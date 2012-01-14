@@ -10,7 +10,7 @@
 #import "chipmunk.h"
 
 
-@interface BFloatRender : DWBehaviour
+@interface BFloatObjectRender : DWBehaviour
 {
     CCSprite *mySprite;
     
@@ -19,7 +19,7 @@
     
 }
 
--(BFloatRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
+-(BFloatObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
 -(void)setSprite;
 -(void)setSpritePos:(NSDictionary *)position;
 

@@ -18,13 +18,29 @@
 		<key>OBJECT_DATA</key>
 		<dict/>
 	</dict>
+	<key>TfloatContainer</key>
+	<dict>
+		<key>BEHAVIOURS</key>
+		<dict>
+			<key>BContainerRender</key>
+			<dict/>
+			<key>BDropTarget</key>
+			<dict/>
+			<key>BMount</key>
+			<dict/>
+		</dict>
+		<key>IMPLEMENT_TEMPLATES</key>
+		<array/>
+		<key>OBJECT_DATA</key>
+		<dict/>
+	</dict>
 	<key>TfloatObject</key>
 	<dict>
 		<key>BEHAVIOURS</key>
 		<dict>
 			<key>BFloatPickupTarget</key>
 			<dict/>
-			<key>BFloatRender</key>
+			<key>BFloatObjectRender</key>
 			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>

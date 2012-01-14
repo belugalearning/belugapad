@@ -6,14 +6,14 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "BFloatRender.h"
+#import "BFloatObjectRender.h"
 #import "global.h"
 
-@implementation BFloatRender
+@implementation BFloatObjectRender
 
--(BFloatRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
+-(BFloatObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
-    self=(BFloatRender*)[super initWithGameObject:aGameObject withData:data];
+    self=(BFloatObjectRender*)[super initWithGameObject:aGameObject withData:data];
     
     //init pos x & y in case they're not set elsewhere
     [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_X];
@@ -68,6 +68,15 @@
     if(messageType==kDWputdown)
     {
         amPickedUp=NO;
+    }
+    
+    if(messageType==kDWsetMount)
+    {
+        //disable phys on this object
+        if(physBody)
+        {
+            cpBodySleep(physBody);
+        }
     }
 }
 

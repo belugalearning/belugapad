@@ -174,6 +174,7 @@ eachShape(void *ptr, void* unused)
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
+    //fixed handlers for menu interaction
     if(location.x>975 & location.y>720)
     {
         [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
@@ -231,24 +232,45 @@ eachShape(void *ptr, void* unused)
 	
     if([gameWorld Blackboard].PickupObject!=nil)
     {
+        [gameWorld Blackboard].DropObject=nil;
+        
+        //mod y down below water line
+        //tofu hard-coded water line at effective -130 from top
+        //tofy this is on touch end lcoaiton -- will need to change for different shape size
+        if(location.y>637)location.y=580;
+        
         NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];
         [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         
-        [[gameWorld Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl];
+        [gameWorld handleMessage:kDWareYouADropTarget andPayload:pl];
         
-        [[gameWorld Blackboard].PickupObject handleMessage:kDWputdown andPayload:nil];
+        if([gameWorld Blackboard].DropObject != nil)
+        {
+            //tell the picked-up object to mount on the dropobject
+            [pl removeAllObjects];
+            [pl setObject:[gameWorld Blackboard].DropObject forKey:MOUNT];
+            [[gameWorld Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl];
+            
+            NSLog(@"mounted float object (presumably) on a drop target");
+            
+            [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
+        }
+        else
+        {
+            //was dropped somewhere that wasn't a drop target
+            [[gameWorld Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl];
+            
+            [[gameWorld Blackboard].PickupObject handleMessage:kDWputdown andPayload:nil];            
+        }
             
         [gameWorld Blackboard].PickupObject=nil;
-        
-        [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
     }
     
 }
 
 -(void)populateGW
 {
-
     
     for (int i=0; i<4; i++)
     {
@@ -260,6 +282,15 @@ eachShape(void *ptr, void* unused)
         NSDictionary *ppl=[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[NSNumber numberWithFloat:x], [NSNumber numberWithFloat:y], nil] forKeys:[NSArray arrayWithObjects:POS_X, POS_Y, nil]];
         [self attachBodyToGO:go atPositionPayload:ppl];        
     }
+    
+    //create a 2 test containers
+    DWGameObject *m2=[gameWorld addGameObjectWithTemplate:@"TfloatContainer"];
+    [[m2 store] setObject:[NSNumber numberWithFloat:418.0f] forKey:POS_X];
+    [[m2 store] setObject:[NSNumber numberWithFloat:283.0f] forKey:POS_Y];
+    
+    DWGameObject *m3=[gameWorld addGameObjectWithTemplate:@"TfloatContainer"];
+    [[m3 store] setObject:[NSNumber numberWithFloat:606.0f] forKey:POS_X];
+    [[m3 store] setObject:[NSNumber numberWithFloat:283.0f] forKey:POS_Y];
 }
 
 -(void)attachBodyToGO:(DWGameObject *)attachGO atPositionPayload:(NSDictionary *)positionPayload

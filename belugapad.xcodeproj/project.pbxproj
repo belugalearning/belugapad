@@ -168,7 +168,7 @@
 		7FABE6BF14B661B400ED2D0C /* BLMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6BE14B661B400ED2D0C /* BLMath.m */; };
 		7FABE6C614B6730A00ED2D0C /* BPickupTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6C514B6730A00ED2D0C /* BPickupTarget.m */; };
 		7FABE6CA14B8F67200ED2D0C /* BFloatPickupTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6C914B8F67100ED2D0C /* BFloatPickupTarget.m */; };
-		7FABE6CD14B8F68100ED2D0C /* BFloatRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6CC14B8F68000ED2D0C /* BFloatRender.m */; };
+		7FABE6CD14B8F68100ED2D0C /* BFloatObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6CC14B8F68000ED2D0C /* BFloatObjectRender.m */; };
 		7FABE6CF14B9112800ED2D0C /* obj-float-object1x1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE6CE14B9112800ED2D0C /* obj-float-object1x1.png */; };
 		7FABE6D114B911FF00ED2D0C /* fg-ipad-float.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE6D014B911FE00ED2D0C /* fg-ipad-float.png */; };
 		7FABE6DB14BB469100ED2D0C /* rpg-ipad-nline.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE6DA14BB469100ED2D0C /* rpg-ipad-nline.png */; };
@@ -512,8 +512,8 @@
 		7FABE6C514B6730A00ED2D0C /* BPickupTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPickupTarget.m; sourceTree = "<group>"; };
 		7FABE6C814B8F67000ED2D0C /* BFloatPickupTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFloatPickupTarget.h; sourceTree = "<group>"; };
 		7FABE6C914B8F67100ED2D0C /* BFloatPickupTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BFloatPickupTarget.m; sourceTree = "<group>"; };
-		7FABE6CB14B8F67F00ED2D0C /* BFloatRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFloatRender.h; sourceTree = "<group>"; };
-		7FABE6CC14B8F68000ED2D0C /* BFloatRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BFloatRender.m; sourceTree = "<group>"; };
+		7FABE6CB14B8F67F00ED2D0C /* BFloatObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BFloatObjectRender.h; sourceTree = "<group>"; };
+		7FABE6CC14B8F68000ED2D0C /* BFloatObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BFloatObjectRender.m; sourceTree = "<group>"; };
 		7FABE6CE14B9112800ED2D0C /* obj-float-object1x1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-float-object1x1.png"; sourceTree = "<group>"; };
 		7FABE6D014B911FE00ED2D0C /* fg-ipad-float.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fg-ipad-float.png"; sourceTree = "<group>"; };
 		7FABE6DA14BB469100ED2D0C /* rpg-ipad-nline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rpg-ipad-nline.png"; sourceTree = "<group>"; };
@@ -1107,8 +1107,8 @@
 				7FABE6C514B6730A00ED2D0C /* BPickupTarget.m */,
 				7FABE6C814B8F67000ED2D0C /* BFloatPickupTarget.h */,
 				7FABE6C914B8F67100ED2D0C /* BFloatPickupTarget.m */,
-				7FABE6CB14B8F67F00ED2D0C /* BFloatRender.h */,
-				7FABE6CC14B8F68000ED2D0C /* BFloatRender.m */,
+				7FABE6CB14B8F67F00ED2D0C /* BFloatObjectRender.h */,
+				7FABE6CC14B8F68000ED2D0C /* BFloatObjectRender.m */,
 			);
 			name = Behaviours;
 			sourceTree = "<group>";
@@ -1342,7 +1342,7 @@
 				7FABE6BF14B661B400ED2D0C /* BLMath.m in Sources */,
 				7FABE6C614B6730A00ED2D0C /* BPickupTarget.m in Sources */,
 				7FABE6CA14B8F67200ED2D0C /* BFloatPickupTarget.m in Sources */,
-				7FABE6CD14B8F68100ED2D0C /* BFloatRender.m in Sources */,
+				7FABE6CD14B8F68100ED2D0C /* BFloatObjectRender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

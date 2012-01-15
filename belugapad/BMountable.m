@@ -33,7 +33,7 @@
         //tell the mount that i'm there
         NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];
         [pl setObject:gameObject forKey:MOUNTED_OBJECT];
-        [newMount handleMessage:kDWsetMountedObject andPayload:pl];
+        [newMount handleMessage:kDWsetMountedObject andPayload:pl withLogLevel:0];
         
         //update the sprite
         [gameObject handleMessage:kDWupdateSprite];

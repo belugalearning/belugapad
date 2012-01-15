@@ -29,7 +29,7 @@ eachShape(void *ptr, void* unused)
         
 		//[sprite setPosition: body->p];
         
-        [dataGo handleMessage:kDWupdatePosFromPhys andPayload:pl];
+        [dataGo handleMessage:kDWupdatePosFromPhys andPayload:pl withLogLevel:-1];
         
 		//[sprite setRotation: (float) CC_RADIANS_TO_DEGREES( -body->a )];
 	}
@@ -73,7 +73,7 @@ eachShape(void *ptr, void* unused)
         [self populateGW];
         
         //general go-oriented render, etc
-        [gameWorld handleMessage:kDWsetupStuff andPayload:nil];
+        [gameWorld handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
         [self schedule:@selector(doUpdate:) interval:1.0f/60.0f];
 
@@ -180,6 +180,8 @@ eachShape(void *ptr, void* unused)
     //fixed handlers for menu interaction
     if(location.x>975 & location.y>720)
     {
+        [gameWorld writeLogBufferToDiskWithKey:@"BlockFloating"];
+        
         [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
         [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.3f scene:[NumberLine scene]]];
     }
@@ -193,24 +195,26 @@ eachShape(void *ptr, void* unused)
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         
         //broadcast search for pickup object gw
-        [gameWorld handleMessage:kDWareYouAPickupTarget andPayload:pl];
+        [gameWorld handleMessage:kDWareYouAPickupTarget andPayload:pl withLogLevel:0];
         
         if([gameWorld Blackboard].PickupObject!=nil)
         {
             //this is just a signal for the GO to us, pickup object is retained on the blackboard
-            [[gameWorld Blackboard].PickupObject handleMessage:kDWpickedUp andPayload:nil];
+            [[gameWorld Blackboard].PickupObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
 
             //look if this object was mounted -- if so, unmount it as soon as its picked up
             DWGameObject *m=[[[gameWorld Blackboard].PickupObject store] objectForKey:MOUNT];
             if(m)
             {
-                [[gameWorld Blackboard].PickupObject handleMessage:kDWunsetMount andPayload:nil];
+                [[gameWorld Blackboard].PickupObject handleMessage:kDWunsetMount andPayload:nil withLogLevel:0];
                 
-                [m handleMessage:kDWunsetMountedObject andPayload:nil];
+                [m handleMessage:kDWunsetMountedObject andPayload:nil withLogLevel:0];
             }
 
             [[SimpleAudioEngine sharedEngine] playEffect:@"pickup.wav"];
-            NSLog(@"got a pickup object");
+            
+            //NSLog(@"got a pickup object");
+            [[gameWorld Blackboard].PickupObject logInfo:@"this object was picked up" withData:0];
             
         }
     }
@@ -232,7 +236,7 @@ eachShape(void *ptr, void* unused)
         [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         
-        [[gameWorld Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl];
+        [[gameWorld Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:-1];
     }
     
 }
@@ -264,16 +268,19 @@ eachShape(void *ptr, void* unused)
         [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         
-        [gameWorld handleMessage:kDWareYouADropTarget andPayload:pl];
+        [gameWorld handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:0];
         
         if([gameWorld Blackboard].DropObject != nil)
         {
             //tell the picked-up object to mount on the dropobject
             [pl removeAllObjects];
             [pl setObject:[gameWorld Blackboard].DropObject forKey:MOUNT];
-            [[gameWorld Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl];
+            [[gameWorld Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
             
-            NSLog(@"mounted float object (presumably) on a drop target");
+            //NSLog(@"mounted float object (presumably) on a drop target");
+            [[gameWorld Blackboard].PickupObject logInfo:@"this object was mounted" withData:0];
+            [[gameWorld Blackboard].DropObject logInfo:@"mounted object on this go" withData:0];
+
             
             [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
         }
@@ -283,9 +290,11 @@ eachShape(void *ptr, void* unused)
             [pl setObject:[NSNumber numberWithFloat:modLocation.y] forKey:POS_Y];
             
             //was dropped somewhere that wasn't a drop target
-            [[gameWorld Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl];
+            [[gameWorld Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:0];
             
-            [[gameWorld Blackboard].PickupObject handleMessage:kDWputdown andPayload:nil];            
+            [[gameWorld Blackboard].PickupObject handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+            
+            [[gameWorld Blackboard].PickupObject logInfo:@"dropped on no valid target" withData:0];
         }
             
         [gameWorld Blackboard].PickupObject=nil;
@@ -358,7 +367,7 @@ eachShape(void *ptr, void* unused)
 	cpSpaceAddShape(space, shape);
     
     NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSValue valueWithPointer:body] forKey:PHYS_BODY];
-    [attachGO handleMessage:kDWsetPhysBody andPayload:pl];
+    [attachGO handleMessage:kDWsetPhysBody andPayload:pl withLogLevel:0];
 }
 
 -(void)doUpdate:(ccTime)delta

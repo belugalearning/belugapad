@@ -40,6 +40,8 @@
 @property (nonatomic,retain) BHexMap *hexMap;
 @property (nonatomic, readonly) DWBlackboard *Blackboard;
 
+@property (retain) NSMutableArray *LogBuffer;
+
 
 -(NSMutableDictionary *) store;
 -(DWGameWorld *)initWithGameScene:(CCLayer *)scene;
@@ -48,10 +50,12 @@
 
 -(void)logLocalStore;
 -(void)logDebugMessage:(NSString *)message atLevel:(int)level;
+-(void)writeLogBufferToDiskWithKey:(NSString *)key;
+
 -(DWGameObject*)addGameObjectWithTemplate:(NSString *)templateName;
 -(void)addGameObject:(DWGameObject*)gameObject;
 -(void)doUpdate:(ccTime)delta;
--(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload;
+-(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel;
 
 -(void)delayRemoveGameObject:(DWGameObject *)gameObject;
 

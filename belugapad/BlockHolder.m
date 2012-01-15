@@ -47,7 +47,7 @@
         [self populateGW];
         
         //general go-oriented render, etc
-        [gameWorld handleMessage:kDWsetupStuff andPayload:nil];
+        [gameWorld handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
         [self schedule:@selector(doUpdate:) interval:1.0f/60.0f];
     }
@@ -118,7 +118,7 @@
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         
         //broadcast search for pickup object gw
-        [gameWorld handleMessage:kDWareYouAPickupTarget andPayload:pl];
+        [gameWorld handleMessage:kDWareYouAPickupTarget andPayload:pl withLogLevel:0];
         
         if([gameWorld Blackboard].PickupObject!=nil)
         {
@@ -150,7 +150,7 @@
                 {
                     [pl removeAllObjects]; 
                     [pl setObject:freeStoreMount forKey:MOUNT];
-                    [[gameWorld Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl];
+                    [[gameWorld Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
                     
                     [gameWorld Blackboard].PickupObject = nil; //drop pickup object
                     NSLog(@"returned object to store");
@@ -173,7 +173,7 @@
         [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         
-        [[gameWorld Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl];
+        [[gameWorld Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:0];
     }
     
 }
@@ -196,14 +196,14 @@
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         
         //broadcast search for pickup object gw
-        [gameWorld handleMessage:kDWareYouADropTarget andPayload:pl];
+        [gameWorld handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:0];
         
         if([gameWorld Blackboard].DropObject!=nil)
         {
             //we have a drop target, tell the pickGO to move to the dropGO
             [pl removeAllObjects];
             [pl setObject:[gameWorld Blackboard].DropObject forKey:MOUNT];
-            [[gameWorld Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl];
+            [[gameWorld Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
             
             NSLog(@"re-mounted pickupGO");
             [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
@@ -211,7 +211,7 @@
         }
         else
         {
-            [[gameWorld Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:nil];
+            [[gameWorld Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:nil withLogLevel:0];
             
             NSLog(@"returned pickupGO");
         }
@@ -263,12 +263,12 @@
     DWGameObject *o1=[gameWorld addGameObjectWithTemplate:@"Tobject"];
     //send store 1 as mount for this object
     NSDictionary *pl1=[NSDictionary dictionaryWithObject:s1 forKey:MOUNT];
-    [o1 handleMessage:kDWsetMount andPayload:pl1];
+    [o1 handleMessage:kDWsetMount andPayload:pl1 withLogLevel:0];
         
     DWGameObject *o2=[gameWorld addGameObjectWithTemplate:@"Tobject"];
     //send store 1 as mount for this object
     NSDictionary *pl2=[NSDictionary dictionaryWithObject:s2 forKey:MOUNT];
-    [o2 handleMessage:kDWsetMount andPayload:pl2];
+    [o2 handleMessage:kDWsetMount andPayload:pl2 withLogLevel:0];
      
 }
 

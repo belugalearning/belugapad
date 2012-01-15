@@ -20,6 +20,8 @@
 #define GOS_SET(object, key) ([[gameObject store] setObject:object forKey:key])
 
 
+#define LOG_OUTPUT_LEVEL 0
+
 typedef enum {
 
     kDWonGameObjectInitComplete,

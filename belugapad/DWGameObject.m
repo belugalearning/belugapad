@@ -141,8 +141,24 @@
     [behaviours addObject:behaviour];
 }
 
--(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload
+-(void)logInfo:(NSString *) desc withData:(int)logData
 {
+    [gameWorld.LogBuffer addObject:[NSString stringWithFormat:@"%@, %@, %d, %@, %d", [NSDate date], [localStore objectForKey:TEMPLATE_NAME], (int)self, desc, logData]];
+    
+    //log this (for now)
+    NSLog(@"to buffer: %@", [gameWorld.LogBuffer objectAtIndex:[gameWorld.LogBuffer count]-1]);
+    
+}
+
+-(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel
+{
+    //log here
+    if(logLevel>= LOG_OUTPUT_LEVEL)
+    {
+        [self logInfo:@"go-handled-loggable-message" withData:messageType];
+    }
+    
+    
 	for(DWBehaviour *b in behaviours)
 	{
 		[b handleMessage:messageType andPayload:payload];
@@ -150,7 +166,7 @@
 }
 -(void)handleMessage:(DWMessageType)messageType
 {
-    [self handleMessage:messageType andPayload:nil];
+    [self handleMessage:messageType andPayload:nil withLogLevel:0];
 }
 
 -(void)doUpdate:(ccTime)delta

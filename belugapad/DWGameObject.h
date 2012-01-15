@@ -29,9 +29,11 @@
 -(void)logDebugMessage:(NSString *)message atLevel:(int)level;
 -(void)loadData:(NSDictionary *)data;
 -(void)doUpdate:(ccTime)delta;
--(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload;
+-(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel;
 -(void)handleMessage:(DWMessageType)messageType;
 -(void)initComplete;
+
+-(void)logInfo:(NSString *) desc withData:(int)logData;
 
 -(DWBehaviour*) queryBehaviourByClass:(Class)classType;
 

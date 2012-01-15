@@ -12,6 +12,7 @@
 
 @implementation DWGameWorld
 @synthesize hexMap;
+@synthesize LogBuffer;
 
 -(DWGameWorld *)initWithGameScene:(CCLayer*)scene
 {
@@ -28,6 +29,9 @@
 		removeObjects=[[NSMutableArray alloc] init];
 		
         blackboard=[[DWBlackboard alloc] init];
+        
+        LogBuffer=[[NSMutableArray alloc] init];
+        [LogBuffer addObject:@"time, object-template, object-address, log-description, log-data"];
     }
 	return self;
 }
@@ -64,14 +68,14 @@
 	}
 }
 
--(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload;
+-(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel
 {
 	if(!mPause)
 	{
         int ic=[gameObjects count];
         for(int i=0; i<ic; i++)
         {
-            [[gameObjects objectAtIndex:i] handleMessage:messageType andPayload:payload];
+            [[gameObjects objectAtIndex:i] handleMessage:messageType andPayload:payload withLogLevel:logLevel];
         }
 	}
 }
@@ -109,6 +113,21 @@
 	{
 		[go logLocalStore];
 	}
+}
+
+-(void)writeLogBufferToDiskWithKey:(NSString *)key
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+
+    NSString *file = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@---%@.csv", key, [NSDate date]]];
+    
+    NSMutableString *wStr=[[NSMutableString alloc] init];
+    for (int i=0; i<[LogBuffer count]; i++) {
+        [wStr appendFormat:@"%@\n", [LogBuffer objectAtIndex:i]];
+    }
+    
+    [wStr writeToFile:file atomically:YES encoding:NSUTF8StringEncoding error:nil];
 }
 
 -(NSMutableDictionary *) store

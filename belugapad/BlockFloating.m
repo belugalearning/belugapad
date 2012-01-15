@@ -10,6 +10,7 @@
 #import "global.h"
 #import "SimpleAudioEngine.h"
 #import "NumberLine.h"
+#import "BLMath.h"
 
 static void
 eachShape(void *ptr, void* unused)
@@ -52,6 +53,8 @@ eachShape(void *ptr, void* unused)
     if(self=[super init])
     {
         self.isTouchEnabled=YES;
+        
+        [[CCDirector sharedDirector] openGLView].multipleTouchEnabled=NO;
      
         cx=[[CCDirector sharedDirector] winSize].width / 2.0f;
         cy=[[CCDirector sharedDirector] winSize].height / 2.0f;
@@ -124,7 +127,7 @@ eachShape(void *ptr, void* unused)
     cpShape *shape;
     
     // bottom
-    shape = cpSegmentShapeNew(staticBody, ccp(0,0), ccp(wins.width,0), 0.0f);
+    shape = cpSegmentShapeNew(staticBody, ccp(0,-200), ccp(wins.width,0), 0.0f);
     shape->e = 1.0f; shape->u = 1.0f;
     cpSpaceAddStaticShape(space, shape);
     
@@ -134,12 +137,12 @@ eachShape(void *ptr, void* unused)
     cpSpaceAddStaticShape(space, shape);
     
     // left
-    shape = cpSegmentShapeNew(staticBody, ccp(0,0), ccp(0,wins.height), 0.0f);
+    shape = cpSegmentShapeNew(staticBody, ccp(-200,0), ccp(0,wins.height), 0.0f);
     shape->e = 1.0f; shape->u = 1.0f;
     cpSpaceAddStaticShape(space, shape);
     
     // right
-    shape = cpSegmentShapeNew(staticBody, ccp(wins.width,0), ccp(wins.width,wins.height), 0.0f);
+    shape = cpSegmentShapeNew(staticBody, ccp(wins.width,0), ccp(wins.width+200,wins.height), 0.0f);
     shape->e = 1.0f; shape->u = 1.0f;
     cpSpaceAddStaticShape(space, shape);
 }
@@ -196,7 +199,16 @@ eachShape(void *ptr, void* unused)
         {
             //this is just a signal for the GO to us, pickup object is retained on the blackboard
             [[gameWorld Blackboard].PickupObject handleMessage:kDWpickedUp andPayload:nil];
-            
+
+            //look if this object was mounted -- if so, unmount it as soon as its picked up
+            DWGameObject *m=[[[gameWorld Blackboard].PickupObject store] objectForKey:MOUNT];
+            if(m)
+            {
+                [[gameWorld Blackboard].PickupObject handleMessage:kDWunsetMount andPayload:nil];
+                
+                [m handleMessage:kDWunsetMountedObject andPayload:nil];
+            }
+
             [[SimpleAudioEngine sharedEngine] playEffect:@"pickup.wav"];
             NSLog(@"got a pickup object");
             
@@ -213,6 +225,9 @@ eachShape(void *ptr, void* unused)
     
     if([gameWorld Blackboard].PickupObject!=nil)
     {
+        //mod location by pickup offset
+        location=[BLMath SubtractVector:[gameWorld Blackboard].PickupOffset from:location];
+        
         NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];
         [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
@@ -234,10 +249,16 @@ eachShape(void *ptr, void* unused)
     {
         [gameWorld Blackboard].DropObject=nil;
         
+        //forcibly mod location by pickup offset
+        
+        CGPoint modLocation=[BLMath SubtractVector:[gameWorld Blackboard].PickupOffset from:location];
+        
         //mod y down below water line
         //tofu hard-coded water line at effective -130 from top
-        //tofy this is on touch end lcoaiton -- will need to change for different shape size
-        if(location.y>637)location.y=580;
+        //tofy this is on touch end lcoaiton -- will need to change for different shape size        
+        if(modLocation.y>637)modLocation.y=580;
+        
+        if(modLocation.y<1)modLocation.y=1;
         
         NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];
         [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
@@ -258,6 +279,9 @@ eachShape(void *ptr, void* unused)
         }
         else
         {
+            [pl setObject:[NSNumber numberWithFloat:modLocation.x] forKey:POS_X];
+            [pl setObject:[NSNumber numberWithFloat:modLocation.y] forKey:POS_Y];
+            
             //was dropped somewhere that wasn't a drop target
             [[gameWorld Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl];
             
@@ -272,9 +296,13 @@ eachShape(void *ptr, void* unused)
 -(void)populateGW
 {
     
-    for (int i=0; i<4; i++)
+    for (int i=0; i<10; i++)
     {
         DWGameObject *go=[gameWorld addGameObjectWithTemplate:@"TfloatObject"];
+        
+        [[go store] setObject:[NSNumber numberWithInt:(arc4random()%3)+1] forKey:OBJ_ROWS];
+        [[go store] setObject:[NSNumber numberWithInt:(arc4random()%3)+1] forKey:OBJ_COLS];
+        
         
         float x=arc4random()%800 + 100;
         float y=arc4random()%400;
@@ -286,11 +314,11 @@ eachShape(void *ptr, void* unused)
     //create a 2 test containers
     DWGameObject *m2=[gameWorld addGameObjectWithTemplate:@"TfloatContainer"];
     [[m2 store] setObject:[NSNumber numberWithFloat:418.0f] forKey:POS_X];
-    [[m2 store] setObject:[NSNumber numberWithFloat:283.0f] forKey:POS_Y];
+    [[m2 store] setObject:[NSNumber numberWithFloat:183.0f] forKey:POS_Y];
     
     DWGameObject *m3=[gameWorld addGameObjectWithTemplate:@"TfloatContainer"];
     [[m3 store] setObject:[NSNumber numberWithFloat:606.0f] forKey:POS_X];
-    [[m3 store] setObject:[NSNumber numberWithFloat:283.0f] forKey:POS_Y];
+    [[m3 store] setObject:[NSNumber numberWithFloat:183.0f] forKey:POS_Y];
 }
 
 -(void)attachBodyToGO:(DWGameObject *)attachGO atPositionPayload:(NSDictionary *)positionPayload
@@ -299,15 +327,26 @@ eachShape(void *ptr, void* unused)
     x=[[positionPayload objectForKey:POS_X] floatValue];
     y=[[positionPayload objectForKey:POS_Y] floatValue];
     
+    //pull unit dimensions from object
+    int c=[[[attachGO store] objectForKey:OBJ_COLS] intValue];
+    int r=[[[attachGO store] objectForKey:OBJ_ROWS] intValue];
+    
     //verts of all objects are 1x1 atm
     int num = 4;
 	CGPoint verts[] = {
-		ccp(-40,-40),
-		ccp(-40, 40),
-		ccp( 40, 40),
-		ccp( 40,-40),
+		ccp(-HALF_SIZE,-HALF_SIZE), //bottom left
+		ccp(-HALF_SIZE, (r-1)*UNIT_SIZE + HALF_SIZE), //top left
+		ccp((c-1)*UNIT_SIZE + HALF_SIZE, (r-1)*UNIT_SIZE + HALF_SIZE), //top right
+		ccp((c-1)*UNIT_SIZE + HALF_SIZE, -HALF_SIZE), // bottom right
 	};
-	
+
+//    CGPoint verts[] = {
+//		ccp(-40,-40), //bottom left
+//		ccp(-40, 40), //top left
+//		ccp( 40, 40),
+//		ccp( 40,-40),
+//	};
+    
 	cpBody *body = cpBodyNew(1.0f, cpMomentForPoly(1.0f, num, verts, CGPointZero));
 	
 	body->p = ccp(x, y);

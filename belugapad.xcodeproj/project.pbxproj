@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F50ABE914C1D1240033C377 /* obj-float-45.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABE814C1D1230033C377 /* obj-float-45.png */; };
 		7F5113C314A9EE62001AF372 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C214A9EE62001AF372 /* QuartzCore.framework */; };
 		7F5113C514A9EE62001AF372 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C414A9EE62001AF372 /* OpenGLES.framework */; };
 		7F5113C714A9EE62001AF372 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C614A9EE62001AF372 /* OpenAL.framework */; };
@@ -179,6 +180,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7F50ABE814C1D1230033C377 /* obj-float-45.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-float-45.png"; sourceTree = "<group>"; };
 		7F5113BE14A9EE62001AF372 /* belugapad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = belugapad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F5113C214A9EE62001AF372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7F5113C414A9EE62001AF372 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -512,7 +514,7 @@
 		7FABE6C514B6730A00ED2D0C /* BPickupTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPickupTarget.m; sourceTree = "<group>"; };
 		7FABE6C814B8F67000ED2D0C /* BFloatPickupTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFloatPickupTarget.h; sourceTree = "<group>"; };
 		7FABE6C914B8F67100ED2D0C /* BFloatPickupTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BFloatPickupTarget.m; sourceTree = "<group>"; };
-		7FABE6CB14B8F67F00ED2D0C /* BFloatObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BFloatObjectRender.h; sourceTree = "<group>"; };
+		7FABE6CB14B8F67F00ED2D0C /* BFloatObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFloatObjectRender.h; sourceTree = "<group>"; };
 		7FABE6CC14B8F68000ED2D0C /* BFloatObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BFloatObjectRender.m; sourceTree = "<group>"; };
 		7FABE6CE14B9112800ED2D0C /* obj-float-object1x1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-float-object1x1.png"; sourceTree = "<group>"; };
 		7FABE6D014B911FE00ED2D0C /* fg-ipad-float.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fg-ipad-float.png"; sourceTree = "<group>"; };
@@ -593,6 +595,7 @@
 			children = (
 				7FAEC25F14BB5BA000E60983 /* visgrad1.fnt */,
 				7FAEC26014BB5BA000E60983 /* visgrad1.png */,
+				7F50ABE814C1D1230033C377 /* obj-float-45.png */,
 				7FABE6A114B4BF0F00ED2D0C /* templatedefs-general.plist */,
 				7FABE69D14B4BC8300ED2D0C /* pickup.wav */,
 				7FABE69E14B4BC8300ED2D0C /* putdown.wav */,
@@ -1192,6 +1195,7 @@
 				7FAEC26114BB5BA000E60983 /* visgrad1.fnt in Resources */,
 				7FAEC26214BB5BA000E60983 /* visgrad1.png in Resources */,
 				7FAEC26414BB64C200E60983 /* btn-fwd.png in Resources */,
+				7F50ABE914C1D1240033C377 /* obj-float-45.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

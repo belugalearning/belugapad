@@ -9,6 +9,7 @@
 #import "cocos2d.h"
 #import "chipmunk.h"
 #import "DWGameWorld.h"
+#import "DWGameObject.h"
 
 @interface BlockFloating : CCLayer
 {

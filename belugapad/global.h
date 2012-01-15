@@ -20,6 +20,13 @@
 #define POS_Y @"POS_Y"
 #define ROT @"ROT"
 
+#define OBJ_COLS @"OBJ_COLS"
+#define OBJ_ROWS @"OBJ_ROWS"
+
+#define UNIT_SIZE 45.0f
+#define HALF_SIZE 22.5f
+
+
 #define MOUNT @"MOUNT"
 #define MOUNTED_OBJECT @"MOUNTED_OBJECT"
 #define DISABLED @"DISABLED"
@@ -36,3 +43,5 @@
 #define NLINE_PRI_MARKER_YBASE 50.0f
 #define NLINE_PRI_SPACEBASE 180.0f
 #define NLINE_MARKER_FONT @"visgrad1.fnt"
+
+#define MY_SPRITE @"MY_SPRITE"

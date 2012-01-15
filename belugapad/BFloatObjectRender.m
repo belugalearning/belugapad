@@ -75,7 +75,15 @@
         //disable phys on this object
         if(physBody)
         {
+            //tofu -- this is a bit of a hack as other activators on the object will revert this
             cpBodySleep(physBody);
+        }
+    }
+    if(messageType==kDWunsetMount)
+    {
+        if(physBody)
+        {
+            cpBodyActivate(physBody);
         }
     }
 }
@@ -87,9 +95,28 @@
 
 -(void)setSprite
 {
-    mySprite=[CCSprite spriteWithFile:@"obj-float-object1x1.png"];
-        
+    mySprite=[CCSprite spriteWithFile:@"obj-float-45.png"];
     [[gameWorld GameScene] addChild:mySprite z:0];
+    
+    //if we're on an object > 1x1, render more sprites as children
+    int r=[GOS_GET(OBJ_ROWS) intValue];
+    int c=[GOS_GET(OBJ_COLS) intValue];
+    
+    for(int ri=0;ri<r;ri++)
+    {
+        for(int ci=0; ci<c;ci++)
+        {
+            if(ri>0 || ci>0)
+            {
+                CCSprite *cs=[CCSprite spriteWithFile:@"obj-float-45.png"];
+                [cs setPosition:ccp((ci*UNIT_SIZE)+HALF_SIZE, (ri*UNIT_SIZE)+HALF_SIZE)];
+                [mySprite addChild:cs];
+            }
+        }
+    }
+    
+    //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
+    GOS_SET(mySprite, MY_SPRITE);
     
 }
 

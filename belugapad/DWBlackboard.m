@@ -13,6 +13,7 @@
 @synthesize DropObject;
 @synthesize PickupObject;
 @synthesize AllStores;
+@synthesize PickupOffset;
 
 -(id) init
 {

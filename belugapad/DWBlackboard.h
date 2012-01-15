@@ -16,6 +16,7 @@
 @property (retain) DWGameObject *DropObject;
 @property (retain) DWGameObject *PickupObject;
 @property (retain) NSMutableArray *AllStores;
+@property CGPoint PickupOffset;
 
 -(void)loadData;
 

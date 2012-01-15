@@ -29,6 +29,8 @@
     if(self=[super init])
     {
         self.isTouchEnabled=YES;
+        
+        [[CCDirector sharedDirector] openGLView].multipleTouchEnabled=NO;
      
         cx=[[CCDirector sharedDirector] winSize].width / 2.0f;
         cy=[[CCDirector sharedDirector] winSize].height / 2.0f;

@@ -27,9 +27,13 @@ typedef enum {
     kDWsetupStuff,
     
     kDWsetMount,
+    kDWunsetMount,
     kDWsetMountedObject,
-    kDWupdateSprite,
     kDWunsetMountedObject,
+    
+    
+    kDWupdateSprite,
+    
     kDWareYouADropTarget,
     kDWareYouAPickupTarget,
     

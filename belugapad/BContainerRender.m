@@ -33,6 +33,7 @@
 -(void)setSprite
 {
     mySprite=[CCSprite spriteWithFile:@"obj-blockholder-mount1x1.png"];
+    [mySprite setOpacity:120];
 
     float x=[[[gameObject store] objectForKey:POS_X] floatValue];
     float y=[GOS_GET(POS_Y) floatValue];

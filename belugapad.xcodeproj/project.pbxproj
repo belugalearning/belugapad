@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		7F50ABE914C1D1240033C377 /* obj-float-45.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABE814C1D1230033C377 /* obj-float-45.png */; };
+		7F50ABEC14C4C6300033C377 /* float-problem1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABEB14C4C6300033C377 /* float-problem1.plist */; };
+		7F50ABF214C4DB290033C377 /* obj-blockholder-mount1x1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABF114C4DB290033C377 /* obj-blockholder-mount1x1.png */; };
 		7F5113C314A9EE62001AF372 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C214A9EE62001AF372 /* QuartzCore.framework */; };
 		7F5113C514A9EE62001AF372 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C414A9EE62001AF372 /* OpenGLES.framework */; };
 		7F5113C714A9EE62001AF372 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C614A9EE62001AF372 /* OpenAL.framework */; };
@@ -164,7 +166,6 @@
 		7FABE6B214B4C64E00ED2D0C /* BMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6B114B4C64D00ED2D0C /* BMountable.m */; };
 		7FABE6B514B4C66F00ED2D0C /* BObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6B414B4C66E00ED2D0C /* BObjectRender.m */; };
 		7FABE6B914B653F500ED2D0C /* bg-ipad-blockholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE6B614B653F500ED2D0C /* bg-ipad-blockholder.png */; };
-		7FABE6BA14B653F500ED2D0C /* obj-blockholder-mount1x1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE6B714B653F500ED2D0C /* obj-blockholder-mount1x1.png */; };
 		7FABE6BB14B653F500ED2D0C /* obj-blockholder-object1x1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE6B814B653F500ED2D0C /* obj-blockholder-object1x1.png */; };
 		7FABE6BF14B661B400ED2D0C /* BLMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6BE14B661B400ED2D0C /* BLMath.m */; };
 		7FABE6C614B6730A00ED2D0C /* BPickupTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6C514B6730A00ED2D0C /* BPickupTarget.m */; };
@@ -181,6 +182,8 @@
 
 /* Begin PBXFileReference section */
 		7F50ABE814C1D1230033C377 /* obj-float-45.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-float-45.png"; sourceTree = "<group>"; };
+		7F50ABEB14C4C6300033C377 /* float-problem1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem1.plist"; sourceTree = "<group>"; };
+		7F50ABF114C4DB290033C377 /* obj-blockholder-mount1x1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-blockholder-mount1x1.png"; sourceTree = "<group>"; };
 		7F5113BE14A9EE62001AF372 /* belugapad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = belugapad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F5113C214A9EE62001AF372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7F5113C414A9EE62001AF372 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -506,7 +509,6 @@
 		7FABE6B314B4C66E00ED2D0C /* BObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BObjectRender.h; sourceTree = "<group>"; };
 		7FABE6B414B4C66E00ED2D0C /* BObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BObjectRender.m; sourceTree = "<group>"; };
 		7FABE6B614B653F500ED2D0C /* bg-ipad-blockholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-ipad-blockholder.png"; sourceTree = "<group>"; };
-		7FABE6B714B653F500ED2D0C /* obj-blockholder-mount1x1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-blockholder-mount1x1.png"; sourceTree = "<group>"; };
 		7FABE6B814B653F500ED2D0C /* obj-blockholder-object1x1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-blockholder-object1x1.png"; sourceTree = "<group>"; };
 		7FABE6BD14B661B400ED2D0C /* BLMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLMath.h; sourceTree = "<group>"; };
 		7FABE6BE14B661B400ED2D0C /* BLMath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLMath.m; sourceTree = "<group>"; };
@@ -544,6 +546,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7F50ABEA14C4C6150033C377 /* problems */ = {
+			isa = PBXGroup;
+			children = (
+				7F50ABEB14C4C6300033C377 /* float-problem1.plist */,
+			);
+			name = problems;
+			sourceTree = "<group>";
+		};
 		7F5113B314A9EE62001AF372 = {
 			isa = PBXGroup;
 			children = (
@@ -593,6 +603,7 @@
 		7F5113D314A9EE63001AF372 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7F50ABEA14C4C6150033C377 /* problems */,
 				7FAEC25F14BB5BA000E60983 /* visgrad1.fnt */,
 				7FAEC26014BB5BA000E60983 /* visgrad1.png */,
 				7F50ABE814C1D1230033C377 /* obj-float-45.png */,
@@ -604,7 +615,7 @@
 				7FABE6B614B653F500ED2D0C /* bg-ipad-blockholder.png */,
 				7FABE6DA14BB469100ED2D0C /* rpg-ipad-nline.png */,
 				7FAEC25C14BB5A5100E60983 /* obj-nline-marker.png */,
-				7FABE6B714B653F500ED2D0C /* obj-blockholder-mount1x1.png */,
+				7F50ABF114C4DB290033C377 /* obj-blockholder-mount1x1.png */,
 				7FABE6B814B653F500ED2D0C /* obj-blockholder-object1x1.png */,
 				7FABE6CE14B9112800ED2D0C /* obj-float-object1x1.png */,
 				7FABE69914B4B8FB00ED2D0C /* bg-ipad.png */,
@@ -1186,7 +1197,6 @@
 				7FABE6A014B4BC8300ED2D0C /* putdown.wav in Resources */,
 				7FABE6A214B4BF0F00ED2D0C /* templatedefs-general.plist in Resources */,
 				7FABE6B914B653F500ED2D0C /* bg-ipad-blockholder.png in Resources */,
-				7FABE6BA14B653F500ED2D0C /* obj-blockholder-mount1x1.png in Resources */,
 				7FABE6BB14B653F500ED2D0C /* obj-blockholder-object1x1.png in Resources */,
 				7FABE6CF14B9112800ED2D0C /* obj-float-object1x1.png in Resources */,
 				7FABE6D114B911FF00ED2D0C /* fg-ipad-float.png in Resources */,
@@ -1196,6 +1206,8 @@
 				7FAEC26214BB5BA000E60983 /* visgrad1.png in Resources */,
 				7FAEC26414BB64C200E60983 /* btn-fwd.png in Resources */,
 				7F50ABE914C1D1240033C377 /* obj-float-45.png in Resources */,
+				7F50ABEC14C4C6300033C377 /* float-problem1.plist in Resources */,
+				7F50ABF214C4DB290033C377 /* obj-blockholder-mount1x1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -115,7 +115,7 @@ eachShape(void *ptr, void* unused)
     
     cpBody *staticBody = cpBodyNew(INFINITY, INFINITY);
     space = cpSpaceNew();
-    cpSpaceResizeStaticHash(space, 400.0f, 40);
+    cpSpaceResizeStaticHash(space, 400.0f, 400);
     cpSpaceResizeActiveHash(space, 100, 600);
     
     //space->gravity = ccp(9.8*30, 0.0f);
@@ -133,7 +133,7 @@ eachShape(void *ptr, void* unused)
     
     // top
     shape = cpSegmentShapeNew(staticBody, ccp(0,wins.height-130), ccp(wins.width,wins.height-130), 0.0f);
-    shape->e = 1.0f; shape->u = 1.0f;
+    shape->e = 0.65f; shape->u = 1.0f;
     cpSpaceAddStaticShape(space, shape);
     
     // left
@@ -142,9 +142,16 @@ eachShape(void *ptr, void* unused)
     cpSpaceAddStaticShape(space, shape);
     
     // right
-    shape = cpSegmentShapeNew(staticBody, ccp(wins.width,0), ccp(wins.width+200,wins.height), 0.0f);
-    shape->e = 1.0f; shape->u = 1.0f;
-    cpSpaceAddStaticShape(space, shape);
+    //shape = cpSegmentShapeNew(staticBody, ccp(wins.width,0), ccp(wins.width+200,wins.height), 0.0f);
+//    shape=cpSegmentShapeNew(staticBody, ccp(800, 0), ccp(1224, 768), 0.0f);
+//    shape->e = 1.0f; shape->u = 1.0f;
+//    cpSpaceAddStaticShape(space, shape);
+    
+//    cpBody *staticBodyRight = cpBodyNew(INFINITY, INFINITY);
+    cpShape *right=cpSegmentShapeNew(staticBody, ccp(1024,0), ccp(1200,768), 0.0f);
+    right->e=1.0f;
+    right->u=1.0f;
+    cpSpaceAddStaticShape(space, right);
 }
 
 -(void)setupSprites
@@ -303,6 +310,68 @@ eachShape(void *ptr, void* unused)
 }
 
 -(void)populateGW
+{
+    NSString *path=[[NSBundle mainBundle] pathForResource:@"float-problem1" ofType:@"plist"];
+	NSDictionary *pdef=[NSDictionary dictionaryWithContentsOfFile:path];
+	
+    //render problem label
+    problemDescLabel=[CCLabelTTF labelWithString:[pdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    [problemDescLabel setPosition:ccp(cx, cy+(0.85*cy))];
+    [problemDescLabel setColor:ccc3(255, 255, 255)];
+    [self addChild:problemDescLabel];
+    
+    //objects
+    NSDictionary *objects=[pdef objectForKey:INIT_OBJECTS];
+    for (NSDictionary *o in objects) {
+        [self createObjectWithCols:[[o objectForKey:DIMENSION_COLS] intValue] andRows:[[o objectForKey:DIMENSION_ROWS] intValue] andTag:[o objectForKey:TAG]];
+    }
+    
+    //containers
+    NSArray *containers=[pdef objectForKey:INIT_CONTAINERS];
+    int containerCount=[containers count];
+    
+    //very basic layout implementation -- distributed space
+    float cleftIncr=(cx*2)/(containerCount+1);
+    
+    for (int i=0; i<containerCount; i++)
+    {
+        CGPoint p=ccp((i+1)*cleftIncr, (0.625*cy));
+        
+        [self createContainerWithPos:p andData:[containers objectAtIndex:0]];
+    }
+}
+
+-(void)createObjectWithCols:(int)cols andRows:(int)rows andTag:(NSString*)tagString
+{
+    //creates an object in the game world
+    //ASSUMES kDWsetupStuff is sent to the object (in problem init this comes through sequential populateGW, setup)
+    
+    DWGameObject *go=[gameWorld addGameObjectWithTemplate:@"TfloatObject"];
+    
+    [[go store] setObject:[NSNumber numberWithInt:rows] forKey:OBJ_ROWS];
+    [[go store] setObject:[NSNumber numberWithInt:cols] forKey:OBJ_COLS];
+    
+    [[go store] setObject:tagString forKey:TAG];
+    
+    //randomly distribute new objects in float space
+    float x=arc4random()%800 + 100;
+    float y=arc4random()%400;
+    
+    NSDictionary *ppl=[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[NSNumber numberWithFloat:x], [NSNumber numberWithFloat:y], nil] forKeys:[NSArray arrayWithObjects:POS_X, POS_Y, nil]];
+    [self attachBodyToGO:go atPositionPayload:ppl];
+}
+
+-(void)createContainerWithPos:(CGPoint)pos andData:(NSDictionary*)containerData
+{
+    //creates a container in the game world
+    //ASSUMES kDWsetupStuff is sent to the object (in problem init this comes through sequential populateGW, setup)
+    
+    DWGameObject *c=[gameWorld addGameObjectWithTemplate:@"TfloatContainer"];
+    [[c store] setObject:[NSNumber numberWithFloat:pos.x] forKey:POS_X];
+    [[c store] setObject:[NSNumber numberWithFloat:pos.y] forKey:POS_Y];
+}
+
+-(void)populateGWHard
 {
     
     for (int i=0; i<10; i++)

@@ -23,9 +23,9 @@
 {
     if(messageType==kDWareYouADropTarget)
     {
-        //only check if I'm not currently mounting something else
-        if([[gameObject store] objectForKey:MOUNTED_OBJECT]==nil)
-        {
+//        //only check if I'm not currently mounting something else
+//        if([[gameObject store] objectForKey:MOUNTED_OBJECT]==nil)
+//        {
             //get current loc
             float x=[[[gameObject store] objectForKey:POS_X] floatValue];
             float y=[[[gameObject store] objectForKey:POS_Y] floatValue];   
@@ -44,7 +44,7 @@
                 
 
             }
-        }
+//        }
 
     }
 }

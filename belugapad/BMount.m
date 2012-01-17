@@ -14,7 +14,10 @@
 -(BMount *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
     self=(BMount*)[super initWithGameObject:aGameObject withData:data];
-       
+    
+    NSMutableArray *mo=[[NSMutableArray alloc] init];
+    GOS_SET(mo, MOUNTED_OBJECTS);
+    
     return self;
 }
 
@@ -23,13 +26,16 @@
     if(messageType==kDWsetMountedObject)
     {
         //set the mount for the GO
-        DWGameObject *go=[payload objectForKey:MOUNTED_OBJECT];
-        [[gameObject store] setObject:go forKey:MOUNTED_OBJECT];
+        NSMutableArray *mo=GOS_GET(MOUNTED_OBJECTS);
+        [mo addObject:[payload objectForKey:MOUNTED_OBJECT]];
+        
     }
     
     if(messageType==kDWunsetMountedObject)
     {
-        [[gameObject store] removeObjectForKey:MOUNTED_OBJECT];
+        NSMutableArray *mo=GOS_GET(MOUNTED_OBJECTS);
+        
+        [mo removeObject:[payload objectForKey:MOUNTED_OBJECT]];
     }
 }
 

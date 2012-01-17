@@ -176,7 +176,7 @@ eachShape(void *ptr, void* unused)
     cpSpaceAddStaticShape(space, shape);
     
     // left
-    shape = cpSegmentShapeNew(staticBody, ccp(-200,0), ccp(0,wins.height), 0.0f);
+    shape = cpSegmentShapeNew(staticBody, ccp(0,0), ccp(0,wins.height), 0.0f);
     shape->e = 1.0f; shape->u = 1.0f;
     cpSpaceAddStaticShape(space, shape);
     
@@ -187,7 +187,10 @@ eachShape(void *ptr, void* unused)
 //    cpSpaceAddStaticShape(space, shape);
     
 //    cpBody *staticBodyRight = cpBodyNew(INFINITY, INFINITY);
-    cpShape *right=cpSegmentShapeNew(staticBody, ccp(1024,0), ccp(1200,768), 0.0f);
+    CGPoint rverts[]={ccp(1024,0), ccp(1024, 768), ccp(1200, 768), ccp(1200, 0)};
+    cpShape *right=cpPolyShapeNew(staticBody, 4, rverts, ccp(0,0));
+    
+    //cpShape *right=cpSegmentShapeNew(staticBody, ccp(1024,0), ccp(1024,768), 0.0f);
     right->e=1.0f;
     right->u=1.0f;
     cpSpaceAddStaticShape(space, right);
@@ -260,7 +263,8 @@ eachShape(void *ptr, void* unused)
             {
                 [[gameWorld Blackboard].PickupObject handleMessage:kDWunsetMount andPayload:nil withLogLevel:0];
                 
-                [m handleMessage:kDWunsetMountedObject andPayload:nil withLogLevel:0];
+                NSDictionary *pl=[NSDictionary dictionaryWithObject:m forKey:MOUNTED_OBJECT];
+                [m handleMessage:kDWunsetMountedObject andPayload:pl withLogLevel:0];
             }
 
             [[SimpleAudioEngine sharedEngine] playEffect:@"pickup.wav"];
@@ -313,6 +317,10 @@ eachShape(void *ptr, void* unused)
         //tofu hard-coded water line at effective -130 from top
         //tofy this is on touch end lcoaiton -- will need to change for different shape size        
         if(modLocation.y>637)modLocation.y=580;
+        
+        //check l/r bounds
+        if(modLocation.x<1)modLocation.x=24;
+        if(modLocation.x>1023)modLocation.x=1000;
         
         if(modLocation.y<1)modLocation.y=1;
         

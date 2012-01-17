@@ -10,6 +10,10 @@
 		7F50ABE914C1D1240033C377 /* obj-float-45.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABE814C1D1230033C377 /* obj-float-45.png */; };
 		7F50ABEC14C4C6300033C377 /* float-problem1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABEB14C4C6300033C377 /* float-problem1.plist */; };
 		7F50ABF214C4DB290033C377 /* obj-blockholder-mount1x1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABF114C4DB290033C377 /* obj-blockholder-mount1x1.png */; };
+		7F50ABF714C55AAE0033C377 /* float-problem5.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABF314C55AAE0033C377 /* float-problem5.plist */; };
+		7F50ABF814C55AAE0033C377 /* float-problem4.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABF414C55AAE0033C377 /* float-problem4.plist */; };
+		7F50ABF914C55AAE0033C377 /* float-problem3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABF514C55AAE0033C377 /* float-problem3.plist */; };
+		7F50ABFA14C55AAE0033C377 /* float-problem2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABF614C55AAE0033C377 /* float-problem2.plist */; };
 		7F5113C314A9EE62001AF372 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C214A9EE62001AF372 /* QuartzCore.framework */; };
 		7F5113C514A9EE62001AF372 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C414A9EE62001AF372 /* OpenGLES.framework */; };
 		7F5113C714A9EE62001AF372 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C614A9EE62001AF372 /* OpenAL.framework */; };
@@ -184,6 +188,10 @@
 		7F50ABE814C1D1230033C377 /* obj-float-45.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-float-45.png"; sourceTree = "<group>"; };
 		7F50ABEB14C4C6300033C377 /* float-problem1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem1.plist"; sourceTree = "<group>"; };
 		7F50ABF114C4DB290033C377 /* obj-blockholder-mount1x1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-blockholder-mount1x1.png"; sourceTree = "<group>"; };
+		7F50ABF314C55AAE0033C377 /* float-problem5.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem5.plist"; sourceTree = "<group>"; };
+		7F50ABF414C55AAE0033C377 /* float-problem4.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem4.plist"; sourceTree = "<group>"; };
+		7F50ABF514C55AAE0033C377 /* float-problem3.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem3.plist"; sourceTree = "<group>"; };
+		7F50ABF614C55AAE0033C377 /* float-problem2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem2.plist"; sourceTree = "<group>"; };
 		7F5113BE14A9EE62001AF372 /* belugapad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = belugapad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F5113C214A9EE62001AF372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7F5113C414A9EE62001AF372 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -550,6 +558,10 @@
 			isa = PBXGroup;
 			children = (
 				7F50ABEB14C4C6300033C377 /* float-problem1.plist */,
+				7F50ABF614C55AAE0033C377 /* float-problem2.plist */,
+				7F50ABF514C55AAE0033C377 /* float-problem3.plist */,
+				7F50ABF414C55AAE0033C377 /* float-problem4.plist */,
+				7F50ABF314C55AAE0033C377 /* float-problem5.plist */,
 			);
 			name = problems;
 			sourceTree = "<group>";
@@ -1208,6 +1220,10 @@
 				7F50ABE914C1D1240033C377 /* obj-float-45.png in Resources */,
 				7F50ABEC14C4C6300033C377 /* float-problem1.plist in Resources */,
 				7F50ABF214C4DB290033C377 /* obj-blockholder-mount1x1.png in Resources */,
+				7F50ABF714C55AAE0033C377 /* float-problem5.plist in Resources */,
+				7F50ABF814C55AAE0033C377 /* float-problem4.plist in Resources */,
+				7F50ABF914C55AAE0033C377 /* float-problem3.plist in Resources */,
+				7F50ABFA14C55AAE0033C377 /* float-problem2.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

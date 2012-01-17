@@ -59,6 +59,8 @@ eachShape(void *ptr, void* unused)
         cx=[[CCDirector sharedDirector] winSize].width / 2.0f;
         cy=[[CCDirector sharedDirector] winSize].height / 2.0f;
         
+        [self listProblemFiles];
+        
         [self setupBkgAndTitle];
         
         [self setupAudio];
@@ -80,6 +82,43 @@ eachShape(void *ptr, void* unused)
     }
     
     return self;
+}
+
+-(void) resetToNextProblem
+{
+    //tear down
+    [gameWorld release];
+    
+    [self removeAllChildrenWithCleanup:YES];
+    
+    cpSpaceDestroy(space);
+    
+    currentProblemIndex++;
+    if(currentProblemIndex>=[problemFiles count])
+        currentProblemIndex=0;
+    
+    
+    //set up
+    [self setupBkgAndTitle];
+    
+    [self setupChSpace];
+    
+    [self setupGW];
+    
+    [self populateGW];
+    
+    [gameWorld handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
+}
+
+-(void)listProblemFiles
+{
+    currentProblemIndex=0;
+    
+    NSString *broot=[[NSBundle mainBundle] bundlePath];
+    NSArray *allFiles=[[NSFileManager defaultManager] contentsOfDirectoryAtPath:broot error:nil];
+    problemFiles=[allFiles filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self BEGINSWITH 'float-problem'"]];
+    
+    [problemFiles retain];
 }
 
 -(void)setupBkgAndTitle
@@ -185,13 +224,19 @@ eachShape(void *ptr, void* unused)
     location=[[CCDirector sharedDirector] convertToGL:location];
     
     //fixed handlers for menu interaction
-    if(location.x>975 & location.y>720)
+    if(location.x>975 && location.y>720)
     {
         [gameWorld writeLogBufferToDiskWithKey:@"BlockFloating"];
         
         [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
         [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.3f scene:[NumberLine scene]]];
     }
+    
+    else if (location.x<cx && location.y > 720)
+    {
+        [self resetToNextProblem];
+    }
+    
     else
     {
         
@@ -311,14 +356,21 @@ eachShape(void *ptr, void* unused)
 
 -(void)populateGW
 {
-    NSString *path=[[NSBundle mainBundle] pathForResource:@"float-problem1" ofType:@"plist"];
-	NSDictionary *pdef=[NSDictionary dictionaryWithContentsOfFile:path];
+    NSString *broot=[[NSBundle mainBundle] bundlePath];
+    NSString *pfile=[broot stringByAppendingPathComponent:[problemFiles objectAtIndex:currentProblemIndex]];
+	NSDictionary *pdef=[NSDictionary dictionaryWithContentsOfFile:pfile];
 	
     //render problem label
     problemDescLabel=[CCLabelTTF labelWithString:[pdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
     [problemDescLabel setPosition:ccp(cx, cy+(0.85*cy))];
     [problemDescLabel setColor:ccc3(255, 255, 255)];
     [self addChild:problemDescLabel];
+    
+    //create problem file name
+    CCLabelBMFont *flabel=[CCLabelBMFont labelWithString:[problemFiles objectAtIndex:currentProblemIndex] fntFile:@"visgrad1.fnt"];
+    [flabel setPosition:ccp(135, 755)];
+    [flabel setOpacity:65];
+    [self addChild:flabel];
     
     //objects
     NSDictionary *objects=[pdef objectForKey:INIT_OBJECTS];
@@ -461,6 +513,8 @@ eachShape(void *ptr, void* unused)
 	space = NULL;
     
     [gameWorld release];
+    
+    [problemFiles release];
     
     [super dealloc];
 }

@@ -42,7 +42,7 @@
                 p=[mySprite convertToWorldSpace:[s position]];
             
             
-            if([BLMath DistanceBetween:p and:hitLoc]<=HALF_SIZE)
+            if([BLMath DistanceBetween:p and:hitLoc]<=(HALF_SIZE*1.5f))
             {
                 //game scene will pickup object from here
                 [gameWorld Blackboard].PickupObject=gameObject;

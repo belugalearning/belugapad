@@ -23,6 +23,9 @@
     cpSpace *space;
     
     CCLabelTTF *problemDescLabel;
+    
+    NSArray *problemFiles;
+    int currentProblemIndex;
 }
 
 +(CCScene *) scene;
@@ -39,5 +42,8 @@
 
 -(void)createObjectWithCols:(int)cols andRows:(int)rows andTag:(NSString*)tag;
 -(void)createContainerWithPos:(CGPoint)pos andData:(NSDictionary*)containerData;
+
+-(void)listProblemFiles;
+-(void) resetToNextProblem;
 
 @end

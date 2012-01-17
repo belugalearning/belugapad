@@ -166,17 +166,23 @@ eachShape(void *ptr, void* unused)
     cpShape *shape;
     
     // bottom
-    shape = cpSegmentShapeNew(staticBody, ccp(0,-200), ccp(wins.width,0), 0.0f);
+    //shape = cpSegmentShapeNew(staticBody, ccp(0,-200), ccp(wins.width,0), 0.0f);
+    CGPoint bottomverts[]={ccp(0, -200), ccp(0, 0), ccp(wins.width, 0), ccp(wins.width, -200)};
+    shape=cpPolyShapeNew(staticBody, 4, bottomverts, ccp(0,0));
     shape->e = 1.0f; shape->u = 1.0f;
     cpSpaceAddStaticShape(space, shape);
     
     // top
-    shape = cpSegmentShapeNew(staticBody, ccp(0,wins.height-130), ccp(wins.width,wins.height-130), 0.0f);
+    //shape = cpSegmentShapeNew(staticBody, ccp(0,wins.height-130), ccp(wins.width,wins.height-130), 0.0f);
+    CGPoint topverts[]={ccp(0, wins.height-130), ccp(0, wins.height+200), ccp(wins.width, wins.height+200), ccp(wins.width, wins.height-130)};
+    shape=cpPolyShapeNew(staticBody, 4, topverts, ccp(0, 0));
     shape->e = 0.65f; shape->u = 1.0f;
     cpSpaceAddStaticShape(space, shape);
     
     // left
-    shape = cpSegmentShapeNew(staticBody, ccp(0,0), ccp(0,wins.height), 0.0f);
+    //shape = cpSegmentShapeNew(staticBody, ccp(0,0), ccp(0,wins.height), 0.0f);
+    CGPoint leftverts[]={ccp(-200, 0), ccp(-200, wins.height), ccp(0, wins.height), ccp(0, 0)};
+    shape=cpPolyShapeNew(staticBody, 4, leftverts, ccp(0,0));
     shape->e = 1.0f; shape->u = 1.0f;
     cpSpaceAddStaticShape(space, shape);
     

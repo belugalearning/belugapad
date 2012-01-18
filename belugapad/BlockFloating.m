@@ -78,6 +78,8 @@ eachShape(void *ptr, void* unused)
         [gameWorld handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
         [self schedule:@selector(doUpdate:) interval:1.0f/60.0f];
+        
+        [self schedule:@selector(evalCompletion:) interval:10.0f/60.0f];
 
     }
     
@@ -96,6 +98,9 @@ eachShape(void *ptr, void* unused)
     currentProblemIndex++;
     if(currentProblemIndex>=[problemFiles count])
         currentProblemIndex=0;
+    
+    [solutionsDef release];
+    solutionsDef=nil;
     
     
     //set up
@@ -131,6 +136,11 @@ eachShape(void *ptr, void* unused)
     [fg setPosition:ccp(cx, cy)];
     [self addChild:fg z:2];
     
+    problemCompleteLabel=[CCLabelTTF labelWithString:@"" fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    [problemCompleteLabel setColor:ccc3(0, 255, 0)];
+    [problemCompleteLabel setPosition:ccp(cx, cy+cy*0.75)];
+    [problemCompleteLabel setVisible:NO];
+    [self addChild:problemCompleteLabel];
     
     CCLabelTTF *title=[CCLabelTTF labelWithString:@"Floating Blocks" fontName:TITLE_FONT fontSize:TITLE_SIZE];
     
@@ -269,7 +279,7 @@ eachShape(void *ptr, void* unused)
             {
                 [[gameWorld Blackboard].PickupObject handleMessage:kDWunsetMount andPayload:nil withLogLevel:0];
                 
-                NSDictionary *pl=[NSDictionary dictionaryWithObject:m forKey:MOUNTED_OBJECT];
+                NSDictionary *pl=[NSDictionary dictionaryWithObject:[gameWorld Blackboard].PickupObject forKey:MOUNTED_OBJECT];
                 [m handleMessage:kDWunsetMountedObject andPayload:pl withLogLevel:0];
             }
 
@@ -343,6 +353,10 @@ eachShape(void *ptr, void* unused)
             [pl setObject:[gameWorld Blackboard].DropObject forKey:MOUNT];
             [[gameWorld Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
             
+            [pl removeAllObjects];
+            [pl setObject:[gameWorld Blackboard].PickupObject forKey:MOUNTED_OBJECT];
+            [[gameWorld Blackboard].DropObject handleMessage:kDWsetMountedObject andPayload:pl withLogLevel:0];
+            
             //NSLog(@"mounted float object (presumably) on a drop target");
             [[gameWorld Blackboard].PickupObject logInfo:@"this object was mounted" withData:0];
             [[gameWorld Blackboard].DropObject logInfo:@"mounted object on this go" withData:0];
@@ -403,8 +417,12 @@ eachShape(void *ptr, void* unused)
     {
         CGPoint p=ccp((i+1)*cleftIncr, (0.625*cy));
         
-        [self createContainerWithPos:p andData:[containers objectAtIndex:0]];
+        [self createContainerWithPos:p andData:[containers objectAtIndex:i]];
     }
+    
+    //retain solutions array
+    solutionsDef=[pdef objectForKey:SOLUTIONS];
+    [solutionsDef retain];
 }
 
 -(void)createObjectWithCols:(int)cols andRows:(int)rows andTag:(NSString*)tagString
@@ -435,6 +453,7 @@ eachShape(void *ptr, void* unused)
     DWGameObject *c=[gameWorld addGameObjectWithTemplate:@"TfloatContainer"];
     [[c store] setObject:[NSNumber numberWithFloat:pos.x] forKey:POS_X];
     [[c store] setObject:[NSNumber numberWithFloat:pos.y] forKey:POS_Y];
+    [c loadData:containerData];
 }
 
 -(void)populateGWHard
@@ -520,6 +539,113 @@ eachShape(void *ptr, void* unused)
     [gameWorld doUpdate:delta];
 }
 
+-(void)evalCompletion:(ccTime)delta
+{
+    //evaluation implemented as delta to simulate completely abstracted (from tool implementation) evaluation
+    //actual value parsing is not tool specific (just behaviour reliant -- e.g. containers, unit-based object) and would suit
+    //inferred aplicability across tools -- but is currently tied to float-problem*.plist data format
+    
+    int solComplete=0;
+    float solScore=0.0f;
+    
+    for (NSDictionary *sol in solutionsDef) {
+        
+        int clausesPassed=0;
+        
+        for (NSDictionary *clause in [sol objectForKey:CLAUSES]) {
+            float val1=0;
+            float val2=0;
+            NSString *clauseType=[clause objectForKey:CLAUSE_TYPE];
+            
+            BOOL valIsSize=NO;
+            if([clauseType isEqualToString:SIZE_EQUAL_TO] || [clauseType isEqualToString:SIZE_GREATER_THAN] || [clauseType isEqualToString:SIZE_LESS_THAN])
+                valIsSize=YES;
+            
+            //this is implemented as specific item1, item2 references to ensure left/right positioning of items whilst
+            // using a non-specific data format (e.g. current plist)
+            val1=[self getEvaluatedValueForItemTag:[clause objectForKey:ITEM1_CONTAINER_TAG] andItemValue:[clause objectForKey:ITEM1_VALUE] andValueRequiredIsSize:valIsSize];
+            
+            val2=[self getEvaluatedValueForItemTag:[clause objectForKey:ITEM2_CONTAINER_TAG] andItemValue:[clause objectForKey:ITEM2_VALUE] andValueRequiredIsSize:valIsSize];
+            
+            BOOL pass=NO;
+            //do evaluation of val1 to val2, based on clause type
+            if([clauseType isEqualToString:SIZE_EQUAL_TO] || [clauseType isEqualToString:COUNT_EQUAL_TO])
+            {
+                if(val1==val2)
+                    pass=YES;
+            }
+            else if([clauseType isEqualToString:SIZE_GREATER_THAN] || [clauseType isEqualToString:COUNT_GREATER_THAN])
+            {
+                if(val1>val2)
+                    pass=YES;
+            }
+            else if([clauseType isEqualToString:SIZE_LESS_THAN] || [clauseType isEqualToString:COUNT_LESS_THAN])
+            {
+                if(val1<val2)
+                    pass=YES;
+            }
+            
+            if(pass==YES)
+            {
+                clausesPassed++;
+            
+            }
+        }
+        
+        if(clausesPassed>=[[sol objectForKey:CLAUSES] count])
+        {
+            solComplete++;
+            solScore+=[[sol objectForKey:SOLUTION_SCORE]floatValue];
+        }
+    }
+    
+    if(solComplete>0)
+    {
+        [problemCompleteLabel setVisible:YES];
+        [problemCompleteLabel setString:[NSString stringWithFormat:@"complete (solution %d, score %f)", solComplete, solScore]];
+    }
+    else
+    {
+        [problemCompleteLabel setVisible:NO];
+    }
+}
+
+-(float)getEvaluatedValueForItemTag: (NSString *)itemContainerTag andItemValue:(NSNumber*)itemValue andValueRequiredIsSize:(BOOL)valIsSize
+{
+    if(itemContainerTag)
+    {
+        DWGameObject *container =[gameWorld gameObjectWithKey:TAG andValue:itemContainerTag];
+        if(container)
+        {
+            if(valIsSize)
+            {
+                //required value is the sum of unit size of all items contained by the specified container
+                NSArray *containerObjects=[[container store] objectForKey:MOUNTED_OBJECTS];
+                float contSize=0.0f;
+                for (DWGameObject *o in containerObjects) {
+                    float vol=[[[o store] objectForKey:OBJ_ROWS] floatValue] * [[[o store] objectForKey:OBJ_COLS] floatValue];
+                    contSize+=vol;
+                }
+                
+                return contSize;
+            }
+            else
+            {
+                //required value is the count of items contained by the specified container
+                NSArray *containerMountedItems=[[container store] objectForKey:MOUNTED_OBJECTS];
+                return [containerMountedItems count];
+                
+            }
+        }
+    }
+    else
+    {
+        //assume we're using a value -- doesn't matter whether it's for size or count, it's fixed in the problem definition
+        return [itemValue floatValue];
+    }
+    return 0.0f;
+}
+
 
 -(void)dealloc
 {
@@ -529,6 +655,7 @@ eachShape(void *ptr, void* unused)
     [gameWorld release];
     
     [problemFiles release];
+    [solutionsDef release];
     
     [super dealloc];
 }

@@ -151,6 +151,22 @@
 	return removeObjects;
 }
 
+-(DWGameObject*)gameObjectWithKey:(NSString *)key andValue:(NSString *)theValue
+{
+    for (DWGameObject *go in gameObjects) {
+        NSString *keyValue=[[go store] objectForKey:key];
+        if(keyValue)
+        {
+            if([keyValue isEqualToString:theValue])
+            {
+                //this is our object, return i
+                return go;
+            }
+        }
+    }
+    return nil;
+}
+
 
 -(void)cleanup
 {

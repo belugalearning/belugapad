@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>find the largest object</string>
+	<string>place the object in the container</string>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
@@ -11,70 +11,6 @@
 			<string>block1</string>
 			<key>DIMENSION_COLS</key>
 			<integer>1</integer>
-			<key>DIMENSION_ROWS</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>TAG</key>
-			<string>block3</string>
-			<key>DIMENSION_COLS</key>
-			<integer>2</integer>
-			<key>DIMENSION_ROWS</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>TAG</key>
-			<string>block4</string>
-			<key>DIMENSION_COLS</key>
-			<integer>2</integer>
-			<key>DIMENSION_ROWS</key>
-			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>TAG</key>
-			<string>block1</string>
-			<key>DIMENSION_COLS</key>
-			<integer>1</integer>
-			<key>DIMENSION_ROWS</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>TAG</key>
-			<string>block1</string>
-			<key>DIMENSION_COLS</key>
-			<integer>1</integer>
-			<key>DIMENSION_ROWS</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>TAG</key>
-			<string>block1</string>
-			<key>DIMENSION_COLS</key>
-			<integer>3</integer>
-			<key>DIMENSION_ROWS</key>
-			<integer>4</integer>
-		</dict>
-		<dict>
-			<key>TAG</key>
-			<string>block1</string>
-			<key>DIMENSION_COLS</key>
-			<integer>1</integer>
-			<key>DIMENSION_ROWS</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>TAG</key>
-			<string>block1</string>
-			<key>DIMENSION_COLS</key>
-			<integer>1</integer>
-			<key>DIMENSION_ROWS</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>TAG</key>
-			<string>block1</string>
-			<key>DIMENSION_COLS</key>
-			<integer>2</integer>
 			<key>DIMENSION_ROWS</key>
 			<integer>1</integer>
 		</dict>
@@ -103,17 +39,9 @@
 					<key>ITEM1_CONTAINER_TAG</key>
 					<string>container1</string>
 					<key>ITEM2_VALUE</key>
-					<integer>5</integer>
+					<integer>0</integer>
 					<key>CLAUSE_TYPE</key>
-					<string>SIZE_GREATER_THAN</string>
-				</dict>
-				<dict>
-					<key>ITEM1_CONTAINER_TAG</key>
-					<string>container2</string>
-					<key>ITEM2_VALUE</key>
-					<integer>5</integer>
-					<key>CLAUSE_TYPE</key>
-					<string>SIZE_GREATER_THAN</string>
+					<string>COUNT_GREATER_THAN</string>
 				</dict>
 			</array>
 		</dict>

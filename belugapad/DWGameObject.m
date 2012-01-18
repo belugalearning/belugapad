@@ -146,7 +146,7 @@
     [gameWorld.LogBuffer addObject:[NSString stringWithFormat:@"%@, %@, %d, %@, %d", [NSDate date], [localStore objectForKey:TEMPLATE_NAME], (int)self, desc, logData]];
     
     //log this (for now)
-    NSLog(@"to buffer: %@", [gameWorld.LogBuffer objectAtIndex:[gameWorld.LogBuffer count]-1]);
+    //NSLog(@"to buffer: %@", [gameWorld.LogBuffer objectAtIndex:[gameWorld.LogBuffer count]-1]);
     
 }
 

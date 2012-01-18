@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>create 3 groups of 2 or more</string>
+	<string>place an object in each container</string>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
@@ -24,11 +24,11 @@
 		</dict>
 		<dict>
 			<key>TAG</key>
-			<string>block4</string>
+			<string>block3</string>
 			<key>DIMENSION_COLS</key>
 			<integer>2</integer>
 			<key>DIMENSION_ROWS</key>
-			<integer>3</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>TAG</key>
@@ -93,7 +93,7 @@
 		</dict>
 		<dict>
 			<key>TAG</key>
-			<string>container1</string>
+			<string>container2</string>
 			<key>CAPACITY_COUNT</key>
 			<integer>2</integer>
 			<key>MAX_OBJECT_SIZE</key>
@@ -103,7 +103,7 @@
 		</dict>
 		<dict>
 			<key>TAG</key>
-			<string>container1</string>
+			<string>container3</string>
 			<key>CAPACITY_COUNT</key>
 			<integer>2</integer>
 			<key>MAX_OBJECT_SIZE</key>
@@ -123,17 +123,25 @@
 					<key>ITEM1_CONTAINER_TAG</key>
 					<string>container1</string>
 					<key>ITEM2_VALUE</key>
-					<integer>5</integer>
+					<integer>0</integer>
 					<key>CLAUSE_TYPE</key>
-					<string>SIZE_GREATER_THAN</string>
+					<string>COUNT_GREATER_THAN</string>
 				</dict>
 				<dict>
 					<key>ITEM1_CONTAINER_TAG</key>
 					<string>container2</string>
 					<key>ITEM2_VALUE</key>
-					<integer>5</integer>
+					<integer>0</integer>
 					<key>CLAUSE_TYPE</key>
-					<string>SIZE_GREATER_THAN</string>
+					<string>COUNT_GREATER_THAN</string>
+				</dict>
+				<dict>
+					<key>ITEM1_CONTAINER_TAG</key>
+					<string>container3</string>
+					<key>ITEM2_VALUE</key>
+					<integer>0</integer>
+					<key>CLAUSE_TYPE</key>
+					<string>COUNT_GREATER_THAN</string>
 				</dict>
 			</array>
 		</dict>

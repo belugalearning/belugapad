@@ -23,6 +23,8 @@
     cpSpace *space;
     
     CCLabelTTF *problemDescLabel;
+    NSArray *solutionsDef;
+    CCLabelTTF *problemCompleteLabel;
     
     NSArray *problemFiles;
     int currentProblemIndex;
@@ -45,5 +47,9 @@
 
 -(void)listProblemFiles;
 -(void) resetToNextProblem;
+
+// both abstracted (i.e. from gw implementation) but fixed to this tool's current problem load -- hence effectively a single-problem evaluation prototype of abstracted (from gw) evaluation
+-(void)evalCompletion:(ccTime)delta;
+-(float)getEvaluatedValueForItemTag: (NSString *)itemContainerTag andItemValue:(NSNumber*)itemValue andValueRequiredIsSize:(BOOL)valIsSize;
 
 @end

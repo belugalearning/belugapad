@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>place 5 equal items</string>
+	<string>place 4 equal items</string>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
@@ -54,6 +54,30 @@
 			<key>DIMENSION_ROWS</key>
 			<integer>2</integer>
 		</dict>
+		<dict>
+			<key>TAG</key>
+			<string>block3</string>
+			<key>DIMENSION_COLS</key>
+			<integer>3</integer>
+			<key>DIMENSION_ROWS</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>TAG</key>
+			<string>block3</string>
+			<key>DIMENSION_COLS</key>
+			<integer>1</integer>
+			<key>DIMENSION_ROWS</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>TAG</key>
+			<string>block3</string>
+			<key>DIMENSION_COLS</key>
+			<integer>3</integer>
+			<key>DIMENSION_ROWS</key>
+			<integer>2</integer>
+		</dict>
 	</array>
 	<key>INIT_CONTAINERS</key>
 	<array>
@@ -69,7 +93,7 @@
 		</dict>
 		<dict>
 			<key>TAG</key>
-			<string>container1</string>
+			<string>container2</string>
 			<key>CAPACITY_COUNT</key>
 			<integer>2</integer>
 			<key>MAX_OBJECT_SIZE</key>
@@ -79,7 +103,7 @@
 		</dict>
 		<dict>
 			<key>TAG</key>
-			<string>container1</string>
+			<string>container3</string>
 			<key>CAPACITY_COUNT</key>
 			<integer>2</integer>
 			<key>MAX_OBJECT_SIZE</key>
@@ -89,17 +113,7 @@
 		</dict>
 		<dict>
 			<key>TAG</key>
-			<string>container1</string>
-			<key>CAPACITY_COUNT</key>
-			<integer>2</integer>
-			<key>MAX_OBJECT_SIZE</key>
-			<integer>4</integer>
-			<key>CAPACITY_SIZE</key>
-			<integer>8</integer>
-		</dict>
-		<dict>
-			<key>TAG</key>
-			<string>container1</string>
+			<string>container4</string>
 			<key>CAPACITY_COUNT</key>
 			<integer>2</integer>
 			<key>MAX_OBJECT_SIZE</key>
@@ -119,17 +133,33 @@
 					<key>ITEM1_CONTAINER_TAG</key>
 					<string>container1</string>
 					<key>ITEM2_VALUE</key>
-					<integer>5</integer>
+					<integer>0</integer>
 					<key>CLAUSE_TYPE</key>
-					<string>SIZE_GREATER_THAN</string>
+					<string>COUNT_GREATER_THAN</string>
+				</dict>
+				<dict>
+					<key>ITEM1_CONTAINER_TAG</key>
+					<string>container1</string>
+					<key>ITEM2_CONTAINER_TAG</key>
+					<string>container2</string>
+					<key>CLAUSE_TYPE</key>
+					<string>SIZE_EQUAL_TO</string>
 				</dict>
 				<dict>
 					<key>ITEM1_CONTAINER_TAG</key>
 					<string>container2</string>
-					<key>ITEM2_VALUE</key>
-					<integer>5</integer>
+					<key>ITEM2_CONTAINER_TAG</key>
+					<string>container3</string>
 					<key>CLAUSE_TYPE</key>
-					<string>SIZE_GREATER_THAN</string>
+					<string>SIZE_EQUAL_TO</string>
+				</dict>
+				<dict>
+					<key>ITEM1_CONTAINER_TAG</key>
+					<string>container3</string>
+					<key>ITEM2_CONTAINER_TAG</key>
+					<string>container4</string>
+					<key>CLAUSE_TYPE</key>
+					<string>SIZE_EQUAL_TO</string>
 				</dict>
 			</array>
 		</dict>

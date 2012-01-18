@@ -71,7 +71,7 @@
 					<key>ITEM1_CONTAINER_TAG</key>
 					<string>container1</string>
 					<key>ITEM2_VALUE</key>
-					<integer>5</integer>
+					<integer>3</integer>
 					<key>CLAUSE_TYPE</key>
 					<string>COUNT_EQUAL_TO</string>
 				</dict>

@@ -31,7 +31,7 @@
     
     if(messageType==kDWupdateSprite)
     {
-        if(mySprite==nil) [self setSprite];
+        if([[gameObject store] objectForKey:MY_SPRITE]==nil) [self setSprite];
         [self setSpritePos:payload];
     }
     
@@ -39,14 +39,11 @@
 
 -(void)setSprite
 {
-    mySprite=[CCSprite spriteWithFile:@"obj-blockholder-object1x1.png"];
-    
-//    float x=[[[gameObject store] objectForKey:POS_X] floatValue];
-//    float y=[GOS_GET(POS_Y) floatValue];
-    
-//    [mySprite setPosition:ccp(x, y)];
+    CCSprite *mySprite=[CCSprite spriteWithFile:@"obj-blockholder-object1x1.png"];
     
     [[gameWorld GameScene] addChild:mySprite z:1];
+    
+    [[gameObject store] setObject:mySprite forKey:MY_SPRITE];
     
 }
 
@@ -54,6 +51,8 @@
 {
     //attempt to get mounting GO
     DWGameObject *go=[[gameObject store] objectForKey:MOUNT];
+    
+    CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
     
     if(position != nil)
     {
@@ -76,7 +75,6 @@
 
 -(void) dealloc
 {
-    [mySprite release];
     [super dealloc];
 }
 

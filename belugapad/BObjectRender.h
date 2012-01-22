@@ -11,7 +11,7 @@
 @interface BObjectRender : DWBehaviour
 {
 
-    CCSprite *mySprite;
+//    CCSprite *mySprite;
 }
 
 -(BObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

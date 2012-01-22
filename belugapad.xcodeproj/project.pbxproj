@@ -156,6 +156,7 @@
 		7F5115A614A9EF67001AF372 /* DWGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A014A9EF67001AF372 /* DWGameObject.m */; };
 		7F5115A714A9EF67001AF372 /* DWGameWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A214A9EF67001AF372 /* DWGameWorld.m */; };
 		7F5115AA14A9EF9E001AF372 /* BlockFloating.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A914A9EF9E001AF372 /* BlockFloating.m */; };
+		7F813D5514CCBA4300C1E997 /* IceDiv.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F813D5414CCBA4300C1E997 /* IceDiv.m */; };
 		7FABE68F14B33D5100ED2D0C /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */; };
 		7FABE69114B33D5600ED2D0C /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */; };
 		7FABE69A14B4B8FB00ED2D0C /* bg-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE69914B4B8FB00ED2D0C /* bg-ipad.png */; };
@@ -496,6 +497,8 @@
 		7F5115A314A9EF67001AF372 /* DWModelConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWModelConstants.h; sourceTree = "<group>"; };
 		7F5115A814A9EF9E001AF372 /* BlockFloating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockFloating.h; sourceTree = "<group>"; };
 		7F5115A914A9EF9E001AF372 /* BlockFloating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockFloating.m; sourceTree = "<group>"; };
+		7F813D5314CCBA4300C1E997 /* IceDiv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IceDiv.h; sourceTree = "<group>"; };
+		7F813D5414CCBA4300C1E997 /* IceDiv.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IceDiv.m; sourceTree = "<group>"; };
 		7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		7FABE69214B33E5800ED2D0C /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = global.h; sourceTree = "<group>"; };
@@ -1098,6 +1101,8 @@
 				7F51159514A9EF17001AF372 /* BlockHolder.m */,
 				7F5115A814A9EF9E001AF372 /* BlockFloating.h */,
 				7F5115A914A9EF9E001AF372 /* BlockFloating.m */,
+				7F813D5314CCBA4300C1E997 /* IceDiv.h */,
+				7F813D5414CCBA4300C1E997 /* IceDiv.m */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -1375,6 +1380,7 @@
 				7FABE6C614B6730A00ED2D0C /* BPickupTarget.m in Sources */,
 				7FABE6CA14B8F67200ED2D0C /* BFloatPickupTarget.m in Sources */,
 				7FABE6CD14B8F68100ED2D0C /* BFloatObjectRender.m in Sources */,
+				7F813D5514CCBA4300C1E997 /* IceDiv.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

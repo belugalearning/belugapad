@@ -33,6 +33,7 @@
     
     if(messageType==kDWupdateSprite)
     {
+        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
         if(mySprite==nil) [self setSprite];
         [self setSpritePos:payload];
         
@@ -50,6 +51,7 @@
     {
         if(amPickedUp==NO)
         {
+            CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
             if(mySprite==nil) [self setSprite];
             [self setSpritePos:payload];            
         }
@@ -95,7 +97,7 @@
 
 -(void)setSprite
 {
-    mySprite=[CCSprite spriteWithFile:@"obj-float-45.png"];
+    CCSprite *mySprite=[CCSprite spriteWithFile:@"obj-float-45.png"];
     [[gameWorld GameScene] addChild:mySprite z:0];
     
     //if we're on an object > 1x1, render more sprites as children
@@ -116,14 +118,15 @@
     }
     
     //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
-    GOS_SET(mySprite, MY_SPRITE);
-    
+    [[gameObject store] setObject:mySprite forKey:MY_SPRITE];
 }
 
 -(void)setSpritePos:(NSDictionary *)position
 {
     if(position != nil)
     {
+        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
+        
         float x=[[position objectForKey:POS_X] floatValue];
         float y=[[position objectForKey:POS_Y] floatValue];
         
@@ -143,7 +146,6 @@
 
 -(void) dealloc
 {
-    [mySprite release];
     [super dealloc];
 }
 

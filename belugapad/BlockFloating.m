@@ -80,6 +80,9 @@ eachShape(void *ptr, void* unused)
         [self schedule:@selector(doUpdate:) interval:1.0f/60.0f];
         
         [self schedule:@selector(evalCompletion:) interval:10.0f/60.0f];
+        
+        timeToNextTutorial=TUTORIAL_TIME_START;
+        [self schedule:@selector(updateTutorials:) interval:1.0f];
 
     }
     
@@ -155,6 +158,9 @@ eachShape(void *ptr, void* unused)
     [btnFwd setPosition:ccp(1024-18-10, 768-28-5)];
     [self addChild:btnFwd z:2];
     
+    //setup ghost layer
+    ghostLayer=[[CCLayer alloc]init];
+    [self addChild:ghostLayer z:2];
 }
 
 -(void)setupChSpace
@@ -402,9 +408,7 @@ eachShape(void *ptr, void* unused)
     
     //objects
     NSDictionary *objects=[pdef objectForKey:INIT_OBJECTS];
-    for (NSDictionary *o in objects) {
-        [self createObjectWithCols:[[o objectForKey:DIMENSION_COLS] intValue] andRows:[[o objectForKey:DIMENSION_ROWS] intValue] andTag:[o objectForKey:TAG]];
-    }
+    [self spawnObjects:objects];
     
     //containers
     NSArray *containers=[pdef objectForKey:INIT_CONTAINERS];
@@ -423,6 +427,23 @@ eachShape(void *ptr, void* unused)
     //retain solutions array
     solutionsDef=[pdef objectForKey:SOLUTIONS];
     [solutionsDef retain];
+    
+    //get tutorials
+    tutorials=[pdef objectForKey:TUTORIALS];
+    if(tutorials)
+    {
+        doTutorials=YES;
+        tutorialPos=0;
+        [tutorials retain];
+    }
+
+}
+
+-(void)spawnObjects:(NSDictionary*)objects
+{
+    for (NSDictionary *o in objects) {
+        [self createObjectWithCols:[[o objectForKey:DIMENSION_COLS] intValue] andRows:[[o objectForKey:DIMENSION_ROWS] intValue] andTag:[o objectForKey:TAG]];
+    }
 }
 
 -(void)createObjectWithCols:(int)cols andRows:(int)rows andTag:(NSString*)tagString
@@ -539,6 +560,24 @@ eachShape(void *ptr, void* unused)
     [gameWorld doUpdate:delta];
 }
 
+-(void)updateTutorials:(ccTime)delta
+{
+    if (doTutorials==NO) return;
+    
+    timeToNextTutorial-=delta;
+    {
+        if(timeToNextTutorial<0)
+        {
+            //get correct tutorial here and show
+            NSDictionary *tdef=[tutorials objectAtIndex:tutorialPos];
+            
+            [self showGhostOf:[tdef objectForKey:GHOST_OBJECT] to:[tdef objectForKey:GHOST_DESTINATION]];
+            
+            timeToNextTutorial=TUTORIAL_TIME_REPEAT;
+        }
+    }
+}
+
 -(void)evalCompletion:(ccTime)delta
 {
     //evaluation implemented as delta to simulate completely abstracted (from tool implementation) evaluation
@@ -550,49 +589,7 @@ eachShape(void *ptr, void* unused)
     
     for (NSDictionary *sol in solutionsDef) {
         
-        int clausesPassed=0;
-        
-        for (NSDictionary *clause in [sol objectForKey:CLAUSES]) {
-            float val1=0;
-            float val2=0;
-            NSString *clauseType=[clause objectForKey:CLAUSE_TYPE];
-            
-            BOOL valIsSize=NO;
-            if([clauseType isEqualToString:SIZE_EQUAL_TO] || [clauseType isEqualToString:SIZE_GREATER_THAN] || [clauseType isEqualToString:SIZE_LESS_THAN])
-                valIsSize=YES;
-            
-            //this is implemented as specific item1, item2 references to ensure left/right positioning of items whilst
-            // using a non-specific data format (e.g. current plist)
-            val1=[self getEvaluatedValueForItemTag:[clause objectForKey:ITEM1_CONTAINER_TAG] andItemValue:[clause objectForKey:ITEM1_VALUE] andValueRequiredIsSize:valIsSize];
-            
-            val2=[self getEvaluatedValueForItemTag:[clause objectForKey:ITEM2_CONTAINER_TAG] andItemValue:[clause objectForKey:ITEM2_VALUE] andValueRequiredIsSize:valIsSize];
-            
-            BOOL pass=NO;
-            //do evaluation of val1 to val2, based on clause type
-            if([clauseType isEqualToString:SIZE_EQUAL_TO] || [clauseType isEqualToString:COUNT_EQUAL_TO])
-            {
-                if(val1==val2)
-                    pass=YES;
-            }
-            else if([clauseType isEqualToString:SIZE_GREATER_THAN] || [clauseType isEqualToString:COUNT_GREATER_THAN])
-            {
-                if(val1>val2)
-                    pass=YES;
-            }
-            else if([clauseType isEqualToString:SIZE_LESS_THAN] || [clauseType isEqualToString:COUNT_LESS_THAN])
-            {
-                if(val1<val2)
-                    pass=YES;
-            }
-            
-            if(pass==YES)
-            {
-                clausesPassed++;
-            
-            }
-        }
-        
-        if(clausesPassed>=[[sol objectForKey:CLAUSES] count])
+        if([self evalClauses:[sol objectForKey:CLAUSES]])
         {
             solComplete++;
             solScore+=[[sol objectForKey:SOLUTION_SCORE]floatValue];
@@ -608,6 +605,85 @@ eachShape(void *ptr, void* unused)
     {
         [problemCompleteLabel setVisible:NO];
     }
+    
+    //evaluate tutorials
+    if(doTutorials)
+    {
+        NSDictionary *tdef=[tutorials objectAtIndex:tutorialPos];
+        
+        if([self evalClauses:[tdef objectForKey:CLAUSES]])
+        {
+            //this tutorial has been completed
+            
+            //immediately remove any ghosts
+            [self clearGhost];
+            
+            //spawn any new objects
+            NSDictionary *objs=[tdef objectForKey:INIT_OBJECTS];
+            if(objs) [self spawnObjects:objs];
+            
+            
+            //set tutorial timer to start -- i.e. like first tutorial (not reapeat timer)
+            timeToNextTutorial=TUTORIAL_TIME_START;
+            
+            tutorialPos++;
+        }
+        
+        //disable tutorials once we've incremented past the last one
+        if(tutorialPos>=[tutorials count])
+            doTutorials=NO;
+    }
+}
+
+-(int)evalClauses:(NSDictionary*)clauses
+{
+    //returns YES if all clauses passed
+    int clausesPassed=0;
+   
+    for (NSDictionary *clause in clauses) {
+        float val1=0;
+        float val2=0;
+        NSString *clauseType=[clause objectForKey:CLAUSE_TYPE];
+        
+        BOOL valIsSize=NO;
+        if([clauseType isEqualToString:SIZE_EQUAL_TO] || [clauseType isEqualToString:SIZE_GREATER_THAN] || [clauseType isEqualToString:SIZE_LESS_THAN])
+            valIsSize=YES;
+        
+        //this is implemented as specific item1, item2 references to ensure left/right positioning of items whilst
+        // using a non-specific data format (e.g. current plist)
+        val1=[self getEvaluatedValueForItemTag:[clause objectForKey:ITEM1_CONTAINER_TAG] andItemValue:[clause objectForKey:ITEM1_VALUE] andValueRequiredIsSize:valIsSize];
+        
+        val2=[self getEvaluatedValueForItemTag:[clause objectForKey:ITEM2_CONTAINER_TAG] andItemValue:[clause objectForKey:ITEM2_VALUE] andValueRequiredIsSize:valIsSize];
+        
+        BOOL pass=NO;
+        //do evaluation of val1 to val2, based on clause type
+        if([clauseType isEqualToString:SIZE_EQUAL_TO] || [clauseType isEqualToString:COUNT_EQUAL_TO])
+        {
+            if(val1==val2)
+                pass=YES;
+        }
+        else if([clauseType isEqualToString:SIZE_GREATER_THAN] || [clauseType isEqualToString:COUNT_GREATER_THAN])
+        {
+            if(val1>val2)
+                pass=YES;
+        }
+        else if([clauseType isEqualToString:SIZE_LESS_THAN] || [clauseType isEqualToString:COUNT_LESS_THAN])
+        {
+            if(val1<val2)
+                pass=YES;
+        }
+        
+        if(pass==YES)
+        {
+            clausesPassed++;
+            
+        }
+    }
+    
+    if(clausesPassed>=[clauses count])
+        return YES;
+    else
+        return NO;
 }
 
 -(float)getEvaluatedValueForItemTag: (NSString *)itemContainerTag andItemValue:(NSNumber*)itemValue andValueRequiredIsSize:(BOOL)valIsSize
@@ -646,6 +722,90 @@ eachShape(void *ptr, void* unused)
     return 0.0f;
 }
 
+-(void)showGhostOf:(NSString *)ghostObjectTag to:(NSString *)ghostDestinationTag
+{
+    //clear any current ghosts
+    [self clearGhost];
+    
+    //get the object
+    DWGameObject *gogo=[gameWorld gameObjectWithKey:TAG andValue:ghostObjectTag];
+    
+    //get the destination
+    DWGameObject *godest=[gameWorld gameObjectWithKey:TAG andValue:ghostDestinationTag];
+    
+    if(gogo && godest)
+    {
+        //clone the source sprite
+        CCSprite *cpSource=[[gogo store] objectForKey:MY_SPRITE];
+        
+        CCSprite *cpGhost=[self ghostCopySprite:cpSource];
+        
+        [ghostLayer addChild:cpGhost];
+        
+        //get destination object's position
+        //  container position is on go as pos_x, _y as is effective independent of sprite
+        float dposx=[[[godest store] objectForKey:POS_X] floatValue];
+        float dposy=[[[godest store] objectForKey:POS_Y] floatValue];
+        
+        //move master sprite -- children will follow
+        CCMoveTo *a1=[CCMoveTo actionWithDuration:GHOST_DURATION_MOVE position:ccp(dposx, dposy)];
+        [cpGhost runAction:a1];
+        
+        //reset rotation by -current rotation
+        CCRotateBy *r1=[CCRotateBy actionWithDuration:GHOST_DURATION_MOVE angle:20.0f];
+        [cpGhost runAction:r1];
+        
+        
+        //fade each sprite individually -- this needs the move time added to delay as actions will run in parallel
+        CCDelayTime *a2=[CCDelayTime actionWithDuration:GHOST_DURATION_STAY + GHOST_DURATION_MOVE];
+        CCFadeTo *a3=[CCFadeTo actionWithDuration:GHOST_DURATION_FADE opacity:0];
+        CCSequence *seq=[CCSequence actions:a2, a3, nil];
+        [cpGhost runAction:seq];
+        
+        for (CCSprite *c in [cpGhost children]) {
+            //create a new sequence for each child sprite
+            CCDelayTime *a2a=[CCDelayTime actionWithDuration:GHOST_DURATION_STAY + GHOST_DURATION_MOVE];
+            CCFadeTo *a3a=[CCFadeTo actionWithDuration:GHOST_DURATION_FADE opacity:0];
+            CCSequence *seqa=[CCSequence actions:a2a, a3a, nil];
+            
+            [c runAction:seqa];
+        }
+        
+    }
+}
+
+-(CCSprite *)ghostCopySprite:(CCSprite*)spriteSource
+{
+    CCSprite *ghost=[CCSprite spriteWithTexture:[spriteSource texture]];
+    [ghost setPosition:[spriteSource position]];
+    [ghost setRotation:[spriteSource rotation]];
+    
+    for (CCSprite *c in [spriteSource children]) {
+        CCSprite *cpc=[CCSprite spriteWithTexture:[c texture]];
+        //CCSprite *cpc=[CCSprite spriteWithTexture:[ghost texture]];
+        //CCSprite *cpc=[CCSprite spriteWithFile:@"obj-float-45.png"];
+        
+        [cpc setPosition:[c position]];
+        [cpc setRotation:[c rotation]];
+        
+        //opacity and tint don't get set for child sprites -- so reset for each here
+        [cpc setOpacity:GHOST_OPACITY];
+        [cpc setColor:ccc3(0, GHOST_TINT_G, 0)];
+        
+        [ghost addChild:cpc];
+        
+    }
+    
+    [ghost setOpacity:GHOST_OPACITY];
+    [ghost setColor:ccc3(0, GHOST_TINT_G, 0)];
+    
+    return ghost;
+}
+
+-(void)clearGhost
+{
+    [ghostLayer removeAllChildrenWithCleanup:YES];
+}
 
 -(void)dealloc
 {
@@ -656,6 +816,9 @@ eachShape(void *ptr, void* unused)
     
     [problemFiles release];
     [solutionsDef release];
+    
+    if(tutorials)
+        [tutorials release];
     
     [super dealloc];
 }

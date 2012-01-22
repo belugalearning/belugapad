@@ -12,7 +12,6 @@
 
 @interface BFloatObjectRender : DWBehaviour
 {
-    CCSprite *mySprite;
     
     BOOL amPickedUp;
     cpBody *physBody;

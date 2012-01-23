@@ -9,7 +9,7 @@
 #import "BlockFloating.h"
 #import "global.h"
 #import "SimpleAudioEngine.h"
-#import "NumberLine.h"
+#import "IceDiv.h"
 #import "BLMath.h"
 
 static void
@@ -254,7 +254,7 @@ eachShape(void *ptr, void* unused)
         [gameWorld writeLogBufferToDiskWithKey:@"BlockFloating"];
         
         [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
-        [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.3f scene:[NumberLine scene]]];
+        [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.3f scene:[IceDiv scene]]];
     }
     
     else if (location.x<cx && location.y > 720)

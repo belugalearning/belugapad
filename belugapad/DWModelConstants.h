@@ -43,6 +43,8 @@ typedef enum {
     kDWsetPhysBody,
     
     kDWpickedUp,
-    kDWputdown
+    kDWputdown,
+    
+    kDWenable
     
 } DWMessageType;

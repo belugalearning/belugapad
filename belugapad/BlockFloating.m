@@ -141,7 +141,7 @@ eachShape(void *ptr, void* unused)
     
     problemCompleteLabel=[CCLabelTTF labelWithString:@"" fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
     [problemCompleteLabel setColor:ccc3(0, 255, 0)];
-    [problemCompleteLabel setPosition:ccp(cx, cy+cy*0.75)];
+    [problemCompleteLabel setPosition:ccp(cx, cy*0.25)];
     [problemCompleteLabel setVisible:NO];
     [self addChild:problemCompleteLabel];
     
@@ -400,6 +400,13 @@ eachShape(void *ptr, void* unused)
     [problemDescLabel setColor:ccc3(255, 255, 255)];
     [self addChild:problemDescLabel];
     
+    //problem sub title
+    NSString *subT=[pdef objectForKey:PROBLEM_SUBTITLE];
+    if(!subT) subT=@"";
+    problemSubLabel=[CCLabelTTF labelWithString:subT fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_SUBTITLE_FONT_SIZE];
+    [problemSubLabel setPosition:ccp(cx, cy+(0.75*cy))];
+    [self addChild:problemSubLabel];
+    
     //create problem file name
     CCLabelBMFont *flabel=[CCLabelBMFont labelWithString:[problemFiles objectAtIndex:currentProblemIndex] fntFile:@"visgrad1.fnt"];
     [flabel setPosition:ccp(135, 755)];
@@ -573,6 +580,10 @@ eachShape(void *ptr, void* unused)
             
             [self showGhostOf:[tdef objectForKey:GHOST_OBJECT] to:[tdef objectForKey:GHOST_DESTINATION]];
             
+            //set subtitle if there
+            NSString *subt=[tdef objectForKey:PROBLEM_SUBTITLE];
+            if(subt) [problemSubLabel setString:subt];
+            
             timeToNextTutorial=TUTORIAL_TIME_REPEAT;
         }
     }
@@ -618,10 +629,23 @@ eachShape(void *ptr, void* unused)
             //immediately remove any ghosts
             [self clearGhost];
             
+            //clear problem subtitle
+            [problemSubLabel setString:@""];
+            
             //spawn any new objects
             NSDictionary *objs=[tdef objectForKey:INIT_OBJECTS];
             if(objs) [self spawnObjects:objs];
             
+            //enable any containers
+            NSArray *enablec=[tdef objectForKey:ENABLE_CONTAINERS];
+            if(enablec)
+            {
+                for (NSString *cont in enablec) {
+                    DWGameObject *contgo=[gameWorld gameObjectWithKey:TAG andValue:cont];
+                    [[contgo store] removeObjectForKey:HIDDEN];
+                    [contgo handleMessage:kDWenable andPayload:nil withLogLevel:0];
+                }
+            }
             
             //set tutorial timer to start -- i.e. like first tutorial (not reapeat timer)
             timeToNextTutorial=TUTORIAL_TIME_START;

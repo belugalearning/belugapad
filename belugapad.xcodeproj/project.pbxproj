@@ -158,12 +158,12 @@
 		7F813D5514CCBA4300C1E997 /* IceDiv.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F813D5414CCBA4300C1E997 /* IceDiv.m */; };
 		7F813D5814CCBDDD00C1E997 /* fire1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5714CCBDDD00C1E997 /* fire1.plist */; };
 		7F813D5C14CCC3A100C1E997 /* fire2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5B14CCC3A100C1E997 /* fire2.plist */; };
-		7F813D6514CCD3C300C1E997 /* icediv-ice.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D6414CCD3C300C1E997 /* icediv-ice.png */; };
 		7F813D6714CCD40700C1E997 /* icediv-crack.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D6614CCD40700C1E997 /* icediv-crack.png */; };
 		7F813D6B14CCD8CF00C1E997 /* fire3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D6A14CCD8CF00C1E997 /* fire3.plist */; };
 		7F813D7014CCE06E00C1E997 /* icediv-crack.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D6D14CCE06E00C1E997 /* icediv-crack.wav */; };
 		7F813D7114CCE06E00C1E997 /* icediv-fire.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D6E14CCE06E00C1E997 /* icediv-fire.wav */; };
 		7F813D7214CCE06E00C1E997 /* icediv-fireball.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D6F14CCE06E00C1E997 /* icediv-fireball.wav */; };
+		7F813D7814CDA70100C1E997 /* icediv-ice.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D7714CDA70100C1E997 /* icediv-ice.png */; };
 		7FABE68F14B33D5100ED2D0C /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */; };
 		7FABE69114B33D5600ED2D0C /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */; };
 		7FABE69A14B4B8FB00ED2D0C /* bg-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE69914B4B8FB00ED2D0C /* bg-ipad.png */; };
@@ -507,12 +507,12 @@
 		7F813D5414CCBA4300C1E997 /* IceDiv.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IceDiv.m; sourceTree = "<group>"; };
 		7F813D5714CCBDDD00C1E997 /* fire1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = fire1.plist; sourceTree = "<group>"; };
 		7F813D5B14CCC3A100C1E997 /* fire2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = fire2.plist; sourceTree = "<group>"; };
-		7F813D6414CCD3C300C1E997 /* icediv-ice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icediv-ice.png"; sourceTree = "<group>"; };
 		7F813D6614CCD40700C1E997 /* icediv-crack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icediv-crack.png"; sourceTree = "<group>"; };
 		7F813D6A14CCD8CF00C1E997 /* fire3.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = fire3.plist; sourceTree = "<group>"; };
 		7F813D6D14CCE06E00C1E997 /* icediv-crack.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "icediv-crack.wav"; sourceTree = "<group>"; };
 		7F813D6E14CCE06E00C1E997 /* icediv-fire.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "icediv-fire.wav"; sourceTree = "<group>"; };
 		7F813D6F14CCE06E00C1E997 /* icediv-fireball.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "icediv-fireball.wav"; sourceTree = "<group>"; };
+		7F813D7714CDA70100C1E997 /* icediv-ice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icediv-ice.png"; sourceTree = "<group>"; };
 		7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		7FABE69214B33E5800ED2D0C /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = global.h; sourceTree = "<group>"; };
@@ -1204,7 +1204,7 @@
 		7F813D6314CCD3B400C1E997 /* icediv */ = {
 			isa = PBXGroup;
 			children = (
-				7F813D6414CCD3C300C1E997 /* icediv-ice.png */,
+				7F813D7714CDA70100C1E997 /* icediv-ice.png */,
 				7F813D6614CCD40700C1E997 /* icediv-crack.png */,
 			);
 			name = icediv;
@@ -1220,21 +1220,29 @@
 			name = icediv;
 			sourceTree = "<group>";
 		};
+		7F813D7914CDAC2800C1E997 /* inactive */ = {
+			isa = PBXGroup;
+			children = (
+				7FABE6B314B4C66E00ED2D0C /* BObjectRender.h */,
+				7FABE6B414B4C66E00ED2D0C /* BObjectRender.m */,
+				7FABE6AD14B4C63D00ED2D0C /* BStoreRender.h */,
+				7FABE6AE14B4C63D00ED2D0C /* BStoreRender.m */,
+			);
+			name = inactive;
+			sourceTree = "<group>";
+		};
 		7FABE6A314B4C5B500ED2D0C /* Behaviours */ = {
 			isa = PBXGroup;
 			children = (
+				7F813D7914CDAC2800C1E997 /* inactive */,
 				7FABE6A414B4C5F100ED2D0C /* BContainerRender.h */,
 				7FABE6A514B4C5F100ED2D0C /* BContainerRender.m */,
 				7FABE6A714B4C60500ED2D0C /* BMount.h */,
 				7FABE6A814B4C60600ED2D0C /* BMount.m */,
 				7FABE6AA14B4C62300ED2D0C /* BDropTarget.h */,
 				7FABE6AB14B4C62300ED2D0C /* BDropTarget.m */,
-				7FABE6AD14B4C63D00ED2D0C /* BStoreRender.h */,
-				7FABE6AE14B4C63D00ED2D0C /* BStoreRender.m */,
 				7FABE6B014B4C64D00ED2D0C /* BMountable.h */,
 				7FABE6B114B4C64D00ED2D0C /* BMountable.m */,
-				7FABE6B314B4C66E00ED2D0C /* BObjectRender.h */,
-				7FABE6B414B4C66E00ED2D0C /* BObjectRender.m */,
 				7FABE6C414B6730900ED2D0C /* BPickupTarget.h */,
 				7FABE6C514B6730A00ED2D0C /* BPickupTarget.m */,
 				7FABE6C814B8F67000ED2D0C /* BFloatPickupTarget.h */,
@@ -1331,12 +1339,12 @@
 				7F50ABFA14C55AAE0033C377 /* float-problem2.plist in Resources */,
 				7F813D5814CCBDDD00C1E997 /* fire1.plist in Resources */,
 				7F813D5C14CCC3A100C1E997 /* fire2.plist in Resources */,
-				7F813D6514CCD3C300C1E997 /* icediv-ice.png in Resources */,
 				7F813D6714CCD40700C1E997 /* icediv-crack.png in Resources */,
 				7F813D6B14CCD8CF00C1E997 /* fire3.plist in Resources */,
 				7F813D7014CCE06E00C1E997 /* icediv-crack.wav in Resources */,
 				7F813D7114CCE06E00C1E997 /* icediv-fire.wav in Resources */,
 				7F813D7214CCE06E00C1E997 /* icediv-fireball.wav in Resources */,
+				7F813D7814CDA70100C1E997 /* icediv-ice.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

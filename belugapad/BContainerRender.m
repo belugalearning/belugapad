@@ -28,6 +28,11 @@
     {
         [self setSprite];
     }
+    
+    if(messageType==kDWenable)
+    {
+        [mySprite setVisible:YES];
+    }
 }
 
 -(void)setSprite
@@ -39,6 +44,12 @@
     float y=[GOS_GET(POS_Y) floatValue];
     
     [mySprite setPosition:ccp(x, y)];
+    
+    BOOL inactive=[[[gameObject store] objectForKey:HIDDEN] boolValue];
+    if(inactive==YES)
+    {
+        [mySprite setVisible:NO];
+    }
     
     [[gameWorld GameScene] addChild:mySprite z:0];
     

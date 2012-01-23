@@ -174,8 +174,6 @@
     CCSequence *seq=[CCSequence actions:s1, s2, nil];
     [crack runAction:seq];
     
-    [[SimpleAudioEngine sharedEngine] playEffect:@"icediv-crack.wav"];
-    
     
     //force set crack opacity, so we can up it if it strikes a fraction
     [crack setOpacity:50];
@@ -191,6 +189,8 @@
         [crack runAction:[CCMoveTo actionWithDuration:0.1f position:ccp(0.25f*xSpan+xBase, cy)]];
         
         [self showFractionFoundLabel:@"1/4"];
+        
+        [[SimpleAudioEngine sharedEngine] playEffect:@"icediv-crack.wav"];
     }
     
     if(fabsf((xMean-xBase) - 0.5*xSpan) < SWIPE_FRACTION_PROX)
@@ -199,6 +199,8 @@
         [crack runAction:[CCMoveTo actionWithDuration:0.1f position:ccp(0.5f*xSpan+xBase, cy)]];
         
         [self showFractionFoundLabel:@"1/2"];
+        
+        [[SimpleAudioEngine sharedEngine] playEffect:@"icediv-crack.wav"];
     }
     
     if(fabsf((xMean-xBase) - 0.75*xSpan) < SWIPE_FRACTION_PROX)
@@ -207,6 +209,8 @@
         [crack runAction:[CCMoveTo actionWithDuration:0.1f position:ccp(0.75f*xSpan+xBase, cy)]];
         
         [self showFractionFoundLabel:@"3/4"];
+    
+        [[SimpleAudioEngine sharedEngine] playEffect:@"icediv-crack.wav"];
     }
     
 }

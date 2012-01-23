@@ -23,6 +23,7 @@
     cpSpace *space;
     
     CCLabelTTF *problemDescLabel;
+    CCLabelTTF *problemSubLabel;
     NSArray *solutionsDef;
     CCLabelTTF *problemCompleteLabel;
     

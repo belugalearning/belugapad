@@ -36,6 +36,8 @@
     int tutorialLastParsed;
     CCLayer *ghostLayer;
     float timeToNextTutorial;
+    
+    BOOL problemIsCurrentlySolved;
 }
 
 +(CCScene *) scene;

@@ -36,12 +36,12 @@
 			<key>CLAUSES</key>
 			<array>
 				<dict>
-					<key>ITEM1_CONTAINER_TAG</key>
+					<key>ITEM1_OBJECT_TAG</key>
+					<string>block1</string>
+					<key>ITEM2_CONTAINER_TAG</key>
 					<string>container1</string>
-					<key>ITEM2_VALUE</key>
-					<integer>0</integer>
 					<key>CLAUSE_TYPE</key>
-					<string>COUNT_GREATER_THAN</string>
+					<string>IS_CONTAINED_BY</string>
 				</dict>
 			</array>
 		</dict>

@@ -59,6 +59,8 @@ eachShape(void *ptr, void* unused)
         cx=[[CCDirector sharedDirector] winSize].width / 2.0f;
         cy=[[CCDirector sharedDirector] winSize].height / 2.0f;
         
+        problemIsCurrentlySolved=NO;
+        
         [self listProblemFiles];
         
         [self setupBkgAndTitle];
@@ -618,13 +620,22 @@ eachShape(void *ptr, void* unused)
             
             [problemCompleteLabel setVisible:YES];
             
-            //try and use the defined solution text
-            NSString *soltext=[sol objectForKey:SOLUTION_DISPLAY_TEXT];
             
-            //other wise populate with generic complete and score
-            if(!soltext) soltext=[NSString stringWithFormat:@"complete (solution %d, score %f)", solComplete, solScore];
-            
-            [problemCompleteLabel setString:soltext];
+            if(problemIsCurrentlySolved==NO)
+            {
+                //try and use the defined solution text
+                NSString *soltext=[sol objectForKey:SOLUTION_DISPLAY_TEXT];
+                
+                //other wise populate with generic complete and score
+                if(!soltext) soltext=[NSString stringWithFormat:@"complete (solution %d, score %f)", solComplete, solScore];
+                
+                NSString *playsound=[sol objectForKey:PLAY_SOUND];
+                if(playsound) [[SimpleAudioEngine sharedEngine] playEffect:playsound];
+                
+                [problemCompleteLabel setString:soltext];
+                
+                problemIsCurrentlySolved=YES;
+            }
             
             break;
         }
@@ -634,6 +645,8 @@ eachShape(void *ptr, void* unused)
     if(solComplete==0)
     {
         [problemCompleteLabel setVisible:NO];
+        
+        problemIsCurrentlySolved=NO;
     }
     
     //evaluate tutorials
@@ -682,6 +695,10 @@ eachShape(void *ptr, void* unused)
             [contgo handleMessage:kDWenable andPayload:nil withLogLevel:0];
         }
     }
+    
+    //play sound
+    NSString *playsound=[actionSet objectForKey:PLAY_SOUND];
+    if(playsound) [[SimpleAudioEngine sharedEngine] playEffect:playsound];
 }
 
 -(int)evalClauses:(NSDictionary*)clauses
@@ -698,28 +715,44 @@ eachShape(void *ptr, void* unused)
         if([clauseType isEqualToString:SIZE_EQUAL_TO] || [clauseType isEqualToString:SIZE_GREATER_THAN] || [clauseType isEqualToString:SIZE_LESS_THAN])
             valIsSize=YES;
         
-        //this is implemented as specific item1, item2 references to ensure left/right positioning of items whilst
-        // using a non-specific data format (e.g. current plist)
-        val1=[self getEvaluatedValueForItemTag:[clause objectForKey:ITEM1_CONTAINER_TAG] andItemValue:[clause objectForKey:ITEM1_VALUE] andValueRequiredIsSize:valIsSize];
-        
-        val2=[self getEvaluatedValueForItemTag:[clause objectForKey:ITEM2_CONTAINER_TAG] andItemValue:[clause objectForKey:ITEM2_VALUE] andValueRequiredIsSize:valIsSize];
-        
         BOOL pass=NO;
-        //do evaluation of val1 to val2, based on clause type
-        if([clauseType isEqualToString:SIZE_EQUAL_TO] || [clauseType isEqualToString:COUNT_EQUAL_TO])
+        
+        //for now, evaluate contained by separately from value evaluations
+        if([clauseType isEqualToString:IS_CONTAINED_BY])
         {
-            if(val1==val2)
+            DWGameObject *goc=[gameWorld gameObjectWithKey:TAG andValue:[clause objectForKey:ITEM2_CONTAINER_TAG]];
+            DWGameObject *goo=[gameWorld gameObjectWithKey:TAG andValue:[clause objectForKey:ITEM1_OBJECT_TAG]];
+            NSArray *gocmounteds=[[goc store] objectForKey:MOUNTED_OBJECTS];
+            if([gocmounteds containsObject:goo])
+            {
                 pass=YES;
+            }
         }
-        else if([clauseType isEqualToString:SIZE_GREATER_THAN] || [clauseType isEqualToString:COUNT_GREATER_THAN])
+        else
         {
-            if(val1>val2)
-                pass=YES;
-        }
-        else if([clauseType isEqualToString:SIZE_LESS_THAN] || [clauseType isEqualToString:COUNT_LESS_THAN])
-        {
-            if(val1<val2)
-                pass=YES;
+            //this is implemented as specific item1, item2 references to ensure left/right positioning of items whilst
+            // using a non-specific data format (e.g. current plist)
+            val1=[self getEvaluatedValueForItemTag:[clause objectForKey:ITEM1_CONTAINER_TAG] andItemValue:[clause objectForKey:ITEM1_VALUE] andValueRequiredIsSize:valIsSize];
+            
+            val2=[self getEvaluatedValueForItemTag:[clause objectForKey:ITEM2_CONTAINER_TAG] andItemValue:[clause objectForKey:ITEM2_VALUE] andValueRequiredIsSize:valIsSize];
+            
+
+            //do evaluation of val1 to val2, based on clause type
+            if([clauseType isEqualToString:SIZE_EQUAL_TO] || [clauseType isEqualToString:COUNT_EQUAL_TO])
+            {
+                if(val1==val2)
+                    pass=YES;
+            }
+            else if([clauseType isEqualToString:SIZE_GREATER_THAN] || [clauseType isEqualToString:COUNT_GREATER_THAN])
+            {
+                if(val1>val2)
+                    pass=YES;
+            }
+            else if([clauseType isEqualToString:SIZE_LESS_THAN] || [clauseType isEqualToString:COUNT_LESS_THAN])
+            {
+                if(val1<val2)
+                    pass=YES;
+            }
         }
         
         if(pass==YES)

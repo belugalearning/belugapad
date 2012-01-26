@@ -167,6 +167,7 @@
 		7F813F3314CF17E900C1E997 /* float-problem6.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813F3214CF17E900C1E997 /* float-problem6.plist */; };
 		7F93668414D1BC2D00CAEF47 /* obj-blockholder-mount1x1-red.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F93668214D1BC2D00CAEF47 /* obj-blockholder-mount1x1-red.png */; };
 		7F93668814D1BE3400CAEF47 /* obj-blockholder-mount1x1-yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F93668714D1BE3400CAEF47 /* obj-blockholder-mount1x1-yellow.png */; };
+		7F93668B14D1CD8500CAEF47 /* firework.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7F93668A14D1CD8500CAEF47 /* firework.wav */; };
 		7FABE68F14B33D5100ED2D0C /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */; };
 		7FABE69114B33D5600ED2D0C /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */; };
 		7FABE69A14B4B8FB00ED2D0C /* bg-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE69914B4B8FB00ED2D0C /* bg-ipad.png */; };
@@ -519,6 +520,7 @@
 		7F813F3214CF17E900C1E997 /* float-problem6.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem6.plist"; sourceTree = "<group>"; };
 		7F93668214D1BC2D00CAEF47 /* obj-blockholder-mount1x1-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-blockholder-mount1x1-red.png"; sourceTree = "<group>"; };
 		7F93668714D1BE3400CAEF47 /* obj-blockholder-mount1x1-yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-blockholder-mount1x1-yellow.png"; sourceTree = "<group>"; };
+		7F93668A14D1CD8500CAEF47 /* firework.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = firework.wav; sourceTree = "<group>"; };
 		7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		7FABE69214B33E5800ED2D0C /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = global.h; sourceTree = "<group>"; };
@@ -1142,6 +1144,7 @@
 		7F813D5A14CCC38700C1E997 /* sfx */ = {
 			isa = PBXGroup;
 			children = (
+				7F93668A14D1CD8500CAEF47 /* firework.wav */,
 				7F813D6C14CCE05900C1E997 /* icediv */,
 				7FABE69D14B4BC8300ED2D0C /* pickup.wav */,
 				7FABE69E14B4BC8300ED2D0C /* putdown.wav */,
@@ -1365,6 +1368,7 @@
 				7F813F3314CF17E900C1E997 /* float-problem6.plist in Resources */,
 				7F93668414D1BC2D00CAEF47 /* obj-blockholder-mount1x1-red.png in Resources */,
 				7F93668814D1BE3400CAEF47 /* obj-blockholder-mount1x1-yellow.png in Resources */,
+				7F93668B14D1CD8500CAEF47 /* firework.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

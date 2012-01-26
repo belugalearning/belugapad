@@ -33,6 +33,7 @@
     NSArray *tutorials;
     BOOL doTutorials;
     int tutorialPos;
+    int tutorialLastParsed;
     CCLayer *ghostLayer;
     float timeToNextTutorial;
 }
@@ -67,5 +68,6 @@
 -(void)showGhostOf:(NSString *)ghostObjectTag to:(NSString *)ghostDestinationTag;
 -(CCSprite *)ghostCopySprite:(CCSprite*)spriteSource;
 -(void)updateTutorials:(ccTime)delta;
+-(void)parseTutorialActionsFor:(NSDictionary*)actionSet;
 
 @end

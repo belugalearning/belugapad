@@ -441,6 +441,7 @@ eachShape(void *ptr, void* unused)
     {
         doTutorials=YES;
         tutorialPos=0;
+        tutorialLastParsed=-1;
         [tutorials retain];
     }
 
@@ -580,9 +581,19 @@ eachShape(void *ptr, void* unused)
             
             [self showGhostOf:[tdef objectForKey:GHOST_OBJECT] to:[tdef objectForKey:GHOST_DESTINATION]];
             
-            //set subtitle if there
-            NSString *subt=[tdef objectForKey:PROBLEM_SUBTITLE];
-            if(subt) [problemSubLabel setString:subt];
+            
+            //don't re-parse tutorials already shown (i.e. just do the ghosting stuff above)
+            if(tutorialPos>tutorialLastParsed)
+            {
+                //set subtitle if there
+                NSString *subt=[tdef objectForKey:PROBLEM_SUBTITLE];
+                if(subt) [problemSubLabel setString:subt];
+                
+                //parse any PRE_ actions
+                [self parseTutorialActionsFor:[tdef objectForKey:PRE_ACTIONS]];
+            
+                tutorialLastParsed=tutorialPos;
+            }
             
             timeToNextTutorial=TUTORIAL_TIME_REPEAT;
         }
@@ -602,17 +613,25 @@ eachShape(void *ptr, void* unused)
         
         if([self evalClauses:[sol objectForKey:CLAUSES]])
         {
-            solComplete++;
-            solScore+=[[sol objectForKey:SOLUTION_SCORE]floatValue];
+            solComplete=1;
+            solScore=[[sol objectForKey:SOLUTION_SCORE]floatValue];
+            
+            [problemCompleteLabel setVisible:YES];
+            
+            //try and use the defined solution text
+            NSString *soltext=[sol objectForKey:SOLUTION_DISPLAY_TEXT];
+            
+            //other wise populate with generic complete and score
+            if(!soltext) soltext=[NSString stringWithFormat:@"complete (solution %d, score %f)", solComplete, solScore];
+            
+            [problemCompleteLabel setString:soltext];
+            
+            break;
         }
     }
     
-    if(solComplete>0)
-    {
-        [problemCompleteLabel setVisible:YES];
-        [problemCompleteLabel setString:[NSString stringWithFormat:@"complete (solution %d, score %f)", solComplete, solScore]];
-    }
-    else
+    //as this eval is abstracted from state events, need to hide solution text if the solution's been broken before progressing
+    if(solComplete==0)
     {
         [problemCompleteLabel setVisible:NO];
     }
@@ -632,20 +651,8 @@ eachShape(void *ptr, void* unused)
             //clear problem subtitle
             [problemSubLabel setString:@""];
             
-            //spawn any new objects
-            NSDictionary *objs=[tdef objectForKey:INIT_OBJECTS];
-            if(objs) [self spawnObjects:objs];
-            
-            //enable any containers
-            NSArray *enablec=[tdef objectForKey:ENABLE_CONTAINERS];
-            if(enablec)
-            {
-                for (NSString *cont in enablec) {
-                    DWGameObject *contgo=[gameWorld gameObjectWithKey:TAG andValue:cont];
-                    [[contgo store] removeObjectForKey:HIDDEN];
-                    [contgo handleMessage:kDWenable andPayload:nil withLogLevel:0];
-                }
-            }
+            //parse any POST_ actions
+            [self parseTutorialActionsFor:[tdef objectForKey:POST_ACTIONS]];
             
             //set tutorial timer to start -- i.e. like first tutorial (not reapeat timer)
             timeToNextTutorial=TUTORIAL_TIME_START;
@@ -656,6 +663,24 @@ eachShape(void *ptr, void* unused)
         //disable tutorials once we've incremented past the last one
         if(tutorialPos>=[tutorials count])
             doTutorials=NO;
+    }
+}
+
+-(void)parseTutorialActionsFor:(NSDictionary*)actionSet
+{
+    //spawn any new objects
+    NSDictionary *objs=[actionSet objectForKey:INIT_OBJECTS];
+    if(objs) [self spawnObjects:objs];
+    
+    //enable any containers
+    NSArray *enablec=[actionSet objectForKey:ENABLE_CONTAINERS];
+    if(enablec)
+    {
+        for (NSString *cont in enablec) {
+            DWGameObject *contgo=[gameWorld gameObjectWithKey:TAG andValue:cont];
+            [[contgo store] removeObjectForKey:HIDDEN];
+            [contgo handleMessage:kDWenable andPayload:nil withLogLevel:0];
+        }
     }
 }
 

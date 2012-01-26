@@ -37,7 +37,10 @@
 
 -(void)setSprite
 {
-    mySprite=[CCSprite spriteWithFile:@"obj-blockholder-mount1x1.png"];
+    NSString *sname=[[gameObject store] objectForKey:RENDER_IMAGE_NAME];
+    if(!sname) sname=@"obj-blockholder-mount1x1.png";
+    
+    mySprite=[CCSprite spriteWithFile:sname];
     [mySprite setOpacity:120];
 
     float x=[[[gameObject store] objectForKey:POS_X] floatValue];

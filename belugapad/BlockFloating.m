@@ -93,6 +93,9 @@ eachShape(void *ptr, void* unused)
 
 -(void) resetToNextProblem
 {
+    //write log on problem switch
+    [gameWorld writeLogBufferToDiskWithKey:@"BlockFloating"];
+    
     //tear down
     [gameWorld release];
     
@@ -396,6 +399,8 @@ eachShape(void *ptr, void* unused)
     NSString *pfile=[broot stringByAppendingPathComponent:[problemFiles objectAtIndex:currentProblemIndex]];
 	NSDictionary *pdef=[NSDictionary dictionaryWithContentsOfFile:pfile];
 	
+    [gameWorld logInfo:[NSString stringWithFormat:@"started problem: %@", pfile] withData:0];
+
     //render problem label
     problemDescLabel=[CCLabelTTF labelWithString:[pdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
     [problemDescLabel setPosition:ccp(cx, cy+(0.85*cy))];
@@ -487,34 +492,6 @@ eachShape(void *ptr, void* unused)
     [c loadData:containerData];
 }
 
--(void)populateGWHard
-{
-    
-    for (int i=0; i<10; i++)
-    {
-        DWGameObject *go=[gameWorld addGameObjectWithTemplate:@"TfloatObject"];
-        
-        [[go store] setObject:[NSNumber numberWithInt:(arc4random()%3)+1] forKey:OBJ_ROWS];
-        [[go store] setObject:[NSNumber numberWithInt:(arc4random()%3)+1] forKey:OBJ_COLS];
-        
-        
-        float x=arc4random()%800 + 100;
-        float y=arc4random()%400;
-        
-        NSDictionary *ppl=[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[NSNumber numberWithFloat:x], [NSNumber numberWithFloat:y], nil] forKeys:[NSArray arrayWithObjects:POS_X, POS_Y, nil]];
-        [self attachBodyToGO:go atPositionPayload:ppl];        
-    }
-    
-    //create a 2 test containers
-    DWGameObject *m2=[gameWorld addGameObjectWithTemplate:@"TfloatContainer"];
-    [[m2 store] setObject:[NSNumber numberWithFloat:418.0f] forKey:POS_X];
-    [[m2 store] setObject:[NSNumber numberWithFloat:183.0f] forKey:POS_Y];
-    
-    DWGameObject *m3=[gameWorld addGameObjectWithTemplate:@"TfloatContainer"];
-    [[m3 store] setObject:[NSNumber numberWithFloat:606.0f] forKey:POS_X];
-    [[m3 store] setObject:[NSNumber numberWithFloat:183.0f] forKey:POS_Y];
-}
-
 -(void)attachBodyToGO:(DWGameObject *)attachGO atPositionPayload:(NSDictionary *)positionPayload
 {
     float x, y;
@@ -532,14 +509,7 @@ eachShape(void *ptr, void* unused)
 		ccp(-HALF_SIZE, (r-1)*UNIT_SIZE + HALF_SIZE), //top left
 		ccp((c-1)*UNIT_SIZE + HALF_SIZE, (r-1)*UNIT_SIZE + HALF_SIZE), //top right
 		ccp((c-1)*UNIT_SIZE + HALF_SIZE, -HALF_SIZE), // bottom right
-	};
-
-//    CGPoint verts[] = {
-//		ccp(-40,-40), //bottom left
-//		ccp(-40, 40), //top left
-//		ccp( 40, 40),
-//		ccp( 40,-40),
-//	};
+	}; 
     
 	cpBody *body = cpBodyNew(1.0f, cpMomentForPoly(1.0f, num, verts, CGPointZero));
 	
@@ -587,6 +557,8 @@ eachShape(void *ptr, void* unused)
             //don't re-parse tutorials already shown (i.e. just do the ghosting stuff above)
             if(tutorialPos>tutorialLastParsed)
             {
+                [gameWorld logInfo:[NSString stringWithFormat:@"tutorial: pre actions for phase %d", tutorialPos] withData:0];
+                
                 //set subtitle if there
                 NSString *subt=[tdef objectForKey:PROBLEM_SUBTITLE];
                 if(subt) [problemSubLabel setString:subt];
@@ -596,6 +568,8 @@ eachShape(void *ptr, void* unused)
             
                 tutorialLastParsed=tutorialPos;
             }
+
+            [gameWorld logInfo:[NSString stringWithFormat:@"showing ghost for phase %d", tutorialPos] withData:0];
             
             timeToNextTutorial=TUTORIAL_TIME_REPEAT;
         }
@@ -634,6 +608,8 @@ eachShape(void *ptr, void* unused)
                 
                 [problemCompleteLabel setString:soltext];
                 
+                [gameWorld logInfo:[NSString stringWithFormat:@"solution found with value %f and text %@", solScore, soltext] withData:0];
+                
                 problemIsCurrentlySolved=YES;
             }
             
@@ -644,9 +620,17 @@ eachShape(void *ptr, void* unused)
     //as this eval is abstracted from state events, need to hide solution text if the solution's been broken before progressing
     if(solComplete==0)
     {
-        [problemCompleteLabel setVisible:NO];
+
         
-        problemIsCurrentlySolved=NO;
+        if(problemIsCurrentlySolved)
+        {
+            [problemCompleteLabel setVisible:NO];
+            
+            problemIsCurrentlySolved=NO;
+            
+            [gameWorld logInfo:@"solution broken" withData:0];
+        }
+
     }
     
     //evaluate tutorials
@@ -669,6 +653,8 @@ eachShape(void *ptr, void* unused)
             
             //set tutorial timer to start -- i.e. like first tutorial (not reapeat timer)
             timeToNextTutorial=TUTORIAL_TIME_START;
+            
+            [gameWorld logInfo:[NSString stringWithFormat:@"tutorial phase %d complete", tutorialPos] withData:0];
             
             tutorialPos++;
         }

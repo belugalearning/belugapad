@@ -62,6 +62,7 @@
 -(NSMutableArray*)removeObjects;
 
 -(DWGameObject*)gameObjectWithKey:(NSString *)key andValue:(NSString *)theValue;
+-(void)logInfo:(NSString *) desc withData:(int)logData;
 
 -(void)cleanup;
 

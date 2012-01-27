@@ -115,6 +115,12 @@
 	}
 }
 
+-(void)logInfo:(NSString *) desc withData:(int)logData
+{
+    [LogBuffer addObject:[NSString stringWithFormat:@"%@, %@, %d, %@, %d", [NSDate date], @"global message", (int)self, desc, logData]];
+    
+}
+
 -(void)writeLogBufferToDiskWithKey:(NSString *)key
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);

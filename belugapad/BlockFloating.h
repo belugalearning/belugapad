@@ -47,7 +47,6 @@
 -(void) setupSprites;
 -(void) setupGW;
 -(void) populateGW;
--(void) populateGWHard;
 -(void)setupChSpace;
 -(void) doUpdate:(ccTime)delta;
 -(void) attachBodyToGO:(DWGameObject *)attachGO atPositionPayload:(NSDictionary *)positionPayload;

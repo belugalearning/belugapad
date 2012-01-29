@@ -193,7 +193,6 @@
         float db=[BLMath DistanceBetween:t1b and:t2b];
         
         float scaleChange=db-da;
-        //NSLog(@"scale change: %f", scaleChange);
         
         scale+=scaleChange;
     }

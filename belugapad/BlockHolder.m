@@ -123,7 +123,6 @@
         if([gameWorld Blackboard].PickupObject!=nil)
         {
             [[SimpleAudioEngine sharedEngine] playEffect:@"pickup.wav"];
-            NSLog(@"got a pickup object");
             
             //if double tapped return pickupGO to feature store 
             if(tapCount == 2)
@@ -152,7 +151,6 @@
                     [[gameWorld Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
                     
                     [gameWorld Blackboard].PickupObject = nil; //drop pickup object
-                    NSLog(@"returned object to store");
                 }
             }
         }
@@ -204,7 +202,6 @@
             [pl setObject:[gameWorld Blackboard].DropObject forKey:MOUNT];
             [[gameWorld Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
             
-            NSLog(@"re-mounted pickupGO");
             [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
             
         }
@@ -212,7 +209,6 @@
         {
             [[gameWorld Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:nil withLogLevel:0];
             
-            NSLog(@"returned pickupGO");
         }
         
         [gameWorld Blackboard].PickupObject=nil;

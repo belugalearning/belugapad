@@ -49,7 +49,7 @@
     [mySprite setPosition:ccp(x, y)];
     
     BOOL inactive=[[[gameObject store] objectForKey:HIDDEN] boolValue];
-    if(inactive==YES)
+    if(inactive)
     {
         [mySprite setVisible:NO];
     }

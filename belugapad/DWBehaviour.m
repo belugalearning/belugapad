@@ -47,17 +47,17 @@
 {
 		if(level<=DEBUG_LEVEL)
 		{
-			NSLog(@"%@ lvl%d behaviour debug log: %@", [self description], level, message);
+			DLog(@"%@ lvl%d behaviour debug log: %@", [self description], level, message);
 		}
 }
 
 -(void)logLocalStore
 {
-	NSLog(@"===== behaviour: %@ ... localstore follows", [self class]);
+	DLog(@"===== behaviour: %@ ... localstore follows", [self class]);
 	
 	for(NSString *key in [[gameObject store] allKeys])
 	{
-		NSLog(@"%@ == %@", key, [[[gameObject store] objectForKey:key] description]);
+		DLog(@"%@ == %@", key, [[[gameObject store] objectForKey:key] description]);
 	}
 	
 }

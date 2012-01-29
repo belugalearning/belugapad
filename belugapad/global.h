@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-
 #define TITLE_FONT @"Helvetica-Bold"
 #define TITLE_SIZE 90
 #define TITLE_OPACITY 15

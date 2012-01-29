@@ -141,11 +141,13 @@
 {
     if(!((tDown.y<ICE_BOTTOM && tUp.y>ICE_TOP) || (tDown.y>ICE_TOP && tUp.y<ICE_BOTTOM)))
     {
-        NSLog(@"swipe wasn't through bottom and top");
+        DLog(@"swipe wasn't through bottom and top");
         return;
     }
     
-    float xMin, xMax;
+    float xMin=0;
+    float xMax=0;
+    
     if(tDown.x<tUp.x)
     {
         xMin=tDown.x;
@@ -159,7 +161,7 @@
     
     if(fabsf(tMax.x-tMin.x) > SWIPE_YVAR_MAX)
     {
-        NSLog(@"yvariance too great %f", (tMax.x-tMin.x));
+        DLog(@"yvariance too great %f", (tMax.x-tMin.x));
         return;
     }
     
@@ -243,7 +245,7 @@
 
 -(void) doUpdate:(ccTime)delta
 {
-    if(touching==YES)
+    if(touching)
     {
         fireTime+=delta;
         if(fireTime>0.25f)

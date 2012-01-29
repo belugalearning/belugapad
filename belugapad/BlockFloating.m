@@ -12,6 +12,51 @@
 #import "IceDiv.h"
 #import "BLMath.h"
 
+const int kBlockSpawnSpaceWidth=800;
+const int kBlockSpawnSpaceHeight=400;
+const float kBlockSpawnSpaceXOffset=100.0f;
+
+const float kContainerYOffsetHalfProp=0.625f;
+
+const GLubyte kDebugLabelOpacity=65;
+const CGPoint kDebugProblemLabelPos={135, 755};
+
+const float kLabelSubTitleYOffsetHalfProp=1.75f;
+const float kLabelTitleYOffsetHalfProp=1.85f;
+const ccColor3B kLabelTitleColor={255, 255, 255};
+const float kLabelCompleteYOffsetHalfProp=0.25f;
+const ccColor3B kLabelCompleteColor={0, 255, 0};
+
+const float kButtonToolbarHitBaseYOffset=720.0f;
+const float kButtonNextToolHitXOffset=975.0f;
+
+const CGPoint kButtonNextToolPos={996, 735};
+
+const float kWaterLineActualYOffset=637.0f;
+const float kWaterLineResubmergeYOffset=580.0f;
+
+const float kPhysWaterLineSimInverseYOffset=130.0f;
+
+const float kPhysContainerHardLeft=1.0f;
+const float kPhysContainerLeftReset=24.0f;
+const float kPhysContainerHardRight=1023.0f;
+const float kPhysContainerRightReset=1000.0f;
+const float kPhysContainerHardBottom=1.0f;
+const float kPhysContainerResetBottom=1.0f;
+
+const float kPhysContainerMargin=200.0f;
+
+const float kPhysCPStaticDimension=400.0f;
+const int kPhysCPStaticCount=400;
+const float kPhysCPActiveDimension=100.0f;
+const int kPhysCPActiveCount=600;
+
+const CGPoint kPhysGravityDefault={0, 500};
+const float kPhysWaterLineElastcity=0.65f;
+
+const float kScheduleUpdateLoopTFPS=60.0f;
+const float kScheduleEvalLoopTFPS=6.0f;
+
 static void
 eachShape(void *ptr, void* unused)
 {
@@ -79,9 +124,9 @@ eachShape(void *ptr, void* unused)
         //general go-oriented render, etc
         [gameWorld handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
-        [self schedule:@selector(doUpdate:) interval:1.0f/60.0f];
+        [self schedule:@selector(doUpdate:) interval:1.0f/kScheduleUpdateLoopTFPS];
         
-        [self schedule:@selector(evalCompletion:) interval:10.0f/60.0f];
+        [self schedule:@selector(evalCompletion:) interval:1.0f/kScheduleEvalLoopTFPS];
         
         timeToNextTutorial=TUTORIAL_TIME_START;
         [self schedule:@selector(updateTutorials:) interval:1.0f];
@@ -145,13 +190,13 @@ eachShape(void *ptr, void* unused)
     [self addChild:fg z:2];
     
     problemCompleteLabel=[CCLabelTTF labelWithString:@"" fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [problemCompleteLabel setColor:ccc3(0, 255, 0)];
-    [problemCompleteLabel setPosition:ccp(cx, cy*0.25)];
+    [problemCompleteLabel setColor:kLabelCompleteColor];
+    [problemCompleteLabel setPosition:ccp(cx, cy*kLabelCompleteYOffsetHalfProp)];
     [problemCompleteLabel setVisible:NO];
     [self addChild:problemCompleteLabel];
     
     CCSprite *btnFwd=[CCSprite spriteWithFile:@"btn-fwd.png"];
-    [btnFwd setPosition:ccp(1024-18-10, 768-28-5)];
+    [btnFwd setPosition:kButtonNextToolPos];
     [self addChild:btnFwd z:2];
     
     //setup ghost layer
@@ -166,40 +211,37 @@ eachShape(void *ptr, void* unused)
     
     cpBody *staticBody = cpBodyNew(INFINITY, INFINITY);
     space = cpSpaceNew();
-    cpSpaceResizeStaticHash(space, 400.0f, 400);
-    cpSpaceResizeActiveHash(space, 100, 600);
+    cpSpaceResizeStaticHash(space, kPhysCPStaticDimension, kPhysCPStaticCount);
+    cpSpaceResizeActiveHash(space, kPhysCPActiveDimension, kPhysCPActiveCount);
     
-    //space->gravity = ccp(9.8*30, 0.0f);
-    space->gravity=ccp(0, 500);
-    //space->damping=5.0f;
+    space->gravity=kPhysGravityDefault;
     
     space->elasticIterations = space->iterations;
     
-    cpShape *shape;
+    cpShape *shape=nil;
     
     // bottom
-    CGPoint bottomverts[]={ccp(0, -200), ccp(0, 0), ccp(wins.width, 0), ccp(wins.width, -200)};
+    CGPoint bottomverts[]={ccp(0, -kPhysContainerMargin), ccp(0, 0), ccp(wins.width, 0), ccp(wins.width, -kPhysContainerMargin)};
     shape=cpPolyShapeNew(staticBody, 4, bottomverts, ccp(0,0));
     shape->e = 1.0f; shape->u = 1.0f;
     cpSpaceAddStaticShape(space, shape);
     
     // top
-    CGPoint topverts[]={ccp(0, wins.height-130), ccp(0, wins.height+200), ccp(wins.width, wins.height+200), ccp(wins.width, wins.height-130)};
+    CGPoint topverts[]={ccp(0, wins.height-kPhysWaterLineSimInverseYOffset), ccp(0, wins.height+kPhysContainerMargin), ccp(wins.width, wins.height+kPhysContainerMargin), ccp(wins.width, wins.height-kPhysWaterLineSimInverseYOffset)};
     shape=cpPolyShapeNew(staticBody, 4, topverts, ccp(0, 0));
-    shape->e = 0.65f; shape->u = 1.0f;
+    shape->e = kPhysWaterLineElastcity; shape->u = 1.0f;
     cpSpaceAddStaticShape(space, shape);
     
     // left
-    CGPoint leftverts[]={ccp(-200, 0), ccp(-200, wins.height), ccp(0, wins.height), ccp(0, 0)};
+    CGPoint leftverts[]={ccp(-kPhysContainerMargin, 0), ccp(-kPhysContainerMargin, wins.height), ccp(0, wins.height), ccp(0, 0)};
     shape=cpPolyShapeNew(staticBody, 4, leftverts, ccp(0,0));
     shape->e = 1.0f; shape->u = 1.0f;
     cpSpaceAddStaticShape(space, shape);
     
     // right
-    CGPoint rverts[]={ccp(1024,0), ccp(1024, 768), ccp(1200, 768), ccp(1200, 0)};
+    CGPoint rverts[]={ccp(cx*2,0), ccp(cx*2, cy*2), ccp((cx*2)+kPhysContainerMargin, cy*2), ccp((cx*2)+kPhysContainerMargin, 0)};
     cpShape *right=cpPolyShapeNew(staticBody, 4, rverts, ccp(0,0));
     
-    //cpShape *right=cpSegmentShapeNew(staticBody, ccp(1024,0), ccp(1024,768), 0.0f);
     right->e=1.0f;
     right->u=1.0f;
     cpSpaceAddStaticShape(space, right);
@@ -236,7 +278,7 @@ eachShape(void *ptr, void* unused)
     location=[[CCDirector sharedDirector] convertToGL:location];
     
     //fixed handlers for menu interaction
-    if(location.x>975 && location.y>720)
+    if(location.x>kButtonNextToolHitXOffset && location.y>kButtonToolbarHitBaseYOffset)
     {
         [gameWorld writeLogBufferToDiskWithKey:@"BlockFloating"];
         
@@ -244,7 +286,7 @@ eachShape(void *ptr, void* unused)
         [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.3f scene:[IceDiv scene]]];
     }
     
-    else if (location.x<cx && location.y > 720)
+    else if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
     {
         [self resetToNextProblem];
     }
@@ -278,7 +320,6 @@ eachShape(void *ptr, void* unused)
 
             [[SimpleAudioEngine sharedEngine] playEffect:@"pickup.wav"];
             
-            //NSLog(@"got a pickup object");
             [[gameWorld Blackboard].PickupObject logInfo:@"this object was picked up" withData:0];
             
         }
@@ -323,13 +364,13 @@ eachShape(void *ptr, void* unused)
         CGPoint modLocation=[BLMath SubtractVector:[gameWorld Blackboard].PickupOffset from:location];
         
         //mod y down below water line
-        if(modLocation.y>637)modLocation.y=580;
+        if(modLocation.y>kWaterLineActualYOffset)modLocation.y=kWaterLineResubmergeYOffset;
         
         //check l/r bounds
-        if(modLocation.x<1)modLocation.x=24;
-        if(modLocation.x>1023)modLocation.x=1000;
+        if(modLocation.x<kPhysContainerHardLeft)modLocation.x=kPhysContainerLeftReset;
+        if(modLocation.x>kPhysContainerHardRight)modLocation.x=kPhysContainerRightReset;
         
-        if(modLocation.y<1)modLocation.y=1;
+        if(modLocation.y<kPhysContainerHardBottom)modLocation.y=kPhysContainerResetBottom;
         
         NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];
         [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
@@ -348,7 +389,6 @@ eachShape(void *ptr, void* unused)
             [pl setObject:[gameWorld Blackboard].PickupObject forKey:MOUNTED_OBJECT];
             [[gameWorld Blackboard].DropObject handleMessage:kDWsetMountedObject andPayload:pl withLogLevel:0];
             
-            //NSLog(@"mounted float object (presumably) on a drop target");
             [[gameWorld Blackboard].PickupObject logInfo:@"this object was mounted" withData:0];
             [[gameWorld Blackboard].DropObject logInfo:@"mounted object on this go" withData:0];
 
@@ -383,21 +423,22 @@ eachShape(void *ptr, void* unused)
 
     //render problem label
     problemDescLabel=[CCLabelTTF labelWithString:[pdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [problemDescLabel setPosition:ccp(cx, cy+(0.85*cy))];
-    [problemDescLabel setColor:ccc3(255, 255, 255)];
+    [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
+    [problemDescLabel setColor:kLabelTitleColor];
+
     [self addChild:problemDescLabel];
     
     //problem sub title
     NSString *subT=[pdef objectForKey:PROBLEM_SUBTITLE];
     if(!subT) subT=@"";
     problemSubLabel=[CCLabelTTF labelWithString:subT fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_SUBTITLE_FONT_SIZE];
-    [problemSubLabel setPosition:ccp(cx, cy+(0.75*cy))];
+    [problemSubLabel setPosition:ccp(cx, kLabelSubTitleYOffsetHalfProp*cy)];
     [self addChild:problemSubLabel];
     
     //create problem file name
     CCLabelBMFont *flabel=[CCLabelBMFont labelWithString:[problemFiles objectAtIndex:currentProblemIndex] fntFile:@"visgrad1.fnt"];
-    [flabel setPosition:ccp(135, 755)];
-    [flabel setOpacity:65];
+    [flabel setPosition:kDebugProblemLabelPos];
+    [flabel setOpacity:kDebugLabelOpacity];
     [self addChild:flabel];
     
     //objects
@@ -413,7 +454,7 @@ eachShape(void *ptr, void* unused)
     
     for (int i=0; i<containerCount; i++)
     {
-        CGPoint p=ccp((i+1)*cleftIncr, (0.625*cy));
+        CGPoint p=ccp((i+1)*cleftIncr, (kContainerYOffsetHalfProp*cy));
         
         [self createContainerWithPos:p andData:[containers objectAtIndex:i]];
     }
@@ -454,8 +495,8 @@ eachShape(void *ptr, void* unused)
     [[go store] setObject:tagString forKey:TAG];
     
     //randomly distribute new objects in float space
-    float x=arc4random()%800 + 100;
-    float y=arc4random()%400;
+    float x=arc4random()%kBlockSpawnSpaceWidth + kBlockSpawnSpaceXOffset;
+    float y=arc4random()%kBlockSpawnSpaceHeight;
     
     NSDictionary *ppl=[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[NSNumber numberWithFloat:x], [NSNumber numberWithFloat:y], nil] forKeys:[NSArray arrayWithObjects:POS_X, POS_Y, nil]];
     [self attachBodyToGO:go atPositionPayload:ppl];
@@ -474,9 +515,8 @@ eachShape(void *ptr, void* unused)
 
 -(void)attachBodyToGO:(DWGameObject *)attachGO atPositionPayload:(NSDictionary *)positionPayload
 {
-    float x, y;
-    x=[[positionPayload objectForKey:POS_X] floatValue];
-    y=[[positionPayload objectForKey:POS_Y] floatValue];
+    float x=[[positionPayload objectForKey:POS_X] floatValue];
+    float y=[[positionPayload objectForKey:POS_Y] floatValue];
     
     //pull unit dimensions from object
     int c=[[[attachGO store] objectForKey:OBJ_COLS] intValue];
@@ -721,7 +761,7 @@ eachShape(void *ptr, void* unused)
             }
         }
         
-        if(pass==YES)
+        if(pass)
         {
             clausesPassed++;
             

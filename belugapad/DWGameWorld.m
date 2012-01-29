@@ -64,7 +64,7 @@
 {
 	if(level<=DEBUG_LEVEL)
 	{
-		NSLog(@"lvl%d behaviour debug log: %@", level, message);
+		DLog(@"lvl%d behaviour debug log: %@", level, message);
 	}
 }
 
@@ -83,7 +83,7 @@
 -(void)doUpdate:(ccTime)delta
 {
 	//clean up / remove objects
-	if(dirtyRemoveObjects==YES)
+	if(dirtyRemoveObjects)
 	{
 		[gameObjects removeObjectsInArray:removeObjects];
 		dirtyRemoveObjects=NO;
@@ -101,13 +101,13 @@
 
 -(void)logLocalStore
 {
-	NSLog(@"======================================= game world ... localstore follows");
+	DLog(@"======================================= game world ... localstore follows");
 	
 	for (NSObject *o in localStore) {
-		NSLog(@"%@", [o description]);
+		DLog(@"%@", [o description]);
 	}
 	
-	NSLog(@"...and objects");
+	DLog(@"...and objects");
 	
 	for(DWGameObject *go in gameObjects)
 	{

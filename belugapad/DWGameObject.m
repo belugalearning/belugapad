@@ -168,14 +168,14 @@
 
 -(void)logLocalStore
 {
-	NSLog(@"==================== game object ... localstore follows");
+	DLog(@"==================== game object ... localstore follows");
 	
 	for(NSString *key in [localStore allKeys])
 	{
-		NSLog(@"%@ == %@", key, [[localStore objectForKey:key] description]);
+		DLog(@"%@ == %@", key, [[localStore objectForKey:key] description]);
 	}
 	
-	NSLog(@"...and behviours");
+	DLog(@"...and behviours");
 	
 	for(DWBehaviour *b in behaviours)
 	{
@@ -187,7 +187,7 @@
 {
 	if(level<=DEBUG_LEVEL)
 	{
-		NSLog(@"%@ lvl%d behaviour debug log: %@", [self description], level, message);
+		DLog(@"%@ lvl%d behaviour debug log: %@", [self description], level, message);
 	}
 }
 

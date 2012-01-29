@@ -77,7 +77,7 @@
         //disable phys on this object
         if(physBody)
         {
-            //tofu -- this is a bit of a hack as other activators on the object will revert this
+            //be aware that other activators on the object will revert this
             cpBodySleep(physBody);
         }
     }

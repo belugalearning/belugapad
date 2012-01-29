@@ -128,7 +128,6 @@
             //if double tapped return pickupGO to feature store 
             if(tapCount == 2)
             {
-                //tofu: all stores need to be in a array (on blackboard?) or respond to messaging for free stores
                 DWGameObject *freeStoreMount = nil;
                 
                 for (DWGameObject *mount in [gameWorld Blackboard].AllStores)

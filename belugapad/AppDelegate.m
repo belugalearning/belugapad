@@ -11,7 +11,6 @@
 #import "AppDelegate.h"
 #import "GameConfig.h"
 #import "NumberLine.h"
-#import "HelloWorldLayer.h"
 #import "BlockHolder.h"
 #import "BlockFloating.h"
 #import "RootViewController.h"

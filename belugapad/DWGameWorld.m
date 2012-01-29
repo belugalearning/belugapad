@@ -11,7 +11,7 @@
 //#import "GameScene.h"
 
 @implementation DWGameWorld
-@synthesize hexMap;
+
 @synthesize LogBuffer;
 
 -(DWGameWorld *)initWithGameScene:(CCLayer*)scene
@@ -119,6 +119,11 @@
 {
     [LogBuffer addObject:[NSString stringWithFormat:@"%@, %@, %d, %@, %d", [NSDate date], @"global message", (int)self, desc, logData]];
     
+}
+
+-(void)logInfoWithRawMessage:(NSString *)message
+{
+    [LogBuffer addObject:message];
 }
 
 -(void)writeLogBufferToDiskWithKey:(NSString *)key

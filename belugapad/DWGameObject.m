@@ -19,8 +19,6 @@
 	NSString *path=[[NSBundle mainBundle] pathForResource:@"templatedefs-general" ofType:@"plist"];
 	NSDictionary *templateDefs=[NSDictionary dictionaryWithContentsOfFile:path];
 	
-	//tofu: template definitions should be cached
-	
 	//create the game object
 	DWGameObject *gameObject=[[DWGameObject alloc] initWithGameWorld:gw];
 
@@ -53,14 +51,10 @@
     
 	for(NSString *behKey in [behs allKeys])
 	{
-		//tofu - tidy this up (no local var is needed)
-		
 		//ignore behaviours starting with _
 		if([behKey characterAtIndex:0]!='_')
 		{
 			NSDictionary *passData=[behs objectForKey:behKey];
-			//tofu got problem with this being static...might need to provide a static loging system.
-			//[self logDebugMessage:[NSString stringWithFormat:@"datacount %d", [passData count]] atLevel:2];
 			[gameObject addBehaviour:behKey
 							withData:passData];
 		}
@@ -95,7 +89,6 @@
 	for (NSString *k in [data allKeys]) {
 
 		//copy the data from template definition
-		//[localStore setObject:[[data objectForKey:k] copy] forKey:[k copy]];
         
         NSObject *oc =[[data objectForKey:k] copy];
         NSString *kc=[k copy];
@@ -123,7 +116,7 @@
 		}
 	}
 	
-	//tofu: check for existence of behaviour, if not found init/alloc
+	//check for existence of behaviour, if not found init/alloc
 	if(b==nil)
 	{
 		[self logDebugMessage:@"behaviour not found, allocting new behaviour for this game object" atLevel:5];
@@ -143,11 +136,7 @@
 
 -(void)logInfo:(NSString *) desc withData:(int)logData
 {
-    [gameWorld.LogBuffer addObject:[NSString stringWithFormat:@"%@, %@, %d, %@, %d", [NSDate date], [localStore objectForKey:TEMPLATE_NAME], (int)self, desc, logData]];
-    
-    //log this (for now)
-    //NSLog(@"to buffer: %@", [gameWorld.LogBuffer objectAtIndex:[gameWorld.LogBuffer count]-1]);
-    
+    [gameWorld logInfoWithRawMessage:[NSString stringWithFormat:@"%@, %@, %d, %@, %d", [NSDate date], [localStore objectForKey:TEMPLATE_NAME], (int)self, desc, logData]];
 }
 
 -(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel

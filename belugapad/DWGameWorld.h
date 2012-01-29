@@ -37,10 +37,9 @@
     DWBlackboard *blackboard;
 	
 }
-@property (nonatomic,retain) BHexMap *hexMap;
 @property (nonatomic, readonly) DWBlackboard *Blackboard;
 
-@property (retain) NSMutableArray *LogBuffer;
+@property (retain, readonly) NSMutableArray *LogBuffer;
 
 
 -(NSMutableDictionary *) store;
@@ -63,6 +62,7 @@
 
 -(DWGameObject*)gameObjectWithKey:(NSString *)key andValue:(NSString *)theValue;
 -(void)logInfo:(NSString *) desc withData:(int)logData;
+-(void)logInfoWithRawMessage:(NSString *)message;
 
 -(void)cleanup;
 

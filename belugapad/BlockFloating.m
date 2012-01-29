@@ -150,15 +150,6 @@ eachShape(void *ptr, void* unused)
     [problemCompleteLabel setVisible:NO];
     [self addChild:problemCompleteLabel];
     
-    CCLabelTTF *title=[CCLabelTTF labelWithString:@"Floating Blocks" fontName:TITLE_FONT fontSize:TITLE_SIZE];
-    
-    [title setColor:TITLE_COLOR3];
-    [title setOpacity:TITLE_OPACITY];
-    [title setPosition:ccp(cx, cy - (0.75f*cy))];
-    
-    [self addChild:title];
-    
-    
     CCSprite *btnFwd=[CCSprite spriteWithFile:@"btn-fwd.png"];
     [btnFwd setPosition:ccp(1024-18-10, 768-28-5)];
     [self addChild:btnFwd z:2];
@@ -187,33 +178,24 @@ eachShape(void *ptr, void* unused)
     cpShape *shape;
     
     // bottom
-    //shape = cpSegmentShapeNew(staticBody, ccp(0,-200), ccp(wins.width,0), 0.0f);
     CGPoint bottomverts[]={ccp(0, -200), ccp(0, 0), ccp(wins.width, 0), ccp(wins.width, -200)};
     shape=cpPolyShapeNew(staticBody, 4, bottomverts, ccp(0,0));
     shape->e = 1.0f; shape->u = 1.0f;
     cpSpaceAddStaticShape(space, shape);
     
     // top
-    //shape = cpSegmentShapeNew(staticBody, ccp(0,wins.height-130), ccp(wins.width,wins.height-130), 0.0f);
     CGPoint topverts[]={ccp(0, wins.height-130), ccp(0, wins.height+200), ccp(wins.width, wins.height+200), ccp(wins.width, wins.height-130)};
     shape=cpPolyShapeNew(staticBody, 4, topverts, ccp(0, 0));
     shape->e = 0.65f; shape->u = 1.0f;
     cpSpaceAddStaticShape(space, shape);
     
     // left
-    //shape = cpSegmentShapeNew(staticBody, ccp(0,0), ccp(0,wins.height), 0.0f);
     CGPoint leftverts[]={ccp(-200, 0), ccp(-200, wins.height), ccp(0, wins.height), ccp(0, 0)};
     shape=cpPolyShapeNew(staticBody, 4, leftverts, ccp(0,0));
     shape->e = 1.0f; shape->u = 1.0f;
     cpSpaceAddStaticShape(space, shape);
     
     // right
-    //shape = cpSegmentShapeNew(staticBody, ccp(wins.width,0), ccp(wins.width+200,wins.height), 0.0f);
-//    shape=cpSegmentShapeNew(staticBody, ccp(800, 0), ccp(1224, 768), 0.0f);
-//    shape->e = 1.0f; shape->u = 1.0f;
-//    cpSpaceAddStaticShape(space, shape);
-    
-//    cpBody *staticBodyRight = cpBodyNew(INFINITY, INFINITY);
     CGPoint rverts[]={ccp(1024,0), ccp(1024, 768), ccp(1200, 768), ccp(1200, 0)};
     cpShape *right=cpPolyShapeNew(staticBody, 4, rverts, ccp(0,0));
     
@@ -341,8 +323,6 @@ eachShape(void *ptr, void* unused)
         CGPoint modLocation=[BLMath SubtractVector:[gameWorld Blackboard].PickupOffset from:location];
         
         //mod y down below water line
-        //tofu hard-coded water line at effective -130 from top
-        //tofy this is on touch end lcoaiton -- will need to change for different shape size        
         if(modLocation.y>637)modLocation.y=580;
         
         //check l/r bounds
@@ -850,8 +830,6 @@ eachShape(void *ptr, void* unused)
     
     for (CCSprite *c in [spriteSource children]) {
         CCSprite *cpc=[CCSprite spriteWithTexture:[c texture]];
-        //CCSprite *cpc=[CCSprite spriteWithTexture:[ghost texture]];
-        //CCSprite *cpc=[CCSprite spriteWithFile:@"obj-float-45.png"];
         
         [cpc setPosition:[c position]];
         [cpc setRotation:[c rotation]];

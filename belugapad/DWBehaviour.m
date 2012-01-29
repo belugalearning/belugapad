@@ -16,8 +16,6 @@
         gameObject=aGameObject;
         gameWorld=[gameObject gameWorld];
         
-        //localStore=[[NSMutableDictionary alloc] init];
-        
         //add data - this will overwrite stuff
         for (NSString *k in [data allKeys]) {
             [self logDebugMessage:[[data objectForKey:k] description] atLevel:5];

@@ -147,7 +147,6 @@
 		7F51157F14A9EE67001AF372 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51157E14A9EE67001AF372 /* main.m */; };
 		7F51158214A9EE67001AF372 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51158114A9EE67001AF372 /* AppDelegate.m */; };
 		7F51158514A9EE67001AF372 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51158414A9EE67001AF372 /* RootViewController.m */; };
-		7F51158814A9EE67001AF372 /* HelloWorldLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51158714A9EE67001AF372 /* HelloWorldLayer.m */; };
 		7F51159314A9EEF3001AF372 /* NumberLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51159214A9EEF3001AF372 /* NumberLine.m */; };
 		7F51159614A9EF17001AF372 /* BlockHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51159514A9EF17001AF372 /* BlockHolder.m */; };
 		7F5115A414A9EF67001AF372 /* DWBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51159C14A9EF67001AF372 /* DWBehaviour.m */; };
@@ -489,8 +488,6 @@
 		7F51158114A9EE67001AF372 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		7F51158314A9EE67001AF372 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		7F51158414A9EE67001AF372 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		7F51158614A9EE67001AF372 /* HelloWorldLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelloWorldLayer.h; sourceTree = "<group>"; };
-		7F51158714A9EE67001AF372 /* HelloWorldLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HelloWorldLayer.m; sourceTree = "<group>"; };
 		7F51158914A9EE67001AF372 /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
 		7F51159114A9EEF3001AF372 /* NumberLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberLine.h; sourceTree = "<group>"; };
 		7F51159214A9EEF3001AF372 /* NumberLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberLine.m; sourceTree = "<group>"; };
@@ -1105,8 +1102,6 @@
 		7F51159914A9EF30001AF372 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				7F51158614A9EE67001AF372 /* HelloWorldLayer.h */,
-				7F51158714A9EE67001AF372 /* HelloWorldLayer.m */,
 				7F51159114A9EEF3001AF372 /* NumberLine.h */,
 				7F51159214A9EEF3001AF372 /* NumberLine.m */,
 				7F51159414A9EF17001AF372 /* BlockHolder.h */,
@@ -1502,7 +1497,6 @@
 				7F51157F14A9EE67001AF372 /* main.m in Sources */,
 				7F51158214A9EE67001AF372 /* AppDelegate.m in Sources */,
 				7F51158514A9EE67001AF372 /* RootViewController.m in Sources */,
-				7F51158814A9EE67001AF372 /* HelloWorldLayer.m in Sources */,
 				7F51159314A9EEF3001AF372 /* NumberLine.m in Sources */,
 				7F51159614A9EF17001AF372 /* BlockHolder.m in Sources */,
 				7F5115A414A9EF67001AF372 /* DWBehaviour.m in Sources */,

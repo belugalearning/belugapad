@@ -27,7 +27,7 @@
         float yhit=[[payload objectForKey:POS_Y] floatValue];
         CGPoint hitLoc=ccp(xhit, yhit);
         
-        //tofu: currently using fixed proximity -- this will need to change for non-square shapes (maybe with hit test on shape or similar)
+        //TODO: currently using fixed proximity -- this will need to change for non-square shapes (maybe with hit test on shape or similar)
         
         //bulid array of all sprites to test -- this is master + children
         CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];

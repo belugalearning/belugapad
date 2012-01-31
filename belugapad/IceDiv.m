@@ -10,12 +10,15 @@
 #import "global.h"
 #import "NumberLine.h"
 #import "SimpleAudioEngine.h"
+#import "Daemon.h"
 
 #define ICE_BOTTOM 200.0f
 #define ICE_TOP 568.0f
 
 #define SWIPE_YVAR_MAX 100.0f
 #define SWIPE_FRACTION_PROX 50.0f
+
+const CGPoint kDaemonPos={50,50};
 
 @implementation IceDiv
 
@@ -42,6 +45,8 @@
         cy=[[CCDirector sharedDirector] winSize].height / 2.0f;
         
         [self setupBkgAndTitle];
+        
+        daemon=[[Daemon alloc] initWithLayer:self andRestingPostion:kDaemonPos];
         
         [self setupParticle];
         
@@ -106,6 +111,9 @@
     }
     else
     {
+        [daemon setMode:kDaemonModeChasing];
+        [daemon setTarget:location];
+        
         [particle setPosition:location];
         [particle setEmissionRate:20000.0f];
         
@@ -124,6 +132,8 @@
 {
     UITouch *touch=[touches anyObject];
     CGPoint location=[[CCDirector sharedDirector] convertToGL:[touch locationInView:touch.view]];
+    
+    //[daemon setMode:kDaemonModeResting];
     
     [particle setEmissionRate:0.0f];
     
@@ -237,6 +247,8 @@
 	CGPoint location=[touch locationInView: [touch view]];
 	location=[[CCDirector sharedDirector] convertToGL:location];
     
+    [daemon setTarget:location];
+    
     [particle setPosition:location];
     
     if(location.x < tMin.x) tMin=location;
@@ -254,6 +266,8 @@
             fireTime=0.0f;
         }
     }
+    
+    [daemon doUpdate:delta];
 }
 
 -(void)dealloc

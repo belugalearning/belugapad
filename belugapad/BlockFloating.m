@@ -11,6 +11,7 @@
 #import "SimpleAudioEngine.h"
 #import "IceDiv.h"
 #import "BLMath.h"
+#import "Daemon.h"
 
 const int kBlockSpawnSpaceWidth=800;
 const int kBlockSpawnSpaceHeight=400;
@@ -56,6 +57,8 @@ const float kPhysWaterLineElastcity=0.65f;
 
 const float kScheduleUpdateLoopTFPS=60.0f;
 const float kScheduleEvalLoopTFPS=6.0f;
+
+const CGPoint kDaemonRest={50, 50};
 
 static void
 eachShape(void *ptr, void* unused)
@@ -110,6 +113,9 @@ eachShape(void *ptr, void* unused)
         
         [self setupBkgAndTitle];
         
+        //setup daemon
+        daemon=[[Daemon alloc] initWithLayer:self andRestingPostion:kDaemonRest];
+        
         [self setupAudio];
         
         [self setupSprites];
@@ -144,6 +150,8 @@ eachShape(void *ptr, void* unused)
     //tear down
     [gameWorld release];
     
+    [daemon release];
+    
     [self removeAllChildrenWithCleanup:YES];
     
     cpSpaceDestroy(space);
@@ -158,6 +166,8 @@ eachShape(void *ptr, void* unused)
     
     //set up
     [self setupBkgAndTitle];
+    
+    daemon=[[Daemon alloc] initWithLayer:self andRestingPostion:kDaemonRest];
     
     [self setupChSpace];
     
@@ -277,6 +287,10 @@ eachShape(void *ptr, void* unused)
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
+    //set daemon mode and target
+    [daemon setTarget:location];
+    [daemon setMode:kDaemonModeFollowing];
+    
     //fixed handlers for menu interaction
     if(location.x>kButtonNextToolHitXOffset && location.y>kButtonToolbarHitBaseYOffset)
     {
@@ -332,6 +346,9 @@ eachShape(void *ptr, void* unused)
     UITouch *touch=[touches anyObject];
 	CGPoint location=[touch locationInView: [touch view]];
 	location=[[CCDirector sharedDirector] convertToGL:location];
+
+    //daemon to move
+    [daemon setTarget:location];
     
     if([gameWorld Blackboard].PickupObject!=nil)
     {
@@ -355,6 +372,9 @@ eachShape(void *ptr, void* unused)
 	CGPoint location=[touch locationInView: [touch view]];
 	location=[[CCDirector sharedDirector] convertToGL:location];
 	
+    //daemon to (currently) let go and rest
+    [daemon setMode:kDaemonModeWaiting];
+    
     if([gameWorld Blackboard].PickupObject!=nil)
     {
         [gameWorld Blackboard].DropObject=nil;
@@ -558,6 +578,9 @@ eachShape(void *ptr, void* unused)
     
     //now update gameworld (pos updates will happen in above &eachShape)
     [gameWorld doUpdate:delta];
+    
+    //daemon updates
+    [daemon doUpdate:delta];
 }
 
 -(void)updateTutorials:(ccTime)delta
@@ -836,8 +859,10 @@ eachShape(void *ptr, void* unused)
         float dposy=[[[godest store] objectForKey:POS_Y] floatValue];
         
         //move master sprite -- children will follow
+        CCDelayTime *a0=[CCDelayTime actionWithDuration:GHOST_DURATION_MOVE];
         CCMoveTo *a1=[CCMoveTo actionWithDuration:GHOST_DURATION_MOVE position:ccp(dposx, dposy)];
-        [cpGhost runAction:a1];
+        CCSequence *seqMove=[CCSequence actions:a0, a1, nil];
+        [cpGhost runAction:seqMove];
         
         //reset rotation by -current rotation
         CCRotateBy *r1=[CCRotateBy actionWithDuration:GHOST_DURATION_MOVE angle:20.0f];
@@ -857,6 +882,13 @@ eachShape(void *ptr, void* unused)
             CCSequence *seqa=[CCSequence actions:a2a, a3a, nil];
             
             [c runAction:seqa];
+        }
+        
+        //attach daemon to master sprite if user not already touching
+        if(!touching) 
+        {
+            [daemon followObject:cpGhost];
+            daemonIsGhosting=YES;
         }
         
     }
@@ -890,6 +922,12 @@ eachShape(void *ptr, void* unused)
 
 -(void)clearGhost
 {
+    if(daemonIsGhosting)
+    {
+        [daemon setMode:kDaemonModeResting];
+        daemonIsGhosting=NO;
+    }
+    
     [ghostLayer removeAllChildrenWithCleanup:YES];
 }
 

@@ -154,6 +154,11 @@
 		7F5115A614A9EF67001AF372 /* DWGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A014A9EF67001AF372 /* DWGameObject.m */; };
 		7F5115A714A9EF67001AF372 /* DWGameWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A214A9EF67001AF372 /* DWGameWorld.m */; };
 		7F5115AA14A9EF9E001AF372 /* BlockFloating.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A914A9EF9E001AF372 /* BlockFloating.m */; };
+		7F719C0314D739A600F30E89 /* Daemon.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F719C0214D739A600F30E89 /* Daemon.m */; };
+		7F719C0614D752D900F30E89 /* dm2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F719C0414D752D900F30E89 /* dm2.plist */; };
+		7F719C0714D752D900F30E89 /* dm1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F719C0514D752D900F30E89 /* dm1.plist */; };
+		7F719C0B14D7548A00F30E89 /* dm3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F719C0A14D7548A00F30E89 /* dm3.plist */; };
+		7F719C4514D75AFA00F30E89 /* dm4.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F719C4414D75AFA00F30E89 /* dm4.plist */; };
 		7F813D5514CCBA4300C1E997 /* IceDiv.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F813D5414CCBA4300C1E997 /* IceDiv.m */; };
 		7F813D5814CCBDDD00C1E997 /* fire1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5714CCBDDD00C1E997 /* fire1.plist */; };
 		7F813D5C14CCC3A100C1E997 /* fire2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5B14CCC3A100C1E997 /* fire2.plist */; };
@@ -504,6 +509,12 @@
 		7F5115A314A9EF67001AF372 /* DWModelConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWModelConstants.h; sourceTree = "<group>"; };
 		7F5115A814A9EF9E001AF372 /* BlockFloating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockFloating.h; sourceTree = "<group>"; };
 		7F5115A914A9EF9E001AF372 /* BlockFloating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockFloating.m; sourceTree = "<group>"; };
+		7F719C0114D739A600F30E89 /* Daemon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Daemon.h; sourceTree = "<group>"; };
+		7F719C0214D739A600F30E89 /* Daemon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Daemon.m; sourceTree = "<group>"; };
+		7F719C0414D752D900F30E89 /* dm2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dm2.plist; sourceTree = "<group>"; };
+		7F719C0514D752D900F30E89 /* dm1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dm1.plist; sourceTree = "<group>"; };
+		7F719C0A14D7548A00F30E89 /* dm3.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dm3.plist; sourceTree = "<group>"; };
+		7F719C4414D75AFA00F30E89 /* dm4.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dm4.plist; sourceTree = "<group>"; };
 		7F813D5314CCBA4300C1E997 /* IceDiv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IceDiv.h; sourceTree = "<group>"; };
 		7F813D5414CCBA4300C1E997 /* IceDiv.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IceDiv.m; sourceTree = "<group>"; };
 		7F813D5714CCBDDD00C1E997 /* fire1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = fire1.plist; sourceTree = "<group>"; };
@@ -1073,8 +1084,9 @@
 		7F51159714A9EF21001AF372 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				7FABE6BC14B6616B00ED2D0C /* Helpers */,
+				7F719C0014D7397000F30E89 /* Daemon */,
 				7FABE69214B33E5800ED2D0C /* global.h */,
+				7FABE6BC14B6616B00ED2D0C /* Helpers */,
 				7F51159A14A9EF31001AF372 /* App */,
 				7F51159914A9EF30001AF372 /* Scenes */,
 				7F51159814A9EF2B001AF372 /* DWModel */,
@@ -1126,9 +1138,22 @@
 			name = App;
 			sourceTree = "<group>";
 		};
+		7F719C0014D7397000F30E89 /* Daemon */ = {
+			isa = PBXGroup;
+			children = (
+				7F719C0114D739A600F30E89 /* Daemon.h */,
+				7F719C0214D739A600F30E89 /* Daemon.m */,
+			);
+			name = Daemon;
+			sourceTree = "<group>";
+		};
 		7F813D5914CCC38100C1E997 /* particles */ = {
 			isa = PBXGroup;
 			children = (
+				7F719C4414D75AFA00F30E89 /* dm4.plist */,
+				7F719C0A14D7548A00F30E89 /* dm3.plist */,
+				7F719C0414D752D900F30E89 /* dm2.plist */,
+				7F719C0514D752D900F30E89 /* dm1.plist */,
 				7F813D6A14CCD8CF00C1E997 /* fire3.plist */,
 				7F813D5B14CCC3A100C1E997 /* fire2.plist */,
 				7F813D5714CCBDDD00C1E997 /* fire1.plist */,
@@ -1364,6 +1389,10 @@
 				7F93668414D1BC2D00CAEF47 /* obj-blockholder-mount1x1-red.png in Resources */,
 				7F93668814D1BE3400CAEF47 /* obj-blockholder-mount1x1-yellow.png in Resources */,
 				7F93668B14D1CD8500CAEF47 /* firework.wav in Resources */,
+				7F719C0614D752D900F30E89 /* dm2.plist in Resources */,
+				7F719C0714D752D900F30E89 /* dm1.plist in Resources */,
+				7F719C0B14D7548A00F30E89 /* dm3.plist in Resources */,
+				7F719C4514D75AFA00F30E89 /* dm4.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1515,6 +1544,7 @@
 				7FABE6CA14B8F67200ED2D0C /* BFloatPickupTarget.m in Sources */,
 				7FABE6CD14B8F68100ED2D0C /* BFloatObjectRender.m in Sources */,
 				7F813D5514CCBA4300C1E997 /* IceDiv.m in Sources */,
+				7F719C0314D739A600F30E89 /* Daemon.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

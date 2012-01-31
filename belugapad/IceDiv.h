@@ -9,6 +9,8 @@
 
 #import "cocos2d.h"
 
+@class Daemon;
+
 @interface IceDiv : CCLayer
 {
     float cx;
@@ -25,6 +27,8 @@
     CGPoint tMax;
 
     CCLabelTTF *fractionLabel;
+    
+    Daemon *daemon;
 }
 
 +(CCScene *) scene;

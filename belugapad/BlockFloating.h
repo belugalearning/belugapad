@@ -11,6 +11,8 @@
 #import "DWGameWorld.h"
 #import "DWGameObject.h"
 
+@class Daemon;
+
 @interface BlockFloating : CCLayer
 {
     float cx;
@@ -38,6 +40,9 @@
     float timeToNextTutorial;
     
     BOOL problemIsCurrentlySolved;
+    
+    Daemon *daemon;
+    BOOL daemonIsGhosting;
 }
 
 +(CCScene *) scene;

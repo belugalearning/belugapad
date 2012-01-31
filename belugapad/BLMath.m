@@ -25,6 +25,107 @@
 	return CGPointMake(v2.x-v1.x, v2.y-v1.y);
 }
 
++(CGPoint) MultiplyVector:(CGPoint)v byScalar:(float)s
+{
+    return CGPointMake(v.x * s, v.y * s);
+}
+
++(CGPoint) DivideVector:(CGPoint)v byScalar:(float)s
+{
+    return CGPointMake(v.x / s, v.y / s);
+}
+
++(CGPoint) NormalizeVector:(CGPoint)v
+{
+    float l=sqrtf((v.x * v.x) + (v.y * v.y));
+    
+    if(l==0)return v;
+    else return CGPointMake(v.x / l, v.y / l);
+}
+
++(CGPoint) PerpendicularRightVectorTo:(CGPoint)v
+{
+    return CGPointMake(v.y, -v.x);
+}
+
++(CGPoint) PerpendicularLeftVectorTo:(CGPoint)v
+{
+    return CGPointMake(-v.y, v.x);
+}
+
++(float) LengthOfVector:(CGPoint)v
+{
+    return sqrtf((v.x * v.x) + (v.y * v.y));
+    
+}
+
++(CGPoint) TruncateVector:(CGPoint)v toMaxLength:(float)l
+{
+    float cl=sqrtf((v.x * v.x) + (v.y * v.y));
+    CGPoint tp;
+    if(cl<l) tp=v;
+    else
+    {
+        tp=[self MultiplyVector:v byScalar:l/cl];
+    }
+    return tp;
+}
+
++(float) angleForNormVector:(CGPoint)v
+{
+    CGPoint absv=CGPointMake(fabsf(v.x), fabsf(v.y));
+    
+    //angle of vecor in +, +
+    float absa=atanf(absv.y / absv.x) * (180/M_PI);
+    
+    if(v.x<=0 && v.y>0) return absa+270;
+    if(v.x<=0 && v.y<=0) return 270-absa;
+    if(v.x>0 && v.y<=0) return absa+90;
+    else return 90-absa;
+    
+}
+
++(CGPoint) closestIntersectionOfLineFrom:(CGPoint)E to:(CGPoint)L againstCircle:(CGPoint)C withRadius:(float)r
+{
+    CGPoint d=[self SubtractVector:E from:L];
+    CGPoint f=[self SubtractVector:C from:E];
+    
+    float a=[self DotProductOf:d and:d];
+    float b=2 * [self DotProductOf:f and:d];
+    float c=[self DotProductOf:f and:f] - (r*r);
+    
+    float disc=b*b-4*a*c;
+    
+    if(disc<0)
+    {
+        return CGPointMake(0, 0);
+    }
+    
+    else
+    {
+        disc=sqrtf(disc);
+        float t1=(-b+disc) / (2*a);
+        float t2=(-b-disc) / (2*a);
+        float tmin=0;
+        
+        if(t1>=0 && t1<=1)
+        {
+            tmin=t1;
+        }
+        if(t2>=0 && t2<=1)
+        {
+            if (t2<tmin)tmin=t2;
+        }
+        
+        if(tmin>0)
+        {
+            return [self AddVector:E toVector:[self MultiplyVector:d byScalar:tmin]];
+        }
+    }
+    
+    return CGPointMake(0, 0);
+}
+
 +(CGPoint) ProjectMovementWithX: (float)x andY:(float)y forRotation:(int)rotationDeg
 {
 	float radAngle=2*M_PI*((float)rotationDeg/360);

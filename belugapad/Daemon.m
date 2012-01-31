@@ -9,22 +9,49 @@
 #import "Daemon.h"
 #import "BLMath.h"
 
-const float kBaseMaxForce=500.0f;
+const float kBaseMaxForce=1500.0f;
 
-const float kBaseMaxSpeed=150.0f;
-const float kFollowMaxSpeed=600.0f;
+const float kBaseMaxSpeed=200.0f;
+const float kFollowMaxSpeed=900.0f;
 
-const float kChaseMaxSpeed=2000.0f;
-const float kChaseMaxForce=2000.0f;
+const float kChaseMaxSpeed=2500.0f;
+const float kChaseMaxForce=2500.0f;
 
-const float kBaseMass=15.0f;
+//const float kBaseMass=15.0f;
+const float kBaseMass=5.0f;
+
 const float kBaseSlowingDistance=50.0f;
 const float kBaseEffectiveRadius=15.0f;
 
 const float kMinLengthThreshold=1.0f;
 
+//const float kBreatheSimMax=500.0f;
+//const float kBreatheSimScalarDown=20.0f;
 const float kBreatheSimMax=500.0f;
-const float kBreatheSimScalarDown=20.0f;
+const float kBreatheSimScalarDown=2.0f;
+
+//const float kBaseMaxForce=500.0f;
+//
+//const float kBaseMaxSpeed=150.0f;
+//const float kFollowMaxSpeed=600.0f;
+//
+//const float kChaseMaxSpeed=2000.0f;
+//const float kChaseMaxForce=2000.0f;
+//
+////const float kBaseMass=15.0f;
+//const float kBaseMass=5.0f;
+//
+//const float kBaseSlowingDistance=50.0f;
+//const float kBaseEffectiveRadius=15.0f;
+//
+//const float kMinLengthThreshold=1.0f;
+//
+////const float kBreatheSimMax=500.0f;
+////const float kBreatheSimScalarDown=20.0f;
+//const float kBreatheSimMax=50.0f;
+//const float kBreatheSimScalarDown=20.0f;
+
+
 
 const CGPoint kDefaultStart={-25, 25};
 
@@ -45,7 +72,9 @@ const float standbyExpiry=7.0f;
     effectiveRadius=kBaseEffectiveRadius;
     velocity=CGPointMake(0, 0);
 
-    primaryParticle=[CCParticleSystemQuad particleWithFile:@"dm3.plist"];
+    primaryParticle=[CCParticleSystemQuad particleWithFile:@"bm5.plist"];
+    
+    [primaryParticle setScale:0.5f];
     
     //initial position is defaulted to offscreen;
     [primaryParticle setPosition:kDefaultStart];

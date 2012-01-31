@@ -12,12 +12,12 @@
 const float kBaseMaxForce=1500.0f;
 
 const float kBaseMaxSpeed=200.0f;
+
 const float kFollowMaxSpeed=900.0f;
 
 const float kChaseMaxSpeed=2500.0f;
 const float kChaseMaxForce=2500.0f;
 
-//const float kBaseMass=15.0f;
 const float kBaseMass=5.0f;
 
 const float kBaseSlowingDistance=50.0f;

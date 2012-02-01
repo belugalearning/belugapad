@@ -24,27 +24,27 @@
 
 typedef enum {
 
-    kDWonGameObjectInitComplete,
+    kDWonGameObjectInitComplete=0,
 
-    kDWsetupStuff,
+    kDWsetupStuff=1,
     
-    kDWsetMount,
-    kDWunsetMount,
-    kDWsetMountedObject,
-    kDWunsetMountedObject,
+    kDWsetMount=2,
+    kDWunsetMount=3,
+    kDWsetMountedObject=4,
+    kDWunsetMountedObject=5,
     
     
-    kDWupdateSprite,
+    kDWupdateSprite=6,
     
-    kDWareYouADropTarget,
-    kDWareYouAPickupTarget,
+    kDWareYouADropTarget=7,
+    kDWareYouAPickupTarget=8,
     
-    kDWupdatePosFromPhys,
-    kDWsetPhysBody,
+    kDWupdatePosFromPhys=9,
+    kDWsetPhysBody=10,
     
-    kDWpickedUp,
-    kDWputdown,
+    kDWpickedUp=11,
+    kDWputdown=12,
     
-    kDWenable
+    kDWenable=13
     
 } DWMessageType;

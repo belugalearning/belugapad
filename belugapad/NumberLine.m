@@ -10,7 +10,7 @@
 #import "global.h"
 #import "BLMath.h"
 
-#import "BlockHolder.h"
+#import "MenuScene.h"
 
 #import "SimpleAudioEngine.h"
 
@@ -153,7 +153,7 @@
     if(location.x>975 & location.y>720)
     {
         [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
-        [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.4f scene:[BlockHolder scene]]];
+        [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.4f scene:[MenuScene scene]]];
     }
     else
     {

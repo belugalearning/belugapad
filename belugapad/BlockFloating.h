@@ -13,6 +13,17 @@
 
 @class Daemon;
 
+typedef enum {
+    kRejectNever=0,
+    kRejectOnCommit=1,
+    kRejectOnAction=2
+} RejectMode;
+
+typedef enum {
+    kEvalAuto=0,
+    kEvalOnCommit=1
+} EvalMode;
+
 @interface BlockFloating : CCLayer
 {
     float cx;
@@ -43,6 +54,19 @@
     
     Daemon *daemon;
     BOOL daemonIsGhosting;
+    
+    //pulled direct from problem def -- both default to 0 state if not defined
+    RejectMode rejectMode;
+    EvalMode evalMode;
+    
+    //the last positively evaluated clauses's solution index
+    int trackedSolutionIndex;
+    BOOL trackingSolution;
+    
+    //timer to next problem
+    BOOL autoMoveToNextProblem;
+    float timeToAutoMoveToNextProblem;
+
 }
 
 +(CCScene *) scene;
@@ -65,10 +89,16 @@
 -(void) resetToNextProblem;
 
 // both abstracted (i.e. from gw implementation) but fixed to this tool's current problem load -- hence effectively a single-problem evaluation prototype of abstracted (from gw) evaluation
--(void)evalCompletion:(ccTime)delta;
+-(void)evalCompletionWithForceCommit:(BOOL)forceCommit;
+-(void)evalCompletionOnTimer:(ccTime)delta;
+-(void)evalCommit;
+-(void)doProblemSolvedActionsFor:(NSDictionary*)sol withCompletion:(int)solComplete andScore:(float)solScore;
+
+-(void)doClauseActionsWithForceNow:(BOOL)forceRejectNow;
+
 -(float)getEvaluatedValueForItemTag: (NSString *)itemContainerTag andItemValue:(NSNumber*)itemValue andValueRequiredIsSize:(BOOL)valIsSize;
 
--(int)evalClauses:(NSDictionary*)clauses;
+-(int)evalClauses:(NSDictionary*)clauses withSolIndex:(int)solIndex;
 
 -(void)clearGhost;
 -(void)showGhostOf:(NSString *)ghostObjectTag to:(NSString *)ghostDestinationTag;

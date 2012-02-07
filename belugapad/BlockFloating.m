@@ -33,6 +33,8 @@ const float kButtonNextToolHitXOffset=975.0f;
 
 const CGPoint kButtonNextToolPos={996, 735};
 
+const CGRect kRectButtonCommit={{944, 0}, {80, 80}};
+
 const float kWaterLineActualYOffset=637.0f;
 const float kWaterLineResubmergeYOffset=580.0f;
 
@@ -60,8 +62,9 @@ const float kScheduleEvalLoopTFPS=6.0f;
 
 const CGPoint kDaemonRest={50, 50};
 
-static void
-eachShape(void *ptr, void* unused)
+const float kTimeToAutoMove=1.0f;
+
+static void eachShape(void *ptr, void* unused)
 {
 	cpShape *shape = (cpShape*) ptr;
 	//CCSprite *sprite = shape->data;
@@ -132,7 +135,7 @@ eachShape(void *ptr, void* unused)
         
         [self schedule:@selector(doUpdate:) interval:1.0f/kScheduleUpdateLoopTFPS];
         
-        [self schedule:@selector(evalCompletion:) interval:1.0f/kScheduleEvalLoopTFPS];
+        [self schedule:@selector(evalCompletionOnTimer:) interval:1.0f/kScheduleEvalLoopTFPS];
         
         timeToNextTutorial=TUTORIAL_TIME_START;
         [self schedule:@selector(updateTutorials:) interval:1.0f];
@@ -305,6 +308,11 @@ eachShape(void *ptr, void* unused)
         [self resetToNextProblem];
     }
     
+    else if (CGRectContainsPoint(kRectButtonCommit, location))
+    {
+        [self evalCommit];
+    }
+    
     else
     {
         
@@ -405,6 +413,8 @@ eachShape(void *ptr, void* unused)
             [pl setObject:[gameWorld Blackboard].DropObject forKey:MOUNT];
             [[gameWorld Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
             
+            [[gameWorld Blackboard].PickupObject handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+            
             [pl removeAllObjects];
             [pl setObject:[gameWorld Blackboard].PickupObject forKey:MOUNTED_OBJECT];
             [[gameWorld Blackboard].DropObject handleMessage:kDWsetMountedObject andPayload:pl withLogLevel:0];
@@ -493,6 +503,24 @@ eachShape(void *ptr, void* unused)
         [tutorials retain];
     }
 
+    //set additional problem-level vars
+    NSNumber *rMode=[pdef objectForKey:REJECT_MODE];
+    if (rMode) rejectMode=[rMode intValue];
+    
+    NSNumber *eMode=[pdef objectForKey:EVAL_MODE];
+    if(eMode) evalMode=[eMode intValue];
+ 
+    //any solution valid until one commenced
+    trackedSolutionIndex=-1;
+    trackingSolution=NO;
+    
+    //show commit button if evalOnCommit
+    if(evalMode==kEvalOnCommit)
+    {
+        CCSprite *commitBtn=[CCSprite spriteWithFile:@"commit.png"];
+        [commitBtn setPosition:ccp((2*cx)-50, 50)];
+        [self addChild:commitBtn];
+    }
 }
 
 -(void)spawnObjects:(NSDictionary*)objects
@@ -531,6 +559,8 @@ eachShape(void *ptr, void* unused)
     [[c store] setObject:[NSNumber numberWithFloat:pos.x] forKey:POS_X];
     [[c store] setObject:[NSNumber numberWithFloat:pos.y] forKey:POS_Y];
     [c loadData:containerData];
+    
+    [gameWorld.Blackboard.AllStores addObject:c];
 }
 
 -(void)attachBodyToGO:(DWGameObject *)attachGO atPositionPayload:(NSDictionary *)positionPayload
@@ -576,6 +606,16 @@ eachShape(void *ptr, void* unused)
 	cpSpaceHashEach(space->activeShapes, &eachShape, nil);
 	cpSpaceHashEach(space->staticShapes, &eachShape, nil);
     
+    if(autoMoveToNextProblem)
+    {
+        timeToAutoMoveToNextProblem+=delta;
+        if(timeToAutoMoveToNextProblem>=kTimeToAutoMove)
+        {
+            [self resetToNextProblem];
+            autoMoveToNextProblem=NO;
+        }
+    }
+    
     //now update gameworld (pos updates will happen in above &eachShape)
     [gameWorld doUpdate:delta];
     
@@ -619,7 +659,46 @@ eachShape(void *ptr, void* unused)
     }
 }
 
--(void)evalCompletion:(ccTime)delta
+-(void)doClauseActionsWithForceNow:(BOOL)forceRejectNow
+{
+    //step over containers and evaluate rejections
+    for (DWGameObject *c in gameWorld.Blackboard.AllStores) {
+        NSMutableArray *matchesSols=[[c store] objectForKey:MATCHES_IN_SOLUTIONS];
+        if(!matchesSols || [matchesSols count]==0)
+        {
+            //no matches -- reject 
+            if(rejectMode==kRejectOnAction || forceRejectNow)
+            {
+                [c handleMessage:kDWejectContents andPayload:nil withLogLevel:0];
+            }
+            
+            //hook do tutorial ?
+        }
+        else
+        {
+            //this container matches some solutions
+            
+            //hook xp / action / tutorial
+        }
+    }
+}
+
+-(void)evalCommit
+{
+    [self evalCompletionWithForceCommit:YES];
+    
+    [self doClauseActionsWithForceNow:YES];
+}
+
+-(void)evalCompletionOnTimer:(ccTime)delta
+{
+    [self evalCompletionWithForceCommit:NO];
+    
+    //look at containers and rejection options, eject anything that doesn't match current solution progress, and/or trigger other actions
+    [self doClauseActionsWithForceNow:NO];
+}
+
+-(void)evalCompletionWithForceCommit:(BOOL)forceCommit
 {
     //evaluation implemented as delta to simulate completely abstracted (from tool implementation) evaluation
     //actual value parsing is not tool specific (just behaviour reliant -- e.g. containers, unit-based object) and would suit
@@ -628,9 +707,14 @@ eachShape(void *ptr, void* unused)
     int solComplete=0;
     float solScore=0.0f;
     
-    for (NSDictionary *sol in solutionsDef) {
+    //purge any solution match data from containers
+    [gameWorld handleMessage:kDWpurgeMatchSolutions andPayload:nil withLogLevel:0];
+
+    for(int solIndex=0; solIndex<[solutionsDef count]; solIndex++)
+    {
+        NSDictionary *sol=[solutionsDef objectAtIndex:solIndex];
         
-        if([self evalClauses:[sol objectForKey:CLAUSES]])
+        if([self evalClauses:[sol objectForKey:CLAUSES] withSolIndex:solIndex])
         {
             solComplete=1;
             solScore=[[sol objectForKey:SOLUTION_SCORE]floatValue];
@@ -638,20 +722,9 @@ eachShape(void *ptr, void* unused)
             [problemCompleteLabel setVisible:YES];
             
             
-            if(problemIsCurrentlySolved==NO)
+            if(problemIsCurrentlySolved==NO && (evalMode==kEvalAuto || forceCommit))
             {
-                //try and use the defined solution text
-                NSString *soltext=[sol objectForKey:SOLUTION_DISPLAY_TEXT];
-                
-                //other wise populate with generic complete and score
-                if(!soltext) soltext=[NSString stringWithFormat:@"complete (solution %d, score %f)", solComplete, solScore];
-                
-                NSString *playsound=[sol objectForKey:PLAY_SOUND];
-                if(playsound) [[SimpleAudioEngine sharedEngine] playEffect:playsound];
-                
-                [problemCompleteLabel setString:soltext];
-                
-                [gameWorld logInfo:[NSString stringWithFormat:@"solution found with value %f and text %@", solScore, soltext] withData:0];
+                [self doProblemSolvedActionsFor:sol withCompletion:solComplete andScore:solScore];
                 
                 problemIsCurrentlySolved=YES;
             }
@@ -663,8 +736,6 @@ eachShape(void *ptr, void* unused)
     //as this eval is abstracted from state events, need to hide solution text if the solution's been broken before progressing
     if(solComplete==0)
     {
-
-        
         if(problemIsCurrentlySolved)
         {
             [problemCompleteLabel setVisible:NO];
@@ -672,6 +743,10 @@ eachShape(void *ptr, void* unused)
             problemIsCurrentlySolved=NO;
             
             [gameWorld logInfo:@"solution broken" withData:0];
+            
+            //reset any tracking clauses -- user could start on a new solution
+            trackedSolutionIndex=-1;
+            trackingSolution=NO;
         }
 
     }
@@ -681,7 +756,7 @@ eachShape(void *ptr, void* unused)
     {
         NSDictionary *tdef=[tutorials objectAtIndex:tutorialPos];
         
-        if([self evalClauses:[tdef objectForKey:CLAUSES]])
+        if([self evalClauses:[tdef objectForKey:CLAUSES] withSolIndex:-1])
         {
             //this tutorial has been completed
             
@@ -706,6 +781,28 @@ eachShape(void *ptr, void* unused)
         if(tutorialPos>=[tutorials count])
             doTutorials=NO;
     }
+    
+}
+
+-(void)doProblemSolvedActionsFor:(NSDictionary*)sol withCompletion:(int)solComplete andScore:(float)solScore
+{
+    
+    //try and use the defined solution text
+    NSString *soltext=[sol objectForKey:SOLUTION_DISPLAY_TEXT];
+    
+    //other wise populate with generic complete and score
+    if(!soltext) soltext=[NSString stringWithFormat:@"complete (solution %d, score %f)", solComplete, solScore];
+    
+    NSString *playsound=[sol objectForKey:PLAY_SOUND];
+    if(playsound) [[SimpleAudioEngine sharedEngine] playEffect:playsound];
+    
+    [problemCompleteLabel setString:soltext];
+    
+    [gameWorld logInfo:[NSString stringWithFormat:@"solution found with value %f and text %@", solScore, soltext] withData:0];
+    
+    //move to next problem
+    autoMoveToNextProblem=YES;
+    timeToAutoMoveToNextProblem=0.0f;
 }
 
 -(void)parseTutorialActionsFor:(NSDictionary*)actionSet
@@ -730,7 +827,7 @@ eachShape(void *ptr, void* unused)
     if(playsound) [[SimpleAudioEngine sharedEngine] playEffect:playsound];
 }
 
--(int)evalClauses:(NSDictionary*)clauses
+-(int)evalClauses:(NSDictionary*)clauses withSolIndex:(int)solIndex
 {
     //returns YES if all clauses passed
     int clausesPassed=0;
@@ -786,9 +883,24 @@ eachShape(void *ptr, void* unused)
         
         if(pass)
         {
-            clausesPassed++;
+            //assume item1 is a container, get it from gw and get matches in sols marray
+            DWGameObject *cont=[gameWorld gameObjectWithKey:TAG andValue:[clause objectForKey:ITEM1_CONTAINER_TAG]];
+            NSMutableArray *matchesInSols=[[cont store]objectForKey:MATCHES_IN_SOLUTIONS];
+            if(!matchesInSols)
+            {
+                matchesInSols=[[NSMutableArray alloc]init];                
+                [[cont store] setObject:matchesInSols forKey:MATCHES_IN_SOLUTIONS];
+            }
             
+            //add this solution index to that array
+            if(![matchesInSols containsObject:[NSNumber numberWithInt:solIndex]])
+            {
+                [matchesInSols addObject:[NSNumber numberWithInt:solIndex]];
+            }
+            
+            clausesPassed++;
         }
+
     }
     
     if(clausesPassed>=[clauses count])

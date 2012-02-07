@@ -45,6 +45,10 @@ typedef enum {
     kDWpickedUp=11,
     kDWputdown=12,
     
-    kDWenable=13
+    kDWenable=13,
+    
+    kDWpurgeMatchSolutions=14,
+    
+    kDWejectContents=15
     
 } DWMessageType;

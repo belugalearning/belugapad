@@ -15,6 +15,8 @@
 #import "BlockFloating.h"
 #import "RootViewController.h"
 
+#import "MenuScene.h"
+
 @implementation AppDelegate
 
 @synthesize window;
@@ -74,8 +76,8 @@
 	[director setOpenGLView:glView];
 	
 //	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
-//	if( ! [director enableRetinaDisplay:YES] )
-//		CCLOG(@"Retina Display Not supported");
+	if( ! [director enableRetinaDisplay:YES] )
+		CCLOG(@"Retina Display Not supported");
 	
 	//
 	// VERY IMPORTANT:
@@ -117,7 +119,7 @@
 	//[[CCDirector sharedDirector] runWithScene: [NumberLine scene]];
     //[[CCDirector sharedDirector] runWithScene:[HelloWorldLayer scene]];
     //[[CCDirector sharedDirector] runWithScene:[BlockHolder scene]];
-    [[CCDirector sharedDirector] runWithScene:[BlockFloating scene]];
+    [[CCDirector sharedDirector] runWithScene:[MenuScene scene]];
 }
 
 

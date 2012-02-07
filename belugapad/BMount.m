@@ -8,6 +8,7 @@
 
 #import "BMount.h"
 #import "global.h"
+#import "SimpleAudioEngine.h"
 
 @implementation BMount
 
@@ -27,7 +28,9 @@
     {
         //set the mount for the GO
         NSMutableArray *mo=GOS_GET(MOUNTED_OBJECTS);
-        [mo addObject:[payload objectForKey:MOUNTED_OBJECT]];
+        
+        DWGameObject *addO=[payload objectForKey:MOUNTED_OBJECT];
+        [mo addObject:addO];
         
     }
     
@@ -36,6 +39,24 @@
         NSMutableArray *mo=GOS_GET(MOUNTED_OBJECTS);
         
         [mo removeObject:[payload objectForKey:MOUNTED_OBJECT]];
+    }
+    
+    if(messageType==kDWpurgeMatchSolutions)
+    {
+        [[gameObject store] removeObjectForKey:MATCHES_IN_SOLUTIONS];
+    }
+    
+    if(messageType==kDWejectContents)
+    {
+        NSMutableArray *mo=[[gameObject store] objectForKey:MOUNTED_OBJECTS];
+        for (DWGameObject *m in mo) {
+            //audio cue (generic)
+            [[SimpleAudioEngine sharedEngine] playEffect:@"thats_not_quite_it.wav"];
+                        
+            [m handleMessage:kDWunsetMount andPayload:nil withLogLevel:0];
+        }
+        
+        [mo removeAllObjects];
     }
 }
 

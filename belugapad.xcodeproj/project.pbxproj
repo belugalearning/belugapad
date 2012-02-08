@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		33A2566914E297CD00494C91 /* float-problem020.plist in Resources */ = {isa = PBXBuildFile; fileRef = 33A2566214E297CC00494C91 /* float-problem020.plist */; };
+		33A2566A14E297CD00494C91 /* float-problem013.plist in Resources */ = {isa = PBXBuildFile; fileRef = 33A2566314E297CC00494C91 /* float-problem013.plist */; };
+		33A2566B14E297CD00494C91 /* float-problem015.plist in Resources */ = {isa = PBXBuildFile; fileRef = 33A2566414E297CD00494C91 /* float-problem015.plist */; };
+		33A2566C14E297CD00494C91 /* float-problem018.plist in Resources */ = {isa = PBXBuildFile; fileRef = 33A2566514E297CD00494C91 /* float-problem018.plist */; };
+		33A2566D14E297CD00494C91 /* float-problem017.plist in Resources */ = {isa = PBXBuildFile; fileRef = 33A2566614E297CD00494C91 /* float-problem017.plist */; };
+		33A2566E14E297CD00494C91 /* float-problem016.plist in Resources */ = {isa = PBXBuildFile; fileRef = 33A2566714E297CD00494C91 /* float-problem016.plist */; };
+		33A2566F14E297CD00494C91 /* float-problem014.plist in Resources */ = {isa = PBXBuildFile; fileRef = 33A2566814E297CD00494C91 /* float-problem014.plist */; };
 		7F39999614D85F7F00745B0C /* obj-blockholder-mount1x1_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F39998C14D85F7F00745B0C /* obj-blockholder-mount1x1_1.png */; };
 		7F39999714D85F7F00745B0C /* obj-blockholder-mount1x1_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F39998D14D85F7F00745B0C /* obj-blockholder-mount1x1_2.png */; };
 		7F39999814D85F7F00745B0C /* obj-blockholder-mount1x1_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F39998E14D85F7F00745B0C /* obj-blockholder-mount1x1_3.png */; };
@@ -250,6 +257,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		33A2566214E297CC00494C91 /* float-problem020.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "float-problem020.plist"; sourceTree = "<group>"; };
+		33A2566314E297CC00494C91 /* float-problem013.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "float-problem013.plist"; sourceTree = "<group>"; };
+		33A2566414E297CD00494C91 /* float-problem015.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "float-problem015.plist"; sourceTree = "<group>"; };
+		33A2566514E297CD00494C91 /* float-problem018.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "float-problem018.plist"; sourceTree = "<group>"; };
+		33A2566614E297CD00494C91 /* float-problem017.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "float-problem017.plist"; sourceTree = "<group>"; };
+		33A2566714E297CD00494C91 /* float-problem016.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "float-problem016.plist"; sourceTree = "<group>"; };
+		33A2566814E297CD00494C91 /* float-problem014.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "float-problem014.plist"; sourceTree = "<group>"; };
 		7F39998C14D85F7F00745B0C /* obj-blockholder-mount1x1_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-blockholder-mount1x1_1.png"; sourceTree = "<group>"; };
 		7F39998D14D85F7F00745B0C /* obj-blockholder-mount1x1_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-blockholder-mount1x1_2.png"; sourceTree = "<group>"; };
 		7F39998E14D85F7F00745B0C /* obj-blockholder-mount1x1_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-blockholder-mount1x1_3.png"; sourceTree = "<group>"; };
@@ -1293,6 +1307,13 @@
 		7F719C4714D85DEB00F30E89 /* usergen */ = {
 			isa = PBXGroup;
 			children = (
+				33A2566214E297CC00494C91 /* float-problem020.plist */,
+				33A2566314E297CC00494C91 /* float-problem013.plist */,
+				33A2566414E297CD00494C91 /* float-problem015.plist */,
+				33A2566514E297CD00494C91 /* float-problem018.plist */,
+				33A2566614E297CD00494C91 /* float-problem017.plist */,
+				33A2566714E297CD00494C91 /* float-problem016.plist */,
+				33A2566814E297CD00494C91 /* float-problem014.plist */,
 				7F3999C214D8621F00745B0C /* float-problem001.plist */,
 				7F3999C314D8621F00745B0C /* float-problem002.plist */,
 				7F3999C414D8621F00745B0C /* float-problem003.plist */,
@@ -1638,6 +1659,13 @@
 				7FF8F31914E0F79600A6D75E /* commit.png in Resources */,
 				7FF8F31E14E107C100A6D75E /* mockelegeo.png in Resources */,
 				7FF8F32014E1181700A6D75E /* backbtn.png in Resources */,
+				33A2566914E297CD00494C91 /* float-problem020.plist in Resources */,
+				33A2566A14E297CD00494C91 /* float-problem013.plist in Resources */,
+				33A2566B14E297CD00494C91 /* float-problem015.plist in Resources */,
+				33A2566C14E297CD00494C91 /* float-problem018.plist in Resources */,
+				33A2566D14E297CD00494C91 /* float-problem017.plist in Resources */,
+				33A2566E14E297CD00494C91 /* float-problem016.plist in Resources */,
+				33A2566F14E297CD00494C91 /* float-problem014.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

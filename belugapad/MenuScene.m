@@ -15,6 +15,7 @@
 const float kPropXPinchThreshold=0.08f;
 const float kPropXSwipeModuleThreshold=0.15f;
 const float kPropYSwipeTopicThreshold=0.2f;
+const float kPinchScaleMin=0.05;
 
 const float kPropYTopicGap=0.6f;
 const float kPropXModuleGap=0.35f;
@@ -279,7 +280,9 @@ const float kPropYHitNextMenu=0.9f;
     CCLayer *currentModule=[[moduleLayers objectAtIndex:topicPosition] objectAtIndex:modulePosition];
     
     float newScale=[currentModule scale] + scaleChange;
-    [currentModule setScale:newScale];
+    
+    if(newScale>kPinchScaleMin)
+        [currentModule setScale:newScale];
     
 }
 
@@ -309,6 +312,15 @@ const float kPropYHitNextMenu=0.9f;
             
     }
     
+}
+
+-(void)resetPinch
+{
+    int modulePosition=[[modulePositions objectAtIndex:topicPosition] intValue];
+    CCLayer *currentModule=[[moduleLayers objectAtIndex:topicPosition] objectAtIndex:modulePosition];
+    
+    if(MenuState==kMenuStateTopic) [currentModule setScale:kMenuModuleScale];
+    if(MenuState==kMenuStateModule) [currentModule setScale:1.0f];
 }
 
 -(void)snapToModuleView
@@ -435,6 +447,7 @@ const float kPropYHitNextMenu=0.9f;
 
     [self snapToXSwipe];
     [self snapToYSwipe];
+    [self resetPinch];
     
     DLog(@"state is %d with topic %d and module %d", MenuState, topicPosition, [[modulePositions objectAtIndex:topicPosition] intValue]);
     

@@ -59,6 +59,7 @@ typedef enum
 -(void)snapToXSwipe;
 -(void)snapToModuleView;
 -(void)snapToTopicView;
+-(void)resetPinch;
 
 -(void)setupMap;
 -(void)setAllModuleOpacityTo:(float)newOpacity exceptFor:(CCLayer*)activeModule;

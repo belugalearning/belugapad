@@ -150,6 +150,8 @@ static float kCageYOrigin=0.08f;
     //tear down
     [gw release];
     
+    gw=nil;
+    
     [daemon release];
     
     [self removeAllChildrenWithCleanup:YES];
@@ -163,15 +165,21 @@ static float kCageYOrigin=0.08f;
     
     
     //set up
+    touching=NO;
+    
     [self setupBkgAndTitle];
+
     [self readPlist];
     
         daemon=[[Daemon alloc] initWithLayer:self andRestingPostion:ccp(kPropXDaemonRest*lx, kPropXDaemonRest*lx)];
-    
-    
-    [self populateGW];
 
+    [self populateGW];
     
+    [gw Blackboard].hostCX = cx;
+    [gw Blackboard].hostCY = cy;
+    [gw Blackboard].hostLX = lx;
+    [gw Blackboard].hostLY = ly;
+
     [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
     
 }

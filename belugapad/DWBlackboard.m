@@ -14,6 +14,10 @@
 @synthesize PickupObject;
 @synthesize AllStores;
 @synthesize PickupOffset;
+@synthesize hostLX;
+@synthesize hostLY;
+@synthesize hostCX;
+@synthesize hostCY;
 
 -(id) init
 {

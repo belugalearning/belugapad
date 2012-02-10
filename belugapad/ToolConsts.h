@@ -6,8 +6,19 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "BLMath.h"
 
-@interface ToolConsts : NSObject
+extern const GLubyte kDebugLabelOpacity;
+extern const CGPoint kDebugProblemLabelPos;
 
-@end
+extern const float kScheduleUpdateLoopTFPS;
+extern const float kButtonToolbarHitBaseYOffset;
+extern const float kButtonNextToolHitXOffset;
+extern const float kLabelSubTitleYOffsetHalfProp;
+extern const float kLabelTitleYOffsetHalfProp;
+extern const ccColor3B kLabelTitleColor;
+extern const float kLabelCompleteYOffsetHalfProp;
+extern const ccColor3B kLabelCompleteColor;
+
+extern const CGPoint kButtonNextToolPos;
+extern const float kTimeObjectSnapBack;

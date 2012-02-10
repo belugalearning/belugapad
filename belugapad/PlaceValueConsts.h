@@ -6,8 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 
-@interface PlaceValueConsts : NSObject
 
-@end
+extern const float kPropXDropProximity;
+extern const float kPropXDaemonRest;

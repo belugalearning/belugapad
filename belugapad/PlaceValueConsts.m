@@ -8,6 +8,5 @@
 
 #import "PlaceValueConsts.h"
 
-@implementation PlaceValueConsts
-
-@end
+const float kPropXDropProximity=0.078f;
+const float kPropXDaemonRest=0.1f;

@@ -2,18 +2,18 @@
 //  BMountable.m
 //  belugapad
 //
-//  Created by Gareth Jenkins on 04/01/2012.
+//  Created by Dave Amphlett on 06/02/2012.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "BMountable.h"
+#import "BPlaceValueMountable.h"
 #import "global.h"
 
-@implementation BMountable
+@implementation BPlaceValueMountable
 
--(BMountable *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
+-(BPlaceValueMountable *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
-    self=(BMountable*)[super initWithGameObject:aGameObject withData:data];
+    self=(BPlaceValueMountable*)[super initWithGameObject:aGameObject withData:data];
     
     return self;
 }
@@ -36,7 +36,7 @@
         [newMount handleMessage:kDWsetMountedObject andPayload:pl withLogLevel:0];
         
         //update the sprite
-        [gameObject handleMessage:kDWupdateSprite];
+        [gameObject handleMessage:kDWupdateSprite andPayload:[newMount store] withLogLevel:0];
         
     }
 }

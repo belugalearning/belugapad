@@ -17,6 +17,10 @@
 @property (retain) DWGameObject *PickupObject;
 @property (retain) NSMutableArray *AllStores;
 @property CGPoint PickupOffset;
+@property float hostLX;
+@property float hostLY;
+@property float hostCX;
+@property float hostCY;
 
 -(void)loadData;
 

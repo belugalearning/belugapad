@@ -2,17 +2,17 @@
 //  BDropTarget.h
 //  belugapad
 //
-//  Created by Gareth Jenkins on 04/01/2012.
+//  Created by Dave Amphlett on 06/02/2012.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
 #import "DWBehaviour.h"
 
-@interface BDropTarget : DWBehaviour
+@interface BPlaceValueDropTarget : DWBehaviour
 {
     
 }
 
--(BDropTarget *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
+-(BPlaceValueDropTarget *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
 
 @end

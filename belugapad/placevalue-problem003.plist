@@ -13,7 +13,7 @@
 	<key>ROPES_PER_COL</key>
 	<integer>5</integer>
 	<key>ROWS_PER_COL</key>
-	<integer>5</integer>
+	<integer>3</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>

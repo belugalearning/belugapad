@@ -14,6 +14,7 @@
 #import "BlockHolder.h"
 #import "BlockFloating.h"
 #import "RootViewController.h"
+#import "PlaceValue.h"
 
 #import "MenuScene.h"
 
@@ -119,7 +120,8 @@
 	//[[CCDirector sharedDirector] runWithScene: [NumberLine scene]];
     //[[CCDirector sharedDirector] runWithScene:[HelloWorldLayer scene]];
     //[[CCDirector sharedDirector] runWithScene:[BlockHolder scene]];
-    [[CCDirector sharedDirector] runWithScene:[MenuScene scene]];
+    //[[CCDirector sharedDirector] runWithScene:[MenuScene scene]];
+    [[CCDirector sharedDirector] runWithScene:[PlaceValue scene]];
 }
 
 

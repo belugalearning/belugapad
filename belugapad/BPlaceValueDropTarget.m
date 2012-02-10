@@ -1,20 +1,21 @@
 //
-//  BDropTarget.m
+//  BPlaceValueDropTarget.m
 //  belugapad
 //
-//  Created by Gareth Jenkins on 04/01/2012.
+//  Created by Dave Amphlett on 06/02/2012.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "BDropTarget.h"
+#import "BPlaceValueDropTarget.h"
 #import "global.h"
 #import "BLMath.h"
+#import "PlaceValueConsts.h"
 
-@implementation BDropTarget
+@implementation BPlaceValueDropTarget
 
--(BDropTarget *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
+-(BPlaceValueDropTarget *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
-    self=(BDropTarget*)[super initWithGameObject:aGameObject withData:data];
+    self=(BPlaceValueDropTarget*)[super initWithGameObject:aGameObject withData:data];
     
     return self;
 }
@@ -37,7 +38,7 @@
             CGPoint hitLoc=ccp(xhit, yhit);
             
             //look see if this is close enough
-            if([BLMath DistanceBetween:myLoc and:hitLoc] <= DROP_PROXIMITY)
+            if([BLMath DistanceBetween:myLoc and:hitLoc] <= (kPropXDropProximity*[gameWorld Blackboard].hostLX))
             {
                 //tell gameScene we are a target for that pickup
                 [gameWorld Blackboard].DropObject=gameObject;

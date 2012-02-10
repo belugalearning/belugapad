@@ -2,18 +2,18 @@
 //  BContainerRender.m
 //  belugapad
 //
-//  Created by Gareth Jenkins on 04/01/2012.
+//  Created by Dave Amphlett on 06/02/2012.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "BContainerRender.h"
+#import "BPlaceValueContainerRender.h"
 #import "global.h"
 
-@implementation BContainerRender
+@implementation BPlaceValueContainerRender
 
--(BContainerRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
+-(BPlaceValueContainerRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
-    self=(BContainerRender*)[super initWithGameObject:aGameObject withData:data];
+    self=(BPlaceValueContainerRender*)[super initWithGameObject:aGameObject withData:data];
     
     //init pos x & y in case they're not set elsewhere
     [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_X];
@@ -38,7 +38,7 @@
 -(void)setSprite
 {
     NSString *sname=[[gameObject store] objectForKey:RENDER_IMAGE_NAME];
-    if(!sname) sname=@"obj-blockholder-mount1x1.png";
+    if(!sname) sname=@"netspacer.png";
     
     mySprite=[CCSprite spriteWithFile:sname];
     [mySprite setOpacity:120];

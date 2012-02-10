@@ -7,7 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "DWBehaviour.h"
 
-@interface BPlaceValueObjectSpawn : NSObject
+@interface BPlaceValueObjectSpawn : DWBehaviour
 
+-(BPlaceValueObjectSpawn *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
+-(void)spawnObject;
 @end

@@ -1535,6 +1535,8 @@
 				7FABE6B414B4C66E00ED2D0C /* BObjectRender.m */,
 				7FABE6AD14B4C63D00ED2D0C /* BStoreRender.h */,
 				7FABE6AE14B4C63D00ED2D0C /* BStoreRender.m */,
+				7FABE6C414B6730900ED2D0C /* BPickupTarget.h */,
+				7FABE6C514B6730A00ED2D0C /* BPickupTarget.m */,
 			);
 			name = inactive;
 			sourceTree = "<group>";
@@ -1563,8 +1565,6 @@
 				7FABE6AB14B4C62300ED2D0C /* BDropTarget.m */,
 				7FABE6B014B4C64D00ED2D0C /* BMountable.h */,
 				7FABE6B114B4C64D00ED2D0C /* BMountable.m */,
-				7FABE6C414B6730900ED2D0C /* BPickupTarget.h */,
-				7FABE6C514B6730A00ED2D0C /* BPickupTarget.m */,
 				7FABE6C814B8F67000ED2D0C /* BFloatPickupTarget.h */,
 				7FABE6C914B8F67100ED2D0C /* BFloatPickupTarget.m */,
 				7FABE6CB14B8F67F00ED2D0C /* BFloatObjectRender.h */,

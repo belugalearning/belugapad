@@ -9,7 +9,7 @@
 #import "BlockFloating.h"
 #import "global.h"
 #import "SimpleAudioEngine.h"
-#import "IceDiv.h"
+#import "PlaceValue.h"
 #import "BLMath.h"
 #import "Daemon.h"
 #import "ToolConsts.h"
@@ -286,7 +286,7 @@ static void eachShape(void *ptr, void* unused)
         [gameWorld writeLogBufferToDiskWithKey:@"BlockFloating"];
         
         [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
-        [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.3f scene:[IceDiv scene]]];
+        [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.3f scene:[PlaceValue scene]]];
     }
     
     else if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)

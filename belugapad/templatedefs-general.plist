@@ -84,6 +84,8 @@
 	<dict>
 		<key>BEHAVIOURS</key>
 		<dict>
+			<key>BPlaceValueSelectionMgr</key>
+			<dict/>
 			<key>BPlaceValueMountable</key>
 			<dict/>
 			<key>BPlaceValuePickupTarget</key>

@@ -35,6 +35,16 @@
     
     if(messageType==kDWupdateSprite)
     {
+        NSNumber *isSelected = [[gameObject store] objectForKey:SELECTED];
+        
+        if(!isSelected)
+        { 
+        }
+        else
+        {
+            [self switchSelection:[isSelected boolValue]];
+        }
+
         CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
         if(mySprite==nil) [self setSprite];
         [self setSpritePos:payload];
@@ -107,6 +117,19 @@
     
     [curSprite runAction:[CCMoveTo actionWithDuration:kTimeObjectSnapBack position:ccp(x, y)]];
     
+}
+
+-(void) switchSelection:(BOOL)isSelected
+{
+    CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
+    if(isSelected) {
+        [mySprite setColor:ccc3(0, 255, 0)]; 
+    }
+    else
+    {
+        [mySprite setColor:ccc3(255, 255, 255)];
+    }
+
 }
 
 -(void) dealloc

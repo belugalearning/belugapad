@@ -52,6 +52,7 @@
 -(void)listProblemFiles;
 -(void)resetToNextProblem;
 -(void)readPlist;
+-(void)evalProblem;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

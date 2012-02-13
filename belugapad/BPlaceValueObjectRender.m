@@ -9,6 +9,7 @@
 #import "BPlaceValueObjectRender.h"
 #import "global.h"
 #import "ToolConsts.h"
+#import "BLMath.h"
 
 @implementation BPlaceValueObjectRender
 
@@ -30,7 +31,7 @@
     if(messageType==kDWsetupStuff)
     {
         [self setSprite];
-        [self setSpritePos:[gameObject store]];
+        [self setSpritePos:[gameObject store] withAnimation:NO];
     }
     
     if(messageType==kDWupdateSprite)
@@ -47,7 +48,11 @@
 
         CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
         if(mySprite==nil) [self setSprite];
-        [self setSpritePos:payload];
+
+        BOOL useAnimation = NO;
+        if([payload objectForKey:ANIMATE_ME]) useAnimation = YES;
+        
+        [self setSpritePos:payload withAnimation:useAnimation];
     }
         
     if(messageType==kDWpickedUp)
@@ -86,7 +91,7 @@
     [[gameObject store] setObject:mySprite forKey:MY_SPRITE];
 }
 
--(void)setSpritePos:(NSDictionary *)position
+-(void)setSpritePos:(NSDictionary *)position withAnimation:(BOOL) animate
 {
     if(position != nil)
     {
@@ -95,12 +100,22 @@
         float x=[[position objectForKey:POS_X] floatValue];
         float y=[[position objectForKey:POS_Y] floatValue];
         
+        
         //also set posx/y on store
         GOS_SET([NSNumber numberWithFloat:x], POS_X);
         GOS_SET([NSNumber numberWithFloat:y], POS_Y);
         
-        //set sprite position
-        [mySprite setPosition:ccp(x, y)];
+          if(animate == YES)
+        {
+            CGPoint newPos = ccp(x, y);
+
+            CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:newPos];
+            [mySprite runAction:anim];
+        }
+        else
+        {
+            [mySprite setPosition:ccp(x, y)];
+        }
     }
 }
 

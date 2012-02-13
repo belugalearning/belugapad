@@ -94,14 +94,14 @@ static float kCageYOrigin=0.08f;
     gw = [[DWGameWorld alloc] initWithGameScene:self];
     
     float ropeWidth = kPropXNetSpace*lx;
-    CGPoint columnOrigin = ccp(cx-((ropeWidth*ropesforColumn)/2.0f)+(ropeWidth/2.0f), ly*kPropYColumnOrigin);
+    CGPoint columnOrigin = ccp(cx-((ropeWidth*ropesforColumn)/2.0f)+(ropeWidth/2.0f), ly*kPropYColumnOrigin); 
 
-    
-    
     for (int iRow=0; iRow<rows; iRow++)
     {
-        CGPoint rowOrigin=ccp(columnOrigin.x, columnOrigin.y-(iRow*ropeWidth)); 
+        NSMutableArray *RowArray = [[NSMutableArray alloc] init];        
+        [gw.Blackboard.AllStores addObject:RowArray];
         
+        CGPoint rowOrigin=ccp(columnOrigin.x, columnOrigin.y-(iRow*ropeWidth)); 
         
         for(int iRope=0; iRope<ropesforColumn; iRope++)
         {
@@ -113,6 +113,8 @@ static float kCageYOrigin=0.08f;
             [[go store] setObject:[NSNumber numberWithFloat:1] forKey:PLACEVALUE_COLUMN];
             [[go store] setObject:[NSNumber numberWithFloat:iRope] forKey:PLACEVALUE_ROPE];
             DLog(@"containerorigin x %f y %f", containerOrigin.x, containerOrigin.y);
+            
+            [RowArray addObject:go];
             
         }
     }
@@ -235,6 +237,13 @@ static float kCageYOrigin=0.08f;
     [solutionsDef retain];
     
 }
+
+-(void)evalProblem
+{
+    int numberSelected = gw.Blackboard.SelectedObjects.count;
+    DLog(@"count selected: %d", numberSelected);    
+}
+
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if(touching)return;
@@ -334,7 +343,7 @@ static float kCageYOrigin=0.08f;
     
     if([BLMath DistanceBetween:touchStartPos and:touchEndPos] < fabs(kTapSlipThreshold) && potentialTap)
         {
-            DLog(@"register tap");
+            DLog(@"register tap - start/end positions were under %f", kTapSlipThreshold);
             [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
         }
     
@@ -369,5 +378,6 @@ static float kCageYOrigin=0.08f;
         [gw Blackboard].PickupObject = nil;
     }
     potentialTap=NO;
+    [self evalProblem];
 }
 @end

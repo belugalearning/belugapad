@@ -18,7 +18,7 @@
 
 -(BPlaceValueObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
 -(void)setSprite;
--(void)setSpritePos:(NSDictionary *)position;
+-(void)setSpritePos:(NSDictionary *)position withAnimation:(BOOL) animate;
 -(void)resetSpriteToMount;
 -(void)switchSelection:(BOOL)isSelected;
 

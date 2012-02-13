@@ -37,10 +37,12 @@
     if([isSelected boolValue])
     {
         [[gameObject store] setObject:[NSNumber numberWithBool:NO] forKey:SELECTED];
+        [gameWorld.Blackboard.SelectedObjects removeObject:gameObject];
     }
     else
     {
-        [[gameObject store] setObject:[NSNumber numberWithBool:YES] forKey:SELECTED];       
+        [[gameObject store] setObject:[NSNumber numberWithBool:YES] forKey:SELECTED];   
+        [gameWorld.Blackboard.SelectedObjects addObject:gameObject];
     }
     
     [gameObject handleMessage:kDWupdateSprite];

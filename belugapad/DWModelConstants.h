@@ -49,6 +49,8 @@ typedef enum {
     
     kDWpurgeMatchSolutions=14,
     
-    kDWejectContents=15
+    kDWejectContents=15,
+    
+    kDWresetToMountPosition=16
     
 } DWMessageType;

@@ -12,26 +12,13 @@
 #import "IceDiv.h"
 #import "BLMath.h"
 #import "Daemon.h"
+#import "ToolConsts.h"
 
 const int kBlockSpawnSpaceWidth=800;
 const int kBlockSpawnSpaceHeight=400;
 const float kBlockSpawnSpaceXOffset=100.0f;
 
 const float kContainerYOffsetHalfProp=0.625f;
-
-const GLubyte kDebugLabelOpacity=65;
-const CGPoint kDebugProblemLabelPos={135, 755};
-
-const float kLabelSubTitleYOffsetHalfProp=1.75f;
-const float kLabelTitleYOffsetHalfProp=1.85f;
-const ccColor3B kLabelTitleColor={255, 255, 255};
-const float kLabelCompleteYOffsetHalfProp=0.25f;
-const ccColor3B kLabelCompleteColor={0, 255, 0};
-
-const float kButtonToolbarHitBaseYOffset=720.0f;
-const float kButtonNextToolHitXOffset=975.0f;
-
-const CGPoint kButtonNextToolPos={996, 735};
 
 const CGRect kRectButtonCommit={{944, 0}, {80, 80}};
 
@@ -57,7 +44,6 @@ const int kPhysCPActiveCount=600;
 const CGPoint kPhysGravityDefault={0, 500};
 const float kPhysWaterLineElastcity=0.65f;
 
-const float kScheduleUpdateLoopTFPS=60.0f;
 const float kScheduleEvalLoopTFPS=6.0f;
 
 const CGPoint kDaemonRest={50, 50};

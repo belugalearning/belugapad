@@ -33,7 +33,7 @@
 
 +(CCScene *) scene;
 
--(void) setupBkgAndTitle;
+-(void) setupBkgAndTitles;
 -(void) setupParticle;
 -(void) evalSwipe;
 -(void) doUpdate:(ccTime)delta;

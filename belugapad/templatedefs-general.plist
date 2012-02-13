@@ -34,6 +34,38 @@
 		<key>OBJECT_DATA</key>
 		<dict/>
 	</dict>
+	<key>TplaceValueContainer</key>
+	<dict>
+		<key>BEHAVIOURS</key>
+		<dict>
+			<key>BPlaceValueContainerRender</key>
+			<dict/>
+			<key>BPlaceValueDropTarget</key>
+			<dict/>
+			<key>BPlaceValueMount</key>
+			<dict/>
+		</dict>
+		<key>IMPLEMENT_TEMPLATES</key>
+		<array/>
+		<key>OBJECT_DATA</key>
+		<dict/>
+	</dict>
+	<key>TplaceValueCage</key>
+	<dict>
+		<key>BEHAVIOURS</key>
+		<dict>
+			<key>BPlaceValueObjectSpawn</key>
+			<dict/>
+			<key>BPlaceValueDropTarget</key>
+			<dict/>
+			<key>BPlaceValueMount</key>
+			<dict/>
+		</dict>
+		<key>IMPLEMENT_TEMPLATES</key>
+		<array/>
+		<key>OBJECT_DATA</key>
+		<dict/>
+	</dict>
 	<key>TfloatObject</key>
 	<dict>
 		<key>BEHAVIOURS</key>
@@ -41,6 +73,22 @@
 			<key>BFloatPickupTarget</key>
 			<dict/>
 			<key>BFloatObjectRender</key>
+			<dict/>
+		</dict>
+		<key>IMPLEMENT_TEMPLATES</key>
+		<array/>
+		<key>OBJECT_DATA</key>
+		<dict/>
+	</dict>
+	<key>TplaceValueObject</key>
+	<dict>
+		<key>BEHAVIOURS</key>
+		<dict>
+			<key>BPlaceValueMountable</key>
+			<dict/>
+			<key>BPlaceValuePickupTarget</key>
+			<dict/>
+			<key>BPlaceValueObjectRender</key>
 			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>

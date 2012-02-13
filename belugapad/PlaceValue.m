@@ -243,6 +243,8 @@ static float kCageYOrigin=0.08f;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    // set the touch start pos for evaluation
+    touchStartPos = location;
     
     [daemon setMode:kDaemonModeFollowing];
     [daemon setTarget:location];    
@@ -260,7 +262,6 @@ static float kCageYOrigin=0.08f;
     else 
     {
         
-        
         [gw Blackboard].PickupObject=nil;
         
         NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];
@@ -272,7 +273,10 @@ static float kCageYOrigin=0.08f;
         
         if([gw Blackboard].PickupObject!=nil)
         {
-            NSLog(@"picktup!");
+            
+            // At this point we can still cancel the tap
+            potentialTap = YES;
+            
             //this is just a signal for the GO to us, pickup object is retained on the blackboard
             [[gw Blackboard].PickupObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
             
@@ -288,8 +292,18 @@ static float kCageYOrigin=0.08f;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+
     
     [daemon setTarget:location];
+    
+    if([BLMath DistanceBetween:touchStartPos and:touchEndPos] >= fabs(kTapSlipResetThreshold) && potentialTap)
+    {
+        DLog(@"reset tap");
+        touchStartPos = ccp(0, 0);
+        touchEndPos = ccp(0, 0);
+        potentialTap = NO;
+    }
+
     
     if([gw Blackboard].PickupObject!=nil)
     {
@@ -311,7 +325,18 @@ static float kCageYOrigin=0.08f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
+    // set the touch end position for evaluation
+    touchEndPos = location;
+    
     [daemon setMode:kDaemonModeWaiting];
+    
+    // evaluate the distance between start/end pos.
+    
+    if([BLMath DistanceBetween:touchStartPos and:touchEndPos] < fabs(kTapSlipThreshold) && potentialTap)
+        {
+            DLog(@"register tap");
+            [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
+        }
     
     if([gw Blackboard].PickupObject!=nil)
     {
@@ -341,6 +366,8 @@ static float kCageYOrigin=0.08f;
         {
             [[gw Blackboard].PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];
         }
+        [gw Blackboard].PickupObject = nil;
     }
+    potentialTap=NO;
 }
 @end

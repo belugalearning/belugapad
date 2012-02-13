@@ -51,6 +51,10 @@ typedef enum {
     
     kDWejectContents=15,
     
-    kDWresetToMountPosition=16
+    kDWresetToMountPosition=16,
+    
+    kDWswitchSelection=17,
+    kDW
+
     
 } DWMessageType;

@@ -12,6 +12,7 @@
 
 @synthesize DropObject;
 @synthesize PickupObject;
+@synthesize SelectedObjects;
 @synthesize AllStores;
 @synthesize PickupOffset;
 @synthesize hostLX;
@@ -34,6 +35,7 @@
 -(void)loadData
 {
     AllStores=[[NSMutableArray alloc] init];
+    SelectedObjects=[[NSMutableArray alloc] init];
 }
 
 

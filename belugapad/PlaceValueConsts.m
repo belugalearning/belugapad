@@ -8,5 +8,8 @@
 
 #import "PlaceValueConsts.h"
 
-const float kPropXDropProximity=0.078f;
+const float kPropXDropProximity=0.039f;
 const float kPropXDaemonRest=0.1f;
+
+const float kTapSlipThreshold=20.1f;
+const float kTapSlipResetThreshold=30.1f;

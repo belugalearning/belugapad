@@ -15,6 +15,7 @@
 @interface PlaceValue : CCLayer
 {
     BOOL touching;
+    BOOL potentialTap;
     
     CGPoint winL;
     float cx, cy, lx, ly;
@@ -37,6 +38,10 @@
     
     DWGameWorld *gw;
     Daemon *daemon;
+
+    CGPoint touchStartPos;
+    CGPoint touchEndPos;
+
 }
 
 +(CCScene *)scene;

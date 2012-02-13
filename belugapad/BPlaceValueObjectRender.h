@@ -20,5 +20,6 @@
 -(void)setSprite;
 -(void)setSpritePos:(NSDictionary *)position;
 -(void)resetSpriteToMount;
+-(void)switchSelection:(BOOL)isSelected;
 
 @end

@@ -10,10 +10,12 @@
 
 @interface BFloatPickupTarget : DWBehaviour
 {
-    
+    NSMutableArray *lookupSpriteMatrix;
 }
 
 
 -(BFloatPickupTarget *)initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
+-(NSMutableArray *)lookupSprites;
+
 
 @end

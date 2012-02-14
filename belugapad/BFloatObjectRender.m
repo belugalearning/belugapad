@@ -8,6 +8,7 @@
 
 #import "BFloatObjectRender.h"
 #import "global.h"
+#import "BLMath.h"
 
 @implementation BFloatObjectRender
 
@@ -72,7 +73,7 @@
         amPickedUp=NO;
     }
     
-    if(messageType==kDWsetMount)
+    if(messageType==kDWsetMount || messageType==kDWdetachPhys)
     {
         //disable phys on this object
         if(physBody)
@@ -80,13 +81,26 @@
             //be aware that other activators on the object will revert this
             cpBodySleep(physBody);
         }
+        
+        physDetached=YES;
     }
-    if(messageType==kDWunsetMount)
+    if(messageType==kDWunsetMount || messageType==kDWattachPhys)
     {
-        if(physBody)
+        if(physBody && physDetached)
         {
             cpBodyActivate(physBody);
+            physDetached=NO;
         }
+    }
+    
+    if(messageType==kDWoperateAddTo)
+    {
+        [self addMeTo:[payload objectForKey:TARGET_GO]];
+    }
+    
+    if(messageType==kDWoperateSubtractFrom)
+    {
+        [self subtractMeFrom:[payload objectForKey:TARGET_GO]];
     }
 }
 
@@ -104,21 +118,61 @@
     int r=[GOS_GET(OBJ_ROWS) intValue];
     int c=[GOS_GET(OBJ_COLS) intValue];
     
+    //use r, c as template for object -- but store as matrix
+    NSMutableArray *childMatrix=[[NSMutableArray alloc] init];
+
+    //add this (primary sprite) a position to the child matrix
+    NSMutableDictionary *primarychild=[[NSMutableDictionary alloc]init];
+    [primarychild setObject:[NSValue valueWithCGPoint:CGPointMake(0, 0)] forKey:OBJ_MATRIXPOS];
+    [primarychild setObject:mySprite forKey:MY_SPRITE];
+    
+    [childMatrix addObject:primarychild];
+    
+    //get unit size
+    int unitSize=[[[gameObject store]objectForKey:OBJ_UNITCOUNT] intValue];
+    
+    if(unitSize>(r*c))
+    {
+        if(r>c) c++;
+        else r++;
+    }
+    
+    //add other children in rectangle fasion
+    
+    int unitsCreated=1; //we already have one unit
+    
     for(int ri=0;ri<r;ri++)
     {
         for(int ci=0; ci<c;ci++)
         {
             if(ri>0 || ci>0)
             {
-                CCSprite *cs=[CCSprite spriteWithFile:@"obj-float-45.png"];
-                [cs setPosition:ccp((ci*UNIT_SIZE)+HALF_SIZE, (ri*UNIT_SIZE)+HALF_SIZE)];
-                [mySprite addChild:cs];
+                if(unitsCreated<unitSize)
+                {
+                    CCSprite *cs=[CCSprite spriteWithFile:@"obj-float-45.png"];
+                    [cs setPosition:ccp((ci*UNIT_SIZE)+HALF_SIZE, (ri*UNIT_SIZE)+HALF_SIZE)];
+                    [mySprite addChild:cs];
+                    
+                    //add this as a position to the child matrix
+                    NSMutableDictionary *child=[[NSMutableDictionary alloc]init];
+                    [child setObject:[NSValue valueWithCGPoint:CGPointMake(ci, ri)] forKey:OBJ_MATRIXPOS];
+                    [child setObject:cs forKey:MY_SPRITE];
+                    
+                    [childMatrix addObject:child];                
+                    
+                    unitsCreated++;
+                }
             }
         }
     }
     
+    //update object data -- e.g.
+    [gameObject handleMessage:kDWupdateObjectData andPayload:nil withLogLevel:0];
+    
     //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
     [[gameObject store] setObject:mySprite forKey:MY_SPRITE];
+    
+    [[gameObject store] setObject:childMatrix forKey:OBJ_CHILDMATRIX];
 }
 
 -(void)setSpritePos:(NSDictionary *)position
@@ -143,6 +197,41 @@
         [mySprite setPosition:ccp(x, y)];
     }
 }
+
+-(CGPoint)avgPosForFloatObject:(DWGameObject *)go
+{
+    NSMutableArray *matrix=[[go store] objectForKey:OBJ_CHILDMATRIX];
+
+    float total=[matrix count];
+    
+    //initialize average with the (already) world pos of primary sprite
+    CCSprite *pSprite=[[matrix objectAtIndex:0] objectForKey:MY_SPRITE];
+    CGPoint accumPos=[BLMath MultiplyVector:[pSprite position] byScalar:1.0f/total];
+    
+    //avg the localised position of children
+    for (int i=1; i<[matrix count]; i++) {
+        NSDictionary *child=[matrix objectAtIndex:i];
+        CCSprite *childSprite=[child objectForKey:MY_SPRITE];
+        CGPoint globalSpos=[pSprite convertToWorldSpace:[childSprite position]];
+        accumPos=[BLMath AddVector:accumPos toVector:[BLMath MultiplyVector:globalSpos byScalar:1.0f/total]];
+    }
+    return accumPos;
+}
+
+-(void)addMeTo:(DWGameObject*)targetGo
+{
+    CGPoint offsetPos=[BLMath offsetPosFrom:[self avgPosForFloatObject:gameObject] to:[self avgPosForFloatObject:targetGo]];
+    DLog(@"add operation from %@", NSStringFromCGPoint(offsetPos));
+    
+}
+
+-(void)subtractMeFrom:(DWGameObject*)targetGo
+{
+    CGPoint offsetPos=[BLMath offsetPosFrom:[self avgPosForFloatObject:gameObject] to:[self avgPosForFloatObject:targetGo]];
+    DLog(@"subtract operation from %@", NSStringFromCGPoint(offsetPos));
+    
+}
+
 
 -(void) dealloc
 {

@@ -22,3 +22,14 @@ extern const ccColor3B kLabelCompleteColor;
 
 extern const CGPoint kButtonNextToolPos;
 extern const float kTimeObjectSnapBack;
+
+typedef enum {
+    kProblemRejectNever=0,
+    kProblemRejectOnCommit=1,
+    kProblemRejectOnAction=2
+} ProblemRejectMode;
+
+typedef enum {
+    kProblemEvalAuto=0,
+    kProblemEvalOnCommit=1
+} ProblemEvalMode;

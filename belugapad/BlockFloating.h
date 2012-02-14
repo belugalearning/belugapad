@@ -10,19 +10,9 @@
 #import "chipmunk.h"
 #import "DWGameWorld.h"
 #import "DWGameObject.h"
+#import "ToolConsts.h"
 
 @class Daemon;
-
-typedef enum {
-    kRejectNever=0,
-    kRejectOnCommit=1,
-    kRejectOnAction=2
-} RejectMode;
-
-typedef enum {
-    kEvalAuto=0,
-    kEvalOnCommit=1
-} EvalMode;
 
 @interface BlockFloating : CCLayer
 {
@@ -56,8 +46,8 @@ typedef enum {
     BOOL daemonIsGhosting;
     
     //pulled direct from problem def -- both default to 0 state if not defined
-    RejectMode rejectMode;
-    EvalMode evalMode;
+    ProblemRejectMode rejectMode;
+    ProblemEvalMode evalMode;
     
     //the last positively evaluated clauses's solution index
     int trackedSolutionIndex;
@@ -67,6 +57,12 @@ typedef enum {
     BOOL autoMoveToNextProblem;
     float timeToAutoMoveToNextProblem;
 
+    DWGameObject *opGOtarget;
+    DWGameObject *opGOsource;
+    
+    BOOL enableOperators;
+    CCLayer *operatorLayer;
+    CCSprite *operatorPanel;
 }
 
 +(CCScene *) scene;
@@ -82,7 +78,7 @@ typedef enum {
 
 -(void)spawnObjects:(NSDictionary*)objects;
 
--(void)createObjectWithCols:(int)cols andRows:(int)rows andTag:(NSString*)tag;
+-(void)createObjectWithCols:(int)cols andRows:(int)rows andUnitCount:(int)unitcount andTag:(NSString*)tagString;
 -(void)createContainerWithPos:(CGPoint)pos andData:(NSDictionary*)containerData;
 
 -(void)listProblemFiles;
@@ -105,5 +101,11 @@ typedef enum {
 -(CCSprite *)ghostCopySprite:(CCSprite*)spriteSource;
 -(void)updateTutorials:(ccTime)delta;
 -(void)parseTutorialActionsFor:(NSDictionary*)actionSet;
+-(void)considerProximateObjects:(ccTime)delta;
+-(void)showOperators;
+-(void)disableOperators;
+-(void)setOperators;
+-(void)doAddOperation;
+-(void)doSubtractOperation;
 
 @end

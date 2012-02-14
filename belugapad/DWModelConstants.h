@@ -54,7 +54,16 @@ typedef enum {
     kDWresetToMountPosition=16,
     
     kDWswitchSelection=17,
-    kDW
+    
 
+    
+    
+    kDWareYouProximateTo=101,
+    kDWupdateObjectData=102,
+    kDWdetachPhys=103,
+    kDWattachPhys=104,
+    
+    kDWoperateAddTo=105,
+    kDWoperateSubtractFrom=106
     
 } DWMessageType;

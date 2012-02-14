@@ -40,6 +40,7 @@ typedef struct _ccHSL
 +(float) DistanceBetween:(CGPoint)p1 and:(CGPoint)p2;
 +(BOOL)rectContainsPoint:(CGPoint)point x:(int)x y:(int)y w:(int)w h:(int)h;
 
++(CGPoint)offsetPosFrom:(CGPoint)p1 to:(CGPoint)p2;
 
 
 //colorspace conversion

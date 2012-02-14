@@ -158,6 +158,24 @@
 		return NO;
 }
 
+
++(CGPoint)offsetPosFrom:(CGPoint)p1 to:(CGPoint)p2
+{
+    CGPoint diff=[self SubtractVector:p1 from:p2];
+    DLog(@"offset diff is %@", NSStringFromCGPoint(diff));
+    if(fabsf(diff.x) >= fabsf(diff.y))
+    {
+        if(diff.x<=0) return CGPointMake(-1, 0);    //left
+        else return CGPointMake(1, 0);              //right
+    }
+    else // x<y
+    {
+        if(diff.y<=0) return CGPointMake(0, -1);    //bottom
+        else return CGPointMake(0, 1);              //top
+    }
+}
+
+
 /*
  Calculate HSL from RGB
  Hue is in degrees

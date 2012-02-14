@@ -9,6 +9,7 @@
 #import "BPlaceValueMount.h"
 #import "global.h"
 #import "SimpleAudioEngine.h"
+#import "PlaceValue.h"
 
 @implementation BPlaceValueMount
 
@@ -23,6 +24,7 @@
 }
 -(void)doUpdate:(ccTime)delta
 {
+    //return;
     if([[gameObject store] objectForKey:MOUNTED_OBJECT])
     {
         // set the row and column equal to the current container's position
@@ -110,6 +112,7 @@
         
         DWGameObject *addO=[payload objectForKey:MOUNTED_OBJECT];
         [[gameObject store] setObject:addO forKey:MOUNTED_OBJECT];
+        [[gameWorld GameScene] problemStateChanged];
         
     }
     

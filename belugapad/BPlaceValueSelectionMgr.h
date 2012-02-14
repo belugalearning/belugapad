@@ -14,4 +14,5 @@
 -(BPlaceValueSelectionMgr*)initWithGameObject:(DWGameObject *)aGameObject withData:(NSDictionary *)data;
 -(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload;
 -(void)switchSelection;
+-(void)deselect;
 @end

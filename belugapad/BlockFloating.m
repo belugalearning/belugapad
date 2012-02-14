@@ -20,7 +20,6 @@ const float kBlockSpawnSpaceXOffset=100.0f;
 
 const float kContainerYOffsetHalfProp=0.625f;
 
-const CGRect kRectButtonCommit={{944, 0}, {80, 80}};
 
 const float kWaterLineActualYOffset=637.0f;
 const float kWaterLineResubmergeYOffset=580.0f;
@@ -47,8 +46,6 @@ const float kPhysWaterLineElastcity=0.65f;
 const float kScheduleEvalLoopTFPS=6.0f;
 
 const CGPoint kDaemonRest={50, 50};
-
-const float kTimeToAutoMove=1.0f;
 
 static void eachShape(void *ptr, void* unused)
 {
@@ -501,10 +498,10 @@ static void eachShape(void *ptr, void* unused)
     trackingSolution=NO;
     
     //show commit button if evalOnCommit
-    if(evalMode==kEvalOnCommit)
+    if(evalMode==kProblemEvalOnCommit)
     {
         CCSprite *commitBtn=[CCSprite spriteWithFile:@"commit.png"];
-        [commitBtn setPosition:ccp((2*cx)-50, 50)];
+        [commitBtn setPosition:ccp((cx*2)-(kPropXCommitButtonPadding*(cx*2)), kPropXCommitButtonPadding*(cx*2))];
         [self addChild:commitBtn];
     }
 }
@@ -653,7 +650,7 @@ static void eachShape(void *ptr, void* unused)
         if(!matchesSols || [matchesSols count]==0)
         {
             //no matches -- reject 
-            if(rejectMode==kRejectOnAction || forceRejectNow)
+            if(rejectMode==kProblemRejectOnAction || forceRejectNow)
             {
                 [c handleMessage:kDWejectContents andPayload:nil withLogLevel:0];
             }
@@ -708,7 +705,7 @@ static void eachShape(void *ptr, void* unused)
             [problemCompleteLabel setVisible:YES];
             
             
-            if(problemIsCurrentlySolved==NO && (evalMode==kEvalAuto || forceCommit))
+            if(problemIsCurrentlySolved==NO && (evalMode==kProblemEvalAuto || forceCommit))
             {
                 [self doProblemSolvedActionsFor:sol withCompletion:solComplete andScore:solScore];
                 

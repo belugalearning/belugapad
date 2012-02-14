@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "cocos2d.h"
+#import "ToolConsts.h"
 @class DWGameWorld;
 @class Daemon;
 
@@ -34,7 +35,7 @@
     NSArray *problemFiles;
     int currentProblemIndex;
     
-    NSArray *solutionsDef;
+    NSDictionary *solutionsDef;
     
     DWGameWorld *gw;
     Daemon *daemon;
@@ -42,6 +43,17 @@
     CGPoint touchStartPos;
     CGPoint touchEndPos;
 
+    NSArray *initObjects;
+    
+    ProblemRejectMode rejectMode;
+    ProblemEvalMode evalMode;
+    
+    float timeToAutoMoveToNextProblem;
+    BOOL autoMoveToNextProblem;
+    BOOL autoHideStatusLabel;
+    float timeToHideStatusLabel;
+    
+    int lastCount;
 }
 
 +(CCScene *)scene;
@@ -52,7 +64,12 @@
 -(void)listProblemFiles;
 -(void)resetToNextProblem;
 -(void)readPlist;
+-(void)problemStateChanged;
 -(void)evalProblem;
+-(void)doWinning;
+-(void)evalProblemCountSeq;
+-(void)evalProblemTotalCount;
+-(void)evalProblemMatrixMatch;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

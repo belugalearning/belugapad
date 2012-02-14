@@ -8,6 +8,7 @@
 
 #import "BPlaceValueSelectionMgr.h"
 #import "global.h"
+#import "PlaceValue.h"
 
 @implementation BPlaceValueSelectionMgr
 -(BPlaceValueSelectionMgr*)initWithGameObject:(DWGameObject *)aGameObject withData:(NSDictionary *)data
@@ -20,6 +21,10 @@
     if(messageType==kDWswitchSelection)
     {
         [self switchSelection];
+    }
+    if(messageType==kDWdeselectAll)
+    {
+        [self deselect];
     }
     
 }
@@ -38,14 +43,34 @@
     {
         [[gameObject store] setObject:[NSNumber numberWithBool:NO] forKey:SELECTED];
         [gameWorld.Blackboard.SelectedObjects removeObject:gameObject];
+        [[gameWorld GameScene] problemStateChanged];
     }
     else
     {
         [[gameObject store] setObject:[NSNumber numberWithBool:YES] forKey:SELECTED];   
         [gameWorld.Blackboard.SelectedObjects addObject:gameObject];
+        [[gameWorld GameScene] problemStateChanged];
     }
     
     [gameObject handleMessage:kDWupdateSprite];
 }
 
+-(void)deselect
+{
+    NSNumber *isSelected = [[gameObject store] objectForKey:SELECTED];
+    
+    if(!isSelected)
+    {
+        DLog(@"no isselected value");
+        isSelected = [NSNumber numberWithBool:NO]; 
+    }
+    
+    if([isSelected boolValue])
+    {
+        [[gameObject store] setObject:[NSNumber numberWithBool:NO] forKey:SELECTED];
+        [gameWorld.Blackboard.SelectedObjects removeObject:gameObject];
+        [[gameWorld GameScene] problemStateChanged];
+    }
+    [gameObject handleMessage:kDWupdateSprite];
+}
 @end

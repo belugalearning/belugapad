@@ -30,8 +30,12 @@
 {
     if(messageType==kDWsetupStuff)
     {
-        [self setSprite];
-        [self setSpritePos:[gameObject store] withAnimation:NO];
+        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
+        if(!mySprite) 
+        {
+            [self setSprite];
+            [self setSpritePos:[gameObject store] withAnimation:NO];            
+        }
     }
     
     if(messageType==kDWupdateSprite)
@@ -47,7 +51,9 @@
         }
 
         CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
-        if(mySprite==nil) [self setSprite];
+        if(!mySprite) { 
+            [self setSprite];
+        }
 
         BOOL useAnimation = NO;
         if([payload objectForKey:ANIMATE_ME]) useAnimation = YES;
@@ -85,7 +91,7 @@
 -(void)setSprite
 {
     CCSprite *mySprite=[CCSprite spriteWithFile:@"obj-placevalue-unit.png"];
-    [[gameWorld GameScene] addChild:mySprite z:0];
+    [[gameWorld GameScene] addChild:mySprite z:1];
         
     //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
     [[gameObject store] setObject:mySprite forKey:MY_SPRITE];

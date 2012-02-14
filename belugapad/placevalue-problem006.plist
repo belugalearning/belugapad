@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>place 3 blocks on the top row, 2 on row 2, and 1 on row 3</string>
+	<string>count to 4 by selecting the blocks</string>
 	<key>NUMBER_INTEGER_COLS</key>
 	<integer>1</integer>
 	<key>NUMBER_DECIMAL_COLS</key>
@@ -11,17 +11,17 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>6</integer>
+	<integer>3</integer>
 	<key>ROWS_PER_COL</key>
-	<integer>4</integer>
+	<integer>3</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
 	<false/>
-	<key>REJECT_MODE</key>
-	<string>1</string>
 	<key>EVAL_MODE</key>
-	<string>0</string>
+	<integer>1</integer>
+	<key>REJECT_MODE</key>
+	<integer>0</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
@@ -30,7 +30,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>0</integer>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
@@ -38,7 +38,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>1</integer>
 			<key>NUMBER</key>
-			<integer>0</integer>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
@@ -46,40 +46,15 @@
 			<key>PUT_IN_ROW</key>
 			<integer>2</integer>
 			<key>NUMBER</key>
-			<integer>0</integer>
+			<integer>3</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
 	<dict>
-		<key>SOLUTION_MATRIX</key>
-		<array>
-			<dict>
-				<key>PUT_IN_COL</key>
-				<integer>1</integer>
-				<key>PUT_IN_ROW</key>
-				<integer>0</integer>
-				<key>NUMBER</key>
-				<integer>3</integer>
-			</dict>
-			<dict>
-				<key>PUT_IN_COL</key>
-				<integer>1</integer>
-				<key>PUT_IN_ROW</key>
-				<integer>1</integer>
-				<key>NUMBER</key>
-				<integer>2</integer>
-			</dict>
-			<dict>
-				<key>PUT_IN_COL</key>
-				<integer>1</integer>
-				<key>PUT_IN_ROW</key>
-				<integer>2</integer>
-				<key>NUMBER</key>
-				<integer>1</integer>
-			</dict>
-		</array>
 		<key>SOLUTION_TYPE</key>
-		<string>MATRIX_MATCH</string>
+		<string>COUNT_SEQUENCE</string>
+		<key>SOLUTION_VALUE</key>
+		<integer>4</integer>
 	</dict>
 </dict>
 </plist>

@@ -23,6 +23,9 @@
 		5536B2A414E4350800D30BC0 /* BPlaceValueObjectSpawn.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B2A314E4350800D30BC0 /* BPlaceValueObjectSpawn.m */; };
 		5536B2A714E43E1400D30BC0 /* PlaceValueConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B2A614E43E1400D30BC0 /* PlaceValueConsts.m */; };
 		5569EA0314E943AA00E80C00 /* BPlaceValueSelectionMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5569EA0214E943AA00E80C00 /* BPlaceValueSelectionMgr.m */; };
+		5570B54414EACE150092DCAF /* placevalue-problem004.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5570B54114EACE150092DCAF /* placevalue-problem004.plist */; };
+		5570B54514EACE150092DCAF /* placevalue-problem005.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5570B54214EACE150092DCAF /* placevalue-problem005.plist */; };
+		5570B54614EACE150092DCAF /* placevalue-problem006.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5570B54314EACE150092DCAF /* placevalue-problem006.plist */; };
 		5571BADD14E406220053A62B /* PlaceValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BADC14E406220053A62B /* PlaceValue.m */; };
 		5571BAE114E406630053A62B /* ToolConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE014E406630053A62B /* ToolConsts.m */; };
 		5571BAED14E4108F0053A62B /* BPlaceValueDropTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE414E4108F0053A62B /* BPlaceValueDropTarget.m */; };
@@ -293,6 +296,9 @@
 		5536B2A614E43E1400D30BC0 /* PlaceValueConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceValueConsts.m; sourceTree = "<group>"; };
 		5569EA0114E943AA00E80C00 /* BPlaceValueSelectionMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueSelectionMgr.h; sourceTree = "<group>"; };
 		5569EA0214E943AA00E80C00 /* BPlaceValueSelectionMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueSelectionMgr.m; sourceTree = "<group>"; };
+		5570B54114EACE150092DCAF /* placevalue-problem004.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "placevalue-problem004.plist"; sourceTree = "<group>"; };
+		5570B54214EACE150092DCAF /* placevalue-problem005.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "placevalue-problem005.plist"; sourceTree = "<group>"; };
+		5570B54314EACE150092DCAF /* placevalue-problem006.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "placevalue-problem006.plist"; sourceTree = "<group>"; };
 		5571BADB14E406220053A62B /* PlaceValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceValue.h; sourceTree = "<group>"; };
 		5571BADC14E406220053A62B /* PlaceValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceValue.m; sourceTree = "<group>"; };
 		5571BADF14E406630053A62B /* ToolConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolConsts.h; sourceTree = "<group>"; };
@@ -758,6 +764,9 @@
 				5536B29614E41A2C00D30BC0 /* placevalue-problem001.plist */,
 				5536B29714E41A2C00D30BC0 /* placevalue-problem002.plist */,
 				5536B29814E41A2C00D30BC0 /* placevalue-problem003.plist */,
+				5570B54114EACE150092DCAF /* placevalue-problem004.plist */,
+				5570B54214EACE150092DCAF /* placevalue-problem005.plist */,
+				5570B54314EACE150092DCAF /* placevalue-problem006.plist */,
 			);
 			name = placevalue;
 			sourceTree = "<group>";
@@ -1765,6 +1774,9 @@
 				5536B29A14E41A2C00D30BC0 /* placevalue-problem002.plist in Resources */,
 				5536B29B14E41A2C00D30BC0 /* placevalue-problem003.plist in Resources */,
 				5536B2A114E42FD100D30BC0 /* obj-placevalue-unit.png in Resources */,
+				5570B54414EACE150092DCAF /* placevalue-problem004.plist in Resources */,
+				5570B54514EACE150092DCAF /* placevalue-problem005.plist in Resources */,
+				5570B54614EACE150092DCAF /* placevalue-problem006.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

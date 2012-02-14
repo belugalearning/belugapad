@@ -15,6 +15,7 @@
 
 @property (retain) DWGameObject *DropObject;
 @property (retain) DWGameObject *PickupObject;
+@property (retain) DWGameObject *ProximateObject;
 @property (retain) NSMutableArray *SelectedObjects;
 @property (retain) NSMutableArray *AllStores;
 @property CGPoint PickupOffset;

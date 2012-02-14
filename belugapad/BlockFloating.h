@@ -57,6 +57,12 @@
     BOOL autoMoveToNextProblem;
     float timeToAutoMoveToNextProblem;
 
+    DWGameObject *opGOtarget;
+    DWGameObject *opGOsource;
+    
+    BOOL enableOperators;
+    CCLayer *operatorLayer;
+    CCSprite *operatorPanel;
 }
 
 +(CCScene *) scene;
@@ -72,7 +78,7 @@
 
 -(void)spawnObjects:(NSDictionary*)objects;
 
--(void)createObjectWithCols:(int)cols andRows:(int)rows andTag:(NSString*)tag;
+-(void)createObjectWithCols:(int)cols andRows:(int)rows andUnitCount:(int)unitcount andTag:(NSString*)tagString;
 -(void)createContainerWithPos:(CGPoint)pos andData:(NSDictionary*)containerData;
 
 -(void)listProblemFiles;
@@ -92,8 +98,14 @@
 
 -(void)clearGhost;
 -(void)showGhostOf:(NSString *)ghostObjectTag to:(NSString *)ghostDestinationTag;
--(CCSprite *)ghostCopySprite:(CCSprite*)spriteSource;
+-(CCNode *)ghostCopySprite:(CCSprite*)spriteSource;
 -(void)updateTutorials:(ccTime)delta;
 -(void)parseTutorialActionsFor:(NSDictionary*)actionSet;
+-(void)considerProximateObjects:(ccTime)delta;
+-(void)showOperators;
+-(void)disableOperators;
+-(void)setOperators;
+-(void)doAddOperation;
+-(void)doSubtractOperation;
 
 @end

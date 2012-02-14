@@ -16,10 +16,19 @@
     BOOL amPickedUp;
     cpBody *physBody;
     
+    BOOL physDetached;
+    
 }
 
 -(BFloatObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
 -(void)setSprite;
 -(void)setSpritePos:(NSDictionary *)position;
+-(CGPoint)avgPosForFloatObject:(DWGameObject *)go;
+-(void)addMeTo:(DWGameObject*)targetGo;
+-(void)subtractMeFrom:(DWGameObject*)targetGo;
+
+-(void)addThisChild:(NSDictionary *)child;
+-(void)subtractWithThisChild:(NSDictionary *)child;
+-(NSMutableArray *)getMatrixContainingChildren;
 
 @end

@@ -10,6 +10,8 @@
 #import "BLMath.h"
 #import "global.h"
 
+static float kProximateHalfSizeDist=4.5f;
+
 @implementation BFloatPickupTarget
 
 -(BFloatPickupTarget *)initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
@@ -20,6 +22,7 @@
 
 -(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload
 {
+    
     if(messageType==kDWareYouAPickupTarget)
     {        
         //get coords from payload (i.e. the search target)
@@ -27,12 +30,8 @@
         float yhit=[[payload objectForKey:POS_Y] floatValue];
         CGPoint hitLoc=ccp(xhit, yhit);
         
-        //TODO: currently using fixed proximity -- this will need to change for non-square shapes (maybe with hit test on shape or similar)
-        
-        //bulid array of all sprites to test -- this is master + children
         CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
-        NSMutableArray *spriteTest=[NSMutableArray arrayWithArray:[[mySprite children] getNSArray]];
-        [spriteTest addObject:mySprite];
+        NSMutableArray *spriteTest=[self lookupSprites];
         
         for (CCSprite *s in spriteTest) {
             CGPoint p;
@@ -55,6 +54,41 @@
         }
     }
     
+    if(messageType==kDWareYouProximateTo)
+    {
+        //very similar to areYouAPickupTarget -- could likely merge to single parameterised lookup if suitable 
+        //likey not though, this needs to evaluate object-object
+        //get coords from payload (i.e. the search target)
+        DWGameObject *tgo=[payload objectForKey:TARGET_GO];
+        
+        //not interested in proximity to self
+        if(tgo==gameObject) return;
+        
+        float xhit=[[[tgo store] objectForKey:POS_X] floatValue];
+        float yhit=[[[tgo store] objectForKey:POS_Y] floatValue];
+        CGPoint hitLoc=ccp(xhit, yhit);
+        
+        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
+        
+        for(NSDictionary *dc in [[gameObject store] objectForKey:OBJ_CHILDMATRIX])
+        {
+            CCSprite *s=[dc objectForKey:MY_SPRITE];
+            CGPoint p;
+            if(s==mySprite)
+                p=[mySprite position];
+            else
+                p=[mySprite convertToWorldSpace:[s position]];
+            
+            
+            if([BLMath DistanceBetween:p and:hitLoc]<=(HALF_SIZE*kProximateHalfSizeDist))
+            {
+                [gameWorld Blackboard].ProximateObject=gameObject;
+                
+                break;
+            }
+        }
+    }
+    
     if(messageType==kDWsetMount)
     {
         GOS_SET([payload objectForKey:MOUNT], MOUNT);
@@ -65,5 +99,16 @@
         [[gameObject store] removeObjectForKey:MOUNT];
     }
 }
+
+-(NSMutableArray *)lookupSprites
+{
+    //bulid array of all sprites to test -- this is master + children
+    CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
+    NSMutableArray *spriteTest=[NSMutableArray arrayWithArray:[[mySprite children] getNSArray]];
+
+    return spriteTest;
+}
+
+
 
 @end

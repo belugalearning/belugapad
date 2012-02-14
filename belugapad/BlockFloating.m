@@ -9,7 +9,7 @@
 #import "BlockFloating.h"
 #import "global.h"
 #import "SimpleAudioEngine.h"
-#import "IceDiv.h"
+#import "PlaceValue.h"
 #import "BLMath.h"
 #import "Daemon.h"
 #import "ToolConsts.h"
@@ -47,6 +47,15 @@ const float kScheduleEvalLoopTFPS=6.0f;
 
 const CGPoint kDaemonRest={50, 50};
 
+static float kScheduleProximityLoopTFPS=4.0f;
+static float kOperatorPopupYOffset=80.0f;
+static float kOperatorPopupDragFriction=0.75f;
+
+static CGPoint kOperator1Offset={-40, 0};
+static CGPoint kOperator2Offset={40, 0};
+
+static float kOperatorHitRadius=25.0f;
+
 static void eachShape(void *ptr, void* unused)
 {
 	cpShape *shape = (cpShape*) ptr;
@@ -62,8 +71,8 @@ static void eachShape(void *ptr, void* unused)
         NSDictionary *pl=[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[NSNumber numberWithFloat:body->p.x], [NSNumber numberWithFloat:body->p.y], degRot, nil] forKeys:[NSArray arrayWithObjects:POS_X, POS_Y, ROT, nil]];
         
 		//[sprite setPosition: body->p];
-        
-        [dataGo handleMessage:kDWupdatePosFromPhys andPayload:pl withLogLevel:-1];
+        if(dataGo)
+            [dataGo handleMessage:kDWupdatePosFromPhys andPayload:pl withLogLevel:-1];
         
 		//[sprite setRotation: (float) CC_RADIANS_TO_DEGREES( -body->a )];
 	}
@@ -122,6 +131,9 @@ static void eachShape(void *ptr, void* unused)
         
         timeToNextTutorial=TUTORIAL_TIME_START;
         [self schedule:@selector(updateTutorials:) interval:1.0f];
+        
+        //look at object proximity
+        [self schedule:@selector(considerProximateObjects:) interval:1.0f / kScheduleProximityLoopTFPS];
 
     }
     
@@ -148,6 +160,10 @@ static void eachShape(void *ptr, void* unused)
     
     [solutionsDef release];
     solutionsDef=nil;
+    
+    enableOperators=NO;
+    opGOsource=nil;
+    opGOtarget=nil;
     
     
     //set up
@@ -198,6 +214,14 @@ static void eachShape(void *ptr, void* unused)
     //setup ghost layer
     ghostLayer=[[CCLayer alloc]init];
     [self addChild:ghostLayer z:2];
+    
+    //setup operator layer
+    operatorLayer=[[CCLayer alloc] init];
+    [self addChild:operatorLayer z:3];
+    
+    operatorPanel=[CCSprite spriteWithFile:@"operator-popup.png"];
+    [operatorLayer addChild:operatorPanel];
+    [operatorLayer setVisible:NO];
 }
 
 -(void)setupChSpace
@@ -273,6 +297,8 @@ static void eachShape(void *ptr, void* unused)
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
+    BOOL continueEval=YES;
+    
     //set daemon mode and target
     [daemon setTarget:location];
     [daemon setMode:kDaemonModeFollowing];
@@ -283,7 +309,7 @@ static void eachShape(void *ptr, void* unused)
         [gameWorld writeLogBufferToDiskWithKey:@"BlockFloating"];
         
         [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
-        [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.3f scene:[IceDiv scene]]];
+        [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.3f scene:[PlaceValue scene]]];
     }
     
     else if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
@@ -296,8 +322,35 @@ static void eachShape(void *ptr, void* unused)
         [self evalCommit];
     }
     
-    else
+    //look at operator taps
+    else if(operatorLayer.visible)
     {
+        CGPoint op1=[BLMath AddVector:operatorLayer.position toVector:kOperator1Offset];
+        CGPoint op2=[BLMath AddVector:operatorLayer.position toVector:kOperator2Offset];
+        
+        if([BLMath DistanceBetween:location and:op1] <= kOperatorHitRadius)
+        {
+            //do operation 1
+            [self doAddOperation];
+            
+            continueEval=NO;
+            [self disableOperators];
+        }
+        
+        else if([BLMath DistanceBetween:location and:op2] <= kOperatorHitRadius)
+        {
+            //do operation 2
+            [self doSubtractOperation];
+            
+            continueEval=NO;
+            [self disableOperators];
+        }
+    }
+    
+    if (continueEval)
+    {
+        //cancel any current operator state
+        [self disableOperators];
         
         [gameWorld Blackboard].PickupObject=nil;
         
@@ -341,6 +394,16 @@ static void eachShape(void *ptr, void* unused)
     //daemon to move
     [daemon setTarget:location];
     
+    //move operator layer
+    if(operatorLayer.visible)
+    {
+        CGPoint prevLoc=[[CCDirector sharedDirector] convertToGL:[touch previousLocationInView:[touch view]]];
+        CGPoint movediff=[BLMath SubtractVector:prevLoc from:location];
+        //decelarate it
+        movediff=[BLMath MultiplyVector:movediff byScalar:kOperatorPopupDragFriction];
+        [operatorLayer setPosition:[BLMath AddVector:[operatorLayer position] toVector:movediff]];
+    }
+    
     if([gameWorld Blackboard].PickupObject!=nil)
     {
         //mod location by pickup offset
@@ -353,6 +416,82 @@ static void eachShape(void *ptr, void* unused)
         [[gameWorld Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:-1];
     }
     
+}
+
+-(void)considerProximateObjects:(ccTime)delta
+{
+    if(gameWorld.Blackboard.PickupObject && touching)
+    {
+        //look at proximate objects -- want to see if we should popup operator dialog
+        gameWorld.Blackboard.ProximateObject=nil;
+        [gameWorld handleMessage:kDWareYouProximateTo andPayload:[NSDictionary dictionaryWithObject:gameWorld.Blackboard.PickupObject forKey:TARGET_GO] withLogLevel:0];
+        if(gameWorld.Blackboard.ProximateObject)
+        {
+            //nothing new to do if this is the same target
+            if(gameWorld.Blackboard.ProximateObject!=opGOtarget)
+            {
+                opGOsource=gameWorld.Blackboard.PickupObject;
+                opGOtarget=gameWorld.Blackboard.ProximateObject;
+                [self showOperators];
+            }
+        }
+        else
+        {
+            //cancel any current operator state
+            [self disableOperators];
+        }
+    }
+}
+
+-(void)showOperators
+{
+    if(!enableOperators) return;
+    
+    CGPoint sourcePos=CGPointMake([[[opGOsource store] objectForKey:POS_X] floatValue], [[[opGOsource store] objectForKey:POS_Y] floatValue]);
+    CGPoint destPos=CGPointMake([[[opGOtarget store] objectForKey:POS_X] floatValue], [[[opGOtarget store] objectForKey:POS_Y] floatValue]);
+    
+    CGPoint showAtPos=[BLMath AddVector:sourcePos toVector:[BLMath MultiplyVector:[BLMath SubtractVector:sourcePos from:destPos] byScalar:0.5f]];
+    showAtPos=[BLMath AddVector:CGPointMake(0, kOperatorPopupYOffset) toVector:showAtPos];
+    
+    //operator Layer
+    [operatorLayer setVisible:YES];
+    [operatorLayer setPosition:showAtPos];
+}
+
+-(void)setOperators
+{
+    if(!enableOperators) return;
+    
+    if(operatorLayer.visible)
+    {
+        //detach physics from both objects
+        [opGOsource handleMessage:kDWdetachPhys andPayload:nil withLogLevel:0];
+        [opGOtarget handleMessage:kDWdetachPhys andPayload:nil withLogLevel:0];    
+    }
+}
+
+-(void)disableOperators
+{
+    if(!enableOperators) return;
+    
+    [opGOsource handleMessage:kDWattachPhys andPayload:nil withLogLevel:0];
+    [opGOtarget handleMessage:kDWattachPhys andPayload:nil withLogLevel:0];
+    
+    opGOsource=nil;
+    opGOtarget=nil;
+    
+    [operatorLayer setVisible:NO];
+}
+
+-(void)doAddOperation
+{
+    [opGOsource handleMessage:kDWoperateAddTo andPayload:[NSDictionary dictionaryWithObject:opGOtarget forKey:TARGET_GO] withLogLevel:0];
+}
+
+-(void)doSubtractOperation
+{
+    [opGOsource handleMessage:kDWoperateSubtractFrom andPayload:[NSDictionary dictionaryWithObject:opGOtarget forKey:TARGET_GO] withLogLevel:0];
+
 }
 
 -(void) ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -368,6 +507,9 @@ static void eachShape(void *ptr, void* unused)
     
     if([gameWorld Blackboard].PickupObject!=nil)
     {
+        //set operators (e.g. fix physics) if on and popped up
+        [self setOperators];
+        
         [gameWorld Blackboard].DropObject=nil;
         
         //forcibly mod location by pickup offset
@@ -428,6 +570,8 @@ static void eachShape(void *ptr, void* unused)
 
 -(void)populateGW
 {
+    //integration: this can split into parse / populate
+    
     NSString *broot=[[NSBundle mainBundle] bundlePath];
     NSString *pfile=[broot stringByAppendingPathComponent:[problemFiles objectAtIndex:currentProblemIndex]];
 	NSDictionary *pdef=[NSDictionary dictionaryWithContentsOfFile:pfile];
@@ -504,16 +648,37 @@ static void eachShape(void *ptr, void* unused)
         [commitBtn setPosition:ccp((cx*2)-(kPropXCommitButtonPadding*(cx*2)), kPropXCommitButtonPadding*(cx*2))];
         [self addChild:commitBtn];
     }
+    
+    //look at operator mode
+    NSString *operatorMode=[pdef objectForKey:OPERATOR_MODE];
+    if(operatorMode)
+    {
+        //all operator modes enable operators currently
+        enableOperators=YES;
+    }
+    else
+    {
+        enableOperators=NO;
+    }
 }
 
 -(void)spawnObjects:(NSDictionary*)objects
 {
     for (NSDictionary *o in objects) {
-        [self createObjectWithCols:[[o objectForKey:DIMENSION_COLS] intValue] andRows:[[o objectForKey:DIMENSION_ROWS] intValue] andTag:[o objectForKey:TAG]];
+        NSNumber *nuc =[o objectForKey:DIMENSION_UNIT_COUNT];
+        int rows=[[o objectForKey:DIMENSION_ROWS] intValue];
+        int cols=[[o objectForKey:DIMENSION_COLS] intValue];
+        int ucount=rows*cols;
+        if(nuc)
+        {
+            if([nuc intValue] > ucount)ucount=[nuc intValue];
+        }
+        
+        [self createObjectWithCols:cols andRows:rows andUnitCount:ucount andTag:[o objectForKey:TAG]];
     }
 }
 
--(void)createObjectWithCols:(int)cols andRows:(int)rows andTag:(NSString*)tagString
+-(void)createObjectWithCols:(int)cols andRows:(int)rows andUnitCount:(int)unitcount andTag:(NSString*)tagString
 {
     //creates an object in the game world
     //ASSUMES kDWsetupStuff is sent to the object (in problem init this comes through sequential populateGW, setup)
@@ -522,6 +687,9 @@ static void eachShape(void *ptr, void* unused)
     
     [[go store] setObject:[NSNumber numberWithInt:rows] forKey:OBJ_ROWS];
     [[go store] setObject:[NSNumber numberWithInt:cols] forKey:OBJ_COLS];
+    
+    //set unit count -- explicitly r*c at the minute, let object decide where to put remainder
+    [[go store] setObject:[NSNumber numberWithInt:unitcount] forKey:OBJ_UNITCOUNT];
     
     [[go store] setObject:tagString forKey:TAG];
     
@@ -905,7 +1073,7 @@ static void eachShape(void *ptr, void* unused)
                 NSArray *containerObjects=[[container store] objectForKey:MOUNTED_OBJECTS];
                 float contSize=0.0f;
                 for (DWGameObject *o in containerObjects) {
-                    float vol=[[[o store] objectForKey:OBJ_ROWS] floatValue] * [[[o store] objectForKey:OBJ_COLS] floatValue];
+                    float vol=[[[o store] objectForKey:OBJ_CHILDMATRIX] count];
                     contSize+=vol;
                 }
                 
@@ -944,7 +1112,7 @@ static void eachShape(void *ptr, void* unused)
         //clone the source sprite
         CCSprite *cpSource=[[gogo store] objectForKey:MY_SPRITE];
         
-        CCSprite *cpGhost=[self ghostCopySprite:cpSource];
+        CCNode *cpGhost=[self ghostCopySprite:cpSource];
         
         [ghostLayer addChild:cpGhost];
         
@@ -965,10 +1133,7 @@ static void eachShape(void *ptr, void* unused)
         
         
         //fade each sprite individually -- this needs the move time added to delay as actions will run in parallel
-        CCDelayTime *a2=[CCDelayTime actionWithDuration:GHOST_DURATION_STAY + GHOST_DURATION_MOVE];
-        CCFadeTo *a3=[CCFadeTo actionWithDuration:GHOST_DURATION_FADE opacity:0];
-        CCSequence *seq=[CCSequence actions:a2, a3, nil];
-        [cpGhost runAction:seq];
+        //cpGhost is a node now -- no need to fade it
         
         for (CCSprite *c in [cpGhost children]) {
             //create a new sequence for each child sprite
@@ -989,9 +1154,14 @@ static void eachShape(void *ptr, void* unused)
     }
 }
 
--(CCSprite *)ghostCopySprite:(CCSprite*)spriteSource
+-(CCNode *)ghostCopySprite:(CCSprite*)spriteSource
 {
-    CCSprite *ghost=[CCSprite spriteWithTexture:[spriteSource texture]];
+//    CCSprite *ghost=[CCSprite spriteWithTexture:[spriteSource texture]];
+//    [ghost setPosition:[spriteSource position]];
+//    [ghost setRotation:[spriteSource rotation]];
+    
+
+    CCNode *ghost=[[CCNode alloc] init];
     [ghost setPosition:[spriteSource position]];
     [ghost setRotation:[spriteSource rotation]];
     
@@ -1009,8 +1179,8 @@ static void eachShape(void *ptr, void* unused)
         
     }
     
-    [ghost setOpacity:GHOST_OPACITY];
-    [ghost setColor:ccc3(0, GHOST_TINT_G, 0)];
+//    [ghost setOpacity:GHOST_OPACITY];
+//    [ghost setColor:ccc3(0, GHOST_TINT_G, 0)];
     
     return ghost;
 }

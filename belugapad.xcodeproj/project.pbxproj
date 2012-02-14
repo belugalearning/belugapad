@@ -81,7 +81,7 @@
 		7F50ABF714C55AAE0033C377 /* float-problem5.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABF314C55AAE0033C377 /* float-problem5.plist */; };
 		7F50ABF814C55AAE0033C377 /* float-problem4.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABF414C55AAE0033C377 /* float-problem4.plist */; };
 		7F50ABF914C55AAE0033C377 /* float-problem3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABF514C55AAE0033C377 /* float-problem3.plist */; };
-		7F50ABFA14C55AAE0033C377 /* float-problem2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABF614C55AAE0033C377 /* float-problem2.plist */; };
+		7F50ABFA14C55AAE0033C377 /* float-problem0002.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABF614C55AAE0033C377 /* float-problem0002.plist */; };
 		7F5113C314A9EE62001AF372 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C214A9EE62001AF372 /* QuartzCore.framework */; };
 		7F5113C514A9EE62001AF372 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C414A9EE62001AF372 /* OpenGLES.framework */; };
 		7F5113C714A9EE62001AF372 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C614A9EE62001AF372 /* OpenAL.framework */; };
@@ -359,7 +359,7 @@
 		7F50ABF314C55AAE0033C377 /* float-problem5.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem5.plist"; sourceTree = "<group>"; };
 		7F50ABF414C55AAE0033C377 /* float-problem4.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem4.plist"; sourceTree = "<group>"; };
 		7F50ABF514C55AAE0033C377 /* float-problem3.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem3.plist"; sourceTree = "<group>"; };
-		7F50ABF614C55AAE0033C377 /* float-problem2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem2.plist"; sourceTree = "<group>"; };
+		7F50ABF614C55AAE0033C377 /* float-problem0002.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem0002.plist"; sourceTree = "<group>"; };
 		7F5113BE14A9EE62001AF372 /* belugapad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = belugapad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F5113C214A9EE62001AF372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7F5113C414A9EE62001AF372 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -816,7 +816,7 @@
 				5536B29514E41A1500D30BC0 /* placevalue */,
 				7F719C4714D85DEB00F30E89 /* usergen */,
 				7F50ABEB14C4C6300033C377 /* float-problem0001.plist */,
-				7F50ABF614C55AAE0033C377 /* float-problem2.plist */,
+				7F50ABF614C55AAE0033C377 /* float-problem0002.plist */,
 				7F50ABF514C55AAE0033C377 /* float-problem3.plist */,
 				7F50ABF414C55AAE0033C377 /* float-problem4.plist */,
 				7F50ABF314C55AAE0033C377 /* float-problem5.plist */,
@@ -1688,7 +1688,7 @@
 				7F50ABF714C55AAE0033C377 /* float-problem5.plist in Resources */,
 				7F50ABF814C55AAE0033C377 /* float-problem4.plist in Resources */,
 				7F50ABF914C55AAE0033C377 /* float-problem3.plist in Resources */,
-				7F50ABFA14C55AAE0033C377 /* float-problem2.plist in Resources */,
+				7F50ABFA14C55AAE0033C377 /* float-problem0002.plist in Resources */,
 				7F813D5814CCBDDD00C1E997 /* fire1.plist in Resources */,
 				7F813D5C14CCC3A100C1E997 /* fire2.plist in Resources */,
 				7F813D6714CCD40700C1E997 /* icediv-crack.png in Resources */,

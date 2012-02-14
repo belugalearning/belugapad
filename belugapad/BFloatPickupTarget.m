@@ -105,7 +105,6 @@ static float kProximateHalfSizeDist=4.5f;
     //bulid array of all sprites to test -- this is master + children
     CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
     NSMutableArray *spriteTest=[NSMutableArray arrayWithArray:[[mySprite children] getNSArray]];
-    [spriteTest addObject:mySprite];
 
     return spriteTest;
 }

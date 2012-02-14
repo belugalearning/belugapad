@@ -98,7 +98,7 @@
 
 -(void)clearGhost;
 -(void)showGhostOf:(NSString *)ghostObjectTag to:(NSString *)ghostDestinationTag;
--(CCSprite *)ghostCopySprite:(CCSprite*)spriteSource;
+-(CCNode *)ghostCopySprite:(CCSprite*)spriteSource;
 -(void)updateTutorials:(ccTime)delta;
 -(void)parseTutorialActionsFor:(NSDictionary*)actionSet;
 -(void)considerProximateObjects:(ccTime)delta;

@@ -58,16 +58,12 @@
 			<string>obj-blockholder-mount1x1-red.png</string>
 			<key>TAG</key>
 			<string>container2</string>
-			<key>HIDDEN</key>
-			<true/>
 		</dict>
 		<dict>
 			<key>RENDER_IMAGE_NAME</key>
 			<string>obj-blockholder-mount1x1-yellow.png</string>
 			<key>TAG</key>
 			<string>container3</string>
-			<key>HIDDEN</key>
-			<true/>
 		</dict>
 	</array>
 	<key>SOLUTIONS</key>

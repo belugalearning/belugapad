@@ -164,6 +164,10 @@ static void eachShape(void *ptr, void* unused)
     [solutionsDef release];
     solutionsDef=nil;
     
+    enableOperators=NO;
+    opGOsource=nil;
+    opGOtarget=nil;
+    
     
     //set up
     [self setupBkgAndTitle];
@@ -1072,7 +1076,7 @@ static void eachShape(void *ptr, void* unused)
                 NSArray *containerObjects=[[container store] objectForKey:MOUNTED_OBJECTS];
                 float contSize=0.0f;
                 for (DWGameObject *o in containerObjects) {
-                    float vol=[[[o store] objectForKey:OBJ_ROWS] floatValue] * [[[o store] objectForKey:OBJ_COLS] floatValue];
+                    float vol=[[[o store] objectForKey:OBJ_CHILDMATRIX] count];
                     contSize+=vol;
                 }
                 
@@ -1111,7 +1115,7 @@ static void eachShape(void *ptr, void* unused)
         //clone the source sprite
         CCSprite *cpSource=[[gogo store] objectForKey:MY_SPRITE];
         
-        CCSprite *cpGhost=[self ghostCopySprite:cpSource];
+        CCNode *cpGhost=[self ghostCopySprite:cpSource];
         
         [ghostLayer addChild:cpGhost];
         
@@ -1132,10 +1136,7 @@ static void eachShape(void *ptr, void* unused)
         
         
         //fade each sprite individually -- this needs the move time added to delay as actions will run in parallel
-        CCDelayTime *a2=[CCDelayTime actionWithDuration:GHOST_DURATION_STAY + GHOST_DURATION_MOVE];
-        CCFadeTo *a3=[CCFadeTo actionWithDuration:GHOST_DURATION_FADE opacity:0];
-        CCSequence *seq=[CCSequence actions:a2, a3, nil];
-        [cpGhost runAction:seq];
+        //cpGhost is a node now -- no need to fade it
         
         for (CCSprite *c in [cpGhost children]) {
             //create a new sequence for each child sprite
@@ -1156,9 +1157,14 @@ static void eachShape(void *ptr, void* unused)
     }
 }
 
--(CCSprite *)ghostCopySprite:(CCSprite*)spriteSource
+-(CCNode *)ghostCopySprite:(CCSprite*)spriteSource
 {
-    CCSprite *ghost=[CCSprite spriteWithTexture:[spriteSource texture]];
+//    CCSprite *ghost=[CCSprite spriteWithTexture:[spriteSource texture]];
+//    [ghost setPosition:[spriteSource position]];
+//    [ghost setRotation:[spriteSource rotation]];
+    
+
+    CCNode *ghost=[[CCNode alloc] init];
     [ghost setPosition:[spriteSource position]];
     [ghost setRotation:[spriteSource rotation]];
     
@@ -1176,8 +1182,8 @@ static void eachShape(void *ptr, void* unused)
         
     }
     
-    [ghost setOpacity:GHOST_OPACITY];
-    [ghost setColor:ccc3(0, GHOST_TINT_G, 0)];
+//    [ghost setOpacity:GHOST_OPACITY];
+//    [ghost setColor:ccc3(0, GHOST_TINT_G, 0)];
     
     return ghost;
 }

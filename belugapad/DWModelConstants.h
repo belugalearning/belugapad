@@ -64,6 +64,8 @@ typedef enum {
     kDWattachPhys=104,
     
     kDWoperateAddTo=105,
-    kDWoperateSubtractFrom=106
+    kDWoperateSubtractFrom=106,
+    kDWfloatAddThisChild=107,
+    kDWfloatSubtractThisChild=108
     
 } DWMessageType;

@@ -27,4 +27,8 @@
 -(void)addMeTo:(DWGameObject*)targetGo;
 -(void)subtractMeFrom:(DWGameObject*)targetGo;
 
+-(void)addThisChild:(NSDictionary *)child;
+-(void)subtractWithThisChild:(NSDictionary *)child;
+-(NSMutableArray *)getMatrixContainingChildren;
+
 @end

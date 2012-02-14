@@ -35,8 +35,18 @@
         [pl setObject:gameObject forKey:MOUNTED_OBJECT];
         [newMount handleMessage:kDWsetMountedObject andPayload:pl withLogLevel:0];
         
+        NSMutableDictionary *pl2 = [[NSMutableDictionary alloc] init];
+        [pl2 setObject:[[newMount store] objectForKey:POS_X] forKey:POS_X];
+        [pl2 setObject:[[newMount store] objectForKey:POS_Y] forKey:POS_Y];
+        
+        if([payload objectForKey:ANIMATE_ME])
+        {
+            [pl2 setObject:ANIMATE_ME forKey:ANIMATE_ME];
+        }
+        
         //update the sprite
-        [gameObject handleMessage:kDWupdateSprite andPayload:[newMount store] withLogLevel:0];
+        //[gameObject handleMessage:kDWupdateSprite andPayload:[newMount store] withLogLevel:0];
+        [gameObject handleMessage:kDWupdateSprite andPayload:pl2 withLogLevel:0];
         
     }
 }

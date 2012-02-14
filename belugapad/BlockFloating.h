@@ -10,19 +10,9 @@
 #import "chipmunk.h"
 #import "DWGameWorld.h"
 #import "DWGameObject.h"
+#import "ToolConsts.h"
 
 @class Daemon;
-
-typedef enum {
-    kRejectNever=0,
-    kRejectOnCommit=1,
-    kRejectOnAction=2
-} RejectMode;
-
-typedef enum {
-    kEvalAuto=0,
-    kEvalOnCommit=1
-} EvalMode;
 
 @interface BlockFloating : CCLayer
 {
@@ -56,8 +46,8 @@ typedef enum {
     BOOL daemonIsGhosting;
     
     //pulled direct from problem def -- both default to 0 state if not defined
-    RejectMode rejectMode;
-    EvalMode evalMode;
+    ProblemRejectMode rejectMode;
+    ProblemEvalMode evalMode;
     
     //the last positively evaluated clauses's solution index
     int trackedSolutionIndex;

@@ -10,7 +10,8 @@
 
 @interface BPlaceValueMount : DWBehaviour
 {
-    
+    BOOL evalUp;
+    BOOL evalLeft;
 }
 
 -(BPlaceValueMount *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

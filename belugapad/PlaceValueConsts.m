@@ -13,3 +13,5 @@ const float kPropXDaemonRest=0.1f;
 
 const float kTapSlipThreshold=20.1f;
 const float kTapSlipResetThreshold=30.1f;
+
+const float kLabelCompletePVYOffsetHalfProp=0.35f;

@@ -54,7 +54,9 @@ typedef enum {
     kDWresetToMountPosition=16,
     
     kDWswitchSelection=17,
-    kDW
+    kDWresetPositionEval=18,
+    
+    kDWdeselectAll=19
 
     
 } DWMessageType;

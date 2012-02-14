@@ -13,3 +13,5 @@ extern const float kPropXDaemonRest;
 
 extern const float kTapSlipThreshold;
 extern const float kTapSlipResetThreshold;
+
+extern const float kLabelCompletePVYOffsetHalfProp;

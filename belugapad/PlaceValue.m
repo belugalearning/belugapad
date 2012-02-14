@@ -49,7 +49,7 @@ static float kCageYOrigin=0.08f;
         cy=ly / 2.0f;
         
         [self setupBkgAndTitle];
-        //[self setupProblem];
+
         
         [self listProblemFiles];
         [self readPlist];
@@ -58,7 +58,7 @@ static float kCageYOrigin=0.08f;
         daemon=[[Daemon alloc] initWithLayer:self andRestingPostion:ccp(kPropXDaemonRest*lx, kPropXDaemonRest*lx)];
         
         [self populateGW];
-        
+
         [gw Blackboard].hostCX = cx;
         [gw Blackboard].hostCY = cy;
         [gw Blackboard].hostLX = lx;
@@ -67,6 +67,10 @@ static float kCageYOrigin=0.08f;
         [self schedule:@selector(doUpdate:) interval:1.0f/kScheduleUpdateLoopTFPS];
     
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
+        
+        // Set the lastCount to 0 - this is for counting problems.
+        
+        lastCount = 0; 
     }
     
     return self;
@@ -76,6 +80,27 @@ static float kCageYOrigin=0.08f;
 {
 	[gw doUpdate:delta];
     [daemon doUpdate:delta];
+    
+    if(autoMoveToNextProblem)
+    {
+        timeToAutoMoveToNextProblem+=delta;
+        if(timeToAutoMoveToNextProblem>=kTimeToAutoMove)
+        {
+            [self resetToNextProblem];
+            autoMoveToNextProblem=NO;
+            timeToAutoMoveToNextProblem=0.0f;
+        }
+    }    
+    if(autoHideStatusLabel)
+    {
+        timeToHideStatusLabel+=delta;
+        if(timeToHideStatusLabel>=kTimeToAutoMove)
+        {
+            [problemCompleteLabel setVisible:NO];
+            autoHideStatusLabel=NO;
+            timeToHideStatusLabel=0.0f;
+        }
+    }
 }
 
 -(void)setupProblem
@@ -94,14 +119,14 @@ static float kCageYOrigin=0.08f;
     gw = [[DWGameWorld alloc] initWithGameScene:self];
     
     float ropeWidth = kPropXNetSpace*lx;
-    CGPoint columnOrigin = ccp(cx-((ropeWidth*ropesforColumn)/2.0f)+(ropeWidth/2.0f), ly*kPropYColumnOrigin);
+    CGPoint columnOrigin = ccp(cx-((ropeWidth*ropesforColumn)/2.0f)+(ropeWidth/2.0f), ly*kPropYColumnOrigin); 
 
-    
-    
     for (int iRow=0; iRow<rows; iRow++)
     {
-        CGPoint rowOrigin=ccp(columnOrigin.x, columnOrigin.y-(iRow*ropeWidth)); 
+        NSMutableArray *RowArray = [[NSMutableArray alloc] init];        
+        [gw.Blackboard.AllStores addObject:RowArray];
         
+        CGPoint rowOrigin=ccp(columnOrigin.x, columnOrigin.y-(iRow*ropeWidth)); 
         
         for(int iRope=0; iRope<ropesforColumn; iRope++)
         {
@@ -114,6 +139,8 @@ static float kCageYOrigin=0.08f;
             [[go store] setObject:[NSNumber numberWithFloat:iRope] forKey:PLACEVALUE_ROPE];
             DLog(@"containerorigin x %f y %f", containerOrigin.x, containerOrigin.y);
             
+            [RowArray addObject:go];
+            
         }
     }
     
@@ -122,6 +149,27 @@ static float kCageYOrigin=0.08f;
     [[colCage store] setObject:[NSNumber numberWithFloat:cx] forKey:POS_X];
     [[colCage store] setObject:[NSNumber numberWithFloat:ly*kCageYOrigin] forKey:POS_Y];
 
+    
+    for(int i=0; i<(initObjects.count); i++)
+    {
+        NSDictionary *curDict = [initObjects objectAtIndex:i];
+        int insCol = [[curDict objectForKey:PUT_IN_COL] intValue];
+        int insRow = [[curDict objectForKey:PUT_IN_ROW] intValue];
+        int count = [[curDict objectForKey:NUMBER] intValue];
+        
+        for(int i=0; i<count; i++)
+        {
+            DWGameObject *block = [gw addGameObjectWithTemplate:@"TplaceValueObject"];
+            
+            NSDictionary *pl = [NSDictionary dictionaryWithObject:[[gw.Blackboard.AllStores objectAtIndex:insRow] objectAtIndex:i] forKey:MOUNT];
+            
+            [block handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
+            
+        }
+        DLog(@"col %d, rows %d, count %d", insCol, insRow, count);
+    }
+
+    
 }
 
 -(void)setupBkgAndTitle
@@ -132,9 +180,9 @@ static float kCageYOrigin=0.08f;
     
     problemCompleteLabel=[CCLabelTTF labelWithString:@"" fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
     [problemCompleteLabel setColor:kLabelCompleteColor];
-    [problemCompleteLabel setPosition:ccp(cx, cy*kLabelCompleteYOffsetHalfProp)];
+    [problemCompleteLabel setPosition:ccp(cx, cy*kLabelCompletePVYOffsetHalfProp)];
     [problemCompleteLabel setVisible:NO];
-    [self addChild:problemCompleteLabel];
+    [self addChild:problemCompleteLabel z:5];
     
     CCSprite *btnFwd=[CCSprite spriteWithFile:@"btn-fwd.png"];
     [btnFwd setPosition:kButtonNextToolPos];
@@ -182,6 +230,10 @@ static float kCageYOrigin=0.08f;
 
     [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
     
+    // Set the lastCount to 0 - this is for counting problems.
+    
+    lastCount = 0; 
+    
 }
 
 -(void)listProblemFiles
@@ -227,14 +279,182 @@ static float kCageYOrigin=0.08f;
     [self addChild:flabel];
     
     //objects
-    //NSDictionary *objects=[pdef objectForKey:INIT_OBJECTS];
-    //nothing can currently be done with these objects.
+    NSArray *objects=[pdef objectForKey:INIT_OBJECTS];
+    initObjects = objects;
     
-    //retain solutions array
+    //retain solutions dict
     solutionsDef=[pdef objectForKey:SOLUTION];
     [solutionsDef retain];
     
+    NSNumber *rMode=[pdef objectForKey:REJECT_MODE];
+    if (rMode) rejectMode=[rMode intValue];
+    
+    NSNumber *eMode=[pdef objectForKey:EVAL_MODE];
+    if(eMode) evalMode=[eMode intValue];
+    
+    //show commit button if evalOnCommit
+    if(evalMode==kProblemEvalOnCommit)
+    {
+        CCSprite *commitBtn=[CCSprite spriteWithFile:@"commit.png"];
+        [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
+        [self addChild:commitBtn];
+    }
+
+    
 }
+
+-(void)problemStateChanged
+{
+    NSString *solutionType = [solutionsDef objectForKey:SOLUTION_TYPE];
+    if([solutionType isEqualToString:COUNT_SEQUENCE])
+    {
+        if(gw.Blackboard.SelectedObjects.count < lastCount)
+        {
+            lastCount = 0;
+        }
+        else
+        {
+            lastCount++;
+        }
+            DLog(@"(COUNT_SEQUENCE) Selected %d lastCount %d", gw.Blackboard.SelectedObjects.count, lastCount);
+    }
+    
+    if(evalMode == kProblemEvalAuto)
+    {
+        [self evalProblem];
+    }
+}
+
+-(void)evalProblem
+{
+    
+    NSString *solutionType = [solutionsDef objectForKey:SOLUTION_TYPE];
+    //int result;
+    DLog(@"evalProblem called for problem type: %@", solutionType);
+    
+        if([solutionType isEqualToString:COUNT_SEQUENCE])
+        {
+            [self evalProblemCountSeq];
+        }
+        else if([solutionType isEqualToString:TOTAL_COUNT])
+        {
+            [self evalProblemTotalCount];
+        }
+        else if([solutionType isEqualToString:MATRIX_MATCH])
+        {
+            [self evalProblemMatrixMatch];
+        }
+
+}
+-(void)doWinning
+{
+    DLog(@"problem complete"); 
+    [problemCompleteLabel setString:@"problem complete! well done!"];
+    autoMoveToNextProblem=YES;
+    [problemCompleteLabel setVisible:YES];    
+}
+-(void)doIncorrect
+{
+    DLog(@"problem incomplete"); 
+    [problemCompleteLabel setString:@"problem incomplete."];
+    autoHideStatusLabel=YES;
+    [problemCompleteLabel setVisible:YES];
+    [gw handleMessage:kDWdeselectAll andPayload:nil withLogLevel:0];
+}
+-(void)evalProblemCountSeq
+{
+    if(lastCount == [[solutionsDef objectForKey:SOLUTION_VALUE] intValue])
+    {
+        DLog(@"(COUNT_SEQUENCE) match");
+        [self doWinning];
+    }
+    else if(lastCount != [[solutionsDef objectForKey:SOLUTION_VALUE] intValue] && evalMode==kProblemEvalOnCommit)
+    {
+        [self doIncorrect];
+    }
+}
+-(void)evalProblemTotalCount
+{
+    int totalCount=0;
+    int expectedCount = [[solutionsDef objectForKey:SOLUTION_VALUE] intValue];
+    for (int i=0; i<gw.Blackboard.AllStores.count; i++)
+    {
+        for(int o=0; o<[[gw.Blackboard.AllStores objectAtIndex:i]count]; o++)
+        {
+            DWGameObject *goC = [[gw.Blackboard.AllStores objectAtIndex:(i)] objectAtIndex:o];
+            if([[goC store] objectForKey:MOUNTED_OBJECT])
+            {
+                totalCount++;
+                DLog(@"(TOTAL_COUNT) Found block in row %d col %d (count %d)", i, o, totalCount);
+            }   
+        }
+    }
+    
+    if(totalCount == expectedCount)
+    {
+        [self doWinning];
+    }
+    else if(totalCount != expectedCount && evalMode==kProblemEvalOnCommit)
+    {
+        [self doIncorrect];
+    }
+}
+
+-(void)evalProblemMatrixMatch
+{
+    int countAtRow[gw.Blackboard.AllStores.count];
+    
+    for (int i=0; i<gw.Blackboard.AllStores.count; i++)
+    {
+        countAtRow[i] = 0;
+    }
+    
+    for (int i=0; i<gw.Blackboard.AllStores.count; i++)
+    {
+        for(int o=0; o<[[gw.Blackboard.AllStores objectAtIndex:i]count]; o++)
+        {
+            DWGameObject *goC = [[gw.Blackboard.AllStores objectAtIndex:(i)] objectAtIndex:o];
+            if([[goC store] objectForKey:MOUNTED_OBJECT])
+            {
+                countAtRow[i] = countAtRow[i] + 1;
+                DLog(@"(MATRIX_MATCH) Found %d blocks on row %d", countAtRow[i], i);
+            }   
+        }
+    }
+    
+    NSArray *solutionMatrix = [solutionsDef objectForKey:SOLUTION_MATRIX];
+    int solutionsFound = 0;
+    
+    
+    for(int o=0; o<solutionMatrix.count; o++)
+    {
+        NSDictionary *solDict = [solutionMatrix objectAtIndex:o];
+        int curRow = [[solDict objectForKey:PUT_IN_ROW] intValue];
+        
+        DLog(@"(MATRIX_MATCH) Found in this row: %d", countAtRow[curRow]);
+        if(countAtRow[curRow] == [[solDict objectForKey:NUMBER] intValue])
+        {
+            solutionsFound++;
+            //TODO: Attach XP/partial progress here
+        }
+        else
+        {
+            //TODO: Attach partial failure here
+        }
+        
+    }
+    
+    if(solutionsFound == solutionMatrix.count)
+    {
+        [self doWinning];
+    }
+    else if(solutionsFound != solutionMatrix.count && evalMode==kProblemEvalOnCommit)
+    {
+        [self doIncorrect];
+    }
+
+}
+
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if(touching)return;
@@ -258,6 +478,10 @@ static float kCageYOrigin=0.08f;
     else if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
     {
         [self resetToNextProblem];
+    }
+    else if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit)
+    {
+        [self evalProblem];
     }
     else 
     {
@@ -292,8 +516,6 @@ static float kCageYOrigin=0.08f;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
-
-    
     [daemon setTarget:location];
     
     if([BLMath DistanceBetween:touchStartPos and:touchEndPos] >= fabs(kTapSlipResetThreshold) && potentialTap)
@@ -328,13 +550,14 @@ static float kCageYOrigin=0.08f;
     // set the touch end position for evaluation
     touchEndPos = location;
     
+    [daemon setTarget:location];
     [daemon setMode:kDaemonModeWaiting];
     
     // evaluate the distance between start/end pos.
     
     if([BLMath DistanceBetween:touchStartPos and:touchEndPos] < fabs(kTapSlipThreshold) && potentialTap)
         {
-            DLog(@"register tap");
+            DLog(@"register tap - start/end positions were under %f", kTapSlipThreshold);
             [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
         }
     

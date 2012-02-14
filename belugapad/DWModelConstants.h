@@ -54,9 +54,10 @@ typedef enum {
     kDWresetToMountPosition=16,
     
     kDWswitchSelection=17,
+    kDWresetPositionEval=18,
     
+    kDWdeselectAll=19,
 
-    
     
     kDWareYouProximateTo=101,
     kDWupdateObjectData=102,

@@ -241,6 +241,9 @@
 		7F93668414D1BC2D00CAEF47 /* obj-blockholder-mount1x1-red.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F93668214D1BC2D00CAEF47 /* obj-blockholder-mount1x1-red.png */; };
 		7F93668814D1BE3400CAEF47 /* obj-blockholder-mount1x1-yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F93668714D1BE3400CAEF47 /* obj-blockholder-mount1x1-yellow.png */; };
 		7F93668B14D1CD8500CAEF47 /* firework.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7F93668A14D1CD8500CAEF47 /* firework.wav */; };
+		7F959A1C14EAE015007D90AC /* placevalue-problem004.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F959A1914EAE015007D90AC /* placevalue-problem004.plist */; };
+		7F959A1D14EAE015007D90AC /* placevalue-problem005.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F959A1A14EAE015007D90AC /* placevalue-problem005.plist */; };
+		7F959A1E14EAE015007D90AC /* placevalue-problem006.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F959A1B14EAE015007D90AC /* placevalue-problem006.plist */; };
 		7FABE68F14B33D5100ED2D0C /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */; };
 		7FABE69114B33D5600ED2D0C /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */; };
 		7FABE69C14B4BA4A00ED2D0C /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE69B14B4BA4900ED2D0C /* icon.png */; };
@@ -682,6 +685,9 @@
 		7F93668214D1BC2D00CAEF47 /* obj-blockholder-mount1x1-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-blockholder-mount1x1-red.png"; sourceTree = "<group>"; };
 		7F93668714D1BE3400CAEF47 /* obj-blockholder-mount1x1-yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-blockholder-mount1x1-yellow.png"; sourceTree = "<group>"; };
 		7F93668A14D1CD8500CAEF47 /* firework.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = firework.wav; sourceTree = "<group>"; };
+		7F959A1914EAE015007D90AC /* placevalue-problem004.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "placevalue-problem004.plist"; sourceTree = "<group>"; };
+		7F959A1A14EAE015007D90AC /* placevalue-problem005.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "placevalue-problem005.plist"; sourceTree = "<group>"; };
+		7F959A1B14EAE015007D90AC /* placevalue-problem006.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "placevalue-problem006.plist"; sourceTree = "<group>"; };
 		7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		7FABE69214B33E5800ED2D0C /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = global.h; sourceTree = "<group>"; };
@@ -760,6 +766,9 @@
 				5536B29614E41A2C00D30BC0 /* placevalue-problem001.plist */,
 				5536B29714E41A2C00D30BC0 /* placevalue-problem002.plist */,
 				5536B29814E41A2C00D30BC0 /* placevalue-problem003.plist */,
+				7F959A1914EAE015007D90AC /* placevalue-problem004.plist */,
+				7F959A1A14EAE015007D90AC /* placevalue-problem005.plist */,
+				7F959A1B14EAE015007D90AC /* placevalue-problem006.plist */,
 			);
 			name = placevalue;
 			sourceTree = "<group>";
@@ -1769,6 +1778,9 @@
 				5536B29B14E41A2C00D30BC0 /* placevalue-problem003.plist in Resources */,
 				5536B2A114E42FD100D30BC0 /* obj-placevalue-unit.png in Resources */,
 				7F54E60414E9B2AF00F25235 /* operator-popup.png in Resources */,
+				7F959A1C14EAE015007D90AC /* placevalue-problem004.plist in Resources */,
+				7F959A1D14EAE015007D90AC /* placevalue-problem005.plist in Resources */,
+				7F959A1E14EAE015007D90AC /* placevalue-problem006.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

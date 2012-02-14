@@ -20,11 +20,16 @@ const float kButtonNextToolHitXOffset=975.0f;
 const float kLabelSubTitleYOffsetHalfProp=1.75f;
 const float kLabelTitleYOffsetHalfProp=1.85f;
 const ccColor3B kLabelTitleColor={255, 255, 255};
-const float kLabelCompleteYOffsetHalfProp=0.25f;
+const float kLabelCompleteYOffsetHalfProp=0.28f;
 const ccColor3B kLabelCompleteColor={0, 255, 0};
 
 const CGPoint kButtonNextToolPos={996, 735};
 
+const float kPropXCommitButtonPadding=0.048f;
+const CGRect kRectButtonCommit={{944, 0}, {80, 80}};
+
+
+const float kTimeToAutoMove=1.0f;
 
 // originally used by placevalue for snap back to cage time
 

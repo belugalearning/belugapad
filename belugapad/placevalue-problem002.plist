@@ -18,6 +18,8 @@
 	<false/>
 	<key>ALLOW_MULCHING</key>
 	<false/>
+	<key>SHOW_CAGE</key>
+	<true/>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>

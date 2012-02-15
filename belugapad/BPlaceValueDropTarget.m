@@ -27,7 +27,7 @@
         BOOL inactive=[[[gameObject store] objectForKey:HIDDEN] boolValue];
         if(inactive==NO)
         {
-            if (![[gameObject store] objectForKey:MOUNTED_OBJECT])
+            if (![[gameObject store] objectForKey:MOUNTED_OBJECT] || [[gameObject store] objectForKey:ALLOW_MULTIPLE_MOUNT])
             {
                 //get current loc
                 float x=[[[gameObject store] objectForKey:POS_X] floatValue];
@@ -44,7 +44,6 @@
                 {
                     //tell gameScene we are a target for that pickup
                     [gameWorld Blackboard].DropObject=gameObject;
-                    
                     
                 }
             }

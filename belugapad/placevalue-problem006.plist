@@ -22,6 +22,12 @@
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
+	<key>SHOW_CAGE</key>
+	<false/>
+	<key>SHOW_COUNT</key>
+	<true/>
+	<key>SHOW_COUNT_BLOCK</key>
+	<true/>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>

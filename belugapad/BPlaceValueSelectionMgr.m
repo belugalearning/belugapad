@@ -47,7 +47,8 @@
     }
     else
     {
-        [[gameObject store] setObject:[NSNumber numberWithBool:YES] forKey:SELECTED];   
+        [[gameObject store] setObject:[NSNumber numberWithBool:YES] forKey:SELECTED]; 
+        gameWorld.Blackboard.LastSelectedObject = gameObject;
         [gameWorld.Blackboard.SelectedObjects addObject:gameObject];
         [[gameWorld GameScene] problemStateChanged];
     }

@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 
+
+@class CXMLDocument;
+
 typedef enum {
     kDaemonModeResting,
     kDaemonModeFollowing,
@@ -32,6 +35,8 @@ typedef enum {
     float slowingDist;
     float effectiveRadius;
     
+    float ly;
+    
     CGPoint velocity;
     CCNode *followObject;
     
@@ -39,7 +44,7 @@ typedef enum {
     float incrBreathe;
 }
 
--(id)initWithLayer:(CCLayer*)theHostLayer andRestingPostion:(CGPoint)theRestingPos;
+-(id)initWithLayer:(CCLayer*)theHostLayer andRestingPostion:(CGPoint)theRestingPos andLy:(float)hostLy;
 
 -(void)doUpdate:(ccTime)delta;
 -(void)resetToRestAtPoint:(CGPoint)newRestingPoint;
@@ -52,5 +57,8 @@ typedef enum {
 -(CGPoint)getSteeringVelocity;
 -(CGPoint)getSeekArriveSV;
 -(CGPoint)getNewPositionWithDesiredSteer:(CGPoint)desiredSteer andDelta:(ccTime)delta;
+
+-(NSMutableArray*)getAnimationPathsFor:(NSString *)animKey;
+-(NSMutableArray*)getAnimationPath:(int)pathIndex onSVG:(CXMLDocument *)doc withMappings:(NSDictionary *)nsMappings;
 
 @end

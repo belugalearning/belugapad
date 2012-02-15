@@ -60,9 +60,10 @@ const float standbyExpiry=7.0f;
 
 @implementation Daemon
 
--(id)initWithLayer:(CCLayer*)theHostLayer andRestingPostion:(CGPoint)theRestingPos
+-(id)initWithLayer:(CCLayer*)theHostLayer andRestingPostion:(CGPoint)theRestingPos andLy:(float)hostLy
 {
     hostLayer=theHostLayer;
+    ly=hostLy;
 
     [self resetToRestAtPoint:theRestingPos];
     
@@ -241,6 +242,61 @@ const float standbyExpiry=7.0f;
     
     pos=[BLMath AddVector:pos toVector:tsVel];
     return pos;
+}
+
+-(NSMutableArray*)getAnimationPathsFor:(NSString *)animKey
+{
+    //load animation data
+	NSString *XMLPath=[[[NSBundle mainBundle] resourcePath] 
+					   stringByAppendingPathComponent:[NSString stringWithFormat:@"daemon-%@.svg", animKey]];
+	
+	//use that file to populate an NSData object
+	NSData *XMLData=[NSData dataWithContentsOfFile:XMLPath];
+	
+	//get TouchXML doc
+	CXMLDocument *doc=
+    [[CXMLDocument alloc] initWithData:XMLData options:0 error:nil];
+    
+    
+	//setup a namespace mapping for the svg namespace
+	NSDictionary *nsMappings=[NSDictionary 
+							  dictionaryWithObject:@"http://www.w3.org/2000/svg" 
+							  forKey:@"svg"];
+	
+    
+    NSMutableArray *retPaths=[[NSMutableArray alloc] init];
+    [retPaths addObject:[self getAnimationPath:0 onSVG:doc withMappings:nsMappings]];
+    [retPaths addObject:[self getAnimationPath:1 onSVG:doc withMappings:nsMappings]];
+    [retPaths addObject:[self getAnimationPath:2 onSVG:doc withMappings:nsMappings]];
+     
+    return retPaths;
+
+}
+
+-(NSMutableArray*)getAnimationPath:(int)pathIndex onSVG:(CXMLDocument *)doc withMappings:(NSDictionary *)nsMappings
+{
+    //get an array of colcircles
+	NSArray *pathPoints=NULL;
+    pathPoints=[doc nodesForXPath:[NSString stringWithFormat:@"//svg:g[@id='path&d']/svg:circle", pathIndex] 
+                namespaceMappings:nsMappings 
+                            error:nil];
+    
+    NSMutableArray *returnPoints=[[NSMutableArray alloc] init];
+    
+    for (CXMLElement *ele in pathPoints) {
+        NSString *spx=[[ele attributeForName:@"cx"] stringValue];
+        NSString *spy=[[ele attributeForName:@"cy"] stringValue];
+        
+        float px=[spx floatValue];
+        float py=[spy floatValue];
+        
+        //flip y
+        py=ly-py;
+        
+        [returnPoints addObject:[NSValue valueWithCGPoint:CGPointMake(px, py)]];
+    }
+    
+    return returnPoints;
 }
 
 

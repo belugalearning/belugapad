@@ -46,7 +46,7 @@ const CGPoint kDaemonPos={50,50};
         
         [self setupBkgAndTitle];
         
-        daemon=[[Daemon alloc] initWithLayer:self andRestingPostion:kDaemonPos];
+        daemon=[[Daemon alloc] initWithLayer:self andRestingPostion:kDaemonPos andLy:2*cy];
         
         [self setupParticle];
         

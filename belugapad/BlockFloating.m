@@ -109,7 +109,7 @@ static void eachShape(void *ptr, void* unused)
         [self setupBkgAndTitle];
         
         //setup daemon
-        daemon=[[Daemon alloc] initWithLayer:self andRestingPostion:kDaemonRest];
+        daemon=[[Daemon alloc] initWithLayer:self andRestingPostion:kDaemonRest andLy:cy*2];
         
         [self setupAudio];
         

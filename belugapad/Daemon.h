@@ -42,6 +42,10 @@ typedef enum {
     
     float standbyTime;
     float incrBreathe;
+    
+    NSString *animKey;
+    NSArray *animPaths;
+    BOOL isAnimating;
 }
 
 -(id)initWithLayer:(CCLayer*)theHostLayer andRestingPostion:(CGPoint)theRestingPos andLy:(float)hostLy;

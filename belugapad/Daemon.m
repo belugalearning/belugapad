@@ -102,6 +102,15 @@ const float standbyExpiry=7.0f;
     maxForce=kChaseMaxForce;
 }
 
+-(void)playAnimation:(NSString *)theAnimKey
+{
+    animKey=theAnimKey;
+    animPaths=[self getAnimationPathsFor:animKey];
+    isAnimating=YES;
+    
+    DLog(@"daemon is animating %@", animKey);
+}
+
 -(void)setMode:(DaemonMode)newMode
 {
     //reset to base
@@ -120,6 +129,9 @@ const float standbyExpiry=7.0f;
     }
     else if(mode==kDaemonModeWaiting)
     {
+        //test animation call
+        [self playAnimation:@"action"];
+        
         target=[primaryParticle position];
     }
     else if(mode==kDaemonModeFollowing)
@@ -246,6 +258,8 @@ const float standbyExpiry=7.0f;
 
 -(NSMutableArray*)getAnimationPathsFor:(NSString *)animKey
 {
+    //todo: consider caching this
+    
     //load animation data
 	NSString *XMLPath=[[[NSBundle mainBundle] resourcePath] 
 					   stringByAppendingPathComponent:[NSString stringWithFormat:@"daemon-%@.svg", animKey]];
@@ -287,11 +301,10 @@ const float standbyExpiry=7.0f;
         NSString *spx=[[ele attributeForName:@"cx"] stringValue];
         NSString *spy=[[ele attributeForName:@"cy"] stringValue];
         
-        float px=[spx floatValue];
-        float py=[spy floatValue];
-        
-        //flip y
-        py=ly-py;
+        //all animations plotted on an inverted-y, 500x500 space -- bring relative to a 250,250 centre point
+        //todo: consider scaling here (instead of at daemon's pquad level?)
+        float px=[spx floatValue]-250;
+        float py=500-[spy floatValue];
         
         [returnPoints addObject:[NSValue valueWithCGPoint:CGPointMake(px, py)]];
     }

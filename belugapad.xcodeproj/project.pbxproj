@@ -281,6 +281,7 @@
 		7FDBA53714EBD560004D1CC9 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA52614EBD560004D1CC9 /* CXMLNode_XPathExtensions.m */; };
 		7FDBA53814EBD560004D1CC9 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA52814EBD560004D1CC9 /* CXMLNode.m */; };
 		7FDBA53914EBD560004D1CC9 /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA52B14EBD560004D1CC9 /* CTidy.m */; };
+		7FDBA54014EBDD6A004D1CC9 /* daemon-action.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7FDBA53F14EBDD6A004D1CC9 /* daemon-action.svg */; };
 		7FF8F12114DD535B00A6D75E /* MenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8F12014DD535B00A6D75E /* MenuScene.m */; };
 		7FF8F12814DD5F0100A6D75E /* bg-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FF8F12514DD5F0100A6D75E /* bg-hd.png */; };
 		7FF8F12A14DD5F0100A6D75E /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FF8F12714DD5F0100A6D75E /* bg.png */; };
@@ -764,6 +765,7 @@
 		7FDBA52A14EBD560004D1CC9 /* CTidy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTidy.h; sourceTree = "<group>"; };
 		7FDBA52B14EBD560004D1CC9 /* CTidy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTidy.m; sourceTree = "<group>"; };
 		7FDBA52C14EBD560004D1CC9 /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchXML.h; sourceTree = "<group>"; };
+		7FDBA53F14EBDD6A004D1CC9 /* daemon-action.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "daemon-action.svg"; sourceTree = "<group>"; };
 		7FF8F11F14DD535B00A6D75E /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
 		7FF8F12014DD535B00A6D75E /* MenuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuScene.m; sourceTree = "<group>"; };
 		7FF8F12514DD5F0100A6D75E /* bg-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-hd.png"; sourceTree = "<group>"; };
@@ -925,6 +927,7 @@
 		7F5113D314A9EE63001AF372 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7FDBA53E14EBDD56004D1CC9 /* daemon animations */,
 				7FF8F12314DD553800A6D75E /* univassets */,
 				7F813D5E14CCC3B300C1E997 /* sprites */,
 				7F813D5D14CCC3AF00C1E997 /* fonts */,
@@ -1693,6 +1696,14 @@
 			path = Tidy;
 			sourceTree = "<group>";
 		};
+		7FDBA53E14EBDD56004D1CC9 /* daemon animations */ = {
+			isa = PBXGroup;
+			children = (
+				7FDBA53F14EBDD6A004D1CC9 /* daemon-action.svg */,
+			);
+			name = "daemon animations";
+			sourceTree = "<group>";
+		};
 		7FF8F12314DD553800A6D75E /* univassets */ = {
 			isa = PBXGroup;
 			children = (
@@ -1876,6 +1887,7 @@
 				7F959A1D14EAE015007D90AC /* placevalue-problem005.plist in Resources */,
 				7F959A1E14EAE015007D90AC /* placevalue-problem006.plist in Resources */,
 				7FDBA50D14EBBD53004D1CC9 /* obj-float-sep.png in Resources */,
+				7FDBA54014EBDD6A004D1CC9 /* daemon-action.svg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,6 +13,7 @@
 @synthesize DropObject;
 @synthesize PickupObject;
 @synthesize ProximateObject;
+@synthesize LastSelectedObject;
 @synthesize SelectedObjects;
 @synthesize AllStores;
 @synthesize PickupOffset;

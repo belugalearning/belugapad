@@ -26,11 +26,15 @@ const ccColor3B kLabelCompleteColor={0, 255, 0};
 const CGPoint kButtonNextToolPos={996, 735};
 
 const float kPropXCommitButtonPadding=0.048f;
+const float kPropXCountLabelPadding=0.188f;
+const float kPropYCountLabelPadding=0.038f;
 const CGRect kRectButtonCommit={{944, 0}, {80, 80}};
 
 
 const float kTimeToAutoMove=1.0f;
+const float kTimeToFadeButtonLabel=2.0f;
 
 // originally used by placevalue for snap back to cage time
 
 const float kTimeObjectSnapBack=0.25f;
+const ccColor3B kLabelCountColor={255, 0, 0};

@@ -24,6 +24,8 @@
     CCLabelTTF *problemDescLabel;
     CCLabelTTF *problemSubLabel;
     CCLabelTTF *problemCompleteLabel;
+    CCLabelTTF *countLabel;
+    CCLabelTTF *countLabelBlock;
     
     int numberofIntegerColumns;
     int numberofDecimalColumns;
@@ -31,6 +33,9 @@
     int rows;
     float defaultColumn;
     float currentColumn;
+    BOOL showCage;
+    BOOL showCount;
+    BOOL showCountOnBlock;
     
     NSArray *problemFiles;
     int currentProblemIndex;

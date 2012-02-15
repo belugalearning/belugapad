@@ -144,11 +144,14 @@ static float kCageYOrigin=0.08f;
         }
     }
     
-    // create cage
-    DWGameObject *colCage = [gw addGameObjectWithTemplate:@"TplaceValueCage"];
-    [[colCage store] setObject:[NSNumber numberWithFloat:cx] forKey:POS_X];
-    [[colCage store] setObject:[NSNumber numberWithFloat:ly*kCageYOrigin] forKey:POS_Y];
-
+    if(showCage) 
+    {
+        // create cage
+        DWGameObject *colCage = [gw addGameObjectWithTemplate:@"TplaceValueCage"];
+        [[colCage store] setObject:[NSNumber numberWithBool:YES] forKey:ALLOW_MULTIPLE_MOUNT];
+        [[colCage store] setObject:[NSNumber numberWithFloat:cx] forKey:POS_X];
+        [[colCage store] setObject:[NSNumber numberWithFloat:ly*kCageYOrigin] forKey:POS_Y];
+    }
     
     for(int i=0; i<(initObjects.count); i++)
     {
@@ -269,6 +272,9 @@ static float kCageYOrigin=0.08f;
     ropesforColumn = [[pdef objectForKey:ROPES_PER_COL] intValue];
     rows = [[pdef objectForKey:ROWS_PER_COL] intValue];
     defaultColumn = [[pdef objectForKey:DEFAULT_COL] floatValue];
+    showCage = [[pdef objectForKey:SHOW_CAGE] boolValue];
+    showCount = [[pdef objectForKey:SHOW_COUNT] boolValue];
+    showCountOnBlock = [[pdef objectForKey:SHOW_COUNT_BLOCK] boolValue];
     
     DLog(@"intcol %d deccol %d ropes %d rows %d defaultcol %f", numberofIntegerColumns, numberofDecimalColumns, ropesforColumn, rows, defaultColumn);
     
@@ -299,6 +305,12 @@ static float kCageYOrigin=0.08f;
         [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
         [self addChild:commitBtn];
     }
+    if(showCount)
+    {
+        countLabel=[CCLabelTTF labelWithString:@"count" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        [countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];   
+        [self addChild:countLabel];
+    }
 
     
 }
@@ -315,6 +327,23 @@ static float kCageYOrigin=0.08f;
         else
         {
             lastCount++;
+            if(showCount)
+            {
+                NSLog(@"should be countin' %d", gw.Blackboard.SelectedObjects.count);
+                [countLabel setString:[NSString stringWithFormat:@"count: %d", gw.Blackboard.SelectedObjects.count]];
+            }
+            if(showCountOnBlock)
+            {
+                CCSprite *s=[[gw.Blackboard.LastSelectedObject store] objectForKey:MY_SPRITE];
+                CGPoint pos=[s position];
+                countLabelBlock=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", gw.Blackboard.SelectedObjects.count] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+                [countLabelBlock setPosition:pos];
+                [self addChild:countLabelBlock z:10];
+                CCFadeOut *labelFade = [CCFadeOut actionWithDuration:kTimeToFadeButtonLabel];
+                [countLabelBlock runAction:labelFade];
+                
+                
+            }
         }
             DLog(@"(COUNT_SEQUENCE) Selected %d lastCount %d", gw.Blackboard.SelectedObjects.count, lastCount);
     }
@@ -559,6 +588,7 @@ static float kCageYOrigin=0.08f;
         {
             DLog(@"register tap - start/end positions were under %f", kTapSlipThreshold);
             [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
+
         }
     
     if([gw Blackboard].PickupObject!=nil)

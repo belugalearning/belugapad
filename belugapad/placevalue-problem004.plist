@@ -19,9 +19,13 @@
 	<key>ALLOW_MULCHING</key>
 	<false/>
 	<key>EVAL_MODE</key>
-	<string>0</string>
+	<string>1</string>
 	<key>REJECT_MODE</key>
 	<string>0</string>
+	<key>SHOW_CAGE</key>
+	<false/>
+	<key>SHOW_COUNT_BLOCK</key>
+	<true/>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>

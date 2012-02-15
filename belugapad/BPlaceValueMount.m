@@ -24,82 +24,81 @@
 }
 -(void)doUpdate:(ccTime)delta
 {
-    //return;
-    if([[gameObject store] objectForKey:MOUNTED_OBJECT])
-    {
-        // set the row and column equal to the current container's position
-        int myColumn = [[[gameObject store] objectForKey:PLACEVALUE_ROPE] intValue];
-        int myRow = [[[gameObject store] objectForKey:PLACEVALUE_ROW] intValue];
-        
-        // if we haven't done the evaluation of the container to our left
-        //if(!evalLeft)
-        //{
-            evalLeft=YES;
-            DWGameObject *moveToLeft = nil;
+        if([[gameObject store] objectForKey:MOUNTED_OBJECT])
+        {
+            // set the row and column equal to the current container's position
+            int myColumn = [[[gameObject store] objectForKey:PLACEVALUE_ROPE] intValue];
+            int myRow = [[[gameObject store] objectForKey:PLACEVALUE_ROW] intValue];
             
-            // then if we're at a position > 0
-            if(myColumn > 0)
-            {
+            // if we haven't done the evaluation of the container to our left
+            //if(!evalLeft)
+            //{
+                evalLeft=YES;
+                DWGameObject *moveToLeft = nil;
                 
-                for(int i=myColumn; i>0; i--)
+                // then if we're at a position > 0
+                if(myColumn > 0)
                 {
-                    // Check the object to our left (-1) for a mounted object
-                    DWGameObject *go = [[gameWorld.Blackboard.AllStores objectAtIndex:myRow] objectAtIndex:(i-1)];
                     
-                    if(![[go store] objectForKey:MOUNTED_OBJECT])
+                    for(int i=myColumn; i>0; i--)
                     {
-                        moveToLeft = go;
+                        // Check the object to our left (-1) for a mounted object
+                        DWGameObject *go = [[gameWorld.Blackboard.AllStores objectAtIndex:myRow] objectAtIndex:(i-1)];
+                        
+                        if(![[go store] objectForKey:MOUNTED_OBJECT])
+                        {
+                            moveToLeft = go;
+                        }
                     }
-                }
-                
-                if(moveToLeft)
-                {
-                    DWGameObject *mountedObject = [[gameObject store] objectForKey:MOUNTED_OBJECT];
-                    NSMutableDictionary *pl = [NSMutableDictionary dictionaryWithObject:moveToLeft forKey:MOUNT];
-                    [pl setObject:[NSNumber numberWithBool:YES] forKey:ANIMATE_ME];
                     
-                    [mountedObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
-                    [gameWorld handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
-                }
-                
-            }
-
-        //}
-        //if(!evalUp)
-        ///{
-            int moveToRow=-1;
-            if(myRow > 0)
-            {
-                for(int i=myRow; i>0; i--)
-                {
-                    DWGameObject *go = [[gameWorld.Blackboard.AllStores objectAtIndex:(i-1)] objectAtIndex:0];
-                    
-                    if(![[go store] objectForKey:MOUNTED_OBJECT])
+                    if(moveToLeft)
                     {
-                        DLog(@"we have empty space above");
-                        moveToRow = i;
-                    }   
-                }
-            }
-            
-           if(moveToRow>=0)
-            {
-                
-                for (DWGameObject *cgo in [gameWorld.Blackboard.AllStores objectAtIndex:myRow]) {
-                    DWGameObject *moveObject = [[cgo store] objectForKey:MOUNTED_OBJECT];
-                    int rope=[[[cgo store] objectForKey:PLACEVALUE_ROPE] intValue];
-                    if(moveObject)
-                    {
-                        NSMutableDictionary *pl = [NSMutableDictionary dictionaryWithObject:[[gameWorld.Blackboard.AllStores objectAtIndex:(myRow-1)] objectAtIndex:rope] forKey:MOUNT];
+                        DWGameObject *mountedObject = [[gameObject store] objectForKey:MOUNTED_OBJECT];
+                        NSMutableDictionary *pl = [NSMutableDictionary dictionaryWithObject:moveToLeft forKey:MOUNT];
                         [pl setObject:[NSNumber numberWithBool:YES] forKey:ANIMATE_ME];
-                        [moveObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
+                        
+                        [mountedObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
+                        [gameWorld handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
+                    }
+                    
+                }
 
+            //}
+            //if(!evalUp)
+            ///{
+                int moveToRow=-1;
+                if(myRow > 0)
+                {
+                    for(int i=myRow; i>0; i--)
+                    {
+                        DWGameObject *go = [[gameWorld.Blackboard.AllStores objectAtIndex:(i-1)] objectAtIndex:0];
+                        
+                        if(![[go store] objectForKey:MOUNTED_OBJECT])
+                        {
+                            DLog(@"we have empty space above");
+                            moveToRow = i;
+                        }   
                     }
                 }
-            }            
-        //[gameObject handleMessage:kDWresetPositionEval];
-        //}
-    }
+                
+               if(moveToRow>=0)
+                {
+                    
+                    for (DWGameObject *cgo in [gameWorld.Blackboard.AllStores objectAtIndex:myRow]) {
+                        DWGameObject *moveObject = [[cgo store] objectForKey:MOUNTED_OBJECT];
+                        int rope=[[[cgo store] objectForKey:PLACEVALUE_ROPE] intValue];
+                        if(moveObject)
+                        {
+                            NSMutableDictionary *pl = [NSMutableDictionary dictionaryWithObject:[[gameWorld.Blackboard.AllStores objectAtIndex:(myRow-1)] objectAtIndex:rope] forKey:MOUNT];
+                            [pl setObject:[NSNumber numberWithBool:YES] forKey:ANIMATE_ME];
+                            [moveObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
+
+                        }
+                    }
+                }            
+            //[gameObject handleMessage:kDWresetPositionEval];
+            //}
+        }
 }
 
 -(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload
@@ -113,6 +112,11 @@
         DWGameObject *addO=[payload objectForKey:MOUNTED_OBJECT];
         [[gameObject store] setObject:addO forKey:MOUNTED_OBJECT];
         [[gameWorld GameScene] problemStateChanged];
+        
+        if([[gameObject store] objectForKey:ALLOW_MULTIPLE_MOUNT])
+        {
+            [addO handleMessage:kDWdeselectAll];
+        }
         
     }
     

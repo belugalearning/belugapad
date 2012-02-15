@@ -8,9 +8,10 @@
 
 #import "DWBehaviour.h"
 
+
 @interface BPlaceValueDropTarget : DWBehaviour
 {
-    
+
 }
 
 -(BPlaceValueDropTarget *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

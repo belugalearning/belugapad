@@ -30,6 +30,7 @@
 		5571BAEF14E4108F0053A62B /* BPlaceValuePickupTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE814E4108F0053A62B /* BPlaceValuePickupTarget.m */; };
 		5571BAF014E4108F0053A62B /* BPlaceValueMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAEA14E4108F0053A62B /* BPlaceValueMount.m */; };
 		5571BAF114E4108F0053A62B /* BPlaceValueMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAEC14E4108F0053A62B /* BPlaceValueMountable.m */; };
+		558EAAE314EBE7B800E67DEF /* placevalue-problem007.plist in Resources */ = {isa = PBXBuildFile; fileRef = 558EAAE214EBE7B700E67DEF /* placevalue-problem007.plist */; };
 		7F39999614D85F7F00745B0C /* obj-blockholder-mount1x1_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F39998C14D85F7F00745B0C /* obj-blockholder-mount1x1_1.png */; };
 		7F39999714D85F7F00745B0C /* obj-blockholder-mount1x1_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F39998D14D85F7F00745B0C /* obj-blockholder-mount1x1_2.png */; };
 		7F39999814D85F7F00745B0C /* obj-blockholder-mount1x1_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F39998E14D85F7F00745B0C /* obj-blockholder-mount1x1_3.png */; };
@@ -311,6 +312,7 @@
 		5571BAEA14E4108F0053A62B /* BPlaceValueMount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueMount.m; sourceTree = "<group>"; };
 		5571BAEB14E4108F0053A62B /* BPlaceValueMountable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueMountable.h; sourceTree = "<group>"; };
 		5571BAEC14E4108F0053A62B /* BPlaceValueMountable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueMountable.m; sourceTree = "<group>"; };
+		558EAAE214EBE7B700E67DEF /* placevalue-problem007.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "placevalue-problem007.plist"; sourceTree = "<group>"; };
 		7F39998C14D85F7F00745B0C /* obj-blockholder-mount1x1_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-blockholder-mount1x1_1.png"; sourceTree = "<group>"; };
 		7F39998D14D85F7F00745B0C /* obj-blockholder-mount1x1_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-blockholder-mount1x1_2.png"; sourceTree = "<group>"; };
 		7F39998E14D85F7F00745B0C /* obj-blockholder-mount1x1_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-blockholder-mount1x1_3.png"; sourceTree = "<group>"; };
@@ -769,6 +771,7 @@
 				7F959A1914EAE015007D90AC /* placevalue-problem004.plist */,
 				7F959A1A14EAE015007D90AC /* placevalue-problem005.plist */,
 				7F959A1B14EAE015007D90AC /* placevalue-problem006.plist */,
+				558EAAE214EBE7B700E67DEF /* placevalue-problem007.plist */,
 			);
 			name = placevalue;
 			sourceTree = "<group>";
@@ -1781,6 +1784,7 @@
 				7F959A1C14EAE015007D90AC /* placevalue-problem004.plist in Resources */,
 				7F959A1D14EAE015007D90AC /* placevalue-problem005.plist in Resources */,
 				7F959A1E14EAE015007D90AC /* placevalue-problem006.plist in Resources */,
+				558EAAE314EBE7B800E67DEF /* placevalue-problem007.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

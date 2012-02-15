@@ -169,7 +169,7 @@ static void eachShape(void *ptr, void* unused)
     //set up
     [self setupBkgAndTitle];
     
-    daemon=[[Daemon alloc] initWithLayer:self andRestingPostion:kDaemonRest];
+    daemon=[[Daemon alloc] initWithLayer:self andRestingPostion:kDaemonRest andLy:2*cy];
     
     [self setupChSpace];
     
@@ -670,6 +670,17 @@ static void eachShape(void *ptr, void* unused)
             [gameWorld handleMessage:kDWenableOccludingSeparators andPayload:nil withLogLevel:0];
         }
     }
+    
+    //enable daemon animations
+    NSNumber *enableDaemonAnim=[pdef objectForKey:ANIMATIONS_ENABLED];
+    if(enableDaemonAnim)
+    {
+        if([enableDaemonAnim boolValue])
+        {
+            [daemon enableAnimations];
+        }
+    }
+    
 }
 
 -(void)spawnObjects:(NSDictionary*)objects

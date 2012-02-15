@@ -219,7 +219,7 @@ static float kCageYOrigin=0.08f;
 
     [self readPlist];
     
-        daemon=[[Daemon alloc] initWithLayer:self andRestingPostion:ccp(kPropXDaemonRest*lx, kPropXDaemonRest*lx)];
+        daemon=[[Daemon alloc] initWithLayer:self andRestingPostion:ccp(kPropXDaemonRest*lx, kPropXDaemonRest*lx) andLy:ly];
 
     [self populateGW];
     

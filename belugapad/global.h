@@ -131,6 +131,9 @@
 
 #define IS_CONTAINED_BY @"IS_CONTAINED_BY"
 
+//daemon params
+#define ANIMATIONS_ENABLED @"ANIMATIONS_ENABLED"
+
 
 //ghost parameters
 #define GHOST_DURATION_MOVE 1.5f

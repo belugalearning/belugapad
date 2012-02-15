@@ -24,10 +24,11 @@ typedef enum {
 {
     CCParticleSystemQuad *primaryParticle;
     CCLayer *hostLayer;
-    
+
     DaemonMode mode;
     CGPoint restingPos;
     CGPoint target;
+    CGPoint animBaseTarget;
 
     float maxForce;
     float maxSpeed;
@@ -42,10 +43,13 @@ typedef enum {
     
     float standbyTime;
     float incrBreathe;
+
+    BOOL animationsEnabled;
     
     NSString *animKey;
     NSArray *animPaths;
     BOOL isAnimating;
+    int animationIndex;
 }
 
 -(id)initWithLayer:(CCLayer*)theHostLayer andRestingPostion:(CGPoint)theRestingPos andLy:(float)hostLy;
@@ -62,6 +66,7 @@ typedef enum {
 -(CGPoint)getSeekArriveSV;
 -(CGPoint)getNewPositionWithDesiredSteer:(CGPoint)desiredSteer andDelta:(ccTime)delta;
 
+-(void)enableAnimations;
 -(NSMutableArray*)getAnimationPathsFor:(NSString *)animKey;
 -(NSMutableArray*)getAnimationPath:(int)pathIndex onSVG:(CXMLDocument *)doc withMappings:(NSDictionary *)nsMappings;
 

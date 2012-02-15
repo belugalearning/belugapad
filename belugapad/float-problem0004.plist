@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>place 4 objects in order of size</string>
+	<key>ANIMATIONS_ENABLED</key>
+	<true/>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>

@@ -25,6 +25,7 @@ const float kBaseSlowingDistance=50.0f;
 const float kBaseEffectiveRadius=15.0f;
 
 const float kMinLengthThreshold=1.0f;
+const float kMinLenthAnimThreshold=20.0f;
 
 //const float kBreatheSimMax=500.0f;
 //const float kBreatheSimScalarDown=20.0f;
@@ -107,6 +108,11 @@ const float standbyExpiry=7.0f;
     animKey=theAnimKey;
     animPaths=[self getAnimationPathsFor:animKey];
     isAnimating=YES;
+    animationIndex=0;
+    animBaseTarget=[primaryParticle position];
+    
+    //currently there is only one head, set target to point 0 on that path
+    target=[BLMath AddVector:animBaseTarget toVector:[[[animPaths objectAtIndex:0] objectAtIndex:0] CGPointValue]];
     
     DLog(@"daemon is animating %@", animKey);
 }
@@ -129,8 +135,11 @@ const float standbyExpiry=7.0f;
     }
     else if(mode==kDaemonModeWaiting)
     {
-        //test animation call
-        [self playAnimation:@"action"];
+        if(animationsEnabled)
+        {
+            //test animation call
+            [self playAnimation:@"action"];
+        }
         
         target=[primaryParticle position];
     }
@@ -144,6 +153,11 @@ const float standbyExpiry=7.0f;
         maxForce=kChaseMaxForce;
     }
     
+}
+
+-(void)enableAnimations
+{
+    animationsEnabled=YES;
 }
 
 -(void)resetToRestAtPoint:(CGPoint)newRestingPoint
@@ -203,27 +217,61 @@ const float standbyExpiry=7.0f;
 {
     BOOL cancelVelocity=NO;
     
+    float useMaxForce=maxForce;
+    float useMaxSpeed=maxSpeed;
+    
+    if(isAnimating)
+    {
+        useMaxForce*=5;
+        useMaxSpeed*=5;
+    }
+    
     CGPoint pos=[primaryParticle position];
     
     //get the vector between pos and target and normalize
     CGPoint dv=[BLMath NormalizeVector:[BLMath SubtractVector:pos from:target]];
     
     //length of vector is currently max speed -- could be based on current speed?
-    dv=[BLMath MultiplyVector:dv byScalar:maxSpeed];
+    dv=[BLMath MultiplyVector:dv byScalar:useMaxSpeed];
     
     float lv=[BLMath LengthOfVector:[BLMath SubtractVector:pos from:target]];
     
-    //check if length of that vector < min relevant value, if so stop movement
-    if(lv<kMinLengthThreshold)
+    if(isAnimating)
     {
-        dv=CGPointMake(0, 0);
-        cancelVelocity=YES;
+        if(lv<kMinLenthAnimThreshold)
+        {
+            dv=CGPointMake(0, 0);
+            cancelVelocity=YES;
+            
+            //increment animation index and point
+            animationIndex++;
+            if(animationIndex>=[[animPaths objectAtIndex:0] count])
+            {
+                //animation is over
+                isAnimating=NO;
+            }
+            else
+            {
+                //get next animation point
+                target=[BLMath AddVector:animBaseTarget toVector:[[[animPaths objectAtIndex:0] objectAtIndex:animationIndex] CGPointValue]];
+            }
+        }        
     }
-    //check if length of that vector < slowingDistance, if so ramp it down
-    else if(lv<slowingDist)
+    else
     {
-        //ramp toward zero
-        dv=[BLMath MultiplyVector:dv byScalar:(lv / slowingDist)];
+        //do normal seek / arrive throttling
+        //check if length of that vector < min relevant value, if so stop movement
+        if(lv<kMinLengthThreshold)
+        {
+            dv=CGPointMake(0, 0);
+            cancelVelocity=YES;
+        }
+        //check if length of that vector < slowingDistance, if so ramp it down
+        else if(lv<slowingDist)
+        {
+            //ramp toward zero
+            dv=[BLMath MultiplyVector:dv byScalar:(lv / slowingDist)];
+        }        
     }
     
     //steering is difference between current vector velocity and desired velocity
@@ -237,17 +285,26 @@ const float standbyExpiry=7.0f;
 
 -(CGPoint)getNewPositionWithDesiredSteer:(CGPoint)desiredSteer andDelta:(ccTime)delta
 {
+    float useMaxForce=maxForce;
+    float useMaxSpeed=maxSpeed;
+    
+    if(isAnimating)
+    {
+        useMaxForce*=10;
+        useMaxSpeed*=10;
+    }
+    
     //todo: what affect of using primary pos of pquad over hosting all pquad (if more than one used) on this pos
     CGPoint pos=[primaryParticle position];
     
     //bail if desired steer is zero
     if(desiredSteer.x==0 && desiredSteer.y==0) return pos;
     
-    CGPoint steerForce=[BLMath TruncateVector:desiredSteer toMaxLength:maxForce];
+    CGPoint steerForce=[BLMath TruncateVector:desiredSteer toMaxLength:useMaxForce];
     CGPoint acc=[BLMath DivideVector:steerForce byScalar:mass];
     
     //track velocity to automate external animation -- or other actions reliant on future position
-    velocity=[BLMath TruncateVector:[BLMath AddVector:velocity toVector:acc] toMaxLength:maxSpeed];
+    velocity=[BLMath TruncateVector:[BLMath AddVector:velocity toVector:acc] toMaxLength:useMaxSpeed];
     
     //don't add velocity directly -- add this time step's velocity
     CGPoint tsVel=[BLMath MultiplyVector:velocity byScalar:delta];
@@ -256,13 +313,13 @@ const float standbyExpiry=7.0f;
     return pos;
 }
 
--(NSMutableArray*)getAnimationPathsFor:(NSString *)animKey
+-(NSMutableArray*)getAnimationPathsFor:(NSString *)theAnimKey
 {
     //todo: consider caching this
     
     //load animation data
 	NSString *XMLPath=[[[NSBundle mainBundle] resourcePath] 
-					   stringByAppendingPathComponent:[NSString stringWithFormat:@"daemon-%@.svg", animKey]];
+					   stringByAppendingPathComponent:[NSString stringWithFormat:@"daemon-%@.svg", theAnimKey]];
 	
 	//use that file to populate an NSData object
 	NSData *XMLData=[NSData dataWithContentsOfFile:XMLPath];
@@ -291,7 +348,7 @@ const float standbyExpiry=7.0f;
 {
     //get an array of colcircles
 	NSArray *pathPoints=NULL;
-    pathPoints=[doc nodesForXPath:[NSString stringWithFormat:@"//svg:g[@id='path&d']/svg:circle", pathIndex] 
+    pathPoints=[doc nodesForXPath:[NSString stringWithFormat:@"//svg:g[@id='path%d']/svg:circle", pathIndex] 
                 namespaceMappings:nsMappings 
                             error:nil];
     
@@ -304,7 +361,7 @@ const float standbyExpiry=7.0f;
         //all animations plotted on an inverted-y, 500x500 space -- bring relative to a 250,250 centre point
         //todo: consider scaling here (instead of at daemon's pquad level?)
         float px=[spx floatValue]-250;
-        float py=500-[spy floatValue];
+        float py=(500-[spy floatValue])-250;
         
         [returnPoints addObject:[NSValue valueWithCGPoint:CGPointMake(px, py)]];
     }

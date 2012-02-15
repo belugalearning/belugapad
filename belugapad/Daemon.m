@@ -8,6 +8,7 @@
 
 #import "Daemon.h"
 #import "BLMath.h"
+#import "TouchXML.h"
 
 const float kBaseMaxForce=1500.0f;
 

@@ -18,6 +18,8 @@
     
     BOOL physDetached;
     
+    NSMutableArray *occSeparators;
+    BOOL enableOccludingSeparators;
 }
 
 -(BFloatObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
@@ -30,5 +32,8 @@
 -(void)addThisChild:(NSDictionary *)child;
 -(void)subtractWithThisChild:(NSDictionary *)child;
 -(NSMutableArray *)getMatrixContainingChildren;
+
+-(void)addOccludingSeparators;
+-(void)removeOccludingSeparators;
 
 @end

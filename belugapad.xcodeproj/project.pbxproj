@@ -80,7 +80,7 @@
 		7F50ABF214C4DB290033C377 /* obj-blockholder-mount1x1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABF114C4DB290033C377 /* obj-blockholder-mount1x1.png */; };
 		7F50ABF714C55AAE0033C377 /* float-problem5.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABF314C55AAE0033C377 /* float-problem5.plist */; };
 		7F50ABF814C55AAE0033C377 /* float-problem4.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABF414C55AAE0033C377 /* float-problem4.plist */; };
-		7F50ABF914C55AAE0033C377 /* float-problem3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABF514C55AAE0033C377 /* float-problem3.plist */; };
+		7F50ABF914C55AAE0033C377 /* float-problem0003.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABF514C55AAE0033C377 /* float-problem0003.plist */; };
 		7F50ABFA14C55AAE0033C377 /* float-problem0002.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F50ABF614C55AAE0033C377 /* float-problem0002.plist */; };
 		7F5113C314A9EE62001AF372 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C214A9EE62001AF372 /* QuartzCore.framework */; };
 		7F5113C514A9EE62001AF372 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C414A9EE62001AF372 /* OpenGLES.framework */; };
@@ -267,6 +267,7 @@
 		7FAEC26114BB5BA000E60983 /* visgrad1.fnt in Resources */ = {isa = PBXBuildFile; fileRef = 7FAEC25F14BB5BA000E60983 /* visgrad1.fnt */; };
 		7FAEC26214BB5BA000E60983 /* visgrad1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FAEC26014BB5BA000E60983 /* visgrad1.png */; };
 		7FAEC26414BB64C200E60983 /* btn-fwd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FAEC26314BB64C200E60983 /* btn-fwd.png */; };
+		7FDBA50D14EBBD53004D1CC9 /* obj-float-sep.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FDBA50C14EBBD53004D1CC9 /* obj-float-sep.png */; };
 		7FF8F12114DD535B00A6D75E /* MenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8F12014DD535B00A6D75E /* MenuScene.m */; };
 		7FF8F12814DD5F0100A6D75E /* bg-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FF8F12514DD5F0100A6D75E /* bg-hd.png */; };
 		7FF8F12A14DD5F0100A6D75E /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FF8F12714DD5F0100A6D75E /* bg.png */; };
@@ -361,7 +362,7 @@
 		7F50ABF114C4DB290033C377 /* obj-blockholder-mount1x1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-blockholder-mount1x1.png"; sourceTree = "<group>"; };
 		7F50ABF314C55AAE0033C377 /* float-problem5.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem5.plist"; sourceTree = "<group>"; };
 		7F50ABF414C55AAE0033C377 /* float-problem4.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem4.plist"; sourceTree = "<group>"; };
-		7F50ABF514C55AAE0033C377 /* float-problem3.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem3.plist"; sourceTree = "<group>"; };
+		7F50ABF514C55AAE0033C377 /* float-problem0003.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem0003.plist"; sourceTree = "<group>"; };
 		7F50ABF614C55AAE0033C377 /* float-problem0002.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem0002.plist"; sourceTree = "<group>"; };
 		7F5113BE14A9EE62001AF372 /* belugapad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = belugapad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F5113C214A9EE62001AF372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -722,6 +723,7 @@
 		7FAEC25F14BB5BA000E60983 /* visgrad1.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = visgrad1.fnt; sourceTree = "<group>"; };
 		7FAEC26014BB5BA000E60983 /* visgrad1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = visgrad1.png; sourceTree = "<group>"; };
 		7FAEC26314BB64C200E60983 /* btn-fwd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-fwd.png"; sourceTree = "<group>"; };
+		7FDBA50C14EBBD53004D1CC9 /* obj-float-sep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-float-sep.png"; sourceTree = "<group>"; };
 		7FF8F11F14DD535B00A6D75E /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
 		7FF8F12014DD535B00A6D75E /* MenuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuScene.m; sourceTree = "<group>"; };
 		7FF8F12514DD5F0100A6D75E /* bg-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-hd.png"; sourceTree = "<group>"; };
@@ -826,7 +828,7 @@
 				7F719C4714D85DEB00F30E89 /* usergen */,
 				7F50ABEB14C4C6300033C377 /* float-problem0001.plist */,
 				7F50ABF614C55AAE0033C377 /* float-problem0002.plist */,
-				7F50ABF514C55AAE0033C377 /* float-problem3.plist */,
+				7F50ABF514C55AAE0033C377 /* float-problem0003.plist */,
 				7F50ABF414C55AAE0033C377 /* float-problem4.plist */,
 				7F50ABF314C55AAE0033C377 /* float-problem5.plist */,
 				7F813F3214CF17E900C1E997 /* float-problem6.plist */,
@@ -1495,6 +1497,7 @@
 				7F93668214D1BC2D00CAEF47 /* obj-blockholder-mount1x1-red.png */,
 				7F93668714D1BE3400CAEF47 /* obj-blockholder-mount1x1-yellow.png */,
 				7F54E60314E9B2AF00F25235 /* operator-popup.png */,
+				7FDBA50C14EBBD53004D1CC9 /* obj-float-sep.png */,
 			);
 			name = floating;
 			sourceTree = "<group>";
@@ -1696,7 +1699,7 @@
 				7F50ABF214C4DB290033C377 /* obj-blockholder-mount1x1.png in Resources */,
 				7F50ABF714C55AAE0033C377 /* float-problem5.plist in Resources */,
 				7F50ABF814C55AAE0033C377 /* float-problem4.plist in Resources */,
-				7F50ABF914C55AAE0033C377 /* float-problem3.plist in Resources */,
+				7F50ABF914C55AAE0033C377 /* float-problem0003.plist in Resources */,
 				7F50ABFA14C55AAE0033C377 /* float-problem0002.plist in Resources */,
 				7F813D5814CCBDDD00C1E997 /* fire1.plist in Resources */,
 				7F813D5C14CCC3A100C1E997 /* fire2.plist in Resources */,
@@ -1781,6 +1784,7 @@
 				7F959A1C14EAE015007D90AC /* placevalue-problem004.plist in Resources */,
 				7F959A1D14EAE015007D90AC /* placevalue-problem005.plist in Resources */,
 				7F959A1E14EAE015007D90AC /* placevalue-problem006.plist in Resources */,
+				7FDBA50D14EBBD53004D1CC9 /* obj-float-sep.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,6 +22,8 @@
     
     amPickedUp=NO;
     
+    occSeparators=[[NSMutableArray alloc] init];
+    
     return self;
 }
 
@@ -32,10 +34,19 @@
         //[self setSprite];
     }
     
+    if(messageType==kDWenableOccludingSeparators)
+    {
+        enableOccludingSeparators=YES;
+    }
+    
     if(messageType==kDWupdateSprite)
     {
         CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
-        if(mySprite==nil) [self setSprite];
+        if(mySprite==nil) 
+        {
+            [self setSprite];
+            [self addOccludingSeparators];
+        }
         [self setSpritePos:payload];
         
         //set phys position
@@ -53,7 +64,11 @@
         if(amPickedUp==NO)
         {
             CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
-            if(mySprite==nil) [self setSprite];
+            if(mySprite==nil) 
+            {
+                [self setSprite];   
+                [self addOccludingSeparators];
+            }
             [self setSpritePos:payload];            
         }
     }
@@ -66,11 +81,15 @@
     if(messageType==kDWpickedUp)
     {
         amPickedUp=YES;
+        
+        [self removeOccludingSeparators];
     }
     
     if(messageType==kDWputdown)
     {
         amPickedUp=NO;
+        
+        [self addOccludingSeparators];
     }
     
     if(messageType==kDWsetMount || messageType==kDWdetachPhys)
@@ -145,7 +164,7 @@
         else r++;
     }
     
-    //add other children in rectangle fasion
+    //add children in rectangle fasion
     
     int unitsCreated=0;
     
@@ -224,10 +243,92 @@
     return accumPos;
 }
 
+-(void)addOccludingSeparators
+{
+    if(!enableOccludingSeparators) return;
+    
+    NSMutableArray *flatChildren=[[gameObject store] objectForKey:OBJ_CHILDMATRIX];
+    NSMutableArray *matrix=[self getMatrixContainingChildren];
+    CCNode *objectNode=[[gameObject store] objectForKey:MY_SPRITE];
+    
+    for (int c=0; c<[matrix count]; c++) {    // iterate to one from last column
+        for(int r=0; r<[[matrix objectAtIndex:0] count]; r++)
+        {
+            int flatIndex=[[[matrix objectAtIndex:c] objectAtIndex:r] intValue];
+            if(flatIndex >= 0)
+            {
+                //is there an object in the next space on this row
+                if(r<[[matrix objectAtIndex:0] count]-1)
+                {
+                    int nextRowFlatIndex=[[[matrix objectAtIndex:c] objectAtIndex:r+1] intValue];
+                    if(nextRowFlatIndex>=0)
+                    {
+                        //there's an object adjacent on this row, draw an occlusion separator
+                        CCSprite *rowSep=[CCSprite spriteWithFile:@"obj-float-sep.png"];
+                        [rowSep setRotation:90.0f];
+                        [objectNode addChild:rowSep];
+                        
+                        CGPoint thisRowObjPos=[[[flatChildren objectAtIndex:flatIndex] objectForKey:MY_SPRITE] position];
+                        [rowSep setPosition:[BLMath AddVector:ccp(0, HALF_SIZE) toVector:thisRowObjPos]];   
+                        
+                        [occSeparators addObject:rowSep];
+                    }
+                }
+                
+                if(c<[matrix count]-1)
+                {
+                    //is there an object in the next column
+                    int nextColFlatIndex=[[[matrix objectAtIndex:c+1] objectAtIndex:r] intValue];
+                    if(nextColFlatIndex>=0)
+                    {
+                        CCSprite *colSep=[CCSprite spriteWithFile:@"obj-float-sep.png"];
+                        [objectNode addChild:colSep];
+                        
+                        CGPoint thisRowObjPos=[[[flatChildren objectAtIndex:flatIndex] objectForKey:MY_SPRITE] position];
+                        [colSep setPosition:[BLMath AddVector:ccp(HALF_SIZE, 0) toVector:thisRowObjPos]];                        
+                        
+                        [occSeparators addObject:colSep];
+                    }
+                }
+                
+                if((r<[[matrix objectAtIndex:0] count]-1) && (c<[matrix count]-1))
+                {
+                    int nextRowFlatIndex=[[[matrix objectAtIndex:c] objectAtIndex:r+1] intValue];
+                    int nextColFlatIndex=[[[matrix objectAtIndex:c+1] objectAtIndex:r] intValue];
+                    int diagFlatIndex=[[[matrix objectAtIndex:c+1] objectAtIndex:r+1] intValue];
+                    
+                    if(nextColFlatIndex>=0 && nextRowFlatIndex >=0 && diagFlatIndex >=0)
+                    {
+                        CCSprite *diagSep=[CCSprite spriteWithFile:@"obj-float-sep.png"];
+                        [objectNode addChild:diagSep];
+                        
+                        CGPoint thisRowObjPos=[[[flatChildren objectAtIndex:flatIndex] objectForKey:MY_SPRITE] position];
+                        [diagSep setPosition:[BLMath AddVector:ccp(HALF_SIZE, HALF_SIZE) toVector:thisRowObjPos]];                        
+                        
+                        [occSeparators addObject:diagSep];
+                    }
+                }
+            }
+        }
+    }
+}
+
+-(void)removeOccludingSeparators
+{
+    if(!enableOccludingSeparators) return;
+    
+    CCNode *n=[[gameObject store] objectForKey:MY_SPRITE];
+    
+    for (CCNode *s in occSeparators) {
+        [n removeChild:s cleanup:YES];
+    }
+    
+    [occSeparators removeAllObjects];
+}
+
 -(void)addMeTo:(DWGameObject*)targetGo
 {
     CGPoint offsetPos=[BLMath offsetPosFrom:[self avgPosForFloatObject:gameObject] to:[self avgPosForFloatObject:targetGo]];
-    DLog(@"add operation from %@", NSStringFromCGPoint(offsetPos));
 
     for (NSDictionary *child in [[gameObject store] objectForKey:OBJ_CHILDMATRIX]) {
         [targetGo handleMessage:kDWfloatAddThisChild andPayload:[NSDictionary dictionaryWithObject:child forKey:OBJ_CHILD] withLogLevel:0];
@@ -246,6 +347,33 @@
     CGPoint offsetPos=[BLMath offsetPosFrom:[self avgPosForFloatObject:gameObject] to:[self avgPosForFloatObject:targetGo]];
     DLog(@"subtract operation from %@", NSStringFromCGPoint(offsetPos));
     
+    int removeCount=0;
+    
+    for(NSDictionary *child in [[gameObject store] objectForKey:OBJ_CHILDMATRIX]){
+        [targetGo handleMessage:kDWfloatSubtractThisChild andPayload:[NSDictionary dictionaryWithObject:child forKey:OBJ_CHILD] withLogLevel:0];
+    
+        removeCount++;
+        
+        [child release];
+        
+        if([[[targetGo store] objectForKey:OBJ_CHILDMATRIX] count]==0)
+        {
+            [targetGo handleMessage:kDWdetachPhys];
+            [gameWorld delayRemoveGameObject:targetGo];
+            break;
+        }
+    }
+
+    if(removeCount==[[[gameObject store] objectForKey:OBJ_CHILDMATRIX] count])
+    {
+        //relinquish ownership of all these children (technically already done above)
+        [[[gameObject store] objectForKey:OBJ_CHILDMATRIX] release];
+        
+        //destroy myself
+        [gameObject handleMessage:kDWdetachPhys];
+        [gameWorld delayRemoveGameObject:gameObject];
+
+    }
 }
 
 -(void)addThisChild:(NSMutableDictionary *)child
@@ -316,12 +444,70 @@
  
     //update the count on this object
     [[gameObject store] setObject:[NSNumber numberWithInt:[flatChildren count]] forKey:OBJ_UNITCOUNT];
+    
+    //update separators
+    [self removeOccludingSeparators];
+    [self addOccludingSeparators];
 }
     
 
 -(void)subtractWithThisChild:(NSDictionary *)child
 {
+    NSMutableArray *flatChildren=[[gameObject store] objectForKey:OBJ_CHILDMATRIX];
+    NSDictionary *localRemove=[flatChildren objectAtIndex:[flatChildren count]-1];
+    NSDictionary *remoteRemove=child;
     
+    CCSprite *localSprite=[localRemove objectForKey:MY_SPRITE];
+    CCSprite *remoteSprite=[remoteRemove objectForKey:MY_SPRITE];
+    CCNode *objectNode=[[gameObject store] objectForKey:MY_SPRITE];
+    
+    CGPoint localPos=[objectNode convertToWorldSpace:[localSprite position]];
+    CGPoint remotePos=[[remoteSprite parent] convertToWorldSpace:[remoteSprite position]];
+    
+    //we'll copy texture and then use this to animate delete
+    CCSprite *subSprite=[CCSprite spriteWithTexture:[remoteSprite texture]];
+    CCSprite *holdSprite=[CCSprite spriteWithTexture:[localSprite texture]];
+    
+    [flatChildren removeObject:localRemove];
+
+    //put a placeholder in original position
+    [holdSprite setPosition:localPos];
+//    [holdSprite setPosition:[localSprite position]];
+//    [holdSprite setAnchorPoint:[objectNode position]];
+//    [holdSprite setRotation:[localSprite rotation]];
+    [[gameWorld GameScene] addChild:holdSprite];
+    CCDelayTime *t0=[CCDelayTime actionWithDuration:1.0f];
+    CCFadeOut *t1=[CCFadeOut actionWithDuration:0.1f];
+    CCSequence *tseq=[CCSequence actions:t0, t1, nil];
+    [holdSprite runAction:tseq];
+    
+    //animate a subtraction from remotePos to localPos
+    [subSprite setColor:ccc3(255, 0, 0)];
+    [subSprite setPosition:remotePos];
+//    [subSprite setPosition:[remoteSprite position]];
+//    [subSprite setAnchorPoint:[[remoteSprite parent] position]];
+//    [subSprite setRotation:[remoteSprite rotation]];
+    CCDelayTime *s0=[CCDelayTime actionWithDuration:0.5f];
+    CCMoveTo *s1=[CCMoveTo actionWithDuration:0.3f position:localPos];
+    CCDelayTime *s2=[CCDelayTime actionWithDuration:0.3f];
+    CCFadeOut *s3=[CCFadeOut actionWithDuration:1.5f];
+    CCSequence *seq=[CCSequence actions:s0, s1, s2, s3, nil];
+    [[gameWorld GameScene] addChild:subSprite];
+    [subSprite runAction:seq];
+
+    
+    [localSprite setVisible:NO];
+    [remoteSprite setVisible:NO];
+    
+    [[gameWorld GameScene] removeChild:localSprite cleanup:YES];
+    [[gameWorld GameScene] removeChild:remoteSprite cleanup:YES];
+    
+    //update count
+    [[gameObject store] setObject:[NSNumber numberWithInt:[flatChildren count]] forKey:OBJ_UNITCOUNT];
+    
+    //update separators
+    [self removeOccludingSeparators];
+    [self addOccludingSeparators];
 }
 
 -(NSMutableArray *)getMatrixContainingChildren

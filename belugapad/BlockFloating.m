@@ -660,6 +660,16 @@ static void eachShape(void *ptr, void* unused)
     {
         enableOperators=NO;
     }
+    
+    //separators
+    NSNumber *enableOccSeparators=[pdef objectForKey:ENABLE_OCCLUDING_SEPARATORS];
+    if(enableOccSeparators)
+    {
+        if([enableOccSeparators boolValue])
+        {
+            [gameWorld handleMessage:kDWenableOccludingSeparators andPayload:nil withLogLevel:0];
+        }
+    }
 }
 
 -(void)spawnObjects:(NSDictionary*)objects

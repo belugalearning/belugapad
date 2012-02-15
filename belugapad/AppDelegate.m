@@ -122,7 +122,7 @@
     //[[CCDirector sharedDirector] runWithScene:[BlockHolder scene]];
     //[[CCDirector sharedDirector] runWithScene:[MenuScene scene]];
     //[[CCDirector sharedDirector] runWithScene:[BlockFloating scene]];
-    [[CCDirector sharedDirector] runWithScene:[PlaceValue scene]];
+    [[CCDirector sharedDirector] runWithScene:[BlockFloating scene]];
 }
 
 

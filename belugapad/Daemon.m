@@ -98,8 +98,6 @@ const float standbyExpiry=7.0f;
     
     //currently there is only one head, set target to point 0 on that path
     target=[BLMath AddVector:animBaseTarget toVector:[[[animPaths objectAtIndex:0] objectAtIndex:0] CGPointValue]];
-    
-    DLog(@"daemon is animating %@", animKey);
 }
 
 -(void)animationOver
@@ -288,8 +286,6 @@ const float standbyExpiry=7.0f;
     
     //don't add velocity directly -- add this time step's velocity
     CGPoint tsVel=[BLMath MultiplyVector:velocity byScalar:delta];
-    
-    DLog(@"tsVel %@", NSStringFromCGPoint(tsVel));
     
     pos=[BLMath AddVector:pos toVector:tsVel];
     return pos;

@@ -43,11 +43,15 @@ const int kPhysCPActiveCount=600;
 const CGPoint kPhysGravityDefault={0, 500};
 const float kPhysWaterLineElastcity=0.65f;
 
-const float kScheduleEvalLoopTFPS=6.0f;
+//const float kScheduleEvalLoopTFPS=6.0f;
+const float kScheduleEvalLoopTFPS=1.0f;
 
 const CGPoint kDaemonRest={50, 50};
 
 static float kScheduleProximityLoopTFPS=4.0f;
+//static float kScheduleProximityLoopTFPS=1.0f;
+
+
 static float kOperatorPopupYOffset=80.0f;
 static float kOperatorPopupDragFriction=0.75f;
 

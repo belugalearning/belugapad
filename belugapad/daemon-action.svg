@@ -15,17 +15,20 @@
 	<circle display="inline" fill="#F1F2F2" stroke="#006838" stroke-miterlimit="10" cx="381.928" cy="303" r="9"/>
 	<circle display="inline" fill="#F1F2F2" stroke="#006838" stroke-miterlimit="10" cx="304" cy="408" r="9"/>
 </g>
+<g id="Layer_6">
+	<line fill="none" stroke="#006838" stroke-miterlimit="10" x1="290" y1="361" x2="454" y2="48"/>
+</g>
 <g id="path0">
 	<circle fill="#F1F2F2" stroke="#006838" stroke-miterlimit="10" cx="184" cy="193" r="9"/>
 	<circle fill="#F1F2F2" stroke="#006838" stroke-miterlimit="10" cx="215" cy="230" r="9"/>
 	<circle fill="#F1F2F2" stroke="#006838" stroke-miterlimit="10" cx="238" cy="256" r="9"/>
 	<circle fill="#F1F2F2" stroke="#006838" stroke-miterlimit="10" cx="263" cy="307" r="9"/>
 	<circle fill="#F1F2F2" stroke="#006838" stroke-miterlimit="10" cx="290" cy="361" r="9"/>
-	<circle fill="#F1F2F2" stroke="#006838" stroke-miterlimit="10" cx="310" cy="302" r="9"/>
-	<circle fill="#F1F2F2" stroke="#006838" stroke-miterlimit="10" cx="337" cy="256" r="9"/>
-	<circle fill="#F1F2F2" stroke="#006838" stroke-miterlimit="10" cx="374" cy="202" r="9"/>
-	<circle fill="#F1F2F2" stroke="#006838" stroke-miterlimit="10" cx="406" cy="146" r="9"/>
-	<circle fill="#F1F2F2" stroke="#006838" stroke-miterlimit="10" cx="454" cy="69" r="9"/>
+	<circle fill="#F1F2F2" stroke="#006838" stroke-miterlimit="10" cx="321" cy="302" r="9"/>
+	<circle fill="#F1F2F2" stroke="#006838" stroke-miterlimit="10" cx="346" cy="250" r="9"/>
+	<circle fill="#F1F2F2" stroke="#006838" stroke-miterlimit="10" cx="372" cy="202" r="9"/>
+	<circle fill="#F1F2F2" stroke="#006838" stroke-miterlimit="10" cx="406" cy="132" r="9"/>
+	<circle fill="#F1F2F2" stroke="#006838" stroke-miterlimit="10" cx="445" cy="60" r="9"/>
 </g>
 <g id="path1">
 </g>

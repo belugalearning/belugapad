@@ -50,9 +50,15 @@ typedef enum {
     NSArray *animPaths;
     BOOL isAnimating;
     int animationIndex;
+    
+    float baseEmitterRate;
+    float baseLife;
+    
+    float baseStartSize;
 }
 
 -(id)initWithLayer:(CCLayer*)theHostLayer andRestingPostion:(CGPoint)theRestingPos andLy:(float)hostLy;
+-(void)setColor:(ccColor4F)aColor;
 
 -(void)doUpdate:(ccTime)delta;
 -(void)resetToRestAtPoint:(CGPoint)newRestingPoint;
@@ -69,5 +75,7 @@ typedef enum {
 -(void)enableAnimations;
 -(NSMutableArray*)getAnimationPathsFor:(NSString *)animKey;
 -(NSMutableArray*)getAnimationPath:(int)pathIndex onSVG:(CXMLDocument *)doc withMappings:(NSDictionary *)nsMappings;
+
+-(void)animationOver;
 
 @end

@@ -10,49 +10,23 @@
 #import "BLMath.h"
 #import "TouchXML.h"
 
-const float kBaseMaxForce=1500.0f;
-
-const float kBaseMaxSpeed=200.0f;
+const float kBaseMaxForce=6000.0f;
+const float kBaseMaxSpeed=800.0f;
+const float kBaseMass=5.0f;
+const float kBaseEffectiveRadius=15.0f;
+const float kBaseSlowingDistance=20.0f;
 
 const float kFollowMaxSpeed=900.0f;
 
-const float kChaseMaxSpeed=2500.0f;
-const float kChaseMaxForce=2500.0f;
-
-const float kBaseMass=5.0f;
-
-const float kBaseSlowingDistance=50.0f;
-const float kBaseEffectiveRadius=15.0f;
+const float kChaseMaxSpeed=1200.0f;
+const float kChaseMaxForce=6000.0f;
 
 const float kMinLengthThreshold=1.0f;
-const float kMinLenthAnimThreshold=20.0f;
+const float kMinLenthAnimThreshold=40.0f;
 
-//const float kBreatheSimMax=500.0f;
-//const float kBreatheSimScalarDown=20.0f;
-const float kBreatheSimMax=500.0f;
+
+const float kBreatheSimMax=200.0f;
 const float kBreatheSimScalarDown=2.0f;
-
-//const float kBaseMaxForce=500.0f;
-//
-//const float kBaseMaxSpeed=150.0f;
-//const float kFollowMaxSpeed=600.0f;
-//
-//const float kChaseMaxSpeed=2000.0f;
-//const float kChaseMaxForce=2000.0f;
-//
-////const float kBaseMass=15.0f;
-//const float kBaseMass=5.0f;
-//
-//const float kBaseSlowingDistance=50.0f;
-//const float kBaseEffectiveRadius=15.0f;
-//
-//const float kMinLengthThreshold=1.0f;
-//
-////const float kBreatheSimMax=500.0f;
-////const float kBreatheSimScalarDown=20.0f;
-//const float kBreatheSimMax=50.0f;
-//const float kBreatheSimScalarDown=20.0f;
-
 
 
 const CGPoint kDefaultStart={-25, 25};
@@ -75,17 +49,25 @@ const float standbyExpiry=7.0f;
     effectiveRadius=kBaseEffectiveRadius;
     velocity=CGPointMake(0, 0);
 
-    primaryParticle=[CCParticleSystemQuad particleWithFile:@"bm5.plist"];
-    
-    [primaryParticle setScale:0.5f];
+    primaryParticle=[CCParticleSystemQuad particleWithFile:@"bm11.plist"];
     
     //initial position is defaulted to offscreen;
     [primaryParticle setPosition:kDefaultStart];
+    
+    baseEmitterRate=primaryParticle.emissionRate;
+    baseLife=primaryParticle.life;
+    baseStartSize=primaryParticle.startSize;
     
     [hostLayer addChild:primaryParticle];
 
     
     return self;
+}
+
+-(void)setColor:(ccColor4F)aColor
+{
+    [primaryParticle setStartColor:aColor];
+    [primaryParticle setEndColor:aColor];
 }
 
 -(void)setTarget:(CGPoint)theTarget
@@ -111,10 +93,20 @@ const float standbyExpiry=7.0f;
     animationIndex=0;
     animBaseTarget=[primaryParticle position];
     
+    [primaryParticle setLife:baseLife*3.5f];
+    [primaryParticle setEmissionRate:baseEmitterRate*1.5f];
+    
     //currently there is only one head, set target to point 0 on that path
     target=[BLMath AddVector:animBaseTarget toVector:[[[animPaths objectAtIndex:0] objectAtIndex:0] CGPointValue]];
     
     DLog(@"daemon is animating %@", animKey);
+}
+
+-(void)animationOver
+{
+    [primaryParticle setEmissionRate:baseEmitterRate];
+    [primaryParticle setLife:baseLife];
+    
 }
 
 -(void)setMode:(DaemonMode)newMode
@@ -186,6 +178,7 @@ const float standbyExpiry=7.0f;
     [primaryParticle setPosition:pos];
     
     //update breathing ryhthm
+    //disabled during testing peffect perf
     [self updateBreatheVars:delta];
     
     if(standbyTime>standbyExpiry)
@@ -197,10 +190,14 @@ const float standbyExpiry=7.0f;
 -(void)updateBreatheVars:(ccTime)delta
 {
     incrBreathe++;
-    if (incrBreathe>kBreatheSimMax) incrBreathe=0;
+    if(incrBreathe>baseStartSize) incrBreathe=0;
     
-    float newStartSize=(sin(incrBreathe/kBreatheSimScalarDown)) * kBreatheSimMax;
-    [primaryParticle setStartSize:newStartSize];
+    [primaryParticle setStartSize:baseStartSize+incrBreathe];
+    
+//    if (incrBreathe>kBreatheSimMax) incrBreathe=0;
+//    
+//    float newStartSize=(sin(incrBreathe/kBreatheSimScalarDown)) * kBreatheSimMax;
+//    [primaryParticle setStartSize:newStartSize];
 }
 
 -(CGPoint)getSteeringVelocity
@@ -217,22 +214,13 @@ const float standbyExpiry=7.0f;
 {
     BOOL cancelVelocity=NO;
     
-    float useMaxForce=maxForce;
-    float useMaxSpeed=maxSpeed;
-    
-    if(isAnimating)
-    {
-        useMaxForce*=5;
-        useMaxSpeed*=5;
-    }
-    
     CGPoint pos=[primaryParticle position];
     
     //get the vector between pos and target and normalize
     CGPoint dv=[BLMath NormalizeVector:[BLMath SubtractVector:pos from:target]];
     
     //length of vector is currently max speed -- could be based on current speed?
-    dv=[BLMath MultiplyVector:dv byScalar:useMaxSpeed];
+    dv=[BLMath MultiplyVector:dv byScalar:maxSpeed];
     
     float lv=[BLMath LengthOfVector:[BLMath SubtractVector:pos from:target]];
     
@@ -249,6 +237,7 @@ const float standbyExpiry=7.0f;
             {
                 //animation is over
                 isAnimating=NO;
+                [self animationOver];
             }
             else
             {
@@ -285,29 +274,22 @@ const float standbyExpiry=7.0f;
 
 -(CGPoint)getNewPositionWithDesiredSteer:(CGPoint)desiredSteer andDelta:(ccTime)delta
 {
-    float useMaxForce=maxForce;
-    float useMaxSpeed=maxSpeed;
-    
-    if(isAnimating)
-    {
-        useMaxForce*=10;
-        useMaxSpeed*=10;
-    }
-    
     //todo: what affect of using primary pos of pquad over hosting all pquad (if more than one used) on this pos
     CGPoint pos=[primaryParticle position];
     
     //bail if desired steer is zero
     if(desiredSteer.x==0 && desiredSteer.y==0) return pos;
     
-    CGPoint steerForce=[BLMath TruncateVector:desiredSteer toMaxLength:useMaxForce];
+    CGPoint steerForce=[BLMath TruncateVector:desiredSteer toMaxLength:maxForce];
     CGPoint acc=[BLMath DivideVector:steerForce byScalar:mass];
     
     //track velocity to automate external animation -- or other actions reliant on future position
-    velocity=[BLMath TruncateVector:[BLMath AddVector:velocity toVector:acc] toMaxLength:useMaxSpeed];
+    velocity=[BLMath TruncateVector:[BLMath AddVector:velocity toVector:acc] toMaxLength:maxSpeed];
     
     //don't add velocity directly -- add this time step's velocity
     CGPoint tsVel=[BLMath MultiplyVector:velocity byScalar:delta];
+    
+    DLog(@"tsVel %@", NSStringFromCGPoint(tsVel));
     
     pos=[BLMath AddVector:pos toVector:tsVel];
     return pos;
@@ -368,7 +350,6 @@ const float standbyExpiry=7.0f;
     
     return returnPoints;
 }
-
 
 @end
 

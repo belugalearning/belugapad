@@ -69,7 +69,6 @@
 		7F3999D914D8621F00745B0C /* float-problem011.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F3999CC14D8621F00745B0C /* float-problem011.plist */; };
 		7F3999DA14D8621F00745B0C /* float-problem012.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F3999CD14D8621F00745B0C /* float-problem012.plist */; };
 		7F3999DB14D8621F00745B0C /* float-problem019.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F3999CE14D8621F00745B0C /* float-problem019.plist */; };
-		7F3999DF14D864AE00745B0C /* bm5.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F3999DE14D864AE00745B0C /* bm5.plist */; };
 		7F3999E514D86F7000745B0C /* complete_1of3.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7F3999E014D86F6F00745B0C /* complete_1of3.wav */; };
 		7F3999E614D86F7000745B0C /* complete_2of3.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7F3999E114D86F6F00745B0C /* complete_2of3.wav */; };
 		7F3999E714D86F7000745B0C /* complete.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7F3999E214D86F6F00745B0C /* complete.wav */; };
@@ -224,10 +223,6 @@
 		7F5115AA14A9EF9E001AF372 /* BlockFloating.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A914A9EF9E001AF372 /* BlockFloating.m */; };
 		7F54E60414E9B2AF00F25235 /* operator-popup.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F54E60314E9B2AF00F25235 /* operator-popup.png */; };
 		7F719C0314D739A600F30E89 /* Daemon.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F719C0214D739A600F30E89 /* Daemon.m */; };
-		7F719C0614D752D900F30E89 /* dm2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F719C0414D752D900F30E89 /* dm2.plist */; };
-		7F719C0714D752D900F30E89 /* dm1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F719C0514D752D900F30E89 /* dm1.plist */; };
-		7F719C0B14D7548A00F30E89 /* dm3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F719C0A14D7548A00F30E89 /* dm3.plist */; };
-		7F719C4514D75AFA00F30E89 /* dm4.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F719C4414D75AFA00F30E89 /* dm4.plist */; };
 		7F813D5514CCBA4300C1E997 /* IceDiv.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F813D5414CCBA4300C1E997 /* IceDiv.m */; };
 		7F813D5814CCBDDD00C1E997 /* fire1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5714CCBDDD00C1E997 /* fire1.plist */; };
 		7F813D5C14CCC3A100C1E997 /* fire2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5B14CCC3A100C1E997 /* fire2.plist */; };
@@ -281,8 +276,9 @@
 		7FDBA53714EBD560004D1CC9 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA52614EBD560004D1CC9 /* CXMLNode_XPathExtensions.m */; };
 		7FDBA53814EBD560004D1CC9 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA52814EBD560004D1CC9 /* CXMLNode.m */; };
 		7FDBA53914EBD560004D1CC9 /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA52B14EBD560004D1CC9 /* CTidy.m */; };
-		7FDBA54414EBE520004D1CC9 /* daemon-action.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7FDBA54314EBE520004D1CC9 /* daemon-action.svg */; };
 		7FDBA54E14EBF2FB004D1CC9 /* placevalue-problem007.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FDBA54D14EBF2FB004D1CC9 /* placevalue-problem007.plist */; };
+		7FDBA56314EC4271004D1CC9 /* bm11.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FDBA56214EC4271004D1CC9 /* bm11.plist */; };
+		7FDBA56514EC6AC2004D1CC9 /* daemon-action.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7FDBA56414EC6AC2004D1CC9 /* daemon-action.svg */; };
 		7FF8F12114DD535B00A6D75E /* MenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8F12014DD535B00A6D75E /* MenuScene.m */; };
 		7FF8F12814DD5F0100A6D75E /* bg-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FF8F12514DD5F0100A6D75E /* bg-hd.png */; };
 		7FF8F12A14DD5F0100A6D75E /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FF8F12714DD5F0100A6D75E /* bg.png */; };
@@ -366,7 +362,6 @@
 		7F3999CC14D8621F00745B0C /* float-problem011.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem011.plist"; sourceTree = "<group>"; };
 		7F3999CD14D8621F00745B0C /* float-problem012.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem012.plist"; sourceTree = "<group>"; };
 		7F3999CE14D8621F00745B0C /* float-problem019.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "float-problem019.plist"; sourceTree = "<group>"; };
-		7F3999DE14D864AE00745B0C /* bm5.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bm5.plist; sourceTree = "<group>"; };
 		7F3999E014D86F6F00745B0C /* complete_1of3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = complete_1of3.wav; sourceTree = "<group>"; };
 		7F3999E114D86F6F00745B0C /* complete_2of3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = complete_2of3.wav; sourceTree = "<group>"; };
 		7F3999E214D86F6F00745B0C /* complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = complete.wav; sourceTree = "<group>"; };
@@ -683,10 +678,6 @@
 		7F54E60314E9B2AF00F25235 /* operator-popup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "operator-popup.png"; sourceTree = "<group>"; };
 		7F719C0114D739A600F30E89 /* Daemon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Daemon.h; sourceTree = "<group>"; };
 		7F719C0214D739A600F30E89 /* Daemon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Daemon.m; sourceTree = "<group>"; };
-		7F719C0414D752D900F30E89 /* dm2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dm2.plist; sourceTree = "<group>"; };
-		7F719C0514D752D900F30E89 /* dm1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dm1.plist; sourceTree = "<group>"; };
-		7F719C0A14D7548A00F30E89 /* dm3.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dm3.plist; sourceTree = "<group>"; };
-		7F719C4414D75AFA00F30E89 /* dm4.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dm4.plist; sourceTree = "<group>"; };
 		7F813D5314CCBA4300C1E997 /* IceDiv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IceDiv.h; sourceTree = "<group>"; };
 		7F813D5414CCBA4300C1E997 /* IceDiv.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IceDiv.m; sourceTree = "<group>"; };
 		7F813D5714CCBDDD00C1E997 /* fire1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = fire1.plist; sourceTree = "<group>"; };
@@ -766,8 +757,9 @@
 		7FDBA52A14EBD560004D1CC9 /* CTidy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTidy.h; sourceTree = "<group>"; };
 		7FDBA52B14EBD560004D1CC9 /* CTidy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTidy.m; sourceTree = "<group>"; };
 		7FDBA52C14EBD560004D1CC9 /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchXML.h; sourceTree = "<group>"; };
-		7FDBA54314EBE520004D1CC9 /* daemon-action.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "daemon-action.svg"; sourceTree = "<group>"; };
 		7FDBA54D14EBF2FB004D1CC9 /* placevalue-problem007.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "placevalue-problem007.plist"; sourceTree = "<group>"; };
+		7FDBA56214EC4271004D1CC9 /* bm11.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bm11.plist; sourceTree = "<group>"; };
+		7FDBA56414EC6AC2004D1CC9 /* daemon-action.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "daemon-action.svg"; sourceTree = "<group>"; };
 		7FF8F11F14DD535B00A6D75E /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
 		7FF8F12014DD535B00A6D75E /* MenuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuScene.m; sourceTree = "<group>"; };
 		7FF8F12514DD5F0100A6D75E /* bg-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-hd.png"; sourceTree = "<group>"; };
@@ -1486,11 +1478,7 @@
 		7F813D5914CCC38100C1E997 /* particles */ = {
 			isa = PBXGroup;
 			children = (
-				7F3999DE14D864AE00745B0C /* bm5.plist */,
-				7F719C4414D75AFA00F30E89 /* dm4.plist */,
-				7F719C0A14D7548A00F30E89 /* dm3.plist */,
-				7F719C0414D752D900F30E89 /* dm2.plist */,
-				7F719C0514D752D900F30E89 /* dm1.plist */,
+				7FDBA56214EC4271004D1CC9 /* bm11.plist */,
 				7F813D6A14CCD8CF00C1E997 /* fire3.plist */,
 				7F813D5B14CCC3A100C1E997 /* fire2.plist */,
 				7F813D5714CCBDDD00C1E997 /* fire1.plist */,
@@ -1702,7 +1690,7 @@
 		7FDBA53E14EBDD56004D1CC9 /* daemon animations */ = {
 			isa = PBXGroup;
 			children = (
-				7FDBA54314EBE520004D1CC9 /* daemon-action.svg */,
+				7FDBA56414EC6AC2004D1CC9 /* daemon-action.svg */,
 			);
 			name = "daemon animations";
 			sourceTree = "<group>";
@@ -1818,10 +1806,6 @@
 				7F93668414D1BC2D00CAEF47 /* obj-blockholder-mount1x1-red.png in Resources */,
 				7F93668814D1BE3400CAEF47 /* obj-blockholder-mount1x1-yellow.png in Resources */,
 				7F93668B14D1CD8500CAEF47 /* firework.wav in Resources */,
-				7F719C0614D752D900F30E89 /* dm2.plist in Resources */,
-				7F719C0714D752D900F30E89 /* dm1.plist in Resources */,
-				7F719C0B14D7548A00F30E89 /* dm3.plist in Resources */,
-				7F719C4514D75AFA00F30E89 /* dm4.plist in Resources */,
 				7F39999614D85F7F00745B0C /* obj-blockholder-mount1x1_1.png in Resources */,
 				7F39999714D85F7F00745B0C /* obj-blockholder-mount1x1_2.png in Resources */,
 				7F39999814D85F7F00745B0C /* obj-blockholder-mount1x1_3.png in Resources */,
@@ -1861,7 +1845,6 @@
 				7F3999D914D8621F00745B0C /* float-problem011.plist in Resources */,
 				7F3999DA14D8621F00745B0C /* float-problem012.plist in Resources */,
 				7F3999DB14D8621F00745B0C /* float-problem019.plist in Resources */,
-				7F3999DF14D864AE00745B0C /* bm5.plist in Resources */,
 				7F3999E514D86F7000745B0C /* complete_1of3.wav in Resources */,
 				7F3999E614D86F7000745B0C /* complete_2of3.wav in Resources */,
 				7F3999E714D86F7000745B0C /* complete.wav in Resources */,
@@ -1890,8 +1873,9 @@
 				7F959A1D14EAE015007D90AC /* placevalue-problem005.plist in Resources */,
 				7F959A1E14EAE015007D90AC /* placevalue-problem006.plist in Resources */,
 				7FDBA50D14EBBD53004D1CC9 /* obj-float-sep.png in Resources */,
-				7FDBA54414EBE520004D1CC9 /* daemon-action.svg in Resources */,
 				7FDBA54E14EBF2FB004D1CC9 /* placevalue-problem007.plist in Resources */,
+				7FDBA56314EC4271004D1CC9 /* bm11.plist in Resources */,
+				7FDBA56514EC6AC2004D1CC9 /* daemon-action.svg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

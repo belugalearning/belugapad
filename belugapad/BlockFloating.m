@@ -640,6 +640,7 @@ static void eachShape(void *ptr, void* unused)
     
     NSNumber *eMode=[pdef objectForKey:EVAL_MODE];
     if(eMode) evalMode=[eMode intValue];
+    else evalMode=kProblemEvalAuto;
  
     //any solution valid until one commenced
     trackedSolutionIndex=-1;

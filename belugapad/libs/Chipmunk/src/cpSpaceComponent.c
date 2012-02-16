@@ -80,6 +80,7 @@ componentActivate(cpBody *root)
 	
 	cpSpace *space = root->space;
 	cpAssert(space, "Trying to activate a body that was never added to a space.");
+    if(!space) return;
 	
 	cpBody *body = root, *next;
 	do {
@@ -244,6 +245,7 @@ cpBodySleepWithGroup(cpBody *body, cpBody *group){
 	
 	cpSpace *space = body->space;
 	cpAssert(space, "Cannot put a body to sleep that has not been added to a space.");
+    if(!space) return;
 	cpAssert(!space->locked, "Bodies can not be put to sleep during a query or a call to cpSpaceSte(). Put these calls into a post-step callback.");
 	cpAssert(!group || cpBodyIsSleeping(group), "Cannot use a non-sleeping body as a group identifier.");
 	

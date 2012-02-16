@@ -294,7 +294,9 @@ cpBodyRemoveShape(cpBody *body, cpShape *shape)
 	}
 	
 	cpAssert(node, "Attempted to remove a shape from a body it was never attached to.");
-	(*prev_ptr) = node->next;
+    if (node) {
+        (*prev_ptr) = node->next;
+    }
 }
 
 cpShape *

@@ -320,18 +320,8 @@ static float kCageYOrigin=0.08f;
     NSString *solutionType = [solutionsDef objectForKey:SOLUTION_TYPE];
     if([solutionType isEqualToString:COUNT_SEQUENCE])
     {
-        if(gw.Blackboard.SelectedObjects.count < lastCount)
+        if(gw.Blackboard.SelectedObjects.count > lastCount)
         {
-            lastCount = 0;
-        }
-        else
-        {
-            lastCount++;
-            if(showCount)
-            {
-                NSLog(@"should be countin' %d", gw.Blackboard.SelectedObjects.count);
-                [countLabel setString:[NSString stringWithFormat:@"count: %d", gw.Blackboard.SelectedObjects.count]];
-            }
             if(showCountOnBlock)
             {
                 CCSprite *s=[[gw.Blackboard.LastSelectedObject store] objectForKey:MY_SPRITE];
@@ -341,17 +331,26 @@ static float kCageYOrigin=0.08f;
                 [self addChild:countLabelBlock z:10];
                 CCFadeOut *labelFade = [CCFadeOut actionWithDuration:kTimeToFadeButtonLabel];
                 [countLabelBlock runAction:labelFade];
-                
-                
             }
-        }
-            DLog(@"(COUNT_SEQUENCE) Selected %d lastCount %d", gw.Blackboard.SelectedObjects.count, lastCount);
+            
+                    }
+        DLog(@"(COUNT_SEQUENCE) Selected %d lastCount %d", gw.Blackboard.SelectedObjects.count, lastCount);
     }
+    
+    lastCount=gw.Blackboard.SelectedObjects.count;
     
     if(evalMode == kProblemEvalAuto)
     {
         [self evalProblem];
     }
+    
+    
+    if (showCount) {
+        NSLog(@"should be countin' %d", gw.Blackboard.SelectedObjects.count);
+        [countLabel setString:[NSString stringWithFormat:@"count: %d", gw.Blackboard.SelectedObjects.count]];
+    }
+    
+
 }
 
 -(void)evalProblem

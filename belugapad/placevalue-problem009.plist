@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>count to 11 by selecting the blocks</string>
+	<string>count how many there are.</string>
 	<key>NUMBER_INTEGER_COLS</key>
 	<integer>1</integer>
 	<key>NUMBER_DECIMAL_COLS</key>
@@ -11,22 +11,22 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>6</integer>
+	<integer>5</integer>
 	<key>ROWS_PER_COL</key>
-	<integer>4</integer>
+	<integer>1</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
 	<false/>
 	<key>EVAL_MODE</key>
-	<string>1</string>
+	<integer>0</integer>
 	<key>REJECT_MODE</key>
-	<string>0</string>
+	<integer>0</integer>
 	<key>SHOW_CAGE</key>
-	<true/>
-	<key>SHOW_COUNT_BLOCK</key>
-	<true/>
+	<false/>
 	<key>SHOW_COUNT</key>
+	<false/>
+	<key>SHOW_COUNT_BLOCK</key>
 	<true/>
 	<key>INIT_OBJECTS</key>
 	<array>
@@ -36,23 +36,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>6</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>1</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>1</integer>
-			<key>NUMBER</key>
 			<integer>4</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>1</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>2</integer>
-			<key>NUMBER</key>
-			<integer>5</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -60,7 +44,7 @@
 		<key>SOLUTION_TYPE</key>
 		<string>COUNT_SEQUENCE</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>11</integer>
+		<integer>4</integer>
 	</dict>
 </dict>
 </plist>

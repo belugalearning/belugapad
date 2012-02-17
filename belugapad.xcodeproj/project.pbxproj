@@ -30,6 +30,15 @@
 		5571BAEF14E4108F0053A62B /* BPlaceValuePickupTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE814E4108F0053A62B /* BPlaceValuePickupTarget.m */; };
 		5571BAF014E4108F0053A62B /* BPlaceValueMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAEA14E4108F0053A62B /* BPlaceValueMount.m */; };
 		5571BAF114E4108F0053A62B /* BPlaceValueMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAEC14E4108F0053A62B /* BPlaceValueMountable.m */; };
+		7F2C73C114EE779400A0FA5D /* ZubiIntro.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2C73C014EE779400A0FA5D /* ZubiIntro.m */; };
+		7F2C73E614EE9A6A00A0FA5D /* zbkg.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F2C73DE14EE9A6A00A0FA5D /* zbkg.png */; };
+		7F2C73E714EE9A6A00A0FA5D /* zlay2.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F2C73DF14EE9A6A00A0FA5D /* zlay2.png */; };
+		7F2C73E814EE9A6A00A0FA5D /* zlay4.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F2C73E014EE9A6A00A0FA5D /* zlay4.png */; };
+		7F2C73E914EE9A6A00A0FA5D /* zlay5.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F2C73E114EE9A6A00A0FA5D /* zlay5.png */; };
+		7F2C73EA14EE9A6A00A0FA5D /* zlay7.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F2C73E214EE9A6A00A0FA5D /* zlay7.png */; };
+		7F2C73EB14EE9A6A00A0FA5D /* zlay9.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F2C73E314EE9A6A00A0FA5D /* zlay9.png */; };
+		7F2C73EC14EE9A6A00A0FA5D /* zlay11.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F2C73E414EE9A6A00A0FA5D /* zlay11.png */; };
+		7F2C73ED14EE9A6A00A0FA5D /* zlay13.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F2C73E514EE9A6A00A0FA5D /* zlay13.png */; };
 		7F39999614D85F7F00745B0C /* obj-blockholder-mount1x1_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F39998C14D85F7F00745B0C /* obj-blockholder-mount1x1_1.png */; };
 		7F39999714D85F7F00745B0C /* obj-blockholder-mount1x1_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F39998D14D85F7F00745B0C /* obj-blockholder-mount1x1_2.png */; };
 		7F39999814D85F7F00745B0C /* obj-blockholder-mount1x1_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F39998E14D85F7F00745B0C /* obj-blockholder-mount1x1_3.png */; };
@@ -323,6 +332,16 @@
 		5571BAEA14E4108F0053A62B /* BPlaceValueMount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueMount.m; sourceTree = "<group>"; };
 		5571BAEB14E4108F0053A62B /* BPlaceValueMountable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueMountable.h; sourceTree = "<group>"; };
 		5571BAEC14E4108F0053A62B /* BPlaceValueMountable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueMountable.m; sourceTree = "<group>"; };
+		7F2C73BF14EE779400A0FA5D /* ZubiIntro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZubiIntro.h; sourceTree = "<group>"; };
+		7F2C73C014EE779400A0FA5D /* ZubiIntro.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZubiIntro.m; sourceTree = "<group>"; };
+		7F2C73DE14EE9A6A00A0FA5D /* zbkg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zbkg.png; sourceTree = "<group>"; };
+		7F2C73DF14EE9A6A00A0FA5D /* zlay2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zlay2.png; sourceTree = "<group>"; };
+		7F2C73E014EE9A6A00A0FA5D /* zlay4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zlay4.png; sourceTree = "<group>"; };
+		7F2C73E114EE9A6A00A0FA5D /* zlay5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zlay5.png; sourceTree = "<group>"; };
+		7F2C73E214EE9A6A00A0FA5D /* zlay7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zlay7.png; sourceTree = "<group>"; };
+		7F2C73E314EE9A6A00A0FA5D /* zlay9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zlay9.png; sourceTree = "<group>"; };
+		7F2C73E414EE9A6A00A0FA5D /* zlay11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zlay11.png; sourceTree = "<group>"; };
+		7F2C73E514EE9A6A00A0FA5D /* zlay13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zlay13.png; sourceTree = "<group>"; };
 		7F39998C14D85F7F00745B0C /* obj-blockholder-mount1x1_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-blockholder-mount1x1_1.png"; sourceTree = "<group>"; };
 		7F39998D14D85F7F00745B0C /* obj-blockholder-mount1x1_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-blockholder-mount1x1_2.png"; sourceTree = "<group>"; };
 		7F39998E14D85F7F00745B0C /* obj-blockholder-mount1x1_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-blockholder-mount1x1_3.png"; sourceTree = "<group>"; };
@@ -835,6 +854,21 @@
 			name = PlaceValue;
 			sourceTree = "<group>";
 		};
+		7F2C73C314EE8C5800A0FA5D /* zubi intro */ = {
+			isa = PBXGroup;
+			children = (
+				7F2C73DE14EE9A6A00A0FA5D /* zbkg.png */,
+				7F2C73DF14EE9A6A00A0FA5D /* zlay2.png */,
+				7F2C73E014EE9A6A00A0FA5D /* zlay4.png */,
+				7F2C73E114EE9A6A00A0FA5D /* zlay5.png */,
+				7F2C73E214EE9A6A00A0FA5D /* zlay7.png */,
+				7F2C73E314EE9A6A00A0FA5D /* zlay9.png */,
+				7F2C73E414EE9A6A00A0FA5D /* zlay11.png */,
+				7F2C73E514EE9A6A00A0FA5D /* zlay13.png */,
+			);
+			name = "zubi intro";
+			sourceTree = "<group>";
+		};
 		7F3999A114D85F8C00745B0C /* usergen */ = {
 			isa = PBXGroup;
 			children = (
@@ -922,6 +956,7 @@
 		7F5113D314A9EE63001AF372 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7F2C73C314EE8C5800A0FA5D /* zubi intro */,
 				7FDBA53E14EBDD56004D1CC9 /* daemon animations */,
 				7FF8F12314DD553800A6D75E /* univassets */,
 				7F813D5E14CCC3B300C1E997 /* sprites */,
@@ -1402,6 +1437,8 @@
 				7FF8F12014DD535B00A6D75E /* MenuScene.m */,
 				5571BADB14E406220053A62B /* PlaceValue.h */,
 				5571BADC14E406220053A62B /* PlaceValue.m */,
+				7F2C73BF14EE779400A0FA5D /* ZubiIntro.h */,
+				7F2C73C014EE779400A0FA5D /* ZubiIntro.m */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -1876,6 +1913,14 @@
 				7FDBA54E14EBF2FB004D1CC9 /* placevalue-problem007.plist in Resources */,
 				7FDBA56314EC4271004D1CC9 /* bm11.plist in Resources */,
 				7FDBA56514EC6AC2004D1CC9 /* daemon-action.svg in Resources */,
+				7F2C73E614EE9A6A00A0FA5D /* zbkg.png in Resources */,
+				7F2C73E714EE9A6A00A0FA5D /* zlay2.png in Resources */,
+				7F2C73E814EE9A6A00A0FA5D /* zlay4.png in Resources */,
+				7F2C73E914EE9A6A00A0FA5D /* zlay5.png in Resources */,
+				7F2C73EA14EE9A6A00A0FA5D /* zlay7.png in Resources */,
+				7F2C73EB14EE9A6A00A0FA5D /* zlay9.png in Resources */,
+				7F2C73EC14EE9A6A00A0FA5D /* zlay11.png in Resources */,
+				7F2C73ED14EE9A6A00A0FA5D /* zlay13.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2053,6 +2098,7 @@
 				7FDBA53714EBD560004D1CC9 /* CXMLNode_XPathExtensions.m in Sources */,
 				7FDBA53814EBD560004D1CC9 /* CXMLNode.m in Sources */,
 				7FDBA53914EBD560004D1CC9 /* CTidy.m in Sources */,
+				7F2C73C114EE779400A0FA5D /* ZubiIntro.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

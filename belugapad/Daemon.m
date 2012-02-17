@@ -52,7 +52,7 @@ const float standbyExpiry=7.0f;
     primaryParticle=[CCParticleSystemQuad particleWithFile:@"bm11.plist"];
     
     //initial position is defaulted to offscreen;
-    [primaryParticle setPosition:kDefaultStart];
+    [primaryParticle setPosition:theRestingPos];
     
     baseEmitterRate=primaryParticle.emissionRate;
     baseLife=primaryParticle.life;

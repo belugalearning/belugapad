@@ -159,12 +159,15 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         
         [gw.Blackboard.AllStores addObject:newCol];
         
+        // set the layer position
+        
+        float layerPositionX = (cx-(defaultColumn*(kPropXColumnSpacing*lx)));
+        [renderLayer setPosition:ccp(layerPositionX, 0)];
+        
         if(currentColumnValue == defaultColumn)
-        {
-            float layerPositionX = (cx-(currentColumnIndex*(kPropXColumnSpacing*lx)));
+        {   
             gw.Blackboard.CurrentStore = newCol;
             currentColumnIndex = i;
-            [renderLayer setPosition:ccp(layerPositionX, 0)];
         }
 
     
@@ -227,6 +230,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             DWGameObject *block = [gw addGameObjectWithTemplate:@"TplaceValueObject"];
             
             NSDictionary *pl = [NSDictionary dictionaryWithObject:[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:insRow] objectAtIndex:i] forKey:MOUNT];
+            [[block store] setObject:[[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] stringValue] forKey:OBJECT_VALUE];
 
             
             
@@ -339,7 +343,10 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     
     // set the vars for our gw!
     
-    defaultColumn = [[pdef objectForKey:DEFAULT_COL] intValue];
+    if([[pdef objectForKey:DEFAULT_COL] intValue])
+    { defaultColumn = [[pdef objectForKey:DEFAULT_COL] intValue]; }
+    else { defaultColumn = 0; }
+    
     columnBaseValue = [[pdef objectForKey:COL_BASE_VALUE] floatValue];
     firstColumnValue = [[pdef objectForKey:FIRST_COL_VALUE] floatValue];
     numberOfColumns = [[pdef objectForKey:NUMBER_COLS] floatValue];
@@ -348,8 +355,10 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     rows = [[pdef objectForKey:ROWS_PER_COL] intValue];
     showCage = [[pdef objectForKey:SHOW_CAGE] boolValue];
     showCount = [[pdef objectForKey:SHOW_COUNT] boolValue];
+    showValue = [[pdef objectForKey:SHOW_VALUE] boolValue];
     showCountOnBlock = [[pdef objectForKey:SHOW_COUNT_BLOCK] boolValue];
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
+    showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
     
     DLog(@"ropes %d rows %d defaultcol %f", 
          ropesforColumn, rows, defaultColumn);
@@ -385,11 +394,26 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
         [self addChild:commitBtn];
     }
-    if(showCount)
+    if(showCount||showValue)
     {
-        countLabel=[CCLabelTTF labelWithString:@"count" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-        [countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];   
-        [self addChild:countLabel];
+        if(showCount && !showValue)
+        {
+            countLabel=[CCLabelTTF labelWithString:@"count" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            [countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];   
+            [self addChild:countLabel];
+        }
+        else if(!showCount && showValue)
+        {
+            countLabel=[CCLabelTTF labelWithString:@"sum" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            [countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];   
+            [self addChild:countLabel];
+        }
+        else if(showCount && showValue)
+        {
+            countLabel=[CCLabelTTF labelWithString:@"count x sum y" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            [countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];   
+            [self addChild:countLabel];
+        }
     }
 
     
@@ -397,7 +421,35 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 
 -(void)problemStateChanged
 {
+    selectedObjectValue=0;
+    
+    for(int i=0; i<gw.Blackboard.SelectedObjects.count; i++)
+    {
+        float currentObjectValue;
+        
+        DWGameObject *go = [gw.Blackboard.SelectedObjects objectAtIndex:i];
+        currentObjectValue = [[[go store] objectForKey:OBJECT_VALUE] floatValue];
+        selectedObjectValue=selectedObjectValue+currentObjectValue;
+        DLog(@"current object value %f", currentObjectValue);
+    }
+        DLog(@"sum of selected objects: %f", selectedObjectValue);
+    
+    
+//    if(gw.Blackboard.SelectedObjects.count > 0)
+//    {
+//        DWGameObject *lastObject = [gw.Blackboard.SelectedObjects objectAtIndex:gw.Blackboard.SelectedObjects.count];
+//        for(int chkLast=0; chkLast<(gw.Blackboard.SelectedObjects.count-1); chkLast++)
+//        {
+//            DWGameObject *go = [gw.Blackboard.SelectedObjects objectAtIndex:chkLast];
+//            if([[go store] objectForKey:OBJECT_VALUE] != [[lastObject store] objectForKey:OBJECT_VALUE])
+//            {
+//                [go handleMessage:kDWdeselectAll andPayload:nil withLogLevel:0];
+//            }
+//        }
+//    }
+    
     NSString *solutionType = [solutionsDef objectForKey:SOLUTION_TYPE];
+    
     if([solutionType isEqualToString:COUNT_SEQUENCE])
     {
         if(gw.Blackboard.SelectedObjects.count < lastCount)
@@ -407,11 +459,6 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         else
         {
             lastCount++;
-            if(showCount)
-            {
-                NSLog(@"should be countin' %d", gw.Blackboard.SelectedObjects.count);
-                [countLabel setString:[NSString stringWithFormat:@"count: %d", gw.Blackboard.SelectedObjects.count]];
-            }
             if(showCountOnBlock)
             {
                 CCSprite *s=[[gw.Blackboard.LastSelectedObject store] objectForKey:MY_SPRITE];
@@ -427,7 +474,25 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         }
             DLog(@"(COUNT_SEQUENCE) Selected %d lastCount %d", gw.Blackboard.SelectedObjects.count, lastCount);
     }
-    
+    if(showCount||showValue)
+    {
+        if(showCount && !showValue)
+        {
+            NSLog(@"should be countin' %d", gw.Blackboard.SelectedObjects.count);
+            [countLabel setString:[NSString stringWithFormat:@"count: %d", gw.Blackboard.SelectedObjects.count]];
+            
+        }
+        else if(!showCount && showValue)
+        {
+            [countLabel setString:[NSString stringWithFormat:@"sum: %g", selectedObjectValue]];
+        }
+        else if(showCount && showValue)
+        {
+            [countLabel setString:[NSString stringWithFormat:@"count: %d / sum: %g", gw.Blackboard.SelectedObjects.count, selectedObjectValue]];
+            
+        }
+    }
+
     if(evalMode == kProblemEvalAuto)
     {
         [self evalProblem];
@@ -484,18 +549,27 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 }
 -(void)evalProblemTotalCount
 {
-    int totalCount=0;
-    int expectedCount = [[solutionsDef objectForKey:SOLUTION_VALUE] intValue];
-    for (int i=0; i<gw.Blackboard.CurrentStore.count; i++)
+    float totalCount=0;
+    float expectedCount = [[solutionsDef objectForKey:SOLUTION_VALUE] floatValue];
+    
+    for(int c=0; c<gw.Blackboard.AllStores.count; c++)
     {
-        for(int o=0; o<[[gw.Blackboard.CurrentStore objectAtIndex:i]count]; o++)
+        
+    
+    
+        for (int i=0; i<[[gw.Blackboard.AllStores objectAtIndex:c]count]; i++)
         {
-            DWGameObject *goC = [[gw.Blackboard.CurrentStore objectAtIndex:(i)] objectAtIndex:o];
-            if([[goC store] objectForKey:MOUNTED_OBJECT])
+            for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:i]count]; o++)
             {
-                totalCount++;
-                DLog(@"(TOTAL_COUNT) Found block in row %d col %d (count %d)", i, o, totalCount);
-            }   
+                DWGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:(i)] objectAtIndex:o];
+                if([[goC store] objectForKey:MOUNTED_OBJECT])
+                {
+                    float objectValue = [[[goC store] objectForKey:OBJECT_VALUE] floatValue];
+                    
+                    totalCount = totalCount+objectValue;
+                    DLog(@"(TOTAL_COUNT) Found block worth %f in row %d col %d (count %f)", objectValue, i, o, totalCount);
+                }   
+            }
         }
     }
     
@@ -512,29 +586,28 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 -(void)evalProblemMatrixMatch
 {
     float solutionsFound = 0;
-    for(int i=0; i<gw.Blackboard.AllStores.count; i++)
+    
+    // for each column
+    for(int c=0; c<gw.Blackboard.AllStores.count; c++)
     {
-    
-        gw.Blackboard.CurrentStore = [[gw Blackboard].AllStores objectAtIndex:i];
         
-        float incValue = [[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
+        int countAtRow[[[gw.Blackboard.AllStores objectAtIndex:c]count]];
         
-        DLog(@"Looping through number i %d and col value %f", i, incValue);
-    
-    
-    
-        int countAtRow[gw.Blackboard.CurrentStore.count];
         
-        for (int i=0; i<gw.Blackboard.CurrentStore.count; i++)
+        // create a count at row for each column
+        for (int car=0; car<[[gw.Blackboard.AllStores objectAtIndex:c]count]; car++)
         {
-            countAtRow[i] = 0;
+            countAtRow[car] = 0;
         }
         
-        for (int i=0; i<gw.Blackboard.CurrentStore.count; i++)
+        // look through each column
+        for (int i=0; i<[[gw.Blackboard.AllStores objectAtIndex:c]count]; i++)
         {
-            for(int o=0; o<[[gw.Blackboard.CurrentStore objectAtIndex:i]count]; o++)
+            // and check each row
+            for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:i]count]; o++)
             {
-                DWGameObject *goC = [[gw.Blackboard.CurrentStore objectAtIndex:(i)] objectAtIndex:o];
+                DLog(@"In column %d, looking at row %d, at object %d with value %f", c, i, o);
+                DWGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:(i)] objectAtIndex:o];
                 if([[goC store] objectForKey:MOUNTED_OBJECT])
                 {
                     countAtRow[i] = countAtRow[i] + 1;
@@ -553,7 +626,6 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             DLog(@"(MATRIX_MATCH) Found in this row: %d", countAtRow[curRow]);
             if(countAtRow[curRow] == [[solDict objectForKey:NUMBER] intValue])
             {
-                //solutionsFound = solutionsFound+(incValue*[[solDict objectForKey:NUMBER] intValue]);
                 solutionsFound++;
                 DLog(@"Current solutionFound count %f - %d needed", solutionsFound, solutionMatrix.count);
                 //TODO: Attach XP/partial progress here
@@ -574,8 +646,10 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             [self doIncorrect];
         }
     }
-
+    
 }
+
+
 
 -(void)snapLayerToPosition
 {
@@ -689,11 +763,29 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         NSLog(@"posX+diff: %f / posY+diff: %f", posX, posY);        
         
         
-        NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];
-        [pl setObject:[NSNumber numberWithFloat:posX] forKey:POS_X];
-        [pl setObject:[NSNumber numberWithFloat:posY] forKey:POS_Y];
+        NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];        
+
         
-        [[gw Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:-1];
+        if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
+        {
+            for(int go=0;go<gw.Blackboard.SelectedObjects.count;go++)
+            {
+                DWGameObject *thisObject = [[[gw Blackboard] SelectedObjects] objectAtIndex:go];
+                
+                
+                [pl setObject:[NSNumber numberWithFloat:location.x+(go*20)] forKey:POS_X];
+                [pl setObject:[NSNumber numberWithFloat:location.y+(go*20)] forKey:POS_Y];
+                [thisObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:0];
+                
+            }
+        }
+        else
+        {
+            [pl setObject:[NSNumber numberWithFloat:posX] forKey:POS_X];
+            [pl setObject:[NSNumber numberWithFloat:posY] forKey:POS_Y];
+            [[gw Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:-1];
+        }
+        
     }
 
 }
@@ -744,9 +836,31 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     if([BLMath DistanceBetween:touchStartPos and:touchEndPos] < fabs(kTapSlipThreshold) && potentialTap)
         {
             DLog(@"register tap - start/end positions were under %f", kTapSlipThreshold);
-            [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
 
+                [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
+        
         }
+    
+    if(gw.Blackboard.SelectedObjects.count == columnBaseValue && showBaseSelection)
+    {
+        if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
+        {
+            for(int go=0; go<gw.Blackboard.SelectedObjects.count; go++)
+            {
+                DWGameObject *goO = [[[gw Blackboard] SelectedObjects] objectAtIndex:go];
+                [goO handleMessage:kDWswitchBaseSelection andPayload:nil withLogLevel:0];
+            }
+        }
+    }
+    else
+    {
+        for(int go=0; go<gw.Blackboard.SelectedObjects.count; go++)
+        {
+            DWGameObject *goO = [[[gw Blackboard] SelectedObjects] objectAtIndex:go];
+            [goO handleMessage:kDWswitchBaseSelectionBack andPayload:nil withLogLevel:0];
+        }
+    }
+
     
     if([gw Blackboard].PickupObject!=nil)
     {
@@ -756,8 +870,14 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         
-        [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:0];
-        
+        if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
+        {
+            // TODO: Decide behaviour when the column base amount is selected
+        }
+        else 
+        {
+            [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:0];
+        }
         if([gw Blackboard].DropObject != nil)
         {
             //tell the picked-up object to mount on the dropobject
@@ -774,6 +894,14 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         }
         else
         {
+            if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
+            {
+                for(int goC=0; goC<gw.Blackboard.SelectedObjects.count; goC++)
+                {
+                    DWGameObject *go = [gw.Blackboard.SelectedObjects objectAtIndex:goC];
+                    [go handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];
+                }
+            }
             [[gw Blackboard].PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];
         }
         [gw Blackboard].PickupObject = nil;

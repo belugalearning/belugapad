@@ -57,6 +57,9 @@ typedef enum {
     kDWresetPositionEval=18,
     
     kDWdeselectAll=19,
+    
+    kDWswitchBaseSelection=20,
+    kDWswitchBaseSelectionBack=21,
 
     
     kDWareYouProximateTo=101,

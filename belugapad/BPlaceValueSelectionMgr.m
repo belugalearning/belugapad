@@ -26,13 +26,17 @@
     {
         [self deselect];
     }
+    if(messageType==kDWswitchBaseSelection)
+    {
+        //[self switchBaseSelection];
+    }
     
 }
 
 -(void)switchSelection
 {
     NSNumber *isSelected = [[gameObject store] objectForKey:SELECTED];
-
+    
     if(!isSelected)
     {
         DLog(@"no isselected value");

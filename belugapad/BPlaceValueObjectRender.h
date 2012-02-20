@@ -21,5 +21,6 @@
 -(void)setSpritePos:(NSDictionary *)position withAnimation:(BOOL) animate;
 -(void)resetSpriteToMount;
 -(void)switchSelection:(BOOL)isSelected;
+-(void)switchBaseSelection:(BOOL)isSelected;
 
 @end

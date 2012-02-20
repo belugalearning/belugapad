@@ -19,3 +19,5 @@ extern const float kPropXColumnSpacing;
 extern const float kMovementForSnapColumn;
 
 extern const float kLayerSnapAnimationTime;
+extern const float kPropXCountLabelPadding;
+extern const float kPropYCountLabelPadding;

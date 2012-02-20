@@ -27,8 +27,12 @@
 	<key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_COUNT</key>
-	<false/>
+	<true/>
 	<key>SHOW_COL_HEADER</key>
+	<true/>
+	<key>SHOW_VALUE</key>
+	<true/>
+	<key>SHOW_BASE_SELECTION</key>
 	<true/>
 	<key>INIT_OBJECTS</key>
 	<array>

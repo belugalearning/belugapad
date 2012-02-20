@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>place the smallest object in the container</string>
+	<key>TOOL_KEY</key>
+	<string>BlockFloating</string>
 	<key>REJECT_MODE</key>
 	<integer>1</integer>
 	<key>EVAL_MODE</key>

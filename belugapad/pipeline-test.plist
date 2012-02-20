@@ -2,8 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
-	<string>float-problem0002.plist</string>
+	<string>float-problem014.plist</string>
+	<string>float-problem015.plist</string>
+	<string>placevalue-problem001.plist</string>
 	<string>float-problem0001.plist</string>
+	<string>placevalue-problem008.plist</string>
+	<string>float-problem0002.plist</string>
+	<string>float-problem017.plist</string>
+	<string>float-problem018.plist</string>
+	<string>placevalue-problem012.plist</string>
+	<string>float-problem019.plist</string>
+	<string>float-problem008.plist</string>
 	<string>placevalue-problem001.plist</string>
 </array>
 </plist>

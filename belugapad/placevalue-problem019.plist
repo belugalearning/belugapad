@@ -4,10 +4,14 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>6 blocks! divide evenly between 3 rows and count how many on one row.</string>
-	<key>NUMBER_INTEGER_COLS</key>
+	<key>TOOL_KEY</key>
+	<string>PlaceValue</string>
+	<key>NUMBER_COLS</key>
 	<integer>1</integer>
-	<key>NUMBER_DECIMAL_COLS</key>
-	<integer>0</integer>
+	<key>FIRST_COL_VALUE</key>
+	<integer>1</integer>
+	<key>COL_BASE_VALUE</key>
+	<string>10</string>
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
@@ -32,7 +36,7 @@
 	<array>
 		<dict>
 			<key>PUT_IN_COL</key>
-			<integer>1</integer>
+			<integer>0</integer>
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>

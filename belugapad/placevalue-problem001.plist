@@ -4,16 +4,14 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>have a total of 7 items on the grid</string>
+	<key>TOOL_KEY</key>
+	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
 	<integer>10</integer>
 	<key>FIRST_COL_VALUE</key>
 	<integer>100</integer>
 	<key>NUMBER_COLS</key>
 	<integer>6</integer>
-	<key>NUMBER_INTEGER_COLS</key>
-	<integer>1</integer>
-	<key>NUMBER_DECIMAL_COLS</key>
-	<integer>0</integer>
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>

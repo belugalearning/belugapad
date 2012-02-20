@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>place 4 equal items</string>
+	<key>TOOL_KEY</key>
+	<string>BlockFloating</string>
 	<key>ENABLE_OCCLUDING_SEPARATORS</key>
 	<true/>
 	<key>INIT_OBJECTS</key>

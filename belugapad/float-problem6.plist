@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>divide the objects equally into two containers</string>
+	<key>TOOL_KEY</key>
+	<string>BlockFloating</string>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>

@@ -166,7 +166,14 @@
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [currentTool ccTouchesBegan:touches withEvent:event];
+    UITouch *touch=[touches anyObject];
+    CGPoint location=[touch locationInView: [touch view]];
+    location=[[CCDirector sharedDirector] convertToGL:location];
+    
+    if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
+        [self gotoNewProblem];
+    else
+        [currentTool ccTouchesBegan:touches withEvent:event];
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event

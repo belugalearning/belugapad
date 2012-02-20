@@ -7,6 +7,8 @@
 
 #import <Foundation/Foundation.h>
 
+
+@class CCLayer;
 @class DWGameObject;
 
 @interface DWBlackboard : NSObject {
@@ -19,6 +21,8 @@
 @property (retain) DWGameObject *LastSelectedObject;
 @property (retain) NSMutableArray *SelectedObjects;
 @property (retain) NSMutableArray *AllStores;
+@property (retain) NSMutableArray *CurrentStore;
+@property (retain) CCLayer *ComponentRenderLayer;
 @property CGPoint PickupOffset;
 @property float hostLX;
 @property float hostLY;

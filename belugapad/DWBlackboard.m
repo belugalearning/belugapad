@@ -16,6 +16,8 @@
 @synthesize LastSelectedObject;
 @synthesize SelectedObjects;
 @synthesize AllStores;
+@synthesize CurrentStore;
+@synthesize ComponentRenderLayer;
 @synthesize PickupOffset;
 @synthesize hostLX;
 @synthesize hostLY;

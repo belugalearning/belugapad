@@ -33,8 +33,22 @@
 -(void)spawnObject
 {
     DWGameObject *block = [gameWorld addGameObjectWithTemplate:@"TplaceValueObject"];
+    
+    //NSDictionary *pl = [NSDictionary dictionaryWithObject:gameObject forKey:MOUNT];
 
-    NSDictionary *pl = [NSDictionary dictionaryWithObject:gameObject forKey:MOUNT];
+    [[block store] setObject:[[gameObject store] objectForKey:OBJECT_VALUE] forKey:OBJECT_VALUE];
+    [[block store] setObject:[[gameObject store] objectForKey:SPRITE_FILENAME] forKey:SPRITE_FILENAME];
+    
+    NSMutableDictionary *pl = [[NSMutableDictionary alloc] init];
+    [pl setObject:gameObject forKey:MOUNT];
+    
+    DLog(@"do we have object value %@", [[gameObject store] objectForKey:OBJECT_VALUE]);
+    DLog(@"do we have sprite fname %@", [[gameObject store] objectForKey:SPRITE_FILENAME]);
+    
+//    if([[gameObject store] objectForKey:SPRITE_FILENAME])
+//    {
+//        
+//    }
     
     [block handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
 }

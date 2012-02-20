@@ -12,7 +12,6 @@
 #import "ToolConsts.h"
 @class DWGameWorld;
 @class Daemon;
-
 @interface PlaceValue : CCLayer
 {
     BOOL touching;
@@ -21,33 +20,45 @@
     CGPoint winL;
     float cx, cy, lx, ly;
     
+    CCLayer *renderLayer;
+    
     CCLabelTTF *problemDescLabel;
     CCLabelTTF *problemSubLabel;
     CCLabelTTF *problemCompleteLabel;
     CCLabelTTF *countLabel;
     CCLabelTTF *countLabelBlock;
-    
-    int numberofIntegerColumns;
-    int numberofDecimalColumns;
+
+    // GameWorld setup
+
     int ropesforColumn;
-    int rows;
+    int rows;    
+    float currentColumnIndex;
     float defaultColumn;
-    float currentColumn;
+    float columnBaseValue;
+    float firstColumnValue;
+    int numberOfColumns;    
+    
+    // GameWorld options
+    
     BOOL showCage;
     BOOL showCount;
     BOOL showCountOnBlock;
+    BOOL showColumnHeader;
+    
+    NSMutableArray *columnInfo;
     
     NSArray *problemFiles;
     int currentProblemIndex;
     
     NSDictionary *solutionsDef;
+    NSDictionary *columnSprites;
     
     DWGameWorld *gw;
     Daemon *daemon;
 
     CGPoint touchStartPos;
     CGPoint touchEndPos;
-
+    
     NSArray *initObjects;
     
     ProblemRejectMode rejectMode;
@@ -75,6 +86,7 @@
 -(void)evalProblemCountSeq;
 -(void)evalProblemTotalCount;
 -(void)evalProblemMatrixMatch;
+-(void)snapLayerToPosition;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

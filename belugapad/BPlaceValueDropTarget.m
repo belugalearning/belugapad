@@ -24,15 +24,24 @@
 {
     if(messageType==kDWareYouADropTarget)
     {
+        DWGameObject *addO=gameWorld.Blackboard.PickupObject;
+        
+        
+        //DWGameObject *addO=[payload objectForKey:SELECTED];
+        
         BOOL inactive=[[[gameObject store] objectForKey:HIDDEN] boolValue];
         if(inactive==NO)
         {
+
             if (![[gameObject store] objectForKey:MOUNTED_OBJECT] || [[gameObject store] objectForKey:ALLOW_MULTIPLE_MOUNT])
             {
                 //get current loc
                 float x=[[[gameObject store] objectForKey:POS_X] floatValue];
                 float y=[[[gameObject store] objectForKey:POS_Y] floatValue];   
                 CGPoint myLoc=ccp(x,y);
+                
+                myLoc = [gameWorld.Blackboard.ComponentRenderLayer convertToWorldSpace:myLoc];
+                
                 
                 //get coords from payload (i.e. the search target)
                 float xhit=[[payload objectForKey:POS_X] floatValue];
@@ -42,8 +51,16 @@
                 //look see if this is close enough
                 if([BLMath DistanceBetween:myLoc and:hitLoc] <= (kPropXDropProximity*[gameWorld Blackboard].hostLX))
                 {
-                    //tell gameScene we are a target for that pickup
-                    [gameWorld Blackboard].DropObject=gameObject;
+                    
+                    NSString *gameObjectValue = [[gameObject store] objectForKey:OBJECT_VALUE];
+                    NSString *pickupObjectValue = [[addO store] objectForKey:OBJECT_VALUE];
+  
+                    if([gameObjectValue isEqualToString:pickupObjectValue])
+                    {
+                        DLog(@"Does has match xD");
+                        //tell gameScene we are a target for that pickup
+                        [gameWorld Blackboard].DropObject=gameObject;
+                    }
                     
                 }
             }

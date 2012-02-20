@@ -28,6 +28,8 @@
         float y=[[[gameObject store] objectForKey:POS_Y] floatValue];   
         CGPoint myLoc=ccp(x,y);
         
+        myLoc = [gameWorld.Blackboard.ComponentRenderLayer convertToWorldSpace:myLoc];
+        
         //get coords from payload (i.e. the search target)
         float xhit=[[payload objectForKey:POS_X] floatValue];
         float yhit=[[payload objectForKey:POS_Y] floatValue];

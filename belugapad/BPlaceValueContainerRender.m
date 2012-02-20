@@ -54,7 +54,8 @@
         [mySprite setVisible:NO];
     }
     
-    [[gameWorld GameScene] addChild:mySprite z:0];
+    [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:0];
+
     
 }
 

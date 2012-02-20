@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>place 12 objects on the grid</string>
+	<string>make the total count 43</string>
 	<key>NUMBER_COLS</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>FIRST_COL_VALUE</key>
 	<integer>10</integer>
 	<key>COL_BASE_VALUE</key>
@@ -22,6 +22,8 @@
 	<false/>
 	<key>SHOW_CAGE</key>
 	<true/>
+	<key>SHOW_COL_HEADER</key>
+	<true/>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
@@ -30,7 +32,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>3</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
@@ -38,7 +40,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>1</integer>
 			<key>NUMBER</key>
-			<integer>3</integer>
+			<integer>2</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -46,7 +48,7 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<string>12</string>
+		<string>43</string>
 	</dict>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>

@@ -19,3 +19,5 @@ const float kPropXColumnSpacing=0.5f;
 
 const float kMovementForSnapColumn=100.0f;
 const float kLayerSnapAnimationTime=0.5f;
+const float kPropXCountLabelPadding=0.258f;
+const float kPropYCountLabelPadding=0.038f;

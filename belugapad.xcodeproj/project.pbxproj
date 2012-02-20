@@ -229,13 +229,13 @@
 		7F51158214A9EE67001AF372 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51158114A9EE67001AF372 /* AppDelegate.m */; };
 		7F51158514A9EE67001AF372 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51158414A9EE67001AF372 /* RootViewController.m */; };
 		7F51159314A9EEF3001AF372 /* NumberLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51159214A9EEF3001AF372 /* NumberLine.m */; };
-		7F51159614A9EF17001AF372 /* BlockHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51159514A9EF17001AF372 /* BlockHolder.m */; };
 		7F5115A414A9EF67001AF372 /* DWBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51159C14A9EF67001AF372 /* DWBehaviour.m */; };
 		7F5115A514A9EF67001AF372 /* DWBlackboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51159E14A9EF67001AF372 /* DWBlackboard.m */; };
 		7F5115A614A9EF67001AF372 /* DWGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A014A9EF67001AF372 /* DWGameObject.m */; };
 		7F5115A714A9EF67001AF372 /* DWGameWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A214A9EF67001AF372 /* DWGameWorld.m */; };
 		7F5115AA14A9EF9E001AF372 /* BlockFloating.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A914A9EF9E001AF372 /* BlockFloating.m */; };
 		7F54E60414E9B2AF00F25235 /* operator-popup.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F54E60314E9B2AF00F25235 /* operator-popup.png */; };
+		7F70274314F2F2A500B0464F /* cmpanel.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F70274214F2F2A500B0464F /* cmpanel.png */; };
 		7F719C0314D739A600F30E89 /* Daemon.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F719C0214D739A600F30E89 /* Daemon.m */; };
 		7F813D5514CCBA4300C1E997 /* IceDiv.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F813D5414CCBA4300C1E997 /* IceDiv.m */; };
 		7F813D5814CCBDDD00C1E997 /* fire1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5714CCBDDD00C1E997 /* fire1.plist */; };
@@ -699,8 +699,6 @@
 		7F51158914A9EE67001AF372 /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
 		7F51159114A9EEF3001AF372 /* NumberLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberLine.h; sourceTree = "<group>"; };
 		7F51159214A9EEF3001AF372 /* NumberLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberLine.m; sourceTree = "<group>"; };
-		7F51159414A9EF17001AF372 /* BlockHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockHolder.h; sourceTree = "<group>"; };
-		7F51159514A9EF17001AF372 /* BlockHolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockHolder.m; sourceTree = "<group>"; };
 		7F51159B14A9EF67001AF372 /* DWBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWBehaviour.h; sourceTree = "<group>"; };
 		7F51159C14A9EF67001AF372 /* DWBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWBehaviour.m; sourceTree = "<group>"; };
 		7F51159D14A9EF67001AF372 /* DWBlackboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWBlackboard.h; sourceTree = "<group>"; };
@@ -713,6 +711,7 @@
 		7F5115A814A9EF9E001AF372 /* BlockFloating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockFloating.h; sourceTree = "<group>"; };
 		7F5115A914A9EF9E001AF372 /* BlockFloating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockFloating.m; sourceTree = "<group>"; };
 		7F54E60314E9B2AF00F25235 /* operator-popup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "operator-popup.png"; sourceTree = "<group>"; };
+		7F70274214F2F2A500B0464F /* cmpanel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cmpanel.png; sourceTree = "<group>"; };
 		7F719C0114D739A600F30E89 /* Daemon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Daemon.h; sourceTree = "<group>"; };
 		7F719C0214D739A600F30E89 /* Daemon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Daemon.m; sourceTree = "<group>"; };
 		7F813D5314CCBA4300C1E997 /* IceDiv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IceDiv.h; sourceTree = "<group>"; };
@@ -843,6 +842,7 @@
 				7F268AD314F2866600F1F65F /* obj-placevalue-unit10.png */,
 				7F268AD414F2866600F1F65F /* obj-placevalue-unit100.png */,
 				5536B29314E4188A00D30BC0 /* netspacer.png */,
+				7F70274214F2F2A500B0464F /* cmpanel.png */,
 			);
 			name = placevalue;
 			sourceTree = "<group>";
@@ -1454,8 +1454,6 @@
 			children = (
 				7F51159114A9EEF3001AF372 /* NumberLine.h */,
 				7F51159214A9EEF3001AF372 /* NumberLine.m */,
-				7F51159414A9EF17001AF372 /* BlockHolder.h */,
-				7F51159514A9EF17001AF372 /* BlockHolder.m */,
 				7F5115A814A9EF9E001AF372 /* BlockFloating.h */,
 				7F5115A914A9EF9E001AF372 /* BlockFloating.m */,
 				7F813D5314CCBA4300C1E997 /* IceDiv.h */,
@@ -1977,6 +1975,7 @@
 				7FB8265014F262080053F221 /* zlay13.png in Resources */,
 				7F268AD514F2866600F1F65F /* obj-placevalue-unit10.png in Resources */,
 				7F268AD614F2866600F1F65F /* obj-placevalue-unit100.png in Resources */,
+				7F70274314F2F2A500B0464F /* cmpanel.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2111,7 +2110,6 @@
 				7F51158214A9EE67001AF372 /* AppDelegate.m in Sources */,
 				7F51158514A9EE67001AF372 /* RootViewController.m in Sources */,
 				7F51159314A9EEF3001AF372 /* NumberLine.m in Sources */,
-				7F51159614A9EF17001AF372 /* BlockHolder.m in Sources */,
 				7F5115A414A9EF67001AF372 /* DWBehaviour.m in Sources */,
 				7F5115A514A9EF67001AF372 /* DWBlackboard.m in Sources */,
 				7F5115A614A9EF67001AF372 /* DWGameObject.m in Sources */,

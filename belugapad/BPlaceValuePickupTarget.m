@@ -23,6 +23,11 @@
 {
     if(messageType==kDWareYouAPickupTarget)
     {        
+        float theirV=[[payload objectForKey:OBJECT_VALUE] floatValue];
+        float myV=[[[gameObject store] objectForKey:OBJECT_VALUE] floatValue];
+        
+        if(theirV!=myV)return;
+        
         //get current loc
         float x=[[[gameObject store] objectForKey:POS_X] floatValue];
         float y=[[[gameObject store] objectForKey:POS_Y] floatValue];   

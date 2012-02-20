@@ -36,7 +36,7 @@
     float defaultColumn;
     float columnBaseValue;
     float firstColumnValue;
-    float selectedObjectValue;
+    float totalObjectValue;
     int numberOfColumns;    
     
     // GameWorld options
@@ -73,6 +73,13 @@
     float timeToHideStatusLabel;
     
     int lastCount;
+    
+    CCSprite *condensePanel;
+    CCSprite *mulchPanel;
+    
+    BOOL inBlockTransition;
+    BOOL inCondenseArea;
+    BOOL inMulchArea;
 }
 
 +(CCScene *)scene;
@@ -90,7 +97,9 @@
 -(void)evalProblemTotalCount;
 -(void)evalProblemMatrixMatch;
 -(void)snapLayerToPosition;
--(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
--(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
--(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
+
+-(void)doCondenseFromLocation:(CGPoint)location;
+-(void)doMulchFromLocation:(CGPoint)location;
+-(void)doTransitionWithIncrement:(int)incr;
+
 @end

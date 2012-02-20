@@ -217,7 +217,6 @@
 		7F51158214A9EE67001AF372 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51158114A9EE67001AF372 /* AppDelegate.m */; };
 		7F51158514A9EE67001AF372 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51158414A9EE67001AF372 /* RootViewController.m */; };
 		7F51159314A9EEF3001AF372 /* NumberLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51159214A9EEF3001AF372 /* NumberLine.m */; };
-		7F51159614A9EF17001AF372 /* BlockHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51159514A9EF17001AF372 /* BlockHolder.m */; };
 		7F5115A414A9EF67001AF372 /* DWBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51159C14A9EF67001AF372 /* DWBehaviour.m */; };
 		7F5115A514A9EF67001AF372 /* DWBlackboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51159E14A9EF67001AF372 /* DWBlackboard.m */; };
 		7F5115A614A9EF67001AF372 /* DWGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A014A9EF67001AF372 /* DWGameObject.m */; };
@@ -281,6 +280,7 @@
 		7FDBA54E14EBF2FB004D1CC9 /* placevalue-problem007.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FDBA54D14EBF2FB004D1CC9 /* placevalue-problem007.plist */; };
 		7FDBA56314EC4271004D1CC9 /* bm11.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FDBA56214EC4271004D1CC9 /* bm11.plist */; };
 		7FDBA56514EC6AC2004D1CC9 /* daemon-action.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7FDBA56414EC6AC2004D1CC9 /* daemon-action.svg */; };
+		7FE3A85214F2DCD8006AD3D5 /* cmpanel.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FE3A85114F2DCD8006AD3D5 /* cmpanel.png */; };
 		7FF8F12114DD535B00A6D75E /* MenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8F12014DD535B00A6D75E /* MenuScene.m */; };
 		7FF8F12814DD5F0100A6D75E /* bg-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FF8F12514DD5F0100A6D75E /* bg-hd.png */; };
 		7FF8F12A14DD5F0100A6D75E /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FF8F12714DD5F0100A6D75E /* bg.png */; };
@@ -666,8 +666,6 @@
 		7F51158914A9EE67001AF372 /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
 		7F51159114A9EEF3001AF372 /* NumberLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberLine.h; sourceTree = "<group>"; };
 		7F51159214A9EEF3001AF372 /* NumberLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberLine.m; sourceTree = "<group>"; };
-		7F51159414A9EF17001AF372 /* BlockHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockHolder.h; sourceTree = "<group>"; };
-		7F51159514A9EF17001AF372 /* BlockHolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockHolder.m; sourceTree = "<group>"; };
 		7F51159B14A9EF67001AF372 /* DWBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWBehaviour.h; sourceTree = "<group>"; };
 		7F51159C14A9EF67001AF372 /* DWBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWBehaviour.m; sourceTree = "<group>"; };
 		7F51159D14A9EF67001AF372 /* DWBlackboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWBlackboard.h; sourceTree = "<group>"; };
@@ -764,6 +762,7 @@
 		7FDBA54D14EBF2FB004D1CC9 /* placevalue-problem007.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "placevalue-problem007.plist"; sourceTree = "<group>"; };
 		7FDBA56214EC4271004D1CC9 /* bm11.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bm11.plist; sourceTree = "<group>"; };
 		7FDBA56414EC6AC2004D1CC9 /* daemon-action.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "daemon-action.svg"; sourceTree = "<group>"; };
+		7FE3A85114F2DCD8006AD3D5 /* cmpanel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cmpanel.png; sourceTree = "<group>"; };
 		7FF8F11F14DD535B00A6D75E /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
 		7FF8F12014DD535B00A6D75E /* MenuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuScene.m; sourceTree = "<group>"; };
 		7FF8F12514DD5F0100A6D75E /* bg-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-hd.png"; sourceTree = "<group>"; };
@@ -796,6 +795,7 @@
 		5536B29214E4187900D30BC0 /* placevalue */ = {
 			isa = PBXGroup;
 			children = (
+				7FE3A85114F2DCD8006AD3D5 /* cmpanel.png */,
 				5516FD1614F14D09004937CE /* obj-placevalue-unit10.png */,
 				5516FD1714F14D09004937CE /* obj-placevalue-unit100.png */,
 				5536B2A014E42FD100D30BC0 /* obj-placevalue-unit.png */,
@@ -1398,8 +1398,6 @@
 			children = (
 				7F51159114A9EEF3001AF372 /* NumberLine.h */,
 				7F51159214A9EEF3001AF372 /* NumberLine.m */,
-				7F51159414A9EF17001AF372 /* BlockHolder.h */,
-				7F51159514A9EF17001AF372 /* BlockHolder.m */,
 				7F5115A814A9EF9E001AF372 /* BlockFloating.h */,
 				7F5115A914A9EF9E001AF372 /* BlockFloating.m */,
 				7F813D5314CCBA4300C1E997 /* IceDiv.h */,
@@ -1884,6 +1882,7 @@
 				7FDBA56514EC6AC2004D1CC9 /* daemon-action.svg in Resources */,
 				5516FD1814F14D09004937CE /* obj-placevalue-unit10.png in Resources */,
 				5516FD1914F14D09004937CE /* obj-placevalue-unit100.png in Resources */,
+				7FE3A85214F2DCD8006AD3D5 /* cmpanel.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2018,7 +2017,6 @@
 				7F51158214A9EE67001AF372 /* AppDelegate.m in Sources */,
 				7F51158514A9EE67001AF372 /* RootViewController.m in Sources */,
 				7F51159314A9EEF3001AF372 /* NumberLine.m in Sources */,
-				7F51159614A9EF17001AF372 /* BlockHolder.m in Sources */,
 				7F5115A414A9EF67001AF372 /* DWBehaviour.m in Sources */,
 				7F5115A514A9EF67001AF372 /* DWBlackboard.m in Sources */,
 				7F5115A614A9EF67001AF372 /* DWGameObject.m in Sources */,

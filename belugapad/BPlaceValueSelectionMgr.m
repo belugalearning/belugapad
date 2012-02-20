@@ -30,6 +30,15 @@
     {
         //[self switchBaseSelection];
     }
+    if(messageType==kDWdeselectIfNotThisValue)
+    {
+        float myV=[[[gameObject store] objectForKey:OBJECT_VALUE] floatValue];
+        float theirV=[[payload objectForKey:OBJECT_VALUE] floatValue];
+        if(myV!=theirV)
+        {
+            [self deselect];
+        }
+    }
     
 }
 
@@ -55,6 +64,11 @@
         gameWorld.Blackboard.LastSelectedObject = gameObject;
         [gameWorld.Blackboard.SelectedObjects addObject:gameObject];
         [[gameWorld GameScene] problemStateChanged];
+        
+        //force deselect of other objects that don't have this value
+        float myV=[[[gameObject store] objectForKey:OBJECT_VALUE] floatValue];
+        NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:myV] forKey:OBJECT_VALUE];
+        [gameWorld handleMessage:kDWdeselectIfNotThisValue andPayload:pl withLogLevel:0];
     }
     
     [gameObject handleMessage:kDWupdateSprite];

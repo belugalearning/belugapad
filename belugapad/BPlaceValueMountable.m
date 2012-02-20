@@ -51,6 +51,16 @@
         
         
     }
+    
+    if(messageType==kDWdismantle)
+    {
+        DWGameObject *m=[[gameObject store] objectForKey:MOUNT];
+        if(m)
+        {
+            [m handleMessage:kDWunsetMountedObject];
+        }
+        [[gameObject store] removeObjectForKey:MOUNT];
+    }
 }
 
 @end

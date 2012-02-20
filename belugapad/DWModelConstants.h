@@ -60,6 +60,9 @@ typedef enum {
     
     kDWswitchBaseSelection=20,
     kDWswitchBaseSelectionBack=21,
+    
+    kDWdeselectIfNotThisValue=22,
+    kDWdismantle=23,
 
     
     kDWareYouProximateTo=101,
@@ -72,5 +75,7 @@ typedef enum {
     kDWfloatAddThisChild=107,
     kDWfloatSubtractThisChild=108,
     kDWenableOccludingSeparators=109
+    
+    
     
 } DWMessageType;

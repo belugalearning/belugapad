@@ -92,6 +92,11 @@
     {
         [self switchBaseSelection:NO];        
     }
+    if(messageType==kDWdismantle)
+    {
+        CCSprite *s=[[gameObject store] objectForKey:MY_SPRITE];
+        [[s parent] removeChild:s cleanup:YES];
+    }
 }
 
 
@@ -174,7 +179,7 @@
     if(isSelected)
     {
 
-        [mySprite setColor:ccc3(255, 215, 0)]; 
+        [mySprite setColor:ccc3(255, 255, 0)]; 
     }
     else
     {

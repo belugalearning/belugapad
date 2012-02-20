@@ -127,6 +127,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     float ropeWidth = kPropXNetSpace*lx;
 
     columnInfo = [[NSMutableArray alloc] init];
+    [columnInfo retain];
     
     float currentColumnValue = firstColumnValue;
     
@@ -267,6 +268,15 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     [btnFwd setPosition:kButtonNextToolPos];
     [self addChild:btnFwd z:2];
     
+    condensePanel=[CCSprite spriteWithFile:@"cmpanel.png"];
+    [condensePanel setPosition:ccp(100, cy)];
+    [condensePanel setVisible:NO];
+    [self addChild:condensePanel z:1];
+    
+    mulchPanel=[CCSprite spriteWithFile:@"cmpanel.png"];
+    [mulchPanel setPosition:ccp(lx-100, cy)];
+    [mulchPanel setVisible:NO];
+    [self addChild:mulchPanel z:1];
     
 }
 -(void) resetToNextProblem
@@ -392,7 +402,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     {
         CCSprite *commitBtn=[CCSprite spriteWithFile:@"commit.png"];
         [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
-        [self addChild:commitBtn];
+        [self addChild:commitBtn z:2];
     }
     if(showCount||showValue)
     {
@@ -421,32 +431,24 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 
 -(void)problemStateChanged
 {
-    selectedObjectValue=0;
+    totalObjectValue=0;
     
-    for(int i=0; i<gw.Blackboard.SelectedObjects.count; i++)
+    for(int c=0; c<gw.Blackboard.AllStores.count; c++)
     {
-        float currentObjectValue;
-        
-        DWGameObject *go = [gw.Blackboard.SelectedObjects objectAtIndex:i];
-        currentObjectValue = [[[go store] objectForKey:OBJECT_VALUE] floatValue];
-        selectedObjectValue=selectedObjectValue+currentObjectValue;
-        DLog(@"current object value %f", currentObjectValue);
+        for (int i=0; i<[[gw.Blackboard.AllStores objectAtIndex:c]count]; i++)
+        {
+            for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:i]count]; o++)
+            {
+                DWGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:(i)] objectAtIndex:o];
+                if([[goC store] objectForKey:MOUNTED_OBJECT])
+                {
+                    float objectValue = [[[goC store] objectForKey:OBJECT_VALUE] floatValue];
+                    
+                    totalObjectValue = totalObjectValue+objectValue;
+                }   
+            }
+        }
     }
-        DLog(@"sum of selected objects: %f", selectedObjectValue);
-    
-    
-//    if(gw.Blackboard.SelectedObjects.count > 0)
-//    {
-//        DWGameObject *lastObject = [gw.Blackboard.SelectedObjects objectAtIndex:gw.Blackboard.SelectedObjects.count];
-//        for(int chkLast=0; chkLast<(gw.Blackboard.SelectedObjects.count-1); chkLast++)
-//        {
-//            DWGameObject *go = [gw.Blackboard.SelectedObjects objectAtIndex:chkLast];
-//            if([[go store] objectForKey:OBJECT_VALUE] != [[lastObject store] objectForKey:OBJECT_VALUE])
-//            {
-//                [go handleMessage:kDWdeselectAll andPayload:nil withLogLevel:0];
-//            }
-//        }
-//    }
     
     NSString *solutionType = [solutionsDef objectForKey:SOLUTION_TYPE];
     
@@ -484,12 +486,11 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         }
         else if(!showCount && showValue)
         {
-            [countLabel setString:[NSString stringWithFormat:@"sum: %g", selectedObjectValue]];
+            [countLabel setString:[NSString stringWithFormat:@"sum: %g", totalObjectValue]];
         }
         else if(showCount && showValue)
         {
-            [countLabel setString:[NSString stringWithFormat:@"count: %d / sum: %g", gw.Blackboard.SelectedObjects.count, selectedObjectValue]];
-            
+            [countLabel setString:[NSString stringWithFormat:@"count: %d / sum: %g", gw.Blackboard.SelectedObjects.count, totalObjectValue]];
         }
     }
 
@@ -657,8 +658,6 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     CCMoveTo *moveLayer = [CCMoveTo actionWithDuration:kLayerSnapAnimationTime position:ccp(layerPositionX, 0)];
     CCEaseIn *moveLayerGently = [CCEaseIn actionWithAction:moveLayer rate:kLayerSnapAnimationTime];
     [renderLayer runAction:moveLayerGently]; 
-    
-    gw.Blackboard.CurrentStore = [gw.Blackboard.AllStores objectAtIndex:currentColumnIndex];   
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -697,6 +696,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];
         [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
+        [pl setObject:[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] forKey:OBJECT_VALUE];
         
         //broadcast search for pickup object gw
         [gw handleMessage:kDWareYouAPickupTarget andPayload:pl withLogLevel:0];
@@ -730,7 +730,6 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     
     if([BLMath DistanceBetween:touchStartPos and:touchEndPos] >= fabs(kTapSlipResetThreshold) && potentialTap)
     {
-        DLog(@"reset tap");
         touchStartPos = ccp(0, 0);
         touchEndPos = ccp(0, 0);
         potentialTap = NO;
@@ -744,43 +743,72 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         diff = ccp(diff.x, 0);
         [renderLayer setPosition:ccpAdd(renderLayer.position, diff)];
     }
+    
     if([gw Blackboard].PickupObject!=nil)
     {
         CGPoint diff=[BLMath SubtractVector:prevLoc from:location];
+        
         //mod location by pickup offset
-        
-        NSLog(@"diff-x: %f / diff-y: %f", diff.x, diff.y);
-        
         float posX = [[[gw.Blackboard.PickupObject store] objectForKey:POS_X] floatValue];
         float posY = [[[gw.Blackboard.PickupObject store] objectForKey:POS_Y] floatValue];
-        
-        NSLog(@"posX: %f / posY: %f", posX, posY);
-
         
         posX = posX + diff.x;
         posY = posY + diff.y;
         
-        NSLog(@"posX+diff: %f / posY+diff: %f", posX, posY);        
-        
-        
         NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];        
 
-        
-        if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
+        if(gw.Blackboard.SelectedObjects.count == columnBaseValue && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject])
         {
+            //flag we're in inBlockTransition
+            inBlockTransition=YES;
+            
+            if([BLMath rectContainsPoint:location x:0 y:0 w:200 h:ly] && currentColumnIndex>0)
+            {
+                inCondenseArea=YES;
+                [condensePanel setVisible:YES];
+            }
+            else
+            {
+                inCondenseArea=NO;
+                [condensePanel setVisible:NO];
+            }
+            
             for(int go=0;go<gw.Blackboard.SelectedObjects.count;go++)
             {
                 DWGameObject *thisObject = [[[gw Blackboard] SelectedObjects] objectAtIndex:go];
                 
+//                float diffx=[[[thisObject store]objectForKey:POS_X]floatValue] - [[[gw.Blackboard.PickupObject store] objectForKey:POS_X] floatValue];
+//                float diffy=[[[thisObject store]objectForKey:POS_Y]floatValue] - [[[gw.Blackboard.PickupObject store] objectForKey:POS_Y] floatValue];
+//                
+//                [pl setObject:[NSNumber numberWithFloat:location.x+diffx] forKey:POS_X];
+//                [pl setObject:[NSNumber numberWithFloat:location.y+diffy] forKey:POS_Y];
+
+                float x=[[[thisObject store] objectForKey:POS_X] floatValue];
+                float y=[[[thisObject store] objectForKey:POS_Y] floatValue];
+
+                [pl setObject:[NSNumber numberWithFloat:x+diff.x] forKey:POS_X];
+                [pl setObject:[NSNumber numberWithFloat:y+diff.y] forKey:POS_Y];
+
                 
-                [pl setObject:[NSNumber numberWithFloat:location.x+(go*20)] forKey:POS_X];
-                [pl setObject:[NSNumber numberWithFloat:location.y+(go*20)] forKey:POS_Y];
                 [thisObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:0];
                 
             }
         }
+        
+        
         else
         {
+            if([BLMath rectContainsPoint:location x:lx-200 y:0 w:200 h:ly] && currentColumnIndex<([gw.Blackboard.AllStores count]-1))
+            {
+                inMulchArea=YES;
+                [mulchPanel setVisible:YES];
+            }
+            else
+            {
+                inMulchArea=NO;
+                [mulchPanel setVisible:NO];
+            }
+            
             [pl setObject:[NSNumber numberWithFloat:posX] forKey:POS_X];
             [pl setObject:[NSNumber numberWithFloat:posY] forKey:POS_Y];
             [[gw Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:-1];
@@ -789,6 +817,111 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     }
 
 }
+
+-(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    //remove all condense/mulch/transition state
+    inBlockTransition=NO;
+    inCondenseArea=NO;
+    inMulchArea=NO;
+    [mulchPanel setVisible:NO];
+    [condensePanel setVisible:NO];
+    
+    touching=NO;
+}
+
+-(void)doTransitionWithIncrement:(int)incr
+{
+    int tranCount=1;
+    if(incr>0) tranCount=10;
+    int space=0;
+    
+    //work out if we have space
+    for (int r=[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+incr] count]-1; r>=0; r--) {
+        NSMutableArray *row=[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+incr] objectAtIndex:r];
+        for (int c=[row count]-1; c>=0; c--)
+        {
+            DWGameObject *co=[row objectAtIndex:c];
+            if(![[co store] objectForKey:MOUNTED_OBJECT])
+            {
+                space++;
+            }
+        }
+    }
+    
+    if(space<tranCount) return;
+
+    if (incr>0) {
+        [gw.Blackboard.PickupObject handleMessage:kDWdismantle andPayload:nil withLogLevel:0];
+        [gw delayRemoveGameObject:gw.Blackboard.PickupObject];
+        gw.Blackboard.PickupObject=nil;
+    }
+    else
+    {
+        for (int i=0; i<[gw.Blackboard.SelectedObjects count]; i++) {
+            [[gw.Blackboard.SelectedObjects objectAtIndex:i] handleMessage:kDWdismantle andPayload:nil withLogLevel:0];
+            [gw delayRemoveGameObject:[gw.Blackboard.SelectedObjects objectAtIndex:i]];
+        }
+        [gw.Blackboard.SelectedObjects removeAllObjects];
+        
+    }
+    
+    //change column index
+    currentColumnIndex+=incr;
+    gw.Blackboard.CurrentStore=[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex];
+    
+    [self snapLayerToPosition];
+        
+    for (int itran=0; itran<tranCount; itran++) {
+            
+        //create a new object
+        NSString *currentColumnValueKey=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] stringValue];
+
+        DWGameObject *go=[gw addGameObjectWithTemplate:@"TplaceValueObject"];
+        
+        //drop target etc expects a string -- so we'll send one
+        [[go store] setObject:currentColumnValueKey forKey:OBJECT_VALUE];
+        
+        if([columnSprites objectForKey:currentColumnValueKey])
+        {
+            [[go store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
+        }
+        
+        [go handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
+        
+        BOOL foundMount=NO;
+        
+        //find a mount for this object
+        for (int r=[gw.Blackboard.CurrentStore count]-1; r>=0; r--) {
+            NSMutableArray *row=[gw.Blackboard.CurrentStore objectAtIndex:r];
+            for (int c=[row count]-1; c>=0; c--)
+            {
+                DWGameObject *co=[row objectAtIndex:c];
+                if(![[co store] objectForKey:MOUNTED_OBJECT])
+                {
+                    //use this as a mount
+                    NSDictionary *pl=[NSDictionary dictionaryWithObject:co forKey:MOUNT];
+                    [go handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
+                    
+                    foundMount=YES;
+                    
+                    break;
+                }
+            }
+        }
+    }
+}
+
+-(void)doCondenseFromLocation:(CGPoint)location
+{
+    [self doTransitionWithIncrement:-1];
+}
+
+-(void)doMulchFromLocation:(CGPoint)location
+{
+    [self doTransitionWithIncrement:1];
+}
+
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     touching=NO;
@@ -802,6 +935,23 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     [daemon setTarget:location];
     [daemon setMode:kDaemonModeWaiting];
     
+    inBlockTransition=NO;
+    
+    //do mulching / condensing
+    if (inMulchArea) {
+        [self doMulchFromLocation:location];
+        
+        inMulchArea=NO;
+        [mulchPanel setVisible:NO];        
+    }
+    if(inCondenseArea)
+    {
+        [self doCondenseFromLocation:location];
+        
+        inCondenseArea=NO;
+        [condensePanel setVisible:NO];
+    }
+    
     if(fabsf(touchStartPos.x-touchEndPos.x)>kMovementForSnapColumn && [gw Blackboard].PickupObject==nil)
     {
         DLog(@"touchstart %f touchend %f difference %f cur col ind %f", touchStartPos.x, touchEndPos.x, touchStartPos.x-touchEndPos.x, currentColumnIndex);
@@ -812,8 +962,9 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             if(currentColumnIndex < 1) { currentColumnIndex = 0; }
             else { currentColumnIndex--; }
         
+            gw.Blackboard.CurrentStore = [gw.Blackboard.AllStores objectAtIndex:currentColumnIndex];   
+            
             [self snapLayerToPosition];
-            DLog(@"curcol %f", currentColumnIndex);
         }
         else
         {
@@ -821,14 +972,15 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             if(currentColumnIndex >= (numberOfColumns-1)) { currentColumnIndex = numberOfColumns-1; }
             else { currentColumnIndex++; }
             
+            gw.Blackboard.CurrentStore = [gw.Blackboard.AllStores objectAtIndex:currentColumnIndex];   
+            
             [self snapLayerToPosition];
-            DLog(@"curcol %f", currentColumnIndex);
           
         }
     }
     else if(fabsf(touchStartPos.x-touchEndPos.x)<kMovementForSnapColumn && [gw Blackboard].PickupObject==nil)
     {
-        //[self snapLayerToPosition];
+        [self snapLayerToPosition];
     }
     
     // evaluate the distance between start/end pos.
@@ -908,4 +1060,11 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     }
     potentialTap=NO;
 }
+-(void) dealloc
+{
+    [columnInfo release];
+    
+    [super dealloc];
+}
+
 @end

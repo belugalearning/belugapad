@@ -274,6 +274,15 @@
 		7FAEC26114BB5BA000E60983 /* visgrad1.fnt in Resources */ = {isa = PBXBuildFile; fileRef = 7FAEC25F14BB5BA000E60983 /* visgrad1.fnt */; };
 		7FAEC26214BB5BA000E60983 /* visgrad1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FAEC26014BB5BA000E60983 /* visgrad1.png */; };
 		7FAEC26414BB64C200E60983 /* btn-fwd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FAEC26314BB64C200E60983 /* btn-fwd.png */; };
+		7FB8264914F262080053F221 /* zbkg.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8263F14F262080053F221 /* zbkg.png */; };
+		7FB8264A14F262080053F221 /* zlay2.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8264014F262080053F221 /* zlay2.png */; };
+		7FB8264B14F262080053F221 /* zlay4.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8264114F262080053F221 /* zlay4.png */; };
+		7FB8264C14F262080053F221 /* zlay5.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8264214F262080053F221 /* zlay5.png */; };
+		7FB8264D14F262080053F221 /* zlay7.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8264314F262080053F221 /* zlay7.png */; };
+		7FB8264E14F262080053F221 /* zlay9.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8264414F262080053F221 /* zlay9.png */; };
+		7FB8264F14F262080053F221 /* zlay11.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8264514F262080053F221 /* zlay11.png */; };
+		7FB8265014F262080053F221 /* zlay13.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8264614F262080053F221 /* zlay13.png */; };
+		7FB8265114F262080053F221 /* ZubiIntro.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB8264814F262080053F221 /* ZubiIntro.m */; };
 		7FDBA50D14EBBD53004D1CC9 /* obj-float-sep.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FDBA50C14EBBD53004D1CC9 /* obj-float-sep.png */; };
 		7FDBA52D14EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51214EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m */; };
 		7FDBA52E14EBD560004D1CC9 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51414EBD560004D1CC9 /* CXMLNode_CreationExtensions.m */; };
@@ -753,6 +762,16 @@
 		7FAEC25F14BB5BA000E60983 /* visgrad1.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = visgrad1.fnt; sourceTree = "<group>"; };
 		7FAEC26014BB5BA000E60983 /* visgrad1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = visgrad1.png; sourceTree = "<group>"; };
 		7FAEC26314BB64C200E60983 /* btn-fwd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-fwd.png"; sourceTree = "<group>"; };
+		7FB8263F14F262080053F221 /* zbkg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zbkg.png; sourceTree = "<group>"; };
+		7FB8264014F262080053F221 /* zlay2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zlay2.png; sourceTree = "<group>"; };
+		7FB8264114F262080053F221 /* zlay4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zlay4.png; sourceTree = "<group>"; };
+		7FB8264214F262080053F221 /* zlay5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zlay5.png; sourceTree = "<group>"; };
+		7FB8264314F262080053F221 /* zlay7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zlay7.png; sourceTree = "<group>"; };
+		7FB8264414F262080053F221 /* zlay9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zlay9.png; sourceTree = "<group>"; };
+		7FB8264514F262080053F221 /* zlay11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zlay11.png; sourceTree = "<group>"; };
+		7FB8264614F262080053F221 /* zlay13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zlay13.png; sourceTree = "<group>"; };
+		7FB8264714F262080053F221 /* ZubiIntro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZubiIntro.h; sourceTree = "<group>"; };
+		7FB8264814F262080053F221 /* ZubiIntro.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZubiIntro.m; sourceTree = "<group>"; };
 		7FDBA50C14EBBD53004D1CC9 /* obj-float-sep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "obj-float-sep.png"; sourceTree = "<group>"; };
 		7FDBA51114EBD560004D1CC9 /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
 		7FDBA51214EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_CreationExtensions.m; sourceTree = "<group>"; };
@@ -958,6 +977,7 @@
 		7F5113D314A9EE63001AF372 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7FB8263D14F261FF0053F221 /* zubi intro */,
 				7FDBA53E14EBDD56004D1CC9 /* daemon animations */,
 				7FF8F12314DD553800A6D75E /* univassets */,
 				7F813D5E14CCC3B300C1E997 /* sprites */,
@@ -1673,6 +1693,23 @@
 			name = Helpers;
 			sourceTree = "<group>";
 		};
+		7FB8263D14F261FF0053F221 /* zubi intro */ = {
+			isa = PBXGroup;
+			children = (
+				7FB8263F14F262080053F221 /* zbkg.png */,
+				7FB8264014F262080053F221 /* zlay2.png */,
+				7FB8264114F262080053F221 /* zlay4.png */,
+				7FB8264214F262080053F221 /* zlay5.png */,
+				7FB8264314F262080053F221 /* zlay7.png */,
+				7FB8264414F262080053F221 /* zlay9.png */,
+				7FB8264514F262080053F221 /* zlay11.png */,
+				7FB8264614F262080053F221 /* zlay13.png */,
+				7FB8264714F262080053F221 /* ZubiIntro.h */,
+				7FB8264814F262080053F221 /* ZubiIntro.m */,
+			);
+			name = "zubi intro";
+			sourceTree = "<group>";
+		};
 		7FDBA50F14EBD550004D1CC9 /* TouchXML */ = {
 			isa = PBXGroup;
 			children = (
@@ -1924,6 +1961,14 @@
 				7F2C741314EEC15900A0FA5D /* placevalue-problem017.plist in Resources */,
 				7F2C741414EEC15900A0FA5D /* placevalue-problem018.plist in Resources */,
 				7F2C741514EEC15900A0FA5D /* placevalue-problem019.plist in Resources */,
+				7FB8264914F262080053F221 /* zbkg.png in Resources */,
+				7FB8264A14F262080053F221 /* zlay2.png in Resources */,
+				7FB8264B14F262080053F221 /* zlay4.png in Resources */,
+				7FB8264C14F262080053F221 /* zlay5.png in Resources */,
+				7FB8264D14F262080053F221 /* zlay7.png in Resources */,
+				7FB8264E14F262080053F221 /* zlay9.png in Resources */,
+				7FB8264F14F262080053F221 /* zlay11.png in Resources */,
+				7FB8265014F262080053F221 /* zlay13.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2101,6 +2146,7 @@
 				7FDBA53714EBD560004D1CC9 /* CXMLNode_XPathExtensions.m in Sources */,
 				7FDBA53814EBD560004D1CC9 /* CXMLNode.m in Sources */,
 				7FDBA53914EBD560004D1CC9 /* CTidy.m in Sources */,
+				7FB8265114F262080053F221 /* ZubiIntro.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

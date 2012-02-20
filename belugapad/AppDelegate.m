@@ -15,6 +15,7 @@
 #import "BlockFloating.h"
 #import "RootViewController.h"
 #import "PlaceValue.h"
+#import "ZubiIntro.h"
 
 #import "MenuScene.h"
 
@@ -122,7 +123,7 @@
     //[[CCDirector sharedDirector] runWithScene:[BlockHolder scene]];
     //[[CCDirector sharedDirector] runWithScene:[MenuScene scene]];
     //[[CCDirector sharedDirector] runWithScene:[BlockFloating scene]];
-    [[CCDirector sharedDirector] runWithScene:[BlockFloating scene]];
+    [[CCDirector sharedDirector] runWithScene:[ZubiIntro scene]];
 }
 
 

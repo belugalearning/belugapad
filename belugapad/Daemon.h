@@ -23,6 +23,9 @@ typedef enum {
 @interface Daemon : NSObject
 {
     CCParticleSystemQuad *primaryParticle;
+    CCParticleSystemQuad *secondParticle;
+    CCParticleSystemQuad *thirdParticle;
+    
     CCLayer *hostLayer;
 
     DaemonMode mode;

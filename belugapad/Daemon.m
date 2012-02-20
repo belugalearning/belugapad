@@ -33,6 +33,8 @@ const CGPoint kDefaultStart={-25, 25};
 
 const float standbyExpiry=7.0f;
 
+static float kSubParticleOffset=10.0f;
+
 @implementation Daemon
 
 -(id)initWithLayer:(CCLayer*)theHostLayer andRestingPostion:(CGPoint)theRestingPos andLy:(float)hostLy
@@ -53,6 +55,15 @@ const float standbyExpiry=7.0f;
     
     //initial position is defaulted to offscreen;
     [primaryParticle setPosition:theRestingPos];
+    
+    //add secondary particles
+    secondParticle=[CCParticleSystemQuad particleWithFile:@"bm11.plist"];
+    [secondParticle setPosition:CGPointMake(kSubParticleOffset, kSubParticleOffset)];
+    thirdParticle=[CCParticleSystemQuad particleWithFile:@"bm11.plist"];
+    [thirdParticle setPosition:CGPointMake(-kSubParticleOffset, kSubParticleOffset)];
+    
+    [primaryParticle addChild:secondParticle];
+    [primaryParticle addChild:thirdParticle];
     
     baseEmitterRate=primaryParticle.emissionRate;
     baseLife=primaryParticle.life;

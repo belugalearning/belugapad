@@ -20,6 +20,8 @@
 static float kPropXNetSpace=0.087890625f;
 static float kPropYColumnOrigin=0.75f;
 static float kCageYOrigin=0.08f;
+static float kPropYColumnHeader=0.85f;
+static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 
 @implementation PlaceValue
 
@@ -40,7 +42,6 @@ static float kCageYOrigin=0.08f;
     {
         self.isTouchEnabled=YES;
         [[CCDirector sharedDirector] openGLView].multipleTouchEnabled=YES;
-        
         CGSize winsize=[[CCDirector sharedDirector] winSize];
         winL=CGPointMake(winsize.width, winsize.height);
         lx=winsize.width;
@@ -71,10 +72,12 @@ static float kCageYOrigin=0.08f;
         // Set the lastCount to 0 - this is for counting problems.
         
         lastCount = 0; 
+
     }
     
     return self;
 }
+
 
 -(void)doUpdate:(ccTime)delta
 {
@@ -110,68 +113,137 @@ static float kCageYOrigin=0.08f;
 //    ropesforColumn = 5;
 //    rows = 5;
 //    defaultColumn = 1.0f;
-    currentColumn = 1.0f;
     touching = NO;
 }
 
 -(void)populateGW
 {
     gw = [[DWGameWorld alloc] initWithGameScene:self];
+    renderLayer = [[CCLayer alloc] init];
+    [self addChild:renderLayer];
+    
+    gw.Blackboard.ComponentRenderLayer = renderLayer;
     
     float ropeWidth = kPropXNetSpace*lx;
-    CGPoint columnOrigin = ccp(cx-((ropeWidth*ropesforColumn)/2.0f)+(ropeWidth/2.0f), ly*kPropYColumnOrigin); 
 
-    for (int iRow=0; iRow<rows; iRow++)
+    columnInfo = [[NSMutableArray alloc] init];
+    
+    float currentColumnValue = firstColumnValue;
+    
+    for (int i=0; i<numberOfColumns; i++)
     {
-        NSMutableArray *RowArray = [[NSMutableArray alloc] init];        
-        [gw.Blackboard.AllStores addObject:RowArray];
+        CGPoint thisColumnOrigin = ccp(-((ropeWidth*ropesforColumn)/2.0f)+(ropeWidth/2.0f)+(i*(kPropXColumnSpacing*lx)), ly*kPropYColumnOrigin); 
         
-        CGPoint rowOrigin=ccp(columnOrigin.x, columnOrigin.y-(iRow*ropeWidth)); 
+        DLog(@"Adding col %d", i);
         
-        for(int iRope=0; iRope<ropesforColumn; iRope++)
+        NSMutableDictionary *currentColumnInfo = [[NSMutableDictionary alloc] init];
+        [currentColumnInfo setObject:[NSNumber numberWithFloat:currentColumnValue] forKey:COL_VALUE];
+        [currentColumnInfo setObject:[NSString stringWithFormat:@"%gs", currentColumnValue] forKey:COL_LABEL];
+        
+        DLog(@"Current column value is %f", currentColumnValue);
+       
+        [columnInfo addObject:currentColumnInfo];
+        
+        if(showColumnHeader)
         {
-            CGPoint containerOrigin=ccp(rowOrigin.x+(iRope*ropeWidth), rowOrigin.y);
-            DWGameObject *go = [gw addGameObjectWithTemplate:@"TplaceValueContainer"];
-            [[go store] setObject:[NSNumber numberWithFloat:containerOrigin.x] forKey:POS_X];
-            [[go store] setObject:[NSNumber numberWithFloat:containerOrigin.y] forKey:POS_Y];
-            [[go store] setObject:[NSNumber numberWithFloat:iRow] forKey:PLACEVALUE_ROW];
-            [[go store] setObject:[NSNumber numberWithFloat:1] forKey:PLACEVALUE_COLUMN];
-            [[go store] setObject:[NSNumber numberWithFloat:iRope] forKey:PLACEVALUE_ROPE];
-            DLog(@"containerorigin x %f y %f", containerOrigin.x, containerOrigin.y);
-            
-            [RowArray addObject:go];
-            
+            CCLabelTTF *columnHeader = [CCLabelTTF labelWithString:[currentColumnInfo objectForKey:COL_LABEL] fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            [columnHeader setPosition:ccp(i*(kPropXColumnSpacing*lx), ly*kPropYColumnHeader)];
+            [renderLayer addChild:columnHeader z:5];
         }
-    }
+        
+        currentColumnValue = (currentColumnValue/columnBaseValue);
+        
+        DLog(@"Reset current column value to %f", currentColumnValue);
+        
+        NSMutableArray *newCol = [[NSMutableArray alloc] init];
+        
+        [gw.Blackboard.AllStores addObject:newCol];
+        
+        if(currentColumnValue == defaultColumn)
+        {
+            float layerPositionX = (cx-(currentColumnIndex*(kPropXColumnSpacing*lx)));
+            gw.Blackboard.CurrentStore = newCol;
+            currentColumnIndex = i;
+            [renderLayer setPosition:ccp(layerPositionX, 0)];
+        }
+
     
-    if(showCage) 
-    {
-        // create cage
-        DWGameObject *colCage = [gw addGameObjectWithTemplate:@"TplaceValueCage"];
-        [[colCage store] setObject:[NSNumber numberWithBool:YES] forKey:ALLOW_MULTIPLE_MOUNT];
-        [[colCage store] setObject:[NSNumber numberWithFloat:cx] forKey:POS_X];
-        [[colCage store] setObject:[NSNumber numberWithFloat:ly*kCageYOrigin] forKey:POS_Y];
-    }
+        for (int iRow=0; iRow<rows; iRow++)
+        {
+            NSMutableArray *RowArray = [[NSMutableArray alloc] init];        
+            [newCol addObject:RowArray];
+            
+            CGPoint rowOrigin=ccp(thisColumnOrigin.x, thisColumnOrigin.y-(iRow*ropeWidth)); 
+            
+            for(int iRope=0; iRope<ropesforColumn; iRope++)
+            {
+                CGPoint containerOrigin=ccp(rowOrigin.x+(iRope*ropeWidth), rowOrigin.y);
+                DWGameObject *go = [gw addGameObjectWithTemplate:@"TplaceValueContainer"];
+                [[go store] setObject:[NSNumber numberWithFloat:containerOrigin.x] forKey:POS_X];
+                [[go store] setObject:[NSNumber numberWithFloat:containerOrigin.y] forKey:POS_Y];
+                [[go store] setObject:[NSNumber numberWithFloat:iRow] forKey:PLACEVALUE_ROW];
+                [[go store] setObject:[NSNumber numberWithFloat:i] forKey:PLACEVALUE_COLUMN];
+                [[go store] setObject:[NSNumber numberWithFloat:iRope] forKey:PLACEVALUE_ROPE];
+                [[go store] setObject:[[currentColumnInfo objectForKey:COL_VALUE] stringValue] forKey:OBJECT_VALUE];
+                
+                [RowArray addObject:go];
+                
+            }
+        }
+        
+        if(showCage) 
+        {
+            // create cage
+            DWGameObject *colCage = [gw addGameObjectWithTemplate:@"TplaceValueCage"];
+            [[colCage store] setObject:[NSNumber numberWithBool:YES] forKey:ALLOW_MULTIPLE_MOUNT];
+            [[colCage store] setObject:[NSNumber numberWithFloat:i*(kPropXColumnSpacing*lx)] forKey:POS_X];
+            [[colCage store] setObject:[NSNumber numberWithFloat:ly*kCageYOrigin] forKey:POS_Y];
+            [[colCage store] setObject:[[currentColumnInfo objectForKey:COL_VALUE] stringValue] forKey:OBJECT_VALUE];
+            
+            
+            NSString *currentColumnValueKey = [[currentColumnInfo objectForKey:COL_VALUE] stringValue];
+            
+            if([columnSprites objectForKey:currentColumnValueKey])
+            {
+                [[colCage store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
+            }
+            else
+            {
+                [[colCage store] setObject:kDefaultSprite forKey:SPRITE_FILENAME];                
+            }
+
+        }
     
+    }
+
     for(int i=0; i<(initObjects.count); i++)
     {
         NSDictionary *curDict = [initObjects objectAtIndex:i];
         int insCol = [[curDict objectForKey:PUT_IN_COL] intValue];
         int insRow = [[curDict objectForKey:PUT_IN_ROW] intValue];
-        int count = [[curDict objectForKey:NUMBER] intValue];
-        
+        int count = [[curDict objectForKey:NUMBER] intValue];     
         for(int i=0; i<count; i++)
         {
             DWGameObject *block = [gw addGameObjectWithTemplate:@"TplaceValueObject"];
             
-            NSDictionary *pl = [NSDictionary dictionaryWithObject:[[gw.Blackboard.AllStores objectAtIndex:insRow] objectAtIndex:i] forKey:MOUNT];
+            NSDictionary *pl = [NSDictionary dictionaryWithObject:[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:insRow] objectAtIndex:i] forKey:MOUNT];
+
             
+            
+            NSString *currentColumnValueKey = [[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] stringValue];
+            
+            if([columnSprites objectForKey:currentColumnValueKey])
+            {
+                [[block store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
+            }
             [block handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
             
         }
         DLog(@"col %d, rows %d, count %d", insCol, insRow, count);
+
     }
 
+    [renderLayer setPosition:ccp(cx-(currentColumnIndex*(kPropXColumnSpacing*lx)), 0)];
     
 }
 
@@ -267,16 +339,20 @@ static float kCageYOrigin=0.08f;
     
     // set the vars for our gw!
     
-    numberofIntegerColumns = [[pdef objectForKey:NUMBER_INTEGER_COLS] intValue];
-    numberofDecimalColumns = [[pdef objectForKey:NUMBER_DECIMAL_COLS] intValue];
+    defaultColumn = [[pdef objectForKey:DEFAULT_COL] intValue];
+    columnBaseValue = [[pdef objectForKey:COL_BASE_VALUE] floatValue];
+    firstColumnValue = [[pdef objectForKey:FIRST_COL_VALUE] floatValue];
+    numberOfColumns = [[pdef objectForKey:NUMBER_COLS] floatValue];
+    
     ropesforColumn = [[pdef objectForKey:ROPES_PER_COL] intValue];
     rows = [[pdef objectForKey:ROWS_PER_COL] intValue];
-    defaultColumn = [[pdef objectForKey:DEFAULT_COL] floatValue];
     showCage = [[pdef objectForKey:SHOW_CAGE] boolValue];
     showCount = [[pdef objectForKey:SHOW_COUNT] boolValue];
     showCountOnBlock = [[pdef objectForKey:SHOW_COUNT_BLOCK] boolValue];
+    showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
     
-    DLog(@"intcol %d deccol %d ropes %d rows %d defaultcol %f", numberofIntegerColumns, numberofDecimalColumns, ropesforColumn, rows, defaultColumn);
+    DLog(@"ropes %d rows %d defaultcol %f", 
+         ropesforColumn, rows, defaultColumn);
     
     //create problem file name
     CCLabelBMFont *flabel=[CCLabelBMFont labelWithString:[problemFiles objectAtIndex:currentProblemIndex] fntFile:@"visgrad1.fnt"];
@@ -291,6 +367,10 @@ static float kCageYOrigin=0.08f;
     //retain solutions dict
     solutionsDef=[pdef objectForKey:SOLUTION];
     [solutionsDef retain];
+    
+    //look for column specific sprites
+    columnSprites = [pdef objectForKey:COLUMN_SPRITES];
+    [columnSprites retain];
     
     NSNumber *rMode=[pdef objectForKey:REJECT_MODE];
     if (rMode) rejectMode=[rMode intValue];
@@ -405,11 +485,11 @@ static float kCageYOrigin=0.08f;
 {
     int totalCount=0;
     int expectedCount = [[solutionsDef objectForKey:SOLUTION_VALUE] intValue];
-    for (int i=0; i<gw.Blackboard.AllStores.count; i++)
+    for (int i=0; i<gw.Blackboard.CurrentStore.count; i++)
     {
-        for(int o=0; o<[[gw.Blackboard.AllStores objectAtIndex:i]count]; o++)
+        for(int o=0; o<[[gw.Blackboard.CurrentStore objectAtIndex:i]count]; o++)
         {
-            DWGameObject *goC = [[gw.Blackboard.AllStores objectAtIndex:(i)] objectAtIndex:o];
+            DWGameObject *goC = [[gw.Blackboard.CurrentStore objectAtIndex:(i)] objectAtIndex:o];
             if([[goC store] objectForKey:MOUNTED_OBJECT])
             {
                 totalCount++;
@@ -430,57 +510,80 @@ static float kCageYOrigin=0.08f;
 
 -(void)evalProblemMatrixMatch
 {
-    int countAtRow[gw.Blackboard.AllStores.count];
-    
-    for (int i=0; i<gw.Blackboard.AllStores.count; i++)
+    float solutionsFound = 0;
+    for(int i=0; i<gw.Blackboard.AllStores.count; i++)
     {
-        countAtRow[i] = 0;
-    }
     
-    for (int i=0; i<gw.Blackboard.AllStores.count; i++)
-    {
-        for(int o=0; o<[[gw.Blackboard.AllStores objectAtIndex:i]count]; o++)
+        gw.Blackboard.CurrentStore = [[gw Blackboard].AllStores objectAtIndex:i];
+        
+        float incValue = [[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
+        
+        DLog(@"Looping through number i %d and col value %f", i, incValue);
+    
+    
+    
+        int countAtRow[gw.Blackboard.CurrentStore.count];
+        
+        for (int i=0; i<gw.Blackboard.CurrentStore.count; i++)
         {
-            DWGameObject *goC = [[gw.Blackboard.AllStores objectAtIndex:(i)] objectAtIndex:o];
-            if([[goC store] objectForKey:MOUNTED_OBJECT])
+            countAtRow[i] = 0;
+        }
+        
+        for (int i=0; i<gw.Blackboard.CurrentStore.count; i++)
+        {
+            for(int o=0; o<[[gw.Blackboard.CurrentStore objectAtIndex:i]count]; o++)
             {
-                countAtRow[i] = countAtRow[i] + 1;
-                DLog(@"(MATRIX_MATCH) Found %d blocks on row %d", countAtRow[i], i);
-            }   
-        }
-    }
-    
-    NSArray *solutionMatrix = [solutionsDef objectForKey:SOLUTION_MATRIX];
-    int solutionsFound = 0;
-    
-    
-    for(int o=0; o<solutionMatrix.count; o++)
-    {
-        NSDictionary *solDict = [solutionMatrix objectAtIndex:o];
-        int curRow = [[solDict objectForKey:PUT_IN_ROW] intValue];
-        
-        DLog(@"(MATRIX_MATCH) Found in this row: %d", countAtRow[curRow]);
-        if(countAtRow[curRow] == [[solDict objectForKey:NUMBER] intValue])
-        {
-            solutionsFound++;
-            //TODO: Attach XP/partial progress here
-        }
-        else
-        {
-            //TODO: Attach partial failure here
+                DWGameObject *goC = [[gw.Blackboard.CurrentStore objectAtIndex:(i)] objectAtIndex:o];
+                if([[goC store] objectForKey:MOUNTED_OBJECT])
+                {
+                    countAtRow[i] = countAtRow[i] + 1;
+                    DLog(@"(MATRIX_MATCH) Found %d blocks on row %d", countAtRow[i], i);
+                }   
+            }
         }
         
-    }
-    
-    if(solutionsFound == solutionMatrix.count)
-    {
-        [self doWinning];
-    }
-    else if(solutionsFound != solutionMatrix.count && evalMode==kProblemEvalOnCommit)
-    {
-        [self doIncorrect];
+        NSArray *solutionMatrix = [solutionsDef objectForKey:SOLUTION_MATRIX];
+        
+        for(int o=0; o<solutionMatrix.count; o++)
+        {
+            NSDictionary *solDict = [solutionMatrix objectAtIndex:o];
+            int curRow = [[solDict objectForKey:PUT_IN_ROW] intValue];
+            
+            DLog(@"(MATRIX_MATCH) Found in this row: %d", countAtRow[curRow]);
+            if(countAtRow[curRow] == [[solDict objectForKey:NUMBER] intValue])
+            {
+                //solutionsFound = solutionsFound+(incValue*[[solDict objectForKey:NUMBER] intValue]);
+                solutionsFound++;
+                DLog(@"Current solutionFound count %f - %d needed", solutionsFound, solutionMatrix.count);
+                //TODO: Attach XP/partial progress here
+            }
+            else
+            {
+                //TODO: Attach partial failure here
+            }
+            
+        }
+        
+        if(solutionsFound == solutionMatrix.count)
+        {
+            [self doWinning];
+        }
+        else if(solutionsFound != solutionMatrix.count && evalMode==kProblemEvalOnCommit)
+        {
+            [self doIncorrect];
+        }
     }
 
+}
+
+-(void)snapLayerToPosition
+{
+    float layerPositionX = (cx-(currentColumnIndex*(kPropXColumnSpacing*lx)));
+    CCMoveTo *moveLayer = [CCMoveTo actionWithDuration:kLayerSnapAnimationTime position:ccp(layerPositionX, 0)];
+    CCEaseIn *moveLayerGently = [CCEaseIn actionWithAction:moveLayer rate:kLayerSnapAnimationTime];
+    [renderLayer runAction:moveLayerGently]; 
+    
+    gw.Blackboard.CurrentStore = [gw.Blackboard.AllStores objectAtIndex:currentColumnIndex];   
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -526,6 +629,7 @@ static float kCageYOrigin=0.08f;
         if([gw Blackboard].PickupObject!=nil)
         {
             
+            gw.Blackboard.PickupOffset = location;
             // At this point we can still cancel the tap
             potentialTap = YES;
             
@@ -544,7 +648,10 @@ static float kCageYOrigin=0.08f;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    CGPoint prevLoc = [touch previousLocationInView:[touch view]];
+    prevLoc = [[CCDirector sharedDirector] convertToGL: prevLoc];
     [daemon setTarget:location];
+    
     
     if([BLMath DistanceBetween:touchStartPos and:touchEndPos] >= fabs(kTapSlipResetThreshold) && potentialTap)
     {
@@ -554,15 +661,36 @@ static float kCageYOrigin=0.08f;
         potentialTap = NO;
     }
 
-    
+    else if(touching && [gw Blackboard].PickupObject==nil)
+    {
+
+
+        CGPoint diff = ccpSub(location, prevLoc);
+        diff = ccp(diff.x, 0);
+        [renderLayer setPosition:ccpAdd(renderLayer.position, diff)];
+    }
     if([gw Blackboard].PickupObject!=nil)
     {
+        CGPoint diff=[BLMath SubtractVector:prevLoc from:location];
         //mod location by pickup offset
-        location=[BLMath SubtractVector:[gw Blackboard].PickupOffset from:location];
+        
+        NSLog(@"diff-x: %f / diff-y: %f", diff.x, diff.y);
+        
+        float posX = [[[gw.Blackboard.PickupObject store] objectForKey:POS_X] floatValue];
+        float posY = [[[gw.Blackboard.PickupObject store] objectForKey:POS_Y] floatValue];
+        
+        NSLog(@"posX: %f / posY: %f", posX, posY);
+
+        
+        posX = posX + diff.x;
+        posY = posY + diff.y;
+        
+        NSLog(@"posX+diff: %f / posY+diff: %f", posX, posY);        
+        
         
         NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];
-        [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
-        [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
+        [pl setObject:[NSNumber numberWithFloat:posX] forKey:POS_X];
+        [pl setObject:[NSNumber numberWithFloat:posY] forKey:POS_Y];
         
         [[gw Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:-1];
     }
@@ -580,6 +708,35 @@ static float kCageYOrigin=0.08f;
     
     [daemon setTarget:location];
     [daemon setMode:kDaemonModeWaiting];
+    
+    if(fabsf(touchStartPos.x-touchEndPos.x)>kMovementForSnapColumn && [gw Blackboard].PickupObject==nil)
+    {
+        DLog(@"touchstart %f touchend %f difference %f cur col ind %f", touchStartPos.x, touchEndPos.x, touchStartPos.x-touchEndPos.x, currentColumnIndex);
+        
+        if(touchStartPos.x < touchEndPos.x)
+        {
+
+            if(currentColumnIndex < 1) { currentColumnIndex = 0; }
+            else { currentColumnIndex--; }
+        
+            [self snapLayerToPosition];
+            DLog(@"curcol %f", currentColumnIndex);
+        }
+        else
+        {
+            
+            if(currentColumnIndex >= (numberOfColumns-1)) { currentColumnIndex = numberOfColumns-1; }
+            else { currentColumnIndex++; }
+            
+            [self snapLayerToPosition];
+            DLog(@"curcol %f", currentColumnIndex);
+          
+        }
+    }
+    else if(fabsf(touchStartPos.x-touchEndPos.x)<kMovementForSnapColumn && [gw Blackboard].PickupObject==nil)
+    {
+        //[self snapLayerToPosition];
+    }
     
     // evaluate the distance between start/end pos.
     

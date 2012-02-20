@@ -4,14 +4,16 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>place 3 blocks on the top row, 2 on row 2, and 1 on row 3</string>
-	<key>NUMBER_INTEGER_COLS</key>
-	<integer>1</integer>
-	<key>NUMBER_DECIMAL_COLS</key>
-	<integer>0</integer>
+	<key>NUMBER_COLS</key>
+	<integer>2</integer>
 	<key>DEFAULT_COL</key>
-	<integer>1</integer>
+	<integer>0</integer>
+	<key>FIRST_COL_VALUE</key>
+	<string>10</string>
+	<key>COL_BASE_VALUE</key>
+	<string>5</string>
 	<key>ROPES_PER_COL</key>
-	<integer>6</integer>
+	<integer>5</integer>
 	<key>ROWS_PER_COL</key>
 	<integer>4</integer>
 	<key>ALLOW_CONDENSING</key>
@@ -28,7 +30,7 @@
 	<array>
 		<dict>
 			<key>PUT_IN_COL</key>
-			<integer>1</integer>
+			<integer>0</integer>
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
@@ -36,7 +38,7 @@
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
-			<integer>1</integer>
+			<integer>0</integer>
 			<key>PUT_IN_ROW</key>
 			<integer>1</integer>
 			<key>NUMBER</key>
@@ -44,11 +46,19 @@
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
-			<integer>1</integer>
+			<integer>0</integer>
 			<key>PUT_IN_ROW</key>
 			<integer>2</integer>
 			<key>NUMBER</key>
 			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
+			<integer>1</integer>
+			<key>PUT_IN_ROW</key>
+			<integer>0</integer>
+			<key>NUMBER</key>
+			<integer>2</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -57,7 +67,7 @@
 		<array>
 			<dict>
 				<key>PUT_IN_COL</key>
-				<integer>1</integer>
+				<integer>0</integer>
 				<key>PUT_IN_ROW</key>
 				<integer>0</integer>
 				<key>NUMBER</key>
@@ -65,7 +75,7 @@
 			</dict>
 			<dict>
 				<key>PUT_IN_COL</key>
-				<integer>1</integer>
+				<integer>0</integer>
 				<key>PUT_IN_ROW</key>
 				<integer>1</integer>
 				<key>NUMBER</key>
@@ -73,11 +83,19 @@
 			</dict>
 			<dict>
 				<key>PUT_IN_COL</key>
-				<integer>1</integer>
+				<integer>0</integer>
 				<key>PUT_IN_ROW</key>
 				<integer>2</integer>
 				<key>NUMBER</key>
 				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>PUT_IN_COL</key>
+				<integer>1</integer>
+				<key>PUT_IN_ROW</key>
+				<integer>2</integer>
+				<key>NUMBER</key>
+				<integer>3</integer>
 			</dict>
 		</array>
 		<key>SOLUTION_TYPE</key>

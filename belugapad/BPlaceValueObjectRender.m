@@ -90,9 +90,17 @@
 
 -(void)setSprite
 {
-    CCSprite *mySprite=[CCSprite spriteWithFile:@"obj-placevalue-unit.png"];
-    [[gameWorld GameScene] addChild:mySprite z:1];
-        
+    NSString *spriteFileName=@"obj-placevalue-unit.png";
+    //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
+
+    if([[gameObject store] objectForKey:SPRITE_FILENAME])
+    {
+        spriteFileName=[[gameObject store] objectForKey:SPRITE_FILENAME];
+    }
+    
+        CCSprite *mySprite=[CCSprite spriteWithFile:spriteFileName];
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:1];
+    
     //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
     [[gameObject store] setObject:mySprite forKey:MY_SPRITE];
 }

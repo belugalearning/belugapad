@@ -11,11 +11,15 @@
 #import "DWGameWorld.h"
 #import "DWGameObject.h"
 #import "ToolConsts.h"
+#import "ToolScene.h"
 
 @class Daemon;
 
-@interface BlockFloating : CCLayer
+@interface BlockFloating : ToolScene
 {
+    ToolHost *toolHost;
+    NSDictionary *problemDef;
+    
     float cx;
     float cy;
     
@@ -42,7 +46,6 @@
     
     BOOL problemIsCurrentlySolved;
     
-    Daemon *daemon;
     BOOL daemonIsGhosting;
     
     //pulled direct from problem def -- both default to 0 state if not defined
@@ -65,13 +68,11 @@
     CCSprite *operatorPanel;
 }
 
-+(CCScene *) scene;
-
 -(void) setupBkgAndTitle;
 -(void) setupAudio;
 -(void) setupSprites;
 -(void) setupGW;
--(void) populateGW;
+-(void)populateGW:(NSDictionary *)pdef;
 -(void)setupChSpace;
 -(void) doUpdate:(ccTime)delta;
 -(void) attachBodyToGO:(DWGameObject *)attachGO atPositionPayload:(NSDictionary *)positionPayload;
@@ -107,5 +108,7 @@
 -(void)setOperators;
 -(void)doAddOperation;
 -(void)doSubtractOperation;
+
+-(void)doUpdate:(ccTime)delta;
 
 @end

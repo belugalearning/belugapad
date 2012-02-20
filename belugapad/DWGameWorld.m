@@ -9,12 +9,13 @@
 #import "DWGameObject.h"
 #import "DWBehaviour.h"
 //#import "GameScene.h"
+#import "ToolScene.h"
 
 @implementation DWGameWorld
 
 @synthesize LogBuffer;
 
--(DWGameWorld *)initWithGameScene:(CCLayer*)scene
+-(DWGameWorld *)initWithGameScene:(ToolScene*)scene
 {
     if( (self=[super init] )) 
     {
@@ -41,7 +42,7 @@
     return blackboard;
 }
 
--(CCLayer *)GameScene
+-(ToolScene *)GameScene
 {
 	return mGameScene;
 }

@@ -8,6 +8,7 @@
 
 #import "BContainerRender.h"
 #import "global.h"
+#import "ToolScene.h"
 
 @implementation BContainerRender
 
@@ -54,7 +55,7 @@
         [mySprite setVisible:NO];
     }
     
-    [[gameWorld GameScene] addChild:mySprite z:0];
+    [[gameWorld GameScene].ForeLayer addChild:mySprite z:0];
     
 }
 

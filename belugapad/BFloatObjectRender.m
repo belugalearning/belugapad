@@ -9,6 +9,7 @@
 #import "BFloatObjectRender.h"
 #import "global.h"
 #import "BLMath.h"
+#import "ToolScene.h"
 
 @implementation BFloatObjectRender
 
@@ -141,7 +142,7 @@
 {
 //    CCSprite *mySprite=[CCSprite spriteWithFile:@"obj-float-45.png"];
     CCNode *mySprite=[[CCNode alloc] init];
-    [[gameWorld GameScene] addChild:mySprite z:0];
+    [[gameWorld GameScene].ForeLayer addChild:mySprite z:0];
     
     //if we're on an object > 1x1, render more sprites as children
     int r=[GOS_GET(OBJ_ROWS) intValue];
@@ -328,7 +329,7 @@
 
 -(void)addMeTo:(DWGameObject*)targetGo
 {
-    CGPoint offsetPos=[BLMath offsetPosFrom:[self avgPosForFloatObject:gameObject] to:[self avgPosForFloatObject:targetGo]];
+//    CGPoint offsetPos=[BLMath offsetPosFrom:[self avgPosForFloatObject:gameObject] to:[self avgPosForFloatObject:targetGo]];
 
     for (NSDictionary *child in [[gameObject store] objectForKey:OBJ_CHILDMATRIX]) {
         [targetGo handleMessage:kDWfloatAddThisChild andPayload:[NSDictionary dictionaryWithObject:child forKey:OBJ_CHILD] withLogLevel:0];
@@ -475,7 +476,7 @@
 //    [holdSprite setPosition:[localSprite position]];
 //    [holdSprite setAnchorPoint:[objectNode position]];
 //    [holdSprite setRotation:[localSprite rotation]];
-    [[gameWorld GameScene] addChild:holdSprite];
+    [[gameWorld GameScene].ForeLayer addChild:holdSprite];
     CCDelayTime *t0=[CCDelayTime actionWithDuration:1.0f];
     CCFadeOut *t1=[CCFadeOut actionWithDuration:0.1f];
     CCSequence *tseq=[CCSequence actions:t0, t1, nil];
@@ -492,15 +493,15 @@
     CCDelayTime *s2=[CCDelayTime actionWithDuration:0.3f];
     CCFadeOut *s3=[CCFadeOut actionWithDuration:1.5f];
     CCSequence *seq=[CCSequence actions:s0, s1, s2, s3, nil];
-    [[gameWorld GameScene] addChild:subSprite];
+    [[gameWorld GameScene].ForeLayer addChild:subSprite];
     [subSprite runAction:seq];
 
     
     [localSprite setVisible:NO];
     [remoteSprite setVisible:NO];
     
-    [[gameWorld GameScene] removeChild:localSprite cleanup:YES];
-    [[gameWorld GameScene] removeChild:remoteSprite cleanup:YES];
+    [[gameWorld GameScene].ForeLayer removeChild:localSprite cleanup:YES];
+    [[gameWorld GameScene].ForeLayer removeChild:remoteSprite cleanup:YES];
     
     //update count
     [[gameObject store] setObject:[NSNumber numberWithInt:[flatChildren count]] forKey:OBJ_UNITCOUNT];

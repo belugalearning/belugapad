@@ -36,12 +36,15 @@
     float defaultColumn;
     float columnBaseValue;
     float firstColumnValue;
+    float selectedObjectValue;
     int numberOfColumns;    
     
     // GameWorld options
     
     BOOL showCage;
     BOOL showCount;
+    BOOL showValue;
+    BOOL showBaseSelection;
     BOOL showCountOnBlock;
     BOOL showColumnHeader;
     

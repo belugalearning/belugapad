@@ -30,8 +30,7 @@ extern const float kLabelTitleYOffsetHalfProp;
 extern const ccColor3B kLabelTitleColor;
 extern const float kLabelCompleteYOffsetHalfProp;
 extern const ccColor3B kLabelCompleteColor;
-extern const float kPropXCountLabelPadding;
-extern const float kPropYCountLabelPadding;
+
 
 extern const float kTimeToAutoMove;
 extern const float kTimeToFadeButtonLabel;

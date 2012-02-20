@@ -84,6 +84,14 @@
     {
         [self resetSpriteToMount];
     }
+    if(messageType==kDWswitchBaseSelection)
+    {
+        [self switchBaseSelection:YES];
+    }
+    if(messageType==kDWswitchBaseSelectionBack)
+    {
+        [self switchBaseSelection:NO];        
+    }
 }
 
 
@@ -158,7 +166,27 @@
     {
         [mySprite setColor:ccc3(255, 255, 255)];
     }
+    
+}
+-(void) switchBaseSelection:(BOOL)isSelected
+{
+    CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
+    if(isSelected)
+    {
 
+        [mySprite setColor:ccc3(255, 215, 0)]; 
+    }
+    else
+    {
+        if([[gameObject store] objectForKey:SELECTED])
+        {
+            [mySprite setColor:ccc3(0, 255, 0)];             
+        }
+        else
+        {
+            [mySprite setColor:ccc3(255, 255, 255)];
+        }
+    }
 }
 
 -(void) dealloc

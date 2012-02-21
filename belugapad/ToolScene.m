@@ -57,7 +57,7 @@
 
 -(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    
+    return YES;
 }
 
 -(void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event

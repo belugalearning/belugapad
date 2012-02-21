@@ -28,6 +28,7 @@
 @property float hostLY;
 @property float hostCX;
 @property float hostCY;
+@property BOOL inProblemSetup;
 
 -(void)loadData;
 

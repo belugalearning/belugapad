@@ -44,14 +44,9 @@ const int kPhysCPActiveCount=600;
 const CGPoint kPhysGravityDefault={0, 500};
 const float kPhysWaterLineElastcity=0.65f;
 
-//const float kScheduleEvalLoopTFPS=6.0f;
 const float kScheduleEvalLoopTFPS=1.0f;
 
 const CGPoint kDaemonRest={50, 50};
-
-static float kScheduleProximityLoopTFPS=4.0f;
-//static float kScheduleProximityLoop4/TFPS=1.0f;
-
 
 static float kOperatorPopupYOffset=80.0f;
 static float kOperatorPopupDragFriction=0.75f;
@@ -122,6 +117,8 @@ static void eachShape(void *ptr, void* unused)
         
         //general go-oriented render, etc
         [gameWorld handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
+        
+        gameWorld.Blackboard.inProblemSetup=NO;
         
         timeToNextTutorial=TUTORIAL_TIME_START;
     }
@@ -500,6 +497,8 @@ static void eachShape(void *ptr, void* unused)
 
 -(void)populateGW:(NSDictionary *)pdef
 {
+    gameWorld.Blackboard.inProblemSetup=YES;
+    
     //integration: this can split into parse / populate
     	
     [gameWorld logInfo:[NSString stringWithFormat:@"started problem"] withData:0];
@@ -508,6 +507,8 @@ static void eachShape(void *ptr, void* unused)
     problemDescLabel=[CCLabelTTF labelWithString:[pdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
     [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
     [problemDescLabel setColor:kLabelTitleColor];
+    [problemDescLabel setOpacity:0];
+    [problemDescLabel setTag:3];
 
     [self.ForeLayer addChild:problemDescLabel];
     

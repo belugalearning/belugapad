@@ -32,7 +32,7 @@
 {
     if(messageType==kDWsetupStuff)
     {
-        //[self setSprite];
+        [self setSprite];
     }
     
     if(messageType==kDWenableOccludingSeparators)
@@ -142,7 +142,7 @@
 {
 //    CCSprite *mySprite=[CCSprite spriteWithFile:@"obj-float-45.png"];
     CCNode *mySprite=[[CCNode alloc] init];
-    [[gameWorld GameScene].ForeLayer addChild:mySprite z:0];
+    [[gameWorld GameScene].ForeLayer addChild:mySprite z:1];
     
     //if we're on an object > 1x1, render more sprites as children
     int r=[GOS_GET(OBJ_ROWS) intValue];
@@ -177,7 +177,12 @@
             {
                 CCSprite *cs=[CCSprite spriteWithFile:@"obj-float-45.png"];
 //                [cs setPosition:ccp((ci*UNIT_SIZE)+HALF_SIZE, (ri*UNIT_SIZE)+HALF_SIZE)];
-                [cs setPosition:ccp((ci*UNIT_SIZE), (ri*UNIT_SIZE))];                
+                [cs setPosition:ccp((ci*UNIT_SIZE), (ri*UNIT_SIZE))]; 
+                if(gameWorld.Blackboard.inProblemSetup)
+                {
+                    [cs setTag:2];
+                    [cs setOpacity:0];
+                }
                 [mySprite addChild:cs];
                 
                 //add this as a position to the child matrix
@@ -266,6 +271,12 @@
                     {
                         //there's an object adjacent on this row, draw an occlusion separator
                         CCSprite *rowSep=[CCSprite spriteWithFile:@"obj-float-sep.png"];
+                        if(gameWorld.Blackboard.inProblemSetup)
+                        {
+                            [rowSep setTag:2];
+                            [rowSep setOpacity:0];
+                        }
+                        
                         [rowSep setRotation:90.0f];
                         [objectNode addChild:rowSep];
                         
@@ -282,8 +293,13 @@
                     int nextColFlatIndex=[[[matrix objectAtIndex:c+1] objectAtIndex:r] intValue];
                     if(nextColFlatIndex>=0)
                     {
-                        CCSprite *colSep=[CCSprite spriteWithFile:@"obj-float-sep.png"];
+                        CCSprite *colSep=[CCSprite spriteWithFile:@"obj-float-sep.png"];                        
                         [objectNode addChild:colSep];
+                        if(gameWorld.Blackboard.inProblemSetup)
+                        {
+                            [colSep setTag:2];
+                            [colSep setOpacity:0];
+                        }
                         
                         CGPoint thisRowObjPos=[[[flatChildren objectAtIndex:flatIndex] objectForKey:MY_SPRITE] position];
                         [colSep setPosition:[BLMath AddVector:ccp(HALF_SIZE, 0) toVector:thisRowObjPos]];                        
@@ -302,6 +318,11 @@
                     {
                         CCSprite *diagSep=[CCSprite spriteWithFile:@"obj-float-sep.png"];
                         [objectNode addChild:diagSep];
+                        if(gameWorld.Blackboard.inProblemSetup)
+                        {
+                            [diagSep setTag:2];
+                            [diagSep setOpacity:0];
+                        }
                         
                         CGPoint thisRowObjPos=[[[flatChildren objectAtIndex:flatIndex] objectForKey:MY_SPRITE] position];
                         [diagSep setPosition:[BLMath AddVector:ccp(HALF_SIZE, HALF_SIZE) toVector:thisRowObjPos]];                        

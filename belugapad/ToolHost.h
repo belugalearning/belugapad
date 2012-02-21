@@ -43,4 +43,7 @@
 -(void)doUpdateOnSecond:(ccTime)delta;
 -(void)doUpdateOnQuarterSecond:(ccTime)delta;
 
+-(void)recurseSetIntroFor:(CCNode*)node withTime:(float)time forTag:(int)tag;
+-(void)stageIntroActions;
+
 @end

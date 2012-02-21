@@ -132,10 +132,38 @@
         [self removeChild:toolForeLayer cleanup:YES];
         [currentTool release];
     }
-    
+
+    //reset multitouch
+    //if tool requires multitouch, it will need to reset accordingly
+    [[CCDirector sharedDirector] openGLView].multipleTouchEnabled=NO;
+
     currentTool=[NSClassFromString(toolKey) alloc];
-    [currentTool initWithToolHost:self andProblemDef:pdef];
+    [currentTool initWithToolHost:self andProblemDef:pdef];    
     
+    [self stageIntroActions];
+}
+
+-(void)stageIntroActions
+{
+    //TODO tags are currently fixed to 2 phases -- either parse tool tree or pre-populate with design-fixed max
+    for (int i=1; i<=3; i++) {
+        [self recurseSetIntroFor:toolBackLayer withTime:i forTag:i];
+        [self recurseSetIntroFor:toolForeLayer withTime:i forTag:i];
+    }
+}
+
+-(void)recurseSetIntroFor:(CCNode*)node withTime:(float)time forTag:(int)tag
+{
+    for (CCNode *cn in [node children]) {
+        if([cn tag]==tag)
+        {
+            CCDelayTime *d=[CCDelayTime actionWithDuration:time];
+            CCFadeIn *f=[CCFadeIn actionWithDuration:0.1f];
+            CCSequence *s=[CCSequence actions:d, f, nil];
+            [cn runAction:s];
+        }
+        [self recurseSetIntroFor:cn withTime:time forTag:tag];
+    }
 }
 
 -(void)loadTestPipeline

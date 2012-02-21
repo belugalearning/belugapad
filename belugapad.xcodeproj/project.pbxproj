@@ -239,6 +239,7 @@
 		7F5115AA14A9EF9E001AF372 /* BlockFloating.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A914A9EF9E001AF372 /* BlockFloating.m */; };
 		7F54E60414E9B2AF00F25235 /* operator-popup.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F54E60314E9B2AF00F25235 /* operator-popup.png */; };
 		7F719C0314D739A600F30E89 /* Daemon.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F719C0214D739A600F30E89 /* Daemon.m */; };
+		7F7D8BA114F389E000A48362 /* shard.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F7D8BA014F389E000A48362 /* shard.png */; };
 		7F813D5514CCBA4300C1E997 /* IceDiv.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F813D5414CCBA4300C1E997 /* IceDiv.m */; };
 		7F813D5814CCBDDD00C1E997 /* fire1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5714CCBDDD00C1E997 /* fire1.plist */; };
 		7F813D5C14CCC3A100C1E997 /* fire2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5B14CCC3A100C1E997 /* fire2.plist */; };
@@ -717,6 +718,7 @@
 		7F54E60314E9B2AF00F25235 /* operator-popup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "operator-popup.png"; sourceTree = "<group>"; };
 		7F719C0114D739A600F30E89 /* Daemon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Daemon.h; sourceTree = "<group>"; };
 		7F719C0214D739A600F30E89 /* Daemon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Daemon.m; sourceTree = "<group>"; };
+		7F7D8BA014F389E000A48362 /* shard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shard.png; sourceTree = "<group>"; };
 		7F813D5314CCBA4300C1E997 /* IceDiv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IceDiv.h; sourceTree = "<group>"; };
 		7F813D5414CCBA4300C1E997 /* IceDiv.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IceDiv.m; sourceTree = "<group>"; };
 		7F813D5714CCBDDD00C1E997 /* fire1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = fire1.plist; sourceTree = "<group>"; };
@@ -1620,6 +1622,7 @@
 		7F813D6114CCC3E400C1E997 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				7F7D8BA014F389E000A48362 /* shard.png */,
 				7FF8F31814E0F79600A6D75E /* commit.png */,
 				7FAEC26314BB64C200E60983 /* btn-fwd.png */,
 			);
@@ -1971,6 +1974,7 @@
 				7F268AD514F2866600F1F65F /* obj-placevalue-unit10.png in Resources */,
 				7F268AD614F2866600F1F65F /* obj-placevalue-unit100.png in Resources */,
 				7F268AE214F28F4400F1F65F /* pipeline-test.plist in Resources */,
+				7F7D8BA114F389E000A48362 /* shard.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

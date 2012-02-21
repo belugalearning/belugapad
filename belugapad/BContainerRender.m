@@ -42,8 +42,17 @@
     if(!sname) sname=@"obj-blockholder-mount1x1.png";
     
     mySprite=[CCSprite spriteWithFile:sname];
+    
+    //this is effectively redundant -- staged introduction will reset to max
     [mySprite setOpacity:120];
 
+    //tagged for staged introduction into problem
+    if(gameWorld.Blackboard.inProblemSetup)
+    {
+        [mySprite setTag:1];
+        [mySprite setOpacity:0];
+    }
+    
     float x=[[[gameObject store] objectForKey:POS_X] floatValue];
     float y=[GOS_GET(POS_Y) floatValue];
     

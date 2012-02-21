@@ -156,10 +156,6 @@ static void eachShape(void *ptr, void* unused)
     [problemCompleteLabel setVisible:NO];
     [self.ForeLayer addChild:problemCompleteLabel];
     
-    CCSprite *btnFwd=[CCSprite spriteWithFile:@"btn-fwd.png"];
-    [btnFwd setPosition:kButtonNextToolPos];
-    [self.ForeLayer addChild:btnFwd z:2];
-    
     //setup ghost layer
     ghostLayer=[[CCLayer alloc]init];
     [self.ForeLayer addChild:ghostLayer z:2];
@@ -251,16 +247,7 @@ static void eachShape(void *ptr, void* unused)
     [toolHost.Zubi setTarget:location];
     [toolHost.Zubi setMode:kDaemonModeFollowing];
     
-    //fixed handlers for menu interaction
-    if(location.x>kButtonNextToolHitXOffset && location.y>kButtonToolbarHitBaseYOffset)
-    {
-        [gameWorld writeLogBufferToDiskWithKey:@"BlockFloating"];
-        
-        [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
-        [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.3f scene:[PlaceValue scene]]];
-    }
-    
-    else if (CGRectContainsPoint(kRectButtonCommit, location))
+    if (CGRectContainsPoint(kRectButtonCommit, location))
     {
         [self evalCommit];
     }

@@ -243,10 +243,6 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     [problemCompleteLabel setVisible:NO];
     [self.ForeLayer addChild:problemCompleteLabel z:5];
     
-    CCSprite *btnFwd=[CCSprite spriteWithFile:@"btn-fwd.png"];
-    [btnFwd setPosition:kButtonNextToolPos];
-    [self.ForeLayer addChild:btnFwd z:2];
-    
     condensePanel=[CCSprite spriteWithFile:@"cmpanel.png"];
     [condensePanel setPosition:ccp(100, cy)];
     [condensePanel setVisible:NO];
@@ -573,13 +569,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     [toolHost.Zubi setMode:kDaemonModeFollowing];
     [toolHost.Zubi setTarget:location];    
     
-    if(location.x>kButtonNextToolHitXOffset && location.y>kButtonToolbarHitBaseYOffset)
-    {
-    
-        [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
-        [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.3f scene:[IceDiv scene]]];
-    }
-    else if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit)
+    if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit)
     {
         [self evalProblem];
     }

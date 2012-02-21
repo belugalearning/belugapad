@@ -314,12 +314,14 @@ enum {
 	float height = -padding;
 	
 	CCMenuItem *item;
-	CCARRAY_FOREACH(children_, item)
+	CCARRAY_FOREACH(children_, item) {
+        if(!item) continue;
 	    height += item.contentSize.height * item.scaleY + padding;
-
+    }
 	float y = height / 2.0f;
 	
 	CCARRAY_FOREACH(children_, item) {
+        if(!item) continue;
 		CGSize itemSize = item.contentSize;
 	    [item setPosition:ccp(0, y - itemSize.height * item.scaleY / 2.0f)];
 	    y -= itemSize.height * item.scaleY + padding;
@@ -336,12 +338,14 @@ enum {
 	
 	float width = -padding;
 	CCMenuItem *item;
-	CCARRAY_FOREACH(children_, item)
+	CCARRAY_FOREACH(children_, item) {
+        if(!item) continue;
 	    width += item.contentSize.width * item.scaleX + padding;
-
+    }
 	float x = -width / 2.0f;
 	
 	CCARRAY_FOREACH(children_, item){
+        if(!item) continue;
 		CGSize itemSize = item.contentSize;
 		[item setPosition:ccp(x + itemSize.width * item.scaleX / 2.0f, 0)];
 		x += itemSize.width * item.scaleX + padding;
@@ -371,6 +375,8 @@ enum {
     NSUInteger row = 0, rowHeight = 0, columnsOccupied = 0, rowColumns;
 	CCMenuItem *item;
 	CCARRAY_FOREACH(children_, item){
+        if(!item) continue;
+        
 		NSAssert( row < [rows count], @"Too many menu items for the amount of rows/columns.");
         
 		rowColumns = [(NSNumber *) [rows objectAtIndex:row] unsignedIntegerValue];
@@ -394,6 +400,8 @@ enum {
 	row = 0; rowHeight = 0; rowColumns = 0;
 	float w, x, y = height / 2;
 	CCARRAY_FOREACH(children_, item) {
+        if(!item) continue;
+        
 		if(rowColumns == 0) {
 			rowColumns = [(NSNumber *) [rows objectAtIndex:row] unsignedIntegerValue];
 			w = winSize.width / (1 + rowColumns);
@@ -447,6 +455,8 @@ enum {
 	NSUInteger column = 0, columnWidth = 0, rowsOccupied = 0, columnRows;
 	CCMenuItem *item;
 	CCARRAY_FOREACH(children_, item){
+        if(!item) continue;
+        
 		NSAssert( column < [columns count], @"Too many menu items for the amount of rows/columns.");
 		
 		columnRows = [(NSNumber *) [columns objectAtIndex:column] unsignedIntegerValue];
@@ -476,6 +486,8 @@ enum {
 	float x = -width / 2, y;
 	
 	CCARRAY_FOREACH(children_, item){
+        if(!item) continue;
+        
 		if(columnRows == 0) {
 			columnRows = [(NSNumber *) [columns objectAtIndex:column] unsignedIntegerValue];
 			y = ([(NSNumber *) [columnHeights objectAtIndex:column] intValue] + winSize.height) / 2;

@@ -590,8 +590,10 @@ struct transformValues_ {
 	
 	// vertex
 	NSInteger diff = offsetof( ccV3F_C4B_T2F, vertices);
+#ifndef __clang_analyzer__ // suppress warning that diff is always 0 here
 	glVertexPointer(3, GL_FLOAT, kQuadSize, (void*) (offset + diff) );
-	
+#endif
+    
 	// color
 	diff = offsetof( ccV3F_C4B_T2F, colors);
 	glColorPointer(4, GL_UNSIGNED_BYTE, kQuadSize, (void*)(offset + diff));

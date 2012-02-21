@@ -61,7 +61,7 @@ const uint32_t	kZoomActionTag = 0xc0c05002;
 
 -(id) initWithTarget:(id) rec selector:(SEL) cb
 {
-	if((self=[super init]) ) {
+	if( (self = [super init]) ) {
 	
 		anchorPoint_ = ccp(0.5f, 0.5f);
 		NSMethodSignature * sig = nil;
@@ -76,7 +76,10 @@ const uint32_t	kZoomActionTag = 0xc0c05002;
 #if NS_BLOCKS_AVAILABLE
 			if ([sig numberOfArguments] == 3) 
 #endif
-			[invocation_ setArgument:&self atIndex:2];
+			{
+                id selfCopy = self; // to suppress static analyser warning about accessing ivars while self not set properly
+                [invocation_ setArgument:&selfCopy atIndex:2];
+            }
 			
 			[invocation_ retain];
 		}

@@ -66,6 +66,9 @@
     BOOL enableOperators;
     CCLayer *operatorLayer;
     CCSprite *operatorPanel;
+    
+    //xp granted
+    NSMutableArray *xpGrantedClauses;
 }
 
 -(void) setupBkgAndTitle;

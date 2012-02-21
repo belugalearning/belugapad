@@ -9,6 +9,7 @@
 #import "Daemon.h"
 #import "BLMath.h"
 #import "TouchXML.h"
+#import "global.h"
 
 const float kBaseMaxForce=6000.0f;
 const float kBaseMaxSpeed=800.0f;
@@ -71,8 +72,73 @@ static float kSubParticleOffset=10.0f;
     
     [hostLayer addChild:primaryParticle];
 
+    shardsActive=[[NSMutableArray alloc] init];
+    shardsExpiring=[[NSMutableArray alloc] init];
     
     return self;
+}
+
+-(void)createXPshards:(int)numShards fromLocation:(CGPoint)baseLocation
+{
+    for (int i=0;i<numShards;i++)
+    {
+        CCSprite *shardSprite=[CCSprite spriteWithFile:@"shard.png"];
+        int o=50+(arc4random()%200);
+        [shardSprite setOpacity:o];
+        
+        float d=arc4random()%200;
+        float a=arc4random()%360;
+        
+        CGPoint destpos=[BLMath ProjectMovementWithX:d andY:d forRotation:a];
+        destpos=[BLMath AddVector:destpos toVector:baseLocation];
+        
+        [shardSprite setPosition:baseLocation];
+        [shardSprite setOpacity:0];
+        
+        CCFadeTo *f=[CCFadeTo actionWithDuration:0.2f opacity:o];
+        CCMoveTo *mt=[CCMoveTo actionWithDuration:5.0f position:destpos];
+        CCEaseIn *ea=[CCEaseIn actionWithAction:mt rate:0.1f];
+        [shardSprite runAction:f];
+        [shardSprite runAction:ea];
+        
+        [shardsActive addObject:shardSprite];
+        
+        [hostLayer addChild:shardSprite];
+        
+        retainedXP++;
+    }
+}
+
+-(void)dumpXP
+{
+    for (int i=0;i<retainedXP;i++)
+    {
+        CCSprite *shardSprite=[CCSprite spriteWithFile:@"shard.png"];
+        int o=50+(arc4random()%200);
+        [shardSprite setOpacity:o];
+        
+        float d=arc4random()%1000;
+        float a=arc4random()%360;
+        
+        CGPoint destpos=[BLMath ProjectMovementWithX:d andY:d forRotation:a];
+        destpos=[BLMath AddVector:destpos toVector:[primaryParticle position]];
+        
+        [shardSprite setPosition:[primaryParticle position]];
+        [shardSprite setOpacity:o];
+        
+        CCFadeTo *f=[CCFadeTo actionWithDuration:0.2f opacity:0];
+        CCMoveTo *mt=[CCMoveTo actionWithDuration:5.0f position:destpos];
+        CCEaseIn *ea=[CCEaseIn actionWithAction:mt rate:0.1f];
+        [shardSprite runAction:f];
+        [shardSprite runAction:ea];
+        
+        [shardsExpiring addObject:shardSprite];
+        expireShardsCooldown=2.0f;
+        
+        [hostLayer addChild:shardSprite];
+        
+        retainedXP--;
+    }    
 }
 
 -(void)setColor:(ccColor4F)aColor
@@ -194,6 +260,58 @@ static float kSubParticleOffset=10.0f;
     {
         [self setMode:kDaemonModeResting];
     }
+    
+    [self tickManageShards:delta];
+}
+
+-(void)tickManageShards:(ccTime)delta
+{
+    //shard accumulation
+    for (CCSprite *shard in shardsActive) {
+        int diff=(int)[BLMath DistanceBetween:[shard position] and:[primaryParticle position]];
+        
+        //mod down -- chance of collection
+        int chanceDiff=(int)(diff / 10.f);
+        
+        if(diff<50 || (arc4random()%chanceDiff)==1)
+        {
+            //collect it
+            CCMoveTo *mt=[CCMoveTo actionWithDuration:0.25f position:[primaryParticle position]];
+            CCEaseOut *eo=[CCEaseOut actionWithAction:mt rate:0.5f];
+            CCFadeOut *fo=[CCFadeOut actionWithDuration:0.3f];
+            [shard stopAllActions];
+            [shard runAction:eo];
+            [shard runAction:fo];
+            
+            //dispose of it in the future
+            [shardsExpiring addObject:shard];
+            
+            //reset disposal timer
+            expireShardsCooldown=2.0f;
+        }
+    }
+    
+    //remove any disposal shards from the active shards
+    [shardsActive removeObjectsInArray:shardsExpiring];
+    
+    //shard expiry management & layer removal
+    if(expireShardsCooldown>0)
+    {
+        expireShardsCooldown-=delta;
+    }
+    else
+    {
+        //expire the shards
+        for (CCSprite *s in shardsExpiring) {
+            [hostLayer removeChild:s cleanup:YES];
+        }
+        
+        [shardsExpiring removeAllObjects];
+        
+        //reset expiry
+        expireShardsCooldown=2.0f;
+    }
+    
 }
 
 -(void)updateBreatheVars:(ccTime)delta

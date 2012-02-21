@@ -71,7 +71,7 @@
 -(void)doUpdateOnTick:(ccTime)delta
 {
     //do internal mgmt updates
-    
+    [self.Zubi doUpdate:delta];
     
     //let tool do updates
     [currentTool doUpdateOnTick:delta];
@@ -141,6 +141,8 @@
     [currentTool initWithToolHost:self andProblemDef:pdef];    
     
     [self stageIntroActions];
+    
+    [self.Zubi dumpXP];
 }
 
 -(void)stageIntroActions

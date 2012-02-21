@@ -99,6 +99,8 @@ static void eachShape(void *ptr, void* unused)
         
         problemIsCurrentlySolved=NO;
         
+        xpGrantedClauses=[[NSMutableArray alloc] init];
+        
         [self setupBkgAndTitle];
         
         //setup daemon
@@ -237,6 +239,9 @@ static void eachShape(void *ptr, void* unused)
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    
+//    //shards on tap
+//    [toolHost.Zubi createXPshards:20 fromLocation:location];
     
     BOOL continueEval=YES;
     
@@ -717,9 +722,6 @@ static void eachShape(void *ptr, void* unused)
     
     //now update gameworld (pos updates will happen in above &eachShape)
     [gameWorld doUpdate:delta];
-    
-    //daemon updates
-    [toolHost.Zubi doUpdate:delta];
 }
 
 -(void)updateTutorials:(ccTime)delta
@@ -995,6 +997,22 @@ static void eachShape(void *ptr, void* unused)
             if(![matchesInSols containsObject:[NSNumber numberWithInt:solIndex]])
             {
                 [matchesInSols addObject:[NSNumber numberWithInt:solIndex]];
+            }
+            
+            if(![xpGrantedClauses containsObject:clause])
+            {
+                DWGameObject *go=[gameWorld gameObjectWithKey:TAG andValue:[clause objectForKey:ITEM1_CONTAINER_TAG]];
+                
+                CGPoint pos=ccp(cx,cy);
+                if(go)
+                {
+                    pos=ccp([[[go store] objectForKey:POS_X] floatValue], [[[go store] objectForKey:POS_Y] floatValue]);
+                }
+                
+                //create partial progress here
+                [toolHost.Zubi createXPshards:20 fromLocation:pos];
+
+                [xpGrantedClauses addObject:clause];
             }
             
             clausesPassed++;

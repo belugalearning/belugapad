@@ -58,6 +58,11 @@ typedef enum {
     float baseLife;
     
     float baseStartSize;
+    
+    NSMutableArray *shardsActive;
+    NSMutableArray *shardsExpiring;
+    float expireShardsCooldown;
+    int retainedXP;
 }
 
 -(id)initWithLayer:(CCLayer*)theHostLayer andRestingPostion:(CGPoint)theRestingPos andLy:(float)hostLy;
@@ -80,5 +85,9 @@ typedef enum {
 -(NSMutableArray*)getAnimationPath:(int)pathIndex onSVG:(CXMLDocument *)doc withMappings:(NSDictionary *)nsMappings;
 
 -(void)animationOver;
+
+-(void)createXPshards:(int)numShards fromLocation:(CGPoint)baseLocation;
+-(void)dumpXP;
+-(void)tickManageShards:(ccTime)delta;
 
 @end

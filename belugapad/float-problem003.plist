@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>place one block in each container</string>
+	<key>TOOL_KEY</key>
+	<string>BlockFloating</string>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>

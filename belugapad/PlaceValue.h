@@ -10,10 +10,17 @@
 
 #import "cocos2d.h"
 #import "ToolConsts.h"
+#import "ToolScene.h"
+
 @class DWGameWorld;
 @class Daemon;
-@interface PlaceValue : CCLayer
+@class ToolHost;
+
+@interface PlaceValue : ToolScene
 {
+    ToolHost *toolHost;
+    NSDictionary *problemDef;
+    
     BOOL touching;
     BOOL potentialTap;
     
@@ -57,7 +64,6 @@
     NSDictionary *columnSprites;
     
     DWGameWorld *gw;
-    Daemon *daemon;
 
     CGPoint touchStartPos;
     CGPoint touchEndPos;
@@ -82,14 +88,10 @@
     BOOL inMulchArea;
 }
 
-+(CCScene *)scene;
--(void)doUpdate:(ccTime)delta;
 -(void)populateGW;
 -(void)setupProblem;
 -(void)setupBkgAndTitle;
--(void)listProblemFiles;
--(void)resetToNextProblem;
--(void)readPlist;
+-(void)readPlist:(NSDictionary*)pdef;
 -(void)problemStateChanged;
 -(void)evalProblem;
 -(void)doWinning;

@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>place 3 blocks on the top row, 2 on row 2, and 1 on row 3</string>
+	<key>TOOL_KEY</key>
+	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
 	<integer>2</integer>
 	<key>DEFAULT_COL</key>

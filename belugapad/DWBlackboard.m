@@ -23,6 +23,7 @@
 @synthesize hostLY;
 @synthesize hostCX;
 @synthesize hostCY;
+@synthesize inProblemSetup;
 
 -(id) init
 {

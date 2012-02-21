@@ -9,9 +9,9 @@
 #import "ZubiIntro.h"
 #import "Daemon.h"
 #import "ToolConsts.h"
-#import "BlockFloating.h"
 #import "BLMath.h"
 
+#import "ToolHost.h"
 
 static float kPropYZubiPos=0.35f;
 static float kPropYOverlayPos=0.65f;
@@ -88,7 +88,7 @@ static float kPropYOverlayPos=0.65f;
     
     if(location.x>kButtonNextToolHitXOffset && location.y>kButtonToolbarHitBaseYOffset)
     {
-        [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.3f scene:[BlockFloating scene]]];
+        [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.3f scene:[ToolHost scene]]];
     }
     
 }
@@ -140,7 +140,7 @@ static float kPropYOverlayPos=0.65f;
         //finish scene
         if(slideIndex==14 && [BLMath DistanceBetween:lastTouch and:ccp(cx, 440)] < 50.0f )
         {
-            [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.3f scene:[BlockFloating scene]]];
+            [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.3f scene:[ToolHost scene]]];
             return;
         }
         

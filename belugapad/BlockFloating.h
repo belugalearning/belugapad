@@ -11,11 +11,15 @@
 #import "DWGameWorld.h"
 #import "DWGameObject.h"
 #import "ToolConsts.h"
+#import "ToolScene.h"
 
 @class Daemon;
 
-@interface BlockFloating : CCLayer
+@interface BlockFloating : ToolScene
 {
+    ToolHost *toolHost;
+    NSDictionary *problemDef;
+    
     float cx;
     float cy;
     
@@ -42,7 +46,6 @@
     
     BOOL problemIsCurrentlySolved;
     
-    Daemon *daemon;
     BOOL daemonIsGhosting;
     
     //pulled direct from problem def -- both default to 0 state if not defined
@@ -63,16 +66,17 @@
     BOOL enableOperators;
     CCLayer *operatorLayer;
     CCSprite *operatorPanel;
+    
+    //xp granted
+    NSMutableArray *xpGrantedClauses;
 }
-
-+(CCScene *) scene;
 
 -(void) setupBkgAndTitle;
 -(void) setupAudio;
 -(void) setupSprites;
 -(void) setupGW;
--(void) populateGW;
--(void)setupChSpace;
+-(void) populateGW:(NSDictionary *)pdef;
+-(void) setupChSpace;
 -(void) doUpdate:(ccTime)delta;
 -(void) attachBodyToGO:(DWGameObject *)attachGO atPositionPayload:(NSDictionary *)positionPayload;
 
@@ -80,9 +84,6 @@
 
 -(void)createObjectWithCols:(int)cols andRows:(int)rows andUnitCount:(int)unitcount andTag:(NSString*)tagString;
 -(void)createContainerWithPos:(CGPoint)pos andData:(NSDictionary*)containerData;
-
--(void)listProblemFiles;
--(void) resetToNextProblem;
 
 // both abstracted (i.e. from gw implementation) but fixed to this tool's current problem load -- hence effectively a single-problem evaluation prototype of abstracted (from gw) evaluation
 -(void)evalCompletionWithForceCommit:(BOOL)forceCommit;
@@ -107,5 +108,7 @@
 -(void)setOperators;
 -(void)doAddOperation;
 -(void)doSubtractOperation;
+
+-(void)doUpdate:(ccTime)delta;
 
 @end

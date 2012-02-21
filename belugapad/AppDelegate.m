@@ -10,11 +10,7 @@
 
 #import "AppDelegate.h"
 #import "GameConfig.h"
-#import "NumberLine.h"
-#import "BlockHolder.h"
-#import "BlockFloating.h"
 #import "RootViewController.h"
-#import "PlaceValue.h"
 #import "ZubiIntro.h"
 
 #import "MenuScene.h"

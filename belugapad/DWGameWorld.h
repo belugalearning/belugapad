@@ -18,12 +18,12 @@
 @class DWGameObject;
 @class DWBehaviour;
 @class CCLayer;
-@class BHexMap;
+@class ToolScene;
 
 @interface DWGameWorld : NSObject
 {
 	
-	CCLayer *mGameScene;
+	ToolScene *mGameScene;
    
 	NSMutableDictionary *localStore;
 	NSMutableArray *gameObjects;
@@ -32,7 +32,6 @@
 	
 	bool dirtyRemoveObjects;
 	NSMutableArray *removeObjects;
-    BHexMap *hexMap;
     
     DWBlackboard *blackboard;
 	
@@ -43,9 +42,9 @@
 
 
 -(NSMutableDictionary *) store;
--(DWGameWorld *)initWithGameScene:(CCLayer *)scene;
+-(DWGameWorld *)initWithGameScene:(ToolScene *)scene;
 
--(CCLayer *)GameScene;
+-(ToolScene *)GameScene;
 
 -(void)logLocalStore;
 -(void)logDebugMessage:(NSString *)message atLevel:(int)level;

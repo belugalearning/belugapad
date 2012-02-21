@@ -13,6 +13,7 @@
 #import "BLMath.h"
 #import "Daemon.h"
 #import "ToolConsts.h"
+#import "ToolHost.h"
 
 const int kBlockSpawnSpaceWidth=800;
 const int kBlockSpawnSpaceHeight=400;
@@ -43,14 +44,9 @@ const int kPhysCPActiveCount=600;
 const CGPoint kPhysGravityDefault={0, 500};
 const float kPhysWaterLineElastcity=0.65f;
 
-//const float kScheduleEvalLoopTFPS=6.0f;
 const float kScheduleEvalLoopTFPS=1.0f;
 
 const CGPoint kDaemonRest={50, 50};
-
-static float kScheduleProximityLoopTFPS=4.0f;
-//static float kScheduleProximityLoopTFPS=1.0f;
-
 
 static float kOperatorPopupYOffset=80.0f;
 static float kOperatorPopupDragFriction=0.75f;
@@ -84,36 +80,31 @@ static void eachShape(void *ptr, void* unused)
 
 @implementation BlockFloating
 
-+(CCScene *) scene
-{
-    CCScene *scene=[CCScene node];
-    
-    BlockFloating *layer=[BlockFloating node];
-    
-    [scene addChild:layer];
-    
-    return scene;
-}
 
--(id) init
+-(id) initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
 {
+    toolHost=host;
+    problemDef=pdef;
+    
     if(self=[super init])
-    {
-        self.isTouchEnabled=YES;
-        
-        [[CCDirector sharedDirector] openGLView].multipleTouchEnabled=NO;
-     
+    {     
         cx=[[CCDirector sharedDirector] winSize].width / 2.0f;
         cy=[[CCDirector sharedDirector] winSize].height / 2.0f;
         
+        
+        self.BkgLayer=[[CCLayer alloc]init];
+        self.ForeLayer=[[CCLayer alloc]init];
+        [toolHost addToolBackLayer:self.BkgLayer];
+        [toolHost addToolForeLayer:self.ForeLayer];
+        
         problemIsCurrentlySolved=NO;
         
-        [self listProblemFiles];
+        xpGrantedClauses=[[NSMutableArray alloc] init];
         
         [self setupBkgAndTitle];
         
         //setup daemon
-        daemon=[[Daemon alloc] initWithLayer:self andRestingPostion:kDaemonRest andLy:cy*2];
+        //daemon=[[Daemon alloc] initWithLayer:self andRestingPostion:kDaemonRest andLy:cy*2];
         
         [self setupAudio];
         
@@ -124,104 +115,53 @@ static void eachShape(void *ptr, void* unused)
         [self setupGW];
         
         //psuedo placeholder -- this is where we break into logical model representation
-        [self populateGW];
+        [self populateGW:pdef];
         
         //general go-oriented render, etc
         [gameWorld handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
-        [self schedule:@selector(doUpdate:) interval:1.0f/kScheduleUpdateLoopTFPS];
-        
-        [self schedule:@selector(evalCompletionOnTimer:) interval:1.0f/kScheduleEvalLoopTFPS];
+        gameWorld.Blackboard.inProblemSetup=NO;
         
         timeToNextTutorial=TUTORIAL_TIME_START;
-        [self schedule:@selector(updateTutorials:) interval:1.0f];
-        
-        //look at object proximity
-        [self schedule:@selector(considerProximateObjects:) interval:1.0f / kScheduleProximityLoopTFPS];
-
     }
     
     return self;
 }
 
--(void) resetToNextProblem
+-(void)doUpdateOnTick:(ccTime)delta
 {
-    //write log on problem switch
-    [gameWorld writeLogBufferToDiskWithKey:@"BlockFloating"];
-    
-    //tear down
-    [gameWorld release];
-    
-    [daemon release];
-    
-    [self removeAllChildrenWithCleanup:YES];
-    
-    cpSpaceDestroy(space);
-    
-    currentProblemIndex++;
-    if(currentProblemIndex>=[problemFiles count])
-        currentProblemIndex=0;
-    
-    [solutionsDef release];
-    solutionsDef=nil;
-    
-    enableOperators=NO;
-    opGOsource=nil;
-    opGOtarget=nil;
-    
-    
-    //set up
-    [self setupBkgAndTitle];
-    
-    daemon=[[Daemon alloc] initWithLayer:self andRestingPostion:kDaemonRest andLy:2*cy];
-    
-    [self setupChSpace];
-    
-    [self setupGW];
-    
-    [self populateGW];
-    
-    [gameWorld handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
+    [self doUpdate:delta];
 }
 
--(void)listProblemFiles
+-(void)doUpdateOnSecond:(ccTime)delta
 {
-    currentProblemIndex=0;
-    
-    NSString *broot=[[NSBundle mainBundle] bundlePath];
-    NSArray *allFiles=[[NSFileManager defaultManager] contentsOfDirectoryAtPath:broot error:nil];
-    problemFiles=[allFiles filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self BEGINSWITH 'float-problem'"]];
-    
-    [problemFiles retain];
+    [self evalCompletionOnTimer:delta];
+}
+
+-(void)doUpdateOnQuarterSecond:(ccTime)delta
+{
+    [self considerProximateObjects:delta];
 }
 
 -(void)setupBkgAndTitle
 {
-    CCSprite *bkg=[CCSprite spriteWithFile:@"bg-ipad.png"];
-    [bkg setPosition:ccp(cx, cy)];
-    [self addChild:bkg z:0];
-    
     CCSprite *fg=[CCSprite spriteWithFile:@"fg-ipad-float.png"];
     [fg setPosition:ccp(cx, cy)];
-    [self addChild:fg z:2];
+    [self.ForeLayer addChild:fg z:2];
     
     problemCompleteLabel=[CCLabelTTF labelWithString:@"" fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
     [problemCompleteLabel setColor:kLabelCompleteColor];
     [problemCompleteLabel setPosition:ccp(cx, cy*kLabelCompleteYOffsetHalfProp)];
     [problemCompleteLabel setVisible:NO];
-    [self addChild:problemCompleteLabel];
-    
-    CCSprite *btnFwd=[CCSprite spriteWithFile:@"btn-fwd.png"];
-    [btnFwd setPosition:kButtonNextToolPos];
-    [self addChild:btnFwd z:2];
+    [self.ForeLayer addChild:problemCompleteLabel];
     
     //setup ghost layer
     ghostLayer=[[CCLayer alloc]init];
-    [self addChild:ghostLayer z:2];
+    [self.ForeLayer addChild:ghostLayer z:2];
     
     //setup operator layer
     operatorLayer=[[CCLayer alloc] init];
-    [self addChild:operatorLayer z:3];
+    [self.ForeLayer addChild:operatorLayer z:3];
     
     operatorPanel=[CCSprite spriteWithFile:@"operator-popup.png"];
     [operatorLayer addChild:operatorPanel];
@@ -279,7 +219,6 @@ static void eachShape(void *ptr, void* unused)
 -(void)setupGW
 {
     gameWorld=[[DWGameWorld alloc]initWithGameScene:self];
-    
 }
 
 
@@ -301,27 +240,16 @@ static void eachShape(void *ptr, void* unused)
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
+//    //shards on tap
+//    [toolHost.Zubi createXPshards:20 fromLocation:location];
+    
     BOOL continueEval=YES;
     
     //set daemon mode and target
-    [daemon setTarget:location];
-    [daemon setMode:kDaemonModeFollowing];
+    [toolHost.Zubi setTarget:location];
+    [toolHost.Zubi setMode:kDaemonModeFollowing];
     
-    //fixed handlers for menu interaction
-    if(location.x>kButtonNextToolHitXOffset && location.y>kButtonToolbarHitBaseYOffset)
-    {
-        [gameWorld writeLogBufferToDiskWithKey:@"BlockFloating"];
-        
-        [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
-        [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.3f scene:[PlaceValue scene]]];
-    }
-    
-    else if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
-    {
-        [self resetToNextProblem];
-    }
-    
-    else if (CGRectContainsPoint(kRectButtonCommit, location))
+    if (CGRectContainsPoint(kRectButtonCommit, location))
     {
         [self evalCommit];
     }
@@ -396,7 +324,7 @@ static void eachShape(void *ptr, void* unused)
 	location=[[CCDirector sharedDirector] convertToGL:location];
 
     //daemon to move
-    [daemon setTarget:location];
+    [toolHost.Zubi setTarget:location];
     
     //move operator layer
     if(operatorLayer.visible)
@@ -507,7 +435,7 @@ static void eachShape(void *ptr, void* unused)
 	location=[[CCDirector sharedDirector] convertToGL:location];
 	
     //daemon to (currently) let go and rest
-    [daemon setMode:kDaemonModeWaiting];
+    [toolHost.Zubi setMode:kDaemonModeWaiting];
     
     if([gameWorld Blackboard].PickupObject!=nil)
     {
@@ -572,35 +500,35 @@ static void eachShape(void *ptr, void* unused)
     
 }
 
--(void)populateGW
+-(void)populateGW:(NSDictionary *)pdef
 {
-    //integration: this can split into parse / populate
+    gameWorld.Blackboard.inProblemSetup=YES;
     
-    NSString *broot=[[NSBundle mainBundle] bundlePath];
-    NSString *pfile=[broot stringByAppendingPathComponent:[problemFiles objectAtIndex:currentProblemIndex]];
-	NSDictionary *pdef=[NSDictionary dictionaryWithContentsOfFile:pfile];
-	
-    [gameWorld logInfo:[NSString stringWithFormat:@"started problem: %@", pfile] withData:0];
+    //integration: this can split into parse / populate
+    	
+    [gameWorld logInfo:[NSString stringWithFormat:@"started problem"] withData:0];
 
     //render problem label
     problemDescLabel=[CCLabelTTF labelWithString:[pdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
     [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
     [problemDescLabel setColor:kLabelTitleColor];
+    [problemDescLabel setOpacity:0];
+    [problemDescLabel setTag:3];
 
-    [self addChild:problemDescLabel];
+    [self.ForeLayer addChild:problemDescLabel];
     
     //problem sub title
     NSString *subT=[pdef objectForKey:PROBLEM_SUBTITLE];
     if(!subT) subT=@"";
     problemSubLabel=[CCLabelTTF labelWithString:subT fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_SUBTITLE_FONT_SIZE];
     [problemSubLabel setPosition:ccp(cx, kLabelSubTitleYOffsetHalfProp*cy)];
-    [self addChild:problemSubLabel];
+    [self.ForeLayer addChild:problemSubLabel];
     
     //create problem file name
     CCLabelBMFont *flabel=[CCLabelBMFont labelWithString:[problemFiles objectAtIndex:currentProblemIndex] fntFile:@"visgrad1.fnt"];
     [flabel setPosition:kDebugProblemLabelPos];
     [flabel setOpacity:kDebugLabelOpacity];
-    [self addChild:flabel];
+    [self.ForeLayer addChild:flabel];
     
     //objects
     NSDictionary *objects=[pdef objectForKey:INIT_OBJECTS];
@@ -651,7 +579,7 @@ static void eachShape(void *ptr, void* unused)
     {
         CCSprite *commitBtn=[CCSprite spriteWithFile:@"commit.png"];
         [commitBtn setPosition:ccp((cx*2)-(kPropXCommitButtonPadding*(cx*2)), kPropXCommitButtonPadding*(cx*2))];
-        [self addChild:commitBtn];
+        [self.ForeLayer addChild:commitBtn];
     }
     
     //look at operator mode
@@ -682,7 +610,7 @@ static void eachShape(void *ptr, void* unused)
     {
         if([enableDaemonAnim boolValue])
         {
-            [daemon enableAnimations];
+            [toolHost.Zubi enableAnimations];
         }
     }
     
@@ -788,16 +716,12 @@ static void eachShape(void *ptr, void* unused)
         timeToAutoMoveToNextProblem+=delta;
         if(timeToAutoMoveToNextProblem>=kTimeToAutoMove)
         {
-            [self resetToNextProblem];
-            autoMoveToNextProblem=NO;
+            self.ProblemComplete=YES;
         }
     }
     
     //now update gameworld (pos updates will happen in above &eachShape)
     [gameWorld doUpdate:delta];
-    
-    //daemon updates
-    [daemon doUpdate:delta];
 }
 
 -(void)updateTutorials:(ccTime)delta
@@ -1075,6 +999,22 @@ static void eachShape(void *ptr, void* unused)
                 [matchesInSols addObject:[NSNumber numberWithInt:solIndex]];
             }
             
+            if(![xpGrantedClauses containsObject:clause])
+            {
+                DWGameObject *go=[gameWorld gameObjectWithKey:TAG andValue:[clause objectForKey:ITEM1_CONTAINER_TAG]];
+                
+                CGPoint pos=ccp(cx,cy);
+                if(go)
+                {
+                    pos=ccp([[[go store] objectForKey:POS_X] floatValue], [[[go store] objectForKey:POS_Y] floatValue]);
+                }
+                
+                //create partial progress here
+                [toolHost.Zubi createXPshards:20 fromLocation:pos];
+
+                [xpGrantedClauses addObject:clause];
+            }
+            
             clausesPassed++;
         }
 
@@ -1173,7 +1113,7 @@ static void eachShape(void *ptr, void* unused)
         //attach daemon to master sprite if user not already touching
         if(!touching) 
         {
-            [daemon followObject:cpGhost];
+            [toolHost.Zubi followObject:cpGhost];
             daemonIsGhosting=YES;
         }
         
@@ -1215,7 +1155,7 @@ static void eachShape(void *ptr, void* unused)
 {
     if(daemonIsGhosting)
     {
-        [daemon setMode:kDaemonModeResting];
+        [toolHost.Zubi setMode:kDaemonModeResting];
         daemonIsGhosting=NO;
     }
     
@@ -1224,13 +1164,21 @@ static void eachShape(void *ptr, void* unused)
 
 -(void)dealloc
 {
-    cpSpaceFree(space);
-	space = NULL;
+    //write log on problem switch
+    [gameWorld writeLogBufferToDiskWithKey:@"BlockFloating"];
     
+    //tear down
     [gameWorld release];
+        
+    [self.BkgLayer removeAllChildrenWithCleanup:YES];
+    [self.ForeLayer removeAllChildrenWithCleanup:YES];
+    
+    cpSpaceDestroy(space);
+	space = NULL;
     
     [problemFiles release];
     [solutionsDef release];
+    solutionsDef=nil;
     
     if(tutorials)
         [tutorials release];

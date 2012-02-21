@@ -9,6 +9,7 @@
 #import "BFloatObjectRender.h"
 #import "global.h"
 #import "BLMath.h"
+#import "ToolScene.h"
 
 @implementation BFloatObjectRender
 
@@ -31,7 +32,7 @@
 {
     if(messageType==kDWsetupStuff)
     {
-        //[self setSprite];
+        [self setSprite];
     }
     
     if(messageType==kDWenableOccludingSeparators)
@@ -141,7 +142,7 @@
 {
 //    CCSprite *mySprite=[CCSprite spriteWithFile:@"obj-float-45.png"];
     CCNode *mySprite=[[CCNode alloc] init];
-    [[gameWorld GameScene] addChild:mySprite z:0];
+    [[gameWorld GameScene].ForeLayer addChild:mySprite z:1];
     
     //if we're on an object > 1x1, render more sprites as children
     int r=[GOS_GET(OBJ_ROWS) intValue];
@@ -176,7 +177,12 @@
             {
                 CCSprite *cs=[CCSprite spriteWithFile:@"obj-float-45.png"];
 //                [cs setPosition:ccp((ci*UNIT_SIZE)+HALF_SIZE, (ri*UNIT_SIZE)+HALF_SIZE)];
-                [cs setPosition:ccp((ci*UNIT_SIZE), (ri*UNIT_SIZE))];                
+                [cs setPosition:ccp((ci*UNIT_SIZE), (ri*UNIT_SIZE))]; 
+                if(gameWorld.Blackboard.inProblemSetup)
+                {
+                    [cs setTag:2];
+                    [cs setOpacity:0];
+                }
                 [mySprite addChild:cs];
                 
                 //add this as a position to the child matrix
@@ -265,6 +271,12 @@
                     {
                         //there's an object adjacent on this row, draw an occlusion separator
                         CCSprite *rowSep=[CCSprite spriteWithFile:@"obj-float-sep.png"];
+                        if(gameWorld.Blackboard.inProblemSetup)
+                        {
+                            [rowSep setTag:2];
+                            [rowSep setOpacity:0];
+                        }
+                        
                         [rowSep setRotation:90.0f];
                         [objectNode addChild:rowSep];
                         
@@ -281,8 +293,13 @@
                     int nextColFlatIndex=[[[matrix objectAtIndex:c+1] objectAtIndex:r] intValue];
                     if(nextColFlatIndex>=0)
                     {
-                        CCSprite *colSep=[CCSprite spriteWithFile:@"obj-float-sep.png"];
+                        CCSprite *colSep=[CCSprite spriteWithFile:@"obj-float-sep.png"];                        
                         [objectNode addChild:colSep];
+                        if(gameWorld.Blackboard.inProblemSetup)
+                        {
+                            [colSep setTag:2];
+                            [colSep setOpacity:0];
+                        }
                         
                         CGPoint thisRowObjPos=[[[flatChildren objectAtIndex:flatIndex] objectForKey:MY_SPRITE] position];
                         [colSep setPosition:[BLMath AddVector:ccp(HALF_SIZE, 0) toVector:thisRowObjPos]];                        
@@ -301,6 +318,11 @@
                     {
                         CCSprite *diagSep=[CCSprite spriteWithFile:@"obj-float-sep.png"];
                         [objectNode addChild:diagSep];
+                        if(gameWorld.Blackboard.inProblemSetup)
+                        {
+                            [diagSep setTag:2];
+                            [diagSep setOpacity:0];
+                        }
                         
                         CGPoint thisRowObjPos=[[[flatChildren objectAtIndex:flatIndex] objectForKey:MY_SPRITE] position];
                         [diagSep setPosition:[BLMath AddVector:ccp(HALF_SIZE, HALF_SIZE) toVector:thisRowObjPos]];                        
@@ -328,7 +350,7 @@
 
 -(void)addMeTo:(DWGameObject*)targetGo
 {
-    CGPoint offsetPos=[BLMath offsetPosFrom:[self avgPosForFloatObject:gameObject] to:[self avgPosForFloatObject:targetGo]];
+//    CGPoint offsetPos=[BLMath offsetPosFrom:[self avgPosForFloatObject:gameObject] to:[self avgPosForFloatObject:targetGo]];
 
     for (NSDictionary *child in [[gameObject store] objectForKey:OBJ_CHILDMATRIX]) {
         [targetGo handleMessage:kDWfloatAddThisChild andPayload:[NSDictionary dictionaryWithObject:child forKey:OBJ_CHILD] withLogLevel:0];
@@ -475,7 +497,7 @@
 //    [holdSprite setPosition:[localSprite position]];
 //    [holdSprite setAnchorPoint:[objectNode position]];
 //    [holdSprite setRotation:[localSprite rotation]];
-    [[gameWorld GameScene] addChild:holdSprite];
+    [[gameWorld GameScene].ForeLayer addChild:holdSprite];
     CCDelayTime *t0=[CCDelayTime actionWithDuration:1.0f];
     CCFadeOut *t1=[CCFadeOut actionWithDuration:0.1f];
     CCSequence *tseq=[CCSequence actions:t0, t1, nil];
@@ -492,15 +514,15 @@
     CCDelayTime *s2=[CCDelayTime actionWithDuration:0.3f];
     CCFadeOut *s3=[CCFadeOut actionWithDuration:1.5f];
     CCSequence *seq=[CCSequence actions:s0, s1, s2, s3, nil];
-    [[gameWorld GameScene] addChild:subSprite];
+    [[gameWorld GameScene].ForeLayer addChild:subSprite];
     [subSprite runAction:seq];
 
     
     [localSprite setVisible:NO];
     [remoteSprite setVisible:NO];
     
-    [[gameWorld GameScene] removeChild:localSprite cleanup:YES];
-    [[gameWorld GameScene] removeChild:remoteSprite cleanup:YES];
+    [[gameWorld GameScene].ForeLayer removeChild:localSprite cleanup:YES];
+    [[gameWorld GameScene].ForeLayer removeChild:remoteSprite cleanup:YES];
     
     //update count
     [[gameObject store] setObject:[NSNumber numberWithInt:[flatChildren count]] forKey:OBJ_UNITCOUNT];

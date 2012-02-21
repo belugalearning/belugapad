@@ -372,7 +372,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             if(showCountOnBlock)
             {
                 CCSprite *s=[[gw.Blackboard.LastSelectedObject store] objectForKey:MY_SPRITE];
-                CGPoint pos=[s position];
+                CGPoint pos=[[s parent] convertToWorldSpace:[s position]];
                 countLabelBlock=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", gw.Blackboard.SelectedObjects.count] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
                 [countLabelBlock setPosition:pos];
                 [self.ForeLayer addChild:countLabelBlock z:10];
@@ -620,6 +620,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     location=[[CCDirector sharedDirector] convertToGL:location];
     CGPoint prevLoc = [touch previousLocationInView:[touch view]];
     prevLoc = [[CCDirector sharedDirector] convertToGL: prevLoc];
+
     [toolHost.Zubi setTarget:location];
     
     

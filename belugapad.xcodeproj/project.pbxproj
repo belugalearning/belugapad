@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C0AB7AD14F5116600437F07 /* Problems in Resources */ = {isa = PBXBuildFile; fileRef = 0C0AB7AC14F5116600437F07 /* Problems */; };
 		5536B29014E4173E00D30BC0 /* BPlaceValueContainerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */; };
 		5536B29414E4188A00D30BC0 /* netspacer.png in Resources */ = {isa = PBXBuildFile; fileRef = 5536B29314E4188A00D30BC0 /* netspacer.png */; };
 		5536B2A114E42FD100D30BC0 /* obj-placevalue-unit.png in Resources */ = {isa = PBXBuildFile; fileRef = 5536B2A014E42FD100D30BC0 /* obj-placevalue-unit.png */; };
@@ -267,6 +268,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0C0AB7AC14F5116600437F07 /* Problems */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Problems; sourceTree = SOURCE_ROOT; };
 		5536B28E14E4173D00D30BC0 /* BPlaceValueContainerRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueContainerRender.h; sourceTree = "<group>"; };
 		5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueContainerRender.m; sourceTree = "<group>"; };
 		5536B29314E4188A00D30BC0 /* netspacer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = netspacer.png; sourceTree = "<group>"; };
@@ -858,6 +860,7 @@
 		7F5113D314A9EE63001AF372 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0C0AB7AC14F5116600437F07 /* Problems */,
 				7F268AE014F28F2700F1F65F /* pipeline-testing */,
 				7FB8263D14F261FF0053F221 /* zubi intro */,
 				7FDBA53E14EBDD56004D1CC9 /* daemon animations */,
@@ -1771,6 +1774,7 @@
 				7F268AD614F2866600F1F65F /* obj-placevalue-unit100.png in Resources */,
 				7F268AE214F28F4400F1F65F /* pipeline-test.plist in Resources */,
 				7F7D8BA114F389E000A48362 /* shard.png in Resources */,
+				0C0AB7AD14F5116600437F07 /* Problems in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

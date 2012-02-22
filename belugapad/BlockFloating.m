@@ -145,7 +145,7 @@ static void eachShape(void *ptr, void* unused)
 
 -(void)setupBkgAndTitle
 {
-    CCSprite *fg=[CCSprite spriteWithFile:@"fg-ipad-float.png"];
+    CCSprite *fg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/fg-ipad-float.png")];
     [fg setPosition:ccp(cx, cy)];
     [self.ForeLayer addChild:fg z:2];
     
@@ -163,7 +163,7 @@ static void eachShape(void *ptr, void* unused)
     operatorLayer=[[CCLayer alloc] init];
     [self.ForeLayer addChild:operatorLayer z:3];
     
-    operatorPanel=[CCSprite spriteWithFile:@"operator-popup.png"];
+    operatorPanel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/operator-popup.png")];
     [operatorLayer addChild:operatorPanel];
     [operatorLayer setVisible:NO];
 }
@@ -577,7 +577,7 @@ static void eachShape(void *ptr, void* unused)
     //show commit button if evalOnCommit
     if(evalMode==kProblemEvalOnCommit)
     {
-        CCSprite *commitBtn=[CCSprite spriteWithFile:@"commit.png"];
+        CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
         [commitBtn setPosition:ccp((cx*2)-(kPropXCommitButtonPadding*(cx*2)), kPropXCommitButtonPadding*(cx*2))];
         [self.ForeLayer addChild:commitBtn];
     }

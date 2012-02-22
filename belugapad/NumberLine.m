@@ -57,7 +57,7 @@
 
 -(void)setupBkgAndTitle
 {
-    CCSprite *bkg=[CCSprite spriteWithFile:@"bg-ipad.png"];
+    CCSprite *bkg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/bg/bg-ipad.png")];
     [bkg setPosition:ccp(cx, cy)];
     [self addChild:bkg z:0];
     
@@ -71,7 +71,7 @@
     [self addChild:title z:2];    
     
     
-    CCSprite *btnFwd=[CCSprite spriteWithFile:@"btn-fwd.png"];
+    CCSprite *btnFwd=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/btn-fwd.png")];
     [btnFwd setPosition:ccp(1024-18-10, 768-28-5)];
     [self addChild:btnFwd z:2];
     
@@ -90,7 +90,7 @@
 //    
 //    for (int i=-extent; i<extent; i++) {
 //
-//        CCSprite *bar=[CCSprite spriteWithFile:@"rpg-ipad-nline.png"];
+//        CCSprite *bar=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/rpg-ipad-nline.png")];
 //        float x=i * 40.0f + 20.0f;
 //        [bar setPosition:ccp(x, cy)];
 //        [bar setScaleX:1.0f];
@@ -109,7 +109,7 @@
     int extent=70;
     
     //render 0
-    zeroMarker=[CCSprite spriteWithFile:@"obj-nline-marker.png"];
+    zeroMarker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/obj-nline-marker.png")];
     [zeroMarker setPosition:ccp(0.0f, NLINE_PRI_MARKER_YBASE)];
     
     CCLabelBMFont *lz=[CCLabelBMFont labelWithString:@"0" fntFile:NLINE_MARKER_FONT];
@@ -121,7 +121,7 @@
     
     for (int i=1; i<extent; i++) {
         //fwd items
-        CCSprite *marker=[CCSprite spriteWithFile:@"obj-nline-marker.png"];
+        CCSprite *marker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/obj-nline-marker.png")];
         float x=i*NLINE_PRI_SPACEBASE;
         [marker setPosition:ccp(x, NLINE_PRI_MARKER_YBASE)];
         
@@ -133,7 +133,7 @@
         [priScaleFwd addObject:marker];
         
         //backward items
-        CCSprite *markerBack=[CCSprite spriteWithFile:@"obj-nline-marker.png"];
+        CCSprite *markerBack=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/obj-nline-marker.png")];
         [markerBack setPosition:ccp(-x, NLINE_PRI_MARKER_YBASE)];
 
         CCLabelBMFont *lb=[CCLabelBMFont labelWithString:[NSString stringWithFormat:@"-%d", i] fntFile:NLINE_MARKER_FONT];

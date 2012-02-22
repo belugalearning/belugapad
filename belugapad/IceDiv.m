@@ -64,11 +64,11 @@ const CGPoint kDaemonPos={50,50};
 
 -(void) setupBkgAndTitle
 {
-    CCSprite *bkg=[CCSprite spriteWithFile:@"bg-ipad.png"];
+    CCSprite *bkg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/bg/bg-ipad.png")];
     [bkg setPosition:ccp(cx, cy)];
     [self addChild:bkg z:0];
     
-    CCSprite *ice=[CCSprite spriteWithFile:@"icediv-ice.png"];
+    CCSprite *ice=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/icediv/icediv-ice.png")];
     [ice setPosition:ccp(cx, cy)];
     [ice setOpacity:150];
     [self addChild:ice z:0];
@@ -84,7 +84,7 @@ const CGPoint kDaemonPos={50,50};
     [fractionLabel setOpacity:0];
     [self addChild:fractionLabel];
     
-    CCSprite *btnFwd=[CCSprite spriteWithFile:@"btn-fwd.png"];
+    CCSprite *btnFwd=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/btn-fwd.png")];
     [btnFwd setPosition:ccp(1024-18-10, 768-28-5)];
     [self addChild:btnFwd z:2];
     
@@ -177,7 +177,7 @@ const CGPoint kDaemonPos={50,50};
     
     float xMean=xMin + ((xMax - xMin) / 2.0f);
     
-    CCSprite *crack=[CCSprite spriteWithFile:@"icediv-crack.png"];
+    CCSprite *crack=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/icediv/icediv-crack.png")];
     [crack setPosition:ccp(xMean, cy)];
     [self addChild:crack];
     

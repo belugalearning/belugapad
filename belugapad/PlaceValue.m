@@ -243,12 +243,12 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     [problemCompleteLabel setVisible:NO];
     [self.ForeLayer addChild:problemCompleteLabel z:5];
     
-    condensePanel=[CCSprite spriteWithFile:@"cmpanel.png"];
+    condensePanel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/cmpanel.png")];
     [condensePanel setPosition:ccp(100, cy)];
     [condensePanel setVisible:NO];
     [self.ForeLayer addChild:condensePanel z:1];
     
-    mulchPanel=[CCSprite spriteWithFile:@"cmpanel.png"];
+    mulchPanel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/cmpanel.png")];
     [mulchPanel setPosition:ccp(lx-100, cy)];
     [mulchPanel setVisible:NO];
     [self.ForeLayer addChild:mulchPanel z:1];
@@ -304,7 +304,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     //show commit button if evalOnCommit
     if(evalMode==kProblemEvalOnCommit)
     {
-        CCSprite *commitBtn=[CCSprite spriteWithFile:@"commit.png"];
+        CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
         [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
         [self.ForeLayer addChild:commitBtn z:2];
     }

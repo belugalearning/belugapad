@@ -10,6 +10,7 @@
 #import "Daemon.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
+#import "global.h"
 
 #import "ToolHost.h"
 
@@ -43,7 +44,7 @@ static float kPropYOverlayPos=0.65f;
         cx=lx / 2.0f;
         cy=ly / 2.0f;
         
-        CCSprite *b=[CCSprite spriteWithFile:@"zbkg.png"];
+        CCSprite *b=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/zubi/intro/zbkg.png")];
         [b setPosition:ccp(cx, cy)];
         [self addChild:b];
         
@@ -69,7 +70,7 @@ static float kPropYOverlayPos=0.65f;
 {
     [bkgLayer removeAllChildrenWithCleanup:YES];
     
-    slideImage=[CCSprite spriteWithFile:[NSString stringWithFormat:@"zlay%d.png", slideIndex]];
+    slideImage=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/zubi/intro/zlay%d.png", slideIndex]))];
     [bkgLayer addChild:slideImage];
     
     [slideImage setPosition:ccp(cx, ly * kPropYOverlayPos)];

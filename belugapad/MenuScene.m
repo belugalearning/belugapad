@@ -103,7 +103,7 @@ const float kPropYHitNextMenu=0.9f;
 
 -(void)setupBackground
 {
-    CCSprite *bkg=[CCSprite spriteWithFile:@"bg-ipad.png"];
+    CCSprite *bkg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/bg/bg-ipad.png")];
     [bkg setPosition:ccp(cx, cy)];
     [self addChild:bkg];
     
@@ -115,7 +115,7 @@ const float kPropYHitNextMenu=0.9f;
     [self addChild:moduleViewUI];
     [moduleViewUI setVisible:NO];
     
-    CCSprite *backBtn=[CCSprite spriteWithFile:@"backbtn.png"];
+    CCSprite *backBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/backbtn.png")];
     [moduleViewUI addChild:backBtn];
     [backBtn setPosition:[BLMath AddVector:ccp(0, ly) toVector:[BLMath MultiplyVector:kPropXBackBtnPos byScalar:lx]]];
 
@@ -161,7 +161,7 @@ const float kPropYHitNextMenu=0.9f;
             [moduleLayer setScale:kMenuModuleScale];
         
             //create module/topc element view
-            CCSprite *elegeo=[CCSprite spriteWithFile:@"mockelegeo.png"];
+            CCSprite *elegeo=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/mockelegeo.png")];
             [elegeo setPosition:ccp(cx, cy)];
             [elegeo setOpacity:kOpacityElementGeo];
             [moduleLayer addChild:elegeo];

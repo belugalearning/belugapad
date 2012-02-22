@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#define BUNDLE_FULL_PATH(_filePath_) [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:_filePath_]
+
 #define TITLE_FONT @"Helvetica-Bold"
 #define TITLE_SIZE 90
 #define TITLE_OPACITY 15

@@ -111,7 +111,7 @@
         spriteFileName=[[gameObject store] objectForKey:SPRITE_FILENAME];
     }
     
-        CCSprite *mySprite=[CCSprite spriteWithFile:spriteFileName];
+        CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/placevalue/%@", spriteFileName]))];
         [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:1];
     
     //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)

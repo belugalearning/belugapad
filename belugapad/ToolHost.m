@@ -48,7 +48,7 @@
         [self addChild:perstLayer z:0];
         
         //add background to background layer
-        CCSprite *bkg=[CCSprite spriteWithFile:@"bg-ipad.png"];
+        CCSprite *bkg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/bg/bg-ipad.png")];
         [bkg setPosition:ccp(cx, cy)];
         [backgroundLayer addChild:bkg z:0];
 

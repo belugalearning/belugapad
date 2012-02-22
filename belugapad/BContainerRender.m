@@ -41,7 +41,7 @@
     NSString *sname=[[gameObject store] objectForKey:RENDER_IMAGE_NAME];
     if(!sname) sname=@"obj-blockholder-mount1x1.png";
     
-    mySprite=[CCSprite spriteWithFile:sname];
+    mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/blockholders/%@", sname]))];
     
     //this is effectively redundant -- staged introduction will reset to max
     [mySprite setOpacity:120];

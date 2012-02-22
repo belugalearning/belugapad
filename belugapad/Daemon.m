@@ -82,7 +82,7 @@ static float kSubParticleOffset=10.0f;
 {
     for (int i=0;i<numShards;i++)
     {
-        CCSprite *shardSprite=[CCSprite spriteWithFile:@"shard.png"];
+        CCSprite *shardSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/shard.png")];
         int o=50+(arc4random()%200);
         [shardSprite setOpacity:o];
         
@@ -113,7 +113,7 @@ static float kSubParticleOffset=10.0f;
 {
     for (int i=0;i<retainedXP;i++)
     {
-        CCSprite *shardSprite=[CCSprite spriteWithFile:@"shard.png"];
+        CCSprite *shardSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/shard.png")];
         int o=50+(arc4random()%200);
         [shardSprite setOpacity:o];
         

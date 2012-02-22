@@ -40,7 +40,7 @@
     NSString *sname=[[gameObject store] objectForKey:RENDER_IMAGE_NAME];
     if(!sname) sname=@"netspacer.png";
     
-    mySprite=[CCSprite spriteWithFile:sname];
+    mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/placevalue/%@", sname]))];
     [mySprite setOpacity:120];
 
     float x=[[[gameObject store] objectForKey:POS_X] floatValue];

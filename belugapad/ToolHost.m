@@ -171,12 +171,7 @@
 -(void)loadTestPipeline
 {
     //TODO: test-specific -- pulls fixed problem list from plist
-    
-    NSString *broot=[[NSBundle mainBundle] bundlePath];
-    NSString *pfile=[broot stringByAppendingPathComponent:@"pipeline-test.plist"];
-    problemList=[NSArray arrayWithContentsOfFile:pfile];
-    
-    [problemList retain];
+    problemList=[[NSArray arrayWithContentsOfFile:BUNDLE_FULL_PATH(@"/pipeline-testing/pipeline-test.plist")] retain];
 }
 
 -(NSDictionary*)getNextProblem

@@ -425,7 +425,7 @@ static float kSubParticleOffset=10.0f;
     //todo: consider caching this
     
     //load animation data
-	NSString *XMLPath=BUNDLE_FULL_PATH(([NSString stringWithFormat:@"daemon-%@.svg", theAnimKey]));
+	NSString *XMLPath=BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/zubi/animatons/daemon-%@.svg", theAnimKey]));
 	
 	//use that file to populate an NSData object
 	NSData *XMLData=[NSData dataWithContentsOfFile:XMLPath];

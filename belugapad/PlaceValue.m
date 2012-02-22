@@ -596,7 +596,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             //this is just a signal for the GO to us, pickup object is retained on the blackboard
             [[gw Blackboard].PickupObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
             
-            [[SimpleAudioEngine sharedEngine] playEffect:@"pickup.wav"];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
             
             [[gw Blackboard].PickupObject logInfo:@"this object was picked up" withData:0];
         }
@@ -916,7 +916,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             [[gw Blackboard].DropObject logInfo:@"mounted object on this go" withData:0];
             
             
-            [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
         }
         else
         {

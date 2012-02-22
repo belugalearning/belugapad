@@ -106,7 +106,7 @@ const CGPoint kDaemonPos={50,50};
     
     if(location.x>975 & location.y>720)
     {
-        [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
         [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.4f scene:[NumberLine scene]]];
     }
     else
@@ -124,7 +124,7 @@ const CGPoint kDaemonPos={50,50};
         
         touching=YES;
         
-        [[SimpleAudioEngine sharedEngine] playEffect:@"icediv-fire.wav"];
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/icediv-fire.wav")];
     }
 }
 
@@ -144,7 +144,7 @@ const CGPoint kDaemonPos={50,50};
     touching=NO;
     fireTime=0.0f;
     
-    [[SimpleAudioEngine sharedEngine] playEffect:@"icediv-fireball.wav"];
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/icediv-fireball.wav")];
 }
 
 -(void) evalSwipe
@@ -202,7 +202,7 @@ const CGPoint kDaemonPos={50,50};
         
         [self showFractionFoundLabel:@"1/4"];
         
-        [[SimpleAudioEngine sharedEngine] playEffect:@"icediv-crack.wav"];
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/icediv-crack.wav")];
     }
     
     if(fabsf((xMean-xBase) - 0.5*xSpan) < SWIPE_FRACTION_PROX)
@@ -212,7 +212,7 @@ const CGPoint kDaemonPos={50,50};
         
         [self showFractionFoundLabel:@"1/2"];
         
-        [[SimpleAudioEngine sharedEngine] playEffect:@"icediv-crack.wav"];
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/icediv-crack.wav")];
     }
     
     if(fabsf((xMean-xBase) - 0.75*xSpan) < SWIPE_FRACTION_PROX)
@@ -222,7 +222,7 @@ const CGPoint kDaemonPos={50,50};
         
         [self showFractionFoundLabel:@"3/4"];
     
-        [[SimpleAudioEngine sharedEngine] playEffect:@"icediv-crack.wav"];
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/icediv-crack.wav")];
     }
     
 }
@@ -262,7 +262,7 @@ const CGPoint kDaemonPos={50,50};
         fireTime+=delta;
         if(fireTime>0.25f)
         {
-            [[SimpleAudioEngine sharedEngine] playEffect:@"icediv-fire.wav"];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/icediv-fire.wav")];
             fireTime=0.0f;
         }
     }

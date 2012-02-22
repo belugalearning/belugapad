@@ -152,7 +152,7 @@
     
     if(location.x>975 & location.y>720)
     {
-        [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
         [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.4f scene:[MenuScene scene]]];
     }
     else

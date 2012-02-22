@@ -226,8 +226,8 @@ static void eachShape(void *ptr, void* unused)
 -(void)setupAudio
 {
     //pre load sfx
-    [[SimpleAudioEngine sharedEngine] preloadEffect:@"pickup.wav"];
-    [[SimpleAudioEngine sharedEngine] preloadEffect:@"putdown.wav"];
+    [[SimpleAudioEngine sharedEngine] preloadEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
+    [[SimpleAudioEngine sharedEngine] preloadEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
 }
 
 
@@ -308,7 +308,7 @@ static void eachShape(void *ptr, void* unused)
                 [m handleMessage:kDWunsetMountedObject andPayload:pl withLogLevel:0];
             }
 
-            [[SimpleAudioEngine sharedEngine] playEffect:@"pickup.wav"];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
             
             [[gameWorld Blackboard].PickupObject logInfo:@"this object was picked up" withData:0];
             
@@ -480,7 +480,7 @@ static void eachShape(void *ptr, void* unused)
             [[gameWorld Blackboard].DropObject logInfo:@"mounted object on this go" withData:0];
 
             
-            [[SimpleAudioEngine sharedEngine] playEffect:@"putdown.wav"];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
         }
         else
         {
@@ -894,8 +894,8 @@ static void eachShape(void *ptr, void* unused)
     //other wise populate with generic complete and score
     if(!soltext) soltext=[NSString stringWithFormat:@"complete (solution %d, score %f)", solComplete, solScore];
     
-    NSString *playsound=[sol objectForKey:PLAY_SOUND];
-    if(playsound) [[SimpleAudioEngine sharedEngine] playEffect:playsound];
+    NSString *playsound=[sol objectForKey:PLAY_SOUND];    
+    if(playsound) [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/sfx/%@", playsound]))];
     
     [problemCompleteLabel setString:soltext];
     
@@ -925,7 +925,7 @@ static void eachShape(void *ptr, void* unused)
     
     //play sound
     NSString *playsound=[actionSet objectForKey:PLAY_SOUND];
-    if(playsound) [[SimpleAudioEngine sharedEngine] playEffect:playsound];
+    if(playsound) [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/sfx/%@", playsound]))];
 }
 
 -(int)evalClauses:(NSDictionary*)clauses withSolIndex:(int)solIndex

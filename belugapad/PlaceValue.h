@@ -86,6 +86,9 @@
     BOOL inBlockTransition;
     BOOL inCondenseArea;
     BOOL inMulchArea;
+    
+    //reference to cages
+    NSMutableArray *allCages;
 }
 
 -(void)populateGW;

@@ -213,29 +213,40 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     
     }
 
+    int numberPrecountedForRow=0;
+    
     for(int i=0; i<(initObjects.count); i++)
     {
         NSDictionary *curDict = [initObjects objectAtIndex:i];
         int insCol = [[curDict objectForKey:PUT_IN_COL] intValue];
         int insRow = [[curDict objectForKey:PUT_IN_ROW] intValue];
-        int count = [[curDict objectForKey:NUMBER] intValue];     
+        int count = [[curDict objectForKey:NUMBER] intValue];
+        int numberToPrecount = [[curDict objectForKey:NUMBER_PRE_COUNTED] intValue];
         for(int i=0; i<count; i++)
         {
             DWGameObject *block = [gw addGameObjectWithTemplate:@"TplaceValueObject"];
             
             NSDictionary *pl = [NSDictionary dictionaryWithObject:[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:insRow] objectAtIndex:i] forKey:MOUNT];
             [[block store] setObject:[[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] stringValue] forKey:OBJECT_VALUE];
-
-
+            
+            
+            if(numberPrecountedForRow<numberToPrecount)
+            {
+                [block handleMessage:kDWswitchSelection andPayload:pl withLogLevel:-1];
+                numberPrecountedForRow++;
+            }
+            
+            // check whether a custom sprite has been set for this column, and if so, set it.
             NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue]];
             
             if([columnSprites objectForKey:currentColumnValueKey])
             {
                 [[block store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
             }
-            [block handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
+            [block handleMessage:kDWsetMount andPayload:pl withLogLevel:-1];
             
         }
+        numberPrecountedForRow=0;
         DLog(@"col %d, rows %d, count %d", insCol, insRow, count);
 
     }
@@ -246,7 +257,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 
 -(void)setupBkgAndTitle
 {
-    problemCompleteLabel=[CCLabelTTF labelWithString:@"" fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    problemCompleteLabel=[CCLabelTTF labelWithString:solutionDisplayText fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
     [problemCompleteLabel setColor:kLabelCompleteColor];
     [problemCompleteLabel setPosition:ccp(cx, cy*kLabelCompletePVYOffsetHalfProp)];
     [problemCompleteLabel setVisible:NO];
@@ -290,7 +301,6 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     showValue = [[pdef objectForKey:SHOW_VALUE] boolValue];
     showCountOnBlock = [[pdef objectForKey:SHOW_COUNT_BLOCK] boolValue];
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
-    showCustomColumnHeader = [pdef objectForKey:CUSTOM_COLUMN_HEADERS];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
     
     //objects
@@ -300,6 +310,18 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     //retain solutions dict
     solutionsDef=[pdef objectForKey:SOLUTION];
     [solutionsDef retain];
+    
+    // set the display text of the solution
+    solutionDisplayText = [solutionsDef objectForKey:SOLUTION_DISPLAY_TEXT];
+    incompleteDisplayText = [solutionsDef objectForKey:INCOMPLETE_DISPLAY_TEXT];
+    
+    // and if it doesn't exist, use a generic one
+    if(!solutionDisplayText) solutionDisplayText=[NSString stringWithFormat:@"problem complete! well done"];
+    if(!incompleteDisplayText) incompleteDisplayText=[NSString stringWithFormat:@"problem incomplete, try again!"];
+    
+    //look for custom column headers
+    showCustomColumnHeader = [pdef objectForKey:CUSTOM_COLUMN_HEADERS];
+    [showCustomColumnHeader retain];
     
     //look for column specific sprites
     columnSprites = [pdef objectForKey:COLUMN_SPRITES];
@@ -435,13 +457,13 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 }
 -(void)doWinning
 {
-    [problemCompleteLabel setString:@"problem complete! well done!"];
+    [problemCompleteLabel setString:solutionDisplayText];
     autoMoveToNextProblem=YES;
     [problemCompleteLabel setVisible:YES];    
 }
 -(void)doIncorrect
 {
-    [problemCompleteLabel setString:@"problem incomplete."];
+    [problemCompleteLabel setString:incompleteDisplayText];
     autoHideStatusLabel=YES;
     [problemCompleteLabel setVisible:YES];
     [gw handleMessage:kDWdeselectAll andPayload:nil withLogLevel:0];

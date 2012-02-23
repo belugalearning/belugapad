@@ -23,7 +23,7 @@
 	<key>ALLOW_MULCHING</key>
 	<false/>
 	<key>EVAL_MODE</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>SHOW_CAGE</key>
@@ -41,6 +41,8 @@
 			<integer>0</integer>
 			<key>NUMBER</key>
 			<integer>3</integer>
+			<key>NUMBER_PRE_COUNTED</key>
+			<integer>2</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -49,6 +51,8 @@
 		<string>COUNT_SEQUENCE</string>
 		<key>SOLUTION_VALUE</key>
 		<integer>4</integer>
+		<key>INCOMPLETE_DISPLAY_TEXT</key>
+		<string>solution incomplete, try again.</string>
 	</dict>
 </dict>
 </plist>

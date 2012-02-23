@@ -54,6 +54,8 @@
     BOOL showBaseSelection;
     BOOL showCountOnBlock;
     BOOL showColumnHeader;
+    NSString *solutionDisplayText;
+    NSString *incompleteDisplayText;
     NSDictionary *showCustomColumnHeader;
     
     NSMutableArray *columnInfo;

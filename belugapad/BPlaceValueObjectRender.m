@@ -38,6 +38,13 @@
         }
     }
     
+    if (messageType==kDWmoveSpriteToPosition) {
+        BOOL useAnimation = NO;
+        if([payload objectForKey:ANIMATE_ME]) useAnimation = YES;
+        
+        [self setSpritePos:payload withAnimation:useAnimation];
+    }
+    
     if(messageType==kDWupdateSprite)
     {
         NSNumber *isSelected = [[gameObject store] objectForKey:SELECTED];

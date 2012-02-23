@@ -585,24 +585,8 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         [pl setObject:[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] forKey:OBJECT_VALUE];
         
-        //look in current store's mounted objects
-        for (NSArray *row in gw.Blackboard.CurrentStore) {
-            for (DWGameObject *cont in row) {
-                DWGameObject *mo=[[cont store] objectForKey:MOUNTED_OBJECT];
-                [mo handleMessage:kDWareYouAPickupTarget andPayload:pl withLogLevel:0];
-            }
-        }
-        
-        //look in all cage mounted objects
-        for(DWGameObject *cage in allCages)
-        {
-            DWGameObject *mo=[[cage store] objectForKey:MOUNTED_OBJECT];
-            [mo handleMessage:kDWareYouAPickupTarget andPayload:pl withLogLevel:0];            
-        }
-        
-            
         //broadcast search for pickup object gw
-        //[gw handleMessage:kDWareYouAPickupTarget andPayload:pl withLogLevel:0];
+        [gw handleMessage:kDWareYouAPickupTarget andPayload:pl withLogLevel:-1];
         
         if([gw Blackboard].PickupObject!=nil)
         {
@@ -684,10 +668,8 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 
                 [pl setObject:[NSNumber numberWithFloat:x+diff.x] forKey:POS_X];
                 [pl setObject:[NSNumber numberWithFloat:y+diff.y] forKey:POS_Y];
-
                 
-                [thisObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:0];
-                
+                [thisObject handleMessage:kDWmoveSpriteToPosition andPayload:pl withLogLevel:-1];
             }
         }
         
@@ -920,7 +902,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         }
         else 
         {
-            [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:0];
+            [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
         }
         if([gw Blackboard].DropObject != nil)
         {

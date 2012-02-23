@@ -32,6 +32,13 @@
 	<true/>
 	<key>SHOW_COUNT_BLOCK</key>
 	<true/>
+	<key>CUSTOM_COLUMN_HEADERS</key>
+	<true/>
+	<key>COLUMN_HEADERS</key>
+	<dict>
+		<key>0</key>
+		<string>Ones.</string>
+	</dict>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>

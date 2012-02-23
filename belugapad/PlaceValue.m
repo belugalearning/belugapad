@@ -130,7 +130,19 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         
         if(showColumnHeader)
         {
-            CCLabelTTF *columnHeader = [CCLabelTTF labelWithString:[currentColumnInfo objectForKey:COL_LABEL] fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            CCLabelTTF *columnHeader;
+            NSLog(@"Got to show column text for column %g", currentColumnValue);
+            if([showCustomColumnHeader objectForKey:[NSString stringWithFormat:@"%g", currentColumnValue]])
+            {
+                NSString *columnHeaderText = [showCustomColumnHeader objectForKey:[NSString stringWithFormat:@"%g", currentColumnValue]];
+                NSLog(@"Found text for column %@ - %@", [NSString stringWithFormat:@"%g", COL_VALUE], columnHeaderText);
+                columnHeader = [CCLabelTTF labelWithString:columnHeaderText fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            }
+            else
+            {
+                columnHeader = [CCLabelTTF labelWithString:[currentColumnInfo objectForKey:COL_LABEL] fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            }
+            
             [columnHeader setPosition:ccp(i*(kPropXColumnSpacing*lx), ly*kPropYColumnHeader)];
             [renderLayer addChild:columnHeader z:5];
         }
@@ -187,9 +199,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             [[colCage store] setObject:[NSNumber numberWithFloat:ly*kCageYOrigin] forKey:POS_Y];
             [[colCage store] setObject:[[currentColumnInfo objectForKey:COL_VALUE] stringValue] forKey:OBJECT_VALUE];
             
-            
-            NSString *currentColumnValueKey = [[currentColumnInfo objectForKey:COL_VALUE] stringValue];
-            
+            NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[currentColumnInfo objectForKey:COL_VALUE] floatValue]];
             if([columnSprites objectForKey:currentColumnValueKey])
             {
                 [[colCage store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
@@ -216,9 +226,8 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             NSDictionary *pl = [NSDictionary dictionaryWithObject:[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:insRow] objectAtIndex:i] forKey:MOUNT];
             [[block store] setObject:[[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] stringValue] forKey:OBJECT_VALUE];
 
-            
-            
-            NSString *currentColumnValueKey = [[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] stringValue];
+
+            NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue]];
             
             if([columnSprites objectForKey:currentColumnValueKey])
             {
@@ -281,6 +290,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     showValue = [[pdef objectForKey:SHOW_VALUE] boolValue];
     showCountOnBlock = [[pdef objectForKey:SHOW_COUNT_BLOCK] boolValue];
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
+    showCustomColumnHeader = [pdef objectForKey:CUSTOM_COLUMN_HEADERS];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
     
     //objects

@@ -32,6 +32,11 @@
 	<true/>
 	<key>SHOW_BASE_SELECTION</key>
 	<true/>
+	<key>CUSTOM_COLUMN_HEADERS</key>
+	<dict>
+		<key>0.001</key>
+		<string>Zero point zero zero ones</string>
+	</dict>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>

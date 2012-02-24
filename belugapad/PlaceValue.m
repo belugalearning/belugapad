@@ -211,7 +211,30 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             {
                 [[colCage store] setObject:kDefaultSprite forKey:SPRITE_FILENAME];                
             }
-
+            
+            if(!allCages) allCages=[[NSMutableArray alloc] init];
+            [allCages addObject:colCage];
+        }
+        if(showNegCage) 
+        {
+            float colValueNeg = -([[currentColumnInfo objectForKey:COL_VALUE] floatValue]);
+            // create cage
+            DWGameObject *colCage = [gw addGameObjectWithTemplate:@"TplaceValueCage"];
+            [[colCage store] setObject:[NSNumber numberWithBool:YES] forKey:ALLOW_MULTIPLE_MOUNT];
+            [[colCage store] setObject:[NSNumber numberWithFloat:i*(kPropXColumnSpacing*lx)+100] forKey:POS_X];
+            [[colCage store] setObject:[NSNumber numberWithFloat:ly*kCageYOrigin] forKey:POS_Y];
+            [[colCage store] setObject:[NSNumber numberWithFloat:colValueNeg] forKey:OBJECT_VALUE];
+            
+            NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[currentColumnInfo objectForKey:COL_VALUE] floatValue]];
+            if([columnSprites objectForKey:currentColumnValueKey])
+            {
+                [[colCage store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
+            }
+            else
+            {
+                [[colCage store] setObject:kDefaultSprite forKey:SPRITE_FILENAME];                
+            }
+            
             if(!allCages) allCages=[[NSMutableArray alloc] init];
             [allCages addObject:colCage];
         }
@@ -301,6 +324,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     ropesforColumn = [[pdef objectForKey:ROPES_PER_COL] intValue];
     rows = [[pdef objectForKey:ROWS_PER_COL] intValue];
     showCage = [[pdef objectForKey:SHOW_CAGE] boolValue];
+    showNegCage = [[pdef objectForKey:SHOW_NEG_CAGE] boolValue];
     showCount = [[pdef objectForKey:SHOW_COUNT] boolValue];
     showValue = [[pdef objectForKey:SHOW_VALUE] boolValue];
     showCountOnBlock = [[pdef objectForKey:SHOW_COUNT_BLOCK] boolValue];
@@ -386,9 +410,10 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:i]count]; o++)
             {
                 DWGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:(i)] objectAtIndex:o];
-                if([[goC store] objectForKey:MOUNTED_OBJECT])
+                DWGameObject *goO = [[goC store] objectForKey:MOUNTED_OBJECT];
+                if(goO)
                 {
-                    float objectValue = [[[goC store] objectForKey:OBJECT_VALUE] floatValue];
+                    float objectValue = [[[goO store] objectForKey:OBJECT_VALUE] floatValue];
                     
                     totalObjectValue = totalObjectValue+objectValue;
                 }   
@@ -523,9 +548,10 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:i]count]; o++)
             {
                 DWGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:(i)] objectAtIndex:o];
-                if([[goC store] objectForKey:MOUNTED_OBJECT])
+                DWGameObject *goO = [[goC store] objectForKey:MOUNTED_OBJECT];
+                if(goO)
                 {
-                    float objectValue = [[[goC store] objectForKey:OBJECT_VALUE] floatValue];
+                    float objectValue = [[[goO store] objectForKey:OBJECT_VALUE] floatValue];
                     
                     totalCount = totalCount+objectValue;
                 }   
@@ -774,6 +800,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 
 -(BOOL)doTransitionWithIncrement:(int)incr
 {
+    BOOL isNegativeNumber=NO;
     int tranCount=1;
     if(incr>0) tranCount=10;
     int space=0;
@@ -791,8 +818,16 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         }
     }
     
+    // bail if not possible
     if(space<tranCount) return NO;
-
+    
+    DWGameObject *cGO = gw.Blackboard.PickupObject;
+    
+    if([[[cGO store] objectForKey:OBJECT_VALUE] floatValue]<0)
+    {
+        isNegativeNumber=YES;
+    }
+    
     if (incr>0) {
         [gw.Blackboard.PickupObject handleMessage:kDWdismantle andPayload:nil withLogLevel:0];
         [gw delayRemoveGameObject:gw.Blackboard.PickupObject];
@@ -815,13 +850,23 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     [self snapLayerToPosition];
         
     for (int itran=0; itran<tranCount; itran++) {
-            
+        
+        NSNumber *currentColumnValueKey;
         //create a new object
-        NSNumber *currentColumnValueKey=[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE];
-
+        if(!isNegativeNumber)
+        {
+           currentColumnValueKey=[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE];
+        }
+        else
+        {
+            
+            float fval=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] floatValue];
+            fval = -fval;
+            currentColumnValueKey=[NSNumber numberWithFloat:fval];
+        }
         DWGameObject *go=[gw addGameObjectWithTemplate:@"TplaceValueObject"];
         
-        //drop target etc expects a string -- so we'll send one
+        //drop target
         [[go store] setObject:currentColumnValueKey forKey:OBJECT_VALUE];
         
         if([columnSprites objectForKey:currentColumnValueKey])

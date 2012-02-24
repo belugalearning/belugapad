@@ -24,6 +24,8 @@
 	<false/>
 	<key>SHOW_CAGE</key>
 	<true/>
+	<key>SHOW_NEG_CAGE</key>
+	<true/>
 	<key>SHOW_COUNT</key>
 	<true/>
 	<key>SHOW_COL_HEADER</key>

@@ -50,6 +50,7 @@
     // GameWorld options
     
     BOOL showCage;
+    BOOL showNegCage;
     BOOL showCount;
     BOOL showValue;
     BOOL showBaseSelection;

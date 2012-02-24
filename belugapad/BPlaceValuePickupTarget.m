@@ -23,8 +23,8 @@
 {
     if(messageType==kDWareYouAPickupTarget)
     {
-        float theirV=[[payload objectForKey:OBJECT_VALUE] floatValue];
-        float myV=[[[gameObject store] objectForKey:OBJECT_VALUE] floatValue];
+        float theirV=fabsf([[payload objectForKey:OBJECT_VALUE] floatValue]);
+        float myV=fabsf([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue]);
         
         if(theirV!=myV)return;
         

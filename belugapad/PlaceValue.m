@@ -63,9 +63,9 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
-        // Set the lastCount to 0 - this is for counting problems.
+        // Set the lastCount to selected obj count - this is for counting problems.
         
-        lastCount = 0; 
+        lastCount = gw.Blackboard.SelectedObjects.count; 
 
     }
     
@@ -229,19 +229,17 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             NSDictionary *pl = [NSDictionary dictionaryWithObject:[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:insRow] objectAtIndex:i] forKey:MOUNT];
             [[block store] setObject:[[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] stringValue] forKey:OBJECT_VALUE];
             
-            
-            if(numberPrecountedForRow<numberToPrecount)
-            {
-                [block handleMessage:kDWswitchSelection andPayload:pl withLogLevel:-1];
-                numberPrecountedForRow++;
-            }
-            
             // check whether a custom sprite has been set for this column, and if so, set it.
             NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue]];
             
             if([columnSprites objectForKey:currentColumnValueKey])
             {
                 [[block store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
+            }
+            if(numberPrecountedForRow<numberToPrecount)
+            {
+                [block handleMessage:kDWswitchSelection andPayload:pl withLogLevel:-1];
+                numberPrecountedForRow++;
             }
             [block handleMessage:kDWsetMount andPayload:pl withLogLevel:-1];
             
@@ -318,6 +316,8 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     // and if it doesn't exist, use a generic one
     if(!solutionDisplayText) solutionDisplayText=[NSString stringWithFormat:@"problem complete! well done"];
     if(!incompleteDisplayText) incompleteDisplayText=[NSString stringWithFormat:@"problem incomplete, try again!"];
+    [solutionDisplayText retain];
+    [incompleteDisplayText retain];
     
     //look for custom column headers
     showCustomColumnHeader = [pdef objectForKey:CUSTOM_COLUMN_HEADERS];
@@ -369,6 +369,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 {
     totalObjectValue=0;
     
+    
     for(int c=0; c<gw.Blackboard.AllStores.count; c++)
     {
         for (int i=0; i<[[gw.Blackboard.AllStores objectAtIndex:c]count]; i++)
@@ -390,27 +391,36 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     
     if([solutionType isEqualToString:COUNT_SEQUENCE])
     {
-        if(gw.Blackboard.SelectedObjects.count < lastCount)
+        if(gw.Blackboard.SelectedObjects.count > totalCountedInProblem)
         {
-            lastCount = 0;
-        }
-        else
-        {
-            lastCount++;
-            if(showCountOnBlock)
+            totalCountedInProblem=gw.Blackboard.SelectedObjects.count;
+            if(!(totalCountedInProblem > [[solutionsDef objectForKey:SOLUTION_VALUE] intValue]))
             {
-                CCSprite *s=[[gw.Blackboard.LastSelectedObject store] objectForKey:MY_SPRITE];
-                CGPoint pos=[[s parent] convertToWorldSpace:[s position]];
-                countLabelBlock=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", gw.Blackboard.SelectedObjects.count] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-                [countLabelBlock setPosition:pos];
-                [self.ForeLayer addChild:countLabelBlock z:10];
-                CCFadeOut *labelFade = [CCFadeOut actionWithDuration:kTimeToFadeButtonLabel];
-                [countLabelBlock runAction:labelFade];
-                
-                
+               [toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
             }
         }
-            DLog(@"(COUNT_SEQUENCE) Selected %d lastCount %d", gw.Blackboard.SelectedObjects.count, lastCount);
+
+
+
+        if(showCountOnBlock && gw.Blackboard.SelectedObjects.count > lastCount)
+        {
+            
+            CCSprite *s=[[gw.Blackboard.LastSelectedObject store] objectForKey:MY_SPRITE];
+            CGPoint pos=[[s parent] convertToWorldSpace:[s position]];
+            countLabelBlock=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", gw.Blackboard.SelectedObjects.count] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            [countLabelBlock setPosition:pos];
+            [self.ForeLayer addChild:countLabelBlock z:10];
+            CCFadeOut *labelFade = [CCFadeOut actionWithDuration:kTimeToFadeButtonLabel];
+            [countLabelBlock runAction:labelFade];
+                    
+
+        }
+        lastCount = gw.Blackboard.SelectedObjects.count;
+        
+        
+        
+        DLog(@"(COUNT_SEQUENCE) Selected %d lastCount %d", gw.Blackboard.SelectedObjects.count, lastCount);
+
     }
     if(showCount||showValue)
     {
@@ -457,24 +467,26 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 }
 -(void)doWinning
 {
+    CGPoint pos=ccp(cx,cy);
     [problemCompleteLabel setString:solutionDisplayText];
     autoMoveToNextProblem=YES;
-    [problemCompleteLabel setVisible:YES];    
+    [problemCompleteLabel setVisible:YES]; 
+    [toolHost.Zubi createXPshards:20 fromLocation:pos];
 }
 -(void)doIncorrect
 {
     [problemCompleteLabel setString:incompleteDisplayText];
     autoHideStatusLabel=YES;
     [problemCompleteLabel setVisible:YES];
-    [gw handleMessage:kDWdeselectAll andPayload:nil withLogLevel:0];
+    [gw handleMessage:kDWdeselectAll andPayload:nil withLogLevel:-1];
 }
 -(void)evalProblemCountSeq
 {
-    if(lastCount == [[solutionsDef objectForKey:SOLUTION_VALUE] intValue])
+    if(gw.Blackboard.SelectedObjects.count == [[solutionsDef objectForKey:SOLUTION_VALUE] intValue])
     {
         [self doWinning];
     }
-    else if(lastCount != [[solutionsDef objectForKey:SOLUTION_VALUE] intValue] && evalMode==kProblemEvalOnCommit)
+    else if(gw.Blackboard.SelectedObjects.count != [[solutionsDef objectForKey:SOLUTION_VALUE] intValue] && evalMode==kProblemEvalOnCommit)
     {
         [self doIncorrect];
     }
@@ -555,7 +567,8 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             if(countAtRow[curRow] == [[solDict objectForKey:NUMBER] intValue])
             {
                 solutionsFound++;
-                //TODO: Attach XP/partial progress here
+                // Attach XP/partial progress here
+                //[toolHost.Zubi createXPshards:20 fromLocation:pos];
             }
             else
             {
@@ -843,7 +856,6 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     touchEndPos = location;
     
     [toolHost.Zubi setTarget:location];
-    [toolHost.Zubi setMode:kDaemonModeWaiting];
     
     inBlockTransition=NO;
     
@@ -928,13 +940,19 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         
+
         if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
         {
             // TODO: Decide behaviour when the column base amount is selected
+            DWGameObject *go = gw.Blackboard.PickupObject;
+            if(![gw.Blackboard.SelectedObjects containsObject:go])
+            {
+                [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];                
+            }
         }
         else 
         {
-            [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:0];
+            [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
         }
         if([gw Blackboard].DropObject != nil)
         {
@@ -979,6 +997,10 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     
     [solutionsDef release];
     [columnInfo release];
+    [solutionDisplayText release];
+    [incompleteDisplayText release];
+    [showCustomColumnHeader release];
+    [columnSprites release];
     
     [super dealloc];
 }

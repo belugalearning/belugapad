@@ -82,6 +82,7 @@
     float timeToHideStatusLabel;
     
     int lastCount;
+    int totalCountedInProblem;
     
     CCSprite *condensePanel;
     CCSprite *mulchPanel;

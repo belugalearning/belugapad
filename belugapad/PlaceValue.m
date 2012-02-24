@@ -186,7 +186,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
                 [[go store] setObject:[NSNumber numberWithFloat:iRow] forKey:PLACEVALUE_ROW];
                 [[go store] setObject:[NSNumber numberWithFloat:i] forKey:PLACEVALUE_COLUMN];
                 [[go store] setObject:[NSNumber numberWithFloat:iRope] forKey:PLACEVALUE_ROPE];
-                [[go store] setObject:[[currentColumnInfo objectForKey:COL_VALUE] stringValue] forKey:OBJECT_VALUE];
+                [[go store] setObject:[currentColumnInfo objectForKey:COL_VALUE] forKey:OBJECT_VALUE];
                 
                 [RowArray addObject:go];
                 
@@ -200,7 +200,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             [[colCage store] setObject:[NSNumber numberWithBool:YES] forKey:ALLOW_MULTIPLE_MOUNT];
             [[colCage store] setObject:[NSNumber numberWithFloat:i*(kPropXColumnSpacing*lx)] forKey:POS_X];
             [[colCage store] setObject:[NSNumber numberWithFloat:ly*kCageYOrigin] forKey:POS_Y];
-            [[colCage store] setObject:[[currentColumnInfo objectForKey:COL_VALUE] stringValue] forKey:OBJECT_VALUE];
+            [[colCage store] setObject:[currentColumnInfo objectForKey:COL_VALUE] forKey:OBJECT_VALUE];
             
             NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[currentColumnInfo objectForKey:COL_VALUE] floatValue]];
             if([columnSprites objectForKey:currentColumnValueKey])
@@ -254,7 +254,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             DWGameObject *block = [gw addGameObjectWithTemplate:@"TplaceValueObject"];
             
             NSDictionary *pl = [NSDictionary dictionaryWithObject:[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:insRow] objectAtIndex:i] forKey:MOUNT];
-            [[block store] setObject:[[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] stringValue] forKey:OBJECT_VALUE];
+            [[block store] setObject:[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] forKey:OBJECT_VALUE];
             
             // check whether a custom sprite has been set for this column, and if so, set it.
             NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue]];
@@ -840,7 +840,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     for (int itran=0; itran<tranCount; itran++) {
             
         //create a new object
-        NSString *currentColumnValueKey=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] stringValue];
+        NSNumber *currentColumnValueKey=[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE];
 
         DWGameObject *go=[gw addGameObjectWithTemplate:@"TplaceValueObject"];
         

@@ -52,12 +52,11 @@
                 if([BLMath DistanceBetween:myLoc and:hitLoc] <= (kPropXDropProximity*[gameWorld Blackboard].hostLX))
                 {
                     
-                    NSString *gameObjectValue = [[gameObject store] objectForKey:OBJECT_VALUE];
-                    NSString *pickupObjectValue = [[addO store] objectForKey:OBJECT_VALUE];
+                    NSNumber *gameObjectValue = [[gameObject store] objectForKey:OBJECT_VALUE];
+                    NSNumber *pickupObjectValue = [[addO store] objectForKey:OBJECT_VALUE];
   
-                    if([gameObjectValue isEqualToString:pickupObjectValue])
+                    if([gameObjectValue isEqualToNumber:pickupObjectValue])
                     {
-                        DLog(@"Does has match xD");
                         //tell gameScene we are a target for that pickup
                         [gameWorld Blackboard].DropObject=gameObject;
                     }

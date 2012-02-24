@@ -53,7 +53,11 @@
     {
         [mySprite setVisible:NO];
     }
-    
+    if(gameWorld.Blackboard.inProblemSetup)
+    {
+        [mySprite setTag:1];
+        [mySprite setOpacity:0];
+    }
     [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:0];
 
     

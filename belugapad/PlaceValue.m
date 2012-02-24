@@ -44,8 +44,8 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         ly=winsize.height;
         cx=lx / 2.0f;
         cy=ly / 2.0f;
-     
-        inProblemSetup = YES;
+        gw = [[DWGameWorld alloc] initWithGameScene:self];
+        gw.Blackboard.inProblemSetup = YES;
         
         self.BkgLayer=[[CCLayer alloc]init];
         self.ForeLayer=[[CCLayer alloc]init];
@@ -67,7 +67,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         
         lastCount = gw.Blackboard.SelectedObjects.count; 
         
-        inProblemSetup = NO;
+        gw.Blackboard.inProblemSetup = NO;
         
     }
     
@@ -107,7 +107,6 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 
 -(void)populateGW
 {
-    gw = [[DWGameWorld alloc] initWithGameScene:self];
     renderLayer = [[CCLayer alloc] init];
     [self.ForeLayer addChild:renderLayer];
     
@@ -133,20 +132,22 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         if(showColumnHeader)
         {
             CCLabelTTF *columnHeader;
-            NSLog(@"Got to show column text for column %g", currentColumnValue);
             if([showCustomColumnHeader objectForKey:[NSString stringWithFormat:@"%g", currentColumnValue]])
             {
                 NSString *columnHeaderText = [showCustomColumnHeader objectForKey:[NSString stringWithFormat:@"%g", currentColumnValue]];
-                NSLog(@"Found text for column %@ - %@", [NSString stringWithFormat:@"%g", COL_VALUE], columnHeaderText);
                 columnHeader = [CCLabelTTF labelWithString:columnHeaderText fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
             }
             else
             {
                 columnHeader = [CCLabelTTF labelWithString:[currentColumnInfo objectForKey:COL_LABEL] fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
             }
-            
-            [columnHeader setPosition:ccp(i*(kPropXColumnSpacing*lx), ly*kPropYColumnHeader)];
-            [renderLayer addChild:columnHeader z:5];
+            if(gw.Blackboard.inProblemSetup)
+            {
+                [columnHeader setTag:3];
+                [columnHeader setOpacity:0];
+                [columnHeader setPosition:ccp(i*(kPropXColumnSpacing*lx), ly*kPropYColumnHeader)];
+                [renderLayer addChild:columnHeader z:5];
+            }
         }
         
         currentColumnValue = (currentColumnValue/columnBaseValue);
@@ -285,7 +286,8 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     problemDescLabel=[CCLabelTTF labelWithString:[pdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
     [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
     //[problemDescLabel setColor:kLabelTitleColor];
-    
+    [problemDescLabel setTag:3];
+    [problemDescLabel setOpacity:0];
     [self.ForeLayer addChild:problemDescLabel];
     
     if([[pdef objectForKey:DEFAULT_COL] intValue])
@@ -345,6 +347,8 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     {
         CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
         [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
+        [commitBtn setTag:3];
+        [commitBtn setOpacity:0];
         [self.ForeLayer addChild:commitBtn z:2];
     }
     if(showCount||showValue)
@@ -352,21 +356,19 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         if(showCount && !showValue)
         {
             countLabel=[CCLabelTTF labelWithString:@"count" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-            [countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];   
-            [self.ForeLayer addChild:countLabel];
         }
         else if(!showCount && showValue)
         {
             countLabel=[CCLabelTTF labelWithString:@"sum" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-            [countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];   
-            [self.ForeLayer addChild:countLabel];
         }
         else if(showCount && showValue)
         {
             countLabel=[CCLabelTTF labelWithString:@"count x sum y" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-            [countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];   
-            [self.ForeLayer addChild:countLabel];
         }
+        [countLabel setTag:3];
+        [countLabel setOpacity:0];
+        [countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)]; 
+        [self.ForeLayer addChild:countLabel];
     }
 
     
@@ -401,7 +403,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         if(gw.Blackboard.SelectedObjects.count > totalCountedInProblem)
         {
             totalCountedInProblem=gw.Blackboard.SelectedObjects.count;
-            if(!(totalCountedInProblem > [[solutionsDef objectForKey:SOLUTION_VALUE] intValue]) && !inProblemSetup)
+            if(!(totalCountedInProblem > [[solutionsDef objectForKey:SOLUTION_VALUE] intValue]) && !gw.Blackboard.inProblemSetup)
             {
                [toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
             }
@@ -432,7 +434,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     else if([solutionType isEqualToString:TOTAL_COUNT])
     {
         [self calcProblemTotalCount];
-        if((totalCount>maxSumReachedByUser) && !inProblemSetup)
+        if((totalCount>maxSumReachedByUser) && !gw.Blackboard.inProblemSetup)
         {
             if (maxSumReachedByUser<=expectedCount)[toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
             maxSumReachedByUser=totalCount;
@@ -443,7 +445,6 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     {
         if(showCount && !showValue)
         {
-            NSLog(@"should be countin' %d", gw.Blackboard.SelectedObjects.count);
             [countLabel setString:[NSString stringWithFormat:@"count: %d", gw.Blackboard.SelectedObjects.count]];
             
         }

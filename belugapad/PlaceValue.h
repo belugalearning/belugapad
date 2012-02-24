@@ -25,8 +25,6 @@
     BOOL touching;
     BOOL potentialTap;
     
-    BOOL inProblemSetup;
-    
     CGPoint winL;
     float cx, cy, lx, ly;
     

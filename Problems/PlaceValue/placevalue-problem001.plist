@@ -70,7 +70,7 @@
 			<integer>1</integer>
 		</dict>
 	</array>
-	<key>SOLUTION</key>
+	<key>OLD__SOLUTION</key>
 	<dict>
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
@@ -89,6 +89,11 @@
 		<string>obj-placevalue-unit10.png</string>
 		<key>100</key>
 		<string>obj-placevalue-unit100.png</string>
+	</dict>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_TITLE</key>
+		<string>test title</string>
 	</dict>
 </dict>
 </plist>

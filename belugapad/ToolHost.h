@@ -20,6 +20,7 @@
     
     CCLayer *perstLayer;
     CCLayer *backgroundLayer;
+    CCLayer *metaQuestionLayer;
 
     CCLayer *toolBackLayer;
     CCLayer *toolForeLayer;
@@ -45,5 +46,8 @@
 
 -(void)recurseSetIntroFor:(CCNode*)node withTime:(float)time forTag:(int)tag;
 -(void)stageIntroActions;
+
+-(void)setupMetaQuestion:(NSDictionary *)pdefMQ;
+-(void)tearDownMetaQuestion;
 
 @end

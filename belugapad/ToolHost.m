@@ -13,6 +13,7 @@
 #import "SimpleAudioEngine.h"
 #import "BLMath.h"
 #import "Daemon.h"
+#import "ToolScene.h"
 
 @implementation ToolHost
 
@@ -52,6 +53,8 @@
         [bkg setPosition:ccp(cx, cy)];
         [backgroundLayer addChild:bkg z:0];
 
+        metaQuestionLayer=[[CCLayer alloc] init];
+        [self addChild:metaQuestionLayer z:2];
         
         [self populatePerstLayer];
         
@@ -122,6 +125,9 @@
 
 -(void) gotoNewProblem
 {
+    //tear down meta question stuff
+    [self tearDownMetaQuestion];
+    
     NSDictionary *pdef=[self getNextProblem];
     
     NSString *toolKey=[pdef objectForKey:TOOL_KEY];
@@ -140,9 +146,34 @@
     currentTool=[NSClassFromString(toolKey) alloc];
     [currentTool initWithToolHost:self andProblemDef:pdef];    
     
+    NSDictionary *mq=[pdef objectForKey:@"META_QUESTION"];
+    if (mq)
+    {
+        [self setupMetaQuestion:mq];
+    }
+    
     [self stageIntroActions];
     
     [self.Zubi dumpXP];
+}
+
+-(void)setupMetaQuestion:(NSDictionary *)pdefMQ
+{
+    DLog(@"setting up a meta question");
+    
+    //render problem label
+    CCLabelTTF *problemDescLabel=[CCLabelTTF labelWithString:[pdefMQ objectForKey:@"META_QUESTION_TITLE"] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    [problemDescLabel setPosition:ccp(cx, [currentTool metaQuestionTitleXLocation])];
+    [problemDescLabel setColor:kMetaQuestionLabelColor];
+    [problemDescLabel setOpacity:0];
+    [problemDescLabel setTag:3];
+    
+    [metaQuestionLayer addChild:problemDescLabel];
+}
+
+-(void)tearDownMetaQuestion
+{
+    [metaQuestionLayer removeAllChildrenWithCleanup:YES];
 }
 
 -(void)stageIntroActions
@@ -151,6 +182,7 @@
     for (int i=1; i<=3; i++) {
         [self recurseSetIntroFor:toolBackLayer withTime:i forTag:i];
         [self recurseSetIntroFor:toolForeLayer withTime:i forTag:i];
+        [self recurseSetIntroFor:metaQuestionLayer withTime:i forTag:i];
     }
 }
 

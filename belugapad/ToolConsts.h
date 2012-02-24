@@ -40,3 +40,5 @@ extern const CGRect kRectButtonCommit;
 extern const CGPoint kButtonNextToolPos;
 extern const float kTimeObjectSnapBack;
 extern const ccColor3B kLabelCountColor;
+
+extern const ccColor3B kMetaQuestionLabelColor;

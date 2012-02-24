@@ -508,14 +508,7 @@ static void eachShape(void *ptr, void* unused)
     	
     [gameWorld logInfo:[NSString stringWithFormat:@"started problem"] withData:0];
 
-    //render problem label
-    problemDescLabel=[CCLabelTTF labelWithString:[pdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
-    [problemDescLabel setColor:kLabelTitleColor];
-    [problemDescLabel setOpacity:0];
-    [problemDescLabel setTag:3];
 
-    [self.ForeLayer addChild:problemDescLabel];
     
     //problem sub title
     NSString *subT=[pdef objectForKey:PROBLEM_SUBTITLE];
@@ -548,9 +541,39 @@ static void eachShape(void *ptr, void* unused)
         [self createContainerWithPos:p andData:[containers objectAtIndex:i]];
     }
     
+    //set additional problem-level vars
+    NSNumber *rMode=[pdef objectForKey:REJECT_MODE];
+    if (rMode) rejectMode=[rMode intValue];
+    
+    NSNumber *eMode=[pdef objectForKey:EVAL_MODE];
+    if(eMode) evalMode=[eMode intValue];
+    else evalMode=kProblemEvalAuto;
+    
     //retain solutions array
     solutionsDef=[pdef objectForKey:SOLUTIONS];
-    [solutionsDef retain];
+    if(solutionsDef)
+    {
+        [solutionsDef retain];        
+        
+        //show commit button if evalOnCommit
+        if(evalMode==kProblemEvalOnCommit)
+        {
+            CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
+            [commitBtn setPosition:ccp((cx*2)-(kPropXCommitButtonPadding*(cx*2)), kPropXCommitButtonPadding*(cx*2))];
+            [self.ForeLayer addChild:commitBtn];
+        }
+        
+        //render problem label
+        problemDescLabel=[CCLabelTTF labelWithString:[pdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
+        [problemDescLabel setColor:kLabelTitleColor];
+        [problemDescLabel setOpacity:0];
+        [problemDescLabel setTag:3];
+        
+        [self.ForeLayer addChild:problemDescLabel];
+
+    }
+
     
     //get tutorials
     tutorials=[pdef objectForKey:TUTORIALS];
@@ -561,26 +584,11 @@ static void eachShape(void *ptr, void* unused)
         tutorialLastParsed=-1;
         [tutorials retain];
     }
-
-    //set additional problem-level vars
-    NSNumber *rMode=[pdef objectForKey:REJECT_MODE];
-    if (rMode) rejectMode=[rMode intValue];
-    
-    NSNumber *eMode=[pdef objectForKey:EVAL_MODE];
-    if(eMode) evalMode=[eMode intValue];
-    else evalMode=kProblemEvalAuto;
  
     //any solution valid until one commenced
     trackedSolutionIndex=-1;
     trackingSolution=NO;
     
-    //show commit button if evalOnCommit
-    if(evalMode==kProblemEvalOnCommit)
-    {
-        CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
-        [commitBtn setPosition:ccp((cx*2)-(kPropXCommitButtonPadding*(cx*2)), kPropXCommitButtonPadding*(cx*2))];
-        [self.ForeLayer addChild:commitBtn];
-    }
     
     //look at operator mode
     NSString *operatorMode=[pdef objectForKey:OPERATOR_MODE];
@@ -1160,6 +1168,16 @@ static void eachShape(void *ptr, void* unused)
     }
     
     [ghostLayer removeAllChildrenWithCleanup:YES];
+}
+
+-(float)metaQuestionTitleXLocation
+{
+    return kLabelTitleYOffsetHalfProp*cy;
+}
+
+-(float)metaQuestionAnswersXLocation
+{
+    return 100;
 }
 
 -(void)dealloc

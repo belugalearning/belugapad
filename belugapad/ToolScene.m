@@ -35,6 +35,16 @@
     
 }
 
+-(float)metaQuestionTitleXLocation
+{
+    return 0;
+}
+
+-(float)metaQuestionAnswersXLocation
+{
+    return 0;
+}
+
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     

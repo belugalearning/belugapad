@@ -305,13 +305,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 {	
     [gw logInfo:[NSString stringWithFormat:@"started problem"] withData:0];
     
-    //render problem label
-    problemDescLabel=[CCLabelTTF labelWithString:[pdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
-    //[problemDescLabel setColor:kLabelTitleColor];
-    [problemDescLabel setTag:3];
-    [problemDescLabel setOpacity:0];
-    [self.ForeLayer addChild:problemDescLabel];
+
     
     if([[pdef objectForKey:DEFAULT_COL] intValue])
     { defaultColumn = [[pdef objectForKey:DEFAULT_COL] intValue]; }
@@ -335,22 +329,56 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     NSArray *objects=[pdef objectForKey:INIT_OBJECTS];
     initObjects = objects;
     
-    //retain solutions dict
+    NSNumber *rMode=[pdef objectForKey:REJECT_MODE];
+    if (rMode) rejectMode=[rMode intValue];
+    
+    NSNumber *eMode=[pdef objectForKey:EVAL_MODE];
+    if(eMode) evalMode=[eMode intValue];
+    
+
     solutionsDef=[pdef objectForKey:SOLUTION];
-    [solutionsDef retain];
     
-    // set the display text of the solution
-    solutionDisplayText = [solutionsDef objectForKey:SOLUTION_DISPLAY_TEXT];
-    incompleteDisplayText = [solutionsDef objectForKey:INCOMPLETE_DISPLAY_TEXT];
-    
-    // and if it doesn't exist, use a generic one
-    if(!solutionDisplayText) solutionDisplayText=[NSString stringWithFormat:@"problem complete! well done"];
-    if(!incompleteDisplayText) incompleteDisplayText=[NSString stringWithFormat:@"problem incomplete, try again!"];
-    [solutionDisplayText retain];
-    [incompleteDisplayText retain];
-    
-    // set the expected count for a TOTAL_COUNT problem if there
-    expectedCount = [[solutionsDef objectForKey:SOLUTION_VALUE] floatValue];
+    if(solutionsDef)
+    {
+        //only do solution & commit related stuff if there's a defined solution
+        [solutionsDef retain];
+        
+        // set the display text of the solution
+        solutionDisplayText = [solutionsDef objectForKey:SOLUTION_DISPLAY_TEXT];
+        incompleteDisplayText = [solutionsDef objectForKey:INCOMPLETE_DISPLAY_TEXT];
+        
+        // and if it doesn't exist, use a generic one
+        if(!solutionDisplayText) solutionDisplayText=[NSString stringWithFormat:@"problem complete! well done"];
+        if(!incompleteDisplayText) incompleteDisplayText=[NSString stringWithFormat:@"problem incomplete, try again!"];
+        [solutionDisplayText retain];
+        [incompleteDisplayText retain];
+        
+        // set the expected count for a TOTAL_COUNT problem if there
+        expectedCount = [[solutionsDef objectForKey:SOLUTION_VALUE] floatValue];
+        
+        //show commit button if evalOnCommit
+        if(evalMode==kProblemEvalOnCommit)
+        {
+            CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
+            [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
+            [commitBtn setTag:3];
+            [commitBtn setOpacity:0];
+            [self.ForeLayer addChild:commitBtn z:2];
+        }
+        
+        //render problem label
+        problemDescLabel=[CCLabelTTF labelWithString:[pdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
+        //[problemDescLabel setColor:kLabelTitleColor];
+        [problemDescLabel setTag:3];
+        [problemDescLabel setOpacity:0];
+        [self.ForeLayer addChild:problemDescLabel];
+    }
+    else
+    {
+        //this is probably a meta question -- we're okay to proceed without a solution
+        
+    }
     
     //look for custom column headers
     showCustomColumnHeader = [pdef objectForKey:CUSTOM_COLUMN_HEADERS];
@@ -360,21 +388,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     columnSprites = [pdef objectForKey:COLUMN_SPRITES];
     [columnSprites retain];
     
-    NSNumber *rMode=[pdef objectForKey:REJECT_MODE];
-    if (rMode) rejectMode=[rMode intValue];
     
-    NSNumber *eMode=[pdef objectForKey:EVAL_MODE];
-    if(eMode) evalMode=[eMode intValue];
-    
-    //show commit button if evalOnCommit
-    if(evalMode==kProblemEvalOnCommit)
-    {
-        CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
-        [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
-        [commitBtn setTag:3];
-        [commitBtn setOpacity:0];
-        [self.ForeLayer addChild:commitBtn z:2];
-    }
     if(showCount||showValue)
     {
         if(showCount && !showValue)
@@ -1053,6 +1067,17 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     }
     potentialTap=NO;
 }
+
+-(float)metaQuestionTitleXLocation
+{
+    return kLabelTitleYOffsetHalfProp*cy;
+}
+
+-(float)metaQuestionAnswersXLocation
+{
+    return 100;
+}
+
 -(void) dealloc
 {
     //write log on problem switch

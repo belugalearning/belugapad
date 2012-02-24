@@ -20,6 +20,7 @@ const float kButtonNextToolHitXOffset=975.0f;
 const float kLabelSubTitleYOffsetHalfProp=1.75f;
 const float kLabelTitleYOffsetHalfProp=1.85f;
 const ccColor3B kLabelTitleColor={255, 255, 255};
+
 const float kLabelCompleteYOffsetHalfProp=0.28f;
 const ccColor3B kLabelCompleteColor={0, 255, 0};
 
@@ -36,3 +37,6 @@ const float kTimeToFadeButtonLabel=2.0f;
 
 const float kTimeObjectSnapBack=0.25f;
 const ccColor3B kLabelCountColor={255, 0, 0};
+
+
+const ccColor3B kMetaQuestionLabelColor={255, 255, 170};

@@ -686,7 +686,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         potentialTap = NO;
     }
 
-    else if(touching && [gw Blackboard].PickupObject==nil)
+    else if(touching && ([gw Blackboard].PickupObject==nil) && numberOfColumns>1)
     {
         CGPoint diff = ccpSub(location, prevLoc);
         diff = ccp(diff.x, 0);
@@ -771,7 +771,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     touching=NO;
 }
 
--(void)doTransitionWithIncrement:(int)incr
+-(BOOL)doTransitionWithIncrement:(int)incr
 {
     int tranCount=1;
     if(incr>0) tranCount=10;
@@ -790,7 +790,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         }
     }
     
-    if(space<tranCount) return;
+    if(space<tranCount) return NO;
 
     if (incr>0) {
         [gw.Blackboard.PickupObject handleMessage:kDWdismantle andPayload:nil withLogLevel:0];
@@ -851,16 +851,17 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             }
         }
     }
+    return YES;
 }
 
--(void)doCondenseFromLocation:(CGPoint)location
+-(BOOL)doCondenseFromLocation:(CGPoint)location
 {
-    [self doTransitionWithIncrement:-1];
+    return [self doTransitionWithIncrement:-1];
 }
 
--(void)doMulchFromLocation:(CGPoint)location
+-(BOOL)doMulchFromLocation:(CGPoint)location
 {
-    [self doTransitionWithIncrement:1];
+    return [self doTransitionWithIncrement:1];
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -869,6 +870,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    BOOL aTransitionHappened=NO;
     
     // set the touch end position for evaluation
     touchEndPos = location;
@@ -879,126 +881,129 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     
     //do mulching / condensing
     if (inMulchArea) {
-        [self doMulchFromLocation:location];
         
+        aTransitionHappened = [self doMulchFromLocation:location];
         inMulchArea=NO;
-        [mulchPanel setVisible:NO];        
+        [mulchPanel setVisible:NO];
+        
     }
     if(inCondenseArea)
     {
-        [self doCondenseFromLocation:location];
-        
+        aTransitionHappened = [self doCondenseFromLocation:location];
         inCondenseArea=NO;
-        [condensePanel setVisible:NO];
-    }
-    
-    if(fabsf(touchStartPos.x-touchEndPos.x)>kMovementForSnapColumn && [gw Blackboard].PickupObject==nil)
-    {
-        if(touchStartPos.x < touchEndPos.x)
-        {
+        [condensePanel setVisible:NO];        
 
-            if(currentColumnIndex < 1) { currentColumnIndex = 0; }
-            else { currentColumnIndex--; }
-        
-            gw.Blackboard.CurrentStore = [gw.Blackboard.AllStores objectAtIndex:currentColumnIndex];   
+    }
+    if(!aTransitionHappened)
+    {
+        if(fabsf(touchStartPos.x-touchEndPos.x)>kMovementForSnapColumn && [gw Blackboard].PickupObject==nil)
+        {
+            if(touchStartPos.x < touchEndPos.x)
+            {
+
+                if(currentColumnIndex < 1) { currentColumnIndex = 0; }
+                else { currentColumnIndex--; }
             
+                gw.Blackboard.CurrentStore = [gw.Blackboard.AllStores objectAtIndex:currentColumnIndex];   
+                
+                [self snapLayerToPosition];
+            }
+            else
+            {
+                
+                if(currentColumnIndex >= (numberOfColumns-1)) { currentColumnIndex = numberOfColumns-1; }
+                else { currentColumnIndex++; }
+                
+                gw.Blackboard.CurrentStore = [gw.Blackboard.AllStores objectAtIndex:currentColumnIndex];   
+                
+                [self snapLayerToPosition];
+              
+            }
+        }
+        else if(fabsf(touchStartPos.x-touchEndPos.x)<kMovementForSnapColumn && [gw Blackboard].PickupObject==nil && numberOfColumns>1)
+        {
             [self snapLayerToPosition];
+        }
+        
+        // evaluate the distance between start/end pos.
+        
+        if([BLMath DistanceBetween:touchStartPos and:touchEndPos] < fabs(kTapSlipThreshold) && potentialTap)
+        {
+                [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
+        
+        }
+        
+        if(gw.Blackboard.SelectedObjects.count == columnBaseValue && showBaseSelection)
+        {
+            if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
+            {
+                for(int go=0; go<gw.Blackboard.SelectedObjects.count; go++)
+                {
+                    DWGameObject *goO = [[[gw Blackboard] SelectedObjects] objectAtIndex:go];
+                    [goO handleMessage:kDWswitchBaseSelection andPayload:nil withLogLevel:0];
+                }
+            }
         }
         else
-        {
-            
-            if(currentColumnIndex >= (numberOfColumns-1)) { currentColumnIndex = numberOfColumns-1; }
-            else { currentColumnIndex++; }
-            
-            gw.Blackboard.CurrentStore = [gw.Blackboard.AllStores objectAtIndex:currentColumnIndex];   
-            
-            [self snapLayerToPosition];
-          
-        }
-    }
-    else if(fabsf(touchStartPos.x-touchEndPos.x)<kMovementForSnapColumn && [gw Blackboard].PickupObject==nil)
-    {
-        [self snapLayerToPosition];
-    }
-    
-    // evaluate the distance between start/end pos.
-    
-    if([BLMath DistanceBetween:touchStartPos and:touchEndPos] < fabs(kTapSlipThreshold) && potentialTap)
-    {
-            [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
-    
-    }
-    
-    if(gw.Blackboard.SelectedObjects.count == columnBaseValue && showBaseSelection)
-    {
-        if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
         {
             for(int go=0; go<gw.Blackboard.SelectedObjects.count; go++)
             {
                 DWGameObject *goO = [[[gw Blackboard] SelectedObjects] objectAtIndex:go];
-                [goO handleMessage:kDWswitchBaseSelection andPayload:nil withLogLevel:0];
+                [goO handleMessage:kDWswitchBaseSelectionBack andPayload:nil withLogLevel:0];
             }
         }
-    }
-    else
-    {
-        for(int go=0; go<gw.Blackboard.SelectedObjects.count; go++)
-        {
-            DWGameObject *goO = [[[gw Blackboard] SelectedObjects] objectAtIndex:go];
-            [goO handleMessage:kDWswitchBaseSelectionBack andPayload:nil withLogLevel:0];
-        }
-    }
 
-    
-    if([gw Blackboard].PickupObject!=nil)
-    {
-        [gw Blackboard].DropObject=nil;
-                        
-        NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];
-        [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
-        [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         
+        if([gw Blackboard].PickupObject!=nil)
+        {
+            [gw Blackboard].DropObject=nil;
+                            
+            NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];
+            [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
+            [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
+            
 
-        if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
-        {
-            // TODO: Decide behaviour when the column base amount is selected
-            DWGameObject *go = gw.Blackboard.PickupObject;
-            if(![gw.Blackboard.SelectedObjects containsObject:go])
-            {
-                [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];                
-            }
-        }
-        else 
-        {
-            [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
-        }
-        if([gw Blackboard].DropObject != nil)
-        {
-            //tell the picked-up object to mount on the dropobject
-            [pl removeAllObjects];
-            [pl setObject:[gw Blackboard].DropObject forKey:MOUNT];
-            [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
-            
-            [[gw Blackboard].PickupObject handleMessage:kDWputdown andPayload:nil withLogLevel:0];         
-            [[gw Blackboard].PickupObject logInfo:@"this object was mounted" withData:0];
-            [[gw Blackboard].DropObject logInfo:@"mounted object on this go" withData:0];
-            
-            
-            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
-        }
-        else
-        {
             if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
             {
-                for(int goC=0; goC<gw.Blackboard.SelectedObjects.count; goC++)
+                // TODO: Decide behaviour when the column base amount is selected
+                DWGameObject *go = gw.Blackboard.PickupObject;
+                if(![gw.Blackboard.SelectedObjects containsObject:go])
                 {
-                    DWGameObject *go = [gw.Blackboard.SelectedObjects objectAtIndex:goC];
-                    [go handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];
+                    [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];                
                 }
             }
-            [[gw Blackboard].PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];
+            else 
+            {
+                [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
+            }
+            if([gw Blackboard].DropObject != nil)
+            {
+                //tell the picked-up object to mount on the dropobject
+                [pl removeAllObjects];
+                [pl setObject:[gw Blackboard].DropObject forKey:MOUNT];
+                [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
+                
+                [[gw Blackboard].PickupObject handleMessage:kDWputdown andPayload:nil withLogLevel:0];         
+                [[gw Blackboard].PickupObject logInfo:@"this object was mounted" withData:0];
+                [[gw Blackboard].DropObject logInfo:@"mounted object on this go" withData:0];
+                
+                
+                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
+            }
+            else
+            {
+                if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
+                {
+                    for(int goC=0; goC<gw.Blackboard.SelectedObjects.count; goC++)
+                    {
+                        DWGameObject *go = [gw.Blackboard.SelectedObjects objectAtIndex:goC];
+                        [go handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];
+                    }
+                }
+                [[gw Blackboard].PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];
+            }
+            [gw Blackboard].PickupObject = nil;
         }
-        [gw Blackboard].PickupObject = nil;
     }
     potentialTap=NO;
 }

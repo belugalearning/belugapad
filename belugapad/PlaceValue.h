@@ -114,8 +114,8 @@
 -(void)evalProblemMatrixMatch;
 -(void)snapLayerToPosition;
 
--(void)doCondenseFromLocation:(CGPoint)location;
--(void)doMulchFromLocation:(CGPoint)location;
--(void)doTransitionWithIncrement:(int)incr;
+-(BOOL)doCondenseFromLocation:(CGPoint)location;
+-(BOOL)doMulchFromLocation:(CGPoint)location;
+-(BOOL)doTransitionWithIncrement:(int)incr;
 
 @end

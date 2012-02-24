@@ -18,11 +18,14 @@
 
 @interface PlaceValue : ToolScene
 {
+
     ToolHost *toolHost;
     NSDictionary *problemDef;
     
     BOOL touching;
     BOOL potentialTap;
+    
+    BOOL inProblemSetup;
     
     CGPoint winL;
     float cx, cy, lx, ly;
@@ -83,6 +86,9 @@
     
     int lastCount;
     int totalCountedInProblem;
+    float maxSumReachedByUser;
+    float expectedCount;
+    float totalCount;
     
     CCSprite *condensePanel;
     CCSprite *mulchPanel;
@@ -103,6 +109,7 @@
 -(void)evalProblem;
 -(void)doWinning;
 -(void)evalProblemCountSeq;
+-(void)calcProblemTotalCount;
 -(void)evalProblemTotalCount;
 -(void)evalProblemMatrixMatch;
 -(void)snapLayerToPosition;

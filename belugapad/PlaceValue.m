@@ -45,6 +45,8 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         cx=lx / 2.0f;
         cy=ly / 2.0f;
      
+        inProblemSetup = YES;
+        
         self.BkgLayer=[[CCLayer alloc]init];
         self.ForeLayer=[[CCLayer alloc]init];
         [toolHost addToolBackLayer:self.BkgLayer];
@@ -63,10 +65,10 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
-        // Set the lastCount to selected obj count - this is for counting problems.
-        
         lastCount = gw.Blackboard.SelectedObjects.count; 
-
+        
+        inProblemSetup = NO;
+        
     }
     
     return self;
@@ -321,6 +323,9 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     [solutionDisplayText retain];
     [incompleteDisplayText retain];
     
+    // set the expected count for a TOTAL_COUNT problem if there
+    expectedCount = [[solutionsDef objectForKey:SOLUTION_VALUE] floatValue];
+    
     //look for custom column headers
     showCustomColumnHeader = [pdef objectForKey:CUSTOM_COLUMN_HEADERS];
     [showCustomColumnHeader retain];
@@ -396,7 +401,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         if(gw.Blackboard.SelectedObjects.count > totalCountedInProblem)
         {
             totalCountedInProblem=gw.Blackboard.SelectedObjects.count;
-            if(!(totalCountedInProblem > [[solutionsDef objectForKey:SOLUTION_VALUE] intValue]))
+            if(!(totalCountedInProblem > [[solutionsDef objectForKey:SOLUTION_VALUE] intValue]) && !inProblemSetup)
             {
                [toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
             }
@@ -422,6 +427,16 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         
         
         DLog(@"(COUNT_SEQUENCE) Selected %d lastCount %d", gw.Blackboard.SelectedObjects.count, lastCount);
+
+    }
+    else if([solutionType isEqualToString:TOTAL_COUNT])
+    {
+        [self calcProblemTotalCount];
+        if((totalCount>maxSumReachedByUser) && !inProblemSetup)
+        {
+            if (maxSumReachedByUser<=expectedCount)[toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
+            maxSumReachedByUser=totalCount;
+        }
 
     }
     if(showCount||showValue)
@@ -493,16 +508,15 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         [self doIncorrect];
     }
 }
--(void)evalProblemTotalCount
+-(void)calcProblemTotalCount
 {
-    float totalCount=0;
-    float expectedCount = [[solutionsDef objectForKey:SOLUTION_VALUE] floatValue];
+    totalCount=0;
     
     for(int c=0; c<gw.Blackboard.AllStores.count; c++)
     {
         
-    
-    
+        
+        
         for (int i=0; i<[[gw.Blackboard.AllStores objectAtIndex:c]count]; i++)
         {
             for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:i]count]; o++)
@@ -517,6 +531,10 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             }
         }
     }
+}
+-(void)evalProblemTotalCount
+{
+    [self calcProblemTotalCount];
     
     if(totalCount == expectedCount)
     {

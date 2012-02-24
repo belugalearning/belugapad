@@ -211,7 +211,29 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             {
                 [[colCage store] setObject:kDefaultSprite forKey:SPRITE_FILENAME];                
             }
-
+            
+            if(!allCages) allCages=[[NSMutableArray alloc] init];
+            [allCages addObject:colCage];
+        }
+        if(showNegCage) 
+        {
+            // create cage
+            DWGameObject *colCage = [gw addGameObjectWithTemplate:@"TplaceValueCage"];
+            [[colCage store] setObject:[NSNumber numberWithBool:YES] forKey:ALLOW_MULTIPLE_MOUNT];
+            [[colCage store] setObject:[NSNumber numberWithFloat:i*(kPropXColumnSpacing*lx)+100] forKey:POS_X];
+            [[colCage store] setObject:[NSNumber numberWithFloat:ly*kCageYOrigin] forKey:POS_Y];
+            [[colCage store] setObject:[[currentColumnInfo objectForKey:COL_VALUE] stringValue] forKey:OBJECT_VALUE];
+            
+            NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[currentColumnInfo objectForKey:COL_VALUE] floatValue]];
+            if([columnSprites objectForKey:currentColumnValueKey])
+            {
+                [[colCage store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
+            }
+            else
+            {
+                [[colCage store] setObject:kDefaultSprite forKey:SPRITE_FILENAME];                
+            }
+            
             if(!allCages) allCages=[[NSMutableArray alloc] init];
             [allCages addObject:colCage];
         }
@@ -301,6 +323,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     ropesforColumn = [[pdef objectForKey:ROPES_PER_COL] intValue];
     rows = [[pdef objectForKey:ROWS_PER_COL] intValue];
     showCage = [[pdef objectForKey:SHOW_CAGE] boolValue];
+    showNegCage = [[pdef objectForKey:SHOW_NEG_CAGE] boolValue];
     showCount = [[pdef objectForKey:SHOW_COUNT] boolValue];
     showValue = [[pdef objectForKey:SHOW_VALUE] boolValue];
     showCountOnBlock = [[pdef objectForKey:SHOW_COUNT_BLOCK] boolValue];

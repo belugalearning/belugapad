@@ -63,6 +63,8 @@ typedef enum {
     
     kDWdeselectIfNotThisValue=22,
     kDWdismantle=23,
+    
+    kDWmoveSpriteToPosition=24,
 
     
     kDWareYouProximateTo=101,

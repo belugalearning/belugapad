@@ -209,6 +209,8 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
                 [[colCage store] setObject:kDefaultSprite forKey:SPRITE_FILENAME];                
             }
 
+            if(!allCages) allCages=[[NSMutableArray alloc] init];
+            [allCages addObject:colCage];
         }
     
     }
@@ -629,7 +631,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         [pl setObject:[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] forKey:OBJECT_VALUE];
         
         //broadcast search for pickup object gw
-        [gw handleMessage:kDWareYouAPickupTarget andPayload:pl withLogLevel:0];
+        [gw handleMessage:kDWareYouAPickupTarget andPayload:pl withLogLevel:-1];
         
         if([gw Blackboard].PickupObject!=nil)
         {
@@ -711,10 +713,8 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 
                 [pl setObject:[NSNumber numberWithFloat:x+diff.x] forKey:POS_X];
                 [pl setObject:[NSNumber numberWithFloat:y+diff.y] forKey:POS_Y];
-
                 
-                [thisObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:0];
-                
+                [thisObject handleMessage:kDWmoveSpriteToPosition andPayload:pl withLogLevel:-1];
             }
         }
         

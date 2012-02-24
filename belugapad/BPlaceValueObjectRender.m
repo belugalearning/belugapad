@@ -125,6 +125,10 @@
         [mySprite setTag:2];
         [mySprite setOpacity:0];
     }
+    if(([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue])<0)
+    {
+        [mySprite setColor:ccc3(255,0,0)];
+    }
         [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:1];
     
     //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
@@ -178,11 +182,23 @@
 {
     CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
     if(isSelected) {
-        [mySprite setColor:ccc3(0, 255, 0)]; 
+        if(([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue])<0)
+        {
+            [mySprite setColor:ccc3(255,0,255)];
+        }
+        else {
+            [mySprite setColor:ccc3(0, 255, 0)]; 
+        }
     }
     else
     {
-        [mySprite setColor:ccc3(255, 255, 255)];
+        if(([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue])<0)
+        {
+            [mySprite setColor:ccc3(255,0,0)];
+        }
+        else {
+            [mySprite setColor:ccc3(255, 255, 255)];
+        }
     }
     
 }
@@ -191,18 +207,41 @@
     CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
     if(isSelected)
     {
-
-        [mySprite setColor:ccc3(255, 255, 0)]; 
-    }
-    else
-    {
-        if([[gameObject store] objectForKey:SELECTED])
+        if(([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue])<0)
         {
-            [mySprite setColor:ccc3(0, 255, 0)];             
+            [mySprite setColor:ccc3(255,0,105)];
         }
         else
         {
-            [mySprite setColor:ccc3(255, 255, 255)];
+            [mySprite setColor:ccc3(255,255,0)]; 
+        }
+    }
+    else
+    {
+        // Check whether selected
+        if([[gameObject store] objectForKey:SELECTED])
+        {
+            // then whether it's a +/- number
+            if(([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue])<0)
+            {
+                [mySprite setColor:ccc3(255,0,255)];
+            }
+            else
+            {
+                [mySprite setColor:ccc3(0,255,0)];             
+            }
+        }
+        else
+        {
+            if(([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue])<0)
+            {
+                [mySprite setColor:ccc3(255,0,105)];
+            }
+            else
+            {
+                [mySprite setColor:ccc3(255,255,255)];
+        
+            }
         }
     }
 }

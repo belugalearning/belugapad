@@ -31,7 +31,7 @@
         [[gameObject store] setObject:newMount forKey:MOUNT];
         
         //tell the mount that i'm there
-        NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];
+        NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
         [pl setObject:gameObject forKey:MOUNTED_OBJECT];
         [newMount handleMessage:kDWsetMountedObject andPayload:pl withLogLevel:0];
         

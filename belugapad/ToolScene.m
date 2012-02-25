@@ -20,6 +20,11 @@
     return self;
 }
 
+-(void)problemStateChanged
+{
+    
+}
+
 -(void)doUpdateOnTick:(ccTime)delta
 {
     

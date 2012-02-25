@@ -19,6 +19,7 @@
     
     NSMutableArray *mo=[[NSMutableArray alloc] init];
     GOS_SET(mo, MOUNTED_OBJECTS);
+    [mo release];
     
     return self;
 }

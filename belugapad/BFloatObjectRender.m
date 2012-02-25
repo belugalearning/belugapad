@@ -150,11 +150,6 @@
     
     //use r, c as template for object -- but store as matrix
     NSMutableArray *childMatrix=[[NSMutableArray alloc] init];
-
-    //add this (primary sprite) a position to the child matrix
-    NSMutableDictionary *primarychild=[[NSMutableDictionary alloc]init];
-    [primarychild setObject:[NSValue valueWithCGPoint:CGPointMake(0, 0)] forKey:OBJ_MATRIXPOS];
-    [primarychild setObject:mySprite forKey:MY_SPRITE];
     
     //get unit size
     int unitSize=[[[gameObject store]objectForKey:OBJ_UNITCOUNT] intValue];
@@ -191,6 +186,7 @@
                 [child setObject:cs forKey:MY_SPRITE];
                 
                 [childMatrix addObject:child];                
+                [child release];
                 
                 unitsCreated++;
             }
@@ -202,8 +198,11 @@
     
     //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
     [[gameObject store] setObject:mySprite forKey:MY_SPRITE];
+    [mySprite release];
     
     [[gameObject store] setObject:childMatrix forKey:OBJ_CHILDMATRIX];
+    [childMatrix release];
+    
 }
 
 -(void)setSpritePos:(NSDictionary *)position
@@ -357,7 +356,7 @@
     }
     
     //relinquish ownership of all these children
-    [[[gameObject store] objectForKey:OBJ_CHILDMATRIX] release];
+    //[[[gameObject store] objectForKey:OBJ_CHILDMATRIX] release];
     
     //destroy myself
     [gameObject handleMessage:kDWdetachPhys];
@@ -389,7 +388,7 @@
     if(removeCount==[[[gameObject store] objectForKey:OBJ_CHILDMATRIX] count])
     {
         //relinquish ownership of all these children (technically already done above)
-        [[[gameObject store] objectForKey:OBJ_CHILDMATRIX] release];
+        //[[[gameObject store] objectForKey:OBJ_CHILDMATRIX] release];
         
         //destroy myself
         [gameObject handleMessage:kDWdetachPhys];
@@ -431,8 +430,11 @@
             {
                 [newCol addObject:[NSNumber numberWithInt:-1]];
             }
+
             //set first row in new col as position
             newPos=CGPointMake(matrixX, 0);
+            
+            [newCol release];
         }
         else
         {
@@ -558,6 +560,8 @@
             //add an invalid (-1) pointer to flat array
             [col addObject:[NSNumber numberWithInt:-1]];
         }
+        
+        [col release];
     }
     
     //populate matrix
@@ -568,6 +572,8 @@
         //change that entry in matrix to an indexed pointer to this flat child
         [[matrix objectAtIndex:matrixPos.x] replaceObjectAtIndex:matrixPos.y withObject:[NSNumber numberWithInt:i]];
     }
+    
+    [matrix autorelease];
     
     return matrix;
 }

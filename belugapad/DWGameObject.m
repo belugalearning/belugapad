@@ -28,7 +28,7 @@
 	[self parseTemplate:templateName inTemplateDefs:templateDefs forObject:gameObject];
     [gameObject initComplete];
 	
-    
+    [gameObject autorelease];
     return gameObject;
 }
 
@@ -117,17 +117,14 @@
 	}
 	
 	//check for existence of behaviour, if not found init/alloc
-	if(b==nil)
+	if(!b)
 	{
 		[self logDebugMessage:@"behaviour not found, allocting new behaviour for this game object" atLevel:5];
 		
-		b=[NSClassFromString(behName) alloc];
-		[b initWithGameObject:self withData:data];
-		[behaviours addObject:b];
-        
+		DWBehaviour *newb=[[NSClassFromString(behName) alloc] initWithGameObject:self withData:data];
+		[behaviours addObject:newb];
+        [newb release];
 	}
-
-	
 }
 -(void)addBehaviour:(DWBehaviour*)behaviour
 {

@@ -37,7 +37,7 @@
     [[block store] setObject:[[gameObject store] objectForKey:OBJECT_VALUE] forKey:OBJECT_VALUE];
     [[block store] setObject:[[gameObject store] objectForKey:SPRITE_FILENAME] forKey:SPRITE_FILENAME];
     
-    NSMutableDictionary *pl = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *pl = [[[NSMutableDictionary alloc] init] autorelease];
     [pl setObject:gameObject forKey:MOUNT];
     
     [block handleMessage:kDWsetMount andPayload:pl withLogLevel:0];

@@ -47,8 +47,8 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         gw = [[DWGameWorld alloc] initWithGameScene:self];
         gw.Blackboard.inProblemSetup = YES;
         
-        self.BkgLayer=[[CCLayer alloc]init];
-        self.ForeLayer=[[CCLayer alloc]init];
+        self.BkgLayer=[[[CCLayer alloc]init] autorelease];
+        self.ForeLayer=[[[CCLayer alloc]init] autorelease];
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
         
@@ -123,7 +123,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     {
         CGPoint thisColumnOrigin = ccp(-((ropeWidth*ropesforColumn)/2.0f)+(ropeWidth/2.0f)+(i*(kPropXColumnSpacing*lx)), ly*kPropYColumnOrigin); 
         
-        NSMutableDictionary *currentColumnInfo = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *currentColumnInfo = [[[NSMutableDictionary alloc] init] autorelease];
         [currentColumnInfo setObject:[NSNumber numberWithFloat:currentColumnValue] forKey:COL_VALUE];
         [currentColumnInfo setObject:[NSString stringWithFormat:@"%gs", currentColumnValue] forKey:COL_LABEL];
         
@@ -191,6 +191,8 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
                 [RowArray addObject:go];
                 
             }
+            
+            [RowArray release];
         }
         
         if(showCage) 
@@ -239,6 +241,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             [allCages addObject:colCage];
         }
     
+        [newCol release];
     }
 
     int numberPrecountedForRow=0;
@@ -279,6 +282,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 
     [renderLayer setPosition:ccp(cx-(currentColumnIndex*(kPropXColumnSpacing*lx)), 0)];
     
+
 }
 
 -(void)setupBkgAndTitle
@@ -599,7 +603,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
                 DWGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:(i)] objectAtIndex:o];
                 if([[goC store] objectForKey:MOUNTED_OBJECT])
                 {
-                    countAtRow[i] = countAtRow[i] + 1;
+                    countAtRow[i] ++;
                 }   
             }
         }
@@ -670,7 +674,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         
         [gw Blackboard].PickupObject=nil;
         
-        NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];
+        NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
         [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         [pl setObject:[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] forKey:OBJECT_VALUE];
@@ -731,7 +735,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         posX = posX + diff.x;
         posY = posY + diff.y;
         
-        NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];        
+        NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];        
 
         if(gw.Blackboard.SelectedObjects.count == columnBaseValue && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject])
         {
@@ -876,8 +880,6 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         
         [go handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
-        BOOL foundMount=NO;
-        
         //find a mount for this object
         for (int r=[gw.Blackboard.CurrentStore count]-1; r>=0; r--) {
             NSMutableArray *row=[gw.Blackboard.CurrentStore objectAtIndex:r];
@@ -889,9 +891,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
                     //use this as a mount
                     NSDictionary *pl=[NSDictionary dictionaryWithObject:co forKey:MOUNT];
                     [go handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
-                    
-                    foundMount=YES;
-                    
+
                     break;
                 }
             }
@@ -1004,7 +1004,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         {
             [gw Blackboard].DropObject=nil;
                             
-            NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];
+            NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
             [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
             [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
             

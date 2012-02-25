@@ -51,8 +51,8 @@
                 //look see if this is close enough
                 if([BLMath DistanceBetween:myLoc and:hitLoc] <= (kPropXDropProximity*[gameWorld Blackboard].hostLX))
                 {
-                    NSNumber *gameObjectValue = [[NSNumber alloc] init];
-                    NSNumber *pickupObjectValue = [[NSNumber alloc] init];
+                    NSNumber *gameObjectValue = nil;
+                    NSNumber *pickupObjectValue = nil;
                     if([[gameObject store] objectForKey:ALLOW_MULTIPLE_MOUNT])
                     {
                         gameObjectValue = [[gameObject store] objectForKey:OBJECT_VALUE];

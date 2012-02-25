@@ -9,7 +9,7 @@
 #import "MenuScene.h"
 #import "global.h"
 #import "BLMath.h"
-#import "BlockFloating.h"
+#import "ZubiIntro.h"
 
 
 const float kPropXPinchThreshold=0.08f;
@@ -133,18 +133,18 @@ const float kPropYHitNextMenu=0.9f;
     
     for (int t=0; t<topicCount; t++) {
         
-        CCLayer *thisTopic=[[CCLayer alloc] init];
+        CCLayer *thisTopic=[[[CCLayer alloc] init] autorelease];
         [thisTopic setPosition:ccp(0, -(t*(kPropYTopicGap*ly)))];
         [topicLayers addObject:thisTopic];
         [topicLayerBase addChild:thisTopic];
         
         //create module base layer on topic
-        CCLayer *modBase=[[CCLayer alloc] init];
+        CCLayer *modBase=[[[CCLayer alloc] init] autorelease];
         [thisTopic addChild:modBase];
         [moduleBaseLayers addObject:modBase];
         
         //create holder array for module layers themselves
-        NSMutableArray *layersForThisTopic=[[NSMutableArray alloc] init];
+        NSMutableArray *layersForThisTopic=[[[NSMutableArray alloc] init] autorelease];
         [moduleLayers addObject:layersForThisTopic];
         
         //set the module position for this topic
@@ -153,7 +153,7 @@ const float kPropYHitNextMenu=0.9f;
         for(int m=0; m<moduleCount; m++)
         {
             //create module 
-            CCLayer *moduleLayer=[[CCLayer alloc] init];
+            CCLayer *moduleLayer=[[[CCLayer alloc] init] autorelease];
             [layersForThisTopic addObject:moduleLayer];
             [modBase addChild:moduleLayer];
             
@@ -186,7 +186,7 @@ const float kPropYHitNextMenu=0.9f;
     CGPoint l=[[CCDirector sharedDirector] convertToGL:[t locationInView:t.view]];
     if(l.x>(kPropXHitNextMenu * lx) && l.y>(kPropYHitNextMenu * ly))
     {
-        [[CCDirector sharedDirector] replaceScene:[BlockFloating scene]];
+        [[CCDirector sharedDirector] replaceScene:[ZubiIntro scene]];
     }
 }
 

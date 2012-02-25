@@ -40,6 +40,8 @@ static float kSubParticleOffset=10.0f;
 
 -(id)initWithLayer:(CCLayer*)theHostLayer andRestingPostion:(CGPoint)theRestingPos andLy:(float)hostLy
 {
+    self=[super init];
+    
     hostLayer=theHostLayer;
     ly=hostLy;
 
@@ -432,7 +434,7 @@ static float kSubParticleOffset=10.0f;
 	
 	//get TouchXML doc
 	CXMLDocument *doc=
-    [[CXMLDocument alloc] initWithData:XMLData options:0 error:nil];
+    [[[CXMLDocument alloc] initWithData:XMLData options:0 error:nil] autorelease];
     
     
 	//setup a namespace mapping for the svg namespace
@@ -441,7 +443,7 @@ static float kSubParticleOffset=10.0f;
 							  forKey:@"svg"];
 	
     
-    NSMutableArray *retPaths=[[NSMutableArray alloc] init];
+    NSMutableArray *retPaths=[[[NSMutableArray alloc] init] autorelease];
     [retPaths addObject:[self getAnimationPath:0 onSVG:doc withMappings:nsMappings]];
     [retPaths addObject:[self getAnimationPath:1 onSVG:doc withMappings:nsMappings]];
     [retPaths addObject:[self getAnimationPath:2 onSVG:doc withMappings:nsMappings]];
@@ -458,7 +460,7 @@ static float kSubParticleOffset=10.0f;
                 namespaceMappings:nsMappings 
                             error:nil];
     
-    NSMutableArray *returnPoints=[[NSMutableArray alloc] init];
+    NSMutableArray *returnPoints=[[[NSMutableArray alloc] init] autorelease];
     
     for (CXMLElement *ele in pathPoints) {
         NSString *spx=[[ele attributeForName:@"cx"] stringValue];

@@ -19,6 +19,7 @@
 @property (retain) CCLayer *ForeLayer;
 
 -(id)initWithToolHost:(ToolHost*)host andProblemDef:(NSDictionary*)pdef;
+-(void)problemStateChanged;
 -(void)doUpdateOnTick:(ccTime)delta;
 -(void)doUpdateOnSecond:(ccTime)delta;
 -(void)doUpdateOnQuarterSecond:(ccTime)delta;

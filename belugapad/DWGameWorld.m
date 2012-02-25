@@ -140,6 +140,7 @@
     }
     
     [wStr writeToFile:file atomically:YES encoding:NSUTF8StringEncoding error:nil];
+    [wStr release];
 }
 
 -(NSMutableDictionary *) store

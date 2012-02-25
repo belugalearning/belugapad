@@ -92,8 +92,8 @@ static void eachShape(void *ptr, void* unused)
         cy=[[CCDirector sharedDirector] winSize].height / 2.0f;
         
         
-        self.BkgLayer=[[CCLayer alloc]init];
-        self.ForeLayer=[[CCLayer alloc]init];
+        self.BkgLayer=[[[CCLayer alloc]init] autorelease];
+        self.ForeLayer=[[[CCLayer alloc]init] autorelease];
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
         
@@ -286,7 +286,7 @@ static void eachShape(void *ptr, void* unused)
         
         [gameWorld Blackboard].PickupObject=nil;
         
-        NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];
+        NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
         [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         
@@ -341,7 +341,7 @@ static void eachShape(void *ptr, void* unused)
         //mod location by pickup offset
         location=[BLMath SubtractVector:[gameWorld Blackboard].PickupOffset from:location];
         
-        NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];
+        NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
         [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         
@@ -457,7 +457,7 @@ static void eachShape(void *ptr, void* unused)
         
         if(modLocation.y<kPhysContainerHardBottom)modLocation.y=kPhysContainerResetBottom;
         
-        NSMutableDictionary *pl=[[NSMutableDictionary alloc] init];
+        NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
         [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         
@@ -1127,7 +1127,7 @@ static void eachShape(void *ptr, void* unused)
 //    [ghost setRotation:[spriteSource rotation]];
     
 
-    CCNode *ghost=[[CCNode alloc] init];
+    CCNode *ghost=[[[CCNode alloc] init] autorelease];
     [ghost setPosition:[spriteSource position]];
     [ghost setRotation:[spriteSource rotation]];
     

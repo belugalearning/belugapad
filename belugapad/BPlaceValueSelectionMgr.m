@@ -9,6 +9,7 @@
 #import "BPlaceValueSelectionMgr.h"
 #import "global.h"
 #import "PlaceValue.h"
+#import "ToolScene.h"
 
 @implementation BPlaceValueSelectionMgr
 -(BPlaceValueSelectionMgr*)initWithGameObject:(DWGameObject *)aGameObject withData:(NSDictionary *)data

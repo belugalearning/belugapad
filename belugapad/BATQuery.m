@@ -38,10 +38,10 @@
     else {
         int lmax=0;
         for (BAExpression *child in [expr children]) {
-            int d=[self getNodeDepthFor:child withParentDepth:0];
-            if(d>lmax)lmax=0;
+            int d=[self getNodeDepthFor:child withParentDepth:pdepth];
+            if(d>lmax)lmax=d;
         }
-        return pdepth+lmax;
+        return pdepth+lmax+1;
     }
 }
 

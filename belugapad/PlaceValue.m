@@ -1068,14 +1068,14 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     potentialTap=NO;
 }
 
--(float)metaQuestionTitleXLocation
+-(float)metaQuestionTitleYLocation
 {
     return kLabelTitleYOffsetHalfProp*cy;
 }
 
--(float)metaQuestionAnswersXLocation
+-(float)metaQuestionAnswersYLocation
 {
-    return 100;
+    return 150;
 }
 
 -(void) dealloc

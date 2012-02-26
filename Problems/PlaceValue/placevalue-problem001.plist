@@ -92,8 +92,39 @@
 	</dict>
 	<key>META_QUESTION</key>
 	<dict>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>New item</key>
+				<string></string>
+				<key>META_ANSWER_TEXT</key>
+				<string>200</string>
+				<key>META_ANSWER_VALUE</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>2000</string>
+				<key>META_ANSWER_VALUE</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>20</string>
+				<key>META_ANSWER_VALUE</key>
+				<integer>0</integer>
+			</dict>
+		</array>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>1</integer>
 		<key>META_QUESTION_TITLE</key>
 		<string>test title</string>
+		<key>META_QUESTION_COMPLETE_TEXT</key>
+		<string>complete!</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>incomplete. try again.</string>
 	</dict>
 </dict>
 </plist>

@@ -8,6 +8,15 @@
 
 #import "cocos2d.h"
 
+typedef enum {
+    kMetaQuestionAnswerSingle=0,
+    kMetaQuestionAnswerMulti=1
+} MetaQuestionAnswerMode;
+typedef enum {
+    kMetaQuestionEvalAuto=0,
+    kMetaQuestionEvalOnCommit=1
+} MetaQuestionEvalMode;
+
 @class Daemon;
 @class ToolScene;
 
@@ -26,6 +35,15 @@
     CCLayer *toolForeLayer;
     
     ToolScene *currentTool;
+    
+    MetaQuestionEvalMode mqEvalMode;
+    MetaQuestionAnswerMode mqAnswerMode;
+    
+    BOOL metaQuestionForThisProblem;
+    NSArray *metaQuestionAnswers;
+    int metaQuestionAnswerCount;
+    NSString *metaQuestionCompleteText;
+    NSString *metaQuestionIncompleteText;
 }
 
 @property (retain) Daemon *Zubi;

@@ -146,7 +146,7 @@
     currentTool=[NSClassFromString(toolKey) alloc];
     [currentTool initWithToolHost:self andProblemDef:pdef];    
     
-    NSDictionary *mq=[pdef objectForKey:@"META_QUESTION"];
+    NSDictionary *mq=[pdef objectForKey:META_QUESTION];
     if (mq)
     {
         [self setupMetaQuestion:mq];
@@ -161,14 +161,55 @@
 {
     DLog(@"setting up a meta question");
     
+    metaQuestionForThisProblem=YES;
+    
     //render problem label
-    CCLabelTTF *problemDescLabel=[CCLabelTTF labelWithString:[pdefMQ objectForKey:@"META_QUESTION_TITLE"] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [problemDescLabel setPosition:ccp(cx, [currentTool metaQuestionTitleXLocation])];
+    CCLabelTTF *problemDescLabel=[CCLabelTTF labelWithString:[pdefMQ objectForKey:META_QUESTION_TITLE] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    [problemDescLabel setPosition:ccp(cx, [currentTool metaQuestionTitleYLocation])];
     [problemDescLabel setColor:kMetaQuestionLabelColor];
     [problemDescLabel setOpacity:0];
     [problemDescLabel setTag:3];
     
     [metaQuestionLayer addChild:problemDescLabel];
+    
+    // check the answer mode and assign
+    NSNumber *aMode=[pdefMQ objectForKey:META_QUESTION_ANSWER_MODE];
+    if (aMode) mqAnswerMode=[aMode intValue];
+    
+    // check the eval mode and assign
+    NSNumber *eMode=[pdefMQ objectForKey:META_QUESTION_EVAL_MODE];
+    if(eMode) mqEvalMode=[eMode intValue];
+    
+    // put our array of answers in an ivar
+    metaQuestionAnswers = [pdefMQ objectForKey:META_QUESTION_ANSWERS];
+    metaQuestionAnswerCount = metaQuestionAnswers.count;
+    
+    // assign our complete and incomplete text to show later
+    metaQuestionCompleteText = [pdefMQ objectForKey:META_QUESTION_COMPLETE_TEXT];
+    metaQuestionIncompleteText = [pdefMQ objectForKey:META_QUESTION_INCOMPLETE_TEXT];
+    
+    //render answer labels
+    for(int i=0; i<metaQuestionAnswerCount; i++)
+    {
+        NSString *answerLabelString=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
+        CCLabelTTF *answerLabel=[CCLabelTTF labelWithString:answerLabelString fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        [answerLabel setPosition:ccp((i+1)*(lx/(metaQuestionAnswerCount+1)), [currentTool metaQuestionAnswersYLocation])];
+        [answerLabel setColor:kMetaQuestionLabelColor];
+        [answerLabel setOpacity:0];
+        [answerLabel setTag: 3];
+        [metaQuestionLayer addChild:answerLabel];
+    }
+    
+    // if eval mode is commit, render a commit button
+    if(mqEvalMode==kMetaQuestionEvalOnCommit)
+    {
+        CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
+        [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
+        [commitBtn setTag:3];
+        [commitBtn setOpacity:0];
+        [metaQuestionLayer addChild:commitBtn z:2];
+    }
+    
 }
 
 -(void)tearDownMetaQuestion
@@ -229,6 +270,21 @@
     
     if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
         [self gotoNewProblem];
+    
+    // otherwise check for a meta question
+    else if(metaQuestionForThisProblem)
+        {
+            // check the eval mode
+            if(mqEvalMode==kMetaQuestionEvalOnCommit)
+            {
+                
+            }
+            else if(mqEvalMode==kMetaQuestionEvalAuto)
+            {
+                
+            }
+        }
+    
     else
         [currentTool ccTouchesBegan:touches withEvent:event];
 }

@@ -10,6 +10,7 @@
 
 @class Daemon;
 @class ToolScene;
+@class BAExpressionTree;
 
 @interface ToolHost : CCLayer
 {
@@ -28,6 +29,7 @@
 }
 
 @property (retain) Daemon *Zubi;
+@property (retain) BAExpressionTree *PpExpr;
 
 +(CCScene *) scene;
 

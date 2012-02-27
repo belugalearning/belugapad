@@ -9,5 +9,10 @@
 #import "BATViz.h"
 
 @interface BATTreeViz : BATViz
+{
+    int maxDepth;
+}
+
+-(void)drawNode:(BAExpression*)node atDepth:(int)depth withParentX:(float)parentX andSiblingIndex:(int)siblingIndex;
 
 @end

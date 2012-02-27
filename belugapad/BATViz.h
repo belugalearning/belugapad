@@ -18,10 +18,12 @@
 
 @property (retain) BAExpression *Root;
 @property (retain) CCLayer *DrawLayer;
+@property CGRect Bounds;
 
--(id)initWithExpr:(BAExpression*)expr andLayer:(CCLayer*)layer;
+-(id)initWithExpr:(BAExpression*)expr andLayer:(CCLayer*)layer andBounds:(CGRect)bounds;
 -(void)initDraw;
 -(void)updateDrawIndicators;
+-(void)scaleVizToBounds;
 
 
 @end

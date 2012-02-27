@@ -11,6 +11,7 @@
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
+#import "BATTreeViz.h"
 
 @implementation ExprScene
 
@@ -42,6 +43,9 @@
         
         [self readProblemDef];
         [self updateExpr];
+        
+        BATTreeViz *viz=[[BATTreeViz alloc] initWithExpr:toolHost.PpExpr.root andLayer:viz1Layer andBounds:CGRectMake(0, 0, lx, ly)];
+        [viz initDraw];
     }
     
     return self;

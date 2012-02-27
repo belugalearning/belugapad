@@ -1177,7 +1177,7 @@ static void eachShape(void *ptr, void* unused)
 
 -(float)metaQuestionAnswersYLocation
 {
-    return 190;
+    return kMetaQuestionYOffsetBlockFloat*cy;
 }
 
 -(void)dealloc

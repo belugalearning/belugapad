@@ -92,8 +92,9 @@
     if(shownMetaQuestionIncompleteFor>kTimeToAutoMove)
     {
         [metaQuestionIncompleteLabel setVisible:NO];
-        shownMetaQuestionIncompleteFor=0;
         showMetaQuestionIncomplete=NO;
+        shownMetaQuestionIncompleteFor=0;
+        [self deselectAnswersExcept:-1];
     }
     
     //let tool do updates
@@ -168,6 +169,7 @@
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ
 {
     metaQuestionForThisProblem=YES;
+    shownMetaQuestionIncompleteFor=0;
     
     metaQuestionAnswers = [[NSMutableArray alloc] init];
     metaQuestionAnswerButtons = [[NSMutableArray alloc] init];
@@ -200,7 +202,7 @@
     metaQuestionIncompleteText = [pdefMQ objectForKey:META_QUESTION_INCOMPLETE_TEXT];
     
     metaQuestionIncompleteLabel = [CCLabelTTF labelWithString:metaQuestionIncompleteText fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [metaQuestionIncompleteLabel setPosition:ccp(cx, [currentTool metaQuestionAnswersYLocation]-40)];
+    [metaQuestionIncompleteLabel setPosition:ccp(cx, [currentTool metaQuestionAnswersYLocation]*kMetaIncompleteLabelYOffset)];
     [metaQuestionIncompleteLabel setColor:kMetaQuestionLabelColor];
     [metaQuestionIncompleteLabel setVisible:NO];
     [metaQuestionLayer addChild:metaQuestionIncompleteLabel];
@@ -224,7 +226,7 @@
         NSString *answerLabelString=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
         CCLabelTTF *answerLabel=[CCLabelTTF labelWithString:answerLabelString fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
         [answerLabel setPosition:ccp((i+1)*(lx/(metaQuestionAnswerCount+1)), [currentTool metaQuestionAnswersYLocation])];
-        [answerLabel setColor:kMetaQuestionLabelColor];
+        [answerLabel setColor:kMetaAnswerLabelColor];
         [answerLabel setOpacity:0];
         [answerLabel setTag: 3];
         [metaQuestionLayer addChild:answerLabel];
@@ -341,14 +343,14 @@
                     // otherwise we can select multiple
                     else if(mqAnswerMode==kMetaQuestionAnswerMulti)
                     {
-                        [answerBtn setColor:ccc3(0, 255, 0)];
+                        [answerBtn setColor:kMetaQuestionButtonSelected];
                         [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
                     }
                 }
                 else
                 {
                     // return to full button colour and set the dictionary selected value to no
-                    [answerBtn setColor:ccc3(255, 255, 255)];
+                    [answerBtn setColor:kMetaQuestionButtonDeselected];
                     [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
                 }
             }
@@ -405,12 +407,12 @@
         CCSprite *answerBtn=[metaQuestionAnswerButtons objectAtIndex:i];
         if(i == answerNumber)
         {
-            [answerBtn setColor:ccc3(0, 255, 0)];
+            [answerBtn setColor:kMetaQuestionButtonSelected];
             [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
         }
         else 
         {
-            [answerBtn setColor:ccc3(255, 255, 255)];
+            [answerBtn setColor:kMetaQuestionButtonDeselected];
             [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
         }
     }

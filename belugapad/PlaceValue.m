@@ -1075,7 +1075,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 
 -(float)metaQuestionAnswersYLocation
 {
-    return 190;
+    return kMetaQuestionYOffsetPlaceValue*cy;
 }
 
 -(void) dealloc

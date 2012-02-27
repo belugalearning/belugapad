@@ -48,7 +48,6 @@
     
     if(!isSelected)
     {
-        DLog(@"no isselected value");
         isSelected = [NSNumber numberWithBool:NO]; 
     }
     
@@ -80,7 +79,6 @@
     
     if(!isSelected)
     {
-        DLog(@"no isselected value");
         isSelected = [NSNumber numberWithBool:NO]; 
     }
     

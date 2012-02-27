@@ -40,3 +40,10 @@ const ccColor3B kLabelCountColor={255, 0, 0};
 
 
 const ccColor3B kMetaQuestionLabelColor={255, 255, 170};
+const ccColor3B kMetaAnswerLabelColor={45, 65, 72};
+const ccColor3B kMetaQuestionButtonSelected={0, 255, 0};
+const ccColor3B kMetaQuestionButtonDeselected={255, 255, 255};
+
+const float kMetaQuestionYOffsetPlaceValue=0.45f;
+const float kMetaQuestionYOffsetBlockFloat=0.35f;
+const float kMetaIncompleteLabelYOffset=0.65f;

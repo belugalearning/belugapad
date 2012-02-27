@@ -96,29 +96,35 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>200</string>
+				<string>answer</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>2000</string>
+				<string>text</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>20</string>
+				<string>text</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>answer</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
 		</array>
 		<key>META_QUESTION_ANSWER_MODE</key>
-		<integer>0</integer>
+		<integer>1</integer>
 		<key>META_QUESTION_EVAL_MODE</key>
-		<integer>0</integer>
+		<integer>1</integer>
 		<key>META_QUESTION_TITLE</key>
-		<string>test title</string>
+		<string>multi-answer with commit</string>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
 		<string>complete!</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>

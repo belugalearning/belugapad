@@ -191,8 +191,9 @@
     if(eMode) mqEvalMode=[eMode intValue];
     
     // put our array of answers in an ivar
-    metaQuestionAnswers = [pdefMQ objectForKey:META_QUESTION_ANSWERS];
-    metaQuestionAnswerCount = metaQuestionAnswers.count;
+//    metaQuestionAnswers = [pdefMQ objectForKey:META_QUESTION_ANSWERS];
+    metaQuestionAnswerCount = [[pdefMQ objectForKey:META_QUESTION_ANSWERS] count];
+    NSArray *pdefAnswers=[pdefMQ objectForKey:META_QUESTION_ANSWERS];
     
     // assign our complete and incomplete text to show later
     metaQuestionCompleteText = [pdefMQ objectForKey:META_QUESTION_COMPLETE_TEXT];
@@ -207,6 +208,9 @@
     // render answer labels and buttons for each answer
     for(int i=0; i<metaQuestionAnswerCount; i++)
     {
+        NSMutableDictionary *a=[NSMutableDictionary dictionaryWithDictionary:[pdefAnswers objectAtIndex:i]];
+        [metaQuestionAnswers addObject:a];
+        
         // sort out the buttons
         CCSprite *answerBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")];
         [answerBtn setPosition:ccp((i+1)*(lx/(metaQuestionAnswerCount+1)), [currentTool metaQuestionAnswersYLocation])];
@@ -488,12 +492,13 @@
 {
     [problemList release];
     
-    [super dealloc];
     [metaQuestionAnswers release];
     [metaQuestionAnswerButtons release];
     [metaQuestionAnswerLabels release];
     [metaQuestionCompleteText release];
     [metaQuestionIncompleteText release];
+    
+    [super dealloc];
 }
 
 @end

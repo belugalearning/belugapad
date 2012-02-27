@@ -82,10 +82,18 @@
 
 -(void)doUpdateOnSecond:(ccTime)delta
 {
+    if(showMetaQuestionIncomplete) shownMetaQuestionIncompleteFor+=delta;
+    
     //do internal mgmt updates
     if(currentTool.ProblemComplete)
     {
         [self gotoNewProblem];
+    }
+    if(shownMetaQuestionIncompleteFor>kTimeToAutoMove)
+    {
+        [metaQuestionIncompleteLabel setVisible:NO];
+        shownMetaQuestionIncompleteFor=0;
+        showMetaQuestionIncomplete=NO;
     }
     
     //let tool do updates
@@ -159,9 +167,11 @@
 
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ
 {
-    DLog(@"setting up a meta question");
-    
     metaQuestionForThisProblem=YES;
+    
+    metaQuestionAnswers = [[NSMutableArray alloc] init];
+    metaQuestionAnswerButtons = [[NSMutableArray alloc] init];
+    metaQuestionAnswerLabels = [[NSMutableArray alloc] init];
     
     //render problem label
     CCLabelTTF *problemDescLabel=[CCLabelTTF labelWithString:[pdefMQ objectForKey:META_QUESTION_TITLE] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
@@ -188,9 +198,25 @@
     metaQuestionCompleteText = [pdefMQ objectForKey:META_QUESTION_COMPLETE_TEXT];
     metaQuestionIncompleteText = [pdefMQ objectForKey:META_QUESTION_INCOMPLETE_TEXT];
     
-    //render answer labels
+    metaQuestionIncompleteLabel = [CCLabelTTF labelWithString:metaQuestionIncompleteText fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    [metaQuestionIncompleteLabel setPosition:ccp(cx, [currentTool metaQuestionAnswersYLocation]-40)];
+    [metaQuestionIncompleteLabel setColor:kMetaQuestionLabelColor];
+    [metaQuestionIncompleteLabel setVisible:NO];
+    [metaQuestionLayer addChild:metaQuestionIncompleteLabel];
+    
+    // render answer labels and buttons for each answer
     for(int i=0; i<metaQuestionAnswerCount; i++)
     {
+        // sort out the buttons
+        CCSprite *answerBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")];
+        [answerBtn setPosition:ccp((i+1)*(lx/(metaQuestionAnswerCount+1)), [currentTool metaQuestionAnswersYLocation])];
+        [answerBtn setTag:3];
+        [answerBtn setScale:0.5f];
+        [answerBtn setOpacity:0];
+        [metaQuestionLayer addChild:answerBtn];
+        [metaQuestionAnswerButtons addObject:answerBtn];
+        
+        // sort out the labels
         NSString *answerLabelString=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
         CCLabelTTF *answerLabel=[CCLabelTTF labelWithString:answerLabelString fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
         [answerLabel setPosition:ccp((i+1)*(lx/(metaQuestionAnswerCount+1)), [currentTool metaQuestionAnswersYLocation])];
@@ -198,7 +224,16 @@
         [answerLabel setOpacity:0];
         [answerLabel setTag: 3];
         [metaQuestionLayer addChild:answerLabel];
+        [metaQuestionAnswerLabels addObject:answerLabel];
+        
+        [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
     }
+        
+    [metaQuestionAnswers retain];
+    [metaQuestionAnswerButtons retain];
+    [metaQuestionAnswerLabels retain];
+    [metaQuestionCompleteText retain];
+    [metaQuestionIncompleteText retain];
     
     // if eval mode is commit, render a commit button
     if(mqEvalMode==kMetaQuestionEvalOnCommit)
@@ -261,30 +296,155 @@
     
     return pdef;
 }
+-(void)checkMetaQuestionTouches:(CGPoint)location
+{
+    if (CGRectContainsPoint(kRectButtonCommit, location) && mqEvalMode==kMetaQuestionEvalOnCommit)
+    {
+        [self evalMetaQuestion];
+    }
+    if(metaQuestionForThisProblem)
+    {
+        for(int i=0; i<metaQuestionAnswerCount; i++)
+        {
+            CCSprite *answerBtn=[metaQuestionAnswerButtons objectAtIndex:i];
+            
+            float aLabelPosXLeft = answerBtn.position.x-((answerBtn.contentSize.width*answerBtn.scale)/2);
+            float aLabelPosYleft = answerBtn.position.y-((answerBtn.contentSize.height*answerBtn.scale)/2);
+            
+            CGRect hitBox = CGRectMake(aLabelPosXLeft, aLabelPosYleft, (answerBtn.contentSize.width*answerBtn.scale), (answerBtn.contentSize.height*answerBtn.scale));
+            // create a dynamic hitbox
+            if(CGRectContainsPoint(hitBox, location))
+            {
+                // and check its current selected value
+                BOOL isSelected=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_SELECTED] boolValue];
+                
+                // then if it's an answer and isn't currently selected
+                if(!isSelected)
+                {
+                    // check what answer mode we have
+                    // if single, we should only only be able to select one so we need to deselect the others and change the selected value
+                    if(mqAnswerMode==kMetaQuestionAnswerSingle)
+                    {
+                        [self deselectAnswersExcept:i];
+                        
+                        // if this is an auto eval, run the eval now
+                        if(mqEvalMode==kMetaQuestionEvalAuto)
+                        {
+                            [self evalMetaQuestion];
+                        }
+                    }
+                    
+                    // otherwise we can select multiple
+                    else if(mqAnswerMode==kMetaQuestionAnswerMulti)
+                    {
+                        [answerBtn setColor:ccc3(0, 255, 0)];
+                        [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
+                    }
+                }
+                else
+                {
+                    // return to full button colour and set the dictionary selected value to no
+                    [answerBtn setColor:ccc3(255, 255, 255)];
+                    [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
+                }
+            }
+            
+        }
+    }
+    
+    return;
 
+}
+-(void)evalMetaQuestion
+{
+    int countRequired=0;
+    int countFound=0;
+
+    for(int i=0; i<metaQuestionAnswerCount; i++)
+    {
+        // check whether the hit answer is an answer
+        BOOL isAnswer=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_VALUE] boolValue];
+        
+        // and check its current selected value
+        BOOL isSelected=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_SELECTED] boolValue];
+        
+        // check current iteration is an answer and is selected
+        if(isAnswer)
+        {
+            countRequired++;
+        }
+        // if it's an answer and selected then it's been found by the user
+        if(isAnswer && isSelected)
+        {
+            countFound++;
+        }
+    }
+    DLog(@"Count required %d, count found %d", countRequired, countFound);
+    
+    
+    
+    if(countRequired==countFound)
+    {
+        [self doWinning];
+    }
+    else
+    {
+        [self doIncomplete];
+    }
+
+
+}
+-(void)deselectAnswersExcept:(int)answerNumber
+{
+    for(int i=0; i<metaQuestionAnswerCount; i++)
+    {
+        CCSprite *answerBtn=[metaQuestionAnswerButtons objectAtIndex:i];
+        if(i == answerNumber)
+        {
+            [answerBtn setColor:ccc3(0, 255, 0)];
+            [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
+        }
+        else 
+        {
+            [answerBtn setColor:ccc3(255, 255, 255)];
+            [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
+        }
+    }
+}
+-(void)doWinning
+{
+    [self removeMetaQuestionButtons];
+    CCLabelTTF *pcLabel = [CCLabelTTF labelWithString:metaQuestionCompleteText fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    [pcLabel setPosition:ccp(cx, [currentTool metaQuestionAnswersYLocation])];
+    [pcLabel setColor:kMetaQuestionLabelColor];
+    [metaQuestionLayer addChild:pcLabel];
+    currentTool.ProblemComplete=YES;
+    
+}
+-(void)doIncomplete
+{
+    [metaQuestionIncompleteLabel setVisible:YES];
+    showMetaQuestionIncomplete=YES;
+    //[self deselectAnswersExcept:-1];
+}
+-(void)removeMetaQuestionButtons
+{
+    for(int i=0;i<metaQuestionAnswerCount;i++)
+    {
+        [metaQuestionLayer removeChild:[metaQuestionAnswerLabels objectAtIndex:i] cleanup:YES];
+        [metaQuestionLayer removeChild:[metaQuestionAnswerButtons objectAtIndex:i] cleanup:YES];
+    } 
+}
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+     
+    [self checkMetaQuestionTouches:location];
     
     if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
         [self gotoNewProblem];
-    
-    // otherwise check for a meta question
-    else if(metaQuestionForThisProblem)
-        {
-            // check the eval mode
-            if(mqEvalMode==kMetaQuestionEvalOnCommit)
-            {
-                
-            }
-            else if(mqEvalMode==kMetaQuestionEvalAuto)
-            {
-                
-            }
-        }
-    
     else
         [currentTool ccTouchesBegan:touches withEvent:event];
 }
@@ -329,6 +489,11 @@
     [problemList release];
     
     [super dealloc];
+    [metaQuestionAnswers release];
+    [metaQuestionAnswerButtons release];
+    [metaQuestionAnswerLabels release];
+    [metaQuestionCompleteText release];
+    [metaQuestionIncompleteText release];
 }
 
 @end

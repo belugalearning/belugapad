@@ -108,7 +108,8 @@
 -(void)setOperators;
 -(void)doAddOperation;
 -(void)doSubtractOperation;
-
+-(float)metaQuestionTitleYLocation;
+-(float)metaQuestionAnswersYLocation;
 -(void)doUpdate:(ccTime)delta;
 
 @end

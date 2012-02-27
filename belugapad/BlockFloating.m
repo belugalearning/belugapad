@@ -1170,14 +1170,14 @@ static void eachShape(void *ptr, void* unused)
     [ghostLayer removeAllChildrenWithCleanup:YES];
 }
 
--(float)metaQuestionTitleXLocation
+-(float)metaQuestionTitleYLocation
 {
     return kLabelTitleYOffsetHalfProp*cy;
 }
 
--(float)metaQuestionAnswersXLocation
+-(float)metaQuestionAnswersYLocation
 {
-    return 100;
+    return 190;
 }
 
 -(void)dealloc

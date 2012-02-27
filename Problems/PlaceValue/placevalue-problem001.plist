@@ -95,30 +95,28 @@
 		<key>META_QUESTION_ANSWERS</key>
 		<array>
 			<dict>
-				<key>New item</key>
-				<string></string>
 				<key>META_ANSWER_TEXT</key>
 				<string>200</string>
 				<key>META_ANSWER_VALUE</key>
-				<integer>0</integer>
+				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
 				<string>2000</string>
 				<key>META_ANSWER_VALUE</key>
-				<integer>0</integer>
+				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
 				<string>20</string>
 				<key>META_ANSWER_VALUE</key>
-				<integer>0</integer>
+				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_ANSWER_MODE</key>
 		<integer>0</integer>
 		<key>META_QUESTION_EVAL_MODE</key>
-		<integer>1</integer>
+		<integer>0</integer>
 		<key>META_QUESTION_TITLE</key>
 		<string>test title</string>
 		<key>META_QUESTION_COMPLETE_TEXT</key>

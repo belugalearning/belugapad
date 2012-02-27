@@ -40,10 +40,15 @@ typedef enum {
     MetaQuestionAnswerMode mqAnswerMode;
     
     BOOL metaQuestionForThisProblem;
-    NSArray *metaQuestionAnswers;
+    NSMutableArray *metaQuestionAnswers;
+    NSMutableArray *metaQuestionAnswerButtons;
+    NSMutableArray *metaQuestionAnswerLabels;
     int metaQuestionAnswerCount;
     NSString *metaQuestionCompleteText;
     NSString *metaQuestionIncompleteText;
+    CCLabelTTF *metaQuestionIncompleteLabel;
+    BOOL showMetaQuestionIncomplete;
+    float shownMetaQuestionIncompleteFor;
 }
 
 @property (retain) Daemon *Zubi;
@@ -66,6 +71,12 @@ typedef enum {
 -(void)stageIntroActions;
 
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ;
+-(void)checkMetaQuestionTouches:(CGPoint)location;
+-(void)evalMetaQuestion;
+-(void)deselectAnswersExcept:(int)answerNumber;
+-(void)doWinning;
+-(void)doIncomplete;
+-(void)removeMetaQuestionButtons;
 -(void)tearDownMetaQuestion;
 
 @end

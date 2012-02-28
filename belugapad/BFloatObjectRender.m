@@ -113,16 +113,26 @@
         }
     }
     
+    //source object receivers for operation initiation
     if(messageType==kDWoperateAddTo)
     {
         [self addMeTo:[payload objectForKey:TARGET_GO]];
     }
-    
     if(messageType==kDWoperateSubtractFrom)
     {
         [self subtractMeFrom:[payload objectForKey:TARGET_GO]];
     }
+    if(messageType==kDWoperateMultiplyBy)
+    {
+        [self multiplyWithMeTo:[payload objectForKey:TARGET_GO]];
+    }
+    if(messageType==kDWoperateDivideBy)
+    {
+        [self divideWithMeTo:[payload objectForKey:TARGET_GO]];
+    }
     
+    
+    //destination object receivers for operation actions
     if(messageType==kDWfloatAddThisChild)
     {
         [self addThisChild:[payload objectForKey:OBJ_CHILD]];
@@ -130,6 +140,14 @@
     if (messageType==kDWfloatSubtractThisChild) 
     {
         [self subtractWithThisChild:[payload objectForKey:OBJ_CHILD]];
+    }
+    if(messageType==kDWfloatMultiplyWithThisChild)
+    {
+        [self  multiplyWithThisChild:[payload objectForKey:OBJ_CHILDMATRIX]];
+    }
+    if(messageType==kDWfloatDivideWithThisChild)
+    {
+        [self divideWithThisChild:[payload objectForKey:OBJ_CHILDMATRIX]];
     }
 }
 
@@ -347,6 +365,14 @@
     [occSeparators removeAllObjects];
 }
 
+-(void)removeChildSprites
+{
+    for (NSDictionary *d in [[gameObject store] objectForKey:OBJ_CHILDMATRIX]) {
+        CCSprite *s=[d objectForKey:MY_SPRITE];
+        [[s parent] removeChild:s cleanup:YES];
+    }
+}
+
 -(void)addMeTo:(DWGameObject*)targetGo
 {
 //    CGPoint offsetPos=[BLMath offsetPosFrom:[self avgPosForFloatObject:gameObject] to:[self avgPosForFloatObject:targetGo]];
@@ -361,6 +387,30 @@
     //destroy myself
     [gameObject handleMessage:kDWdetachPhys];
     [gameWorld delayRemoveGameObject:gameObject];
+}
+
+-(void)multiplyWithMeTo:(DWGameObject*)targetGo
+{
+    [targetGo handleMessage:kDWfloatMultiplyWithThisChild andPayload:[NSDictionary dictionaryWithObject:[[gameObject store] objectForKey:OBJ_CHILDMATRIX] forKey:OBJ_CHILDMATRIX] withLogLevel:0];
+    
+    [self removeOccludingSeparators];
+    [self removeChildSprites];
+    
+    //destroy myself
+    [gameObject handleMessage:kDWdetachPhys];
+    [gameWorld delayRemoveGameObject:gameObject];    
+}
+
+-(void)divideWithMeTo:(DWGameObject*)targetGo
+{
+    [targetGo handleMessage:kDWfloatDivideWithThisChild andPayload:[NSDictionary dictionaryWithObject:[[gameObject store] objectForKey:OBJ_CHILDMATRIX] forKey:OBJ_CHILDMATRIX] withLogLevel:0];
+    
+    [self removeOccludingSeparators];
+    [self removeChildSprites];
+    
+    //destroy myself
+    [gameObject handleMessage:kDWdetachPhys];
+    [gameWorld delayRemoveGameObject:gameObject];        
 }
 
 -(void)subtractMeFrom:(DWGameObject*)targetGo
@@ -397,7 +447,51 @@
     }
 }
 
--(void)addThisChild:(NSMutableDictionary *)child
+-(void)multiplyWithThisChild:(NSMutableArray*)child
+{
+    int multiple=[child count];
+    CCNode *myNode=[[gameObject store] objectForKey:MY_SPRITE];
+    NSMutableArray *myMatrix=[[gameObject store] objectForKey:OBJ_CHILDMATRIX];
+    int baseCount=[myMatrix count];
+    
+    for(int i=0; i<multiple-1; i++)
+    {
+        for(int b=0; b<baseCount; b++)
+        {
+            CGPoint newPos=[self findMatrixFreePos];
+            int ci=newPos.x;
+            int ri=newPos.y;
+            
+            //create new objects
+            CCSprite *cs=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/blocks/obj-float-45.png")];
+            [cs setPosition:ccp((ci*UNIT_SIZE), (ri*UNIT_SIZE))]; 
+            
+            [cs setOpacity:0];
+            
+            CCDelayTime *dt=[CCDelayTime actionWithDuration:i*0.5f];
+            CCFadeIn *fi=[CCFadeIn actionWithDuration:0.2f];
+            CCSequence *seq=[CCSequence actions:dt, fi, nil];
+            [cs runAction:seq];
+            
+            [myNode addChild:cs];
+            
+            //add this as a position to the child matrix
+            NSMutableDictionary *child=[[NSMutableDictionary alloc]init];
+            [child setObject:[NSValue valueWithCGPoint:CGPointMake(ci, ri)] forKey:OBJ_MATRIXPOS];
+            [child setObject:cs forKey:MY_SPRITE];
+            
+            [myMatrix addObject:child];                
+            [child release];
+        }
+    }
+}
+
+-(void)divideWithThisChild:(NSMutableArray*)child
+{
+    
+}
+
+-(CGPoint)findMatrixFreePos
 {
     NSMutableArray *matrix=[self getMatrixContainingChildren];
     
@@ -430,7 +524,7 @@
             {
                 [newCol addObject:[NSNumber numberWithInt:-1]];
             }
-
+            
             //set first row in new col as position
             newPos=CGPointMake(matrixX, 0);
             
@@ -447,6 +541,13 @@
             newPos=CGPointMake(0, matrixY);
         }
     }
+
+    return newPos;
+}
+
+-(void)addThisChild:(NSMutableDictionary *)child
+{
+    CGPoint newPos=[self findMatrixFreePos];
 
     //move object to this new position
     NSMutableArray *flatChildren=[[gameObject store] objectForKey:OBJ_CHILDMATRIX];

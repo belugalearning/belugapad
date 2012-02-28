@@ -51,8 +51,10 @@ const CGPoint kDaemonRest={50, 50};
 static float kOperatorPopupYOffset=80.0f;
 static float kOperatorPopupDragFriction=0.75f;
 
-static CGPoint kOperator1Offset={-40, 0};
-static CGPoint kOperator2Offset={40, 0};
+static CGPoint kOperator1Offset={-105, 0};
+static CGPoint kOperator2Offset={-35, 0};
+static CGPoint kOperator3Offset={35, 0};
+static CGPoint kOperator4Offset={105, 0};
 
 static float kOperatorHitRadius=25.0f;
 
@@ -259,6 +261,9 @@ static void eachShape(void *ptr, void* unused)
     {
         CGPoint op1=[BLMath AddVector:operatorLayer.position toVector:kOperator1Offset];
         CGPoint op2=[BLMath AddVector:operatorLayer.position toVector:kOperator2Offset];
+        CGPoint op3=[BLMath AddVector:operatorLayer.position toVector:kOperator3Offset];
+        CGPoint op4=[BLMath AddVector:operatorLayer.position toVector:kOperator4Offset];
+        
         
         if([BLMath DistanceBetween:location and:op1] <= kOperatorHitRadius)
         {
@@ -273,6 +278,24 @@ static void eachShape(void *ptr, void* unused)
         {
             //do operation 2
             [self doSubtractOperation];
+            
+            continueEval=NO;
+            [self disableOperators];
+        }
+        
+        else if([BLMath DistanceBetween:location and:op3] <= kOperatorHitRadius)
+        {
+            //do operation 2
+            [self doMultiplyOperation];
+            
+            continueEval=NO;
+            [self disableOperators];
+        }
+        
+        else if([BLMath DistanceBetween:location and:op4] <= kOperatorHitRadius)
+        {
+            //do operation 2
+            [self doDivideOperation];
             
             continueEval=NO;
             [self disableOperators];
@@ -424,6 +447,18 @@ static void eachShape(void *ptr, void* unused)
 {
     [opGOsource handleMessage:kDWoperateSubtractFrom andPayload:[NSDictionary dictionaryWithObject:opGOtarget forKey:TARGET_GO] withLogLevel:0];
 
+}
+
+-(void)doMultiplyOperation
+{
+    [opGOsource handleMessage:kDWoperateMultiplyBy andPayload:[NSDictionary dictionaryWithObject:opGOtarget forKey:TARGET_GO] withLogLevel:0];
+    
+}
+
+-(void)doDivideOperation
+{
+    [opGOsource handleMessage:kDWoperateDivideBy andPayload:[NSDictionary dictionaryWithObject:opGOtarget forKey:TARGET_GO] withLogLevel:0];
+    
 }
 
 -(void) ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event

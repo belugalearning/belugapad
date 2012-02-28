@@ -108,6 +108,8 @@
 -(void)setOperators;
 -(void)doAddOperation;
 -(void)doSubtractOperation;
+-(void)doMultiplyOperation;
+-(void)doDivideOperation;
 
 -(void)doUpdate:(ccTime)delta;
 

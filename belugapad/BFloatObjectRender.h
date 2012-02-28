@@ -28,12 +28,20 @@
 -(CGPoint)avgPosForFloatObject:(DWGameObject *)go;
 -(void)addMeTo:(DWGameObject*)targetGo;
 -(void)subtractMeFrom:(DWGameObject*)targetGo;
+-(void)multiplyWithMeTo:(DWGameObject*)targetGo;
+-(void)divideWithMeTo:(DWGameObject*)targetGo;
 
 -(void)addThisChild:(NSDictionary *)child;
 -(void)subtractWithThisChild:(NSDictionary *)child;
+-(void)multiplyWithThisChild:(NSMutableArray*)child;
+-(void)divideWithThisChild:(NSMutableArray*)child;
+
 -(NSMutableArray *)getMatrixContainingChildren;
+
+-(CGPoint)findMatrixFreePos;
 
 -(void)addOccludingSeparators;
 -(void)removeOccludingSeparators;
+-(void)removeChildSprites;
 
 @end

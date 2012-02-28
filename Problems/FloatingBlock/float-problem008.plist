@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>put the block of 2 into the container</string>
+	<string>put the block of 2 into the container &lt;&lt; PROBLEM8</string>
 	<key>TOOL_KEY</key>
 	<string>BlockFloating</string>
 	<key>INIT_OBJECTS</key>

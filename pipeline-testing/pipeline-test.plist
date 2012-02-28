@@ -14,6 +14,8 @@
 	<string>/Problems/PlaceValue/placevalue-problem012.plist</string>
 	<string>/Problems/FloatingBlock/float-problem019.plist</string>
 	<string>/Problems/FloatingBlock/float-problem008.plist</string>
-	<string>/Problems/PlaceValue/placevalue-problem001.plist</string>
+	<string>/Problems/PlaceValue/placevalue-problem001-mq.plist</string>
+	<string>/Problems/FloatingBlock/float-problem015-mq.plist</string>
+	<string>/Problems/FloatingBlock/float-problem014-mq.plist</string>
 </array>
 </plist>

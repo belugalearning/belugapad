@@ -373,6 +373,19 @@
     }
 }
 
+-(void)removeThisManyChildren: (int)removeCount
+{
+    NSMutableArray *cMatrix=[[gameObject store] objectForKey:OBJ_CHILDMATRIX];
+    
+    for (int i=0;i<removeCount;i++)
+    {
+        NSDictionary *d=[cMatrix lastObject];
+        CCSprite *s=[d objectForKey:MY_SPRITE];
+        [[s parent] removeChild:s cleanup:YES];
+        [cMatrix removeLastObject];
+    }
+}
+
 -(void)addMeTo:(DWGameObject*)targetGo
 {
 //    CGPoint offsetPos=[BLMath offsetPosFrom:[self avgPosForFloatObject:gameObject] to:[self avgPosForFloatObject:targetGo]];
@@ -403,14 +416,27 @@
 
 -(void)divideWithMeTo:(DWGameObject*)targetGo
 {
+    int myCount=[[[gameObject store] objectForKey:OBJ_CHILDMATRIX] count];
+    int theirCount=[[[targetGo store] objectForKey:OBJ_CHILDMATRIX] count];
+    int rem=myCount % theirCount;
+    if (myCount<theirCount) rem=0;
+    
     [targetGo handleMessage:kDWfloatDivideWithThisChild andPayload:[NSDictionary dictionaryWithObject:[[gameObject store] objectForKey:OBJ_CHILDMATRIX] forKey:OBJ_CHILDMATRIX] withLogLevel:0];
     
-    [self removeOccludingSeparators];
-    [self removeChildSprites];
     
-    //destroy myself
-    [gameObject handleMessage:kDWdetachPhys];
-    [gameWorld delayRemoveGameObject:gameObject];        
+    if(rem==0)
+    {
+        [self removeOccludingSeparators];
+        [self removeChildSprites];
+        
+        //destroy myself
+        [gameObject handleMessage:kDWdetachPhys];
+        [gameWorld delayRemoveGameObject:gameObject];        
+    }
+    else {
+        //just remove remainder
+        [self removeThisManyChildren:myCount-rem];
+    }
 }
 
 -(void)subtractMeFrom:(DWGameObject*)targetGo
@@ -488,6 +514,14 @@
 
 -(void)divideWithThisChild:(NSMutableArray*)child
 {
+    int divisor=[child count];
+    NSMutableArray *myMatrix=[[gameObject store] objectForKey:OBJ_CHILDMATRIX];
+    int myCount=[myMatrix count];
+    
+    int result=myCount/divisor;
+    [self removeThisManyChildren:myCount-result];
+    
+    //remove children to achieve result
     
 }
 

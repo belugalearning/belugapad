@@ -43,5 +43,6 @@
 -(void)addOccludingSeparators;
 -(void)removeOccludingSeparators;
 -(void)removeChildSprites;
+-(void)removeThisManyChildren: (int)removeCount;
 
 @end

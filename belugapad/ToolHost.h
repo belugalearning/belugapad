@@ -8,6 +8,15 @@
 
 #import "cocos2d.h"
 
+typedef enum {
+    kMetaQuestionAnswerSingle=0,
+    kMetaQuestionAnswerMulti=1
+} MetaQuestionAnswerMode;
+typedef enum {
+    kMetaQuestionEvalAuto=0,
+    kMetaQuestionEvalOnCommit=1
+} MetaQuestionEvalMode;
+
 @class Daemon;
 @class ToolScene;
 
@@ -20,11 +29,26 @@
     
     CCLayer *perstLayer;
     CCLayer *backgroundLayer;
+    CCLayer *metaQuestionLayer;
 
     CCLayer *toolBackLayer;
     CCLayer *toolForeLayer;
     
     ToolScene *currentTool;
+    
+    MetaQuestionEvalMode mqEvalMode;
+    MetaQuestionAnswerMode mqAnswerMode;
+    
+    BOOL metaQuestionForThisProblem;
+    NSMutableArray *metaQuestionAnswers;
+    NSMutableArray *metaQuestionAnswerButtons;
+    NSMutableArray *metaQuestionAnswerLabels;
+    int metaQuestionAnswerCount;
+    NSString *metaQuestionCompleteText;
+    NSString *metaQuestionIncompleteText;
+    CCLabelTTF *metaQuestionIncompleteLabel;
+    BOOL showMetaQuestionIncomplete;
+    float shownMetaQuestionIncompleteFor;
 }
 
 @property (retain) Daemon *Zubi;
@@ -45,5 +69,14 @@
 
 -(void)recurseSetIntroFor:(CCNode*)node withTime:(float)time forTag:(int)tag;
 -(void)stageIntroActions;
+
+-(void)setupMetaQuestion:(NSDictionary *)pdefMQ;
+-(void)checkMetaQuestionTouches:(CGPoint)location;
+-(void)evalMetaQuestion;
+-(void)deselectAnswersExcept:(int)answerNumber;
+-(void)doWinning;
+-(void)doIncomplete;
+-(void)removeMetaQuestionButtons;
+-(void)tearDownMetaQuestion;
 
 @end

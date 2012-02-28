@@ -111,6 +111,9 @@
 -(void)doMultiplyOperation;
 -(void)doDivideOperation;
 
+-(float)metaQuestionTitleYLocation;
+-(float)metaQuestionAnswersYLocation;
+
 -(void)doUpdate:(ccTime)delta;
 
 @end

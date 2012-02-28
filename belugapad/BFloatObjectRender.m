@@ -419,7 +419,7 @@
     int myCount=[[[gameObject store] objectForKey:OBJ_CHILDMATRIX] count];
     int theirCount=[[[targetGo store] objectForKey:OBJ_CHILDMATRIX] count];
     int rem=myCount % theirCount;
-    if (myCount<theirCount) rem=0;
+    if (myCount<theirCount) rem=theirCount-myCount;
     
     [targetGo handleMessage:kDWfloatDivideWithThisChild andPayload:[NSDictionary dictionaryWithObject:[[gameObject store] objectForKey:OBJ_CHILDMATRIX] forKey:OBJ_CHILDMATRIX] withLogLevel:0];
     

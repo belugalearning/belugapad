@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>count how many there are.</string>
+	<string>count</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -15,7 +15,7 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>5</integer>
+	<integer>4</integer>
 	<key>ROWS_PER_COL</key>
 	<integer>1</integer>
 	<key>ALLOW_CONDENSING</key>

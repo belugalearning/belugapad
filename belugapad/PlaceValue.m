@@ -49,6 +49,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];
         self.ForeLayer=[[[CCLayer alloc]init] autorelease];
+        countLayer=[[[CCLayer alloc]init]autorelease];
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
         
@@ -109,6 +110,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 {
     renderLayer = [[CCLayer alloc] init];
     [self.ForeLayer addChild:renderLayer];
+    [renderLayer addChild:countLayer z:10];
     
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     
@@ -243,6 +245,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     
         [newCol release];
     }
+    
 
     int numberPrecountedForRow=0;
     
@@ -324,10 +327,18 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     showCage = [[pdef objectForKey:SHOW_CAGE] boolValue];
     showNegCage = [[pdef objectForKey:SHOW_NEG_CAGE] boolValue];
     showCount = [[pdef objectForKey:SHOW_COUNT] boolValue];
-    showValue = [[pdef objectForKey:SHOW_VALUE] boolValue];
+    showValue = [[pdef objectForKey:SHOW_VALUE] boolValue];    
+    showReset=[[pdef objectForKey:SHOW_RESET] boolValue];
     showCountOnBlock = [[pdef objectForKey:SHOW_COUNT_BLOCK] boolValue];
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
+
+    if([pdef objectForKey:ALLOW_DESELECTION]) allowDeselect = [[pdef objectForKey:ALLOW_DESELECTION] boolValue];
+    else allowDeselect=YES;
+    if([pdef objectForKey:FADE_COUNT]) fadeCount = [[pdef objectForKey:FADE_COUNT] boolValue];
+    else fadeCount=YES;
+    
+
     
     //objects
     NSArray *objects=[pdef objectForKey:INIT_OBJECTS];
@@ -382,6 +393,15 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     {
         //this is probably a meta question -- we're okay to proceed without a solution
         
+    }
+    
+    if(showReset)
+    {
+        CCSprite *resetBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/reset.png")];
+        [resetBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), ly-(kPropXCommitButtonPadding*lx))];
+        [resetBtn setTag:3];
+        [resetBtn setOpacity:0];
+        [self.ForeLayer addChild:resetBtn z:2];        
     }
     
     //look for custom column headers
@@ -458,14 +478,22 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         {
             
             CCSprite *s=[[gw.Blackboard.LastSelectedObject store] objectForKey:MY_SPRITE];
-            CGPoint pos=[[s parent] convertToWorldSpace:[s position]];
+            CGPoint pos=[s position];
             countLabelBlock=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", gw.Blackboard.SelectedObjects.count] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
             [countLabelBlock setPosition:pos];
-            [self.ForeLayer addChild:countLabelBlock z:10];
-            CCFadeOut *labelFade = [CCFadeOut actionWithDuration:kTimeToFadeButtonLabel];
-            [countLabelBlock runAction:labelFade];
+            [countLayer addChild:countLabelBlock];
+            
+            if(fadeCount)
+            {
+                CCFadeOut *labelFade = [CCFadeOut actionWithDuration:kTimeToFadeButtonLabel];
+                [countLabelBlock runAction:labelFade];
+            }
                     
 
+        }
+        else if(showCountOnBlock && !fadeCount && gw.Blackboard.SelectedObjects.count < lastCount)
+        {
+            [countLayer removeAllChildrenWithCleanup:YES];
         }
         lastCount = gw.Blackboard.SelectedObjects.count;
         
@@ -678,6 +706,15 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     
     [toolHost.Zubi setMode:kDaemonModeFollowing];
     [toolHost.Zubi setTarget:location];    
+    
+    
+    // TODO: This should be made proportional
+    if (CGRectContainsPoint(kRectButtonReset, location) && showReset)
+    {
+        [toolHost resetProblem];
+    }
+    
+    // TODO: This should be made proportional
     
     if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit)
     {
@@ -990,8 +1027,11 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         
         if([BLMath DistanceBetween:touchStartPos and:touchEndPos] < fabs(kTapSlipThreshold) && potentialTap)
         {
+            // check whether it's selected and we can deselect - or that it's deselected
+            if(!([[[gw.Blackboard.PickupObject store] objectForKey:SELECTED] boolValue]) || ([[[gw.Blackboard.PickupObject store] objectForKey:SELECTED] boolValue] && allowDeselect))
+            {
                 [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
-        
+            }
         }
         
         if(gw.Blackboard.SelectedObjects.count == columnBaseValue && showBaseSelection)

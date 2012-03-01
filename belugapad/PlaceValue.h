@@ -29,6 +29,7 @@
     float cx, cy, lx, ly;
     
     CCLayer *renderLayer;
+    CCLayer *countLayer;
     
     CCLabelTTF *problemDescLabel;
     CCLabelTTF *problemSubLabel;
@@ -56,6 +57,10 @@
     BOOL showBaseSelection;
     BOOL showCountOnBlock;
     BOOL showColumnHeader;
+    BOOL showReset;
+    BOOL fadeCount;
+    BOOL allowDeselect;
+
     NSString *solutionDisplayText;
     NSString *incompleteDisplayText;
     NSDictionary *showCustomColumnHeader;

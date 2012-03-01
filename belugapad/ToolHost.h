@@ -49,6 +49,8 @@ typedef enum {
     CCLabelTTF *metaQuestionIncompleteLabel;
     BOOL showMetaQuestionIncomplete;
     float shownMetaQuestionIncompleteFor;
+    
+    NSDictionary *pdef;
 }
 
 @property (retain) Daemon *Zubi;
@@ -62,7 +64,8 @@ typedef enum {
 -(void) addToolBackLayer:(CCLayer *) backLayer;
 -(void) populatePerstLayer;
 -(void) gotoNewProblem;
-
+-(void) loadProblem;
+-(void) resetProblem;
 -(void)doUpdateOnTick:(ccTime)delta;
 -(void)doUpdateOnSecond:(ccTime)delta;
 -(void)doUpdateOnQuarterSecond:(ccTime)delta;

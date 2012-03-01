@@ -95,8 +95,8 @@
 		<key>META_QUESTION_ANSWERS</key>
 		<array>
 			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>answer</string>
+				<key>SPRITE_FILENAME</key>
+				<string>backbtn.png</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>

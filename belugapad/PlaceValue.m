@@ -887,11 +887,12 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         //drop target
         [[go store] setObject:currentColumnValueKey forKey:OBJECT_VALUE];
         
-        if([columnSprites objectForKey:currentColumnValueKey])
-        {
-            [[go store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
-        }
+        NSString *currentColumnValueString = [NSString stringWithFormat:@"%g", [currentColumnValueKey floatValue]];
         
+        if([columnSprites objectForKey:currentColumnValueString])
+        {
+            [[go store] setObject:[columnSprites objectForKey:currentColumnValueString] forKey:SPRITE_FILENAME];
+        }
         [go handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
         //find a mount for this object

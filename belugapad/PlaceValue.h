@@ -57,12 +57,10 @@
     BOOL showBaseSelection;
     BOOL showCountOnBlock;
     BOOL showColumnHeader;
-<<<<<<< Updated upstream
-=======
     BOOL showReset;
     BOOL fadeCount;
     BOOL allowDeselect;
->>>>>>> Stashed changes
+
     NSString *solutionDisplayText;
     NSString *incompleteDisplayText;
     NSDictionary *showCustomColumnHeader;

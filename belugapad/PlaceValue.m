@@ -332,14 +332,13 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     showCountOnBlock = [[pdef objectForKey:SHOW_COUNT_BLOCK] boolValue];
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
-<<<<<<< Updated upstream
-=======
+
     if([pdef objectForKey:ALLOW_DESELECTION]) allowDeselect = [[pdef objectForKey:ALLOW_DESELECTION] boolValue];
     else allowDeselect=YES;
     if([pdef objectForKey:FADE_COUNT]) fadeCount = [[pdef objectForKey:FADE_COUNT] boolValue];
     else fadeCount=YES;
     
->>>>>>> Stashed changes
+
     
     //objects
     NSArray *objects=[pdef objectForKey:INIT_OBJECTS];
@@ -1028,8 +1027,11 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         
         if([BLMath DistanceBetween:touchStartPos and:touchEndPos] < fabs(kTapSlipThreshold) && potentialTap)
         {
+            // check whether it's selected and we can deselect - or that it's deselected
+            if(!([[[gw.Blackboard.PickupObject store] objectForKey:SELECTED] boolValue]) || ([[[gw.Blackboard.PickupObject store] objectForKey:SELECTED] boolValue] && allowDeselect))
+            {
                 [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
-        
+            }
         }
         
         if(gw.Blackboard.SelectedObjects.count == columnBaseValue && showBaseSelection)

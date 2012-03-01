@@ -38,6 +38,7 @@
 		7F2CE9FD14F7AEEE00B02001 /* BAPowerOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2CE9ED14F7AEEE00B02001 /* BAPowerOperator.m */; };
 		7F2CE9FE14F7AEEE00B02001 /* BAVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2CE9EF14F7AEEE00B02001 /* BAVariable.m */; };
 		7F2CE9FF14F7AEEE00B02001 /* NSArray_BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2CE9F114F7AEEE00B02001 /* NSArray_BAAdditions.m */; };
+		7F40D88E14FF631C006A3A55 /* local-settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F40D88D14FF631C006A3A55 /* local-settings.plist */; };
 		7F5113C314A9EE62001AF372 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C214A9EE62001AF372 /* QuartzCore.framework */; };
 		7F5113C514A9EE62001AF372 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C414A9EE62001AF372 /* OpenGLES.framework */; };
 		7F5113C714A9EE62001AF372 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C614A9EE62001AF372 /* OpenAL.framework */; };
@@ -274,6 +275,7 @@
 		7F2CE9EF14F7AEEE00B02001 /* BAVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAVariable.m; sourceTree = "<group>"; };
 		7F2CE9F014F7AEEE00B02001 /* NSArray_BAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSArray_BAAdditions.h; sourceTree = "<group>"; };
 		7F2CE9F114F7AEEE00B02001 /* NSArray_BAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSArray_BAAdditions.m; sourceTree = "<group>"; };
+		7F40D88D14FF631C006A3A55 /* local-settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "local-settings.plist"; sourceTree = "<group>"; };
 		7F5113BE14A9EE62001AF372 /* belugapad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = belugapad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F5113C214A9EE62001AF372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7F5113C414A9EE62001AF372 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -773,6 +775,7 @@
 				7F5113D614A9EE63001AF372 /* fps_images.png */,
 				7F5113E414A9EE63001AF372 /* Info.plist */,
 				7F5113E514A9EE63001AF372 /* iTunesArtwork */,
+				7F40D88D14FF631C006A3A55 /* local-settings.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1441,6 +1444,7 @@
 				0C427C3714F529CC0033AFE2 /* sfx in Resources */,
 				0CF9187C14F54C1D00FAC58D /* images in Resources */,
 				0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */,
+				7F40D88E14FF631C006A3A55 /* local-settings.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

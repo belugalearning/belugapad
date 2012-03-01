@@ -14,6 +14,7 @@
 #import "BLMath.h"
 #import "Daemon.h"
 #import "ToolScene.h"
+#import "AppDelegate.h"
 
 @implementation ToolHost
 
@@ -284,8 +285,11 @@
 
 -(void)loadTestPipeline
 {
-    //TODO: test-specific -- pulls fixed problem list from plist
-    problemList=[[NSArray arrayWithContentsOfFile:BUNDLE_FULL_PATH(@"/pipeline-testing/pipeline-test.plist")] retain];
+    //load problem pipeline path from app settings
+    AppDelegate *ad =(AppDelegate*)[[UIApplication sharedApplication] delegate];
+    NSString *ppath=[ad.LocalSettings objectForKey:@"PROBLEM_PIPELINE"];
+    
+    problemList=[[NSArray arrayWithContentsOfFile:BUNDLE_FULL_PATH(ppath)] retain];
 }
 
 -(NSDictionary*)getNextProblem

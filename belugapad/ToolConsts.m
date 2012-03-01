@@ -28,6 +28,7 @@ const CGPoint kButtonNextToolPos={996, 735};
 
 const float kPropXCommitButtonPadding=0.048f;
 const CGRect kRectButtonCommit={{944, 0}, {80, 80}};
+const CGRect kRectButtonReset={{944, 688}, {80, 80}};
 
 
 const float kTimeToAutoMove=1.0f;

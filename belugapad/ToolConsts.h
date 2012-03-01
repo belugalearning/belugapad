@@ -37,6 +37,7 @@ extern const float kTimeToFadeButtonLabel;
 
 extern const float kPropXCommitButtonPadding;
 extern const CGRect kRectButtonCommit;
+extern const CGRect kRectButtonReset;
 extern const CGPoint kButtonNextToolPos;
 extern const float kTimeObjectSnapBack;
 extern const ccColor3B kLabelCountColor;

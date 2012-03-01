@@ -135,10 +135,16 @@
 
 -(void) gotoNewProblem
 {
+
+    pdef=[self getNextProblem];
+    [pdef retain];
+    [self loadProblem];
+}
+
+-(void) loadProblem
+{
     //tear down meta question stuff
     [self tearDownMetaQuestion];
-    
-    NSDictionary *pdef=[self getNextProblem];
     
     NSString *toolKey=[pdef objectForKey:TOOL_KEY];
     
@@ -148,11 +154,11 @@
         [self removeChild:toolForeLayer cleanup:YES];
         [currentTool release];
     }
-
+    
     //reset multitouch
     //if tool requires multitouch, it will need to reset accordingly
     [[CCDirector sharedDirector] openGLView].multipleTouchEnabled=NO;
-
+    
     currentTool=[NSClassFromString(toolKey) alloc];
     [currentTool initWithToolHost:self andProblemDef:pdef];    
     
@@ -166,6 +172,12 @@
     
     [self.Zubi dumpXP];
 }
+
+-(void) resetProblem
+{
+    [self loadProblem];
+}
+
 
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ
 {
@@ -498,6 +510,7 @@
 {
     [problemList release];
     
+    [pdef release];
     [metaQuestionAnswers release];
     [metaQuestionAnswerButtons release];
     [metaQuestionAnswerLabels release];

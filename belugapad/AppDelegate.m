@@ -12,12 +12,14 @@
 #import "GameConfig.h"
 #import "RootViewController.h"
 #import "ZubiIntro.h"
+#import "global.h"
 
 #import "MenuScene.h"
 
 @implementation AppDelegate
 
 @synthesize window;
+@synthesize LocalSettings;
 
 - (void) removeStartupFlicker
 {
@@ -113,12 +115,10 @@
 	// Removes the startup flicker
 	[self removeStartupFlicker];
 	
+    //load local settings
+    self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
+    
 	// Run the intro Scene
-	//[[CCDirector sharedDirector] runWithScene: [NumberLine scene]];
-    //[[CCDirector sharedDirector] runWithScene:[HelloWorldLayer scene]];
-    //[[CCDirector sharedDirector] runWithScene:[BlockHolder scene]];
-    //[[CCDirector sharedDirector] runWithScene:[MenuScene scene]];
-    //[[CCDirector sharedDirector] runWithScene:[BlockFloating scene]];
     [[CCDirector sharedDirector] runWithScene:[ZubiIntro scene]];
 }
 

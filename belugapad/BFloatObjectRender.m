@@ -33,6 +33,7 @@
     if(messageType==kDWsetupStuff)
     {
         [self setSprite];
+        [self addOccludingSeparators];
     }
     
     if(messageType==kDWenableOccludingSeparators)
@@ -188,7 +189,7 @@
         {
             if(unitsCreated<unitSize)
             {
-                CCSprite *cs=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/blocks/obj-float-45.png")];
+                CCSprite *cs=[CCSprite spriteWithFile:BUNDLE_FULL_PATH([[gameObject store] objectForKey:SPRITE_FILENAME])];
 //                [cs setPosition:ccp((ci*UNIT_SIZE)+HALF_SIZE, (ri*UNIT_SIZE)+HALF_SIZE)];
                 [cs setPosition:ccp((ci*UNIT_SIZE), (ri*UNIT_SIZE))]; 
                 if(gameWorld.Blackboard.inProblemSetup)
@@ -287,7 +288,7 @@
                     if(nextRowFlatIndex>=0)
                     {
                         //there's an object adjacent on this row, draw an occlusion separator
-                        CCSprite *rowSep=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/blocks/obj-float-sep.png")];
+                        CCSprite *rowSep=[CCSprite spriteWithFile:BUNDLE_FULL_PATH([[gameObject store] objectForKey:SEPARATOR_FILENAME])];
                         if(gameWorld.Blackboard.inProblemSetup)
                         {
                             [rowSep setTag:2];
@@ -310,7 +311,7 @@
                     int nextColFlatIndex=[[[matrix objectAtIndex:c+1] objectAtIndex:r] intValue];
                     if(nextColFlatIndex>=0)
                     {
-                        CCSprite *colSep=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/blocks/obj-float-sep.png")];
+                        CCSprite *colSep=[CCSprite spriteWithFile:BUNDLE_FULL_PATH([[gameObject store] objectForKey:SEPARATOR_FILENAME])];
                         [objectNode addChild:colSep];
                         if(gameWorld.Blackboard.inProblemSetup)
                         {
@@ -333,7 +334,7 @@
                     
                     if(nextColFlatIndex>=0 && nextRowFlatIndex >=0 && diagFlatIndex >=0)
                     {
-                        CCSprite *diagSep=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/blocks/obj-float-sep.png")];
+                        CCSprite *diagSep=[CCSprite spriteWithFile:BUNDLE_FULL_PATH([[gameObject store] objectForKey:SEPARATOR_FILENAME])];
                         [objectNode addChild:diagSep];
                         if(gameWorld.Blackboard.inProblemSetup)
                         {
@@ -489,7 +490,7 @@
             int ri=newPos.y;
             
             //create new objects
-            CCSprite *cs=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/blocks/obj-float-45.png")];
+            CCSprite *cs=[CCSprite spriteWithFile:BUNDLE_FULL_PATH([[gameObject store] objectForKey:SPRITE_FILENAME])];
             [cs setPosition:ccp((ci*UNIT_SIZE), (ri*UNIT_SIZE))]; 
             
             [cs setOpacity:0];

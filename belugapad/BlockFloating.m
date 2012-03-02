@@ -666,11 +666,11 @@ static void eachShape(void *ptr, void* unused)
         int rows=[[o objectForKey:DIMENSION_ROWS] intValue];
         int cols=[[o objectForKey:DIMENSION_COLS] intValue];
         NSString *filename = [[NSString alloc]init];
-        if([o objectForKey:SPRITE_FILENAME]) filename =[NSString stringWithFormat:@"/images/blocks/%@", [o objectForKey:SPRITE_FILENAME]];
+        if([o objectForKey:SPRITE_FILENAME]) filename =[NSString stringWithFormat:@"%@", [o objectForKey:SPRITE_FILENAME]];
         else filename = [NSString stringWithFormat:@"/images/blocks/obj-float-45.png"];
         NSString *sepfilename = [[NSString alloc]init];
         
-        if([o objectForKey:SEPARATOR_FILENAME]) sepfilename =[NSString stringWithFormat:@"/images/blocks/%@", [o objectForKey:SEPARATOR_FILENAME]];
+        if([o objectForKey:SEPARATOR_FILENAME]) sepfilename =[NSString stringWithFormat:@"%@", [o objectForKey:SEPARATOR_FILENAME]];
         else sepfilename = [NSString stringWithFormat:@"/images/blocks/obj-float-sep.png"];
         int ucount=rows*cols;
         if(nuc)

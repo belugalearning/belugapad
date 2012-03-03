@@ -666,23 +666,28 @@ static void eachShape(void *ptr, void* unused)
         int rows=[[o objectForKey:DIMENSION_ROWS] intValue];
         int cols=[[o objectForKey:DIMENSION_COLS] intValue];
         NSString *filename = [[NSString alloc]init];
+        NSString *sepfilename = [[NSString alloc]init];
+        NSString *overlayfilename = [[NSString alloc]init];
+        
         if([o objectForKey:SPRITE_FILENAME]) filename =[NSString stringWithFormat:@"%@", [o objectForKey:SPRITE_FILENAME]];
         else filename = [NSString stringWithFormat:@"/images/blocks/obj-float-45.png"];
-        NSString *sepfilename = [[NSString alloc]init];
         
         if([o objectForKey:SEPARATOR_FILENAME]) sepfilename =[NSString stringWithFormat:@"%@", [o objectForKey:SEPARATOR_FILENAME]];
         else sepfilename = [NSString stringWithFormat:@"/images/blocks/obj-float-sep.png"];
+        
+        if([o objectForKey:OBJECT_OVERLAY_FILENAME]) overlayfilename =[NSString stringWithFormat:@"%@", [o objectForKey:OBJECT_OVERLAY_FILENAME]];
+        
         int ucount=rows*cols;
         if(nuc)
         {
             if([nuc intValue] > ucount)ucount=[nuc intValue];
         }
         
-        [self createObjectWithCols:cols andRows:rows andUnitCount:ucount andTag:[o objectForKey:TAG] andSprite:filename andSeparator:sepfilename];
+        [self createObjectWithCols:cols andRows:rows andUnitCount:ucount andTag:[o objectForKey:TAG] andSprite:filename andSeparator:sepfilename andOverlay:overlayfilename];
     }
 }
 
--(void)createObjectWithCols:(int)cols andRows:(int)rows andUnitCount:(int)unitcount andTag:(NSString*)tagString andSprite:(NSString*) fileName andSeparator:(NSString*) sepFileName
+-(void)createObjectWithCols:(int)cols andRows:(int)rows andUnitCount:(int)unitcount andTag:(NSString*)tagString andSprite:(NSString*) fileName andSeparator:(NSString*) sepFileName andOverlay:(NSString*) overlayFileName
 {
     //creates an object in the game world
     //ASSUMES kDWsetupStuff is sent to the object (in problem init this comes through sequential populateGW, setup)
@@ -693,6 +698,7 @@ static void eachShape(void *ptr, void* unused)
     [[go store] setObject:[NSNumber numberWithInt:cols] forKey:OBJ_COLS];
     [[go store] setObject:fileName forKey:SPRITE_FILENAME];
     [[go store] setObject:sepFileName forKey:SEPARATOR_FILENAME];
+    if(![overlayFileName isEqualToString:@""]) [[go store] setObject:overlayFileName forKey:OBJECT_OVERLAY_FILENAME];
     
     //set unit count -- explicitly r*c at the minute, let object decide where to put remainder
     [[go store] setObject:[NSNumber numberWithInt:unitcount] forKey:OBJ_UNITCOUNT];

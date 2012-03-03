@@ -212,6 +212,21 @@
         }
     }
     
+    if([[gameObject store] objectForKey:OBJECT_OVERLAY_FILENAME] && ([[mySprite children]count]>0))
+    {
+        CCSprite *ol=[CCSprite spriteWithFile:BUNDLE_FULL_PATH([[gameObject store] objectForKey:OBJECT_OVERLAY_FILENAME])];
+        float scalar = (1.0f/(float)[[mySprite children]count]);
+        CGPoint avg = ccp(0,0);
+        
+        for(int i=0; i<[[mySprite children]count]; i++)
+        {
+            CCSprite *cs = [[mySprite children] objectAtIndex:i];
+            avg = [BLMath AddVector:cs.position toVector:avg];
+        }
+        avg = [BLMath MultiplyVector:avg byScalar:scalar];
+        [ol setPosition:avg];
+        [mySprite addChild:ol];
+    }
     //update object data -- e.g.
     [gameObject handleMessage:kDWupdateObjectData andPayload:nil withLogLevel:0];
     

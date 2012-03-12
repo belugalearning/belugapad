@@ -49,8 +49,6 @@
     
     // GameWorld options
     
-    BOOL showCage;
-    BOOL showNegCage;
     BOOL showCount;
     BOOL showValue;
     BOOL showBaseSelection;
@@ -67,6 +65,8 @@
     
     NSDictionary *solutionsDef;
     NSDictionary *columnSprites;
+    NSDictionary *columnCages;
+    NSDictionary *columnNegCages;
     
     DWGameWorld *gw;
 

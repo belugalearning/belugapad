@@ -213,6 +213,8 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
                 [[colCage store] setObject:[NSNumber numberWithFloat:i*(kPropXColumnSpacing*lx)] forKey:POS_X];
                 [[colCage store] setObject:[NSNumber numberWithFloat:ly*kCageYOrigin] forKey:POS_Y];
                 [[colCage store] setObject:[currentColumnInfo objectForKey:COL_VALUE] forKey:OBJECT_VALUE];
+                [[colCage store] setObject:[NSNumber numberWithBool:disableCageAdd] forKey:DISABLE_ADD];
+                [[colCage store] setObject:[NSNumber numberWithBool:disableCageDelete] forKey:DISABLE_DEL];
                 
                 if([columnSprites objectForKey:currentColumnValueKey])
                 {
@@ -236,6 +238,11 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             [[colCage store] setObject:[NSNumber numberWithFloat:i*(kPropXColumnSpacing*lx)+100] forKey:POS_X];
             [[colCage store] setObject:[NSNumber numberWithFloat:ly*kCageYOrigin] forKey:POS_Y];
             [[colCage store] setObject:[NSNumber numberWithFloat:colValueNeg] forKey:OBJECT_VALUE];
+//            if(disableCageAdd) { [[colCage store] setObject:[NSNumber numberWithBool:YES] forKey:DISABLE_ADD]; }
+//            if(disableCageDelete) { [[colCage store] setObject:[NSNumber numberWithBool:YES] forKey:DISABLE_DEL]; }
+            [[colCage store] setObject:[NSNumber numberWithBool:disableCageAdd] forKey:DISABLE_ADD];
+            [[colCage store] setObject:[NSNumber numberWithBool:disableCageDelete] forKey:DISABLE_DEL];
+
             
             if([columnSprites objectForKey:currentColumnValueKey])
             {
@@ -335,8 +342,9 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     showCountOnBlock = [[pdef objectForKey:SHOW_COUNT_BLOCK] boolValue];
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
-    allowCageAdd = [[pdef objectForKey:ALLOW_CAGE_ADD] boolValue];
-    allowCageDelete = [[pdef objectForKey:ALLOW_CAGE_DELETE] boolValue];
+    disableCageAdd = [[pdef objectForKey:DISABLE_CAGE_ADD] boolValue];
+    disableCageDelete = [[pdef objectForKey:DISABLE_CAGE_DELETE] boolValue];
+
     
     columnRopes = [pdef objectForKey:COLUMN_ROPES];
     [columnRopes retain];
@@ -722,7 +730,6 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         
         if([gw Blackboard].PickupObject!=nil)
         {
-            
             gw.Blackboard.PickupOffset = location;
             // At this point we can still cancel the tap
             potentialTap = YES;

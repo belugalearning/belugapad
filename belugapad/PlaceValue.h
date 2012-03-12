@@ -54,8 +54,8 @@
     BOOL showBaseSelection;
     BOOL showCountOnBlock;
     BOOL showColumnHeader;
-    BOOL allowCageAdd;
-    BOOL allowCageDelete;
+    BOOL disableCageAdd;
+    BOOL disableCageDelete;
     NSString *solutionDisplayText;
     NSString *incompleteDisplayText;
     NSDictionary *showCustomColumnHeader;

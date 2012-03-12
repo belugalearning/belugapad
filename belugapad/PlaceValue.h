@@ -54,6 +54,8 @@
     BOOL showBaseSelection;
     BOOL showCountOnBlock;
     BOOL showColumnHeader;
+    BOOL allowCageAdd;
+    BOOL allowCageDelete;
     NSString *solutionDisplayText;
     NSString *incompleteDisplayText;
     NSDictionary *showCustomColumnHeader;
@@ -67,6 +69,8 @@
     NSDictionary *columnSprites;
     NSDictionary *columnCages;
     NSDictionary *columnNegCages;
+    NSDictionary *columnRows;
+    NSDictionary *columnRopes;
     
     DWGameWorld *gw;
 

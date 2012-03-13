@@ -209,6 +209,8 @@
 		7FB8265114F262080053F221 /* ZubiIntro.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB8264814F262080053F221 /* ZubiIntro.m */; };
 		7FC27F6F150FAAAA00E16A44 /* DWRamblerGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */; };
 		7FC27F72150FAB4400E16A44 /* NLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F71150FAB4300E16A44 /* NLine.m */; };
+		7FC27F7F150FB19B00E16A44 /* BNLineRamblerInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F7E150FB19B00E16A44 /* BNLineRamblerInput.m */; };
+		7FC27F82150FB1AD00E16A44 /* BNLineRamblerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F81150FB1AD00E16A44 /* BNLineRamblerRender.m */; };
 		7FDBA52D14EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51214EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m */; };
 		7FDBA52E14EBD560004D1CC9 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51414EBD560004D1CC9 /* CXMLNode_CreationExtensions.m */; };
 		7FDBA52F14EBD560004D1CC9 /* CXHTMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51614EBD560004D1CC9 /* CXHTMLDocument.m */; };
@@ -643,6 +645,10 @@
 		7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWRamblerGameObject.m; sourceTree = "<group>"; };
 		7FC27F70150FAB4300E16A44 /* NLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NLine.h; sourceTree = "<group>"; };
 		7FC27F71150FAB4300E16A44 /* NLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NLine.m; sourceTree = "<group>"; };
+		7FC27F7D150FB19B00E16A44 /* BNLineRamblerInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNLineRamblerInput.h; sourceTree = "<group>"; };
+		7FC27F7E150FB19B00E16A44 /* BNLineRamblerInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNLineRamblerInput.m; sourceTree = "<group>"; };
+		7FC27F80150FB1AD00E16A44 /* BNLineRamblerRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNLineRamblerRender.h; sourceTree = "<group>"; };
+		7FC27F81150FB1AD00E16A44 /* BNLineRamblerRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNLineRamblerRender.m; sourceTree = "<group>"; };
 		7FDBA51114EBD560004D1CC9 /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
 		7FDBA51214EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_CreationExtensions.m; sourceTree = "<group>"; };
 		7FDBA51314EBD560004D1CC9 /* CXMLNode_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_CreationExtensions.h; sourceTree = "<group>"; };
@@ -1381,6 +1387,7 @@
 		7FABE6A314B4C5B500ED2D0C /* Behaviours */ = {
 			isa = PBXGroup;
 			children = (
+				7FC27F7B150FB18000E16A44 /* NLine */,
 				5571BAE214E40FE90053A62B /* PlaceValue */,
 				7FABE6A414B4C5F100ED2D0C /* BContainerRender.h */,
 				7FABE6A514B4C5F100ED2D0C /* BContainerRender.m */,
@@ -1414,6 +1421,17 @@
 				7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		7FC27F7B150FB18000E16A44 /* NLine */ = {
+			isa = PBXGroup;
+			children = (
+				7FC27F7D150FB19B00E16A44 /* BNLineRamblerInput.h */,
+				7FC27F7E150FB19B00E16A44 /* BNLineRamblerInput.m */,
+				7FC27F80150FB1AD00E16A44 /* BNLineRamblerRender.h */,
+				7FC27F81150FB1AD00E16A44 /* BNLineRamblerRender.m */,
+			);
+			name = NLine;
 			sourceTree = "<group>";
 		};
 		7FDBA50F14EBD550004D1CC9 /* TouchXML */ = {
@@ -1782,6 +1800,8 @@
 				7F2CE9FF14F7AEEE00B02001 /* NSArray_BAAdditions.m in Sources */,
 				7FC27F6F150FAAAA00E16A44 /* DWRamblerGameObject.m in Sources */,
 				7FC27F72150FAB4400E16A44 /* NLine.m in Sources */,
+				7FC27F7F150FB19B00E16A44 /* BNLineRamblerInput.m in Sources */,
+				7FC27F82150FB1AD00E16A44 /* BNLineRamblerRender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

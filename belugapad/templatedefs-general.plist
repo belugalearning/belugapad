@@ -130,5 +130,19 @@
 		<key>OBJECT_DATA</key>
 		<dict/>
 	</dict>
+	<key>TnLineRambler</key>
+	<dict>
+		<key>BEHAVIOURS</key>
+		<dict>
+			<key>BNLineRamblerInput</key>
+			<dict/>
+			<key>BNLineRamblerRender</key>
+			<dict/>
+		</dict>
+		<key>IMPLEMENT_TEMPLATES</key>
+		<array/>
+		<key>OBJECT_DATA</key>
+		<dict/>
+	</dict>
 </dict>
 </plist>

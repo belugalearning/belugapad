@@ -19,6 +19,8 @@
 @property (nonatomic, retain) DWGameWorld *gameWorld;
 
 +(DWGameObject*) createFromTemplate:(NSString*) templateName withWorld:(DWGameWorld *)gw;
++(void) populateObject:(DWGameObject*) theObject fromTemplate:(NSString*) templateName withWorld:(DWGameWorld *)gw;
+
 +(void)parseTemplate:(NSString *)templateName inTemplateDefs:(NSDictionary *)templateDefs forObject:(DWGameObject *)gameObject;
 
 -(NSMutableDictionary *) store;

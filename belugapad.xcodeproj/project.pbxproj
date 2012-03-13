@@ -189,6 +189,14 @@
 		7F5115A714A9EF67001AF372 /* DWGameWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A214A9EF67001AF372 /* DWGameWorld.m */; };
 		7F5115AA14A9EF9E001AF372 /* BlockFloating.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A914A9EF9E001AF372 /* BlockFloating.m */; };
 		7F719C0314D739A600F30E89 /* Daemon.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F719C0214D739A600F30E89 /* Daemon.m */; };
+		7F71B405150FBCA80097A956 /* BATQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B400150FBCA80097A956 /* BATQuery.m */; };
+		7F71B406150FBCA80097A956 /* BATTreeViz.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B402150FBCA80097A956 /* BATTreeViz.m */; };
+		7F71B407150FBCA80097A956 /* BATViz.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B404150FBCA80097A956 /* BATViz.m */; };
+		7F71B40A150FBCB20097A956 /* ExprScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B409150FBCB20097A956 /* ExprScene.m */; };
+		7F71B40B150FBD9D0097A956 /* ExprScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B409150FBCB20097A956 /* ExprScene.m */; };
+		7F71B40C150FBDAA0097A956 /* BATQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B400150FBCA80097A956 /* BATQuery.m */; };
+		7F71B40D150FBDAD0097A956 /* BATTreeViz.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B402150FBCA80097A956 /* BATTreeViz.m */; };
+		7F71B40E150FBDB00097A956 /* BATViz.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B404150FBCA80097A956 /* BATViz.m */; };
 		7F813D5514CCBA4300C1E997 /* IceDiv.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F813D5414CCBA4300C1E997 /* IceDiv.m */; };
 		7F813D5814CCBDDD00C1E997 /* fire1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5714CCBDDD00C1E997 /* fire1.plist */; };
 		7F813D5C14CCC3A100C1E997 /* fire2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5B14CCC3A100C1E997 /* fire2.plist */; };
@@ -613,6 +621,14 @@
 		7F5115A914A9EF9E001AF372 /* BlockFloating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BlockFloating.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7F719C0114D739A600F30E89 /* Daemon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Daemon.h; sourceTree = "<group>"; };
 		7F719C0214D739A600F30E89 /* Daemon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Daemon.m; sourceTree = "<group>"; };
+		7F71B3FF150FBCA80097A956 /* BATQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATQuery.h; sourceTree = "<group>"; };
+		7F71B400150FBCA80097A956 /* BATQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATQuery.m; sourceTree = "<group>"; };
+		7F71B401150FBCA80097A956 /* BATTreeViz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATTreeViz.h; sourceTree = "<group>"; };
+		7F71B402150FBCA80097A956 /* BATTreeViz.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATTreeViz.m; sourceTree = "<group>"; };
+		7F71B403150FBCA80097A956 /* BATViz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATViz.h; sourceTree = "<group>"; };
+		7F71B404150FBCA80097A956 /* BATViz.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATViz.m; sourceTree = "<group>"; };
+		7F71B408150FBCB20097A956 /* ExprScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExprScene.h; sourceTree = "<group>"; };
+		7F71B409150FBCB20097A956 /* ExprScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprScene.m; sourceTree = "<group>"; };
 		7F813D5314CCBA4300C1E997 /* IceDiv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IceDiv.h; sourceTree = "<group>"; };
 		7F813D5414CCBA4300C1E997 /* IceDiv.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = IceDiv.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7F813D5714CCBDDD00C1E997 /* fire1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = fire1.plist; sourceTree = "<group>"; };
@@ -1285,6 +1301,7 @@
 		7F51159714A9EF21001AF372 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				7F71B3FD150FBC8B0097A956 /* BATools */,
 				7F2CE9D314F7AEEE00B02001 /* BAExpression */,
 				7F719C0014D7397000F30E89 /* Daemon */,
 				7FABE69214B33E5800ED2D0C /* global.h */,
@@ -1317,6 +1334,8 @@
 		7F51159914A9EF30001AF372 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				7F71B408150FBCB20097A956 /* ExprScene.h */,
+				7F71B409150FBCB20097A956 /* ExprScene.m */,
 				7FB8264714F262080053F221 /* ZubiIntro.h */,
 				7FB8264814F262080053F221 /* ZubiIntro.m */,
 				7F51159114A9EEF3001AF372 /* NumberLine.h */,
@@ -1362,6 +1381,19 @@
 				7F719C0214D739A600F30E89 /* Daemon.m */,
 			);
 			name = Daemon;
+			sourceTree = "<group>";
+		};
+		7F71B3FD150FBC8B0097A956 /* BATools */ = {
+			isa = PBXGroup;
+			children = (
+				7F71B3FF150FBCA80097A956 /* BATQuery.h */,
+				7F71B400150FBCA80097A956 /* BATQuery.m */,
+				7F71B401150FBCA80097A956 /* BATTreeViz.h */,
+				7F71B402150FBCA80097A956 /* BATTreeViz.m */,
+				7F71B403150FBCA80097A956 /* BATViz.h */,
+				7F71B404150FBCA80097A956 /* BATViz.m */,
+			);
+			name = BATools;
 			sourceTree = "<group>";
 		};
 		7F813D5914CCC38100C1E997 /* particles */ = {
@@ -1611,6 +1643,10 @@
 				7F40D8B314FFDA4D006A3A55 /* IntegerLogicTests.m in Sources */,
 				7F40D8B414FFDA4D006A3A55 /* MultiplyLogicTests.m in Sources */,
 				7F40D8B514FFDA4D006A3A55 /* PowerLogicTests.m in Sources */,
+				7F71B405150FBCA80097A956 /* BATQuery.m in Sources */,
+				7F71B406150FBCA80097A956 /* BATTreeViz.m in Sources */,
+				7F71B407150FBCA80097A956 /* BATViz.m in Sources */,
+				7F71B40A150FBCB20097A956 /* ExprScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1618,6 +1654,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F71B40B150FBD9D0097A956 /* ExprScene.m in Sources */,
+				7F71B40C150FBDAA0097A956 /* BATQuery.m in Sources */,
+				7F71B40D150FBDAD0097A956 /* BATTreeViz.m in Sources */,
 				7F5113EB14A9EE63001AF372 /* CCAction.m in Sources */,
 				7F5113EE14A9EE63001AF372 /* CCActionCamera.m in Sources */,
 				7F5113F114A9EE63001AF372 /* CCActionEase.m in Sources */,
@@ -1661,6 +1700,7 @@
 				7F51146614A9EE64001AF372 /* CCSprite.m in Sources */,
 				7F51146914A9EE64001AF372 /* CCSpriteBatchNode.m in Sources */,
 				7F51146C14A9EE64001AF372 /* CCSpriteFrame.m in Sources */,
+				7F71B40E150FBDB00097A956 /* BATViz.m in Sources */,
 				7F51146F14A9EE64001AF372 /* CCSpriteFrameCache.m in Sources */,
 				7F51147214A9EE64001AF372 /* CCTexture2D.m in Sources */,
 				7F51147514A9EE64001AF372 /* CCTextureAtlas.m in Sources */,

@@ -9,3 +9,4 @@
 #import "NLineConsts.h"
 
 extern const float kSelectorProximity;
+extern const float kRamblerYMax;

@@ -7,3 +7,4 @@
 //
 
 const float kSelectorProximity=80.0f;
+const float kRamblerYMax=300;

@@ -17,6 +17,7 @@
 #import "DWSelectorGameObject.h"
 #import "Daemon.h"
 #import "ToolHost.h"
+#import "NLineConsts.h"
 
 
 @implementation NLine
@@ -115,12 +116,15 @@
 
 -(void)problemStateChanged
 {
-    
+    if(evalMode==kProblemEvalAuto)
+    {
+        self.ProblemComplete=[self evalProblem];
+    }
 }
 
 -(BOOL)evalProblem
 {
-    BOOL result;
+    BOOL result=NO;
     return result;
 }
 
@@ -135,9 +139,9 @@
     
     if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit)
     {
-        [self evalProblem];
+        self.ProblemComplete=[self evalProblem];
     }
-    else if (location.y < 300)
+    else if (location.y < kRamblerYMax)
     {
         inRamblerArea=YES;
     }
@@ -163,6 +167,7 @@
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     touching=NO;
+    inRamblerArea=NO;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
@@ -171,5 +176,6 @@
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     touching=NO;
+    inRamblerArea=NO;
 }
 @end

@@ -19,6 +19,7 @@
 
 #define POS_X @"POS_X"
 #define POS_Y @"POS_Y"
+#define POS @"POS"
 #define ROT @"ROT"
 
 #define OBJ_COLS @"OBJ_COLS"
@@ -134,6 +135,7 @@
 #define SHOW_RESET @"SHOW_RESET"
 #define FADE_COUNT @"FADE_COUNT"
 
+// BlockFloating specifics
 
 #define SEPARATOR_FILENAME @"SEPARATOR_FILENAME"
 #define OBJECT_OVERLAY_FILENAME @"OBJECT_OVERLAY_FILENAME"

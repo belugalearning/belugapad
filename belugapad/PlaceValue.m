@@ -44,6 +44,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         ly=winsize.height;
         cx=lx / 2.0f;
         cy=ly / 2.0f;
+        
         gw = [[DWGameWorld alloc] initWithGameScene:self];
         gw.Blackboard.inProblemSetup = YES;
         

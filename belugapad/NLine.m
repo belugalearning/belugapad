@@ -14,6 +14,7 @@
 #import "ToolConsts.h"
 #import "DWGameWorld.h"
 #import "DWRamblerGameObject.h"
+#import "DWSelectorGameObject.h"
 #import "Daemon.h"
 #import "ToolHost.h"
 
@@ -46,9 +47,7 @@
 
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
-        
-        [self setupBkgAndTitle];
-        
+                
         [self readPlist:pdef];
         
         [self populateGW];
@@ -59,6 +58,7 @@
         gw.Blackboard.inProblemSetup = NO;
         
         NSLog(@"rambler value %f", rambler.Value);
+        NSLog(@"selector pos x %f/y %f", selector.pos.x, selector.pos.y);
     }
     
     return self;
@@ -76,6 +76,11 @@
     [gw populateAndAddGameObject:rambler withTemplateName:@"TnLineRambler"];
     
     rambler.Value=45;
+    
+    selector=[DWSelectorGameObject alloc];
+    [gw populateAndAddGameObject:selector withTemplateName:@"TnLineSelector"];
+    
+    selector.pos=ccp(cx,cy);
 }
 
 -(void)readPlist:(NSDictionary*)pdef
@@ -132,11 +137,13 @@
     {
         [self evalProblem];
     }
+    else if (location.y < 300)
+    {
+        inRamblerArea=YES;
+    }
     else 
     {
-        NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
-        [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
-        [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
+        NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
         [gw handleMessage:kDWhandleTap andPayload:pl withLogLevel:-1];
     }
 }
@@ -146,6 +153,11 @@
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    
+    if(inRamblerArea)
+    {
+        //Do some stuff
+    }
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event

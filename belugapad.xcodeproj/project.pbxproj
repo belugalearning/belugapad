@@ -14,6 +14,10 @@
 		5536B29014E4173E00D30BC0 /* BPlaceValueContainerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */; };
 		5536B2A414E4350800D30BC0 /* BPlaceValueObjectSpawn.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B2A314E4350800D30BC0 /* BPlaceValueObjectSpawn.m */; };
 		5536B2A714E43E1400D30BC0 /* PlaceValueConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B2A614E43E1400D30BC0 /* PlaceValueConsts.m */; };
+		553E80B8150FC57100263473 /* BNLineSelectorRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80B7150FC57100263473 /* BNLineSelectorRender.m */; };
+		553E80BB150FC60200263473 /* BNLineSelectorInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80BA150FC60100263473 /* BNLineSelectorInput.m */; };
+		553E80BE150FC78F00263473 /* DWSelectorGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80BD150FC78E00263473 /* DWSelectorGameObject.m */; };
+		553E80C1150FD3FD00263473 /* NLineConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80C0150FD3FD00263473 /* NLineConsts.m */; };
 		5569EA0314E943AA00E80C00 /* BPlaceValueSelectionMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5569EA0214E943AA00E80C00 /* BPlaceValueSelectionMgr.m */; };
 		5571BADD14E406220053A62B /* PlaceValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BADC14E406220053A62B /* PlaceValue.m */; };
 		5571BAE114E406630053A62B /* ToolConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE014E406630053A62B /* ToolConsts.m */; };
@@ -257,6 +261,14 @@
 		5536B2A314E4350800D30BC0 /* BPlaceValueObjectSpawn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueObjectSpawn.m; sourceTree = "<group>"; };
 		5536B2A514E43E1400D30BC0 /* PlaceValueConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceValueConsts.h; sourceTree = "<group>"; };
 		5536B2A614E43E1400D30BC0 /* PlaceValueConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceValueConsts.m; sourceTree = "<group>"; };
+		553E80B6150FC57100263473 /* BNLineSelectorRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNLineSelectorRender.h; sourceTree = "<group>"; };
+		553E80B7150FC57100263473 /* BNLineSelectorRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNLineSelectorRender.m; sourceTree = "<group>"; };
+		553E80B9150FC60100263473 /* BNLineSelectorInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNLineSelectorInput.h; sourceTree = "<group>"; };
+		553E80BA150FC60100263473 /* BNLineSelectorInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNLineSelectorInput.m; sourceTree = "<group>"; };
+		553E80BC150FC78E00263473 /* DWSelectorGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWSelectorGameObject.h; sourceTree = "<group>"; };
+		553E80BD150FC78E00263473 /* DWSelectorGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWSelectorGameObject.m; sourceTree = "<group>"; };
+		553E80BF150FD3FD00263473 /* NLineConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NLineConsts.h; sourceTree = "<group>"; };
+		553E80C0150FD3FD00263473 /* NLineConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NLineConsts.m; sourceTree = "<group>"; };
 		5569EA0114E943AA00E80C00 /* BPlaceValueSelectionMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueSelectionMgr.h; sourceTree = "<group>"; };
 		5569EA0214E943AA00E80C00 /* BPlaceValueSelectionMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueSelectionMgr.m; sourceTree = "<group>"; };
 		5571BADB14E406220053A62B /* PlaceValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceValue.h; sourceTree = "<group>"; };
@@ -1370,6 +1382,8 @@
 				5571BAE014E406630053A62B /* ToolConsts.m */,
 				5536B2A514E43E1400D30BC0 /* PlaceValueConsts.h */,
 				5536B2A614E43E1400D30BC0 /* PlaceValueConsts.m */,
+				553E80BF150FD3FD00263473 /* NLineConsts.h */,
+				553E80C0150FD3FD00263473 /* NLineConsts.m */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -1451,6 +1465,8 @@
 			children = (
 				7FC27F6D150FAAAA00E16A44 /* DWRamblerGameObject.h */,
 				7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */,
+				553E80BC150FC78E00263473 /* DWSelectorGameObject.h */,
+				553E80BD150FC78E00263473 /* DWSelectorGameObject.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -1458,6 +1474,10 @@
 		7FC27F7B150FB18000E16A44 /* NLine */ = {
 			isa = PBXGroup;
 			children = (
+				553E80B6150FC57100263473 /* BNLineSelectorRender.h */,
+				553E80B7150FC57100263473 /* BNLineSelectorRender.m */,
+				553E80B9150FC60100263473 /* BNLineSelectorInput.h */,
+				553E80BA150FC60100263473 /* BNLineSelectorInput.m */,
 				7FC27F7D150FB19B00E16A44 /* BNLineRamblerInput.h */,
 				7FC27F7E150FB19B00E16A44 /* BNLineRamblerInput.m */,
 				7FC27F80150FB1AD00E16A44 /* BNLineRamblerRender.h */,
@@ -1842,6 +1862,10 @@
 				7FC27F72150FAB4400E16A44 /* NLine.m in Sources */,
 				7FC27F7F150FB19B00E16A44 /* BNLineRamblerInput.m in Sources */,
 				7FC27F82150FB1AD00E16A44 /* BNLineRamblerRender.m in Sources */,
+				553E80B8150FC57100263473 /* BNLineSelectorRender.m in Sources */,
+				553E80BB150FC60200263473 /* BNLineSelectorInput.m in Sources */,
+				553E80BE150FC78F00263473 /* DWSelectorGameObject.m in Sources */,
+				553E80C1150FD3FD00263473 /* NLineConsts.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

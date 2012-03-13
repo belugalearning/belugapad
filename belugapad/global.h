@@ -19,6 +19,7 @@
 
 #define POS_X @"POS_X"
 #define POS_Y @"POS_Y"
+#define POS @"POS"
 #define ROT @"ROT"
 
 #define OBJ_COLS @"OBJ_COLS"
@@ -133,8 +134,6 @@
 #define ALLOW_DESELECTION @"ALLOW_DESELECTION"
 #define SHOW_RESET @"SHOW_RESET"
 #define FADE_COUNT @"FADE_COUNT"
-
-#define TOUCH_LOCATION @"TOUCH_LOCATION"
 
 // BlockFloating specifics
 

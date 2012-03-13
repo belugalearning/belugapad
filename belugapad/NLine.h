@@ -12,6 +12,7 @@
 
 @class DWGameWorld;
 @class DWRamblerGameObject;
+@class DWSelectorGameObject;
 @class Daemon;
 @class ToolHost;
 
@@ -25,9 +26,11 @@
     
     DWGameWorld *gw;
     DWRamblerGameObject *rambler;
+    DWSelectorGameObject *selector;
     
     // Problem state vars
     BOOL touching;
+    BOOL inRamblerArea;
     
     // Problem definition vars
     ProblemRejectMode rejectMode;

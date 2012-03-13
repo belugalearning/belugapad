@@ -6,5 +6,6 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-const float kSelectorProximity=80.0f;
-const float kRamblerYMax=300;
+
+extern const float kSelectorProximity;
+extern const float kRamblerYMax;

@@ -8,5 +8,5 @@
 
 #import "NLineConsts.h"
 
-extern const float kSelectorProximity;
-extern const float kRamblerYMax;
+const float kSelectorProximity=80.0f;
+const float kRamblerYMax=300;

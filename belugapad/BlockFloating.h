@@ -82,7 +82,7 @@
 
 -(void)spawnObjects:(NSDictionary*)objects;
 
--(void)createObjectWithCols:(int)cols andRows:(int)rows andUnitCount:(int)unitcount andTag:(NSString*)tagString;
+-(void)createObjectWithCols:(int)cols andRows:(int)rows andUnitCount:(int)unitcount andTag:(NSString*)tagString andSprite:(NSString*) fileName andSeparator:(NSString*) sepFileName andOverlay:(NSString*) overlayFileName;
 -(void)createContainerWithPos:(CGPoint)pos andData:(NSDictionary*)containerData;
 
 // both abstracted (i.e. from gw implementation) but fixed to this tool's current problem load -- hence effectively a single-problem evaluation prototype of abstracted (from gw) evaluation

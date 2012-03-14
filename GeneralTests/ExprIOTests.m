@@ -249,6 +249,62 @@
     STAssertTrue([tree.root.children count] >0, @"tree should have more than one child and should be xmlStringValue writable");
 }
 
+-(void)testReadParseAndWriteToXMLAndReadAgainAndSubstituteAndEvaluate
+{
+    NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/aplusbeq14.mathml");
+    BAExpressionTree *tree=[BATio loadTreeFromMathMLFile:f];
+    
+    NSString *o=[tree xmlStringValue];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    NSString *file = [documentsDirectory stringByAppendingPathComponent:@"test-output-for-test.mathml"];
+    
+    [o writeToFile:file atomically:YES encoding:NSUTF8StringEncoding error:nil];
+    
+    BAExpressionTree *newtree=[BATio loadTreeFromMathMLFile:file];
+    
+    //create the substitutions and add to the tree
+    NSMutableDictionary *subs=[[NSMutableDictionary alloc]init];
+    [subs setObject:[NSNumber numberWithInt:3] forKey:@"a"];
+    [subs setObject:[NSNumber numberWithInt:11] forKey:@"b"];
+    
+    newtree.VariableSubstitutions=(NSDictionary*)subs;
+    
+    //execute the substitutions
+    [newtree substitueVariablesForIntegersOnNode:newtree.root];
+    
+    STAssertTrue([newtree.root.children count] >0, @"tree should have more than one child");
+    
+    BATQuery *q=[[BATQuery alloc] initWithExpr:newtree.root andTree:newtree];
+    STAssertTrue([q assumeAndEvalEqualityAtRoot], @"tree root equality should be possible with variables and substitutions after save, reload, subs");
+}
+
+-(void)testReadParseAndWriteToXMLAndReadAgainWithLiterals
+{
+    NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/7plus7eq14.mathml");
+    BAExpressionTree *tree=[BATio loadTreeFromMathMLFile:f];
+    
+    NSString *o=[tree xmlStringValue];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    NSString *file = [documentsDirectory stringByAppendingPathComponent:@"test-output-for-test.mathml"];
+    
+    [o writeToFile:file atomically:YES encoding:NSUTF8StringEncoding error:nil];
+    
+    BAExpressionTree *newtree=[BATio loadTreeFromMathMLFile:file];
+        
+    STAssertTrue([newtree.root.children count] >0, @"tree should have more than one child");
+    
+    BATQuery *q=[[BATQuery alloc] initWithExpr:newtree.root andTree:newtree];
+    STAssertTrue([q assumeAndEvalEqualityAtRoot], @"tree root equality should be possible with literals and reload through xml");
+}
+
+
+
 -(void)testVarSubstitutedStringToXML
 {
     NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/aplusbeq14.mathml");

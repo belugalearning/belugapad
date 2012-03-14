@@ -83,6 +83,8 @@ typedef enum {
     kDWoperateMultiplyBy=110,
     kDWoperateDivideBy=111,
     kDWfloatMultiplyWithThisChild=112,
-    kDWfloatDivideWithThisChild=113
+    kDWfloatDivideWithThisChild=113,
+    
+    kDWnlineReleaseRamblerAtOffset=114
     
 } DWMessageType;

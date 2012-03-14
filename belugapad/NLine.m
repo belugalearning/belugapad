@@ -42,12 +42,13 @@
         gw = [[DWGameWorld alloc] initWithGameScene:self];
         gw.Blackboard.inProblemSetup = YES;
         
-        
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];
         self.ForeLayer=[[[CCLayer alloc]init] autorelease];
-
+        
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
+        
+        gw.Blackboard.ComponentRenderLayer=self.ForeLayer;
                 
         [self readPlist:pdef];
         
@@ -61,9 +62,6 @@
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
         gw.Blackboard.inProblemSetup = NO;
-        
-        NSLog(@"rambler value %f", rambler.Value);
-        NSLog(@"selector pos x %f/y %f", selector.pos.x, selector.pos.y);
     }
     
     return self;
@@ -80,17 +78,18 @@
     rambler=[DWRamblerGameObject alloc];
     [gw populateAndAddGameObject:rambler withTemplateName:@"TnLineRambler"];
     
-    rambler.Value=7;
-    rambler.StartValue=7;
-    rambler.MinValue=[NSNumber numberWithInt:0];
+    rambler.Value=0;
+    rambler.StartValue=0;
+    rambler.MinValue=[NSNumber numberWithInt:-1];
+    rambler.MaxValue=[NSNumber numberWithInt:3];
     rambler.DefaultSegmentSize=115;
     rambler.CurrentSegmentValue=1;
-    rambler.Pos=ccp(cx,cy);
+    rambler.Pos=ccp(cx,cy - 75.0f);
     
     selector=[DWSelectorGameObject alloc];
     [gw populateAndAddGameObject:selector withTemplateName:@"TnLineSelector"];
     
-    selector.pos=ccp(cx,cy);
+    selector.pos=ccp(cx,cy + 75.0f);
 }
 
 -(void)readPlist:(NSDictionary*)pdef
@@ -169,14 +168,26 @@
     
     if(inRamblerArea)
     {
-        //Do some stuff
+        CGPoint a = [[CCDirector sharedDirector] convertToGL:[touch previousLocationInView:touch.view]];
+        CGPoint b = [[CCDirector sharedDirector] convertToGL:[touch locationInView:touch.view]];
+    
+        rambler.TouchXOffset+=b.x-a.x;
     }
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     touching=NO;
-    inRamblerArea=NO;
+    
+    if(inRamblerArea)
+    {
+        [rambler handleMessage:kDWnlineReleaseRamblerAtOffset];
+        
+        inRamblerArea=NO;
+        rambler.TouchXOffset=0;
+    }
+
+    
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];

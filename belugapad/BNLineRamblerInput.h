@@ -8,9 +8,11 @@
 
 #import "DWBehaviour.h"
 
+@class DWRamblerGameObject;
+
 @interface BNLineRamblerInput : DWBehaviour
 {
-    
+    DWRamblerGameObject *ramblerGameObject;
 }
 
 

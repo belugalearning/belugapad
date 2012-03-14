@@ -78,12 +78,14 @@
     rambler=[DWRamblerGameObject alloc];
     [gw populateAndAddGameObject:rambler withTemplateName:@"TnLineRambler"];
     
-    rambler.Value=0;
-    rambler.StartValue=0;
-//    rambler.MinValue=[NSNumber numberWithInt:-1];
-//    rambler.MaxValue=[NSNumber numberWithInt:3];
+    rambler.Value=[[problemDef objectForKey:START_VALUE] floatValue];
+    rambler.StartValue=rambler.Value;
+    rambler.CurrentSegmentValue=[[problemDef objectForKey:SEGMENT_VALUE] floatValue];
+    rambler.MinValue=[problemDef objectForKey:MIN_VALUE];
+    rambler.MaxValue=[problemDef objectForKey:MAX_VALUE];
+
+    //positioning
     rambler.DefaultSegmentSize=115;
-    rambler.CurrentSegmentValue=1;
     rambler.Pos=ccp(cx,cy - 75.0f);
     
     selector=[DWSelectorGameObject alloc];

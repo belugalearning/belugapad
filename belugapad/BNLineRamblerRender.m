@@ -103,13 +103,10 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     int assLineIndex=0;
     int assIndicatorIndex=0;
     
-    //label / font render -----------------------------------------------------------------------------------------
-//    for (CCLabelBMFont *l in assLabels) {
-//        [l setVisible:NO];
-//    }
-    
     [labelLayer removeAllChildrenWithCleanup:YES];
-    //-------------------------------------------------------------------------------------------------------------
+    
+    [assStartTerminator setVisible:NO];
+    [assEndTerminator setVisible:NO];
     
     for (int iValue=minValuePos; iValue<=maxValuePos; iValue+=ramblerGameObject.CurrentSegmentValue) {
         

@@ -149,6 +149,11 @@
     [wStr release];
 }
 
+-(NSMutableArray*)AllGameObjects
+{
+    return gameObjects;
+}
+
 -(NSMutableDictionary *) store
 {
 //	[gameObjects release];

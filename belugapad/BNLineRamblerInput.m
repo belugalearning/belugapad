@@ -31,26 +31,24 @@
     
     else if (messageType==kDWnlineReleaseRamblerAtOffset)
     {
-    
         int valueOffset=-ramblerGameObject.TouchXOffset / ramblerGameObject.DefaultSegmentSize;
         
-        //look at remainder
+        float rm=fabsf(ramblerGameObject.TouchXOffset) - fabsf(valueOffset * ramblerGameObject.DefaultSegmentSize);
         
-        float rem=ramblerGameObject.TouchXOffset - (valueOffset * ramblerGameObject.DefaultSegmentSize);
-        
-        if(-rem > ramblerGameObject.DefaultSegmentSize / 2.0f) 
+        if(rm> (ramblerGameObject.DefaultSegmentSize / 2.0f))
         {
-            valueOffset += ramblerGameObject.CurrentSegmentValue;
+            if (ramblerGameObject.TouchXOffset>0) {
+                valueOffset -= ramblerGameObject.CurrentSegmentValue;
+            }
+            else {
+                valueOffset += ramblerGameObject.CurrentSegmentValue;
+            }
         }
-        else if(-rem < -(ramblerGameObject.DefaultSegmentSize / 2.0f)) 
-        {
-            valueOffset -= ramblerGameObject.CurrentSegmentValue;
-        }
-        
+                
         int newValue=ramblerGameObject.Value+valueOffset;
         
-        if (newValue > [ramblerGameObject.MaxValue intValue]) newValue=[ramblerGameObject.MaxValue intValue];
-        if (newValue < [ramblerGameObject.MinValue intValue]) newValue=[ramblerGameObject.MinValue intValue];
+        if (ramblerGameObject.MaxValue && newValue > [ramblerGameObject.MaxValue intValue]) newValue=[ramblerGameObject.MaxValue intValue];
+        if (ramblerGameObject.MinValue && newValue < [ramblerGameObject.MinValue intValue]) newValue=[ramblerGameObject.MinValue intValue];
         
         ramblerGameObject.Value=newValue;
     }

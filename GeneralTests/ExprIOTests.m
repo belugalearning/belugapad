@@ -229,7 +229,7 @@
 }
 
 
--(void)testReadParseAndWrite1
+-(void)testReadParseAndWriteToString
 {
     NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/aplusbeq14.mathml");
     BAExpressionTree *tree=[BATio loadTreeFromMathMLFile:f];
@@ -239,5 +239,48 @@
     STAssertTrue([tree.root.children count] >0, @"tree should have more than one child and should be stringValue writable");
 }
 
+-(void)testReadParseAndWriteToXML
+{
+    NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/aplusbeq14.mathml");
+    BAExpressionTree *tree=[BATio loadTreeFromMathMLFile:f];
+    
+    NSLog(@"xml expression: %@", [[tree root] xmlStringValueWithPad:@""]);
+    
+    STAssertTrue([tree.root.children count] >0, @"tree should have more than one child and should be xmlStringValue writable");
+}
+
+-(void)testVarSubstitutedStringToXML
+{
+    NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/aplusbeq14.mathml");
+    BAExpressionTree *tree=[BATio loadTreeFromMathMLFile:f];
+    
+    STAssertTrue([tree.root.children count] >0, @"tree should have more than one child");
+    
+    //create the substitutions and add to the tree
+    NSMutableDictionary *subs=[[NSMutableDictionary alloc]init];
+    [subs setObject:[NSNumber numberWithInt:3] forKey:@"a"];
+    [subs setObject:[NSNumber numberWithInt:11] forKey:@"b"];
+    
+    tree.VariableSubstitutions=(NSDictionary*)subs;
+    
+    //execute the substitutions
+    [tree substitueVariablesForIntegersOnNode:tree.root];
+    
+    NSLog(@"xml expression: %@", [[tree root] xmlStringValueWithPad:@""]);
+    
+    BATQuery *q=[[BATQuery alloc] initWithExpr:tree.root andTree:tree];
+    STAssertTrue([q assumeAndEvalEqualityAtRoot], @"tree root equality should be possible with variables and substitutions and writing to xmlstring");
+    
+}
+
+-(void)testReadParseAndWriteToXMLdocString
+{
+    NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/aplusbeq14.mathml");
+    BAExpressionTree *tree=[BATio loadTreeFromMathMLFile:f];
+    
+    NSLog(@"xml string document: \n%@", [tree xmlStringValue]);
+    
+    STAssertTrue([tree.root.children count] >0, @"tree should have more than one child and should be xmlStringValue writable to document");
+}
 
 @end

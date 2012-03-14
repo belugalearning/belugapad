@@ -55,6 +55,7 @@ static CGPoint kOperator1Offset={-105, 0};
 static CGPoint kOperator2Offset={-35, 0};
 static CGPoint kOperator3Offset={35, 0};
 static CGPoint kOperator4Offset={105, 0};
+static CGPoint kOperatorNilOffset={0, 0};
 
 static float kOperatorHitRadius=25.0f;
 
@@ -164,10 +165,6 @@ static void eachShape(void *ptr, void* unused)
     //setup operator layer
     operatorLayer=[[CCLayer alloc] init];
     [self.ForeLayer addChild:operatorLayer z:3];
-    
-    operatorPanel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/operator-popup.png")];
-    [operatorLayer addChild:operatorPanel];
-    [operatorLayer setVisible:NO];
 }
 
 -(void)setupChSpace
@@ -259,47 +256,90 @@ static void eachShape(void *ptr, void* unused)
     //look at operator taps
     else if(operatorLayer.visible)
     {
-        CGPoint op1=[BLMath AddVector:operatorLayer.position toVector:kOperator1Offset];
-        CGPoint op2=[BLMath AddVector:operatorLayer.position toVector:kOperator2Offset];
-        CGPoint op3=[BLMath AddVector:operatorLayer.position toVector:kOperator3Offset];
-        CGPoint op4=[BLMath AddVector:operatorLayer.position toVector:kOperator4Offset];
-        
-        
-        if([BLMath DistanceBetween:location and:op1] <= kOperatorHitRadius)
+        if([operatorMode isEqualToString:@"ALL"])
         {
-            //do operation 1
-            [self doAddOperation];
+            CGPoint op1=[BLMath AddVector:operatorLayer.position toVector:kOperator1Offset];
+            CGPoint op2=[BLMath AddVector:operatorLayer.position toVector:kOperator2Offset];
+            CGPoint op3=[BLMath AddVector:operatorLayer.position toVector:kOperator3Offset];
+            CGPoint op4=[BLMath AddVector:operatorLayer.position toVector:kOperator4Offset];
             
-            continueEval=NO;
-            [self disableOperators];
+            
+            if([BLMath DistanceBetween:location and:op1] <= kOperatorHitRadius)
+            {
+                //do operation 1
+                [self doAddOperation];
+                
+                continueEval=NO;
+                [self disableOperators];
+            }
+            
+            else if([BLMath DistanceBetween:location and:op2] <= kOperatorHitRadius)
+            {
+                //do operation 2
+                [self doSubtractOperation];
+                
+                continueEval=NO;
+                [self disableOperators];
+            }
+            
+            else if([BLMath DistanceBetween:location and:op3] <= kOperatorHitRadius)
+            {
+                //do operation 2
+                [self doMultiplyOperation];
+                
+                continueEval=NO;
+                [self disableOperators];
+            }
+            
+            else if([BLMath DistanceBetween:location and:op4] <= kOperatorHitRadius)
+            {
+                //do operation 2
+                [self doDivideOperation];
+                
+                continueEval=NO;
+                [self disableOperators];
+            }
+        }
+        else
+        {
+            CGPoint op1=[BLMath AddVector:operatorLayer.position toVector:kOperatorNilOffset];
+            if([BLMath DistanceBetween:location and:op1] <= kOperatorHitRadius)
+            {
+                if([operatorMode isEqualToString:@"ADD"])
+                {
+                    //do operation 1
+                    [self doAddOperation];
+                    
+                    continueEval=NO;
+                    [self disableOperators];
+                }
+                if([operatorMode isEqualToString:@"SUB"])
+                {
+                    //do operation 2
+                    [self doSubtractOperation];
+                    
+                    continueEval=NO;
+                    [self disableOperators];
+                }
+                if([operatorMode isEqualToString:@"DIV"])
+                {
+                    //do operation 3
+                    [self doDivideOperation];
+                    
+                    continueEval=NO;
+                    [self disableOperators];
+                }
+                if([operatorMode isEqualToString:@"MUL"])
+                {
+                    //do operation 4
+                    [self doMultiplyOperation];
+                    
+                    continueEval=NO;
+                    [self disableOperators];
+                }
+            }
         }
         
-        else if([BLMath DistanceBetween:location and:op2] <= kOperatorHitRadius)
-        {
-            //do operation 2
-            [self doSubtractOperation];
-            
-            continueEval=NO;
-            [self disableOperators];
-        }
-        
-        else if([BLMath DistanceBetween:location and:op3] <= kOperatorHitRadius)
-        {
-            //do operation 2
-            [self doMultiplyOperation];
-            
-            continueEval=NO;
-            [self disableOperators];
-        }
-        
-        else if([BLMath DistanceBetween:location and:op4] <= kOperatorHitRadius)
-        {
-            //do operation 2
-            [self doDivideOperation];
-            
-            continueEval=NO;
-            [self disableOperators];
-        }
     }
     
     if (continueEval)
@@ -626,11 +666,21 @@ static void eachShape(void *ptr, void* unused)
     
     
     //look at operator mode
-    NSString *operatorMode=[pdef objectForKey:OPERATOR_MODE];
+    operatorMode=[pdef objectForKey:OPERATOR_MODE];
+    [operatorMode retain];
     if(operatorMode)
     {
-        //all operator modes enable operators currently
         enableOperators=YES;
+        
+        // check what mode we've assigned and change the sprite used on the operator layer accordingly
+        if([operatorMode isEqualToString:@"ALL"]) operatorPanel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/operator-popup.png")];
+        if([operatorMode isEqualToString:@"ADD"]) operatorPanel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/operator-add.png")];
+        if([operatorMode isEqualToString:@"SUB"]) operatorPanel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/operator-sub.png")];
+        if([operatorMode isEqualToString:@"MUL"]) operatorPanel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/operator-mul.png")];
+        if([operatorMode isEqualToString:@"DIV"]) operatorPanel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/operator-div.png")];
+        [operatorLayer addChild:operatorPanel];
+        [operatorLayer setVisible:NO];
+
     }
     else
     {
@@ -1243,6 +1293,7 @@ static void eachShape(void *ptr, void* unused)
     
     cpSpaceDestroy(space);
 	space = NULL;
+    [operatorMode release];
     
     [problemFiles release];
     [solutionsDef release];

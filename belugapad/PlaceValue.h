@@ -112,9 +112,10 @@
 -(void)problemStateChanged;
 -(void)evalProblem;
 -(void)doWinning;
--(void)evalProblemCountSeq;
+-(BOOL)evalProblemCountSeq:(NSString*)problemType;
+-(void)calcProblemCountSequence;
 -(void)calcProblemTotalCount;
--(void)evalProblemTotalCount;
+-(BOOL)evalProblemTotalCount:(NSString*)problemType;
 -(void)evalProblemMatrixMatch;
 -(void)snapLayerToPosition;
 

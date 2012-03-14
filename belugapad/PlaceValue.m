@@ -463,41 +463,8 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     
     if([solutionType isEqualToString:COUNT_SEQUENCE])
     {
-        if(gw.Blackboard.SelectedObjects.count > totalCountedInProblem)
-        {
-            totalCountedInProblem=gw.Blackboard.SelectedObjects.count;
-            if(!(totalCountedInProblem > [[solutionsDef objectForKey:SOLUTION_VALUE] intValue]) && !gw.Blackboard.inProblemSetup)
-            {
-               [toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
-            }
-        }
-
-
-
-        if(showCountOnBlock && gw.Blackboard.SelectedObjects.count > lastCount)
-        {
-            
-            CCSprite *s=[[gw.Blackboard.LastSelectedObject store] objectForKey:MY_SPRITE];
-            CGPoint pos=[s position];
-            countLabelBlock=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", gw.Blackboard.SelectedObjects.count] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-            [countLabelBlock setPosition:pos];
-            [countLayer addChild:countLabelBlock];
-            
-            if(fadeCount)
-            {
-                CCFadeOut *labelFade = [CCFadeOut actionWithDuration:kTimeToFadeButtonLabel];
-                [countLabelBlock runAction:labelFade];
-            }
-                    
-
-        }
-        else if(showCountOnBlock && !fadeCount && gw.Blackboard.SelectedObjects.count < lastCount)
-        {
-            [countLayer removeAllChildrenWithCleanup:YES];
-        }
-        lastCount = gw.Blackboard.SelectedObjects.count;
         
-        
+        [self calcProblemCountSequence];
         
         DLog(@"(COUNT_SEQUENCE) Selected %d lastCount %d", gw.Blackboard.SelectedObjects.count, lastCount);
 
@@ -511,6 +478,11 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             maxSumReachedByUser=totalCount;
         }
 
+    }
+    else if([solutionType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE])
+    {
+        [self calcProblemCountSequence];
+        [self calcProblemTotalCount];
     }
     if(showCount||showValue)
     {
@@ -542,11 +514,21 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 
     if([solutionType isEqualToString:COUNT_SEQUENCE])
     {
-        [self evalProblemCountSeq];
+        [self evalProblemCountSeq:COUNT_SEQUENCE];
     }
     else if([solutionType isEqualToString:TOTAL_COUNT])
     {
-        [self evalProblemTotalCount];
+        [self evalProblemTotalCount:TOTAL_COUNT];
+    }
+    else if([solutionType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE])
+    {
+        BOOL seqIsOk = [self evalProblemCountSeq:TOTAL_COUNT_AND_COUNT_SEQUENCE];
+        BOOL countIsOk = [self evalProblemTotalCount:TOTAL_COUNT_AND_COUNT_SEQUENCE];
+        
+        if(seqIsOk && countIsOk)
+        {
+            [self doWinning];
+        }
     }
     else if([solutionType isEqualToString:MATRIX_MATCH])
     {
@@ -569,16 +551,72 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     [problemCompleteLabel setVisible:YES];
     [gw handleMessage:kDWdeselectAll andPayload:nil withLogLevel:-1];
 }
--(void)evalProblemCountSeq
+-(BOOL)evalProblemCountSeq:(NSString*)problemType
 {
-    if(gw.Blackboard.SelectedObjects.count == [[solutionsDef objectForKey:SOLUTION_VALUE] intValue])
+    if([problemType isEqualToString:COUNT_SEQUENCE])
     {
-        [self doWinning];
+        if(gw.Blackboard.SelectedObjects.count == [[solutionsDef objectForKey:SOLUTION_VALUE] intValue])
+        {
+            [self doWinning];
+            return YES;
+        }
+        else if(gw.Blackboard.SelectedObjects.count != [[solutionsDef objectForKey:SOLUTION_VALUE] intValue] && evalMode==kProblemEvalOnCommit)
+        {
+            [self doIncorrect];
+            return NO;
+        }
     }
-    else if(gw.Blackboard.SelectedObjects.count != [[solutionsDef objectForKey:SOLUTION_VALUE] intValue] && evalMode==kProblemEvalOnCommit)
+    
+    if([problemType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE])
     {
-        [self doIncorrect];
+        if(gw.Blackboard.SelectedObjects.count == [[solutionsDef objectForKey:SOLUTION_VALUE] intValue])
+        {
+            return YES;
+        }
+        else if(gw.Blackboard.SelectedObjects.count != [[solutionsDef objectForKey:SOLUTION_VALUE] intValue] && evalMode==kProblemEvalOnCommit)
+        {
+            return NO;
+        }
+
     }
+    return NO;
+}
+-(void)calcProblemCountSequence
+{
+    if(gw.Blackboard.SelectedObjects.count > totalCountedInProblem)
+    {
+        totalCountedInProblem=gw.Blackboard.SelectedObjects.count;
+        if(!(totalCountedInProblem > [[solutionsDef objectForKey:SOLUTION_VALUE] intValue]) && !gw.Blackboard.inProblemSetup)
+        {
+            [toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
+        }
+    }
+    
+    
+    
+    if(showCountOnBlock && gw.Blackboard.SelectedObjects.count > lastCount)
+    {
+        
+        CCSprite *s=[[gw.Blackboard.LastSelectedObject store] objectForKey:MY_SPRITE];
+        CGPoint pos=[s position];
+        countLabelBlock=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", gw.Blackboard.SelectedObjects.count] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        [countLabelBlock setPosition:pos];
+        [countLayer addChild:countLabelBlock];
+        
+        if(fadeCount)
+        {
+            CCFadeOut *labelFade = [CCFadeOut actionWithDuration:kTimeToFadeButtonLabel];
+            [countLabelBlock runAction:labelFade];
+        }
+        
+        
+    }
+    else if(showCountOnBlock && !fadeCount && gw.Blackboard.SelectedObjects.count < lastCount)
+    {
+        [countLayer removeAllChildrenWithCleanup:YES];
+    }
+    lastCount = gw.Blackboard.SelectedObjects.count;
+
 }
 -(void)calcProblemTotalCount
 {
@@ -605,18 +643,34 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         }
     }
 }
--(void)evalProblemTotalCount
+-(BOOL)evalProblemTotalCount:(NSString*)problemType
 {
     [self calcProblemTotalCount];
-    
-    if(totalCount == expectedCount)
+    if([problemType isEqualToString:TOTAL_COUNT])
     {
-        [self doWinning];
+        if(totalCount == expectedCount)
+        {
+            [self doWinning];
+            return YES;
+        }
+        else if(totalCount != expectedCount && evalMode==kProblemEvalOnCommit)
+        {
+            [self doIncorrect];
+            return NO;
+        }
     }
-    else if(totalCount != expectedCount && evalMode==kProblemEvalOnCommit)
+    if([problemType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE])
     {
-        [self doIncorrect];
+        if(totalCount == expectedCount)
+        {
+            return YES;
+        }
+        else if(totalCount != expectedCount && evalMode==kProblemEvalOnCommit)
+        {
+            return NO;
+        }
     }
+    return NO;
 }
 
 -(void)evalProblemMatrixMatch

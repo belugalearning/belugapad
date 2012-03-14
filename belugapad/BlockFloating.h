@@ -67,6 +67,8 @@
     CCLayer *operatorLayer;
     CCSprite *operatorPanel;
     
+    NSString *operatorMode;
+    
     //xp granted
     NSMutableArray *xpGrantedClauses;
 }

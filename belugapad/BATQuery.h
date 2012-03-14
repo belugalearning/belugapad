@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class BAExpression;
+@class BAExpressionTree;
 
 @interface BATQuery : NSObject
 {
@@ -16,9 +17,13 @@
 }
 
 @property (retain) BAExpression *Root;
+@property (retain) BAExpressionTree *Tree;
 
 -(id)initWithExpr:(BAExpression*)expr;
+-(id)initWithExpr:(BAExpression*)expr andTree:(BAExpressionTree*)tree;
 -(int)getMaxDepth;
 -(int)getNodeDepthFor:(BAExpression *)expr withParentDepth:(int)pdepth;
+
+-(BOOL)assumeAndEvalEqualityAtRoot;
 
 @end

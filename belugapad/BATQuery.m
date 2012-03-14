@@ -13,12 +13,21 @@
 @implementation BATQuery
 
 @synthesize Root;
+@synthesize Tree;
 
--(id)initWithExpr:(BAExpression*)expr
+-(id)initWithExpr:(BAExpression *)expr
+{
+    return [self initWithExpr:expr andTree:nil];
+}
+
+-(id)initWithExpr:(BAExpression*)expr andTree:(BAExpressionTree*)tree
 {
     if(self=[super init])
     {
         self.Root=expr;        
+        
+        if(tree) self.Tree=tree;
+        else self.Tree=[BAExpressionTree treeWithRoot:expr];
     }
     
     return self;
@@ -43,6 +52,15 @@
         }
         return pdepth+lmax+1;
     }
+}
+
+-(BOOL)assumeAndEvalEqualityAtRoot
+{
+    //assumes root is equality and evaluates both sides and compares use l comp r
+    BAExpression *leval=[[[self.Root children] objectAtIndex:0] evaluate];
+    BAExpression *reval=[[[self.Root children] objectAtIndex:1] evaluate];
+    
+    return [leval isEqualToExpression:reval];
 }
 
 @end

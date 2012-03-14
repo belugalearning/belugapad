@@ -11,5 +11,11 @@
 @implementation DWRamblerGameObject
 
 @synthesize Value;
+@synthesize StartValue;
+@synthesize DefaultSegmentSize;
+@synthesize CurrentSegmentValue;
+@synthesize Pos;
+@synthesize MinValue;
+@synthesize MaxValue;
 
 @end

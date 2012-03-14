@@ -11,6 +11,11 @@
 @interface DWRamblerGameObject : DWGameObject
 
 @property float Value;
-
+@property float StartValue;
+@property float DefaultSegmentSize;
+@property float CurrentSegmentValue;
+@property CGPoint Pos;
+@property (retain) NSNumber *MinValue;
+@property (retain) NSNumber *MaxValue;
 
 @end

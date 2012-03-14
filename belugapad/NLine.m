@@ -53,6 +53,10 @@
         
         [self populateGW];
         
+        [gw Blackboard].hostCX = cx;
+        [gw Blackboard].hostCY = cy;
+        [gw Blackboard].hostLX = lx;
+        [gw Blackboard].hostLY = ly;
         
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
@@ -76,7 +80,12 @@
     rambler=[DWRamblerGameObject alloc];
     [gw populateAndAddGameObject:rambler withTemplateName:@"TnLineRambler"];
     
-    rambler.Value=45;
+    rambler.Value=7;
+    rambler.StartValue=7;
+    rambler.MinValue=[NSNumber numberWithInt:0];
+    rambler.DefaultSegmentSize=115;
+    rambler.CurrentSegmentValue=1;
+    rambler.Pos=ccp(cx,cy);
     
     selector=[DWSelectorGameObject alloc];
     [gw populateAndAddGameObject:selector withTemplateName:@"TnLineSelector"];

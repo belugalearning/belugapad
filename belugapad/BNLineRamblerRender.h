@@ -8,9 +8,19 @@
 
 #import "DWBehaviour.h"
 
+@class DWRamblerGameObject;
+
 @interface BNLineRamblerRender : DWBehaviour
 {
+    DWRamblerGameObject *ramblerGameObject;
     
+    NSMutableArray *assBlankSegments;
+    NSMutableArray *assLineSegments;
+    NSMutableArray *assIndicators;
+    NSMutableArray *assLabels;
+    
+    CCSprite *assStartTerminator;
+    CCSprite *assEndTerminator;
 }
 
 -(BNLineRamblerRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

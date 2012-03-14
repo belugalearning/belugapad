@@ -223,6 +223,8 @@
 		7FC27F72150FAB4400E16A44 /* NLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F71150FAB4300E16A44 /* NLine.m */; };
 		7FC27F7F150FB19B00E16A44 /* BNLineRamblerInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F7E150FB19B00E16A44 /* BNLineRamblerInput.m */; };
 		7FC27F82150FB1AD00E16A44 /* BNLineRamblerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F81150FB1AD00E16A44 /* BNLineRamblerRender.m */; };
+		7FCBC3E415100CF700066426 /* BATio.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E315100CF700066426 /* BATio.m */; };
+		7FCBC3E815100F3D00066426 /* MathMLConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E715100F3D00066426 /* MathMLConsts.m */; };
 		7FDBA52D14EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51214EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m */; };
 		7FDBA52E14EBD560004D1CC9 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51414EBD560004D1CC9 /* CXMLNode_CreationExtensions.m */; };
 		7FDBA52F14EBD560004D1CC9 /* CXHTMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51614EBD560004D1CC9 /* CXHTMLDocument.m */; };
@@ -677,6 +679,10 @@
 		7FC27F7E150FB19B00E16A44 /* BNLineRamblerInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNLineRamblerInput.m; sourceTree = "<group>"; };
 		7FC27F80150FB1AD00E16A44 /* BNLineRamblerRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNLineRamblerRender.h; sourceTree = "<group>"; };
 		7FC27F81150FB1AD00E16A44 /* BNLineRamblerRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNLineRamblerRender.m; sourceTree = "<group>"; };
+		7FCBC3E215100CF700066426 /* BATio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATio.h; sourceTree = "<group>"; };
+		7FCBC3E315100CF700066426 /* BATio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATio.m; sourceTree = "<group>"; };
+		7FCBC3E615100F3D00066426 /* MathMLConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathMLConsts.h; sourceTree = "<group>"; };
+		7FCBC3E715100F3D00066426 /* MathMLConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MathMLConsts.m; sourceTree = "<group>"; };
 		7FDBA51114EBD560004D1CC9 /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
 		7FDBA51214EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_CreationExtensions.m; sourceTree = "<group>"; };
 		7FDBA51314EBD560004D1CC9 /* CXMLNode_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_CreationExtensions.h; sourceTree = "<group>"; };
@@ -1384,6 +1390,8 @@
 				5536B2A614E43E1400D30BC0 /* PlaceValueConsts.m */,
 				553E80BF150FD3FD00263473 /* NLineConsts.h */,
 				553E80C0150FD3FD00263473 /* NLineConsts.m */,
+				7FCBC3E615100F3D00066426 /* MathMLConsts.h */,
+				7FCBC3E715100F3D00066426 /* MathMLConsts.m */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -1406,6 +1414,8 @@
 				7F71B402150FBCA80097A956 /* BATTreeViz.m */,
 				7F71B403150FBCA80097A956 /* BATViz.h */,
 				7F71B404150FBCA80097A956 /* BATViz.m */,
+				7FCBC3E215100CF700066426 /* BATio.h */,
+				7FCBC3E315100CF700066426 /* BATio.m */,
 			);
 			name = BATools;
 			sourceTree = "<group>";
@@ -1866,6 +1876,8 @@
 				553E80BB150FC60200263473 /* BNLineSelectorInput.m in Sources */,
 				553E80BE150FC78F00263473 /* DWSelectorGameObject.m in Sources */,
 				553E80C1150FD3FD00263473 /* NLineConsts.m in Sources */,
+				7FCBC3E415100CF700066426 /* BATio.m in Sources */,
+				7FCBC3E815100F3D00066426 /* MathMLConsts.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

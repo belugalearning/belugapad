@@ -80,7 +80,7 @@
     
     rambler.Value=0;
     rambler.StartValue=0;
-    rambler.MinValue=[NSNumber numberWithInt:-1];
+//    rambler.MinValue=[NSNumber numberWithInt:-1];
 //    rambler.MaxValue=[NSNumber numberWithInt:3];
     rambler.DefaultSegmentSize=115;
     rambler.CurrentSegmentValue=1;

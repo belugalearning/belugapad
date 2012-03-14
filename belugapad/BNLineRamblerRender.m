@@ -117,95 +117,99 @@ static NSString *kLabelFont=@"visgrad1.fnt";
         CGPoint segStartPos=CGPointMake(ramblerGameObject.Pos.x + ramblerGameObject.TouchXOffset + diffInValFromCentre * ramblerGameObject.DefaultSegmentSize, ramblerGameObject.Pos.y);
         CGPoint segStartPosForLine = CGPointMake(segStartPos.x + ramblerGameObject.DefaultSegmentSize / 2.0f, segStartPos.y);
         
-        //line segment rendering --------------------------------------------------------------------------------------
-        if(ramblerGameObject.MinValue && iValue<[ramblerGameObject.MinValue intValue])
+        if(segStartPos.x > -ramblerGameObject.DefaultSegmentSize && segStartPos.x < (2*gameWorld.Blackboard.hostCX))
         {
-            //render as blank
-            CCSprite *assBlank=[assBlankSegments objectAtIndex:assBlankIndex];
-            [assBlank setVisible:YES];
-            [assBlank setPosition:segStartPosForLine];
             
-            assBlankIndex++;
-        }
-        
-        if((!ramblerGameObject.MinValue || iValue>=[ramblerGameObject.MinValue intValue]) && (!ramblerGameObject.MaxValue || iValue < [ramblerGameObject.MaxValue intValue]))
-        {
-            //render as line
-            CCSprite *assLine=[assLineSegments objectAtIndex:assLineIndex];
-            [assLine setVisible:YES];
-            [assLine setPosition:segStartPosForLine];
+            //line segment rendering --------------------------------------------------------------------------------------
+            if(ramblerGameObject.MinValue && iValue<[ramblerGameObject.MinValue intValue])
+            {
+                //render as blank
+                CCSprite *assBlank=[assBlankSegments objectAtIndex:assBlankIndex];
+                [assBlank setVisible:YES];
+                [assBlank setPosition:segStartPosForLine];
+                
+                assBlankIndex++;
+            }
             
-            assLineIndex++;
-        }
-        
-        if(ramblerGameObject.MaxValue && iValue>= [ramblerGameObject.MaxValue intValue])
-        {
-            //render as blank
-            CCSprite *assBlank=[assBlankSegments objectAtIndex:assBlankIndex];
-            [assBlank setVisible:YES];
-            [assBlank setPosition:segStartPosForLine];
+            if((!ramblerGameObject.MinValue || iValue>=[ramblerGameObject.MinValue intValue]) && (!ramblerGameObject.MaxValue || iValue < [ramblerGameObject.MaxValue intValue]))
+            {
+                //render as line
+                CCSprite *assLine=[assLineSegments objectAtIndex:assLineIndex];
+                [assLine setVisible:YES];
+                [assLine setPosition:segStartPosForLine];
+                
+                assLineIndex++;
+            }
             
-            assBlankIndex++;
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        
-        //place start / end indicators---------------------------------------------------------------------------------
-        if(ramblerGameObject.MinValue && iValue==[ramblerGameObject.MinValue intValue])
-        {
-            [assStartTerminator setVisible:YES];
-            [assStartTerminator setPosition:segStartPos];
-        }
-        if(ramblerGameObject.MaxValue && iValue==[ramblerGameObject.MaxValue intValue])
-        {
-            [assEndTerminator setVisible:YES];
-            [assEndTerminator setPosition:segStartPos];
-        }
-        //-------------------------------------------------------------------------------------------------------------
-        
-        //render number indicator -------------------------------------------------------------------------------------
-        CCSprite *ind=[assIndicators objectAtIndex:assIndicatorIndex];
-        [ind setVisible:YES];
-        [ind setPosition:CGPointMake(segStartPos.x, segStartPos.y - kIndicatorYOffset)];
+            if(ramblerGameObject.MaxValue && iValue>= [ramblerGameObject.MaxValue intValue])
+            {
+                //render as blank
+                CCSprite *assBlank=[assBlankSegments objectAtIndex:assBlankIndex];
+                [assBlank setVisible:YES];
+                [assBlank setPosition:segStartPosForLine];
+                
+                assBlankIndex++;
+            }
+            //-------------------------------------------------------------------------------------------------------------
+            
+            //place start / end indicators---------------------------------------------------------------------------------
+            if(ramblerGameObject.MinValue && iValue==[ramblerGameObject.MinValue intValue])
+            {
+                [assStartTerminator setVisible:YES];
+                [assStartTerminator setPosition:segStartPos];
+            }
+            if(ramblerGameObject.MaxValue && iValue==[ramblerGameObject.MaxValue intValue])
+            {
+                [assEndTerminator setVisible:YES];
+                [assEndTerminator setPosition:segStartPos];
+            }
+            //-------------------------------------------------------------------------------------------------------------
+            
+            //render number indicator -------------------------------------------------------------------------------------
+            CCSprite *ind=[assIndicators objectAtIndex:assIndicatorIndex];
+            [ind setVisible:YES];
+            [ind setPosition:CGPointMake(segStartPos.x, segStartPos.y - kIndicatorYOffset)];
 
-        //change opcaity for on-line and off-line items
-        if((!ramblerGameObject.MinValue || iValue>=[ramblerGameObject.MinValue intValue]) && (!ramblerGameObject.MaxValue || iValue <= [ramblerGameObject.MaxValue intValue]))
-        {
-            [ind setOpacity:255];
-        }
-        else {
-            [ind setOpacity:50];
-        }
+            //change opcaity for on-line and off-line items
+            if((!ramblerGameObject.MinValue || iValue>=[ramblerGameObject.MinValue intValue]) && (!ramblerGameObject.MaxValue || iValue <= [ramblerGameObject.MaxValue intValue]))
+            {
+                [ind setOpacity:255];
+            }
+            else {
+                [ind setOpacity:50];
+            }
 
-        assIndicatorIndex++;
-        
-        //-------------------------------------------------------------------------------------------------------------
-        
-        
-        //label / font render -----------------------------------------------------------------------------------------
+            assIndicatorIndex++;
+            
+            //-------------------------------------------------------------------------------------------------------------
+            
+            
+            //label / font render -----------------------------------------------------------------------------------------
 
-        if((!ramblerGameObject.MinValue || iValue>=[ramblerGameObject.MinValue intValue]) && (!ramblerGameObject.MaxValue || iValue <= [ramblerGameObject.MaxValue intValue]))
-        {
-            NSNumber *numRender=[NSNumber numberWithInt:iValue];        
-//        CCLabelBMFont *l=[CCLabelBMFont labelWithString:[numRender stringValue] fntFile:kLabelFont];
-            CCLabelTTF *l=[CCLabelTTF labelWithString:[numRender stringValue] fontName:@"Helvetica" fontSize:36.0f];
-        
-            [l setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
-            [labelLayer addChild:l];
+            if((!ramblerGameObject.MinValue || iValue>=[ramblerGameObject.MinValue intValue]) && (!ramblerGameObject.MaxValue || iValue <= [ramblerGameObject.MaxValue intValue]))
+            {
+                NSNumber *numRender=[NSNumber numberWithInt:iValue];        
+    //        CCLabelBMFont *l=[CCLabelBMFont labelWithString:[numRender stringValue] fntFile:kLabelFont];
+                CCLabelTTF *l=[CCLabelTTF labelWithString:[numRender stringValue] fontName:@"Helvetica" fontSize:36.0f];
+            
+                [l setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
+                [labelLayer addChild:l];
+            }
+            
+
+    //        CCLabelBMFont *lbl=[assLabels objectForKey:numRender];
+    //        if(!lbl)
+    //        {
+    //            lbl=[CCLabelBMFont labelWithString:[numRender stringValue] fntFile:kLabelFont];
+    ////            lbl=[CCLabelTTF labelWithString:[numRender stringValue] fontName:@"Helvetica" fontSize:24.0f];
+    //            [gameWorld.Blackboard.ComponentRenderLayer addChild:lbl];
+    //            [assLabels setObject:lbl forKey:numRender];
+    //        }
+    //        [lbl setVisible:YES];
+    //        [lbl setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
+            //-------------------------------------------------------------------------------------------------------------
+
         }
-        
-
-//        CCLabelBMFont *lbl=[assLabels objectForKey:numRender];
-//        if(!lbl)
-//        {
-//            lbl=[CCLabelBMFont labelWithString:[numRender stringValue] fntFile:kLabelFont];
-////            lbl=[CCLabelTTF labelWithString:[numRender stringValue] fontName:@"Helvetica" fontSize:24.0f];
-//            [gameWorld.Blackboard.ComponentRenderLayer addChild:lbl];
-//            [assLabels setObject:lbl forKey:numRender];
-//        }
-//        [lbl setVisible:YES];
-//        [lbl setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
-        //-------------------------------------------------------------------------------------------------------------
-        
     }
     
     //set invisible any remaining segements etc

@@ -469,8 +469,15 @@ static void eachShape(void *ptr, void* unused)
 {
     if(!enableOperators) return;
     
-    [opGOsource handleMessage:kDWattachPhys andPayload:nil withLogLevel:0];
-    [opGOtarget handleMessage:kDWattachPhys andPayload:nil withLogLevel:0];
+    if(![[opGOsource store] objectForKey:MOUNT])
+    {
+        [opGOsource handleMessage:kDWattachPhys andPayload:nil withLogLevel:0];
+    }
+    
+    if(![[opGOtarget store] objectForKey:MOUNT])
+    {
+        [opGOtarget handleMessage:kDWattachPhys andPayload:nil withLogLevel:0];        
+    }
     
     opGOsource=nil;
     opGOtarget=nil;

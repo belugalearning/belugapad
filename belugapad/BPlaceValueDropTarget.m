@@ -25,11 +25,11 @@
     if(messageType==kDWareYouADropTarget)
     {
         DWGameObject *addO=gameWorld.Blackboard.PickupObject;
-        
-        
-        //DWGameObject *addO=[payload objectForKey:SELECTED];
-        
         BOOL inactive=[[[gameObject store] objectForKey:HIDDEN] boolValue];
+        if([[[gameObject store] objectForKey:DISABLE_DEL] boolValue])return;
+
+        
+        
         if(inactive==NO)
         {
 

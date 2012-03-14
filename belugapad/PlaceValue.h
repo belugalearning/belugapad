@@ -50,13 +50,13 @@
     
     // GameWorld options
     
-    BOOL showCage;
-    BOOL showNegCage;
     BOOL showCount;
     BOOL showValue;
     BOOL showBaseSelection;
     BOOL showCountOnBlock;
     BOOL showColumnHeader;
+    BOOL disableCageAdd;
+    BOOL disableCageDelete;
     BOOL showReset;
     BOOL fadeCount;
     BOOL allowDeselect;
@@ -72,6 +72,10 @@
     
     NSDictionary *solutionsDef;
     NSDictionary *columnSprites;
+    NSDictionary *columnCages;
+    NSDictionary *columnNegCages;
+    NSDictionary *columnRows;
+    NSDictionary *columnRopes;
     
     DWGameWorld *gw;
 

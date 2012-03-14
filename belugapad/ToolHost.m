@@ -19,6 +19,7 @@
 @implementation ToolHost
 
 @synthesize Zubi;
+@synthesize PpExpr;
 
 +(CCScene *) scene
 {

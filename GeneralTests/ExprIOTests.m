@@ -71,7 +71,7 @@
     
 }
 
--(void)testVarSumWithSubstituions
+-(void)testVarSumWithSubstituions1
 {
     NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/aplusbeq14.mathml");
     BAExpressionTree *tree=[BATio loadTreeFromMathMLFile:f];
@@ -85,10 +85,149 @@
     
     tree.VariableSubstitutions=(NSDictionary*)subs;
     
+    //execute the substitutions
+    [tree substitueVariablesForIntegersOnNode:tree.root];
+    
     BATQuery *q=[[BATQuery alloc] initWithExpr:tree.root andTree:tree];
     STAssertTrue([q assumeAndEvalEqualityAtRoot], @"tree root equality should be possible with variables and substitutions");
     
 }
+
+-(void)testVarSumWithSubstituions2
+{
+    NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/aplusbeq14.mathml");
+    BAExpressionTree *tree=[BATio loadTreeFromMathMLFile:f];
+    
+    STAssertTrue([tree.root.children count] >0, @"tree should have more than one child");
+    
+    //create the substitutions and add to the tree
+    NSMutableDictionary *subs=[[NSMutableDictionary alloc]init];
+    [subs setObject:[NSNumber numberWithInt:11] forKey:@"a"];
+    [subs setObject:[NSNumber numberWithInt:3] forKey:@"b"];
+    
+    tree.VariableSubstitutions=(NSDictionary*)subs;
+    
+    //execute the substitutions
+    [tree substitueVariablesForIntegersOnNode:tree.root];
+    
+    BATQuery *q=[[BATQuery alloc] initWithExpr:tree.root andTree:tree];
+    STAssertTrue([q assumeAndEvalEqualityAtRoot], @"tree root equality should be possible with variables and substitutions that are different");
+    
+}
+
+-(void)testVarSumWithPartialSubstituions
+{
+    NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/aplusbeq14.mathml");
+    BAExpressionTree *tree=[BATio loadTreeFromMathMLFile:f];
+    
+    STAssertTrue([tree.root.children count] >0, @"tree should have more than one child");
+    
+    //create the substitutions and add to the tree
+    NSMutableDictionary *subs=[[NSMutableDictionary alloc]init];
+    [subs setObject:[NSNumber numberWithInt:7] forKey:@"a"];
+    
+    tree.VariableSubstitutions=(NSDictionary*)subs;
+    
+    //execute the substitutions
+    [tree substitueVariablesForIntegersOnNode:tree.root];
+    
+    BATQuery *q=[[BATQuery alloc] initWithExpr:tree.root andTree:tree];
+    STAssertFalse([q assumeAndEvalEqualityAtRoot], @"tree root equality should not be possible without full variable substitution");
+}
+
+-(void)testVarSumWithIncorrectSubstituions
+{
+    NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/aplusbeq14.mathml");
+    BAExpressionTree *tree=[BATio loadTreeFromMathMLFile:f];
+    
+    STAssertTrue([tree.root.children count] >0, @"tree should have more than one child");
+    
+    //create the substitutions and add to the tree
+    NSMutableDictionary *subs=[[NSMutableDictionary alloc]init];
+    [subs setObject:[NSNumber numberWithInt:3] forKey:@"a"];
+    [subs setObject:[NSNumber numberWithInt:16] forKey:@"b"];
+    
+    tree.VariableSubstitutions=(NSDictionary*)subs;
+    
+    //execute the substitutions
+    [tree substitueVariablesForIntegersOnNode:tree.root];
+    
+    BATQuery *q=[[BATQuery alloc] initWithExpr:tree.root andTree:tree];
+    STAssertFalse([q assumeAndEvalEqualityAtRoot], @"tree root equality should not be possible with incorrect variables and substitutions");
+}
+
+-(void)testVarSumWithSubstituionsOnCopy1
+{
+    NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/aplusbeq14.mathml");
+    BAExpressionTree *tree=[BATio loadTreeFromMathMLFile:f];
+    
+    STAssertTrue([tree.root.children count] >0, @"tree should have more than one child");
+    
+    tree=[tree copy];
+    
+    //create the substitutions and add to the tree
+    NSMutableDictionary *subs=[[NSMutableDictionary alloc]init];
+    [subs setObject:[NSNumber numberWithInt:7] forKey:@"a"];
+    [subs setObject:[NSNumber numberWithInt:7] forKey:@"b"];
+    
+    tree.VariableSubstitutions=(NSDictionary*)subs;
+    
+    //execute the substitutions
+    [tree substitueVariablesForIntegersOnNode:tree.root];
+    
+    BATQuery *q=[[BATQuery alloc] initWithExpr:tree.root andTree:tree];
+    STAssertTrue([q assumeAndEvalEqualityAtRoot], @"tree root equality should be possible with variables and substitutions on a copied tree");
+    
+}
+
+-(void)testVarSumWithSubstituionsOnCopy2
+{
+    NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/aplusbeq14.mathml");
+    BAExpressionTree *tree=[BATio loadTreeFromMathMLFile:f];
+    
+    STAssertTrue([tree.root.children count] >0, @"tree should have more than one child");
+    
+    //create the substitutions and add to the tree
+    NSMutableDictionary *subs=[[NSMutableDictionary alloc]init];
+    [subs setObject:[NSNumber numberWithInt:7] forKey:@"a"];
+    [subs setObject:[NSNumber numberWithInt:7] forKey:@"b"];
+    
+    tree.VariableSubstitutions=(NSDictionary*)subs;
+    
+    tree=[tree copy];
+    
+    //execute the substitutions
+    [tree substitueVariablesForIntegersOnNode:tree.root];
+    
+    BATQuery *q=[[BATQuery alloc] initWithExpr:tree.root andTree:tree];
+    STAssertTrue([q assumeAndEvalEqualityAtRoot], @"tree root equality should be possible with variables and substitutions after copy");
+    
+}
+
+-(void)testVarSumWithSubstituionsOnCopy3
+{
+    NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/aplusbeq14.mathml");
+    BAExpressionTree *tree=[BATio loadTreeFromMathMLFile:f];
+    
+    STAssertTrue([tree.root.children count] >0, @"tree should have more than one child");
+    
+    //create the substitutions and add to the tree
+    NSMutableDictionary *subs=[[NSMutableDictionary alloc]init];
+    [subs setObject:[NSNumber numberWithInt:7] forKey:@"a"];
+    [subs setObject:[NSNumber numberWithInt:7] forKey:@"b"];
+    
+    tree.VariableSubstitutions=(NSDictionary*)subs;
+    
+    //execute the substitutions
+    [tree substitueVariablesForIntegersOnNode:tree.root];
+    
+    tree=[tree copy];
+    
+    BATQuery *q=[[BATQuery alloc] initWithExpr:tree.root andTree:tree];
+    STAssertTrue([q assumeAndEvalEqualityAtRoot], @"tree root equality should be possible with variables and substitutions after copying sub-d tree");
+    
+}
+
 
 -(void)testReadParseAndWrite1
 {

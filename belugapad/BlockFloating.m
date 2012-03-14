@@ -1047,6 +1047,7 @@ static void eachShape(void *ptr, void* unused)
 {
     //returns YES if all clauses passed
     int clausesPassed=0;
+    NSMutableArray *matchedObjects = [[NSMutableArray alloc] init];
    
     for (NSDictionary *clause in clauses) {
         float val1=0;
@@ -1068,6 +1069,28 @@ static void eachShape(void *ptr, void* unused)
             if([gocmounteds containsObject:goo])
             {
                 pass=YES;
+            }
+        }
+        if([clauseType isEqualToString:OBJECT_OF_SIZE])
+        {
+            int reqSize = [[clause objectForKey:ITEM1_VALUE] intValue];
+            
+            for(DWGameObject *go in [gameWorld AllGameObjects])
+            {
+                if([[[go store] objectForKey:TEMPLATE_NAME] isEqualToString:@"TfloatObject"])
+                {
+                    
+                    if([[[go store] objectForKey:OBJ_CHILDMATRIX] count] == reqSize)
+                    {
+                        if(![matchedObjects containsObject:go])
+                        {
+                            [matchedObjects addObject:go];
+                            NSLog(@"matched object. array contains: %d", [matchedObjects count]);
+                            pass=YES;
+                            break;
+                        }
+                    }
+                }
             }
         }
         else

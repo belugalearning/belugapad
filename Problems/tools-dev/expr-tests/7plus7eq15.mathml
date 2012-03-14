@@ -5,9 +5,9 @@
   <eq />
   <apply>
    <plus />
-   <ci>a</ci>
-   <ci>b</ci>
+   <cn type='integer'>7</cn>
+   <cn type='integer'>7</cn>
   </apply>
-  <cn type='integer'>14</cn>
+  <cn type='integer'>15</cn>
  </apply>
 </math>

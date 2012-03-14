@@ -205,6 +205,34 @@
 		7FAEC26114BB5BA000E60983 /* visgrad1.fnt in Resources */ = {isa = PBXBuildFile; fileRef = 7FAEC25F14BB5BA000E60983 /* visgrad1.fnt */; };
 		7FAEC26214BB5BA000E60983 /* visgrad1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FAEC26014BB5BA000E60983 /* visgrad1.png */; };
 		7FB8265114F262080053F221 /* ZubiIntro.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB8264814F262080053F221 /* ZubiIntro.m */; };
+		7FB982AD15116633006D31AE /* BAAdditionOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB9829015116633006D31AE /* BAAdditionOperator.m */; };
+		7FB982AE15116633006D31AE /* BAAdditionOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB9829015116633006D31AE /* BAAdditionOperator.m */; };
+		7FB982AF15116633006D31AE /* BABracketOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB9829215116633006D31AE /* BABracketOperator.m */; };
+		7FB982B015116633006D31AE /* BABracketOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB9829215116633006D31AE /* BABracketOperator.m */; };
+		7FB982B115116633006D31AE /* BADivisionOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB9829415116633006D31AE /* BADivisionOperator.m */; };
+		7FB982B215116633006D31AE /* BADivisionOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB9829415116633006D31AE /* BADivisionOperator.m */; };
+		7FB982B315116633006D31AE /* BAEqualsOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB9829615116633006D31AE /* BAEqualsOperator.m */; };
+		7FB982B415116633006D31AE /* BAEqualsOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB9829615116633006D31AE /* BAEqualsOperator.m */; };
+		7FB982B515116633006D31AE /* BAExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB9829815116633006D31AE /* BAExpression.m */; };
+		7FB982B615116633006D31AE /* BAExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB9829815116633006D31AE /* BAExpression.m */; };
+		7FB982B715116633006D31AE /* BAExpressionBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB9829A15116633006D31AE /* BAExpressionBuilder.m */; };
+		7FB982B815116633006D31AE /* BAExpressionBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB9829A15116633006D31AE /* BAExpressionBuilder.m */; };
+		7FB982B915116633006D31AE /* BAExpressionTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB9829D15116633006D31AE /* BAExpressionTree.m */; };
+		7FB982BA15116633006D31AE /* BAExpressionTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB9829D15116633006D31AE /* BAExpressionTree.m */; };
+		7FB982BB15116633006D31AE /* BAInteger.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982A015116633006D31AE /* BAInteger.m */; };
+		7FB982BC15116633006D31AE /* BAInteger.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982A015116633006D31AE /* BAInteger.m */; };
+		7FB982BD15116633006D31AE /* BAMultiplicationOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982A215116633006D31AE /* BAMultiplicationOperator.m */; };
+		7FB982BE15116633006D31AE /* BAMultiplicationOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982A215116633006D31AE /* BAMultiplicationOperator.m */; };
+		7FB982BF15116633006D31AE /* BAOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982A415116633006D31AE /* BAOperator.m */; };
+		7FB982C015116633006D31AE /* BAOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982A415116633006D31AE /* BAOperator.m */; };
+		7FB982C115116633006D31AE /* BAOperatorSortDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982A615116633006D31AE /* BAOperatorSortDescriptor.m */; };
+		7FB982C215116633006D31AE /* BAOperatorSortDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982A615116633006D31AE /* BAOperatorSortDescriptor.m */; };
+		7FB982C315116633006D31AE /* BAPowerOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982A815116633006D31AE /* BAPowerOperator.m */; };
+		7FB982C415116633006D31AE /* BAPowerOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982A815116633006D31AE /* BAPowerOperator.m */; };
+		7FB982C515116633006D31AE /* BAVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982AA15116633006D31AE /* BAVariable.m */; };
+		7FB982C615116633006D31AE /* BAVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982AA15116633006D31AE /* BAVariable.m */; };
+		7FB982C715116633006D31AE /* NSArray_BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */; };
+		7FB982C815116633006D31AE /* NSArray_BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */; };
 		7FC27F6F150FAAAA00E16A44 /* DWRamblerGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */; };
 		7FC27F72150FAB4400E16A44 /* NLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F71150FAB4300E16A44 /* NLine.m */; };
 		7FC27F7F150FB19B00E16A44 /* BNLineRamblerInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F7E150FB19B00E16A44 /* BNLineRamblerInput.m */; };
@@ -629,6 +657,36 @@
 		7FAEC26014BB5BA000E60983 /* visgrad1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = visgrad1.png; sourceTree = "<group>"; };
 		7FB8264714F262080053F221 /* ZubiIntro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZubiIntro.h; sourceTree = "<group>"; };
 		7FB8264814F262080053F221 /* ZubiIntro.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZubiIntro.m; sourceTree = "<group>"; };
+		7FB9828F15116633006D31AE /* BAAdditionOperator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAAdditionOperator.h; sourceTree = "<group>"; };
+		7FB9829015116633006D31AE /* BAAdditionOperator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAAdditionOperator.m; sourceTree = "<group>"; };
+		7FB9829115116633006D31AE /* BABracketOperator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABracketOperator.h; sourceTree = "<group>"; };
+		7FB9829215116633006D31AE /* BABracketOperator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABracketOperator.m; sourceTree = "<group>"; };
+		7FB9829315116633006D31AE /* BADivisionOperator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BADivisionOperator.h; sourceTree = "<group>"; };
+		7FB9829415116633006D31AE /* BADivisionOperator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BADivisionOperator.m; sourceTree = "<group>"; };
+		7FB9829515116633006D31AE /* BAEqualsOperator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAEqualsOperator.h; sourceTree = "<group>"; };
+		7FB9829615116633006D31AE /* BAEqualsOperator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAEqualsOperator.m; sourceTree = "<group>"; };
+		7FB9829715116633006D31AE /* BAExpression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAExpression.h; sourceTree = "<group>"; };
+		7FB9829815116633006D31AE /* BAExpression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAExpression.m; sourceTree = "<group>"; };
+		7FB9829915116633006D31AE /* BAExpressionBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAExpressionBuilder.h; sourceTree = "<group>"; };
+		7FB9829A15116633006D31AE /* BAExpressionBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAExpressionBuilder.m; sourceTree = "<group>"; };
+		7FB9829B15116633006D31AE /* BAExpressionHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAExpressionHeaders.h; sourceTree = "<group>"; };
+		7FB9829C15116633006D31AE /* BAExpressionTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAExpressionTree.h; sourceTree = "<group>"; };
+		7FB9829D15116633006D31AE /* BAExpressionTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAExpressionTree.m; sourceTree = "<group>"; };
+		7FB9829E15116633006D31AE /* BAExpressionTreeElementProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAExpressionTreeElementProtocol.h; sourceTree = "<group>"; };
+		7FB9829F15116633006D31AE /* BAInteger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAInteger.h; sourceTree = "<group>"; };
+		7FB982A015116633006D31AE /* BAInteger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAInteger.m; sourceTree = "<group>"; };
+		7FB982A115116633006D31AE /* BAMultiplicationOperator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAMultiplicationOperator.h; sourceTree = "<group>"; };
+		7FB982A215116633006D31AE /* BAMultiplicationOperator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAMultiplicationOperator.m; sourceTree = "<group>"; };
+		7FB982A315116633006D31AE /* BAOperator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAOperator.h; sourceTree = "<group>"; };
+		7FB982A415116633006D31AE /* BAOperator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAOperator.m; sourceTree = "<group>"; };
+		7FB982A515116633006D31AE /* BAOperatorSortDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAOperatorSortDescriptor.h; sourceTree = "<group>"; };
+		7FB982A615116633006D31AE /* BAOperatorSortDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAOperatorSortDescriptor.m; sourceTree = "<group>"; };
+		7FB982A715116633006D31AE /* BAPowerOperator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAPowerOperator.h; sourceTree = "<group>"; };
+		7FB982A815116633006D31AE /* BAPowerOperator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAPowerOperator.m; sourceTree = "<group>"; };
+		7FB982A915116633006D31AE /* BAVariable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAVariable.h; sourceTree = "<group>"; };
+		7FB982AA15116633006D31AE /* BAVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAVariable.m; sourceTree = "<group>"; };
+		7FB982AB15116633006D31AE /* NSArray_BAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSArray_BAAdditions.h; sourceTree = "<group>"; };
+		7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSArray_BAAdditions.m; sourceTree = "<group>"; };
 		7FC27F6D150FAAAA00E16A44 /* DWRamblerGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWRamblerGameObject.h; sourceTree = "<group>"; };
 		7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWRamblerGameObject.m; sourceTree = "<group>"; };
 		7FC27F70150FAB4300E16A44 /* NLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NLine.h; sourceTree = "<group>"; };
@@ -1242,6 +1300,7 @@
 		7F51159714A9EF21001AF372 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				7FB9828E15116612006D31AE /* BAExpression */,
 				7F71B3FD150FBC8B0097A956 /* BATools */,
 				7F719C0014D7397000F30E89 /* Daemon */,
 				7FABE69214B33E5800ED2D0C /* global.h */,
@@ -1390,6 +1449,43 @@
 				7FABE6BE14B661B400ED2D0C /* BLMath.m */,
 			);
 			name = Helpers;
+			sourceTree = "<group>";
+		};
+		7FB9828E15116612006D31AE /* BAExpression */ = {
+			isa = PBXGroup;
+			children = (
+				7FB9828F15116633006D31AE /* BAAdditionOperator.h */,
+				7FB9829015116633006D31AE /* BAAdditionOperator.m */,
+				7FB9829115116633006D31AE /* BABracketOperator.h */,
+				7FB9829215116633006D31AE /* BABracketOperator.m */,
+				7FB9829315116633006D31AE /* BADivisionOperator.h */,
+				7FB9829415116633006D31AE /* BADivisionOperator.m */,
+				7FB9829515116633006D31AE /* BAEqualsOperator.h */,
+				7FB9829615116633006D31AE /* BAEqualsOperator.m */,
+				7FB9829715116633006D31AE /* BAExpression.h */,
+				7FB9829815116633006D31AE /* BAExpression.m */,
+				7FB9829915116633006D31AE /* BAExpressionBuilder.h */,
+				7FB9829A15116633006D31AE /* BAExpressionBuilder.m */,
+				7FB9829B15116633006D31AE /* BAExpressionHeaders.h */,
+				7FB9829C15116633006D31AE /* BAExpressionTree.h */,
+				7FB9829D15116633006D31AE /* BAExpressionTree.m */,
+				7FB9829E15116633006D31AE /* BAExpressionTreeElementProtocol.h */,
+				7FB9829F15116633006D31AE /* BAInteger.h */,
+				7FB982A015116633006D31AE /* BAInteger.m */,
+				7FB982A115116633006D31AE /* BAMultiplicationOperator.h */,
+				7FB982A215116633006D31AE /* BAMultiplicationOperator.m */,
+				7FB982A315116633006D31AE /* BAOperator.h */,
+				7FB982A415116633006D31AE /* BAOperator.m */,
+				7FB982A515116633006D31AE /* BAOperatorSortDescriptor.h */,
+				7FB982A615116633006D31AE /* BAOperatorSortDescriptor.m */,
+				7FB982A715116633006D31AE /* BAPowerOperator.h */,
+				7FB982A815116633006D31AE /* BAPowerOperator.m */,
+				7FB982A915116633006D31AE /* BAVariable.h */,
+				7FB982AA15116633006D31AE /* BAVariable.m */,
+				7FB982AB15116633006D31AE /* NSArray_BAAdditions.h */,
+				7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */,
+			);
+			name = BAExpression;
 			sourceTree = "<group>";
 		};
 		7FC27F6B150FA9FC00E16A44 /* Extensions */ = {
@@ -1601,6 +1697,20 @@
 				7F71B407150FBCA80097A956 /* BATViz.m in Sources */,
 				7F71B40A150FBCB20097A956 /* ExprScene.m in Sources */,
 				7FCBC3EB1510195F00066426 /* ExprIOTests.m in Sources */,
+				7FB982AE15116633006D31AE /* BAAdditionOperator.m in Sources */,
+				7FB982B015116633006D31AE /* BABracketOperator.m in Sources */,
+				7FB982B215116633006D31AE /* BADivisionOperator.m in Sources */,
+				7FB982B415116633006D31AE /* BAEqualsOperator.m in Sources */,
+				7FB982B615116633006D31AE /* BAExpression.m in Sources */,
+				7FB982B815116633006D31AE /* BAExpressionBuilder.m in Sources */,
+				7FB982BA15116633006D31AE /* BAExpressionTree.m in Sources */,
+				7FB982BC15116633006D31AE /* BAInteger.m in Sources */,
+				7FB982BE15116633006D31AE /* BAMultiplicationOperator.m in Sources */,
+				7FB982C015116633006D31AE /* BAOperator.m in Sources */,
+				7FB982C215116633006D31AE /* BAOperatorSortDescriptor.m in Sources */,
+				7FB982C415116633006D31AE /* BAPowerOperator.m in Sources */,
+				7FB982C615116633006D31AE /* BAVariable.m in Sources */,
+				7FB982C815116633006D31AE /* NSArray_BAAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1788,6 +1898,20 @@
 				553E80C1150FD3FD00263473 /* NLineConsts.m in Sources */,
 				7FCBC3E415100CF700066426 /* BATio.m in Sources */,
 				7FCBC3E815100F3D00066426 /* MathMLConsts.m in Sources */,
+				7FB982AD15116633006D31AE /* BAAdditionOperator.m in Sources */,
+				7FB982AF15116633006D31AE /* BABracketOperator.m in Sources */,
+				7FB982B115116633006D31AE /* BADivisionOperator.m in Sources */,
+				7FB982B315116633006D31AE /* BAEqualsOperator.m in Sources */,
+				7FB982B515116633006D31AE /* BAExpression.m in Sources */,
+				7FB982B715116633006D31AE /* BAExpressionBuilder.m in Sources */,
+				7FB982B915116633006D31AE /* BAExpressionTree.m in Sources */,
+				7FB982BB15116633006D31AE /* BAInteger.m in Sources */,
+				7FB982BD15116633006D31AE /* BAMultiplicationOperator.m in Sources */,
+				7FB982BF15116633006D31AE /* BAOperator.m in Sources */,
+				7FB982C115116633006D31AE /* BAOperatorSortDescriptor.m in Sources */,
+				7FB982C315116633006D31AE /* BAPowerOperator.m in Sources */,
+				7FB982C515116633006D31AE /* BAVariable.m in Sources */,
+				7FB982C715116633006D31AE /* NSArray_BAAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

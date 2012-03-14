@@ -21,13 +21,15 @@
     
     NSDictionary *nsmap=[NSDictionary dictionaryWithObject:MML_NAMESPACE forKey:@""];
     
-    BAExpression *root=[self parseMathMLElement:(CXMLElement*)[[doc rootElement] childAtIndex:0]];
+    CXMLElement *e1=[[[doc rootElement] nodesForXPath:@"*" namespaceMappings:nsmap error:nil] objectAtIndex:0];
+    
+    BAExpression *root=[self parseMathMLElement:(CXMLElement*)e1 withNSMap:nsmap];
     BAExpressionTree *tree=[BAExpressionTree treeWithRoot:root];
     
     return tree;
 }
 
-+(BAExpression *)parseMathMLElement:(CXMLElement*)element
++(BAExpression *)parseMathMLElement:(CXMLElement*)element withNSMap:(NSDictionary*)nsmap
 {
     BAExpression *expr=nil;
 
@@ -38,10 +40,11 @@
             //case the first child (the apply what / node type) and then add children (using nodes past the first)
             if([[element children] count]<1)
             {
-                DLog(@"no children found for apply");
+//                DLog(@"no children found for apply");
             }
             else {
-                CXMLElement *fchild=[[element children] objectAtIndex:0];
+                NSArray *echildren=[element nodesForXPath:@"*" namespaceMappings:nsmap error:nil];
+                CXMLElement *fchild=[echildren objectAtIndex:0];
                 if([fchild.name isEqualToString:MML_EQ])
                 {
                     expr=[BAEqualsOperator operator];
@@ -52,7 +55,7 @@
                 }
                 else if([fchild.name isEqualToString:MML_MINUS])
                 {
-                    DLog(@"minus not currently supported in parser / engine");
+//                    DLog(@"minus not currently supported in parser / engine");
                 }
                 else if([fchild.name isEqualToString:MML_TIMES])
                 {
@@ -60,8 +63,8 @@
                 }
                 
                 //parse and add children (past first)
-                for (int i=1; i<[[element children] count]; i++) {
-                    [expr addChild:[self parseMathMLElement:[[element children] objectAtIndex:i]]];
+                for (int i=1; i<[echildren count]; i++) {
+                    [expr addChild:[self parseMathMLElement:[echildren objectAtIndex:i] withNSMap:nsmap]];
                 }
             }
             
@@ -79,7 +82,7 @@
         }
         else {
             //do nothing, we don't recognise or don't want this element
-            DLog(@"unrecognized element found in MathML parse: %@", element.name);
+//            DLog(@"unrecognized element found in MathML parse: %@", element.name);
         }
     }
     

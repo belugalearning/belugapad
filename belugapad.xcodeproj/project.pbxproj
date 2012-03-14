@@ -225,6 +225,8 @@
 		7FC27F82150FB1AD00E16A44 /* BNLineRamblerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F81150FB1AD00E16A44 /* BNLineRamblerRender.m */; };
 		7FCBC3E415100CF700066426 /* BATio.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E315100CF700066426 /* BATio.m */; };
 		7FCBC3E815100F3D00066426 /* MathMLConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E715100F3D00066426 /* MathMLConsts.m */; };
+		7FCBC3EB1510195F00066426 /* ExprIOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3EA1510195F00066426 /* ExprIOTests.m */; };
+		7FCBC3EC15101B5A00066426 /* BATio.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E315100CF700066426 /* BATio.m */; };
 		7FDBA52D14EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51214EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m */; };
 		7FDBA52E14EBD560004D1CC9 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51414EBD560004D1CC9 /* CXMLNode_CreationExtensions.m */; };
 		7FDBA52F14EBD560004D1CC9 /* CXHTMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51614EBD560004D1CC9 /* CXHTMLDocument.m */; };
@@ -683,6 +685,7 @@
 		7FCBC3E315100CF700066426 /* BATio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATio.m; sourceTree = "<group>"; };
 		7FCBC3E615100F3D00066426 /* MathMLConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathMLConsts.h; sourceTree = "<group>"; };
 		7FCBC3E715100F3D00066426 /* MathMLConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MathMLConsts.m; sourceTree = "<group>"; };
+		7FCBC3EA1510195F00066426 /* ExprIOTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprIOTests.m; sourceTree = "<group>"; };
 		7FDBA51114EBD560004D1CC9 /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
 		7FDBA51214EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_CreationExtensions.m; sourceTree = "<group>"; };
 		7FDBA51314EBD560004D1CC9 /* CXMLNode_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_CreationExtensions.h; sourceTree = "<group>"; };
@@ -809,6 +812,7 @@
 			children = (
 				7F40D8A214FFD8BE006A3A55 /* GeneralTests.h */,
 				7F40D8A314FFD8BE006A3A55 /* GeneralTests.m */,
+				7FCBC3EA1510195F00066426 /* ExprIOTests.m */,
 				7F40D8A914FFDA4C006A3A55 /* AddSubtractLogicTests.m */,
 				7F40D8AA14FFDA4C006A3A55 /* DivisionLogicTests.m */,
 				7F40D8AD14FFDA4C006A3A55 /* IntegerLogicTests.m */,
@@ -1673,10 +1677,12 @@
 				7F40D8B314FFDA4D006A3A55 /* IntegerLogicTests.m in Sources */,
 				7F40D8B414FFDA4D006A3A55 /* MultiplyLogicTests.m in Sources */,
 				7F40D8B514FFDA4D006A3A55 /* PowerLogicTests.m in Sources */,
+				7FCBC3EC15101B5A00066426 /* BATio.m in Sources */,
 				7F71B405150FBCA80097A956 /* BATQuery.m in Sources */,
 				7F71B406150FBCA80097A956 /* BATTreeViz.m in Sources */,
 				7F71B407150FBCA80097A956 /* BATViz.m in Sources */,
 				7F71B40A150FBCB20097A956 /* ExprScene.m in Sources */,
+				7FCBC3EB1510195F00066426 /* ExprIOTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1922,6 +1928,7 @@
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				HEADER_SEARCH_PATHS = "/usr/include/libxml2/**";
 				INFOPLIST_FILE = "GeneralTests/GeneralTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -1943,6 +1950,7 @@
 				GCC_PREFIX_HEADER = "GeneralTests/GeneralTests-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				HEADER_SEARCH_PATHS = "/usr/include/libxml2/**";
 				INFOPLIST_FILE = "GeneralTests/GeneralTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";

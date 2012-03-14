@@ -6,8 +6,15 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+
+@class BAExpressionTree;
+@class BAExpression;
+@class CXMLElement;
 
 @interface BATio : NSObject
+
++(BAExpressionTree *)loadTreeFromMathMLFile:(NSString*)filePath;
++(BAExpression *)parseMathMLElement:(CXMLElement*)element withNSMap:(NSDictionary*)nsmap;
 
 @end

@@ -50,6 +50,7 @@ typedef enum {
     CCLabelTTF *metaQuestionIncompleteLabel;
     BOOL showMetaQuestionIncomplete;
     float shownMetaQuestionIncompleteFor;
+    BOOL metaQuestionForceComplete;
     
     NSDictionary *pdef;
     

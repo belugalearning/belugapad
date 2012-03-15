@@ -12,6 +12,9 @@
 @interface BNLineSelectorInput : DWBehaviour
 {
     DWSelectorGameObject *selector;
+    
+    //position of this selector in populating the variable names
+    int selectorVarPos;
 }
 
 

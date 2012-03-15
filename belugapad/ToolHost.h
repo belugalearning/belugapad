@@ -56,6 +56,7 @@ typedef enum {
 
 @property (retain) Daemon *Zubi;
 @property (retain) BAExpressionTree *PpExpr;
+@property BOOL flagResetProblem;
 
 +(CCScene *) scene;
 

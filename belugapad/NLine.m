@@ -52,7 +52,9 @@
         [toolHost addToolForeLayer:self.ForeLayer];
         
         gw.Blackboard.ComponentRenderLayer=self.ForeLayer;
-                
+        
+        [self setupLabels];
+        
         [self readPlist:pdef];
         
         [self populateGW];
@@ -68,6 +70,16 @@
     }
     
     return self;
+}
+
+-(void)setupLabels
+{
+    problemCompleteLabel=[CCLabelTTF labelWithString:@"problem complete" fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    [problemCompleteLabel setColor:kLabelCompleteColor];
+    [problemCompleteLabel setPosition:ccp(cx, cy*0.2f)];
+    [problemCompleteLabel setVisible:NO];
+    [self.ForeLayer addChild:problemCompleteLabel z:5];
+
 }
 
 -(void)doUpdateOnTick:(ccTime)delta
@@ -94,14 +106,19 @@
     selector=[DWSelectorGameObject alloc];
     [gw populateAndAddGameObject:selector withTemplateName:@"TnLineSelector"];
     
+    //point the selector at the rambler
+    selector.WatchRambler=rambler;
     selector.pos=ccp(cx,cy + 75.0f);
     
-    //point gameWorld at expression
-    gw.Blackboard.ProblemExpression=toolHost.PpExpr;
+    if(toolHost.PpExpr)
+    {
+        //point gameWorld at expression
+        gw.Blackboard.ProblemExpression=toolHost.PpExpr;
     
-    //get list of vars for selector
-    BATQuery *q=[[BATQuery alloc] initWithExpr:toolHost.PpExpr.root andTree:toolHost.PpExpr];
-    selector.PopulateVariableNames=[q getDistinctVarNames];
+        //get list of vars for selector
+        BATQuery *q=[[BATQuery alloc] initWithExpr:toolHost.PpExpr.root andTree:toolHost.PpExpr];
+        selector.PopulateVariableNames=[q getDistinctVarNames];
+    }
 }
 
 -(void)readPlist:(NSDictionary*)pdef
@@ -127,7 +144,7 @@
     problemDescLabel=[CCLabelTTF labelWithString:[pdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
     [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
     //[problemDescLabel setColor:kLabelTitleColor];
-    [problemDescLabel setTag:3];
+    [problemDescLabel setTag:1];
     [problemDescLabel setOpacity:0];
     [self.ForeLayer addChild:problemDescLabel];
     
@@ -139,12 +156,41 @@
     if(evalMode==kProblemEvalAuto)
     {
         self.ProblemComplete=[self evalProblem];
+        
+        if(!self.ProblemComplete) 
+        {
+            toolHost.flagResetProblem=YES;
+        }
+        else {
+            [self showComplete];
+        }
     }
+}
+
+-(void)showComplete
+{
+    [problemCompleteLabel setVisible:YES];
 }
 
 -(BOOL)evalProblem
 {
-    BOOL result=NO;
+    //not possible to eval without expression
+    if(!toolHost.PpExpr) return NO;
+    
+    //copy, sub eval and compare the expression
+    BAExpressionTree *evalTree=[toolHost.PpExpr copy];
+    
+    //set subs & execute
+    evalTree.VariableSubstitutions=gw.Blackboard.ProblemVariableSubstitutions;
+    [evalTree substitueVariablesForIntegersOnNode:evalTree.root];
+    
+    //evaluate
+    [evalTree evaluateTree];
+    
+    //query comparison for equality (currently has to assume as a top level eq using query layer
+    BATQuery *q=[[BATQuery alloc] initWithExpr:evalTree.root andTree:evalTree];
+    BOOL result=[q assumeAndEvalEqualityAtRoot];
+    
     return result;
 }
 
@@ -160,6 +206,14 @@
     if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit)
     {
         self.ProblemComplete=[self evalProblem];
+        
+        if(!self.ProblemComplete) 
+        {
+            toolHost.flagResetProblem=YES;
+        }
+        else {
+            [self showComplete];
+        }
     }
     else if (location.y < kRamblerYMax)
     {

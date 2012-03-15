@@ -12,5 +12,6 @@
 
 @synthesize pos;
 @synthesize PopulateVariableNames;
+@synthesize WatchRambler;
 
 @end

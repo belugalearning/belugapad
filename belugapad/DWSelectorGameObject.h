@@ -8,9 +8,13 @@
 
 #import "DWGameObject.h"
 
+@class DWRamblerGameObject;
+
+
 @interface DWSelectorGameObject : DWGameObject
 
 @property CGPoint pos;
-@property NSMutableArray *PopulateVariableNames;
+@property (retain) NSMutableArray *PopulateVariableNames;
+@property (retain) DWRamblerGameObject *WatchRambler;
 
 @end

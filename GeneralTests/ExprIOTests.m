@@ -344,6 +344,21 @@
     
 }
 
+-(void)testVariableNameQueryCountWithDuplicates
+{
+    NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/aplusbbyaeq14.mathml");
+    BAExpressionTree *tree=[BATio loadTreeFromMathMLFile:f];
+    
+    STAssertTrue([tree.root.children count] >0, @"tree should have more than one child");
+    
+    BATQuery *q=[[BATQuery alloc] initWithExpr:tree.root andTree:tree];
+    
+    NSMutableArray *varnames=[q getDistinctVarNames];
+    
+    STAssertTrue([varnames count]==2, @"count of unique vars should be two (distinct)");
+    
+}
+
 -(void)testReadParseAndWriteToXMLdocString
 {
     NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/aplusbeq14.mathml");

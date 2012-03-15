@@ -125,7 +125,7 @@
         spriteFileName=[[gameObject store] objectForKey:SPRITE_FILENAME];
     }
     
-    CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/placevalue/%@", spriteFileName]))];
+    CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
     
     if(gameWorld.Blackboard.inProblemSetup)
     {

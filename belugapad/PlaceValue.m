@@ -896,6 +896,11 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         
         if([gw Blackboard].PickupObject!=nil)
         {
+            if([[[gw Blackboard].PickupObject store] objectForKey:PICKUP_SPRITE_FILENAME] && !gw.Blackboard.inProblemSetup)
+            {
+                CCSprite *mySprite=[[[gw Blackboard].PickupObject store] objectForKey:MY_SPRITE];
+                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[[gw Blackboard].PickupObject store] objectForKey:PICKUP_SPRITE_FILENAME])]];
+            }
             gw.Blackboard.PickupOffset = location;
             // At this point we can still cancel the tap
             potentialTap = YES;
@@ -935,7 +940,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         [renderLayer setPosition:ccpAdd(renderLayer.position, diff)];
     }
     
-    if([gw Blackboard].DropObject!=nil)
+    if([gw Blackboard].PickupObject!=nil)
     {
         if(proximitySprite)
         {
@@ -944,19 +949,19 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
             
             //-NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
-            DWGameObject *tobj=gw.Blackboard.DropObject;
+            //DWGameObject *tobj=gw.Blackboard.DropObject;
             //gw.Blackboard.DropObject = nil;
             [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
 
             //DWGameObject *go = [[gw.Blackboard.PickupObject store] objectForKey:MOUNT];
-        CCSprite *mySprite = [[gw.Blackboard.DropObject store] objectForKey:MY_SPRITE];
+        CCSprite *mySprite = [[gw.Blackboard.PickupObject store] objectForKey:MY_SPRITE];
             if([gw Blackboard].DropObject != nil)
             {
-                    [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[[gw Blackboard].DropObject store] objectForKey:PROXIMITY_SPRITE_FILENAME])]];
+                    [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[[gw Blackboard].PickupObject store] objectForKey:PROXIMITY_SPRITE_FILENAME])]];
 
             }
             else {
-                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gw.Blackboard.DropObject store] objectForKey:SPRITE_FILENAME])]];                
+                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gw.Blackboard.PickupObject store] objectForKey:SPRITE_FILENAME])]];                
             }
         }
         CGPoint diff=[BLMath SubtractVector:prevLoc from:location];

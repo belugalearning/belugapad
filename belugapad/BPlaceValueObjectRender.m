@@ -117,7 +117,7 @@
 
 -(void)setSprite
 {
-    NSString *spriteFileName=@"obj-placevalue-unit.png";
+    NSString *spriteFileName=@"/images/placevalue/obj-placevalue-unit.png";
     //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
 
     if([[gameObject store] objectForKey:SPRITE_FILENAME])
@@ -165,10 +165,6 @@
         }
         else
         {
-            if([[gameObject store] objectForKey:PICKUP_SPRITE_FILENAME] && !gameWorld.Blackboard.inProblemSetup)
-            {
-                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gameObject store] objectForKey:PICKUP_SPRITE_FILENAME])]];
-            }
             [mySprite setPosition:ccp(x, y)];
         }
     }

@@ -409,6 +409,37 @@ static void eachShape(void *ptr, void* unused)
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         
         [[gameWorld Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:-1];
+        
+        //if we were previously over a drop target, check that we still are
+        if(gameWorld.Blackboard.DropObject)
+        {
+            DWGameObject *tobj=gameWorld.Blackboard.DropObject;
+            
+            //look for a drop target
+            gameWorld.Blackboard.DropObject=nil;
+            [gameWorld handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:0];
+            
+            if(gameWorld.Blackboard.DropObject)
+            {
+                //we are -- just reset DropObject (don't resend message)
+                gameWorld.Blackboard.DropObject=tobj;
+            }
+            else {
+                //no longer over drop object, unhighlight it
+                [tobj  handleMessage:kDWunhighlight];
+            }
+        }
+        else {
+            //look for a drop target
+            gameWorld.Blackboard.DropObject=nil;
+            [gameWorld handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:0];
+            
+            if(gameWorld.Blackboard.DropObject)
+            {
+                //newly proximate go, highlight it
+               [gameWorld.Blackboard.DropObject handleMessage:kDWhighlight];
+            }
+        }
     }
     
 }
@@ -525,6 +556,11 @@ static void eachShape(void *ptr, void* unused)
 	
     //daemon to (currently) let go and rest
     [toolHost.Zubi setMode:kDaemonModeWaiting];
+    
+    if(gameWorld.Blackboard.DropObject)
+    {
+        [gameWorld.Blackboard.DropObject handleMessage:kDWunhighlight];
+    }
     
     if([gameWorld Blackboard].PickupObject!=nil)
     {

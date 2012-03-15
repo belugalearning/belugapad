@@ -34,6 +34,39 @@
     {
         [mySprite setVisible:YES];
     }
+    
+    if(messageType==kDWhighlight)
+    {
+        [self showHighlight];
+    }
+
+    if(messageType==kDWunhighlight)
+    {
+        [self hideHighlight];
+    }
+}
+
+-(void)showHighlight
+{
+    if(myHighlight)return;
+    
+    NSString *sname=[[gameObject store] objectForKey:@"RENDER_HIGHLIGHT_IMAGE_NAME"];
+    if(!sname) sname=@"obj-blockholder-mount1x1_block1.png";
+    
+    myHighlight=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/blockholders/%@", sname]))];    
+    
+    float x=[[[gameObject store] objectForKey:POS_X] floatValue];
+    float y=[GOS_GET(POS_Y) floatValue];
+    
+    [myHighlight setPosition:ccp(x, y)];
+    
+    [[gameWorld GameScene].ForeLayer addChild:myHighlight z:0];
+}
+
+-(void)hideHighlight
+{
+    [[gameWorld GameScene].ForeLayer removeChild:myHighlight cleanup:YES];
+    myHighlight=nil;
 }
 
 -(void)setSprite

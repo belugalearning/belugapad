@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>3 blocks! add 1 more and count how many you have.</string>
+	<string>3 blocks! add 1 more and count how many you have. (totcount+sequence)</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -23,7 +23,7 @@
 	<key>ALLOW_MULCHING</key>
 	<false/>
 	<key>EVAL_MODE</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>SHOW_CAGE</key>

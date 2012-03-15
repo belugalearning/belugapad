@@ -6,5 +6,9 @@
 	<string>/Problems/tools-dev/da-pv/placevalue-problem021.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem022.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem023.plist</string>
+	<string>/Problems/tools-dev/da-pv/placevalue-problem024.plist</string>
+	<string>/Problems/tools-dev/da-fb/float-problem1-singleop.plist</string>
+	<string>/Problems/tools-dev/da-fb/float-problem0001.plist</string>
+	<string>/Problems/tools-dev/da-fb/float-problem0002.plist</string>
 </array>
 </plist>

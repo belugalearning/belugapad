@@ -626,7 +626,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     
     
     
-    if(showCountOnBlock && gw.Blackboard.SelectedObjects.count > lastCount)
+    if(showCountOnBlock && gw.Blackboard.SelectedObjects.count > lastCount && !gw.Blackboard.inProblemSetup)
     {
         
         CCSprite *s=[[gw.Blackboard.LastSelectedObject store] objectForKey:MY_SPRITE];

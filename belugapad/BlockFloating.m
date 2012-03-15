@@ -428,6 +428,10 @@ static void eachShape(void *ptr, void* unused)
                 opGOsource=gameWorld.Blackboard.PickupObject;
                 opGOtarget=gameWorld.Blackboard.ProximateObject;
                 [self showOperators];
+                
+                //set mode for objects to operatormode
+                [opGOsource handleMessage:kDWinOperatorMode];
+                [opGOtarget handleMessage:kDWinOperatorMode];
             }
         }
         else
@@ -478,6 +482,9 @@ static void eachShape(void *ptr, void* unused)
     {
         [opGOtarget handleMessage:kDWattachPhys andPayload:nil withLogLevel:0];        
     }
+    
+    [opGOsource handleMessage:kDWnotInOperatorMode];
+    [opGOtarget handleMessage:kDWnotInOperatorMode];
     
     opGOsource=nil;
     opGOtarget=nil;

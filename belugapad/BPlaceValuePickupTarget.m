@@ -25,8 +25,13 @@
     {
         float theirV=fabsf([[payload objectForKey:OBJECT_VALUE] floatValue]);
         float myV=fabsf([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue]);
+
         
         if(theirV!=myV)return;
+        
+        // if add from cage disabled - return at this point
+        DWGameObject *mount = [[gameObject store] objectForKey:MOUNT];
+        if([[[mount store] objectForKey:DISABLE_ADD] boolValue]) return;
         
         //get current loc
         float x=[[[gameObject store] objectForKey:POS_X] floatValue];

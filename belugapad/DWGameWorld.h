@@ -51,6 +51,10 @@
 -(void)writeLogBufferToDiskWithKey:(NSString *)key;
 
 -(DWGameObject*)addGameObjectWithTemplate:(NSString *)templateName;
+-(void)populateAndAddGameObject:(DWGameObject*)originalObject withTemplateName:(NSString *)templateName;
+
+-(NSMutableArray*)AllGameObjects;
+
 -(void)addGameObject:(DWGameObject*)gameObject;
 -(void)doUpdate:(ccTime)delta;
 -(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel;

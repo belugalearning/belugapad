@@ -28,6 +28,8 @@
 	<true/>
 	<key>SHOW_COUNT</key>
 	<true/>
+	<key>SHOW_COUNT_BLOCK</key>
+	<true/>
 	<key>SHOW_COL_HEADER</key>
 	<true/>
 	<key>SHOW_VALUE</key>

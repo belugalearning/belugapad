@@ -90,4 +90,7 @@ typedef enum {
 -(void)dumpXP;
 -(void)tickManageShards:(ccTime)delta;
 
+-(void)hideZubi;
+-(void)showZubi;
+
 @end

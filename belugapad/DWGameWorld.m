@@ -55,6 +55,12 @@
 	return gameObject;
 }
 
+-(void)populateAndAddGameObject:(DWGameObject*)originalObject withTemplateName:(NSString *)templateName
+{
+    [DWGameObject populateObject:originalObject fromTemplate:templateName withWorld:self];
+    [gameObjects addObject:originalObject];
+}
+
 -(void)addGameObject:(DWGameObject*)gameObject
 {
     [gameObjects addObject:gameObject];
@@ -141,6 +147,11 @@
     
     [wStr writeToFile:file atomically:YES encoding:NSUTF8StringEncoding error:nil];
     [wStr release];
+}
+
+-(NSMutableArray*)AllGameObjects
+{
+    return gameObjects;
 }
 
 -(NSMutableDictionary *) store

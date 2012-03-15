@@ -24,6 +24,8 @@
 @synthesize hostCX;
 @synthesize hostCY;
 @synthesize inProblemSetup;
+@synthesize ProblemExpression;
+@synthesize ProblemVariableSubstitutions;
 
 -(id) init
 {

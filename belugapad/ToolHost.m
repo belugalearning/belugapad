@@ -15,10 +15,14 @@
 #import "Daemon.h"
 #import "ToolScene.h"
 #import "AppDelegate.h"
+#import "BAExpressionHeaders.h"
+#import "BATio.h"
 
 @implementation ToolHost
 
 @synthesize Zubi;
+@synthesize PpExpr;
+@synthesize flagResetProblem;
 
 +(CCScene *) scene
 {
@@ -90,6 +94,13 @@
     {
         [self gotoNewProblem];
     }
+    
+    if(self.flagResetProblem)
+    {
+        [self resetProblem];
+        self.flagResetProblem=NO;
+    }
+    
     if(shownMetaQuestionIncompleteFor>kTimeToAutoMove)
     {
         [metaQuestionIncompleteLabel setVisible:NO];
@@ -135,10 +146,16 @@
 
 -(void) gotoNewProblem
 {
+
+    pdef=[self getNextProblem];
+    [pdef retain];
+    [self loadProblem];
+}
+
+-(void) loadProblem
+{
     //tear down meta question stuff
     [self tearDownMetaQuestion];
-    
-    NSDictionary *pdef=[self getNextProblem];
     
     NSString *toolKey=[pdef objectForKey:TOOL_KEY];
     
@@ -148,24 +165,52 @@
         [self removeChild:toolForeLayer cleanup:YES];
         [currentTool release];
     }
-
+    
+    if(self.PpExpr)
+    {
+        [self.PpExpr release];
+        self.PpExpr=nil;
+    }
+    
     //reset multitouch
     //if tool requires multitouch, it will need to reset accordingly
     [[CCDirector sharedDirector] openGLView].multipleTouchEnabled=NO;
-
+    
+    //setup hosted expression (if there is one)
+    NSString *exprFile=[pdef objectForKey:EXPRESSION_FILE];
+    if(exprFile)
+    {
+        PpExpr=[BATio loadTreeFromMathMLFile:BUNDLE_FULL_PATH(exprFile)];
+    }
+    
+    //initialize tool scene
     currentTool=[NSClassFromString(toolKey) alloc];
     [currentTool initWithToolHost:self andProblemDef:pdef];    
     
+    //setup meta question (if there is one)
     NSDictionary *mq=[pdef objectForKey:META_QUESTION];
     if (mq)
     {
         [self setupMetaQuestion:mq];
     }
     
-    [self stageIntroActions];
-    
+    [self stageIntroActions];        
+
     [self.Zubi dumpXP];
+    
+    if([pdef objectForKey:@"HIDE_ZUBI"])
+    {
+        [self.Zubi hideZubi];
+    }
+    else [self.Zubi showZubi];
 }
+
+-(void) resetProblem
+{
+    skipNextStagedIntroAnim=YES;
+    [self loadProblem];
+}
+
 
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ
 {
@@ -214,8 +259,27 @@
         NSMutableDictionary *a=[NSMutableDictionary dictionaryWithDictionary:[pdefAnswers objectAtIndex:i]];
         [metaQuestionAnswers addObject:a];
         
-        // sort out the buttons
-        CCSprite *answerBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")];
+        CCSprite *answerBtn = [[CCSprite alloc]init];
+        CCLabelTTF *answerLabel = [CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        
+        // sort out the labels and buttons if there's an answer text
+        if([[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT])
+        {
+            // sort out the buttons
+            answerBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")];
+            
+            // then the answer label
+            NSString *answerLabelString=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
+            [answerLabel setString:answerLabelString];
+        }
+        // there should never be both an answer text and custom sprite defined - so if no answer text, only render the SPRITE_FILENAME
+        else
+        {
+            // sort out the button with a custom sprite 
+            answerBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH([[metaQuestionAnswers objectAtIndex:i] objectForKey:SPRITE_FILENAME])];
+        }
+        
+        // render buttons
         [answerBtn setPosition:ccp((i+1)*(lx/(metaQuestionAnswerCount+1)), [currentTool metaQuestionAnswersYLocation])];
         [answerBtn setTag:3];
         [answerBtn setScale:0.5f];
@@ -223,16 +287,19 @@
         [metaQuestionLayer addChild:answerBtn];
         [metaQuestionAnswerButtons addObject:answerBtn];
         
-        // sort out the labels
-        NSString *answerLabelString=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
-        CCLabelTTF *answerLabel=[CCLabelTTF labelWithString:answerLabelString fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-        [answerLabel setPosition:ccp((i+1)*(lx/(metaQuestionAnswerCount+1)), [currentTool metaQuestionAnswersYLocation])];
-        [answerLabel setColor:kMetaAnswerLabelColor];
-        [answerLabel setOpacity:0];
-        [answerLabel setTag: 3];
-        [metaQuestionLayer addChild:answerLabel];
-        [metaQuestionAnswerLabels addObject:answerLabel];
         
+        // check for text, render if nesc
+        if(![answerLabel.string isEqualToString:@""])
+        {
+            [answerLabel setPosition:ccp((i+1)*(lx/(metaQuestionAnswerCount+1)), [currentTool metaQuestionAnswersYLocation])];
+            [answerLabel setColor:kMetaAnswerLabelColor];
+            [answerLabel setOpacity:0];
+            [answerLabel setTag: 3];
+            [metaQuestionLayer addChild:answerLabel];
+            [metaQuestionAnswerLabels addObject:answerLabel];
+        }
+        
+        // set a new value in the array so we can see that it's not currently selected
         [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
     }
         
@@ -263,10 +330,16 @@
 {
     //TODO tags are currently fixed to 2 phases -- either parse tool tree or pre-populate with design-fixed max
     for (int i=1; i<=3; i++) {
-        [self recurseSetIntroFor:toolBackLayer withTime:i forTag:i];
-        [self recurseSetIntroFor:toolForeLayer withTime:i forTag:i];
-        [self recurseSetIntroFor:metaQuestionLayer withTime:i forTag:i];
+        
+        int time=i;
+        if(skipNextStagedIntroAnim) time=0;
+        
+        [self recurseSetIntroFor:toolBackLayer withTime:time forTag:i];
+        [self recurseSetIntroFor:toolForeLayer withTime:time forTag:i];
+        [self recurseSetIntroFor:metaQuestionLayer withTime:time forTag:i];
     }
+    
+    skipNextStagedIntroAnim=NO;
 }
 
 -(void)recurseSetIntroFor:(CCNode*)node withTime:(float)time forTag:(int)tag
@@ -369,6 +442,7 @@
 {
     int countRequired=0;
     int countFound=0;
+    int countSelected=0;
 
     for(int i=0; i<metaQuestionAnswerCount; i++)
     {
@@ -383,17 +457,20 @@
         {
             countRequired++;
         }
+        if(isSelected)
+        {
+            countSelected++;
+        }
         // if it's an answer and selected then it's been found by the user
         if(isAnswer && isSelected)
         {
             countFound++;
         }
     }
-    DLog(@"Count required %d, count found %d", countRequired, countFound);
     
     
     
-    if(countRequired==countFound)
+    if(countRequired==countFound && countFound==countSelected)
     {
         [self doWinning];
     }
@@ -439,11 +516,15 @@
 }
 -(void)removeMetaQuestionButtons
 {
-    for(int i=0;i<metaQuestionAnswerCount;i++)
+    for(int i=0;i<metaQuestionAnswerLabels.count;i++)
     {
         [metaQuestionLayer removeChild:[metaQuestionAnswerLabels objectAtIndex:i] cleanup:YES];
+    } 
+    for(int i=0;i<metaQuestionAnswerButtons.count;i++)
+    {
         [metaQuestionLayer removeChild:[metaQuestionAnswerButtons objectAtIndex:i] cleanup:YES];
     } 
+
 }
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -498,6 +579,7 @@
 {
     [problemList release];
     
+    [pdef release];
     [metaQuestionAnswers release];
     [metaQuestionAnswerButtons release];
     [metaQuestionAnswerLabels release];

@@ -65,6 +65,8 @@ typedef enum {
     kDWdismantle=23,
     
     kDWmoveSpriteToPosition=24,
+    
+    kDWhandleTap=25,
 
     
     kDWareYouProximateTo=101,
@@ -81,6 +83,12 @@ typedef enum {
     kDWoperateMultiplyBy=110,
     kDWoperateDivideBy=111,
     kDWfloatMultiplyWithThisChild=112,
-    kDWfloatDivideWithThisChild=113
+    kDWfloatDivideWithThisChild=113,
+    
+    kDWnlineReleaseRamblerAtOffset=114,
+    kDWrenderSelection=115,
+    
+    kDWinOperatorMode=116,
+    kDWnotInOperatorMode=117
     
 } DWMessageType;

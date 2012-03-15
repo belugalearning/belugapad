@@ -19,6 +19,7 @@ typedef enum {
 
 @class Daemon;
 @class ToolScene;
+@class BAExpressionTree;
 
 @interface ToolHost : CCLayer
 {
@@ -49,9 +50,15 @@ typedef enum {
     CCLabelTTF *metaQuestionIncompleteLabel;
     BOOL showMetaQuestionIncomplete;
     float shownMetaQuestionIncompleteFor;
+    
+    NSDictionary *pdef;
+    
+    BOOL skipNextStagedIntroAnim;
 }
 
 @property (retain) Daemon *Zubi;
+@property (retain) BAExpressionTree *PpExpr;
+@property BOOL flagResetProblem;
 
 +(CCScene *) scene;
 
@@ -62,7 +69,8 @@ typedef enum {
 -(void) addToolBackLayer:(CCLayer *) backLayer;
 -(void) populatePerstLayer;
 -(void) gotoNewProblem;
-
+-(void) loadProblem;
+-(void) resetProblem;
 -(void)doUpdateOnTick:(ccTime)delta;
 -(void)doUpdateOnSecond:(ccTime)delta;
 -(void)doUpdateOnQuarterSecond:(ccTime)delta;

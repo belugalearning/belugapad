@@ -44,11 +44,13 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         ly=winsize.height;
         cx=lx / 2.0f;
         cy=ly / 2.0f;
+        
         gw = [[DWGameWorld alloc] initWithGameScene:self];
         gw.Blackboard.inProblemSetup = YES;
         
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];
         self.ForeLayer=[[[CCLayer alloc]init] autorelease];
+        countLayer=[[[CCLayer alloc]init]autorelease];
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
         
@@ -109,6 +111,10 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 {
     renderLayer = [[CCLayer alloc] init];
     [self.ForeLayer addChild:renderLayer];
+    [renderLayer addChild:countLayer z:10];
+    
+    int currentColumnRows = 0;
+    int currentColumnRopes = 0;
     
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     
@@ -151,6 +157,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         }
         
         currentColumnValue = (currentColumnValue/columnBaseValue);
+        NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[currentColumnInfo objectForKey:COL_VALUE] floatValue]];
         
         DLog(@"Reset current column value to %f", currentColumnValue);
         
@@ -169,15 +176,20 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             currentColumnIndex = i;
         }
 
-    
-        for (int iRow=0; iRow<rows; iRow++)
+        if([columnRopes objectForKey:currentColumnValueKey]) currentColumnRopes = [[columnRopes objectForKey:currentColumnValueKey] intValue];
+        else currentColumnRopes = ropesforColumn;
+        if([columnRows objectForKey:currentColumnValueKey]) currentColumnRows = [[columnRows objectForKey:currentColumnValueKey] intValue];
+        else currentColumnRows = rows;
+        
+        
+        for (int iRow=0; iRow<currentColumnRows; iRow++)
         {
             NSMutableArray *RowArray = [[NSMutableArray alloc] init];        
             [newCol addObject:RowArray];
             
             CGPoint rowOrigin=ccp(thisColumnOrigin.x, thisColumnOrigin.y-(iRow*ropeWidth)); 
             
-            for(int iRope=0; iRope<ropesforColumn; iRope++)
+            for(int iRope=0; iRope<currentColumnRopes; iRope++)
             {
                 CGPoint containerOrigin=ccp(rowOrigin.x+(iRope*ropeWidth), rowOrigin.y);
                 DWGameObject *go = [gw addGameObjectWithTemplate:@"TplaceValueContainer"];
@@ -195,29 +207,32 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             [RowArray release];
         }
         
-        if(showCage) 
+        if(!([columnCages objectForKey:currentColumnValueKey]) || ([[columnCages objectForKey:currentColumnValueKey] boolValue]==YES)) 
         {
-            // create cage
-            DWGameObject *colCage = [gw addGameObjectWithTemplate:@"TplaceValueCage"];
-            [[colCage store] setObject:[NSNumber numberWithBool:YES] forKey:ALLOW_MULTIPLE_MOUNT];
-            [[colCage store] setObject:[NSNumber numberWithFloat:i*(kPropXColumnSpacing*lx)] forKey:POS_X];
-            [[colCage store] setObject:[NSNumber numberWithFloat:ly*kCageYOrigin] forKey:POS_Y];
-            [[colCage store] setObject:[currentColumnInfo objectForKey:COL_VALUE] forKey:OBJECT_VALUE];
             
-            NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[currentColumnInfo objectForKey:COL_VALUE] floatValue]];
-            if([columnSprites objectForKey:currentColumnValueKey])
-            {
-                [[colCage store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
-            }
-            else
-            {
-                [[colCage store] setObject:kDefaultSprite forKey:SPRITE_FILENAME];                
-            }
+                // create cage
+                DWGameObject *colCage = [gw addGameObjectWithTemplate:@"TplaceValueCage"];
+                [[colCage store] setObject:[NSNumber numberWithBool:YES] forKey:ALLOW_MULTIPLE_MOUNT];
+                [[colCage store] setObject:[NSNumber numberWithFloat:i*(kPropXColumnSpacing*lx)] forKey:POS_X];
+                [[colCage store] setObject:[NSNumber numberWithFloat:ly*kCageYOrigin] forKey:POS_Y];
+                [[colCage store] setObject:[currentColumnInfo objectForKey:COL_VALUE] forKey:OBJECT_VALUE];
+                [[colCage store] setObject:[NSNumber numberWithBool:disableCageAdd] forKey:DISABLE_ADD];
+                [[colCage store] setObject:[NSNumber numberWithBool:disableCageDelete] forKey:DISABLE_DEL];
+                
+                if([columnSprites objectForKey:currentColumnValueKey])
+                {
+                    [[colCage store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
+                }
+                else
+                {
+                    [[colCage store] setObject:kDefaultSprite forKey:SPRITE_FILENAME];                
+                }
+                
+                if(!allCages) allCages=[[NSMutableArray alloc] init];
+                [allCages addObject:colCage];
             
-            if(!allCages) allCages=[[NSMutableArray alloc] init];
-            [allCages addObject:colCage];
         }
-        if(showNegCage) 
+        if(!([columnNegCages objectForKey:currentColumnValueKey]) || [[columnNegCages objectForKey:currentColumnValueKey] boolValue]==YES) 
         {
             float colValueNeg = -([[currentColumnInfo objectForKey:COL_VALUE] floatValue]);
             // create cage
@@ -226,8 +241,12 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             [[colCage store] setObject:[NSNumber numberWithFloat:i*(kPropXColumnSpacing*lx)+100] forKey:POS_X];
             [[colCage store] setObject:[NSNumber numberWithFloat:ly*kCageYOrigin] forKey:POS_Y];
             [[colCage store] setObject:[NSNumber numberWithFloat:colValueNeg] forKey:OBJECT_VALUE];
+//            if(disableCageAdd) { [[colCage store] setObject:[NSNumber numberWithBool:YES] forKey:DISABLE_ADD]; }
+//            if(disableCageDelete) { [[colCage store] setObject:[NSNumber numberWithBool:YES] forKey:DISABLE_DEL]; }
+            [[colCage store] setObject:[NSNumber numberWithBool:disableCageAdd] forKey:DISABLE_ADD];
+            [[colCage store] setObject:[NSNumber numberWithBool:disableCageDelete] forKey:DISABLE_DEL];
+
             
-            NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[currentColumnInfo objectForKey:COL_VALUE] floatValue]];
             if([columnSprites objectForKey:currentColumnValueKey])
             {
                 [[colCage store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
@@ -243,6 +262,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     
         [newCol release];
     }
+    
 
     int numberPrecountedForRow=0;
     
@@ -321,13 +341,27 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     
     ropesforColumn = [[pdef objectForKey:ROPES_PER_COL] intValue];
     rows = [[pdef objectForKey:ROWS_PER_COL] intValue];
-    showCage = [[pdef objectForKey:SHOW_CAGE] boolValue];
-    showNegCage = [[pdef objectForKey:SHOW_NEG_CAGE] boolValue];
     showCount = [[pdef objectForKey:SHOW_COUNT] boolValue];
-    showValue = [[pdef objectForKey:SHOW_VALUE] boolValue];
+    showValue = [[pdef objectForKey:SHOW_VALUE] boolValue];    
+    showReset=[[pdef objectForKey:SHOW_RESET] boolValue];
     showCountOnBlock = [[pdef objectForKey:SHOW_COUNT_BLOCK] boolValue];
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
+    disableCageAdd = [[pdef objectForKey:DISABLE_CAGE_ADD] boolValue];
+    disableCageDelete = [[pdef objectForKey:DISABLE_CAGE_DELETE] boolValue];
+
+    
+    columnRopes = [pdef objectForKey:COLUMN_ROPES];
+    [columnRopes retain];
+    
+    columnRows = [pdef objectForKey:COLUMN_ROWS];
+    [columnRows retain];
+
+    if([pdef objectForKey:ALLOW_DESELECTION]) allowDeselect = [[pdef objectForKey:ALLOW_DESELECTION] boolValue];
+    else allowDeselect=YES;
+    if([pdef objectForKey:FADE_COUNT]) fadeCount = [[pdef objectForKey:FADE_COUNT] boolValue];
+    else fadeCount=YES;
+    
     
     //objects
     NSArray *objects=[pdef objectForKey:INIT_OBJECTS];
@@ -384,6 +418,15 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         
     }
     
+    if(showReset)
+    {
+        CCSprite *resetBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/reset.png")];
+        [resetBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), ly-(kPropXCommitButtonPadding*lx))];
+        [resetBtn setTag:3];
+        [resetBtn setOpacity:0];
+        [self.ForeLayer addChild:resetBtn z:2];        
+    }
+    
     //look for custom column headers
     showCustomColumnHeader = [pdef objectForKey:CUSTOM_COLUMN_HEADERS];
     [showCustomColumnHeader retain];
@@ -391,6 +434,15 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     //look for column specific sprites
     columnSprites = [pdef objectForKey:COLUMN_SPRITES];
     [columnSprites retain];
+    
+    //look for column cages
+    columnCages = [pdef objectForKey:COLUMN_CAGES];
+    [columnCages retain];
+    
+    // look for negative column cages
+    columnNegCages = [pdef objectForKey:COLUMN_NEG_CAGES];
+    [columnNegCages retain];
+    
     
     
     if(showCount||showValue)
@@ -443,33 +495,8 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     
     if([solutionType isEqualToString:COUNT_SEQUENCE])
     {
-        if(gw.Blackboard.SelectedObjects.count > totalCountedInProblem)
-        {
-            totalCountedInProblem=gw.Blackboard.SelectedObjects.count;
-            if(!(totalCountedInProblem > [[solutionsDef objectForKey:SOLUTION_VALUE] intValue]) && !gw.Blackboard.inProblemSetup)
-            {
-               [toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
-            }
-        }
-
-
-
-        if(showCountOnBlock && gw.Blackboard.SelectedObjects.count > lastCount)
-        {
-            
-            CCSprite *s=[[gw.Blackboard.LastSelectedObject store] objectForKey:MY_SPRITE];
-            CGPoint pos=[[s parent] convertToWorldSpace:[s position]];
-            countLabelBlock=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", gw.Blackboard.SelectedObjects.count] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-            [countLabelBlock setPosition:pos];
-            [self.ForeLayer addChild:countLabelBlock z:10];
-            CCFadeOut *labelFade = [CCFadeOut actionWithDuration:kTimeToFadeButtonLabel];
-            [countLabelBlock runAction:labelFade];
-                    
-
-        }
-        lastCount = gw.Blackboard.SelectedObjects.count;
         
-        
+        [self calcProblemCountSequence];
         
         DLog(@"(COUNT_SEQUENCE) Selected %d lastCount %d", gw.Blackboard.SelectedObjects.count, lastCount);
 
@@ -483,6 +510,11 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             maxSumReachedByUser=totalCount;
         }
 
+    }
+    else if([solutionType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE])
+    {
+        [self calcProblemCountSequence];
+        [self calcProblemTotalCount];
     }
     if(showCount||showValue)
     {
@@ -514,11 +546,21 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 
     if([solutionType isEqualToString:COUNT_SEQUENCE])
     {
-        [self evalProblemCountSeq];
+        [self evalProblemCountSeq:COUNT_SEQUENCE];
     }
     else if([solutionType isEqualToString:TOTAL_COUNT])
     {
-        [self evalProblemTotalCount];
+        [self evalProblemTotalCount:TOTAL_COUNT];
+    }
+    else if([solutionType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE])
+    {
+        BOOL seqIsOk = [self evalProblemCountSeq:TOTAL_COUNT_AND_COUNT_SEQUENCE];
+        BOOL countIsOk = [self evalProblemTotalCount:TOTAL_COUNT_AND_COUNT_SEQUENCE];
+        
+        if(seqIsOk && countIsOk)
+        {
+            [self doWinning];
+        }
     }
     else if([solutionType isEqualToString:MATRIX_MATCH])
     {
@@ -541,16 +583,72 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     [problemCompleteLabel setVisible:YES];
     [gw handleMessage:kDWdeselectAll andPayload:nil withLogLevel:-1];
 }
--(void)evalProblemCountSeq
+-(BOOL)evalProblemCountSeq:(NSString*)problemType
 {
-    if(gw.Blackboard.SelectedObjects.count == [[solutionsDef objectForKey:SOLUTION_VALUE] intValue])
+    if([problemType isEqualToString:COUNT_SEQUENCE])
     {
-        [self doWinning];
+        if(gw.Blackboard.SelectedObjects.count == [[solutionsDef objectForKey:SOLUTION_VALUE] intValue])
+        {
+            [self doWinning];
+            return YES;
+        }
+        else if(gw.Blackboard.SelectedObjects.count != [[solutionsDef objectForKey:SOLUTION_VALUE] intValue] && evalMode==kProblemEvalOnCommit)
+        {
+            [self doIncorrect];
+            return NO;
+        }
     }
-    else if(gw.Blackboard.SelectedObjects.count != [[solutionsDef objectForKey:SOLUTION_VALUE] intValue] && evalMode==kProblemEvalOnCommit)
+    
+    if([problemType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE])
     {
-        [self doIncorrect];
+        if(gw.Blackboard.SelectedObjects.count == [[solutionsDef objectForKey:SOLUTION_VALUE] intValue])
+        {
+            return YES;
+        }
+        else if(gw.Blackboard.SelectedObjects.count != [[solutionsDef objectForKey:SOLUTION_VALUE] intValue] && evalMode==kProblemEvalOnCommit)
+        {
+            return NO;
+        }
+
     }
+    return NO;
+}
+-(void)calcProblemCountSequence
+{
+    if(gw.Blackboard.SelectedObjects.count > totalCountedInProblem)
+    {
+        totalCountedInProblem=gw.Blackboard.SelectedObjects.count;
+        if(!(totalCountedInProblem > [[solutionsDef objectForKey:SOLUTION_VALUE] intValue]) && !gw.Blackboard.inProblemSetup)
+        {
+            [toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
+        }
+    }
+    
+    
+    
+    if(showCountOnBlock && gw.Blackboard.SelectedObjects.count > lastCount && !gw.Blackboard.inProblemSetup)
+    {
+        
+        CCSprite *s=[[gw.Blackboard.LastSelectedObject store] objectForKey:MY_SPRITE];
+        CGPoint pos=[s position];
+        countLabelBlock=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", gw.Blackboard.SelectedObjects.count] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        [countLabelBlock setPosition:pos];
+        [countLayer addChild:countLabelBlock];
+        
+        if(fadeCount)
+        {
+            CCFadeOut *labelFade = [CCFadeOut actionWithDuration:kTimeToFadeButtonLabel];
+            [countLabelBlock runAction:labelFade];
+        }
+        
+        
+    }
+    else if(showCountOnBlock && !fadeCount && gw.Blackboard.SelectedObjects.count < lastCount)
+    {
+        [countLayer removeAllChildrenWithCleanup:YES];
+    }
+    lastCount = gw.Blackboard.SelectedObjects.count;
+
 }
 -(void)calcProblemTotalCount
 {
@@ -577,18 +675,34 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         }
     }
 }
--(void)evalProblemTotalCount
+-(BOOL)evalProblemTotalCount:(NSString*)problemType
 {
     [self calcProblemTotalCount];
-    
-    if(totalCount == expectedCount)
+    if([problemType isEqualToString:TOTAL_COUNT])
     {
-        [self doWinning];
+        if(totalCount == expectedCount && !gw.Blackboard.inProblemSetup)
+        {
+            [self doWinning];
+            return YES;
+        }
+        else if(totalCount != expectedCount && evalMode==kProblemEvalOnCommit)
+        {
+            [self doIncorrect];
+            return NO;
+        }
     }
-    else if(totalCount != expectedCount && evalMode==kProblemEvalOnCommit)
+    if([problemType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE])
     {
-        [self doIncorrect];
+        if(totalCount == expectedCount && !gw.Blackboard.inProblemSetup)
+        {
+            return YES;
+        }
+        else if(totalCount != expectedCount && evalMode==kProblemEvalOnCommit)
+        {
+            return NO;
+        }
     }
+    return NO;
 }
 
 -(void)evalProblemMatrixMatch
@@ -679,13 +793,21 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     [toolHost.Zubi setMode:kDaemonModeFollowing];
     [toolHost.Zubi setTarget:location];    
     
+    
+    // TODO: This should be made proportional
+    if (CGRectContainsPoint(kRectButtonReset, location) && showReset)
+    {
+        [toolHost resetProblem];
+    }
+    
+    // TODO: This should be made proportional
+    
     if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit)
     {
         [self evalProblem];
     }
     else 
     {
-        
         [gw Blackboard].PickupObject=nil;
         
         NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
@@ -693,12 +815,12 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         [pl setObject:[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] forKey:OBJECT_VALUE];
         
+        
         //broadcast search for pickup object gw
         [gw handleMessage:kDWareYouAPickupTarget andPayload:pl withLogLevel:-1];
         
         if([gw Blackboard].PickupObject!=nil)
         {
-            
             gw.Blackboard.PickupOffset = location;
             // At this point we can still cancel the tap
             potentialTap = YES;
@@ -887,11 +1009,12 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         //drop target
         [[go store] setObject:currentColumnValueKey forKey:OBJECT_VALUE];
         
-        if([columnSprites objectForKey:currentColumnValueKey])
-        {
-            [[go store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
-        }
+        NSString *currentColumnValueString = [NSString stringWithFormat:@"%g", [currentColumnValueKey floatValue]];
         
+        if([columnSprites objectForKey:currentColumnValueString])
+        {
+            [[go store] setObject:[columnSprites objectForKey:currentColumnValueString] forKey:SPRITE_FILENAME];
+        }
         [go handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
         //find a mount for this object
@@ -989,8 +1112,11 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         
         if([BLMath DistanceBetween:touchStartPos and:touchEndPos] < fabs(kTapSlipThreshold) && potentialTap)
         {
+            // check whether it's selected and we can deselect - or that it's deselected
+            if(!([[[gw.Blackboard.PickupObject store] objectForKey:SELECTED] boolValue]) || ([[[gw.Blackboard.PickupObject store] objectForKey:SELECTED] boolValue] && allowDeselect))
+            {
                 [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
-        
+            }
         }
         
         if(gw.Blackboard.SelectedObjects.count == columnBaseValue && showBaseSelection)
@@ -1095,6 +1221,10 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     [incompleteDisplayText release];
     [showCustomColumnHeader release];
     [columnSprites release];
+    [columnCages release];
+    [columnNegCages release];
+    [columnRows release];
+    [columnRopes release];
     
     [super dealloc];
 }

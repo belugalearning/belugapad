@@ -29,6 +29,7 @@
     float cx, cy, lx, ly;
     
     CCLayer *renderLayer;
+    CCLayer *countLayer;
     
     CCLabelTTF *problemDescLabel;
     CCLabelTTF *problemSubLabel;
@@ -49,13 +50,17 @@
     
     // GameWorld options
     
-    BOOL showCage;
-    BOOL showNegCage;
     BOOL showCount;
     BOOL showValue;
     BOOL showBaseSelection;
     BOOL showCountOnBlock;
     BOOL showColumnHeader;
+    BOOL disableCageAdd;
+    BOOL disableCageDelete;
+    BOOL showReset;
+    BOOL fadeCount;
+    BOOL allowDeselect;
+
     NSString *solutionDisplayText;
     NSString *incompleteDisplayText;
     NSDictionary *showCustomColumnHeader;
@@ -67,6 +72,10 @@
     
     NSDictionary *solutionsDef;
     NSDictionary *columnSprites;
+    NSDictionary *columnCages;
+    NSDictionary *columnNegCages;
+    NSDictionary *columnRows;
+    NSDictionary *columnRopes;
     
     DWGameWorld *gw;
 
@@ -107,9 +116,10 @@
 -(void)problemStateChanged;
 -(void)evalProblem;
 -(void)doWinning;
--(void)evalProblemCountSeq;
+-(BOOL)evalProblemCountSeq:(NSString*)problemType;
+-(void)calcProblemCountSequence;
 -(void)calcProblemTotalCount;
--(void)evalProblemTotalCount;
+-(BOOL)evalProblemTotalCount:(NSString*)problemType;
 -(void)evalProblemMatrixMatch;
 -(void)snapLayerToPosition;
 

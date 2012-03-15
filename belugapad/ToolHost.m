@@ -198,11 +198,13 @@
 
     [self.Zubi dumpXP];
     
-    if([pdef objectForKey:@"HIDE_ZUBI"])
-    {
+    //zubi is fixed off by default
+    if ([pdef objectForKey:@"SHOW_ZUBI"]) {
+        [self.Zubi showZubi];
+    }
+    else {
         [self.Zubi hideZubi];
     }
-    else [self.Zubi showZubi];
 }
 
 -(void) resetProblem

@@ -15,6 +15,8 @@
 #import "Daemon.h"
 #import "ToolScene.h"
 #import "AppDelegate.h"
+#import "BAExpressionHeaders.h"
+#import "BATio.h"
 
 @implementation ToolHost
 
@@ -160,9 +162,18 @@
     //if tool requires multitouch, it will need to reset accordingly
     [[CCDirector sharedDirector] openGLView].multipleTouchEnabled=NO;
     
+    //initialize tool scene
     currentTool=[NSClassFromString(toolKey) alloc];
     [currentTool initWithToolHost:self andProblemDef:pdef];    
     
+    //setup hosted expression (if there is one)
+    NSString *exprFile=[pdef objectForKey:EXPRESSION_FILE];
+    if(exprFile)
+    {
+        PpExpr=[BATio loadTreeFromMathMLFile:BUNDLE_FULL_PATH(exprFile)];
+    }
+    
+    //setup meta question (if there is one)
     NSDictionary *mq=[pdef objectForKey:META_QUESTION];
     if (mq)
     {

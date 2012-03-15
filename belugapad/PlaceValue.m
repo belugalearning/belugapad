@@ -248,6 +248,10 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             {
                 [[colCage store] setObject:pickupSprite forKey:PICKUP_SPRITE_FILENAME];
             }
+            if(proximitySprite)
+            {
+                [[colCage store] setObject:proximitySprite forKey:PROXIMITY_SPRITE_FILENAME];
+            }
                 
                 if(!allCages) allCages=[[NSMutableArray alloc] init];
                 [allCages addObject:colCage];
@@ -291,7 +295,10 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             {
                 [[colCage store] setObject:pickupSprite forKey:PICKUP_SPRITE_FILENAME];
             }
-            
+            if(proximitySprite)
+            {
+                [[colCage store] setObject:proximitySprite forKey:PROXIMITY_SPRITE_FILENAME];
+            }            
             if(!allCages) allCages=[[NSMutableArray alloc] init];
             [allCages addObject:colCage];
         }
@@ -326,6 +333,10 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             if(pickupSprite)
             {
                 [[block store] setObject:pickupSprite forKey:PICKUP_SPRITE_FILENAME];
+            }
+            if(proximitySprite)
+            {
+                [[block store] setObject:proximitySprite forKey:PROXIMITY_SPRITE_FILENAME];
             }
             if(numberPrecountedForRow<numberToPrecount)
             {
@@ -926,6 +937,25 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     
     if([gw Blackboard].PickupObject!=nil)
     {
+        if(proximitySprite)
+        {
+            NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
+            [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
+            [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
+            
+            //-NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
+        [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
+            DWGameObject *go = [[gw.Blackboard.PickupObject store] objectForKey:MOUNT];
+        CCSprite *mySprite = [[gw.Blackboard.PickupObject store] objectForKey:MY_SPRITE];
+            if([gw Blackboard].DropObject != nil)
+            {
+                    [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[go store] objectForKey:PROXIMITY_SPRITE_FILENAME])]];
+
+            }
+            else {
+                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gw.Blackboard.PickupObject store] objectForKey:SPRITE_FILENAME])]];                
+            }
+        }
         CGPoint diff=[BLMath SubtractVector:prevLoc from:location];
         
         //mod location by pickup offset
@@ -1083,6 +1113,10 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         {
             [[go store] setObject:pickupSprite forKey:PICKUP_SPRITE_FILENAME];
         }
+        if(proximitySprite)
+        {
+            [[go store] setObject:proximitySprite forKey:PROXIMITY_SPRITE_FILENAME];
+        }
         [go handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
         //find a mount for this object
@@ -1232,7 +1266,6 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             }
             if([gw Blackboard].DropObject != nil)
             {
-                [gw.Blackboard.PickupObject setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gw.Blackboard.PickupObject store] objectForKey:PROXIMITY_SPRITE_FILENAME])]];
                 //tell the picked-up object to mount on the dropobject
                 [pl removeAllObjects];
                 [pl setObject:[gw Blackboard].DropObject forKey:MOUNT];

@@ -11,5 +11,6 @@
 @interface DWSelectorGameObject : DWGameObject
 
 @property CGPoint pos;
+@property NSMutableArray *PopulateVariableNames;
 
 @end

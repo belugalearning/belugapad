@@ -11,5 +11,6 @@
 @implementation DWSelectorGameObject
 
 @synthesize pos;
+@synthesize PopulateVariableNames;
 
 @end

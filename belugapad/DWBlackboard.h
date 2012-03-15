@@ -10,6 +10,7 @@
 
 @class CCLayer;
 @class DWGameObject;
+@class BAExpressionTree;
 
 @interface DWBlackboard : NSObject {
  
@@ -29,6 +30,8 @@
 @property float hostCX;
 @property float hostCY;
 @property BOOL inProblemSetup;
+@property (retain) BAExpressionTree *ProblemExpression;
+@property (retain) NSMutableDictionary *ProblemVariableSubstitutions;
 
 -(void)loadData;
 

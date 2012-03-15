@@ -51,7 +51,7 @@
     if(myHighlight)return;
     
     NSString *sname=[[gameObject store] objectForKey:@"RENDER_HIGHLIGHT_IMAGE_NAME"];
-    if(!sname) sname=@"obj-blockholder-mount1x1_block1.png";
+    if(!sname) sname=@"obj-blockholder-mount1x1_highlight.png";
     
     myHighlight=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/blockholders/%@", sname]))];    
     

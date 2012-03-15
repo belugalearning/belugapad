@@ -29,8 +29,8 @@
 #define OBJ_CHILDMATRIX @"OBJ_CHILDMATRIX"
 #define OBJ_CHILD @"OBJ_CHILD"
 
-#define UNIT_SIZE 45.0f
-#define HALF_SIZE 22.5f
+#define UNIT_SIZE 50.0f
+#define HALF_SIZE 25.0f
 
 
 #define MOUNT @"MOUNT"
@@ -43,7 +43,7 @@
 #define PICKUP_PROXIMITY 70.0f
 #define DROP_PROXIMITY 70.0f
 
-#define FLOAT_PICKUP_PROXIMITY 45.0f
+#define FLOAT_PICKUP_PROXIMITY 50.0f
 
 #define TARGET_GO @"TARGET_GO"
 

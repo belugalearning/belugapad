@@ -727,7 +727,7 @@ static void eachShape(void *ptr, void* unused)
         NSString *overlayfilename = [[NSString alloc]init];
         
         if([o objectForKey:SPRITE_FILENAME]) filename =[NSString stringWithFormat:@"%@", [o objectForKey:SPRITE_FILENAME]];
-        else filename = [NSString stringWithFormat:@"/images/blocks/obj-float-45.png"];
+        else filename = [NSString stringWithFormat:@"/images/blocks/obj-float-50.png"];
         
         if([o objectForKey:SEPARATOR_FILENAME]) sepfilename =[NSString stringWithFormat:@"%@", [o objectForKey:SEPARATOR_FILENAME]];
         else sepfilename = [NSString stringWithFormat:@"/images/blocks/obj-float-sep.png"];

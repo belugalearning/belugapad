@@ -45,4 +45,6 @@
 -(void)removeChildSprites;
 -(void)removeThisManyChildren: (int)removeCount;
 
+-(void)swapObjSpritesTo:(NSString*)spriteFile;
+
 @end

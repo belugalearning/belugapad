@@ -86,6 +86,9 @@ typedef enum {
     kDWfloatDivideWithThisChild=113,
     
     kDWnlineReleaseRamblerAtOffset=114,
-    kDWrenderSelection=115
+    kDWrenderSelection=115,
+    
+    kDWinOperatorMode=116,
+    kDWnotInOperatorMode=117
     
 } DWMessageType;

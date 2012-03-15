@@ -11,6 +11,9 @@
 #import "BLMath.h"
 #import "ToolScene.h"
 
+static NSString *kSpriteFilePickup = @"obj-float-50-pickup.png";
+static NSString *kSpriteFileOperatorMode = @"obj-float-50-operatormode.png";
+
 @implementation BFloatObjectRender
 
 -(BFloatObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
@@ -85,6 +88,8 @@
         amPickedUp=YES;
         
         [self removeOccludingSeparators];
+        
+        [self swapObjSpritesTo:kSpriteFilePickup];
     }
     
     if(messageType==kDWputdown)
@@ -92,6 +97,16 @@
         amPickedUp=NO;
         
         [self addOccludingSeparators];
+    }
+    
+    if(messageType==kDWinOperatorMode)
+    {
+        [self swapObjSpritesTo:kSpriteFileOperatorMode];
+    }
+    
+    if(messageType==kDWnotInOperatorMode || messageType==kDWputdown)
+    {
+        [self swapObjSpritesTo:[[gameObject store] objectForKey:SPRITE_FILENAME]];
     }
     
     if(messageType==kDWsetMount || messageType==kDWdetachPhys)
@@ -159,7 +174,6 @@
 
 -(void)setSprite
 {
-    //CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/blocks/obj-float-45.png")];
     CCNode *mySprite=[[CCNode alloc] init];
     [[gameWorld GameScene].ForeLayer addChild:mySprite z:1];
     
@@ -280,6 +294,17 @@
         accumPos=[BLMath AddVector:accumPos toVector:[BLMath MultiplyVector:globalSpos byScalar:1.0f/total]];
     }
     return accumPos;
+}
+
+-(void)swapObjSpritesTo:(NSString*)spriteFile
+{
+    NSMutableArray *flatChildren=[[gameObject store] objectForKey:OBJ_CHILDMATRIX];
+    
+    for (NSDictionary *fd in flatChildren) {
+        CCSprite *s=[fd objectForKey:MY_SPRITE];
+        
+        [s setTexture:[[CCTexture2D alloc] initWithImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(spriteFile)]]];
+    }
 }
 
 -(void)addOccludingSeparators

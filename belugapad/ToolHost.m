@@ -166,6 +166,12 @@
         [currentTool release];
     }
     
+    if(self.PpExpr)
+    {
+        [self.PpExpr release];
+        self.PpExpr=nil;
+    }
+    
     //reset multitouch
     //if tool requires multitouch, it will need to reset accordingly
     [[CCDirector sharedDirector] openGLView].multipleTouchEnabled=NO;
@@ -188,13 +194,20 @@
         [self setupMetaQuestion:mq];
     }
     
-    [self stageIntroActions];
-    
+    [self stageIntroActions];        
+
     [self.Zubi dumpXP];
+    
+    if([pdef objectForKey:@"HIDE_ZUBI"])
+    {
+        [self.Zubi hideZubi];
+    }
+    else [self.Zubi showZubi];
 }
 
 -(void) resetProblem
 {
+    skipNextStagedIntroAnim=YES;
     [self loadProblem];
 }
 
@@ -317,10 +330,16 @@
 {
     //TODO tags are currently fixed to 2 phases -- either parse tool tree or pre-populate with design-fixed max
     for (int i=1; i<=3; i++) {
-        [self recurseSetIntroFor:toolBackLayer withTime:i forTag:i];
-        [self recurseSetIntroFor:toolForeLayer withTime:i forTag:i];
-        [self recurseSetIntroFor:metaQuestionLayer withTime:i forTag:i];
+        
+        int time=i;
+        if(skipNextStagedIntroAnim) time=0;
+        
+        [self recurseSetIntroFor:toolBackLayer withTime:time forTag:i];
+        [self recurseSetIntroFor:toolForeLayer withTime:time forTag:i];
+        [self recurseSetIntroFor:metaQuestionLayer withTime:time forTag:i];
     }
+    
+    skipNextStagedIntroAnim=NO;
 }
 
 -(void)recurseSetIntroFor:(CCNode*)node withTime:(float)time forTag:(int)tag

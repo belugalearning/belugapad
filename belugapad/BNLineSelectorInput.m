@@ -53,7 +53,9 @@
         
         DLog(@"selected %f for variable %@", selector.WatchRambler.Value, [selector.PopulateVariableNames objectAtIndex:selectorVarPos]);
         
-        [gameObject handleMessage:kDWrenderSelection andPayload:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:selector.WatchRambler.Value] forKey:@"VALUE"] withLogLevel:nil];
+        [gameObject handleMessage:kDWrenderSelection andPayload:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:selector.WatchRambler.Value] forKey:@"VALUE"] withLogLevel:0];
+        
+        NSLog(@"%@", gameWorld.Blackboard.ProblemVariableSubstitutions);
         
         //next time populate the next variable
         selectorVarPos++;

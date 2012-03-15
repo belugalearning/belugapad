@@ -80,6 +80,20 @@ static float kSubParticleOffset=10.0f;
     return self;
 }
 
+-(void)hideZubi
+{
+    [primaryParticle setVisible:NO];
+    [secondParticle setVisible:NO];
+    [thirdParticle setVisible:NO];
+}
+
+-(void)showZubi
+{
+    [primaryParticle setVisible:YES];
+    [secondParticle setVisible:YES];
+    [thirdParticle setVisible:YES];    
+}
+
 -(void)createXPshards:(int)numShards fromLocation:(CGPoint)baseLocation
 {
     for (int i=0;i<numShards;i++)

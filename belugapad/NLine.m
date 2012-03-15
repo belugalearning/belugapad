@@ -183,9 +183,14 @@
     //set subs & execute
     evalTree.VariableSubstitutions=gw.Blackboard.ProblemVariableSubstitutions;
     [evalTree substitueVariablesForIntegersOnNode:evalTree.root];
+
+    NSLog(@"problem expression: %@", [toolHost.PpExpr expressionString]);
+    NSLog(@"substituted expression: %@", [evalTree expressionString]);
     
     //evaluate
     [evalTree evaluateTree];
+    
+    NSLog(@"evaluated expression: %@", [evalTree expressionString]);
     
     //query comparison for equality (currently has to assume as a top level eq using query layer
     BATQuery *q=[[BATQuery alloc] initWithExpr:evalTree.root andTree:evalTree];

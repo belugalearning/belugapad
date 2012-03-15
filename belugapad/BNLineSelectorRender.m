@@ -65,6 +65,13 @@
     
     [[gameWorld GameScene].ForeLayer addChild:mySprite z:0];
     
+    CCSprite *connector=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/selector-connector.png")];
+    [connector setPosition:CGPointMake(selector.pos.x, selector.pos.y-92)];
+    [connector setTag:3];
+    [connector setOpacity:0];
+    [[gameWorld GameScene].ForeLayer addChild:connector];
+    
+    
 }
 
 

@@ -60,6 +60,9 @@
     
     [self getDistinctVarNamesFrom:Tree.root withArray:vars];
     
+    //sort this a-z
+    vars = (NSMutableArray*)[vars sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+    
     return vars;
 }
 

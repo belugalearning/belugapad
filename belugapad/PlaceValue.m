@@ -135,9 +135,13 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         
         [columnInfo addObject:currentColumnInfo];
         
+        
+        // if column headers should be shown
         if(showColumnHeader)
         {
             CCLabelTTF *columnHeader;
+            
+            // check if a custom header exists or use a generic one
             if([showCustomColumnHeader objectForKey:[NSString stringWithFormat:@"%g", currentColumnValue]])
             {
                 NSString *columnHeaderText = [showCustomColumnHeader objectForKey:[NSString stringWithFormat:@"%g", currentColumnValue]];
@@ -209,6 +213,11 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         
         if(!([columnCages objectForKey:currentColumnValueKey]) || ([[columnCages objectForKey:currentColumnValueKey] boolValue]==YES)) 
         {
+            CCSprite *cageContainer = [CCSprite spriteWithFile:posCageSprite];
+            [cageContainer setPosition:ccp(i*(kPropXColumnSpacing*lx), ly*kCageYOrigin)];
+            [cageContainer setOpacity:0];
+            [cageContainer setTag:2];
+            [renderLayer addChild:cageContainer z:1];
             
                 // create cage
                 DWGameObject *colCage = [gw addGameObjectWithTemplate:@"TplaceValueCage"];
@@ -216,24 +225,42 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
                 [[colCage store] setObject:[NSNumber numberWithFloat:i*(kPropXColumnSpacing*lx)] forKey:POS_X];
                 [[colCage store] setObject:[NSNumber numberWithFloat:ly*kCageYOrigin] forKey:POS_Y];
                 [[colCage store] setObject:[currentColumnInfo objectForKey:COL_VALUE] forKey:OBJECT_VALUE];
-                [[colCage store] setObject:[NSNumber numberWithBool:disableCageAdd] forKey:DISABLE_ADD];
-                [[colCage store] setObject:[NSNumber numberWithBool:disableCageDelete] forKey:DISABLE_DEL];
-                
-                if([columnSprites objectForKey:currentColumnValueKey])
-                {
-                    [[colCage store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
-                }
-                else
-                {
-                    [[colCage store] setObject:kDefaultSprite forKey:SPRITE_FILENAME];                
-                }
+            
+                //[[colCage store] setObject:[NSNumber numberWithBool:disableCageAdd] forKey:DISABLE_ADD];
+                //[[colCage store] setObject:[NSNumber numberWithBool:disableCageDelete] forKey:DISABLE_DEL];
+            if([columnCagePosDisableAdd objectForKey:currentColumnValueKey])
+            {
+                [[colCage store] setObject:[NSNumber numberWithBool:[[columnCagePosDisableAdd objectForKey:currentColumnValueKey] boolValue]] forKey:DISABLE_ADD];
+            }
+            if([columnCagePosDisableDel objectForKey:currentColumnValueKey])
+            {
+                [[colCage store] setObject:[NSNumber numberWithBool:[[columnCagePosDisableDel objectForKey:currentColumnValueKey] boolValue]] forKey:DISABLE_DEL];
+            }
+            if([columnSprites objectForKey:currentColumnValueKey])
+            {
+                [[colCage store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
+            }
+            else
+            {
+                [[colCage store] setObject:kDefaultSprite forKey:SPRITE_FILENAME];                
+            }
+            if(pickupSprite)
+            {
+                [[colCage store] setObject:pickupSprite forKey:PICKUP_SPRITE_FILENAME];
+            }
                 
                 if(!allCages) allCages=[[NSMutableArray alloc] init];
                 [allCages addObject:colCage];
             
         }
-        if(!([columnNegCages objectForKey:currentColumnValueKey]) || [[columnNegCages objectForKey:currentColumnValueKey] boolValue]==YES) 
+        if([[columnNegCages objectForKey:currentColumnValueKey] boolValue]==YES) 
         {
+            CCSprite *cageContainer = [CCSprite spriteWithFile:negCageSprite];
+            [cageContainer setPosition:ccp(i*(kPropXColumnSpacing*lx), ly*kCageYOrigin)];
+            [cageContainer setOpacity:0];
+            [cageContainer setTag:2];
+            [renderLayer addChild:cageContainer z:-1];
+            
             float colValueNeg = -([[currentColumnInfo objectForKey:COL_VALUE] floatValue]);
             // create cage
             DWGameObject *colCage = [gw addGameObjectWithTemplate:@"TplaceValueCage"];
@@ -243,9 +270,14 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             [[colCage store] setObject:[NSNumber numberWithFloat:colValueNeg] forKey:OBJECT_VALUE];
 //            if(disableCageAdd) { [[colCage store] setObject:[NSNumber numberWithBool:YES] forKey:DISABLE_ADD]; }
 //            if(disableCageDelete) { [[colCage store] setObject:[NSNumber numberWithBool:YES] forKey:DISABLE_DEL]; }
-            [[colCage store] setObject:[NSNumber numberWithBool:disableCageAdd] forKey:DISABLE_ADD];
-            [[colCage store] setObject:[NSNumber numberWithBool:disableCageDelete] forKey:DISABLE_DEL];
-
+            if([columnCageNegDisableAdd objectForKey:currentColumnValueKey])
+            {
+                [[colCage store] setObject:[NSNumber numberWithBool:[[columnCageNegDisableAdd objectForKey:currentColumnValueKey] boolValue]] forKey:DISABLE_ADD];
+            }
+            if([columnCageNegDisableDel objectForKey:currentColumnValueKey])
+            {
+                [[colCage store] setObject:[NSNumber numberWithBool:[[columnCageNegDisableDel objectForKey:currentColumnValueKey] boolValue]] forKey:DISABLE_DEL];
+            }
             
             if([columnSprites objectForKey:currentColumnValueKey])
             {
@@ -254,6 +286,10 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             else
             {
                 [[colCage store] setObject:kDefaultSprite forKey:SPRITE_FILENAME];                
+            }
+            if(pickupSprite)
+            {
+                [[colCage store] setObject:pickupSprite forKey:PICKUP_SPRITE_FILENAME];
             }
             
             if(!allCages) allCages=[[NSMutableArray alloc] init];
@@ -286,6 +322,10 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             if([columnSprites objectForKey:currentColumnValueKey])
             {
                 [[block store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
+            }
+            if(pickupSprite)
+            {
+                [[block store] setObject:pickupSprite forKey:PICKUP_SPRITE_FILENAME];
             }
             if(numberPrecountedForRow<numberToPrecount)
             {
@@ -347,8 +387,32 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     showCountOnBlock = [[pdef objectForKey:SHOW_COUNT_BLOCK] boolValue];
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
-    disableCageAdd = [[pdef objectForKey:DISABLE_CAGE_ADD] boolValue];
-    disableCageDelete = [[pdef objectForKey:DISABLE_CAGE_DELETE] boolValue];
+    //disableCageAdd = [[pdef objectForKey:DISABLE_CAGE_ADD] boolValue];
+    //disableCageDelete = [[pdef objectForKey:DISABLE_CAGE_DELETE] boolValue];
+    
+    // look at what positive columns are allowed to add/del
+    columnCagePosDisableAdd = [pdef objectForKey:CAGE_POS_DISABLE_ADD];
+    [columnCagePosDisableAdd retain];
+    columnCagePosDisableDel = [pdef objectForKey:CAGE_POS_DISABLE_DELETE];
+    [columnCagePosDisableAdd retain];
+    columnCageNegDisableAdd = [pdef objectForKey:CAGE_NEG_DISABLE_ADD];
+    [columnCageNegDisableAdd retain];
+    columnCageNegDisableDel = [pdef objectForKey:CAGE_NEG_DISABLE_DELETE];
+    [columnCageNegDisableDel retain];
+    
+    if([[pdef objectForKey:CAGE_SPRITES] objectForKey:POS_CAGE]) posCageSprite = [NSString stringWithFormat:@"%@", BUNDLE_FULL_PATH([[pdef objectForKey:CAGE_SPRITES] objectForKey:POS_CAGE])];
+    else posCageSprite=BUNDLE_FULL_PATH(@"/images/placevalue/cage-pos.png");
+            [posCageSprite retain];
+    if([[pdef objectForKey:CAGE_SPRITES] objectForKey:NEG_CAGE]) negCageSprite = [NSString stringWithFormat:@"%@", BUNDLE_FULL_PATH([[pdef objectForKey:CAGE_SPRITES] objectForKey:NEG_CAGE])];
+    else negCageSprite=BUNDLE_FULL_PATH(@"/images/placevalue/cage-neg.png");
+            [negCageSprite retain];
+        
+    //if([pdef objectForKey:PICKUP_SPRITE_FILENAME]) pickupSprite = [NSString stringWithFormat:@"%@", BUNDLE_FULL_PATH([pdef objectForKey:PICKUP_SPRITE_FILENAME])];
+    if([pdef objectForKey:PICKUP_SPRITE_FILENAME]) pickupSprite = [pdef objectForKey:PICKUP_SPRITE_FILENAME];
+    [pickupSprite retain];
+    
+    if([pdef objectForKey:PROXIMITY_SPRITE_FILENAME]) proximitySprite = [pdef objectForKey:PROXIMITY_SPRITE_FILENAME];
+    [proximitySprite retain];
 
     
     columnRopes = [pdef objectForKey:COLUMN_ROPES];
@@ -1015,6 +1079,10 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         {
             [[go store] setObject:[columnSprites objectForKey:currentColumnValueString] forKey:SPRITE_FILENAME];
         }
+        if(pickupSprite)
+        {
+            [[go store] setObject:pickupSprite forKey:PICKUP_SPRITE_FILENAME];
+        }
         [go handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
         //find a mount for this object
@@ -1164,6 +1232,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             }
             if([gw Blackboard].DropObject != nil)
             {
+                [gw.Blackboard.PickupObject setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gw.Blackboard.PickupObject store] objectForKey:PROXIMITY_SPRITE_FILENAME])]];
                 //tell the picked-up object to mount on the dropobject
                 [pl removeAllObjects];
                 [pl setObject:[gw Blackboard].DropObject forKey:MOUNT];
@@ -1220,11 +1289,19 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     [solutionDisplayText release];
     [incompleteDisplayText release];
     [showCustomColumnHeader release];
+    [columnCagePosDisableAdd release];
+    [columnCagePosDisableDel release];
+    [columnCageNegDisableAdd release];
+    [columnCageNegDisableDel release];
     [columnSprites release];
     [columnCages release];
     [columnNegCages release];
     [columnRows release];
     [columnRopes release];
+    [posCageSprite release];
+    [negCageSprite release];
+    [pickupSprite release];
+    [proximitySprite release];
     
     [super dealloc];
 }

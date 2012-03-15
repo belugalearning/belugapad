@@ -55,11 +55,16 @@
     BOOL showBaseSelection;
     BOOL showCountOnBlock;
     BOOL showColumnHeader;
-    BOOL disableCageAdd;
-    BOOL disableCageDelete;
+    //BOOL disableCageAdd;
+    //BOOL disableCageDelete;
     BOOL showReset;
     BOOL fadeCount;
     BOOL allowDeselect;
+    
+    NSString *posCageSprite;
+    NSString *negCageSprite;
+    NSString *pickupSprite;
+    NSString *proximitySprite;
 
     NSString *solutionDisplayText;
     NSString *incompleteDisplayText;
@@ -76,6 +81,10 @@
     NSDictionary *columnNegCages;
     NSDictionary *columnRows;
     NSDictionary *columnRopes;
+    NSDictionary *columnCagePosDisableAdd;
+    NSDictionary *columnCagePosDisableDel;
+    NSDictionary *columnCageNegDisableAdd;
+    NSDictionary *columnCageNegDisableDel;
     
     DWGameWorld *gw;
 

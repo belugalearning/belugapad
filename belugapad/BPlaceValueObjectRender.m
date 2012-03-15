@@ -76,6 +76,13 @@
     if(messageType==kDWputdown)
     {
         amPickedUp=NO;
+        
+        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
+        if([[gameObject store] objectForKey:PICKUP_SPRITE_FILENAME] && !gameWorld.Blackboard.inProblemSetup)
+        {
+            [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gameObject store] objectForKey:SPRITE_FILENAME])]];
+
+        }
     }
     
     if(messageType==kDWsetMount)
@@ -129,7 +136,7 @@
     {
         [mySprite setColor:ccc3(255,0,0)];
     }
-        [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:1];
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:2];
     
     //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
     [[gameObject store] setObject:mySprite forKey:MY_SPRITE];
@@ -158,6 +165,10 @@
         }
         else
         {
+            if([[gameObject store] objectForKey:PICKUP_SPRITE_FILENAME] && !gameWorld.Blackboard.inProblemSetup)
+            {
+                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gameObject store] objectForKey:PICKUP_SPRITE_FILENAME])]];
+            }
             [mySprite setPosition:ccp(x, y)];
         }
     }
@@ -174,6 +185,10 @@
     
     CCSprite *curSprite = [[gameObject store] objectForKey:MY_SPRITE];
     
+    if([[gameObject store] objectForKey:PICKUP_SPRITE_FILENAME] && !gameWorld.Blackboard.inProblemSetup)
+    {
+        [curSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gameObject store] objectForKey:SPRITE_FILENAME])]];
+    }
     [curSprite runAction:[CCMoveTo actionWithDuration:kTimeObjectSnapBack position:ccp(x, y)]];
     
 }

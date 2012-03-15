@@ -18,6 +18,9 @@
 #import "Daemon.h"
 #import "ToolHost.h"
 #import "NLineConsts.h"
+#import "BAExpressionHeaders.h"
+#import "BAExpressionTree.h"
+#import "BATQuery.h"
 
 
 @implementation NLine
@@ -92,6 +95,13 @@
     [gw populateAndAddGameObject:selector withTemplateName:@"TnLineSelector"];
     
     selector.pos=ccp(cx,cy + 75.0f);
+    
+    //point gameWorld at expression
+    gw.Blackboard.ProblemExpression=toolHost.PpExpr;
+    
+    //get list of vars for selector
+    BATQuery *q=[[BATQuery alloc] initWithExpr:toolHost.PpExpr.root andTree:toolHost.PpExpr];
+    selector.PopulateVariableNames=[q getDistinctVarNames];
 }
 
 -(void)readPlist:(NSDictionary*)pdef

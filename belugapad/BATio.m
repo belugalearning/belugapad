@@ -17,7 +17,7 @@
 +(BAExpressionTree *)loadTreeFromMathMLFile:(NSString*)filePath
 {
     NSData *XMLData=[NSData dataWithContentsOfFile:filePath];
-    CXMLDocument *doc=[[[CXMLDocument alloc] initWithData:XMLData options:0 error:nil] autorelease];
+    CXMLDocument *doc=[[[CXMLDocument alloc] initWithData:XMLData options:0 error:nil] retain];
     
     NSDictionary *nsmap=[NSDictionary dictionaryWithObject:MML_NAMESPACE forKey:@""];
     

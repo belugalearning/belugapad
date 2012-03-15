@@ -27,6 +27,23 @@
     {
         [self setSprite];
     }
+    if(messageType==kDWrenderSelection)
+    {
+        NSNumber *num=[payload objectForKey:@"VALUE"];
+        [self renderLabelSelection:[num stringValue]];
+    }
+}
+
+-(void)renderLabelSelection:(NSString*)labelText
+{
+    if(selectionLabel)
+    {
+        [[gameWorld GameScene].ForeLayer removeChild:selectionLabel cleanup:YES];
+    }
+    
+    selectionLabel=[CCLabelTTF labelWithString:labelText fontName:@"Helvetica" fontSize:40];
+    [selectionLabel setPosition:CGPointMake(selector.pos.x, selector.pos.y+10)];
+    [[gameWorld GameScene].ForeLayer addChild:selectionLabel];
 }
 
 -(void)setSprite
@@ -39,7 +56,7 @@
     //tagged for staged introduction into problem
     if(gameWorld.Blackboard.inProblemSetup)
     {
-        [mySprite setTag:1];
+        [mySprite setTag:2];
         [mySprite setOpacity:0];
     }
     
@@ -47,6 +64,13 @@
     
     
     [[gameWorld GameScene].ForeLayer addChild:mySprite z:0];
+    
+    CCSprite *connector=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/selector-connector.png")];
+    [connector setPosition:CGPointMake(selector.pos.x, selector.pos.y-92)];
+    [connector setTag:3];
+    [connector setOpacity:0];
+    [[gameWorld GameScene].ForeLayer addChild:connector];
+    
     
 }
 

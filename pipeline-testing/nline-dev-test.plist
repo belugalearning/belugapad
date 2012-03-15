@@ -2,6 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>/Problems/tools-dev/nline-dev/nline-deve1.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-deve2.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-deve3.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-deve4.plist</string>
 	<string>/Problems/tools-dev/nline-dev/nline-dev1.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-dev2.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-dev3.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-dev4.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-dev5.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-dev6.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-dev7.plist</string>
 </array>
 </plist>

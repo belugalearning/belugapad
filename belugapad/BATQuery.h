@@ -25,5 +25,6 @@
 -(int)getNodeDepthFor:(BAExpression *)expr withParentDepth:(int)pdepth;
 
 -(BOOL)assumeAndEvalEqualityAtRoot;
+-(NSMutableArray*)getDistinctVarNames;
 
 @end

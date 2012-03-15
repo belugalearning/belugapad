@@ -54,6 +54,35 @@
     }
 }
 
+-(NSMutableArray*)getDistinctVarNames
+{
+    NSMutableArray *vars=[[NSMutableArray alloc] init];
+    
+    [self getDistinctVarNamesFrom:Tree.root withArray:vars];
+    
+    //sort this a-z
+    vars = (NSMutableArray*)[vars sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+    
+    return vars;
+}
+
+-(void)getDistinctVarNamesFrom:(BAExpression *)expr withArray:(NSMutableArray*)array
+{
+    for (BAExpression *child in [expr children]) {
+        if([child isKindOfClass:[BAVariable class]])
+        {
+            NSString *vname=[(BAVariable*)child name];
+            if(![array containsObject:vname])
+            {
+                [array addObject:vname];
+            }
+        }
+        else {
+            [self getDistinctVarNamesFrom:child withArray:array];
+        }
+    }
+}
+
 -(BOOL)assumeAndEvalEqualityAtRoot
 {
     //assumes root is equality and evaluates both sides and compares use l comp r

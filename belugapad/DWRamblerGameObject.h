@@ -18,4 +18,7 @@
 @property (retain) NSNumber *MinValue;
 @property (retain) NSNumber *MaxValue;
 
+@property float TouchXOffset;
+
+
 @end

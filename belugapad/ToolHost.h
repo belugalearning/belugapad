@@ -52,10 +52,13 @@ typedef enum {
     float shownMetaQuestionIncompleteFor;
     
     NSDictionary *pdef;
+    
+    BOOL skipNextStagedIntroAnim;
 }
 
 @property (retain) Daemon *Zubi;
 @property (retain) BAExpressionTree *PpExpr;
+@property BOOL flagResetProblem;
 
 +(CCScene *) scene;
 

@@ -36,15 +36,13 @@
     ProblemRejectMode rejectMode;
     ProblemEvalMode evalMode;
     CCLabelTTF *problemDescLabel;
-    
+
+    CCLabelTTF *problemCompleteLabel;
 }
 
 -(void)populateGW;
 -(void)readPlist:(NSDictionary*)pdef;
--(void)problemStateChanged;
+
 -(BOOL)evalProblem;
--(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
--(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
--(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
--(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
+
 @end

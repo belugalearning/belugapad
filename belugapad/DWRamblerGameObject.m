@@ -18,4 +18,6 @@
 @synthesize MinValue;
 @synthesize MaxValue;
 
+@synthesize TouchXOffset;
+
 @end

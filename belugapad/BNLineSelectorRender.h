@@ -13,6 +13,7 @@
 {
     DWSelectorGameObject *selector;
     CCSprite *mySprite;
+    CCSprite *selectionLabel;
 }
 
 -(BNLineSelectorRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

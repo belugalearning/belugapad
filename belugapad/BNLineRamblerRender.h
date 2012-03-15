@@ -17,10 +17,12 @@
     NSMutableArray *assBlankSegments;
     NSMutableArray *assLineSegments;
     NSMutableArray *assIndicators;
-    NSMutableArray *assLabels;
     
     CCSprite *assStartTerminator;
     CCSprite *assEndTerminator;
+    
+    NSMutableDictionary *assLabels;
+    CCLayer *labelLayer;
 }
 
 -(BNLineRamblerRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

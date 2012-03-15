@@ -30,6 +30,7 @@
     
     ToolHost *layer=[ToolHost node];
     
+    
     [scene addChild:layer];
     
     return scene;
@@ -157,6 +158,13 @@
     //tear down meta question stuff
     [self tearDownMetaQuestion];
     
+    //tear down host background
+    if(hostBackground)
+    {
+        [self removeChild:hostBackground cleanup:YES];
+        hostBackground=nil;
+    }
+    
     NSString *toolKey=[pdef objectForKey:TOOL_KEY];
     
     if(currentTool)
@@ -164,6 +172,7 @@
         [self removeChild:toolBackLayer cleanup:YES];
         [self removeChild:toolForeLayer cleanup:YES];
         [currentTool release];
+        currentTool=nil;
     }
     
     if(self.PpExpr)
@@ -187,6 +196,16 @@
     currentTool=[NSClassFromString(toolKey) alloc];
     [currentTool initWithToolHost:self andProblemDef:pdef];    
     
+    
+    //setup background png / underlay
+    NSString *hostBackgroundFile=[pdef objectForKey:@"HOST_BACKGROUND_IMAGE"];
+    if(hostBackgroundFile)
+    {
+        hostBackground=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(hostBackgroundFile)];
+        [hostBackground setPosition:ccp(cx, cy)];
+        [self addChild:hostBackground];
+    }
+    
     //setup meta question (if there is one)
     NSDictionary *mq=[pdef objectForKey:META_QUESTION];
     if (mq)
@@ -205,6 +224,7 @@
     else {
         [self.Zubi hideZubi];
     }
+    
 }
 
 -(void) resetProblem
@@ -223,9 +243,17 @@
     metaQuestionAnswerButtons = [[NSMutableArray alloc] init];
     metaQuestionAnswerLabels = [[NSMutableArray alloc] init];
     
+    float titleY=cy*1.75f;
+    float answersY=cy*0.25;
+    if(currentTool)
+    {
+        titleY=[currentTool metaQuestionTitleYLocation];
+        answersY=[currentTool metaQuestionAnswersYLocation];
+    }
+    
     //render problem label
     CCLabelTTF *problemDescLabel=[CCLabelTTF labelWithString:[pdefMQ objectForKey:META_QUESTION_TITLE] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [problemDescLabel setPosition:ccp(cx, [currentTool metaQuestionTitleYLocation])];
+    [problemDescLabel setPosition:ccp(cx, titleY)];
     [problemDescLabel setColor:kMetaQuestionLabelColor];
     [problemDescLabel setOpacity:0];
     [problemDescLabel setTag:3];
@@ -250,7 +278,7 @@
     metaQuestionIncompleteText = [pdefMQ objectForKey:META_QUESTION_INCOMPLETE_TEXT];
     
     metaQuestionIncompleteLabel = [CCLabelTTF labelWithString:metaQuestionIncompleteText fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [metaQuestionIncompleteLabel setPosition:ccp(cx, [currentTool metaQuestionAnswersYLocation]*kMetaIncompleteLabelYOffset)];
+    [metaQuestionIncompleteLabel setPosition:ccp(cx, answersY*kMetaIncompleteLabelYOffset)];
     [metaQuestionIncompleteLabel setColor:kMetaQuestionLabelColor];
     [metaQuestionIncompleteLabel setVisible:NO];
     [metaQuestionLayer addChild:metaQuestionIncompleteLabel];
@@ -282,7 +310,7 @@
         }
         
         // render buttons
-        [answerBtn setPosition:ccp((i+1)*(lx/(metaQuestionAnswerCount+1)), [currentTool metaQuestionAnswersYLocation])];
+        [answerBtn setPosition:ccp((i+1)*(lx/(metaQuestionAnswerCount+1)), answersY)];
         [answerBtn setTag:3];
         [answerBtn setScale:0.5f];
         [answerBtn setOpacity:0];
@@ -293,7 +321,7 @@
         // check for text, render if nesc
         if(![answerLabel.string isEqualToString:@""])
         {
-            [answerLabel setPosition:ccp((i+1)*(lx/(metaQuestionAnswerCount+1)), [currentTool metaQuestionAnswersYLocation])];
+            [answerLabel setPosition:ccp((i+1)*(lx/(metaQuestionAnswerCount+1)), answersY)];
             [answerLabel setColor:kMetaAnswerLabelColor];
             [answerLabel setOpacity:0];
             [answerLabel setTag: 3];

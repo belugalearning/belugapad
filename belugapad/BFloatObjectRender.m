@@ -11,8 +11,8 @@
 #import "BLMath.h"
 #import "ToolScene.h"
 
-static NSString *kSpriteFilePickup = @"obj-float-50-pickup.png";
-static NSString *kSpriteFileOperatorMode = @"obj-float-50-operatormode.png";
+static NSString *kSpriteFilePickup = @"/images/blocks/obj-float-50-pickup.png";
+static NSString *kSpriteFileOperatorMode = @"/images/blocks/obj-float-50-operatormode.png";
 
 @implementation BFloatObjectRender
 
@@ -97,16 +97,21 @@ static NSString *kSpriteFileOperatorMode = @"obj-float-50-operatormode.png";
         amPickedUp=NO;
         
         [self addOccludingSeparators];
+        
+        if(!inOperatorMode)
+            [self swapObjSpritesTo:[[gameObject store] objectForKey:SPRITE_FILENAME]];
     }
     
     if(messageType==kDWinOperatorMode)
     {
         [self swapObjSpritesTo:kSpriteFileOperatorMode];
+        inOperatorMode=YES;
     }
     
-    if(messageType==kDWnotInOperatorMode || messageType==kDWputdown)
+    if(messageType==kDWnotInOperatorMode)
     {
         [self swapObjSpritesTo:[[gameObject store] objectForKey:SPRITE_FILENAME]];
+        inOperatorMode=NO;
     }
     
     if(messageType==kDWsetMount || messageType==kDWdetachPhys)
@@ -303,7 +308,7 @@ static NSString *kSpriteFileOperatorMode = @"obj-float-50-operatormode.png";
     for (NSDictionary *fd in flatChildren) {
         CCSprite *s=[fd objectForKey:MY_SPRITE];
         
-        [s setTexture:[[CCTexture2D alloc] initWithImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(spriteFile)]]];
+        [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(spriteFile)]];
     }
 }
 

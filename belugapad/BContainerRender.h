@@ -12,6 +12,7 @@
 {
 
     CCSprite *mySprite;
+    CCSprite *myHighlight;
 }
 
 -(BContainerRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

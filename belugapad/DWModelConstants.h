@@ -89,6 +89,9 @@ typedef enum {
     kDWrenderSelection=115,
     
     kDWinOperatorMode=116,
-    kDWnotInOperatorMode=117
+    kDWnotInOperatorMode=117,
+    
+    kDWhighlight=118,
+    kDWunhighlight=119
     
 } DWMessageType;

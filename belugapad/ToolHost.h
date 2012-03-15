@@ -54,6 +54,8 @@ typedef enum {
     NSDictionary *pdef;
     
     BOOL skipNextStagedIntroAnim;
+    
+    CCSprite *hostBackground;
 }
 
 @property (retain) Daemon *Zubi;

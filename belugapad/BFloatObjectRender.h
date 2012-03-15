@@ -20,6 +20,8 @@
     
     NSMutableArray *occSeparators;
     BOOL enableOccludingSeparators;
+    
+    BOOL inOperatorMode;
 }
 
 -(BFloatObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>count</string>
+	<string>add 5</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -15,7 +15,7 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>4</integer>
+	<integer>5</integer>
 	<key>ROWS_PER_COL</key>
 	<integer>1</integer>
 	<key>ALLOW_CONDENSING</key>
@@ -27,28 +27,24 @@
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>SHOW_CAGE</key>
-	<false/>
+	<true/>
 	<key>SHOW_COUNT</key>
 	<false/>
 	<key>SHOW_COUNT_BLOCK</key>
 	<true/>
-	<key>INIT_OBJECTS</key>
-	<array>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
-			<key>NUMBER</key>
-			<integer>4</integer>
-		</dict>
-	</array>
+	<key>CUSTOM_COLUMN_HEADERS</key>
+	<true/>
+	<key>COLUMN_HEADERS</key>
+	<dict>
+		<key>0</key>
+		<string>Ones.</string>
+	</dict>
 	<key>SOLUTION</key>
 	<dict>
 		<key>SOLUTION_TYPE</key>
-		<string>COUNT_SEQUENCE</string>
+		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>4</integer>
+		<integer>5</integer>
 	</dict>
 </dict>
 </plist>

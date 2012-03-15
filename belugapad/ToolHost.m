@@ -91,7 +91,7 @@
     if(showMetaQuestionIncomplete) shownMetaQuestionIncompleteFor+=delta;
     
     //do internal mgmt updates
-    if(currentTool.ProblemComplete)
+    if(currentTool.ProblemComplete || metaQuestionForceComplete)
     {
         [self gotoNewProblem];
     }
@@ -244,7 +244,7 @@
     metaQuestionAnswerLabels = [[NSMutableArray alloc] init];
     
     float titleY=cy*1.75f;
-    float answersY=cy*0.25;
+    float answersY=cy*0.40;
     if(currentTool)
     {
         titleY=[currentTool metaQuestionTitleYLocation];
@@ -278,7 +278,12 @@
     metaQuestionIncompleteText = [pdefMQ objectForKey:META_QUESTION_INCOMPLETE_TEXT];
     
     metaQuestionIncompleteLabel = [CCLabelTTF labelWithString:metaQuestionIncompleteText fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [metaQuestionIncompleteLabel setPosition:ccp(cx, answersY*kMetaIncompleteLabelYOffset)];
+    
+    if(currentTool)
+        [metaQuestionIncompleteLabel setPosition:ccp(cx, answersY*kMetaIncompleteLabelYOffset)];
+    else
+        [metaQuestionIncompleteLabel setPosition:ccp(cx, cy*0.25)];
+    
     [metaQuestionIncompleteLabel setColor:kMetaQuestionLabelColor];
     [metaQuestionIncompleteLabel setVisible:NO];
     [metaQuestionLayer addChild:metaQuestionIncompleteLabel];
@@ -354,6 +359,8 @@
 -(void)tearDownMetaQuestion
 {
     [metaQuestionLayer removeAllChildrenWithCleanup:YES];
+    
+    metaQuestionForceComplete=NO;
 }
 
 -(void)stageIntroActions
@@ -532,11 +539,11 @@
 {
     [self removeMetaQuestionButtons];
     CCLabelTTF *pcLabel = [CCLabelTTF labelWithString:metaQuestionCompleteText fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [pcLabel setPosition:ccp(cx, [currentTool metaQuestionAnswersYLocation])];
+    [pcLabel setPosition:ccp(cx, cy*0.25)];
     [pcLabel setColor:kMetaQuestionLabelColor];
     [metaQuestionLayer addChild:pcLabel];
     currentTool.ProblemComplete=YES;
-    
+    metaQuestionForceComplete=YES;
 }
 -(void)doIncomplete
 {

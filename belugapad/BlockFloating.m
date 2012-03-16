@@ -104,8 +104,6 @@ static void eachShape(void *ptr, void* unused)
         
         xpGrantedClauses=[[NSMutableArray alloc] init];
         
-        [self setupBkgAndTitle];
-        
         //setup daemon
         //daemon=[[Daemon alloc] initWithLayer:self andRestingPostion:kDaemonRest andLy:cy*2];
         
@@ -148,7 +146,9 @@ static void eachShape(void *ptr, void* unused)
 
 -(void)setupBkgAndTitle
 {
-    CCSprite *fg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/fg-ipad-float.png")];
+    CCSprite *fg = [[CCSprite alloc]init];
+    if(underlayImage) fg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(underlayImage)]; 
+    else fg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/fg-ipad-float.png")];
     [fg setPosition:ccp(cx, cy)];
     [self.ForeLayer addChild:fg z:2];
     
@@ -633,8 +633,11 @@ static void eachShape(void *ptr, void* unused)
     	
     [gameWorld logInfo:[NSString stringWithFormat:@"started problem"] withData:0];
 
-
     
+    if([pdef objectForKey:UNDERLAY_FILENAME]) underlayImage=[pdef objectForKey:UNDERLAY_FILENAME];
+    
+
+    [self setupBkgAndTitle];
     //problem sub title
     NSString *subT=[pdef objectForKey:PROBLEM_SUBTITLE];
     if(!subT) subT=@"";
@@ -1060,6 +1063,7 @@ static void eachShape(void *ptr, void* unused)
     [gameWorld logInfo:[NSString stringWithFormat:@"solution found with value %f and text %@", solScore, soltext] withData:0];
     
     //move to next problem
+    [toolHost showProblemCompleteMessage];
     autoMoveToNextProblem=YES;
     timeToAutoMoveToNextProblem=0.0f;
 }

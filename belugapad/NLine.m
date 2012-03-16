@@ -169,7 +169,8 @@
 
 -(void)showComplete
 {
-    [problemCompleteLabel setVisible:YES];
+    //[problemCompleteLabel setVisible:YES];
+    [toolHost showProblemCompleteMessage];
 }
 
 -(BOOL)evalProblem

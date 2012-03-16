@@ -58,6 +58,12 @@
         CCSprite *bkg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/bg/bg-ipad.png")];
         [bkg setPosition:ccp(cx, cy)];
         [backgroundLayer addChild:bkg z:0];
+        
+        //add a pause button but keep it hidden -- to be brought in by the fader
+        CCSprite *pause=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/button-pause.png")];
+        [pause setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), ly-(kPropXCommitButtonPadding*lx))];
+        [backgroundLayer addChild:pause z:3];        
+
 
         metaQuestionLayer=[[CCLayer alloc] init];
         [self addChild:metaQuestionLayer z:2];
@@ -81,6 +87,24 @@
 {
     //do internal mgmt updates
     [self.Zubi doUpdate:delta];
+    
+    if(showingProblemComplete) shownProblemStatusFor+=delta;
+    if(showingProblemIncomplete) shownProblemStatusFor+=delta;
+ 
+    if(shownProblemStatusFor>kTimeToShowProblemStatus)
+    {
+        if(showingProblemComplete)
+        {
+            showingProblemComplete=NO;
+            [problemComplete runAction:[CCFadeOut actionWithDuration:kTimeToFadeProblemStatus]];
+        }
+        if(showingProblemIncomplete)
+        {
+            showingProblemIncomplete=NO;
+            [problemIncomplete runAction:[CCFadeOut actionWithDuration:kTimeToFadeProblemStatus]];
+        }
+            shownProblemStatusFor=0.0f;
+    }
     
     //let tool do updates
     [currentTool doUpdateOnTick:delta];
@@ -233,6 +257,60 @@
     [self loadProblem];
 }
 
+-(void) showPauseMenu
+{
+    isPaused = YES;
+    
+    pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
+    [pauseMenu setPosition:ccp(cx, cy)];
+    [toolForeLayer addChild:pauseMenu z:10];
+}
+
+-(void) checkPauseTouches:(CGPoint)location
+{
+    if(CGRectContainsPoint(kPauseMenuContinue, location))
+    {
+        //resume
+        [toolForeLayer removeChild:pauseMenu cleanup:YES];
+        isPaused=NO;
+    }
+    if(CGRectContainsPoint(kPauseMenuReset, location))
+    {
+       //reset
+        [self resetProblem];
+        isPaused=NO;
+    }
+    if(CGRectContainsPoint(kPauseMenuMenu,location))
+    {
+       //menu - do nothing, yet
+        [self returnToMenu];
+        
+    }
+           
+}
+
+-(void) returnToMenu
+{
+    DLog(@"menu button touch");
+}
+
+-(void) showProblemCompleteMessage
+{
+    problemComplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/complete-overlay.png")];
+    [problemComplete setPosition:ccp(cx, cy)];
+    [metaQuestionLayer addChild:problemComplete];
+    showingProblemComplete=YES;
+    [problemComplete retain];
+}
+
+-(void) showProblemIncompleteMessage
+{
+    problemIncomplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/failed-overlay.png")];
+    [problemIncomplete setPosition:ccp(cx,cy)];
+    [toolForeLayer addChild:problemIncomplete];
+    showingProblemIncomplete=YES;
+    [problemIncomplete retain];
+}
 
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ
 {
@@ -538,17 +616,13 @@
 -(void)doWinning
 {
     [self removeMetaQuestionButtons];
-    CCLabelTTF *pcLabel = [CCLabelTTF labelWithString:metaQuestionCompleteText fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [pcLabel setPosition:ccp(cx, cy*0.25)];
-    [pcLabel setColor:kMetaQuestionLabelColor];
-    [metaQuestionLayer addChild:pcLabel];
+    [self showProblemCompleteMessage];
     currentTool.ProblemComplete=YES;
     metaQuestionForceComplete=YES;
 }
 -(void)doIncomplete
-{
-    [metaQuestionIncompleteLabel setVisible:YES];
-    showMetaQuestionIncomplete=YES;
+{   
+    [self showProblemIncompleteMessage];
     //[self deselectAnswersExcept:-1];
 }
 -(void)removeMetaQuestionButtons
@@ -570,6 +644,11 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
      
     [self checkMetaQuestionTouches:location];
+    if (location.x > 944 && location.y > 688 && !isPaused)
+    {
+        [self showPauseMenu];
+        return;
+    }
     
     if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
         [self gotoNewProblem];
@@ -584,6 +663,17 @@
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    UITouch *touch=[touches anyObject];
+    CGPoint location=[touch locationInView: [touch view]];
+    location=[[CCDirector sharedDirector] convertToGL:location];
+    
+    // if we're paused - check if any menu options were valid.
+    // touches ended event becase otherwise these touches go through to the tool
+    if(isPaused)
+    {
+        [self checkPauseTouches:location];
+        return;
+    }
     [currentTool ccTouchesEnded:touches withEvent:event];
 }
 
@@ -622,6 +712,8 @@
     [metaQuestionAnswerLabels release];
     [metaQuestionCompleteText release];
     [metaQuestionIncompleteText release];
+    [problemComplete release];
+    [problemIncomplete release];
     
     [super dealloc];
 }

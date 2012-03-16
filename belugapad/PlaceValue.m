@@ -23,7 +23,7 @@ static float kPropXNetSpace=0.087890625f;
 static float kPropYColumnOrigin=0.75f;
 static float kCageYOrigin=0.08f;
 static float kPropYColumnHeader=0.85f;
-static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
+static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 
 @implementation PlaceValue
 
@@ -127,7 +127,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     
     for (int i=0; i<numberOfColumns; i++)
     {
-        CGPoint thisColumnOrigin = ccp(-((ropeWidth*ropesforColumn)/2.0f)+(ropeWidth/2.0f)+(i*(kPropXColumnSpacing*lx)), ly*kPropYColumnOrigin); 
+
         
         NSMutableDictionary *currentColumnInfo = [[[NSMutableDictionary alloc] init] autorelease];
         [currentColumnInfo setObject:[NSNumber numberWithFloat:currentColumnValue] forKey:COL_VALUE];
@@ -184,14 +184,21 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
         else currentColumnRopes = ropesforColumn;
         if([columnRows objectForKey:currentColumnValueKey]) currentColumnRows = [[columnRows objectForKey:currentColumnValueKey] intValue];
         else currentColumnRows = rows;
-        
-        
+
+        CGPoint thisColumnOrigin = ccp(-((ropeWidth*ropesforColumn)/2.0f)+(ropeWidth/2.0f)+(i*(kPropXColumnSpacing*lx)), ly*kPropYColumnOrigin);
+
+
         for (int iRow=0; iRow<currentColumnRows; iRow++)
         {
             NSMutableArray *RowArray = [[NSMutableArray alloc] init];        
             [newCol addObject:RowArray];
             
             CGPoint rowOrigin=ccp(thisColumnOrigin.x, thisColumnOrigin.y-(iRow*ropeWidth)); 
+            if(currentColumnRopes != ropesforColumn)
+            {
+                float adjustAmount = (((ropesforColumn-currentColumnRopes) / 2.0f) * ropeWidth);
+                rowOrigin=ccp(rowOrigin.x+adjustAmount, rowOrigin.y);
+            }
             
             for(int iRope=0; iRope<currentColumnRopes; iRope++)
             {
@@ -646,16 +653,18 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
 -(void)doWinning
 {
     CGPoint pos=ccp(cx,cy);
-    [problemCompleteLabel setString:solutionDisplayText];
+    //[problemCompleteLabel setString:solutionDisplayText];
     autoMoveToNextProblem=YES;
-    [problemCompleteLabel setVisible:YES]; 
+    //[problemCompleteLabel setVisible:YES]; 
+    [toolHost showProblemCompleteMessage];
     [toolHost.Zubi createXPshards:20 fromLocation:pos];
 }
 -(void)doIncorrect
 {
-    [problemCompleteLabel setString:incompleteDisplayText];
-    autoHideStatusLabel=YES;
-    [problemCompleteLabel setVisible:YES];
+    //[problemCompleteLabel setString:incompleteDisplayText];
+    //autoHideStatusLabel=YES;
+    //[problemCompleteLabel setVisible:YES];
+    [toolHost showProblemIncompleteMessage];
     [gw handleMessage:kDWdeselectAll andPayload:nil withLogLevel:-1];
 }
 -(BOOL)evalProblemCountSeq:(NSString*)problemType
@@ -943,41 +952,44 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     if([gw Blackboard].PickupObject!=nil)
     {
         ccColor3B currentColour = ccc3(0,0,0);
-        if(proximitySprite)
-        {
-            NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
-            [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
-            [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
+        NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
+        [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
+        [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
             
-            //-NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
-
-            [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
+        
+        [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
+        
 
             CCSprite *mySprite = [[gw.Blackboard.PickupObject store] objectForKey:MY_SPRITE];
             if([gw Blackboard].DropObject != nil)
             {
-                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[[gw Blackboard].PickupObject store] objectForKey:PROXIMITY_SPRITE_FILENAME])]];
+                if(proximitySprite)
+                {
+                    [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[[gw Blackboard].PickupObject store] objectForKey:PROXIMITY_SPRITE_FILENAME])]];
+                }
         
                 currentColour=ccc3(0,255,0);
 
             }
             else {
-                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gw.Blackboard.PickupObject store] objectForKey:PICKUP_SPRITE_FILENAME])]];
+                if(proximitySprite)
+                {
+                    [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gw.Blackboard.PickupObject store] objectForKey:PICKUP_SPRITE_FILENAME])]];
+                }
                 currentColour=ccc3(255,255,255);
-
             }
             gw.Blackboard.DropObject = nil;
         
             // now we loop through the current column index for all the net spacer sprites to tint them            
-            for (int i=0; i<[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]; i++)
+
+        for (int i=0; i<[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]; i++)
+        {
+            for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex] objectAtIndex:i]count]; o++)
             {
-                for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex] objectAtIndex:i]count]; o++)
-                {
-                    DWGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex] objectAtIndex:(i)] objectAtIndex:o];
-                    
-                    CCSprite *mySprite = [[goC store] objectForKey:MY_SPRITE];
-                    [mySprite setColor:currentColour]; 
-                }
+                DWGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex] objectAtIndex:(i)] objectAtIndex:o];
+                
+                CCSprite *mySprite = [[goC store] objectForKey:MY_SPRITE];
+                [mySprite setColor:currentColour]; 
             }
         }
     CGPoint diff=[BLMath SubtractVector:prevLoc from:location];
@@ -989,7 +1001,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     posX = posX + diff.x;
     posY = posY + diff.y;
     
-    NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];        
+    //NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];        
 
     if(gw.Blackboard.SelectedObjects.count == columnBaseValue && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject])
     {

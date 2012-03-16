@@ -32,6 +32,8 @@ const CGRect kRectButtonReset={{944, 688}, {80, 80}};
 
 
 const float kTimeToAutoMove=1.0f;
+const float kTimeToShowProblemStatus=1.5f;
+const float kTimeToFadeProblemStatus=1.0f;
 const float kTimeToFadeButtonLabel=2.0f;
 
 // originally used by placevalue for snap back to cage time
@@ -48,3 +50,7 @@ const ccColor3B kMetaQuestionButtonDeselected={255, 255, 255};
 const float kMetaQuestionYOffsetPlaceValue=0.45f;
 const float kMetaQuestionYOffsetBlockFloat=0.35f;
 const float kMetaIncompleteLabelYOffset=0.65f;
+
+const CGRect kPauseMenuMenu={{456.5f,477.5},{107.0f,40.0f}};
+const CGRect kPauseMenuReset={{466.5f,395.5},{89.0f,38.0f}};
+const CGRect kPauseMenuContinue={{431.5f,233.5f},{160.0f,42.0f}};

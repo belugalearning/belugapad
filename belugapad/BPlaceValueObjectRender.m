@@ -183,7 +183,10 @@
     
     if([[gameObject store] objectForKey:PICKUP_SPRITE_FILENAME] && !gameWorld.Blackboard.inProblemSetup)
     {
-        [curSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gameObject store] objectForKey:SPRITE_FILENAME])]];
+        NSString *spriteFileName=@"/images/placevalue/obj-placevalue-unit.png";
+        if([[gameObject store] objectForKey:SPRITE_FILENAME]) spriteFileName=[[gameObject store] objectForKey:SPRITE_FILENAME];
+        
+        [curSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(spriteFileName)]];
     }
     [curSprite runAction:[CCMoveTo actionWithDuration:kTimeObjectSnapBack position:ccp(x, y)]];
     

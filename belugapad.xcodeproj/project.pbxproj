@@ -35,6 +35,8 @@
 		0CE3D72B15137BFD003D5193 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D71D15137BFD003D5193 /* User.m */; };
 		0CE3D72C15137BFD003D5193 /* UsersService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D71F15137BFD003D5193 /* UsersService.m */; };
 		0CE3D72D15137BFD003D5193 /* UsersService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D71F15137BFD003D5193 /* UsersService.m */; };
+		0CE3D73315137FC0003D5193 /* EditZubi.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D73215137FC0003D5193 /* EditZubi.m */; };
+		0CE3D73415137FC0003D5193 /* EditZubi.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D73215137FC0003D5193 /* EditZubi.m */; };
 		0CF9187C14F54C1D00FAC58D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF9187B14F54C1D00FAC58D /* images */; };
 		5536B29014E4173E00D30BC0 /* BPlaceValueContainerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */; };
 		5536B2A414E4350800D30BC0 /* BPlaceValueObjectSpawn.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B2A314E4350800D30BC0 /* BPlaceValueObjectSpawn.m */; };
@@ -317,6 +319,8 @@
 		0CE3D71D15137BFD003D5193 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		0CE3D71E15137BFD003D5193 /* UsersService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersService.h; sourceTree = "<group>"; };
 		0CE3D71F15137BFD003D5193 /* UsersService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersService.m; sourceTree = "<group>"; };
+		0CE3D73115137FC0003D5193 /* EditZubi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditZubi.h; sourceTree = "<group>"; };
+		0CE3D73215137FC0003D5193 /* EditZubi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditZubi.m; sourceTree = "<group>"; };
 		0CF9187B14F54C1D00FAC58D /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = SOURCE_ROOT; };
 		5536B28E14E4173D00D30BC0 /* BPlaceValueContainerRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueContainerRender.h; sourceTree = "<group>"; };
 		5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueContainerRender.m; sourceTree = "<group>"; };
@@ -1412,6 +1416,8 @@
 		7F51159914A9EF30001AF372 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				0CE3D73115137FC0003D5193 /* EditZubi.h */,
+				0CE3D73215137FC0003D5193 /* EditZubi.m */,
 				7F71B408150FBCB20097A956 /* ExprScene.h */,
 				7F71B409150FBCB20097A956 /* ExprScene.m */,
 				7FB8264714F262080053F221 /* ZubiIntro.h */,
@@ -1803,6 +1809,7 @@
 				0CE3D72715137BFD003D5193 /* SelectUserViewController.m in Sources */,
 				0CE3D72B15137BFD003D5193 /* User.m in Sources */,
 				0CE3D72D15137BFD003D5193 /* UsersService.m in Sources */,
+				0CE3D73415137FC0003D5193 /* EditZubi.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2010,6 +2017,7 @@
 				0CE3D72615137BFD003D5193 /* SelectUserViewController.m in Sources */,
 				0CE3D72A15137BFD003D5193 /* User.m in Sources */,
 				0CE3D72C15137BFD003D5193 /* UsersService.m in Sources */,
+				0CE3D73315137FC0003D5193 /* EditZubi.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2099,7 +2107,7 @@
 					"COCOS2D_DEBUG=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
@@ -2114,7 +2122,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;

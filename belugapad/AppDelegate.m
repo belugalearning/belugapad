@@ -12,48 +12,51 @@
 #import "GameConfig.h"
 #import "RootViewController.h"
 #import "ZubiIntro.h"
+#import "ToolHost.h"
 #import "global.h"
+#import "UsersService.h"
+#import "SelectUserViewController.h"
 
-#import "MenuScene.h"
+@interface AppDelegate()
+{
+@private
+    SelectUserViewController *selectUserViewController;
+}
+
+@end
 
 @implementation AppDelegate
 
 @synthesize window;
 @synthesize LocalSettings;
+@synthesize usersService;
 
-- (void) removeStartupFlicker
-{
-	//
-	// THIS CODE REMOVES THE STARTUP FLICKER
-	//
-	// Uncomment the following code if you Application only supports landscape mode
-	//
-#if GAME_AUTOROTATION == kGameAutorotationUIViewController
-
-//	CC_ENABLE_DEFAULT_GL_STATES();
-//	CCDirector *director = [CCDirector sharedDirector];
-//	CGSize size = [director winSize];
-//	CCSprite *sprite = [CCSprite spriteWithFile:@"Default.png"];
-//	sprite.position = ccp(size.width/2, size.height/2);
-//	sprite.rotation = -90;
-//	[sprite visit];
-//	[[director openGLView] swapBuffers];
-//	CC_ENABLE_DEFAULT_GL_STATES();
-	
-#endif // GAME_AUTOROTATION == kGameAutorotationUIViewController	
-}
 - (void) applicationDidFinishLaunching:(UIApplication*)application
-{
-	// Init the window
-	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	
-	// Try to use CADisplayLink director
+{    
+    // Try to use CADisplayLink director
 	// if it fails (SDK < 3.1) use the default director
 	if( ! [CCDirector setDirectorType:kCCDirectorTypeDisplayLink] )
 		[CCDirector setDirectorType:kCCDirectorTypeDefault];
+    
+	// Init the window
+	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    self.usersService = [[UsersService alloc] init];
 	
-	
-	CCDirector *director = [CCDirector sharedDirector];
+    //load local settings
+    self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
+    
+    //[self proceedFromLoginViaIntro:YES];
+    selectUserViewController = [[SelectUserViewController alloc] init];
+    [self.window addSubview:selectUserViewController.view];
+    [self.window makeKeyAndVisible];
+}
+
+-(void)proceedFromLoginViaIntro:(BOOL)viaIntro
+{
+ 	CCDirector *director = [CCDirector sharedDirector];
+    
+    [director end];
 	
 	// Init the View Controller
 	viewController = [[RootViewController alloc] initWithNibName:nil bundle:nil];
@@ -75,7 +78,7 @@
 	// attach the openglView to the director
 	[director setOpenGLView:glView];
 	
-//	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
+    //	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
 	if( ! [director enableRetinaDisplay:YES] )
 		CCLOG(@"Retina Display Not supported");
 	
@@ -110,16 +113,8 @@
 	// It can be RGBA8888, RGBA4444, RGB5_A1, RGB565
 	// You can change anytime.
 	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
-
-	
-	// Removes the startup flicker
-	[self removeStartupFlicker];
-	
-    //load local settings
-    self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
     
-	// Run the intro Scene
-    [[CCDirector sharedDirector] runWithScene:[ZubiIntro scene]];
+    [[CCDirector sharedDirector] runWithScene:(viaIntro ? [ZubiIntro scene] : [ToolHost scene])];
 }
 
 

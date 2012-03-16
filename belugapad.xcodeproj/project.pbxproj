@@ -21,6 +21,20 @@
 		0CE3D7051513778D003D5193 /* TouchDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D7011513778D003D5193 /* TouchDB.framework */; };
 		0CE3D707151377B7003D5193 /* select-edit-user-images in Resources */ = {isa = PBXBuildFile; fileRef = 0CE3D706151377B7003D5193 /* select-edit-user-images */; };
 		0CE3D708151377B7003D5193 /* select-edit-user-images in Resources */ = {isa = PBXBuildFile; fileRef = 0CE3D706151377B7003D5193 /* select-edit-user-images */; };
+		0CE3D72015137BFD003D5193 /* CCScreenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D71415137BFD003D5193 /* CCScreenshot.m */; };
+		0CE3D72115137BFD003D5193 /* CCScreenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D71415137BFD003D5193 /* CCScreenshot.m */; };
+		0CE3D72215137BFD003D5193 /* ColorPickerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D71615137BFD003D5193 /* ColorPickerImageView.m */; };
+		0CE3D72315137BFD003D5193 /* ColorPickerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D71615137BFD003D5193 /* ColorPickerImageView.m */; };
+		0CE3D72415137BFD003D5193 /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D71815137BFD003D5193 /* Device.m */; };
+		0CE3D72515137BFD003D5193 /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D71815137BFD003D5193 /* Device.m */; };
+		0CE3D72615137BFD003D5193 /* SelectUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D71A15137BFD003D5193 /* SelectUserViewController.m */; };
+		0CE3D72715137BFD003D5193 /* SelectUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D71A15137BFD003D5193 /* SelectUserViewController.m */; };
+		0CE3D72815137BFD003D5193 /* SelectUserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CE3D71B15137BFD003D5193 /* SelectUserViewController.xib */; };
+		0CE3D72915137BFD003D5193 /* SelectUserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CE3D71B15137BFD003D5193 /* SelectUserViewController.xib */; };
+		0CE3D72A15137BFD003D5193 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D71D15137BFD003D5193 /* User.m */; };
+		0CE3D72B15137BFD003D5193 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D71D15137BFD003D5193 /* User.m */; };
+		0CE3D72C15137BFD003D5193 /* UsersService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D71F15137BFD003D5193 /* UsersService.m */; };
+		0CE3D72D15137BFD003D5193 /* UsersService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D71F15137BFD003D5193 /* UsersService.m */; };
 		0CF9187C14F54C1D00FAC58D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF9187B14F54C1D00FAC58D /* images */; };
 		5536B29014E4173E00D30BC0 /* BPlaceValueContainerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */; };
 		5536B2A414E4350800D30BC0 /* BPlaceValueObjectSpawn.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B2A314E4350800D30BC0 /* BPlaceValueObjectSpawn.m */; };
@@ -290,6 +304,19 @@
 		0CE3D7001513778D003D5193 /* CouchCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchCocoa.framework; path = belugapad/Frameworks/CouchCocoa.framework; sourceTree = "<group>"; };
 		0CE3D7011513778D003D5193 /* TouchDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TouchDB.framework; path = belugapad/Frameworks/TouchDB.framework; sourceTree = "<group>"; };
 		0CE3D706151377B7003D5193 /* select-edit-user-images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "select-edit-user-images"; sourceTree = SOURCE_ROOT; };
+		0CE3D71315137BFD003D5193 /* CCScreenshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCScreenshot.h; sourceTree = "<group>"; };
+		0CE3D71415137BFD003D5193 /* CCScreenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCScreenshot.m; sourceTree = "<group>"; };
+		0CE3D71515137BFD003D5193 /* ColorPickerImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPickerImageView.h; sourceTree = "<group>"; };
+		0CE3D71615137BFD003D5193 /* ColorPickerImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerImageView.m; sourceTree = "<group>"; };
+		0CE3D71715137BFD003D5193 /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
+		0CE3D71815137BFD003D5193 /* Device.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Device.m; sourceTree = "<group>"; };
+		0CE3D71915137BFD003D5193 /* SelectUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectUserViewController.h; sourceTree = "<group>"; };
+		0CE3D71A15137BFD003D5193 /* SelectUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectUserViewController.m; sourceTree = "<group>"; };
+		0CE3D71B15137BFD003D5193 /* SelectUserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectUserViewController.xib; sourceTree = "<group>"; };
+		0CE3D71C15137BFD003D5193 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		0CE3D71D15137BFD003D5193 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		0CE3D71E15137BFD003D5193 /* UsersService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersService.h; sourceTree = "<group>"; };
+		0CE3D71F15137BFD003D5193 /* UsersService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersService.m; sourceTree = "<group>"; };
 		0CF9187B14F54C1D00FAC58D /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = SOURCE_ROOT; };
 		5536B28E14E4173D00D30BC0 /* BPlaceValueContainerRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueContainerRender.h; sourceTree = "<group>"; };
 		5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueContainerRender.m; sourceTree = "<group>"; };
@@ -786,6 +813,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0CE3D71115137BDB003D5193 /* Users */ = {
+			isa = PBXGroup;
+			children = (
+				0CE3D71315137BFD003D5193 /* CCScreenshot.h */,
+				0CE3D71415137BFD003D5193 /* CCScreenshot.m */,
+				0CE3D71515137BFD003D5193 /* ColorPickerImageView.h */,
+				0CE3D71615137BFD003D5193 /* ColorPickerImageView.m */,
+				0CE3D71715137BFD003D5193 /* Device.h */,
+				0CE3D71815137BFD003D5193 /* Device.m */,
+				0CE3D71915137BFD003D5193 /* SelectUserViewController.h */,
+				0CE3D71A15137BFD003D5193 /* SelectUserViewController.m */,
+				0CE3D71B15137BFD003D5193 /* SelectUserViewController.xib */,
+				0CE3D71C15137BFD003D5193 /* User.h */,
+				0CE3D71D15137BFD003D5193 /* User.m */,
+				0CE3D71E15137BFD003D5193 /* UsersService.h */,
+				0CE3D71F15137BFD003D5193 /* UsersService.m */,
+			);
+			name = Users;
+			sourceTree = "<group>";
+		};
 		5571BAE214E40FE90053A62B /* PlaceValue */ = {
 			isa = PBXGroup;
 			children = (
@@ -1331,6 +1378,7 @@
 		7F51159714A9EF21001AF372 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				0CE3D71115137BDB003D5193 /* Users */,
 				7FB9828E15116612006D31AE /* BAExpression */,
 				7F71B3FD150FBC8B0097A956 /* BATools */,
 				7F719C0014D7397000F30E89 /* Daemon */,
@@ -1669,6 +1717,7 @@
 				7F40D8A114FFD8BE006A3A55 /* InfoPlist.strings in Resources */,
 				0CE3D6FF1513775A003D5193 /* LucidaGrande.ttc in Resources */,
 				0CE3D708151377B7003D5193 /* select-edit-user-images in Resources */,
+				0CE3D72915137BFD003D5193 /* SelectUserViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1695,6 +1744,7 @@
 				7F40D88E14FF631C006A3A55 /* local-settings.plist in Resources */,
 				0CE3D6FE1513775A003D5193 /* LucidaGrande.ttc in Resources */,
 				0CE3D707151377B7003D5193 /* select-edit-user-images in Resources */,
+				0CE3D72815137BFD003D5193 /* SelectUserViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1747,6 +1797,12 @@
 				7FB982C415116633006D31AE /* BAPowerOperator.m in Sources */,
 				7FB982C615116633006D31AE /* BAVariable.m in Sources */,
 				7FB982C815116633006D31AE /* NSArray_BAAdditions.m in Sources */,
+				0CE3D72115137BFD003D5193 /* CCScreenshot.m in Sources */,
+				0CE3D72315137BFD003D5193 /* ColorPickerImageView.m in Sources */,
+				0CE3D72515137BFD003D5193 /* Device.m in Sources */,
+				0CE3D72715137BFD003D5193 /* SelectUserViewController.m in Sources */,
+				0CE3D72B15137BFD003D5193 /* User.m in Sources */,
+				0CE3D72D15137BFD003D5193 /* UsersService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1948,6 +2004,12 @@
 				7FB982C315116633006D31AE /* BAPowerOperator.m in Sources */,
 				7FB982C515116633006D31AE /* BAVariable.m in Sources */,
 				7FB982C715116633006D31AE /* NSArray_BAAdditions.m in Sources */,
+				0CE3D72015137BFD003D5193 /* CCScreenshot.m in Sources */,
+				0CE3D72215137BFD003D5193 /* ColorPickerImageView.m in Sources */,
+				0CE3D72415137BFD003D5193 /* Device.m in Sources */,
+				0CE3D72615137BFD003D5193 /* SelectUserViewController.m in Sources */,
+				0CE3D72A15137BFD003D5193 /* User.m in Sources */,
+				0CE3D72C15137BFD003D5193 /* UsersService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

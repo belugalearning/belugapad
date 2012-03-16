@@ -38,10 +38,11 @@
 -(void)setSprite
 {
     NSString *sname=[[gameObject store] objectForKey:RENDER_IMAGE_NAME];
-    if(!sname) sname=@"netspacer.png";
+    if(!sname) sname=@"/images/placevalue/netspacer.png";
     
-    mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/placevalue/%@", sname]))];
+    mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", sname]))];
     [mySprite setOpacity:120];
+    [[gameObject store] setObject:mySprite forKey:MY_SPRITE];
 
     float x=[[[gameObject store] objectForKey:POS_X] floatValue];
     float y=[GOS_GET(POS_Y) floatValue];

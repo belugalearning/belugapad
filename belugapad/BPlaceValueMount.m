@@ -111,6 +111,7 @@
         evalLeft = NO;
         evalUp = NO;
 
+        
         DWGameObject *addO=[payload objectForKey:MOUNTED_OBJECT];
         [[gameObject store] setObject:addO forKey:MOUNTED_OBJECT];
         [[gameWorld GameScene] problemStateChanged];
@@ -119,7 +120,6 @@
         {
             [addO handleMessage:kDWdeselectAll];
         }
-
     }
     
     if(messageType==kDWunsetMountedObject)

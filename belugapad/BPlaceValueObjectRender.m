@@ -76,6 +76,13 @@
     if(messageType==kDWputdown)
     {
         amPickedUp=NO;
+        
+        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
+        if([[gameObject store] objectForKey:PICKUP_SPRITE_FILENAME] && !gameWorld.Blackboard.inProblemSetup)
+        {
+            [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gameObject store] objectForKey:SPRITE_FILENAME])]];
+
+        }
     }
     
     if(messageType==kDWsetMount)
@@ -110,7 +117,7 @@
 
 -(void)setSprite
 {
-    NSString *spriteFileName=@"obj-placevalue-unit.png";
+    NSString *spriteFileName=@"/images/placevalue/obj-placevalue-unit.png";
     //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
 
     if([[gameObject store] objectForKey:SPRITE_FILENAME])
@@ -118,7 +125,7 @@
         spriteFileName=[[gameObject store] objectForKey:SPRITE_FILENAME];
     }
     
-    CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/placevalue/%@", spriteFileName]))];
+    CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
     
     if(gameWorld.Blackboard.inProblemSetup)
     {
@@ -129,7 +136,7 @@
     {
         [mySprite setColor:ccc3(255,0,0)];
     }
-        [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:1];
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:2];
     
     //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
     [[gameObject store] setObject:mySprite forKey:MY_SPRITE];
@@ -174,6 +181,13 @@
     
     CCSprite *curSprite = [[gameObject store] objectForKey:MY_SPRITE];
     
+    if([[gameObject store] objectForKey:PICKUP_SPRITE_FILENAME] && !gameWorld.Blackboard.inProblemSetup)
+    {
+        NSString *spriteFileName=@"/images/placevalue/obj-placevalue-unit.png";
+        if([[gameObject store] objectForKey:SPRITE_FILENAME]) spriteFileName=[[gameObject store] objectForKey:SPRITE_FILENAME];
+        
+        [curSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(spriteFileName)]];
+    }
     [curSprite runAction:[CCMoveTo actionWithDuration:kTimeObjectSnapBack position:ccp(x, y)]];
     
 }

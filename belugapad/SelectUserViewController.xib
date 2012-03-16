@@ -105,10 +105,10 @@
 							<object class="IBUIImageView" id="985085729">
 								<reference key="NSNextResponder" ref="757069751"/>
 								<int key="NSvFlags">301</int>
-								<string key="NSFrame">{{372, 179}, {230, 230}}</string>
+								<string key="NSFrame">{{372, 252}, {230, 230}}</string>
 								<reference key="NSSuperview" ref="757069751"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="74265580"/>
 								<string key="NSReuseIdentifierKey">_NS:569</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUIContentMode">9</int>
@@ -125,6 +125,18 @@
 						<reference key="NSNextKeyView" ref="985085729"/>
 						<string key="NSReuseIdentifierKey">_NS:212</string>
 						<reference key="IBUIBackgroundColor" ref="661750430"/>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+					</object>
+					<object class="IBUIView" id="74265580">
+						<reference key="NSNextResponder" ref="766721923"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrameSize">{1024, 768}</string>
+						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<reference key="IBUIBackgroundColor" ref="661750430"/>
+						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</array>
@@ -194,6 +206,14 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">loadExistingUserView</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="74265580"/>
+					</object>
+					<int key="connectionID">43</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="161900598"/>
 						<reference key="destination" ref="841351856"/>
@@ -235,6 +255,7 @@
 							<reference ref="432284177"/>
 							<reference ref="757069751"/>
 							<reference ref="212262502"/>
+							<reference ref="74265580"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -270,6 +291,11 @@
 						<reference key="object" ref="985085729"/>
 						<reference key="parent" ref="757069751"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">42</int>
+						<reference key="object" ref="74265580"/>
+						<reference key="parent" ref="766721923"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -284,12 +310,13 @@
 				<string key="20.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.CustomClassName">ColorPickerImageView</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="42.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">39</int>
+			<int key="maxID">43</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -308,6 +335,7 @@
 						<string key="backgroundImageView">UIImageView</string>
 						<string key="colorWheel">ColorPickerImageView</string>
 						<string key="editUserView">UIView</string>
+						<string key="loadExistingUserView">UIView</string>
 						<string key="selectUserTableView">UITableView</string>
 						<string key="selectUserView">UIView</string>
 					</dictionary>
@@ -322,6 +350,10 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="editUserView">
 							<string key="name">editUserView</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="loadExistingUserView">
+							<string key="name">loadExistingUserView</string>
 							<string key="candidateClassName">UIView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="selectUserTableView">

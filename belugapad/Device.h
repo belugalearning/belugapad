@@ -10,6 +10,7 @@
 
 @interface Device : CouchModel
 
+@property (retain) NSDate *firstLaunchDateTime;
 @property (retain) NSArray *userSessions;
 
 @end

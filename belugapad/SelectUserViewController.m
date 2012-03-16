@@ -7,6 +7,7 @@
 //
 
 #import "SelectUserViewController.h"
+#import "global.h"
 #import "cocos2d.h"
 #import "AppDelegate.h"
 #import "UsersService.h"
@@ -25,27 +26,29 @@
     NSArray *deviceUsersByLastSession;
     IBOutlet UITableView *selectUserTableView;
     UIButton *newUserButton;
+    UIButton *existingUserButton;
     
     UITextField *newUserNameTF;
     UITextField *newUserPasswordTF;
-    UIButton *cancelButton;
-    UIButton *saveButton;
+    UILabel *nameTakenLabel;
+    UIButton *cancelNewUserButton;
+    UIButton *saveNewUserButton;
     
     UITextField *existingUserNameTF;
     UITextField *existingUserPasswordTF;
     UIButton *cancelExistingUserButton;
     UIButton *loadExistingUserButton;
 }
-- (void) buildSelectUserView;
-- (void) buildEditUserView;
-- (void) setActiveView:(UIView *)view;
+-(void) buildSelectUserView;
+-(void) buildEditUserView;
+-(void) setActiveView:(UIView *)view;
 @end
 
 @implementation SelectUserViewController
 
 @synthesize colorWheel;
 
-// TODO: Check what to do about delete button on swipe !!!!!
+// TODO: ensure this line doesn't want restoring: [newUserNameTF addTarget:self action:@selector(handleNameChanged:) forControlEvents:UIControlEventValueChanged];
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -61,11 +64,12 @@
     
     [self buildSelectUserView];
     [self buildEditUserView];
+    [self buildLoadExistingUserView];
     
     deviceUsersByLastSession = [((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService deviceUsersByLastSessionDate];
     if ([deviceUsersByLastSession count] == 0)
     {
-        [cancelButton setHidden:YES];
+        [cancelNewUserButton setHidden:YES];
         [self setActiveView:editUserView];
     }
     else [self setActiveView:selectUserView];
@@ -78,14 +82,30 @@
     [super viewWillAppear:animated];
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField*)textField
+{
+    [textField resignFirstResponder];
+    return  YES;
+}
+
 - (void) setActiveView:(UIView *)view
 {
-    NSAssert(view == selectUserView || view == editUserView, @"bad args: method requires either selectUserView or editUserView");
+    NSAssert(view == selectUserView || view == editUserView || view == loadExistingUserView, @"bad args: method requires either selectUserView or editUserView");
     [selectUserView setHidden:(view != selectUserView)];
     [editUserView setHidden:(view != editUserView)];
-    [backgroundImageView setImage:[UIImage imageNamed:(view == selectUserView 
-                                                       ? @"/select-edit-user-images/SelectUserBackground.png"
-                                                       : @"/select-edit-user-images/EditUserBackground.png")]];
+    [loadExistingUserView setHidden:(view != loadExistingUserView)];
+    if (view == selectUserView)
+    {
+        [backgroundImageView setImage:[UIImage imageNamed:(@"/select-edit-user-images/SelectUserBackground.png")]];
+    }
+    else if (view == editUserView)
+    {
+        [backgroundImageView setImage:[UIImage imageNamed:(@"/select-edit-user-images/EditUserBackground.png")]];
+    }
+    else
+    {
+        [backgroundImageView setImage:[UIImage imageNamed:(@"/select-edit-user-images/ExistingUserBackground.png")]];
+    }
 }
 
 #pragma mark -
@@ -98,11 +118,22 @@
     [newUserButton setImage:[UIImage imageNamed:@"/select-edit-user-images/NewUserButton.png"] forState:UIControlStateNormal];
     [newUserButton addTarget:self action:@selector(handleNewUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [selectUserView addSubview:newUserButton];
+    
+    existingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    existingUserButton.frame = CGRectMake(261.0f, 558.0f, 539.0f, 81.0f);
+    [existingUserButton setImage:[UIImage imageNamed:@"/select-edit-user-images/SyncExistingUser_btn.png"] forState:UIControlStateNormal];
+    [existingUserButton addTarget:self action:@selector(handleExistingUserClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [selectUserView addSubview:existingUserButton];
 }
 
 - (void) handleNewUserClicked:(id)button
 {
     [self setActiveView:editUserView];
+}
+
+- (void) handleExistingUserClicked:(id)button
+{
+    [self setActiveView:loadExistingUserView];
 }
 
 #pragma mark UITableViewDataSource
@@ -128,7 +159,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    User *user = [deviceUsersByLastSession objectAtIndex:[indexPath indexAtPosition:0]];     
+    User *user = [deviceUsersByLastSession objectAtIndex:indexPath.row];     
     cell.textLabel.text = user.nickName;
     cell.imageView.image = user.zubiScreenshot;
     return cell;
@@ -138,7 +169,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    User *user = [deviceUsersByLastSession objectAtIndex:[indexPath indexAtPosition:0]];
+    User *user = [deviceUsersByLastSession objectAtIndex:indexPath.row];
     usersService.currentUser = user;
     [self.view removeFromSuperview];
     [app proceedFromLoginViaIntro:NO];
@@ -151,7 +182,7 @@
 {
     [colorWheel addObserver: self forKeyPath: @"lastColorRGBAData" options: 0 context: NULL];
     
-    EAGLView *glview = [EAGLView viewWithFrame:CGRectMake(632, 220, 160, 160) pixelFormat:kEAGLColorFormatRGBA8 depthFormat:0];
+    EAGLView *glview = [EAGLView viewWithFrame:CGRectMake(632, 290, 160, 160) pixelFormat:kEAGLColorFormatRGBA8 depthFormat:0];
     glview.opaque = NO;
     [[CCDirector sharedDirector] setOpenGLView:glview];    
     [CCDirector sharedDirector].openGLView.backgroundColor = [UIColor clearColor];
@@ -172,20 +203,43 @@
     newUserNameTF.returnKeyType = UIReturnKeyDone;
     [newUserNameTF setTextColor:[UIColor darkGrayColor]];
     [newUserNameTF setBorderStyle:UITextBorderStyleNone];
-    [newUserNameTF addTarget:self action:@selector(handleNameChanged:) forControlEvents:UIControlEventValueChanged];
     [editUserView addSubview:newUserNameTF];
     
-    cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelButton.frame = CGRectMake(229.0f, 66.0f, 50.0f, 50.0f);
-    [cancelButton setImage:[UIImage imageNamed:@"/select-edit-user-images/Cancel.png"] forState:UIControlStateNormal];
-    [cancelButton addTarget:self action:@selector(handleCancelClicked:) forControlEvents:UIControlEventTouchDown];
-    [editUserView addSubview:cancelButton];
+    newUserPasswordTF = [[UITextField alloc] initWithFrame:CGRectMake(358.0f, 186.0f, 400.0f, 45.0f)];
+    newUserPasswordTF.delegate = self;
+    newUserPasswordTF.font = [UIFont fontWithName:@"Lucida Grande" size:28];
+    newUserPasswordTF.placeholder = @"password";
+    newUserPasswordTF.secureTextEntry = YES;
+    newUserPasswordTF.clearButtonMode = UITextFieldViewModeWhileEditing;
+    newUserPasswordTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    newUserPasswordTF.autocorrectionType = UITextAutocorrectionTypeNo;
+    newUserPasswordTF.keyboardType = UIKeyboardTypeNamePhonePad;
+    newUserPasswordTF.returnKeyType = UIReturnKeyDone;
+    [newUserPasswordTF setTextColor:[UIColor darkGrayColor]];
+    [newUserPasswordTF setBorderStyle:UITextBorderStyleNone];
+    [editUserView addSubview:newUserPasswordTF];    
     
-    saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    saveButton.frame = CGRectMake(261.0f, 458.0f, 539.0f, 81.0f);
-    [saveButton setImage:[UIImage imageNamed:@"/select-edit-user-images/Save.png"] forState:UIControlStateNormal];
-    [saveButton addTarget:self action:@selector(handleSaveClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [editUserView addSubview:saveButton];
+    cancelNewUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancelNewUserButton.frame = CGRectMake(229.0f, 66.0f, 50.0f, 50.0f);
+    [cancelNewUserButton setImage:[UIImage imageNamed:@"/select-edit-user-images/Cancel.png"] forState:UIControlStateNormal];
+    [cancelNewUserButton addTarget:self action:@selector(handleCancelNewUserClicked:) forControlEvents:UIControlEventTouchDown];
+    [editUserView addSubview:cancelNewUserButton];
+    
+    saveNewUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    saveNewUserButton.frame = CGRectMake(261.0f, 528.0f, 539.0f, 81.0f);
+    [saveNewUserButton setImage:[UIImage imageNamed:@"/select-edit-user-images/Save.png"] forState:UIControlStateNormal];
+    [saveNewUserButton addTarget:self action:@selector(handleSaveNewUserClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [editUserView addSubview:saveNewUserButton];
+    
+    nameTakenLabel = [[UILabel alloc] initWithFrame:CGRectMake(261.0f, 550.0f, 539.0f, 85.0f)];
+    nameTakenLabel.text = @"Sorry this nickname is taken. Please try another one.";
+    [nameTakenLabel setHidden:YES];    
+    [editUserView addSubview:nameTakenLabel];
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if (textField == newUserNameTF) [nameTakenLabel setHidden:YES];
 }
 
 - (void) observeValueForKeyPath:(NSString*)keyPath
@@ -209,19 +263,17 @@
     }
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField*)textField
+- (void) handleCancelNewUserClicked:(id*)button
 {
+    newUserNameTF.text = @"";
+    newUserPasswordTF.text = @"";
     [newUserNameTF resignFirstResponder];
-    return  YES;
-}
-
-- (void) handleCancelClicked:(id*)button
-{
-    [newUserNameTF resignFirstResponder];
+    [newUserPasswordTF resignFirstResponder];
+    [nameTakenLabel setHidden:YES]; 
     [self setActiveView:selectUserView];
 }
 
-- (void) handleSaveClicked:(id*)button
+- (void) handleSaveNewUserClicked:(id*)button
 {
     if (!newUserNameTF.text || !newUserNameTF.text.length)
     {
@@ -229,8 +281,15 @@
         return;
     }
     
+    if (!newUserPasswordTF.text || !newUserPasswordTF.text.length)
+    {
+        [newUserPasswordTF becomeFirstResponder];
+        return;
+    }
+    
     if (![usersService nickNameIsAvailable:newUserNameTF.text])
     {
+        [nameTakenLabel setHidden:NO];
         return;
     }
     
@@ -242,47 +301,75 @@
     User *newUser = [[usersService createUserWithNickName:newUserNameTF.text
                                             andZubiColor:colorWheel.lastColorRGBAData
                                        andZubiScreenshot:image] autorelease];
-    usersService.currentUser = newUser;    
+    usersService.currentUser = newUser;
+    [self.view removeFromSuperview];
     [app proceedFromLoginViaIntro:YES];
 }
 
 #pragma mark -
-#pragma mark LoadExistingUserView
+#pragma mark LoadExistingUserView;
 
 - (void) buildLoadExistingUserView
-{    
-    /*
-     UITextField *existingUserNameTF;
-     UITextField *existingUserPasswordTF;
-     UIButton *cancelExistingUserButton;
-     UIButton *loadExistingUserButton;
-     */
-    // will this force git tower to update????????
-    newUserNameTF = [[UITextField alloc] initWithFrame:CGRectMake(358.0f, 114.0f, 400.0f, 45.0f)];
-    newUserNameTF.delegate = self;
-    newUserNameTF.font = [UIFont fontWithName:@"Lucida Grande" size:28];
-    newUserNameTF.placeholder = @"name";
-    newUserNameTF.clearButtonMode = UITextFieldViewModeWhileEditing;
-    newUserNameTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    newUserNameTF.autocorrectionType = UITextAutocorrectionTypeNo;
-    newUserNameTF.keyboardType = UIKeyboardTypeNamePhonePad;
-    newUserNameTF.returnKeyType = UIReturnKeyDone;
-    [newUserNameTF setTextColor:[UIColor darkGrayColor]];
-    [newUserNameTF setBorderStyle:UITextBorderStyleNone];
-    [newUserNameTF addTarget:self action:@selector(handleNameChanged:) forControlEvents:UIControlEventValueChanged];
-    [editUserView addSubview:newUserNameTF];
+{
+    existingUserNameTF = [[UITextField alloc] initWithFrame:CGRectMake(358.0f, 114.0f, 400.0f, 45.0f)];
+    existingUserNameTF.delegate = self;
+    existingUserNameTF.font = [UIFont fontWithName:@"Lucida Grande" size:28];
+    existingUserNameTF.placeholder = @"name";
+    existingUserNameTF.clearButtonMode = UITextFieldViewModeWhileEditing;
+    existingUserNameTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    existingUserNameTF.autocorrectionType = UITextAutocorrectionTypeNo;
+    existingUserNameTF.keyboardType = UIKeyboardTypeDefault;
+    existingUserNameTF.returnKeyType = UIReturnKeyDone;
+    [existingUserNameTF setTextColor:[UIColor darkGrayColor]];
+    [existingUserNameTF setBorderStyle:UITextBorderStyleNone];
+    [loadExistingUserView addSubview:existingUserNameTF];
     
-    cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelButton.frame = CGRectMake(229.0f, 66.0f, 50.0f, 50.0f);
-    [cancelButton setImage:[UIImage imageNamed:@"/select-edit-user-images/Cancel.png"] forState:UIControlStateNormal];
-    [cancelButton addTarget:self action:@selector(handleCancelClicked:) forControlEvents:UIControlEventTouchDown];
-    [editUserView addSubview:cancelButton];
+    existingUserPasswordTF = [[UITextField alloc] initWithFrame:CGRectMake(358.0f, 186.0f, 400.0f, 45.0f)];
+    existingUserPasswordTF.delegate = self;
+    existingUserPasswordTF.font = [UIFont fontWithName:@"Lucida Grande" size:28];
+    existingUserPasswordTF.placeholder = @"password";
+    existingUserPasswordTF.secureTextEntry = YES;
+    existingUserPasswordTF.clearButtonMode = UITextFieldViewModeWhileEditing;
+    existingUserPasswordTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    existingUserPasswordTF.autocorrectionType = UITextAutocorrectionTypeNo;
+    existingUserPasswordTF.keyboardType = UIKeyboardTypeDefault;
+    existingUserPasswordTF.returnKeyType = UIReturnKeyDone;
+    [existingUserPasswordTF setTextColor:[UIColor darkGrayColor]];
+    [existingUserPasswordTF setBorderStyle:UITextBorderStyleNone];
+    [loadExistingUserView addSubview:existingUserPasswordTF];
     
-    saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    saveButton.frame = CGRectMake(261.0f, 458.0f, 539.0f, 81.0f);
-    [saveButton setImage:[UIImage imageNamed:@"/select-edit-user-images/Save.png"] forState:UIControlStateNormal];
-    [saveButton addTarget:self action:@selector(handleSaveClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [editUserView addSubview:saveButton];
+    cancelExistingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancelExistingUserButton.frame = CGRectMake(229.0f, 66.0f, 50.0f, 50.0f);
+    [cancelExistingUserButton setImage:[UIImage imageNamed:@"/select-edit-user-images/Cancel.png"] forState:UIControlStateNormal];
+    [cancelExistingUserButton addTarget:self action:@selector(handleCancelExistingUserClicked:) forControlEvents:UIControlEventTouchDown];
+    [loadExistingUserView addSubview:cancelExistingUserButton];
+    
+    loadExistingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    loadExistingUserButton.frame = CGRectMake(261.0f, 270.0f, 539.0f, 81.0f);
+    [loadExistingUserButton setImage:[UIImage imageNamed:@"/select-edit-user-images/SyncExistingUser_btn.png"] forState:UIControlStateNormal];
+    [loadExistingUserButton addTarget:self action:@selector(handleLoadExistingUserClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [loadExistingUserView addSubview:loadExistingUserButton];
+}
+
+- (void) handleCancelExistingUserClicked:(id*)button
+{
+    existingUserNameTF.text = @"";
+    existingUserPasswordTF.text = @"";
+    [existingUserNameTF resignFirstResponder];
+    [existingUserPasswordTF resignFirstResponder];
+    [self setActiveView:selectUserView];
+}
+
+- (void) handleLoadExistingUserClicked:(id*)button
+{
+    User *usr = [usersService userMatchingNickName:existingUserNameTF.text  password:existingUserPasswordTF.text];    
+    if (usr == nil) return;
+    // TODO: Handle no match
+    
+    usersService.currentUser = usr;
+    
+    [self.view removeFromSuperview];
+    [app proceedFromLoginViaIntro:NO];
 }
 
 
@@ -299,6 +386,7 @@
     [editUserView release];
     [selectUserView release];
     [selectUserTableView release];
+    [loadExistingUserView release];
     [super dealloc];
 }
 
@@ -318,6 +406,8 @@
     selectUserView = nil;
     [selectUserTableView release];
     selectUserTableView = nil;
+    [loadExistingUserView release];
+    loadExistingUserView = nil;
     [super viewDidUnload];
 }
 @end

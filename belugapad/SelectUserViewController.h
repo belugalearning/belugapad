@@ -16,6 +16,7 @@
     IBOutlet UIImageView *backgroundImageView;    
     IBOutlet UIView *selectUserView;    
     IBOutlet UIView *editUserView;
+    IBOutlet UIView *loadExistingUserView;
 }
 
 //@property (retain, nonatomic) IBOutlet CouchUITableSource *dataSource;

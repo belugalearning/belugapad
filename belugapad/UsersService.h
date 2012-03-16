@@ -22,4 +22,7 @@
 
 -(BOOL) nickNameIsAvailable:(NSString*)nickName;
 
+-(User*) userMatchingNickName:(NSString*)nickName
+                     password:(NSString*)password;
+
 @end

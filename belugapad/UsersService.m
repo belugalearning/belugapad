@@ -19,6 +19,7 @@ NSString * const kLocalUserDatabaseName = @"users";
 NSString * const kDefaultDesignDocName = @"default";
 NSString * const kDeviceUsersLastSessionStart = @"device-users-last-session";
 NSString * const kAllUserNicknames = @"all-user-nick-names";
+NSString * const kUsersByNickNamePassword = @"users-by-nick-name-password";
 
 @interface UsersService()
 {
@@ -66,6 +67,7 @@ NSString * const kAllUserNicknames = @"all-user-nick-names";
             CouchDocument *deviceDoc = [database untitledDocument];
             RESTOperation *op = [deviceDoc putProperties:[NSDictionary dictionaryWithObjectsAndKeys:
                                                           @"device", @"type"
+                                                          , [RESTBody JSONObjectWithDate:[NSDate date]], @"firstLaunchDateTime"
                                                           , [NSArray array], @"userSessions", nil]];
             if (![op wait])
             {
@@ -143,8 +145,21 @@ NSString * const kAllUserNicknames = @"all-user-nick-names";
 {
     CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kAllUserNicknames];
     q.keys = [NSArray arrayWithObject:nickName];
+    q.prefetch = YES;
     [[q start] wait];
     return [q.rows.allObjects count] == 0;
+}
+
+-(User*) userMatchingNickName:(NSString*)nickName
+                     password:(NSString*)password
+{
+    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersByNickNamePassword];
+    q.keys = [NSArray arrayWithObject:[NSArray arrayWithObjects:nickName, password, nil]];
+    [[q start] wait];
+    
+    if ([q.rows.allObjects count] == 0) return nil;
+    
+    return [[CouchModelFactory sharedInstance] modelForDocument:((CouchQueryRow*)[q.rows.allObjects objectAtIndex:0]).document];
 }
 
 -(User*) createUserWithNickName:(NSString*)nickName
@@ -196,7 +211,19 @@ NSString * const kAllUserNicknames = @"all-user-nick-names";
         }
     })
                     version: @"v1.01"];
-     
+    
+    [design defineViewNamed:kUsersByNickNamePassword
+                        mapBlock:MAPBLOCK({        
+        id type = [doc objectForKey:@"type"];        
+        
+        if (type && 
+            [type respondsToSelector:@selector(isEqualToString:)] && 
+            [type isEqualToString:@"user"])
+        {
+            emit([NSArray arrayWithObjects:[doc objectForKey:@"nickName"], [doc objectForKey:@"password"], nil], nil);
+        }
+    })
+                    version: @"v1.00"];
 }
 
 -(void)startLiveQueries

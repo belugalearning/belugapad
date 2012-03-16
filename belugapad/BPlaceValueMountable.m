@@ -43,7 +43,7 @@
             {
                 [pl2 setObject:ANIMATE_ME forKey:ANIMATE_ME];
             }
-            
+
         
             //update the sprite
             //[gameObject handleMessage:kDWupdateSprite andPayload:[newMount store] withLogLevel:0];

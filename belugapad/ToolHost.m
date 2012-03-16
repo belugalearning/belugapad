@@ -58,6 +58,12 @@
         CCSprite *bkg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/bg/bg-ipad.png")];
         [bkg setPosition:ccp(cx, cy)];
         [backgroundLayer addChild:bkg z:0];
+        
+        //add a pause button but keep it hidden -- to be brought in by the fader
+        CCSprite *pause=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/button-pause.png")];
+        [pause setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), ly-(kPropXCommitButtonPadding*lx))];
+        [backgroundLayer addChild:pause z:3];        
+
 
         metaQuestionLayer=[[CCLayer alloc] init];
         [self addChild:metaQuestionLayer z:2];
@@ -233,6 +239,52 @@
     [self loadProblem];
 }
 
+-(void) showPauseMenu
+{
+    isPaused = YES;
+    
+    pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
+    [pauseMenu setPosition:ccp(cx, cy)];
+    [toolForeLayer addChild:pauseMenu z:10];
+}
+
+-(void) checkPauseTouches:(CGPoint)location
+{
+    if(CGRectContainsPoint(kPauseMenuContinue, location))
+    {
+        //resume
+        [toolForeLayer removeChild:pauseMenu cleanup:YES];
+        isPaused=NO;
+    }
+    if(CGRectContainsPoint(kPauseMenuReset, location))
+    {
+       //reset
+        [self resetProblem];
+        isPaused=NO;
+    }
+    if(CGRectContainsPoint(kPauseMenuMenu,location))
+    {
+       //menu - do nothing, yet
+        [self returnToMenu];
+        
+    }
+           
+}
+
+-(void) returnToMenu
+{
+    DLog(@"menu button touch");
+}
+
+-(void) showProblemCompleteMessage
+{
+    
+}
+
+-(void) showProblemIncompleteMessage
+{
+    
+}
 
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ
 {
@@ -570,6 +622,11 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
      
     [self checkMetaQuestionTouches:location];
+    if (location.x > 944 && location.y > 688 && !isPaused)
+    {
+        [self showPauseMenu];
+        return;
+    }
     
     if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
         [self gotoNewProblem];
@@ -584,6 +641,17 @@
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    UITouch *touch=[touches anyObject];
+    CGPoint location=[touch locationInView: [touch view]];
+    location=[[CCDirector sharedDirector] convertToGL:location];
+    
+    // if we're paused - check if any menu options were valid.
+    // touches ended event becase otherwise these touches go through to the tool
+    if(isPaused)
+    {
+        [self checkPauseTouches:location];
+        return;
+    }
     [currentTool ccTouchesEnded:touches withEvent:event];
 }
 

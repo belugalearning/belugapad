@@ -52,11 +52,14 @@ typedef enum {
     float shownMetaQuestionIncompleteFor;
     BOOL metaQuestionForceComplete;
     
+    BOOL isPaused;
+    
     NSDictionary *pdef;
     
     BOOL skipNextStagedIntroAnim;
     
     CCSprite *hostBackground;
+    CCSprite *pauseMenu;
 }
 
 @property (retain) Daemon *Zubi;
@@ -74,6 +77,11 @@ typedef enum {
 -(void) gotoNewProblem;
 -(void) loadProblem;
 -(void) resetProblem;
+-(void) showPauseMenu;
+-(void) checkPauseTouches:(CGPoint)location;
+-(void) returnToMenu;
+-(void) showProblemCompleteMessage;
+-(void) showProblemIncompleteMessage;
 -(void)doUpdateOnTick:(ccTime)delta;
 -(void)doUpdateOnSecond:(ccTime)delta;
 -(void)doUpdateOnQuarterSecond:(ccTime)delta;

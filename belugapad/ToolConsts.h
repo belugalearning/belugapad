@@ -50,3 +50,7 @@ extern const ccColor3B kMetaQuestionButtonDeselected;
 extern const float kMetaQuestionYOffsetPlaceValue;
 extern const float kMetaQuestionYOffsetBlockFloat;
 extern const float kMetaIncompleteLabelYOffset;
+
+extern const CGRect kPauseMenuMenu;
+extern const CGRect kPauseMenuReset;
+extern const CGRect kPauseMenuContinue;

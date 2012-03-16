@@ -15,6 +15,7 @@
 
 #define BKG_COLOR4 ccc4(235, 246, 252, 255)
 
+#define UNDERLAY_FILENAME @"UNDERLAY_FILENAME"
 
 
 #define POS_X @"POS_X"

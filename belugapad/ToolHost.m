@@ -300,6 +300,8 @@
     [problemComplete setPosition:ccp(cx, cy)];
     [toolForeLayer addChild:problemComplete];
     showingProblemComplete=YES;
+    
+    [problemComplete retain];
 }
 
 -(void) showProblemIncompleteMessage

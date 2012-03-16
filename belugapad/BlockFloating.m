@@ -1063,6 +1063,7 @@ static void eachShape(void *ptr, void* unused)
     [gameWorld logInfo:[NSString stringWithFormat:@"solution found with value %f and text %@", solScore, soltext] withData:0];
     
     //move to next problem
+    [toolHost showProblemCompleteMessage];
     autoMoveToNextProblem=YES;
     timeToAutoMoveToNextProblem=0.0f;
 }

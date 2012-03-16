@@ -88,6 +88,24 @@
     //do internal mgmt updates
     [self.Zubi doUpdate:delta];
     
+    if(showingProblemComplete) shownProblemStatusFor+=delta;
+    if(showingProblemIncomplete) shownProblemStatusFor+=delta;
+ 
+    if(shownProblemStatusFor>kTimeToShowProblemStatus)
+    {
+        if(showingProblemComplete)
+        {
+            [problemComplete runAction:[CCFadeOut actionWithDuration:kTimeToFadeProblemStatus]];
+            showingProblemComplete=NO;
+        }
+        if(showingProblemIncomplete)
+        {
+            [problemIncomplete runAction:[CCFadeOut actionWithDuration:kTimeToFadeProblemStatus]];
+            showingProblemIncomplete=NO;
+        }
+            shownProblemStatusFor=0.0f;
+    }
+    
     //let tool do updates
     [currentTool doUpdateOnTick:delta];
 }
@@ -278,12 +296,18 @@
 
 -(void) showProblemCompleteMessage
 {
-    
+    problemComplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/complete-overlay.png")];
+    [problemComplete setPosition:ccp(cx, cy)];
+    [toolForeLayer addChild:problemComplete];
+    showingProblemComplete=YES;
 }
 
 -(void) showProblemIncompleteMessage
 {
-    
+    problemIncomplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/failed-overlay.png")];
+    [problemIncomplete setPosition:ccp(cx,cy)];
+    [toolForeLayer addChild:problemIncomplete];
+    showingProblemIncomplete=YES;
 }
 
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ

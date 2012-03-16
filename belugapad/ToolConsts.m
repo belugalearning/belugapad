@@ -32,6 +32,8 @@ const CGRect kRectButtonReset={{944, 688}, {80, 80}};
 
 
 const float kTimeToAutoMove=1.0f;
+const float kTimeToShowProblemStatus=1.5f;
+const float kTimeToFadeProblemStatus=1.0f;
 const float kTimeToFadeButtonLabel=2.0f;
 
 // originally used by placevalue for snap back to cage time

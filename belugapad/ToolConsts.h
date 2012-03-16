@@ -33,6 +33,8 @@ extern const ccColor3B kLabelCompleteColor;
 
 
 extern const float kTimeToAutoMove;
+const float kTimeToShowProblemStatus;
+const float kTimeToFadeProblemStatus;
 extern const float kTimeToFadeButtonLabel;
 
 extern const float kPropXCommitButtonPadding;

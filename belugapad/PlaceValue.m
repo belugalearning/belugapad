@@ -653,16 +653,18 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 -(void)doWinning
 {
     CGPoint pos=ccp(cx,cy);
-    [problemCompleteLabel setString:solutionDisplayText];
+    //[problemCompleteLabel setString:solutionDisplayText];
     autoMoveToNextProblem=YES;
-    [problemCompleteLabel setVisible:YES]; 
+    //[problemCompleteLabel setVisible:YES]; 
+    [toolHost showProblemCompleteMessage];
     [toolHost.Zubi createXPshards:20 fromLocation:pos];
 }
 -(void)doIncorrect
 {
-    [problemCompleteLabel setString:incompleteDisplayText];
-    autoHideStatusLabel=YES;
-    [problemCompleteLabel setVisible:YES];
+    //[problemCompleteLabel setString:incompleteDisplayText];
+    //autoHideStatusLabel=YES;
+    //[problemCompleteLabel setVisible:YES];
+    [toolHost showProblemIncompleteMessage];
     [gw handleMessage:kDWdeselectAll andPayload:nil withLogLevel:-1];
 }
 -(BOOL)evalProblemCountSeq:(NSString*)problemType

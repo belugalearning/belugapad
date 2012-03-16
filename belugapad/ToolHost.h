@@ -53,6 +53,9 @@ typedef enum {
     BOOL metaQuestionForceComplete;
     
     BOOL isPaused;
+    BOOL showingProblemComplete;
+    BOOL showingProblemIncomplete;
+    float shownProblemStatusFor;
     
     NSDictionary *pdef;
     
@@ -60,6 +63,8 @@ typedef enum {
     
     CCSprite *hostBackground;
     CCSprite *pauseMenu;
+    CCSprite *problemComplete;
+    CCSprite *problemIncomplete;
 }
 
 @property (retain) Daemon *Zubi;

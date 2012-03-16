@@ -10,6 +10,17 @@
 		0C0AB7AD14F5116600437F07 /* Problems in Resources */ = {isa = PBXBuildFile; fileRef = 0C0AB7AC14F5116600437F07 /* Problems */; };
 		0C427C3714F529CC0033AFE2 /* sfx in Resources */ = {isa = PBXBuildFile; fileRef = 0C427C3614F529CC0033AFE2 /* sfx */; };
 		0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */ = {isa = PBXBuildFile; fileRef = 0C9FEFF514F572FB00E64138 /* pipeline-testing */; };
+		0CE3D6F815137690003D5193 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D6F715137690003D5193 /* libz.dylib */; };
+		0CE3D6FA15137698003D5193 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D6F915137698003D5193 /* libsqlite3.dylib */; };
+		0CE3D6FC1513769F003D5193 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D6FB1513769F003D5193 /* SystemConfiguration.framework */; };
+		0CE3D6FE1513775A003D5193 /* LucidaGrande.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 0CE3D6FD1513775A003D5193 /* LucidaGrande.ttc */; };
+		0CE3D6FF1513775A003D5193 /* LucidaGrande.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 0CE3D6FD1513775A003D5193 /* LucidaGrande.ttc */; };
+		0CE3D7021513778D003D5193 /* CouchCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D7001513778D003D5193 /* CouchCocoa.framework */; };
+		0CE3D7031513778D003D5193 /* CouchCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D7001513778D003D5193 /* CouchCocoa.framework */; };
+		0CE3D7041513778D003D5193 /* TouchDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D7011513778D003D5193 /* TouchDB.framework */; };
+		0CE3D7051513778D003D5193 /* TouchDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D7011513778D003D5193 /* TouchDB.framework */; };
+		0CE3D707151377B7003D5193 /* select-edit-user-images in Resources */ = {isa = PBXBuildFile; fileRef = 0CE3D706151377B7003D5193 /* select-edit-user-images */; };
+		0CE3D708151377B7003D5193 /* select-edit-user-images in Resources */ = {isa = PBXBuildFile; fileRef = 0CE3D706151377B7003D5193 /* select-edit-user-images */; };
 		0CF9187C14F54C1D00FAC58D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF9187B14F54C1D00FAC58D /* images */; };
 		5536B29014E4173E00D30BC0 /* BPlaceValueContainerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */; };
 		5536B2A414E4350800D30BC0 /* BPlaceValueObjectSpawn.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B2A314E4350800D30BC0 /* BPlaceValueObjectSpawn.m */; };
@@ -272,6 +283,13 @@
 		0C0AB7AC14F5116600437F07 /* Problems */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Problems; sourceTree = SOURCE_ROOT; };
 		0C427C3614F529CC0033AFE2 /* sfx */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sfx; sourceTree = SOURCE_ROOT; };
 		0C9FEFF514F572FB00E64138 /* pipeline-testing */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pipeline-testing"; sourceTree = SOURCE_ROOT; };
+		0CE3D6F715137690003D5193 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		0CE3D6F915137698003D5193 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		0CE3D6FB1513769F003D5193 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		0CE3D6FD1513775A003D5193 /* LucidaGrande.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = LucidaGrande.ttc; path = Resources/fonts/LucidaGrande.ttc; sourceTree = "<group>"; };
+		0CE3D7001513778D003D5193 /* CouchCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchCocoa.framework; path = belugapad/Frameworks/CouchCocoa.framework; sourceTree = "<group>"; };
+		0CE3D7011513778D003D5193 /* TouchDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TouchDB.framework; path = belugapad/Frameworks/TouchDB.framework; sourceTree = "<group>"; };
+		0CE3D706151377B7003D5193 /* select-edit-user-images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "select-edit-user-images"; sourceTree = SOURCE_ROOT; };
 		0CF9187B14F54C1D00FAC58D /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = SOURCE_ROOT; };
 		5536B28E14E4173D00D30BC0 /* BPlaceValueContainerRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueContainerRender.h; sourceTree = "<group>"; };
 		5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueContainerRender.m; sourceTree = "<group>"; };
@@ -740,6 +758,8 @@
 				7F40D89A14FFD8BE006A3A55 /* UIKit.framework in Frameworks */,
 				7F40D89B14FFD8BE006A3A55 /* Foundation.framework in Frameworks */,
 				7F40D8D514FFDE40006A3A55 /* SenTestingKit.framework in Frameworks */,
+				0CE3D7031513778D003D5193 /* CouchCocoa.framework in Frameworks */,
+				0CE3D7051513778D003D5193 /* TouchDB.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -747,6 +767,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CE3D6FC1513769F003D5193 /* SystemConfiguration.framework in Frameworks */,
+				0CE3D6FA15137698003D5193 /* libsqlite3.dylib in Frameworks */,
+				0CE3D6F815137690003D5193 /* libz.dylib in Frameworks */,
 				7F5113C314A9EE62001AF372 /* QuartzCore.framework in Frameworks */,
 				7F5113C514A9EE62001AF372 /* OpenGLES.framework in Frameworks */,
 				7F5113C714A9EE62001AF372 /* OpenAL.framework in Frameworks */,
@@ -755,6 +778,8 @@
 				7F5113CD14A9EE63001AF372 /* UIKit.framework in Frameworks */,
 				7F5113CF14A9EE63001AF372 /* Foundation.framework in Frameworks */,
 				7F5113D114A9EE63001AF372 /* CoreGraphics.framework in Frameworks */,
+				0CE3D7021513778D003D5193 /* CouchCocoa.framework in Frameworks */,
+				0CE3D7041513778D003D5193 /* TouchDB.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -835,6 +860,9 @@
 		7F5113C114A9EE62001AF372 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0CE3D7001513778D003D5193 /* CouchCocoa.framework */,
+				0CE3D7011513778D003D5193 /* TouchDB.framework */,
+				0CE3D6FB1513769F003D5193 /* SystemConfiguration.framework */,
 				7F5113C214A9EE62001AF372 /* QuartzCore.framework */,
 				7F5113C414A9EE62001AF372 /* OpenGLES.framework */,
 				7F5113C614A9EE62001AF372 /* OpenAL.framework */,
@@ -862,6 +890,7 @@
 		7F5113D314A9EE63001AF372 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0CE3D706151377B7003D5193 /* select-edit-user-images */,
 				0CF9187B14F54C1D00FAC58D /* images */,
 				0C9FEFF514F572FB00E64138 /* pipeline-testing */,
 				0C0AB7AC14F5116600437F07 /* Problems */,
@@ -880,6 +909,8 @@
 		7F5113E714A9EE63001AF372 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				0CE3D6F915137698003D5193 /* libsqlite3.dylib */,
+				0CE3D6F715137690003D5193 /* libz.dylib */,
 				7FDBA50F14EBD550004D1CC9 /* TouchXML */,
 				7F5114DD14A9EE65001AF372 /* LICENSE_cocos2d.txt */,
 				7F5114EC14A9EE65001AF372 /* LICENSE_CocosDenshion.txt */,
@@ -1415,6 +1446,7 @@
 		7F813D5D14CCC3AF00C1E997 /* fonts */ = {
 			isa = PBXGroup;
 			children = (
+				0CE3D6FD1513775A003D5193 /* LucidaGrande.ttc */,
 				7FAEC25F14BB5BA000E60983 /* visgrad1.fnt */,
 				7FAEC26014BB5BA000E60983 /* visgrad1.png */,
 			);
@@ -1635,6 +1667,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7F40D8A114FFD8BE006A3A55 /* InfoPlist.strings in Resources */,
+				0CE3D6FF1513775A003D5193 /* LucidaGrande.ttc in Resources */,
+				0CE3D708151377B7003D5193 /* select-edit-user-images in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1659,6 +1693,8 @@
 				0CF9187C14F54C1D00FAC58D /* images in Resources */,
 				0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */,
 				7F40D88E14FF631C006A3A55 /* local-settings.plist in Resources */,
+				0CE3D6FE1513775A003D5193 /* LucidaGrande.ttc in Resources */,
+				0CE3D707151377B7003D5193 /* select-edit-user-images in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1946,6 +1982,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"\"$(SRCROOT)/belugapad/Frameworks\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1973,6 +2010,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"\"$(SRCROOT)/belugapad/Frameworks\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GeneralTests/GeneralTests-Prefix.pch";
@@ -2028,6 +2066,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/belugapad/Frameworks\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = belugapad/Prefix.pch;
@@ -2039,6 +2081,7 @@
 				OTHER_LDFLAGS = (
 					"-lxml2",
 					"-lz",
+					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2052,6 +2095,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/belugapad/Frameworks\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = belugapad/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
@@ -2062,6 +2109,7 @@
 				OTHER_LDFLAGS = (
 					"-lxml2",
 					"-lz",
+					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -956,6 +956,18 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             if([gw Blackboard].DropObject != nil)
             {
                 [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[[gw Blackboard].PickupObject store] objectForKey:PROXIMITY_SPRITE_FILENAME])]];
+                
+
+                    for (int i=0; i<[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]; i++)
+                    {
+                        for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex] objectAtIndex:i]count]; o++)
+                        {
+                            DWGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex] objectAtIndex:(i)] objectAtIndex:o];
+
+                            CCSprite *mySprite = [CCSprite spriteWithFile:[[goC store] objectForKey:MY_SPRITE]];
+                            [mySprite setColor:ccc3(0, 255, 0)]; 
+                        }
+                    }
             }
             else {
                 [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gw.Blackboard.PickupObject store] objectForKey:PICKUP_SPRITE_FILENAME])]];                

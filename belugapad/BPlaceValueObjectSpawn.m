@@ -36,8 +36,14 @@
 
     [[block store] setObject:[[gameObject store] objectForKey:OBJECT_VALUE] forKey:OBJECT_VALUE];
     [[block store] setObject:[[gameObject store] objectForKey:SPRITE_FILENAME] forKey:SPRITE_FILENAME];
-    [[block store] setObject:[[gameObject store] objectForKey:PROXIMITY_SPRITE_FILENAME] forKey:PROXIMITY_SPRITE_FILENAME];
-    [[block store] setObject:[[gameObject store] objectForKey:PICKUP_SPRITE_FILENAME] forKey:PICKUP_SPRITE_FILENAME];
+    if([[gameObject store] objectForKey:PROXIMITY_SPRITE_FILENAME])
+    {
+        [[block store] setObject:[[gameObject store] objectForKey:PROXIMITY_SPRITE_FILENAME] forKey:PROXIMITY_SPRITE_FILENAME];
+    }
+    if([[gameObject store] objectForKey:PICKUP_SPRITE_FILENAME])
+    {
+        [[block store] setObject:[[gameObject store] objectForKey:PICKUP_SPRITE_FILENAME] forKey:PICKUP_SPRITE_FILENAME];
+    }
     
     NSMutableDictionary *pl = [[[NSMutableDictionary alloc] init] autorelease];
     [pl setObject:gameObject forKey:MOUNT];

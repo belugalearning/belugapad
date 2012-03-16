@@ -942,6 +942,7 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
     
     if([gw Blackboard].PickupObject!=nil)
     {
+        ccColor3B currentColour = ccc3(0,0,0);
         if(proximitySprite)
         {
             NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
@@ -956,25 +957,29 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             if([gw Blackboard].DropObject != nil)
             {
                 [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[[gw Blackboard].PickupObject store] objectForKey:PROXIMITY_SPRITE_FILENAME])]];
-                
+        
+                currentColour=ccc3(0,255,0);
 
-                    for (int i=0; i<[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]; i++)
-                    {
-                        for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex] objectAtIndex:i]count]; o++)
-                        {
-                            DWGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex] objectAtIndex:(i)] objectAtIndex:o];
-
-                            CCSprite *mySprite = [CCSprite spriteWithFile:[[goC store] objectForKey:MY_SPRITE]];
-                            [mySprite setColor:ccc3(0, 255, 0)]; 
-                        }
-                    }
             }
             else {
-                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gw.Blackboard.PickupObject store] objectForKey:PICKUP_SPRITE_FILENAME])]];                
+                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gw.Blackboard.PickupObject store] objectForKey:PICKUP_SPRITE_FILENAME])]];
+                currentColour=ccc3(255,255,255);
+
             }
             gw.Blackboard.DropObject = nil;
         
-    }
+            // now we loop through the current column index for all the net spacer sprites to tint them            
+            for (int i=0; i<[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]; i++)
+            {
+                for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex] objectAtIndex:i]count]; o++)
+                {
+                    DWGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex] objectAtIndex:(i)] objectAtIndex:o];
+                    
+                    CCSprite *mySprite = [[goC store] objectForKey:MY_SPRITE];
+                    [mySprite setColor:currentColour]; 
+                }
+            }
+        }
     CGPoint diff=[BLMath SubtractVector:prevLoc from:location];
     
     //mod location by pickup offset
@@ -1296,6 +1301,19 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
                 
                 
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
+                
+                // take away the colour from the grid
+                for (int i=0; i<[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]; i++)
+                {
+                    for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex] objectAtIndex:i]count]; o++)
+                    {
+                        DWGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex] objectAtIndex:(i)] objectAtIndex:o];
+                        
+                        CCSprite *mySprite = [[goC store] objectForKey:MY_SPRITE];
+                        [mySprite setColor:ccc3(255,255,255)]; 
+                    }
+                }
+                
             }
             else
             {

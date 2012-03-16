@@ -42,6 +42,7 @@
     
     mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", sname]))];
     [mySprite setOpacity:120];
+    [[gameObject store] setObject:mySprite forKey:MY_SPRITE];
 
     float x=[[[gameObject store] objectForKey:POS_X] floatValue];
     float y=[GOS_GET(POS_Y) floatValue];

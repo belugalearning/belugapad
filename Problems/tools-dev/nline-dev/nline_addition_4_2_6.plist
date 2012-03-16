@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>count on four</string>
+	<string>find 4+2</string>
 	<key>EXPRESSION_FILE</key>
-	<string>/Problems/tools-dev/nline-dev/a-eq-7.mathml</string>
+	<string>/Problems/tools-dev/nline-dev/a-eq-6.mathml</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>3</string>
+	<string>4</string>
 	<key>SEGMENT_VALUE</key>
 	<string>1</string>
 	<key>MIN_VALUE</key>

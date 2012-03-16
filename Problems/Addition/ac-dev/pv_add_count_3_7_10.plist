@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>add 2 and count</string>
+	<string>find 3+7 </string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -62,7 +62,7 @@
 		<key>SOLUTION_TYPE</key>
 		<string>COUNT_SEQUENCE</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>5</integer>
+		<integer>10</integer>
 	</dict>
 </dict>
 </plist>

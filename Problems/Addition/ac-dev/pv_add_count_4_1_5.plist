@@ -34,6 +34,11 @@
 	<true/>
 	<key>CUSTOM_COLUMN_HEADERS</key>
 	<true/>
+	<key>COLUMN_NEG_CAGES</key>
+	<dict>
+		<key>1</key>
+		<false/>
+	</dict>
 	<key>COLUMN_HEADERS</key>
 	<dict>
 		<key>0</key>

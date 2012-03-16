@@ -34,6 +34,11 @@
 	<true/>
 	<key>CUSTOM_COLUMN_HEADERS</key>
 	<true/>
+	<key>COLUMN_NEG_CAGES</key>
+	<dict>
+		<key>1</key>
+		<false/>
+	</dict>
 	<key>COLUMN_HEADERS</key>
 	<dict>
 		<key>0</key>
@@ -47,6 +52,8 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
+			<integer>3</integer>
+			<key>NUMBER_PRE_COUNTED</key>
 			<integer>3</integer>
 		</dict>
 	</array>

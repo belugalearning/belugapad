@@ -20,7 +20,7 @@
 			<key>DIMENSION_COLS</key>
 			<integer>1</integer>
 			<key>DIMENSION_ROWS</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>TAG</key>
@@ -28,7 +28,7 @@
 			<key>DIMENSION_COLS</key>
 			<integer>1</integer>
 			<key>DIMENSION_ROWS</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
 	</array>
 	<key>SOLUTIONS</key>
@@ -42,7 +42,7 @@
 			<array>
 				<dict>
 					<key>ITEM1_VALUE</key>
-					<integer>2</integer>
+					<integer>4</integer>
 					<key>CLAUSE_TYPE</key>
 					<string>OBJECT_OF_SIZE</string>
 				</dict>

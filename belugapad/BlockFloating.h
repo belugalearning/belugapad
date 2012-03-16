@@ -34,6 +34,8 @@
     NSArray *solutionsDef;
     CCLabelTTF *problemCompleteLabel;
     
+    NSString *underlayImage;
+    
     NSArray *problemFiles;
     int currentProblemIndex;
     

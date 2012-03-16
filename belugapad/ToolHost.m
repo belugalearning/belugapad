@@ -95,13 +95,13 @@
     {
         if(showingProblemComplete)
         {
-            [problemComplete runAction:[CCFadeOut actionWithDuration:kTimeToFadeProblemStatus]];
             showingProblemComplete=NO;
+            [problemComplete runAction:[CCFadeOut actionWithDuration:kTimeToFadeProblemStatus]];
         }
         if(showingProblemIncomplete)
         {
-            [problemIncomplete runAction:[CCFadeOut actionWithDuration:kTimeToFadeProblemStatus]];
             showingProblemIncomplete=NO;
+            [problemIncomplete runAction:[CCFadeOut actionWithDuration:kTimeToFadeProblemStatus]];
         }
             shownProblemStatusFor=0.0f;
     }

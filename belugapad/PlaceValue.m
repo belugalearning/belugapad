@@ -127,7 +127,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     
     for (int i=0; i<numberOfColumns; i++)
     {
-        CGPoint thisColumnOrigin = ccp(-((ropeWidth*ropesforColumn)/2.0f)+(ropeWidth/2.0f)+(i*(kPropXColumnSpacing*lx)), ly*kPropYColumnOrigin); 
+
         
         NSMutableDictionary *currentColumnInfo = [[[NSMutableDictionary alloc] init] autorelease];
         [currentColumnInfo setObject:[NSNumber numberWithFloat:currentColumnValue] forKey:COL_VALUE];
@@ -184,14 +184,21 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         else currentColumnRopes = ropesforColumn;
         if([columnRows objectForKey:currentColumnValueKey]) currentColumnRows = [[columnRows objectForKey:currentColumnValueKey] intValue];
         else currentColumnRows = rows;
-        
-        
+
+        CGPoint thisColumnOrigin = ccp(-((ropeWidth*ropesforColumn)/2.0f)+(ropeWidth/2.0f)+(i*(kPropXColumnSpacing*lx)), ly*kPropYColumnOrigin);
+
+
         for (int iRow=0; iRow<currentColumnRows; iRow++)
         {
             NSMutableArray *RowArray = [[NSMutableArray alloc] init];        
             [newCol addObject:RowArray];
             
             CGPoint rowOrigin=ccp(thisColumnOrigin.x, thisColumnOrigin.y-(iRow*ropeWidth)); 
+            if(currentColumnRopes != ropesforColumn)
+            {
+                float adjustAmount = (((ropesforColumn-currentColumnRopes) / 2.0f) * ropeWidth);
+                rowOrigin=ccp(rowOrigin.x+adjustAmount, rowOrigin.y);
+            }
             
             for(int iRope=0; iRope<currentColumnRopes; iRope++)
             {
@@ -646,16 +653,18 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 -(void)doWinning
 {
     CGPoint pos=ccp(cx,cy);
-    [problemCompleteLabel setString:solutionDisplayText];
+    //[problemCompleteLabel setString:solutionDisplayText];
     autoMoveToNextProblem=YES;
-    [problemCompleteLabel setVisible:YES]; 
+    //[problemCompleteLabel setVisible:YES]; 
+    [toolHost showProblemCompleteMessage];
     [toolHost.Zubi createXPshards:20 fromLocation:pos];
 }
 -(void)doIncorrect
 {
-    [problemCompleteLabel setString:incompleteDisplayText];
-    autoHideStatusLabel=YES;
-    [problemCompleteLabel setVisible:YES];
+    //[problemCompleteLabel setString:incompleteDisplayText];
+    //autoHideStatusLabel=YES;
+    //[problemCompleteLabel setVisible:YES];
+    [toolHost showProblemIncompleteMessage];
     [gw handleMessage:kDWdeselectAll andPayload:nil withLogLevel:-1];
 }
 -(BOOL)evalProblemCountSeq:(NSString*)problemType

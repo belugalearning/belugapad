@@ -949,81 +949,80 @@ static NSString *kDefaultSprite=@"obj-placevalue-unit.png";
             [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
             
             //-NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
-            //DWGameObject *tobj=gw.Blackboard.DropObject;
-            //gw.Blackboard.DropObject = nil;
+
             [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
 
-            //DWGameObject *go = [[gw.Blackboard.PickupObject store] objectForKey:MOUNT];
-        CCSprite *mySprite = [[gw.Blackboard.PickupObject store] objectForKey:MY_SPRITE];
+            CCSprite *mySprite = [[gw.Blackboard.PickupObject store] objectForKey:MY_SPRITE];
             if([gw Blackboard].DropObject != nil)
             {
-                    [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[[gw Blackboard].PickupObject store] objectForKey:PROXIMITY_SPRITE_FILENAME])]];
-
+                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[[gw Blackboard].PickupObject store] objectForKey:PROXIMITY_SPRITE_FILENAME])]];
             }
             else {
-                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gw.Blackboard.PickupObject store] objectForKey:SPRITE_FILENAME])]];                
+                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gw.Blackboard.PickupObject store] objectForKey:PICKUP_SPRITE_FILENAME])]];                
             }
-        }
-        CGPoint diff=[BLMath SubtractVector:prevLoc from:location];
+            gw.Blackboard.DropObject = nil;
         
-        //mod location by pickup offset
-        float posX = [[[gw.Blackboard.PickupObject store] objectForKey:POS_X] floatValue];
-        float posY = [[[gw.Blackboard.PickupObject store] objectForKey:POS_Y] floatValue];
-        
-        posX = posX + diff.x;
-        posY = posY + diff.y;
-        
-        NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];        
+    }
+    CGPoint diff=[BLMath SubtractVector:prevLoc from:location];
+    
+    //mod location by pickup offset
+    float posX = [[[gw.Blackboard.PickupObject store] objectForKey:POS_X] floatValue];
+    float posY = [[[gw.Blackboard.PickupObject store] objectForKey:POS_Y] floatValue];
+    
+    posX = posX + diff.x;
+    posY = posY + diff.y;
+    
+    NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];        
 
-        if(gw.Blackboard.SelectedObjects.count == columnBaseValue && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject])
+    if(gw.Blackboard.SelectedObjects.count == columnBaseValue && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject])
+    {
+        //flag we're in inBlockTransition
+        inBlockTransition=YES;
+        
+        if([BLMath rectContainsPoint:location x:0 y:0 w:200 h:ly] && currentColumnIndex>0)
         {
-            //flag we're in inBlockTransition
-            inBlockTransition=YES;
-            
-            if([BLMath rectContainsPoint:location x:0 y:0 w:200 h:ly] && currentColumnIndex>0)
-            {
-                inCondenseArea=YES;
-                [condensePanel setVisible:YES];
-            }
-            else
-            {
-                inCondenseArea=NO;
-                [condensePanel setVisible:NO];
-            }
-            
-            for(int go=0;go<gw.Blackboard.SelectedObjects.count;go++)
-            {
-                DWGameObject *thisObject = [[[gw Blackboard] SelectedObjects] objectAtIndex:go];
-
-                float x=[[[thisObject store] objectForKey:POS_X] floatValue];
-                float y=[[[thisObject store] objectForKey:POS_Y] floatValue];
-
-                [pl setObject:[NSNumber numberWithFloat:x+diff.x] forKey:POS_X];
-                [pl setObject:[NSNumber numberWithFloat:y+diff.y] forKey:POS_Y];
-                
-                [thisObject handleMessage:kDWmoveSpriteToPosition andPayload:pl withLogLevel:-1];
-            }
+            inCondenseArea=YES;
+            [condensePanel setVisible:YES];
         }
-        
-        
         else
         {
-            if([BLMath rectContainsPoint:location x:lx-200 y:0 w:200 h:ly] && currentColumnIndex<([gw.Blackboard.AllStores count]-1))
-            {
-                inMulchArea=YES;
-                [mulchPanel setVisible:YES];
-            }
-            else
-            {
-                inMulchArea=NO;
-                [mulchPanel setVisible:NO];
-            }
-            
-            [pl setObject:[NSNumber numberWithFloat:posX] forKey:POS_X];
-            [pl setObject:[NSNumber numberWithFloat:posY] forKey:POS_Y];
-            [[gw Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:-1];
+            inCondenseArea=NO;
+            [condensePanel setVisible:NO];
         }
         
+        for(int go=0;go<gw.Blackboard.SelectedObjects.count;go++)
+        {
+            DWGameObject *thisObject = [[[gw Blackboard] SelectedObjects] objectAtIndex:go];
+
+            float x=[[[thisObject store] objectForKey:POS_X] floatValue];
+            float y=[[[thisObject store] objectForKey:POS_Y] floatValue];
+
+            [pl setObject:[NSNumber numberWithFloat:x+diff.x] forKey:POS_X];
+            [pl setObject:[NSNumber numberWithFloat:y+diff.y] forKey:POS_Y];
+            
+            [thisObject handleMessage:kDWmoveSpriteToPosition andPayload:pl withLogLevel:-1];
+        }
+    }
+        
+    
+    else
+    {
+        if([BLMath rectContainsPoint:location x:lx-200 y:0 w:200 h:ly] && currentColumnIndex<([gw.Blackboard.AllStores count]-1))
+        {
+            inMulchArea=YES;
+            [mulchPanel setVisible:YES];
+        }
+        else
+        {
+            inMulchArea=NO;
+            [mulchPanel setVisible:NO];
+        }
+        
+        [pl setObject:[NSNumber numberWithFloat:posX] forKey:POS_X];
+        [pl setObject:[NSNumber numberWithFloat:posY] forKey:POS_Y];
+        [[gw Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:-1];
+    }
+    
     }
 
 }

@@ -160,7 +160,6 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             }
         }
         
-        currentColumnValue = (currentColumnValue/columnBaseValue);
         NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[currentColumnInfo objectForKey:COL_VALUE] floatValue]];
         
         DLog(@"Reset current column value to %f", currentColumnValue);
@@ -311,6 +310,9 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         }
     
         [newCol release];
+
+        //decrement for next column
+        currentColumnValue = (currentColumnValue/columnBaseValue);
     }
     
 

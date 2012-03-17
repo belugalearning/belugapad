@@ -29,11 +29,11 @@
 	<key>SHOW_COUNT</key>
 	<false/>
 	<key>SHOW_COUNT_BLOCK</key>
-	<true/>
+	<false/>
 	<key>SHOW_COL_HEADER</key>
 	<true/>
 	<key>SHOW_VALUE</key>
-	<true/>
+	<false/>
 	<key>SHOW_BASE_SELECTION</key>
 	<true/>
 	<key>PICKUP_SPRITE_FILENAME</key>
@@ -73,7 +73,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>1</integer>
 			<key>NUMBER</key>
-			<integer>2</integer>
+			<integer>5</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

@@ -13,7 +13,7 @@
 	<key>NUMBER_COLS</key>
 	<integer>2</integer>
 	<key>DEFAULT_COL</key>
-	<string>1</string>
+	<string>10</string>
 	<key>ROPES_PER_COL</key>
 	<integer>5</integer>
 	<key>ROWS_PER_COL</key>
@@ -29,11 +29,11 @@
 	<key>SHOW_COUNT</key>
 	<false/>
 	<key>SHOW_COUNT_BLOCK</key>
-	<true/>
+	<false/>
 	<key>SHOW_COL_HEADER</key>
 	<true/>
 	<key>SHOW_VALUE</key>
-	<true/>
+	<false/>
 	<key>SHOW_BASE_SELECTION</key>
 	<true/>
 	<key>PICKUP_SPRITE_FILENAME</key>
@@ -47,23 +47,25 @@
 		<key>1</key>
 		<string>ones</string>
 	</dict>
+	<key>COLUMN_ROPES</key>
+	<dict>
+		<key>10</key>
+		<integer>1</integer>
+	</dict>
+	<key>COLUMN_ROWS</key>
+	<dict>
+		<key>10</key>
+		<integer>1</integer>
+	</dict>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
 			<key>PUT_IN_COL</key>
-			<integer>1</integer>
+			<integer>0</integer>
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>5</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
 			<integer>1</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>1</integer>
-			<key>NUMBER</key>
-			<integer>5</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

@@ -298,9 +298,8 @@
 {
     problemComplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/complete-overlay.png")];
     [problemComplete setPosition:ccp(cx, cy)];
-    [toolForeLayer addChild:problemComplete];
+    [metaQuestionLayer addChild:problemComplete];
     showingProblemComplete=YES;
-    
     [problemComplete retain];
 }
 
@@ -310,6 +309,7 @@
     [problemIncomplete setPosition:ccp(cx,cy)];
     [toolForeLayer addChild:problemIncomplete];
     showingProblemIncomplete=YES;
+    [problemIncomplete retain];
 }
 
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ
@@ -616,17 +616,13 @@
 -(void)doWinning
 {
     [self removeMetaQuestionButtons];
-    CCLabelTTF *pcLabel = [CCLabelTTF labelWithString:metaQuestionCompleteText fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [pcLabel setPosition:ccp(cx, cy*0.25)];
-    [pcLabel setColor:kMetaQuestionLabelColor];
-    [metaQuestionLayer addChild:pcLabel];
+    [self showProblemCompleteMessage];
     currentTool.ProblemComplete=YES;
     metaQuestionForceComplete=YES;
 }
 -(void)doIncomplete
-{
-    [metaQuestionIncompleteLabel setVisible:YES];
-    showMetaQuestionIncomplete=YES;
+{   
+    [self showProblemIncompleteMessage];
     //[self deselectAnswersExcept:-1];
 }
 -(void)removeMetaQuestionButtons
@@ -716,6 +712,8 @@
     [metaQuestionAnswerLabels release];
     [metaQuestionCompleteText release];
     [metaQuestionIncompleteText release];
+    [problemComplete release];
+    [problemIncomplete release];
     
     [super dealloc];
 }

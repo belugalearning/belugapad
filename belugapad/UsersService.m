@@ -151,7 +151,7 @@ NSString * const kUsersByNickNamePassword = @"users-by-nick-name-password";
 }
 
 -(User*) userMatchingNickName:(NSString*)nickName
-                     password:(NSString*)password
+                     andPassword:(NSString*)password
 {
     CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersByNickNamePassword];
     q.keys = [NSArray arrayWithObject:[NSArray arrayWithObjects:nickName, password, nil]];

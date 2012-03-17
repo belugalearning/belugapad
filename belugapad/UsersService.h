@@ -16,13 +16,13 @@
 
 -(NSArray*) deviceUsersByLastSessionDate;
 
-- (User*) createUserWithNickName:(NSString*)nickName
+-(BOOL) nickNameIsAvailable:(NSString*)nickName;
+
+-(User*) createUserWithNickName:(NSString*)nickName
                     andZubiColor:(NSData*)color // rgba
                andZubiScreenshot:(UIImage*)image;
 
--(BOOL) nickNameIsAvailable:(NSString*)nickName;
-
 -(User*) userMatchingNickName:(NSString*)nickName
-                     password:(NSString*)password;
+                     andPassword:(NSString*)password;
 
 @end

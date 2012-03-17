@@ -362,9 +362,15 @@
 
 - (void) handleLoadExistingUserClicked:(id*)button
 {
-    User *usr = [usersService userMatchingNickName:existingUserNameTF.text  password:existingUserPasswordTF.text];    
-    if (usr == nil) return;
-    // TODO: Handle no match
+    User *usr = [usersService userMatchingNickName:existingUserNameTF.text  andPassword:existingUserPasswordTF.text];    
+    if (usr == nil)
+    {
+        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"TITLE"
+                                                            message:@"YOU FUCKED UP" delegate:self 
+                                                  cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+        return;
+    }
     
     usersService.currentUser = usr;
     

@@ -23,7 +23,7 @@ NSString *const kZubiScreenshotFile = @"zubi_screenshot.png";
     return [[[UIImage alloc] initWithData: a.body] autorelease];
 }
 
-- (void) setZubiScreenshot: (UIImage*)image
+- (void) setZubiScreenshot:(UIImage*)image
 {
     if (!image)
     {
@@ -35,7 +35,7 @@ NSString *const kZubiScreenshotFile = @"zubi_screenshot.png";
     }
 }
 
-- (id) initWithNewDocumentInDatabase: (CouchDatabase*)database
+- (id) initWithNewDocumentInDatabase:(CouchDatabase*)database
 {
     NSParameterAssert(database);
     self = [super initWithDocument: nil];

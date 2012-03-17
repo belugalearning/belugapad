@@ -7,7 +7,6 @@
 //
 
 #import "SelectUserViewController.h"
-#import "global.h"
 #import "cocos2d.h"
 #import "AppDelegate.h"
 #import "UsersService.h"
@@ -30,7 +29,6 @@
     
     UITextField *newUserNameTF;
     UITextField *newUserPasswordTF;
-    UILabel *nameTakenLabel;
     UIButton *cancelNewUserButton;
     UIButton *saveNewUserButton;
     
@@ -230,16 +228,6 @@
     [saveNewUserButton setImage:[UIImage imageNamed:@"/select-edit-user-images/Save.png"] forState:UIControlStateNormal];
     [saveNewUserButton addTarget:self action:@selector(handleSaveNewUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [editUserView addSubview:saveNewUserButton];
-    
-    nameTakenLabel = [[UILabel alloc] initWithFrame:CGRectMake(261.0f, 550.0f, 539.0f, 85.0f)];
-    nameTakenLabel.text = @"Sorry this nickname is taken. Please try another one.";
-    [nameTakenLabel setHidden:YES];    
-    [editUserView addSubview:nameTakenLabel];
-}
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    if (textField == newUserNameTF) [nameTakenLabel setHidden:YES];
 }
 
 - (void) observeValueForKeyPath:(NSString*)keyPath
@@ -269,7 +257,6 @@
     newUserPasswordTF.text = @"";
     [newUserNameTF resignFirstResponder];
     [newUserPasswordTF resignFirstResponder];
-    [nameTakenLabel setHidden:YES]; 
     [self setActiveView:selectUserView];
 }
 
@@ -289,7 +276,10 @@
     
     if (![usersService nickNameIsAvailable:newUserNameTF.text])
     {
-        [nameTakenLabel setHidden:NO];
+        UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
+                                                             message:@"This nickname is already in use. Please try another one." delegate:self 
+                                                   cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
+        [alertView show];
         return;
     }
     
@@ -365,9 +355,9 @@
     User *usr = [usersService userMatchingNickName:existingUserNameTF.text  andPassword:existingUserPasswordTF.text];    
     if (usr == nil)
     {
-        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"TITLE"
-                                                            message:@"YOU FUCKED UP" delegate:self 
-                                                  cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
+                                                            message:@"We could not find a match for those login details. Please double-check and try again." delegate:self 
+                                                  cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
         [alertView show];
         return;
     }

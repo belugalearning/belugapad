@@ -3,6 +3,6 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_PIPELINE</key>
-	<string>/pipeline-testing/old_sorting_counting-pipeline.plist</string>
+	<string>/pipeline-testing/alastair-pipeline-test.plist</string>
 </dict>
 </plist>

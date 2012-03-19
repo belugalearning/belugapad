@@ -118,5 +118,7 @@
 		<key>100</key>
 		<true/>
 	</dict>
+	<key>PLAY_SOUND</key>
+	<string>05pv/make the number 15 by adding ones.wav</string>
 </dict>
 </plist>

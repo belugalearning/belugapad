@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>find 10 + 4</string>
+	<string>10 - 7 = ?</string>
 	<key>EXPRESSION_FILE</key>
-	<string>/Problems/Addition/ac-dev/01pv/a-eq-14.mathml</string>
+	<string>/Problems/tools-dev/nline-dev/a-eq-3.mathml</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
@@ -22,7 +22,5 @@
 	<integer>0</integer>
 	<key>HIDE_ZUBI</key>
 	<true/>
-	<key>PLAY_SOUND</key>
-	<string>05pv/find 10 and 4.wav</string>
 </dict>
 </plist>

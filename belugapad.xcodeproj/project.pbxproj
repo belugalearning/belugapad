@@ -26,6 +26,8 @@
 		5571BAEF14E4108F0053A62B /* BPlaceValuePickupTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE814E4108F0053A62B /* BPlaceValuePickupTarget.m */; };
 		5571BAF014E4108F0053A62B /* BPlaceValueMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAEA14E4108F0053A62B /* BPlaceValueMount.m */; };
 		5571BAF114E4108F0053A62B /* BPlaceValueMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAEC14E4108F0053A62B /* BPlaceValueMountable.m */; };
+		55BB4E3C1517521E00A1D639 /* ColumnAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BB4E3B1517521D00A1D639 /* ColumnAddition.m */; };
+		55BB4E401517594700A1D639 /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BB4E3F1517594700A1D639 /* ColumnAdditionConsts.m */; };
 		7F268ADE14F28DE500F1F65F /* ToolHost.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F268ADD14F28DE500F1F65F /* ToolHost.m */; };
 		7F268AE514F2A2A300F1F65F /* ToolScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F268AE414F2A2A200F1F65F /* ToolScene.m */; };
 		7F40D88E14FF631C006A3A55 /* local-settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F40D88D14FF631C006A3A55 /* local-settings.plist */; };
@@ -303,6 +305,10 @@
 		5571BAEA14E4108F0053A62B /* BPlaceValueMount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueMount.m; sourceTree = "<group>"; };
 		5571BAEB14E4108F0053A62B /* BPlaceValueMountable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueMountable.h; sourceTree = "<group>"; };
 		5571BAEC14E4108F0053A62B /* BPlaceValueMountable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueMountable.m; sourceTree = "<group>"; };
+		55BB4E3A1517521D00A1D639 /* ColumnAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAddition.h; sourceTree = "<group>"; };
+		55BB4E3B1517521D00A1D639 /* ColumnAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAddition.m; sourceTree = "<group>"; };
+		55BB4E3E1517594700A1D639 /* ColumnAdditionConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAdditionConsts.h; sourceTree = "<group>"; };
+		55BB4E3F1517594700A1D639 /* ColumnAdditionConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAdditionConsts.m; sourceTree = "<group>"; };
 		7F268ADC14F28DE500F1F65F /* ToolHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolHost.h; sourceTree = "<group>"; };
 		7F268ADD14F28DE500F1F65F /* ToolHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolHost.m; sourceTree = "<group>"; };
 		7F268AE314F2A2A200F1F65F /* ToolScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolScene.h; sourceTree = "<group>"; };
@@ -1353,6 +1359,8 @@
 				7F268AE414F2A2A200F1F65F /* ToolScene.m */,
 				7FC27F70150FAB4300E16A44 /* NLine.h */,
 				7FC27F71150FAB4300E16A44 /* NLine.m */,
+				55BB4E3A1517521D00A1D639 /* ColumnAddition.h */,
+				55BB4E3B1517521D00A1D639 /* ColumnAddition.m */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -1373,6 +1381,8 @@
 				553E80C0150FD3FD00263473 /* NLineConsts.m */,
 				7FCBC3E615100F3D00066426 /* MathMLConsts.h */,
 				7FCBC3E715100F3D00066426 /* MathMLConsts.m */,
+				55BB4E3E1517594700A1D639 /* ColumnAdditionConsts.h */,
+				55BB4E3F1517594700A1D639 /* ColumnAdditionConsts.m */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -1912,6 +1922,8 @@
 				7FB982C315116633006D31AE /* BAPowerOperator.m in Sources */,
 				7FB982C515116633006D31AE /* BAVariable.m in Sources */,
 				7FB982C715116633006D31AE /* NSArray_BAAdditions.m in Sources */,
+				55BB4E3C1517521E00A1D639 /* ColumnAddition.m in Sources */,
+				55BB4E401517594700A1D639 /* ColumnAdditionConsts.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

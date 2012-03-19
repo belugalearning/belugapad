@@ -14,7 +14,7 @@ NSString *const kZubiScreenshotFile = @"zubi_screenshot.png";
 
 @implementation User
 
-@dynamic type, nickName, creationDateTime, zubiColor;
+@dynamic type, nickName, password, creationDateTime, zubiColor;
 
 - (UIImage*) zubiScreenshot
 {

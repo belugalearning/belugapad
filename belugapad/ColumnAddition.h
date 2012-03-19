@@ -38,14 +38,14 @@
     
     float colSpacing;
     
-    int aCols[4];
-    int bCols[4];
-    int sCols[4];
+    int aCols[5];
+    int bCols[5];
+    int sCols[5];
     
-    CCLabelTTF *aColLabels[4];
-    CCLabelTTF *bColLabels[4];
-    CCLabelTTF *sColLabels[4];
-    CCLabelTTF *remLabels[4];
+    CCLabelTTF *aColLabels[5];
+    CCLabelTTF *bColLabels[5];
+    CCLabelTTF *sColLabels[5];
+    CCLabelTTF *remLabels[5];
     
 }
 -(void)populateGW;

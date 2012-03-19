@@ -48,5 +48,6 @@
     CCLabelTTF *remLabels[4];
     
 }
-
+-(void)populateGW;
+-(void)readPlist:(NSDictionary*)pdef;
 @end

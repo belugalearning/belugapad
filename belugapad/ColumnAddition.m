@@ -78,21 +78,80 @@
 
 -(void)populateGW
 {
+    
     colSpacing=kSumBoxWidth/6.0f;
+    
+    NSString *aColNos = [NSString stringWithFormat:@"%d", sourceA];
+    NSString *bColNos = [NSString stringWithFormat:@"%d", sourceB];
+    int backwardArrayPos = 4;
+    
+    
+    for(int i=0; i<[aColNos length]; i++)
+    {
+        NSLog(@"(start-FOR) bCols[0] = %d", bCols[0]);
+        NSString *thisChar=[aColNos substringWithRange:NSMakeRange([aColNos length]-i-1, 1)];
+        NSLog(@"(mid-FOR) bCols[0] = %d", bCols[0]);
+        aCols[backwardArrayPos] = [thisChar intValue];
+        backwardArrayPos--;
+        NSLog(@"aCols[%d] = %d", i, aCols[i]);
+        NSLog(@"(end-FOR) bCols[%d] = %d", i, bCols[i]);
+    }
+    
+    backwardArrayPos = 4;
+    
+    for(int i=0; i<[bColNos length]; i++)
+    {
+        NSLog(@"fill var bCols[%d], i %d", backwardArrayPos, i);
+        
+        NSString *thisCharB=[bColNos substringWithRange:NSMakeRange([bColNos length]-i-1, 1)];
+        bCols[backwardArrayPos] = [thisCharB intValue];
+        backwardArrayPos--;
+        NSLog(@"i %d, char %@", i, thisCharB);
+    }
     
     for(int i=0; i<5; i++)
     {
-        sColLabels[i] = [CCLabelTTF labelWithString:@"#" fontName:PROBLEM_DESC_FONT fontSize:72.0f];
         float lblXPos=(i+1)*colSpacing;
-        [sColLabels[i] setPosition:ccp(lblXPos, 500)];
+        NSString *aColCurrentLabel = [NSString stringWithFormat:@"%d", aCols[i]];
+        
+        NSString *bColCurrentLabel = [NSString stringWithFormat:@"%d", bCols[i]];
+        
+        aColLabels[i] = [CCLabelTTF labelWithString:aColCurrentLabel fontName:PROBLEM_DESC_FONT fontSize:72.0f];
+        
+        bColLabels[i] = [CCLabelTTF labelWithString:bColCurrentLabel fontName:PROBLEM_DESC_FONT fontSize:72.0f];
+        
+        sColLabels[i] = [CCLabelTTF labelWithString:@"#" fontName:PROBLEM_DESC_FONT fontSize:72.0f];
+        
+
+        [aColLabels[i] setPosition:ccp(lblXPos, 500)];
+        
+        [bColLabels[i] setPosition:ccp(lblXPos, 350)];
+        
+        [sColLabels[i] setPosition:ccp(lblXPos, 200)];
+        
+        [sumBoxLayer addChild:aColLabels[i]];
+        
+        [sumBoxLayer addChild:bColLabels[i]];
+        
         [sumBoxLayer addChild:sColLabels[i]];
     }
+    
 }
 
 -(void)readPlist:(NSDictionary*)pdef
 {
     sourceA = [[pdef objectForKey:NUMBER_A] intValue];
     sourceB = [[pdef objectForKey:NUMBER_B] intValue];
+}
+
+-(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
+}
+
+-(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
 }
 
 

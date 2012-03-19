@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0C0AB7AD14F5116600437F07 /* Problems in Resources */ = {isa = PBXBuildFile; fileRef = 0C0AB7AC14F5116600437F07 /* Problems */; };
 		0C427C3714F529CC0033AFE2 /* sfx in Resources */ = {isa = PBXBuildFile; fileRef = 0C427C3614F529CC0033AFE2 /* sfx */; };
+		0C92B2541515702700342094 /* ContentService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C92B2531515702700342094 /* ContentService.m */; };
 		0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */ = {isa = PBXBuildFile; fileRef = 0C9FEFF514F572FB00E64138 /* pipeline-testing */; };
 		0CF9187C14F54C1D00FAC58D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF9187B14F54C1D00FAC58D /* images */; };
 		5536B29014E4173E00D30BC0 /* BPlaceValueContainerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */; };
@@ -271,6 +272,8 @@
 /* Begin PBXFileReference section */
 		0C0AB7AC14F5116600437F07 /* Problems */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Problems; sourceTree = SOURCE_ROOT; };
 		0C427C3614F529CC0033AFE2 /* sfx */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sfx; sourceTree = SOURCE_ROOT; };
+		0C92B2521515702700342094 /* ContentService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentService.h; sourceTree = "<group>"; };
+		0C92B2531515702700342094 /* ContentService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentService.m; sourceTree = "<group>"; };
 		0C9FEFF514F572FB00E64138 /* pipeline-testing */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pipeline-testing"; sourceTree = SOURCE_ROOT; };
 		0CF9187B14F54C1D00FAC58D /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = SOURCE_ROOT; };
 		5536B28E14E4173D00D30BC0 /* BPlaceValueContainerRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueContainerRender.h; sourceTree = "<group>"; };
@@ -761,6 +764,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C92B2501515700100342094 /* Content */ = {
+			isa = PBXGroup;
+			children = (
+				0C92B2521515702700342094 /* ContentService.h */,
+				0C92B2531515702700342094 /* ContentService.m */,
+			);
+			name = Content;
+			sourceTree = "<group>";
+		};
 		5571BAE214E40FE90053A62B /* PlaceValue */ = {
 			isa = PBXGroup;
 			children = (
@@ -1300,6 +1312,7 @@
 		7F51159714A9EF21001AF372 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				0C92B2501515700100342094 /* Content */,
 				7FB9828E15116612006D31AE /* BAExpression */,
 				7F71B3FD150FBC8B0097A956 /* BATools */,
 				7F719C0014D7397000F30E89 /* Daemon */,
@@ -1912,6 +1925,7 @@
 				7FB982C315116633006D31AE /* BAPowerOperator.m in Sources */,
 				7FB982C515116633006D31AE /* BAVariable.m in Sources */,
 				7FB982C715116633006D31AE /* NSArray_BAAdditions.m in Sources */,
+				0C92B2541515702700342094 /* ContentService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

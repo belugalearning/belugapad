@@ -826,7 +826,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-<<<<<<< HEAD
 		0CE3D71115137BDB003D5193 /* Users */ = {
 			isa = PBXGroup;
 			children = (
@@ -845,7 +844,8 @@
 				0CE3D71F15137BFD003D5193 /* UsersService.m */,
 			);
 			name = Users;
-=======
+			sourceTree = "<group>";
+        };
 		0C92B2501515700100342094 /* Content */ = {
 			isa = PBXGroup;
 			children = (
@@ -853,7 +853,6 @@
 				0C92B2531515702700342094 /* ContentService.m */,
 			);
 			name = Content;
->>>>>>> refs/heads/development
 			sourceTree = "<group>";
 		};
 		5571BAE214E40FE90053A62B /* PlaceValue */ = {
@@ -1401,11 +1400,8 @@
 		7F51159714A9EF21001AF372 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				0CE3D71115137BDB003D5193 /* Users */,
-=======
 				0C92B2501515700100342094 /* Content */,
->>>>>>> refs/heads/development
 				7FB9828E15116612006D31AE /* BAExpression */,
 				7F71B3FD150FBC8B0097A956 /* BATools */,
 				7F719C0014D7397000F30E89 /* Daemon */,
@@ -1439,13 +1435,10 @@
 		7F51159914A9EF30001AF372 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				0CE3D73115137FC0003D5193 /* EditZubi.h */,
 				0CE3D73215137FC0003D5193 /* EditZubi.m */,
-=======
 				550708741517623E00111BBB /* ColumnAddition.h */,
 				550708751517623E00111BBB /* ColumnAddition.m */,
->>>>>>> refs/heads/development
 				7F71B408150FBCB20097A956 /* ExprScene.h */,
 				7F71B409150FBCB20097A956 /* ExprScene.m */,
 				7FB8264714F262080053F221 /* ZubiIntro.h */,
@@ -1833,7 +1826,6 @@
 				7FB982C415116633006D31AE /* BAPowerOperator.m in Sources */,
 				7FB982C615116633006D31AE /* BAVariable.m in Sources */,
 				7FB982C815116633006D31AE /* NSArray_BAAdditions.m in Sources */,
-<<<<<<< HEAD
 				0CE3D72115137BFD003D5193 /* CCScreenshot.m in Sources */,
 				0CE3D72315137BFD003D5193 /* ColorPickerImageView.m in Sources */,
 				0CE3D72515137BFD003D5193 /* Device.m in Sources */,
@@ -1841,10 +1833,8 @@
 				0CE3D72B15137BFD003D5193 /* User.m in Sources */,
 				0CE3D72D15137BFD003D5193 /* UsersService.m in Sources */,
 				0CE3D73415137FC0003D5193 /* EditZubi.m in Sources */,
-=======
 				550708761517623E00111BBB /* ColumnAddition.m in Sources */,
 				5507087A1517625300111BBB /* ColumnAdditionConsts.m in Sources */,
->>>>>>> refs/heads/development
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2046,7 +2036,6 @@
 				7FB982C315116633006D31AE /* BAPowerOperator.m in Sources */,
 				7FB982C515116633006D31AE /* BAVariable.m in Sources */,
 				7FB982C715116633006D31AE /* NSArray_BAAdditions.m in Sources */,
-<<<<<<< HEAD
 				0CE3D72015137BFD003D5193 /* CCScreenshot.m in Sources */,
 				0CE3D72215137BFD003D5193 /* ColorPickerImageView.m in Sources */,
 				0CE3D72415137BFD003D5193 /* Device.m in Sources */,
@@ -2054,9 +2043,7 @@
 				0CE3D72A15137BFD003D5193 /* User.m in Sources */,
 				0CE3D72C15137BFD003D5193 /* UsersService.m in Sources */,
 				0CE3D73315137FC0003D5193 /* EditZubi.m in Sources */,
-=======
 				0C92B2541515702700342094 /* ContentService.m in Sources */,
->>>>>>> refs/heads/development
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

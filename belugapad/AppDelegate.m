@@ -14,12 +14,9 @@
 #import "ZubiIntro.h"
 #import "ToolHost.h"
 #import "global.h"
-<<<<<<< HEAD
+#import "ContentService.h"
 #import "UsersService.h"
 #import "SelectUserViewController.h"
-=======
-#import "ContentService.h"
->>>>>>> refs/heads/development
 
 @interface AppDelegate()
 {
@@ -33,11 +30,8 @@
 
 @synthesize window;
 @synthesize LocalSettings;
-<<<<<<< HEAD
-@synthesize usersService;
-=======
 @synthesize contentService;
->>>>>>> refs/heads/development
+@synthesize usersService;
 
 - (void) applicationDidFinishLaunching:(UIApplication*)application
 {    
@@ -121,17 +115,10 @@
 	// It can be RGBA8888, RGBA4444, RGB5_A1, RGB565
 	// You can change anytime.
 	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
-<<<<<<< HEAD
-=======
-
-	
-	// Removes the startup flicker
-	[self removeStartupFlicker];
 	
     //load local settings
     self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
     contentService = [[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
->>>>>>> refs/heads/development
     
     [[CCDirector sharedDirector] runWithScene:(viaIntro ? [ZubiIntro scene] : [ToolHost scene])];
 }

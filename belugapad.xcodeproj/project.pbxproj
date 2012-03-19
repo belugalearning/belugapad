@@ -12,6 +12,8 @@
 		0C92B2541515702700342094 /* ContentService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C92B2531515702700342094 /* ContentService.m */; };
 		0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */ = {isa = PBXBuildFile; fileRef = 0C9FEFF514F572FB00E64138 /* pipeline-testing */; };
 		0CF9187C14F54C1D00FAC58D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF9187B14F54C1D00FAC58D /* images */; };
+		550708761517623E00111BBB /* ColumnAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708751517623E00111BBB /* ColumnAddition.m */; };
+		5507087A1517625300111BBB /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708791517625300111BBB /* ColumnAdditionConsts.m */; };
 		5536B29014E4173E00D30BC0 /* BPlaceValueContainerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */; };
 		5536B2A414E4350800D30BC0 /* BPlaceValueObjectSpawn.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B2A314E4350800D30BC0 /* BPlaceValueObjectSpawn.m */; };
 		5536B2A714E43E1400D30BC0 /* PlaceValueConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B2A614E43E1400D30BC0 /* PlaceValueConsts.m */; };
@@ -276,6 +278,10 @@
 		0C92B2531515702700342094 /* ContentService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentService.m; sourceTree = "<group>"; };
 		0C9FEFF514F572FB00E64138 /* pipeline-testing */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pipeline-testing"; sourceTree = SOURCE_ROOT; };
 		0CF9187B14F54C1D00FAC58D /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = SOURCE_ROOT; };
+		550708741517623E00111BBB /* ColumnAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAddition.h; sourceTree = "<group>"; };
+		550708751517623E00111BBB /* ColumnAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAddition.m; sourceTree = "<group>"; };
+		550708781517625300111BBB /* ColumnAdditionConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAdditionConsts.h; sourceTree = "<group>"; };
+		550708791517625300111BBB /* ColumnAdditionConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAdditionConsts.m; sourceTree = "<group>"; };
 		5536B28E14E4173D00D30BC0 /* BPlaceValueContainerRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueContainerRender.h; sourceTree = "<group>"; };
 		5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueContainerRender.m; sourceTree = "<group>"; };
 		5536B2A214E4350700D30BC0 /* BPlaceValueObjectSpawn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueObjectSpawn.h; sourceTree = "<group>"; };
@@ -1346,6 +1352,8 @@
 		7F51159914A9EF30001AF372 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				550708741517623E00111BBB /* ColumnAddition.h */,
+				550708751517623E00111BBB /* ColumnAddition.m */,
 				7F71B408150FBCB20097A956 /* ExprScene.h */,
 				7F71B409150FBCB20097A956 /* ExprScene.m */,
 				7FB8264714F262080053F221 /* ZubiIntro.h */,
@@ -1386,6 +1394,8 @@
 				553E80C0150FD3FD00263473 /* NLineConsts.m */,
 				7FCBC3E615100F3D00066426 /* MathMLConsts.h */,
 				7FCBC3E715100F3D00066426 /* MathMLConsts.m */,
+				550708781517625300111BBB /* ColumnAdditionConsts.h */,
+				550708791517625300111BBB /* ColumnAdditionConsts.m */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -1724,6 +1734,8 @@
 				7FB982C415116633006D31AE /* BAPowerOperator.m in Sources */,
 				7FB982C615116633006D31AE /* BAVariable.m in Sources */,
 				7FB982C815116633006D31AE /* NSArray_BAAdditions.m in Sources */,
+				550708761517623E00111BBB /* ColumnAddition.m in Sources */,
+				5507087A1517625300111BBB /* ColumnAdditionConsts.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

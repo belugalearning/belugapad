@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>count on one</string>
+	<string>count up one</string>
 	<key>EXPRESSION_FILE</key>
 	<string>/Problems/tools-dev/nline-dev/a-eq-3.mathml</string>
 	<key>TOOL_KEY</key>

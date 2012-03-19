@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>/Problems/Addition/ac-dev/float-problem0001.plist</string>
+	<string>/Problems/Addition/ac-dev/float-problem0002.plist</string>
+	<string>/Problems/Addition/ac-dev/float-problem0003.plist</string>
+	<string>/Problems/Addition/ac-dev/pv_add_count_2_1_3.plist</string>
+	<string>/Problems/Addition/ac-dev/pv_add_count_3_1_4.plist</string>
+	<string>/Problems/Addition/ac-dev/pv_add_count_4_1_5.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline_count_on_2_1_3.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline_count_on_3_1_4.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline_count_on_4_1_5.plist</string>
+	<string>/Problems/Addition/ac-dev/addition_2_1_3.plist</string>
+	<string>/Problems/Addition/ac-dev/addition_3_1_4.plist</string>
+	<string>/Problems/Addition/ac-dev/addition_4_1_5.plist</string>
+	<string>/Problems/Addition/ac-dev/pv_add_count_3_2_5.plist</string>
+	<string>/Problems/Addition/ac-dev/pv_add_count_3_3_6.plist</string>
+	<string>/Problems/Addition/ac-dev/pv_add_count_3_4_7.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline_count_on_3_2_5.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline_count_on_3_3_6.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline_count_on_3_4_7.plist</string>
+	<string>/Problems/Addition/ac-dev/addition_3_2_5.plist</string>
+	<string>/Problems/Addition/ac-dev/addition_3_3_6.plist</string>
+	<string>/Problems/Addition/ac-dev/addition_3_4_7.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline_addition_3_5_8.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline_addition_2_7_9.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline_addition_4_2_6.plist</string>
+	<string>/Problems/Addition/ac-dev/addition_3_5_8.plist</string>
+	<string>/Problems/Addition/ac-dev/addition_2_7_9.plist</string>
+	<string>/Problems/Addition/ac-dev/addition_4_2_6.plist</string>
+	<string>/Problems/Addition/ac-dev/pv_add_count_2_4_6.plist</string>
+	<string>/Problems/Addition/ac-dev/pv_add_count_4_5_9.plist</string>
+	<string>/Problems/Addition/ac-dev/pv_add_count_3_7_10.plist</string>
+	<string>/Problems/Addition/ac-dev/addition_missing_addend_2_4_6.plist</string>
+	<string>/Problems/Addition/ac-dev/addition_missing_addend_4_5_9.plist</string>
+	<string>/Problems/Addition/ac-dev/addition_missing_addend_3_7_10.plist</string>
+</array>
+</plist>

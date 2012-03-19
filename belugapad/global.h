@@ -219,3 +219,8 @@
 #define SEGMENT_VALUE @"SEGMENT_VALUE"
 #define MIN_VALUE @"MIN_VALUE"
 #define MAX_VALUE @"MAX_VALUE"
+
+
+// column addition
+#define NUMBER_A @"NUMBER_A"
+#define NUMBER_B @"NUMBER_B"

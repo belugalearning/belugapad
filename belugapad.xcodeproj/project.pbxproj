@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0C0AB7AD14F5116600437F07 /* Problems in Resources */ = {isa = PBXBuildFile; fileRef = 0C0AB7AC14F5116600437F07 /* Problems */; };
 		0C427C3714F529CC0033AFE2 /* sfx in Resources */ = {isa = PBXBuildFile; fileRef = 0C427C3614F529CC0033AFE2 /* sfx */; };
+		0C92B2541515702700342094 /* ContentService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C92B2531515702700342094 /* ContentService.m */; };
 		0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */ = {isa = PBXBuildFile; fileRef = 0C9FEFF514F572FB00E64138 /* pipeline-testing */; };
 		0CE3D6F815137690003D5193 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D6F715137690003D5193 /* libz.dylib */; };
 		0CE3D6FA15137698003D5193 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D6F915137698003D5193 /* libsqlite3.dylib */; };
@@ -38,6 +39,8 @@
 		0CE3D73315137FC0003D5193 /* EditZubi.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D73215137FC0003D5193 /* EditZubi.m */; };
 		0CE3D73415137FC0003D5193 /* EditZubi.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D73215137FC0003D5193 /* EditZubi.m */; };
 		0CF9187C14F54C1D00FAC58D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF9187B14F54C1D00FAC58D /* images */; };
+		550708761517623E00111BBB /* ColumnAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708751517623E00111BBB /* ColumnAddition.m */; };
+		5507087A1517625300111BBB /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708791517625300111BBB /* ColumnAdditionConsts.m */; };
 		5536B29014E4173E00D30BC0 /* BPlaceValueContainerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */; };
 		5536B2A414E4350800D30BC0 /* BPlaceValueObjectSpawn.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B2A314E4350800D30BC0 /* BPlaceValueObjectSpawn.m */; };
 		5536B2A714E43E1400D30BC0 /* PlaceValueConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B2A614E43E1400D30BC0 /* PlaceValueConsts.m */; };
@@ -298,6 +301,8 @@
 /* Begin PBXFileReference section */
 		0C0AB7AC14F5116600437F07 /* Problems */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Problems; sourceTree = SOURCE_ROOT; };
 		0C427C3614F529CC0033AFE2 /* sfx */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sfx; sourceTree = SOURCE_ROOT; };
+		0C92B2521515702700342094 /* ContentService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentService.h; sourceTree = "<group>"; };
+		0C92B2531515702700342094 /* ContentService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentService.m; sourceTree = "<group>"; };
 		0C9FEFF514F572FB00E64138 /* pipeline-testing */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pipeline-testing"; sourceTree = SOURCE_ROOT; };
 		0CE3D6F715137690003D5193 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		0CE3D6F915137698003D5193 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -322,6 +327,10 @@
 		0CE3D73115137FC0003D5193 /* EditZubi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditZubi.h; sourceTree = "<group>"; };
 		0CE3D73215137FC0003D5193 /* EditZubi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditZubi.m; sourceTree = "<group>"; };
 		0CF9187B14F54C1D00FAC58D /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = SOURCE_ROOT; };
+		550708741517623E00111BBB /* ColumnAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAddition.h; sourceTree = "<group>"; };
+		550708751517623E00111BBB /* ColumnAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAddition.m; sourceTree = "<group>"; };
+		550708781517625300111BBB /* ColumnAdditionConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAdditionConsts.h; sourceTree = "<group>"; };
+		550708791517625300111BBB /* ColumnAdditionConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAdditionConsts.m; sourceTree = "<group>"; };
 		5536B28E14E4173D00D30BC0 /* BPlaceValueContainerRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueContainerRender.h; sourceTree = "<group>"; };
 		5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueContainerRender.m; sourceTree = "<group>"; };
 		5536B2A214E4350700D30BC0 /* BPlaceValueObjectSpawn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueObjectSpawn.h; sourceTree = "<group>"; };
@@ -817,6 +826,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+<<<<<<< HEAD
 		0CE3D71115137BDB003D5193 /* Users */ = {
 			isa = PBXGroup;
 			children = (
@@ -835,6 +845,15 @@
 				0CE3D71F15137BFD003D5193 /* UsersService.m */,
 			);
 			name = Users;
+=======
+		0C92B2501515700100342094 /* Content */ = {
+			isa = PBXGroup;
+			children = (
+				0C92B2521515702700342094 /* ContentService.h */,
+				0C92B2531515702700342094 /* ContentService.m */,
+			);
+			name = Content;
+>>>>>>> refs/heads/development
 			sourceTree = "<group>";
 		};
 		5571BAE214E40FE90053A62B /* PlaceValue */ = {
@@ -1382,7 +1401,11 @@
 		7F51159714A9EF21001AF372 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				0CE3D71115137BDB003D5193 /* Users */,
+=======
+				0C92B2501515700100342094 /* Content */,
+>>>>>>> refs/heads/development
 				7FB9828E15116612006D31AE /* BAExpression */,
 				7F71B3FD150FBC8B0097A956 /* BATools */,
 				7F719C0014D7397000F30E89 /* Daemon */,
@@ -1416,8 +1439,13 @@
 		7F51159914A9EF30001AF372 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				0CE3D73115137FC0003D5193 /* EditZubi.h */,
 				0CE3D73215137FC0003D5193 /* EditZubi.m */,
+=======
+				550708741517623E00111BBB /* ColumnAddition.h */,
+				550708751517623E00111BBB /* ColumnAddition.m */,
+>>>>>>> refs/heads/development
 				7F71B408150FBCB20097A956 /* ExprScene.h */,
 				7F71B409150FBCB20097A956 /* ExprScene.m */,
 				7FB8264714F262080053F221 /* ZubiIntro.h */,
@@ -1458,6 +1486,8 @@
 				553E80C0150FD3FD00263473 /* NLineConsts.m */,
 				7FCBC3E615100F3D00066426 /* MathMLConsts.h */,
 				7FCBC3E715100F3D00066426 /* MathMLConsts.m */,
+				550708781517625300111BBB /* ColumnAdditionConsts.h */,
+				550708791517625300111BBB /* ColumnAdditionConsts.m */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -1803,6 +1833,7 @@
 				7FB982C415116633006D31AE /* BAPowerOperator.m in Sources */,
 				7FB982C615116633006D31AE /* BAVariable.m in Sources */,
 				7FB982C815116633006D31AE /* NSArray_BAAdditions.m in Sources */,
+<<<<<<< HEAD
 				0CE3D72115137BFD003D5193 /* CCScreenshot.m in Sources */,
 				0CE3D72315137BFD003D5193 /* ColorPickerImageView.m in Sources */,
 				0CE3D72515137BFD003D5193 /* Device.m in Sources */,
@@ -1810,6 +1841,10 @@
 				0CE3D72B15137BFD003D5193 /* User.m in Sources */,
 				0CE3D72D15137BFD003D5193 /* UsersService.m in Sources */,
 				0CE3D73415137FC0003D5193 /* EditZubi.m in Sources */,
+=======
+				550708761517623E00111BBB /* ColumnAddition.m in Sources */,
+				5507087A1517625300111BBB /* ColumnAdditionConsts.m in Sources */,
+>>>>>>> refs/heads/development
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2011,6 +2046,7 @@
 				7FB982C315116633006D31AE /* BAPowerOperator.m in Sources */,
 				7FB982C515116633006D31AE /* BAVariable.m in Sources */,
 				7FB982C715116633006D31AE /* NSArray_BAAdditions.m in Sources */,
+<<<<<<< HEAD
 				0CE3D72015137BFD003D5193 /* CCScreenshot.m in Sources */,
 				0CE3D72215137BFD003D5193 /* ColorPickerImageView.m in Sources */,
 				0CE3D72415137BFD003D5193 /* Device.m in Sources */,
@@ -2018,6 +2054,9 @@
 				0CE3D72A15137BFD003D5193 /* User.m in Sources */,
 				0CE3D72C15137BFD003D5193 /* UsersService.m in Sources */,
 				0CE3D73315137FC0003D5193 /* EditZubi.m in Sources */,
+=======
+				0C92B2541515702700342094 /* ContentService.m in Sources */,
+>>>>>>> refs/heads/development
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

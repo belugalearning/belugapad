@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>/Problems/Addition/ac-dev/03sub/sub-fb-3_1_2.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/sub-fb-4_1_3.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/sub-fb-5_2_3.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/pv_sub_count_3_1_2.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/pv_sub_count_4_1_3.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/pv_sub_count_5_1_4.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/nline_count_back_3_1_2.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/nline_count_back_4_1_3.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/nline_count_back_5_1_4.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/subtraction_3_1_2.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/subtraction_4_1_3.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/subtraction_5_1_4.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/pv_sub_count_6_2_4.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/pv_sub_count_6_3_3.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/pv_sub_count_6_4_2.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/nline_count_back_6_2_4.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/nline_count_back_6_3_3.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/nline_count_back_6_4_2.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/subtraction_6_2_4.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/subtraction_6_3_3.plist</string>
+	<string>/Problems/Addition/ac-dev/03sub/subtraction_6_4_2.plist</string>
+</array>
+</plist>

@@ -17,6 +17,15 @@
 #import "AppDelegate.h"
 #import "BAExpressionHeaders.h"
 #import "BATio.h"
+#import "ContentService.h"
+
+@interface ToolHost()
+{
+    @private
+    ContentService *contentService;
+}
+
+@end
 
 @implementation ToolHost
 
@@ -70,8 +79,7 @@
         
         [self populatePerstLayer];
         
-        [self loadTestPipeline];
-        
+        contentService = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).contentService;        
         [self gotoNewProblem];
         
         [self schedule:@selector(doUpdateOnTick:) interval:1.0f/60.0f];
@@ -171,9 +179,14 @@
 
 -(void) gotoNewProblem
 {
-
-    pdef=[self getNextProblem];
-    [pdef retain];
+    if (pdef) [pdef release];
+    self.PpExpr = nil;
+    
+    [contentService gotoNextProblem];
+    
+    pdef = [contentService.currentPDef retain];
+    self.PpExpr = contentService.currentPExpr;
+    
     [self loadProblem];
 }
 
@@ -199,22 +212,9 @@
         currentTool=nil;
     }
     
-    if(self.PpExpr)
-    {
-        [self.PpExpr release];
-        self.PpExpr=nil;
-    }
-    
     //reset multitouch
     //if tool requires multitouch, it will need to reset accordingly
     [[CCDirector sharedDirector] openGLView].multipleTouchEnabled=NO;
-    
-    //setup hosted expression (if there is one)
-    NSString *exprFile=[pdef objectForKey:EXPRESSION_FILE];
-    if(exprFile)
-    {
-        PpExpr=[BATio loadTreeFromMathMLFile:BUNDLE_FULL_PATH(exprFile)];
-    }
     
     //initialize tool scene
     currentTool=[NSClassFromString(toolKey) alloc];
@@ -471,29 +471,6 @@
     }
 }
 
--(void)loadTestPipeline
-{
-    //load problem pipeline path from app settings
-    AppDelegate *ad =(AppDelegate*)[[UIApplication sharedApplication] delegate];
-    NSString *ppath=[ad.LocalSettings objectForKey:@"PROBLEM_PIPELINE"];
-    
-    problemList=[[NSArray arrayWithContentsOfFile:BUNDLE_FULL_PATH(ppath)] retain];
-}
-
--(NSDictionary*)getNextProblem
-{
-    //TODO: effectively test specific, as it only loads data from problem file, no user context etc
-    NSString *pfilename=[problemList objectAtIndex:problemIndex];
-    NSString *broot=[[NSBundle mainBundle] bundlePath];
-    NSString *pfilepath=[broot stringByAppendingPathComponent:pfilename];
-    NSDictionary *pdef=[NSDictionary dictionaryWithContentsOfFile:pfilepath];
-
-    //TODO: this is test-specific, just loops the problem list
-    problemIndex++;
-    if(problemIndex>=[problemList count])problemIndex=0;
-    
-    return pdef;
-}
 -(void)checkMetaQuestionTouches:(CGPoint)location
 {
     if (CGRectContainsPoint(kRectButtonCommit, location) && mqEvalMode==kMetaQuestionEvalOnCommit)
@@ -704,8 +681,7 @@
 
 -(void) dealloc
 {
-    [problemList release];
-    
+    [contentService release];
     [pdef release];
     [metaQuestionAnswers release];
     [metaQuestionAnswerButtons release];

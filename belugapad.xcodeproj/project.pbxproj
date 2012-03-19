@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0C0AB7AD14F5116600437F07 /* Problems in Resources */ = {isa = PBXBuildFile; fileRef = 0C0AB7AC14F5116600437F07 /* Problems */; };
 		0C427C3714F529CC0033AFE2 /* sfx in Resources */ = {isa = PBXBuildFile; fileRef = 0C427C3614F529CC0033AFE2 /* sfx */; };
+		0C92B2541515702700342094 /* ContentService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C92B2531515702700342094 /* ContentService.m */; };
 		0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */ = {isa = PBXBuildFile; fileRef = 0C9FEFF514F572FB00E64138 /* pipeline-testing */; };
 		0CF9187C14F54C1D00FAC58D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF9187B14F54C1D00FAC58D /* images */; };
 		5536B29014E4173E00D30BC0 /* BPlaceValueContainerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */; };
@@ -26,8 +27,6 @@
 		5571BAEF14E4108F0053A62B /* BPlaceValuePickupTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE814E4108F0053A62B /* BPlaceValuePickupTarget.m */; };
 		5571BAF014E4108F0053A62B /* BPlaceValueMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAEA14E4108F0053A62B /* BPlaceValueMount.m */; };
 		5571BAF114E4108F0053A62B /* BPlaceValueMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAEC14E4108F0053A62B /* BPlaceValueMountable.m */; };
-		55BB4E3C1517521E00A1D639 /* ColumnAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BB4E3B1517521D00A1D639 /* ColumnAddition.m */; };
-		55BB4E401517594700A1D639 /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BB4E3F1517594700A1D639 /* ColumnAdditionConsts.m */; };
 		7F268ADE14F28DE500F1F65F /* ToolHost.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F268ADD14F28DE500F1F65F /* ToolHost.m */; };
 		7F268AE514F2A2A300F1F65F /* ToolScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F268AE414F2A2A200F1F65F /* ToolScene.m */; };
 		7F40D88E14FF631C006A3A55 /* local-settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F40D88D14FF631C006A3A55 /* local-settings.plist */; };
@@ -273,6 +272,8 @@
 /* Begin PBXFileReference section */
 		0C0AB7AC14F5116600437F07 /* Problems */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Problems; sourceTree = SOURCE_ROOT; };
 		0C427C3614F529CC0033AFE2 /* sfx */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sfx; sourceTree = SOURCE_ROOT; };
+		0C92B2521515702700342094 /* ContentService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentService.h; sourceTree = "<group>"; };
+		0C92B2531515702700342094 /* ContentService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentService.m; sourceTree = "<group>"; };
 		0C9FEFF514F572FB00E64138 /* pipeline-testing */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pipeline-testing"; sourceTree = SOURCE_ROOT; };
 		0CF9187B14F54C1D00FAC58D /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = SOURCE_ROOT; };
 		5536B28E14E4173D00D30BC0 /* BPlaceValueContainerRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueContainerRender.h; sourceTree = "<group>"; };
@@ -305,10 +306,6 @@
 		5571BAEA14E4108F0053A62B /* BPlaceValueMount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueMount.m; sourceTree = "<group>"; };
 		5571BAEB14E4108F0053A62B /* BPlaceValueMountable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueMountable.h; sourceTree = "<group>"; };
 		5571BAEC14E4108F0053A62B /* BPlaceValueMountable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueMountable.m; sourceTree = "<group>"; };
-		55BB4E3A1517521D00A1D639 /* ColumnAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAddition.h; sourceTree = "<group>"; };
-		55BB4E3B1517521D00A1D639 /* ColumnAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAddition.m; sourceTree = "<group>"; };
-		55BB4E3E1517594700A1D639 /* ColumnAdditionConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAdditionConsts.h; sourceTree = "<group>"; };
-		55BB4E3F1517594700A1D639 /* ColumnAdditionConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAdditionConsts.m; sourceTree = "<group>"; };
 		7F268ADC14F28DE500F1F65F /* ToolHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolHost.h; sourceTree = "<group>"; };
 		7F268ADD14F28DE500F1F65F /* ToolHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolHost.m; sourceTree = "<group>"; };
 		7F268AE314F2A2A200F1F65F /* ToolScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolScene.h; sourceTree = "<group>"; };
@@ -767,6 +764,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C92B2501515700100342094 /* Content */ = {
+			isa = PBXGroup;
+			children = (
+				0C92B2521515702700342094 /* ContentService.h */,
+				0C92B2531515702700342094 /* ContentService.m */,
+			);
+			name = Content;
+			sourceTree = "<group>";
+		};
 		5571BAE214E40FE90053A62B /* PlaceValue */ = {
 			isa = PBXGroup;
 			children = (
@@ -1306,6 +1312,7 @@
 		7F51159714A9EF21001AF372 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				0C92B2501515700100342094 /* Content */,
 				7FB9828E15116612006D31AE /* BAExpression */,
 				7F71B3FD150FBC8B0097A956 /* BATools */,
 				7F719C0014D7397000F30E89 /* Daemon */,
@@ -1359,8 +1366,6 @@
 				7F268AE414F2A2A200F1F65F /* ToolScene.m */,
 				7FC27F70150FAB4300E16A44 /* NLine.h */,
 				7FC27F71150FAB4300E16A44 /* NLine.m */,
-				55BB4E3A1517521D00A1D639 /* ColumnAddition.h */,
-				55BB4E3B1517521D00A1D639 /* ColumnAddition.m */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -1381,8 +1386,6 @@
 				553E80C0150FD3FD00263473 /* NLineConsts.m */,
 				7FCBC3E615100F3D00066426 /* MathMLConsts.h */,
 				7FCBC3E715100F3D00066426 /* MathMLConsts.m */,
-				55BB4E3E1517594700A1D639 /* ColumnAdditionConsts.h */,
-				55BB4E3F1517594700A1D639 /* ColumnAdditionConsts.m */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -1922,8 +1925,7 @@
 				7FB982C315116633006D31AE /* BAPowerOperator.m in Sources */,
 				7FB982C515116633006D31AE /* BAVariable.m in Sources */,
 				7FB982C715116633006D31AE /* NSArray_BAAdditions.m in Sources */,
-				55BB4E3C1517521E00A1D639 /* ColumnAddition.m in Sources */,
-				55BB4E401517594700A1D639 /* ColumnAdditionConsts.m in Sources */,
+				0C92B2541515702700342094 /* ContentService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

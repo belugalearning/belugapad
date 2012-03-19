@@ -8,14 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@class RootViewController;
+@class RootViewController, ContentService;
 
-@interface AppDelegate : NSObject <UIApplicationDelegate> {
+@interface AppDelegate : NSObject <UIApplicationDelegate>
+{
 	UIWindow			*window;
 	RootViewController	*viewController;
 }
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) NSDictionary *LocalSettings;
+@property (nonatomic, readonly) ContentService *contentService;
 
 @end

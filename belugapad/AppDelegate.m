@@ -13,6 +13,7 @@
 #import "RootViewController.h"
 #import "ZubiIntro.h"
 #import "global.h"
+#import "ContentService.h"
 
 #import "MenuScene.h"
 
@@ -20,6 +21,7 @@
 
 @synthesize window;
 @synthesize LocalSettings;
+@synthesize contentService;
 
 - (void) removeStartupFlicker
 {
@@ -117,6 +119,7 @@
 	
     //load local settings
     self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
+    contentService = [[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
     
 	// Run the intro Scene
     [[CCDirector sharedDirector] runWithScene:[ZubiIntro scene]];
@@ -161,6 +164,7 @@
 
 - (void)dealloc {
 	[[CCDirector sharedDirector] end];
+    [contentService release];
 	[window release];
 	[super dealloc];
 }

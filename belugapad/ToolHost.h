@@ -25,9 +25,6 @@ typedef enum {
 {
     float cx, cy, lx, ly;
     
-    NSArray *problemList;
-    int problemIndex;
-    
     CCLayer *perstLayer;
     CCLayer *backgroundLayer;
     CCLayer *metaQuestionLayer;
@@ -73,8 +70,6 @@ typedef enum {
 
 +(CCScene *) scene;
 
--(NSDictionary*)getNextProblem;
--(void)loadTestPipeline;
 -(void) loadTool;
 -(void) addToolForeLayer:(CCLayer *) foreLayer;
 -(void) addToolBackLayer:(CCLayer *) backLayer;

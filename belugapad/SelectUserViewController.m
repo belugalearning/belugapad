@@ -289,6 +289,7 @@
     UIImage *image = [UIImage imageWithContentsOfFile:screenshotPath];
     
     User *newUser = [[usersService createUserWithNickName:newUserNameTF.text
+                                              andPassword:newUserPasswordTF.text    
                                             andZubiColor:colorWheel.lastColorRGBAData
                                        andZubiScreenshot:image] autorelease];
     usersService.currentUser = newUser;

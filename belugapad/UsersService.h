@@ -19,6 +19,7 @@
 -(BOOL) nickNameIsAvailable:(NSString*)nickName;
 
 -(User*) createUserWithNickName:(NSString*)nickName
+                    andPassword:(NSString*)password
                     andZubiColor:(NSData*)color // rgba
                andZubiScreenshot:(UIImage*)image;
 

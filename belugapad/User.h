@@ -12,6 +12,7 @@
 
 @property (retain) NSString *type;
 @property (retain) NSString *nickName;
+@property (retain) NSString *password;
 @property (retain) NSDate *creationDateTime;
 @property (retain) NSData *zubiColor; //(r,g,b,a) in const CGFLoat *
 @property (retain) UIImage *zubiScreenshot;

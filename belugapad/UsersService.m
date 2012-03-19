@@ -163,11 +163,13 @@ NSString * const kUsersByNickNamePassword = @"users-by-nick-name-password";
 }
 
 -(User*) createUserWithNickName:(NSString*)nickName
+                    andPassword:(NSString*)password
                     andZubiColor:(NSData*)color // rgba
                andZubiScreenshot:(UIImage*)image
 {
     User *u = [[[User alloc] initWithNewDocumentInDatabase:database] autorelease];
     u.nickName = nickName;
+    u.password = password;
     u.zubiColor = color;
     u.zubiScreenshot = image;
     u.autosaves = YES;

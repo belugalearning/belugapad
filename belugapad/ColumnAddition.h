@@ -16,9 +16,18 @@
 @class Daemon;
 @class ToolHost;
 
+typedef enum
+{
+    kNoState=0,
+    kNumberASelected=1,
+    kNumberBSelected=2,
+    kNumberRemainder=3
+} currentToolState;
+
 @interface ColumnAddition : ToolScene
 
 {
+    currentToolState toolState;
     ToolHost *toolHost;
     NSDictionary *problemDef;
     
@@ -38,16 +47,29 @@
     
     float colSpacing;
     
-    int aCols[4];
-    int bCols[4];
-    int sCols[4];
+    int aCols[5];
+    int bCols[5];
+    int sCols[5];
     
-    CCLabelTTF *aColLabels[4];
-    CCLabelTTF *bColLabels[4];
-    CCLabelTTF *sColLabels[4];
-    CCLabelTTF *remLabels[4];
+    CCLabelTTF *aColLabels[5];
+    CCLabelTTF *bColLabels[5];
+    CCLabelTTF *sColLabels[5];
+    CCLabelTTF *remLabels[5];
+    CCLabelTTF *lblOperator;
+    
+    BOOL aColLabelSelected[5];
+    BOOL bColLabelSelected[5];
+    BOOL sColLabelSelected[5];
+    BOOL lblOperatorSelected;
     
 }
 -(void)populateGW;
 -(void)readPlist:(NSDictionary*)pdef;
+-(void)updateLabels;
+-(void)deselectNumberAExcept:(int)thisNumber;
+-(void)deselectNumberBExcept:(int)thisNumber;
+-(void)switchOperator;
+-(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
+-(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
+-(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
 @end

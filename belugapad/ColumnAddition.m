@@ -73,6 +73,7 @@
 -(void)doUpdateOnTick:(ccTime)delta
 {
 	[gw doUpdate:delta];
+    [self updateLabels];
     
 }
 
@@ -85,28 +86,26 @@
     NSString *bColNos = [NSString stringWithFormat:@"%d", sourceB];
     int backwardArrayPos = 4;
     
+    lblOperator = [CCLabelTTF labelWithString:@"+" fontName:PROBLEM_DESC_FONT fontSize:100.0f];
+    [lblOperator setPosition:ccp(colSpacing*0.3, 350)];
+    [sumBoxLayer addChild:lblOperator];
+    
     
     for(int i=0; i<[aColNos length]; i++)
     {
-        NSLog(@"(start-FOR) bCols[0] = %d", bCols[0]);
         NSString *thisChar=[aColNos substringWithRange:NSMakeRange([aColNos length]-i-1, 1)];
-        NSLog(@"(mid-FOR) bCols[0] = %d", bCols[0]);
         aCols[backwardArrayPos] = [thisChar intValue];
         backwardArrayPos--;
-        NSLog(@"aCols[%d] = %d", i, aCols[i]);
-        NSLog(@"(end-FOR) bCols[%d] = %d", i, bCols[i]);
     }
     
     backwardArrayPos = 4;
     
     for(int i=0; i<[bColNos length]; i++)
     {
-        NSLog(@"fill var bCols[%d], i %d", backwardArrayPos, i);
         
-        NSString *thisCharB=[bColNos substringWithRange:NSMakeRange([bColNos length]-i-1, 1)];
-        bCols[backwardArrayPos] = [thisCharB intValue];
+        NSString *thisChar=[bColNos substringWithRange:NSMakeRange([bColNos length]-i-1, 1)];
+        bCols[backwardArrayPos] = [thisChar intValue];
         backwardArrayPos--;
-        NSLog(@"i %d, char %@", i, thisCharB);
     }
     
     for(int i=0; i<5; i++)
@@ -116,11 +115,11 @@
         
         NSString *bColCurrentLabel = [NSString stringWithFormat:@"%d", bCols[i]];
         
-        aColLabels[i] = [CCLabelTTF labelWithString:aColCurrentLabel fontName:PROBLEM_DESC_FONT fontSize:72.0f];
+        aColLabels[i] = [CCLabelTTF labelWithString:aColCurrentLabel fontName:PROBLEM_DESC_FONT fontSize:kFontLabelSize];
         
-        bColLabels[i] = [CCLabelTTF labelWithString:bColCurrentLabel fontName:PROBLEM_DESC_FONT fontSize:72.0f];
+        bColLabels[i] = [CCLabelTTF labelWithString:bColCurrentLabel fontName:PROBLEM_DESC_FONT fontSize:kFontLabelSize];
         
-        sColLabels[i] = [CCLabelTTF labelWithString:@"#" fontName:PROBLEM_DESC_FONT fontSize:72.0f];
+        sColLabels[i] = [CCLabelTTF labelWithString:@"#" fontName:PROBLEM_DESC_FONT fontSize:kFontLabelSize];
         
 
         [aColLabels[i] setPosition:ccp(lblXPos, 500)];
@@ -138,6 +137,68 @@
     
 }
 
+-(void)updateLabels
+{
+    for(int i=0; i<5; i++)
+    {
+        if(aColLabelSelected[i] && bColLabelSelected[i] && lblOperatorSelected)
+        {
+            NSString *addString = [NSString stringWithFormat:@"%d", aCols[i]+bCols[i]];
+            [sColLabels[i] setString:addString];
+        }
+    }
+}
+
+-(void)deselectNumberAExcept:(int)thisNumber
+{
+    for(int i=0; i<5; i++)
+    {
+        // this is the number we want selected
+        if(thisNumber == i)
+        {
+            aColLabelSelected[i]=YES;
+            [aColLabels[i] setColor:ccc3(0,255,0)];
+        }
+        else 
+        {
+            aColLabelSelected[i]=NO;
+            [aColLabels[i] setColor:ccc3(255,255,255)];
+        }
+    }
+}
+
+-(void)deselectNumberBExcept:(int)thisNumber
+{
+    for(int i=0; i<5; i++)
+    {
+        // this is the number we want selected
+        if(thisNumber == i)
+        {
+            bColLabelSelected[i]=YES;
+            [bColLabels[i] setColor:ccc3(0,255,0)];
+        }
+        else 
+        {
+            bColLabelSelected[i]=NO;
+            [bColLabels[i] setColor:ccc3(255,255,255)];
+        }
+    }
+}
+
+-(void)switchOperator
+{
+    if(!lblOperatorSelected)
+    {
+        [lblOperator setColor:ccc3(0,255,0)];
+        lblOperatorSelected=YES;
+    }
+    else 
+    {
+        [lblOperator setColor:ccc3(255,255,255)];
+        lblOperatorSelected=NO;
+    }
+}
+
 -(void)readPlist:(NSDictionary*)pdef
 {
     sourceA = [[pdef objectForKey:NUMBER_A] intValue];
@@ -146,13 +207,68 @@
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    UITouch *touch=[touches anyObject];
+    CGPoint location=[touch locationInView: [touch view]];
+    location=[[CCDirector sharedDirector] convertToGL:location];
     
+    touching=YES;
+
+    
+    // loop over the number A, check for touches
+    for(int i=0; i<5; i++)
+    {
+        CGRect curHit = CGRectMake(aColLabels[i].position.x+(kFontLabelSize/2), aColLabels[i].position.y+(kFontLabelSize/2), kFontLabelSize, kFontLabelSize);
+        if(CGRectContainsPoint(curHit, location))
+           {
+               [self deselectNumberAExcept:i];
+               //[aColLabels[i] setColor:ccc3(0, 255, 0)];
+               return;
+           }
+//        else {
+//            [self deselectNumberAExcept:-1];
+//        }
+    }
+    
+    // loop over the number B, check for touches
+    for(int i=0; i<5; i++)
+    {
+        CGRect curHit = CGRectMake(bColLabels[i].position.x+(kFontLabelSize/2), bColLabels[i].position.y+(kFontLabelSize/2), kFontLabelSize, kFontLabelSize);
+        if(CGRectContainsPoint(curHit, location))
+        {
+            [self deselectNumberBExcept:i];
+            return;
+        }
+//        else {
+//            [self deselectNumberBExcept:-1];
+//        }
+    }
+    
+    
+    // check operator touhes
+    CGRect curHit = CGRectMake(lblOperator.position.x+(kOperatorLabelSize/2), lblOperator.position.y+(kOperatorLabelSize/2), kOperatorLabelSize, kOperatorLabelSize);
+    if(CGRectContainsPoint(curHit, location))
+    {
+        [self switchOperator];
+        return;
+    }
+
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    
+    UITouch *touch=[touches anyObject];
+    CGPoint location=[touch locationInView: [touch view]];
+    location=[[CCDirector sharedDirector] convertToGL:location];
+
 }
 
+-(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch=[touches anyObject];
+    CGPoint location=[touch locationInView: [touch view]];
+    location=[[CCDirector sharedDirector] convertToGL:location];
+    
+    touching=NO;
+}
 
 @end

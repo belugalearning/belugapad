@@ -123,5 +123,7 @@
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>
+	<key>PLAY_SOUND</key>
+	<string>05pv/what number is this.wav</string>
 </dict>
 </plist>

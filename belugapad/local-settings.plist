@@ -3,6 +3,6 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_PIPELINE</key>
-	<string>/pipeline-testing/04sub-pipeline.plist</string>
+	<string>/pipeline-testing/05pv-pipeline.plist</string>
 </dict>
 </plist>

@@ -12,6 +12,8 @@
 	<string>1</string>
 	<key>OPERATOR_MODE</key>
 	<string>ALL</string>
+	<key>UNDERLAY_FILENAME</key>
+	<string>/images/menu/mockelegeo.png</string>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>

@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch1.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch2.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch3.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch4.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch5.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch6.plist</string>
 	<string>/Problems/tools-dev/nline-dev/nline-deve5.plist</string>
 	<string>/Problems/tools-dev/nline-dev/nline-dev2.plist</string>
 	<string>/Problems/tools-dev/nline-dev/nline-dev3.plist</string>

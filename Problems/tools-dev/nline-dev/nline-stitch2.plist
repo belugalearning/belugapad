@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>select 7</string>
+	<string>stitch, auto 3</string>
 	<key>EXPRESSION_FILE</key>
 	<string>/Problems/tools-dev/nline-dev/a-eq-7.mathml</string>
 	<key>TOOL_KEY</key>
@@ -15,11 +15,11 @@
 	<key>RENDER_STITCHES</key>
 	<true/>
 	<key>AUTO_STITCH_INCREMENT</key>
-	<integer>2</integer>
+	<integer>3</integer>
 	<key>MIN_VALUE</key>
-	<string>0</string>
+	<string>-9</string>
 	<key>MAX_VALUE</key>
-	<string>7</string>
+	<string>9</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
 	<key>REJECT_MODE</key>

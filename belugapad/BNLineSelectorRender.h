@@ -13,6 +13,7 @@
 {
     DWSelectorGameObject *selector;
     CCSprite *mySprite;
+    CCSprite *connectorSprite;
     CCSprite *selectionLabel;
 }
 

@@ -160,13 +160,29 @@
         
         if(aColLabelSelected[i] && bColLabelSelected[i] && lblOperatorSelected)
         {
-            NSString *addString = [NSString stringWithFormat:@"%d", aCols[i]+bCols[i]];
+            sCols[i]= sCols[i] + aCols[i] + bCols[i];
+            
+            if(sCols[i]>9)
+            {
+                toolState=kNumberRemainder;
+                
+                //do carry over
+                
+                
+                
+                //set sCols to remainder
+                sCols[i]=sCols[i]-10;
+            }
+            else {
+                toolState=kNoState;
+            }
+            
+            NSString *addString = [NSString stringWithFormat:@"%d", sCols[i]];
             [sColLabels[i] setString:addString];
             [self switchOperator];
             [self deselectNumberAExcept:-1];
             [self deselectNumberBExcept:-1];
             [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
-            toolState=kNoState;
             DLog(@"Switched tool state: %d", toolState);
             return;
         }

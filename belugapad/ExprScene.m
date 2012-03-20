@@ -12,6 +12,7 @@
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
 #import "BATTreeViz.h"
+#import "global.h"
 
 @implementation ExprScene
 

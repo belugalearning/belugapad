@@ -11,6 +11,16 @@
 #import "AppDelegate.h"
 #import "BAExpressionHeaders.h"
 #import "BATio.h"
+#import "Problem.h"
+#import "Element.h"
+#import "Module.h"
+#import "Topic.h"
+#import "Syllabus.h"
+#import "ProblemAttempt.h"
+#import <CouchCocoa/CouchCocoa.h>
+#import <CouchCocoa/CouchDesignDocument_Embedded.h>
+#import <CouchCocoa/CouchModelFactory.h>
+#import <CouchCocoa/CouchTouchDBServer.h>
 
 @interface ContentService()
 {
@@ -35,6 +45,13 @@
     self = [super init];
     if (self)
     {
+        [[CouchModelFactory sharedInstance] registerClass:[Problem class] forDocumentType:@"problem"];
+        [[CouchModelFactory sharedInstance] registerClass:[Element class] forDocumentType:@"element"];
+        [[CouchModelFactory sharedInstance] registerClass:[Module class] forDocumentType:@"module"];
+        [[CouchModelFactory sharedInstance] registerClass:[Topic class] forDocumentType:@"topic"];
+        [[CouchModelFactory sharedInstance] registerClass:[Syllabus class] forDocumentType:@"syllabus"];
+        [[CouchModelFactory sharedInstance] registerClass:[ProblemAttempt class] forDocumentType:@"problem attempt"];
+        
         useTestPipeline = ![@"DATABASE" isEqualToString:source];
         
         if (useTestPipeline)

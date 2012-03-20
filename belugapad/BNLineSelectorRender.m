@@ -41,7 +41,7 @@
         [[gameWorld GameScene].ForeLayer removeChild:selectionLabel cleanup:YES];
     }
     
-    selectionLabel=[CCLabelTTF labelWithString:labelText fontName:@"Helvetica" fontSize:40];
+    selectionLabel=[CCLabelTTF labelWithString:labelText fontName:GENERIC_FONT fontSize:40];
     [selectionLabel setPosition:CGPointMake(selector.pos.x, selector.pos.y+10)];
     [[gameWorld GameScene].ForeLayer addChild:selectionLabel];
 }

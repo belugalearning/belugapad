@@ -13,7 +13,7 @@
 
 static float kNodeXSpace=100.0f;          //node space at lowest level
 static float kNodeYSpace=100.0f;          //space between depths
-static NSString *kNodeFont=@"Helvetica";
+static NSString *kNodeFont=GENERIC_FONT;
 static float kNodeFontSize=24.0f;
 
 @implementation BATTreeViz

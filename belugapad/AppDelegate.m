@@ -47,7 +47,8 @@
 	
     //load local settings
     self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
-    
+    contentService = [[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
+        
     //[self proceedFromLoginViaIntro:YES];
     selectUserViewController = [[SelectUserViewController alloc] init];
     [self.window addSubview:selectUserViewController.view];
@@ -116,10 +117,6 @@
 	// You can change anytime.
 	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
 	
-    //load local settings
-    self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
-    contentService = [[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
-    
     [[CCDirector sharedDirector] runWithScene:(viaIntro ? [ZubiIntro scene] : [ToolHost scene])];
 }
 

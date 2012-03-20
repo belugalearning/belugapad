@@ -1306,7 +1306,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         }
 
         
-        if([gw Blackboard].PickupObject!=nil)
+        if([gw Blackboard].PickupObject!=nil && ([BLMath DistanceBetween:touchStartPos and:touchEndPos] > fabs(kTapSlipThreshold)))
         {
             [gw Blackboard].DropObject=nil;
                             
@@ -1357,20 +1357,30 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             }
             else
             {
-                if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
-                {
-                    for(int goC=0; goC<gw.Blackboard.SelectedObjects.count; goC++)
-                    {
-                        DWGameObject *go = [gw.Blackboard.SelectedObjects objectAtIndex:goC];
-                        [go handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];
-                    }
-                }
-                [[gw Blackboard].PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];
+                [self resetPickupObjectPos];
             }
             [gw Blackboard].PickupObject = nil;
         }
+        
+        else {
+            [self resetPickupObjectPos];
+        }
+        
     }
     potentialTap=NO;
+}
+
+-(void)resetPickupObjectPos
+{
+    if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
+    {
+        for(int goC=0; goC<gw.Blackboard.SelectedObjects.count; goC++)
+        {
+            DWGameObject *go = [gw.Blackboard.SelectedObjects objectAtIndex:goC];
+            [go handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];
+        }
+    }
+    [[gw Blackboard].PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];    
 }
 
 -(float)metaQuestionTitleYLocation

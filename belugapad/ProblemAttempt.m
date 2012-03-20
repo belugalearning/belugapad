@@ -10,4 +10,6 @@
 
 @implementation ProblemAttempt
 
+@dynamic user, problemId, problemRevisionId, dateTimeStart, dateTimeEnd, success, interactionEvents;
+
 @end

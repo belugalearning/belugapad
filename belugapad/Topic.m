@@ -10,4 +10,6 @@
 
 @implementation Topic
 
+@dynamic name, modules, syllabusId;
+
 @end

@@ -7,7 +7,16 @@
 //
 
 #import <CouchCocoa/CouchCocoa.h>
+@class User, Problem;
 
 @interface ProblemAttempt : CouchModel
+
+@property (retain) User *user;
+@property (retain) NSString *problemId;
+@property (retain) NSString *problemRevisionId;
+@property (retain) NSDate *dateTimeStart;
+@property (retain) NSDate *dateTimeEnd;
+@property bool success;
+@property (retain) NSArray *interactionEvents;
 
 @end

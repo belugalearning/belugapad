@@ -10,4 +10,6 @@
 
 @implementation Element
 
+@dynamic name, syllabusId, topicId, moduleId, includedProblems, assessmentCriteria;
+
 @end

@@ -10,4 +10,9 @@
 
 @interface Module : CouchModel
 
+@property (readonly, retain) NSString *name;
+@property (readonly, retain) NSString *syllabusId;
+@property (readonly, retain) NSString *topicId;
+@property (readonly, retain) NSArray *elements;
+
 @end

@@ -10,4 +10,6 @@
 
 @implementation Module
 
+@dynamic name, syllabusId, topicId, elements;
+
 @end

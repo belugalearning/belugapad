@@ -10,4 +10,6 @@
 
 @implementation Syllabus
 
+@dynamic name, topics;
+
 @end

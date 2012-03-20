@@ -9,6 +9,7 @@
 #import "UsersService.h"
 #import "Device.h"
 #import "User.h"
+#import "ProblemAttempt.h"
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
 #import <CouchCocoa/CouchModelFactory.h>
@@ -31,6 +32,8 @@ NSString * const kUsersByNickNamePassword = @"users-by-nick-name-password";
     CouchDatabase *database;
     CouchReplication *pushReplication;
     CouchReplication *pullReplication;
+    
+    ProblemAttempt *currentProblemAttempt;
 }
 -(void)createViews;
 -(void)startLiveQueries;
@@ -47,7 +50,8 @@ NSString * const kUsersByNickNamePassword = @"users-by-nick-name-password";
     if (self)
     {
         [[CouchModelFactory sharedInstance] registerClass:[Device class] forDocumentType:@"device"];
-        [[CouchModelFactory sharedInstance] registerClass:[User class] forDocumentType:@"user"];
+        [[CouchModelFactory sharedInstance] registerClass:[User class] forDocumentType:@"user"];        
+        [[CouchModelFactory sharedInstance] registerClass:[ProblemAttempt class] forDocumentType:@"problem attempt"];
         
         CouchTouchDBServer *server = [CouchTouchDBServer sharedInstance];
         

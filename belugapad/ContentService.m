@@ -16,11 +16,15 @@
 #import "Module.h"
 #import "Topic.h"
 #import "Syllabus.h"
-#import "ProblemAttempt.h"
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
 #import <CouchCocoa/CouchModelFactory.h>
 #import <CouchCocoa/CouchTouchDBServer.h>
+
+NSString * const kRemoteContentDatabaseURI = @"http://www.soFarAslant.com:5984/temp-blm-content";
+NSString * const kLocalContentDatabaseName = @"content";
+NSString * const kDefaultDesignDocName = @"default";
+NSString * const kDefaultSyllabusViewName = @"default-syllabus";
 
 @interface ContentService()
 {
@@ -29,9 +33,15 @@
     
     NSArray *testProblemList;
     NSUInteger currentPIndex;
+    
+    CouchDatabase *database;
+    Problem *currentProblem;
 }
+
 @property (nonatomic, readwrite, retain) NSDictionary *currentPDef;
 @property (nonatomic, readwrite, retain) BAExpressionTree *currentPExpr;
+
+-(void)createViews;
 @end
 
 @implementation ContentService
@@ -45,19 +55,43 @@
     self = [super init];
     if (self)
     {
-        [[CouchModelFactory sharedInstance] registerClass:[Problem class] forDocumentType:@"problem"];
-        [[CouchModelFactory sharedInstance] registerClass:[Element class] forDocumentType:@"element"];
-        [[CouchModelFactory sharedInstance] registerClass:[Module class] forDocumentType:@"module"];
-        [[CouchModelFactory sharedInstance] registerClass:[Topic class] forDocumentType:@"topic"];
-        [[CouchModelFactory sharedInstance] registerClass:[Syllabus class] forDocumentType:@"syllabus"];
-        [[CouchModelFactory sharedInstance] registerClass:[ProblemAttempt class] forDocumentType:@"problem attempt"];
-        
         useTestPipeline = ![@"DATABASE" isEqualToString:source];
         
         if (useTestPipeline)
         {
             currentPIndex = NSUIntegerMax;
             testProblemList = [[NSArray arrayWithContentsOfFile:BUNDLE_FULL_PATH(source)] retain];
+        }
+        else
+        {
+            [[CouchModelFactory sharedInstance] registerClass:[Problem class] forDocumentType:@"problem"];
+            [[CouchModelFactory sharedInstance] registerClass:[Element class] forDocumentType:@"element"];
+            [[CouchModelFactory sharedInstance] registerClass:[Module class] forDocumentType:@"module"];
+            [[CouchModelFactory sharedInstance] registerClass:[Topic class] forDocumentType:@"topic"];
+            [[CouchModelFactory sharedInstance] registerClass:[Syllabus class] forDocumentType:@"syllabus"];
+            
+            CouchTouchDBServer *server = [CouchTouchDBServer sharedInstance];
+            database = [server databaseNamed:kLocalContentDatabaseName];
+            RESTOperation* op = [database create];
+            if (![op wait] && op.error.code != 412)
+            {
+                self = nil;
+                return self;
+            }
+            database.tracksChanges = YES;
+            
+            CouchReplication *pull;
+            pull = [[database pullFromDatabaseAtURL:[NSURL URLWithString:kRemoteContentDatabaseURI]] retain];
+            [[pull start] wait];
+            [pull release];
+            
+            [self createViews];
+            
+            CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kDefaultSyllabusViewName];
+            [[q start] wait];            
+            return [[CouchModelFactory sharedInstance] modelForDocument:((CouchQueryRow*)[q.rows.allObjects objectAtIndex:0]).document];
+            
+            
         }
     }
     return self;
@@ -85,6 +119,29 @@
         }
         
     }
+    else
+    {
+        if (currentProblem) [currentProblem release];
+    }
+}
+
+-(void)createViews
+{
+    CouchDesignDocument* design = [database designDocumentWithName:kDefaultDesignDocName];
+    
+    [design defineViewNamed:kDefaultSyllabusViewName
+                   mapBlock:MAPBLOCK({
+        id type = [doc objectForKey:@"type"];
+        id name = [doc objectForKey:@"name"];
+        
+        if (type && name &&
+            [@"syllabus" isEqualToString:type] &&
+            [@"Default" isEqualToString:name])
+        {
+            emit([doc objectForKey:@"_id"], nil);
+        }
+    })
+                    version:@"v1.00"];
 }
 
 - (void)dealloc

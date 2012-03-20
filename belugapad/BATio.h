@@ -15,6 +15,7 @@
 @interface BATio : NSObject
 
 +(BAExpressionTree *)loadTreeFromMathMLFile:(NSString*)filePath;
++(BAExpressionTree *)loadTreeFromMathMLData:(NSString*)xmlData;
 +(BAExpression *)parseMathMLElement:(CXMLElement*)element withNSMap:(NSDictionary*)nsmap;
 
 @end

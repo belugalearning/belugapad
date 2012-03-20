@@ -103,7 +103,11 @@
 		<integer>6</integer>
 		<key>SOLUTION_DISPLAY_TEXT</key>
 		<string>that&apos;s 6!</string>
+		<key>PLAY_SOUND</key>
+		<string>complete.wav</string>
 	</dict>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
 	<key>PLAY_SOUND</key>
 	<string>05pv/take 8 from this number.m4a</string>
 </dict>

@@ -203,7 +203,7 @@
         }
         else {
             // tint for selection (+ number)
-            [mySprite setColor:ccc3(0, 255, 0)]; 
+            [mySprite setColor:ccc3(255, 128, 0)]; 
         }
     }
     else
@@ -249,8 +249,7 @@
             }
             else
             {
-                // selection colour for a positive number
-                [mySprite setColor:ccc3(0,255,0)];             
+                [mySprite setColor:ccc3(255,128,0)];             
             }
         }
         else

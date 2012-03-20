@@ -120,8 +120,11 @@
     NSString *spriteFileName=@"/images/placevalue/obj-placevalue-unit.png";
     //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
 
-    if([[gameObject store] objectForKey:SPRITE_FILENAME])
+    if(![[gameObject store] objectForKey:SPRITE_FILENAME])
     {
+        [[gameObject store] setObject:spriteFileName forKey:SPRITE_FILENAME];
+    }
+    else {
         spriteFileName=[[gameObject store] objectForKey:SPRITE_FILENAME];
     }
     

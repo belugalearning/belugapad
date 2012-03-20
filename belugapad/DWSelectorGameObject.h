@@ -14,6 +14,7 @@
 @interface DWSelectorGameObject : DWGameObject
 
 @property CGPoint pos;
+@property CGPoint BasePos;
 @property (retain) NSMutableArray *PopulateVariableNames;
 @property (retain) DWRamblerGameObject *WatchRambler;
 

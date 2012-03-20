@@ -44,6 +44,37 @@
                 valueOffset += ramblerGameObject.CurrentSegmentValue;
             }
         }
+        
+        int valueSign=1;
+        if(valueOffset<0)valueSign=-1;
+        
+        //do value stitching assessment without signing
+        valueOffset=abs(valueOffset);
+        
+        //adjust value offset to auto stitching
+        if(ramblerGameObject.AutoStitchIncrement>0)
+        {
+            if(valueOffset>ramblerGameObject.AutoStitchIncrement)
+            {
+                //snap back to value offset
+                valueOffset=ramblerGameObject.AutoStitchIncrement;
+            }
+            else {
+                float valueProp=fabsf(ramblerGameObject.TouchXOffset) / ((float)ramblerGameObject.AutoStitchIncrement * ramblerGameObject.DefaultSegmentSize);
+                if(valueProp>=0.5)
+                {
+                    //snap forward
+                    valueOffset=ramblerGameObject.AutoStitchIncrement;
+                }
+                else {
+                    //snap back to no offset
+                    valueOffset=0;
+                }
+            }
+        }
+        
+        //re-sign offset now stitching assessment is done
+        valueOffset=valueOffset*valueSign;
                 
         int newValue=ramblerGameObject.Value+valueOffset;
         

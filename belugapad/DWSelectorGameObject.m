@@ -11,6 +11,7 @@
 @implementation DWSelectorGameObject
 
 @synthesize pos;
+@synthesize BasePos;
 @synthesize PopulateVariableNames;
 @synthesize WatchRambler;
 

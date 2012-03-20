@@ -19,8 +19,8 @@
 typedef enum
 {
     kNoState=0,
-    kNumberASelected=1,
-    kNumberBSelected=2,
+    kNumberSelected=1,
+    kNumberOperatorSelected=2,
     kNumberRemainder=3
 } currentToolState;
 

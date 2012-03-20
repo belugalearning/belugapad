@@ -80,6 +80,8 @@
 	<dict>
 		<key>10</key>
 		<string>/images/placevalue/obj-placevalue-unit10.png</string>
+		<key>1</key>
+		<string>/images/placevalue/obj-placevalue-unit1.png</string>
 	</dict>
 	<key>COLUMN_CAGES</key>
 	<dict>
@@ -103,6 +105,6 @@
 		<string>that&apos;s 6!</string>
 	</dict>
 	<key>PLAY_SOUND</key>
-	<string>05pv/take 8 from this number.wav</string>
+	<string>05pv/take 8 from this number.m4a</string>
 </dict>
 </plist>

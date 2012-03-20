@@ -82,6 +82,8 @@
 	<dict>
 		<key>10</key>
 		<string>/images/placevalue/obj-placevalue-unit10.png</string>
+		<key>1</key>
+		<string>/images/placevalue/obj-placevalue-unit1.png</string>
 	</dict>
 	<key>COLUMN_CAGES</key>
 	<dict>
@@ -100,6 +102,6 @@
 		<string>that&apos;s 22!</string>
 	</dict>
 	<key>PLAY_SOUND</key>
-	<string>05pv/add 8 to this number.wav</string>
+	<string>05pv/add 8 to this number.m4a</string>
 </dict>
 </plist>

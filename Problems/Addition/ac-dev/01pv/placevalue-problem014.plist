@@ -75,6 +75,8 @@
 	<dict>
 		<key>10</key>
 		<string>/images/placevalue/obj-placevalue-unit10.png</string>
+		<key>1</key>
+		<string>/images/placevalue/obj-placevalue-unit1.png</string>
 	</dict>
 	<key>COLUMN_CAGES</key>
 	<dict>

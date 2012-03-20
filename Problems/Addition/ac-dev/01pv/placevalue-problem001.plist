@@ -82,7 +82,7 @@
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
 		<integer>5</integer>
-		<key>SOLUTION_DISPLAY_TEXT2</key>
+		<key>SOLUTION_DISPLAY_TEXT</key>
 		<string>success!</string>
 	</dict>
 	<key>REJECT_MODE</key>

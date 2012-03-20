@@ -10,6 +10,7 @@
 #import "BATQuery.h"
 #import "BAExpressionHeaders.h"
 #import "cocos2d.h"
+#import "global.h"
 
 static float kNodeXSpace=100.0f;          //node space at lowest level
 static float kNodeYSpace=100.0f;          //space between depths

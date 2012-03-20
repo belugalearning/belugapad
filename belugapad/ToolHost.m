@@ -230,6 +230,10 @@
         [self addChild:hostBackground];
     }
     
+    //playback sound assocaited with problem
+    NSString *playsound=[pdef objectForKey:PLAY_SOUND];
+    if(playsound) [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/sfx/%@", playsound]))];
+    
     //setup meta question (if there is one)
     NSDictionary *mq=[pdef objectForKey:META_QUESTION];
     if (mq)

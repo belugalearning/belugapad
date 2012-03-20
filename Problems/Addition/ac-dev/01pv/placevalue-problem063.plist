@@ -107,6 +107,8 @@
 		<string>MATRIX_MATCH</string>
 		<key>SOLUTION_DISPLAY_TEXT</key>
 		<string>that&apos;s 10!</string>
+		<key>PLAY_SOUND</key>
+		<string>complete.wav</string>
 	</dict>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>

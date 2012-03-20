@@ -19,11 +19,11 @@
 	<key>ROWS_PER_COL</key>
 	<integer>2</integer>
 	<key>ALLOW_CONDENSING</key>
-	<false/>
-	<key>ALLOW_MULCHING</key>
-	<false/>
-	<key>SHOW_CAGE</key>
 	<true/>
+	<key>ALLOW_MULCHING</key>
+	<true/>
+	<key>SHOW_CAGE</key>
+	<false/>
 	<key>SHOW_NEG_CAGE</key>
 	<false/>
 	<key>SHOW_COUNT</key>
@@ -57,6 +57,17 @@
 		<key>10</key>
 		<integer>1</integer>
 	</dict>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>PUT_IN_COL</key>
+			<integer>0</integer>
+			<key>PUT_IN_ROW</key>
+			<integer>0</integer>
+			<key>NUMBER</key>
+			<integer>1</integer>
+		</dict>
+	</array>
 	<key>COLUMN_SPRITES</key>
 	<dict>
 		<key>10</key>
@@ -69,7 +80,7 @@
 		<key>10</key>
 		<false/>
 		<key>1</key>
-		<true/>
+		<false/>
 	</dict>
 	<key>SOLUTION</key>
 	<dict>

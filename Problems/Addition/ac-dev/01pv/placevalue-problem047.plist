@@ -100,7 +100,11 @@
 		<integer>22</integer>
 		<key>SOLUTION_DISPLAY_TEXT</key>
 		<string>that&apos;s 22!</string>
+		<key>PLAY_SOUND</key>
+		<string>complete.wav</string>
 	</dict>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
 	<key>PLAY_SOUND</key>
 	<string>05pv/add 8 to this number.m4a</string>
 </dict>

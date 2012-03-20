@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>make 1 ten</string>
+	<string>make 10 ones</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -61,19 +61,11 @@
 	<array>
 		<dict>
 			<key>PUT_IN_COL</key>
-			<integer>1</integer>
+			<integer>0</integer>
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>5</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
 			<integer>1</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>1</integer>
-			<key>NUMBER</key>
-			<integer>5</integer>
 		</dict>
 	</array>
 	<key>COLUMN_SPRITES</key>
@@ -96,11 +88,19 @@
 		<array>
 			<dict>
 				<key>PUT_IN_COL</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>PUT_IN_ROW</key>
 				<integer>0</integer>
 				<key>NUMBER</key>
+				<integer>5</integer>
+			</dict>
+			<dict>
+				<key>PUT_IN_COL</key>
 				<integer>1</integer>
+				<key>PUT_IN_ROW</key>
+				<integer>1</integer>
+				<key>NUMBER</key>
+				<integer>5</integer>
 			</dict>
 		</array>
 		<key>SOLUTION_TYPE</key>
@@ -113,6 +113,6 @@
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>PLAY_SOUND</key>
-	<string>05pv/make 1 ten.m4a</string>
+	<string>05pv/make 10 ones.m4a</string>
 </dict>
 </plist>

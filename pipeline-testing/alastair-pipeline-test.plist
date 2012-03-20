@@ -2,6 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>/Problems/Addition/ac-dev/02count/count-fb-hard-3.plist</string>
 	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem021.plist</string>
 	<string>/Problems/Addition/ac-dev/01pv/floatingblock-001.plist</string>
 	<string>/Problems/Addition/ac-dev/01pv/anline_addition_10_2_12.plist</string>

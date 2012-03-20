@@ -10,3 +10,5 @@
 
 const float kSumBoxWidth=900.0f;
 const CGPoint kSumBoxLayerPos={62,100};
+const float kFontLabelSize=72.0f;
+const float kOperatorLabelSize=100.0f;

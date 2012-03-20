@@ -8,3 +8,5 @@
 
 extern const float kSumBoxWidth;
 extern const CGPoint kSumBoxLayerPos;
+extern const float kFontLabelSize;
+extern const float kOperatorLabelSize;

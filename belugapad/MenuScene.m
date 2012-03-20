@@ -167,7 +167,7 @@ const float kPropYHitNextMenu=0.9f;
             [moduleLayer addChild:elegeo];
             
             //create module/topic label
-            CCLabelTTF *tlabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"T%d M%d", t, m] fontName:@"Helvetica" fontSize:(kPropXMenuLabelFontSize*lx)];
+            CCLabelTTF *tlabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"T%d M%d", t, m] fontName:GENERIC_FONT fontSize:(kPropXMenuLabelFontSize*lx)];
             [tlabel setPosition:ccp(cx, cy)];
             [tlabel setColor:kMenuLabelTitleColor];
             [tlabel setOpacity:kMenuLabelOpacity];

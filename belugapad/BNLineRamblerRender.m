@@ -187,7 +187,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
             {
                 NSNumber *numRender=[NSNumber numberWithInt:iValue];        
     //        CCLabelBMFont *l=[CCLabelBMFont labelWithString:[numRender stringValue] fntFile:kLabelFont];
-                CCLabelTTF *l=[CCLabelTTF labelWithString:[numRender stringValue] fontName:@"Helvetica" fontSize:36.0f];
+                CCLabelTTF *l=[CCLabelTTF labelWithString:[numRender stringValue] fontName:GENERIC_FONT fontSize:36.0f];
             
                 [l setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
                 [labelLayer addChild:l];
@@ -198,7 +198,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     //        if(!lbl)
     //        {
     //            lbl=[CCLabelBMFont labelWithString:[numRender stringValue] fntFile:kLabelFont];
-    ////            lbl=[CCLabelTTF labelWithString:[numRender stringValue] fontName:@"Helvetica" fontSize:24.0f];
+    ////            lbl=[CCLabelTTF labelWithString:[numRender stringValue] fontName:GENERIC_FONT fontSize:24.0f];
     //            [gameWorld.Blackboard.ComponentRenderLayer addChild:lbl];
     //            [assLabels setObject:lbl forKey:numRender];
     //        }

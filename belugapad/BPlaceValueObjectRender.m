@@ -201,7 +201,7 @@
             [mySprite setColor:ccc3(255,0,255)];
         }
         else {
-            [mySprite setColor:ccc3(0, 255, 0)]; 
+            [mySprite setColor:ccc3(255, 128, 0)]; 
         }
     }
     else
@@ -242,7 +242,7 @@
             }
             else
             {
-                [mySprite setColor:ccc3(0,255,0)];             
+                [mySprite setColor:ccc3(255,128,0)];             
             }
         }
         else

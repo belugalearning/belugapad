@@ -96,8 +96,8 @@
     
     if(!exprLabel)
     {
-        exprLabel=[CCLabelTTF labelWithString:text dimensions:CGSizeMake(lx*0.5f, ly*0.5f) alignment:UITextAlignmentLeft fontName:@"Helvetica" fontSize:24];
-//        exprLabel=[CCLabelTTF labelWithString:text fontName:@"Helvetica" fontSize:24];
+        exprLabel=[CCLabelTTF labelWithString:text dimensions:CGSizeMake(lx*0.5f, ly*0.5f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:24];
+//        exprLabel=[CCLabelTTF labelWithString:text fontName:GENERIC_FONT fontSize:24];
         [exprLabel setOpacity:100];
         [exprLabel setPosition:ccp(lx*0.25f + lx*0.0075f, ly*0.75f - lx*0.005f)];
         [self.ForeLayer addChild:exprLabel];

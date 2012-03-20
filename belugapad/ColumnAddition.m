@@ -80,16 +80,11 @@
 -(void)populateGW
 {
     
-    colSpacing=kSumBoxWidth/6.0f;
+    // populate our individual number arrays
     
     NSString *aColNos = [NSString stringWithFormat:@"%d", sourceA];
     NSString *bColNos = [NSString stringWithFormat:@"%d", sourceB];
     int backwardArrayPos = 4;
-    
-    lblOperator = [CCLabelTTF labelWithString:@"+" fontName:PROBLEM_DESC_FONT fontSize:100.0f];
-    [lblOperator setPosition:ccp(colSpacing*0.3, 350)];
-    [sumBoxLayer addChild:lblOperator];
-    
     
     for(int i=0; i<[aColNos length]; i++)
     {
@@ -108,32 +103,44 @@
         backwardArrayPos--;
     }
     
+    colSpacing=kSumBoxWidth/6.0f;
+    
+    
     for(int i=0; i<5; i++)
     {
-        float lblXPos=(i+1)*colSpacing;
-        NSString *aColCurrentLabel = [NSString stringWithFormat:@"%d", aCols[i]];
-        
-        NSString *bColCurrentLabel = [NSString stringWithFormat:@"%d", bCols[i]];
-        
-        aColLabels[i] = [CCLabelTTF labelWithString:aColCurrentLabel fontName:PROBLEM_DESC_FONT fontSize:kFontLabelSize];
-        
-        bColLabels[i] = [CCLabelTTF labelWithString:bColCurrentLabel fontName:PROBLEM_DESC_FONT fontSize:kFontLabelSize];
-        
-        sColLabels[i] = [CCLabelTTF labelWithString:@"#" fontName:PROBLEM_DESC_FONT fontSize:kFontLabelSize];
-        
+        // only show labels where we don't have 0s (until an 'actual' number starts)
+        if(!aCols[i] == 0 && !bCols[i] == 0)
+        {
+            float lblXPos=(i+1)*colSpacing;
+            NSString *aColCurrentLabel = [NSString stringWithFormat:@"%d", aCols[i]];
+            
+            NSString *bColCurrentLabel = [NSString stringWithFormat:@"%d", bCols[i]];
+            
+            aColLabels[i] = [CCLabelTTF labelWithString:aColCurrentLabel fontName:PROBLEM_DESC_FONT fontSize:kFontLabelSize];
+            
+            bColLabels[i] = [CCLabelTTF labelWithString:bColCurrentLabel fontName:PROBLEM_DESC_FONT fontSize:kFontLabelSize];
+            
+            sColLabels[i] = [CCLabelTTF labelWithString:@"#" fontName:PROBLEM_DESC_FONT fontSize:kFontLabelSize];
+            
 
-        [aColLabels[i] setPosition:ccp(lblXPos, 500)];
-        
-        [bColLabels[i] setPosition:ccp(lblXPos, 350)];
-        
-        [sColLabels[i] setPosition:ccp(lblXPos, 200)];
-        
-        [sumBoxLayer addChild:aColLabels[i]];
-        
-        [sumBoxLayer addChild:bColLabels[i]];
-        
-        [sumBoxLayer addChild:sColLabels[i]];
+            [aColLabels[i] setPosition:ccp(lblXPos, 500)];
+            
+            [bColLabels[i] setPosition:ccp(lblXPos, 350)];
+            
+            [sColLabels[i] setPosition:ccp(lblXPos, 200)];
+            
+            [sumBoxLayer addChild:aColLabels[i]];
+            
+            [sumBoxLayer addChild:bColLabels[i]];
+            
+            [sumBoxLayer addChild:sColLabels[i]];
+        }
     }
+    
+    lblOperator = [CCLabelTTF labelWithString:@"+" fontName:PROBLEM_DESC_FONT fontSize:100.0f];
+    [lblOperator setPosition:ccp(colSpacing*0.3, 350)];
+    [lblOperator setVisible:NO];
+    [sumBoxLayer addChild:lblOperator];
     
 }
 
@@ -141,10 +148,27 @@
 {
     for(int i=0; i<5; i++)
     {
+        // if we have 1 individual number in col A and col B we want to show the operator
+        if(toolState==kNumberSelected && aColLabelSelected[i] && bColLabelSelected[i])
+        {
+            [lblOperator setVisible:YES];
+            return;
+        }
+        else {
+            [lblOperator setVisible:NO];
+        }
+        
         if(aColLabelSelected[i] && bColLabelSelected[i] && lblOperatorSelected)
         {
             NSString *addString = [NSString stringWithFormat:@"%d", aCols[i]+bCols[i]];
             [sColLabels[i] setString:addString];
+            [self switchOperator];
+            [self deselectNumberAExcept:-1];
+            [self deselectNumberBExcept:-1];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
+            toolState=kNoState;
+            DLog(@"Switched tool state: %d", toolState);
+            return;
         }
     }
 }
@@ -157,6 +181,7 @@
         if(thisNumber == i)
         {
             aColLabelSelected[i]=YES;
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
             [aColLabels[i] setColor:ccc3(0,255,0)];
         }
         else 
@@ -175,6 +200,7 @@
         if(thisNumber == i)
         {
             bColLabelSelected[i]=YES;
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
             [bColLabels[i] setColor:ccc3(0,255,0)];
         }
         else 
@@ -190,6 +216,7 @@
     if(!lblOperatorSelected)
     {
         [lblOperator setColor:ccc3(0,255,0)];
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
         lblOperatorSelected=YES;
     }
     else 
@@ -212,45 +239,77 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     
     touching=YES;
-
     
-    // loop over the number A, check for touches
-    for(int i=0; i<5; i++)
-    {
-        CGRect curHit = CGRectMake(aColLabels[i].position.x+(kFontLabelSize/2), aColLabels[i].position.y+(kFontLabelSize/2), kFontLabelSize, kFontLabelSize);
-        if(CGRectContainsPoint(curHit, location))
-           {
-               [self deselectNumberAExcept:i];
-               //[aColLabels[i] setColor:ccc3(0, 255, 0)];
-               return;
-           }
-//        else {
-//            [self deselectNumberAExcept:-1];
-//        }
-    }
-    
-    // loop over the number B, check for touches
-    for(int i=0; i<5; i++)
-    {
-        CGRect curHit = CGRectMake(bColLabels[i].position.x+(kFontLabelSize/2), bColLabels[i].position.y+(kFontLabelSize/2), kFontLabelSize, kFontLabelSize);
-        if(CGRectContainsPoint(curHit, location))
+        // loop over the number A, check for touches
+        for(int i=0; i<5; i++)
         {
-            [self deselectNumberBExcept:i];
+            // create a dynamic hitbox using the position properties of the current label, check for a touch in it
+            CGRect curHit = CGRectMake(aColLabels[i].position.x-(kFontLabelSize), aColLabels[i].position.y-(kFontLabelSize), kFontLabelSize*2, kFontLabelSize*2);
+
+            if(CGRectContainsPoint(curHit, [sumBoxLayer convertToNodeSpace:location]))
+               {
+                   if(!aColLabelSelected[i])
+                   {
+                       DLog(@"Label position is x %f y %f", aColLabels[i].position.x, aColLabels[i].position.y);
+                       DLog(@"Hitbox is: x %f, y %f, width %f, height %f", curHit.origin.x, curHit.origin.y, curHit.size.width, curHit.size.height);
+                       DLog(@"Touch is at: x %f, y %f", location.x, location.y);
+                       [self deselectNumberAExcept:i];
+                       toolState=kNumberSelected;
+                       DLog(@"Switched tool state: %d", toolState);
+                       return;                   
+                   }
+                   else {
+                       [self deselectNumberAExcept:-1];
+                       if(!bColLabelSelected[i])
+                       {
+                           toolState=kNoState;
+                           DLog(@"Switched tool state: %d", toolState);
+                       }
+                   }
+                   return;
+
+               }
+            
+        }
+    
+        // check operator touhes
+            CGRect curHit = CGRectMake(lblOperator.position.x-(kFontLabelSize), lblOperator.position.y-(kFontLabelSize), kFontLabelSize*2, kFontLabelSize*2);
+        if(CGRectContainsPoint(curHit, [sumBoxLayer convertToNodeSpace:location]))
+        {
+            [self switchOperator];
+            if(lblOperatorSelected)
+            {
+                toolState=kNumberOperatorSelected;
+                DLog(@"Switched tool state: %d", toolState);
+            }
             return;
         }
-//        else {
-//            [self deselectNumberBExcept:-1];
-//        }
-    }
     
+    // loop over the number B, check for touches
+
     
-    // check operator touhes
-    CGRect curHit = CGRectMake(lblOperator.position.x+(kOperatorLabelSize/2), lblOperator.position.y+(kOperatorLabelSize/2), kOperatorLabelSize, kOperatorLabelSize);
-    if(CGRectContainsPoint(curHit, location))
-    {
-        [self switchOperator];
-        return;
-    }
+        for(int i=0; i<5; i++)
+        {
+            CGRect curHit = CGRectMake(bColLabels[i].position.x-(kFontLabelSize), bColLabels[i].position.y-(kFontLabelSize), kFontLabelSize*2, kFontLabelSize*2);
+            
+            if(CGRectContainsPoint(curHit, [sumBoxLayer convertToNodeSpace:location]))
+            {
+                if(!bColLabelSelected[i]) {
+                    [self deselectNumberBExcept:i];
+                    return;
+                }
+                else {
+                    [self deselectNumberBExcept:-1];
+                    // also check if the corresponding a column is deselected, reset tool state if so
+                    if(!aColLabelSelected[i])
+                    {
+                        toolState=kNoState;
+                        DLog(@"Switched tool state: %d", toolState);
+                    }
+                }
+            }
+        }
+    
 
 }
 

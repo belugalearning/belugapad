@@ -21,5 +21,6 @@
 -(id)initWithProblemPipeline:(NSString*)source;
 -(void)gotoNextProblem;
 -(CouchDatabase*)Database;
+-(void)gotoNextProblemInElement;
 
 @end

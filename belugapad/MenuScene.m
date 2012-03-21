@@ -222,7 +222,7 @@ const float kPropYHitNextMenu=0.9f;
             }
             
             //create module/topic label
-            CCLabelTTF *tlabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"M%@", module.name] fontName:GENERIC_FONT fontSize:(kPropXMenuLabelFontSize*lx)];
+            CCLabelTTF *tlabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%@", module.name] fontName:GENERIC_FONT fontSize:(kPropXMenuLabelFontSize*lx)];
             [tlabel setPosition:ccp(cx, cy-200)];
             [tlabel setColor:kMenuLabelTitleColor];
             [tlabel setOpacity:kMenuLabelOpacity];
@@ -597,6 +597,7 @@ const float kPropYHitNextMenu=0.9f;
         {
             if(selectedElement)
             {
+                contentService.currentElement=selectedElement;
                 [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
             }
         }

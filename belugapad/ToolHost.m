@@ -183,7 +183,7 @@
     if (pdef) [pdef release];
     self.PpExpr = nil;
     
-    [contentService gotoNextProblem];
+    [contentService gotoNextProblemInElement];
     
     pdef = [contentService.currentPDef retain];
     
@@ -276,6 +276,8 @@
     pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
     [pauseMenu setPosition:ccp(cx, cy)];
     [toolForeLayer addChild:pauseMenu z:10];
+    
+//    UserService userService = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).contentService;
 }
 
 -(void) checkPauseTouches:(CGPoint)location

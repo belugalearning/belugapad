@@ -49,6 +49,24 @@ typedef enum
     float timeSinceTap;
     
     ContentService *contentService;
+    
+    CCLayer *eMenu;
+    
+    CCSprite *eMenuLeftOlay;
+    CCSprite *eMenuLeftPlayBtn;
+    CCSprite *eMenuLeftClock;
+    
+    CCLabelTTF *eMenuTotExp;
+    CCLabelTTF *eMenuTotTime;
+    CCLabelTTF *eMenuModName;
+    CCLabelTTF *eMenuModDesc;
+    CCLabelTTF *eMenuModStatus;
+    CCLabelTTF *eMenuModTime;
+    CCLabelTTF *eMenuPlayerName;
+    
+    
+    
+    
 }
 
 +(CCScene *)scene;

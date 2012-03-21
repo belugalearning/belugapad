@@ -386,6 +386,26 @@ const float kPropYHitNextMenu=0.9f;
     [moduleViewUI setVisible:YES];
 }
 
+-(void)buildModuleOverlay
+{
+    eMenu = [[CCLayer alloc]init];
+    [self addChild:eMenu z:10];
+    [eMenu setVisible:NO];
+    
+    eMenuLeftOlay = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/ElementView/Menu_LeftPanelStatic.png")];
+    eMenuLeftPlayBtn = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/ElementView/PlayButton.png")];
+    eMenuLeftClock = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/ElementView/Menu_E_Clock.png")];
+    
+    eMenuTotExp = [CCLabelTTF labelWithString:@"53,000" fontName:GENERIC_FONT fontSize:50.0f];
+    eMenuTotTime = [CCLabelTTF labelWithString:@"23 mins" fontName:GENERIC_FONT fontSize:50.0f];
+    eMenuModName = [CCLabelTTF labelWithString:@"MOD_NAME" fontName:GENERIC_FONT fontSize:50.0];
+    eMenuModDesc = [CCLabelTTF labelWithString:@"MOD_DESC" fontName:GENERIC_FONT fontSize:50.0f];
+    eMenuModStatus = [CCLabelTTF labelWithString:@"MOD_STATUS" fontName:GENERIC_FONT fontSize:50.0f];
+    eMenuModTime = [CCLabelTTF labelWithString:@"9 mins" fontName:GENERIC_FONT fontSize:50.0f];
+    eMenuPlayerName = [CCLabelTTF labelWithString:@"PLAYER_NAME" fontName:GENERIC_FONT fontSize:50.0f];
+    
+}
+
 -(void)showModuleOverlay: (Module*)module
 {
     NSLog(@"module: %@", module.name);

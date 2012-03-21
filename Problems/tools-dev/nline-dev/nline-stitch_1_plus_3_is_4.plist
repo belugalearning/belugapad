@@ -3,15 +3,19 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>9 - 2 = ?</string>
+	<string>what is 1 + 3 ?</string>
 	<key>EXPRESSION_FILE</key>
-	<string>/Problems/tools-dev/nline-dev/a-eq-7.mathml</string>
+	<string>/Problems/tools-dev/nline-dev/a-eq-4.mathml</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>9</string>
+	<string>1</string>
 	<key>SEGMENT_VALUE</key>
 	<string>1</string>
+	<key>RENDER_STITCHES</key>
+	<true/>
+	<key>AUTO_STITCH_INCREMENT</key>
+	<integer>3</integer>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
@@ -20,7 +24,5 @@
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
-	<key>HIDE_ZUBI</key>
-	<true/>
 </dict>
 </plist>

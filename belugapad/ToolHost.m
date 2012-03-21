@@ -33,6 +33,8 @@
 @synthesize PpExpr;
 @synthesize flagResetProblem;
 
+static float kMoveToNextProblemTime=2.0f;
+
 +(CCScene *) scene
 {
     CCScene *scene=[CCScene node];
@@ -114,6 +116,16 @@
             shownProblemStatusFor=0.0f;
     }
     
+    if(autoMoveToNextProblem)
+    {
+        moveToNextProblemTime-=delta;
+        if(moveToNextProblemTime<0)
+        {
+            autoMoveToNextProblem=NO;
+            [self gotoNewProblem];
+        }
+    }
+    
     //let tool do updates
     [currentTool doUpdateOnTick:delta];
 }
@@ -123,9 +135,11 @@
     if(showMetaQuestionIncomplete) shownMetaQuestionIncompleteFor+=delta;
     
     //do internal mgmt updates
-    if(currentTool.ProblemComplete || metaQuestionForceComplete)
+    //don't eval if we're in an auto move to next problem
+    if((currentTool.ProblemComplete || metaQuestionForceComplete) && !autoMoveToNextProblem)
     {
-        [self gotoNewProblem];
+        moveToNextProblemTime=kMoveToNextProblemTime;
+        autoMoveToNextProblem=YES;
     }
     
     if(self.flagResetProblem)

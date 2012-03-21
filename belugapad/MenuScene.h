@@ -82,6 +82,8 @@ typedef enum
 -(void)moveTopicPositionByLinearY:(float)moveByY;
 -(void)pinchMovementBy:(float)pinchBy;
 -(void)buildModuleOverlay;
+-(void)hideModuleOverlay;
+-(NSString *)convertTimeFromSeconds:(NSString *)seconds;
 -(void)snapToYSwipe;
 -(void)snapToXSwipe;
 -(void)snapToModuleView;

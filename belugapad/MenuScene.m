@@ -477,13 +477,68 @@ const float kPropYHitNextMenu=0.9f;
     [eMenu addChild:eMenuLeftPlayBtn z:1];
 }
 
+-(NSString *)convertTimeFromSeconds:(NSString *)seconds 
+{
+    
+    // Return variable.
+    NSString *result = @"";
+    
+    // Int variables for calculation.
+    int secs = [seconds intValue];
+    int tempHour    = 0;
+    int tempMinute  = 0;
+    int tempSecond  = 0;
+    
+    NSString *hour      = @"";
+    NSString *minute    = @"";
+    NSString *second    = @"";
+    
+    // Convert the seconds to hours, minutes and seconds.
+    tempHour    = secs / 3600;
+    tempMinute  = secs / 60 - tempHour * 60;
+    tempSecond  = secs - (tempHour * 3600 + tempMinute * 60);
+    
+    hour    = [[NSNumber numberWithInt:tempHour] stringValue];
+    minute  = [[NSNumber numberWithInt:tempMinute] stringValue];
+    second  = [[NSNumber numberWithInt:tempSecond] stringValue];
+    
+    // Make time look like 00:00:00 and not 0:0:0
+    if (tempHour < 10) {
+        hour = [@"0" stringByAppendingString:hour];
+    } 
+    
+    if (tempMinute < 10) {
+        minute = [@"0" stringByAppendingString:minute];
+    }
+    
+    if (tempSecond < 10) {
+        second = [@"0" stringByAppendingString:second];
+    }
+    
+    if (tempHour == 0) {
+        
+        NSLog(@"Result of Time Conversion: %@ hrs %@ mins", minute, second);
+        result = [NSString stringWithFormat:@"%@ hrs %@ mins", minute, second];
+        
+    } else {
+        
+        NSLog(@"Result of Time Conversion: %@ hrs %@ mins %@ secs", hour, minute, second); 
+        result = [NSString stringWithFormat:@"%@ hrs %@ mins %@ secs",hour, minute, second];
+        
+    }
+    
+    return result;
+    
+}
+
 -(void)showModuleOverlay: (Module*)module
 {
     UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+    NSString *timeInApp = [self convertTimeFromSeconds:[NSString stringWithFormat:@"%g", us.currentUserTotalTimeInApp]];
     [eMenuModName setString:module.name];
     [eMenuPlayerName setString:us.currentUser.nickName];
     [eMenuTotExp setString:@"53,000"];
-    [eMenuTotTime setString:@"23 mins"];
+    [eMenuTotTime setString:timeInApp];
     [eMenu setVisible:YES];
     [eMenuLeftPlayBtn setVisible:YES];
 }

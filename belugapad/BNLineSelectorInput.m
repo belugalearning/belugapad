@@ -40,11 +40,16 @@
             [self doSelection];
         }
     }
+    
+    if(messageType==kDWdoSelection)
+    {
+        [self doSelection];
+    }
 }
 
 -(void)doSelection
 {
-    if(selectorVarPos < [selector.PopulateVariableNames count])
+    if(selectorVarPos < [selector.PopulateVariableNames count] && selector.WatchRambler.Value!=oldSelection)
     {
         if(!gameWorld.Blackboard.ProblemVariableSubstitutions) gameWorld.Blackboard.ProblemVariableSubstitutions=[[NSMutableDictionary alloc] init];
         
@@ -65,6 +70,8 @@
         {
             [[gameWorld GameScene] problemStateChanged];
         }
+        
+        oldSelection=selector.WatchRambler.Value;
     }
     
     else {

@@ -82,6 +82,8 @@
         if (ramblerGameObject.MinValue && newValue < [ramblerGameObject.MinValue intValue]) newValue=[ramblerGameObject.MinValue intValue];
         
         ramblerGameObject.Value=newValue;
+        
+        [[gameObject gameWorld] handleMessage:kDWdoSelection andPayload:nil withLogLevel:0];
     }
     
 }

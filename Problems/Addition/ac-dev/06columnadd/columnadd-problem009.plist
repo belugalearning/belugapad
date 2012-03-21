@@ -5,8 +5,10 @@
 	<key>TOOL_KEY</key>
 	<string>ColumnAddition</string>
 	<key>NUMBER_A</key>
-	<integer>296</integer>
+	<integer>245</integer>
 	<key>NUMBER_B</key>
-	<integer>123</integer>
+	<integer>196</integer>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>245 + 196 = 441</string>
 </dict>
 </plist>

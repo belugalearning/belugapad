@@ -150,8 +150,8 @@
         sColLabels[i] = [CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:kFontLabelSize];
         
         // if there are any labels that we can't see that are disabled (ie A, 34, B, 234) we set the missing label to be enabled
-        if(i-(5-[aColNos length])<=[aColNos length]==0) { [aColLabels[i] setVisible:NO]; sColCompleted[i]=YES; }
-        if(i-(5-[bColNos length])<=[bColNos length]==0) { [bColLabels[i] setVisible:NO]; sColCompleted[i]=YES; }
+        if(i-(5-[aColNos length])<=[aColNos length]==0) { [aColLabels[i] setVisible:NO]; }
+        if(i-(5-[bColNos length])<=[bColNos length]==0) { [bColLabels[i] setVisible:NO]; }
 
         [aColLabels[i] setPosition:ccp(lblXPos, 500)];
         
@@ -237,11 +237,6 @@
                 [aColLabels[i] setOpacity:50];
                 [bColLabels[i] setOpacity:50];
                 
-                // also mark this column as completed
-                
-                sColCompleted[i]=YES;
-                [self evalProblem];
-                
                 NSString *addString = [NSString stringWithFormat:@"%d", sCols[i]];
                 [sColLabels[i] setString:addString];
                 [sColLabels[i] setVisible:YES];
@@ -258,6 +253,7 @@
         [self switchOperator];
         if(lblOperatorActive)[self switchOperatorSprite];
     }
+    [self evalProblem];
 }
 
 -(void)deselectNumberAExcept:(int)thisNumber
@@ -336,23 +332,26 @@
 
 -(void)evalProblem
 {
-    int countRequired=5;
+    NSString *sColNos = [NSString stringWithFormat:@"%d", sourceA+sourceB];
+    int backwardArrayPos = 4;
+    int countRequired=[sColNos length];
     int countSolved=0;
     
-    for (int i=0; i<5; i++)
+    for(int i=0; i<[sColNos length]; i++)
     {
-        if(sColCompleted[i])
+        NSString *thisChar=[sColNos substringWithRange:NSMakeRange([sColNos length]-i-1, 1)];
+        if([thisChar intValue] == sCols[backwardArrayPos])
         {
             countSolved++;
         }
+        backwardArrayPos--;
     }
-    NSLog(@"eval prob req %d sol %d", countRequired, countSolved);
-    
     if(countSolved==countRequired)
     {
         [toolHost showProblemCompleteMessage];
         autoMoveToNextProblem=YES;
     }
+
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

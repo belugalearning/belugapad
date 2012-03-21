@@ -69,7 +69,6 @@ typedef enum
     BOOL bColLabelSelected[5];
     BOOL bColLabelEnabled[5];
     BOOL sColLabelSelected[5];
-    BOOL sColCompleted[5];
     BOOL lblOperatorSelected;
     BOOL lblOperatorActive;
     

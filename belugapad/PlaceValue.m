@@ -443,10 +443,10 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     if([pdef objectForKey:PICKUP_SPRITE_FILENAME]) pickupSprite = [pdef objectForKey:PICKUP_SPRITE_FILENAME];
     [pickupSprite retain];
     
-    if([pdef objectForKey:PROXIMITY_SPRITE_FILENAME]) {
-        proximitySprite = [pdef objectForKey:PROXIMITY_SPRITE_FILENAME];
-        [proximitySprite retain];   
-    }
+//    if([pdef objectForKey:PROXIMITY_SPRITE_FILENAME]) {
+//        proximitySprite = [pdef objectForKey:PROXIMITY_SPRITE_FILENAME];
+//        [proximitySprite retain];   
+//    }
 
     
     if([pdef objectForKey:COLUMN_ROPES]) {

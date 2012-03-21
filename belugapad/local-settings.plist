@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>PROBLEM_PIPELINE</key>
-<<<<<<< HEAD
-	<string>/pipeline-testing/da-pipeline-test.plist</string>
-=======
-	<string>/pipeline-testing/02count-pipeline.plist</string>
->>>>>>> dad32026401da3c4c51ed02d957540302781f6c0
-</dict>
+<array>
+	<string>/pipeline-testing/alastair-pipeline-test.plist</string>
+</array>
 </plist>

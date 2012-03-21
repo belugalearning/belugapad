@@ -691,7 +691,6 @@
 
 -(void) dealloc
 {
-    [contentService release];
     [pdef release];
     [metaQuestionAnswers release];
     [metaQuestionAnswerButtons release];

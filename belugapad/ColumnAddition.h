@@ -61,6 +61,7 @@ typedef enum
     //CCLabelTTF *lblOperator;
     CCSprite *btnOperator;
     CCSprite *lblRemainder;
+    CCSprite *lblRemainderArrow;
     CGPoint lblRemainderPos;
     
     BOOL aColLabelSelected[5];
@@ -68,10 +69,15 @@ typedef enum
     BOOL bColLabelSelected[5];
     BOOL bColLabelEnabled[5];
     BOOL sColLabelSelected[5];
+    BOOL sColCompleted[5];
     BOOL lblOperatorSelected;
     BOOL lblOperatorActive;
     
     NSString *bkgOverlay;
+    
+    BOOL autoMoveToNextProblem;
+    float timeToAutoMoveToNextProblem;
+//    BOOL ProblemComplete;
     
 }
 -(void)populateGW;

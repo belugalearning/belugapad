@@ -275,17 +275,20 @@
     if(CGRectContainsPoint(kPauseMenuContinue, location))
     {
         //resume
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [toolForeLayer removeChild:pauseMenu cleanup:YES];
         isPaused=NO;
     }
     if(CGRectContainsPoint(kPauseMenuReset, location))
     {
        //reset
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self resetProblem];
         isPaused=NO;
     }
     if(CGRectContainsPoint(kPauseMenuMenu,location))
     {
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
        //menu - do nothing, yet
         [self returnToMenu];
         

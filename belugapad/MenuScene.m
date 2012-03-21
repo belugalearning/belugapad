@@ -183,7 +183,7 @@ const float kPropYHitNextMenu=0.9f;
         
         NSArray *moduleIDs=topic.modules;
         
-        for(int m=0; m<[moduleIDs count]; m++)
+        for(int m=0; m<[moduleIDs count] && m<2; m++)
         {
             Module *module=[[CouchModelFactory sharedInstance] modelForDocument:[[contentService Database] documentWithID:[moduleIDs objectAtIndex:m]]];
             
@@ -291,7 +291,8 @@ const float kPropYHitNextMenu=0.9f;
             [self rotateOrbitByLinearX:diffx];
             
             //move topic
-            [self moveTopicPositionByLinearY:diffy];
+            //TOFU -- disabled for sprint demo
+            //[self moveTopicPositionByLinearY:diffy];
             
             //track total movement
             touchXMovement+=diffx;  
@@ -550,20 +551,23 @@ const float kPropYHitNextMenu=0.9f;
             [self snapToModuleView];
 
         }
+        
+        //TOFU: don't topic scroll for demo
+//        //topic change up
+//        else if (topicPosition < (topicCount-1) && touchYMovement >= (kPropYSwipeTopicThreshold*ly))
+//        {
+//            topicPosition++;
+//            
+//        }
+//
+//        //topic change down
+//        else if (topicPosition>0 && touchYMovement <= -(kPropYSwipeTopicThreshold*ly))
+//        {
+//            topicPosition--;
+//            
+//        }
 
-        //topic change up
-        else if (topicPosition < (topicCount-1) && touchYMovement >= (kPropYSwipeTopicThreshold*ly))
-        {
-            topicPosition++;
-            
-        }
-
-        //topic change down
-        else if (topicPosition>0 && touchYMovement <= -(kPropYSwipeTopicThreshold*ly))
-        {
-            topicPosition--;
-            
-        }
+        
         
         //module change up
         else if (touchXMovement <= -(kPropXSwipeModuleThreshold*lx))

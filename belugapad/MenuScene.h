@@ -46,6 +46,8 @@ typedef enum
     
     NSMutableArray *moduleObjects;
     
+    NSMutableArray *elementObjects;
+    
     float timeSinceTap;
     
     ContentService *contentService;

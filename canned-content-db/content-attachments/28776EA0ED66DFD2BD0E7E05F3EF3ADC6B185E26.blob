@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>HOST_BACKGROUND_IMAGE</key>
+	<string>/images/bg/bg-ipad-addition_14_8_22.png</string>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>22</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>23</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>24</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+		</array>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_COMPLETE_TEXT</key>
+		<string>well done!!</string>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again</string>
+		<key>META_QUESTION_TITLE</key>
+		<string>find the missing number</string>
+	</dict>
+	<key>PLAY_SOUND</key>
+	<string>05pv/find the missing number.m4a</string>
+</dict>
+</plist>

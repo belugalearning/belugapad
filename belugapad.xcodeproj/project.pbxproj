@@ -17,6 +17,7 @@
 		0C92B2981518BD6500342094 /* Syllabus.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C92B2971518BD6500342094 /* Syllabus.m */; };
 		0C92B2A71518EB1600342094 /* ProblemAttempt.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C92B2A61518EB1600342094 /* ProblemAttempt.m */; };
 		0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */ = {isa = PBXBuildFile; fileRef = 0C9FEFF514F572FB00E64138 /* pipeline-testing */; };
+		0CBD654A151987E400343E12 /* canned-content-db in Resources */ = {isa = PBXBuildFile; fileRef = 0CBD6549151987E400343E12 /* canned-content-db */; };
 		0CE3D6F815137690003D5193 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D6F715137690003D5193 /* libz.dylib */; };
 		0CE3D6FA15137698003D5193 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D6F915137698003D5193 /* libsqlite3.dylib */; };
 		0CE3D6FC1513769F003D5193 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D6FB1513769F003D5193 /* SystemConfiguration.framework */; };
@@ -324,6 +325,7 @@
 		0C92B2A51518EB1600342094 /* ProblemAttempt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProblemAttempt.h; sourceTree = "<group>"; };
 		0C92B2A61518EB1600342094 /* ProblemAttempt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProblemAttempt.m; sourceTree = "<group>"; };
 		0C9FEFF514F572FB00E64138 /* pipeline-testing */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pipeline-testing"; sourceTree = SOURCE_ROOT; };
+		0CBD6549151987E400343E12 /* canned-content-db */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "canned-content-db"; sourceTree = SOURCE_ROOT; };
 		0CE3D6F715137690003D5193 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		0CE3D6F915137698003D5193 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		0CE3D6FB1513769F003D5193 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -991,6 +993,7 @@
 		7F5113D314A9EE63001AF372 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0CBD6549151987E400343E12 /* canned-content-db */,
 				0CE3D706151377B7003D5193 /* select-edit-user-images */,
 				0CF9187B14F54C1D00FAC58D /* images */,
 				0C9FEFF514F572FB00E64138 /* pipeline-testing */,
@@ -1806,6 +1809,7 @@
 				0CE3D6FE1513775A003D5193 /* LucidaGrande.ttc in Resources */,
 				0CE3D707151377B7003D5193 /* select-edit-user-images in Resources */,
 				0CE3D72815137BFD003D5193 /* SelectUserViewController.xib in Resources */,
+				0CBD654A151987E400343E12 /* canned-content-db in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

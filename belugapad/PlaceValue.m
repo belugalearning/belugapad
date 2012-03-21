@@ -819,6 +819,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 -(void)evalProblemMatrixMatch
 {
     float solutionsFound = 0;
+    BOOL canEval;
+    NSArray *solutionMatrix = [solutionsDef objectForKey:SOLUTION_MATRIX];
     
     // for each column
     for(int c=0; c<gw.Blackboard.AllStores.count; c++)
@@ -847,8 +849,6 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             }
         }
         
-        NSArray *solutionMatrix = [solutionsDef objectForKey:SOLUTION_MATRIX];
-        
         for(int o=0; o<solutionMatrix.count; o++)
         {
             NSDictionary *solDict = [solutionMatrix objectAtIndex:o];
@@ -864,17 +864,18 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             {
                 //TODO: Attach partial failure here
             }
+            canEval=YES;
             
         }
-        
-        if(solutionsFound == solutionMatrix.count)
-        {
-            [self doWinning];
-        }
-        else if(solutionsFound != solutionMatrix.count && evalMode==kProblemEvalOnCommit)
-        {
-            [self doIncorrect];
-        }
+    }
+    
+    if(solutionsFound == solutionMatrix.count && canEval)
+    {
+        [self doWinning];
+    }
+    else if(solutionsFound != solutionMatrix.count && evalMode==kProblemEvalOnCommit && canEval)
+    {
+        [self doIncorrect];
     }
     
 }

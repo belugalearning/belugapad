@@ -59,34 +59,34 @@
 
 -(void)loadPpExpr
 {
-    //populate primary problem expression
-    
-    BAAdditionOperator *add=[BAAdditionOperator operator];
-    BAInteger *i1=[BAInteger integerWithIntValue:2];
-    BAInteger *i2=[BAInteger integerWithIntValue:3];
-    [add addChild:i1];
-    [add addChild:i2];
-        
-    BAMultiplicationOperator *mult=[BAMultiplicationOperator operator];
-    BADivisionOperator *div=[BADivisionOperator operator];
-    BAInteger *i3=[BAInteger integerWithIntValue:5];
-    BAVariable *x=[BAVariable variableWithName:@"x"];
-    [div addChild:i3];
-    [div addChild:x];
-    
-    BAAdditionOperator *add2=[BAAdditionOperator operator];
-    BAInteger *i4=[BAInteger integerWithIntValue:12];
-    BAInteger *i5=[BAInteger integerWithIntValue:1];
-    [add2 addChild:i4];
-    [add2 addChild:i5];
-    
-    [mult addChild:add2];
-    [mult addChild:div];
-    
-    BAEqualsOperator *eq=[BAEqualsOperator operator];
-    [eq addChild:add];
-    [eq addChild:mult];
-    toolHost.PpExpr=[BAExpressionTree treeWithRoot:eq];
+//    //populate primary problem expression
+//    
+//    BAAdditionOperator *add=[BAAdditionOperator operator];
+//    BAInteger *i1=[BAInteger integerWithIntValue:2];
+//    BAInteger *i2=[BAInteger integerWithIntValue:3];
+//    [add addChild:i1];
+//    [add addChild:i2];
+//        
+//    BAMultiplicationOperator *mult=[BAMultiplicationOperator operator];
+//    BADivisionOperator *div=[BADivisionOperator operator];
+//    BAInteger *i3=[BAInteger integerWithIntValue:5];
+//    BAVariable *x=[BAVariable variableWithName:@"x"];
+//    [div addChild:i3];
+//    [div addChild:x];
+//    
+//    BAAdditionOperator *add2=[BAAdditionOperator operator];
+//    BAInteger *i4=[BAInteger integerWithIntValue:12];
+//    BAInteger *i5=[BAInteger integerWithIntValue:1];
+//    [add2 addChild:i4];
+//    [add2 addChild:i5];
+//    
+//    [mult addChild:add2];
+//    [mult addChild:div];
+//    
+//    BAEqualsOperator *eq=[BAEqualsOperator operator];
+//    [eq addChild:add];
+//    [eq addChild:mult];
+//    toolHost.PpExpr=[BAExpressionTree treeWithRoot:eq];
 }
 
 -(void)writeExprLabel

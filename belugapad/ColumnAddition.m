@@ -159,6 +159,14 @@
         
         [sColLabels[i] setPosition:ccp(lblXPos, 200)];
         
+        [aColLabels[i] setTag:2];
+        
+        [bColLabels[i] setTag:2];
+        
+        [aColLabels[i] setOpacity:0];
+        
+        [bColLabels[i] setOpacity:0];
+        
         [sumBoxLayer addChild:aColLabels[i]];
         
         [sumBoxLayer addChild:bColLabels[i]];
@@ -170,14 +178,20 @@
     btnOperator = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/columnadd/plus-inactive.png")];
     [btnOperator setPosition:ccp(colSpacing*0.3, 350)];
     [btnOperator setScale:kColumnAddAssetScale];
+    [btnOperator setOpacity:0];
+    [btnOperator setTag:2];
     [sumBoxLayer addChild:btnOperator];
     
     CCSprite *lnSeparatorTop = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/columnadd/separator.png")];
     [lnSeparatorTop setPosition:ccp(480, 260)];
+    [lnSeparatorTop setTag:1];
+    [lnSeparatorTop setOpacity:0];
     [sumBoxLayer addChild: lnSeparatorTop];
     
     CCSprite *lnSeparatorBottom = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/columnadd/separator.png")];
     [lnSeparatorBottom setPosition:ccp(480, 160)];
+    [lnSeparatorBottom setTag:1];
+    [lnSeparatorBottom setOpacity:0];
     [sumBoxLayer addChild: lnSeparatorBottom];
     
 }

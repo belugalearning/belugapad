@@ -80,7 +80,7 @@ typedef enum
 -(void)rotateOrbitByLinearX:(float)moveByX;
 -(void)moveTopicPositionByLinearY:(float)moveByY;
 -(void)pinchMovementBy:(float)pinchBy;
-
+-(void)buildModuleOverlay;
 -(void)snapToYSwipe;
 -(void)snapToXSwipe;
 -(void)snapToModuleView;

@@ -36,7 +36,6 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
     NSUInteger currentPIndex;
     
     CouchDatabase *database;
-    Syllabus *defaultSyllabus;
     Problem *currentProblem;
 
     // TODO: pull replication temporarily removed. Need way to figure out when replication is complete. 
@@ -47,6 +46,7 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
 
 @property (nonatomic, readwrite, retain) NSDictionary *currentPDef;
 @property (nonatomic, readwrite, retain) BAExpressionTree *currentPExpr;
+@property (nonatomic, readwrite, retain) Syllabus *defaultSyllabus;
 
 -(void)createViews;
 @end
@@ -55,6 +55,7 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
 
 @synthesize currentPDef;
 @synthesize currentPExpr;
+@synthesize defaultSyllabus;
 
 // Designated initializer
 -(id)initWithProblemPipeline:(NSString*)source
@@ -101,7 +102,7 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
             
             if ([syllabi count] > 0)
             {
-                defaultSyllabus = [[[CouchModelFactory sharedInstance] modelForDocument:((CouchQueryRow*)[syllabi objectAtIndex:0]).document] retain];
+                self.defaultSyllabus = [[CouchModelFactory sharedInstance] modelForDocument:((CouchQueryRow*)[syllabi objectAtIndex:0]).document];
                 
             }
         }
@@ -144,7 +145,7 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
             Module *m = [[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:currentProblem.moduleId]];
             Element *e = [[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:currentProblem.elementId]];
             
-            tIx = [defaultSyllabus.topics indexOfObject:currentProblem.topicId];
+            tIx = [self.defaultSyllabus.topics indexOfObject:currentProblem.topicId];
             mIx = [t.modules indexOfObject:currentProblem.moduleId];
             eIx = [m.elements indexOfObject:currentProblem.elementId];
             pIx = 1 + [e.includedProblems indexOfObject:currentProblem.document.documentID];
@@ -153,9 +154,9 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
             currentProblem = nil;
         }
         
-        while (!currentProblem && tIx < [defaultSyllabus.topics count])
+        while (!currentProblem && tIx < [self.defaultSyllabus.topics count])
         {
-            NSString *tId = [defaultSyllabus.topics objectAtIndex:tIx];
+            NSString *tId = [self.defaultSyllabus.topics objectAtIndex:tIx];
             Topic *t = [[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:tId]];
             
             while (!currentProblem && mIx < [t.modules count])
@@ -218,7 +219,7 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
     [currentPDef release];
     [currentPExpr release];
     [testProblemList release];
-    [defaultSyllabus release];
+    [self.defaultSyllabus release];
     [super dealloc];
 }
 

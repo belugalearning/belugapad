@@ -7,12 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-@class BAExpressionTree;
+@class BAExpressionTree, Syllabus;
 
 @interface ContentService : NSObject
 
 @property (nonatomic, readonly, retain) NSDictionary *currentPDef;
 @property (nonatomic, readonly, retain) BAExpressionTree *currentPExpr;
+@property (nonatomic, readonly, retain) Syllabus *defaultSyllabus;
 
 -(id)initWithProblemPipeline:(NSString*)source;
 -(void)gotoNextProblem;

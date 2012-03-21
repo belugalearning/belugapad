@@ -18,6 +18,7 @@
 #import "BAExpressionHeaders.h"
 #import "BATio.h"
 #import "ContentService.h"
+#import "MenuScene.h"
 
 @interface ToolHost()
 {
@@ -185,6 +186,13 @@
     [contentService gotoNextProblem];
     
     pdef = [contentService.currentPDef retain];
+    
+    if(!pdef)
+    {
+        //no more problems in this sequence, bail to menu
+        [[CCDirector sharedDirector] replaceScene:[MenuScene scene]];
+    }
+    
     self.PpExpr = contentService.currentPExpr;
     
     [self loadProblem];
@@ -286,9 +294,7 @@
     }
     if(CGRectContainsPoint(kPauseMenuMenu,location))
     {
-       //menu - do nothing, yet
-        [self returnToMenu];
-        
+        [[CCDirector sharedDirector] replaceScene:[MenuScene scene]];
     }
            
 }
@@ -685,7 +691,6 @@
 
 -(void) dealloc
 {
-    [contentService release];
     [pdef release];
     [metaQuestionAnswers release];
     [metaQuestionAnswerButtons release];

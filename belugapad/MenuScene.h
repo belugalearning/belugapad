@@ -9,6 +9,7 @@
 #import "cocos2d.h"
 
 @class ContentService;
+@class Element;
 
 typedef enum
 {
@@ -66,9 +67,9 @@ typedef enum
     CCLabelTTF *eMenuModTime;
     CCLabelTTF *eMenuPlayerName;
     
-    
-    
     CCSprite *selectedElementOverlay;
+    
+    Element *selectedElement;
 }
 
 +(CCScene *)scene;

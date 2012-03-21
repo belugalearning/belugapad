@@ -54,10 +54,18 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
 
 @implementation ContentService
 
+@synthesize currentElement;
 @synthesize currentProblem;
 @synthesize currentPDef;
 @synthesize currentPExpr;
 @synthesize defaultSyllabus;
+
+-(void)setCurrentElement:(Element*)element
+{
+    self.currentProblem = nil;
+    if (currentElement) [currentElement release];
+    currentElement = [element retain];
+}
 
 // Designated initializer
 -(id)initWithProblemPipeline:(NSString*)source
@@ -123,6 +131,32 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
 -(id)init
 {
     return [self initWithProblemPipeline:@"DATABASE"];
+}
+
+-(void)gotoNextProblemInElement
+{
+    self.currentPDef = nil;
+    self.currentPExpr = nil;
+    
+    if (self.currentProblem && self.currentProblem.elementId != self.currentElement.document.documentID)
+    {
+        self.currentProblem = nil;
+    }
+    
+    NSUInteger pIx = 0;
+    if (self.currentProblem)
+    {
+        pIx = 1 + [self.currentElement.includedProblems indexOfObject:self.currentProblem.document.documentID];
+    }
+    
+    if (pIx < [self.currentElement.includedProblems count])
+    {
+        NSString *pId = [self.currentElement.includedProblems objectAtIndex:pIx];
+        self.currentProblem = [[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:pId]];
+        self.currentPDef = self.currentProblem.pdef;
+        NSData *expressionData = self.currentProblem.expressionData;
+        if (expressionData) self.currentPExpr = [BATio loadTreeFromMathMLData:expressionData];
+    }
 }
 
 -(void)gotoNextProblem

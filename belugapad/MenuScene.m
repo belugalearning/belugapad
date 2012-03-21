@@ -119,7 +119,7 @@ const float kPropYHitNextMenu=0.9f;
 
 -(void)setupBackground
 {
-    CCSprite *bkg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/bg/bg-ipad.png")];
+    CCSprite *bkg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/bg/archive_bg-ipad.png")];
     [bkg setPosition:ccp(cx, cy)];
     [self addChild:bkg];
     
@@ -422,7 +422,7 @@ const float kPropYHitNextMenu=0.9f;
     eMenuModTime = [CCLabelTTF labelWithString:@"" dimensions:CGSizeMake(246.0f,26.0f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:26.0f];
     
     [eMenuLeftOlay setPosition:ccp(168,384)];
-    [eMenuPlayerName setPosition:ccp(203,684)];
+    [eMenuPlayerName setPosition:ccp(198,684)];
     [eMenuLeftClock setPosition:ccp(60,310)];
     [eMenuLeftPlayBtn setPosition:ccp(162,51)];
     [eMenuTotExp setPosition:ccp(228,610)];

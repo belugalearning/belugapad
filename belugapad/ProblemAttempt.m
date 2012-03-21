@@ -21,7 +21,7 @@
 
 @implementation ProblemAttempt
 
-@dynamic user, problemId, problemRevisionId, elementId, dateTimeStart, dateTimeEnd, pauses, timeInPlay, success, interactionEvents;
+@dynamic user, problemId, problemRevisionId, elementId, dateTimeStart, dateTimeEnd, pauses, timeInPlay, success, interactionEvents, awardedAssessmentCriteriaPoints;
 
 - (id) initWithNewDocumentInDatabase:(CouchDatabase*)database
                              AndUser:(User*)user

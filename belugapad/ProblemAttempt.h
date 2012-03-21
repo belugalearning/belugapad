@@ -21,11 +21,13 @@
 @property  NSTimeInterval timeInPlay;
 @property bool success;
 @property (retain) NSArray *interactionEvents;
+@property (retain) NSDictionary *awardedAssessmentCriteriaPoints;
 
 - (id) initWithNewDocumentInDatabase:(CouchDatabase*)database
-                             AndUser:(User*)user
-                          AndProblem:(Problem*)problem;
+                             andUser:(User*)user
+                          andProblem:(Problem*)problem;
 
 -(void) togglePause;
+-(void) endAttempt:(BOOL)success;
 
 @end

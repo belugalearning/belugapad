@@ -65,7 +65,7 @@ NSString *const kZubiScreenshotFile = @"zubi_screenshot.png";
 
 -(void)endSession
 {
-    NSMutableArray *mutableSessions = [self.sessions mutableCopy];
+    NSMutableArray *mutableSessions = self.sessions ? [self.sessions mutableCopy] : [NSMutableArray array];
     NSDictionary *session = [NSDictionary dictionaryWithObjectsAndKeys: [RESTBody JSONObjectWithDate:currentSessionStart], "@start",
                                                                         [RESTBody JSONObjectWithDate:[NSDate date]], @"end",
                                                                         nil];

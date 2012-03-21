@@ -186,6 +186,13 @@
     [contentService gotoNextProblem];
     
     pdef = [contentService.currentPDef retain];
+    
+    if(!pdef)
+    {
+        //no more problems in this sequence, bail to menu
+        [[CCDirector sharedDirector] replaceScene:[MenuScene scene]];
+    }
+    
     self.PpExpr = contentService.currentPExpr;
     
     [self loadProblem];

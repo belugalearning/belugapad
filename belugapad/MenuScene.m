@@ -392,6 +392,14 @@ const float kPropYHitNextMenu=0.9f;
 -(void)snapToModuleView
 {
     int modulePosition=[[modulePositions objectAtIndex:topicPosition] intValue];
+    
+    if(modulePosition<0 || (modulePosition >= [[moduleLayers objectAtIndex:topicPosition] count]))
+    {
+        MenuState=kMenuStateTopic;
+        return;
+    }
+    
+
     CCLayer *currentModule=[[moduleLayers objectAtIndex:topicPosition] objectAtIndex:modulePosition];
     
     Module *module=[[moduleObjects objectAtIndex:topicPosition] objectAtIndex:modulePosition];

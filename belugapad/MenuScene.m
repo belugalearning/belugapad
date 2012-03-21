@@ -209,7 +209,7 @@ const float kPropYHitNextMenu=0.9f;
                 [elementsForThisModule addObject:element];
                 
                 //create module/topc element view
-                CCSprite *elegeo=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/ElementView/Menu_E_C_S.png")];
+                CCSprite *elegeo=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/ElementView/Menu_E_C_NS.png")];
                 
                 float offsetX=-(((int)[elementIDs count]-1) * 100);
                 
@@ -434,6 +434,11 @@ const float kPropYHitNextMenu=0.9f;
     
 }
 
+-(void)showElementInfo:(Element*)element
+{
+    
+}
+
 -(void)snapToTopicView
 {
     int modulePosition=[[modulePositions objectAtIndex:topicPosition] intValue];
@@ -444,6 +449,8 @@ const float kPropYHitNextMenu=0.9f;
     [currentModule runAction:[CCMoveBy actionWithDuration:kMenuScaleTime position:ccp(-150,0)]];
     
     [self setAllModuleOpacityTo:1.0f exceptFor:currentModule];
+    
+    if(selectedElementOverlay) [self removeChild:selectedElementOverlay cleanup:YES];
     
     [moduleViewUI setVisible:NO];
 }
@@ -553,9 +560,34 @@ const float kPropYHitNextMenu=0.9f;
         else {
             //look for element taps
             int modulePosition=[[modulePositions objectAtIndex:topicPosition] intValue];   
-            Module *module=[[moduleObjects objectAtIndex:topicPosition] objectAtIndex:modulePosition];
-            
+            CCLayer *currentModule=[[moduleLayers objectAtIndex:topicPosition] objectAtIndex:modulePosition];
             NSArray *elements=[[elementObjects objectAtIndex:topicPosition] objectAtIndex:modulePosition];
+            
+            CGPoint tapInModule=[currentModule convertToNodeSpace:location];
+        
+            for (int e=0; e<[elements count]; e++) {
+                
+                float xBase=-(((int)[elements count]-1) * 100);
+                
+                CGPoint ePoint=ccp(xBase+512+(200*e), cy);
+                
+                if([BLMath DistanceBetween:ePoint and:tapInModule] < 75)
+                {
+                    Element *element=[elements objectAtIndex:e];
+                    NSLog(@"tapped element %@", element.name);
+                    
+                    if(selectedElementOverlay) [self removeChild:selectedElementOverlay cleanup:YES];
+                    
+                    selectedElementOverlay=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/ElementView/Menu_E_C_S.png")];
+                    [selectedElementOverlay setPosition:[currentModule convertToWorldSpace:ePoint]];
+                    [self addChild:selectedElementOverlay];
+                    
+                    [self showElementInfo:element];
+                    
+                }
+            }
+            
+            NSLog(@"tap local: %@", NSStringFromCGPoint(tapInModule));
             
             NSLog(@"elements count: %d", [elements count]);
         }

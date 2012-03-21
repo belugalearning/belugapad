@@ -68,7 +68,7 @@ typedef enum
     
     
     
-    
+    CCSprite *selectedElementOverlay;
 }
 
 +(CCScene *)scene;

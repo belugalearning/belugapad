@@ -16,5 +16,6 @@
 @property (retain) NSDate *creationDateTime;
 @property (retain) NSData *zubiColor; //(r,g,b,a) in const CGFLoat *
 @property (retain) UIImage *zubiScreenshot;
+@property (retain) NSArray *sessions;
 
 @end

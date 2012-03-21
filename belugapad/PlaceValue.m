@@ -1314,7 +1314,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
             [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
             
-
+											
             if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
             {
                 // TODO: Decide behaviour when the column base amount is selected
@@ -1333,6 +1333,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 //tell the picked-up object to mount on the dropobject
                 [pl removeAllObjects];
                 [pl setObject:[gw Blackboard].DropObject forKey:MOUNT];
+                [pl setObject:[NSNumber numberWithBool:YES] forKey:ANIMATE_ME];
                 [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
                 
                 [[gw Blackboard].PickupObject handleMessage:kDWputdown andPayload:nil withLogLevel:0];         

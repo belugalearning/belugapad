@@ -18,6 +18,9 @@
     
     CCLayer *viz1Layer;
     CCLabelTTF *exprLabel;
+    
+    CCLabelTTF *labelExprString;
+    CCLabelTTF *labelExprMathML;
 }
 
 -(void)readProblemDef;

@@ -93,19 +93,29 @@
 {
     BATQuery *q=[[BATQuery alloc] initWithExpr:toolHost.PpExpr.root];
     
-    NSString *text=[NSString stringWithFormat:@"expressionString: %@ \ndepth: %d", [[toolHost.PpExpr root] expressionString], [q getMaxDepth]];
+    NSString *text=[[toolHost.PpExpr root] expressionString];
     
     if(!exprLabel)
     {
-        exprLabel=[CCLabelTTF labelWithString:text dimensions:CGSizeMake(lx*0.5f, ly*0.5f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:24];
+//        exprLabel=[CCLabelTTF labelWithString:text dimensions:CGSizeMake(lx*0.5f, ly*0.5f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:96];
+//        
+        exprLabel=[CCLabelTTF labelWithString:text fontName:GENERIC_FONT fontSize:80];
 //        exprLabel=[CCLabelTTF labelWithString:text fontName:GENERIC_FONT fontSize:24];
         [exprLabel setOpacity:100];
-        [exprLabel setPosition:ccp(lx*0.25f + lx*0.0075f, ly*0.75f - lx*0.005f)];
+        [exprLabel setPosition:ccp(cx, 80)];
         [self.ForeLayer addChild:exprLabel];
     }
     else {
         [exprLabel setString:text];
     }
+
+    NSString *mml=[toolHost.PpExpr xmlStringValue];
+    labelExprMathML=[CCLabelTTF labelWithString:mml dimensions:CGSizeMake(lx, ly) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:24];
+    //        exprLabel=[CCLabelTTF labelWithString:text fontName:GENERIC_FONT fontSize:24];
+    [labelExprMathML setOpacity:100];
+    [labelExprMathML setPosition:ccp(cx, 384)];
+    [self.ForeLayer addChild:labelExprMathML];
+    
 }
 
 -(void)updateExpr

@@ -110,6 +110,11 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
     return self;
 }
 
+-(CouchDatabase*)Database
+{
+    return database;
+}
+
 -(id)init
 {
     return [self initWithProblemPipeline:@"DATABASE"];

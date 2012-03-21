@@ -56,7 +56,7 @@ const float kMenuScheduleUpdateDoUpdate=60.0f;
 //temporary -- for elegeo sprite placeholder
 const float kOpacityElementGeo=75;
 
-const CGPoint kPropXBackBtnPos={0.06, -0.06};
+const CGPoint kPropXBackBtnPos={0.36, -0.06};
 const float kPropXBackBtnHitRadius=40;
 
 const float kPropXHitNextMenu=0.9f;

@@ -22,6 +22,7 @@ NSString * const kDeviceUsersLastSessionStart = @"device-users-last-session";
 NSString * const kAllUserNicknames = @"all-user-nick-names";
 NSString * const kUsersByNickNamePassword = @"users-by-nick-name-password";
 NSString * const kUsersTimeInApp = @"users-time-in-app";
+NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-element-date";
 
 @interface UsersService()
 {
@@ -280,7 +281,23 @@ NSString * const kUsersTimeInApp = @"users-time-in-app";
         for (NSNumber *num in values) sum += [num doubleValue];
         return [NSNumber numberWithDouble:sum];
                 })
-                                  version: @"v1.00"];
+                    version: @"v1.00"];
+    
+    [design defineViewNamed:kProblemSuccessByUserElementDate
+                   mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)){
+                       id type = [doc objectForKey:@"type"];
+                       if (type && 
+                           [type respondsToSelector:@selector(isEqualToString:)] && 
+                           [type isEqualToString:@"problem attempt"] &&
+                           (bool)[doc objectForKey:@"success"] == true)
+                       {
+                           NSArray *key = [NSArray arrayWithObjects:[doc objectForKey:@"user"], [doc objectForKey:@"elementId"], [doc objectForKey:@"dateTimeEnd"], nil];
+                           emit(key, [doc objectForKey:@"problemId"]);
+                       }
+                   }
+                    version: @"v1.00"];
+                
+    
 }
 
 -(void)startLiveQueries

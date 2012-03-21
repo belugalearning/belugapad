@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-@class BAExpressionTree, Syllabus;
+@class BAExpressionTree, Problem, Syllabus;
 @class CouchDatabase;
 
 @interface ContentService : NSObject
 
+@property (nonatomic, readonly, retain) Problem *currentProblem;
 @property (nonatomic, readonly, retain) NSDictionary *currentPDef;
 @property (nonatomic, readonly, retain) BAExpressionTree *currentPExpr;
 @property (nonatomic, readonly, retain) Syllabus *defaultSyllabus;

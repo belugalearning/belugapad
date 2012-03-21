@@ -38,8 +38,10 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
     CouchDatabase *database;
 
     // TODO: pull replication temporarily removed. Need way to figure out when replication is complete. 
+    // TODO: not sure about this - with logging turned on, building to simulator, took 3 runs to get db updated to latest sequence number.
+    //      Does this mean continuous replication not reliable? Or is it the simulator? Or....?
     // Try using comparison of database.lastSequenceNumber against http://www.sofaraslant.com:5984/temp-blm-content doc's update_seq value
-    CouchReplication *pull;
+    CouchReplication *pullReplication;
 }
 
 @property (nonatomic, readwrite, retain) Problem *currentProblem;
@@ -103,8 +105,11 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
             if ([syllabi count] > 0)
             {
                 self.defaultSyllabus = [[CouchModelFactory sharedInstance] modelForDocument:((CouchQueryRow*)[syllabi objectAtIndex:0]).document];
-                
             }
+            
+// For the moment relying soley on canned db            
+//            pullReplication = [[database pullFromDatabaseAtURL:[NSURL URLWithString:kRemoteContentDatabaseURI]] retain];
+//            pullReplication.continuous = YES;
         }
     }
     return self;
@@ -224,6 +229,7 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
     [currentPExpr release];
     [testProblemList release];
     [self.defaultSyllabus release];
+    [pullReplication release];
     [super dealloc];
 }
 

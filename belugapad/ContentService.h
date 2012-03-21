@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 @class BAExpressionTree, Syllabus;
+@class CouchDatabase;
 
 @interface ContentService : NSObject
 
@@ -17,5 +18,6 @@
 
 -(id)initWithProblemPipeline:(NSString*)source;
 -(void)gotoNextProblem;
+-(CouchDatabase*)Database;
 
 @end

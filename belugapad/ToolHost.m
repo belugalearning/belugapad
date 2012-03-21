@@ -623,8 +623,12 @@
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
-     
+    
     [self checkMetaQuestionTouches:location];
+    if(isPaused)
+    {
+        return;
+    }  
     if (location.x > 944 && location.y > 688 && !isPaused)
     {
         [self showPauseMenu];
@@ -639,6 +643,10 @@
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if(isPaused)
+    {
+        return;
+    }  
     [currentTool ccTouchesMoved:touches withEvent:event];
 }
 
@@ -665,16 +673,28 @@
 
 -(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
+    if(isPaused)
+    {
+        return;
+    }  
     return [currentTool ccTouchBegan:touch withEvent:event];
 }
 
 -(void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
+    if(isPaused)
+    {
+        return;
+    }  
     [currentTool ccTouchMoved:touch withEvent:event];
 }
 
 -(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
+    if(isPaused)
+    {
+        return;
+    }  
     [currentTool ccTouchEnded:touch withEvent:event];
 }
 

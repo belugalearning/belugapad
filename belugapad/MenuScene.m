@@ -187,6 +187,14 @@ const float kPropYHitNextMenu=0.9f;
         //set the module position for this topic
         [modulePositions addObject:[NSNumber numberWithInt:0]];
         
+        
+        //topic name
+        CCLabelTTF *tnamelabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%@", topic.name] fontName:GENERIC_FONT fontSize:(kPropXMenuLabelFontSize*0.6*lx)];
+        [tnamelabel setPosition:ccp(200, cy)];
+        [tnamelabel setColor:kMenuLabelTitleColor];
+        [tnamelabel setOpacity:kMenuLabelOpacity];
+        [modBase addChild:tnamelabel];
+        
         NSArray *moduleIDs=topic.modules;
         
         for(int m=0; m<[moduleIDs count] && m<2; m++)

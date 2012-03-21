@@ -29,7 +29,8 @@
 {
     NSMutableString *s=[NSMutableString stringWithFormat:@"%@<apply>\n", padding];
     
-    [s appendFormat:@"%@ <eq />\n"];
+    //[s appendFormat:@"%@ <eq />\n"];
+    [s appendFormat:@"%@ <eq />\n", padding];
     
     for(NSInteger i = 0; i < [[self children] count]; i++)
     {

@@ -71,7 +71,7 @@
 {
     NSMutableString *s=[NSMutableString stringWithFormat:@"%@<apply>\n", padding];
     
-    [s appendFormat:@"%@ <power />\n"];
+    [s appendFormat:@"%@ <power />\n", padding];
     
     for(NSInteger i = 0; i < [[self children] count]; i++)
     {

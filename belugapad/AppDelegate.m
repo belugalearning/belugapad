@@ -17,6 +17,7 @@
 #import "ContentService.h"
 #import "UsersService.h"
 #import "SelectUserViewController.h"
+#import "MenuScene.h"
 
 @interface AppDelegate()
 {
@@ -117,7 +118,7 @@
 	// You can change anytime.
 	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
 	
-    [[CCDirector sharedDirector] runWithScene:(viaIntro ? [ZubiIntro scene] : [ToolHost scene])];
+    [[CCDirector sharedDirector] runWithScene:(viaIntro ? [ZubiIntro scene] : [MenuScene scene])];
 }
 
 

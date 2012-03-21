@@ -377,6 +377,8 @@ const float kPropYHitNextMenu=0.9f;
     
     [currentModule runAction:[CCEaseIn actionWithAction:[CCScaleTo actionWithDuration:kMenuScaleTime scale:1.0f] rate:kMenuModuleScaleRate]];
     
+    [currentModule runAction:[CCMoveBy actionWithDuration:kMenuScaleTime position:ccp(150,0)]];
+    
     //semi-hide all other elements
     [self setAllModuleOpacityTo:0.0f exceptFor:currentModule];
     
@@ -406,7 +408,9 @@ const float kPropYHitNextMenu=0.9f;
     int modulePosition=[[modulePositions objectAtIndex:topicPosition] intValue];
     CCLayer *currentModule=[[moduleLayers objectAtIndex:topicPosition] objectAtIndex:modulePosition];
     
-    [currentModule runAction:[CCEaseIn actionWithAction:[CCScaleTo actionWithDuration:kMenuScaleTime scale:kMenuModuleScale] rate:kMenuModuleScaleRate]];    
+    [currentModule runAction:[CCEaseIn actionWithAction:[CCScaleTo actionWithDuration:kMenuScaleTime scale:kMenuModuleScale] rate:kMenuModuleScaleRate]];   
+    
+    [currentModule runAction:[CCMoveBy actionWithDuration:kMenuScaleTime position:ccp(-150,0)]];
     
     [self setAllModuleOpacityTo:1.0f exceptFor:currentModule];
     

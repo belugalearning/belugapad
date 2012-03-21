@@ -15,6 +15,8 @@
     
     //position of this selector in populating the variable names
     int selectorVarPos;
+    
+    int oldSelection;
 }
 
 

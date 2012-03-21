@@ -119,7 +119,7 @@ const float kPropYHitNextMenu=0.9f;
 
 -(void)setupBackground
 {
-    CCSprite *bkg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/bg/bg-ipad.png")];
+    CCSprite *bkg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/bg/archive_bg-ipad.png")];
     [bkg setPosition:ccp(cx, cy)];
     [self addChild:bkg];
     
@@ -405,32 +405,32 @@ const float kPropYHitNextMenu=0.9f;
 -(void)buildModuleOverlay
 {
     eMenu = [[CCLayer alloc]init];
-    [self addChild:eMenu z:10];
+    [self addChild:eMenu];
     [eMenu setVisible:NO];
     
     eMenuLeftOlay = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/ElementView/Menu_LeftPanelStatic.png")];
     eMenuLeftPlayBtn = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/ElementView/PlayButton.png")];
     eMenuLeftClock = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/ElementView/Menu_E_Clock.png")];
+
+    eMenuPlayerName = [CCLabelTTF labelWithString:@"" dimensions:CGSizeMake(283.0f,40.0f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:50.0f];
+    eMenuTotExp = [CCLabelTTF labelWithString:@"" dimensions:CGSizeMake(213.0f,45.0f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:42.0f];
     
-    eMenuTotExp = [CCLabelTTF labelWithString:@"53,000" dimensions:CGSizeMake(213.0f,45.0f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:42.0f];
-    
-    eMenuTotTime = [CCLabelTTF labelWithString:@"23 mins" dimensions:CGSizeMake(213.0f,45.0f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:42.0f];
-    eMenuModName = [CCLabelTTF labelWithString:@"MOD_NAME" dimensions:CGSizeMake(289.0f,45.0f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:45.0f];
-    eMenuModDesc = [CCLabelTTF labelWithString:@"MOD_DESC" dimensions:CGSizeMake(289.0f,45.0f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:45.0f];
-    eMenuModStatus = [CCLabelTTF labelWithString:@"MOD_STATUS" dimensions:CGSizeMake(289.0f,45.0f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:50.0f];
-    eMenuModTime = [CCLabelTTF labelWithString:@"9 mins" dimensions:CGSizeMake(246.0f,26.0f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:26.0f];
-    eMenuPlayerName = [CCLabelTTF labelWithString:@"PLAYER_NAME" dimensions:CGSizeMake(283.0f,40.0f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:50.0f];
+    eMenuTotTime = [CCLabelTTF labelWithString:@"" dimensions:CGSizeMake(213.0f,45.0f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:42.0f];
+    eMenuModName = [CCLabelTTF labelWithString:@"" dimensions:CGSizeMake(289.0f,45.0f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:45.0f];
+    eMenuModDesc = [CCLabelTTF labelWithString:@"" dimensions:CGSizeMake(289.0f,45.0f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:30.0f];
+    eMenuModStatus = [CCLabelTTF labelWithString:@"" dimensions:CGSizeMake(289.0f,45.0f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:25.0f];
+    eMenuModTime = [CCLabelTTF labelWithString:@"" dimensions:CGSizeMake(246.0f,26.0f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:26.0f];
     
     [eMenuLeftOlay setPosition:ccp(168,384)];
-    [eMenuLeftClock setPosition:ccp(60,330)];
+    [eMenuPlayerName setPosition:ccp(198,684)];
+    [eMenuLeftClock setPosition:ccp(60,310)];
     [eMenuLeftPlayBtn setPosition:ccp(162,51)];
     [eMenuTotExp setPosition:ccp(228,610)];
     [eMenuTotTime setPosition:ccp(228,543)];
-    [eMenuModName setPosition:ccp(190,489)];
-    [eMenuModDesc setPosition:ccp(190,419)];
-    [eMenuModStatus setPosition:ccp(190,379)];
-    [eMenuModTime setPosition:ccp(211,328)];
-    [eMenuPlayerName setPosition:ccp(193,684)];
+    [eMenuModName setPosition:ccp(190,454)];
+    [eMenuModDesc setPosition:ccp(190,399)];
+    [eMenuModStatus setPosition:ccp(190,354)];
+    [eMenuModTime setPosition:ccp(211,308)];
     
     [eMenuTotExp setColor:ccc3(89, 133, 136)];
     [eMenuModName setColor:ccc3(45, 97, 130)];
@@ -439,28 +439,43 @@ const float kPropYHitNextMenu=0.9f;
     [eMenuModTime setColor:ccc3(103, 157, 185)];
     [eMenuPlayerName setColor:ccc3(255, 255, 255)];
     
+    [eMenuLeftClock setVisible:NO];
     
-    [eMenu addChild:eMenuLeftOlay];
-    [eMenu addChild:eMenuPlayerName];
-    [eMenu addChild:eMenuTotExp];
-    [eMenu addChild:eMenuTotTime];
-    [eMenu addChild:eMenuModName];
-    [eMenu addChild:eMenuModDesc];
-    [eMenu addChild:eMenuModStatus];
-    [eMenu addChild:eMenuModTime];
-    [eMenu addChild:eMenuLeftClock];
-    [eMenu addChild:eMenuLeftPlayBtn];
+    
+    [eMenu addChild:eMenuLeftOlay z:0];
+    [eMenu addChild:eMenuPlayerName z:1];
+    [eMenu addChild:eMenuTotExp z:1];
+    [eMenu addChild:eMenuTotTime z:1];
+    [eMenu addChild:eMenuModName z:1];
+    [eMenu addChild:eMenuModDesc z:1];
+    [eMenu addChild:eMenuModStatus z:1];
+    [eMenu addChild:eMenuModTime z:1];
+    [eMenu addChild:eMenuLeftClock z:1];
+    [eMenu addChild:eMenuLeftPlayBtn z:1];
 }
 
 -(void)showModuleOverlay: (Module*)module
 {
-    NSLog(@"module: %@", module.name);
+    [eMenuModName setString:module.name];
+    [eMenuPlayerName setString:@"Dave"];
+    [eMenuTotExp setString:@"53,000"];
+    [eMenuTotTime setString:@"23 mins"];
     [eMenu setVisible:YES];
+    [eMenuLeftPlayBtn setVisible:YES];
 }
 
 -(void)hideModuleOverlay
 {
     NSLog(@"hide module view");
+
+    [eMenuTotExp setString:@""];
+    [eMenuTotTime setString:@""];
+    [eMenuModName setString:@""];
+    [eMenuModDesc setString:@""];
+    [eMenuModStatus setString:@""];
+    [eMenuModTime setString:@""];
+    [eMenuLeftPlayBtn setVisible:NO];
+    [eMenuLeftClock setVisible:NO];
     [eMenu setVisible:NO];
 }
 
@@ -471,7 +486,10 @@ const float kPropYHitNextMenu=0.9f;
 
 -(void)showElementInfo:(Element*)element
 {
-    
+    [eMenuModDesc setString:element.name];
+    [eMenuModStatus setString:@"IN PROGRESS"];
+    [eMenuModTime setString:@"5 mins"];
+    [eMenuLeftClock setVisible:YES];    
 }
 
 -(void)snapToTopicView

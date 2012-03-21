@@ -675,7 +675,7 @@
 {
     if(isPaused)
     {
-        return;
+        return NO;
     }  
     return [currentTool ccTouchBegan:touch withEvent:event];
 }

@@ -75,6 +75,16 @@
 {
 	[gw doUpdate:delta];
     [self updateLabels];
+    if(autoMoveToNextProblem)
+    {
+        timeToAutoMoveToNextProblem+=delta;
+        if(timeToAutoMoveToNextProblem>=kTimeToAutoMove)
+        {
+            self.ProblemComplete=YES;
+            autoMoveToNextProblem=NO;
+            timeToAutoMoveToNextProblem=0.0f;
+        }
+    }   
     
 }
 
@@ -140,8 +150,8 @@
         sColLabels[i] = [CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:kFontLabelSize];
         
         // if there are any labels that we can't see that are disabled (ie A, 34, B, 234) we set the missing label to be enabled
-        if(i-(5-[aColNos length])<=[aColNos length]==0) { [aColLabels[i] setVisible:NO]; }
-        if(i-(5-[bColNos length])<=[bColNos length]==0) { [bColLabels[i] setVisible:NO]; }
+        if(i-(5-[aColNos length])<=[aColNos length]==0) { [aColLabels[i] setVisible:NO]; sColCompleted[i]=YES; }
+        if(i-(5-[bColNos length])<=[bColNos length]==0) { [bColLabels[i] setVisible:NO]; sColCompleted[i]=YES; }
 
         [aColLabels[i] setPosition:ccp(lblXPos, 500)];
         
@@ -159,7 +169,7 @@
     //lblOperator = [CCLabelTTF labelWithString:@"+" fontName:PROBLEM_DESC_FONT fontSize:100.0f];
     btnOperator = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/columnadd/plus-inactive.png")];
     [btnOperator setPosition:ccp(colSpacing*0.3, 350)];
-    [btnOperator setScale:0.5f];
+    [btnOperator setScale:kColumnAddAssetScale];
     [sumBoxLayer addChild:btnOperator];
     
     CCSprite *lnSeparatorTop = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/columnadd/separator.png")];
@@ -195,15 +205,20 @@
             {
                 toolState=kNumberRemainder;
                 DLog(@"Switched tool state: %d", toolState);
-                float lblXPos=(i+1)*(colSpacing*1.05);
+                float lblXPos=(i+1)*(colSpacing*kColumnAddRemainderOffset);
+                float lblXPosArrow=(i+1)*(colSpacing*kColumnAddRemainderArrowOffset);
                 //do carry over
                 aCols[i]=0;
                 bCols[i]=0;
                 rCols[i]=1;
                 lblRemainder = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/columnadd/remainder.png")];
                 [lblRemainder setPosition:ccp(lblXPos, 100)];
-                [lblRemainder setScale:0.75f];
+                [lblRemainder setScale:kColumnAddAssetScale];
                 [sumBoxLayer addChild: lblRemainder];
+                lblRemainderArrow = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/columnadd/arrow.png")];
+                [lblRemainderArrow setPosition:ccp(lblXPosArrow, 100)];
+                [lblRemainderArrow setScale:kColumnAddAssetScale];
+                [sumBoxLayer addChild: lblRemainderArrow];
                 
                 
                 //set sCols to remainder
@@ -221,6 +236,11 @@
 
                 [aColLabels[i] setOpacity:50];
                 [bColLabels[i] setOpacity:50];
+                
+                // also mark this column as completed
+                
+                sColCompleted[i]=YES;
+                [self evalProblem];
                 
                 NSString *addString = [NSString stringWithFormat:@"%d", sCols[i]];
                 [sColLabels[i] setString:addString];
@@ -314,6 +334,27 @@
     [bkgOverlay retain];
 }
 
+-(void)evalProblem
+{
+    int countRequired=5;
+    int countSolved=0;
+    
+    for (int i=0; i<5; i++)
+    {
+        if(sColCompleted[i])
+        {
+            countSolved++;
+        }
+    }
+    NSLog(@"eval prob req %d sol %d", countRequired, countSolved);
+    
+    if(countSolved==countRequired)
+    {
+        [toolHost showProblemCompleteMessage];
+        autoMoveToNextProblem=YES;
+    }
+}
+
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch=[touches anyObject];
@@ -404,12 +445,11 @@
             {
                 if(rCols[i]>0)
                 {
-                    //sCols[i-1]=sCols[i-1]+rCols[i];
-                    //[sumBoxLayer removeChild:lblRemainder cleanup:YES];
                     toolState=kNumberRemainderDrag;
                     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
                     DLog(@"Switched tool state: %d", toolState);
                     lblRemainderPos = lblRemainder.position;
+                    [lblRemainderArrow setVisible:NO];
 
                 }
             }
@@ -457,27 +497,13 @@
                     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
                 }
                 else {
-                    [lblRemainder runAction:[CCMoveTo actionWithDuration:0.25f position:lblRemainderPos]];
+                    [lblRemainderArrow setVisible:YES];
+                    [lblRemainder runAction:[CCMoveTo actionWithDuration:kMoveTimeForRemainder position:lblRemainderPos]];
+                    toolState=kNumberRemainder;
+                    DLog(@"Switched tool state: %d", toolState);
                 }
             }
         }
-        
-//        CGRect curHit = CGRectMake(lblRemainder.position.x-(kFontLabelSize), lblRemainder.position.y-(kFontLabelSize), kFontLabelSize*2, kFontLabelSize*2);
-//        if(CGRectContainsPoint(curHit, [sumBoxLayer convertToNodeSpace:location]))
-//        {
-//            for (int i=0; i<5; i++)
-//            {
-//                if(rCols[i]>0)
-//                {
-//                    sCols[i-1]=sCols[i-1]+rCols[i];
-//                    [sumBoxLayer removeChild:lblRemainder cleanup:YES];
-//                    toolState=kNumberRemainderPress;
-//                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
-//                    DLog(@"Switched tool state: %d", toolState);
-//                    
-//                }
-//            }
-//        }
     }
 }
 

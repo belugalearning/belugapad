@@ -59,6 +59,8 @@ static CGPoint kOperatorNilOffset={0, 0};
 
 static float kOperatorHitRadius=25.0f;
 
+static float kOpModeBodySize=400.0f;
+
 static void eachShape(void *ptr, void* unused)
 {
 	cpShape *shape = (cpShape*) ptr;
@@ -489,6 +491,19 @@ static void eachShape(void *ptr, void* unused)
     //operator Layer
     [operatorLayer setVisible:YES];
     [operatorLayer setPosition:showAtPos];
+    
+    blowOutPos=showAtPos;
+}
+
+-(void)removeBlowOut
+{
+    cpSpaceRemoveShape(space, shapeBlowOut);
+    cpSpaceRemoveBody(space, bodyBlowOut);
+    cpShapeFree(shapeBlowOut);
+    cpBodyFree(bodyBlowOut);
+    
+    shapeBlowOut=nil;
+    bodyBlowOut=nil;
 }
 
 -(void)setOperators
@@ -500,12 +515,28 @@ static void eachShape(void *ptr, void* unused)
         //detach physics from both objects
         [opGOsource handleMessage:kDWdetachPhys andPayload:nil withLogLevel:0];
         [opGOtarget handleMessage:kDWdetachPhys andPayload:nil withLogLevel:0];    
+        
+        //create a space maker body
+        //destroy old one if needed
+        if(shapeBlowOut) [self removeBlowOut];
+        
+        bodyBlowOut=cpBodyNew(kOpModeBodySize, INFINITY);
+        bodyBlowOut->p=blowOutPos;
+        cpSpaceAddBody(space, bodyBlowOut);
+        
+        shapeBlowOut = cpCircleShapeNew(bodyBlowOut, kOpModeBodySize/2.0f, cpvzero);  
+        shapeBlowOut->e = 0.5;
+        shapeBlowOut->u = 0.8;
+        
+        cpSpaceAddShape(space, shapeBlowOut);
     }
 }
 
 -(void)disableOperators
 {
     if(!enableOperators) return;
+
+    if(shapeBlowOut) [self removeBlowOut];
     
     if(![[opGOsource store] objectForKey:MOUNT])
     {
@@ -527,6 +558,7 @@ static void eachShape(void *ptr, void* unused)
     opGOtarget=nil;
     
     [operatorLayer setVisible:NO];
+    
 }
 
 -(void)doAddOperation

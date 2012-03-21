@@ -73,6 +73,10 @@
     
     //xp granted
     NSMutableArray *xpGrantedClauses;
+    
+    cpBody *bodyBlowOut;
+    cpShape *shapeBlowOut;
+    CGPoint blowOutPos;
 }
 
 -(void) setupBkgAndTitle;

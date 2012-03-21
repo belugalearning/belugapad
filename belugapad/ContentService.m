@@ -138,9 +138,23 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
     self.currentPDef = nil;
     self.currentPExpr = nil;
     
-    if (self.currentProblem && self.currentProblem.elementId != self.currentElement.document.documentID)
+    if (!self.currentElement)
     {
         self.currentProblem = nil;
+        
+        NSString *tId = [self.defaultSyllabus.topics objectAtIndex:0];
+        Topic *t = [[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:tId]];
+        
+        NSString *mId = [t.modules objectAtIndex:0];
+        Module *m = [[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:mId]];
+        
+        NSString *eId = [m.elements objectAtIndex:0];
+        self.currentElement = [[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:eId]];
+        
+    }
+    else if (self.currentProblem && ![self.currentProblem.elementId isEqualToString:self.currentElement.document.documentID])
+    {
+        self.currentProblem = nil;        
     }
     
     NSUInteger pIx = 0;

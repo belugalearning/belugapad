@@ -142,8 +142,9 @@ static float kMoveToNextProblemTime=2.0f;
     {
         //UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
         //[us endProblemAttempt:YES];
-        
-        [self gotoNewProblem];
+
+        [Zubi createXPshards:100 fromLocation:ccp(cx, cy)];
+
         moveToNextProblemTime=kMoveToNextProblemTime;
         autoMoveToNextProblem=YES;
     }

@@ -8,6 +8,8 @@
 
 #import "cocos2d.h"
 
+@class ContentService;
+
 typedef enum
 {
     kMenuStateTopic=0,
@@ -42,7 +44,31 @@ typedef enum
     NSMutableArray *moduleBaseLayers;
     NSMutableArray *moduleLayers;
     
+    NSMutableArray *moduleObjects;
+    
+    NSMutableArray *elementObjects;
+    
     float timeSinceTap;
+    
+    ContentService *contentService;
+    
+    CCLayer *eMenu;
+    
+    CCSprite *eMenuLeftOlay;
+    CCSprite *eMenuLeftPlayBtn;
+    CCSprite *eMenuLeftClock;
+    
+    CCLabelTTF *eMenuTotExp;
+    CCLabelTTF *eMenuTotTime;
+    CCLabelTTF *eMenuModName;
+    CCLabelTTF *eMenuModDesc;
+    CCLabelTTF *eMenuModStatus;
+    CCLabelTTF *eMenuModTime;
+    CCLabelTTF *eMenuPlayerName;
+    
+    
+    
+    
 }
 
 +(CCScene *)scene;

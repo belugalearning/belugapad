@@ -10,7 +10,18 @@
 #import "global.h"
 #import "BLMath.h"
 #import "ZubiIntro.h"
+#import "ContentService.h"
+#import "Syllabus.h"
+#import "Topic.h"
+#import "Module.h"
+#import "Element.h"
+#import "AppDelegate.h"
 
+#import <CouchCocoa/CouchCocoa.h>
+#import <CouchCocoa/CouchDesignDocument_Embedded.h>
+#import <CouchCocoa/CouchModelFactory.h>
+#import <CouchCocoa/CouchTouchDBServer.h>
+#import <TouchDB/TouchDB.h>
 
 const float kPropXPinchThreshold=0.08f;
 const float kPropXSwipeModuleThreshold=0.15f;
@@ -21,8 +32,8 @@ const float kPropYTopicGap=0.6f;
 const float kPropXModuleGap=0.35f;
 
 const ccColor3B kMenuLabelTitleColor={255, 255, 255};
-const GLubyte kMenuLabelOpacity=200;
-const float kPropXMenuLabelFontSize=0.1f;
+const GLubyte kMenuLabelOpacity=120;
+const float kPropXMenuLabelFontSize=0.08f;
 
 const float kMenuSnapTime=0.15f;
 const float kMenuSnapRate=0.5f;
@@ -80,9 +91,11 @@ const float kPropYHitNextMenu=0.9f;
         
         MenuState=kMenuStateTopic;
         
-        //load this from module data
-        moduleCount=5;
-        topicCount=4;
+        contentService = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).contentService;
+        
+        //load this from module data        
+        //moduleCount=5;
+        topicCount=[contentService.defaultSyllabus.topics count];
         
         [self setupBackground];
         
@@ -131,7 +144,16 @@ const float kPropYHitNextMenu=0.9f;
     moduleLayers=[[NSMutableArray alloc]init];
     modulePositions=[[NSMutableArray alloc]init];
     
-    for (int t=0; t<topicCount; t++) {
+    moduleObjects=[[NSMutableArray alloc] init];
+    elementObjects=[[NSMutableArray alloc] init];
+    
+    NSArray *topicIDs=contentService.defaultSyllabus.topics;
+    
+    for (int t=0; t<[topicIDs count]; t++) {
+        
+        Topic *topic=[[CouchModelFactory sharedInstance] modelForDocument:[[contentService Database] documentWithID:[topicIDs objectAtIndex:t]]];
+        
+        NSLog(@"topic name: %@", topic.name);
         
         CCLayer *thisTopic=[[[CCLayer alloc] init] autorelease];
         [thisTopic setPosition:ccp(0, -(t*(kPropYTopicGap*ly)))];
@@ -147,28 +169,58 @@ const float kPropYHitNextMenu=0.9f;
         NSMutableArray *layersForThisTopic=[[[NSMutableArray alloc] init] autorelease];
         [moduleLayers addObject:layersForThisTopic];
         
+        NSMutableArray *objectsForThisTopic=[[[NSMutableArray alloc] init] autorelease];
+        [moduleObjects addObject:objectsForThisTopic];
+        
+        NSMutableArray *elementModulesForThisTopic=[[[NSMutableArray alloc] init] autorelease];
+        [elementObjects addObject:elementModulesForThisTopic];
+        
         //set the module position for this topic
         [modulePositions addObject:[NSNumber numberWithInt:0]];
         
-        for(int m=0; m<moduleCount; m++)
+        NSArray *moduleIDs=topic.modules;
+        
+        for(int m=0; m<[moduleIDs count]; m++)
         {
+            Module *module=[[CouchModelFactory sharedInstance] modelForDocument:[[contentService Database] documentWithID:[moduleIDs objectAtIndex:m]]];
+            
             //create module 
             CCLayer *moduleLayer=[[[CCLayer alloc] init] autorelease];
             [layersForThisTopic addObject:moduleLayer];
             [modBase addChild:moduleLayer];
             
+            [objectsForThisTopic addObject:module];
+            
+            NSMutableArray *elementsForThisModule=[[[NSMutableArray alloc] init] autorelease];
+            [elementModulesForThisTopic addObject:elementsForThisModule];
+            
             [moduleLayer setPosition:ccp(m * (kPropXModuleGap * lx), 0)];
             [moduleLayer setScale:kMenuModuleScale];
-        
-            //create module/topc element view
-            CCSprite *elegeo=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/mockelegeo.png")];
-            [elegeo setPosition:ccp(cx, cy)];
-            [elegeo setOpacity:kOpacityElementGeo];
-            [moduleLayer addChild:elegeo];
+            
+            //render elements
+            NSArray *elementIDs=module.elements;
+            //float xOffsetCentre=-(([elementIDs count]-1)*200) / 2.0f;
+            //float xOffsetCentre=0;
+            
+            for(int e=0; e<[elementIDs count]; e++)
+            {                
+                Element *element=[[CouchModelFactory sharedInstance] modelForDocument:[[contentService Database] documentWithID:[elementIDs objectAtIndex:e]]];
+                
+                [elementsForThisModule addObject:element];
+                
+                //create module/topc element view
+                CCSprite *elegeo=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/ElementView/Menu_E_C_S.png")];
+                
+                float offsetX=-(((int)[elementIDs count]-1) * 100);
+                
+                [elegeo setPosition:ccp(cx + (e*200) + offsetX, cy)];
+                [elegeo setOpacity:255];
+                [moduleLayer addChild:elegeo];
+            }
             
             //create module/topic label
-            CCLabelTTF *tlabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"T%d M%d", t, m] fontName:GENERIC_FONT fontSize:(kPropXMenuLabelFontSize*lx)];
-            [tlabel setPosition:ccp(cx, cy)];
+            CCLabelTTF *tlabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"M%@", module.name] fontName:GENERIC_FONT fontSize:(kPropXMenuLabelFontSize*lx)];
+            [tlabel setPosition:ccp(cx, cy-200)];
             [tlabel setColor:kMenuLabelTitleColor];
             [tlabel setOpacity:kMenuLabelOpacity];
             [moduleLayer addChild:tlabel];
@@ -317,6 +369,10 @@ const float kPropYHitNextMenu=0.9f;
 -(void)resetPinch
 {
     int modulePosition=[[modulePositions objectAtIndex:topicPosition] intValue];
+    
+    //bail if before or after modules
+    if (modulePosition<0 || modulePosition>=[[moduleLayers objectAtIndex:topicPosition] count]) return;
+    
     CCLayer *currentModule=[[moduleLayers objectAtIndex:topicPosition] objectAtIndex:modulePosition];
     
     if(MenuState==kMenuStateTopic) [currentModule setScale:kMenuModuleScale];
@@ -328,12 +384,54 @@ const float kPropYHitNextMenu=0.9f;
     int modulePosition=[[modulePositions objectAtIndex:topicPosition] intValue];
     CCLayer *currentModule=[[moduleLayers objectAtIndex:topicPosition] objectAtIndex:modulePosition];
     
+    Module *module=[[moduleObjects objectAtIndex:topicPosition] objectAtIndex:modulePosition];
+    
     [currentModule runAction:[CCEaseIn actionWithAction:[CCScaleTo actionWithDuration:kMenuScaleTime scale:1.0f] rate:kMenuModuleScaleRate]];
+    
+    [currentModule runAction:[CCMoveBy actionWithDuration:kMenuScaleTime position:ccp(150,0)]];
     
     //semi-hide all other elements
     [self setAllModuleOpacityTo:0.0f exceptFor:currentModule];
     
+    //show element view
+    [self showModuleOverlay:module];
+    
     [moduleViewUI setVisible:YES];
+}
+
+-(void)buildModuleOverlay
+{
+    eMenu = [[CCLayer alloc]init];
+    [self addChild:eMenu z:10];
+    [eMenu setVisible:NO];
+    
+    eMenuLeftOlay = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/ElementView/Menu_LeftPanelStatic.png")];
+    eMenuLeftPlayBtn = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/ElementView/PlayButton.png")];
+    eMenuLeftClock = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/ElementView/Menu_E_Clock.png")];
+    
+    eMenuTotExp = [CCLabelTTF labelWithString:@"53,000" fontName:GENERIC_FONT fontSize:50.0f];
+    eMenuTotTime = [CCLabelTTF labelWithString:@"23 mins" fontName:GENERIC_FONT fontSize:50.0f];
+    eMenuModName = [CCLabelTTF labelWithString:@"MOD_NAME" fontName:GENERIC_FONT fontSize:50.0];
+    eMenuModDesc = [CCLabelTTF labelWithString:@"MOD_DESC" fontName:GENERIC_FONT fontSize:50.0f];
+    eMenuModStatus = [CCLabelTTF labelWithString:@"MOD_STATUS" fontName:GENERIC_FONT fontSize:50.0f];
+    eMenuModTime = [CCLabelTTF labelWithString:@"9 mins" fontName:GENERIC_FONT fontSize:50.0f];
+    eMenuPlayerName = [CCLabelTTF labelWithString:@"PLAYER_NAME" fontName:GENERIC_FONT fontSize:50.0f];
+    
+}
+
+-(void)showModuleOverlay: (Module*)module
+{
+    NSLog(@"module: %@", module.name);
+}
+
+-(void)hideModuleOverlay
+{
+    NSLog(@"hide module view");
+}
+
+-(void)pressedPlayButton
+{
+    
 }
 
 -(void)snapToTopicView
@@ -341,7 +439,9 @@ const float kPropYHitNextMenu=0.9f;
     int modulePosition=[[modulePositions objectAtIndex:topicPosition] intValue];
     CCLayer *currentModule=[[moduleLayers objectAtIndex:topicPosition] objectAtIndex:modulePosition];
     
-    [currentModule runAction:[CCEaseIn actionWithAction:[CCScaleTo actionWithDuration:kMenuScaleTime scale:kMenuModuleScale] rate:kMenuModuleScaleRate]];    
+    [currentModule runAction:[CCEaseIn actionWithAction:[CCScaleTo actionWithDuration:kMenuScaleTime scale:kMenuModuleScale] rate:kMenuModuleScaleRate]];   
+    
+    [currentModule runAction:[CCMoveBy actionWithDuration:kMenuScaleTime position:ccp(-150,0)]];
     
     [self setAllModuleOpacityTo:1.0f exceptFor:currentModule];
     
@@ -434,6 +534,8 @@ const float kPropYHitNextMenu=0.9f;
         {
             MenuState=kMenuStateTopic;
             
+            [self hideModuleOverlay];
+            
             [self snapToTopicView];            
         }
         
@@ -441,8 +543,25 @@ const float kPropYHitNextMenu=0.9f;
         {
             MenuState=kMenuStateTopic;
             
+            [self hideModuleOverlay];
+            
             [self snapToTopicView];
         }
+
+        //tofu touch here for play button press -- call pressMenuButton
+        
+        else {
+            //look for element taps
+            int modulePosition=[[modulePositions objectAtIndex:topicPosition] intValue];   
+            Module *module=[[moduleObjects objectAtIndex:topicPosition] objectAtIndex:modulePosition];
+            
+            NSArray *elements=[[elementObjects objectAtIndex:topicPosition] objectAtIndex:modulePosition];
+            
+            NSLog(@"elements count: %d", [elements count]);
+        }
+        
+        
+        
     }
 
     [self snapToXSwipe];

@@ -145,6 +145,7 @@ const float kPropYHitNextMenu=0.9f;
     modulePositions=[[NSMutableArray alloc]init];
     
     moduleObjects=[[NSMutableArray alloc] init];
+    elementObjects=[[NSMutableArray alloc] init];
     
     NSArray *topicIDs=contentService.defaultSyllabus.topics;
     
@@ -171,6 +172,9 @@ const float kPropYHitNextMenu=0.9f;
         NSMutableArray *objectsForThisTopic=[[[NSMutableArray alloc] init] autorelease];
         [moduleObjects addObject:objectsForThisTopic];
         
+        NSMutableArray *elementModulesForThisTopic=[[[NSMutableArray alloc] init] autorelease];
+        [elementObjects addObject:elementModulesForThisTopic];
+        
         //set the module position for this topic
         [modulePositions addObject:[NSNumber numberWithInt:0]];
         
@@ -187,6 +191,9 @@ const float kPropYHitNextMenu=0.9f;
             
             [objectsForThisTopic addObject:module];
             
+            NSMutableArray *elementsForThisModule=[[[NSMutableArray alloc] init] autorelease];
+            [elementModulesForThisTopic addObject:elementsForThisModule];
+            
             [moduleLayer setPosition:ccp(m * (kPropXModuleGap * lx), 0)];
             [moduleLayer setScale:kMenuModuleScale];
             
@@ -197,6 +204,10 @@ const float kPropYHitNextMenu=0.9f;
             
             for(int e=0; e<[elementIDs count]; e++)
             {                
+                Element *element=[[CouchModelFactory sharedInstance] modelForDocument:[[contentService Database] documentWithID:[elementIDs objectAtIndex:e]]];
+                
+                [elementsForThisModule addObject:element];
+                
                 //create module/topc element view
                 CCSprite *elegeo=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/ElementView/Menu_E_C_S.png")];
                 
@@ -516,8 +527,21 @@ const float kPropYHitNextMenu=0.9f;
             
             [self snapToTopicView];
         }
-        
+
         //tofu touch here for play button press -- call pressMenuButton
+        
+        else {
+            //look for element taps
+            int modulePosition=[[modulePositions objectAtIndex:topicPosition] intValue];   
+            Module *module=[[moduleObjects objectAtIndex:topicPosition] objectAtIndex:modulePosition];
+            
+            NSArray *elements=[[elementObjects objectAtIndex:topicPosition] objectAtIndex:modulePosition];
+            
+            NSLog(@"elements count: %d", [elements count]);
+        }
+        
+        
+        
     }
 
     [self snapToXSwipe];

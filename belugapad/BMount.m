@@ -53,7 +53,7 @@
         NSMutableArray *mo=[[gameObject store] objectForKey:MOUNTED_OBJECTS];
         for (DWGameObject *m in mo) {
             //audio cue (generic)
-            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/thats_not_quite_it.wav")];
+            //[[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/thats_not_quite_it.wav")];
                         
             [m handleMessage:kDWunsetMount andPayload:nil withLogLevel:0];
         }

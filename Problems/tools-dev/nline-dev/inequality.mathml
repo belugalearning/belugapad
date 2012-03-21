@@ -1,0 +1,21 @@
+<?xml version='1.0'?>
+<!DOCTYPE math PUBLIC '-//W3C//DTD MathML 2.0//EN' 'http://www.w3.org/TR/MathML2/dtd/mathml2.dtd'>
+<math xmlns='http://www.w3.org/1998/Math/MathML'>
+    <apply>
+        <eq />
+        <ci>a</ci>
+        <apply>
+            <eq />
+            <ci>b</ci>
+            <apply>
+                <eq />
+                <ci>c</ci>
+                <apply>
+                    <eq />
+                    <ci>d</ci>
+                    <cn type='integer'>1</cn>
+                </apply>
+            </apply>
+        </apply>
+    </apply>
+</math>

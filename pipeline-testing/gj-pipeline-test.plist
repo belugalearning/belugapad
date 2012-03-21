@@ -3,6 +3,12 @@
 <plist version="1.0">
 <array>
 	<string>/Problems/Addition/ac-dev/02count/count-fb-hard-3.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch1.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch2.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch3.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch4.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch5.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch6.plist</string>
 	<string>/Problems/tools-dev/gj-dev/float-ops.plist</string>
 	<string>/Problems/tools-dev/gj-dev/gj-mq1.plist</string>
 	<string>/Problems/tools-dev/gj-dev/gj-f1.plist</string>

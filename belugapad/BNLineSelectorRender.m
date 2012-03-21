@@ -45,7 +45,7 @@
     }
     
     selectionLabel=[CCLabelTTF labelWithString:labelText fontName:GENERIC_FONT fontSize:40];
-    [selectionLabel setPosition:CGPointMake(selector.pos.x, selector.pos.y+10)];
+    [selectionLabel setPosition:CGPointMake(selector.BasePos.x, selector.BasePos.y+10)];
     [[gameWorld GameScene].ForeLayer addChild:selectionLabel];
 }
 
@@ -60,11 +60,13 @@
         
         if(selector.WatchRambler.MinValue && selector.WatchRambler.Value <= [selector.WatchRambler.MinValue intValue] && selector.WatchRambler.TouchXOffset>0)
         {
-            moveX=-selector.WatchRambler.TouchXOffset;
+            selector.WatchRambler.TouchXOffset=0;
+            //moveX=-selector.WatchRambler.TouchXOffset;
         }
         else if(selector.WatchRambler.MaxValue && selector.WatchRambler.Value >= [selector.WatchRambler.MaxValue intValue] && selector.WatchRambler.TouchXOffset<0)
         {
-            moveX=-selector.WatchRambler.TouchXOffset;
+            selector.WatchRambler.TouchXOffset=0;
+            //moveX=-selector.WatchRambler.TouchXOffset;
         }
         else {
                 
@@ -86,6 +88,10 @@
                 
                 //put move in negative space if touch was in positive space
                 if(selector.WatchRambler.TouchXOffset>0)moveX*=-1;
+                
+                //reset touch offset to bound
+                if(selector.WatchRambler.TouchXOffset<0) selector.WatchRambler.TouchXOffset=-totalX;
+                else selector.WatchRambler.TouchXOffset=totalX;
             }
             
             //get offset on y
@@ -100,6 +106,7 @@
         [mySprite setPosition:selector.pos];
         
         [connectorSprite setOpacity:connectorOpacity];
+        [selectionLabel setOpacity:connectorOpacity];
     }
 }
 

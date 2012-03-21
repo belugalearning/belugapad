@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>stitch auto 2, no render</string>
 	<key>EXPRESSION_FILE</key>
-	<string>/Problems/tools-dev/nline-dev/a-eq-7.mathml</string>
+	<string>/Problems/tools-dev/nline-dev/inequality.mathml</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>

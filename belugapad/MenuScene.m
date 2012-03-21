@@ -18,6 +18,8 @@
 #import "AppDelegate.h"
 #import "ToolHost.h"
 #import "SimpleAudioEngine.h"
+#import "User.h"
+#import "UsersService.h"
 
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
@@ -461,8 +463,9 @@ const float kPropYHitNextMenu=0.9f;
 
 -(void)showModuleOverlay: (Module*)module
 {
+    UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
     [eMenuModName setString:module.name];
-    [eMenuPlayerName setString:@"Dave"];
+    [eMenuPlayerName setString:us.currentUser.nickName];
     [eMenuTotExp setString:@"53,000"];
     [eMenuTotTime setString:@"23 mins"];
     [eMenu setVisible:YES];

@@ -17,6 +17,7 @@
 #import "Element.h"
 #import "AppDelegate.h"
 #import "ToolHost.h"
+#import "SimpleAudioEngine.h"
 
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
@@ -107,6 +108,9 @@ const float kPropYHitNextMenu=0.9f;
         [self schedule:@selector(doUpdate:) interval:1.0f/kMenuScheduleUpdateDoUpdate];
         
         [self buildModuleOverlay];
+        
+        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/mood.mp3") loop:YES];
+        
     }
     
     return self;
@@ -619,6 +623,7 @@ const float kPropYHitNextMenu=0.9f;
         {
             if(selectedElement)
             {
+                [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
                 contentService.currentElement=selectedElement;
                 [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
             }

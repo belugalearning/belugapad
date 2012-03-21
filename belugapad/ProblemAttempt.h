@@ -14,6 +14,7 @@
 @property (retain) User *user;
 @property (retain) NSString *problemId;
 @property (retain) NSString *problemRevisionId;
+@property (retain) NSString *elementId;
 @property (retain) NSDate *dateTimeStart;
 @property (retain) NSDate *dateTimeEnd;
 @property (retain) NSArray *pauses;

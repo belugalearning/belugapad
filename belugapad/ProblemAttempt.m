@@ -21,7 +21,7 @@
 
 @implementation ProblemAttempt
 
-@dynamic user, problemId, problemRevisionId, dateTimeStart, dateTimeEnd, pauses, timeInPlay, success, interactionEvents;
+@dynamic user, problemId, problemRevisionId, elementId, dateTimeStart, dateTimeEnd, pauses, timeInPlay, success, interactionEvents;
 
 - (id) initWithNewDocumentInDatabase:(CouchDatabase*)database
                              AndUser:(User*)user
@@ -35,6 +35,7 @@
         self.user = user;
         self.problemId = problem.document.documentID;
         self.problemRevisionId = [problem.document propertyForKey:@"_rev"];
+        self.elementId = problem.elementId;
         self.dateTimeStart = [NSDate date];
         self.dateTimeEnd = nil;
         self.pauses = [NSMutableArray array];

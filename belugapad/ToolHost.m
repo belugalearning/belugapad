@@ -18,6 +18,7 @@
 #import "BAExpressionHeaders.h"
 #import "BATio.h"
 #import "ContentService.h"
+#import "MenuScene.h"
 
 @interface ToolHost()
 {
@@ -286,9 +287,7 @@
     }
     if(CGRectContainsPoint(kPauseMenuMenu,location))
     {
-       //menu - do nothing, yet
-        [self returnToMenu];
-        
+        [[CCDirector sharedDirector] replaceScene:[MenuScene scene]];
     }
            
 }

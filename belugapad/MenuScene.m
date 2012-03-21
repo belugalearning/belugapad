@@ -16,6 +16,7 @@
 #import "Module.h"
 #import "Element.h"
 #import "AppDelegate.h"
+#import "ToolHost.h"
 
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
@@ -56,7 +57,7 @@ const float kMenuScheduleUpdateDoUpdate=60.0f;
 //temporary -- for elegeo sprite placeholder
 const float kOpacityElementGeo=75;
 
-const CGPoint kPropXBackBtnPos={0.36, -0.06};
+const CGPoint kPropXBackBtnPos={0.39, -0.06};
 const float kPropXBackBtnHitRadius=40;
 
 const float kPropXHitNextMenu=0.9f;
@@ -486,6 +487,8 @@ const float kPropYHitNextMenu=0.9f;
     
     if(selectedElementOverlay) [self removeChild:selectedElementOverlay cleanup:YES];
     
+    if(selectedElement) selectedElement=nil;
+    
     [moduleViewUI setVisible:NO];
 }
 
@@ -590,6 +593,13 @@ const float kPropYHitNextMenu=0.9f;
         }
 
         //tofu touch here for play button press -- call pressMenuButton
+        else if(CGRectContainsPoint(CGRectMake(0, 0, 300, 100), location))
+        {
+            if(selectedElement)
+            {
+                [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
+            }
+        }
         
         else {
             //look for element taps
@@ -617,6 +627,8 @@ const float kPropYHitNextMenu=0.9f;
                     [self addChild:selectedElementOverlay];
                     
                     [self showElementInfo:element];
+                    
+                    selectedElement=element;
                     
                 }
             }

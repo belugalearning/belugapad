@@ -20,10 +20,11 @@
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
 #import <CouchCocoa/CouchModelFactory.h>
 #import <CouchCocoa/CouchTouchDBServer.h>
+#import <TouchDB/TouchDB.h>
 
 NSString * const kRemoteContentDatabaseURI = @"http://www.soFarAslant.com:5984/temp-blm-content";
 NSString * const kLocalContentDatabaseName = @"content";
-NSString * const kDefaultDesignDocName = @"default";
+NSString * const kDefaultContentDesignDocName = @"default";
 NSString * const kDefaultSyllabusViewName = @"default-syllabus";
 
 @interface ContentService()
@@ -35,7 +36,13 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
     NSUInteger currentPIndex;
     
     CouchDatabase *database;
+    Syllabus *defaultSyllabus;
     Problem *currentProblem;
+
+    // TODO: pull replication temporarily removed. Need way to figure out when replication is complete. 
+    // Try using comparison of database.lastSequenceNumber against http://www.sofaraslant.com:5984/temp-blm-content doc's update_seq value
+    CouchReplication *pull;
+    
 }
 
 @property (nonatomic, readwrite, retain) NSDictionary *currentPDef;
@@ -71,27 +78,32 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
             [[CouchModelFactory sharedInstance] registerClass:[Syllabus class] forDocumentType:@"syllabus"];
             
             CouchTouchDBServer *server = [CouchTouchDBServer sharedInstance];
-            database = [server databaseNamed:kLocalContentDatabaseName];
-            RESTOperation* op = [database create];
-            if (![op wait] && op.error.code != 412)
-            {
-                self = nil;
-                return self;
-            }
-            database.tracksChanges = YES;
             
-            CouchReplication *pull;
-            pull = [[database pullFromDatabaseAtURL:[NSURL URLWithString:kRemoteContentDatabaseURI]] retain];
-            [[pull start] wait];
-            [pull release];
+            // if this is the first launch of the app, install canned content db                      
+            TDDatabase *db = [server.touchServer databaseNamed:kLocalContentDatabaseName];
+            if (!db.exists)
+            {
+                // first launch
+                NSError *err;
+                [db replaceWithDatabaseFile:BUNDLE_FULL_PATH(@"/canned-content-db/content.touchdb")
+                            withAttachments:BUNDLE_FULL_PATH(@"/canned-content-db/content-attachments")
+                                      error:&err];
+            }
+            
+            database = [server databaseNamed:kLocalContentDatabaseName];
+            database.tracksChanges = YES;
             
             [self createViews];
             
-            CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kDefaultSyllabusViewName];
-            [[q start] wait];            
-            return [[CouchModelFactory sharedInstance] modelForDocument:((CouchQueryRow*)[q.rows.allObjects objectAtIndex:0]).document];
+            CouchQuery *q = [[database designDocumentWithName:kDefaultContentDesignDocName] queryViewNamed:kDefaultSyllabusViewName];
+            [[q start] wait];
+            NSArray *syllabi = q.rows.allObjects; // there should be exactly 1
             
-            
+            if ([syllabi count] > 0)
+            {
+                defaultSyllabus = [[[CouchModelFactory sharedInstance] modelForDocument:((CouchQueryRow*)[syllabi objectAtIndex:0]).document] retain];
+                
+            }
         }
     }
     return self;
@@ -121,13 +133,70 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
     }
     else
     {
-        if (currentProblem) [currentProblem release];
+        NSUInteger tIx = 0;
+        NSUInteger mIx = 0;
+        NSUInteger eIx = 0;
+        NSUInteger pIx = 0;
+        
+        if (currentProblem)
+        {
+            Topic *t = [[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:currentProblem.topicId]];
+            Module *m = [[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:currentProblem.moduleId]];
+            Element *e = [[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:currentProblem.elementId]];
+            
+            tIx = [defaultSyllabus.topics indexOfObject:currentProblem.topicId];
+            mIx = [t.modules indexOfObject:currentProblem.moduleId];
+            eIx = [m.elements indexOfObject:currentProblem.elementId];
+            pIx = 1 + [e.includedProblems indexOfObject:currentProblem.document.documentID];
+            
+            [currentProblem release];
+            currentProblem = nil;
+        }
+        
+        while (!currentProblem && tIx < [defaultSyllabus.topics count])
+        {
+            NSString *tId = [defaultSyllabus.topics objectAtIndex:tIx];
+            Topic *t = [[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:tId]];
+            
+            while (!currentProblem && mIx < [t.modules count])
+            {
+                NSString *mId = [t.modules objectAtIndex:mIx];
+                Module *m = [[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:mId]];
+                
+                while (!currentProblem && eIx < [m.elements count])
+                {
+                    NSString *eId = [m.elements objectAtIndex:eIx];
+                    Element *e = [[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:eId]];
+                    
+                    if (pIx < [e.includedProblems count])
+                    {
+                        NSString *pId = [e.includedProblems objectAtIndex:pIx];
+                        currentProblem = [[[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:pId]] retain];
+                    }
+                    else
+                    {
+                        pIx = 0;
+                        ++eIx;
+                    }
+                }
+                eIx = 0;           
+                ++mIx;
+            }            
+            ++tIx;
+        }
+        
+        if (currentProblem)
+        {
+            self.currentPDef = currentProblem.pdef;
+            NSData *expressionData = currentProblem.expressionData;
+            if (expressionData) self.currentPExpr = [BATio loadTreeFromMathMLData:expressionData];
+        }
     }
 }
 
 -(void)createViews
 {
-    CouchDesignDocument* design = [database designDocumentWithName:kDefaultDesignDocName];
+    CouchDesignDocument* design = [database designDocumentWithName:kDefaultContentDesignDocName];
     
     [design defineViewNamed:kDefaultSyllabusViewName
                    mapBlock:MAPBLOCK({
@@ -149,6 +218,7 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
     [currentPDef release];
     [currentPExpr release];
     [testProblemList release];
+    [defaultSyllabus release];
     [super dealloc];
 }
 

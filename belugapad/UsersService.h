@@ -31,6 +31,8 @@
 -(NSString*) lastCompletedProblemIdInElementWithId:(NSString*)elementId
                                          andUserId:(NSString*)userId;
 
--(ProblemAttempt*) startProblemAttempt;
+-(void)startProblemAttempt;
+-(void)togglePauseProblemAttempt;
+-(void)endProblemAttempt:(BOOL)success;
 
 @end

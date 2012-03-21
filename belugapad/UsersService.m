@@ -10,6 +10,8 @@
 #import "Device.h"
 #import "User.h"
 #import "ProblemAttempt.h"
+#import "AppDelegate.h"
+#import "ContentService.h"
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
 #import <CouchCocoa/CouchModelFactory.h>
@@ -93,8 +95,8 @@ NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-el
 
         pushReplication = [[database pushToDatabaseAtURL:[NSURL URLWithString:kRemoteUsersDatabaseURI]] retain];
         pushReplication.continuous = YES;
-        pushReplication = [[database pullFromDatabaseAtURL:[NSURL URLWithString:kRemoteUsersDatabaseURI]] retain];
-        pushReplication.continuous = YES;
+        pullReplication = [[database pullFromDatabaseAtURL:[NSURL URLWithString:kRemoteUsersDatabaseURI]] retain];
+        pullReplication.continuous = YES;
     }
     return self;
 }
@@ -211,6 +213,43 @@ NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-el
     
     CouchQueryRow *latest = [q.rows.allObjects objectAtIndex:0];
     return latest.value;
+}
+
+-(void)startProblemAttempt
+{
+    if (currentProblemAttempt)
+    {
+        // TODO: This is horrible quick pre-emptive fix. If currentProblemAttempt != nil, there's an issue. Hopefully will never end up here!
+        [currentProblemAttempt endAttempt:NO];
+        [currentProblemAttempt release];
+    }
+    
+    AppDelegate *ad = [[UIApplication sharedApplication] delegate];
+    ContentService *cs = ad.contentService;
+    Problem *currentProblem = cs.currentProblem;
+    
+    currentProblemAttempt = [[ProblemAttempt alloc] initWithNewDocumentInDatabase:database
+                                                                          andUser:currentUser
+                                                                       andProblem:currentProblem];
+}
+
+-(void) togglePauseProblemAttempt
+{
+    if (!currentProblemAttempt) return; // TODO: Handle Error properly
+    [currentProblemAttempt togglePause];
+}
+
+-(void) endProblemAttempt:(BOOL)success
+{
+    if (!currentProblemAttempt) return; // TODO: Handle Error properly
+    [currentProblemAttempt endAttempt:success];
+    
+    if (success)
+    {
+        // award assessment criteria points.
+        // for now we're awarding max points for the sole assessment criterion
+        
+    }
 }
 
 -(void)createViews

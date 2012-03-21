@@ -20,11 +20,11 @@
 
 -(User*) createUserWithNickName:(NSString*)nickName
                     andPassword:(NSString*)password
-                    andZubiColor:(NSData*)color // rgba
-               andZubiScreenshot:(UIImage*)image;
+                   andZubiColor:(NSData*)color // rgba
+              andZubiScreenshot:(UIImage*)image;
 
 -(User*) userMatchingNickName:(NSString*)nickName
-                     andPassword:(NSString*)password;
+                  andPassword:(NSString*)password;
 
 -(ProblemAttempt*) startProblemAttempt;
 

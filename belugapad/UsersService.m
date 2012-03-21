@@ -183,6 +183,20 @@ NSString * const kUsersTimeInApp = @"users-time-in-app";
     return u;
 }
 
+-(double)currentUserTotalTimeInApp
+{
+    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersTimeInApp];
+    q.groupLevel = 1;
+    q.keys = [NSArray arrayWithObject:self.currentUser.document.documentID];
+    [[q start] wait];
+    
+    // should have 1 row returned!
+    if (![q.rows.allObjects count]) return 0;
+    
+    CouchQueryRow *r = [q.rows.allObjects objectAtIndex:0];
+    return [(NSNumber*)r.value doubleValue];
+}
+
 -(void)createViews
 {
     CouchDesignDocument* design = [database designDocumentWithName:kDefaultDesignDocName];

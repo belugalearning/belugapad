@@ -26,6 +26,8 @@
 -(User*) userMatchingNickName:(NSString*)nickName
                   andPassword:(NSString*)password;
 
+-(double) currentUserTotalTimeInApp;
+
 -(ProblemAttempt*) startProblemAttempt;
 
 @end

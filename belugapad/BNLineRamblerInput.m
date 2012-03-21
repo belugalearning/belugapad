@@ -61,7 +61,8 @@
             }
             else {
                 float valueProp=fabsf(ramblerGameObject.TouchXOffset) / ((float)ramblerGameObject.AutoStitchIncrement * ramblerGameObject.DefaultSegmentSize);
-                if(valueProp>=0.66)
+
+                if(fabsf(ramblerGameObject.TouchXOffset) >= ((float)ramblerGameObject.AutoStitchIncrement - 0.5f) * ramblerGameObject.DefaultSegmentSize)
                 {
                     //snap forward
                     valueOffset=ramblerGameObject.AutoStitchIncrement;

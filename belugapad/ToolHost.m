@@ -18,6 +18,7 @@
 #import "BAExpressionHeaders.h"
 #import "BATio.h"
 #import "ContentService.h"
+#import "UsersService.h"
 #import "MenuScene.h"
 
 @interface ToolHost()
@@ -126,6 +127,9 @@
     //do internal mgmt updates
     if(currentTool.ProblemComplete || metaQuestionForceComplete)
     {
+        //UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+        //[us endProblemAttempt:YES];
+        
         [self gotoNewProblem];
     }
     
@@ -261,11 +265,17 @@
         [self.Zubi hideZubi];
     }
     
+    //UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+    //[us startProblemAttempt];
 }
 
 -(void) resetProblem
 {
     skipNextStagedIntroAnim=YES;
+    
+    //UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+    //[us endProblemAttempt:NO];
+    
     [self loadProblem];
 }
 
@@ -277,7 +287,8 @@
     [pauseMenu setPosition:ccp(cx, cy)];
     [toolForeLayer addChild:pauseMenu z:10];
     
-//    UserService userService = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).contentService;
+    //UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+    //[us togglePauseProblemAttempt];
 }
 
 -(void) checkPauseTouches:(CGPoint)location
@@ -287,6 +298,9 @@
         //resume
         [toolForeLayer removeChild:pauseMenu cleanup:YES];
         isPaused=NO;
+        
+        //UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+        //[us togglePauseProblemAttempt];
     }
     if(CGRectContainsPoint(kPauseMenuReset, location))
     {

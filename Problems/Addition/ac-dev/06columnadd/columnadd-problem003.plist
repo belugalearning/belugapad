@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ColumnAddition</string>
+	<key>NUMBER_A</key>
+	<integer>7</integer>
+	<key>NUMBER_B</key>
+	<integer>6</integer>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>7 + 6 = 13</string>
+</dict>
+</plist>

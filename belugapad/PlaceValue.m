@@ -443,10 +443,10 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     if([pdef objectForKey:PICKUP_SPRITE_FILENAME]) pickupSprite = [pdef objectForKey:PICKUP_SPRITE_FILENAME];
     [pickupSprite retain];
     
-    if([pdef objectForKey:PROXIMITY_SPRITE_FILENAME]) {
-        proximitySprite = [pdef objectForKey:PROXIMITY_SPRITE_FILENAME];
-        [proximitySprite retain];   
-    }
+//    if([pdef objectForKey:PROXIMITY_SPRITE_FILENAME]) {
+//        proximitySprite = [pdef objectForKey:PROXIMITY_SPRITE_FILENAME];
+//        [proximitySprite retain];   
+//    }
 
     
     if([pdef objectForKey:COLUMN_ROPES]) {
@@ -819,6 +819,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 -(void)evalProblemMatrixMatch
 {
     float solutionsFound = 0;
+    BOOL canEval;
+    NSArray *solutionMatrix = [solutionsDef objectForKey:SOLUTION_MATRIX];
     
     // for each column
     for(int c=0; c<gw.Blackboard.AllStores.count; c++)
@@ -847,8 +849,6 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             }
         }
         
-        NSArray *solutionMatrix = [solutionsDef objectForKey:SOLUTION_MATRIX];
-        
         for(int o=0; o<solutionMatrix.count; o++)
         {
             NSDictionary *solDict = [solutionMatrix objectAtIndex:o];
@@ -864,17 +864,18 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             {
                 //TODO: Attach partial failure here
             }
+            canEval=YES;
             
         }
-        
-        if(solutionsFound == solutionMatrix.count)
-        {
-            [self doWinning];
-        }
-        else if(solutionsFound != solutionMatrix.count && evalMode==kProblemEvalOnCommit)
-        {
-            [self doIncorrect];
-        }
+    }
+    
+    if(solutionsFound == solutionMatrix.count && canEval)
+    {
+        [self doWinning];
+    }
+    else if(solutionsFound != solutionMatrix.count && evalMode==kProblemEvalOnCommit && canEval)
+    {
+        [self doIncorrect];
     }
     
 }
@@ -1314,7 +1315,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
             [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
             
-
+											
             if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
             {
                 // TODO: Decide behaviour when the column base amount is selected
@@ -1333,6 +1334,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 //tell the picked-up object to mount on the dropobject
                 [pl removeAllObjects];
                 [pl setObject:[gw Blackboard].DropObject forKey:MOUNT];
+                [pl setObject:[NSNumber numberWithBool:YES] forKey:ANIMATE_ME];
                 [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
                 
                 [[gw Blackboard].PickupObject handleMessage:kDWputdown andPayload:nil withLogLevel:0];         

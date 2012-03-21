@@ -296,6 +296,7 @@
     if(CGRectContainsPoint(kPauseMenuContinue, location))
     {
         //resume
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [toolForeLayer removeChild:pauseMenu cleanup:YES];
         isPaused=NO;
         
@@ -305,19 +306,24 @@
     if(CGRectContainsPoint(kPauseMenuReset, location))
     {
        //reset
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self resetProblem];
         isPaused=NO;
     }
     if(CGRectContainsPoint(kPauseMenuMenu,location))
     {
-        [[CCDirector sharedDirector] replaceScene:[MenuScene scene]];
+
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
+        [self returnToMenu];
+
+
     }
            
 }
 
 -(void) returnToMenu
 {
-    DLog(@"menu button touch");
+    [[CCDirector sharedDirector] replaceScene:[MenuScene scene]];
 }
 
 -(void) showProblemCompleteMessage
@@ -645,8 +651,12 @@
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
-     
+    
     [self checkMetaQuestionTouches:location];
+    if(isPaused)
+    {
+        return;
+    }  
     if (location.x > 944 && location.y > 688 && !isPaused)
     {
         [self showPauseMenu];
@@ -661,6 +671,10 @@
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if(isPaused)
+    {
+        return;
+    }  
     [currentTool ccTouchesMoved:touches withEvent:event];
 }
 
@@ -687,16 +701,28 @@
 
 -(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
+    if(isPaused)
+    {
+        return NO;
+    }  
     return [currentTool ccTouchBegan:touch withEvent:event];
 }
 
 -(void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
+    if(isPaused)
+    {
+        return;
+    }  
     [currentTool ccTouchMoved:touch withEvent:event];
 }
 
 -(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
+    if(isPaused)
+    {
+        return;
+    }  
     [currentTool ccTouchEnded:touch withEvent:event];
 }
 

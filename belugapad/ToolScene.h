@@ -33,7 +33,7 @@
 -(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event;
 -(void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event;
 
--(float)metaQuestionTitleYLocation;
--(float)metaQuestionAnswersYLocation;
+-(float)metaQuestionTitleXLocation;
+-(float)metaQuestionAnswersXLocation;
 
 @end

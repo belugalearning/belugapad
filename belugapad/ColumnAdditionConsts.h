@@ -10,3 +10,7 @@ extern const float kSumBoxWidth;
 extern const CGPoint kSumBoxLayerPos;
 extern const float kFontLabelSize;
 extern const float kOperatorLabelSize;
+extern const float kMoveTimeForRemainder;
+extern const float kColumnAddAssetScale;
+extern const float kColumnAddRemainderOffset;
+extern const float kColumnAddRemainderArrowOffset;

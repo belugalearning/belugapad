@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>2+3=x</string>
+	<key>EXPRESSION_FILE</key>
+	<string>/Problems/ExprScene/inequality.mathml</string>
 	<key>TOOL_KEY</key>
 	<string>ExprScene</string>
 </dict>

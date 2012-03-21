@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>/Problems/ExprScene/expr-problem001.plist</string>
+	<string>/Problems/tools-dev/gj-dev/float-noops.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch1.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch2.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch3.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch4.plist</string>
+</array>
+</plist>

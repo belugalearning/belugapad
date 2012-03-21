@@ -16,10 +16,10 @@
 
 +(BAExpressionTree *)loadTreeFromMathMLFile:(NSString*)filePath
 {
-    return [BATio loadTreeFromMLFileData:[NSData dataWithContentsOfFile:filePath]];
+    return [BATio loadTreeFromMathMLData:[NSData dataWithContentsOfFile:filePath]];
 }
 
-+(BAExpressionTree *)loadTreeFromMLFileData:(NSData*)xmlData
++(BAExpressionTree *)loadTreeFromMathMLData:(NSData*)xmlData
 {
     CXMLDocument *doc=[[[CXMLDocument alloc] initWithData:xmlData options:0 error:nil] retain];
     

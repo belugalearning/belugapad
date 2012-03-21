@@ -106,6 +106,7 @@ static NSString *kSpriteFileOperatorMode = @"/images/blocks/obj-float-50-operato
     {
         [self swapObjSpritesTo:kSpriteFileOperatorMode];
         inOperatorMode=YES;
+        
     }
     
     if(messageType==kDWnotInOperatorMode)

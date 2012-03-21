@@ -12,6 +12,10 @@
 	<string>0</string>
 	<key>SEGMENT_VALUE</key>
 	<string>1</string>
+	<key>RENDER_STITCHES</key>
+	<true/>
+	<key>AUTO_STITCH_INCREMENT</key>
+	<integer>2</integer>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>

@@ -59,6 +59,8 @@ static CGPoint kOperatorNilOffset={0, 0};
 
 static float kOperatorHitRadius=25.0f;
 
+static float kOpModeBodySize=400.0f;
+
 static void eachShape(void *ptr, void* unused)
 {
 	cpShape *shape = (cpShape*) ptr;
@@ -243,6 +245,9 @@ static void eachShape(void *ptr, void* unused)
 //    [toolHost.Zubi createXPshards:20 fromLocation:location];
     
     BOOL continueEval=YES;
+    
+    //hide any solution text
+    [problemCompleteLabel setVisible:NO];
     
     //set daemon mode and target
     [toolHost.Zubi setTarget:location];
@@ -489,6 +494,19 @@ static void eachShape(void *ptr, void* unused)
     //operator Layer
     [operatorLayer setVisible:YES];
     [operatorLayer setPosition:showAtPos];
+    
+    blowOutPos=showAtPos;
+}
+
+-(void)removeBlowOut
+{
+    cpSpaceRemoveShape(space, shapeBlowOut);
+    cpSpaceRemoveBody(space, bodyBlowOut);
+    cpShapeFree(shapeBlowOut);
+    cpBodyFree(bodyBlowOut);
+    
+    shapeBlowOut=nil;
+    bodyBlowOut=nil;
 }
 
 -(void)setOperators
@@ -500,12 +518,28 @@ static void eachShape(void *ptr, void* unused)
         //detach physics from both objects
         [opGOsource handleMessage:kDWdetachPhys andPayload:nil withLogLevel:0];
         [opGOtarget handleMessage:kDWdetachPhys andPayload:nil withLogLevel:0];    
+        
+        //create a space maker body
+        //destroy old one if needed
+        if(shapeBlowOut) [self removeBlowOut];
+        
+        bodyBlowOut=cpBodyNew(kOpModeBodySize, INFINITY);
+        bodyBlowOut->p=blowOutPos;
+        cpSpaceAddBody(space, bodyBlowOut);
+        
+        shapeBlowOut = cpCircleShapeNew(bodyBlowOut, kOpModeBodySize/2.0f, cpvzero);  
+        shapeBlowOut->e = 0.5;
+        shapeBlowOut->u = 0.8;
+        
+        cpSpaceAddShape(space, shapeBlowOut);
     }
 }
 
 -(void)disableOperators
 {
     if(!enableOperators) return;
+
+    if(shapeBlowOut) [self removeBlowOut];
     
     if(![[opGOsource store] objectForKey:MOUNT])
     {
@@ -527,6 +561,7 @@ static void eachShape(void *ptr, void* unused)
     opGOtarget=nil;
     
     [operatorLayer setVisible:NO];
+    
 }
 
 -(void)doAddOperation
@@ -994,15 +1029,34 @@ static void eachShape(void *ptr, void* unused)
             {
                 [self doProblemSolvedActionsFor:sol withCompletion:solComplete andScore:solScore];
                 
-                problemIsCurrentlySolved=YES;
+                //now in solcopmlete below
+                //problemIsCurrentlySolved=YES;
             }
             
             break;
         }
     }
     
+    
     //as this eval is abstracted from state events, need to hide solution text if the solution's been broken before progressing
-    if(solComplete==0)
+    if(solComplete==1 && (evalMode==kProblemEvalAuto || forceCommit))
+    {
+        if(solScore>0)
+        {
+            problemIsCurrentlySolved=YES;
+            
+            //move to next problem
+            [toolHost showProblemCompleteMessage];
+            autoMoveToNextProblem=YES;
+            timeToAutoMoveToNextProblem=0.0f;
+        }
+        else {
+            //problem not solved, reject things from containers
+            [gameWorld handleMessage:kDWejectContents andPayload:nil withLogLevel:0];
+        }
+    }
+    
+    else
     {
         if(problemIsCurrentlySolved)
         {
@@ -1016,7 +1070,6 @@ static void eachShape(void *ptr, void* unused)
             trackedSolutionIndex=-1;
             trackingSolution=NO;
         }
-
     }
     
     //evaluate tutorials
@@ -1065,13 +1118,9 @@ static void eachShape(void *ptr, void* unused)
     if(playsound) [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/sfx/%@", playsound]))];
     
     [problemCompleteLabel setString:soltext];
+    [problemCompleteLabel setVisible:YES];
     
     [gameWorld logInfo:[NSString stringWithFormat:@"solution found with value %f and text %@", solScore, soltext] withData:0];
-    
-    //move to next problem
-    [toolHost showProblemCompleteMessage];
-    autoMoveToNextProblem=YES;
-    timeToAutoMoveToNextProblem=0.0f;
 }
 
 -(void)parseTutorialActionsFor:(NSDictionary*)actionSet

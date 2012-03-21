@@ -20,4 +20,7 @@
 
 @synthesize TouchXOffset;
 
+@synthesize RenderStitches;
+@synthesize AutoStitchIncrement;
+
 @end

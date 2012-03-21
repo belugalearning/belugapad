@@ -20,5 +20,8 @@
 
 @property float TouchXOffset;
 
+@property BOOL RenderStitches;
+@property int AutoStitchIncrement;
+
 
 @end

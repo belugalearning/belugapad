@@ -16,7 +16,15 @@
 @property (retain) NSString *problemRevisionId;
 @property (retain) NSDate *dateTimeStart;
 @property (retain) NSDate *dateTimeEnd;
+@property (retain) NSArray *pauses;
+@property  NSTimeInterval timeInPlay;
 @property bool success;
 @property (retain) NSArray *interactionEvents;
+
+- (id) initWithNewDocumentInDatabase:(CouchDatabase*)database
+                             AndUser:(User*)user
+                          AndProblem:(Problem*)problem;
+
+-(void) togglePause;
 
 @end

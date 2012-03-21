@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class User, CouchLiveQuery;
+@class User, ProblemAttempt, CouchLiveQuery;
 
 @interface UsersService : NSObject
 
@@ -25,5 +25,7 @@
 
 -(User*) userMatchingNickName:(NSString*)nickName
                      andPassword:(NSString*)password;
+
+-(ProblemAttempt*) startProblemAttempt;
 
 @end

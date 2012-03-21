@@ -28,6 +28,9 @@
 
 -(double) currentUserTotalTimeInApp;
 
+-(NSString*) lastCompletedProblemIdInElementWithId:(NSString*)elementId
+                                         andUserId:(NSString*)userId;
+
 -(ProblemAttempt*) startProblemAttempt;
 
 @end

@@ -198,6 +198,21 @@ NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-el
     return [(NSNumber*)r.value doubleValue];
 }
 
+-(NSString*) lastCompletedProblemIdInElementWithId:(NSString*)elementId
+                                         andUserId:(NSString*)userId
+{
+    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kProblemSuccessByUserElementDate];
+    q.descending = YES;
+    q.startKey = [NSArray arrayWithObjects:elementId, userId, [NSDictionary dictionary], nil];
+    q.endKey = [NSArray arrayWithObjects:elementId, userId, nil];
+    [[q start] wait];
+    
+    if (![q.rows.allObjects count]) return nil;
+    
+    CouchQueryRow *latest = [q.rows.allObjects objectAtIndex:0];
+    return latest.value;
+}
+
 -(void)createViews
 {
     CouchDesignDocument* design = [database designDocumentWithName:kDefaultDesignDocName];
@@ -214,7 +229,7 @@ NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-el
                              [session objectForKey:@"startDateTime"]);
                     }
                 }
-        }) 
+        })
                 reduceBlock:REDUCEBLOCK({
         NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:nil ascending:NO selector:@selector(localizedCaseInsensitiveCompare:)];
         NSArray *sessionsByStartDesc = [values sortedArrayUsingDescriptors:[NSArray arrayWithObject:sd]];

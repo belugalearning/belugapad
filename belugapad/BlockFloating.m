@@ -1022,7 +1022,7 @@ static void eachShape(void *ptr, void* unused)
             solComplete=1;
             solScore=[[sol objectForKey:SOLUTION_SCORE]floatValue];
             
-            [problemCompleteLabel setVisible:YES];
+            //[problemCompleteLabel setVisible:YES];
             
             
             if(problemIsCurrentlySolved==NO && (evalMode==kProblemEvalAuto || forceCommit))

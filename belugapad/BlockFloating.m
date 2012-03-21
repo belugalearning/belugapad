@@ -246,6 +246,9 @@ static void eachShape(void *ptr, void* unused)
     
     BOOL continueEval=YES;
     
+    //hide any solution text
+    [problemCompleteLabel setVisible:NO];
+    
     //set daemon mode and target
     [toolHost.Zubi setTarget:location];
     [toolHost.Zubi setMode:kDaemonModeFollowing];
@@ -1026,15 +1029,34 @@ static void eachShape(void *ptr, void* unused)
             {
                 [self doProblemSolvedActionsFor:sol withCompletion:solComplete andScore:solScore];
                 
-                problemIsCurrentlySolved=YES;
+                //now in solcopmlete below
+                //problemIsCurrentlySolved=YES;
             }
             
             break;
         }
     }
     
+    
     //as this eval is abstracted from state events, need to hide solution text if the solution's been broken before progressing
-    if(solComplete==0)
+    if(solComplete==1 && (evalMode==kProblemEvalAuto || forceCommit))
+    {
+        if(solScore>0)
+        {
+            problemIsCurrentlySolved=YES;
+            
+            //move to next problem
+            [toolHost showProblemCompleteMessage];
+            autoMoveToNextProblem=YES;
+            timeToAutoMoveToNextProblem=0.0f;
+        }
+        else {
+            //problem not solved, reject things from containers
+            [gameWorld handleMessage:kDWejectContents andPayload:nil withLogLevel:0];
+        }
+    }
+    
+    else
     {
         if(problemIsCurrentlySolved)
         {
@@ -1048,7 +1070,6 @@ static void eachShape(void *ptr, void* unused)
             trackedSolutionIndex=-1;
             trackingSolution=NO;
         }
-
     }
     
     //evaluate tutorials
@@ -1097,13 +1118,9 @@ static void eachShape(void *ptr, void* unused)
     if(playsound) [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/sfx/%@", playsound]))];
     
     [problemCompleteLabel setString:soltext];
+    [problemCompleteLabel setVisible:YES];
     
     [gameWorld logInfo:[NSString stringWithFormat:@"solution found with value %f and text %@", solScore, soltext] withData:0];
-    
-    //move to next problem
-    [toolHost showProblemCompleteMessage];
-    autoMoveToNextProblem=YES;
-    timeToAutoMoveToNextProblem=0.0f;
 }
 
 -(void)parseTutorialActionsFor:(NSDictionary*)actionSet

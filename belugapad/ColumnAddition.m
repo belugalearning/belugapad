@@ -63,6 +63,7 @@
         [gw Blackboard].hostLY = ly;
         
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
+        toolState=kNoState;
         
         gw.Blackboard.inProblemSetup = NO;
     }
@@ -79,6 +80,11 @@
 
 -(void)populateGW
 {
+    if(bkgOverlay) {
+        CCSprite *bkg = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(bkgOverlay)];
+        [bkg setPosition:ccp(cx, cy)];
+        [self.BkgLayer addChild:bkg];
+    }
     
     // populate our individual number arrays
     
@@ -108,66 +114,96 @@
     
     for(int i=0; i<5; i++)
     {
-        // only show labels where we don't have 0s (until an 'actual' number starts)
-        if(!aCols[i] == 0 && !bCols[i] == 0)
-        {
-            float lblXPos=(i+1)*colSpacing;
-            NSString *aColCurrentLabel = [NSString stringWithFormat:@"%d", aCols[i]];
-            
-            NSString *bColCurrentLabel = [NSString stringWithFormat:@"%d", bCols[i]];
-            
-            aColLabels[i] = [CCLabelTTF labelWithString:aColCurrentLabel fontName:PROBLEM_DESC_FONT fontSize:kFontLabelSize];
-            
-            bColLabels[i] = [CCLabelTTF labelWithString:bColCurrentLabel fontName:PROBLEM_DESC_FONT fontSize:kFontLabelSize];
-            
-            sColLabels[i] = [CCLabelTTF labelWithString:@"#" fontName:PROBLEM_DESC_FONT fontSize:kFontLabelSize];
-            
-
-            [aColLabels[i] setPosition:ccp(lblXPos, 500)];
-            
-            [bColLabels[i] setPosition:ccp(lblXPos, 350)];
-            
-            [sColLabels[i] setPosition:ccp(lblXPos, 200)];
-            
-            [sumBoxLayer addChild:aColLabels[i]];
-            
-            [sumBoxLayer addChild:bColLabels[i]];
-            
-            [sumBoxLayer addChild:sColLabels[i]];
+        float lblXPos=(i+1)*colSpacing;
+        NSString *aColCurrentLabel;
+        NSString *bColCurrentLabel;
+        
+        // just display labels that are actually required
+        if(i-(5-[aColNos length])<=[aColNos length]>0) {
+            aColCurrentLabel = [NSString stringWithFormat:@"%d", aCols[i]];
+            aColLabelEnabled[i] = YES;
         }
+        else aColCurrentLabel = @"0";
+        if(i-(5-[bColNos length])<=[bColNos length]>0) {
+            bColCurrentLabel = [NSString stringWithFormat:@"%d", bCols[i]];   
+            bColLabelEnabled[i] = YES;
+        }
+        else bColCurrentLabel = @"0";
+        
+        
+        //bColCurrentLabel = [NSString stringWithFormat:@"%d", bCols[i]];
+        
+        aColLabels[i] = [CCLabelTTF labelWithString:aColCurrentLabel fontName:PROBLEM_DESC_FONT fontSize:kFontLabelSize];
+        
+        bColLabels[i] = [CCLabelTTF labelWithString:bColCurrentLabel fontName:PROBLEM_DESC_FONT fontSize:kFontLabelSize];
+        
+        sColLabels[i] = [CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:kFontLabelSize];
+        
+        // if there are any labels that we can't see that are disabled (ie A, 34, B, 234) we set the missing label to be enabled
+        if(i-(5-[aColNos length])<=[aColNos length]==0) { [aColLabels[i] setVisible:NO]; }
+        if(i-(5-[bColNos length])<=[bColNos length]==0) { [bColLabels[i] setVisible:NO]; }
+
+        [aColLabels[i] setPosition:ccp(lblXPos, 500)];
+        
+        [bColLabels[i] setPosition:ccp(lblXPos, 350)];
+        
+        [sColLabels[i] setPosition:ccp(lblXPos, 200)];
+        
+        [sumBoxLayer addChild:aColLabels[i]];
+        
+        [sumBoxLayer addChild:bColLabels[i]];
+        
+        [sumBoxLayer addChild:sColLabels[i]];
     }
     
-    lblOperator = [CCLabelTTF labelWithString:@"+" fontName:PROBLEM_DESC_FONT fontSize:100.0f];
-    [lblOperator setPosition:ccp(colSpacing*0.3, 350)];
-    [lblOperator setVisible:NO];
-    [sumBoxLayer addChild:lblOperator];
+    //lblOperator = [CCLabelTTF labelWithString:@"+" fontName:PROBLEM_DESC_FONT fontSize:100.0f];
+    btnOperator = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/columnadd/plus-inactive.png")];
+    [btnOperator setPosition:ccp(colSpacing*0.3, 350)];
+    [btnOperator setScale:0.5f];
+    [sumBoxLayer addChild:btnOperator];
+    
+    CCSprite *lnSeparatorTop = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/columnadd/separator.png")];
+    [lnSeparatorTop setPosition:ccp(480, 260)];
+    [sumBoxLayer addChild: lnSeparatorTop];
+    
+    CCSprite *lnSeparatorBottom = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/columnadd/separator.png")];
+    [lnSeparatorBottom setPosition:ccp(480, 160)];
+    [sumBoxLayer addChild: lnSeparatorBottom];
     
 }
 
 -(void)updateLabels
 {
+    BOOL canSwitchSelection=NO;
     for(int i=0; i<5; i++)
     {
-        // if we have 1 individual number in col A and col B we want to show the operator
-        if(toolState==kNumberSelected && aColLabelSelected[i] && bColLabelSelected[i])
+        if(toolState==kNumberRemainderPress && rCols[i]>0)
         {
-            [lblOperator setVisible:YES];
-            return;
-        }
-        else {
-            [lblOperator setVisible:NO];
+            sCols[i-1]=sCols[i-1]+rCols[i];
+            rCols[i]=0;
+            NSString *addString = [NSString stringWithFormat:@"%d", sCols[i-1]];
+            [sColLabels[i-1] setString:addString];
+            toolState=kNoState;
+            DLog(@"Switched tool state: %d", toolState);
         }
         
-        if(aColLabelSelected[i] && bColLabelSelected[i] && lblOperatorSelected)
+        if((aColLabelSelected[i] || !aColLabelEnabled[i]) && (bColLabelSelected[i] || !bColLabelEnabled[i]) && lblOperatorSelected)
         {
-            sCols[i]= sCols[i] + aCols[i] + bCols[i];
+            sCols[i]=sCols[i] + aCols[i] + bCols[i];
             
             if(sCols[i]>9)
             {
                 toolState=kNumberRemainder;
-                
+                DLog(@"Switched tool state: %d", toolState);
+                float lblXPos=(i+1)*(colSpacing*1.05);
                 //do carry over
-                
+                aCols[i]=0;
+                bCols[i]=0;
+                rCols[i]=1;
+                lblRemainder = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/columnadd/remainder.png")];
+                [lblRemainder setPosition:ccp(lblXPos, 100)];
+                [lblRemainder setScale:0.75f];
+                [sumBoxLayer addChild: lblRemainder];
                 
                 
                 //set sCols to remainder
@@ -175,22 +211,38 @@
             }
             else {
                 toolState=kNoState;
+                DLog(@"Switched tool state: %d", toolState);
             }
-            
-            NSString *addString = [NSString stringWithFormat:@"%d", sCols[i]];
-            [sColLabels[i] setString:addString];
-            [self switchOperator];
-            [self deselectNumberAExcept:-1];
-            [self deselectNumberBExcept:-1];
+            if(aColLabelEnabled[i] || bColLabelEnabled[i])
+            {
+                // reset the A and B numbers to be 0 so the readd can't be done again
+                aCols[i]=0;   
+                bCols[i]=0;
+
+                [aColLabels[i] setOpacity:50];
+                [bColLabels[i] setOpacity:50];
+                
+                NSString *addString = [NSString stringWithFormat:@"%d", sCols[i]];
+                [sColLabels[i] setString:addString];
+                [sColLabels[i] setVisible:YES];
+            }
+            canSwitchSelection=YES;
             [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
             DLog(@"Switched tool state: %d", toolState);
-            return;
         }
+    }
+    if(canSwitchSelection)
+    {
+        [self deselectNumberAExcept:-1];
+        [self deselectNumberBExcept:-1];
+        [self switchOperator];
+        if(lblOperatorActive)[self switchOperatorSprite];
     }
 }
 
 -(void)deselectNumberAExcept:(int)thisNumber
 {
+    //if(!aColLabels[thisNumber].visible) return;
     for(int i=0; i<5; i++)
     {
         // this is the number we want selected
@@ -202,7 +254,7 @@
         }
         else 
         {
-            aColLabelSelected[i]=NO;
+            if(aColLabelEnabled) aColLabelSelected[i]=NO;
             [aColLabels[i] setColor:ccc3(255,255,255)];
         }
     }
@@ -210,6 +262,7 @@
 
 -(void)deselectNumberBExcept:(int)thisNumber
 {
+    //if(!bColLabels[thisNumber].visible) return;
     for(int i=0; i<5; i++)
     {
         // this is the number we want selected
@@ -221,7 +274,7 @@
         }
         else 
         {
-            bColLabelSelected[i]=NO;
+            if(bColLabelEnabled) bColLabelSelected[i]=NO;
             [bColLabels[i] setColor:ccc3(255,255,255)];
         }
     }
@@ -231,14 +284,25 @@
 {
     if(!lblOperatorSelected)
     {
-        [lblOperator setColor:ccc3(0,255,0)];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
         lblOperatorSelected=YES;
     }
     else 
     {
-        [lblOperator setColor:ccc3(255,255,255)];
         lblOperatorSelected=NO;
+    }
+}
+
+-(void)switchOperatorSprite
+{
+    if(!lblOperatorActive)
+    {
+        lblOperatorActive=YES;
+        [btnOperator setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/columnadd/plus-active.png")]];
+    }
+    else {
+        lblOperatorActive=NO;
+        [btnOperator setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/columnadd/plus-inactive.png")]];
     }
 }
 
@@ -246,6 +310,8 @@
 {
     sourceA = [[pdef objectForKey:NUMBER_A] intValue];
     sourceB = [[pdef objectForKey:NUMBER_B] intValue];
+    bkgOverlay = [pdef objectForKey:OVERLAY_FILENAME];
+    [bkgOverlay retain];
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -256,6 +322,8 @@
     
     touching=YES;
     
+    if(toolState==kNumberSelected||toolState==kNumberOperatorSelected||toolState==kNoState)
+    {
         // loop over the number A, check for touches
         for(int i=0; i<5; i++)
         {
@@ -266,9 +334,7 @@
                {
                    if(!aColLabelSelected[i])
                    {
-                       DLog(@"Label position is x %f y %f", aColLabels[i].position.x, aColLabels[i].position.y);
-                       DLog(@"Hitbox is: x %f, y %f, width %f, height %f", curHit.origin.x, curHit.origin.y, curHit.size.width, curHit.size.height);
-                       DLog(@"Touch is at: x %f, y %f", location.x, location.y);
+                    if(!lblOperatorActive) [self switchOperatorSprite];
                        [self deselectNumberAExcept:i];
                        toolState=kNumberSelected;
                        DLog(@"Switched tool state: %d", toolState);
@@ -288,22 +354,8 @@
             
         }
     
-        // check operator touhes
-            CGRect curHit = CGRectMake(lblOperator.position.x-(kFontLabelSize), lblOperator.position.y-(kFontLabelSize), kFontLabelSize*2, kFontLabelSize*2);
-        if(CGRectContainsPoint(curHit, [sumBoxLayer convertToNodeSpace:location]))
-        {
-            [self switchOperator];
-            if(lblOperatorSelected)
-            {
-                toolState=kNumberOperatorSelected;
-                DLog(@"Switched tool state: %d", toolState);
-            }
-            return;
-        }
-    
-    // loop over the number B, check for touches
-
-    
+        
+        // loop over the number B, check for touches
         for(int i=0; i<5; i++)
         {
             CGRect curHit = CGRectMake(bColLabels[i].position.x-(kFontLabelSize), bColLabels[i].position.y-(kFontLabelSize), kFontLabelSize*2, kFontLabelSize*2);
@@ -311,7 +363,10 @@
             if(CGRectContainsPoint(curHit, [sumBoxLayer convertToNodeSpace:location]))
             {
                 if(!bColLabelSelected[i]) {
+                    if(!lblOperatorActive) [self switchOperatorSprite];
                     [self deselectNumberBExcept:i];
+                    toolState=kNumberSelected;
+                    DLog(@"Switched tool state: %d", toolState);
                     return;
                 }
                 else {
@@ -325,7 +380,41 @@
                 }
             }
         }
-    
+        
+        // check operator touhes
+        CGRect curHit = CGRectMake(btnOperator.position.x-(kFontLabelSize), btnOperator.position.y-(kFontLabelSize), kFontLabelSize*2, kFontLabelSize*2);
+        if(CGRectContainsPoint(curHit, [sumBoxLayer convertToNodeSpace:location]))
+        {
+            [self switchOperator];
+            if(lblOperatorSelected)
+            {
+                toolState=kNumberOperatorSelected;
+                DLog(@"Switched tool state: %d", toolState);
+            }
+            return;
+        }
+    }
+    // if there's a remainder force the user to do something with it
+    if(toolState==kNumberRemainder) {
+        
+        CGRect curHit = CGRectMake(lblRemainder.position.x-(kFontLabelSize), lblRemainder.position.y-(kFontLabelSize), kFontLabelSize*2, kFontLabelSize*2);
+        if(CGRectContainsPoint(curHit, [sumBoxLayer convertToNodeSpace:location]))
+        {
+            for (int i=0; i<5; i++)
+            {
+                if(rCols[i]>0)
+                {
+                    //sCols[i-1]=sCols[i-1]+rCols[i];
+                    //[sumBoxLayer removeChild:lblRemainder cleanup:YES];
+                    toolState=kNumberRemainderDrag;
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
+                    DLog(@"Switched tool state: %d", toolState);
+                    lblRemainderPos = lblRemainder.position;
+
+                }
+            }
+        }
+    }
 
 }
 
@@ -334,6 +423,11 @@
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    if(toolState==kNumberRemainderDrag)
+    {
+        [lblRemainder setPosition:[sumBoxLayer convertToNodeSpace:location]];
+    }
+
 
 }
 
@@ -344,6 +438,63 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     
     touching=NO;
+    if(toolState==kNumberRemainderDrag)
+    {
+
+        for(int i=0; i<5; i++)
+        {
+            // check we're on a col with a remainder
+            if(rCols[i]>0)
+            {
+                // then check the position is the one to our left (i-1)
+                CGRect curHit = CGRectMake(sColLabels[i-1].position.x-(kFontLabelSize), sColLabels[i-1].position.y-(kFontLabelSize), kFontLabelSize*3, kFontLabelSize*3);
+                if(CGRectContainsPoint(curHit, [sumBoxLayer convertToNodeSpace:location]))
+                {
+                    // if it's in the right place, remove the sprite and set the game mode back to 'press' to eval
+                    [sumBoxLayer removeChild:lblRemainder cleanup:YES];
+                    toolState=kNumberRemainderPress;
+                    DLog(@"Switched tool state: %d", toolState);
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
+                }
+                else {
+                    [lblRemainder runAction:[CCMoveTo actionWithDuration:0.25f position:lblRemainderPos]];
+                }
+            }
+        }
+        
+//        CGRect curHit = CGRectMake(lblRemainder.position.x-(kFontLabelSize), lblRemainder.position.y-(kFontLabelSize), kFontLabelSize*2, kFontLabelSize*2);
+//        if(CGRectContainsPoint(curHit, [sumBoxLayer convertToNodeSpace:location]))
+//        {
+//            for (int i=0; i<5; i++)
+//            {
+//                if(rCols[i]>0)
+//                {
+//                    sCols[i-1]=sCols[i-1]+rCols[i];
+//                    [sumBoxLayer removeChild:lblRemainder cleanup:YES];
+//                    toolState=kNumberRemainderPress;
+//                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
+//                    DLog(@"Switched tool state: %d", toolState);
+//                    
+//                }
+//            }
+//        }
+    }
+}
+
+-(void) dealloc
+{
+    //write log on problem switch
+    [gw writeLogBufferToDiskWithKey:@"ColumnAddition"];
+    
+    //tear down
+    [gw release];
+    
+    [self.ForeLayer removeAllChildrenWithCleanup:YES];
+    [self.BkgLayer removeAllChildrenWithCleanup:YES];
+    
+    if(bkgOverlay) [bkgOverlay release];
+    
+    [super dealloc];
 }
 
 @end

@@ -21,6 +21,7 @@ NSString * const kDefaultDesignDocName = @"default";
 NSString * const kDeviceUsersLastSessionStart = @"device-users-last-session";
 NSString * const kAllUserNicknames = @"all-user-nick-names";
 NSString * const kUsersByNickNamePassword = @"users-by-nick-name-password";
+NSString * const kUsersTimeInApp = @"users-time-in-app";
 
 @interface UsersService()
 {
@@ -206,6 +207,7 @@ NSString * const kUsersByNickNamePassword = @"users-by-nick-name-password";
                 })
                     version: @"v1.04"];
     
+    
     [design defineViewNamed:kAllUserNicknames
                    mapBlock:MAPBLOCK({
         id type = [doc objectForKey:@"type"];
@@ -217,6 +219,7 @@ NSString * const kUsersByNickNamePassword = @"users-by-nick-name-password";
         }
     })
                     version: @"v1.01"];
+    
     
     [design defineViewNamed:kUsersByNickNamePassword
                         mapBlock:MAPBLOCK({        
@@ -230,6 +233,40 @@ NSString * const kUsersByNickNamePassword = @"users-by-nick-name-password";
         }
     })
                     version: @"v1.00"];
+    
+    
+    [design defineViewNamed:kUsersTimeInApp
+                   mapBlock:MAPBLOCK({        
+        id type = [doc objectForKey:@"type"];                        
+        if (type && 
+            [type respondsToSelector:@selector(isEqualToString:)] && 
+            [type isEqualToString:@"user"])
+        {
+            if ( [doc objectForKey:@"sessions"] )
+            {
+                NSArray *sessions = [doc objectForKey:@"sessions"];
+                for (NSDictionary *session in sessions)
+                {
+                    NSDate *start = [session objectForKey:@"start"] ? [RESTBody dateWithJSONObject:[session objectForKey:@"start"]] : nil;
+                    NSDate *end = [session objectForKey:@"end"] ? [RESTBody dateWithJSONObject:[session objectForKey:@"end"]] : nil;
+                    
+                    // if end is not defined, but this session is the most recent session - assume that this session is in progress and use current date as end
+                    if (!end && session == [sessions objectAtIndex:([sessions count] - 1)])
+                    {
+                        end = [NSDate date];
+                    }
+                    
+                    if (start && end) emit([doc objectForKey:@"_id"], [NSNumber numberWithDouble:[end timeIntervalSinceDate:start]]);
+                }
+            }
+        }
+    })
+                reduceBlock:REDUCEBLOCK({        
+        double sum = 0;
+        for (NSNumber *num in values) sum += [num doubleValue];
+        return [NSNumber numberWithDouble:sum];
+                })
+                                  version: @"v1.00"];
 }
 
 -(void)startLiveQueries

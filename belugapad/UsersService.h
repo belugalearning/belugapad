@@ -27,8 +27,9 @@
                   andPassword:(NSString*)password;
 
 -(NSUInteger)currentUserTotalExp;
--(double)currentUserPercentageCompletionOfElement:(Element*)element;
+-(double)currentUserPercentageCompletionOfElement:(Element*)elementId;
 -(double)currentUserTotalTimeInApp;
+-(double)currentUserTotalPlayingElement:(NSString*)element;
 
 -(NSString*) lastCompletedProblemIdInElementWithId:(NSString*)elementId
                                          andUserId:(NSString*)userId;

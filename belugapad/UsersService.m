@@ -25,7 +25,7 @@ NSString * const kDefaultDesignDocName = @"default";
 NSString * const kDeviceUsersLastSessionStart = @"device-users-last-session";
 NSString * const kAllUserNicknames = @"all-user-nick-names";
 NSString * const kUsersByNickNamePassword = @"users-by-nick-name-password";
-NSString * const kUsersTimeInApp = @"users-time-in-app";
+NSString * const kUsersTimeInPlay = @"users-time-in-play";
 //NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-element-date";
 NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 NSString * const kTotalExpByUser = @"total-exp-by-user";
@@ -201,12 +201,32 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
 
 -(double)currentUserTotalTimeInApp
 {
-    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersTimeInApp];
+    NSString *urId = self.currentUser.document.documentID;
+    
+    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersTimeInPlay];
     q.groupLevel = 1;
-    q.keys = [NSArray arrayWithObject:self.currentUser.document.documentID];
+    q.startKey = [NSArray arrayWithObject:urId];
+    q.endKey = [NSArray arrayWithObjects:urId, [NSDictionary dictionary], nil];
     [[q start] wait];
     
-    // should have 1 row returned!
+    // should have 1 row returned
+    if (![[q rows] count]) return 0;
+    
+    CouchQueryRow *r = [[q rows].allObjects objectAtIndex:0];
+    return [(NSNumber*)r.value doubleValue];
+}
+
+-(double)currentUserTotalPlayingElement:(NSString *)elementId
+{
+    NSString *urId = self.currentUser.document.documentID;
+    
+    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersTimeInPlay];
+    q.groupLevel = 1;
+    q.startKey = [NSArray arrayWithObjects:urId, elementId, nil];
+    q.endKey = [NSArray arrayWithObjects:urId, elementId, [NSDictionary dictionary], nil];
+    [[q start] wait];
+    
+    // should have 1 row returned
     if (![[q rows] count]) return 0;
     
     CouchQueryRow *r = [[q rows].allObjects objectAtIndex:0];
@@ -365,7 +385,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
                     version: @"v1.00"];
     
     
-    [design defineViewNamed:kProblemsCompletedByUser
+    [design defineViewNamed:kProblemsCompletedByUser // query view with groupLevel = 2.
                    mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)) {
                        id type = [doc objectForKey:@"type"];
                        id success = [doc objectForKey:@"success"];
@@ -380,11 +400,11 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
                        }
                    }
                 reduceBlock:^id(NSArray* keys, NSArray* values, BOOL rereduce) {
-                    return [values objectAtIndex:0]; // call view with groupLevel = 2.
+                    return [values objectAtIndex:0];
                 }
                     version: @"v1.05"];    
     
-    [design defineViewNamed:kTotalExpByUser
+    [design defineViewNamed:kTotalExpByUser  // query view with groupLevel = 1
                    mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)) {
                        id type = [doc objectForKey:@"type"];
                        id success = [doc objectForKey:@"success"];
@@ -406,42 +426,30 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
                     {
                         sum += [points unsignedIntValue];
                     }
-                    return [NSNumber numberWithUnsignedInt:sum]; // call view with groupLevel = 1
+                    return [NSNumber numberWithUnsignedInt:sum];
                 }
                     version: @"v1.00"];
     
-    [design defineViewNamed:kUsersTimeInApp
-                   mapBlock:MAPBLOCK({        
-        id type = [doc objectForKey:@"type"];                        
-        if (type && 
-            [type respondsToSelector:@selector(isEqualToString:)] && 
-            [type isEqualToString:@"user"])
-        {
-            if ( [doc objectForKey:@"sessions"] )
-            {
-                NSArray *sessions = [doc objectForKey:@"sessions"];
-                for (NSDictionary *session in sessions)
-                {
-                    NSDate *start = [session objectForKey:@"start"] ? [RESTBody dateWithJSONObject:[session objectForKey:@"start"]] : nil;
-                    NSDate *end = [session objectForKey:@"end"] ? [RESTBody dateWithJSONObject:[session objectForKey:@"end"]] : nil;
-                    
-                    // if end is not defined, but this session is the most recent session - assume that this session is in progress and use current date as end
-                    if (!end && session == [sessions objectAtIndex:([sessions count] - 1)])
-                    {
-                        end = [NSDate date];
+    [design defineViewNamed:kUsersTimeInPlay // query view with groupLevel=1 (all time in play for user), or groupLevel=2 (time in play on per element per user)
+                    mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)) {
+                        id type = [doc objectForKey:@"type"];                        
+                        if (type && 
+                            [type respondsToSelector:@selector(isEqualToString:)] && 
+                            [type isEqualToString:@"problem attempt"])
+                        {
+                            NSArray *key = [NSArray arrayWithObjects:[doc objectForKey:@"userId"], [doc objectForKey:@"elementId"], nil];
+                            emit(key, [doc objectForKey:@"timeInPlay"]);
+                        }
                     }
-                    
-                    if (start && end) emit([doc objectForKey:@"_id"], [NSNumber numberWithDouble:[end timeIntervalSinceDate:start]]);
+                reduceBlock:^id(NSArray* keys, NSArray* values, BOOL rereduce) {
+                    double sum = 0;
+                    for (NSNumber *num in values)
+                    {
+                        sum += [num doubleValue];
+                    }
+                    return [NSNumber numberWithDouble:sum];
                 }
-            }
-        }
-    })
-                reduceBlock:REDUCEBLOCK({        
-        double sum = 0;
-        for (NSNumber *num in values) sum += [num doubleValue];
-        return [NSNumber numberWithDouble:sum];
-                })
-                    version: @"v1.00"];
+                    version: @"v1.02"];
     
 /*    [design defineViewNamed:kProblemSuccessByUserElementDate
                    mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)){

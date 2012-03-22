@@ -539,13 +539,15 @@ const float kPropYHitNextMenu=0.9f;
 -(void)showModuleOverlay: (Module*)module
 {
     UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
-    NSString *timeInApp = [self convertTimeFromSeconds:[NSString stringWithFormat:@"%g", us.currentUserTotalTimeInApp]];
     NSUInteger totalExp = [us currentUserTotalExp];
+    double secsInApp = [us currentUserTotalTimeInApp];
+    NSUInteger hours = (NSUInteger)(secsInApp/3600);
+    NSUInteger mins = (NSUInteger)(secsInApp/60);
     
     [eMenuModName setString:module.name];
     [eMenuPlayerName setString:us.currentUser.nickName];
     [eMenuTotExp setString:[NSString stringWithFormat:@"%d", totalExp]];
-    [eMenuTotTime setString:timeInApp];
+    [eMenuTotTime setString:[NSString stringWithFormat:@"%dh %dm", hours, mins]];
     [eMenu setVisible:YES];
     [eMenuLeftPlayBtn setVisible:YES];
     
@@ -580,9 +582,13 @@ const float kPropYHitNextMenu=0.9f;
     double elCompletion = [us currentUserPercentageCompletionOfElement:element];    
     // TODO: Display element completion (remember to multiply by 100)
     
+    double secsPlayingEl = [us currentUserTotalPlayingElement:element.document.documentID];
+    NSUInteger hours = (NSUInteger)(secsPlayingEl/3600);
+    NSUInteger mins = (NSUInteger)(secsPlayingEl/60);
+    
     [eMenuModDesc setString:element.name];
-    [eMenuModStatus setString:@"IN PROGRESS"];
-    [eMenuModTime setString:@"5 mins"];
+    [eMenuModStatus setString:(elCompletion < 1 ? [NSString stringWithFormat:@"%d%% COMPLETED", (NSUInteger)(100*elCompletion)] : @"COMPLETED")];
+    [eMenuModTime setString:[NSString stringWithFormat:@"%d hours %d mins", hours, mins]];
     [eMenuLeftClock setVisible:YES];    
 }
 
@@ -606,7 +612,8 @@ const float kPropYHitNextMenu=0.9f;
 
 -(void)setAllModuleOpacityTo:(float)newOpacity exceptFor:(CCLayer*)activeModule
 {
-    for (NSMutableArray *mn in moduleLayers) {
+    for (NSMutableArray *mn in moduleLayers)
+    {
         for(CCLayer *ml in mn)
         {
             if(ml!=activeModule)

@@ -107,6 +107,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
 
 -(User*)currentUser
 {
+    // TODO: This is a quick fix. I've done something wrong. Shouldn't need to store the user on the app delegate
     AppDelegate *ad = [[UIApplication sharedApplication] delegate];
     return  ad.currentUser;
 }
@@ -132,6 +133,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     device.userSessions = userSessions;
     [[device save] wait];
     
+    // TODO: This is a quick fix. I've fone something wrong. Shouldn't need to store the user on the app delegate
     AppDelegate *ad = [[UIApplication sharedApplication] delegate];
     ad.currentUser = user;
 }

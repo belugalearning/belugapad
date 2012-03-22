@@ -63,6 +63,9 @@ typedef enum {
     CCSprite *pauseMenu;
     CCSprite *problemComplete;
     CCSprite *problemIncomplete;
+    
+    BOOL autoMoveToNextProblem;
+    float moveToNextProblemTime;
 }
 
 @property (retain) Daemon *Zubi;

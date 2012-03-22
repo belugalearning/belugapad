@@ -17,6 +17,9 @@
 #import "Element.h"
 #import "AppDelegate.h"
 #import "ToolHost.h"
+#import "SimpleAudioEngine.h"
+#import "User.h"
+#import "UsersService.h"
 
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
@@ -107,6 +110,9 @@ const float kPropYHitNextMenu=0.9f;
         [self schedule:@selector(doUpdate:) interval:1.0f/kMenuScheduleUpdateDoUpdate];
         
         [self buildModuleOverlay];
+        
+        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/mood.mp3") loop:YES];
+        
     }
     
     return self;
@@ -180,6 +186,14 @@ const float kPropYHitNextMenu=0.9f;
         
         //set the module position for this topic
         [modulePositions addObject:[NSNumber numberWithInt:0]];
+        
+        
+        //topic name
+        CCLabelTTF *tnamelabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%@", topic.name] fontName:GENERIC_FONT fontSize:(kPropXMenuLabelFontSize*0.6*lx)];
+        [tnamelabel setPosition:ccp(200, cy)];
+        [tnamelabel setColor:kMenuLabelTitleColor];
+        [tnamelabel setOpacity:kMenuLabelOpacity];
+        [modBase addChild:tnamelabel];
         
         NSArray *moduleIDs=topic.modules;
         
@@ -386,6 +400,14 @@ const float kPropYHitNextMenu=0.9f;
 -(void)snapToModuleView
 {
     int modulePosition=[[modulePositions objectAtIndex:topicPosition] intValue];
+    
+    if(modulePosition<0 || (modulePosition >= [[moduleLayers objectAtIndex:topicPosition] count]))
+    {
+        MenuState=kMenuStateTopic;
+        return;
+    }
+    
+
     CCLayer *currentModule=[[moduleLayers objectAtIndex:topicPosition] objectAtIndex:modulePosition];
     
     Module *module=[[moduleObjects objectAtIndex:topicPosition] objectAtIndex:modulePosition];
@@ -455,12 +477,68 @@ const float kPropYHitNextMenu=0.9f;
     [eMenu addChild:eMenuLeftPlayBtn z:1];
 }
 
+-(NSString *)convertTimeFromSeconds:(NSString *)seconds 
+{
+    
+    // Return variable.
+    NSString *result = @"";
+    
+    // Int variables for calculation.
+    int secs = [seconds intValue];
+    int tempHour    = 0;
+    int tempMinute  = 0;
+    int tempSecond  = 0;
+    
+    NSString *hour      = @"";
+    NSString *minute    = @"";
+    NSString *second    = @"";
+    
+    // Convert the seconds to hours, minutes and seconds.
+    tempHour    = secs / 3600;
+    tempMinute  = secs / 60 - tempHour * 60;
+    tempSecond  = secs - (tempHour * 3600 + tempMinute * 60);
+    
+    hour    = [[NSNumber numberWithInt:tempHour] stringValue];
+    minute  = [[NSNumber numberWithInt:tempMinute] stringValue];
+    second  = [[NSNumber numberWithInt:tempSecond] stringValue];
+    
+    // Make time look like 00:00:00 and not 0:0:0
+    if (tempHour < 10) {
+        hour = [@"0" stringByAppendingString:hour];
+    } 
+    
+    if (tempMinute < 10) {
+        minute = [@"0" stringByAppendingString:minute];
+    }
+    
+    if (tempSecond < 10) {
+        second = [@"0" stringByAppendingString:second];
+    }
+    
+    if (tempHour == 0) {
+        
+        NSLog(@"Result of Time Conversion: %@ hrs %@ mins", minute, second);
+        result = [NSString stringWithFormat:@"%@ hrs %@ mins", minute, second];
+        
+    } else {
+        
+        NSLog(@"Result of Time Conversion: %@ hrs %@ mins %@ secs", hour, minute, second); 
+        result = [NSString stringWithFormat:@"%@ hrs %@ mins %@ secs",hour, minute, second];
+        
+    }
+    
+    return result;
+    
+}
+
 -(void)showModuleOverlay: (Module*)module
 {
+    UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+    NSString *timeInApp = [self convertTimeFromSeconds:[NSString stringWithFormat:@"%g", us.currentUserTotalTimeInApp]];
     [eMenuModName setString:module.name];
-    [eMenuPlayerName setString:@"Dave"];
+    [eMenuPlayerName setString:us.currentUser.nickName];
     [eMenuTotExp setString:@"53,000"];
-    [eMenuTotTime setString:@"23 mins"];
+    [eMenuTotTime setString:timeInApp];
     [eMenu setVisible:YES];
     [eMenuLeftPlayBtn setVisible:YES];
 }
@@ -619,6 +697,7 @@ const float kPropYHitNextMenu=0.9f;
         {
             if(selectedElement)
             {
+                [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
                 contentService.currentElement=selectedElement;
                 [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
             }

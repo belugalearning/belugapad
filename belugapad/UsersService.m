@@ -9,6 +9,7 @@
 #import "UsersService.h"
 #import "Device.h"
 #import "User.h"
+#import "Problem.h"
 #import "ProblemAttempt.h"
 #import "AppDelegate.h"
 #import "ContentService.h"
@@ -101,6 +102,12 @@ NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-el
     return self;
 }
 
+-(User*)currentUser
+{
+    AppDelegate *ad = [[UIApplication sharedApplication] delegate];
+    return  ad.currentUser;
+}
+
 -(void)setCurrentUser:(User*)user
 {
     NSString *now = [RESTBody JSONObjectWithDate:[NSDate date]];
@@ -121,6 +128,9 @@ NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-el
     [userSessions addObject:currentUserSession];
     device.userSessions = userSessions;
     [[device save] wait];
+    
+    AppDelegate *ad = [[UIApplication sharedApplication] delegate];
+    ad.currentUser = user;
 }
 
 -(NSArray*)deviceUsersByLastSessionDate
@@ -228,8 +238,10 @@ NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-el
     ContentService *cs = ad.contentService;
     Problem *currentProblem = cs.currentProblem;
     
+    NSString *userId = self.currentUser.document.documentID;
+    
     currentProblemAttempt = [[ProblemAttempt alloc] initWithNewDocumentInDatabase:database
-                                                                          andUser:currentUser
+                                                                        andUserId:userId
                                                                        andProblem:currentProblem];
 }
 
@@ -247,9 +259,24 @@ NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-el
     if (success)
     {
         // award assessment criteria points.
-        // for now we're awarding max points for the sole assessment criterion
+        // for now we're awarding max points
+        AppDelegate *ad = [[UIApplication sharedApplication] delegate];
+        ContentService *cs = ad.contentService;
+        Problem *p = cs.currentProblem;
         
-    }
+        NSMutableArray *awarded = [NSMutableArray array];
+        for (NSDictionary *criterion in p.assessmentCriteria)
+        {
+            NSDictionary *d = [NSDictionary dictionaryWithObjectsAndKeys:[criterion objectForKey:@"id"], @"id", [criterion objectForKey:@"maxScore"], @"points", nil];
+            [awarded addObject:d];
+        }
+        currentProblemAttempt.awardedAssessmentCriteriaPoints = awarded;
+
+        [[currentProblemAttempt save] wait];
+        
+    }    
+    [currentProblemAttempt release];
+    currentProblemAttempt = nil;
 }
 
 -(void)createViews

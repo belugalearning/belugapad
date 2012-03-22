@@ -33,6 +33,7 @@
 @synthesize LocalSettings;
 @synthesize contentService;
 @synthesize usersService;
+@synthesize currentUser;
 
 - (void) applicationDidFinishLaunching:(UIApplication*)application
 {    
@@ -44,7 +45,7 @@
 	// Init the window
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    self.usersService = [[UsersService alloc] init];
+    usersService = [[UsersService alloc] init];
 	
     //load local settings
     self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
@@ -161,6 +162,7 @@
 - (void)dealloc {
 	[[CCDirector sharedDirector] end];
     [contentService release];
+    [usersService release];
 	[window release];
 	[super dealloc];
 }

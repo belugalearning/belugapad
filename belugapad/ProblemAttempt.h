@@ -11,7 +11,8 @@
 
 @interface ProblemAttempt : CouchModel
 
-@property (retain) User *user;
+@property (retain) NSString *type;
+@property (retain) NSString *userId;
 @property (retain) NSString *problemId;
 @property (retain) NSString *problemRevisionId;
 @property (retain) NSString *elementId;
@@ -21,10 +22,10 @@
 @property  NSTimeInterval timeInPlay;
 @property bool success;
 @property (retain) NSArray *interactionEvents;
-@property (retain) NSDictionary *awardedAssessmentCriteriaPoints;
+@property (retain) NSArray *awardedAssessmentCriteriaPoints;
 
 - (id) initWithNewDocumentInDatabase:(CouchDatabase*)database
-                             andUser:(User*)user
+                             andUserId:(NSString*)urId
                           andProblem:(Problem*)problem;
 
 -(void) togglePause;

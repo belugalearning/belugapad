@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class RootViewController, ContentService, UsersService;
+@class RootViewController, ContentService, UsersService, User;
 
 @interface AppDelegate : NSObject <UIApplicationDelegate>
 {
@@ -19,7 +19,8 @@
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) NSDictionary *LocalSettings;
 @property (nonatomic, readonly) ContentService *contentService;
-@property (nonatomic, retain) UsersService *usersService;
+@property (nonatomic, readonly) UsersService *usersService;
+@property (retain) User *currentUser;
 
 -(void)proceedFromLoginViaIntro:(BOOL)viaIntro;
 

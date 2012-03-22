@@ -127,8 +127,8 @@
     //do internal mgmt updates
     if(currentTool.ProblemComplete || metaQuestionForceComplete)
     {
-        //UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
-        //[us endProblemAttempt:YES];
+        UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+        [us endProblemAttempt:YES];
         
         [self gotoNewProblem];
     }
@@ -265,16 +265,16 @@
         [self.Zubi hideZubi];
     }
     
-    //UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
-    //[us startProblemAttempt];
+    UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+    [us startProblemAttempt];
 }
 
 -(void) resetProblem
 {
     skipNextStagedIntroAnim=YES;
     
-    //UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
-    //[us endProblemAttempt:NO];
+    UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+    [us endProblemAttempt:NO];
     
     [self loadProblem];
 }
@@ -287,8 +287,8 @@
     [pauseMenu setPosition:ccp(cx, cy)];
     [toolForeLayer addChild:pauseMenu z:10];
     
-    //UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
-    //[us togglePauseProblemAttempt];
+    UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+    [us togglePauseProblemAttempt];
 }
 
 -(void) checkPauseTouches:(CGPoint)location
@@ -300,8 +300,8 @@
         [toolForeLayer removeChild:pauseMenu cleanup:YES];
         isPaused=NO;
         
-        //UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
-        //[us togglePauseProblemAttempt];
+        UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+        [us togglePauseProblemAttempt];
     }
     if(CGRectContainsPoint(kPauseMenuReset, location))
     {
@@ -318,7 +318,7 @@
 
 
     }
-           
+            
 }
 
 -(void) returnToMenu

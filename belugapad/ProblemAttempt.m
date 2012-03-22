@@ -8,6 +8,7 @@
 
 #import "ProblemAttempt.h"
 #import "Problem.h"
+#import "User.h"
 
 #import <CouchCocoa/CouchCocoa.h>
 
@@ -21,18 +22,19 @@
 
 @implementation ProblemAttempt
 
-@dynamic user, problemId, problemRevisionId, elementId, dateTimeStart, dateTimeEnd, pauses, timeInPlay, success, interactionEvents, awardedAssessmentCriteriaPoints;
+@dynamic type, userId, problemId, problemRevisionId, elementId, dateTimeStart, dateTimeEnd, pauses, timeInPlay, success, interactionEvents, awardedAssessmentCriteriaPoints;
 
 - (id) initWithNewDocumentInDatabase:(CouchDatabase*)database
-                             AndUser:(User*)user
-                          AndProblem:(Problem*)problem
+                             andUserId:(NSString*)urId
+                          andProblem:(Problem*)problem
 {
     NSParameterAssert(database);
     self = [super initWithDocument: nil];
     if (self)
     {
         self.database = database;
-        self.user = user;
+        self.type = @"problem attempt";
+        self.userId = urId;
         self.problemId = problem.document.documentID;
         self.problemRevisionId = [problem.document propertyForKey:@"_rev"];
         self.elementId = problem.elementId;
@@ -43,7 +45,7 @@
         self.success = false;
         self.interactionEvents = [NSMutableArray array];
         
-        self.autosaves  = YES;
+        [[self save] wait];
         
         timePaused = 0;
     }
@@ -71,6 +73,8 @@
         [currentPause setObject:[RESTBody JSONObjectWithDate:end] forKey:@"end"];
         [currentPause release];        
     }
+    
+    [[self save] wait];
 }
 
 -(void) endAttempt:(BOOL)success
@@ -79,7 +83,7 @@
     if (currentPause) [self togglePause];
     self.dateTimeEnd = [NSDate date];    
     self.timeInPlay = [self.dateTimeEnd timeIntervalSinceDate:self.dateTimeStart] - timePaused;
-    [self save]; // perhaps overkill is autosaving
+    [[self save] wait];
 }
 
 -(void)dealloc

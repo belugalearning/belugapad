@@ -45,6 +45,7 @@
 		0CE3D72D15137BFD003D5193 /* UsersService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D71F15137BFD003D5193 /* UsersService.m */; };
 		0CE3D73315137FC0003D5193 /* EditZubi.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D73215137FC0003D5193 /* EditZubi.m */; };
 		0CE3D73415137FC0003D5193 /* EditZubi.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D73215137FC0003D5193 /* EditZubi.m */; };
+		0CF7DC37151AF0EE00078C84 /* ActivityFeedEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF7DC36151AF0EE00078C84 /* ActivityFeedEvent.m */; };
 		0CF9187C14F54C1D00FAC58D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF9187B14F54C1D00FAC58D /* images */; };
 		550708761517623E00111BBB /* ColumnAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708751517623E00111BBB /* ColumnAddition.m */; };
 		5507087A1517625300111BBB /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708791517625300111BBB /* ColumnAdditionConsts.m */; };
@@ -348,6 +349,8 @@
 		0CE3D71F15137BFD003D5193 /* UsersService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersService.m; sourceTree = "<group>"; };
 		0CE3D73115137FC0003D5193 /* EditZubi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditZubi.h; sourceTree = "<group>"; };
 		0CE3D73215137FC0003D5193 /* EditZubi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditZubi.m; sourceTree = "<group>"; };
+		0CF7DC35151AF0EE00078C84 /* ActivityFeedEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityFeedEvent.h; sourceTree = "<group>"; };
+		0CF7DC36151AF0EE00078C84 /* ActivityFeedEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityFeedEvent.m; sourceTree = "<group>"; };
 		0CF9187B14F54C1D00FAC58D /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = SOURCE_ROOT; };
 		550708741517623E00111BBB /* ColumnAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAddition.h; sourceTree = "<group>"; };
 		550708751517623E00111BBB /* ColumnAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAddition.m; sourceTree = "<group>"; };
@@ -885,6 +888,8 @@
 				0CE3D71D15137BFD003D5193 /* User.m */,
 				0CE3D71E15137BFD003D5193 /* UsersService.h */,
 				0CE3D71F15137BFD003D5193 /* UsersService.m */,
+				0CF7DC35151AF0EE00078C84 /* ActivityFeedEvent.h */,
+				0CF7DC36151AF0EE00078C84 /* ActivityFeedEvent.m */,
 			);
 			name = Users;
 			sourceTree = "<group>";
@@ -2088,6 +2093,7 @@
 				0C92B2951518BD5200342094 /* Topic.m in Sources */,
 				0C92B2981518BD6500342094 /* Syllabus.m in Sources */,
 				0C92B2A71518EB1600342094 /* ProblemAttempt.m in Sources */,
+				0CF7DC37151AF0EE00078C84 /* ActivityFeedEvent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

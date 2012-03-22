@@ -11,6 +11,7 @@
 #import "User.h"
 #import "Problem.h"
 #import "ProblemAttempt.h"
+#import "Element.h"
 #import "AppDelegate.h"
 #import "ContentService.h"
 #import <CouchCocoa/CouchCocoa.h>
@@ -25,7 +26,8 @@ NSString * const kDeviceUsersLastSessionStart = @"device-users-last-session";
 NSString * const kAllUserNicknames = @"all-user-nick-names";
 NSString * const kUsersByNickNamePassword = @"users-by-nick-name-password";
 NSString * const kUsersTimeInApp = @"users-time-in-app";
-NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-element-date";
+//NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-element-date";
+NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 
 @interface UsersService()
 {
@@ -144,7 +146,7 @@ NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-el
     [[q start] wait];
     
     // now need to sort the users themselves by their most recent session start
-    NSArray *sortedBySessionStartDesc = [q.rows.allObjects sortedArrayUsingComparator:^(id a, id b) {
+    NSArray *sortedBySessionStartDesc = [[q rows].allObjects sortedArrayUsingComparator:^(id a, id b) {
         return [(NSString*)((CouchQueryRow*)b).value compare:(NSString*)((CouchQueryRow*)a).value];
     }];
     
@@ -165,7 +167,7 @@ NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-el
     q.keys = [NSArray arrayWithObject:nickName];
     q.prefetch = YES;
     [[q start] wait];
-    return [q.rows.allObjects count] == 0;
+    return [[q rows] count] == 0;
 }
 
 -(User*) userMatchingNickName:(NSString*)nickName
@@ -175,9 +177,9 @@ NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-el
     q.keys = [NSArray arrayWithObject:[NSArray arrayWithObjects:nickName, password, nil]];
     [[q start] wait];
     
-    if ([q.rows.allObjects count] == 0) return nil;
+    if ([[q rows] count] == 0) return nil;
     
-    return [[CouchModelFactory sharedInstance] modelForDocument:((CouchQueryRow*)[q.rows.allObjects objectAtIndex:0]).document];
+    return [[CouchModelFactory sharedInstance] modelForDocument:((CouchQueryRow*)[[q rows].allObjects objectAtIndex:0]).document];
 }
 
 -(User*) createUserWithNickName:(NSString*)nickName
@@ -204,13 +206,31 @@ NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-el
     [[q start] wait];
     
     // should have 1 row returned!
-    if (![q.rows.allObjects count]) return 0;
+    if (![[q rows] count]) return 0;
     
-    CouchQueryRow *r = [q.rows.allObjects objectAtIndex:0];
+    CouchQueryRow *r = [[q rows].allObjects objectAtIndex:0];
     return [(NSNumber*)r.value doubleValue];
 }
 
--(NSString*) lastCompletedProblemIdInElementWithId:(NSString*)elementId
+-(double)currentUserPercentageCompletionOfElement:(Element*)element
+{
+    NSString *urId = self.currentUser.document.documentID;
+    
+    NSMutableArray *keys = [NSMutableArray array];
+    for (NSString *pId in element.includedProblems)
+    {
+        [keys addObject:[NSArray arrayWithObjects:urId, pId, nil]];
+    }
+    
+    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kProblemsCompletedByUser];
+    q.groupLevel = 2;
+    q.keys = keys;
+    [[q start] wait];
+    
+    return [[q rows] count] / (double)[element.includedProblems count];
+}
+
+/*-(NSString*) lastCompletedProblemIdInElementWithId:(NSString*)elementId
                                          andUserId:(NSString*)userId
 {
     CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kProblemSuccessByUserElementDate];
@@ -219,11 +239,11 @@ NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-el
     q.endKey = [NSArray arrayWithObjects:elementId, userId, nil];
     [[q start] wait];
     
-    if (![q.rows.allObjects count]) return nil;
+    if (![[q rows] count]) return nil;
     
-    CouchQueryRow *latest = [q.rows.allObjects objectAtIndex:0];
+    CouchQueryRow *latest = [[q rows].allObjects objectAtIndex:0];
     return latest.value;
-}
+}*/
 
 -(void)startProblemAttempt
 {
@@ -284,37 +304,37 @@ NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-el
     CouchDesignDocument* design = [database designDocumentWithName:kDefaultDesignDocName];
     
     [design defineViewNamed:kDeviceUsersLastSessionStart
-                   mapBlock:MAPBLOCK({        
-                id type = [doc objectForKey:@"type"];                        
-                if (type && 
-                    [type respondsToSelector:@selector(isEqualToString:)] && 
-                    [type isEqualToString:@"device"])
-                {
-                    for (NSDictionary *session in [doc objectForKey:@"userSessions"]) {
-                        emit([NSArray arrayWithObjects:[doc objectForKey:@"_id"], [session objectForKey:@"userId"], nil], 
-                             [session objectForKey:@"startDateTime"]);
-                    }
+                   mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)) {
+                       id type = [doc objectForKey:@"type"];
+                       if (type && 
+                           [type respondsToSelector:@selector(isEqualToString:)] && 
+                           [type isEqualToString:@"device"])
+                       {
+                           for (NSDictionary *session in [doc objectForKey:@"userSessions"])
+                           {
+                               emit([NSArray arrayWithObjects:[doc objectForKey:@"_id"], [session objectForKey:@"userId"], nil], [session objectForKey:@"startDateTime"]);
+                           }
+                       }
+                   }
+                reduceBlock:^id(NSArray* keys, NSArray* values, BOOL rereduce) {
+                    NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:nil ascending:NO selector:@selector(localizedCaseInsensitiveCompare:)];
+                    NSArray *sessionsByStartDesc = [values sortedArrayUsingDescriptors:[NSArray arrayWithObject:sd]];
+                    return [sessionsByStartDesc objectAtIndex:0];
                 }
-        })
-                reduceBlock:REDUCEBLOCK({
-        NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:nil ascending:NO selector:@selector(localizedCaseInsensitiveCompare:)];
-        NSArray *sessionsByStartDesc = [values sortedArrayUsingDescriptors:[NSArray arrayWithObject:sd]];
-        return [sessionsByStartDesc objectAtIndex:0];
-                })
-                    version: @"v1.04"];
+                    version: @"v1.05"];
     
     
     [design defineViewNamed:kAllUserNicknames
-                   mapBlock:MAPBLOCK({
-        id type = [doc objectForKey:@"type"];
-        if (type &&
-            [type respondsToSelector:@selector(isEqualToString:)] &&
-            [type isEqualToString:@"user"])
-        {
-            emit([doc objectForKey:@"nickName"], nil);
-        }
-    })
-                    version: @"v1.01"];
+                   mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)) {
+                       id type = [doc objectForKey:@"type"];
+                       if (type &&
+                           [type respondsToSelector:@selector(isEqualToString:)] &&
+                           [type isEqualToString:@"user"])
+                       {
+                           emit([doc objectForKey:@"nickName"], nil);
+                       }
+                   }
+                    version: @"v1.05"];
     
     
     [design defineViewNamed:kUsersByNickNamePassword
@@ -329,6 +349,25 @@ NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-el
         }
     })
                     version: @"v1.00"];
+    
+    
+    [design defineViewNamed:kProblemsCompletedByUser
+                   mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)) {
+                       id type = [doc objectForKey:@"type"];
+                       //id success = [doc objectForKey:@"success"];
+                       if (type && 
+                           [type respondsToSelector:@selector(isEqualToString:)] && 
+                           [type isEqualToString:@"problem attempt"] /*&&
+                           (bool)success == true*/)
+                       {
+                           NSArray *key = [NSArray arrayWithObjects:[doc objectForKey:@"userId"], [doc objectForKey:@"problemId"], nil];
+                           emit(key, [doc objectForKey:@"problemId"]);
+                       }
+                   }
+                reduceBlock:^id(NSArray* keys, NSArray* values, BOOL rereduce) {
+                    return [values objectAtIndex:0]; // call view with groupLevel = 2.
+                }
+                    version: @"v1.04"];
     
     
     [design defineViewNamed:kUsersTimeInApp
@@ -364,7 +403,7 @@ NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-el
                 })
                     version: @"v1.00"];
     
-    [design defineViewNamed:kProblemSuccessByUserElementDate
+/*    [design defineViewNamed:kProblemSuccessByUserElementDate
                    mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)){
                        id type = [doc objectForKey:@"type"];
                        if (type && 
@@ -376,9 +415,9 @@ NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-el
                            emit(key, [doc objectForKey:@"problemId"]);
                        }
                    }
-                    version: @"v1.00"];
+                    version: @"v1.01"];
                 
-    
+  */  
 }
 
 -(void)startLiveQueries

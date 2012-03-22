@@ -574,6 +574,10 @@ const float kPropYHitNextMenu=0.9f;
 
 -(void)showElementInfo:(Element*)element
 {
+    UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+    double elCompletion = [us currentUserPercentageCompletionOfElement:element];    
+    // TODO: Display element completion (remember to multiply by 100)
+    
     [eMenuModDesc setString:element.name];
     [eMenuModStatus setString:@"IN PROGRESS"];
     [eMenuModTime setString:@"5 mins"];

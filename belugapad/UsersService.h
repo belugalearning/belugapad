@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class User, ProblemAttempt, CouchLiveQuery;
+@class User, ProblemAttempt, Element, CouchLiveQuery;
 
 @interface UsersService : NSObject
 
@@ -26,7 +26,8 @@
 -(User*) userMatchingNickName:(NSString*)nickName
                   andPassword:(NSString*)password;
 
--(double) currentUserTotalTimeInApp;
+-(double)currentUserPercentageCompletionOfElement:(Element*)element;
+-(double)currentUserTotalTimeInApp;
 
 -(NSString*) lastCompletedProblemIdInElementWithId:(NSString*)elementId
                                          andUserId:(NSString*)userId;

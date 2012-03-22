@@ -60,7 +60,9 @@
         NSDate *start = [NSDate date];
         
         currentPause = [[NSMutableDictionary dictionaryWithObject:[RESTBody JSONObjectWithDate:start] forKey:@"start"] retain];
-        [(NSMutableArray*)self.pauses addObject:currentPause];
+        NSMutableArray *mutableCopyPauses = [self.pauses mutableCopy];
+        [mutableCopyPauses addObject:currentPause];
+        self.pauses = mutableCopyPauses;
     }
     else
     {
@@ -71,7 +73,8 @@
         timePaused += [end timeIntervalSinceDate:start];
         
         [currentPause setObject:[RESTBody JSONObjectWithDate:end] forKey:@"end"];
-        [currentPause release];        
+        [currentPause release];
+        currentPause = nil;
     }
     
     [[self save] wait];

@@ -28,7 +28,7 @@
 
 -(NSData*)expressionData
 {
-    CouchAttachment *ca = [self attachmentNamed:@"pdef.plist"];
+    CouchAttachment *ca = [self attachmentNamed:@"expression.mathml"];
     if (!ca) return nil;
     return ca.body;
 }

@@ -140,8 +140,8 @@ static float kMoveToNextProblemTime=2.0f;
     //don't eval if we're in an auto move to next problem
     if((currentTool.ProblemComplete || metaQuestionForceComplete) && !autoMoveToNextProblem)
     {
-        //UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
-        //[us endProblemAttempt:YES];
+        UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+        [us endProblemAttempt:YES];
 
         [Zubi createXPshards:100 fromLocation:ccp(cx, cy)];
 
@@ -281,16 +281,16 @@ static float kMoveToNextProblemTime=2.0f;
         [self.Zubi hideZubi];
     }
     
-    //UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
-    //[us startProblemAttempt];
+    UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+    [us startProblemAttempt];
 }
 
 -(void) resetProblem
 {
     skipNextStagedIntroAnim=YES;
     
-    //UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
-    //[us endProblemAttempt:NO];
+    UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+    [us endProblemAttempt:NO];
     
     [self loadProblem];
 }
@@ -303,8 +303,8 @@ static float kMoveToNextProblemTime=2.0f;
     [pauseMenu setPosition:ccp(cx, cy)];
     [toolForeLayer addChild:pauseMenu z:10];
     
-    //UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
-    //[us togglePauseProblemAttempt];
+    UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+    [us togglePauseProblemAttempt];
 }
 
 -(void) checkPauseTouches:(CGPoint)location
@@ -316,8 +316,8 @@ static float kMoveToNextProblemTime=2.0f;
         [toolForeLayer removeChild:pauseMenu cleanup:YES];
         isPaused=NO;
         
-        //UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
-        //[us togglePauseProblemAttempt];
+        UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+        [us togglePauseProblemAttempt];
     }
     if(CGRectContainsPoint(kPauseMenuReset, location))
     {

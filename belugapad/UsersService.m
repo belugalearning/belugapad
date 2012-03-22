@@ -299,6 +299,7 @@ NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-
     
     AppDelegate *ad = [[UIApplication sharedApplication] delegate];
     ContentService *cs = ad.contentService;
+    CouchDatabase *contentDb = [cs Database];
     Problem *currentProblem = cs.currentProblem;
     
     User *ur = self.currentUser;    
@@ -315,7 +316,7 @@ NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-
         NSMutableArray *mStarted = [ur.modulesStarted mutableCopy];
         [mStarted addObject:mId];
         ur.modulesStarted = mStarted;
-        e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:[cs Database] eventType:kStartModule entityId:mId points:0];
+        e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:contentDb eventType:kStartModule entityId:mId points:0];
         [[e save] wait];
         [e release];
         e = nil;
@@ -324,7 +325,7 @@ NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-
     if (![ur.currentModuleId isEqualToString:mId])
     {
         ur.currentModuleId = mId;
-        e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:[cs Database] eventType:kPlayingModule entityId:mId points:0];
+        e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:contentDb eventType:kPlayingModule entityId:mId points:0];
         [[e save] wait];
         [e release];
         e = nil;
@@ -336,7 +337,7 @@ NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-
         [eStarted addObject:eId];
         ur.elementsStarted = eStarted;
         
-        e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:[cs Database] eventType:kStartElement entityId:eId points:0];
+        e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:contentDb eventType:kStartElement entityId:eId points:0];
         [[e save] wait];
         [e release];
         e = nil;
@@ -345,7 +346,7 @@ NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-
     if (![ur.currentElementId isEqualToString:eId])
     {
         ur.currentElementId = eId;
-        e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:[cs Database] eventType:kPlayingElement entityId:eId points:0];
+        e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:contentDb eventType:kPlayingElement entityId:eId points:0];
         [[e save] wait];
         [e release];
         e = nil;
@@ -375,6 +376,7 @@ NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-
         // for now we're awarding max points
         AppDelegate *ad = [[UIApplication sharedApplication] delegate];
         ContentService *cs = ad.contentService;
+        CouchDatabase *contentDb = [cs Database];
         Problem *p = cs.currentProblem;
         NSUInteger totalPoints = 0;
         
@@ -393,7 +395,7 @@ NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-
         
         User *ur = self.currentUser;
         ActivityFeedEvent *e = nil;
-        e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:[cs Database] eventType:kCompleteProblem entityId:p.document.documentID points:totalPoints];
+        e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:contentDb eventType:kCompleteProblem entityId:p.document.documentID points:totalPoints];
         [[e save] wait];
         [e release];
         e = nil;
@@ -403,14 +405,14 @@ NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-
         
         if (![ur.elementsCompleted containsObject:p.elementId])
         {
-            Element *el = [[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:p.elementId]];
+            Element *el = [[CouchModelFactory sharedInstance] modelForDocument:[contentDb documentWithID:p.elementId]];
             double elCompletion = [self currentUserPercentageCompletionOfElement:el];
             if (elCompletion >= 1)
             {
                 NSMutableArray *completedElements = [self.currentUser.elementsCompleted mutableCopy];
                 [completedElements addObject:p.elementId];
                 ur.elementsCompleted = completedElements;
-                e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:[cs Database] eventType:kCompleteElement entityId:p.elementId points:0];
+                e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:contentDb eventType:kCompleteElement entityId:p.elementId points:0];
                 [[e save] wait];
                 [e release];
                 e = nil;
@@ -419,7 +421,7 @@ NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-
         
         if (![ur.modulesCompleted containsObject:p.moduleId])
         {
-            Module *mod = [[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:p.moduleId]];
+            Module *mod = [[CouchModelFactory sharedInstance] modelForDocument:[contentDb documentWithID:p.moduleId]];
             NSSet *modElements = [NSSet setWithArray:mod.elements];
             NSSet *completedElements = [NSSet setWithArray:ur.elementsCompleted];
             BOOL modCompleted = [modElements isSubsetOfSet:completedElements];
@@ -429,7 +431,7 @@ NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-
                 NSMutableArray *completedModules = [ur.modulesCompleted mutableCopy];
                 [completedModules addObject:p.moduleId];
                 self.currentUser.modulesCompleted = completedModules;
-                e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:[cs Database] eventType:kCompleteModule entityId:p.moduleId points:0];
+                e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:contentDb eventType:kCompleteModule entityId:p.moduleId points:0];
                 [[e save] wait];
                 [e release];
                 e = nil;

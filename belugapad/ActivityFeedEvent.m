@@ -21,6 +21,7 @@
 
 - (id) initWithNewDocumentInDatabase:(CouchDatabase*)database
                         usersService:(UsersService*)usersService
+                     contentDatabase:(CouchDatabase*)contentDatabase
                            eventType:(ActivityFeedEventTypes)eventType
                             entityId:(NSString*)entityId
                               points:(NSUInteger)points
@@ -45,39 +46,39 @@
         {
             case kStartModule:
                 self.eventType = @"started module";
-                m = [[CouchModelFactory sharedInstance] modelForDocument:[self.database documentWithID:entityId]];
+                m = [[CouchModelFactory sharedInstance] modelForDocument:[contentDatabase documentWithID:entityId]];
                 self.text = [NSString stringWithFormat:@"%@ started %@", nickName, m.name];
                 break;
             case kStartElement:
                 self.eventType = @"started element";
-                e = [[CouchModelFactory sharedInstance] modelForDocument:[self.database documentWithID:entityId]];
+                e = [[CouchModelFactory sharedInstance] modelForDocument:[contentDatabase documentWithID:entityId]];
                 self.text = [NSString stringWithFormat:@"%@ started %@", nickName, e.name];
                 break;
             case kPlayingModule:
                 self.eventType = @"playing module";
-                m = [[CouchModelFactory sharedInstance] modelForDocument:[self.database documentWithID:entityId]];
+                m = [[CouchModelFactory sharedInstance] modelForDocument:[contentDatabase documentWithID:entityId]];
                 self.text = [NSString stringWithFormat:@"%@ playing %@", nickName, m.name];
                 break;
             case kPlayingElement:
                 self.eventType = @"playing element";
-                e = [[CouchModelFactory sharedInstance] modelForDocument:[self.database documentWithID:entityId]];
+                e = [[CouchModelFactory sharedInstance] modelForDocument:[contentDatabase documentWithID:entityId]];
                 self.text = [NSString stringWithFormat:@"%@ playing %@", nickName, e.name];
                 break;
             case kCompleteModule:
                 self.eventType = @"completed module";
-                m = [[CouchModelFactory sharedInstance] modelForDocument:[self.database documentWithID:entityId]];
+                m = [[CouchModelFactory sharedInstance] modelForDocument:[contentDatabase documentWithID:entityId]];
                 self.text = [NSString stringWithFormat:@"%@ completed %@", nickName, m.name];
                 break;
             case kCompleteElement:
                 self.eventType = @"completed element";
-                e = [[CouchModelFactory sharedInstance] modelForDocument:[self.database documentWithID:entityId]];
+                e = [[CouchModelFactory sharedInstance] modelForDocument:[contentDatabase documentWithID:entityId]];
                 self.text = [NSString stringWithFormat:@"%@ completed %@", nickName, e.name];
                 break;
             case kCompleteProblem:
                 self.eventType = @"completed problem";
-                p = [[CouchModelFactory sharedInstance] modelForDocument:[self.database documentWithID:entityId]];
-                e = [[CouchModelFactory sharedInstance] modelForDocument:[self.database documentWithID:p.elementId]];
-                double elCompletion = (NSUInteger)(100 * [usersService currentUserPercentageCompletionOfElement:e]);
+                p = [[CouchModelFactory sharedInstance] modelForDocument:[contentDatabase documentWithID:entityId]];
+                e = [[CouchModelFactory sharedInstance] modelForDocument:[contentDatabase documentWithID:p.elementId]];
+                NSUInteger elCompletion = (NSUInteger)(100 * [usersService currentUserPercentageCompletionOfElement:e]);
                 self.text = [NSString stringWithFormat:@"%@ +%d %@ (%d%%)", nickName, points, e.name, elCompletion];
                 break;
             default:

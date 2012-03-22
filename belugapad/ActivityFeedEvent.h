@@ -33,6 +33,7 @@ typedef enum {
 
 - (id) initWithNewDocumentInDatabase:(CouchDatabase*)database
                         usersService:(UsersService*)usersService
+                     contentDatabase:(CouchDatabase*)contentDatabase
                            eventType:(ActivityFeedEventTypes)eventType
                             entityId:(NSString*)entityId
                               points:(NSUInteger)points;

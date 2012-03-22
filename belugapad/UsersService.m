@@ -28,6 +28,7 @@ NSString * const kUsersByNickNamePassword = @"users-by-nick-name-password";
 NSString * const kUsersTimeInApp = @"users-time-in-app";
 //NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-element-date";
 NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
+NSString * const kTotalExpByUser = @"total-exp-by-user";
 
 @interface UsersService()
 {
@@ -230,6 +231,19 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     return [[q rows] count] / (double)[element.includedProblems count];
 }
 
+-(NSUInteger)currentUserTotalExp
+{
+    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kTotalExpByUser];
+    q.groupLevel = 1;
+    q.keys = [NSArray arrayWithObject:self.currentUser.document.documentID];
+    [[q start] wait];
+    
+    if (![[q rows] count]) return 0;
+    
+    CouchQueryRow *r = [[q rows].allObjects objectAtIndex:0];
+    return [(NSNumber*)r.value unsignedIntValue];
+}
+
 /*-(NSString*) lastCompletedProblemIdInElementWithId:(NSString*)elementId
                                          andUserId:(NSString*)userId
 {
@@ -354,11 +368,12 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     [design defineViewNamed:kProblemsCompletedByUser
                    mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)) {
                        id type = [doc objectForKey:@"type"];
-                       //id success = [doc objectForKey:@"success"];
+                       id success = [doc objectForKey:@"success"];
+                       
                        if (type && 
                            [type respondsToSelector:@selector(isEqualToString:)] && 
-                           [type isEqualToString:@"problem attempt"] /*&&
-                           (bool)success == true*/)
+                           [type isEqualToString:@"problem attempt"] &&
+                           (bool)success == true)
                        {
                            NSArray *key = [NSArray arrayWithObjects:[doc objectForKey:@"userId"], [doc objectForKey:@"problemId"], nil];
                            emit(key, [doc objectForKey:@"problemId"]);
@@ -367,8 +382,33 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
                 reduceBlock:^id(NSArray* keys, NSArray* values, BOOL rereduce) {
                     return [values objectAtIndex:0]; // call view with groupLevel = 2.
                 }
-                    version: @"v1.04"];
+                    version: @"v1.05"];    
     
+    [design defineViewNamed:kTotalExpByUser
+                   mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)) {
+                       id type = [doc objectForKey:@"type"];
+                       id success = [doc objectForKey:@"success"];
+                       if (type && 
+                           [type respondsToSelector:@selector(isEqualToString:)] && 
+                           [type isEqualToString:@"problem attempt"] &&
+                                                                      (bool)success == true)
+                       {
+                           NSArray *acPoints = [doc objectForKey:@"awardedAssessmentCriteriaPoints"];
+                           for (NSDictionary *crit in acPoints)
+                           {
+                               emit([doc objectForKey:@"userId"], [crit objectForKey:@"points"]);
+                           }
+                       }
+                   }
+                reduceBlock:^id(NSArray* keys, NSArray* values, BOOL rereduce) {
+                    NSUInteger sum = 0;
+                    for (NSNumber *points in values)
+                    {
+                        sum += [points unsignedIntValue];
+                    }
+                    return [NSNumber numberWithUnsignedInt:sum]; // call view with groupLevel = 1
+                }
+                    version: @"v1.00"];
     
     [design defineViewNamed:kUsersTimeInApp
                    mapBlock:MAPBLOCK({        

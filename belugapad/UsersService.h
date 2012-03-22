@@ -26,6 +26,7 @@
 -(User*) userMatchingNickName:(NSString*)nickName
                   andPassword:(NSString*)password;
 
+-(NSUInteger)currentUserTotalExp;
 -(double)currentUserPercentageCompletionOfElement:(Element*)element;
 -(double)currentUserTotalTimeInApp;
 

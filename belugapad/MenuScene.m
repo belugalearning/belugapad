@@ -540,9 +540,11 @@ const float kPropYHitNextMenu=0.9f;
 {
     UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
     NSString *timeInApp = [self convertTimeFromSeconds:[NSString stringWithFormat:@"%g", us.currentUserTotalTimeInApp]];
+    NSUInteger totalExp = [us currentUserTotalExp];
+    
     [eMenuModName setString:module.name];
     [eMenuPlayerName setString:us.currentUser.nickName];
-    [eMenuTotExp setString:@"53,000"];
+    [eMenuTotExp setString:[NSString stringWithFormat:@"%d", totalExp]];
     [eMenuTotTime setString:timeInApp];
     [eMenu setVisible:YES];
     [eMenuLeftPlayBtn setVisible:YES];

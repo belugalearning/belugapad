@@ -70,6 +70,8 @@ typedef enum
     CCSprite *selectedElementOverlay;
     
     Element *selectedElement;
+    
+    CCLabelTTF *topicLabelLast;
 }
 
 +(CCScene *)scene;

@@ -195,6 +195,11 @@ const float kPropYHitNextMenu=0.9f;
         [tnamelabel setOpacity:kMenuLabelOpacity];
         [modBase addChild:tnamelabel];
         
+        if(!topicLabelLast)
+        {
+            topicLabelLast=tnamelabel;
+        }
+        
         NSArray *moduleIDs=topic.modules;
         
         for(int m=0; m<[moduleIDs count] && m<2; m++)
@@ -541,6 +546,8 @@ const float kPropYHitNextMenu=0.9f;
     [eMenuTotTime setString:timeInApp];
     [eMenu setVisible:YES];
     [eMenuLeftPlayBtn setVisible:YES];
+    
+    [topicLabelLast setOpacity:0];
 }
 
 -(void)hideModuleOverlay
@@ -556,6 +563,8 @@ const float kPropYHitNextMenu=0.9f;
     [eMenuLeftPlayBtn setVisible:NO];
     [eMenuLeftClock setVisible:NO];
     [eMenu setVisible:NO];
+    
+    [topicLabelLast setOpacity:kMenuLabelOpacity];
 }
 
 -(void)pressedPlayButton

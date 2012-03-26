@@ -231,13 +231,13 @@ const float kPropYHitNextMenu=0.9f;
                 [elementsForThisModule addObject:element];
                 
                 //create module/topc element view
-                CCSprite *elegeo=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/elementview/acirc.png")];
+                //CCSprite *elegeo=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/elementview/acirc.png")];
                 
                 float offsetX=-(((int)[elementIDs count]-1) * 100);
                 
-                [elegeo setPosition:ccp(cx + (e*200) + offsetX, cy)];
-                [elegeo setOpacity:255];
-                [moduleLayer addChild:elegeo];
+                //[elegeo setPosition:ccp(cx + (e*200) + offsetX, cy)];
+                //[elegeo setOpacity:255];
+                //[moduleLayer addChild:elegeo];
             }
             
             //create module/topic label

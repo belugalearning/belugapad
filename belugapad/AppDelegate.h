@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "cocos2d.h"
 
+@class ContentService;
+
 @interface AppController : NSObject <UIApplicationDelegate, CCDirectorDelegate>
 {
 	UIWindow *window_;

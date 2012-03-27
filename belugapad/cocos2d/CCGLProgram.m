@@ -34,7 +34,7 @@
 #import "Support/OpenGL_Internal.h"
 
 // extern
-#import "GL/matrix.h"
+#import "matrix.h"
 #import "kazmath.h"
 
 

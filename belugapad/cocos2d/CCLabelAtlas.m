@@ -37,7 +37,7 @@
 #import "Support/TransformUtils.h"
 
 // external
-#import "GL/matrix.h"
+#import "matrix.h"
 
 @implementation CCLabelAtlas
 

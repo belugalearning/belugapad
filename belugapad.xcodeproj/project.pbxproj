@@ -173,6 +173,7 @@
 		7F5005C11521B3070038D251 /* cpSpaceQuery.c in Sources */ = {isa = PBXBuildFile; fileRef = 7F5005A21521B3060038D251 /* cpSpaceQuery.c */; };
 		7F5005C21521B3070038D251 /* cpSpaceStep.c in Sources */ = {isa = PBXBuildFile; fileRef = 7F5005A31521B3060038D251 /* cpSpaceStep.c */; };
 		7F5005C31521B3070038D251 /* cpVect.c in Sources */ = {isa = PBXBuildFile; fileRef = 7F5005A41521B3060038D251 /* cpVect.c */; };
+		7F5005C715223ADC0038D251 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5005C615223ADC0038D251 /* Icon.png */; };
 		7F5113C314A9EE62001AF372 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C214A9EE62001AF372 /* QuartzCore.framework */; };
 		7F5113C514A9EE62001AF372 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C414A9EE62001AF372 /* OpenGLES.framework */; };
 		7F5113C714A9EE62001AF372 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C614A9EE62001AF372 /* OpenAL.framework */; };
@@ -217,7 +218,6 @@
 		7F813D6B14CCD8CF00C1E997 /* fire3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D6A14CCD8CF00C1E997 /* fire3.plist */; };
 		7FABE68F14B33D5100ED2D0C /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */; };
 		7FABE69114B33D5600ED2D0C /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */; };
-		7FABE69C14B4BA4A00ED2D0C /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE69B14B4BA4900ED2D0C /* icon.png */; };
 		7FABE6A214B4BF0F00ED2D0C /* templatedefs-general.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE6A114B4BF0F00ED2D0C /* templatedefs-general.plist */; };
 		7FABE6A614B4C5F100ED2D0C /* BContainerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6A514B4C5F100ED2D0C /* BContainerRender.m */; };
 		7FABE6A914B4C60600ED2D0C /* BMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6A814B4C60600ED2D0C /* BMount.m */; };
@@ -632,6 +632,7 @@
 		7F5005A31521B3060038D251 /* cpSpaceStep.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cpSpaceStep.c; sourceTree = "<group>"; };
 		7F5005A41521B3060038D251 /* cpVect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cpVect.c; sourceTree = "<group>"; };
 		7F5005A51521B3060038D251 /* prime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prime.h; sourceTree = "<group>"; };
+		7F5005C615223ADC0038D251 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		7F5113BE14A9EE62001AF372 /* belugapad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = belugapad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F5113C214A9EE62001AF372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7F5113C414A9EE62001AF372 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -709,7 +710,6 @@
 		7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		7FABE69214B33E5800ED2D0C /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = global.h; sourceTree = "<group>"; };
-		7FABE69B14B4BA4900ED2D0C /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		7FABE6A114B4BF0F00ED2D0C /* templatedefs-general.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "templatedefs-general.plist"; sourceTree = "<group>"; };
 		7FABE6A414B4C5F100ED2D0C /* BContainerRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BContainerRender.h; sourceTree = "<group>"; };
 		7FABE6A514B4C5F100ED2D0C /* BContainerRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BContainerRender.m; sourceTree = "<group>"; };
@@ -1316,7 +1316,7 @@
 		7F5113B314A9EE62001AF372 = {
 			isa = PBXGroup;
 			children = (
-				7FABE69B14B4BA4900ED2D0C /* icon.png */,
+				7F5005C615223ADC0038D251 /* Icon.png */,
 				7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */,
 				7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */,
 				7F5113D214A9EE63001AF372 /* belugapad */,
@@ -1814,7 +1814,6 @@
 				7F5113E614A9EE63001AF372 /* iTunesArtwork in Resources */,
 				7FABE68F14B33D5100ED2D0C /* Default-Portrait~ipad.png in Resources */,
 				7FABE69114B33D5600ED2D0C /* Default-Landscape~ipad.png in Resources */,
-				7FABE69C14B4BA4A00ED2D0C /* icon.png in Resources */,
 				7FABE6A214B4BF0F00ED2D0C /* templatedefs-general.plist in Resources */,
 				7FAEC26114BB5BA000E60983 /* visgrad1.fnt in Resources */,
 				7FAEC26214BB5BA000E60983 /* visgrad1.png in Resources */,
@@ -1833,6 +1832,7 @@
 				7F5005A71521B3060038D251 /* LICENSE.txt in Resources */,
 				7F5005A81521B3060038D251 /* README.txt in Resources */,
 				7F5005AA1521B3060038D251 /* CMakeLists.txt in Resources */,
+				7F5005C715223ADC0038D251 /* Icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2194,6 +2194,10 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"\"belugapad/kazmath/include\"/**",
+					"\"belugapad/Chipmunk/include/chipmunk\"/**",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				SDKROOT = iphoneos;
 			};
@@ -2209,6 +2213,10 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"\"belugapad/kazmath/include\"/**",
+					"\"belugapad/Chipmunk/include/chipmunk\"/**",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
@@ -2225,7 +2233,11 @@
 				GCC_PREFIX_HEADER = belugapad/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = /usr/include/libxml2;
+				HEADER_SEARCH_PATHS = (
+					"/usr/include/libxml2/**",
+					"\"belugapad/kazmath/include\"/**",
+					"\"belugapad/Chipmunk/include/chipmunk\"/**",
+				);
 				INFOPLIST_FILE = belugapad/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				OTHER_LDFLAGS = (
@@ -2248,7 +2260,11 @@
 				GCC_PREFIX_HEADER = belugapad/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = /usr/include/libxml2;
+				HEADER_SEARCH_PATHS = (
+					"/usr/include/libxml2/**",
+					"\"belugapad/kazmath/include\"/**",
+					"\"belugapad/Chipmunk/include/chipmunk\"/**",
+				);
 				INFOPLIST_FILE = belugapad/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				OTHER_LDFLAGS = (

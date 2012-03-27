@@ -206,16 +206,17 @@ static float kMoveToNextProblemTime=2.0f;
     [contentService gotoNextProblemInElement];
     
     pdef = [contentService.currentPDef retain];
+    self.PpExpr = contentService.currentPExpr;
     
-    if(!pdef)
+    if(pdef)
+    {
+        [self loadProblem];
+    }
+    else
     {
         //no more problems in this sequence, bail to menu
         [[CCDirector sharedDirector] replaceScene:[MenuScene scene]];
     }
-    
-    self.PpExpr = contentService.currentPExpr;
-    
-    [self loadProblem];
 }
 
 -(void) loadProblem

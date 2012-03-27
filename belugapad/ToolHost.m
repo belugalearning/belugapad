@@ -81,7 +81,7 @@ static float kMoveToNextProblemTime=2.0f;
         
         [self populatePerstLayer];
         
-        contentService = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).contentService;        
+        contentService = ((AppController*)[[UIApplication sharedApplication] delegate]).contentService;        
         [self gotoNewProblem];
         
         [self schedule:@selector(doUpdateOnTick:) interval:1.0f/60.0f];

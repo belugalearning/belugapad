@@ -174,6 +174,9 @@
 		7F5005C21521B3070038D251 /* cpSpaceStep.c in Sources */ = {isa = PBXBuildFile; fileRef = 7F5005A31521B3060038D251 /* cpSpaceStep.c */; };
 		7F5005C31521B3070038D251 /* cpVect.c in Sources */ = {isa = PBXBuildFile; fileRef = 7F5005A41521B3060038D251 /* cpVect.c */; };
 		7F5005C715223ADC0038D251 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5005C615223ADC0038D251 /* Icon.png */; };
+		7F5005CB1522478C0038D251 /* fps_images-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5005C81522478C0038D251 /* fps_images-hd.png */; };
+		7F5005CC1522478C0038D251 /* fps_images-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5005C91522478C0038D251 /* fps_images-ipadhd.png */; };
+		7F5005CD1522478C0038D251 /* fps_images.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5005CA1522478C0038D251 /* fps_images.png */; };
 		7F5113C314A9EE62001AF372 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C214A9EE62001AF372 /* QuartzCore.framework */; };
 		7F5113C514A9EE62001AF372 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C414A9EE62001AF372 /* OpenGLES.framework */; };
 		7F5113C714A9EE62001AF372 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C614A9EE62001AF372 /* OpenAL.framework */; };
@@ -182,7 +185,6 @@
 		7F5113CD14A9EE63001AF372 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113CC14A9EE63001AF372 /* UIKit.framework */; };
 		7F5113CF14A9EE63001AF372 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113CE14A9EE63001AF372 /* Foundation.framework */; };
 		7F5113D114A9EE63001AF372 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113D014A9EE63001AF372 /* CoreGraphics.framework */; };
-		7F5113D714A9EE63001AF372 /* fps_images.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5113D614A9EE63001AF372 /* fps_images.png */; };
 		7F5113E614A9EE63001AF372 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 7F5113E514A9EE63001AF372 /* iTunesArtwork */; };
 		7F5114FB14A9EE65001AF372 /* CDataScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5114FA14A9EE65001AF372 /* CDataScanner.m */; };
 		7F5114FF14A9EE65001AF372 /* CDataScanner_Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5114FE14A9EE65001AF372 /* CDataScanner_Extensions.m */; };
@@ -633,6 +635,9 @@
 		7F5005A41521B3060038D251 /* cpVect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cpVect.c; sourceTree = "<group>"; };
 		7F5005A51521B3060038D251 /* prime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prime.h; sourceTree = "<group>"; };
 		7F5005C615223ADC0038D251 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		7F5005C81522478C0038D251 /* fps_images-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fps_images-hd.png"; sourceTree = "<group>"; };
+		7F5005C91522478C0038D251 /* fps_images-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fps_images-ipadhd.png"; sourceTree = "<group>"; };
+		7F5005CA1522478C0038D251 /* fps_images.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fps_images.png; sourceTree = "<group>"; };
 		7F5113BE14A9EE62001AF372 /* belugapad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = belugapad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F5113C214A9EE62001AF372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7F5113C414A9EE62001AF372 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -642,7 +647,6 @@
 		7F5113CC14A9EE63001AF372 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7F5113CE14A9EE63001AF372 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7F5113D014A9EE63001AF372 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		7F5113D614A9EE63001AF372 /* fps_images.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fps_images.png; path = Resources/fps_images.png; sourceTree = "<group>"; };
 		7F5113E414A9EE63001AF372 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = "<group>"; };
 		7F5113E514A9EE63001AF372 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; name = iTunesArtwork; path = Resources/iTunesArtwork; sourceTree = "<group>"; };
 		7F5114DD14A9EE65001AF372 /* LICENSE_cocos2d.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE_cocos2d.txt; path = libs/LICENSE_cocos2d.txt; sourceTree = "<group>"; };
@@ -1365,6 +1369,9 @@
 		7F5113D314A9EE63001AF372 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7F5005C81522478C0038D251 /* fps_images-hd.png */,
+				7F5005C91522478C0038D251 /* fps_images-ipadhd.png */,
+				7F5005CA1522478C0038D251 /* fps_images.png */,
 				0CF9187B14F54C1D00FAC58D /* images */,
 				0C9FEFF514F572FB00E64138 /* pipeline-testing */,
 				0C0AB7AC14F5116600437F07 /* Problems */,
@@ -1372,7 +1379,6 @@
 				7F813D5D14CCC3AF00C1E997 /* fonts */,
 				7F813D5914CCC38100C1E997 /* particles */,
 				7FABE6A114B4BF0F00ED2D0C /* templatedefs-general.plist */,
-				7F5113D614A9EE63001AF372 /* fps_images.png */,
 				7F5113E414A9EE63001AF372 /* Info.plist */,
 				7F5113E514A9EE63001AF372 /* iTunesArtwork */,
 				7F40D88D14FF631C006A3A55 /* local-settings.plist */,
@@ -1810,7 +1816,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7F5113D714A9EE63001AF372 /* fps_images.png in Resources */,
 				7F5113E614A9EE63001AF372 /* iTunesArtwork in Resources */,
 				7FABE68F14B33D5100ED2D0C /* Default-Portrait~ipad.png in Resources */,
 				7FABE69114B33D5600ED2D0C /* Default-Landscape~ipad.png in Resources */,
@@ -1833,6 +1838,9 @@
 				7F5005A81521B3060038D251 /* README.txt in Resources */,
 				7F5005AA1521B3060038D251 /* CMakeLists.txt in Resources */,
 				7F5005C715223ADC0038D251 /* Icon.png in Resources */,
+				7F5005CB1522478C0038D251 /* fps_images-hd.png in Resources */,
+				7F5005CC1522478C0038D251 /* fps_images-ipadhd.png in Resources */,
+				7F5005CD1522478C0038D251 /* fps_images.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

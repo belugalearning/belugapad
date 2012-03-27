@@ -173,10 +173,10 @@
 		7F5005C11521B3070038D251 /* cpSpaceQuery.c in Sources */ = {isa = PBXBuildFile; fileRef = 7F5005A21521B3060038D251 /* cpSpaceQuery.c */; };
 		7F5005C21521B3070038D251 /* cpSpaceStep.c in Sources */ = {isa = PBXBuildFile; fileRef = 7F5005A31521B3060038D251 /* cpSpaceStep.c */; };
 		7F5005C31521B3070038D251 /* cpVect.c in Sources */ = {isa = PBXBuildFile; fileRef = 7F5005A41521B3060038D251 /* cpVect.c */; };
-		7F5005C715223ADC0038D251 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5005C615223ADC0038D251 /* Icon.png */; };
 		7F5005CB1522478C0038D251 /* fps_images-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5005C81522478C0038D251 /* fps_images-hd.png */; };
 		7F5005CC1522478C0038D251 /* fps_images-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5005C91522478C0038D251 /* fps_images-ipadhd.png */; };
 		7F5005CD1522478C0038D251 /* fps_images.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5005CA1522478C0038D251 /* fps_images.png */; };
+		7F5005D8152248FD0038D251 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5005D7152248FD0038D251 /* Icon.png */; };
 		7F5113C314A9EE62001AF372 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C214A9EE62001AF372 /* QuartzCore.framework */; };
 		7F5113C514A9EE62001AF372 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C414A9EE62001AF372 /* OpenGLES.framework */; };
 		7F5113C714A9EE62001AF372 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C614A9EE62001AF372 /* OpenAL.framework */; };
@@ -634,10 +634,10 @@
 		7F5005A31521B3060038D251 /* cpSpaceStep.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cpSpaceStep.c; sourceTree = "<group>"; };
 		7F5005A41521B3060038D251 /* cpVect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cpVect.c; sourceTree = "<group>"; };
 		7F5005A51521B3060038D251 /* prime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prime.h; sourceTree = "<group>"; };
-		7F5005C615223ADC0038D251 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		7F5005C81522478C0038D251 /* fps_images-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fps_images-hd.png"; sourceTree = "<group>"; };
 		7F5005C91522478C0038D251 /* fps_images-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fps_images-ipadhd.png"; sourceTree = "<group>"; };
 		7F5005CA1522478C0038D251 /* fps_images.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fps_images.png; sourceTree = "<group>"; };
+		7F5005D7152248FD0038D251 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		7F5113BE14A9EE62001AF372 /* belugapad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = belugapad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F5113C214A9EE62001AF372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7F5113C414A9EE62001AF372 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -1320,7 +1320,7 @@
 		7F5113B314A9EE62001AF372 = {
 			isa = PBXGroup;
 			children = (
-				7F5005C615223ADC0038D251 /* Icon.png */,
+				7F5005D7152248FD0038D251 /* Icon.png */,
 				7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */,
 				7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */,
 				7F5113D214A9EE63001AF372 /* belugapad */,
@@ -1837,10 +1837,10 @@
 				7F5005A71521B3060038D251 /* LICENSE.txt in Resources */,
 				7F5005A81521B3060038D251 /* README.txt in Resources */,
 				7F5005AA1521B3060038D251 /* CMakeLists.txt in Resources */,
-				7F5005C715223ADC0038D251 /* Icon.png in Resources */,
 				7F5005CB1522478C0038D251 /* fps_images-hd.png in Resources */,
 				7F5005CC1522478C0038D251 /* fps_images-ipadhd.png in Resources */,
 				7F5005CD1522478C0038D251 /* fps_images.png in Resources */,
+				7F5005D8152248FD0038D251 /* Icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

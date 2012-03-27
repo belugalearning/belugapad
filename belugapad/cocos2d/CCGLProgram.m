@@ -34,8 +34,8 @@
 #import "Support/OpenGL_Internal.h"
 
 // extern
-#import "matrix.h"
-#import "kazmath.h"
+#import "kazmath/GL/matrix.h"
+#import "kazmath/kazmath.h"
 
 
 typedef struct _hashUniformEntry

@@ -33,7 +33,7 @@
 #import "Support/TransformUtils.h"
 
 // external
-#import "matrix.h"
+#import "kazmath/GL/matrix.h"
 
 
 @interface CCAtlasNode ()

@@ -11,8 +11,23 @@
 
 @interface UsersService : NSObject
 
+typedef enum {
+    kUserEventFirstStartTopic,
+    kUserEventFirstStartModule,
+    kUserEventFirstStartElement,
+    kUserEventNowPlayingTopic,
+    kUserEventNowPlayingModule,
+    kUserEventNowPlayingElement,
+    kUserEventCompleteTopic,
+    kUserEventCompleteModule,
+    kUserEventCompleteElement,  
+    kUserEventCompleteProblem   
+} UserEvents;
+
 @property (readonly, retain, nonatomic) NSString *installationUUID;
 @property (retain, nonatomic) User *currentUser;
+
++(NSString*)userEventString:(UserEvents)event;
 
 -(NSArray*) deviceUsersByLastSessionDate;
 

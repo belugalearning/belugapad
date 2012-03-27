@@ -17,29 +17,75 @@
 @private
     NSTimeInterval timePaused;
     NSMutableDictionary *currentPause;
+    NSArray *problemAssessmentCriteria;
 }
 @end
 
 @implementation ProblemAttempt
 
-@dynamic type, userId, problemId, problemRevisionId, elementId, dateTimeStart, dateTimeEnd, pauses, timeInPlay, success, interactionEvents, awardedAssessmentCriteriaPoints;
+@dynamic type;
+@dynamic userId;
+@dynamic userNickName;
+@dynamic problemId;
+@dynamic problemRevisionId;
+@dynamic elementId;
+@dynamic elementRevisionId;
+@dynamic elementName;
+@dynamic moduleId;
+@dynamic moduleRevisionId;
+@dynamic moduleName;
+@dynamic topicId;
+@dynamic topicRevisionId;
+@dynamic topicName;
+@dynamic dateTimeStart;
+@dynamic dateTimeEnd;
+@dynamic onStartUserEvents;
+@dynamic onEndUserEvents;
+@dynamic pauses;
+@dynamic timeInPlay;                                                                                                                                                                   
+@dynamic success;                                                                                                                                                                                 
+@dynamic interactionEvents;
+@dynamic pointsAwarded;                                                                                                                                                               
+@dynamic elementCompletionOnEnd;
 
-- (id) initWithNewDocumentInDatabase:(CouchDatabase*)database
-                             andUserId:(NSString*)urId
-                          andProblem:(Problem*)problem
-{
-    NSParameterAssert(database);
+- (id) initAndStartAttemptForUser:(User*)user
+                       andProblem:(Problem*)problem
+                onStartUserEvents:(NSArray*)events;
+{   
     self = [super initWithDocument: nil];
     if (self)
     {
-        self.database = database;
+        self.database = user.database;
         self.type = @"problem attempt";
-        self.userId = urId;
+        
+        self.userId = user.document.documentID;
+        self.userNickName = user.nickName;
+        
         self.problemId = problem.document.documentID;
         self.problemRevisionId = [problem.document propertyForKey:@"_rev"];
-        self.elementId = problem.elementId;
+        
+        CouchDatabase *contentDb = problem.database;
+        
+        CouchDocument *t = [contentDb documentWithID:problem.topicId];
+        self.topicId = t.documentID;
+        self.topicRevisionId = [t propertyForKey:@"_rev"];
+        self.topicName = [t propertyForKey:@"name"];
+        
+        CouchDocument *m = [contentDb documentWithID:problem.moduleId];
+        self.moduleId = m.documentID;
+        self.moduleRevisionId = [m propertyForKey:@"_rev"];
+        self.moduleName = [m propertyForKey:@"name"];
+        
+        CouchDocument *e = [contentDb documentWithID:problem.elementId];
+        self.elementId = e.documentID;
+        self.elementRevisionId = [e propertyForKey:@"_rev"];
+        self.elementName = [e propertyForKey:@"name"];
+        
         self.dateTimeStart = [NSDate date];
         self.dateTimeEnd = nil;
+        
+        self.onStartUserEvents = events;
+        
         self.pauses = [NSMutableArray array];
         self.timeInPlay = 0;
         self.success = false;
@@ -48,6 +94,7 @@
         [[self save] wait];
         
         timePaused = 0;
+        problemAssessmentCriteria = [problem.assessmentCriteria copy];
     }
     return self;
 }
@@ -60,7 +107,7 @@
         NSDate *start = [NSDate date];
         
         currentPause = [[NSMutableDictionary dictionaryWithObject:[RESTBody JSONObjectWithDate:start] forKey:@"start"] retain];
-        NSMutableArray *mutableCopyPauses = [self.pauses mutableCopy];
+        NSMutableArray *mutableCopyPauses = [[self.pauses mutableCopy] autorelease];
         [mutableCopyPauses addObject:currentPause];
         self.pauses = mutableCopyPauses;
     }
@@ -82,16 +129,31 @@
 
 -(void) endAttempt:(BOOL)success
 {
-    self.success = (success ? true : false);
     if (currentPause) [self togglePause];
-    self.dateTimeEnd = [NSDate date];    
+    self.dateTimeEnd = [NSDate date];
     self.timeInPlay = [self.dateTimeEnd timeIntervalSinceDate:self.dateTimeStart] - timePaused;
+    
+    self.success = (success ? true : false);
+    if (success)
+    {
+        // TODO: currently akways awarding max assessment criteria points!!!!
+        NSMutableArray *points = [NSMutableArray array];
+        for (NSDictionary *d in problemAssessmentCriteria)
+        {
+            NSString *criterionId = [d objectForKey:@"id"];
+            NSString *maxScore = [d objectForKey:@"maxScore"];
+            [points addObject:[NSDictionary dictionaryWithObjectsAndKeys:maxScore, @"points", criterionId, @"criterionId", nil]];
+        }
+        self.pointsAwarded = points;
+    }
+    
     [[self save] wait];
 }
 
 -(void)dealloc
 {
     if (currentPause) [currentPause release];
+    if (problemAssessmentCriteria) [problemAssessmentCriteria release];
     [super dealloc];
 }
 

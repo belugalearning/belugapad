@@ -17,11 +17,14 @@
 @property (retain) NSData *zubiColor; //(r,g,b,a) in const CGFLoat *
 @property (retain) UIImage *zubiScreenshot;
 @property (retain) NSArray *sessions;
+@property (retain) NSArray *topicsStarted;
+@property (retain) NSArray *topicsCompleted;
+@property (retain) NSString *currentTopicId;
 @property (retain) NSArray *modulesStarted;
-@property (retain) NSArray *elementsStarted;
 @property (retain) NSArray *modulesCompleted;
-@property (retain) NSArray *elementsCompleted;
 @property (retain) NSString *currentModuleId;
+@property (retain) NSArray *elementsStarted;
+@property (retain) NSArray *elementsCompleted;
 @property (retain) NSString *currentElementId;
 
 @end

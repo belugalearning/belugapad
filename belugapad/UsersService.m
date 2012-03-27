@@ -11,9 +11,9 @@
 #import "User.h"
 #import "Problem.h"
 #import "ProblemAttempt.h"
+#import "Topic.h"
 #import "Module.h"
 #import "Element.h"
-#import "ActivityFeedEvent.h"
 #import "AppDelegate.h"
 #import "ContentService.h"
 #import <CouchCocoa/CouchCocoa.h>
@@ -31,7 +31,6 @@ NSString * const kUsersTimeInPlay = @"users-time-in-play";
 //NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-element-date";
 NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 NSString * const kTotalExpByUser = @"total-exp-by-user";
-NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-date";
 
 @interface UsersService()
 {
@@ -56,6 +55,33 @@ NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-
 @synthesize installationUUID;
 @synthesize currentUser;
 
++(NSString*)userEventString:(UserEvents)event
+{
+    switch(event)
+    {
+        case kUserEventFirstStartTopic:
+            return @"user-first-start-topic";
+        case  kUserEventFirstStartModule:
+            return @"user-first-start-module";
+        case kUserEventFirstStartElement:
+            return @"user-first-start-element";
+        case kUserEventNowPlayingTopic:
+            return @"user-now-playing-topic";
+        case kUserEventNowPlayingModule:
+            return @"user-now-playing-module";
+        case kUserEventNowPlayingElement:
+            return @"user-now-playing-element";
+        case kUserEventCompleteTopic:
+            return @"user-complete-topic";
+        case kUserEventCompleteModule:
+            return @"user-complete-module";
+        case kUserEventCompleteElement:
+            return @"user-complete-element";
+        case kUserEventCompleteProblem:
+            return @"user-complete-problem";
+    }
+}
+
 -(id)init
 {
     self = [super init];
@@ -64,7 +90,6 @@ NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-
         [[CouchModelFactory sharedInstance] registerClass:[Device class] forDocumentType:@"device"];
         [[CouchModelFactory sharedInstance] registerClass:[User class] forDocumentType:@"user"];        
         [[CouchModelFactory sharedInstance] registerClass:[ProblemAttempt class] forDocumentType:@"problem attempt"];
-        [[CouchModelFactory sharedInstance] registerClass:[ActivityFeedEvent class] forDocumentType:@"activity feed event"];
         
         CouchTouchDBServer *server = [CouchTouchDBServer sharedInstance];
         
@@ -117,7 +142,7 @@ NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-
     return  ad.currentUser;
 }
 
--(void)setCurrentUser:(User*)user
+-(void)setCurrentUser:(User*)ur
 {
     NSString *now = [RESTBody JSONObjectWithDate:[NSDate date]];
     
@@ -127,22 +152,30 @@ NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-
         [currentUser release];
     }
     
-    currentUser = [user retain];
-    currentUser.currentModuleId = nil;
-    currentUser.currentElementId = nil;
+    ur.currentTopicId = nil;
+    ur.currentModuleId = nil;
+    ur.currentElementId = nil;    
+    if (!ur.topicsStarted) ur.topicsStarted = [NSArray array];
+    if (!ur.modulesStarted) ur.modulesStarted = [NSArray array];
+    if (!ur.elementsStarted) ur.elementsStarted = [NSArray array];    
+    if (!ur.topicsCompleted) ur.topicsCompleted = [NSArray array];
+    if (!ur.modulesCompleted) ur.modulesCompleted = [NSArray array];
+    if (!ur.elementsCompleted) ur.elementsCompleted = [NSArray array];
+    [[ur save] wait];
+    
+    currentUser = [ur retain];    
+    // TODO: This is a quick fix. I've done something wrong. Shouldn't need to store the user on the app delegate
+    AppDelegate *ad = [[UIApplication sharedApplication] delegate];
+    ad.currentUser = ur;
     
     currentUserSession = [NSMutableDictionary dictionary];
-    [currentUserSession setObject:user.document.documentID forKey:@"userId"];
+    [currentUserSession setObject:ur.document.documentID forKey:@"userId"];
     [currentUserSession setObject:now forKey:@"startDateTime"];
     
-    NSMutableArray *userSessions = [device.userSessions mutableCopy];
+    NSMutableArray *userSessions = [[device.userSessions mutableCopy] autorelease];
     [userSessions addObject:currentUserSession];
     device.userSessions = userSessions;
     [[device save] wait];
-    
-    // TODO: This is a quick fix. I've done something wrong. Shouldn't need to store the user on the app delegate
-    AppDelegate *ad = [[UIApplication sharedApplication] delegate];
-    ad.currentUser = user;
 }
 
 -(NSArray*)deviceUsersByLastSessionDate
@@ -168,7 +201,7 @@ NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-
         if (user) [users addObject:user];
     }
     
-    return [users copy];
+    return [[users copy] autorelease];
 }
 
 -(BOOL) nickNameIsAvailable:(NSString*)nickName
@@ -292,71 +325,69 @@ NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-
 {
     if (currentProblemAttempt)
     {
-        // TODO: This is horrible quick pre-emptive fix. If currentProblemAttempt != nil, there's an issue. Hopefully will never end up here!
+        // TODO: Shouldn't be here. Handle properly
         [currentProblemAttempt endAttempt:NO];
         [currentProblemAttempt release];
     }
     
     AppDelegate *ad = [[UIApplication sharedApplication] delegate];
     ContentService *cs = ad.contentService;
-    CouchDatabase *contentDb = [cs Database];
     Problem *currentProblem = cs.currentProblem;
     
     User *ur = self.currentUser;    
+    NSString *tId = currentProblem.topicId;
     NSString *mId = currentProblem.moduleId;
     NSString *eId = currentProblem.elementId;
     
-    if (!ur.modulesStarted) ur.modulesStarted = [NSArray array];
-    if (!ur.elementsStarted) ur.elementsStarted = [NSArray array];
+    NSMutableArray *events = [NSMutableArray array];
     
-    ActivityFeedEvent *e = nil;
-    
-    if (![ur.modulesStarted containsObject:mId])
+    if (![eId isEqualToString:ur.currentElementId])
     {
-        NSMutableArray *mStarted = [ur.modulesStarted mutableCopy];
-        [mStarted addObject:mId];
-        ur.modulesStarted = mStarted;
-        e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:contentDb eventType:kStartModule entityId:mId points:0];
-        [[e save] wait];
-        [e release];
-        e = nil;
-    }
-    
-    if (![ur.currentModuleId isEqualToString:mId])
-    {
-        ur.currentModuleId = mId;
-        e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:contentDb eventType:kPlayingModule entityId:mId points:0];
-        [[e save] wait];
-        [e release];
-        e = nil;
-    }
-    
-    if (![ur.elementsStarted containsObject:eId])
-    {
-        NSMutableArray *eStarted = [ur.elementsStarted mutableCopy];
-        [eStarted addObject:eId];
-        ur.elementsStarted = eStarted;
-        
-        e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:contentDb eventType:kStartElement entityId:eId points:0];
-        [[e save] wait];
-        [e release];
-        e = nil;
-    }
-    
-    if (![ur.currentElementId isEqualToString:eId])
-    {
+        [events addObject:[UsersService userEventString:kUserEventNowPlayingElement]];
         ur.currentElementId = eId;
-        e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:contentDb eventType:kPlayingElement entityId:eId points:0];
-        [[e save] wait];
-        [e release];
-        e = nil;
+        
+        if (![ur.elementsStarted containsObject:eId])
+        {
+            [events addObject:[UsersService userEventString:kUserEventFirstStartElement]];
+            NSMutableArray *eStarted = [[ur.elementsStarted mutableCopy] autorelease];
+            [eStarted addObject:eId];
+            ur.elementsStarted = eStarted;
+        }
+        
+        if (![mId isEqualToString:ur.currentModuleId])
+        {
+            [events addObject:[UsersService userEventString:kUserEventNowPlayingModule]];
+            ur.currentModuleId = mId;
+            
+            if (![ur.modulesStarted containsObject:mId])
+            {
+                [events addObject:[UsersService userEventString:kUserEventFirstStartModule]];
+                NSMutableArray *mStarted = [[ur.modulesStarted mutableCopy] autorelease];
+                [mStarted addObject:mId];
+                ur.modulesStarted = mStarted;
+            }
+            
+            if (![tId isEqualToString:ur.currentTopicId])
+            {
+                [events addObject:[UsersService userEventString:kUserEventNowPlayingTopic]];
+                ur.currentTopicId = tId;
+                
+                if (![ur.topicsStarted containsObject:tId])
+                {
+                    [events addObject:[UsersService userEventString:kUserEventFirstStartTopic]];
+                    NSMutableArray *tStarted = [[ur.topicsStarted mutableCopy] autorelease];
+                    [tStarted addObject:tId];
+                    ur.topicsStarted = tStarted;
+                }
+            }
+        }
     }
     
-    [ur save];
+    [[ur save] wait];
         
-    currentProblemAttempt = [[ProblemAttempt alloc] initWithNewDocumentInDatabase:database
-                                                                        andUserId:ur.document.documentID
-                                                                       andProblem:currentProblem];
+    currentProblemAttempt = [[ProblemAttempt alloc] initAndStartAttemptForUser:ur
+                                                                    andProblem:currentProblem
+                                                             onStartUserEvents:events];
 }
 
 -(void) togglePauseProblemAttempt
@@ -370,76 +401,56 @@ NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-
     if (!currentProblemAttempt) return; // TODO: Handle Error properly
     [currentProblemAttempt endAttempt:success];
     
+    User *ur = self.currentUser;
+    AppDelegate *ad = [[UIApplication sharedApplication] delegate];
+    ContentService *cs = ad.contentService;
+    CouchDatabase *contentDb = [cs Database];        
+    Problem *p = [[CouchModelFactory sharedInstance] modelForDocument:[contentDb documentWithID:currentProblemAttempt.problemId]];        
+    Element *e = [[CouchModelFactory sharedInstance] modelForDocument:[contentDb documentWithID:p.elementId]];
+    Module *m = [[CouchModelFactory sharedInstance] modelForDocument:[contentDb documentWithID:p.moduleId]];
+    Topic *t = [[CouchModelFactory sharedInstance] modelForDocument:[contentDb documentWithID:p.topicId]];
+    
+    currentProblemAttempt.elementCompletionOnEnd = [self currentUserPercentageCompletionOfElement:e];
+
     if (success)
     {
-        // award assessment criteria points.
-        // for now we're awarding max points
-        AppDelegate *ad = [[UIApplication sharedApplication] delegate];
-        ContentService *cs = ad.contentService;
-        CouchDatabase *contentDb = [cs Database];
-        Problem *p = cs.currentProblem;
-        NSUInteger totalPoints = 0;
+        NSMutableArray *events = [NSMutableArray arrayWithObject:[UsersService userEventString:kUserEventCompleteProblem]];
         
-        NSMutableArray *awarded = [NSMutableArray array];
-        for (NSDictionary *criterion in p.assessmentCriteria)
+        if (currentProblemAttempt.elementCompletionOnEnd >=1 && ![ur.elementsCompleted containsObject:p.elementId])
         {
-            NSNumber *points = [criterion objectForKey:@"maxScore"];
-            totalPoints += [points unsignedIntValue];
+            [events addObject:[UsersService userEventString:kUserEventCompleteElement]];
+            NSMutableArray *eCompleted = [[ur.elementsCompleted mutableCopy] autorelease];
+            [eCompleted addObject:p.elementId];
+            ur.elementsCompleted = eCompleted;
             
-            NSDictionary *d = [NSDictionary dictionaryWithObjectsAndKeys:[criterion objectForKey:@"id"], @"id", points, @"points", nil];
-            [awarded addObject:d];
-        }
-        currentProblemAttempt.awardedAssessmentCriteriaPoints = awarded;
-
-        [[currentProblemAttempt save] wait];
-        
-        User *ur = self.currentUser;
-        ActivityFeedEvent *e = nil;
-        e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:contentDb eventType:kCompleteProblem entityId:p.document.documentID points:totalPoints];
-        [[e save] wait];
-        [e release];
-        e = nil;
-        
-        if (!self.currentUser.elementsCompleted) ur.elementsCompleted = [NSArray array];
-        if (!self.currentUser.modulesCompleted) ur.modulesCompleted = [NSArray array];
-        
-        if (![ur.elementsCompleted containsObject:p.elementId])
-        {
-            Element *el = [[CouchModelFactory sharedInstance] modelForDocument:[contentDb documentWithID:p.elementId]];
-            double elCompletion = [self currentUserPercentageCompletionOfElement:el];
-            if (elCompletion >= 1)
-            {
-                NSMutableArray *completedElements = [self.currentUser.elementsCompleted mutableCopy];
-                [completedElements addObject:p.elementId];
-                ur.elementsCompleted = completedElements;
-                e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:contentDb eventType:kCompleteElement entityId:p.elementId points:0];
-                [[e save] wait];
-                [e release];
-                e = nil;
+            if (![ur.modulesCompleted containsObject:p.moduleId])
+            {   
+                BOOL mComplete = [[NSSet setWithArray:m.elements] isSubsetOfSet:[NSSet setWithArray:ur.elementsCompleted]];                
+                if (mComplete)
+                {
+                    [events addObject:[UsersService userEventString:kUserEventCompleteModule]];
+                    NSMutableArray *mCompleted = [[ur.modulesCompleted mutableCopy] autorelease];
+                    [mCompleted addObject:p.moduleId];
+                    ur.modulesCompleted = mCompleted;
+                    
+                    if (![ur.topicsCompleted containsObject:p.topicId])
+                    {
+                        BOOL tComplete = [[NSSet setWithArray:t.modules] isSubsetOfSet:[NSSet setWithArray:ur.topicsCompleted]];
+                        if (tComplete)
+                        {
+                            [events addObject:[UsersService userEventString:kUserEventCompleteTopic]];
+                            NSMutableArray *tCompleted = [[ur.topicsCompleted mutableCopy] autorelease];
+                            [tCompleted addObject:p.topicId];
+                            ur.topicsCompleted = tCompleted;
+                        }
+                    }
+                }
             }
-        }
-        
-        if (![ur.modulesCompleted containsObject:p.moduleId])
-        {
-            Module *mod = [[CouchModelFactory sharedInstance] modelForDocument:[contentDb documentWithID:p.moduleId]];
-            NSSet *modElements = [NSSet setWithArray:mod.elements];
-            NSSet *completedElements = [NSSet setWithArray:ur.elementsCompleted];
-            BOOL modCompleted = [modElements isSubsetOfSet:completedElements];
-            
-            if (modCompleted)
-            {
-                NSMutableArray *completedModules = [ur.modulesCompleted mutableCopy];
-                [completedModules addObject:p.moduleId];
-                self.currentUser.modulesCompleted = completedModules;
-                e = [[ActivityFeedEvent alloc] initWithNewDocumentInDatabase:database usersService:self contentDatabase:contentDb eventType:kCompleteModule entityId:p.moduleId points:0];
-                [[e save] wait];
-                [e release];
-                e = nil;
-            }
-        }
-                
+        }        
+        currentProblemAttempt.onEndUserEvents = events;
     }
     [[self.currentUser save] wait];
+    [[currentProblemAttempt save] wait];
     [currentProblemAttempt release];
     currentProblemAttempt = nil;
 }
@@ -499,16 +510,15 @@ NSString * const kActivityFeedEventsByUserDate = @"activity-feed-events-by-user-
     
     
     [design defineViewNamed:kUsersByNickNamePassword
-                        mapBlock:MAPBLOCK({        
-        id type = [doc objectForKey:@"type"];        
-        
-        if (type && 
-            [type respondsToSelector:@selector(isEqualToString:)] && 
-            [type isEqualToString:@"user"])
-        {
-            emit([NSArray arrayWithObjects:[doc objectForKey:@"nickName"], [doc objectForKey:@"password"], nil], nil);
-        }
-    })
+                        mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)) {
+                            id type = [doc objectForKey:@"type"];        
+                            if (type && 
+                                [type respondsToSelector:@selector(isEqualToString:)] && 
+                                [type isEqualToString:@"user"])
+                            {
+                                emit([NSArray arrayWithObjects:[doc objectForKey:@"nickName"], [doc objectForKey:@"password"], nil], nil);
+                            }
+                        }
                     version: @"v1.00"];
     
     

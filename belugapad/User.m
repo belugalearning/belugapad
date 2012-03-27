@@ -21,7 +21,10 @@ NSString *const kZubiScreenshotFile = @"zubi_screenshot.png";
 
 @implementation User
 
-@dynamic type, nickName, password, creationDateTime, zubiColor, sessions, modulesStarted, elementsStarted, modulesCompleted, elementsCompleted, currentModuleId, currentElementId;
+@dynamic type, nickName, password, creationDateTime, zubiColor, sessions;
+@dynamic topicsStarted, topicsCompleted, currentTopicId;
+@dynamic modulesStarted, modulesCompleted, currentModuleId;
+@dynamic elementsStarted, elementsCompleted, currentElementId;
 
 - (UIImage*) zubiScreenshot
 {
@@ -52,9 +55,14 @@ NSString *const kZubiScreenshotFile = @"zubi_screenshot.png";
         self.type = @"user";
         self.creationDateTime = [NSDate date];
         self.sessions = [NSMutableArray array];
+        
+        self.topicsStarted = [NSArray array];
+        self.topicsCompleted = [NSArray array];
+        
         self.modulesStarted = [NSArray array];
-        self.elementsStarted = [NSArray array];
         self.modulesCompleted = [NSArray array];
+        
+        self.elementsStarted = [NSArray array];
         self.elementsCompleted = [NSArray array];
         
         self.autosaves = YES;

@@ -64,7 +64,8 @@
     [self buildEditUserView];
     [self buildLoadExistingUserView];
     
-    deviceUsersByLastSession = [((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService deviceUsersByLastSessionDate];
+    AppDelegate *ad = [[UIApplication sharedApplication] delegate];    
+    deviceUsersByLastSession = [[ad.usersService deviceUsersByLastSessionDate] retain];
     if ([deviceUsersByLastSession count] == 0)
     {
         [cancelNewUserButton setHidden:YES];

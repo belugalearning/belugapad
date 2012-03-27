@@ -49,7 +49,7 @@
 #import "Support/TransformUtils.h"
 
 // extern
-#import "kazmath/GL/matrix.h"
+#import "GL/matrix.h"
 
 @interface CCParticleSystemQuad ()
 -(void) initVAO;

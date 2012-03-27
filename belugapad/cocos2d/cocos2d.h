@@ -161,8 +161,8 @@
 //
 // external
 //
-#import "kazmath/kazmath.h"
-#import "kazmath/GL/matrix.h"
+#import "kazmath.h"
+#import "matrix.h"
 
 
 

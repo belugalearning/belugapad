@@ -120,8 +120,11 @@
     NSString *spriteFileName=@"/images/placevalue/obj-placevalue-unit.png";
     //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
 
-    if([[gameObject store] objectForKey:SPRITE_FILENAME])
+    if(![[gameObject store] objectForKey:SPRITE_FILENAME])
     {
+        [[gameObject store] setObject:spriteFileName forKey:SPRITE_FILENAME];
+    }
+    else {
         spriteFileName=[[gameObject store] objectForKey:SPRITE_FILENAME];
     }
     
@@ -198,19 +201,23 @@
     if(isSelected) {
         if(([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue])<0)
         {
+            // if the object is a negative, what colour do we tint selection
             [mySprite setColor:ccc3(255,0,255)];
         }
         else {
-            [mySprite setColor:ccc3(0, 255, 0)]; 
+            // tint for selection (+ number)
+            [mySprite setColor:ccc3(255, 128, 0)]; 
         }
     }
     else
     {
         if(([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue])<0)
         {
+            // default tint of a negative object
             [mySprite setColor:ccc3(255,0,0)];
         }
         else {
+            // default tint of a positive number
             [mySprite setColor:ccc3(255, 255, 255)];
         }
     }
@@ -223,10 +230,12 @@
     {
         if(([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue])<0)
         {
+            // base selection tint of negative numbers
             [mySprite setColor:ccc3(255,0,105)];
         }
         else
         {
+            // base selection tint of positive numbers
             [mySprite setColor:ccc3(255,255,0)]; 
         }
     }
@@ -238,11 +247,12 @@
             // then whether it's a +/- number
             if(([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue])<0)
             {
+                //selection colour for a negative number
                 [mySprite setColor:ccc3(255,0,255)];
             }
             else
             {
-                [mySprite setColor:ccc3(0,255,0)];             
+                [mySprite setColor:ccc3(255,128,0)];             
             }
         }
         else

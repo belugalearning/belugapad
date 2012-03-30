@@ -19,9 +19,11 @@
 typedef enum
 {
     kNoState=0,
-    kNumberASelected=1,
-    kNumberBSelected=2,
-    kNumberRemainder=3
+    kNumberSelected=1,
+    kNumberOperatorSelected=2,
+    kNumberRemainder=3,
+    kNumberRemainderDrag=4,
+    kNumberRemainderPress=5
 } currentToolState;
 
 @interface ColumnAddition : ToolScene
@@ -50,17 +52,31 @@ typedef enum
     int aCols[5];
     int bCols[5];
     int sCols[5];
+    int rCols[5];
     
     CCLabelTTF *aColLabels[5];
     CCLabelTTF *bColLabels[5];
     CCLabelTTF *sColLabels[5];
     CCLabelTTF *remLabels[5];
-    CCLabelTTF *lblOperator;
+    //CCLabelTTF *lblOperator;
+    CCSprite *btnOperator;
+    CCSprite *lblRemainder;
+    CCSprite *lblRemainderArrow;
+    CGPoint lblRemainderPos;
     
     BOOL aColLabelSelected[5];
+    BOOL aColLabelEnabled[5];
     BOOL bColLabelSelected[5];
+    BOOL bColLabelEnabled[5];
     BOOL sColLabelSelected[5];
     BOOL lblOperatorSelected;
+    BOOL lblOperatorActive;
+    
+    NSString *bkgOverlay;
+    
+    BOOL autoMoveToNextProblem;
+    float timeToAutoMoveToNextProblem;
+//    BOOL ProblemComplete;
     
 }
 -(void)populateGW;
@@ -69,6 +85,7 @@ typedef enum
 -(void)deselectNumberAExcept:(int)thisNumber;
 -(void)deselectNumberBExcept:(int)thisNumber;
 -(void)switchOperator;
+-(void)switchOperatorSprite;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

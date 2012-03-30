@@ -8,7 +8,9 @@
 
 #define BUNDLE_FULL_PATH(_filePath_) [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:_filePath_]
 
-#define TITLE_FONT @"Helvetica-Bold"
+#define GENERIC_FONT @"STHeitiTC-Light"
+#define TITLE_FONT @"STHeitiTC-Light"
+//#define TITLE_FONT @"Helvetica-Bold"
 #define TITLE_SIZE 90
 #define TITLE_OPACITY 15
 #define TITLE_COLOR3 ccc3(255, 255, 255)
@@ -16,6 +18,7 @@
 #define BKG_COLOR4 ccc4(235, 246, 252, 255)
 
 #define UNDERLAY_FILENAME @"UNDERLAY_FILENAME"
+#define OVERLAY_FILENAME @"OVERLAY_FILENAME"
 
 
 #define POS_X @"POS_X"
@@ -53,8 +56,8 @@
 #define NLINE_PRI_SPACEBASE 180.0f
 #define NLINE_MARKER_FONT @"visgrad1.fnt"
 
-#define PROBLEM_DESC_FONT @"Helvetica"
-#define PROBLEM_DESC_FONT_SIZE 32
+#define PROBLEM_DESC_FONT @"STHeitiTC-Light"
+#define PROBLEM_DESC_FONT_SIZE 35
 #define PROBLEM_SUBTITLE_FONT_SIZE 20
 
 #define MY_SPRITE @"MY_SPRITE"

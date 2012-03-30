@@ -74,8 +74,10 @@
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
 		<integer>15</integer>
-		<key>SOLUTION_DISPLAY_TEXT2</key>
+		<key>SOLUTION_DISPLAY_TEXT</key>
 		<string>success!</string>
+		<key>PLAY_SOUND</key>
+		<string>complete.wav</string>
 	</dict>
 	<key>REJECT_MODE</key>
 	<integer>1</integer>
@@ -85,6 +87,8 @@
 	<dict>
 		<key>10</key>
 		<string>/images/placevalue/obj-placevalue-unit10.png</string>
+		<key>1</key>
+		<string>/images/placevalue/obj-placevalue-unit1.png</string>
 	</dict>
 	<key>COLUMN_CAGES</key>
 	<dict>

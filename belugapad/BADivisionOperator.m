@@ -168,7 +168,7 @@
 {
     NSMutableString *s=[NSMutableString stringWithFormat:@"%@<apply>\n", padding];
     
-    [s appendFormat:@"%@ <divide />\n"];
+    [s appendFormat:@"%@ <divide />\n", padding];
     
     for(NSInteger i = 0; i < [[self children] count]; i++)
     {

@@ -435,7 +435,7 @@
 {
     NSMutableString *s=[NSMutableString stringWithFormat:@"%@<apply>\n", padding];
     
-    [s appendFormat:@"%@ <times />\n"];
+    [s appendFormat:@"%@ <times />\n", padding];
     
     for(NSInteger i = 0; i < [[self children] count]; i++)
     {

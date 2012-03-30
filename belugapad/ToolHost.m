@@ -33,6 +33,8 @@
 @synthesize PpExpr;
 @synthesize flagResetProblem;
 
+static float kMoveToNextProblemTime=2.0f;
+
 +(CCScene *) scene
 {
     CCScene *scene=[CCScene node];
@@ -79,7 +81,7 @@
         
         [self populatePerstLayer];
         
-        contentService = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).contentService;        
+        contentService = ((AppController*)[[UIApplication sharedApplication] delegate]).contentService;        
         [self gotoNewProblem];
         
         [self schedule:@selector(doUpdateOnTick:) interval:1.0f/60.0f];
@@ -114,6 +116,16 @@
             shownProblemStatusFor=0.0f;
     }
     
+    if(autoMoveToNextProblem)
+    {
+        moveToNextProblemTime-=delta;
+        if(moveToNextProblemTime<0)
+        {
+            autoMoveToNextProblem=NO;
+            [self gotoNewProblem];
+        }
+    }
+    
     //let tool do updates
     [currentTool doUpdateOnTick:delta];
 }
@@ -123,9 +135,11 @@
     if(showMetaQuestionIncomplete) shownMetaQuestionIncompleteFor+=delta;
     
     //do internal mgmt updates
-    if(currentTool.ProblemComplete || metaQuestionForceComplete)
+    //don't eval if we're in an auto move to next problem
+    if((currentTool.ProblemComplete || metaQuestionForceComplete) && !autoMoveToNextProblem)
     {
-        [self gotoNewProblem];
+        moveToNextProblemTime=kMoveToNextProblemTime;
+        autoMoveToNextProblem=YES;
     }
     
     if(self.flagResetProblem)
@@ -230,6 +244,10 @@
         [self addChild:hostBackground];
     }
     
+    //playback sound assocaited with problem
+    NSString *playsound=[pdef objectForKey:PLAY_SOUND];
+    if(playsound) [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/sfx/%@", playsound]))];
+    
     //setup meta question (if there is one)
     NSDictionary *mq=[pdef objectForKey:META_QUESTION];
     if (mq)
@@ -271,17 +289,20 @@
     if(CGRectContainsPoint(kPauseMenuContinue, location))
     {
         //resume
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [toolForeLayer removeChild:pauseMenu cleanup:YES];
         isPaused=NO;
     }
     if(CGRectContainsPoint(kPauseMenuReset, location))
     {
        //reset
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self resetProblem];
         isPaused=NO;
     }
     if(CGRectContainsPoint(kPauseMenuMenu,location))
     {
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
        //menu - do nothing, yet
         [self returnToMenu];
         
@@ -619,8 +640,12 @@
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
-     
+    
     [self checkMetaQuestionTouches:location];
+    if(isPaused)
+    {
+        return;
+    }  
     if (location.x > 944 && location.y > 688 && !isPaused)
     {
         [self showPauseMenu];
@@ -635,6 +660,10 @@
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if(isPaused)
+    {
+        return;
+    }  
     [currentTool ccTouchesMoved:touches withEvent:event];
 }
 
@@ -661,16 +690,28 @@
 
 -(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
+    if(isPaused)
+    {
+        return NO;
+    }  
     return [currentTool ccTouchBegan:touch withEvent:event];
 }
 
 -(void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
+    if(isPaused)
+    {
+        return;
+    }  
     [currentTool ccTouchMoved:touch withEvent:event];
 }
 
 -(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
+    if(isPaused)
+    {
+        return;
+    }  
     [currentTool ccTouchEnded:touch withEvent:event];
 }
 

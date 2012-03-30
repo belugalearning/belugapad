@@ -2,10 +2,21 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>/Problems/ExprScene/expr-problem001.plist</string>
+	<string>/Problems/ExprScene/expr-problem001.plist</string>
+	<string>/Problems/ExprScene/expr-problem001.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch1.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch2.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch3.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch4.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch5.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline-stitch6.plist</string>
+	<string>/Problems/tools-dev/gj-dev/float-ops.plist</string>
+	<string>/Problems/tools-dev/gj-dev/gj-mq1.plist</string>
 	<string>/Problems/tools-dev/gj-dev/gj-f1.plist</string>
 	<string>/Problems/tools-dev/gj-dev/gj-f2.plist</string>
 	<string>/Problems/tools-dev/gj-dev/gj-mq1.plist</string>
-	<string>/Problems/FloatingBlock/float-problem0001.plist</string>
+	<string>/Problems/tools-dev/gj-dev/float-noops.plist</string>
 	<string>/Problems/FloatingBlock/float-problem0001.plist</string>
 	<string>/Problems/FloatingBlock/float-problem0001.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem020.plist</string>

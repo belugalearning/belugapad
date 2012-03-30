@@ -11,6 +11,10 @@
 	<string>/Problems/Addition/ac-dev/01pv/floatingblock-003.plist</string>
 	<string>/Problems/Addition/ac-dev/01pv/anline_addition_10_7_17.plist</string>
 	<string>/Problems/Addition/ac-dev/addition_10_7_17.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem061.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem062.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem064.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem063.plist</string>
 	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem011.plist</string>
 	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem012.plist</string>
 	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem013.plist</string>
@@ -26,5 +30,21 @@
 	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem021.plist</string>
 	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem022.plist</string>
 	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem023.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem041.plist</string>
+	<string>/Problems/Addition/ac-dev/addition_13_10_23.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem042.plist</string>
+	<string>/Problems/Addition/ac-dev/addition_22_13_35.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem043.plist</string>
+	<string>/Problems/Addition/ac-dev/subtraction_24_12_12.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem044.plist</string>
+	<string>/Problems/Addition/ac-dev/addition_31_14_45.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem045.plist</string>
+	<string>/Problems/Addition/ac-dev/subtraction_23_21_2.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem046.plist</string>
+	<string>/Problems/Addition/ac-dev/addition_24_35_59.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem047.plist</string>
+	<string>/Problems/Addition/ac-dev/addition_14_8_22.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem048.plist</string>
+	<string>/Problems/Addition/ac-dev/subtraction_33_8_25.plist</string>
 </array>
 </plist>

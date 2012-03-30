@@ -106,6 +106,7 @@ static NSString *kSpriteFileOperatorMode = @"/images/blocks/obj-float-50-operato
     {
         [self swapObjSpritesTo:kSpriteFileOperatorMode];
         inOperatorMode=YES;
+        
     }
     
     if(messageType==kDWnotInOperatorMode)
@@ -487,6 +488,12 @@ static NSString *kSpriteFileOperatorMode = @"/images/blocks/obj-float-50-operato
 
 -(void)subtractMeFrom:(DWGameObject*)targetGo
 {
+    //decide if this is possible
+    if([[[targetGo store] objectForKey:OBJ_CHILDMATRIX] count]<[[[gameObject store] objectForKey:OBJ_CHILDMATRIX] count])
+    {
+        return;
+    }
+    
     CGPoint offsetPos=[BLMath offsetPosFrom:[self avgPosForFloatObject:gameObject] to:[self avgPosForFloatObject:targetGo]];
     DLog(@"subtract operation from %@", NSStringFromCGPoint(offsetPos));
     

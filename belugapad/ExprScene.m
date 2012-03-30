@@ -12,6 +12,7 @@
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
 #import "BATTreeViz.h"
+#import "global.h"
 
 @implementation ExprScene
 
@@ -58,53 +59,63 @@
 
 -(void)loadPpExpr
 {
-    //populate primary problem expression
-    
-    BAAdditionOperator *add=[BAAdditionOperator operator];
-    BAInteger *i1=[BAInteger integerWithIntValue:2];
-    BAInteger *i2=[BAInteger integerWithIntValue:3];
-    [add addChild:i1];
-    [add addChild:i2];
-        
-    BAMultiplicationOperator *mult=[BAMultiplicationOperator operator];
-    BADivisionOperator *div=[BADivisionOperator operator];
-    BAInteger *i3=[BAInteger integerWithIntValue:5];
-    BAVariable *x=[BAVariable variableWithName:@"x"];
-    [div addChild:i3];
-    [div addChild:x];
-    
-    BAAdditionOperator *add2=[BAAdditionOperator operator];
-    BAInteger *i4=[BAInteger integerWithIntValue:12];
-    BAInteger *i5=[BAInteger integerWithIntValue:1];
-    [add2 addChild:i4];
-    [add2 addChild:i5];
-    
-    [mult addChild:add2];
-    [mult addChild:div];
-    
-    BAEqualsOperator *eq=[BAEqualsOperator operator];
-    [eq addChild:add];
-    [eq addChild:mult];
-    toolHost.PpExpr=[BAExpressionTree treeWithRoot:eq];
+//    //populate primary problem expression
+//    
+//    BAAdditionOperator *add=[BAAdditionOperator operator];
+//    BAInteger *i1=[BAInteger integerWithIntValue:2];
+//    BAInteger *i2=[BAInteger integerWithIntValue:3];
+//    [add addChild:i1];
+//    [add addChild:i2];
+//        
+//    BAMultiplicationOperator *mult=[BAMultiplicationOperator operator];
+//    BADivisionOperator *div=[BADivisionOperator operator];
+//    BAInteger *i3=[BAInteger integerWithIntValue:5];
+//    BAVariable *x=[BAVariable variableWithName:@"x"];
+//    [div addChild:i3];
+//    [div addChild:x];
+//    
+//    BAAdditionOperator *add2=[BAAdditionOperator operator];
+//    BAInteger *i4=[BAInteger integerWithIntValue:12];
+//    BAInteger *i5=[BAInteger integerWithIntValue:1];
+//    [add2 addChild:i4];
+//    [add2 addChild:i5];
+//    
+//    [mult addChild:add2];
+//    [mult addChild:div];
+//    
+//    BAEqualsOperator *eq=[BAEqualsOperator operator];
+//    [eq addChild:add];
+//    [eq addChild:mult];
+//    toolHost.PpExpr=[BAExpressionTree treeWithRoot:eq];
 }
 
 -(void)writeExprLabel
 {
     BATQuery *q=[[BATQuery alloc] initWithExpr:toolHost.PpExpr.root];
     
-    NSString *text=[NSString stringWithFormat:@"expressionString: %@ \ndepth: %d", [[toolHost.PpExpr root] expressionString], [q getMaxDepth]];
+    NSString *text=[[toolHost.PpExpr root] expressionString];
     
     if(!exprLabel)
     {
-        exprLabel=[CCLabelTTF labelWithString:text dimensions:CGSizeMake(lx*0.5f, ly*0.5f) alignment:UITextAlignmentLeft fontName:@"Helvetica" fontSize:24];
-//        exprLabel=[CCLabelTTF labelWithString:text fontName:@"Helvetica" fontSize:24];
+//        exprLabel=[CCLabelTTF labelWithString:text dimensions:CGSizeMake(lx*0.5f, ly*0.5f) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:96];
+//        
+        exprLabel=[CCLabelTTF labelWithString:text fontName:GENERIC_FONT fontSize:80];
+//        exprLabel=[CCLabelTTF labelWithString:text fontName:GENERIC_FONT fontSize:24];
         [exprLabel setOpacity:100];
-        [exprLabel setPosition:ccp(lx*0.25f + lx*0.0075f, ly*0.75f - lx*0.005f)];
+        [exprLabel setPosition:ccp(cx, 80)];
         [self.ForeLayer addChild:exprLabel];
     }
     else {
         [exprLabel setString:text];
     }
+
+    NSString *mml=[toolHost.PpExpr xmlStringValue];
+    labelExprMathML=[CCLabelTTF labelWithString:mml dimensions:CGSizeMake(lx, ly) alignment:UITextAlignmentLeft fontName:GENERIC_FONT fontSize:24];
+    //        exprLabel=[CCLabelTTF labelWithString:text fontName:GENERIC_FONT fontSize:24];
+    [labelExprMathML setOpacity:100];
+    [labelExprMathML setPosition:ccp(cx, 384)];
+    [self.ForeLayer addChild:labelExprMathML];
+    
 }
 
 -(void)updateExpr

@@ -411,15 +411,27 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     //disableCageDelete = [[pdef objectForKey:DISABLE_CAGE_DELETE] boolValue];
     
     // look at what positive columns are allowed to add/del
+    
+    if([pdef objectForKey:CAGE_POS_DISABLE_ADD]) {
     columnCagePosDisableAdd = [pdef objectForKey:CAGE_POS_DISABLE_ADD];
     [columnCagePosDisableAdd retain];
+    }
+        
+    if([pdef objectForKey:CAGE_POS_DISABLE_DELETE]) {
     columnCagePosDisableDel = [pdef objectForKey:CAGE_POS_DISABLE_DELETE];
-    [columnCagePosDisableAdd retain];
+    [columnCagePosDisableDel retain];
+    }
+    
+    if([pdef objectForKey:CAGE_NEG_DISABLE_ADD]) {
     columnCageNegDisableAdd = [pdef objectForKey:CAGE_NEG_DISABLE_ADD];
     [columnCageNegDisableAdd retain];
+    }
+    
+    if([pdef objectForKey:CAGE_NEG_DISABLE_DELETE]) {
     columnCageNegDisableDel = [pdef objectForKey:CAGE_NEG_DISABLE_DELETE];
     [columnCageNegDisableDel retain];
-    
+    }
+        
     if([[pdef objectForKey:CAGE_SPRITES] objectForKey:POS_CAGE]) posCageSprite = [NSString stringWithFormat:@"%@", BUNDLE_FULL_PATH([[pdef objectForKey:CAGE_SPRITES] objectForKey:POS_CAGE])];
     else posCageSprite=BUNDLE_FULL_PATH(@"/images/placevalue/cage-pos.png");
             [posCageSprite retain];
@@ -431,15 +443,21 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     if([pdef objectForKey:PICKUP_SPRITE_FILENAME]) pickupSprite = [pdef objectForKey:PICKUP_SPRITE_FILENAME];
     [pickupSprite retain];
     
-    if([pdef objectForKey:PROXIMITY_SPRITE_FILENAME]) proximitySprite = [pdef objectForKey:PROXIMITY_SPRITE_FILENAME];
-    [proximitySprite retain];
+//    if([pdef objectForKey:PROXIMITY_SPRITE_FILENAME]) {
+//        proximitySprite = [pdef objectForKey:PROXIMITY_SPRITE_FILENAME];
+//        [proximitySprite retain];   
+//    }
 
     
+    if([pdef objectForKey:COLUMN_ROPES]) {
     columnRopes = [pdef objectForKey:COLUMN_ROPES];
     [columnRopes retain];
-    
+    }
+        
+    if([pdef objectForKey:COLUMN_ROWS]) {
     columnRows = [pdef objectForKey:COLUMN_ROWS];
     [columnRows retain];
+    }
 
     if([pdef objectForKey:ALLOW_DESELECTION]) allowDeselect = [[pdef objectForKey:ALLOW_DESELECTION] boolValue];
     else allowDeselect=YES;
@@ -512,21 +530,28 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     }
     
     //look for custom column headers
+    if([pdef objectForKey:CUSTOM_COLUMN_HEADERS]) {
     showCustomColumnHeader = [pdef objectForKey:CUSTOM_COLUMN_HEADERS];
     [showCustomColumnHeader retain];
+    }
     
+    if([pdef objectForKey:COLUMN_SPRITES]) {
     //look for column specific sprites
     columnSprites = [pdef objectForKey:COLUMN_SPRITES];
     [columnSprites retain];
+    }
     
+    if([pdef objectForKey:COLUMN_CAGES]) {
     //look for column cages
     columnCages = [pdef objectForKey:COLUMN_CAGES];
     [columnCages retain];
+    }
     
+    if([pdef objectForKey:COLUMN_NEG_CAGES]) {
     // look for negative column cages
     columnNegCages = [pdef objectForKey:COLUMN_NEG_CAGES];
     [columnNegCages retain];
-    
+    }
     
     
     if(showCount||showValue)
@@ -794,6 +819,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 -(void)evalProblemMatrixMatch
 {
     float solutionsFound = 0;
+    BOOL canEval;
+    NSArray *solutionMatrix = [solutionsDef objectForKey:SOLUTION_MATRIX];
     
     // for each column
     for(int c=0; c<gw.Blackboard.AllStores.count; c++)
@@ -822,8 +849,6 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             }
         }
         
-        NSArray *solutionMatrix = [solutionsDef objectForKey:SOLUTION_MATRIX];
-        
         for(int o=0; o<solutionMatrix.count; o++)
         {
             NSDictionary *solDict = [solutionMatrix objectAtIndex:o];
@@ -839,17 +864,18 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             {
                 //TODO: Attach partial failure here
             }
+            canEval=YES;
             
         }
-        
-        if(solutionsFound == solutionMatrix.count)
-        {
-            [self doWinning];
-        }
-        else if(solutionsFound != solutionMatrix.count && evalMode==kProblemEvalOnCommit)
-        {
-            [self doIncorrect];
-        }
+    }
+    
+    if(solutionsFound == solutionMatrix.count && canEval)
+    {
+        [self doWinning];
+    }
+    else if(solutionsFound != solutionMatrix.count && evalMode==kProblemEvalOnCommit && canEval)
+    {
+        [self doIncorrect];
     }
     
 }
@@ -967,7 +993,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             {
                 if(proximitySprite)
                 {
-                    [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[[gw Blackboard].PickupObject store] objectForKey:PROXIMITY_SPRITE_FILENAME])]];
+                    //[mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[[gw Blackboard].PickupObject store] objectForKey:PROXIMITY_SPRITE_FILENAME])]];
+                    [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(proximitySprite)]];
                 }
         
                 currentColour=ccc3(0,255,0);
@@ -1280,7 +1307,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         }
 
         
-        if([gw Blackboard].PickupObject!=nil)
+        if([gw Blackboard].PickupObject!=nil && ([BLMath DistanceBetween:touchStartPos and:touchEndPos] > fabs(kTapSlipThreshold)))
         {
             [gw Blackboard].DropObject=nil;
                             
@@ -1288,7 +1315,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
             [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
             
-
+											
             if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
             {
                 // TODO: Decide behaviour when the column base amount is selected
@@ -1307,6 +1334,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 //tell the picked-up object to mount on the dropobject
                 [pl removeAllObjects];
                 [pl setObject:[gw Blackboard].DropObject forKey:MOUNT];
+                [pl setObject:[NSNumber numberWithBool:YES] forKey:ANIMATE_ME];
                 [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
                 
                 [[gw Blackboard].PickupObject handleMessage:kDWputdown andPayload:nil withLogLevel:0];         
@@ -1331,20 +1359,30 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             }
             else
             {
-                if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
-                {
-                    for(int goC=0; goC<gw.Blackboard.SelectedObjects.count; goC++)
-                    {
-                        DWGameObject *go = [gw.Blackboard.SelectedObjects objectAtIndex:goC];
-                        [go handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];
-                    }
-                }
-                [[gw Blackboard].PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];
+                [self resetPickupObjectPos];
             }
             [gw Blackboard].PickupObject = nil;
         }
+        
+        else {
+            [self resetPickupObjectPos];
+        }
+        
     }
     potentialTap=NO;
+}
+
+-(void)resetPickupObjectPos
+{
+    if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
+    {
+        for(int goC=0; goC<gw.Blackboard.SelectedObjects.count; goC++)
+        {
+            DWGameObject *go = [gw.Blackboard.SelectedObjects objectAtIndex:goC];
+            [go handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];
+        }
+    }
+    [[gw Blackboard].PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];    
 }
 
 -(float)metaQuestionTitleYLocation
@@ -1368,24 +1406,24 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
     
-    [solutionsDef release];
-    [columnInfo release];
-    [solutionDisplayText release];
-    [incompleteDisplayText release];
-    [showCustomColumnHeader release];
-    [columnCagePosDisableAdd release];
-    [columnCagePosDisableDel release];
-    [columnCageNegDisableAdd release];
-    [columnCageNegDisableDel release];
-    [columnSprites release];
-    [columnCages release];
-    [columnNegCages release];
-    [columnRows release];
-    [columnRopes release];
-    [posCageSprite release];
-    [negCageSprite release];
-    [pickupSprite release];
-    [proximitySprite release];
+    if(solutionsDef) [solutionsDef release];
+    if(columnInfo) [columnInfo release];
+    if(solutionDisplayText) [solutionDisplayText release];
+    if(incompleteDisplayText) [incompleteDisplayText release];
+    if(showCustomColumnHeader) [showCustomColumnHeader release];
+    if(columnCagePosDisableAdd) [columnCagePosDisableAdd release];
+    if(columnCagePosDisableDel) [columnCagePosDisableDel release];
+    if(columnCageNegDisableAdd) [columnCageNegDisableAdd release];
+    if(columnCageNegDisableDel) [columnCageNegDisableDel release];
+    if(columnSprites) [columnSprites release];
+    if(columnCages) [columnCages release];
+    if(columnNegCages) [columnNegCages release];
+    if(columnRows) [columnRows release];
+    if(columnRopes) [columnRopes release];
+    if(posCageSprite) [posCageSprite release];
+    if(negCageSprite) [negCageSprite release];
+    if(pickupSprite) [pickupSprite release];
+    if(proximitySprite) [proximitySprite release];
     
     [super dealloc];
 }

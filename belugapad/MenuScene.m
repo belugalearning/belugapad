@@ -231,7 +231,9 @@ const float kPropYHitNextMenu=0.9f;
                 [elementsForThisModule addObject:element];
                 
                 //create module/topc element view
-                CCSprite *elegeo=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/elementview/acirc.png")];
+//                CCSprite *elegeo=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/elementview/acirc.png")];
+                
+                CCSprite *elegeo=[CCSprite spriteWithFile:@"acirc.png"];
                 
                 float offsetX=-(((int)[elementIDs count]-1) * 100);
                 

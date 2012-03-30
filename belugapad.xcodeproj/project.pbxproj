@@ -79,6 +79,7 @@
 		7F40D8B414FFDA4D006A3A55 /* MultiplyLogicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F40D8AE14FFDA4D006A3A55 /* MultiplyLogicTests.m */; };
 		7F40D8B514FFDA4D006A3A55 /* PowerLogicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F40D8AF14FFDA4D006A3A55 /* PowerLogicTests.m */; };
 		7F40D8D514FFDE40006A3A55 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F40D8D414FFDE40006A3A55 /* SenTestingKit.framework */; };
+		7F5005F015259BB50038D251 /* acirc.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5005EF15259BB50038D251 /* acirc.png */; };
 		7F5113C314A9EE62001AF372 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C214A9EE62001AF372 /* QuartzCore.framework */; };
 		7F5113C514A9EE62001AF372 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C414A9EE62001AF372 /* OpenGLES.framework */; };
 		7F5113C714A9EE62001AF372 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C614A9EE62001AF372 /* OpenAL.framework */; };
@@ -403,6 +404,7 @@
 		7F40D8AE14FFDA4D006A3A55 /* MultiplyLogicTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiplyLogicTests.m; sourceTree = "<group>"; };
 		7F40D8AF14FFDA4D006A3A55 /* PowerLogicTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerLogicTests.m; sourceTree = "<group>"; };
 		7F40D8D414FFDE40006A3A55 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		7F5005EF15259BB50038D251 /* acirc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = acirc.png; sourceTree = "<group>"; };
 		7F5113BE14A9EE62001AF372 /* belugapad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = belugapad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F5113C214A9EE62001AF372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7F5113C414A9EE62001AF372 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -943,6 +945,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		7F5005ED15259BA30038D251 /* tempimg */ = {
+			isa = PBXGroup;
+			children = (
+				7F5005EF15259BB50038D251 /* acirc.png */,
+			);
+			name = tempimg;
+			sourceTree = "<group>";
+		};
 		7F5113B314A9EE62001AF372 = {
 			isa = PBXGroup;
 			children = (
@@ -998,6 +1008,7 @@
 		7F5113D314A9EE63001AF372 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7F5005ED15259BA30038D251 /* tempimg */,
 				0CBD6549151987E400343E12 /* canned-content-db */,
 				0CE3D706151377B7003D5193 /* select-edit-user-images */,
 				0CF9187B14F54C1D00FAC58D /* images */,
@@ -1815,6 +1826,7 @@
 				0CE3D707151377B7003D5193 /* select-edit-user-images in Resources */,
 				0CE3D72815137BFD003D5193 /* SelectUserViewController.xib in Resources */,
 				0CBD654A151987E400343E12 /* canned-content-db in Resources */,
+				7F5005F015259BB50038D251 /* acirc.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

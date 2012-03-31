@@ -19,13 +19,10 @@
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
 #import <CouchCocoa/CouchModelFactory.h>
-#import <CouchCocoa/CouchTouchDBServer.h>
-#import <TouchDB/TouchDB.h>
 
 NSString * const kRemoteContentDatabaseURI = @"http://www.soFarAslant.com:5984/temp-blm-content";
 NSString * const kLocalContentDatabaseName = @"content";
-NSString * const kDefaultContentDesignDocName = @"default";
-NSString * const kDefaultSyllabusViewName = @"default-syllabus";
+NSString * const kDefaultContentDesignDocName = @"content-views";
 
 @interface ContentService()
 {
@@ -37,8 +34,8 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
     
     CouchDatabase *database;
 
-    // TODO: pull replication temporarily removed. Need way to figure out when replication is complete. 
-    // TODO: not sure about this - with logging turned on, building to simulator, took 3 runs to get db updated to latest sequence number.
+    // TODO: Need way to figure out when replication is complete. 
+    // TODO: not sure about this - using TOUCHDB, with logging turned on, building to simulator, took 3 runs to get db updated to latest sequence number.
     //      Does this mean continuous replication not reliable? Or is it the simulator? Or....?
     // Try using comparison of database.lastSequenceNumber against http://www.sofaraslant.com:5984/temp-blm-content doc's update_seq value
     CouchReplication *pullReplication;
@@ -49,7 +46,6 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
 @property (nonatomic, readwrite, retain) BAExpressionTree *currentPExpr;
 @property (nonatomic, readwrite, retain) Syllabus *defaultSyllabus;
 
--(void)createViews;
 @end
 
 @implementation ContentService
@@ -88,25 +84,19 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
             [[CouchModelFactory sharedInstance] registerClass:[Topic class] forDocumentType:@"topic"];
             [[CouchModelFactory sharedInstance] registerClass:[Syllabus class] forDocumentType:@"syllabus"];
             
-            CouchTouchDBServer *server = [CouchTouchDBServer sharedInstance];
-            
-            // if this is the first launch of the app, install canned content db                      
-            TDDatabase *db = [server.touchServer databaseNamed:kLocalContentDatabaseName];
-            if (!db.exists)
-            {
-                // first launch
-                NSError *err;
-                [db replaceWithDatabaseFile:BUNDLE_FULL_PATH(@"/canned-content-db/content.touchdb")
-                            withAttachments:BUNDLE_FULL_PATH(@"/canned-content-db/content-attachments")
-                                      error:&err];
-            }
+            CouchEmbeddedServer *server = [CouchEmbeddedServer sharedInstance];
             
             database = [server databaseNamed:kLocalContentDatabaseName];
+            RESTOperation* op = [database create];
+            if (![op wait] && op.error.code != 412)
+            {
+                self = nil;
+                return self;
+            }
             database.tracksChanges = YES;
             
-            [self createViews];
-            
-            CouchQuery *q = [[database designDocumentWithName:kDefaultContentDesignDocName] queryViewNamed:kDefaultSyllabusViewName];
+            CouchQuery *q = [[database designDocumentWithName:kDefaultContentDesignDocName] queryViewNamed:@"syllabi-by-name"];
+            q.keys = [NSArray arrayWithObject:@"Default"];
             [[q start] wait];
             NSArray *syllabi = q.rows.allObjects; // there should be exactly 1
             
@@ -115,9 +105,9 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
                 self.defaultSyllabus = [[CouchModelFactory sharedInstance] modelForDocument:((CouchQueryRow*)[syllabi objectAtIndex:0]).document];
             }
             
-// For the moment relying soley on canned db            
-//            pullReplication = [[database pullFromDatabaseAtURL:[NSURL URLWithString:kRemoteContentDatabaseURI]] retain];
-//            pullReplication.continuous = YES;
+            // TODO: REINSTATE REPLICATION - will need to manage response to changes in remote content database
+            //pullReplication = [[database pullFromDatabaseAtURL:[NSURL URLWithString:kRemoteContentDatabaseURI]] retain];
+            //pullReplication.continuous = YES;
         }
     }
     return self;
@@ -254,25 +244,6 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
             if (expressionData) self.currentPExpr = [BATio loadTreeFromMathMLData:expressionData];
         }
     }
-}
-
--(void)createViews
-{
-    CouchDesignDocument* design = [database designDocumentWithName:kDefaultContentDesignDocName];
-    
-    [design defineViewNamed:kDefaultSyllabusViewName
-                   mapBlock:MAPBLOCK({
-        id type = [doc objectForKey:@"type"];
-        id name = [doc objectForKey:@"name"];
-        
-        if (type && name &&
-            [@"syllabus" isEqualToString:type] &&
-            [@"Default" isEqualToString:name])
-        {
-            emit([doc objectForKey:@"_id"], nil);
-        }
-    })
-                    version:@"v1.00"];
 }
 
 - (void)dealloc

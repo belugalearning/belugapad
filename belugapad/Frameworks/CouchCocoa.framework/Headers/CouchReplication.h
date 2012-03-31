@@ -18,14 +18,6 @@
 @class CouchDatabase, RESTOperation;
 
 
-typedef enum {
-    kCouchReplicationStopped,
-    kCouchReplicationOffline,
-    kCouchReplicationIdle,
-    kCouchReplicationActive
-} CouchReplicationMode;
-
-
 /** Tracks a CouchDB replication. Can be used to observe its progress. */
 @interface CouchReplication : NSObject
 {
@@ -38,7 +30,6 @@ typedef enum {
     NSString* _taskID;
     NSString* _status;
     unsigned _completed, _total;
-    CouchReplicationMode _mode;
     NSError* _error;
 }
 
@@ -83,7 +74,5 @@ typedef enum {
 @property (nonatomic, readonly) unsigned total;
 
 @property (nonatomic, readonly, retain) NSError* error;
-
-@property (nonatomic, readonly) CouchReplicationMode mode;
 
 @end

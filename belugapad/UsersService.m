@@ -19,16 +19,14 @@
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
 #import <CouchCocoa/CouchModelFactory.h>
-#import <CouchCocoa/CouchTouchDBServer.h>
 
 NSString * const kRemoteUsersDatabaseURI = @"http://www.soFarAslant.com:5984/temp-blm-users";
 NSString * const kLocalUserDatabaseName = @"users";
-NSString * const kDefaultDesignDocName = @"default";
+NSString * const kDefaultDesignDocName = @"users-views";
 NSString * const kDeviceUsersLastSessionStart = @"device-users-last-session";
-NSString * const kAllUserNicknames = @"all-user-nick-names";
+NSString * const kUsersByNickName = @"users-by-nick-name";
 NSString * const kUsersByNickNamePassword = @"users-by-nick-name-password";
 NSString * const kUsersTimeInPlay = @"users-time-in-play";
-//NSString * const kProblemSuccessByUserElementDate = @"problem-success-by-user-element-date";
 NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 NSString * const kTotalExpByUser = @"total-exp-by-user";
 
@@ -45,8 +43,6 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     
     ProblemAttempt *currentProblemAttempt;
 }
--(void)createViews;
--(void)startLiveQueries;
 -(NSDate*)currentUserSessionStart;
 @end
 
@@ -91,7 +87,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
         [[CouchModelFactory sharedInstance] registerClass:[User class] forDocumentType:@"user"];        
         [[CouchModelFactory sharedInstance] registerClass:[ProblemAttempt class] forDocumentType:@"problem attempt"];
         
-        CouchTouchDBServer *server = [CouchTouchDBServer sharedInstance];
+        CouchEmbeddedServer *server = [CouchEmbeddedServer sharedInstance];
         
         database = [server databaseNamed:kLocalUserDatabaseName];
         RESTOperation* op = [database create];
@@ -123,9 +119,6 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
         installationUUID = [standardUserDefaults objectForKey:@"installationUUID"];
         device = [[[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:installationUUID]] retain];
         device.autosaves = true;
-        
-        [self createViews];
-        [self startLiveQueries];
 
         pushReplication = [[database pushToDatabaseAtURL:[NSURL URLWithString:kRemoteUsersDatabaseURI]] retain];
         pushReplication.continuous = YES;
@@ -206,7 +199,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
 
 -(BOOL) nickNameIsAvailable:(NSString*)nickName
 {
-    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kAllUserNicknames];
+    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersByNickName];
     q.keys = [NSArray arrayWithObject:nickName];
     q.prefetch = YES;
     [[q start] wait];
@@ -214,7 +207,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
 }
 
 -(User*) userMatchingNickName:(NSString*)nickName
-                     andPassword:(NSString*)password
+                  andPassword:(NSString*)password
 {
     CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersByNickNamePassword];
     q.keys = [NSArray arrayWithObject:[NSArray arrayWithObjects:nickName, password, nil]];
@@ -258,7 +251,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     return [(NSNumber*)r.value doubleValue];
 }
 
--(double)currentUserTotalPlayingElement:(NSString *)elementId
+-(double)currentUserTotalPlayingElement:(NSString*)elementId
 {
     NSString *urId = self.currentUser.document.documentID;
     
@@ -305,21 +298,6 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     CouchQueryRow *r = [[q rows].allObjects objectAtIndex:0];
     return [(NSNumber*)r.value unsignedIntValue];
 }
-
-/*-(NSString*) lastCompletedProblemIdInElementWithId:(NSString*)elementId
-                                         andUserId:(NSString*)userId
-{
-    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kProblemSuccessByUserElementDate];
-    q.descending = YES;
-    q.startKey = [NSArray arrayWithObjects:elementId, userId, [NSDictionary dictionary], nil];
-    q.endKey = [NSArray arrayWithObjects:elementId, userId, nil];
-    [[q start] wait];
-    
-    if (![[q rows] count]) return nil;
-    
-    CouchQueryRow *latest = [[q rows].allObjects objectAtIndex:0];
-    return latest.value;
-}*/
 
 -(void)startProblemAttempt
 {
@@ -469,144 +447,6 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     }
     
     return [RESTBody dateWithJSONObject:[currentSession objectForKey:@"startDateTime"]];
-}
-
--(void)createViews
-{
-    CouchDesignDocument* design = [database designDocumentWithName:kDefaultDesignDocName];
-    
-    [design defineViewNamed:kDeviceUsersLastSessionStart
-                   mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)) {
-                       id type = [doc objectForKey:@"type"];
-                       if (type && 
-                           [type respondsToSelector:@selector(isEqualToString:)] && 
-                           [type isEqualToString:@"device"])
-                       {
-                           for (NSDictionary *session in [doc objectForKey:@"userSessions"])
-                           {
-                               emit([NSArray arrayWithObjects:[doc objectForKey:@"_id"], [session objectForKey:@"userId"], nil], [session objectForKey:@"startDateTime"]);
-                           }
-                       }
-                   }
-                reduceBlock:^id(NSArray* keys, NSArray* values, BOOL rereduce) {
-                    NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:nil ascending:NO selector:@selector(localizedCaseInsensitiveCompare:)];
-                    NSArray *sessionsByStartDesc = [values sortedArrayUsingDescriptors:[NSArray arrayWithObject:sd]];
-                    return [sessionsByStartDesc objectAtIndex:0];
-                }
-                    version: @"v1.05"];
-    
-    
-    [design defineViewNamed:kAllUserNicknames
-                   mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)) {
-                       id type = [doc objectForKey:@"type"];
-                       if (type &&
-                           [type respondsToSelector:@selector(isEqualToString:)] &&
-                           [type isEqualToString:@"user"])
-                       {
-                           emit([doc objectForKey:@"nickName"], nil);
-                       }
-                   }
-                    version: @"v1.05"];
-    
-    
-    [design defineViewNamed:kUsersByNickNamePassword
-                        mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)) {
-                            id type = [doc objectForKey:@"type"];        
-                            if (type && 
-                                [type respondsToSelector:@selector(isEqualToString:)] && 
-                                [type isEqualToString:@"user"])
-                            {
-                                emit([NSArray arrayWithObjects:[doc objectForKey:@"nickName"], [doc objectForKey:@"password"], nil], nil);
-                            }
-                        }
-                    version: @"v1.00"];
-    
-    
-    [design defineViewNamed:kProblemsCompletedByUser // query view with groupLevel = 2.
-                   mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)) {
-                       id type = [doc objectForKey:@"type"];
-                       id success = [doc objectForKey:@"success"];
-                       
-                       if (type && 
-                           [type respondsToSelector:@selector(isEqualToString:)] && 
-                           [type isEqualToString:@"problem attempt"] &&
-                           (bool)success == true)
-                       {
-                           NSArray *key = [NSArray arrayWithObjects:[doc objectForKey:@"userId"], [doc objectForKey:@"problemId"], nil];
-                           emit(key, [doc objectForKey:@"problemId"]);
-                       }
-                   }
-                reduceBlock:^id(NSArray* keys, NSArray* values, BOOL rereduce) {
-                    return [values objectAtIndex:0];
-                }
-                    version: @"v1.05"];    
-    
-    [design defineViewNamed:kTotalExpByUser  // query view with groupLevel = 1
-                   mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)) {
-                       id type = [doc objectForKey:@"type"];
-                       id success = [doc objectForKey:@"success"];
-                       if (type && 
-                           [type respondsToSelector:@selector(isEqualToString:)] && 
-                           [type isEqualToString:@"problem attempt"] &&
-                                                                      (bool)success == true)
-                       {
-                           NSArray *acPoints = [doc objectForKey:@"awardedAssessmentCriteriaPoints"];
-                           for (NSDictionary *crit in acPoints)
-                           {
-                               emit([doc objectForKey:@"userId"], [crit objectForKey:@"points"]);
-                           }
-                       }
-                   }
-                reduceBlock:^id(NSArray* keys, NSArray* values, BOOL rereduce) {
-                    NSUInteger sum = 0;
-                    for (NSNumber *points in values)
-                    {
-                        sum += [points unsignedIntValue];
-                    }
-                    return [NSNumber numberWithUnsignedInt:sum];
-                }
-                    version: @"v1.00"];
-    
-    [design defineViewNamed:kUsersTimeInPlay // query view with groupLevel=1 (all time in play for user), or groupLevel=2 (time in play on per element per user)
-                    mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)) {
-                        id type = [doc objectForKey:@"type"];                        
-                        if (type && 
-                            [type respondsToSelector:@selector(isEqualToString:)] && 
-                            [type isEqualToString:@"problem attempt"])
-                        {
-                            NSArray *key = [NSArray arrayWithObjects:[doc objectForKey:@"userId"], [doc objectForKey:@"elementId"], nil];
-                            emit(key, [doc objectForKey:@"timeInPlay"]);
-                        }
-                    }
-                reduceBlock:^id(NSArray* keys, NSArray* values, BOOL rereduce) {
-                    double sum = 0;
-                    for (NSNumber *num in values)
-                    {
-                        sum += [num doubleValue];
-                    }
-                    return [NSNumber numberWithDouble:sum];
-                }
-                    version: @"v1.02"];
-    
-/*    [design defineViewNamed:kProblemSuccessByUserElementDate
-                   mapBlock:^(NSDictionary* doc, void (^emit)(id key, id value)){
-                       id type = [doc objectForKey:@"type"];
-                       if (type && 
-                           [type respondsToSelector:@selector(isEqualToString:)] && 
-                           [type isEqualToString:@"problem attempt"] &&
-                           (bool)[doc objectForKey:@"success"] == true)
-                       {
-                           NSArray *key = [NSArray arrayWithObjects:[doc objectForKey:@"user"], [doc objectForKey:@"elementId"], [doc objectForKey:@"dateTimeEnd"], nil];
-                           emit(key, [doc objectForKey:@"problemId"]);
-                       }
-                   }
-                    version: @"v1.01"];
-                
-  */  
-}
-
--(void)startLiveQueries
-{
 }
 
 -(void)dealloc

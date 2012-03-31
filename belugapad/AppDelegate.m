@@ -18,6 +18,7 @@
 #import "UsersService.h"
 #import "SelectUserViewController.h"
 #import "MenuScene.h"
+#import <CouchCocoa/CouchCocoa.h>
 
 @interface AppDelegate()
 {
@@ -36,25 +37,34 @@
 @synthesize currentUser;
 
 - (void) applicationDidFinishLaunching:(UIApplication*)application
-{    
-    // Try to use CADisplayLink director
-	// if it fails (SDK < 3.1) use the default director
-	if( ! [CCDirector setDirectorType:kCCDirectorTypeDisplayLink] )
-		[CCDirector setDirectorType:kCCDirectorTypeDefault];
+{
+    CouchEmbeddedServer* server = [CouchEmbeddedServer sharedInstance];
     
-	// Init the window
-	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // install canned copy of content database if doesn't yet exist (i.e. first app launch)
+    [server.couchbase installDefaultDatabase:BUNDLE_FULL_PATH(@"/canned-content-db/content.couch")];
     
-    usersService = [[UsersService alloc] init];
-	
-    //load local settings
-    self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
-    contentService = [[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
+    [server start: ^{
+        NSAssert(!server.error, @"Error launching Couchbase: %@", server.error);
         
-    //[self proceedFromLoginViaIntro:YES];
-    selectUserViewController = [[SelectUserViewController alloc] init];
-    [self.window addSubview:selectUserViewController.view];
-    [self.window makeKeyAndVisible];
+        // Try to use CADisplayLink director
+        // if it fails (SDK < 3.1) use the default director
+        if( ! [CCDirector setDirectorType:kCCDirectorTypeDisplayLink] )
+            [CCDirector setDirectorType:kCCDirectorTypeDefault];
+        
+        // Init the window
+        window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        
+        usersService = [[UsersService alloc] init];
+        
+        //load local settings
+        self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
+        contentService = [[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
+        
+        //[self proceedFromLoginViaIntro:YES];
+        selectUserViewController = [[SelectUserViewController alloc] init];
+        [self.window addSubview:selectUserViewController.view];
+        [self.window makeKeyAndVisible];
+    }];
 }
 
 -(void)proceedFromLoginViaIntro:(BOOL)viaIntro

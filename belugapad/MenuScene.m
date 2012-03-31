@@ -24,8 +24,6 @@
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
 #import <CouchCocoa/CouchModelFactory.h>
-#import <CouchCocoa/CouchTouchDBServer.h>
-#import <TouchDB/TouchDB.h>
 
 const float kPropXPinchThreshold=0.08f;
 const float kPropXSwipeModuleThreshold=0.15f;

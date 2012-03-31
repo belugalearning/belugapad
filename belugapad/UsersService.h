@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class User, ProblemAttempt, Element, CouchLiveQuery;
+@class User, ProblemAttempt, Element, CouchLiveQuery, CouchEmbeddedServer;
 
 @interface UsersService : NSObject
 
@@ -21,7 +21,7 @@ typedef enum {
     kUserEventCompleteTopic,
     kUserEventCompleteModule,
     kUserEventCompleteElement,  
-    kUserEventCompleteProblem   
+    kUserEventCompleteProblem
 } UserEvents;
 
 @property (readonly, retain, nonatomic) NSString *installationUUID;
@@ -29,7 +29,7 @@ typedef enum {
 
 +(NSString*)userEventString:(UserEvents)event;
 
--(NSArray*) deviceUsersByLastSessionDate;
+-(NSArray*)deviceUsersByLastSessionDate;
 
 -(BOOL) nickNameIsAvailable:(NSString*)nickName;
 
@@ -42,12 +42,9 @@ typedef enum {
                   andPassword:(NSString*)password;
 
 -(NSUInteger)currentUserTotalExp;
--(double)currentUserPercentageCompletionOfElement:(Element*)elementId;
+-(double)currentUserPercentageCompletionOfElement:(Element*)element;
 -(double)currentUserTotalTimeInApp;
--(double)currentUserTotalPlayingElement:(NSString*)element;
-
--(NSString*) lastCompletedProblemIdInElementWithId:(NSString*)elementId
-                                         andUserId:(NSString*)userId;
+-(double)currentUserTotalPlayingElement:(NSString*)elementId;
 
 -(void)startProblemAttempt;
 -(void)togglePauseProblemAttempt;

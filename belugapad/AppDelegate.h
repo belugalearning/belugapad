@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <Couchbase/CouchbaseMobile.h>
 @class RootViewController, ContentService, UsersService, User;
 
 @interface AppDelegate : NSObject <UIApplicationDelegate>

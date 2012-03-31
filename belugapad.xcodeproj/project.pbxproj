@@ -19,14 +19,11 @@
 		0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */ = {isa = PBXBuildFile; fileRef = 0C9FEFF514F572FB00E64138 /* pipeline-testing */; };
 		0CBD654A151987E400343E12 /* canned-content-db in Resources */ = {isa = PBXBuildFile; fileRef = 0CBD6549151987E400343E12 /* canned-content-db */; };
 		0CE3D6F815137690003D5193 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D6F715137690003D5193 /* libz.dylib */; };
-		0CE3D6FA15137698003D5193 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D6F915137698003D5193 /* libsqlite3.dylib */; };
 		0CE3D6FC1513769F003D5193 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D6FB1513769F003D5193 /* SystemConfiguration.framework */; };
 		0CE3D6FE1513775A003D5193 /* LucidaGrande.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 0CE3D6FD1513775A003D5193 /* LucidaGrande.ttc */; };
 		0CE3D6FF1513775A003D5193 /* LucidaGrande.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 0CE3D6FD1513775A003D5193 /* LucidaGrande.ttc */; };
 		0CE3D7021513778D003D5193 /* CouchCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D7001513778D003D5193 /* CouchCocoa.framework */; };
 		0CE3D7031513778D003D5193 /* CouchCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D7001513778D003D5193 /* CouchCocoa.framework */; };
-		0CE3D7041513778D003D5193 /* TouchDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D7011513778D003D5193 /* TouchDB.framework */; };
-		0CE3D7051513778D003D5193 /* TouchDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE3D7011513778D003D5193 /* TouchDB.framework */; };
 		0CE3D707151377B7003D5193 /* select-edit-user-images in Resources */ = {isa = PBXBuildFile; fileRef = 0CE3D706151377B7003D5193 /* select-edit-user-images */; };
 		0CE3D708151377B7003D5193 /* select-edit-user-images in Resources */ = {isa = PBXBuildFile; fileRef = 0CE3D706151377B7003D5193 /* select-edit-user-images */; };
 		0CE3D72015137BFD003D5193 /* CCScreenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D71415137BFD003D5193 /* CCScreenshot.m */; };
@@ -45,6 +42,9 @@
 		0CE3D72D15137BFD003D5193 /* UsersService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D71F15137BFD003D5193 /* UsersService.m */; };
 		0CE3D73315137FC0003D5193 /* EditZubi.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D73215137FC0003D5193 /* EditZubi.m */; };
 		0CE3D73415137FC0003D5193 /* EditZubi.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3D73215137FC0003D5193 /* EditZubi.m */; };
+		0CF7DC5D1523603800078C84 /* Couchbase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CF7DC5C1523603800078C84 /* Couchbase.framework */; };
+		0CF7DC611523612A00078C84 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CF7DC5F1523612A00078C84 /* libstdc++.dylib */; };
+		0CF7DC621523612A00078C84 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CF7DC601523612A00078C84 /* Security.framework */; };
 		0CF9187C14F54C1D00FAC58D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF9187B14F54C1D00FAC58D /* images */; };
 		550708761517623E00111BBB /* ColumnAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708751517623E00111BBB /* ColumnAddition.m */; };
 		5507087A1517625300111BBB /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708791517625300111BBB /* ColumnAdditionConsts.m */; };
@@ -327,11 +327,9 @@
 		0C9FEFF514F572FB00E64138 /* pipeline-testing */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pipeline-testing"; sourceTree = SOURCE_ROOT; };
 		0CBD6549151987E400343E12 /* canned-content-db */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "canned-content-db"; sourceTree = SOURCE_ROOT; };
 		0CE3D6F715137690003D5193 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		0CE3D6F915137698003D5193 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		0CE3D6FB1513769F003D5193 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		0CE3D6FD1513775A003D5193 /* LucidaGrande.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = LucidaGrande.ttc; path = Resources/fonts/LucidaGrande.ttc; sourceTree = "<group>"; };
 		0CE3D7001513778D003D5193 /* CouchCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchCocoa.framework; path = belugapad/Frameworks/CouchCocoa.framework; sourceTree = "<group>"; };
-		0CE3D7011513778D003D5193 /* TouchDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TouchDB.framework; path = belugapad/Frameworks/TouchDB.framework; sourceTree = "<group>"; };
 		0CE3D706151377B7003D5193 /* select-edit-user-images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "select-edit-user-images"; sourceTree = SOURCE_ROOT; };
 		0CE3D71315137BFD003D5193 /* CCScreenshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCScreenshot.h; sourceTree = "<group>"; };
 		0CE3D71415137BFD003D5193 /* CCScreenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCScreenshot.m; sourceTree = "<group>"; };
@@ -348,6 +346,9 @@
 		0CE3D71F15137BFD003D5193 /* UsersService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersService.m; sourceTree = "<group>"; };
 		0CE3D73115137FC0003D5193 /* EditZubi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditZubi.h; sourceTree = "<group>"; };
 		0CE3D73215137FC0003D5193 /* EditZubi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditZubi.m; sourceTree = "<group>"; };
+		0CF7DC5C1523603800078C84 /* Couchbase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Couchbase.framework; path = belugapad/Frameworks/Couchbase.framework; sourceTree = "<group>"; };
+		0CF7DC5F1523612A00078C84 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
+		0CF7DC601523612A00078C84 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		0CF9187B14F54C1D00FAC58D /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = SOURCE_ROOT; };
 		550708741517623E00111BBB /* ColumnAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAddition.h; sourceTree = "<group>"; };
 		550708751517623E00111BBB /* ColumnAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAddition.m; sourceTree = "<group>"; };
@@ -821,7 +822,6 @@
 				7F40D89B14FFD8BE006A3A55 /* Foundation.framework in Frameworks */,
 				7F40D8D514FFDE40006A3A55 /* SenTestingKit.framework in Frameworks */,
 				0CE3D7031513778D003D5193 /* CouchCocoa.framework in Frameworks */,
-				0CE3D7051513778D003D5193 /* TouchDB.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -829,8 +829,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CF7DC611523612A00078C84 /* libstdc++.dylib in Frameworks */,
+				0CF7DC621523612A00078C84 /* Security.framework in Frameworks */,
 				0CE3D6FC1513769F003D5193 /* SystemConfiguration.framework in Frameworks */,
-				0CE3D6FA15137698003D5193 /* libsqlite3.dylib in Frameworks */,
 				0CE3D6F815137690003D5193 /* libz.dylib in Frameworks */,
 				7F5113C314A9EE62001AF372 /* QuartzCore.framework in Frameworks */,
 				7F5113C514A9EE62001AF372 /* OpenGLES.framework in Frameworks */,
@@ -841,7 +842,7 @@
 				7F5113CF14A9EE63001AF372 /* Foundation.framework in Frameworks */,
 				7F5113D114A9EE63001AF372 /* CoreGraphics.framework in Frameworks */,
 				0CE3D7021513778D003D5193 /* CouchCocoa.framework in Frameworks */,
-				0CE3D7041513778D003D5193 /* TouchDB.framework in Frameworks */,
+				0CF7DC5D1523603800078C84 /* Couchbase.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -963,8 +964,9 @@
 		7F5113C114A9EE62001AF372 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0CF7DC601523612A00078C84 /* Security.framework */,
+				0CF7DC5C1523603800078C84 /* Couchbase.framework */,
 				0CE3D7001513778D003D5193 /* CouchCocoa.framework */,
-				0CE3D7011513778D003D5193 /* TouchDB.framework */,
 				0CE3D6FB1513769F003D5193 /* SystemConfiguration.framework */,
 				7F5113C214A9EE62001AF372 /* QuartzCore.framework */,
 				7F5113C414A9EE62001AF372 /* OpenGLES.framework */,
@@ -1013,7 +1015,7 @@
 		7F5113E714A9EE63001AF372 /* libs */ = {
 			isa = PBXGroup;
 			children = (
-				0CE3D6F915137698003D5193 /* libsqlite3.dylib */,
+				0CF7DC5F1523612A00078C84 /* libstdc++.dylib */,
 				0CE3D6F715137690003D5193 /* libz.dylib */,
 				7FDBA50F14EBD550004D1CC9 /* TouchXML */,
 				7F5114DD14A9EE65001AF372 /* LICENSE_cocos2d.txt */,
@@ -1737,6 +1739,7 @@
 				7F5113BA14A9EE62001AF372 /* Sources */,
 				7F5113BB14A9EE62001AF372 /* Frameworks */,
 				7F5113BC14A9EE62001AF372 /* Resources */,
+				0CF7DC631523619800078C84 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1816,6 +1819,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0CF7DC631523619800078C84 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "rsync -a \"${SRCROOT}/belugapad/Frameworks/Couchbase.framework/CouchbaseResources\" \"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"";
+		};
 		7F40D89514FFD8BE006A3A55 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

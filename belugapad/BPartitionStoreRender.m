@@ -89,22 +89,26 @@
 
 -(void)setSprite
 {
-    NSString *spriteFileName=@"/images/blocks/obj-float-45.png";
-    //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
+    
+    for(int i=0;i<pogo.Length;i++) {
+        NSString *spriteFileName=@"/images/partition/store.png";
+        //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
 
-    
-    CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-    
-    if(gameWorld.Blackboard.inProblemSetup)
-    {
-        [mySprite setTag:2];
-        [mySprite setOpacity:0];
+        
+        CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+        [mySprite setPosition:ccp(pogo.Position.x+(i*50), pogo.Position.y)];
+        
+        if(gameWorld.Blackboard.inProblemSetup)
+        {
+            [mySprite setTag:2];
+            [mySprite setOpacity:0];
+        }
+
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:2];
+        
+        //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
+        [[gameObject store] setObject:mySprite forKey:MY_SPRITE];
     }
-
-    [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:2];
-    
-    //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
-    [[gameObject store] setObject:mySprite forKey:MY_SPRITE];
 }
 
 -(void)setSpritePos:(BOOL) withAnimation

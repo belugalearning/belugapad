@@ -23,9 +23,25 @@
     CGPoint winL;
     float cx, cy, lx, ly;
 
+    BOOL isTouching;
+    
     CCLayer *renderLayer;
+    
+    CCLabelTTF *problemDescLabel;
+    NSArray *initBars;
+    NSArray *initObjects;
+    NSArray *initCages;
+    NSArray *solutionsDef;
+    
+    NSMutableArray *createdRows;
+    NSMutableArray *createdObjects;
+    NSMutableArray *createdCages;
 }
 
--(void)readPlist;
+-(void)readPlist:(NSDictionary*)pdef;
 -(void)populateGW;
+-(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
+-(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
+-(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
+-(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
 @end

@@ -6,15 +6,15 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "BPartitionDropTarget.h"
+#import "BPartitionStoreDropTarget.h"
 #import "global.h"
 #import "BLMath.h"
 
-@implementation BPartitionDropTarget
+@implementation BPartitionStoreDropTarget
 
--(BPartitionDropTarget *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
+-(BPartitionStoreDropTarget *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
-    self=(BPartitionDropTarget*)[super initWithGameObject:aGameObject withData:data];
+    self=(BPartitionStoreDropTarget*)[super initWithGameObject:aGameObject withData:data];
     
     return self;
 }
@@ -39,7 +39,7 @@
                 float y=[[[gameObject store] objectForKey:POS_Y] floatValue];   
                 CGPoint myLoc=ccp(x,y);
                 
-                myLoc = [gameWorld.Blackboard.ComponentRenderLayer convertToWorldSpace:myLoc];
+                myLoc = [gameWorld.Blackboard.ComponentRenderLayer convertToNodeSpace:myLoc];
                 
                 
                 //get coords from payload (i.e. the search target)
@@ -50,16 +50,7 @@
 
                     NSNumber *gameObjectValue = nil;
                     NSNumber *pickupObjectValue = nil;
-                    if([[gameObject store] objectForKey:ALLOW_MULTIPLE_MOUNT])
-                    {
-                        gameObjectValue = [[gameObject store] objectForKey:OBJECT_VALUE];
-                        pickupObjectValue = [[addO store] objectForKey:OBJECT_VALUE];
-                    }
-                    else
-                    {
-                        gameObjectValue = [NSNumber numberWithFloat:fabsf([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue])];
-                        pickupObjectValue = [NSNumber numberWithFloat:fabsf([[[addO store] objectForKey:OBJECT_VALUE] floatValue])];
-                    }
+
                     if([gameObjectValue isEqualToNumber:pickupObjectValue])
                     {
                         float dist=[BLMath DistanceBetween:myLoc and:hitLoc];

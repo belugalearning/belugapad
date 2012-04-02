@@ -89,11 +89,13 @@
 
 -(void)setSprite
 {
-    NSString *spriteFileName=@"/images/partition/obj-unit-mid.png";
+    
+    NSString *spriteFileName=@"/images/partition/block.png";
     //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
-
     
     CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+    
+
     
     if(gameWorld.Blackboard.inProblemSetup)
     {
@@ -105,6 +107,7 @@
     
     //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
     [[gameObject store] setObject:mySprite forKey:MY_SPRITE];
+    
 }
 
 -(void)setSpritePos:(BOOL) withAnimation

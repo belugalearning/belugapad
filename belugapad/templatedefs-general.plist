@@ -178,7 +178,7 @@
 		<dict>
 			<key>BPartitionStoreRender</key>
 			<dict/>
-			<key>BPartitionDropTarget</key>
+			<key>BPartitionStoreDropTarget</key>
 			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>
@@ -192,7 +192,7 @@
 		<dict>
 			<key>BPartitionRowRender</key>
 			<dict/>
-			<key>BPartitionDropTarget</key>
+			<key>BPartitionRowDropTarget</key>
 			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>

@@ -13,6 +13,8 @@
 @property float AcceptedObjectValue;
 @property (retain) NSMutableArray *MountedObjects;
 @property CGPoint Position;
+@property (retain) NSString *Label;
+@property int Length;
 
 
 @end

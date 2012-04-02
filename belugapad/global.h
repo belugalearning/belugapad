@@ -68,6 +68,8 @@
 #define PROBLEM_DESCRIPTION @"PROBLEM_DESCRIPTION"
 #define PROBLEM_SUBTITLE @"PROBLEM_SUBTITLE"
 #define INIT_OBJECTS @"INIT_OBJECTS"
+#define INIT_BARS @"INIT_BARS"
+#define INIT_CAGES @"INIT_CAGES"
 #define TAG @"TAG"
 #define HIDDEN @"HIDDEN"
 #define DIMENSION_COLS @"DIMENSION_COLS"
@@ -227,3 +229,9 @@
 // column addition
 #define NUMBER_A @"NUMBER_A"
 #define NUMBER_B @"NUMBER_B"
+
+// partition tool
+
+#define LENGTH @"LENGTH"
+#define LOCKED @"LOCKED"
+#define LABEL @"LABEL"

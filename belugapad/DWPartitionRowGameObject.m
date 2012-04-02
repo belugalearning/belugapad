@@ -14,5 +14,6 @@
 @synthesize MountedObjects;
 @synthesize Locked;
 @synthesize Position;
+@synthesize Length;
 
 @end

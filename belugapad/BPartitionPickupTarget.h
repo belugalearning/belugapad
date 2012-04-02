@@ -8,9 +8,11 @@
 
 #import "DWBehaviour.h"
 
+@class DWPartitionObjectGameObject;
+
 @interface BPartitionPickupTarget : DWBehaviour
 {
-    
+    DWPartitionObjectGameObject *pogo;
 }
 
 

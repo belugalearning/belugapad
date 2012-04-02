@@ -14,6 +14,7 @@
 @property (retain) NSMutableArray *MountedObjects;
 @property BOOL Locked;
 @property CGPoint Position;
+@property int Length;
 
 
 

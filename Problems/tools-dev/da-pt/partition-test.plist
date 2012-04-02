@@ -3,8 +3,44 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>express 77 (column_cages active, only 1 cage on 10/100)</string>
+	<string>PT problem</string>
 	<key>TOOL_KEY</key>
 	<string>PartitionTool</string>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict/>
+	</array>
+	<key>INIT_BARS</key>
+	<array>
+		<dict>
+			<key>LOCKED</key>
+			<true/>
+			<key>LENGTH</key>
+			<integer>4</integer>
+		</dict>
+		<dict>
+			<key>LOCKED</key>
+			<false/>
+			<key>LENGTH</key>
+			<string>4</string>
+		</dict>
+	</array>
+	<key>INIT_CAGES</key>
+	<array>
+		<dict>
+			<key>LENGTH</key>
+			<integer>2</integer>
+			<key>LABEL</key>
+			<string>2</string>
+		</dict>
+		<dict>
+			<key>LENGTH</key>
+			<integer>1</integer>
+			<key>LABEL</key>
+			<string>1</string>
+		</dict>
+	</array>
+	<key>SOLUTIONS</key>
+	<array/>
 </dict>
 </plist>

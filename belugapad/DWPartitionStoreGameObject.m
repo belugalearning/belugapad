@@ -13,6 +13,8 @@
 @synthesize AcceptedObjectValue;
 @synthesize MountedObjects;
 @synthesize Position;
+@synthesize Label;
+@synthesize Length;
 
 
 @end

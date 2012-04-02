@@ -8,6 +8,9 @@
 
 #import "PartitionTool.h"
 #import "ToolHost.h"
+#import "DWPartitionObjectGameObject.h"
+#import "DWPartitionRowGameObject.h"
+#import "DWPartitionStoreGameObject.h"
 
 @implementation PartitionTool
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
@@ -43,6 +46,9 @@
         [gw Blackboard].hostLX = lx;
         [gw Blackboard].hostLY = ly;
         
+        [self readPlist];
+        [self populateGW];
+        
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
         gw.Blackboard.inProblemSetup = NO;
@@ -58,4 +64,29 @@
     
 
 }
+
+-(void)readPlist
+{
+    renderLayer = [[CCLayer alloc] init];
+    [self.ForeLayer addChild:renderLayer];
+    
+    gw.Blackboard.ComponentRenderLayer = renderLayer;
+    
+}
+
+-(void)populateGW
+{
+    DWPartitionObjectGameObject *pogo = [DWPartitionObjectGameObject alloc];
+    [gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];
+    DWPartitionRowGameObject *prgo = [DWPartitionRowGameObject alloc];
+    [gw populateAndAddGameObject:prgo withTemplateName:@"TpartitionRow"];
+    //DWPartitionStoreGameObject *psgo = 
+    DWPartitionStoreGameObject *psgo = [DWPartitionStoreGameObject alloc];
+    [gw populateAndAddGameObject:psgo withTemplateName:@"TpartitionStore"];
+    
+    pogo.Position=ccp(512,284);
+    prgo.Position=ccp(512,484);
+    psgo.Position=ccp(512,184);
+}
+
 @end

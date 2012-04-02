@@ -10,6 +10,10 @@
 #import "ToolConsts.h"
 #import "ToolScene.h"
 
+@class DWPartitionObjectGameObject;
+@class DWPartitionRowGameObject;
+@class DWPartitionStoreGameObject;
+
 @interface PartitionTool : ToolScene
 {
     ToolHost *toolHost;
@@ -21,4 +25,7 @@
 
     CCLayer *renderLayer;
 }
+
+-(void)readPlist;
+-(void)populateGW;
 @end

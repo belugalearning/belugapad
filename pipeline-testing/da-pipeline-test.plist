@@ -2,7 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
-	<string>/Problems/tools-dev/da-ca/columnadd-problem001.plist</string>
+	<string>/Problems/tools-dev/da-pt/partition-test.plist</string>
+	<string>/Problems/tools-dev/da-ca/columnadd-problem003.plist</string>
+	<string>/Problems/tools-dev/da-ca/columnadd-problem004.plist</string>
 	<string>/Problems/tools-dev/da-fb/float-problem0002.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem022.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem023.plist</string>

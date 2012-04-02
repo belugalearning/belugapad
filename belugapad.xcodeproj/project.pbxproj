@@ -16,6 +16,15 @@
 		5507087A1517625300111BBB /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708791517625300111BBB /* ColumnAdditionConsts.m */; };
 		5507087B15176A0600111BBB /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708791517625300111BBB /* ColumnAdditionConsts.m */; };
 		5507087C15176A0600111BBB /* ColumnAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708751517623E00111BBB /* ColumnAddition.m */; };
+		551815631525EA920097E259 /* PartitionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815621525EA920097E259 /* PartitionTool.m */; };
+		5518156C1525F7500097E259 /* BPartitionDropTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815671525F7500097E259 /* BPartitionDropTarget.m */; };
+		5518156D1525F7500097E259 /* BPartitionObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815691525F7500097E259 /* BPartitionObjectRender.m */; };
+		5518156E1525F7500097E259 /* BPartitionPickupTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5518156B1525F7500097E259 /* BPartitionPickupTarget.m */; };
+		551815721525F9880097E259 /* DWPartitionObjectGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815711525F9880097E259 /* DWPartitionObjectGameObject.m */; };
+		551815751525FD3C0097E259 /* DWPartitionStoreGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815741525FD3C0097E259 /* DWPartitionStoreGameObject.m */; };
+		551815781525FDDF0097E259 /* DWPartitionRowGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815771525FDDF0097E259 /* DWPartitionRowGameObject.m */; };
+		551815811526210D0097E259 /* BPartitionRowRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5518157E1526210C0097E259 /* BPartitionRowRender.m */; };
+		551815821526210D0097E259 /* BPartitionStoreRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815801526210C0097E259 /* BPartitionStoreRender.m */; };
 		5536B29014E4173E00D30BC0 /* BPlaceValueContainerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */; };
 		5536B2A414E4350800D30BC0 /* BPlaceValueObjectSpawn.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B2A314E4350800D30BC0 /* BPlaceValueObjectSpawn.m */; };
 		5536B2A714E43E1400D30BC0 /* PlaceValueConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B2A614E43E1400D30BC0 /* PlaceValueConsts.m */; };
@@ -305,6 +314,24 @@
 		550708751517623E00111BBB /* ColumnAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAddition.m; sourceTree = "<group>"; };
 		550708781517625300111BBB /* ColumnAdditionConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAdditionConsts.h; sourceTree = "<group>"; };
 		550708791517625300111BBB /* ColumnAdditionConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAdditionConsts.m; sourceTree = "<group>"; };
+		551815611525EA920097E259 /* PartitionTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartitionTool.h; sourceTree = "<group>"; };
+		551815621525EA920097E259 /* PartitionTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartitionTool.m; sourceTree = "<group>"; };
+		551815661525F7500097E259 /* BPartitionDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPartitionDropTarget.h; sourceTree = "<group>"; };
+		551815671525F7500097E259 /* BPartitionDropTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionDropTarget.m; sourceTree = "<group>"; };
+		551815681525F7500097E259 /* BPartitionObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPartitionObjectRender.h; sourceTree = "<group>"; };
+		551815691525F7500097E259 /* BPartitionObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionObjectRender.m; sourceTree = "<group>"; };
+		5518156A1525F7500097E259 /* BPartitionPickupTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPartitionPickupTarget.h; sourceTree = "<group>"; };
+		5518156B1525F7500097E259 /* BPartitionPickupTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionPickupTarget.m; sourceTree = "<group>"; };
+		551815701525F9880097E259 /* DWPartitionObjectGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPartitionObjectGameObject.h; sourceTree = "<group>"; };
+		551815711525F9880097E259 /* DWPartitionObjectGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWPartitionObjectGameObject.m; sourceTree = "<group>"; };
+		551815731525FD3C0097E259 /* DWPartitionStoreGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPartitionStoreGameObject.h; sourceTree = "<group>"; };
+		551815741525FD3C0097E259 /* DWPartitionStoreGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWPartitionStoreGameObject.m; sourceTree = "<group>"; };
+		551815761525FDDF0097E259 /* DWPartitionRowGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPartitionRowGameObject.h; sourceTree = "<group>"; };
+		551815771525FDDF0097E259 /* DWPartitionRowGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWPartitionRowGameObject.m; sourceTree = "<group>"; };
+		5518157D1526210C0097E259 /* BPartitionRowRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPartitionRowRender.h; sourceTree = "<group>"; };
+		5518157E1526210C0097E259 /* BPartitionRowRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionRowRender.m; sourceTree = "<group>"; };
+		5518157F1526210C0097E259 /* BPartitionStoreRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPartitionStoreRender.h; sourceTree = "<group>"; };
+		551815801526210C0097E259 /* BPartitionStoreRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionStoreRender.m; sourceTree = "<group>"; };
 		5536B28E14E4173D00D30BC0 /* BPlaceValueContainerRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueContainerRender.h; sourceTree = "<group>"; };
 		5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueContainerRender.m; sourceTree = "<group>"; };
 		5536B2A214E4350700D30BC0 /* BPlaceValueObjectSpawn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueObjectSpawn.h; sourceTree = "<group>"; };
@@ -844,6 +871,23 @@
 				0C92B2531515702700342094 /* ContentService.m */,
 			);
 			name = Content;
+			sourceTree = "<group>";
+		};
+		551815651525F67F0097E259 /* Partition */ = {
+			isa = PBXGroup;
+			children = (
+				551815661525F7500097E259 /* BPartitionDropTarget.h */,
+				551815671525F7500097E259 /* BPartitionDropTarget.m */,
+				551815681525F7500097E259 /* BPartitionObjectRender.h */,
+				551815691525F7500097E259 /* BPartitionObjectRender.m */,
+				5518156A1525F7500097E259 /* BPartitionPickupTarget.h */,
+				5518156B1525F7500097E259 /* BPartitionPickupTarget.m */,
+				5518157D1526210C0097E259 /* BPartitionRowRender.h */,
+				5518157E1526210C0097E259 /* BPartitionRowRender.m */,
+				5518157F1526210C0097E259 /* BPartitionStoreRender.h */,
+				551815801526210C0097E259 /* BPartitionStoreRender.m */,
+			);
+			name = Partition;
 			sourceTree = "<group>";
 		};
 		5571BAE214E40FE90053A62B /* PlaceValue */ = {
@@ -1519,6 +1563,8 @@
 				7F813D5414CCBA4300C1E997 /* IceDiv.m */,
 				7FF8F11F14DD535B00A6D75E /* MenuScene.h */,
 				7FF8F12014DD535B00A6D75E /* MenuScene.m */,
+				551815611525EA920097E259 /* PartitionTool.h */,
+				551815621525EA920097E259 /* PartitionTool.m */,
 				5571BADB14E406220053A62B /* PlaceValue.h */,
 				5571BADC14E406220053A62B /* PlaceValue.m */,
 				7F268ADC14F28DE500F1F65F /* ToolHost.h */,
@@ -1598,6 +1644,7 @@
 		7FABE6A314B4C5B500ED2D0C /* Behaviours */ = {
 			isa = PBXGroup;
 			children = (
+				551815651525F67F0097E259 /* Partition */,
 				7FC27F7B150FB18000E16A44 /* NLine */,
 				5571BAE214E40FE90053A62B /* PlaceValue */,
 				7FABE6A414B4C5F100ED2D0C /* BContainerRender.h */,
@@ -1665,6 +1712,12 @@
 		7FC27F6B150FA9FC00E16A44 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				551815761525FDDF0097E259 /* DWPartitionRowGameObject.h */,
+				551815771525FDDF0097E259 /* DWPartitionRowGameObject.m */,
+				551815731525FD3C0097E259 /* DWPartitionStoreGameObject.h */,
+				551815741525FD3C0097E259 /* DWPartitionStoreGameObject.m */,
+				551815701525F9880097E259 /* DWPartitionObjectGameObject.h */,
+				551815711525F9880097E259 /* DWPartitionObjectGameObject.m */,
 				7FC27F6D150FAAAA00E16A44 /* DWRamblerGameObject.h */,
 				7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */,
 				553E80BC150FC78E00263473 /* DWSelectorGameObject.h */,
@@ -2112,6 +2165,15 @@
 				7F5005C11521B3070038D251 /* cpSpaceQuery.c in Sources */,
 				7F5005C21521B3070038D251 /* cpSpaceStep.c in Sources */,
 				7F5005C31521B3070038D251 /* cpVect.c in Sources */,
+				551815631525EA920097E259 /* PartitionTool.m in Sources */,
+				5518156C1525F7500097E259 /* BPartitionDropTarget.m in Sources */,
+				5518156D1525F7500097E259 /* BPartitionObjectRender.m in Sources */,
+				5518156E1525F7500097E259 /* BPartitionPickupTarget.m in Sources */,
+				551815721525F9880097E259 /* DWPartitionObjectGameObject.m in Sources */,
+				551815751525FD3C0097E259 /* DWPartitionStoreGameObject.m in Sources */,
+				551815781525FDDF0097E259 /* DWPartitionRowGameObject.m in Sources */,
+				551815811526210D0097E259 /* BPartitionRowRender.m in Sources */,
+				551815821526210D0097E259 /* BPartitionStoreRender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

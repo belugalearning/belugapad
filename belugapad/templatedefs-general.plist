@@ -158,5 +158,47 @@
 		<key>OBJECT_DATA</key>
 		<dict/>
 	</dict>
+	<key>TpartitionObject</key>
+	<dict>
+		<key>BEHAVIOURS</key>
+		<dict>
+			<key>BPartitionPickupTarget</key>
+			<dict/>
+			<key>BPartitionObjectRender</key>
+			<dict/>
+		</dict>
+		<key>IMPLEMENT_TEMPLATES</key>
+		<array/>
+		<key>OBJECT_DATA</key>
+		<dict/>
+	</dict>
+	<key>TpartitionStore</key>
+	<dict>
+		<key>BEHAVIOURS</key>
+		<dict>
+			<key>BPartitionStoreRender</key>
+			<dict/>
+			<key>BPartitionDropTarget</key>
+			<dict/>
+		</dict>
+		<key>IMPLEMENT_TEMPLATES</key>
+		<array/>
+		<key>OBJECT_DATA</key>
+		<dict/>
+	</dict>
+	<key>TpartitionRow</key>
+	<dict>
+		<key>BEHAVIOURS</key>
+		<dict>
+			<key>BPartitionRowRender</key>
+			<dict/>
+			<key>BPartitionDropTarget</key>
+			<dict/>
+		</dict>
+		<key>IMPLEMENT_TEMPLATES</key>
+		<array/>
+		<key>OBJECT_DATA</key>
+		<dict/>
+	</dict>
 </dict>
 </plist>

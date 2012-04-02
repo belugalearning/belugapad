@@ -2,7 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>PROBLEM_PIPELINE</key>
-	<string>/pipeline-testing/da-pipeline-test.plist</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>express 77 (column_cages active, only 1 cage on 10/100)</string>
+	<key>TOOL_KEY</key>
+	<string>PartitionTool</string>
 </dict>
 </plist>

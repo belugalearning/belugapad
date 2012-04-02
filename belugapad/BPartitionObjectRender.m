@@ -89,24 +89,31 @@
 
 -(void)setSprite
 {
+    NSMutableArray *mySprites=[[NSMutableArray alloc]init];
+    if(!pogo.Length) pogo.Length=1;
     
     NSString *spriteFileName=@"/images/partition/block.png";
     //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
     
-    CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-    
+    for(int i=0;i<pogo.Length;i++) {
+        NSLog(@"pogo position x %f", pogo.Position.x);
+        CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+        float thisXPos = pogo.Position.x+(i*50);
+        [mySprite setPosition:ccp(thisXPos, pogo.Position.y)];
+        NSLog(@"thisXPos position x %f", thisXPos);
 
-    
-    if(gameWorld.Blackboard.inProblemSetup)
-    {
-        [mySprite setTag:2];
-        [mySprite setOpacity:0];
+        
+        if(gameWorld.Blackboard.inProblemSetup)
+        {
+            [mySprite setTag:2];
+            [mySprite setOpacity:0];
+        }
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:2];
+        
+        //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
+        [mySprites addObject:mySprite];
+        [[gameObject store] setObject:mySprites forKey:MY_SPRITE];
     }
-
-    [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:2];
-    
-    //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
-    [[gameObject store] setObject:mySprite forKey:MY_SPRITE];
     
 }
 
@@ -115,20 +122,22 @@
     
     if(pogo.Position.x || pogo.Position.y)
     {
-        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
+        NSMutableArray *mySprites=[[gameObject store] objectForKey:MY_SPRITE];
         
-
-        
-          if(withAnimation == YES)
+        for(int i=0; i<mySprites.count; i++)
         {
-            CGPoint newPos = ccp(pogo.Position.x, pogo.Position.y);
+            CCSprite *curSprite = [mySprites objectAtIndex:i];
+            if(withAnimation == YES)
+            {
+                CGPoint newPos = ccp(pogo.Position.x, pogo.Position.y);
 
-            CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:newPos];
-            [mySprite runAction:anim];
-        }
-        else
-        {
-            [mySprite setPosition:pogo.Position];
+                CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:newPos];
+                [curSprite runAction:anim];
+            }
+            else
+            {
+                [curSprite setPosition:ccp(pogo.Position.x+(i*50), pogo.Position.y)];
+            }
         }
     }
 }

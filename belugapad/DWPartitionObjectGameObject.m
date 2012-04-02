@@ -13,5 +13,6 @@
 @synthesize ObjectValue;
 @synthesize Position;
 @synthesize BaseNode;
+@synthesize Length;
 
 @end

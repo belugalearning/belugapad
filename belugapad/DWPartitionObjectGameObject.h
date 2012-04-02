@@ -13,5 +13,6 @@
 @property float ObjectValue;
 @property CGPoint Position;
 @property (retain) CCNode *BaseNode;
+@property int Length;
 
 @end

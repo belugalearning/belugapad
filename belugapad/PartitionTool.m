@@ -129,19 +129,21 @@
     // do stuff with our INIT_CAGES (DWPartitionStoreGameObject)
     for (int i=0;i<[initCages count]; i++)
     {
-        DWPartitionStoreGameObject *psgo = [DWPartitionStoreGameObject alloc];
-        [gw populateAndAddGameObject:psgo withTemplateName:@"TpartitionStore"];
-        psgo.Position=ccp(100,184+(i*100));
-        psgo.Label=[[initCages objectAtIndex:i] objectForKey:LABEL];
-        psgo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
+        DWPartitionObjectGameObject *pogo = [DWPartitionObjectGameObject alloc];
+        [gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];
+        //DWPartitionStoreGameObject *psgo = [DWPartitionStoreGameObject alloc];
+        //[gw populateAndAddGameObject:psgo withTemplateName:@"TpartitionStore"];
+        pogo.Position=ccp(100,184+(i*100));
+        //pogo.Label=[[initCages objectAtIndex:i] objectForKey:LABEL];
+        pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
     }
     
     // do stuff with our INIT_OBJECTS (DWPartitionObjectGameObject)    
     for (int i=0;i<[initObjects count]; i++)
     {
-        DWPartitionObjectGameObject *pogo = [DWPartitionObjectGameObject alloc];
-        [gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];
-        pogo.Position=ccp(512,284);
+        //DWPartitionObjectGameObject *pogo = [DWPartitionObjectGameObject alloc];
+        //[gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];
+        //pogo.Position=ccp(512,284);
     }
 
 }

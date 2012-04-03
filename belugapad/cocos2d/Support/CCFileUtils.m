@@ -188,6 +188,12 @@ NSInteger ccLoadFileIntoMemory(const char *filename, unsigned char **out)
 		ret = fullpath;
 	}
 
+    //check that file exists -- return placeholder if not
+    if(![__localFileManager fileExistsAtPath:ret])
+    {
+        ret=[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"/images/ui/missing.png"];
+    }
+    
 	return ret;
 
 #elif defined(__CC_PLATFORM_MAC)

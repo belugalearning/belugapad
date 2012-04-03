@@ -87,6 +87,15 @@
 			</array>
 		</dict>
 	</array>
+	<key>INIT_CONTAINERS</key>
+	<array>
+		<dict>
+			<key>TAG</key>
+			<string>container1</string>
+			<key>RENDER_IMAGE_NAME</key>
+			<string>an-image-that-doens&apos;t-exist.png</string>
+		</dict>
+	</array>
 	<key>_TUTORIALS</key>
 	<array>
 		<dict>

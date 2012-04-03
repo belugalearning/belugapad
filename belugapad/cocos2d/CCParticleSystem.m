@@ -217,41 +217,45 @@
 		{
 		// texture
 		// Try to get the texture from the cache
+            
+        //beluga patch -- don't look for non-embedded textures, always load embedded data
+            
+            
 			NSString *textureName = [dictionary valueForKey:@"textureFileName"];
+//
+//			CCTexture2D *tex = [[CCTextureCache sharedTextureCache] addImage:textureName];
+//
+//			if( tex )
+//				[self setTexture:tex];
+//			else {
 
-			CCTexture2D *tex = [[CCTextureCache sharedTextureCache] addImage:textureName];
+            NSString *textureData = [dictionary valueForKey:@"textureImageData"];
+            NSAssert( textureData, @"CCParticleSystem: Couldn't load texture");
 
-			if( tex )
-				[self setTexture:tex];
-			else {
+            // if it fails, try to get it from the base64-gzipped data
+            unsigned char *buffer = NULL;
+            int len = base64Decode((unsigned char*)[textureData UTF8String], (unsigned int)[textureData length], &buffer);
+            NSAssert( buffer != NULL, @"CCParticleSystem: error decoding textureImageData");
 
-				NSString *textureData = [dictionary valueForKey:@"textureImageData"];
-				NSAssert( textureData, @"CCParticleSystem: Couldn't load texture");
+            unsigned char *deflated = NULL;
+            NSUInteger deflatedLen = ccInflateMemory(buffer, len, &deflated);
+            free( buffer );
 
-				// if it fails, try to get it from the base64-gzipped data
-				unsigned char *buffer = NULL;
-				int len = base64Decode((unsigned char*)[textureData UTF8String], (unsigned int)[textureData length], &buffer);
-				NSAssert( buffer != NULL, @"CCParticleSystem: error decoding textureImageData");
-
-				unsigned char *deflated = NULL;
-				NSUInteger deflatedLen = ccInflateMemory(buffer, len, &deflated);
-				free( buffer );
-
-				NSAssert( deflated != NULL, @"CCParticleSystem: error ungzipping textureImageData");
-				NSData *data = [[NSData alloc] initWithBytes:deflated length:deflatedLen];
+            NSAssert( deflated != NULL, @"CCParticleSystem: error ungzipping textureImageData");
+            NSData *data = [[NSData alloc] initWithBytes:deflated length:deflatedLen];
 
 #ifdef __CC_PLATFORM_IOS
-				UIImage *image = [[UIImage alloc] initWithData:data];
+            UIImage *image = [[UIImage alloc] initWithData:data];
 #elif defined(__CC_PLATFORM_MAC)
-				NSBitmapImageRep *image = [[NSBitmapImageRep alloc] initWithData:data];
+            NSBitmapImageRep *image = [[NSBitmapImageRep alloc] initWithData:data];
 #endif
 
-				free(deflated); deflated = NULL;
+            free(deflated); deflated = NULL;
 
-				[self setTexture:  [ [CCTextureCache sharedTextureCache] addCGImage:[image CGImage] forKey:textureName]];
-				[data release];
-				[image release];
-			}
+            [self setTexture:  [ [CCTextureCache sharedTextureCache] addCGImage:[image CGImage] forKey:textureName]];
+            [data release];
+            [image release];
+//			}
 
 			NSAssert( [self texture] != NULL, @"CCParticleSystem: error loading the texture");
 		}

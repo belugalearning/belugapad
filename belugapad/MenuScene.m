@@ -544,7 +544,7 @@ const float kPropYHitNextMenu=0.9f;
     NSUInteger totalExp = [us currentUserTotalExp];
     double secsInApp = [us currentUserTotalTimeInApp];
     NSUInteger hours = (NSUInteger)(secsInApp/3600);
-    NSUInteger mins = (NSUInteger)(secsInApp/60);
+    NSUInteger mins = ((NSUInteger)secsInApp % 3600)/60;
     
     [eMenuModName setString:module.name];
     [eMenuPlayerName setString:us.currentUser.nickName];
@@ -586,7 +586,7 @@ const float kPropYHitNextMenu=0.9f;
     
     double secsPlayingEl = [us currentUserTotalPlayingElement:element.document.documentID];
     NSUInteger hours = (NSUInteger)(secsPlayingEl/3600);
-    NSUInteger mins = (NSUInteger)(secsPlayingEl/60);
+    NSUInteger mins = ((NSUInteger)secsPlayingEl % 3600) / 60;
     
     [eMenuModDesc setString:element.name];
     [eMenuModStatus setString:(elCompletion < 1 ? [NSString stringWithFormat:@"%d%% COMPLETED", (NSUInteger)(100*elCompletion)] : @"COMPLETED")];

@@ -13,6 +13,8 @@
 @property float MaximumValue;
 @property (retain) NSMutableArray *MountedObjects;
 @property BOOL Locked;
+@property BOOL LeftPiece;
+@property BOOL RightPiece;
 @property CGPoint Position;
 @property int Length;
 

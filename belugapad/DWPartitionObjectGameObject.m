@@ -12,6 +12,7 @@
 
 @synthesize ObjectValue;
 @synthesize Position;
+@synthesize MovePosition;
 @synthesize BaseNode;
 @synthesize Length;
 

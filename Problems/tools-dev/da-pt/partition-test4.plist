@@ -29,17 +29,17 @@
 	<array>
 		<dict>
 			<key>LENGTH</key>
-			<integer>2</integer>
+			<integer>4</integer>
 			<key>LABEL</key>
-			<string>2</string>
+			<string>4</string>
 			<key>QUANTITY</key>
 			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>LENGTH</key>
-			<integer>1</integer>
+			<integer>5</integer>
 			<key>LABEL</key>
-			<string>1</string>
+			<string>5</string>
 			<key>QUANTITY</key>
 			<string>2</string>
 		</dict>

@@ -49,7 +49,10 @@
         
         [self setSpritePos:useAnimation];
     }
-    
+    if(messageType==kDWmoveSpriteToHome)
+    {
+        [self moveSpriteHome];
+    }
     if(messageType==kDWupdateSprite)
     {
 
@@ -92,13 +95,29 @@
     NSMutableArray *mySprites=[[NSMutableArray alloc]init];
     if(!pogo.Length) pogo.Length=1;
     
-    NSString *spriteFileName=@"/images/partition/block.png";
+    NSString *spriteFileName=[[NSString alloc]init];
     //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
     
     for(int i=0;i<pogo.Length;i++) {
+        if(i==0)
+        {
+            spriteFileName=@"/images/partition/block-l.png";
+            CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+            float thisXPos = pogo.Position.x-13;
+            [mySprite setPosition:ccp(thisXPos, pogo.Position.y)];
+            [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:2];
+            [mySprites addObject:mySprite];
+            if(gameWorld.Blackboard.inProblemSetup)
+            {
+                [mySprite setTag:2];
+                [mySprite setOpacity:0];
+            }
+
+        }
+        spriteFileName=@"/images/partition/block-m.png";
         NSLog(@"pogo position x %f", pogo.Position.x);
         CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-        float thisXPos = pogo.Position.x+(i*50);
+        float thisXPos = pogo.Position.x+(i*25);
         [mySprite setPosition:ccp(thisXPos, pogo.Position.y)];
         NSLog(@"thisXPos position x %f", thisXPos);
 
@@ -109,7 +128,21 @@
             [mySprite setOpacity:0];
         }
         [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:2];
-        
+        if(i==pogo.Length-1)
+        {
+            spriteFileName=@"/images/partition/block-r.png";
+            CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+            float thisXPos = pogo.Position.x+(i*25)+13;
+            [mySprite setPosition:ccp(thisXPos, pogo.Position.y)];
+            [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:2];
+            [mySprites addObject:mySprite];
+            if(gameWorld.Blackboard.inProblemSetup)
+            {
+                [mySprite setTag:2];
+                [mySprite setOpacity:0];
+            }
+            
+        }
         //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
         [mySprites addObject:mySprite];
         [[gameObject store] setObject:mySprites forKey:MY_SPRITE];
@@ -120,7 +153,7 @@
 -(void)setSpritePos:(BOOL) withAnimation
 {
     
-    if(pogo.Position.x || pogo.Position.y)
+    if(pogo.MovePosition.x || pogo.MovePosition.y)
     {
         NSMutableArray *mySprites=[[gameObject store] objectForKey:MY_SPRITE];
         
@@ -129,19 +162,28 @@
             CCSprite *curSprite = [mySprites objectAtIndex:i];
             if(withAnimation == YES)
             {
-                CGPoint newPos = ccp(pogo.Position.x, pogo.Position.y);
+                CGPoint newPos = ccp(pogo.MovePosition.x, pogo.MovePosition.y);
 
                 CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:newPos];
                 [curSprite runAction:anim];
             }
             else
             {
-                [curSprite setPosition:ccp(pogo.Position.x+(i*50), pogo.Position.y)];
+                [curSprite setPosition:ccp(pogo.MovePosition.x+(i*25), pogo.MovePosition.y)];
             }
         }
     }
 }
-
+-(void)moveSpriteHome
+{
+    NSMutableArray *mySprites=[[gameObject store] objectForKey:MY_SPRITE];
+    for(int i=0; i<mySprites.count; i++)
+    {
+        CCSprite *curSprite = [mySprites objectAtIndex:i];
+        CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:ccp(pogo.Position.x+(i*25), pogo.Position.y)];
+        [curSprite runAction:anim];
+    }
+}
 -(void)resetSpriteToMount
 {
     DWGameObject *mount = [[gameObject store] objectForKey:MOUNT];

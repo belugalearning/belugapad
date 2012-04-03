@@ -235,3 +235,4 @@
 #define LENGTH @"LENGTH"
 #define LOCKED @"LOCKED"
 #define LABEL @"LABEL"
+#define QUANTITY @"QUANTITY"

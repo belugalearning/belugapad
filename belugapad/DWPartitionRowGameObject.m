@@ -13,6 +13,8 @@
 @synthesize MaximumValue;
 @synthesize MountedObjects;
 @synthesize Locked;
+@synthesize LeftPiece;
+@synthesize RightPiece;
 @synthesize Position;
 @synthesize Length;
 

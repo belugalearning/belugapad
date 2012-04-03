@@ -89,10 +89,14 @@
 
 -(void)setSprite
 {
+    NSString *spriteFileName=[[NSString alloc]init];
     
- 
-    NSString *spriteFileName=@"/images/partition/row.png";
+    if(pogo.LeftPiece)spriteFileName=@"/images/partition/row-left.png";
+    else if(pogo.RightPiece)spriteFileName=@"/images/partition/row-right.png";
+    else spriteFileName=@"/images/partition/row.png";
+
     //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
+    
     
     CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
         

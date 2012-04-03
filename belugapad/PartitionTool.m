@@ -117,6 +117,8 @@
             prgo.Position=ccp(xStartPos,yStartPos);
             prgo.Length = [[[initBars objectAtIndex:i] objectForKey:LENGTH] intValue];
             prgo.Locked = [[[initBars objectAtIndex:i] objectForKey:LOCKED] boolValue];
+            if(go==0) prgo.LeftPiece=YES;
+            if(go==prgo.Length-1 && prgo.Locked)prgo.RightPiece=YES;
         
             [createdRows addObject:prgo];
             xStartPos=xStartPos+50;
@@ -129,13 +131,17 @@
     // do stuff with our INIT_CAGES (DWPartitionStoreGameObject)
     for (int i=0;i<[initCages count]; i++)
     {
-        DWPartitionObjectGameObject *pogo = [DWPartitionObjectGameObject alloc];
-        [gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];
-        //DWPartitionStoreGameObject *psgo = [DWPartitionStoreGameObject alloc];
-        //[gw populateAndAddGameObject:psgo withTemplateName:@"TpartitionStore"];
-        pogo.Position=ccp(100,184+(i*100));
-        //pogo.Label=[[initCages objectAtIndex:i] objectForKey:LABEL];
-        pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
+        int qtyForThisStore=[[[initCages objectAtIndex:i] objectForKey:QUANTITY] intValue];
+        for (int ic=0;ic<qtyForThisStore;ic++)
+        {
+            DWPartitionObjectGameObject *pogo = [DWPartitionObjectGameObject alloc];
+            [gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];
+            //DWPartitionStoreGameObject *psgo = [DWPartitionStoreGameObject alloc];
+            //[gw populateAndAddGameObject:psgo withTemplateName:@"TpartitionStore"];
+            pogo.Position=ccp(100,184+(i*100));
+            //pogo.Label=[[initCages objectAtIndex:i] objectForKey:LABEL];
+            pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
+        }
     }
     
     // do stuff with our INIT_OBJECTS (DWPartitionObjectGameObject)    
@@ -191,7 +197,7 @@
     if([gw Blackboard].PickupObject != nil)
     {
         DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
-        pogo.Position = location;
+        pogo.MovePosition = location;
         [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToPosition];
         
     }
@@ -216,6 +222,10 @@
         {
             NSLog(@"got a dropobject!");
             //[gw handleMessage:kDWsetMount];
+        }
+        else
+        {
+            [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToHome];
         }
     }
     

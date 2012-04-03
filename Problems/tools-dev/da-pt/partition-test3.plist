@@ -16,32 +16,38 @@
 			<key>LOCKED</key>
 			<true/>
 			<key>LENGTH</key>
-			<integer>4</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>LOCKED</key>
 			<false/>
 			<key>LENGTH</key>
-			<string>4</string>
+			<string>2</string>
+		</dict>
+		<dict>
+			<key>LOCKED</key>
+			<false/>
+			<key>LENGTH</key>
+			<string>2</string>
 		</dict>
 	</array>
 	<key>INIT_CAGES</key>
 	<array>
 		<dict>
 			<key>LENGTH</key>
-			<integer>2</integer>
+			<integer>3</integer>
 			<key>LABEL</key>
-			<string>2</string>
+			<string>3</string>
 			<key>QUANTITY</key>
 			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>LENGTH</key>
-			<integer>1</integer>
+			<integer>2</integer>
 			<key>LABEL</key>
 			<string>1</string>
 			<key>QUANTITY</key>
-			<string>2</string>
+			<string>1</string>
 		</dict>
 	</array>
 	<key>SOLUTIONS</key>

@@ -171,6 +171,10 @@ NSString * const kDefaultSyllabusViewName = @"default-syllabus";
         NSData *expressionData = self.currentProblem.expressionData;
         if (expressionData) self.currentPExpr = [BATio loadTreeFromMathMLData:expressionData];
     }
+    else
+    {
+        self.currentProblem = nil;
+    }
 }
 
 -(void)gotoNextProblem

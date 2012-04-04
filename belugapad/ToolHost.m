@@ -228,7 +228,11 @@ static float kMoveToNextProblemTime=2.0f;
     
     //reset multitouch
     //if tool requires multitouch, it will need to reset accordingly
-    [[CCDirector sharedDirector] openGLView].multipleTouchEnabled=NO;
+    //for multi-touch scaling we need to force this on
+    [[CCDirector sharedDirector] openGLView].multipleTouchEnabled=YES;
+    
+    //reset scale
+    scale=1.0f;
     
     //initialize tool scene
     currentTool=[NSClassFromString(toolKey) alloc];
@@ -663,8 +667,37 @@ static float kMoveToNextProblemTime=2.0f;
     if(isPaused)
     {
         return;
-    }  
-    [currentTool ccTouchesMoved:touches withEvent:event];
+    } 
+    
+    //pinch handling
+    if([touches count]>1)
+    {
+        UITouch *t1=[[touches allObjects] objectAtIndex:0];
+        UITouch *t2=[[touches allObjects] objectAtIndex:1];
+        
+        CGPoint t1a=[[CCDirector sharedDirector] convertToGL:[t1 previousLocationInView:t1.view]];
+        CGPoint t1b=[[CCDirector sharedDirector] convertToGL:[t1 locationInView:t1.view]];
+        CGPoint t2a=[[CCDirector sharedDirector] convertToGL:[t2 previousLocationInView:t2.view]];
+        CGPoint t2b=[[CCDirector sharedDirector] convertToGL:[t2 locationInView:t2.view]];
+        
+        float da=[BLMath DistanceBetween:t1a and:t2a];
+        float db=[BLMath DistanceBetween:t1b and:t2b];
+        
+        float scaleChange=db-da;
+        
+        scale+=(scaleChange / 500.0f);
+        if(scale<0.1) scale=0.1;
+        
+        [toolBackLayer setScale:scale];
+        [toolForeLayer setScale:scale];
+        
+        NSLog(@"scale: %f", scale);
+    }
+    else {
+        [currentTool ccTouchesMoved:touches withEvent:event];
+    }
+    
+
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event

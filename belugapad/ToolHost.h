@@ -65,6 +65,8 @@ typedef enum {
     
     BOOL autoMoveToNextProblem;
     float moveToNextProblemTime;
+    
+    float scale;
 }
 
 @property (retain) Daemon *Zubi;

@@ -87,6 +87,7 @@
     solutionsDef = [pdef objectForKey:SOLUTIONS];
     [solutionsDef retain];
     
+    createdRows = [[NSMutableArray alloc]init];
     [createdRows retain];
     
     
@@ -107,6 +108,8 @@
 
     float yStartPos=582;
     // do stuff with our INIT_BARS (DWPartitionRowGameObject)
+    NSMutableArray *currentRow = [[NSMutableArray alloc]init];
+    
     for (int i=0;i<[initBars count]; i++)
     {
         //float xStartPos=512;
@@ -120,10 +123,12 @@
             if(go==0) prgo.LeftPiece=YES;
             if(go==prgo.Length-1 && prgo.Locked)prgo.RightPiece=YES;
         
-            [createdRows addObject:prgo];
+            [currentRow addObject:prgo];
+            
             xStartPos=xStartPos+50;
         }
-        
+        [createdRows addObject:currentRow];
+        NSLog(@"created row count %d", createdRows.count);
         xStartPos = 512;
     yStartPos = yStartPos-100;
     }
@@ -138,18 +143,29 @@
             [gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];
             //DWPartitionStoreGameObject *psgo = [DWPartitionStoreGameObject alloc];
             //[gw populateAndAddGameObject:psgo withTemplateName:@"TpartitionStore"];
-            pogo.Position=ccp(100,184+(i*100));
+            pogo.Position=ccp(25,700-(i*75));
             //pogo.Label=[[initCages objectAtIndex:i] objectForKey:LABEL];
             pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
+            pogo.MountPosition = pogo.Position;
         }
     }
     
     // do stuff with our INIT_OBJECTS (DWPartitionObjectGameObject)    
     for (int i=0;i<[initObjects count]; i++)
     {
-        //DWPartitionObjectGameObject *pogo = [DWPartitionObjectGameObject alloc];
-        //[gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];
         //pogo.Position=ccp(512,284);
+        int insRow=[[[initObjects objectAtIndex:i] objectForKey:PUT_IN_ROW] intValue];
+        int insLength=[[[initObjects objectAtIndex:i] objectForKey:LENGTH] intValue];
+        int insPos=[[[initObjects objectAtIndex:i] objectForKey:POS] intValue];
+        DWPartitionObjectGameObject *pogo = [DWPartitionObjectGameObject alloc];
+        [gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];   
+        
+        
+        [pogo.Mounts addObject:[createdRows objectAtIndex:insRow]];
+        pogo.Length = insLength;
+        
+        DWPartitionRowGameObject *prgo = (DWPartitionRowGameObject*)[[createdRows objectAtIndex:insRow] objectAtIndex:insPos];
+        pogo.Position = prgo.Position;
     }
 
 }
@@ -220,8 +236,23 @@
         
         if([gw Blackboard].DropObject!=nil)
         {
+            DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
+            DWPartitionRowGameObject *prgo = (DWPartitionRowGameObject*)[gw Blackboard].DropObject;
+            
             NSLog(@"got a dropobject!");
-            //[gw handleMessage:kDWsetMount];
+            [pogo.Mounts removeAllObjects];
+            [pogo.Mounts addObject:prgo];
+            pogo.MovePosition = prgo.Position;
+            pogo.Position = prgo.Position;
+            [pogo handleMessage:kDWmoveSpriteToPosition];
+            
+            [pogo handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:prgo forKey:MOUNT] withLogLevel:-1];
+            
+            [prgo.MountedObjects removeAllObjects];
+            [prgo.MountedObjects addObject:pogo];
+            [prgo handleMessage:kDWsetMountedObject andPayload:[NSDictionary dictionaryWithObject:pogo forKey:MOUNT] withLogLevel:-1];
+            
+            
         }
         else
         {

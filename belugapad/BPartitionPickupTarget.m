@@ -39,20 +39,27 @@
 
         CGPoint myLoc=pogo.Position;
         
-        myLoc = [gameWorld.Blackboard.ComponentRenderLayer convertToNodeSpace:myLoc];
         
-        //get coords from payload (i.e. the search target)
-        float xhit=[[payload objectForKey:POS_X] floatValue];
-        float yhit=[[payload objectForKey:POS_Y] floatValue];
         
-        CGPoint hitLoc=ccp(xhit, yhit);
-        
-    
-        if([BLMath DistanceBetween:myLoc and:hitLoc] <= (0.040f*[gameWorld Blackboard].hostLX))
+        for(int i=0;i<pogo.BaseNode.children.count;i++)
         {
-            //tell gameScene we are a target for that pickup
-            [gameWorld Blackboard].PickupObject=gameObject;
-        }    
+        
+            CCSprite *curSprite = [pogo.BaseNode.children objectAtIndex:i];
+            myLoc = [pogo.BaseNode convertToWorldSpace:curSprite.position];
+            
+            //get coords from payload (i.e. the search target)
+            float xhit=[[payload objectForKey:POS_X] floatValue];
+            float yhit=[[payload objectForKey:POS_Y] floatValue];
+            
+            CGPoint hitLoc=ccp(xhit, yhit);
+            
+
+            if([BLMath DistanceBetween:myLoc and:hitLoc] <= (0.040f*[gameWorld Blackboard].hostLX))
+            {
+                //tell gameScene we are a target for that pickup
+                [gameWorld Blackboard].PickupObject=gameObject;
+            }  
+        }
       
     }
     

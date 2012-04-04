@@ -92,6 +92,7 @@
 
 -(void)setSprite
 {
+    pogo.BaseNode = [[CCNode alloc]init];
     NSMutableArray *mySprites=[[NSMutableArray alloc]init];
     if(!pogo.Length) pogo.Length=1;
     
@@ -103,9 +104,9 @@
         {
             spriteFileName=@"/images/partition/block-l.png";
             CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-            float thisXPos = pogo.Position.x-13;
-            [mySprite setPosition:ccp(thisXPos, pogo.Position.y)];
-            [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:2];
+            float thisXPos = -15;
+            [mySprite setPosition:ccp(thisXPos, 0)];
+            [pogo.BaseNode addChild:mySprite z:2];
             [mySprites addObject:mySprite];
             if(gameWorld.Blackboard.inProblemSetup)
             {
@@ -117,8 +118,8 @@
         spriteFileName=@"/images/partition/block-m.png";
         NSLog(@"pogo position x %f", pogo.Position.x);
         CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-        float thisXPos = pogo.Position.x+(i*25);
-        [mySprite setPosition:ccp(thisXPos, pogo.Position.y)];
+        float thisXPos = i*25;
+        [mySprite setPosition:ccp(thisXPos, 0)];
         NSLog(@"thisXPos position x %f", thisXPos);
 
         
@@ -127,14 +128,14 @@
             [mySprite setTag:2];
             [mySprite setOpacity:0];
         }
-        [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:2];
+        [pogo.BaseNode addChild:mySprite z:2];
         if(i==pogo.Length-1)
         {
             spriteFileName=@"/images/partition/block-r.png";
             CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-            float thisXPos = pogo.Position.x+(i*25)+13;
-            [mySprite setPosition:ccp(thisXPos, pogo.Position.y)];
-            [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:2];
+            float thisXPos = (i*25)+15;
+            [mySprite setPosition:ccp(thisXPos, 0)];
+            [pogo.BaseNode addChild:mySprite z:2];
             [mySprites addObject:mySprite];
             if(gameWorld.Blackboard.inProblemSetup)
             {
@@ -148,6 +149,9 @@
         [[gameObject store] setObject:mySprites forKey:MY_SPRITE];
     }
     
+    pogo.BaseNode.position=pogo.Position;
+    [[gameWorld Blackboard].ComponentRenderLayer addChild:pogo.BaseNode z:2];
+    
 }
 
 -(void)setSpritePos:(BOOL) withAnimation
@@ -155,34 +159,26 @@
     
     if(pogo.MovePosition.x || pogo.MovePosition.y)
     {
-        NSMutableArray *mySprites=[[gameObject store] objectForKey:MY_SPRITE];
         
-        for(int i=0; i<mySprites.count; i++)
-        {
-            CCSprite *curSprite = [mySprites objectAtIndex:i];
             if(withAnimation == YES)
             {
-                CGPoint newPos = ccp(pogo.MovePosition.x, pogo.MovePosition.y);
+                pogo.BaseNode.position=ccp(pogo.MovePosition.x, pogo.MovePosition.y);
 
-                CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:newPos];
-                [curSprite runAction:anim];
+                CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:pogo.MovePosition];
+                [pogo.BaseNode runAction:anim];
             }
             else
             {
-                [curSprite setPosition:ccp(pogo.MovePosition.x+(i*25), pogo.MovePosition.y)];
+                [pogo.BaseNode setPosition:pogo.MovePosition];
+                
             }
-        }
     }
 }
 -(void)moveSpriteHome
 {
-    NSMutableArray *mySprites=[[gameObject store] objectForKey:MY_SPRITE];
-    for(int i=0; i<mySprites.count; i++)
-    {
-        CCSprite *curSprite = [mySprites objectAtIndex:i];
-        CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:ccp(pogo.Position.x+(i*25), pogo.Position.y)];
-        [curSprite runAction:anim];
-    }
+    CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:pogo.MountPosition];
+    [pogo.BaseNode runAction:anim];
+    pogo.Position=pogo.MountPosition;
 }
 -(void)resetSpriteToMount
 {

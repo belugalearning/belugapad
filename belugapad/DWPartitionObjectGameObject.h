@@ -13,6 +13,8 @@
 @property float ObjectValue;
 @property CGPoint Position;
 @property CGPoint MovePosition;
+@property CGPoint MountPosition;
+@property (retain) NSMutableArray *Mounts;
 @property (retain) CCNode *BaseNode;
 @property int Length;
 

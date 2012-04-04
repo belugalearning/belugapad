@@ -8,7 +8,22 @@
 	<string>PartitionTool</string>
 	<key>INIT_OBJECTS</key>
 	<array>
-		<dict/>
+		<dict>
+			<key>LOCKED</key>
+			<true/>
+			<key>LENGTH</key>
+			<integer>2</integer>
+			<key>POS</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>LOCKED</key>
+			<true/>
+			<key>LENGTH</key>
+			<integer>2</integer>
+			<key>POS</key>
+			<string>2</string>
+		</dict>
 	</array>
 	<key>INIT_BARS</key>
 	<array>

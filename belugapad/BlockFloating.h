@@ -96,7 +96,7 @@
 // both abstracted (i.e. from gw implementation) but fixed to this tool's current problem load -- hence effectively a single-problem evaluation prototype of abstracted (from gw) evaluation
 -(void)evalCompletionWithForceCommit:(BOOL)forceCommit;
 -(void)evalCompletionOnTimer:(ccTime)delta;
--(void)evalCommit;
+-(void)evalProblem;
 -(void)doProblemSolvedActionsFor:(NSDictionary*)sol withCompletion:(int)solComplete andScore:(float)solScore;
 
 -(void)doClauseActionsWithForceNow:(BOOL)forceRejectNow;

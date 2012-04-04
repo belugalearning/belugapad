@@ -27,7 +27,6 @@
     
     CCLayer *renderLayer;
     
-    CCLabelTTF *problemDescLabel;
     NSArray *initBars;
     NSArray *initObjects;
     NSArray *initCages;

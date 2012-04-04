@@ -31,7 +31,6 @@
     CCLayer *renderLayer;
     CCLayer *countLayer;
     
-    CCLabelTTF *problemDescLabel;
     CCLabelTTF *problemSubLabel;
     CCLabelTTF *problemCompleteLabel;
     CCLabelTTF *countLabel;

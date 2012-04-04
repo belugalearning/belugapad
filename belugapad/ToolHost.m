@@ -78,6 +78,8 @@ static float kMoveToNextProblemTime=2.0f;
 
         metaQuestionLayer=[[CCLayer alloc] init];
         [self addChild:metaQuestionLayer z:2];
+        problemDefLayer=[[CCLayer alloc] init];
+        [self addChild:problemDefLayer z:3];
         
         [self populatePerstLayer];
         
@@ -194,6 +196,7 @@ static float kMoveToNextProblemTime=2.0f;
 -(void) gotoNewProblem
 {
     if (pdef) [pdef release];
+    [self tearDownProblemDef];
     self.PpExpr = nil;
     
     [contentService gotoNextProblem];
@@ -257,6 +260,9 @@ static float kMoveToNextProblemTime=2.0f;
     if (mq)
     {
         [self setupMetaQuestion:mq];
+    }
+    else {
+        [self setupProblemOnToolHost:pdef];
     }
     
     [self stageIntroActions];        
@@ -337,6 +343,29 @@ static float kMoveToNextProblemTime=2.0f;
     [problemIncomplete retain];
 }
 
+-(void)setupProblemOnToolHost:(NSDictionary *)curpdef
+{
+    NSNumber *eMode=[curpdef objectForKey:EVAL_MODE];
+    if(eMode) evalMode=[eMode intValue];
+    else evalMode=kProblemEvalAuto;
+    
+    problemDescLabel=[CCLabelTTF labelWithString:[curpdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
+    //[problemDescLabel setColor:kLabelTitleColor];
+    [problemDescLabel setTag:3];
+    [problemDescLabel setOpacity:0];
+    [problemDefLayer addChild:problemDescLabel];
+    
+    if(evalMode==kProblemEvalOnCommit)
+    {
+        CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
+        [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
+        [commitBtn setTag:3];
+        [commitBtn setOpacity:0];
+        [problemDefLayer addChild:commitBtn z:2];
+    }
+}
+
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ
 {
     metaQuestionForThisProblem=YES;
@@ -355,7 +384,7 @@ static float kMoveToNextProblemTime=2.0f;
     }
     
     //render problem label
-    CCLabelTTF *problemDescLabel=[CCLabelTTF labelWithString:[pdefMQ objectForKey:META_QUESTION_TITLE] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    problemDescLabel=[CCLabelTTF labelWithString:[pdefMQ objectForKey:META_QUESTION_TITLE] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
     [problemDescLabel setPosition:ccp(cx, titleY)];
     [problemDescLabel setColor:kMetaQuestionLabelColor];
     [problemDescLabel setOpacity:0];
@@ -466,6 +495,11 @@ static float kMoveToNextProblemTime=2.0f;
     metaQuestionForceComplete=NO;
 }
 
+-(void)tearDownProblemDef
+{
+    [problemDefLayer removeAllChildrenWithCleanup:YES];
+}
+
 -(void)stageIntroActions
 {
     //TODO tags are currently fixed to 2 phases -- either parse tool tree or pre-populate with design-fixed max
@@ -477,6 +511,7 @@ static float kMoveToNextProblemTime=2.0f;
         [self recurseSetIntroFor:toolBackLayer withTime:time forTag:i];
         [self recurseSetIntroFor:toolForeLayer withTime:time forTag:i];
         [self recurseSetIntroFor:metaQuestionLayer withTime:time forTag:i];
+        [self recurseSetIntroFor:problemDefLayer withTime:time forTag:i];
     }
     
     skipNextStagedIntroAnim=NO;
@@ -650,6 +685,12 @@ static float kMoveToNextProblemTime=2.0f;
     {
         return;
     }  
+    // TODO: This should be made proportional
+    
+    if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit)
+    {
+        [currentTool evalProblem];
+    }
     if (location.x > 944 && location.y > 688 && !isPaused)
     {
         [self showPauseMenu];

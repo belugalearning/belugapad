@@ -253,13 +253,8 @@ static void eachShape(void *ptr, void* unused)
     [toolHost.Zubi setTarget:location];
     [toolHost.Zubi setMode:kDaemonModeFollowing];
     
-    if (CGRectContainsPoint(kRectButtonCommit, location))
-    {
-        [self evalCommit];
-    }
-    
     //look at operator taps
-    else if(operatorLayer.visible)
+    if(operatorLayer.visible)
     {
         if([operatorMode isEqualToString:@"ALL"])
         {
@@ -723,23 +718,6 @@ static void eachShape(void *ptr, void* unused)
     if(solutionsDef)
     {
         [solutionsDef retain];        
-        
-        //show commit button if evalOnCommit
-        if(evalMode==kProblemEvalOnCommit)
-        {
-            CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
-            [commitBtn setPosition:ccp((cx*2)-(kPropXCommitButtonPadding*(cx*2)), kPropXCommitButtonPadding*(cx*2))];
-            [self.ForeLayer addChild:commitBtn];
-        }
-        
-        //render problem label
-        problemDescLabel=[CCLabelTTF labelWithString:[pdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-        [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
-        [problemDescLabel setColor:kLabelTitleColor];
-        [problemDescLabel setOpacity:0];
-        [problemDescLabel setTag:3];
-        
-        [self.ForeLayer addChild:problemDescLabel];
 
     }
 
@@ -986,7 +964,7 @@ static void eachShape(void *ptr, void* unused)
     }
 }
 
--(void)evalCommit
+-(void)evalProblem
 {
     [self evalCompletionWithForceCommit:YES];
     

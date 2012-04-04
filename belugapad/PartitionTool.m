@@ -90,14 +90,6 @@
     createdRows = [[NSMutableArray alloc]init];
     [createdRows retain];
     
-    
-    problemDescLabel=[CCLabelTTF labelWithString:[pdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
-    //[problemDescLabel setColor:kLabelTitleColor];
-    [problemDescLabel setTag:3];
-    [problemDescLabel setOpacity:0];
-    [self.ForeLayer addChild:problemDescLabel];
-    
 }
 
 -(void)populateGW

@@ -7,6 +7,7 @@
 //
 
 #import "cocos2d.h"
+#import "ToolConsts.h"
 
 typedef enum {
     kMetaQuestionAnswerSingle=0,
@@ -28,6 +29,7 @@ typedef enum {
     CCLayer *perstLayer;
     CCLayer *backgroundLayer;
     CCLayer *metaQuestionLayer;
+    CCLayer *problemDefLayer;
 
     CCLayer *toolBackLayer;
     CCLayer *toolForeLayer;
@@ -67,6 +69,9 @@ typedef enum {
     float moveToNextProblemTime;
     
     float scale;
+    
+    CCLabelTTF *problemDescLabel;
+    ProblemEvalMode evalMode;
 }
 
 @property (retain) Daemon *Zubi;
@@ -93,7 +98,7 @@ typedef enum {
 
 -(void)recurseSetIntroFor:(CCNode*)node withTime:(float)time forTag:(int)tag;
 -(void)stageIntroActions;
-
+-(void)setupProblemOnToolHost:(NSDictionary *)pdef;
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ;
 -(void)checkMetaQuestionTouches:(CGPoint)location;
 -(void)evalMetaQuestion;
@@ -102,5 +107,6 @@ typedef enum {
 -(void)doIncomplete;
 -(void)removeMetaQuestionButtons;
 -(void)tearDownMetaQuestion;
+-(void)tearDownProblemDef;
 
 @end

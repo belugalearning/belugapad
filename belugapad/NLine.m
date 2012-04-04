@@ -142,24 +142,6 @@
     if (rMode) rejectMode=[rMode intValue];
     
     
-    if(evalMode==kProblemEvalOnCommit)
-    {
-        CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
-        [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
-        [commitBtn setTag:3];
-        [commitBtn setOpacity:0];
-        [self.ForeLayer addChild:commitBtn z:2];
-    }
-    
-    //render problem label
-    problemDescLabel=[CCLabelTTF labelWithString:[pdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
-    //[problemDescLabel setColor:kLabelTitleColor];
-    [problemDescLabel setTag:1];
-    [problemDescLabel setOpacity:0];
-    [self.ForeLayer addChild:problemDescLabel];
-    
-    
 }
 
 -(void)problemStateChanged

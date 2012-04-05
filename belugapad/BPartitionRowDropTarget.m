@@ -10,6 +10,7 @@
 #import "DWPartitionRowGameObject.h"
 #import "global.h"
 #import "BLMath.h"
+#import "DWPartitionObjectGameObject.h"
 
 @implementation BPartitionRowDropTarget
 
@@ -38,12 +39,29 @@
         CGPoint hitLoc=ccp(xhit, yhit);
         
 
-            float dist=[BLMath DistanceBetween:myLoc and:hitLoc];
-            if(!gameWorld.Blackboard.DropObject && dist<80.0f)
+            //float dist=[BLMath DistanceBetween:myLoc and:hitLoc];
+        CGRect boundingBox = CGRectZero;
+        for(int i=0;i<prgo.BaseNode.children.count;i++)
+        {
+            CCSprite *curSprite = [prgo.BaseNode.children objectAtIndex:i];
+            boundingBox=CGRectUnion(boundingBox, curSprite.boundingBox);
+        }
+        
+        if(!gameWorld.Blackboard.DropObject && CGRectContainsPoint(boundingBox, [prgo.BaseNode convertToNodeSpace:hitLoc]) && !prgo.Locked)
             {
-                gameWorld.Blackboard.DropObject=gameObject;
-                //gameWorld.Blackboard.DropObjectDistance=dist;
-                NSLog(@"hover over row drop target");
+                float myHeldValue=0.0f;
+                for(int i=0;i<prgo.MountedObjects.count;i++)
+                {
+                    DWPartitionObjectGameObject *mo = [prgo.MountedObjects objectAtIndex:i];
+                    myHeldValue=myHeldValue+mo.Length;
+                }
+                DWPartitionObjectGameObject *newO = (DWPartitionObjectGameObject*)gameWorld.Blackboard.PickupObject;
+                if(myHeldValue+newO.Length<=prgo.Length)
+                {                
+                    gameWorld.Blackboard.DropObject=gameObject;
+                    //gameWorld.Blackboard.DropObjectDistance=dist;
+                    NSLog(@"hover over row drop target");
+                }
             }
 
     }

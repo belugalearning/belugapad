@@ -13,11 +13,17 @@
 @synthesize MaximumValue;
 @synthesize MountedObjects;
 @synthesize Locked;
-@synthesize LeftPiece;
-@synthesize RightPiece;
 @synthesize Position;
 @synthesize Length;
 @synthesize BaseNode;
 
+-(DWGameObject *) initWithGameWorld:(DWGameWorld*)aGameWorld
+{
+    if( (self=[super initWithGameWorld:aGameWorld] )) 
+    {
+        MountedObjects = [[NSMutableArray alloc]init];
+    }
+	return self;
+}
 
 @end

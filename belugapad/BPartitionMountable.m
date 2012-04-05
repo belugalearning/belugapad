@@ -47,7 +47,14 @@
         //set new mount
         pogo.Mount=prgo;
         
-        pogo.MovePosition=prgo.Position;
+        float myHeldValue=0.0f;
+        for(int i=0;i<prgo.MountedObjects.count;i++)
+        {
+            DWPartitionObjectGameObject *mo = [prgo.MountedObjects objectAtIndex:i];
+            myHeldValue=myHeldValue+mo.Length;
+        }
+        
+        pogo.MovePosition=ccp(prgo.Position.x+(50*myHeldValue), prgo.Position.y);
         pogo.Position=prgo.Position;
         
         //message myself to move

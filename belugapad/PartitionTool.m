@@ -234,7 +234,7 @@
             
             //[prgo.MountedObjects removeAllObjects];
 //            [prgo.MountedObjects addObject:pogo];
-            [prgo handleMessage:kDWsetMountedObject andPayload:[NSDictionary dictionaryWithObject:pogo forKey:MOUNT] withLogLevel:-1];
+            [prgo handleMessage:kDWsetMountedObject andPayload:[NSDictionary dictionaryWithObject:pogo forKey:MOUNTED_OBJECT] withLogLevel:-1];
             
             
         }

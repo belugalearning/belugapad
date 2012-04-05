@@ -7,6 +7,7 @@
 //
 
 #import "DWPartitionObjectGameObject.h"
+#import "DWPartitionRowGameObject.h"
 
 @implementation DWPartitionObjectGameObject
 
@@ -14,7 +15,7 @@
 @synthesize Position;
 @synthesize MovePosition;
 @synthesize MountPosition;
-@synthesize Mounts;
+@synthesize Mount;
 @synthesize BaseNode;
 @synthesize Length;
 

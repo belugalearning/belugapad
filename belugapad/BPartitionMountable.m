@@ -8,6 +8,8 @@
 
 #import "BPartitionMountable.h"
 #import "global.h"
+#import "DWPartitionRowGameObject.h"
+#import "DWPartitionObjectGameObject.h"
 
 @implementation BPartitionMountable
 
@@ -15,43 +17,13 @@
 {
     self=(BPartitionMountable*)[super initWithGameObject:aGameObject withData:data];
     
+    pogo=(DWPartitionObjectGameObject*)gameObject;
+    
     return self;
 }
 
 -(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload
 {
-    if(messageType==kDWsetMount)
-    {
-            //set the old mount
-            DWGameObject *oldMount=[[gameObject store] objectForKey:MOUNT];
-            [oldMount handleMessage:kDWunsetMountedObject];
-            
-            //set the new mount for the GO
-            DWGameObject *newMount=[payload objectForKey:MOUNT];
-            [[gameObject store] setObject:newMount forKey:MOUNT];
-            
-            //tell the mount that i'm there
-            NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
-            [pl setObject:gameObject forKey:MOUNTED_OBJECT];
-            [newMount handleMessage:kDWsetMountedObject andPayload:pl withLogLevel:0];
-            
-            NSMutableDictionary *pl2 = [[[NSMutableDictionary alloc] init] autorelease];
-            [pl2 setObject:[[newMount store] objectForKey:POS_X] forKey:POS_X];
-            [pl2 setObject:[[newMount store] objectForKey:POS_Y] forKey:POS_Y];
-            
-            if([payload objectForKey:ANIMATE_ME])
-            {
-                [pl2 setObject:ANIMATE_ME forKey:ANIMATE_ME];
-            }
-
-        
-            //update the sprite
-            //[gameObject handleMessage:kDWupdateSprite andPayload:[newMount store] withLogLevel:0];
-            [gameObject handleMessage:kDWupdateSprite andPayload:pl2 withLogLevel:0];
-        
-        
-    }
-    
     if(messageType==kDWdismantle)
     {
         DWGameObject *m=[[gameObject store] objectForKey:MOUNT];
@@ -60,6 +32,42 @@
             [m handleMessage:kDWunsetMountedObject];
         }
         [[gameObject store] removeObjectForKey:MOUNT];
+    }
+    
+    if(messageType==kDWsetMount)
+    {
+        DWPartitionRowGameObject *prgo=[payload objectForKey:MOUNT];
+        
+        //if we had a mount previously, tell that mount to unmount me
+        if(pogo.Mount)
+        {
+            [pogo.Mount handleMessage:kDWunsetMountedObject];
+        }
+        
+        //set new mount
+        pogo.Mount=prgo;
+        
+        pogo.MovePosition=prgo.Position;
+        pogo.Position=prgo.Position;
+        
+        //message myself to move
+        [pogo handleMessage:kDWmoveSpriteToPosition];
+        
+    }
+    
+    if(messageType==kDWunsetMount)
+    {
+        [[gameObject store] removeObjectForKey:MOUNT];
+    }
+    
+    if(messageType==kDWmoveSpriteToHome)
+    {
+        if(pogo.Mount)
+        {
+            [pogo.Mount handleMessage:kDWunsetMountedObject];
+        }
+        
+        pogo.Mount=nil;
     }
 }
 

@@ -8,13 +8,15 @@
 
 #import "DWGameObject.h"
 
+@class DWPartitionRowGameObject;
+
 @interface DWPartitionObjectGameObject : DWGameObject
 
 @property float ObjectValue;
 @property CGPoint Position;
 @property CGPoint MovePosition;
 @property CGPoint MountPosition;
-@property (retain) NSMutableArray *Mounts;
+@property (retain) DWPartitionRowGameObject *Mount;
 @property (retain) CCNode *BaseNode;
 @property int Length;
 

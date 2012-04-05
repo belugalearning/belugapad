@@ -224,16 +224,16 @@
             DWPartitionRowGameObject *prgo = (DWPartitionRowGameObject*)[gw Blackboard].DropObject;
             
             NSLog(@"got a dropobject!");
-            [pogo.Mounts removeAllObjects];
-            [pogo.Mounts addObject:prgo];
-            pogo.MovePosition = prgo.Position;
-            pogo.Position = prgo.Position;
-            [pogo handleMessage:kDWmoveSpriteToPosition];
+//            [pogo.Mounts removeAllObjects];
+//            [pogo.Mounts addObject:prgo];
+//            pogo.MovePosition = prgo.Position;
+//            pogo.Position = prgo.Position;
+//            [pogo handleMessage:kDWmoveSpriteToPosition];
             
             [pogo handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:prgo forKey:MOUNT] withLogLevel:-1];
             
-            [prgo.MountedObjects removeAllObjects];
-            [prgo.MountedObjects addObject:pogo];
+            //[prgo.MountedObjects removeAllObjects];
+//            [prgo.MountedObjects addObject:pogo];
             [prgo handleMessage:kDWsetMountedObject andPayload:[NSDictionary dictionaryWithObject:pogo forKey:MOUNT] withLogLevel:-1];
             
             

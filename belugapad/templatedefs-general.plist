@@ -164,6 +164,8 @@
 		<dict>
 			<key>BPartitionPickupTarget</key>
 			<dict/>
+			<key>BPartitionMountable</key>
+			<dict/>
 			<key>BPartitionObjectRender</key>
 			<dict/>
 		</dict>
@@ -191,6 +193,8 @@
 		<key>BEHAVIOURS</key>
 		<dict>
 			<key>BPartitionRowRender</key>
+			<dict/>
+			<key>BPartitionMount</key>
 			<dict/>
 			<key>BPartitionRowDropTarget</key>
 			<dict/>

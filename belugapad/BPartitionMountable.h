@@ -8,9 +8,11 @@
 
 #import "DWBehaviour.h"
 
+@class DWPartitionObjectGameObject;
+
 @interface BPartitionMountable : DWBehaviour
 {
-    
+    DWPartitionObjectGameObject *pogo;
 }
 
 -(BPartitionMountable *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

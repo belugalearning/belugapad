@@ -10,6 +10,7 @@
 #import "global.h"
 #import "SimpleAudioEngine.h"
 #import "PlaceValue.h"
+#import "DWPartitionRowGameObject.h"
 
 @implementation BPartitionMount
 
@@ -17,9 +18,7 @@
 {
     self=(BPartitionMount*)[super initWithGameObject:aGameObject withData:data];
     
-    NSMutableArray *mo=[[NSMutableArray alloc] init];
-    GOS_SET(mo, MOUNTED_OBJECTS);
-    [mo release];
+    prgo=(DWPartitionRowGameObject*)gameObject;
     
     return self;
 }
@@ -32,14 +31,16 @@
     if(messageType==kDWsetMountedObject)
     {
         DWGameObject *addO=[payload objectForKey:MOUNTED_OBJECT];
-        [[gameObject store] setObject:addO forKey:MOUNTED_OBJECT];
         
+        [prgo.MountedObjects addObject:addO];
 
     }
     
     if(messageType==kDWunsetMountedObject)
     {
-        [[gameObject store] removeObjectForKey:MOUNTED_OBJECT];
+        DWGameObject *removeO=[payload objectForKey:MOUNTED_OBJECT];
+        
+        [prgo.MountedObjects removeObject:removeO];
     }
 
 }

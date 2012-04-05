@@ -10,6 +10,7 @@
 #import "BLMath.h"
 #import "global.h"
 #import "DWPartitionObjectGameObject.h"
+#import "DWPartitionRowGameObject.h"
 
 
 @implementation BPartitionPickupTarget
@@ -63,15 +64,7 @@
       
     }
     
-    if(messageType==kDWsetMount)
-    {
-        GOS_SET([payload objectForKey:MOUNT], MOUNT);
-    }
-    
-    if(messageType==kDWunsetMount)
-    {
-        [[gameObject store] removeObjectForKey:MOUNT];
-    }
+
 }
 
 @end

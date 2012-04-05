@@ -17,6 +17,7 @@
 @property BOOL RightPiece;
 @property CGPoint Position;
 @property int Length;
+@property (retain) CCNode *BaseNode;
 
 
 

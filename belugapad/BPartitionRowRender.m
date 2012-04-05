@@ -89,27 +89,33 @@
 
 -(void)setSprite
 {
+    pogo.BaseNode = [[CCNode alloc]init];
     NSString *spriteFileName=[[NSString alloc]init];
+    int lengthWithStops=pogo.Length+2;
     
-    if(pogo.LeftPiece)spriteFileName=@"/images/partition/row-left.png";
-    else if(pogo.RightPiece)spriteFileName=@"/images/partition/row-right.png";
-    else spriteFileName=@"/images/partition/row.png";
-
-    //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
+    for(int i=0;i<lengthWithStops;i++)
+    {
     
-    
-    CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+        if(i==0)spriteFileName=@"/images/partition/row-left.png";
+        else if(i==lengthWithStops-1)spriteFileName=@"/images/partition/row-right.png";
+        else spriteFileName=@"/images/partition/row.png";
         
         
-        if(gameWorld.Blackboard.inProblemSetup)
-        {
-            [mySprite setTag:1];
-            [mySprite setOpacity:0];
-        }
+        CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+        [mySprite setPosition:ccp((i+1)*50,0)];
+            
+            
+            if(gameWorld.Blackboard.inProblemSetup)
+            {
+                [mySprite setTag:1];
+                [mySprite setOpacity:0];
+            }
 
-        [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:2];
-        //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
-        [[gameObject store] setObject:mySprite forKey:MY_SPRITE];
+            [pogo.BaseNode addChild:mySprite z:2];
+
+    }
+    pogo.BaseNode.position = pogo.Position;
+    [[gameWorld Blackboard].ComponentRenderLayer addChild:pogo.BaseNode z:2];
 }
 
 -(void)setSpritePos:(BOOL) withAnimation

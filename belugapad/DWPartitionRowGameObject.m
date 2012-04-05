@@ -17,5 +17,6 @@
 @synthesize RightPiece;
 @synthesize Position;
 @synthesize Length;
+@synthesize BaseNode;
 
 @end

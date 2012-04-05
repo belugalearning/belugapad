@@ -100,28 +100,22 @@
 
     float yStartPos=582;
     // do stuff with our INIT_BARS (DWPartitionRowGameObject)
-    NSMutableArray *currentRow = [[NSMutableArray alloc]init];
     
     for (int i=0;i<[initBars count]; i++)
     {
-        //float xStartPos=512;
-        float xStartPos=(cx-(([[[initBars objectAtIndex:i] objectForKey:LENGTH] intValue]*50)/2)+25);
-        for(int go=0;go<[[[initBars objectAtIndex:i] objectForKey:LENGTH] intValue];go++) {
+        
+        float xStartPos=(cx-((([[[initBars objectAtIndex:i] objectForKey:LENGTH] intValue]+2)*50)/2)+25);
+
             DWPartitionRowGameObject *prgo = [DWPartitionRowGameObject alloc];
             [gw populateAndAddGameObject:prgo withTemplateName:@"TpartitionRow"];
             prgo.Position=ccp(xStartPos,yStartPos);
             prgo.Length = [[[initBars objectAtIndex:i] objectForKey:LENGTH] intValue];
             prgo.Locked = [[[initBars objectAtIndex:i] objectForKey:LOCKED] boolValue];
-            if(go==0) prgo.LeftPiece=YES;
-            if(go==prgo.Length-1 && prgo.Locked)prgo.RightPiece=YES;
+            //if(go==0) prgo.LeftPiece=YES;
+            //if(go==prgo.Length-1 && prgo.Locked)prgo.RightPiece=YES;
         
-            [currentRow addObject:prgo];
-            
-            xStartPos=xStartPos+50;
-        }
-        [createdRows addObject:currentRow];
-        NSLog(@"created row count %d", createdRows.count);
-        xStartPos = 512;
+        
+        [createdRows addObject:prgo];
     yStartPos = yStartPos-100;
     }
     
@@ -133,8 +127,6 @@
         {
             DWPartitionObjectGameObject *pogo = [DWPartitionObjectGameObject alloc];
             [gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];
-            //DWPartitionStoreGameObject *psgo = [DWPartitionStoreGameObject alloc];
-            //[gw populateAndAddGameObject:psgo withTemplateName:@"TpartitionStore"];
             pogo.Position=ccp(25,700-(i*75));
             //pogo.Label=[[initCages objectAtIndex:i] objectForKey:LABEL];
             pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
@@ -146,18 +138,18 @@
     for (int i=0;i<[initObjects count]; i++)
     {
         //pogo.Position=ccp(512,284);
-        int insRow=[[[initObjects objectAtIndex:i] objectForKey:PUT_IN_ROW] intValue];
-        int insLength=[[[initObjects objectAtIndex:i] objectForKey:LENGTH] intValue];
-        int insPos=[[[initObjects objectAtIndex:i] objectForKey:POS] intValue];
-        DWPartitionObjectGameObject *pogo = [DWPartitionObjectGameObject alloc];
-        [gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];   
-        
-        
-        [pogo.Mounts addObject:[createdRows objectAtIndex:insRow]];
-        pogo.Length = insLength;
-        
-        DWPartitionRowGameObject *prgo = (DWPartitionRowGameObject*)[[createdRows objectAtIndex:insRow] objectAtIndex:insPos];
-        pogo.Position = prgo.Position;
+//        int insRow=[[[initObjects objectAtIndex:i] objectForKey:PUT_IN_ROW] intValue];
+//        int insLength=[[[initObjects objectAtIndex:i] objectForKey:LENGTH] intValue];
+//        int insPos=[[[initObjects objectAtIndex:i] objectForKey:POS] intValue];
+//        DWPartitionObjectGameObject *pogo = [DWPartitionObjectGameObject alloc];
+//        [gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];   
+//        
+//        
+//        [pogo.Mounts addObject:[createdRows objectAtIndex:insRow]];
+//        pogo.Length = insLength;
+//        
+//        DWPartitionRowGameObject *prgo = (DWPartitionRowGameObject*)[[createdRows objectAtIndex:insRow] objectAtIndex:insPos];
+//        pogo.Position = prgo.Position;
     }
 
 }

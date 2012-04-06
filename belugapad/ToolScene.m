@@ -50,6 +50,11 @@
     return 0;
 }
 
+-(void)evalProblem
+{
+    
+}
+
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     

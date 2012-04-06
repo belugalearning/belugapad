@@ -58,11 +58,24 @@
                 DWPartitionObjectGameObject *newO = (DWPartitionObjectGameObject*)gameWorld.Blackboard.PickupObject;
                 if(myHeldValue+newO.Length<=prgo.Length)
                 {                
+                    for(CCSprite *s in prgo.BaseNode.children)
+                    {
+                        [s setColor:ccc3(255,0,0)];
+                    }
                     gameWorld.Blackboard.DropObject=gameObject;
                     //gameWorld.Blackboard.DropObjectDistance=dist;
                     NSLog(@"hover over row drop target");
+                    
                 }
+
             }
+        else {
+            for(CCSprite *s in prgo.BaseNode.children)
+            {
+                [s setColor:ccc3(255,255,255)];
+            }
+            gameWorld.Blackboard.DropObject=nil;
+        }
 
     }
 }

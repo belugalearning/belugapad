@@ -202,6 +202,10 @@
     
     if([gw Blackboard].PickupObject != nil)
     {
+        NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
+        [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
+        [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
+        [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
         DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
         pogo.MovePosition = location;
         [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToPosition];

@@ -19,5 +19,6 @@
 @property (retain) DWPartitionRowGameObject *Mount;
 @property (retain) CCNode *BaseNode;
 @property int Length;
+@property (retain) CCLabelTTF *Label;
 
 @end

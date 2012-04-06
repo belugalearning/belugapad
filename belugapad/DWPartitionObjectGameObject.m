@@ -18,5 +18,15 @@
 @synthesize Mount;
 @synthesize BaseNode;
 @synthesize Length;
+@synthesize Label;
+
+-(DWGameObject *) initWithGameWorld:(DWGameWorld*)aGameWorld
+{
+    if( (self=[super initWithGameWorld:aGameWorld] )) 
+    {
+        Label = [[CCLabelTTF alloc]init];
+    }
+	return self;
+}
 
 @end

@@ -127,10 +127,16 @@
         {
             DWPartitionObjectGameObject *pogo = [DWPartitionObjectGameObject alloc];
             [gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];
-            pogo.Position=ccp(25,650-(i*65));
-            //pogo.Label=[[initCages objectAtIndex:i] objectForKey:LABEL];
+            pogo.Position=ccp(25,650-(i*65));            
             pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
+            
+            if([[initCages objectAtIndex:i] objectForKey:LABEL])
+            {
+                pogo.Label= [CCLabelTTF labelWithString:[[initCages objectAtIndex:i] objectForKey:LABEL] dimensions:CGSizeMake((pogo.Length+2)*25, 50.0f) alignment:UITextAlignmentCenter fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            }
+            
             pogo.MountPosition = pogo.Position;
+            
         }
     }
     

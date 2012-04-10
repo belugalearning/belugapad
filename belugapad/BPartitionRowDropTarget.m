@@ -47,7 +47,9 @@
             boundingBox=CGRectUnion(boundingBox, curSprite.boundingBox);
         }
         
-        if(!gameWorld.Blackboard.DropObject && CGRectContainsPoint(boundingBox, [prgo.BaseNode convertToNodeSpace:hitLoc]) && !prgo.Locked)
+        CGRect newBndBox=CGRectMake(boundingBox.origin.x, boundingBox.origin.y-30, boundingBox.size.width, boundingBox.size.height+60);
+        //if(!gameWorld.Blackboard.DropObject && CGRectContainsPoint(boundingBox, [prgo.BaseNode convertToNodeSpace:hitLoc]) && !prgo.Locked)
+        if(!gameWorld.Blackboard.DropObject && CGRectContainsPoint(newBndBox, [prgo.BaseNode convertToNodeSpace:hitLoc]) && !prgo.Locked)
             {
                 float myHeldValue=0.0f;
                 for(int i=0;i<prgo.MountedObjects.count;i++)

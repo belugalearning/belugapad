@@ -98,6 +98,7 @@
     
         if(i==0)spriteFileName=@"/images/partition/row-left.png";
         else if(i==lengthWithStops-1 && pogo.Locked)spriteFileName=@"/images/partition/row-right.png";
+        else if(i==lengthWithStops-1 && !pogo.Locked)spriteFileName=@"/images/partition/row-right-open.png";
         else spriteFileName=@"/images/partition/row.png";
         
         

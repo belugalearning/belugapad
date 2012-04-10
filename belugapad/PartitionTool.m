@@ -157,7 +157,6 @@
         DWPartitionRowGameObject *prgo = (DWPartitionRowGameObject*)[createdRows objectAtIndex:insRow];
         NSDictionary *pl=[NSDictionary dictionaryWithObject:prgo forKey:MOUNT];
         [pogo handleMessage:kDWsetMount andPayload:pl withLogLevel:-1];
-        
     }
     
     [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
@@ -185,6 +184,7 @@
     
     if([gw Blackboard].PickupObject!=nil)
     {
+        [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
         gw.Blackboard.DropObject=nil;
         gw.Blackboard.PickupOffset = location;
 
@@ -213,8 +213,12 @@
         DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
         pogo.MovePosition = location;
         [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToPosition];
-        
+        if(gw.Blackboard.DropObject == nil)
+        {
+            [pogo handleMessage:kDWunsetMount];
+        }
     }
+
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -237,20 +241,7 @@
             DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
             DWPartitionRowGameObject *prgo = (DWPartitionRowGameObject*)[gw Blackboard].DropObject;
             
-            NSLog(@"got a dropobject!");
-//            [pogo.Mounts removeAllObjects];
-//            [pogo.Mounts addObject:prgo];
-//            pogo.MovePosition = prgo.Position;
-//            pogo.Position = prgo.Position;
-//            [pogo handleMessage:kDWmoveSpriteToPosition];
-            
             [pogo handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:prgo forKey:MOUNT] withLogLevel:-1];
-            
-            //[prgo.MountedObjects removeAllObjects];
-//            [prgo.MountedObjects addObject:pogo];
-            [prgo handleMessage:kDWsetMountedObject andPayload:[NSDictionary dictionaryWithObject:pogo forKey:MOUNTED_OBJECT] withLogLevel:-1];
-            
-            
         }
         else
         {

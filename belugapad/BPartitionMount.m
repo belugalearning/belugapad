@@ -56,9 +56,10 @@
         for(int i=0;i<prgo.MountedObjects.count;i++)
         {
             DWPartitionObjectGameObject *mo = [prgo.MountedObjects objectAtIndex:i];
-            myHeldValue=myHeldValue+mo.Length;
             mo.MovePosition=ccp(prgo.Position.x+(50*myHeldValue), prgo.Position.y);
             [mo handleMessage:kDWmoveSpriteToPosition];
+            
+            myHeldValue=myHeldValue+mo.Length;
         }
 
     }

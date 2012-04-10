@@ -54,7 +54,7 @@
             myHeldValue=myHeldValue+mo.Length;
         }
         
-        pogo.MovePosition=ccp(prgo.Position.x+(50*myHeldValue), prgo.Position.y);
+        pogo.MovePosition=ccp(prgo.Position.x+(50*myHeldValue-1), prgo.Position.y);
         pogo.Position=prgo.Position;
         
         //message myself to move

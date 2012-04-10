@@ -3,14 +3,6 @@
 <plist version="1.0">
 <array>
 	<string>/Problems/tools-dev/da-pt/partition-test.plist</string>
-	<string>/Problems/PlaceValue/placevalue-problem004.plist</string>
-	<string>/Problems/PlaceValue/placevalue-problem009.plist</string>
-	<string>/Problems/FloatingBlock/float-problem006.plist</string>
-	<string>/Problems/FloatingBlock/float-problem002.plist</string>
-	<string>/Problems/Addition/ac-dev/01pv/anline_addition_10_2_12.plist</string>
-	<string>/Problems/Addition/ac-dev/99saved_hard_counting/nline-stitch1.plist</string>
-	<string>/Problems/Addition/ac-dev/06columnadd/columnadd-problem001.plist</string>
-	<string>/Problems/FloatingBlock/float-problem002.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test2.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test3.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test4.plist</string>

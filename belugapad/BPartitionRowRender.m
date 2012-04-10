@@ -102,7 +102,7 @@
         
         
         CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-        [mySprite setPosition:ccp((i-1)*50,0)];
+        [mySprite setPosition:ccp((i*50)-25,0)];
             
             
             if(gameWorld.Blackboard.inProblemSetup)

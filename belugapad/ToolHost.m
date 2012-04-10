@@ -335,6 +335,10 @@ static float kMoveToNextProblemTime=2.0f;
 
 
     }
+    if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset && isPaused) {
+        isPaused=NO;
+        [self gotoNewProblem];
+    }
            
 }
 
@@ -680,10 +684,7 @@ static float kMoveToNextProblemTime=2.0f;
         return;
     }
     
-    if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
-        [self gotoNewProblem];
-    else
-        [currentTool ccTouchesBegan:touches withEvent:event];
+    [currentTool ccTouchesBegan:touches withEvent:event];
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event

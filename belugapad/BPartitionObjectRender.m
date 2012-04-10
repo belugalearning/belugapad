@@ -104,7 +104,7 @@
         {
             spriteFileName=@"/images/partition/block-l.png";
             CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-            float thisXPos = -15;
+            float thisXPos = -50;
             [mySprite setPosition:ccp(thisXPos, 0)];
             [pogo.BaseNode addChild:mySprite z:2];
             [mySprites addObject:mySprite];
@@ -118,7 +118,7 @@
         spriteFileName=@"/images/partition/block-m.png";
         NSLog(@"pogo position x %f", pogo.Position.x);
         CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-        float thisXPos = i*25;
+        float thisXPos = i*50;
         [mySprite setPosition:ccp(thisXPos, 0)];
         NSLog(@"thisXPos position x %f", thisXPos);
 
@@ -133,7 +133,7 @@
         {
             spriteFileName=@"/images/partition/block-r.png";
             CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-            float thisXPos = (i*25)+15;
+            float thisXPos = (i*50)+50;
             [mySprite setPosition:ccp(thisXPos, 0)];
             [pogo.BaseNode addChild:mySprite z:2];
             [mySprites addObject:mySprite];

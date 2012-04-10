@@ -60,11 +60,21 @@
         //message myself to move
         [pogo handleMessage:kDWmoveSpriteToPosition];
         
+        // and set a new mounted object
+        NSDictionary *pl=[NSDictionary dictionaryWithObject:pogo forKey:MOUNTED_OBJECT];
+        [prgo handleMessage:kDWsetMountedObject andPayload:pl withLogLevel:-1];   
+        
     }
     
     if(messageType==kDWunsetMount)
     {
         [[gameObject store] removeObjectForKey:MOUNT];
+        if(pogo.Mount)
+        {
+            NSDictionary *pl=[NSDictionary dictionaryWithObject:pogo forKey:MOUNTED_OBJECT];
+            [pogo.Mount handleMessage:kDWunsetMountedObject andPayload:pl withLogLevel:-1];
+            [pogo.Mount handleMessage:kDWresetPositionEval];
+        }
     }
     
     if(messageType==kDWmoveSpriteToHome)

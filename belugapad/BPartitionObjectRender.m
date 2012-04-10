@@ -99,12 +99,12 @@
     NSString *spriteFileName=[[NSString alloc]init];
     //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
     
-    for(int i=0;i<pogo.Length;i++) {
+    for(int i=0;i<pogo.Length+1;i++) {
         if(i==0)
         {
             spriteFileName=@"/images/partition/block-l.png";
             CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-            float thisXPos = -50;
+            float thisXPos = 0;
             [mySprite setPosition:ccp(thisXPos, 0)];
             [pogo.BaseNode addChild:mySprite z:2];
             [mySprites addObject:mySprite];
@@ -115,25 +115,30 @@
             }
 
         }
-        spriteFileName=@"/images/partition/block-m.png";
-        NSLog(@"pogo position x %f", pogo.Position.x);
-        CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-        float thisXPos = i*50;
-        [mySprite setPosition:ccp(thisXPos, 0)];
-        NSLog(@"thisXPos position x %f", thisXPos);
-
         
-        if(gameWorld.Blackboard.inProblemSetup)
+        if(i !=0 || i !=pogo.Length)
         {
-            [mySprite setTag:2];
-            [mySprite setOpacity:0];
+            spriteFileName=@"/images/partition/block-m.png";
+            NSLog(@"pogo position x %f", pogo.Position.x);
+            CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+            float thisXPos = i*50;
+            [mySprite setPosition:ccp(thisXPos, 0)];
+            NSLog(@"thisXPos position x %f", thisXPos);
+
+            
+            if(gameWorld.Blackboard.inProblemSetup)
+            {
+                [mySprite setTag:2];
+                [mySprite setOpacity:0];
+            }
+            [pogo.BaseNode addChild:mySprite z:2];
         }
-        [pogo.BaseNode addChild:mySprite z:2];
-        if(i==pogo.Length-1)
+        
+        if(i==pogo.Length)
         {
             spriteFileName=@"/images/partition/block-r.png";
             CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-            float thisXPos = (i*50)+50;
+            float thisXPos = i*50;
             [mySprite setPosition:ccp(thisXPos, 0)];
             [pogo.BaseNode addChild:mySprite z:2];
             [mySprites addObject:mySprite];
@@ -145,8 +150,8 @@
             
         }
         //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
-        [mySprites addObject:mySprite];
-        [[gameObject store] setObject:mySprites forKey:MY_SPRITE];
+        //[mySprites addObject:mySprite];
+        //[[gameObject store] setObject:mySprites forKey:MY_SPRITE];
     }
     
     if(pogo.Label) { 

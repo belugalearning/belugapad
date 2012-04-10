@@ -116,14 +116,13 @@
 
         }
         
-        if(i !=0 || i !=pogo.Length)
+        if(i !=0 && i !=pogo.Length)
         {
             spriteFileName=@"/images/partition/block-m.png";
             NSLog(@"pogo position x %f", pogo.Position.x);
             CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
             float thisXPos = i*50;
             [mySprite setPosition:ccp(thisXPos, 0)];
-            NSLog(@"thisXPos position x %f", thisXPos);
 
             
             if(gameWorld.Blackboard.inProblemSetup)
@@ -149,6 +148,7 @@
             }
             
         }
+        
         //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
         //[mySprites addObject:mySprite];
         //[[gameObject store] setObject:mySprites forKey:MY_SPRITE];

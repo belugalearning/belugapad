@@ -52,12 +52,15 @@
     
     if(messageType==kDWresetPositionEval)
     {
+        float myHeldValue=0.0f;
         for(int i=0;i<prgo.MountedObjects.count;i++)
         {
-            DWPartitionObjectGameObject *pogo = [prgo.MountedObjects objectAtIndex:i];
-            pogo.BaseNode.position=ccp(prgo.Position.x+(i*50), prgo.Position.y);
-            
+            DWPartitionObjectGameObject *mo = [prgo.MountedObjects objectAtIndex:i];
+            myHeldValue=myHeldValue+mo.Length;
+            mo.MovePosition=ccp(prgo.Position.x+(50*myHeldValue), prgo.Position.y);
+            [mo handleMessage:kDWmoveSpriteToPosition];
         }
+
     }
 }
 

@@ -157,6 +157,7 @@
         DWPartitionRowGameObject *prgo = (DWPartitionRowGameObject*)[createdRows objectAtIndex:insRow];
         NSDictionary *pl=[NSDictionary dictionaryWithObject:prgo forKey:MOUNT];
         [pogo handleMessage:kDWsetMount andPayload:pl withLogLevel:-1];
+        [prgo handleMessage:kDWresetPositionEval];
     }
 
 }

@@ -132,7 +132,7 @@
             
             if([[initCages objectAtIndex:i] objectForKey:LABEL])
             {
-                pogo.Label= [CCLabelTTF labelWithString:[[initCages objectAtIndex:i] objectForKey:LABEL] dimensions:CGSizeMake((pogo.Length+2)*25, 50.0f) alignment:UITextAlignmentCenter fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+                pogo.Label=[CCLabelTTF labelWithString:[[initCages objectAtIndex:i] objectForKey:LABEL] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
             }
             
             pogo.MountPosition = pogo.Position;
@@ -158,9 +158,9 @@
         NSDictionary *pl=[NSDictionary dictionaryWithObject:prgo forKey:MOUNT];
         [pogo handleMessage:kDWsetMount andPayload:pl withLogLevel:-1];
         
-        NSDictionary *pl2=[NSDictionary dictionaryWithObject:pogo forKey:MOUNTED_OBJECT];
-        [prgo handleMessage:kDWsetMountedObject andPayload:pl2 withLogLevel:-1];
     }
+    
+    [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
 
 }
 

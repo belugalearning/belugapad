@@ -11,6 +11,7 @@
 #import "SimpleAudioEngine.h"
 #import "PlaceValue.h"
 #import "DWPartitionRowGameObject.h"
+#import "DWPartitionObjectGameObject.h"
 
 @implementation BPartitionMount
 
@@ -43,6 +44,16 @@
         [prgo.MountedObjects removeObject:removeO];
     }
 
+    
+    if(messageType==kDWresetPositionEval)
+    {
+        for(int i=0;i<prgo.MountedObjects.count;i++)
+        {
+            DWPartitionObjectGameObject *pogo = [prgo.MountedObjects objectAtIndex:i];
+            pogo.BaseNode.position=ccp(prgo.Position.x+(i*50), prgo.Position.y);
+            
+        }
+    }
 }
 
 @end

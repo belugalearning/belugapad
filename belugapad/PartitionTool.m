@@ -146,15 +146,17 @@
         //pogo.Position=ccp(512,284);
         int insRow=[[[initObjects objectAtIndex:i] objectForKey:PUT_IN_ROW] intValue];
         int insLength=[[[initObjects objectAtIndex:i] objectForKey:LENGTH] intValue];
-        int insPos=[[[initObjects objectAtIndex:i] objectForKey:POS] intValue];
         DWPartitionObjectGameObject *pogo = [DWPartitionObjectGameObject alloc];
         [gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];   
         
         //[pogo.Mounts addObject:[createdRows objectAtIndex:insRow]];
-        //pogo.Length = insLength;
-//        
-//        DWPartitionRowGameObject *prgo = (DWPartitionRowGameObject*)[[createdRows objectAtIndex:insRow] objectAtIndex:insPos];
-//        pogo.Position = prgo.Position;
+        pogo.Length = insLength;
+        NSString *fillText = [NSString stringWithFormat:@"%d", pogo.Length];
+        pogo.Label = [CCLabelTTF labelWithString:fillText fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        
+        DWPartitionRowGameObject *prgo = (DWPartitionRowGameObject*)[createdRows objectAtIndex:insRow];
+        NSDictionary *pl=[NSDictionary dictionaryWithObject:prgo forKey:MOUNT];
+        [pogo handleMessage:kDWsetMount andPayload:pl withLogLevel:-1];
     }
 
 }

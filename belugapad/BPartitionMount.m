@@ -34,6 +34,11 @@
         DWGameObject *addO=[payload objectForKey:MOUNTED_OBJECT];
         
         [prgo.MountedObjects addObject:addO];
+        
+        for(CCSprite *s in prgo.BaseNode.children)
+        {
+            [s setColor:ccc3(255,255,255)];
+        }
 
     }
     

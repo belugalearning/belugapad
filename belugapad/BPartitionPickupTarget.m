@@ -55,7 +55,7 @@
             CGPoint hitLoc=ccp(xhit, yhit);
             
 
-            if([BLMath DistanceBetween:myLoc and:hitLoc] <= (0.040f*[gameWorld Blackboard].hostLX))
+            if([BLMath DistanceBetween:myLoc and:hitLoc] <= (0.040f*[gameWorld Blackboard].hostLX) && !pogo.Mount.Locked)
             {
                 //tell gameScene we are a target for that pickup
                 [gameWorld Blackboard].PickupObject=gameObject;

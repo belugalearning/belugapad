@@ -155,14 +155,8 @@
     }
     
     if(pogo.Label) { 
-        float widthX=0;
         [pogo.Label setColor:ccc3(0,0,0)];
-        for(int i=0;i<pogo.BaseNode.children.count;i++)
-        {
-            CCSprite *curSprite=[pogo.BaseNode.children objectAtIndex:i];
-            widthX=widthX+curSprite.contentSize.width;
-        }
-        [pogo.Label setPosition:ccp(0, -10)];
+        [pogo.Label setPosition:ccp((pogo.Length * 50) * 0.5f, 0)];
         [pogo.Label setTag:2];
         [pogo.Label setOpacity:0];
         [pogo.BaseNode addChild:pogo.Label z:10];

@@ -81,6 +81,9 @@ static float kMoveToNextProblemTime=2.0f;
         problemDefLayer=[[CCLayer alloc] init];
         [self addChild:problemDefLayer z:3];
         
+        pauseLayer=[[CCLayer alloc]init];
+        [self addChild:pauseLayer z:4];
+        
         [self populatePerstLayer];
         
         contentService = ((AppController*)[[UIApplication sharedApplication] delegate]).contentService;        
@@ -291,7 +294,7 @@ static float kMoveToNextProblemTime=2.0f;
     
     pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
     [pauseMenu setPosition:ccp(cx, cy)];
-    [toolForeLayer addChild:pauseMenu z:10];
+    [pauseLayer addChild:pauseMenu z:10];
 }
 
 -(void) checkPauseTouches:(CGPoint)location
@@ -300,7 +303,7 @@ static float kMoveToNextProblemTime=2.0f;
     {
         //resume
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-        [toolForeLayer removeChild:pauseMenu cleanup:YES];
+        [pauseLayer removeChild:pauseMenu cleanup:YES];
         isPaused=NO;
     }
     if(CGRectContainsPoint(kPauseMenuReset, location))

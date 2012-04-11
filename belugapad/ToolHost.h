@@ -30,6 +30,7 @@ typedef enum {
     CCLayer *backgroundLayer;
     CCLayer *metaQuestionLayer;
     CCLayer *problemDefLayer;
+    CCLayer *pauseLayer;
 
     CCLayer *toolBackLayer;
     CCLayer *toolForeLayer;

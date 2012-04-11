@@ -33,7 +33,7 @@
     {
         self.isTouchEnabled=YES;
         
-        [[CCDirector sharedDirector] openGLView].multipleTouchEnabled=YES;
+        [[CCDirector sharedDirector] view].multipleTouchEnabled=YES;
         
         cx=[[CCDirector sharedDirector] winSize].width / 2.0f;
         cy=[[CCDirector sharedDirector] winSize].height / 2.0f;

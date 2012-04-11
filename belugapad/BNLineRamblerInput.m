@@ -60,7 +60,7 @@
                 valueOffset=ramblerGameObject.AutoStitchIncrement;
             }
             else {
-                float valueProp=fabsf(ramblerGameObject.TouchXOffset) / ((float)ramblerGameObject.AutoStitchIncrement * ramblerGameObject.DefaultSegmentSize);
+//                float valueProp=fabsf(ramblerGameObject.TouchXOffset) / ((float)ramblerGameObject.AutoStitchIncrement * ramblerGameObject.DefaultSegmentSize);
 
                 if(fabsf(ramblerGameObject.TouchXOffset) >= ((float)ramblerGameObject.AutoStitchIncrement - 0.5f) * ramblerGameObject.DefaultSegmentSize)
                 {

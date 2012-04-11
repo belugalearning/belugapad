@@ -191,7 +191,7 @@ static float kMoveToNextProblemTime=2.0f;
 {
     //reset multitouch
     //if tool requires multitouch, it will need to reset accordingly
-    [[CCDirector sharedDirector] openGLView].multipleTouchEnabled=NO;
+        [[CCDirector sharedDirector] view].multipleTouchEnabled=NO;
 
     
 }
@@ -235,7 +235,7 @@ static float kMoveToNextProblemTime=2.0f;
     //reset multitouch
     //if tool requires multitouch, it will need to reset accordingly
     //for multi-touch scaling we need to force this on
-    [[CCDirector sharedDirector] openGLView].multipleTouchEnabled=YES;
+    [[CCDirector sharedDirector] view].multipleTouchEnabled=YES;
     
     //reset scale
     scale=1.0f;

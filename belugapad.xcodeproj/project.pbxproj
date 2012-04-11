@@ -12,8 +12,6 @@
 		0C92B2541515702700342094 /* ContentService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C92B2531515702700342094 /* ContentService.m */; };
 		0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */ = {isa = PBXBuildFile; fileRef = 0C9FEFF514F572FB00E64138 /* pipeline-testing */; };
 		0CF9187C14F54C1D00FAC58D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF9187B14F54C1D00FAC58D /* images */; };
-		550708761517623E00111BBB /* ColumnAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708751517623E00111BBB /* ColumnAddition.m */; };
-		5507087A1517625300111BBB /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708791517625300111BBB /* ColumnAdditionConsts.m */; };
 		5507087B15176A0600111BBB /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708791517625300111BBB /* ColumnAdditionConsts.m */; };
 		5507087C15176A0600111BBB /* ColumnAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708751517623E00111BBB /* ColumnAddition.m */; };
 		551815631525EA920097E259 /* PartitionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815621525EA920097E259 /* PartitionTool.m */; };
@@ -142,7 +140,7 @@
 		7F5003541521B23D0038D251 /* SimpleAudioEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5003501521B23D0038D251 /* SimpleAudioEngine.m */; };
 		7F5003781521B24C0038D251 /* aabb.c in Sources */ = {isa = PBXBuildFile; fileRef = 7F5003681521B24C0038D251 /* aabb.c */; };
 		7F5003791521B24C0038D251 /* ChangeLog in Resources */ = {isa = PBXBuildFile; fileRef = 7F5003691521B24C0038D251 /* ChangeLog */; };
-		7F50037A1521B24C0038D251 /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7F50036A1521B24C0038D251 /* CMakeLists.txt */; };
+		7F50037A1521B24C0038D251 /* CMakeLists-kazmath.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7F50036A1521B24C0038D251 /* CMakeLists-kazmath.txt */; };
 		7F50037B1521B24C0038D251 /* mat4stack.c in Sources */ = {isa = PBXBuildFile; fileRef = 7F50036C1521B24C0038D251 /* mat4stack.c */; };
 		7F50037C1521B24C0038D251 /* matrix.c in Sources */ = {isa = PBXBuildFile; fileRef = 7F50036D1521B24C0038D251 /* matrix.c */; };
 		7F50037D1521B24C0038D251 /* mat3.c in Sources */ = {isa = PBXBuildFile; fileRef = 7F50036E1521B24C0038D251 /* mat3.c */; };
@@ -217,10 +215,6 @@
 		7F5115A714A9EF67001AF372 /* DWGameWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A214A9EF67001AF372 /* DWGameWorld.m */; };
 		7F5115AA14A9EF9E001AF372 /* BlockFloating.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A914A9EF9E001AF372 /* BlockFloating.m */; };
 		7F719C0314D739A600F30E89 /* Daemon.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F719C0214D739A600F30E89 /* Daemon.m */; };
-		7F71B405150FBCA80097A956 /* BATQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B400150FBCA80097A956 /* BATQuery.m */; };
-		7F71B406150FBCA80097A956 /* BATTreeViz.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B402150FBCA80097A956 /* BATTreeViz.m */; };
-		7F71B407150FBCA80097A956 /* BATViz.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B404150FBCA80097A956 /* BATViz.m */; };
-		7F71B40A150FBCB20097A956 /* ExprScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B409150FBCB20097A956 /* ExprScene.m */; };
 		7F71B40B150FBD9D0097A956 /* ExprScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B409150FBCB20097A956 /* ExprScene.m */; };
 		7F71B40C150FBDAA0097A956 /* BATQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B400150FBCA80097A956 /* BATQuery.m */; };
 		7F71B40D150FBDAD0097A956 /* BATTreeViz.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B402150FBCA80097A956 /* BATTreeViz.m */; };
@@ -277,7 +271,6 @@
 		7FCBC3E415100CF700066426 /* BATio.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E315100CF700066426 /* BATio.m */; };
 		7FCBC3E815100F3D00066426 /* MathMLConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E715100F3D00066426 /* MathMLConsts.m */; };
 		7FCBC3EB1510195F00066426 /* ExprIOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3EA1510195F00066426 /* ExprIOTests.m */; };
-		7FCBC3EC15101B5A00066426 /* BATio.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E315100CF700066426 /* BATio.m */; };
 		7FDBA52D14EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51214EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m */; };
 		7FDBA52E14EBD560004D1CC9 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51414EBD560004D1CC9 /* CXMLNode_CreationExtensions.m */; };
 		7FDBA52F14EBD560004D1CC9 /* CXHTMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51614EBD560004D1CC9 /* CXHTMLDocument.m */; };
@@ -597,7 +590,7 @@
 		7F5003661521B24C0038D251 /* vec4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vec4.h; sourceTree = "<group>"; };
 		7F5003681521B24C0038D251 /* aabb.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aabb.c; sourceTree = "<group>"; };
 		7F5003691521B24C0038D251 /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; };
-		7F50036A1521B24C0038D251 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
+		7F50036A1521B24C0038D251 /* CMakeLists-kazmath.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "CMakeLists-kazmath.txt"; sourceTree = "<group>"; };
 		7F50036C1521B24C0038D251 /* mat4stack.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mat4stack.c; sourceTree = "<group>"; };
 		7F50036D1521B24C0038D251 /* matrix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = matrix.c; sourceTree = "<group>"; };
 		7F50036E1521B24C0038D251 /* mat3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mat3.c; sourceTree = "<group>"; };
@@ -1243,7 +1236,7 @@
 			children = (
 				7F5003681521B24C0038D251 /* aabb.c */,
 				7F5003691521B24C0038D251 /* ChangeLog */,
-				7F50036A1521B24C0038D251 /* CMakeLists.txt */,
+				7F50036A1521B24C0038D251 /* CMakeLists-kazmath.txt */,
 				7F50036B1521B24C0038D251 /* GL */,
 				7F50036E1521B24C0038D251 /* mat3.c */,
 				7F50036F1521B24C0038D251 /* mat4.c */,
@@ -1897,7 +1890,7 @@
 				0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */,
 				7F40D88E14FF631C006A3A55 /* local-settings.plist in Resources */,
 				7F5003791521B24C0038D251 /* ChangeLog in Resources */,
-				7F50037A1521B24C0038D251 /* CMakeLists.txt in Resources */,
+				7F50037A1521B24C0038D251 /* CMakeLists-kazmath.txt in Resources */,
 				7F5005A61521B3060038D251 /* chipmunk-docs.html in Resources */,
 				7F5005A71521B3060038D251 /* LICENSE.txt in Resources */,
 				7F5005A81521B3060038D251 /* README.txt in Resources */,
@@ -1937,11 +1930,6 @@
 				7F40D8B314FFDA4D006A3A55 /* IntegerLogicTests.m in Sources */,
 				7F40D8B414FFDA4D006A3A55 /* MultiplyLogicTests.m in Sources */,
 				7F40D8B514FFDA4D006A3A55 /* PowerLogicTests.m in Sources */,
-				7FCBC3EC15101B5A00066426 /* BATio.m in Sources */,
-				7F71B405150FBCA80097A956 /* BATQuery.m in Sources */,
-				7F71B406150FBCA80097A956 /* BATTreeViz.m in Sources */,
-				7F71B407150FBCA80097A956 /* BATViz.m in Sources */,
-				7F71B40A150FBCB20097A956 /* ExprScene.m in Sources */,
 				7FCBC3EB1510195F00066426 /* ExprIOTests.m in Sources */,
 				7FB982AE15116633006D31AE /* BAAdditionOperator.m in Sources */,
 				7FB982B015116633006D31AE /* BABracketOperator.m in Sources */,
@@ -1957,8 +1945,6 @@
 				7FB982C415116633006D31AE /* BAPowerOperator.m in Sources */,
 				7FB982C615116633006D31AE /* BAVariable.m in Sources */,
 				7FB982C815116633006D31AE /* NSArray_BAAdditions.m in Sources */,
-				550708761517623E00111BBB /* ColumnAddition.m in Sources */,
-				5507087A1517625300111BBB /* ColumnAdditionConsts.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

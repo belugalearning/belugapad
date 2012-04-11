@@ -75,7 +75,6 @@
             {
                 [s setColor:ccc3(255,255,255)];
             }
-            gameWorld.Blackboard.DropObject=nil;
         }
 
     }

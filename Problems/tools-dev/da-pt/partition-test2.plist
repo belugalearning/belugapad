@@ -73,5 +73,7 @@
 	</array>
 	<key>SOLUTIONS</key>
 	<array/>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
 </dict>
 </plist>

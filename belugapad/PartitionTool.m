@@ -300,19 +300,31 @@
 
 -(void)resetProblemFromReject
 {
-    [toolHost showProblemIncompleteMessage];
-    for(int i=0;i<createdRows.count;i++)
+    // check our reject mode is correct
+    if(rejectMode==kProblemRejectOnCommit)
     {
-        DWPartitionRowGameObject *prgo=[createdRows objectAtIndex:i];
-        float count=[prgo.MountedObjects count]-1;
-        if(!prgo.Locked) {
-            for(int o=count;o>=0;o--)
-            {
-                NSLog(@"try sprite y0! %d/%d", o, [prgo.MountedObjects count]);
-                DWPartitionObjectGameObject *pogo=[prgo.MountedObjects objectAtIndex:o];
-                [pogo handleMessage:kDWmoveSpriteToHome];
+        // show the problem incomplete message
+        [toolHost showProblemIncompleteMessage];
+        
+        // loop over the rows (single objects)
+        for(int i=0;i<createdRows.count;i++)
+        {
+            // and for each of our rows, get a count
+            DWPartitionRowGameObject *prgo=[createdRows objectAtIndex:i];
+            float count=[prgo.MountedObjects count]-1;
+            
+            // then if they're not locked
+            if(!prgo.Locked) {
+                // loop over the mounted items backward (the stuff gets removed from the arrays as it runs) so we need to check for o being greater or equal to 0.
+                for(int o=count;o>=0;o--)
+                {
+                    // then move each of our sprites back!
+                    DWPartitionObjectGameObject *pogo=[prgo.MountedObjects objectAtIndex:o];
+                    [pogo handleMessage:kDWmoveSpriteToHome];
+                }
             }
         }
+
     }
 }
 

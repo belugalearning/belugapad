@@ -263,6 +263,13 @@
     isTouching=NO;
 }
 
+-(BOOL)evalExpression
+{
+    //returns YES if the tool expression evaluates succesfully
+    
+    return YES;
+}
+
 -(void) dealloc
 {
     //write log on problem switch

@@ -35,6 +35,12 @@
     NSMutableArray *createdRows;
     NSMutableArray *createdObjects;
     NSMutableArray *createdCages;
+    
+    ProblemRejectMode rejectMode;
+    ProblemEvalMode evalMode;
+    
+    float timeToAutoMoveToNextProblem;
+    BOOL autoMoveToNextProblem;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;
@@ -43,4 +49,7 @@
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
+-(BOOL)evalExpression;
+-(void)evalProblem;
+-(void)resetProblemFromReject;
 @end

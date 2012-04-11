@@ -83,6 +83,14 @@
         CCSprite *s=[[gameObject store] objectForKey:MY_SPRITE];
         [[s parent] removeChild:s cleanup:YES];
     }
+    
+    if(messageType==kDWhighlight)
+    {
+        for(CCSprite *s in pogo.BaseNode.children)
+        {
+            [s setColor:ccc3(255,255,255)];
+        }
+    }
 }
 
 

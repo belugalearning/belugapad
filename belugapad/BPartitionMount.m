@@ -57,7 +57,8 @@
         {
             DWPartitionObjectGameObject *mo = [prgo.MountedObjects objectAtIndex:i];
             mo.MovePosition=ccp(prgo.Position.x+(50*myHeldValue), prgo.Position.y);
-            [mo handleMessage:kDWmoveSpriteToPosition];
+            NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:ANIMATE_ME];
+            [mo handleMessage:kDWmoveSpriteToPosition andPayload:pl withLogLevel:-1];
             
             myHeldValue=myHeldValue+mo.Length;
         }

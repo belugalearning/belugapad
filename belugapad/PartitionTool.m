@@ -208,7 +208,7 @@
         [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
         
-        //[gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
+        [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
         
         
         DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
@@ -249,6 +249,7 @@
         else
         {
             [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToHome];
+            [[gw Blackboard].PickupObject handleMessage:kDWunsetMount];
             [gw handleMessage:kDWhighlight andPayload:nil withLogLevel:-1];
         }
     }

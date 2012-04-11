@@ -174,10 +174,10 @@
         
             if(withAnimation == YES)
             {
-                pogo.BaseNode.position=ccp(pogo.MovePosition.x, pogo.MovePosition.y);
+                pogo.BaseNode.position=pogo.MovePosition;
 
                 CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:pogo.MovePosition];
-                [pogo.BaseNode runAction:anim];
+                [pogo.BaseNode runAction:[CCEaseIn actionWithAction:anim rate:0.5f]];
             }
             else
             {
@@ -189,7 +189,7 @@
 -(void)moveSpriteHome
 {
     CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:pogo.MountPosition];
-    [pogo.BaseNode runAction:anim];
+    [pogo.BaseNode runAction:[CCEaseIn actionWithAction:anim rate:0.5f]];
     pogo.Position=pogo.MountPosition;
 }
 -(void)resetSpriteToMount

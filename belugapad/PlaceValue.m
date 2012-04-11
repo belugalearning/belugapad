@@ -36,7 +36,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     {
         //this will force override parent setting
         //TODO: is multitouch actually required on this tool?
-        [[CCDirector sharedDirector] openGLView].multipleTouchEnabled=YES;
+        [[CCDirector sharedDirector] view].multipleTouchEnabled=YES;
         
         CGSize winsize=[[CCDirector sharedDirector] winSize];
         winL=CGPointMake(winsize.width, winsize.height);

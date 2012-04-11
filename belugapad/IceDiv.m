@@ -39,7 +39,7 @@ const CGPoint kDaemonPos={50,50};
     {
         self.isTouchEnabled=YES;
         
-        [[CCDirector sharedDirector] openGLView].multipleTouchEnabled=NO;
+        [[CCDirector sharedDirector] view].multipleTouchEnabled=NO;
         
         cx=[[CCDirector sharedDirector] winSize].width / 2.0f;
         cy=[[CCDirector sharedDirector] winSize].height / 2.0f;

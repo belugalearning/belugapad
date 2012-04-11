@@ -35,7 +35,7 @@ static float kPropYOverlayPos=0.65f;
     if(self=[super init])
     {
         self.isTouchEnabled=YES;
-        [[CCDirector sharedDirector] openGLView].multipleTouchEnabled=YES;
+        [[CCDirector sharedDirector] view].multipleTouchEnabled=YES;
         
         CGSize winsize=[[CCDirector sharedDirector] winSize];
         winL=CGPointMake(winsize.width, winsize.height);

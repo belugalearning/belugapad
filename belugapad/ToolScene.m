@@ -50,6 +50,16 @@
     return 0;
 }
 
+-(float)metaQuestionTitleYLocation
+{
+    return 0;
+}
+
+-(float)metaQuestionAnswersYLocation
+{
+    return 0;
+}
+
 -(void)evalProblem
 {
     

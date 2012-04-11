@@ -36,4 +36,7 @@
 -(float)metaQuestionTitleXLocation;
 -(float)metaQuestionAnswersXLocation;
 
+-(float)metaQuestionTitleYLocation;
+-(float)metaQuestionAnswersYLocation;
+
 @end

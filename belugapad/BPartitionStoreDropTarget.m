@@ -23,7 +23,7 @@
 {
     if(messageType==kDWareYouADropTarget)
     {
-        DWGameObject *addO=gameWorld.Blackboard.PickupObject;
+//        DWGameObject *addO=gameWorld.Blackboard.PickupObject;
         BOOL inactive=[[[gameObject store] objectForKey:HIDDEN] boolValue];
         if([[[gameObject store] objectForKey:DISABLE_DEL] boolValue])return;
 

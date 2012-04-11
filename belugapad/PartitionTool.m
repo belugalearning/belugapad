@@ -111,8 +111,6 @@
             prgo.Position=ccp(xStartPos,yStartPos);
             prgo.Length = [[[initBars objectAtIndex:i] objectForKey:LENGTH] intValue];
             prgo.Locked = [[[initBars objectAtIndex:i] objectForKey:LOCKED] boolValue];
-            //if(go==0) prgo.LeftPiece=YES;
-            //if(go==prgo.Length-1 && prgo.Locked)prgo.RightPiece=YES;
         
         
         [createdRows addObject:prgo];
@@ -209,10 +207,14 @@
         NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
         [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
         [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
-        [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
+        
+        //[gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
+        
+        
         DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
         pogo.MovePosition = location;
         [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToPosition];
+        
         if(gw.Blackboard.DropObject == nil)
         {
             [pogo handleMessage:kDWunsetMount];
@@ -234,6 +236,7 @@
     
     if([gw Blackboard].PickupObject!=nil)
     {
+        gw.Blackboard.DropObject = nil;
         [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
         
         if([gw Blackboard].DropObject!=nil)
@@ -246,6 +249,7 @@
         else
         {
             [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToHome];
+            [gw handleMessage:kDWhighlight andPayload:nil withLogLevel:-1];
         }
     }
     

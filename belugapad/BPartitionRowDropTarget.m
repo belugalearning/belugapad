@@ -38,8 +38,6 @@
         float yhit=[[payload objectForKey:POS_Y] floatValue];
         CGPoint hitLoc=ccp(xhit, yhit);
         
-
-            //float dist=[BLMath DistanceBetween:myLoc and:hitLoc];
         CGRect boundingBox = CGRectZero;
         for(int i=0;i<prgo.BaseNode.children.count;i++)
         {
@@ -49,7 +47,8 @@
         
         CGRect newBndBox=CGRectMake(boundingBox.origin.x, boundingBox.origin.y-30, boundingBox.size.width, boundingBox.size.height+60);
         //if(!gameWorld.Blackboard.DropObject && CGRectContainsPoint(boundingBox, [prgo.BaseNode convertToNodeSpace:hitLoc]) && !prgo.Locked)
-        if(!gameWorld.Blackboard.DropObject && CGRectContainsPoint(newBndBox, [prgo.BaseNode convertToNodeSpace:hitLoc]) && !prgo.Locked)
+        
+        if(CGRectContainsPoint(newBndBox, [prgo.BaseNode convertToNodeSpace:hitLoc]) && !prgo.Locked)
             {
                 float myHeldValue=0.0f;
                 for(int i=0;i<prgo.MountedObjects.count;i++)
@@ -66,7 +65,6 @@
                         [s setColor:ccc3(0,255,0)];
                     }
                     gameWorld.Blackboard.DropObject=gameObject;
-                    //gameWorld.Blackboard.DropObjectDistance=dist;
                     
                 }
 

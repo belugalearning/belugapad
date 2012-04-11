@@ -35,7 +35,7 @@
 		</dict>
 		<dict>
 			<key>LOCKED</key>
-			<true/>
+			<false/>
 			<key>LENGTH</key>
 			<string>6</string>
 		</dict>

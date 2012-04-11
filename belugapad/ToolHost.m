@@ -323,6 +323,7 @@ static float kMoveToNextProblemTime=2.0f;
     if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
     {
         isPaused=NO;
+        [pauseLayer removeAllChildrenWithCleanup:YES];
         [self gotoNewProblem];
     }      
 }

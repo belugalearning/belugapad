@@ -242,7 +242,10 @@ static float kMoveToNextProblemTime=2.0f;
     
     //initialize tool scene
     currentTool=[NSClassFromString(toolKey) alloc];
-    [currentTool initWithToolHost:self andProblemDef:pdef];    
+    [currentTool initWithToolHost:self andProblemDef:pdef];
+    
+    //read our tool specific options
+    [self readToolOptions:toolKey];
     
     
     //setup background png / underlay
@@ -311,6 +314,7 @@ static float kMoveToNextProblemTime=2.0f;
        //reset
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self resetProblem];
+        [pauseLayer removeChild:pauseMenu cleanup:YES];
         isPaused=NO;
     }
     if(CGRectContainsPoint(kPauseMenuMenu,location))
@@ -506,6 +510,19 @@ static float kMoveToNextProblemTime=2.0f;
 -(void)tearDownProblemDef
 {
     [problemDefLayer removeAllChildrenWithCleanup:YES];
+}
+
+-(void)readToolOptions:(NSString *)currentToolKey
+{
+    NSDictionary *toolDef=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/tooldef.plist")];
+    
+    NSDictionary *toolOpt=[toolDef objectForKey:currentToolKey];
+
+    currentTool.ScaleMax=[[toolOpt objectForKey:SCALE_MAX] floatValue];
+    currentTool.ScaleMin=[[toolOpt objectForKey:SCALE_MIN] floatValue];
+    currentTool.PassThruScaling=[[toolOpt objectForKey:SCALING_PASS_THRU] boolValue];
+    
+    
 }
 
 -(void)stageIntroActions
@@ -731,8 +748,9 @@ static float kMoveToNextProblemTime=2.0f;
         
         float scaleChange=db-da;
         
-        scale+=(scaleChange / 500.0f);
-        if(scale<0.1) scale=0.1;
+        scale+=(scaleChange / cx);
+        if(scale<currentTool.ScaleMin) scale=currentTool.ScaleMin;
+        if(scale>currentTool.ScaleMax) scale=currentTool.ScaleMax;
         
         [toolBackLayer setScale:scale];
         [toolForeLayer setScale:scale];

@@ -23,6 +23,7 @@
 		551815781525FDDF0097E259 /* DWPartitionRowGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815771525FDDF0097E259 /* DWPartitionRowGameObject.m */; };
 		551815811526210D0097E259 /* BPartitionRowRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5518157E1526210C0097E259 /* BPartitionRowRender.m */; };
 		551815821526210D0097E259 /* BPartitionStoreRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815801526210C0097E259 /* BPartitionStoreRender.m */; };
+		552478661536BF5C00BA5C4E /* tooldef.plist in Resources */ = {isa = PBXBuildFile; fileRef = 552478651536BF5C00BA5C4E /* tooldef.plist */; };
 		5529F4D11529EA940085492E /* BPartitionStoreDropTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D01529EA940085492E /* BPartitionStoreDropTarget.m */; };
 		5529F4D4152A04320085492E /* BPartitionMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D3152A04310085492E /* BPartitionMount.m */; };
 		5529F4D7152A05EB0085492E /* BPartitionMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D6152A05EB0085492E /* BPartitionMountable.m */; };
@@ -327,6 +328,7 @@
 		5518157E1526210C0097E259 /* BPartitionRowRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionRowRender.m; sourceTree = "<group>"; };
 		5518157F1526210C0097E259 /* BPartitionStoreRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPartitionStoreRender.h; sourceTree = "<group>"; };
 		551815801526210C0097E259 /* BPartitionStoreRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionStoreRender.m; sourceTree = "<group>"; };
+		552478651536BF5C00BA5C4E /* tooldef.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tooldef.plist; sourceTree = "<group>"; };
 		5529F4CF1529EA940085492E /* BPartitionStoreDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPartitionStoreDropTarget.h; sourceTree = "<group>"; };
 		5529F4D01529EA940085492E /* BPartitionStoreDropTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionStoreDropTarget.m; sourceTree = "<group>"; };
 		5529F4D2152A04310085492E /* BPartitionMount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPartitionMount.h; sourceTree = "<group>"; };
@@ -1428,6 +1430,7 @@
 				7F813D5D14CCC3AF00C1E997 /* fonts */,
 				7F813D5914CCC38100C1E997 /* particles */,
 				7FABE6A114B4BF0F00ED2D0C /* templatedefs-general.plist */,
+				552478651536BF5C00BA5C4E /* tooldef.plist */,
 				7F5113E414A9EE63001AF372 /* Info.plist */,
 				7F5113E514A9EE63001AF372 /* iTunesArtwork */,
 				7F40D88D14FF631C006A3A55 /* local-settings.plist */,
@@ -1898,6 +1901,7 @@
 				7F5005CB1522478C0038D251 /* fps_images-hd.png in Resources */,
 				7F5005CC1522478C0038D251 /* fps_images-ipadhd.png in Resources */,
 				7F5005CD1522478C0038D251 /* fps_images.png in Resources */,
+				552478661536BF5C00BA5C4E /* tooldef.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

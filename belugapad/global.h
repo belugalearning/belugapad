@@ -64,6 +64,11 @@
 
 #define RENDER_IMAGE_NAME @"RENDER_IMAGE_NAME"
 
+// tool definition files
+#define SCALE_MIN @"SCALE_MIN"
+#define SCALE_MAX @"SCALE_MAX"
+#define SCALING_PASS_THRU @"SCALING_PASS_THRU"
+
 // problem definition files
 #define PROBLEM_DESCRIPTION @"PROBLEM_DESCRIPTION"
 #define PROBLEM_SUBTITLE @"PROBLEM_SUBTITLE"

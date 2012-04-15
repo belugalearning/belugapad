@@ -23,6 +23,7 @@
 		551815781525FDDF0097E259 /* DWPartitionRowGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815771525FDDF0097E259 /* DWPartitionRowGameObject.m */; };
 		551815811526210D0097E259 /* BPartitionRowRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5518157E1526210C0097E259 /* BPartitionRowRender.m */; };
 		551815821526210D0097E259 /* BPartitionStoreRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815801526210C0097E259 /* BPartitionStoreRender.m */; };
+		552478661536BF5C00BA5C4E /* tooldef.plist in Resources */ = {isa = PBXBuildFile; fileRef = 552478651536BF5C00BA5C4E /* tooldef.plist */; };
 		5529F4D11529EA940085492E /* BPartitionStoreDropTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D01529EA940085492E /* BPartitionStoreDropTarget.m */; };
 		5529F4D4152A04320085492E /* BPartitionMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D3152A04310085492E /* BPartitionMount.m */; };
 		5529F4D7152A05EB0085492E /* BPartitionMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D6152A05EB0085492E /* BPartitionMountable.m */; };
@@ -41,6 +42,18 @@
 		5571BAEF14E4108F0053A62B /* BPlaceValuePickupTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE814E4108F0053A62B /* BPlaceValuePickupTarget.m */; };
 		5571BAF014E4108F0053A62B /* BPlaceValueMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAEA14E4108F0053A62B /* BPlaceValueMount.m */; };
 		5571BAF114E4108F0053A62B /* BPlaceValueMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAEC14E4108F0053A62B /* BPlaceValueMountable.m */; };
+		55C5F71A153874C4009D8906 /* DotGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F719153874C3009D8906 /* DotGrid.m */; };
+		55C5F72715388A40009D8906 /* DWDotGridAnchorGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F72015388A40009D8906 /* DWDotGridAnchorGameObject.m */; };
+		55C5F72815388A40009D8906 /* DWDotGridHandleGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F72215388A40009D8906 /* DWDotGridHandleGameObject.m */; };
+		55C5F72915388A40009D8906 /* DWDotGridShapeGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F72415388A40009D8906 /* DWDotGridShapeGameObject.m */; };
+		55C5F72A15388A40009D8906 /* DWDotGridTileGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F72615388A40009D8906 /* DWDotGridTileGameObject.m */; };
+		55C5F73A1538A8F2009D8906 /* BDotGridAnchorObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F72D1538A8F2009D8906 /* BDotGridAnchorObjectRender.m */; };
+		55C5F73B1538A8F2009D8906 /* BDotGridAnchorTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F72F1538A8F2009D8906 /* BDotGridAnchorTouch.m */; };
+		55C5F73C1538A8F2009D8906 /* BDotGridHandleObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7311538A8F2009D8906 /* BDotGridHandleObjectRender.m */; };
+		55C5F73D1538A8F2009D8906 /* BDotGridHandleTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7331538A8F2009D8906 /* BDotGridHandleTouch.m */; };
+		55C5F73E1538A8F2009D8906 /* BDotGridShapeObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7351538A8F2009D8906 /* BDotGridShapeObjectRender.m */; };
+		55C5F73F1538A8F2009D8906 /* BDotGridShapeTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7371538A8F2009D8906 /* BDotGridShapeTouch.m */; };
+		55C5F7401538A8F2009D8906 /* BDotGridTileObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7391538A8F2009D8906 /* BDotGridTileObjectRender.m */; };
 		7F268ADE14F28DE500F1F65F /* ToolHost.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F268ADD14F28DE500F1F65F /* ToolHost.m */; };
 		7F268AE514F2A2A300F1F65F /* ToolScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F268AE414F2A2A200F1F65F /* ToolScene.m */; };
 		7F40D88E14FF631C006A3A55 /* local-settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F40D88D14FF631C006A3A55 /* local-settings.plist */; };
@@ -328,6 +341,7 @@
 		5518157E1526210C0097E259 /* BPartitionRowRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionRowRender.m; sourceTree = "<group>"; };
 		5518157F1526210C0097E259 /* BPartitionStoreRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPartitionStoreRender.h; sourceTree = "<group>"; };
 		551815801526210C0097E259 /* BPartitionStoreRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionStoreRender.m; sourceTree = "<group>"; };
+		552478651536BF5C00BA5C4E /* tooldef.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tooldef.plist; sourceTree = "<group>"; };
 		5529F4CF1529EA940085492E /* BPartitionStoreDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPartitionStoreDropTarget.h; sourceTree = "<group>"; };
 		5529F4D01529EA940085492E /* BPartitionStoreDropTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionStoreDropTarget.m; sourceTree = "<group>"; };
 		5529F4D2152A04310085492E /* BPartitionMount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPartitionMount.h; sourceTree = "<group>"; };
@@ -364,6 +378,30 @@
 		5571BAEA14E4108F0053A62B /* BPlaceValueMount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueMount.m; sourceTree = "<group>"; };
 		5571BAEB14E4108F0053A62B /* BPlaceValueMountable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueMountable.h; sourceTree = "<group>"; };
 		5571BAEC14E4108F0053A62B /* BPlaceValueMountable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueMountable.m; sourceTree = "<group>"; };
+		55C5F718153874C3009D8906 /* DotGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DotGrid.h; sourceTree = "<group>"; };
+		55C5F719153874C3009D8906 /* DotGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DotGrid.m; sourceTree = "<group>"; };
+		55C5F71F15388A40009D8906 /* DWDotGridAnchorGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWDotGridAnchorGameObject.h; sourceTree = "<group>"; };
+		55C5F72015388A40009D8906 /* DWDotGridAnchorGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWDotGridAnchorGameObject.m; sourceTree = "<group>"; };
+		55C5F72115388A40009D8906 /* DWDotGridHandleGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWDotGridHandleGameObject.h; sourceTree = "<group>"; };
+		55C5F72215388A40009D8906 /* DWDotGridHandleGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWDotGridHandleGameObject.m; sourceTree = "<group>"; };
+		55C5F72315388A40009D8906 /* DWDotGridShapeGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWDotGridShapeGameObject.h; sourceTree = "<group>"; };
+		55C5F72415388A40009D8906 /* DWDotGridShapeGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWDotGridShapeGameObject.m; sourceTree = "<group>"; };
+		55C5F72515388A40009D8906 /* DWDotGridTileGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWDotGridTileGameObject.h; sourceTree = "<group>"; };
+		55C5F72615388A40009D8906 /* DWDotGridTileGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWDotGridTileGameObject.m; sourceTree = "<group>"; };
+		55C5F72C1538A8F2009D8906 /* BDotGridAnchorObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDotGridAnchorObjectRender.h; sourceTree = "<group>"; };
+		55C5F72D1538A8F2009D8906 /* BDotGridAnchorObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDotGridAnchorObjectRender.m; sourceTree = "<group>"; };
+		55C5F72E1538A8F2009D8906 /* BDotGridAnchorTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDotGridAnchorTouch.h; sourceTree = "<group>"; };
+		55C5F72F1538A8F2009D8906 /* BDotGridAnchorTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDotGridAnchorTouch.m; sourceTree = "<group>"; };
+		55C5F7301538A8F2009D8906 /* BDotGridHandleObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDotGridHandleObjectRender.h; sourceTree = "<group>"; };
+		55C5F7311538A8F2009D8906 /* BDotGridHandleObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDotGridHandleObjectRender.m; sourceTree = "<group>"; };
+		55C5F7321538A8F2009D8906 /* BDotGridHandleTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDotGridHandleTouch.h; sourceTree = "<group>"; };
+		55C5F7331538A8F2009D8906 /* BDotGridHandleTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDotGridHandleTouch.m; sourceTree = "<group>"; };
+		55C5F7341538A8F2009D8906 /* BDotGridShapeObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDotGridShapeObjectRender.h; sourceTree = "<group>"; };
+		55C5F7351538A8F2009D8906 /* BDotGridShapeObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDotGridShapeObjectRender.m; sourceTree = "<group>"; };
+		55C5F7361538A8F2009D8906 /* BDotGridShapeTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDotGridShapeTouch.h; sourceTree = "<group>"; };
+		55C5F7371538A8F2009D8906 /* BDotGridShapeTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDotGridShapeTouch.m; sourceTree = "<group>"; };
+		55C5F7381538A8F2009D8906 /* BDotGridTileObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDotGridTileObjectRender.h; sourceTree = "<group>"; };
+		55C5F7391538A8F2009D8906 /* BDotGridTileObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDotGridTileObjectRender.m; sourceTree = "<group>"; };
 		7F268ADC14F28DE500F1F65F /* ToolHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolHost.h; sourceTree = "<group>"; };
 		7F268ADD14F28DE500F1F65F /* ToolHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolHost.m; sourceTree = "<group>"; };
 		7F268AE314F2A2A200F1F65F /* ToolScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolScene.h; sourceTree = "<group>"; };
@@ -921,6 +959,66 @@
 			name = PlaceValue;
 			sourceTree = "<group>";
 		};
+		55C5F71C1538863C009D8906 /* Partition */ = {
+			isa = PBXGroup;
+			children = (
+				551815761525FDDF0097E259 /* DWPartitionRowGameObject.h */,
+				551815771525FDDF0097E259 /* DWPartitionRowGameObject.m */,
+				551815731525FD3C0097E259 /* DWPartitionStoreGameObject.h */,
+				551815741525FD3C0097E259 /* DWPartitionStoreGameObject.m */,
+				551815701525F9880097E259 /* DWPartitionObjectGameObject.h */,
+				551815711525F9880097E259 /* DWPartitionObjectGameObject.m */,
+			);
+			name = Partition;
+			sourceTree = "<group>";
+		};
+		55C5F71D15388665009D8906 /* NLine */ = {
+			isa = PBXGroup;
+			children = (
+				7FC27F6D150FAAAA00E16A44 /* DWRamblerGameObject.h */,
+				7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */,
+				553E80BC150FC78E00263473 /* DWSelectorGameObject.h */,
+				553E80BD150FC78E00263473 /* DWSelectorGameObject.m */,
+			);
+			name = NLine;
+			sourceTree = "<group>";
+		};
+		55C5F71E1538867F009D8906 /* DotGrid */ = {
+			isa = PBXGroup;
+			children = (
+				55C5F71F15388A40009D8906 /* DWDotGridAnchorGameObject.h */,
+				55C5F72015388A40009D8906 /* DWDotGridAnchorGameObject.m */,
+				55C5F72115388A40009D8906 /* DWDotGridHandleGameObject.h */,
+				55C5F72215388A40009D8906 /* DWDotGridHandleGameObject.m */,
+				55C5F72315388A40009D8906 /* DWDotGridShapeGameObject.h */,
+				55C5F72415388A40009D8906 /* DWDotGridShapeGameObject.m */,
+				55C5F72515388A40009D8906 /* DWDotGridTileGameObject.h */,
+				55C5F72615388A40009D8906 /* DWDotGridTileGameObject.m */,
+			);
+			name = DotGrid;
+			sourceTree = "<group>";
+		};
+		55C5F72B15388A84009D8906 /* DotGrid */ = {
+			isa = PBXGroup;
+			children = (
+				55C5F72C1538A8F2009D8906 /* BDotGridAnchorObjectRender.h */,
+				55C5F72D1538A8F2009D8906 /* BDotGridAnchorObjectRender.m */,
+				55C5F72E1538A8F2009D8906 /* BDotGridAnchorTouch.h */,
+				55C5F72F1538A8F2009D8906 /* BDotGridAnchorTouch.m */,
+				55C5F7301538A8F2009D8906 /* BDotGridHandleObjectRender.h */,
+				55C5F7311538A8F2009D8906 /* BDotGridHandleObjectRender.m */,
+				55C5F7321538A8F2009D8906 /* BDotGridHandleTouch.h */,
+				55C5F7331538A8F2009D8906 /* BDotGridHandleTouch.m */,
+				55C5F7341538A8F2009D8906 /* BDotGridShapeObjectRender.h */,
+				55C5F7351538A8F2009D8906 /* BDotGridShapeObjectRender.m */,
+				55C5F7361538A8F2009D8906 /* BDotGridShapeTouch.h */,
+				55C5F7371538A8F2009D8906 /* BDotGridShapeTouch.m */,
+				55C5F7381538A8F2009D8906 /* BDotGridTileObjectRender.h */,
+				55C5F7391538A8F2009D8906 /* BDotGridTileObjectRender.m */,
+			);
+			name = DotGrid;
+			sourceTree = "<group>";
+		};
 		7F40D89C14FFD8BE006A3A55 /* GeneralTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -1431,6 +1529,7 @@
 				7F813D5D14CCC3AF00C1E997 /* fonts */,
 				7F813D5914CCC38100C1E997 /* particles */,
 				7FABE6A114B4BF0F00ED2D0C /* templatedefs-general.plist */,
+				552478651536BF5C00BA5C4E /* tooldef.plist */,
 				7F5113E414A9EE63001AF372 /* Info.plist */,
 				7F5113E514A9EE63001AF372 /* iTunesArtwork */,
 				7F40D88D14FF631C006A3A55 /* local-settings.plist */,
@@ -1581,6 +1680,8 @@
 				7F268AE414F2A2A200F1F65F /* ToolScene.m */,
 				7FC27F70150FAB4300E16A44 /* NLine.h */,
 				7FC27F71150FAB4300E16A44 /* NLine.m */,
+				55C5F718153874C3009D8906 /* DotGrid.h */,
+				55C5F719153874C3009D8906 /* DotGrid.m */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -1652,6 +1753,7 @@
 		7FABE6A314B4C5B500ED2D0C /* Behaviours */ = {
 			isa = PBXGroup;
 			children = (
+				55C5F72B15388A84009D8906 /* DotGrid */,
 				551815651525F67F0097E259 /* Partition */,
 				7FC27F7B150FB18000E16A44 /* NLine */,
 				5571BAE214E40FE90053A62B /* PlaceValue */,
@@ -1720,16 +1822,9 @@
 		7FC27F6B150FA9FC00E16A44 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				551815761525FDDF0097E259 /* DWPartitionRowGameObject.h */,
-				551815771525FDDF0097E259 /* DWPartitionRowGameObject.m */,
-				551815731525FD3C0097E259 /* DWPartitionStoreGameObject.h */,
-				551815741525FD3C0097E259 /* DWPartitionStoreGameObject.m */,
-				551815701525F9880097E259 /* DWPartitionObjectGameObject.h */,
-				551815711525F9880097E259 /* DWPartitionObjectGameObject.m */,
-				7FC27F6D150FAAAA00E16A44 /* DWRamblerGameObject.h */,
-				7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */,
-				553E80BC150FC78E00263473 /* DWSelectorGameObject.h */,
-				553E80BD150FC78E00263473 /* DWSelectorGameObject.m */,
+				55C5F71E1538867F009D8906 /* DotGrid */,
+				55C5F71D15388665009D8906 /* NLine */,
+				55C5F71C1538863C009D8906 /* Partition */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -1901,6 +1996,7 @@
 				7F5005CB1522478C0038D251 /* fps_images-hd.png in Resources */,
 				7F5005CC1522478C0038D251 /* fps_images-ipadhd.png in Resources */,
 				7F5005CD1522478C0038D251 /* fps_images.png in Resources */,
+				552478661536BF5C00BA5C4E /* tooldef.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2178,6 +2274,18 @@
 				5529F4D11529EA940085492E /* BPartitionStoreDropTarget.m in Sources */,
 				5529F4D4152A04320085492E /* BPartitionMount.m in Sources */,
 				5529F4D7152A05EB0085492E /* BPartitionMountable.m in Sources */,
+				55C5F71A153874C4009D8906 /* DotGrid.m in Sources */,
+				55C5F72715388A40009D8906 /* DWDotGridAnchorGameObject.m in Sources */,
+				55C5F72815388A40009D8906 /* DWDotGridHandleGameObject.m in Sources */,
+				55C5F72915388A40009D8906 /* DWDotGridShapeGameObject.m in Sources */,
+				55C5F72A15388A40009D8906 /* DWDotGridTileGameObject.m in Sources */,
+				55C5F73A1538A8F2009D8906 /* BDotGridAnchorObjectRender.m in Sources */,
+				55C5F73B1538A8F2009D8906 /* BDotGridAnchorTouch.m in Sources */,
+				55C5F73C1538A8F2009D8906 /* BDotGridHandleObjectRender.m in Sources */,
+				55C5F73D1538A8F2009D8906 /* BDotGridHandleTouch.m in Sources */,
+				55C5F73E1538A8F2009D8906 /* BDotGridShapeObjectRender.m in Sources */,
+				55C5F73F1538A8F2009D8906 /* BDotGridShapeTouch.m in Sources */,
+				55C5F7401538A8F2009D8906 /* BDotGridTileObjectRender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

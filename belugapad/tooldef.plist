@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ColumnAddition</key>
+	<dict>
+		<key>SCALE_MIN</key>
+		<real>0.3</real>
+		<key>SCALE_MAX</key>
+		<real>0.8</real>
+		<key>SCALING_PASS_THRU</key>
+		<false/>
+	</dict>
+	<key>NumberLine</key>
+	<dict>
+		<key>SCALE_MIN</key>
+		<integer>1</integer>
+		<key>SCALE_MAX</key>
+		<real>1.2</real>
+		<key>SCALING_PASS_THRU</key>
+		<false/>
+	</dict>
+	<key>PartitionTool</key>
+	<dict>
+		<key>SCALE_MIN</key>
+		<real>0.7</real>
+		<key>SCALE_MAX</key>
+		<integer>1</integer>
+		<key>SCALING_PASS_THRU</key>
+		<false/>
+	</dict>
+	<key>PlaceValue</key>
+	<dict>
+		<key>SCALE_MIN</key>
+		<integer>1</integer>
+		<key>SCALE_MAX</key>
+		<real>1.2</real>
+		<key>SCALING_PASS_THRU</key>
+		<false/>
+	</dict>
+	<key>DotGrid</key>
+	<dict>
+		<key>SCALE_MIN</key>
+		<integer>1</integer>
+		<key>SCALE_MAX</key>
+		<real>1.2</real>
+		<key>SCALING_PASS_THRU</key>
+		<false/>
+	</dict>
+</dict>
+</plist>

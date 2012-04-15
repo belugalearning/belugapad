@@ -61,5 +61,9 @@
 	</array>
 	<key>SOLUTIONS</key>
 	<array/>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>REJECT_MODE</key>
+	<integer>0</integer>
 </dict>
 </plist>

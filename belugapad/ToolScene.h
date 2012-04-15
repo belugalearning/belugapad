@@ -17,6 +17,9 @@
 @property BOOL ProblemComplete;
 @property (retain) CCLayer *BkgLayer;
 @property (retain) CCLayer *ForeLayer;
+@property float ScaleMin;
+@property float ScaleMax;
+@property BOOL PassThruScaling;
 
 -(id)initWithToolHost:(ToolHost*)host andProblemDef:(NSDictionary*)pdef;
 -(void)problemStateChanged;

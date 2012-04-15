@@ -96,7 +96,6 @@ typedef enum {
 -(void)doUpdateOnTick:(ccTime)delta;
 -(void)doUpdateOnSecond:(ccTime)delta;
 -(void)doUpdateOnQuarterSecond:(ccTime)delta;
-
 -(void)recurseSetIntroFor:(CCNode*)node withTime:(float)time forTag:(int)tag;
 -(void)stageIntroActions;
 -(void)setupProblemOnToolHost:(NSDictionary *)pdef;
@@ -109,5 +108,6 @@ typedef enum {
 -(void)removeMetaQuestionButtons;
 -(void)tearDownMetaQuestion;
 -(void)tearDownProblemDef;
+-(void)readToolOptions:(NSString*)currentTool;
 
 @end

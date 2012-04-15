@@ -66,6 +66,17 @@
 {
 	[gw doUpdate:delta];
     
+    if(autoMoveToNextProblem)
+    {
+        timeToAutoMoveToNextProblem+=delta;
+        if(timeToAutoMoveToNextProblem>=kTimeToAutoMove)
+        {
+            self.ProblemComplete=YES;
+            autoMoveToNextProblem=NO;
+            timeToAutoMoveToNextProblem=0.0f;
+        }
+    }   
+    
 
 }
 
@@ -86,6 +97,10 @@
     [initCages retain];
     solutionsDef = [pdef objectForKey:SOLUTIONS];
     [solutionsDef retain];
+    
+    evalMode = [[pdef objectForKey:EVAL_MODE] intValue];
+    
+    rejectMode = [[pdef objectForKey:REJECT_MODE] intValue];
     
     createdRows = [[NSMutableArray alloc]init];
     [createdRows retain];
@@ -149,6 +164,7 @@
         
         //[pogo.Mounts addObject:[createdRows objectAtIndex:insRow]];
         pogo.Length = insLength;
+
         NSString *fillText = [NSString stringWithFormat:@"%d", pogo.Length];
         pogo.Label = [CCLabelTTF labelWithString:fillText fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
         
@@ -267,7 +283,49 @@
 {
     //returns YES if the tool expression evaluates succesfully
     
-    return YES;
+    return NO;
+}
+
+-(void)evalProblem
+{
+    BOOL isWinning=[self evalExpression];
+    
+    if(isWinning)
+    {
+        autoMoveToNextProblem=YES;
+        [toolHost showProblemCompleteMessage];
+    }
+    else [self resetProblemFromReject];
+}
+
+-(void)resetProblemFromReject
+{
+    // check our reject mode is correct
+    if(rejectMode==kProblemRejectOnCommit)
+    {
+        // show the problem incomplete message
+        [toolHost showProblemIncompleteMessage];
+        
+        // loop over the rows (single objects)
+        for(int i=0;i<createdRows.count;i++)
+        {
+            // and for each of our rows, get a count
+            DWPartitionRowGameObject *prgo=[createdRows objectAtIndex:i];
+            float count=[prgo.MountedObjects count]-1;
+            
+            // then if they're not locked
+            if(!prgo.Locked) {
+                // loop over the mounted items backward (the stuff gets removed from the arrays as it runs) so we need to check for o being greater or equal to 0.
+                for(int o=count;o>=0;o--)
+                {
+                    // then move each of our sprites back!
+                    DWPartitionObjectGameObject *pogo=[prgo.MountedObjects objectAtIndex:o];
+                    [pogo handleMessage:kDWmoveSpriteToHome];
+                }
+            }
+        }
+
+    }
 }
 
 -(void) dealloc

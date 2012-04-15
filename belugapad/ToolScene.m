@@ -14,6 +14,9 @@
 @synthesize ProblemComplete;
 @synthesize BkgLayer;
 @synthesize ForeLayer;
+@synthesize ScaleMin;
+@synthesize ScaleMax;
+@synthesize PassThruScaling;
 
 -(id)initWithToolHost:(ToolHost*)host andProblemDef:(NSDictionary*)pdef
 {

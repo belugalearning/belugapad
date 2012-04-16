@@ -32,6 +32,8 @@
     
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
+    
+    int spaceBetweenAnchors;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

@@ -241,3 +241,7 @@
 #define LOCKED @"LOCKED"
 #define LABEL @"LABEL"
 #define QUANTITY @"QUANTITY"
+
+// dotgrid tool
+
+#define ANCHOR_SPACE @"ANCHOR_SPACE"

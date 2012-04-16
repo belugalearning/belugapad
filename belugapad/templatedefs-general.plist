@@ -204,5 +204,19 @@
 		<key>OBJECT_DATA</key>
 		<dict/>
 	</dict>
+	<key>TdotgridAnchor</key>
+	<dict>
+		<key>BEHAVIOURS</key>
+		<dict>
+			<key>BDotGridAnchorObjectRender</key>
+			<dict/>
+			<key>BDotGridAnchorTouch</key>
+			<dict/>
+		</dict>
+		<key>IMPLEMENT_TEMPLATES</key>
+		<array/>
+		<key>OBJECT_DATA</key>
+		<dict/>
+	</dict>
 </dict>
 </plist>

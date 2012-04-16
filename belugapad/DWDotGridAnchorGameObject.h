@@ -10,5 +10,6 @@
 
 @interface DWDotGridAnchorGameObject : DWGameObject
 
+@property CGPoint Position;
 
 @end

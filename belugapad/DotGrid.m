@@ -11,6 +11,7 @@
 #import "global.h"
 #import "ToolConsts.h"
 #import "DWGameWorld.h"
+#import "DWDotGridAnchorGameObject.h"
 
 @implementation DotGrid
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
@@ -85,7 +86,7 @@
     
     // All our stuff needs to go into vars to read later
     
-    
+    spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
 
 
     
@@ -93,6 +94,25 @@
 
 -(void)populateGW
 {
+    renderLayer = [[CCLayer alloc] init];
+    [self.ForeLayer addChild:renderLayer];
+    
+    gw.Blackboard.ComponentRenderLayer = renderLayer;
+    
+//    float xStartPos=50;
+//    
+//    for (int c=0; c<(int)(lx/spaceBetweenAnchors-xStartPos-2);c++)
+//    {
+        DWDotGridAnchorGameObject *anch = [DWDotGridAnchorGameObject alloc];
+        [gw populateAndAddGameObject:anch withTemplateName:@"TdotgridAnchor"];
+        anch.Position=ccp(50,50);
+        
+//        for(int r=0;r<(int)(ly/spaceBetweenAnchors);r++)
+//        {
+//            
+//        }
+//    }
+    
     
     
 }

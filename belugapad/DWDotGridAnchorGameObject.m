@@ -10,6 +10,6 @@
 
 @implementation DWDotGridAnchorGameObject
 
-
+@synthesize Position;
 
 @end

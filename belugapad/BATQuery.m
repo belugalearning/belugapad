@@ -86,10 +86,24 @@
 -(BOOL)assumeAndEvalEqualityAtRoot
 {
     //assumes root is equality and evaluates both sides and compares use l comp r
-    BAExpression *leval=[[[self.Root children] objectAtIndex:0] evaluate];
-    BAExpression *reval=[[[self.Root children] objectAtIndex:1] evaluate];
+    //BAExpression *leval=[[[self.Root children] objectAtIndex:0] evaluate];
+    //BAExpression *reval=[[[self.Root children] objectAtIndex:1] evaluate];
     
-    return [leval isEqualToExpression:reval];
+    //return [leval isEqualToExpression:reval];
+    
+    BAExpression *firstchild=[[[self.Root children] objectAtIndex:0] evaluate];
+
+    //the result of each comparioson is anded with the cumulative result
+    //a single child query will return YES
+    BOOL evalResult=YES;
+    
+    //compare each child to the first
+    for (int i=1; i<[[self.Root children] count]; i++) {
+        BAExpression *thischild=[[[self.Root children] objectAtIndex:i] evaluate];
+        evalResult=[firstchild isEqualToExpression:thischild] && evalResult;
+    }
+    
+    return evalResult;
 }
 
 @end

@@ -15,12 +15,20 @@ typedef enum {
     kSpecifiedStartAnchor=1
 } DrawMode;
 
+typedef enum {
+    kNoState=0,
+    kStartAnchor=1,
+    kCollectAnchors=2,
+    kDrawnShape=3
+} GameState;
+
 @interface DotGrid : ToolScene
 {
     ToolHost *toolHost;
     DWGameWorld *gw;
     
     DrawMode drawMode;
+    GameState gameState;
 
     
     CGPoint winL;
@@ -33,6 +41,7 @@ typedef enum {
     NSArray *initObjects;
     NSArray *solutionsDef;
     
+    CGPoint lastTouch;
     
     ProblemRejectMode rejectMode;
     ProblemEvalMode evalMode;

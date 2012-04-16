@@ -38,17 +38,10 @@
         CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
         if(!mySprite) 
         {
-            [self setSprite];
-            [self setSpritePos:NO];            
+            [self setSprite];     
         }
     }
     
-    if (messageType==kDWmoveSpriteToPosition) {
-        BOOL useAnimation = NO;
-        if([payload objectForKey:ANIMATE_ME]) useAnimation = YES;
-        
-        [self setSpritePos:useAnimation];
-    }
     if(messageType==kDWupdateSprite)
     {
 
@@ -60,12 +53,16 @@
         BOOL useAnimation = NO;
         if([payload objectForKey:ANIMATE_ME]) useAnimation = YES;
         
-        [self setSpritePos:useAnimation];
     }
     if(messageType==kDWdismantle)
     {
         CCSprite *s=[[gameObject store] objectForKey:MY_SPRITE];
         [[s parent] removeChild:s cleanup:YES];
+    }
+    
+    if(messageType==kDWswitchSelection)
+    {
+        [self switchSelection];
     }
 }
 
@@ -78,32 +75,44 @@
 
         
     spriteFileName=@"/images/dotgrid/anchor.png";
-    CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-    [mySprite setPosition:anch.Position];
-    [mySprite setScale:0.5f];
+    anch.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+    [anch.mySprite setPosition:anch.Position];
+    [anch.mySprite setScale:0.5f];
     
     
     if(gameWorld.Blackboard.inProblemSetup)
     {
-        [mySprite setTag:2];
-        [mySprite setOpacity:0];
+        [anch.mySprite setTag:2];
+        [anch.mySprite setOpacity:0];
     }
     
     if(anch.StartAnchor)
     {
-        [mySprite setColor:ccc3(255, 0, 0)];
+        [anch.mySprite setColor:ccc3(255, 0, 0)];
     }
 
     
 
-    [[gameWorld Blackboard].ComponentRenderLayer addChild:mySprite z:2];
+    [[gameWorld Blackboard].ComponentRenderLayer addChild:anch.mySprite z:2];
     
 }
 
--(void)setSpritePos:(BOOL) withAnimation
+-(void)switchSelection
 {
-    
-
+    if(anch.CurrentlySelected)
+    {
+        if(anch.StartAnchor) [anch.mySprite setColor:ccc3(255,0,0)];
+        else [anch.mySprite setColor:ccc3(255,255,255)];
+        anch.CurrentlySelected=NO;
+        [gameWorld.Blackboard.SelectedObjects removeObject:anch];
+        NSLog(@"add current sprite");
+    }
+    else {
+        if(anch.StartAnchor) [anch.mySprite setColor:ccc3(255,0,86)];
+        else [anch.mySprite setColor:ccc3(120,125,255)];
+        anch.CurrentlySelected=YES;
+        [gameWorld.Blackboard.SelectedObjects addObject:anch];
+    }
 }
 
 -(void) dealloc

@@ -13,6 +13,7 @@
 #import "DWGameWorld.h"
 #import "DWDotGridAnchorGameObject.h"
 #import "DWDotGridHandleGameObject.h"
+#import "BLMath.h"
 
 @implementation DotGrid
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
@@ -97,6 +98,7 @@
 
 -(void)populateGW
 {
+    gameState=kNoState;
     renderLayer = [[CCLayer alloc] init];
     [self.ForeLayer addChild:renderLayer];
     
@@ -110,17 +112,22 @@
         
         for(int iCol=0; iCol<(int)(ly-spaceBetweenAnchors*2)/spaceBetweenAnchors; iCol++)
         {
+            // create our start position and gameobject
             float yStartPos=(iCol+1)*spaceBetweenAnchors;
             DWDotGridAnchorGameObject *anch = [DWDotGridAnchorGameObject alloc];
             [gw populateAndAddGameObject:anch withTemplateName:@"TdotgridAnchor"];
             anch.Position=ccp(xStartPos,yStartPos);
             
-            if(iRow==startX && iCol==startY && drawMode==kSpecifiedStartAnchor)
+            // check - if the game is in a specified start anchor mode
+            // if it is, then our gameobject needs to have properties set!
+            if((iRow==startX && iCol==startY) && drawMode==kSpecifiedStartAnchor)
             {
                 anch.Disabled=NO;
                 anch.StartAnchor=YES;
+                NSLog(@"THIS ANCHOR IS *ENABLED*");
             }
-            else if(iRow!=startX && iCol!=startY && drawMode==kSpecifiedStartAnchor) {
+            else if((iRow!=startX || iCol!=startY) && drawMode==kSpecifiedStartAnchor) {
+                NSLog(@"THIS ANCHOR IS *DISABLED*");
                 anch.Disabled=YES;
             }
             
@@ -146,10 +153,12 @@ rshandle.Position=ccp(60,400);
 {
     if(isTouching)return;
     isTouching=YES;
+
     
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    lastTouch=location;
     
     
     [gw Blackboard].PickupObject=nil;
@@ -166,6 +175,16 @@ rshandle.Position=ccp(60,400);
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
+    if([BLMath DistanceBetween:location and:lastTouch]>spaceBetweenAnchors/1.5)
+    {
+        lastTouch=location;
+        NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
+        [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];   
+    }
+    else {
+        NSLog(@"not enough movement to resend canITouchYou");
+    }
+    
     
 }
 
@@ -175,12 +194,15 @@ rshandle.Position=ccp(60,400);
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     isTouching=NO;
+    
+    // Draw object, empty selected objects - make sure that no objects say they're selected
      
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouching=NO;
+    // empty selected objects
 }
 
 -(BOOL)evalExpression

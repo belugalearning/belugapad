@@ -13,5 +13,7 @@
 @synthesize Position;
 @synthesize StartAnchor;
 @synthesize Disabled;
+@synthesize CurrentlySelected;
+@synthesize mySprite;
 
 @end

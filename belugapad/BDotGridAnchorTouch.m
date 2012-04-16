@@ -42,18 +42,39 @@
         CGPoint loc=[[payload objectForKey:POS] CGPointValue];
         [self checkTouch:loc];
     }
+    
+    if(messageType==kDWaddMeToSelection)
+    {
+        
+    }
+    
+    if(messageType==kDWremoveMeFromSelection)
+    {
+        
+    }
+    
+    if(messageType==kDWremoveAllFromSelection)
+    {
+        
+    }
 }
 
 -(void)checkTouch:(CGPoint)hitLoc
 {
     
     
-    if([BLMath DistanceBetween:anch.Position and:hitLoc] <= (0.07f*[gameWorld Blackboard].hostLX))
+    if([BLMath DistanceBetween:anch.Position and:hitLoc] <= (0.03f*[gameWorld Blackboard].hostLX))
     {
         //tell gameScene we are a target for that pickup
         
-        if(anch.Disabled) NSLog(@"got touched but i'm disabled");
-        else NSLog(@"got touched and i'm enabled!");
+        if(anch.Disabled) {
+            NSLog(@"got touched but i'm disabled");  
+        }
+        else if(!anch.Disabled) {
+            NSLog(@"got touched and i'm enabled!");   
+        }
+        
+        [anch handleMessage:kDWswitchSelection];
     }    
 }
 

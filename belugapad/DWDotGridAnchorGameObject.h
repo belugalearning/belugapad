@@ -13,5 +13,7 @@
 @property CGPoint Position;
 @property BOOL StartAnchor;
 @property BOOL Disabled;
+@property BOOL CurrentlySelected;
+@property (retain) CCSprite *mySprite;
 
 @end

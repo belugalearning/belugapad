@@ -70,6 +70,9 @@ typedef enum {
     
     kDWmoveSpriteToHome=26,
     kDWcanITouchYou=27,
+    kDWaddMeToSelection=28,
+    kDWremoveMeFromSelection=29,
+    kDWremoveAllFromSelection=30,
 
     
     kDWareYouProximateTo=101,

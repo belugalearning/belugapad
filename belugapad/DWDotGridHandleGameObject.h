@@ -8,7 +8,14 @@
 
 #import "DWGameObject.h"
 
+typedef enum {
+    kMoveHandle=0,
+    kResizeHandle=1
+} HandleType;
+
 @interface DWDotGridHandleGameObject : DWGameObject
 
+@property HandleType handleType;
+@property CGPoint Position;
 
 @end

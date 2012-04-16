@@ -10,10 +10,17 @@
 #import "ToolConsts.h"
 #import "ToolScene.h"
 
+typedef enum {
+    kAnyStartAnchorValid=0,
+    kSpecifiedStartAnchor=1
+} DrawMode;
+
 @interface DotGrid : ToolScene
 {
     ToolHost *toolHost;
     DWGameWorld *gw;
+    
+    DrawMode drawMode;
 
     
     CGPoint winL;
@@ -32,6 +39,10 @@
     
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
+    
+    int spaceBetweenAnchors;
+    int startX;
+    int startY;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

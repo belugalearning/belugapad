@@ -328,6 +328,17 @@
     }
 }
 
+-(float)metaQuestionTitleYLocation
+{
+    return kLabelTitleYOffsetHalfProp*cy;
+}
+
+-(float)metaQuestionAnswersYLocation
+{
+    return kMetaQuestionYOffsetPlaceValue*cy;
+}
+
+
 -(void) dealloc
 {
     //write log on problem switch

@@ -10,6 +10,8 @@
 
 @implementation DWDotGridAnchorGameObject
 
-
+@synthesize Position;
+@synthesize StartAnchor;
+@synthesize Disabled;
 
 @end

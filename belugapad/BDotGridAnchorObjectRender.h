@@ -7,11 +7,11 @@
 //
 
 #import "DWBehaviour.h"
-
+@class DWDotGridAnchorGameObject;
 
 @interface BDotGridAnchorObjectRender : DWBehaviour
 {
-    
+    DWDotGridAnchorGameObject *anch;
 }
 
 -(BDotGridAnchorObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

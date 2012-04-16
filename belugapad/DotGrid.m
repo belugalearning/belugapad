@@ -11,6 +11,8 @@
 #import "global.h"
 #import "ToolConsts.h"
 #import "DWGameWorld.h"
+#import "DWDotGridAnchorGameObject.h"
+#import "DWDotGridHandleGameObject.h"
 
 @implementation DotGrid
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
@@ -85,16 +87,59 @@
     
     // All our stuff needs to go into vars to read later
     
-    
-
+    drawMode=[[pdef objectForKey:DRAW_MODE] intValue];
+    spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
+    startX=[[pdef objectForKey:START_X] intValue];
+    startY=[[pdef objectForKey:START_Y] intValue];
 
     
 }
 
 -(void)populateGW
 {
+    renderLayer = [[CCLayer alloc] init];
+    [self.ForeLayer addChild:renderLayer];
     
+    gw.Blackboard.ComponentRenderLayer = renderLayer;
     
+
+    float xStartPos=spaceBetweenAnchors*1.5;
+    
+    for (int iRow=0; iRow<(int)(lx-spaceBetweenAnchors*2)/spaceBetweenAnchors; iRow++)
+    {
+        
+        for(int iCol=0; iCol<(int)(ly-spaceBetweenAnchors*2)/spaceBetweenAnchors; iCol++)
+        {
+            float yStartPos=(iCol+1)*spaceBetweenAnchors;
+            DWDotGridAnchorGameObject *anch = [DWDotGridAnchorGameObject alloc];
+            [gw populateAndAddGameObject:anch withTemplateName:@"TdotgridAnchor"];
+            anch.Position=ccp(xStartPos,yStartPos);
+            
+            if(iRow==startX && iCol==startY && drawMode==kSpecifiedStartAnchor)
+            {
+                anch.Disabled=NO;
+                anch.StartAnchor=YES;
+            }
+            else if(iRow!=startX && iCol!=startY && drawMode==kSpecifiedStartAnchor) {
+                anch.Disabled=YES;
+            }
+            
+        }
+        
+        xStartPos=xStartPos+spaceBetweenAnchors;
+        
+    }    
+    
+DWDotGridHandleGameObject *mvhandle = [DWDotGridHandleGameObject alloc];
+[gw populateAndAddGameObject:mvhandle withTemplateName:@"TdotgridHandle"];
+mvhandle.handleType=kMoveHandle;
+mvhandle.Position=ccp(40,400);
+
+DWDotGridHandleGameObject *rshandle = [DWDotGridHandleGameObject alloc];
+[gw populateAndAddGameObject:rshandle withTemplateName:@"TdotgridHandle"];
+rshandle.handleType=kResizeHandle;
+rshandle.Position=ccp(60,400);
+
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -108,6 +153,11 @@
     
     
     [gw Blackboard].PickupObject=nil;
+    
+    NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
+    [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
+    
+    
  }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event

@@ -7,6 +7,7 @@
 //
 
 #import "BDotGridHandleObjectRender.h"
+#import "DWDotGridHandleGameObject.h"
 #import "global.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
@@ -17,6 +18,7 @@
 -(BDotGridHandleObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
     self=(BDotGridHandleObjectRender*)[super initWithGameObject:aGameObject withData:data];
+    handle=(DWDotGridHandleGameObject*)gameObject;
     
     //init pos x & y in case they're not set elsewhere
     
@@ -71,7 +73,29 @@
 
 -(void)setSprite
 {    
+    NSString *spriteFileName=[[NSString alloc]init];
+
+    NSLog(@"type of sprite: %d", handle.handleType);
     
+    if(handle.handleType==kMoveHandle) spriteFileName=@"/images/dotgrid/move.png";
+    if(handle.handleType==kResizeHandle) spriteFileName=@"/images/dotgrid/resize.png";
+    
+    NSLog(@"file: %@", spriteFileName);
+    
+    CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+    [mySprite setPosition:handle.Position];
+    [mySprite setScale:0.3f];
+    
+    
+    if(gameWorld.Blackboard.inProblemSetup)
+    {
+        [mySprite setTag:2];
+        [mySprite setOpacity:0];
+    }
+    
+    
+    
+    [[gameWorld Blackboard].ComponentRenderLayer addChild:mySprite z:2];
     
 }
 

@@ -241,3 +241,10 @@
 #define LOCKED @"LOCKED"
 #define LABEL @"LABEL"
 #define QUANTITY @"QUANTITY"
+
+// dotgrid tool
+
+#define DRAW_MODE @"DRAW_MODE"
+#define ANCHOR_SPACE @"ANCHOR_SPACE"
+#define START_X @"START_X"
+#define START_Y @"START_Y"

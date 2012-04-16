@@ -10,5 +10,8 @@
 
 @interface DWDotGridAnchorGameObject : DWGameObject
 
+@property CGPoint Position;
+@property BOOL StartAnchor;
+@property BOOL Disabled;
 
 @end

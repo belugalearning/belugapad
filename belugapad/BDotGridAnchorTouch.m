@@ -7,6 +7,7 @@
 //
 
 #import "BDotGridAnchorTouch.h"
+#import "DWDotGridAnchorGameObject.h"
 #import "global.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
@@ -17,7 +18,7 @@
 -(BDotGridAnchorTouch *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
     self=(BDotGridAnchorTouch*)[super initWithGameObject:aGameObject withData:data];
-    
+    anch=(DWDotGridAnchorGameObject*)gameObject;
     //init pos x & y in case they're not set elsewhere
     
     
@@ -35,8 +36,26 @@
      {
          
      }
+    
+    if(messageType==kDWcanITouchYou)
+    {
+        CGPoint loc=[[payload objectForKey:POS] CGPointValue];
+        [self checkTouch:loc];
+    }
 }
 
+-(void)checkTouch:(CGPoint)hitLoc
+{
+    
+    
+    if([BLMath DistanceBetween:anch.Position and:hitLoc] <= (0.07f*[gameWorld Blackboard].hostLX))
+    {
+        //tell gameScene we are a target for that pickup
+        
+        if(anch.Disabled) NSLog(@"got touched but i'm disabled");
+        else NSLog(@"got touched and i'm enabled!");
+    }    
+}
 
 -(void) dealloc
 {

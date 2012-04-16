@@ -298,6 +298,7 @@
 		7FDBA53814EBD560004D1CC9 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA52814EBD560004D1CC9 /* CXMLNode.m */; };
 		7FDBA53914EBD560004D1CC9 /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA52B14EBD560004D1CC9 /* CTidy.m */; };
 		7FDBA56314EC4271004D1CC9 /* bm11.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FDBA56214EC4271004D1CC9 /* bm11.plist */; };
+		7FEDCE1C1535DCA400C8C9F3 /* ExprEvalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */; };
 		7FF8F12114DD535B00A6D75E /* MenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8F12014DD535B00A6D75E /* MenuScene.m */; };
 /* End PBXBuildFile section */
 
@@ -869,6 +870,7 @@
 		7FDBA52B14EBD560004D1CC9 /* CTidy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTidy.m; sourceTree = "<group>"; };
 		7FDBA52C14EBD560004D1CC9 /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchXML.h; sourceTree = "<group>"; };
 		7FDBA56214EC4271004D1CC9 /* bm11.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bm11.plist; sourceTree = "<group>"; };
+		7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprEvalTests.m; sourceTree = "<group>"; };
 		7FF8F11F14DD535B00A6D75E /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
 		7FF8F12014DD535B00A6D75E /* MenuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuScene.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1022,6 +1024,7 @@
 			children = (
 				7F40D8A214FFD8BE006A3A55 /* GeneralTests.h */,
 				7F40D8A314FFD8BE006A3A55 /* GeneralTests.m */,
+				7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */,
 				7FCBC3EA1510195F00066426 /* ExprIOTests.m */,
 				7F40D8A914FFDA4C006A3A55 /* AddSubtractLogicTests.m */,
 				7F40D8AA14FFDA4C006A3A55 /* DivisionLogicTests.m */,
@@ -2041,6 +2044,7 @@
 				7FB982C415116633006D31AE /* BAPowerOperator.m in Sources */,
 				7FB982C615116633006D31AE /* BAVariable.m in Sources */,
 				7FB982C815116633006D31AE /* NSArray_BAAdditions.m in Sources */,
+				7FEDCE1C1535DCA400C8C9F3 /* ExprEvalTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

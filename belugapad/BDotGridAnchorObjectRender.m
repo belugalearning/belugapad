@@ -80,12 +80,18 @@
     spriteFileName=@"/images/dotgrid/anchor.png";
     CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
     [mySprite setPosition:anch.Position];
+    [mySprite setScale:0.5f];
     
     
     if(gameWorld.Blackboard.inProblemSetup)
     {
         [mySprite setTag:2];
         [mySprite setOpacity:0];
+    }
+    
+    if(anch.StartAnchor)
+    {
+        [mySprite setColor:ccc3(255, 0, 0)];
     }
 
     

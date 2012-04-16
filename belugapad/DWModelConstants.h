@@ -69,6 +69,7 @@ typedef enum {
     kDWhandleTap=25,
     
     kDWmoveSpriteToHome=26,
+    kDWcanITouchYou=27,
 
     
     kDWareYouProximateTo=101,

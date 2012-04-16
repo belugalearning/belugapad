@@ -10,5 +10,7 @@
 
 @implementation DWDotGridHandleGameObject
 
+@synthesize handleType;
+@synthesize Position;
 
 @end

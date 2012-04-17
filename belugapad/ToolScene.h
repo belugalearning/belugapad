@@ -42,4 +42,6 @@
 -(float)metaQuestionTitleYLocation;
 -(float)metaQuestionAnswersYLocation;
 
+-(void)draw;
+
 @end

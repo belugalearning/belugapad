@@ -98,6 +98,11 @@ static float kMoveToNextProblemTime=2.0f;
     return self;
 }
 
+-(void)draw
+{
+    [currentTool draw];
+}
+
 -(void)doUpdateOnTick:(ccTime)delta
 {
     //do internal mgmt updates

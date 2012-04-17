@@ -15,5 +15,7 @@
 @property BOOL Disabled;
 @property BOOL CurrentlySelected;
 @property (retain) CCSprite *mySprite;
+@property int myXpos;
+@property int myYpos;
 
 @end

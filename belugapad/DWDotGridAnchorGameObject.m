@@ -15,5 +15,7 @@
 @synthesize Disabled;
 @synthesize CurrentlySelected;
 @synthesize mySprite;
+@synthesize myXpos;
+@synthesize myYpos;
 
 @end

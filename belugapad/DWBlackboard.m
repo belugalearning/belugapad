@@ -27,6 +27,9 @@
 @synthesize inProblemSetup;
 @synthesize ProblemExpression;
 @synthesize ProblemVariableSubstitutions;
+@synthesize FirstAnchor;
+@synthesize LastAnchor;
+
 
 -(id) init
 {

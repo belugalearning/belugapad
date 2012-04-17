@@ -33,6 +33,8 @@
 @property BOOL inProblemSetup;
 @property (retain) BAExpressionTree *ProblemExpression;
 @property (retain) NSMutableDictionary *ProblemVariableSubstitutions;
+@property (retain) DWGameObject *FirstAnchor;
+@property (retain) DWGameObject *LastAnchor;
 
 -(void)loadData;
 

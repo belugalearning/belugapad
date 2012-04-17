@@ -13,6 +13,7 @@
 #import "DWGameWorld.h"
 #import "DWDotGridAnchorGameObject.h"
 #import "DWDotGridHandleGameObject.h"
+#import "DWDotGridTileGameObject.h"
 #import "BLMath.h"
 
 @implementation DotGrid
@@ -55,6 +56,9 @@
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
         gw.Blackboard.inProblemSetup = NO;
+        gw.Blackboard.FirstAnchor=(DWDotGridAnchorGameObject*)[[DWGameObject alloc]init];
+        gw.Blackboard.LastAnchor=(DWDotGridAnchorGameObject*)[[DWGameObject alloc]init];
+        gw.Blackboard.FirstAnchor=nil;
         
     }
     
@@ -99,6 +103,8 @@
 -(void)populateGW
 {
     gameState=kNoState;
+    dotMatrix=[[NSMutableArray alloc]init];
+    [dotMatrix retain];
     renderLayer = [[CCLayer alloc] init];
     [self.ForeLayer addChild:renderLayer];
     
@@ -109,6 +115,7 @@
     
     for (int iRow=0; iRow<(int)(lx-spaceBetweenAnchors*2)/spaceBetweenAnchors; iRow++)
     {
+        NSMutableArray *currentCol=[[NSMutableArray alloc]init];
         
         for(int iCol=0; iCol<(int)(ly-spaceBetweenAnchors*2)/spaceBetweenAnchors; iCol++)
         {
@@ -118,22 +125,28 @@
             [gw populateAndAddGameObject:anch withTemplateName:@"TdotgridAnchor"];
             anch.Position=ccp(xStartPos,yStartPos);
             
+            anch.myXpos=iRow;
+            anch.myYpos=iCol;
+            
             // check - if the game is in a specified start anchor mode
             // if it is, then our gameobject needs to have properties set!
             if((iRow==startX && iCol==startY) && drawMode==kSpecifiedStartAnchor)
             {
                 anch.Disabled=NO;
                 anch.StartAnchor=YES;
-                NSLog(@"THIS ANCHOR IS *ENABLED*");
+                NSLog(@"THIS ANCHOR IS *ENABLED* (x %d / y %d)", anch.myXpos, anch.myYpos);
             }
             else if((iRow!=startX || iCol!=startY) && drawMode==kSpecifiedStartAnchor) {
-                NSLog(@"THIS ANCHOR IS *DISABLED*");
+                NSLog(@"THIS ANCHOR IS *DISABLED* (x %d / y %d)", anch.myXpos, anch.myYpos);
                 anch.Disabled=YES;
             }
+            
+            [currentCol addObject:anch];
             
         }
         
         xStartPos=xStartPos+spaceBetweenAnchors;
+        [dotMatrix addObject:currentCol];
         
     }    
     
@@ -147,6 +160,109 @@ DWDotGridHandleGameObject *rshandle = [DWDotGridHandleGameObject alloc];
 rshandle.handleType=kResizeHandle;
 rshandle.Position=ccp(60,400);
 
+}
+
+-(void)checkAnchors
+{
+    // only run if we have a first and last anchor point
+    if(gw.Blackboard.FirstAnchor && gw.Blackboard.LastAnchor)
+    {
+        NSMutableArray *anchorsForShape=[[NSMutableArray alloc]init];
+        DWDotGridAnchorGameObject *anchStart=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
+        DWDotGridAnchorGameObject *anchEnd=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+        
+        // if the start X point is to the left of the end X point
+        if(anchStart.myXpos < anchEnd.myXpos)
+        {
+            // start the loop
+            for(int x=anchStart.myXpos;x<anchEnd.myXpos;x++)
+            {
+                // then check whether we're going up or down
+                if(anchStart.myYpos < anchEnd.myYpos)
+                {
+                    // this is if the end point is higher in the grid
+                    for(int y=anchStart.myYpos;y<anchEnd.myYpos;y++)
+                    {
+                        DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
+                        [anchorsForShape addObject:curAnch];
+                    }
+                }
+                else {
+                    // and this is lower
+                    for(int y=anchStart.myYpos-1;y>anchEnd.myYpos-1;y--)
+                    {
+                        DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
+                        [anchorsForShape addObject:curAnch];
+                    } 
+                }
+            }
+            [self createShapeWithAnchorPoints:anchorsForShape Direction:0];
+        }
+        else {
+            // start the loop
+            for(int x=anchStart.myXpos-1;x>anchEnd.myXpos-1;x--)
+            {
+                // then check whether we're going up or down
+                if(anchStart.myYpos < anchEnd.myYpos)
+                {
+                    // this is if the end point is higher in the grid
+                    for(int y=anchStart.myYpos;y<anchEnd.myYpos;y++)
+                    {
+                        DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
+                        [anchorsForShape addObject:curAnch];
+                    }
+                }
+                else {
+                    // and this is lower
+                    for(int y=anchStart.myYpos-1;y>anchEnd.myYpos-1;y--)
+                    {
+                        DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
+                        [anchorsForShape addObject:curAnch];
+                    } 
+                }
+            }
+            [self createShapeWithAnchorPoints:anchorsForShape Direction:0];
+
+        }
+        
+        for(int i=0;i<[anchorsForShape count];i++)
+        {
+            DWDotGridAnchorGameObject *wanch = [anchorsForShape objectAtIndex:i];
+            NSLog(@"shape in matrix (%d/%d): x %d / y %d", i, [anchorsForShape count], wanch.myXpos, wanch.myYpos);
+        }
+
+    }
+}
+
+-(void)createShapeWithAnchorPoints:(NSArray*)anchors Direction:(int)direction
+{
+    //direction - 0 fwd
+    //          - 1 rvs
+    if(direction==0)
+    {
+        for(int i=0;i<[anchors count];i++)
+        {
+            DWDotGridAnchorGameObject *curAnch = [anchors objectAtIndex:i];
+            DWDotGridTileGameObject *tile = [DWDotGridTileGameObject alloc];
+            [gw populateAndAddGameObject:tile withTemplateName:@"TdotgridTile"];
+            
+            tile.tileType=kNoBorder;
+            tile.Position=ccp(curAnch.Position.x+spaceBetweenAnchors/2, curAnch.Position.y+spaceBetweenAnchors/2);
+            [tile handleMessage:kDWsetupStuff];
+        }
+    }
+    if(direction==1)
+    {
+        for(DWDotGridTileGameObject *curAnch in [anchors reverseObjectEnumerator])
+        {
+            DWDotGridTileGameObject *tile = [DWDotGridTileGameObject alloc];
+            [gw populateAndAddGameObject:tile withTemplateName:@"TdotgridTile"];
+            
+            tile.tileType=kNoBorder;
+            tile.Position=ccp(curAnch.Position.x-spaceBetweenAnchors/2, curAnch.Position.y-spaceBetweenAnchors/2);
+            [tile handleMessage:kDWsetupStuff];
+        }
+    }
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -185,7 +301,6 @@ rshandle.Position=ccp(60,400);
         NSLog(@"not enough movement to resend canITouchYou");
     }
     
-    
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -195,7 +310,25 @@ rshandle.Position=ccp(60,400);
     location=[[CCDirector sharedDirector] convertToGL:location];
     isTouching=NO;
     
+    DWDotGridAnchorGameObject *anchStart=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
+    DWDotGridAnchorGameObject *anchEnd=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+    
+    NSLog(@"anchStart x %d y %d / anchEnd x %d y %d", anchStart.myXpos, anchStart.myYpos, anchEnd.myXpos, anchEnd.myYpos);
+    [self checkAnchors];
+    
+    
+    gw.Blackboard.FirstAnchor=nil;
+    gw.Blackboard.LastAnchor=nil;
+    
     // Draw object, empty selected objects - make sure that no objects say they're selected
+    
+    
+    for(int i=0;i<[gw.Blackboard.SelectedObjects count];i++)
+    {
+        DWDotGridAnchorGameObject *anch = [gw.Blackboard.SelectedObjects objectAtIndex:i];
+        anch.CurrentlySelected=NO;
+    }
+    [gw.Blackboard.SelectedObjects removeAllObjects];
      
 }
 
@@ -203,6 +336,16 @@ rshandle.Position=ccp(60,400);
 {
     isTouching=NO;
     // empty selected objects
+    gw.Blackboard.FirstAnchor=nil;
+    gw.Blackboard.LastAnchor=nil;
+
+    // empty selected objects
+    for(int i=0;i<[gw.Blackboard.SelectedObjects count];i++)
+    {
+        DWDotGridAnchorGameObject *anch = [gw.Blackboard.SelectedObjects objectAtIndex:i];
+        anch.CurrentlySelected=NO;
+    }
+    [gw.Blackboard.SelectedObjects removeAllObjects];
 }
 
 -(BOOL)evalExpression
@@ -232,6 +375,7 @@ rshandle.Position=ccp(60,400);
     
     //tear down
     [gw release];
+    [dotMatrix release];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

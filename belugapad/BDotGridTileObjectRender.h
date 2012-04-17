@@ -7,11 +7,11 @@
 //
 
 #import "DWBehaviour.h"
-
+@class DWDotGridTileGameObject;
 
 @interface BDotGridTileObjectRender : DWBehaviour
 {
-    
+    DWDotGridTileGameObject *tile;
 }
 
 -(BDotGridTileObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

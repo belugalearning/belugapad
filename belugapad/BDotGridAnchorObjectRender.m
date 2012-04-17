@@ -77,7 +77,7 @@
     spriteFileName=@"/images/dotgrid/anchor.png";
     anch.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
     [anch.mySprite setPosition:anch.Position];
-    [anch.mySprite setScale:0.5f];
+    //[anch.mySprite setScale:0.5f];
     
     
     if(gameWorld.Blackboard.inProblemSetup)

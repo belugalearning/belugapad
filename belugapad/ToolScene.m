@@ -63,7 +63,7 @@
     return 0;
 }
 
--(void)handlePassThroughScaling:(float)scale
+-(void)handlePassThruScaling:(float)scale
 {
     
 }

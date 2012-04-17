@@ -750,7 +750,7 @@ static float kMoveToNextProblemTime=2.0f;
         
         
         scale+=(scaleChange / cx);
-        if(currentTool.PassThruScaling) [currentTool handlePassThroughScaling:scale];
+        if(currentTool.PassThruScaling) [currentTool handlePassThruScaling:scale];
         else {
             if(scale<currentTool.ScaleMin) scale=currentTool.ScaleMin;
             if(scale>currentTool.ScaleMax) scale=currentTool.ScaleMax;

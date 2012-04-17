@@ -10,5 +10,8 @@
 
 @implementation DWDotGridTileGameObject
 
+@synthesize tileType;
+@synthesize mySprite;
+@synthesize Position;
 
 @end

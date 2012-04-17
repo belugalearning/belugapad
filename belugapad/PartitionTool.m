@@ -15,6 +15,9 @@
 #import "SimpleAudioEngine.h"
 #import "ToolConsts.h"
 #import "DWGameWorld.h"
+#import "BAExpressionHeaders.h"
+#import "BAExpressionTree.h"
+#import "BATQuery.h"
 
 @implementation PartitionTool
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
@@ -282,8 +285,36 @@
 -(BOOL)evalExpression
 {
     //returns YES if the tool expression evaluates succesfully
+    toolHost.PpExpr=[BAExpressionTree treeWithRoot:[BAEqualsOperator operator]];
     
-    return NO;
+    //loop rows
+    for (DWPartitionRowGameObject *prgo in createdRows) {
+
+        //create child to the equality
+        //BAAdditionOperator *rowAdd=[BAAdditionOperator operator];
+        //[toolHost.PpExpr.root addChild:rowAdd];
+        
+        int cumRowLength=0;
+        
+        for(DWPartitionObjectGameObject *pogo in prgo.MountedObjects)
+        {
+            //create child to the addition
+            //disabled -- we can't add more or less than two values, sum internally
+            //[rowAdd addChild:[BAInteger integerWithIntValue:pogo.Length]];
+            
+            cumRowLength+=pogo.Length;
+        }
+        
+        //add the accumulated row length as an integer child to the equality
+        [toolHost.PpExpr.root addChild:[BAInteger integerWithIntValue:cumRowLength]];
+    }
+    
+    //print expression
+    NSLog(@"%@", [toolHost.PpExpr xmlStringValue]);
+    
+    BATQuery *q=[[BATQuery alloc] initWithExpr:toolHost.PpExpr.root andTree:toolHost.PpExpr];
+    
+    return [q assumeAndEvalEqualityAtRoot];
 }
 
 -(void)evalProblem

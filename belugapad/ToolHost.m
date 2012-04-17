@@ -748,12 +748,16 @@ static float kMoveToNextProblemTime=2.0f;
         
         float scaleChange=db-da;
         
-        scale+=(scaleChange / cx);
-        if(scale<currentTool.ScaleMin) scale=currentTool.ScaleMin;
-        if(scale>currentTool.ScaleMax) scale=currentTool.ScaleMax;
         
-        [toolBackLayer setScale:scale];
-        [toolForeLayer setScale:scale];
+        scale+=(scaleChange / cx);
+        if(currentTool.PassThruScaling) [currentTool handlePassThroughScaling:scale];
+        else {
+            if(scale<currentTool.ScaleMin) scale=currentTool.ScaleMin;
+            if(scale>currentTool.ScaleMax) scale=currentTool.ScaleMax;
+            
+            [toolBackLayer setScale:scale];
+            [toolForeLayer setScale:scale];
+        }
         
         NSLog(@"scale: %f", scale);
     }

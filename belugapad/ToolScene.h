@@ -38,7 +38,7 @@
 -(void)evalProblem;
 -(float)metaQuestionTitleXLocation;
 -(float)metaQuestionAnswersXLocation;
-
+-(void)handlePassThroughScaling:(float)scale;
 -(float)metaQuestionTitleYLocation;
 -(float)metaQuestionAnswersYLocation;
 

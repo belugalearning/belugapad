@@ -10,5 +10,6 @@
 
 @interface DWDotGridShapeGameObject : DWGameObject
 
+@property (retain) NSMutableArray *tiles;
 
 @end

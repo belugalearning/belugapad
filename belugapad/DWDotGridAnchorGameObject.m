@@ -17,5 +17,6 @@
 @synthesize mySprite;
 @synthesize myXpos;
 @synthesize myYpos;
-
+@synthesize resizeHandle;
+@synthesize moveHandle;
 @end

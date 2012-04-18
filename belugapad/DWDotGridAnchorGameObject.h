@@ -17,5 +17,7 @@
 @property (retain) CCSprite *mySprite;
 @property int myXpos;
 @property int myYpos;
+@property BOOL resizeHandle;
+@property BOOL moveHandle;
 
 @end

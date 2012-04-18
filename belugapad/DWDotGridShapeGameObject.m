@@ -10,6 +10,6 @@
 
 @implementation DWDotGridShapeGameObject
 
-
+@synthesize tiles;
 
 @end

@@ -62,7 +62,7 @@
     
     if(messageType==kDWswitchSelection)
     {
-        [self switchSelection];
+        //[self switchSelection];
     }
 }
 

@@ -248,3 +248,5 @@
 #define ANCHOR_SPACE @"ANCHOR_SPACE"
 #define START_X @"START_X"
 #define START_Y @"START_Y"
+#define END_X @"END_X"
+#define END_Y @"END_Y"

@@ -98,6 +98,11 @@ static float kMoveToNextProblemTime=2.0f;
     return self;
 }
 
+-(void)draw
+{
+    [currentTool draw];
+}
+
 -(void)doUpdateOnTick:(ccTime)delta
 {
     //do internal mgmt updates
@@ -110,13 +115,13 @@ static float kMoveToNextProblemTime=2.0f;
     {
         if(showingProblemComplete)
         {
-            showingProblemComplete=NO;
             [problemComplete runAction:[CCFadeOut actionWithDuration:kTimeToFadeProblemStatus]];
+            showingProblemComplete=NO;
         }
         if(showingProblemIncomplete)
         {
-            showingProblemIncomplete=NO;
             [problemIncomplete runAction:[CCFadeOut actionWithDuration:kTimeToFadeProblemStatus]];
+            showingProblemIncomplete=NO;
         }
             shownProblemStatusFor=0.0f;
     }

@@ -174,9 +174,9 @@
         DWPartitionRowGameObject *prgo = (DWPartitionRowGameObject*)[createdRows objectAtIndex:insRow];
         NSDictionary *pl=[NSDictionary dictionaryWithObject:prgo forKey:MOUNT];
         [pogo handleMessage:kDWsetMount andPayload:pl withLogLevel:-1];
+        pogo.Position = prgo.Position;
+        [prgo handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
     }
-    
-    [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
 
 }
 
@@ -326,7 +326,10 @@
         autoMoveToNextProblem=YES;
         [toolHost showProblemCompleteMessage];
     }
-    else [self resetProblemFromReject];
+    else {
+        if(rejectMode==kProblemRejectOnCommit)[self resetProblemFromReject];
+        else [toolHost showProblemIncompleteMessage];
+    }
 }
 
 -(void)resetProblemFromReject
@@ -336,25 +339,28 @@
     {
         // show the problem incomplete message
         [toolHost showProblemIncompleteMessage];
-        
+
+        [toolHost resetProblem];
         // loop over the rows (single objects)
-        for(int i=0;i<createdRows.count;i++)
-        {
-            // and for each of our rows, get a count
-            DWPartitionRowGameObject *prgo=[createdRows objectAtIndex:i];
-            float count=[prgo.MountedObjects count]-1;
-            
-            // then if they're not locked
-            if(!prgo.Locked) {
-                // loop over the mounted items backward (the stuff gets removed from the arrays as it runs) so we need to check for o being greater or equal to 0.
-                for(int o=count;o>=0;o--)
-                {
-                    // then move each of our sprites back!
-                    DWPartitionObjectGameObject *pogo=[prgo.MountedObjects objectAtIndex:o];
-                    [pogo handleMessage:kDWmoveSpriteToHome];
-                }
-            }
-        }
+//        for(int i=0;i<createdRows.count;i++)
+//        {
+//            // and for each of our rows, get a count
+//            DWPartitionRowGameObject *prgo=[createdRows objectAtIndex:i];
+//            float count=[prgo.MountedObjects count];
+//            
+//            // then if they're not locked
+//            if(!prgo.Locked) {
+//                for(int o=0;o<count;o++)
+//                {
+//                    // then move each of our sprites back!
+//                    DWPartitionObjectGameObject *pogo=[prgo.MountedObjects objectAtIndex:o];
+//                    pogo.Position = pogo.MountPosition;
+//                    NSLog(@"send movesprite message to obj %d/%d", i, prgo.MountedObjects.count);
+//                    [pogo handleMessage:kDWmoveSpriteToPosition];
+//                }
+//                [prgo.MountedObjects removeAllObjects];
+//            }
+//        }
 
     }
 }

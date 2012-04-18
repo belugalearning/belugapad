@@ -73,6 +73,11 @@
     
 }
 
+-(void)draw
+{
+    
+}
+
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     

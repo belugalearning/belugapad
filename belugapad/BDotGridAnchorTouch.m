@@ -63,7 +63,7 @@
 {
     
     
-    if([BLMath DistanceBetween:anch.Position and:hitLoc] <= (0.03f*[gameWorld Blackboard].hostLX))
+    if([BLMath DistanceBetween:anch.Position and:hitLoc] <= (0.045f*[gameWorld Blackboard].hostLX))
     {
         //tell gameScene we are a target for that pickup
         

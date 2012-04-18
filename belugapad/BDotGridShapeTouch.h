@@ -7,16 +7,17 @@
 //
 
 #import "DWBehaviour.h"
+@class DWDotGridShapeGameObject;
 
 
 @interface BDotGridShapeTouch : DWBehaviour
 {
     
-    
+    DWDotGridShapeGameObject *shape;
     
 }
 
 -(BDotGridShapeTouch *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
-
+-(void)checkTouchSwitchSelection:(CGPoint)location;
 
 @end

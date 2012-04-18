@@ -259,7 +259,8 @@
 
 -(void)createShapeWithAnchorPoints:(NSArray*)anchors
 {
-    DWDotGridShapeGameObject *shape=[[DWDotGridShapeGameObject alloc]init];
+    DWDotGridShapeGameObject *shape=[DWDotGridShapeGameObject alloc];           
+    [gw populateAndAddGameObject:shape withTemplateName:@"TdotgridShape"];
     shape.tiles=[[NSMutableArray alloc]init];
     //direction - 0 fwd
     //          - 1 rvs
@@ -312,6 +313,7 @@
     
     NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
     [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
+    [gw handleMessage:kDWswitchSelection andPayload:pl withLogLevel:-1];
     if(gw.Blackboard.FirstAnchor) gameState=kStartAnchor;
     
     
@@ -344,13 +346,14 @@
 //    DWDotGridAnchorGameObject *anchEnd=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
 //    
 //    NSLog(@"anchStart x %d y %d / anchEnd x %d y %d", anchStart.myXpos, anchStart.myYpos, anchEnd.myXpos, anchEnd.myYpos);
+    
+    
+    // Draw object, empty selected objects - make sure that no objects say they're selected
     [self checkAnchors];
     
     
     gw.Blackboard.FirstAnchor=nil;
     gw.Blackboard.LastAnchor=nil;
-    
-    // Draw object, empty selected objects - make sure that no objects say they're selected
     
     
     for(int i=0;i<[gw.Blackboard.SelectedObjects count];i++)

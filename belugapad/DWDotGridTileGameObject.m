@@ -13,5 +13,6 @@
 @synthesize tileType;
 @synthesize mySprite;
 @synthesize Position;
+@synthesize Selected;
 
 @end

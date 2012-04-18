@@ -25,5 +25,6 @@ typedef enum {
 @property TileType tileType;
 @property (retain) CCSprite *mySprite;
 @property CGPoint Position;
+@property BOOL Selected;
 
 @end

@@ -2,8 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
-	<string>/Problems/tools-dev/da-dg/dg1.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg2.plist</string>
+	<string>/Problems/tools-dev/da-dg/dg1.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test4.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test2.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test3.plist</string>

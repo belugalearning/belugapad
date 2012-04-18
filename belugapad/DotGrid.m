@@ -79,8 +79,29 @@
             timeToAutoMoveToNextProblem=0.0f;
         }
     }   
-    
-    
+}
+
+-(void)draw
+{
+    if(gameState==kStartAnchor)
+    {
+        CGPoint points[4];
+        points[0]=((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Position;
+        points[2]=lastTouch;
+        points[1]=CGPointMake(points[2].x, points[0].y);
+        points[3]=CGPointMake(points[0].x, points[2].y);
+        
+        CGPoint *first=&points[0];
+        
+        ccDrawPoly(first, 4, YES);
+        
+        points[2]=((DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor).Position;
+        points[1]=CGPointMake(points[2].x, points[0].y);
+        points[3]=CGPointMake(points[0].x, points[2].y);
+        
+        ccDrawFilledPoly(first, 4, ccc4f(1, 1, 1, 1));
+        
+    }
 }
 
 -(void)readPlist:(NSDictionary*)pdef
@@ -150,15 +171,15 @@
         
     }    
     
-DWDotGridHandleGameObject *mvhandle = [DWDotGridHandleGameObject alloc];
-[gw populateAndAddGameObject:mvhandle withTemplateName:@"TdotgridHandle"];
-mvhandle.handleType=kMoveHandle;
-mvhandle.Position=ccp(40,400);
-
-DWDotGridHandleGameObject *rshandle = [DWDotGridHandleGameObject alloc];
-[gw populateAndAddGameObject:rshandle withTemplateName:@"TdotgridHandle"];
-rshandle.handleType=kResizeHandle;
-rshandle.Position=ccp(60,400);
+//DWDotGridHandleGameObject *mvhandle = [DWDotGridHandleGameObject alloc];
+//[gw populateAndAddGameObject:mvhandle withTemplateName:@"TdotgridHandle"];
+//mvhandle.handleType=kMoveHandle;
+//mvhandle.Position=ccp(40,400);
+//
+//DWDotGridHandleGameObject *rshandle = [DWDotGridHandleGameObject alloc];
+//[gw populateAndAddGameObject:rshandle withTemplateName:@"TdotgridHandle"];
+//rshandle.handleType=kResizeHandle;
+//rshandle.Position=ccp(60,400);
 
 }
 
@@ -269,7 +290,6 @@ rshandle.Position=ccp(60,400);
 {
     if(isTouching)return;
     isTouching=YES;
-
     
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
@@ -281,6 +301,7 @@ rshandle.Position=ccp(60,400);
     
     NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
     [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
+    if(gw.Blackboard.FirstAnchor) gameState=kStartAnchor;
     
     
  }
@@ -291,15 +312,12 @@ rshandle.Position=ccp(60,400);
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
-    if([BLMath DistanceBetween:location and:lastTouch]>spaceBetweenAnchors/1.5)
-    {
-        lastTouch=location;
-        NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
-        [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];   
-    }
-    else {
-        NSLog(@"not enough movement to resend canITouchYou");
-    }
+    //if([BLMath DistanceBetween:location and:lastTouch]>spaceBetweenAnchors/1.5)
+    //{
+    lastTouch=location;
+    NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
+    [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];   
+    //}
     
 }
 
@@ -309,11 +327,12 @@ rshandle.Position=ccp(60,400);
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     isTouching=NO;
+    gameState=kNoState;
     
-    DWDotGridAnchorGameObject *anchStart=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
-    DWDotGridAnchorGameObject *anchEnd=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
-    
-    NSLog(@"anchStart x %d y %d / anchEnd x %d y %d", anchStart.myXpos, anchStart.myYpos, anchEnd.myXpos, anchEnd.myYpos);
+//    DWDotGridAnchorGameObject *anchStart=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
+//    DWDotGridAnchorGameObject *anchEnd=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+//    
+//    NSLog(@"anchStart x %d y %d / anchEnd x %d y %d", anchStart.myXpos, anchStart.myYpos, anchEnd.myXpos, anchEnd.myYpos);
     [self checkAnchors];
     
     

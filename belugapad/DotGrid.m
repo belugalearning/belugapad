@@ -14,6 +14,7 @@
 #import "DWDotGridAnchorGameObject.h"
 #import "DWDotGridHandleGameObject.h"
 #import "DWDotGridTileGameObject.h"
+#import "DWDotGridShapeGameObject.h"
 #import "BLMath.h"
 
 @implementation DotGrid
@@ -170,16 +171,6 @@
         [dotMatrix addObject:currentCol];
         
     }    
-    
-//DWDotGridHandleGameObject *mvhandle = [DWDotGridHandleGameObject alloc];
-//[gw populateAndAddGameObject:mvhandle withTemplateName:@"TdotgridHandle"];
-//mvhandle.handleType=kMoveHandle;
-//mvhandle.Position=ccp(40,400);
-//
-//DWDotGridHandleGameObject *rshandle = [DWDotGridHandleGameObject alloc];
-//[gw populateAndAddGameObject:rshandle withTemplateName:@"TdotgridHandle"];
-//rshandle.handleType=kResizeHandle;
-//rshandle.Position=ccp(60,400);
 
 }
 
@@ -205,6 +196,8 @@
                     for(int y=anchStart.myYpos;y<anchEnd.myYpos;y++)
                     {
                         DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
+                        if(x==anchEnd.myXpos-1 && y==anchStart.myYpos)curAnch.resizeHandle=YES;
+                        if(x==anchStart.myXpos && y==anchEnd.myYpos-1)curAnch.moveHandle=YES;
                         [anchorsForShape addObject:curAnch];
                     }
                 }
@@ -213,16 +206,19 @@
                     for(int y=anchStart.myYpos-1;y>anchEnd.myYpos-1;y--)
                     {
                         DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
+                        if(x==anchEnd.myXpos-1 && y==anchEnd.myYpos)curAnch.resizeHandle=YES;
+                        if(x==anchStart.myXpos && y==anchStart.myYpos-1)curAnch.moveHandle=YES;
                         [anchorsForShape addObject:curAnch];
                     } 
                 }
             }
-            [self createShapeWithAnchorPoints:anchorsForShape Direction:0];
+            [self createShapeWithAnchorPoints:anchorsForShape];
         }
         else {
             // start the loop
             for(int x=anchStart.myXpos-1;x>anchEnd.myXpos-1;x--)
             {
+                NSLog(@"current x %d", x);
                 // then check whether we're going up or down
                 if(anchStart.myYpos < anchEnd.myYpos)
                 {
@@ -231,6 +227,8 @@
                     {
                         DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
                         [anchorsForShape addObject:curAnch];
+                        if(x==anchStart.myXpos-1 && y==anchStart.myYpos)curAnch.resizeHandle=YES;
+                        if(x==anchEnd.myXpos && y==anchEnd.myYpos-1)curAnch.moveHandle=YES;
                     }
                 }
                 else {
@@ -239,10 +237,12 @@
                     {
                         DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
                         [anchorsForShape addObject:curAnch];
+                        if(x==anchEnd.myXpos+1 && y==anchEnd.myYpos)curAnch.resizeHandle=YES;
+                        if(x==anchEnd.myXpos && y==anchStart.myYpos-1)curAnch.moveHandle=YES;
                     } 
                 }
             }
-            [self createShapeWithAnchorPoints:anchorsForShape Direction:0];
+            [self createShapeWithAnchorPoints:anchorsForShape];
 
         }
         
@@ -255,12 +255,13 @@
     }
 }
 
--(void)createShapeWithAnchorPoints:(NSArray*)anchors Direction:(int)direction
+-(void)createShapeWithAnchorPoints:(NSArray*)anchors
 {
+    DWDotGridShapeGameObject *shape=[[DWDotGridShapeGameObject alloc]init];
+    shape.tiles=[[NSMutableArray alloc]init];
     //direction - 0 fwd
     //          - 1 rvs
-    if(direction==0)
-    {
+
         for(int i=0;i<[anchors count];i++)
         {
             DWDotGridAnchorGameObject *curAnch = [anchors objectAtIndex:i];
@@ -270,20 +271,27 @@
             tile.tileType=kNoBorder;
             tile.Position=ccp(curAnch.Position.x+spaceBetweenAnchors/2, curAnch.Position.y+spaceBetweenAnchors/2);
             [tile handleMessage:kDWsetupStuff];
-        }
-    }
-    if(direction==1)
-    {
-        for(DWDotGridTileGameObject *curAnch in [anchors reverseObjectEnumerator])
-        {
-            DWDotGridTileGameObject *tile = [DWDotGridTileGameObject alloc];
-            [gw populateAndAddGameObject:tile withTemplateName:@"TdotgridTile"];
+            [shape.tiles addObject:tile];
             
-            tile.tileType=kNoBorder;
-            tile.Position=ccp(curAnch.Position.x-spaceBetweenAnchors/2, curAnch.Position.y-spaceBetweenAnchors/2);
-            [tile handleMessage:kDWsetupStuff];
+            if(curAnch.resizeHandle)
+            {
+                DWDotGridHandleGameObject *rshandle = [DWDotGridHandleGameObject alloc];
+                [gw populateAndAddGameObject:rshandle withTemplateName:@"TdotgridHandle"];
+                rshandle.handleType=kResizeHandle;
+                rshandle.Position=ccp(curAnch.Position.x+spaceBetweenAnchors,curAnch.Position.y);
+                [rshandle handleMessage:kDWsetupStuff];
+            }
+            
+            if(curAnch.moveHandle)
+            {
+                DWDotGridHandleGameObject *mvhandle = [DWDotGridHandleGameObject alloc];
+                [gw populateAndAddGameObject:mvhandle withTemplateName:@"TdotgridHandle"];
+                mvhandle.handleType=kMoveHandle;
+                mvhandle.Position=ccp(curAnch.Position.x, curAnch.Position.y+spaceBetweenAnchors);
+                [mvhandle handleMessage:kDWsetupStuff];
+            }
         }
-    }
+      
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

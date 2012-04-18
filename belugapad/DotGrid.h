@@ -59,7 +59,7 @@ typedef enum {
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)populateGW;
 -(void)checkAnchors;
--(void)createShapeWithAnchorPoints:(NSArray*)anchors Direction:(int)direction;
+-(void)createShapeWithAnchorPoints:(NSArray*)anchors;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

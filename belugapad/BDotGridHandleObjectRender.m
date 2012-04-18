@@ -95,7 +95,7 @@
     
     
     
-    [[gameWorld Blackboard].ComponentRenderLayer addChild:mySprite z:2];
+    [[gameWorld Blackboard].ComponentRenderLayer addChild:mySprite z:10];
     
 }
 

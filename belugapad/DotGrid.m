@@ -196,6 +196,7 @@
                     for(int y=anchStart.myYpos;y<anchEnd.myYpos;y++)
                     {
                         DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
+                        if(curAnch.Disabled)return;
                         if(x==anchEnd.myXpos-1 && y==anchStart.myYpos)curAnch.resizeHandle=YES;
                         if(x==anchStart.myXpos && y==anchEnd.myYpos-1)curAnch.moveHandle=YES;
                         [anchorsForShape addObject:curAnch];
@@ -206,13 +207,13 @@
                     for(int y=anchStart.myYpos-1;y>anchEnd.myYpos-1;y--)
                     {
                         DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
+                        if(curAnch.Disabled)return;
                         if(x==anchEnd.myXpos-1 && y==anchEnd.myYpos)curAnch.resizeHandle=YES;
                         if(x==anchStart.myXpos && y==anchStart.myYpos-1)curAnch.moveHandle=YES;
                         [anchorsForShape addObject:curAnch];
                     } 
                 }
             }
-            [self createShapeWithAnchorPoints:anchorsForShape];
         }
         else {
             // start the loop
@@ -226,6 +227,7 @@
                     for(int y=anchStart.myYpos;y<anchEnd.myYpos;y++)
                     {
                         DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
+                        if(curAnch.Disabled)return;
                         [anchorsForShape addObject:curAnch];
                         if(x==anchStart.myXpos-1 && y==anchStart.myYpos)curAnch.resizeHandle=YES;
                         if(x==anchEnd.myXpos && y==anchEnd.myYpos-1)curAnch.moveHandle=YES;
@@ -236,16 +238,16 @@
                     for(int y=anchStart.myYpos-1;y>anchEnd.myYpos-1;y--)
                     {
                         DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
+                        if(curAnch.Disabled)return;
                         [anchorsForShape addObject:curAnch];
                         if(x==anchEnd.myXpos+1 && y==anchEnd.myYpos)curAnch.resizeHandle=YES;
                         if(x==anchEnd.myXpos && y==anchStart.myYpos-1)curAnch.moveHandle=YES;
                     } 
                 }
             }
-            [self createShapeWithAnchorPoints:anchorsForShape];
 
         }
-        
+        [self createShapeWithAnchorPoints:anchorsForShape];        
         for(int i=0;i<[anchorsForShape count];i++)
         {
             DWDotGridAnchorGameObject *wanch = [anchorsForShape objectAtIndex:i];
@@ -265,6 +267,7 @@
         for(int i=0;i<[anchors count];i++)
         {
             DWDotGridAnchorGameObject *curAnch = [anchors objectAtIndex:i];
+            curAnch.Disabled=YES;
             DWDotGridTileGameObject *tile = [DWDotGridTileGameObject alloc];
             [gw populateAndAddGameObject:tile withTemplateName:@"TdotgridTile"];
             
@@ -324,7 +327,7 @@
     //{
     lastTouch=location;
     NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
-    [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];   
+    if(gw.Blackboard.FirstAnchor) [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];   
     //}
     
 }

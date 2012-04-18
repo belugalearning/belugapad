@@ -244,5 +244,17 @@
 		<key>OBJECT_DATA</key>
 		<dict/>
 	</dict>
+	<key>TdotgridShape</key>
+	<dict>
+		<key>BEHAVIOURS</key>
+		<dict>
+			<key>BDotGridShapeTouch</key>
+			<dict/>
+		</dict>
+		<key>IMPLEMENT_TEMPLATES</key>
+		<array/>
+		<key>OBJECT_DATA</key>
+		<dict/>
+	</dict>
 </dict>
 </plist>

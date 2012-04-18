@@ -83,7 +83,7 @@
         
         gameWorld.Blackboard.LastAnchor=anch;
         
-        [anch handleMessage:kDWswitchSelection];
+        //[anch handleMessage:kDWswitchSelection];
     }    
 }
 

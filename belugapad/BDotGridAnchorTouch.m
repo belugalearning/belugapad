@@ -74,9 +74,9 @@
             NSLog(@"got touched and i'm enabled! pos x %d / y %d", anch.myXpos, anch.myYpos);
             // we only want our first anchor to be set if there isn't one already.
             // this will be cleared on touchesended/cancelled
+            if(gameWorld.Blackboard.FirstAnchor==nil) gameWorld.Blackboard.FirstAnchor=anch;
             
         }
-        if(gameWorld.Blackboard.FirstAnchor==nil) gameWorld.Blackboard.FirstAnchor=anch;
         
         
         // but our last anchor always needs to be stored

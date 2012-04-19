@@ -52,8 +52,7 @@
     if(messageType==kDWupdateSprite)
     {
         
-        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
-        if(!mySprite) { 
+        if(!handle.mySprite) { 
             [self setSprite];
         }
         
@@ -64,8 +63,7 @@
     }
     if(messageType==kDWdismantle)
     {
-        CCSprite *s=[[gameObject store] objectForKey:MY_SPRITE];
-        [[s parent] removeChild:s cleanup:YES];
+        [[handle.mySprite parent] removeChild:handle.mySprite cleanup:YES];
     }
 }
 
@@ -82,20 +80,20 @@
     
     NSLog(@"file: %@", spriteFileName);
     
-    CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-    [mySprite setPosition:handle.Position];
+    handle.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+    [handle.mySprite setPosition:handle.Position];
     //[mySprite setScale:0.3f];
     
     
     if(gameWorld.Blackboard.inProblemSetup)
     {
-        [mySprite setTag:2];
-        [mySprite setOpacity:0];
+        [handle.mySprite setTag:2];
+        [handle.mySprite setOpacity:0];
     }
     
     
     
-    [[gameWorld Blackboard].ComponentRenderLayer addChild:mySprite z:10];
+    [[gameWorld Blackboard].ComponentRenderLayer addChild:handle.mySprite z:10];
     
 }
 

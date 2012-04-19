@@ -35,8 +35,7 @@
 {
     if(messageType==kDWsetupStuff)
     {
-        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
-        if(!mySprite) 
+        if(!anch.mySprite) 
         {
             [self setSprite];     
         }
@@ -44,9 +43,7 @@
     
     if(messageType==kDWupdateSprite)
     {
-
-        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
-        if(!mySprite) { 
+        if(!anch.mySprite) { 
             [self setSprite];
         }
 
@@ -56,8 +53,7 @@
     }
     if(messageType==kDWdismantle)
     {
-        CCSprite *s=[[gameObject store] objectForKey:MY_SPRITE];
-        [[s parent] removeChild:s cleanup:YES];
+        [[anch.mySprite parent] removeChild:anch.mySprite cleanup:YES];
     }
     
     if(messageType==kDWswitchSelection)

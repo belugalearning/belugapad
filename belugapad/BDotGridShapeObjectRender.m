@@ -33,12 +33,6 @@
 {
     if(messageType==kDWsetupStuff)
     {
-        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
-        if(!mySprite) 
-        {
-            [self setSprite];
-            [self setSpritePos:NO];            
-        }
     }
     
     if (messageType==kDWmoveSpriteToPosition) {

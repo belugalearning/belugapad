@@ -35,8 +35,7 @@
 {
     if(messageType==kDWsetupStuff)
     {
-        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
-        if(!mySprite) 
+        if(!tile.mySprite) 
         {
             [self setSprite];
             [self setSpritePos:NO];            
@@ -122,11 +121,11 @@
         spriteFileName=@"/images/dotgrid/tile-border-none.png";
     }
     
-    
-    
     tile.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
     [tile.mySprite setPosition:tile.Position];
     
+    // THE TINTING BEHAVIOUR HERE CAN ALSO BE APPLIED BY THE SHAPE TOUCH BEHAVIOUR    
+    if(tile.Selected)[tile.mySprite setColor:ccc3(255,0,0)];
     
     if(gameWorld.Blackboard.inProblemSetup)
     {

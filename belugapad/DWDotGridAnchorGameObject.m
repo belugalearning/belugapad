@@ -20,4 +20,5 @@
 @synthesize resizeHandle;
 @synthesize moveHandle;
 @synthesize tile;
+
 @end

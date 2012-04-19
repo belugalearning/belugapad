@@ -17,5 +17,6 @@ typedef enum {
 
 @property HandleType handleType;
 @property CGPoint Position;
+@property (retain) CCSprite *mySprite;
 
 @end

@@ -47,6 +47,7 @@
 
 -(void)checkTouchSwitchSelection:(CGPoint)location
 {
+    // THE TINTING BEHAVIOUR HERE CAN ALSO BE APPLIED BY THE TILE OBJECT RENDER
     // check through this shape's tiles
     for(DWDotGridTileGameObject *tile in shape.tiles)
     {
@@ -54,7 +55,7 @@
         if(CGRectContainsPoint(tile.mySprite.boundingBox, location))
         {
             
-            // then if that tile is not selected, make it green
+            // then if that tile is not selected, make it red
             if(!tile.Selected){
                 [tile.mySprite setColor:ccc3(255, 0, 0)];
                 tile.Selected=YES;

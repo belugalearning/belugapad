@@ -19,5 +19,6 @@
 @property int myYpos;
 @property BOOL resizeHandle;
 @property BOOL moveHandle;
+@property (retain) DWGameObject *tile;
 
 @end

@@ -19,4 +19,5 @@
 @synthesize myYpos;
 @synthesize resizeHandle;
 @synthesize moveHandle;
+@synthesize tile;
 @end

@@ -35,8 +35,21 @@
     {
         
     }
+    if(messageType==kDWcanITouchYou)
+    {
+        
+    }
 }
 
+-(void)handleMove
+{
+    
+}
+
+-(void)handleResize
+{
+    
+}
 
 -(void) dealloc
 {

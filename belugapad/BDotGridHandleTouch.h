@@ -17,6 +17,7 @@
 }
 
 -(BDotGridHandleTouch *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
-
+-(void)handleMove;
+-(void)handleResize;
 
 @end

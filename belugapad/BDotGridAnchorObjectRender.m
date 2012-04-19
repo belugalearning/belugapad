@@ -99,14 +99,12 @@
     {
         if(anch.StartAnchor) [anch.mySprite setColor:ccc3(255,0,0)];
         else [anch.mySprite setColor:ccc3(255,255,255)];
-        anch.CurrentlySelected=NO;
         [gameWorld.Blackboard.SelectedObjects removeObject:anch];
         NSLog(@"add current sprite");
     }
     else {
         if(anch.StartAnchor) [anch.mySprite setColor:ccc3(255,0,86)];
         else [anch.mySprite setColor:ccc3(120,125,255)];
-        anch.CurrentlySelected=YES;
         [gameWorld.Blackboard.SelectedObjects addObject:anch];
     }
 }

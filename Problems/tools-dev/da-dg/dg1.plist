@@ -11,7 +11,7 @@
 	<key>START_X</key>
 	<integer>0</integer>
 	<key>START_Y</key>
-	<integer>7</integer>
+	<integer>6</integer>
 	<key>DRAW_MODE</key>
 	<integer>1</integer>
 	<key>INIT_OBJECTS</key>
@@ -24,18 +24,31 @@
 			<key>END_X</key>
 			<integer>2</integer>
 			<key>END_Y</key>
-			<integer>3</integer>
+			<integer>2</integer>
+			<key>SHOW_RESIZE</key>
+			<false/>
+			<key>SHOW_LABELS</key>
+			<false/>
+			<key>NUMBER_COUNTED</key>
+			<string></string>
 		</dict>
 		<dict>
 			<key>START_X</key>
 			<integer>4</integer>
 			<key>START_Y</key>
-			<integer>3</integer>
+			<integer>4</integer>
 			<key>END_X</key>
 			<integer>6</integer>
 			<key>END_Y</key>
-			<integer>5</integer>
+			<integer>6</integer>
+			<key>SHOW_MOVE</key>
+			<false/>
 		</dict>
 	</array>
+	<key>DISABLED_ROWS</key>
+	<dict>
+		<key>3</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

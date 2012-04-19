@@ -250,3 +250,5 @@
 #define START_Y @"START_Y"
 #define END_X @"END_X"
 #define END_Y @"END_Y"
+#define SHOW_MOVE @"SHOW_MOVE"
+#define SHOW_RESIZE @"SHOW_RESIZE"

@@ -29,10 +29,10 @@
 			<false/>
 			<key>SHOW_LABELS</key>
 			<false/>
-			<key>NUMBER_COUNTED</key>
-			<integer>0</integer>
+			<key>NUMBER_PRE_COUNTED</key>
+			<integer>3</integer>
 			<key>COUNT_DIRECTION</key>
-			<string></string>
+			<integer>0</integer>
 			<key>DISABLE_COUNTING</key>
 			<false/>
 		</dict>
@@ -46,7 +46,9 @@
 			<key>END_Y</key>
 			<integer>6</integer>
 			<key>SHOW_MOVE</key>
-			<false/>
+			<true/>
+			<key>NUMBER_PRE_COUNTED</key>
+			<integer>1</integer>
 		</dict>
 	</array>
 	<key>DISABLED_ROWS</key>

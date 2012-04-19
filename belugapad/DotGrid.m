@@ -101,7 +101,8 @@
         points[1]=CGPointMake(points[2].x, points[0].y);
         points[3]=CGPointMake(points[0].x, points[2].y);
         
-        ccDrawFilledPoly(first, 4, ccc4f(1, 1, 1, 1));
+        ccDrawFilledPoly(first, 4, ccc4FFromccc4B(ccc4(255,255,255,5)));
+        
         
     }
 }
@@ -183,18 +184,25 @@
         int curStartY=[[curObject objectForKey:START_Y] intValue];
         int curEndX=[[curObject objectForKey:END_X] intValue];
         int curEndY=[[curObject objectForKey:END_Y] intValue];
+        int noPreCounted=[[curObject objectForKey:NUMBER_PRE_COUNTED] intValue];
+        BOOL showMove = [[curObject objectForKey:SHOW_MOVE] boolValue];
+        BOOL showResize = [[curObject objectForKey:SHOW_RESIZE] boolValue];
         
         gw.Blackboard.FirstAnchor=[[dotMatrix objectAtIndex:curStartX] objectAtIndex:curStartY];
         gw.Blackboard.LastAnchor=[[dotMatrix objectAtIndex:curEndX] objectAtIndex:curEndY];
-        [self checkAnchors];
+
+        
+        [self checkAnchorsAndUseResizeHandle:showResize andShowMove:showMove andPrecount:noPreCounted];
     }
 
 }
-
 -(void)checkAnchors
 {
+    [self checkAnchorsAndUseResizeHandle:YES andShowMove:YES andPrecount:0];
+}
+-(void)checkAnchorsAndUseResizeHandle:(BOOL)showResize andShowMove:(BOOL)showMove andPrecount:(int)noOfTiles
+{
     // only run if we have a first and last anchor point
-    NSLog(@"gameState: %d / gameSetup = ", gameState);
     if(gw.Blackboard.FirstAnchor && gw.Blackboard.LastAnchor)
     {
         NSMutableArray *anchorsForShape=[[NSMutableArray alloc]init];
@@ -214,11 +222,11 @@
                     for(int y=anchStart.myYpos;y<anchEnd.myYpos;y++)
                     {
                         DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
-                        // if current anchor is disabled AND we're not in problem setup OR not in the game state we want
-                        //if(curAnch.Disabled && !gw.Blackboard.inProblemSetup)return;
+                        // if current anchor is disabled AND we're not in problem setup AND not in the game state we want OR if the current anchor already has a tile on it
+
                         if((curAnch.Disabled && !gw.Blackboard.inProblemSetup && !gameState==kStartAnchor)||curAnch.tile)return;
-                        if(x==anchEnd.myXpos-1 && y==anchStart.myYpos)curAnch.resizeHandle=YES;
-                        if(x==anchStart.myXpos && y==anchEnd.myYpos-1)curAnch.moveHandle=YES;
+                        if(x==anchEnd.myXpos-1 && y==anchStart.myYpos && showResize)curAnch.resizeHandle=YES;
+                        if(x==anchStart.myXpos && y==anchEnd.myYpos-1 && showMove)curAnch.moveHandle=YES;
                         [anchorsForShape addObject:curAnch];
                     }
                 }
@@ -236,8 +244,8 @@
                         //}
                         
                         if((curAnch.Disabled && !gw.Blackboard.inProblemSetup && !gameState==kStartAnchor)||curAnch.tile)return;
-                        if(x==anchEnd.myXpos-1 && y==anchEnd.myYpos)curAnch.resizeHandle=YES;
-                        if(x==anchStart.myXpos && y==anchStart.myYpos-1)curAnch.moveHandle=YES;
+                        if(x==anchEnd.myXpos-1 && y==anchEnd.myYpos && showResize)curAnch.resizeHandle=YES;
+                        if(x==anchStart.myXpos && y==anchStart.myYpos-1 && showMove)curAnch.moveHandle=YES;
                         [anchorsForShape addObject:curAnch];
                     } 
                 }
@@ -257,8 +265,8 @@
                         DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
                         if((curAnch.Disabled && !gw.Blackboard.inProblemSetup && !gameState==kStartAnchor)||curAnch.tile)return;
                         [anchorsForShape addObject:curAnch];
-                        if(x==anchStart.myXpos-1 && y==anchStart.myYpos)curAnch.resizeHandle=YES;
-                        if(x==anchEnd.myXpos && y==anchEnd.myYpos-1)curAnch.moveHandle=YES;
+                        if(x==anchStart.myXpos-1 && y==anchStart.myYpos && showResize)curAnch.resizeHandle=YES;
+                        if(x==anchEnd.myXpos && y==anchEnd.myYpos-1 && showMove)curAnch.moveHandle=YES;
                     }
                 }
                 else {
@@ -268,14 +276,14 @@
                         DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
                         if((curAnch.Disabled && !gw.Blackboard.inProblemSetup && !gameState==kStartAnchor)||curAnch.tile)return;
                         [anchorsForShape addObject:curAnch];
-                        if(x==anchEnd.myXpos+1 && y==anchEnd.myYpos)curAnch.resizeHandle=YES;
-                        if(x==anchEnd.myXpos && y==anchStart.myYpos-1)curAnch.moveHandle=YES;
+                        if(x==anchEnd.myXpos+1 && y==anchEnd.myYpos && showResize)curAnch.resizeHandle=YES;
+                        if(x==anchEnd.myXpos && y==anchStart.myYpos-1 && showMove)curAnch.moveHandle=YES;
                     } 
                 }
             }
 
         }
-        [self createShapeWithAnchorPoints:anchorsForShape];        
+        [self createShapeWithAnchorPoints:anchorsForShape andPrecount:noOfTiles];        
         for(int i=0;i<[anchorsForShape count];i++)
         {
             DWDotGridAnchorGameObject *wanch = [anchorsForShape objectAtIndex:i];
@@ -285,7 +293,7 @@
     }
 }
 
--(void)createShapeWithAnchorPoints:(NSArray*)anchors
+-(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(int)noToCount
 {
     
     //if(((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).tile)return;
@@ -293,6 +301,7 @@
     DWDotGridShapeGameObject *shape=[DWDotGridShapeGameObject alloc];           
     [gw populateAndAddGameObject:shape withTemplateName:@"TdotgridShape"];
     shape.tiles=[[NSMutableArray alloc]init];
+    int numberCounted=0;
     //direction - 0 fwd
     //          - 1 rvs
 
@@ -305,9 +314,14 @@
             
             tile.tileType=kNoBorder;
             tile.Position=ccp(curAnch.Position.x+spaceBetweenAnchors/2, curAnch.Position.y+spaceBetweenAnchors/2);
-            [tile handleMessage:kDWsetupStuff];
+            //[tile handleMessage:kDWsetupStuff];
             [shape.tiles addObject:tile];
             curAnch.tile=tile;
+            // if we have pre counting tiles on
+            if(numberCounted<noToCount){
+                tile.Selected=YES;
+                numberCounted++;
+            }
             
             if(curAnch.resizeHandle)
             {
@@ -315,7 +329,7 @@
                 [gw populateAndAddGameObject:rshandle withTemplateName:@"TdotgridHandle"];
                 rshandle.handleType=kResizeHandle;
                 rshandle.Position=ccp(curAnch.Position.x+spaceBetweenAnchors,curAnch.Position.y);
-                [rshandle handleMessage:kDWsetupStuff];
+                //[rshandle handleMessage:kDWsetupStuff];
             }
             
             if(curAnch.moveHandle)
@@ -324,10 +338,12 @@
                 [gw populateAndAddGameObject:mvhandle withTemplateName:@"TdotgridHandle"];
                 mvhandle.handleType=kMoveHandle;
                 mvhandle.Position=ccp(curAnch.Position.x, curAnch.Position.y+spaceBetweenAnchors);
-                [mvhandle handleMessage:kDWsetupStuff];
+                //[mvhandle handleMessage:kDWsetupStuff];
             }
         }
-      
+    
+[gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
+    
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

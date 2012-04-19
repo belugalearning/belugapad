@@ -51,7 +51,7 @@
 			<integer>1</integer>
 		</dict>
 	</array>
-	<key>DISABLED_ROWS</key>
+	<key>HIDDEN_ROWS</key>
 	<dict>
 		<key>3</key>
 		<true/>

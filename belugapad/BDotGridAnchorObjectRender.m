@@ -66,32 +66,34 @@
 
 -(void)setSprite
 {    
-    NSString *spriteFileName=[[NSString alloc]init];
-    //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
+    if(!anch.Hidden)
+    {
+        NSString *spriteFileName=[[NSString alloc]init];
+        //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
+
+            
+        if(anch.StartAnchor)spriteFileName=@"/images/dotgrid/move.png";
+        else spriteFileName=@"/images/dotgrid/anchor.png";
+        anch.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+        [anch.mySprite setPosition:anch.Position];
+        //[anch.mySprite setScale:0.5f];
+        
+        
+        if(gameWorld.Blackboard.inProblemSetup)
+        {
+            [anch.mySprite setTag:2];
+            [anch.mySprite setOpacity:0];
+        }
 
         
-    if(anch.StartAnchor)spriteFileName=@"/images/dotgrid/move.png";
-    else spriteFileName=@"/images/dotgrid/anchor.png";
-    anch.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-    [anch.mySprite setPosition:anch.Position];
-    //[anch.mySprite setScale:0.5f];
-    
-    
-    if(gameWorld.Blackboard.inProblemSetup)
-    {
-        [anch.mySprite setTag:2];
-        [anch.mySprite setOpacity:0];
+
+        [[gameWorld Blackboard].ComponentRenderLayer addChild:anch.mySprite z:2];
     }
-
-    
-
-    [[gameWorld Blackboard].ComponentRenderLayer addChild:anch.mySprite z:2];
-    
 }
 
 -(void)switchSelection
 {
-    if(anch.CurrentlySelected)
+    if(anch.Disabled)
     {
         if(anch.StartAnchor) [anch.mySprite setColor:ccc3(255,0,0)];
         else [anch.mySprite setColor:ccc3(255,255,255)];

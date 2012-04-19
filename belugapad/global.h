@@ -252,3 +252,4 @@
 #define END_Y @"END_Y"
 #define SHOW_MOVE @"SHOW_MOVE"
 #define SHOW_RESIZE @"SHOW_RESIZE"
+#define HIDDEN_ROWS @"HIDDEN_ROWS"

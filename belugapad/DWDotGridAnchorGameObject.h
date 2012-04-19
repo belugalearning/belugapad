@@ -13,7 +13,7 @@
 @property CGPoint Position;
 @property BOOL StartAnchor;
 @property BOOL Disabled;
-@property BOOL CurrentlySelected;
+@property BOOL Hidden;
 @property (retain) CCSprite *mySprite;
 @property int myXpos;
 @property int myYpos;

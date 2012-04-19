@@ -47,6 +47,7 @@ typedef enum {
     ProblemEvalMode evalMode;
     
     NSMutableArray *dotMatrix;
+    NSDictionary *hiddenRows;
     
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;

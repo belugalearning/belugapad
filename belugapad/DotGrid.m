@@ -120,8 +120,10 @@
     spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
     startX=[[pdef objectForKey:START_X] intValue];
     startY=[[pdef objectForKey:START_Y] intValue];
-    initObjects=[pdef objectForKey:INIT_OBJECTS];
-    [initObjects retain];
+    if([pdef objectForKey:INIT_OBJECTS])initObjects=[pdef objectForKey:INIT_OBJECTS];
+    if(initObjects)[initObjects retain];
+    if([pdef objectForKey:HIDDEN_ROWS])hiddenRows=[pdef objectForKey:HIDDEN_ROWS];
+    if(hiddenRows)[hiddenRows retain];
 
     
 }
@@ -142,6 +144,7 @@
     for (int iRow=0; iRow<(int)(lx-spaceBetweenAnchors*2)/spaceBetweenAnchors; iRow++)
     {
         NSMutableArray *currentCol=[[NSMutableArray alloc]init];
+        BOOL currentRowHidden=NO;
         
         for(int iCol=0; iCol<(int)(ly-spaceBetweenAnchors*2)/spaceBetweenAnchors; iCol++)
         {
@@ -150,9 +153,18 @@
             DWDotGridAnchorGameObject *anch = [DWDotGridAnchorGameObject alloc];
             [gw populateAndAddGameObject:anch withTemplateName:@"TdotgridAnchor"];
             anch.Position=ccp(xStartPos,yStartPos);
-            
             anch.myXpos=iRow;
             anch.myYpos=iCol;
+            
+            // set the hidden property for every anchor on this row if 
+            if(hiddenRows && [hiddenRows objectForKey:[NSString stringWithFormat:@"%d", iCol]]) {
+                currentRowHidden=[[hiddenRows objectForKey:[NSString stringWithFormat:@"%d", iCol]] boolValue];
+                if(currentRowHidden) {
+                    anch.Hidden=YES;
+                }
+            }
+        
+            
             
             // check - if the game is in a specified start anchor mode
             // if it is, then our gameobject needs to have properties set!
@@ -168,6 +180,7 @@
             }
             
             [currentCol addObject:anch];
+            
 
         }
         
@@ -403,11 +416,6 @@
     gw.Blackboard.LastAnchor=nil;
     
     
-    for(int i=0;i<[gw.Blackboard.SelectedObjects count];i++)
-    {
-        DWDotGridAnchorGameObject *anch = [gw.Blackboard.SelectedObjects objectAtIndex:i];
-        anch.CurrentlySelected=NO;
-    }
     [gw.Blackboard.SelectedObjects removeAllObjects];
     gameState=kNoState;
 
@@ -421,12 +429,7 @@
     gw.Blackboard.FirstAnchor=nil;
     gw.Blackboard.LastAnchor=nil;
 
-    // empty selected objects
-    for(int i=0;i<[gw.Blackboard.SelectedObjects count];i++)
-    {
-        DWDotGridAnchorGameObject *anch = [gw.Blackboard.SelectedObjects objectAtIndex:i];
-        anch.CurrentlySelected=NO;
-    }
+
     [gw.Blackboard.SelectedObjects removeAllObjects];
 }
 
@@ -457,8 +460,9 @@
     
     //tear down
     [gw release];
-    [dotMatrix release];
-    [initObjects release];
+    if(dotMatrix)[dotMatrix release];
+    if(initObjects)[initObjects release];
+    if(hiddenRows)[hiddenRows release];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

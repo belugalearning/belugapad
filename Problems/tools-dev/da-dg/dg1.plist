@@ -30,7 +30,11 @@
 			<key>SHOW_LABELS</key>
 			<false/>
 			<key>NUMBER_COUNTED</key>
+			<integer>0</integer>
+			<key>COUNT_DIRECTION</key>
 			<string></string>
+			<key>DISABLE_COUNTING</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>START_X</key>

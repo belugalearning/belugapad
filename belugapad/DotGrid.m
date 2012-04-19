@@ -418,7 +418,7 @@
 {
     //returns YES if the tool expression evaluates succesfully
     
-    return NO;
+    return YES;
 }
 
 -(void)evalProblem

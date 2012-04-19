@@ -229,13 +229,15 @@ const float kPropYHitNextMenu=0.9f;
                 [elementsForThisModule addObject:element];
                 
                 //create module/topc element view
-                //CCSprite *elegeo=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/elementview/acirc.png")];
+//                CCSprite *elegeo=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/elementview/acirc.png")];
+                
+                CCSprite *elegeo=[CCSprite spriteWithFile:@"acirc.png"];
                 
                 float offsetX=-(((int)[elementIDs count]-1) * 100);
                 
-                //[elegeo setPosition:ccp(cx + (e*200) + offsetX, cy)];
-                //[elegeo setOpacity:255];
-                //[moduleLayer addChild:elegeo];
+                [elegeo setPosition:ccp(cx + (e*200) + offsetX, cy)];
+                [elegeo setOpacity:255];
+                [moduleLayer addChild:elegeo];
             }
             
             //create module/topic label
@@ -540,7 +542,7 @@ const float kPropYHitNextMenu=0.9f;
     NSUInteger totalExp = [us currentUserTotalExp];
     double secsInApp = [us currentUserTotalTimeInApp];
     NSUInteger hours = (NSUInteger)(secsInApp/3600);
-    NSUInteger mins = (NSUInteger)(secsInApp/60);
+    NSUInteger mins = ((NSUInteger)secsInApp % 3600)/60;
     
     [eMenuModName setString:module.name];
     [eMenuPlayerName setString:us.currentUser.nickName];
@@ -582,7 +584,7 @@ const float kPropYHitNextMenu=0.9f;
     
     double secsPlayingEl = [us currentUserTotalPlayingElement:element.document.documentID];
     NSUInteger hours = (NSUInteger)(secsPlayingEl/3600);
-    NSUInteger mins = (NSUInteger)(secsPlayingEl/60);
+    NSUInteger mins = ((NSUInteger)secsPlayingEl % 3600) / 60;
     
     [eMenuModDesc setString:element.name];
     [eMenuModStatus setString:(elCompletion < 1 ? [NSString stringWithFormat:@"%d%% COMPLETED", (NSUInteger)(100*elCompletion)] : @"COMPLETED")];

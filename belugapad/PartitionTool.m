@@ -168,7 +168,7 @@
         //[pogo.Mounts addObject:[createdRows objectAtIndex:insRow]];
         pogo.Length = insLength;
 
-        NSString *fillText = [NSString stringWithFormat:@"%d", pogo.Length];
+        NSString *fillText = [[[initObjects objectAtIndex:i]objectForKey:LABEL] stringValue];
         pogo.Label = [CCLabelTTF labelWithString:fillText fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
         
         DWPartitionRowGameObject *prgo = (DWPartitionRowGameObject*)[createdRows objectAtIndex:insRow];

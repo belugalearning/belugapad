@@ -21,6 +21,7 @@ typedef enum {
 @class Daemon;
 @class ToolScene;
 @class BAExpressionTree;
+@class UsersService;
 
 @interface ToolHost : CCLayer
 {

@@ -18,6 +18,8 @@
 #import "BAExpressionHeaders.h"
 #import "BATio.h"
 #import "ContentService.h"
+#import "UsersService.h"
+#import "MenuScene.h"
 
 @interface ToolHost()
 {
@@ -148,6 +150,11 @@ static float kMoveToNextProblemTime=2.0f;
     //don't eval if we're in an auto move to next problem
     if((currentTool.ProblemComplete || metaQuestionForceComplete) && !autoMoveToNextProblem)
     {
+        UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
+        [us endProblemAttempt:YES];
+
+        [Zubi createXPshards:100 fromLocation:ccp(cx, cy)];
+
         moveToNextProblemTime=kMoveToNextProblemTime;
         autoMoveToNextProblem=YES;
     }
@@ -207,12 +214,20 @@ static float kMoveToNextProblemTime=2.0f;
     [self tearDownProblemDef];
     self.PpExpr = nil;
     
-    [contentService gotoNextProblem];
+    [contentService gotoNextProblemInElement];
     
     pdef = [contentService.currentPDef retain];
     self.PpExpr = contentService.currentPExpr;
     
-    [self loadProblem];
+    if(pdef)
+    {
+        [self loadProblem];
+    }
+    else
+    {
+        //no more problems in this sequence, bail to menu
+        [[CCDirector sharedDirector] replaceScene:[MenuScene scene]];
+    }
 }
 
 -(void) loadProblem
@@ -288,11 +303,17 @@ static float kMoveToNextProblemTime=2.0f;
         [self.Zubi hideZubi];
     }
     
+    UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
+    [us startProblemAttempt];
 }
 
 -(void) resetProblem
 {
     skipNextStagedIntroAnim=YES;
+    
+    UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
+    [us endProblemAttempt:NO];
+    
     [self loadProblem];
 }
 
@@ -303,6 +324,11 @@ static float kMoveToNextProblemTime=2.0f;
     pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
     [pauseMenu setPosition:ccp(cx, cy)];
     [pauseLayer addChild:pauseMenu z:10];
+
+    [toolForeLayer addChild:pauseMenu z:10];
+    
+    UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
+    [us togglePauseProblemAttempt];
 }
 
 -(void) checkPauseTouches:(CGPoint)location
@@ -313,6 +339,9 @@ static float kMoveToNextProblemTime=2.0f;
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [pauseLayer removeChild:pauseMenu cleanup:YES];
         isPaused=NO;
+        
+        UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
+        [us togglePauseProblemAttempt];
     }
     if(CGRectContainsPoint(kPauseMenuReset, location))
     {
@@ -324,10 +353,11 @@ static float kMoveToNextProblemTime=2.0f;
     }
     if(CGRectContainsPoint(kPauseMenuMenu,location))
     {
+
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-       //menu - do nothing, yet
         [self returnToMenu];
-        
+
+
     }
     if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
     {
@@ -339,7 +369,7 @@ static float kMoveToNextProblemTime=2.0f;
 
 -(void) returnToMenu
 {
-    DLog(@"menu button touch");
+    [[CCDirector sharedDirector] replaceScene:[MenuScene scene]];
 }
 
 -(void) showProblemCompleteMessage
@@ -828,7 +858,6 @@ static float kMoveToNextProblemTime=2.0f;
 
 -(void) dealloc
 {
-    [contentService release];
     [pdef release];
     [metaQuestionAnswers release];
     [metaQuestionAnswerButtons release];

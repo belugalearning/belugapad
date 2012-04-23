@@ -2028,6 +2028,7 @@
 				7F5113BA14A9EE62001AF372 /* Sources */,
 				7F5113BB14A9EE62001AF372 /* Frameworks */,
 				7F5113BC14A9EE62001AF372 /* Resources */,
+				0CA945741545BD46007789C6 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2110,6 +2111,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0CA945741545BD46007789C6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "rsync -a \"${SRCROOT}/belugapad/Frameworks/Couchbase.framework/CouchbaseResources\" \"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"";
+		};
 		7F40D89514FFD8BE006A3A55 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

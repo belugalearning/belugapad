@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "cocos2d.h"
 
-@class ContentService;
+#import <Couchbase/CouchbaseMobile.h>
+
+@class RootViewController, ContentService, UsersService, User;
 
 @interface AppController : NSObject <UIApplicationDelegate, CCDirectorDelegate>
 {
@@ -17,6 +19,8 @@
 	UINavigationController *navController_;
     
 	CCDirectorIOS	*director_;							// weak ref
+    
+   	RootViewController	*viewController;
 }
 
 @property (nonatomic, retain) UIWindow *window;
@@ -25,5 +29,10 @@
 
 @property (nonatomic, retain) NSDictionary *LocalSettings;
 @property (nonatomic, readonly) ContentService *contentService;
+
+@property (nonatomic, readonly) UsersService *usersService;
+@property (retain) User *currentUser;
+
+-(void)proceedFromLoginViaIntro:(BOOL)viaIntro;
 
 @end

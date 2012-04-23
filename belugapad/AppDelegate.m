@@ -16,12 +16,28 @@
 
 #import "AppDelegate.h"
 
+#import "UsersService.h"
+#import "SelectUserViewController.h"
+#import "MenuScene.h"
+#import <CouchCocoa/CouchCocoa.h>
+
+@interface AppController()
+{
+@private
+    SelectUserViewController *selectUserViewController;
+}
+
+@end
+
 @implementation AppController
 
 @synthesize window=window_, navController=navController_, director=director_;
 
 @synthesize LocalSettings;
 @synthesize contentService;
+
+@synthesize usersService;
+@synthesize currentUser;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

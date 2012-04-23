@@ -41,9 +41,48 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	// Create the main window
-	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    launchOptionsCache=launchOptions;
     
+    CouchEmbeddedServer* server = [CouchEmbeddedServer sharedInstance];
+    
+    // install canned copy of content database if doesn't yet exist (i.e. first app launch)
+    [server.couchbase installDefaultDatabase:BUNDLE_FULL_PATH(@"/canned-content-db/content.couch")];
+    
+    [server start: ^{
+        NSAssert(!server.error, @"Error launching Couchbase: %@", server.error);
+        
+        // Try to use CADisplayLink director
+        // if it fails (SDK < 3.1) use the default director
+        
+        //todo: no cc2 equiv
+        //if( ! [CCDirector setDirectorType:kCCDirectorTypeDisplayLink] )
+        //    [CCDirector setDirectorType:kCCDirectorTypeDefault];
+        
+        // Init the window
+        window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        
+        usersService = [[UsersService alloc] init];
+        
+        //load local settings
+        self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
+        contentService = [[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
+        
+        //[self proceedFromLoginViaIntro:YES];
+        selectUserViewController = [[SelectUserViewController alloc] init];
+        [self.window addSubview:selectUserViewController.view];
+        [self.window makeKeyAndVisible];
+    }];
+    
+    return YES;
+}
+
+-(void)proceedFromLoginViaIntro:(BOOL)viaIntro
+{
+    NSDictionary *launchOptions=launchOptionsCache;
+    
+    //not sure this is required -- it's being ended in SelectUserViewController?
+    director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
+    [director_ end];
     
 	// Create an CCGLView with a RGB565 color buffer, and a depth buffer of 0-bits
 	CCGLView *glView = [CCGLView viewWithFrame:[window_ bounds]
@@ -102,18 +141,12 @@
     
 	// Assume that PVR images have premultiplied alpha
 	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
-    
-
-    //load local settings
-    self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
-    contentService = [[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
 
     
     // and add the scene to the stack. The director will run it when it automatically when the view is displayed.
-	[director_ pushScene: [ZubiIntro scene]]; 
+	[director_ pushScene: (viaIntro ? [ZubiIntro scene] : [MenuScene scene])]; 
     
     
-	return YES;
 }
 
 // Supported orientations: Landscape. Customize it for your own needs
@@ -169,6 +202,9 @@
 
 - (void) dealloc
 {
+    [contentService release];
+    [usersService release];
+    
 	[window_ release];
 	[navController_ release];
     

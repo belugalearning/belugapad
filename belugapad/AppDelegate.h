@@ -21,6 +21,8 @@
 	CCDirectorIOS	*director_;							// weak ref
     
    	RootViewController	*viewController;
+    
+    NSDictionary *launchOptionsCache;
 }
 
 @property (nonatomic, retain) UIWindow *window;

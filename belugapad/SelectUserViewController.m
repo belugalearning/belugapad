@@ -18,7 +18,7 @@
 @interface SelectUserViewController ()
 {
     @private
-    AppDelegate *app;
+    AppController *app;
     UsersService *usersService;
     unsigned char zubiColorRGBAByteData[4];
     
@@ -64,7 +64,7 @@
     [self buildEditUserView];
     [self buildLoadExistingUserView];
     
-    AppDelegate *ad = [[UIApplication sharedApplication] delegate];    
+    AppController *ad = [[UIApplication sharedApplication] delegate];    
     deviceUsersByLastSession = [[ad.usersService deviceUsersByLastSessionDate] retain];
     if ([deviceUsersByLastSession count] == 0)
     {

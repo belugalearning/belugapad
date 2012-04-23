@@ -93,7 +93,7 @@ const float kPropYHitNextMenu=0.9f;
         
         MenuState=kMenuStateTopic;
         
-        contentService = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).contentService;
+        contentService = ((AppController*)[[UIApplication sharedApplication] delegate]).contentService;
         
         //load this from module data        
         //moduleCount=5;
@@ -538,7 +538,7 @@ const float kPropYHitNextMenu=0.9f;
 
 -(void)showModuleOverlay: (Module*)module
 {
-    UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+    UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
     NSUInteger totalExp = [us currentUserTotalExp];
     double secsInApp = [us currentUserTotalTimeInApp];
     NSUInteger hours = (NSUInteger)(secsInApp/3600);
@@ -578,7 +578,7 @@ const float kPropYHitNextMenu=0.9f;
 
 -(void)showElementInfo:(Element*)element
 {
-    UsersService *us = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).usersService;
+    UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
     double elCompletion = [us currentUserPercentageCompletionOfElement:element];    
     // TODO: Display element completion (remember to multiply by 100)
     

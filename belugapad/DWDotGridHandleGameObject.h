@@ -7,6 +7,7 @@
 //
 
 #import "DWGameObject.h"
+#import "DWDotGridShapeGameObject.h"
 
 typedef enum {
     kMoveHandle=0,
@@ -18,5 +19,6 @@ typedef enum {
 @property HandleType handleType;
 @property CGPoint Position;
 @property (retain) CCSprite *mySprite;
+@property (retain) DWDotGridShapeGameObject *myShape;
 
 @end

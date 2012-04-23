@@ -29,6 +29,7 @@
 @synthesize ProblemVariableSubstitutions;
 @synthesize FirstAnchor;
 @synthesize LastAnchor;
+@synthesize CurrentHandle;
 
 
 -(id) init

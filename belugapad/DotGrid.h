@@ -18,8 +18,8 @@ typedef enum {
 typedef enum {
     kNoState=0,
     kStartAnchor=1,
-    kCollectAnchors=2,
-    kDrawnShape=3
+    kResizeShape=2,
+    kMoveShape=3
 } GameState;
 
 @interface DotGrid : ToolScene

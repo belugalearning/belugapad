@@ -7,17 +7,19 @@
 //
 
 #import "DWBehaviour.h"
-
+@class DWDotGridHandleGameObject;
 
 @interface BDotGridHandleTouch : DWBehaviour
 {
     
-    
+    DWDotGridHandleGameObject *handle;
     
 }
 
 -(BDotGridHandleTouch *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
--(void)handleMove;
--(void)handleResize;
+-(void)setCurrentHandle:(CGPoint)hitLoc;
+-(void)resizeShape:(CGPoint)hitLoc;
+-(void)moveShape:(CGPoint)hitLoc;
+
 
 @end

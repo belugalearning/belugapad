@@ -16,7 +16,7 @@
 
 -(BDotGridShapeObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
 -(void)setSprite;
--(void)setSpritePos:(BOOL) withAnimation;
+-(void)setPos;
 
 
 @end

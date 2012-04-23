@@ -105,6 +105,11 @@
         
         
     }
+    
+    if(gameState==kResizeShape)
+    {
+        
+    }
 }
 
 -(void)readPlist:(NSDictionary*)pdef
@@ -248,13 +253,6 @@
                     for(int y=anchStart.myYpos-1;y>anchEnd.myYpos-1;y--)
                     {
                         DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
-                        //if(curAnch.Disabled && !gw.Blackboard.inProblemSetup)return;
-                        //if((curAnch.Disabled && !gw.Blackboard.inProblemSetup) || (curAnch.Disabled && gameState!=kStartAnchor))return;
-                        //if(curAnch.Disabled && (!gw.Blackboard.inProblemSetup || gameState!=kStartAnchor))return;
-                        //if(curAnch.Disabled){
-                        //    if(!gw.Blackboard.inProblemSetup&&!gameState==kStartAnchor)
-                        //    {return;}
-                        //}
                         
                         if((curAnch.Disabled && !gw.Blackboard.inProblemSetup && !gameState==kStartAnchor)||curAnch.tile)return;
                         if(x==anchEnd.myXpos-1 && y==anchEnd.myYpos && showResize)curAnch.resizeHandle=YES;
@@ -309,14 +307,11 @@
 -(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(int)noToCount
 {
     
-    //if(((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).tile)return;
-    
     DWDotGridShapeGameObject *shape=[DWDotGridShapeGameObject alloc];           
     [gw populateAndAddGameObject:shape withTemplateName:@"TdotgridShape"];
     shape.tiles=[[NSMutableArray alloc]init];
     int numberCounted=0;
-    //direction - 0 fwd
-    //          - 1 rvs
+
 
         for(int i=0;i<[anchors count];i++)
         {
@@ -342,7 +337,9 @@
                 [gw populateAndAddGameObject:rshandle withTemplateName:@"TdotgridHandle"];
                 rshandle.handleType=kResizeHandle;
                 rshandle.Position=ccp(curAnch.Position.x+spaceBetweenAnchors,curAnch.Position.y);
-                //[rshandle handleMessage:kDWsetupStuff];
+                shape.resizeHandle=rshandle;
+                rshandle.myShape=shape;
+                
             }
             
             if(curAnch.moveHandle)
@@ -351,7 +348,9 @@
                 [gw populateAndAddGameObject:mvhandle withTemplateName:@"TdotgridHandle"];
                 mvhandle.handleType=kMoveHandle;
                 mvhandle.Position=ccp(curAnch.Position.x, curAnch.Position.y+spaceBetweenAnchors);
-                //[mvhandle handleMessage:kDWsetupStuff];
+                shape.moveHandle=mvhandle;
+                mvhandle.myShape=shape;
+
             }
         }
     
@@ -375,7 +374,16 @@
     NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
     [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
     [gw handleMessage:kDWswitchSelection andPayload:pl withLogLevel:-1];
-    if(gw.Blackboard.FirstAnchor) gameState=kStartAnchor;
+    if(gw.Blackboard.FirstAnchor && !((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).tile) {
+        ((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Disabled=YES;
+        gameState=kStartAnchor; 
+    }
+    
+    if(gw.Blackboard.CurrentHandle) {
+        if(((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).handleType == kResizeShape) gameState=kResizeShape;
+        if(((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).handleType == kResizeShape) gameState=kMoveShape;
+        
+    }
     
     
  }
@@ -386,12 +394,28 @@
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
-    //if([BLMath DistanceBetween:location and:lastTouch]>spaceBetweenAnchors/1.5)
-    //{
     lastTouch=location;
     NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
-    if(gw.Blackboard.FirstAnchor) [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];   
-    //}
+    
+    if(gameState==kNoState)
+    {
+        
+    }
+    
+    if(gameState==kStartAnchor)
+    {
+        if(gw.Blackboard.FirstAnchor) [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];   
+    }
+    
+    if(gameState==kResizeShape)
+    {
+        if(gw.Blackboard.CurrentHandle) [gw.Blackboard.CurrentHandle handleMessage:kDWuseThisHandle];    
+    }
+    
+    if(gameState==kMoveShape)
+    {
+        if(gw.Blackboard.CurrentHandle) [((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).myShape handleMessage:kDWmoveShape];         
+    }
     
 }
 
@@ -409,11 +433,15 @@
     
     
     // Draw object, empty selected objects - make sure that no objects say they're selected
-    [self checkAnchors];
+    if(gameState==kStartAnchor) { 
+        [self checkAnchors];
+        ((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Disabled=NO;
+    }
     
     
     gw.Blackboard.FirstAnchor=nil;
     gw.Blackboard.LastAnchor=nil;
+    gw.Blackboard.CurrentHandle=nil;
     
     
     [gw.Blackboard.SelectedObjects removeAllObjects];
@@ -427,7 +455,8 @@
     isTouching=NO;
     // empty selected objects
     gw.Blackboard.FirstAnchor=nil;
-    gw.Blackboard.LastAnchor=nil;
+    gw.Blackboard.LastAnchor=nil;    
+    gw.Blackboard.CurrentHandle=nil;
 
 
     [gw.Blackboard.SelectedObjects removeAllObjects];

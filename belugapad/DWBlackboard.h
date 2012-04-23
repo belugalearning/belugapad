@@ -35,6 +35,7 @@
 @property (retain) NSMutableDictionary *ProblemVariableSubstitutions;
 @property (retain) DWGameObject *FirstAnchor;
 @property (retain) DWGameObject *LastAnchor;
+@property (retain) DWGameObject *CurrentHandle;
 
 -(void)loadData;
 

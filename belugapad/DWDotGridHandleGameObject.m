@@ -13,5 +13,5 @@
 @synthesize handleType;
 @synthesize Position;
 @synthesize mySprite;
-
+@synthesize myShape;
 @end

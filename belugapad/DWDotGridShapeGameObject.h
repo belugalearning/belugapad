@@ -7,9 +7,12 @@
 //
 
 #import "DWGameObject.h"
+@class DWDotGridHandleGameObject;
 
 @interface DWDotGridShapeGameObject : DWGameObject
 
 @property (retain) NSMutableArray *tiles;
+@property (retain) DWDotGridHandleGameObject *moveHandle;
+@property (retain) DWDotGridHandleGameObject *resizeHandle;
 
 @end

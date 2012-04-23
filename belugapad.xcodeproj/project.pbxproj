@@ -1011,8 +1011,8 @@
 				55C5F7331538A8F2009D8906 /* BDotGridHandleTouch.m */,
 				55C5F7341538A8F2009D8906 /* BDotGridShapeObjectRender.h */,
 				55C5F7351538A8F2009D8906 /* BDotGridShapeObjectRender.m */,
-				55C5F7361538A8F2009D8906 /* BDotGridShapeTouch.h */,
 				55C5F7371538A8F2009D8906 /* BDotGridShapeTouch.m */,
+				55C5F7361538A8F2009D8906 /* BDotGridShapeTouch.h */,
 				55C5F7381538A8F2009D8906 /* BDotGridTileObjectRender.h */,
 				55C5F7391538A8F2009D8906 /* BDotGridTileObjectRender.m */,
 			);

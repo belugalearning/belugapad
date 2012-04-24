@@ -232,6 +232,7 @@
 		7F71B40C150FBDAA0097A956 /* BATQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B400150FBCA80097A956 /* BATQuery.m */; };
 		7F71B40D150FBDAD0097A956 /* BATTreeViz.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B402150FBCA80097A956 /* BATTreeViz.m */; };
 		7F71B40E150FBDB00097A956 /* BATViz.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B404150FBCA80097A956 /* BATViz.m */; };
+		7F77AA41154552470064D12B /* JourneyScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F77AA40154552470064D12B /* JourneyScene.m */; };
 		7F813D5514CCBA4300C1E997 /* IceDiv.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F813D5414CCBA4300C1E997 /* IceDiv.m */; };
 		7F813D5814CCBDDD00C1E997 /* fire1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5714CCBDDD00C1E997 /* fire1.plist */; };
 		7F813D5C14CCC3A100C1E997 /* fire2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5B14CCC3A100C1E997 /* fire2.plist */; };
@@ -772,6 +773,8 @@
 		7F71B404150FBCA80097A956 /* BATViz.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATViz.m; sourceTree = "<group>"; };
 		7F71B408150FBCB20097A956 /* ExprScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExprScene.h; sourceTree = "<group>"; };
 		7F71B409150FBCB20097A956 /* ExprScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprScene.m; sourceTree = "<group>"; };
+		7F77AA3F154552470064D12B /* JourneyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JourneyScene.h; sourceTree = "<group>"; };
+		7F77AA40154552470064D12B /* JourneyScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JourneyScene.m; sourceTree = "<group>"; };
 		7F813D5314CCBA4300C1E997 /* IceDiv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IceDiv.h; sourceTree = "<group>"; };
 		7F813D5414CCBA4300C1E997 /* IceDiv.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = IceDiv.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7F813D5714CCBDDD00C1E997 /* fire1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = fire1.plist; sourceTree = "<group>"; };
@@ -1682,6 +1685,8 @@
 				7FC27F71150FAB4300E16A44 /* NLine.m */,
 				55C5F718153874C3009D8906 /* DotGrid.h */,
 				55C5F719153874C3009D8906 /* DotGrid.m */,
+				7F77AA3F154552470064D12B /* JourneyScene.h */,
+				7F77AA40154552470064D12B /* JourneyScene.m */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -2286,6 +2291,7 @@
 				55C5F73E1538A8F2009D8906 /* BDotGridShapeObjectRender.m in Sources */,
 				55C5F73F1538A8F2009D8906 /* BDotGridShapeTouch.m in Sources */,
 				55C5F7401538A8F2009D8906 /* BDotGridTileObjectRender.m in Sources */,
+				7F77AA41154552470064D12B /* JourneyScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

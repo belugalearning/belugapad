@@ -9,12 +9,11 @@
 #import "ZubiIntro.h"
 #import "global.h"
 #import "ContentService.h"
-
 #import "MenuScene.h"
-
 #import "cocos2d.h"
-
 #import "AppDelegate.h"
+
+#import "JourneyScene.h"
 
 @implementation AppController
 
@@ -94,7 +93,8 @@
 
     
     // and add the scene to the stack. The director will run it when it automatically when the view is displayed.
-	[director_ pushScene: [ZubiIntro scene]]; 
+	//[director_ pushScene: [ZubiIntro scene]]; 
+    [director_ pushScene:[JourneyScene scene]];
     
     
 	return YES;

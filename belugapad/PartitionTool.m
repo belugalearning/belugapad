@@ -204,7 +204,6 @@
         [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
         gw.Blackboard.DropObject=nil;
         gw.Blackboard.PickupOffset = location;
-        NSLog(@"got pickupobject - unset mount");
         [((DWPartitionObjectGameObject*)gw.Blackboard.PickupObject) handleMessage:kDWunsetMount];
 
         
@@ -238,7 +237,6 @@
         
         if(gw.Blackboard.DropObject == nil)
         {
-            NSLog(@"touch moved dropobject is nil so unset mount");
             [pogo handleMessage:kDWunsetMount];
         }
     }
@@ -263,7 +261,6 @@
         
         if([gw Blackboard].DropObject!=nil)
         {
-            NSLog(@"touch end dropobject not nil, set mount");
             DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
             DWPartitionRowGameObject *prgo = (DWPartitionRowGameObject*)[gw Blackboard].DropObject;
             
@@ -271,11 +268,12 @@
         }
         else
         {
-            NSLog(@"touch end dropobject not nil, move it home and unset the mount");
             [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToHome];
             [gw handleMessage:kDWhighlight andPayload:nil withLogLevel:-1];
         }
     }
+    
+    [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:-1];
     
     [gw Blackboard].PickupObject=nil;
 

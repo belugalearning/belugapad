@@ -205,20 +205,21 @@
         int noPreCounted=[[curObject objectForKey:NUMBER_PRE_COUNTED] intValue];
         BOOL showMove = [[curObject objectForKey:SHOW_MOVE] boolValue];
         BOOL showResize = [[curObject objectForKey:SHOW_RESIZE] boolValue];
+        NSString *countDirection = [curObject objectForKey:COUNT_DIRECTION];
         
         gw.Blackboard.FirstAnchor=[[dotMatrix objectAtIndex:curStartX] objectAtIndex:curStartY];
         gw.Blackboard.LastAnchor=[[dotMatrix objectAtIndex:curEndX] objectAtIndex:curEndY];
 
         
-        [self checkAnchorsAndUseResizeHandle:showResize andShowMove:showMove andPrecount:noPreCounted];
+        [self checkAnchorsAndUseResizeHandle:showResize andShowMove:showMove andPrecount:noPreCounted withDirection:countDirection];
     }
 
 }
 -(void)checkAnchors
 {
-    [self checkAnchorsAndUseResizeHandle:YES andShowMove:YES andPrecount:0];
+    [self checkAnchorsAndUseResizeHandle:YES andShowMove:YES andPrecount:0 withDirection:@"NONE"];
 }
--(void)checkAnchorsAndUseResizeHandle:(BOOL)showResize andShowMove:(BOOL)showMove andPrecount:(int)noOfTiles
+-(void)checkAnchorsAndUseResizeHandle:(BOOL)showResize andShowMove:(BOOL)showMove andPrecount:(int)noOfTiles withDirection:(NSString*)countDirection
 {
     // only run if we have a first and last anchor point
     if(gw.Blackboard.FirstAnchor && gw.Blackboard.LastAnchor)
@@ -294,7 +295,7 @@
             }
 
         }
-        [self createShapeWithAnchorPoints:anchorsForShape andPrecount:noOfTiles];        
+        [self createShapeWithAnchorPoints:anchorsForShape andPrecount:noOfTiles withDirection:countDirection];        
         for(int i=0;i<[anchorsForShape count];i++)
         {
             DWDotGridAnchorGameObject *wanch = [anchorsForShape objectAtIndex:i];
@@ -304,7 +305,7 @@
     }
 }
 
--(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(int)noToCount
+-(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(int)noToCount withDirection:(NSString*)countDirection
 {
     
     DWDotGridShapeGameObject *shape=[DWDotGridShapeGameObject alloc];           

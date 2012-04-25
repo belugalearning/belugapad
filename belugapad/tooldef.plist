@@ -47,5 +47,10 @@
 		<key>SCALING_PASS_THRU</key>
 		<false/>
 	</dict>
+	<key>LongDivision</key>
+	<dict>
+		<key>SCALING_PASS_THRU</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

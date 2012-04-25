@@ -208,6 +208,7 @@
         [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
         gw.Blackboard.DropObject=nil;
         gw.Blackboard.PickupOffset = location;
+        [((DWPartitionObjectGameObject*)gw.Blackboard.PickupObject) handleMessage:kDWunsetMount];
 
         
         //this is just a signal for the GO to us, pickup object is retained on the blackboard
@@ -272,10 +273,11 @@
         else
         {
             [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToHome];
-            [[gw Blackboard].PickupObject handleMessage:kDWunsetMount];
             [gw handleMessage:kDWhighlight andPayload:nil withLogLevel:-1];
         }
     }
+    
+    [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:-1];
     
     [gw Blackboard].PickupObject=nil;
 

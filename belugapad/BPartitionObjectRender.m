@@ -191,6 +191,7 @@
     CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:pogo.MountPosition];
     [pogo.BaseNode runAction:[CCEaseIn actionWithAction:anim rate:0.5f]];
     pogo.Position=pogo.MountPosition;
+    [pogo handleMessage:kDWunsetMount];
 }
 -(void)resetSpriteToMount
 {

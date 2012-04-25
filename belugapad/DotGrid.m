@@ -203,6 +203,7 @@
         int curEndX=[[curObject objectForKey:END_X] intValue];
         int curEndY=[[curObject objectForKey:END_Y] intValue];
         int noPreCounted=[[curObject objectForKey:NUMBER_PRE_COUNTED] intValue];
+        BOOL disabled = [[curObject objectForKey:DISABLE_COUNTING] boolValue];
         BOOL showMove = [[curObject objectForKey:SHOW_MOVE] boolValue];
         BOOL showResize = [[curObject objectForKey:SHOW_RESIZE] boolValue];
         NSString *countDirection = [curObject objectForKey:COUNT_DIRECTION];
@@ -211,15 +212,15 @@
         gw.Blackboard.LastAnchor=[[dotMatrix objectAtIndex:curEndX] objectAtIndex:curEndY];
 
         
-        [self checkAnchorsAndUseResizeHandle:showResize andShowMove:showMove andPrecount:noPreCounted withDirection:countDirection];
+        [self checkAnchorsAndUseResizeHandle:showResize andShowMove:showMove andPrecount:noPreCounted withDirection:countDirection andDisabled:disabled];
     }
 
 }
 -(void)checkAnchors
 {
-    [self checkAnchorsAndUseResizeHandle:YES andShowMove:YES andPrecount:0 withDirection:@"NONE"];
+    [self checkAnchorsAndUseResizeHandle:YES andShowMove:YES andPrecount:0 withDirection:@"NONE" andDisabled:NO];
 }
--(void)checkAnchorsAndUseResizeHandle:(BOOL)showResize andShowMove:(BOOL)showMove andPrecount:(int)noOfTiles withDirection:(NSString*)countDirection
+-(void)checkAnchorsAndUseResizeHandle:(BOOL)showResize andShowMove:(BOOL)showMove andPrecount:(int)noOfTiles withDirection:(NSString*)countDirection andDisabled:(BOOL)Disabled
 {
     // only run if we have a first and last anchor point
     if(gw.Blackboard.FirstAnchor && gw.Blackboard.LastAnchor)
@@ -295,7 +296,7 @@
             }
 
         }
-        [self createShapeWithAnchorPoints:anchorsForShape andPrecount:noOfTiles withDirection:countDirection];        
+        [self createShapeWithAnchorPoints:anchorsForShape andPrecount:noOfTiles withDirection:countDirection andDisabled:Disabled];        
         for(int i=0;i<[anchorsForShape count];i++)
         {
             DWDotGridAnchorGameObject *wanch = [anchorsForShape objectAtIndex:i];
@@ -305,11 +306,12 @@
     }
 }
 
--(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(int)noToCount withDirection:(NSString*)countDirection
+-(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(int)noToCount withDirection:(NSString*)countDirection andDisabled:(BOOL)Disabled
 {
     
     DWDotGridShapeGameObject *shape=[DWDotGridShapeGameObject alloc];           
     [gw populateAndAddGameObject:shape withTemplateName:@"TdotgridShape"];
+    shape.Disabled=Disabled;
     shape.tiles=[[NSMutableArray alloc]init];
     int numberCounted=0;
 
@@ -482,6 +484,15 @@
 
 }
 
+-(float)metaQuestionTitleYLocation
+{
+    return kLabelTitleYOffsetHalfProp*cy;
+}
+
+-(float)metaQuestionAnswersYLocation
+{
+    return kMetaQuestionYOffsetPlaceValue*cy;
+}
 
 -(void) dealloc
 {

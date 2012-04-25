@@ -60,13 +60,15 @@ typedef enum {
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)populateGW;
 -(void)checkAnchors;
--(void)checkAnchorsAndUseResizeHandle:(BOOL)showResize andShowMove:(BOOL)showMove andPrecount:(int)noOfTiles withDirection:(NSString*)countDirection;
--(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(int)noToCount withDirection:(NSString*)countDirection;
+-(void)checkAnchorsAndUseResizeHandle:(BOOL)showResize andShowMove:(BOOL)showMove andPrecount:(int)noOfTiles withDirection:(NSString*)countDirection andDisabled:(BOOL)Disabled;
+-(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(int)noToCount withDirection:(NSString*)countDirection andDisabled:(BOOL)Disabled;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
 -(BOOL)evalExpression;
 -(void)evalProblem;
+-(float)metaQuestionTitleYLocation;
+-(float)metaQuestionAnswersYLocation;
 
 @end

@@ -14,5 +14,6 @@
 @property (retain) NSMutableArray *tiles;
 @property (retain) DWDotGridHandleGameObject *moveHandle;
 @property (retain) DWDotGridHandleGameObject *resizeHandle;
+@property BOOL Disabled;
 
 @end

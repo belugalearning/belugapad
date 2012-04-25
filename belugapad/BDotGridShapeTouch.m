@@ -65,7 +65,7 @@
     for(DWDotGridTileGameObject *tile in shape.tiles)
     {
         // and for each one see if the hit was in a tile box
-        if(CGRectContainsPoint(tile.mySprite.boundingBox, location))
+        if(CGRectContainsPoint(tile.mySprite.boundingBox, location) && !shape.Disabled)
         {
             
             // then if that tile is not selected, make it red

@@ -800,7 +800,6 @@
 		7F813D6A14CCD8CF00C1E997 /* fire3.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = fire3.plist; sourceTree = "<group>"; };
 		7FA38A941544D36F0031E59D /* Couchbase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Couchbase.framework; path = belugapad/Frameworks/Couchbase.framework; sourceTree = "<group>"; };
 		7FA38A951544D36F0031E59D /* CouchCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchCocoa.framework; path = belugapad/Frameworks/CouchCocoa.framework; sourceTree = "<group>"; };
-		7FA38A961544D36F0031E59D /* TouchDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TouchDB.framework; path = belugapad/Frameworks/TouchDB.framework; sourceTree = "<group>"; };
 		7FA38A9B1544D4B00031E59D /* canned-content-db */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "canned-content-db"; sourceTree = SOURCE_ROOT; };
 		7FA38AA11545321E0031E59D /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		7FA38AA3154532260031E59D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -1544,8 +1543,6 @@
 			isa = PBXGroup;
 			children = (
 				7FA38AA7154532360031E59D /* libz.dylib */,
-				7FA38AA51545322E0031E59D /* SystemConfiguration.framework */,
-				7FA38AA3154532260031E59D /* Security.framework */,
 				7FA38AA11545321E0031E59D /* libstdc++.dylib */,
 				7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */,
 				7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */,
@@ -1568,9 +1565,10 @@
 		7F5113C114A9EE62001AF372 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7FA38AA51545322E0031E59D /* SystemConfiguration.framework */,
+				7FA38AA3154532260031E59D /* Security.framework */,
 				7FA38A941544D36F0031E59D /* Couchbase.framework */,
 				7FA38A951544D36F0031E59D /* CouchCocoa.framework */,
-				7FA38A961544D36F0031E59D /* TouchDB.framework */,
 				7F5113C214A9EE62001AF372 /* QuartzCore.framework */,
 				7F5113C414A9EE62001AF372 /* OpenGLES.framework */,
 				7F5113C614A9EE62001AF372 /* OpenAL.framework */,

@@ -57,14 +57,14 @@
 {
     [super viewDidLoad];
     
-    app = [[UIApplication sharedApplication] delegate];
+    app = (AppController*)[[UIApplication sharedApplication] delegate];
     usersService = app.usersService;
     
     [self buildSelectUserView];
     [self buildEditUserView];
     [self buildLoadExistingUserView];
     
-    AppController *ad = [[UIApplication sharedApplication] delegate];    
+    AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];    
     deviceUsersByLastSession = [[ad.usersService deviceUsersByLastSessionDate] retain];
     if ([deviceUsersByLastSession count] == 0)
     {

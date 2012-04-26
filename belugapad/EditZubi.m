@@ -38,7 +38,7 @@
         cy = [[CCDirector sharedDirector] winSize].height / 2;
         
         self.isTouchEnabled = YES;        
-        [[CCDirector sharedDirector] openGLView].multipleTouchEnabled = NO;
+        [CCDirector sharedDirector].view.multipleTouchEnabled=NO;
         
         daemon = [[Daemon alloc] initWithLayer:self andRestingPostion:(CGPoint){cx,cy} andLy:0.0f];
         [daemon enableAnimations];

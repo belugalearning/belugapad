@@ -90,7 +90,8 @@
 
 -(void)proceedFromLoginViaIntro:(BOOL)viaIntro
 {
-    NSDictionary *launchOptions=launchOptionsCache;
+    //no purpose in getting this -- it's not used
+    //NSDictionary *launchOptions=launchOptionsCache;
     
     //not sure this is required -- it's being ended in SelectUserViewController?
     //[director_ end];

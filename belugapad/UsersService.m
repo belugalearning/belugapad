@@ -131,7 +131,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
 -(User*)currentUser
 {
     // TODO: This is a quick fix. I've done something wrong. Shouldn't need to store the user on the app delegate
-    AppController *ad = [[UIApplication sharedApplication] delegate];
+    AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
     return  ad.currentUser;
 }
 
@@ -158,7 +158,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     
     currentUser = [ur retain];    
     // TODO: This is a quick fix. I've done something wrong. Shouldn't need to store the user on the app delegate
-    AppController *ad = [[UIApplication sharedApplication] delegate];
+    AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
     ad.currentUser = ur;
     
     currentUserSession = [NSMutableDictionary dictionary];
@@ -308,7 +308,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
         [currentProblemAttempt release];
     }
     
-    AppController *ad = [[UIApplication sharedApplication] delegate];
+    AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
     ContentService *cs = ad.contentService;
     Problem *currentProblem = cs.currentProblem;
     
@@ -380,7 +380,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     [currentProblemAttempt endAttempt:success];
     
     User *ur = self.currentUser;
-    AppController *ad = [[UIApplication sharedApplication] delegate];
+    AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
     ContentService *cs = ad.contentService;
     CouchDatabase *contentDb = [cs Database];        
     Problem *p = [[CouchModelFactory sharedInstance] modelForDocument:[contentDb documentWithID:currentProblemAttempt.problemId]];        

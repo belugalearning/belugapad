@@ -298,6 +298,7 @@
 		7FB982C615116633006D31AE /* BAVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982AA15116633006D31AE /* BAVariable.m */; };
 		7FB982C715116633006D31AE /* NSArray_BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */; };
 		7FB982C815116633006D31AE /* NSArray_BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */; };
+		7FBE969315497DDF00D993AC /* select-edit-user-images in Resources */ = {isa = PBXBuildFile; fileRef = 7FBE969215497DDF00D993AC /* select-edit-user-images */; };
 		7FC27F6F150FAAAA00E16A44 /* DWRamblerGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */; };
 		7FC27F72150FAB4400E16A44 /* NLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F71150FAB4300E16A44 /* NLine.m */; };
 		7FC27F7F150FB19B00E16A44 /* BNLineRamblerInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F7E150FB19B00E16A44 /* BNLineRamblerInput.m */; };
@@ -884,6 +885,7 @@
 		7FB982AA15116633006D31AE /* BAVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAVariable.m; sourceTree = "<group>"; };
 		7FB982AB15116633006D31AE /* NSArray_BAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSArray_BAAdditions.h; sourceTree = "<group>"; };
 		7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSArray_BAAdditions.m; sourceTree = "<group>"; };
+		7FBE969215497DDF00D993AC /* select-edit-user-images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "select-edit-user-images"; sourceTree = SOURCE_ROOT; };
 		7FC27F6D150FAAAA00E16A44 /* DWRamblerGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWRamblerGameObject.h; sourceTree = "<group>"; };
 		7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWRamblerGameObject.m; sourceTree = "<group>"; };
 		7FC27F70150FAB4300E16A44 /* NLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NLine.h; sourceTree = "<group>"; };
@@ -1596,6 +1598,7 @@
 		7F5113D314A9EE63001AF372 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7FBE969215497DDF00D993AC /* select-edit-user-images */,
 				7FA38A9B1544D4B00031E59D /* canned-content-db */,
 				7F5005C81522478C0038D251 /* fps_images-hd.png */,
 				7F5005C91522478C0038D251 /* fps_images-ipadhd.png */,
@@ -2103,6 +2106,7 @@
 				552478661536BF5C00BA5C4E /* tooldef.plist in Resources */,
 				7FA38A9C1544D4B00031E59D /* canned-content-db in Resources */,
 				7FA38ABA1545334B0031E59D /* SelectUserViewController.xib in Resources */,
+				7FBE969315497DDF00D993AC /* select-edit-user-images in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

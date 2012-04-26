@@ -67,6 +67,11 @@
         self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
         contentService = [[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
         
+        
+        //do cocos stuff
+        //director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
+        //[director_ enableRetinaDisplay:NO];
+        
         //[self proceedFromLoginViaIntro:YES];
         selectUserViewController = [[SelectUserViewController alloc] init];
         [self.window addSubview:selectUserViewController.view];
@@ -81,8 +86,9 @@
     NSDictionary *launchOptions=launchOptionsCache;
     
     //not sure this is required -- it's being ended in SelectUserViewController?
+    //[director_ end];
+    
     director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
-    [director_ end];
     
 	// Create an CCGLView with a RGB565 color buffer, and a depth buffer of 0-bits
 	CCGLView *glView = [CCGLView viewWithFrame:[window_ bounds]
@@ -144,8 +150,9 @@
 
     
     // and add the scene to the stack. The director will run it when it automatically when the view is displayed.
-	[director_ pushScene: (viaIntro ? [ZubiIntro scene] : [MenuScene scene])]; 
+	//[director_ pushScene: (viaIntro ? [ZubiIntro scene] : [MenuScene scene])]; 
     
+    [director_ pushScene:[ZubiIntro scene]];
     
 }
 

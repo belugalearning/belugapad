@@ -181,15 +181,23 @@
 {
     [colorWheel addObserver: self forKeyPath: @"lastColorRGBAData" options: 0 context: NULL];
     
-    EAGLView *glview = [EAGLView viewWithFrame:CGRectMake(632, 290, 160, 160) pixelFormat:kEAGLColorFormatRGBA8 depthFormat:0];
-    glview.opaque = NO;
-    [[CCDirector sharedDirector] setOpenGLView:glview];    
-    [CCDirector sharedDirector].openGLView.backgroundColor = [UIColor clearColor];
-    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    [[CCDirector sharedDirector] runWithScene:[EditZubi scene]];
-    [editUserView addSubview:glview];
+//    CCGLView *glView = [CCGLView viewWithFrame:CGRectMake(632, 290, 160, 160)
+//								   pixelFormat:kEAGLColorFormatRGBA8	//kEAGLColorFormatRGBA8
+//								   depthFormat:0	//GL_DEPTH_COMPONENT24_OES
+//							preserveBackbuffer:NO
+//									sharegroup:nil
+//								 multiSampling:NO
+//							   numberOfSamples:0];
+//    
+////    EAGLView *glview = [EAGLView viewWithFrame:CGRectMake(632, 290, 160, 160) pixelFormat:kEAGLColorFormatRGBA8 depthFormat:0];
+//    glView.opaque = NO;
+//    [[CCDirector sharedDirector] setView:glView];    
+//    [CCDirector sharedDirector].view.backgroundColor = [UIColor clearColor];
+////    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+////    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+////    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//    [[CCDirector sharedDirector] runWithScene:[EditZubi scene]];
+//    [editUserView addSubview:glView];
     
     newUserNameTF = [[UITextField alloc] initWithFrame:CGRectMake(358.0f, 114.0f, 400.0f, 45.0f)];
     newUserNameTF.delegate = self;

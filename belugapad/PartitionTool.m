@@ -357,27 +357,26 @@
         // show the problem incomplete message
         [toolHost showProblemIncompleteMessage];
 
-        [toolHost resetProblem];
-        // loop over the rows (single objects)
-//        for(int i=0;i<createdRows.count;i++)
-//        {
-//            // and for each of our rows, get a count
-//            DWPartitionRowGameObject *prgo=[createdRows objectAtIndex:i];
-//            float count=[prgo.MountedObjects count];
-//            
-//            // then if they're not locked
-//            if(!prgo.Locked) {
-//                for(int o=0;o<count;o++)
-//                {
-//                    // then move each of our sprites back!
-//                    DWPartitionObjectGameObject *pogo=[prgo.MountedObjects objectAtIndex:o];
-//                    pogo.Position = pogo.MountPosition;
-//                    NSLog(@"send movesprite message to obj %d/%d", i, prgo.MountedObjects.count);
-//                    [pogo handleMessage:kDWmoveSpriteToPosition];
-//                }
-//                [prgo.MountedObjects removeAllObjects];
-//            }
-//        }
+        // start our for loop
+        for(int i=0;i<createdRows.count;i++)
+        {
+            // set the current row
+            DWPartitionRowGameObject *prgo=[createdRows objectAtIndex:i];
+        
+            //set the count of objects on that row
+            int count=[prgo.MountedObjects count];
+            
+            //and if the row isn't locked
+            if(!prgo.Locked){
+                for (int o=count-1;o>=0;o--)
+                {
+                    // set the current object and send it home - resetting the mount for any inited objects
+                    DWPartitionObjectGameObject *pogo=[prgo.MountedObjects objectAtIndex:o];
+                    [pogo handleMessage:kDWmoveSpriteToHome];
+                    if(pogo.InitedObject) [pogo handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:prgo forKey:MOUNT] withLogLevel:0];
+                }
+            }
+        }
 
     }
 }

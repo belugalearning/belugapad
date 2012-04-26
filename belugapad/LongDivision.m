@@ -250,36 +250,41 @@
     
     if(doingHorizontalDrag)
     {
-        // this code snaps to a number
         CGPoint diff=[BLMath SubtractVector:location from:touchStart];
         diff = ccp(diff.x, 0);
-        int offsetPos=0;
-        CCLayer *moveLayer = [numberLayers objectAtIndex:1];
-        float floatNumberPos=-diff.x/120.0f;
-        if(floatNumberPos>0.5f){
-            floatNumberPos=-(floatNumberPos-0.5);
-            currentNumberPos+=(int)floatNumberPos+1;
-            offsetPos=(int)floatNumberPos+1;
-        }       
-        else {
-            currentNumberPos+=(int)floatNumberPos; 
-            offsetPos=(int)floatNumberPos;
-        }
         
-        NSLog(@"floatNumberPos %f", floatNumberPos);
+        CCLayer *moveLayer = [numberLayers objectAtIndex:1];
 
+        //the quantity of increments moved
+        float floatNumberPos=fabsf(diff.x)/120.0f;
+        
+        //the remainder of the movement past the last whole increment
+        float remainder=floatNumberPos - (int)floatNumberPos;
+        
+        //by how much should the line be incremented
+        int incrementor=0;
+        
+        //round up
+        if(remainder>0.5f)
+            incrementor=(int)floatNumberPos+1;
+        //round down
+        else
+            incrementor=(int)floatNumberPos;
+
+        
+        //if the diff in x is positive, the number wants to go up (end point of x is less that of start point) 
+        if(diff.x > 0) // incrementing line
+            currentNumberPos+=incrementor;
+        //otherwise the number on the line goes down
+        else 
+            currentNumberPos-=incrementor;
+        
+        //truncate to fixed bounds
         if(currentNumberPos<0)currentNumberPos=0;
         if(currentNumberPos>9)currentNumberPos=9;
-        NSLog(@"currentNumberPos %d", currentNumberPos);
-        NSLog(@"touchStart x %f / y %f", touchStart.x, touchStart.y);
-        NSLog(@"touchEnd x %f / y %f", location.x, location.y);
-        float remainder=fabsf(floatNumberPos)-fabsf(offsetPos);
-        if(diff.x<0) remainder=-remainder;
-        float moveBy=remainder*120;
-        NSLog(@"moveBy %f", moveBy);
-    
-        //[moveLayer runAction:[CCMoveBy actionWithDuration:0.5f position:ccp(moveBy,0)]];
-        [moveLayer runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(currentNumberPos*-120,0)]];
+
+        //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
+        [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(currentNumberPos*-120,0)]];
     }
     
     topTouch=NO;

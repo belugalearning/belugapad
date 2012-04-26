@@ -18,6 +18,7 @@
 
 #import "UsersService.h"
 #import "SelectUserViewController.h"
+#import "LoadingViewController.h"
 #import "MenuScene.h"
 #import <CouchCocoa/CouchCocoa.h>
 
@@ -43,6 +44,14 @@
 {
     launchOptionsCache=launchOptions;
     
+    // Init the window
+    window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    LoadingViewController *lvc=[[LoadingViewController alloc] init];
+    [self.window addSubview:lvc.view];
+    [self.window makeKeyAndVisible];
+    [lvc release];
+    
     CouchEmbeddedServer* server = [CouchEmbeddedServer sharedInstance];
     
     // install canned copy of content database if doesn't yet exist (i.e. first app launch)
@@ -58,9 +67,6 @@
         //if( ! [CCDirector setDirectorType:kCCDirectorTypeDisplayLink] )
         //    [CCDirector setDirectorType:kCCDirectorTypeDefault];
         
-        // Init the window
-        window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-        
         usersService = [[UsersService alloc] init];
         
         //load local settings
@@ -74,6 +80,7 @@
         
         //[self proceedFromLoginViaIntro:YES];
         selectUserViewController = [[SelectUserViewController alloc] init];
+        
         [self.window addSubview:selectUserViewController.view];
         [self.window makeKeyAndVisible];
     }];

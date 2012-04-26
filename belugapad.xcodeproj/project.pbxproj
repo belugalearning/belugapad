@@ -299,6 +299,9 @@
 		7FB982C715116633006D31AE /* NSArray_BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */; };
 		7FB982C815116633006D31AE /* NSArray_BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */; };
 		7FBE969315497DDF00D993AC /* select-edit-user-images in Resources */ = {isa = PBXBuildFile; fileRef = 7FBE969215497DDF00D993AC /* select-edit-user-images */; };
+		7FBE96991549819300D993AC /* LoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FBE96971549819300D993AC /* LoadingViewController.m */; };
+		7FBE969A1549819300D993AC /* LoadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FBE96981549819300D993AC /* LoadingViewController.xib */; };
+		7FBE969C15498F3700D993AC /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FBE969B15498F3700D993AC /* Icon.png */; };
 		7FC27F6F150FAAAA00E16A44 /* DWRamblerGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */; };
 		7FC27F72150FAB4400E16A44 /* NLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F71150FAB4300E16A44 /* NLine.m */; };
 		7FC27F7F150FB19B00E16A44 /* BNLineRamblerInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F7E150FB19B00E16A44 /* BNLineRamblerInput.m */; };
@@ -886,6 +889,10 @@
 		7FB982AB15116633006D31AE /* NSArray_BAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSArray_BAAdditions.h; sourceTree = "<group>"; };
 		7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSArray_BAAdditions.m; sourceTree = "<group>"; };
 		7FBE969215497DDF00D993AC /* select-edit-user-images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "select-edit-user-images"; sourceTree = SOURCE_ROOT; };
+		7FBE96961549819300D993AC /* LoadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingViewController.h; sourceTree = "<group>"; };
+		7FBE96971549819300D993AC /* LoadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingViewController.m; sourceTree = "<group>"; };
+		7FBE96981549819300D993AC /* LoadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingViewController.xib; sourceTree = "<group>"; };
+		7FBE969B15498F3700D993AC /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		7FC27F6D150FAAAA00E16A44 /* DWRamblerGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWRamblerGameObject.h; sourceTree = "<group>"; };
 		7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWRamblerGameObject.m; sourceTree = "<group>"; };
 		7FC27F70150FAB4300E16A44 /* NLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NLine.h; sourceTree = "<group>"; };
@@ -1546,6 +1553,7 @@
 			children = (
 				7FA38AA7154532360031E59D /* libz.dylib */,
 				7FA38AA11545321E0031E59D /* libstdc++.dylib */,
+				7FBE969B15498F3700D993AC /* Icon.png */,
 				7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */,
 				7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */,
 				7F5113D214A9EE63001AF372 /* belugapad */,
@@ -1852,6 +1860,9 @@
 				7FA38ABC1545335A0031E59D /* User.m */,
 				7FA38ABD1545335A0031E59D /* UsersService.h */,
 				7FA38ABE1545335A0031E59D /* UsersService.m */,
+				7FBE96961549819300D993AC /* LoadingViewController.h */,
+				7FBE96971549819300D993AC /* LoadingViewController.m */,
+				7FBE96981549819300D993AC /* LoadingViewController.xib */,
 			);
 			name = Users;
 			sourceTree = "<group>";
@@ -2107,6 +2118,8 @@
 				7FA38A9C1544D4B00031E59D /* canned-content-db in Resources */,
 				7FA38ABA1545334B0031E59D /* SelectUserViewController.xib in Resources */,
 				7FBE969315497DDF00D993AC /* select-edit-user-images in Resources */,
+				7FBE969A1549819300D993AC /* LoadingViewController.xib in Resources */,
+				7FBE969C15498F3700D993AC /* Icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2422,6 +2435,7 @@
 				7FA38ACC154533900031E59D /* Topic.m in Sources */,
 				7FA38ACF1545339C0031E59D /* Syllabus.m in Sources */,
 				7FA38AD2154534340031E59D /* EditZubi.m in Sources */,
+				7FBE96991549819300D993AC /* LoadingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

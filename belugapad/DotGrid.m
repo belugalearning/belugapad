@@ -202,25 +202,24 @@
         int curStartY=[[curObject objectForKey:START_Y] intValue];
         int curEndX=[[curObject objectForKey:END_X] intValue];
         int curEndY=[[curObject objectForKey:END_Y] intValue];
-        int noPreCounted=[[curObject objectForKey:NUMBER_PRE_COUNTED] intValue];
+        NSArray *preCountedTiles=[curObject objectForKey:PRE_COUNTED_TILES];
         BOOL disabled = [[curObject objectForKey:DISABLE_COUNTING] boolValue];
         BOOL showMove = [[curObject objectForKey:SHOW_MOVE] boolValue];
         BOOL showResize = [[curObject objectForKey:SHOW_RESIZE] boolValue];
-        NSString *countDirection = [curObject objectForKey:COUNT_DIRECTION];
         
         gw.Blackboard.FirstAnchor=[[dotMatrix objectAtIndex:curStartX] objectAtIndex:curStartY];
         gw.Blackboard.LastAnchor=[[dotMatrix objectAtIndex:curEndX] objectAtIndex:curEndY];
 
         
-        [self checkAnchorsAndUseResizeHandle:showResize andShowMove:showMove andPrecount:noPreCounted withDirection:countDirection andDisabled:disabled];
+        [self checkAnchorsAndUseResizeHandle:showResize andShowMove:showMove andPrecount:preCountedTiles andDisabled:disabled];
     }
 
 }
 -(void)checkAnchors
 {
-    [self checkAnchorsAndUseResizeHandle:YES andShowMove:YES andPrecount:0 withDirection:@"NONE" andDisabled:NO];
+    [self checkAnchorsAndUseResizeHandle:YES andShowMove:YES andPrecount:nil andDisabled:NO];
 }
--(void)checkAnchorsAndUseResizeHandle:(BOOL)showResize andShowMove:(BOOL)showMove andPrecount:(int)noOfTiles withDirection:(NSString*)countDirection andDisabled:(BOOL)Disabled
+-(void)checkAnchorsAndUseResizeHandle:(BOOL)showResize andShowMove:(BOOL)showMove andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled
 {
     // only run if we have a first and last anchor point
     if(gw.Blackboard.FirstAnchor && gw.Blackboard.LastAnchor)
@@ -296,7 +295,7 @@
             }
 
         }
-        [self createShapeWithAnchorPoints:anchorsForShape andPrecount:noOfTiles withDirection:countDirection andDisabled:Disabled];        
+        [self createShapeWithAnchorPoints:anchorsForShape andPrecount:preCountedTiles andDisabled:Disabled];        
         for(int i=0;i<[anchorsForShape count];i++)
         {
             DWDotGridAnchorGameObject *wanch = [anchorsForShape objectAtIndex:i];
@@ -306,7 +305,7 @@
     }
 }
 
--(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(int)noToCount withDirection:(NSString*)countDirection andDisabled:(BOOL)Disabled
+-(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled
 {
     
     DWDotGridShapeGameObject *shape=[DWDotGridShapeGameObject alloc];           
@@ -329,9 +328,15 @@
             [shape.tiles addObject:tile];
             curAnch.tile=tile;
             // if we have pre counting tiles on
-            if(numberCounted<noToCount){
-                tile.Selected=YES;
-                numberCounted++;
+            if(preCountedTiles){
+                NSDictionary *thisTile=[[NSDictionary alloc]init];
+                if(numberCounted<[preCountedTiles count]) thisTile=[preCountedTiles objectAtIndex:numberCounted];
+                
+                if(curAnch.myXpos == [[thisTile objectForKey:POS_X] intValue] && curAnch.myYpos == [[thisTile objectForKey:POS_Y]intValue])
+                {
+                    numberCounted++;
+                    tile.Selected=YES;
+                }
             }
             
             if(curAnch.resizeHandle)

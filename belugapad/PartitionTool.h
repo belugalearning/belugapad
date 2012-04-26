@@ -41,6 +41,8 @@
     
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
+    
+    DWPartitionRowGameObject *previousMount;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

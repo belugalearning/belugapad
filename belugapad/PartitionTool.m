@@ -168,6 +168,8 @@
         
         //[pogo.Mounts addObject:[createdRows objectAtIndex:insRow]];
         pogo.Length = insLength;
+        
+        pogo.InitedObject=YES;
 
         if([[initObjects objectAtIndex:i]objectForKey:LABEL]) fillText = [[initObjects objectAtIndex:i]objectForKey:LABEL];
         else fillText=[NSString stringWithFormat:@"%d", insLength];
@@ -208,6 +210,9 @@
         [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
         gw.Blackboard.DropObject=nil;
         gw.Blackboard.PickupOffset = location;
+        
+        previousMount=((DWPartitionObjectGameObject*)gw.Blackboard.PickupObject).Mount;
+        
         [((DWPartitionObjectGameObject*)gw.Blackboard.PickupObject) handleMessage:kDWunsetMount];
 
         
@@ -272,8 +277,14 @@
         }
         else
         {
-            [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToHome];
-            [gw handleMessage:kDWhighlight andPayload:nil withLogLevel:-1];
+            if(((DWPartitionObjectGameObject*)gw.Blackboard.PickupObject).InitedObject)
+            {
+                [gw.Blackboard.PickupObject handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:previousMount forKey:MOUNT] withLogLevel:0];
+            }
+            else {
+                [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToHome];
+                [gw handleMessage:kDWhighlight andPayload:nil withLogLevel:-1];                
+            }
         }
     }
     

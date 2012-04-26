@@ -143,7 +143,7 @@
         {
             DWPartitionObjectGameObject *pogo = [DWPartitionObjectGameObject alloc];
             [gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];
-            pogo.Position=ccp(25,650-(i*65));            
+            pogo.Position=ccp(25-(ic*2),650-(i*65)+(ic*3));            
             pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
             
             if([[initCages objectAtIndex:i] objectForKey:LABEL])

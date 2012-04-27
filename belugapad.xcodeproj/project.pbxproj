@@ -309,6 +309,7 @@
 		7FCBC3E415100CF700066426 /* BATio.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E315100CF700066426 /* BATio.m */; };
 		7FCBC3E815100F3D00066426 /* MathMLConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E715100F3D00066426 /* MathMLConsts.m */; };
 		7FCBC3EB1510195F00066426 /* ExprIOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3EA1510195F00066426 /* ExprIOTests.m */; };
+		7FDABAC3154AABF300F3F1A5 /* ConceptNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDABAC2154AABF300F3F1A5 /* ConceptNode.m */; };
 		7FDBA52D14EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51214EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m */; };
 		7FDBA52E14EBD560004D1CC9 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51414EBD560004D1CC9 /* CXMLNode_CreationExtensions.m */; };
 		7FDBA52F14EBD560004D1CC9 /* CXHTMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51614EBD560004D1CC9 /* CXHTMLDocument.m */; };
@@ -906,6 +907,8 @@
 		7FCBC3E615100F3D00066426 /* MathMLConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathMLConsts.h; sourceTree = "<group>"; };
 		7FCBC3E715100F3D00066426 /* MathMLConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MathMLConsts.m; sourceTree = "<group>"; };
 		7FCBC3EA1510195F00066426 /* ExprIOTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprIOTests.m; sourceTree = "<group>"; };
+		7FDABAC1154AABF300F3F1A5 /* ConceptNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConceptNode.h; sourceTree = "<group>"; };
+		7FDABAC2154AABF300F3F1A5 /* ConceptNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConceptNode.m; sourceTree = "<group>"; };
 		7FDBA51114EBD560004D1CC9 /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
 		7FDBA51214EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_CreationExtensions.m; sourceTree = "<group>"; };
 		7FDBA51314EBD560004D1CC9 /* CXMLNode_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_CreationExtensions.h; sourceTree = "<group>"; };
@@ -989,6 +992,8 @@
 				7FA38ACB154533900031E59D /* Topic.m */,
 				7FA38ACD1545339C0031E59D /* Syllabus.h */,
 				7FA38ACE1545339C0031E59D /* Syllabus.m */,
+				7FDABAC1154AABF300F3F1A5 /* ConceptNode.h */,
+				7FDABAC2154AABF300F3F1A5 /* ConceptNode.m */,
 			);
 			name = Content;
 			sourceTree = "<group>";
@@ -2436,6 +2441,7 @@
 				7FA38ACF1545339C0031E59D /* Syllabus.m in Sources */,
 				7FA38AD2154534340031E59D /* EditZubi.m in Sources */,
 				7FBE96991549819300D993AC /* LoadingViewController.m in Sources */,
+				7FDABAC3154AABF300F3F1A5 /* ConceptNode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

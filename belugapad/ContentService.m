@@ -16,6 +16,7 @@
 #import "Module.h"
 #import "Topic.h"
 #import "Syllabus.h"
+#import "ConceptNode.h"
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
 #import <CouchCocoa/CouchModelFactory.h>
@@ -23,7 +24,7 @@
 //NSString * const kRemoteContentDatabaseURI = @"http://www.soFarAslant.com:5984/temp-blm-content";
 NSString * const kRemoteContentDatabaseURI = @"http://www.soFarAslant.com:5984/please-do-not-replicate-me";
 NSString * const kLocalContentDatabaseName = @"kcm";
-NSString * const kDefaultContentDesignDocName = @"content-views";
+NSString * const kDefaultContentDesignDocName = @"kcm-views";
 
 @interface ContentService()
 {
@@ -84,7 +85,7 @@ NSString * const kDefaultContentDesignDocName = @"content-views";
             [[CouchModelFactory sharedInstance] registerClass:[Module class] forDocumentType:@"module"];
             [[CouchModelFactory sharedInstance] registerClass:[Topic class] forDocumentType:@"topic"];
             [[CouchModelFactory sharedInstance] registerClass:[Syllabus class] forDocumentType:@"syllabus"];
-            
+            [[CouchModelFactory sharedInstance] registerClass:[ConceptNode class] forDocumentType:@"concept node"];
             
             
             CouchEmbeddedServer *server = [CouchEmbeddedServer sharedInstance];
@@ -107,6 +108,12 @@ NSString * const kDefaultContentDesignDocName = @"content-views";
             {
                 self.defaultSyllabus = [[CouchModelFactory sharedInstance] modelForDocument:((CouchQueryRow*)[syllabi objectAtIndex:0]).document];
             }
+            
+            //test we have some nodes
+            CouchQuery *nodeq=[[database designDocumentWithName:kDefaultContentDesignDocName] queryViewNamed:@"concept-nodes"];
+            [[nodeq start] wait];
+            NSArray *nodes=nodeq.rows.allObjects;
+            NSLog(@"node count is %d", [nodes count]);
             
             // TODO: REINSTATE REPLICATION - will need to manage response to changes in remote content database
             //pullReplication = [[database pullFromDatabaseAtURL:[NSURL URLWithString:kRemoteContentDatabaseURI]] retain];

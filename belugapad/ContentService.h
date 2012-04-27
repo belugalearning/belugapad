@@ -22,5 +22,6 @@
 -(void)gotoNextProblem;
 -(CouchDatabase*)Database;
 -(void)gotoNextProblemInElement;
+-(NSArray*)allConceptNodes;
 
 @end

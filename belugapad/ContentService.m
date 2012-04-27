@@ -109,12 +109,6 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
                 self.defaultSyllabus = [[CouchModelFactory sharedInstance] modelForDocument:((CouchQueryRow*)[syllabi objectAtIndex:0]).document];
             }
             
-            //test we have some nodes
-            CouchQuery *nodeq=[[database designDocumentWithName:kDefaultContentDesignDocName] queryViewNamed:@"concept-nodes"];
-            [[nodeq start] wait];
-            NSArray *nodes=nodeq.rows.allObjects;
-            NSLog(@"node count is %d", [nodes count]);
-            
             // TODO: REINSTATE REPLICATION - will need to manage response to changes in remote content database
             //pullReplication = [[database pullFromDatabaseAtURL:[NSURL URLWithString:kRemoteContentDatabaseURI]] retain];
             //pullReplication.continuous = YES;
@@ -131,6 +125,24 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
 -(id)init
 {
     return [self initWithProblemPipeline:@"DATABASE"];
+}
+
+-(NSArray*)allConceptNodes
+{
+    CouchQuery *nodeq=[[database designDocumentWithName:kDefaultContentDesignDocName] queryViewNamed:@"concept-nodes"];
+    [[nodeq start] wait];
+    
+    NSArray *ids=nodeq.rows.allObjects;
+    
+    NSMutableArray *nodes=[[NSMutableArray alloc] init];
+    for (int i=0; i<[ids count]; i++) {
+        CouchQueryRow *qr=[ids objectAtIndex:i];
+        NSString *thisid=qr.key;
+        ConceptNode *n=[[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:thisid]];
+        
+        [nodes addObject:n];
+    }
+    return nodes;
 }
 
 -(void)gotoNextProblemInElement

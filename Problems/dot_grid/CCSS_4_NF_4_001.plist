@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Shade 1/2 of this shape</string>
+	<string>this is 3/8. Draw 5x 3/8.</string>
 	<key>TOOL_KEY</key>
 	<string>DotGrid</string>
 	<key>ANCHOR_SPACE</key>
@@ -18,7 +18,7 @@
 			<key>START_X</key>
 			<integer>2</integer>
 			<key>START_Y</key>
-			<integer>5</integer>
+			<integer>4</integer>
 			<key>END_X</key>
 			<integer>6</integer>
 			<key>END_Y</key>
@@ -29,9 +29,39 @@
 			<false/>
 			<key>SHOW_LABELS</key>
 			<false/>
+			<key>PRE_COUNTED_TILES</key>
+			<array>
+				<dict>
+					<key>POS_X</key>
+					<integer>2</integer>
+					<key>POS_Y</key>
+					<integer>4</integer>
+				</dict>
+				<dict>
+					<key>POS_X</key>
+					<integer>2</integer>
+					<key>POS_Y</key>
+					<integer>5</integer>
+				</dict>
+				<dict>
+					<key>POS_X</key>
+					<integer>3</integer>
+					<key>POS_Y</key>
+					<integer>5</integer>
+				</dict>
+			</array>
 			<key>DISABLE_COUNTING</key>
-			<false/>
+			<true/>
 		</dict>
 	</array>
+	<key>HIDDEN_ROWS</key>
+	<dict>
+		<key>6</key>
+		<true/>
+		<key>5</key>
+		<true/>
+		<key>4</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

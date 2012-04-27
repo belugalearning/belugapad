@@ -8,6 +8,10 @@
 	<string>DotGrid</string>
 	<key>ANCHOR_SPACE</key>
 	<integer>85</integer>
+	<key>START_X</key>
+	<integer>2</integer>
+	<key>START_Y</key>
+	<integer>3</integer>
 	<key>DRAW_MODE</key>
 	<integer>1</integer>
 	<key>EVAL_MODE</key>
@@ -29,11 +33,23 @@
 			<false/>
 			<key>SHOW_LABELS</key>
 			<false/>
-			<key>NUMBER_PRE_COUNTED</key>
-			<integer>2</integer>
+			<key>PRE_COUNTED_TILES</key>
+			<array>
+				<dict>
+					<key>POS_X</key>
+					<integer>2</integer>
+					<key>POS_Y</key>
+					<integer>5</integer>
+				</dict>
+			</array>
 			<key>DISABLE_COUNTING</key>
 			<true/>
 		</dict>
 	</array>
+	<key>HIDDEN_ROWS</key>
+	<dict>
+		<key>4</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

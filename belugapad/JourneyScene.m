@@ -18,11 +18,16 @@
 
 #import "ConceptNode.h"
 
+static float kNodeScale=2.0f;
+static CGPoint kStartMapPos={-2420, -3063};
+
 @interface JourneyScene()
 {
     @private
     ContentService *contentService;
+
     NSArray *kcmNodes;
+    NSMutableArray *nodeSprites;
     
     float nMinX, nMinY, nMaxX, nMaxY;
 }
@@ -58,7 +63,7 @@
         
         [self schedule:@selector(doUpdate:) interval:1.0f / 60.0f];
         
-        daemon=[[Daemon alloc] initWithLayer:mapLayer andRestingPostion:ccp(cx, cy) andLy:ly];
+        daemon=[[Daemon alloc] initWithLayer:mapLayer andRestingPostion:[mapLayer convertToNodeSpace:ccp(cx, cy)] andLy:ly];
         [daemon setMode:kDaemonModeFollowing];
     }
     
@@ -68,22 +73,14 @@
 -(void) setupMap
 {
     //base map layer
-    mapLayer=[[CCLayer alloc] init];
+    mapLayer=[[CCLayerColor alloc] initWithColor:ccc4(0, 59, 72, 255) width:100000 height:100000];
+    [mapLayer setPosition:kStartMapPos];
     [self addChild:mapLayer];
     
-    //add background to the map itself
-    for (int r=-2; r<3; r++) {
-        for (int c=-2; c<3; c++) {
-            CCSprite *btile=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/mapbase.png")];
-            [btile setPosition:ccp((lx*c)+cx, (ly*r)+cy)];
-            [mapLayer addChild:btile];
-        }
-    }
-    
     //add overlay on centre tile
-    CCSprite *sample=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/samplenodes.png")];
-    [sample setPosition:ccp(cx, cy)];
-    [mapLayer addChild:sample];
+//    CCSprite *sample=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/samplenodes.png")];
+//    [sample setPosition:ccp(cx, cy)];
+//    [mapLayer addChild:sample];
     
     kcmNodes=[contentService allConceptNodes];
     //find bounds
@@ -108,7 +105,38 @@
         }
     }
     
+    nMinX=nMinX*kNodeScale;
+    nMinY=nMinY*kNodeScale;
+    nMaxX=nMaxX*kNodeScale;
+    nMaxY=nMaxY*kNodeScale;
+    
+    //add background to the map itself
+    
+//    int rsize=(int)((nMaxY-nMinY) / ly);
+//    int csize=(int)((nMaxX-nMinX) / lx);
+//    
+//    for (int r=0; r<=rsize; r++) {
+//        for (int c=0; c<csize; c++) {
+//            CCSprite *btile=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/mapbase.png")];
+//            [btile setPosition:ccp((lx*c)+cx, (ly*r)+cy)];
+//            [mapLayer addChild:btile];
+//        }
+//    }
+    
+    [self createNodeSprites];
+    
     NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
+}
+
+-(void)createNodeSprites
+{
+    for(ConceptNode *n in kcmNodes)
+    {
+        CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-std.png")];
+        [s setPosition:ccp([n.x floatValue] / kNodeScale, [n.y floatValue] / kNodeScale)];
+        [mapLayer addChild:s];
+        [nodeSprites addObject:s];
+    }
 }
 
 -(void) doUpdate:(ccTime)delta
@@ -137,6 +165,8 @@
     CGPoint l=[touch locationInView:[touch view]];
     l=[[CCDirector sharedDirector] convertToGL:l];
     
+    [mapLayer setPosition:[BLMath AddVector:mapLayer.position toVector:[BLMath SubtractVector:lastTouch from:l]]];
+    
     lastTouch=l;
     
     CGPoint lOnMap=[mapLayer convertToNodeSpace:l];
@@ -147,19 +177,19 @@
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    CGPoint tapFromC=[BLMath SubtractVector:ccp(cx, cy) from:lastTouch];
-    CGPoint moveBy=ccp(-tapFromC.x, -tapFromC.y);
+    //CGPoint tapFromC=[BLMath SubtractVector:ccp(cx, cy) from:lastTouch];
+    //CGPoint moveBy=ccp(-tapFromC.x, -tapFromC.y);
     
-    CCMoveBy *m=[CCMoveBy actionWithDuration:2.5f position:moveBy];
+    //CCMoveBy *m=[CCMoveBy actionWithDuration:2.5f position:moveBy];
     
     //CCEaseInOut *ease=[CCEaseInOut actionWithAction:[CCMoveBy actionWithDuration:2.0f position:moveBy] rate:0.5f];
     
     //CCEaseOut *eout=[CCEaseOut actionWithAction:m rate:0.6f];
     //CCEaseIn *ein=[CCEaseIn actionWithAction:eout rate:0.6f];
     
-    CCEaseIn *eins=[CCEaseIn actionWithAction:m rate:0.5f];
+    //CCEaseIn *eins=[CCEaseIn actionWithAction:m rate:0.5f];
     
-    [mapLayer runAction:eins];
+    //[mapLayer runAction:eins];
 }
 
 

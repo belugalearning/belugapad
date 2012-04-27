@@ -50,6 +50,8 @@
     float dividend;
     float divisor;
     
+    int currentRowPos;
+    int activeRow;
     int currentNumberPos;
     float rowMultiplier;
     float startRow;

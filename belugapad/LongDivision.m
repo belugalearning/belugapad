@@ -104,10 +104,10 @@
     [numberRows retain];
     [numberLayers retain];
 
-    float rowMultiplierT=0.1f;
+    float rowMultiplierT=0.001f;
     
     // we have 3 visible at any one time, so this is the current rows
-    for(int r=0;r<3;r++)
+    for(int r=0;r<8;r++)
     {
         NSMutableArray *thisRow=[[NSMutableArray alloc]init];
         
@@ -133,6 +133,9 @@
         
         rowMultiplierT=rowMultiplierT*10;
     }
+    
+    currentRowPos=0;
+    activeRow=currentRowPos+1;
 }
 
 -(void)populateGW
@@ -215,7 +218,7 @@
             doingHorizontalDrag=YES;
             CGPoint diff=[BLMath SubtractVector:lastTouch from:location];
             diff = ccp(diff.x, 0);
-            CCLayer *moveLayer = [numberLayers objectAtIndex:1];
+            CCLayer *moveLayer = [numberLayers objectAtIndex:activeRow];
                       
             [moveLayer setPosition:ccpAdd(moveLayer.position, diff)];
 
@@ -253,7 +256,7 @@
         CGPoint diff=[BLMath SubtractVector:location from:touchStart];
         diff = ccp(diff.x, 0);
         
-        CCLayer *moveLayer = [numberLayers objectAtIndex:1];
+        CCLayer *moveLayer = [numberLayers objectAtIndex:activeRow];
 
         //the quantity of increments moved
         float floatNumberPos=fabsf(diff.x)/120.0f;
@@ -270,7 +273,6 @@
         //round down
         else
             incrementor=(int)floatNumberPos;
-
         
         //if the diff in x is positive, the number wants to go up (end point of x is less that of start point) 
         if(diff.x > 0) // incrementing line
@@ -282,9 +284,64 @@
         //truncate to fixed bounds
         if(currentNumberPos<0)currentNumberPos=0;
         if(currentNumberPos>9)currentNumberPos=9;
-
+        
         //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
-        [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(currentNumberPos*-120,0)]];
+        [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(currentNumberPos*-120,moveLayer.position.y)]];
+    }
+    
+    if(doingVerticalDrag)
+    {
+        CGPoint diff=[BLMath SubtractVector:location from:touchStart];
+        diff = ccp(0, diff.y);
+        
+        //the quantity of increments moved
+        float floatRowPos=fabsf(diff.y)/80.0f;
+        NSLog(@"floatrowpos %f", floatRowPos);
+        
+        //the remainder of the movement past the last whole increment
+        float remainder=floatRowPos - (int)floatRowPos;
+        
+        //by how much should the line be incremented
+        int incrementor=0;
+        
+        //round up
+        if(remainder>0.5f)
+            incrementor=(int)floatRowPos+1;
+        //round down
+        else
+            incrementor=(int)floatRowPos;
+        
+        NSLog(@"incrementor %d", incrementor);
+        
+        //if the diff in x is positive, the number wants to go up (end point of x is less that of start point) 
+        if(diff.y > 0) // incrementing line
+            currentRowPos-=incrementor;
+        //otherwise the number on the line goes down
+        else 
+            currentRowPos+=incrementor;
+        NSLog(@"currentrowpos %d", currentRowPos);
+        
+        //truncate to fixed bounds
+        if(currentRowPos<-1)currentRowPos=-1;
+        if(currentRowPos>6)currentRowPos=6;
+  
+        activeRow=currentRowPos+1;
+        
+        NSLog(@"currentrowpos %d", currentRowPos);
+        //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
+        
+        for(int i=0;i<[numberLayers count];i++)
+        {
+            CCLayer *moveLayer=[numberLayers objectAtIndex:i];
+            [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(moveLayer.position.x,currentRowPos*80)]];
+            for(CCLabelTTF *lbl in moveLayer.children)
+            {
+                if(i == activeRow) [lbl setOpacity:255];
+                else [lbl setOpacity:50];
+            }
+            
+        }
+        
     }
     
     topTouch=NO;

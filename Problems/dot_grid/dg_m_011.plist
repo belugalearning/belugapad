@@ -3,15 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>DotGrid problem y0!</string>
+	<string>draw a shape twice as big as the white square.</string>
 	<key>TOOL_KEY</key>
 	<string>DotGrid</string>
 	<key>ANCHOR_SPACE</key>
 	<integer>85</integer>
 	<key>START_X</key>
-	<integer>0</integer>
+	<integer>4</integer>
 	<key>START_Y</key>
-	<integer>6</integer>
+	<integer>3</integer>
 	<key>DRAW_MODE</key>
 	<integer>1</integer>
 	<key>EVAL_MODE</key>
@@ -20,57 +20,68 @@
 	<array>
 		<dict>
 			<key>START_X</key>
-			<integer>0</integer>
+			<integer>1</integer>
 			<key>START_Y</key>
-			<integer>0</integer>
+			<integer>5</integer>
 			<key>END_X</key>
 			<integer>2</integer>
 			<key>END_Y</key>
-			<integer>2</integer>
+			<integer>6</integer>
 			<key>SHOW_RESIZE</key>
+			<false/>
+			<key>SHOW_MOVE</key>
 			<false/>
 			<key>SHOW_LABELS</key>
 			<false/>
 			<key>NUMBER_PRE_COUNTED</key>
-			<integer>3</integer>
-			<key>COUNT_DIRECTION</key>
-			<integer>0</integer>
+			<integer>1</integer>
 			<key>DISABLE_COUNTING</key>
-			<false/>
-			<key>PRE_COUNTED_TILES</key>
-			<array>
-				<dict>
-					<key>POS_X</key>
-					<integer>0</integer>
-					<key>POS_Y</key>
-					<integer>1</integer>
-				</dict>
-				<dict>
-					<key>POS_X</key>
-					<integer>1</integer>
-					<key>POS_Y</key>
-					<integer>0</integer>
-				</dict>
-			</array>
+			<true/>
 		</dict>
 		<dict>
 			<key>START_X</key>
 			<integer>4</integer>
 			<key>START_Y</key>
-			<integer>4</integer>
+			<integer>5</integer>
 			<key>END_X</key>
 			<integer>6</integer>
 			<key>END_Y</key>
 			<integer>6</integer>
+			<key>SHOW_RESIZE</key>
+			<false/>
 			<key>SHOW_MOVE</key>
-			<true/>
+			<false/>
+			<key>SHOW_LABELS</key>
+			<false/>
 			<key>NUMBER_PRE_COUNTED</key>
+			<integer>2</integer>
+			<key>DISABLE_COUNTING</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>START_X</key>
 			<integer>1</integer>
+			<key>START_Y</key>
+			<integer>1</integer>
+			<key>END_X</key>
+			<integer>3</integer>
+			<key>END_Y</key>
+			<integer>3</integer>
+			<key>SHOW_RESIZE</key>
+			<false/>
+			<key>SHOW_MOVE</key>
+			<false/>
+			<key>SHOW_LABELS</key>
+			<false/>
+			<key>NUMBER_PRE_COUNTED</key>
+			<integer>0</integer>
+			<key>DISABLE_COUNTING</key>
+			<true/>
 		</dict>
 	</array>
 	<key>HIDDEN_ROWS</key>
 	<dict>
-		<key>3</key>
+		<key>4</key>
 		<true/>
 	</dict>
 </dict>

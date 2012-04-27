@@ -177,10 +177,10 @@
             {
                 anch.Disabled=NO;
                 anch.StartAnchor=YES;
-                NSLog(@"THIS ANCHOR IS *ENABLED* (x %d / y %d)", anch.myXpos, anch.myYpos);
+                //NSLog(@"THIS ANCHOR IS *ENABLED* (x %d / y %d)", anch.myXpos, anch.myYpos);
             }
             else if((iRow!=startX || iCol!=startY) && drawMode==kSpecifiedStartAnchor) {
-                NSLog(@"THIS ANCHOR IS *DISABLED* (x %d / y %d)", anch.myXpos, anch.myYpos);
+                //NSLog(@"THIS ANCHOR IS *DISABLED* (x %d / y %d)", anch.myXpos, anch.myYpos);
                 anch.Disabled=YES;
             }
             
@@ -474,7 +474,29 @@
 {
     //returns YES if the tool expression evaluates succesfully
     
-    return YES;
+    for (DWGameObject *go in [gw AllGameObjects]) {
+        if([go isKindOfClass:[DWDotGridShapeGameObject class]])
+        {
+            DWDotGridShapeGameObject *sgo=(DWDotGridShapeGameObject*)go;
+            
+            //ignore disabled shapes
+            if(!sgo.Disabled)
+            {
+                int tileCount=0;
+                int selectedCount=0;
+                
+                for (DWDotGridTileGameObject *tgo in sgo.tiles) {
+                    tileCount++;
+                    if(tgo.Selected)selectedCount++;
+                }
+                
+                NSLog(@"shape of %d / %d", selectedCount, tileCount);
+            }
+        }
+    }
+    
+    //return YES;
+    return NO;
 }
 
 -(void)evalProblem

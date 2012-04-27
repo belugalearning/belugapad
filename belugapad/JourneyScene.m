@@ -12,6 +12,23 @@
 #import "global.h"
 #import "BLMath.h"
 
+#import "AppDelegate.h"
+#import "ContentService.h"
+#import "UsersService.h"
+
+#import "ConceptNode.h"
+
+@interface JourneyScene()
+{
+    @private
+    ContentService *contentService;
+    NSArray *kcmNodes;
+    
+    float nMinX, nMinY, nMaxX, nMaxY;
+}
+
+@end
+
 @implementation JourneyScene
 
 +(CCScene *)scene
@@ -35,13 +52,14 @@
         cx = lx / 2.0f;
         cy = ly / 2.0f;
         
+        contentService = ((AppController*)[[UIApplication sharedApplication] delegate]).contentService; 
+        
         [self setupMap];
         
         [self schedule:@selector(doUpdate:) interval:1.0f / 60.0f];
         
         daemon=[[Daemon alloc] initWithLayer:mapLayer andRestingPostion:ccp(cx, cy) andLy:ly];
         [daemon setMode:kDaemonModeFollowing];
-        
     }
     
     return self;
@@ -66,6 +84,31 @@
     CCSprite *sample=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/samplenodes.png")];
     [sample setPosition:ccp(cx, cy)];
     [mapLayer addChild:sample];
+    
+    kcmNodes=[contentService allConceptNodes];
+    //find bounds
+    //set bounds to first element
+    if(kcmNodes.count>0)
+    {
+        ConceptNode *n1=[kcmNodes objectAtIndex:0];
+        nMinX=[n1.x floatValue];
+        nMinY=[n1.y floatValue];
+        nMaxX=nMinX;
+        nMaxY=nMaxY;
+        
+        if(kcmNodes.count>1)
+        {
+            for (int i=1; i<[kcmNodes count]; i++) {
+                ConceptNode *n=[kcmNodes objectAtIndex:i];
+                if([n.x floatValue]<nMinX)nMinX=[n.x floatValue];
+                if([n.y floatValue]<nMinY)nMinY=[n.y floatValue];
+                if([n.x floatValue]>nMaxX)nMaxX=[n.x floatValue];
+                if([n.y floatValue]>nMaxY)nMaxY=[n.y floatValue];
+            }
+        }
+    }
+    
+    NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
 }
 
 -(void) doUpdate:(ccTime)delta

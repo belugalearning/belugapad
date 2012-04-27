@@ -55,7 +55,7 @@
     CouchEmbeddedServer* server = [CouchEmbeddedServer sharedInstance];
     
     // install canned copy of content database if doesn't yet exist (i.e. first app launch)
-    [server.couchbase installDefaultDatabase:BUNDLE_FULL_PATH(@"/canned-content-db/content.couch")];
+    [server.couchbase installDefaultDatabase:BUNDLE_FULL_PATH(@"/canned-content-db/kcm.couch")];
     
     [server start: ^{
         NSAssert(!server.error, @"Error launching Couchbase: %@", server.error);

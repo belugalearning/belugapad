@@ -20,8 +20,9 @@
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
 #import <CouchCocoa/CouchModelFactory.h>
 
-NSString * const kRemoteContentDatabaseURI = @"http://www.soFarAslant.com:5984/temp-blm-content";
-NSString * const kLocalContentDatabaseName = @"content";
+//NSString * const kRemoteContentDatabaseURI = @"http://www.soFarAslant.com:5984/temp-blm-content";
+NSString * const kRemoteContentDatabaseURI = @"http://www.soFarAslant.com:5984/please-do-not-replicate-me";
+NSString * const kLocalContentDatabaseName = @"kcm";
 NSString * const kDefaultContentDesignDocName = @"content-views";
 
 @interface ContentService()
@@ -83,6 +84,8 @@ NSString * const kDefaultContentDesignDocName = @"content-views";
             [[CouchModelFactory sharedInstance] registerClass:[Module class] forDocumentType:@"module"];
             [[CouchModelFactory sharedInstance] registerClass:[Topic class] forDocumentType:@"topic"];
             [[CouchModelFactory sharedInstance] registerClass:[Syllabus class] forDocumentType:@"syllabus"];
+            
+            
             
             CouchEmbeddedServer *server = [CouchEmbeddedServer sharedInstance];
             

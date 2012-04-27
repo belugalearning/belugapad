@@ -20,5 +20,6 @@
 @property (retain) CCNode *BaseNode;
 @property int Length;
 @property (retain) CCLabelTTF *Label;
+@property BOOL InitedObject;
 
 @end

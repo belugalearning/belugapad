@@ -39,7 +39,7 @@
         BOOL useAnimation = NO;
         if([payload objectForKey:ANIMATE_ME]) useAnimation = YES;
         
-        [self setSpritePos:useAnimation];
+        [self setPos];
     }
     if(messageType==kDWupdateSprite)
     {
@@ -52,7 +52,7 @@
         BOOL useAnimation = NO;
         if([payload objectForKey:ANIMATE_ME]) useAnimation = YES;
         
-        [self setSpritePos:useAnimation];
+        [self setPos];
     }
     if(messageType==kDWdismantle)
     {
@@ -69,7 +69,7 @@
     
 }
 
--(void)setSpritePos:(BOOL) withAnimation
+-(void)setPos
 {
     
     

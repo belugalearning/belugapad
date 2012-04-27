@@ -11,5 +11,8 @@
 @implementation DWDotGridShapeGameObject
 
 @synthesize tiles;
+@synthesize moveHandle;
+@synthesize resizeHandle;
+@synthesize Disabled;
 
 @end

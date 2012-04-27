@@ -143,7 +143,7 @@
         {
             DWPartitionObjectGameObject *pogo = [DWPartitionObjectGameObject alloc];
             [gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];
-            pogo.Position=ccp(25,650-(i*65));            
+            pogo.Position=ccp(25-(ic*2),650-(i*65)+(ic*3));            
             pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
             
             if([[initCages objectAtIndex:i] objectForKey:LABEL])
@@ -162,19 +162,25 @@
         //pogo.Position=ccp(512,284);
         int insRow=[[[initObjects objectAtIndex:i] objectForKey:PUT_IN_ROW] intValue];
         int insLength=[[[initObjects objectAtIndex:i] objectForKey:LENGTH] intValue];
+        NSString *fillText=[[NSString alloc]init];
         DWPartitionObjectGameObject *pogo = [DWPartitionObjectGameObject alloc];
         [gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];   
         
         //[pogo.Mounts addObject:[createdRows objectAtIndex:insRow]];
         pogo.Length = insLength;
+        
+        pogo.InitedObject=YES;
 
-        NSString *fillText = [NSString stringWithFormat:@"%d", pogo.Length];
+        if([[initObjects objectAtIndex:i]objectForKey:LABEL]) fillText = [[initObjects objectAtIndex:i]objectForKey:LABEL];
+        else fillText=[NSString stringWithFormat:@"%d", insLength];
+        
         pogo.Label = [CCLabelTTF labelWithString:fillText fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
         
         DWPartitionRowGameObject *prgo = (DWPartitionRowGameObject*)[createdRows objectAtIndex:insRow];
         NSDictionary *pl=[NSDictionary dictionaryWithObject:prgo forKey:MOUNT];
         [pogo handleMessage:kDWsetMount andPayload:pl withLogLevel:-1];
         pogo.Position = prgo.Position;
+        pogo.MountPosition = prgo.Position;
         [prgo handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
     }
 
@@ -204,6 +210,10 @@
         [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
         gw.Blackboard.DropObject=nil;
         gw.Blackboard.PickupOffset = location;
+        
+        previousMount=((DWPartitionObjectGameObject*)gw.Blackboard.PickupObject).Mount;
+        
+        [((DWPartitionObjectGameObject*)gw.Blackboard.PickupObject) handleMessage:kDWunsetMount];
 
         
         //this is just a signal for the GO to us, pickup object is retained on the blackboard
@@ -267,11 +277,18 @@
         }
         else
         {
-            [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToHome];
-            [[gw Blackboard].PickupObject handleMessage:kDWunsetMount];
-            [gw handleMessage:kDWhighlight andPayload:nil withLogLevel:-1];
+            if(((DWPartitionObjectGameObject*)gw.Blackboard.PickupObject).InitedObject)
+            {
+                [gw.Blackboard.PickupObject handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:previousMount forKey:MOUNT] withLogLevel:0];
+            }
+            else {
+                [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToHome];
+                [gw handleMessage:kDWhighlight andPayload:nil withLogLevel:-1];                
+            }
         }
     }
+    
+    [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:-1];
     
     [gw Blackboard].PickupObject=nil;
 
@@ -340,27 +357,26 @@
         // show the problem incomplete message
         [toolHost showProblemIncompleteMessage];
 
-        [toolHost resetProblem];
-        // loop over the rows (single objects)
-//        for(int i=0;i<createdRows.count;i++)
-//        {
-//            // and for each of our rows, get a count
-//            DWPartitionRowGameObject *prgo=[createdRows objectAtIndex:i];
-//            float count=[prgo.MountedObjects count];
-//            
-//            // then if they're not locked
-//            if(!prgo.Locked) {
-//                for(int o=0;o<count;o++)
-//                {
-//                    // then move each of our sprites back!
-//                    DWPartitionObjectGameObject *pogo=[prgo.MountedObjects objectAtIndex:o];
-//                    pogo.Position = pogo.MountPosition;
-//                    NSLog(@"send movesprite message to obj %d/%d", i, prgo.MountedObjects.count);
-//                    [pogo handleMessage:kDWmoveSpriteToPosition];
-//                }
-//                [prgo.MountedObjects removeAllObjects];
-//            }
-//        }
+        // start our for loop
+        for(int i=0;i<createdRows.count;i++)
+        {
+            // set the current row
+            DWPartitionRowGameObject *prgo=[createdRows objectAtIndex:i];
+        
+            //set the count of objects on that row
+            int count=[prgo.MountedObjects count];
+            
+            //and if the row isn't locked
+            if(!prgo.Locked){
+                for (int o=count-1;o>=0;o--)
+                {
+                    // set the current object and send it home - resetting the mount for any inited objects
+                    DWPartitionObjectGameObject *pogo=[prgo.MountedObjects objectAtIndex:o];
+                    [pogo handleMessage:kDWmoveSpriteToHome];
+                    if(pogo.InitedObject) [pogo handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:prgo forKey:MOUNT] withLogLevel:0];
+                }
+            }
+        }
 
     }
 }

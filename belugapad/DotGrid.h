@@ -18,8 +18,8 @@ typedef enum {
 typedef enum {
     kNoState=0,
     kStartAnchor=1,
-    kCollectAnchors=2,
-    kDrawnShape=3
+    kResizeShape=2,
+    kMoveShape=3
 } GameState;
 
 @interface DotGrid : ToolScene
@@ -60,13 +60,15 @@ typedef enum {
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)populateGW;
 -(void)checkAnchors;
--(void)checkAnchorsAndUseResizeHandle:(BOOL)showResize andShowMove:(BOOL)showMove andPrecount:(int)noOfTiles;
--(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(int)noToCount;
+-(void)checkAnchorsAndUseResizeHandle:(BOOL)showResize andShowMove:(BOOL)showMove andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled;
+-(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
 -(BOOL)evalExpression;
 -(void)evalProblem;
+-(float)metaQuestionTitleYLocation;
+-(float)metaQuestionAnswersYLocation;
 
 @end

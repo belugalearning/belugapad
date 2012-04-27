@@ -496,23 +496,6 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         // set the expected count for a TOTAL_COUNT problem if there
         expectedCount = [[solutionsDef objectForKey:SOLUTION_VALUE] floatValue];
         
-//        //show commit button if evalOnCommit
-//        if(evalMode==kProblemEvalOnCommit)
-//        {
-//            CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
-//            [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
-//            [commitBtn setTag:3];
-//            [commitBtn setOpacity:0];
-//            [self.ForeLayer addChild:commitBtn z:2];
-//        }
-//        
-//        //render problem label
-//        problemDescLabel=[CCLabelTTF labelWithString:[pdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-//        [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
-//        //[problemDescLabel setColor:kLabelTitleColor];
-//        [problemDescLabel setTag:3];
-//        [problemDescLabel setOpacity:0];
-//        [self.ForeLayer addChild:problemDescLabel];
     }
     else
     {

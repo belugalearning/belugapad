@@ -19,5 +19,7 @@
 
 -(BDotGridShapeTouch *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
 -(void)checkTouchSwitchSelection:(CGPoint)location;
+-(void)resizeShape:(CGPoint)location;
+-(void)moveShape:(CGPoint)location;
 
 @end

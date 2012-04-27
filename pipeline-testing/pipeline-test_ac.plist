@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>/Problems/partitioning/partition_001.plist</string>
+	<string>/Problems/partitioning/partition_002.plist</string>
+	<string>/Problems/partitioning/partition_003.plist</string>
+	<string>/Problems/partitioning/partition_004.plist</string>
+	<string>/Problems/partitioning/partition_005.plist</string>
+	<string>/Problems/partitioning/partition_006.plist</string>
+	<string>/Problems/partitioning/partition_007.plist</string>
+	<string>/Problems/partitioning/partition_008.plist</string>
+	<string>/Problems/partitioning/partition_009.plist</string>
+	<string>/Problems/partitioning/partition_010.plist</string>
+	<string>/Problems/partitioning/partition_011.plist</string>
+	<string>/Problems/partitioning/partition_012.plist</string>
+	<string>/Problems/dot_grid/dg001.plist</string>
+	<string>/Problems/dot_grid/dg002.plist</string>
+	<string>/Problems/dot_grid/dg003.plist</string>
+	<string>/Problems/dot_grid/dg004.plist</string>
+	<string>/Problems/dot_grid/dg005.plist</string>
+	<string>/Problems/dot_grid/dg006.plist</string>
+	<string>/Problems/dot_grid/dg007.plist</string>
+	<string>/Problems/dot_grid/dg008.plist</string>
+	<string>/Problems/dot_grid/dg009.plist</string>
+</array>
+</plist>

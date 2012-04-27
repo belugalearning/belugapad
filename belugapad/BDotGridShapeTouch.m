@@ -9,6 +9,7 @@
 #import "BDotGridShapeTouch.h"
 #import "DWDotGridShapeGameObject.h"
 #import "DWDotGridTileGameObject.h"
+#import "DWDotGridHandleGameObject.h"
 #import "global.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
@@ -43,6 +44,18 @@
         CGPoint loc=[[payload objectForKey:POS] CGPointValue];
         [self checkTouchSwitchSelection:loc];
     }
+    if(messageType==kDWmoveShape)
+    {
+        CGPoint loc=[[payload objectForKey:POS] CGPointValue];
+        [self moveShape:loc];
+        
+    }
+    if(messageType==kDWresizeShape)
+    {
+        CGPoint loc=[[payload objectForKey:POS] CGPointValue];
+        [self resizeShape:loc];
+    }
+
 }
 
 -(void)checkTouchSwitchSelection:(CGPoint)location
@@ -52,7 +65,7 @@
     for(DWDotGridTileGameObject *tile in shape.tiles)
     {
         // and for each one see if the hit was in a tile box
-        if(CGRectContainsPoint(tile.mySprite.boundingBox, location))
+        if(CGRectContainsPoint(tile.mySprite.boundingBox, location) && !shape.Disabled)
         {
             
             // then if that tile is not selected, make it red
@@ -68,6 +81,16 @@
             }
         }
     }
+}
+
+-(void)resizeShape:(CGPoint)location
+{
+    NSLog(@"do stuff here to do stuff with resizing");
+}
+
+-(void)moveShape:(CGPoint)location
+{
+    NSLog(@"do stuff here to do stuff to move!");
 }
 
 -(void) dealloc

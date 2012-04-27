@@ -14,6 +14,8 @@
 	<integer>6</integer>
 	<key>DRAW_MODE</key>
 	<integer>1</integer>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
@@ -35,6 +37,21 @@
 			<integer>0</integer>
 			<key>DISABLE_COUNTING</key>
 			<false/>
+			<key>PRE_COUNTED_TILES</key>
+			<array>
+				<dict>
+					<key>POS_X</key>
+					<integer>0</integer>
+					<key>POS_Y</key>
+					<integer>1</integer>
+				</dict>
+				<dict>
+					<key>POS_X</key>
+					<integer>1</integer>
+					<key>POS_Y</key>
+					<integer>0</integer>
+				</dict>
+			</array>
 		</dict>
 		<dict>
 			<key>START_X</key>

@@ -7,6 +7,7 @@
 //
 
 #import "BDotGridHandleTouch.h"
+#import "DWDotGridHandleGameObject.h"
 #import "global.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
@@ -17,7 +18,7 @@
 -(BDotGridHandleTouch *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
     self=(BDotGridHandleTouch*)[super initWithGameObject:aGameObject withData:data];
-    
+    handle=(DWDotGridHandleGameObject*)gameObject;
     //init pos x & y in case they're not set elsewhere
     
     
@@ -33,23 +34,39 @@
 {
     if(messageType==kDWrenderSelection)
     {
-        
+
     }
     if(messageType==kDWcanITouchYou)
     {
-        
+        CGPoint loc=[[payload objectForKey:POS] CGPointValue];
+        [self setCurrentHandle:loc];
+    }
+    if(messageType==kDWuseThisHandle)
+    {
+        if(handle.handleType==kMoveHandle) [handle.myShape handleMessage:kDWmoveShape andPayload:payload withLogLevel:-1];
+        if(handle.handleType==kResizeHandle) [handle.myShape handleMessage:kDWresizeShape andPayload:payload withLogLevel:-1];
     }
 }
 
--(void)handleMove
+-(void)setCurrentHandle:(CGPoint)hitLoc
+{
+    if([BLMath DistanceBetween:handle.Position and:hitLoc] <= (0.045f*[gameWorld Blackboard].hostLX))
+    {
+        NSLog(@"touch move handle");
+        gameWorld.Blackboard.CurrentHandle=handle;
+    }
+}
+
+-(void)resizeShape:(CGPoint)hitLoc
 {
     
 }
 
--(void)handleResize
+-(void)moveShape:(CGPoint)hitLoc
 {
     
 }
+
 
 -(void) dealloc
 {

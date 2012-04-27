@@ -1,4 +1,4 @@
-//
+;//
 //  BMount.m
 //  belugapad
 //
@@ -57,6 +57,7 @@
         {
             DWPartitionObjectGameObject *mo = [prgo.MountedObjects objectAtIndex:i];
             mo.MovePosition=ccp(prgo.Position.x+(50*myHeldValue), prgo.Position.y);
+            mo.Position=mo.MovePosition;
             NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:ANIMATE_ME];
             [mo handleMessage:kDWmoveSpriteToPosition andPayload:pl withLogLevel:-1];
             

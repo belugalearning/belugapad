@@ -156,7 +156,7 @@
     
     if(pogo.Label) { 
         [pogo.Label setColor:ccc3(0,0,0)];
-        [pogo.Label setPosition:ccp((pogo.Length * 50) * 0.5f, 0)];
+        [pogo.Label setPosition:ccp((pogo.Length * 50) * 0.5f, -3)];
         [pogo.Label setTag:2];
         [pogo.Label setOpacity:0];
         [pogo.BaseNode addChild:pogo.Label z:10];
@@ -191,6 +191,7 @@
     CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:pogo.MountPosition];
     [pogo.BaseNode runAction:[CCEaseIn actionWithAction:anim rate:0.5f]];
     pogo.Position=pogo.MountPosition;
+    [pogo handleMessage:kDWunsetMount];
 }
 -(void)resetSpriteToMount
 {

@@ -19,6 +19,7 @@
 @synthesize BaseNode;
 @synthesize Length;
 @synthesize Label;
+@synthesize InitedObject;
 
 -(DWGameObject *) initWithGameWorld:(DWGameWorld*)aGameWorld
 {

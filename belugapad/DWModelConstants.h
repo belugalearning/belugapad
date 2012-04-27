@@ -73,6 +73,10 @@ typedef enum {
     kDWaddMeToSelection=28,
     kDWremoveMeFromSelection=29,
     kDWremoveAllFromSelection=30,
+    
+    kDWuseThisHandle=31,
+    kDWmoveShape=32,
+    kDWresizeShape=33,
 
     
     kDWareYouProximateTo=101,

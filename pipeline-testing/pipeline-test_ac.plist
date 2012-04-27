@@ -2,6 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>/Problems/partitioning/CCSS_3_NF_1_001.plist</string>
+	<string>/Problems/partitioning/CCSS_3_NF_1_002.plist</string>
+	<string>/Problems/partitioning/partition_017.plist</string>
+	<string>/Problems/partitioning/partition_013.plist</string>
+	<string>/Problems/partitioning/partition_014.plist</string>
+	<string>/Problems/partitioning/partition_015.plist</string>
+	<string>/Problems/partitioning/partition_016.plist</string>
+	<string>/Problems/dot_grid/dg_f_001.plist</string>
+	<string>/Problems/dot_grid/dg_f_002.plist</string>
+	<string>/Problems/dot_grid/dg_f_002.plist</string>
+	<string>/Problems/dot_grid/dg_m_011.plist</string>
+	<string>/Problems/dot_grid/dg_m_001.plist</string>
+	<string>/Problems/dot_grid/dg_m_002.plist</string>
+	<string>/Problems/dot_grid/dg_m_003.plist</string>
 	<string>/Problems/partitioning/partition_001.plist</string>
 	<string>/Problems/partitioning/partition_002.plist</string>
 	<string>/Problems/partitioning/partition_003.plist</string>
@@ -14,6 +28,7 @@
 	<string>/Problems/partitioning/partition_010.plist</string>
 	<string>/Problems/partitioning/partition_011.plist</string>
 	<string>/Problems/partitioning/partition_012.plist</string>
+	<string>/Problems/dot_grid/dg001.plist</string>
 	<string>/Problems/dot_grid/dg001.plist</string>
 	<string>/Problems/dot_grid/dg002.plist</string>
 	<string>/Problems/dot_grid/dg003.plist</string>

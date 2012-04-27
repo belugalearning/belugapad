@@ -324,6 +324,7 @@
             [gw populateAndAddGameObject:tile withTemplateName:@"TdotgridTile"];
             
             tile.tileType=kNoBorder;
+            tile.tileSize=spaceBetweenAnchors;
             tile.Position=ccp(curAnch.Position.x+spaceBetweenAnchors/2, curAnch.Position.y+spaceBetweenAnchors/2);
             //[tile handleMessage:kDWsetupStuff];
             [shape.tiles addObject:tile];

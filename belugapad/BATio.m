@@ -65,6 +65,10 @@
                 {
                     expr=[BAMultiplicationOperator operator];
                 }
+                else if([fchild.name isEqualToString:MML_DIVIDE])
+                {
+                    expr=[BADivisionOperator operator];
+                }
                 
                 //parse and add children (past first)
                 for (int i=1; i<[echildren count]; i++) {

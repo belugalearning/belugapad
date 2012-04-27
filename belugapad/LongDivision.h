@@ -30,6 +30,7 @@
     NSArray *solutionsDef;
     
     CGPoint lastTouch;
+    CGPoint touchStart;
     
     ProblemRejectMode rejectMode;
     ProblemEvalMode evalMode;
@@ -42,10 +43,14 @@
     
     BOOL topTouch;
     BOOL bottomTouch;
+    BOOL startedInActiveRow;
+    BOOL doingHorizontalDrag;
+    BOOL doingVerticalDrag;
     
     float dividend;
     float divisor;
     
+    int currentNumberPos;
     float rowMultiplier;
     float startRow;
     

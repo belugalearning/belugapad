@@ -85,7 +85,37 @@
     STAssertFalse([q assumeAndEvalEqualityAtRoot], @"expression should not be equal");
 }
 
+-(void)testComaprisonOfTwoDivisions
+{
+    NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/2div4-eq-2div4.mathml");
+    BAExpressionTree *tree=[BATio loadTreeFromMathMLFile:f];
+    
+    STAssertTrue([tree.root.children count] >0, @"tree should have more than one child");
+    
+    BATQuery *q=[[BATQuery alloc] initWithExpr:tree.root andTree:tree];
+    STAssertTrue([q assumeAndEvalEqualityAtRoot], @"expression should be equal");    
+}
 
+-(void)testInequalityOfTwoDivisions1
+{
+    NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/2div5-eq-2div4.mathml");
+    BAExpressionTree *tree=[BATio loadTreeFromMathMLFile:f];
+    
+    STAssertTrue([tree.root.children count] >0, @"tree should have more than one child");
+    
+    BATQuery *q=[[BATQuery alloc] initWithExpr:tree.root andTree:tree];
+    STAssertFalse([q assumeAndEvalEqualityAtRoot], @"expression should not be equal");    
+}
 
+-(void)testInequalityOfTwoDivisions2
+{
+    NSString *f=BUNDLE_FULL_PATH(@"/Problems/tools-dev/expr-tests/3div14-eq-2div4.mathml");
+    BAExpressionTree *tree=[BATio loadTreeFromMathMLFile:f];
+    
+    STAssertTrue([tree.root.children count] >0, @"tree should have more than one child");
+    
+    BATQuery *q=[[BATQuery alloc] initWithExpr:tree.root andTree:tree];
+    STAssertFalse([q assumeAndEvalEqualityAtRoot], @"expression should not be equal");    
+}
 
 @end

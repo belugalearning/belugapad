@@ -68,11 +68,9 @@
     
     if(messageType==kDWunsetMount)
     {
-        NSLog(@"unsetmount");
         [[gameObject store] removeObjectForKey:MOUNT];
         if(pogo.Mount)
         {
-                    NSLog(@"isamount - telling to unset and thingy");
             NSDictionary *pl=[NSDictionary dictionaryWithObject:pogo forKey:MOUNTED_OBJECT];
             [pogo.Mount handleMessage:kDWunsetMountedObject andPayload:pl withLogLevel:-1];
         }

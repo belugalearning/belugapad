@@ -18,6 +18,8 @@
 #define MML_PLUS @"plus"
 #define MML_MINUS @"minus"
 #define MML_TIMES @"times"
+#define MML_DIVIDE @"divide"
+
 
 #define MML_CI @"ci"
 #define MML_CN @"cn"

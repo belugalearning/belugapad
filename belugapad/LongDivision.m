@@ -78,7 +78,20 @@
             autoMoveToNextProblem=NO;
             timeToAutoMoveToNextProblem=0.0f;
         }
-    }   
+    }  
+    
+    float currentTotal=0;
+
+    for(int i=0;i<[selectedNumbers count];i++)
+    {
+        float curMultiplier=[[rowMultipliers objectAtIndex:i]floatValue];
+        int curNumber=[[selectedNumbers objectAtIndex:i] intValue];
+        
+        currentTotal=currentTotal+(curNumber*curMultiplier);
+        
+    }
+    
+[lblCurrentTotal setString:[NSString stringWithFormat:@"%g", currentTotal]];
 }
 
 
@@ -110,6 +123,11 @@
     for(int r=0;r<8;r++)
     {
         NSMutableArray *thisRow=[[NSMutableArray alloc]init];
+        
+        // add the current multiplier to our array of multipliers
+        [rowMultipliers addObject:[NSNumber numberWithFloat:rowMultiplierT]];
+        [selectedNumbers addObject:[NSNumber numberWithInt:0]];
+        NSLog(@"selectednumber count %d", [selectedNumbers count]);
         
         // create a layer for each row of numbers
         CCLayer *thisLayer=[[[CCLayer alloc]init]autorelease];
@@ -143,6 +161,11 @@
     [renderLayer addChild:topSection];
     [renderLayer addChild:bottomSection];
     
+    selectedNumbers=[[NSMutableArray alloc]init];
+    [selectedNumbers retain];
+    rowMultipliers=[[NSMutableArray alloc]init];
+    [rowMultipliers retain];
+    
     // add the selector to the middle of the screen
     
     CCSprite *selector=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/selection_pointer.png")];
@@ -155,6 +178,10 @@
     [multiplier setPosition:ccp(820,202)];
     [multiplier setOpacity:25];
     [renderLayer addChild:multiplier];
+    
+    lblCurrentTotal=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    [lblCurrentTotal setPosition:ccp(100,745)];
+    [renderLayer addChild:lblCurrentTotal];
     
     [self createVisibleNumbers];
 }
@@ -194,7 +221,7 @@
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
-    NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
+    //NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
     
     if(topTouch)
     {
@@ -287,6 +314,7 @@
         
         //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
         [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(currentNumberPos*-120,moveLayer.position.y)]];
+        [selectedNumbers replaceObjectAtIndex:activeRow withObject:[NSNumber numberWithInt:currentNumberPos]];
     }
     
     if(doingVerticalDrag)
@@ -400,6 +428,8 @@
     [gw release];
     if(numberRows)[numberRows release];
     if(numberLayers)[numberLayers release];
+    if(selectedNumbers)[selectedNumbers release];
+    if(rowMultipliers)[rowMultipliers retain];
 
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];

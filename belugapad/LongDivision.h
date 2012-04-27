@@ -25,6 +25,8 @@
     
     CCLayer *renderLayer;
     
+    CCLabelTTF *lblCurrentTotal;
+    
     NSMutableArray *numberRows;
     NSMutableArray *numberLayers;
     NSArray *solutionsDef;
@@ -35,8 +37,6 @@
     ProblemRejectMode rejectMode;
     ProblemEvalMode evalMode;
     
-    NSMutableArray *dotMatrix;
-    NSDictionary *hiddenRows;
     
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
@@ -56,7 +56,8 @@
     float rowMultiplier;
     float startRow;
     
-    CGRect rowBoundingBox;
+    NSMutableArray *selectedNumbers;
+    NSMutableArray *rowMultipliers;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

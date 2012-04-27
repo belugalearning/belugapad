@@ -228,6 +228,7 @@
 		7F5115A614A9EF67001AF372 /* DWGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A014A9EF67001AF372 /* DWGameObject.m */; };
 		7F5115A714A9EF67001AF372 /* DWGameWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A214A9EF67001AF372 /* DWGameWorld.m */; };
 		7F5115AA14A9EF9E001AF372 /* BlockFloating.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A914A9EF9E001AF372 /* BlockFloating.m */; };
+		7F5BD842154AB6A70092740B /* JourneyScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5BD841154AB6A70092740B /* JourneyScene.m */; };
 		7F719C0314D739A600F30E89 /* Daemon.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F719C0214D739A600F30E89 /* Daemon.m */; };
 		7F71B40B150FBD9D0097A956 /* ExprScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B409150FBCB20097A956 /* ExprScene.m */; };
 		7F71B40C150FBDAA0097A956 /* BATQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B400150FBCA80097A956 /* BATQuery.m */; };
@@ -791,6 +792,8 @@
 		7F5115A314A9EF67001AF372 /* DWModelConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWModelConstants.h; sourceTree = "<group>"; };
 		7F5115A814A9EF9E001AF372 /* BlockFloating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockFloating.h; sourceTree = "<group>"; };
 		7F5115A914A9EF9E001AF372 /* BlockFloating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BlockFloating.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		7F5BD840154AB6A70092740B /* JourneyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JourneyScene.h; sourceTree = "<group>"; };
+		7F5BD841154AB6A70092740B /* JourneyScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JourneyScene.m; sourceTree = "<group>"; };
 		7F719C0114D739A600F30E89 /* Daemon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Daemon.h; sourceTree = "<group>"; };
 		7F719C0214D739A600F30E89 /* Daemon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Daemon.m; sourceTree = "<group>"; };
 		7F71B3FF150FBCA80097A956 /* BATQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATQuery.h; sourceTree = "<group>"; };
@@ -1784,6 +1787,8 @@
 				55C5F719153874C3009D8906 /* DotGrid.m */,
 				7F2CAED9154AB58B00BFBB6F /* LongDivision.h */,
 				7F2CAEDA154AB58B00BFBB6F /* LongDivision.m */,
+				7F5BD840154AB6A70092740B /* JourneyScene.h */,
+				7F5BD841154AB6A70092740B /* JourneyScene.m */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -2448,6 +2453,7 @@
 				7FBE96991549819300D993AC /* LoadingViewController.m in Sources */,
 				7FDABAC3154AABF300F3F1A5 /* ConceptNode.m in Sources */,
 				7F2CAEDB154AB58B00BFBB6F /* LongDivision.m in Sources */,
+				7F5BD842154AB6A70092740B /* JourneyScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

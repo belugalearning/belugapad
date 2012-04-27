@@ -166,6 +166,7 @@
                 currentRowHidden=[[hiddenRows objectForKey:[NSString stringWithFormat:@"%d", iCol]] boolValue];
                 if(currentRowHidden) {
                     anch.Hidden=YES;
+                    anch.Disabled=YES;
                 }
             }
         

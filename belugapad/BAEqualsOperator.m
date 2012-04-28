@@ -61,14 +61,16 @@
 
 - (BOOL)isEqualToExpression:(BAExpression*)theOtherExpression
 {
-	if([theOtherExpression isKindOfClass:[BAEqualsOperator class]] == NO)
-		return NO;
+    @throw [NSException exceptionWithName:@"equality not implemented in BAEqualsOperator" reason:@"equality not implemented in BAEqualsOperator" userInfo:nil];
+    
+//	if([theOtherExpression isKindOfClass:[BAEqualsOperator class]] == NO)
+//		return NO;
 	
-	// do we just compare the operator itself or do we compare the whole operation (including the childrne?)
-	
-	// I don't know what the right behavior is for equals operators in this case.
-	// for now, i'll just return yes
-	return YES;
+//	// do we just compare the operator itself or do we compare the whole operation (including the childrne?)
+//	
+//	// I don't know what the right behavior is for equals operators in this case.
+//	// for now, i'll just return yes
+//	return YES;
 }
 
 @end

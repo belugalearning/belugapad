@@ -199,13 +199,15 @@
 
 - (BOOL)isEqualToExpression:(BAExpression*)theOtherExpression
 {
-	if([theOtherExpression isKindOfClass:[BADivisionOperator class]] == NO)
-		return NO;
-	
-	// do we just compare the operator itself or do we compare the whole operation (including the childrne?)
-	
-	// for now, i consider it a match if it is the same operator, the children must be compared on their own
-	return YES;
+    @throw [NSException exceptionWithName:@"equality not implemented in BADivisionOperator" reason:@"not implemented" userInfo:nil];
+    
+//	if([theOtherExpression isKindOfClass:[BADivisionOperator class]] == NO)
+//		return NO;
+//	
+//	// do we just compare the operator itself or do we compare the whole operation (including the childrne?)
+//	
+//	// for now, i consider it a match if it is the same operator, the children must be compared on their own
+//	return YES;
 }
 
 @end

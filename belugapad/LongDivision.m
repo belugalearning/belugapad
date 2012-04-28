@@ -17,6 +17,9 @@
 #import "DWDotGridShapeGameObject.h"
 #import "BLMath.h"
 
+const float kSpaceBetweenNumbers=180;
+const float kSpaceBetweenRows=80;
+
 @implementation LongDivision
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
 {
@@ -91,7 +94,40 @@
         
     }
     
-[lblCurrentTotal setString:[NSString stringWithFormat:@"%g", currentTotal]];
+    if(fabs((currentTotal*divisor))!=fabs(dividend))
+        [lblCurrentTotal setColor:ccc3(255,0,0)];
+    else 
+        [lblCurrentTotal setColor:ccc3(0,255,0)];
+    [lblCurrentTotal setString:[NSString stringWithFormat:@"%g", currentTotal]];
+    
+        
+    for(int l=0;l<[numberRows count];l++)
+    {
+        
+        NSArray *currentRow=[numberRows objectAtIndex:l];
+        CCLayer *thisLayer=[numberLayers objectAtIndex:l];
+        for(CCLabelTTF *lbl in currentRow)
+        {
+            CGPoint realLabelPos=[thisLayer convertToWorldSpace:lbl.position];
+            //CGPoint realLabelPos=lbl.position;
+            float distToFade=0;
+            float distToActive=[BLMath DistanceBetween:realLabelPos and:ccp(realLabelPos.x, 220)];
+            if(realLabelPos.y>220)
+                distToFade=[BLMath DistanceBetween:realLabelPos and:ccp(realLabelPos.x, 380)];
+            else 
+                distToFade=[BLMath DistanceBetween:realLabelPos and:ccp(realLabelPos.x, 50)];
+            
+            float prop=distToActive/(distToActive+distToFade);
+            float opac=(1-prop)*255;
+            
+            
+            
+            //if(opac<25)opac=0;
+            [lbl setOpacity:opac];
+        }
+        
+    }
+    
 }
 
 
@@ -139,9 +175,9 @@
               
             NSString *currentNumber=[NSString stringWithFormat:@"%g", i*rowMultiplierT];
             CCLabelTTF *number=[CCLabelTTF labelWithString:currentNumber fontName:PROBLEM_DESC_FONT fontSize:60.0f];
-            [number setPosition:ccp((lx/2)+(i*120), 300-(r*80))];
+            [number setPosition:ccp((lx/2)+(i*kSpaceBetweenNumbers), 300-(r*kSpaceBetweenRows))];
             [thisLayer addChild:number];
-            if(r!=1)[number setOpacity:50];
+            //if(r!=1)[number setOpacity:50];
             [thisRow addObject:number];
             
         }
@@ -183,9 +219,17 @@
     [lblCurrentTotal setPosition:ccp(100,745)];
     [renderLayer addChild:lblCurrentTotal];
     
+    line=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/line.png")];
+    [line setPosition:ccp(cx,550)];
+    [topSection addChild:line];
+    
     [self createVisibleNumbers];
 }
-
+-(void)handlePassThruScaling:(float)scale
+{
+        if(topTouch)
+            [topSection setScale:scale];
+}
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if(isTouching)return;
@@ -225,6 +269,9 @@
     
     if(topTouch)
     {
+        CGPoint diff=[BLMath SubtractVector:lastTouch from:location];
+        //diff = ccp(diff.x, 0);
+        [topSection setPosition:ccpAdd(topSection.position, diff)];
         
     }
     
@@ -286,7 +333,7 @@
         CCLayer *moveLayer = [numberLayers objectAtIndex:activeRow];
 
         //the quantity of increments moved
-        float floatNumberPos=fabsf(diff.x)/120.0f;
+        float floatNumberPos=fabsf(diff.x)/kSpaceBetweenNumbers;
         
         //the remainder of the movement past the last whole increment
         float remainder=floatNumberPos - (int)floatNumberPos;
@@ -313,7 +360,7 @@
         if(currentNumberPos>9)currentNumberPos=9;
         
         //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
-        [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(currentNumberPos*-120,moveLayer.position.y)]];
+        [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(currentNumberPos*-kSpaceBetweenNumbers,moveLayer.position.y)]];
         [selectedNumbers replaceObjectAtIndex:activeRow withObject:[NSNumber numberWithInt:currentNumberPos]];
     }
     
@@ -323,8 +370,7 @@
         diff = ccp(0, diff.y);
         
         //the quantity of increments moved
-        float floatRowPos=fabsf(diff.y)/80.0f;
-        NSLog(@"floatrowpos %f", floatRowPos);
+        float floatRowPos=fabsf(diff.y)/kSpaceBetweenRows;
         
         //the remainder of the movement past the last whole increment
         float remainder=floatRowPos - (int)floatRowPos;
@@ -338,16 +384,11 @@
         //round down
         else
             incrementor=(int)floatRowPos;
-        
-        NSLog(@"incrementor %d", incrementor);
-        
-        //if the diff in x is positive, the number wants to go up (end point of x is less that of start point) 
         if(diff.y > 0) // incrementing line
             currentRowPos-=incrementor;
-        //otherwise the number on the line goes down
+        
         else 
             currentRowPos+=incrementor;
-        NSLog(@"currentrowpos %d", currentRowPos);
         
         //truncate to fixed bounds
         if(currentRowPos<-1)currentRowPos=-1;
@@ -355,19 +396,12 @@
   
         activeRow=currentRowPos+1;
         
-        NSLog(@"currentrowpos %d", currentRowPos);
         //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
         
         for(int i=0;i<[numberLayers count];i++)
         {
             CCLayer *moveLayer=[numberLayers objectAtIndex:i];
-            [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(moveLayer.position.x,currentRowPos*80)]];
-            for(CCLabelTTF *lbl in moveLayer.children)
-            {
-                if(i == activeRow) [lbl setOpacity:255];
-                else [lbl setOpacity:50];
-            }
-            
+            [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(moveLayer.position.x,currentRowPos*kSpaceBetweenRows)]];
         }
         
     }

@@ -17,6 +17,7 @@
 #import "Topic.h"
 #import "Syllabus.h"
 #import "ConceptNode.h"
+#import "Relation.h"
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
 #import <CouchCocoa/CouchModelFactory.h>
@@ -86,6 +87,7 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
             [[CouchModelFactory sharedInstance] registerClass:[Topic class] forDocumentType:@"topic"];
             [[CouchModelFactory sharedInstance] registerClass:[Syllabus class] forDocumentType:@"syllabus"];
             [[CouchModelFactory sharedInstance] registerClass:[ConceptNode class] forDocumentType:@"concept node"];
+            [[CouchModelFactory sharedInstance] registerClass:[Relation class] forDocumentType:@"relation"];
             
             
             CouchEmbeddedServer *server = [CouchEmbeddedServer sharedInstance];
@@ -143,6 +145,23 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
         [nodes addObject:n];
     }
     return nodes;
+}
+
+-(NSArray*)relationMembersForName:(NSString *)name
+{
+    CouchQuery *rq=[[database designDocumentWithName:kDefaultContentDesignDocName] queryViewNamed:@"relations-by-name"];
+    rq.prefetch=YES;
+    [[rq start] wait];
+    
+    for (CouchQueryRow *qr in rq.rows) {
+        
+        if([qr.key isEqualToString:@"Prerequisite"])
+        {
+            Relation *r=[[CouchModelFactory sharedInstance] modelForDocument:qr.document];
+            return r.members;
+        }
+    }
+    return nil;
 }
 
 -(void)gotoNextProblemInElement

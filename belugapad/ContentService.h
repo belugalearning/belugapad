@@ -23,5 +23,7 @@
 -(CouchDatabase*)Database;
 -(void)gotoNextProblemInElement;
 -(NSArray*)allConceptNodes;
+-(NSArray*)relationMembersForName:(NSString *)name;
+
 
 @end

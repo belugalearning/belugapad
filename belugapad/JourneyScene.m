@@ -27,7 +27,11 @@ static CGPoint kStartMapPos={-2420, -3063};
     ContentService *contentService;
 
     NSArray *kcmNodes;
+    NSDictionary *kcmIdIndex;
     NSMutableArray *nodeSprites;
+    NSMutableArray *dotSprites;
+    
+    NSArray *prereqRelations;
     
     float nMinX, nMinY, nMaxX, nMaxY;
 }
@@ -72,8 +76,12 @@ static CGPoint kStartMapPos={-2420, -3063};
 
 -(void) setupMap
 {
+    //base colour layer
+    CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(0, 59, 72, 255) width:lx height:ly];
+    [self addChild:cLayer];
+    
     //base map layer
-    mapLayer=[[CCLayerColor alloc] initWithColor:ccc4(0, 59, 72, 255) width:100000 height:100000];
+    mapLayer=[[CCLayer alloc] init];
     [mapLayer setPosition:kStartMapPos];
     [self addChild:mapLayer];
     
@@ -81,6 +89,10 @@ static CGPoint kStartMapPos={-2420, -3063};
 //    CCSprite *sample=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/samplenodes.png")];
 //    [sample setPosition:ccp(cx, cy)];
 //    [mapLayer addChild:sample];
+    
+    kcmIdIndex=[[NSMutableDictionary alloc] init];
+    dotSprites=[[NSMutableArray alloc] init];
+    nodeSprites=[[NSMutableArray alloc] init];
     
     kcmNodes=[contentService allConceptNodes];
     //find bounds
@@ -93,15 +105,15 @@ static CGPoint kStartMapPos={-2420, -3063};
         nMaxX=nMinX;
         nMaxY=nMaxY;
         
-        if(kcmNodes.count>1)
-        {
-            for (int i=1; i<[kcmNodes count]; i++) {
-                ConceptNode *n=[kcmNodes objectAtIndex:i];
-                if([n.x floatValue]<nMinX)nMinX=[n.x floatValue];
-                if([n.y floatValue]<nMinY)nMinY=[n.y floatValue];
-                if([n.x floatValue]>nMaxX)nMaxX=[n.x floatValue];
-                if([n.y floatValue]>nMaxY)nMaxY=[n.y floatValue];
-            }
+        for (int i=1; i<[kcmNodes count]; i++) {
+            ConceptNode *n=[kcmNodes objectAtIndex:i];
+            if([n.x floatValue]<nMinX)nMinX=[n.x floatValue];
+            if([n.y floatValue]<nMinY)nMinY=[n.y floatValue];
+            if([n.x floatValue]>nMaxX)nMaxX=[n.x floatValue];
+            if([n.y floatValue]>nMaxY)nMaxY=[n.y floatValue];
+            
+            //add reference
+            [kcmIdIndex setValue:[NSNumber numberWithInt:i] forKey:n.document.documentID];
         }
     }
     
@@ -109,6 +121,28 @@ static CGPoint kStartMapPos={-2420, -3063};
     nMinY=nMinY*kNodeScale;
     nMaxX=nMaxX*kNodeScale;
     nMaxY=nMaxY*kNodeScale;
+    
+    [self createNodeSprites];
+    
+    prereqRelations=[contentService relationMembersForName:@"Prerequisites"];
+    NSLog(@"relation count %d", [prereqRelations count]);
+    
+    //iterate relations and find start/end points
+    for (NSArray *rel in prereqRelations) {
+        NSString *id1=[rel objectAtIndex:0];
+        NSString *id2=[rel objectAtIndex:1];
+        
+        NSNumber *idx1=[kcmIdIndex objectForKey:id1];
+        NSNumber *idx2=[kcmIdIndex objectForKey:id2];
+        
+        CCSprite *cs1=[nodeSprites objectAtIndex:[idx1 integerValue]];
+        CCSprite *cs2=[nodeSprites objectAtIndex:[idx2 integerValue]];
+        
+        CGPoint pos1=[cs1 position];
+        CGPoint pos2=[cs2 position];
+    
+        [self drawPathFrom:pos1 to:pos2];
+    }
     
     //add background to the map itself
     
@@ -123,9 +157,36 @@ static CGPoint kStartMapPos={-2420, -3063};
 //        }
 //    }
     
-    [self createNodeSprites];
-    
     NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
+}
+
+-(void)drawPathFrom:(CGPoint)p1 to:(CGPoint)p2
+{
+    //get the lenth of the vector
+    float l=[BLMath DistanceBetween:p1 and:p2];
+    
+    //how many plots to point
+    float dotCount=l / 50.0f;
+    
+    //vector between
+    CGPoint diff=[BLMath SubtractVector:p2 from:p1];
+    
+    float gapx=diff.x / l;
+    float gapy=diff.y / l;
+    
+    if(dotCount>=1)
+    {
+        for(int i=1; i<=(int)dotCount; i++)
+        {
+            //put dot at p1 + (gapx * i, gapy * i)
+            CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-std.png")];
+            [s setScale:0.25];
+            [s setOpacity:100];
+            [s setPosition:ccpAdd(p1, ccp(i*gapx, i*gapy))];
+            [mapLayer addChild:s];
+            [dotSprites addObject:s];
+        }
+    }
 }
 
 -(void)createNodeSprites

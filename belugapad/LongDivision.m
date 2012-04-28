@@ -94,7 +94,7 @@ const float kSpaceBetweenRows=80;
         
     }
     
-    if(fabs((currentTotal*divisor))!=fabs(dividend))
+    if(((float)currentTotal*(float)divisor)!=fabsf(dividend))
         [lblCurrentTotal setColor:ccc3(255,0,0)];
     else 
         [lblCurrentTotal setColor:ccc3(0,255,0)];
@@ -110,15 +110,18 @@ const float kSpaceBetweenRows=80;
         {
             CGPoint realLabelPos=[thisLayer convertToWorldSpace:lbl.position];
             //CGPoint realLabelPos=lbl.position;
-            float distToFade=0;
+            //float distToFade=0;
             float distToActive=[BLMath DistanceBetween:realLabelPos and:ccp(realLabelPos.x, 220)];
-            if(realLabelPos.y>220)
-                distToFade=[BLMath DistanceBetween:realLabelPos and:ccp(realLabelPos.x, 380)];
-            else 
-                distToFade=[BLMath DistanceBetween:realLabelPos and:ccp(realLabelPos.x, 50)];
+
+//            if(realLabelPos.y>220)
+//                distToFade=[BLMath DistanceBetween:realLabelPos and:ccp(realLabelPos.x, 380)];
+//            else 
+//                distToFade=[BLMath DistanceBetween:realLabelPos and:ccp(realLabelPos.x, 50)];
             
-            float prop=distToActive/(distToActive+distToFade);
+            float prop=distToActive/150;
             float opac=(1-prop)*255;
+            if(opac<0)opac=0;
+            if(opac>255)opac=255;
             
             
             
@@ -227,12 +230,12 @@ const float kSpaceBetweenRows=80;
 }
 -(void)handlePassThruScaling:(float)scale
 {
-        if(topTouch)
+        if(topTouch && currentTouchCount>1)
             [topSection setScale:scale];
 }
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if(isTouching)return;
+    //if(isTouching)return;
     isTouching=YES;
     
     UITouch *touch=[touches anyObject];
@@ -240,9 +243,18 @@ const float kSpaceBetweenRows=80;
     location=[[CCDirector sharedDirector] convertToGL:location];
     lastTouch=location;
     touchStart=location;
+    currentTouchCount+=[touches count];
+    NSLog(@"touch count %d", currentTouchCount);
     
-    if(location.y>cx)topTouch=YES;
-    if(location.y<cx)bottomTouch=YES;
+    
+    for(UITouch *t in touches)
+    {
+        CGPoint location=[t locationInView: [t view]];
+        location=[[CCDirector sharedDirector] convertToGL:location];
+        if(location.y>cx)topTouch=YES;
+        
+    }
+    if(location.y<cx && currentTouchCount==1)bottomTouch=YES;
     
     if(topTouch)NSLog(@"touching top");
     
@@ -254,6 +266,9 @@ const float kSpaceBetweenRows=80;
         if(location.y > 190 && location.y < 250)
         {
             startedInActiveRow=YES;
+            CCLayer *curLayer=[numberLayers objectAtIndex:activeRow];
+            currentNumberPos=fabsf((int)curLayer.position.x/kSpaceBetweenNumbers);
+            NSLog(@"currentpos - %d", currentNumberPos);
         }        
     }
     
@@ -264,14 +279,14 @@ const float kSpaceBetweenRows=80;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
-    
+    NSLog(@"touch count ivar %d nsset %d", currentTouchCount, [touches count]);
     //NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
     
-    if(topTouch)
+    if(topTouch && currentTouchCount==1)
     {
-        CGPoint diff=[BLMath SubtractVector:lastTouch from:location];
-        //diff = ccp(diff.x, 0);
-        [topSection setPosition:ccpAdd(topSection.position, diff)];
+            CGPoint diff=[BLMath SubtractVector:lastTouch from:location];
+            diff = ccp(diff.x, 0);
+            [topSection setPosition:ccpAdd(topSection.position, diff)];
         
     }
     
@@ -323,6 +338,7 @@ const float kSpaceBetweenRows=80;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    currentTouchCount-=[touches count];
     isTouching=NO;
     
     if(doingHorizontalDrag)
@@ -411,7 +427,6 @@ const float kSpaceBetweenRows=80;
     startedInActiveRow=NO;
     doingHorizontalDrag=NO;
     doingVerticalDrag=NO;
-    
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -422,6 +437,7 @@ const float kSpaceBetweenRows=80;
     startedInActiveRow=NO;
     doingHorizontalDrag=NO;
     doingVerticalDrag=NO;
+    currentTouchCount-=[touches count];
 }
 
 -(BOOL)evalExpression

@@ -57,6 +57,8 @@
     float rowMultiplier;
     float startRow;
     
+    int currentTouchCount;
+    
     NSMutableArray *selectedNumbers;
     NSMutableArray *rowMultipliers;
 }

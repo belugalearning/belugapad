@@ -764,7 +764,7 @@ static float kMoveToNextProblemTime=2.0f;
             [toolForeLayer setScale:scale];
         }
         
-        NSLog(@"scale: %f", scale);
+        //NSLog(@"scale: %f", scale);
     }
     else {
         [currentTool ccTouchesMoved:touches withEvent:event];

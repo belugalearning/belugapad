@@ -123,7 +123,7 @@
     
     drawMode=[[pdef objectForKey:DRAW_MODE] intValue];
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
-    evalType=[[pdef objectForKey:EVAL_TYPE] intValue];
+    evalType=[[pdef objectForKey:DOTGRID_EVAL_TYPE] intValue];
     spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
     startX=[[pdef objectForKey:START_X] intValue];
     startY=[[pdef objectForKey:START_Y] intValue];

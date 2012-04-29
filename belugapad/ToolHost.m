@@ -366,6 +366,14 @@ static float kMoveToNextProblemTime=2.0f;
     if(eMode) evalMode=[eMode intValue];
     else evalMode=kProblemEvalAuto;
     
+    if([curpdef objectForKey:DEFAULT_SCALE])
+        scale=[[curpdef objectForKey:DEFAULT_SCALE]floatValue];
+    else 
+        scale=1.0f;
+    
+    [toolBackLayer setScale:scale];
+    [toolForeLayer setScale:scale];
+    
     problemDescLabel=[CCLabelTTF labelWithString:[curpdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
     [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
     //[problemDescLabel setColor:kLabelTitleColor];
@@ -523,9 +531,20 @@ static float kMoveToNextProblemTime=2.0f;
     
     NSDictionary *toolOpt=[toolDef objectForKey:currentToolKey];
 
-    currentTool.ScaleMax=[[toolOpt objectForKey:SCALE_MAX] floatValue];
-    currentTool.ScaleMin=[[toolOpt objectForKey:SCALE_MIN] floatValue];
-    currentTool.PassThruScaling=[[toolOpt objectForKey:SCALING_PASS_THRU] boolValue];
+    if([toolOpt objectForKey:SCALE_MAX])
+        currentTool.ScaleMax=[[toolOpt objectForKey:SCALE_MAX] floatValue];
+    else
+        currentTool.ScaleMax=1.0f;
+    
+    if([toolOpt objectForKey:SCALE_MIN])
+        currentTool.ScaleMin=[[toolOpt objectForKey:SCALE_MIN] floatValue];
+    else
+        currentTool.ScaleMin=1.0f;
+    
+    if([toolOpt objectForKey:SCALING_PASS_THRU])
+        currentTool.PassThruScaling=[[toolOpt objectForKey:SCALING_PASS_THRU] boolValue];
+    else 
+        currentTool.PassThruScaling=NO;
     
     
 }

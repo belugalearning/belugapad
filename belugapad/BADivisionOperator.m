@@ -227,6 +227,11 @@
             return NO;
         }
     }
+    else if(![theOtherExpression isKindOfClass:[BADivisionOperator class]])
+    {
+        //can't compare to anything but a division currently
+        return NO;
+    }
     else {
         @throw [NSException exceptionWithName:@"equality not implemented in BADivisionOperator" reason:@"not implemented" userInfo:nil];
     }

@@ -4,6 +4,8 @@
 <dict>
 	<key>TOOL_KEY</key>
 	<string>LongDivision</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>48/3</string>
 	<key>DIVIDEND</key>
 	<integer>48</integer>
 	<key>DIVISOR</key>

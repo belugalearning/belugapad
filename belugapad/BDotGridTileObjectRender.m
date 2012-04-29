@@ -78,50 +78,50 @@
     // check the requested tile type, then like, set our sprite to reflect this
     if(tile.tileType==kTopLeft)
     {
-        spriteFileName=@"/images/dotgrid/tile-corner.png";
+        spriteFileName=@"/images/dotgrid/tile-corner";
         [tile.mySprite setRotation:0.0f];
     }
     if(tile.tileType==kTopRight)
     {
-        spriteFileName=@"/images/dotgrid/tile-corner.png";
+        spriteFileName=@"/images/dotgrid/tile-corner";
         [tile.mySprite setRotation:90.0f];
     }
     if(tile.tileType==kBottomLeft)
     {
-        spriteFileName=@"/images/dotgrid/tile-corner.png";
+        spriteFileName=@"/images/dotgrid/tile-corner";
         [tile.mySprite setRotation:270.0f];
     }
     if(tile.tileType==kBottomRight)
     {
-        spriteFileName=@"/images/dotgrid/tile-corner.png";
+        spriteFileName=@"/images/dotgrid/tile-corner";
         [tile.mySprite setRotation:180.0f];
     }
     if(tile.tileType==kBorderLeft)
     {
-        spriteFileName=@"/images/dotgrid/tile-border-single.png";
+        spriteFileName=@"/images/dotgrid/tile-border-single";
         [tile.mySprite setRotation:0.0f];
     }
     if(tile.tileType==kBorderRight)
     {
-        spriteFileName=@"/images/dotgrid/tile-border-single.png";
+        spriteFileName=@"/images/dotgrid/tile-border-single";
         [tile.mySprite setRotation:180.0f];
     }
     if(tile.tileType==kBorderTop)
     {
-        spriteFileName=@"/images/dotgrid/tile-border-single.png";
+        spriteFileName=@"/images/dotgrid/tile-border-single";
         [tile.mySprite setRotation:90.0f];
     }
     if(tile.tileType==kBorderBottom)
     {
-        spriteFileName=@"/images/dotgrid/tile-border-single.png";
+        spriteFileName=@"/images/dotgrid/tile-border-single";
         [tile.mySprite setRotation:270.0f];
     }
     if(tile.tileType==kNoBorder)
     {
-        spriteFileName=@"/images/dotgrid/tile-border-none.png";
+        spriteFileName=@"/images/dotgrid/tile-border-none";
     }
     
-    tile.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+    tile.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@%d.png", spriteFileName, tile.tileSize]))];
     [tile.mySprite setPosition:tile.Position];
     
     // THE TINTING BEHAVIOUR HERE CAN ALSO BE APPLIED BY THE SHAPE TOUCH BEHAVIOUR    

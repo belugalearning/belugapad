@@ -25,6 +25,9 @@
     
     CCLayer *renderLayer;
     
+    CCLabelTTF *lblCurrentTotal;
+    CCSprite *line;
+    
     NSMutableArray *numberRows;
     NSMutableArray *numberLayers;
     NSArray *solutionsDef;
@@ -35,8 +38,6 @@
     ProblemRejectMode rejectMode;
     ProblemEvalMode evalMode;
     
-    NSMutableArray *dotMatrix;
-    NSDictionary *hiddenRows;
     
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
@@ -50,16 +51,22 @@
     float dividend;
     float divisor;
     
+    int currentRowPos;
+    int activeRow;
     int currentNumberPos;
     float rowMultiplier;
     float startRow;
     
-    CGRect rowBoundingBox;
+    int currentTouchCount;
+    
+    NSMutableArray *selectedNumbers;
+    NSMutableArray *rowMultipliers;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)createVisibleNumbers;
 -(void)populateGW;
+-(void)handlePassThruScaling:(float)scale;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

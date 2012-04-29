@@ -22,6 +22,11 @@ typedef enum {
     kMoveShape=3
 } GameState;
 
+typedef enum {
+    kProblemTotalShapeSize=0,
+    kProblemSumOfFractions=1
+} DotGridEvalType;
+
 @interface DotGrid : ToolScene
 {
     ToolHost *toolHost;
@@ -29,7 +34,12 @@ typedef enum {
     
     DrawMode drawMode;
     GameState gameState;
+    ProblemEvalMode evalMode;
+    DotGridEvalType evalType;
 
+    int evalDividend;
+    int evalDivisor;
+    int evalTotalSize;
     
     CGPoint winL;
     float cx, cy, lx, ly;
@@ -44,7 +54,6 @@ typedef enum {
     CGPoint lastTouch;
     
     ProblemRejectMode rejectMode;
-    ProblemEvalMode evalMode;
     
     NSMutableArray *dotMatrix;
     NSDictionary *hiddenRows;

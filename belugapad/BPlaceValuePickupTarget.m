@@ -23,11 +23,11 @@
 {
     if(messageType==kDWareYouAPickupTarget)
     {
-        float theirV=fabsf([[payload objectForKey:OBJECT_VALUE] floatValue]);
-        float myV=fabsf([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue]);
+//        float theirV=fabsf([[payload objectForKey:OBJECT_VALUE] floatValue]);
+//        float myV=fabsf([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue]);
 
         
-        if(theirV!=myV)return;
+        //if(theirV!=myV)return;
         
         // if add from cage disabled - return at this point
         DWGameObject *mount = [[gameObject store] objectForKey:MOUNT];

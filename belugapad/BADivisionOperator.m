@@ -199,13 +199,44 @@
 
 - (BOOL)isEqualToExpression:(BAExpression*)theOtherExpression
 {
-	if([theOtherExpression isKindOfClass:[BADivisionOperator class]] == NO)
-		return NO;
-	
-	// do we just compare the operator itself or do we compare the whole operation (including the childrne?)
-	
-	// for now, i consider it a match if it is the same operator, the children must be compared on their own
-	return YES;
+    if([self children].count != 2 || [self children].count != 2)
+    {
+        @throw [NSException exceptionWithName:@"not supported" reason:@"equal on supported with 2 children per side" userInfo:nil];
+        return NO;
+    }
+    
+    
+    //compare divisions with 2 integer children on both sides
+    if([[[self children] objectAtIndex:0] isKindOfClass:[BAInteger class]] &&
+       [[[self children] objectAtIndex:1] isKindOfClass:[BAInteger class]] &&
+       [[[theOtherExpression children] objectAtIndex:0] isKindOfClass:[BAInteger class]] &&
+       [[[theOtherExpression children] objectAtIndex:1] isKindOfClass:[BAInteger class]])
+    {
+        //return yes if top of self and top of comparison are equal, and bottom of self and bottom of compare are equal
+        BAInteger *ltop=(BAInteger*)[[self children] objectAtIndex:0];
+        BAInteger *lbottom=(BAInteger*)[[self children] objectAtIndex:1];
+        BAInteger *rtop=(BAInteger*)[[theOtherExpression children] objectAtIndex:0];
+        BAInteger *rbottom=(BAInteger*)[[theOtherExpression children] objectAtIndex:1];
+        
+        if([ltop isEqualToExpression:rtop] && [lbottom isEqualToExpression:rbottom])
+        {
+            return YES;
+        }
+        else {
+            //this is a no based on the terms provided -- not 
+            return NO;
+        }
+    }
+    else if(![theOtherExpression isKindOfClass:[BADivisionOperator class]])
+    {
+        //can't compare to anything but a division currently
+        return NO;
+    }
+    else {
+        @throw [NSException exceptionWithName:@"equality not implemented in BADivisionOperator" reason:@"not implemented" userInfo:nil];
+    }
+    
+    return NO;
 }
 
 @end

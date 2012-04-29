@@ -70,14 +70,16 @@
 
 - (BOOL)isEqualToExpression:(BAExpression*)theOtherExpression
 {
-	if([theOtherExpression isKindOfClass:[BABracketOperator class]] == NO)
-		return NO;
-	
-	// do we just compare the operator itself or do we compare the whole operation (including the childrne?)
-	
-	// I don't know what the right behavior is for bracket operators in this case.
-	// for now, i'll just return yes, but i have a hunch that we'll want to check their inner expressions...
-	return YES;
+    @throw [NSException exceptionWithName:@"equality not implemented in BABracketOperator" reason:@"equality not implemented in BABracketOperator" userInfo:nil];
+    
+//	if([theOtherExpression isKindOfClass:[BABracketOperator class]] == NO)
+//		return NO;
+//	
+//	// do we just compare the operator itself or do we compare the whole operation (including the childrne?)
+//	
+//	// I don't know what the right behavior is for bracket operators in this case.
+//	// for now, i'll just return yes, but i have a hunch that we'll want to check their inner expressions...
+//	return YES;
 }
 
 @end

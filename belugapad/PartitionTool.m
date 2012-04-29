@@ -194,6 +194,7 @@
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    //location=[self.ForeLayer convertToNodeSpace:location];
 
     
     [gw Blackboard].PickupObject=nil;
@@ -230,6 +231,7 @@
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    location=[self.ForeLayer convertToNodeSpace:location];
     
     if([gw Blackboard].PickupObject != nil)
     {
@@ -257,6 +259,7 @@
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    location=[self.ForeLayer convertToNodeSpace:location];
     isTouching=NO;
 
     NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];

@@ -122,6 +122,8 @@
     // All our stuff needs to go into vars to read later
     
     drawMode=[[pdef objectForKey:DRAW_MODE] intValue];
+    evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
+    evalType=[[pdef objectForKey:EVAL_TYPE] intValue];
     spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
     startX=[[pdef objectForKey:START_X] intValue];
     startY=[[pdef objectForKey:START_Y] intValue];
@@ -129,6 +131,7 @@
     if(initObjects)[initObjects retain];
     if([pdef objectForKey:HIDDEN_ROWS])hiddenRows=[pdef objectForKey:HIDDEN_ROWS];
     if(hiddenRows)[hiddenRows retain];
+
 
     
 }

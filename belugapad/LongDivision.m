@@ -241,6 +241,7 @@ const float kSpaceBetweenRows=80;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
     touchStart=location;
     currentTouchCount+=[touches count];
@@ -279,6 +280,7 @@ const float kSpaceBetweenRows=80;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    location=[self.ForeLayer convertToNodeSpace:location];
     NSLog(@"touch count ivar %d nsset %d", currentTouchCount, [touches count]);
     //NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
     
@@ -338,6 +340,7 @@ const float kSpaceBetweenRows=80;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    location=[self.ForeLayer convertToNodeSpace:location];
     currentTouchCount-=[touches count];
     isTouching=NO;
     

@@ -149,6 +149,7 @@
 {
     UITouch *touch=[touches anyObject];
     CGPoint location=[[CCDirector sharedDirector] convertToGL:[touch locationInView:touch.view]];
+    location=[foreScaleLayer convertToNodeSpace:location];
     
     if(location.x>975 & location.y>720)
     {

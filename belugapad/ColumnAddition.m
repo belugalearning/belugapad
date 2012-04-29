@@ -373,6 +373,7 @@
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    //location=[self.ForeLayer convertToNodeSpace:location];
     
     touching=YES;
     
@@ -476,6 +477,7 @@
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    //location=[self.ForeLayer convertToNodeSpace:location];
     if(toolState==kNumberRemainderDrag)
     {
         [lblRemainder setPosition:[sumBoxLayer convertToNodeSpace:location]];
@@ -489,6 +491,7 @@
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+
     
     touching=NO;
     if(toolState==kNumberRemainderDrag)

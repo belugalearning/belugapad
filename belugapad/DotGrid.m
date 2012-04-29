@@ -379,6 +379,7 @@
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
     
     
@@ -406,6 +407,7 @@
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    location=[self.ForeLayer convertToNodeSpace:location];
     
     lastTouch=location;
     NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
@@ -437,6 +439,7 @@
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    //location=[self.ForeLayer convertToNodeSpace:location];
     isTouching=NO;
     
 //    DWDotGridAnchorGameObject *anchStart=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;

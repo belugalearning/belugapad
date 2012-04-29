@@ -240,6 +240,7 @@ static void eachShape(void *ptr, void* unused)
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    //location=[self.ForeLayer convertToNodeSpace:location];
     
 //    //shards on tap
 //    [toolHost.Zubi createXPshards:20 fromLocation:location];
@@ -385,6 +386,7 @@ static void eachShape(void *ptr, void* unused)
     UITouch *touch=[touches anyObject];
 	CGPoint location=[touch locationInView: [touch view]];
 	location=[[CCDirector sharedDirector] convertToGL:location];
+    location=[self.ForeLayer convertToNodeSpace:location];
 
     //daemon to move
     [toolHost.Zubi setTarget:location];
@@ -589,6 +591,7 @@ static void eachShape(void *ptr, void* unused)
     UITouch *touch=[touches anyObject];
 	CGPoint location=[touch locationInView: [touch view]];
 	location=[[CCDirector sharedDirector] convertToGL:location];
+    location=[self.ForeLayer convertToNodeSpace:location];
 	
     //daemon to (currently) let go and rest
     [toolHost.Zubi setMode:kDaemonModeWaiting];

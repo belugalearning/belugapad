@@ -169,16 +169,18 @@
 
 - (BOOL)isEqualToExpression:(BAExpression*)theOtherExpression
 {
-	if([theOtherExpression isKindOfClass:[BAPowerOperator class]] == NO)
-		return NO;
-	
-	// do we just compare the operator itself or do we compare the whole operation (including the childrne?)
-	
-	// for power operators, we'll compare the base and exponent values
-	if(		[[[theOtherExpression children] objectAtIndex:0] isEqualToExpression:[[self children] objectAtIndex:0]]
-	   &&	[[[theOtherExpression children] objectAtIndex:1] isEqualToExpression:[[self children] objectAtIndex:1]])
-		return YES;
-	return NO;
+    @throw [NSException exceptionWithName:@"equality not implemented in BAPowerOperator" reason:@"equality not implemented in BAPowerOperator" userInfo:nil];
+    
+//	if([theOtherExpression isKindOfClass:[BAPowerOperator class]] == NO)
+//		return NO;
+//	
+//	// do we just compare the operator itself or do we compare the whole operation (including the childrne?)
+//	
+//	// for power operators, we'll compare the base and exponent values
+//	if(		[[[theOtherExpression children] objectAtIndex:0] isEqualToExpression:[[self children] objectAtIndex:0]]
+//	   &&	[[[theOtherExpression children] objectAtIndex:1] isEqualToExpression:[[self children] objectAtIndex:1]])
+//		return YES;
+//	return NO;
 }
 
 @end

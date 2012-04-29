@@ -37,6 +37,9 @@ typedef enum {
     ProblemEvalMode evalMode;
     DotGridEvalType evalType;
 
+    int evalDividend;
+    int evalDivisor;
+    int evalTotalSize;
     
     CGPoint winL;
     float cx, cy, lx, ly;

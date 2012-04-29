@@ -17,6 +17,10 @@
 #import "DWDotGridShapeGameObject.h"
 #import "BLMath.h"
 
+#import "BAExpressionHeaders.h"
+#import "BAExpressionTree.h"
+#import "BATQuery.h"
+
 @implementation DotGrid
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
 {
@@ -124,6 +128,9 @@
     drawMode=[[pdef objectForKey:DRAW_MODE] intValue];
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
     evalType=[[pdef objectForKey:DOTGRID_EVAL_TYPE] intValue];
+    evalDividend=[[pdef objectForKey:DOTGRID_EVAL_DIVIDEND] intValue];
+    evalDivisor=[[pdef objectForKey:DOTGRID_EVAL_DIVISOR] intValue];
+    evalTotalSize=[[pdef objectForKey:DOTGRID_EVAL_TOTALSIZE] intValue];
     spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
     startX=[[pdef objectForKey:START_X] intValue];
     startY=[[pdef objectForKey:START_Y] intValue];
@@ -479,6 +486,14 @@
 {
     //returns YES if the tool expression evaluates succesfully
     
+    if(toolHost.PpExpr) [toolHost.PpExpr release];
+    
+    //create base equality
+    toolHost.PpExpr=[BAExpressionTree treeWithRoot:[BAEqualsOperator operator]];
+    
+    NSMutableArray *tileCounts=[[NSMutableArray alloc] init ];
+    NSMutableArray *selectedCounts=[[NSMutableArray alloc] init];
+    
     for (DWGameObject *go in [gw AllGameObjects]) {
         if([go isKindOfClass:[DWDotGridShapeGameObject class]])
         {
@@ -495,13 +510,72 @@
                     if(tgo.Selected)selectedCount++;
                 }
                 
+                [tileCounts addObject:[NSNumber numberWithInt:tileCount]];
+                [selectedCounts addObject:[NSNumber numberWithInt:selectedCount]];
+                
                 NSLog(@"shape of %d / %d", selectedCount, tileCount);
             }
         }
     }
     
-    //return YES;
-    return NO;
+    //evaluted wrong by default if no shapes found
+    if(tileCounts.count == 0) return NO;
+    
+    else if(evalType==kProblemTotalShapeSize)
+    {
+        int tileCountSum=0;
+        for (NSNumber *n in tileCounts) {
+            tileCountSum+=[n intValue];
+        }
+        
+        //add left part (an integer as in pdef)
+        [toolHost.PpExpr.root addChild:[BAInteger integerWithIntValue:evalTotalSize]];
+        
+        //add right part (total of tiles drawn)
+        [toolHost.PpExpr.root addChild:[BAInteger integerWithIntValue:tileCountSum]];
+    }
+    
+    else if(evalType==kProblemSumOfFractions)
+    {
+        //create left part as dividend/divisor
+        BADivisionOperator *leftdiv=[BADivisionOperator operator];
+        [toolHost.PpExpr.root addChild:leftdiv];
+        
+        [leftdiv addChild:[BAInteger integerWithIntValue:evalDividend]];
+        [leftdiv addChild:[BAInteger integerWithIntValue:evalDivisor]];
+        
+        //if there was only one shape, then add it as division to root equality -- if not, create an addition for all divisions on right
+        if(tileCounts.count==1)
+        {
+            BADivisionOperator *rightdiv=[BADivisionOperator operator];
+            [toolHost.PpExpr.root addChild:rightdiv];
+            
+            [rightdiv addChild:[BAInteger integerWithIntValue:[[selectedCounts objectAtIndex:0] intValue]]];
+            [rightdiv addChild:[BAInteger integerWithIntValue:[[tileCounts objectAtIndex:0] intValue]]];
+        }
+        else {
+            //add all the divisions together
+            BAAdditionOperator *rightadd=[BAAdditionOperator operator];
+            [toolHost.PpExpr.root addChild:rightadd];
+            
+            for (int i; i<[tileCounts count]; i++) {
+                BADivisionOperator *div=[BADivisionOperator operator];
+                [rightadd addChild:div];
+                
+                [div addChild:[BAInteger integerWithIntValue:[[selectedCounts objectAtIndex:i] intValue]]];
+                [div addChild:[BAInteger integerWithIntValue:[[tileCounts objectAtIndex:i] intValue]]];
+            }
+        }
+    }
+    else {
+        //no eval mode specified, return no
+        return NO;
+    }
+    
+    NSLog(@"%@", [toolHost.PpExpr xmlStringValue]);
+    
+    BATQuery *q=[[BATQuery alloc] initWithExpr:toolHost.PpExpr.root andTree:toolHost.PpExpr];
+    return [q assumeAndEvalEqualityAtRoot];
 }
 
 -(void)evalProblem

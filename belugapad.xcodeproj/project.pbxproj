@@ -314,6 +314,8 @@
 		7FCBC3EB1510195F00066426 /* ExprIOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3EA1510195F00066426 /* ExprIOTests.m */; };
 		7FD18782154E027E008F0A31 /* DWLongDivGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD18781154E027E008F0A31 /* DWLongDivGameObject.m */; };
 		7FD18786154E02AD008F0A31 /* BLongDivGameObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD18785154E02AD008F0A31 /* BLongDivGameObjectRender.m */; };
+		7FD18789154E6B81008F0A31 /* NodeSlice.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD18788154E6B81008F0A31 /* NodeSlice.m */; };
+		7FD1878C154E7396008F0A31 /* PipelineNodeSliceInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD1878B154E7395008F0A31 /* PipelineNodeSliceInstance.m */; };
 		7FDABAC3154AABF300F3F1A5 /* ConceptNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDABAC2154AABF300F3F1A5 /* ConceptNode.m */; };
 		7FDBA52D14EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51214EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m */; };
 		7FDBA52E14EBD560004D1CC9 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51414EBD560004D1CC9 /* CXMLNode_CreationExtensions.m */; };
@@ -922,6 +924,10 @@
 		7FD18781154E027E008F0A31 /* DWLongDivGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWLongDivGameObject.m; sourceTree = "<group>"; };
 		7FD18784154E02AD008F0A31 /* BLongDivGameObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLongDivGameObjectRender.h; sourceTree = "<group>"; };
 		7FD18785154E02AD008F0A31 /* BLongDivGameObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLongDivGameObjectRender.m; sourceTree = "<group>"; };
+		7FD18787154E6B81008F0A31 /* NodeSlice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeSlice.h; sourceTree = "<group>"; };
+		7FD18788154E6B81008F0A31 /* NodeSlice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodeSlice.m; sourceTree = "<group>"; };
+		7FD1878A154E7395008F0A31 /* PipelineNodeSliceInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PipelineNodeSliceInstance.h; sourceTree = "<group>"; };
+		7FD1878B154E7395008F0A31 /* PipelineNodeSliceInstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PipelineNodeSliceInstance.m; sourceTree = "<group>"; };
 		7FDABAC1154AABF300F3F1A5 /* ConceptNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConceptNode.h; sourceTree = "<group>"; };
 		7FDABAC2154AABF300F3F1A5 /* ConceptNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConceptNode.m; sourceTree = "<group>"; };
 		7FDBA51114EBD560004D1CC9 /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
@@ -1011,6 +1017,10 @@
 				7FDABAC2154AABF300F3F1A5 /* ConceptNode.m */,
 				7F5BD844154AFAE70092740B /* Relation.h */,
 				7F5BD845154AFAE70092740B /* Relation.m */,
+				7FD18787154E6B81008F0A31 /* NodeSlice.h */,
+				7FD18788154E6B81008F0A31 /* NodeSlice.m */,
+				7FD1878A154E7395008F0A31 /* PipelineNodeSliceInstance.h */,
+				7FD1878B154E7395008F0A31 /* PipelineNodeSliceInstance.m */,
 			);
 			name = Content;
 			sourceTree = "<group>";
@@ -2488,6 +2498,8 @@
 				7F5BD846154AFAE70092740B /* Relation.m in Sources */,
 				7FD18782154E027E008F0A31 /* DWLongDivGameObject.m in Sources */,
 				7FD18786154E02AD008F0A31 /* BLongDivGameObjectRender.m in Sources */,
+				7FD18789154E6B81008F0A31 /* NodeSlice.m in Sources */,
+				7FD1878C154E7396008F0A31 /* PipelineNodeSliceInstance.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

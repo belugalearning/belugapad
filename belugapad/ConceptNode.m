@@ -7,9 +7,15 @@
 //
 
 #import "ConceptNode.h"
+#import "User.h"
 
 @implementation ConceptNode
 
 @dynamic graffleId, nodeDescription, notes, pipelines, tags, x, y;
+
+-(BOOL)isNodeCompleteForUser:(User*)user
+{
+    return NO;
+}
 
 @end

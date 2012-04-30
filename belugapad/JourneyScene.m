@@ -19,7 +19,9 @@
 #import "ConceptNode.h"
 
 static float kNodeScale=2.0f;
-static CGPoint kStartMapPos={-2420, -3063};
+static CGPoint kStartMapPos={-3376, -1457};
+
+static int kNodeMax=50;
 
 @interface JourneyScene()
 {
@@ -34,6 +36,7 @@ static CGPoint kStartMapPos={-2420, -3063};
     NSArray *prereqRelations;
     
     float nMinX, nMinY, nMaxX, nMaxY;
+    float scale;
 }
 
 @end
@@ -53,7 +56,7 @@ static CGPoint kStartMapPos={-2420, -3063};
     if(self=[super init])
     {
         self.isTouchEnabled=YES;
-        [[CCDirector sharedDirector] view].multipleTouchEnabled=NO;
+        [[CCDirector sharedDirector] view].multipleTouchEnabled=YES;
         
         CGSize winsize=[[CCDirector sharedDirector] winSize];
         lx=winsize.width;
@@ -61,9 +64,13 @@ static CGPoint kStartMapPos={-2420, -3063};
         cx = lx / 2.0f;
         cy = ly / 2.0f;
         
+        scale=1.0f;
+        
         contentService = ((AppController*)[[UIApplication sharedApplication] delegate]).contentService; 
         
         [self setupMap];
+        
+        [self addFeatures];
         
         [self schedule:@selector(doUpdate:) interval:1.0f / 60.0f];
         
@@ -95,6 +102,7 @@ static CGPoint kStartMapPos={-2420, -3063};
     nodeSprites=[[NSMutableArray alloc] init];
     
     kcmNodes=[contentService allConceptNodes];
+    
     //find bounds
     //set bounds to first element
     if(kcmNodes.count>0)
@@ -114,6 +122,9 @@ static CGPoint kStartMapPos={-2420, -3063};
             
             //add reference
             [kcmIdIndex setValue:[NSNumber numberWithInt:i] forKey:n.document.documentID];
+            
+            //force quit at max (e.g. 50) nodes
+            if(i>=kNodeMax) break;
         }
     }
     
@@ -135,13 +146,16 @@ static CGPoint kStartMapPos={-2420, -3063};
         NSNumber *idx1=[kcmIdIndex objectForKey:id1];
         NSNumber *idx2=[kcmIdIndex objectForKey:id2];
         
-        CCSprite *cs1=[nodeSprites objectAtIndex:[idx1 integerValue]];
-        CCSprite *cs2=[nodeSprites objectAtIndex:[idx2 integerValue]];
+        if(idx1 && idx2)
+        {
+            CCSprite *cs1=[nodeSprites objectAtIndex:[idx1 integerValue]];
+            CCSprite *cs2=[nodeSprites objectAtIndex:[idx2 integerValue]];
+            
+            CGPoint pos1=[cs1 position];
+            CGPoint pos2=[cs2 position];
         
-        CGPoint pos1=[cs1 position];
-        CGPoint pos2=[cs2 position];
-    
-        [self drawPathFrom:pos1 to:pos2];
+            [self drawPathFrom:pos1 to:pos2];
+        }
     }
     
     //add background to the map itself
@@ -165,14 +179,14 @@ static CGPoint kStartMapPos={-2420, -3063};
     //get the lenth of the vector
     float l=[BLMath DistanceBetween:p1 and:p2];
     
-    //how many plots to point
+    //how many points to plot
     float dotCount=l / 50.0f;
     
     //vector between
     CGPoint diff=[BLMath SubtractVector:p2 from:p1];
     
-    float gapx=diff.x / l;
-    float gapy=diff.y / l;
+    float gapx=diff.x / dotCount;
+    float gapy=diff.y / dotCount;
     
     if(dotCount>=1)
     {
@@ -191,13 +205,76 @@ static CGPoint kStartMapPos={-2420, -3063};
 
 -(void)createNodeSprites
 {
-    for(ConceptNode *n in kcmNodes)
+    for(int i=0; i<kcmNodes.count; i++)
     {
+        ConceptNode *n=[kcmNodes objectAtIndex:i];
+        
         CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-std.png")];
         [s setPosition:ccp([n.x floatValue] / kNodeScale, [n.y floatValue] / kNodeScale)];
+        
+        if(n.pipelines.count==0)
+        {
+            [s setOpacity:100];
+        }
+        else {
+            NSLog(@"pipelines %d", n.pipelines.count);
+        }
+        
+        NSLog(@"id: %@ pipelines: %d", n.document.documentID, n.pipelines.count);
+        
         [mapLayer addChild:s];
         [nodeSprites addObject:s];
+        
     }
+}
+
+-(void)addFeatures
+{
+    int fCount=0;
+    float minDist=100.0f;
+    
+    int xDiff=(nMaxX - nMinX) + nMinX;
+    int yDiff=(nMaxY - nMinY) + nMinY;
+    
+    do {
+        int rx=arc4random() % xDiff;
+        int ry=arc4random() % yDiff;
+        
+//        float x=rx*xDiff;
+//        float y=ry*yDiff;
+        
+        CGPoint pos=ccp(rx, ry);
+        BOOL found=NO;
+        for (CCNode *n in nodeSprites) {
+            if(fabsf([BLMath DistanceBetween:pos and:n.position])<minDist)
+            {
+                found=YES;
+                return;
+            }
+        }
+        for (CCNode *n in dotSprites) {
+            if(fabsf([BLMath DistanceBetween:pos and:n.position])<minDist)
+            {
+                found=YES;
+                return;
+            }
+        }
+        
+        if(!found)
+        {
+            [self drawFeatureAt:pos];
+            fCount++;
+        }
+        
+    } while (fCount<100);
+}
+
+-(void)drawFeatureAt:(CGPoint)pos
+{
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/features/large1.png")];
+    [s setPosition:pos];
+    [s setScale:0.25f];
+    [mapLayer addChild:s];
 }
 
 -(void) doUpdate:(ccTime)delta
@@ -226,14 +303,52 @@ static CGPoint kStartMapPos={-2420, -3063};
     CGPoint l=[touch locationInView:[touch view]];
     l=[[CCDirector sharedDirector] convertToGL:l];
     
-    [mapLayer setPosition:[BLMath AddVector:mapLayer.position toVector:[BLMath SubtractVector:lastTouch from:l]]];
+    //pinch handling
+    if([touches count]>1)
+    {
+        UITouch *t1=[[touches allObjects] objectAtIndex:0];
+        UITouch *t2=[[touches allObjects] objectAtIndex:1];
+        
+        CGPoint t1a=[[CCDirector sharedDirector] convertToGL:[t1 previousLocationInView:t1.view]];
+        CGPoint t1b=[[CCDirector sharedDirector] convertToGL:[t1 locationInView:t1.view]];
+        CGPoint t2a=[[CCDirector sharedDirector] convertToGL:[t2 previousLocationInView:t2.view]];
+        CGPoint t2b=[[CCDirector sharedDirector] convertToGL:[t2 locationInView:t2.view]];
+        
+        float da=[BLMath DistanceBetween:t1a and:t2a];
+        float db=[BLMath DistanceBetween:t1b and:t2b];
+        
+        float scaleChange=db-da;
+        
+        
+        scale+=(scaleChange / cx) * 0.01f;
+        
+        if(scale<0.1f)scale=0.1f;
+        if(scale>2.0f)scale=1.0f;
+        
+        CGPoint avgPos=ccpMult(ccpAdd(t1b, t2b), 0.5f);
+        CGPoint diffCenter=[BLMath SubtractVector:mapLayer.position from:avgPos];
+        
+        //[mapLayer setPosition:ccpAdd(mapLayer.position, ccpMult(diffCenter, (1-(scaleChange / cx))*0.01f))];
+        
+        NSLog(@"ns avgpos %@", NSStringFromCGPoint([mapLayer convertToNodeSpace:avgPos]));
+        
+        [mapLayer setAnchorPoint:[mapLayer convertToNodeSpace:avgPos]];
+        [mapLayer setScale:scale];
+        
+        //NSLog(@"scale: %f", scale);
+    }
+    else {
+        [mapLayer setPosition:[BLMath AddVector:mapLayer.position toVector:[BLMath SubtractVector:lastTouch from:l]]];
+        
+        lastTouch=l;
+        
+        CGPoint lOnMap=[mapLayer convertToNodeSpace:l];
+        
+        [daemon setTarget:lOnMap];    
+        [daemon setRestingPoint:lOnMap];
+
+    }
     
-    lastTouch=l;
-    
-    CGPoint lOnMap=[mapLayer convertToNodeSpace:l];
-    
-    [daemon setTarget:lOnMap];    
-    [daemon setRestingPoint:lOnMap];
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event

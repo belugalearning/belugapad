@@ -32,7 +32,7 @@
 	<key>PlaceValue</key>
 	<dict>
 		<key>SCALE_MIN</key>
-		<real>0.7</real>
+		<real>0.3</real>
 		<key>SCALE_MAX</key>
 		<real>1.2</real>
 		<key>SCALING_PASS_THRU</key>

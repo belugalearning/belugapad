@@ -3,6 +3,7 @@
 <plist version="1.0">
 <array>
 	<string>/Problems/tools-dev/da-ld/ld1.plist</string>
+	<string>/Problems/tools-dev/da-fb/float-problem0002.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test2.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test3.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test4.plist</string>

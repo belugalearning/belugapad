@@ -50,9 +50,11 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];
         self.ForeLayer=[[[CCLayer alloc]init] autorelease];
+        self.NoScaleLayer=[[[CCLayer alloc]init] autorelease];
         countLayer=[[[CCLayer alloc]init]autorelease];
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
+        [toolHost addToolNoScaleLayer:self.NoScaleLayer];
         
         [self setupBkgAndTitle];
 
@@ -376,12 +378,12 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     condensePanel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/cmpanel.png")];
     [condensePanel setPosition:ccp(100, cy)];
     [condensePanel setVisible:NO];
-    [self.ForeLayer addChild:condensePanel z:1];
+    [self.NoScaleLayer addChild:condensePanel z:1];
     
     mulchPanel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/cmpanel.png")];
     [mulchPanel setPosition:ccp(lx-100, cy)];
     [mulchPanel setVisible:NO];
-    [self.ForeLayer addChild:mulchPanel z:1];
+    [self.NoScaleLayer addChild:mulchPanel z:1];
     
 }
 
@@ -392,8 +394,9 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 
     
     if([[pdef objectForKey:DEFAULT_COL] intValue])
-    { defaultColumn = [[pdef objectForKey:DEFAULT_COL] intValue]; }
-    else { defaultColumn = 0; }
+        defaultColumn = [[pdef objectForKey:DEFAULT_COL] intValue]; 
+    else
+        defaultColumn = 0; 
     
     columnBaseValue = [[pdef objectForKey:COL_BASE_VALUE] floatValue];
     firstColumnValue = [[pdef objectForKey:FIRST_COL_VALUE] floatValue];
@@ -554,7 +557,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         [countLabel setTag:3];
         [countLabel setOpacity:0];
         [countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)]; 
-        [self.ForeLayer addChild:countLabel];
+        [self.NoScaleLayer addChild:countLabel z:10];
     }
 
     
@@ -932,8 +935,10 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    location=[renderLayer convertToNodeSpace:location];
     CGPoint prevLoc = [touch previousLocationInView:[touch view]];
     prevLoc = [[CCDirector sharedDirector] convertToGL: prevLoc];
+    prevLoc=[renderLayer convertToNodeSpace:prevLoc];
 
     [toolHost.Zubi setTarget:location];
     
@@ -1121,7 +1126,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     currentColumnIndex+=incr;
     gw.Blackboard.CurrentStore=[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex];
     
-    [self snapLayerToPosition];
+    //[self snapLayerToPosition];
         
     for (int itran=0; itran<tranCount; itran++) {
         

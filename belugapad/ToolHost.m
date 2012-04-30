@@ -175,6 +175,12 @@ static float kMoveToNextProblemTime=2.0f;
     [currentTool doUpdateOnQuarterSecond:delta];
 }
 
+-(void) addToolNoScaleLayer:(CCLayer *) noScaleLayer
+{
+    toolNoScaleLayer=noScaleLayer;
+    [self addChild:toolNoScaleLayer];
+}
+
 -(void) addToolBackLayer:(CCLayer *) backLayer
 {
     toolBackLayer=backLayer;
@@ -233,6 +239,7 @@ static float kMoveToNextProblemTime=2.0f;
     {
         [self removeChild:toolBackLayer cleanup:YES];
         [self removeChild:toolForeLayer cleanup:YES];
+        [self removeChild:toolNoScaleLayer cleanup:YES];
         [currentTool release];
         currentTool=nil;
     }
@@ -559,6 +566,7 @@ static float kMoveToNextProblemTime=2.0f;
         
         [self recurseSetIntroFor:toolBackLayer withTime:time forTag:i];
         [self recurseSetIntroFor:toolForeLayer withTime:time forTag:i];
+        [self recurseSetIntroFor:toolNoScaleLayer withTime:time forTag:i];
         [self recurseSetIntroFor:metaQuestionLayer withTime:time forTag:i];
         [self recurseSetIntroFor:problemDefLayer withTime:time forTag:i];
     }

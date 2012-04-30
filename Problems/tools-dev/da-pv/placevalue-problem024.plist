@@ -54,5 +54,7 @@
 		<key>INCOMPLETE_DISPLAY_TEXT</key>
 		<string>solution incomplete, try again.</string>
 	</dict>
+	<key>DEFAULT_SCALE</key>
+	<real>0.7</real>
 </dict>
 </plist>

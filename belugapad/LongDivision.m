@@ -231,7 +231,7 @@ const float kSpaceBetweenRows=80;
 -(void)handlePassThruScaling:(float)scale
 {
         if(topTouch && currentTouchCount>1)
-            [topSection setScale:scale];
+            [topSection setScaleX:scale];
 }
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {

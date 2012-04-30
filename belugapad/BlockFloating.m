@@ -395,6 +395,7 @@ static void eachShape(void *ptr, void* unused)
     if(operatorLayer.visible)
     {
         CGPoint prevLoc=[[CCDirector sharedDirector] convertToGL:[touch previousLocationInView:[touch view]]];
+        prevLoc=[self.ForeLayer convertToNodeSpace:prevLoc];
         CGPoint movediff=[BLMath SubtractVector:prevLoc from:location];
         //decelarate it
         movediff=[BLMath MultiplyVector:movediff byScalar:kOperatorPopupDragFriction];

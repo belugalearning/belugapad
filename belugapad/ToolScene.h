@@ -16,6 +16,7 @@
 
 @property BOOL ProblemComplete;
 @property (retain) CCLayer *BkgLayer;
+@property (retain) CCLayer *NoScaleLayer;
 @property (retain) CCLayer *ForeLayer;
 @property float ScaleMin;
 @property float ScaleMax;

@@ -130,5 +130,7 @@
 	</dict>
 	<key>DEFAULT_SCALE</key>
 	<real>0.7</real>
+	<key>ALLOW_PANNING</key>
+	<false/>
 </dict>
 </plist>

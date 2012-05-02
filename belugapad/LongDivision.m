@@ -131,9 +131,20 @@ const float kSpaceBetweenRows=80;
     }
     
     
-    for(int i=0;i<[numberRows count];i++)
+    NSArray *currentRow=[numberRows objectAtIndex:activeRow];
+    CCLayer *thisLayer=[numberLayers objectAtIndex:activeRow];
+    
+    for (CCLabelTTF *lbl in currentRow)
     {
+        CGPoint realLabelPos=[thisLayer convertToWorldSpace:lbl.position];
         
+        float distToActive=[BLMath DistanceBetween:realLabelPos and:ccp(cx, realLabelPos.y)];
+        float prop=distToActive/150;
+        float opac=(1-prop)*400;
+        if(opac<150)opac=150;
+        if(opac>255)opac=255;
+        
+        [lbl setOpacity:opac];
     }
     
 if(evalMode==kProblemEvalAuto)[self evalProblem];

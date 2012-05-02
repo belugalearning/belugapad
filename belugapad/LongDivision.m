@@ -131,6 +131,7 @@ const float kSpaceBetweenRows=80;
     }
     
     
+    // this re-iterates back through the active row and sorts our side-side fading out
     NSArray *currentRow=[numberRows objectAtIndex:activeRow];
     CCLayer *thisLayer=[numberLayers objectAtIndex:activeRow];
     
@@ -231,17 +232,18 @@ if(evalMode==kProblemEvalAuto)[self evalProblem];
 
 -(void)checkBlock
 {
+    // we need to find out where this block should go
+    float myBase=[[rowMultipliers objectAtIndex:activeRow]floatValue];
+    
     if(renderedBlocks.count==0)
     {
         [self createBlockAtIndex:0 withBase:[[rowMultipliers objectAtIndex:activeRow]floatValue]];
     }
     else 
     {
+        // this is when we're creating an object
         if(creatingObject && (previousNumberPos!=currentNumberPos || previousRow!=activeRow) )
         {
-             // we need to find out where this block should go
-            float myBase=[[rowMultipliers objectAtIndex:activeRow]floatValue];
-            
             // we need to look at what exists currently
             for(int i=0;i<[renderedBlocks count];i++)
             {
@@ -257,6 +259,24 @@ if(evalMode==kProblemEvalAuto)[self evalProblem];
             }
             // if nowt init, create the block at the end
             [self createBlockAtIndex:[renderedBlocks count] withBase:myBase];
+        }
+        
+        
+        if(destroyingObject)
+        {
+            for(int i=0;i<[renderedBlocks count];i++)
+            {
+                NSDictionary *curDict=[renderedBlocks objectAtIndex:i];
+                float theirBase=[[curDict objectForKey:ROW_MULTIPLIER]floatValue];
+                
+                if(theirBase==myBase)
+                {
+                    CCSprite *curSprite=[curDict objectForKey:MY_SPRITE];
+                    [curSprite removeFromParentAndCleanup:YES];
+                    [renderedBlocks removeObjectAtIndex:i];
+                    return;
+                }
+            }
         }
     }
 }

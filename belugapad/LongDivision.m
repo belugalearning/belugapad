@@ -71,6 +71,7 @@ const float kSpaceBetweenRows=80;
 -(void)doUpdateOnTick:(ccTime)delta
 {
 	[gw doUpdate:delta];
+    [self updateBlock];
     
     if(autoMoveToNextProblem)
     {
@@ -203,6 +204,68 @@ if(evalMode==kProblemEvalAuto)[self evalProblem];
     activeRow=currentRowPos+1;
 }
 
+-(void)updateBlock
+{
+    cumulativeTotal=0;
+    for(int i=0;i<[renderedBlocks count];i++)
+    {
+        CCSprite *curSprite=[[renderedBlocks objectAtIndex:i]objectForKey:MY_SPRITE];
+        //[curSprite setPosition:ccp(line.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2)-(line.contentSize.width/2)+cumulativeTotal, line.position.y+30)];
+        [curSprite setPosition:ccp(line.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2)-(line.contentSize.width/2)+cumulativeTotal, line.position.y+30)];
+        cumulativeTotal=cumulativeTotal+(curSprite.contentSize.width*curSprite.scaleX);
+        // width*scale = the size of the block drawn
+        // cumulativex=cumulativex+(currentsprite width*scale)
+    }
+}
+
+-(void)checkBlock
+{
+    if(renderedBlocks.count==0)
+    {
+        [self createBlockAtIndex:0 withBase:[[rowMultipliers objectAtIndex:activeRow]floatValue]];
+    }
+    else 
+    {
+        if(creatingObject && (previousNumberPos!=currentNumberPos || previousRow!=activeRow) )
+        {
+             // we need to find out where this block should go
+            float myBase=[[rowMultipliers objectAtIndex:activeRow]floatValue];
+            
+            // we need to look at what exists currently
+            for(int i=0;i<[renderedBlocks count];i++)
+            {
+                NSDictionary *curDict=[renderedBlocks objectAtIndex:i];
+                float theirBase=[[curDict objectForKey:ROW_MULTIPLIER]floatValue];
+                
+                if(theirBase<myBase)
+                {
+                    if(i==0)[self createBlockAtIndex:i withBase:myBase];
+                    else [self createBlockAtIndex:i-1 withBase:myBase];
+                    return;
+                }
+            }
+            // if nowt init, create the block at the end
+            [self createBlockAtIndex:[renderedBlocks count] withBase:myBase];
+        }
+    }
+}
+
+-(void)createBlockAtIndex:(int)index withBase:(float)base
+{
+    NSMutableDictionary *curDict=[[NSMutableDictionary alloc]init];
+    float myBase=[[rowMultipliers objectAtIndex:activeRow]floatValue];
+    CCSprite *curBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/renderblock.png")];
+    
+    
+    [curBlock setPosition:line.position];
+    [curBlock setScaleX:(divisor*myBase/dividend*line.contentSize.width)/curBlock.contentSize.width];
+    [curDict setObject:curBlock forKey:MY_SPRITE];
+    [curDict setObject:[NSNumber numberWithFloat:base] forKey:ROW_MULTIPLIER];
+    [renderedBlocks insertObject:curDict atIndex:index];
+    
+    [topSection addChild:curBlock];
+}
+
 -(void)populateGW
 {
     [renderLayer addChild:topSection];
@@ -212,6 +275,8 @@ if(evalMode==kProblemEvalAuto)[self evalProblem];
     [selectedNumbers retain];
     rowMultipliers=[[NSMutableArray alloc]init];
     [rowMultipliers retain];
+    renderedBlocks=[[NSMutableArray alloc]init];
+    [renderedBlocks retain];
     
     // add the selector to the middle of the screen
     
@@ -254,6 +319,9 @@ if(evalMode==kProblemEvalAuto)[self evalProblem];
     touchStart=location;
     currentTouchCount+=[touches count];
     NSLog(@"touch count %d", currentTouchCount);
+    
+    previousNumberPos=[[selectedNumbers objectAtIndex:activeRow]intValue];
+    previousRow=activeRow;
     
     
     for(UITouch *t in touches)
@@ -313,12 +381,10 @@ if(evalMode==kProblemEvalAuto)[self evalProblem];
         
         
         if(horizontTouch && startedInActiveRow && !doingVerticalDrag) {
-        
             doingHorizontalDrag=YES;
             CGPoint diff=[BLMath SubtractVector:lastTouch from:location];
             diff = ccp(diff.x, 0);
             CCLayer *moveLayer = [numberLayers objectAtIndex:activeRow];
-                      
             [moveLayer setPosition:ccpAdd(moveLayer.position, diff)];
 
         
@@ -333,7 +399,6 @@ if(evalMode==kProblemEvalAuto)[self evalProblem];
                 CGPoint diff=[BLMath SubtractVector:lastTouch from:location];
                 diff = ccp(0, diff.y);
                 [moveLayer setPosition:ccpAdd(moveLayer.position, diff)];
-                
                 
             }
         }
@@ -354,6 +419,9 @@ if(evalMode==kProblemEvalAuto)[self evalProblem];
     
     if(doingHorizontalDrag)
     {
+        if(location.x<touchStart.x)creatingObject=YES;
+        if(location.x>touchStart.x)destroyingObject=YES;
+        
         CGPoint diff=[BLMath SubtractVector:location from:touchStart];
         diff = ccp(diff.x, 0);
         
@@ -389,6 +457,7 @@ if(evalMode==kProblemEvalAuto)[self evalProblem];
         //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
         [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(currentNumberPos*-kSpaceBetweenNumbers,moveLayer.position.y)]];
         [selectedNumbers replaceObjectAtIndex:activeRow withObject:[NSNumber numberWithInt:currentNumberPos]];
+        [self checkBlock];
     }
     
     if(doingVerticalDrag)
@@ -438,6 +507,8 @@ if(evalMode==kProblemEvalAuto)[self evalProblem];
     startedInActiveRow=NO;
     doingHorizontalDrag=NO;
     doingVerticalDrag=NO;
+    creatingObject=NO;
+    destroyingObject=NO;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -449,6 +520,8 @@ if(evalMode==kProblemEvalAuto)[self evalProblem];
     doingHorizontalDrag=NO;
     doingVerticalDrag=NO;
     currentTouchCount-=[touches count];
+    creatingObject=NO;
+    destroyingObject=NO;
 }
 
 -(BOOL)evalExpression
@@ -498,7 +571,8 @@ if(evalMode==kProblemEvalAuto)[self evalProblem];
     if(numberRows)[numberRows release];
     if(numberLayers)[numberLayers release];
     if(selectedNumbers)[selectedNumbers release];
-    if(rowMultipliers)[rowMultipliers retain];
+    if(rowMultipliers)[rowMultipliers release];
+    if(renderedBlocks)[renderedBlocks release];
 
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];

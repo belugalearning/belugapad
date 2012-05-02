@@ -55,7 +55,9 @@
     
     int currentRowPos;
     int activeRow;
+    int previousRow;
     int currentNumberPos;
+    int previousNumberPos;
     float currentTotal;
     float rowMultiplier;
     float startRow;
@@ -65,10 +67,20 @@
     NSMutableArray *selectedNumbers;
     NSMutableArray *rowMultipliers;
     NSMutableArray *drawnObjects;
+    
+    // rendering vars
+    float cumulativeTotal;
+    float lastBaseEval;
+    BOOL creatingObject;
+    BOOL destroyingObject;
+    NSMutableArray *renderedBlocks;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)createVisibleNumbers;
+-(void)updateBlock;
+-(void)checkBlock;
+-(void)createBlockAtIndex:(int)index withBase:(float)base;
 -(void)populateGW;
 -(void)handlePassThruScaling:(float)scale;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;

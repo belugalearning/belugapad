@@ -467,6 +467,9 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     if([pdef objectForKey:FADE_COUNT]) fadeCount = [[pdef objectForKey:FADE_COUNT] boolValue];
     else fadeCount=YES;
     
+    if([pdef objectForKey:ALLOW_PANNING]) allowPanning=[[pdef objectForKey:ALLOW_PANNING]boolValue];
+    else allowPanning=YES;
+    
     
     //objects
     NSArray *objects=[pdef objectForKey:INIT_OBJECTS];
@@ -960,7 +963,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         potentialTap = NO;
     }
 
-    else if(touching && ([gw Blackboard].PickupObject==nil) && numberOfColumns>1)
+    else if(touching && ([gw Blackboard].PickupObject==nil) && numberOfColumns>1 && allowPanning)
     {
         CGPoint diff = ccpSub(location, prevLoc);
         diff = ccp(diff.x, 0);

@@ -59,6 +59,7 @@
     BOOL showReset;
     BOOL fadeCount;
     BOOL allowDeselect;
+    BOOL allowPanning;
     
     NSString *posCageSprite;
     NSString *negCageSprite;

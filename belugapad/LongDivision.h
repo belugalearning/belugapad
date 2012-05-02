@@ -48,12 +48,15 @@
     BOOL doingHorizontalDrag;
     BOOL doingVerticalDrag;
     
+    BOOL goodBadHighlight;
+    
     float dividend;
     float divisor;
     
     int currentRowPos;
     int activeRow;
     int currentNumberPos;
+    float currentTotal;
     float rowMultiplier;
     float startRow;
     
@@ -61,6 +64,7 @@
     
     NSMutableArray *selectedNumbers;
     NSMutableArray *rowMultipliers;
+    NSMutableArray *drawnObjects;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

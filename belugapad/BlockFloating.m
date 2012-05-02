@@ -592,7 +592,7 @@ static void eachShape(void *ptr, void* unused)
     UITouch *touch=[touches anyObject];
 	CGPoint location=[touch locationInView: [touch view]];
 	location=[[CCDirector sharedDirector] convertToGL:location];
-    location=[self.ForeLayer convertToNodeSpace:location];
+    //location=[self.ForeLayer convertToNodeSpace:location];
 	
     //daemon to (currently) let go and rest
     [toolHost.Zubi setMode:kDaemonModeWaiting];

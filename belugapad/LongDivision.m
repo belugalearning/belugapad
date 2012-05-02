@@ -82,8 +82,9 @@ const float kSpaceBetweenRows=80;
             timeToAutoMoveToNextProblem=0.0f;
         }
     }  
-    
-    float currentTotal=0;
+
+    // work out the current total
+    currentTotal=0;
 
     for(int i=0;i<[selectedNumbers count];i++)
     {
@@ -94,13 +95,20 @@ const float kSpaceBetweenRows=80;
         
     }
     
-    if(((float)currentTotal*(float)divisor)!=fabsf(dividend))
-        [lblCurrentTotal setColor:ccc3(255,0,0)];
-    else 
-        [lblCurrentTotal setColor:ccc3(0,255,0)];
+    // this sets the good/bad sum indicator if the mode is enabled
+    if(goodBadHighlight) 
+    {
+        if(((float)currentTotal*(float)divisor)!=fabsf(dividend))
+            [lblCurrentTotal setColor:ccc3(255,0,0)];
+        else 
+            [lblCurrentTotal setColor:ccc3(0,255,0)];
+    }
+    
+    // then update the actual text of it
     [lblCurrentTotal setString:[NSString stringWithFormat:@"%g", currentTotal]];
     
-        
+    
+    // this sets the fade amount of each row proportional to it's current position
     for(int l=0;l<[numberRows count];l++)
     {
         
@@ -109,27 +117,25 @@ const float kSpaceBetweenRows=80;
         for(CCLabelTTF *lbl in currentRow)
         {
             CGPoint realLabelPos=[thisLayer convertToWorldSpace:lbl.position];
-            //CGPoint realLabelPos=lbl.position;
-            //float distToFade=0;
-            float distToActive=[BLMath DistanceBetween:realLabelPos and:ccp(realLabelPos.x, 220)];
 
-//            if(realLabelPos.y>220)
-//                distToFade=[BLMath DistanceBetween:realLabelPos and:ccp(realLabelPos.x, 380)];
-//            else 
-//                distToFade=[BLMath DistanceBetween:realLabelPos and:ccp(realLabelPos.x, 50)];
-            
+            float distToActive=[BLMath DistanceBetween:realLabelPos and:ccp(realLabelPos.x, 220)];
             float prop=distToActive/150;
-            float opac=(1-prop)*255;
+            float opac=(1-prop)*150;
             if(opac<0)opac=0;
-            if(opac>255)opac=255;
+            if(opac==150)opac=255;
             
-            
-            
-            //if(opac<25)opac=0;
             [lbl setOpacity:opac];
         }
         
     }
+    
+    
+    for(int i=0;i<[numberRows count];i++)
+    {
+        
+    }
+    
+if(evalMode==kProblemEvalAuto)[self evalProblem];
     
 }
 
@@ -143,6 +149,8 @@ const float kSpaceBetweenRows=80;
     
     dividend=[[pdef objectForKey:DIVIDEND] floatValue];
     divisor=[[pdef objectForKey:DIVISOR] floatValue];
+    evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
+    goodBadHighlight=[[pdef objectForKey:GOOD_BAD_HIGHLIGHT] boolValue];
     
 
     
@@ -219,7 +227,7 @@ const float kSpaceBetweenRows=80;
     [renderLayer addChild:multiplier];
     
     lblCurrentTotal=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [lblCurrentTotal setPosition:ccp(100,745)];
+    [lblCurrentTotal setPosition:ccp(cx,50)];
     [renderLayer addChild:lblCurrentTotal];
     
     line=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/line.png")];
@@ -230,7 +238,7 @@ const float kSpaceBetweenRows=80;
 }
 -(void)handlePassThruScaling:(float)scale
 {
-        if(topTouch && currentTouchCount>1)
+        if(topTouch && currentTouchCount>1 && scale>0)
             [topSection setScaleX:scale];
 }
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -447,7 +455,8 @@ const float kSpaceBetweenRows=80;
 {
     //returns YES if the tool expression evaluates succesfully
     
-    return YES;
+    if(currentTotal==(dividend/divisor))return YES;
+    else return NO;
 }
 
 -(void)evalProblem
@@ -458,6 +467,13 @@ const float kSpaceBetweenRows=80;
     {
         autoMoveToNextProblem=YES;
         [toolHost showProblemCompleteMessage];
+    }
+    else {
+        if(evalMode==kProblemEvalOnCommit)
+        {
+            [toolHost showProblemIncompleteMessage]; 
+            [toolHost resetProblem];
+        }
     }
     
 }

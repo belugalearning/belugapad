@@ -71,7 +71,6 @@ const float kSpaceBetweenRows=80;
 -(void)doUpdateOnTick:(ccTime)delta
 {
 	[gw doUpdate:delta];
-    [self updateBlock];
     
     if(autoMoveToNextProblem)
     {
@@ -148,8 +147,8 @@ const float kSpaceBetweenRows=80;
         [lbl setOpacity:opac];
     }
     
-if(evalMode==kProblemEvalAuto)[self evalProblem];
-    
+    if(evalMode==kProblemEvalAuto)[self evalProblem];
+    [self updateBlock];
 }
 
 
@@ -216,18 +215,27 @@ if(evalMode==kProblemEvalAuto)[self evalProblem];
     activeRow=currentRowPos+1;
 }
 
+-(void)updateLabels:(CGPoint)position
+{
+    [markerText setString:[NSString stringWithFormat:@"%g", currentTotal*3]];
+    [marker setPosition:ccp(position.x,position.y+60)];
+}
+
 -(void)updateBlock
 {
     cumulativeTotal=0;
+    CGPoint markerPos;
     for(int i=0;i<[renderedBlocks count];i++)
     {
         CCSprite *curSprite=[[renderedBlocks objectAtIndex:i]objectForKey:MY_SPRITE];
         //[curSprite setPosition:ccp(line.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2)-(line.contentSize.width/2)+cumulativeTotal, line.position.y+30)];
         [curSprite setPosition:ccp(line.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2)-(line.contentSize.width/2)+cumulativeTotal, line.position.y+30)];
         cumulativeTotal=cumulativeTotal+(curSprite.contentSize.width*curSprite.scaleX);
+        markerPos=ccp(curSprite.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2), curSprite.position.y);
         // width*scale = the size of the block drawn
         // cumulativex=cumulativex+(currentsprite width*scale)
     }
+    [self updateLabels:markerPos];
 }
 
 -(void)checkBlock
@@ -329,6 +337,16 @@ if(evalMode==kProblemEvalAuto)[self evalProblem];
     line=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/line.png")];
     [line setPosition:ccp(cx,550)];
     [topSection addChild:line];
+    
+    marker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
+    //[marker setPosition:ccp(line.position.x-(line.contentSize.width/2), line.position.y+30)];
+    [topSection addChild:marker];
+    markerText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    [marker addChild:markerText];
+
+    [markerText setPosition:ccp(0,65)];
+    
+    
     
     [self createVisibleNumbers];
 }

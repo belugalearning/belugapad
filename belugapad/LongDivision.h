@@ -27,6 +27,8 @@
     
     CCLabelTTF *lblCurrentTotal;
     CCSprite *line;
+    CCSprite *marker;
+    CCLabelTTF *markerText;
     
     NSMutableArray *numberRows;
     NSMutableArray *numberLayers;
@@ -78,6 +80,7 @@
 
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)createVisibleNumbers;
+-(void)updateLabels:(CGPoint)position;
 -(void)updateBlock;
 -(void)checkBlock;
 -(void)createBlockAtIndex:(int)index withBase:(float)base;

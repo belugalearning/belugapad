@@ -2,6 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>/Problems/partitioning/CCSS_5_NF_7b_001.plist</string>
+	<string>/Problems/dot_grid/CCSS_5_NF_7a_001.plist</string>
+	<string>/Problems/partitioning/CCSS_5_NF_7_001.plist</string>
+	<string>/Problems/partitioning/CCSS_5_NF_4_002.plist</string>
+	<string>/Problems/partitioning/CCSS_5_NF_4_001.plist</string>
+	<string>/Problems/partitioning/CCSS_5_NF_3_001.plist</string>
+	<string>/Problems/partitioning/CCSS_4_NF_3c_001.plist</string>
+	<string>/Problems/dot_grid/CCSS_4_NF_3b_001.plist</string>
+	<string>/Problems/dot_grid/CCSS_5_NF_1_002.plist</string>
+	<string>/Problems/dot_grid/CCSS_5_NF_1_001.plist</string>
 	<string>/Problems/dot_grid/CCSS_4_NF_3a_001.plist</string>
 	<string>/Problems/partitioning/CCSS_4_NF_3a_002.plist</string>
 	<string>/Problems/dot_grid/CCSS_4_NF_6_001.plist</string>

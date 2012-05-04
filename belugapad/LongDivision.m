@@ -250,8 +250,8 @@ const float kSpaceBetweenRows=80;
     else 
     {
         // this is when we're creating an object
-        //if(creatingObject && (previousNumberPos!=currentNumberPos || previousRow!=activeRow))
-        if(creatingObject)
+        //if(creatingObject)
+        if(creatingObject && (previousNumberPos!=currentNumberPos || previousRow!=activeRow))
         {
             // we need to look at what exists currently
             for(int i=0;i<[renderedBlocks count];i++)
@@ -434,6 +434,28 @@ const float kSpaceBetweenRows=80;
             diff = ccp(diff.x, 0);
             CCLayer *moveLayer = [numberLayers objectAtIndex:activeRow];
             [moveLayer setPosition:ccpAdd(moveLayer.position, diff)];
+            int scrollByNumber=fabsf((int)moveLayer.position.x/kSpaceBetweenNumbers);
+            
+            if(location.x<lastTouch.x)
+            {
+                NSLog(@"in creatingObject state");
+                creatingObject=YES;
+                destroyingObject=NO;
+            }
+            if(location.x>lastTouch.x)
+            {
+                NSLog(@"in destroyingObject state");
+                creatingObject=NO;
+                destroyingObject=YES;
+            }
+            
+            if(scrollByNumber!=previousNumberPos)
+            {
+                NSLog(@"currentNumber %d, scrollByNumber %d, previousNumberPos %d", currentNumberPos, scrollByNumber, previousNumberPos);
+                [self checkBlock];
+                previousNumberPos=scrollByNumber;
+                NSLog(@"currentNumber %d, scrollByNumber %d, previousNumberPos %d", currentNumberPos, scrollByNumber, previousNumberPos);
+            }
 
         
         }
@@ -467,8 +489,8 @@ const float kSpaceBetweenRows=80;
     
     if(doingHorizontalDrag)
     {
-        if(location.x<touchStart.x)creatingObject=YES;
-        if(location.x>touchStart.x)destroyingObject=YES;
+        if(location.x<lastTouch.x)creatingObject=YES;
+        if(location.x>lastTouch.x)destroyingObject=YES;
         
         CGPoint diff=[BLMath SubtractVector:location from:touchStart];
         diff = ccp(diff.x, 0);

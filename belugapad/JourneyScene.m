@@ -205,27 +205,33 @@ static int kNodeMax=50;
 
 -(void)createNodeSprites
 {
+    //effectively depracated -- this iterates all nodes and draws them
+    
     for(int i=0; i<kcmNodes.count; i++)
     {
         ConceptNode *n=[kcmNodes objectAtIndex:i];
         
-        CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-std.png")];
-        [s setPosition:ccp([n.x floatValue] / kNodeScale, [n.y floatValue] / kNodeScale)];
-        
-        if(n.pipelines.count==0)
-        {
-            [s setOpacity:100];
-        }
-        else {
-            NSLog(@"pipelines %d", n.pipelines.count);
-        }
-        
-        NSLog(@"id: %@ pipelines: %d", n.document.documentID, n.pipelines.count);
-        
-        [mapLayer addChild:s];
-        [nodeSprites addObject:s];
-        
+        [self createASpriteForNode:n];
     }
+}
+
+-(void)createASpriteForNode:(ConceptNode *)n
+{
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-std.png")];
+    [s setPosition:ccp([n.x floatValue] / kNodeScale, [n.y floatValue] / kNodeScale)];
+    
+    if(n.pipelines.count==0)
+    {
+        [s setOpacity:100];
+    }
+    else {
+        NSLog(@"pipelines %d", n.pipelines.count);
+    }
+    
+    NSLog(@"id: %@ pipelines: %d", n.document.documentID, n.pipelines.count);
+    
+    [mapLayer addChild:s];
+    [nodeSprites addObject:s];    
 }
 
 -(void)addFeatures

@@ -43,6 +43,8 @@ static int kNodeMax=50;
 
 @implementation JourneyScene
 
+#pragma mark - init
+
 +(CCScene *)scene
 {
     CCScene *scene=[CCScene node];
@@ -81,18 +83,11 @@ static int kNodeMax=50;
     return self;
 }
 
-
+#pragma mark - setup and parse
 
 -(void) setupMap
 {
-    //base colour layer
-    CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(0, 59, 72, 255) width:lx height:ly];
-    [self addChild:cLayer];
-    
-    //base map layer
-    mapLayer=[[CCLayer alloc] init];
-    [mapLayer setPosition:kStartMapPos];
-    [self addChild:mapLayer];
+    [self createLayers];
     
     //add overlay on centre tile
 //    CCSprite *sample=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/samplenodes.png")];
@@ -105,6 +100,42 @@ static int kNodeMax=50;
     
     kcmNodes=[contentService allConceptNodes];
     
+    [self parseForBoundsAndCreateKcmIndex];
+    
+    [self createNodeSprites];
+    
+    [self parsePreReqRelations];
+    
+    //add background to the map itself
+    
+//    int rsize=(int)((nMaxY-nMinY) / ly);
+//    int csize=(int)((nMaxX-nMinX) / lx);
+//    
+//    for (int r=0; r<=rsize; r++) {
+//        for (int c=0; c<csize; c++) {
+//            CCSprite *btile=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/mapbase.png")];
+//            [btile setPosition:ccp((lx*c)+cx, (ly*r)+cy)];
+//            [mapLayer addChild:btile];
+//        }
+//    }
+    
+    NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
+}
+
+- (void)createLayers
+{
+    //base colour layer
+    CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(0, 59, 72, 255) width:lx height:ly];
+    [self addChild:cLayer];
+    
+    //base map layer
+    mapLayer=[[CCLayer alloc] init];
+    [mapLayer setPosition:kStartMapPos];
+    [self addChild:mapLayer];
+}
+
+- (void)parseForBoundsAndCreateKcmIndex
+{
     //find bounds
     //set bounds to first element
     if(kcmNodes.count>0)
@@ -134,25 +165,6 @@ static int kNodeMax=50;
     nMinY=nMinY*kNodeScale;
     nMaxX=nMaxX*kNodeScale;
     nMaxY=nMaxY*kNodeScale;
-    
-    [self createNodeSprites];
-    
-    [self parsePreReqRelations];
-    
-    //add background to the map itself
-    
-//    int rsize=(int)((nMaxY-nMinY) / ly);
-//    int csize=(int)((nMaxX-nMinX) / lx);
-//    
-//    for (int r=0; r<=rsize; r++) {
-//        for (int c=0; c<csize; c++) {
-//            CCSprite *btile=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/mapbase.png")];
-//            [btile setPosition:ccp((lx*c)+cx, (ly*r)+cy)];
-//            [mapLayer addChild:btile];
-//        }
-//    }
-    
-    NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
 }
 
 - (void)parsePreReqRelations
@@ -180,6 +192,8 @@ static int kNodeMax=50;
         }
     }
 }
+
+#pragma mark drawing and sprite creation
 
 -(void)drawPathFrom:(CGPoint)p1 to:(CGPoint)p2
 {
@@ -290,10 +304,14 @@ static int kNodeMax=50;
     [mapLayer addChild:s];
 }
 
+#pragma mark loops
+
 -(void) doUpdate:(ccTime)delta
 {
     [daemon doUpdate:delta];
 }
+
+#pragma mark touch handling
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {

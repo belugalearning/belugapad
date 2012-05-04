@@ -85,6 +85,8 @@ static int kNodeMax=50;
 
 #pragma mark - setup and parse
 
+
+
 -(void) setupMap
 {
     [self createLayers];
@@ -101,18 +103,8 @@ static int kNodeMax=50;
     
     [self parsePreReqRelations];
     
-    //add background to the map itself
-    
-//    int rsize=(int)((nMaxY-nMinY) / ly);
-//    int csize=(int)((nMaxX-nMinX) / lx);
-//    
-//    for (int r=0; r<=rsize; r++) {
-//        for (int c=0; c<csize; c++) {
-//            CCSprite *btile=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/mapbase.png")];
-//            [btile setPosition:ccp((lx*c)+cx, (ly*r)+cy)];
-//            [mapLayer addChild:btile];
-//        }
-//    }
+    //we don't want to do this -- needs to move to dynamic draw
+    //[self createAllBackgroundTileSprites];
     
     NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
 }
@@ -127,6 +119,22 @@ static int kNodeMax=50;
     mapLayer=[[CCLayer alloc] init];
     [mapLayer setPosition:kStartMapPos];
     [self addChild:mapLayer];
+}
+
+- (void)createAllBackgroundTileSprites
+{
+    //add background to the map itself
+    
+    int rsize=(int)((nMaxY-nMinY) / ly);
+    int csize=(int)((nMaxX-nMinX) / lx);
+    
+    for (int r=0; r<=rsize; r++) {
+        for (int c=0; c<csize; c++) {
+            CCSprite *btile=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/mapbase.png")];
+            [btile setPosition:ccp((lx*c)+cx, (ly*r)+cy)];
+            [mapLayer addChild:btile];
+        }
+    }
 }
 
 - (void)parseForBoundsAndCreateKcmIndex

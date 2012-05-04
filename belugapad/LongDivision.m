@@ -218,7 +218,7 @@ const float kSpaceBetweenRows=80;
 -(void)updateLabels:(CGPoint)position
 {
     [markerText setString:[NSString stringWithFormat:@"%g", currentTotal*3]];
-    [marker setPosition:ccp(position.x,position.y+60)];
+    [marker setPosition:position];
 }
 
 -(void)updateBlock
@@ -231,7 +231,7 @@ const float kSpaceBetweenRows=80;
         //[curSprite setPosition:ccp(line.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2)-(line.contentSize.width/2)+cumulativeTotal, line.position.y+30)];
         [curSprite setPosition:ccp(line.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2)-(line.contentSize.width/2)+cumulativeTotal, line.position.y+30)];
         cumulativeTotal=cumulativeTotal+(curSprite.contentSize.width*curSprite.scaleX);
-        markerPos=ccp(curSprite.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2), curSprite.position.y);
+        markerPos=ccp(curSprite.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2), curSprite.position.y+40);
         // width*scale = the size of the block drawn
         // cumulativex=cumulativex+(currentsprite width*scale)
     }
@@ -250,7 +250,8 @@ const float kSpaceBetweenRows=80;
     else 
     {
         // this is when we're creating an object
-        if(creatingObject && (previousNumberPos!=currentNumberPos || previousRow!=activeRow) )
+        //if(creatingObject && (previousNumberPos!=currentNumberPos || previousRow!=activeRow))
+        if(creatingObject)
         {
             // we need to look at what exists currently
             for(int i=0;i<[renderedBlocks count];i++)
@@ -339,7 +340,7 @@ const float kSpaceBetweenRows=80;
     [topSection addChild:line];
     
     marker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
-    //[marker setPosition:ccp(line.position.x-(line.contentSize.width/2), line.position.y+30)];
+    [marker setPosition:[topSection convertToNodeSpace:ccp(line.position.x-(line.contentSize.width/2), line.position.y+30)]];
     [topSection addChild:marker];
     markerText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
     [marker addChild:markerText];
@@ -363,7 +364,7 @@ const float kSpaceBetweenRows=80;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
-    location=[self.ForeLayer convertToNodeSpace:location];
+    location=[self.ForeLayer convertToWorldSpace:location];
     lastTouch=location;
     touchStart=location;
     currentTouchCount+=[touches count];
@@ -382,7 +383,6 @@ const float kSpaceBetweenRows=80;
     }
     if(location.y<cx && currentTouchCount==1)bottomTouch=YES;
     
-    if(topTouch)NSLog(@"touching top");
     
     
     if(bottomTouch)
@@ -394,7 +394,6 @@ const float kSpaceBetweenRows=80;
             startedInActiveRow=YES;
             CCLayer *curLayer=[numberLayers objectAtIndex:activeRow];
             currentNumberPos=fabsf((int)curLayer.position.x/kSpaceBetweenNumbers);
-            NSLog(@"currentpos - %d", currentNumberPos);
         }        
     }
     
@@ -406,7 +405,6 @@ const float kSpaceBetweenRows=80;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
-    NSLog(@"touch count ivar %d nsset %d", currentTouchCount, [touches count]);
     //NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
     
     if(topTouch && currentTouchCount==1)
@@ -430,6 +428,7 @@ const float kSpaceBetweenRows=80;
         
         
         if(horizontTouch && startedInActiveRow && !doingVerticalDrag) {
+            
             doingHorizontalDrag=YES;
             CGPoint diff=[BLMath SubtractVector:lastTouch from:location];
             diff = ccp(diff.x, 0);

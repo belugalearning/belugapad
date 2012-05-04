@@ -89,11 +89,6 @@ static int kNodeMax=50;
 {
     [self createLayers];
     
-    //add overlay on centre tile
-//    CCSprite *sample=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/samplenodes.png")];
-//    [sample setPosition:ccp(cx, cy)];
-//    [mapLayer addChild:sample];
-    
     kcmIdIndex=[[NSMutableDictionary alloc] init];
     dotSprites=[[NSMutableArray alloc] init];
     nodeSprites=[[NSMutableArray alloc] init];

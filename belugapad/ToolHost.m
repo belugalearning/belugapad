@@ -353,7 +353,7 @@ static float kMoveToNextProblemTime=2.0f;
 {
     problemComplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/complete-overlay.png")];
     [problemComplete setPosition:ccp(cx, cy)];
-    [metaQuestionLayer addChild:problemComplete];
+    [problemDefLayer addChild:problemComplete];
     showingProblemComplete=YES;
     [problemComplete retain];
 }
@@ -362,7 +362,7 @@ static float kMoveToNextProblemTime=2.0f;
 {
     problemIncomplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/failed-overlay.png")];
     [problemIncomplete setPosition:ccp(cx,cy)];
-    [toolForeLayer addChild:problemIncomplete];
+    [problemDefLayer addChild:problemIncomplete];
     showingProblemIncomplete=YES;
     [problemIncomplete retain];
 }

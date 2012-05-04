@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>build 5 x 1/4</string>
+	<key>TOOL_KEY</key>
+	<string>PartitionTool</string>
+	<key>INIT_BARS</key>
+	<array>
+		<dict>
+			<key>LOCKED</key>
+			<false/>
+			<key>LENGTH</key>
+			<integer>10</integer>
+		</dict>
+	</array>
+	<key>INIT_CAGES</key>
+	<array>
+		<dict>
+			<key>LENGTH</key>
+			<integer>8</integer>
+			<key>LABEL</key>
+			<string>1</string>
+			<key>QUANTITY</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>LENGTH</key>
+			<integer>2</integer>
+			<key>LABEL</key>
+			<string>1/4</string>
+			<key>QUANTITY</key>
+			<integer>5</integer>
+		</dict>
+	</array>
+	<key>SOLUTIONS</key>
+	<array/>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>REJECT_MODE</key>
+	<integer>0</integer>
+</dict>
+</plist>

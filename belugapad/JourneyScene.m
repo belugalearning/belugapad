@@ -72,8 +72,6 @@ static int kNodeMax=50;
         
         [self setupMap];
         
-        [self addFeatures];
-        
         [self schedule:@selector(doUpdate:) interval:1.0f / 60.0f];
         
         daemon=[[Daemon alloc] initWithLayer:mapLayer andRestingPostion:[mapLayer convertToNodeSpace:ccp(cx, cy)] andLy:ly];
@@ -101,7 +99,9 @@ static int kNodeMax=50;
     
     [self createNodeSprites];
     
-    [self parsePreReqRelations];
+    [self parseAndCreateSpritesForPreReqRelations];
+    
+    [self addFeaturesInEmptySpace];
     
     //we don't want to do this -- needs to move to dynamic draw
     //[self createAllBackgroundTileSprites];
@@ -170,7 +170,7 @@ static int kNodeMax=50;
     nMaxY=nMaxY*kNodeScale;
 }
 
-- (void)parsePreReqRelations
+- (void)parseAndCreateSpritesForPreReqRelations
 {
     prereqRelations=[contentService relationMembersForName:@"Prerequisites"];
     NSLog(@"relation count %d", [prereqRelations count]);
@@ -258,7 +258,7 @@ static int kNodeMax=50;
     [nodeSprites addObject:s];    
 }
 
--(void)addFeatures
+-(void)addFeaturesInEmptySpace
 {
     int fCount=0;
     float minDist=100.0f;

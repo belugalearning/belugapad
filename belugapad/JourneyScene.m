@@ -303,41 +303,7 @@ static int kNodeMax=50;
     CGPoint l=[touch locationInView:[touch view]];
     l=[[CCDirector sharedDirector] convertToGL:l];
     
-    //pinch handling
-    if([touches count]>1)
-    {
-        UITouch *t1=[[touches allObjects] objectAtIndex:0];
-        UITouch *t2=[[touches allObjects] objectAtIndex:1];
-        
-        CGPoint t1a=[[CCDirector sharedDirector] convertToGL:[t1 previousLocationInView:t1.view]];
-        CGPoint t1b=[[CCDirector sharedDirector] convertToGL:[t1 locationInView:t1.view]];
-        CGPoint t2a=[[CCDirector sharedDirector] convertToGL:[t2 previousLocationInView:t2.view]];
-        CGPoint t2b=[[CCDirector sharedDirector] convertToGL:[t2 locationInView:t2.view]];
-        
-        float da=[BLMath DistanceBetween:t1a and:t2a];
-        float db=[BLMath DistanceBetween:t1b and:t2b];
-        
-        float scaleChange=db-da;
-        
-        
-        scale+=(scaleChange / cx) * 0.01f;
-        
-        if(scale<0.1f)scale=0.1f;
-        if(scale>2.0f)scale=1.0f;
-        
-        CGPoint avgPos=ccpMult(ccpAdd(t1b, t2b), 0.5f);
-        CGPoint diffCenter=[BLMath SubtractVector:mapLayer.position from:avgPos];
-        
-        //[mapLayer setPosition:ccpAdd(mapLayer.position, ccpMult(diffCenter, (1-(scaleChange / cx))*0.01f))];
-        
-        NSLog(@"ns avgpos %@", NSStringFromCGPoint([mapLayer convertToNodeSpace:avgPos]));
-        
-        [mapLayer setAnchorPoint:[mapLayer convertToNodeSpace:avgPos]];
-        [mapLayer setScale:scale];
-        
-        //NSLog(@"scale: %f", scale);
-    }
-    else {
+    if (touches.count==1) {
         [mapLayer setPosition:[BLMath AddVector:mapLayer.position toVector:[BLMath SubtractVector:lastTouch from:l]]];
         
         lastTouch=l;
@@ -353,19 +319,7 @@ static int kNodeMax=50;
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    //CGPoint tapFromC=[BLMath SubtractVector:ccp(cx, cy) from:lastTouch];
-    //CGPoint moveBy=ccp(-tapFromC.x, -tapFromC.y);
-    
-    //CCMoveBy *m=[CCMoveBy actionWithDuration:2.5f position:moveBy];
-    
-    //CCEaseInOut *ease=[CCEaseInOut actionWithAction:[CCMoveBy actionWithDuration:2.0f position:moveBy] rate:0.5f];
-    
-    //CCEaseOut *eout=[CCEaseOut actionWithAction:m rate:0.6f];
-    //CCEaseIn *ein=[CCEaseIn actionWithAction:eout rate:0.6f];
-    
-    //CCEaseIn *eins=[CCEaseIn actionWithAction:m rate:0.5f];
-    
-    //[mapLayer runAction:eins];
+
 }
 
 

@@ -36,7 +36,7 @@
 #define UNIT_SIZE 50.0f
 #define HALF_SIZE 25.0f
 
-
+#define OFFSET @"OFFSET"
 #define MOUNT @"MOUNT"
 #define MOUNTED_OBJECT @"MOUNTED_OBJECT"
 #define MOUNTED_OBJECTS @"MOUNTED_OBJECTS"

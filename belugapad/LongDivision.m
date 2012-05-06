@@ -200,7 +200,6 @@ const float kSpaceBetweenRows=80;
             CCLabelTTF *number=[CCLabelTTF labelWithString:currentNumber fontName:PROBLEM_DESC_FONT fontSize:60.0f];
             [number setPosition:ccp((lx/2)+(i*kSpaceBetweenNumbers), 300-(r*kSpaceBetweenRows))];
             [thisLayer addChild:number];
-            //if(r!=1)[number setOpacity:50];
             [thisRow addObject:number];
             
         }
@@ -223,17 +222,42 @@ const float kSpaceBetweenRows=80;
 
 -(void)updateBlock
 {
+    // if the marker and it's text don't exist - create
+    if(!marker && !markerText)
+    {
+        marker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
+        [marker setPosition:ccp(line.position.x-(line.contentSize.width/2), line.position.y+30)];
+        markerText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        [markerText setPosition:ccp(0,65)];    
+        [marker addChild:markerText];
+        [topSection addChild:marker];
+    }
+    
     cumulativeTotal=0;
     CGPoint markerPos;
+    float currentYScale=1.0f;
+    float startBase=0;
+    
     for(int i=0;i<[renderedBlocks count];i++)
     {
+        //float curOffset=[[[renderedBlocks objectAtIndex:i] objectForKey:OFFSET]floatValue];
+        float curOffset=0.0f;
+        // if the startbase is 0, set it equal to the current base, then sort out scaling based upon that 
+        float currentBase=[[[renderedBlocks objectAtIndex:i]objectForKey:ROW_MULTIPLIER]floatValue];
+        if(startBase==0)startBase=currentBase;
+        
+        if(currentBase<startBase)
+        {
+            currentYScale = currentYScale*0.8f;
+            startBase=currentBase;
+        }
+        
+        // then set the options on our current iteration
         CCSprite *curSprite=[[renderedBlocks objectAtIndex:i]objectForKey:MY_SPRITE];
-        //[curSprite setPosition:ccp(line.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2)-(line.contentSize.width/2)+cumulativeTotal, line.position.y+30)];
-        [curSprite setPosition:ccp(line.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2)-(line.contentSize.width/2)+cumulativeTotal, line.position.y+30)];
+        [curSprite setScaleY:currentYScale];
+        [curSprite setPosition:ccp(curOffset+line.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2)-(line.contentSize.width/2)+cumulativeTotal, line.position.y+30)];
         cumulativeTotal=cumulativeTotal+(curSprite.contentSize.width*curSprite.scaleX);
         markerPos=ccp(curSprite.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2), curSprite.position.y+40);
-        // width*scale = the size of the block drawn
-        // cumulativex=cumulativex+(currentsprite width*scale)
     }
     [self updateLabels:markerPos];
 }
@@ -250,8 +274,8 @@ const float kSpaceBetweenRows=80;
     else 
     {
         // this is when we're creating an object
-        //if(creatingObject)
-        if(creatingObject && (previousNumberPos!=currentNumberPos || previousRow!=activeRow))
+        if(creatingObject)
+        //if(creatingObject && (previousNumberPos!=currentNumberPos || previousRow!=activeRow))
         {
             // we need to look at what exists currently
             for(int i=0;i<[renderedBlocks count];i++)
@@ -271,6 +295,7 @@ const float kSpaceBetweenRows=80;
         }
         
         
+        // remove object if needed
         if(destroyingObject)
         {
             for(int i=0;i<[renderedBlocks count];i++)
@@ -295,13 +320,18 @@ const float kSpaceBetweenRows=80;
     NSMutableDictionary *curDict=[[NSMutableDictionary alloc]init];
     float myBase=[[rowMultipliers objectAtIndex:activeRow]floatValue];
     CCSprite *curBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/renderblock.png")];
-    
+    float calc=0.0f;
     
     [curBlock setPosition:line.position];
     [curBlock setScaleX:(divisor*myBase/dividend*line.contentSize.width)/curBlock.contentSize.width];
     [curDict setObject:curBlock forKey:MY_SPRITE];
     [curDict setObject:[NSNumber numberWithFloat:base] forKey:ROW_MULTIPLIER];
     [renderedBlocks insertObject:curDict atIndex:index];
+
+    
+    calc=-curBlock.contentSize.width*curBlock.scaleX;
+    
+    [curDict setObject:[NSNumber numberWithFloat:calc] forKey:OFFSET];
     
     [topSection addChild:curBlock];
 }
@@ -338,14 +368,6 @@ const float kSpaceBetweenRows=80;
     line=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/line.png")];
     [line setPosition:ccp(cx,550)];
     [topSection addChild:line];
-    
-    marker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
-    [marker setPosition:[topSection convertToNodeSpace:ccp(line.position.x-(line.contentSize.width/2), line.position.y+30)]];
-    [topSection addChild:marker];
-    markerText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [marker addChild:markerText];
-
-    [markerText setPosition:ccp(0,65)];
     
     
     
@@ -435,26 +457,31 @@ const float kSpaceBetweenRows=80;
             CCLayer *moveLayer = [numberLayers objectAtIndex:activeRow];
             [moveLayer setPosition:ccpAdd(moveLayer.position, diff)];
             int scrollByNumber=fabsf((int)moveLayer.position.x/kSpaceBetweenNumbers);
+
+            for(int i=0;i<[renderedBlocks count];i++)
+            {
+                NSMutableDictionary *curObj=[renderedBlocks objectAtIndex:i];
+                CCSprite *curSprite=[curObj objectForKey:MY_SPRITE];
+                float updateOffset=[BLMath DistanceBetween:location and:touchStart]/curSprite.contentSize.width*curSprite.scaleX;
+                [curObj setObject:[NSNumber numberWithFloat:updateOffset] forKey:OFFSET];
+            }
+                           
             
             if(location.x<lastTouch.x)
             {
-                NSLog(@"in creatingObject state");
                 creatingObject=YES;
                 destroyingObject=NO;
             }
             if(location.x>lastTouch.x)
             {
-                NSLog(@"in destroyingObject state");
                 creatingObject=NO;
                 destroyingObject=YES;
             }
             
             if(scrollByNumber!=previousNumberPos)
             {
-                NSLog(@"currentNumber %d, scrollByNumber %d, previousNumberPos %d", currentNumberPos, scrollByNumber, previousNumberPos);
                 [self checkBlock];
                 previousNumberPos=scrollByNumber;
-                NSLog(@"currentNumber %d, scrollByNumber %d, previousNumberPos %d", currentNumberPos, scrollByNumber, previousNumberPos);
             }
 
         
@@ -486,11 +513,13 @@ const float kSpaceBetweenRows=80;
     location=[self.ForeLayer convertToNodeSpace:location];
     currentTouchCount-=[touches count];
     isTouching=NO;
+    creatingObject=NO;
+    destroyingObject=NO;
     
     if(doingHorizontalDrag)
     {
-        if(location.x<lastTouch.x)creatingObject=YES;
-        if(location.x>lastTouch.x)destroyingObject=YES;
+        //if(location.x<lastTouch.x)creatingObject=YES;
+        //if(location.x>lastTouch.x)destroyingObject=YES;
         
         CGPoint diff=[BLMath SubtractVector:location from:touchStart];
         diff = ccp(diff.x, 0);
@@ -516,6 +545,7 @@ const float kSpaceBetweenRows=80;
         //if the diff in x is positive, the number wants to go up (end point of x is less that of start point) 
         if(diff.x > 0) // incrementing line
             currentNumberPos+=incrementor;
+        
         //otherwise the number on the line goes down
         else 
             currentNumberPos-=incrementor;
@@ -524,10 +554,22 @@ const float kSpaceBetweenRows=80;
         if(currentNumberPos<0)currentNumberPos=0;
         if(currentNumberPos>9)currentNumberPos=9;
         
+
+        
         //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
         [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(currentNumberPos*-kSpaceBetweenNumbers,moveLayer.position.y)]];
         [selectedNumbers replaceObjectAtIndex:activeRow withObject:[NSNumber numberWithInt:currentNumberPos]];
-        [self checkBlock];
+
+        
+        if(location.x<lastTouch.x)
+            creatingObject=YES;
+        
+        if(location.x>lastTouch.x)
+            destroyingObject=YES;
+        
+        if(currentNumberPos!=previousNumberPos)
+            [self checkBlock];
+        
     }
     
     if(doingVerticalDrag)

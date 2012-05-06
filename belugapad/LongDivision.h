@@ -73,6 +73,7 @@
     // rendering vars
     float cumulativeTotal;
     float lastBaseEval;
+    float currentScaleY;
     BOOL creatingObject;
     BOOL destroyingObject;
     NSMutableArray *renderedBlocks;

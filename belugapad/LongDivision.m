@@ -95,13 +95,19 @@ const float kSpaceBetweenRows=80;
         
     }
     
+    //effective 4-digit precision evaluation test
+    int prec=10000;
+    int sum=(int)(currentTotal*divisor*prec);
+    int idividend=(int)(dividend*prec);
+    expressionIsEqual=(sum==idividend);
+        
     // this sets the good/bad sum indicator if the mode is enabled
     if(goodBadHighlight) 
     {
-        if(((float)currentTotal*(float)divisor)!=fabsf(dividend))
-            [lblCurrentTotal setColor:ccc3(255,0,0)];
+        if(expressionIsEqual)
+            [lblCurrentTotal setColor:ccc3(0, 255,0)];
         else 
-            [lblCurrentTotal setColor:ccc3(0,255,0)];
+            [lblCurrentTotal setColor:ccc3(255,0,0)];
     }
     
     // then update the actual text of it

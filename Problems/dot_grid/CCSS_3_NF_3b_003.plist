@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Shade 1/2 of this shape</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>shading 1/2 of 2x4 recatngle</string>
 	<key>TOOL_KEY</key>
 	<string>DotGrid</string>
 	<key>ANCHOR_SPACE</key>

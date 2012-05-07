@@ -3,62 +3,57 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string></string>
-	<key>INTERNAL_DESCRIPTION</key>
-	<string>what number is 23? pv</string>
+	<string>count</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
-	<key>COL_BASE_VALUE</key>
-	<integer>10</integer>
-	<key>FIRST_COL_VALUE</key>
-	<integer>10</integer>
 	<key>NUMBER_COLS</key>
-	<integer>2</integer>
+	<integer>1</integer>
+	<key>FIRST_COL_VALUE</key>
+	<integer>1</integer>
+	<key>COL_BASE_VALUE</key>
+	<string>10</string>
 	<key>DEFAULT_COL</key>
-	<integer>10</integer>
+	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
 	<integer>3</integer>
 	<key>ROWS_PER_COL</key>
-	<integer>1</integer>
+	<integer>3</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
 	<false/>
+	<key>EVAL_MODE</key>
+	<integer>0</integer>
+	<key>REJECT_MODE</key>
+	<integer>0</integer>
 	<key>SHOW_CAGE</key>
-	<false/>
-	<key>SHOW_NEG_CAGE</key>
 	<false/>
 	<key>SHOW_COUNT</key>
 	<false/>
 	<key>SHOW_COUNT_BLOCK</key>
 	<false/>
-	<key>SHOW_COL_HEADER</key>
-	<true/>
-	<key>SHOW_VALUE</key>
-	<false/>
-	<key>SHOW_BASE_SELECTION</key>
-	<true/>
-	<key>PICKUP_SPRITE_FILENAME</key>
-	<string>/images/placevalue/cage-neg.png</string>
-	<key>PROXIMITY_SPRITE_FILENAME</key>
-	<string>/images/placevalue/cage-pos.png</string>
 	<key>CUSTOM_COLUMN_HEADERS</key>
+	<true/>
+	<key>COLUMN_CAGES</key>
 	<dict>
-		<key>10</key>
-		<string>tens</string>
+		<key>1</key>
+		<false/>
+	</dict>
+	<key>COLUMN_NEG_CAGES</key>
+	<dict>
+		<key>1</key>
+		<false/>
+	</dict>
+	<key>COLUMN_HEADERS</key>
+	<dict>
 		<key>1</key>
 		<string>ones</string>
-	</dict>
-	<key>COLUMN_ROPES</key>
-	<dict>
-		<key>10</key>
-		<integer>2</integer>
 	</dict>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
 			<key>PUT_IN_COL</key>
-			<integer>1</integer>
+			<integer>0</integer>
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
@@ -68,25 +63,19 @@
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
 			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
+			<integer>1</integer>
 			<key>NUMBER</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
+			<integer>0</integer>
+			<key>PUT_IN_ROW</key>
 			<integer>2</integer>
+			<key>NUMBER</key>
+			<integer>3</integer>
 		</dict>
 	</array>
-	<key>COLUMN_SPRITES</key>
-	<dict>
-		<key>10</key>
-		<string>/images/placevalue/obj-placevalue-unit10.png</string>
-		<key>1</key>
-		<string>/images/placevalue/obj-placevalue-unit1.png</string>
-	</dict>
-	<key>COLUMN_CAGES</key>
-	<dict>
-		<key>10</key>
-		<false/>
-		<key>1</key>
-		<false/>
-	</dict>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
@@ -99,29 +88,27 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>2</string>
+				<string>6</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>3</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>23</string>
+				<string>7</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>8</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>what number is this?</string>
+		<string>how many?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>
-	<key>PLAY_SOUND</key>
-	<string>05pv/what number is this.wav</string>
 </dict>
 </plist>

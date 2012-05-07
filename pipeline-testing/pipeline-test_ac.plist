@@ -2,6 +2,40 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>/Problems/Addition/ac-dev/02count/earlymap_001.plist</string>
+	<string>/Problems/Addition/ac-dev/02count/earlymap_002.plist</string>
+	<string>/Problems/Addition/ac-dev/02count/earlymap_003.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/earlytest_001.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/earlytest_005.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/earlytest_004.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/CCSS_K_OA_4_001.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/CCSS_K_OA_4_002.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/CCSS_K_OA_4_003.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/CCSS_K_OA_4_004.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/CCSS_K_OA_4_005.plist</string>
+	<string>/Problems/partitioning/CCSS_K_OA_3_003.plist</string>
+	<string>/Problems/partitioning/CCSS_K_OA_3_004.plist</string>
+	<string>/Problems/partitioning/CCSS_K_OA_3_005.plist</string>
+	<string>/Problems/partitioning/CCSS_K_OA_3_006.plist</string>
+	<string>/Problems/partitioning/CCSS_K_OA_3_007.plist</string>
+	<string>/Problems/partitioning/CCSS_1_OA_3_001.plist</string>
+	<string>/Problems/partitioning/CCSS_1_OA_3_002.plist</string>
+	<string>/Problems/partitioning/CCSS_1_OA_3_003.plist</string>
+	<string>/Problems/partitioning/CCSS_1_OA_3_004.plist</string>
+	<string>/Problems/partitioning/CCSS_1_OA_3_005.plist</string>
+	<string>/Problems/partitioning/early_001.plist</string>
+	<string>/Problems/partitioning/early_002.plist</string>
+	<string>/Problems/partitioning/early_003.plist</string>
+	<string>/Problems/partitioning/early_004.plist</string>
+	<string>/Problems/partitioning/early_005.plist</string>
+	<string>/Problems/partitioning/CCSS_1_OA_3a_001.plist</string>
+	<string>/Problems/partitioning/CCSS_1_OA_3a_002.plist</string>
+	<string>/Problems/partitioning/CCSS_1_OA_3a_003.plist</string>
+	<string>/Problems/partitioning/CCSS_1_OA_3a_004.plist</string>
+	<string>/Problems/partitioning/CCSS_1_OA_3a_005.plist</string>
+	<string>/Problems/partitioning/CCSS_K_NBT_1_002.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/CCSS_1_NBT_2c_001.plist</string>
+	<string>/Problems/Addition/ac-dev/01pv/CCSS_K_OA_3_003.plist</string>
 	<string>/Problems/partitioning/CCSS_5_NF_7b_001.plist</string>
 	<string>/Problems/dot_grid/CCSS_5_NF_7a_001.plist</string>
 	<string>/Problems/partitioning/CCSS_5_NF_7_001.plist</string>

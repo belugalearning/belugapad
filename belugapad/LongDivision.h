@@ -77,6 +77,9 @@
     BOOL creatingObject;
     BOOL destroyingObject;
     NSMutableArray *renderedBlocks;
+    
+    //problem state
+    BOOL expressionIsEqual;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

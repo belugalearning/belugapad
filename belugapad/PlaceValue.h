@@ -40,7 +40,7 @@
 
     int ropesforColumn;
     int rows;    
-    float currentColumnIndex;
+    int currentColumnIndex;
     float defaultColumn;
     float columnBaseValue;
     float firstColumnValue;

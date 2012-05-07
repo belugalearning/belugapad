@@ -890,13 +890,28 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     //location=[renderLayer convertToNodeSpace:location];
 
 
-    CGPoint transLocation=ccp(location.x+(0.5f*kPropXColumnSpacing),location.y);
-    transLocation=[renderLayer convertToNodeSpace:location];
+    //the touch location in the node space of the render layer
+    CGPoint locationInNS=[renderLayer convertToNodeSpace:location];
     
-    currentColumnIndex=(int)transLocation.x/(numberOfColumns-1*(lx*kPropXColumnSpacing));
-    currentColumnIndex=fabsf((int)currentColumnIndex);
+    //width of a column
+    float colW=lx*kPropXColumnSpacing;
     
-    NSLog(@"currentColIndex: %f, trans X %f, trans Y %f", currentColumnIndex, transLocation.x, transLocation.y);
+    //offset the touch location by half the column width to allow for hitting a column in -0.5x -- +0.5x space
+    CGPoint shiftedLocationInNS=ccp(locationInNS.x + (0.5f * colW), locationInNS.y);
+    
+    //rounded down value of touch location over col width gives us column index (e.g. anything from 0 to colw is first col (0), next is second (1) etc)
+    currentColumnIndex = (int)(shiftedLocationInNS.x / colW);
+
+    NSLog(@"currentColIndex: %d, colW %f, locationInNS X %f, shiftedLocationInNS X %f", currentColumnIndex, colW, locationInNS.x, shiftedLocationInNS.x);
+
+    
+//    CGPoint transLocation=ccp(location.x+(0.5f*kPropXColumnSpacing),location.y);
+//    transLocation=[renderLayer convertToNodeSpace:location];
+//    
+//    currentColumnIndex=(int)transLocation.x/(numberOfColumns-1*(lx*kPropXColumnSpacing));
+//    currentColumnIndex=fabsf((int)currentColumnIndex);
+//    
+//    NSLog(@"currentColIndex: %f, trans X %f, trans Y %f", currentColumnIndex, transLocation.x, transLocation.y);
     
     // set the touch start pos for evaluation
     touchStartPos = location;

@@ -77,6 +77,7 @@ typedef enum {
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
 -(BOOL)evalExpression;
 -(void)evalProblem;
+-(void)resetProblem;
 -(float)metaQuestionTitleYLocation;
 -(float)metaQuestionAnswersYLocation;
 

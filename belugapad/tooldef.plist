@@ -11,10 +11,10 @@
 		<key>SCALING_PASS_THRU</key>
 		<false/>
 	</dict>
-	<key>NumberLine</key>
+	<key>NLine</key>
 	<dict>
 		<key>SCALE_MIN</key>
-		<integer>1</integer>
+		<real>0.7</real>
 		<key>SCALE_MAX</key>
 		<real>1.2</real>
 		<key>SCALING_PASS_THRU</key>

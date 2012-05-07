@@ -82,8 +82,9 @@ const float kSpaceBetweenRows=80;
             timeToAutoMoveToNextProblem=0.0f;
         }
     }  
-    
-    float currentTotal=0;
+
+    // work out the current total
+    currentTotal=0;
 
     for(int i=0;i<[selectedNumbers count];i++)
     {
@@ -94,13 +95,20 @@ const float kSpaceBetweenRows=80;
         
     }
     
-    if(((float)currentTotal*(float)divisor)!=fabsf(dividend))
-        [lblCurrentTotal setColor:ccc3(255,0,0)];
-    else 
-        [lblCurrentTotal setColor:ccc3(0,255,0)];
+    // this sets the good/bad sum indicator if the mode is enabled
+    if(goodBadHighlight) 
+    {
+        if(((float)currentTotal*(float)divisor)!=fabsf(dividend))
+            [lblCurrentTotal setColor:ccc3(255,0,0)];
+        else 
+            [lblCurrentTotal setColor:ccc3(0,255,0)];
+    }
+    
+    // then update the actual text of it
     [lblCurrentTotal setString:[NSString stringWithFormat:@"%g", currentTotal]];
     
-        
+    
+    // this sets the fade amount of each row proportional to it's current position
     for(int l=0;l<[numberRows count];l++)
     {
         
@@ -109,28 +117,38 @@ const float kSpaceBetweenRows=80;
         for(CCLabelTTF *lbl in currentRow)
         {
             CGPoint realLabelPos=[thisLayer convertToWorldSpace:lbl.position];
-            //CGPoint realLabelPos=lbl.position;
-            //float distToFade=0;
-            float distToActive=[BLMath DistanceBetween:realLabelPos and:ccp(realLabelPos.x, 220)];
 
-//            if(realLabelPos.y>220)
-//                distToFade=[BLMath DistanceBetween:realLabelPos and:ccp(realLabelPos.x, 380)];
-//            else 
-//                distToFade=[BLMath DistanceBetween:realLabelPos and:ccp(realLabelPos.x, 50)];
-            
+            float distToActive=[BLMath DistanceBetween:realLabelPos and:ccp(realLabelPos.x, 220)];
             float prop=distToActive/150;
-            float opac=(1-prop)*255;
+            float opac=(1-prop)*150;
             if(opac<0)opac=0;
-            if(opac>255)opac=255;
+            if(opac==150)opac=255;
             
-            
-            
-            //if(opac<25)opac=0;
             [lbl setOpacity:opac];
         }
         
     }
     
+    
+    // this re-iterates back through the active row and sorts our side-side fading out
+    NSArray *currentRow=[numberRows objectAtIndex:activeRow];
+    CCLayer *thisLayer=[numberLayers objectAtIndex:activeRow];
+    
+    for (CCLabelTTF *lbl in currentRow)
+    {
+        CGPoint realLabelPos=[thisLayer convertToWorldSpace:lbl.position];
+        
+        float distToActive=[BLMath DistanceBetween:realLabelPos and:ccp(cx, realLabelPos.y)];
+        float prop=distToActive/150;
+        float opac=(1-prop)*400;
+        if(opac<150)opac=150;
+        if(opac>255)opac=255;
+        
+        [lbl setOpacity:opac];
+    }
+    
+    if(evalMode==kProblemEvalAuto)[self evalProblem];
+    [self updateBlock];
 }
 
 
@@ -143,6 +161,8 @@ const float kSpaceBetweenRows=80;
     
     dividend=[[pdef objectForKey:DIVIDEND] floatValue];
     divisor=[[pdef objectForKey:DIVISOR] floatValue];
+    evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
+    goodBadHighlight=[[pdef objectForKey:GOOD_BAD_HIGHLIGHT] boolValue];
     
 
     
@@ -180,7 +200,6 @@ const float kSpaceBetweenRows=80;
             CCLabelTTF *number=[CCLabelTTF labelWithString:currentNumber fontName:PROBLEM_DESC_FONT fontSize:60.0f];
             [number setPosition:ccp((lx/2)+(i*kSpaceBetweenNumbers), 300-(r*kSpaceBetweenRows))];
             [thisLayer addChild:number];
-            //if(r!=1)[number setOpacity:50];
             [thisRow addObject:number];
             
         }
@@ -195,6 +214,128 @@ const float kSpaceBetweenRows=80;
     activeRow=currentRowPos+1;
 }
 
+-(void)updateLabels:(CGPoint)position
+{
+    [markerText setString:[NSString stringWithFormat:@"%g", currentTotal*3]];
+    [marker setPosition:position];
+}
+
+-(void)updateBlock
+{
+    // if the marker and it's text don't exist - create
+    if(!marker && !markerText)
+    {
+        marker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
+        [marker setPosition:ccp(line.position.x-(line.contentSize.width/2), line.position.y+30)];
+        markerText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        [markerText setPosition:ccp(0,65)];    
+        [marker addChild:markerText];
+        [topSection addChild:marker];
+    }
+    
+    cumulativeTotal=0;
+    CGPoint markerPos;
+    float currentYScale=1.0f;
+    float startBase=0;
+    
+    for(int i=0;i<[renderedBlocks count];i++)
+    {
+        //float curOffset=[[[renderedBlocks objectAtIndex:i] objectForKey:OFFSET]floatValue];
+        float curOffset=0.0f;
+        // if the startbase is 0, set it equal to the current base, then sort out scaling based upon that 
+        float currentBase=[[[renderedBlocks objectAtIndex:i]objectForKey:ROW_MULTIPLIER]floatValue];
+        if(startBase==0)startBase=currentBase;
+        
+        if(currentBase<startBase)
+        {
+            currentYScale = currentYScale*0.8f;
+            startBase=currentBase;
+        }
+        
+        // then set the options on our current iteration
+        CCSprite *curSprite=[[renderedBlocks objectAtIndex:i]objectForKey:MY_SPRITE];
+        [curSprite setScaleY:currentYScale];
+        [curSprite setPosition:ccp(curOffset+line.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2)-(line.contentSize.width/2)+cumulativeTotal, line.position.y+30)];
+        cumulativeTotal=cumulativeTotal+(curSprite.contentSize.width*curSprite.scaleX);
+        markerPos=ccp(curSprite.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2), curSprite.position.y+40);
+    }
+    [self updateLabels:markerPos];
+}
+
+-(void)checkBlock
+{
+    // we need to find out where this block should go
+    float myBase=[[rowMultipliers objectAtIndex:activeRow]floatValue];
+    
+    if(renderedBlocks.count==0)
+    {
+        [self createBlockAtIndex:0 withBase:[[rowMultipliers objectAtIndex:activeRow]floatValue]];
+    }
+    else 
+    {
+        // this is when we're creating an object
+        if(creatingObject)
+        //if(creatingObject && (previousNumberPos!=currentNumberPos || previousRow!=activeRow))
+        {
+            // we need to look at what exists currently
+            for(int i=0;i<[renderedBlocks count];i++)
+            {
+                NSDictionary *curDict=[renderedBlocks objectAtIndex:i];
+                float theirBase=[[curDict objectForKey:ROW_MULTIPLIER]floatValue];
+                
+                if(theirBase<myBase)
+                {
+                    if(i==0)[self createBlockAtIndex:i withBase:myBase];
+                    else [self createBlockAtIndex:i-1 withBase:myBase];
+                    return;
+                }
+            }
+            // if nowt init, create the block at the end
+            [self createBlockAtIndex:[renderedBlocks count] withBase:myBase];
+        }
+        
+        
+        // remove object if needed
+        if(destroyingObject)
+        {
+            for(int i=0;i<[renderedBlocks count];i++)
+            {
+                NSDictionary *curDict=[renderedBlocks objectAtIndex:i];
+                float theirBase=[[curDict objectForKey:ROW_MULTIPLIER]floatValue];
+                
+                if(theirBase==myBase)
+                {
+                    CCSprite *curSprite=[curDict objectForKey:MY_SPRITE];
+                    [curSprite removeFromParentAndCleanup:YES];
+                    [renderedBlocks removeObjectAtIndex:i];
+                    return;
+                }
+            }
+        }
+    }
+}
+
+-(void)createBlockAtIndex:(int)index withBase:(float)base
+{
+    NSMutableDictionary *curDict=[[NSMutableDictionary alloc]init];
+    float myBase=[[rowMultipliers objectAtIndex:activeRow]floatValue];
+    CCSprite *curBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/renderblock.png")];
+    float calc=0.0f;
+    
+    [curBlock setPosition:line.position];
+    [curBlock setScaleX:(divisor*myBase/dividend*line.contentSize.width)/curBlock.contentSize.width];
+    [curDict setObject:curBlock forKey:MY_SPRITE];
+    [curDict setObject:[NSNumber numberWithFloat:base] forKey:ROW_MULTIPLIER];
+    [renderedBlocks insertObject:curDict atIndex:index];
+
+    
+    calc=-curBlock.contentSize.width*curBlock.scaleX;
+    
+    [curDict setObject:[NSNumber numberWithFloat:calc] forKey:OFFSET];
+    
+    [topSection addChild:curBlock];
+}
+
 -(void)populateGW
 {
     [renderLayer addChild:topSection];
@@ -204,6 +345,8 @@ const float kSpaceBetweenRows=80;
     [selectedNumbers retain];
     rowMultipliers=[[NSMutableArray alloc]init];
     [rowMultipliers retain];
+    renderedBlocks=[[NSMutableArray alloc]init];
+    [renderedBlocks retain];
     
     // add the selector to the middle of the screen
     
@@ -219,18 +362,20 @@ const float kSpaceBetweenRows=80;
     [renderLayer addChild:multiplier];
     
     lblCurrentTotal=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [lblCurrentTotal setPosition:ccp(100,745)];
+    [lblCurrentTotal setPosition:ccp(cx,50)];
     [renderLayer addChild:lblCurrentTotal];
     
     line=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/line.png")];
     [line setPosition:ccp(cx,550)];
     [topSection addChild:line];
     
+    
+    
     [self createVisibleNumbers];
 }
 -(void)handlePassThruScaling:(float)scale
 {
-        if(topTouch && currentTouchCount>1)
+        if(topTouch && currentTouchCount>1 && scale>0)
             [topSection setScaleX:scale];
 }
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -241,11 +386,14 @@ const float kSpaceBetweenRows=80;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
-    location=[self.ForeLayer convertToNodeSpace:location];
+    location=[self.ForeLayer convertToWorldSpace:location];
     lastTouch=location;
     touchStart=location;
     currentTouchCount+=[touches count];
     NSLog(@"touch count %d", currentTouchCount);
+    
+    previousNumberPos=[[selectedNumbers objectAtIndex:activeRow]intValue];
+    previousRow=activeRow;
     
     
     for(UITouch *t in touches)
@@ -257,7 +405,6 @@ const float kSpaceBetweenRows=80;
     }
     if(location.y<cx && currentTouchCount==1)bottomTouch=YES;
     
-    if(topTouch)NSLog(@"touching top");
     
     
     if(bottomTouch)
@@ -269,7 +416,6 @@ const float kSpaceBetweenRows=80;
             startedInActiveRow=YES;
             CCLayer *curLayer=[numberLayers objectAtIndex:activeRow];
             currentNumberPos=fabsf((int)curLayer.position.x/kSpaceBetweenNumbers);
-            NSLog(@"currentpos - %d", currentNumberPos);
         }        
     }
     
@@ -281,7 +427,6 @@ const float kSpaceBetweenRows=80;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
-    NSLog(@"touch count ivar %d nsset %d", currentTouchCount, [touches count]);
     //NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
     
     if(topTouch && currentTouchCount==1)
@@ -305,13 +450,39 @@ const float kSpaceBetweenRows=80;
         
         
         if(horizontTouch && startedInActiveRow && !doingVerticalDrag) {
-        
+            
             doingHorizontalDrag=YES;
             CGPoint diff=[BLMath SubtractVector:lastTouch from:location];
             diff = ccp(diff.x, 0);
             CCLayer *moveLayer = [numberLayers objectAtIndex:activeRow];
-                      
             [moveLayer setPosition:ccpAdd(moveLayer.position, diff)];
+            int scrollByNumber=fabsf((int)moveLayer.position.x/kSpaceBetweenNumbers);
+
+            for(int i=0;i<[renderedBlocks count];i++)
+            {
+                NSMutableDictionary *curObj=[renderedBlocks objectAtIndex:i];
+                CCSprite *curSprite=[curObj objectForKey:MY_SPRITE];
+                float updateOffset=[BLMath DistanceBetween:location and:touchStart]/curSprite.contentSize.width*curSprite.scaleX;
+                [curObj setObject:[NSNumber numberWithFloat:updateOffset] forKey:OFFSET];
+            }
+                           
+            
+            if(location.x<lastTouch.x)
+            {
+                creatingObject=YES;
+                destroyingObject=NO;
+            }
+            if(location.x>lastTouch.x)
+            {
+                creatingObject=NO;
+                destroyingObject=YES;
+            }
+            
+            if(scrollByNumber!=previousNumberPos)
+            {
+                [self checkBlock];
+                previousNumberPos=scrollByNumber;
+            }
 
         
         }
@@ -325,7 +496,6 @@ const float kSpaceBetweenRows=80;
                 CGPoint diff=[BLMath SubtractVector:lastTouch from:location];
                 diff = ccp(0, diff.y);
                 [moveLayer setPosition:ccpAdd(moveLayer.position, diff)];
-                
                 
             }
         }
@@ -343,9 +513,14 @@ const float kSpaceBetweenRows=80;
     location=[self.ForeLayer convertToNodeSpace:location];
     currentTouchCount-=[touches count];
     isTouching=NO;
+    creatingObject=NO;
+    destroyingObject=NO;
     
     if(doingHorizontalDrag)
     {
+        //if(location.x<lastTouch.x)creatingObject=YES;
+        //if(location.x>lastTouch.x)destroyingObject=YES;
+        
         CGPoint diff=[BLMath SubtractVector:location from:touchStart];
         diff = ccp(diff.x, 0);
         
@@ -370,6 +545,7 @@ const float kSpaceBetweenRows=80;
         //if the diff in x is positive, the number wants to go up (end point of x is less that of start point) 
         if(diff.x > 0) // incrementing line
             currentNumberPos+=incrementor;
+        
         //otherwise the number on the line goes down
         else 
             currentNumberPos-=incrementor;
@@ -378,9 +554,22 @@ const float kSpaceBetweenRows=80;
         if(currentNumberPos<0)currentNumberPos=0;
         if(currentNumberPos>9)currentNumberPos=9;
         
+
+        
         //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
         [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(currentNumberPos*-kSpaceBetweenNumbers,moveLayer.position.y)]];
         [selectedNumbers replaceObjectAtIndex:activeRow withObject:[NSNumber numberWithInt:currentNumberPos]];
+
+        
+        if(location.x<lastTouch.x)
+            creatingObject=YES;
+        
+        if(location.x>lastTouch.x)
+            destroyingObject=YES;
+        
+        if(currentNumberPos!=previousNumberPos)
+            [self checkBlock];
+        
     }
     
     if(doingVerticalDrag)
@@ -430,6 +619,8 @@ const float kSpaceBetweenRows=80;
     startedInActiveRow=NO;
     doingHorizontalDrag=NO;
     doingVerticalDrag=NO;
+    creatingObject=NO;
+    destroyingObject=NO;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -441,13 +632,16 @@ const float kSpaceBetweenRows=80;
     doingHorizontalDrag=NO;
     doingVerticalDrag=NO;
     currentTouchCount-=[touches count];
+    creatingObject=NO;
+    destroyingObject=NO;
 }
 
 -(BOOL)evalExpression
 {
     //returns YES if the tool expression evaluates succesfully
     
-    return YES;
+    if(currentTotal==(dividend/divisor))return YES;
+    else return NO;
 }
 
 -(void)evalProblem
@@ -458,6 +652,13 @@ const float kSpaceBetweenRows=80;
     {
         autoMoveToNextProblem=YES;
         [toolHost showProblemCompleteMessage];
+    }
+    else {
+        if(evalMode==kProblemEvalOnCommit)
+        {
+            [toolHost showProblemIncompleteMessage]; 
+            [toolHost resetProblem];
+        }
     }
     
 }
@@ -482,7 +683,8 @@ const float kSpaceBetweenRows=80;
     if(numberRows)[numberRows release];
     if(numberLayers)[numberLayers release];
     if(selectedNumbers)[selectedNumbers release];
-    if(rowMultipliers)[rowMultipliers retain];
+    if(rowMultipliers)[rowMultipliers release];
+    if(renderedBlocks)[renderedBlocks release];
 
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];

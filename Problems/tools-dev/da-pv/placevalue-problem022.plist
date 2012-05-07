@@ -11,7 +11,7 @@
 	<key>FIRST_COL_VALUE</key>
 	<integer>100</integer>
 	<key>NUMBER_COLS</key>
-	<integer>6</integer>
+	<integer>5</integer>
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
@@ -95,6 +95,6 @@
 	<key>DISABLE_CAGE_ADD</key>
 	<true/>
 	<key>DEFAULT_SCALE</key>
-	<real>0.7</real>
+	<real>1.1</real>
 </dict>
 </plist>

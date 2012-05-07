@@ -8,6 +8,8 @@
 
 #import <CouchCocoa/CouchCocoa.h>
 
+@class CCSprite;
+
 @interface ConceptNode : CouchModel
 
 @property (readonly, retain) NSNumber *graffleId;
@@ -17,5 +19,8 @@
 @property (readonly, retain) NSArray *tags;
 @property (readonly, retain) NSNumber *x;
 @property (readonly, retain) NSNumber *y;
+
+//not persisted
+@property (retain) CCSprite *journeySprite;
 
 @end

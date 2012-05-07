@@ -18,8 +18,9 @@
 
 #import "ConceptNode.h"
 
-static float kNodeScale=2.0f;
+static float kNodeScale=0.5f;
 static CGPoint kStartMapPos={-3376, -1457};
+static float kPropXNodeDrawDist=1.25f;
 
 static int kNodeMax=50;
 
@@ -72,7 +73,12 @@ static int kNodeMax=50;
         
         [self setupMap];
         
+        //create nodes near camera
+        [self createNodeSpritesNearCentre];
+        
         [self schedule:@selector(doUpdate:) interval:1.0f / 60.0f];
+        
+        [self schedule:@selector(doUpdateCreateNodes:) interval:1.0f / 4.0f];
         
         daemon=[[Daemon alloc] initWithLayer:mapLayer andRestingPostion:[mapLayer convertToNodeSpace:ccp(cx, cy)] andLy:ly];
         [daemon setMode:kDaemonModeFollowing];
@@ -97,11 +103,14 @@ static int kNodeMax=50;
     
     [self parseForBoundsAndCreateKcmIndex];
     
-    [self createNodeSprites];
+    //shifting to proximity create
+    //[self createNodeSprites];
+
+    //not doing this at all atm
+    //[self parseAndCreateSpritesForPreReqRelations];
     
-    [self parseAndCreateSpritesForPreReqRelations];
-    
-    [self addFeaturesInEmptySpace];
+    //shifting to proximity features
+    //[self addFeaturesInEmptySpace];
     
     //we don't want to do this -- needs to move to dynamic draw
     //[self createAllBackgroundTileSprites];
@@ -239,10 +248,54 @@ static int kNodeMax=50;
     }
 }
 
+-(CGPoint)currentCentre
+{
+    CGPoint c=ccp(-mapLayer.position.x + (0.5f*lx), -mapLayer.position.y + (0.5f*ly));
+    return c;
+}
+
+-(void)createNodeSpritesNearCentre
+{
+    [self createNodeSpritesNear:[self currentCentre]];
+}
+
+-(void)createNodeSpritesNear:(CGPoint)loc
+{
+    //creates sprites within kPropXNodeDrawDist of loc, and destroys them outside of that
+    
+    for(int i=0; i<kcmNodes.count; i++)
+    {
+        ConceptNode *n=[kcmNodes objectAtIndex:i];
+     
+        
+        CGPoint nlpos=ccp([n.x floatValue] * kNodeScale, [n.y floatValue] * kNodeScale);
+        float diff=[BLMath DistanceBetween:loc and:nlpos];
+        
+        if(diff<(kPropXNodeDrawDist*lx))
+        {
+            //create a sprite
+            if(!n.journeySprite)
+            {
+                [self createASpriteForNode:n];
+            }
+        }
+        else {
+            //destroy the sprite, if present
+            if(n.journeySprite)
+            {
+                [mapLayer removeChild:n.journeySprite cleanup:YES];
+                [n.journeySprite release];
+                n.journeySprite=nil;
+            }
+        }
+    
+    }    
+}
+
 -(void)createASpriteForNode:(ConceptNode *)n
 {
     CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-std.png")];
-    [s setPosition:ccp([n.x floatValue] / kNodeScale, [n.y floatValue] / kNodeScale)];
+    [s setPosition:ccp([n.x floatValue] * kNodeScale, [n.y floatValue] * kNodeScale)];
     
     if(n.pipelines.count==0)
     {
@@ -256,6 +309,8 @@ static int kNodeMax=50;
     
     [mapLayer addChild:s];
     [nodeSprites addObject:s];    
+    
+    n.journeySprite=s;
 }
 
 -(void)addFeaturesInEmptySpace
@@ -312,6 +367,11 @@ static int kNodeMax=50;
 -(void) doUpdate:(ccTime)delta
 {
     [daemon doUpdate:delta];
+}
+
+-(void) doUpdateCreateNodes:(ccTime)delta
+{
+    [self createNodeSpritesNearCentre];
 }
 
 #pragma mark touch handling

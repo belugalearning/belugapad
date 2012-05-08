@@ -100,6 +100,7 @@
 #define ANIMATE_ME @"ANIMATE_ME"
 #define SOLUTION_TYPE @"SOLUTION_TYPE"
 #define X_OFFSET @"X_OFFSET"
+#define COLUMN_SPACING @"COLUMN_SPACING"
 
 // PlaceValue specifics
 

@@ -401,7 +401,12 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     if([pdef objectForKey:X_OFFSET])
         xStartOffset = [[pdef objectForKey:X_OFFSET]floatValue];
     else
-        xStartOffset=0;
+        xStartOffset=0.0f;
+    
+    if([pdef objectForKey:COLUMN_SPACING])
+        kPropXColumnSpacing = [[pdef objectForKey:COLUMN_SPACING]floatValue];
+    else
+        kPropXColumnSpacing=0.5f;
     
     columnBaseValue = [[pdef objectForKey:COL_BASE_VALUE] floatValue];
     firstColumnValue = [[pdef objectForKey:FIRST_COL_VALUE] floatValue];

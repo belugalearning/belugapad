@@ -239,6 +239,7 @@
 		7F813D5814CCBDDD00C1E997 /* fire1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5714CCBDDD00C1E997 /* fire1.plist */; };
 		7F813D5C14CCC3A100C1E997 /* fire2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5B14CCC3A100C1E997 /* fire2.plist */; };
 		7F813D6B14CCD8CF00C1E997 /* fire3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D6A14CCD8CF00C1E997 /* fire3.plist */; };
+		7F85187C1558E85F002E9F07 /* Pipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F85187B1558E85F002E9F07 /* Pipeline.m */; };
 		7FA38A971544D36F0031E59D /* Couchbase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38A941544D36F0031E59D /* Couchbase.framework */; };
 		7FA38A981544D36F0031E59D /* CouchCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38A951544D36F0031E59D /* CouchCocoa.framework */; };
 		7FA38A9C1544D4B00031E59D /* canned-content-db in Resources */ = {isa = PBXBuildFile; fileRef = 7FA38A9B1544D4B00031E59D /* canned-content-db */; };
@@ -816,6 +817,8 @@
 		7F813D5714CCBDDD00C1E997 /* fire1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = fire1.plist; sourceTree = "<group>"; };
 		7F813D5B14CCC3A100C1E997 /* fire2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = fire2.plist; sourceTree = "<group>"; };
 		7F813D6A14CCD8CF00C1E997 /* fire3.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = fire3.plist; sourceTree = "<group>"; };
+		7F85187A1558E85F002E9F07 /* Pipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pipeline.h; sourceTree = "<group>"; };
+		7F85187B1558E85F002E9F07 /* Pipeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Pipeline.m; sourceTree = "<group>"; };
 		7FA38A941544D36F0031E59D /* Couchbase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Couchbase.framework; path = belugapad/Frameworks/Couchbase.framework; sourceTree = "<group>"; };
 		7FA38A951544D36F0031E59D /* CouchCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchCocoa.framework; path = belugapad/Frameworks/CouchCocoa.framework; sourceTree = "<group>"; };
 		7FA38A9B1544D4B00031E59D /* canned-content-db */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "canned-content-db"; sourceTree = SOURCE_ROOT; };
@@ -1021,6 +1024,8 @@
 				7FD18788154E6B81008F0A31 /* NodeSlice.m */,
 				7FD1878A154E7395008F0A31 /* PipelineNodeSliceInstance.h */,
 				7FD1878B154E7395008F0A31 /* PipelineNodeSliceInstance.m */,
+				7F85187A1558E85F002E9F07 /* Pipeline.h */,
+				7F85187B1558E85F002E9F07 /* Pipeline.m */,
 			);
 			name = Content;
 			sourceTree = "<group>";
@@ -2500,6 +2505,7 @@
 				7FD18786154E02AD008F0A31 /* BLongDivGameObjectRender.m in Sources */,
 				7FD18789154E6B81008F0A31 /* NodeSlice.m in Sources */,
 				7FD1878C154E7396008F0A31 /* PipelineNodeSliceInstance.m in Sources */,
+				7F85187C1558E85F002E9F07 /* Pipeline.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

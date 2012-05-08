@@ -13,7 +13,7 @@
 
 @dynamic graffleId, nodeDescription, notes, pipelines, tags, x, y;
 
-@synthesize journeySprite;
+@synthesize journeySprite, nodeSliceSprite;
 
 -(BOOL)isNodeCompleteForUser:(User*)user
 {

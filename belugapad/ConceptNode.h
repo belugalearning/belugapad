@@ -22,5 +22,6 @@
 
 //not persisted
 @property (retain) CCSprite *journeySprite;
+@property (retain) CCSprite *nodeSliceSprite;
 
 @end

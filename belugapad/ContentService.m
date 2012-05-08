@@ -18,6 +18,7 @@
 #import "Syllabus.h"
 #import "ConceptNode.h"
 #import "Relation.h"
+#import "Pipeline.h"
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
 #import <CouchCocoa/CouchModelFactory.h>
@@ -88,7 +89,7 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
             [[CouchModelFactory sharedInstance] registerClass:[Syllabus class] forDocumentType:@"syllabus"];
             [[CouchModelFactory sharedInstance] registerClass:[ConceptNode class] forDocumentType:@"concept node"];
             [[CouchModelFactory sharedInstance] registerClass:[Relation class] forDocumentType:@"relation"];
-            
+            [[CouchModelFactory sharedInstance] registerClass:[Pipeline class] forDocumentType:@"pipeline"];
             
             CouchEmbeddedServer *server = [CouchEmbeddedServer sharedInstance];
             

@@ -17,12 +17,29 @@
 #import "UsersService.h"
 
 #import "ConceptNode.h"
+#import "Pipeline.h"
+
+#import <CouchCocoa/CouchCocoa.h>
+#import <CouchCocoa/CouchModelFactory.h>
 
 static float kNodeScale=0.5f;
 static CGPoint kStartMapPos={-3376, -1457};
 static float kPropXNodeDrawDist=1.25f;
+static float kPropXNodeHitDist=0.065f;
+
+static float kNodeSliceStartScale=0.08f;
+static CGPoint kNodeSliceOrigin={600, 384};
+static float kNodeSliceRadius=350.0f;
+static float kNodeSliceHoldTime=1.0f;
+
 
 static int kNodeMax=50;
+
+typedef enum {
+    kJuiStateNodeMap,
+    kJuiStateNodeSliceTransition,
+    kJuiStateNodeSlice
+} JuiState;
 
 @interface JourneyScene()
 {
@@ -36,8 +53,18 @@ static int kNodeMax=50;
     
     NSArray *prereqRelations;
     
+    NSMutableArray *nodeSliceNodes;
+    ConceptNode *currentNodeSliceNode;
+    BOOL currentNodeSliceHasProblems;
+    float nodeSliceTransitionHold;
+    CGPoint mapPosAtNodeSliceTransitionComplete;
+    
+    JuiState juiState;
+    
     float nMinX, nMinY, nMaxX, nMaxY;
     float scale;
+    
+    BOOL touchStartedInNodeMap;
 }
 
 @end
@@ -66,6 +93,8 @@ static int kNodeMax=50;
         ly=winsize.height;
         cx = lx / 2.0f;
         cy = ly / 2.0f;
+        
+        juiState=kJuiStateNodeMap;
         
         scale=1.0f;
         
@@ -98,6 +127,7 @@ static int kNodeMax=50;
     kcmIdIndex=[[NSMutableDictionary alloc] init];
     dotSprites=[[NSMutableArray alloc] init];
     nodeSprites=[[NSMutableArray alloc] init];
+    nodeSliceNodes=[[NSMutableArray alloc] init];
     
     kcmNodes=[contentService allConceptNodes];
     
@@ -284,7 +314,9 @@ static int kNodeMax=50;
             if(n.journeySprite)
             {
                 [mapLayer removeChild:n.journeySprite cleanup:YES];
-                [n.journeySprite release];
+                [nodeSprites removeObject:n.journeySprite];
+                
+                //[n.journeySprite release];
                 n.journeySprite=nil;
             }
         }
@@ -367,6 +399,11 @@ static int kNodeMax=50;
 -(void) doUpdate:(ccTime)delta
 {
     [daemon doUpdate:delta];
+    
+    if(juiState==kJuiStateNodeSliceTransition)
+    {
+        nodeSliceTransitionHold+=delta;
+    }
 }
 
 -(void) doUpdateCreateNodes:(ccTime)delta
@@ -374,7 +411,139 @@ static int kNodeMax=50;
     [self createNodeSpritesNearCentre];
 }
 
+#pragma mark location testing and queries
+
+-(ConceptNode*) nodeWithin:(float)distance ofLocation:(CGPoint)location
+{
+    //returns first node withing distance of location
+    for(int i=0; i<kcmNodes.count; i++)
+    {
+        ConceptNode *n=[kcmNodes objectAtIndex:i];
+        
+        
+        CGPoint nlpos=ccp([n.x floatValue] * kNodeScale, [n.y floatValue] * kNodeScale);
+        float diff=[BLMath DistanceBetween:location and:nlpos];
+        
+        if(diff<distance)
+        {
+            return n;
+        }
+    }
+    return nil;
+}
+
+#pragma mark transitions
+
+-(void)createNodeSliceFrom:(ConceptNode*)n
+{
+    //establish if there are problems
+    currentNodeSliceHasProblems=n.pipelines.count>0;
+    if(currentNodeSliceHasProblems)
+    {
+        currentNodeSliceHasProblems=NO;
+        for (int i=0; i<n.pipelines.count; i++) {
+            
+            Pipeline *p=[[CouchModelFactory sharedInstance] modelForDocument:[[contentService Database] documentWithID:[n.pipelines objectAtIndex:i]]];
+            
+            if(p.problems.count>0)
+            {
+                currentNodeSliceHasProblems=YES;
+                break;
+            }
+        }
+    }
+    
+    NSString *bpath=BUNDLE_FULL_PATH(@"/images/journeymap/nodeslice-bkg.png");
+    if(!currentNodeSliceHasProblems) bpath=BUNDLE_FULL_PATH(@"/images/journeymap/nodeslice-bkg-nopin.png");
+    
+    CCSprite *ns=[CCSprite spriteWithFile:bpath];
+    [ns setScale:kNodeSliceStartScale];
+    [ns setPosition:n.journeySprite.position];
+
+    [mapLayer addChild:ns];
+    [nodeSliceNodes addObject:n];
+    
+    n.nodeSliceSprite=ns;
+    
+    float time1=0.1f;
+    float time2=0.9f;
+    float time3=0.2f;
+    
+    CCScaleTo *scale1=[CCScaleTo actionWithDuration:time1 scale:0.3f];
+    CCScaleTo *scale2=[CCScaleTo actionWithDuration:time2 scale:0.5f];
+    CCEaseOut *ease2=[CCEaseOut actionWithAction:scale2 rate:0.5f];
+    CCScaleTo *scale3=[CCScaleTo actionWithDuration:time3 scale:1.0f];
+    CCSequence *scaleSeq=[CCSequence actions:scale1, ease2, scale3, nil];
+    
+    CCDelayTime *move1=[CCDelayTime actionWithDuration:time1 + time2];
+    CCMoveTo *move2=[CCMoveTo actionWithDuration:time3 position:[mapLayer convertToNodeSpace:kNodeSliceOrigin]];
+    CCSequence *moveSeq=[CCSequence actions:move1, move2, nil];
+    
+    [ns runAction:scaleSeq];
+    [ns runAction:moveSeq];
+}
+
+-(void)cancelNodeSliceTransition
+{
+    if(!currentNodeSliceNode) return;
+    
+    CCSprite *ns=currentNodeSliceNode.nodeSliceSprite;
+    
+    [ns stopAllActions];
+    
+    CCScaleTo *scaleto=[CCScaleTo actionWithDuration:0.2f scale:kNodeSliceStartScale];
+    CCFadeOut *fade=[CCFadeOut actionWithDuration:0.6f];
+    CCMoveTo *moveto=[CCMoveTo actionWithDuration:0.2f position:currentNodeSliceNode.journeySprite.position];
+    [ns runAction:scaleto];
+    [ns runAction:fade];
+    [ns runAction:moveto];
+    
+    currentNodeSliceNode=nil;
+}
+
+-(void)tidyUpRemovedNodeSlices
+{
+    NSMutableArray *removedS=[[NSMutableArray alloc] init];
+    
+    for (ConceptNode *n in nodeSliceNodes) {
+        if(n.nodeSliceSprite.opacity==0)
+        {
+            [mapLayer removeChild:n.nodeSliceSprite cleanup:YES];
+            //[n.nodeSliceSprite release];
+            n.nodeSliceSprite=nil;
+            [removedS addObject:n];
+            
+        }
+    }
+    
+    [nodeSliceNodes removeObjectsInArray:removedS];
+    [removedS release];
+}
+
+-(void)removeNodeSlices
+{
+    [self tidyUpRemovedNodeSlices];
+    
+    for (ConceptNode *n in nodeSliceNodes) {
+        
+        CCSprite *ns=n.nodeSliceSprite;
+        
+        if(ns.opacity==255)
+        {
+            CCScaleTo *scaleto=[CCScaleTo actionWithDuration:0.2f scale:kNodeSliceStartScale];
+            CCFadeOut *fade=[CCFadeOut actionWithDuration:0.6f];
+            CCMoveTo *moveto=[CCMoveTo actionWithDuration:0.2f position:n.journeySprite.position];
+            [ns runAction:scaleto];
+            [ns runAction:fade];
+            [ns runAction:moveto];
+        }
+    }
+    
+}
+
 #pragma mark touch handling
+
+
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -389,6 +558,55 @@ static int kNodeMax=50;
     [daemon setTarget:lOnMap];
     [daemon setRestingPoint:lOnMap];
     
+    //assume touch didn't start in the node map
+    touchStartedInNodeMap=NO;
+
+    if (juiState==kJuiStateNodeMap) {
+        
+        [self removeNodeSlices];
+        
+        [self testForNodeSliceTransitionStartWithTouchAt:lOnMap];
+        
+        touchStartedInNodeMap=YES;
+    }
+    
+    else if(juiState==kJuiStateNodeSlice)
+    {
+        if([BLMath DistanceBetween:lOnMap and:currentNodeSliceNode.nodeSliceSprite.position] >= kNodeSliceRadius)
+        {
+            //handle as normal tap -- but reset to node map state in case a new node isn't hit
+            juiState=kJuiStateNodeMap;
+            
+            [self removeNodeSlices];
+            
+            [self testForNodeSliceTransitionStartWithTouchAt:lOnMap];
+            
+            touchStartedInNodeMap=YES;
+        }
+        else {
+            //handle as a tap in the nodeslice
+            
+            //look for tap on pin
+        }
+    }
+}
+
+- (void)testForNodeSliceTransitionStartWithTouchAt:(CGPoint)lOnMap
+{
+    //test for node hit and start transition
+    ConceptNode *n=[self nodeWithin:(kPropXNodeHitDist * lx) ofLocation:lOnMap];
+    if(n)
+    {
+        [self createNodeSliceFrom:n];
+        NSLog(@"hit node %@", n.description);
+        
+        //keep this to move there if the user pans during transition
+        mapPosAtNodeSliceTransitionComplete=mapLayer.position;
+        
+        juiState=kJuiStateNodeSliceTransition;
+        nodeSliceTransitionHold=0.0f;
+        currentNodeSliceNode=n;
+    }
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -398,22 +616,41 @@ static int kNodeMax=50;
     l=[[CCDirector sharedDirector] convertToGL:l];
     
     if (touches.count==1) {
-        [mapLayer setPosition:[BLMath AddVector:mapLayer.position toVector:[BLMath SubtractVector:lastTouch from:l]]];
         
-        lastTouch=l;
-        
-        CGPoint lOnMap=[mapLayer convertToNodeSpace:l];
-        
-        [daemon setTarget:lOnMap];    
-        [daemon setRestingPoint:lOnMap];
-
+        if(touchStartedInNodeMap)
+        {
+            [mapLayer setPosition:[BLMath AddVector:mapLayer.position toVector:[BLMath SubtractVector:lastTouch from:l]]];
+            
+            lastTouch=l;
+            
+            CGPoint lOnMap=[mapLayer convertToNodeSpace:l];
+            
+            [daemon setTarget:lOnMap];    
+            [daemon setRestingPoint:lOnMap];
+        }
     }
     
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-
+    if(juiState==kJuiStateNodeSliceTransition)
+    {
+        if(nodeSliceTransitionHold>=kNodeSliceHoldTime)
+        {
+            //alow the transition to complete, and change state
+            juiState=kJuiStateNodeSlice;
+            
+            //move the map layer to get nodeslice view in correct position if user panned
+            [mapLayer runAction:[CCEaseIn actionWithAction:[CCMoveTo actionWithDuration:0.2f position:mapPosAtNodeSliceTransitionComplete] rate:0.5f]];
+        }
+        else {
+            //cancel current transition
+            [self cancelNodeSliceTransition];
+            
+            juiState=kJuiStateNodeMap;
+        }
+    }
 }
 
 

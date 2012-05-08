@@ -227,10 +227,10 @@ const float kScaleOfLesserBlocks=0.6f;
 
 -(void)updateLabels:(CGPoint)position
 {
-    [markerText setString:[NSString stringWithFormat:@"%g", currentTotal*3]];
+    [markerText setString:[NSString stringWithFormat:@"%g", currentTotal*divisor]];
     [marker setPosition:[topSection convertToWorldSpace:position]];
-    [startMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x-(line.contentSize.width/2)+1, line.position.y)]];
-    [endMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x+(line.contentSize.width/2)-1, line.position.y)]];
+    [startMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x-(line.contentSize.width/2)+2, line.position.y)]];
+    [endMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x+(line.contentSize.width/2)-2, line.position.y)]];
 }
 
 -(void)updateBlock
@@ -680,15 +680,13 @@ const float kScaleOfLesserBlocks=0.6f;
 -(BOOL)evalExpression
 {
     //returns YES if the tool expression evaluates succesfully
-    
-    if(currentTotal==(dividend/divisor))
-    {NSLog(@"right");return YES;}
-    else {return NO;}
+    return YES;
+
 }
 
 -(void)evalProblem
 {
-    BOOL isWinning=[self evalExpression];
+    BOOL isWinning=expressionIsEqual;
     
     if(isWinning)
     {

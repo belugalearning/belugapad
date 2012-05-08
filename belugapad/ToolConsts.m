@@ -51,6 +51,6 @@ const float kMetaQuestionYOffsetPlaceValue=0.45f;
 const float kMetaQuestionYOffsetBlockFloat=0.35f;
 const float kMetaIncompleteLabelYOffset=0.65f;
 
-const CGRect kPauseMenuMenu={{456.5f,477.5},{107.0f,40.0f}};
-const CGRect kPauseMenuReset={{466.5f,395.5},{89.0f,38.0f}};
-const CGRect kPauseMenuContinue={{431.5f,233.5f},{160.0f,42.0f}};
+const CGRect kPauseMenuMenu={{400.0f,477.5},{250.0f,45.0f}};
+const CGRect kPauseMenuReset={{400.0f,395.5},{250.0f,45.0f}};
+const CGRect kPauseMenuContinue={{400.0f,233.5f},{250.0f,45.0f}};

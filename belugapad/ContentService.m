@@ -7,6 +7,7 @@
 //
 
 #import "ContentService.h"
+#import "UsersService.h"
 #import "global.h"
 #import "AppDelegate.h"
 #import "BAExpressionHeaders.h"
@@ -47,6 +48,7 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
     //kcm concept node pipeline progression
     Pipeline *currentPipeline;
     int pipelineIndex;
+    ConceptNode *currentNode;
 }
 
 @property (nonatomic, readwrite, retain) Problem *currentProblem;
@@ -63,6 +65,7 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
 @synthesize currentPDef;
 @synthesize currentPExpr;
 @synthesize defaultSyllabus;
+@synthesize fullRedraw;
 
 -(void)setCurrentElement:(Element*)element
 {
@@ -169,13 +172,16 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
     return nil;
 }
 
--(void)startPipelineWithId:(NSString *)pipelineid
+-(void)startPipelineWithId:(NSString *)pipelineid forNode:(ConceptNode*)node
 {
     if(currentPipeline) [currentPipeline release];
     
     currentPipeline=[[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:pipelineid]];
     [currentPipeline retain];
     pipelineIndex=-1;
+    
+    currentNode=node;
+    [currentNode retain];
     
     NSLog(@"starting pipeline named %@ with %d problems", currentPipeline.name, currentPipeline.problems.count);
 }
@@ -197,6 +203,16 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
         NSData *expressionData = self.currentProblem.expressionData;
         if (expressionData) self.currentPExpr = [BATio loadTreeFromMathMLData:expressionData];
     }
+}
+
+-(void)setPipelineNodeComplete
+{
+    //effective placeholder for assessed complete -- e.g. lit on node
+    
+    UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
+    [us addCompletedNodeId:currentNode.document.documentID];
+    
+    //NSLog(@"currentNode: %@", currentNode.document.documentID);
 }
 
 -(void)gotoNextProblemInElement

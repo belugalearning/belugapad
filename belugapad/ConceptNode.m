@@ -11,13 +11,23 @@
 
 @implementation ConceptNode
 
-@dynamic graffleId, nodeDescription, notes, pipelines, tags, x, y;
+@dynamic graffleId, nodeDescription, notes, pipelines, tags, x, y, isLit;
 
-@synthesize journeySprite, nodeSliceSprite, shouldBeLit, lightSprite;
+@synthesize journeySprite, nodeSliceSprite, lightSprite;
 
 -(BOOL)isNodeCompleteForUser:(User*)user
 {
     return NO;
 }
+
+//-(void)makeLit
+//{
+//    shouldBeLit=YES;
+//}
+//
+//-(BOOL)isShouldBeLit
+//{
+//    return shouldBeLit;
+//}
 
 @end

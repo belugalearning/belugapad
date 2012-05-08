@@ -12,6 +12,10 @@
 
 @interface ConceptNode : CouchModel
 
+{
+
+}
+
 @property (readonly, retain) NSNumber *graffleId;
 @property (readonly, retain) NSString *nodeDescription;
 @property (readonly, retain) NSString *notes;
@@ -23,7 +27,10 @@
 //not persisted
 @property (retain) CCSprite *journeySprite;
 @property (retain) CCSprite *nodeSliceSprite;
-@property BOOL shouldBeLit;
 @property (retain) CCSprite *lightSprite;
+@property bool isLit;
+
+//-(void)makeLit;
+//-(BOOL)isShouldBeLit;
 
 @end

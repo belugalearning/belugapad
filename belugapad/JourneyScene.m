@@ -8,6 +8,8 @@
 
 #import "JourneyScene.h"
 
+#import "UsersService.h"
+
 #import "Daemon.h"
 #import "global.h"
 #import "BLMath.h"
@@ -25,7 +27,7 @@
 #import <CouchCocoa/CouchModelFactory.h>
 
 static float kNodeScale=0.5f;
-static CGPoint kStartMapPos={-3376, -1457};
+static CGPoint kStartMapPos={-3576, -2557};
 static float kPropXNodeDrawDist=1.25f;
 static float kPropXNodeHitDist=0.065f;
 
@@ -76,6 +78,7 @@ typedef enum {
     CCSprite *zubiLight;
     CCSprite *nodeSliceLight;
     
+    UsersService *usersService;
 }
 
 @end
@@ -110,6 +113,7 @@ typedef enum {
         scale=1.0f;
         
         contentService = ((AppController*)[[UIApplication sharedApplication] delegate]).contentService; 
+        usersService = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
         
         [self setupMap];
         
@@ -247,6 +251,11 @@ typedef enum {
         nMaxX=nMinX;
         nMaxY=nMaxY;
         
+        //clean up any left over sprite info from last use
+        n1.journeySprite=nil;
+        n1.lightSprite=nil;
+        n1.nodeSliceSprite=nil;
+        
         for (int i=1; i<[kcmNodes count]; i++) {
             ConceptNode *n=[kcmNodes objectAtIndex:i];
             if([n.x floatValue]<nMinX)nMinX=[n.x floatValue];
@@ -259,6 +268,11 @@ typedef enum {
             
             //force quit at max (e.g. 50) nodes
             if(i>=kNodeMax) break;
+
+            //clean up any left over sprite info from last use
+            n.journeySprite=nil;
+            n.lightSprite=nil;
+            n.nodeSliceSprite=nil;
         }
     }
     
@@ -363,15 +377,20 @@ typedef enum {
         if(diff<(kPropXNodeDrawDist*lx))
         {
             //create a sprite
-            if(!n.journeySprite)
+            if(!n.journeySprite || contentService.fullRedraw)
             {
                 [self createASpriteForNode:n];
+                
+                if(!visibleNodes)
+                    visibleNodes=[[NSMutableArray alloc] init];
                 
                 //also add to visible nodes
                 [visibleNodes addObject:n];
                 
                 //setup light if required
-                if(1==1 || n.shouldBeLit || [n.document.documentID isEqualToString:@"5608a59d6797796ce9e11484fd14100c"])
+                BOOL isLit=[usersService hasCompletedNodeId:n.document.documentID];
+                
+                if(isLit || [n.document.documentID isEqualToString:@"5608a59d6797796ce9e11484fd14100c"])
                 {
                     n.lightSprite=[self createLight];
                     [n.lightSprite setPosition:[mapLayer convertToWorldSpace:n.journeySprite.position]];
@@ -400,7 +419,9 @@ typedef enum {
             }
         }
     
-    }    
+    }   
+    
+    contentService.fullRedraw=NO;
 }
 
 -(void)createASpriteForNode:(ConceptNode *)n
@@ -661,7 +682,7 @@ typedef enum {
     NSLog(@"starting pipeline 0 for node %@", currentNodeSliceNode.nodeDescription);
     
     if (currentNodeSliceNode.pipelines.count>0) {
-        [contentService startPipelineWithId:[currentNodeSliceNode.pipelines objectAtIndex:0]];
+        [contentService startPipelineWithId:[currentNodeSliceNode.pipelines objectAtIndex:0] forNode:currentNodeSliceNode];
         [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
     }
     else {
@@ -793,6 +814,18 @@ typedef enum {
     }
 }
 
-
+-(void)dealloc
+{
+    [kcmNodes release];
+    [kcmIdIndex release];
+    [nodeSprites release];
+    [dotSprites release];
+    [visibleNodes release];
+    [prereqRelations release];
+    [nodeSliceNodes release];
+    [lightSprites release];
+    
+    [super dealloc];
+}
 
 @end

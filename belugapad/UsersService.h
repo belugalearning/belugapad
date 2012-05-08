@@ -50,4 +50,7 @@ typedef enum {
 -(void)togglePauseProblemAttempt;
 -(void)endProblemAttempt:(BOOL)success;
 
+-(void)addCompletedNodeId:(NSString *)nodeId;
+-(BOOL)hasCompletedNodeId:(NSString *)nodeId;
+
 @end

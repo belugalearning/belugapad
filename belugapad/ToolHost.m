@@ -226,6 +226,11 @@ static float kMoveToNextProblemTime=2.0f;
     else
     {
         //no more problems in this sequence, bail to menu
+        
+        //assume completion
+        [contentService setPipelineNodeComplete];
+        contentService.fullRedraw=YES;
+        
         [[CCDirector sharedDirector] replaceScene:[JourneyScene scene]];
     }
 }

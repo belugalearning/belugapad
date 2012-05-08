@@ -42,6 +42,8 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     CouchReplication *pullReplication;
     
     ProblemAttempt *currentProblemAttempt;
+
+    NSMutableArray *completedNodeIds;
 }
 -(NSDate*)currentUserSessionStart;
 @end
@@ -126,6 +128,26 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
         pullReplication.continuous = YES;
     }
     return self;
+}
+
+-(void)addCompletedNodeId:(NSString *)nodeId
+{
+    if(!completedNodeIds) completedNodeIds =[[NSMutableArray alloc] init];
+    if(![completedNodeIds containsObject:nodeId])
+    {
+        [completedNodeIds addObject:nodeId];
+    }
+}
+
+-(BOOL)hasCompletedNodeId:(NSString *)nodeId
+{
+    if(completedNodeIds)
+    {
+        return [completedNodeIds containsObject:nodeId];
+    }
+    else {
+        return NO;
+    }
 }
 
 -(User*)currentUser

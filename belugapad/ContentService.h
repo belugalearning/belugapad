@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 @class BAExpressionTree, Problem, Syllabus, Element;
 @class CouchDatabase;
+@class ConceptNode;
 
 @interface ContentService : NSObject
 
@@ -17,11 +18,14 @@
 @property (nonatomic, readonly, retain) NSDictionary *currentPDef;
 @property (nonatomic, readonly, retain) BAExpressionTree *currentPExpr;
 @property (nonatomic, readonly, retain) Syllabus *defaultSyllabus;
+@property BOOL fullRedraw;
 
 -(id)initWithProblemPipeline:(NSString*)source;
 -(void)gotoNextProblem;
+-(void)setPipelineNodeComplete;
 
--(void)startPipelineWithId:(NSString *)pipelineid;
+
+-(void)startPipelineWithId:(NSString *)pipelineid forNode:(ConceptNode*)node;
 -(void)gotoNextProblemInPipeline;
 
 -(CouchDatabase*)Database;

@@ -214,7 +214,7 @@ static float kMoveToNextProblemTime=2.0f;
     [self tearDownProblemDef];
     self.PpExpr = nil;
     
-    [contentService gotoNextProblemInElement];
+    [contentService gotoNextProblemInPipeline];
     
     pdef = [contentService.currentPDef retain];
     self.PpExpr = contentService.currentPExpr;
@@ -321,11 +321,17 @@ static float kMoveToNextProblemTime=2.0f;
 {
     isPaused = YES;
     
-    pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
-    [pauseMenu setPosition:ccp(cx, cy)];
-    [pauseLayer addChild:pauseMenu z:10];
+    if(!pauseMenu)
+    {
+        pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
+        [pauseMenu setPosition:ccp(cx, cy)];
+        [pauseLayer addChild:pauseMenu z:10];
 
-    [toolForeLayer addChild:pauseMenu z:10];
+        //[toolForeLayer addChild:pauseMenu z:10];
+    }
+    else {
+        [pauseMenu setVisible:YES];
+    }
     
     UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
     [us togglePauseProblemAttempt];
@@ -337,7 +343,7 @@ static float kMoveToNextProblemTime=2.0f;
     {
         //resume
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-        [pauseLayer removeChild:pauseMenu cleanup:YES];
+        [pauseMenu setVisible:NO];
         isPaused=NO;
         
         UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
@@ -348,7 +354,7 @@ static float kMoveToNextProblemTime=2.0f;
        //reset
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self resetProblem];
-        [pauseLayer removeChild:pauseMenu cleanup:YES];
+        [pauseMenu setVisible:NO];
         isPaused=NO;
     }
     if(CGRectContainsPoint(kPauseMenuMenu,location))
@@ -362,7 +368,7 @@ static float kMoveToNextProblemTime=2.0f;
     if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
     {
         isPaused=NO;
-        [pauseLayer removeAllChildrenWithCleanup:YES];
+        [pauseMenu setVisible:NO];
         [self gotoNewProblem];
     }      
 }

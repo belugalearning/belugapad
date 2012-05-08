@@ -2,6 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>/Problems/Addition/ac-dev/01pv/multiplication_001.plist</string>
 	<string>/Problems/Addition/ac-dev/01pv/decimal_001.plist</string>
 	<string>/Problems/Addition/ac-dev/01pv/earlytest_006.plist</string>
 	<string>/Problems/Addition/ac-dev/02count/earlymap_001.plist</string>

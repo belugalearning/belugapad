@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>which is larger?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>decimal comparison:crashes </string>
+	<string>2x3 multiplication by replication: crashes on panning.</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -17,15 +17,15 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>4</integer>
-	<key>ROWS_PER_COL</key>
 	<integer>2</integer>
+	<key>ROWS_PER_COL</key>
+	<integer>3</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
 	<false/>
 	<key>SHOW_CAGE</key>
-	<false/>
+	<true/>
 	<key>SHOW_NEG_CAGE</key>
 	<false/>
 	<key>SHOW_COUNT</key>
@@ -52,12 +52,12 @@
 	<key>COLUMN_ROPES</key>
 	<dict>
 		<key>10</key>
-		<integer>5</integer>
+		<integer>2</integer>
 	</dict>
 	<key>COLUMN_ROWS</key>
 	<dict>
 		<key>10</key>
-		<integer>2</integer>
+		<integer>1</integer>
 	</dict>
 	<key>INIT_OBJECTS</key>
 	<array>
@@ -67,39 +67,15 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>5</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>1</integer>
-			<key>NUMBER</key>
-			<integer>5</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>1</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
-			<key>NUMBER</key>
-			<integer>4</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>1</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>1</integer>
-			<key>NUMBER</key>
-			<integer>4</integer>
+			<integer>2</integer>
 		</dict>
 	</array>
 	<key>COLUMN_SPRITES</key>
 	<dict>
 		<key>10</key>
-		<string>/images/placevalue/obj-placevalue-unit1hundredth.png</string>
+		<string>/images/placevalue/obj-placevalue-unit.png</string>
 		<key>1</key>
-		<string>/images/placevalue/obj-placevalue-unit1hundredth.png</string>
+		<string>/images/placevalue/obj-placevalue-unit.png</string>
 	</dict>
 	<key>META_QUESTION</key>
 	<dict>
@@ -113,19 +89,31 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>0.1</string>
+				<string>4</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>6</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>0.08</string>
+				<string>8</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>10</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>which is larger?</string>
+		<string>1 row has 2. How many in 3 rows?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>
@@ -134,7 +122,7 @@
 		<key>10</key>
 		<false/>
 		<key>1</key>
-		<false/>
+		<true/>
 	</dict>
 	<key>COLUMN_NEG_CAGES</key>
 	<dict>

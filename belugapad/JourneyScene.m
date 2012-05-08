@@ -19,6 +19,8 @@
 #import "ConceptNode.h"
 #import "Pipeline.h"
 
+#import "ToolHost.h"
+
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchModelFactory.h>
 
@@ -31,6 +33,8 @@ static float kNodeSliceStartScale=0.08f;
 static CGPoint kNodeSliceOrigin={600, 384};
 static float kNodeSliceRadius=350.0f;
 static float kNodeSliceHoldTime=1.0f;
+static CGPoint kPinOffset={-118, -162.5f};
+static float kPinTapRadius=80.0f;
 
 
 static int kNodeMax=50;
@@ -541,6 +545,21 @@ typedef enum {
     
 }
 
+#pragma mark user i/o
+
+-(void)startSeletedPin
+{
+    NSLog(@"starting pipeline 0 for node %@", currentNodeSliceNode.nodeDescription);
+    
+    if (currentNodeSliceNode.pipelines.count>0) {
+        [contentService startPipelineWithId:[currentNodeSliceNode.pipelines objectAtIndex:0]];
+        [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
+    }
+    else {
+        NSLog(@"failed to start -- no pipelines found");
+    }
+}
+
 #pragma mark touch handling
 
 
@@ -587,6 +606,15 @@ typedef enum {
             //handle as a tap in the nodeslice
             
             //look for tap on pin
+            if(currentNodeSliceHasProblems)
+            {
+                CGPoint pinOnMap=[mapLayer convertToNodeSpace:ccpAdd(kNodeSliceOrigin, kPinOffset)];
+                
+                if([BLMath DistanceBetween:pinOnMap and:lOnMap] <= kPinTapRadius)
+                {
+                    [self startSeletedPin];
+                }
+            }
         }
     }
 }

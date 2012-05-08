@@ -19,7 +19,7 @@
 #import "BATio.h"
 #import "ContentService.h"
 #import "UsersService.h"
-#import "MenuScene.h"
+#import "JourneyScene.h"
 
 @interface ToolHost()
 {
@@ -226,7 +226,7 @@ static float kMoveToNextProblemTime=2.0f;
     else
     {
         //no more problems in this sequence, bail to menu
-        [[CCDirector sharedDirector] replaceScene:[MenuScene scene]];
+        [[CCDirector sharedDirector] replaceScene:[JourneyScene scene]];
     }
 }
 
@@ -326,8 +326,6 @@ static float kMoveToNextProblemTime=2.0f;
         pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
         [pauseMenu setPosition:ccp(cx, cy)];
         [pauseLayer addChild:pauseMenu z:10];
-
-        //[toolForeLayer addChild:pauseMenu z:10];
     }
     else {
         [pauseMenu setVisible:YES];
@@ -375,7 +373,7 @@ static float kMoveToNextProblemTime=2.0f;
 
 -(void) returnToMenu
 {
-    [[CCDirector sharedDirector] replaceScene:[MenuScene scene]];
+    [[CCDirector sharedDirector] replaceScene:[JourneyScene scene]];
 }
 
 -(void) showProblemCompleteMessage

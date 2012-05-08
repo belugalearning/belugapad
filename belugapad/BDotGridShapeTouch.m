@@ -70,7 +70,7 @@
             
             // then if that tile is not selected, make it red
             if(!tile.Selected){
-                [tile.mySprite setColor:ccc3(255, 0, 0)];
+                [tile.mySprite setColor:ccc3(89,133,136)];
                 tile.Selected=YES;
             }
             

@@ -125,7 +125,7 @@
     [tile.mySprite setPosition:tile.Position];
     
     // THE TINTING BEHAVIOUR HERE CAN ALSO BE APPLIED BY THE SHAPE TOUCH BEHAVIOUR    
-    if(tile.Selected)[tile.mySprite setColor:ccc3(255,0,0)];
+    if(tile.Selected)[tile.mySprite setColor:ccc3(89,133,136)];
     
     if(gameWorld.Blackboard.inProblemSetup)
     {

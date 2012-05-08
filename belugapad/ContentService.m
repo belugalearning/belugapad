@@ -171,7 +171,10 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
 
 -(void)startPipelineWithId:(NSString *)pipelineid
 {
+    if(currentPipeline) [currentPipeline release];
+    
     currentPipeline=[[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:pipelineid]];
+    [currentPipeline retain];
     pipelineIndex=-1;
     
     NSLog(@"starting pipeline named %@ with %d problems", currentPipeline.name, currentPipeline.problems.count);

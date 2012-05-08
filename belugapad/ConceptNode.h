@@ -23,5 +23,7 @@
 //not persisted
 @property (retain) CCSprite *journeySprite;
 @property (retain) CCSprite *nodeSliceSprite;
+@property BOOL shouldBeLit;
+@property (retain) CCSprite *lightSprite;
 
 @end

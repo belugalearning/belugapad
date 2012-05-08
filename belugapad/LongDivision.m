@@ -20,6 +20,7 @@
 const float kSpaceBetweenNumbers=180.0f;
 const float kSpaceBetweenRows=80.0f;
 const float kRenderBlockWidth=1000.0f;
+const float kScaleOfLesserBlocks=0.6f;
 
 @implementation LongDivision
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
@@ -172,6 +173,7 @@ const float kRenderBlockWidth=1000.0f;
     divisor=[[pdef objectForKey:DIVISOR] floatValue];
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
     goodBadHighlight=[[pdef objectForKey:GOOD_BAD_HIGHLIGHT] boolValue];
+    renderBlockLabels=[[pdef objectForKey:RENDERBLOCK_LABELS] boolValue];
     
 
     
@@ -227,6 +229,8 @@ const float kRenderBlockWidth=1000.0f;
 {
     [markerText setString:[NSString stringWithFormat:@"%g", currentTotal*3]];
     [marker setPosition:[topSection convertToWorldSpace:position]];
+    [startMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x-(line.contentSize.width/2)+1, line.position.y)]];
+    [endMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x+(line.contentSize.width/2)-1, line.position.y)]];
 }
 
 -(void)updateBlock
@@ -257,14 +261,22 @@ const float kRenderBlockWidth=1000.0f;
         
         if(currentBase<startBase)
         {
-            currentYScale = currentYScale*0.8f;
+            currentYScale = currentYScale*kScaleOfLesserBlocks;
             startBase=currentBase;
         }
         
         // then set the options on our current iteration
         CCSprite *curSprite=[[renderedBlocks objectAtIndex:i]objectForKey:MY_SPRITE];
         [curSprite setScaleY:currentYScale];
-        [curSprite setPosition:ccp(curOffset+line.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2)-(line.contentSize.width/2)+cumulativeTotal, line.position.y+30)];
+        [curSprite setPosition:ccp(curOffset+line.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2)-(line.contentSize.width/2)+cumulativeTotal, line.position.y+((curSprite.contentSize.height*curSprite.scaleY)/2)-20)];
+        if(renderBlockLabels)
+        {
+            for(CCLabelTTF *lbl in curSprite.children)
+            {
+                [lbl setPosition:ccp(curSprite.position.x,curSprite.position.y+50)];
+            }
+                                                
+        }
         cumulativeTotal=cumulativeTotal+(curSprite.contentSize.width*curSprite.scaleX);
         markerPos=ccp(curSprite.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2), curSprite.position.y+40);
     }
@@ -331,13 +343,18 @@ const float kRenderBlockWidth=1000.0f;
     CCSprite *curBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/renderblock.png")];
     float calc=0.0f;
     
-    [curBlock setPosition:line.position];
+    [curBlock setPosition:ccp(line.position.x+((curBlock.contentSize.width*curBlock.scaleX)/2-(line.contentSize.width/2))+cumulativeTotal, line.position.y+15)];
     [curBlock setScaleX:(divisor*myBase/dividend*line.contentSize.width)/curBlock.contentSize.width];
     [curDict setObject:curBlock forKey:MY_SPRITE];
     [curDict setObject:[NSNumber numberWithFloat:base] forKey:ROW_MULTIPLIER];
     [renderedBlocks insertObject:curDict atIndex:index];
 
-    
+    if(renderBlockLabels) {
+        CCLabelTTF *blockValue=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", base] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        [blockValue setColor:ccc3(0,255,0)];
+        [blockValue setPosition:curBlock.position];
+        [curBlock addChild:blockValue];
+    }
     calc=-curBlock.contentSize.width*curBlock.scaleX;
     
     [curDict setObject:[NSNumber numberWithFloat:calc] forKey:OFFSET];
@@ -378,6 +395,21 @@ const float kRenderBlockWidth=1000.0f;
     [line setPosition:ccp(cx,550)];
     [topSection addChild:line];
     
+    
+    // set up start and end marker
+    startMarker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
+    endMarker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
+    [startMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x-(line.contentSize.width/2)+5, line.position.y)]];
+    [endMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x+(line.contentSize.width/2)-5, line.position.y)]];
+    CCLabelTTF *start=[CCLabelTTF labelWithString:@"0" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    CCLabelTTF *end=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", dividend] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    [start setPosition:ccp(10,60)];
+    [end setPosition:ccp(10,60)];
+    [startMarker addChild:start];
+    [endMarker addChild:end];
+    
+    [self.NoScaleLayer addChild:startMarker];
+    [self.NoScaleLayer addChild:endMarker];
     
     
     [self createVisibleNumbers];
@@ -649,8 +681,9 @@ const float kRenderBlockWidth=1000.0f;
 {
     //returns YES if the tool expression evaluates succesfully
     
-    if(currentTotal==(dividend/divisor))return YES;
-    else return NO;
+    if(currentTotal==(dividend/divisor))
+    {NSLog(@"right");return YES;}
+    else {return NO;}
 }
 
 -(void)evalProblem

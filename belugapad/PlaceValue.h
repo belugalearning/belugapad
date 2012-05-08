@@ -45,6 +45,7 @@
     float columnBaseValue;
     float firstColumnValue;
     float totalObjectValue;
+    float xStartOffset;
     int numberOfColumns;    
     
     // GameWorld options

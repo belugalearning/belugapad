@@ -172,7 +172,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         
         // set the layer position
         
-        float layerPositionX = (cx-(defaultColumn*(kPropXColumnSpacing*lx)));
+        float layerPositionX = (cx-(defaultColumn*(kPropXColumnSpacing*lx))+(xStartOffset*lx));
         [renderLayer setPosition:ccp(layerPositionX, 0)];
         
         if(currentColumnValue == defaultColumn)
@@ -362,7 +362,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 
     }
 
-    [renderLayer setPosition:ccp(cx-(currentColumnIndex*(kPropXColumnSpacing*lx)), 0)];
+    [renderLayer setPosition:ccp(cx-(currentColumnIndex*(kPropXColumnSpacing*lx)+(xStartOffset*lx)), 0)];
     
 
 }
@@ -398,6 +398,11 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     else
         defaultColumn = 0; 
     
+    if([pdef objectForKey:X_OFFSET])
+        xStartOffset = [[pdef objectForKey:X_OFFSET]floatValue];
+    else
+        xStartOffset=0;
+    
     columnBaseValue = [[pdef objectForKey:COL_BASE_VALUE] floatValue];
     firstColumnValue = [[pdef objectForKey:FIRST_COL_VALUE] floatValue];
     numberOfColumns = [[pdef objectForKey:NUMBER_COLS] floatValue];
@@ -410,8 +415,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     showCountOnBlock = [[pdef objectForKey:SHOW_COUNT_BLOCK] boolValue];
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
-    //disableCageAdd = [[pdef objectForKey:DISABLE_CAGE_ADD] boolValue];
-    //disableCageDelete = [[pdef objectForKey:DISABLE_CAGE_DELETE] boolValue];
+
     
     // look at what positive columns are allowed to add/del
     
@@ -901,6 +905,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     
     //rounded down value of touch location over col width gives us column index (e.g. anything from 0 to colw is first col (0), next is second (1) etc)
     currentColumnIndex = (int)(shiftedLocationInNS.x / colW);
+    if(currentColumnIndex>numberOfColumns-1)currentColumnIndex=numberOfColumns-1;
+    if(currentColumnIndex<0)currentColumnIndex=0;
 
     NSLog(@"currentColIndex: %d, colW %f, locationInNS X %f, shiftedLocationInNS X %f", currentColumnIndex, colW, locationInNS.x, shiftedLocationInNS.x);
 

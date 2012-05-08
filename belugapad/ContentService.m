@@ -43,6 +43,10 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
     //      Does this mean continuous replication not reliable? Or is it the simulator? Or....?
     // Try using comparison of database.lastSequenceNumber against http://www.sofaraslant.com:5984/temp-blm-content doc's update_seq value
     CouchReplication *pullReplication;
+    
+    //kcm concept node pipeline progression
+    Pipeline *currentPipeline;
+    int pipelineIndex;
 }
 
 @property (nonatomic, readwrite, retain) Problem *currentProblem;
@@ -163,6 +167,33 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
         }
     }
     return nil;
+}
+
+-(void)startPipelineWithId:(NSString *)pipelineid
+{
+    currentPipeline=[[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:pipelineid]];
+    pipelineIndex=-1;
+    
+    NSLog(@"starting pipeline named %@ with %d problems", currentPipeline.name, currentPipeline.problems.count);
+}
+
+-(void)gotoNextProblemInPipeline
+{
+    pipelineIndex++;
+    self.currentPDef=nil;
+    self.currentPExpr=nil;
+    
+    if(pipelineIndex>=currentPipeline.problems.count)
+    {
+        //don't progress, current pdef & ppexpr are set to nil above
+    }
+    else {
+        NSString *pid=[currentPipeline.problems objectAtIndex:pipelineIndex];
+        self.currentProblem = [[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:pid]];
+        self.currentPDef = self.currentProblem.pdef;
+        NSData *expressionData = self.currentProblem.expressionData;
+        if (expressionData) self.currentPExpr = [BATio loadTreeFromMathMLData:expressionData];
+    }
 }
 
 -(void)gotoNextProblemInElement

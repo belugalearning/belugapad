@@ -20,6 +20,10 @@
 
 -(id)initWithProblemPipeline:(NSString*)source;
 -(void)gotoNextProblem;
+
+-(void)startPipelineWithId:(NSString *)pipelineid;
+-(void)gotoNextProblemInPipeline;
+
 -(CouchDatabase*)Database;
 -(void)gotoNextProblemInElement;
 -(NSArray*)allConceptNodes;

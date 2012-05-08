@@ -94,4 +94,6 @@ typedef enum {
 -(void)hideZubi;
 -(void)showZubi;
 
+-(CGPoint)currentPosition;
+
 @end

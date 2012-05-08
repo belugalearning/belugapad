@@ -17,8 +17,9 @@
 #import "DWDotGridShapeGameObject.h"
 #import "BLMath.h"
 
-const float kSpaceBetweenNumbers=180;
-const float kSpaceBetweenRows=80;
+const float kSpaceBetweenNumbers=180.0f;
+const float kSpaceBetweenRows=80.0f;
+const float kRenderBlockWidth=1000.0f;
 
 @implementation LongDivision
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
@@ -43,10 +44,12 @@ const float kSpaceBetweenRows=80;
         
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];
         self.ForeLayer=[[[CCLayer alloc]init] autorelease];
+        self.NoScaleLayer=[[[CCLayer alloc]init] autorelease];
         topSection=[[[CCLayer alloc]init] autorelease];
         bottomSection=[[[CCLayer alloc]init] autorelease];
         
         [toolHost addToolBackLayer:self.BkgLayer];
+        [toolHost addToolNoScaleLayer:self.NoScaleLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
         
         
@@ -223,7 +226,7 @@ const float kSpaceBetweenRows=80;
 -(void)updateLabels:(CGPoint)position
 {
     [markerText setString:[NSString stringWithFormat:@"%g", currentTotal*3]];
-    [marker setPosition:position];
+    [marker setPosition:[topSection convertToWorldSpace:position]];
 }
 
 -(void)updateBlock
@@ -234,9 +237,9 @@ const float kSpaceBetweenRows=80;
         marker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
         [marker setPosition:ccp(line.position.x-(line.contentSize.width/2), line.position.y+30)];
         markerText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-        [markerText setPosition:ccp(0,65)];    
+        [markerText setPosition:ccp(10,65)];    
         [marker addChild:markerText];
-        [topSection addChild:marker];
+        [self.NoScaleLayer addChild:marker];
     }
     
     cumulativeTotal=0;

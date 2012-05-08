@@ -54,7 +54,8 @@ typedef enum {
     NSDictionary *kcmIdIndex;
     NSMutableArray *nodeSprites;
     NSMutableArray *dotSprites;
-    
+    NSMutableArray *visibleNodes;
+        
     NSArray *prereqRelations;
     
     NSMutableArray *nodeSliceNodes;
@@ -69,6 +70,12 @@ typedef enum {
     float scale;
     
     BOOL touchStartedInNodeMap;
+    
+    CCRenderTexture *darknessLayer;
+    NSMutableArray *lightSprites;
+    CCSprite *zubiLight;
+    CCSprite *nodeSliceLight;
+    
 }
 
 @end
@@ -113,7 +120,8 @@ typedef enum {
         
         [self schedule:@selector(doUpdateCreateNodes:) interval:1.0f / 4.0f];
         
-        daemon=[[Daemon alloc] initWithLayer:mapLayer andRestingPostion:[mapLayer convertToNodeSpace:ccp(cx, cy)] andLy:ly];
+        //daemon=[[Daemon alloc] initWithLayer:mapLayer andRestingPostion:[mapLayer convertToNodeSpace:ccp(cx, cy)] andLy:ly];
+        daemon=[[Daemon alloc] initWithLayer:foreLayer andRestingPostion:ccp(cx, cy) andLy:ly];
         [daemon setMode:kDaemonModeFollowing];
     }
     
@@ -132,6 +140,7 @@ typedef enum {
     dotSprites=[[NSMutableArray alloc] init];
     nodeSprites=[[NSMutableArray alloc] init];
     nodeSliceNodes=[[NSMutableArray alloc] init];
+    lightSprites=[[NSMutableArray alloc] init];
     
     kcmNodes=[contentService allConceptNodes];
     
@@ -149,6 +158,8 @@ typedef enum {
     //we don't want to do this -- needs to move to dynamic draw
     //[self createAllBackgroundTileSprites];
     
+    [self createLights];
+    
     NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
 }
 
@@ -162,6 +173,50 @@ typedef enum {
     mapLayer=[[CCLayer alloc] init];
     [mapLayer setPosition:kStartMapPos];
     [self addChild:mapLayer];
+
+    //darkness layer
+    darknessLayer=[CCRenderTexture renderTextureWithWidth:lx height:ly];
+    [darknessLayer setPosition:ccp(cx, cy)];
+    [self addChild:darknessLayer];
+
+    //fore layer
+    foreLayer=[[CCLayer alloc] init];
+    [self addChild:foreLayer];
+    
+}
+
+-(void)createLights
+{
+    //test lights
+//    CCSprite *l=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-light.png")];
+//    [l setBlendFunc:(ccBlendFunc){GL_ZERO, GL_ONE_MINUS_SRC_ALPHA}];
+//    [l setPosition:ccp(cx, cy)];
+//    [l setScale:10.0f];
+//    //[darknessLayer addChild:l];
+//    [l retain];
+//    [lightSprites addObject:l];
+    
+    //zubi light
+    zubiLight=[self createLight];
+    [zubiLight setScale:3.0f];
+    
+    //nodeslice light
+    nodeSliceLight=[self createLight];
+    [nodeSliceLight setScale:14.0f];
+    [nodeSliceLight setPosition:kNodeSliceOrigin];
+    //only add this when in the correct mode
+    [lightSprites removeObject:nodeSliceLight];
+}
+
+-(CCSprite*)createLight
+{
+    CCSprite *l=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-light.png")];
+    [l setBlendFunc:(ccBlendFunc){GL_ZERO, GL_ONE_MINUS_SRC_ALPHA}];
+    [l setPosition:ccp(cx, cy)];
+    [l setScale:10.0f];
+    [l retain];
+    [lightSprites addObject:l];    
+    return l;
 }
 
 - (void)createAllBackgroundTileSprites
@@ -311,6 +366,16 @@ typedef enum {
             if(!n.journeySprite)
             {
                 [self createASpriteForNode:n];
+                
+                //also add to visible nodes
+                [visibleNodes addObject:n];
+                
+                //setup light if required
+                if(1==1 || n.shouldBeLit || [n.document.documentID isEqualToString:@"5608a59d6797796ce9e11484fd14100c"])
+                {
+                    n.lightSprite=[self createLight];
+                    [n.lightSprite setPosition:[mapLayer convertToWorldSpace:n.journeySprite.position]];
+                }
             }
         }
         else {
@@ -322,6 +387,16 @@ typedef enum {
                 
                 //[n.journeySprite release];
                 n.journeySprite=nil;
+                
+                //remove light if present
+                if(n.lightSprite)
+                {
+                    [lightSprites removeObject:n.lightSprite];
+                    n.lightSprite=nil;
+                }
+                
+                //remove from visible nodes
+                [visibleNodes removeObject:n];
             }
         }
     
@@ -407,6 +482,38 @@ typedef enum {
     if(juiState==kJuiStateNodeSliceTransition)
     {
         nodeSliceTransitionHold+=delta;
+    }
+    
+    //update light positions
+    [self updateLightPositions];
+    
+    //render darkness layer
+    [darknessLayer clear:0.0f g:0.0f b:0.0f a:0.7f];
+    
+    [darknessLayer begin];
+    
+
+    glColorMask(0, 0, 0, 1);
+    
+    for (CCSprite *l in lightSprites) {
+        [l visit];
+    }
+    
+    glColorMask(1, 1, 1, 1);
+    
+    [darknessLayer end];
+}
+
+-(void)updateLightPositions
+{
+    //[zubiLight setPosition:[mapLayer convertToWorldSpace:[daemon currentPosition]]];
+    [zubiLight setPosition:[daemon currentPosition]];
+    
+    for (ConceptNode *n in visibleNodes) {
+        if(n.lightSprite)
+        {
+            [n.lightSprite setPosition:[mapLayer convertToWorldSpace:n.journeySprite.position]];
+        }
     }
 }
 
@@ -528,6 +635,8 @@ typedef enum {
 {
     [self tidyUpRemovedNodeSlices];
     
+    if([lightSprites containsObject:nodeSliceLight])[lightSprites removeObject:nodeSliceLight];
+    
     for (ConceptNode *n in nodeSliceNodes) {
         
         CCSprite *ns=n.nodeSliceSprite;
@@ -574,8 +683,8 @@ typedef enum {
     
     CGPoint lOnMap=[mapLayer convertToNodeSpace:l];
     
-    [daemon setTarget:lOnMap];
-    [daemon setRestingPoint:lOnMap];
+    [daemon setTarget:l];
+    [daemon setRestingPoint:l];
     
     //assume touch didn't start in the node map
     touchStartedInNodeMap=NO;
@@ -626,7 +735,7 @@ typedef enum {
     if(n)
     {
         [self createNodeSliceFrom:n];
-        NSLog(@"hit node %@", n.description);
+        NSLog(@"hit node %@", n.document.documentID);
         
         //keep this to move there if the user pans during transition
         mapPosAtNodeSliceTransitionComplete=mapLayer.position;
@@ -653,8 +762,8 @@ typedef enum {
             
             CGPoint lOnMap=[mapLayer convertToNodeSpace:l];
             
-            [daemon setTarget:lOnMap];    
-            [daemon setRestingPoint:lOnMap];
+            [daemon setTarget:l];    
+            [daemon setRestingPoint:l];
         }
     }
     
@@ -671,6 +780,9 @@ typedef enum {
             
             //move the map layer to get nodeslice view in correct position if user panned
             [mapLayer runAction:[CCEaseIn actionWithAction:[CCMoveTo actionWithDuration:0.2f position:mapPosAtNodeSliceTransitionComplete] rate:0.5f]];
+            
+            //add the nodeslice light
+            [lightSprites addObject:nodeSliceLight];
         }
         else {
             //cancel current transition

@@ -17,6 +17,7 @@
     Daemon *daemon;
     
     CCLayer *mapLayer;
+    CCLayer *foreLayer;
     
     CGPoint lastTouch;
 }

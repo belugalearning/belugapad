@@ -18,5 +18,7 @@
 	<true/>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>RENDERBLOCK_LABELS</key>
+	<true/>
 </dict>
 </plist>

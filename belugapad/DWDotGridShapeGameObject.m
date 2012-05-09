@@ -14,5 +14,7 @@
 @synthesize moveHandle;
 @synthesize resizeHandle;
 @synthesize Disabled;
+@synthesize firstAnchor;
+@synthesize lastAnchor;
 
 @end

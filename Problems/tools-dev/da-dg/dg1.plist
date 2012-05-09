@@ -29,12 +29,10 @@
 			<integer>2</integer>
 			<key>SHOW_RESIZE</key>
 			<false/>
+			<key>SHOW_MOVE</key>
+			<false/>
 			<key>SHOW_LABELS</key>
 			<false/>
-			<key>NUMBER_PRE_COUNTED</key>
-			<integer>3</integer>
-			<key>COUNT_DIRECTION</key>
-			<integer>0</integer>
 			<key>DISABLE_COUNTING</key>
 			<false/>
 			<key>PRE_COUNTED_TILES</key>
@@ -63,7 +61,7 @@
 			<key>END_Y</key>
 			<integer>6</integer>
 			<key>SHOW_MOVE</key>
-			<true/>
+			<false/>
 			<key>NUMBER_PRE_COUNTED</key>
 			<integer>1</integer>
 		</dict>

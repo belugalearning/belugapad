@@ -51,7 +51,7 @@
     if(messageType==kDWupdateSprite)
     {
         
-        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
+        CCSprite *mySprite=tile.mySprite;
         if(!mySprite) { 
             [self setSprite];
         }
@@ -63,7 +63,7 @@
     }
     if(messageType==kDWdismantle)
     {
-        CCSprite *s=[[gameObject store] objectForKey:MY_SPRITE];
+        CCSprite *s=tile.mySprite;
         [[s parent] removeChild:s cleanup:YES];
     }
 }

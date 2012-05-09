@@ -265,7 +265,7 @@ static float kBubblePushSpeed=400.0f;
     location=[self.ForeLayer convertToNodeSpace:location];
     
     if(holdingBubble)
-    {
+    {            
         float offsetFromCX=location.x-cx;
         if(fabsf(offsetFromCX)>kBubbleScrollBoundary)
         {

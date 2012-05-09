@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>this is 1/2, draw 1/4</string>
+	<key>TOOL_KEY</key>
+	<string>DotGrid</string>
+	<key>ANCHOR_SPACE</key>
+	<integer>85</integer>
+	<key>START_X</key>
+	<integer>3</integer>
+	<key>START_Y</key>
+	<integer>3</integer>
+	<key>DRAW_MODE</key>
+	<integer>1</integer>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>START_X</key>
+			<integer>3</integer>
+			<key>START_Y</key>
+			<integer>5</integer>
+			<key>END_X</key>
+			<integer>7</integer>
+			<key>END_Y</key>
+			<integer>6</integer>
+			<key>SHOW_RESIZE</key>
+			<false/>
+			<key>SHOW_MOVE</key>
+			<false/>
+			<key>SHOW_LABELS</key>
+			<false/>
+			<key>DISABLE_COUNTING</key>
+			<true/>
+			<key>PRE_COUNTED_TILES</key>
+			<array>
+				<dict>
+					<key>POS_X</key>
+					<integer>3</integer>
+					<key>POS_Y</key>
+					<integer>5</integer>
+				</dict>
+				<dict>
+					<key>POS_X</key>
+					<integer>4</integer>
+					<key>POS_Y</key>
+					<integer>5</integer>
+				</dict>
+			</array>
+		</dict>
+	</array>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>DOTGRID_EVAL_TYPE</key>
+	<string>1</string>
+	<key>DOTGRID_EVAL_DIVIDEND</key>
+	<integer>1</integer>
+	<key>DOTGRID_EVAL_DIVISOR</key>
+	<integer>4</integer>
+	<key>HIDDEN_ROWS</key>
+	<dict>
+		<key>5</key>
+		<true/>
+		<key>6</key>
+		<true/>
+	</dict>
+</dict>
+</plist>

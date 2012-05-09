@@ -50,9 +50,11 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];
         self.ForeLayer=[[[CCLayer alloc]init] autorelease];
+        self.NoScaleLayer=[[[CCLayer alloc]init] autorelease];
         countLayer=[[[CCLayer alloc]init]autorelease];
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
+        [toolHost addToolNoScaleLayer:self.NoScaleLayer];
         
         [self setupBkgAndTitle];
 
@@ -170,7 +172,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         
         // set the layer position
         
-        float layerPositionX = (cx-(defaultColumn*(kPropXColumnSpacing*lx)));
+        float layerPositionX = (cx-(defaultColumn*(kPropXColumnSpacing*lx))+(xStartOffset*lx));
         [renderLayer setPosition:ccp(layerPositionX, 0)];
         
         if(currentColumnValue == defaultColumn)
@@ -360,7 +362,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 
     }
 
-    [renderLayer setPosition:ccp(cx-(currentColumnIndex*(kPropXColumnSpacing*lx)), 0)];
+    [renderLayer setPosition:ccp(cx-(currentColumnIndex*(kPropXColumnSpacing*lx)+(xStartOffset*lx)), 0)];
     
 
 }
@@ -376,12 +378,12 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     condensePanel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/cmpanel.png")];
     [condensePanel setPosition:ccp(100, cy)];
     [condensePanel setVisible:NO];
-    [self.ForeLayer addChild:condensePanel z:1];
+    [self.NoScaleLayer addChild:condensePanel z:1];
     
     mulchPanel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/cmpanel.png")];
     [mulchPanel setPosition:ccp(lx-100, cy)];
     [mulchPanel setVisible:NO];
-    [self.ForeLayer addChild:mulchPanel z:1];
+    [self.NoScaleLayer addChild:mulchPanel z:1];
     
 }
 
@@ -392,8 +394,19 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 
     
     if([[pdef objectForKey:DEFAULT_COL] intValue])
-    { defaultColumn = [[pdef objectForKey:DEFAULT_COL] intValue]; }
-    else { defaultColumn = 0; }
+        defaultColumn = [[pdef objectForKey:DEFAULT_COL] intValue]; 
+    else
+        defaultColumn = 0; 
+    
+    if([pdef objectForKey:X_OFFSET])
+        xStartOffset = [[pdef objectForKey:X_OFFSET]floatValue];
+    else
+        xStartOffset=0.0f;
+    
+    if([pdef objectForKey:COLUMN_SPACING])
+        kPropXColumnSpacing = [[pdef objectForKey:COLUMN_SPACING]floatValue];
+    else
+        kPropXColumnSpacing=0.5f;
     
     columnBaseValue = [[pdef objectForKey:COL_BASE_VALUE] floatValue];
     firstColumnValue = [[pdef objectForKey:FIRST_COL_VALUE] floatValue];
@@ -407,8 +420,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     showCountOnBlock = [[pdef objectForKey:SHOW_COUNT_BLOCK] boolValue];
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
-    //disableCageAdd = [[pdef objectForKey:DISABLE_CAGE_ADD] boolValue];
-    //disableCageDelete = [[pdef objectForKey:DISABLE_CAGE_DELETE] boolValue];
+
     
     // look at what positive columns are allowed to add/del
     
@@ -463,6 +475,9 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     else allowDeselect=YES;
     if([pdef objectForKey:FADE_COUNT]) fadeCount = [[pdef objectForKey:FADE_COUNT] boolValue];
     else fadeCount=YES;
+    
+    if([pdef objectForKey:ALLOW_PANNING]) allowPanning=[[pdef objectForKey:ALLOW_PANNING]boolValue];
+    else allowPanning=YES;
     
     
     //objects
@@ -554,7 +569,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         [countLabel setTag:3];
         [countLabel setOpacity:0];
         [countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)]; 
-        [self.ForeLayer addChild:countLabel];
+        [self.NoScaleLayer addChild:countLabel z:10];
     }
 
     
@@ -881,7 +896,34 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    //location=[renderLayer convertToNodeSpace:location];
 
+
+    //the touch location in the node space of the render layer
+    CGPoint locationInNS=[renderLayer convertToNodeSpace:location];
+    
+    //width of a column
+    float colW=lx*kPropXColumnSpacing;
+    
+    //offset the touch location by half the column width to allow for hitting a column in -0.5x -- +0.5x space
+    CGPoint shiftedLocationInNS=ccp(locationInNS.x + (0.5f * colW), locationInNS.y);
+    
+    //rounded down value of touch location over col width gives us column index (e.g. anything from 0 to colw is first col (0), next is second (1) etc)
+    currentColumnIndex = (int)(shiftedLocationInNS.x / colW);
+    if(currentColumnIndex>numberOfColumns-1)currentColumnIndex=numberOfColumns-1;
+    if(currentColumnIndex<0)currentColumnIndex=0;
+
+    NSLog(@"currentColIndex: %d, colW %f, locationInNS X %f, shiftedLocationInNS X %f", currentColumnIndex, colW, locationInNS.x, shiftedLocationInNS.x);
+
+    
+//    CGPoint transLocation=ccp(location.x+(0.5f*kPropXColumnSpacing),location.y);
+//    transLocation=[renderLayer convertToNodeSpace:location];
+//    
+//    currentColumnIndex=(int)transLocation.x/(numberOfColumns-1*(lx*kPropXColumnSpacing));
+//    currentColumnIndex=fabsf((int)currentColumnIndex);
+//    
+//    NSLog(@"currentColIndex: %f, trans X %f, trans Y %f", currentColumnIndex, transLocation.x, transLocation.y);
+    
     // set the touch start pos for evaluation
     touchStartPos = location;
     
@@ -932,8 +974,10 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    location=[renderLayer convertToNodeSpace:location];
     CGPoint prevLoc = [touch previousLocationInView:[touch view]];
     prevLoc = [[CCDirector sharedDirector] convertToGL: prevLoc];
+    prevLoc=[renderLayer convertToNodeSpace:prevLoc];
 
     [toolHost.Zubi setTarget:location];
     
@@ -945,7 +989,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         potentialTap = NO;
     }
 
-    else if(touching && ([gw Blackboard].PickupObject==nil) && numberOfColumns>1)
+    else if(touching && ([gw Blackboard].PickupObject==nil) && numberOfColumns>1 && allowPanning)
     {
         CGPoint diff = ccpSub(location, prevLoc);
         diff = ccp(diff.x, 0);
@@ -1006,13 +1050,27 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     posY = posY + diff.y;
     
     //NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];        
-
     if(gw.Blackboard.SelectedObjects.count == columnBaseValue && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject])
     {
+        CGRect boundingBoxCondense=CGRectZero;
         //flag we're in inBlockTransition
         inBlockTransition=YES;
-        
-        if([BLMath rectContainsPoint:location x:0 y:0 w:200 h:ly] && currentColumnIndex>0)
+        if(currentColumnIndex>0)
+        {
+
+            for(int i=0;i<[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex-1]count];i++)
+            {
+                for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex-1] objectAtIndex:i]count]; o++)
+                {
+                    DWGameObject *go=[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex-1] objectAtIndex:i]objectAtIndex:o];
+                    CCSprite *mySprite = [[go store] objectForKey:MY_SPRITE];
+                    boundingBoxCondense=CGRectUnion(boundingBoxCondense, mySprite.boundingBox);
+                }
+            }
+
+        }
+        if(CGRectContainsPoint(boundingBoxCondense, location) && currentColumnIndex>0)
+        //if([BLMath rectContainsPoint:location x:0 y:0 w:200 h:ly] && currentColumnIndex>0)
         {
             inCondenseArea=YES;
             [condensePanel setVisible:YES];
@@ -1040,7 +1098,23 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     
     else
     {
-        if([BLMath rectContainsPoint:location x:lx-200 y:0 w:200 h:ly] && currentColumnIndex<([gw.Blackboard.AllStores count]-1))
+        CGRect boundingBoxMulch=CGRectNull;
+        if(currentColumnIndex<numberOfColumns-1)
+        {
+            for(int i=0;i<[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+1]count];i++)
+            {
+                for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+1] objectAtIndex:i]count]; o++)
+                {
+                    DWGameObject *go=[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+1] objectAtIndex:i]objectAtIndex:o];
+                    CCSprite *mySprite = [[go store] objectForKey:MY_SPRITE];
+                    boundingBoxMulch=CGRectUnion(boundingBoxMulch, mySprite.boundingBox);
+                    NSLog(@"Bounding box width %f", boundingBoxMulch.size.width);
+                }
+            }
+        }
+        //if([BLMath rectContainsPoint:location x:lx-200 y:0 w:200 h:ly] && currentColumnIndex<([gw.Blackboard.AllStores count]-1))
+        if(CGRectContainsPoint(boundingBoxMulch, location) && currentColumnIndex<([gw.Blackboard.AllStores count]-1))
+
         {
             inMulchArea=YES;
             [mulchPanel setVisible:YES];
@@ -1121,7 +1195,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     currentColumnIndex+=incr;
     gw.Blackboard.CurrentStore=[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex];
     
-    [self snapLayerToPosition];
+    //[self snapLayerToPosition];
         
     for (int itran=0; itran<tranCount; itran++) {
         
@@ -1231,7 +1305,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             
                 gw.Blackboard.CurrentStore = [gw.Blackboard.AllStores objectAtIndex:currentColumnIndex];   
                 
-                [self snapLayerToPosition];
+                //[self snapLayerToPosition];
             }
             else
             {
@@ -1241,13 +1315,13 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 
                 gw.Blackboard.CurrentStore = [gw.Blackboard.AllStores objectAtIndex:currentColumnIndex];   
                 
-                [self snapLayerToPosition];
+                //[self snapLayerToPosition];
               
             }
         }
         else if(fabsf(touchStartPos.x-touchEndPos.x)<kMovementForSnapColumn && [gw Blackboard].PickupObject==nil && numberOfColumns>1)
         {
-            [self snapLayerToPosition];
+            //[self snapLayerToPosition];
         }
         
         // evaluate the distance between start/end pos.

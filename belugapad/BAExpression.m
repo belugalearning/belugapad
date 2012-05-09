@@ -62,6 +62,11 @@
 	return nil;
 }
 
+- (NSString*)xmlStringValueWithPad:(NSString *)padding
+{
+    return nil;
+}
+
 - (BOOL)canEvaluate
 {
 	return NO; // subclasses must implement this

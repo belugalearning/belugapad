@@ -94,5 +94,7 @@
 	</dict>
 	<key>DISABLE_CAGE_DELETE</key>
 	<true/>
+	<key>DEFAULT_SCALE</key>
+	<real>0.4</real>
 </dict>
 </plist>

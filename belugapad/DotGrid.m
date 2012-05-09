@@ -494,7 +494,7 @@
     //create base equality
     toolHost.PpExpr=[BAExpressionTree treeWithRoot:[BAEqualsOperator operator]];
     
-    NSMutableArray *tileCounts=[[NSMutableArray alloc] init ];
+    NSMutableArray *tileCounts=[[NSMutableArray alloc] init];
     NSMutableArray *selectedCounts=[[NSMutableArray alloc] init];
     
     for (DWGameObject *go in [gw AllGameObjects]) {
@@ -590,7 +590,15 @@
         autoMoveToNextProblem=YES;
         [toolHost showProblemCompleteMessage];
     }
+    else {
+        if(evalMode==kProblemEvalOnCommit)[self resetProblem];
+    }
 
+}
+
+-(void)resetProblem
+{
+    [toolHost resetProblem];
 }
 
 -(float)metaQuestionTitleYLocation

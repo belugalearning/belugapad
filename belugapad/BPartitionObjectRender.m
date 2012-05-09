@@ -93,7 +93,6 @@
 -(void)setSprite
 {
     pogo.BaseNode = [[CCNode alloc]init];
-    NSMutableArray *mySprites=[[NSMutableArray alloc]init];
     if(!pogo.Length) pogo.Length=1;
     
     NSString *spriteFileName=[[NSString alloc]init];
@@ -107,7 +106,6 @@
             float thisXPos = 0;
             [mySprite setPosition:ccp(thisXPos, 0)];
             [pogo.BaseNode addChild:mySprite z:2];
-            [mySprites addObject:mySprite];
             if(gameWorld.Blackboard.inProblemSetup)
             {
                 [mySprite setTag:2];
@@ -140,7 +138,6 @@
             float thisXPos = i*50;
             [mySprite setPosition:ccp(thisXPos, 0)];
             [pogo.BaseNode addChild:mySprite z:2];
-            [mySprites addObject:mySprite];
             if(gameWorld.Blackboard.inProblemSetup)
             {
                 [mySprite setTag:2];
@@ -149,9 +146,6 @@
             
         }
         
-        //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
-        //[mySprites addObject:mySprite];
-        //[[gameObject store] setObject:mySprites forKey:MY_SPRITE];
     }
     
     if(pogo.Label) { 

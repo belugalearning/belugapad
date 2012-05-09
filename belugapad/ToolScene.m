@@ -14,6 +14,7 @@
 @synthesize ProblemComplete;
 @synthesize BkgLayer;
 @synthesize ForeLayer;
+@synthesize NoScaleLayer;
 @synthesize ScaleMin;
 @synthesize ScaleMax;
 @synthesize PassThruScaling;

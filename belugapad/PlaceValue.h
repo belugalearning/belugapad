@@ -40,11 +40,13 @@
 
     int ropesforColumn;
     int rows;    
-    float currentColumnIndex;
+    int currentColumnIndex;
     float defaultColumn;
     float columnBaseValue;
     float firstColumnValue;
     float totalObjectValue;
+    float xStartOffset;
+    float kPropXColumnSpacing;
     int numberOfColumns;    
     
     // GameWorld options
@@ -59,6 +61,7 @@
     BOOL showReset;
     BOOL fadeCount;
     BOOL allowDeselect;
+    BOOL allowPanning;
     
     NSString *posCageSprite;
     NSString *negCageSprite;

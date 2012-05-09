@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>what number is this?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>10x10 grid representation of 0.22</string>
 	<key>TOOL_KEY</key>
 	<string>DotGrid</string>
 	<key>ANCHOR_SPACE</key>

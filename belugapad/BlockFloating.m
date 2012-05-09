@@ -395,6 +395,7 @@ static void eachShape(void *ptr, void* unused)
     if(operatorLayer.visible)
     {
         CGPoint prevLoc=[[CCDirector sharedDirector] convertToGL:[touch previousLocationInView:[touch view]]];
+        prevLoc=[self.ForeLayer convertToNodeSpace:prevLoc];
         CGPoint movediff=[BLMath SubtractVector:prevLoc from:location];
         //decelarate it
         movediff=[BLMath MultiplyVector:movediff byScalar:kOperatorPopupDragFriction];
@@ -591,7 +592,7 @@ static void eachShape(void *ptr, void* unused)
     UITouch *touch=[touches anyObject];
 	CGPoint location=[touch locationInView: [touch view]];
 	location=[[CCDirector sharedDirector] convertToGL:location];
-    location=[self.ForeLayer convertToNodeSpace:location];
+    //location=[self.ForeLayer convertToNodeSpace:location];
 	
     //daemon to (currently) let go and rest
     [toolHost.Zubi setMode:kDaemonModeWaiting];

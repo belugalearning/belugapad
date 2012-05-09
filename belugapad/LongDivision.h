@@ -27,6 +27,10 @@
     
     CCLabelTTF *lblCurrentTotal;
     CCSprite *line;
+    CCSprite *marker;
+    CCLabelTTF *markerText;
+    CCSprite *startMarker;
+    CCSprite *endMarker;
     
     NSMutableArray *numberRows;
     NSMutableArray *numberLayers;
@@ -48,12 +52,18 @@
     BOOL doingHorizontalDrag;
     BOOL doingVerticalDrag;
     
+    BOOL goodBadHighlight;
+    BOOL renderBlockLabels;
+    
     float dividend;
     float divisor;
     
     int currentRowPos;
     int activeRow;
+    int previousRow;
     int currentNumberPos;
+    int previousNumberPos;
+    float currentTotal;
     float rowMultiplier;
     float startRow;
     
@@ -61,10 +71,26 @@
     
     NSMutableArray *selectedNumbers;
     NSMutableArray *rowMultipliers;
+    NSMutableArray *drawnObjects;
+    
+    // rendering vars
+    float cumulativeTotal;
+    float lastBaseEval;
+    float currentScaleY;
+    BOOL creatingObject;
+    BOOL destroyingObject;
+    NSMutableArray *renderedBlocks;
+    
+    //problem state
+    BOOL expressionIsEqual;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)createVisibleNumbers;
+-(void)updateLabels:(CGPoint)position;
+-(void)updateBlock;
+-(void)checkBlock;
+-(void)createBlockAtIndex:(int)index withBase:(float)base;
 -(void)populateGW;
 -(void)handlePassThruScaling:(float)scale;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;

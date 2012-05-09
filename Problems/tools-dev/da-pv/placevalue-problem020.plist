@@ -11,9 +11,9 @@
 	<key>FIRST_COL_VALUE</key>
 	<integer>100</integer>
 	<key>NUMBER_COLS</key>
-	<integer>6</integer>
+	<integer>3</integer>
 	<key>DEFAULT_COL</key>
-	<integer>1</integer>
+	<integer>10</integer>
 	<key>ROPES_PER_COL</key>
 	<integer>3</integer>
 	<key>ROWS_PER_COL</key>
@@ -128,5 +128,9 @@
 		<key>100</key>
 		<true/>
 	</dict>
+	<key>DEFAULT_SCALE</key>
+	<real>0.7</real>
+	<key>ALLOW_PANNING</key>
+	<false/>
 </dict>
 </plist>

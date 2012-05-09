@@ -35,6 +35,7 @@ typedef enum {
 
     CCLayer *toolBackLayer;
     CCLayer *toolForeLayer;
+    CCLayer *toolNoScaleLayer;
     
     ToolScene *currentTool;
     
@@ -83,6 +84,7 @@ typedef enum {
 +(CCScene *) scene;
 
 -(void) loadTool;
+-(void) addToolNoScaleLayer:(CCLayer *) noScaleLayer;
 -(void) addToolForeLayer:(CCLayer *) foreLayer;
 -(void) addToolBackLayer:(CCLayer *) backLayer;
 -(void) populatePerstLayer;

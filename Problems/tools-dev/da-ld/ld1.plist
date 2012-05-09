@@ -14,5 +14,9 @@
 	<integer>10</integer>
 	<key>START_ROW</key>
 	<real>0.1</real>
+	<key>GOOD_BAD_HIGHLIGHT</key>
+	<true/>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
 </dict>
 </plist>

@@ -15,7 +15,7 @@ extern const float kTapSlipThreshold;
 extern const float kTapSlipResetThreshold;
 
 extern const float kLabelCompletePVYOffsetHalfProp;
-extern const float kPropXColumnSpacing;
+//extern const float kPropXColumnSpacing;
 extern const float kMovementForSnapColumn;
 
 extern const float kLayerSnapAnimationTime;

@@ -18,6 +18,8 @@
 	<string>7</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>EVAL_TARGET</key>
+	<integer>5</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>HIDE_ZUBI</key>

@@ -702,7 +702,6 @@ typedef enum {
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSLog(@"layer pos %@", NSStringFromCGPoint(mapLayer.position));
     
     UITouch *touch=[touches anyObject];
     CGPoint l=[touch locationInView:[touch view]];
@@ -711,6 +710,8 @@ typedef enum {
     lastTouch=l;
     
     CGPoint lOnMap=[mapLayer convertToNodeSpace:l];
+ 
+    NSLog(@"touched at %@", NSStringFromCGPoint(lOnMap));
     
     [daemon setTarget:l];
     [daemon setRestingPoint:l];

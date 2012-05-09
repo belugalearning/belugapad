@@ -174,15 +174,21 @@ typedef enum {
     
     [self addTerrainAtPosition:ccp(1201,-3226) withFile:BUNDLE_FULL_PATH(@"/images/map/forrest-with-base-3-25%.png")];
     
-    [self addTerrainAtPosition:ccp(1208,-3587) withFile:BUNDLE_FULL_PATH(@"/images/map/hills-with-base-1-25%.png")];
+    [self addTerrainAtPosition:ccp(1480,-3032) withFile:BUNDLE_FULL_PATH(@"/images/map/hills-with-base-1-25%.png")];
     
     [self addTerrainAtPosition:ccp(1451,-2751) withFile:BUNDLE_FULL_PATH(@"/images/map/mountain-range-with-base-1-25%.png")];
     
     [self addTerrainAtPosition:ccp(1038,-2780) withFile:BUNDLE_FULL_PATH(@"/images/map/mountains-with-base-1-25%.png")];
     
-    [self addTerrainAtPosition:ccp(1146,-2343) withFile:BUNDLE_FULL_PATH(@"/images/map/lake-with-base-1-25%.png")];
+    [self addTerrainAtPosition:ccp(1146,-2076) withFile:BUNDLE_FULL_PATH(@"/images/map/lake-with-base-1-25%.png")];
     
     [self addTerrainAtPosition:ccp(834,-2288) withFile:BUNDLE_FULL_PATH(@"/images/map/lake-with-base-4-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(1553,-2290) withFile:BUNDLE_FULL_PATH(@"/images/map/mountain-range-with-base-1-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(1553,-2290) withFile:BUNDLE_FULL_PATH(@"/images/map/mountain-range-with-base-1-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(587,-2940) withFile:BUNDLE_FULL_PATH(@"/images/map/hills-with-base-3-25%.png")];
     
     
     

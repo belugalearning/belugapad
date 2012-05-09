@@ -30,7 +30,7 @@
 
 static float kNodeScale=0.5f;
 //static CGPoint kStartMapPos={-3576, -2557};
-static CGPoint kStartMapPos={-1750, 0};
+static CGPoint kStartMapPos={-611, 3613};
 static float kPropXNodeDrawDist=1.25f;
 static float kPropXNodeHitDist=0.065f;
 
@@ -376,7 +376,7 @@ typedef enum {
         ConceptNode *n=[kcmNodes objectAtIndex:i];
      
         
-        CGPoint nlpos=ccp([n.x floatValue] * kNodeScale, [n.y floatValue] * kNodeScale);
+        CGPoint nlpos=ccp([n.x floatValue] * kNodeScale, (nMaxY-[n.y floatValue]) * kNodeScale);
         float diff=[BLMath DistanceBetween:loc and:nlpos];
         
         if(diff<(kPropXNodeDrawDist*lx))
@@ -433,7 +433,7 @@ typedef enum {
 -(void)createASpriteForNode:(ConceptNode *)n
 {
     CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-std.png")];
-    [s setPosition:ccp([n.x floatValue] * kNodeScale, [n.y floatValue] * kNodeScale)];
+    [s setPosition:ccp([n.x floatValue] * kNodeScale, (nMaxY-[n.y floatValue]) * kNodeScale)];
     
     if(n.pipelines.count==0)
     {
@@ -559,7 +559,7 @@ typedef enum {
         ConceptNode *n=[kcmNodes objectAtIndex:i];
         
         
-        CGPoint nlpos=ccp([n.x floatValue] * kNodeScale, [n.y floatValue] * kNodeScale);
+        CGPoint nlpos=ccp([n.x floatValue] * kNodeScale, (nMaxY-[n.y floatValue]) * kNodeScale);
         float diff=[BLMath DistanceBetween:location and:nlpos];
         
         if(diff<distance)
@@ -702,6 +702,8 @@ typedef enum {
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    NSLog(@"layer pos %@", NSStringFromCGPoint(mapLayer.position));
+    
     UITouch *touch=[touches anyObject];
     CGPoint l=[touch locationInView:[touch view]];
     l=[[CCDirector sharedDirector] convertToGL:l];

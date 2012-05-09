@@ -11,6 +11,7 @@
 #import "ToolConsts.h"
 #import "BLMath.h"
 #import "global.h"
+#import "JourneyScene.h"
 
 #import "ToolHost.h"
 
@@ -141,7 +142,7 @@ static float kPropYOverlayPos=0.65f;
         //finish scene
         if(slideIndex==14 && [BLMath DistanceBetween:lastTouch and:ccp(cx, 440)] < 50.0f )
         {
-            [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.3f scene:[ToolHost scene]]];
+            [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.3f scene:[JourneyScene scene]]];
             return;
         }
         

@@ -24,8 +24,8 @@
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
 #import <CouchCocoa/CouchModelFactory.h>
 
-//NSString * const kRemoteContentDatabaseURI = @"http://www.soFarAslant.com:5984/temp-blm-content";
-NSString * const kRemoteContentDatabaseURI = @"http://www.soFarAslant.com:5984/please-do-not-replicate-me";
+//NSString * const kRemoteContentDatabaseURI = @"http://u.zubi.me:5984/temp-blm-content";
+NSString * const kRemoteContentDatabaseURI = @"http://u.zubi.me:5984/please-do-not-replicate-me";
 NSString * const kLocalContentDatabaseName = @"kcm";
 NSString * const kDefaultContentDesignDocName = @"kcm-views";
 
@@ -42,7 +42,7 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
     // TODO: Need way to figure out when replication is complete. 
     // TODO: not sure about this - using TOUCHDB, with logging turned on, building to simulator, took 3 runs to get db updated to latest sequence number.
     //      Does this mean continuous replication not reliable? Or is it the simulator? Or....?
-    // Try using comparison of database.lastSequenceNumber against http://www.sofaraslant.com:5984/temp-blm-content doc's update_seq value
+    // Try using comparison of database.lastSequenceNumber against http://u.zubi.me:5984/temp-blm-content doc's update_seq value
     CouchReplication *pullReplication;
     
     //kcm concept node pipeline progression

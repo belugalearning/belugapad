@@ -20,7 +20,7 @@
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
 #import <CouchCocoa/CouchModelFactory.h>
 
-NSString * const kRemoteUsersDatabaseURI = @"http://www.soFarAslant.com:5984/temp-blm-users";
+NSString * const kRemoteUsersDatabaseURI = @"http://u.zubi.me:5984/blm-users";
 NSString * const kLocalUserDatabaseName = @"users";
 NSString * const kDefaultDesignDocName = @"users-views";
 NSString * const kDeviceUsersLastSessionStart = @"device-users-last-session";

@@ -313,7 +313,6 @@
 		7FCBC3E415100CF700066426 /* BATio.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E315100CF700066426 /* BATio.m */; };
 		7FCBC3E815100F3D00066426 /* MathMLConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E715100F3D00066426 /* MathMLConsts.m */; };
 		7FCBC3EB1510195F00066426 /* ExprIOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3EA1510195F00066426 /* ExprIOTests.m */; };
-		7FD18786154E02AD008F0A31 /* BLongDivGameObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD18785154E02AD008F0A31 /* BLongDivGameObjectRender.m */; };
 		7FD18789154E6B81008F0A31 /* NodeSlice.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD18788154E6B81008F0A31 /* NodeSlice.m */; };
 		7FD1878C154E7396008F0A31 /* PipelineNodeSliceInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD1878B154E7395008F0A31 /* PipelineNodeSliceInstance.m */; };
 		7FDABAC3154AABF300F3F1A5 /* ConceptNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDABAC2154AABF300F3F1A5 /* ConceptNode.m */; };
@@ -2488,7 +2487,6 @@
 				7F2CAEDB154AB58B00BFBB6F /* LongDivision.m in Sources */,
 				7F5BD842154AB6A70092740B /* JourneyScene.m in Sources */,
 				7F5BD846154AFAE70092740B /* Relation.m in Sources */,
-				7FD18786154E02AD008F0A31 /* BLongDivGameObjectRender.m in Sources */,
 				7FD18789154E6B81008F0A31 /* NodeSlice.m in Sources */,
 				7FD1878C154E7396008F0A31 /* PipelineNodeSliceInstance.m in Sources */,
 				7F85187C1558E85F002E9F07 /* Pipeline.m in Sources */,

@@ -22,6 +22,9 @@
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
 
+static float kBubbleProx=100.0f;
+static float kBubbleScrollBoundary=350;
+static float kBubblePushSpeed=400.0f;
 
 @implementation NLine
 
@@ -66,10 +69,20 @@
         
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
+        [self setupBubble];
+        
         gw.Blackboard.inProblemSetup = NO;
     }
     
     return self;
+}
+
+-(void)setupBubble
+{
+    bubbleSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/bubble.png")];
+    [bubbleSprite setPosition:ccp(cx, cy)];
+    [self.ForeLayer addChild:bubbleSprite];
+    
 }
 
 -(void)setupLabels
@@ -86,6 +99,8 @@
 {
 	[gw doUpdate:delta];
     
+    rambler.TouchXOffset+=bubblePushDir * kBubblePushSpeed * delta;
+    
 }
 
 -(void)populateGW
@@ -101,7 +116,7 @@
 
     //positioning
     rambler.DefaultSegmentSize=115;
-    rambler.Pos=ccp(cx,cy - 75.0f);
+    rambler.Pos=ccp(cx,cy);
     
     selector=[DWSelectorGameObject alloc];
     [gw populateAndAddGameObject:selector withTemplateName:@"TnLineSelector"];
@@ -215,14 +230,20 @@
             [self showComplete];
         }
     }
-    else if (location.y < kRamblerYMax)
+//    else if (location.y < kRamblerYMax)
+//    {
+//        inRamblerArea=YES;
+//    }
+//    else 
+//    {
+//        NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
+//        [gw handleMessage:kDWhandleTap andPayload:pl withLogLevel:-1];
+//    }
+    
+    else if([BLMath DistanceBetween:location and:bubbleSprite.position]<kBubbleProx)
     {
-        inRamblerArea=YES;
-    }
-    else 
-    {
-        NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
-        [gw handleMessage:kDWhandleTap andPayload:pl withLogLevel:-1];
+        holdingBubbleOffset=location.x - bubbleSprite.position.x;
+        holdingBubble=YES;
     }
 }
 
@@ -233,26 +254,55 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
     
-    if(inRamblerArea)
+    if(holdingBubble)
     {
-        CGPoint a = [[CCDirector sharedDirector] convertToGL:[touch previousLocationInView:touch.view]];
-        CGPoint b = [[CCDirector sharedDirector] convertToGL:[touch locationInView:touch.view]];
-    
-        rambler.TouchXOffset+=b.x-a.x;
+
+        
+        float offsetFromCX=location.x-cx;
+        if(fabsf(offsetFromCX)>kBubbleScrollBoundary)
+        {
+            if(offsetFromCX>0)bubblePushDir=-1;
+            if(offsetFromCX<0)bubblePushDir=1;
+        }
+        else {
+            [bubbleSprite setPosition:ccp(location.x + holdingBubbleOffset, bubbleSprite.position.y)];
+            
+            bubblePushDir=0;
+        }
     }
+    
+//    if(inRamblerArea)
+//    {
+//        CGPoint a = [[CCDirector sharedDirector] convertToGL:[touch previousLocationInView:touch.view]];
+//        CGPoint b = [[CCDirector sharedDirector] convertToGL:[touch locationInView:touch.view]];
+//    
+//        rambler.TouchXOffset+=b.x-a.x;
+//    }
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     touching=NO;
+    bubblePushDir=0;
     
-    if(inRamblerArea)
+    if(holdingBubbleOffset)
     {
-        [rambler handleMessage:kDWnlineReleaseRamblerAtOffset];
+        //[gw handleMessage:kDWnlineReleaseRamblerAtOffset andPayload:nil withLogLevel:0];
+        holdingBubbleOffset=NO;
         
-        inRamblerArea=NO;
-        rambler.TouchXOffset=0;
+        float distFromCentre=rambler.TouchXOffset + (bubbleSprite.position.x - cx);
+        float stepsFromCentre=distFromCentre / rambler.DefaultSegmentSize;
+        int roundedStepsFromCentre=(int)(stepsFromCentre + 0.5f);
+        NSLog(@"bubble pos %d", roundedStepsFromCentre);
+        
     }
+//    if(inRamblerArea)
+//    {
+//        [rambler handleMessage:kDWnlineReleaseRamblerAtOffset];
+//        
+//        inRamblerArea=NO;
+//        rambler.TouchXOffset=0;
+//    }
 
     
     UITouch *touch=[touches anyObject];

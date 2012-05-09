@@ -127,13 +127,13 @@
     [mySprite setPosition:ccp(selector.pos.x, selector.pos.y)];
     
     
-    [[gameWorld GameScene].ForeLayer addChild:mySprite z:0];
+    //[[gameWorld GameScene].ForeLayer addChild:mySprite z:0];
     
     connectorSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/selector-connector.png")];
     [connectorSprite setPosition:CGPointMake(selector.pos.x, selector.pos.y-92)];
     [connectorSprite setTag:3];
     [connectorSprite setOpacity:0];
-    [[gameWorld GameScene].ForeLayer addChild:connectorSprite];
+    //[[gameWorld GameScene].ForeLayer addChild:connectorSprite];
     
     
 }

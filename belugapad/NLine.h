@@ -38,6 +38,11 @@
     CCLabelTTF *problemDescLabel;
 
     CCLabelTTF *problemCompleteLabel;
+    
+    CCSprite *bubbleSprite;
+    BOOL holdingBubble;
+    float holdingBubbleOffset;
+    int bubblePushDir;
 }
 
 -(void)populateGW;

@@ -29,7 +29,8 @@
 #import <CouchCocoa/CouchModelFactory.h>
 
 static float kNodeScale=0.5f;
-static CGPoint kStartMapPos={-3576, -2557};
+//static CGPoint kStartMapPos={-3576, -2557};
+static CGPoint kStartMapPos={-1750, 0};
 static float kPropXNodeDrawDist=1.25f;
 static float kPropXNodeHitDist=0.065f;
 
@@ -102,7 +103,7 @@ typedef enum {
     if(self=[super init])
     {
         self.isTouchEnabled=YES;
-        [[CCDirector sharedDirector] view].multipleTouchEnabled=YES;
+        [[CCDirector sharedDirector] view].multipleTouchEnabled=NO;
         
         CGSize winsize=[[CCDirector sharedDirector] winSize];
         lx=winsize.width;
@@ -394,7 +395,8 @@ typedef enum {
                 //setup light if required
                 BOOL isLit=[usersService hasCompletedNodeId:n.document.documentID];
                 
-                if(isLit || [n.document.documentID isEqualToString:@"5608a59d6797796ce9e11484fd14100c"])
+                if(isLit || [n.document.documentID isEqualToString:@"5608a59d6797796ce9e11484fd180214"]
+                   || [n.document.documentID isEqualToString:@"5608a59d6797796ce9e11484fd180be3"])
                 {
                     n.lightSprite=[self createLight];
                     [n.lightSprite setPosition:[mapLayer convertToWorldSpace:n.journeySprite.position]];

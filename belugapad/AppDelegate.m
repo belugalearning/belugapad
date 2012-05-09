@@ -10,6 +10,7 @@
 #import "JourneyScene.h"
 #import "global.h"
 #import "ContentService.h"
+#import "ToolHost.h"
 
 #import "MenuScene.h"
 
@@ -162,6 +163,7 @@
 	//[director_ pushScene: (viaIntro ? [ZubiIntro scene] : [JourneyScene scene])]; 
     
     [director_ pushScene:[JourneyScene scene]];
+    //[director_ pushScene:[ToolHost scene]];
     
 }
 

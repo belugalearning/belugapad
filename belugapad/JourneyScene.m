@@ -168,8 +168,33 @@ typedef enum {
     //[self createAllBackgroundTileSprites];
     
     [self createLights];
+    [self addTerrainAtPosition:ccp(1208,-3587) withFile:BUNDLE_FULL_PATH(@"/images/map/fjord-with-base-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(1562,-3500) withFile:BUNDLE_FULL_PATH(@"/images/map/forrest-with-base-4-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(1201,-3226) withFile:BUNDLE_FULL_PATH(@"/images/map/forrest-with-base-3-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(1208,-3587) withFile:BUNDLE_FULL_PATH(@"/images/map/hills-with-base-1-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(1451,-2751) withFile:BUNDLE_FULL_PATH(@"/images/map/mountain-range-with-base-1-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(1038,-2780) withFile:BUNDLE_FULL_PATH(@"/images/map/mountains-with-base-1-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(1146,-2343) withFile:BUNDLE_FULL_PATH(@"/images/map/lake-with-base-1-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(834,-2288) withFile:BUNDLE_FULL_PATH(@"/images/map/lake-with-base-4-25%.png")];
+    
+    
     
     NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
+}
+
+-(void)addTerrainAtPosition:(CGPoint)location withFile:(NSString*)thisImage
+{
+    
+    CCSprite *thisSprite=[CCSprite spriteWithFile:thisImage];
+    [thisSprite setPosition:location];
+    [mapLayer addChild:thisSprite];
 }
 
 - (void)createLayers

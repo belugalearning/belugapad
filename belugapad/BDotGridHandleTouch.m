@@ -52,8 +52,9 @@
 {
     if([BLMath DistanceBetween:handle.Position and:hitLoc] <= (0.045f*[gameWorld Blackboard].hostLX))
     {
-        NSLog(@"touch move handle");
-        gameWorld.Blackboard.CurrentHandle=handle;
+        NSLog(@"touch handle of type %d", handle.handleType);
+        if(handle.handleType=kResizeHandle) gameWorld.Blackboard.CurrentHandle=handle;
+        else NSLog(@"this handle isn't valid.");
     }
 }
 

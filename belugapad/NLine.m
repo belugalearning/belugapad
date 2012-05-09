@@ -99,7 +99,12 @@ static float kBubblePushSpeed=400.0f;
 {
 	[gw doUpdate:delta];
     
-    rambler.TouchXOffset+=bubblePushDir * kBubblePushSpeed * delta;
+    float distFromCentre=-rambler.TouchXOffset + ((bubbleSprite.position.x + holdingBubbleOffset) - cx);
+    if (distFromCentre <= ([rambler.MaxValue floatValue] * rambler.DefaultSegmentSize)
+        && distFromCentre >= ([rambler.MinValue floatValue] * rambler.DefaultSegmentSize)) {
+        
+        rambler.TouchXOffset+=bubblePushDir * kBubblePushSpeed * delta;
+    }    
     
 }
 
@@ -156,6 +161,9 @@ static float kBubblePushSpeed=400.0f;
     NSNumber *rMode=[pdef objectForKey:REJECT_MODE];
     if (rMode) rejectMode=[rMode intValue];
     
+ 
+    NSNumber *eT=[pdef objectForKey:@"EVAL_TARGET"];
+    if(eT)evalTarget=[eT intValue];
     
 }
 
@@ -183,29 +191,31 @@ static float kBubblePushSpeed=400.0f;
 
 -(BOOL)evalProblem
 {
-    //not possible to eval without expression
-    if(!toolHost.PpExpr) return NO;
+    return (evalTarget==lastBubbleLoc);
     
-    //copy, sub eval and compare the expression
-    BAExpressionTree *evalTree=[toolHost.PpExpr copy];
-    
-    //set subs & execute
-    evalTree.VariableSubstitutions=gw.Blackboard.ProblemVariableSubstitutions;
-    [evalTree substitueVariablesForIntegersOnNode:evalTree.root];
-
-    NSLog(@"problem expression: %@", [toolHost.PpExpr expressionString]);
-    NSLog(@"substituted expression: %@", [evalTree expressionString]);
-    
-    //evaluate
-    [evalTree evaluateTree];
-    
-    NSLog(@"evaluated expression: %@", [evalTree expressionString]);
-    
-    //query comparison for equality (currently has to assume as a top level eq using query layer
-    BATQuery *q=[[BATQuery alloc] initWithExpr:evalTree.root andTree:evalTree];
-    BOOL result=[q assumeAndEvalEqualityAtRoot];
-    
-    return result;
+//    //not possible to eval without expression
+//    if(!toolHost.PpExpr) return NO;
+//    
+//    //copy, sub eval and compare the expression
+//    BAExpressionTree *evalTree=[toolHost.PpExpr copy];
+//    
+//    //set subs & execute
+//    evalTree.VariableSubstitutions=gw.Blackboard.ProblemVariableSubstitutions;
+//    [evalTree substitueVariablesForIntegersOnNode:evalTree.root];
+//
+//    NSLog(@"problem expression: %@", [toolHost.PpExpr expressionString]);
+//    NSLog(@"substituted expression: %@", [evalTree expressionString]);
+//    
+//    //evaluate
+//    [evalTree evaluateTree];
+//    
+//    NSLog(@"evaluated expression: %@", [evalTree expressionString]);
+//    
+//    //query comparison for equality (currently has to assume as a top level eq using query layer
+//    BATQuery *q=[[BATQuery alloc] initWithExpr:evalTree.root andTree:evalTree];
+//    BOOL result=[q assumeAndEvalEqualityAtRoot];
+//    
+//    return result;
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -256,8 +266,6 @@ static float kBubblePushSpeed=400.0f;
     
     if(holdingBubble)
     {
-
-        
         float offsetFromCX=location.x-cx;
         if(fabsf(offsetFromCX)>kBubbleScrollBoundary)
         {
@@ -265,7 +273,14 @@ static float kBubblePushSpeed=400.0f;
             if(offsetFromCX<0)bubblePushDir=1;
         }
         else {
-            [bubbleSprite setPosition:ccp(location.x + holdingBubbleOffset, bubbleSprite.position.y)];
+
+            float distFromCentre=-rambler.TouchXOffset + ((bubbleSprite.position.x + holdingBubbleOffset) - cx);
+            if (distFromCentre <= ([rambler.MaxValue floatValue] * rambler.DefaultSegmentSize)
+                && distFromCentre >= ([rambler.MinValue floatValue] * rambler.DefaultSegmentSize)) {
+
+                [bubbleSprite setPosition:ccp(location.x + holdingBubbleOffset, bubbleSprite.position.y)];
+                
+            }
             
             bubblePushDir=0;
         }
@@ -290,10 +305,15 @@ static float kBubblePushSpeed=400.0f;
         //[gw handleMessage:kDWnlineReleaseRamblerAtOffset andPayload:nil withLogLevel:0];
         holdingBubbleOffset=NO;
         
-        float distFromCentre=rambler.TouchXOffset + (bubbleSprite.position.x - cx);
+        float distFromCentre=-rambler.TouchXOffset + (bubbleSprite.position.x - cx);
         float stepsFromCentre=distFromCentre / rambler.DefaultSegmentSize;
         int roundedStepsFromCentre=(int)(stepsFromCentre + 0.5f);
         NSLog(@"bubble pos %d", roundedStepsFromCentre);
+        lastBubbleLoc=roundedStepsFromCentre;
+        
+        //diff (moveby)
+        float diffx=(roundedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
+        [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
         
     }
 //    if(inRamblerArea)

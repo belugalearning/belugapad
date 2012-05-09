@@ -30,7 +30,7 @@
 
 static float kNodeScale=0.5f;
 //static CGPoint kStartMapPos={-3576, -2557};
-static CGPoint kStartMapPos={-611, 3613};
+static CGPoint kStartMapPos={-611, 3713};
 static float kPropXNodeDrawDist=1.25f;
 static float kPropXNodeHitDist=0.065f;
 
@@ -206,7 +206,8 @@ typedef enum {
 - (void)createLayers
 {
     //base colour layer
-    CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(0, 59, 72, 255) width:lx height:ly];
+//    CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(0, 59, 72, 255) width:lx height:ly];
+    CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(137, 173, 171, 255) width:lx height:ly];
     [self addChild:cLayer];
     
     //base map layer

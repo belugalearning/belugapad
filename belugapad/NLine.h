@@ -43,6 +43,8 @@
     BOOL holdingBubble;
     float holdingBubbleOffset;
     int bubblePushDir;
+    int lastBubbleLoc;
+    int evalTarget;
 }
 
 -(void)populateGW;

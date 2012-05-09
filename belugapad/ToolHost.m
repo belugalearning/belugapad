@@ -563,6 +563,7 @@ static float kMoveToNextProblemTime=2.0f;
 {
     [metaQuestionLayer removeAllChildrenWithCleanup:YES];
     
+    metaQuestionForThisProblem=NO;
     metaQuestionForceComplete=NO;
 }
 
@@ -688,46 +689,50 @@ static float kMoveToNextProblemTime=2.0f;
 }
 -(void)evalMetaQuestion
 {
-    int countRequired=0;
-    int countFound=0;
-    int countSelected=0;
-
-    for(int i=0; i<metaQuestionAnswerCount; i++)
+    if(metaQuestionForThisProblem)
     {
-        // check whether the hit answer is an answer
-        BOOL isAnswer=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_VALUE] boolValue];
         
-        // and check its current selected value
-        BOOL isSelected=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_SELECTED] boolValue];
+    
+        int countRequired=0;
+        int countFound=0;
+        int countSelected=0;
+
+        for(int i=0; i<metaQuestionAnswerCount; i++)
+        {
+            // check whether the hit answer is an answer
+            BOOL isAnswer=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_VALUE] boolValue];
+            
+            // and check its current selected value
+            BOOL isSelected=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_SELECTED] boolValue];
+            
+            // check current iteration is an answer and is selected
+            if(isAnswer)
+            {
+                countRequired++;
+            }
+            if(isSelected)
+            {
+                countSelected++;
+            }
+            // if it's an answer and selected then it's been found by the user
+            if(isAnswer && isSelected)
+            {
+                countFound++;
+            }
+        }
         
-        // check current iteration is an answer and is selected
-        if(isAnswer)
+        
+        
+        if(countRequired==countFound && countFound==countSelected)
         {
-            countRequired++;
+            [self doWinning];
         }
-        if(isSelected)
+        else
         {
-            countSelected++;
+            [self doIncomplete];
         }
-        // if it's an answer and selected then it's been found by the user
-        if(isAnswer && isSelected)
-        {
-            countFound++;
-        }
-    }
-    
-    
-    
-    if(countRequired==countFound && countFound==countSelected)
-    {
-        [self doWinning];
-    }
-    else
-    {
-        [self doIncomplete];
-    }
 
-
+    }
 }
 -(void)deselectAnswersExcept:(int)answerNumber
 {

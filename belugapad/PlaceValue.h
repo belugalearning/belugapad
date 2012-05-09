@@ -112,6 +112,9 @@
     CCSprite *condensePanel;
     CCSprite *mulchPanel;
     
+    CGRect boundingBoxCondense;
+    CGRect boundingBoxMulch;
+    
     BOOL inBlockTransition;
     BOOL inCondenseArea;
     BOOL inMulchArea;

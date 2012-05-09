@@ -8,6 +8,8 @@
 
 #import "DWGameObject.h"
 
+@class DWDotGridAnchorGameObject;
+
 typedef enum {
     kTopLeft=0,
     kTopRight=1,
@@ -27,5 +29,6 @@ typedef enum {
 @property CGPoint Position;
 @property BOOL Selected;
 @property int tileSize;
+@property (retain) DWDotGridAnchorGameObject *myAnchor;
 
 @end

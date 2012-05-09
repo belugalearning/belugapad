@@ -66,6 +66,7 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
 @synthesize currentPExpr;
 @synthesize defaultSyllabus;
 @synthesize fullRedraw;
+@synthesize lightUpProgressFromLastNode;
 
 -(void)setCurrentElement:(Element*)element
 {

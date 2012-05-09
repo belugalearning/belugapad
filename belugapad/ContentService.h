@@ -19,6 +19,7 @@
 @property (nonatomic, readonly, retain) BAExpressionTree *currentPExpr;
 @property (nonatomic, readonly, retain) Syllabus *defaultSyllabus;
 @property BOOL fullRedraw;
+@property BOOL lightUpProgressFromLastNode;
 
 -(id)initWithProblemPipeline:(NSString*)source;
 -(void)gotoNextProblem;

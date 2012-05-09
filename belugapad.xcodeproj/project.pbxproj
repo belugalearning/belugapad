@@ -313,7 +313,6 @@
 		7FCBC3E415100CF700066426 /* BATio.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E315100CF700066426 /* BATio.m */; };
 		7FCBC3E815100F3D00066426 /* MathMLConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E715100F3D00066426 /* MathMLConsts.m */; };
 		7FCBC3EB1510195F00066426 /* ExprIOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3EA1510195F00066426 /* ExprIOTests.m */; };
-		7FD18782154E027E008F0A31 /* DWLongDivGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD18781154E027E008F0A31 /* DWLongDivGameObject.m */; };
 		7FD18786154E02AD008F0A31 /* BLongDivGameObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD18785154E02AD008F0A31 /* BLongDivGameObjectRender.m */; };
 		7FD18789154E6B81008F0A31 /* NodeSlice.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD18788154E6B81008F0A31 /* NodeSlice.m */; };
 		7FD1878C154E7396008F0A31 /* PipelineNodeSliceInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD1878B154E7395008F0A31 /* PipelineNodeSliceInstance.m */; };
@@ -923,8 +922,6 @@
 		7FCBC3E615100F3D00066426 /* MathMLConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathMLConsts.h; sourceTree = "<group>"; };
 		7FCBC3E715100F3D00066426 /* MathMLConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MathMLConsts.m; sourceTree = "<group>"; };
 		7FCBC3EA1510195F00066426 /* ExprIOTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprIOTests.m; sourceTree = "<group>"; };
-		7FD18780154E027E008F0A31 /* DWLongDivGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWLongDivGameObject.h; sourceTree = "<group>"; };
-		7FD18781154E027E008F0A31 /* DWLongDivGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWLongDivGameObject.m; sourceTree = "<group>"; };
 		7FD18784154E02AD008F0A31 /* BLongDivGameObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLongDivGameObjectRender.h; sourceTree = "<group>"; };
 		7FD18785154E02AD008F0A31 /* BLongDivGameObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLongDivGameObjectRender.m; sourceTree = "<group>"; };
 		7FD18787154E6B81008F0A31 /* NodeSlice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeSlice.h; sourceTree = "<group>"; };
@@ -1981,7 +1978,6 @@
 		7FC27F6B150FA9FC00E16A44 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				7FD1877E154E0263008F0A31 /* LongDivision */,
 				55C5F71E1538867F009D8906 /* DotGrid */,
 				55C5F71D15388665009D8906 /* NLine */,
 				55C5F71C1538863C009D8906 /* Partition */,
@@ -2002,15 +1998,6 @@
 				7FC27F81150FB1AD00E16A44 /* BNLineRamblerRender.m */,
 			);
 			name = NLine;
-			sourceTree = "<group>";
-		};
-		7FD1877E154E0263008F0A31 /* LongDivision */ = {
-			isa = PBXGroup;
-			children = (
-				7FD18780154E027E008F0A31 /* DWLongDivGameObject.h */,
-				7FD18781154E027E008F0A31 /* DWLongDivGameObject.m */,
-			);
-			name = LongDivision;
 			sourceTree = "<group>";
 		};
 		7FD18783154E02A2008F0A31 /* LongDivision */ = {
@@ -2501,7 +2488,6 @@
 				7F2CAEDB154AB58B00BFBB6F /* LongDivision.m in Sources */,
 				7F5BD842154AB6A70092740B /* JourneyScene.m in Sources */,
 				7F5BD846154AFAE70092740B /* Relation.m in Sources */,
-				7FD18782154E027E008F0A31 /* DWLongDivGameObject.m in Sources */,
 				7FD18786154E02AD008F0A31 /* BLongDivGameObjectRender.m in Sources */,
 				7FD18789154E6B81008F0A31 /* NodeSlice.m in Sources */,
 				7FD1878C154E7396008F0A31 /* PipelineNodeSliceInstance.m in Sources */,

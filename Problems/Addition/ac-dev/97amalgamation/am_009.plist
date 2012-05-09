@@ -60,8 +60,6 @@
 			<integer>0</integer>
 			<key>NUMBER</key>
 			<integer>2</integer>
-			<key>NUMBER_PRE_COUNTED</key>
-			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
@@ -69,8 +67,6 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>3</integer>
-			<key>NUMBER_PRE_COUNTED</key>
 			<integer>3</integer>
 		</dict>
 	</array>

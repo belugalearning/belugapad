@@ -23,6 +23,8 @@
 
 #import "ToolHost.h"
 
+#import "SimpleAudioEngine.h"
+
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchModelFactory.h>
 
@@ -127,6 +129,8 @@ typedef enum {
         //daemon=[[Daemon alloc] initWithLayer:mapLayer andRestingPostion:[mapLayer convertToNodeSpace:ccp(cx, cy)] andLy:ly];
         daemon=[[Daemon alloc] initWithLayer:foreLayer andRestingPostion:ccp(cx, cy) andLy:ly];
         [daemon setMode:kDaemonModeFollowing];
+        
+        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/mood.mp3") loop:YES];
     }
     
     return self;

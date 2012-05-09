@@ -99,12 +99,12 @@ static float kBubblePushSpeed=400.0f;
 {
 	[gw doUpdate:delta];
     
-    float distFromCentre=-rambler.TouchXOffset + ((bubbleSprite.position.x + holdingBubbleOffset) - cx);
-    if (distFromCentre <= ([rambler.MaxValue floatValue] * rambler.DefaultSegmentSize)
-        && distFromCentre >= ([rambler.MinValue floatValue] * rambler.DefaultSegmentSize)) {
+//    float distFromCentre=-rambler.TouchXOffset + ((bubbleSprite.position.x + holdingBubbleOffset) - cx);
+//    if (distFromCentre <= ([rambler.MaxValue floatValue] * rambler.DefaultSegmentSize)
+//        && distFromCentre >= ([rambler.MinValue floatValue] * rambler.DefaultSegmentSize)) {
         
         rambler.TouchXOffset+=bubblePushDir * kBubblePushSpeed * delta;
-    }    
+//    }    
     
 }
 
@@ -274,13 +274,13 @@ static float kBubblePushSpeed=400.0f;
         }
         else {
 
-            float distFromCentre=-rambler.TouchXOffset + ((bubbleSprite.position.x + holdingBubbleOffset) - cx);
-            if (distFromCentre <= ([rambler.MaxValue floatValue] * rambler.DefaultSegmentSize)
-                && distFromCentre >= ([rambler.MinValue floatValue] * rambler.DefaultSegmentSize)) {
+//            float distFromCentre=-rambler.TouchXOffset + ((bubbleSprite.position.x + holdingBubbleOffset) - cx);
+//            if (distFromCentre <= ([rambler.MaxValue floatValue] * rambler.DefaultSegmentSize)
+//                && distFromCentre >= ([rambler.MinValue floatValue] * rambler.DefaultSegmentSize)) {
 
                 [bubbleSprite setPosition:ccp(location.x + holdingBubbleOffset, bubbleSprite.position.y)];
                 
-            }
+//            }
             
             bubblePushDir=0;
         }
@@ -309,6 +309,10 @@ static float kBubblePushSpeed=400.0f;
         float stepsFromCentre=distFromCentre / rambler.DefaultSegmentSize;
         int roundedStepsFromCentre=(int)(stepsFromCentre + 0.5f);
         NSLog(@"bubble pos %d", roundedStepsFromCentre);
+        
+        if(roundedStepsFromCentre>[rambler.MaxValue intValue])roundedStepsFromCentre=[rambler.MaxValue intValue];
+        if(roundedStepsFromCentre<[rambler.MinValue intValue])roundedStepsFromCentre=[rambler.MinValue intValue];
+        
         lastBubbleLoc=roundedStepsFromCentre;
         
         //diff (moveby)

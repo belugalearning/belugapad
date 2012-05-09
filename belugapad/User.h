@@ -26,5 +26,6 @@
 @property (retain) NSArray *elementsStarted;
 @property (retain) NSArray *elementsCompleted;
 @property (retain) NSString *currentElementId;
+@property (retain) NSArray *nodesCompleted;
 
 @end

@@ -25,6 +25,7 @@ NSString *const kZubiScreenshotFile = @"zubi_screenshot.png";
 @dynamic topicsStarted, topicsCompleted, currentTopicId;
 @dynamic modulesStarted, modulesCompleted, currentModuleId;
 @dynamic elementsStarted, elementsCompleted, currentElementId;
+@dynamic nodesCompleted;
 
 - (UIImage*) zubiScreenshot
 {
@@ -64,6 +65,8 @@ NSString *const kZubiScreenshotFile = @"zubi_screenshot.png";
         
         self.elementsStarted = [NSArray array];
         self.elementsCompleted = [NSArray array];
+        
+        self.nodesCompleted = [NSArray array];
         
         self.autosaves = YES;
     }

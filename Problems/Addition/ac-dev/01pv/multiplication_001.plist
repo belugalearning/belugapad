@@ -151,5 +151,7 @@
 		<key>100</key>
 		<false/>
 	</dict>
+	<key>X_OFFSET</key>
+	<real>-0.25</real>
 </dict>
 </plist>

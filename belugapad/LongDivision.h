@@ -29,6 +29,8 @@
     CCSprite *line;
     CCSprite *marker;
     CCLabelTTF *markerText;
+    CCSprite *startMarker;
+    CCSprite *endMarker;
     
     NSMutableArray *numberRows;
     NSMutableArray *numberLayers;
@@ -51,6 +53,7 @@
     BOOL doingVerticalDrag;
     
     BOOL goodBadHighlight;
+    BOOL renderBlockLabels;
     
     float dividend;
     float divisor;

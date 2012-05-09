@@ -11,7 +11,7 @@
 	<key>COL_BASE_VALUE</key>
 	<integer>10</integer>
 	<key>X_OFFSET</key>
-	<real>0.3</real>
+	<real>0.25</real>
 	<key>FIRST_COL_VALUE</key>
 	<integer>1</integer>
 	<key>NUMBER_COLS</key>

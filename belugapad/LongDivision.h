@@ -77,8 +77,6 @@
     float cumulativeTotal;
     float lastBaseEval;
     float currentScaleY;
-    BOOL creatingObject;
-    BOOL destroyingObject;
     NSMutableArray *renderedBlocks;
     
     //problem state

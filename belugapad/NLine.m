@@ -306,19 +306,40 @@ static float kBubblePushSpeed=400.0f;
         
         float distFromCentre=-rambler.TouchXOffset + (bubbleSprite.position.x - cx);
         float stepsFromCentre=distFromCentre / rambler.DefaultSegmentSize;
+        
         int roundedStepsFromCentre=(int)(stepsFromCentre + 0.5f);
+        if(stepsFromCentre<0) roundedStepsFromCentre=(int)(stepsFromCentre - 0.5f);
+        
         NSLog(@"bubble pos %d", roundedStepsFromCentre);
         
-        if(roundedStepsFromCentre>[rambler.MaxValue intValue])roundedStepsFromCentre=[rambler.MaxValue intValue];
-        if(roundedStepsFromCentre<[rambler.MinValue intValue])roundedStepsFromCentre=[rambler.MinValue intValue];
         
-        lastBubbleLoc=roundedStepsFromCentre + [[problemDef objectForKey:START_VALUE] intValue];
+        int startOffset=[[problemDef objectForKey:START_VALUE] intValue];
+        lastBubbleLoc = roundedStepsFromCentre+startOffset;
+        int adjustedStepsFromCentre=roundedStepsFromCentre;
         
+        if (lastBubbleLoc>[rambler.MaxValue intValue]) adjustedStepsFromCentre = [rambler.MaxValue intValue] - startOffset;
+        
+        if(lastBubbleLoc<[rambler.MinValue intValue]) adjustedStepsFromCentre = [rambler.MinValue intValue] - startOffset;
+
         //diff (moveby)
-        float diffx=(roundedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
+        float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
         [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
+               
+//        int roundedStepsFromActualCentre=roundedStepsFromCentre;
+//        
+//        roundedStepsFromCentre += [[problemDef objectForKey:START_VALUE] intValue];
+//        
+//        if(roundedStepsFromCentre>[rambler.MaxValue intValue])roundedStepsFromCentre=[rambler.MaxValue intValue] - [[problemDef objectForKey:START_VALUE] intValue];
+//        if(roundedStepsFromCentre<[rambler.MinValue intValue])roundedStepsFromCentre=[rambler.MinValue intValue] - [[problemDef objectForKey:START_VALUE] intValue];
+//        
+//        //lastBubbleLoc=roundedStepsFromCentre + [[problemDef objectForKey:START_VALUE] intValue];
+//        lastBubbleLoc=roundedStepsFromCentre;
         
+//        //diff (moveby)
+//        float diffx=(roundedStepsFromActualCentre * rambler.DefaultSegmentSize)-distFromCentre;
+//        [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
     }
+    
 //    if(inRamblerArea)
 //    {
 //        [rambler handleMessage:kDWnlineReleaseRamblerAtOffset];

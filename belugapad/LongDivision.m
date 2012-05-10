@@ -157,6 +157,11 @@ const float kScaleOfLesserBlocks=0.6f;
         [lbl setOpacity:opac];
     }
     
+    for(int n=0;n<[selectedNumbers count];n++)
+    {
+            [self checkBlock:n];
+    }
+    
     if(evalMode==kProblemEvalAuto)[self evalProblem];
     [self updateBlock];
 }
@@ -283,14 +288,14 @@ const float kScaleOfLesserBlocks=0.6f;
     [self updateLabels:markerPos];
 }
 
--(void)checkBlock
+-(void)checkBlock:(int)thisRow
 {
     // we need to find out where this block should go
-    float myBase=[[rowMultipliers objectAtIndex:activeRow]floatValue];
+    float myBase=[[rowMultipliers objectAtIndex:thisRow]floatValue];
     
     if(renderedBlocks.count==0)
     {
-        [self createBlockAtIndex:0 withBase:[[rowMultipliers objectAtIndex:activeRow]floatValue]];
+        [self createBlockAtIndex:0 withBase:[[rowMultipliers objectAtIndex:thisRow]floatValue]];
     }
     else 
     {
@@ -299,17 +304,30 @@ const float kScaleOfLesserBlocks=0.6f;
         //if(creatingObject && (previousNumberPos!=currentNumberPos || previousRow!=activeRow))
         {
             // we need to look at what exists currently
+            int curAtThisBase=0;
             for(int i=0;i<[renderedBlocks count];i++)
             {
+                //NSLog(@"current found at this base %d", curAtThisBase
                 NSDictionary *curDict=[renderedBlocks objectAtIndex:i];
                 float theirBase=[[curDict objectForKey:ROW_MULTIPLIER]floatValue];
                 
-                if(theirBase<myBase)
+                //NSLog(@"current count at this base %d, required %d", curAtThisBase, [[selectedNumbers objectAtIndex:thisRow]intValue]);
+                
+                if(curAtThisBase>[[selectedNumbers objectAtIndex:thisRow]intValue])
+                {
+                    destroyingObject=YES;
+                    continue;
+                }
+                else if(theirBase<myBase && curAtThisBase<=[[selectedNumbers objectAtIndex:thisRow]intValue])
                 {
                     if(i==0)[self createBlockAtIndex:i withBase:myBase];
                     else [self createBlockAtIndex:i-1 withBase:myBase];
                     return;
                 }
+                else {
+                    curAtThisBase++;
+                }
+
             }
             // if nowt init, create the block at the end
             [self createBlockAtIndex:[renderedBlocks count] withBase:myBase];
@@ -333,6 +351,8 @@ const float kScaleOfLesserBlocks=0.6f;
                 }
             }
         }
+        creatingObject=YES;
+        destroyingObject=NO;
     }
 }
 
@@ -508,22 +528,22 @@ const float kScaleOfLesserBlocks=0.6f;
             }
                            
             
-            if(location.x<lastTouch.x)
-            {
-                creatingObject=YES;
-                destroyingObject=NO;
-            }
-            if(location.x>lastTouch.x)
-            {
-                creatingObject=NO;
-                destroyingObject=YES;
-            }
-            
-            if(scrollByNumber!=previousNumberPos)
-            {
-                [self checkBlock];
-                previousNumberPos=scrollByNumber;
-            }
+//            if(location.x<lastTouch.x)
+//            {
+//                creatingObject=YES;
+//                destroyingObject=NO;
+//            }
+//            if(location.x>lastTouch.x)
+//            {
+//                creatingObject=NO;
+//                destroyingObject=YES;
+//            }
+//            
+//            if(scrollByNumber!=previousNumberPos)
+//            {
+//                [self checkBlock];
+//                previousNumberPos=scrollByNumber;
+//            }
 
         
         }
@@ -602,14 +622,14 @@ const float kScaleOfLesserBlocks=0.6f;
         [selectedNumbers replaceObjectAtIndex:activeRow withObject:[NSNumber numberWithInt:currentNumberPos]];
 
         
-        if(location.x<lastTouch.x)
-            creatingObject=YES;
-        
-        if(location.x>lastTouch.x)
-            destroyingObject=YES;
-        
-        if(currentNumberPos!=previousNumberPos)
-            [self checkBlock];
+//        if(location.x<lastTouch.x)
+//            creatingObject=YES;
+//        
+//        if(location.x>lastTouch.x)
+//            destroyingObject=YES;
+//        
+//        if(currentNumberPos!=previousNumberPos)
+//            [self checkBlock];
         
     }
     

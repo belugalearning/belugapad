@@ -89,7 +89,7 @@
 -(void)createVisibleNumbers;
 -(void)updateLabels:(CGPoint)position;
 -(void)updateBlock;
--(void)checkBlock;
+-(void)checkBlock:(int)thisRow;
 -(void)createBlockAtIndex:(int)index withBase:(float)base;
 -(void)populateGW;
 -(void)handlePassThruScaling:(float)scale;

@@ -357,13 +357,11 @@
                 // this is if the end point is higher in the grid
                 for(int y=anchStart.myYpos;y<anchEnd.myYpos;y++)
                 {
-                    //NSLog(@"this shape is x %d y %d", 
                     DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
                     // if current anchor is disabled AND we're not in problem setup AND not in the game state we want OR if the current anchor already has a tile on it
                     
                     if((curAnch.tile || curAnch.Disabled) && !gw.Blackboard.inProblemSetup && (!gameState==kStartAnchor || !gameState==kResizeShape))return;
-//                    if(x==anchEnd.myXpos-1 && y==anchStart.myYpos && thisShape.resizeHandle)curAnch.resizeHandle=YES;
-//                    if(x==anchStart.myXpos && y==anchEnd.myYpos-1 && thisShape.moveHandle)curAnch.moveHandle=YES;
+
                     [anchorsForShape addObject:curAnch];
                 }
             }
@@ -492,8 +490,7 @@
     if([anchors count]==0)return;
     
     // we are deleting
-    if([anchors count]<[thisShape.tiles count])
-    {
+
         for(DWDotGridTileGameObject *tile in thisShape.tiles)
         {
             if(![anchors containsObject:tile.myAnchor])
@@ -514,12 +511,10 @@
             [tile handleMessage:kDWdismantle];
             [thisShape.tiles removeObject:tile];
             [gw delayRemoveGameObject:tile];
+            NSLog(@"remove tile at anch %d/%d", tile.myAnchor.myXpos, tile.myAnchor.myYpos);
             NSLog(@"current anchors %d anchors left to remove %d amount to remove %d", [anchors count], [thisShape.tiles count], [removeObjects count]);
         }
-    }
     
-    else 
-    {
         // loop through the anchors we've been given
         for(DWDotGridAnchorGameObject *curAnch in anchors)
         {
@@ -536,7 +531,7 @@
                 curAnch.tile=tile;
                 tile.myAnchor=curAnch;
             }
-        }
+
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
     }
 

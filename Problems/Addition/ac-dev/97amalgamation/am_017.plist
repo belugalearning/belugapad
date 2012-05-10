@@ -20,7 +20,7 @@
 			<key>START_X</key>
 			<integer>3</integer>
 			<key>START_Y</key>
-			<integer>4</integer>
+			<integer>5</integer>
 			<key>END_X</key>
 			<integer>6</integer>
 			<key>END_Y</key>
@@ -37,7 +37,7 @@
 					<key>POS_X</key>
 					<integer>3</integer>
 					<key>POS_Y</key>
-					<integer>4</integer>
+					<integer>5</integer>
 				</dict>
 			</array>
 			<key>DISABLE_COUNTING</key>

@@ -12,6 +12,8 @@
 	<integer>4</integer>
 	<key>GOOD_BAD_HIGHLIGHT</key>
 	<true/>
+	<key>START_ROW</key>
+	<integer>1</integer>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 </dict>

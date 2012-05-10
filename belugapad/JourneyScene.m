@@ -159,6 +159,8 @@ typedef enum {
     
     kcmNodes=[contentService allConceptNodes];
     
+    prereqRelations=[contentService relationMembersForName:@"Prerequisites"];
+    
     [self parseForBoundsAndCreateKcmIndex];
     
     //shifting to proximity create
@@ -456,6 +458,36 @@ typedef enum {
                         [n.lightSprite setScale:1.0f];
 //                        [n.lightSprite runAction:[CCFadeIn actionWithDuration:1.0f]];
 //                        [n.lightSprite runAction:[CCScaleTo actionWithDuration:1.0f scale:10.0f]];
+                        
+                        int tagCount=3;
+                        
+                        //parse prereqs destinations and light them up
+                        for (NSArray *prq in prereqRelations) {
+                            NSString *id1=[prq objectAtIndex:0];
+                            NSString *id2=[prq objectAtIndex:1];
+                            
+                            if([id1 isEqualToString:n.document.documentID])
+                            {
+                                //draw a light at that end point
+                                for (ConceptNode *endpoint in visibleNodes) {
+                                    if([id2 isEqualToString:endpoint.document.documentID])
+                                    {
+                                        CCSprite *l=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-light-dest.png")];
+                                        [l setBlendFunc:(ccBlendFunc){GL_ZERO, GL_ONE_MINUS_SRC_ALPHA}];
+                                        CGPoint dlpos=ccp([endpoint.x floatValue] * kNodeScale, (nMaxY-[endpoint.y floatValue]) * kNodeScale);
+                                        [l setPosition:[mapLayer convertToWorldSpace: dlpos]];
+                                        [l setScale:1.0f];
+                                        [l retain];
+                                        [lightSprites addObject:l];  
+                                        [l setTag:tagCount];
+                                        tagCount++;
+                                        
+                                        endpoint.lightSprite=l;
+                                    }
+                                }
+                            }
+                        }
+                        
                     }
                 }
             }
@@ -583,7 +615,7 @@ typedef enum {
     
     for (CCSprite *l in lightSprites) {
         
-        if(l.tag==1)
+        if(l.tag>0)
         {
             if(deltacum>l.tag * kLightInDelay)
             {

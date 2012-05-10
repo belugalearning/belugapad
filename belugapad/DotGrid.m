@@ -513,6 +513,7 @@
             tile.myAnchor=nil;
             [tile handleMessage:kDWdismantle];
             [thisShape.tiles removeObject:tile];
+            [gw delayRemoveGameObject:tile];
             NSLog(@"current anchors %d anchors left to remove %d amount to remove %d", [anchors count], [thisShape.tiles count], [removeObjects count]);
         }
     }
@@ -559,7 +560,6 @@ thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
     
     NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
     [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
-    [gw handleMessage:kDWswitchSelection andPayload:pl withLogLevel:-1];
     
     
     // if a handle responds saying it's been touched
@@ -584,6 +584,9 @@ thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
         }
         
     }
+        
+    // if we get past having a handle, then send a switchselection
+    [gw handleMessage:kDWswitchSelection andPayload:pl withLogLevel:-1];
     
     if(gw.Blackboard.FirstAnchor && !((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).tile) {
         ((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Disabled=YES;

@@ -24,19 +24,10 @@
 @implementation ProblemAttempt
 
 @dynamic type;
-@dynamic userId;
+@dynamic user;
 @dynamic userNickName;
-@dynamic problemId;
-@dynamic problemRevisionId;
-@dynamic elementId;
-@dynamic elementRevisionId;
-@dynamic elementName;
-@dynamic moduleId;
-@dynamic moduleRevisionId;
-@dynamic moduleName;
-@dynamic topicId;
-@dynamic topicRevisionId;
-@dynamic topicName;
+@dynamic problem;
+@dynamic problemRev;
 @dynamic dateTimeStart;
 @dynamic dateTimeEnd;
 @dynamic onStartUserEvents;
@@ -45,8 +36,7 @@
 @dynamic timeInPlay;                                                                                                                                                                   
 @dynamic success;                                                                                                                                                                                 
 @dynamic interactionEvents;
-@dynamic pointsAwarded;                                                                                                                                                               
-@dynamic elementCompletionOnEnd;
+@dynamic pointsAwarded;
 
 - (id) initAndStartAttemptForUser:(User*)user
                        andProblem:(Problem*)problem
@@ -58,28 +48,11 @@
         self.database = user.database;
         self.type = @"problem attempt";
         
-        self.userId = user.document.documentID;
+        self.user = user;
         self.userNickName = user.nickName;
         
-        self.problemId = problem.document.documentID;
-        self.problemRevisionId = [problem.document propertyForKey:@"_rev"];
-        
-        CouchDatabase *contentDb = problem.database;
-        
-        CouchDocument *t = [contentDb documentWithID:problem.topicId];
-        self.topicId = t.documentID;
-        self.topicRevisionId = [t propertyForKey:@"_rev"];
-        self.topicName = [t propertyForKey:@"name"];
-        
-        CouchDocument *m = [contentDb documentWithID:problem.moduleId];
-        self.moduleId = m.documentID;
-        self.moduleRevisionId = [m propertyForKey:@"_rev"];
-        self.moduleName = [m propertyForKey:@"name"];
-        
-        CouchDocument *e = [contentDb documentWithID:problem.elementId];
-        self.elementId = e.documentID;
-        self.elementRevisionId = [e propertyForKey:@"_rev"];
-        self.elementName = [e propertyForKey:@"name"];
+        self.problem = problem;
+        self.problemRev = [problem.document propertyForKey:@"_rev"];
         
         self.dateTimeStart = [NSDate date];
         self.dateTimeEnd = nil;
@@ -94,7 +67,6 @@
         [[self save] wait];
         
         timePaused = 0;
-        problemAssessmentCriteria = [problem.assessmentCriteria copy];
     }
     return self;
 }
@@ -131,22 +103,8 @@
 {
     if (currentPause) [self togglePause];
     self.dateTimeEnd = [NSDate date];
-    self.timeInPlay = [self.dateTimeEnd timeIntervalSinceDate:self.dateTimeStart] - timePaused;
-    
-    self.success = (success ? true : false);
-    if (success)
-    {
-        // TODO: currently akways awarding max assessment criteria points!!!!
-        NSMutableArray *points = [NSMutableArray array];
-        for (NSDictionary *d in problemAssessmentCriteria)
-        {
-            NSString *criterionId = [d objectForKey:@"id"];
-            NSString *maxScore = [d objectForKey:@"maxScore"];
-            [points addObject:[NSDictionary dictionaryWithObjectsAndKeys:maxScore, @"points", criterionId, @"criterionId", nil]];
-        }
-        self.pointsAwarded = points;
-    }
-    
+    self.timeInPlay = [self.dateTimeEnd timeIntervalSinceDate:self.dateTimeStart] - timePaused;    
+    self.success = (success ? true : false);    
     [[self save] wait];
 }
 

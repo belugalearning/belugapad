@@ -233,6 +233,14 @@ static float kMoveToNextProblemTime=2.0f;
     {
         //no more problems in this sequence, bail to menu
         
+        /********
+         * Gareth:
+         * Note from Nick - what used to happen, and probably should again as soon as is convenient, is that completion events (then topic/module/element, now pipeline/node) were stored on the associated ProblemAttempt document.
+         * What had been completed was calculated in UsersService#endProblemAttempt.
+         * The events strings were taken form UsersService#userEventsString
+        ********/
+        
+        
         //assume completion
         [contentService setPipelineNodeComplete];
         contentService.fullRedraw=YES;

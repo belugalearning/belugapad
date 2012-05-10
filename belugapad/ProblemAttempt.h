@@ -12,19 +12,10 @@
 @interface ProblemAttempt : CouchModel
 
 @property (retain) NSString *type;
-@property (retain) NSString *userId;
+@property (retain) User *user;
 @property (retain) NSString *userNickName;
-@property (retain) NSString *problemId;
-@property (retain) NSString *problemRevisionId;
-@property (retain) NSString *elementId;
-@property (retain) NSString *elementRevisionId;
-@property (retain) NSString *elementName;
-@property (retain) NSString *moduleId;
-@property (retain) NSString *moduleRevisionId;
-@property (retain) NSString *moduleName;
-@property (retain) NSString *topicId;
-@property (retain) NSString *topicRevisionId;
-@property (retain) NSString *topicName;
+@property (retain) Problem *problem;
+@property (retain) NSString *problemRev;
 @property (retain) NSDate *dateTimeStart;
 @property (retain) NSDate *dateTimeEnd;
 @property (retain) NSArray *onStartUserEvents;
@@ -34,7 +25,6 @@
 @property bool success;
 @property (retain) NSArray *interactionEvents;
 @property (retain) NSArray *pointsAwarded;
-@property double elementCompletionOnEnd;
 
 - (id) initAndStartAttemptForUser:(User*)user
                        andProblem:(Problem*)problem

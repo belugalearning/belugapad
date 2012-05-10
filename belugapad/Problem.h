@@ -10,11 +10,6 @@
 
 @interface Problem : CouchModel
 
-@property (readonly, retain) NSString *syllabusId;
-@property (readonly, retain) NSString *topicId;
-@property (readonly, retain) NSString *moduleId;
-@property (readonly, retain) NSString *elementId;
-@property (readonly, retain) NSArray *assessmentCriteria;
 @property (readonly) NSDictionary *pdef;
 @property (readonly) NSData *expressionData;
 

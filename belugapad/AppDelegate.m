@@ -12,8 +12,6 @@
 #import "ContentService.h"
 #import "ToolHost.h"
 
-#import "MenuScene.h"
-
 #import "cocos2d.h"
 
 #import "AppDelegate.h"
@@ -21,7 +19,6 @@
 #import "UsersService.h"
 #import "SelectUserViewController.h"
 #import "LoadingViewController.h"
-#import "MenuScene.h"
 #import <CouchCocoa/CouchCocoa.h>
 
 @interface AppController()

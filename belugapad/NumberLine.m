@@ -9,8 +9,7 @@
 #import "NumberLine.h"
 #import "global.h"
 #import "BLMath.h"
-
-#import "MenuScene.h"
+#import "JourneyScene.h"
 
 #import "SimpleAudioEngine.h"
 
@@ -154,7 +153,8 @@
     if(location.x>975 & location.y>720)
     {
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
-        [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.4f scene:[MenuScene scene]]];
+        // ***** Gareth: you're busy talking. Line below used to have MenuScene in place of JourneyScene. I've guessed at a substitution
+        [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.4f scene:[JourneyScene scene]]];
     }
     else
     {

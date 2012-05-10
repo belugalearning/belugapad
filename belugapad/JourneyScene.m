@@ -41,6 +41,9 @@ static float kNodeSliceHoldTime=1.0f;
 static CGPoint kPinOffset={-118, -162.5f};
 static float kPinTapRadius=80.0f;
 
+static float kLightInDelay=0.4f;
+static float kLightInTime=0.5f;
+static float kLightInScaleMax=10.0f;
 
 static int kNodeMax=50;
 
@@ -82,6 +85,9 @@ typedef enum {
     CCSprite *nodeSliceLight;
     
     UsersService *usersService;
+    
+    float deltacum;
+    
 }
 
 @end
@@ -446,10 +452,10 @@ typedef enum {
                     if (n==contentService.currentNode && contentService.lightUpProgressFromLastNode) {
                         NSLog(@"got just completed node");
                         [n.lightSprite setTag:1];
-                        //[n.lightSprite setOpacity:0];
-                        //[n.lightSprite setScale:0.1f];
+//                        [n.lightSprite setOpacity:0];
+                        [n.lightSprite setScale:1.0f];
 //                        [n.lightSprite runAction:[CCFadeIn actionWithDuration:1.0f]];
-//                        [n.lightSprite runAction:[CCScaleTo actionWithDuration:1.0f scale:1.0f]];
+//                        [n.lightSprite runAction:[CCScaleTo actionWithDuration:1.0f scale:10.0f]];
                     }
                 }
             }
@@ -557,6 +563,7 @@ typedef enum {
 -(void) doUpdate:(ccTime)delta
 {
     [daemon doUpdate:delta];
+    deltacum+=delta;
     
     if(juiState==kJuiStateNodeSliceTransition)
     {
@@ -578,7 +585,16 @@ typedef enum {
         
         if(l.tag==1)
         {
-            [l setScale:0.5f];
+            if(deltacum>l.tag * kLightInDelay)
+            {
+                float prop = deltacum - (l.tag * kLightInDelay);
+                float newscale=kLightInScaleMax * (prop / kLightInTime);
+                if(newscale>kLightInScaleMax)
+                {
+                    newscale=kLightInScaleMax;
+                }
+                [l setScale:newscale];
+            }
         }
         
         [l visit];

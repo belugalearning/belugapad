@@ -10,6 +10,8 @@
 #import "ToolConsts.h"
 #import "ToolScene.h"
 
+@class DWDotGridShapeGameObject;
+
 typedef enum {
     kAnyStartAnchorValid=0,
     kSpecifiedStartAnchor=1
@@ -70,7 +72,9 @@ typedef enum {
 -(void)populateGW;
 -(void)checkAnchors;
 -(void)checkAnchorsAndUseResizeHandle:(BOOL)showResize andShowMove:(BOOL)showMove andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled;
+-(void)checkAnchorsOfExistingShape:(DWDotGridShapeGameObject*)thisShape;
 -(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled;
+-(void)modifyThisShape:(DWDotGridShapeGameObject*)thisShape withTheseAnchors:(NSArray*)anchors;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

@@ -10,6 +10,7 @@
 #import "JourneyScene.h"
 #import "global.h"
 #import "ContentService.h"
+#import "ToolHost.h"
 
 #import "cocos2d.h"
 
@@ -110,7 +111,7 @@
 	director_.wantsFullScreenLayout = YES;
     
 	// Display FSP and SPF
-	[director_ setDisplayStats:YES];
+	[director_ setDisplayStats:NO];
     
 	// set FPS at 60
 	[director_ setAnimationInterval:1.0/60];
@@ -156,9 +157,10 @@
 
     
     // and add the scene to the stack. The director will run it when it automatically when the view is displayed.
-	[director_ pushScene: (viaIntro ? [ZubiIntro scene] : [JourneyScene scene])]; 
+	//[director_ pushScene: (viaIntro ? [ZubiIntro scene] : [JourneyScene scene])]; 
     
-    //[director_ pushScene:[JourneyScene scene]];
+    [director_ pushScene:[JourneyScene scene]];
+    //[director_ pushScene:[ToolHost scene]];
     
 }
 

@@ -17,6 +17,7 @@
 @property (nonatomic, readonly, retain) NSDictionary *currentPDef;
 @property (nonatomic, readonly, retain) BAExpressionTree *currentPExpr;
 @property BOOL fullRedraw;
+@property BOOL lightUpProgressFromLastNode;
 
 -(id)initWithProblemPipeline:(NSString*)source;
 -(void)setPipelineNodeComplete;

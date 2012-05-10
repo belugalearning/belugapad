@@ -85,7 +85,9 @@
 
 -(void)resizeShape:(CGPoint)location
 {
-    NSLog(@"do stuff here to do stuff with resizing");
+
+    gameWorld.Blackboard.FirstAnchor=(DWGameObject*)shape.firstAnchor;
+    gameWorld.Blackboard.LastAnchor=(DWGameObject*)shape.lastAnchor;
 }
 
 -(void)moveShape:(CGPoint)location

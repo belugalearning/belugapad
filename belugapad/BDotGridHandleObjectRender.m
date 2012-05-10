@@ -35,19 +35,17 @@
 {
     if(messageType==kDWsetupStuff)
     {
-        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
+        CCSprite *mySprite=handle.mySprite;
         if(!mySprite) 
         {
             [self setSprite];
-            [self setSpritePos:NO];            
+            [self setSpritePos];            
         }
     }
     
     if (messageType==kDWmoveSpriteToPosition) {
-        BOOL useAnimation = NO;
-        if([payload objectForKey:ANIMATE_ME]) useAnimation = YES;
         
-        [self setSpritePos:useAnimation];
+        [self setSpritePos];
     }
     if(messageType==kDWupdateSprite)
     {
@@ -56,10 +54,7 @@
             [self setSprite];
         }
         
-        BOOL useAnimation = NO;
-        if([payload objectForKey:ANIMATE_ME]) useAnimation = YES;
-        
-        [self setSpritePos:useAnimation];
+        [self setSpritePos];
     }
     if(messageType==kDWdismantle)
     {
@@ -97,10 +92,9 @@
     
 }
 
--(void)setSpritePos:(BOOL) withAnimation
+-(void)setSpritePos
 {
-    
-    
+    [handle.mySprite setPosition:handle.Position];
 }
 
 -(void) dealloc

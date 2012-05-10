@@ -23,11 +23,14 @@
 
 #import "ToolHost.h"
 
+#import "SimpleAudioEngine.h"
+
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchModelFactory.h>
 
 static float kNodeScale=0.5f;
-static CGPoint kStartMapPos={-3576, -2557};
+//static CGPoint kStartMapPos={-3576, -2557};
+static CGPoint kStartMapPos={-611, 3713};
 static float kPropXNodeDrawDist=1.25f;
 static float kPropXNodeHitDist=0.065f;
 
@@ -100,7 +103,7 @@ typedef enum {
     if(self=[super init])
     {
         self.isTouchEnabled=YES;
-        [[CCDirector sharedDirector] view].multipleTouchEnabled=YES;
+        [[CCDirector sharedDirector] view].multipleTouchEnabled=NO;
         
         CGSize winsize=[[CCDirector sharedDirector] winSize];
         lx=winsize.width;
@@ -127,6 +130,8 @@ typedef enum {
         //daemon=[[Daemon alloc] initWithLayer:mapLayer andRestingPostion:[mapLayer convertToNodeSpace:ccp(cx, cy)] andLy:ly];
         daemon=[[Daemon alloc] initWithLayer:foreLayer andRestingPostion:ccp(cx, cy) andLy:ly];
         [daemon setMode:kDaemonModeFollowing];
+        
+        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/mood.mp3") loop:YES];
     }
     
     return self;
@@ -163,14 +168,46 @@ typedef enum {
     //[self createAllBackgroundTileSprites];
     
     [self createLights];
+    [self addTerrainAtPosition:ccp(1208,-3587) withFile:BUNDLE_FULL_PATH(@"/images/map/fjord-with-base-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(1562,-3500) withFile:BUNDLE_FULL_PATH(@"/images/map/forrest-with-base-4-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(1201,-3226) withFile:BUNDLE_FULL_PATH(@"/images/map/forrest-with-base-3-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(1480,-3032) withFile:BUNDLE_FULL_PATH(@"/images/map/hills-with-base-1-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(1451,-2751) withFile:BUNDLE_FULL_PATH(@"/images/map/mountain-range-with-base-1-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(1038,-2780) withFile:BUNDLE_FULL_PATH(@"/images/map/mountains-with-base-1-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(1146,-2076) withFile:BUNDLE_FULL_PATH(@"/images/map/lake-with-base-1-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(834,-2288) withFile:BUNDLE_FULL_PATH(@"/images/map/lake-with-base-4-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(1553,-2290) withFile:BUNDLE_FULL_PATH(@"/images/map/mountain-range-with-base-1-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(1553,-2290) withFile:BUNDLE_FULL_PATH(@"/images/map/mountain-range-with-base-1-25%.png")];
+    
+    [self addTerrainAtPosition:ccp(587,-2940) withFile:BUNDLE_FULL_PATH(@"/images/map/hills-with-base-3-25%.png")];
+    
+    
     
     NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
+}
+
+-(void)addTerrainAtPosition:(CGPoint)location withFile:(NSString*)thisImage
+{
+    
+    CCSprite *thisSprite=[CCSprite spriteWithFile:thisImage];
+    [thisSprite setPosition:location];
+    [mapLayer addChild:thisSprite];
 }
 
 - (void)createLayers
 {
     //base colour layer
-    CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(0, 59, 72, 255) width:lx height:ly];
+//    CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(0, 59, 72, 255) width:lx height:ly];
+    CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(137, 173, 171, 255) width:lx height:ly];
     [self addChild:cLayer];
     
     //base map layer
@@ -371,7 +408,7 @@ typedef enum {
         ConceptNode *n=[kcmNodes objectAtIndex:i];
      
         
-        CGPoint nlpos=ccp([n.x floatValue] * kNodeScale, [n.y floatValue] * kNodeScale);
+        CGPoint nlpos=ccp([n.x floatValue] * kNodeScale, (nMaxY-[n.y floatValue]) * kNodeScale);
         float diff=[BLMath DistanceBetween:loc and:nlpos];
         
         if(diff<(kPropXNodeDrawDist*lx))
@@ -390,7 +427,8 @@ typedef enum {
                 //setup light if required
                 BOOL isLit=[usersService hasCompletedNodeId:n.document.documentID];
                 
-                if(isLit || [n.document.documentID isEqualToString:@"5608a59d6797796ce9e11484fd14100c"])
+                if(isLit || [n.document.documentID isEqualToString:@"5608a59d6797796ce9e11484fd180214"]
+                   || [n.document.documentID isEqualToString:@"5608a59d6797796ce9e11484fd180be3"])
                 {
                     n.lightSprite=[self createLight];
                     [n.lightSprite setPosition:[mapLayer convertToWorldSpace:n.journeySprite.position]];
@@ -427,7 +465,7 @@ typedef enum {
 -(void)createASpriteForNode:(ConceptNode *)n
 {
     CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-std.png")];
-    [s setPosition:ccp([n.x floatValue] * kNodeScale, [n.y floatValue] * kNodeScale)];
+    [s setPosition:ccp([n.x floatValue] * kNodeScale, (nMaxY-[n.y floatValue]) * kNodeScale)];
     
     if(n.pipelines.count==0)
     {
@@ -553,7 +591,7 @@ typedef enum {
         ConceptNode *n=[kcmNodes objectAtIndex:i];
         
         
-        CGPoint nlpos=ccp([n.x floatValue] * kNodeScale, [n.y floatValue] * kNodeScale);
+        CGPoint nlpos=ccp([n.x floatValue] * kNodeScale, (nMaxY-[n.y floatValue]) * kNodeScale);
         float diff=[BLMath DistanceBetween:location and:nlpos];
         
         if(diff<distance)
@@ -696,6 +734,7 @@ typedef enum {
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    
     UITouch *touch=[touches anyObject];
     CGPoint l=[touch locationInView:[touch view]];
     l=[[CCDirector sharedDirector] convertToGL:l];
@@ -703,6 +742,8 @@ typedef enum {
     lastTouch=l;
     
     CGPoint lOnMap=[mapLayer convertToNodeSpace:l];
+ 
+    NSLog(@"touched at %@", NSStringFromCGPoint(lOnMap));
     
     [daemon setTarget:l];
     [daemon setRestingPoint:l];

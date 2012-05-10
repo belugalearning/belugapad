@@ -59,6 +59,7 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
 @synthesize currentPDef;
 @synthesize currentPExpr;
 @synthesize fullRedraw;
+@synthesize lightUpProgressFromLastNode;
 
 // Designated initializer
 -(id)initWithProblemPipeline:(NSString*)source

@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>worded q: counting on, 3sweets, 2 more.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>worded q: counting on, 3sweets, 2 more.</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>

@@ -41,19 +41,7 @@
         
         [self setPos];
     }
-    if(messageType==kDWupdateSprite)
-    {
-        
-        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
-        if(!mySprite) { 
-            [self setSprite];
-        }
-        
-        BOOL useAnimation = NO;
-        if([payload objectForKey:ANIMATE_ME]) useAnimation = YES;
-        
-        [self setPos];
-    }
+
     if(messageType==kDWdismantle)
     {
         CCSprite *s=[[gameObject store] objectForKey:MY_SPRITE];

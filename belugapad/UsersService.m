@@ -263,10 +263,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
 }
 
 -(void)startProblemAttempt
-{
-    //short-circuiting return here as element/module stuff not valid
-    return;
-    
+{   
     if (currentProblemAttempt)
     {
         // TODO: Shouldn't be here. Handle properly

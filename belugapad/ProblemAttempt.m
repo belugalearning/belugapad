@@ -24,10 +24,10 @@
 @implementation ProblemAttempt
 
 @dynamic type;
-@dynamic userId;
+@dynamic user;
 @dynamic userNickName;
-@dynamic problemId;
-@dynamic problemRevisionId;
+@dynamic problem;
+@dynamic problemRev;
 @dynamic dateTimeStart;
 @dynamic dateTimeEnd;
 @dynamic onStartUserEvents;
@@ -48,11 +48,11 @@
         self.database = user.database;
         self.type = @"problem attempt";
         
-        self.userId = user.document.documentID;
+        self.user = user;
         self.userNickName = user.nickName;
         
-        self.problemId = problem.document.documentID;
-        self.problemRevisionId = [problem.document propertyForKey:@"_rev"];
+        self.problem = problem;
+        self.problemRev = [problem.document propertyForKey:@"_rev"];
         
         self.dateTimeStart = [NSDate date];
         self.dateTimeEnd = nil;
@@ -103,22 +103,8 @@
 {
     if (currentPause) [self togglePause];
     self.dateTimeEnd = [NSDate date];
-    self.timeInPlay = [self.dateTimeEnd timeIntervalSinceDate:self.dateTimeStart] - timePaused;
-    
-    self.success = (success ? true : false);
-    if (success)
-    {
-        // TODO: currently akways awarding max assessment criteria points!!!!
-        NSMutableArray *points = [NSMutableArray array];
-        for (NSDictionary *d in problemAssessmentCriteria)
-        {
-            NSString *criterionId = [d objectForKey:@"id"];
-            NSString *maxScore = [d objectForKey:@"maxScore"];
-            [points addObject:[NSDictionary dictionaryWithObjectsAndKeys:maxScore, @"points", criterionId, @"criterionId", nil]];
-        }
-        self.pointsAwarded = points;
-    }
-    
+    self.timeInPlay = [self.dateTimeEnd timeIntervalSinceDate:self.dateTimeStart] - timePaused;    
+    self.success = (success ? true : false);    
     [[self save] wait];
 }
 

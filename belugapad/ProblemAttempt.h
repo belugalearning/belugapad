@@ -12,10 +12,10 @@
 @interface ProblemAttempt : CouchModel
 
 @property (retain) NSString *type;
-@property (retain) NSString *userId;
+@property (retain) User *user;
 @property (retain) NSString *userNickName;
-@property (retain) NSString *problemId;
-@property (retain) NSString *problemRevisionId;
+@property (retain) Problem *problem;
+@property (retain) NSString *problemRev;
 @property (retain) NSDate *dateTimeStart;
 @property (retain) NSDate *dateTimeEnd;
 @property (retain) NSArray *onStartUserEvents;

@@ -126,6 +126,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     [nc addObject:nodeId];
     
     currentUser.nodesCompleted = nc;
+    [[currentUser save] wait];
 }
 
 -(BOOL)hasCompletedNodeId:(NSString *)nodeId
@@ -280,7 +281,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     // events populated with strings form UsersService#userEvents
     NSMutableArray *events = [NSMutableArray array];
     
-    // previously arrays on user doc like topicsStarted, topicsCompleted etc. were populated here
+    // previously arrays on user doc like topicsStarted, topicsCompleted etc. were updated here
     //[[ur save] wait];
         
     currentProblemAttempt = [[ProblemAttempt alloc] initAndStartAttemptForUser:ur

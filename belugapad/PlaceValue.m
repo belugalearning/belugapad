@@ -916,13 +916,38 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     NSLog(@"currentColIndex: %d, colW %f, locationInNS X %f, shiftedLocationInNS X %f", currentColumnIndex, colW, locationInNS.x, shiftedLocationInNS.x);
 
     
-//    CGPoint transLocation=ccp(location.x+(0.5f*kPropXColumnSpacing),location.y);
-//    transLocation=[renderLayer convertToNodeSpace:location];
-//    
-//    currentColumnIndex=(int)transLocation.x/(numberOfColumns-1*(lx*kPropXColumnSpacing));
-//    currentColumnIndex=fabsf((int)currentColumnIndex);
-//    
-//    NSLog(@"currentColIndex: %f, trans X %f, trans Y %f", currentColumnIndex, transLocation.x, transLocation.y);
+    // create the 2 bounding boxes for condensing and mulching on a touchbegan
+    
+    boundingBoxCondense=CGRectNull;
+    if(currentColumnIndex>0)
+    {
+        
+        for(int i=0;i<[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex-1]count];i++)
+        {
+            for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex-1] objectAtIndex:i]count]; o++)
+            {
+                DWGameObject *go=[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex-1] objectAtIndex:i]objectAtIndex:o];
+                CCSprite *mySprite = [[go store] objectForKey:MY_SPRITE];
+                boundingBoxCondense=CGRectUnion(boundingBoxCondense, mySprite.boundingBox);
+            }
+        }
+        
+    }
+
+    boundingBoxMulch=CGRectNull;
+    if(currentColumnIndex<numberOfColumns-1)
+    {
+        for(int i=0;i<[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+1]count];i++)
+        {
+            for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+1] objectAtIndex:i]count]; o++)
+            {
+                DWGameObject *go=[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+1] objectAtIndex:i]objectAtIndex:o];
+                CCSprite *mySprite = [[go store] objectForKey:MY_SPRITE];
+                boundingBoxMulch=CGRectUnion(boundingBoxMulch, mySprite.boundingBox);
+                NSLog(@"Bounding box width %f", boundingBoxMulch.size.width);
+            }
+        }
+    }
     
     // set the touch start pos for evaluation
     touchStartPos = location;
@@ -1052,23 +1077,9 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     //NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];        
     if(gw.Blackboard.SelectedObjects.count == columnBaseValue && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject])
     {
-        CGRect boundingBoxCondense=CGRectZero;
         //flag we're in inBlockTransition
         inBlockTransition=YES;
-        if(currentColumnIndex>0)
-        {
 
-            for(int i=0;i<[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex-1]count];i++)
-            {
-                for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex-1] objectAtIndex:i]count]; o++)
-                {
-                    DWGameObject *go=[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex-1] objectAtIndex:i]objectAtIndex:o];
-                    CCSprite *mySprite = [[go store] objectForKey:MY_SPRITE];
-                    boundingBoxCondense=CGRectUnion(boundingBoxCondense, mySprite.boundingBox);
-                }
-            }
-
-        }
         if(CGRectContainsPoint(boundingBoxCondense, location) && currentColumnIndex>0)
         //if([BLMath rectContainsPoint:location x:0 y:0 w:200 h:ly] && currentColumnIndex>0)
         {
@@ -1098,20 +1109,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     
     else
     {
-        CGRect boundingBoxMulch=CGRectNull;
-        if(currentColumnIndex<numberOfColumns-1)
-        {
-            for(int i=0;i<[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+1]count];i++)
-            {
-                for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+1] objectAtIndex:i]count]; o++)
-                {
-                    DWGameObject *go=[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+1] objectAtIndex:i]objectAtIndex:o];
-                    CCSprite *mySprite = [[go store] objectForKey:MY_SPRITE];
-                    boundingBoxMulch=CGRectUnion(boundingBoxMulch, mySprite.boundingBox);
-                    NSLog(@"Bounding box width %f", boundingBoxMulch.size.width);
-                }
-            }
-        }
+
         //if([BLMath rectContainsPoint:location x:lx-200 y:0 w:200 h:ly] && currentColumnIndex<([gw.Blackboard.AllStores count]-1))
         if(CGRectContainsPoint(boundingBoxMulch, location) && currentColumnIndex<([gw.Blackboard.AllStores count]-1))
 
@@ -1142,6 +1140,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     inMulchArea=NO;
     [mulchPanel setVisible:NO];
     [condensePanel setVisible:NO];
+    boundingBoxCondense=CGRectNull;
+    boundingBoxMulch=CGRectNull;
     
     touching=NO;
 }
@@ -1419,6 +1419,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         
     }
     potentialTap=NO;
+    boundingBoxCondense=CGRectNull;
+    boundingBoxMulch=CGRectNull;
 }
 
 -(void)resetPickupObjectPos

@@ -15,5 +15,6 @@
 @synthesize Position;
 @synthesize Selected;
 @synthesize tileSize;
+@synthesize myAnchor;
 
 @end

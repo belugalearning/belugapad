@@ -157,6 +157,11 @@ const float kScaleOfLesserBlocks=0.6f;
         [lbl setOpacity:opac];
     }
     
+    for(int n=0;n<[selectedNumbers count];n++)
+    {
+            [self checkBlock:n];
+    }
+    
     if(evalMode==kProblemEvalAuto)[self evalProblem];
     [self updateBlock];
 }
@@ -283,55 +288,44 @@ const float kScaleOfLesserBlocks=0.6f;
     [self updateLabels:markerPos];
 }
 
--(void)checkBlock
+-(void)checkBlock:(int)thisRow
 {
     // we need to find out where this block should go
-    float myBase=[[rowMultipliers objectAtIndex:activeRow]floatValue];
+    float myBase=[[rowMultipliers objectAtIndex:thisRow]floatValue];
     
-    if(renderedBlocks.count==0)
-    {
-        [self createBlockAtIndex:0 withBase:[[rowMultipliers objectAtIndex:activeRow]floatValue]];
-    }
-    else 
-    {
-        // this is when we're creating an object
-        if(creatingObject)
-        //if(creatingObject && (previousNumberPos!=currentNumberPos || previousRow!=activeRow))
+    int selectedForRow=[[selectedNumbers objectAtIndex:thisRow]intValue];
+    
+    int countOfRenderedForRow=0;
+    int indexOfLastRenderedAtMyBase=0;
+    
+    NSDictionary *lastRBDictAtMyBase=nil;
+    
+    for (NSMutableDictionary *rbdict in renderedBlocks) {
+        float rbbase=[[rbdict objectForKey:ROW_MULTIPLIER] floatValue];
+        if(rbbase==myBase)
         {
-            // we need to look at what exists currently
-            for(int i=0;i<[renderedBlocks count];i++)
-            {
-                NSDictionary *curDict=[renderedBlocks objectAtIndex:i];
-                float theirBase=[[curDict objectForKey:ROW_MULTIPLIER]floatValue];
-                
-                if(theirBase<myBase)
-                {
-                    if(i==0)[self createBlockAtIndex:i withBase:myBase];
-                    else [self createBlockAtIndex:i-1 withBase:myBase];
-                    return;
-                }
-            }
-            // if nowt init, create the block at the end
-            [self createBlockAtIndex:[renderedBlocks count] withBase:myBase];
+            countOfRenderedForRow++;
+            lastRBDictAtMyBase=rbdict;
         }
-        
-        
-        // remove object if needed
-        if(destroyingObject)
+        else if(rbbase<myBase)
         {
-            for(int i=0;i<[renderedBlocks count];i++)
-            {
-                NSDictionary *curDict=[renderedBlocks objectAtIndex:i];
-                float theirBase=[[curDict objectForKey:ROW_MULTIPLIER]floatValue];
-                
-                if(theirBase==myBase)
-                {
-                    CCSprite *curSprite=[curDict objectForKey:MY_SPRITE];
-                    [curSprite removeFromParentAndCleanup:YES];
-                    [renderedBlocks removeObjectAtIndex:i];
-                    return;
-                }
-            }
+            break;
+        }
+        indexOfLastRenderedAtMyBase++;
+    }
+    
+    if(countOfRenderedForRow<selectedForRow)
+    {
+        [self createBlockAtIndex:indexOfLastRenderedAtMyBase withBase:myBase];
+    }
+    
+    if(countOfRenderedForRow>selectedForRow)
+    {
+        if(lastRBDictAtMyBase)
+        {
+            CCSprite *remSprite=[lastRBDictAtMyBase objectForKey:MY_SPRITE];
+            [remSprite removeFromParentAndCleanup:YES];
+            [renderedBlocks removeObject:lastRBDictAtMyBase];
         }
     }
 }
@@ -349,12 +343,12 @@ const float kScaleOfLesserBlocks=0.6f;
     [curDict setObject:[NSNumber numberWithFloat:base] forKey:ROW_MULTIPLIER];
     [renderedBlocks insertObject:curDict atIndex:index];
 
-    if(renderBlockLabels) {
-        CCLabelTTF *blockValue=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", base] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-        [blockValue setColor:ccc3(0,255,0)];
-        [blockValue setPosition:curBlock.position];
-        [curBlock addChild:blockValue];
-    }
+//    if(renderBlockLabels) {
+//        CCLabelTTF *blockValue=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", base] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+//        [blockValue setColor:ccc3(0,255,0)];
+//        [blockValue setPosition:curBlock.position];
+//        [curBlock addChild:blockValue];
+//    }
     calc=-curBlock.contentSize.width*curBlock.scaleX;
     
     [curDict setObject:[NSNumber numberWithFloat:calc] forKey:OFFSET];
@@ -507,22 +501,10 @@ const float kScaleOfLesserBlocks=0.6f;
                 [curObj setObject:[NSNumber numberWithFloat:updateOffset] forKey:OFFSET];
             }
                            
-            
-            if(location.x<lastTouch.x)
+            if(scrollByNumber!=currentNumberPos)
             {
-                creatingObject=YES;
-                destroyingObject=NO;
-            }
-            if(location.x>lastTouch.x)
-            {
-                creatingObject=NO;
-                destroyingObject=YES;
-            }
-            
-            if(scrollByNumber!=previousNumberPos)
-            {
-                [self checkBlock];
-                previousNumberPos=scrollByNumber;
+                currentNumberPos=scrollByNumber;
+                [selectedNumbers replaceObjectAtIndex:activeRow withObject:[NSNumber numberWithInt:currentNumberPos]];
             }
 
         
@@ -554,13 +536,10 @@ const float kScaleOfLesserBlocks=0.6f;
     location=[self.ForeLayer convertToNodeSpace:location];
     currentTouchCount-=[touches count];
     isTouching=NO;
-    creatingObject=NO;
-    destroyingObject=NO;
     
     if(doingHorizontalDrag)
     {
-        //if(location.x<lastTouch.x)creatingObject=YES;
-        //if(location.x>lastTouch.x)destroyingObject=YES;
+
         
         CGPoint diff=[BLMath SubtractVector:location from:touchStart];
         diff = ccp(diff.x, 0);
@@ -601,15 +580,6 @@ const float kScaleOfLesserBlocks=0.6f;
         [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(currentNumberPos*-kSpaceBetweenNumbers,moveLayer.position.y)]];
         [selectedNumbers replaceObjectAtIndex:activeRow withObject:[NSNumber numberWithInt:currentNumberPos]];
 
-        
-        if(location.x<lastTouch.x)
-            creatingObject=YES;
-        
-        if(location.x>lastTouch.x)
-            destroyingObject=YES;
-        
-        if(currentNumberPos!=previousNumberPos)
-            [self checkBlock];
         
     }
     
@@ -660,8 +630,6 @@ const float kScaleOfLesserBlocks=0.6f;
     startedInActiveRow=NO;
     doingHorizontalDrag=NO;
     doingVerticalDrag=NO;
-    creatingObject=NO;
-    destroyingObject=NO;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -673,8 +641,6 @@ const float kScaleOfLesserBlocks=0.6f;
     doingHorizontalDrag=NO;
     doingVerticalDrag=NO;
     currentTouchCount-=[touches count];
-    creatingObject=NO;
-    destroyingObject=NO;
 }
 
 -(BOOL)evalExpression

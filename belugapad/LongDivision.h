@@ -77,8 +77,6 @@
     float cumulativeTotal;
     float lastBaseEval;
     float currentScaleY;
-    BOOL creatingObject;
-    BOOL destroyingObject;
     NSMutableArray *renderedBlocks;
     
     //problem state
@@ -89,7 +87,7 @@
 -(void)createVisibleNumbers;
 -(void)updateLabels:(CGPoint)position;
 -(void)updateBlock;
--(void)checkBlock;
+-(void)checkBlock:(int)thisRow;
 -(void)createBlockAtIndex:(int)index withBase:(float)base;
 -(void)populateGW;
 -(void)handlePassThruScaling:(float)scale;

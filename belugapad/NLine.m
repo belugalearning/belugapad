@@ -312,7 +312,7 @@ static float kBubblePushSpeed=400.0f;
         if(roundedStepsFromCentre>[rambler.MaxValue intValue])roundedStepsFromCentre=[rambler.MaxValue intValue];
         if(roundedStepsFromCentre<[rambler.MinValue intValue])roundedStepsFromCentre=[rambler.MinValue intValue];
         
-        lastBubbleLoc=roundedStepsFromCentre;
+        lastBubbleLoc=roundedStepsFromCentre + [[problemDef objectForKey:START_VALUE] intValue];
         
         //diff (moveby)
         float diffx=(roundedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;

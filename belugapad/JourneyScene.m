@@ -168,6 +168,7 @@ typedef enum {
     //[self createAllBackgroundTileSprites];
     
     [self createLights];
+    
     [self addTerrainAtPosition:ccp(1208,-3587) withFile:BUNDLE_FULL_PATH(@"/images/map/fjord-with-base-25%.png")];
     
     [self addTerrainAtPosition:ccp(1562,-3500) withFile:BUNDLE_FULL_PATH(@"/images/map/forrest-with-base-4-25%.png")];
@@ -190,7 +191,14 @@ typedef enum {
     
     [self addTerrainAtPosition:ccp(587,-2940) withFile:BUNDLE_FULL_PATH(@"/images/map/hills-with-base-3-25%.png")];
     
-    
+    //reposition if previous node
+    if(contentService.currentNode)
+    {
+        //put map at this position
+        CGPoint p=ccp(-[contentService.currentNode.x floatValue] * kNodeScale, -(nMaxY - [contentService.currentNode.y floatValue]) * kNodeScale);
+        p=ccpAdd(ccp(cx, cy), p);
+        [mapLayer setPosition:p];
+    }
     
     NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
 }
@@ -212,7 +220,8 @@ typedef enum {
     
     //base map layer
     mapLayer=[[CCLayer alloc] init];
-    [mapLayer setPosition:kStartMapPos];
+    [mapLayer setPosition:kStartMapPos];        
+
     [self addChild:mapLayer];
 
     //darkness layer
@@ -432,6 +441,16 @@ typedef enum {
                 {
                     n.lightSprite=[self createLight];
                     [n.lightSprite setPosition:[mapLayer convertToWorldSpace:n.journeySprite.position]];
+                    
+                    //if this is the node just completed, animate it
+                    if (n==contentService.currentNode && contentService.lightUpProgressFromLastNode) {
+                        NSLog(@"got just completed node");
+                        [n.lightSprite setTag:1];
+                        //[n.lightSprite setOpacity:0];
+                        //[n.lightSprite setScale:0.1f];
+//                        [n.lightSprite runAction:[CCFadeIn actionWithDuration:1.0f]];
+//                        [n.lightSprite runAction:[CCScaleTo actionWithDuration:1.0f scale:1.0f]];
+                    }
                 }
             }
         }
@@ -460,6 +479,7 @@ typedef enum {
     }   
     
     contentService.fullRedraw=NO;
+    contentService.lightUpProgressFromLastNode=NO;
 }
 
 -(void)createASpriteForNode:(ConceptNode *)n
@@ -555,6 +575,12 @@ typedef enum {
     glColorMask(0, 0, 0, 1);
     
     for (CCSprite *l in lightSprites) {
+        
+        if(l.tag==1)
+        {
+            [l setScale:0.5f];
+        }
+        
         [l visit];
     }
     

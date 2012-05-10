@@ -20,6 +20,7 @@
 @property (nonatomic, readonly, retain) Syllabus *defaultSyllabus;
 @property BOOL fullRedraw;
 @property BOOL lightUpProgressFromLastNode;
+@property (nonatomic, retain) ConceptNode *currentNode;
 
 -(id)initWithProblemPipeline:(NSString*)source;
 -(void)gotoNextProblem;

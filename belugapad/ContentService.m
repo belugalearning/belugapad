@@ -48,7 +48,7 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
     //kcm concept node pipeline progression
     Pipeline *currentPipeline;
     int pipelineIndex;
-    ConceptNode *currentNode;
+//    ConceptNode *currentNode;
 }
 
 @property (nonatomic, readwrite, retain) Problem *currentProblem;
@@ -66,7 +66,9 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
 @synthesize currentPExpr;
 @synthesize defaultSyllabus;
 @synthesize fullRedraw;
+
 @synthesize lightUpProgressFromLastNode;
+@synthesize currentNode;
 
 -(void)setCurrentElement:(Element*)element
 {
@@ -181,8 +183,8 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
     [currentPipeline retain];
     pipelineIndex=-1;
     
-    currentNode=node;
-    [currentNode retain];
+    self.currentNode=node;
+    [self.currentNode retain];
     
     NSLog(@"starting pipeline named %@ with %d problems", currentPipeline.name, currentPipeline.problems.count);
 }
@@ -211,7 +213,7 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
     //effective placeholder for assessed complete -- e.g. lit on node
     
     UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
-    [us addCompletedNodeId:currentNode.document.documentID];
+    [us addCompletedNodeId:self.currentNode.document.documentID];
     
     //NSLog(@"currentNode: %@", currentNode.document.documentID);
 }

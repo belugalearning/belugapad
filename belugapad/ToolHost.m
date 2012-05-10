@@ -236,6 +236,7 @@ static float kMoveToNextProblemTime=2.0f;
         //assume completion
         [contentService setPipelineNodeComplete];
         contentService.fullRedraw=YES;
+        contentService.lightUpProgressFromLastNode=YES;
         
         [[CCDirector sharedDirector] replaceScene:[JourneyScene scene]];
     }

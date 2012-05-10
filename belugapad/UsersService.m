@@ -11,9 +11,6 @@
 #import "User.h"
 #import "Problem.h"
 #import "ProblemAttempt.h"
-#import "Topic.h"
-#import "Module.h"
-#import "Element.h"
 #import "AppDelegate.h"
 #import "ContentService.h"
 #import <CouchCocoa/CouchCocoa.h>
@@ -51,30 +48,15 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
 @synthesize installationUUID;
 @synthesize currentUser;
 
+// use a dict instead?
 +(NSString*)userEventString:(UserEvents)event
 {
     switch(event)
     {
-        case kUserEventFirstStartTopic:
-            return @"user-first-start-topic";
-        case  kUserEventFirstStartModule:
-            return @"user-first-start-module";
-        case kUserEventFirstStartElement:
-            return @"user-first-start-element";
-        case kUserEventNowPlayingTopic:
-            return @"user-now-playing-topic";
-        case kUserEventNowPlayingModule:
-            return @"user-now-playing-module";
-        case kUserEventNowPlayingElement:
-            return @"user-now-playing-element";
-        case kUserEventCompleteTopic:
-            return @"user-complete-topic";
-        case kUserEventCompleteModule:
-            return @"user-complete-module";
-        case kUserEventCompleteElement:
-            return @"user-complete-element";
         case kUserEventCompleteProblem:
             return @"user-complete-problem";
+        case kUserEventCompleteNode:
+            return @"user-complete-node";
     }
 }
 
@@ -97,7 +79,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
             return self;
         }
         database.tracksChanges = YES;
-                
+        
         NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
         if (![standardUserDefaults objectForKey:@"installationUUID"])
         {
@@ -169,18 +151,10 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
         [currentUser release];
     }
     
-    ur.currentTopicId = nil;
-    ur.currentModuleId = nil;
-    ur.currentElementId = nil;    
-    if (!ur.topicsStarted) ur.topicsStarted = [NSArray array];
-    if (!ur.modulesStarted) ur.modulesStarted = [NSArray array];
-    if (!ur.elementsStarted) ur.elementsStarted = [NSArray array];    
-    if (!ur.topicsCompleted) ur.topicsCompleted = [NSArray array];
-    if (!ur.modulesCompleted) ur.modulesCompleted = [NSArray array];
-    if (!ur.elementsCompleted) ur.elementsCompleted = [NSArray array];
+    if (!ur.nodesCompleted) ur.nodesCompleted = [NSArray array];
     [[ur save] wait];
     
-    currentUser = [ur retain];    
+    currentUser = [ur retain];
     // TODO: This is a quick fix. I've done something wrong. Shouldn't need to store the user on the app delegate
     AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
     ad.currentUser = ur;
@@ -275,41 +249,6 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     return [(NSNumber*)r.value doubleValue];
 }
 
--(double)currentUserTotalPlayingElement:(NSString*)elementId
-{
-    NSString *urId = self.currentUser.document.documentID;
-    
-    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersTimeInPlay];
-    q.groupLevel = 1;
-    q.startKey = [NSArray arrayWithObjects:urId, elementId, nil];
-    q.endKey = [NSArray arrayWithObjects:urId, elementId, [NSDictionary dictionary], nil];
-    [[q start] wait];
-    
-    // should have 1 row returned
-    if (![[q rows] count]) return 0;
-    
-    CouchQueryRow *r = [[q rows].allObjects objectAtIndex:0];
-    return [(NSNumber*)r.value doubleValue];
-}
-
--(double)currentUserPercentageCompletionOfElement:(Element*)element
-{
-    NSString *urId = self.currentUser.document.documentID;
-    
-    NSMutableArray *keys = [NSMutableArray array];
-    for (NSString *pId in element.includedProblems)
-    {
-        [keys addObject:[NSArray arrayWithObjects:urId, pId, nil]];
-    }
-    
-    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kProblemsCompletedByUser];
-    q.groupLevel = 2;
-    q.keys = keys;
-    [[q start] wait];
-    
-    return [[q rows] count] / (double)[element.includedProblems count];
-}
-
 -(NSUInteger)currentUserTotalExp
 {
     CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kTotalExpByUser];
@@ -339,56 +278,13 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     ContentService *cs = ad.contentService;
     Problem *currentProblem = cs.currentProblem;
     
-    User *ur = self.currentUser;    
-    NSString *tId = currentProblem.topicId;
-    NSString *mId = currentProblem.moduleId;
-    NSString *eId = currentProblem.elementId;
+    User *ur = self.currentUser;
     
+    // events populated with strings form UsersService#userEvents
     NSMutableArray *events = [NSMutableArray array];
     
-    if (![eId isEqualToString:ur.currentElementId])
-    {
-        [events addObject:[UsersService userEventString:kUserEventNowPlayingElement]];
-        ur.currentElementId = eId;
-        
-        if (![ur.elementsStarted containsObject:eId])
-        {
-            [events addObject:[UsersService userEventString:kUserEventFirstStartElement]];
-            NSMutableArray *eStarted = [[ur.elementsStarted mutableCopy] autorelease];
-            [eStarted addObject:eId];
-            ur.elementsStarted = eStarted;
-        }
-        
-        if (![mId isEqualToString:ur.currentModuleId])
-        {
-            [events addObject:[UsersService userEventString:kUserEventNowPlayingModule]];
-            ur.currentModuleId = mId;
-            
-            if (![ur.modulesStarted containsObject:mId])
-            {
-                [events addObject:[UsersService userEventString:kUserEventFirstStartModule]];
-                NSMutableArray *mStarted = [[ur.modulesStarted mutableCopy] autorelease];
-                [mStarted addObject:mId];
-                ur.modulesStarted = mStarted;
-            }
-            
-            if (![tId isEqualToString:ur.currentTopicId])
-            {
-                [events addObject:[UsersService userEventString:kUserEventNowPlayingTopic]];
-                ur.currentTopicId = tId;
-                
-                if (![ur.topicsStarted containsObject:tId])
-                {
-                    [events addObject:[UsersService userEventString:kUserEventFirstStartTopic]];
-                    NSMutableArray *tStarted = [[ur.topicsStarted mutableCopy] autorelease];
-                    [tStarted addObject:tId];
-                    ur.topicsStarted = tStarted;
-                }
-            }
-        }
-    }
-    
-    [[ur save] wait];
+    // previously arrays on user doc like topicsStarted, topicsCompleted etc. were populated here
+    //[[ur save] wait];
         
     currentProblemAttempt = [[ProblemAttempt alloc] initAndStartAttemptForUser:ur
                                                                     andProblem:currentProblem
@@ -407,54 +303,21 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     [currentProblemAttempt endAttempt:success];
     
     User *ur = self.currentUser;
-    AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
-    ContentService *cs = ad.contentService;
-    CouchDatabase *contentDb = [cs Database];        
-    Problem *p = [[CouchModelFactory sharedInstance] modelForDocument:[contentDb documentWithID:currentProblemAttempt.problemId]];        
-    Element *e = [[CouchModelFactory sharedInstance] modelForDocument:[contentDb documentWithID:p.elementId]];
-    Module *m = [[CouchModelFactory sharedInstance] modelForDocument:[contentDb documentWithID:p.moduleId]];
-    Topic *t = [[CouchModelFactory sharedInstance] modelForDocument:[contentDb documentWithID:p.topicId]];
-    
-    currentProblemAttempt.elementCompletionOnEnd = [self currentUserPercentageCompletionOfElement:e];
 
     if (success)
     {
+        // N.B. previously logging events on currentProblemAttempt relating to completing topics/modules/elements
+        //    AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
+        //    ContentService *cs = ad.contentService;
+        //    CouchDatabase *contentDb = [cs Database];
+        //    Problem *p = [[CouchModelFactory sharedInstance] modelForDocument:[contentDb documentWithID:currentProblemAttempt.problemId]];
+        
+        // events populated with strings from UsersService#userEventString
         NSMutableArray *events = [NSMutableArray arrayWithObject:[UsersService userEventString:kUserEventCompleteProblem]];
         
-        if (currentProblemAttempt.elementCompletionOnEnd >=1 && ![ur.elementsCompleted containsObject:p.elementId])
-        {
-            [events addObject:[UsersService userEventString:kUserEventCompleteElement]];
-            NSMutableArray *eCompleted = [[ur.elementsCompleted mutableCopy] autorelease];
-            [eCompleted addObject:p.elementId];
-            ur.elementsCompleted = eCompleted;
-            
-            if (![ur.modulesCompleted containsObject:p.moduleId])
-            {   
-                BOOL mComplete = [[NSSet setWithArray:m.elements] isSubsetOfSet:[NSSet setWithArray:ur.elementsCompleted]];                
-                if (mComplete)
-                {
-                    [events addObject:[UsersService userEventString:kUserEventCompleteModule]];
-                    NSMutableArray *mCompleted = [[ur.modulesCompleted mutableCopy] autorelease];
-                    [mCompleted addObject:p.moduleId];
-                    ur.modulesCompleted = mCompleted;
-                    
-                    if (![ur.topicsCompleted containsObject:p.topicId])
-                    {
-                        BOOL tComplete = [[NSSet setWithArray:t.modules] isSubsetOfSet:[NSSet setWithArray:ur.topicsCompleted]];
-                        if (tComplete)
-                        {
-                            [events addObject:[UsersService userEventString:kUserEventCompleteTopic]];
-                            NSMutableArray *tCompleted = [[ur.topicsCompleted mutableCopy] autorelease];
-                            [tCompleted addObject:p.topicId];
-                            ur.topicsCompleted = tCompleted;
-                        }
-                    }
-                }
-            }
-        }        
         currentProblemAttempt.onEndUserEvents = events;
     }
-    [[self.currentUser save] wait];
+    [[ur save] wait];
     [[currentProblemAttempt save] wait];
     [currentProblemAttempt release];
     currentProblemAttempt = nil;

@@ -28,15 +28,6 @@
 @dynamic userNickName;
 @dynamic problemId;
 @dynamic problemRevisionId;
-@dynamic elementId;
-@dynamic elementRevisionId;
-@dynamic elementName;
-@dynamic moduleId;
-@dynamic moduleRevisionId;
-@dynamic moduleName;
-@dynamic topicId;
-@dynamic topicRevisionId;
-@dynamic topicName;
 @dynamic dateTimeStart;
 @dynamic dateTimeEnd;
 @dynamic onStartUserEvents;
@@ -45,8 +36,7 @@
 @dynamic timeInPlay;                                                                                                                                                                   
 @dynamic success;                                                                                                                                                                                 
 @dynamic interactionEvents;
-@dynamic pointsAwarded;                                                                                                                                                               
-@dynamic elementCompletionOnEnd;
+@dynamic pointsAwarded;
 
 - (id) initAndStartAttemptForUser:(User*)user
                        andProblem:(Problem*)problem
@@ -64,23 +54,6 @@
         self.problemId = problem.document.documentID;
         self.problemRevisionId = [problem.document propertyForKey:@"_rev"];
         
-        CouchDatabase *contentDb = problem.database;
-        
-        CouchDocument *t = [contentDb documentWithID:problem.topicId];
-        self.topicId = t.documentID;
-        self.topicRevisionId = [t propertyForKey:@"_rev"];
-        self.topicName = [t propertyForKey:@"name"];
-        
-        CouchDocument *m = [contentDb documentWithID:problem.moduleId];
-        self.moduleId = m.documentID;
-        self.moduleRevisionId = [m propertyForKey:@"_rev"];
-        self.moduleName = [m propertyForKey:@"name"];
-        
-        CouchDocument *e = [contentDb documentWithID:problem.elementId];
-        self.elementId = e.documentID;
-        self.elementRevisionId = [e propertyForKey:@"_rev"];
-        self.elementName = [e propertyForKey:@"name"];
-        
         self.dateTimeStart = [NSDate date];
         self.dateTimeEnd = nil;
         
@@ -94,7 +67,6 @@
         [[self save] wait];
         
         timePaused = 0;
-        problemAssessmentCriteria = [problem.assessmentCriteria copy];
     }
     return self;
 }

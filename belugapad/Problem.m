@@ -11,9 +11,7 @@
 
 @implementation Problem
 
-@dynamic syllabusId, topicId, moduleId, elementId, assessmentCriteria;
-
--(NSDictionary*)pdef    
+-(NSDictionary*)pdef 
 {
     CouchAttachment *ca = [self attachmentNamed:@"pdef.plist"];
     if (!ca || !ca.body) return nil;

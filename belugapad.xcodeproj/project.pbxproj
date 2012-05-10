@@ -256,10 +256,6 @@
 		7FA38ABF1545335A0031E59D /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38ABC1545335A0031E59D /* User.m */; };
 		7FA38AC01545335A0031E59D /* UsersService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38ABE1545335A0031E59D /* UsersService.m */; };
 		7FA38AC31545336A0031E59D /* Problem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38AC21545336A0031E59D /* Problem.m */; };
-		7FA38AC6154533760031E59D /* Element.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38AC5154533760031E59D /* Element.m */; };
-		7FA38AC9154533820031E59D /* Module.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38AC8154533820031E59D /* Module.m */; };
-		7FA38ACC154533900031E59D /* Topic.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38ACB154533900031E59D /* Topic.m */; };
-		7FA38ACF1545339C0031E59D /* Syllabus.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38ACE1545339C0031E59D /* Syllabus.m */; };
 		7FA38AD2154534340031E59D /* EditZubi.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38AD1154534340031E59D /* EditZubi.m */; };
 		7FABE68F14B33D5100ED2D0C /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */; };
 		7FABE69114B33D5600ED2D0C /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */; };
@@ -331,7 +327,6 @@
 		7FDBA53914EBD560004D1CC9 /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA52B14EBD560004D1CC9 /* CTidy.m */; };
 		7FDBA56314EC4271004D1CC9 /* bm11.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FDBA56214EC4271004D1CC9 /* bm11.plist */; };
 		7FEDCE1C1535DCA400C8C9F3 /* ExprEvalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */; };
-		7FF8F12114DD535B00A6D75E /* MenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8F12014DD535B00A6D75E /* MenuScene.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -841,14 +836,6 @@
 		7FA38ABE1545335A0031E59D /* UsersService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersService.m; sourceTree = "<group>"; };
 		7FA38AC11545336A0031E59D /* Problem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Problem.h; sourceTree = "<group>"; };
 		7FA38AC21545336A0031E59D /* Problem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Problem.m; sourceTree = "<group>"; };
-		7FA38AC4154533760031E59D /* Element.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Element.h; sourceTree = "<group>"; };
-		7FA38AC5154533760031E59D /* Element.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Element.m; sourceTree = "<group>"; };
-		7FA38AC7154533820031E59D /* Module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Module.h; sourceTree = "<group>"; };
-		7FA38AC8154533820031E59D /* Module.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Module.m; sourceTree = "<group>"; };
-		7FA38ACA154533900031E59D /* Topic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Topic.h; sourceTree = "<group>"; };
-		7FA38ACB154533900031E59D /* Topic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Topic.m; sourceTree = "<group>"; };
-		7FA38ACD1545339C0031E59D /* Syllabus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Syllabus.h; sourceTree = "<group>"; };
-		7FA38ACE1545339C0031E59D /* Syllabus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Syllabus.m; sourceTree = "<group>"; };
 		7FA38AD0154534340031E59D /* EditZubi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditZubi.h; sourceTree = "<group>"; };
 		7FA38AD1154534340031E59D /* EditZubi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditZubi.m; sourceTree = "<group>"; };
 		7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
@@ -958,8 +945,6 @@
 		7FDBA52C14EBD560004D1CC9 /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchXML.h; sourceTree = "<group>"; };
 		7FDBA56214EC4271004D1CC9 /* bm11.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bm11.plist; sourceTree = "<group>"; };
 		7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprEvalTests.m; sourceTree = "<group>"; };
-		7FF8F11F14DD535B00A6D75E /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
-		7FF8F12014DD535B00A6D75E /* MenuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuScene.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1004,14 +989,6 @@
 				0C92B2531515702700342094 /* ContentService.m */,
 				7FA38AC11545336A0031E59D /* Problem.h */,
 				7FA38AC21545336A0031E59D /* Problem.m */,
-				7FA38AC4154533760031E59D /* Element.h */,
-				7FA38AC5154533760031E59D /* Element.m */,
-				7FA38AC7154533820031E59D /* Module.h */,
-				7FA38AC8154533820031E59D /* Module.m */,
-				7FA38ACA154533900031E59D /* Topic.h */,
-				7FA38ACB154533900031E59D /* Topic.m */,
-				7FA38ACD1545339C0031E59D /* Syllabus.h */,
-				7FA38ACE1545339C0031E59D /* Syllabus.m */,
 				7FDABAC1154AABF300F3F1A5 /* ConceptNode.h */,
 				7FDABAC2154AABF300F3F1A5 /* ConceptNode.m */,
 				7F5BD844154AFAE70092740B /* Relation.h */,
@@ -1793,8 +1770,6 @@
 				7F5115A914A9EF9E001AF372 /* BlockFloating.m */,
 				7F813D5314CCBA4300C1E997 /* IceDiv.h */,
 				7F813D5414CCBA4300C1E997 /* IceDiv.m */,
-				7FF8F11F14DD535B00A6D75E /* MenuScene.h */,
-				7FF8F12014DD535B00A6D75E /* MenuScene.m */,
 				551815611525EA920097E259 /* PartitionTool.h */,
 				551815621525EA920097E259 /* PartitionTool.m */,
 				5571BADB14E406220053A62B /* PlaceValue.h */,
@@ -2269,7 +2244,6 @@
 				7FABE6CD14B8F68100ED2D0C /* BFloatObjectRender.m in Sources */,
 				7F813D5514CCBA4300C1E997 /* IceDiv.m in Sources */,
 				7F719C0314D739A600F30E89 /* Daemon.m in Sources */,
-				7FF8F12114DD535B00A6D75E /* MenuScene.m in Sources */,
 				5571BADD14E406220053A62B /* PlaceValue.m in Sources */,
 				5571BAE114E406630053A62B /* ToolConsts.m in Sources */,
 				5571BAED14E4108F0053A62B /* BPlaceValueDropTarget.m in Sources */,
@@ -2477,10 +2451,6 @@
 				7FA38ABF1545335A0031E59D /* User.m in Sources */,
 				7FA38AC01545335A0031E59D /* UsersService.m in Sources */,
 				7FA38AC31545336A0031E59D /* Problem.m in Sources */,
-				7FA38AC6154533760031E59D /* Element.m in Sources */,
-				7FA38AC9154533820031E59D /* Module.m in Sources */,
-				7FA38ACC154533900031E59D /* Topic.m in Sources */,
-				7FA38ACF1545339C0031E59D /* Syllabus.m in Sources */,
 				7FA38AD2154534340031E59D /* EditZubi.m in Sources */,
 				7FBE96991549819300D993AC /* LoadingViewController.m in Sources */,
 				7FDABAC3154AABF300F3F1A5 /* ConceptNode.m in Sources */,

@@ -7,7 +7,6 @@
 //
 
 #import "NLine.h"
-#import "MenuScene.h"
 #import "global.h"
 #import "BLMath.h"
 #import "SimpleAudioEngine.h"

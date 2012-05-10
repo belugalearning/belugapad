@@ -7,21 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-@class User, ProblemAttempt, Element, CouchLiveQuery, CouchEmbeddedServer;
+@class User, ProblemAttempt, CouchLiveQuery, CouchEmbeddedServer;
 
 @interface UsersService : NSObject
 
+// use a static dict instead?
 typedef enum {
-    kUserEventFirstStartTopic,
-    kUserEventFirstStartModule,
-    kUserEventFirstStartElement,
-    kUserEventNowPlayingTopic,
-    kUserEventNowPlayingModule,
-    kUserEventNowPlayingElement,
-    kUserEventCompleteTopic,
-    kUserEventCompleteModule,
-    kUserEventCompleteElement,  
     kUserEventCompleteProblem
+    , kUserEventCompleteNode
 } UserEvents;
 
 @property (readonly, retain, nonatomic) NSString *installationUUID;
@@ -42,9 +35,7 @@ typedef enum {
                   andPassword:(NSString*)password;
 
 -(NSUInteger)currentUserTotalExp;
--(double)currentUserPercentageCompletionOfElement:(Element*)element;
 -(double)currentUserTotalTimeInApp;
--(double)currentUserTotalPlayingElement:(NSString*)elementId;
 
 -(void)startProblemAttempt;
 -(void)togglePauseProblemAttempt;

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>count to {$target}</string>
+	<key>TOOL_KEY</key>
+	<string>NLine</string>
+	<key>START_VALUE</key>
+	<string>0</string>
+	<key>MIN_VALUE</key>
+	<string>{$start}</string>
+	<key>MAX_VALUE</key>
+	<string>{$end}</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>EVAL_TARGET</key>
+	<string>{$target}</string>
+	<key>REJECT_MODE</key>
+	<integer>0</integer>
+	<key>DVARS</key>
+	<dict>
+		<key>$start</key>
+		<dict>
+			<key>retain</key>
+			<true/>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>5</string>
+		</dict>
+		<key>$end</key>
+		<dict>
+			<key>MIN</key>
+			<string>5</string>
+			<key>MAX</key>
+			<string>10</string>
+			<key>GREATER_THAN</key>
+			<array>
+				<string>{$start+1}</string>
+			</array>
+		</dict>
+		<key>$target</key>
+		<dict>
+			<key>MIN</key>
+			<string>{$start+1}</string>
+			<key>MAX</key>
+			<string>{$end}</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

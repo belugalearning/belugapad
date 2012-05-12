@@ -22,6 +22,7 @@
 
 -(id)initWithProblemPipeline:(NSString*)source;
 -(void)setPipelineNodeComplete;
+-(BOOL)isUsingTestPipeline;
 
 
 -(void)startPipelineWithId:(NSString *)pipelineid forNode:(ConceptNode*)node;

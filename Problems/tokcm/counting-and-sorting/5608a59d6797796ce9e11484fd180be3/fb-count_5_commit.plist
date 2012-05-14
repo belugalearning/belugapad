@@ -3,9 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>put the matching items into the container</string>
+	<string>count 5 ice blocks</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>count 5</string>
 	<key>TOOL_KEY</key>
 	<string>BlockFloating</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>REJECT_MODE</key>
+	<integer>0</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
@@ -20,7 +26,7 @@
 			<key>TAG</key>
 			<string>block2</string>
 			<key>DIMENSION_COLS</key>
-			<integer>2</integer>
+			<integer>1</integer>
 			<key>DIMENSION_ROWS</key>
 			<integer>1</integer>
 		</dict>
@@ -28,7 +34,7 @@
 			<key>TAG</key>
 			<string>block3</string>
 			<key>DIMENSION_COLS</key>
-			<integer>2</integer>
+			<integer>1</integer>
 			<key>DIMENSION_ROWS</key>
 			<integer>1</integer>
 		</dict>
@@ -36,9 +42,33 @@
 			<key>TAG</key>
 			<string>block4</string>
 			<key>DIMENSION_COLS</key>
-			<integer>2</integer>
+			<integer>1</integer>
 			<key>DIMENSION_ROWS</key>
-			<integer>2</integer>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>TAG</key>
+			<string>block5</string>
+			<key>DIMENSION_COLS</key>
+			<integer>1</integer>
+			<key>DIMENSION_ROWS</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>TAG</key>
+			<string>block5</string>
+			<key>DIMENSION_COLS</key>
+			<integer>1</integer>
+			<key>DIMENSION_ROWS</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>TAG</key>
+			<string>block5</string>
+			<key>DIMENSION_COLS</key>
+			<integer>1</integer>
+			<key>DIMENSION_ROWS</key>
+			<integer>1</integer>
 		</dict>
 	</array>
 	<key>INIT_CONTAINERS</key>
@@ -46,12 +76,6 @@
 		<dict>
 			<key>TAG</key>
 			<string>container1</string>
-			<key>CAPACITY_COUNT</key>
-			<integer>2</integer>
-			<key>MAX_OBJECT_SIZE</key>
-			<integer>2</integer>
-			<key>CAPACITY_SIZE</key>
-			<integer>4</integer>
 		</dict>
 	</array>
 	<key>SOLUTIONS</key>
@@ -67,40 +91,17 @@
 					<key>ITEM1_CONTAINER_TAG</key>
 					<string>container1</string>
 					<key>ITEM2_VALUE</key>
-					<integer>1</integer>
+					<integer>5</integer>
 					<key>CLAUSE_TYPE</key>
-					<string>COUNT_GREATER_THAN</string>
+					<string>COUNT_EQUAL_TO</string>
 				</dict>
 				<dict>
 					<key>ITEM1_CONTAINER_TAG</key>
 					<string>container1</string>
 					<key>ITEM2_VALUE</key>
-					<integer>4</integer>
+					<integer>5</integer>
 					<key>CLAUSE_TYPE</key>
 					<string>SIZE_EQUAL_TO</string>
-				</dict>
-			</array>
-		</dict>
-	</array>
-	<key>TUTORIALS</key>
-	<array>
-		<dict>
-			<key>PROBLEM_SUBTITLE</key>
-			<string>drag one ice cube into the first container</string>
-			<key>PRE_ACTIONS</key>
-			<dict>
-				<key>PLAY_SOUND</key>
-				<string>put_the_matching_blocks_in_the_container.wav</string>
-			</dict>
-			<key>CLAUSES</key>
-			<array>
-				<dict>
-					<key>ITEM1_CONTAINER_TAG</key>
-					<string>container1</string>
-					<key>ITEM2_VALUE</key>
-					<integer>0</integer>
-					<key>CLAUSE_TYPE</key>
-					<string>COUNT_GREATER_THAN</string>
 				</dict>
 			</array>
 		</dict>

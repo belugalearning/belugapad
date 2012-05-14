@@ -3,13 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>place the largest object in the container</string>
+	<string>count {$no_objects} ice blocks</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>count x</string>
 	<key>TOOL_KEY</key>
 	<string>BlockFloating</string>
-	<key>REJECT_MODE</key>
-	<integer>2</integer>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>REJECT_MODE</key>
+	<integer>0</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
@@ -24,7 +26,7 @@
 			<key>TAG</key>
 			<string>block2</string>
 			<key>DIMENSION_COLS</key>
-			<integer>2</integer>
+			<integer>1</integer>
 			<key>DIMENSION_ROWS</key>
 			<integer>1</integer>
 		</dict>
@@ -32,7 +34,39 @@
 			<key>TAG</key>
 			<string>block3</string>
 			<key>DIMENSION_COLS</key>
-			<integer>3</integer>
+			<integer>1</integer>
+			<key>DIMENSION_ROWS</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>TAG</key>
+			<string>block4</string>
+			<key>DIMENSION_COLS</key>
+			<integer>1</integer>
+			<key>DIMENSION_ROWS</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>TAG</key>
+			<string>block5</string>
+			<key>DIMENSION_COLS</key>
+			<integer>1</integer>
+			<key>DIMENSION_ROWS</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>TAG</key>
+			<string>block5</string>
+			<key>DIMENSION_COLS</key>
+			<integer>1</integer>
+			<key>DIMENSION_ROWS</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>TAG</key>
+			<string>block5</string>
+			<key>DIMENSION_COLS</key>
+			<integer>1</integer>
 			<key>DIMENSION_ROWS</key>
 			<integer>1</integer>
 		</dict>
@@ -42,12 +76,6 @@
 		<dict>
 			<key>TAG</key>
 			<string>container1</string>
-			<key>CAPACITY_COUNT</key>
-			<integer>2</integer>
-			<key>MAX_OBJECT_SIZE</key>
-			<integer>4</integer>
-			<key>CAPACITY_SIZE</key>
-			<integer>8</integer>
 		</dict>
 	</array>
 	<key>SOLUTIONS</key>
@@ -63,12 +91,30 @@
 					<key>ITEM1_CONTAINER_TAG</key>
 					<string>container1</string>
 					<key>ITEM2_VALUE</key>
-					<integer>3</integer>
+					<string>{$no_objects}</string>
+					<key>CLAUSE_TYPE</key>
+					<string>COUNT_EQUAL_TO</string>
+				</dict>
+				<dict>
+					<key>ITEM1_CONTAINER_TAG</key>
+					<string>container1</string>
+					<key>ITEM2_VALUE</key>
+					<string>{$no_objects}</string>
 					<key>CLAUSE_TYPE</key>
 					<string>SIZE_EQUAL_TO</string>
 				</dict>
 			</array>
 		</dict>
 	</array>
+	<key>DVARS</key>
+	<dict>
+		<key>$no_objects</key>
+		<dict>
+			<key>MIN</key>
+			<string>2</string>
+			<key>MAX</key>
+			<string>6</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

@@ -102,10 +102,10 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
         device = [[[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:installationUUID]] retain];
         device.autosaves = true;
 
-        pushReplication = [[database pushToDatabaseAtURL:[NSURL URLWithString:kRemoteUsersDatabaseURI]] retain];
-        pushReplication.continuous = YES;
-        pullReplication = [[database pullFromDatabaseAtURL:[NSURL URLWithString:kRemoteUsersDatabaseURI]] retain];
-        pullReplication.continuous = YES;
+//        pushReplication = [[database pushToDatabaseAtURL:[NSURL URLWithString:kRemoteUsersDatabaseURI]] retain];
+//        pushReplication.continuous = YES;
+//        pullReplication = [[database pullFromDatabaseAtURL:[NSURL URLWithString:kRemoteUsersDatabaseURI]] retain];
+//        pullReplication.continuous = YES;
     }
     return self;
 }

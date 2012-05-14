@@ -16,6 +16,8 @@
 	<string>15</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>SEGMENT_VALUE</key>
+	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>

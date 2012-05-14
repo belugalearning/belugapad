@@ -19,7 +19,7 @@
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<string>{$target+$interval}</string>
+	<string>{$start_value+$interval}</string>
 	<key>DVARS</key>
 	<dict>
 		<key>$start_value</key>

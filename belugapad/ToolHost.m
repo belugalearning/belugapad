@@ -35,6 +35,7 @@
 @synthesize Zubi;
 @synthesize PpExpr;
 @synthesize flagResetProblem;
+@synthesize DynProblemParser;
 
 static float kMoveToNextProblemTime=2.0f;
 
@@ -89,11 +90,11 @@ static float kMoveToNextProblemTime=2.0f;
         
         [self populatePerstLayer];
         
-        contentService = ((AppController*)[[UIApplication sharedApplication] delegate]).contentService;        
-        [self gotoNewProblem];
-        
         //dynamic problem parser (persists to end of pipeline)
         self.DynProblemParser=[[DProblemParser alloc] init];
+        
+        contentService = ((AppController*)[[UIApplication sharedApplication] delegate]).contentService;        
+        [self gotoNewProblem];
         
         [self schedule:@selector(doUpdateOnTick:) interval:1.0f/60.0f];
         [self schedule:@selector(doUpdateOnSecond:) interval:1.0f];
@@ -342,6 +343,11 @@ static float kMoveToNextProblemTime=2.0f;
     UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
     [us endProblemAttempt:NO];
     
+    if(problemDescLabel)
+    {
+        [problemDescLabel removeFromParentAndCleanup:YES];
+    }
+    
     [self loadProblem];
 }
 
@@ -436,7 +442,9 @@ static float kMoveToNextProblemTime=2.0f;
     [toolBackLayer setScale:scale];
     [toolForeLayer setScale:scale];
     
-    problemDescLabel=[CCLabelTTF labelWithString:[curpdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    NSString *labelDesc=[self.DynProblemParser parseStringFromValueWithKey:PROBLEM_DESCRIPTION inDef:curpdef];
+    
+    problemDescLabel=[CCLabelTTF labelWithString:labelDesc fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
     [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
     //[problemDescLabel setColor:kLabelTitleColor];
     [problemDescLabel setTag:3];

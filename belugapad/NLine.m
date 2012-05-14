@@ -168,6 +168,8 @@ static float kBubblePushSpeed=400.0f;
     initMaxVal=[NSNumber numberWithInt:[toolHost.DynProblemParser parseIntFromValueWithKey:MAX_VALUE inDef:pdef]];
     initSegmentVal=[toolHost.DynProblemParser parseIntFromValueWithKey:SEGMENT_VALUE inDef:pdef];
     
+    //force default on segment value if not specified
+    if(initSegmentVal==0)initSegmentVal=1;
 }
 
 -(void)problemStateChanged
@@ -317,7 +319,7 @@ static float kBubblePushSpeed=400.0f;
         NSLog(@"bubble pos %d", roundedStepsFromCentre);
         
         
-        int startOffset=[[problemDef objectForKey:START_VALUE] intValue];
+        int startOffset=initStartVal;
         lastBubbleLoc = roundedStepsFromCentre+startOffset;
         int adjustedStepsFromCentre=roundedStepsFromCentre;
         

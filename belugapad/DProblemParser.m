@@ -34,6 +34,8 @@
     for (int i=0; i<[[dvarsdef allKeys] count]; i++) {
         NSString *namebase=[[dvarsdef allKeys] objectAtIndex:i];
         
+        NSLog(@"parsing %@", namebase);
+        
         //the dictionary for this dvar's settings & properties
         NSDictionary *dv=[[dvarsdef allValues] objectAtIndex:i];
         
@@ -52,7 +54,7 @@
             continue;
         }
         
-        //output valeu
+        //output value
         NSNumber *outputvalue=[NSNumber numberWithInt:0];
         
         //raw string expressions
@@ -81,8 +83,9 @@
         //add this variable to the problem dvars
         [dVars setObject:outputvalue forKey:name];
         
-        //should we retain this variable?
+        NSLog(@"setting %@ to %@", namebase, [outputvalue stringValue]);
         
+        //should we retain this variable?
         NSNumber *retain=[dvarsdef objectForKey:@"RETAIN"];
         if(retain)
         {
@@ -90,10 +93,14 @@
             {
                 //clear any existing value and do not retain
                 [retainedVars removeObjectForKey:namebase];
+                
+                NSLog(@"cleared any retained value for %@", namebase);
             }
             else {
                 //retain the value, overwriting any current value
                 [retainedVars setObject:outputvalue forKey:namebase];
+                
+                NSLog(@"retained value of %@", namebase);
             }
         }
     }
@@ -205,8 +212,20 @@
 
 -(NSString*)parseStringFromString:(NSString *)input withRecall:(BOOL)recall
 {
+    if(!input)
+    {
+        NSLog(@"no input");
+        return @"";
+    }
+    
+    if(![input isKindOfClass:[NSString class]])
+    {
+        NSLog(@"input is not string");
+        return @"";
+    }
+    
     NSMutableDictionary *lkpVars=[dVars copy];
-    NSString *parse=input;
+    NSString *parse=[input copy];
     
     //if we're recalling, write into this recalled values
     if(recall)
@@ -215,6 +234,12 @@
             //write each key/value from retaining into the lkp -- will overwrite if required
             [lkpVars setObject:[[retainedVars allValues] objectAtIndex:i] forKey:[[retainedVars allKeys] objectAtIndex:i]];
         }
+    }
+    
+    if([parse isEqualToString:@""])
+    {
+        NSLog(@"no string to parse");
+        return parse;
     }
     
     //todo: parse the string, looking for {...} pairs and substituting them
@@ -240,7 +265,7 @@
         if(rop.location==NSNotFound) rop=[mid rangeOfString:@"/"];
         if(rop.location==NSNotFound) rop=[mid rangeOfString:@"^"];
         
-        NSRange replacerange={r.location, rend.location+1};
+        NSRange replacerange={r.location, rend.location+2};
         
         if(rop.location==NSNotFound)
         {
@@ -250,7 +275,7 @@
         else {
             //we have operators, get vars and operate
             NSString *lstring=[mid substringToIndex:rop.location];
-            NSString *rstring=[mid substringFromIndex:rop.location];
+            NSString *rstring=[mid substringFromIndex:rop.location+1];
             
             NSNumber *l = [self numberFromVarLiteralString:lstring withLkpSource:lkpVars];
             NSNumber *r = [self numberFromVarLiteralString:rstring withLkpSource:lkpVars];
@@ -292,7 +317,7 @@
 
 -(NSString *)inputStringFromValueWithKey: (NSString*)key inDef:(NSDictionary*) pdef
 {
-    NSString *pstring;
+    NSString *pstring=@"";
     NSObject *val=[pdef objectForKey:key];
     if([val isKindOfClass:[NSString class]])
     {

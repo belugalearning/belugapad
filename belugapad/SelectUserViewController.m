@@ -66,12 +66,12 @@
     
     AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];    
     deviceUsersByLastSession = [[ad.usersService deviceUsersByLastSessionDate] retain];
-    if ([deviceUsersByLastSession count] == 0)
+    /*if ([deviceUsersByLastSession count] == 0)
     {
         [cancelNewUserButton setHidden:YES];
         [self setActiveView:editUserView];
     }
-    else [self setActiveView:selectUserView];
+    else*/ [self setActiveView:selectUserView];
     
 }
 

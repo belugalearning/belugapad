@@ -106,6 +106,11 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
     return self;
 }
 
+-(BOOL)isUsingTestPipeline
+{
+    return useTestPipeline;
+}
+
 -(CouchDatabase*)Database
 {
     return database;
@@ -171,7 +176,19 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
     self.currentPDef=nil;
     self.currentPExpr=nil;
     
-    if(pipelineIndex>=currentPipeline.problems.count)
+    if (useTestPipeline)
+    {
+        currentPIndex = (currentPIndex == NSUIntegerMax) ? 0 : (currentPIndex + 1) % [testProblemList count];
+        self.currentPDef = [NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH([testProblemList objectAtIndex:currentPIndex])];
+        
+        NSString *exprFile = [self.currentPDef objectForKey:EXPRESSION_FILE];
+        if (exprFile)
+        {
+            self.currentPExpr = [BATio loadTreeFromMathMLFile:BUNDLE_FULL_PATH(exprFile)];
+        }
+        
+    }    
+    else if(pipelineIndex>=currentPipeline.problems.count)
     {
         //don't progress, current pdef & ppexpr are set to nil above
     }

@@ -161,9 +161,14 @@
     // and add the scene to the stack. The director will run it when it automatically when the view is displayed.
 	//[director_ pushScene: (viaIntro ? [ZubiIntro scene] : [JourneyScene scene])]; 
     
-    [director_ pushScene:[JourneyScene scene]];
-    //[director_ pushScene:[ToolHost scene]];
-    
+    if(contentService.isUsingTestPipeline)
+    {
+        [director_ pushScene:[ToolHost scene]];
+    }
+    else
+    {
+        [director_ pushScene:[JourneyScene scene]];
+    }    
 }
 
 // Supported orientations: Landscape. Customize it for your own needs

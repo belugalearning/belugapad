@@ -20,4 +20,8 @@
 -(int)parseIntFromString:(NSString*)input;
 -(float)parseFloatFromString:(NSString*)input;
 
+-(NSString *)parseStringFromValueWithKey: (NSString*)key inDef:(NSDictionary*)pdef;
+-(int)parseIntFromValueWithKey: (NSString *)key inDef:(NSDictionary*) pdef;
+-(float)parseFloatFromValueWithKey: (NSString *)key inDef:(NSDictionary*) pdef;
+
 @end

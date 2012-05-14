@@ -290,4 +290,33 @@
     return [[self parseStringFromString:input] floatValue];
 }
 
+-(NSString *)inputStringFromValueWithKey: (NSString*)key inDef:(NSDictionary*) pdef
+{
+    NSString *pstring;
+    NSObject *val=[pdef objectForKey:key];
+    if([val isKindOfClass:[NSString class]])
+    {
+        pstring=(NSString*)val;
+    }
+    else if ([val isKindOfClass:[NSNumber class]]) {
+        pstring=[((NSNumber*)val) stringValue];
+    }
+    return pstring;
+}
+
+-(NSString *)parseStringFromValueWithKey: (NSString*)key inDef:(NSDictionary*)pdef
+{
+    return [self parseStringFromString:[self inputStringFromValueWithKey:key inDef:pdef]];
+}
+
+-(int)parseIntFromValueWithKey: (NSString *)key inDef:(NSDictionary*) pdef
+{
+    return [[self parseStringFromString:[self inputStringFromValueWithKey:key inDef:pdef]] intValue];
+}
+
+-(float)parseFloatFromValueWithKey: (NSString *)key inDef:(NSDictionary*) pdef
+{
+    return [[self parseStringFromString:[self inputStringFromValueWithKey:key inDef:pdef]] floatValue];
+}
+
 @end

@@ -20,6 +20,7 @@
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
+#import "DProblemParser.h"
 
 static float kBubbleProx=100.0f;
 static float kBubbleScrollBoundary=350;
@@ -112,11 +113,11 @@ static float kBubblePushSpeed=400.0f;
     rambler=[DWRamblerGameObject alloc];
     [gw populateAndAddGameObject:rambler withTemplateName:@"TnLineRambler"];
     
-    rambler.Value=[[problemDef objectForKey:START_VALUE] floatValue];
+    rambler.Value=initStartVal;
     rambler.StartValue=rambler.Value;
-    rambler.CurrentSegmentValue=[[problemDef objectForKey:SEGMENT_VALUE] floatValue];
-    rambler.MinValue=[problemDef objectForKey:MIN_VALUE];
-    rambler.MaxValue=[problemDef objectForKey:MAX_VALUE];
+    rambler.CurrentSegmentValue=initSegmentVal;
+    rambler.MinValue=initMinVal;
+    rambler.MaxValue=initMaxVal;
 
     //positioning
     rambler.DefaultSegmentSize=115;
@@ -160,9 +161,12 @@ static float kBubblePushSpeed=400.0f;
     NSNumber *rMode=[pdef objectForKey:REJECT_MODE];
     if (rMode) rejectMode=[rMode intValue];
     
- 
-    NSNumber *eT=[pdef objectForKey:@"EVAL_TARGET"];
-    if(eT)evalTarget=[eT intValue];
+    evalTarget=[toolHost.DynProblemParser parseIntFromValueWithKey:@"EVAL_TARGET" inDef:pdef];
+    
+    initStartVal=[toolHost.DynProblemParser parseIntFromValueWithKey:START_VALUE inDef:pdef];
+    initMinVal=[NSNumber numberWithInt:[toolHost.DynProblemParser parseIntFromValueWithKey:MIN_VALUE inDef:pdef]];
+    initMaxVal=[NSNumber numberWithInt:[toolHost.DynProblemParser parseIntFromValueWithKey:MAX_VALUE inDef:pdef]];
+    initSegmentVal=[toolHost.DynProblemParser parseIntFromValueWithKey:SEGMENT_VALUE inDef:pdef];
     
 }
 

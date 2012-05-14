@@ -45,6 +45,11 @@
     int bubblePushDir;
     int lastBubbleLoc;
     int evalTarget;
+    
+    int initStartVal;
+    NSNumber *initMinVal;
+    NSNumber *initMaxVal;
+    int initSegmentVal;
 }
 
 -(void)populateGW;

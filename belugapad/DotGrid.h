@@ -14,7 +14,8 @@
 
 typedef enum {
     kAnyStartAnchorValid=0,
-    kSpecifiedStartAnchor=1
+    kSpecifiedStartAnchor=1,
+    kNoDrawing=2
 } DrawMode;
 
 typedef enum {

@@ -205,7 +205,11 @@
                 anch.StartAnchor=YES;
                 //NSLog(@"THIS ANCHOR IS *ENABLED* (x %d / y %d)", anch.myXpos, anch.myYpos);
             }
-            else if((iRow!=startX || iCol!=startY) && drawMode==kSpecifiedStartAnchor) {
+            else if((iRow==0 && iCol==0) && drawMode==kNoDrawing)
+            {
+                anch.Disabled=YES;
+            }
+            else if((iRow!=startX || iCol!=startY) && (drawMode==kSpecifiedStartAnchor || drawMode==kNoDrawing)) {
                 //NSLog(@"THIS ANCHOR IS *DISABLED* (x %d / y %d)", anch.myXpos, anch.myYpos);
                 anch.Disabled=YES;
             }

@@ -50,6 +50,10 @@
 	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>LucidaGrande.ttc</string>
+	</array>
 	<key>UIPrerenderedIcon</key>
 	<true/>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -64,10 +68,6 @@
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
-	</array>
-	<key>UIAppFonts</key>
-	<array>
-		<string>LucidaGrande.ttc</string>
 	</array>
 </dict>
 </plist>

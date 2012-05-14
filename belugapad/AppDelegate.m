@@ -66,7 +66,7 @@
         //if( ! [CCDirector setDirectorType:kCCDirectorTypeDisplayLink] )
         //    [CCDirector setDirectorType:kCCDirectorTypeDefault];
         
-        usersService = [[UsersService alloc] init];
+        //usersService = [[UsersService alloc] init];
         
         //load local settings
         self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
@@ -77,11 +77,13 @@
         //director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
         //[director_ enableRetinaDisplay:NO];
         
-        //[self proceedFromLoginViaIntro:YES];
-        selectUserViewController = [[SelectUserViewController alloc] init];
+        [self proceedFromLoginViaIntro:NO];
         
-        [self.window addSubview:selectUserViewController.view];
-        [self.window makeKeyAndVisible];
+        //[self proceedFromLoginViaIntro:YES];
+//        selectUserViewController = [[SelectUserViewController alloc] init];
+//        
+//        [self.window addSubview:selectUserViewController.view];
+//        [self.window makeKeyAndVisible];
     }];
     
     return YES;

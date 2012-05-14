@@ -93,7 +93,7 @@ static float kMoveToNextProblemTime=2.0f;
         [self gotoNewProblem];
         
         //dynamic problem parser (persists to end of pipeline)
-        dProblemParser=[[DProblemParser alloc] init];
+        self.DynProblemParser=[[DProblemParser alloc] init];
         
         [self schedule:@selector(doUpdateOnTick:) interval:1.0f/60.0f];
         [self schedule:@selector(doUpdateOnSecond:) interval:1.0f];
@@ -286,7 +286,7 @@ static float kMoveToNextProblemTime=2.0f;
     scale=1.0f;
     
     //parse dynamic problem stuff -- needs to be done before toolscene is init'd
-    [dProblemParser startNewProblemWithPDef:pdef];
+    [self.DynProblemParser startNewProblemWithPDef:pdef];
     
     //initialize tool scene
     currentTool=[NSClassFromString(toolKey) alloc];

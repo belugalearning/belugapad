@@ -76,13 +76,12 @@ typedef enum {
     
     CCLabelTTF *problemDescLabel;
     ProblemEvalMode evalMode;
-    
-    DProblemParser *dProblemParser;
 }
 
 @property (retain) Daemon *Zubi;
 @property (retain) BAExpressionTree *PpExpr;
 @property BOOL flagResetProblem;
+@property (retain) DProblemParser *DynProblemParser;
 
 +(CCScene *) scene;
 

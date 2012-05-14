@@ -62,6 +62,8 @@
     BOOL fadeCount;
     BOOL allowDeselect;
     BOOL allowPanning;
+    BOOL allowCondensing;
+    BOOL allowMulching;
     
     NSString *posCageSprite;
     NSString *negCageSprite;

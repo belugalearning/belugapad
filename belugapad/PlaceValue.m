@@ -478,6 +478,12 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     if([pdef objectForKey:ALLOW_PANNING]) allowPanning=[[pdef objectForKey:ALLOW_PANNING]boolValue];
     else allowPanning=YES;
     
+    if([pdef objectForKey:ALLOW_CONDENSING]) allowCondensing=[[pdef objectForKey:ALLOW_CONDENSING]boolValue];
+    else allowCondensing=YES;
+    
+    if([pdef objectForKey:ALLOW_MULCHING]) allowMulching=[[pdef objectForKey:ALLOW_MULCHING]boolValue];
+    else allowMulching=YES;
+    
     
     //objects
     NSArray *objects=[pdef objectForKey:INIT_OBJECTS];
@@ -1074,7 +1080,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     posY = posY + diff.y;
     
     //NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];        
-    if(gw.Blackboard.SelectedObjects.count == columnBaseValue && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject])
+    if(gw.Blackboard.SelectedObjects.count == columnBaseValue && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject] && allowCondensing)
     {
         //flag we're in inBlockTransition
         inBlockTransition=YES;
@@ -1110,7 +1116,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     {
 
         //if([BLMath rectContainsPoint:location x:lx-200 y:0 w:200 h:ly] && currentColumnIndex<([gw.Blackboard.AllStores count]-1))
-        if(CGRectContainsPoint(boundingBoxMulch, location) && currentColumnIndex<([gw.Blackboard.AllStores count]-1))
+        if(CGRectContainsPoint(boundingBoxMulch, location) && currentColumnIndex<([gw.Blackboard.AllStores count]-1) && allowMulching)
 
         {
             inMulchArea=YES;

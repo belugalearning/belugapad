@@ -22,6 +22,7 @@ typedef enum {
 @class ToolScene;
 @class BAExpressionTree;
 @class UsersService;
+@class DProblemParser;
 
 @interface ToolHost : CCLayer
 {
@@ -75,6 +76,8 @@ typedef enum {
     
     CCLabelTTF *problemDescLabel;
     ProblemEvalMode evalMode;
+    
+    DProblemParser *dProblemParser;
 }
 
 @property (retain) Daemon *Zubi;

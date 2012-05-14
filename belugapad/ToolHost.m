@@ -20,6 +20,7 @@
 #import "ContentService.h"
 #import "UsersService.h"
 #import "JourneyScene.h"
+#import "DProblemParser.h"
 
 @interface ToolHost()
 {
@@ -90,6 +91,9 @@ static float kMoveToNextProblemTime=2.0f;
         
         contentService = ((AppController*)[[UIApplication sharedApplication] delegate]).contentService;        
         [self gotoNewProblem];
+        
+        //dynamic problem parser (persists to end of pipeline)
+        dProblemParser=[[DProblemParser alloc] init];
         
         [self schedule:@selector(doUpdateOnTick:) interval:1.0f/60.0f];
         [self schedule:@selector(doUpdateOnSecond:) interval:1.0f];
@@ -280,6 +284,9 @@ static float kMoveToNextProblemTime=2.0f;
     
     //reset scale
     scale=1.0f;
+    
+    //parse dynamic problem stuff -- needs to be done before toolscene is init'd
+    [dProblemParser startNewProblemWithPDef:pdef];
     
     //initialize tool scene
     currentTool=[NSClassFromString(toolKey) alloc];

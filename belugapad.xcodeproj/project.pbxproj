@@ -2539,7 +2539,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Scott Shields (RMD882AUJ8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Scott Shields (RMD882AUJ8)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2555,6 +2556,8 @@
 					"\"belugapad/Chipmunk/include/chipmunk\"/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PROVISIONING_PROFILE = "D81F5C9C-1FC6-4FCE-A147-AC5F05664743";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D81F5C9C-1FC6-4FCE-A147-AC5F05664743";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -2563,7 +2566,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Scott Shields (RMD882AUJ8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Scott Shields (RMD882AUJ8)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -2575,6 +2579,8 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "D81F5C9C-1FC6-4FCE-A147-AC5F05664743";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D81F5C9C-1FC6-4FCE-A147-AC5F05664743";
 				SDKROOT = iphoneos;
 			};
 			name = Release;

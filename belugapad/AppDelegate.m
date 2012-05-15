@@ -58,7 +58,7 @@
     // install canned copy of content database if doesn't yet exist (i.e. first app launch)
     [server.couchbase installDefaultDatabase:BUNDLE_FULL_PATH(@"/canned-content-db/kcm.couch")];
     
-    [server start: ^{
+    /*[server start: ^{
         NSAssert(!server.error, @"Error launching Couchbase: %@", server.error);
         
         // Try to use CADisplayLink director
@@ -86,7 +86,11 @@
 //        
 //        [self.window addSubview:selectUserViewController.view];
 //        [self.window makeKeyAndVisible];
-    }];
+    }];*/
+    
+    self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
+    contentService = [[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
+    [self proceedFromLoginViaIntro:NO];
     
     return YES;
 }

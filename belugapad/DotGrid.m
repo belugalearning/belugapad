@@ -675,7 +675,9 @@ thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
 {
     //returns YES if the tool expression evaluates succesfully
     
-    if(toolHost.PpExpr) [toolHost.PpExpr release];
+    BOOL isForceReturnNo=NO;
+    
+    //if(toolHost.PpExpr) [toolHost.PpExpr release];
     
     //create base equality
     toolHost.PpExpr=[BAExpressionTree treeWithRoot:[BAEqualsOperator operator]];
@@ -736,11 +738,20 @@ thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
         //if there was only one shape, then add it as division to root equality -- if not, create an addition for all divisions on right
         if(tileCounts.count==1)
         {
-            BADivisionOperator *rightdiv=[BADivisionOperator operator];
-            [toolHost.PpExpr.root addChild:rightdiv];
-            
-            [rightdiv addChild:[BAInteger integerWithIntValue:[[selectedCounts objectAtIndex:0] intValue]]];
-            [rightdiv addChild:[BAInteger integerWithIntValue:[[tileCounts objectAtIndex:0] intValue]]];
+            if([[selectedCounts objectAtIndex:0] intValue]==0)
+            {
+                [toolHost.PpExpr.root addChild:[BAInteger integerWithIntValue:0]];
+                isForceReturnNo=YES;
+            }
+            else {
+                BADivisionOperator *rightdiv=[BADivisionOperator operator];
+                [toolHost.PpExpr.root addChild:rightdiv];
+                
+                [rightdiv addChild:[BAInteger integerWithIntValue:[[selectedCounts objectAtIndex:0] intValue]]];
+                [rightdiv addChild:[BAInteger integerWithIntValue:[[tileCounts objectAtIndex:0] intValue]]];
+                
+            }
+
         }
         else {
             //add all the divisions together
@@ -748,11 +759,18 @@ thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
             [toolHost.PpExpr.root addChild:rightadd];
             
             for (int i; i<[tileCounts count]; i++) {
-                BADivisionOperator *div=[BADivisionOperator operator];
-                [rightadd addChild:div];
-                
-                [div addChild:[BAInteger integerWithIntValue:[[selectedCounts objectAtIndex:i] intValue]]];
-                [div addChild:[BAInteger integerWithIntValue:[[tileCounts objectAtIndex:i] intValue]]];
+                if([[selectedCounts objectAtIndex:i] intValue]==0)
+                {
+                    [rightadd addChild:[BAInteger integerWithIntValue:0]];
+                    isForceReturnNo=YES;
+                }
+                else {
+                    BADivisionOperator *div=[BADivisionOperator operator];
+                    [rightadd addChild:div];
+                    
+                    [div addChild:[BAInteger integerWithIntValue:[[selectedCounts objectAtIndex:i] intValue]]];
+                    [div addChild:[BAInteger integerWithIntValue:[[tileCounts objectAtIndex:i] intValue]]];                    
+                }
             }
         }
     }
@@ -763,8 +781,13 @@ thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
     
     NSLog(@"%@", [toolHost.PpExpr xmlStringValue]);
     
-    BATQuery *q=[[BATQuery alloc] initWithExpr:toolHost.PpExpr.root andTree:toolHost.PpExpr];
-    return [q assumeAndEvalEqualityAtRoot];
+    if (isForceReturnNo) {
+        return NO;
+    }
+    else {
+        BATQuery *q=[[BATQuery alloc] initWithExpr:toolHost.PpExpr.root andTree:toolHost.PpExpr];
+        return [q assumeAndEvalEqualityAtRoot];        
+    }
 }
 
 -(void)evalProblem

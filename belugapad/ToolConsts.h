@@ -15,6 +15,11 @@ typedef enum {
 } ProblemRejectMode;
 
 typedef enum {
+    kProblemResetOnReject=0,
+    kProblemAutomatedTransition=1
+} ProbjemRejectType;
+
+typedef enum {
     kProblemEvalAuto=0,
     kProblemEvalOnCommit=1
 } ProblemEvalMode;

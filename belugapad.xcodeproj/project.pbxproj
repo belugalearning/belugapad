@@ -733,7 +733,7 @@
 		7F5005C81522478C0038D251 /* fps_images-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fps_images-hd.png"; sourceTree = "<group>"; };
 		7F5005C91522478C0038D251 /* fps_images-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fps_images-ipadhd.png"; sourceTree = "<group>"; };
 		7F5005CA1522478C0038D251 /* fps_images.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fps_images.png; sourceTree = "<group>"; };
-		7F5113BE14A9EE62001AF372 /* belugapad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = belugapad.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F5113BE14A9EE62001AF372 /* beluga-demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "beluga-demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F5113C214A9EE62001AF372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7F5113C414A9EE62001AF372 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		7F5113C614A9EE62001AF372 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
@@ -1576,7 +1576,7 @@
 		7F5113BF14A9EE62001AF372 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7F5113BE14A9EE62001AF372 /* belugapad.app */,
+				7F5113BE14A9EE62001AF372 /* beluga-demo.app */,
 				7F40D89714FFD8BE006A3A55 /* GeneralTests.octest */,
 			);
 			name = Products;
@@ -2070,7 +2070,7 @@
 			);
 			name = "beluga-demo";
 			productName = belugapad;
-			productReference = 7F5113BE14A9EE62001AF372 /* belugapad.app */;
+			productReference = 7F5113BE14A9EE62001AF372 /* beluga-demo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */

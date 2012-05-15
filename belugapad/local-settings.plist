@@ -2,9 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>PROBLEM_PIPELINE-3</key>
-	<string>/pipeline-testing/gj-test-dproblems.plist</string>
+	<key>PROBLEM_PIPELINE-a</key>
+	<string>/pipeline-testing/pipeline_amalgamation.plist</string>
 	<key>PROBLEM_PIPELINE</key>
+	<string>DATABASE</string>
+	<key>PROBLEM_PIPELINE-6</key>
+	<string>/pipeline-testing/gj-test-dproblems.plist</string>
+	<key>PROBLEM_PIPELINE-4</key>
 	<string>/Problems/tokcm/counting-and-sorting/5608a59d6797796ce9e11484fd11e438/default-pipeline.plist</string>
 </dict>
 </plist>

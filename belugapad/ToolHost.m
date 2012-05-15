@@ -18,6 +18,9 @@
 #import "BAExpressionHeaders.h"
 #import "BATio.h"
 #import "ContentService.h"
+#import "UsersService.h"
+#import "JourneyScene.h"
+#import "DProblemParser.h"
 
 @interface ToolHost()
 {
@@ -32,6 +35,7 @@
 @synthesize Zubi;
 @synthesize PpExpr;
 @synthesize flagResetProblem;
+@synthesize DynProblemParser;
 
 static float kMoveToNextProblemTime=2.0f;
 
@@ -85,6 +89,9 @@ static float kMoveToNextProblemTime=2.0f;
         [self addChild:pauseLayer z:4];
         
         [self populatePerstLayer];
+        
+        //dynamic problem parser (persists to end of pipeline)
+        self.DynProblemParser=[[DProblemParser alloc] init];
         
         contentService = ((AppController*)[[UIApplication sharedApplication] delegate]).contentService;        
         [self gotoNewProblem];
@@ -148,6 +155,11 @@ static float kMoveToNextProblemTime=2.0f;
     //don't eval if we're in an auto move to next problem
     if((currentTool.ProblemComplete || metaQuestionForceComplete) && !autoMoveToNextProblem)
     {
+        UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
+        [us endProblemAttempt:YES];
+
+        [Zubi createXPshards:100 fromLocation:ccp(cx, cy)];
+
         moveToNextProblemTime=kMoveToNextProblemTime;
         autoMoveToNextProblem=YES;
     }
@@ -213,12 +225,34 @@ static float kMoveToNextProblemTime=2.0f;
     [self tearDownProblemDef];
     self.PpExpr = nil;
     
-    [contentService gotoNextProblem];
+    [contentService gotoNextProblemInPipeline];
     
     pdef = [contentService.currentPDef retain];
     self.PpExpr = contentService.currentPExpr;
     
-    [self loadProblem];
+    if(pdef)
+    {
+        [self loadProblem];
+    }
+    else
+    {
+        //no more problems in this sequence, bail to menu
+        
+        /********
+         * Gareth:
+         * Note from Nick - what used to happen, and probably should again as soon as is convenient, is that completion events (then topic/module/element, now pipeline/node) were stored on the associated ProblemAttempt document.
+         * What had been completed was calculated in UsersService#endProblemAttempt.
+         * The events strings were taken form UsersService#userEventsString
+        ********/
+        
+        
+        //assume completion
+        [contentService setPipelineNodeComplete];
+        contentService.fullRedraw=YES;
+        contentService.lightUpProgressFromLastNode=YES;
+        
+        [[CCDirector sharedDirector] replaceScene:[JourneyScene scene]];
+    }
 }
 
 -(void) loadProblem
@@ -251,6 +285,9 @@ static float kMoveToNextProblemTime=2.0f;
     
     //reset scale
     scale=1.0f;
+    
+    //parse dynamic problem stuff -- needs to be done before toolscene is init'd
+    [self.DynProblemParser startNewProblemWithPDef:pdef];
     
     //initialize tool scene
     currentTool=[NSClassFromString(toolKey) alloc];
@@ -295,11 +332,22 @@ static float kMoveToNextProblemTime=2.0f;
         [self.Zubi hideZubi];
     }
     
+    UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
+    [us startProblemAttempt];
 }
 
 -(void) resetProblem
 {
     skipNextStagedIntroAnim=YES;
+    
+    UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
+    [us endProblemAttempt:NO];
+    
+    if(problemDescLabel)
+    {
+        [problemDescLabel removeFromParentAndCleanup:YES];
+    }
+    
     [self loadProblem];
 }
 
@@ -307,9 +355,18 @@ static float kMoveToNextProblemTime=2.0f;
 {
     isPaused = YES;
     
-    pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
-    [pauseMenu setPosition:ccp(cx, cy)];
-    [pauseLayer addChild:pauseMenu z:10];
+    if(!pauseMenu)
+    {
+        pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
+        [pauseMenu setPosition:ccp(cx, cy)];
+        [pauseLayer addChild:pauseMenu z:10];
+    }
+    else {
+        [pauseMenu setVisible:YES];
+    }
+    
+    UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
+    [us togglePauseProblemAttempt];
 }
 
 -(void) checkPauseTouches:(CGPoint)location
@@ -318,35 +375,39 @@ static float kMoveToNextProblemTime=2.0f;
     {
         //resume
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-        [pauseLayer removeChild:pauseMenu cleanup:YES];
+        [pauseMenu setVisible:NO];
         isPaused=NO;
+        
+        UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
+        [us togglePauseProblemAttempt];
     }
     if(CGRectContainsPoint(kPauseMenuReset, location))
     {
        //reset
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self resetProblem];
-        [pauseLayer removeChild:pauseMenu cleanup:YES];
+        [pauseMenu setVisible:NO];
         isPaused=NO;
     }
     if(CGRectContainsPoint(kPauseMenuMenu,location))
     {
+
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-       //menu - do nothing, yet
         [self returnToMenu];
-        
+
+
     }
     if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
     {
         isPaused=NO;
-        [pauseLayer removeAllChildrenWithCleanup:YES];
+        [pauseMenu setVisible:NO];
         [self gotoNewProblem];
     }      
 }
 
 -(void) returnToMenu
 {
-    DLog(@"menu button touch");
+    [[CCDirector sharedDirector] replaceScene:[JourneyScene scene]];
 }
 
 -(void) showProblemCompleteMessage
@@ -360,9 +421,15 @@ static float kMoveToNextProblemTime=2.0f;
 
 -(void) showProblemIncompleteMessage
 {
-    problemIncomplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/failed-overlay.png")];
+    BOOL addToLayer=NO;
+    if(!problemIncomplete)
+    {
+        problemIncomplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/failed-overlay.png")];
+        addToLayer=YES;
+    }
     [problemIncomplete setPosition:ccp(cx,cy)];
-    [problemDefLayer addChild:problemIncomplete];
+    [problemIncomplete setOpacity:255];
+    if(addToLayer) [problemDefLayer addChild:problemIncomplete];
     showingProblemIncomplete=YES;
     [problemIncomplete retain];
 }
@@ -381,7 +448,9 @@ static float kMoveToNextProblemTime=2.0f;
     [toolBackLayer setScale:scale];
     [toolForeLayer setScale:scale];
     
-    problemDescLabel=[CCLabelTTF labelWithString:[curpdef objectForKey:PROBLEM_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    NSString *labelDesc=[self.DynProblemParser parseStringFromValueWithKey:PROBLEM_DESCRIPTION inDef:curpdef];
+    
+    problemDescLabel=[CCLabelTTF labelWithString:labelDesc fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
     [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
     //[problemDescLabel setColor:kLabelTitleColor];
     [problemDescLabel setTag:3];
@@ -860,7 +929,6 @@ static float kMoveToNextProblemTime=2.0f;
 
 -(void) dealloc
 {
-    [contentService release];
     [pdef release];
     [metaQuestionAnswers release];
     [metaQuestionAnswerButtons release];

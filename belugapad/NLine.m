@@ -7,7 +7,6 @@
 //
 
 #import "NLine.h"
-#import "MenuScene.h"
 #import "global.h"
 #import "BLMath.h"
 #import "SimpleAudioEngine.h"
@@ -21,7 +20,11 @@
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
+#import "DProblemParser.h"
 
+static float kBubbleProx=100.0f;
+static float kBubbleScrollBoundary=350;
+static float kBubblePushSpeed=400.0f;
 
 @implementation NLine
 
@@ -66,10 +69,20 @@
         
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
+        [self setupBubble];
+        
         gw.Blackboard.inProblemSetup = NO;
     }
     
     return self;
+}
+
+-(void)setupBubble
+{
+    bubbleSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/bubble.png")];
+    [bubbleSprite setPosition:ccp(cx, cy)];
+    [self.ForeLayer addChild:bubbleSprite];
+    
 }
 
 -(void)setupLabels
@@ -86,6 +99,13 @@
 {
 	[gw doUpdate:delta];
     
+//    float distFromCentre=-rambler.TouchXOffset + ((bubbleSprite.position.x + holdingBubbleOffset) - cx);
+//    if (distFromCentre <= ([rambler.MaxValue floatValue] * rambler.DefaultSegmentSize)
+//        && distFromCentre >= ([rambler.MinValue floatValue] * rambler.DefaultSegmentSize)) {
+        
+        rambler.TouchXOffset+=bubblePushDir * kBubblePushSpeed * delta;
+//    }    
+    
 }
 
 -(void)populateGW
@@ -93,15 +113,15 @@
     rambler=[DWRamblerGameObject alloc];
     [gw populateAndAddGameObject:rambler withTemplateName:@"TnLineRambler"];
     
-    rambler.Value=[[problemDef objectForKey:START_VALUE] floatValue];
+    rambler.Value=initStartVal;
     rambler.StartValue=rambler.Value;
-    rambler.CurrentSegmentValue=[[problemDef objectForKey:SEGMENT_VALUE] floatValue];
-    rambler.MinValue=[problemDef objectForKey:MIN_VALUE];
-    rambler.MaxValue=[problemDef objectForKey:MAX_VALUE];
+    rambler.CurrentSegmentValue=initSegmentVal;
+    rambler.MinValue=initMinVal;
+    rambler.MaxValue=initMaxVal;
 
     //positioning
     rambler.DefaultSegmentSize=115;
-    rambler.Pos=ccp(cx,cy - 75.0f);
+    rambler.Pos=ccp(cx,cy);
     
     selector=[DWSelectorGameObject alloc];
     [gw populateAndAddGameObject:selector withTemplateName:@"TnLineSelector"];
@@ -141,7 +161,15 @@
     NSNumber *rMode=[pdef objectForKey:REJECT_MODE];
     if (rMode) rejectMode=[rMode intValue];
     
+    evalTarget=[toolHost.DynProblemParser parseIntFromValueWithKey:@"EVAL_TARGET" inDef:pdef];
     
+    initStartVal=[toolHost.DynProblemParser parseIntFromValueWithKey:START_VALUE inDef:pdef];
+    initMinVal=[NSNumber numberWithInt:[toolHost.DynProblemParser parseIntFromValueWithKey:MIN_VALUE inDef:pdef]];
+    initMaxVal=[NSNumber numberWithInt:[toolHost.DynProblemParser parseIntFromValueWithKey:MAX_VALUE inDef:pdef]];
+    initSegmentVal=[toolHost.DynProblemParser parseIntFromValueWithKey:SEGMENT_VALUE inDef:pdef];
+    
+    //force default on segment value if not specified
+    if(initSegmentVal==0)initSegmentVal=1;
 }
 
 -(void)problemStateChanged
@@ -168,29 +196,31 @@
 
 -(BOOL)evalProblem
 {
-    //not possible to eval without expression
-    if(!toolHost.PpExpr) return NO;
+    return (evalTarget==lastBubbleLoc);
     
-    //copy, sub eval and compare the expression
-    BAExpressionTree *evalTree=[toolHost.PpExpr copy];
-    
-    //set subs & execute
-    evalTree.VariableSubstitutions=gw.Blackboard.ProblemVariableSubstitutions;
-    [evalTree substitueVariablesForIntegersOnNode:evalTree.root];
-
-    NSLog(@"problem expression: %@", [toolHost.PpExpr expressionString]);
-    NSLog(@"substituted expression: %@", [evalTree expressionString]);
-    
-    //evaluate
-    [evalTree evaluateTree];
-    
-    NSLog(@"evaluated expression: %@", [evalTree expressionString]);
-    
-    //query comparison for equality (currently has to assume as a top level eq using query layer
-    BATQuery *q=[[BATQuery alloc] initWithExpr:evalTree.root andTree:evalTree];
-    BOOL result=[q assumeAndEvalEqualityAtRoot];
-    
-    return result;
+//    //not possible to eval without expression
+//    if(!toolHost.PpExpr) return NO;
+//    
+//    //copy, sub eval and compare the expression
+//    BAExpressionTree *evalTree=[toolHost.PpExpr copy];
+//    
+//    //set subs & execute
+//    evalTree.VariableSubstitutions=gw.Blackboard.ProblemVariableSubstitutions;
+//    [evalTree substitueVariablesForIntegersOnNode:evalTree.root];
+//
+//    NSLog(@"problem expression: %@", [toolHost.PpExpr expressionString]);
+//    NSLog(@"substituted expression: %@", [evalTree expressionString]);
+//    
+//    //evaluate
+//    [evalTree evaluateTree];
+//    
+//    NSLog(@"evaluated expression: %@", [evalTree expressionString]);
+//    
+//    //query comparison for equality (currently has to assume as a top level eq using query layer
+//    BATQuery *q=[[BATQuery alloc] initWithExpr:evalTree.root andTree:evalTree];
+//    BOOL result=[q assumeAndEvalEqualityAtRoot];
+//    
+//    return result;
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -215,14 +245,20 @@
             [self showComplete];
         }
     }
-    else if (location.y < kRamblerYMax)
+//    else if (location.y < kRamblerYMax)
+//    {
+//        inRamblerArea=YES;
+//    }
+//    else 
+//    {
+//        NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
+//        [gw handleMessage:kDWhandleTap andPayload:pl withLogLevel:-1];
+//    }
+    
+    else if([BLMath DistanceBetween:location and:bubbleSprite.position]<kBubbleProx)
     {
-        inRamblerArea=YES;
-    }
-    else 
-    {
-        NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
-        [gw handleMessage:kDWhandleTap andPayload:pl withLogLevel:-1];
+        holdingBubbleOffset=location.x - bubbleSprite.position.x;
+        holdingBubble=YES;
     }
 }
 
@@ -233,26 +269,90 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
     
-    if(inRamblerArea)
-    {
-        CGPoint a = [[CCDirector sharedDirector] convertToGL:[touch previousLocationInView:touch.view]];
-        CGPoint b = [[CCDirector sharedDirector] convertToGL:[touch locationInView:touch.view]];
-    
-        rambler.TouchXOffset+=b.x-a.x;
+    if(holdingBubble)
+    {            
+        float offsetFromCX=location.x-cx;
+        if(fabsf(offsetFromCX)>kBubbleScrollBoundary)
+        {
+            if(offsetFromCX>0)bubblePushDir=-1;
+            if(offsetFromCX<0)bubblePushDir=1;
+        }
+        else {
+
+//            float distFromCentre=-rambler.TouchXOffset + ((bubbleSprite.position.x + holdingBubbleOffset) - cx);
+//            if (distFromCentre <= ([rambler.MaxValue floatValue] * rambler.DefaultSegmentSize)
+//                && distFromCentre >= ([rambler.MinValue floatValue] * rambler.DefaultSegmentSize)) {
+
+                [bubbleSprite setPosition:ccp(location.x + holdingBubbleOffset, bubbleSprite.position.y)];
+                
+//            }
+            
+            bubblePushDir=0;
+        }
     }
+    
+//    if(inRamblerArea)
+//    {
+//        CGPoint a = [[CCDirector sharedDirector] convertToGL:[touch previousLocationInView:touch.view]];
+//        CGPoint b = [[CCDirector sharedDirector] convertToGL:[touch locationInView:touch.view]];
+//    
+//        rambler.TouchXOffset+=b.x-a.x;
+//    }
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     touching=NO;
+    bubblePushDir=0;
     
-    if(inRamblerArea)
+    if(holdingBubbleOffset)
     {
-        [rambler handleMessage:kDWnlineReleaseRamblerAtOffset];
+        //[gw handleMessage:kDWnlineReleaseRamblerAtOffset andPayload:nil withLogLevel:0];
+        holdingBubbleOffset=NO;
         
-        inRamblerArea=NO;
-        rambler.TouchXOffset=0;
+        float distFromCentre=-rambler.TouchXOffset + (bubbleSprite.position.x - cx);
+        float stepsFromCentre=distFromCentre / rambler.DefaultSegmentSize;
+        
+        int roundedStepsFromCentre=(int)(stepsFromCentre + 0.5f);
+        if(stepsFromCentre<0) roundedStepsFromCentre=(int)(stepsFromCentre - 0.5f);
+        
+        NSLog(@"bubble pos %d", roundedStepsFromCentre);
+        
+        
+        int startOffset=initStartVal;
+        lastBubbleLoc = roundedStepsFromCentre+startOffset;
+        int adjustedStepsFromCentre=roundedStepsFromCentre;
+        
+        if (lastBubbleLoc>[rambler.MaxValue intValue]) adjustedStepsFromCentre = [rambler.MaxValue intValue] - startOffset;
+        
+        if(lastBubbleLoc<[rambler.MinValue intValue]) adjustedStepsFromCentre = [rambler.MinValue intValue] - startOffset;
+
+        //diff (moveby)
+        float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
+        [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
+               
+//        int roundedStepsFromActualCentre=roundedStepsFromCentre;
+//        
+//        roundedStepsFromCentre += [[problemDef objectForKey:START_VALUE] intValue];
+//        
+//        if(roundedStepsFromCentre>[rambler.MaxValue intValue])roundedStepsFromCentre=[rambler.MaxValue intValue] - [[problemDef objectForKey:START_VALUE] intValue];
+//        if(roundedStepsFromCentre<[rambler.MinValue intValue])roundedStepsFromCentre=[rambler.MinValue intValue] - [[problemDef objectForKey:START_VALUE] intValue];
+//        
+//        //lastBubbleLoc=roundedStepsFromCentre + [[problemDef objectForKey:START_VALUE] intValue];
+//        lastBubbleLoc=roundedStepsFromCentre;
+        
+//        //diff (moveby)
+//        float diffx=(roundedStepsFromActualCentre * rambler.DefaultSegmentSize)-distFromCentre;
+//        [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
     }
+    
+//    if(inRamblerArea)
+//    {
+//        [rambler handleMessage:kDWnlineReleaseRamblerAtOffset];
+//        
+//        inRamblerArea=NO;
+//        rambler.TouchXOffset=0;
+//    }
 
     
     UITouch *touch=[touches anyObject];

@@ -33,8 +33,12 @@
 	   &&	[aRightChild isKindOfClass:[BAInteger class]]
 	   &&	[(BAInteger*)aRightChild intValue] != 0)
 	{
+        if([(BAInteger*)aLeftChild intValue]==0)
+        {
+            return [BAInteger integerWithIntValue:0];
+        }
 		// we can only return an integer if the numerator divides evenly into the denominator
-		if([(BAInteger*)aLeftChild intValue] % [(BAInteger*)aRightChild intValue] == 0)
+		else if([(BAInteger*)aLeftChild intValue] % [(BAInteger*)aRightChild intValue] == 0)
 		{	
 			if(		(	[(BAInteger*)aLeftChild symbolString] != nil
 					 &&	[(BAInteger*)aRightChild symbolString] != nil)

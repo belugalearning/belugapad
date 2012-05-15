@@ -7,14 +7,27 @@
 //
 
 #import "ZubiIntro.h"
+#import "JourneyScene.h"
 #import "global.h"
 #import "ContentService.h"
-
-#import "MenuScene.h"
+#import "ToolHost.h"
 
 #import "cocos2d.h"
 
 #import "AppDelegate.h"
+
+#import "UsersService.h"
+#import "SelectUserViewController.h"
+#import "LoadingViewController.h"
+#import <CouchCocoa/CouchCocoa.h>
+
+@interface AppController()
+{
+@private
+    SelectUserViewController *selectUserViewController;
+}
+
+@end
 
 @implementation AppController
 
@@ -23,11 +36,66 @@
 @synthesize LocalSettings;
 @synthesize contentService;
 
+@synthesize usersService;
+@synthesize currentUser;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	// Create the main window
-	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    launchOptionsCache=launchOptions;
     
+    // Init the window
+    window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    LoadingViewController *lvc=[[LoadingViewController alloc] init];
+    [self.window addSubview:lvc.view];
+    [self.window makeKeyAndVisible];
+    [lvc release];
+    
+    CouchEmbeddedServer* server = [CouchEmbeddedServer sharedInstance];
+    
+    // install canned copy of content database if doesn't yet exist (i.e. first app launch)
+    [server.couchbase installDefaultDatabase:BUNDLE_FULL_PATH(@"/canned-content-db/kcm.couch")];
+    
+    [server start: ^{
+        NSAssert(!server.error, @"Error launching Couchbase: %@", server.error);
+        
+        // Try to use CADisplayLink director
+        // if it fails (SDK < 3.1) use the default director
+        
+        //todo: no cc2 equiv
+        //if( ! [CCDirector setDirectorType:kCCDirectorTypeDisplayLink] )
+        //    [CCDirector setDirectorType:kCCDirectorTypeDefault];
+        
+        usersService = [[UsersService alloc] init];
+        
+        //load local settings
+        self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
+        contentService = [[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
+        
+        
+        //do cocos stuff
+        //director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
+        //[director_ enableRetinaDisplay:NO];
+        
+        //[self proceedFromLoginViaIntro:YES];
+        selectUserViewController = [[SelectUserViewController alloc] init];
+        
+        [self.window addSubview:selectUserViewController.view];
+        [self.window makeKeyAndVisible];
+    }];
+    
+    return YES;
+}
+
+-(void)proceedFromLoginViaIntro:(BOOL)viaIntro
+{
+    //no purpose in getting this -- it's not used
+    //NSDictionary *launchOptions=launchOptionsCache;
+    
+    //not sure this is required -- it's being ended in SelectUserViewController?
+    //[director_ end];
+    
+    director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
     
 	// Create an CCGLView with a RGB565 color buffer, and a depth buffer of 0-bits
 	CCGLView *glView = [CCGLView viewWithFrame:[window_ bounds]
@@ -43,7 +111,7 @@
 	director_.wantsFullScreenLayout = YES;
     
 	// Display FSP and SPF
-	[director_ setDisplayStats:YES];
+	[director_ setDisplayStats:NO];
     
 	// set FPS at 60
 	[director_ setAnimationInterval:1.0/60];
@@ -86,18 +154,19 @@
     
 	// Assume that PVR images have premultiplied alpha
 	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
-    
-
-    //load local settings
-    self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
-    contentService = [[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
 
     
     // and add the scene to the stack. The director will run it when it automatically when the view is displayed.
-	[director_ pushScene: [ZubiIntro scene]]; 
+	//[director_ pushScene: (viaIntro ? [ZubiIntro scene] : [JourneyScene scene])]; 
     
-    
-	return YES;
+    if(contentService.isUsingTestPipeline)
+    {
+        [director_ pushScene:[ToolHost scene]];
+    }
+    else
+    {
+        [director_ pushScene:[JourneyScene scene]];
+    }    
 }
 
 // Supported orientations: Landscape. Customize it for your own needs
@@ -153,6 +222,9 @@
 
 - (void) dealloc
 {
+    [contentService release];
+    [usersService release];
+    
 	[window_ release];
 	[navController_ release];
     

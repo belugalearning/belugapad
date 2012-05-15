@@ -69,6 +69,7 @@ typedef enum {
 -(void)setColor:(ccColor4F)aColor;
 
 -(void)doUpdate:(ccTime)delta;
+-(void)setRestingPoint:(CGPoint)newRestingPoint;
 -(void)resetToRestAtPoint:(CGPoint)newRestingPoint;
 -(void)setMode:(DaemonMode)newMode;
 -(void)setTarget:(CGPoint)theTarget;
@@ -92,5 +93,7 @@ typedef enum {
 
 -(void)hideZubi;
 -(void)showZubi;
+
+-(CGPoint)currentPosition;
 
 @end

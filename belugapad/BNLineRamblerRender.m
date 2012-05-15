@@ -11,7 +11,8 @@
 #import "global.h"
 
 static float kIndicatorYOffset=15.0f;
-static float kLabelOffset=-70.0f;
+//static float kLabelOffset=-70.0f;
+static float kLabelOffset=-170.0f;
 static NSString *kLabelFont=@"visgrad1.fnt";
 
 @implementation BNLineRamblerRender

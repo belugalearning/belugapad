@@ -243,6 +243,11 @@ static float kSubParticleOffset=10.0f;
     animationsEnabled=YES;
 }
 
+-(void)setRestingPoint:(CGPoint)newRestingPoint
+{
+    restingPos=newRestingPoint;
+}
+
 -(void)resetToRestAtPoint:(CGPoint)newRestingPoint
 {
     restingPos=newRestingPoint;
@@ -278,6 +283,11 @@ static float kSubParticleOffset=10.0f;
     }
     
     [self tickManageShards:delta];
+}
+
+-(CGPoint)currentPosition
+{
+    return primaryParticle.position;
 }
 
 -(void)tickManageShards:(ccTime)delta

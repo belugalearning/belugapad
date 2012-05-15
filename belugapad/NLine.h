@@ -38,6 +38,18 @@
     CCLabelTTF *problemDescLabel;
 
     CCLabelTTF *problemCompleteLabel;
+    
+    CCSprite *bubbleSprite;
+    BOOL holdingBubble;
+    float holdingBubbleOffset;
+    int bubblePushDir;
+    int lastBubbleLoc;
+    int evalTarget;
+    
+    int initStartVal;
+    NSNumber *initMinVal;
+    NSNumber *initMaxVal;
+    int initSegmentVal;
 }
 
 -(void)populateGW;

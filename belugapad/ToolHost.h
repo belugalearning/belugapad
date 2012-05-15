@@ -21,6 +21,8 @@ typedef enum {
 @class Daemon;
 @class ToolScene;
 @class BAExpressionTree;
+@class UsersService;
+@class DProblemParser;
 
 @interface ToolHost : CCLayer
 {
@@ -79,6 +81,7 @@ typedef enum {
 @property (retain) Daemon *Zubi;
 @property (retain) BAExpressionTree *PpExpr;
 @property BOOL flagResetProblem;
+@property (retain) DProblemParser *DynProblemParser;
 
 +(CCScene *) scene;
 

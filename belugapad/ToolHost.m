@@ -344,7 +344,7 @@ static float kMoveToNextProblemTime=2.0f;
     
     if(!pauseMenu)
     {
-        pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
+        pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay_FW-no_menu.png")];
         [pauseMenu setPosition:ccp(cx, cy)];
         [pauseLayer addChild:pauseMenu z:10];
     }
@@ -379,8 +379,8 @@ static float kMoveToNextProblemTime=2.0f;
     if(CGRectContainsPoint(kPauseMenuMenu,location))
     {
 
-        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-        [self returnToMenu];
+//        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
+//        [self returnToMenu];
 
 
     }

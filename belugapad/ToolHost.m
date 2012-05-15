@@ -421,9 +421,15 @@ static float kMoveToNextProblemTime=2.0f;
 
 -(void) showProblemIncompleteMessage
 {
-    problemIncomplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/failed-overlay.png")];
+    BOOL addToLayer=NO;
+    if(!problemIncomplete)
+    {
+        problemIncomplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/failed-overlay.png")];
+        addToLayer=YES;
+    }
     [problemIncomplete setPosition:ccp(cx,cy)];
-    [problemDefLayer addChild:problemIncomplete];
+    [problemIncomplete setOpacity:255];
+    if(addToLayer) [problemDefLayer addChild:problemIncomplete];
     showingProblemIncomplete=YES;
     [problemIncomplete retain];
 }

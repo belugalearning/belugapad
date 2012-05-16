@@ -14,9 +14,9 @@
 	<key>NLine</key>
 	<dict>
 		<key>SCALE_MIN</key>
-		<real>0.7</real>
+		<integer>1</integer>
 		<key>SCALE_MAX</key>
-		<real>1.2</real>
+		<integer>1</integer>
 		<key>SCALING_PASS_THRU</key>
 		<false/>
 	</dict>

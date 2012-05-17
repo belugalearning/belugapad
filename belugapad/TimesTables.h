@@ -10,12 +10,7 @@
 #import "ToolConsts.h"
 #import "ToolScene.h"
 
-typedef enum {
-    kOperatorAdd=0,
-    kOperatorSub=1,
-    kOperatorMul=2,
-    kOperatorDiv=3
-} OperatorMode;
+
 
 @interface TimesTables : ToolScene
 {

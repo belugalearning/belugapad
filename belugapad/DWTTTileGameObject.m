@@ -16,6 +16,6 @@
 @synthesize myText;
 @synthesize myXpos;
 @synthesize myYpos;
-
+@synthesize operatorType;
 
 @end

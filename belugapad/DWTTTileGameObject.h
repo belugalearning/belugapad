@@ -7,6 +7,7 @@
 //
 
 #import "DWGameObject.h"
+#import "ToolConsts.h"
 
 @interface DWTTTileGameObject : DWGameObject
 
@@ -16,5 +17,7 @@
 @property (retain) CCLabelTTF *myText;
 @property int myXpos;
 @property int myYpos;
+@property OperatorMode operatorType;
+
 
 @end

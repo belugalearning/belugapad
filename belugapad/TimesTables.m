@@ -154,6 +154,7 @@
             tile.Position=ccp(xStartPos,yStartPos);
             tile.myXpos=xStartNumber;
             tile.myYpos=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-(iCol+1);
+            tile.operatorType=operatorMode;
             
             NSLog(@"iRow = %d, iCol = %d, tile.myXpos = %d, tile.myYpos = %d", iRow, iCol, tile.myXpos, tile.myYpos);
             

@@ -53,6 +53,7 @@
     //pulled direct from problem def -- both default to 0 state if not defined
     ProblemRejectMode rejectMode;
     ProblemEvalMode evalMode;
+    ProbjemRejectType rejectType;
     
     //the last positively evaluated clauses's solution index
     int trackedSolutionIndex;

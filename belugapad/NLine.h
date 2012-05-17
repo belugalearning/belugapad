@@ -34,6 +34,7 @@
     
     // Problem definition vars
     ProblemRejectMode rejectMode;
+    ProbjemRejectType rejectType;
     ProblemEvalMode evalMode;
     CCLabelTTF *problemDescLabel;
 

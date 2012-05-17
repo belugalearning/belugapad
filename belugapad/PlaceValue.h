@@ -98,6 +98,7 @@
     NSArray *initObjects;
     
     ProblemRejectMode rejectMode;
+    ProbjemRejectType rejectType;
     ProblemEvalMode evalMode;
     
     float timeToAutoMoveToNextProblem;

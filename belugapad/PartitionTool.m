@@ -104,6 +104,7 @@
     evalMode = [[pdef objectForKey:EVAL_MODE] intValue];
     
     rejectMode = [[pdef objectForKey:REJECT_MODE] intValue];
+    rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
     
     createdRows = [[NSMutableArray alloc]init];
     [createdRows retain];
@@ -347,7 +348,8 @@
         [toolHost showProblemCompleteMessage];
     }
     else {
-        if(rejectMode==kProblemRejectOnCommit)[self resetProblemFromReject];
+        if(rejectMode==kProblemRejectOnCommit && rejectType==kProblemAutomatedTransition)[self resetProblemFromReject];
+        else if(rejectType==kProblemResetOnReject)[toolHost resetProblem];
         else [toolHost showProblemIncompleteMessage];
     }
 }

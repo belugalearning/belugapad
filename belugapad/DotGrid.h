@@ -38,6 +38,8 @@ typedef enum {
     DrawMode drawMode;
     GameState gameState;
     ProblemEvalMode evalMode;
+    ProblemRejectMode rejectMode;
+    ProbjemRejectType rejectType;
     DotGridEvalType evalType;
 
     int evalDividend;
@@ -56,7 +58,7 @@ typedef enum {
     
     CGPoint lastTouch;
     
-    ProblemRejectMode rejectMode;
+
     
     NSMutableArray *dotMatrix;
     NSDictionary *hiddenRows;

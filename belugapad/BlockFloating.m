@@ -676,6 +676,7 @@ static void eachShape(void *ptr, void* unused)
     
     if([pdef objectForKey:UNDERLAY_FILENAME]) underlayImage=[pdef objectForKey:UNDERLAY_FILENAME];
     
+    rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
 
     [self setupBkgAndTitle];
     //problem sub title
@@ -952,9 +953,12 @@ static void eachShape(void *ptr, void* unused)
         if(!matchesSols || [matchesSols count]==0)
         {
             //no matches -- reject 
-            if(rejectMode==kProblemRejectOnAction || forceRejectNow)
+            if((rejectMode==kProblemRejectOnAction || forceRejectNow) && rejectType==kProblemAutomatedTransition)
             {
                 [c handleMessage:kDWejectContents andPayload:nil withLogLevel:0];
+            }
+            else {
+                [toolHost resetProblem];
             }
             
             //hook do tutorial ?

@@ -177,6 +177,7 @@ const float kScaleOfLesserBlocks=0.6f;
     dividend=[[pdef objectForKey:DIVIDEND] floatValue];
     divisor=[[pdef objectForKey:DIVISOR] floatValue];
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
+    rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
     goodBadHighlight=[[pdef objectForKey:GOOD_BAD_HIGHLIGHT] boolValue];
     renderBlockLabels=[[pdef objectForKey:RENDERBLOCK_LABELS] boolValue];
     

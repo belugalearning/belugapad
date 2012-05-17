@@ -492,6 +492,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     NSNumber *rMode=[pdef objectForKey:REJECT_MODE];
     if (rMode) rejectMode=[rMode intValue];
     
+    rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
+    
     NSNumber *eMode=[pdef objectForKey:EVAL_MODE];
     if(eMode) evalMode=[eMode intValue];
     

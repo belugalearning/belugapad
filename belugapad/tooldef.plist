@@ -61,5 +61,14 @@
 		<key>SCALE_MAX</key>
 		<integer>1</integer>
 	</dict>
+	<key>TimesTables</key>
+	<dict>
+		<key>SCALING_PASS_THRU</key>
+		<false/>
+		<key>SCALE_MIN</key>
+		<integer>1</integer>
+		<key>SCALE_MAX</key>
+		<integer>1</integer>
+	</dict>
 </dict>
 </plist>

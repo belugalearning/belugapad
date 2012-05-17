@@ -42,6 +42,10 @@
 		5571BAEF14E4108F0053A62B /* BPlaceValuePickupTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE814E4108F0053A62B /* BPlaceValuePickupTarget.m */; };
 		5571BAF014E4108F0053A62B /* BPlaceValueMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAEA14E4108F0053A62B /* BPlaceValueMount.m */; };
 		5571BAF114E4108F0053A62B /* BPlaceValueMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAEC14E4108F0053A62B /* BPlaceValueMountable.m */; };
+		55AFD6A5156517FC00FF1886 /* TimesTables.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6A4156517FC00FF1886 /* TimesTables.m */; };
+		55AFD6AA15651B5800FF1886 /* DWTTTileGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6A815651B5800FF1886 /* DWTTTileGameObject.m */; };
+		55AFD6AE15651C4700FF1886 /* BTTTileObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6AD15651C4700FF1886 /* BTTTileObjectRender.m */; };
+		55AFD6B115651C5500FF1886 /* BTTTileTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6B015651C5500FF1886 /* BTTTileTouch.m */; };
 		55C5F71A153874C4009D8906 /* DotGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F719153874C3009D8906 /* DotGrid.m */; };
 		55C5F72715388A40009D8906 /* DWDotGridAnchorGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F72015388A40009D8906 /* DWDotGridAnchorGameObject.m */; };
 		55C5F72815388A40009D8906 /* DWDotGridHandleGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F72215388A40009D8906 /* DWDotGridHandleGameObject.m */; };
@@ -406,6 +410,14 @@
 		5571BAEA14E4108F0053A62B /* BPlaceValueMount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueMount.m; sourceTree = "<group>"; };
 		5571BAEB14E4108F0053A62B /* BPlaceValueMountable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueMountable.h; sourceTree = "<group>"; };
 		5571BAEC14E4108F0053A62B /* BPlaceValueMountable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueMountable.m; sourceTree = "<group>"; };
+		55AFD6A3156517FC00FF1886 /* TimesTables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimesTables.h; sourceTree = "<group>"; };
+		55AFD6A4156517FC00FF1886 /* TimesTables.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimesTables.m; sourceTree = "<group>"; };
+		55AFD6A815651B5800FF1886 /* DWTTTileGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWTTTileGameObject.m; sourceTree = "<group>"; };
+		55AFD6A915651B5800FF1886 /* DWTTTileGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWTTTileGameObject.h; sourceTree = "<group>"; };
+		55AFD6AC15651C3C00FF1886 /* BTTTileObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTTTileObjectRender.h; sourceTree = "<group>"; };
+		55AFD6AD15651C4700FF1886 /* BTTTileObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTTTileObjectRender.m; sourceTree = "<group>"; };
+		55AFD6AF15651C5500FF1886 /* BTTTileTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTTTileTouch.h; sourceTree = "<group>"; };
+		55AFD6B015651C5500FF1886 /* BTTTileTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTTTileTouch.m; sourceTree = "<group>"; };
 		55C5F718153874C3009D8906 /* DotGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DotGrid.h; sourceTree = "<group>"; };
 		55C5F719153874C3009D8906 /* DotGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DotGrid.m; sourceTree = "<group>"; };
 		55C5F71F15388A40009D8906 /* DWDotGridAnchorGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWDotGridAnchorGameObject.h; sourceTree = "<group>"; };
@@ -1050,6 +1062,26 @@
 				5569EA0214E943AA00E80C00 /* BPlaceValueSelectionMgr.m */,
 			);
 			name = PlaceValue;
+			sourceTree = "<group>";
+		};
+		55AFD6A715651A6800FF1886 /* TimesTables */ = {
+			isa = PBXGroup;
+			children = (
+				55AFD6A815651B5800FF1886 /* DWTTTileGameObject.m */,
+				55AFD6A915651B5800FF1886 /* DWTTTileGameObject.h */,
+			);
+			name = TimesTables;
+			sourceTree = "<group>";
+		};
+		55AFD6AB15651BD500FF1886 /* TimesTables */ = {
+			isa = PBXGroup;
+			children = (
+				55AFD6AF15651C5500FF1886 /* BTTTileTouch.h */,
+				55AFD6B015651C5500FF1886 /* BTTTileTouch.m */,
+				55AFD6AD15651C4700FF1886 /* BTTTileObjectRender.m */,
+				55AFD6AC15651C3C00FF1886 /* BTTTileObjectRender.h */,
+			);
+			name = TimesTables;
 			sourceTree = "<group>";
 		};
 		55C5F71C1538863C009D8906 /* Partition */ = {
@@ -1769,6 +1801,8 @@
 		7F51159914A9EF30001AF372 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				55AFD6A3156517FC00FF1886 /* TimesTables.h */,
+				55AFD6A4156517FC00FF1886 /* TimesTables.m */,
 				550708741517623E00111BBB /* ColumnAddition.h */,
 				550708751517623E00111BBB /* ColumnAddition.m */,
 				7F71B408150FBCB20097A956 /* ExprScene.h */,
@@ -1895,6 +1929,7 @@
 		7FABE6A314B4C5B500ED2D0C /* Behaviours */ = {
 			isa = PBXGroup;
 			children = (
+				55AFD6AB15651BD500FF1886 /* TimesTables */,
 				7FD18783154E02A2008F0A31 /* LongDivision */,
 				55C5F72B15388A84009D8906 /* DotGrid */,
 				551815651525F67F0097E259 /* Partition */,
@@ -1965,6 +2000,7 @@
 		7FC27F6B150FA9FC00E16A44 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				55AFD6A715651A6800FF1886 /* TimesTables */,
 				55C5F71E1538867F009D8906 /* DotGrid */,
 				55C5F71D15388665009D8906 /* NLine */,
 				55C5F71C1538863C009D8906 /* Partition */,
@@ -2474,6 +2510,10 @@
 				7FD1878C154E7396008F0A31 /* PipelineNodeSliceInstance.m in Sources */,
 				7F85187C1558E85F002E9F07 /* Pipeline.m in Sources */,
 				7F3367DD155FC38A00A2E656 /* DProblemParser.m in Sources */,
+				55AFD6A5156517FC00FF1886 /* TimesTables.m in Sources */,
+				55AFD6AA15651B5800FF1886 /* DWTTTileGameObject.m in Sources */,
+				55AFD6AE15651C4700FF1886 /* BTTTileObjectRender.m in Sources */,
+				55AFD6B115651C5500FF1886 /* BTTTileTouch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

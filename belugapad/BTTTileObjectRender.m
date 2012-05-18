@@ -76,6 +76,7 @@
         [tile.mySprite setPosition:tile.Position];
         //[anch.mySprite setScale:0.5f];
         
+        if(tile.Disabled)[tile.mySprite setColor:ccc3(40,40,40)];
         
         if(gameWorld.Blackboard.inProblemSetup)
         {

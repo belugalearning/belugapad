@@ -48,8 +48,11 @@ typedef enum {
     int spaceBetweenAnchors;
     int startX;
     int startY;
+    BOOL showXAxis;
+    BOOL showYAxis;
     NSMutableArray *ttMatrix;
-    NSMutableDictionary *hiddenRows;
+    NSMutableArray *activeCols;
+    NSMutableArray *activeRows;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

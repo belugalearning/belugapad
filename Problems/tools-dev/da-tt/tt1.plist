@@ -20,12 +20,14 @@
 	<true/>
 	<key>SHOW_Y_AXIS</key>
 	<true/>
-	<key>ACTIVE_ROWS-OFF</key>
+	<key>ACTIVE_ROWS</key>
 	<array>
 		<integer>5</integer>
+		<string>0</string>
 	</array>
-	<key>ACTIVE_COLS-OFF</key>
+	<key>ACTIVE_COLS</key>
 	<array>
+		<integer>4</integer>
 		<integer>5</integer>
 	</array>
 	<key>SOLUTIONS</key>

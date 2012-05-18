@@ -165,39 +165,9 @@
             tile.myXpos=xStartNumber;
             tile.myYpos=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-(iCol+1);
             
-            if(activeRows && !tile.Disabled)
-            {
-                for(NSNumber *n in activeRows)
-                {
-                    int this=[n intValue];
-                    if(this==tile.myXpos){tile.Disabled=NO;break;}
-                    else{tile.Disabled=YES;}
-                }
-            }
-            
-//            if(activeCols && !tile.Disabled)
-//            {
-//                for(NSNumber *n in activeCols)
-//                {
-//                    int this=[n intValue];
-//                    if(this==tile.myYpos){tile.Disabled=NO;break;}
-//                    else{tile.Disabled=YES;}
-//                }
-//            }
-            
             NSLog(@"iRow = %d, iCol = %d, tile.myXpos = %d, tile.myYpos = %d", iRow, iCol, tile.myXpos, tile.myYpos);
             
-            
-            // set the hidden property for every anchor on this row if 
-//            if(hiddenRows && [hiddenRows objectForKey:[NSString stringWithFormat:@"%d", iCol]]) {
-//                currentRowHidden=[[hiddenRows objectForKey:[NSString stringWithFormat:@"%d", iCol]] boolValue];
-//                if(currentRowHidden) {
-//                    tile.Disabled=YES;
-//                }
-//            }
-        
 
-            
             [currentCol addObject:tile];
             
 
@@ -208,6 +178,42 @@
         [ttMatrix addObject:currentCol];
         
     }    
+    
+    if(activeCols || activeRows)
+    {
+        for(int r=0;r<[ttMatrix count];r++)
+        {
+            NSArray *curCol=[ttMatrix objectAtIndex:r];
+            
+            for(int c=0;c<[curCol count];c++)
+            {
+                int thisX=0;
+                int thisY=0;
+                DWTTTileGameObject *tile=[curCol objectAtIndex:c];
+                
+                
+                for(NSNumber *n in activeCols)
+                {
+                    thisX=[n intValue];
+                    if(thisX==tile.myXpos)break;
+                }
+                for(NSNumber *n in activeRows)
+                {
+                    thisY=[n intValue];
+                    if(thisY==tile.myYpos)break;
+                }
+                
+                if(tile.myXpos == thisX || tile.myYpos == thisY)
+                {
+                    tile.Disabled=NO;
+                }
+                else {
+                    tile.Disabled=YES;
+                }
+                
+            }
+        }
+    }
     
 }
 

@@ -38,7 +38,7 @@
 -(void)testDivSimplifyToSame
 {
     BADivisionOperator *d=[self buildDivisionWithDividend:1 andDivisor:2];
-    [d simplify];
+    [d simplifyIntegerDivision];
     STAssertTrue([self doesDivision:d haveDividend:1 andDivisor:2], @"didn't simplify");
 }
 
@@ -46,70 +46,70 @@
 -(void)testDivSimplify2over4
 {
     BADivisionOperator *d=[self buildDivisionWithDividend:2 andDivisor:4];
-    [d simplify];
+    [d simplifyIntegerDivision];
     STAssertTrue([self doesDivision:d haveDividend:1 andDivisor:2], @"didn't simplify");
 }
 
 -(void)testDivSimplify3over6
 {
     BADivisionOperator *d=[self buildDivisionWithDividend:3 andDivisor:6];
-    [d simplify];
+    [d simplifyIntegerDivision];
     STAssertTrue([self doesDivision:d haveDividend:1 andDivisor:2], @"didn't simplify");
 }
 
 -(void)testDivSimplify21over42
 {
     BADivisionOperator *d=[self buildDivisionWithDividend:21 andDivisor:42];
-    [d simplify];
+    [d simplifyIntegerDivision];
     STAssertTrue([self doesDivision:d haveDividend:1 andDivisor:2], @"didn't simplify");
 }
 
 -(void)testDivSimplify4over2
 {
     BADivisionOperator *d=[self buildDivisionWithDividend:4 andDivisor:2];
-    [d simplify];
+    [d simplifyIntegerDivision];
     STAssertTrue([self doesDivision:d haveDividend:2 andDivisor:1], @"didn't simplify");
 }
 
 -(void)testDivSimplify15over9
 {
     BADivisionOperator *d=[self buildDivisionWithDividend:15 andDivisor:9];
-    [d simplify];
+    [d simplifyIntegerDivision];
     STAssertTrue([self doesDivision:d haveDividend:5 andDivisor:3], @"didn't simplify");
 }
 
 -(void)testDivSimplify28over60
 {
     BADivisionOperator *d=[self buildDivisionWithDividend:28 andDivisor:60];
-    [d simplify];
+    [d simplifyIntegerDivision];
     STAssertTrue([self doesDivision:d haveDividend:7 andDivisor:15], @"didn't simplify");
 }
 
 -(void)testDivSimplify95over114
 {
     BADivisionOperator *d=[self buildDivisionWithDividend:95 andDivisor:114];
-    [d simplify];
+    [d simplifyIntegerDivision];
     STAssertTrue([self doesDivision:d haveDividend:5 andDivisor:6], @"didn't simplify");
 }
 
 -(void)testDivSimplify2900over3000
 {
     BADivisionOperator *d=[self buildDivisionWithDividend:2900 andDivisor:3000];
-    [d simplify];
+    [d simplifyIntegerDivision];
     STAssertTrue([self doesDivision:d haveDividend:29 andDivisor:30], @"didn't simplify");
 }
 
 -(void)testDivSimplify7over7
 {
     BADivisionOperator *d=[self buildDivisionWithDividend:7 andDivisor:7];
-    [d simplify];
+    [d simplifyIntegerDivision];
     STAssertTrue([self doesDivision:d haveDividend:1 andDivisor:1], @"didn't simplify");
 }
 
 -(void)testDivSimplify1over1
 {
     BADivisionOperator *d=[self buildDivisionWithDividend:1 andDivisor:1];
-    [d simplify];
+    [d simplifyIntegerDivision];
     STAssertTrue([self doesDivision:d haveDividend:1 andDivisor:1], @"didn't simplify");
 }
 

@@ -341,6 +341,7 @@
     sourceA = [[pdef objectForKey:NUMBER_A] intValue];
     sourceB = [[pdef objectForKey:NUMBER_B] intValue];
     bkgOverlay = [pdef objectForKey:OVERLAY_FILENAME];
+    rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
     [bkgOverlay retain];
 }
 

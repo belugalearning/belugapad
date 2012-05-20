@@ -2,6 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>/Problems/CoinMultiplication/cm_001.plist</string>
+	<string>/Problems/CoinMultiplication/cm_002.plist</string>
+	<string>/Problems/CoinMultiplication/cm_003.plist</string>
+	<string>/Problems/CoinMultiplication/cm_004.plist</string>
+	<string>/Problems/CoinMultiplication/cm_005.plist</string>
+	<string>/Problems/CoinMultiplication/cm_006.plist</string>
+	<string>/Problems/CoinMultiplication/cm_007.plist</string>
+	<string>/Problems/CoinMultiplication/cm_008.plist</string>
+	<string>/Problems/CoinMultiplication/cm_009.plist</string>
+	<string>/Problems/CoinMultiplication/cm_010.plist</string>
+	<string>/Problems/CoinMultiplication/cm_011.plist</string>
 	<string>/Problems/longdivision/ld_001.plist</string>
 	<string>/Problems/longdivision/ld_002.plist</string>
 	<string>/Problems/longdivision/ld_003.plist</string>

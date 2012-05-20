@@ -40,6 +40,7 @@
     CGPoint touchStart;
     
     ProblemRejectMode rejectMode;
+    ProbjemRejectType rejectType;
     ProblemEvalMode evalMode;
     
     

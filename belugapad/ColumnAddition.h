@@ -32,6 +32,7 @@ typedef enum
     currentToolState toolState;
     ToolHost *toolHost;
     NSDictionary *problemDef;
+    ProbjemRejectType rejectType;
     
     CGPoint winL;
     float cx, cy, lx, ly;

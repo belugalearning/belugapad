@@ -161,6 +161,8 @@ static float kBubblePushSpeed=400.0f;
     NSNumber *rMode=[pdef objectForKey:REJECT_MODE];
     if (rMode) rejectMode=[rMode intValue];
     
+    rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
+    
     evalTarget=[toolHost.DynProblemParser parseIntFromValueWithKey:@"EVAL_TARGET" inDef:pdef];
     
     initStartVal=[toolHost.DynProblemParser parseIntFromValueWithKey:START_VALUE inDef:pdef];

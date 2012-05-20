@@ -10,41 +10,25 @@
 #import "ToolConsts.h"
 #import "ToolScene.h"
 
-@class DWDotGridShapeGameObject;
-
 typedef enum {
-    kAnyStartAnchorValid=0,
-    kSpecifiedStartAnchor=1,
-    kNoDrawing=2
-} DrawMode;
+    kOperatorAdd=0,
+    kOperatorSub=1,
+    kOperatorMul=2,
+    kOperatorDiv=3
+} OperatorMode;
 
-typedef enum {
-    kNoState=0,
-    kStartAnchor=1,
-    kResizeShape=2,
-    kMoveShape=3
-} GameState;
-
-typedef enum {
-    kProblemTotalShapeSize=0,
-    kProblemSumOfFractions=1
-} DotGridEvalType;
-
-@interface DotGrid : ToolScene
+@interface TimesTables : ToolScene
 {
     ToolHost *toolHost;
     DWGameWorld *gw;
     
-    DrawMode drawMode;
-    GameState gameState;
     ProblemEvalMode evalMode;
     ProblemRejectMode rejectMode;
     ProbjemRejectType rejectType;
-    DotGridEvalType evalType;
+    
+    OperatorMode operatorMode;
+    NSString *operatorName;
 
-    int evalDividend;
-    int evalDivisor;
-    int evalTotalSize;
     
     CGPoint winL;
     float cx, cy, lx, ly;
@@ -53,15 +37,10 @@ typedef enum {
     
     CCLayer *renderLayer;
     
-    NSArray *initObjects;
     NSArray *solutionsDef;
     
     CGPoint lastTouch;
-    
 
-    
-    NSMutableArray *dotMatrix;
-    NSDictionary *hiddenRows;
     
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
@@ -69,15 +48,15 @@ typedef enum {
     int spaceBetweenAnchors;
     int startX;
     int startY;
+    BOOL showXAxis;
+    BOOL showYAxis;
+    NSMutableArray *ttMatrix;
+    NSMutableArray *activeCols;
+    NSMutableArray *activeRows;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)populateGW;
--(void)checkAnchors;
--(void)checkAnchorsAndUseResizeHandle:(BOOL)showResize andShowMove:(BOOL)showMove andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled;
--(void)checkAnchorsOfExistingShape:(DWDotGridShapeGameObject*)thisShape;
--(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled;
--(void)modifyThisShape:(DWDotGridShapeGameObject*)thisShape withTheseAnchors:(NSArray*)anchors;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

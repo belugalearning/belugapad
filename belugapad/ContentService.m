@@ -57,6 +57,7 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
 
 @synthesize currentProblem;
 @synthesize currentPDef;
+@synthesize currentStaticPdef;
 @synthesize currentPExpr;
 @synthesize fullRedraw;
 

@@ -16,6 +16,7 @@
 @property (nonatomic, readonly, retain) Problem *currentProblem;
 @property (nonatomic, readonly, retain) NSDictionary *currentPDef;
 @property (nonatomic, readonly, retain) BAExpressionTree *currentPExpr;
+@property (nonatomic, retain) NSMutableDictionary *currentStaticPdef;
 @property BOOL fullRedraw;
 @property BOOL lightUpProgressFromLastNode;
 @property (nonatomic, retain) ConceptNode *currentNode;

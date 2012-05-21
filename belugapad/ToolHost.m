@@ -334,6 +334,9 @@ static float kMoveToNextProblemTime=2.0f;
     
     //local copy of pdef is parsed to static (this may be identical to original, but supports dynamic population if specified in plist)
     pdef=[self.DynProblemParser createStaticPdefFromPdef:contentService.currentPDef];
+    
+    //keep reference to the current static definition on the content service -- for logging etc
+    contentService.currentStaticPdef=pdef;
 
     //not often used, but retain local ref to the content service's loaded ppexpr
     self.PpExpr = contentService.currentPExpr;

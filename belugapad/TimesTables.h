@@ -45,6 +45,7 @@
     int startY;
     BOOL showXAxis;
     BOOL showYAxis;
+    BOOL showCalcBubble;
     NSMutableArray *ttMatrix;
     NSMutableArray *activeCols;
     NSMutableArray *activeRows;

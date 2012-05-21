@@ -77,6 +77,8 @@ typedef enum {
     kDWuseThisHandle=31,
     kDWmoveShape=32,
     kDWresizeShape=33,
+    
+    kDWshowCalcBubble=34,
 
     
     kDWareYouProximateTo=101,

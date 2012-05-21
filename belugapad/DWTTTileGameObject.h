@@ -16,6 +16,7 @@
 @property BOOL Selected;
 @property (retain) CCSprite *mySprite;
 @property (retain) CCSprite *selSprite;
+@property (retain) CCSprite *ansSprite;
 @property (retain) CCLabelTTF *myText;
 @property int myXpos;
 @property int myYpos;

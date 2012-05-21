@@ -112,6 +112,9 @@
     if([pdef objectForKey:ALLOW_Y_HIGHLIGHT])allowHighlightY=[[pdef objectForKey:ALLOW_Y_HIGHLIGHT]boolValue];
     else allowHighlightY=YES;
     
+    if([pdef objectForKey:SHOW_CALC_BUBBLE])showCalcBubble=[[pdef objectForKey:SHOW_CALC_BUBBLE]boolValue];
+    else showCalcBubble=NO;
+    
     
     if([pdef objectForKey:SOLUTIONS])solutionsDef=[pdef objectForKey:SOLUTIONS];
     if([pdef objectForKey:ACTIVE_ROWS])activeRows=[pdef objectForKey:ACTIVE_ROWS];
@@ -256,7 +259,7 @@
     {
         DWTTTileGameObject *tile=[[ttMatrix objectAtIndex:i]objectAtIndex:thisRow];
         if(tile.Disabled)continue;
-        if(thisRow == currentXHighlightNo && currentXHighlight)[tile.mySprite setColor:ccc3(255,255,255)];
+        if(thisRow == currentXHighlightNo && currentXHighlight && tile.myYpos!=currentYHighlight && !currentYHighlight)[tile.mySprite setColor:ccc3(255,255,255)];
         else [tile.mySprite setColor:ccc3(0,255,0)];
         
     }
@@ -329,7 +332,8 @@
     [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
     
     
-    if (gw.Blackboard.LastSelectedObject && evalMode==kProblemEvalAuto) [self evalProblem];
+    if(gw.Blackboard.LastSelectedObject)[gw.Blackboard.LastSelectedObject handleMessage:kDWshowCalcBubble];
+    if(gw.Blackboard.LastSelectedObject && evalMode==kProblemEvalAuto) [self evalProblem];
     
     
  }

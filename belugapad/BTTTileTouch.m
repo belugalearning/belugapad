@@ -66,7 +66,7 @@
         [tile.ansSprite setPosition:[tile.mySprite convertToNodeSpace:ccp(tile.mySprite.position.x, tile.mySprite.position.y+55)]];
         //[tile.ansSprite setPosition:ccp(tile.mySprite.position.x, tile.mySprite.position.y+55)];
         //[tile.mySprite.parent addChild:tile.ansSprite z:9999];
-        [tile.selSprite addChild:tile.ansSprite];
+        [tile.selSprite addChild:tile.ansSprite z:9999];
         
         CCLabelTTF *myText=[CCLabelTTF alloc];
         

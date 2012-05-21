@@ -15,6 +15,7 @@
 @synthesize Selected;
 @synthesize selSprite;
 @synthesize mySprite;
+@synthesize ansSprite;
 @synthesize myText;
 @synthesize myXpos;
 @synthesize myYpos;

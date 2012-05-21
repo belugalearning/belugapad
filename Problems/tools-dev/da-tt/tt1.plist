@@ -16,6 +16,8 @@
 	<integer>1</integer>
 	<key>OPERATOR_MODE</key>
 	<integer>2</integer>
+	<key>SHOW_CALC_BUBBLE</key>
+	<true/>
 	<key>SHOW_X_AXIS</key>
 	<true/>
 	<key>SHOW_Y_AXIS</key>

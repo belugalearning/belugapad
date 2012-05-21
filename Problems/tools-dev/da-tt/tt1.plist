@@ -7,7 +7,7 @@
 	<key>TOOL_KEY</key>
 	<string>TimesTables</string>
 	<key>ANCHOR_SPACE</key>
-	<integer>70</integer>
+	<integer>65</integer>
 	<key>START_X</key>
 	<integer>1</integer>
 	<key>START_Y</key>
@@ -21,6 +21,8 @@
 	<key>SHOW_X_AXIS</key>
 	<true/>
 	<key>SHOW_Y_AXIS</key>
+	<true/>
+	<key>SWITCH_XY_ANSWER</key>
 	<true/>
 	<key>ACTIVE_ROWS-OLD</key>
 	<array>

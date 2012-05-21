@@ -233,6 +233,8 @@
         for (int i=0; i<[[retainedVars allKeys] count]; i++) {
             //write each key/value from retaining into the lkp -- will overwrite if required
             [lkpVars setObject:[[retainedVars allValues] objectAtIndex:i] forKey:[[retainedVars allKeys] objectAtIndex:i]];
+            
+            NSLog(@"recalling a retained value: %@ for key %@", [[[retainedVars allValues] objectAtIndex:i] stringValue], [[[retainedVars allKeys] objectAtIndex:i] stringValue]);
         }
     }
     

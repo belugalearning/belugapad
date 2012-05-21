@@ -344,4 +344,101 @@
     return [[self parseStringFromString:[self inputStringFromValueWithKey:key inDef:pdef]] floatValue];
 }
 
+#pragma mark PDEF parsing and creation
+
+-(NSMutableDictionary*) createStaticPdefFromPdef:(NSDictionary*)dpdef
+{
+    NSMutableDictionary *spdef=[dpdef mutableCopy];
+ 
+    [self cstatParseKeysInDict:spdef];
+    
+    return spdef;
+}
+
+-(void) cstatParseKeysInDict:(NSMutableDictionary*)dict
+{
+    //need local copy of keys as order may change in mutation
+    NSArray *keys=[[dict allKeys] copy];
+
+    for(int i=0; i<keys.count; i++)
+    {
+        NSObject *o=[dict objectForKey:[keys objectAtIndex:i]];
+
+        if([o isKindOfClass:[NSString class]])
+        {
+            //a string in an array
+            NSString *so=(NSString*)o;
+            NSString *ps=[self cstatParseValue:so];
+            if(ps!=so) [dict setValue:ps forKey:[keys objectAtIndex:i]];
+        }
+        
+        if([o isKindOfClass:[NSNumber class]])
+        {
+            //a number in an array
+            NSString *so=[(NSNumber*)o stringValue];
+            NSString *ps=[self cstatParseValue:so];
+            if(ps!=so) [dict setValue:ps forKey:[keys objectAtIndex:i]];        
+        }
+        
+        if([o isKindOfClass:[NSMutableArray class]])
+        {
+            [self cstatParseKeysInArray:(NSMutableArray*)o];
+        }
+        if([o isKindOfClass:[NSMutableDictionary class]])
+        {
+            [self cstatParseKeysInDict:(NSMutableDictionary*)o];
+        }
+
+    }
+    
+    [keys release];
+}
+
+-(void) cstatParseKeysInArray:(NSMutableArray*)array
+{
+    for (int i=0; i<[array count]; i++) {
+        NSObject *o=[array objectAtIndex:i];
+        
+        if([o isKindOfClass:[NSString class]])
+        {
+            //a string in an array
+            NSString *so=(NSString*)o;
+            NSString *ps=[self cstatParseValue:so];
+            if(ps!=so) [array replaceObjectAtIndex:i withObject:ps];
+        }
+        
+        if([o isKindOfClass:[NSNumber class]])
+        {
+            //a number in an array
+            NSString *so=[(NSNumber*)o stringValue];
+            NSString *ps=[self cstatParseValue:so];
+            if(ps!=so) [array replaceObjectAtIndex:i withObject:ps];            
+        }
+        
+        if([o isKindOfClass:[NSMutableArray class]])
+        {
+            [self cstatParseKeysInArray:(NSMutableArray*)o];
+        }
+        if([o isKindOfClass:[NSMutableDictionary class]])
+        {
+            [self cstatParseKeysInDict:(NSMutableDictionary*)o];
+        }
+    }
+}
+
+-(NSString*) cstatParseValue:(NSString*)val
+{
+    if([val rangeOfString:@"{"].location!=NSNotFound || [val rangeOfString:@"[["].location!=NSNotFound)
+    {
+        //parse the thing
+        return [self parseStringFromString:val];
+    }
+    else {
+        //return it as is
+        return val;
+    }
+}
+
+#pragma mark
+
 @end

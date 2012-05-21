@@ -288,7 +288,10 @@ static float kMoveToNextProblemTime=2.0f;
     
     [contentService gotoNextProblemInPipeline];
     
-    pdef = [contentService.currentPDef retain];
+    //local copy of pdef is parsed to static (this may be identical to original, but supports dynamic population if specified in plist)
+    pdef=[self.DynProblemParser createStaticPdefFromPdef:contentService.currentPDef];
+    
+    //pdef = [contentService.currentPDef retain];
     self.PpExpr = contentService.currentPExpr;
     
     if(pdef)

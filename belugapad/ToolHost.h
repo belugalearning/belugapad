@@ -60,7 +60,7 @@ typedef enum {
     BOOL showingProblemIncomplete;
     float shownProblemStatusFor;
     
-    NSDictionary *pdef;
+    NSMutableDictionary *pdef;
     
     BOOL skipNextStagedIntroAnim;
     

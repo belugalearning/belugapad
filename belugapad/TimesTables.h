@@ -10,12 +10,7 @@
 #import "ToolConsts.h"
 #import "ToolScene.h"
 
-typedef enum {
-    kOperatorAdd=0,
-    kOperatorSub=1,
-    kOperatorMul=2,
-    kOperatorDiv=3
-} OperatorMode;
+
 
 @interface TimesTables : ToolScene
 {
@@ -53,10 +48,20 @@ typedef enum {
     NSMutableArray *ttMatrix;
     NSMutableArray *activeCols;
     NSMutableArray *activeRows;
+    NSMutableArray *headerLabels;
+    CCSprite *selection;
+    int currentXHighlightNo;
+    int currentYHighlightNo;
+    BOOL currentXHighlight;
+    BOOL currentYHighlight;
+    BOOL allowHighlightX;
+    BOOL allowHighlightY;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)populateGW;
+-(void)tintRow:(int)thisRow;
+-(void)tintCol:(int)thisCol;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

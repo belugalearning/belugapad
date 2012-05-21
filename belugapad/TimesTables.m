@@ -83,6 +83,10 @@
 
 -(void)readPlist:(NSDictionary*)pdef
 {
+    activeRows=nil;
+    activeCols=nil;
+    headerLabels=[[NSMutableArray alloc]init];
+    
     renderLayer = [[CCLayer alloc] init];
     [self.ForeLayer addChild:renderLayer];
     
@@ -102,6 +106,13 @@
     if([pdef objectForKey:SHOW_Y_AXIS])showYAxis=[[pdef objectForKey:SHOW_Y_AXIS]boolValue];
     else showYAxis=YES;
     
+    if([pdef objectForKey:ALLOW_X_HIGHLIGHT])allowHighlightX=[[pdef objectForKey:ALLOW_X_HIGHLIGHT]boolValue];
+    else allowHighlightX=YES;
+    
+    if([pdef objectForKey:ALLOW_Y_HIGHLIGHT])allowHighlightY=[[pdef objectForKey:ALLOW_Y_HIGHLIGHT]boolValue];
+    else allowHighlightY=YES;
+    
+    
     if([pdef objectForKey:SOLUTIONS])solutionsDef=[pdef objectForKey:SOLUTIONS];
     if([pdef objectForKey:ACTIVE_ROWS])activeRows=[pdef objectForKey:ACTIVE_ROWS];
     if([pdef objectForKey:ACTIVE_COLS])activeCols=[pdef objectForKey:ACTIVE_COLS];
@@ -110,6 +121,9 @@
     else if(operatorMode==1)operatorName=@"sub";
     else if(operatorMode==2)operatorName=@"mul";
     else if(operatorMode==3)operatorName=@"div";
+    
+    [activeRows retain];
+    [activeCols retain];
 }
 
 -(void)populateGW
@@ -131,13 +145,18 @@
     CCSprite *operator = [CCSprite spriteWithFile:operatorFileName];
     [operator setPosition:ccp(xStartPos-spaceBetweenAnchors,ly-spaceBetweenAnchors*1.5)];
     [self.ForeLayer addChild:operator];
+
+    NSMutableArray *xHeaders=[[NSMutableArray alloc]init];
+    NSMutableArray *yHeaders=[[NSMutableArray alloc]init];
+    [headerLabels addObject:xHeaders];
+    [headerLabels addObject:yHeaders];
+    [headerLabels retain];
     
     // render the times table grid
     
     for (int iRow=0; iRow<(int)(lx-spaceBetweenAnchors*3)/spaceBetweenAnchors; iRow++)
     {
         NSMutableArray *currentCol=[[NSMutableArray alloc]init];
-        BOOL currentRowHidden=NO;
         
         for(int iCol=0; iCol<(int)(ly-spaceBetweenAnchors*3)/spaceBetweenAnchors; iCol++)
         {
@@ -150,6 +169,7 @@
                 CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", yStartNumber] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
                 [curLabel setPosition:ccp(xStartPos-spaceBetweenAnchors,yStartPos)];
                 [self.ForeLayer addChild:curLabel];
+                [yHeaders addObject:curLabel];
                 yStartNumber--;
             }
             
@@ -157,6 +177,7 @@
                 CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", xStartNumber]fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
                 [curLabel setPosition:ccp(xStartPos,yStartPos+spaceBetweenAnchors)];
                 [self.ForeLayer addChild:curLabel];
+                [xHeaders addObject:curLabel];
             }
             
             DWTTTileGameObject *tile = [DWTTTileGameObject alloc];
@@ -164,6 +185,7 @@
             tile.Position=ccp(xStartPos,yStartPos);
             tile.myXpos=xStartNumber;
             tile.myYpos=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-(iCol+1);
+            tile.operatorType=operatorMode;
             
             NSLog(@"iRow = %d, iCol = %d, tile.myXpos = %d, tile.myYpos = %d", iRow, iCol, tile.myXpos, tile.myYpos);
             
@@ -176,6 +198,7 @@
         xStartNumber++;
         xStartPos=xStartPos+spaceBetweenAnchors;
         [ttMatrix addObject:currentCol];
+
         
     }    
     
@@ -192,17 +215,21 @@
                 DWTTTileGameObject *tile=[curCol objectAtIndex:c];
                 
                 
-                for(NSNumber *n in activeCols)
-                {
-                    thisX=[n intValue];
-                    if(thisX==tile.myXpos)break;
-                }
-                for(NSNumber *n in activeRows)
-                {
-                    thisY=[n intValue];
-                    if(thisY==tile.myYpos)break;
-                }
+                //if(activeCols.count>0){
+                    for(NSNumber *n in activeCols)
+                    {
+                        thisX=[n intValue];
+                        if(thisX==tile.myXpos)break;
+                    }
+                //}
                 
+                //if(activeRows.count>0) {
+                    for(NSNumber *n in activeRows)
+                    {
+                        thisY=[n intValue];
+                        if(thisY==tile.myYpos)break;
+                    }
+                //}
                 if(tile.myXpos == thisX || tile.myYpos == thisY)
                 {
                     tile.Disabled=NO;
@@ -213,6 +240,57 @@
                 
             }
         }
+    }
+    
+    // add the selection ring to the scene
+//    selection=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/selectionbox.png")];
+//    [renderLayer addChild:selection z:100];
+//    [selection setVisible:NO];
+    
+}
+
+-(void)tintRow:(int)thisRow
+{
+    for(int i=0;i<[ttMatrix count];i++)
+    {
+        DWTTTileGameObject *tile=[[ttMatrix objectAtIndex:i]objectAtIndex:thisRow];
+        if(tile.Disabled)continue;
+        if(thisRow == currentXHighlightNo && currentXHighlight)[tile.mySprite setColor:ccc3(255,255,255)];
+        else [tile.mySprite setColor:ccc3(0,255,0)];
+        
+    }
+    
+    if(thisRow == currentXHighlightNo && currentXHighlight)
+    {
+        currentXHighlight=NO;
+        currentXHighlightNo=-1;
+    }
+    else { 
+        currentXHighlight=YES;
+        currentXHighlightNo=thisRow;
+    }
+    
+    
+}
+
+-(void)tintCol:(int)thisCol
+{
+    for(int i=0;i<[[ttMatrix objectAtIndex:thisCol]count];i++)
+    {
+        DWTTTileGameObject *tile=[[ttMatrix objectAtIndex:thisCol]objectAtIndex:i];
+        if(tile.Disabled)continue;
+        if(thisCol == currentYHighlightNo && currentYHighlight)[tile.mySprite setColor:ccc3(255,255,255)];
+        else [tile.mySprite setColor:ccc3(0,255,0)];
+    }
+    
+    if(thisCol == currentYHighlightNo && currentYHighlight)
+    {
+        currentYHighlight=NO;
+        currentYHighlightNo=-1;
+    }
+    else { 
+        currentYHighlight=YES;
+        currentYHighlightNo=thisCol;
     }
     
 }
@@ -231,8 +309,26 @@
     
     [gw Blackboard].PickupObject=nil;
     
+    for(int o=0;o<[headerLabels count];o++)
+    {
+        NSArray *theseNumbers=[headerLabels objectAtIndex:o];
+        
+        for(int i=0;i<[theseNumbers count];i++)
+        {
+            CCLabelTTF *curLabel=[theseNumbers objectAtIndex:i];
+            if(CGRectContainsPoint(curLabel.boundingBox, location))
+            {
+                if(o==0 && allowHighlightY) [self tintCol:i];
+                if(o==1 && allowHighlightX) [self tintRow:i];
+            }
+        }
+    }
+    
     NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
     [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
+    
+    
+    if (gw.Blackboard.LastSelectedObject && evalMode==kProblemEvalAuto) [self evalProblem];
     
     
  }
@@ -256,7 +352,7 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     isTouching=NO;
- 
+    //gw.Blackboard.LastSelectedObject=nil;
 
      
 }
@@ -264,12 +360,35 @@
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouching=NO;
+    //gw.Blackboard.LastSelectedObject=nil;
     // empty selected objects
 }
 
 -(BOOL)evalExpression
 {
-    return YES;
+    if(!solutionsDef)return NO;
+    
+    //DWTTTileGameObject *selTile=(DWTTTileGameObject*)gw.Blackboard.LastSelectedObject;
+    
+    int answersFound=0;
+    
+    for(int i=0;i<[solutionsDef count];i++)
+    {
+        NSMutableDictionary *curDict=[solutionsDef objectAtIndex:i];
+        int thisAnsX=[[curDict objectForKey:POS_X]intValue];
+        int thisAnsY=[[curDict objectForKey:POS_Y]intValue];
+        
+        for(int o=0;o<[gw.Blackboard.SelectedObjects count];o++)
+        {
+            DWTTTileGameObject *selTile=[gw.Blackboard.SelectedObjects objectAtIndex:i];
+            
+            if(thisAnsX==selTile.myXpos && thisAnsY==selTile.myXpos)answersFound++;
+        }
+    }
+    
+    if(answersFound==[solutionsDef count])return YES;
+    else return NO;
+
 }
 
 -(void)evalProblem
@@ -282,13 +401,14 @@
         [toolHost showProblemCompleteMessage];
     }
     else {
-        if(evalMode==kProblemEvalOnCommit)[self resetProblem];
+        if(evalMode==kProblemEvalOnCommit)[toolHost resetProblem];
     }
 
 }
 
 -(void)resetProblem
 {
+    [toolHost showProblemIncompleteMessage];
     [toolHost resetProblem];
 }
 
@@ -305,13 +425,14 @@
 -(void) dealloc
 {
     //write log on problem switch
-    [gw writeLogBufferToDiskWithKey:@"DotGrid"];
+    [gw writeLogBufferToDiskWithKey:@"TimesTables"];
     
     //tear down
     [gw release];
     if(ttMatrix)[ttMatrix release];
     if(activeCols)[activeCols release];
     if(activeRows)[activeRows release];
+    if(headerLabels)[headerLabels release];
     if(solutionsDef)[solutionsDef release];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];

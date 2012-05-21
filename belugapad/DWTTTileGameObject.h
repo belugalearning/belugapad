@@ -7,14 +7,19 @@
 //
 
 #import "DWGameObject.h"
+#import "ToolConsts.h"
 
 @interface DWTTTileGameObject : DWGameObject
 
 @property CGPoint Position;
 @property BOOL Disabled;
+@property BOOL Selected;
 @property (retain) CCSprite *mySprite;
+@property (retain) CCSprite *selSprite;
 @property (retain) CCLabelTTF *myText;
 @property int myXpos;
 @property int myYpos;
+@property OperatorMode operatorType;
+
 
 @end

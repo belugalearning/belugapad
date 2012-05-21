@@ -67,7 +67,7 @@
     if(CGRectContainsPoint(tile.mySprite.boundingBox, hitLoc))
     {
         if(!tile.Disabled){
-            //[tile.mySprite setColor:ccc3(255,0,0)];
+
             NSLog(@"tile hit - my value is %d, myXpos %d, myYpos %d", tile.myXpos*tile.myYpos, tile.myXpos, tile.myYpos);
             if(!tile.myText)
             {
@@ -77,8 +77,23 @@
                 [tile.myText setColor:ccc3(83,93,100)];
                 [tile.mySprite addChild:tile.myText];
 
-                //NSLog(@"myText pos - %@, sprite pos %@", NSStringFromCGPoint(tile.myText.position), NSStringFromCGPoint(tile.mySprite.position));
-                
+            }
+            
+            if(!tile.Selected)
+            {
+                tile.Selected=YES;
+                [gameWorld.Blackboard.SelectedObjects addObject:tile];
+                tile.selSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/selectionbox.png")];
+                [tile.selSprite setPosition:[tile.mySprite convertToNodeSpace:tile.Position]];
+                [tile.mySprite addChild:tile.selSprite];
+                gameWorld.Blackboard.LastSelectedObject=gameObject;
+            
+            }
+            else
+            { 
+                tile.Selected=NO;
+                [gameWorld.Blackboard.SelectedObjects removeObject:tile];
+                [tile.selSprite removeFromParentAndCleanup:YES];
             }
         }
     }    

@@ -46,6 +46,8 @@ typedef enum {
     int evalDivisor;
     int evalTotalSize;
     
+    BOOL doNotSimplifyFractions;
+    
     CGPoint winL;
     float cx, cy, lx, ly;
     

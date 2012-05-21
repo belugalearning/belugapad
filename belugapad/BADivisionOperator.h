@@ -21,4 +21,6 @@
 {
 }
 
+-(void)simplifyIntegerDivision;
+
 @end

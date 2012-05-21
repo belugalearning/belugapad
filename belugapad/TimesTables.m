@@ -96,6 +96,16 @@
     startX=[[pdef objectForKey:START_X] intValue];
     startY=[[pdef objectForKey:START_Y] intValue];
     operatorMode=[[pdef objectForKey:OPERATOR_MODE]intValue];
+    if([pdef objectForKey:SHOW_X_AXIS])showXAxis=[[pdef objectForKey:SHOW_X_AXIS]boolValue];
+    else showXAxis=YES;
+    
+    if([pdef objectForKey:SHOW_Y_AXIS])showYAxis=[[pdef objectForKey:SHOW_Y_AXIS]boolValue];
+    else showYAxis=YES;
+    
+    if([pdef objectForKey:SOLUTIONS])solutionsDef=[pdef objectForKey:SOLUTIONS];
+    if([pdef objectForKey:ACTIVE_ROWS])activeRows=[pdef objectForKey:ACTIVE_ROWS];
+    if([pdef objectForKey:ACTIVE_COLS])activeCols=[pdef objectForKey:ACTIVE_COLS];
+    
     if(operatorMode==0)operatorName=@"add";
     else if(operatorMode==1)operatorName=@"sub";
     else if(operatorMode==2)operatorName=@"mul";
@@ -135,7 +145,7 @@
             // create our start position and gameobject
             float yStartPos=(iCol+1.5)*spaceBetweenAnchors;
             
-            if(iRow==0)
+            if(iRow==0 && showYAxis)
             {
                 CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", yStartNumber] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
                 [curLabel setPosition:ccp(xStartPos-spaceBetweenAnchors,yStartPos)];
@@ -143,7 +153,7 @@
                 yStartNumber--;
             }
             
-            if(iCol==(int)((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-1) {
+            if(iCol==(int)((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-1 && showXAxis) {
                 CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", xStartNumber]fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
                 [curLabel setPosition:ccp(xStartPos,yStartPos+spaceBetweenAnchors)];
                 [self.ForeLayer addChild:curLabel];
@@ -157,17 +167,7 @@
             
             NSLog(@"iRow = %d, iCol = %d, tile.myXpos = %d, tile.myYpos = %d", iRow, iCol, tile.myXpos, tile.myYpos);
             
-            
-            // set the hidden property for every anchor on this row if 
-            if(hiddenRows && [hiddenRows objectForKey:[NSString stringWithFormat:@"%d", iCol]]) {
-                currentRowHidden=[[hiddenRows objectForKey:[NSString stringWithFormat:@"%d", iCol]] boolValue];
-                if(currentRowHidden) {
-                    tile.Disabled=YES;
-                }
-            }
-        
 
-            
             [currentCol addObject:tile];
             
 
@@ -178,6 +178,42 @@
         [ttMatrix addObject:currentCol];
         
     }    
+    
+    if(activeCols || activeRows)
+    {
+        for(int r=0;r<[ttMatrix count];r++)
+        {
+            NSArray *curCol=[ttMatrix objectAtIndex:r];
+            
+            for(int c=0;c<[curCol count];c++)
+            {
+                int thisX=0;
+                int thisY=0;
+                DWTTTileGameObject *tile=[curCol objectAtIndex:c];
+                
+                
+                for(NSNumber *n in activeCols)
+                {
+                    thisX=[n intValue];
+                    if(thisX==tile.myXpos)break;
+                }
+                for(NSNumber *n in activeRows)
+                {
+                    thisY=[n intValue];
+                    if(thisY==tile.myYpos)break;
+                }
+                
+                if(tile.myXpos == thisX || tile.myYpos == thisY)
+                {
+                    tile.Disabled=NO;
+                }
+                else {
+                    tile.Disabled=YES;
+                }
+                
+            }
+        }
+    }
     
 }
 
@@ -274,6 +310,9 @@
     //tear down
     [gw release];
     if(ttMatrix)[ttMatrix release];
+    if(activeCols)[activeCols release];
+    if(activeRows)[activeRows release];
+    if(solutionsDef)[solutionsDef release];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

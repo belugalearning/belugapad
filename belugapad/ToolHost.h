@@ -76,6 +76,14 @@ typedef enum {
     
     CCLabelTTF *problemDescLabel;
     ProblemEvalMode evalMode;
+    
+    
+    CCSprite *bgBase1;
+    CCSprite *bgWater1;
+    CCSprite *bgSun1;
+    
+    CCSprite *bgMountain1;
+    
 }
 
 @property (retain) Daemon *Zubi;
@@ -114,5 +122,9 @@ typedef enum {
 -(void)tearDownMetaQuestion;
 -(void)tearDownProblemDef;
 -(void)readToolOptions:(NSString*)currentTool;
+
+
+-(void) moveToTool1: (ccTime) delta;
+-(void) gotoFirstProblem: (ccTime) delta;
 
 @end

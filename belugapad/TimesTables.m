@@ -332,7 +332,7 @@
     [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
     
     
-    if(gw.Blackboard.LastSelectedObject)[gw.Blackboard.LastSelectedObject handleMessage:kDWshowCalcBubble];
+    if(gw.Blackboard.LastSelectedObject && showCalcBubble)[gw.Blackboard.LastSelectedObject handleMessage:kDWshowCalcBubble];
     if(gw.Blackboard.LastSelectedObject && evalMode==kProblemEvalAuto) [self evalProblem];
     
     

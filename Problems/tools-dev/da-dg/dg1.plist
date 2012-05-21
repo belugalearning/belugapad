@@ -16,6 +16,8 @@
 	<integer>1</integer>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>DO_NOT_SIMPLIFY_FRACTIONS</key>
+	<false/>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>

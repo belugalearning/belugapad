@@ -50,7 +50,9 @@
     NSMutableArray *activeCols;
     NSMutableArray *activeRows;
     NSMutableArray *headerLabels;
-    NSMutableArray *bubbles;
+    NSMutableArray *revealRows;
+    NSMutableArray *revealCols;
+    NSMutableArray *revealTiles;
     CCSprite *selection;
     int currentXHighlightNo;
     int currentYHighlightNo;
@@ -62,6 +64,7 @@
 
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)populateGW;
+-(void)revealRows;
 -(void)tintRow:(int)thisRow;
 -(void)tintCol:(int)thisCol;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;

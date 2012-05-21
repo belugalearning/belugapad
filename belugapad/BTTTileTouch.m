@@ -110,7 +110,7 @@
             {
                 tile.Selected=YES;
                 [gameWorld.Blackboard.SelectedObjects addObject:tile];
-                tile.selSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/selectionbox.png")];
+                tile.selSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/selectionbox%d.png"), tile.Size]];
                 //[tile.selSprite setPosition:[tile.mySprite convertToNodeSpace:tile.Position]];
                 [tile.selSprite setPosition:tile.Position];
                 [tile.mySprite.parent addChild:tile.selSprite z:1000];

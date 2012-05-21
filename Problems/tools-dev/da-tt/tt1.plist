@@ -7,11 +7,11 @@
 	<key>TOOL_KEY</key>
 	<string>TimesTables</string>
 	<key>ANCHOR_SPACE</key>
-	<integer>85</integer>
+	<integer>70</integer>
 	<key>START_X</key>
-	<integer>3</integer>
+	<integer>1</integer>
 	<key>START_Y</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>OPERATOR_MODE</key>
@@ -22,15 +22,38 @@
 	<true/>
 	<key>SHOW_Y_AXIS</key>
 	<true/>
-	<key>ACTIVE_ROWS</key>
+	<key>ACTIVE_ROWS-OLD</key>
 	<array>
 		<integer>5</integer>
 		<string>0</string>
 	</array>
-	<key>ACTIVE_COLS</key>
+	<key>ACTIVE_COLS-OLD</key>
 	<array>
 		<integer>4</integer>
 		<integer>5</integer>
+	</array>
+	<key>REVEAL_ROWS</key>
+	<array>
+		<integer>5</integer>
+	</array>
+	<key>REVEAL_COLS</key>
+	<array>
+		<integer>3</integer>
+	</array>
+	<key>REVEAL_TILES</key>
+	<array>
+		<dict>
+			<key>POS_X</key>
+			<integer>1</integer>
+			<key>POS_Y</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>POS_X</key>
+			<integer>9</integer>
+			<key>POS_Y</key>
+			<integer>3</integer>
+		</dict>
 	</array>
 	<key>SOLUTIONS</key>
 	<array>

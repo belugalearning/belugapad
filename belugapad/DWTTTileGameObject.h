@@ -12,6 +12,7 @@
 @interface DWTTTileGameObject : DWGameObject
 
 @property CGPoint Position;
+@property int Size;
 @property BOOL Disabled;
 @property BOOL Selected;
 @property (retain) CCSprite *mySprite;

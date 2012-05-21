@@ -57,6 +57,8 @@
         
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
+        [self revealRows];
+        
         gw.Blackboard.inProblemSetup = NO;
         
     }
@@ -85,6 +87,8 @@
 {
     activeRows=nil;
     activeCols=nil;
+    revealRows=nil;
+    revealCols=nil;
     headerLabels=[[NSMutableArray alloc]init];
     
     renderLayer = [[CCLayer alloc] init];
@@ -119,6 +123,10 @@
     if([pdef objectForKey:SOLUTIONS])solutionsDef=[pdef objectForKey:SOLUTIONS];
     if([pdef objectForKey:ACTIVE_ROWS])activeRows=[pdef objectForKey:ACTIVE_ROWS];
     if([pdef objectForKey:ACTIVE_COLS])activeCols=[pdef objectForKey:ACTIVE_COLS];
+    if([pdef objectForKey:REVEAL_ROWS])revealRows=[pdef objectForKey:REVEAL_ROWS];
+    if([pdef objectForKey:REVEAL_COLS])revealCols=[pdef objectForKey:REVEAL_COLS];
+    if([pdef objectForKey:REVEAL_TILES])revealTiles=[pdef objectForKey:REVEAL_TILES];
+    
     
     if(operatorMode==0)operatorName=@"add";
     else if(operatorMode==1)operatorName=@"sub";
@@ -127,6 +135,9 @@
     
     [activeRows retain];
     [activeCols retain];
+    [revealRows retain];
+    [revealCols retain];
+    [revealTiles retain];
     [solutionsDef retain];
 }
 
@@ -148,6 +159,8 @@
     
     CCSprite *operator = [CCSprite spriteWithFile:operatorFileName];
     [operator setPosition:ccp(xStartPos-spaceBetweenAnchors,ly-spaceBetweenAnchors*1.5)];
+    [operator setTag:1];
+    [operator setOpacity:0];
     [self.ForeLayer addChild:operator];
 
     NSMutableArray *xHeaders=[[NSMutableArray alloc]init];
@@ -172,6 +185,8 @@
             {
                 CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", yStartNumber] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
                 [curLabel setPosition:ccp(xStartPos-spaceBetweenAnchors,yStartPos)];
+                [curLabel setTag:2];
+                [curLabel setOpacity:0];
                 [self.ForeLayer addChild:curLabel];
                 [yHeaders addObject:curLabel];
                 yStartNumber--;
@@ -181,6 +196,8 @@
                 CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", xStartNumber]fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
                 [curLabel setPosition:ccp(xStartPos,yStartPos+spaceBetweenAnchors)];
                 [self.ForeLayer addChild:curLabel];
+                [curLabel setTag:2];
+                [curLabel setOpacity:0];
                 [xHeaders addObject:curLabel];
             }
             
@@ -190,6 +207,7 @@
             tile.myXpos=xStartNumber;
             tile.myYpos=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-(iCol+1);
             tile.operatorType=operatorMode;
+            tile.Size=spaceBetweenAnchors;
             
             //NSLog(@"iRow = %d, iCol = %d, tile.myXpos = %d, tile.myYpos = %d", iRow, iCol, tile.myXpos, tile.myYpos);
             
@@ -219,21 +237,19 @@
                 DWTTTileGameObject *tile=[curCol objectAtIndex:c];
                 
                 
-                //if(activeCols.count>0){
-                    for(NSNumber *n in activeCols)
-                    {
-                        thisX=[n intValue];
-                        if(thisX==tile.myXpos)break;
-                    }
-                //}
-                
-                //if(activeRows.count>0) {
-                    for(NSNumber *n in activeRows)
-                    {
-                        thisY=[n intValue];
-                        if(thisY==tile.myYpos)break;
-                    }
-                //}
+            
+                for(NSNumber *n in activeCols)
+                {
+                    thisX=[n intValue];
+                    if(thisX==tile.myXpos)break;
+                }
+        
+                for(NSNumber *n in activeRows)
+                {
+                    thisY=[n intValue];
+                    if(thisY==tile.myYpos)break;
+                }
+            
                 if(tile.myXpos == thisX || tile.myYpos == thisY)
                 {
                     tile.Disabled=NO;
@@ -245,12 +261,80 @@
             }
         }
     }
+
     
     // add the selection ring to the scene
 //    selection=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/selectionbox.png")];
 //    [renderLayer addChild:selection z:100];
 //    [selection setVisible:NO];
     
+}
+
+-(void)revealRows
+{
+    
+    if(revealCols || revealRows)
+    {
+        for(int r=0;r<[ttMatrix count];r++)
+        {
+            NSArray *curCol=[ttMatrix objectAtIndex:r];
+            
+            for(int c=0;c<[curCol count];c++)
+            {
+                int thisX=0;
+                int thisY=0;
+                DWTTTileGameObject *tile=[curCol objectAtIndex:c];
+                
+                
+                
+                for(NSNumber *n in revealCols)
+                {
+                    thisX=[n intValue];
+                    if(thisX==tile.myXpos)break;
+                }
+                
+                for(NSNumber *n in revealRows)
+                {
+                    thisY=[n intValue];
+                    if(thisY==tile.myYpos)break;
+                }
+                
+                if(tile.myXpos == thisX || tile.myYpos == thisY)
+                {
+                    [tile handleMessage:kDWswitchSelection];
+                }
+                
+            }
+        }
+    }
+    
+    if(revealTiles)
+    {
+        for(int r=0;r<[ttMatrix count];r++)
+        {
+            NSArray *curCol=[ttMatrix objectAtIndex:r];
+            
+            for(int c=0;c<[curCol count];c++)
+            {
+                int thisX=0;
+                int thisY=0;
+                DWTTTileGameObject *tile=[curCol objectAtIndex:c];
+                
+                for(int p=0;p<[revealTiles count];p++)
+                {
+                    thisX=[[[revealTiles objectAtIndex:p] objectForKey:POS_X]intValue];
+                    thisY=[[[revealTiles objectAtIndex:p] objectForKey:POS_Y]intValue];
+                    
+                    if(tile.myXpos == thisX && tile.myYpos == thisY)
+                    {
+                        [tile handleMessage:kDWswitchSelection];
+                    }
+                }
+                
+            }
+        }
+
+    }
 }
 
 -(void)tintRow:(int)thisRow
@@ -438,6 +522,9 @@
     if(activeRows)[activeRows release];
     if(headerLabels)[headerLabels release];
     if(solutionsDef)[solutionsDef release];
+    if(revealRows)[revealRows release];
+    if(revealCols)[revealCols release];
+    if(revealTiles)[revealTiles release];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

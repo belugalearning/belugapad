@@ -11,6 +11,7 @@
 @implementation DWTTTileGameObject
 
 @synthesize Position;
+@synthesize Size;
 @synthesize Disabled;
 @synthesize Selected;
 @synthesize selSprite;

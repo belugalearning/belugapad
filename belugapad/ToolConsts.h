@@ -24,6 +24,13 @@ typedef enum {
     kProblemEvalOnCommit=1
 } ProblemEvalMode;
 
+typedef enum {
+    kOperatorAdd=0,
+    kOperatorSub=1,
+    kOperatorMul=2,
+    kOperatorDiv=3
+} OperatorMode;
+
 extern const GLubyte kDebugLabelOpacity;
 extern const CGPoint kDebugProblemLabelPos;
 

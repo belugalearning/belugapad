@@ -163,6 +163,44 @@
 	return [self evaluateForExpressions:[self children]];
 }
 
+- (void)simplifyIntegerDivision
+{
+    if(self.children.count!=2)
+    {
+        @throw [NSException exceptionWithName:@"cannot simplify" reason:@"cannot simplify without precisely two children" userInfo:nil];
+    }
+    if(![[self.children objectAtIndex:0] isKindOfClass:[BAInteger class]] ||
+       ![[self.children objectAtIndex:1] isKindOfClass:[BAInteger class]])
+    {
+        @throw [NSException exceptionWithName:@"cannot simplify" reason:@"cannot simplify if children are not BAIntegers" userInfo:nil];
+    }
+    
+    //will get top and bottom as integers, simplify and then recreate if necessary
+    BAInteger *top=[self.children objectAtIndex:0];
+    BAInteger *bottom=[self.children objectAtIndex:1];
+    int origtop=[top intValue];
+    int origbottom=[bottom intValue];
+    int a=origtop;
+    int b=origbottom;
+    
+    //get GCD
+    while (b!=0) {
+        int t=b;
+        b = a % b;
+        a=t;
+    }
+    int gcd=a;
+
+    if(gcd>1)
+    {
+        [self removeChild:top];
+        [self removeChild:bottom];
+        
+        [self addChild:[BAInteger integerWithIntValue:origtop / gcd]];
+        [self addChild:[BAInteger integerWithIntValue:origbottom / gcd]];
+    }
+}
+
 - (NSString*)stringValue
 {
 	return @"÷";

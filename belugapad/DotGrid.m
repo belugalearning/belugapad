@@ -740,6 +740,8 @@ thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
         [leftdiv addChild:[BAInteger integerWithIntValue:evalDividend]];
         [leftdiv addChild:[BAInteger integerWithIntValue:evalDivisor]];
         
+        if(!doNotSimplifyFractions) [leftdiv simplifyIntegerDivision];
+        
         //if there was only one shape, then add it as division to root equality -- if not, create an addition for all divisions on right
         if(tileCounts.count==1)
         {
@@ -755,6 +757,7 @@ thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
                 [rightdiv addChild:[BAInteger integerWithIntValue:[[selectedCounts objectAtIndex:0] intValue]]];
                 [rightdiv addChild:[BAInteger integerWithIntValue:[[tileCounts objectAtIndex:0] intValue]]];
                 
+                if(!doNotSimplifyFractions)[rightdiv simplifyIntegerDivision];
             }
 
         }
@@ -775,6 +778,8 @@ thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
                     
                     [div addChild:[BAInteger integerWithIntValue:[[selectedCounts objectAtIndex:i] intValue]]];
                     [div addChild:[BAInteger integerWithIntValue:[[tileCounts objectAtIndex:i] intValue]]];                    
+                    
+                    if(!doNotSimplifyFractions)[div simplifyIntegerDivision];
                 }
             }
         }

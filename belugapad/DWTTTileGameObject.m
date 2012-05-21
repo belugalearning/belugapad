@@ -12,6 +12,8 @@
 
 @synthesize Position;
 @synthesize Disabled;
+@synthesize Selected;
+@synthesize selSprite;
 @synthesize mySprite;
 @synthesize myText;
 @synthesize myXpos;

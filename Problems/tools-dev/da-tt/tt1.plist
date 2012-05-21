@@ -33,10 +33,10 @@
 	<key>SOLUTIONS</key>
 	<array>
 		<dict>
-			<key>X_POS</key>
+			<key>POS_X</key>
 			<integer>5</integer>
-			<key>Y_POS</key>
-			<integer>0</integer>
+			<key>POS_Y</key>
+			<integer>3</integer>
 		</dict>
 	</array>
 </dict>

@@ -66,24 +66,20 @@
     
     if(CGRectContainsPoint(tile.mySprite.boundingBox, hitLoc))
     {
-        //[tile.mySprite setColor:ccc3(255,0,0)];
-        NSLog(@"tile hit - my value is %d, myXpos %d, myYpos %d", tile.myXpos*tile.myYpos, tile.myXpos, tile.myYpos);
-        if(!tile.myText)
-        {
+        if(!tile.Disabled){
+            //[tile.mySprite setColor:ccc3(255,0,0)];
+            NSLog(@"tile hit - my value is %d, myXpos %d, myYpos %d", tile.myXpos*tile.myYpos, tile.myXpos, tile.myYpos);
+            if(!tile.myText)
+            {
 
-            if(tile.operatorType==kOperatorAdd)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos+tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
-            else if(tile.operatorType==kOperatorSub)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos-tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
-            else if(tile.operatorType==kOperatorMul)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos*tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
-            else if(tile.operatorType==kOperatorDiv)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", tile.myXpos/tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
-            
-            [tile.myText setPosition:[tile.mySprite convertToNodeSpace:tile.Position]];
-            [tile.myText setColor:ccc3(83,93,100)];
-            [tile.mySprite addChild:tile.myText];
+                tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos*tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
+                [tile.myText setPosition:[tile.mySprite convertToNodeSpace:tile.Position]];
+                [tile.myText setColor:ccc3(83,93,100)];
+                [tile.mySprite addChild:tile.myText];
 
-            //NSLog(@"myText pos - %@, sprite pos %@", NSStringFromCGPoint(tile.myText.position), NSStringFromCGPoint(tile.mySprite.position));
-            
-            gameWorld.Blackboard.LastSelectedObject=gameObject;
-            
+                //NSLog(@"myText pos - %@, sprite pos %@", NSStringFromCGPoint(tile.myText.position), NSStringFromCGPoint(tile.mySprite.position));
+                
+            }
         }
     }    
 }

@@ -124,6 +124,7 @@
     
     [activeRows retain];
     [activeCols retain];
+    [solutionsDef retain];
 }
 
 -(void)populateGW
@@ -187,7 +188,7 @@
             tile.myYpos=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-(iCol+1);
             tile.operatorType=operatorMode;
             
-            NSLog(@"iRow = %d, iCol = %d, tile.myXpos = %d, tile.myYpos = %d", iRow, iCol, tile.myXpos, tile.myYpos);
+            //NSLog(@"iRow = %d, iCol = %d, tile.myXpos = %d, tile.myYpos = %d", iRow, iCol, tile.myXpos, tile.myYpos);
             
 
             [currentCol addObject:tile];
@@ -368,8 +369,6 @@
 {
     if(!solutionsDef)return NO;
     
-    //DWTTTileGameObject *selTile=(DWTTTileGameObject*)gw.Blackboard.LastSelectedObject;
-    
     int answersFound=0;
     
     for(int i=0;i<[solutionsDef count];i++)
@@ -382,7 +381,8 @@
         {
             DWTTTileGameObject *selTile=[gw.Blackboard.SelectedObjects objectAtIndex:i];
             
-            if(thisAnsX==selTile.myXpos && thisAnsY==selTile.myXpos)answersFound++;
+            if(thisAnsX==selTile.myXpos && thisAnsY==selTile.myYpos)answersFound++;
+            NSLog(@"thisAnsX=%d,selTile X=%d, thisAnsY=%d, selTile Y=%d", thisAnsX, selTile.myXpos, thisAnsY, selTile.myYpos);
         }
     }
     
@@ -401,7 +401,7 @@
         [toolHost showProblemCompleteMessage];
     }
     else {
-        if(evalMode==kProblemEvalOnCommit)[toolHost resetProblem];
+        if(evalMode==kProblemEvalOnCommit)[self resetProblem];
     }
 
 }

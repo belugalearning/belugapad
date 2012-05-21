@@ -49,6 +49,7 @@
     NSMutableArray *activeCols;
     NSMutableArray *activeRows;
     NSMutableArray *headerLabels;
+    NSMutableArray *bubbles;
     CCSprite *selection;
     int currentXHighlightNo;
     int currentYHighlightNo;

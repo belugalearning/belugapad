@@ -48,6 +48,7 @@
     NSMutableArray *ttMatrix;
     NSMutableArray *activeCols;
     NSMutableArray *activeRows;
+    CCSprite *selection;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

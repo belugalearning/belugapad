@@ -82,6 +82,8 @@
 
             //NSLog(@"myText pos - %@, sprite pos %@", NSStringFromCGPoint(tile.myText.position), NSStringFromCGPoint(tile.mySprite.position));
             
+            gameWorld.Blackboard.LastSelectedObject=gameObject;
+            
         }
     }    
 }

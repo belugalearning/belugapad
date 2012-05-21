@@ -131,13 +131,13 @@
     CCSprite *operator = [CCSprite spriteWithFile:operatorFileName];
     [operator setPosition:ccp(xStartPos-spaceBetweenAnchors,ly-spaceBetweenAnchors*1.5)];
     [self.ForeLayer addChild:operator];
+
     
     // render the times table grid
     
     for (int iRow=0; iRow<(int)(lx-spaceBetweenAnchors*3)/spaceBetweenAnchors; iRow++)
     {
         NSMutableArray *currentCol=[[NSMutableArray alloc]init];
-        BOOL currentRowHidden=NO;
         
         for(int iCol=0; iCol<(int)(ly-spaceBetweenAnchors*3)/spaceBetweenAnchors; iCol++)
         {
@@ -216,6 +216,11 @@
         }
     }
     
+    // add the selection ring to the scene
+    selection=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/selectionbox.png")];
+    [renderLayer addChild:selection];
+    [selection setVisible:NO];
+    
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -234,6 +239,13 @@
     
     NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
     [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
+    
+    
+    if (gw.Blackboard.LastSelectedObject) {
+        DWTTTileGameObject *curTile=(DWTTTileGameObject*)gw.Blackboard.LastSelectedObject;
+        if(!selection.visible)[selection setVisible:YES];
+        [selection setPosition:[selection convertToWorldSpace:curTile.mySprite.position]];
+    }
     
     
  }
@@ -257,7 +269,7 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     isTouching=NO;
- 
+    gw.Blackboard.LastSelectedObject=nil;
 
      
 }
@@ -265,6 +277,7 @@
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouching=NO;
+    gw.Blackboard.LastSelectedObject=nil;
     // empty selected objects
 }
 

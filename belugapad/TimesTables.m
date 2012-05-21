@@ -119,6 +119,8 @@
     if([pdef objectForKey:SHOW_CALC_BUBBLE])showCalcBubble=[[pdef objectForKey:SHOW_CALC_BUBBLE]boolValue];
     else showCalcBubble=NO;
     
+    if([pdef objectForKey:SWITCH_XY_ANSWER])switchXYforAnswer=[[pdef objectForKey:SWITCH_XY_ANSWER]boolValue];
+    else switchXYforAnswer=NO;
     
     if([pdef objectForKey:SOLUTIONS])solutionsDef=[pdef objectForKey:SOLUTIONS];
     if([pdef objectForKey:ACTIVE_ROWS])activeRows=[pdef objectForKey:ACTIVE_ROWS];
@@ -469,7 +471,8 @@
         {
             DWTTTileGameObject *selTile=[gw.Blackboard.SelectedObjects objectAtIndex:i];
             
-            if(thisAnsX==selTile.myXpos && thisAnsY==selTile.myYpos)answersFound++;
+            if(thisAnsX==selTile.myXpos && thisAnsY==selTile.myYpos && !switchXYforAnswer)answersFound++;
+            else if(thisAnsY==selTile.myXpos && thisAnsX==selTile.myYpos && switchXYforAnswer)answersFound++;
             NSLog(@"thisAnsX=%d,selTile X=%d, thisAnsY=%d, selTile Y=%d", thisAnsX, selTile.myXpos, thisAnsY, selTile.myYpos);
         }
     }

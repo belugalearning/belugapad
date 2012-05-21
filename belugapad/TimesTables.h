@@ -60,6 +60,7 @@
     BOOL currentYHighlight;
     BOOL allowHighlightX;
     BOOL allowHighlightY;
+    BOOL switchXYforAnswer;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

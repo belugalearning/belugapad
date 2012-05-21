@@ -288,13 +288,8 @@ static float kMoveToNextProblemTime=2.0f;
     
     [contentService gotoNextProblemInPipeline];
     
-    //local copy of pdef is parsed to static (this may be identical to original, but supports dynamic population if specified in plist)
-    pdef=[self.DynProblemParser createStaticPdefFromPdef:contentService.currentPDef];
-    
-    //pdef = [contentService.currentPDef retain];
-    self.PpExpr = contentService.currentPExpr;
-    
-    if(pdef)
+    //check that the content service found a pdef (this will be the raw dynamic one)
+    if(contentService.currentPDef)
     {
         [self loadProblem];
     }
@@ -321,6 +316,7 @@ static float kMoveToNextProblemTime=2.0f;
 
 -(void) loadProblem
 {
+    // ---------------- TEAR DOWN ------------------------------------
     //tear down meta question stuff
     [self tearDownMetaQuestion];
     
@@ -330,6 +326,18 @@ static float kMoveToNextProblemTime=2.0f;
         [self removeChild:hostBackground cleanup:YES];
         hostBackground=nil;
     }
+    // ---------------- END TEAR DOWN --------------------------------
+    
+    
+    //parse dynamic problem stuff -- needs to be done before toolscene is init'd AND before tool host or scene tried to do anything with the pdef
+    [self.DynProblemParser startNewProblemWithPDef:contentService.currentPDef];
+    
+    //local copy of pdef is parsed to static (this may be identical to original, but supports dynamic population if specified in plist)
+    pdef=[self.DynProblemParser createStaticPdefFromPdef:contentService.currentPDef];
+
+    //not often used, but retain local ref to the content service's loaded ppexpr
+    self.PpExpr = contentService.currentPExpr;
+    
     
     NSString *toolKey=[pdef objectForKey:TOOL_KEY];
     
@@ -349,9 +357,6 @@ static float kMoveToNextProblemTime=2.0f;
     
     //reset scale
     scale=1.0f;
-    
-    //parse dynamic problem stuff -- needs to be done before toolscene is init'd
-    [self.DynProblemParser startNewProblemWithPDef:pdef];
     
     //initialize tool scene
     currentTool=[NSClassFromString(toolKey) alloc];

@@ -41,6 +41,10 @@
 	<dict>
 		<key>$name</key>
 		<dict>
+			<key>RECALL</key>
+			<true/>
+			<key>RETAIN</key>
+			<true/>
 			<key>MODE</key>
 			<string>RANDOM</string>
 			<key>DATA</key>

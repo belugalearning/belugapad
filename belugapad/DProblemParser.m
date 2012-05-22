@@ -16,6 +16,7 @@
     dVars=[[NSMutableDictionary alloc] init];
     dStrings=[[NSMutableDictionary alloc] init];
     retainedVars=[[NSMutableDictionary alloc] init];
+    retainedStrings=[[NSMutableDictionary alloc] init];
     
     return self;
 }
@@ -333,7 +334,7 @@
         if(rop.location==NSNotFound) rop=[mid rangeOfString:@"/"];
         if(rop.location==NSNotFound) rop=[mid rangeOfString:@"^"];
         
-        NSRange replacerange={r.location, rend.location+3};
+        NSRange replacerange={r.location, rend.location+2};
         
         if(rop.location==NSNotFound)
         {
@@ -393,7 +394,7 @@
         if(rend.location!=NSNotFound) mid=[rstring substringToIndex:rend.location];
         
         //the range in the parse string that we're going to replace
-        NSRange replacerange={dsrange.location, rend.location+3};
+        NSRange replacerange={dsrange.location, rend.location+4};
         
         NSLog(@"dstring replacing range |%@| in string |%@| with string |%@| for key |%@|",
               NSStringFromRange(replacerange),

@@ -14,6 +14,7 @@
 -(id)init
 {
     dVars=[[NSMutableDictionary alloc] init];
+    dStrings=[[NSMutableDictionary alloc] init];
     retainedVars=[[NSMutableDictionary alloc] init];
     
     return self;
@@ -23,6 +24,7 @@
 {
     //clear any problem variables
     [dVars removeAllObjects];
+    [dStrings removeAllObjects];
     
     //parse the dvars from the new pdef
     NSDictionary *dvdef=[pdef objectForKey:@"DVARS"];
@@ -43,33 +45,49 @@
         NSString *val=nil;
         BOOL setString;
         
-        if([mode isEqualToString:@"RANDOM"])
+        if([def objectForKey:@"RECALL"] && [retainedStrings objectForKey:key])
         {
-            //pick random string from data
-            int r=(arc4random() % [data count])-1;
-            val=(NSString *)[data objectAtIndex:r];
-            setString=YES;
-        }
-        
-        if(setString)
-        {
-            [dStrings setObject:val forKey:key];
+            NSLog(@"parsing RECALL'd DSTRING %@", key);
             
-            NSNumber *retain=[def objectForKey:@"RETAIN"];
-            if(retain)
+            //recall this value from retained vars
+            [dStrings setObject:[retainedStrings objectForKey:key] forKey:key];
+        }
+        else {
+            //not recalled, so look at modes for selection
+            if([mode isEqualToString:@"RANDOM"])
             {
-                if([retain intValue]==0)
+                NSLog(@"parsing dstring random %@", key);
+                
+                //pick random string from data
+                int r=(arc4random() % [data count]);
+                val=(NSString *)[data objectAtIndex:r];
+                setString=YES;
+            }
+            if([mode isEqualToString:@"ITERATE"])
+            {
+                //step over the data list
+            }
+            
+            if(setString)
+            {
+                [dStrings setObject:val forKey:key];
+                
+                NSNumber *retain=[def objectForKey:@"RETAIN"];
+                if(retain)
                 {
-                    //clear any existing value and do not retain
-                    [retainedStrings removeObjectForKey:key];
-                    
-                    NSLog(@"cleared any retained dstring for %@", key);
-                }
-                else {
-                    //retain the value, overwriting any current value
-                    [retainedStrings setObject:val forKey:key];
-                    
-                    NSLog(@"retained value of %@", key);
+                    if([retain intValue]==0)
+                    {
+                        //clear any existing value and do not retain
+                        [retainedStrings removeObjectForKey:key];
+                        
+                        NSLog(@"cleared any retained dstring for %@", key);
+                    }
+                    else {
+                        //retain the value, overwriting any current value
+                        [retainedStrings setObject:val forKey:key];
+                        
+                        NSLog(@"retained value of %@", key);
+                    }
                 }
             }
         }
@@ -292,7 +310,7 @@
         return parse;
     }
     
-    //todo: parse the string, looking for {...} pairs and substituting them
+    //parse the string, looking for {...} pairs and substituting them
     //subs is replacing vars with literals from lkpvars and doing operations
     NSRange r=[parse rangeOfString:@"{"];
     while (r.location!=NSNotFound) {
@@ -315,7 +333,7 @@
         if(rop.location==NSNotFound) rop=[mid rangeOfString:@"/"];
         if(rop.location==NSNotFound) rop=[mid rangeOfString:@"^"];
         
-        NSRange replacerange={r.location, rend.location+2};
+        NSRange replacerange={r.location, rend.location+3};
         
         if(rop.location==NSNotFound)
         {
@@ -359,6 +377,37 @@
         //get new range to step
         r=[parse rangeOfString:@"{"];
     }
+    
+    
+    //DSTRING replacements
+    NSRange dsrange=[parse rangeOfString:@"[["];
+    while (dsrange.location!=NSNotFound) {
+        //string from [[ +2 to end
+        NSString *rstring=[parse substringFromIndex:dsrange.location+2];
+        
+        //position of close
+        NSRange rend=[rstring rangeOfString:@"]]"];
+        
+        //middle of string
+        NSString *mid=rstring;
+        if(rend.location!=NSNotFound) mid=[rstring substringToIndex:rend.location];
+        
+        //the range in the parse string that we're going to replace
+        NSRange replacerange={dsrange.location, rend.location+3};
+        
+        NSLog(@"dstring replacing range |%@| in string |%@| with string |%@| for key |%@|",
+              NSStringFromRange(replacerange),
+              parse,
+              [dStrings objectForKey:mid],
+              mid);
+        
+        //do straight swap of [[$____]]  in parse
+        parse=[parse stringByReplacingCharactersInRange:replacerange withString:[dStrings objectForKey:mid]];
+        
+        //look for next replacement
+        dsrange=[parse rangeOfString:@"[["];
+    }
+    
     return parse;
 }
 

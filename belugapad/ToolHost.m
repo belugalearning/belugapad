@@ -21,6 +21,10 @@
 #import "UsersService.h"
 #import "JourneyScene.h"
 #import "DProblemParser.h"
+#import "Problem.h"
+#import "Pipeline.h"
+#import <CouchCocoa/CouchCocoa.h>
+#import <CouchCocoa/CouchModelFactory.h>
 
 @interface ToolHost()
 {
@@ -432,9 +436,28 @@ static float kMoveToNextProblemTime=2.0f;
         pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
         [pauseMenu setPosition:ccp(cx, cy)];
         [pauseLayer addChild:pauseMenu z:10];
+        
+        if(contentService.pathToTestDef)
+        {
+            
+            pauseTestPathLabel=[CCLabelTTF labelWithString:@"" fontName:TITLE_FONT fontSize:12];
+            [pauseTestPathLabel setPosition:ccp(cx, ly-20)];
+            [pauseTestPathLabel setColor:ccc3(255, 255, 255)];
+            [pauseLayer addChild:pauseTestPathLabel z:11];
+        }
     }
     else {
-        [pauseMenu setVisible:YES];
+        [pauseLayer setVisible:YES];
+    }
+    
+    if(contentService.pathToTestDef)
+    {
+        [pauseTestPathLabel setString:contentService.pathToTestDef];
+        NSLog(@"pausing in test problem %@", contentService.pathToTestDef);
+    }
+    else {
+        //just log document id for the problem & pipeline
+        NSLog(@"pausing in problem document %@ in pipeline %@", contentService.currentProblem.document.documentID, contentService.currentPipeline.document.documentID);
     }
     
     UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
@@ -447,7 +470,7 @@ static float kMoveToNextProblemTime=2.0f;
     {
         //resume
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-        [pauseMenu setVisible:NO];
+        [pauseLayer setVisible:NO];
         isPaused=NO;
         
         UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
@@ -458,7 +481,7 @@ static float kMoveToNextProblemTime=2.0f;
        //reset
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self resetProblem];
-        [pauseMenu setVisible:NO];
+        [pauseLayer setVisible:NO];
         isPaused=NO;
     }
     if(CGRectContainsPoint(kPauseMenuMenu,location))
@@ -472,7 +495,7 @@ static float kMoveToNextProblemTime=2.0f;
     if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
     {
         isPaused=NO;
-        [pauseMenu setVisible:NO];
+        [pauseLayer setVisible:NO];
         [self gotoNewProblem];
     }      
 }

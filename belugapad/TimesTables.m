@@ -57,6 +57,8 @@
         
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
+        [self revealRows];
+        
         gw.Blackboard.inProblemSetup = NO;
         
     }
@@ -85,6 +87,8 @@
 {
     activeRows=nil;
     activeCols=nil;
+    revealRows=nil;
+    revealCols=nil;
     headerLabels=[[NSMutableArray alloc]init];
     
     renderLayer = [[CCLayer alloc] init];
@@ -112,10 +116,19 @@
     if([pdef objectForKey:ALLOW_Y_HIGHLIGHT])allowHighlightY=[[pdef objectForKey:ALLOW_Y_HIGHLIGHT]boolValue];
     else allowHighlightY=YES;
     
+    if([pdef objectForKey:SHOW_CALC_BUBBLE])showCalcBubble=[[pdef objectForKey:SHOW_CALC_BUBBLE]boolValue];
+    else showCalcBubble=NO;
+    
+    if([pdef objectForKey:SWITCH_XY_ANSWER])switchXYforAnswer=[[pdef objectForKey:SWITCH_XY_ANSWER]boolValue];
+    else switchXYforAnswer=NO;
     
     if([pdef objectForKey:SOLUTIONS])solutionsDef=[pdef objectForKey:SOLUTIONS];
     if([pdef objectForKey:ACTIVE_ROWS])activeRows=[pdef objectForKey:ACTIVE_ROWS];
     if([pdef objectForKey:ACTIVE_COLS])activeCols=[pdef objectForKey:ACTIVE_COLS];
+    if([pdef objectForKey:REVEAL_ROWS])revealRows=[pdef objectForKey:REVEAL_ROWS];
+    if([pdef objectForKey:REVEAL_COLS])revealCols=[pdef objectForKey:REVEAL_COLS];
+    if([pdef objectForKey:REVEAL_TILES])revealTiles=[pdef objectForKey:REVEAL_TILES];
+    
     
     if(operatorMode==0)operatorName=@"add";
     else if(operatorMode==1)operatorName=@"sub";
@@ -124,6 +137,10 @@
     
     [activeRows retain];
     [activeCols retain];
+    [revealRows retain];
+    [revealCols retain];
+    [revealTiles retain];
+    [solutionsDef retain];
 }
 
 -(void)populateGW
@@ -144,6 +161,8 @@
     
     CCSprite *operator = [CCSprite spriteWithFile:operatorFileName];
     [operator setPosition:ccp(xStartPos-spaceBetweenAnchors,ly-spaceBetweenAnchors*1.5)];
+    [operator setTag:1];
+    [operator setOpacity:0];
     [self.ForeLayer addChild:operator];
 
     NSMutableArray *xHeaders=[[NSMutableArray alloc]init];
@@ -168,6 +187,8 @@
             {
                 CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", yStartNumber] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
                 [curLabel setPosition:ccp(xStartPos-spaceBetweenAnchors,yStartPos)];
+                [curLabel setTag:2];
+                [curLabel setOpacity:0];
                 [self.ForeLayer addChild:curLabel];
                 [yHeaders addObject:curLabel];
                 yStartNumber--;
@@ -177,6 +198,8 @@
                 CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", xStartNumber]fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
                 [curLabel setPosition:ccp(xStartPos,yStartPos+spaceBetweenAnchors)];
                 [self.ForeLayer addChild:curLabel];
+                [curLabel setTag:2];
+                [curLabel setOpacity:0];
                 [xHeaders addObject:curLabel];
             }
             
@@ -186,8 +209,9 @@
             tile.myXpos=xStartNumber;
             tile.myYpos=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-(iCol+1);
             tile.operatorType=operatorMode;
+            tile.Size=spaceBetweenAnchors;
             
-            NSLog(@"iRow = %d, iCol = %d, tile.myXpos = %d, tile.myYpos = %d", iRow, iCol, tile.myXpos, tile.myYpos);
+            //NSLog(@"iRow = %d, iCol = %d, tile.myXpos = %d, tile.myYpos = %d", iRow, iCol, tile.myXpos, tile.myYpos);
             
 
             [currentCol addObject:tile];
@@ -215,21 +239,19 @@
                 DWTTTileGameObject *tile=[curCol objectAtIndex:c];
                 
                 
-                //if(activeCols.count>0){
-                    for(NSNumber *n in activeCols)
-                    {
-                        thisX=[n intValue];
-                        if(thisX==tile.myXpos)break;
-                    }
-                //}
-                
-                //if(activeRows.count>0) {
-                    for(NSNumber *n in activeRows)
-                    {
-                        thisY=[n intValue];
-                        if(thisY==tile.myYpos)break;
-                    }
-                //}
+            
+                for(NSNumber *n in activeCols)
+                {
+                    thisX=[n intValue];
+                    if(thisX==tile.myXpos)break;
+                }
+        
+                for(NSNumber *n in activeRows)
+                {
+                    thisY=[n intValue];
+                    if(thisY==tile.myYpos)break;
+                }
+            
                 if(tile.myXpos == thisX || tile.myYpos == thisY)
                 {
                     tile.Disabled=NO;
@@ -241,6 +263,7 @@
             }
         }
     }
+
     
     // add the selection ring to the scene
 //    selection=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/selectionbox.png")];
@@ -249,13 +272,80 @@
     
 }
 
+-(void)revealRows
+{
+    
+    if(revealCols || revealRows)
+    {
+        for(int r=0;r<[ttMatrix count];r++)
+        {
+            NSArray *curCol=[ttMatrix objectAtIndex:r];
+            
+            for(int c=0;c<[curCol count];c++)
+            {
+                int thisX=0;
+                int thisY=0;
+                DWTTTileGameObject *tile=[curCol objectAtIndex:c];
+                
+                
+                
+                for(NSNumber *n in revealCols)
+                {
+                    thisX=[n intValue];
+                    if(thisX==tile.myXpos)break;
+                }
+                
+                for(NSNumber *n in revealRows)
+                {
+                    thisY=[n intValue];
+                    if(thisY==tile.myYpos)break;
+                }
+                
+                if(tile.myXpos == thisX || tile.myYpos == thisY)
+                {
+                    [tile handleMessage:kDWswitchSelection];
+                }
+                
+            }
+        }
+    }
+    
+    if(revealTiles)
+    {
+        for(int r=0;r<[ttMatrix count];r++)
+        {
+            NSArray *curCol=[ttMatrix objectAtIndex:r];
+            
+            for(int c=0;c<[curCol count];c++)
+            {
+                int thisX=0;
+                int thisY=0;
+                DWTTTileGameObject *tile=[curCol objectAtIndex:c];
+                
+                for(int p=0;p<[revealTiles count];p++)
+                {
+                    thisX=[[[revealTiles objectAtIndex:p] objectForKey:POS_X]intValue];
+                    thisY=[[[revealTiles objectAtIndex:p] objectForKey:POS_Y]intValue];
+                    
+                    if(tile.myXpos == thisX && tile.myYpos == thisY)
+                    {
+                        [tile handleMessage:kDWswitchSelection];
+                    }
+                }
+                
+            }
+        }
+
+    }
+}
+
 -(void)tintRow:(int)thisRow
 {
     for(int i=0;i<[ttMatrix count];i++)
     {
         DWTTTileGameObject *tile=[[ttMatrix objectAtIndex:i]objectAtIndex:thisRow];
         if(tile.Disabled)continue;
-        if(thisRow == currentXHighlightNo && currentXHighlight)[tile.mySprite setColor:ccc3(255,255,255)];
+        if(thisRow == currentXHighlightNo && currentXHighlight && tile.myYpos!=currentYHighlight && !currentYHighlight)[tile.mySprite setColor:ccc3(255,255,255)];
         else [tile.mySprite setColor:ccc3(0,255,0)];
         
     }
@@ -328,7 +418,8 @@
     [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
     
     
-    if (gw.Blackboard.LastSelectedObject && evalMode==kProblemEvalAuto) [self evalProblem];
+    if(gw.Blackboard.LastSelectedObject && showCalcBubble)[gw.Blackboard.LastSelectedObject handleMessage:kDWshowCalcBubble];
+    if(gw.Blackboard.LastSelectedObject && evalMode==kProblemEvalAuto) [self evalProblem];
     
     
  }
@@ -368,8 +459,6 @@
 {
     if(!solutionsDef)return NO;
     
-    //DWTTTileGameObject *selTile=(DWTTTileGameObject*)gw.Blackboard.LastSelectedObject;
-    
     int answersFound=0;
     
     for(int i=0;i<[solutionsDef count];i++)
@@ -382,7 +471,9 @@
         {
             DWTTTileGameObject *selTile=[gw.Blackboard.SelectedObjects objectAtIndex:i];
             
-            if(thisAnsX==selTile.myXpos && thisAnsY==selTile.myXpos)answersFound++;
+            if(thisAnsX==selTile.myXpos && thisAnsY==selTile.myYpos && !switchXYforAnswer)answersFound++;
+            else if(thisAnsY==selTile.myXpos && thisAnsX==selTile.myYpos && switchXYforAnswer)answersFound++;
+            NSLog(@"thisAnsX=%d,selTile X=%d, thisAnsY=%d, selTile Y=%d", thisAnsX, selTile.myXpos, thisAnsY, selTile.myYpos);
         }
     }
     
@@ -401,7 +492,7 @@
         [toolHost showProblemCompleteMessage];
     }
     else {
-        if(evalMode==kProblemEvalOnCommit)[toolHost resetProblem];
+        if(evalMode==kProblemEvalOnCommit)[self resetProblem];
     }
 
 }
@@ -434,6 +525,9 @@
     if(activeRows)[activeRows release];
     if(headerLabels)[headerLabels release];
     if(solutionsDef)[solutionsDef release];
+    if(revealRows)[revealRows release];
+    if(revealCols)[revealCols release];
+    if(revealTiles)[revealTiles release];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

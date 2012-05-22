@@ -10,5 +10,7 @@
 	<integer>85</integer>
 	<key>DRAW_MODE</key>
 	<integer>0</integer>
+	<key>DO_NOT_SIMPLIFY_FRACTIONS</key>
+	<false/>
 </dict>
 </plist>

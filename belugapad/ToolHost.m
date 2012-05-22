@@ -21,6 +21,10 @@
 #import "UsersService.h"
 #import "JourneyScene.h"
 #import "DProblemParser.h"
+#import "Problem.h"
+#import "Pipeline.h"
+#import <CouchCocoa/CouchCocoa.h>
+#import <CouchCocoa/CouchModelFactory.h>
 
 @interface ToolHost()
 {
@@ -288,10 +292,8 @@ static float kMoveToNextProblemTime=2.0f;
     
     [contentService gotoNextProblemInPipeline];
     
-    pdef = [contentService.currentPDef retain];
-    self.PpExpr = contentService.currentPExpr;
-    
-    if(pdef)
+    //check that the content service found a pdef (this will be the raw dynamic one)
+    if(contentService.currentPDef)
     {
         [self loadProblem];
     }
@@ -318,6 +320,7 @@ static float kMoveToNextProblemTime=2.0f;
 
 -(void) loadProblem
 {
+    // ---------------- TEAR DOWN ------------------------------------
     //tear down meta question stuff
     [self tearDownMetaQuestion];
     
@@ -327,6 +330,21 @@ static float kMoveToNextProblemTime=2.0f;
         [self removeChild:hostBackground cleanup:YES];
         hostBackground=nil;
     }
+    // ---------------- END TEAR DOWN --------------------------------
+    
+    
+    //parse dynamic problem stuff -- needs to be done before toolscene is init'd AND before tool host or scene tried to do anything with the pdef
+    [self.DynProblemParser startNewProblemWithPDef:contentService.currentPDef];
+    
+    //local copy of pdef is parsed to static (this may be identical to original, but supports dynamic population if specified in plist)
+    pdef=[self.DynProblemParser createStaticPdefFromPdef:contentService.currentPDef];
+    
+    //keep reference to the current static definition on the content service -- for logging etc
+    contentService.currentStaticPdef=pdef;
+
+    //not often used, but retain local ref to the content service's loaded ppexpr
+    self.PpExpr = contentService.currentPExpr;
+    
     
     NSString *toolKey=[pdef objectForKey:TOOL_KEY];
     
@@ -346,9 +364,6 @@ static float kMoveToNextProblemTime=2.0f;
     
     //reset scale
     scale=1.0f;
-    
-    //parse dynamic problem stuff -- needs to be done before toolscene is init'd
-    [self.DynProblemParser startNewProblemWithPDef:pdef];
     
     //initialize tool scene
     currentTool=[NSClassFromString(toolKey) alloc];
@@ -421,9 +436,28 @@ static float kMoveToNextProblemTime=2.0f;
         pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
         [pauseMenu setPosition:ccp(cx, cy)];
         [pauseLayer addChild:pauseMenu z:10];
+        
+        if(contentService.pathToTestDef)
+        {
+            
+            pauseTestPathLabel=[CCLabelTTF labelWithString:@"" fontName:TITLE_FONT fontSize:12];
+            [pauseTestPathLabel setPosition:ccp(cx, ly-20)];
+            [pauseTestPathLabel setColor:ccc3(255, 255, 255)];
+            [pauseLayer addChild:pauseTestPathLabel z:11];
+        }
     }
     else {
-        [pauseMenu setVisible:YES];
+        [pauseLayer setVisible:YES];
+    }
+    
+    if(contentService.pathToTestDef)
+    {
+        [pauseTestPathLabel setString:contentService.pathToTestDef];
+        NSLog(@"pausing in test problem %@", contentService.pathToTestDef);
+    }
+    else {
+        //just log document id for the problem & pipeline
+        NSLog(@"pausing in problem document %@ in pipeline %@", contentService.currentProblem.document.documentID, contentService.currentPipeline.document.documentID);
     }
     
     UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
@@ -436,7 +470,7 @@ static float kMoveToNextProblemTime=2.0f;
     {
         //resume
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-        [pauseMenu setVisible:NO];
+        [pauseLayer setVisible:NO];
         isPaused=NO;
         
         UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
@@ -447,7 +481,7 @@ static float kMoveToNextProblemTime=2.0f;
        //reset
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self resetProblem];
-        [pauseMenu setVisible:NO];
+        [pauseLayer setVisible:NO];
         isPaused=NO;
     }
     if(CGRectContainsPoint(kPauseMenuMenu,location))
@@ -461,7 +495,7 @@ static float kMoveToNextProblemTime=2.0f;
     if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
     {
         isPaused=NO;
-        [pauseMenu setVisible:NO];
+        [pauseLayer setVisible:NO];
         [self gotoNewProblem];
     }      
 }

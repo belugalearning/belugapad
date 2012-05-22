@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class BAExpressionTree, Problem;
+@class BAExpressionTree, Problem, Pipeline;
 @class CouchDatabase;
 @class ConceptNode;
 
@@ -16,6 +16,9 @@
 @property (nonatomic, readonly, retain) Problem *currentProblem;
 @property (nonatomic, readonly, retain) NSDictionary *currentPDef;
 @property (nonatomic, readonly, retain) BAExpressionTree *currentPExpr;
+@property (nonatomic, retain) NSMutableDictionary *currentStaticPdef;
+@property (nonatomic, readonly, retain) NSString *pathToTestDef;
+@property (nonatomic, readonly, retain) Pipeline *currentPipeline;
 @property BOOL fullRedraw;
 @property BOOL lightUpProgressFromLastNode;
 @property (nonatomic, retain) ConceptNode *currentNode;

@@ -24,4 +24,6 @@
 -(int)parseIntFromValueWithKey: (NSString *)key inDef:(NSDictionary*) pdef;
 -(float)parseFloatFromValueWithKey: (NSString *)key inDef:(NSDictionary*) pdef;
 
+-(NSMutableDictionary*) createStaticPdefFromPdef:(NSDictionary*)dpdef;
+
 @end

@@ -154,6 +154,8 @@
     if(initObjects)[initObjects retain];
     if([pdef objectForKey:HIDDEN_ROWS])hiddenRows=[pdef objectForKey:HIDDEN_ROWS];
     if(hiddenRows)[hiddenRows retain];
+    if([pdef objectForKey:DO_NOT_SIMPLIFY_FRACTIONS])doNotSimplifyFractions=[[pdef objectForKey:DO_NOT_SIMPLIFY_FRACTIONS]boolValue];
+    else doNotSimplifyFractions=NO;
 
 
     

@@ -163,12 +163,22 @@ static float kBubblePushSpeed=400.0f;
     
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
     
-    evalTarget=[toolHost.DynProblemParser parseIntFromValueWithKey:@"EVAL_TARGET" inDef:pdef];
+    evalTarget=[[pdef objectForKey:@"EVAL_TARGET"] intValue];
     
-    initStartVal=[toolHost.DynProblemParser parseIntFromValueWithKey:START_VALUE inDef:pdef];
-    initMinVal=[NSNumber numberWithInt:[toolHost.DynProblemParser parseIntFromValueWithKey:MIN_VALUE inDef:pdef]];
-    initMaxVal=[NSNumber numberWithInt:[toolHost.DynProblemParser parseIntFromValueWithKey:MAX_VALUE inDef:pdef]];
-    initSegmentVal=[toolHost.DynProblemParser parseIntFromValueWithKey:SEGMENT_VALUE inDef:pdef];
+    initStartVal=[[pdef objectForKey:START_VALUE] intValue];
+    
+    initMinVal=(NSNumber*)[pdef objectForKey:MIN_VALUE];
+    initMaxVal=(NSNumber*)[pdef objectForKey:MAX_VALUE];
+    
+    initSegmentVal=[[pdef objectForKey:SEGMENT_VALUE] intValue];
+    
+    //this stuff still works -- direct parse is okay, but it's redundant as the toolhost will create dynamic content anyway
+//    evalTarget=[toolHost.DynProblemParser parseIntFromValueWithKey:@"EVAL_TARGET" inDef:pdef];
+//    
+//    initStartVal=[toolHost.DynProblemParser parseIntFromValueWithKey:START_VALUE inDef:pdef];
+//    initMinVal=[NSNumber numberWithInt:[toolHost.DynProblemParser parseIntFromValueWithKey:MIN_VALUE inDef:pdef]];
+//    initMaxVal=[NSNumber numberWithInt:[toolHost.DynProblemParser parseIntFromValueWithKey:MAX_VALUE inDef:pdef]];
+//    initSegmentVal=[toolHost.DynProblemParser parseIntFromValueWithKey:SEGMENT_VALUE inDef:pdef];
     
     //force default on segment value if not specified
     if(initSegmentVal==0)initSegmentVal=1;

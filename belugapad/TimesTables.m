@@ -458,24 +458,27 @@
 -(BOOL)evalExpression
 {
     if(!solutionsDef)return NO;
+    if([gw.Blackboard.SelectedObjects count]<[solutionsDef count])return NO;
     
     int answersFound=0;
     
-    for(int i=0;i<[solutionsDef count];i++)
+    for(int o=0;o<[gw.Blackboard.SelectedObjects count];o++)
     {
-        NSMutableDictionary *curDict=[solutionsDef objectAtIndex:i];
-        int thisAnsX=[[curDict objectForKey:POS_X]intValue];
-        int thisAnsY=[[curDict objectForKey:POS_Y]intValue];
+        DWTTTileGameObject *selTile=[gw.Blackboard.SelectedObjects objectAtIndex:o];
+        NSLog(@"selTile X=%d, selTile Y=%d", selTile.myXpos, selTile.myYpos);
         
-        for(int o=0;o<[gw.Blackboard.SelectedObjects count];o++)
+        for(int i=0;i<[solutionsDef count];i++)
         {
-            DWTTTileGameObject *selTile=[gw.Blackboard.SelectedObjects objectAtIndex:i];
+            NSMutableDictionary *curDict=[solutionsDef objectAtIndex:i];
+            int thisAnsX=[[curDict objectForKey:POS_X]intValue];
+            int thisAnsY=[[curDict objectForKey:POS_Y]intValue];
+            NSLog(@"thisAnsX=%d, thisAnsY=%d", thisAnsX, thisAnsY);
             
             if(thisAnsX==selTile.myXpos && thisAnsY==selTile.myYpos && !switchXYforAnswer)answersFound++;
             else if(thisAnsY==selTile.myXpos && thisAnsX==selTile.myYpos && switchXYforAnswer)answersFound++;
-            NSLog(@"thisAnsX=%d,selTile X=%d, thisAnsY=%d, selTile Y=%d", thisAnsX, selTile.myXpos, thisAnsY, selTile.myYpos);
         }
     }
+    
     
     if(answersFound==[solutionsDef count])return YES;
     else return NO;

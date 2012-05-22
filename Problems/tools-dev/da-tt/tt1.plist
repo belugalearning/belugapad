@@ -22,14 +22,14 @@
 	<true/>
 	<key>SHOW_Y_AXIS</key>
 	<true/>
-	<key>SWITCH_XY_ANSWER</key>
+	<key>SWITCH_XY_ANSWER-IGNORE</key>
 	<true/>
-	<key>ACTIVE_ROWS-OLD</key>
+	<key>ACTIVE_ROWS-IGNORE</key>
 	<array>
 		<integer>5</integer>
 		<string>0</string>
 	</array>
-	<key>ACTIVE_COLS-OLD</key>
+	<key>ACTIVE_COLS-IGNORE</key>
 	<array>
 		<integer>4</integer>
 		<integer>5</integer>
@@ -65,6 +65,32 @@
 			<key>POS_Y</key>
 			<integer>3</integer>
 		</dict>
+		<dict>
+			<key>POS_X</key>
+			<integer>3</integer>
+			<key>POS_Y</key>
+			<integer>5</integer>
+		</dict>
 	</array>
+	<key>TIMER</key>
+	<dict>
+		<key>TIMER_DURATION</key>
+		<integer>0</integer>
+		<key>TIMER_ACTIONS</key>
+		<dict>
+			<key>REVEAL_ROWS</key>
+			<array/>
+			<key>REVEAL_COLS</key>
+			<array/>
+			<key>REVEAL_TILES</key>
+			<array/>
+			<key>SHOW_X_AXIS</key>
+			<false/>
+			<key>SHOW_Y_AXIS</key>
+			<false/>
+			<key>SHOW_CALC_BUBBLE</key>
+			<string></string>
+		</dict>
+	</dict>
 </dict>
 </plist>

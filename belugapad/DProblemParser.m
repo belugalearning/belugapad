@@ -271,8 +271,14 @@
         
         if(rop.location==NSNotFound)
         {
+            NSLog(@"replacing range |%@| in string |%@| with string |%@|",
+                  NSStringFromRange(replacerange),
+                  parse,
+                  [self numberFromVarLiteralString:mid withLkpSource:lkpVars]);
+            
             //presume one variable, get as literal replacement
             parse=[parse stringByReplacingCharactersInRange:replacerange withString:[[self numberFromVarLiteralString:mid withLkpSource:lkpVars] stringValue]];
+            
         }
         else {
             //we have operators, get vars and operate
@@ -291,6 +297,12 @@
             if([op isEqualToString:@"*"]) fres=[l floatValue] * [r floatValue];
             if([op isEqualToString:@"/"]) fres=[l floatValue] / [r floatValue];
             if([op isEqualToString:@"^"]) fres=powf([l floatValue], [r floatValue]);
+         
+            
+            NSLog(@"replacing range |%@| in string |%@| with string |%@|",
+                  NSStringFromRange(replacerange),
+                  parse,
+                  [self castFloat:fres AsStringFromOptionsInVarLiteral:lstring andVarLiteral:rstring]);
             
             //if float
             parse=[parse stringByReplacingCharactersInRange:replacerange withString:[self castFloat:fres AsStringFromOptionsInVarLiteral:lstring andVarLiteral:rstring]];

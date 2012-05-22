@@ -56,6 +56,8 @@ typedef enum {
     BOOL metaQuestionForceComplete;
     
     BOOL isPaused;
+    CCLabelTTF *pauseTestPathLabel;
+    
     BOOL showingProblemComplete;
     BOOL showingProblemIncomplete;
     float shownProblemStatusFor;

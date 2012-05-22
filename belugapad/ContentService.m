@@ -42,14 +42,15 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
     CouchReplication *pullReplication;
     
     //kcm concept node pipeline progression
-    Pipeline *currentPipeline;
     int pipelineIndex;
-//    ConceptNode *currentNode;
+
 }
 
 @property (nonatomic, readwrite, retain) Problem *currentProblem;
 @property (nonatomic, readwrite, retain) NSDictionary *currentPDef;
 @property (nonatomic, readwrite, retain) BAExpressionTree *currentPExpr;
+@property (nonatomic, readwrite, retain) NSString *pathToTestDef;
+@property (nonatomic, readwrite, retain) Pipeline *currentPipeline;
 
 @end
 
@@ -58,8 +59,10 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
 @synthesize currentProblem;
 @synthesize currentPDef;
 @synthesize currentStaticPdef;
+@synthesize pathToTestDef;
 @synthesize currentPExpr;
 @synthesize fullRedraw;
+@synthesize currentPipeline;
 
 @synthesize lightUpProgressFromLastNode;
 @synthesize currentNode;
@@ -159,16 +162,16 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
 
 -(void)startPipelineWithId:(NSString *)pipelineid forNode:(ConceptNode*)node
 {
-    if(currentPipeline) [currentPipeline release];
+    if(self.currentPipeline) [self.currentPipeline release];
     
-    currentPipeline=[[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:pipelineid]];
-    [currentPipeline retain];
+    self.currentPipeline=[[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:pipelineid]];
+    [self.currentPipeline retain];
     pipelineIndex=-1;
     
     self.currentNode=node;
     [self.currentNode retain];
     
-    NSLog(@"starting pipeline named %@ with %d problems", currentPipeline.name, currentPipeline.problems.count);
+    NSLog(@"starting pipeline named %@ with %d problems", self.currentPipeline.name, self.currentPipeline.problems.count);
 }
 
 -(void)gotoNextProblemInPipeline
@@ -182,6 +185,9 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
         currentPIndex = (currentPIndex == NSUIntegerMax) ? 0 : (currentPIndex + 1) % [testProblemList count];
         self.currentPDef = [NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH([testProblemList objectAtIndex:currentPIndex])];
         
+        self.pathToTestDef=[testProblemList objectAtIndex:currentPIndex];
+        NSLog(@"loaded test def: %@", self.pathToTestDef);
+        
         NSString *exprFile = [self.currentPDef objectForKey:EXPRESSION_FILE];
         if (exprFile)
         {
@@ -189,12 +195,12 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
         }
         
     }    
-    else if(pipelineIndex>=currentPipeline.problems.count)
+    else if(pipelineIndex>=self.currentPipeline.problems.count)
     {
         //don't progress, current pdef & ppexpr are set to nil above
     }
     else {
-        NSString *pid=[currentPipeline.problems objectAtIndex:pipelineIndex];
+        NSString *pid=[self.currentPipeline.problems objectAtIndex:pipelineIndex];
         self.currentProblem = [[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:pid]];
         self.currentPDef = self.currentProblem.pdef;
         NSData *expressionData = self.currentProblem.expressionData;

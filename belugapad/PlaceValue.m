@@ -1013,8 +1013,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 
     [toolHost.Zubi setTarget:location];
     
-    
-    if([BLMath DistanceBetween:touchStartPos and:touchEndPos] >= fabs(kTapSlipResetThreshold) && potentialTap)
+
+    if([BLMath DistanceBetween:[renderLayer convertToNodeSpace:touchStartPos] and:location] >= fabs(kTapSlipResetThreshold) && potentialTap)
     {
         touchStartPos = ccp(0, 0);
         touchEndPos = ccp(0, 0);
@@ -1130,9 +1130,12 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             [mulchPanel setVisible:NO];
         }
         
-        [pl setObject:[NSNumber numberWithFloat:posX] forKey:POS_X];
-        [pl setObject:[NSNumber numberWithFloat:posY] forKey:POS_Y];
-        [[gw Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:-1];
+        if(!potentialTap)
+        {
+            [pl setObject:[NSNumber numberWithFloat:posX] forKey:POS_X];
+            [pl setObject:[NSNumber numberWithFloat:posY] forKey:POS_Y];
+            [[gw Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:-1];
+        }
     }
     
     }

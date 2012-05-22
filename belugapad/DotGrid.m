@@ -368,6 +368,9 @@
                     // if current anchor is disabled AND we're not in problem setup AND not in the game state we want OR if the current anchor already has a tile on it
                     
                     if((curAnch.tile || curAnch.Disabled) && !gw.Blackboard.inProblemSetup && (!gameState==kStartAnchor || !gameState==kResizeShape))return;
+                    if(x==anchEnd.myXpos-1 && y==anchEnd.myYpos && thisShape.resizeHandle)
+                        curAnch.resizeHandle=YES;
+                    else curAnch.resizeHandle=NO;
 
                     [anchorsForShape addObject:curAnch];
                 }
@@ -379,6 +382,9 @@
                     DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
                     
                     if((curAnch.tile || curAnch.Disabled) && !gw.Blackboard.inProblemSetup && (!gameState==kStartAnchor || !gameState==kResizeShape))return;
+                    if(x==anchEnd.myXpos-1 && y==anchEnd.myYpos && thisShape.resizeHandle)
+                        curAnch.resizeHandle=YES;
+                    else curAnch.resizeHandle=NO;
 
                     [anchorsForShape addObject:curAnch];
                 } 
@@ -398,6 +404,9 @@
                 {
                     DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
                     if((curAnch.tile || curAnch.Disabled) && !gw.Blackboard.inProblemSetup && (!gameState==kStartAnchor || !gameState==kResizeShape))return;
+                    if(x==anchStart.myXpos-1 && y==anchStart.myYpos && thisShape.resizeHandle)
+                        curAnch.resizeHandle=YES;
+                    else curAnch.resizeHandle=NO;          
                     [anchorsForShape addObject:curAnch];
                     
                 }
@@ -408,6 +417,9 @@
                 {
                     DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
                     if((curAnch.tile || curAnch.Disabled) && !gw.Blackboard.inProblemSetup && (!gameState==kStartAnchor || !gameState==kResizeShape))return;
+                    if(x==anchEnd.myXpos+1 && y==anchEnd.myYpos && thisShape.resizeHandle)
+                        curAnch.resizeHandle=YES;
+                    else curAnch.resizeHandle=NO;
                     [anchorsForShape addObject:curAnch];
 
                 } 
@@ -485,16 +497,36 @@
             }
         }
     
-[gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
+    [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
     
 }
 
 -(void)modifyThisShape:(DWDotGridShapeGameObject*)thisShape withTheseAnchors:(NSArray*)anchors
 {
     NSMutableArray *removeObjects=[[NSMutableArray alloc]init];
-    //thisShape.lastAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
-
+    DWDotGridAnchorGameObject *rsAnchor=[DWDotGridAnchorGameObject alloc];
+    int dupeAnchors=0;
+    
+    
     if([anchors count]==0)return;
+    
+    for(int i=0;i<[anchors count];i++)
+    {
+        for(int c=0;c<[thisShape.tiles count];c++)
+        {
+            DWDotGridTileGameObject *tile=[thisShape.tiles objectAtIndex:c];
+            if ([anchors containsObject:tile.myAnchor])dupeAnchors++;
+            if(tile.myAnchor.resizeHandle)rsAnchor=tile.myAnchor;
+        }
+    }
+    
+    if(dupeAnchors<1)
+    {
+        thisShape.resizeHandle.Position=ccp(rsAnchor.Position.x+spaceBetweenAnchors,rsAnchor.Position.y);
+        [thisShape.resizeHandle handleMessage:kDWmoveSpriteToPosition];
+        
+        return;
+    }
     
     // we are deleting
 
@@ -506,7 +538,6 @@
                 anch.tile=nil;
                 [removeObjects addObject:tile];
                 
-                NSLog(@"current anchors %d previous anchors %d amount to remove %d", [anchors count], [thisShape.tiles count], [removeObjects count]);
             }
 
         }
@@ -518,8 +549,6 @@
             [tile handleMessage:kDWdismantle];
             [thisShape.tiles removeObject:tile];
             [gw delayRemoveGameObject:tile];
-            NSLog(@"remove tile at anch %d/%d", tile.myAnchor.myXpos, tile.myAnchor.myYpos);
-            NSLog(@"current anchors %d anchors left to remove %d amount to remove %d", [anchors count], [thisShape.tiles count], [removeObjects count]);
         }
     
         // loop through the anchors we've been given
@@ -572,7 +601,7 @@ thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
         if(((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).handleType == kResizeHandle && !((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).myShape.Disabled) {
                 gameState=kResizeShape;
                 [((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).myShape handleMessage:kDWresizeShape];
-                NSLog(@"current handletype %d current gameState %d", ((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).handleType, gameState);
+                
                 return;
         }
         
@@ -581,7 +610,6 @@ thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
         {
                 gameState=kMoveShape;
                 [((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).myShape handleMessage:kDWresizeShape];
-                NSLog(@"current handletype %d current gameState %d", ((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).handleType, gameState);
                 return;
         }
         

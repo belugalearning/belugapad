@@ -27,6 +27,54 @@
     //parse the dvars from the new pdef
     NSDictionary *dvdef=[pdef objectForKey:@"DVARS"];
     if(dvdef) [self parseDVars:dvdef];
+    
+    //parse the dstrings from the new pdef
+    NSDictionary *dsdef=[pdef objectForKey:@"DSTRINGS"];
+    if(dsdef) [self  parseDStrings:dsdef];
+}
+
+-(void)parseDStrings:(NSDictionary*)dstringsdef
+{
+    for (int i=0; i<[[dstringsdef allKeys] count]; i++) {
+        NSString *key=[[dstringsdef allKeys] objectAtIndex:i];
+        NSDictionary *def=[dstringsdef objectForKey:key];
+        NSString *mode=[def objectForKey:@"MODE"];
+        NSArray *data=[def objectForKey:@"DATA"];
+        NSString *val=nil;
+        BOOL setString;
+        
+        if([mode isEqualToString:@"RANDOM"])
+        {
+            //pick random string from data
+            int r=(arc4random() % [data count])-1;
+            val=(NSString *)[data objectAtIndex:r];
+            setString=YES;
+        }
+        
+        if(setString)
+        {
+            [dStrings setObject:val forKey:key];
+            
+            NSNumber *retain=[def objectForKey:@"RETAIN"];
+            if(retain)
+            {
+                if([retain intValue]==0)
+                {
+                    //clear any existing value and do not retain
+                    [retainedStrings removeObjectForKey:key];
+                    
+                    NSLog(@"cleared any retained dstring for %@", key);
+                }
+                else {
+                    //retain the value, overwriting any current value
+                    [retainedStrings setObject:val forKey:key];
+                    
+                    NSLog(@"retained value of %@", key);
+                }
+            }
+        }
+        
+    }
 }
 
 -(void)parseDVars:(NSDictionary*)dvarsdef
@@ -365,6 +413,11 @@
     NSMutableDictionary *spdef=[dpdef mutableCopy];
  
     [self cstatParseKeysInDict:spdef];
+    
+    //remove any dynamic def/spec stuff from the static definition
+    [spdef removeObjectForKey:@"DVARS"];
+    [spdef removeObjectForKey:@"DSTRINGS"];
+    [spdef removeObjectForKey:@"DBUILD"];
     
     return spdef;
 }

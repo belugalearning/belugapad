@@ -12,6 +12,9 @@
 {
     NSMutableDictionary *dVars;
     NSMutableDictionary *retainedVars;
+    
+    NSMutableDictionary *dStrings;
+    NSMutableDictionary *retainedStrings;
 }
 
 

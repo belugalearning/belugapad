@@ -79,6 +79,9 @@
         [myText setPosition:ccp(tile.ansSprite.contentSize.width/2, (tile.ansSprite.contentSize.height/2)-2)];
         [myText setColor:ccc3(83,93,100)];
         [tile.ansSprite addChild:myText];
+        
+        [tile.ansSprite runAction:[CCFadeOut actionWithDuration:2.0f]];
+        [myText runAction:[CCFadeOut actionWithDuration:2.0f]];
 
             
     }
@@ -106,23 +109,8 @@
 
             }
             
-            if(!tile.Selected)
-            {
-                tile.Selected=YES;
-                [gameWorld.Blackboard.SelectedObjects addObject:tile];
-                tile.selSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/selectionbox%d.png"), tile.Size]];
-                //[tile.selSprite setPosition:[tile.mySprite convertToNodeSpace:tile.Position]];
-                [tile.selSprite setPosition:tile.Position];
-                [tile.mySprite.parent addChild:tile.selSprite z:1000];
-                gameWorld.Blackboard.LastSelectedObject=gameObject;
-            
-            }
-            else
-            { 
-                tile.Selected=NO;
-                [gameWorld.Blackboard.SelectedObjects removeObject:tile];
-                [tile.selSprite removeFromParentAndCleanup:YES];
-            }
+            gameWorld.Blackboard.LastSelectedObject=gameObject;
+
         }
     }    
 }

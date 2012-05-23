@@ -24,6 +24,8 @@
 	<true/>
 	<key>SWITCH_XY_ANSWER-IGNORE</key>
 	<true/>
+	<key>SELECTION_MODE</key>
+	<integer>0</integer>
 	<key>ACTIVE_ROWS-IGNORE</key>
 	<array>
 		<integer>5</integer>

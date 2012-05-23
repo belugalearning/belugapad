@@ -104,6 +104,9 @@
     startX=[[pdef objectForKey:START_X] intValue];
     startY=[[pdef objectForKey:START_Y] intValue];
     operatorMode=[[pdef objectForKey:OPERATOR_MODE]intValue];
+    selectionMode=[[pdef objectForKey:SELECTION_MODE]intValue];
+    
+    
     if([pdef objectForKey:SHOW_X_AXIS])showXAxis=[[pdef objectForKey:SHOW_X_AXIS]boolValue];
     else showXAxis=YES;
     
@@ -418,8 +421,30 @@
     [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
     
     
-    if(gw.Blackboard.LastSelectedObject && showCalcBubble)[gw.Blackboard.LastSelectedObject handleMessage:kDWshowCalcBubble];
-    if(gw.Blackboard.LastSelectedObject && evalMode==kProblemEvalAuto) [self evalProblem];
+    if(gw.Blackboard.LastSelectedObject)
+    {
+        if(selectionMode==kSelectSingle)
+        {
+            // if there's another selection, send the handletap message
+            if([gw.Blackboard.SelectedObjects count]>0)
+            {
+                for(DWTTTileGameObject *t in gw.Blackboard.SelectedObjects)
+                {
+                    [t handleMessage:kDWhandleTap];
+                }
+            }
+            
+            [gw.Blackboard.LastSelectedObject handleMessage:kDWhandleTap];
+        }
+        else if(selectionMode==kSelectMulti)
+        {
+            [gw.Blackboard.LastSelectedObject handleMessage:kDWhandleTap];   
+        }
+        
+        
+        if(showCalcBubble)[gw.Blackboard.LastSelectedObject handleMessage:kDWshowCalcBubble];
+        if(evalMode==kProblemEvalAuto)[self evalProblem];
+    }
     
     
  }

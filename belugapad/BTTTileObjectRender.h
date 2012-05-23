@@ -16,7 +16,7 @@
 
 -(BTTTileObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
 -(void)setSprite;
--(void)switchSelection;
+-(void)handleTap;
 
 
 @end

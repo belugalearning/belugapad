@@ -58,17 +58,25 @@
     
     if(messageType==kDWswitchSelection)
     {
-        if(tile.operatorType==kOperatorAdd)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos+tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
-        else if(tile.operatorType==kOperatorSub)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos-tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
-        else if(tile.operatorType==kOperatorMul)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos*tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
-        else if(tile.operatorType==kOperatorDiv)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", tile.myXpos/tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE]; 
-        [tile.myText setPosition:[tile.mySprite convertToNodeSpace:tile.Position]];
-        [tile.myText setColor:ccc3(83,93,100)];
-        if(gameWorld.Blackboard.inProblemSetup){
-            [tile.myText setTag:3];
-            [tile.myText setOpacity:0];
+        if(!tile.myText)
+        {
+            if(tile.operatorType==kOperatorAdd)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos+tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
+            else if(tile.operatorType==kOperatorSub)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos-tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
+            else if(tile.operatorType==kOperatorMul)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos*tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
+            else if(tile.operatorType==kOperatorDiv)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", tile.myXpos/tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE]; 
+            [tile.myText setPosition:[tile.mySprite convertToNodeSpace:tile.Position]];
+            [tile.myText setColor:ccc3(83,93,100)];
+            if(gameWorld.Blackboard.inProblemSetup){
+                [tile.myText setTag:3];
+                [tile.myText setOpacity:0];
+            }
+            [tile.mySprite addChild:tile.myText];
         }
-        [tile.mySprite addChild:tile.myText];
+    }
+    
+    if(messageType==kDWhandleTap)
+    {
+        [self handleTap];
     }
 }
 
@@ -100,14 +108,24 @@
 
 }
 
--(void)switchSelection
+-(void)handleTap
 {
-    if(tile.Disabled)
+    
+    if(!tile.Selected)
     {
-        [gameWorld.Blackboard.SelectedObjects removeObject:tile];
-    }
-    else {
+        tile.Selected=YES;
         [gameWorld.Blackboard.SelectedObjects addObject:tile];
+        tile.selSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/selectionbox%d.png"), tile.Size]];
+        //[tile.selSprite setPosition:[tile.mySprite convertToNodeSpace:tile.Position]];
+        [tile.selSprite setPosition:tile.Position];
+        [tile.mySprite.parent addChild:tile.selSprite z:1000];
+        
+    }
+    else
+    { 
+        tile.Selected=NO;
+        [gameWorld.Blackboard.SelectedObjects removeObject:tile];
+        [tile.selSprite removeFromParentAndCleanup:YES];
     }
 }
 

@@ -10,7 +10,10 @@
 #import "ToolConsts.h"
 #import "ToolScene.h"
 
-
+typedef enum {
+    kSelectSingle=0,
+    kSelectMulti=1
+} SelectionMode;
 
 @interface TimesTables : ToolScene
 {
@@ -40,6 +43,7 @@
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
     
+    SelectionMode selectionMode;
     int spaceBetweenAnchors;
     int startX;
     int startY;

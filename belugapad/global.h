@@ -281,6 +281,7 @@
 
 // times tables tool
 
+#define SELECTION_MODE @"SELECTION_MODE"
 #define SHOW_X_AXIS @"SHOW_X_AXIS"
 #define SHOW_Y_AXIS @"SHOW_Y_AXIS"
 #define ALLOW_X_HIGHLIGHT @"ALLOW_X_HIGHLIGHT"

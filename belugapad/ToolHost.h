@@ -143,6 +143,7 @@ typedef enum {
 -(void)doWinning;
 -(void)doIncomplete;
 -(void)removeMetaQuestionButtons;
+-(void)tearDownNumberPicker;
 -(void)tearDownMetaQuestion;
 -(void)tearDownProblemDef;
 -(void)readToolOptions:(NSString*)currentTool;

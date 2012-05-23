@@ -324,6 +324,7 @@ static float kMoveToNextProblemTime=2.0f;
     //tear down meta question stuff
     [self tearDownMetaQuestion];
     
+    [self tearDownNumberPicker];
     //tear down host background
     if(hostBackground)
     {
@@ -734,6 +735,13 @@ static float kMoveToNextProblemTime=2.0f;
 -(void)checkNumberPickerTouches:(CGPoint)location
 {
     
+}
+
+-(void)tearDownNumberPicker
+{
+    [numberPickerLayer removeAllChildrenWithCleanup:YES];
+    
+    numberPickerForThisProblem=NO;
 }
 
 -(void)tearDownMetaQuestion

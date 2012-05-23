@@ -17,6 +17,16 @@ typedef enum {
     kMetaQuestionEvalAuto=0,
     kMetaQuestionEvalOnCommit=1
 } MetaQuestionEvalMode;
+typedef enum {
+    kNumberPickerCalc=0,
+    kNumberPickerSingleLine=1,
+    kNumberPickerDoubleLineHoriz=2,
+    kNumberPickerDoubleColumnVert=3
+}NumberPickerType;
+typedef enum {
+    kNumberPickerEvalAuto=0,
+    kNumberPickerEvalOnCommit=1
+}NumberPickerEvalMode;
 
 @class Daemon;
 @class ToolScene;
@@ -31,6 +41,7 @@ typedef enum {
     CCLayer *perstLayer;
     CCLayer *backgroundLayer;
     CCLayer *metaQuestionLayer;
+    CCLayer *numberPickerLayer;
     CCLayer *problemDefLayer;
     CCLayer *pauseLayer;
 
@@ -54,6 +65,13 @@ typedef enum {
     BOOL showMetaQuestionIncomplete;
     float shownMetaQuestionIncompleteFor;
     BOOL metaQuestionForceComplete;
+    
+    BOOL numberPickerForThisProblem;
+    NumberPickerType numberPickerType;
+    NumberPickerEvalMode numberPickerEvalMode;
+    NSMutableArray *numberPickerButtons;
+    
+    
     
     BOOL isPaused;
     CCLabelTTF *pauseTestPathLabel;
@@ -116,6 +134,8 @@ typedef enum {
 -(void)setupProblemOnToolHost:(NSDictionary *)pdef;
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ;
 -(void)checkMetaQuestionTouches:(CGPoint)location;
+-(void)setupNumberPicker:(NSDictionary *)pdefNP;
+-(void)checkNumberPickerTouches:(CGPoint)location;
 -(void)evalMetaQuestion;
 -(void)deselectAnswersExcept:(int)answerNumber;
 -(void)doWinning;

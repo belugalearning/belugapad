@@ -388,13 +388,22 @@ static float kMoveToNextProblemTime=2.0f;
     
     //setup meta question (if there is one)
     NSDictionary *mq=[pdef objectForKey:META_QUESTION];
+    NSDictionary *np=[pdef objectForKey:NUMBER_PICKER];
     if (mq)
     {
         [self setupMetaQuestion:mq];
     }
+    else if(np)
+    {
+        [self setupNumberPicker:np];
+    }
     else {
         [self setupProblemOnToolHost:pdef];
     }
+    
+    
+
+
     
     [self stageIntroActions];        
 
@@ -681,6 +690,49 @@ static float kMoveToNextProblemTime=2.0f;
         [commitBtn setOpacity:0];
         [metaQuestionLayer addChild:commitBtn z:2];
     }
+    
+}
+
+-(void)setupNumberPicker:(NSDictionary *)pdefNP
+{
+    numberPickerButtons=[[NSMutableArray alloc]init];
+    [numberPickerButtons retain];
+    
+    numberPickerLayer=[[CCLayer alloc]init];
+    [self addChild:numberPickerLayer z:3];
+    numberPickerForThisProblem=YES;
+    shownProblemStatusFor=0;
+    
+    numberPickerType=[[pdefNP objectForKey:PICKER_LAYOUT]intValue];
+    numberPickerEvalMode=[[pdefNP objectForKey:EVAL_MODE]intValue];
+    
+    if(numberPickerType==kNumberPickerCalc)
+    {
+        
+    }
+    else if(numberPickerType==kNumberPickerSingleLine)
+    {
+        for(int i=0;i<11;i++)
+        {
+            CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
+            [curSprite setPosition:ccp(30+(i*55), 30)];
+            [numberPickerLayer addChild:curSprite];
+            
+        }
+    }
+    else if(numberPickerType==kNumberPickerDoubleLineHoriz)
+    {
+        
+    }
+    else if(numberPickerType==kNumberPickerDoubleColumnVert)
+    {
+        
+    }
+    
+}
+
+-(void)checkNumberPickerTouches:(CGPoint)location
+{
     
 }
 
@@ -1032,6 +1084,7 @@ static float kMoveToNextProblemTime=2.0f;
     [metaQuestionIncompleteText release];
     [problemComplete release];
     [problemIncomplete release];
+    [numberPickerButtons release];
     
     [super dealloc];
 }

@@ -26,7 +26,7 @@ const ccColor3B kLabelCompleteColor={0, 255, 0};
 
 const CGPoint kButtonNextToolPos={996, 735};
 
-const float kPropXCommitButtonPadding=0.048f;
+const float kPropXCommitButtonPadding=0.052f;
 const CGRect kRectButtonCommit={{944, 0}, {80, 80}};
 const CGRect kRectButtonReset={{944, 688}, {80, 80}};
 

@@ -38,6 +38,8 @@ typedef enum {
     CCLayer *toolForeLayer;
     CCLayer *toolNoScaleLayer;
     
+    CCNode *nPicker;
+    
     ToolScene *currentTool;
     
     MetaQuestionEvalMode mqEvalMode;

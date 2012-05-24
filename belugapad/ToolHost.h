@@ -72,6 +72,7 @@ typedef enum {
     NumberPickerType numberPickerType;
     NumberPickerEvalMode numberPickerEvalMode;
     NSMutableArray *numberPickerButtons;
+    NSMutableArray *numberPickedSelection;
     
     
     

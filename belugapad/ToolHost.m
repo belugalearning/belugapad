@@ -709,6 +709,9 @@ static float kMoveToNextProblemTime=2.0f;
     numberPickerButtons=[[NSMutableArray alloc]init];
     [numberPickerButtons retain];
     
+    numberPickedSelection=[[NSMutableArray alloc]init];
+    [numberPickedSelection retain];
+    
     nPicker=[[CCNode alloc]init];
     [nPicker setPosition:ccp(npOriginX,npOriginY)];
     
@@ -721,30 +724,39 @@ static float kMoveToNextProblemTime=2.0f;
     if(numberPickerType==kNumberPickerCalc)
     {
         int h=0;
-        for (int i=0;i<11;i+=3)
+        
+        for(int i=0;i<3;i++)
         {
-            // because i increments by 3 each time, h acts as another incrementor to adjust the height
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(30, 200-(h*55))];
+            [curSprite setPosition:ccp(30+(i*55), 200)];
             [nPicker addChild:curSprite];
+            [numberPickerButtons addObject:curSprite];
+        }
+        h=0;
+        for(int i=3;i<6;i++)
+        {
+            CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
+            [curSprite setPosition:ccp(30+(h*55), 145)];
+            [nPicker addChild:curSprite];
+            [numberPickerButtons addObject:curSprite];
+            h++;
+        }        
+        h=0;
+        for(int i=6;i<9;i++)
+        {
+            CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
+            [curSprite setPosition:ccp(30+(h*55), 90)];
+            [nPicker addChild:curSprite];
+            [numberPickerButtons addObject:curSprite];
             h++;
         }
-        
         h=0;
-        for (int i=1;i<11;i+=3)
+        for(int i=9;i<11;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(85, 200-(h*55))];
+            [curSprite setPosition:ccp(30+(h*55), 35)];
             [nPicker addChild:curSprite];
-            h++;
-        }
-        
-        h=0;
-        for (int i=2;i<11;i+=3)
-        {
-            CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(140, 200-(h*55))];
-            [nPicker addChild:curSprite];
+            [numberPickerButtons addObject:curSprite];
             h++;
         }
         
@@ -756,6 +768,7 @@ static float kMoveToNextProblemTime=2.0f;
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
             [curSprite setPosition:ccp(30+(i*55), 30)];
             [nPicker addChild:curSprite];
+            [numberPickerButtons addObject:curSprite];
             
         }
     }
@@ -766,6 +779,7 @@ static float kMoveToNextProblemTime=2.0f;
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
             [curSprite setPosition:ccp(30+(i*55), 100)];
             [nPicker addChild:curSprite];
+            [numberPickerButtons addObject:curSprite];
         }
         
         int h=0;
@@ -774,6 +788,7 @@ static float kMoveToNextProblemTime=2.0f;
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
             [curSprite setPosition:ccp(30+(h*55), 45)];
             [nPicker addChild:curSprite];
+            [numberPickerButtons addObject:curSprite];
             h++;
         }
     }
@@ -784,6 +799,7 @@ static float kMoveToNextProblemTime=2.0f;
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
             [curSprite setPosition:ccp(30, 300-(i*55))];
             [nPicker addChild:curSprite];
+            [numberPickerButtons addObject:curSprite];
         }
         int h=0;
         for (int i=6;i<11;i++)
@@ -791,6 +807,7 @@ static float kMoveToNextProblemTime=2.0f;
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
             [curSprite setPosition:ccp(85, 300-(h*55))];
             [nPicker addChild:curSprite];
+            [numberPickerButtons addObject:curSprite];
             h++;
         }    
     }
@@ -799,7 +816,18 @@ static float kMoveToNextProblemTime=2.0f;
 
 -(void)checkNumberPickerTouches:(CGPoint)location
 {
-    
+    for(int i=0;i<[numberPickerButtons count];i++)
+    {
+        CCSprite *s=[numberPickerButtons objectAtIndex:i];
+        if(CGRectContainsPoint(s.boundingBox, location))
+        {
+            CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
+            [curSprite setPosition:[nPicker convertToWorldSpace:s.position]];
+            [numberPickerLayer addChild:curSprite];
+            [curSprite runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(cx+([numberPickedSelection count]*55),cy)]];
+            [numberPickedSelection addObject:curSprite];
+        }
+    }
 }
 
 -(void)tearDownNumberPicker
@@ -1031,7 +1059,12 @@ static float kMoveToNextProblemTime=2.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
-    [self checkMetaQuestionTouches:location];
+    if(metaQuestionForThisProblem)
+        [self checkMetaQuestionTouches:location];
+    else if(numberPickerForThisProblem)
+        [self checkNumberPickerTouches:location];
+    
+    
     if(isPaused)
     {
         return;
@@ -1157,7 +1190,9 @@ static float kMoveToNextProblemTime=2.0f;
     [metaQuestionIncompleteText release];
     [problemComplete release];
     [problemIncomplete release];
+    [problemDescLabel release];
     [numberPickerButtons release];
+    [numberPickedSelection release];
     
     [super dealloc];
 }

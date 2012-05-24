@@ -51,6 +51,8 @@ typedef enum {
     
     CCNode *nPicker;
     
+    CGPoint lastTouch;
+    
     ToolScene *currentTool;
     
     MetaQuestionEvalMode mqEvalMode;
@@ -74,6 +76,9 @@ typedef enum {
     NumberPickerEvalMode numberPickerEvalMode;
     NSMutableArray *numberPickerButtons;
     NSMutableArray *numberPickedSelection;
+    NSMutableArray *numberPickedValue;
+    CCSprite *npMove;
+    CCSprite *npDropbox;
     
     
     
@@ -140,6 +145,7 @@ typedef enum {
 -(void)checkMetaQuestionTouches:(CGPoint)location;
 -(void)setupNumberPicker:(NSDictionary *)pdefNP;
 -(void)checkNumberPickerTouches:(CGPoint)location;
+-(void)reorderNumberPickerSelections;
 -(void)evalMetaQuestion;
 -(void)deselectAnswersExcept:(int)answerNumber;
 -(void)doWinning;

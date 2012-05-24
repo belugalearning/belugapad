@@ -5,7 +5,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>PICKER_LAYOUT</key>
-		<integer>0</integer>
+		<integer>3</integer>
 	</dict>
 </dict>
 </plist>

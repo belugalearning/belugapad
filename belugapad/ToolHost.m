@@ -429,11 +429,6 @@ static float kMoveToNextProblemTime=2.0f;
     UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
     [us endProblemAttempt:NO];
     
-    if(problemDescLabel)
-    {
-        [problemDescLabel removeFromParentAndCleanup:YES];
-    }
-    
     [self loadProblem];
 }
 
@@ -708,6 +703,16 @@ static float kMoveToNextProblemTime=2.0f;
     numberPickerEvalMode=[[pdefNP objectForKey:EVAL_MODE]intValue];
     animatePickedButtons=[[pdefNP objectForKey:ANIMATE_FROM_PICKER]boolValue];
     
+    npEval=[[pdefNP objectForKey:EVAL_VALUE]floatValue];
+    
+    numberPickerEvalMode=[[pdefNP objectForKey:PICKER_EVAL_MODE]intValue];
+    
+    if([pdefNP objectForKey:MAX_NUMBERS])
+        npMaxNoInDropbox=[[pdefNP objectForKey:MAX_NUMBERS]intValue];
+    else
+        npMaxNoInDropbox=5;
+
+    
     
     numberPickerButtons=[[NSMutableArray alloc]init];
     [numberPickerButtons retain];
@@ -715,18 +720,32 @@ static float kMoveToNextProblemTime=2.0f;
     numberPickedSelection=[[NSMutableArray alloc]init];
     [numberPickedSelection retain];
     
+    numberPickedValue=[[NSMutableArray alloc]init];
+    [numberPickedValue retain];
+    
+
+    
     nPicker=[[CCNode alloc]init];
     [nPicker setPosition:ccp(npOriginX,npOriginY)];
     
     numberPickerLayer=[[CCLayer alloc]init];
-    [self addChild:numberPickerLayer z:3];
+    [self addChild:numberPickerLayer z:2];
     [numberPickerLayer addChild:nPicker];
     
+    float titleY=cy*1.75f;
+    //render problem label
+    problemDescLabel=[CCLabelTTF labelWithString:[pdefNP objectForKey:NUMBER_PICKER_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    [problemDescLabel setPosition:ccp(cx, titleY)];
+    [problemDescLabel setColor:kMetaQuestionLabelColor];
+    [problemDescLabel setOpacity:0];
+    [problemDescLabel setTag:3];
+    
+    [numberPickerLayer addChild:problemDescLabel];
 
     // if we have the dropbox defined, then we need to set it up here
     npDropbox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberpicker/np_dropbox.png")];
     [npDropbox setPosition:ccp(cx,cy+50)];
-    [numberPickerLayer addChild:npDropbox];
+    [numberPickerLayer addChild:npDropbox z:0];
     if(!npShowDropbox)[npDropbox setVisible:NO];
     
     // then continue and make our awesome picker dood
@@ -820,42 +839,97 @@ static float kMoveToNextProblemTime=2.0f;
             h++;
         }    
     }
+    // if eval mode is commit, render a commit button
+    if(numberPickerEvalMode==kNumberPickerEvalOnCommit)
+    {
+        CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
+        [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
+        [commitBtn setTag:3];
+        [commitBtn setOpacity:0];
+        [metaQuestionLayer addChild:commitBtn z:2];
+    }
     
 }
 
 -(void)checkNumberPickerTouches:(CGPoint)location
 {
-    for(int i=0;i<[numberPickerButtons count];i++)
+    CGPoint origloc=location;
+    location=[nPicker convertToNodeSpace:location];
+    
+    if(numberPickerEvalMode==kNumberPickerEvalOnCommit)
     {
-        CCSprite *s=[numberPickerButtons objectAtIndex:i];
-        if(CGRectContainsPoint(s.boundingBox, location))
+        if(CGRectContainsPoint(kRectButtonCommit, origloc))
         {
-            CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [numberPickerLayer addChild:curSprite];
-            if(animatePickedButtons) {
-                [curSprite setPosition:[nPicker convertToWorldSpace:s.position]];                
-                [curSprite runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/1.25)+([numberPickedSelection count]*55),cy+50)]];
-            }
-            else {
-                [curSprite setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/1.25)+([numberPickedSelection count]*55),cy+50)];                
-                [curSprite runAction:[CCFadeIn actionWithDuration:0.5f]];
-
-            }
-            [numberPickedSelection addObject:curSprite];
-            [numberPickedValue addObject:[NSNumber numberWithInt:i]];
-            break;
+            [self evalNumberPicker];
         }
     }
-    
+    // if we haven't met our max number on the number picker then carry on adding more
+    if([numberPickedSelection count] <npMaxNoInDropbox) {
+        for(int i=0;i<[numberPickerButtons count];i++)
+        {
+            // check each of the buttons to see if it was them that were hit
+            CCSprite *s=[numberPickerButtons objectAtIndex:i];
+            if(CGRectContainsPoint(s.boundingBox, location))
+            {
+                CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
+                [numberPickerLayer addChild:curSprite];
+                
+                // check if we're animating our buttons or fading them in
+                if(animatePickedButtons) {
+                    // and set the position/actions
+                    [curSprite setPosition:[nPicker convertToWorldSpace:s.position]];                
+                    [curSprite runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/1.25)+([numberPickedSelection count]*55),cy+50)]];
+                }
+                else {
+                    [curSprite setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/1.25)+([numberPickedSelection count]*55),cy+50)];                
+                    [curSprite runAction:[CCFadeIn actionWithDuration:0.5f]];
+
+                }
+                
+                // then add them to our selection and value arrays
+                [numberPickedSelection addObject:curSprite];
+                [numberPickedValue addObject:[NSNumber numberWithInt:i]];
+                return;
+            }
+        }
+    }
     for(int i=0;i<[numberPickedSelection count];i++)
     {
         CCSprite *s=[numberPickedSelection objectAtIndex:i];
-        if(CGRectContainsPoint(s.boundingBox, location))
+        if(CGRectContainsPoint(s.boundingBox, origloc))
         {
             npMove=s;
-            break;
+            return;
         }
     }
+    
+    
+}
+
+-(void)evalNumberPicker
+{
+    NSString *strEval=[[NSString alloc]init];
+    
+    for (int i=0;i<[numberPickedValue count];i++)
+    {
+        NSNumber *thisNo=[numberPickedValue objectAtIndex:i];
+        int iThisNo=[thisNo intValue];
+        NSString *strThisNo=[[NSString alloc] init];
+        
+        if(iThisNo==10)strThisNo=@".";
+        else strThisNo=[NSString stringWithFormat:@"%d", iThisNo];
+        //strEval=[NSString stringWithFormat:@"%d", iThisNo];
+        
+        strEval=[NSString stringWithFormat:@"%@%@", strEval, strThisNo];
+        
+        NSLog(@"eval %@", strEval);
+    }
+    
+    float onDropbox=[strEval floatValue];
+    if(onDropbox==npEval)
+        [self doWinning];
+    else
+        [self doIncomplete];
 }
 
 -(void)reorderNumberPickerSelections
@@ -924,6 +998,7 @@ static float kMoveToNextProblemTime=2.0f;
         [self recurseSetIntroFor:toolNoScaleLayer withTime:time forTag:i];
         [self recurseSetIntroFor:metaQuestionLayer withTime:time forTag:i];
         [self recurseSetIntroFor:problemDefLayer withTime:time forTag:i];
+        [self recurseSetIntroFor:numberPickerLayer withTime:time forTag:i];
     }
     
     skipNextStagedIntroAnim=NO;
@@ -1252,6 +1327,7 @@ static float kMoveToNextProblemTime=2.0f;
     if(problemDescLabel)[problemDescLabel release];
     if(numberPickerButtons)[numberPickerButtons release];
     if(numberPickedSelection)[numberPickedSelection release];
+    if(numberPickedValue)[numberPickedValue release];
     
     [super dealloc];
 }

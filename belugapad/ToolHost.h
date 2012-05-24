@@ -79,6 +79,8 @@ typedef enum {
     NSMutableArray *numberPickedValue;
     CCSprite *npMove;
     CCSprite *npDropbox;
+    float npEval;
+    int npMaxNoInDropbox;
     
     
     
@@ -145,6 +147,7 @@ typedef enum {
 -(void)checkMetaQuestionTouches:(CGPoint)location;
 -(void)setupNumberPicker:(NSDictionary *)pdefNP;
 -(void)checkNumberPickerTouches:(CGPoint)location;
+-(void)evalNumberPicker;
 -(void)reorderNumberPickerSelections;
 -(void)evalMetaQuestion;
 -(void)deselectAnswersExcept:(int)answerNumber;

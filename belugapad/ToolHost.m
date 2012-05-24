@@ -704,6 +704,7 @@ static float kMoveToNextProblemTime=2.0f;
     
     numberPickerType=[[pdefNP objectForKey:PICKER_LAYOUT]intValue];
     numberPickerEvalMode=[[pdefNP objectForKey:EVAL_MODE]intValue];
+    animatePickedButtons=[[pdef objectForKey:ANIMATE_FROM_PICKER]boolValue];
     
     
     numberPickerButtons=[[NSMutableArray alloc]init];
@@ -822,9 +823,16 @@ static float kMoveToNextProblemTime=2.0f;
         if(CGRectContainsPoint(s.boundingBox, location))
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:[nPicker convertToWorldSpace:s.position]];
             [numberPickerLayer addChild:curSprite];
-            [curSprite runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(cx+([numberPickedSelection count]*55),cy)]];
+            if(animatePickedButtons) {
+                [curSprite setPosition:[nPicker convertToWorldSpace:s.position]];                
+                [curSprite runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(cx+([numberPickedSelection count]*55),cy)]];
+            }
+            else {
+                [curSprite setPosition:ccp(cx+([numberPickedSelection count]*55),cy)];                
+                [curSprite runAction:[CCFadeIn actionWithDuration:0.5f]];
+
+            }
             [numberPickedSelection addObject:curSprite];
         }
     }

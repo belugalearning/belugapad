@@ -69,6 +69,7 @@ typedef enum {
     BOOL metaQuestionForceComplete;
     
     BOOL numberPickerForThisProblem;
+    BOOL animatePickedButtons;
     NumberPickerType numberPickerType;
     NumberPickerEvalMode numberPickerEvalMode;
     NSMutableArray *numberPickerButtons;

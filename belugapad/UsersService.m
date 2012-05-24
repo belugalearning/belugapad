@@ -41,6 +41,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     ProblemAttempt *currentProblemAttempt;
 }
 -(NSDate*)currentUserSessionStart;
+-(NSString*)generateUUID;
 @end
 
 @implementation UsersService
@@ -335,6 +336,18 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     }
     
     return [RESTBody dateWithJSONObject:[currentSession objectForKey:@"startDateTime"]];
+}
+
+-(NSString*)generateUUID
+{
+    CFUUIDRef UUIDRef = CFUUIDCreate(kCFAllocatorDefault);
+    CFStringRef UUIDSRef = CFUUIDCreateString(kCFAllocatorDefault, UUIDRef);
+    NSString *uuid = [NSString stringWithFormat:@"%@", UUIDSRef];
+    
+    CFRelease(UUIDRef);
+    CFRelease(UUIDSRef);
+    
+    return uuid;
 }
 
 -(void)dealloc

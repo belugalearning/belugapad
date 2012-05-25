@@ -729,7 +729,7 @@ static float kMoveToNextProblemTime=2.0f;
         for(int i=0;i<3;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(30+(i*55), 200)];
+            [curSprite setPosition:ccp(30+(i*75), 265)];
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
         }
@@ -737,7 +737,7 @@ static float kMoveToNextProblemTime=2.0f;
         for(int i=3;i<6;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(30+(h*55), 145)];
+            [curSprite setPosition:ccp(30+(h*75), 190)];
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
             h++;
@@ -746,7 +746,7 @@ static float kMoveToNextProblemTime=2.0f;
         for(int i=6;i<9;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(30+(h*55), 90)];
+            [curSprite setPosition:ccp(30+(h*75), 115)];
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
             h++;
@@ -755,7 +755,7 @@ static float kMoveToNextProblemTime=2.0f;
         for(int i=9;i<11;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(30+(h*55), 35)];
+            [curSprite setPosition:ccp(30+(h*75), 40)];
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
             h++;
@@ -767,7 +767,7 @@ static float kMoveToNextProblemTime=2.0f;
         for(int i=0;i<11;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(30+(i*55), 30)];
+            [curSprite setPosition:ccp(30+(i*75), 40)];
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
             
@@ -778,7 +778,7 @@ static float kMoveToNextProblemTime=2.0f;
         for (int i=0;i<6;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(30+(i*55), 100)];
+            [curSprite setPosition:ccp(30+(i*75), 115)];
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
         }
@@ -787,7 +787,7 @@ static float kMoveToNextProblemTime=2.0f;
         for (int i=6;i<11;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(30+(h*55), 45)];
+            [curSprite setPosition:ccp(30+(h*75), 40)];
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
             h++;
@@ -798,7 +798,7 @@ static float kMoveToNextProblemTime=2.0f;
         for (int i=0;i<6;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(30, 300-(i*55))];
+            [curSprite setPosition:ccp(30, 300-(i*75))];
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
         }
@@ -806,7 +806,7 @@ static float kMoveToNextProblemTime=2.0f;
         for (int i=6;i<11;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(85, 300-(h*55))];
+            [curSprite setPosition:ccp(85, 300-(h*75))];
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
             h++;
@@ -861,10 +861,10 @@ static float kMoveToNextProblemTime=2.0f;
                 if(animatePickedButtons) {
                     // and set the position/actions
                     [curSprite setPosition:[nPicker convertToWorldSpace:s.position]];                
-                    [curSprite runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/1.25)+([numberPickedSelection count]*55),cy+50)]];
+                    [curSprite runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/1.25)+([numberPickedSelection count]*75),cy+50)]];
                 }
                 else {
-                    [curSprite setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/1.25)+([numberPickedSelection count]*55),cy+50)];                
+                    [curSprite setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/1.25)+([numberPickedSelection count]*75),cy+50)];                
                     [curSprite runAction:[CCFadeIn actionWithDuration:0.5f]];
 
                 }
@@ -921,7 +921,7 @@ static float kMoveToNextProblemTime=2.0f;
     for(int i=0;i<[numberPickedSelection count];i++)
     {
         CCSprite *s=[numberPickedSelection objectAtIndex:i];
-        [s setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(s.contentSize.width/1.25)+(i*55),cy+50)];
+        [s setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(s.contentSize.width/1.25)+(i*75),cy+50)];
 
     }
 }
@@ -1203,7 +1203,6 @@ static float kMoveToNextProblemTime=2.0f;
 
                 
                 CCSprite *repSprite=[numberPickedSelection objectAtIndex:i];
-                CGPoint repSpritePos=repSprite.position;
                 [repSprite runAction:[CCMoveTo actionWithDuration:0.2 position:npMoveStartPos]];
                 npMoveStartPos=repSprite.position;
                 npLastMoved=s;

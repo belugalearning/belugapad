@@ -136,7 +136,7 @@ static CGPoint hill2Pos2={1200, 0};
         
         [self animateCreature1];
         
-        timeToNextCreature=(arc4random()%30) + 20;
+        timeToNextCreature=(arc4random()%40) + 5;
     }
 }
 
@@ -152,11 +152,14 @@ static CGPoint hill2Pos2={1200, 0};
 
 -(void)doCreatureSetupFor:(CCSprite *)creature
 {
-    if (camPos<3) {
-        [creature setOpacity:50];
-    }
-    else {
-        [creature setOpacity:150];
+    if (camPos<4) {
+        
+        int sizeDown=100-(arc4random()%50);
+        float propDown=sizeDown/100.0f;
+        
+        [creature setScale:propDown];
+        
+        [creature setOpacity:10+ (30*propDown)];
     }
 }
 
@@ -207,11 +210,12 @@ static CGPoint hill2Pos2={1200, 0};
     
     ccBezierConfig b;
     b.controlPoint_1=ccp((arc4random()%300) + 350, p2.y + (arc4random()%150));
+    b.controlPoint_2=b.controlPoint_1;
     b.endPosition=p2;
 
-    p1=[backgroundLayer convertToNodeSpace:p1];
     p2=[backgroundLayer convertToNodeSpace:p2];
     b.controlPoint_1=[backgroundLayer convertToNodeSpace:b.controlPoint_1];
+    b.controlPoint_2=[backgroundLayer convertToNodeSpace:b.controlPoint_2];
     b.endPosition=[backgroundLayer convertToNodeSpace:b.endPosition];
 
     [sprite setPosition:p1];

@@ -111,6 +111,7 @@ typedef enum {
     ProblemEvalMode evalMode;
     
     NordicAnimator *animator;
+    int animPos;
     
 }
 

@@ -78,6 +78,7 @@ static float kMoveToNextProblemTime=2.0f;
         [animator setBackground:backgroundLayer withCx:cx withCy:cy];
         
         [animator animateBackgroundIn];
+        animPos=1;
         
         [self scheduleOnce:@selector(moveToTool1:) delay:1.5f];
         
@@ -115,6 +116,11 @@ static float kMoveToNextProblemTime=2.0f;
 }
 
 #pragma mark animation and transisitons
+
+-(void)moveToTool0: (ccTime) delta
+{
+    [animator moveToTool0:delta];
+}
 
 -(void) moveToTool1: (ccTime) delta
 {
@@ -1141,6 +1147,27 @@ static float kMoveToNextProblemTime=2.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     lastTouch=location;
+    
+    if(animPos==0)
+    {
+        animPos++;
+        [self moveToTool1:0];
+    }
+    
+    if(animPos==1)
+    {
+        animPos++;
+        [self moveToTool2:0];
+    }
+    else if(animPos==2)
+    {
+        animPos++;
+        [self moveToTool3:0];
+    }
+    else if (animPos==3) {
+        animPos=1;
+        [self moveToTool0:0];
+    }
     
     if(metaQuestionForThisProblem)
         [self checkMetaQuestionTouches:location];

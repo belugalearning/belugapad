@@ -21,7 +21,7 @@
 NSString * const kRemoteUsersDatabaseURI = @"http://u.zubi.me:5984/blm-users";
 NSString * const kLocalUserDatabaseName = @"users";
 NSString * const kDefaultDesignDocName = @"users-views";
-NSString * const kDeviceUsersLastSessionStart = @"device-users-last-session";
+NSString * const kDeviceUsersLastSessionStart = @"most-recent-session-start-per-device-user";
 NSString * const kUsersByNickName = @"users-by-nick-name";
 NSString * const kUsersByNickNamePassword = @"users-by-nick-name-password";
 NSString * const kUsersTimeInPlay = @"users-time-in-play";

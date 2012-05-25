@@ -1154,7 +1154,7 @@ static float kMoveToNextProblemTime=2.0f;
         [self moveToTool1:0];
     }
     
-    if(animPos==1)
+    else if(animPos==1)
     {
         animPos++;
         [self moveToTool2:0];
@@ -1165,7 +1165,7 @@ static float kMoveToNextProblemTime=2.0f;
         [self moveToTool3:0];
     }
     else if (animPos==3) {
-        animPos=1;
+        animPos=0;
         [self moveToTool0:0];
     }
     

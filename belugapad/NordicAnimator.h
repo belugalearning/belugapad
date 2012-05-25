@@ -15,7 +15,20 @@
     
     CCLayer *backgroundLayer;
     
-    CCSprite *bgBase1;
+    CCLayer *baseLayer;
+    CCSprite *baseSprite[4];
+    
+    CCLayerColor *baseColor;
+    
+    
+    CCLayer *waterLayer;
+    CCSprite *waterSprite[4];
+    
+    CCSprite *skySprite1;
+    CCSprite *hill1;
+    CCSprite *hill2;
+        
+    
     CCSprite *bgWater1;
     CCSprite *bgSun1;
     
@@ -23,6 +36,7 @@
 }
 
 -(void) animateBackgroundIn;
+-(void) moveToTool0: (ccTime) delta;
 -(void) moveToTool1: (ccTime) delta;
 -(void) moveToTool2: (ccTime) delta;
 -(void) moveToTool3: (ccTime) delta;

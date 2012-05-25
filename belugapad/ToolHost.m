@@ -25,6 +25,7 @@
 #import "Pipeline.h"
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchModelFactory.h>
+#import "NordicAnimator.h"
 
 @interface ToolHost()
 {
@@ -73,7 +74,12 @@ static float kMoveToNextProblemTime=2.0f;
         perstLayer=[[CCLayer alloc] init];
         [self addChild:perstLayer z:0];
         
-        [self animateBackgroundIn];
+        animator=[[NordicAnimator alloc] init];
+        [animator setBackground:backgroundLayer withCx:cx withCy:cy];
+        
+        [animator animateBackgroundIn];
+        
+        [self scheduleOnce:@selector(moveToTool1:) delay:1.5f];
         
         //add a pause button but keep it hidden -- to be brought in by the fader
         CCSprite *pause=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/button-pause.png")];
@@ -108,59 +114,21 @@ static float kMoveToNextProblemTime=2.0f;
     return self;
 }
 
-#pragma mark animation and transisitons -- to factor out to animation providor
+#pragma mark animation and transisitons
 
--(void) animateBackgroundIn
-{
-    //all -top2 images are loaded at -1.5*cy to place top1 of the top2 in centre frame on start with bg layer at 0,0
-    
-    //add bases to background layer
-    bgBase1=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/tx-base-layer-1x-top2.png")];
-    [bgBase1 setPosition:ccp(cx, ly * -0.0f)];
-    [backgroundLayer addChild:bgBase1 z:0];
-    
-    
-    //manually offsetting this
-    bgWater1=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/tx-water-1x-top2.png")];
-    [bgWater1 setPosition:ccp(cx, ly * -0.15)];
-    [backgroundLayer addChild:bgWater1 z:0];
-    
-    //needs offset built in as 0.5*ly bigger
-    bgSun1=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/tx-sun-1x-top2.5.png")];
-    [bgSun1 setPosition:ccp(cx, ly * -0.25f)];
-    [bgSun1 setOpacity:50];
-    [backgroundLayer addChild:bgSun1 z:0];
-    
-    CCRotateBy *r1=[CCRotateBy actionWithDuration:6.0f angle:7.0f];
-    CCEaseInOut *sunease1=[CCEaseInOut actionWithAction:r1 rate:2.0f];
-    CCRotateBy *r2=[CCRotateBy actionWithDuration:6.0f angle:-7.0f];
-    CCEaseInOut *sunease2=[CCEaseInOut actionWithAction:r2 rate:2.0f];
-    CCSequence *s=[CCSequence actions:sunease1, sunease2, nil];
-    CCRepeatForever *rp=[CCRepeatForever actionWithAction:s];
-    [bgSun1 runAction:rp];
-
-    bgMountain1=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/tx-mountains-1x.png")];
-    [bgMountain1 setPosition:ccp(lx, cy)];
-    [backgroundLayer addChild:bgMountain1 z:0];
-    
-    
-    [self scheduleOnce:@selector(moveToTool1:) delay:1.5f];
-}
-     
 -(void) moveToTool1: (ccTime) delta
 {
-    CCMoveBy *mv=[CCMoveBy actionWithDuration:1.5f position:ccp(0, ly)];
-    CCEaseInOut *ease=[CCEaseInOut actionWithAction:mv rate:2.0f];
-    [backgroundLayer runAction:ease];
-    
-    //move the sun quicker still
-    CCMoveBy *mvSun=[CCMoveBy actionWithDuration:1.5f position:ccp(0, 0.25*ly)];
-    [bgSun1 runAction:mvSun];
-    
-    //move the mountain
-    CCMoveBy *mvMountain=[CCMoveBy actionWithDuration:1.5f position:ccp(cx, 0)];
-    [bgMountain1 runAction:mvMountain];
-    
+    [animator moveToTool1:delta];
+}
+
+-(void) moveToTool2: (ccTime) delta
+{
+    [animator moveToTool2:delta];
+}
+
+-(void) moveToTool3: (ccTime) delta
+{
+    [animator moveToTool3:delta];
 }
 
 #pragma mark
@@ -268,6 +236,7 @@ static float kMoveToNextProblemTime=2.0f;
 -(void) populatePerstLayer
 {
     Zubi=[[Daemon alloc] initWithLayer:perstLayer andRestingPostion:ccp(50,50) andLy:ly];
+    [Zubi hideZubi];
 }
 
 -(void) loadTool
@@ -899,6 +868,7 @@ static float kMoveToNextProblemTime=2.0f;
         if(CGRectContainsPoint(s.boundingBox, origloc))
         {
             npMove=s;
+            npMoveStartPos=npMove.position;
             return;
         }
     }
@@ -1208,7 +1178,31 @@ static float kMoveToNextProblemTime=2.0f;
         return;
     } 
     
-    if(npMove && numberPickerForThisProblem)npMove.position=location;
+    if(npMove && numberPickerForThisProblem){
+        for(int i=0;i<[numberPickedSelection count];i++)
+        {
+            CCSprite *s=[numberPickedSelection objectAtIndex:i];
+            if(s==npMove)continue;
+            if(CGRectContainsPoint(s.boundingBox, location))
+            {
+                CCSprite *repSprite=[numberPickedSelection objectAtIndex:i];
+                //CGPoint repSpritePos=repSprite.position;
+                [repSprite runAction:[CCMoveTo actionWithDuration:0.2 position:npMoveStartPos]];
+                //npMoveStartPos=repSprite.position;
+                
+                
+                int obValue=[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]intValue];
+                [numberPickedValue removeObjectAtIndex:[numberPickedSelection indexOfObject:npMove]];
+                [numberPickedSelection removeObject:npMove];
+                [numberPickedValue insertObject:[NSNumber numberWithInt:obValue] atIndex:i];
+                [numberPickedSelection insertObject:npMove atIndex:i];
+                
+                //[repSprite runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/1.25)+([numberPickedSelection count]*55),cy+50)
+
+            }
+        }
+        npMove.position=location;
+    }
     
     //pinch handling
     if([touches count]>1)
@@ -1269,6 +1263,7 @@ static float kMoveToNextProblemTime=2.0f;
             [npMove removeFromParentAndCleanup:YES];
             [self reorderNumberPickerSelections];
         }
+        [self reorderNumberPickerSelections];
         npMove=nil;
     }
     

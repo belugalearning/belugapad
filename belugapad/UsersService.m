@@ -26,7 +26,6 @@ NSString * const kUsersByNickName = @"users-by-nick-name";
 NSString * const kUsersByNickNamePassword = @"users-by-nick-name-password";
 NSString * const kUsersTimeInPlay = @"users-time-in-play";
 NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
-NSString * const kTotalExpByUser = @"total-exp-by-user";
 
 @interface UsersService()
 {
@@ -235,19 +234,6 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     
     CouchQueryRow *r = [[q rows].allObjects objectAtIndex:0];
     return [(NSNumber*)r.value doubleValue];
-}
-
--(NSUInteger)currentUserTotalExp
-{
-    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kTotalExpByUser];
-    q.groupLevel = 1;
-    q.keys = [NSArray arrayWithObject:self.currentUser.document.documentID];
-    [[q start] wait];
-    
-    if (![[q rows] count]) return 0;
-    
-    CouchQueryRow *r = [[q rows].allObjects objectAtIndex:0];
-    return [(NSNumber*)r.value unsignedIntValue];
 }
 
 -(void)startProblemAttempt

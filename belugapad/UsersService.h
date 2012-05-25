@@ -34,7 +34,6 @@ typedef enum {
 -(User*) userMatchingNickName:(NSString*)nickName
                   andPassword:(NSString*)password;
 
--(NSUInteger)currentUserTotalExp;
 -(double)currentUserTotalTimeInApp;
 
 -(void)startProblemAttempt;

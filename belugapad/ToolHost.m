@@ -149,6 +149,9 @@ static float kMoveToNextProblemTime=2.0f;
     //do internal mgmt updates
     [self.Zubi doUpdate:delta];
     
+    //animator
+    [animator doUpdate:delta];
+    
     if(showingProblemComplete) shownProblemStatusFor+=delta;
     if(showingProblemIncomplete) shownProblemStatusFor+=delta;
  

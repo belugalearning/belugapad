@@ -37,7 +37,6 @@
 @synthesize contentService;
 
 @synthesize usersService;
-@synthesize currentUser;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

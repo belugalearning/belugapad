@@ -20,6 +20,7 @@
     
     CCLayerColor *baseColor;
     
+    CCSprite *subLinesSprite;
     
     CCLayer *waterLayer;
     CCSprite *waterSprite[4];

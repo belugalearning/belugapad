@@ -9,6 +9,11 @@
 #import "NordicAnimator.h"
 #import "global.h"
 
+static CGPoint hill1Pos={100, 0};
+static CGPoint hill2Pos={900, 0};
+static CGPoint hill1Pos2={-50, 0};
+static CGPoint hill2Pos2={1200, 0};
+
 @implementation NordicAnimator
 
 -(void)setBackground:(CCLayer *)bkg withCx:(float)cxin withCy:(float)cyin
@@ -46,12 +51,19 @@
     [backgroundLayer addChild:baseColor];
     
     
+    subLinesSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/subsurface-lines.png")];
+    [subLinesSprite setPosition:ccp(cx, (-2.5f*ly)+385.5f)];
+    [subLinesSprite setOpacity:75];
+    [subLinesSprite setScale:4];
+    [backgroundLayer addChild:subLinesSprite];
+    
+    
     waterLayer=[[CCLayer alloc] init];
     [waterLayer setPosition:ccp(0, -4.0f*ly)];
     
     for (int i=0; i<5; i++) {
         
-        NSString *fp=[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:[NSString stringWithFormat: @"/images/ttbg/tx-water-0%d.png", i+1]];
+        NSString *fp=[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:[NSString stringWithFormat: @"/images/ttbg/tx-water_0%d.png", i+1]];
         waterSprite[i]=[CCSprite spriteWithFile:fp];
         NSLog(@"loading %@", fp);
         [waterSprite[i] setPosition:ccp(cx, ((5-i)*ly - cy))];
@@ -62,11 +74,11 @@
     
     
     hill1=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/tx-left-hill.png")];
-    [hill1 setPosition:ccp(150, 0)];
+    [hill1 setPosition:hill1Pos];
     [backgroundLayer addChild:hill1];
     
     hill2=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/tx-right-hill.png")];
-    [hill2 setPosition:ccp(lx-250, 0)];
+    [hill2 setPosition:hill2Pos];
     [backgroundLayer addChild:hill2];
     
     skySprite1=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/sky-01.png")];
@@ -109,8 +121,11 @@
     //move the sun quicker still
     CCMoveBy *mvSun=[CCMoveBy actionWithDuration:1.5f position:ccp(0, 0.25*ly)];
     [bgSun1 runAction:mvSun];
-    
-    
+
+    CCMoveTo *mv=[CCMoveTo actionWithDuration:0.5f position:ccp(0, 0.15f*ly)];
+    CCEaseInOut *ease=[CCEaseInOut actionWithAction:mv rate:2.0f];
+    [backgroundLayer runAction:ease];
+        
 }
 
 -(void) moveToTool1: (ccTime) delta
@@ -129,8 +144,8 @@
     [bgMountain1 runAction:mvMountain];
     
     //move the hills
-    [hill1 runAction:[CCMoveTo actionWithDuration:1.5f position:ccp(0, 0)]];
-    [hill2 runAction:[CCMoveTo actionWithDuration:1.5f position:ccp(lx, 0)]];
+    [hill1 runAction:[CCMoveTo actionWithDuration:1.5f position:hill1Pos2]];
+    [hill2 runAction:[CCMoveTo actionWithDuration:1.5f position:hill2Pos2]];
     
 }
 
@@ -141,8 +156,8 @@
     [bgMountain1 runAction:mvMountain];
     
     //move the hills
-    [hill1 runAction:[CCMoveBy actionWithDuration:1.5f position:ccp(150, 0)]];
-    [hill2 runAction:[CCMoveBy actionWithDuration:1.5f position:ccp(lx-250, 0)]];
+    [hill1 runAction:[CCMoveTo actionWithDuration:1.5f position:hill1Pos]];
+    [hill2 runAction:[CCMoveTo actionWithDuration:1.5f position:hill2Pos]];
     
 }
 
@@ -167,7 +182,7 @@
 
 -(void) moveToTool0: (ccTime) delta
 {
-    CCMoveTo *mv=[CCMoveTo actionWithDuration:1.5f position:ccp(0, 0)];
+    CCMoveTo *mv=[CCMoveTo actionWithDuration:1.5f position:ccp(0, 0.15f*ly)];
     CCEaseInOut *ease=[CCEaseInOut actionWithAction:mv rate:2.0f];
     [backgroundLayer runAction:ease];
     

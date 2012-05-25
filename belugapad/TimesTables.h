@@ -15,6 +15,11 @@ typedef enum {
     kSelectMulti=1
 } SelectionMode;
 
+typedef enum {
+    kMatrixMatch=0,
+    kSolutionVal=1
+} SolutionType;
+
 @interface TimesTables : ToolScene
 {
     ToolHost *toolHost;
@@ -35,7 +40,10 @@ typedef enum {
     
     CCLayer *renderLayer;
     
+    SolutionType solutionType;
     NSArray *solutionsDef;
+    int solutionValue;
+    int solutionComponent;
     
     CGPoint lastTouch;
 

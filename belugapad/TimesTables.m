@@ -104,6 +104,9 @@
     startX=[[pdef objectForKey:START_X] intValue];
     startY=[[pdef objectForKey:START_Y] intValue];
     operatorMode=[[pdef objectForKey:OPERATOR_MODE]intValue];
+    selectionMode=[[pdef objectForKey:SELECTION_MODE]intValue];
+    
+    
     if([pdef objectForKey:SHOW_X_AXIS])showXAxis=[[pdef objectForKey:SHOW_X_AXIS]boolValue];
     else showXAxis=YES;
     
@@ -418,8 +421,30 @@
     [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
     
     
-    if(gw.Blackboard.LastSelectedObject && showCalcBubble)[gw.Blackboard.LastSelectedObject handleMessage:kDWshowCalcBubble];
-    if(gw.Blackboard.LastSelectedObject && evalMode==kProblemEvalAuto) [self evalProblem];
+    if(gw.Blackboard.LastSelectedObject)
+    {
+        if(selectionMode==kSelectSingle)
+        {
+            // if there's another selection, send the handletap message
+            if([gw.Blackboard.SelectedObjects count]>0)
+            {
+                for(DWTTTileGameObject *t in gw.Blackboard.SelectedObjects)
+                {
+                    [t handleMessage:kDWhandleTap];
+                }
+            }
+            
+            [gw.Blackboard.LastSelectedObject handleMessage:kDWhandleTap];
+        }
+        else if(selectionMode==kSelectMulti)
+        {
+            [gw.Blackboard.LastSelectedObject handleMessage:kDWhandleTap];   
+        }
+        
+        
+        if(showCalcBubble)[gw.Blackboard.LastSelectedObject handleMessage:kDWshowCalcBubble];
+        if(evalMode==kProblemEvalAuto)[self evalProblem];
+    }
     
     
  }
@@ -458,24 +483,27 @@
 -(BOOL)evalExpression
 {
     if(!solutionsDef)return NO;
+    if([gw.Blackboard.SelectedObjects count]<[solutionsDef count])return NO;
     
     int answersFound=0;
     
-    for(int i=0;i<[solutionsDef count];i++)
+    for(int o=0;o<[gw.Blackboard.SelectedObjects count];o++)
     {
-        NSMutableDictionary *curDict=[solutionsDef objectAtIndex:i];
-        int thisAnsX=[[curDict objectForKey:POS_X]intValue];
-        int thisAnsY=[[curDict objectForKey:POS_Y]intValue];
+        DWTTTileGameObject *selTile=[gw.Blackboard.SelectedObjects objectAtIndex:o];
+        NSLog(@"selTile X=%d, selTile Y=%d", selTile.myXpos, selTile.myYpos);
         
-        for(int o=0;o<[gw.Blackboard.SelectedObjects count];o++)
+        for(int i=0;i<[solutionsDef count];i++)
         {
-            DWTTTileGameObject *selTile=[gw.Blackboard.SelectedObjects objectAtIndex:i];
+            NSMutableDictionary *curDict=[solutionsDef objectAtIndex:i];
+            int thisAnsX=[[curDict objectForKey:POS_X]intValue];
+            int thisAnsY=[[curDict objectForKey:POS_Y]intValue];
+            NSLog(@"thisAnsX=%d, thisAnsY=%d", thisAnsX, thisAnsY);
             
             if(thisAnsX==selTile.myXpos && thisAnsY==selTile.myYpos && !switchXYforAnswer)answersFound++;
             else if(thisAnsY==selTile.myXpos && thisAnsX==selTile.myYpos && switchXYforAnswer)answersFound++;
-            NSLog(@"thisAnsX=%d,selTile X=%d, thisAnsY=%d, selTile Y=%d", thisAnsX, selTile.myXpos, thisAnsY, selTile.myYpos);
         }
     }
+    
     
     if(answersFound==[solutionsDef count])return YES;
     else return NO;

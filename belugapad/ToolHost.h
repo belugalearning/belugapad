@@ -17,6 +17,16 @@ typedef enum {
     kMetaQuestionEvalAuto=0,
     kMetaQuestionEvalOnCommit=1
 } MetaQuestionEvalMode;
+typedef enum {
+    kNumberPickerCalc=0,
+    kNumberPickerSingleLine=1,
+    kNumberPickerDoubleLineHoriz=2,
+    kNumberPickerDoubleColumnVert=3
+}NumberPickerType;
+typedef enum {
+    kNumberPickerEvalAuto=0,
+    kNumberPickerEvalOnCommit=1
+}NumberPickerEvalMode;
 
 @class Daemon;
 @class ToolScene;
@@ -31,12 +41,17 @@ typedef enum {
     CCLayer *perstLayer;
     CCLayer *backgroundLayer;
     CCLayer *metaQuestionLayer;
+    CCLayer *numberPickerLayer;
     CCLayer *problemDefLayer;
     CCLayer *pauseLayer;
 
     CCLayer *toolBackLayer;
     CCLayer *toolForeLayer;
     CCLayer *toolNoScaleLayer;
+    
+    CCNode *nPicker;
+    
+    CGPoint lastTouch;
     
     ToolScene *currentTool;
     
@@ -54,6 +69,21 @@ typedef enum {
     BOOL showMetaQuestionIncomplete;
     float shownMetaQuestionIncompleteFor;
     BOOL metaQuestionForceComplete;
+    
+    BOOL numberPickerForThisProblem;
+    BOOL animatePickedButtons;
+    NumberPickerType numberPickerType;
+    NumberPickerEvalMode numberPickerEvalMode;
+    NSMutableArray *numberPickerButtons;
+    NSMutableArray *numberPickedSelection;
+    NSMutableArray *numberPickedValue;
+    CCSprite *npMove;
+    CGPoint npMoveStartPos;
+    CCSprite *npDropbox;
+    float npEval;
+    int npMaxNoInDropbox;
+    
+    
     
     BOOL isPaused;
     CCLabelTTF *pauseTestPathLabel;
@@ -116,11 +146,16 @@ typedef enum {
 -(void)setupProblemOnToolHost:(NSDictionary *)pdef;
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ;
 -(void)checkMetaQuestionTouches:(CGPoint)location;
+-(void)setupNumberPicker:(NSDictionary *)pdefNP;
+-(void)checkNumberPickerTouches:(CGPoint)location;
+-(void)evalNumberPicker;
+-(void)reorderNumberPickerSelections;
 -(void)evalMetaQuestion;
 -(void)deselectAnswersExcept:(int)answerNumber;
 -(void)doWinning;
 -(void)doIncomplete;
 -(void)removeMetaQuestionButtons;
+-(void)tearDownNumberPicker;
 -(void)tearDownMetaQuestion;
 -(void)tearDownProblemDef;
 -(void)readToolOptions:(NSString*)currentTool;

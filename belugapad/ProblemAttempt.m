@@ -40,7 +40,7 @@
 
 - (id) initAndStartAttemptForUser:(User*)user
                        andProblem:(Problem*)problem
-                onStartUserEvents:(NSArray*)events;
+                onStartUserEvents:(NSArray*)events
 {   
     self = [super initWithDocument: nil];
     if (self)

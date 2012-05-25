@@ -729,7 +729,7 @@ static float kMoveToNextProblemTime=2.0f;
         for(int i=0;i<3;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(30+(i*75), 265)];
+            [curSprite setPosition:ccp(45+(i*75), 265)];
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
         }
@@ -737,7 +737,7 @@ static float kMoveToNextProblemTime=2.0f;
         for(int i=3;i<6;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(30+(h*75), 190)];
+            [curSprite setPosition:ccp(45+(h*75), 190)];
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
             h++;
@@ -746,7 +746,7 @@ static float kMoveToNextProblemTime=2.0f;
         for(int i=6;i<9;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(30+(h*75), 115)];
+            [curSprite setPosition:ccp(45+(h*75), 115)];
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
             h++;
@@ -755,7 +755,7 @@ static float kMoveToNextProblemTime=2.0f;
         for(int i=9;i<11;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(30+(h*75), 40)];
+            [curSprite setPosition:ccp(45+(h*75), 40)];
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
             h++;
@@ -767,7 +767,7 @@ static float kMoveToNextProblemTime=2.0f;
         for(int i=0;i<11;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(30+(i*75), 40)];
+            [curSprite setPosition:ccp(45+(i*75), 40)];
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
             
@@ -778,7 +778,7 @@ static float kMoveToNextProblemTime=2.0f;
         for (int i=0;i<6;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(30+(i*75), 115)];
+            [curSprite setPosition:ccp(45+(i*75), 115)];
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
         }
@@ -787,7 +787,7 @@ static float kMoveToNextProblemTime=2.0f;
         for (int i=6;i<11;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(30+(h*75), 40)];
+            [curSprite setPosition:ccp(45+(h*75), 40)];
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
             h++;
@@ -798,7 +798,7 @@ static float kMoveToNextProblemTime=2.0f;
         for (int i=0;i<6;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(30, 300-(i*75))];
+            [curSprite setPosition:ccp(45, 415-(i*75))];
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
         }
@@ -806,7 +806,7 @@ static float kMoveToNextProblemTime=2.0f;
         for (int i=6;i<11;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
-            [curSprite setPosition:ccp(85, 300-(h*75))];
+            [curSprite setPosition:ccp(120, 415-(h*75))];
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
             h++;

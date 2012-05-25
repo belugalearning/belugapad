@@ -78,6 +78,7 @@ typedef enum {
     NSMutableArray *numberPickedSelection;
     NSMutableArray *numberPickedValue;
     CCSprite *npMove;
+    CGPoint npMoveStartPos;
     CCSprite *npDropbox;
     float npEval;
     int npMaxNoInDropbox;

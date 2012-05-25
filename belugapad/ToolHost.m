@@ -899,6 +899,7 @@ static float kMoveToNextProblemTime=2.0f;
         if(CGRectContainsPoint(s.boundingBox, origloc))
         {
             npMove=s;
+            npMoveStartPos=npMove.position;
             return;
         }
     }
@@ -1208,7 +1209,31 @@ static float kMoveToNextProblemTime=2.0f;
         return;
     } 
     
-    if(npMove && numberPickerForThisProblem)npMove.position=location;
+    if(npMove && numberPickerForThisProblem){
+        for(int i=0;i<[numberPickedSelection count];i++)
+        {
+            CCSprite *s=[numberPickedSelection objectAtIndex:i];
+            if(s==npMove)continue;
+            if(CGRectContainsPoint(s.boundingBox, location))
+            {
+                CCSprite *repSprite=[numberPickedSelection objectAtIndex:i];
+                //CGPoint repSpritePos=repSprite.position;
+                [repSprite runAction:[CCMoveTo actionWithDuration:0.2 position:npMoveStartPos]];
+                //npMoveStartPos=repSprite.position;
+                
+                
+                int obValue=[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]intValue];
+                [numberPickedValue removeObjectAtIndex:[numberPickedSelection indexOfObject:npMove]];
+                [numberPickedSelection removeObject:npMove];
+                [numberPickedValue insertObject:[NSNumber numberWithInt:obValue] atIndex:i];
+                [numberPickedSelection insertObject:npMove atIndex:i];
+                
+                //[repSprite runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/1.25)+([numberPickedSelection count]*55),cy+50)
+
+            }
+        }
+        npMove.position=location;
+    }
     
     //pinch handling
     if([touches count]>1)
@@ -1269,6 +1294,7 @@ static float kMoveToNextProblemTime=2.0f;
             [npMove removeFromParentAndCleanup:YES];
             [self reorderNumberPickerSelections];
         }
+        [self reorderNumberPickerSelections];
         npMove=nil;
     }
     

@@ -256,6 +256,7 @@ static float kMoveToNextProblemTime=2.0f;
 -(void) gotoNewProblem
 {
     if (pdef) [pdef release];
+
     [self tearDownProblemDef];
     self.PpExpr = nil;
     
@@ -394,6 +395,7 @@ static float kMoveToNextProblemTime=2.0f;
 
 -(void) resetProblem
 {
+    if(problemDescLabel)[problemDescLabel removeFromParentAndCleanup:YES];
     skipNextStagedIntroAnim=YES;
     
     UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;

@@ -236,6 +236,7 @@ static float kMoveToNextProblemTime=2.0f;
 -(void) populatePerstLayer
 {
     Zubi=[[Daemon alloc] initWithLayer:perstLayer andRestingPostion:ccp(50,50) andLy:ly];
+    [Zubi hideZubi];
 }
 
 -(void) loadTool

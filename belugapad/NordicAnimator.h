@@ -19,8 +19,11 @@
     CCSprite *baseSprite[4];
     
     CCLayerColor *baseColor;
+    CCLayerColor *baseSky;
     
     CCSprite *subLinesSprite;
+    
+    CCLayer *creatureLayer;
     
     CCLayer *waterLayer;
     CCSprite *waterSprite[4];
@@ -34,6 +37,12 @@
     CCSprite *bgSun1;
     
     CCSprite *bgMountain1;
+    
+    float timeToNextCreature;
+    
+    CCSpriteBatchNode *creature1Batch;
+    
+    int camPos;
 }
 
 -(void) animateBackgroundIn;
@@ -42,5 +51,7 @@
 -(void) moveToTool2: (ccTime) delta;
 -(void) moveToTool3: (ccTime) delta;
 -(void)setBackground:(CCLayer *)bkg withCx:(float)cxin withCy:(float)cyin;
+
+-(void) doUpdate:(ccTime) delta;
 
 @end

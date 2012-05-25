@@ -9,6 +9,7 @@
 #import "UsersService.h"
 #import "Device.h"
 #import "User.h"
+#import "UserSession.h"
 #import "Problem.h"
 #import "ProblemAttempt.h"
 #import "AppDelegate.h"
@@ -32,7 +33,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     @private
     NSString *installationUUID;
     Device *device;
-    NSMutableDictionary *currentUserSession;
+    UserSession *currentUserSession;
     
     CouchDatabase *database;
     CouchReplication *pushReplication;
@@ -40,7 +41,6 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     
     ProblemAttempt *currentProblemAttempt;
 }
--(NSDate*)currentUserSessionStart;
 -(NSString*)generateUUID;
 @end
 
@@ -138,37 +138,23 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
 
 -(User*)currentUser
 {
-    // TODO: This is a quick fix. I've done something wrong. Shouldn't need to store the user on the app delegate
-    AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
-    return  ad.currentUser;
+    if (!currentUserSession) return nil;
+    return currentUserSession.user;
 }
 
 -(void)setCurrentUser:(User*)ur
 {
-    NSString *now = [RESTBody JSONObjectWithDate:[NSDate date]];
-    
-    if (currentUser)
+    if (currentUserSession)
     {
-        [currentUserSession setObject:now forKey:@"endDateTime"];
-        [currentUser release];
+        currentUserSession.dateEnd = [NSDate date];
+        [[currentUserSession save] wait];
+        [currentUserSession release];
     }
+    
+    currentUserSession = [[UserSession alloc] initAndStartSessionForUser:ur onDevice:device];
     
     if (!ur.nodesCompleted) ur.nodesCompleted = [NSArray array];
     [[ur save] wait];
-    
-    currentUser = [ur retain];
-    // TODO: This is a quick fix. I've done something wrong. Shouldn't need to store the user on the app delegate
-    AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
-    ad.currentUser = ur;
-    
-    currentUserSession = [NSMutableDictionary dictionary];
-    [currentUserSession setObject:ur.document.documentID forKey:@"userId"];
-    [currentUserSession setObject:now forKey:@"startDateTime"];
-    
-    NSMutableArray *userSessions = [[device.userSessions mutableCopy] autorelease];
-    [userSessions addObject:currentUserSession];
-    device.userSessions = userSessions;
-    [[device save] wait];
 }
 
 -(NSArray*)deviceUsersByLastSessionDate
@@ -322,22 +308,6 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     currentProblemAttempt = nil;
 }
 
--(NSDate*)currentUserSessionStart
-{
-    if (!self.currentUser) return nil; // TODO: handle properly - error
-    
-    NSString *urId = self.currentUser.document.documentID;
-    
-    NSDictionary *currentSession = [device.userSessions lastObject];
-    if (!currentSession || ![urId isEqualToString:[currentSession objectForKey:@"userId"]])
-    {
-        // TODO: error - handle properly
-        return nil;
-    }
-    
-    return [RESTBody dateWithJSONObject:[currentSession objectForKey:@"startDateTime"]];
-}
-
 -(NSString*)generateUUID
 {
     CFUUIDRef UUIDRef = CFUUIDCreate(kCFAllocatorDefault);
@@ -352,6 +322,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
 
 -(void)dealloc
 {
+    if (currentUserSession) [currentUserSession release];
     [device release];
     [pushReplication release];
     [pullReplication release];

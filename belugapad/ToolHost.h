@@ -33,6 +33,7 @@ typedef enum {
 @class BAExpressionTree;
 @class UsersService;
 @class DProblemParser;
+@class NordicAnimator;
 
 @interface ToolHost : CCLayer
 {
@@ -109,12 +110,7 @@ typedef enum {
     CCLabelTTF *problemDescLabel;
     ProblemEvalMode evalMode;
     
-    
-    CCSprite *bgBase1;
-    CCSprite *bgWater1;
-    CCSprite *bgSun1;
-    
-    CCSprite *bgMountain1;
+    NordicAnimator *animator;
     
 }
 

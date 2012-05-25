@@ -365,6 +365,7 @@ static float kMoveToNextProblemTime=2.0f;
     }
     else if(np)
     {
+        evalMode=1;
         [self setupNumberPicker:np];
     }
     else {
@@ -507,6 +508,7 @@ static float kMoveToNextProblemTime=2.0f;
 {
     NSNumber *eMode=[curpdef objectForKey:EVAL_MODE];
     if(eMode) evalMode=[eMode intValue];
+    else if(eMode && numberPickerForThisProblem) evalMode=kProblemEvalOnCommit;
     else evalMode=kProblemEvalAuto;
     
     if([curpdef objectForKey:DEFAULT_SCALE])
@@ -808,6 +810,16 @@ static float kMoveToNextProblemTime=2.0f;
             h++;
         }    
     }
+    
+    // create a picker bounding box so we can drag items back off to it later
+    pickerBox=CGRectNull;
+    
+    for (int i=0; i<[numberPickerButtons count];i++)
+    {
+        CCSprite *s=[numberPickerButtons objectAtIndex:i];
+        pickerBox=CGRectUnion(pickerBox, s.boundingBox);
+    }
+    
     // if eval mode is commit, render a commit button
     if(numberPickerEvalMode==kNumberPickerEvalOnCommit)
     {
@@ -1182,14 +1194,17 @@ static float kMoveToNextProblemTime=2.0f;
         for(int i=0;i<[numberPickedSelection count];i++)
         {
             CCSprite *s=[numberPickedSelection objectAtIndex:i];
-            if(s==npMove)continue;
+            if(s==npMove||s==npLastMoved)continue;
             if(CGRectContainsPoint(s.boundingBox, location))
             {
-                CCSprite *repSprite=[numberPickedSelection objectAtIndex:i];
-                //CGPoint repSpritePos=repSprite.position;
-                [repSprite runAction:[CCMoveTo actionWithDuration:0.2 position:npMoveStartPos]];
-                //npMoveStartPos=repSprite.position;
+                NSLog(@"hit block index %d, index of moving block %d", i, [numberPickedSelection indexOfObject:npMove]);
+
                 
+                CCSprite *repSprite=[numberPickedSelection objectAtIndex:i];
+                CGPoint repSpritePos=repSprite.position;
+                [repSprite runAction:[CCMoveTo actionWithDuration:0.2 position:npMoveStartPos]];
+                npMoveStartPos=repSprite.position;
+                npLastMoved=s;
                 
                 int obValue=[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]intValue];
                 [numberPickedValue removeObjectAtIndex:[numberPickedSelection indexOfObject:npMove]];
@@ -1261,7 +1276,6 @@ static float kMoveToNextProblemTime=2.0f;
             [numberPickedValue removeObjectAtIndex:[numberPickedSelection indexOfObject:npMove]];
             [numberPickedSelection removeObject:npMove];
             [npMove removeFromParentAndCleanup:YES];
-            [self reorderNumberPickerSelections];
         }
         [self reorderNumberPickerSelections];
         npMove=nil;

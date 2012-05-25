@@ -79,10 +79,12 @@ typedef enum {
     NSMutableArray *numberPickedSelection;
     NSMutableArray *numberPickedValue;
     CCSprite *npMove;
+    CCSprite *npLastMoved;
     CGPoint npMoveStartPos;
     CCSprite *npDropbox;
     float npEval;
     int npMaxNoInDropbox;
+    CGRect pickerBox;
     
     
     

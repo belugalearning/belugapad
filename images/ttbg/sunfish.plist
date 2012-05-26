@@ -7,769 +7,769 @@
             <key>sun fish0001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,139},{133,174}}</string>
+                <string>{{272,72},{68,88}}</string>
                 <key>offset</key>
-                <string>{8,7}</string>
+                <string>{4,4}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,6},{133,174}}</string>
+                <string>{{39,2},{68,88}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{530,2},{135,174}}</string>
+                <string>{{182,72},{68,88}}</string>
                 <key>offset</key>
-                <string>{8,7}</string>
+                <string>{4,4}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,6},{135,174}}</string>
+                <string>{{39,2},{68,88}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{350,276},{135,172}}</string>
+                <string>{{266,286},{70,86}}</string>
                 <key>offset</key>
-                <string>{9,7}</string>
+                <string>{4,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,7},{135,172}}</string>
+                <string>{{38,4},{70,86}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,685},{135,170}}</string>
+                <string>{{178,286},{70,86}}</string>
                 <key>offset</key>
-                <string>{9,6}</string>
+                <string>{4,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,9},{135,170}}</string>
+                <string>{{38,4},{70,86}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{172,828},{137,168}}</string>
+                <string>{{174,574},{70,84}}</string>
                 <key>offset</key>
-                <string>{9,6}</string>
+                <string>{4,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,10},{137,168}}</string>
+                <string>{{38,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0006.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{344,826},{137,168}}</string>
+                <string>{{88,574},{70,84}}</string>
                 <key>offset</key>
-                <string>{10,6}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,10},{137,168}}</string>
+                <string>{{39,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0007.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{170,967},{137,166}}</string>
+                <string>{{2,574},{70,84}}</string>
                 <key>offset</key>
-                <string>{10,6}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,11},{137,166}}</string>
+                <string>{{39,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0008.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{682,965},{139,164}}</string>
+                <string>{{254,648},{70,82}}</string>
                 <key>offset</key>
-                <string>{10,5}</string>
+                <string>{5,2}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,13},{139,164}}</string>
+                <string>{{39,7},{70,82}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0009.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{332,1245},{139,162}}</string>
+                <string>{{260,574},{72,82}}</string>
                 <key>offset</key>
-                <string>{11,5}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,14},{139,162}}</string>
+                <string>{{38,6},{72,82}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0010.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{838,1228},{139,158}}</string>
+                <string>{{84,718},{72,80}}</string>
                 <key>offset</key>
-                <string>{11,4}</string>
+                <string>{5,2}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,17},{139,158}}</string>
+                <string>{{38,8},{72,80}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0011.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{166,1247},{139,160}}</string>
+                <string>{{2,718},{72,80}}</string>
                 <key>offset</key>
-                <string>{11,4}</string>
+                <string>{5,2}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,16},{139,160}}</string>
+                <string>{{38,8},{72,80}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0012.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{502,1110},{139,162}}</string>
+                <string>{{432,542},{72,82}}</string>
                 <key>offset</key>
-                <string>{11,5}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{79,14},{139,162}}</string>
+                <string>{{38,6},{72,82}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0013.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{674,1106},{139,162}}</string>
+                <string>{{170,646},{70,82}}</string>
                 <key>offset</key>
-                <string>{10,5}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,14},{139,162}}</string>
+                <string>{{39,6},{70,82}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0014.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{848,1087},{139,162}}</string>
+                <string>{{86,646},{70,82}}</string>
                 <key>offset</key>
-                <string>{10,5}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,14},{139,162}}</string>
+                <string>{{39,6},{70,82}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0015.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,1100},{139,164}}</string>
+                <string>{{346,504},{70,84}}</string>
                 <key>offset</key>
-                <string>{10,5}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,13},{139,164}}</string>
+                <string>{{39,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0016.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{868,500},{139,164}}</string>
+                <string>{{260,502},{70,84}}</string>
                 <key>offset</key>
-                <string>{10,5}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,13},{139,164}}</string>
+                <string>{{39,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0017.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{342,965},{137,166}}</string>
+                <string>{{174,502},{70,84}}</string>
                 <key>offset</key>
-                <string>{10,6}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,11},{137,166}}</string>
+                <string>{{39,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0018.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{514,830},{137,166}}</string>
+                <string>{{88,502},{70,84}}</string>
                 <key>offset</key>
-                <string>{10,6}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,11},{137,166}}</string>
+                <string>{{39,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0019.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{516,691},{137,168}}</string>
+                <string>{{2,502},{70,84}}</string>
                 <key>offset</key>
-                <string>{10,6}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,10},{137,168}}</string>
+                <string>{{39,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0020.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,822},{137,168}}</string>
+                <string>{{346,432},{70,84}}</string>
                 <key>offset</key>
-                <string>{9,6}</string>
+                <string>{4,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,10},{137,168}}</string>
+                <string>{{38,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0021.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{174,689},{137,168}}</string>
+                <string>{{260,430},{70,84}}</string>
                 <key>offset</key>
-                <string>{9,6}</string>
+                <string>{4,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,10},{137,168}}</string>
+                <string>{{38,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0022.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{176,413},{137,170}}</string>
+                <string>{{90,286},{70,86}}</string>
                 <key>offset</key>
-                <string>{9,7}</string>
+                <string>{4,4}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,8},{137,170}}</string>
+                <string>{{38,3},{70,86}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0023.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{174,552},{135,170}}</string>
+                <string>{{2,286},{70,86}}</string>
                 <key>offset</key>
-                <string>{9,6}</string>
+                <string>{4,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,9},{135,170}}</string>
+                <string>{{38,4},{70,86}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0024.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{348,550},{135,170}}</string>
+                <string>{{354,216},{70,86}}</string>
                 <key>offset</key>
-                <string>{9,6}</string>
+                <string>{4,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,9},{135,170}}</string>
+                <string>{{38,4},{70,86}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0025.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,411},{135,172}}</string>
+                <string>{{266,214},{70,86}}</string>
                 <key>offset</key>
-                <string>{9,7}</string>
+                <string>{4,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,7},{135,172}}</string>
+                <string>{{38,4},{70,86}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0026.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{176,276},{135,172}}</string>
+                <string>{{178,214},{70,86}}</string>
                 <key>offset</key>
-                <string>{9,7}</string>
+                <string>{4,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,7},{135,172}}</string>
+                <string>{{38,4},{70,86}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0027.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{700,272},{135,172}}</string>
+                <string>{{92,72},{68,88}}</string>
                 <key>offset</key>
-                <string>{8,7}</string>
+                <string>{4,4}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,7},{135,172}}</string>
+                <string>{{39,2},{68,88}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0028.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{354,2},{135,174}}</string>
+                <string>{{2,72},{68,88}}</string>
                 <key>offset</key>
-                <string>{8,7}</string>
+                <string>{4,4}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,6},{135,174}}</string>
+                <string>{{39,2},{68,88}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0029.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{706,137},{133,174}}</string>
+                <string>{{362,2},{68,88}}</string>
                 <key>offset</key>
-                <string>{9,7}</string>
+                <string>{4,4}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{80,6},{133,174}}</string>
+                <string>{{39,2},{68,88}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0030.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,139},{133,174}}</string>
+                <string>{{272,72},{68,88}}</string>
                 <key>offset</key>
-                <string>{8,7}</string>
+                <string>{4,4}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,6},{133,174}}</string>
+                <string>{{39,2},{68,88}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0031.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{178,2},{135,174}}</string>
+                <string>{{272,2},{68,88}}</string>
                 <key>offset</key>
-                <string>{8,7}</string>
+                <string>{4,4}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,6},{135,174}}</string>
+                <string>{{39,2},{68,88}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0032.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{526,139},{135,172}}</string>
+                <string>{{90,214},{70,86}}</string>
                 <key>offset</key>
-                <string>{9,7}</string>
+                <string>{4,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,7},{135,172}}</string>
+                <string>{{38,4},{70,86}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0033.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{520,415},{135,170}}</string>
+                <string>{{2,214},{70,86}}</string>
                 <key>offset</key>
-                <string>{9,6}</string>
+                <string>{4,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,9},{135,170}}</string>
+                <string>{{38,4},{70,86}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0034.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{696,409},{137,170}}</string>
+                <string>{{354,144},{70,86}}</string>
                 <key>offset</key>
-                <string>{9,7}</string>
+                <string>{4,4}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,8},{137,170}}</string>
+                <string>{{38,3},{70,86}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0035.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{346,687},{137,168}}</string>
+                <string>{{174,430},{70,84}}</string>
                 <key>offset</key>
-                <string>{9,6}</string>
+                <string>{4,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,10},{137,168}}</string>
+                <string>{{38,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0036.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{854,948},{137,166}}</string>
+                <string>{{88,430},{70,84}}</string>
                 <key>offset</key>
-                <string>{10,6}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,11},{137,166}}</string>
+                <string>{{39,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0037.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{874,334},{139,164}}</string>
+                <string>{{2,430},{70,84}}</string>
                 <key>offset</key>
-                <string>{10,5}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,13},{139,164}}</string>
+                <string>{{39,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0038.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,1241},{139,162}}</string>
+                <string>{{2,646},{70,82}}</string>
                 <key>offset</key>
-                <string>{10,5}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,14},{139,162}}</string>
+                <string>{{39,6},{70,82}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0039.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{168,1106},{139,162}}</string>
+                <string>{{432,458},{72,82}}</string>
                 <key>offset</key>
-                <string>{11,5}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{79,14},{139,162}}</string>
+                <string>{{38,6},{72,82}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0040.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,1382},{139,158}}</string>
+                <string>{{420,698},{72,80}}</string>
                 <key>offset</key>
-                <string>{11,4}</string>
+                <string>{5,2}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,17},{139,158}}</string>
+                <string>{{38,8},{72,80}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0041.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{862,666},{139,160}}</string>
+                <string>{{338,648},{72,80}}</string>
                 <key>offset</key>
-                <string>{11,4}</string>
+                <string>{5,2}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,16},{139,160}}</string>
+                <string>{{38,8},{72,80}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0042.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{338,1104},{139,162}}</string>
+                <string>{{432,374},{72,82}}</string>
                 <key>offset</key>
-                <string>{11,5}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{79,14},{139,162}}</string>
+                <string>{{38,6},{72,82}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0043.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{510,969},{139,162}}</string>
+                <string>{{428,626},{70,82}}</string>
                 <key>offset</key>
-                <string>{10,5}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,14},{139,162}}</string>
+                <string>{{39,6},{70,82}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0044.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{860,807},{139,162}}</string>
+                <string>{{344,576},{70,82}}</string>
                 <key>offset</key>
-                <string>{10,5}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,14},{139,162}}</string>
+                <string>{{39,6},{70,82}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0045.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{882,168},{139,164}}</string>
+                <string>{{346,360},{70,84}}</string>
                 <key>offset</key>
-                <string>{10,5}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,13},{139,164}}</string>
+                <string>{{39,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0046.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{882,2},{139,164}}</string>
+                <string>{{260,358},{70,84}}</string>
                 <key>offset</key>
-                <string>{10,5}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,13},{139,164}}</string>
+                <string>{{39,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0047.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{686,826},{137,166}}</string>
+                <string>{{174,358},{70,84}}</string>
                 <key>offset</key>
-                <string>{10,6}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,11},{137,166}}</string>
+                <string>{{39,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0048.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,961},{137,166}}</string>
+                <string>{{88,358},{70,84}}</string>
                 <key>offset</key>
-                <string>{10,6}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,11},{137,166}}</string>
+                <string>{{39,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0049.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{690,687},{137,168}}</string>
+                <string>{{2,358},{70,84}}</string>
                 <key>offset</key>
-                <string>{10,6}</string>
+                <string>{5,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,10},{137,168}}</string>
+                <string>{{39,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0050.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{520,552},{137,168}}</string>
+                <string>{{440,288},{70,84}}</string>
                 <key>offset</key>
-                <string>{9,6}</string>
+                <string>{4,3}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{78,10},{137,168}}</string>
+                <string>{{38,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0051.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{692,548},{137,168}}</string>
+                <string>{{354,288},{70,84}}</string>
                 <key>offset</key>
-                <string>{9,6}</string>
+                <string>{4,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,10},{137,168}}</string>
+                <string>{{38,5},{70,84}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0052.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{524,276},{137,170}}</string>
+                <string>{{266,142},{70,86}}</string>
                 <key>offset</key>
-                <string>{9,7}</string>
+                <string>{4,4}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,8},{137,170}}</string>
+                <string>{{38,3},{70,86}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0053.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{348,413},{135,170}}</string>
+                <string>{{178,142},{70,86}}</string>
                 <key>offset</key>
-                <string>{9,6}</string>
+                <string>{4,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,9},{135,170}}</string>
+                <string>{{38,4},{70,86}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0054.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,548},{135,170}}</string>
+                <string>{{90,142},{70,86}}</string>
                 <key>offset</key>
-                <string>{9,6}</string>
+                <string>{4,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,9},{135,170}}</string>
+                <string>{{38,4},{70,86}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0055.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{352,139},{135,172}}</string>
+                <string>{{2,142},{70,86}}</string>
                 <key>offset</key>
-                <string>{9,7}</string>
+                <string>{4,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,7},{135,172}}</string>
+                <string>{{38,4},{70,86}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0056.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,274},{135,172}}</string>
+                <string>{{362,72},{70,86}}</string>
                 <key>offset</key>
-                <string>{9,7}</string>
+                <string>{4,3}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{79,7},{135,172}}</string>
+                <string>{{38,4},{70,86}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0057.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{178,139},{135,172}}</string>
+                <string>{{182,2},{68,88}}</string>
                 <key>offset</key>
-                <string>{8,7}</string>
+                <string>{4,4}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,7},{135,172}}</string>
+                <string>{{39,2},{68,88}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0058.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{135,174}}</string>
+                <string>{{92,2},{68,88}}</string>
                 <key>offset</key>
-                <string>{8,7}</string>
+                <string>{4,4}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{78,6},{135,174}}</string>
+                <string>{{39,2},{68,88}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
             <key>sun fish0059.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{706,2},{133,174}}</string>
+                <string>{{2,2},{68,88}}</string>
                 <key>offset</key>
-                <string>{9,7}</string>
+                <string>{4,4}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{80,6},{133,174}}</string>
+                <string>{{39,2},{68,88}}</string>
                 <key>sourceSize</key>
-                <string>{275,200}</string>
+                <string>{138,100}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -779,9 +779,9 @@
             <key>realTextureFileName</key>
             <string>sunfish.png</string>
             <key>size</key>
-            <string>{1024,2048}</string>
+            <string>{512,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:c2dfa7c3900662aed61d899100e12b29$</string>
+            <string>$TexturePacker:SmartUpdate:5474321cb5f3d18afd1612564eda4cff$</string>
             <key>textureFileName</key>
             <string>sunfish.png</string>
         </dict>

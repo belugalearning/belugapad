@@ -41,6 +41,7 @@
     float timeToNextCreature;
     
     CCSpriteBatchNode *creature1Batch;
+    CCSpriteBatchNode *creature2Batch;
     
     int camPos;
 }

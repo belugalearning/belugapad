@@ -139,13 +139,17 @@ static CGPoint hill2Pos2={1200, 0};
         if(camPos==1) offset=-0.5f*ly;
         
         
-        int cpick=arc4random()%2;
+        int cpick=arc4random()%3;
         if (cpick==0) {
             [self animateCreature1withYOffset:offset];
         }
         else if (cpick==1)
         {
             [self animateCreature2withYOffset:offset];
+        }
+        else if (cpick==2 && camPos>1)
+        {
+            [self animateCreature3withYOffset:offset];
         }
         
         //timeToNextCreature=(arc4random()%40) + 5;
@@ -348,44 +352,28 @@ static CGPoint hill2Pos2={1200, 0};
     
     [sprite runAction:rf];
     
-    //start position (l or r)
-    int ry1=arc4random()%(int)ly;
-    //offset up or down on other side
-    int ry2=arc4random()%(int)(ly / 3.0f);
+    //start bottom
+    int rx1=arc4random()%(int)lx;
     
-    //flip up or down randomly
-    if((arc4random()%2)==1) ry2=ry1+ry2;
-    else ry2=ry1-ry2;
+    CGPoint p1=ccp(rx1, -100);
+    CGPoint pmv1=ccp(0, 10);
+    CGPoint pmv2=ccp(0, 90);
     
-    CGPoint p1, p2;
-    
-    //flip left to right, right to left
-    if ((arc4random()%2)==1) {
-        p1=ccp(-100, ry1+yoffset);
-        p2=ccp(lx+100, ry2+yoffset);
-    }
-    else {
-        p1=ccp(lx+100, ry1+yoffset);
-        p2=ccp(-100, ry2+yoffset);
-        [sprite setFlipX:YES];
-    }
-    
-    //bezier the path
-    ccBezierConfig b;
-    b.controlPoint_1=ccp((arc4random()%300) + 350, p2.y + (arc4random()%150) + yoffset);
-    b.controlPoint_2=b.controlPoint_1;
-    b.endPosition=p2;
+    //CGPoint p2=ccp(rx2, ly+100);
     
     //now translate all coordinates into layer space
     p1=[backgroundLayer convertToNodeSpace:p1];
-    p2=[backgroundLayer convertToNodeSpace:p2];
-    b.controlPoint_1=[backgroundLayer convertToNodeSpace:b.controlPoint_1];
-    b.controlPoint_2=[backgroundLayer convertToNodeSpace:b.controlPoint_2];
-    b.endPosition=[backgroundLayer convertToNodeSpace:b.endPosition];
+
+    CCMoveBy *mv1=[CCMoveBy actionWithDuration:(1/24.0f * 22) position:pmv1];
+    CCMoveBy *mv2=[CCMoveBy actionWithDuration:(1/24.0f * 31) position:pmv2];
+    CCEaseInOut *ease2=[CCEaseInOut actionWithAction:mv2 rate:2.0f];
+    CCSequence *seq=[CCSequence actions:mv1, ease2, nil];
+    CCRepeatForever *rs=[CCRepeatForever actionWithAction:seq];
+    
     
     //wheee!
     [sprite setPosition:p1];
-    [sprite runAction:[CCBezierTo actionWithDuration:70.0f bezier:b]];
+    [sprite runAction:rs];
     
     //general config -- handles position tinting, size etc
     [self doCreatureSetupFor:sprite];

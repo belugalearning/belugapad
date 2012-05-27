@@ -178,8 +178,8 @@ static CGPoint hill2Pos2={1200, 0};
             [self animateBlowfishWithYOffset:offset];
         }
         
-        //timeToNextCreature=(arc4random()%40) + 5;
-        timeToNextCreature=(arc4random()%2) + 2;
+        timeToNextCreature=(arc4random()%40) + 5;
+        //timeToNextCreature=(arc4random()%2) + 2;
     }
 }
 

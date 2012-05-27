@@ -148,11 +148,11 @@ static void eachShape(void *ptr, void* unused)
 
 -(void)setupBkgAndTitle
 {
-    CCSprite *fg = [[CCSprite alloc]init];
-    if(underlayImage) fg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(underlayImage)]; 
-    else fg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/fg-ipad-float.png")];
-    [fg setPosition:ccp(cx, cy)];
-    [self.ForeLayer addChild:fg z:2];
+//    CCSprite *fg = [[CCSprite alloc]init];
+//    if(underlayImage) fg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(underlayImage)]; 
+//    else fg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/fg-ipad-float.png")];
+//    [fg setPosition:ccp(cx, cy)];
+//    [self.ForeLayer addChild:fg z:2];
     
     problemCompleteLabel=[CCLabelTTF labelWithString:@"" fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
     [problemCompleteLabel setColor:kLabelCompleteColor];

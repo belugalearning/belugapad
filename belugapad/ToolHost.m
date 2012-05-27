@@ -147,6 +147,25 @@ static float kMoveToNextProblemTime=2.0f;
 
 #pragma mark
 
+#pragma mark audio generic methods
+
+-(void)playAudioClick
+{
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/integrated/Click B.aac")];
+}
+
+-(void)playAudioPress
+{
+    //play a blpress
+    int i=arc4random() % 5 + 1;
+    NSString *file=[NSString stringWithFormat:@"/sfx/integrated/blpress-%d.wav", i];
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(file)];
+}
+
+#pragma mark
+
+
+
 -(void)draw
 {
     [currentTool draw];
@@ -865,6 +884,8 @@ static float kMoveToNextProblemTime=2.0f;
     {
         if(CGRectContainsPoint(kRectButtonCommit, origloc))
         {
+            [self playAudioPress];
+            
             [self evalNumberPicker];
         }
     }
@@ -876,6 +897,9 @@ static float kMoveToNextProblemTime=2.0f;
             CCSprite *s=[numberPickerButtons objectAtIndex:i];
             if(CGRectContainsPoint(s.boundingBox, location))
             {
+                //a valid click?
+                [self playAudioPress];
+                
                 CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
                 [numberPickerLayer addChild:curSprite];
                 
@@ -903,6 +927,8 @@ static float kMoveToNextProblemTime=2.0f;
         CCSprite *s=[numberPickedSelection objectAtIndex:i];
         if(CGRectContainsPoint(s.boundingBox, origloc))
         {
+            [self playAudioPress];
+            
             npMove=s;
             npMoveStartPos=npMove.position;
             return;
@@ -1186,6 +1212,7 @@ static float kMoveToNextProblemTime=2.0f;
     } 
 
 }
+
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch=[touches anyObject];
@@ -1229,6 +1256,8 @@ static float kMoveToNextProblemTime=2.0f;
     
     if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit)
     {
+        [self playAudioPress];
+        
         [currentTool evalProblem];
     }
     if (location.x > 944 && location.y > 688 && !isPaused)

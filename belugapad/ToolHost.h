@@ -164,4 +164,7 @@ typedef enum {
 -(void) moveToTool1: (ccTime) delta;
 -(void) gotoFirstProblem: (ccTime) delta;
 
+-(void)playAudioClick;
+-(void)playAudioPress;
+
 @end

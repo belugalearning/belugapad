@@ -8,6 +8,7 @@
 
 #import "NordicAnimator.h"
 #import "global.h"
+#import "SimpleAudioEngine.h"
 
 static CGPoint hill1Pos={100, 0};
 static CGPoint hill2Pos={900, 0};
@@ -177,6 +178,11 @@ static CGPoint hill2Pos2={1200, 0};
         {
             [self animateBlowfishWithYOffset:offset];
         }
+        
+        //play a random whale sample
+        int whaleno=arc4random() % 7 + 1;
+        NSString *whalefile=[NSString stringWithFormat:@"/sfx/integrated/creature%d.wav", whaleno];
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(whalefile)];
         
         timeToNextCreature=(arc4random()%40) + 5;
         //timeToNextCreature=(arc4random()%2) + 2;
@@ -720,6 +726,8 @@ static CGPoint hill2Pos2={1200, 0};
     [self moveInLedges];
     
     camPos=1;
+    
+    [[SimpleAudioEngine sharedEngine] playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/integrated/Beach Ambience.aac") loop:YES];
 }
 
 -(void) moveToTool2: (ccTime) delta
@@ -733,7 +741,8 @@ static CGPoint hill2Pos2={1200, 0};
     [self moveAwayUpperLedges];
     
     camPos=2;
-    
+
+    [[SimpleAudioEngine sharedEngine] playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/integrated/Ambience deep with music theme.aac") loop:YES];
 }
 
 -(void) moveToTool3: (ccTime) delta
@@ -748,6 +757,8 @@ static CGPoint hill2Pos2={1200, 0};
     [self moveAwayLowerLedges];
     
     camPos=3;
+    
+    [[SimpleAudioEngine sharedEngine] playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/integrated/Ambience deep no music theme.aac") loop:YES];
 }
 
 -(void) moveToTool0: (ccTime) delta

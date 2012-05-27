@@ -353,13 +353,13 @@ static float kMoveToNextProblemTime=2.0f;
     
     
     //setup background png / underlay
-    NSString *hostBackgroundFile=[pdef objectForKey:@"HOST_BACKGROUND_IMAGE"];
-    if(hostBackgroundFile)
-    {
-        hostBackground=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(hostBackgroundFile)];
-        [hostBackground setPosition:ccp(cx, cy)];
-        [self addChild:hostBackground];
-    }
+//    NSString *hostBackgroundFile=[pdef objectForKey:@"HOST_BACKGROUND_IMAGE"];
+//    if(hostBackgroundFile)
+//    {
+//        hostBackground=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(hostBackgroundFile)];
+//        [hostBackground setPosition:ccp(cx, cy)];
+//        [self addChild:hostBackground];
+//    }
     
     //playback sound assocaited with problem
     NSString *playsound=[pdef objectForKey:PLAY_SOUND];

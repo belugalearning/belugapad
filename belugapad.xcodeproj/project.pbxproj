@@ -1158,6 +1158,66 @@
 			name = Animators;
 			sourceTree = "<group>";
 		};
+		7F2317CA1572B21700E2C941 /* NodeExtensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = NodeExtensions;
+			sourceTree = "<group>";
+		};
+		7F2317CB1572B23300E2C941 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				55AFD6A3156517FC00FF1886 /* TimesTables.h */,
+				55AFD6A4156517FC00FF1886 /* TimesTables.m */,
+				550708741517623E00111BBB /* ColumnAddition.h */,
+				550708751517623E00111BBB /* ColumnAddition.m */,
+				7F51159114A9EEF3001AF372 /* NumberLine.h */,
+				7F51159214A9EEF3001AF372 /* NumberLine.m */,
+				7F5115A814A9EF9E001AF372 /* BlockFloating.h */,
+				7F5115A914A9EF9E001AF372 /* BlockFloating.m */,
+				7F813D5314CCBA4300C1E997 /* IceDiv.h */,
+				7F813D5414CCBA4300C1E997 /* IceDiv.m */,
+				551815611525EA920097E259 /* PartitionTool.h */,
+				551815621525EA920097E259 /* PartitionTool.m */,
+				5571BADB14E406220053A62B /* PlaceValue.h */,
+				5571BADC14E406220053A62B /* PlaceValue.m */,
+				7FC27F70150FAB4300E16A44 /* NLine.h */,
+				7FC27F71150FAB4300E16A44 /* NLine.m */,
+				55C5F718153874C3009D8906 /* DotGrid.h */,
+				55C5F719153874C3009D8906 /* DotGrid.m */,
+				7F2CAED9154AB58B00BFBB6F /* LongDivision.h */,
+				7F2CAEDA154AB58B00BFBB6F /* LongDivision.m */,
+			);
+			name = Tools;
+			sourceTree = "<group>";
+		};
+		7F2317CD1572B28000E2C941 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				7F268ADC14F28DE500F1F65F /* ToolHost.h */,
+				7F268ADD14F28DE500F1F65F /* ToolHost.m */,
+				7F268AE314F2A2A200F1F65F /* ToolScene.h */,
+				7F268AE414F2A2A200F1F65F /* ToolScene.m */,
+				7F71B408150FBCB20097A956 /* ExprScene.h */,
+				7F71B409150FBCB20097A956 /* ExprScene.m */,
+			);
+			name = Foundation;
+			sourceTree = "<group>";
+		};
+		7F2317CE1572B29400E2C941 /* Menus */ = {
+			isa = PBXGroup;
+			children = (
+				7FB8264714F262080053F221 /* ZubiIntro.h */,
+				7FB8264814F262080053F221 /* ZubiIntro.m */,
+				7FA38AD0154534340031E59D /* EditZubi.h */,
+				7FA38AD1154534340031E59D /* EditZubi.m */,
+				7F5BD840154AB6A70092740B /* JourneyScene.h */,
+				7F5BD841154AB6A70092740B /* JourneyScene.m */,
+			);
+			name = Menus;
+			sourceTree = "<group>";
+		};
 		7F3367D9155FC2EE00A2E656 /* ProblemTools */ = {
 			isa = PBXGroup;
 			children = (
@@ -1780,75 +1840,37 @@
 		7F51159714A9EF21001AF372 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				7FC642911572B79B0043D575 /* ExpressionEngine */,
 				7F3367D9155FC2EE00A2E656 /* ProblemTools */,
 				7FA38AA9154532EF0031E59D /* Users */,
 				0C92B2501515700100342094 /* Content */,
-				7FB9828E15116612006D31AE /* BAExpression */,
-				7F71B3FD150FBC8B0097A956 /* BATools */,
-				7F719C0014D7397000F30E89 /* Daemon */,
-				7FABE69214B33E5800ED2D0C /* global.h */,
 				7FABE6BC14B6616B00ED2D0C /* Helpers */,
 				7F51159A14A9EF31001AF372 /* App */,
 				7F51159914A9EF30001AF372 /* Scenes */,
-				7F51159814A9EF2B001AF372 /* DWModel */,
-				7FABE6A314B4C5B500ED2D0C /* Behaviours */,
+				7F51159814A9EF2B001AF372 /* CompArchitecture */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
 		};
-		7F51159814A9EF2B001AF372 /* DWModel */ = {
+		7F51159814A9EF2B001AF372 /* CompArchitecture */ = {
 			isa = PBXGroup;
 			children = (
-				7FC27F6B150FA9FC00E16A44 /* Extensions */,
-				7F51159B14A9EF67001AF372 /* DWBehaviour.h */,
-				7F51159C14A9EF67001AF372 /* DWBehaviour.m */,
-				7F51159D14A9EF67001AF372 /* DWBlackboard.h */,
-				7F51159E14A9EF67001AF372 /* DWBlackboard.m */,
-				7F51159F14A9EF67001AF372 /* DWGameObject.h */,
-				7F5115A014A9EF67001AF372 /* DWGameObject.m */,
-				7F5115A114A9EF67001AF372 /* DWGameWorld.h */,
-				7F5115A214A9EF67001AF372 /* DWGameWorld.m */,
-				7F5115A314A9EF67001AF372 /* DWModelConstants.h */,
+				7FABE6A314B4C5B500ED2D0C /* Behaviours */,
+				7FC6428F1572B6220043D575 /* Model */,
+				7FC27F6B150FA9FC00E16A44 /* GameObjectExtensions */,
 			);
-			name = DWModel;
+			name = CompArchitecture;
 			sourceTree = "<group>";
 		};
 		7F51159914A9EF30001AF372 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				7F2317CE1572B29400E2C941 /* Menus */,
+				7F2317CD1572B28000E2C941 /* Foundation */,
+				7F719C0014D7397000F30E89 /* Daemon */,
+				7F2317CB1572B23300E2C941 /* Tools */,
+				7F2317CA1572B21700E2C941 /* NodeExtensions */,
 				7F2317C1156FA0FB00E2C941 /* Animators */,
-				55AFD6A3156517FC00FF1886 /* TimesTables.h */,
-				55AFD6A4156517FC00FF1886 /* TimesTables.m */,
-				550708741517623E00111BBB /* ColumnAddition.h */,
-				550708751517623E00111BBB /* ColumnAddition.m */,
-				7F71B408150FBCB20097A956 /* ExprScene.h */,
-				7F71B409150FBCB20097A956 /* ExprScene.m */,
-				7FB8264714F262080053F221 /* ZubiIntro.h */,
-				7FB8264814F262080053F221 /* ZubiIntro.m */,
-				7FA38AD0154534340031E59D /* EditZubi.h */,
-				7FA38AD1154534340031E59D /* EditZubi.m */,
-				7F51159114A9EEF3001AF372 /* NumberLine.h */,
-				7F51159214A9EEF3001AF372 /* NumberLine.m */,
-				7F5115A814A9EF9E001AF372 /* BlockFloating.h */,
-				7F5115A914A9EF9E001AF372 /* BlockFloating.m */,
-				7F813D5314CCBA4300C1E997 /* IceDiv.h */,
-				7F813D5414CCBA4300C1E997 /* IceDiv.m */,
-				551815611525EA920097E259 /* PartitionTool.h */,
-				551815621525EA920097E259 /* PartitionTool.m */,
-				5571BADB14E406220053A62B /* PlaceValue.h */,
-				5571BADC14E406220053A62B /* PlaceValue.m */,
-				7F268ADC14F28DE500F1F65F /* ToolHost.h */,
-				7F268ADD14F28DE500F1F65F /* ToolHost.m */,
-				7F268AE314F2A2A200F1F65F /* ToolScene.h */,
-				7F268AE414F2A2A200F1F65F /* ToolScene.m */,
-				7FC27F70150FAB4300E16A44 /* NLine.h */,
-				7FC27F71150FAB4300E16A44 /* NLine.m */,
-				55C5F718153874C3009D8906 /* DotGrid.h */,
-				55C5F719153874C3009D8906 /* DotGrid.m */,
-				7F2CAED9154AB58B00BFBB6F /* LongDivision.h */,
-				7F2CAEDA154AB58B00BFBB6F /* LongDivision.m */,
-				7F5BD840154AB6A70092740B /* JourneyScene.h */,
-				7F5BD841154AB6A70092740B /* JourneyScene.m */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -1856,6 +1878,7 @@
 		7F51159A14A9EF31001AF372 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				7FABE69214B33E5800ED2D0C /* global.h */,
 				7F51158014A9EE67001AF372 /* AppDelegate.h */,
 				7F51158114A9EE67001AF372 /* AppDelegate.m */,
 				7F51158914A9EE67001AF372 /* GameConfig.h */,
@@ -1945,24 +1968,13 @@
 		7FABE6A314B4C5B500ED2D0C /* Behaviours */ = {
 			isa = PBXGroup;
 			children = (
+				7FC642901572B7600043D575 /* FloatingBlocks */,
 				55AFD6AB15651BD500FF1886 /* TimesTables */,
 				7FD18783154E02A2008F0A31 /* LongDivision */,
 				55C5F72B15388A84009D8906 /* DotGrid */,
 				551815651525F67F0097E259 /* Partition */,
 				7FC27F7B150FB18000E16A44 /* NLine */,
 				5571BAE214E40FE90053A62B /* PlaceValue */,
-				7FABE6A414B4C5F100ED2D0C /* BContainerRender.h */,
-				7FABE6A514B4C5F100ED2D0C /* BContainerRender.m */,
-				7FABE6A714B4C60500ED2D0C /* BMount.h */,
-				7FABE6A814B4C60600ED2D0C /* BMount.m */,
-				7FABE6AA14B4C62300ED2D0C /* BDropTarget.h */,
-				7FABE6AB14B4C62300ED2D0C /* BDropTarget.m */,
-				7FABE6B014B4C64D00ED2D0C /* BMountable.h */,
-				7FABE6B114B4C64D00ED2D0C /* BMountable.m */,
-				7FABE6C814B8F67000ED2D0C /* BFloatPickupTarget.h */,
-				7FABE6C914B8F67100ED2D0C /* BFloatPickupTarget.m */,
-				7FABE6CB14B8F67F00ED2D0C /* BFloatObjectRender.h */,
-				7FABE6CC14B8F68000ED2D0C /* BFloatObjectRender.m */,
 			);
 			name = Behaviours;
 			sourceTree = "<group>";
@@ -2013,7 +2025,7 @@
 			name = BAExpression;
 			sourceTree = "<group>";
 		};
-		7FC27F6B150FA9FC00E16A44 /* Extensions */ = {
+		7FC27F6B150FA9FC00E16A44 /* GameObjectExtensions */ = {
 			isa = PBXGroup;
 			children = (
 				55AFD6A715651A6800FF1886 /* TimesTables */,
@@ -2021,7 +2033,7 @@
 				55C5F71D15388665009D8906 /* NLine */,
 				55C5F71C1538863C009D8906 /* Partition */,
 			);
-			name = Extensions;
+			name = GameObjectExtensions;
 			sourceTree = "<group>";
 		};
 		7FC27F7B150FB18000E16A44 /* NLine */ = {
@@ -2037,6 +2049,50 @@
 				7FC27F81150FB1AD00E16A44 /* BNLineRamblerRender.m */,
 			);
 			name = NLine;
+			sourceTree = "<group>";
+		};
+		7FC6428F1572B6220043D575 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7F51159B14A9EF67001AF372 /* DWBehaviour.h */,
+				7F51159C14A9EF67001AF372 /* DWBehaviour.m */,
+				7F51159D14A9EF67001AF372 /* DWBlackboard.h */,
+				7F51159E14A9EF67001AF372 /* DWBlackboard.m */,
+				7F51159F14A9EF67001AF372 /* DWGameObject.h */,
+				7F5115A014A9EF67001AF372 /* DWGameObject.m */,
+				7F5115A114A9EF67001AF372 /* DWGameWorld.h */,
+				7F5115A214A9EF67001AF372 /* DWGameWorld.m */,
+				7F5115A314A9EF67001AF372 /* DWModelConstants.h */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		7FC642901572B7600043D575 /* FloatingBlocks */ = {
+			isa = PBXGroup;
+			children = (
+				7FABE6A414B4C5F100ED2D0C /* BContainerRender.h */,
+				7FABE6A514B4C5F100ED2D0C /* BContainerRender.m */,
+				7FABE6A714B4C60500ED2D0C /* BMount.h */,
+				7FABE6A814B4C60600ED2D0C /* BMount.m */,
+				7FABE6AA14B4C62300ED2D0C /* BDropTarget.h */,
+				7FABE6AB14B4C62300ED2D0C /* BDropTarget.m */,
+				7FABE6B014B4C64D00ED2D0C /* BMountable.h */,
+				7FABE6B114B4C64D00ED2D0C /* BMountable.m */,
+				7FABE6C814B8F67000ED2D0C /* BFloatPickupTarget.h */,
+				7FABE6C914B8F67100ED2D0C /* BFloatPickupTarget.m */,
+				7FABE6CB14B8F67F00ED2D0C /* BFloatObjectRender.h */,
+				7FABE6CC14B8F68000ED2D0C /* BFloatObjectRender.m */,
+			);
+			name = FloatingBlocks;
+			sourceTree = "<group>";
+		};
+		7FC642911572B79B0043D575 /* ExpressionEngine */ = {
+			isa = PBXGroup;
+			children = (
+				7FB9828E15116612006D31AE /* BAExpression */,
+				7F71B3FD150FBC8B0097A956 /* BATools */,
+			);
+			name = ExpressionEngine;
 			sourceTree = "<group>";
 		};
 		7FD18783154E02A2008F0A31 /* LongDivision */ = {

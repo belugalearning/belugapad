@@ -57,7 +57,21 @@ static CGPoint hill2Pos2={1200, 0};
     [baseSky setPosition:ccp(0, 0)];
     [backgroundLayer addChild:baseSky];
     
-
+    bgLeftUpperLedge=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/left-upper-ledge.png")];
+    [bgLeftUpperLedge setPosition:ccp(0, -1.75f * ly)];
+    [bgLeftUpperLedge setOpacity:180];
+    [bgLeftUpperLedge setScale:4.0f];
+    [backgroundLayer addChild:bgLeftUpperLedge];
+    
+    bgLeftLowerLedge=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/left-lower-ledge.png")];
+    [bgLeftLowerLedge setPosition:ccp(0, -3.0f * ly)];
+    [bgLeftLowerLedge setScale:4.0f];
+    [backgroundLayer addChild:bgLeftLowerLedge];
+    
+    bgRightLowerLedge=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/right-lower-ledge.png")];
+    [bgRightLowerLedge setPosition:ccp(lx, -2.75f * ly)];
+    [bgRightLowerLedge setScale:4.0f];
+    [backgroundLayer addChild:bgRightLowerLedge];
     
     subLinesSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/subsurface-lines.png")];
     [subLinesSprite setPosition:ccp(cx, (-2.5f*ly)+385.5f)];
@@ -632,16 +646,7 @@ static CGPoint hill2Pos2={1200, 0};
         
 }
 
--(void) moveToTool1: (ccTime) delta
-{
-    CCMoveTo *mv=[CCMoveTo actionWithDuration:1.5f position:ccp(0, 0.85f*ly)];
-    CCEaseInOut *ease=[CCEaseInOut actionWithAction:mv rate:2.0f];
-    [backgroundLayer runAction:ease];
-    
-    [self moveAwaySurface];
-    
-    camPos=1;
-}
+
 
 -(void) moveAwaySurface
 {
@@ -653,6 +658,43 @@ static CGPoint hill2Pos2={1200, 0};
     [hill1 runAction:[CCMoveTo actionWithDuration:1.5f position:hill1Pos2]];
     [hill2 runAction:[CCMoveTo actionWithDuration:1.5f position:hill2Pos2]];
     
+}
+
+-(void)moveAwayUpperLedges
+{
+    CCMoveTo *mvLeft=[CCMoveTo actionWithDuration:2.5f position:ccp(-400, bgLeftUpperLedge.position.y )];
+    [bgLeftUpperLedge runAction:mvLeft];
+    
+    //small move for lower ledges
+    CCMoveTo *mvLeftLower=[CCMoveTo actionWithDuration:3.0f position:ccp(-100, bgLeftLowerLedge.position.y )];
+    CCEaseIn *ei1=[CCEaseIn actionWithAction:mvLeftLower rate:0.5f];
+    [bgLeftLowerLedge runAction:ei1];
+    
+    CCMoveTo *mvRight=[CCMoveTo actionWithDuration:3.0f position:ccp(lx+100, bgRightLowerLedge.position.y )];
+    CCEaseIn *ei2=[CCEaseIn actionWithAction:mvRight rate:0.5f];
+    [bgRightLowerLedge runAction:ei2];
+}
+
+-(void)moveAwayLowerLedges
+{
+    CCMoveTo *mvLeft=[CCMoveTo actionWithDuration:2.5f position:ccp(-400, bgLeftLowerLedge.position.y )];
+    [bgLeftLowerLedge runAction:mvLeft];
+    
+    CCMoveTo *mvRight=[CCMoveTo actionWithDuration:2.5f position:ccp(lx+400, bgRightLowerLedge.position.y )];
+    [bgRightLowerLedge runAction:mvRight];
+}
+
+-(void)moveInLedges
+{
+    CCMoveTo *mvLeft=[CCMoveTo actionWithDuration:1.5f position:ccp(0, bgLeftUpperLedge.position.y )];
+    [bgLeftUpperLedge runAction:mvLeft];
+    
+    //small move for lower ledges
+    CCMoveTo *mvLeftLower=[CCMoveTo actionWithDuration:1.5f position:ccp(0, bgLeftLowerLedge.position.y )];
+    [bgLeftLowerLedge runAction:mvLeftLower];
+    
+    CCMoveTo *mvRight=[CCMoveTo actionWithDuration:1.5f position:ccp(lx, bgRightLowerLedge.position.y )];
+    [bgRightLowerLedge runAction:mvRight];
 }
 
 -(void) moveToSurface
@@ -667,6 +709,19 @@ static CGPoint hill2Pos2={1200, 0};
     
 }
 
+-(void) moveToTool1: (ccTime) delta
+{
+    CCMoveTo *mv=[CCMoveTo actionWithDuration:1.5f position:ccp(0, 0.85f*ly)];
+    CCEaseInOut *ease=[CCEaseInOut actionWithAction:mv rate:2.0f];
+    [backgroundLayer runAction:ease];
+    
+    [self moveAwaySurface];
+    
+    [self moveInLedges];
+    
+    camPos=1;
+}
+
 -(void) moveToTool2: (ccTime) delta
 {
     CCMoveTo *mv=[CCMoveTo actionWithDuration:1.5f position:ccp(0, 2.25f*ly)];
@@ -674,6 +729,8 @@ static CGPoint hill2Pos2={1200, 0};
     [backgroundLayer runAction:ease];
     
     [self moveAwaySurface];
+    
+    [self moveAwayUpperLedges];
     
     camPos=2;
     
@@ -687,6 +744,9 @@ static CGPoint hill2Pos2={1200, 0};
 
     [self moveAwaySurface];
     
+    [self moveAwayUpperLedges];
+    [self moveAwayLowerLedges];
+    
     camPos=3;
 }
 
@@ -697,6 +757,8 @@ static CGPoint hill2Pos2={1200, 0};
     [backgroundLayer runAction:ease];
     
     [self moveToSurface];
+    
+    [self moveInLedges];
     
     camPos=0;
 }

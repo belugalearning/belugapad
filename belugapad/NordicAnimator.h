@@ -38,6 +38,10 @@
     
     CCSprite *bgMountain1;
     
+    CCSprite *bgLeftUpperLedge;
+    CCSprite *bgLeftLowerLedge;
+    CCSprite *bgRightLowerLedge;
+    
     float timeToNextCreature;
     
     CCSpriteBatchNode *sunfishBatch;

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>TimesTables problem</string>
+	<string>what is 2 x 2?</string>
 	<key>TOOL_KEY</key>
 	<string>TimesTables</string>
 	<key>ANCHOR_SPACE</key>
@@ -25,7 +25,7 @@
 	<key>SWITCH_XY_ANSWER-IGNORE</key>
 	<true/>
 	<key>SELECTION_MODE</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>ACTIVE_ROWS-IGNORE</key>
 	<array>
 		<integer>5</integer>

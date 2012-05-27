@@ -3,7 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>TimesTables problem</string>
+	<string>what is {$multiplier} x {$number}</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>multipling in dyn with bubble, labels and answers displayed</string>
 	<key>TOOL_KEY</key>
 	<string>TimesTables</string>
 	<key>ANCHOR_SPACE</key>
@@ -17,7 +19,7 @@
 	<key>OPERATOR_MODE</key>
 	<integer>2</integer>
 	<key>SHOW_CALC_BUBBLE</key>
-	<true/>
+	<false/>
 	<key>SHOW_X_AXIS</key>
 	<true/>
 	<key>SHOW_Y_AXIS</key>
@@ -25,55 +27,38 @@
 	<key>SWITCH_XY_ANSWER-IGNORE</key>
 	<true/>
 	<key>SELECTION_MODE</key>
+	<integer>0</integer>
+	<key>SOLUTION_MODE</key>
 	<integer>1</integer>
-	<key>ACTIVE_ROWS-IGNORE</key>
-	<array>
-		<integer>5</integer>
-		<string>0</string>
-	</array>
-	<key>ACTIVE_COLS-IGNORE</key>
-	<array>
-		<integer>4</integer>
-		<integer>5</integer>
-	</array>
+	<key>SOLUTION_VALUE</key>
+	<string>{$multiplier*$number}</string>
+	<key>SOLUTION_COMPONENT</key>
+	<string>{$number}</string>
 	<key>REVEAL_ROWS</key>
 	<array>
-		<integer>5</integer>
+		<string>{$number}</string>
 	</array>
 	<key>REVEAL_COLS</key>
 	<array>
-		<integer>3</integer>
+		<string>{$multiplier}</string>
 	</array>
-	<key>REVEAL_TILES</key>
-	<array>
+	<key>DVARS</key>
+	<dict>
+		<key>$multiplier</key>
 		<dict>
-			<key>POS_X</key>
-			<integer>1</integer>
-			<key>POS_Y</key>
-			<integer>1</integer>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>12</string>
 		</dict>
+		<key>$number</key>
 		<dict>
-			<key>POS_X</key>
-			<integer>9</integer>
-			<key>POS_Y</key>
-			<integer>3</integer>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>8</string>
 		</dict>
-	</array>
-	<key>SOLUTIONS</key>
-	<array>
-		<dict>
-			<key>POS_X</key>
-			<integer>5</integer>
-			<key>POS_Y</key>
-			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>POS_X</key>
-			<integer>3</integer>
-			<key>POS_Y</key>
-			<integer>5</integer>
-		</dict>
-	</array>
+	</dict>
 	<key>TIMER</key>
 	<dict>
 		<key>TIMER_DURATION</key>

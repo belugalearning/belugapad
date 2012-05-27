@@ -380,12 +380,14 @@ static CGPoint hill2Pos2={1200, 0};
     CCMoveBy *mv2=[CCMoveBy actionWithDuration:(1/24.0f * 31) position:pmv2];
     CCEaseInOut *ease2=[CCEaseInOut actionWithAction:mv2 rate:2.0f];
     CCSequence *seq=[CCSequence actions:mv1, ease2, nil];
-    CCRepeatForever *rs=[CCRepeatForever actionWithAction:seq];
+    CCRepeat *r=[CCRepeat actionWithAction:seq times:10];
+    CCFadeOut *fo=[CCFadeOut actionWithDuration:1.0f];
+    CCSequence *runout=[CCSequence actions:r, fo, nil];
     
     
     //wheee!
     [sprite setPosition:p1];
-    [sprite runAction:rs];
+    [sprite runAction:runout];
     
     //general config -- handles position tinting, size etc
     [self doCreatureSetupFor:sprite];
@@ -544,38 +546,60 @@ static CGPoint hill2Pos2={1200, 0};
     CCAnimation *baseAnim=[[CCAnimation alloc] init];
     [baseAnim setDelayPerUnit:1.0f/24.0f];
     
-    for (int fi=1; fi<=220; fi++) {
-        NSString *fname=[NSString stringWithFormat:@"jellyfishswim%04d.png", fi];
-        [baseAnim addSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:fname]];
-        
-    }
+    int swimCount=arc4random()%30 + 1;
     
+    //swim
+    for (int i=0; i<swimCount; i++)
+    {
+        for (int fi=1; fi<=105; fi++) {
+            NSString *fname=[NSString stringWithFormat:@"blowfish%04d.png", fi];
+            [baseAnim addSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:fname]];
+            
+        }
+    }
+    //explode
+    for (int fci=106; fci<=220; fci++) {
+        NSString *fname=[NSString stringWithFormat:@"blowfish%04d.png", fci];
+        [baseAnim addSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:fname]];        
+    }
+    //rotate
+    for (int i=0; i<10; i++)
+    {
+        for (int fci=138; fci<=220; fci++) {
+            NSString *fname=[NSString stringWithFormat:@"blowfish%04d.png", fci];
+            [baseAnim addSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:fname]];        
+        }   
+    }
     CCAnimate *animate=[CCAnimate actionWithAnimation:baseAnim];
     [sprite runAction:animate];
+    
+    
     
     //start y
     int ry1=arc4random()%(int)ly;
     CGPoint p1, p2;
+    int swimLengthX=50;
     
     //flip left to right, right to left
     if ((arc4random()%2)==1) {
         p1=ccp(-100, ry1+yoffset);
-        p2=ccp(200, ry1+yoffset);
+        p2=ccp(swimLengthX*swimCount, ry1+yoffset);
         [sprite setFlipX:YES];
     }
     else {
         p1=ccp(lx+100, ry1+yoffset);
-        p2=ccp(lx-200, ry1+yoffset);
+        p2=ccp(lx-(swimLengthX*swimCount), ry1+yoffset);
     }
     
     //now translate all coordinates into layer space
     p1=[backgroundLayer convertToNodeSpace:p1];
     p2=[backgroundLayer convertToNodeSpace:p2];
     
-    CCMoveTo *mv1=[CCMoveTo actionWithDuration:(1/24.0f * 105) position:p2];
-    CCMoveBy *mv2=[CCMoveBy actionWithDuration:(1/24.0f * 115) position:ccp(0, 800)];
-    CCEaseInOut *ease2=[CCEaseInOut actionWithAction:mv2 rate:2.0f];
-    CCSequence *seq=[CCSequence actions:mv1, ease2, nil];
+    CCMoveTo *mv1=[CCMoveTo actionWithDuration:1/24.0f * 105 * swimCount position:p2];
+    CCMoveBy *mv2=[CCMoveBy actionWithDuration:25.0f position:ccp(0, 1600)];
+    CCEaseOut *ease2=[CCEaseInOut actionWithAction:mv2 rate:2.0f];
+    CCFadeOut *fo=[CCFadeOut actionWithDuration:1.0f];
+    CCSequence *seq=[CCSequence actions:mv1, ease2, fo, nil];
     
     //wheee!
     [sprite setPosition:p1];

@@ -141,19 +141,19 @@ static CGPoint hill2Pos2={1200, 0};
         
         int cpick=arc4random()%4;
         if (cpick==0) {
-            [self animateCreature1withYOffset:offset];
+            [self animateSunfishWithYOffset:offset];
         }
         else if (cpick==1)
         {
-            [self animateCreature2withYOffset:offset];
+            [self animateAnglerWithYOffset:offset];
         }
-        else if (cpick==2 && camPos>1)
+        else if (cpick==2 && camPos>1) // jelly fish
         {
-            [self animateCreature3withYOffset:offset];
+            [self animateJellyfishWithYOffset:offset];
         }
-        else if(cpick==3)
+        else if(cpick==3) // school
         {
-            [self animateCreature4withYOffset:offset];
+            [self animateSchoolWithYOffset:offset];
         }
         
         //timeToNextCreature=(arc4random()%40) + 5;
@@ -191,7 +191,7 @@ static CGPoint hill2Pos2={1200, 0};
     }
 }
 
--(void) animateCreature1withYOffset:(int)yoffset //sunfish
+-(void) animateSunfishWithYOffset:(int)yoffset //sunfish
 {
     if(!creature1Batch)
     {
@@ -261,7 +261,7 @@ static CGPoint hill2Pos2={1200, 0};
 }
 
 
--(void) animateCreature2withYOffset:(int)yoffset //angler fish
+-(void) animateAnglerWithYOffset:(int)yoffset //angler fish
 {
     if(!creature2Batch)
     {
@@ -330,7 +330,7 @@ static CGPoint hill2Pos2={1200, 0};
     [self doCreatureSetupFor:sprite];
 }
 
--(void) animateCreature3withYOffset:(int)yoffset //jelly fish
+-(void) animateJellyfishWithYOffset:(int)yoffset //jelly fish
 {
     if(!creature3Batch)
     {
@@ -383,7 +383,7 @@ static CGPoint hill2Pos2={1200, 0};
     [self doCreatureSetupFor:sprite];
 }
 
--(void) animateCreature4withYOffset:(int)yoffset //school of fish
+-(void) animateSchoolWithYOffset:(int)yoffset //school of fish
 {
     if(!creature4Batch)
     {

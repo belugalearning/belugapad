@@ -353,13 +353,16 @@ static float kMoveToNextProblemTime=2.0f;
     //reset scale
     scale=1.0f;
     
-    //initialize tool scene
-    currentTool=[NSClassFromString(toolKey) alloc];
-    [currentTool initWithToolHost:self andProblemDef:pdef];
+    if(toolKey)
+    {
+        //initialize tool scene
+        currentTool=[NSClassFromString(toolKey) alloc];
+        [currentTool initWithToolHost:self andProblemDef:pdef];
+    }
     
     //read our tool specific options
     [self readToolOptions:toolKey];
-    
+
     //move to correct depth
     [self moveToCurrentToolDepth];
     
@@ -966,33 +969,40 @@ static float kMoveToNextProblemTime=2.0f;
 
 -(void)readToolOptions:(NSString *)currentToolKey
 {
-    NSDictionary *toolDef=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/tooldef.plist")];
-    
-    NSDictionary *toolOpt=[toolDef objectForKey:currentToolKey];
-
-    if([toolOpt objectForKey:SCALE_MAX])
-        currentTool.ScaleMax=[[toolOpt objectForKey:SCALE_MAX] floatValue];
-    else
-        currentTool.ScaleMax=1.0f;
-    
-    if([toolOpt objectForKey:SCALE_MIN])
-        currentTool.ScaleMin=[[toolOpt objectForKey:SCALE_MIN] floatValue];
-    else
-        currentTool.ScaleMin=1.0f;
-    
-    if([toolOpt objectForKey:SCALING_PASS_THRU])
-        currentTool.PassThruScaling=[[toolOpt objectForKey:SCALING_PASS_THRU] boolValue];
-    else 
-        currentTool.PassThruScaling=NO;
-    
- 
-    //get tool depth
-    if([toolOpt objectForKey:@"TOOL_DEPTH"])
+    if(currentToolKey)
     {
-        currentToolDepth=[(NSNumber *)[toolOpt objectForKey:@"TOOL_DEPTH"] intValue];
+        NSDictionary *toolDef=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/tooldef.plist")];
+        
+        NSDictionary *toolOpt=[toolDef objectForKey:currentToolKey];
+
+        if([toolOpt objectForKey:SCALE_MAX])
+            currentTool.ScaleMax=[[toolOpt objectForKey:SCALE_MAX] floatValue];
+        else
+            currentTool.ScaleMax=1.0f;
+        
+        if([toolOpt objectForKey:SCALE_MIN])
+            currentTool.ScaleMin=[[toolOpt objectForKey:SCALE_MIN] floatValue];
+        else
+            currentTool.ScaleMin=1.0f;
+        
+        if([toolOpt objectForKey:SCALING_PASS_THRU])
+            currentTool.PassThruScaling=[[toolOpt objectForKey:SCALING_PASS_THRU] boolValue];
+        else 
+            currentTool.PassThruScaling=NO;
+        
+     
+        //get tool depth
+        if([toolOpt objectForKey:@"TOOL_DEPTH"])
+        {
+            currentToolDepth=[(NSNumber *)[toolOpt objectForKey:@"TOOL_DEPTH"] intValue];
+        }
+        else {
+            currentToolDepth=2; // put tool default in middle
+        }
+            
     }
     else {
-        currentToolDepth=2; // put tool default in middle
+        currentToolDepth=2;
     }
 }
 

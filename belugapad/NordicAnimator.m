@@ -396,7 +396,7 @@ static CGPoint hill2Pos2={1200, 0};
     [creature4Batch addChild:sprite];
     
     CCAnimation *baseAnim=[[CCAnimation alloc] init];
-    [baseAnim setDelayPerUnit:1.0f/24.0f];
+    [baseAnim setDelayPerUnit:1.0f/15.0f];
     
     for (int fi=1; fi<=19; fi++) {
         NSString *fname=[NSString stringWithFormat:@"schoolswim%04d.png", fi];
@@ -424,11 +424,11 @@ static CGPoint hill2Pos2={1200, 0};
     if ((arc4random()%2)==1) {
         p1=ccp(-100, ry1+yoffset);
         p2=ccp(lx+100, ry2+yoffset);
+        [sprite setFlipX:YES];
     }
     else {
         p1=ccp(lx+100, ry1+yoffset);
         p2=ccp(-100, ry2+yoffset);
-        [sprite setFlipX:YES];
     }
     
     //bezier the path

@@ -45,6 +45,7 @@
     CCSpriteBatchNode *jellyfishBatch;
     CCSpriteBatchNode *schoolBatch;
     CCSpriteBatchNode *eelBatch;
+    CCSpriteBatchNode *blowfishBatch;
     
     int camPos;
 }

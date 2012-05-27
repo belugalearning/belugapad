@@ -139,7 +139,7 @@ static CGPoint hill2Pos2={1200, 0};
         if(camPos==1) offset=-0.5f*ly;
         
         
-        int cpick=arc4random()%5;
+        int cpick=arc4random()%6;
         if (cpick==0) {
             [self animateSunfishWithYOffset:offset];
         }
@@ -158,6 +158,10 @@ static CGPoint hill2Pos2={1200, 0};
         else if(cpick==4 && camPos==3) //eel
         {
             [self animateEelWithYOffset:offset];
+        }
+        else if(cpick==5 && camPos>1) // blow fish
+        {
+            [self animateBlowfishWithYOffset:offset];
         }
         
         //timeToNextCreature=(arc4random()%40) + 5;
@@ -500,8 +504,8 @@ static CGPoint hill2Pos2={1200, 0};
         [sprite setFlipX:YES];
     }
     else {
-        p1=ccp(lx+100, ry1+yoffset);
-        p2=ccp(-100, ry2+yoffset);
+        p1=ccp(lx+300, ry1+yoffset);
+        p2=ccp(-300, ry2+yoffset);
     }
     
     //bezier the path
@@ -520,6 +524,62 @@ static CGPoint hill2Pos2={1200, 0};
     //wheee!
     [sprite setPosition:p1];
     [sprite runAction:[CCBezierTo actionWithDuration:20.0f bezier:b]];
+    
+    //general config -- handles position tinting, size etc
+    [self doCreatureSetupFor:sprite];
+}
+
+-(void) animateBlowfishWithYOffset:(int)yoffset //blow fish
+{
+    if(!blowfishBatch)
+    {
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/blowfish.plist")];
+        blowfishBatch=[CCSpriteBatchNode batchNodeWithFile: BUNDLE_FULL_PATH(@"/images/ttbg/blowfish.png")];
+        [creatureLayer addChild:blowfishBatch];
+    }
+    
+    CCSprite *sprite=[CCSprite spriteWithSpriteFrameName:@"blowfish0001.png"];
+    [blowfishBatch addChild:sprite];
+    
+    CCAnimation *baseAnim=[[CCAnimation alloc] init];
+    [baseAnim setDelayPerUnit:1.0f/24.0f];
+    
+    for (int fi=1; fi<=220; fi++) {
+        NSString *fname=[NSString stringWithFormat:@"jellyfishswim%04d.png", fi];
+        [baseAnim addSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:fname]];
+        
+    }
+    
+    CCAnimate *animate=[CCAnimate actionWithAnimation:baseAnim];
+    [sprite runAction:animate];
+    
+    //start y
+    int ry1=arc4random()%(int)ly;
+    CGPoint p1, p2;
+    
+    //flip left to right, right to left
+    if ((arc4random()%2)==1) {
+        p1=ccp(-100, ry1+yoffset);
+        p2=ccp(200, ry1+yoffset);
+        [sprite setFlipX:YES];
+    }
+    else {
+        p1=ccp(lx+100, ry1+yoffset);
+        p2=ccp(lx-200, ry1+yoffset);
+    }
+    
+    //now translate all coordinates into layer space
+    p1=[backgroundLayer convertToNodeSpace:p1];
+    p2=[backgroundLayer convertToNodeSpace:p2];
+    
+    CCMoveTo *mv1=[CCMoveTo actionWithDuration:(1/24.0f * 105) position:p2];
+    CCMoveBy *mv2=[CCMoveBy actionWithDuration:(1/24.0f * 115) position:ccp(0, 800)];
+    CCEaseInOut *ease2=[CCEaseInOut actionWithAction:mv2 rate:2.0f];
+    CCSequence *seq=[CCSequence actions:mv1, ease2, nil];
+    
+    //wheee!
+    [sprite setPosition:p1];
+    [sprite runAction:seq];
     
     //general config -- handles position tinting, size etc
     [self doCreatureSetupFor:sprite];

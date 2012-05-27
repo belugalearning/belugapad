@@ -48,16 +48,25 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 @synthesize installationUUID;
 @synthesize currentUser;
 
-// use a dict instead?
-+(NSString*)userEventString:(UserEvents)event
+-(User*)currentUser
 {
-    switch(event)
+    if (!currentUserSession) return nil;
+    return currentUserSession.user;
+}
+
+-(void)setCurrentUser:(User*)ur
+{
+    if (currentUserSession)
     {
-        case kUserEventCompleteProblem:
-            return @"user-complete-problem";
-        case kUserEventCompleteNode:
-            return @"user-complete-node";
+        currentUserSession.dateEnd = [NSDate date];
+        [[currentUserSession save] wait];
+        [currentUserSession release];
     }
+    
+    currentUserSession = [[UserSession alloc] initAndStartSessionForUser:ur onDevice:device];
+    
+    if (!ur.nodesCompleted) ur.nodesCompleted = [NSArray array];
+    [[ur save] wait];
 }
 
 -(id)init
@@ -66,7 +75,8 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     if (self)
     {
         [[CouchModelFactory sharedInstance] registerClass:[Device class] forDocumentType:@"device"];
-        [[CouchModelFactory sharedInstance] registerClass:[User class] forDocumentType:@"user"];        
+        [[CouchModelFactory sharedInstance] registerClass:[User class] forDocumentType:@"user"];
+        [[CouchModelFactory sharedInstance] registerClass:[UserSession class] forDocumentType:@"user session"];
         [[CouchModelFactory sharedInstance] registerClass:[ProblemAttempt class] forDocumentType:@"problem attempt"];
         
         CouchEmbeddedServer *server = [CouchEmbeddedServer sharedInstance];
@@ -108,52 +118,6 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
         pullReplication.continuous = YES;
     }
     return self;
-}
-
--(void)addCompletedNodeId:(NSString *)nodeId
-{
-    NSMutableArray *nc;
-    
-    if (!currentUser.nodesCompleted)
-    {
-        nc = [NSMutableArray array];
-    }
-    else
-    {
-        nc = [currentUser.nodesCompleted mutableCopy];
-    }
-    
-    [nc addObject:nodeId];
-    
-    currentUser.nodesCompleted = nc;
-    [[currentUser save] wait];
-}
-
--(BOOL)hasCompletedNodeId:(NSString *)nodeId
-{
-    if (!currentUser.nodesCompleted) return NO;
-    return [currentUser.nodesCompleted containsObject:nodeId];
-}
-
--(User*)currentUser
-{
-    if (!currentUserSession) return nil;
-    return currentUserSession.user;
-}
-
--(void)setCurrentUser:(User*)ur
-{
-    if (currentUserSession)
-    {
-        currentUserSession.dateEnd = [NSDate date];
-        [[currentUserSession save] wait];
-        [currentUserSession release];
-    }
-    
-    currentUserSession = [[UserSession alloc] initAndStartSessionForUser:ur onDevice:device];
-    
-    if (!ur.nodesCompleted) ur.nodesCompleted = [NSArray array];
-    [[ur save] wait];
 }
 
 -(NSArray*)deviceUsersByLastSessionDate
@@ -219,79 +183,116 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     return u;
 }
 
--(double)currentUserTotalTimeInApp
-{
-    NSString *urId = self.currentUser.document.documentID;
-    
-    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersTimeInPlay];
-    q.groupLevel = 1;
-    q.startKey = [NSArray arrayWithObject:urId];
-    q.endKey = [NSArray arrayWithObjects:urId, [NSDictionary dictionary], nil];
-    [[q start] wait];
-    
-    // should have 1 row returned
-    if (![[q rows] count]) return 0;
-    
-    CouchQueryRow *r = [[q rows].allObjects objectAtIndex:0];
-    return [(NSNumber*)r.value doubleValue];
-}
-
 -(void)startProblemAttempt
 {   
     if (currentProblemAttempt)
     {
-        // TODO: Shouldn't be here. Handle properly
-        [currentProblemAttempt endAttempt:NO];
         [currentProblemAttempt release];
+        currentProblemAttempt = nil;
     }
     
     AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
     ContentService *cs = ad.contentService;
     Problem *currentProblem = cs.currentProblem;
-    
-    User *ur = self.currentUser;
-    
-    // events populated with strings form UsersService#userEvents
-    NSMutableArray *events = [NSMutableArray array];
-    
-    // previously arrays on user doc like topicsStarted, topicsCompleted etc. were updated here
-    //[[ur save] wait];
         
-    currentProblemAttempt = [[ProblemAttempt alloc] initAndStartAttemptForUser:ur
-                                                                    andProblem:currentProblem
-                                                             onStartUserEvents:events];
-}
-
--(void) togglePauseProblemAttempt
-{
-    if (!currentProblemAttempt) return; // TODO: Handle Error properly
-    [currentProblemAttempt togglePause];
-}
-
--(void) endProblemAttempt:(BOOL)success
-{
-    if (!currentProblemAttempt) return; // TODO: Handle Error properly
-    [currentProblemAttempt endAttempt:success];
+    currentProblemAttempt = [[ProblemAttempt alloc] initAndStartAttemptForUserSession:currentUserSession
+                                                                           andProblem:currentProblem
+                                                                     andParentProblem:nil
+                                                                     andGeneratedPDEF:nil];
     
-    User *ur = self.currentUser;
-
-    if (success)
-    {
-        // N.B. previously logging events on currentProblemAttempt relating to completing topics/modules/elements
-        //    AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
-        //    ContentService *cs = ad.contentService;
-        //    CouchDatabase *contentDb = [cs Database];
-        //    Problem *p = [[CouchModelFactory sharedInstance] modelForDocument:[contentDb documentWithID:currentProblemAttempt.problemId]];
-        
-        // events populated with strings from UsersService#userEventString
-        NSMutableArray *events = [NSMutableArray arrayWithObject:[UsersService userEventString:kUserEventCompleteProblem]];
-        
-        currentProblemAttempt.onEndUserEvents = events;
-    }
-    [[ur save] wait];
+    [self logProblemAttemptEvent:kProblemAttemptStart withOptionalNote:nil];
     [[currentProblemAttempt save] wait];
-    [currentProblemAttempt release];
-    currentProblemAttempt = nil;
+}
+
+-(void)logProblemAttemptEvent:(ProblemAttemptEvent)event
+             withOptionalNote:(NSString*)note
+{
+    if (currentProblemAttempt)
+    {
+        NSString *eventString = nil;
+        switch (event) {
+            case kProblemAttemptStart:
+                eventString = @"PROBLEM_ATTEMPT_START";
+                break;
+            case kProblemAttemptUserPause:
+                eventString = @"PROBLEM_ATTEMPT_USER_PAUSE";
+                break;
+            case kProblemAttemptUserResume:
+                eventString = @"PROBLEM_ATTEMPT_USER_RESUME";
+                break;
+            case kProblemAttemptAppResign:
+                eventString = @"APP_RESIGN";
+                break;
+            case kProblemAttemptAppResume:
+                eventString = @"APP_RESUME";
+                break;
+            case kProblemAttemptAbandonApp:
+                eventString = @"ABANDON_APP";
+                break;
+            case kProblemAttemptSuccess:
+                eventString = @"PROBLEM_ATTEMPT_SUCCESS";
+                break;
+            case kProblemAttemptExitToMap:
+                eventString = @"PROBLEM_ATTEMPT_EXIT_TO_MAP";
+                break;
+            case kProblemAttemptExitLogOut:
+                eventString = @"PROBLEM_ATTEMPT_EXIT_LOG_OUT";
+                break;
+            case kProblemAttemptUserReset:
+                eventString = @"PROBLEM_ATTEMPT_USER_RESET";
+                break;
+            case kProblemAttemptSkip:
+                eventString = @"PROBLEM_ATTEMPT_SKIP";
+                break;
+            case kProblemAttemptSkipWithSuggestion:
+                eventString = @"PROBLEM_ATTEMPT_SKIP_WITH_SUGGESTION";
+                break;
+            case kProblemAttemptSkipDebug:
+                eventString = @"PROBLEM_ATTEMPT_SKIP_DEBUG";
+                break;
+            case kProblemAttemptFail:
+                eventString = @"PROBLEM_ATTEMPT_FAIL";
+                break;
+            case kProblemAttemptFailWithChildProblem:
+                eventString = @"PROBLEM_ATTEMPT_FAIL_WITH_CHILD_PROBLEM";
+                break;            
+            default:
+                // TODO: ERROR - LOG TO DATABASE!
+                break;
+        }
+        if (eventString)
+        {
+            NSMutableArray *e = [[currentProblemAttempt.events mutableCopy] autorelease];
+            [e addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSDate date], @"date", eventString, @"event", note, @"note", nil]];
+            currentProblemAttempt.events = e;
+            [[currentProblemAttempt save] wait];
+        }
+    }
+}
+
+-(void)addCompletedNodeId:(NSString *)nodeId
+{
+    NSMutableArray *nc;
+    
+    if (!currentUser.nodesCompleted)
+    {
+        nc = [NSMutableArray array];
+    }
+    else
+    {
+        nc = [currentUser.nodesCompleted mutableCopy];
+    }
+    
+    [nc addObject:nodeId];
+    
+    currentUser.nodesCompleted = nc;
+    [[currentUser save] wait];
+}
+
+-(BOOL)hasCompletedNodeId:(NSString *)nodeId
+{
+    if (!currentUser.nodesCompleted) return NO;
+    return [currentUser.nodesCompleted containsObject:nodeId];
 }
 
 -(NSString*)generateUUID

@@ -30,6 +30,7 @@
 {
     @private
     ContentService *contentService;
+    UsersService *usersService;
 }
 
 @end
@@ -94,7 +95,9 @@ static float kMoveToNextProblemTime=2.0f;
         //dynamic problem parser (persists to end of pipeline)
         self.DynProblemParser=[[DProblemParser alloc] init];
         
-        contentService = ((AppController*)[[UIApplication sharedApplication] delegate]).contentService;        
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        contentService = ac.contentService;
+        usersService = ac.usersService;
         
         [self scheduleOnce:@selector(gotoFirstProblem:) delay:3.0f];
         //[self gotoNewProblem];
@@ -214,10 +217,7 @@ static float kMoveToNextProblemTime=2.0f;
     //do internal mgmt updates
     //don't eval if we're in an auto move to next problem
     if((currentTool.ProblemComplete || metaQuestionForceComplete) && !autoMoveToNextProblem)
-    {
-        UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
-        [us endProblemAttempt:YES];
-
+    {   
         [Zubi createXPshards:100 fromLocation:ccp(cx, cy)];
 
         moveToNextProblemTime=kMoveToNextProblemTime;
@@ -300,14 +300,6 @@ static float kMoveToNextProblemTime=2.0f;
     else
     {
         //no more problems in this sequence, bail to menu
-        
-        /********
-         * Gareth:
-         * Note from Nick - what used to happen, and probably should again as soon as is convenient, is that completion events (then topic/module/element, now pipeline/node) were stored on the associated ProblemAttempt document.
-         * What had been completed was calculated in UsersService#endProblemAttempt.
-         * The events strings were taken form UsersService#userEventsString
-        ********/
-        
         
         //assume completion
         [contentService setPipelineNodeComplete];
@@ -418,16 +410,12 @@ static float kMoveToNextProblemTime=2.0f;
         [self.Zubi hideZubi];
     }
     
-    UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
-    [us startProblemAttempt];
+    [usersService startProblemAttempt];
 }
 
 -(void) resetProblem
 {
     skipNextStagedIntroAnim=YES;
-    
-    UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
-    [us endProblemAttempt:NO];
     
     if(problemDescLabel)
     {
@@ -470,8 +458,7 @@ static float kMoveToNextProblemTime=2.0f;
         NSLog(@"pausing in problem document %@ in pipeline %@", contentService.currentProblem.document.documentID, contentService.currentPipeline.document.documentID);
     }
     
-    UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
-    [us togglePauseProblemAttempt];
+    [usersService logProblemAttemptEvent:kProblemAttemptUserPause withOptionalNote:nil];
 }
 
 -(void) checkPauseTouches:(CGPoint)location
@@ -479,16 +466,15 @@ static float kMoveToNextProblemTime=2.0f;
     if(CGRectContainsPoint(kPauseMenuContinue, location))
     {
         //resume
+        [usersService logProblemAttemptEvent:kProblemAttemptUserResume withOptionalNote:nil];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [pauseLayer setVisible:NO];
         isPaused=NO;
-        
-        UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
-        [us togglePauseProblemAttempt];
     }
     if(CGRectContainsPoint(kPauseMenuReset, location))
     {
-       //reset
+        //reset
+        [usersService logProblemAttemptEvent:kProblemAttemptUserReset withOptionalNote:nil];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self resetProblem];
         [pauseLayer setVisible:NO];
@@ -496,7 +482,7 @@ static float kMoveToNextProblemTime=2.0f;
     }
     if(CGRectContainsPoint(kPauseMenuMenu,location))
     {
-
+        [usersService logProblemAttemptEvent:kProblemAttemptExitToMap withOptionalNote:nil];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self returnToMenu];
 
@@ -504,6 +490,7 @@ static float kMoveToNextProblemTime=2.0f;
     }
     if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
     {
+        [usersService logProblemAttemptEvent:kProblemAttemptSkipDebug withOptionalNote:nil];
         isPaused=NO;
         [pauseLayer setVisible:NO];
         [self gotoNewProblem];

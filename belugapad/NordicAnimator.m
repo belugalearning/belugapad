@@ -381,7 +381,7 @@ static CGPoint hill2Pos2={1200, 0};
     CCEaseInOut *ease2=[CCEaseInOut actionWithAction:mv2 rate:2.0f];
     CCSequence *seq=[CCSequence actions:mv1, ease2, nil];
     CCRepeat *r=[CCRepeat actionWithAction:seq times:10];
-    CCFadeOut *fo=[CCFadeOut actionWithDuration:1.0f];
+    CCFadeTo *fo=[CCFadeTo actionWithDuration:1.0f opacity:0];
     CCSequence *runout=[CCSequence actions:r, fo, nil];
     
     
@@ -598,7 +598,7 @@ static CGPoint hill2Pos2={1200, 0};
     CCMoveTo *mv1=[CCMoveTo actionWithDuration:1/24.0f * 105 * swimCount position:p2];
     CCMoveBy *mv2=[CCMoveBy actionWithDuration:25.0f position:ccp(0, 1600)];
     CCEaseOut *ease2=[CCEaseInOut actionWithAction:mv2 rate:2.0f];
-    CCFadeOut *fo=[CCFadeOut actionWithDuration:1.0f];
+    CCFadeTo *fo=[CCFadeTo actionWithDuration:1.0f opacity:0];
     CCSequence *seq=[CCSequence actions:mv1, ease2, fo, nil];
     
     //wheee!

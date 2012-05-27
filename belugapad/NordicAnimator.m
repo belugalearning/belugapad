@@ -452,6 +452,74 @@ static CGPoint hill2Pos2={1200, 0};
     [self doCreatureSetupFor:sprite];
 }
 
+-(void) animateEelWithYOffset:(int)yoffset //eel
+{
+    if(!eelBatch)
+    {
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/pelicaneel.plist")];
+        eelBatch=[CCSpriteBatchNode batchNodeWithFile: BUNDLE_FULL_PATH(@"/images/ttbg/pelicaneel.png")];
+        [creatureLayer addChild:eelBatch];
+    }
+    
+    CCSprite *sprite=[CCSprite spriteWithSpriteFrameName:@"pelican eel v20001.png"];
+    [eelBatch addChild:sprite];
+    
+    CCAnimation *baseAnim=[[CCAnimation alloc] init];
+    [baseAnim setDelayPerUnit:1.0f/15.0f];
+    
+    for (int fi=1; fi<=19; fi++) {
+        NSString *fname=[NSString stringWithFormat:@"pelican eel v2%04d.png", fi];
+        [baseAnim addSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:fname]];
+        
+    }
+    
+    CCAnimate *animate=[CCAnimate actionWithAnimation:baseAnim];
+    CCRepeatForever *rf=[CCRepeatForever actionWithAction:animate];
+    
+    [sprite runAction:rf];
+    
+    //start position (l or r)
+    int ry1=arc4random()%(int)ly;
+    //offset up or down on other side
+    int ry2=arc4random()%(int)(ly / 5.0f);
+    
+    //flip up or down randomly
+    if((arc4random()%2)==1) ry2=ry1+ry2;
+    else ry2=ry1-ry2;
+    
+    CGPoint p1, p2;
+    
+    //flip left to right, right to left
+    if ((arc4random()%2)==1) {
+        p1=ccp(-100, ry1+yoffset);
+        p2=ccp(lx+100, ry2+yoffset);
+        [sprite setFlipX:YES];
+    }
+    else {
+        p1=ccp(lx+100, ry1+yoffset);
+        p2=ccp(-100, ry2+yoffset);
+    }
+    
+    //bezier the path
+    ccBezierConfig b;
+    b.controlPoint_1=ccp((arc4random()%300) + 350, p2.y + (arc4random()%50) + yoffset);
+    b.controlPoint_2=b.controlPoint_1;
+    b.endPosition=p2;
+    
+    //now translate all coordinates into layer space
+    p1=[backgroundLayer convertToNodeSpace:p1];
+    p2=[backgroundLayer convertToNodeSpace:p2];
+    b.controlPoint_1=[backgroundLayer convertToNodeSpace:b.controlPoint_1];
+    b.controlPoint_2=[backgroundLayer convertToNodeSpace:b.controlPoint_2];
+    b.endPosition=[backgroundLayer convertToNodeSpace:b.endPosition];
+    
+    //wheee!
+    [sprite setPosition:p1];
+    [sprite runAction:[CCBezierTo actionWithDuration:110.0f bezier:b]];
+    
+    //general config -- handles position tinting, size etc
+    [self doCreatureSetupFor:sprite];
+}
 
 -(void) animateBackgroundIn
 {

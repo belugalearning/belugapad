@@ -44,6 +44,7 @@
     CCSpriteBatchNode *creature2Batch;
     CCSpriteBatchNode *creature3Batch;
     CCSpriteBatchNode *creature4Batch;
+    CCSpriteBatchNode *eelBatch;
     
     int camPos;
 }

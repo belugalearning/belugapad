@@ -5,7 +5,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>what is {$augend [[$opertator]] $addend}</string>
+		<string>what is {$augend} [[$operator]] {$addend}</string>
 		<key>INTERNAL_DESCRIPTION</key>
 		<string>memorising addition number facts</string>
 		<key>PICKER_LAYOUT</key>
@@ -18,36 +18,36 @@
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
 		<string>{$augend+$addend}</string>
-		<key>DSTRINGS</key>
+	</dict>
+	<key>DVARS</key>
+	<dict>
+		<key>$augend</key>
 		<dict>
-			<key>$operator</key>
-			<dict>
-				<key>MODE</key>
-				<string>RANDOM</string>
-				<key>DATA</key>
-				<array>
-					<string>+</string>
-					<string>plus</string>
-					<string>add</string>
-				</array>
-			</dict>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>5</string>
 		</dict>
-		<key>DVARS</key>
+		<key>$addend</key>
 		<dict>
-			<key>$augend</key>
-			<dict>
-				<key>MIN</key>
-				<string>1</string>
-				<key>MAX</key>
-				<string>5</string>
-			</dict>
-			<key>$addend</key>
-			<dict>
-				<key>MIN</key>
-				<string>1</string>
-				<key>MAX</key>
-				<string>5</string>
-			</dict>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>5</string>
+		</dict>
+	</dict>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>$operator</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>+</string>
+				<string>plus</string>
+				<string>add</string>
+			</array>
 		</dict>
 	</dict>
 </dict>

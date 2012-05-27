@@ -40,10 +40,10 @@
     
     float timeToNextCreature;
     
-    CCSpriteBatchNode *creature1Batch;
-    CCSpriteBatchNode *creature2Batch;
-    CCSpriteBatchNode *creature3Batch;
-    CCSpriteBatchNode *creature4Batch;
+    CCSpriteBatchNode *sunfishBatch;
+    CCSpriteBatchNode *anglerBatch;
+    CCSpriteBatchNode *jellyfishBatch;
+    CCSpriteBatchNode *schoolBatch;
     CCSpriteBatchNode *eelBatch;
     
     int camPos;

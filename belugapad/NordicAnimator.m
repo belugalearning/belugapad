@@ -139,7 +139,7 @@ static CGPoint hill2Pos2={1200, 0};
         if(camPos==1) offset=-0.5f*ly;
         
         
-        int cpick=arc4random()%4;
+        int cpick=arc4random()%5;
         if (cpick==0) {
             [self animateSunfishWithYOffset:offset];
         }
@@ -154,6 +154,10 @@ static CGPoint hill2Pos2={1200, 0};
         else if(cpick==3) // school
         {
             [self animateSchoolWithYOffset:offset];
+        }
+        else if(cpick==4 && camPos==3) //eel
+        {
+            [self animateEelWithYOffset:offset];
         }
         
         //timeToNextCreature=(arc4random()%40) + 5;
@@ -193,15 +197,15 @@ static CGPoint hill2Pos2={1200, 0};
 
 -(void) animateSunfishWithYOffset:(int)yoffset //sunfish
 {
-    if(!creature1Batch)
+    if(!sunfishBatch)
     {
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/sunfish.plist")];
-        creature1Batch=[CCSpriteBatchNode batchNodeWithFile: BUNDLE_FULL_PATH(@"/images/ttbg/sunfish.png")];
-        [creatureLayer addChild:creature1Batch];
+        sunfishBatch=[CCSpriteBatchNode batchNodeWithFile: BUNDLE_FULL_PATH(@"/images/ttbg/sunfish.png")];
+        [creatureLayer addChild:sunfishBatch];
     }
     
     CCSprite *sprite=[CCSprite spriteWithSpriteFrameName:@"sun fish0001.png"];
-    [creature1Batch addChild:sprite];
+    [sunfishBatch addChild:sprite];
     
     CCAnimation *baseAnim=[[CCAnimation alloc] init];
     [baseAnim setDelayPerUnit:1.0f/24.0f];
@@ -263,15 +267,15 @@ static CGPoint hill2Pos2={1200, 0};
 
 -(void) animateAnglerWithYOffset:(int)yoffset //angler fish
 {
-    if(!creature2Batch)
+    if(!anglerBatch)
     {
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/anglerswim.plist")];
-        creature2Batch=[CCSpriteBatchNode batchNodeWithFile: BUNDLE_FULL_PATH(@"/images/ttbg/anglerswim.png")];
-        [creatureLayer addChild:creature2Batch];
+        anglerBatch=[CCSpriteBatchNode batchNodeWithFile: BUNDLE_FULL_PATH(@"/images/ttbg/anglerswim.png")];
+        [creatureLayer addChild:anglerBatch];
     }
     
     CCSprite *sprite=[CCSprite spriteWithSpriteFrameName:@"anglerswim0001.png"];
-    [creature2Batch addChild:sprite];
+    [anglerBatch addChild:sprite];
     
     CCAnimation *baseAnim=[[CCAnimation alloc] init];
     [baseAnim setDelayPerUnit:1.0f/24.0f];
@@ -332,15 +336,15 @@ static CGPoint hill2Pos2={1200, 0};
 
 -(void) animateJellyfishWithYOffset:(int)yoffset //jelly fish
 {
-    if(!creature3Batch)
+    if(!jellyfishBatch)
     {
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/jellyfish.plist")];
-        creature3Batch=[CCSpriteBatchNode batchNodeWithFile: BUNDLE_FULL_PATH(@"/images/ttbg/jellyfish.png")];
-        [creatureLayer addChild:creature3Batch];
+        jellyfishBatch=[CCSpriteBatchNode batchNodeWithFile: BUNDLE_FULL_PATH(@"/images/ttbg/jellyfish.png")];
+        [creatureLayer addChild:jellyfishBatch];
     }
     
     CCSprite *sprite=[CCSprite spriteWithSpriteFrameName:@"jellyfishswim0001.png"];
-    [creature3Batch addChild:sprite];
+    [jellyfishBatch addChild:sprite];
     
     CCAnimation *baseAnim=[[CCAnimation alloc] init];
     [baseAnim setDelayPerUnit:1.0f/24.0f];
@@ -385,15 +389,15 @@ static CGPoint hill2Pos2={1200, 0};
 
 -(void) animateSchoolWithYOffset:(int)yoffset //school of fish
 {
-    if(!creature4Batch)
+    if(!schoolBatch)
     {
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/schoolswim.plist")];
-        creature4Batch=[CCSpriteBatchNode batchNodeWithFile: BUNDLE_FULL_PATH(@"/images/ttbg/schoolswim.png")];
-        [creatureLayer addChild:creature4Batch];
+        schoolBatch=[CCSpriteBatchNode batchNodeWithFile: BUNDLE_FULL_PATH(@"/images/ttbg/schoolswim.png")];
+        [creatureLayer addChild:schoolBatch];
     }
     
     CCSprite *sprite=[CCSprite spriteWithSpriteFrameName:@"schoolswim0001.png"];
-    [creature4Batch addChild:sprite];
+    [schoolBatch addChild:sprite];
     
     CCAnimation *baseAnim=[[CCAnimation alloc] init];
     [baseAnim setDelayPerUnit:1.0f/15.0f];
@@ -467,7 +471,7 @@ static CGPoint hill2Pos2={1200, 0};
     CCAnimation *baseAnim=[[CCAnimation alloc] init];
     [baseAnim setDelayPerUnit:1.0f/15.0f];
     
-    for (int fi=1; fi<=19; fi++) {
+    for (int fi=1; fi<=30; fi++) {
         NSString *fname=[NSString stringWithFormat:@"pelican eel v2%04d.png", fi];
         [baseAnim addSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:fname]];
         
@@ -491,8 +495,8 @@ static CGPoint hill2Pos2={1200, 0};
     
     //flip left to right, right to left
     if ((arc4random()%2)==1) {
-        p1=ccp(-100, ry1+yoffset);
-        p2=ccp(lx+100, ry2+yoffset);
+        p1=ccp(-300, ry1+yoffset);
+        p2=ccp(lx+300, ry2+yoffset);
         [sprite setFlipX:YES];
     }
     else {
@@ -515,7 +519,7 @@ static CGPoint hill2Pos2={1200, 0};
     
     //wheee!
     [sprite setPosition:p1];
-    [sprite runAction:[CCBezierTo actionWithDuration:110.0f bezier:b]];
+    [sprite runAction:[CCBezierTo actionWithDuration:20.0f bezier:b]];
     
     //general config -- handles position tinting, size etc
     [self doCreatureSetupFor:sprite];

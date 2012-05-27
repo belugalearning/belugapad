@@ -80,7 +80,7 @@ static float kMoveToNextProblemTime=2.0f;
         [animator animateBackgroundIn];
         animPos=1;
         
-        [self scheduleOnce:@selector(moveToTool1:) delay:1.5f];
+        //[self scheduleOnce:@selector(moveToTool1:) delay:1.5f];
         
         //add a pause button but keep it hidden -- to be brought in by the fader
         CCSprite *pause=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/button-pause.png")];
@@ -116,6 +116,14 @@ static float kMoveToNextProblemTime=2.0f;
 }
 
 #pragma mark animation and transisitons
+
+-(void)moveToCurrentToolDepth
+{
+    if(currentToolDepth==0)[self moveToTool0:0];
+    else if(currentToolDepth==1)[self moveToTool1:0];
+    else if(currentToolDepth==2)[self moveToTool2:0];
+    else if(currentToolDepth==3)[self moveToTool3:0];
+}
 
 -(void)moveToTool0: (ccTime) delta
 {
@@ -352,6 +360,8 @@ static float kMoveToNextProblemTime=2.0f;
     //read our tool specific options
     [self readToolOptions:toolKey];
     
+    //move to correct depth
+    [self moveToCurrentToolDepth];
     
     //setup background png / underlay
 //    NSString *hostBackgroundFile=[pdef objectForKey:@"HOST_BACKGROUND_IMAGE"];
@@ -975,7 +985,15 @@ static float kMoveToNextProblemTime=2.0f;
     else 
         currentTool.PassThruScaling=NO;
     
-    
+ 
+    //get tool depth
+    if([toolOpt objectForKey:@"TOOL_DEPTH"])
+    {
+        currentToolDepth=[(NSNumber *)[toolOpt objectForKey:@"TOOL_DEPTH"] intValue];
+    }
+    else {
+        currentToolDepth=2; // put tool default in middle
+    }
 }
 
 -(void)stageIntroActions
@@ -1164,27 +1182,28 @@ static float kMoveToNextProblemTime=2.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     lastTouch=location;
-    
-    if(animPos==0)
-    {
-        animPos++;
-        [self moveToTool1:0];
-    }
-    
-    else if(animPos==1)
-    {
-        animPos++;
-        [self moveToTool2:0];
-    }
-    else if(animPos==2)
-    {
-        animPos++;
-        [self moveToTool3:0];
-    }
-    else if (animPos==3) {
-        animPos=0;
-        [self moveToTool0:0];
-    }
+
+    //testing block for stepping between tool positions
+//    if(animPos==0)
+//    {
+//        animPos++;
+//        [self moveToTool1:0];
+//    }
+//    
+//    else if(animPos==1)
+//    {
+//        animPos++;
+//        [self moveToTool2:0];
+//    }
+//    else if(animPos==2)
+//    {
+//        animPos++;
+//        [self moveToTool3:0];
+//    }
+//    else if (animPos==3) {
+//        animPos=0;
+//        [self moveToTool0:0];
+//    }
     
     if(metaQuestionForThisProblem)
         [self checkMetaQuestionTouches:location];

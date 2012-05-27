@@ -115,6 +115,7 @@ typedef enum {
     NordicAnimator *animator;
     int animPos;
     
+    int currentToolDepth;
 }
 
 @property (retain) Daemon *Zubi;

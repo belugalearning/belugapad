@@ -84,8 +84,8 @@ static float kMoveToNextProblemTime=2.0f;
         
         //add a pause button but keep it hidden -- to be brought in by the fader
         CCSprite *pause=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/button-pause.png")];
-        [pause setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), ly-(kPropXCommitButtonPadding*lx))];
-        [backgroundLayer addChild:pause z:3];        
+        [pause setPosition:ccp(lx-(kPropXPauseButtonPadding*lx), ly-(kPropXPauseButtonPadding*lx))];
+        [perstLayer addChild:pause z:3];        
 
 
         metaQuestionLayer=[[CCLayer alloc] init];

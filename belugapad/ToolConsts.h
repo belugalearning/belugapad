@@ -49,6 +49,7 @@ const float kTimeToShowProblemStatus;
 const float kTimeToFadeProblemStatus;
 extern const float kTimeToFadeButtonLabel;
 
+extern const float kPropXPauseButtonPadding;
 extern const float kPropXCommitButtonPadding;
 extern const CGRect kRectButtonCommit;
 extern const CGRect kRectButtonReset;

@@ -596,7 +596,7 @@ static CGPoint hill2Pos2={1200, 0};
     p2=[backgroundLayer convertToNodeSpace:p2];
     
     CCMoveTo *mv1=[CCMoveTo actionWithDuration:1/24.0f * 105 * swimCount position:p2];
-    CCMoveBy *mv2=[CCMoveBy actionWithDuration:25.0f position:ccp(0, 1600)];
+    CCMoveBy *mv2=[CCMoveBy actionWithDuration:12.5f position:ccp(0, 800)];
     CCEaseOut *ease2=[CCEaseInOut actionWithAction:mv2 rate:2.0f];
     CCFadeTo *fo=[CCFadeTo actionWithDuration:1.0f opacity:0];
     CCSequence *seq=[CCSequence actions:mv1, ease2, fo, nil];

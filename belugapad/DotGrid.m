@@ -349,7 +349,7 @@
     NSMutableArray *anchorsForShape=[[NSMutableArray alloc]init];
     DWDotGridAnchorGameObject *anchStart=thisShape.firstAnchor;
     DWDotGridAnchorGameObject *anchEnd=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
-    thisShape.lastAnchor=anchEnd;
+    BOOL failedChecks=NO;
     
     // if the start X point is to the left of the end X point
     if(anchStart.myXpos < anchEnd.myXpos)
@@ -367,7 +367,10 @@
                     DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
                     // if current anchor is disabled AND we're not in problem setup AND not in the game state we want OR if the current anchor already has a tile on it
                     
-                    if((curAnch.tile || curAnch.Disabled) && !gw.Blackboard.inProblemSetup && (!gameState==kStartAnchor || !gameState==kResizeShape))return;
+                    //if((curAnch.tile || curAnch.Disabled) && !gw.Blackboard.inProblemSetup && (!gameState==kStartAnchor))return;
+                    if(curAnch.Hidden)failedChecks=YES;
+                    if(curAnch.tile && ![thisShape.tiles containsObject:curAnch.tile])failedChecks=YES;
+                    
                     if(x==anchEnd.myXpos-1 && y==anchEnd.myYpos && thisShape.resizeHandle)
                         curAnch.resizeHandle=YES;
                     else curAnch.resizeHandle=NO;
@@ -381,7 +384,9 @@
                 {
                     DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
                     
-                    if((curAnch.tile || curAnch.Disabled) && !gw.Blackboard.inProblemSetup && (!gameState==kStartAnchor || !gameState==kResizeShape))return;
+                    //if((curAnch.tile || curAnch.Disabled) && !gw.Blackboard.inProblemSetup && (!gameState==kStartAnchor||!gameState==kResizeShape))return;
+                    if(curAnch.Hidden)failedChecks=YES;
+                    if(curAnch.tile && ![thisShape.tiles containsObject:curAnch.tile])failedChecks=YES;
                     if(x==anchEnd.myXpos-1 && y==anchEnd.myYpos && thisShape.resizeHandle)
                         curAnch.resizeHandle=YES;
                     else curAnch.resizeHandle=NO;
@@ -403,7 +408,8 @@
                 for(int y=anchStart.myYpos;y<anchEnd.myYpos;y++)
                 {
                     DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
-                    if((curAnch.tile || curAnch.Disabled) && !gw.Blackboard.inProblemSetup && (!gameState==kStartAnchor || !gameState==kResizeShape))return;
+                    if(curAnch.Hidden)failedChecks=YES;
+                    if(curAnch.tile && ![thisShape.tiles containsObject:curAnch.tile])failedChecks=YES;
                     if(x==anchStart.myXpos-1 && y==anchStart.myYpos && thisShape.resizeHandle)
                         curAnch.resizeHandle=YES;
                     else curAnch.resizeHandle=NO;          
@@ -416,7 +422,8 @@
                 for(int y=anchStart.myYpos-1;y>anchEnd.myYpos-1;y--)
                 {
                     DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
-                    if((curAnch.tile || curAnch.Disabled) && !gw.Blackboard.inProblemSetup && (!gameState==kStartAnchor || !gameState==kResizeShape))return;
+                    if(curAnch.Hidden)failedChecks=YES;
+                    if(curAnch.tile && ![thisShape.tiles containsObject:curAnch.tile])failedChecks=YES;
                     if(x==anchEnd.myXpos+1 && y==anchEnd.myYpos && thisShape.resizeHandle)
                         curAnch.resizeHandle=YES;
                     else curAnch.resizeHandle=NO;
@@ -428,11 +435,20 @@
         
     }
 
+    if(failedChecks)
+    {
+        thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
+        [thisShape.resizeHandle handleMessage:kDWupdateSprite];
+        return;
+    }
+    
     for(int i=0;i<[anchorsForShape count];i++)
     {
         DWDotGridAnchorGameObject *wanch = [anchorsForShape objectAtIndex:i];
         NSLog(@"shape in matrix (%d/%d): x %d / y %d", i, [anchorsForShape count], wanch.myXpos, wanch.myYpos);
     }
+    
+    thisShape.lastAnchor=anchEnd;
     [self modifyThisShape:thisShape withTheseAnchors:anchorsForShape];
 }
 

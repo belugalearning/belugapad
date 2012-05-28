@@ -22,10 +22,11 @@ const float kBlockSpawnSpaceXOffset=100.0f;
 const float kContainerYOffsetHalfProp=0.625f;
 
 
-const float kWaterLineActualYOffset=637.0f;
+//const float kWaterLineActualYOffset=637.0f;
+const float kWaterLineActualYOffset=677.0f;
 const float kWaterLineResubmergeYOffset=580.0f;
 
-const float kPhysWaterLineSimInverseYOffset=130.0f;
+const float kPhysWaterLineSimInverseYOffset=105.0f;
 
 const float kPhysContainerHardLeft=1.0f;
 const float kPhysContainerLeftReset=24.0f;
@@ -148,11 +149,11 @@ static void eachShape(void *ptr, void* unused)
 
 -(void)setupBkgAndTitle
 {
-    CCSprite *fg = [[CCSprite alloc]init];
-    if(underlayImage) fg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(underlayImage)]; 
-    else fg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/fg-ipad-float.png")];
-    [fg setPosition:ccp(cx, cy)];
-    [self.ForeLayer addChild:fg z:2];
+//    CCSprite *fg = [[CCSprite alloc]init];
+//    if(underlayImage) fg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(underlayImage)]; 
+//    else fg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/fg-ipad-float.png")];
+//    [fg setPosition:ccp(cx, cy)];
+//    [self.ForeLayer addChild:fg z:2];
     
     problemCompleteLabel=[CCLabelTTF labelWithString:@"" fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
     [problemCompleteLabel setColor:kLabelCompleteColor];
@@ -210,6 +211,20 @@ static void eachShape(void *ptr, void* unused)
     right->e=1.0f;
     right->u=1.0f;
     cpSpaceAddStaticShape(space, right);
+    
+    //top left bank
+    CGPoint rbankverts[]={ccp(0, 580), ccp(0, 663), ccp(200, 663)};
+    shape=cpPolyShapeNew(staticBody, 3, rbankverts, ccp(0,0));
+    shape->e = 1.0f;
+    shape->u = 1.0f;
+    cpSpaceAddStaticShape(space, shape);
+    
+    //top left bank
+    CGPoint lbankverts[]={ccp(800, 663), ccp(1024, 663), ccp(1024, 500)};
+    shape=cpPolyShapeNew(staticBody, 3, lbankverts, ccp(0,0));
+    shape->e = 1.0f;
+    shape->u = 1.0f;
+    cpSpaceAddStaticShape(space, shape);
 }
 
 -(void)setupSprites

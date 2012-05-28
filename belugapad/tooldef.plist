@@ -13,6 +13,8 @@
 	</dict>
 	<key>NLine</key>
 	<dict>
+		<key>TOOL_DEPTH</key>
+		<integer>3</integer>
 		<key>SCALE_MIN</key>
 		<integer>1</integer>
 		<key>SCALE_MAX</key>
@@ -49,11 +51,15 @@
 	</dict>
 	<key>LongDivision</key>
 	<dict>
+		<key>TOOL_DEPTH</key>
+		<string>3</string>
 		<key>SCALING_PASS_THRU</key>
 		<true/>
 	</dict>
 	<key>BlockFloating</key>
 	<dict>
+		<key>TOOL_DEPTH</key>
+		<string>1</string>
 		<key>SCALING_PASS_THRU</key>
 		<false/>
 		<key>SCALE_MIN</key>

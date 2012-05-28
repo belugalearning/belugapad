@@ -125,7 +125,17 @@
     if([pdef objectForKey:SWITCH_XY_ANSWER])switchXYforAnswer=[[pdef objectForKey:SWITCH_XY_ANSWER]boolValue];
     else switchXYforAnswer=NO;
     
+    if([pdef objectForKey:SOLUTION_MODE])solutionType=[[pdef objectForKey:SOLUTION_MODE]intValue];
+    if(solutionType==kSolutionVal)
+    {
+        solutionValue=[[pdef objectForKey:SOLUTION_VALUE]intValue];
+        solutionComponent=[[pdef objectForKey:SOLUTION_COMPONENT]intValue];
+        
+    }
+    
+    
     if([pdef objectForKey:SOLUTIONS])solutionsDef=[pdef objectForKey:SOLUTIONS];
+    
     if([pdef objectForKey:ACTIVE_ROWS])activeRows=[pdef objectForKey:ACTIVE_ROWS];
     if([pdef objectForKey:ACTIVE_COLS])activeCols=[pdef objectForKey:ACTIVE_COLS];
     if([pdef objectForKey:REVEAL_ROWS])revealRows=[pdef objectForKey:REVEAL_ROWS];
@@ -482,32 +492,64 @@
 
 -(BOOL)evalExpression
 {
-    if(!solutionsDef)return NO;
-    if([gw.Blackboard.SelectedObjects count]<[solutionsDef count])return NO;
+    if(!solutionsDef && solutionType==kMatrixMatch)return NO;
+    if([gw.Blackboard.SelectedObjects count]<[solutionsDef count] && solutionType==kMatrixMatch)return NO;
     
     int answersFound=0;
-    
-    for(int o=0;o<[gw.Blackboard.SelectedObjects count];o++)
+    if(solutionType==kMatrixMatch)
     {
-        DWTTTileGameObject *selTile=[gw.Blackboard.SelectedObjects objectAtIndex:o];
-        NSLog(@"selTile X=%d, selTile Y=%d", selTile.myXpos, selTile.myYpos);
         
-        for(int i=0;i<[solutionsDef count];i++)
+        
+        for(int o=0;o<[gw.Blackboard.SelectedObjects count];o++)
         {
-            NSMutableDictionary *curDict=[solutionsDef objectAtIndex:i];
-            int thisAnsX=[[curDict objectForKey:POS_X]intValue];
-            int thisAnsY=[[curDict objectForKey:POS_Y]intValue];
-            NSLog(@"thisAnsX=%d, thisAnsY=%d", thisAnsX, thisAnsY);
+            DWTTTileGameObject *selTile=[gw.Blackboard.SelectedObjects objectAtIndex:o];
+            NSLog(@"selTile X=%d, selTile Y=%d", selTile.myXpos, selTile.myYpos);
             
-            if(thisAnsX==selTile.myXpos && thisAnsY==selTile.myYpos && !switchXYforAnswer)answersFound++;
-            else if(thisAnsY==selTile.myXpos && thisAnsX==selTile.myYpos && switchXYforAnswer)answersFound++;
+            for(int i=0;i<[solutionsDef count];i++)
+            {
+                NSMutableDictionary *curDict=[solutionsDef objectAtIndex:i];
+                int thisAnsX=[[curDict objectForKey:POS_X]intValue];
+                int thisAnsY=[[curDict objectForKey:POS_Y]intValue];
+                NSLog(@"thisAnsX=%d, thisAnsY=%d", thisAnsX, thisAnsY);
+                
+                if(thisAnsX==selTile.myXpos && thisAnsY==selTile.myYpos && !switchXYforAnswer)answersFound++;
+                else if(thisAnsY==selTile.myXpos && thisAnsX==selTile.myYpos && switchXYforAnswer)answersFound++;
+            }
         }
+        
+        
+        if(answersFound==[solutionsDef count])return YES;
+        else return NO;
     }
     
-    
-    if(answersFound==[solutionsDef count])return YES;
-    else return NO;
+    if(solutionType==kSolutionVal)
+    {
+        for(int o=0;o<[gw.Blackboard.SelectedObjects count];o++)
+        {
+            DWTTTileGameObject *selTile=[gw.Blackboard.SelectedObjects objectAtIndex:o];
+            NSLog(@"selTile X=%d, selTile Y=%d", selTile.myXpos, selTile.myYpos);
+            
 
+                int thisAnsX=selTile.myXpos;
+                int thisAnsY=selTile.myYpos;
+                
+                if(operatorMode==kOperatorAdd)
+                    if(thisAnsX+thisAnsY==solutionValue && (thisAnsX==solutionComponent||thisAnsY==solutionComponent))answersFound++;
+                if(operatorMode==kOperatorSub)
+                    if(thisAnsX-thisAnsY==solutionValue && (thisAnsX==solutionComponent||thisAnsY==solutionComponent))answersFound++;
+                if(operatorMode==kOperatorMul)
+                    if(thisAnsX*thisAnsY==solutionValue && (thisAnsX==solutionComponent||thisAnsY==solutionComponent))answersFound++;
+                if(operatorMode==kOperatorDiv)
+                    if(thisAnsX/thisAnsY==solutionValue && (thisAnsX==solutionComponent||thisAnsY==solutionComponent))answersFound++;
+                
+        }
+
+        
+        
+        if(answersFound>0)return YES;
+    }
+    
+    return NO;
 }
 
 -(void)evalProblem

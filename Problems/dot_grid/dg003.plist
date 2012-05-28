@@ -18,6 +18,24 @@
 	<array>
 		<dict>
 			<key>START_X</key>
+			<integer>0</integer>
+			<key>START_Y</key>
+			<integer>0</integer>
+			<key>END_X</key>
+			<integer>1</integer>
+			<key>END_Y</key>
+			<integer>1</integer>
+			<key>SHOW_RESIZE</key>
+			<true/>
+			<key>SHOW_MOVE</key>
+			<false/>
+			<key>SHOW_LABELS</key>
+			<false/>
+			<key>DISABLE_COUNTING</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>START_X</key>
 			<integer>2</integer>
 			<key>START_Y</key>
 			<integer>2</integer>

@@ -33,6 +33,7 @@ typedef enum {
 @class BAExpressionTree;
 @class UsersService;
 @class DProblemParser;
+@class NordicAnimator;
 
 @interface ToolHost : CCLayer
 {
@@ -50,6 +51,8 @@ typedef enum {
     CCLayer *toolNoScaleLayer;
     
     CCNode *nPicker;
+    
+    CGPoint lastTouch;
     
     ToolScene *currentTool;
     
@@ -74,6 +77,14 @@ typedef enum {
     NumberPickerEvalMode numberPickerEvalMode;
     NSMutableArray *numberPickerButtons;
     NSMutableArray *numberPickedSelection;
+    NSMutableArray *numberPickedValue;
+    CCSprite *npMove;
+    CCSprite *npLastMoved;
+    CGPoint npMoveStartPos;
+    CCSprite *npDropbox;
+    float npEval;
+    int npMaxNoInDropbox;
+    CGRect pickerBox;
     
     
     
@@ -101,13 +112,12 @@ typedef enum {
     CCLabelTTF *problemDescLabel;
     ProblemEvalMode evalMode;
     
+    NordicAnimator *animator;
+    int animPos;
     
-    CCSprite *bgBase1;
-    CCSprite *bgWater1;
-    CCSprite *bgSun1;
+    int currentToolDepth;
     
-    CCSprite *bgMountain1;
-    
+    NSString *touchLogPath;
 }
 
 @property (retain) Daemon *Zubi;
@@ -140,6 +150,8 @@ typedef enum {
 -(void)checkMetaQuestionTouches:(CGPoint)location;
 -(void)setupNumberPicker:(NSDictionary *)pdefNP;
 -(void)checkNumberPickerTouches:(CGPoint)location;
+-(void)evalNumberPicker;
+-(void)reorderNumberPickerSelections;
 -(void)evalMetaQuestion;
 -(void)deselectAnswersExcept:(int)answerNumber;
 -(void)doWinning;
@@ -153,5 +165,8 @@ typedef enum {
 
 -(void) moveToTool1: (ccTime) delta;
 -(void) gotoFirstProblem: (ccTime) delta;
+
+-(void)playAudioClick;
+-(void)playAudioPress;
 
 @end

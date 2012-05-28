@@ -4,8 +4,16 @@
 <dict>
 	<key>NUMBER_PICKER</key>
 	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>32.73. Different button layout, animated</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>2</integer>
+		<key>ANIMATE_FROM_PICKER</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<real>32.73</real>
 	</dict>
 </dict>
 </plist>

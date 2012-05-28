@@ -49,6 +49,7 @@ typedef enum {
 
 @property (readonly, retain, nonatomic) NSString *installationUUID;
 @property (retain, nonatomic) User *currentUser;
+@property (readonly, retain) NSString *currentProblemAttemptID;
 
 -(NSArray*)deviceUsersByLastSessionDate;
 -(NSArray*)deviceUsersByNickName;

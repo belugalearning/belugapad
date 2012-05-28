@@ -426,6 +426,9 @@ static float kMoveToNextProblemTime=2.0f;
     }
     
     [usersService startProblemAttempt];
+    
+    //write the problem attempt id into the touch log for reconciliation
+    [self logTouchProblemAttemptID:usersService.currentProblemAttemptID];
 }
 
 -(void) resetProblem
@@ -975,7 +978,10 @@ static float kMoveToNextProblemTime=2.0f;
             
         }
     }
-    [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberMove withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",moveNumber]];
+    
+    //removed b/c of log performance issues
+//    [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberMove withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",moveNumber]];
+    
     npMove.position=location;
 
 }
@@ -1275,9 +1281,19 @@ static float kMoveToNextProblemTime=2.0f;
     [header writeToFile:touchLogPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
 }
 
+-(void)logTouchProblemAttemptID:(NSString*)paid
+{
+    NSString *item=[NSString stringWithFormat:@" problemattempt %@ ", paid];
+    
+    NSFileHandle *myHandle = [NSFileHandle fileHandleForUpdatingAtPath:touchLogPath];
+    [myHandle seekToEndOfFile];
+    [myHandle writeData:[item dataUsingEncoding:NSUTF8StringEncoding]];
+    [myHandle closeFile];
+}
+
 -(void)logTouches:(NSSet*)touches forEvent:(NSString*)event
 {
-    NSString *item=[NSString stringWithFormat:@"%@ %f ", event, [[NSDate date] timeIntervalSince1970]];
+    NSString *item=[NSString stringWithFormat:@" %@ %f ", event, [[NSDate date] timeIntervalSince1970]];
     
     for (UITouch *t in touches) {
         item=[item stringByAppendingString:[NSString stringWithFormat:@"{%@,%@},", NSStringFromCGPoint([t locationInView:t.view]), NSStringFromCGPoint([t previousLocationInView:t.view])]];

@@ -9,20 +9,35 @@
 #import <Foundation/Foundation.h>
 @class User, ProblemAttempt, CouchLiveQuery, CouchEmbeddedServer;
 
-@interface UsersService : NSObject
-
-// use a static dict instead?
+// see ProblemAttempt#logEvent
 typedef enum {
-    kUserEventCompleteProblem
-    , kUserEventCompleteNode
-} UserEvents;
+    kProblemAttemptError,
+    kProblemAttemptStart,
+    kProblemAttemptUserPause,
+    kProblemAttemptUserResume,
+    kProblemAttemptAppResignActive,
+    kProblemAttemptAppBecomeActive,
+    kProblemAttemptAppEnterBackground,
+    kProblemAttemptAppEnterForeground,
+    kProblemAttemptAbandonApp,
+    kProblemAttemptSuccess,
+    kProblemAttemptExitToMap,
+    kProblemAttemptExitLogOut,
+    kProblemAttemptUserReset,
+    kProblemAttemptSkip,
+    kProblemAttemptSkipWithSuggestion,
+    kProblemAttemptSkipDebug,
+    kProblemAttemptFail,
+    kProblemAttemptFailWithChildProblem
+} ProblemAttemptEvent;
+
+@interface UsersService : NSObject
 
 @property (readonly, retain, nonatomic) NSString *installationUUID;
 @property (retain, nonatomic) User *currentUser;
 
-+(NSString*)userEventString:(UserEvents)event;
-
 -(NSArray*)deviceUsersByLastSessionDate;
+-(NSArray*)deviceUsersByNickName;
 
 -(BOOL) nickNameIsAvailable:(NSString*)nickName;
 
@@ -34,14 +49,11 @@ typedef enum {
 -(User*) userMatchingNickName:(NSString*)nickName
                   andPassword:(NSString*)password;
 
--(NSUInteger)currentUserTotalExp;
--(double)currentUserTotalTimeInApp;
-
 -(void)startProblemAttempt;
--(void)togglePauseProblemAttempt;
--(void)endProblemAttempt:(BOOL)success;
+-(void)logProblemAttemptEvent:(ProblemAttemptEvent)event
+             withOptionalNote:(NSString*)note;
 
--(void)addCompletedNodeId:(NSString *)nodeId;
--(BOOL)hasCompletedNodeId:(NSString *)nodeId;
+-(void)addCompletedNodeId:(NSString*)nodeId;
+-(BOOL)hasCompletedNodeId:(NSString*)nodeId;
 
 @end

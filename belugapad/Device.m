@@ -10,6 +10,6 @@
 
 @implementation Device
 
-@dynamic firstLaunchDateTime, userSessions;
+@dynamic firstLaunchDateTime;
 
 @end

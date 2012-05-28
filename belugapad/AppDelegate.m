@@ -37,7 +37,6 @@
 @synthesize contentService;
 
 @synthesize usersService;
-@synthesize currentUser;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -77,7 +76,6 @@
         //director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
         //[director_ enableRetinaDisplay:NO];
         
-        //[self proceedFromLoginViaIntro:YES];
         selectUserViewController = [[SelectUserViewController alloc] init];
         
         [self.window addSubview:selectUserViewController.view];
@@ -91,9 +89,6 @@
 {
     //no purpose in getting this -- it's not used
     //NSDictionary *launchOptions=launchOptionsCache;
-    
-    //not sure this is required -- it's being ended in SelectUserViewController?
-    //[director_ end];
     
     director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
     
@@ -169,6 +164,19 @@
     }    
 }
 
+-(void)returnToLogin
+{
+    [navController_.view removeFromSuperview];
+    if (selectUserViewController)
+    {
+        [selectUserViewController release];
+        selectUserViewController = nil;
+    }
+    selectUserViewController = [[SelectUserViewController alloc] init];    
+    [window_ addSubview:selectUserViewController.view];
+    [window_ makeKeyAndVisible];
+}
+
 // Supported orientations: Landscape. Customize it for your own needs
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -179,6 +187,7 @@
 // getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
+    [usersService logProblemAttemptEvent:kProblemAttemptAppResignActive withOptionalNote:nil];
 	if( [navController_ visibleViewController] == director_ )
 		[director_ pause];
 }
@@ -186,18 +195,21 @@
 // call got rejected
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {
+    [usersService logProblemAttemptEvent:kProblemAttemptAppBecomeActive withOptionalNote:nil];
 	if( [navController_ visibleViewController] == director_ )
 		[director_ resume];
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
+    [usersService logProblemAttemptEvent:kProblemAttemptAppEnterBackground withOptionalNote:nil];
 	if( [navController_ visibleViewController] == director_ )
 		[director_ stopAnimation];
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application
 {
+    [usersService logProblemAttemptEvent:kProblemAttemptAppEnterForeground withOptionalNote:nil];
 	if( [navController_ visibleViewController] == director_ )
 		[director_ startAnimation];
 }

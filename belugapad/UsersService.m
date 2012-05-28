@@ -9,6 +9,7 @@
 #import "UsersService.h"
 #import "Device.h"
 #import "User.h"
+#import "UserSession.h"
 #import "Problem.h"
 #import "ProblemAttempt.h"
 #import "AppDelegate.h"
@@ -20,19 +21,18 @@
 NSString * const kRemoteUsersDatabaseURI = @"http://u.zubi.me:5984/blm-users";
 NSString * const kLocalUserDatabaseName = @"users";
 NSString * const kDefaultDesignDocName = @"users-views";
-NSString * const kDeviceUsersLastSessionStart = @"device-users-last-session";
+NSString * const kDeviceUsersLastSessionStart = @"most-recent-session-start-per-device-user";
 NSString * const kUsersByNickName = @"users-by-nick-name";
 NSString * const kUsersByNickNamePassword = @"users-by-nick-name-password";
 NSString * const kUsersTimeInPlay = @"users-time-in-play";
 NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
-NSString * const kTotalExpByUser = @"total-exp-by-user";
 
 @interface UsersService()
 {
     @private
     NSString *installationUUID;
     Device *device;
-    NSMutableDictionary *currentUserSession;
+    UserSession *currentUserSession;
     
     CouchDatabase *database;
     CouchReplication *pushReplication;
@@ -40,7 +40,7 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     
     ProblemAttempt *currentProblemAttempt;
 }
--(NSDate*)currentUserSessionStart;
+-(NSString*)generateUUID;
 @end
 
 @implementation UsersService
@@ -48,15 +48,30 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
 @synthesize installationUUID;
 @synthesize currentUser;
 
-// use a dict instead?
-+(NSString*)userEventString:(UserEvents)event
+-(User*)currentUser
 {
-    switch(event)
+    if (!currentUserSession) return nil;
+    return currentUserSession.user;
+}
+
+-(void)setCurrentUser:(User*)ur
+{
+    if (currentUserSession)
     {
-        case kUserEventCompleteProblem:
-            return @"user-complete-problem";
-        case kUserEventCompleteNode:
-            return @"user-complete-node";
+        currentUserSession.dateEnd = [NSDate date];
+        [[currentUserSession save] wait];
+        [currentUserSession release];
+        currentUserSession = nil;
+    }
+    
+    if (ur)
+    {    
+        currentUserSession = [[UserSession alloc] initAndStartSessionForUser:ur onDevice:device];        
+        if (!ur.nodesCompleted)
+        {
+            ur.nodesCompleted = [NSArray array];
+            [[ur save] wait];   
+        }
     }
 }
 
@@ -66,7 +81,8 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     if (self)
     {
         [[CouchModelFactory sharedInstance] registerClass:[Device class] forDocumentType:@"device"];
-        [[CouchModelFactory sharedInstance] registerClass:[User class] forDocumentType:@"user"];        
+        [[CouchModelFactory sharedInstance] registerClass:[User class] forDocumentType:@"user"];
+        [[CouchModelFactory sharedInstance] registerClass:[UserSession class] forDocumentType:@"user session"];
         [[CouchModelFactory sharedInstance] registerClass:[ProblemAttempt class] forDocumentType:@"problem attempt"];
         
         CouchEmbeddedServer *server = [CouchEmbeddedServer sharedInstance];
@@ -110,66 +126,6 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     return self;
 }
 
--(void)addCompletedNodeId:(NSString *)nodeId
-{
-    NSMutableArray *nc;
-    
-    if (!currentUser.nodesCompleted)
-    {
-        nc = [NSMutableArray array];
-    }
-    else
-    {
-        nc = [currentUser.nodesCompleted mutableCopy];
-    }
-    
-    [nc addObject:nodeId];
-    
-    currentUser.nodesCompleted = nc;
-    [[currentUser save] wait];
-}
-
--(BOOL)hasCompletedNodeId:(NSString *)nodeId
-{
-    if (!currentUser.nodesCompleted) return NO;
-    return [currentUser.nodesCompleted containsObject:nodeId];
-}
-
--(User*)currentUser
-{
-    // TODO: This is a quick fix. I've done something wrong. Shouldn't need to store the user on the app delegate
-    AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
-    return  ad.currentUser;
-}
-
--(void)setCurrentUser:(User*)ur
-{
-    NSString *now = [RESTBody JSONObjectWithDate:[NSDate date]];
-    
-    if (currentUser)
-    {
-        [currentUserSession setObject:now forKey:@"endDateTime"];
-        [currentUser release];
-    }
-    
-    if (!ur.nodesCompleted) ur.nodesCompleted = [NSArray array];
-    [[ur save] wait];
-    
-    currentUser = [ur retain];
-    // TODO: This is a quick fix. I've done something wrong. Shouldn't need to store the user on the app delegate
-    AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
-    ad.currentUser = ur;
-    
-    currentUserSession = [NSMutableDictionary dictionary];
-    [currentUserSession setObject:ur.document.documentID forKey:@"userId"];
-    [currentUserSession setObject:now forKey:@"startDateTime"];
-    
-    NSMutableArray *userSessions = [[device.userSessions mutableCopy] autorelease];
-    [userSessions addObject:currentUserSession];
-    device.userSessions = userSessions;
-    [[device save] wait];
-}
-
 -(NSArray*)deviceUsersByLastSessionDate
 {
     // The view named kDeviceUsersLastSessionStart will pull back the most recent session start for each user on each device
@@ -196,6 +152,29 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     return [[users copy] autorelease];
 }
 
+-(NSArray*)deviceUsersByNickName
+{
+    // The view named kDeviceUsersLastSessionStart will pull back the most recent session start for each user on each device
+    // key: [deviceId, userId]      value:sessionStart
+    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kDeviceUsersLastSessionStart];
+    q.groupLevel = 2;
+    q.startKey = [NSArray arrayWithObjects:device.document.documentID, nil];
+    q.endKey = [NSArray arrayWithObjects:device.document.documentID, [NSDictionary dictionary], nil];
+    [[q start] wait];
+    
+    NSMutableArray *users = [NSMutableArray array];
+    for (CouchQueryRow *row in q.rows)
+    {
+        CouchDocument *userDoc = [database documentWithID:row.key1];
+        User *user = [[CouchModelFactory sharedInstance] modelForDocument:userDoc];
+        if (user) [users addObject:user];
+    }
+    
+    return [users sortedArrayUsingComparator:^(id a, id b) {
+        return [[(NSString*)((User*)a).nickName lowercaseString] compare:[(NSString*)((User*)b).nickName lowercaseString]];
+    }];
+}
+
 -(BOOL) nickNameIsAvailable:(NSString*)nickName
 {
     CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersByNickName];
@@ -219,8 +198,8 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
 
 -(User*) createUserWithNickName:(NSString*)nickName
                     andPassword:(NSString*)password
-                    andZubiColor:(NSData*)color // rgba
-               andZubiScreenshot:(UIImage*)image
+                   andZubiColor:(NSData*)color // rgba
+              andZubiScreenshot:(UIImage*)image
 {
     User *u = [[[User alloc] initWithNewDocumentInDatabase:database] autorelease];
     u.nickName = nickName;
@@ -233,112 +212,142 @@ NSString * const kTotalExpByUser = @"total-exp-by-user";
     return u;
 }
 
--(double)currentUserTotalTimeInApp
-{
-    NSString *urId = self.currentUser.document.documentID;
-    
-    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersTimeInPlay];
-    q.groupLevel = 1;
-    q.startKey = [NSArray arrayWithObject:urId];
-    q.endKey = [NSArray arrayWithObjects:urId, [NSDictionary dictionary], nil];
-    [[q start] wait];
-    
-    // should have 1 row returned
-    if (![[q rows] count]) return 0;
-    
-    CouchQueryRow *r = [[q rows].allObjects objectAtIndex:0];
-    return [(NSNumber*)r.value doubleValue];
-}
-
--(NSUInteger)currentUserTotalExp
-{
-    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kTotalExpByUser];
-    q.groupLevel = 1;
-    q.keys = [NSArray arrayWithObject:self.currentUser.document.documentID];
-    [[q start] wait];
-    
-    if (![[q rows] count]) return 0;
-    
-    CouchQueryRow *r = [[q rows].allObjects objectAtIndex:0];
-    return [(NSNumber*)r.value unsignedIntValue];
-}
-
 -(void)startProblemAttempt
 {   
     if (currentProblemAttempt)
     {
-        // TODO: Shouldn't be here. Handle properly
-        [currentProblemAttempt endAttempt:NO];
         [currentProblemAttempt release];
+        currentProblemAttempt = nil;
     }
     
     AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
     ContentService *cs = ad.contentService;
     Problem *currentProblem = cs.currentProblem;
-    
-    User *ur = self.currentUser;
-    
-    // events populated with strings form UsersService#userEvents
-    NSMutableArray *events = [NSMutableArray array];
-    
-    // previously arrays on user doc like topicsStarted, topicsCompleted etc. were updated here
-    //[[ur save] wait];
         
-    currentProblemAttempt = [[ProblemAttempt alloc] initAndStartAttemptForUser:ur
-                                                                    andProblem:currentProblem
-                                                             onStartUserEvents:events];
-}
-
--(void) togglePauseProblemAttempt
-{
-    if (!currentProblemAttempt) return; // TODO: Handle Error properly
-    [currentProblemAttempt togglePause];
-}
-
--(void) endProblemAttempt:(BOOL)success
-{
-    if (!currentProblemAttempt) return; // TODO: Handle Error properly
-    [currentProblemAttempt endAttempt:success];
+    currentProblemAttempt = [[ProblemAttempt alloc] initAndStartAttemptForUserSession:currentUserSession
+                                                                           andProblem:currentProblem
+                                                                     andParentProblem:nil
+                                                                     andGeneratedPDEF:cs.currentStaticPdef];
     
-    User *ur = self.currentUser;
-
-    if (success)
-    {
-        // N.B. previously logging events on currentProblemAttempt relating to completing topics/modules/elements
-        //    AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
-        //    ContentService *cs = ad.contentService;
-        //    CouchDatabase *contentDb = [cs Database];
-        //    Problem *p = [[CouchModelFactory sharedInstance] modelForDocument:[contentDb documentWithID:currentProblemAttempt.problemId]];
-        
-        // events populated with strings from UsersService#userEventString
-        NSMutableArray *events = [NSMutableArray arrayWithObject:[UsersService userEventString:kUserEventCompleteProblem]];
-        
-        currentProblemAttempt.onEndUserEvents = events;
-    }
-    [[ur save] wait];
+    [self logProblemAttemptEvent:kProblemAttemptStart withOptionalNote:nil];
     [[currentProblemAttempt save] wait];
-    [currentProblemAttempt release];
-    currentProblemAttempt = nil;
 }
 
--(NSDate*)currentUserSessionStart
+-(void)logProblemAttemptEvent:(ProblemAttemptEvent)event
+             withOptionalNote:(NSString*)note
 {
-    if (!self.currentUser) return nil; // TODO: handle properly - error
+    if (!currentProblemAttempt) return;
     
-    NSString *urId = self.currentUser.document.documentID;
+    NSString *eventString = nil;
+    switch (event) {
+        case kProblemAttemptStart:
+            eventString = @"PROBLEM_ATTEMPT_START";
+            break;
+        case kProblemAttemptUserPause:
+            eventString = @"PROBLEM_ATTEMPT_USER_PAUSE";
+            break;
+        case kProblemAttemptUserResume:
+            eventString = @"PROBLEM_ATTEMPT_USER_RESUME";
+            break;
+        case kProblemAttemptAppResignActive:
+            eventString = @"APP_RESIGN_ACTIVE";
+            break;
+        case kProblemAttemptAppBecomeActive:
+            eventString = @"APP_BECOME_ACTIVE";
+            break;
+        case kProblemAttemptAppEnterBackground:
+            eventString = @"APP_ENTER_BACKGROUND";
+            break;
+        case kProblemAttemptAppEnterForeground:
+            eventString = @"APP_ENTER_FOREGROUND";
+            break;
+        case kProblemAttemptAbandonApp:
+            eventString = @"ABANDON_APP";
+            break;
+        case kProblemAttemptSuccess:
+            eventString = @"PROBLEM_ATTEMPT_SUCCESS";
+            break;
+        case kProblemAttemptExitToMap:
+            eventString = @"PROBLEM_ATTEMPT_EXIT_TO_MAP";
+            break;
+        case kProblemAttemptExitLogOut:
+            eventString = @"PROBLEM_ATTEMPT_EXIT_LOG_OUT";
+            break;
+        case kProblemAttemptUserReset:
+            eventString = @"PROBLEM_ATTEMPT_USER_RESET";
+            break;
+        case kProblemAttemptSkip:
+            eventString = @"PROBLEM_ATTEMPT_SKIP";
+            break;
+        case kProblemAttemptSkipWithSuggestion:
+            eventString = @"PROBLEM_ATTEMPT_SKIP_WITH_SUGGESTION";
+            break;
+        case kProblemAttemptSkipDebug:
+            eventString = @"PROBLEM_ATTEMPT_SKIP_DEBUG";
+            break;
+        case kProblemAttemptFail:
+            eventString = @"PROBLEM_ATTEMPT_FAIL";
+            break;
+        case kProblemAttemptFailWithChildProblem:
+            eventString = @"PROBLEM_ATTEMPT_FAIL_WITH_CHILD_PROBLEM";
+            break;            
+        default:
+            // TODO: ERROR - LOG TO DATABASE!
+            break;
+    }
+    if (eventString)
+    { 
+        NSMutableArray *events = [[currentProblemAttempt.events mutableCopy] autorelease];
+        NSDictionary *e = [NSDictionary dictionaryWithObjectsAndKeys:
+                                eventString, @"eventType",
+                                [RESTBody JSONObjectWithDate:[NSDate date]], @"date",
+                                note, @"note", nil];
+        [events addObject:e];
+        currentProblemAttempt.events = events;
+        [[currentProblemAttempt save] wait];
+    }
+}
+
+-(void)addCompletedNodeId:(NSString *)nodeId
+{
+    NSMutableArray *nc;
     
-    NSDictionary *currentSession = [device.userSessions lastObject];
-    if (!currentSession || ![urId isEqualToString:[currentSession objectForKey:@"userId"]])
+    if (!currentUser.nodesCompleted)
     {
-        // TODO: error - handle properly
-        return nil;
+        nc = [NSMutableArray array];
+    }
+    else
+    {
+        nc = [currentUser.nodesCompleted mutableCopy];
     }
     
-    return [RESTBody dateWithJSONObject:[currentSession objectForKey:@"startDateTime"]];
+    [nc addObject:nodeId];
+    
+    currentUser.nodesCompleted = nc;
+    [[currentUser save] wait];
+}
+
+-(BOOL)hasCompletedNodeId:(NSString *)nodeId
+{
+    if (!currentUser.nodesCompleted) return NO;
+    return [currentUser.nodesCompleted containsObject:nodeId];
+}
+
+-(NSString*)generateUUID
+{
+    CFUUIDRef UUIDRef = CFUUIDCreate(kCFAllocatorDefault);
+    CFStringRef UUIDSRef = CFUUIDCreateString(kCFAllocatorDefault, UUIDRef);
+    NSString *uuid = [NSString stringWithFormat:@"%@", UUIDSRef];
+    
+    CFRelease(UUIDRef);
+    CFRelease(UUIDSRef);
+    
+    return uuid;
 }
 
 -(void)dealloc
 {
+    if (currentUserSession) [currentUserSession release];
     [device release];
     [pushReplication release];
     [pullReplication release];

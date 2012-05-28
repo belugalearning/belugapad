@@ -7,31 +7,22 @@
 //
 
 #import <CouchCocoa/CouchCocoa.h>
-@class User, Problem;
+#import "UsersService.h"
+@class UserSession, Problem;
 
 @interface ProblemAttempt : CouchModel
 
 @property (retain) NSString *type;
-@property (retain) User *user;
-@property (retain) NSString *userNickName;
+@property (retain) UserSession *userSession;
 @property (retain) Problem *problem;
 @property (retain) NSString *problemRev;
-@property (retain) NSDate *dateTimeStart;
-@property (retain) NSDate *dateTimeEnd;
-@property (retain) NSArray *onStartUserEvents;
-@property (retain) NSArray *onEndUserEvents;
-@property (retain) NSArray *pauses;
-@property  NSTimeInterval timeInPlay;
-@property bool success;
-@property (retain) NSArray *interactionEvents;
-@property (retain) NSArray *pointsAwarded;
+@property (retain) Problem *parentProblem;
+@property (retain) NSString *parentProblemRev;
+@property (retain) NSArray *events;
 
-- (id) initAndStartAttemptForUser:(User*)user
-                       andProblem:(Problem*)problem
-                onStartUserEvents:(NSArray*)events;
-
--(void) endAttempt:(BOOL)success;
-
--(void) togglePause;
+- (id) initAndStartAttemptForUserSession:(UserSession*)userSession
+                              andProblem:(Problem*)problem
+                        andParentProblem:(Problem*)parentProblem
+                        andGeneratedPDEF:(NSDictionary*)pdef;
 
 @end

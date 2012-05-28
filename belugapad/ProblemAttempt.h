@@ -18,12 +18,11 @@
 @property (retain) NSString *problemRev;
 @property (retain) Problem *parentProblem;
 @property (retain) NSString *parentProblemRev;
-@property (retain) NSString *generatedPDEF;
 @property (retain) NSArray *events;
 
 - (id) initAndStartAttemptForUserSession:(UserSession*)userSession
                               andProblem:(Problem*)problem
                         andParentProblem:(Problem*)parentProblem
-                        andGeneratedPDEF:(NSString*)pdef;
+                        andGeneratedPDEF:(NSDictionary*)pdef;
 
 @end

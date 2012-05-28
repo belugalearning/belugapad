@@ -198,7 +198,7 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     currentProblemAttempt = [[ProblemAttempt alloc] initAndStartAttemptForUserSession:currentUserSession
                                                                            andProblem:currentProblem
                                                                      andParentProblem:nil
-                                                                     andGeneratedPDEF:nil];
+                                                                     andGeneratedPDEF:cs.currentStaticPdef];
     
     [self logProblemAttemptEvent:kProblemAttemptStart withOptionalNote:nil];
     [[currentProblemAttempt save] wait];

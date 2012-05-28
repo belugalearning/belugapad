@@ -27,13 +27,12 @@
 @dynamic problemRev;
 @dynamic parentProblem;
 @dynamic parentProblemRev;
-@dynamic generatedPDEF;
 @dynamic events;
 
 - (id) initAndStartAttemptForUserSession:(UserSession*)userSession
                               andProblem:(Problem*)problem
                         andParentProblem:(Problem*)parentProblem
-                        andGeneratedPDEF:(NSString*)pdef
+                        andGeneratedPDEF:(NSDictionary*)pdef
 {
     self = [super initWithDocument: nil];
     if (self)
@@ -48,8 +47,14 @@
             self.parentProblem = parentProblem;
             self.parentProblemRev = [parentProblem.document propertyForKey:@"_rev"];
         }
-        self.generatedPDEF = pdef; 
-        self.events = [NSMutableArray array];
+        self.events = [NSMutableArray array];        
+        if (pdef)
+        {
+            NSString *libDir = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+            NSString *filePath = [NSString stringWithFormat:@"%@/pdef.plist", libDir];
+            [pdef writeToFile:filePath atomically:NO];
+            [self createAttachmentWithName:@"pdef.plist" type:@"application/xml" body:[NSData dataWithContentsOfFile:filePath]];
+        }
     }
     return self;
 }

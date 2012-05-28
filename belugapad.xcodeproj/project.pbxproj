@@ -313,6 +313,7 @@
 		7FC27F72150FAB4400E16A44 /* NLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F71150FAB4300E16A44 /* NLine.m */; };
 		7FC27F7F150FB19B00E16A44 /* BNLineRamblerInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F7E150FB19B00E16A44 /* BNLineRamblerInput.m */; };
 		7FC27F82150FB1AD00E16A44 /* BNLineRamblerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F81150FB1AD00E16A44 /* BNLineRamblerRender.m */; };
+		7FC642941572F64A0043D575 /* BLFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC642931572F64A0043D575 /* BLFiles.m */; };
 		7FCBC3E415100CF700066426 /* BATio.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E315100CF700066426 /* BATio.m */; };
 		7FCBC3E815100F3D00066426 /* MathMLConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E715100F3D00066426 /* MathMLConsts.m */; };
 		7FCBC3EB1510195F00066426 /* ExprIOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3EA1510195F00066426 /* ExprIOTests.m */; };
@@ -923,6 +924,8 @@
 		7FC27F7E150FB19B00E16A44 /* BNLineRamblerInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNLineRamblerInput.m; sourceTree = "<group>"; };
 		7FC27F80150FB1AD00E16A44 /* BNLineRamblerRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNLineRamblerRender.h; sourceTree = "<group>"; };
 		7FC27F81150FB1AD00E16A44 /* BNLineRamblerRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNLineRamblerRender.m; sourceTree = "<group>"; };
+		7FC642921572F64A0043D575 /* BLFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLFiles.h; sourceTree = "<group>"; };
+		7FC642931572F64A0043D575 /* BLFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLFiles.m; sourceTree = "<group>"; };
 		7FCBC3E215100CF700066426 /* BATio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATio.h; sourceTree = "<group>"; };
 		7FCBC3E315100CF700066426 /* BATio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATio.m; sourceTree = "<group>"; };
 		7FCBC3E615100F3D00066426 /* MathMLConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathMLConsts.h; sourceTree = "<group>"; };
@@ -1984,6 +1987,8 @@
 			children = (
 				7FABE6BD14B661B400ED2D0C /* BLMath.h */,
 				7FABE6BE14B661B400ED2D0C /* BLMath.m */,
+				7FC642921572F64A0043D575 /* BLFiles.h */,
+				7FC642931572F64A0043D575 /* BLFiles.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -2588,6 +2593,7 @@
 				55AFD6AE15651C4700FF1886 /* BTTTileObjectRender.m in Sources */,
 				55AFD6B115651C5500FF1886 /* BTTTileTouch.m in Sources */,
 				7F2317C5156FA13400E2C941 /* NordicAnimator.m in Sources */,
+				7FC642941572F64A0043D575 /* BLFiles.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2726,6 +2732,7 @@
 					"/usr/include/libxml2/**",
 					"\"belugapad/kazmath/include\"/**",
 					"\"belugapad/Chipmunk/include/chipmunk\"/**",
+					"$(SDKROOT)/usr/include/libxml2/**",
 				);
 				INFOPLIST_FILE = belugapad/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
@@ -2760,6 +2767,7 @@
 					"/usr/include/libxml2/**",
 					"\"belugapad/kazmath/include\"/**",
 					"\"belugapad/Chipmunk/include/chipmunk\"/**",
+					"$(SDKROOT)/usr/include/libxml2/**",
 				);
 				INFOPLIST_FILE = belugapad/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;

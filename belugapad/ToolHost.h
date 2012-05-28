@@ -116,6 +116,8 @@ typedef enum {
     int animPos;
     
     int currentToolDepth;
+    
+    NSString *touchLogPath;
 }
 
 @property (retain) Daemon *Zubi;

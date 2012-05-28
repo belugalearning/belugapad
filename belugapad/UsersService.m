@@ -61,12 +61,18 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
         currentUserSession.dateEnd = [NSDate date];
         [[currentUserSession save] wait];
         [currentUserSession release];
+        currentUserSession = nil;
     }
     
-    currentUserSession = [[UserSession alloc] initAndStartSessionForUser:ur onDevice:device];
-    
-    if (!ur.nodesCompleted) ur.nodesCompleted = [NSArray array];
-    [[ur save] wait];
+    if (ur)
+    {    
+        currentUserSession = [[UserSession alloc] initAndStartSessionForUser:ur onDevice:device];        
+        if (!ur.nodesCompleted)
+        {
+            ur.nodesCompleted = [NSArray array];
+            [[ur save] wait];   
+        }
+    }
 }
 
 -(id)init
@@ -169,8 +175,8 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 
 -(User*) createUserWithNickName:(NSString*)nickName
                     andPassword:(NSString*)password
-                    andZubiColor:(NSData*)color // rgba
-               andZubiScreenshot:(UIImage*)image
+                   andZubiColor:(NSData*)color // rgba
+              andZubiScreenshot:(UIImage*)image
 {
     User *u = [[[User alloc] initWithNewDocumentInDatabase:database] autorelease];
     u.nickName = nickName;

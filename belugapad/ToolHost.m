@@ -480,13 +480,18 @@ static float kMoveToNextProblemTime=2.0f;
         [pauseLayer setVisible:NO];
         isPaused=NO;
     }
-    if(CGRectContainsPoint(kPauseMenuMenu,location))
+    if(CGRectContainsPoint(kPauseMenuMenu, location))
     {
         [usersService logProblemAttemptEvent:kProblemAttemptExitToMap withOptionalNote:nil];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self returnToMenu];
-
-
+    }
+    if(CGRectContainsPoint((CGRect){{400.0f,559.5f},{250.0f,45.0f}}, location))
+    {
+        [usersService logProblemAttemptEvent:kProblemAttemptExitLogOut withOptionalNote:nil];
+        usersService.currentUser = nil;
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
+        [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
     }
     if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
     {

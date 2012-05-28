@@ -34,5 +34,6 @@
 @property (nonatomic, readonly) UsersService *usersService;
 
 -(void)proceedFromLoginViaIntro:(BOOL)viaIntro;
+-(void)returnToLogin;
 
 @end

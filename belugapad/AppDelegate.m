@@ -76,7 +76,6 @@
         //director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
         //[director_ enableRetinaDisplay:NO];
         
-        //[self proceedFromLoginViaIntro:YES];
         selectUserViewController = [[SelectUserViewController alloc] init];
         
         [self.window addSubview:selectUserViewController.view];
@@ -90,9 +89,6 @@
 {
     //no purpose in getting this -- it's not used
     //NSDictionary *launchOptions=launchOptionsCache;
-    
-    //not sure this is required -- it's being ended in SelectUserViewController?
-    //[director_ end];
     
     director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
     
@@ -166,6 +162,19 @@
     {
         [director_ pushScene:[JourneyScene scene]];
     }    
+}
+
+-(void)returnToLogin
+{
+    [navController_.view removeFromSuperview];
+    if (selectUserViewController)
+    {
+        [selectUserViewController release];
+        selectUserViewController = nil;
+    }
+    selectUserViewController = [[SelectUserViewController alloc] init];    
+    [window_ addSubview:selectUserViewController.view];
+    [window_ makeKeyAndVisible];
 }
 
 // Supported orientations: Landscape. Customize it for your own needs

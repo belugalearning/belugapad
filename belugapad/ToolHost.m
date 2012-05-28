@@ -26,6 +26,7 @@
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchModelFactory.h>
 #import "NordicAnimator.h"
+#import "BLFiles.h"
 
 @interface ToolHost()
 {
@@ -79,6 +80,8 @@ static float kMoveToNextProblemTime=2.0f;
         
         [animator animateBackgroundIn];
         animPos=1;
+        
+        [self setupTouchLogging];
         
         //[self scheduleOnce:@selector(moveToTool1:) delay:1.5f];
         
@@ -1213,6 +1216,32 @@ static float kMoveToNextProblemTime=2.0f;
 
 }
 
+-(void)setupTouchLogging
+{
+    //get logging path
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    touchLogPath=[documentsDirectory stringByAppendingPathComponent:[[BLFiles generateUuidString] stringByAppendingString:@".log"]];
+    [touchLogPath retain];
+    
+    NSString *header=[NSString stringWithFormat:@"logging at %f: ", [[NSDate date] timeIntervalSince1970]];
+    [header writeToFile:touchLogPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+}
+
+-(void)logTouches:(NSSet*)touches forEvent:(NSString*)event
+{
+    NSString *item=[event copy];
+    
+    for (UITouch *t in touches) {
+        item=[item stringByAppendingString:[NSString stringWithFormat:@"{%@,%@},", NSStringFromCGPoint([t locationInView:t.view]), NSStringFromCGPoint([t previousLocationInView:t.view])]];
+    }
+    
+    NSFileHandle *myHandle = [NSFileHandle fileHandleForUpdatingAtPath:touchLogPath];
+    [myHandle seekToEndOfFile];
+    [myHandle writeData:[item dataUsingEncoding:NSUTF8StringEncoding]];
+    [myHandle closeFile];
+}
+
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch=[touches anyObject];
@@ -1220,6 +1249,7 @@ static float kMoveToNextProblemTime=2.0f;
     location=[[CCDirector sharedDirector] convertToGL:location];
     lastTouch=location;
 
+    [self logTouches:touches forEvent:@"b"];
     //testing block for stepping between tool positions
 //    if(animPos==0)
 //    {
@@ -1274,6 +1304,8 @@ static float kMoveToNextProblemTime=2.0f;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    
+    [self logTouches:touches forEvent:@"m"];
     
     if(isPaused)
     {
@@ -1350,6 +1382,8 @@ static float kMoveToNextProblemTime=2.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
+    [self logTouches:touches forEvent:@"e"];
+    
     // if we're paused - check if any menu options were valid.
     // touches ended event becase otherwise these touches go through to the tool
     if(isPaused)
@@ -1377,6 +1411,8 @@ static float kMoveToNextProblemTime=2.0f;
 {
     if(npMove)npMove=nil;
     [currentTool ccTouchesCancelled:touches withEvent:event];
+    
+    [self logTouches:touches forEvent:@"c"];
 }
 
 -(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event

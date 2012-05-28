@@ -152,6 +152,29 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     return [[users copy] autorelease];
 }
 
+-(NSArray*)deviceUsersByNickName
+{
+    // The view named kDeviceUsersLastSessionStart will pull back the most recent session start for each user on each device
+    // key: [deviceId, userId]      value:sessionStart
+    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kDeviceUsersLastSessionStart];
+    q.groupLevel = 2;
+    q.startKey = [NSArray arrayWithObjects:device.document.documentID, nil];
+    q.endKey = [NSArray arrayWithObjects:device.document.documentID, [NSDictionary dictionary], nil];
+    [[q start] wait];
+    
+    NSMutableArray *users = [NSMutableArray array];
+    for (CouchQueryRow *row in q.rows)
+    {
+        CouchDocument *userDoc = [database documentWithID:row.key1];
+        User *user = [[CouchModelFactory sharedInstance] modelForDocument:userDoc];
+        if (user) [users addObject:user];
+    }
+    
+    return [users sortedArrayUsingComparator:^(id a, id b) {
+        return [[(NSString*)((User*)a).nickName lowercaseString] compare:[(NSString*)((User*)b).nickName lowercaseString]];
+    }];
+}
+
 -(BOOL) nickNameIsAvailable:(NSString*)nickName
 {
     CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersByNickName];

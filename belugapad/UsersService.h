@@ -35,6 +35,7 @@ typedef enum {
 @property (retain, nonatomic) User *currentUser;
 
 -(NSArray*)deviceUsersByLastSessionDate;
+-(NSArray*)deviceUsersByNickName;
 
 -(BOOL) nickNameIsAvailable:(NSString*)nickName;
 

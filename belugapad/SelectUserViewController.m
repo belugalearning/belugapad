@@ -22,7 +22,7 @@
     UsersService *usersService;
     unsigned char zubiColorRGBAByteData[4];
     
-    NSArray *deviceUsersByLastSession;
+    NSArray *deviceUsers;
     IBOutlet UITableView *selectUserTableView;
     UIButton *newUserButton;
     UIButton *existingUserButton;
@@ -65,9 +65,8 @@
     [self buildLoadExistingUserView];
     
     AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];    
-    deviceUsersByLastSession = [[ad.usersService deviceUsersByLastSessionDate] retain];
-    [self setActiveView:selectUserView];
-    
+    deviceUsers = [[ad.usersService deviceUsersByNickName] retain];
+    [self setActiveView:selectUserView];    
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -133,7 +132,7 @@
 #pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [deviceUsersByLastSession count];
+    return [deviceUsers count];
 }
 
  - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -153,7 +152,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    User *user = [deviceUsersByLastSession objectAtIndex:indexPath.row];     
+    User *user = [deviceUsers objectAtIndex:indexPath.row];     
     cell.textLabel.text = user.nickName;
     cell.imageView.image = user.zubiScreenshot;
     return cell;
@@ -163,7 +162,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    User *user = [deviceUsersByLastSession objectAtIndex:indexPath.row];
+    User *user = [deviceUsers objectAtIndex:indexPath.row];
     usersService.currentUser = user;
     [self.view removeFromSuperview];
     [app proceedFromLoginViaIntro:NO];
@@ -380,7 +379,7 @@
 - (void)dealloc
 {
     [[CCDirector sharedDirector] end];
-    [deviceUsersByLastSession release];
+    [deviceUsers release];
     if (colorWheel) [colorWheel removeObserver:self forKeyPath:@"lastColorRGBAData"];
     [backgroundImageView release];
     [newUserNameTF release];
@@ -394,8 +393,8 @@
 - (void)viewDidUnload
 {
     [[CCDirector sharedDirector] end];
-    [deviceUsersByLastSession release];
-    deviceUsersByLastSession = nil;
+    [deviceUsers release];
+    deviceUsers = nil;
     if (colorWheel) [colorWheel removeObserver:self forKeyPath:@"lastColorRGBAData"];
     [backgroundImageView release];
     backgroundImageView = nil;

@@ -245,7 +245,7 @@ const float kScaleOfLesserBlocks=0.6f;
     if(!marker && !markerText)
     {
         marker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
-        [marker setPosition:ccp(line.position.x-(line.contentSize.width/2), line.position.y+30)];
+        [marker setPosition:[topSection convertToWorldSpace:ccp(line.position.x-(line.contentSize.width/2), line.position.y+30)]];
         markerText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
         [markerText setPosition:ccp(10,65)];    
         [marker addChild:markerText];
@@ -253,7 +253,7 @@ const float kScaleOfLesserBlocks=0.6f;
     }
     
     cumulativeTotal=0;
-    CGPoint markerPos;
+    CGPoint markerPos=CGPointZero;
     float currentYScale=1.0f;
     float startBase=0;
     
@@ -274,7 +274,7 @@ const float kScaleOfLesserBlocks=0.6f;
         // then set the options on our current iteration
         CCSprite *curSprite=[[renderedBlocks objectAtIndex:i]objectForKey:MY_SPRITE];
         [curSprite setScaleY:currentYScale];
-        [curSprite setPosition:ccp(curOffset+line.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2)-(line.contentSize.width/2)+cumulativeTotal, line.position.y+((curSprite.contentSize.height*curSprite.scaleY)/2)-20)];
+        [curSprite setPosition:[topSection convertToWorldSpace:ccp(curOffset+line.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2)-(line.contentSize.width/2)+cumulativeTotal, line.position.y+((curSprite.contentSize.height*curSprite.scaleY)/2)-20)]];
         if(renderBlockLabels)
         {
             for(CCLabelTTF *lbl in curSprite.children)
@@ -286,6 +286,8 @@ const float kScaleOfLesserBlocks=0.6f;
         cumulativeTotal=cumulativeTotal+(curSprite.contentSize.width*curSprite.scaleX);
         markerPos=ccp(curSprite.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2), curSprite.position.y+40);
     }
+    if(markerPos.x==0 && markerPos.y==0)[marker setVisible:NO];
+    else [marker setVisible:YES];
     [self updateLabels:markerPos];
 }
 
@@ -549,19 +551,25 @@ const float kScaleOfLesserBlocks=0.6f;
 
         //the quantity of increments moved
         float floatNumberPos=fabsf(diff.x)/kSpaceBetweenNumbers;
+        NSLog(@"qty of increment = %f", floatNumberPos);
         
         //the remainder of the movement past the last whole increment
         float remainder=floatNumberPos - (int)floatNumberPos;
+        NSLog(@"remainder = %f, floatpos %f, currentpos %d", remainder, floatNumberPos, currentNumberPos);
         
         //by how much should the line be incremented
         int incrementor=0;
         
         //round up
-        if(remainder>0.5f)
+        if(remainder>0.5f && currentNumberPos!=(int)floatNumberPos)
             incrementor=(int)floatNumberPos+1;
+        //if(remainder>0.7f<1.0f)
+        //    incrementor=0;
         //round down
         else
             incrementor=(int)floatNumberPos;
+        
+        NSLog(@"incrementor %d", incrementor);
         
         //if the diff in x is positive, the number wants to go up (end point of x is less that of start point) 
         if(diff.x > 0) // incrementing line

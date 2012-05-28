@@ -44,7 +44,8 @@
     
     if(messageType==kDWunsetMountedObject)
     {
-        DWGameObject *removeO=[payload objectForKey:MOUNTED_OBJECT];
+        DWPartitionObjectGameObject *removeO=[payload objectForKey:MOUNTED_OBJECT];
+        removeO.Mount=nil;
         
         [prgo.MountedObjects removeObject:removeO];
     }

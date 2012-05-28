@@ -30,8 +30,19 @@ typedef enum {
     kProblemAttemptFail,
     kProblemAttemptFailWithChildProblem,
     kProblemAttemptUserCommit,
-    
     kProblemAttemptToolHostPinch,
+    kProblemAttemptNumberPickerNumberFromPicker,
+    kProblemAttemptNumberPickerNumberFromRegister,
+    kProblemAttemptNumberPickerNumberMove,
+    kProblemAttemptNumberPickerNumberDelete,
+    kProblemAttemptMetaQuestionChangeAnswer,
+    kProblemAttemptPartitionToolTouchBeganOnCagedObject,
+    kProblemAttemptPartitionToolTouchMovedMoveBlock,
+    kProblemAttemptPartitionToolTouchBeganOnRow,
+    kProblemAttemptPartitionToolTouchEndedOnRow,
+    kProblemAttemptPartitionToolTouchEndedInSpace,
+    kProblemAttemptPartitionToolTouchBeganOnLockedRow
+
 } ProblemAttemptEvent;
 
 @interface UsersService : NSObject

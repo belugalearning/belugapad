@@ -298,6 +298,51 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
         case kProblemAttemptToolHostPinch:
             eventString = @"PROBLEM_ATTEMPT_TOOLHOST_PINCH";
             break;
+            
+        case kProblemAttemptNumberPickerNumberFromPicker:
+            eventString = @"PROBLEM_ATTEMPT_NUMBERPICKER_NUMBER_FROM_PICKER";
+            break;
+            
+        case kProblemAttemptNumberPickerNumberFromRegister:
+            eventString = @"PROBLEM_ATTEMPT_NUMBERPICKER_NUMBER_FROM_REGISTER";
+            break;
+            
+        case kProblemAttemptNumberPickerNumberMove:
+            eventString = @"PROBLEM_ATTEMPT_NUMBERPICKER_NUMBER_MOVE";
+            break;
+            
+        case kProblemAttemptNumberPickerNumberDelete:
+            eventString = @"PROBLEM_ATTEMPT_NUMBERPICKER_NUMBER_DELETE";
+            break;
+            
+        case kProblemAttemptMetaQuestionChangeAnswer:
+            eventString = @"PROBLEM_ATTEMPT_METAQUESTION_CHANGE_ANSWER";
+            break;
+            
+        case kProblemAttemptPartitionToolTouchBeganOnCagedObject:
+            eventString = @"PROBLEM_ATTEMPT_PARTITIONTOOL_TOUCH_BEGAN_ON_CAGED_OBJECT";
+            break;
+            
+        case kProblemAttemptPartitionToolTouchMovedMoveBlock:
+            eventString = @"PROBLEM_ATTEMPT_PARTITIONTOOL_TOUCH_MOVED_MOVE_BLOCK";
+            break;
+            
+        case kProblemAttemptPartitionToolTouchBeganOnRow:
+            eventString = @"PROBLEM_ATTEMPT_PARTITIONTOOL_TOUCH_BEGAN_ON_ROW";
+            break;
+            
+        case kProblemAttemptPartitionToolTouchEndedOnRow:
+            eventString = @"PROBLEM_ATTEMPT_PARTITIONTOOL_TOUCH_ENDED_ON_ROW";
+            break;
+            
+        case kProblemAttemptPartitionToolTouchEndedInSpace:
+            eventString = @"PROBLEM_ATTEMPT_PARTITIONTOOL_TOUCH_ENDED_IN_SPACE";
+            break;
+            
+        case kProblemAttemptPartitionToolTouchBeganOnLockedRow:
+            eventString = @"PROBLEM_ATTEMPT_PARTITIONTOOL_TOUCH_BEGAN_ON_LOCKED_ROW";
+            break;
+            
         default:
             // TODO: ERROR - LOG TO DATABASE!
             break;

@@ -18,6 +18,17 @@
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
+#import "UsersService.h"
+#import "AppDelegate.h"
+
+@interface PartitionTool()
+{
+@private
+    ContentService *contentService;
+    UsersService *usersService;
+}
+
+@end
 
 @implementation PartitionTool
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
@@ -47,6 +58,9 @@
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
         
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        contentService = ac.contentService;
+        usersService = ac.usersService;
         
         [gw Blackboard].hostCX = cx;
         [gw Blackboard].hostCY = cy;
@@ -213,6 +227,11 @@
         gw.Blackboard.DropObject=nil;
         gw.Blackboard.PickupOffset = location;
         
+        // check where our object was - no mount = cage. mount = row.
+        DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
+        if(pogo.Mount) [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchBeganOnRow withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%f}",pogo.ObjectValue]];
+        else [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchBeganOnCagedObject withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%f}",pogo.ObjectValue]];
+        
         previousMount=((DWPartitionObjectGameObject*)gw.Blackboard.PickupObject).Mount;
         
         [((DWPartitionObjectGameObject*)gw.Blackboard.PickupObject) handleMessage:kDWunsetMount];
@@ -244,6 +263,10 @@
         
         
         DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
+
+        [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchMovedMoveBlock withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%f}",pogo.ObjectValue]];
+
+        
         pogo.MovePosition = location;
         [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToPosition];
         
@@ -271,10 +294,11 @@
     {
         gw.Blackboard.DropObject = nil;
         [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
+        DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
         
         if([gw Blackboard].DropObject!=nil)
         {
-            DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
+
             DWPartitionRowGameObject *prgo = (DWPartitionRowGameObject*)[gw Blackboard].DropObject;
             
             [pogo handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:prgo forKey:MOUNT] withLogLevel:-1];
@@ -284,10 +308,16 @@
             if(((DWPartitionObjectGameObject*)gw.Blackboard.PickupObject).InitedObject)
             {
                 [gw.Blackboard.PickupObject handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:previousMount forKey:MOUNT] withLogLevel:0];
+                
+                // touch ended on a row so we've set it. log it's value
+                [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchEndedOnRow withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%f}",pogo.ObjectValue]];
             }
             else {
                 [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToHome];
-                [gw handleMessage:kDWhighlight andPayload:nil withLogLevel:-1];                
+                [gw handleMessage:kDWhighlight andPayload:nil withLogLevel:-1];  
+                
+                // log that we dropped into space
+                [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchEndedInSpace withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%f}",pogo.ObjectValue]];
             }
         }
     }

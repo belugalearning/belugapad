@@ -290,7 +290,14 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
             break;
         case kProblemAttemptFailWithChildProblem:
             eventString = @"PROBLEM_ATTEMPT_FAIL_WITH_CHILD_PROBLEM";
-            break;            
+            break;
+        case kProblemAttemptUserCommit:
+            eventString = @"PROBLEM_ATTEMPT_USER_COMMIT";
+            break;
+            
+        case kProblemAttemptToolHostPinch:
+            eventString = @"PROBLEM_ATTEMPT_TOOLHOST_PINCH";
+            break;
         default:
             // TODO: ERROR - LOG TO DATABASE!
             break;

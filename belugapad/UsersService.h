@@ -28,7 +28,10 @@ typedef enum {
     kProblemAttemptSkipWithSuggestion,
     kProblemAttemptSkipDebug,
     kProblemAttemptFail,
-    kProblemAttemptFailWithChildProblem
+    kProblemAttemptFailWithChildProblem,
+    kProblemAttemptUserCommit,
+    
+    kProblemAttemptToolHostPinch,
 } ProblemAttemptEvent;
 
 @interface UsersService : NSObject

@@ -885,6 +885,9 @@ static float kMoveToNextProblemTime=2.0f;
         {
             [self playAudioPress];
             
+            //effective user commit of number picker
+            [usersService logProblemAttemptEvent:kProblemAttemptUserCommit withOptionalNote:nil];
+            
             [self evalNumberPicker];
         }
     }
@@ -1068,6 +1071,9 @@ static float kMoveToNextProblemTime=2.0f;
 {
     if (CGRectContainsPoint(kRectButtonCommit, location) && mqEvalMode==kMetaQuestionEvalOnCommit)
     {
+        //effective user commit
+        [usersService logProblemAttemptEvent:kProblemAttemptUserCommit withOptionalNote:nil];
+        
         [self evalMetaQuestion];
     }
     if(metaQuestionForThisProblem)
@@ -1284,6 +1290,9 @@ static float kMoveToNextProblemTime=2.0f;
     {
         [self playAudioPress];
         
+        //effective user commit
+        [usersService logProblemAttemptEvent:kProblemAttemptUserCommit withOptionalNote:nil];
+        
         [currentTool evalProblem];
     }
     if (location.x > 944 && location.y > 688 && !isPaused)
@@ -1354,6 +1363,9 @@ static float kMoveToNextProblemTime=2.0f;
         
         
         scale+=(scaleChange / cx);
+        
+        [usersService logProblemAttemptEvent:kProblemAttemptToolHostPinch withOptionalNote:[NSString stringWithFormat:@"scale: %f", scale]];
+        
         if(currentTool.PassThruScaling) [currentTool handlePassThruScaling:scale];
         else {
             if(scale<currentTool.ScaleMin) scale=currentTool.ScaleMin;

@@ -37,6 +37,7 @@ extern const CGPoint kDebugProblemLabelPos;
 extern const float kScheduleUpdateLoopTFPS;
 extern const float kButtonToolbarHitBaseYOffset;
 extern const float kButtonNextToolHitXOffset;
+extern const float kLabelTitleXMarginProp;
 extern const float kLabelSubTitleYOffsetHalfProp;
 extern const float kLabelTitleYOffsetHalfProp;
 extern const ccColor3B kLabelTitleColor;

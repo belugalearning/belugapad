@@ -559,8 +559,10 @@ static float kMoveToNextProblemTime=2.0f;
     
     NSString *labelDesc=[self.DynProblemParser parseStringFromValueWithKey:PROBLEM_DESCRIPTION inDef:curpdef];
     
-    problemDescLabel=[CCLabelTTF labelWithString:labelDesc fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    //problemDescLabel=[CCLabelTTF labelWithString:labelDesc fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    problemDescLabel=[CCLabelTTF labelWithString:labelDesc dimensions:CGSizeMake(lx*kLabelTitleXMarginProp, cy) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
     [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
+    //[problemDescLabel setPosition:ccp(cx, cy)];
     //[problemDescLabel setColor:kLabelTitleColor];
     [problemDescLabel setTag:3];
     [problemDescLabel setOpacity:0];
@@ -594,8 +596,10 @@ static float kMoveToNextProblemTime=2.0f;
     }
     
     //render problem label
-    problemDescLabel=[CCLabelTTF labelWithString:[pdefMQ objectForKey:META_QUESTION_TITLE] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [problemDescLabel setPosition:ccp(cx, titleY)];
+    //problemDescLabel=[CCLabelTTF labelWithString:[pdefMQ objectForKey:META_QUESTION_TITLE] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    problemDescLabel=[CCLabelTTF labelWithString:[pdefMQ objectForKey:META_QUESTION_TITLE] dimensions:CGSizeMake(lx*kLabelTitleXMarginProp, cy) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    
+    [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
     [problemDescLabel setColor:kMetaQuestionLabelColor];
     [problemDescLabel setOpacity:0];
     [problemDescLabel setTag:3];
@@ -741,10 +745,10 @@ static float kMoveToNextProblemTime=2.0f;
     [self addChild:numberPickerLayer z:2];
     [numberPickerLayer addChild:nPicker];
     
-    float titleY=cy*1.75f;
     //render problem label
-    problemDescLabel=[CCLabelTTF labelWithString:[pdefNP objectForKey:NUMBER_PICKER_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [problemDescLabel setPosition:ccp(cx, titleY)];
+    //problemDescLabel=[CCLabelTTF labelWithString:[pdefNP objectForKey:NUMBER_PICKER_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    problemDescLabel=[CCLabelTTF labelWithString:[pdefNP objectForKey:NUMBER_PICKER_DESCRIPTION] dimensions:CGSizeMake(lx*kLabelTitleXMarginProp, cy) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
     [problemDescLabel setColor:kMetaQuestionLabelColor];
     [problemDescLabel setOpacity:0];
     [problemDescLabel setTag:3];

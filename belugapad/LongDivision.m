@@ -234,7 +234,8 @@ const float kScaleOfLesserBlocks=0.6f;
 -(void)updateLabels:(CGPoint)position
 {
     [markerText setString:[NSString stringWithFormat:@"%g", currentTotal*divisor]];
-    [marker setPosition:[topSection convertToWorldSpace:position]];
+//    [marker setPosition:[topSection convertToWorldSpace:position]];
+    [marker setPosition:position];
     [startMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x-(line.contentSize.width/2)+2, line.position.y)]];
     [endMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x+(line.contentSize.width/2)-2, line.position.y)]];
 }
@@ -245,7 +246,7 @@ const float kScaleOfLesserBlocks=0.6f;
     if(!marker && !markerText)
     {
         marker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
-        [marker setPosition:ccp(line.position.x-(line.contentSize.width/2), line.position.y+30)];
+        [marker setPosition:[topSection convertToWorldSpace:ccp(line.position.x-(line.contentSize.width/2), line.position.y+30)]];
         markerText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
         [markerText setPosition:ccp(10,65)];    
         [marker addChild:markerText];
@@ -253,7 +254,7 @@ const float kScaleOfLesserBlocks=0.6f;
     }
     
     cumulativeTotal=0;
-    CGPoint markerPos;
+    CGPoint markerPos=CGPointZero;
     float currentYScale=1.0f;
     float startBase=0;
     
@@ -273,8 +274,9 @@ const float kScaleOfLesserBlocks=0.6f;
         
         // then set the options on our current iteration
         CCSprite *curSprite=[[renderedBlocks objectAtIndex:i]objectForKey:MY_SPRITE];
+
         [curSprite setScaleY:currentYScale];
-        [curSprite setPosition:ccp(curOffset+line.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2)-(line.contentSize.width/2)+cumulativeTotal, line.position.y+((curSprite.contentSize.height*curSprite.scaleY)/2)-20)];
+        [curSprite setPosition:[topSection convertToWorldSpace:ccp(curOffset+line.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2)-(line.contentSize.width/2)+cumulativeTotal, line.position.y+((curSprite.contentSize.height*curSprite.scaleY)/2)-20)]];
         if(renderBlockLabels)
         {
             for(CCLabelTTF *lbl in curSprite.children)
@@ -286,6 +288,8 @@ const float kScaleOfLesserBlocks=0.6f;
         cumulativeTotal=cumulativeTotal+(curSprite.contentSize.width*curSprite.scaleX);
         markerPos=ccp(curSprite.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2), curSprite.position.y+40);
     }
+    if(markerPos.x==0 && markerPos.y==0)[marker setVisible:NO];
+    else [marker setVisible:YES];
     [self updateLabels:markerPos];
 }
 
@@ -354,7 +358,7 @@ const float kScaleOfLesserBlocks=0.6f;
     
     [curDict setObject:[NSNumber numberWithFloat:calc] forKey:OFFSET];
     
-    [topSection addChild:curBlock];
+    [self.NoScaleLayer addChild:curBlock];
 }
 
 -(void)populateGW
@@ -547,35 +551,19 @@ const float kScaleOfLesserBlocks=0.6f;
         
         CCLayer *moveLayer = [numberLayers objectAtIndex:activeRow];
 
-        //the quantity of increments moved
-        float floatNumberPos=fabsf(diff.x)/kSpaceBetweenNumbers;
+        float distMoved=diff.x / kSpaceBetweenNumbers;
+        float absDistMoved=fabsf(distMoved);
         
-        //the remainder of the movement past the last whole increment
-        float remainder=floatNumberPos - (int)floatNumberPos;
+        int absRoundedIncrMoved=(int)(absDistMoved + 0.5f);
         
-        //by how much should the line be incremented
-        int incrementor=0;
+        int roundedMove=absRoundedIncrMoved;
+        if(distMoved<0)roundedMove=-roundedMove;
         
-        //round up
-        if(remainder>0.5f)
-            incrementor=(int)floatNumberPos+1;
-        //round down
-        else
-            incrementor=(int)floatNumberPos;
-        
-        //if the diff in x is positive, the number wants to go up (end point of x is less that of start point) 
-        if(diff.x > 0) // incrementing line
-            currentNumberPos+=incrementor;
-        
-        //otherwise the number on the line goes down
-        else 
-            currentNumberPos-=incrementor;
-        
+        currentNumberPos=previousNumberPos+roundedMove;
+                
         //truncate to fixed bounds
         if(currentNumberPos<0)currentNumberPos=0;
         if(currentNumberPos>9)currentNumberPos=9;
-        
-
         
         //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
         [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(currentNumberPos*-kSpaceBetweenNumbers,moveLayer.position.y)]];

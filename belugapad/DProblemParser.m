@@ -153,7 +153,7 @@
         NSLog(@"setting %@ to %@", namebase, [outputvalue stringValue]);
         
         //should we retain this variable?
-        NSNumber *retain=[dvarsdef objectForKey:@"RETAIN"];
+        NSNumber *retain=[dv objectForKey:@"RETAIN"];
         if(retain)
         {
             if([retain intValue]==0)
@@ -460,7 +460,9 @@
 
 -(NSMutableDictionary*) createStaticPdefFromPdef:(NSDictionary*)dpdef
 {
-    NSMutableDictionary *spdef=[dpdef mutableCopy];
+    //NSMutableDictionary *spdef=[dpdef mutableCopy];
+    
+    NSMutableDictionary *spdef = (NSMutableDictionary *)CFPropertyListCreateDeepCopy(kCFAllocatorDefault, (CFDictionaryRef)dpdef, kCFPropertyListMutableContainers);
  
     [self cstatParseKeysInDict:spdef];
     

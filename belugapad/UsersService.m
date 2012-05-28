@@ -236,70 +236,75 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 -(void)logProblemAttemptEvent:(ProblemAttemptEvent)event
              withOptionalNote:(NSString*)note
 {
-    if (currentProblemAttempt)
-    {
-        NSString *eventString = nil;
-        switch (event) {
-            case kProblemAttemptStart:
-                eventString = @"PROBLEM_ATTEMPT_START";
-                break;
-            case kProblemAttemptUserPause:
-                eventString = @"PROBLEM_ATTEMPT_USER_PAUSE";
-                break;
-            case kProblemAttemptUserResume:
-                eventString = @"PROBLEM_ATTEMPT_USER_RESUME";
-                break;
-            case kProblemAttemptAppResign:
-                eventString = @"APP_RESIGN";
-                break;
-            case kProblemAttemptAppResume:
-                eventString = @"APP_RESUME";
-                break;
-            case kProblemAttemptAbandonApp:
-                eventString = @"ABANDON_APP";
-                break;
-            case kProblemAttemptSuccess:
-                eventString = @"PROBLEM_ATTEMPT_SUCCESS";
-                break;
-            case kProblemAttemptExitToMap:
-                eventString = @"PROBLEM_ATTEMPT_EXIT_TO_MAP";
-                break;
-            case kProblemAttemptExitLogOut:
-                eventString = @"PROBLEM_ATTEMPT_EXIT_LOG_OUT";
-                break;
-            case kProblemAttemptUserReset:
-                eventString = @"PROBLEM_ATTEMPT_USER_RESET";
-                break;
-            case kProblemAttemptSkip:
-                eventString = @"PROBLEM_ATTEMPT_SKIP";
-                break;
-            case kProblemAttemptSkipWithSuggestion:
-                eventString = @"PROBLEM_ATTEMPT_SKIP_WITH_SUGGESTION";
-                break;
-            case kProblemAttemptSkipDebug:
-                eventString = @"PROBLEM_ATTEMPT_SKIP_DEBUG";
-                break;
-            case kProblemAttemptFail:
-                eventString = @"PROBLEM_ATTEMPT_FAIL";
-                break;
-            case kProblemAttemptFailWithChildProblem:
-                eventString = @"PROBLEM_ATTEMPT_FAIL_WITH_CHILD_PROBLEM";
-                break;            
-            default:
-                // TODO: ERROR - LOG TO DATABASE!
-                break;
-        }
-        if (eventString)
-        { 
-            NSMutableArray *events = [[currentProblemAttempt.events mutableCopy] autorelease];
-            NSDictionary *e = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    eventString, @"eventType",
-                                    [RESTBody JSONObjectWithDate:[NSDate date]], @"date",
-                                    note, @"note", nil];
-            [events addObject:e];
-            currentProblemAttempt.events = events;
-            [[currentProblemAttempt save] wait];
-        }
+    if (!currentProblemAttempt) return;
+    
+    NSString *eventString = nil;
+    switch (event) {
+        case kProblemAttemptStart:
+            eventString = @"PROBLEM_ATTEMPT_START";
+            break;
+        case kProblemAttemptUserPause:
+            eventString = @"PROBLEM_ATTEMPT_USER_PAUSE";
+            break;
+        case kProblemAttemptUserResume:
+            eventString = @"PROBLEM_ATTEMPT_USER_RESUME";
+            break;
+        case kProblemAttemptAppResignActive:
+            eventString = @"APP_RESIGN_ACTIVE";
+            break;
+        case kProblemAttemptAppBecomeActive:
+            eventString = @"APP_BECOME_ACTIVE";
+            break;
+        case kProblemAttemptAppEnterBackground:
+            eventString = @"APP_ENTER_BACKGROUND";
+            break;
+        case kProblemAttemptAppEnterForeground:
+            eventString = @"APP_ENTER_FOREGROUND";
+            break;
+        case kProblemAttemptAbandonApp:
+            eventString = @"ABANDON_APP";
+            break;
+        case kProblemAttemptSuccess:
+            eventString = @"PROBLEM_ATTEMPT_SUCCESS";
+            break;
+        case kProblemAttemptExitToMap:
+            eventString = @"PROBLEM_ATTEMPT_EXIT_TO_MAP";
+            break;
+        case kProblemAttemptExitLogOut:
+            eventString = @"PROBLEM_ATTEMPT_EXIT_LOG_OUT";
+            break;
+        case kProblemAttemptUserReset:
+            eventString = @"PROBLEM_ATTEMPT_USER_RESET";
+            break;
+        case kProblemAttemptSkip:
+            eventString = @"PROBLEM_ATTEMPT_SKIP";
+            break;
+        case kProblemAttemptSkipWithSuggestion:
+            eventString = @"PROBLEM_ATTEMPT_SKIP_WITH_SUGGESTION";
+            break;
+        case kProblemAttemptSkipDebug:
+            eventString = @"PROBLEM_ATTEMPT_SKIP_DEBUG";
+            break;
+        case kProblemAttemptFail:
+            eventString = @"PROBLEM_ATTEMPT_FAIL";
+            break;
+        case kProblemAttemptFailWithChildProblem:
+            eventString = @"PROBLEM_ATTEMPT_FAIL_WITH_CHILD_PROBLEM";
+            break;            
+        default:
+            // TODO: ERROR - LOG TO DATABASE!
+            break;
+    }
+    if (eventString)
+    { 
+        NSMutableArray *events = [[currentProblemAttempt.events mutableCopy] autorelease];
+        NSDictionary *e = [NSDictionary dictionaryWithObjectsAndKeys:
+                                eventString, @"eventType",
+                                [RESTBody JSONObjectWithDate:[NSDate date]], @"date",
+                                note, @"note", nil];
+        [events addObject:e];
+        currentProblemAttempt.events = events;
+        [[currentProblemAttempt save] wait];
     }
 }
 

@@ -274,7 +274,7 @@ const float kScaleOfLesserBlocks=0.6f;
         
         // then set the options on our current iteration
         CCSprite *curSprite=[[renderedBlocks objectAtIndex:i]objectForKey:MY_SPRITE];
-        [curSprite setScaleX:topSection.scaleX];
+
         [curSprite setScaleY:currentYScale];
         [curSprite setPosition:[topSection convertToWorldSpace:ccp(curOffset+line.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2)-(line.contentSize.width/2)+cumulativeTotal, line.position.y+((curSprite.contentSize.height*curSprite.scaleY)/2)-20)]];
         if(renderBlockLabels)

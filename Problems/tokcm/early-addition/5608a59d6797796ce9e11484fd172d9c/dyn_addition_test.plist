@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>show that 1+2 = 3</string>
+	<string>show that {$first_value}+{$second_value} = {$target}</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>show that 1+2=3</string>
+	<string>show that x+y=x+y</string>
 	<key>TOOL_KEY</key>
 	<string>PartitionTool</string>
 	<key>INIT_OBJECTS</key>
@@ -14,9 +14,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>LENGTH</key>
-			<integer>3</integer>
-			<key>LABEL</key>
-			<string>3</string>
+			<string>{$target}</string>
 		</dict>
 	</array>
 	<key>INIT_BARS</key>
@@ -25,36 +23,56 @@
 			<key>LOCKED</key>
 			<true/>
 			<key>LENGTH</key>
-			<integer>3</integer>
+			<string>{$target}</string>
 		</dict>
 		<dict>
 			<key>LOCKED</key>
 			<false/>
 			<key>LENGTH</key>
-			<string>3</string>
+			<string>{$target}</string>
 		</dict>
 	</array>
 	<key>INIT_CAGES</key>
 	<array>
 		<dict>
 			<key>LENGTH</key>
-			<integer>1</integer>
+			<string>{$first_value}</string>
 			<key>LABEL</key>
-			<string>1</string>
+			<string>{$first_value}</string>
 			<key>QUANTITY</key>
 			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>LENGTH</key>
-			<integer>2</integer>
+			<string>{$second_value}</string>
 			<key>LABEL</key>
-			<string>2</string>
+			<string>{$second_value}</string>
 			<key>QUANTITY</key>
-			<integer>1</integer>
+			<string>1</string>
 		</dict>
 	</array>
-	<key>SOLUTIONS</key>
-	<array/>
+	<key>DVARS</key>
+	<dict>
+		<key>$first_value</key>
+		<dict>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>5</string>
+		</dict>
+		<key>$second_value</key>
+		<dict>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>5</string>
+		</dict>
+		<key>$target</key>
+		<dict>
+			<key>VALUE</key>
+			<string>{$first_value+$second_value}</string>
+		</dict>
+	</dict>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>

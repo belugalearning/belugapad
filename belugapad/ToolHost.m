@@ -1222,7 +1222,7 @@ static float kMoveToNextProblemTime=2.0f;
 
 -(void)logTouches:(NSSet*)touches forEvent:(NSString*)event
 {
-    NSString *item=[event copy];
+    NSString *item=[NSString stringWithFormat:@"%@ %f ", event, [[NSDate date] timeIntervalSince1970]];
     
     for (UITouch *t in touches) {
         item=[item stringByAppendingString:[NSString stringWithFormat:@"{%@,%@},", NSStringFromCGPoint([t locationInView:t.view]), NSStringFromCGPoint([t previousLocationInView:t.view])]];

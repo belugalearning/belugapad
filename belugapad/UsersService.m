@@ -196,7 +196,7 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     return [[CouchModelFactory sharedInstance] modelForDocument:((CouchQueryRow*)[[q rows].allObjects objectAtIndex:0]).document];
 }
 
--(User*) createUserWithNickName:(NSString*)nickName
+-(User*) getNewUserWithNickName:(NSString*)nickName
                     andPassword:(NSString*)password
                    andZubiColor:(NSData*)color // rgba
               andZubiScreenshot:(UIImage*)image

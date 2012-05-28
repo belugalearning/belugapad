@@ -286,15 +286,20 @@
         return;
     }
     
-    CCScene *scene = [[CCDirector sharedDirector] runningScene];
+    /*CCScene *scene = [[CCDirector sharedDirector] runningScene];
     EditZubi *layer = [scene.children objectAtIndex:0];
-    NSString *screenshotPath = [layer takeScreenshot];    
-    UIImage *image = [UIImage imageWithContentsOfFile:screenshotPath];
+    NSString *screenshotPath = [layer takeScreenshot];
     
-    User *newUser = [[usersService createUserWithNickName:newUserNameTF.text
-                                              andPassword:newUserPasswordTF.text    
+    UIImage *image = [UIImage imageWithContentsOfFile:screenshotPath];
+    User *newUser = [usersService getNewUserWithNickName:newUserNameTF.text
+                                             andPassword:newUserPasswordTF.text    
                                             andZubiColor:colorWheel.lastColorRGBAData
-                                       andZubiScreenshot:image] autorelease];
+                                       andZubiScreenshot:image];
+    */
+    User *newUser = [usersService getNewUserWithNickName:newUserNameTF.text
+                                             andPassword:newUserPasswordTF.text    
+                                            andZubiColor:nil
+                                       andZubiScreenshot:nil];
     usersService.currentUser = newUser;
     [self.view removeFromSuperview];
     [app proceedFromLoginViaIntro:YES];

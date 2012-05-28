@@ -41,7 +41,7 @@ typedef enum {
 
 -(BOOL) nickNameIsAvailable:(NSString*)nickName;
 
--(User*) createUserWithNickName:(NSString*)nickName
+-(User*) getNewUserWithNickName:(NSString*)nickName
                     andPassword:(NSString*)password
                    andZubiColor:(NSData*)color // rgba
               andZubiScreenshot:(UIImage*)image;

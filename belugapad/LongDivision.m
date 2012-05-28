@@ -234,7 +234,8 @@ const float kScaleOfLesserBlocks=0.6f;
 -(void)updateLabels:(CGPoint)position
 {
     [markerText setString:[NSString stringWithFormat:@"%g", currentTotal*divisor]];
-    [marker setPosition:[topSection convertToWorldSpace:position]];
+//    [marker setPosition:[topSection convertToWorldSpace:position]];
+    [marker setPosition:position];
     [startMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x-(line.contentSize.width/2)+2, line.position.y)]];
     [endMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x+(line.contentSize.width/2)-2, line.position.y)]];
 }
@@ -273,6 +274,7 @@ const float kScaleOfLesserBlocks=0.6f;
         
         // then set the options on our current iteration
         CCSprite *curSprite=[[renderedBlocks objectAtIndex:i]objectForKey:MY_SPRITE];
+        [curSprite setScaleX:topSection.scaleX];
         [curSprite setScaleY:currentYScale];
         [curSprite setPosition:[topSection convertToWorldSpace:ccp(curOffset+line.position.x+((curSprite.contentSize.width*curSprite.scaleX)/2)-(line.contentSize.width/2)+cumulativeTotal, line.position.y+((curSprite.contentSize.height*curSprite.scaleY)/2)-20)]];
         if(renderBlockLabels)
@@ -356,7 +358,7 @@ const float kScaleOfLesserBlocks=0.6f;
     
     [curDict setObject:[NSNumber numberWithFloat:calc] forKey:OFFSET];
     
-    [topSection addChild:curBlock];
+    [self.NoScaleLayer addChild:curBlock];
 }
 
 -(void)populateGW

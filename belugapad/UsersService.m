@@ -298,6 +298,23 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
         case kProblemAttemptToolHostPinch:
             eventString = @"PROBLEM_ATTEMPT_TOOLHOST_PINCH";
             break;
+            
+        case kProblemAttemptNumberPickerNumberFromPicker:
+            eventString = @"PROBLEM_ATTEMPT_NUMBERPICKER_NUMBER_FROM_PICKER";
+            break;
+            
+        case kProblemAttemptNumberPickerNumberFromRegister:
+            eventString = @"PROBLEM_ATTEMPT_NUMBERPICKER_NUMBER_FROM_REGISTER";
+            break;
+            
+        case kProblemAttemptNumberPickerNumberMove:
+            eventString = @"PROBLEM_ATTEMPT_NUMBERPICKER_NUMBER_MOVE";
+            break;
+            
+        case kProblemAttemptNumberPickerNumberDelete:
+            eventString = @"PROBLEM_ATTEMPT_NUMBERPICKER_NUMBER_DELETE";
+            break;
+            
         default:
             // TODO: ERROR - LOG TO DATABASE!
             break;

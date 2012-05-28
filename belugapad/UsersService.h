@@ -30,8 +30,13 @@ typedef enum {
     kProblemAttemptFail,
     kProblemAttemptFailWithChildProblem,
     kProblemAttemptUserCommit,
-    
     kProblemAttemptToolHostPinch,
+    kProblemAttemptNumberPickerNumberFromPicker,
+    kProblemAttemptNumberPickerNumberFromRegister,
+    kProblemAttemptNumberPickerNumberMove,
+    kProblemAttemptNumberPickerNumberDelete,
+    kProblemAttemptMetaQuestionChangeAnswer,
+
 } ProblemAttemptEvent;
 
 @interface UsersService : NSObject

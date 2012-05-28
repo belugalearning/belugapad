@@ -905,6 +905,9 @@ static float kMoveToNextProblemTime=2.0f;
                 CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
                 [numberPickerLayer addChild:curSprite];
                 
+                // log pickup from register/dropbox
+                [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberFromPicker withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",i]];
+                
                 // check if we're animating our buttons or fading them in
                 if(animatePickedButtons) {
                     // and set the position/actions
@@ -920,6 +923,9 @@ static float kMoveToNextProblemTime=2.0f;
                 // then add them to our selection and value arrays
                 [numberPickedSelection addObject:curSprite];
                 [numberPickedValue addObject:[NSNumber numberWithInt:i]];
+                
+                [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberFromRegister withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:curSprite]]intValue]]];                
+                
                 return;
             }
         }
@@ -938,6 +944,40 @@ static float kMoveToNextProblemTime=2.0f;
     }
     
     
+}
+
+-(void)checkNumberPickerTouchOnRegister:(CGPoint)location
+{
+    int moveNumber=0;
+    for(int i=0;i<[numberPickedSelection count];i++)
+    {
+        CCSprite *s=[numberPickedSelection objectAtIndex:i];
+        if(s==npMove||s==npLastMoved)continue;
+        if(CGRectContainsPoint(s.boundingBox, location))
+        {
+            moveNumber=i;
+            NSLog(@"hit block index %d, index of moving block %d", i, [numberPickedSelection indexOfObject:npMove]);
+            // log pickup from register/dropbox
+            [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberFromRegister withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",i]];
+            
+            CCSprite *repSprite=[numberPickedSelection objectAtIndex:i];
+            [repSprite runAction:[CCMoveTo actionWithDuration:0.2 position:npMoveStartPos]];
+            npMoveStartPos=repSprite.position;
+            npLastMoved=s;
+            
+            int obValue=[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]intValue];
+            [numberPickedValue removeObjectAtIndex:[numberPickedSelection indexOfObject:npMove]];
+            [numberPickedSelection removeObject:npMove];
+            [numberPickedValue insertObject:[NSNumber numberWithInt:obValue] atIndex:i];
+            [numberPickedSelection insertObject:npMove atIndex:i];
+            
+            //[repSprite runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/1.25)+([numberPickedSelection count]*55),cy+50)
+            
+        }
+    }
+    [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberMove withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",moveNumber]];
+    npMove.position=location;
+
 }
 
 -(void)evalNumberPicker
@@ -1095,6 +1135,9 @@ static float kMoveToNextProblemTime=2.0f;
                 // then if it's an answer and isn't currently selected
                 if(!isSelected)
                 {
+                    // the user has changed their answer (even if they didn't have one before)
+                    
+                    [usersService logProblemAttemptEvent:kProblemAttemptMetaQuestionChangeAnswer withOptionalNote:[NSString stringWithFormat:@"{\"Selction\":%d}", i]];
                     // check what answer mode we have
                     // if single, we should only only be able to select one so we need to deselect the others and change the selected value
                     if(mqAnswerMode==kMetaQuestionAnswerSingle)
@@ -1195,6 +1238,7 @@ static float kMoveToNextProblemTime=2.0f;
 }
 -(void)doWinning
 {
+    [usersService logProblemAttemptEvent:kProblemAttemptSuccess withOptionalNote:nil];
     [self removeMetaQuestionButtons];
     [self showProblemCompleteMessage];
     currentTool.ProblemComplete=YES;
@@ -1202,6 +1246,7 @@ static float kMoveToNextProblemTime=2.0f;
 }
 -(void)doIncomplete
 {   
+    [usersService logProblemAttemptEvent:kProblemAttemptFail withOptionalNote:nil];
     [self showProblemIncompleteMessage];
     //[self deselectAnswersExcept:-1];
 }
@@ -1317,33 +1362,7 @@ static float kMoveToNextProblemTime=2.0f;
         return;
     } 
     
-    if(npMove && numberPickerForThisProblem){
-        for(int i=0;i<[numberPickedSelection count];i++)
-        {
-            CCSprite *s=[numberPickedSelection objectAtIndex:i];
-            if(s==npMove||s==npLastMoved)continue;
-            if(CGRectContainsPoint(s.boundingBox, location))
-            {
-                NSLog(@"hit block index %d, index of moving block %d", i, [numberPickedSelection indexOfObject:npMove]);
-
-                
-                CCSprite *repSprite=[numberPickedSelection objectAtIndex:i];
-                [repSprite runAction:[CCMoveTo actionWithDuration:0.2 position:npMoveStartPos]];
-                npMoveStartPos=repSprite.position;
-                npLastMoved=s;
-                
-                int obValue=[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]intValue];
-                [numberPickedValue removeObjectAtIndex:[numberPickedSelection indexOfObject:npMove]];
-                [numberPickedSelection removeObject:npMove];
-                [numberPickedValue insertObject:[NSNumber numberWithInt:obValue] atIndex:i];
-                [numberPickedSelection insertObject:npMove atIndex:i];
-                
-                //[repSprite runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/1.25)+([numberPickedSelection count]*55),cy+50)
-
-            }
-        }
-        npMove.position=location;
-    }
+    if(npMove && numberPickerForThisProblem)[self checkNumberPickerTouchOnRegister:location];
     
     //pinch handling
     if([touches count]>1)
@@ -1364,7 +1383,7 @@ static float kMoveToNextProblemTime=2.0f;
         
         scale+=(scaleChange / cx);
         
-        [usersService logProblemAttemptEvent:kProblemAttemptToolHostPinch withOptionalNote:[NSString stringWithFormat:@"scale: %f", scale]];
+        [usersService logProblemAttemptEvent:kProblemAttemptToolHostPinch withOptionalNote:[NSString stringWithFormat:@"{\"scale\" : %f}", scale]];
         
         if(currentTool.PassThruScaling) [currentTool handlePassThruScaling:scale];
         else {
@@ -1404,9 +1423,14 @@ static float kMoveToNextProblemTime=2.0f;
         float distance=[BLMath DistanceBetween:lastTouch and:location];
         if(!CGRectContainsPoint(npDropbox.boundingBox, location) || (CGRectContainsPoint(npDropbox.boundingBox, location) && distance<5.0f))
         {
+
+            
+            
+            [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberDelete withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]intValue]]];
             [numberPickedValue removeObjectAtIndex:[numberPickedSelection indexOfObject:npMove]];
             [numberPickedSelection removeObject:npMove];
             [npMove removeFromParentAndCleanup:YES];
+            
         }
         [self reorderNumberPickerSelections];
         npMove=nil;

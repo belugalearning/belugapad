@@ -11,12 +11,25 @@
 #import "global.h"
 #import "DWPartitionObjectGameObject.h"
 #import "DWPartitionRowGameObject.h"
+#import "AppDelegate.h"
+#import "UsersService.h"
 
+@interface BPartitionPickupTarget()
+{
+@private
+    ContentService *contentService;
+    UsersService *usersService;
+}
+@end
 
 @implementation BPartitionPickupTarget
 
 -(BPartitionPickupTarget *)initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    contentService = ac.contentService;
+    usersService = ac.usersService;
+    
     self=(BPartitionPickupTarget *)[super initWithGameObject:aGameObject withData:data];
     pogo=(DWPartitionObjectGameObject*)gameObject;
     return self;
@@ -45,8 +58,11 @@
         {
             //tell gameScene we are a target for that pickup
             [gameWorld Blackboard].PickupObject=gameObject;
+        } 
+        else if(CGRectContainsPoint(boundingBox, [pogo.BaseNode convertToNodeSpace:hitLoc]) && pogo.Mount.Locked)
+        {
+            [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchBeganOnLockedRow withOptionalNote:nil];
         }
-      
     }
     
 

@@ -36,6 +36,12 @@ typedef enum {
     kProblemAttemptNumberPickerNumberMove,
     kProblemAttemptNumberPickerNumberDelete,
     kProblemAttemptMetaQuestionChangeAnswer,
+    kProblemAttemptPartitionToolTouchBeganOnCagedObject,
+    kProblemAttemptPartitionToolTouchMovedMoveBlock,
+    kProblemAttemptPartitionToolTouchBeganOnRow,
+    kProblemAttemptPartitionToolTouchEndedOnRow,
+    kProblemAttemptPartitionToolTouchEndedInSpace,
+    kProblemAttemptPartitionToolTouchBeganOnLockedRow
 
 } ProblemAttemptEvent;
 

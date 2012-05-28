@@ -571,6 +571,12 @@
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
     }
 
+//    for(int i=0;i<[thisShape.tiles count];i++)
+//    {
+//        DWDotGridTileGameObject *tile=[thisShape.tiles objectAtIndex:i];
+//        [tile.mySprite setOpacity:150];
+//    }
+    
 thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
 [thisShape.resizeHandle handleMessage:kDWmoveSpriteToPosition];
 }
@@ -600,7 +606,18 @@ thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
         
         if(((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).handleType == kResizeHandle && !((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).myShape.Disabled) {
                 gameState=kResizeShape;
-                [((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).myShape handleMessage:kDWresizeShape];
+            
+            DWDotGridShapeGameObject *curShape=((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).myShape;
+            
+            //    for(int i=0;i<[curShape.tiles count];i++)
+            //    {
+            //        DWDotGridTileGameObject *tile=[curShape.tiles objectAtIndex:i];
+            //        [tile.mySprite setOpacity:150];
+            //    }
+            
+            [curShape handleMessage:kDWresizeShape];
+                
+             
                 
                 return;
         }

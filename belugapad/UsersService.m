@@ -261,10 +261,14 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
                 break;
         }
         if (eventString)
-        {
-            NSMutableArray *e = [[currentProblemAttempt.events mutableCopy] autorelease];
-            [e addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSDate date], @"date", eventString, @"event", note, @"note", nil]];
-            currentProblemAttempt.events = e;
+        { 
+            NSMutableArray *events = [[currentProblemAttempt.events mutableCopy] autorelease];
+            NSDictionary *e = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    eventString, @"eventType",
+                                    [RESTBody JSONObjectWithDate:[NSDate date]], @"date",
+                                    note, @"note", nil];
+            [events addObject:e];
+            currentProblemAttempt.events = events;
             [[currentProblemAttempt save] wait];
         }
     }

@@ -2738,6 +2738,7 @@
 					"/usr/include/libxml2/**",
 					"\"belugapad/kazmath/include\"/**",
 					"\"belugapad/Chipmunk/include/chipmunk\"/**",
+					"$(SDKROOT)/usr/include/libxml2/**",
 				);
 				INFOPLIST_FILE = belugapad/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
@@ -2772,6 +2773,7 @@
 					"/usr/include/libxml2/**",
 					"\"belugapad/kazmath/include\"/**",
 					"\"belugapad/Chipmunk/include/chipmunk\"/**",
+					"$(SDKROOT)/usr/include/libxml2/**",
 				);
 				INFOPLIST_FILE = belugapad/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;

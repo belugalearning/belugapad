@@ -70,3 +70,4 @@ extern const float kMetaIncompleteLabelYOffset;
 extern const CGRect kPauseMenuMenu;
 extern const CGRect kPauseMenuReset;
 extern const CGRect kPauseMenuContinue;
+extern const CGRect kPauseMenuLogOut;

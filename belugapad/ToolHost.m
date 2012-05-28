@@ -497,20 +497,20 @@ static float kMoveToNextProblemTime=2.0f;
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self returnToMenu];
     }
-    if(CGRectContainsPoint((CGRect){{400.0f,559.5f},{250.0f,45.0f}}, location))
+    if(CGRectContainsPoint(kPauseMenuLogOut, location))
     {
         [usersService logProblemAttemptEvent:kProblemAttemptExitLogOut withOptionalNote:nil];
         usersService.currentUser = nil;
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
     }
-    if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
+    if (location.x>cx && location.y < 768 - kButtonToolbarHitBaseYOffset)
     {
         [usersService logProblemAttemptEvent:kProblemAttemptSkipDebug withOptionalNote:nil];
         isPaused=NO;
         [pauseLayer setVisible:NO];
         [self gotoNewProblem];
-    }      
+    }
 }
 
 -(void) returnToMenu

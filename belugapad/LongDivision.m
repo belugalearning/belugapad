@@ -549,41 +549,19 @@ const float kScaleOfLesserBlocks=0.6f;
         
         CCLayer *moveLayer = [numberLayers objectAtIndex:activeRow];
 
-        //the quantity of increments moved
-        float floatNumberPos=fabsf(diff.x)/kSpaceBetweenNumbers;
-        NSLog(@"qty of increment = %f", floatNumberPos);
+        float distMoved=diff.x / kSpaceBetweenNumbers;
+        float absDistMoved=fabsf(distMoved);
         
-        //the remainder of the movement past the last whole increment
-        float remainder=floatNumberPos - (int)floatNumberPos;
-        NSLog(@"remainder = %f, floatpos %f, currentpos %d", remainder, floatNumberPos, currentNumberPos);
+        int absRoundedIncrMoved=(int)(absDistMoved + 0.5f);
         
-        //by how much should the line be incremented
-        int incrementor=0;
+        int roundedMove=absRoundedIncrMoved;
+        if(distMoved<0)roundedMove=-roundedMove;
         
-        //round up
-        if(remainder>0.5f && currentNumberPos!=(int)floatNumberPos)
-            incrementor=(int)floatNumberPos+1;
-        //if(remainder>0.7f<1.0f)
-        //    incrementor=0;
-        //round down
-        else
-            incrementor=(int)floatNumberPos;
-        
-        NSLog(@"incrementor %d", incrementor);
-        
-        //if the diff in x is positive, the number wants to go up (end point of x is less that of start point) 
-        if(diff.x > 0) // incrementing line
-            currentNumberPos+=incrementor;
-        
-        //otherwise the number on the line goes down
-        else 
-            currentNumberPos-=incrementor;
-        
+        currentNumberPos=previousNumberPos+roundedMove;
+                
         //truncate to fixed bounds
         if(currentNumberPos<0)currentNumberPos=0;
         if(currentNumberPos>9)currentNumberPos=9;
-        
-
         
         //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
         [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(currentNumberPos*-kSpaceBetweenNumbers,moveLayer.position.y)]];

@@ -87,7 +87,16 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
                 //build an array from this location
                 currentPIndex = NSUIntegerMax;
                 NSString *pathOfProblems=BUNDLE_FULL_PATH(source);
-                testProblemList=[[NSFileManager defaultManager] contentsOfDirectoryAtPath:pathOfProblems error:nil];
+                NSArray *files=[[NSFileManager defaultManager] contentsOfDirectoryAtPath:pathOfProblems error:nil];
+                
+                NSMutableArray *allFilePaths=[[NSMutableArray alloc] init];
+                
+                for (int i=0; i<files.count; i++) {
+                    [allFilePaths addObject:[pathOfProblems stringByAppendingPathComponent:[files objectAtIndex:i]]];
+                }
+                
+                testProblemList=[NSArray arrayWithArray:allFilePaths];
+                [testProblemList retain];
             }
 
         }
@@ -194,7 +203,13 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
     if (useTestPipeline)
     {
         currentPIndex = (currentPIndex == NSUIntegerMax) ? 0 : (currentPIndex + 1) % [testProblemList count];
-        self.currentPDef = [NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH([testProblemList objectAtIndex:currentPIndex])];
+        
+        NSString *problemPath=[testProblemList objectAtIndex:currentPIndex];
+        
+        if([problemPath rangeOfString:@".app"].location==NSNotFound)
+            problemPath=BUNDLE_FULL_PATH(problemPath);
+        
+        self.currentPDef = [NSDictionary dictionaryWithContentsOfFile:problemPath];
         
         self.pathToTestDef=[testProblemList objectAtIndex:currentPIndex];
         NSLog(@"loaded test def: %@", self.pathToTestDef);

@@ -150,6 +150,7 @@ typedef enum {
 -(void)checkMetaQuestionTouches:(CGPoint)location;
 -(void)setupNumberPicker:(NSDictionary *)pdefNP;
 -(void)checkNumberPickerTouches:(CGPoint)location;
+-(void)checkNumberPickerTouchOnRegister:(CGPoint)location;
 -(void)evalNumberPicker;
 -(void)reorderNumberPickerSelections;
 -(void)evalMetaQuestion;

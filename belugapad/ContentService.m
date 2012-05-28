@@ -77,8 +77,19 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
         
         if (useTestPipeline)
         {
-            currentPIndex = NSUIntegerMax;
-            testProblemList = [[NSArray arrayWithContentsOfFile:BUNDLE_FULL_PATH(source)] retain];
+            if([source rangeOfString:@".plist"].location!=NSNotFound)
+            {
+                //load from this array
+                currentPIndex = NSUIntegerMax;
+                testProblemList = [[NSArray arrayWithContentsOfFile:BUNDLE_FULL_PATH(source)] retain];
+            }
+            else {
+                //build an array from this location
+                currentPIndex = NSUIntegerMax;
+                NSString *pathOfProblems=BUNDLE_FULL_PATH(source);
+                testProblemList=[[NSFileManager defaultManager] contentsOfDirectoryAtPath:pathOfProblems error:nil];
+            }
+
         }
         else
         {

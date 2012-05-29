@@ -8,7 +8,6 @@
 
 #import "IceDiv.h"
 #import "global.h"
-#import "NumberLine.h"
 #import "SimpleAudioEngine.h"
 #import "Daemon.h"
 
@@ -107,7 +106,6 @@ const CGPoint kDaemonPos={50,50};
     if(location.x>975 & location.y>720)
     {
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
-        [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:0.4f scene:[NumberLine scene]]];
     }
     else
     {

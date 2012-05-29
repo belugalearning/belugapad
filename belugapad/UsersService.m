@@ -349,6 +349,46 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
             eventString = @"PROBLEM_ATTEMPT_PARTITIONTOOL_TOUCH_BEGAN_ON_LOCKED_ROW";
             break;
             
+        case kProblemAttemptDotGridTouchBeginCreateShape:
+            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_BEGAN_CREATE_SHAPE";
+            break;
+        
+        case kProblemAttemptDotGridTouchEndedCreateShape:
+            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_ENDED_CREATE_SHAPE";
+            break;
+            
+        case kProblemAttemptDotGridTouchBeginResizeShape:
+            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_BEGAN_RESIZE_SHAPE";
+            break;
+            
+        case kProblemAttemptDotGridTouchEndedResizeShape:
+            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_ENDED_CREATE_SHAPE";
+            break;
+            
+        case kProblemAttemptDotGridTouchBeginSelectTile:
+            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_BEGAN_SELECT_TILE";
+            break;
+            
+        case kProblemAttemptDotGridTouchBeginDeselectTile:
+            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_BEGAN_DESELECT_TILE";
+            break;
+            
+        case kProblemAttemptDotGridTouchEndedInvalidResizeHidden:
+            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_ENDED_INVALID_RESIZE_HIDDEN";
+            break;
+            
+        case kProblemAttemptDotGridTouchEndedInvalidResizeExistingTile:
+            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_ENDED_INVALID_RESIZE_EXISTING_TILE";
+            break;
+            
+        case kProblemAttemptDotGridTouchEndedInvalidCreateHidden:
+            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_ENDED_INVALID_CREATE_HIDDEN";
+            break;
+            
+        case kProblemAttemptDotGridTouchEndedInvalidCreateExistingTile:
+            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_ENDED_INVALID_CREATE_EXISTING_TILE";
+            break;
+            
         default:
             // TODO: ERROR - LOG TO DATABASE!
             break;

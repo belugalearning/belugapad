@@ -21,5 +21,8 @@
 @synthesize myXpos;
 @synthesize myYpos;
 @synthesize operatorType;
+@synthesize isEndXPiece;
+@synthesize isEndYPiece;
+@synthesize isCornerPiece;
 
 @end

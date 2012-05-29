@@ -58,7 +58,7 @@
     
     if(messageType==kDWswitchSelection)
     {
-        if(!tile.myText)
+        if(!tile.myText && !tile.Disabled)
         {
             if(tile.operatorType==kOperatorAdd)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos+tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
             else if(tile.operatorType==kOperatorSub)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos-tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
@@ -88,13 +88,19 @@
     NSString *spriteFileName=[[NSString alloc]init];
     //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
 
-        
-    spriteFileName=[NSString stringWithFormat:@"/images/timestables/tile%d.png", tile.Size];
+    
+    if(tile.isEndXPiece)spriteFileName=[NSString stringWithFormat:@"/images/timestables/tile%d_end_row.png", tile.Size];
+    else if(tile.isEndYPiece)spriteFileName=[NSString stringWithFormat:@"/images/timestables/tile%d_end_col.png", tile.Size];
+    else if(tile.isCornerPiece)spriteFileName=[NSString stringWithFormat:@"/images/timestables/tile%d_end_corner.png", tile.Size];
+
+    else spriteFileName=[NSString stringWithFormat:@"/images/timestables/tile%d.png", tile.Size];
+    
+    
     tile.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
     [tile.mySprite setPosition:tile.Position];
     //[anch.mySprite setScale:0.5f];
     
-    if(tile.Disabled)[tile.mySprite setColor:ccc3(40,40,40)];
+    if(tile.Disabled && !tile.isEndXPiece && !tile.isEndYPiece)[tile.mySprite setColor:ccc3(40,40,40)];
     
     if(gameWorld.Blackboard.inProblemSetup)
     {
@@ -111,7 +117,7 @@
 -(void)handleTap
 {
     
-    if(!tile.Selected)
+    if(!tile.Selected && !tile.Disabled)
     {
         tile.Selected=YES;
         [gameWorld.Blackboard.SelectedObjects addObject:tile];

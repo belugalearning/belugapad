@@ -21,6 +21,17 @@
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
 #import "DProblemParser.h"
+#import "UsersService.h"
+#import "AppDelegate.h"
+
+@interface NLine()
+{
+@private
+    ContentService *contentService;
+    UsersService *usersService;
+}
+
+@end
 
 static float kBubbleProx=100.0f;
 static float kBubbleScrollBoundary=350;
@@ -53,6 +64,10 @@ static float kBubblePushSpeed=400.0f;
         
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
+        
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        contentService = ac.contentService;
+        usersService = ac.usersService;
         
         gw.Blackboard.ComponentRenderLayer=self.ForeLayer;
         

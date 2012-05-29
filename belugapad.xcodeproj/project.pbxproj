@@ -230,7 +230,6 @@
 		7F51151E14A9EE66001AF372 /* ZFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51151D14A9EE66001AF372 /* ZFont.m */; };
 		7F51157F14A9EE67001AF372 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51157E14A9EE67001AF372 /* main.m */; };
 		7F51158214A9EE67001AF372 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51158114A9EE67001AF372 /* AppDelegate.m */; };
-		7F51159314A9EEF3001AF372 /* NumberLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51159214A9EEF3001AF372 /* NumberLine.m */; };
 		7F5115A414A9EF67001AF372 /* DWBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51159C14A9EF67001AF372 /* DWBehaviour.m */; };
 		7F5115A514A9EF67001AF372 /* DWBlackboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51159E14A9EF67001AF372 /* DWBlackboard.m */; };
 		7F5115A614A9EF67001AF372 /* DWGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A014A9EF67001AF372 /* DWGameObject.m */; };
@@ -802,8 +801,6 @@
 		7F51158014A9EE67001AF372 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7F51158114A9EE67001AF372 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		7F51158914A9EE67001AF372 /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
-		7F51159114A9EEF3001AF372 /* NumberLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberLine.h; sourceTree = "<group>"; };
-		7F51159214A9EEF3001AF372 /* NumberLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberLine.m; sourceTree = "<group>"; };
 		7F51159B14A9EF67001AF372 /* DWBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWBehaviour.h; sourceTree = "<group>"; };
 		7F51159C14A9EF67001AF372 /* DWBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWBehaviour.m; sourceTree = "<group>"; };
 		7F51159D14A9EF67001AF372 /* DWBlackboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWBlackboard.h; sourceTree = "<group>"; };
@@ -1178,8 +1175,6 @@
 				55AFD6A4156517FC00FF1886 /* TimesTables.m */,
 				550708741517623E00111BBB /* ColumnAddition.h */,
 				550708751517623E00111BBB /* ColumnAddition.m */,
-				7F51159114A9EEF3001AF372 /* NumberLine.h */,
-				7F51159214A9EEF3001AF372 /* NumberLine.m */,
 				7F5115A814A9EF9E001AF372 /* BlockFloating.h */,
 				7F5115A914A9EF9E001AF372 /* BlockFloating.m */,
 				7F813D5314CCBA4300C1E997 /* IceDiv.h */,
@@ -2361,7 +2356,6 @@
 				7F51151E14A9EE66001AF372 /* ZFont.m in Sources */,
 				7F51157F14A9EE67001AF372 /* main.m in Sources */,
 				7F51158214A9EE67001AF372 /* AppDelegate.m in Sources */,
-				7F51159314A9EEF3001AF372 /* NumberLine.m in Sources */,
 				7F5115A414A9EF67001AF372 /* DWBehaviour.m in Sources */,
 				7F5115A514A9EF67001AF372 /* DWBlackboard.m in Sources */,
 				7F5115A614A9EF67001AF372 /* DWGameObject.m in Sources */,

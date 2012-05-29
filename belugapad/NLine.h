@@ -54,6 +54,8 @@
     NSNumber *initMinVal;
     NSNumber *initMaxVal;
     int initSegmentVal;
+    
+    float timeSinceInteractionOrShake;
 }
 
 -(void)populateGW;

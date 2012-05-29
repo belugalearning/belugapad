@@ -37,6 +37,8 @@ static float kBubbleProx=100.0f;
 static float kBubbleScrollBoundary=350;
 static float kBubblePushSpeed=400.0f;
 
+static float kTimeToBubbleShake=7.0f;
+
 @implementation NLine
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
@@ -124,6 +126,13 @@ static float kBubblePushSpeed=400.0f;
         rambler.TouchXOffset+=bubblePushDir * kBubblePushSpeed * delta;
 //    }    
     
+    
+    timeSinceInteractionOrShake+=delta;
+    if(timeSinceInteractionOrShake>kTimeToBubbleShake)
+    {
+        [self animShakeBubble];
+        timeSinceInteractionOrShake=0;
+    }
 }
 
 -(void)populateGW
@@ -270,6 +279,24 @@ static float kBubblePushSpeed=400.0f;
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/nline/release.wav")];
 }
 
+-(void)animShakeBubble
+{
+    CCEaseInOut *ml1=[CCEaseInOut actionWithAction:[CCMoveBy actionWithDuration:0.05f position:ccp(-10, 0)] rate:2.0f];
+    CCEaseInOut *mr1=[CCEaseInOut actionWithAction:[CCMoveBy actionWithDuration:0.1f position:ccp(20, 0)] rate:2.0f];
+    CCEaseInOut *ml2=[CCEaseInOut actionWithAction:[CCMoveBy actionWithDuration:0.05f position:ccp(-10, 0)] rate:2.0f];
+    CCSequence *s=[CCSequence actions:ml1, mr1, ml2, nil];
+    CCRepeat *r=[CCRepeat actionWithAction:s times:4];
+    
+    CCEaseInOut *oe=[CCEaseInOut actionWithAction:r rate:2.0f];
+    
+//    CCMoveBy *left1=[CCMoveBy actionWithDuration:0.05f position:ccp(00, 0)];
+//    CCMoveBy *right=[CCMoveBy actionWithDuration:0.1f position:ccp(40, 0)];
+//    CCMoveBy *left2=[CCMoveBy actionWithDuration:0.05f position:ccp(0, 0)];
+//    CCSequence *seq=[CCSequence actions:left1, right, left2, nil];
+    
+    [bubbleSprite runAction:oe];
+}
+
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if(touching)return;
@@ -308,6 +335,8 @@ static float kBubblePushSpeed=400.0f;
         holdingBubble=YES;
         
         [self animPickupBubble];
+        
+        timeSinceInteractionOrShake=0;
     }
 }
 
@@ -320,6 +349,8 @@ static float kBubblePushSpeed=400.0f;
     
     if(holdingBubble)
     {            
+        timeSinceInteractionOrShake=0;
+        
         float offsetFromCX=location.x-cx;
         if(fabsf(offsetFromCX)>kBubbleScrollBoundary)
         {
@@ -356,6 +387,8 @@ static float kBubblePushSpeed=400.0f;
     
     if(holdingBubbleOffset)
     {
+        timeSinceInteractionOrShake=0;
+        
         //[gw handleMessage:kDWnlineReleaseRamblerAtOffset andPayload:nil withLogLevel:0];
         holdingBubbleOffset=NO;
         

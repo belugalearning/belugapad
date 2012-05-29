@@ -434,6 +434,8 @@ static float kMoveToNextProblemTime=2.0f;
 -(void) resetProblem
 {
     if(problemDescLabel)[problemDescLabel removeFromParentAndCleanup:YES];
+    if(commitBtn)[commitBtn removeFromParentAndCleanup:YES];
+    
     skipNextStagedIntroAnim=YES;
     
     [self loadProblem];
@@ -573,7 +575,7 @@ static float kMoveToNextProblemTime=2.0f;
     
     if(evalMode==kProblemEvalOnCommit)
     {
-        CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
+        commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
         [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
         [commitBtn setTag:3];
         [commitBtn setOpacity:0];

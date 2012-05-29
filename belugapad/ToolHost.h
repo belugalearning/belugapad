@@ -112,6 +112,8 @@ typedef enum {
     CCLabelTTF *problemDescLabel;
     ProblemEvalMode evalMode;
     
+    CCSprite *commitBtn;
+    
     NordicAnimator *animator;
     int animPos;
     

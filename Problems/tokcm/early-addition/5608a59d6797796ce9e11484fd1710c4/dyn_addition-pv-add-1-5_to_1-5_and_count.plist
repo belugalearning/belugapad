@@ -19,7 +19,7 @@
 	<key>ROPES_PER_COL</key>
 	<integer>10</integer>
 	<key>ROWS_PER_COL</key>
-	<integer>2</integer>
+	<integer>1</integer>
 	<key>MAX_OBJECTS_IN_COLS</key>
 	<array>
 		<dict>
@@ -82,21 +82,23 @@
 		<string>{$number+$interval}</string>
 	</dict>
 	<key>DVARS</key>
-	<dict>
-		<key>$number</key>
+	<array>
 		<dict>
+			<key>VAR_NAME</key>
+			<string>$number</string>
 			<key>MIN</key>
 			<string>1</string>
 			<key>MAX</key>
 			<string>5</string>
 		</dict>
-		<key>$interval</key>
 		<dict>
+			<key>VAR_NAME</key>
+			<string>$interval</string>
 			<key>MIN</key>
 			<string>1</string>
 			<key>MAX</key>
 			<string>5</string>
 		</dict>
-	</dict>
+	</array>
 </dict>
 </plist>

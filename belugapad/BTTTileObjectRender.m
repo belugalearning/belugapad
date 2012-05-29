@@ -95,12 +95,10 @@
 
     else spriteFileName=[NSString stringWithFormat:@"/images/timestables/tile%d.png", tile.Size];
     
-    
     tile.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
     [tile.mySprite setPosition:tile.Position];
-    //[anch.mySprite setScale:0.5f];
     
-    if(tile.Disabled && !tile.isEndXPiece && !tile.isEndYPiece)[tile.mySprite setColor:ccc3(40,40,40)];
+    if(tile.Disabled && !tile.isEndXPiece && !tile.isEndYPiece && !tile.isCornerPiece)[tile.mySprite setColor:ccc3(40,40,40)];
     
     if(gameWorld.Blackboard.inProblemSetup)
     {
@@ -122,7 +120,7 @@
         tile.Selected=YES;
         [gameWorld.Blackboard.SelectedObjects addObject:tile];
         tile.selSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/selectionbox%d.png"), tile.Size]];
-        //[tile.selSprite setPosition:[tile.mySprite convertToNodeSpace:tile.Position]];
+
         [tile.selSprite setPosition:tile.Position];
         [tile.mySprite.parent addChild:tile.selSprite z:1000];
         

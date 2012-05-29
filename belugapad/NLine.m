@@ -258,12 +258,16 @@ static float kBubblePushSpeed=400.0f;
     [bubbleSprite stopAllActions];
     [bubbleSprite setTexture:bubbleTexSelected];
     [bubbleSprite runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.15f scale:1.15f] rate:2.0f]];
+    
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/nline/pickup.wav")];
 }
 
 -(void)animReleaseBubble
 {
     [bubbleSprite setTexture:bubbleTexRegular];
     [bubbleSprite runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.15f scale:1.0f] rate:2.0f]];    
+    
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/nline/release.wav")];
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

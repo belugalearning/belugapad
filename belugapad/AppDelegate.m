@@ -34,6 +34,8 @@
 @synthesize window=window_, navController=navController_, director=director_;
 
 @synthesize LocalSettings;
+@synthesize ReleaseMode;
+
 @synthesize contentService;
 
 @synthesize usersService;
@@ -71,6 +73,9 @@
         self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
         contentService = [[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
         
+        //are we in release mode
+        NSNumber *relmode=[self.LocalSettings objectForKey:@"RELEASE_MODE"];
+        if(relmode) if ([relmode boolValue]) self.ReleaseMode=YES;
         
         //do cocos stuff
         //director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
@@ -106,7 +111,7 @@
 	director_.wantsFullScreenLayout = YES;
     
 	// Display FSP and SPF
-	[director_ setDisplayStats:YES];
+	[director_ setDisplayStats:!self.ReleaseMode];
     
 	// set FPS at 60
 	[director_ setAnimationInterval:1.0/60];

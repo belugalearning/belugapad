@@ -242,7 +242,7 @@
                 yStartNumber--;
             }
             
-            if(iCol==(int)((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-1 && showXAxis && !tile.isEndXPiece) {
+            if(iCol==amtForY-1 && showXAxis && !tile.isEndXPiece) {
                 CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", xStartNumber]fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
                 [curLabel setPosition:ccp(xStartPos,yStartPos+spaceBetweenAnchors)];
                 [self.ForeLayer addChild:curLabel];

@@ -52,27 +52,30 @@
 		</dict>
 	</array>
 	<key>DVARS</key>
-	<dict>
-		<key>$first_value</key>
+	<array>
 		<dict>
+			<key>VAR_NAME</key>
+			<string>$first_value</string>
 			<key>MIN</key>
 			<string>1</string>
 			<key>MAX</key>
 			<string>5</string>
 		</dict>
-		<key>$second_value</key>
 		<dict>
+			<key>VAR_NAME</key>
+			<string>$second_value</string>
 			<key>MIN</key>
 			<string>1</string>
 			<key>MAX</key>
 			<string>5</string>
 		</dict>
-		<key>$target</key>
 		<dict>
+			<key>VAR_NAME</key>
+			<string>$target</string>
 			<key>VALUE</key>
 			<string>{$first_value+$second_value}</string>
 		</dict>
-	</dict>
+	</array>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>

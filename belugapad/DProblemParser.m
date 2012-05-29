@@ -28,8 +28,9 @@
     [dStrings removeAllObjects];
     
     //parse the dvars from the new pdef
-    NSDictionary *dvdef=[pdef objectForKey:@"DVARS"];
-    if(dvdef) [self parseDVars:dvdef];
+    NSObject *dvdobject=[pdef objectForKey:@"DVARS"];
+    if([dvdobject isKindOfClass:[NSDictionary class]]) [self parseDVarsInDictionary:(NSDictionary*)dvdobject];
+    else if([dvdobject isKindOfClass:[NSArray class]]) [self parseDVarsInArray:(NSArray *)dvdobject];
     
     //parse the dstrings from the new pdef
     NSDictionary *dsdef=[pdef objectForKey:@"DSTRINGS"];
@@ -96,7 +97,7 @@
     }
 }
 
--(void)parseDVars:(NSDictionary*)dvarsdef
+-(void)parseDVarsInDictionary:(NSDictionary*)dvarsdef
 {
     for (int i=0; i<[[dvarsdef allKeys] count]; i++) {
         NSString *namebase=[[dvarsdef allKeys] objectAtIndex:i];
@@ -106,72 +107,87 @@
         //the dictionary for this dvar's settings & properties
         NSDictionary *dv=[[dvarsdef allValues] objectAtIndex:i];
         
-        if([namebase length]<2)
-        {
-            NSLog(@"string not long enough %@", namebase);
-            continue;
-        }
+        [self parseDVar:namebase withDef:dv];
+    }
+}
+
+-(void)parseDVarsInArray:(NSArray*)dvarsarray
+{
+    for(int i=0; i<dvarsarray.count; i++)
+    {
+        NSDictionary *dvdef=[dvarsarray objectAtIndex:i];
+        NSString *dvname=[dvdef objectForKey:@"VAR_NAME"];
         
-        NSString *name=[namebase substringFromIndex:1];
-        NSString *casttype=[namebase substringToIndex:1];
-        
-        if(!([casttype isEqualToString:@"$"] || [casttype isEqualToString:@"%%"] || [casttype isEqualToString:@"&"]))
-        {
-            NSLog(@"cast type char not in $, %%, &");
-            continue;
-        }
-        
-        //output value
-        NSNumber *outputvalue=[NSNumber numberWithInt:0];
-        
-        //raw string expressions
-        NSString *valexpr=[dv objectForKey:@"VALUE"];
-        NSString *recallexpr=[dv objectForKey:@"RECALL"];
-        
-        if(valexpr)
-        {
-            //create this variable by evaluating a value
-            NSString *parsedval=[self parseStringFromString:valexpr];
-            
-            outputvalue=[self numberFromString:parsedval withCastType:casttype];
-        }
-        else if(recallexpr)
-        {
-            //create by evaluating a value, recalling retained vars where applicable
-            NSString *parsedval=[self parseStringFromString:recallexpr withRecall:YES];
-            outputvalue=[self numberFromString:parsedval withCastType:casttype];
-        }
-        else {
-            //create this vairable by creating a random number
-            //note: this is actually using a string output of the random NSNumber and then casting back using casttype
-            outputvalue=[self numberFromString:[[self randomNumberWithParams:dv] stringValue] withCastType:casttype];
-        }
-        
-        //add this variable to the problem dvars
-        [dVars setObject:outputvalue forKey:name];
-        
-        NSLog(@"setting %@ to %@", namebase, [outputvalue stringValue]);
-        
-        //should we retain this variable?
-        NSNumber *retain=[dv objectForKey:@"RETAIN"];
-        if(retain)
-        {
-            if([retain intValue]==0)
-            {
-                //clear any existing value and do not retain
-                [retainedVars removeObjectForKey:namebase];
-                
-                NSLog(@"cleared any retained value for %@", namebase);
-            }
-            else {
-                //retain the value, overwriting any current value
-                [retainedVars setObject:outputvalue forKey:namebase];
-                
-                NSLog(@"retained value of %@", namebase);
-            }
-        }
+        [self parseDVar:dvname withDef:dvdef];
+    }
+}
+
+- (void)parseDVar:(NSString *)namebase withDef:(NSDictionary *)dv
+{
+    if([namebase length]<2)
+    {
+        NSLog(@"string not long enough %@", namebase);
+        return;
     }
     
+    NSString *name=[namebase substringFromIndex:1];
+    NSString *casttype=[namebase substringToIndex:1];
+    
+    if(!([casttype isEqualToString:@"$"] || [casttype isEqualToString:@"%%"] || [casttype isEqualToString:@"&"]))
+    {
+        NSLog(@"cast type char not in $, %%, &");
+        return;
+    }
+    
+    //output value
+    NSNumber *outputvalue=[NSNumber numberWithInt:0];
+    
+    //raw string expressions
+    NSString *valexpr=[dv objectForKey:@"VALUE"];
+    NSString *recallexpr=[dv objectForKey:@"RECALL"];
+    
+    if(valexpr)
+    {
+        //create this variable by evaluating a value
+        NSString *parsedval=[self parseStringFromString:valexpr];
+        
+        outputvalue=[self numberFromString:parsedval withCastType:casttype];
+    }
+    else if(recallexpr)
+    {
+        //create by evaluating a value, recalling retained vars where applicable
+        NSString *parsedval=[self parseStringFromString:recallexpr withRecall:YES];
+        outputvalue=[self numberFromString:parsedval withCastType:casttype];
+    }
+    else {
+        //create this vairable by creating a random number
+        //note: this is actually using a string output of the random NSNumber and then casting back using casttype
+        outputvalue=[self numberFromString:[[self randomNumberWithParams:dv] stringValue] withCastType:casttype];
+    }
+    
+    //add this variable to the problem dvars
+    [dVars setObject:outputvalue forKey:name];
+    
+    NSLog(@"setting %@ to %@", namebase, [outputvalue stringValue]);
+    
+    //should we retain this variable?
+    NSNumber *retain=[dv objectForKey:@"RETAIN"];
+    if(retain)
+    {
+        if([retain intValue]==0)
+        {
+            //clear any existing value and do not retain
+            [retainedVars removeObjectForKey:namebase];
+            
+            NSLog(@"cleared any retained value for %@", namebase);
+        }
+        else {
+            //retain the value, overwriting any current value
+            [retainedVars setObject:outputvalue forKey:namebase];
+            
+            NSLog(@"retained value of %@", namebase);
+        }
+    }
 }
 
 -(NSNumber *)randomNumberWithParams:(NSDictionary*)params

@@ -264,7 +264,8 @@
         
         DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
 
-        [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchMovedMoveBlock withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%f}",pogo.ObjectValue]];
+        //remove b/c of log perf
+//        [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchMovedMoveBlock withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%f}",pogo.ObjectValue]];
 
         
         pogo.MovePosition = location;

@@ -426,11 +426,16 @@ static float kMoveToNextProblemTime=2.0f;
     }
     
     [usersService startProblemAttempt];
+    
+    //write the problem attempt id into the touch log for reconciliation
+    [self logTouchProblemAttemptID:usersService.currentProblemAttemptID];
 }
 
 -(void) resetProblem
 {
     if(problemDescLabel)[problemDescLabel removeFromParentAndCleanup:YES];
+    if(commitBtn)[commitBtn removeFromParentAndCleanup:YES];
+    
     skipNextStagedIntroAnim=YES;
     
     [self loadProblem];
@@ -497,20 +502,20 @@ static float kMoveToNextProblemTime=2.0f;
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self returnToMenu];
     }
-    if(CGRectContainsPoint((CGRect){{400.0f,559.5f},{250.0f,45.0f}}, location))
+    if(CGRectContainsPoint(kPauseMenuLogOut, location))
     {
         [usersService logProblemAttemptEvent:kProblemAttemptExitLogOut withOptionalNote:nil];
         usersService.currentUser = nil;
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
     }
-    if (location.x<cx && location.y > kButtonToolbarHitBaseYOffset)
+    if (location.x>cx && location.y < 768 - kButtonToolbarHitBaseYOffset)
     {
         [usersService logProblemAttemptEvent:kProblemAttemptSkipDebug withOptionalNote:nil];
         isPaused=NO;
         [pauseLayer setVisible:NO];
         [self gotoNewProblem];
-    }      
+    }
 }
 
 -(void) returnToMenu
@@ -570,7 +575,7 @@ static float kMoveToNextProblemTime=2.0f;
     
     if(evalMode==kProblemEvalOnCommit)
     {
-        CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
+        commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
         [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
         [commitBtn setTag:3];
         [commitBtn setOpacity:0];
@@ -975,7 +980,10 @@ static float kMoveToNextProblemTime=2.0f;
             
         }
     }
-    [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberMove withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",moveNumber]];
+    
+    //removed b/c of log performance issues
+//    [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberMove withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",moveNumber]];
+    
     npMove.position=location;
 
 }
@@ -1275,9 +1283,19 @@ static float kMoveToNextProblemTime=2.0f;
     [header writeToFile:touchLogPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
 }
 
+-(void)logTouchProblemAttemptID:(NSString*)paid
+{
+    NSString *item=[NSString stringWithFormat:@" problemattempt %@ ", paid];
+    
+    NSFileHandle *myHandle = [NSFileHandle fileHandleForUpdatingAtPath:touchLogPath];
+    [myHandle seekToEndOfFile];
+    [myHandle writeData:[item dataUsingEncoding:NSUTF8StringEncoding]];
+    [myHandle closeFile];
+}
+
 -(void)logTouches:(NSSet*)touches forEvent:(NSString*)event
 {
-    NSString *item=[NSString stringWithFormat:@"%@ %f ", event, [[NSDate date] timeIntervalSince1970]];
+    NSString *item=[NSString stringWithFormat:@" %@ %f ", event, [[NSDate date] timeIntervalSince1970]];
     
     for (UITouch *t in touches) {
         item=[item stringByAppendingString:[NSString stringWithFormat:@"{%@,%@},", NSStringFromCGPoint([t locationInView:t.view]), NSStringFromCGPoint([t previousLocationInView:t.view])]];

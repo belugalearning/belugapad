@@ -47,6 +47,9 @@ static float kLightInScaleMax=10.0f;
 
 static int kNodeMax=50;
 
+const float kLogOutBtnPadding = 8.0f;
+const CGSize kLogOutBtnSize = { 120.0f, 43.0f };
+
 typedef enum {
     kJuiStateNodeMap,
     kJuiStateNodeSliceTransition,
@@ -88,6 +91,8 @@ typedef enum {
     
     float deltacum;
     
+    CGPoint logOutBtnCentre;
+    CGRect logOutBtnBounds;
 }
 
 @end
@@ -136,6 +141,13 @@ typedef enum {
         //daemon=[[Daemon alloc] initWithLayer:mapLayer andRestingPostion:[mapLayer convertToNodeSpace:ccp(cx, cy)] andLy:ly];
         daemon=[[Daemon alloc] initWithLayer:foreLayer andRestingPostion:ccp(cx, cy) andLy:ly];
         [daemon setMode:kDaemonModeFollowing];
+        
+        logOutBtnBounds = CGRectMake(winsize.width-kLogOutBtnSize.width - kLogOutBtnPadding, kLogOutBtnPadding, 
+                                     kLogOutBtnSize.width, kLogOutBtnSize.height);        
+        logOutBtnCentre = CGPointMake(logOutBtnBounds.origin.x + kLogOutBtnSize.width/2, logOutBtnBounds.origin.y + kLogOutBtnSize.height/2);
+        CCSprite *b=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/log-out.png")];
+        [b setPosition:logOutBtnCentre];
+        [foreLayer addChild:b];
         
         [[SimpleAudioEngine sharedEngine] playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/mood.mp3") loop:YES];
     }
@@ -812,6 +824,14 @@ typedef enum {
     UITouch *touch=[touches anyObject];
     CGPoint l=[touch locationInView:[touch view]];
     l=[[CCDirector sharedDirector] convertToGL:l];
+    
+    if(CGRectContainsPoint(logOutBtnBounds, l))
+    {
+        [usersService logProblemAttemptEvent:kProblemAttemptExitLogOut withOptionalNote:nil];
+        usersService.currentUser = nil;
+        [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
+        return;
+    }
  
     lastTouch=l;
     

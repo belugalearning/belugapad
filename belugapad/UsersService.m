@@ -41,12 +41,15 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     ProblemAttempt *currentProblemAttempt;
 }
 -(NSString*)generateUUID;
+
+@property (readwrite, retain) NSString *currentProblemAttemptID;
 @end
 
 @implementation UsersService
 
 @synthesize installationUUID;
 @synthesize currentUser;
+@synthesize currentProblemAttemptID;
 
 -(User*)currentUser
 {
@@ -228,6 +231,9 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
                                                                            andProblem:currentProblem
                                                                      andParentProblem:nil
                                                                      andGeneratedPDEF:cs.currentStaticPdef];
+
+    //expose the id of the current event -- used in touch logging reconciliation
+    currentProblemAttemptID=currentProblemAttempt.document.documentID;
     
     [self logProblemAttemptEvent:kProblemAttemptStart withOptionalNote:nil];
     [[currentProblemAttempt save] wait];

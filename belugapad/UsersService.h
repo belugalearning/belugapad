@@ -41,7 +41,17 @@ typedef enum {
     kProblemAttemptPartitionToolTouchBeganOnRow,
     kProblemAttemptPartitionToolTouchEndedOnRow,
     kProblemAttemptPartitionToolTouchEndedInSpace,
-    kProblemAttemptPartitionToolTouchBeganOnLockedRow
+    kProblemAttemptPartitionToolTouchBeganOnLockedRow,
+    kProblemAttemptDotGridTouchBeginCreateShape,
+    kProblemAttemptDotGridTouchEndedCreateShape,
+    kProblemAttemptDotGridTouchBeginResizeShape,
+    kProblemAttemptDotGridTouchEndedResizeShape,
+    kProblemAttemptDotGridTouchBeginSelectTile,
+    kProblemAttemptDotGridTouchBeginDeselectTile,
+    kProblemAttemptDotGridTouchEndedInvalidResizeHidden,
+    kProblemAttemptDotGridTouchEndedInvalidResizeExistingTile,
+    kProblemAttemptDotGridTouchEndedInvalidCreateHidden,
+    kProblemAttemptDotGridTouchEndedInvalidCreateExistingTile,
 
 } ProblemAttemptEvent;
 

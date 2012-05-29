@@ -698,7 +698,7 @@ static float kMoveToNextProblemTime=2.0f;
     // if eval mode is commit, render a commit button
     if(mqEvalMode==kMetaQuestionEvalOnCommit)
     {
-        CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
+        commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
         [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
         [commitBtn setTag:3];
         [commitBtn setOpacity:0];
@@ -728,7 +728,7 @@ static float kMoveToNextProblemTime=2.0f;
     if([pdefNP objectForKey:MAX_NUMBERS])
         npMaxNoInDropbox=[[pdefNP objectForKey:MAX_NUMBERS]intValue];
     else
-        npMaxNoInDropbox=5;
+        npMaxNoInDropbox=4;
 
     
     
@@ -870,7 +870,7 @@ static float kMoveToNextProblemTime=2.0f;
     // if eval mode is commit, render a commit button
     if(numberPickerEvalMode==kNumberPickerEvalOnCommit)
     {
-        CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
+        commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
         [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
         [commitBtn setTag:3];
         [commitBtn setOpacity:0];
@@ -917,11 +917,11 @@ static float kMoveToNextProblemTime=2.0f;
                 if(animatePickedButtons) {
                     // and set the position/actions
                     [curSprite setPosition:[nPicker convertToWorldSpace:s.position]];                
-                    [curSprite runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/1.25)+([numberPickedSelection count]*75),cy+50)]];
+                    [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+([numberPickedSelection count]*75),cy+50)]];
                 }
                 else {
-                    [curSprite setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/1.25)+([numberPickedSelection count]*75),cy+50)];                
-                    [curSprite runAction:[CCFadeIn actionWithDuration:0.5f]];
+                    [curSprite setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+([numberPickedSelection count]*75),cy+50)];                
+                    [curSprite runAction:[CCFadeIn actionWithDuration:kNumberPickerNumberFadeInTime]];
 
                 }
                 
@@ -1019,7 +1019,7 @@ static float kMoveToNextProblemTime=2.0f;
     for(int i=0;i<[numberPickedSelection count];i++)
     {
         CCSprite *s=[numberPickedSelection objectAtIndex:i];
-        [s setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(s.contentSize.width/1.25)+(i*75),cy+50)];
+        [s setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(s.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+(i*75),cy+50)];
 
     }
 }
@@ -1336,6 +1336,10 @@ static float kMoveToNextProblemTime=2.0f;
 //        animPos=0;
 //        [self moveToTool0:0];
 //    }
+    if(isPaused)
+    {
+        return;
+    }  
     
     if(metaQuestionForThisProblem)
         [self checkMetaQuestionTouches:location];
@@ -1343,10 +1347,6 @@ static float kMoveToNextProblemTime=2.0f;
         [self checkNumberPickerTouches:location];
     
     
-    if(isPaused)
-    {
-        return;
-    }  
     // TODO: This should be made proportional
     
     if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit)
@@ -1439,7 +1439,7 @@ static float kMoveToNextProblemTime=2.0f;
     if(npMove)
     {
         float distance=[BLMath DistanceBetween:lastTouch and:location];
-        if(!CGRectContainsPoint(npDropbox.boundingBox, location) || (CGRectContainsPoint(npDropbox.boundingBox, location) && distance<5.0f))
+        if(!CGRectContainsPoint(npDropbox.boundingBox, location) || (CGRectContainsPoint(npDropbox.boundingBox, location) && distance<10.0f))
         {
 
             

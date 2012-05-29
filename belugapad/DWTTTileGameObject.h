@@ -22,6 +22,9 @@
 @property int myXpos;
 @property int myYpos;
 @property OperatorMode operatorType;
+@property BOOL isEndXPiece;
+@property BOOL isEndYPiece;
+@property BOOL isCornerPiece;
 
 
 @end

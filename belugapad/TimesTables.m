@@ -17,6 +17,17 @@
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
+#import "UsersService.h"
+#import "AppDelegate.h"
+
+@interface TimesTables()
+{
+@private
+    ContentService *contentService;
+    UsersService *usersService;
+}
+
+@end
 
 @implementation TimesTables
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
@@ -45,7 +56,9 @@
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
         
-        
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        contentService = ac.contentService;
+        usersService = ac.usersService;
         
         [gw Blackboard].hostCX = cx;
         [gw Blackboard].hostCY = cy;
@@ -186,17 +199,39 @@
     
     // render the times table grid
     
-    for (int iRow=0; iRow<(int)(lx-spaceBetweenAnchors*3)/spaceBetweenAnchors; iRow++)
+    int amtForX=(int)((lx-spaceBetweenAnchors*3)/spaceBetweenAnchors)+1;
+    int amtForY=(int)((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)+1;
+    
+    for (int iRow=0; iRow<amtForX; iRow++)
     {
         NSMutableArray *currentCol=[[NSMutableArray alloc]init];
         
-        for(int iCol=0; iCol<(int)(ly-spaceBetweenAnchors*3)/spaceBetweenAnchors; iCol++)
+        for(int iCol=0; iCol<amtForY; iCol++)
         {
             
             // create our start position and gameobject
             float yStartPos=(iCol+1.5)*spaceBetweenAnchors;
+            DWTTTileGameObject *tile = [DWTTTileGameObject alloc];
+            [gw populateAndAddGameObject:tile withTemplateName:@"TtimestablesTile"];
             
-            if(iRow==0 && showYAxis)
+            if(iRow==amtForX-1 && iCol==0)
+            {
+                tile.isCornerPiece=YES;
+                tile.Disabled=YES;
+            }
+            else if(iRow==amtForX-1)
+            {
+                tile.isEndXPiece=YES;
+                tile.Disabled=YES;
+            }
+            else if(iCol==0)
+            {
+                tile.isEndYPiece=YES;
+                tile.Disabled=YES;
+            }
+        
+            
+            if(iRow==0 && showYAxis && !tile.isEndYPiece)
             {
                 CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", yStartNumber] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
                 [curLabel setPosition:ccp(xStartPos-spaceBetweenAnchors,yStartPos)];
@@ -207,7 +242,7 @@
                 yStartNumber--;
             }
             
-            if(iCol==(int)((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-1 && showXAxis) {
+            if(iCol==amtForY-1 && showXAxis && !tile.isEndXPiece) {
                 CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", xStartNumber]fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
                 [curLabel setPosition:ccp(xStartPos,yStartPos+spaceBetweenAnchors)];
                 [self.ForeLayer addChild:curLabel];
@@ -216,14 +251,13 @@
                 [xHeaders addObject:curLabel];
             }
             
-            DWTTTileGameObject *tile = [DWTTTileGameObject alloc];
-            [gw populateAndAddGameObject:tile withTemplateName:@"TtimestablesTile"];
             tile.Position=ccp(xStartPos,yStartPos);
             tile.myXpos=xStartNumber;
             tile.myYpos=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-(iCol+1);
             tile.operatorType=operatorMode;
             tile.Size=spaceBetweenAnchors;
-            
+            NSLog(@"iRow %d amtForX %d // iCol %d amtForY %d", iRow, amtForX, iCol, amtForY);
+
             //NSLog(@"iRow = %d, iCol = %d, tile.myXpos = %d, tile.myYpos = %d", iRow, iCol, tile.myXpos, tile.myYpos);
             
 

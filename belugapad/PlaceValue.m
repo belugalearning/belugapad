@@ -16,7 +16,17 @@
 #import "DWGameWorld.h"
 #import "Daemon.h"
 #import "ToolHost.h"
+#import "UsersService.h"
+#import "AppDelegate.h"
 
+@interface PlaceValue()
+{
+@private
+    ContentService *contentService;
+    UsersService *usersService;
+}
+
+@end
 
 static float kPropXNetSpace=0.087890625f;
 static float kPropYColumnOrigin=0.75f;
@@ -54,6 +64,10 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
         [toolHost addToolNoScaleLayer:self.NoScaleLayer];
+        
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        contentService = ac.contentService;
+        usersService = ac.usersService;
         
         [self setupBkgAndTitle];
 

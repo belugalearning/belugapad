@@ -14,6 +14,17 @@
 #import "Daemon.h"
 #import "ToolConsts.h"
 #import "ToolHost.h"
+#import "UsersService.h"
+#import "AppDelegate.h"
+
+@interface BlockFloating()
+{
+@private
+    ContentService *contentService;
+    UsersService *usersService;
+}
+
+@end
 
 const int kBlockSpawnSpaceWidth=800;
 const int kBlockSpawnSpaceHeight=400;
@@ -102,6 +113,10 @@ static void eachShape(void *ptr, void* unused)
         self.ForeLayer=[[[CCLayer alloc]init] autorelease];
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
+        
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        contentService = ac.contentService;
+        usersService = ac.usersService;
         
         problemIsCurrentlySolved=NO;
         

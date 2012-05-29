@@ -53,6 +53,13 @@ const float kMetaQuestionYOffsetPlaceValue=0.45f;
 const float kMetaQuestionYOffsetBlockFloat=0.35f;
 const float kMetaIncompleteLabelYOffset=0.65f;
 
+// number picker
+const float kNumberPickerSpacingFromDropboxEdge=1.85f;
+const float kNumberPickerNumberFadeInTime=0.5f;
+const float kNumberPickerNumberAnimateInTime=0.2f;
+const float kNumberPickerNumberSpaceBetweenSpritesProp=0.005f;
+
+
 const CGRect kPauseMenuLogOut={{8.0f,717.0f},{120.0f,43.0f}};
 const CGRect kPauseMenuMenu={{374.0f,478.0f},{275.0f,80.0f}};
 const CGRect kPauseMenuReset={{374.0f,378.0f},{275.0f,80.0f}};

@@ -67,6 +67,12 @@ extern const float kMetaQuestionYOffsetPlaceValue;
 extern const float kMetaQuestionYOffsetBlockFloat;
 extern const float kMetaIncompleteLabelYOffset;
 
+// number picker
+extern const float kNumberPickerSpacingFromDropboxEdge;
+extern const float kNumberPickerNumberFadeInTime;
+extern const float kNumberPickerNumberAnimateInTime;
+
+
 extern const CGRect kPauseMenuMenu;
 extern const CGRect kPauseMenuReset;
 extern const CGRect kPauseMenuContinue;

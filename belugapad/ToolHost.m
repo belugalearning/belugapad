@@ -698,7 +698,7 @@ static float kMoveToNextProblemTime=2.0f;
     // if eval mode is commit, render a commit button
     if(mqEvalMode==kMetaQuestionEvalOnCommit)
     {
-        CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
+        commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
         [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
         [commitBtn setTag:3];
         [commitBtn setOpacity:0];
@@ -870,7 +870,7 @@ static float kMoveToNextProblemTime=2.0f;
     // if eval mode is commit, render a commit button
     if(numberPickerEvalMode==kNumberPickerEvalOnCommit)
     {
-        CCSprite *commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
+        commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
         [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
         [commitBtn setTag:3];
         [commitBtn setOpacity:0];
@@ -1336,6 +1336,10 @@ static float kMoveToNextProblemTime=2.0f;
 //        animPos=0;
 //        [self moveToTool0:0];
 //    }
+    if(isPaused)
+    {
+        return;
+    }  
     
     if(metaQuestionForThisProblem)
         [self checkMetaQuestionTouches:location];
@@ -1343,10 +1347,6 @@ static float kMoveToNextProblemTime=2.0f;
         [self checkNumberPickerTouches:location];
     
     
-    if(isPaused)
-    {
-        return;
-    }  
     // TODO: This should be made proportional
     
     if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit)

@@ -94,7 +94,10 @@ static float kBubblePushSpeed=400.0f;
 
 -(void)setupBubble
 {
-    bubbleSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/bubble.png")];
+    bubbleTexRegular=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/bubble.png")].CGImage resolutionType:kCCResolutioniPad];
+    bubbleTexSelected=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/bubble_selected.png")].CGImage resolutionType:kCCResolutioniPad];
+    
+    bubbleSprite=[CCSprite spriteWithTexture:bubbleTexRegular];
     [bubbleSprite setPosition:ccp(cx, cy)];
     [self.ForeLayer addChild:bubbleSprite];
     
@@ -250,6 +253,19 @@ static float kBubblePushSpeed=400.0f;
 //    return result;
 }
 
+-(void)animPickupBubble
+{
+    [bubbleSprite stopAllActions];
+    [bubbleSprite setTexture:bubbleTexSelected];
+    [bubbleSprite runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.15f scale:1.15f] rate:2.0f]];
+}
+
+-(void)animReleaseBubble
+{
+    [bubbleSprite setTexture:bubbleTexRegular];
+    [bubbleSprite runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.15f scale:1.0f] rate:2.0f]];    
+}
+
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if(touching)return;
@@ -286,6 +302,8 @@ static float kBubblePushSpeed=400.0f;
     {
         holdingBubbleOffset=location.x - bubbleSprite.position.x;
         holdingBubble=YES;
+        
+        [self animPickupBubble];
     }
 }
 
@@ -357,7 +375,11 @@ static float kBubblePushSpeed=400.0f;
         //diff (moveby)
         float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
         [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
-               
+        
+        
+        //release the bubble
+        [self animReleaseBubble];
+        
 //        int roundedStepsFromActualCentre=roundedStepsFromCentre;
 //        
 //        roundedStepsFromCentre += [[problemDef objectForKey:START_VALUE] intValue];

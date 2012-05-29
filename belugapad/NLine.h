@@ -40,6 +40,9 @@
 
     CCLabelTTF *problemCompleteLabel;
     
+    CCTexture2D *bubbleTexRegular;
+    CCTexture2D *bubbleTexSelected;
+    
     CCSprite *bubbleSprite;
     BOOL holdingBubble;
     float holdingBubbleOffset;

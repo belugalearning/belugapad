@@ -295,6 +295,8 @@ static float kTimeToBubbleShake=7.0f;
 //    CCSequence *seq=[CCSequence actions:left1, right, left2, nil];
     
     [bubbleSprite runAction:oe];
+    
+    
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

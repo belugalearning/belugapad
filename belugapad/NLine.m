@@ -531,6 +531,9 @@ static float kTimeToBubbleShake=7.0f;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    
+    holdingBubbleOffset=0;
+    holdingBubble=NO;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event

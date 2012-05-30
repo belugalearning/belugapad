@@ -145,6 +145,7 @@ static float kTimeToBubbleShake=7.0f;
     rambler.CurrentSegmentValue=initSegmentVal;
     rambler.MinValue=initMinVal;
     rambler.MaxValue=initMaxVal;
+    rambler.BubblePos=lastBubbleLoc;
 
     //positioning
     rambler.DefaultSegmentSize=115;

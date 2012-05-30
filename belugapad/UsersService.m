@@ -32,7 +32,8 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 @interface UsersService()
 {
     @private
-    BOOL sessionLoggingIsEnabled;
+    BOOL problemAttemptLoggingIsEnabled;
+    NSString *contentSource;
     
     NSString *installationUUID;
     Device *device;
@@ -76,11 +77,12 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     
     user = ur;
     
-    if (ur && sessionLoggingIsEnabled)
+    if (ur)
     {    
         currentUserSession = [[UserSession alloc] initWithNewDocumentInDatabase:loggingDatabase
                                                          AndStartSessionForUser:ur
-                                                                       onDevice:device];
+                                                                       onDevice:device
+                                                              withContentSource:contentSource];
     }
 }
 
@@ -89,7 +91,8 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     self = [super init];
     if (self)
     {
-        sessionLoggingIsEnabled = [@"DATABASE" isEqualToString:source];
+        problemAttemptLoggingIsEnabled = [@"DATABASE" isEqualToString:source];
+        contentSource = source;
         
         [[CouchModelFactory sharedInstance] registerClass:[Device class] forDocumentType:@"device"];
         [[CouchModelFactory sharedInstance] registerClass:[User class] forDocumentType:@"user"];
@@ -234,7 +237,7 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 
 -(void)startProblemAttempt
 {
-    if (!sessionLoggingIsEnabled) return;
+    if (!problemAttemptLoggingIsEnabled) return;
     
     if (currentProblemAttempt)
     {
@@ -261,7 +264,7 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 -(void)logProblemAttemptEvent:(ProblemAttemptEvent)event
              withOptionalNote:(NSString*)note
 {
-    if (!sessionLoggingIsEnabled) return;
+    if (!problemAttemptLoggingIsEnabled) return;
     if (!currentProblemAttempt) return;
     
     NSString *eventString = nil;

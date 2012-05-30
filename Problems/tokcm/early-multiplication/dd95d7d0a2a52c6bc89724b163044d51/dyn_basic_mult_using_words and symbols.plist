@@ -42,7 +42,7 @@
 			<key>LABEL</key>
 			<string>2</string>
 			<key>QUANTITY</key>
-			<integer>3</integer>
+			<string>{$multiplier}</string>
 		</dict>
 	</array>
 	<key>DVARS</key>

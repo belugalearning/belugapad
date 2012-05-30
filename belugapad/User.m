@@ -15,13 +15,12 @@ NSString *const kZubiScreenshotFile = @"zubi_screenshot.png";
 @interface User()
 {
     @private
-    NSDate *currentSessionStart;
 }
 @end
 
 @implementation User
 
-@dynamic type, nickName, password, creationDateTime, zubiColor, sessions;
+@dynamic type, nickName, password, dateCreation, zubiColor;
 @dynamic nodesCompleted;
 
 - (UIImage*) zubiScreenshot
@@ -51,32 +50,12 @@ NSString *const kZubiScreenshotFile = @"zubi_screenshot.png";
     {
         self.database = database;
         self.type = @"user";
-        self.creationDateTime = [NSDate date];
-        self.sessions = [NSMutableArray array];
-        
+        self.dateCreation = [NSDate date];        
         self.nodesCompleted = [NSArray array];
         
         self.autosaves = YES;
     }
     return self;
-}
-
--(void)startSession
-{
-    currentSessionStart = [[NSDate date] retain];
-}
-
--(void)endSession
-{
-    NSMutableArray *mutableSessions = self.sessions ? [self.sessions mutableCopy] : [NSMutableArray array];
-    NSDictionary *session = [NSDictionary dictionaryWithObjectsAndKeys: [RESTBody JSONObjectWithDate:currentSessionStart], "@start",
-                                                                        [RESTBody JSONObjectWithDate:[NSDate date]], @"end",
-                                                                        nil];
-    [mutableSessions addObject:session];
-    self.sessions = mutableSessions;
-    
-    [currentSessionStart release];
-    currentSessionStart = nil;
 }
 
 @end

@@ -17,7 +17,7 @@
 @property (retain) NSDate *dateStart;
 @property (retain) NSDate *dateEnd;
 
-- (id) initAndStartSessionForUser:(User*)user
-                         onDevice:(Device*)device;
-
+-(id)initWithNewDocumentInDatabase:(CouchDatabase*)database
+            AndStartSessionForUser:(User*)user
+                          onDevice:(Device*)device;
 @end

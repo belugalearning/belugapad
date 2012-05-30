@@ -18,8 +18,10 @@
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
 #import <CouchCocoa/CouchModelFactory.h>
 
-NSString * const kRemoteUsersDatabaseURI = @"http://u.zubi.me:5984/blm-users";
-NSString * const kLocalUserDatabaseName = @"users";
+NSString * const kRemoteUsersDatabaseURI = @"http://u.zubi.me:5984/may2012-users";
+NSString * const kRemoteLoggingDatabaseURI = @"http://u.zubi.me:5984/may2012-logging";
+NSString * const kLocalUserDatabaseName = @"may2012-users";
+NSString * const kLocalLoggingDatabaseName = @"may2012-logging";
 NSString * const kDefaultDesignDocName = @"users-views";
 NSString * const kDeviceUsersLastSessionStart = @"most-recent-session-start-per-device-user";
 NSString * const kUsersByNickName = @"users-by-nick-name";
@@ -30,13 +32,19 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 @interface UsersService()
 {
     @private
+    BOOL sessionLoggingIsEnabled;
+    
     NSString *installationUUID;
     Device *device;
+    User *user;
     UserSession *currentUserSession;
     
-    CouchDatabase *database;
-    CouchReplication *pushReplication;
-    CouchReplication *pullReplication;
+    CouchDatabase *usersDatabase;
+    CouchDatabase *loggingDatabase;
+    
+    CouchReplication *usersPushReplication;
+    CouchReplication *usersPullReplication;
+    CouchReplication *loggingPushReplication;
     
     ProblemAttempt *currentProblemAttempt;
 }
@@ -53,8 +61,7 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 
 -(User*)currentUser
 {
-    if (!currentUserSession) return nil;
-    return currentUserSession.user;
+    return user;
 }
 
 -(void)setCurrentUser:(User*)ur
@@ -67,22 +74,23 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
         currentUserSession = nil;
     }
     
-    if (ur)
+    user = ur;
+    
+    if (ur && sessionLoggingIsEnabled)
     {    
-        currentUserSession = [[UserSession alloc] initAndStartSessionForUser:ur onDevice:device];        
-        if (!ur.nodesCompleted)
-        {
-            ur.nodesCompleted = [NSArray array];
-            [[ur save] wait];   
-        }
+        currentUserSession = [[UserSession alloc] initWithNewDocumentInDatabase:loggingDatabase
+                                                         AndStartSessionForUser:ur
+                                                                       onDevice:device];
     }
 }
 
--(id)init
+-(id)initWithProblemPipeline:(NSString*)source;
 {
     self = [super init];
     if (self)
     {
+        sessionLoggingIsEnabled = [@"DATABASE" isEqualToString:source];
+        
         [[CouchModelFactory sharedInstance] registerClass:[Device class] forDocumentType:@"device"];
         [[CouchModelFactory sharedInstance] registerClass:[User class] forDocumentType:@"user"];
         [[CouchModelFactory sharedInstance] registerClass:[UserSession class] forDocumentType:@"user session"];
@@ -90,24 +98,31 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
         
         CouchEmbeddedServer *server = [CouchEmbeddedServer sharedInstance];
         
-        database = [server databaseNamed:kLocalUserDatabaseName];
-        RESTOperation* op = [database create];
+        usersDatabase = [server databaseNamed:kLocalUserDatabaseName];
+        RESTOperation* op = [usersDatabase create];
         if (![op wait] && op.error.code != 412)
         {
             self = nil;
             return self;
         }
-        database.tracksChanges = YES;
+        usersDatabase.tracksChanges = YES;
+        
+        loggingDatabase = [server databaseNamed:kLocalLoggingDatabaseName];
+        op = [loggingDatabase create];
+        if (![op wait] && op.error.code != 412)
+        {
+            self = nil;
+            return self;
+        }
         
         NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
         if (![standardUserDefaults objectForKey:@"installationUUID"])
         {
             // This is the first run of the app on the device
-            CouchDocument *deviceDoc = [database untitledDocument];
+            CouchDocument *deviceDoc = [loggingDatabase untitledDocument];
             RESTOperation *op = [deviceDoc putProperties:[NSDictionary dictionaryWithObjectsAndKeys:
                                                           @"device", @"type"
-                                                          , [RESTBody JSONObjectWithDate:[NSDate date]], @"firstLaunchDateTime"
-                                                          , [NSArray array], @"userSessions", nil]];
+                                                          , [RESTBody JSONObjectWithDate:[NSDate date]], @"firstLaunchDateTime", nil]];
             if (![op wait])
             {
                 self = nil;
@@ -118,13 +133,15 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
         }
         
         installationUUID = [standardUserDefaults objectForKey:@"installationUUID"];
-        device = [[[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:installationUUID]] retain];
+        device = [[[CouchModelFactory sharedInstance] modelForDocument:[loggingDatabase documentWithID:installationUUID]] retain];
         device.autosaves = true;
 
-        pushReplication = [[database pushToDatabaseAtURL:[NSURL URLWithString:kRemoteUsersDatabaseURI]] retain];
-        pushReplication.continuous = YES;
-        pullReplication = [[database pullFromDatabaseAtURL:[NSURL URLWithString:kRemoteUsersDatabaseURI]] retain];
-        pullReplication.continuous = YES;
+        usersPushReplication = [[usersDatabase pushToDatabaseAtURL:[NSURL URLWithString:kRemoteUsersDatabaseURI]] retain];
+        usersPushReplication.continuous = YES;
+        usersPullReplication = [[usersDatabase pullFromDatabaseAtURL:[NSURL URLWithString:kRemoteUsersDatabaseURI]] retain];
+        usersPullReplication.continuous = YES;
+        loggingPushReplication = [[loggingDatabase pushToDatabaseAtURL:[NSURL URLWithString:kRemoteLoggingDatabaseURI]] retain];
+        loggingPushReplication.continuous = YES;
     }
     return self;
 }
@@ -133,7 +150,7 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 {
     // The view named kDeviceUsersLastSessionStart will pull back the most recent session start for each user on each device
     // key: [deviceId, userId]      value:sessionStart
-    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kDeviceUsersLastSessionStart];
+    CouchQuery *q = [[loggingDatabase designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kDeviceUsersLastSessionStart];
     q.groupLevel = 2;
     q.startKey = [NSArray arrayWithObjects:device.document.documentID, nil];
     q.endKey = [NSArray arrayWithObjects:device.document.documentID, [NSDictionary dictionary], nil];
@@ -147,9 +164,9 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     NSMutableArray *users = [NSMutableArray array];
     for (CouchQueryRow *row in sortedBySessionStartDesc)
     {
-        CouchDocument *userDoc = [database documentWithID:row.key1];
-        User *user = [[CouchModelFactory sharedInstance] modelForDocument:userDoc];
-        if (user) [users addObject:user];
+        CouchDocument *userDoc = [usersDatabase documentWithID:row.key1];
+        User *ur = [[CouchModelFactory sharedInstance] modelForDocument:userDoc];
+        if (ur) [users addObject:ur];
     }
     
     return [[users copy] autorelease];
@@ -159,7 +176,7 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 {
     // The view named kDeviceUsersLastSessionStart will pull back the most recent session start for each user on each device
     // key: [deviceId, userId]      value:sessionStart
-    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kDeviceUsersLastSessionStart];
+    CouchQuery *q = [[loggingDatabase designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kDeviceUsersLastSessionStart];
     q.groupLevel = 2;
     q.startKey = [NSArray arrayWithObjects:device.document.documentID, nil];
     q.endKey = [NSArray arrayWithObjects:device.document.documentID, [NSDictionary dictionary], nil];
@@ -168,9 +185,9 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     NSMutableArray *users = [NSMutableArray array];
     for (CouchQueryRow *row in q.rows)
     {
-        CouchDocument *userDoc = [database documentWithID:row.key1];
-        User *user = [[CouchModelFactory sharedInstance] modelForDocument:userDoc];
-        if (user) [users addObject:user];
+        CouchDocument *userDoc = [usersDatabase documentWithID:row.key1];
+        User *ur = [[CouchModelFactory sharedInstance] modelForDocument:userDoc];
+        if (ur) [users addObject:ur];
     }
     
     return [users sortedArrayUsingComparator:^(id a, id b) {
@@ -180,7 +197,7 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 
 -(BOOL) nickNameIsAvailable:(NSString*)nickName
 {
-    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersByNickName];
+    CouchQuery *q = [[usersDatabase designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersByNickName];
     q.keys = [NSArray arrayWithObject:nickName];
     q.prefetch = YES;
     [[q start] wait];
@@ -190,7 +207,7 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 -(User*) userMatchingNickName:(NSString*)nickName
                   andPassword:(NSString*)password
 {
-    CouchQuery *q = [[database designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersByNickNamePassword];
+    CouchQuery *q = [[usersDatabase designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersByNickNamePassword];
     q.keys = [NSArray arrayWithObject:[NSArray arrayWithObjects:nickName, password, nil]];
     [[q start] wait];
     
@@ -204,7 +221,7 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
                    andZubiColor:(NSData*)color // rgba
               andZubiScreenshot:(UIImage*)image
 {
-    User *u = [[[User alloc] initWithNewDocumentInDatabase:database] autorelease];
+    User *u = [[[User alloc] initWithNewDocumentInDatabase:usersDatabase] autorelease];
     u.nickName = nickName;
     u.password = password;
     u.zubiColor = color;
@@ -216,7 +233,9 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 }
 
 -(void)startProblemAttempt
-{   
+{
+    if (!sessionLoggingIsEnabled) return;
+    
     if (currentProblemAttempt)
     {
         [currentProblemAttempt release];
@@ -242,6 +261,7 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 -(void)logProblemAttemptEvent:(ProblemAttemptEvent)event
              withOptionalNote:(NSString*)note
 {
+    if (!sessionLoggingIsEnabled) return;
     if (!currentProblemAttempt) return;
     
     NSString *eventString = nil;
@@ -447,10 +467,10 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 {
     if (currentUserSession) [currentUserSession release];
     [device release];
-    [pushReplication release];
-    [pullReplication release];
+    [usersPushReplication release];
+    [usersPullReplication release];
+    [loggingPushReplication release];
     [super dealloc];
 }
-    
 
 @end

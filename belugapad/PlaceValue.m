@@ -356,6 +356,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 if ([coldef intValue]==insCol && maxdef) {
                     if([maxdef intValue])
                     {
+                        if(!boundCounts) boundCounts=[[NSMutableDictionary alloc] init];
+                        
                         boundCol=YES;
                         //see if there a dict item for this
                         NSNumber *boundPre=[boundCounts objectForKey:[NSNumber numberWithInt:insCol]];

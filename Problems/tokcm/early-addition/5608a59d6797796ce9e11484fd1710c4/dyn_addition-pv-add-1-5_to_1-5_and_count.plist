@@ -19,7 +19,7 @@
 	<key>ROPES_PER_COL</key>
 	<integer>10</integer>
 	<key>ROWS_PER_COL</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>MAX_OBJECTS_IN_COLS</key>
 	<array>
 		<dict>

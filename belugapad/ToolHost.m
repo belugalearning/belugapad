@@ -199,6 +199,7 @@ static float kMoveToNextProblemTime=2.0f;
         {
             [problemIncomplete runAction:[CCFadeOut actionWithDuration:kTimeToFadeProblemStatus]];
             showingProblemIncomplete=NO;
+            if(metaQuestionForThisProblem)[self deselectAnswersExcept:-1];
         }
             shownProblemStatusFor=0.0f;
     }
@@ -1452,9 +1453,9 @@ static float kMoveToNextProblemTime=2.0f;
             [npMove removeFromParentAndCleanup:YES];
         }
         [self reorderNumberPickerSelections];
-        int moveNumber=[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]intValue];
+        //int moveNumber=[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]intValue];
         
-        if(hasMovedNumber)[usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberMove withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",moveNumber]];
+        //if(hasMovedNumber)[usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberMove withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",moveNumber]];
         
         npMove=nil;
         hasMovedNumber=NO;

@@ -64,6 +64,8 @@
     BOOL allowPanning;
     BOOL allowCondensing;
     BOOL allowMulching;
+    BOOL hasMovedBlock;
+    BOOL hasMovedLayer;
     
     NSString *posCageSprite;
     NSString *negCageSprite;

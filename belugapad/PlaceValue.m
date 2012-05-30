@@ -805,6 +805,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         [countLabelBlock setPosition:pos];
         [countLayer addChild:countLabelBlock];
         
+        [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchBeginCountObject withOptionalNote:nil];
+        
         if(fadeCount)
         {
             CCFadeOut *labelFade = [CCFadeOut actionWithDuration:kTimeToFadeButtonLabel];
@@ -815,6 +817,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     }
     else if(showCountOnBlock && !fadeCount && gw.Blackboard.SelectedObjects.count < lastCount)
     {
+        [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchBeginUncountObject withOptionalNote:nil];
         [countLayer removeAllChildrenWithCleanup:YES];
     }
     lastCount = gw.Blackboard.SelectedObjects.count;
@@ -1035,7 +1038,14 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         [gw handleMessage:kDWareYouAPickupTarget andPayload:pl withLogLevel:-1];
         
         if([gw Blackboard].PickupObject!=nil)
-        {
+        { 
+            DWGameObject *curMount=[[[gw Blackboard].PickupObject store] objectForKey:MOUNT];
+            BOOL isCage=[[[curMount store] objectForKey:ALLOW_MULTIPLE_MOUNT]boolValue];
+            float objValue=[[[[gw Blackboard].PickupObject store] objectForKey:OBJECT_VALUE]floatValue];
+            
+            if(isCage)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchBeginPickupCageObject withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%d}",objValue]];
+            else [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchBeginPickupGridObject withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%d}",objValue]];
+            
             if([[[gw Blackboard].PickupObject store] objectForKey:PICKUP_SPRITE_FILENAME] && !gw.Blackboard.inProblemSetup)
             {
                 CCSprite *mySprite=[[[gw Blackboard].PickupObject store] objectForKey:MY_SPRITE];
@@ -1077,6 +1087,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 
     else if(touching && ([gw Blackboard].PickupObject==nil) && numberOfColumns>1 && allowPanning)
     {
+        hasMovedLayer=YES;
         CGPoint diff = ccpSub(location, prevLoc);
         diff = ccp(diff.x, 0);
         [renderLayer setPosition:ccpAdd(renderLayer.position, diff)];
@@ -1164,6 +1175,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             [pl setObject:[NSNumber numberWithFloat:y+diff.y] forKey:POS_Y];
             
             [thisObject handleMessage:kDWmoveSpriteToPosition andPayload:pl withLogLevel:-1];
+            hasMovedBlock=YES;
         }
     }
         
@@ -1206,6 +1218,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     [condensePanel setVisible:NO];
     boundingBoxCondense=CGRectNull;
     boundingBoxMulch=CGRectNull;
+    hasMovedBlock=NO;
+    hasMovedLayer=NO;
     
     touching=NO;
 }
@@ -1319,11 +1333,13 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 
 -(BOOL)doCondenseFromLocation:(CGPoint)location
 {
+    [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchEndedCondenseObject withOptionalNote:nil];
     return [self doTransitionWithIncrement:-1];
 }
 
 -(BOOL)doMulchFromLocation:(CGPoint)location
 {
+    [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchEndedMulchObjects withOptionalNote:nil];
     return [self doTransitionWithIncrement:1];
 }
 
@@ -1341,6 +1357,15 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     [toolHost.Zubi setTarget:location];
     
     inBlockTransition=NO;
+    
+    // log out if blocks are moved
+    if(hasMovedBlock)
+    {
+        float objValue=[[[[gw Blackboard].PickupObject store] objectForKey:OBJECT_VALUE]floatValue];
+        if([gw.Blackboard.SelectedObjects count]==1)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchMovedMoveObject withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%d}",objValue]];
+        else if([gw.Blackboard.SelectedObjects count]>1)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchMovedMoveObjects withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%d}",objValue]];
+    }
+    if(hasMovedLayer)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchMovedMoveGrid withOptionalNote:nil];
     
     //do mulching / condensing
     if (inMulchArea) {
@@ -1444,6 +1469,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             }
             if([gw Blackboard].DropObject != nil)
             {
+                BOOL isCage=[[[[gw Blackboard].DropObject store] objectForKey:ALLOW_MULTIPLE_MOUNT]boolValue];
                 //tell the picked-up object to mount on the dropobject
                 [pl removeAllObjects];
                 [pl setObject:[gw Blackboard].DropObject forKey:MOUNT];
@@ -1454,6 +1480,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 [[gw Blackboard].PickupObject logInfo:@"this object was mounted" withData:0];
                 [[gw Blackboard].DropObject logInfo:@"mounted object on this go" withData:0];
                 
+                if(isCage)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchEndedDropObjectOnCage withOptionalNote:nil];
+                else [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchEndedDropObjectOnGrid withOptionalNote:nil];
                 
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
                 
@@ -1483,6 +1511,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         
     }
     potentialTap=NO;
+    hasMovedBlock=NO;
+    hasMovedLayer=NO;
     boundingBoxCondense=CGRectNull;
     boundingBoxMulch=CGRectNull;
 }

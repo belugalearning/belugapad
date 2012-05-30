@@ -22,6 +22,8 @@
 	<false/>
 	<key>ALLOW_MULCHING</key>
 	<false/>
+	<key>ALLOW_PANNING</key>
+	<string>NO</string>
 	<key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_NEG_CAGE</key>

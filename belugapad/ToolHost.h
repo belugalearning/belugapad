@@ -85,7 +85,7 @@ typedef enum {
     float npEval;
     int npMaxNoInDropbox;
     CGRect pickerBox;
-    
+    BOOL hasMovedNumber;
     
     
     BOOL isPaused;

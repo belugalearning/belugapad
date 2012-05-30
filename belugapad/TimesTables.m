@@ -388,6 +388,7 @@
 
 -(void)tintRow:(int)thisRow
 {
+    BOOL haveLogged=NO;
     for(int i=0;i<[ttMatrix count];i++)
     {
         DWTTTileGameObject *tile=[[ttMatrix objectAtIndex:i]objectAtIndex:thisRow];
@@ -395,11 +396,13 @@
         if(thisRow == currentXHighlightNo && currentXHighlight && tile.myYpos!=currentYHighlight && !currentYHighlight)
         {
             [tile.mySprite setColor:ccc3(255,255,255)];
-            [usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginHighlightRow withOptionalNote:[NSString stringWithFormat:@"{\"unhighlightrow\":%d}",thisRow]];
+            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginUnhighlightRow withOptionalNote:[NSString stringWithFormat:@"{\"unhighlightrow\":%d}",thisRow]];
+            haveLogged=YES;
         }
         else { 
             [tile.mySprite setColor:ccc3(0,255,0)]; 
-            [usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginHighlightRow withOptionalNote:[NSString stringWithFormat:@"{\"highlightrow\":%d}",thisRow]];
+            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginHighlightRow withOptionalNote:[NSString stringWithFormat:@"{\"highlightrow\":%d}",thisRow]];
+            haveLogged=YES;
         }
         
     }
@@ -419,6 +422,7 @@
 
 -(void)tintCol:(int)thisCol
 {
+    BOOL haveLogged=NO;
     for(int i=0;i<[[ttMatrix objectAtIndex:thisCol]count];i++)
     {
         DWTTTileGameObject *tile=[[ttMatrix objectAtIndex:thisCol]objectAtIndex:i];
@@ -426,11 +430,13 @@
         if(thisCol == currentYHighlightNo && currentYHighlight)
         {
             [tile.mySprite setColor:ccc3(255,255,255)];
-            [usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginHighlightRow withOptionalNote:[NSString stringWithFormat:@"{\"unhighlightcol\":%d}",thisCol]];
+            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginUnhighlightColumn withOptionalNote:[NSString stringWithFormat:@"{\"unhighlightcol\":%d}",thisCol]];
+            haveLogged=YES;
         }
         else {
             [tile.mySprite setColor:ccc3(0,255,0)];
-            [usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginHighlightRow withOptionalNote:[NSString stringWithFormat:@"{\"highlightcol\":%d}",thisCol]];
+            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginHighlightColumn withOptionalNote:[NSString stringWithFormat:@"{\"highlightcol\":%d}",thisCol]];
+            haveLogged=YES;
         }
     }
     

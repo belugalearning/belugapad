@@ -24,4 +24,18 @@
 @property int AutoStitchIncrement;
 
 
+@property int BubblePos;
+
+@property BOOL HideStartNumber;
+@property BOOL HideEndNumber;
+@property BOOL HideAllNumbers;
+@property (retain) NSArray *ShowNumbersAtIntervals;
+
+@property BOOL HideStartNotch;
+@property BOOL HideEndNotch;
+@property BOOL HideAllNotches;
+@property (retain) NSArray *ShowNotchesAtIntervals;
+
+
+
 @end

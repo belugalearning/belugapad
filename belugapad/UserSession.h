@@ -14,10 +14,12 @@
 @property (retain) NSString *type;
 @property (retain) User *user;
 @property (retain) Device *device;
+@property (retain) NSString *contentSource;
 @property (retain) NSDate *dateStart;
 @property (retain) NSDate *dateEnd;
 
 -(id)initWithNewDocumentInDatabase:(CouchDatabase*)database
             AndStartSessionForUser:(User*)user
-                          onDevice:(Device*)device;
+                          onDevice:(Device*)device
+                 withContentSource:(NSString*)source;
 @end

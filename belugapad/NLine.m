@@ -145,7 +145,33 @@ static float kTimeToBubbleShake=7.0f;
     rambler.CurrentSegmentValue=initSegmentVal;
     rambler.MinValue=initMinVal;
     rambler.MaxValue=initMaxVal;
+    rambler.BubblePos=lastBubbleLoc;
 
+    NSNumber *hideAllNumbers=[problemDef objectForKey:@"HIDE_ALL_NUMBERS"];
+    if(hideAllNumbers) if([hideAllNumbers boolValue]) rambler.HideAllNumbers=YES;
+    
+    NSNumber *hideStartNumber=[problemDef objectForKey:@"HIDE_START_NUMBER"];
+    if(hideStartNumber) if([hideStartNumber boolValue]) rambler.HideStartNumber=YES;
+    
+    NSNumber *hideEndNumber=[problemDef objectForKey:@"HIDE_END_NUMBER"];
+    if(hideEndNumber) if([hideEndNumber boolValue]) rambler.HideEndNumber=YES;
+    
+    NSArray *showNumbersAtInterval=[problemDef objectForKey:@"SHOW_NUMBERS_AT_INTERVALS"];
+    if(showNumbersAtInterval) if(showNumbersAtInterval.count>0) rambler.ShowNumbersAtIntervals=showNumbersAtInterval;
+    
+    NSNumber *hideAllNotches=[problemDef objectForKey:@"HIDE_ALL_NOTCHES"];
+    if(hideAllNotches) if([hideAllNotches boolValue]) rambler.HideAllNotches=YES;
+    
+    NSNumber *hideStartNotch=[problemDef objectForKey:@"HIDE_START_NOTCH"];
+    if(hideStartNotch) if([hideStartNotch boolValue]) rambler.HideStartNotch=YES;
+    
+    NSNumber *hideEndNotch=[problemDef objectForKey:@"HIDE_END_NOTCH"];
+    if(hideEndNotch) if([hideEndNotch boolValue]) rambler.HideEndNotch=YES;
+    
+    NSArray *showNotchesAtIntervals=[problemDef objectForKey:@"SHOW_NOTCHES_AT_INTERVALS"];
+    if(showNotchesAtIntervals) if(showNotchesAtIntervals.count>0) rambler.ShowNotchesAtIntervals=showNotchesAtIntervals;
+    
+    
     //positioning
     rambler.DefaultSegmentSize=115;
     rambler.Pos=ccp(cx,cy);
@@ -193,6 +219,7 @@ static float kTimeToBubbleShake=7.0f;
     evalTarget=[[pdef objectForKey:@"EVAL_TARGET"] intValue];
     
     initStartVal=[[pdef objectForKey:START_VALUE] intValue];
+    lastBubbleLoc=initStartVal;
     
     initMinVal=(NSNumber*)[pdef objectForKey:MIN_VALUE];
     initMaxVal=(NSNumber*)[pdef objectForKey:MAX_VALUE];
@@ -362,26 +389,69 @@ static float kTimeToBubbleShake=7.0f;
         float offsetFromCX=location.x-cx;
         if(fabsf(offsetFromCX)>kBubbleScrollBoundary)
         {
-            if(offsetFromCX>0)bubblePushDir=-1;
-            if(offsetFromCX<0)bubblePushDir=1;
+            if(offsetFromCX>0 && bubbleAtBounds<=0)bubblePushDir=-1;
+            if(offsetFromCX<0 && bubbleAtBounds>=0)bubblePushDir=1;
             
             logBubbleDidMoveLine=YES;
             logBubbleDidMove=YES;
         }
         else {
-
-//            float distFromCentre=-rambler.TouchXOffset + ((bubbleSprite.position.x + holdingBubbleOffset) - cx);
-//            if (distFromCentre <= ([rambler.MaxValue floatValue] * rambler.DefaultSegmentSize)
-//                && distFromCentre >= ([rambler.MinValue floatValue] * rambler.DefaultSegmentSize)) {
-
-                [bubbleSprite setPosition:ccp(location.x + holdingBubbleOffset, bubbleSprite.position.y)];
-                
-//            }
+            CGPoint newloc=ccp(location.x + holdingBubbleOffset, bubbleSprite.position.y);
+            float xdiff=newloc.x-bubbleSprite.position.x;
             
+            if((bubbleAtBounds>0 && xdiff<0) || (bubbleAtBounds<0 && xdiff>0) || bubbleAtBounds==0)
+            {
+                [bubbleSprite setPosition:newloc];
+                logBubbleDidMove=YES;
+                bubbleAtBounds=0;
+            }
+
             bubblePushDir=0;
-            
-            logBubbleDidMove=YES;
         }
+        
+        
+        float distFromCentre=-rambler.TouchXOffset + (bubbleSprite.position.x - cx);
+        float stepsFromCentre=distFromCentre / rambler.DefaultSegmentSize;
+        
+        int roundedStepsFromCentre=(int)(stepsFromCentre + 0.5f);
+        if(stepsFromCentre<0) roundedStepsFromCentre=(int)(stepsFromCentre - 0.5f);
+        
+        NSLog(@"bubble pos %d", roundedStepsFromCentre);
+                
+        int startOffset=initStartVal;
+        lastBubbleLoc = roundedStepsFromCentre+startOffset;
+        int adjustedStepsFromCentre=roundedStepsFromCentre;
+        
+        BOOL stopLine=NO;
+        
+        if (lastBubbleLoc>[rambler.MaxValue intValue]) 
+        {
+            adjustedStepsFromCentre = [rambler.MaxValue intValue] - startOffset;
+            stopLine=YES;
+            bubbleAtBounds=1;
+            bubblePushDir=0;
+        }
+        
+        if(lastBubbleLoc<[rambler.MinValue intValue]) 
+        {
+            adjustedStepsFromCentre = [rambler.MinValue intValue] - startOffset;
+            stopLine=YES;
+            bubbleAtBounds=-1;
+            bubblePushDir=0;
+        }
+        
+        if(stopLine)
+        {
+            //diff (moveby)
+            float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
+            [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
+        }
+        
+        
+        
+        //update the rambler value
+        rambler.BubblePos=lastBubbleLoc;
+
     }
     
 //    if(inRamblerArea)
@@ -425,6 +495,11 @@ static float kTimeToBubbleShake=7.0f;
         //diff (moveby)
         float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
         [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
+        
+        
+        
+        //update the rambler value
+        rambler.BubblePos=lastBubbleLoc;
         
         
         //release the bubble
@@ -483,6 +558,9 @@ static float kTimeToBubbleShake=7.0f;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    
+    holdingBubbleOffset=0;
+    holdingBubble=NO;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event

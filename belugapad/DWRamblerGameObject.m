@@ -23,4 +23,18 @@
 @synthesize RenderStitches;
 @synthesize AutoStitchIncrement;
 
+@synthesize BubblePos;
+
+@synthesize HideStartNumber;
+@synthesize HideEndNumber;
+@synthesize HideAllNumbers;
+@synthesize ShowNumbersAtIntervals;
+
+@synthesize HideStartNotch;
+@synthesize HideEndNotch;
+@synthesize HideAllNotches;
+@synthesize ShowNotchesAtIntervals;
+
+
+
 @end

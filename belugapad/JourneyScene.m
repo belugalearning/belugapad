@@ -56,12 +56,38 @@ typedef enum {
     kJuiStateNodeSlice
 } JuiState;
 
+static int kInclNodeCount=21;
+static NSString *inclNodes[21]={
+    @"5608a59d6797796ce9e11484fd11e438",
+    @"5608a59d6797796ce9e11484fd11f407",
+    @"5608a59d6797796ce9e11484fd180be3",
+    @"5608a59d6797796ce9e11484fd1798f0",
+    @"5608a59d6797796ce9e11484fd18040c",
+    @"5608a59d6797796ce9e11484fd179328",
+    @"5608a59d6797796ce9e11484fd179442",
+    @"5608a59d6797796ce9e11484fd180214",
+    @"5608a59d6797796ce9e11484fd17e9eb",
+    @"5608a59d6797796ce9e11484fd182d0d",
+    @"5608a59d6797796ce9e11484fd1756d2",
+    @"5608a59d6797796ce9e11484fd17640d",
+    @"5608a59d6797796ce9e11484fd181755",
+    @"5608a59d6797796ce9e11484fd172d9c",
+    @"5608a59d6797796ce9e11484fd178e3e",
+    @"5608a59d6797796ce9e11484fd1710c4",
+    @"5608a59d6797796ce9e11484fd17369e",
+    @"5608a59d6797796ce9e11484fd17913c",
+    @"dd95d7d0a2a52c6bc89724b163044d51",
+    @"dd95d7d0a2a52c6bc89724b16304518b",
+    @"5608a59d6797796ce9e11484fd17167c"
+};
+
+
 @interface JourneyScene()
 {
     @private
     ContentService *contentService;
 
-    NSArray *kcmNodes;
+    NSMutableArray *kcmNodes;
     NSDictionary *kcmIdIndex;
     NSMutableArray *nodeSprites;
     NSMutableArray *dotSprites;
@@ -169,7 +195,8 @@ typedef enum {
     nodeSliceNodes=[[NSMutableArray alloc] init];
     lightSprites=[[NSMutableArray alloc] init];
     
-    kcmNodes=[contentService allConceptNodes];
+    kcmNodes=[NSMutableArray arrayWithArray:[contentService allConceptNodes]];
+    [kcmNodes retain];
     
     prereqRelations=[contentService relationMembersForName:@"Prerequisites"];
     
@@ -309,6 +336,8 @@ typedef enum {
 {
     //find bounds
     //set bounds to first element
+    NSMutableArray *removeNodes=[[NSMutableArray alloc] init];
+    
     if(kcmNodes.count>0)
     {
         ConceptNode *n1=[kcmNodes objectAtIndex:0];
@@ -324,23 +353,42 @@ typedef enum {
         
         for (int i=1; i<[kcmNodes count]; i++) {
             ConceptNode *n=[kcmNodes objectAtIndex:i];
-            if([n.x floatValue]<nMinX)nMinX=[n.x floatValue];
-            if([n.y floatValue]<nMinY)nMinY=[n.y floatValue];
-            if([n.x floatValue]>nMaxX)nMaxX=[n.x floatValue];
-            if([n.y floatValue]>nMaxY)nMaxY=[n.y floatValue];
             
-            //add reference
-            [kcmIdIndex setValue:[NSNumber numberWithInt:i] forKey:n.document.documentID];
+            //todo: confirm inclusion against list or 25May
+            BOOL found=NO;
+            for (int i=0; i<kInclNodeCount; i++) {
+                if([n.document.documentID isEqualToString:inclNodes[i]])
+                {
+                    found=YES;
+                    break;
+                }
+            }
             
-            //force quit at max (e.g. 50) nodes
-            if(i>=kNodeMax) break;
+            if(found)
+            {
+                if([n.x floatValue]<nMinX)nMinX=[n.x floatValue];
+                if([n.y floatValue]<nMinY)nMinY=[n.y floatValue];
+                if([n.x floatValue]>nMaxX)nMaxX=[n.x floatValue];
+                if([n.y floatValue]>nMaxY)nMaxY=[n.y floatValue];
+                
+                //add reference
+                [kcmIdIndex setValue:[NSNumber numberWithInt:i] forKey:n.document.documentID];
+                
+                //force quit at max (e.g. 50) nodes
+                if(i>=kNodeMax) break;
 
-            //clean up any left over sprite info from last use
-            n.journeySprite=nil;
-            n.lightSprite=nil;
-            n.nodeSliceSprite=nil;
+                //clean up any left over sprite info from last use
+                n.journeySprite=nil;
+                n.lightSprite=nil;
+                n.nodeSliceSprite=nil;
+            }
+            else {
+                [removeNodes addObject:n];
+            }
         }
     }
+
+    [kcmNodes removeObjectsInArray:removeNodes];
     
     nMinX=nMinX*kNodeScale;
     nMinY=nMinY*kNodeScale;
@@ -431,7 +479,6 @@ typedef enum {
 -(void)createNodeSpritesNear:(CGPoint)loc
 {
     //creates sprites within kPropXNodeDrawDist of loc, and destroys them outside of that
-    
     for(int i=0; i<kcmNodes.count; i++)
     {
         ConceptNode *n=[kcmNodes objectAtIndex:i];
@@ -701,7 +748,7 @@ typedef enum {
             
             Pipeline *p=[[CouchModelFactory sharedInstance] modelForDocument:[[contentService Database] documentWithID:[n.pipelines objectAtIndex:i]]];
             
-            if(p.problems.count>0)
+            if(p.problems.count>0 && [p.name isEqualToString:@"25May"])
             {
                 currentNodeSliceHasProblems=YES;
                 break;
@@ -806,8 +853,15 @@ typedef enum {
     NSLog(@"starting pipeline 0 for node %@", currentNodeSliceNode.nodeDescription);
     
     if (currentNodeSliceNode.pipelines.count>0) {
-        [contentService startPipelineWithId:[currentNodeSliceNode.pipelines objectAtIndex:0] forNode:currentNodeSliceNode];
-        [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
+        //need to get the right pipeline -- named @"25May"
+        for (NSString *pid in currentNodeSliceNode.pipelines) {
+            Pipeline  *p=[[CouchModelFactory sharedInstance] modelForDocument:[[contentService Database] documentWithID:pid]];
+            if([p.name isEqualToString:@"25May"])
+            {
+                [contentService startPipelineWithId:[currentNodeSliceNode.pipelines objectAtIndex:0] forNode:currentNodeSliceNode];
+                [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];                
+            }
+        }
     }
     else {
         NSLog(@"failed to start -- no pipelines found");

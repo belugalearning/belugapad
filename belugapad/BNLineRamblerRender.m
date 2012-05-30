@@ -189,11 +189,32 @@ static NSString *kLabelFont=@"visgrad1.fnt";
             if((!ramblerGameObject.MinValue || iValue>=[ramblerGameObject.MinValue intValue]) && (!ramblerGameObject.MaxValue || iValue <= [ramblerGameObject.MaxValue intValue]))
             {
                 NSNumber *numRender=[NSNumber numberWithInt:iValue];        
-    //        CCLabelBMFont *l=[CCLabelBMFont labelWithString:[numRender stringValue] fntFile:kLabelFont];
-                CCLabelTTF *l=[CCLabelTTF labelWithString:[numRender stringValue] fontName:GENERIC_FONT fontSize:36.0f];
-            
-                [l setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
-                [labelLayer addChild:l];
+                
+                float thisNumber=[numRender intValue];
+                BOOL renderNumber=NO;
+                
+                if(thisNumber==[ramblerGameObject.MinValue floatValue] && !ramblerGameObject.HideStartNumber) renderNumber=YES;
+                else if(thisNumber==[ramblerGameObject.MaxValue floatValue] && !ramblerGameObject.HideEndNumber) renderNumber=YES;
+                else if(ramblerGameObject.ShowNumbersAtIntervals)
+                {
+                    for (NSNumber *n in ramblerGameObject.ShowNumbersAtIntervals) {
+                        int totalRem = (int)thisNumber % [n intValue];
+                        if (totalRem==0) {
+                            renderNumber=YES;
+                            break;
+                        }
+                    }
+                }
+                else if (!ramblerGameObject.HideAllNumbers) renderNumber=YES;
+                
+                
+                if(renderNumber)
+                {
+                    CCLabelTTF *l=[CCLabelTTF labelWithString:[numRender stringValue] fontName:GENERIC_FONT fontSize:36.0f];
+                
+                    [l setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
+                    [labelLayer addChild:l];
+                }
             }
             
 

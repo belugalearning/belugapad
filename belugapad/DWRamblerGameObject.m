@@ -25,4 +25,9 @@
 
 @synthesize BubblePos;
 
+@synthesize HideStartNumber;
+@synthesize HideEndNumber;
+@synthesize HideAllNumbers;
+@synthesize ShowNumbersAtIntervals;
+
 @end

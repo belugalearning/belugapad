@@ -147,6 +147,18 @@ static float kTimeToBubbleShake=7.0f;
     rambler.MaxValue=initMaxVal;
     rambler.BubblePos=lastBubbleLoc;
 
+    NSNumber *hideAllNumbers=[problemDef objectForKey:@"HIDE_ALL_NUMBERS"];
+    if(hideAllNumbers) if([hideAllNumbers boolValue]) rambler.HideAllNumbers=YES;
+    
+    NSNumber *hideStartNumber=[problemDef objectForKey:@"HIDE_START_NUMBER"];
+    if(hideStartNumber) if([hideStartNumber boolValue]) rambler.HideStartNumber=YES;
+    
+    NSNumber *hideEndNumber=[problemDef objectForKey:@"HIDE_END_NUMBER"];
+    if(hideEndNumber) if([hideEndNumber boolValue]) rambler.HideEndNumber=YES;
+    
+    NSArray *showNumbersAtInterval=[problemDef objectForKey:@"SHOW_NUMBERS_AT_INTERVALS"];
+    if(showNumbersAtInterval) rambler.ShowNumbersAtIntervals=showNumbersAtInterval;
+    
     //positioning
     rambler.DefaultSegmentSize=115;
     rambler.Pos=ccp(cx,cy);

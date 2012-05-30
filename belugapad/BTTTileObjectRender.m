@@ -80,7 +80,7 @@
             else if(tile.operatorType==kOperatorMul)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos*tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
             else if(tile.operatorType==kOperatorDiv)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", tile.myXpos/tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE]; 
             [tile.myText setPosition:[tile.mySprite convertToNodeSpace:tile.Position]];
-            [tile.myText setColor:ccc3(83,93,100)];
+            [tile.myText setColor:ccc3(200,200,200)];
             if(gameWorld.Blackboard.inProblemSetup){
                 [tile.myText setTag:3];
                 [tile.myText setOpacity:0];

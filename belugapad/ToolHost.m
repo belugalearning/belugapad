@@ -199,6 +199,7 @@ static float kMoveToNextProblemTime=2.0f;
         {
             [problemIncomplete runAction:[CCFadeOut actionWithDuration:kTimeToFadeProblemStatus]];
             showingProblemIncomplete=NO;
+            if(metaQuestionForThisProblem)[self deselectAnswersExcept:-1];
         }
             shownProblemStatusFor=0.0f;
     }

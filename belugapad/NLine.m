@@ -157,7 +157,20 @@ static float kTimeToBubbleShake=7.0f;
     if(hideEndNumber) if([hideEndNumber boolValue]) rambler.HideEndNumber=YES;
     
     NSArray *showNumbersAtInterval=[problemDef objectForKey:@"SHOW_NUMBERS_AT_INTERVALS"];
-    if(showNumbersAtInterval) rambler.ShowNumbersAtIntervals=showNumbersAtInterval;
+    if(showNumbersAtInterval) if(showNumbersAtInterval.count>0) rambler.ShowNumbersAtIntervals=showNumbersAtInterval;
+    
+    NSNumber *hideAllNotches=[problemDef objectForKey:@"HIDE_ALL_NOTCHES"];
+    if(hideAllNotches) if([hideAllNotches boolValue]) rambler.HideAllNotches=YES;
+    
+    NSNumber *hideStartNotch=[problemDef objectForKey:@"HIDE_START_NOTCH"];
+    if(hideStartNotch) if([hideStartNotch boolValue]) rambler.HideStartNotch=YES;
+    
+    NSNumber *hideEndNotch=[problemDef objectForKey:@"HIDE_END_NOTCH"];
+    if(hideEndNotch) if([hideEndNotch boolValue]) rambler.HideEndNotch=YES;
+    
+    NSArray *showNotchesAtIntervals=[problemDef objectForKey:@"SHOW_NOTCHES_AT_INTERVALS"];
+    if(showNotchesAtIntervals) if(showNotchesAtIntervals.count>0) rambler.ShowNotchesAtIntervals=showNotchesAtIntervals;
+    
     
     //positioning
     rambler.DefaultSegmentSize=115;

@@ -166,8 +166,27 @@ static NSString *kLabelFont=@"visgrad1.fnt";
             //-------------------------------------------------------------------------------------------------------------
             
             //render number indicator -------------------------------------------------------------------------------------
+
+            float thisNumber=(float)iValue;
+            BOOL renderNotch=NO;
+            
+            if(thisNumber==[ramblerGameObject.MinValue floatValue] && !ramblerGameObject.HideStartNotch) renderNotch=YES;
+            else if(thisNumber==[ramblerGameObject.MaxValue floatValue] && !ramblerGameObject.HideEndNotch) renderNotch=YES;
+            else if(ramblerGameObject.ShowNotchesAtIntervals)
+            {
+                for (NSNumber *n in ramblerGameObject.ShowNotchesAtIntervals) {
+                    int totalRem = (int)thisNumber % [n intValue];
+                    if (totalRem==0) {
+                        renderNotch=YES;
+                        break;
+                    }
+                }
+            }
+            else if (!ramblerGameObject.HideAllNotches) renderNotch=YES;
+                        
+
             CCSprite *ind=[assIndicators objectAtIndex:assIndicatorIndex];
-            [ind setVisible:YES];
+            [ind setVisible:renderNotch];
             [ind setPosition:CGPointMake(segStartPos.x, segStartPos.y - kIndicatorYOffset)];
 
             //change opcaity for on-line and off-line items
@@ -178,6 +197,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
             else {
                 [ind setOpacity:50];
             }
+
 
             assIndicatorIndex++;
             

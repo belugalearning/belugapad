@@ -168,8 +168,10 @@ static NSString *inclNodes[21]={
         daemon=[[Daemon alloc] initWithLayer:foreLayer andRestingPostion:ccp(cx, cy) andLy:ly];
         [daemon setMode:kDaemonModeFollowing];
         
-        logOutBtnBounds = CGRectMake(winsize.width-kLogOutBtnSize.width - kLogOutBtnPadding, kLogOutBtnPadding, 
-                                     kLogOutBtnSize.width, kLogOutBtnSize.height);        
+        logOutBtnBounds=CGRectMake(kLogOutBtnPadding, winsize.height - kLogOutBtnSize.height - kLogOutBtnPadding, kLogOutBtnSize.width, kLogOutBtnSize.height);
+//        
+//        logOutBtnBounds = CGRectMake(winsize.width-kLogOutBtnSize.width - kLogOutBtnPadding, kLogOutBtnPadding, 
+//                                     kLogOutBtnSize.width, kLogOutBtnSize.height);        
         logOutBtnCentre = CGPointMake(logOutBtnBounds.origin.x + kLogOutBtnSize.width/2, logOutBtnBounds.origin.y + kLogOutBtnSize.height/2);
         CCSprite *b=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/log-out.png")];
         [b setPosition:logOutBtnCentre];
@@ -967,7 +969,17 @@ static NSString *inclNodes[21]={
         
         if(touchStartedInNodeMap)
         {
-            [mapLayer setPosition:[BLMath AddVector:mapLayer.position toVector:[BLMath SubtractVector:lastTouch from:l]]];
+            CGPoint newpos=[BLMath AddVector:mapLayer.position toVector:[BLMath SubtractVector:lastTouch from:l]];
+            
+            if (newpos.x > 100) newpos.x=100;
+            if (newpos.y > 4000) newpos.y=4000;
+
+            if (newpos.x < -1400) newpos.x=-1400;
+            if (newpos.y < 2300) newpos.y=2300;
+            
+            [mapLayer setPosition:newpos];
+
+            NSLog(@"new pos %@", NSStringFromCGPoint(newpos));
             
             lastTouch=l;
             

@@ -13,12 +13,27 @@
 #import "BLMath.h"
 #import "DWGameObject.h"
 #import "DWGameWorld.h"
+#import "AppDelegate.h"
+#import "UsersService.h"
+
+@interface BTTTileObjectRender()
+{
+@private
+    ContentService *contentService;
+    UsersService *usersService;
+}
+
+@end
 
 @implementation BTTTileObjectRender
 
 -(BTTTileObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
     self=(BTTTileObjectRender*)[super initWithGameObject:aGameObject withData:data];
+    
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    contentService = ac.contentService;
+    usersService = ac.usersService;
     
     //init pos x & y in case they're not set elsewhere
     
@@ -114,9 +129,12 @@
 
 -(void)handleTap
 {
+    if(tile.Disabled)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginTapDisabledBox withOptionalNote:[NSString stringWithFormat:@"{\"tapdisabledx\":%d,\"tapdisabledy\":%d}", tile.myXpos, tile.myYpos]];
     
     if(!tile.Selected && !tile.Disabled)
     {
+        [usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginSelectAnswer withOptionalNote:[NSString stringWithFormat:@"{\"selecttilex\":%d,\"selecttiley\":%d}", tile.myXpos, tile.myYpos]];
+        
         tile.Selected=YES;
         [gameWorld.Blackboard.SelectedObjects addObject:tile];
         tile.selSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/selectionbox%d.png"), tile.Size]];
@@ -127,6 +145,8 @@
     }
     else
     { 
+        [usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginSelectAnswer withOptionalNote:[NSString stringWithFormat:@"{\"deselecttilex\":%d,\"deselecttiley\":%d}", tile.myXpos, tile.myYpos]];
+        
         tile.Selected=NO;
         [gameWorld.Blackboard.SelectedObjects removeObject:tile];
         [tile.selSprite removeFromParentAndCleanup:YES];

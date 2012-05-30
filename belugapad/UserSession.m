@@ -12,11 +12,12 @@
 
 @implementation UserSession
 
-@dynamic type, user, device, dateStart, dateEnd;
+@dynamic type, user, device, contentSource, dateStart, dateEnd;
 
 -(id)initWithNewDocumentInDatabase:(CouchDatabase*)database
             AndStartSessionForUser:(User*)user
                           onDevice:(Device*)device
+                 withContentSource:(NSString*)source
 {
     self = [super initWithDocument: nil];
     if (self)
@@ -24,7 +25,8 @@
         self.database = database;
         self.type = @"user session";        
         self.user = user;
-        self.device = device;        
+        self.device = device;
+        self.contentSource = source;
         self.dateStart = [NSDate date];
         
         [[self save] wait];

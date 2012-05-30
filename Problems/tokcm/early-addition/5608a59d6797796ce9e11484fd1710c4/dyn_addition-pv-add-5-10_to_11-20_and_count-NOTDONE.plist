@@ -19,7 +19,7 @@
 	<key>ROPES_PER_COL</key>
 	<integer>10</integer>
 	<key>ROWS_PER_COL</key>
-	<integer>2</integer>
+	<integer>3</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
@@ -36,6 +36,15 @@
 	<true/>
 	<key>CUSTOM_COLUMN_HEADERS</key>
 	<true/>
+	<key>MAX_OBJECTS_IN_COLS</key>
+	<array>
+		<dict>
+			<key>COL</key>
+			<integer>0</integer>
+			<key>NUMBER</key>
+			<string>{$number}</string>
+		</dict>
+	</array>
 	<key>COLUMN_NEG_CAGES</key>
 	<dict>
 		<key>1</key>
@@ -54,7 +63,23 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<string>{$number}</string>
+			<string>10</string>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
+			<integer>0</integer>
+			<key>PUT_IN_ROW</key>
+			<integer>1</integer>
+			<key>NUMBER</key>
+			<string>10</string>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
+			<integer>0</integer>
+			<key>PUT_IN_ROW</key>
+			<integer>2</integer>
+			<key>NUMBER</key>
+			<string>10</string>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -62,16 +87,16 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT_AND_COUNT_SEQUENCE</string>
 		<key>SOLUTION_VALUE</key>
-		<string>{$number+$interval]</string>
+		<string>{$number+$interval}</string>
 	</dict>
 	<key>DVARS</key>
 	<dict>
 		<key>$number</key>
 		<dict>
 			<key>MIN</key>
-			<string>1</string>
+			<string>11</string>
 			<key>MAX</key>
-			<string>5</string>
+			<string>20</string>
 		</dict>
 		<key>$interval</key>
 		<dict>

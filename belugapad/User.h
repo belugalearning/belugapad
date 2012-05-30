@@ -13,10 +13,9 @@
 @property (retain) NSString *type;
 @property (retain) NSString *nickName;
 @property (retain) NSString *password;
-@property (retain) NSDate *creationDateTime;
+@property (retain) NSDate *dateCreation;
 @property (retain) NSData *zubiColor; //(r,g,b,a) in const CGFLoat *
 @property (retain) UIImage *zubiScreenshot;
-@property (retain) NSArray *sessions;
 @property (retain) NSArray *nodesCompleted;
 
 @end

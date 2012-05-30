@@ -32,6 +32,7 @@
 @property (nonatomic, retain) NSDictionary *LocalSettings;
 @property (nonatomic, readonly) ContentService *contentService;
 @property (nonatomic, readonly) UsersService *usersService;
+@property BOOL ReleaseMode;
 
 -(void)proceedFromLoginViaIntro:(BOOL)viaIntro;
 -(void)returnToLogin;

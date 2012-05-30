@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0C0AB7AD14F5116600437F07 /* Problems in Resources */ = {isa = PBXBuildFile; fileRef = 0C0AB7AC14F5116600437F07 /* Problems */; };
 		0C35A9D0156ED63300D47517 /* UserSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C35A9CF156ED63300D47517 /* UserSession.m */; };
+		0C35A9F81576272500D47517 /* canned-dbs in Resources */ = {isa = PBXBuildFile; fileRef = 0C35A9F71576272500D47517 /* canned-dbs */; };
 		0C427C3714F529CC0033AFE2 /* sfx in Resources */ = {isa = PBXBuildFile; fileRef = 0C427C3614F529CC0033AFE2 /* sfx */; };
 		0C92B2541515702700342094 /* ContentService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C92B2531515702700342094 /* ContentService.m */; };
 		0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */ = {isa = PBXBuildFile; fileRef = 0C9FEFF514F572FB00E64138 /* pipeline-testing */; };
@@ -250,7 +251,6 @@
 		7F9D414F15751E1600AFA1A0 /* NGNineGridSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9D414E15751E1600AFA1A0 /* NGNineGridSprite.m */; };
 		7FA38A971544D36F0031E59D /* Couchbase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38A941544D36F0031E59D /* Couchbase.framework */; };
 		7FA38A981544D36F0031E59D /* CouchCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38A951544D36F0031E59D /* CouchCocoa.framework */; };
-		7FA38A9C1544D4B00031E59D /* canned-content-db in Resources */ = {isa = PBXBuildFile; fileRef = 7FA38A9B1544D4B00031E59D /* canned-content-db */; };
 		7FA38AA21545321E0031E59D /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38AA11545321E0031E59D /* libstdc++.dylib */; };
 		7FA38AA4154532260031E59D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38AA3154532260031E59D /* Security.framework */; };
 		7FA38AA61545322E0031E59D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38AA51545322E0031E59D /* SystemConfiguration.framework */; };
@@ -352,6 +352,7 @@
 		0C0AB7AC14F5116600437F07 /* Problems */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Problems; sourceTree = SOURCE_ROOT; };
 		0C35A9CE156ED63300D47517 /* UserSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserSession.h; sourceTree = "<group>"; };
 		0C35A9CF156ED63300D47517 /* UserSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserSession.m; sourceTree = "<group>"; };
+		0C35A9F71576272500D47517 /* canned-dbs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "canned-dbs"; sourceTree = SOURCE_ROOT; };
 		0C427C3614F529CC0033AFE2 /* sfx */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sfx; sourceTree = SOURCE_ROOT; };
 		0C92B2521515702700342094 /* ContentService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentService.h; sourceTree = "<group>"; };
 		0C92B2531515702700342094 /* ContentService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentService.m; sourceTree = "<group>"; };
@@ -838,7 +839,6 @@
 		7F9D414E15751E1600AFA1A0 /* NGNineGridSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NGNineGridSprite.m; sourceTree = "<group>"; };
 		7FA38A941544D36F0031E59D /* Couchbase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Couchbase.framework; path = belugapad/Frameworks/Couchbase.framework; sourceTree = "<group>"; };
 		7FA38A951544D36F0031E59D /* CouchCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchCocoa.framework; path = belugapad/Frameworks/CouchCocoa.framework; sourceTree = "<group>"; };
-		7FA38A9B1544D4B00031E59D /* canned-content-db */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "canned-content-db"; sourceTree = SOURCE_ROOT; };
 		7FA38AA11545321E0031E59D /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		7FA38AA3154532260031E59D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		7FA38AA51545322E0031E59D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -1741,8 +1741,8 @@
 		7F5113D314A9EE63001AF372 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0C35A9F71576272500D47517 /* canned-dbs */,
 				7FBE969215497DDF00D993AC /* select-edit-user-images */,
-				7FA38A9B1544D4B00031E59D /* canned-content-db */,
 				7F5005C81522478C0038D251 /* fps_images-hd.png */,
 				7F5005C91522478C0038D251 /* fps_images-ipadhd.png */,
 				7F5005CA1522478C0038D251 /* fps_images.png */,
@@ -2186,9 +2186,9 @@
 			productReference = 7F40D89714FFD8BE006A3A55 /* GeneralTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
-		7F5113BD14A9EE62001AF372 /* belugapad */ = {
+		7F5113BD14A9EE62001AF372 /* beluga may '12 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7F51158E14A9EE67001AF372 /* Build configuration list for PBXNativeTarget "belugapad" */;
+			buildConfigurationList = 7F51158E14A9EE67001AF372 /* Build configuration list for PBXNativeTarget "beluga may '12" */;
 			buildPhases = (
 				7F5113BA14A9EE62001AF372 /* Sources */,
 				7F5113BB14A9EE62001AF372 /* Frameworks */,
@@ -2199,7 +2199,7 @@
 			);
 			dependencies = (
 			);
-			name = belugapad;
+			name = "beluga may '12";
 			productName = belugapad;
 			productReference = 7F5113BE14A9EE62001AF372 /* belugapad.app */;
 			productType = "com.apple.product-type.application";
@@ -2224,7 +2224,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7F5113BD14A9EE62001AF372 /* belugapad */,
+				7F5113BD14A9EE62001AF372 /* beluga may '12 */,
 				7F40D89614FFD8BE006A3A55 /* GeneralTests */,
 			);
 		};
@@ -2268,11 +2268,11 @@
 				7F5005CC1522478C0038D251 /* fps_images-ipadhd.png in Resources */,
 				7F5005CD1522478C0038D251 /* fps_images.png in Resources */,
 				552478661536BF5C00BA5C4E /* tooldef.plist in Resources */,
-				7FA38A9C1544D4B00031E59D /* canned-content-db in Resources */,
 				7FA38ABA1545334B0031E59D /* SelectUserViewController.xib in Resources */,
 				7FBE969315497DDF00D993AC /* select-edit-user-images in Resources */,
 				7FBE969A1549819300D993AC /* LoadingViewController.xib in Resources */,
 				7FBE969C15498F3700D993AC /* Icon.png in Resources */,
+				0C35A9F81576272500D47517 /* canned-dbs in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2608,7 +2608,7 @@
 /* Begin PBXTargetDependency section */
 		7F40D90314FFECBE006A3A55 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 7F5113BD14A9EE62001AF372 /* belugapad */;
+			target = 7F5113BD14A9EE62001AF372 /* beluga may '12 */;
 			targetProxy = 7F40D90214FFECBE006A3A55 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -2812,7 +2812,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7F51158E14A9EE67001AF372 /* Build configuration list for PBXNativeTarget "belugapad" */ = {
+		7F51158E14A9EE67001AF372 /* Build configuration list for PBXNativeTarget "beluga may '12" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7F51158F14A9EE67001AF372 /* Debug */,

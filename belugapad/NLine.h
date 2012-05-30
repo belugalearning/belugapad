@@ -40,6 +40,9 @@
 
     CCLabelTTF *problemCompleteLabel;
     
+    CCTexture2D *bubbleTexRegular;
+    CCTexture2D *bubbleTexSelected;
+    
     CCSprite *bubbleSprite;
     BOOL holdingBubble;
     float holdingBubbleOffset;
@@ -51,6 +54,8 @@
     NSNumber *initMinVal;
     NSNumber *initMaxVal;
     int initSegmentVal;
+    
+    float timeSinceInteractionOrShake;
 }
 
 -(void)populateGW;

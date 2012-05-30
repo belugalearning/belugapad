@@ -74,6 +74,8 @@ typedef enum {
 @property (retain, nonatomic) User *currentUser;
 @property (readonly, retain) NSString *currentProblemAttemptID;
 
+-(id)initWithProblemPipeline:(NSString*)source;
+
 -(NSArray*)deviceUsersByLastSessionDate;
 -(NSArray*)deviceUsersByNickName;
 

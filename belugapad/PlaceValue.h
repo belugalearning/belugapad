@@ -124,6 +124,8 @@
     
     //reference to cages
     NSMutableArray *allCages;
+    
+    NSMutableDictionary *boundCounts;
 }
 
 -(void)populateGW;

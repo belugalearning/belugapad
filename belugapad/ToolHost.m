@@ -509,7 +509,9 @@ static float kMoveToNextProblemTime=2.0f;
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
     }
-    if (location.x>cx && location.y < 768 - kButtonToolbarHitBaseYOffset)
+    
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    if (!ac.ReleaseMode && location.x>cx && location.y < 768 - kButtonToolbarHitBaseYOffset)
     {
         [usersService logProblemAttemptEvent:kProblemAttemptSkipDebug withOptionalNote:nil];
         isPaused=NO;

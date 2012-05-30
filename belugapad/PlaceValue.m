@@ -340,8 +340,48 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         int insRow = [[curDict objectForKey:PUT_IN_ROW] intValue];
         int count = [[curDict objectForKey:NUMBER] intValue];
         int numberToPrecount = [[curDict objectForKey:NUMBER_PRE_COUNTED] intValue];
+        
+        //check if there is a max setting on objects to populate -- acts as bounds for dvar problems
+        NSArray *maxO=[problemDef objectForKey:@"MAX_OBJECTS_IN_COLS"];
+        BOOL boundCol=NO;
+        int boundCounter=0;
+        int boundMax=0;
+        
+        if(maxO)
+        {
+            for (NSDictionary *maxODef in maxO) {
+                NSNumber *coldef=[maxODef objectForKey:@"COL"];
+                NSNumber *maxdef=[maxODef objectForKey:@"NUMBER"];
+                
+                if ([coldef intValue]==insCol && maxdef) {
+                    if([maxdef intValue])
+                    {
+                        if(!boundCounts) boundCounts=[[NSMutableDictionary alloc] init];
+                        
+                        boundCol=YES;
+                        //see if there a dict item for this
+                        NSNumber *boundPre=[boundCounts objectForKey:[NSNumber numberWithInt:insCol]];
+                        if(boundPre) boundCounter=[boundPre intValue];
+                        boundMax=[maxdef intValue];
+                    }
+                }
+            }
+        }
+        
         for(int i=0; i<count; i++)
         {
+            if(boundCol)
+            {
+                //incr the total count in this bound col
+                boundCounter++;
+                
+                //if past max, stop adding objects
+                if(boundCounter>boundMax) break;
+                
+                //update total count in this col
+                [boundCounts setObject:[NSNumber numberWithInt:boundCounter] forKey:[NSNumber numberWithInt:insCol]];
+            }
+            
             DWGameObject *block = [gw addGameObjectWithTemplate:@"TplaceValueObject"];
             
             NSDictionary *pl = [NSDictionary dictionaryWithObject:[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:insRow] objectAtIndex:i] forKey:MOUNT];

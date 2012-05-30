@@ -177,15 +177,15 @@
         if([retain intValue]==0)
         {
             //clear any existing value and do not retain
-            [retainedVars removeObjectForKey:namebase];
+            [retainedVars removeObjectForKey:name];
             
-            NSLog(@"cleared any retained value for %@", namebase);
+            NSLog(@"cleared any retained value for %@", name);
         }
         else {
             //retain the value, overwriting any current value
-            [retainedVars setObject:outputvalue forKey:namebase];
+            [retainedVars setObject:outputvalue forKey:name];
             
-            NSLog(@"retained value of %@", namebase);
+            NSLog(@"retained value of %@", name);
         }
     }
 }
@@ -307,7 +307,8 @@
         return @"";
     }
     
-    NSMutableDictionary *lkpVars=[dVars copy];
+    //NSMutableDictionary *lkpVars=[dVars copy];
+    NSMutableDictionary *lkpVars=[NSMutableDictionary dictionaryWithDictionary:dVars];
     NSString *parse=[input copy];
     
     //if we're recalling, write into this recalled values
@@ -315,9 +316,13 @@
     {
         for (int i=0; i<[[retainedVars allKeys] count]; i++) {
             //write each key/value from retaining into the lkp -- will overwrite if required
-            [lkpVars setObject:[[retainedVars allValues] objectAtIndex:i] forKey:[[retainedVars allKeys] objectAtIndex:i]];
+            //[lkpVars setObject:[[retainedVars allValues] objectAtIndex:i] forKey:[[retainedVars allKeys] objectAtIndex:i]];
             
-            NSLog(@"recalling a retained value: %@ for key %@", [[[retainedVars allValues] objectAtIndex:i] stringValue], [[[retainedVars allKeys] objectAtIndex:i] stringValue]);
+            NSNumber *val=[[retainedVars allValues] objectAtIndex:i];
+            NSString *key=[[retainedVars allKeys] objectAtIndex:i];
+            [lkpVars setObject:[val copy] forKey:[key copy]];
+            
+            NSLog(@"recalling a retained value: %@ for key %@", [val stringValue], key);
         }
     }
     

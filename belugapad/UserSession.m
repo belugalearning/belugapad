@@ -14,13 +14,14 @@
 
 @dynamic type, user, device, dateStart, dateEnd;
 
-- (id) initAndStartSessionForUser:(User*)user
-                         onDevice:(Device*)device
-{   
+-(id)initWithNewDocumentInDatabase:(CouchDatabase*)database
+            AndStartSessionForUser:(User*)user
+                          onDevice:(Device*)device
+{
     self = [super initWithDocument: nil];
     if (self)
     {
-        self.database = user.database;
+        self.database = database;
         self.type = @"user session";        
         self.user = user;
         self.device = device;        

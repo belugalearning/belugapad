@@ -54,8 +54,10 @@
     
     CouchEmbeddedServer* server = [CouchEmbeddedServer sharedInstance];
     
-    // install canned copy of content database if doesn't yet exist (i.e. first app launch)
-    [server.couchbase installDefaultDatabase:BUNDLE_FULL_PATH(@"/canned-content-db/kcm.couch")];
+    // install canned copy of any databases that don't yet exist (i.e. all of them on first app launch, hopefully none of them afterwards)
+    [server.couchbase installDefaultDatabase:BUNDLE_FULL_PATH(@"/canned-dbs/kcm.couch")];
+    [server.couchbase installDefaultDatabase:BUNDLE_FULL_PATH(@"/canned-dbs/may2012-users.couch")];    
+    [server.couchbase installDefaultDatabase:BUNDLE_FULL_PATH(@"/canned-dbs/may2012-logging.couch")];
     
     [server start: ^{
         NSAssert(!server.error, @"Error launching Couchbase: %@", server.error);
@@ -67,10 +69,10 @@
         //if( ! [CCDirector setDirectorType:kCCDirectorTypeDisplayLink] )
         //    [CCDirector setDirectorType:kCCDirectorTypeDefault];
         
-        usersService = [[UsersService alloc] init];
-        
         //load local settings
         self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
+        
+        usersService = [[UsersService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
         contentService = [[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
         
         //are we in release mode

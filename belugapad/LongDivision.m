@@ -16,11 +16,22 @@
 #import "DWDotGridTileGameObject.h"
 #import "DWDotGridShapeGameObject.h"
 #import "BLMath.h"
+#import "AppDelegate.h"
+#import "UsersService.h"
 
 const float kSpaceBetweenNumbers=180.0f;
 const float kSpaceBetweenRows=80.0f;
 const float kRenderBlockWidth=1000.0f;
 const float kScaleOfLesserBlocks=0.6f;
+
+@interface LongDivision()
+{
+@private
+    ContentService *contentService;
+    UsersService *usersService;
+}
+
+@end
 
 @implementation LongDivision
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
@@ -53,7 +64,9 @@ const float kScaleOfLesserBlocks=0.6f;
         [toolHost addToolNoScaleLayer:self.NoScaleLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
         
-        
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        contentService = ac.contentService;
+        usersService = ac.usersService;
         
         [gw Blackboard].hostCX = cx;
         [gw Blackboard].hostCY = cy;
@@ -471,9 +484,10 @@ const float kScaleOfLesserBlocks=0.6f;
     
     if(topTouch && currentTouchCount==1)
     {
-            CGPoint diff=[BLMath SubtractVector:lastTouch from:location];
-            diff = ccp(diff.x, 0);
-            [topSection setPosition:ccpAdd(topSection.position, diff)];
+        movedTopSection=YES;
+        CGPoint diff=[BLMath SubtractVector:lastTouch from:location];
+        diff = ccp(diff.x, 0);
+        [topSection setPosition:ccpAdd(topSection.position, diff)];
         
     }
     
@@ -545,7 +559,7 @@ const float kScaleOfLesserBlocks=0.6f;
     if(doingHorizontalDrag)
     {
 
-        
+        [usersService logProblemAttemptEvent:kProblemAttemptLongDivisionTouchMovedMoveRow withOptionalNote:nil];
         CGPoint diff=[BLMath SubtractVector:location from:touchStart];
         diff = ccp(diff.x, 0);
         
@@ -592,17 +606,21 @@ const float kScaleOfLesserBlocks=0.6f;
         //round down
         else
             incrementor=(int)floatRowPos;
-        if(diff.y > 0) // incrementing line
+        if(diff.y > 0){ // incrementing line
             currentRowPos-=incrementor;
-        
-        else 
+            [usersService logProblemAttemptEvent:kProblemAttemptLongDivisionTouchEndedDecrementActiveNumber withOptionalNote:[NSString stringWithFormat:@"{\"decrementby\":%d}",incrementor]];
+        }
+        else {
             currentRowPos+=incrementor;
-        
+            [usersService logProblemAttemptEvent:kProblemAttemptLongDivisionTouchEndedIncrementActiveNumber withOptionalNote:[NSString stringWithFormat:@"{\"incrementby\":%d}",incrementor]];
+        }
         //truncate to fixed bounds
         if(currentRowPos<-1)currentRowPos=-1;
         if(currentRowPos>6)currentRowPos=6;
   
         activeRow=currentRowPos+1;
+        [usersService logProblemAttemptEvent:kProblemAttemptLongDivisionTouchEndedChangedActiveRow withOptionalNote:[NSString stringWithFormat:@"{\"activerow\":%f}",activeRow]];
+        
         
         //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
         
@@ -613,12 +631,15 @@ const float kScaleOfLesserBlocks=0.6f;
         }
         
     }
+    if(movedTopSection)[usersService logProblemAttemptEvent:kProblemAttemptLongDivisionTouchEndedPanningTopSection withOptionalNote:nil];
+    
     
     topTouch=NO;
     bottomTouch=NO;
     startedInActiveRow=NO;
     doingHorizontalDrag=NO;
     doingVerticalDrag=NO;
+    movedTopSection=NO;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -630,6 +651,7 @@ const float kScaleOfLesserBlocks=0.6f;
     doingHorizontalDrag=NO;
     doingVerticalDrag=NO;
     currentTouchCount-=[touches count];
+    movedTopSection=NO;
 }
 
 -(BOOL)evalExpression

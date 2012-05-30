@@ -389,6 +389,59 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
             eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_ENDED_INVALID_CREATE_EXISTING_TILE";
             break;
             
+        case kProblemAttemptLongDivisionTouchEndedChangedActiveRow:
+            eventString = @"PROBLEM_ATTEMPT_LONGDIVISION_TOUCH_ENDED_CHANGED_ACTIVE_ROW";
+            break;
+            
+        case kProblemAttemptLongDivisionTouchMovedMoveRow:
+            eventString = @"PROBLEM_ATTEMPT_LONGDIVISION_TOUCH_MOVED_MOVE_ROW";
+            break;
+            
+        case kProblemAttemptLongDivisionTouchEndedIncrementActiveNumber:
+            eventString = @"PROBLEM_ATTEMPT_LONGDIVISION_TOUCH_ENDED_INCREMENT_ACTIVE_NUMBER";
+            break;
+            
+        case kProblemAttemptLongDivisionTouchEndedDecrementActiveNumber:
+            eventString = @"PROBLEM_ATTEMPT_LONGDIVISION_TOUCH_ENDED_DECREMENT_ACTIVE_NUMBER";
+            break;
+            
+        case kProblemAttemptLongDivisionTouchEndedPanningTopSection:
+            eventString = @"PROBLEM_ATTEMPT_LONGDIVISION_TOUCH_ENDED_PANNING_TOPSECTION";
+            break;
+            
+        case kProblemAttemptTimesTablesTouchBeginHighlightRow:
+            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_BEGIN_HIGHLIGHT_ROW";
+            break;
+            
+        case kProblemAttemptTimesTablesTouchBeginHighlightColumn:
+            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_BEGIN_HIGHLIGHT_COLUMN";
+            break;
+            
+        case kProblemAttemptTimesTablesTouchBeginUnhighlightRow:
+            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_BEGIN_UNHIGHLIGHT_ROW";
+            break;
+            
+        case kProblemAttemptTimesTablesTouchBeginUnhighlightColumn:
+            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_BEGIN_UNHIGHLIGHT_COLUMN";
+            break;
+            
+        case kProblemAttemptTimesTablesTouchBeginRevealAnswer:
+            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_BEGIN_REVEAL_ANSWER";
+            break;
+            
+        case kProblemAttemptTimesTablesTouchBeginSelectAnswer:
+            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_BEGIN_SELECT_ANSWER";
+            break;
+            
+        case kProblemAttemptTimesTablesTouchBeginDeselectAnswer:
+            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_BEGIN_DESELECT_ANSWER";
+            break;
+            
+        case kProblemAttemptTimesTablesTouchBeginTapDisabledBox:
+            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_BEGIN_TAP_DISABLED_BOX";
+            break;
+
+            
         default:
             // TODO: ERROR - LOG TO DATABASE!
             break;

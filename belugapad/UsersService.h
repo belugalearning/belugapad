@@ -52,6 +52,19 @@ typedef enum {
     kProblemAttemptDotGridTouchEndedInvalidResizeExistingTile,
     kProblemAttemptDotGridTouchEndedInvalidCreateHidden,
     kProblemAttemptDotGridTouchEndedInvalidCreateExistingTile,
+    kProblemAttemptLongDivisionTouchEndedChangedActiveRow,
+    kProblemAttemptLongDivisionTouchMovedMoveRow,
+    kProblemAttemptLongDivisionTouchEndedIncrementActiveNumber,
+    kProblemAttemptLongDivisionTouchEndedDecrementActiveNumber,
+    kProblemAttemptLongDivisionTouchEndedPanningTopSection,
+    kProblemAttemptTimesTablesTouchBeginHighlightRow,
+    kProblemAttemptTimesTablesTouchBeginHighlightColumn,
+    kProblemAttemptTimesTablesTouchBeginUnhighlightRow,
+    kProblemAttemptTimesTablesTouchBeginUnhighlightColumn,
+    kProblemAttemptTimesTablesTouchBeginRevealAnswer,
+    kProblemAttemptTimesTablesTouchBeginSelectAnswer,
+    kProblemAttemptTimesTablesTouchBeginDeselectAnswer,
+    kProblemAttemptTimesTablesTouchBeginTapDisabledBox,
 
 } ProblemAttemptEvent;
 

@@ -12,7 +12,17 @@
 #import "ToolConsts.h"
 #import "ToolHost.h"
 #import "BLMath.h"
+#import "AppDelegate.h"
+#import "UsersService.h"
 
+@interface BTTTileTouch()
+{
+@private
+    ContentService *contentService;
+    UsersService *usersService;
+}
+
+@end
 
 @implementation BTTTileTouch
 
@@ -22,7 +32,9 @@
     tile=(DWTTTileGameObject*)gameObject;
     //init pos x & y in case they're not set elsewhere
     
-    
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    contentService = ac.contentService;
+    usersService = ac.usersService;
     
     [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_X];
     [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_Y];
@@ -98,11 +110,16 @@
             NSLog(@"tile hit - my value is %d, myXpos %d, myYpos %d", tile.myXpos*tile.myYpos, tile.myXpos, tile.myYpos);
             if(!tile.myText)
             {
-
+                [usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginRevealAnswer withOptionalNote:[NSString stringWithFormat:@"{\"revealanswerx\":%d, \"revealanswery\":%d}", tile.myXpos, tile.myYpos]];
+                
                 if(tile.operatorType==kOperatorAdd)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos+tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
+                
                 else if(tile.operatorType==kOperatorSub)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos-tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
+               
                 else if(tile.operatorType==kOperatorMul)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos*tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
+                
                 else if(tile.operatorType==kOperatorDiv)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", tile.myXpos/tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE]; 
+                
                 [tile.myText setPosition:[tile.mySprite convertToNodeSpace:tile.Position]];
                 [tile.myText setColor:ccc3(83,93,100)];
                 [tile.mySprite addChild:tile.myText];

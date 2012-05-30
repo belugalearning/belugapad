@@ -68,6 +68,7 @@ typedef enum {
     kProblemAttemptNumberLineTouchBeginPickupBubble,
     kProblemAttemptNumberLineTouchEndedReleaseBubble,
     kProblemAttemptNumberLineTouchMovedMoveBubble,
+    kProblemAttemptNumberLineTouchMovedMoveLine,
     kProblemAttemptNumberLineTouchEndedIncreaseSelection,
     kProblemAttemptNumberLineTouchEndedDecreaseSelection,
 

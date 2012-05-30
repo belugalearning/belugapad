@@ -66,6 +66,8 @@
     
     float touchResetX;
     int touchResetDir;
+    
+    BOOL enableAudioCounting;
 }
 
 -(void)populateGW;

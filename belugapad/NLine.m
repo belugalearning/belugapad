@@ -153,7 +153,9 @@ static float kTimeToBubbleShake=7.0f;
     rambler.MinValue=initMinVal;
     rambler.MaxValue=initMaxVal;
     rambler.BubblePos=lastBubbleLoc;
-
+    
+    enableAudioCounting = [rambler.MinValue intValue]>=0 && [rambler.MaxValue intValue]<=20;
+    
     NSNumber *hideAllNumbers=[problemDef objectForKey:@"HIDE_ALL_NUMBERS"];
     if(hideAllNumbers) if([hideAllNumbers boolValue]) rambler.HideAllNumbers=YES;
     
@@ -561,6 +563,13 @@ static float kTimeToBubbleShake=7.0f;
         //update the rambler value
         rambler.BubblePos=lastBubbleLoc;
         
+        
+        //play some audio
+        if(enableAudioCounting && lastBubbleLoc!=logLastBubblePos)
+        {
+            NSString *path=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", lastBubbleLoc];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(path)];
+        }
         
         //release the bubble
         [self animReleaseBubble];

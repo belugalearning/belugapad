@@ -460,7 +460,26 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
         case kProblemAttemptTimesTablesTouchBeginTapDisabledBox:
             eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_BEGIN_TAP_DISABLED_BOX";
             break;
-
+        
+        case kProblemAttemptNumberLineTouchBeginPickupBubble:
+            eventString = @"PROBLEM_ATTEMPT_NUMBERLINE_TOUCH_BEGIN_PICKUP_BUBBLE";
+            break;
+        
+        case kProblemAttemptNumberLineTouchEndedReleaseBubble:
+            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_ENDED_RELEASE_BUBBLE";
+            break;
+        
+        case kProblemAttemptNumberLineTouchMovedMoveBubble:
+            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_MOVED_MOVE_BUBBLE";
+            break;
+        
+        case kProblemAttemptNumberLineTouchEndedIncreaseSelection:
+            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_ENDED_INCREASE_SELECTION";
+            break;
+        
+        case kProblemAttemptNumberLineTouchEndedDecreaseSelection:
+            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_ENDED_DECREASE_SELECTION";
+            break;
             
         default:
             // TODO: ERROR - LOG TO DATABASE!

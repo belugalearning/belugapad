@@ -65,6 +65,11 @@ typedef enum {
     kProblemAttemptTimesTablesTouchBeginSelectAnswer,
     kProblemAttemptTimesTablesTouchBeginDeselectAnswer,
     kProblemAttemptTimesTablesTouchBeginTapDisabledBox,
+    kProblemAttemptNumberLineTouchBeginPickupBubble,
+    kProblemAttemptNumberLineTouchEndedReleaseBubble,
+    kProblemAttemptNumberLineTouchMovedMoveBubble,
+    kProblemAttemptNumberLineTouchEndedIncreaseSelection,
+    kProblemAttemptNumberLineTouchEndedDecreaseSelection,
 
 } ProblemAttemptEvent;
 

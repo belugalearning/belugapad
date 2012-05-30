@@ -145,7 +145,7 @@
     }
     else
     { 
-        [usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginSelectAnswer withOptionalNote:[NSString stringWithFormat:@"{\"deselecttilex\":%d,\"deselecttiley\":%d}", tile.myXpos, tile.myYpos]];
+        [usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginDeselectAnswer withOptionalNote:[NSString stringWithFormat:@"{\"deselecttilex\":%d,\"deselecttiley\":%d}", tile.myXpos, tile.myYpos]];
         
         tile.Selected=NO;
         [gameWorld.Blackboard.SelectedObjects removeObject:tile];

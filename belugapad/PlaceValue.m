@@ -1201,6 +1201,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             [pl setObject:[NSNumber numberWithFloat:posX] forKey:POS_X];
             [pl setObject:[NSNumber numberWithFloat:posY] forKey:POS_Y];
             [[gw Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:-1];
+            hasMovedBlock=YES;
         }
     }
     
@@ -1362,7 +1363,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     if(hasMovedBlock)
     {
         float objValue=[[[[gw Blackboard].PickupObject store] objectForKey:OBJECT_VALUE]floatValue];
-        if([gw.Blackboard.SelectedObjects count]==1)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchMovedMoveObject withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%d}",objValue]];
+        if([gw.Blackboard.SelectedObjects count]<=1)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchMovedMoveObject withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%d}",objValue]];
         else if([gw.Blackboard.SelectedObjects count]>1)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchMovedMoveObjects withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%d}",objValue]];
     }
     if(hasMovedLayer)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchMovedMoveGrid withOptionalNote:nil];

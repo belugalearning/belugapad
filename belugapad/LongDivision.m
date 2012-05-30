@@ -579,6 +579,12 @@ const float kScaleOfLesserBlocks=0.6f;
         if(currentNumberPos<0)currentNumberPos=0;
         if(currentNumberPos>9)currentNumberPos=9;
         
+        if(distMoved<0)
+            [usersService logProblemAttemptEvent:kProblemAttemptLongDivisionTouchEndedDecrementActiveNumber withOptionalNote:[NSString stringWithFormat:@"{\"selectednumber\":%d}",currentNumberPos]];
+        else
+            [usersService logProblemAttemptEvent:kProblemAttemptLongDivisionTouchEndedIncrementActiveNumber withOptionalNote:[NSString stringWithFormat:@"{\"selectednumber\":%d}",currentNumberPos]];
+        
+        
         //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
         [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(currentNumberPos*-kSpaceBetweenNumbers,moveLayer.position.y)]];
         [selectedNumbers replaceObjectAtIndex:activeRow withObject:[NSNumber numberWithInt:currentNumberPos]];
@@ -606,14 +612,12 @@ const float kScaleOfLesserBlocks=0.6f;
         //round down
         else
             incrementor=(int)floatRowPos;
-        if(diff.y > 0){ // incrementing line
+        if(diff.y > 0) // incrementing line
             currentRowPos-=incrementor;
-            [usersService logProblemAttemptEvent:kProblemAttemptLongDivisionTouchEndedDecrementActiveNumber withOptionalNote:[NSString stringWithFormat:@"{\"decrementby\":%d}",incrementor]];
-        }
-        else {
+        
+        else 
             currentRowPos+=incrementor;
-            [usersService logProblemAttemptEvent:kProblemAttemptLongDivisionTouchEndedIncrementActiveNumber withOptionalNote:[NSString stringWithFormat:@"{\"incrementby\":%d}",incrementor]];
-        }
+                 
         //truncate to fixed bounds
         if(currentRowPos<-1)currentRowPos=-1;
         if(currentRowPos>6)currentRowPos=6;

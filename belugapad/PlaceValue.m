@@ -340,6 +340,25 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         int insRow = [[curDict objectForKey:PUT_IN_ROW] intValue];
         int count = [[curDict objectForKey:NUMBER] intValue];
         int numberToPrecount = [[curDict objectForKey:NUMBER_PRE_COUNTED] intValue];
+        
+        //check if there is a max setting on objects to populate -- acts as bounds for dvar problems
+        NSArray *maxO=[problemDef objectForKey:@"MAX_OBJECTS_IN_COLS"];
+        if(maxO)
+        {
+            for (NSDictionary *maxODef in maxO) {
+                NSNumber *coldef=[maxODef objectForKey:@"COL"];
+                NSNumber *maxdef=[maxODef objectForKey:@"NUMBER"];
+                
+                if ([coldef intValue]==insCol && maxdef) {
+                    if([maxdef intValue]<count)
+                    {
+                        //if the specified max is less than the count, change the count
+                        count=[maxdef intValue];
+                    }
+                }
+            }
+        }
+        
         for(int i=0; i<count; i++)
         {
             DWGameObject *block = [gw addGameObjectWithTemplate:@"TplaceValueObject"];

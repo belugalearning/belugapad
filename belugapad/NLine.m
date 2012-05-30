@@ -344,7 +344,8 @@ static float kTimeToBubbleShake=7.0f;
     [bubbleSprite setTexture:bubbleTexSelected];
     [bubbleSprite setTextureRect:CGRectMake(0, 0, bubbleTexSelected.contentSize.width, bubbleTexSelected.contentSize.height)];
     
-    [bubbleSprite runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.15f scale:1.15f] rate:2.0f]];
+    [bubbleSprite setScale:0.87f];
+    [bubbleSprite runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.15f scale:1.0f] rate:2.0f]];
     
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/nline/pickup.wav")];
 }
@@ -354,6 +355,7 @@ static float kTimeToBubbleShake=7.0f;
     [bubbleSprite setTexture:bubbleTexRegular];
     [bubbleSprite setTextureRect:CGRectMake(0, 0, bubbleTexRegular.contentSize.width, bubbleTexRegular.contentSize.height)];
     
+    [bubbleSprite setScale:1.15f];
     [bubbleSprite runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.15f scale:1.0f] rate:2.0f]];    
     
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/nline/release.wav")];
@@ -443,7 +445,7 @@ static float kTimeToBubbleShake=7.0f;
     {            
         timeSinceInteractionOrShake=0;
         
-        float offsetFromCX=location.x-cx;
+        float offsetFromCX=location.x-cx-holdingBubbleOffset;
         if(fabsf(offsetFromCX)>kBubbleScrollBoundary)
         {
             if(offsetFromCX>0 && bubbleAtBounds<=0)bubblePushDir=-1;
@@ -453,7 +455,8 @@ static float kTimeToBubbleShake=7.0f;
             logBubbleDidMove=YES;
         }
         else {
-            CGPoint newloc=ccp(location.x + holdingBubbleOffset, bubbleSprite.position.y);
+            CGPoint newloc=ccp(location.x - holdingBubbleOffset, bubbleSprite.position.y);
+            //CGPoint newloc=ccp(location.x, bubbleSprite.position.y);
             float xdiff=newloc.x-bubbleSprite.position.x;
             
             if((bubbleAtBounds>0 && xdiff<0) || (bubbleAtBounds<0 && xdiff>0) || bubbleAtBounds==0)
@@ -530,7 +533,7 @@ static float kTimeToBubbleShake=7.0f;
         timeSinceInteractionOrShake=0;
         
         //[gw handleMessage:kDWnlineReleaseRamblerAtOffset andPayload:nil withLogLevel:0];
-        holdingBubbleOffset=NO;
+        holdingBubbleOffset=0;
         
         float distFromCentre=-rambler.TouchXOffset + (bubbleSprite.position.x - cx);
         float stepsFromCentre=distFromCentre / rambler.DefaultSegmentSize;

@@ -34,7 +34,7 @@
 	<key>ALLOW_MULCHING</key>
 	<false/>
 	<key>EVAL_MODE</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>SHOW_CAGE</key>

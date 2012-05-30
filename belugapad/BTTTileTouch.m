@@ -121,7 +121,7 @@
                 else if(tile.operatorType==kOperatorDiv)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", tile.myXpos/tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE]; 
                 
                 [tile.myText setPosition:[tile.mySprite convertToNodeSpace:tile.Position]];
-                [tile.myText setColor:ccc3(83,93,100)];
+                [tile.myText setColor:ccc3(200,200,200)];
                 [tile.mySprite addChild:tile.myText];
 
             }

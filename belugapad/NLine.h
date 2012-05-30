@@ -56,6 +56,11 @@
     int initSegmentVal;
     
     float timeSinceInteractionOrShake;
+    
+    //for logging
+    int logLastBubblePos;
+    BOOL logBubbleDidMove;
+    BOOL logBubbleDidMoveLine;
 }
 
 -(void)populateGW;

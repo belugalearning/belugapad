@@ -338,6 +338,12 @@ static float kTimeToBubbleShake=7.0f;
         
         [self animPickupBubble];
         
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        [ac.usersService logProblemAttemptEvent:kProblemAttemptNumberLineTouchBeginPickupBubble withOptionalNote:nil];
+        
+        //retain current pos to incr/decr log
+        logLastBubblePos=lastBubbleLoc;
+        
         timeSinceInteractionOrShake=0;
     }
 }
@@ -358,6 +364,9 @@ static float kTimeToBubbleShake=7.0f;
         {
             if(offsetFromCX>0)bubblePushDir=-1;
             if(offsetFromCX<0)bubblePushDir=1;
+            
+            logBubbleDidMoveLine=YES;
+            logBubbleDidMove=YES;
         }
         else {
 
@@ -370,6 +379,8 @@ static float kTimeToBubbleShake=7.0f;
 //            }
             
             bubblePushDir=0;
+            
+            logBubbleDidMove=YES;
         }
     }
     
@@ -418,6 +429,32 @@ static float kTimeToBubbleShake=7.0f;
         
         //release the bubble
         [self animReleaseBubble];
+        
+        //do some logging
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        [ac.usersService logProblemAttemptEvent:kProblemAttemptNumberLineTouchEndedReleaseBubble withOptionalNote:nil];
+        
+        if(lastBubbleLoc>logLastBubblePos)
+        {
+            [ac.usersService logProblemAttemptEvent:kProblemAttemptNumberLineTouchEndedIncreaseSelection withOptionalNote:nil];
+        }
+        else if(lastBubbleLoc<logLastBubblePos)
+        {
+            [ac.usersService logProblemAttemptEvent:kProblemAttemptNumberLineTouchEndedDecreaseSelection withOptionalNote:nil];            
+        }
+        
+        //did we move the bubble, the line
+        if(logBubbleDidMove)
+        {
+            [ac.usersService logProblemAttemptEvent:kProblemAttemptNumberLineTouchMovedMoveBubble withOptionalNote:nil];
+        }
+        if(logBubbleDidMoveLine)
+        {
+            [ac.usersService logProblemAttemptEvent:kProblemAttemptNumberLineTouchMovedMoveBubble withOptionalNote:nil];            
+        }
+        
+        logBubbleDidMove=NO;
+        logBubbleDidMoveLine=NO;
         
 //        int roundedStepsFromActualCentre=roundedStepsFromCentre;
 //        

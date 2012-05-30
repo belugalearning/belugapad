@@ -193,6 +193,7 @@ static float kTimeToBubbleShake=7.0f;
     evalTarget=[[pdef objectForKey:@"EVAL_TARGET"] intValue];
     
     initStartVal=[[pdef objectForKey:START_VALUE] intValue];
+    lastBubbleLoc=initStartVal;
     
     initMinVal=(NSNumber*)[pdef objectForKey:MIN_VALUE];
     initMaxVal=(NSNumber*)[pdef objectForKey:MAX_VALUE];

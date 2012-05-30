@@ -73,6 +73,9 @@ typedef enum {
     BOOL allowHighlightX;
     BOOL allowHighlightY;
     BOOL switchXYforAnswer;
+    
+    NSMutableArray *rowTints;
+    NSMutableArray *colTints;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

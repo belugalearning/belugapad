@@ -202,13 +202,18 @@
     int amtForX=(int)((lx-spaceBetweenAnchors*3)/spaceBetweenAnchors)+1;
     int amtForY=(int)((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)+1;
     
+    rowTints=[[NSMutableArray alloc] init];
+    colTints=[[NSMutableArray alloc] init];
+    
+    for (int i=0; i<amtForY; i++) { [rowTints addObject:[NSNumber numberWithBool:NO]]; }
+    for (int i=0; i<amtForX; i++) { [colTints addObject:[NSNumber numberWithBool:NO]]; }
+    
     for (int iRow=0; iRow<amtForX; iRow++)
     {
         NSMutableArray *currentCol=[[NSMutableArray alloc]init];
         
         for(int iCol=0; iCol<amtForY; iCol++)
         {
-            
             // create our start position and gameobject
             float yStartPos=(iCol+1.5)*spaceBetweenAnchors;
             DWTTTileGameObject *tile = [DWTTTileGameObject alloc];
@@ -397,70 +402,116 @@
 
 -(void)tintRow:(int)thisRow
 {
-    BOOL haveLogged=NO;
+    BOOL tinted=[[rowTints objectAtIndex:thisRow] boolValue];
+    
     for(int i=0;i<[ttMatrix count];i++)
     {
         DWTTTileGameObject *tile=[[ttMatrix objectAtIndex:i]objectAtIndex:thisRow];
         if(tile.Disabled)continue;
-//        if(tile.myYpos==currentYHighlightNo)continue;
-        //if(thisRow == currentXHighlightNo && currentXHighlight && tile.myYpos!=currentYHighlightNo && !currentYHighlight)
-        if(thisRow == currentXHighlightNo && currentXHighlight)
-        {
-            [tile.mySprite setColor:ccc3(255,255,255)];
-            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginUnhighlightRow withOptionalNote:[NSString stringWithFormat:@"{\"unhighlightrow\":%d}",thisRow]];
-            haveLogged=YES;
-        }
-        else { 
-            [tile.mySprite setColor:ccc3(0,255,0)]; 
-            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginHighlightRow withOptionalNote:[NSString stringWithFormat:@"{\"highlightrow\":%d}",thisRow]];
-            haveLogged=YES;
-        }
         
+        if(tinted)
+        {
+            //untint -- so long as it's not in a row
+            if (![[colTints objectAtIndex:i] boolValue]) {
+                [tile.mySprite setColor:ccc3(255,255,255)];
+            }
+        }
+        else {
+            //tint it
+            [tile.mySprite setColor:ccc3(0,255,0)];
+        }
     }
     
-    if(thisRow == currentXHighlightNo && currentXHighlight)
-    {
-        currentXHighlight=NO;
-        currentXHighlightNo=-1;
-    }
-    else { 
-        currentXHighlight=YES;
-        currentXHighlightNo=thisRow;
-    }
+    [rowTints replaceObjectAtIndex:thisRow withObject:[NSNumber numberWithBool:!tinted]];
+    
+    
+//    BOOL haveLogged=NO;
+//    for(int i=0;i<[ttMatrix count];i++)
+//    {
+//        DWTTTileGameObject *tile=[[ttMatrix objectAtIndex:i]objectAtIndex:thisRow];
+//        if(tile.Disabled)continue;
+////        if(tile.myYpos==currentYHighlightNo)continue;
+//        //if(thisRow == currentXHighlightNo && currentXHighlight && tile.myYpos!=currentYHighlightNo && !currentYHighlight)
+//        if(thisRow == currentXHighlightNo && currentXHighlight)
+//        {
+//            [tile.mySprite setColor:ccc3(255,255,255)];
+//            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginUnhighlightRow withOptionalNote:[NSString stringWithFormat:@"{\"unhighlightrow\":%d}",thisRow]];
+//            haveLogged=YES;
+//        }
+//        else { 
+//            [tile.mySprite setColor:ccc3(0,255,0)]; 
+//            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginHighlightRow withOptionalNote:[NSString stringWithFormat:@"{\"highlightrow\":%d}",thisRow]];
+//            haveLogged=YES;
+//        }
+//        
+//    }
+//    
+//    if(thisRow == currentXHighlightNo && currentXHighlight)
+//    {
+//        currentXHighlight=NO;
+//        currentXHighlightNo=-1;
+//    }
+//    else { 
+//        currentXHighlight=YES;
+//        currentXHighlightNo=thisRow;
+//    }
     
     
 }
 
 -(void)tintCol:(int)thisCol
 {
-    BOOL haveLogged=NO;
+    BOOL tinted=[[colTints objectAtIndex:thisCol] boolValue];
+
     for(int i=0;i<[[ttMatrix objectAtIndex:thisCol]count];i++)
     {
         DWTTTileGameObject *tile=[[ttMatrix objectAtIndex:thisCol]objectAtIndex:i];
         if(tile.Disabled)continue;
-//        if(tile.myXpos==currentXHighlightNo)continue;
-        if(thisCol == currentYHighlightNo && currentYHighlight)
+
+        if(tinted)
         {
-            [tile.mySprite setColor:ccc3(255,255,255)];
-            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginUnhighlightColumn withOptionalNote:[NSString stringWithFormat:@"{\"unhighlightcol\":%d}",thisCol]];
-            haveLogged=YES;
+            //untint -- so long as it's not in a row
+            if (![[rowTints objectAtIndex:i] boolValue]) {
+                [tile.mySprite setColor:ccc3(255,255,255)];
+            }
         }
         else {
+            //tint it
             [tile.mySprite setColor:ccc3(0,255,0)];
-            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginHighlightColumn withOptionalNote:[NSString stringWithFormat:@"{\"highlightcol\":%d}",thisCol]];
-            haveLogged=YES;
         }
     }
     
-    if(thisCol == currentYHighlightNo && currentYHighlight)
-    {
-        currentYHighlight=NO;
-        currentYHighlightNo=-1;
-    }
-    else { 
-        currentYHighlight=YES;
-        currentYHighlightNo=thisCol;
-    }
+    [colTints replaceObjectAtIndex:thisCol withObject:[NSNumber numberWithBool:!tinted]];
+    
+//    BOOL haveLogged=NO;
+//    for(int i=0;i<[[ttMatrix objectAtIndex:thisCol]count];i++)
+//    {
+//        DWTTTileGameObject *tile=[[ttMatrix objectAtIndex:thisCol]objectAtIndex:i];
+//        if(tile.Disabled)continue;
+////        if(tile.myXpos==currentXHighlightNo)continue;
+//        
+//        if(thisCol == currentYHighlightNo && currentYHighlight)
+//        {
+//            [tile.mySprite setColor:ccc3(255,255,255)];
+//            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginUnhighlightColumn withOptionalNote:[NSString stringWithFormat:@"{\"unhighlightcol\":%d}",thisCol]];
+//            haveLogged=YES;
+//        }
+//        else {
+//            [tile.mySprite setColor:ccc3(0,255,0)];
+//            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginHighlightColumn withOptionalNote:[NSString stringWithFormat:@"{\"highlightcol\":%d}",thisCol]];
+//            haveLogged=YES;
+//        }
+//    }
+//    
+//    if(thisCol == currentYHighlightNo && currentYHighlight)
+//    {
+//        currentYHighlight=NO;
+//        currentYHighlightNo=-1;
+//    }
+//    else { 
+//        currentYHighlight=YES;
+//        currentYHighlightNo=thisCol;
+//    }
     
 }
 

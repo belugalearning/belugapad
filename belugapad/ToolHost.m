@@ -1520,7 +1520,7 @@ static float kMoveToNextProblemTime=2.0f;
     if(metaQuestionIncompleteLabel)[metaQuestionIncompleteText release];
     if(problemComplete)[problemComplete release];
     if(problemIncomplete)[problemIncomplete release];
-    if(problemDescLabel)[problemDescLabel release];
+    //if(problemDescLabel)[problemDescLabel release];
     if(numberPickerButtons)[numberPickerButtons release];
     if(numberPickedSelection)[numberPickedSelection release];
     if(numberPickedValue)[numberPickedValue release];

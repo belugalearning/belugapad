@@ -97,7 +97,7 @@ static float kTimeToBubbleShake=7.0f;
 -(void)setupBubble
 {
     bubbleTexRegular=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/bubble.png")].CGImage resolutionType:kCCResolutioniPad];
-    bubbleTexSelected=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/bubble_selected.png")].CGImage resolutionType:kCCResolutioniPad];
+    bubbleTexSelected=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/bubble_selected115.png")].CGImage resolutionType:kCCResolutioniPad];
     
     bubbleSprite=[CCSprite spriteWithTexture:bubbleTexRegular];
     [bubbleSprite setPosition:ccp(cx, cy)];
@@ -132,6 +132,13 @@ static float kTimeToBubbleShake=7.0f;
     {
         [self animShakeBubble];
         timeSinceInteractionOrShake=0;
+    }
+    
+    if(touchResetX>0)
+    {
+        float movex=1+((touchResetX-1) / 15.0f);
+        rambler.TouchXOffset += movex * touchResetDir;
+        touchResetX -=movex;
     }
 }
 
@@ -289,11 +296,56 @@ static float kTimeToBubbleShake=7.0f;
 //    return result;
 }
 
+-(void)resetBubble
+{
+    //set last bubble loc
+    lastBubbleLoc=rambler.StartValue;
+    
+    //set bubble pos on ramber to start
+    rambler.BubblePos=lastBubbleLoc;
+    
+    //animate bubble to start equiv pos
+    float distFromCentre= bubbleSprite.position.x - cx;
+    
+    CCMoveBy *mt=[CCMoveBy actionWithDuration:0.5f position:ccp(-distFromCentre, 0)];
+    
+    CCEaseInOut *easemove=[CCEaseInOut actionWithAction:mt rate:2.0f];
+    
+    CCScaleTo *s1=[CCScaleTo actionWithDuration:0.25f scaleX:1.0f scaleY:0.9f];
+    CCScaleTo *s2=[CCScaleTo actionWithDuration:0.25f scaleX:1.0f scaleY:1.0f];
+    CCSequence *seq=[CCSequence actions:s1, s2, nil];
+
+    CCEaseInOut *easescale=[CCEaseInOut actionWithAction:seq rate:2.0f];
+    
+    CCTintTo *t1=[CCTintTo actionWithDuration:0.05f red:255 green:50 blue:50];
+    CCDelayTime *d=[CCDelayTime actionWithDuration:0.4f];
+    CCTintTo *t2=[CCTintTo actionWithDuration:0.05f red:255 green:255 blue:255];
+    
+    CCSequence *seqtint=[CCSequence actions:t1, d, t2, nil];
+    CCEaseInOut *easetint=[CCEaseInOut actionWithAction:seqtint rate:2.0f];
+    
+    [bubbleSprite runAction:easemove];
+    [bubbleSprite runAction:easescale];
+    [bubbleSprite runAction:easetint];
+    
+    //animate line itself (through rambler) to start at centre
+    if (rambler.TouchXOffset!=0) {
+        if(rambler.TouchXOffset<0)touchResetDir=1;
+        else touchResetDir=-1;
+        
+         touchResetX=fabsf(rambler.TouchXOffset);
+    }
+}
+
 -(void)animPickupBubble
 {
     [bubbleSprite stopAllActions];
+    
     [bubbleSprite setTexture:bubbleTexSelected];
-    [bubbleSprite runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.15f scale:1.15f] rate:2.0f]];
+    [bubbleSprite setTextureRect:CGRectMake(0, 0, bubbleTexSelected.contentSize.width, bubbleTexSelected.contentSize.height)];
+    
+    [bubbleSprite setScale:0.87f];
+    [bubbleSprite runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.15f scale:1.0f] rate:2.0f]];
     
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/nline/pickup.wav")];
 }
@@ -301,6 +353,9 @@ static float kTimeToBubbleShake=7.0f;
 -(void)animReleaseBubble
 {
     [bubbleSprite setTexture:bubbleTexRegular];
+    [bubbleSprite setTextureRect:CGRectMake(0, 0, bubbleTexRegular.contentSize.width, bubbleTexRegular.contentSize.height)];
+    
+    [bubbleSprite setScale:1.15f];
     [bubbleSprite runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.15f scale:1.0f] rate:2.0f]];    
     
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/nline/release.wav")];
@@ -342,7 +397,11 @@ static float kTimeToBubbleShake=7.0f;
         
         if(!self.ProblemComplete) 
         {
-            toolHost.flagResetProblem=YES;
+            //automate reset here
+            
+            [self resetBubble];
+            
+            //toolHost.flagResetProblem=YES;
         }
         else {
             [self showComplete];
@@ -386,7 +445,7 @@ static float kTimeToBubbleShake=7.0f;
     {            
         timeSinceInteractionOrShake=0;
         
-        float offsetFromCX=location.x-cx;
+        float offsetFromCX=location.x-cx-holdingBubbleOffset;
         if(fabsf(offsetFromCX)>kBubbleScrollBoundary)
         {
             if(offsetFromCX>0 && bubbleAtBounds<=0)bubblePushDir=-1;
@@ -396,7 +455,8 @@ static float kTimeToBubbleShake=7.0f;
             logBubbleDidMove=YES;
         }
         else {
-            CGPoint newloc=ccp(location.x + holdingBubbleOffset, bubbleSprite.position.y);
+            CGPoint newloc=ccp(location.x - holdingBubbleOffset, bubbleSprite.position.y);
+            //CGPoint newloc=ccp(location.x, bubbleSprite.position.y);
             float xdiff=newloc.x-bubbleSprite.position.x;
             
             if((bubbleAtBounds>0 && xdiff<0) || (bubbleAtBounds<0 && xdiff>0) || bubbleAtBounds==0)
@@ -473,7 +533,7 @@ static float kTimeToBubbleShake=7.0f;
         timeSinceInteractionOrShake=0;
         
         //[gw handleMessage:kDWnlineReleaseRamblerAtOffset andPayload:nil withLogLevel:0];
-        holdingBubbleOffset=NO;
+        holdingBubbleOffset=0;
         
         float distFromCentre=-rambler.TouchXOffset + (bubbleSprite.position.x - cx);
         float stepsFromCentre=distFromCentre / rambler.DefaultSegmentSize;

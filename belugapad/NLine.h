@@ -63,6 +63,9 @@
     BOOL logBubbleDidMoveLine;
     
     int bubbleAtBounds;
+    
+    float touchResetX;
+    int touchResetDir;
 }
 
 -(void)populateGW;

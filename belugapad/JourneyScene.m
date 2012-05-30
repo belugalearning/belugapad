@@ -360,7 +360,8 @@ static NSString *inclNodes[21]={
                 if([n.document.documentID isEqualToString:inclNodes[i]])
                 {
                     found=YES;
-                    break;
+                    NSLog(@"found node %@", n.document.documentID);
+                    //break;
                 }
             }
             
@@ -375,7 +376,7 @@ static NSString *inclNodes[21]={
                 [kcmIdIndex setValue:[NSNumber numberWithInt:i] forKey:n.document.documentID];
                 
                 //force quit at max (e.g. 50) nodes
-                if(i>=kNodeMax) break;
+                //if(i>=kNodeMax) break;
 
                 //clean up any left over sprite info from last use
                 n.journeySprite=nil;

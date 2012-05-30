@@ -955,14 +955,12 @@ static float kMoveToNextProblemTime=2.0f;
 
 -(void)checkNumberPickerTouchOnRegister:(CGPoint)location
 {
-    int moveNumber=0;
     for(int i=0;i<[numberPickedSelection count];i++)
     {
         CCSprite *s=[numberPickedSelection objectAtIndex:i];
         if(s==npMove||s==npLastMoved)continue;
         if(CGRectContainsPoint(s.boundingBox, location))
         {
-            moveNumber=i;
             NSLog(@"hit block index %d, index of moving block %d", i, [numberPickedSelection indexOfObject:npMove]);
             // log pickup from register/dropbox
             [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberFromRegister withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",i]];
@@ -971,6 +969,8 @@ static float kMoveToNextProblemTime=2.0f;
             [repSprite runAction:[CCMoveTo actionWithDuration:0.2 position:npMoveStartPos]];
             npMoveStartPos=repSprite.position;
             npLastMoved=s;
+            
+            NSLog(@"s position %@, repsprite pos %@", NSStringFromCGPoint(s.position), NSStringFromCGPoint(repSprite.position));
             
             int obValue=[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]intValue];
             [numberPickedValue removeObjectAtIndex:[numberPickedSelection indexOfObject:npMove]];
@@ -1022,6 +1022,7 @@ static float kMoveToNextProblemTime=2.0f;
     for(int i=0;i<[numberPickedSelection count];i++)
     {
         CCSprite *s=[numberPickedSelection objectAtIndex:i];
+        NSLog(@"sprite %d position %@", i, NSStringFromCGPoint(s.position));
         [s setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(s.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+(i*75),cy+50)];
 
     }
@@ -1458,6 +1459,7 @@ static float kMoveToNextProblemTime=2.0f;
         //if(hasMovedNumber)[usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberMove withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",moveNumber]];
         
         npMove=nil;
+        npLastMoved=nil;
         hasMovedNumber=NO;
     }
     
@@ -1468,6 +1470,7 @@ static float kMoveToNextProblemTime=2.0f;
 {
     hasMovedNumber=NO;
     if(npMove)npMove=nil;
+    npLastMoved=nil;
     [currentTool ccTouchesCancelled:touches withEvent:event];
     
     [self logTouches:touches forEvent:@"c"];

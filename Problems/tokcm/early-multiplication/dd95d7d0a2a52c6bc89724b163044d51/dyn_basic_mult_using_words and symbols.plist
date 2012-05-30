@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>show that {$multiplier} [[$wordorsymbol]] 2 equals {$target}</string>
+	<string>show that {$multiplier} [[$wordorsymbol]] 2 equals {$multiplier*2}</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>with 2 blocks switching between &quot;times&quot; and &quot;lots of&quot; and &quot;x&quot;</string>
 	<key>TOOL_KEY</key>
@@ -14,9 +14,9 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>LENGTH</key>
-			<integer>6</integer>
+			<string>{$multiplier*2}</string>
 			<key>LABEL</key>
-			<string>6</string>
+			<string>{$multiplier*2}</string>
 		</dict>
 	</array>
 	<key>INIT_BARS</key>
@@ -25,13 +25,13 @@
 			<key>LOCKED</key>
 			<true/>
 			<key>LENGTH</key>
-			<integer>6</integer>
+			<string>{$multiplier*2}</string>
 		</dict>
 		<dict>
 			<key>LOCKED</key>
 			<false/>
 			<key>LENGTH</key>
-			<string>6</string>
+			<string>{$multiplier*2}</string>
 		</dict>
 	</array>
 	<key>INIT_CAGES</key>
@@ -42,7 +42,7 @@
 			<key>LABEL</key>
 			<string>2</string>
 			<key>QUANTITY</key>
-			<integer>3</integer>
+			<string>{$multiplier}</string>
 		</dict>
 	</array>
 	<key>DVARS</key>

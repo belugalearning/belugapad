@@ -231,24 +231,33 @@
             }
         
             
-            if(iRow==0 && showYAxis && !tile.isEndYPiece)
+            if(iRow==0 && showYAxis)
             {
                 CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", yStartNumber] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
                 [curLabel setPosition:ccp(xStartPos-spaceBetweenAnchors,yStartPos)];
                 [curLabel setTag:2];
                 [curLabel setOpacity:0];
-                [self.ForeLayer addChild:curLabel];
+
+                if(!tile.isEndYPiece)
+                {
+                    [self.ForeLayer addChild:curLabel];
+                }
                 [yHeaders addObject:curLabel];
                 yStartNumber--;
             }
             
-            if(iCol==amtForY-1 && showXAxis && !tile.isEndXPiece) {
+            if(iCol==amtForY-1 && showXAxis) {
                 CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", xStartNumber]fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
                 [curLabel setPosition:ccp(xStartPos,yStartPos+spaceBetweenAnchors)];
-                [self.ForeLayer addChild:curLabel];
+                if(!tile.isEndXPiece)
+                {
+                    [self.ForeLayer addChild:curLabel];
+                    [xHeaders addObject:curLabel];
+                }
+
                 [curLabel setTag:2];
                 [curLabel setOpacity:0];
-                [xHeaders addObject:curLabel];
+                
             }
             
             tile.Position=ccp(xStartPos,yStartPos);
@@ -393,7 +402,9 @@
     {
         DWTTTileGameObject *tile=[[ttMatrix objectAtIndex:i]objectAtIndex:thisRow];
         if(tile.Disabled)continue;
-        if(thisRow == currentXHighlightNo && currentXHighlight && tile.myYpos!=currentYHighlight && !currentYHighlight)
+//        if(tile.myYpos==currentYHighlightNo)continue;
+        //if(thisRow == currentXHighlightNo && currentXHighlight && tile.myYpos!=currentYHighlightNo && !currentYHighlight)
+        if(thisRow == currentXHighlightNo && currentXHighlight)
         {
             [tile.mySprite setColor:ccc3(255,255,255)];
             if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginUnhighlightRow withOptionalNote:[NSString stringWithFormat:@"{\"unhighlightrow\":%d}",thisRow]];
@@ -427,6 +438,7 @@
     {
         DWTTTileGameObject *tile=[[ttMatrix objectAtIndex:thisCol]objectAtIndex:i];
         if(tile.Disabled)continue;
+//        if(tile.myXpos==currentXHighlightNo)continue;
         if(thisCol == currentYHighlightNo && currentYHighlight)
         {
             [tile.mySprite setColor:ccc3(255,255,255)];
@@ -473,7 +485,8 @@
         for(int i=0;i<[theseNumbers count];i++)
         {
             CCLabelTTF *curLabel=[theseNumbers objectAtIndex:i];
-            if(CGRectContainsPoint(curLabel.boundingBox, location))
+            CGRect boundingBox=CGRectMake(curLabel.position.x-(spaceBetweenAnchors/2), curLabel.position.y-(spaceBetweenAnchors/2), spaceBetweenAnchors, spaceBetweenAnchors);
+            if(CGRectContainsPoint(boundingBox, location))
             {
                 if(o==0 && allowHighlightY) [self tintCol:i];
                 if(o==1 && allowHighlightX) [self tintRow:i];

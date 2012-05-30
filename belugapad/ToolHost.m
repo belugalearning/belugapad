@@ -1453,9 +1453,9 @@ static float kMoveToNextProblemTime=2.0f;
             [npMove removeFromParentAndCleanup:YES];
         }
         [self reorderNumberPickerSelections];
-        int moveNumber=[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]intValue];
+        //int moveNumber=[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]intValue];
         
-        if(hasMovedNumber)[usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberMove withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",moveNumber]];
+        //if(hasMovedNumber)[usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberMove withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",moveNumber]];
         
         npMove=nil;
         hasMovedNumber=NO;

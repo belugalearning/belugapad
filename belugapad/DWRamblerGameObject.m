@@ -23,4 +23,6 @@
 @synthesize RenderStitches;
 @synthesize AutoStitchIncrement;
 
+@synthesize BubblePos;
+
 @end

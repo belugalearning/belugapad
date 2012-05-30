@@ -96,8 +96,11 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     int segsInCX=(gameWorld.Blackboard.hostCX / ramblerGameObject.DefaultSegmentSize);
     
     //scale these up by three -- allows for full screen scroll in either direction without new draw
-    float minValuePos=ramblerGameObject.Value - (segsInCX * 4);
-    float maxValuePos=ramblerGameObject.Value + (segsInCX * 4);
+//    float minValuePos=ramblerGameObject.Value - (segsInCX * 4);
+//    float maxValuePos=ramblerGameObject.Value + (segsInCX * 4);
+    float minValuePos=ramblerGameObject.BubblePos - (segsInCX * 4);
+    float maxValuePos=ramblerGameObject.BubblePos + (segsInCX * 4);
+    
     
     int assBlankIndex=0;
     int assLineIndex=0;

@@ -24,4 +24,6 @@
 @property int AutoStitchIncrement;
 
 
+@property int BubblePos;
+
 @end

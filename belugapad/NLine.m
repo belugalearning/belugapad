@@ -362,26 +362,69 @@ static float kTimeToBubbleShake=7.0f;
         float offsetFromCX=location.x-cx;
         if(fabsf(offsetFromCX)>kBubbleScrollBoundary)
         {
-            if(offsetFromCX>0)bubblePushDir=-1;
-            if(offsetFromCX<0)bubblePushDir=1;
+            if(offsetFromCX>0 && bubbleAtBounds<=0)bubblePushDir=-1;
+            if(offsetFromCX<0 && bubbleAtBounds>=0)bubblePushDir=1;
             
             logBubbleDidMoveLine=YES;
             logBubbleDidMove=YES;
         }
         else {
-
-//            float distFromCentre=-rambler.TouchXOffset + ((bubbleSprite.position.x + holdingBubbleOffset) - cx);
-//            if (distFromCentre <= ([rambler.MaxValue floatValue] * rambler.DefaultSegmentSize)
-//                && distFromCentre >= ([rambler.MinValue floatValue] * rambler.DefaultSegmentSize)) {
-
-                [bubbleSprite setPosition:ccp(location.x + holdingBubbleOffset, bubbleSprite.position.y)];
-                
-//            }
+            CGPoint newloc=ccp(location.x + holdingBubbleOffset, bubbleSprite.position.y);
+            float xdiff=newloc.x-bubbleSprite.position.x;
             
+            if((bubbleAtBounds>0 && xdiff<0) || (bubbleAtBounds<0 && xdiff>0) || bubbleAtBounds==0)
+            {
+                [bubbleSprite setPosition:newloc];
+                logBubbleDidMove=YES;
+                bubbleAtBounds=0;
+            }
+
             bubblePushDir=0;
-            
-            logBubbleDidMove=YES;
         }
+        
+        
+        float distFromCentre=-rambler.TouchXOffset + (bubbleSprite.position.x - cx);
+        float stepsFromCentre=distFromCentre / rambler.DefaultSegmentSize;
+        
+        int roundedStepsFromCentre=(int)(stepsFromCentre + 0.5f);
+        if(stepsFromCentre<0) roundedStepsFromCentre=(int)(stepsFromCentre - 0.5f);
+        
+        NSLog(@"bubble pos %d", roundedStepsFromCentre);
+                
+        int startOffset=initStartVal;
+        lastBubbleLoc = roundedStepsFromCentre+startOffset;
+        int adjustedStepsFromCentre=roundedStepsFromCentre;
+        
+        BOOL stopLine=NO;
+        
+        if (lastBubbleLoc>[rambler.MaxValue intValue]) 
+        {
+            adjustedStepsFromCentre = [rambler.MaxValue intValue] - startOffset;
+            stopLine=YES;
+            bubbleAtBounds=1;
+            bubblePushDir=0;
+        }
+        
+        if(lastBubbleLoc<[rambler.MinValue intValue]) 
+        {
+            adjustedStepsFromCentre = [rambler.MinValue intValue] - startOffset;
+            stopLine=YES;
+            bubbleAtBounds=-1;
+            bubblePushDir=0;
+        }
+        
+        if(stopLine)
+        {
+            //diff (moveby)
+            float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
+            [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
+        }
+        
+        
+        
+        //update the rambler value
+        rambler.BubblePos=lastBubbleLoc;
+
     }
     
 //    if(inRamblerArea)
@@ -425,6 +468,11 @@ static float kTimeToBubbleShake=7.0f;
         //diff (moveby)
         float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
         [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
+        
+        
+        
+        //update the rambler value
+        rambler.BubblePos=lastBubbleLoc;
         
         
         //release the bubble

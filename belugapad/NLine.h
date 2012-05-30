@@ -61,6 +61,8 @@
     int logLastBubblePos;
     BOOL logBubbleDidMove;
     BOOL logBubbleDidMoveLine;
+    
+    int bubbleAtBounds;
 }
 
 -(void)populateGW;

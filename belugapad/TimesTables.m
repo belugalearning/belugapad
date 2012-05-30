@@ -545,7 +545,7 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     isTouching=NO;
-    //gw.Blackboard.LastSelectedObject=nil;
+    gw.Blackboard.LastSelectedObject=nil;
 
      
 }
@@ -553,7 +553,7 @@
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouching=NO;
-    //gw.Blackboard.LastSelectedObject=nil;
+    gw.Blackboard.LastSelectedObject=nil;
     // empty selected objects
 }
 

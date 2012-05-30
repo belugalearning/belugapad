@@ -43,6 +43,8 @@
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
     
+    BOOL hasMovedBlock;
+    
     DWPartitionRowGameObject *previousMount;
 }
 

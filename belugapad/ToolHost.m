@@ -930,8 +930,7 @@ static float kMoveToNextProblemTime=2.0f;
                 // then add them to our selection and value arrays
                 [numberPickedSelection addObject:curSprite];
                 [numberPickedValue addObject:[NSNumber numberWithInt:i]];
-                
-                [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberFromRegister withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:curSprite]]intValue]]];                
+                        
                 
                 return;
             }
@@ -943,7 +942,7 @@ static float kMoveToNextProblemTime=2.0f;
         if(CGRectContainsPoint(s.boundingBox, origloc))
         {
             [self playAudioPress];
-            
+            [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberFromRegister withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:s]]intValue]]];
             npMove=s;
             npMoveStartPos=npMove.position;
             return;
@@ -984,6 +983,7 @@ static float kMoveToNextProblemTime=2.0f;
     }
     
     //removed b/c of log performance issues
+    if(!hasMovedNumber)hasMovedNumber=YES;
 //    [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberMove withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",moveNumber]];
     
     npMove.position=location;
@@ -1441,19 +1441,23 @@ static float kMoveToNextProblemTime=2.0f;
     if(npMove)
     {
         float distance=[BLMath DistanceBetween:lastTouch and:location];
-        if(!CGRectContainsPoint(npDropbox.boundingBox, location) || (CGRectContainsPoint(npDropbox.boundingBox, location) && distance<10.0f))
+        if(!CGRectContainsPoint(npDropbox.boundingBox, location) || (CGRectContainsPoint(npDropbox.boundingBox, location) && distance<7.0f))
         {
-
-            
             
             [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberDelete withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]intValue]]];
+            
+            
             [numberPickedValue removeObjectAtIndex:[numberPickedSelection indexOfObject:npMove]];
             [numberPickedSelection removeObject:npMove];
             [npMove removeFromParentAndCleanup:YES];
-            
         }
         [self reorderNumberPickerSelections];
+        int moveNumber=[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]intValue];
+        
+        if(hasMovedNumber)[usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberMove withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",moveNumber]];
+        
         npMove=nil;
+        hasMovedNumber=NO;
     }
     
     [currentTool ccTouchesEnded:touches withEvent:event];
@@ -1461,6 +1465,7 @@ static float kMoveToNextProblemTime=2.0f;
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    hasMovedNumber=NO;
     if(npMove)npMove=nil;
     [currentTool ccTouchesCancelled:touches withEvent:event];
     

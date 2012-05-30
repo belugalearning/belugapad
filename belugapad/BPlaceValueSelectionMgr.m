@@ -10,10 +10,25 @@
 #import "global.h"
 #import "PlaceValue.h"
 #import "ToolScene.h"
+#import "UsersService.h"
+#import "AppDelegate.h"
+
+@interface BPlaceValueSelectionMgr()
+{
+@private
+    ContentService *contentService;
+    UsersService *usersService;
+}
+
+@end
 
 @implementation BPlaceValueSelectionMgr
 -(BPlaceValueSelectionMgr*)initWithGameObject:(DWGameObject *)aGameObject withData:(NSDictionary *)data
 {
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    contentService = ac.contentService;
+    usersService = ac.usersService;
+    
     self=(BPlaceValueSelectionMgr *)[super initWithGameObject:aGameObject withData:data];
     return self;
 }
@@ -54,12 +69,14 @@
     
     if([isSelected boolValue])
     {
+        [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchBeginDeselectObject withOptionalNote:nil];
         [[gameObject store] setObject:[NSNumber numberWithBool:NO] forKey:SELECTED];
         [gameWorld.Blackboard.SelectedObjects removeObject:gameObject];
         [[gameWorld GameScene] problemStateChanged];
     }
     else
     {
+      [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchBeginSelectObject withOptionalNote:nil];
         [[gameObject store] setObject:[NSNumber numberWithBool:YES] forKey:SELECTED]; 
         gameWorld.Blackboard.LastSelectedObject = gameObject;
         [gameWorld.Blackboard.SelectedObjects addObject:gameObject];

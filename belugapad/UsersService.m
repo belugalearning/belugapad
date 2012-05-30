@@ -488,6 +488,60 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
             eventString = @"PROBLEM_ATTEMPT_NUMBERLINE_TOUCH_MOVED_MOVE_LINE";
             break;
             
+        case kProblemAttemptPlaceValueTouchBeginPickupCageObject:
+            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_BEGIN_PICKUP_CAGE_OBJECT";
+            break;
+            
+        case kProblemAttemptPlaceValueTouchBeginPickupGridObject:
+            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_BEGIN_PICKUP_GRID_OBJECT";
+            break;
+            
+        case kProblemAttemptPlaceValueTouchEndedDropObjectOnCage:
+            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_ENDED_DROP_OBJECT_ON_CAGE";
+            break;
+            
+        case kProblemAttemptPlaceValueTouchEndedDropObjectOnGrid:
+            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_ENDED_DROP_OBJECT_ON_GRID";
+            break;
+            
+        case kProblemAttemptPlaceValueTouchEndedCondenseObject:
+            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_ENDED_CONDENSE_OBJECT";
+            break;
+            
+        case kProblemAttemptPlaceValueTouchEndedMulchObjects:
+            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_ENDED_MULCH_OBJECTS";
+            break;
+            
+        case kProblemAttemptPlaceValueTouchMovedMoveObject:
+            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_MOVED_MOVE_OBJECT";
+            break;
+            
+        case kProblemAttemptPlaceValueTouchMovedMoveObjects:
+            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_MOVED_MOVE_OBJECTS";
+            break;
+            
+        case kProblemAttemptPlaceValueTouchBeginSelectObject:
+            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_BEGIN_SELECT_OBJECT";
+            break;
+            
+        case kProblemAttemptPlaceValueTouchBeginDeselectObject:
+            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_BEGIN_DESELECT_OBJECT";
+            break;
+            
+        case kProblemAttemptPlaceValueTouchBeginCountObject:
+            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_BEGIN_COUNT_OBJECT";
+            break;
+            
+        case kProblemAttemptPlaceValueTouchBeginUncountObject:
+            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_BEGIN_UNCOUNT_OBJECT";
+            break;
+            
+        case kProblemAttemptPlaceValueTouchMovedMoveGrid:
+            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_MOVED_MOVE_GRID";
+            break;
+            
+
+            
         default:
             // TODO: ERROR - LOG TO DATABASE!
             break;

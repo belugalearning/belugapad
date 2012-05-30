@@ -266,6 +266,7 @@
 
         //remove b/c of log perf
 //        [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchMovedMoveBlock withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%f}",pogo.ObjectValue]];
+        hasMovedBlock=YES;
 
         
         pogo.MovePosition = location;
@@ -291,6 +292,8 @@
     [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
     [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
     
+    if(hasMovedBlock)[usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchMovedMoveBlock withOptionalNote:nil];
+    
     if([gw Blackboard].PickupObject!=nil)
     {
         gw.Blackboard.DropObject = nil;
@@ -303,15 +306,15 @@
             DWPartitionRowGameObject *prgo = (DWPartitionRowGameObject*)[gw Blackboard].DropObject;
             
             [pogo handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:prgo forKey:MOUNT] withLogLevel:-1];
+            
+            // touch ended on a row so we've set it. log it's value
+            [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchEndedOnRow withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%f}",pogo.ObjectValue]];
         }
         else
         {
             if(((DWPartitionObjectGameObject*)gw.Blackboard.PickupObject).InitedObject)
             {
                 [gw.Blackboard.PickupObject handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:previousMount forKey:MOUNT] withLogLevel:0];
-                
-                // touch ended on a row so we've set it. log it's value
-                [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchEndedOnRow withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%f}",pogo.ObjectValue]];
             }
             else {
                 [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToHome];
@@ -326,12 +329,14 @@
     [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:-1];
     
     [gw Blackboard].PickupObject=nil;
+    hasMovedBlock=NO;
 
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouching=NO;
+    hasMovedBlock=NO;
 }
 
 -(BOOL)evalExpression

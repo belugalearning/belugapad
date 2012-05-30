@@ -71,6 +71,19 @@ typedef enum {
     kProblemAttemptNumberLineTouchMovedMoveLine,
     kProblemAttemptNumberLineTouchEndedIncreaseSelection,
     kProblemAttemptNumberLineTouchEndedDecreaseSelection,
+    kProblemAttemptPlaceValueTouchBeginPickupCageObject,
+    kProblemAttemptPlaceValueTouchBeginPickupGridObject,
+    kProblemAttemptPlaceValueTouchEndedDropObjectOnCage,
+    kProblemAttemptPlaceValueTouchEndedDropObjectOnGrid,
+    kProblemAttemptPlaceValueTouchEndedCondenseObject,
+    kProblemAttemptPlaceValueTouchEndedMulchObjects,
+    kProblemAttemptPlaceValueTouchMovedMoveObject,
+    kProblemAttemptPlaceValueTouchMovedMoveObjects,
+    kProblemAttemptPlaceValueTouchBeginSelectObject,
+    kProblemAttemptPlaceValueTouchBeginDeselectObject,
+    kProblemAttemptPlaceValueTouchBeginCountObject,
+    kProblemAttemptPlaceValueTouchBeginUncountObject,
+    kProblemAttemptPlaceValueTouchMovedMoveGrid,
 
 } ProblemAttemptEvent;
 

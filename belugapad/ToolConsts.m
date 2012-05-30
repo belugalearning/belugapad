@@ -18,7 +18,7 @@ const float kButtonNextToolHitXOffset=975.0f;
 
 
 const float kLabelSubTitleYOffsetHalfProp=1.75f;
-const float kLabelTitleXMarginProp=0.9f;
+const float kLabelTitleXMarginProp=0.87f;
 const float kLabelTitleYOffsetHalfProp=1.47f;
 const ccColor3B kLabelTitleColor={255, 255, 255};
 

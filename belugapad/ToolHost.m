@@ -1443,6 +1443,7 @@ static float kMoveToNextProblemTime=2.0f;
     if(npMove)
     {
         float distance=[BLMath DistanceBetween:lastTouch and:location];
+        //if([BLMath DistanceBetween:myLoc and:hitLoc] <= (kPropXDropProximity*[gameWorld Blackboard].hostLX))
         if(!CGRectContainsPoint(npDropbox.boundingBox, location) || (CGRectContainsPoint(npDropbox.boundingBox, location) && distance<7.0f))
         {
             

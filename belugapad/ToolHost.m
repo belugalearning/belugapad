@@ -316,6 +316,10 @@ static float kMoveToNextProblemTime=2.0f;
         contentService.fullRedraw=YES;
         contentService.lightUpProgressFromLastNode=YES;
         
+        [contentService quitPipelineTracking];
+        
+        //[contentService.currentStaticPdef release];
+        
         [[CCDirector sharedDirector] replaceScene:[JourneyScene scene]];
     }
 }
@@ -1512,7 +1516,7 @@ static float kMoveToNextProblemTime=2.0f;
 
 -(void) dealloc
 {
-    [pdef release];
+    //[pdef release];
     if(metaQuestionAnswers)[metaQuestionAnswers release];
     if(metaQuestionAnswerButtons)[metaQuestionAnswerButtons release];
     if(metaQuestionAnswerLabels)[metaQuestionAnswerLabels release];

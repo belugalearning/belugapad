@@ -34,6 +34,7 @@
 -(CouchDatabase*)Database;
 -(NSArray*)allConceptNodes;
 -(NSArray*)relationMembersForName:(NSString *)name;
+-(void)quitPipelineTracking;
 
 
 @end

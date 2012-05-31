@@ -23,10 +23,7 @@
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
-	<array>
-		<integer>5</integer>
-		<integer>3</integer>
-	</array>
+	<array/>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>

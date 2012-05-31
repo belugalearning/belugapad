@@ -575,6 +575,7 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     }
     
     [nc addObject:nodeId];
+    [nc release];
     
     currentUser.nodesCompleted = nc;
     [[currentUser save] wait];

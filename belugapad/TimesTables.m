@@ -118,6 +118,8 @@
     startY=[[pdef objectForKey:START_Y] intValue];
     operatorMode=[[pdef objectForKey:OPERATOR_MODE]intValue];
     selectionMode=[[pdef objectForKey:SELECTION_MODE]intValue];
+    if([pdef objectForKey:REVEAL_ALL_TILES])revealAllTiles=[[pdef objectForKey:REVEAL_ALL_TILES]boolValue];
+    else revealAllTiles=NO;
     
     
     if([pdef objectForKey:SHOW_X_AXIS])showXAxis=[[pdef objectForKey:SHOW_X_AXIS]boolValue];
@@ -391,7 +393,24 @@
                 
             }
         }
+        
+    }
 
+    if(revealAllTiles)
+    {
+        for(int r=0;r<[ttMatrix count];r++)
+        {
+            NSArray *curCol=[ttMatrix objectAtIndex:r];
+            
+            for(int c=0;c<[curCol count];c++)
+            {
+
+                DWTTTileGameObject *tile=[curCol objectAtIndex:c];                
+                [tile handleMessage:kDWswitchSelection];
+                
+            }
+        }
+        
     }
 }
 

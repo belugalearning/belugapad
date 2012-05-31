@@ -65,6 +65,7 @@ typedef enum {
     NSMutableArray *revealRows;
     NSMutableArray *revealCols;
     NSMutableArray *revealTiles;
+    BOOL revealAllTiles;
     CCSprite *selection;
     int currentXHighlightNo;
     int currentYHighlightNo;

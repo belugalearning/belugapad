@@ -130,6 +130,14 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
     return self;
 }
 
+-(void)setCurrentStaticPdef:(NSMutableDictionary *)currentStaticPdefValue
+{
+    NSLog(@"setting currentStaticPdef");
+    [currentStaticPdefValue retain];
+    [currentStaticPdef release];
+    currentStaticPdef=currentStaticPdefValue;
+}
+
 -(BOOL)isUsingTestPipeline
 {
     return useTestPipeline;
@@ -192,6 +200,13 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
     [self.currentNode retain];
     
     NSLog(@"starting pipeline named %@ with %d problems", self.currentPipeline.name, self.currentPipeline.problems.count);
+}
+
+-(void)quitPipelineTracking
+{
+    self.currentPDef=nil;
+    self.currentPExpr=nil;
+    [self.currentStaticPdef release];
 }
 
 -(void)gotoNextProblemInPipeline

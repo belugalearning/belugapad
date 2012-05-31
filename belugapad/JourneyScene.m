@@ -860,7 +860,7 @@ static NSString *inclNodes[20]={
             Pipeline  *p=[[CouchModelFactory sharedInstance] modelForDocument:[[contentService Database] documentWithID:pid]];
             if([p.name isEqualToString:@"25May"])
             {
-                [contentService startPipelineWithId:[currentNodeSliceNode.pipelines objectAtIndex:0] forNode:currentNodeSliceNode];
+                [contentService startPipelineWithId:pid forNode:currentNodeSliceNode];
                 [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];                
             }
         }

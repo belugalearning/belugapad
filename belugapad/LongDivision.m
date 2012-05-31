@@ -169,14 +169,15 @@ const float kScaleOfLesserBlocks=0.6f;
         
         [lbl setOpacity:opac];
     }
-    
-    for(int n=0;n<[selectedNumbers count];n++)
-    {
-            [self checkBlock:n];
-    }
-    
+    if(!hideRenderLayer){
+        for(int n=0;n<[selectedNumbers count];n++)
+        {
+                [self checkBlock:n];
+        }
+        [self updateBlock];
+    }       
     if(evalMode==kProblemEvalAuto)[self evalProblem];
-    [self updateBlock];
+
 }
 
 
@@ -193,6 +194,8 @@ const float kScaleOfLesserBlocks=0.6f;
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
     goodBadHighlight=[[pdef objectForKey:GOOD_BAD_HIGHLIGHT] boolValue];
     renderBlockLabels=[[pdef objectForKey:RENDERBLOCK_LABELS] boolValue];
+    hideRenderLayer=[[pdef objectForKey:HIDE_RENDERLAYER] boolValue];
+    startRow=[[pdef objectForKey:START_ROW]floatValue];
     
 
     
@@ -228,7 +231,7 @@ const float kScaleOfLesserBlocks=0.6f;
               
             NSString *currentNumber=[NSString stringWithFormat:@"%g", i*rowMultiplierT];
             CCLabelTTF *number=[CCLabelTTF labelWithString:currentNumber fontName:PROBLEM_DESC_FONT fontSize:60.0f];
-            [number setPosition:ccp((lx/2)+(i*kSpaceBetweenNumbers), 300-(r*kSpaceBetweenRows))];
+            [number setPosition:ccp((lx/2)+(i*kSpaceBetweenNumbers), 220-(r*kSpaceBetweenRows))];
             [thisLayer addChild:number];
             [thisRow addObject:number];
             
@@ -240,9 +243,20 @@ const float kScaleOfLesserBlocks=0.6f;
         rowMultiplierT=rowMultiplierT*10;
     }
     
-    currentRowPos=0;
-    activeRow=currentRowPos+1;
+    currentRowPos=startRow;
+    activeRow=currentRowPos;
+    
+    
+    
+    for(int i=0;i<[numberLayers count];i++)
+    {
+        CCLayer *moveLayer=[numberLayers objectAtIndex:i];
+        [moveLayer setPosition:ccp(moveLayer.position.x,currentRowPos*kSpaceBetweenRows)];
+    }
+
 }
+
+
 
 -(void)updateLabels:(CGPoint)position
 {
@@ -407,21 +421,23 @@ const float kScaleOfLesserBlocks=0.6f;
     [line setPosition:ccp(cx,550)];
     [topSection addChild:line];
     
-    
-    // set up start and end marker
-    startMarker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
-    endMarker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
-    [startMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x-(line.contentSize.width/2)+5, line.position.y)]];
-    [endMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x+(line.contentSize.width/2)-5, line.position.y)]];
-    CCLabelTTF *start=[CCLabelTTF labelWithString:@"0" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    CCLabelTTF *end=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", dividend] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [start setPosition:ccp(10,60)];
-    [end setPosition:ccp(10,60)];
-    [startMarker addChild:start];
-    [endMarker addChild:end];
-    
-    [self.NoScaleLayer addChild:startMarker];
-    [self.NoScaleLayer addChild:endMarker];
+    if(hideRenderLayer){[topSection setVisible:NO];}
+    else{
+        // set up start and end marker
+        startMarker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
+        endMarker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
+        [startMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x-(line.contentSize.width/2)+5, line.position.y)]];
+        [endMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x+(line.contentSize.width/2)-5, line.position.y)]];
+        CCLabelTTF *start=[CCLabelTTF labelWithString:@"0" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        CCLabelTTF *end=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", dividend] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        [start setPosition:ccp(10,60)];
+        [end setPosition:ccp(10,60)];
+        [startMarker addChild:start];
+        [endMarker addChild:end];
+        
+        [self.NoScaleLayer addChild:startMarker];
+        [self.NoScaleLayer addChild:endMarker];
+    }
     
     
     [self createVisibleNumbers];
@@ -619,10 +635,10 @@ const float kScaleOfLesserBlocks=0.6f;
             currentRowPos+=incrementor;
                  
         //truncate to fixed bounds
-        if(currentRowPos<-1)currentRowPos=-1;
-        if(currentRowPos>6)currentRowPos=6;
+        if(currentRowPos<0)currentRowPos=0;
+        if(currentRowPos>7)currentRowPos=7;
   
-        activeRow=currentRowPos+1;
+        activeRow=currentRowPos;
         [usersService logProblemAttemptEvent:kProblemAttemptLongDivisionTouchEndedChangedActiveRow withOptionalNote:[NSString stringWithFormat:@"{\"activerow\":%f}",activeRow]];
         
         

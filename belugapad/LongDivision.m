@@ -193,6 +193,7 @@ const float kScaleOfLesserBlocks=0.6f;
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
     goodBadHighlight=[[pdef objectForKey:GOOD_BAD_HIGHLIGHT] boolValue];
     renderBlockLabels=[[pdef objectForKey:RENDERBLOCK_LABELS] boolValue];
+    startRow=[[pdef objectForKey:START_ROW]floatValue];
     
 
     
@@ -228,7 +229,7 @@ const float kScaleOfLesserBlocks=0.6f;
               
             NSString *currentNumber=[NSString stringWithFormat:@"%g", i*rowMultiplierT];
             CCLabelTTF *number=[CCLabelTTF labelWithString:currentNumber fontName:PROBLEM_DESC_FONT fontSize:60.0f];
-            [number setPosition:ccp((lx/2)+(i*kSpaceBetweenNumbers), 300-(r*kSpaceBetweenRows))];
+            [number setPosition:ccp((lx/2)+(i*kSpaceBetweenNumbers), 220-(r*kSpaceBetweenRows))];
             [thisLayer addChild:number];
             [thisRow addObject:number];
             
@@ -240,9 +241,20 @@ const float kScaleOfLesserBlocks=0.6f;
         rowMultiplierT=rowMultiplierT*10;
     }
     
-    currentRowPos=0;
-    activeRow=currentRowPos+1;
+    currentRowPos=startRow;
+    activeRow=currentRowPos;
+    
+    
+    
+    for(int i=0;i<[numberLayers count];i++)
+    {
+        CCLayer *moveLayer=[numberLayers objectAtIndex:i];
+        [moveLayer setPosition:ccp(moveLayer.position.x,currentRowPos*kSpaceBetweenRows)];
+    }
+
 }
+
+
 
 -(void)updateLabels:(CGPoint)position
 {
@@ -622,7 +634,7 @@ const float kScaleOfLesserBlocks=0.6f;
         if(currentRowPos<-1)currentRowPos=-1;
         if(currentRowPos>6)currentRowPos=6;
   
-        activeRow=currentRowPos+1;
+        activeRow=currentRowPos;
         [usersService logProblemAttemptEvent:kProblemAttemptLongDivisionTouchEndedChangedActiveRow withOptionalNote:[NSString stringWithFormat:@"{\"activerow\":%f}",activeRow]];
         
         

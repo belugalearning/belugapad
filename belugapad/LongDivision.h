@@ -67,7 +67,7 @@
     int previousNumberPos;
     float currentTotal;
     float rowMultiplier;
-    float startRow;
+    int startRow;
     
     int currentTouchCount;
     

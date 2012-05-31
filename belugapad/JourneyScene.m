@@ -263,7 +263,7 @@ static NSString *inclNodes[20]={
 {
     //base colour layer
 //    CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(0, 59, 72, 255) width:lx height:ly];
-    CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(137, 173, 171, 255) width:lx height:ly];
+    CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(54, 59, 59, 255) width:lx height:ly];
     [self addChild:cLayer];
     
     //base map layer
@@ -511,7 +511,7 @@ static NSString *inclNodes[20]={
                     if ([n.document.documentID isEqualToString:@"5608a59d6797796ce9e11484fd180be3"] && isLit) {
                         [n.journeySprite setColor:ccc3(0, 255, 0)];
                     }
-                    else {
+                    else if (isLit) {
                         [n.journeySprite setColor:ccc3(0, 255, 0)];                        
                     }
                     

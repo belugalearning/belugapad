@@ -559,22 +559,11 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 
 -(void)addCompletedNodeId:(NSString *)nodeId
 {
-    NSMutableArray *nc;
-    
-    if (!currentUser.nodesCompleted)
-    {
-        nc = [NSMutableArray array];
-    }
-    else
-    {
-        nc = [currentUser.nodesCompleted mutableCopy];
-    }
-    
-    [nc addObject:nodeId];
-    [nc release];
-    
+    NSMutableArray *nc = [currentUser.nodesCompleted mutableCopy];
+    [nc addObject:nodeId];    
     currentUser.nodesCompleted = nc;
     [[currentUser save] wait];
+    [nc release];
 }
 
 -(BOOL)hasCompletedNodeId:(NSString *)nodeId

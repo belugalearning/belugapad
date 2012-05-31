@@ -1516,6 +1516,17 @@ static float kMoveToNextProblemTime=2.0f;
 
 -(void) dealloc
 {
+    [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
+    
+    if(currentTool)
+    {
+        [self removeChild:toolBackLayer cleanup:YES];
+        [self removeChild:toolForeLayer cleanup:YES];
+        [self removeChild:toolNoScaleLayer cleanup:YES];
+        [currentTool release];
+        currentTool=nil;
+    }
+    
     //[pdef release];
     if(metaQuestionAnswers)[metaQuestionAnswers release];
     if(metaQuestionAnswerButtons)[metaQuestionAnswerButtons release];

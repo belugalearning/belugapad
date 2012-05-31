@@ -60,11 +60,6 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 @synthesize currentUser;
 @synthesize currentProblemAttemptID;
 
--(User*)currentUser
-{
-    return user;
-}
-
 -(void)setCurrentUser:(User*)ur
 {
     if (currentUserSession)
@@ -77,6 +72,7 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     
     //user = ur;
     [ur retain];
+    [currentUser release];
     currentUser=ur;
     
     if (ur)

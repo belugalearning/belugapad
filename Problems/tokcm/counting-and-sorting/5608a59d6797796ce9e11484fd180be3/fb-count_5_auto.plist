@@ -69,6 +69,8 @@
 			<string>complete.wav</string>
 			<key>SOLUTION_SCORE</key>
 			<integer>1</integer>
+			<key>SOLUTION_DISPLAY_TEXT</key>
+			<string></string>
 			<key>CLAUSES</key>
 			<array>
 				<dict>

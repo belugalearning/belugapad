@@ -116,15 +116,6 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
                 self = nil;
                 return self;
             }
-            database.tracksChanges = YES;
-            
-            CouchQuery *q = [[database designDocumentWithName:kDefaultContentDesignDocName] queryViewNamed:@"syllabi-by-name"];
-            q.keys = [NSArray arrayWithObject:@"Default"];
-            [[q start] wait];
-            
-            // TODO: REINSTATE REPLICATION - will need to manage response to changes in remote content database
-            //pullReplication = [[database pullFromDatabaseAtURL:[NSURL URLWithString:kRemoteContentDatabaseURI]] retain];
-            //pullReplication.continuous = YES;
         }
     }
     return self;

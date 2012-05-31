@@ -635,8 +635,8 @@ const float kScaleOfLesserBlocks=0.6f;
             currentRowPos+=incrementor;
                  
         //truncate to fixed bounds
-        if(currentRowPos<-1)currentRowPos=-1;
-        if(currentRowPos>6)currentRowPos=6;
+        if(currentRowPos<0)currentRowPos=0;
+        if(currentRowPos>7)currentRowPos=7;
   
         activeRow=currentRowPos;
         [usersService logProblemAttemptEvent:kProblemAttemptLongDivisionTouchEndedChangedActiveRow withOptionalNote:[NSString stringWithFormat:@"{\"activerow\":%f}",activeRow]];

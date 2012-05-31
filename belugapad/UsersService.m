@@ -570,11 +570,10 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
         nc = [currentUser.nodesCompleted mutableCopy];
     }
     
-    [nc addObject:nodeId];
-    [nc release];
-    
+    [nc addObject:nodeId];    
     currentUser.nodesCompleted = nc;
     [[currentUser save] wait];
+    [nc release];
 }
 
 -(BOOL)hasCompletedNodeId:(NSString *)nodeId

@@ -27,6 +27,9 @@
     SelectUserViewController *selectUserViewController;
 }
 
+@property (nonatomic, readwrite) ContentService *contentService;
+@property (nonatomic, readwrite) UsersService *usersService;
+
 @end
 
 @implementation AppController
@@ -72,8 +75,8 @@
         //load local settings
         self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
         
-        usersService = [[UsersService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
-        contentService = [[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
+        self.usersService = [[UsersService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
+        self.contentService = [[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
         
         //are we in release mode
         NSNumber *relmode=[self.LocalSettings objectForKey:@"RELEASE_MODE"];

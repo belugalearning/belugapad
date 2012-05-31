@@ -117,7 +117,8 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
             {
                 self = nil;
                 return self;
-            }
+            }            
+            database.tracksChanges = YES;
         }
     }
     return self;

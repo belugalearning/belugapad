@@ -134,7 +134,7 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
 {
     NSLog(@"setting currentStaticPdef");
     [currentStaticPdefValue retain];
-    [currentStaticPdef release];
+    //[currentStaticPdef release];
     currentStaticPdef=currentStaticPdefValue;
 }
 

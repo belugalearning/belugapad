@@ -478,7 +478,7 @@ static float kTimeToBubbleShake=7.0f;
         int roundedStepsFromCentre=(int)(stepsFromCentre + 0.5f);
         if(stepsFromCentre<0) roundedStepsFromCentre=(int)(stepsFromCentre - 0.5f);
         
-        NSLog(@"bubble pos %d", roundedStepsFromCentre);
+        //NSLog(@"bubble pos %d", roundedStepsFromCentre);
                 
         int startOffset=initStartVal;
         lastBubbleLoc = roundedStepsFromCentre+startOffset;
@@ -543,7 +543,7 @@ static float kTimeToBubbleShake=7.0f;
         int roundedStepsFromCentre=(int)(stepsFromCentre + 0.5f);
         if(stepsFromCentre<0) roundedStepsFromCentre=(int)(stepsFromCentre - 0.5f);
         
-        NSLog(@"bubble pos %d", roundedStepsFromCentre);
+        //NSLog(@"bubble pos %d", roundedStepsFromCentre);
         
         
         int startOffset=initStartVal;

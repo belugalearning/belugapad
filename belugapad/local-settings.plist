@@ -4,13 +4,13 @@
 <dict>
 	<key>PROBLEM_PIPELINE-2</key>
 	<string>/pipeline-testing/pipeline_amalgamation.plist</string>
-	<key>PROBLEM_PIPELINE-d</key>
-	<string>DATABASE</string>
 	<key>PROBLEM_PIPELINE</key>
+	<string>DATABASE</string>
+	<key>PROBLEM_PIPELINE-e</key>
 	<string>/pipeline-testing/da-pipeline-test.plist</string>
 	<key>PROBLEM_PIPELINE-g</key>
 	<string>/pipeline-testing/gj-pipeline-test.plist</string>
 	<key>RELEASE_MODE</key>
-	<false/>
+	<true/>
 </dict>
 </plist>

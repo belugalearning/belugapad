@@ -56,6 +56,7 @@
     BOOL goodBadHighlight;
     BOOL renderBlockLabels;
     BOOL movedTopSection;
+    BOOL hideRenderLayer;
     
     float dividend;
     float divisor;

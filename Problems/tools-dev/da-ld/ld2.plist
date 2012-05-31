@@ -18,5 +18,7 @@
 	<false/>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
+	<key>HIDE_RENDERLAYER</key>
+	<true/>
 </dict>
 </plist>

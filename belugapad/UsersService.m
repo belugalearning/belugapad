@@ -75,7 +75,9 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
         currentUserSession = nil;
     }
     
-    user = ur;
+    //user = ur;
+    [ur retain];
+    currentUser=ur;
     
     if (ur)
     {    

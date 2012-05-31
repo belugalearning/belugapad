@@ -508,6 +508,8 @@ static NSString *inclNodes[20]={
                 if(isLit || [n.document.documentID isEqualToString:@"5608a59d6797796ce9e11484fd180214"]
                    || [n.document.documentID isEqualToString:@"5608a59d6797796ce9e11484fd180be3"])
                 {
+                    [n.journeySprite setColor:ccc3(0, 255, 0)];
+                    
                     n.lightSprite=[self createLight];
                     [n.lightSprite setPosition:[mapLayer convertToWorldSpace:n.journeySprite.position]];
                     

@@ -43,6 +43,8 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
     
     //kcm concept node pipeline progression
     int pipelineIndex;
+    
+    NSString *NodeIdCopy;
 
 }
 
@@ -196,8 +198,12 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
     [self.currentPipeline retain];
     pipelineIndex=-1;
     
+    
+    
     self.currentNode=node;
     [self.currentNode retain];
+    
+    NodeIdCopy=[currentNode.document.documentID copy];
     
     NSLog(@"starting pipeline named %@ with %d problems", self.currentPipeline.name, self.currentPipeline.problems.count);
 }
@@ -253,11 +259,28 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
 {
     //effective placeholder for assessed complete -- e.g. lit on node
     
+    NSLog(@"node id: %@", NodeIdCopy);
+    NSLog(@"currentNode id %@", currentNode.document.documentID);
+    
     UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
-    if (currentNode)
+
+    NSLog(@"currentNode id %@", currentNode.document.documentID);
+    
+    [us addCompletedNodeId:NodeIdCopy];
+    
+    NSLog(@"currentNode id %@", currentNode.document.documentID);
+    
+    if ([us hasCompletedNodeId:NodeIdCopy])
     {
-        [us addCompletedNodeId:currentNode.document.documentID];
+        NSLog(@"user completed node");
     }
+    
+    
+//      if (currentNode)
+//    {
+//        [us addCompletedNodeId:currentNode.document.documentID];
+//    }
+    
     //NSLog(@"currentNode: %@", currentNode.document.documentID);
 }
 

@@ -306,6 +306,9 @@ static float kTimeToBubbleShake=7.0f;
     //set bubble pos on ramber to start
     rambler.BubblePos=lastBubbleLoc;
     
+    //reset flags
+    bubbleAtBounds=0;
+    
     //animate bubble to start equiv pos
     float distFromCentre= bubbleSprite.position.x - cx;
     

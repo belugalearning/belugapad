@@ -33,6 +33,7 @@
 @end
 
 @implementation DotGrid
+#pragma mark - scene setup
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
 {
     toolHost=host;
@@ -100,50 +101,9 @@
     }   
 }
 
--(void)draw
-{
-    if(gameState==kStartAnchor)
-    {
-        CGPoint points[4];
-        points[0]=((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Position;
-        points[2]=lastTouch;
-        points[1]=CGPointMake(points[2].x, points[0].y);
-        points[3]=CGPointMake(points[0].x, points[2].y);
-        
-        CGPoint *first=&points[0];
-        
-        ccDrawPoly(first, 4, YES);
-        
-        points[2]=((DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor).Position;
-        points[1]=CGPointMake(points[2].x, points[0].y);
-        points[3]=CGPointMake(points[0].x, points[2].y);
-        
-        ccDrawFilledPoly(first, 4, ccc4FFromccc4B(ccc4(255,255,255,5)));
-        
-        
-    }
-    
-    if(gameState==kResizeShape)
-    {
-        CGPoint points[4];
-        points[0]=((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Position;
-    
-        points[2]=lastTouch;
-        points[1]=CGPointMake(points[2].x, points[0].y);
-        points[3]=CGPointMake(points[0].x, points[2].y);
-        
-        CGPoint *first=&points[0];
-        
-        ccDrawPoly(first, 4, YES);
-        
-        points[2]=((DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor).Position;
-        points[1]=CGPointMake(points[2].x, points[0].y);
-        points[3]=CGPointMake(points[0].x, points[2].y);
-        
-        ccDrawFilledPoly(first, 4, ccc4FFromccc3B(ccc3(230,0,0)));
-    }
-}
 
+
+#pragma mark - gameworld population
 -(void)readPlist:(NSDictionary*)pdef
 {
     renderLayer = [[CCLayer alloc] init];
@@ -260,6 +220,51 @@
         [self checkAnchorsAndUseResizeHandle:showResize andShowMove:showMove andPrecount:preCountedTiles andDisabled:disabled];
     }
 
+}
+
+#pragma mark - drawing methods
+-(void)draw
+{
+    if(gameState==kStartAnchor)
+    {
+        CGPoint points[4];
+        points[0]=((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Position;
+        points[2]=lastTouch;
+        points[1]=CGPointMake(points[2].x, points[0].y);
+        points[3]=CGPointMake(points[0].x, points[2].y);
+        
+        CGPoint *first=&points[0];
+        
+        ccDrawPoly(first, 4, YES);
+        
+        points[2]=((DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor).Position;
+        points[1]=CGPointMake(points[2].x, points[0].y);
+        points[3]=CGPointMake(points[0].x, points[2].y);
+        
+        ccDrawFilledPoly(first, 4, ccc4FFromccc4B(ccc4(255,255,255,5)));
+        
+        
+    }
+    
+    if(gameState==kResizeShape)
+    {
+        CGPoint points[4];
+        points[0]=((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Position;
+        
+        points[2]=lastTouch;
+        points[1]=CGPointMake(points[2].x, points[0].y);
+        points[3]=CGPointMake(points[0].x, points[2].y);
+        
+        CGPoint *first=&points[0];
+        
+        ccDrawPoly(first, 4, YES);
+        
+        points[2]=((DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor).Position;
+        points[1]=CGPointMake(points[2].x, points[0].y);
+        points[3]=CGPointMake(points[0].x, points[2].y);
+        
+        ccDrawFilledPoly(first, 4, ccc4FFromccc3B(ccc3(230,0,0)));
+    }
 }
 -(void)checkAnchors
 {
@@ -630,6 +635,7 @@
     [usersService logProblemAttemptEvent:kProblemAttemptDotGridTouchEndedResizeShape withOptionalNote:[NSString stringWithFormat:@"{\"numberoftiles:\":%d}",[thisShape.tiles count]]];
 }
 
+#pragma mark - touch events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if(isTouching)return;
@@ -775,6 +781,7 @@
     [gw.Blackboard.SelectedObjects removeAllObjects];
 }
 
+#pragma mark - evaluation
 -(BOOL)evalExpression
 {
     //returns YES if the tool expression evaluates succesfully
@@ -919,6 +926,7 @@
     [toolHost resetProblem];
 }
 
+#pragma mark - meta question
 -(float)metaQuestionTitleYLocation
 {
     return kLabelTitleYOffsetHalfProp*cy;
@@ -929,6 +937,7 @@
     return kMetaQuestionYOffsetPlaceValue*cy;
 }
 
+#pragma mark - dealloc
 -(void) dealloc
 {
     //write log on problem switch

@@ -118,6 +118,17 @@
     
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     
+    pieBox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/dropzone.png")];
+    conBox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/dropzone.png")];
+    
+    [pieBox setPosition:ccp(cx,475)];
+    [conBox setPosition:ccp(cx,240)];
+    
+    
+    [renderLayer addChild:pieBox];
+    [renderLayer addChild:conBox];
+    
+    
     
 }
 

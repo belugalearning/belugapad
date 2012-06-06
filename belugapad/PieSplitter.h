@@ -37,6 +37,11 @@
     CCLayer *renderLayer;
     
     
+    // then our specifics
+    CCSprite *pieBox;
+    CCSprite *conBox;
+    
+    
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

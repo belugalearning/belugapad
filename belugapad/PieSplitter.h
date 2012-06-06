@@ -10,11 +10,21 @@
 #import "ToolConsts.h"
 #import "ToolScene.h"
 
+typedef enum {
+    kGameCannotSplit=0,
+    kGameReadyToSplit=1,
+    kGameSlicesActive=2
+    
+} GameState
+
 @interface PieSplitter : ToolScene
 {
     // required toolhost stuff
     ToolHost *toolHost;
+    
+    //gameworld
     DWGameWorld *gw;
+    GameState gameState;
     
     // standard Problem Definition stuff
     ProblemEvalMode evalMode;

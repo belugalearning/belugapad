@@ -60,6 +60,7 @@
 		55C5F73E1538A8F2009D8906 /* BDotGridShapeObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7351538A8F2009D8906 /* BDotGridShapeObjectRender.m */; };
 		55C5F73F1538A8F2009D8906 /* BDotGridShapeTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7371538A8F2009D8906 /* BDotGridShapeTouch.m */; };
 		55C5F7401538A8F2009D8906 /* BDotGridTileObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7391538A8F2009D8906 /* BDotGridTileObjectRender.m */; };
+		55FDAEDF157F7CBB00943176 /* ToolTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FDAEDE157F7CBB00943176 /* ToolTemplate.m */; };
 		7F2317C5156FA13400E2C941 /* NordicAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2317C4156FA13400E2C941 /* NordicAnimator.m */; };
 		7F2586AF15697EBD00C439F6 /* ExprSimplifyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2586AE15697EBD00C439F6 /* ExprSimplifyTests.m */; };
 		7F268ADE14F28DE500F1F65F /* ToolHost.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F268ADD14F28DE500F1F65F /* ToolHost.m */; };
@@ -449,6 +450,8 @@
 		55C5F7371538A8F2009D8906 /* BDotGridShapeTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDotGridShapeTouch.m; sourceTree = "<group>"; };
 		55C5F7381538A8F2009D8906 /* BDotGridTileObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDotGridTileObjectRender.h; sourceTree = "<group>"; };
 		55C5F7391538A8F2009D8906 /* BDotGridTileObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDotGridTileObjectRender.m; sourceTree = "<group>"; };
+		55FDAEDD157F7CBB00943176 /* ToolTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolTemplate.h; sourceTree = "<group>"; };
+		55FDAEDE157F7CBB00943176 /* ToolTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolTemplate.m; sourceTree = "<group>"; };
 		7F2317C3156FA13400E2C941 /* NordicAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NordicAnimator.h; sourceTree = "<group>"; };
 		7F2317C4156FA13400E2C941 /* NordicAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NordicAnimator.m; sourceTree = "<group>"; };
 		7F2586AE15697EBD00C439F6 /* ExprSimplifyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprSimplifyTests.m; sourceTree = "<group>"; };
@@ -1176,6 +1179,8 @@
 		7F2317CB1572B23300E2C941 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				55FDAEDD157F7CBB00943176 /* ToolTemplate.h */,
+				55FDAEDE157F7CBB00943176 /* ToolTemplate.m */,
 				55AFD6A3156517FC00FF1886 /* TimesTables.h */,
 				55AFD6A4156517FC00FF1886 /* TimesTables.m */,
 				550708741517623E00111BBB /* ColumnAddition.h */,
@@ -2600,6 +2605,7 @@
 				7F2317C5156FA13400E2C941 /* NordicAnimator.m in Sources */,
 				7FC642941572F64A0043D575 /* BLFiles.m in Sources */,
 				7F9D414F15751E1600AFA1A0 /* NGNineGridSprite.m in Sources */,
+				55FDAEDF157F7CBB00943176 /* ToolTemplate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,6 @@
+[submodule "belugapad/libs/fmdb"]
+	path = belugapad/libs/fmdb
+	url = git://github.com/ccgus/fmdb.git
+[submodule "belugapad/libs/JSONKit"]
+	path = belugapad/libs/JSONKit
+	url = https://github.com/johnezang/JSONKit.git

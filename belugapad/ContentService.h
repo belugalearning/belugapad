@@ -7,15 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-@class BAExpressionTree, Problem, Pipeline;
-@class CouchDatabase;
+@class BAExpressionTree, Pipeline, Problem;
 @class ConceptNode;
 
 @interface ContentService : NSObject
 
 @property (nonatomic, readonly, retain) Problem *currentProblem;
 @property (nonatomic, readonly, retain) NSDictionary *currentPDef;
-@property (nonatomic, readonly, retain) BAExpressionTree *currentPExpr;
 @property (nonatomic, retain) NSMutableDictionary *currentStaticPdef;
 @property (nonatomic, readonly, retain) NSString *pathToTestDef;
 @property (nonatomic, readonly, retain) Pipeline *currentPipeline;
@@ -28,13 +26,13 @@
 -(BOOL)isUsingTestPipeline;
 
 
--(void)startPipelineWithId:(NSString *)pipelineid forNode:(ConceptNode*)node;
+-(void)startPipelineWithId:(NSString*)pipelineid forNode:(ConceptNode*)node;
 -(void)gotoNextProblemInPipeline;
 
--(CouchDatabase*)Database;
 -(NSArray*)allConceptNodes;
--(NSArray*)relationMembersForName:(NSString *)name;
--(void)quitPipelineTracking;
+-(NSArray*)relationMembersForName:(NSString*)name;
+-(Pipeline*)pipelineWithId:(NSString*)plId;
 
+-(void)quitPipelineTracking;
 
 @end

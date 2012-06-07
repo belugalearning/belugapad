@@ -40,12 +40,12 @@
         self.database = userSession.database;
         self.type = @"problem attempt";        
         self.userSession = userSession;
-        self.problem = problem;
-        self.problemRev = [problem.document propertyForKey:@"_rev"];
+        self.problem = problem._id;
+        self.problemRev = problem._rev;
         if (parentProblem)
         {            
-            self.parentProblem = parentProblem;
-            self.parentProblemRev = [parentProblem.document propertyForKey:@"_rev"];
+            self.parentProblem = parentProblem._id;
+            self.parentProblemRev = parentProblem._rev;
         }
         self.events = [NSMutableArray array];        
         if (pdef)

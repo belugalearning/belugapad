@@ -6,11 +6,11 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import <CouchCocoa/CouchCocoa.h>
+#import "CouchDBDerivedDocument.h"
 
-@interface Pipeline : CouchModel
+@interface Pipeline : CouchDBDerivedDocument
 
-@property (readonly, retain) NSArray *problems;
-@property (readonly, retain) NSString *name;
+@property (readonly) NSString *name;
+@property (readonly) NSArray *problems;
 
 @end

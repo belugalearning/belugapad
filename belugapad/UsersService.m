@@ -245,10 +245,9 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     
     AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
     ContentService *cs = ad.contentService;
-    Problem *currentProblem = cs.currentProblem;
         
     currentProblemAttempt = [[ProblemAttempt alloc] initAndStartAttemptForUserSession:currentUserSession
-                                                                           andProblem:currentProblem
+                                                                           andProblem:cs.currentProblem
                                                                      andParentProblem:nil
                                                                      andGeneratedPDEF:cs.currentStaticPdef];
 

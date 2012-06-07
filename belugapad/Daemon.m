@@ -96,6 +96,8 @@ static float kSubParticleOffset=10.0f;
 
 -(void)createXPshards:(int)numShards fromLocation:(CGPoint)baseLocation
 {
+    return;
+    
     if(shardsActive.count>30) return;
     
     for (int i=0;i<numShards;i++)

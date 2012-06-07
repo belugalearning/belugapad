@@ -192,16 +192,6 @@ static float kTimeToBubbleShake=7.0f;
     selector.WatchRambler=rambler;
     selector.pos=ccp(cx,cy + 75.0f);
     
-    if(toolHost.PpExpr)
-    {
-        //point gameWorld at expression
-        gw.Blackboard.ProblemExpression=toolHost.PpExpr;
-    
-        //get list of vars for selector
-        BATQuery *q=[[BATQuery alloc] initWithExpr:toolHost.PpExpr.root andTree:toolHost.PpExpr];
-        selector.PopulateVariableNames=[q getDistinctVarNames];
-    }
-    
     //stiching -- should we render stitches?
     if ([problemDef objectForKey:@"RENDER_STITCHES"]) {
         rambler.RenderStitches=[[problemDef objectForKey:@"RENDER_STITCHES"] boolValue];
@@ -273,29 +263,6 @@ static float kTimeToBubbleShake=7.0f;
 {
     return (evalTarget==lastBubbleLoc);
     
-//    //not possible to eval without expression
-//    if(!toolHost.PpExpr) return NO;
-//    
-//    //copy, sub eval and compare the expression
-//    BAExpressionTree *evalTree=[toolHost.PpExpr copy];
-//    
-//    //set subs & execute
-//    evalTree.VariableSubstitutions=gw.Blackboard.ProblemVariableSubstitutions;
-//    [evalTree substitueVariablesForIntegersOnNode:evalTree.root];
-//
-//    NSLog(@"problem expression: %@", [toolHost.PpExpr expressionString]);
-//    NSLog(@"substituted expression: %@", [evalTree expressionString]);
-//    
-//    //evaluate
-//    [evalTree evaluateTree];
-//    
-//    NSLog(@"evaluated expression: %@", [evalTree expressionString]);
-//    
-//    //query comparison for equality (currently has to assume as a top level eq using query layer
-//    BATQuery *q=[[BATQuery alloc] initWithExpr:evalTree.root andTree:evalTree];
-//    BOOL result=[q assumeAndEvalEqualityAtRoot];
-//    
-//    return result;
 }
 
 -(void)resetBubble

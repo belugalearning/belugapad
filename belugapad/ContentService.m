@@ -14,43 +14,27 @@
 #import "BATio.h"
 #import "Problem.h"
 #import "ConceptNode.h"
-#import "Relation.h"
 #import "Pipeline.h"
-#import <CouchCocoa/CouchCocoa.h>
-#import <CouchCocoa/CouchDesignDocument_Embedded.h>
-#import <CouchCocoa/CouchModelFactory.h>
-
-//NSString * const kRemoteContentDatabaseURI = @"http://u.zubi.me:5984/temp-blm-content";
-NSString * const kRemoteContentDatabaseURI = @"http://u.zubi.me:5984/please-do-not-replicate-me";
-NSString * const kLocalContentDatabaseName = @"kcm";
-NSString * const kDefaultContentDesignDocName = @"kcm-views";
+#import "FMDatabase.h"
+#import "JSONKit.h"
 
 @interface ContentService()
 {
 @private
-    BOOL useTestPipeline;    
+    BOOL useTestPipeline;
     
     NSArray *testProblemList;
     NSUInteger currentPIndex;
     
-    CouchDatabase *database;
+    FMDatabase *contentDatabase;
 
-    // TODO: Need way to figure out when replication is complete. 
-    // TODO: not sure about this - using TOUCHDB, with logging turned on, building to simulator, took 3 runs to get db updated to latest sequence number.
-    //      Does this mean continuous replication not reliable? Or is it the simulator? Or....?
-    // Try using comparison of database.lastSequenceNumber against http://u.zubi.me:5984/temp-blm-content doc's update_seq value
-    CouchReplication *pullReplication;
-    
     //kcm concept node pipeline progression
     int pipelineIndex;
-    
-    NSString *NodeIdCopy;
 
 }
 
 @property (nonatomic, readwrite, retain) Problem *currentProblem;
 @property (nonatomic, readwrite, retain) NSDictionary *currentPDef;
-@property (nonatomic, readwrite, retain) BAExpressionTree *currentPExpr;
 @property (nonatomic, readwrite, retain) NSString *pathToTestDef;
 @property (nonatomic, readwrite, retain) Pipeline *currentPipeline;
 
@@ -62,7 +46,6 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
 @synthesize currentPDef;
 @synthesize currentStaticPdef;
 @synthesize pathToTestDef;
-@synthesize currentPExpr;
 @synthesize fullRedraw;
 @synthesize currentPipeline;
 
@@ -104,42 +87,29 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
         }
         else
         {
-            [[CouchModelFactory sharedInstance] registerClass:[Problem class] forDocumentType:@"problem"];
-            [[CouchModelFactory sharedInstance] registerClass:[ConceptNode class] forDocumentType:@"concept node"];
-            [[CouchModelFactory sharedInstance] registerClass:[Relation class] forDocumentType:@"relation"];
-            [[CouchModelFactory sharedInstance] registerClass:[Pipeline class] forDocumentType:@"pipeline"];
-            
-            CouchEmbeddedServer *server = [CouchEmbeddedServer sharedInstance];
-            
-            database = [server databaseNamed:kLocalContentDatabaseName];
-            RESTOperation* op = [database create];
-            if (![op wait] && op.error.code != 412)
+            contentDatabase = [FMDatabase databaseWithPath:BUNDLE_FULL_PATH(@"/canned-dbs/canned-content/content.db")];
+            [contentDatabase retain];
+            if (![contentDatabase open])
             {
-                self = nil;
-                return self;
-            }            
-            database.tracksChanges = YES;
+                // TODO: Discuss with G
+                NSLog(@"Failed to open content database");
+            }
         }
     }
     return self;
 }
 
--(void)setCurrentStaticPdef:(NSMutableDictionary *)currentStaticPdefValue
+-(void)setCurrentStaticPdef:(NSMutableDictionary*)pdef
 {
     NSLog(@"setting currentStaticPdef");
-    [currentStaticPdefValue retain];
-    //[currentStaticPdef release];
-    currentStaticPdef=currentStaticPdefValue;
+    if (pdef) [pdef retain];
+    if (currentStaticPdef) [currentStaticPdef release];
+    currentStaticPdef = pdef;
 }
 
 -(BOOL)isUsingTestPipeline
 {
     return useTestPipeline;
-}
-
--(CouchDatabase*)Database
-{
-    return database;
 }
 
 -(id)init
@@ -149,69 +119,75 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
 
 -(NSArray*)allConceptNodes
 {
-    CouchQuery *nodeq=[[database designDocumentWithName:kDefaultContentDesignDocName] queryViewNamed:@"concept-nodes"];
-    [[nodeq start] wait];
-    
-    NSArray *ids=nodeq.rows.allObjects;
-    
-    NSMutableArray *nodes=[[NSMutableArray alloc] init];
-    for (int i=0; i<[ids count]; i++) {
-        CouchQueryRow *qr=[ids objectAtIndex:i];
-        NSString *thisid=qr.key;
-        ConceptNode *n=[[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:thisid]];
-        
+    NSMutableArray *nodes=[[[NSMutableArray alloc] init] autorelease];
+    FMResultSet *rs = [contentDatabase executeQuery:@"select * from ConceptNodes"];
+    while([rs next])
+    {
+        ConceptNode *n = [[[ConceptNode alloc] initWithFMResultSetRow:rs] autorelease];
         [nodes addObject:n];
     }
+    [rs close];
     return nodes;
 }
-
+    
 -(NSArray*)relationMembersForName:(NSString *)name
 {
-    CouchQuery *rq=[[database designDocumentWithName:kDefaultContentDesignDocName] queryViewNamed:@"relations-by-name"];
-    rq.prefetch=YES;
-    [[rq start] wait];
-    
-    for (CouchQueryRow *qr in rq.rows) {
-        
-        if([qr.key isEqualToString:@"Prerequisite"])
-        {
-            Relation *r=[[CouchModelFactory sharedInstance] modelForDocument:qr.document];
-            return r.members;
-        }
+    FMResultSet *rs = [contentDatabase executeQuery:@"select pairs from BinaryRelations where name=?", name];
+    NSArray *pairs = nil;
+    if ([rs next])
+    {
+        pairs = [[rs stringForColumn:@"pairs"] objectFromJSONString];
     }
-    return nil;
+    [rs close];
+    return pairs;
 }
 
--(void)startPipelineWithId:(NSString *)pipelineid forNode:(ConceptNode*)node
+-(Pipeline*)pipelineWithId:(NSString*)plId
 {
-    if(self.currentPipeline) [self.currentPipeline release];
+    Pipeline *pl = nil;
+    FMResultSet *rs = [contentDatabase executeQuery:@"select * from Pipelines where id=?", plId];
+    if ([rs next])
+    {
+        pl = [[[Pipeline alloc] initWithFMResultSetRow:rs] autorelease];
+    }
+    [rs close];
+    return pl;
+}
+
+-(void)startPipelineWithId:(NSString*)pipelineid forNode:(ConceptNode*)node
+{
+    if (![node.pipelines containsObject:pipelineid])
+    {
+        // TODO: Discuss with G
+        NSLog(@"ContentService#startPipelineWithId error. Node id=\"%@\" doesn't contain pipeline id=\"%@\"", node._id, pipelineid);
+    }
     
-    self.currentPipeline=[[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:pipelineid]];
-    [self.currentPipeline retain];
+    FMResultSet *rs = [contentDatabase executeQuery:@"select * from Pipelines where id=?", pipelineid];
+    if (![rs next])
+    {
+        // TODO: Discuss with G
+        NSLog(@"ContentService#startPipelineWithId error. Pipeline id=\"%@\" not found on database", pipelineid);
+    }    
+    self.currentPipeline = [[[Pipeline alloc] initWithFMResultSetRow:rs] autorelease];
+    [rs close];
+    
     pipelineIndex=-1;
-    
-    
-    
+        
     self.currentNode=node;
-    [self.currentNode retain];
     
-    NodeIdCopy=[currentNode.document.documentID copy];
-    
-    NSLog(@"starting pipeline named %@ with %d problems", self.currentPipeline.name, self.currentPipeline.problems.count);
+    NSLog(@"starting pipeline id=\"%@\" and name=\"%@\" with %d problems", self.currentPipeline._id, self.currentPipeline.name, self.currentPipeline.problems.count);
 }
 
 -(void)quitPipelineTracking
 {
     self.currentPDef=nil;
-    self.currentPExpr=nil;
-    [self.currentStaticPdef release];
+    self.currentStaticPdef = nil;
 }
 
 -(void)gotoNextProblemInPipeline
 {
     pipelineIndex++;
     self.currentPDef=nil;
-    self.currentPExpr=nil;
     
     if (useTestPipeline)
     {
@@ -225,63 +201,54 @@ NSString * const kDefaultContentDesignDocName = @"kcm-views";
         self.currentPDef = [NSDictionary dictionaryWithContentsOfFile:problemPath];
         
         self.pathToTestDef=[testProblemList objectAtIndex:currentPIndex];
-        NSLog(@"loaded test def: %@", self.pathToTestDef);
-        
-        NSString *exprFile = [self.currentPDef objectForKey:EXPRESSION_FILE];
-        if (exprFile)
-        {
-            self.currentPExpr = [BATio loadTreeFromMathMLFile:BUNDLE_FULL_PATH(exprFile)];
-        }
-        
+        NSLog(@"loaded test def: %@", self.pathToTestDef);        
     }    
     else if(pipelineIndex>=self.currentPipeline.problems.count)
     {
         //don't progress, current pdef & ppexpr are set to nil above
     }
-    else {
-        NSString *pid=[self.currentPipeline.problems objectAtIndex:pipelineIndex];
-        self.currentProblem = [[CouchModelFactory sharedInstance] modelForDocument:[database documentWithID:pid]];
-        self.currentPDef = self.currentProblem.pdef;
-        NSData *expressionData = self.currentProblem.expressionData;
-        if (expressionData) self.currentPExpr = [BATio loadTreeFromMathMLData:expressionData];
+    else
+    {
+        NSString *pId = [self.currentPipeline.problems objectAtIndex:pipelineIndex];
+        
+        FMResultSet *rs = [contentDatabase executeQuery:@"select id, rev from Problems where id=?", pId];
+        if (![rs next])
+        {
+            // TODO: Discuss with G
+            NSLog(@"ContentService#gotoNextProblemInPipeline error. Problem id=\"%@\" not found on database", pId);
+        }
+        self.currentProblem = [[[Problem alloc] initWithFMResultSetRow:rs] autorelease];
+        [rs close];
+        
+        NSString *relPath = [NSString stringWithFormat:@"/canned-dbs/canned-content/pdefs/%@.plist", pId];
+        self.currentPDef = [NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(relPath)];
+        
+        if (!self.currentPDef)
+        {
+            // TODO: Discuss with G
+            NSLog(@"self.currentPDef == nil. pdefpath:\"%@\"", relPath);
+        }
     }
 }
 
 -(void)setPipelineNodeComplete
 {
+    NSLog(@"ContentService#setPipelineNodeComplete currentNode id=\"%@\"", currentNode._id);
     //effective placeholder for assessed complete -- e.g. lit on node
-    
-    NSLog(@"node id: %@", NodeIdCopy);
-    NSLog(@"currentNode id %@", currentNode.document.documentID);
-    
-    UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
-
-    NSLog(@"currentNode id %@", currentNode.document.documentID);
-    
-    [us addCompletedNodeId:NodeIdCopy];
-    
-    NSLog(@"currentNode id %@", currentNode.document.documentID);
-    
-    if ([us hasCompletedNodeId:NodeIdCopy])
-    {
-        NSLog(@"user completed node");
-    }
-    
-    
-//      if (currentNode)
-//    {
-//        [us addCompletedNodeId:currentNode.document.documentID];
-//    }
-    
-    //NSLog(@"currentNode: %@", currentNode.document.documentID);
+    UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;    
+    [us addCompletedNodeId:self.currentNode._id];
 }
 
 - (void)dealloc
 {
-    [currentPDef release];
-    [currentPExpr release];
-    [testProblemList release];
-    [pullReplication release];
+    if (contentDatabase)
+    {
+        [contentDatabase close];
+        [contentDatabase release];
+    }
+    if (currentProblem) [currentProblem release];
+    if (currentPDef) [currentPDef release];
+    if (testProblemList) [testProblemList release];
     [super dealloc];
 }
 

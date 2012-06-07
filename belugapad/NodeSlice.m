@@ -35,7 +35,7 @@
         self.database=user.database;
         self.type=@"nodeslice";
         self.userId=user.document.documentID;
-        self.nodeId=node.document.documentID;
+        self.nodeId=node._id;
         
         [self populateNode];
     }

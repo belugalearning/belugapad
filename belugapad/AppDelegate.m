@@ -58,7 +58,6 @@
     CouchEmbeddedServer* server = [CouchEmbeddedServer sharedInstance];
     
     // install canned copy of any databases that don't yet exist (i.e. all of them on first app launch, hopefully none of them afterwards)
-    [server.couchbase installDefaultDatabase:BUNDLE_FULL_PATH(@"/canned-dbs/kcm.couch")];
     [server.couchbase installDefaultDatabase:BUNDLE_FULL_PATH(@"/canned-dbs/may2012-users.couch")];    
     [server.couchbase installDefaultDatabase:BUNDLE_FULL_PATH(@"/canned-dbs/may2012-logging.couch")];
     

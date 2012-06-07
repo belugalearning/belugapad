@@ -199,7 +199,7 @@ static NSString *inclNodes[20]={
     kcmNodes=[NSMutableArray arrayWithArray:[contentService allConceptNodes]];
     [kcmNodes retain];
     
-    prereqRelations=[contentService relationMembersForName:@"Prerequisites"];
+    prereqRelations=[[contentService relationMembersForName:@"Prerequisite"] retain];
     
     [self parseForBoundsAndCreateKcmIndex];
     
@@ -243,7 +243,7 @@ static NSString *inclNodes[20]={
     if(contentService.currentNode)
     {
         //put map at this position
-        CGPoint p=ccp(-[contentService.currentNode.x floatValue] * kNodeScale, -(nMaxY - [contentService.currentNode.y floatValue]) * kNodeScale);
+        CGPoint p=ccp(contentService.currentNode.x * kNodeScale, -(nMaxY - contentService.currentNode.y) * kNodeScale);
         p=ccpAdd(ccp(cx, cy), p);
         [mapLayer setPosition:p];
     }
@@ -342,8 +342,8 @@ static NSString *inclNodes[20]={
     if(kcmNodes.count>0)
     {
         ConceptNode *n1=[kcmNodes objectAtIndex:0];
-        nMinX=[n1.x floatValue];
-        nMinY=[n1.y floatValue];
+        nMinX=(float)n1.x;
+        nMinY=(float)n1.y;
         nMaxX=nMinX;
         nMaxY=nMaxY;
         
@@ -358,23 +358,23 @@ static NSString *inclNodes[20]={
             //todo: confirm inclusion against list or 25May
             BOOL found=NO;
             for (int i=0; i<kInclNodeCount; i++) {
-                if([n.document.documentID isEqualToString:inclNodes[i]])
+                if([n._id isEqualToString:inclNodes[i]])
                 {
                     found=YES;
-                    NSLog(@"found node %@", n.document.documentID);
+                    NSLog(@"found node %@", n._id);
                     //break;
                 }
             }
             
             if(found)
             {
-                if([n.x floatValue]<nMinX)nMinX=[n.x floatValue];
-                if([n.y floatValue]<nMinY)nMinY=[n.y floatValue];
-                if([n.x floatValue]>nMaxX)nMaxX=[n.x floatValue];
-                if([n.y floatValue]>nMaxY)nMaxY=[n.y floatValue];
+                if((float)n.x<nMinX)nMinX=(float)n.x;
+                if((float)n.y<nMinY)nMinY=(float)n.y;
+                if((float)n.x>nMaxX)nMaxX=(float)n.x;
+                if((float)n.y>nMaxY)nMaxY=(float)n.y;
                 
                 //add reference
-                [kcmIdIndex setValue:[NSNumber numberWithInt:i] forKey:n.document.documentID];
+                [kcmIdIndex setValue:[NSNumber numberWithInt:i] forKey:n._id];
                 
                 //force quit at max (e.g. 50) nodes
                 //if(i>=kNodeMax) break;
@@ -486,7 +486,7 @@ static NSString *inclNodes[20]={
         ConceptNode *n=[kcmNodes objectAtIndex:i];
      
         
-        CGPoint nlpos=ccp([n.x floatValue] * kNodeScale, (nMaxY-[n.y floatValue]) * kNodeScale);
+        CGPoint nlpos=ccp((float)n.x * kNodeScale, (nMaxY-(float)n.y) * kNodeScale);
         float diff=[BLMath DistanceBetween:loc and:nlpos];
         
         if(diff<(kPropXNodeDrawDist*lx))
@@ -503,12 +503,12 @@ static NSString *inclNodes[20]={
                 [visibleNodes addObject:n];
                 
                 //setup light if required
-                BOOL isLit=[usersService hasCompletedNodeId:n.document.documentID];
+                BOOL isLit=[usersService hasCompletedNodeId:n._id];
                 
-                if(isLit || [n.document.documentID isEqualToString:@"5608a59d6797796ce9e11484fd180be3"])
+                if(isLit || [n._id isEqualToString:@"5608a59d6797796ce9e11484fd180be3"])
                 {
                     
-                    if ([n.document.documentID isEqualToString:@"5608a59d6797796ce9e11484fd180be3"] && isLit) {
+                    if ([n._id isEqualToString:@"5608a59d6797796ce9e11484fd180be3"] && isLit) {
                         [n.journeySprite setColor:ccc3(0, 255, 0)];
                     }
                     else if (isLit) {
@@ -534,15 +534,15 @@ static NSString *inclNodes[20]={
                             NSString *id1=[prq objectAtIndex:0];
                             NSString *id2=[prq objectAtIndex:1];
                             
-                            if([id1 isEqualToString:n.document.documentID])
+                            if([id1 isEqualToString:n._id])
                             {
                                 //draw a light at that end point
                                 for (ConceptNode *endpoint in visibleNodes) {
-                                    if([id2 isEqualToString:endpoint.document.documentID])
+                                    if([id2 isEqualToString:endpoint._id])
                                     {
                                         CCSprite *l=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-light-dest.png")];
                                         [l setBlendFunc:(ccBlendFunc){GL_ZERO, GL_ONE_MINUS_SRC_ALPHA}];
-                                        CGPoint dlpos=ccp([endpoint.x floatValue] * kNodeScale, (nMaxY-[endpoint.y floatValue]) * kNodeScale);
+                                        CGPoint dlpos=ccp((float)endpoint.x * kNodeScale, (nMaxY-(float)endpoint.y) * kNodeScale);
                                         [l setPosition:[mapLayer convertToWorldSpace: dlpos]];
                                         [l setScale:1.0f];
                                         [l retain];
@@ -591,7 +591,7 @@ static NSString *inclNodes[20]={
 -(void)createASpriteForNode:(ConceptNode *)n
 {
     CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-std.png")];
-    [s setPosition:ccp([n.x floatValue] * kNodeScale, (nMaxY-[n.y floatValue]) * kNodeScale)];
+    [s setPosition:ccp((float)n.x * kNodeScale, (nMaxY-(float)n.y) * kNodeScale)];
     
     if(n.pipelines.count==0)
     {
@@ -601,7 +601,7 @@ static NSString *inclNodes[20]={
         NSLog(@"pipelines %d", n.pipelines.count);
     }
     
-    NSLog(@"id: %@ pipelines: %d", n.document.documentID, n.pipelines.count);
+    NSLog(@"id: %@ pipelines: %d", n._id, n.pipelines.count);
     
     [mapLayer addChild:s];
     [nodeSprites addObject:s];    
@@ -733,7 +733,7 @@ static NSString *inclNodes[20]={
         ConceptNode *n=[kcmNodes objectAtIndex:i];
         
         
-        CGPoint nlpos=ccp([n.x floatValue] * kNodeScale, (nMaxY-[n.y floatValue]) * kNodeScale);
+        CGPoint nlpos=ccp((float)n.x * kNodeScale, (nMaxY-(float)n.y) * kNodeScale);
         float diff=[BLMath DistanceBetween:location and:nlpos];
         
         if(diff<distance)
@@ -754,8 +754,7 @@ static NSString *inclNodes[20]={
     {
         currentNodeSliceHasProblems=NO;
         for (int i=0; i<n.pipelines.count; i++) {
-            
-            Pipeline *p=[[CouchModelFactory sharedInstance] modelForDocument:[[contentService Database] documentWithID:[n.pipelines objectAtIndex:i]]];
+            Pipeline *p = [contentService pipelineWithId:[n.pipelines objectAtIndex:i]];
             
             if(p.problems.count>0 && [p.name isEqualToString:@"25May"])
             {
@@ -859,16 +858,17 @@ static NSString *inclNodes[20]={
 
 -(void)startSeletedPin
 {
-    NSLog(@"starting pipeline 0 for node %@", currentNodeSliceNode.nodeDescription);
+    NSLog(@"starting pipeline 0 for node %@", currentNodeSliceNode._id);
     
     if (currentNodeSliceNode.pipelines.count>0) {
         //need to get the right pipeline -- named @"25May"
         for (NSString *pid in currentNodeSliceNode.pipelines) {
-            Pipeline  *p=[[CouchModelFactory sharedInstance] modelForDocument:[[contentService Database] documentWithID:pid]];
+            Pipeline *p=[contentService pipelineWithId:pid];
             if([p.name isEqualToString:@"25May"])
             {
                 [contentService startPipelineWithId:pid forNode:currentNodeSliceNode];
-                [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];                
+                [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
+                break;
             }
         }
     }
@@ -954,7 +954,7 @@ static NSString *inclNodes[20]={
     if(n)
     {
         [self createNodeSliceFrom:n];
-        NSLog(@"hit node %@", n.document.documentID);
+        NSLog(@"hit node %@", n._id);
         
         //keep this to move there if the user pans during transition
         mapPosAtNodeSliceTransitionComplete=mapLayer.position;

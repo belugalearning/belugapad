@@ -15,7 +15,7 @@ typedef enum {
     kGameReadyToSplit=1,
     kGameSlicesActive=2
     
-} GameState
+} GameState;
 
 @interface PieSplitter : ToolScene
 {
@@ -50,6 +50,10 @@ typedef enum {
     // then our specifics
     CCSprite *pieBox;
     CCSprite *conBox;
+    CCSprite *splitBtn;
+    
+    NSMutableArray *activePie;
+    NSMutableArray *activeCon;
     
     
 }

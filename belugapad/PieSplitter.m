@@ -120,9 +120,11 @@
     
     pieBox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/dropzone.png")];
     conBox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/dropzone.png")];
+    splitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/split.png")];
     
     [pieBox setPosition:ccp(cx,475)];
     [conBox setPosition:ccp(cx,240)];
+    [splitBtn setPosition:ccp(800, 700)];
     
     
     [renderLayer addChild:pieBox];

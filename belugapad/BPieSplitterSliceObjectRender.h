@@ -7,10 +7,11 @@
 //
 
 #import "DWBehaviour.h"
+@class DWPieSplitterSliceGameObject;
 
 @interface BPieSplitterSliceObjectRender : DWBehaviour
 {
-
+    DWPieSplitterSliceGameObject *slice;
 }
 
 -(BPieSplitterSliceObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

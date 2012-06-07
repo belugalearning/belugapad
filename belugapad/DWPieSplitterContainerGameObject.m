@@ -10,6 +10,8 @@
 
 @implementation DWPieSplitterContainerGameObject
 
+@synthesize Position;
 @synthesize mySprite;
+@synthesize mySlices;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "BPieSplitterContainerObjectRender.h"
+#import "DWPieSplitterContainerGameObject.h"
 #import "global.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
@@ -29,6 +30,7 @@
 -(BPieSplitterContainerObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
     self=(BPieSplitterContainerObjectRender*)[super initWithGameObject:aGameObject withData:data];
+    cont=(DWPieSplitterContainerGameObject*)gameObject;
     
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     contentService = ac.contentService;
@@ -44,22 +46,22 @@
 {
     if(messageType==kDWsetupStuff)
     {
-        //if(!tile.mySprite) 
-        //{
-        //    [self setSprite];     
-        //}
+        if(!cont.mySprite) 
+        {
+            [self setSprite];     
+        }
     }
     
     if(messageType==kDWupdateSprite)
     {
-        //if(!tile.mySprite) { 
-        //    [self setSprite];
-        //}
+        if(!cont.mySprite) { 
+            [self setSprite];
+        }
         
     }
     if(messageType==kDWdismantle)
     {
-        //[[tile.mySprite parent] removeChild:tile.mySprite cleanup:YES];
+        [[cont.mySprite parent] removeChild:cont.mySprite cleanup:YES];
     } 
     
 }
@@ -70,23 +72,22 @@
 {    
     
     NSString *spriteFileName=[[NSString alloc]init];
-    //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
     
     
-    spriteFileName=[NSString stringWithFormat:@"/images/timestables/tile.png"];
+    spriteFileName=[NSString stringWithFormat:@"/images/timestables/container.png"];
     
-    //tile.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-    //[tile.mySprite setPosition:tile.Position];
+    cont.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+    [cont.mySprite setPosition:cont.Position];
     
-    //    if(gameWorld.Blackboard.inProblemSetup)
-    //    {
-    //        [tile.mySprite setTag:1];
-    //        [tile.mySprite setOpacity:0];
-    //    }
+        if(gameWorld.Blackboard.inProblemSetup)
+        {
+            [cont.mySprite setTag:1];
+            [cont.mySprite setOpacity:0];
+        }
     
     
     
-    //    [[gameWorld Blackboard].ComponentRenderLayer addChild:tile.mySprite z:2];
+        [[gameWorld Blackboard].ComponentRenderLayer addChild:cont.mySprite z:2];
     
 }
 

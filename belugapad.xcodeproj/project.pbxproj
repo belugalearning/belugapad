@@ -60,6 +60,17 @@
 		55C5F73E1538A8F2009D8906 /* BDotGridShapeObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7351538A8F2009D8906 /* BDotGridShapeObjectRender.m */; };
 		55C5F73F1538A8F2009D8906 /* BDotGridShapeTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7371538A8F2009D8906 /* BDotGridShapeTouch.m */; };
 		55C5F7401538A8F2009D8906 /* BDotGridTileObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7391538A8F2009D8906 /* BDotGridTileObjectRender.m */; };
+		55E7CBDA157FC82400A399CF /* DWPieSplitterPieGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBD9157FC82400A399CF /* DWPieSplitterPieGameObject.m */; };
+		55E7CBDF157FC85200A399CF /* DWPieSplitterSliceGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBDE157FC85200A399CF /* DWPieSplitterSliceGameObject.m */; };
+		55E7CBE3157FC8B800A399CF /* DWPieSplitterContainerGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBE2157FC8B800A399CF /* DWPieSplitterContainerGameObject.m */; };
+		55E7CBE6157FCCC900A399CF /* BPieSplitterSliceObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBE5157FCCC900A399CF /* BPieSplitterSliceObjectRender.m */; };
+		55E7CBE9157FCD4800A399CF /* BPieSplitterPieObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBE8157FCD4800A399CF /* BPieSplitterPieObjectRender.m */; };
+		55E7CBEC157FCD6900A399CF /* BPieSplitterContainerObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBEB157FCD6700A399CF /* BPieSplitterContainerObjectRender.m */; };
+		55E7CBEF157FDE3200A399CF /* BPieSplitterSliceTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBEE157FDE3000A399CF /* BPieSplitterSliceTouch.m */; };
+		55E7CBF2157FDE4E00A399CF /* BPieSplitterContainerMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBF1157FDE4D00A399CF /* BPieSplitterContainerMountable.m */; };
+		55E7CBF5157FE4AD00A399CF /* BPieSplitterSliceMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBF4157FE4AA00A399CF /* BPieSplitterSliceMount.m */; };
+		55FDAEDF157F7CBB00943176 /* ToolTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FDAEDE157F7CBB00943176 /* ToolTemplate.m */; };
+		55FDAEE3157F802900943176 /* PieSplitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FDAEE2157F802900943176 /* PieSplitter.m */; };
 		7F2317C5156FA13400E2C941 /* NordicAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2317C4156FA13400E2C941 /* NordicAnimator.m */; };
 		7F2586AF15697EBD00C439F6 /* ExprSimplifyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2586AE15697EBD00C439F6 /* ExprSimplifyTests.m */; };
 		7F268ADE14F28DE500F1F65F /* ToolHost.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F268ADD14F28DE500F1F65F /* ToolHost.m */; };
@@ -449,6 +460,28 @@
 		55C5F7371538A8F2009D8906 /* BDotGridShapeTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDotGridShapeTouch.m; sourceTree = "<group>"; };
 		55C5F7381538A8F2009D8906 /* BDotGridTileObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDotGridTileObjectRender.h; sourceTree = "<group>"; };
 		55C5F7391538A8F2009D8906 /* BDotGridTileObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDotGridTileObjectRender.m; sourceTree = "<group>"; };
+		55E7CBD8157FC82400A399CF /* DWPieSplitterPieGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPieSplitterPieGameObject.h; sourceTree = "<group>"; };
+		55E7CBD9157FC82400A399CF /* DWPieSplitterPieGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWPieSplitterPieGameObject.m; sourceTree = "<group>"; };
+		55E7CBDD157FC85200A399CF /* DWPieSplitterSliceGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPieSplitterSliceGameObject.h; sourceTree = "<group>"; };
+		55E7CBDE157FC85200A399CF /* DWPieSplitterSliceGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWPieSplitterSliceGameObject.m; sourceTree = "<group>"; };
+		55E7CBE1157FC8B800A399CF /* DWPieSplitterContainerGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPieSplitterContainerGameObject.h; sourceTree = "<group>"; };
+		55E7CBE2157FC8B800A399CF /* DWPieSplitterContainerGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWPieSplitterContainerGameObject.m; sourceTree = "<group>"; };
+		55E7CBE4157FCCC900A399CF /* BPieSplitterSliceObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPieSplitterSliceObjectRender.h; sourceTree = "<group>"; };
+		55E7CBE5157FCCC900A399CF /* BPieSplitterSliceObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPieSplitterSliceObjectRender.m; sourceTree = "<group>"; };
+		55E7CBE7157FCD4700A399CF /* BPieSplitterPieObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPieSplitterPieObjectRender.h; sourceTree = "<group>"; };
+		55E7CBE8157FCD4800A399CF /* BPieSplitterPieObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPieSplitterPieObjectRender.m; sourceTree = "<group>"; };
+		55E7CBEA157FCD6600A399CF /* BPieSplitterContainerObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPieSplitterContainerObjectRender.h; sourceTree = "<group>"; };
+		55E7CBEB157FCD6700A399CF /* BPieSplitterContainerObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPieSplitterContainerObjectRender.m; sourceTree = "<group>"; };
+		55E7CBED157FDE2E00A399CF /* BPieSplitterSliceTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPieSplitterSliceTouch.h; sourceTree = "<group>"; };
+		55E7CBEE157FDE3000A399CF /* BPieSplitterSliceTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPieSplitterSliceTouch.m; sourceTree = "<group>"; };
+		55E7CBF0157FDE4B00A399CF /* BPieSplitterContainerMountable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPieSplitterContainerMountable.h; sourceTree = "<group>"; };
+		55E7CBF1157FDE4D00A399CF /* BPieSplitterContainerMountable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPieSplitterContainerMountable.m; sourceTree = "<group>"; };
+		55E7CBF3157FE4A700A399CF /* BPieSplitterSliceMount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPieSplitterSliceMount.h; sourceTree = "<group>"; };
+		55E7CBF4157FE4AA00A399CF /* BPieSplitterSliceMount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPieSplitterSliceMount.m; sourceTree = "<group>"; };
+		55FDAEDD157F7CBB00943176 /* ToolTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolTemplate.h; sourceTree = "<group>"; };
+		55FDAEDE157F7CBB00943176 /* ToolTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolTemplate.m; sourceTree = "<group>"; };
+		55FDAEE1157F802900943176 /* PieSplitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieSplitter.h; sourceTree = "<group>"; };
+		55FDAEE2157F802900943176 /* PieSplitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieSplitter.m; sourceTree = "<group>"; };
 		7F2317C3156FA13400E2C941 /* NordicAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NordicAnimator.h; sourceTree = "<group>"; };
 		7F2317C4156FA13400E2C941 /* NordicAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NordicAnimator.m; sourceTree = "<group>"; };
 		7F2586AE15697EBD00C439F6 /* ExprSimplifyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprSimplifyTests.m; sourceTree = "<group>"; };
@@ -934,8 +967,6 @@
 		7FCBC3E615100F3D00066426 /* MathMLConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathMLConsts.h; sourceTree = "<group>"; };
 		7FCBC3E715100F3D00066426 /* MathMLConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MathMLConsts.m; sourceTree = "<group>"; };
 		7FCBC3EA1510195F00066426 /* ExprIOTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprIOTests.m; sourceTree = "<group>"; };
-		7FD18784154E02AD008F0A31 /* BLongDivGameObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLongDivGameObjectRender.h; sourceTree = "<group>"; };
-		7FD18785154E02AD008F0A31 /* BLongDivGameObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLongDivGameObjectRender.m; sourceTree = "<group>"; };
 		7FD18787154E6B81008F0A31 /* NodeSlice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeSlice.h; sourceTree = "<group>"; };
 		7FD18788154E6B81008F0A31 /* NodeSlice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodeSlice.m; sourceTree = "<group>"; };
 		7FD1878A154E7395008F0A31 /* PipelineNodeSliceInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PipelineNodeSliceInstance.h; sourceTree = "<group>"; };
@@ -1155,6 +1186,38 @@
 			name = DotGrid;
 			sourceTree = "<group>";
 		};
+		55E7CBDC157FC82B00A399CF /* PieSplitter */ = {
+			isa = PBXGroup;
+			children = (
+				55E7CBD8157FC82400A399CF /* DWPieSplitterPieGameObject.h */,
+				55E7CBD9157FC82400A399CF /* DWPieSplitterPieGameObject.m */,
+				55E7CBDD157FC85200A399CF /* DWPieSplitterSliceGameObject.h */,
+				55E7CBDE157FC85200A399CF /* DWPieSplitterSliceGameObject.m */,
+				55E7CBE1157FC8B800A399CF /* DWPieSplitterContainerGameObject.h */,
+				55E7CBE2157FC8B800A399CF /* DWPieSplitterContainerGameObject.m */,
+			);
+			name = PieSplitter;
+			sourceTree = "<group>";
+		};
+		55E7CBE0157FC86C00A399CF /* PieSplitter */ = {
+			isa = PBXGroup;
+			children = (
+				55E7CBE4157FCCC900A399CF /* BPieSplitterSliceObjectRender.h */,
+				55E7CBE5157FCCC900A399CF /* BPieSplitterSliceObjectRender.m */,
+				55E7CBE7157FCD4700A399CF /* BPieSplitterPieObjectRender.h */,
+				55E7CBE8157FCD4800A399CF /* BPieSplitterPieObjectRender.m */,
+				55E7CBEA157FCD6600A399CF /* BPieSplitterContainerObjectRender.h */,
+				55E7CBEB157FCD6700A399CF /* BPieSplitterContainerObjectRender.m */,
+				55E7CBED157FDE2E00A399CF /* BPieSplitterSliceTouch.h */,
+				55E7CBEE157FDE3000A399CF /* BPieSplitterSliceTouch.m */,
+				55E7CBF0157FDE4B00A399CF /* BPieSplitterContainerMountable.h */,
+				55E7CBF1157FDE4D00A399CF /* BPieSplitterContainerMountable.m */,
+				55E7CBF3157FE4A700A399CF /* BPieSplitterSliceMount.h */,
+				55E7CBF4157FE4AA00A399CF /* BPieSplitterSliceMount.m */,
+			);
+			name = PieSplitter;
+			sourceTree = "<group>";
+		};
 		7F2317C1156FA0FB00E2C941 /* Animators */ = {
 			isa = PBXGroup;
 			children = (
@@ -1176,6 +1239,8 @@
 		7F2317CB1572B23300E2C941 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				55FDAEDD157F7CBB00943176 /* ToolTemplate.h */,
+				55FDAEDE157F7CBB00943176 /* ToolTemplate.m */,
 				55AFD6A3156517FC00FF1886 /* TimesTables.h */,
 				55AFD6A4156517FC00FF1886 /* TimesTables.m */,
 				550708741517623E00111BBB /* ColumnAddition.h */,
@@ -1194,6 +1259,8 @@
 				55C5F719153874C3009D8906 /* DotGrid.m */,
 				7F2CAED9154AB58B00BFBB6F /* LongDivision.h */,
 				7F2CAEDA154AB58B00BFBB6F /* LongDivision.m */,
+				55FDAEE1157F802900943176 /* PieSplitter.h */,
+				55FDAEE2157F802900943176 /* PieSplitter.m */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -1976,9 +2043,9 @@
 		7FABE6A314B4C5B500ED2D0C /* Behaviours */ = {
 			isa = PBXGroup;
 			children = (
+				55E7CBE0157FC86C00A399CF /* PieSplitter */,
 				7FC642901572B7600043D575 /* FloatingBlocks */,
 				55AFD6AB15651BD500FF1886 /* TimesTables */,
-				7FD18783154E02A2008F0A31 /* LongDivision */,
 				55C5F72B15388A84009D8906 /* DotGrid */,
 				551815651525F67F0097E259 /* Partition */,
 				7FC27F7B150FB18000E16A44 /* NLine */,
@@ -2038,6 +2105,7 @@
 		7FC27F6B150FA9FC00E16A44 /* GameObjectExtensions */ = {
 			isa = PBXGroup;
 			children = (
+				55E7CBDC157FC82B00A399CF /* PieSplitter */,
 				55AFD6A715651A6800FF1886 /* TimesTables */,
 				55C5F71E1538867F009D8906 /* DotGrid */,
 				55C5F71D15388665009D8906 /* NLine */,
@@ -2103,15 +2171,6 @@
 				7F71B3FD150FBC8B0097A956 /* BATools */,
 			);
 			name = ExpressionEngine;
-			sourceTree = "<group>";
-		};
-		7FD18783154E02A2008F0A31 /* LongDivision */ = {
-			isa = PBXGroup;
-			children = (
-				7FD18784154E02AD008F0A31 /* BLongDivGameObjectRender.h */,
-				7FD18785154E02AD008F0A31 /* BLongDivGameObjectRender.m */,
-			);
-			name = LongDivision;
 			sourceTree = "<group>";
 		};
 		7FDBA50F14EBD550004D1CC9 /* TouchXML */ = {
@@ -2600,6 +2659,17 @@
 				7F2317C5156FA13400E2C941 /* NordicAnimator.m in Sources */,
 				7FC642941572F64A0043D575 /* BLFiles.m in Sources */,
 				7F9D414F15751E1600AFA1A0 /* NGNineGridSprite.m in Sources */,
+				55FDAEDF157F7CBB00943176 /* ToolTemplate.m in Sources */,
+				55FDAEE3157F802900943176 /* PieSplitter.m in Sources */,
+				55E7CBDA157FC82400A399CF /* DWPieSplitterPieGameObject.m in Sources */,
+				55E7CBDF157FC85200A399CF /* DWPieSplitterSliceGameObject.m in Sources */,
+				55E7CBE3157FC8B800A399CF /* DWPieSplitterContainerGameObject.m in Sources */,
+				55E7CBE6157FCCC900A399CF /* BPieSplitterSliceObjectRender.m in Sources */,
+				55E7CBE9157FCD4800A399CF /* BPieSplitterPieObjectRender.m in Sources */,
+				55E7CBEC157FCD6900A399CF /* BPieSplitterContainerObjectRender.m in Sources */,
+				55E7CBEF157FDE3200A399CF /* BPieSplitterSliceTouch.m in Sources */,
+				55E7CBF2157FDE4E00A399CF /* BPieSplitterContainerMountable.m in Sources */,
+				55E7CBF5157FE4AD00A399CF /* BPieSplitterSliceMount.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

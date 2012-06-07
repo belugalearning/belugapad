@@ -31,6 +31,7 @@
 @end
 
 @implementation PartitionTool
+#pragma mark - scene setup
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
 {
     toolHost=host;
@@ -97,6 +98,7 @@
 
 }
 
+#pragma mark - gameworld setup and population
 -(void)readPlist:(NSDictionary*)pdef
 {
     renderLayer = [[CCLayer alloc] init];
@@ -201,6 +203,7 @@
 
 }
 
+#pragma mark - touches events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if(isTouching)return;
@@ -339,6 +342,7 @@
     hasMovedBlock=NO;
 }
 
+#pragma mark - evaluation and reject
 -(BOOL)evalExpression
 {
     //returns YES if the tool expression evaluates succesfully
@@ -422,6 +426,7 @@
     }
 }
 
+#pragma mark - meta question
 -(float)metaQuestionTitleYLocation
 {
     return kLabelTitleYOffsetHalfProp*cy;
@@ -432,7 +437,7 @@
     return kMetaQuestionYOffsetPlaceValue*cy;
 }
 
-
+#pragma mark - dealloc
 -(void) dealloc
 {
     //write log on problem switch

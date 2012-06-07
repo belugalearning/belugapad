@@ -1,0 +1,101 @@
+//
+//  BPieSplitterPieObjectRender.m
+//  belugapad
+//
+//  Created by David Amphlett on 06/06/2012.
+//  Copyright (c) 2012 Productivity Balloon Ltd. All rights reserved.
+//
+
+#import "BPieSplitterPieObjectRender.h"
+#import "DWPieSplitterPieGameObject.h"
+#import "global.h"
+#import "ToolConsts.h"
+#import "BLMath.h"
+#import "DWGameObject.h"
+#import "DWGameWorld.h"
+#import "AppDelegate.h"
+#import "UsersService.h"
+
+@interface BPieSplitterPieObjectRender()
+{
+@private
+    ContentService *contentService;
+    UsersService *usersService;
+}
+
+@end
+
+@implementation BPieSplitterPieObjectRender
+
+-(BPieSplitterPieObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
+{
+    self=(BPieSplitterPieObjectRender*)[super initWithGameObject:aGameObject withData:data];
+    pie=(DWPieSplitterPieGameObject*)gameObject;
+    
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    contentService = ac.contentService;
+    usersService = ac.usersService;
+    
+    //init pos x & y in case they're not set elsewhere
+    
+    
+    return self;
+}
+
+-(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload
+{
+    if(messageType==kDWsetupStuff)
+    {
+        if(!pie.mySprite) 
+        {
+            [self setSprite];     
+        }
+    }
+    
+    if(messageType==kDWupdateSprite)
+    {
+        if(!pie.mySprite) { 
+            [self setSprite];
+        }
+        
+    }
+    if(messageType==kDWdismantle)
+    {
+        [[pie.mySprite parent] removeChild:pie.mySprite cleanup:YES];
+    } 
+    
+}
+
+
+
+-(void)setSprite
+{    
+    
+    NSString *spriteFileName=[[NSString alloc]init];
+    spriteFileName=[NSString stringWithFormat:@"/images/timestables/pie.png"];
+    
+    pie.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+    [pie.mySprite setPosition:pie.Position];
+    
+        if(gameWorld.Blackboard.inProblemSetup)
+        {
+            [pie.mySprite setTag:1];
+            [pie.mySprite setOpacity:0];
+        }
+    
+    
+    
+        [[gameWorld Blackboard].ComponentRenderLayer addChild:pie.mySprite z:2];
+    
+}
+
+-(void)handleTap
+{
+}
+
+-(void) dealloc
+{
+    [super dealloc];
+}
+
+@end

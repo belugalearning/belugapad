@@ -270,5 +270,47 @@
 		<key>OBJECT_DATA</key>
 		<dict/>
 	</dict>
+	<key>TpieSplitterSlice</key>
+	<dict>
+		<key>BEHAVIOURS</key>
+		<dict>
+			<key>BPieSplitterSliceObjectRender</key>
+			<dict/>
+			<key>BPieSplitterSliceTouch</key>
+			<dict/>
+			<key>BPieSplitterSliceMount</key>
+			<dict/>
+		</dict>
+		<key>IMPLEMENT_TEMPLATES</key>
+		<array/>
+		<key>OBJECT_DATA</key>
+		<dict/>
+	</dict>
+	<key>TpieSplitterPie</key>
+	<dict>
+		<key>BEHAVIOURS</key>
+		<dict>
+			<key>BPieSplitterPieObjectRender</key>
+			<dict/>
+		</dict>
+		<key>IMPLEMENT_TEMPLATES</key>
+		<array/>
+		<key>OBJECT_DATA</key>
+		<dict/>
+	</dict>
+	<key>TpieSplitterContainer</key>
+	<dict>
+		<key>BEHAVIOURS</key>
+		<dict>
+			<key>BPieSplitterContainerObjectRender</key>
+			<dict/>
+			<key>BPieSplitterContainerMountable</key>
+			<dict/>
+		</dict>
+		<key>IMPLEMENT_TEMPLATES</key>
+		<array/>
+		<key>OBJECT_DATA</key>
+		<dict/>
+	</dict>
 </dict>
 </plist>

@@ -11,10 +11,6 @@
 #import "global.h"
 #import "ToolConsts.h"
 #import "DWGameWorld.h"
-#import "DWDotGridAnchorGameObject.h"
-#import "DWDotGridHandleGameObject.h"
-#import "DWDotGridTileGameObject.h"
-#import "DWDotGridShapeGameObject.h"
 #import "BLMath.h"
 #import "AppDelegate.h"
 #import "UsersService.h"
@@ -34,6 +30,8 @@ const float kScaleOfLesserBlocks=0.6f;
 @end
 
 @implementation LongDivision
+
+#pragma mark - scene setup
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
 {
     toolHost=host;
@@ -180,7 +178,7 @@ const float kScaleOfLesserBlocks=0.6f;
 
 }
 
-
+#pragma mark - gameworld setup and population
 -(void)readPlist:(NSDictionary*)pdef
 {
     renderLayer = [[CCLayer alloc] init];
@@ -201,6 +199,62 @@ const float kScaleOfLesserBlocks=0.6f;
     
     
 }
+
+-(void)populateGW
+{
+    [renderLayer addChild:topSection];
+    [renderLayer addChild:bottomSection];
+    
+    selectedNumbers=[[NSMutableArray alloc]init];
+    [selectedNumbers retain];
+    rowMultipliers=[[NSMutableArray alloc]init];
+    [rowMultipliers retain];
+    renderedBlocks=[[NSMutableArray alloc]init];
+    [renderedBlocks retain];
+    
+    // add the selector to the middle of the screen
+    
+    CCSprite *selector=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/selection_pointer.png")];
+    [selector setPosition:ccp(cx,cy)];
+    [selector setOpacity:50];
+    [renderLayer addChild:selector];
+    
+    // add the big multiplier behind the numbers
+    CCLabelTTF *multiplier=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"x%g",divisor] fontName:PROBLEM_DESC_FONT fontSize:200.0f];
+    [multiplier setPosition:ccp(820,202)];
+    [multiplier setOpacity:25];
+    [renderLayer addChild:multiplier];
+    
+    lblCurrentTotal=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    [lblCurrentTotal setPosition:ccp(cx,50)];
+    [renderLayer addChild:lblCurrentTotal];
+    
+    line=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/line.png")];
+    [line setPosition:ccp(cx,550)];
+    [topSection addChild:line];
+    
+    if(hideRenderLayer){[topSection setVisible:NO];}
+    else{
+        // set up start and end marker
+        startMarker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
+        endMarker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
+        [startMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x-(line.contentSize.width/2)+5, line.position.y)]];
+        [endMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x+(line.contentSize.width/2)-5, line.position.y)]];
+        CCLabelTTF *start=[CCLabelTTF labelWithString:@"0" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        CCLabelTTF *end=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", dividend] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        [start setPosition:ccp(10,60)];
+        [end setPosition:ccp(10,60)];
+        [startMarker addChild:start];
+        [endMarker addChild:end];
+        
+        [self.NoScaleLayer addChild:startMarker];
+        [self.NoScaleLayer addChild:endMarker];
+    }
+    
+    
+    [self createVisibleNumbers];
+}
+
 
 -(void)createVisibleNumbers
 {
@@ -257,7 +311,7 @@ const float kScaleOfLesserBlocks=0.6f;
 }
 
 
-
+#pragma mark - render interaction
 -(void)updateLabels:(CGPoint)position
 {
     [markerText setString:[NSString stringWithFormat:@"%g", currentTotal*divisor]];
@@ -388,65 +442,15 @@ const float kScaleOfLesserBlocks=0.6f;
     [self.NoScaleLayer addChild:curBlock];
 }
 
--(void)populateGW
-{
-    [renderLayer addChild:topSection];
-    [renderLayer addChild:bottomSection];
-    
-    selectedNumbers=[[NSMutableArray alloc]init];
-    [selectedNumbers retain];
-    rowMultipliers=[[NSMutableArray alloc]init];
-    [rowMultipliers retain];
-    renderedBlocks=[[NSMutableArray alloc]init];
-    [renderedBlocks retain];
-    
-    // add the selector to the middle of the screen
-    
-    CCSprite *selector=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/selection_pointer.png")];
-    [selector setPosition:ccp(cx,cy)];
-    [selector setOpacity:50];
-    [renderLayer addChild:selector];
-    
-    // add the big multiplier behind the numbers
-    CCLabelTTF *multiplier=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"x%g",divisor] fontName:PROBLEM_DESC_FONT fontSize:200.0f];
-    [multiplier setPosition:ccp(820,202)];
-    [multiplier setOpacity:25];
-    [renderLayer addChild:multiplier];
-    
-    lblCurrentTotal=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [lblCurrentTotal setPosition:ccp(cx,50)];
-    [renderLayer addChild:lblCurrentTotal];
-    
-    line=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/line.png")];
-    [line setPosition:ccp(cx,550)];
-    [topSection addChild:line];
-    
-    if(hideRenderLayer){[topSection setVisible:NO];}
-    else{
-        // set up start and end marker
-        startMarker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
-        endMarker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
-        [startMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x-(line.contentSize.width/2)+5, line.position.y)]];
-        [endMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x+(line.contentSize.width/2)-5, line.position.y)]];
-        CCLabelTTF *start=[CCLabelTTF labelWithString:@"0" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-        CCLabelTTF *end=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", dividend] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-        [start setPosition:ccp(10,60)];
-        [end setPosition:ccp(10,60)];
-        [startMarker addChild:start];
-        [endMarker addChild:end];
-        
-        [self.NoScaleLayer addChild:startMarker];
-        [self.NoScaleLayer addChild:endMarker];
-    }
-    
-    
-    [self createVisibleNumbers];
-}
+
+#pragma mark - touches events
 -(void)handlePassThruScaling:(float)scale
 {
         if(topTouch && currentTouchCount>1 && scale>0)
             [topSection setScaleX:scale];
 }
+
+
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     //if(isTouching)return;
@@ -674,6 +678,7 @@ const float kScaleOfLesserBlocks=0.6f;
     movedTopSection=NO;
 }
 
+#pragma mark - evaluation
 -(BOOL)evalExpression
 {
     //returns YES if the tool expression evaluates succesfully
@@ -700,6 +705,7 @@ const float kScaleOfLesserBlocks=0.6f;
     
 }
 
+#pragma mark - meta question align
 -(float)metaQuestionTitleYLocation
 {
     return kLabelTitleYOffsetHalfProp*cy;

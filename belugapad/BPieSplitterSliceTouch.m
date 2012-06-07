@@ -7,7 +7,7 @@
 //
 
 #import "BPieSplitterSliceTouch.h"
-
+#import "DWPieSplitterSliceGameObject.h"
 #import "global.h"
 #import "ToolConsts.h"
 #import "ToolHost.h"
@@ -65,8 +65,10 @@
 
 -(void)checkTouch:(CGPoint)hitLoc
 {
-    
-    
+    if(CGRectContainsPoint(slice.mySprite.boundingBox, hitLoc))
+    {
+        gameWorld.Blackboard.PickupObject=slice;
+    }
 }
 
 -(void) dealloc

@@ -71,6 +71,12 @@
     {
         [[pie.mySprite parent] removeChild:pie.mySprite cleanup:YES];
     } 
+    if(messageType==kDWsplitActivePies)
+    {
+        CCLabelTTF *lbl=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",pie.numberOfSlices] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        [lbl setPosition:ccp(50,50)];
+        [pie.mySprite addChild:lbl];
+    }
     
     
 }

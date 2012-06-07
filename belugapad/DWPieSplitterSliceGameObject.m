@@ -13,5 +13,6 @@
 @synthesize Position;
 @synthesize mySprite;
 @synthesize myPie;
+@synthesize sliceValue;
 
 @end

@@ -11,6 +11,17 @@
 		0C35A9D0156ED63300D47517 /* UserSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C35A9CF156ED63300D47517 /* UserSession.m */; };
 		0C35A9F81576272500D47517 /* canned-dbs in Resources */ = {isa = PBXBuildFile; fileRef = 0C35A9F71576272500D47517 /* canned-dbs */; };
 		0C427C3714F529CC0033AFE2 /* sfx in Resources */ = {isa = PBXBuildFile; fileRef = 0C427C3614F529CC0033AFE2 /* sfx */; };
+		0C692E4A157F973D009307DB /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C692E49157F973D009307DB /* libsqlite3.dylib */; };
+		0C692E50157F9794009307DB /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C692E4B157F9794009307DB /* FMDatabase.m */; };
+		0C692E51157F9794009307DB /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C692E4C157F9794009307DB /* FMDatabaseAdditions.m */; };
+		0C692E52157F9794009307DB /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C692E4D157F9794009307DB /* FMDatabasePool.m */; };
+		0C692E53157F9794009307DB /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C692E4E157F9794009307DB /* FMDatabaseQueue.m */; };
+		0C692E54157F9794009307DB /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C692E4F157F9794009307DB /* FMResultSet.m */; };
+		0C692E571580BCF4009307DB /* CouchDBDerivedDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C692E561580BCF4009307DB /* CouchDBDerivedDocument.m */; };
+		0C712C0D1580C392004B716F /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 0C712C091580C392004B716F /* CHANGELOG.md */; };
+		0C712C0E1580C392004B716F /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C712C0B1580C392004B716F /* JSONKit.m */; };
+		0C712C0F1580C392004B716F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0C712C0C1580C392004B716F /* README.md */; };
+		0C712C131580EDEE004B716F /* Problem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C712C121580EDED004B716F /* Problem.m */; };
 		0C92B2541515702700342094 /* ContentService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C92B2531515702700342094 /* ContentService.m */; };
 		0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */ = {isa = PBXBuildFile; fileRef = 0C9FEFF514F572FB00E64138 /* pipeline-testing */; };
 		0CF9187C14F54C1D00FAC58D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF9187B14F54C1D00FAC58D /* images */; };
@@ -250,7 +261,6 @@
 		7F5115A714A9EF67001AF372 /* DWGameWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A214A9EF67001AF372 /* DWGameWorld.m */; };
 		7F5115AA14A9EF9E001AF372 /* BlockFloating.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A914A9EF9E001AF372 /* BlockFloating.m */; };
 		7F5BD842154AB6A70092740B /* JourneyScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5BD841154AB6A70092740B /* JourneyScene.m */; };
-		7F5BD846154AFAE70092740B /* Relation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5BD845154AFAE70092740B /* Relation.m */; };
 		7F719C0314D739A600F30E89 /* Daemon.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F719C0214D739A600F30E89 /* Daemon.m */; };
 		7F71B40B150FBD9D0097A956 /* ExprScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B409150FBCB20097A956 /* ExprScene.m */; };
 		7F71B40C150FBDAA0097A956 /* BATQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B400150FBCA80097A956 /* BATQuery.m */; };
@@ -276,7 +286,6 @@
 		7FA38ABA1545334B0031E59D /* SelectUserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FA38AB81545334B0031E59D /* SelectUserViewController.xib */; };
 		7FA38ABF1545335A0031E59D /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38ABC1545335A0031E59D /* User.m */; };
 		7FA38AC01545335A0031E59D /* UsersService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38ABE1545335A0031E59D /* UsersService.m */; };
-		7FA38AC31545336A0031E59D /* Problem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38AC21545336A0031E59D /* Problem.m */; };
 		7FA38AD2154534340031E59D /* EditZubi.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38AD1154534340031E59D /* EditZubi.m */; };
 		7FABE68F14B33D5100ED2D0C /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */; };
 		7FABE69114B33D5600ED2D0C /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */; };
@@ -367,6 +376,25 @@
 		0C35A9CF156ED63300D47517 /* UserSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserSession.m; sourceTree = "<group>"; };
 		0C35A9F71576272500D47517 /* canned-dbs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "canned-dbs"; sourceTree = SOURCE_ROOT; };
 		0C427C3614F529CC0033AFE2 /* sfx */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sfx; sourceTree = SOURCE_ROOT; };
+		0C692E38157F9413009307DB /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
+		0C692E3A157F9413009307DB /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		0C692E3C157F9413009307DB /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabasePool.h; sourceTree = "<group>"; };
+		0C692E3E157F9413009307DB /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseQueue.h; sourceTree = "<group>"; };
+		0C692E41157F9413009307DB /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
+		0C692E49157F973D009307DB /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		0C692E4B157F9794009307DB /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
+		0C692E4C157F9794009307DB /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		0C692E4D157F9794009307DB /* FMDatabasePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabasePool.m; sourceTree = "<group>"; };
+		0C692E4E157F9794009307DB /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseQueue.m; sourceTree = "<group>"; };
+		0C692E4F157F9794009307DB /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
+		0C692E551580BCF4009307DB /* CouchDBDerivedDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchDBDerivedDocument.h; sourceTree = "<group>"; };
+		0C692E561580BCF4009307DB /* CouchDBDerivedDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchDBDerivedDocument.m; sourceTree = "<group>"; };
+		0C712C091580C392004B716F /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.md; sourceTree = "<group>"; };
+		0C712C0A1580C392004B716F /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		0C712C0B1580C392004B716F /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		0C712C0C1580C392004B716F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		0C712C111580EDED004B716F /* Problem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Problem.h; sourceTree = "<group>"; };
+		0C712C121580EDED004B716F /* Problem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Problem.m; sourceTree = "<group>"; };
 		0C92B2521515702700342094 /* ContentService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentService.h; sourceTree = "<group>"; };
 		0C92B2531515702700342094 /* ContentService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentService.m; sourceTree = "<group>"; };
 		0C9FEFF514F572FB00E64138 /* pipeline-testing */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pipeline-testing"; sourceTree = SOURCE_ROOT; };
@@ -855,8 +883,6 @@
 		7F5115A914A9EF9E001AF372 /* BlockFloating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BlockFloating.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7F5BD840154AB6A70092740B /* JourneyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JourneyScene.h; sourceTree = "<group>"; };
 		7F5BD841154AB6A70092740B /* JourneyScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JourneyScene.m; sourceTree = "<group>"; };
-		7F5BD844154AFAE70092740B /* Relation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Relation.h; sourceTree = "<group>"; };
-		7F5BD845154AFAE70092740B /* Relation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Relation.m; sourceTree = "<group>"; };
 		7F719C0114D739A600F30E89 /* Daemon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Daemon.h; sourceTree = "<group>"; };
 		7F719C0214D739A600F30E89 /* Daemon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Daemon.m; sourceTree = "<group>"; };
 		7F71B3FF150FBCA80097A956 /* BATQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATQuery.h; sourceTree = "<group>"; };
@@ -897,8 +923,6 @@
 		7FA38ABC1545335A0031E59D /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		7FA38ABD1545335A0031E59D /* UsersService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersService.h; sourceTree = "<group>"; };
 		7FA38ABE1545335A0031E59D /* UsersService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersService.m; sourceTree = "<group>"; };
-		7FA38AC11545336A0031E59D /* Problem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Problem.h; sourceTree = "<group>"; };
-		7FA38AC21545336A0031E59D /* Problem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Problem.m; sourceTree = "<group>"; };
 		7FA38AD0154534340031E59D /* EditZubi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditZubi.h; sourceTree = "<group>"; };
 		7FA38AD1154534340031E59D /* EditZubi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditZubi.m; sourceTree = "<group>"; };
 		7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
@@ -1025,6 +1049,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C692E4A157F973D009307DB /* libsqlite3.dylib in Frameworks */,
 				7FA38AA8154532370031E59D /* libz.dylib in Frameworks */,
 				7FA38AA61545322E0031E59D /* SystemConfiguration.framework in Frameworks */,
 				7FA38AA4154532260031E59D /* Security.framework in Frameworks */,
@@ -1045,23 +1070,53 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C692E37157F9413009307DB /* fmdb */ = {
+			isa = PBXGroup;
+			children = (
+				0C692E4B157F9794009307DB /* FMDatabase.m */,
+				0C692E4C157F9794009307DB /* FMDatabaseAdditions.m */,
+				0C692E4D157F9794009307DB /* FMDatabasePool.m */,
+				0C692E4E157F9794009307DB /* FMDatabaseQueue.m */,
+				0C692E4F157F9794009307DB /* FMResultSet.m */,
+				0C692E38157F9413009307DB /* FMDatabase.h */,
+				0C692E3A157F9413009307DB /* FMDatabaseAdditions.h */,
+				0C692E3C157F9413009307DB /* FMDatabasePool.h */,
+				0C692E3E157F9413009307DB /* FMDatabaseQueue.h */,
+				0C692E41157F9413009307DB /* FMResultSet.h */,
+			);
+			name = fmdb;
+			path = libs/fmdb/src;
+			sourceTree = "<group>";
+		};
+		0C712C081580C392004B716F /* JSONKit */ = {
+			isa = PBXGroup;
+			children = (
+				0C712C091580C392004B716F /* CHANGELOG.md */,
+				0C712C0A1580C392004B716F /* JSONKit.h */,
+				0C712C0B1580C392004B716F /* JSONKit.m */,
+				0C712C0C1580C392004B716F /* README.md */,
+			);
+			name = JSONKit;
+			path = libs/JSONKit;
+			sourceTree = "<group>";
+		};
 		0C92B2501515700100342094 /* Content */ = {
 			isa = PBXGroup;
 			children = (
+				0C692E551580BCF4009307DB /* CouchDBDerivedDocument.h */,
+				0C692E561580BCF4009307DB /* CouchDBDerivedDocument.m */,
 				0C92B2521515702700342094 /* ContentService.h */,
 				0C92B2531515702700342094 /* ContentService.m */,
-				7FA38AC11545336A0031E59D /* Problem.h */,
-				7FA38AC21545336A0031E59D /* Problem.m */,
 				7FDABAC1154AABF300F3F1A5 /* ConceptNode.h */,
 				7FDABAC2154AABF300F3F1A5 /* ConceptNode.m */,
-				7F5BD844154AFAE70092740B /* Relation.h */,
-				7F5BD845154AFAE70092740B /* Relation.m */,
 				7FD18787154E6B81008F0A31 /* NodeSlice.h */,
 				7FD18788154E6B81008F0A31 /* NodeSlice.m */,
 				7FD1878A154E7395008F0A31 /* PipelineNodeSliceInstance.h */,
 				7FD1878B154E7395008F0A31 /* PipelineNodeSliceInstance.m */,
 				7F85187A1558E85F002E9F07 /* Pipeline.h */,
 				7F85187B1558E85F002E9F07 /* Pipeline.m */,
+				0C712C111580EDED004B716F /* Problem.h */,
+				0C712C121580EDED004B716F /* Problem.m */,
 			);
 			name = Content;
 			sourceTree = "<group>";
@@ -1763,6 +1818,7 @@
 		7F5113B314A9EE62001AF372 = {
 			isa = PBXGroup;
 			children = (
+				0C692E49157F973D009307DB /* libsqlite3.dylib */,
 				7FA38AA7154532360031E59D /* libz.dylib */,
 				7FA38AA11545321E0031E59D /* libstdc++.dylib */,
 				7FBE969B15498F3700D993AC /* Icon.png */,
@@ -1841,6 +1897,8 @@
 		7F5113E714A9EE63001AF372 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				0C712C081580C392004B716F /* JSONKit */,
+				0C692E37157F9413009307DB /* fmdb */,
 				7F5005651521B3050038D251 /* Chipmunk */,
 				7F5003551521B24C0038D251 /* kazmath */,
 				7F5003471521B23C0038D251 /* CocosDenshion */,
@@ -2342,6 +2400,8 @@
 				7FBE969A1549819300D993AC /* LoadingViewController.xib in Resources */,
 				7FBE969C15498F3700D993AC /* Icon.png in Resources */,
 				0C35A9F81576272500D47517 /* canned-dbs in Resources */,
+				0C712C0D1580C392004B716F /* CHANGELOG.md in Resources */,
+				0C712C0F1580C392004B716F /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2650,13 +2710,11 @@
 				7FA38AB91545334B0031E59D /* SelectUserViewController.m in Sources */,
 				7FA38ABF1545335A0031E59D /* User.m in Sources */,
 				7FA38AC01545335A0031E59D /* UsersService.m in Sources */,
-				7FA38AC31545336A0031E59D /* Problem.m in Sources */,
 				7FA38AD2154534340031E59D /* EditZubi.m in Sources */,
 				7FBE96991549819300D993AC /* LoadingViewController.m in Sources */,
 				7FDABAC3154AABF300F3F1A5 /* ConceptNode.m in Sources */,
 				7F2CAEDB154AB58B00BFBB6F /* LongDivision.m in Sources */,
 				7F5BD842154AB6A70092740B /* JourneyScene.m in Sources */,
-				7F5BD846154AFAE70092740B /* Relation.m in Sources */,
 				7FD18789154E6B81008F0A31 /* NodeSlice.m in Sources */,
 				7FD1878C154E7396008F0A31 /* PipelineNodeSliceInstance.m in Sources */,
 				7F85187C1558E85F002E9F07 /* Pipeline.m in Sources */,
@@ -2682,6 +2740,14 @@
 				55E7CBF5157FE4AD00A399CF /* BPieSplitterSliceMount.m in Sources */,
 				55BBB5D31580C3FC0031B1F5 /* BPieSplitterPieTouch.m in Sources */,
 				55BBB5D71580C4350031B1F5 /* BPieSplitterContainerTouch.m in Sources */,
+				0C692E50157F9794009307DB /* FMDatabase.m in Sources */,
+				0C692E51157F9794009307DB /* FMDatabaseAdditions.m in Sources */,
+				0C692E52157F9794009307DB /* FMDatabasePool.m in Sources */,
+				0C692E53157F9794009307DB /* FMDatabaseQueue.m in Sources */,
+				0C692E54157F9794009307DB /* FMResultSet.m in Sources */,
+				0C692E571580BCF4009307DB /* CouchDBDerivedDocument.m in Sources */,
+				0C712C0E1580C392004B716F /* JSONKit.m in Sources */,
+				0C712C131580EDEE004B716F /* Problem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

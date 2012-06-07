@@ -348,11 +348,7 @@ static float kMoveToNextProblemTime=2.0f;
     
     //keep reference to the current static definition on the content service -- for logging etc
     contentService.currentStaticPdef=pdef;
-
-    //not often used, but retain local ref to the content service's loaded ppexpr
-    self.PpExpr = contentService.currentPExpr;
-    
-    
+        
     NSString *toolKey=[pdef objectForKey:TOOL_KEY];
     
     if(currentTool)
@@ -476,7 +472,7 @@ static float kMoveToNextProblemTime=2.0f;
     }
     else {
         //just log document id for the problem & pipeline
-        NSLog(@"pausing in problem document %@ in pipeline %@", contentService.currentProblem.document.documentID, contentService.currentPipeline.document.documentID);
+        NSLog(@"pausing in problem document %@ in pipeline %@", contentService.currentProblem._id, contentService.currentPipeline._id);
     }
     
     [usersService logProblemAttemptEvent:kProblemAttemptUserPause withOptionalNote:nil];

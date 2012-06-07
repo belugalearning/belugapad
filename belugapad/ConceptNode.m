@@ -7,27 +7,38 @@
 //
 
 #import "ConceptNode.h"
-#import "User.h"
+#import "FMDatabase.h"
+#import "JSONKit.h"
 
 @implementation ConceptNode
 
-@dynamic graffleId, nodeDescription, notes, pipelines, tags, x, y, isLit;
-
+@synthesize pipelines;
+@synthesize x, y;
 @synthesize journeySprite, nodeSliceSprite, lightSprite;
 
--(BOOL)isNodeCompleteForUser:(User*)user
+@dynamic isLit;
+
+-(id)initWithFMResultSetRow:(FMResultSet*)resultSet
 {
-    return NO;
+    self=[super initWithFMResultSetRow:resultSet];
+    if (self)
+    {
+        pipelines = [[resultSet stringForColumn:@"pipelines"] objectFromJSONString];
+        [pipelines retain];
+        
+        x = [resultSet intForColumn:@"x"];
+        y = [resultSet intForColumn:@"y"];
+    }
+    return self;
 }
 
-//-(void)makeLit
-//{
-//    shouldBeLit=YES;
-//}
-//
-//-(BOOL)isShouldBeLit
-//{
-//    return shouldBeLit;
-//}
+-(void) dealloc
+{
+    [pipelines release];
+    if (journeySprite) [journeySprite release];
+    if (nodeSliceSprite) [nodeSliceSprite release];
+    if (lightSprite) [lightSprite release];
+    [super dealloc];
+}
 
 @end

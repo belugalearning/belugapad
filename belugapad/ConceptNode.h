@@ -7,30 +7,21 @@
 //
 
 #import <CouchCocoa/CouchCocoa.h>
-
+#import "CouchDBDerivedDocument.h"
 @class CCSprite;
 
-@interface ConceptNode : CouchModel
-
+@interface ConceptNode : CouchDBDerivedDocument
 {
-
 }
 
-@property (readonly, retain) NSNumber *graffleId;
-@property (readonly, retain) NSString *nodeDescription;
-@property (readonly, retain) NSString *notes;
-@property (readonly, retain) NSArray *pipelines;
-@property (readonly, retain) NSArray *tags;
-@property (readonly, retain) NSNumber *x;
-@property (readonly, retain) NSNumber *y;
+@property (readonly) NSArray *pipelines;
+@property (readonly) int x;
+@property (readonly) int y;
 
 //not persisted
 @property (retain) CCSprite *journeySprite;
 @property (retain) CCSprite *nodeSliceSprite;
 @property (retain) CCSprite *lightSprite;
 @property bool isLit;
-
-//-(void)makeLit;
-//-(BOOL)isShouldBeLit;
 
 @end

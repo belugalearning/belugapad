@@ -7,9 +7,32 @@
 //
 
 #import "Pipeline.h"
+#import "FMDatabase.h"
+#import "JSONKit.h"
 
 @implementation Pipeline
 
-@dynamic problems, name;
+@synthesize name, problems;
+
+-(id)initWithFMResultSetRow:(FMResultSet *)resultSet
+{
+    self=[super initWithFMResultSetRow:resultSet];
+    if (self)
+    {
+        name = [resultSet stringForColumn:@"name"];
+        [name retain];
+        
+        problems = [[resultSet stringForColumn:@"problems"] objectFromJSONString];
+        [problems retain];
+    }
+    return self;
+}
+
+-(void)dealloc
+{
+    [name release];
+    [problems release];
+    [super dealloc];
+}
 
 @end

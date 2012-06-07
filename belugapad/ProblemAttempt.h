@@ -14,9 +14,9 @@
 
 @property (retain) NSString *type;
 @property (retain) UserSession *userSession;
-@property (retain) Problem *problem;
+@property (retain) NSString *problem;
 @property (retain) NSString *problemRev;
-@property (retain) Problem *parentProblem;
+@property (retain) NSString *parentProblem;
 @property (retain) NSString *parentProblemRev;
 @property (retain) NSArray *events;
 

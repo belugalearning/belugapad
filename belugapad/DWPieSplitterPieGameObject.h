@@ -12,8 +12,10 @@
 @interface DWPieSplitterPieGameObject : DWGameObject
 
 @property CGPoint Position;
+@property CGPoint MountPosition;
 @property (retain) CCSprite *mySprite;
 @property (retain) NSMutableArray *mySlices;
+@property BOOL ScaledUp;
 
 
 @end

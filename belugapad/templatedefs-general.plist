@@ -292,6 +292,8 @@
 		<dict>
 			<key>BPieSplitterPieObjectRender</key>
 			<dict/>
+			<key>BPieSplitterPieTouch</key>
+			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>
 		<array/>
@@ -305,6 +307,8 @@
 			<key>BPieSplitterContainerObjectRender</key>
 			<dict/>
 			<key>BPieSplitterContainerMountable</key>
+			<dict/>
+			<key>BPieSplitterContainerTouch</key>
 			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>

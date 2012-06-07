@@ -48,6 +48,8 @@ typedef enum {
     
     
     // then our specifics
+    BOOL createdNewCon;
+    BOOL createdNewPie;
     CCSprite *pieBox;
     CCSprite *conBox;
     CCSprite *splitBtn;
@@ -60,6 +62,10 @@ typedef enum {
 
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)populateGW;
+-(void)createPieAtMount;
+-(void)createContainerAtMount;
+-(void)reorderActivePies;
+-(void)reorderActiveContainers;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

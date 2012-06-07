@@ -59,6 +59,14 @@
         }
         
     }
+    if(messageType==kDWmoveSpriteToPosition)
+    {
+        [self moveSprite];
+    }
+    if(messageType==kDWresetToMountPosition)
+    {
+        [self moveSpriteHome];
+    }
     if(messageType==kDWdismantle)
     {
         [[cont.mySprite parent] removeChild:cont.mySprite cleanup:YES];
@@ -74,10 +82,11 @@
     NSString *spriteFileName=[[NSString alloc]init];
     
     
-    spriteFileName=[NSString stringWithFormat:@"/images/timestables/container.png"];
+    spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/container.png"];
     
     cont.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
     [cont.mySprite setPosition:cont.Position];
+    [cont.mySprite setScale:0.5f];
     
         if(gameWorld.Blackboard.inProblemSetup)
         {
@@ -90,7 +99,22 @@
         [[gameWorld Blackboard].ComponentRenderLayer addChild:cont.mySprite z:2];
     
 }
-
+-(void)moveSprite
+{
+    if(!cont.ScaledUp){
+        [cont.mySprite runAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f]];
+        cont.ScaledUp=YES;
+    }
+    [cont.mySprite setPosition:cont.Position];
+}
+-(void)moveSpriteHome
+{
+    if(cont.ScaledUp){
+        [cont.mySprite runAction:[CCScaleTo actionWithDuration:0.2f scale:0.5f]];
+        cont.ScaledUp=NO;
+    }
+    [cont.mySprite runAction:[CCMoveTo actionWithDuration:0.5f position:cont.MountPosition]];
+}
 -(void)handleTap
 {
 }

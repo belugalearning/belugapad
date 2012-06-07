@@ -11,7 +11,9 @@
 @implementation DWPieSplitterPieGameObject
 
 @synthesize Position;
+@synthesize MountPosition;
 @synthesize mySprite;
 @synthesize mySlices;
+@synthesize ScaledUp;
 
 @end

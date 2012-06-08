@@ -1398,10 +1398,10 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     if(hasMovedBlock)
     {
         float objValue=[[[[gw Blackboard].PickupObject store] objectForKey:OBJECT_VALUE]floatValue];
-//        if([gw.Blackboard.SelectedObjects count]<=1)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchMovedMoveObject withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%d}",objValue]];
-//        else if([gw.Blackboard.SelectedObjects count]>1)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchMovedMoveObjects withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%d}",objValue]];
+        if([gw.Blackboard.SelectedObjects count]<=1)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchMovedMoveObject withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%d}",objValue]];
+        else if([gw.Blackboard.SelectedObjects count]>1)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchMovedMoveObjects withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%d}",objValue]];
     }
-//    if(hasMovedLayer)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchMovedMoveGrid withOptionalNote:nil];
+    if(hasMovedLayer)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchMovedMoveGrid withOptionalNote:nil];
     
     //do mulching / condensing
     if (inMulchArea) {
@@ -1517,8 +1517,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 [[gw Blackboard].PickupObject logInfo:@"this object was mounted" withData:0];
                 [[gw Blackboard].DropObject logInfo:@"mounted object on this go" withData:0];
                 
-//                if(isCage)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchEndedDropObjectOnCage withOptionalNote:nil];
-//                else [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchEndedDropObjectOnGrid withOptionalNote:nil];
+                if(isCage)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchEndedDropObjectOnCage withOptionalNote:nil];
+                else [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchEndedDropObjectOnGrid withOptionalNote:nil];
                 
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
                 

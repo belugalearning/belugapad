@@ -4,10 +4,12 @@
 <dict>
 	<key>PROBLEM_PIPELINE-2</key>
 	<string>/pipeline-testing/pipeline_amalgamation.plist</string>
-	<key>PROBLEM_PIPELINE</key>
+	<key>PROBLEM_PIPELINE--gj</key>
+	<string>/Problems/tools-dev/da-pv</string>
+	<key>PROBLEM_PIPELINE - 2</key>
 	<string>/Problems/tokcm/counting-making-sets/5608a59d6797796ce9e11484fd182d0d</string>
-	<key>PROBLEM_PIPELINE-e</key>
-	<string>/pipeline-testing/da-pipeline-test.plist</string>
+	<key>PROBLEM_PIPELINE</key>
+	<string>DATABASE</string>
 	<key>PROBLEM_PIPELINE-g</key>
 	<string>/pipeline-testing/gj-pipeline-test.plist</string>
 	<key>RELEASE_MODE</key>

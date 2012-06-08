@@ -554,6 +554,8 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
         [events addObject:e];
         currentProblemAttempt.events = events;
         [[currentProblemAttempt save] wait];
+        
+        NSLog(@"logged %@", eventString);
     }
 }
 

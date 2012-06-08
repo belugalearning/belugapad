@@ -10,11 +10,21 @@
 #import "ToolConsts.h"
 #import "ToolScene.h"
 
+typedef enum {
+    kGameCannotSplit=0,
+    kGameReadyToSplit=1,
+    kGameSlicesActive=2
+    
+} GameState;
+
 @interface PieSplitter : ToolScene
 {
     // required toolhost stuff
     ToolHost *toolHost;
+    
+    //gameworld
     DWGameWorld *gw;
+    GameState gameState;
     
     // standard Problem Definition stuff
     ProblemEvalMode evalMode;
@@ -36,11 +46,36 @@
     // and a default layer
     CCLayer *renderLayer;
     
+    // pdef options
+    BOOL showReset;
+    int numberOfCagedPies;
+    int numberOfCagedContainers;
+    int numberOfActivePies;
+    int numberOfActiveContainers;
+    int dividend;
+    int divisor;
+    
+    // then our specifics
+    BOOL createdNewCon;
+    BOOL createdNewPie;
+    BOOL hasSplit;
+    
+    CCSprite *pieBox;
+    CCSprite *conBox;
+    CCSprite *splitBtn;
+    
+    NSMutableArray *activePie;
+    NSMutableArray *activeCon;
+    
     
 }
 
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)populateGW;
+-(void)createPieAtMount;
+-(void)createContainerAtMount;
+-(void)reorderActivePies;
+-(void)reorderActiveContainers;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

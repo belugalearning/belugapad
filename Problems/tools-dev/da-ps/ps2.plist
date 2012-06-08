@@ -14,7 +14,7 @@
 	<integer>3</integer>
 	<key>NUMBER_ACTIVE_PIES</key>
 	<integer>6</integer>
-	<key>NUMBER_ACTIVE_CONTAINERS</key>
+	<key>NUMBER_ACTIVE_SQUARES</key>
 	<integer>3</integer>
 	<key>START_PROBLEM_SPLIT</key>
 	<true/>

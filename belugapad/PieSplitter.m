@@ -124,9 +124,9 @@
     showReset=[[pdef objectForKey:SHOW_RESET]boolValue];
     startProblemSplit=[[pdef objectForKey:START_PROBLEM_SPLIT]boolValue];
     numberOfCagedPies=[[pdef objectForKey:NUMBER_CAGED_PIES]intValue];
-    numberOfCagedContainers=[[pdef objectForKey:NUMBER_CAGED_CONTAINERS]intValue];
+    numberOfCagedContainers=[[pdef objectForKey:NUMBER_CAGED_SQUARES]intValue];
     numberOfActivePies=[[pdef objectForKey:NUMBER_ACTIVE_PIES]intValue];
-    numberOfActiveContainers=[[pdef objectForKey:NUMBER_ACTIVE_CONTAINERS]intValue];
+    numberOfActiveContainers=[[pdef objectForKey:NUMBER_ACTIVE_SQUARES]intValue];
     dividend=[[pdef objectForKey:DIVIDEND]intValue];
     divisor=[[pdef objectForKey:DIVISOR]intValue];
     
@@ -178,6 +178,9 @@
         [self createActivePie];
     }
     
+    [self reorderActiveContainers];
+    [self reorderActivePies];
+    
     [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
     
     if(startProblemSplit)[self splitPies];
@@ -206,7 +209,7 @@
 {
     DWPieSplitterPieGameObject *pie = [DWPieSplitterPieGameObject alloc];
     [gw populateAndAddGameObject:pie withTemplateName:@"TpieSplitterPie"];
-    pie.Position=ccp(60+([activePie count]*100),pieBox.position.y);
+    pie.Position=ccp(0,pieBox.position.y);
     pie.MountPosition=ccp(35,700);
     [pie.mySprite setScale:1.0f];
     pie.ScaledUp=YES;
@@ -217,7 +220,7 @@
 {
     DWPieSplitterContainerGameObject *cont = [DWPieSplitterContainerGameObject alloc];
     [gw populateAndAddGameObject:cont withTemplateName:@"TpieSplitterContainer"];
-    cont.Position=ccp(60+([activeCon count]*100),conBox.position.y);
+    cont.Position=ccp(0,conBox.position.y);
     cont.MountPosition=ccp(35,640);
     [cont.mySprite setScale:1.0f];
     cont.ScaledUp=YES;
@@ -230,7 +233,7 @@
     for(int i=0;i<[activePie count];i++)
     {
         DWPieSplitterPieGameObject *p=[activePie objectAtIndex:i];
-        p.Position=ccp(60+(i*100), pieBox.position.y);
+        p.Position=ccp((i+0.5)*(lx/[activePie count]), pieBox.position.y);
         [p.mySprite runAction:[CCMoveTo actionWithDuration:0.3 position:p.Position]];
     }
 }
@@ -240,7 +243,7 @@
     for(int i=0;i<[activeCon count];i++)
     {
         DWPieSplitterContainerGameObject *p=[activeCon objectAtIndex:i];
-        p.Position=ccp(60+(i*100), conBox.position.y);
+        p.Position=ccp((i+0.5)*(lx/[activeCon count]), conBox.position.y);
         [p.mySprite runAction:[CCMoveTo actionWithDuration:0.3 position:p.Position]];
     }
 }

@@ -14,7 +14,7 @@
 	<integer>4</integer>
 	<key>NUMBER_ACTIVE_PIES</key>
 	<integer>3</integer>
-	<key>NUMBER_ACTIVE_CONTAINERS</key>
+	<key>NUMBER_ACTIVE_SQUARES</key>
 	<integer>4</integer>
 </dict>
 </plist>

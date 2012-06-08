@@ -238,7 +238,9 @@
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterPieGameObject class]])
             ((DWPieSplitterPieGameObject*)gw.Blackboard.PickupObject).Position=location;
         
+        NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
         [gw.Blackboard.PickupObject handleMessage:kDWmoveSpriteToPosition andPayload:nil withLogLevel:-1];
+        [gw.Blackboard.PickupObject handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
         
         // if we haven't yet created a new object, do it now
         if(!createdNewCon)
@@ -321,6 +323,12 @@
             
             [self reorderActivePies];
         }
+        
+        if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterSliceGameObject class]])
+        {
+            
+        }
+        
     }
     
     

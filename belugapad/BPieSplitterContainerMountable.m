@@ -8,15 +8,17 @@
 
 #import "global.h"
 #import "BPieSplitterContainerMountable.h"
+#import "DWPieSplitterContainerGameObject.h"
 
 @implementation BPieSplitterContainerMountable
 
 
 -(BPieSplitterContainerMountable *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
-self=(BPieSplitterContainerMountable *)[super initWithGameObject:aGameObject withData:data];
+    self=(BPieSplitterContainerMountable *)[super initWithGameObject:aGameObject withData:data];
+    cont=(DWPieSplitterContainerGameObject*)gameObject;
 
-return self;
+    return self;
 }
 
 -(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload
@@ -31,6 +33,19 @@ return self;
     {
 
     }
+    if(messageType==kDWareYouADropTarget)
+    {
+        CGPoint loc=[[payload objectForKey:POS] CGPointValue];
+        [self checkDropTarget:loc]; 
+    }
+}
+
+-(void)checkDropTarget:(CGPoint)hitLoc
+{
+    if(CGRectContainsPoint(cont.mySprite.boundingBox, hitLoc))
+   {
+       gameWorld.Blackboard.DropObject=cont;
+   }
 }
 
 @end

@@ -59,6 +59,10 @@
         }
         
     }
+    if(messageType==kDWmoveSpriteToPosition)
+    {
+        [self moveSprite];
+    }
     if(messageType==kDWdismantle)
     {
         [[slice.mySprite parent] removeChild:slice.mySprite cleanup:YES];
@@ -90,7 +94,10 @@
     [[gameWorld Blackboard].ComponentRenderLayer addChild:slice.mySprite z:2];
     
 }
-
+-(void)moveSprite
+{
+    [slice.mySprite setPosition:slice.Position];
+}
 -(void)handleTap
 {
 }

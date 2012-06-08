@@ -14,5 +14,6 @@
 @synthesize mySprite;
 @synthesize myPie;
 @synthesize sliceValue;
+@synthesize myCont;
 
 @end

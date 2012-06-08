@@ -48,6 +48,7 @@ typedef enum {
     
     // pdef options
     BOOL showReset;
+    BOOL startProblemSplit;
     int numberOfCagedPies;
     int numberOfCagedContainers;
     int numberOfActivePies;
@@ -76,6 +77,7 @@ typedef enum {
 -(void)createContainerAtMount;
 -(void)reorderActivePies;
 -(void)reorderActiveContainers;
+-(void)splitPies;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

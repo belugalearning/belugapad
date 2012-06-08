@@ -16,4 +16,6 @@
 
 -(BPieSplitterContainerMountable *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
 -(void)checkDropTarget:(CGPoint)hitLoc;
+-(void)mountObjectToMe;
+-(void)unMountObjectFromMe;
 @end

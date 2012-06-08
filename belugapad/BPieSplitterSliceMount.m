@@ -7,6 +7,7 @@
 //
 
 #import "BPieSplitterSliceMount.h"
+#import "DWPieSplitterSliceGameObject.h"
 #import "global.h"
 #import "SimpleAudioEngine.h"
 
@@ -15,6 +16,7 @@
 -(BPieSplitterSliceMount *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
     self=(BPieSplitterSliceMount*)[super initWithGameObject:aGameObject withData:data];
+    slice=(DWPieSplitterSliceGameObject*)gameObject;
     
     NSMutableArray *mo=[[NSMutableArray alloc] init];
     GOS_SET(mo, MOUNTED_OBJECTS);
@@ -29,18 +31,33 @@
 
 -(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload
 {
-    if(messageType==kDWsetMountedObject)
+    if(messageType==kDWsetMount)
     {
+        [self mountMeToContainer];
+    }
+    if(messageType==kDWunsetMount)
+    {
+        [self unMountMeFromContainer];
+    }
+}
+
+-(void)mountMeToContainer
+{
+    if(slice.myCont){
+        [slice.myCont handleMessage:kDWunsetMountedObject];
+        slice.myCont=nil;
     }
     
-    if(messageType==kDWunsetMountedObject)
+    if(gameWorld.Blackboard.DropObject)
     {
-
+        slice.myCont=gameWorld.Blackboard.DropObject;
+        slice.Position=((DWPieSplitterSliceGameObject*)gameWorld.Blackboard.DropObject).Position;
+        [slice handleMessage:kDWmoveSpriteToPosition];
     }
-    if(messageType==kDWresetPositionEval)
-    {
-
-    }
+}
+-(void)unMountMeFromContainer
+{
+    slice.myCont=nil;
 }
 
 @end

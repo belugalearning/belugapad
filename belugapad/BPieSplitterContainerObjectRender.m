@@ -86,7 +86,8 @@
     
     cont.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
     [cont.mySprite setPosition:cont.Position];
-    [cont.mySprite setScale:0.5f];
+    if(!cont.ScaledUp)[cont.mySprite setScale:0.5f];
+    else [cont.mySprite setScale:1.0f];
     
         if(gameWorld.Blackboard.inProblemSetup)
         {

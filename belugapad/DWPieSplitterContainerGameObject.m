@@ -16,5 +16,6 @@
 @synthesize mySlices;
 @synthesize ScaledUp;
 @synthesize myHeldValue;
+@synthesize myText;
 
 @end

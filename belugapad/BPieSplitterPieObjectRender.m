@@ -91,7 +91,8 @@
     
     pie.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
     [pie.mySprite setPosition:pie.Position];
-    [pie.mySprite setScale:0.5f];
+    if(!pie.ScaledUp)[pie.mySprite setScale:0.5f];
+    else [pie.mySprite setScale:1.0f];
     
         if(gameWorld.Blackboard.inProblemSetup)
         {

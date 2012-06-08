@@ -122,6 +122,7 @@
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
     rejectType=[[pdef objectForKey:REJECT_TYPE] intValue];    
     showReset=[[pdef objectForKey:SHOW_RESET]boolValue];
+    startProblemSplit=[[pdef objectForKey:START_PROBLEM_SPLIT]boolValue];
     numberOfCagedPies=[[pdef objectForKey:NUMBER_CAGED_PIES]intValue];
     numberOfCagedContainers=[[pdef objectForKey:NUMBER_CAGED_CONTAINERS]intValue];
     numberOfActivePies=[[pdef objectForKey:NUMBER_ACTIVE_PIES]intValue];
@@ -167,8 +168,19 @@
     [self createPieAtMount];
     [self createContainerAtMount];
 
+    for (int i=0;i<numberOfActiveContainers;i++)
+    {
+        [self createActiveContainer];
+    }
+    
+    for(int i=0;i<numberOfActivePies;i++)
+    {
+        [self createActivePie];
+    }
     
     [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
+    
+    if(startProblemSplit)[self splitPies];
     
     
 }
@@ -178,7 +190,7 @@
 {
     DWPieSplitterPieGameObject *pie = [DWPieSplitterPieGameObject alloc];
     [gw populateAndAddGameObject:pie withTemplateName:@"TpieSplitterPie"];
-    pie.Position=ccp(35,640);
+    pie.Position=ccp(35,700);
     pie.MountPosition=pie.Position;
 }
 
@@ -186,8 +198,30 @@
 {
     DWPieSplitterContainerGameObject *cont = [DWPieSplitterContainerGameObject alloc];
     [gw populateAndAddGameObject:cont withTemplateName:@"TpieSplitterContainer"];
-    cont.Position=ccp(35,700);
+    cont.Position=ccp(35,640);
     cont.MountPosition=cont.Position;
+}
+
+-(void)createActivePie
+{
+    DWPieSplitterPieGameObject *pie = [DWPieSplitterPieGameObject alloc];
+    [gw populateAndAddGameObject:pie withTemplateName:@"TpieSplitterPie"];
+    pie.Position=ccp(60+([activePie count]*100),pieBox.position.y);
+    pie.MountPosition=ccp(35,700);
+    [pie.mySprite setScale:1.0f];
+    pie.ScaledUp=YES;
+    [activePie addObject:pie];
+}
+
+-(void)createActiveContainer
+{
+    DWPieSplitterContainerGameObject *cont = [DWPieSplitterContainerGameObject alloc];
+    [gw populateAndAddGameObject:cont withTemplateName:@"TpieSplitterContainer"];
+    cont.Position=ccp(60+([activeCon count]*100),conBox.position.y);
+    cont.MountPosition=ccp(35,640);
+    [cont.mySprite setScale:1.0f];
+    cont.ScaledUp=YES;
+    [activeCon addObject:cont];
 }
 
 -(void)reorderActivePies
@@ -211,6 +245,29 @@
     }
 }
 
+-(void)splitPies
+{
+    for (DWPieSplitterPieGameObject *p in activePie)
+    {
+        p.numberOfSlices=[activeCon count];
+        p.HasSplit=YES;
+        
+        for(int i=0;i<p.numberOfSlices;i++)
+        {
+            DWPieSplitterSliceGameObject *slice = [DWPieSplitterSliceGameObject alloc];
+            [gw populateAndAddGameObject:slice withTemplateName:@"TpieSplitterSlice"];
+            slice.Position=p.Position;
+            slice.myPie=p;
+            [p.mySlices addObject:slice];
+            [slice handleMessage:kDWsetupStuff];
+        }
+        
+        [p handleMessage:kDWsplitActivePies];
+    }
+    
+    hasSplit=YES;
+}
+
 #pragma mark - touches events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -225,26 +282,7 @@
     
     if(gameState==kGameReadyToSplit && CGRectContainsPoint(splitBtn.boundingBox, location))
     {
-        for (DWPieSplitterPieGameObject *p in activePie)
-        {
-            p.numberOfSlices=[activeCon count];
-            p.HasSplit=YES;
-            
-            for(int i=0;i<p.numberOfSlices;i++)
-            {
-                DWPieSplitterSliceGameObject *slice = [DWPieSplitterSliceGameObject alloc];
-                [gw populateAndAddGameObject:slice withTemplateName:@"TpieSplitterSlice"];
-                slice.Position=p.Position;
-                slice.myPie=p;
-                [p.mySlices addObject:slice];
-                [slice handleMessage:kDWsetupStuff];
-            }
-            
-            [p handleMessage:kDWsplitActivePies];
-        }
-        
-        hasSplit=YES;
-        
+        [self splitPies];
     }
     
     NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
@@ -278,9 +316,10 @@
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterPieGameObject class]])
             ((DWPieSplitterPieGameObject*)gw.Blackboard.PickupObject).Position=location;
         
-        NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
+        if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterSliceGameObject class]])
+            ((DWPieSplitterSliceGameObject*)gw.Blackboard.PickupObject).Position=location;
+        
         [gw.Blackboard.PickupObject handleMessage:kDWmoveSpriteToPosition andPayload:nil withLogLevel:-1];
-        [gw.Blackboard.PickupObject handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
         
         // if we haven't yet created a new object, do it now
         if(!createdNewCon)
@@ -364,9 +403,28 @@
             [self reorderActivePies];
         }
         
+        // is a slice?
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterSliceGameObject class]])
         {
+            NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
+            [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
             
+            DWPieSplitterContainerGameObject *cont=[[DWPieSplitterContainerGameObject alloc]init];
+            if(gw.Blackboard.DropObject)cont=(DWPieSplitterContainerGameObject*)gw.Blackboard.DropObject;
+
+            
+            // if we have a dropobject then we need to be mounted to it
+            if(gw.Blackboard.DropObject)
+            {
+                [gw.Blackboard.PickupObject handleMessage:kDWsetMount];
+                [gw.Blackboard.DropObject handleMessage:kDWsetMountedObject];
+            }
+            else {
+                DWPieSplitterSliceGameObject *slice=(DWPieSplitterSliceGameObject *)gw.Blackboard.PickupObject;
+                DWPieSplitterContainerGameObject *cont=(DWPieSplitterContainerGameObject *)slice.myCont;
+                [cont handleMessage:kDWunsetMountedObject];
+                [gw.Blackboard.PickupObject handleMessage:kDWunsetMount];
+            }
         }
         
     }
@@ -376,6 +434,7 @@
     createdNewCon=NO;
     createdNewPie=NO;
     gw.Blackboard.PickupObject=nil;
+    gw.Blackboard.DropObject=nil;
     
     
 }
@@ -386,12 +445,34 @@
     createdNewCon=NO;
     createdNewPie=NO;
     gw.Blackboard.PickupObject=nil;
-    // empty selected objects
+    gw.Blackboard.DropObject=nil;
+
 }
 
 #pragma mark - evaluation
 -(BOOL)evalExpression
 {
+    if([activeCon count]==divisor)
+    {
+        int totalSlices=dividend*divisor;
+        int slicesInEachPie=totalSlices/divisor;
+        int correctCon=0;
+        
+        NSLog(@"start eval with totalSlices %d, slicesInEachPie %d", totalSlices, slicesInEachPie);
+        
+        for(int i=0;i<[activeCon count];i++)
+        {
+            DWPieSplitterContainerGameObject *cont=[activeCon objectAtIndex:i];
+            
+            if([cont.mySlices count]==slicesInEachPie){
+                correctCon++;
+                NSLog(@"correct slice count on obj %d", i);
+            }
+        }
+        
+        if(correctCon==[activeCon count])return YES;
+        
+    }
     return NO;
 }
 

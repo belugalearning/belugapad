@@ -89,11 +89,6 @@
         {
             contentDatabase = [FMDatabase databaseWithPath:BUNDLE_FULL_PATH(@"/canned-dbs/canned-content/content.db")];
             [contentDatabase retain];
-            if (![contentDatabase open])
-            {
-                // TODO: Discuss with G
-                NSLog(@"Failed to open content database");
-            }
         }
     }
     return self;
@@ -120,6 +115,7 @@
 -(NSArray*)allConceptNodes
 {
     NSMutableArray *nodes=[[[NSMutableArray alloc] init] autorelease];
+    [contentDatabase open];
     FMResultSet *rs = [contentDatabase executeQuery:@"select * from ConceptNodes"];
     while([rs next])
     {
@@ -127,11 +123,13 @@
         [nodes addObject:n];
     }
     [rs close];
+    [contentDatabase close];
     return nodes;
 }
     
 -(NSArray*)relationMembersForName:(NSString *)name
 {
+    [contentDatabase open];
     FMResultSet *rs = [contentDatabase executeQuery:@"select pairs from BinaryRelations where name=?", name];
     NSArray *pairs = nil;
     if ([rs next])
@@ -139,18 +137,21 @@
         pairs = [[rs stringForColumn:@"pairs"] objectFromJSONString];
     }
     [rs close];
+    [contentDatabase close];
     return pairs;
 }
 
 -(Pipeline*)pipelineWithId:(NSString*)plId
 {
     Pipeline *pl = nil;
+    [contentDatabase open];
     FMResultSet *rs = [contentDatabase executeQuery:@"select * from Pipelines where id=?", plId];
     if ([rs next])
     {
         pl = [[[Pipeline alloc] initWithFMResultSetRow:rs] autorelease];
     }
     [rs close];
+    [contentDatabase close];
     return pl;
 }
 
@@ -162,6 +163,7 @@
         NSLog(@"ContentService#startPipelineWithId error. Node id=\"%@\" doesn't contain pipeline id=\"%@\"", node._id, pipelineid);
     }
     
+    [contentDatabase open];
     FMResultSet *rs = [contentDatabase executeQuery:@"select * from Pipelines where id=?", pipelineid];
     if (![rs next])
     {
@@ -170,6 +172,7 @@
     }    
     self.currentPipeline = [[[Pipeline alloc] initWithFMResultSetRow:rs] autorelease];
     [rs close];
+    [contentDatabase close];
     
     pipelineIndex=-1;
         
@@ -211,6 +214,7 @@
     {
         NSString *pId = [self.currentPipeline.problems objectAtIndex:pipelineIndex];
         
+        [contentDatabase open];
         FMResultSet *rs = [contentDatabase executeQuery:@"select id, rev from Problems where id=?", pId];
         if (![rs next])
         {
@@ -219,6 +223,7 @@
         }
         self.currentProblem = [[[Problem alloc] initWithFMResultSetRow:rs] autorelease];
         [rs close];
+        [contentDatabase close];
         
         NSString *relPath = [NSString stringWithFormat:@"/canned-dbs/canned-content/pdefs/%@.plist", pId];
         self.currentPDef = [NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(relPath)];

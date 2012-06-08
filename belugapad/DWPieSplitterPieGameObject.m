@@ -15,5 +15,8 @@
 @synthesize mySprite;
 @synthesize mySlices;
 @synthesize ScaledUp;
+@synthesize HasSplit;
+@synthesize myValue;
+@synthesize numberOfSlices;
 
 @end

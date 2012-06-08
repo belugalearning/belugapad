@@ -16,6 +16,9 @@
 @property (retain) CCSprite *mySprite;
 @property (retain) NSMutableArray *mySlices;
 @property BOOL ScaledUp;
+@property BOOL HasSplit;
+@property float myValue;
+@property int numberOfSlices;
 
 
 @end

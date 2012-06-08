@@ -67,9 +67,8 @@
 
 -(void)checkTouch:(CGPoint)hitLoc
 {
-    if(CGRectContainsPoint(pie.mySprite.boundingBox, hitLoc))
+    if(CGRectContainsPoint(pie.mySprite.boundingBox, hitLoc) && !pie.HasSplit)
     {
-        NSLog(@"nigga drinkin capri sun");
         gameWorld.Blackboard.PickupObject=gameObject;
     }
    

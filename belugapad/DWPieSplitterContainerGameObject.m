@@ -15,5 +15,6 @@
 @synthesize mySprite;
 @synthesize mySlices;
 @synthesize ScaledUp;
+@synthesize myHeldValue;
 
 @end

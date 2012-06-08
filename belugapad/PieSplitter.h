@@ -46,10 +46,20 @@ typedef enum {
     // and a default layer
     CCLayer *renderLayer;
     
+    // pdef options
+    BOOL showReset;
+    int numberOfCagedPies;
+    int numberOfCagedContainers;
+    int numberOfActivePies;
+    int numberOfActiveContainers;
+    int dividend;
+    int divisor;
     
     // then our specifics
     BOOL createdNewCon;
     BOOL createdNewPie;
+    BOOL hasSplit;
+    
     CCSprite *pieBox;
     CCSprite *conBox;
     CCSprite *splitBtn;

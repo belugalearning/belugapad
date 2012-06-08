@@ -87,6 +87,12 @@
 {
 	[gw doUpdate:delta];
     
+    // compare our status to the gamestate
+    if([activeCon count]<1 && [activePie count]<1)gameState=kGameCannotSplit;
+    else if([activeCon count]>1 && [activePie count]>0 && !hasSplit)gameState=kGameReadyToSplit;
+    else if([activeCon count]>1 && [activePie count]>0 && hasSplit)gameState=kGameSlicesActive;
+    else gameState=kGameCannotSplit;
+    
     if(autoMoveToNextProblem)
     {
         timeToAutoMoveToNextProblem+=delta;
@@ -99,6 +105,7 @@
     } 
     
     if(gameState==kGameReadyToSplit)[splitBtn setVisible:YES];
+    else [splitBtn setVisible:NO];
 }
 
 #pragma mark - gameworld setup and population
@@ -113,7 +120,16 @@
     // All our stuff needs to go into vars to read later
     
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
-    rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];    
+    rejectType=[[pdef objectForKey:REJECT_TYPE] intValue];    
+    showReset=[[pdef objectForKey:SHOW_RESET]boolValue];
+    numberOfCagedPies=[[pdef objectForKey:NUMBER_CAGED_PIES]intValue];
+    numberOfCagedContainers=[[pdef objectForKey:NUMBER_CAGED_CONTAINERS]intValue];
+    numberOfActivePies=[[pdef objectForKey:NUMBER_ACTIVE_PIES]intValue];
+    numberOfActiveContainers=[[pdef objectForKey:NUMBER_ACTIVE_CONTAINERS]intValue];
+    dividend=[[pdef objectForKey:DIVIDEND]intValue];
+    divisor=[[pdef objectForKey:DIVISOR]intValue];
+    
+    
     
 }
 
@@ -206,6 +222,30 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
+    
+    if(gameState==kGameReadyToSplit && CGRectContainsPoint(splitBtn.boundingBox, location))
+    {
+        for (DWPieSplitterPieGameObject *p in activePie)
+        {
+            p.numberOfSlices=[activeCon count];
+            p.HasSplit=YES;
+            
+            for(int i=0;i<p.numberOfSlices;i++)
+            {
+                DWPieSplitterSliceGameObject *slice = [DWPieSplitterSliceGameObject alloc];
+                [gw populateAndAddGameObject:slice withTemplateName:@"TpieSplitterSlice"];
+                slice.Position=p.Position;
+                slice.myPie=p;
+                [p.mySlices addObject:slice];
+                [slice handleMessage:kDWsetupStuff];
+            }
+            
+            [p handleMessage:kDWsplitActivePies];
+        }
+        
+        hasSplit=YES;
+        
+    }
     
     NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
     [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];

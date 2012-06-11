@@ -76,6 +76,7 @@
         CCLabelTTF *lbl=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",pie.numberOfSlices] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
         [lbl setPosition:ccp(50,50)];
         [pie.mySprite addChild:lbl];
+        [pie.mySprite removeChild:pie.touchOverlay cleanup:YES];
     }
     
     
@@ -100,6 +101,18 @@
             [pie.mySprite setOpacity:0];
         }
     
+    if(!pie.HasSplit) {
+        NSString *overlayFileName=[[NSString alloc]init];
+        overlayFileName=[NSString stringWithFormat:@"/images/piesplitter/pie-split-overlay.png"];
+        pie.touchOverlay=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(overlayFileName)];
+        [pie.touchOverlay setPosition:ccp(50,50)];
+        [pie.mySprite addChild:pie.touchOverlay];
+        if(gameWorld.Blackboard.inProblemSetup)
+        {
+            [pie.touchOverlay setTag:1];
+            [pie.touchOverlay setOpacity:0];
+        }
+    }
     
     
         [[gameWorld Blackboard].ComponentRenderLayer addChild:pie.mySprite z:2];

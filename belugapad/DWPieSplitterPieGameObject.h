@@ -19,6 +19,7 @@
 @property BOOL HasSplit;
 @property float myValue;
 @property int numberOfSlices;
+@property (retain) CCSprite *touchOverlay;
 
 
 @end

@@ -9,6 +9,8 @@
 #import "DWGameObject.h"
 #import "ToolConsts.h"
 #import "ToolScene.h"
+@class DWPieSplitterPieGameObject;
+@class DWPieSplitterContainerGameObject;
 
 typedef enum {
     kGameCannotSplit=0,
@@ -42,6 +44,7 @@ typedef enum {
     // standard to move between problems
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
+    float timeSinceInteractionOrShake;
     
     // and a default layer
     CCLayer *renderLayer;
@@ -57,16 +60,22 @@ typedef enum {
     int divisor;
     
     // then our specifics
+    DWPieSplitterContainerGameObject *newCon;
+    DWPieSplitterPieGameObject *newPie;
     BOOL createdNewCon;
     BOOL createdNewPie;
     BOOL hasSplit;
     
     CCSprite *pieBox;
     CCSprite *conBox;
-    CCSprite *splitBtn;
+    
+    DWGameObject *ghost;
     
     NSMutableArray *activePie;
     NSMutableArray *activeCon;
+    
+    int createdPies;
+    int createdCont;
     
     
 }
@@ -75,8 +84,12 @@ typedef enum {
 -(void)populateGW;
 -(void)createPieAtMount;
 -(void)createContainerAtMount;
+-(void)addGhostPie;
+-(void)addGhostContainer;
+-(void)removeGhost;
 -(void)reorderActivePies;
 -(void)reorderActiveContainers;
+-(void)splitPie:(DWPieSplitterPieGameObject*)p;
 -(void)splitPies;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;

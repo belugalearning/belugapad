@@ -19,6 +19,11 @@ typedef enum {
     
 } GameState;
 
+typedef enum {
+    kLabelShowFraction=0,
+    kLabelShowDecimal=1
+} LabelType;
+
 @interface PieSplitter : ToolScene
 {
     // required toolhost stuff
@@ -59,6 +64,8 @@ typedef enum {
     int dividend;
     int divisor;
     
+    int slicesInEachPie;
+    
     // then our specifics
     DWPieSplitterContainerGameObject *newCon;
     DWPieSplitterPieGameObject *newPie;
@@ -73,9 +80,12 @@ typedef enum {
     
     NSMutableArray *activePie;
     NSMutableArray *activeCon;
+    NSMutableArray *activeLabels;
     
     int createdPies;
     int createdCont;
+    
+    LabelType labelType;
     
     
 }

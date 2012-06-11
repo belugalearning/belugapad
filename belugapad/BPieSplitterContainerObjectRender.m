@@ -59,6 +59,16 @@
         }
         
     }
+    if(messageType==kDWupdateLabels)
+    {
+        if(!cont.myText)
+        {
+            cont.myText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            [cont.myText setPosition:ccp(50,-20)];
+            [cont.mySprite addChild:cont.myText];
+        }
+        [cont.myText setString:cont.textString];
+    }
     if(messageType==kDWmoveSpriteToPosition)
     {
         [self moveSprite];

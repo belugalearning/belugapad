@@ -111,6 +111,8 @@ static float kTimeToPieShake=7.0f;
         [self animShake];
         timeSinceInteractionOrShake=0;
     }
+
+    [self updateLabels];
     
 }
 
@@ -156,6 +158,10 @@ static float kTimeToPieShake=7.0f;
         [resetBtn setOpacity:0];
         [self.ForeLayer addChild:resetBtn z:2];        
     }    
+    
+    
+    int totalSlices=dividend*divisor;
+    slicesInEachPie=totalSlices/divisor;
 }
 
 -(void)populateGW
@@ -206,6 +212,22 @@ static float kTimeToPieShake=7.0f;
     if(startProblemSplit)[self splitPies];
     
     
+}
+
+-(void)updateLabels
+{
+    for(int i=0;i<[activeCon count];i++)
+    {
+        DWPieSplitterContainerGameObject *cont=[activeCon objectAtIndex:i];
+        NSString *thisConVal=[[NSString alloc]init];
+        int slicesInCont=[cont.mySlices count];
+        float thisVal=(float)slicesInCont/(float)[activeCon count];
+        if(labelType==kLabelShowDecimal) thisConVal=[NSString stringWithFormat:@"%.02g", thisVal];
+        if(labelType==kLabelShowFraction) thisConVal=[NSString stringWithFormat:@"%d/%d", slicesInCont, [activeCon count]];
+        if(!cont.textString)cont.textString=[[NSString alloc]init];
+        cont.textString=thisConVal;
+    }
+    [gw handleMessage:kDWupdateLabels andPayload:nil withLogLevel:-1];
 }
 
 #pragma mark - object interaction
@@ -404,7 +426,19 @@ static float kTimeToPieShake=7.0f;
             if(CGRectContainsPoint(p.mySprite.boundingBox, location) && !p.HasSplit)
             {
                 [self splitPie:p];
+                return;
             }
+        }
+    }
+    
+    // check the labels have been tapped, or not
+    for(DWPieSplitterContainerGameObject *c in activeCon)
+    {
+        if(CGRectContainsPoint(c.myText.boundingBox, [c.mySprite convertToNodeSpace:location]))
+        {
+            if(labelType==kLabelShowDecimal)labelType=kLabelShowFraction;
+            else if(labelType==kLabelShowFraction)labelType=kLabelShowDecimal;
+            return;
         }
     }
     
@@ -584,11 +618,7 @@ static float kTimeToPieShake=7.0f;
 {
     if([activeCon count]==divisor)
     {
-        int totalSlices=dividend*divisor;
-        int slicesInEachPie=totalSlices/divisor;
         int correctCon=0;
-        
-        NSLog(@"start eval with totalSlices %d, slicesInEachPie %d", totalSlices, slicesInEachPie);
         
         for(int i=0;i<[activeCon count];i++)
         {

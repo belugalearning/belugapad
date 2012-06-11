@@ -81,6 +81,7 @@ typedef enum {
     kDWshowCalcBubble=34,
     
     kDWsplitActivePies=35,
+    kDWupdateLabels=36,
 
     
     kDWareYouProximateTo=101,

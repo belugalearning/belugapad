@@ -17,5 +17,6 @@
 @synthesize ScaledUp;
 @synthesize myHeldValue;
 @synthesize myText;
+@synthesize textString;
 
 @end

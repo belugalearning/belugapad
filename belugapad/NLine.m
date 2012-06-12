@@ -23,6 +23,7 @@
 #import "DProblemParser.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
+#import "InteractionFeedback.h"
 
 @interface NLine()
 {
@@ -317,7 +318,7 @@ static float kTimeToBubbleShake=7.0f;
     [bubbleSprite setTextureRect:CGRectMake(0, 0, bubbleTexSelected.contentSize.width, bubbleTexSelected.contentSize.height)];
     
     [bubbleSprite setScale:0.87f];
-    [bubbleSprite runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.15f scale:1.0f] rate:2.0f]];
+    [bubbleSprite runAction:[InteractionFeedback enlargeTo1xAction]];
     
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/nline/pickup.wav")];
 }
@@ -328,29 +329,14 @@ static float kTimeToBubbleShake=7.0f;
     [bubbleSprite setTextureRect:CGRectMake(0, 0, bubbleTexRegular.contentSize.width, bubbleTexRegular.contentSize.height)];
     
     [bubbleSprite setScale:1.15f];
-    [bubbleSprite runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.15f scale:1.0f] rate:2.0f]];    
+    [bubbleSprite runAction:[InteractionFeedback reduceTo1xAction]];    
     
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/nline/release.wav")];
 }
 
 -(void)animShakeBubble
 {
-    CCEaseInOut *ml1=[CCEaseInOut actionWithAction:[CCMoveBy actionWithDuration:0.05f position:ccp(-10, 0)] rate:2.0f];
-    CCEaseInOut *mr1=[CCEaseInOut actionWithAction:[CCMoveBy actionWithDuration:0.1f position:ccp(20, 0)] rate:2.0f];
-    CCEaseInOut *ml2=[CCEaseInOut actionWithAction:[CCMoveBy actionWithDuration:0.05f position:ccp(-10, 0)] rate:2.0f];
-    CCSequence *s=[CCSequence actions:ml1, mr1, ml2, nil];
-    CCRepeat *r=[CCRepeat actionWithAction:s times:4];
-    
-    CCEaseInOut *oe=[CCEaseInOut actionWithAction:r rate:2.0f];
-    
-//    CCMoveBy *left1=[CCMoveBy actionWithDuration:0.05f position:ccp(00, 0)];
-//    CCMoveBy *right=[CCMoveBy actionWithDuration:0.1f position:ccp(40, 0)];
-//    CCMoveBy *left2=[CCMoveBy actionWithDuration:0.05f position:ccp(0, 0)];
-//    CCSequence *seq=[CCSequence actions:left1, right, left2, nil];
-    
-    [bubbleSprite runAction:oe];
-    
-    
+    [bubbleSprite runAction:[InteractionFeedback shakeAction]];
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

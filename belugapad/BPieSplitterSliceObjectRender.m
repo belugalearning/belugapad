@@ -64,6 +64,10 @@
     {
         [self moveSprite];
     }
+    if(messageType==kDWmoveSpriteToHome)
+    {
+        [self moveSpriteHome];
+    }
     if(messageType==kDWdismantle)
     {
         [[slice.mySprite parent] removeChild:slice.mySprite cleanup:YES];
@@ -100,6 +104,14 @@
 {
     DWPieSplitterPieGameObject *pie=(DWPieSplitterPieGameObject*)slice.myPie;
     [slice.mySprite setPosition:[pie.mySprite convertToNodeSpace:slice.Position]];
+}
+-(void)moveSpriteHome
+{
+    DWPieSplitterPieGameObject *myPie=(DWPieSplitterPieGameObject*)slice.myPie;
+    if(slice.myPie) {
+        slice.Position=myPie.Position;
+        [slice.mySprite runAction:[CCMoveTo actionWithDuration:0.5f position:[myPie.mySprite convertToNodeSpace: slice.Position]]];
+    }
 }
 -(void)handleTap
 {

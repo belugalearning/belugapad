@@ -91,7 +91,7 @@ static float kTimeToPieShake=7.0f;
     
     // compare our status to the gamestate
     if([activeCon count]<1 && [activePie count]<1)gameState=kGameCannotSplit;
-    else if(([activeCon count]>1 && [activePie count]>0 && !hasSplit && !reqCorrectPieSquaresToSplit) || ([activeCon count]==divisor && [activePie count]==dividend && !hasSplit && reqCorrectPieSquaresToSplit))gameState=kGameReadyToSplit;
+    else if(([activeCon count]>1 && [activePie count]>0 && !reqCorrectPieSquaresToSplit) || ([activeCon count]==divisor && [activePie count]==dividend && reqCorrectPieSquaresToSplit))gameState=kGameReadyToSplit;
 
     else if([activeCon count]>1 && [activePie count]>0 && hasSplit)gameState=kGameSlicesActive;
     else gameState=kGameCannotSplit;
@@ -132,11 +132,10 @@ static float kTimeToPieShake=7.0f;
     rejectType=[[pdef objectForKey:REJECT_TYPE] intValue];    
     showReset=[[pdef objectForKey:SHOW_RESET]boolValue];
     startProblemSplit=[[pdef objectForKey:START_PROBLEM_SPLIT]boolValue];
-<<<<<<< HEAD
     reqCorrectPieSquaresToSplit=[[pdef objectForKey:SPLIT_WITH_CORRECT_NUMBERS]boolValue];
     numberOfCagedPies=[[pdef objectForKey:NUMBER_CAGED_PIES]intValue];
     numberOfCagedContainers=[[pdef objectForKey:NUMBER_CAGED_SQUARES]intValue];
-=======
+
     
     if([pdef objectForKey:NUMBER_CAGED_PIES])
         numberOfCagedPies=[[pdef objectForKey:NUMBER_CAGED_PIES]intValue];
@@ -148,7 +147,6 @@ static float kTimeToPieShake=7.0f;
     else
         numberOfCagedContainers=20;
     
->>>>>>> e84387630110ad8be4f268d9008741c6cd882ff6
     numberOfActivePies=[[pdef objectForKey:NUMBER_ACTIVE_PIES]intValue];
     numberOfActiveContainers=[[pdef objectForKey:NUMBER_ACTIVE_SQUARES]intValue];
     dividend=[[pdef objectForKey:DIVIDEND]intValue];
@@ -244,6 +242,7 @@ static float kTimeToPieShake=7.0f;
     [gw populateAndAddGameObject:pie withTemplateName:@"TpieSplitterPie"];
     pie.Position=ccp(35,700);
     pie.MountPosition=pie.Position;
+    //if(hasSplit)[self splitPie:pie];
     newPie=pie;
     createdPies++;
 }
@@ -303,7 +302,7 @@ static float kTimeToPieShake=7.0f;
 {
     [conBox setVisible:YES];
     
-    DWPieSplitterPieGameObject *cont = [DWPieSplitterPieGameObject alloc];
+    DWPieSplitterContainerGameObject *cont = [DWPieSplitterContainerGameObject alloc];
     ghost=cont;
     
     [gw populateAndAddGameObject:cont withTemplateName:@"TpieSplitterContainer"];
@@ -314,7 +313,6 @@ static float kTimeToPieShake=7.0f;
     [activeCon addObject:cont];
     [cont handleMessage:kDWsetupStuff];
     [cont.mySprite setOpacity:25];
-    [cont.touchOverlay setOpacity:25];
     [self reorderActiveContainers];
 }
 
@@ -338,12 +336,7 @@ static float kTimeToPieShake=7.0f;
 
     for(DWPieSplitterPieGameObject *p in activePie)
     {
-<<<<<<< HEAD
-        DWPieSplitterPieGameObject *p=[activePie objectAtIndex:i];
-        p.Position=ccp((i+0.5)*(lx/[activePie count]), pieBox.position.y+(((int)[activePie count]/10)*100));
-=======
         p.Position=ccp(([activePie indexOfObject:p]+0.5)*(lx/[activePie count]), pieBox.position.y);
->>>>>>> e84387630110ad8be4f268d9008741c6cd882ff6
         [p.mySprite runAction:[CCMoveTo actionWithDuration:0.3 position:p.Position]];
     }
 }
@@ -599,6 +592,7 @@ static float kTimeToPieShake=7.0f;
                 DWPieSplitterSliceGameObject *slice=(DWPieSplitterSliceGameObject *)gw.Blackboard.PickupObject;
                 DWPieSplitterContainerGameObject *cont=(DWPieSplitterContainerGameObject *)slice.myCont;
                 [cont handleMessage:kDWunsetMountedObject];
+                [gw.Blackboard.PickupObject handleMessage:kDWmoveSpriteToHome];
                 [gw.Blackboard.PickupObject handleMessage:kDWunsetMount];
             }
         }

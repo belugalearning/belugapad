@@ -17,6 +17,7 @@
 -(BPieSplitterSliceObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
 -(void)setSprite;
 -(void)moveSprite;
+-(void)moveSpriteHome;
 -(void)handleTap;
 
 

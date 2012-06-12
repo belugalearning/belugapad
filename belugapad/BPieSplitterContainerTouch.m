@@ -69,7 +69,6 @@
 {
     if(CGRectContainsPoint(cont.mySprite.boundingBox, hitLoc))
     {
-        NSLog(@"niggie smalls!");
         gameWorld.Blackboard.PickupObject=gameObject;
     }
 }

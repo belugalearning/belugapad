@@ -49,6 +49,7 @@ typedef enum {
     // pdef options
     BOOL showReset;
     BOOL startProblemSplit;
+    BOOL reqCorrectPieSquaresToSplit;
     int numberOfCagedPies;
     int numberOfCagedContainers;
     int numberOfActivePies;

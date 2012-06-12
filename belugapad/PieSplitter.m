@@ -89,7 +89,8 @@
     
     // compare our status to the gamestate
     if([activeCon count]<1 && [activePie count]<1)gameState=kGameCannotSplit;
-    else if([activeCon count]>1 && [activePie count]>0 && !hasSplit)gameState=kGameReadyToSplit;
+    else if(([activeCon count]>1 && [activePie count]>0 && !hasSplit && !reqCorrectPieSquaresToSplit) || ([activeCon count]==divisor && [activePie count]==dividend && !hasSplit && reqCorrectPieSquaresToSplit))gameState=kGameReadyToSplit;
+
     else if([activeCon count]>1 && [activePie count]>0 && hasSplit)gameState=kGameSlicesActive;
     else gameState=kGameCannotSplit;
     
@@ -123,6 +124,7 @@
     rejectType=[[pdef objectForKey:REJECT_TYPE] intValue];    
     showReset=[[pdef objectForKey:SHOW_RESET]boolValue];
     startProblemSplit=[[pdef objectForKey:START_PROBLEM_SPLIT]boolValue];
+    reqCorrectPieSquaresToSplit=[[pdef objectForKey:SPLIT_WITH_CORRECT_NUMBERS]boolValue];
     numberOfCagedPies=[[pdef objectForKey:NUMBER_CAGED_PIES]intValue];
     numberOfCagedContainers=[[pdef objectForKey:NUMBER_CAGED_SQUARES]intValue];
     numberOfActivePies=[[pdef objectForKey:NUMBER_ACTIVE_PIES]intValue];
@@ -233,7 +235,7 @@
     for(int i=0;i<[activePie count];i++)
     {
         DWPieSplitterPieGameObject *p=[activePie objectAtIndex:i];
-        p.Position=ccp((i+0.5)*(lx/[activePie count]), pieBox.position.y);
+        p.Position=ccp((i+0.5)*(lx/[activePie count]), pieBox.position.y+(((int)[activePie count]/10)*100));
         [p.mySprite runAction:[CCMoveTo actionWithDuration:0.3 position:p.Position]];
     }
 }
@@ -243,7 +245,7 @@
     for(int i=0;i<[activeCon count];i++)
     {
         DWPieSplitterContainerGameObject *p=[activeCon objectAtIndex:i];
-        p.Position=ccp((i+0.5)*(lx/[activeCon count]), conBox.position.y);
+        p.Position=ccp((i+0.5)*(lx/[activeCon count]), conBox.position.y+((int)[activeCon count]/10)*100);
         [p.mySprite runAction:[CCMoveTo actionWithDuration:0.3 position:p.Position]];
     }
 }

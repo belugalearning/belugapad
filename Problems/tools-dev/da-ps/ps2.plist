@@ -17,6 +17,6 @@
 	<key>NUMBER_ACTIVE_SQUARES</key>
 	<integer>3</integer>
 	<key>START_PROBLEM_SPLIT</key>
-	<true/>
+	<false/>
 </dict>
 </plist>

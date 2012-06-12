@@ -16,5 +16,7 @@
 	<integer>3</integer>
 	<key>NUMBER_ACTIVE_SQUARES</key>
 	<integer>4</integer>
+	<key>SPLIT_WITH_CORRECT_NUMBERS</key>
+	<true/>
 </dict>
 </plist>

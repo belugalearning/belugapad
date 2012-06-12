@@ -8,6 +8,7 @@
 
 #import "BPieSplitterSliceObjectRender.h"
 #import "DWPieSplitterSliceGameObject.h"
+#import "DWPieSplitterPieGameObject.h"
 #import "global.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
@@ -74,15 +75,15 @@
 
 -(void)setSprite
 {    
-    
+    DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie;
     NSString *spriteFileName=[[NSString alloc]init];
-    
     
     spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/slice.png"];
     
     slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-    [slice.mySprite setPosition:slice.Position];
-        
+    [slice.mySprite setPosition:[p.mySprite convertToNodeSpace:slice.Position]];
+    
+    
     if(gameWorld.Blackboard.inProblemSetup)
     {
         [slice.mySprite setTag:1];
@@ -91,12 +92,14 @@
     
     
     
-    [[gameWorld Blackboard].ComponentRenderLayer addChild:slice.mySprite z:2];
+    [p.mySprite addChild:slice.mySprite];
+    
     
 }
 -(void)moveSprite
 {
-    [slice.mySprite setPosition:slice.Position];
+    DWPieSplitterPieGameObject *pie=(DWPieSplitterPieGameObject*)slice.myPie;
+    [slice.mySprite setPosition:[pie.mySprite convertToNodeSpace:slice.Position]];
 }
 -(void)handleTap
 {

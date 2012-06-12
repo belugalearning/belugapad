@@ -58,16 +58,8 @@
 {
     if(gameWorld.Blackboard.PickupObject)
     {
-        if(!cont.myText)
-        {
-            cont.myText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-            [cont.myText setPosition:ccp(50,-10)];
-            [cont.mySprite addChild:cont.myText];
-        }
-        
         if(!cont.mySlices)cont.mySlices=[[NSMutableArray alloc]init];
         [cont.mySlices addObject:gameWorld.Blackboard.PickupObject];
-        [cont.myText setString:[NSString stringWithFormat:@"%d", [cont.mySlices count]]];
     }
 }
 -(void)unMountObjectFromMe

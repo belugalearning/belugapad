@@ -17,6 +17,10 @@
 	<key>NUMBER_ACTIVE_SQUARES</key>
 	<integer>3</integer>
 	<key>START_PROBLEM_SPLIT</key>
-	<false/>
+	<true/>
+	<key>NUMBER_CAGED_PIES</key>
+	<integer>0</integer>
+	<key>NUMBER_CAGED_SQUARES</key>
+	<integer>0</integer>
 </dict>
 </plist>

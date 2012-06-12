@@ -265,6 +265,9 @@ static float kTimeToPieShake=7.0f;
     pie.MountPosition=ccp(35,700);
     [pie.mySprite setScale:1.0f];
     pie.ScaledUp=YES;
+    if(hasSplit)
+        [self splitPie:pie];
+    
     [activePie addObject:pie];
 }
 
@@ -338,6 +341,12 @@ static float kTimeToPieShake=7.0f;
     {
         p.Position=ccp(([activePie indexOfObject:p]+0.5)*(lx/[activePie count]), pieBox.position.y);
         [p.mySprite runAction:[CCMoveTo actionWithDuration:0.3 position:p.Position]];
+        
+        for(DWPieSplitterSliceGameObject *s in p.mySlices)
+        {
+            s.Position=p.Position;
+            [s.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:[p.mySprite convertToNodeSpace:s.Position]]];
+        }
     }
 }
 
@@ -347,7 +356,14 @@ static float kTimeToPieShake=7.0f;
     {
         DWPieSplitterContainerGameObject *p=[activeCon objectAtIndex:i];
         p.Position=ccp((i+0.5)*(lx/[activeCon count]), conBox.position.y+((int)[activeCon count]/10)*100);
-        [p.mySprite runAction:[CCMoveTo actionWithDuration:0.3 position:p.Position]];
+        [p.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:p.Position]];
+        
+        for(DWPieSplitterSliceGameObject *s in p.mySlices)
+        {
+            DWPieSplitterPieGameObject *pie=(DWPieSplitterPieGameObject*)s.myPie;
+            s.Position=p.Position;
+            [s.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:[pie.mySprite convertToNodeSpace:s.Position]]];
+        }
     }
 }
 

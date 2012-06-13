@@ -67,7 +67,7 @@
 
 -(void)checkTouch:(CGPoint)hitLoc
 {
-    if(CGRectContainsPoint(cont.mySprite.boundingBox, hitLoc))
+    if(CGRectContainsPoint(cont.mySprite.boundingBox, hitLoc) && [cont.mySlices count]==0)
     {
         gameWorld.Blackboard.PickupObject=gameObject;
     }

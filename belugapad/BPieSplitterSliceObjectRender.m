@@ -9,6 +9,7 @@
 #import "BPieSplitterSliceObjectRender.h"
 #import "DWPieSplitterSliceGameObject.h"
 #import "DWPieSplitterPieGameObject.h"
+#import "DWPieSplitterContainerGameObject.h"
 #import "global.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
@@ -103,7 +104,15 @@
 -(void)moveSprite
 {
     DWPieSplitterPieGameObject *pie=(DWPieSplitterPieGameObject*)slice.myPie;
-    [slice.mySprite setPosition:[pie.mySprite convertToNodeSpace:slice.Position]];
+    DWPieSplitterContainerGameObject *c=(DWPieSplitterContainerGameObject*)slice.myCont;
+    NSLog(@"spritepos=%@", NSStringFromCGPoint(slice.Position));
+    
+    if(slice.myCont)
+        [slice.mySprite setPosition:[c.mySprite convertToNodeSpace:slice.Position]];
+    else 
+        [slice.mySprite setPosition:[pie.mySprite convertToNodeSpace:slice.Position]];
+
+    
 }
 -(void)moveSpriteHome
 {

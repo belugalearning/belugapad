@@ -329,23 +329,17 @@ static float kTimeToPieShake=7.0f;
 
 -(void)reorderActivePies
 {
-    
-//    for(int i=0;i<[activePie count];i++)
-//    {
-//        DWPieSplitterPieGameObject *p=[activePie objectAtIndex:i];
-//        p.Position=ccp((i+0.5)*(lx/[activePie count]), pieBox.position.y);
-//        [p.mySprite runAction:[CCMoveTo actionWithDuration:0.3 position:p.Position]];
-//    }
 
     for(DWPieSplitterPieGameObject *p in activePie)
     {
         p.Position=ccp(([activePie indexOfObject:p]+0.5)*(lx/[activePie count]), pieBox.position.y);
-        [p.mySprite runAction:[CCMoveTo actionWithDuration:0.3 position:p.Position]];
+        [p.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:p.Position]];
         
         for(DWPieSplitterSliceGameObject *s in p.mySlices)
         {
-            s.Position=p.Position;
-            [s.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:[p.mySprite convertToNodeSpace:s.Position]]];
+            DWPieSplitterContainerGameObject *c=(DWPieSplitterContainerGameObject*)s.myCont;
+            s.Position=c.Position;
+            [s.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:[c.mySprite convertToNodeSpace:s.Position]]];
         }
     }
 }
@@ -354,15 +348,13 @@ static float kTimeToPieShake=7.0f;
 {
     for(int i=0;i<[activeCon count];i++)
     {
-        DWPieSplitterContainerGameObject *p=[activeCon objectAtIndex:i];
-        p.Position=ccp((i+0.5)*(lx/[activeCon count]), conBox.position.y+((int)[activeCon count]/10)*100);
-        [p.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:p.Position]];
-        
-        for(DWPieSplitterSliceGameObject *s in p.mySlices)
+        DWPieSplitterContainerGameObject *c=[activeCon objectAtIndex:i];
+        c.Position=ccp((i+0.5)*(lx/[activeCon count]), conBox.position.y+((int)[activeCon count]/10)*100);
+        [c.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:c.Position]];
+        for(DWPieSplitterSliceGameObject *s in c.mySlices)
         {
-            DWPieSplitterPieGameObject *pie=(DWPieSplitterPieGameObject*)s.myPie;
-            s.Position=p.Position;
-            [s.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:[pie.mySprite convertToNodeSpace:s.Position]]];
+            s.Position=c.mySprite.position;
+            [s.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:[c.mySprite convertToNodeSpace:s.Position]]];
         }
     }
 }
@@ -607,9 +599,10 @@ static float kTimeToPieShake=7.0f;
             else {
                 DWPieSplitterSliceGameObject *slice=(DWPieSplitterSliceGameObject *)gw.Blackboard.PickupObject;
                 DWPieSplitterContainerGameObject *cont=(DWPieSplitterContainerGameObject *)slice.myCont;
+                slice.Position=location;
                 [cont handleMessage:kDWunsetMountedObject];
-                [gw.Blackboard.PickupObject handleMessage:kDWmoveSpriteToHome];
                 [gw.Blackboard.PickupObject handleMessage:kDWunsetMount];
+                [gw.Blackboard.PickupObject handleMessage:kDWmoveSpriteToHome];
             }
         }
         
@@ -648,7 +641,6 @@ static float kTimeToPieShake=7.0f;
             
             if([cont.mySlices count]==slicesInEachPie){
                 correctCon++;
-                NSLog(@"correct slice count on obj %d", i);
             }
         }
         

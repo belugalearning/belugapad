@@ -41,10 +41,6 @@
         [self checkDropTarget:loc]; 
     }
 }
--(void)setMountedObject
-{
-    
-}
 
 -(void)checkDropTarget:(CGPoint)hitLoc
 {

@@ -15,5 +15,7 @@
 @synthesize PickupSprite;
 @synthesize mySprite;
 @synthesize SpriteFilename;
+@synthesize PosX;
+@synthesize PosY;
 
 @end

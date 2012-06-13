@@ -16,5 +16,6 @@
 @property int myCol;
 @property int myRope;
 @property float ColumnValue;
+@property (retain) DWGameObject *MountedObject;
 
 @end

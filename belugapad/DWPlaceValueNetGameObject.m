@@ -16,5 +16,6 @@
 @synthesize myCol;
 @synthesize myRope;
 @synthesize ColumnValue;
+@synthesize MountedObject;
 
 @end

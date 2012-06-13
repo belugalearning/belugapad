@@ -10,12 +10,15 @@
 #import "BLMath.h"
 #import "global.h"
 #import "PlaceValueConsts.h"
+#import "DWPlaceValueBlockGameObject.m"
+#import "DWPlaceValueCageGameObject.h"
 
 @implementation BPlaceValuePickupTarget
 
 -(BPlaceValuePickupTarget *)initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
     self=(BPlaceValuePickupTarget *)[super initWithGameObject:aGameObject withData:data];
+    b=(DWPlaceValueBlockGameObject*)gameObject;
     return self;
 }
 
@@ -23,19 +26,14 @@
 {
     if(messageType==kDWareYouAPickupTarget)
     {
-//        float theirV=fabsf([[payload objectForKey:OBJECT_VALUE] floatValue]);
-//        float myV=fabsf([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue]);
-
-        
-        //if(theirV!=myV)return;
         
         // if add from cage disabled - return at this point
-        DWGameObject *mount = [[gameObject store] objectForKey:MOUNT];
-        if([[[mount store] objectForKey:DISABLE_ADD] boolValue]) return;
+        DWPlaceValueCageGameObject *mount=(DWPlaceValueCageGameObject*)b.Mount;
+        if(mount.DisableAdd) return;
         
         //get current loc
-        float x=[[[gameObject store] objectForKey:POS_X] floatValue];
-        float y=[[[gameObject store] objectForKey:POS_Y] floatValue];   
+        float x=b.PosX;
+        float y=b.PosY;
         CGPoint myLoc=ccp(x,y);
         
         myLoc = [gameWorld.Blackboard.ComponentRenderLayer convertToWorldSpace:myLoc];
@@ -55,12 +53,12 @@
     
     if(messageType==kDWsetMount)
     {
-        GOS_SET([payload objectForKey:MOUNT], MOUNT);
+        b.Mount=[payload objectForKey:MOUNT];
     }
     
     if(messageType==kDWunsetMount)
     {
-        [[gameObject store] removeObjectForKey:MOUNT];
+        b.Mount=nil;
     }
 }
 

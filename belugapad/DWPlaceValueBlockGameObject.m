@@ -17,5 +17,7 @@
 @synthesize SpriteFilename;
 @synthesize PosX;
 @synthesize PosY;
+@synthesize AnimateMe;
+@synthesize Selected;
 
 @end

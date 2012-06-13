@@ -8,6 +8,7 @@
 
 #import "BPlaceValueContainerRender.h"
 #import "global.h"
+#import "DWPlaceValueCageGameObject.h"
 
 @implementation BPlaceValueContainerRender
 
@@ -16,8 +17,8 @@
     self=(BPlaceValueContainerRender*)[super initWithGameObject:aGameObject withData:data];
     
     //init pos x & y in case they're not set elsewhere
-    [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_X];
-    [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_Y];
+    c.PosX=0.0f;
+    c.PosY=0.0f;
     
     return self;
 }
@@ -37,23 +38,21 @@
 
 -(void)setSprite
 {
-    NSString *sname=[[gameObject store] objectForKey:RENDER_IMAGE_NAME];
-    if(!sname) sname=@"/images/placevalue/netspacer.png";
+    NSString *sname=@"/images/placevalue/netspacer.png";
     
     mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", sname]))];
     [mySprite setOpacity:120];
-    [[gameObject store] setObject:mySprite forKey:MY_SPRITE];
+    c.mySprite=mySprite;
 
-    float x=[[[gameObject store] objectForKey:POS_X] floatValue];
-    float y=[GOS_GET(POS_Y) floatValue];
+    float x=c.PosX;
+    float y=c.PosY;
     
     [mySprite setPosition:ccp(x, y)];
     
-    BOOL inactive=[[[gameObject store] objectForKey:HIDDEN] boolValue];
+    BOOL inactive=c.Hidden;
     if(inactive)
-    {
         [mySprite setVisible:NO];
-    }
+    
     if(gameWorld.Blackboard.inProblemSetup)
     {
         [mySprite setTag:1];

@@ -10,6 +10,9 @@
 #import "global.h"
 #import "BLMath.h"
 #import "PlaceValueConsts.h"
+#import "DWPlaceValueBlockGameObject.h"
+#import "DWPlaceValueCageGameObject.h"
+#import "DWPlaceValueNetGameObject.h"
 
 @implementation BPlaceValueDropTarget
 
@@ -24,20 +27,21 @@
 {
     if(messageType==kDWareYouADropTarget)
     {
-        DWGameObject *addO=gameWorld.Blackboard.PickupObject;
-        BOOL inactive=[[[gameObject store] objectForKey:HIDDEN] boolValue];
-        if([[[gameObject store] objectForKey:DISABLE_DEL] boolValue])return;
+//        DWGameObject *addO=gameWorld.Blackboard.PickupObject;
+        DWPlaceValueBlockGameObject *addO=(DWPlaceValueBlockGameObject*)gameWorld.Blackboard.PickupObject;
+        BOOL inactive=c.Hidden;
+        if(c.DisableDel)return;
 
         
         
         if(inactive==NO)
         {
 
-            if (![[gameObject store] objectForKey:MOUNTED_OBJECT] || [[gameObject store] objectForKey:ALLOW_MULTIPLE_MOUNT])
+            if (!c.MountedObject || c.AllowMultipleMount)
             {
                 //get current loc
-                float x=[[[gameObject store] objectForKey:POS_X] floatValue];
-                float y=[[[gameObject store] objectForKey:POS_Y] floatValue];   
+                float x=c.PosX;
+                float y=c.PosY;
                 CGPoint myLoc=ccp(x,y);
                 
                 myLoc = [gameWorld.Blackboard.ComponentRenderLayer convertToWorldSpace:myLoc];
@@ -51,15 +55,15 @@
 
                     NSNumber *gameObjectValue = nil;
                     NSNumber *pickupObjectValue = nil;
-                    if([[gameObject store] objectForKey:ALLOW_MULTIPLE_MOUNT])
+                    if(c.AllowMultipleMount)
                     {
-                        gameObjectValue = [[gameObject store] objectForKey:OBJECT_VALUE];
-                        pickupObjectValue = [[addO store] objectForKey:OBJECT_VALUE];
+                        gameObjectValue = [NSNumber numberWithFloat:c.ObjectValue];
+                        pickupObjectValue = [NSNumber numberWithFloat:addO.ObjectValue];
                     }
                     else
                     {
-                        gameObjectValue = [NSNumber numberWithFloat:fabsf([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue])];
-                        pickupObjectValue = [NSNumber numberWithFloat:fabsf([[[addO store] objectForKey:OBJECT_VALUE] floatValue])];
+                        gameObjectValue = [NSNumber numberWithFloat:fabsf(c.ObjectValue)];
+                        pickupObjectValue = [NSNumber numberWithFloat:fabsf(addO.ObjectValue)];
                     }
                     if([gameObjectValue isEqualToNumber:pickupObjectValue])
                     {

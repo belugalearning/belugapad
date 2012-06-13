@@ -8,11 +8,13 @@
 
 #import "BPlaceValueObjectSpawn.h"
 #import "global.h"
+#import "DWPlaceValueBlockGameObject.h"
 
 @implementation BPlaceValueObjectSpawn
 -(BPlaceValueObjectSpawn *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
     self=(BPlaceValueObjectSpawn*)[super initWithGameObject:aGameObject withData:data];
+    b=(DWPlaceValueBlockGameObject*)gameObject;
     
     return self;
 }
@@ -32,23 +34,16 @@
 
 -(void)spawnObject
 {
-    DWGameObject *block = [gameWorld addGameObjectWithTemplate:@"TplaceValueObject"];
+    DWPlaceValueBlockGameObject *block = [DWPlaceValueBlockGameObject alloc];
+    [gameWorld populateAndAddGameObject:block withTemplateName:@"TplaceValueObject"];
 
-    [[block store] setObject:[[gameObject store] objectForKey:OBJECT_VALUE] forKey:OBJECT_VALUE];
-    [[block store] setObject:[[gameObject store] objectForKey:SPRITE_FILENAME] forKey:SPRITE_FILENAME];
-    if([[gameObject store] objectForKey:PROXIMITY_SPRITE_FILENAME])
-    {
-        [[block store] setObject:[[gameObject store] objectForKey:PROXIMITY_SPRITE_FILENAME] forKey:PROXIMITY_SPRITE_FILENAME];
-    }
-    if([[gameObject store] objectForKey:PICKUP_SPRITE_FILENAME])
-    {
-        [[block store] setObject:[[gameObject store] objectForKey:PICKUP_SPRITE_FILENAME] forKey:PICKUP_SPRITE_FILENAME];
-    }
+    block.ObjectValue=b.ObjectValue;
+    block.SpriteFilename=b.SpriteFilename;
+    block.PickupSprite=b.PickupSprite;
+    block.Mount=b.Mount;
+
     
-    NSMutableDictionary *pl = [[[NSMutableDictionary alloc] init] autorelease];
-    [pl setObject:gameObject forKey:MOUNT];
-    
-    [block handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
+    [block handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
 }
 
 

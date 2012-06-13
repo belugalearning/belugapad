@@ -7,11 +7,11 @@
 //
 
 #import "DWBehaviour.h"
-
+@class DWPlaceValueCageGameObject;
 
 @interface BPlaceValueDropTarget : DWBehaviour
 {
-
+    DWPlaceValueCageGameObject *c;
 }
 
 -(BPlaceValueDropTarget *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

@@ -19,5 +19,6 @@
 @synthesize SpriteFilename;
 @synthesize PickupSpriteFilename;
 @synthesize MountedObject;
+@synthesize Hidden;
 
 @end

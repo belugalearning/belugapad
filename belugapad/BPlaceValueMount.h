@@ -7,11 +7,15 @@
 //
 
 #import "DWBehaviour.h"
+@class DWPlaceValueCageGameObject;
+@class DWPlaceValueNetGameObject;
 
 @interface BPlaceValueMount : DWBehaviour
 {
     BOOL evalUp;
     BOOL evalLeft;
+    DWPlaceValueNetGameObject *n;
+    DWPlaceValueCageGameObject *c;
 }
 
 -(BPlaceValueMount *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

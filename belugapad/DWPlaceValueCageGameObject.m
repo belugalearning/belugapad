@@ -20,5 +20,6 @@
 @synthesize PickupSpriteFilename;
 @synthesize MountedObject;
 @synthesize Hidden;
+@synthesize mySprite;
 
 @end

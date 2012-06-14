@@ -1226,7 +1226,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+1] objectAtIndex:i]count]; o++)
             {
 //                DWGameObject *go=[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+1] objectAtIndex:i]objectAtIndex:o];
-                DWPlaceValueBlockGameObject *go=[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+1] objectAtIndex:i]objectAtIndex:o];
+                DWPlaceValueNetGameObject *go=[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+1] objectAtIndex:i]objectAtIndex:o];
                 CCSprite *mySprite = go.mySprite;
                 boundingBoxMulch=CGRectUnion(boundingBoxMulch, mySprite.boundingBox);
                 NSLog(@"Bounding box width %f", boundingBoxMulch.size.width);

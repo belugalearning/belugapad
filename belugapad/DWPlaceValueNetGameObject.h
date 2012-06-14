@@ -8,6 +8,8 @@
 
 #import "DWGameObject.h"
 
+@class CCSprite;
+
 @interface DWPlaceValueNetGameObject : DWGameObject
 
 @property float PosX;
@@ -17,5 +19,7 @@
 @property int myRope;
 @property float ColumnValue;
 @property (retain) DWGameObject *MountedObject;
+@property (retain) CCSprite *mySprite;
+@property BOOL Hidden;
 
 @end

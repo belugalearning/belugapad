@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "DWBehaviour.h"
-@class DWPlaceValueBlockGameObject;
+@class DWPlaceValueCageGameObject;
 
 @interface BPlaceValueObjectSpawn : DWBehaviour
 {
-    DWPlaceValueBlockGameObject *b;
+    DWPlaceValueCageGameObject *c;
 }
 
 

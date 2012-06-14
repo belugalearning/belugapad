@@ -17,5 +17,7 @@
 @synthesize myRope;
 @synthesize ColumnValue;
 @synthesize MountedObject;
+@synthesize mySprite;
+@synthesize Hidden;
 
 @end

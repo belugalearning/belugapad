@@ -8,17 +8,19 @@
 
 #import "BPlaceValueContainerRender.h"
 #import "global.h"
-#import "DWPlaceValueCageGameObject.h"
+#import "DWPlaceValueNetGameObject.h"
 
 @implementation BPlaceValueContainerRender
 
 -(BPlaceValueContainerRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
     self=(BPlaceValueContainerRender*)[super initWithGameObject:aGameObject withData:data];
+   
+    n=(DWPlaceValueNetGameObject*)aGameObject;
     
     //init pos x & y in case they're not set elsewhere
-    c.PosX=0.0f;
-    c.PosY=0.0f;
+    n.PosX=0.0f;
+    n.PosY=0.0f;
     
     return self;
 }
@@ -42,14 +44,14 @@
     
     mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", sname]))];
     [mySprite setOpacity:120];
-    c.mySprite=mySprite;
+    n.mySprite=mySprite;
 
-    float x=c.PosX;
-    float y=c.PosY;
+    float x=n.PosX;
+    float y=n.PosY;
     
     [mySprite setPosition:ccp(x, y)];
     
-    BOOL inactive=c.Hidden;
+    BOOL inactive=n.Hidden;
     if(inactive)
         [mySprite setVisible:NO];
     

@@ -8,13 +8,14 @@
 
 #import "BPlaceValueObjectSpawn.h"
 #import "global.h"
+#import "DWPlaceValueCageGameObject.h"
 #import "DWPlaceValueBlockGameObject.h"
 
 @implementation BPlaceValueObjectSpawn
 -(BPlaceValueObjectSpawn *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
     self=(BPlaceValueObjectSpawn*)[super initWithGameObject:aGameObject withData:data];
-    b=(DWPlaceValueBlockGameObject*)gameObject;
+    c=(DWPlaceValueCageGameObject*)gameObject;
     
     return self;
 }
@@ -37,10 +38,12 @@
     DWPlaceValueBlockGameObject *block = [DWPlaceValueBlockGameObject alloc];
     [gameWorld populateAndAddGameObject:block withTemplateName:@"TplaceValueObject"];
 
-    block.ObjectValue=b.ObjectValue;
-    block.SpriteFilename=b.SpriteFilename;
-    block.PickupSprite=b.PickupSprite;
-    block.Mount=b.Mount;
+    block.ObjectValue=c.ObjectValue;
+    block.SpriteFilename=c.SpriteFilename;
+
+    block.PickupSprite=c.PickupSpriteFilename;
+
+    block.Mount=c;
 
     
     [block handleMessage:kDWsetMount andPayload:nil withLogLevel:0];

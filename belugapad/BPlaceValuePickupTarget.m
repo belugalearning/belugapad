@@ -10,7 +10,7 @@
 #import "BLMath.h"
 #import "global.h"
 #import "PlaceValueConsts.h"
-#import "DWPlaceValueBlockGameObject.m"
+#import "DWPlaceValueBlockGameObject.h"
 #import "DWPlaceValueCageGameObject.h"
 
 @implementation BPlaceValuePickupTarget

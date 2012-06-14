@@ -130,15 +130,15 @@
 -(NSArray*)relationMembersForName:(NSString *)name
 {
     [contentDatabase open];
-    FMResultSet *rs = [contentDatabase executeQuery:@"select pairs from BinaryRelations where name=?", name];
-    NSArray *pairs = nil;
+    FMResultSet *rs = [contentDatabase executeQuery:@"select members from BinaryRelations where name=?", name];
+    NSArray *members = nil;
     if ([rs next])
     {
-        pairs = [[rs stringForColumn:@"pairs"] objectFromJSONString];
+        members = [[rs stringForColumn:@"pairs"] objectFromJSONString];
     }
     [rs close];
     [contentDatabase close];
-    return pairs;
+    return members;
 }
 
 -(Pipeline*)pipelineWithId:(NSString*)plId

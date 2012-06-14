@@ -7,12 +7,15 @@
 //
 
 #import "DWBehaviour.h"
+@class DWPieSplitterContainerGameObject;
 
 @interface BPieSplitterContainerMountable : DWBehaviour
 {
-    
+    DWPieSplitterContainerGameObject *cont;
 }
 
 -(BPieSplitterContainerMountable *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
-
+-(void)checkDropTarget:(CGPoint)hitLoc;
+-(void)mountObjectToMe;
+-(void)unMountObjectFromMe;
 @end

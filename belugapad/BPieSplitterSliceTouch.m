@@ -8,6 +8,7 @@
 
 #import "BPieSplitterSliceTouch.h"
 #import "DWPieSplitterSliceGameObject.h"
+#import "DWPieSplitterPieGameObject.h"
 #import "global.h"
 #import "ToolConsts.h"
 #import "ToolHost.h"
@@ -65,9 +66,11 @@
 
 -(void)checkTouch:(CGPoint)hitLoc
 {
-    if(CGRectContainsPoint(slice.mySprite.boundingBox, hitLoc))
+    DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie;
+    if(CGRectContainsPoint(slice.mySprite.boundingBox, [slice.mySprite.parent convertToNodeSpace:hitLoc]))
     {
         gameWorld.Blackboard.PickupObject=slice;
+    
     }
 }
 

@@ -17,5 +17,7 @@
 @property (retain) NSMutableArray *mySlices;
 @property BOOL ScaledUp;
 @property float myHeldValue;
+@property (retain) CCLabelTTF *myText;
+@property (retain) NSString *textString;
 
 @end

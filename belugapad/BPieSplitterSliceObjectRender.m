@@ -8,6 +8,8 @@
 
 #import "BPieSplitterSliceObjectRender.h"
 #import "DWPieSplitterSliceGameObject.h"
+#import "DWPieSplitterPieGameObject.h"
+#import "DWPieSplitterContainerGameObject.h"
 #import "global.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
@@ -59,6 +61,14 @@
         }
         
     }
+    if(messageType==kDWmoveSpriteToPosition)
+    {
+        [self moveSprite];
+    }
+    if(messageType==kDWmoveSpriteToHome)
+    {
+        [self moveSpriteHome];
+    }
     if(messageType==kDWdismantle)
     {
         [[slice.mySprite parent] removeChild:slice.mySprite cleanup:YES];
@@ -70,15 +80,15 @@
 
 -(void)setSprite
 {    
-    
+    DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie;
     NSString *spriteFileName=[[NSString alloc]init];
-    
     
     spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/slice.png"];
     
     slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-    [slice.mySprite setPosition:slice.Position];
-        
+    [slice.mySprite setPosition:[p.mySprite convertToNodeSpace:slice.Position]];
+    
+    
     if(gameWorld.Blackboard.inProblemSetup)
     {
         [slice.mySprite setTag:1];
@@ -87,10 +97,31 @@
     
     
     
-    [[gameWorld Blackboard].ComponentRenderLayer addChild:slice.mySprite z:2];
+    [p.mySprite addChild:slice.mySprite];
+    
     
 }
+-(void)moveSprite
+{
+    DWPieSplitterPieGameObject *pie=(DWPieSplitterPieGameObject*)slice.myPie;
+    DWPieSplitterContainerGameObject *c=(DWPieSplitterContainerGameObject*)slice.myCont;
+    NSLog(@"spritepos=%@", NSStringFromCGPoint(slice.Position));
+    
+    if(slice.myCont)
+        [slice.mySprite setPosition:[c.mySprite convertToNodeSpace:slice.Position]];
+    else 
+        [slice.mySprite setPosition:[pie.mySprite convertToNodeSpace:slice.Position]];
 
+    
+}
+-(void)moveSpriteHome
+{
+    DWPieSplitterPieGameObject *myPie=(DWPieSplitterPieGameObject*)slice.myPie;
+    if(slice.myPie) {
+        slice.Position=myPie.Position;
+        [slice.mySprite runAction:[CCMoveTo actionWithDuration:0.5f position:[myPie.mySprite convertToNodeSpace: slice.Position]]];
+    }
+}
 -(void)handleTap
 {
 }

@@ -36,6 +36,9 @@
 		551815781525FDDF0097E259 /* DWPartitionRowGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815771525FDDF0097E259 /* DWPartitionRowGameObject.m */; };
 		551815811526210D0097E259 /* BPartitionRowRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5518157E1526210C0097E259 /* BPartitionRowRender.m */; };
 		551815821526210D0097E259 /* BPartitionStoreRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815801526210C0097E259 /* BPartitionStoreRender.m */; };
+		551D775C1588A899003583AC /* DWPlaceValueBlockGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 551D775B1588A899003583AC /* DWPlaceValueBlockGameObject.m */; };
+		551D775F1588A8D6003583AC /* DWPlaceValueNetGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 551D775E1588A8D6003583AC /* DWPlaceValueNetGameObject.m */; };
+		551D77621588A8FD003583AC /* DWPlaceValueCageGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 551D77611588A8FD003583AC /* DWPlaceValueCageGameObject.m */; };
 		552478661536BF5C00BA5C4E /* tooldef.plist in Resources */ = {isa = PBXBuildFile; fileRef = 552478651536BF5C00BA5C4E /* tooldef.plist */; };
 		5529F4D11529EA940085492E /* BPartitionStoreDropTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D01529EA940085492E /* BPartitionStoreDropTarget.m */; };
 		5529F4D4152A04320085492E /* BPartitionMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D3152A04310085492E /* BPartitionMount.m */; };
@@ -84,6 +87,7 @@
 		55E7CBF5157FE4AD00A399CF /* BPieSplitterSliceMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBF4157FE4AA00A399CF /* BPieSplitterSliceMount.m */; };
 		55FDAEDF157F7CBB00943176 /* ToolTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FDAEDE157F7CBB00943176 /* ToolTemplate.m */; };
 		55FDAEE3157F802900943176 /* PieSplitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FDAEE2157F802900943176 /* PieSplitter.m */; };
+		7F0AE04D158782D100194644 /* InteractionFeedback.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0AE04C158782D100194644 /* InteractionFeedback.m */; };
 		7F2317C5156FA13400E2C941 /* NordicAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2317C4156FA13400E2C941 /* NordicAnimator.m */; };
 		7F2586AF15697EBD00C439F6 /* ExprSimplifyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2586AE15697EBD00C439F6 /* ExprSimplifyTests.m */; };
 		7F268ADE14F28DE500F1F65F /* ToolHost.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F268ADD14F28DE500F1F65F /* ToolHost.m */; };
@@ -419,6 +423,12 @@
 		5518157E1526210C0097E259 /* BPartitionRowRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionRowRender.m; sourceTree = "<group>"; };
 		5518157F1526210C0097E259 /* BPartitionStoreRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPartitionStoreRender.h; sourceTree = "<group>"; };
 		551815801526210C0097E259 /* BPartitionStoreRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionStoreRender.m; sourceTree = "<group>"; };
+		551D775A1588A899003583AC /* DWPlaceValueBlockGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPlaceValueBlockGameObject.h; sourceTree = "<group>"; };
+		551D775B1588A899003583AC /* DWPlaceValueBlockGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWPlaceValueBlockGameObject.m; sourceTree = "<group>"; };
+		551D775D1588A8D6003583AC /* DWPlaceValueNetGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPlaceValueNetGameObject.h; sourceTree = "<group>"; };
+		551D775E1588A8D6003583AC /* DWPlaceValueNetGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWPlaceValueNetGameObject.m; sourceTree = "<group>"; };
+		551D77601588A8FD003583AC /* DWPlaceValueCageGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPlaceValueCageGameObject.h; sourceTree = "<group>"; };
+		551D77611588A8FD003583AC /* DWPlaceValueCageGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWPlaceValueCageGameObject.m; sourceTree = "<group>"; };
 		552478651536BF5C00BA5C4E /* tooldef.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tooldef.plist; sourceTree = "<group>"; };
 		5529F4CF1529EA940085492E /* BPartitionStoreDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPartitionStoreDropTarget.h; sourceTree = "<group>"; };
 		5529F4D01529EA940085492E /* BPartitionStoreDropTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionStoreDropTarget.m; sourceTree = "<group>"; };
@@ -514,6 +524,8 @@
 		55FDAEDE157F7CBB00943176 /* ToolTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolTemplate.m; sourceTree = "<group>"; };
 		55FDAEE1157F802900943176 /* PieSplitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieSplitter.h; sourceTree = "<group>"; };
 		55FDAEE2157F802900943176 /* PieSplitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieSplitter.m; sourceTree = "<group>"; };
+		7F0AE04B158782D100194644 /* InteractionFeedback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractionFeedback.h; sourceTree = "<group>"; };
+		7F0AE04C158782D100194644 /* InteractionFeedback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionFeedback.m; sourceTree = "<group>"; };
 		7F2317C3156FA13400E2C941 /* NordicAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NordicAnimator.h; sourceTree = "<group>"; };
 		7F2317C4156FA13400E2C941 /* NordicAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NordicAnimator.m; sourceTree = "<group>"; };
 		7F2586AE15697EBD00C439F6 /* ExprSimplifyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprSimplifyTests.m; sourceTree = "<group>"; };
@@ -1134,6 +1146,19 @@
 			name = Partition;
 			sourceTree = "<group>";
 		};
+		551D77581588A671003583AC /* PlaceValue */ = {
+			isa = PBXGroup;
+			children = (
+				551D775A1588A899003583AC /* DWPlaceValueBlockGameObject.h */,
+				551D775B1588A899003583AC /* DWPlaceValueBlockGameObject.m */,
+				551D775D1588A8D6003583AC /* DWPlaceValueNetGameObject.h */,
+				551D775E1588A8D6003583AC /* DWPlaceValueNetGameObject.m */,
+				551D77601588A8FD003583AC /* DWPlaceValueCageGameObject.h */,
+				551D77611588A8FD003583AC /* DWPlaceValueCageGameObject.m */,
+			);
+			name = PlaceValue;
+			sourceTree = "<group>";
+		};
 		5571BAE214E40FE90053A62B /* PlaceValue */ = {
 			isa = PBXGroup;
 			children = (
@@ -1278,6 +1303,8 @@
 			children = (
 				7F2317C3156FA13400E2C941 /* NordicAnimator.h */,
 				7F2317C4156FA13400E2C941 /* NordicAnimator.m */,
+				7F0AE04B158782D100194644 /* InteractionFeedback.h */,
+				7F0AE04C158782D100194644 /* InteractionFeedback.m */,
 			);
 			name = Animators;
 			sourceTree = "<group>";
@@ -2163,6 +2190,7 @@
 		7FC27F6B150FA9FC00E16A44 /* GameObjectExtensions */ = {
 			isa = PBXGroup;
 			children = (
+				551D77581588A671003583AC /* PlaceValue */,
 				55E7CBDC157FC82B00A399CF /* PieSplitter */,
 				55AFD6A715651A6800FF1886 /* TimesTables */,
 				55C5F71E1538867F009D8906 /* DotGrid */,
@@ -2736,6 +2764,10 @@
 				0C692E571580BCF4009307DB /* CouchDBDerivedDocument.m in Sources */,
 				0C712C0E1580C392004B716F /* JSONKit.m in Sources */,
 				0C712C131580EDEE004B716F /* Problem.m in Sources */,
+				7F0AE04D158782D100194644 /* InteractionFeedback.m in Sources */,
+				551D775C1588A899003583AC /* DWPlaceValueBlockGameObject.m in Sources */,
+				551D775F1588A8D6003583AC /* DWPlaceValueNetGameObject.m in Sources */,
+				551D77621588A8FD003583AC /* DWPlaceValueCageGameObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

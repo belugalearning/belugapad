@@ -9,6 +9,8 @@
 #import "DWGameObject.h"
 #import "ToolConsts.h"
 #import "ToolScene.h"
+@class DWPieSplitterPieGameObject;
+@class DWPieSplitterContainerGameObject;
 
 typedef enum {
     kGameCannotSplit=0,
@@ -16,6 +18,11 @@ typedef enum {
     kGameSlicesActive=2
     
 } GameState;
+
+typedef enum {
+    kLabelShowFraction=0,
+    kLabelShowDecimal=1
+} LabelType;
 
 @interface PieSplitter : ToolScene
 {
@@ -42,12 +49,15 @@ typedef enum {
     // standard to move between problems
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
+    float timeSinceInteractionOrShake;
     
     // and a default layer
     CCLayer *renderLayer;
     
     // pdef options
     BOOL showReset;
+    BOOL startProblemSplit;
+    BOOL reqCorrectPieSquaresToSplit;
     int numberOfCagedPies;
     int numberOfCagedContainers;
     int numberOfActivePies;
@@ -55,17 +65,28 @@ typedef enum {
     int dividend;
     int divisor;
     
+    int slicesInEachPie;
+    
     // then our specifics
+    DWPieSplitterContainerGameObject *newCon;
+    DWPieSplitterPieGameObject *newPie;
     BOOL createdNewCon;
     BOOL createdNewPie;
     BOOL hasSplit;
     
     CCSprite *pieBox;
     CCSprite *conBox;
-    CCSprite *splitBtn;
+    
+    DWGameObject *ghost;
     
     NSMutableArray *activePie;
     NSMutableArray *activeCon;
+    NSMutableArray *activeLabels;
+    
+    int createdPies;
+    int createdCont;
+    
+    LabelType labelType;
     
     
 }
@@ -74,8 +95,13 @@ typedef enum {
 -(void)populateGW;
 -(void)createPieAtMount;
 -(void)createContainerAtMount;
+-(void)addGhostPie;
+-(void)addGhostContainer;
+-(void)removeGhost;
 -(void)reorderActivePies;
 -(void)reorderActiveContainers;
+-(void)splitPie:(DWPieSplitterPieGameObject*)p;
+-(void)splitPies;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

@@ -59,6 +59,16 @@
         }
         
     }
+    if(messageType==kDWupdateLabels)
+    {
+        if(!cont.myText)
+        {
+            cont.myText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            [cont.myText setPosition:ccp(50,-20)];
+            [cont.mySprite addChild:cont.myText];
+        }
+        [cont.myText setString:cont.textString];
+    }
     if(messageType==kDWmoveSpriteToPosition)
     {
         [self moveSprite];
@@ -86,7 +96,8 @@
     
     cont.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
     [cont.mySprite setPosition:cont.Position];
-    [cont.mySprite setScale:0.5f];
+    if(!cont.ScaledUp)[cont.mySprite setScale:0.5f];
+    else [cont.mySprite setScale:1.0f];
     
         if(gameWorld.Blackboard.inProblemSetup)
         {

@@ -15,5 +15,6 @@
 @property (retain) CCSprite *mySprite;
 @property (retain) DWGameObject *myPie;
 @property float sliceValue;
+@property (retain) DWGameObject *myCont;
 
 @end

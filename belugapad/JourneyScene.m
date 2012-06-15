@@ -48,6 +48,8 @@ static float kLightInScaleMax=10.0f;
 const float kLogOutBtnPadding = 8.0f;
 const CGSize kLogOutBtnSize = { 120.0f, 43.0f };
 
+static CGRect debugButtonBounds={{950, 0}, {100, 50}};
+
 typedef enum {
     kJuiStateNodeMap,
     kJuiStateNodeSliceTransition,
@@ -116,7 +118,14 @@ typedef enum {
     
     CGPoint logOutBtnCentre;
     CGRect logOutBtnBounds;
+    
+    //debug stuff
+    BOOL debugEnabled;
+    CCMenu *debugMenu;
 }
+
+-(void)debugRelocate:(id)sender;
+-(void)debugRebuildNodeTris:(id)sender;
 
 @end
 
@@ -151,6 +160,10 @@ typedef enum {
         
         contentService = ((AppController*)[[UIApplication sharedApplication] delegate]).contentService; 
         usersService = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
+        
+        debugEnabled=!((AppController*)[[UIApplication sharedApplication] delegate]).ReleaseMode;
+        
+        if(debugEnabled) [self buildDebugMenu];
         
         [self setupMap];
         
@@ -861,6 +874,13 @@ typedef enum {
         [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
         return;
     }
+    
+    if(debugEnabled && CGRectContainsPoint(debugButtonBounds, l))
+    {
+        BOOL doat=!debugMenu.enabled;
+        debugMenu.enabled=doat;
+        debugMenu.visible=doat;
+    }
  
     lastTouch=l;
     
@@ -987,6 +1007,36 @@ typedef enum {
         }
     }
 }
+
+#pragma mark - debug
+
+-(void)buildDebugMenu
+{
+    CCMenuItemLabel *i1=[CCMenuItemFont itemWithString:@"relocate to home" target:self selector:@selector(debugRelocate:)];
+    CCMenuItemLabel *i2=[CCMenuItemFont itemWithString:@"rebuild node tris" target:self selector:@selector(debugRebuildNodeTris:)];
+    
+    debugMenu =[CCMenu menuWithItems:i1, i2, nil];
+    
+    [debugMenu alignItemsVertically];
+    
+    [self addChild:debugMenu z:10];
+    debugMenu.visible=NO;
+    debugMenu.enabled=NO;
+    
+}
+
+-(void)debugRelocate:(id)sender
+{
+    NSLog(@"debug did reset map position");
+    [mapLayer setPosition:kStartMapPos];   
+}
+
+-(void)debugRebuildNodeTris:(id)sender
+{
+    NSLog(@"debug did rebuild node tris");
+}
+
+#pragma mark - tear down
 
 -(void)dealloc
 {

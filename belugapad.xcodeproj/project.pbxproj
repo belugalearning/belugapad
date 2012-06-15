@@ -267,6 +267,10 @@
 		7F71B40C150FBDAA0097A956 /* BATQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B400150FBCA80097A956 /* BATQuery.m */; };
 		7F71B40D150FBDAD0097A956 /* BATTreeViz.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B402150FBCA80097A956 /* BATTreeViz.m */; };
 		7F71B40E150FBDB00097A956 /* BATViz.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B404150FBCA80097A956 /* BATViz.m */; };
+		7F7336A5158B14CE00A37FC4 /* SGBlackboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F73369D158B14CE00A37FC4 /* SGBlackboard.m */; };
+		7F7336A6158B14CE00A37FC4 /* SGComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F73369F158B14CE00A37FC4 /* SGComponent.m */; };
+		7F7336A7158B14CE00A37FC4 /* SGGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336A1158B14CE00A37FC4 /* SGGameObject.m */; };
+		7F7336A8158B14CE00A37FC4 /* SGGameWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336A3158B14CE00A37FC4 /* SGGameWorld.m */; };
 		7F813D5514CCBA4300C1E997 /* IceDiv.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F813D5414CCBA4300C1E997 /* IceDiv.m */; };
 		7F813D5814CCBDDD00C1E997 /* fire1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5714CCBDDD00C1E997 /* fire1.plist */; };
 		7F813D5C14CCC3A100C1E997 /* fire2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5B14CCC3A100C1E997 /* fire2.plist */; };
@@ -896,6 +900,15 @@
 		7F71B404150FBCA80097A956 /* BATViz.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATViz.m; sourceTree = "<group>"; };
 		7F71B408150FBCB20097A956 /* ExprScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExprScene.h; sourceTree = "<group>"; };
 		7F71B409150FBCB20097A956 /* ExprScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprScene.m; sourceTree = "<group>"; };
+		7F73369C158B14CE00A37FC4 /* SGBlackboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBlackboard.h; sourceTree = "<group>"; };
+		7F73369D158B14CE00A37FC4 /* SGBlackboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBlackboard.m; sourceTree = "<group>"; };
+		7F73369E158B14CE00A37FC4 /* SGComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGComponent.h; sourceTree = "<group>"; };
+		7F73369F158B14CE00A37FC4 /* SGComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGComponent.m; sourceTree = "<group>"; };
+		7F7336A0158B14CE00A37FC4 /* SGGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGGameObject.h; sourceTree = "<group>"; };
+		7F7336A1158B14CE00A37FC4 /* SGGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGGameObject.m; sourceTree = "<group>"; };
+		7F7336A2158B14CE00A37FC4 /* SGGameWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGGameWorld.h; sourceTree = "<group>"; };
+		7F7336A3158B14CE00A37FC4 /* SGGameWorld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGGameWorld.m; sourceTree = "<group>"; };
+		7F7336A4158B14CE00A37FC4 /* SGModelConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGModelConstants.h; sourceTree = "<group>"; };
 		7F813D5314CCBA4300C1E997 /* IceDiv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IceDiv.h; sourceTree = "<group>"; };
 		7F813D5414CCBA4300C1E997 /* IceDiv.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = IceDiv.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7F813D5714CCBDDD00C1E997 /* fire1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = fire1.plist; sourceTree = "<group>"; };
@@ -2001,6 +2014,7 @@
 		7F51159814A9EF2B001AF372 /* CompArchitecture */ = {
 			isa = PBXGroup;
 			children = (
+				7F73369B158B14C200A37FC4 /* SGModel */,
 				7FABE6A314B4C5B500ED2D0C /* Behaviours */,
 				7FC6428F1572B6220043D575 /* Model */,
 				7FC27F6B150FA9FC00E16A44 /* GameObjectExtensions */,
@@ -2064,6 +2078,22 @@
 				7FCBC3E315100CF700066426 /* BATio.m */,
 			);
 			name = BATools;
+			sourceTree = "<group>";
+		};
+		7F73369B158B14C200A37FC4 /* SGModel */ = {
+			isa = PBXGroup;
+			children = (
+				7F73369C158B14CE00A37FC4 /* SGBlackboard.h */,
+				7F73369D158B14CE00A37FC4 /* SGBlackboard.m */,
+				7F73369E158B14CE00A37FC4 /* SGComponent.h */,
+				7F73369F158B14CE00A37FC4 /* SGComponent.m */,
+				7F7336A0158B14CE00A37FC4 /* SGGameObject.h */,
+				7F7336A1158B14CE00A37FC4 /* SGGameObject.m */,
+				7F7336A2158B14CE00A37FC4 /* SGGameWorld.h */,
+				7F7336A3158B14CE00A37FC4 /* SGGameWorld.m */,
+				7F7336A4158B14CE00A37FC4 /* SGModelConstants.h */,
+			);
+			name = SGModel;
 			sourceTree = "<group>";
 		};
 		7F813D5914CCC38100C1E997 /* particles */ = {
@@ -2754,6 +2784,10 @@
 				0C712C0E1580C392004B716F /* JSONKit.m in Sources */,
 				0C712C131580EDEE004B716F /* Problem.m in Sources */,
 				7F0AE04D158782D100194644 /* InteractionFeedback.m in Sources */,
+				7F7336A5158B14CE00A37FC4 /* SGBlackboard.m in Sources */,
+				7F7336A6158B14CE00A37FC4 /* SGComponent.m in Sources */,
+				7F7336A7158B14CE00A37FC4 /* SGGameObject.m in Sources */,
+				7F7336A8158B14CE00A37FC4 /* SGGameWorld.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -45,8 +45,6 @@ static float kLightInDelay=0.4f;
 static float kLightInTime=0.5f;
 static float kLightInScaleMax=10.0f;
 
-static int kNodeMax=50;
-
 const float kLogOutBtnPadding = 8.0f;
 const CGSize kLogOutBtnSize = { 120.0f, 43.0f };
 
@@ -56,29 +54,29 @@ typedef enum {
     kJuiStateNodeSlice
 } JuiState;
 
-static int kInclNodeCount=20;
-static NSString *inclNodes[20]={
-    @"5608a59d6797796ce9e11484fd11e438",
-    @"5608a59d6797796ce9e11484fd11f407",
-    @"5608a59d6797796ce9e11484fd180be3",
-    @"5608a59d6797796ce9e11484fd1798f0",
-    @"5608a59d6797796ce9e11484fd18040c",
-    @"5608a59d6797796ce9e11484fd179328",
-    @"5608a59d6797796ce9e11484fd179442",
-    @"5608a59d6797796ce9e11484fd17e9eb",
-    @"5608a59d6797796ce9e11484fd182d0d",
-    @"5608a59d6797796ce9e11484fd1756d2",
-    @"5608a59d6797796ce9e11484fd17640d",
-    @"5608a59d6797796ce9e11484fd181755",
-    @"5608a59d6797796ce9e11484fd172d9c",
-    @"5608a59d6797796ce9e11484fd178e3e",
-    @"5608a59d6797796ce9e11484fd1710c4",
-    @"5608a59d6797796ce9e11484fd17369e",
-    @"5608a59d6797796ce9e11484fd17913c",
-    @"dd95d7d0a2a52c6bc89724b163044d51",
-    @"dd95d7d0a2a52c6bc89724b16304518b",
-    @"5608a59d6797796ce9e11484fd17167c"
-};
+//static int kInclNodeCount=20;
+//static NSString *inclNodes[20]={
+//    @"5608a59d6797796ce9e11484fd11e438",
+//    @"5608a59d6797796ce9e11484fd11f407",
+//    @"5608a59d6797796ce9e11484fd180be3",
+//    @"5608a59d6797796ce9e11484fd1798f0",
+//    @"5608a59d6797796ce9e11484fd18040c",
+//    @"5608a59d6797796ce9e11484fd179328",
+//    @"5608a59d6797796ce9e11484fd179442",
+//    @"5608a59d6797796ce9e11484fd17e9eb",
+//    @"5608a59d6797796ce9e11484fd182d0d",
+//    @"5608a59d6797796ce9e11484fd1756d2",
+//    @"5608a59d6797796ce9e11484fd17640d",
+//    @"5608a59d6797796ce9e11484fd181755",
+//    @"5608a59d6797796ce9e11484fd172d9c",
+//    @"5608a59d6797796ce9e11484fd178e3e",
+//    @"5608a59d6797796ce9e11484fd1710c4",
+//    @"5608a59d6797796ce9e11484fd17369e",
+//    @"5608a59d6797796ce9e11484fd17913c",
+//    @"dd95d7d0a2a52c6bc89724b163044d51",
+//    @"dd95d7d0a2a52c6bc89724b16304518b",
+//    @"5608a59d6797796ce9e11484fd17167c"
+//};
 
 
 @interface JourneyScene()
@@ -163,9 +161,8 @@ static NSString *inclNodes[20]={
         
         [self schedule:@selector(doUpdateCreateNodes:) interval:1.0f / 4.0f];
         
-        //daemon=[[Daemon alloc] initWithLayer:mapLayer andRestingPostion:[mapLayer convertToNodeSpace:ccp(cx, cy)] andLy:ly];
-        daemon=[[Daemon alloc] initWithLayer:foreLayer andRestingPostion:ccp(cx, cy) andLy:ly];
-        [daemon setMode:kDaemonModeFollowing];
+//        daemon=[[Daemon alloc] initWithLayer:foreLayer andRestingPostion:ccp(cx, cy) andLy:ly];
+//        [daemon setMode:kDaemonModeFollowing];
         
         logOutBtnBounds=CGRectMake(kLogOutBtnPadding, winsize.height - kLogOutBtnSize.height - kLogOutBtnPadding, kLogOutBtnSize.width, kLogOutBtnSize.height);
 //        
@@ -214,31 +211,10 @@ static NSString *inclNodes[20]={
     
     //we don't want to do this -- needs to move to dynamic draw
     //[self createAllBackgroundTileSprites];
-    
-    [self createLights];
-    
-    [self addTerrainAtPosition:ccp(1208,-3587) withFile:BUNDLE_FULL_PATH(@"/images/map/fjord-with-base-25%.png")];
-    
-    [self addTerrainAtPosition:ccp(1562,-3500) withFile:BUNDLE_FULL_PATH(@"/images/map/forrest-with-base-4-25%.png")];
-    
-    [self addTerrainAtPosition:ccp(1201,-3226) withFile:BUNDLE_FULL_PATH(@"/images/map/forrest-with-base-3-25%.png")];
-    
-    [self addTerrainAtPosition:ccp(1480,-3032) withFile:BUNDLE_FULL_PATH(@"/images/map/hills-with-base-1-25%.png")];
-    
-    [self addTerrainAtPosition:ccp(1451,-2751) withFile:BUNDLE_FULL_PATH(@"/images/map/mountain-range-with-base-1-25%.png")];
-    
-    [self addTerrainAtPosition:ccp(1038,-2780) withFile:BUNDLE_FULL_PATH(@"/images/map/mountains-with-base-1-25%.png")];
-    
-    [self addTerrainAtPosition:ccp(1146,-2076) withFile:BUNDLE_FULL_PATH(@"/images/map/lake-with-base-1-25%.png")];
-    
-    [self addTerrainAtPosition:ccp(834,-2288) withFile:BUNDLE_FULL_PATH(@"/images/map/lake-with-base-4-25%.png")];
-    
-    [self addTerrainAtPosition:ccp(1553,-2290) withFile:BUNDLE_FULL_PATH(@"/images/map/mountain-range-with-base-1-25%.png")];
-    
-    [self addTerrainAtPosition:ccp(1553,-2290) withFile:BUNDLE_FULL_PATH(@"/images/map/mountain-range-with-base-1-25%.png")];
-    
-    [self addTerrainAtPosition:ccp(587,-2940) withFile:BUNDLE_FULL_PATH(@"/images/map/hills-with-base-3-25%.png")];
-    
+
+    //no lights used
+    //[self createLights];
+        
     //reposition if previous node
     if(contentService.currentNode)
     {
@@ -285,15 +261,6 @@ static NSString *inclNodes[20]={
 
 -(void)createLights
 {
-    //test lights
-//    CCSprite *l=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-light.png")];
-//    [l setBlendFunc:(ccBlendFunc){GL_ZERO, GL_ONE_MINUS_SRC_ALPHA}];
-//    [l setPosition:ccp(cx, cy)];
-//    [l setScale:10.0f];
-//    //[darknessLayer addChild:l];
-//    [l retain];
-//    [lightSprites addObject:l];
-    
     //zubi light
     zubiLight=[self createLight];
     [zubiLight setScale:3.0f];
@@ -355,16 +322,16 @@ static NSString *inclNodes[20]={
         for (int i=1; i<[kcmNodes count]; i++) {
             ConceptNode *n=[kcmNodes objectAtIndex:i];
             
-            //todo: confirm inclusion against list or 25May
-            BOOL found=NO;
-            for (int i=0; i<kInclNodeCount; i++) {
-                if([n._id isEqualToString:inclNodes[i]])
-                {
-                    found=YES;
-                    NSLog(@"found node %@", n._id);
-                    //break;
-                }
-            }
+            //force find -- was previously checking against specific include list
+            BOOL found=YES;
+//            for (int i=0; i<kInclNodeCount; i++) {
+//                if([n._id isEqualToString:inclNodes[i]])
+//                {
+//                    found=YES;
+//                    NSLog(@"found node %@", n._id);
+//                    //break;
+//                }
+//            }
             
             if(found)
             {
@@ -662,7 +629,7 @@ static NSString *inclNodes[20]={
 
 -(void) doUpdate:(ccTime)delta
 {
-    [daemon doUpdate:delta];
+    //[daemon doUpdate:delta];
     deltacum+=delta;
     
     if(juiState==kJuiStateNodeSliceTransition)
@@ -670,45 +637,44 @@ static NSString *inclNodes[20]={
         nodeSliceTransitionHold+=delta;
     }
     
-    //update light positions
-    [self updateLightPositions];
-    
-    //render darkness layer
-    [darknessLayer clear:0.0f g:0.0f b:0.0f a:0.7f];
-    
-    [darknessLayer begin];
-    
-
-    glColorMask(0, 0, 0, 1);
-    
-    for (CCSprite *l in lightSprites) {
-        
-        if(l.tag>0)
-        {
-            if(deltacum>l.tag * kLightInDelay)
-            {
-                float prop = deltacum - (l.tag * kLightInDelay);
-                float newscale=kLightInScaleMax * (prop / kLightInTime);
-                if(newscale>kLightInScaleMax)
-                {
-                    newscale=kLightInScaleMax;
-                }
-                [l setScale:newscale];
-            }
-        }
-        
-        [l visit];
-    }
-    
-    glColorMask(1, 1, 1, 1);
-    
-    [darknessLayer end];
+//    //update light positions
+//    [self updateLightPositions];
+//    
+//    //render darkness layer
+//    [darknessLayer clear:0.0f g:0.0f b:0.0f a:0.7f];
+//    
+//    [darknessLayer begin];
+//    
+//
+//    glColorMask(0, 0, 0, 1);
+//    
+//    for (CCSprite *l in lightSprites) {
+//        
+//        if(l.tag>0)
+//        {
+//            if(deltacum>l.tag * kLightInDelay)
+//            {
+//                float prop = deltacum - (l.tag * kLightInDelay);
+//                float newscale=kLightInScaleMax * (prop / kLightInTime);
+//                if(newscale>kLightInScaleMax)
+//                {
+//                    newscale=kLightInScaleMax;
+//                }
+//                [l setScale:newscale];
+//            }
+//        }
+//        
+//        [l visit];
+//    }
+//    
+//    glColorMask(1, 1, 1, 1);
+//    
+//    [darknessLayer end];
 }
 
 -(void)updateLightPositions
 {
-    //[zubiLight setPosition:[mapLayer convertToWorldSpace:[daemon currentPosition]]];
-    [zubiLight setPosition:[daemon currentPosition]];
+    //[zubiLight setPosition:[daemon currentPosition]];
     
     for (ConceptNode *n in visibleNodes) {
         if(n.lightSprite)
@@ -902,8 +868,8 @@ static NSString *inclNodes[20]={
  
     NSLog(@"touched at %@", NSStringFromCGPoint(lOnMap));
     
-    [daemon setTarget:l];
-    [daemon setRestingPoint:l];
+//    [daemon setTarget:l];
+//    [daemon setRestingPoint:l];
     
     //assume touch didn't start in the node map
     touchStartedInNodeMap=NO;
@@ -989,10 +955,10 @@ static NSString *inclNodes[20]={
             
             lastTouch=l;
             
-            CGPoint lOnMap=[mapLayer convertToNodeSpace:l];
+//            CGPoint lOnMap=[mapLayer convertToNodeSpace:l];
             
-            [daemon setTarget:l];    
-            [daemon setRestingPoint:l];
+//            [daemon setTarget:l];    
+//            [daemon setRestingPoint:l];
         }
     }
     

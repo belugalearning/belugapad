@@ -14,7 +14,7 @@
 {
     float cx, cy, lx, ly;
     
-    Daemon *daemon;
+    //Daemon *daemon;
     
     CCLayer *mapLayer;
     CCLayer *foreLayer;

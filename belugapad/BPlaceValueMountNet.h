@@ -14,6 +14,8 @@
     BOOL evalUp;
     BOOL evalLeft;
     DWPlaceValueNetGameObject *n;
+    
+    BOOL seek;
 }
 
 -(BPlaceValueMountNet *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

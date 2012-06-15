@@ -22,10 +22,6 @@
     
     n=(DWPlaceValueNetGameObject*)gameObject;
     
-    NSMutableArray *mo=[[NSMutableArray alloc] init];
-    GOS_SET(mo, MOUNTED_OBJECTS);
-    [mo release];
-    
     return self;
 }
 -(void)doUpdate:(ccTime)delta
@@ -64,7 +60,6 @@
                 DWPlaceValueBlockGameObject *mountedObject = (DWPlaceValueBlockGameObject*)n.MountedObject;
                 mountedObject.Mount=moveToLeft;
                 mountedObject.AnimateMe=YES;
-                
                 [gameWorld handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
             }
             
@@ -127,6 +122,7 @@
     {
         evalLeft=NO;
         evalUp=NO;
+        [gameObject handleMessage:kDWupdateSprite];
     }
 }
 

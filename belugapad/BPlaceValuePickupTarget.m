@@ -38,12 +38,9 @@
         
         myLoc = [gameWorld.Blackboard.ComponentRenderLayer convertToWorldSpace:myLoc];
         
-        //get coords from payload (i.e. the search target)
-        float xhit=[[payload objectForKey:POS_X] floatValue];
-        float yhit=[[payload objectForKey:POS_Y] floatValue];
-        CGPoint hitLoc=ccp(xhit, yhit);
+        CGPoint hitLoc=gameWorld.Blackboard.TestTouchLocation;
         
-        
+
         if([BLMath DistanceBetween:myLoc and:hitLoc] <= (kPropXDropProximity*[gameWorld Blackboard].hostLX))
         {
             //tell gameScene we are a target for that pickup

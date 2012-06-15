@@ -42,7 +42,7 @@
 			<dict/>
 			<key>BPlaceValueDropTarget</key>
 			<dict/>
-			<key>BPlaceValueMount</key>
+			<key>BPlaceValueMountNet</key>
 			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>
@@ -58,7 +58,7 @@
 			<dict/>
 			<key>BPlaceValueDropTarget</key>
 			<dict/>
-			<key>BPlaceValueMount</key>
+			<key>BPlaceValueMountCage</key>
 			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>

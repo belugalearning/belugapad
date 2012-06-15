@@ -149,21 +149,16 @@
 
     CCSprite *mySprite=b.mySprite;
     
-    float x=b.PosX;
-    float y=b.PosY;
-    
-    
-    
     if(animate == YES)
     {
-        CGPoint newPos = ccp(x, y);
+        CGPoint newPos = ccp(b.PosX,b.PosY);
 
         CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:newPos];
         [mySprite runAction:anim];
     }
     else
     {
-        [mySprite setPosition:ccp(x, y)];
+        [mySprite setPosition:ccp(b.PosX,b.PosY)];
     }
 
 }

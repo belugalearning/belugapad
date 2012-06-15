@@ -16,6 +16,7 @@
 -(BPlaceValueMountable *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
     self=(BPlaceValueMountable*)[super initWithGameObject:aGameObject withData:data];
+    b=(DWPlaceValueBlockGameObject*)gameObject;
     
     return self;
 }
@@ -24,20 +25,22 @@
 {
     if(messageType==kDWsetMount)
     {
-        //set the old mount
-        DWGameObject *oldMount=b.Mount;
-        [oldMount handleMessage:kDWunsetMountedObject];
-            
-        //set the new mount for the GO
-        DWPlaceValueNetGameObject *newMount=[payload objectForKey:MOUNT];
-        b.Mount=newMount;
+//        //set the old mount
+//        if(b.Mount)
+//            [b.Mount handleMessage:kDWunsetMountedObject];
+//            
+//        //set the new mount for the GO
+        DWPlaceValueNetGameObject *newMount=(DWPlaceValueNetGameObject*)b.Mount;
+//        b.Mount=newMount;
         
         //tell the mount that i'm there
-        newMount.MountedObject=b.Mount;
+        newMount.MountedObject=b;
+        
+        NSLog(@"b posX %f /  b posY %f, nwmnt X %f / nwmnt y %f", b.PosX, b.PosY, newMount.PosX, newMount.PosY);
         
         b.PosX=newMount.PosX;
         b.PosY=newMount.PosY;
-        
+        NSLog(@"b posX %f /  b posY %f, nwmnt X %f / nwmnt y %f", b.PosX, b.PosY, newMount.PosX, newMount.PosY);        
         
         b.AnimateMe=YES;
 

@@ -10,14 +10,13 @@
 @class DWPlaceValueCageGameObject;
 @class DWPlaceValueNetGameObject;
 
-@interface BPlaceValueMount : DWBehaviour
+@interface BPlaceValueMountCage : DWBehaviour
 {
     BOOL evalUp;
     BOOL evalLeft;
-    DWPlaceValueNetGameObject *n;
     DWPlaceValueCageGameObject *c;
 }
 
--(BPlaceValueMount *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
+-(BPlaceValueMountCage *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
 
 @end

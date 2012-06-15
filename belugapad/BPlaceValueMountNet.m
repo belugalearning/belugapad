@@ -60,6 +60,9 @@
                 DWPlaceValueBlockGameObject *mountedObject = (DWPlaceValueBlockGameObject*)n.MountedObject;
                 mountedObject.Mount=moveToLeft;
                 mountedObject.AnimateMe=YES;
+                mountedObject.PosX=((DWPlaceValueNetGameObject*)moveToLeft).PosX;
+                mountedObject.PosY=((DWPlaceValueNetGameObject*)moveToLeft).PosY;
+                [mountedObject handleMessage:kDWupdateSprite];
                 [gameWorld handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
             }
             
@@ -92,6 +95,9 @@
                 {
                     moveObject.Mount=[[[gameWorld.Blackboard.AllStores objectAtIndex:myColumn] objectAtIndex:(myRow-1)] objectAtIndex:rope];
                     moveObject.AnimateMe=YES;
+                    moveObject.PosX=((DWPlaceValueNetGameObject*)moveObject.Mount).PosX;
+                    moveObject.PosY=((DWPlaceValueNetGameObject*)moveObject.Mount).PosY;
+                    [moveObject handleMessage:kDWupdateSprite];
                 }
             }
         }            
@@ -122,7 +128,6 @@
     {
         evalLeft=NO;
         evalUp=NO;
-        [gameObject handleMessage:kDWupdateSprite];
     }
 }
 

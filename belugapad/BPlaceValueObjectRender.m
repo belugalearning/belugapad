@@ -161,6 +161,8 @@
         [mySprite setPosition:ccp(b.PosX,b.PosY)];
     }
 
+    b.AnimateMe=NO;
+    
 }
 
 -(void)resetSpriteToMount

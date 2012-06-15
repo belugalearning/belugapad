@@ -36,11 +36,9 @@
         //tell the mount that i'm there
         newMount.MountedObject=b;
         
-        NSLog(@"b posX %f /  b posY %f, nwmnt X %f / nwmnt y %f", b.PosX, b.PosY, newMount.PosX, newMount.PosY);
         
         b.PosX=newMount.PosX;
-        b.PosY=newMount.PosY;
-        NSLog(@"b posX %f /  b posY %f, nwmnt X %f / nwmnt y %f", b.PosX, b.PosY, newMount.PosX, newMount.PosY);        
+        b.PosY=newMount.PosY; 
         
         b.AnimateMe=YES;
 

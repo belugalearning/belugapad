@@ -12,6 +12,7 @@
 #import "PlaceValueConsts.h"
 #import "DWPlaceValueBlockGameObject.h"
 #import "DWPlaceValueCageGameObject.h"
+#import "DWPlaceValueNetGameObject.h"
 
 @implementation BPlaceValuePickupTarget
 
@@ -26,11 +27,20 @@
 {
     if(messageType==kDWareYouAPickupTarget)
     {
+        DWPlaceValueCageGameObject *mountCge=[DWPlaceValueCageGameObject alloc];
+        //DWPlaceValueNetGameObject *mountNet=[DWPlaceValueNetGameObject alloc];
         
         // if add from cage disabled - return at this point
-        DWPlaceValueCageGameObject *mount=(DWPlaceValueCageGameObject*)b.Mount;
-        if(mount.DisableAdd) return;
-        
+    
+        if([b.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
+        {
+            mountCge=(DWPlaceValueCageGameObject*)b.Mount;
+            if(mountCge.DisableAdd) return;
+        }
+        else if([b.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
+        {
+            
+        }
         //get current loc
         float x=b.PosX;
         float y=b.PosY;

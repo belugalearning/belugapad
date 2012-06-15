@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "BPlaceValueDropTarget.h"
+#import "BPlaceValueDropTargetCage.h"
 #import "global.h"
 #import "BLMath.h"
 #import "PlaceValueConsts.h"
@@ -14,12 +14,12 @@
 #import "DWPlaceValueCageGameObject.h"
 #import "DWPlaceValueNetGameObject.h"
 
-@implementation BPlaceValueDropTarget
+@implementation BPlaceValueDropTargetCage
 
--(BPlaceValueDropTarget *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
+-(BPlaceValueDropTargetCage *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
-    self=(BPlaceValueDropTarget*)[super initWithGameObject:aGameObject withData:data];
-    
+    self=(BPlaceValueDropTargetCage*)[super initWithGameObject:aGameObject withData:data];
+    c=(DWPlaceValueCageGameObject*)gameObject;
     return self;
 }
 
@@ -48,9 +48,7 @@
                 
                 
                 //get coords from payload (i.e. the search target)
-                float xhit=[[payload objectForKey:POS_X] floatValue];
-                float yhit=[[payload objectForKey:POS_Y] floatValue];
-                CGPoint hitLoc=ccp(xhit, yhit);
+                CGPoint hitLoc=gameWorld.Blackboard.TestTouchLocation;
                 
 
                     NSNumber *gameObjectValue = nil;

@@ -41,7 +41,7 @@
     
     if(messageType==kDWunsetMountedObject)
     {
-
+        
     }
     if(messageType==kDWresetPositionEval)
     {

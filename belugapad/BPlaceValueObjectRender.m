@@ -155,13 +155,13 @@
 
         CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:newPos];
         [mySprite runAction:anim];
+        b.AnimateMe=NO;
     }
     else
     {
         [mySprite setPosition:ccp(b.PosX,b.PosY)];
     }
 
-    b.AnimateMe=NO;
     
 }
 

@@ -271,6 +271,10 @@
 		7F7336A6158B14CE00A37FC4 /* SGComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F73369F158B14CE00A37FC4 /* SGComponent.m */; };
 		7F7336A7158B14CE00A37FC4 /* SGGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336A1158B14CE00A37FC4 /* SGGameObject.m */; };
 		7F7336A8158B14CE00A37FC4 /* SGGameWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336A3158B14CE00A37FC4 /* SGGameWorld.m */; };
+		7F7336B3158B37A200A37FC4 /* SGJmapNodeGO.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336B2158B37A200A37FC4 /* SGJmapNodeGO.m */; };
+		7F7336B6158B383600A37FC4 /* SGJmapMNodeGO.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336B5158B383600A37FC4 /* SGJmapMNodeGO.m */; };
+		7F7336B9158B391400A37FC4 /* SGJmapNodeRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336B8158B391400A37FC4 /* SGJmapNodeRender.m */; };
+		7F7336BC158B3AF000A37FC4 /* SGJmapMNodeRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336BB158B3AF000A37FC4 /* SGJmapMNodeRender.m */; };
 		7F813D5514CCBA4300C1E997 /* IceDiv.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F813D5414CCBA4300C1E997 /* IceDiv.m */; };
 		7F813D5814CCBDDD00C1E997 /* fire1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5714CCBDDD00C1E997 /* fire1.plist */; };
 		7F813D5C14CCC3A100C1E997 /* fire2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5B14CCC3A100C1E997 /* fire2.plist */; };
@@ -909,6 +913,15 @@
 		7F7336A2158B14CE00A37FC4 /* SGGameWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGGameWorld.h; sourceTree = "<group>"; };
 		7F7336A3158B14CE00A37FC4 /* SGGameWorld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGGameWorld.m; sourceTree = "<group>"; };
 		7F7336A4158B14CE00A37FC4 /* SGModelConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGModelConstants.h; sourceTree = "<group>"; };
+		7F7336AB158B362500A37FC4 /* SGJmapObjectProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapObjectProtocols.h; sourceTree = "<group>"; };
+		7F7336B1158B37A200A37FC4 /* SGJmapNodeGO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapNodeGO.h; sourceTree = "<group>"; };
+		7F7336B2158B37A200A37FC4 /* SGJmapNodeGO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapNodeGO.m; sourceTree = "<group>"; };
+		7F7336B4158B383600A37FC4 /* SGJmapMNodeGO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapMNodeGO.h; sourceTree = "<group>"; };
+		7F7336B5158B383600A37FC4 /* SGJmapMNodeGO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapMNodeGO.m; sourceTree = "<group>"; };
+		7F7336B7158B391400A37FC4 /* SGJmapNodeRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapNodeRender.h; sourceTree = "<group>"; };
+		7F7336B8158B391400A37FC4 /* SGJmapNodeRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapNodeRender.m; sourceTree = "<group>"; };
+		7F7336BA158B3AF000A37FC4 /* SGJmapMNodeRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapMNodeRender.h; sourceTree = "<group>"; };
+		7F7336BB158B3AF000A37FC4 /* SGJmapMNodeRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapMNodeRender.m; sourceTree = "<group>"; };
 		7F813D5314CCBA4300C1E997 /* IceDiv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IceDiv.h; sourceTree = "<group>"; };
 		7F813D5414CCBA4300C1E997 /* IceDiv.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = IceDiv.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7F813D5714CCBDDD00C1E997 /* fire1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = fire1.plist; sourceTree = "<group>"; };
@@ -2014,6 +2027,9 @@
 		7F51159814A9EF2B001AF372 /* CompArchitecture */ = {
 			isa = PBXGroup;
 			children = (
+				7F7336AE158B36EE00A37FC4 /* SGComponents */,
+				7F7336AA158B356B00A37FC4 /* SGProtocols */,
+				7F7336A9158B353B00A37FC4 /* SGGameObjects */,
 				7F73369B158B14C200A37FC4 /* SGModel */,
 				7FABE6A314B4C5B500ED2D0C /* Behaviours */,
 				7FC6428F1572B6220043D575 /* Model */,
@@ -2094,6 +2110,52 @@
 				7F7336A4158B14CE00A37FC4 /* SGModelConstants.h */,
 			);
 			name = SGModel;
+			sourceTree = "<group>";
+		};
+		7F7336A9158B353B00A37FC4 /* SGGameObjects */ = {
+			isa = PBXGroup;
+			children = (
+				7F7336AF158B374800A37FC4 /* Jmap */,
+			);
+			name = SGGameObjects;
+			sourceTree = "<group>";
+		};
+		7F7336AA158B356B00A37FC4 /* SGProtocols */ = {
+			isa = PBXGroup;
+			children = (
+				7F7336AB158B362500A37FC4 /* SGJmapObjectProtocols.h */,
+			);
+			name = SGProtocols;
+			sourceTree = "<group>";
+		};
+		7F7336AE158B36EE00A37FC4 /* SGComponents */ = {
+			isa = PBXGroup;
+			children = (
+				7F7336B0158B374F00A37FC4 /* Jmap */,
+			);
+			name = SGComponents;
+			sourceTree = "<group>";
+		};
+		7F7336AF158B374800A37FC4 /* Jmap */ = {
+			isa = PBXGroup;
+			children = (
+				7F7336B1158B37A200A37FC4 /* SGJmapNodeGO.h */,
+				7F7336B2158B37A200A37FC4 /* SGJmapNodeGO.m */,
+				7F7336B4158B383600A37FC4 /* SGJmapMNodeGO.h */,
+				7F7336B5158B383600A37FC4 /* SGJmapMNodeGO.m */,
+			);
+			name = Jmap;
+			sourceTree = "<group>";
+		};
+		7F7336B0158B374F00A37FC4 /* Jmap */ = {
+			isa = PBXGroup;
+			children = (
+				7F7336B7158B391400A37FC4 /* SGJmapNodeRender.h */,
+				7F7336B8158B391400A37FC4 /* SGJmapNodeRender.m */,
+				7F7336BA158B3AF000A37FC4 /* SGJmapMNodeRender.h */,
+				7F7336BB158B3AF000A37FC4 /* SGJmapMNodeRender.m */,
+			);
+			name = Jmap;
 			sourceTree = "<group>";
 		};
 		7F813D5914CCC38100C1E997 /* particles */ = {
@@ -2788,6 +2850,10 @@
 				7F7336A6158B14CE00A37FC4 /* SGComponent.m in Sources */,
 				7F7336A7158B14CE00A37FC4 /* SGGameObject.m in Sources */,
 				7F7336A8158B14CE00A37FC4 /* SGGameWorld.m in Sources */,
+				7F7336B3158B37A200A37FC4 /* SGJmapNodeGO.m in Sources */,
+				7F7336B6158B383600A37FC4 /* SGJmapMNodeGO.m in Sources */,
+				7F7336B9158B391400A37FC4 /* SGJmapNodeRender.m in Sources */,
+				7F7336BC158B3AF000A37FC4 /* SGJmapMNodeRender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

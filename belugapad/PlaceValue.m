@@ -1559,6 +1559,10 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         }
         
     }
+    
+    //get any auto reset / repositions to re-evaluate
+    [gw handleMessage:kDWstartRespositionSeek andPayload:nil withLogLevel:0];
+    
     potentialTap=NO;
     hasMovedBlock=NO;
     hasMovedLayer=NO;

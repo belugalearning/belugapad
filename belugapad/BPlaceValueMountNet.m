@@ -59,6 +59,7 @@
             {
                 DWPlaceValueBlockGameObject *mountedObject = (DWPlaceValueBlockGameObject*)n.MountedObject;
                 mountedObject.Mount=moveToLeft;
+                ((DWPlaceValueNetGameObject*)moveToLeft).MountedObject=mountedObject;
                 mountedObject.AnimateMe=YES;
                 mountedObject.PosX=((DWPlaceValueNetGameObject*)moveToLeft).PosX;
                 mountedObject.PosY=((DWPlaceValueNetGameObject*)moveToLeft).PosY;
@@ -94,6 +95,7 @@
                 if(moveObject)
                 {
                     moveObject.Mount=[[[gameWorld.Blackboard.AllStores objectAtIndex:myColumn] objectAtIndex:(myRow-1)] objectAtIndex:rope];
+                    ((DWPlaceValueNetGameObject*)moveObject.Mount).MountedObject=moveObject;
                     moveObject.AnimateMe=YES;
                     moveObject.PosX=((DWPlaceValueNetGameObject*)moveObject.Mount).PosX;
                     moveObject.PosY=((DWPlaceValueNetGameObject*)moveObject.Mount).PosY;

@@ -167,8 +167,8 @@
 
 -(void)resetSpriteToMount
 {
-    DWPlaceValueCageGameObject *c=[DWPlaceValueCageGameObject alloc];
-    DWPlaceValueNetGameObject *n=[DWPlaceValueNetGameObject alloc];
+    DWPlaceValueCageGameObject *c;
+    DWPlaceValueNetGameObject *n;
     
     float x;
     float y;

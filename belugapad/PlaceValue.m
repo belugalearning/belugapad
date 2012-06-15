@@ -1522,7 +1522,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             }
             if([gw Blackboard].DropObject != nil)
             {
-                
+                DWPlaceValueBlockGameObject *po=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
                 // TODO: check the isCage returns correct results - will checking dropobject return?
                 BOOL isCage;
                 
@@ -1530,10 +1530,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 else isCage=NO;
 
                 //tell the picked-up object to mount on the dropobject
-                [pl removeAllObjects];
-                [pl setObject:[gw Blackboard].DropObject forKey:MOUNT];
-                [pl setObject:[NSNumber numberWithBool:YES] forKey:ANIMATE_ME];
-                [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
+
+                [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
                 
                 [[gw Blackboard].PickupObject handleMessage:kDWputdown andPayload:nil withLogLevel:0];         
                 [[gw Blackboard].PickupObject logInfo:@"this object was mounted" withData:0];

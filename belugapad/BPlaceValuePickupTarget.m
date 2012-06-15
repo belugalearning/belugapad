@@ -27,14 +27,12 @@
 {
     if(messageType==kDWareYouAPickupTarget)
     {
-        DWPlaceValueCageGameObject *mountCge=[DWPlaceValueCageGameObject alloc];
-        //DWPlaceValueNetGameObject *mountNet=[DWPlaceValueNetGameObject alloc];
         
         // if add from cage disabled - return at this point
     
         if([b.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
         {
-            mountCge=(DWPlaceValueCageGameObject*)b.Mount;
+            DWPlaceValueCageGameObject *mountCge=(DWPlaceValueCageGameObject*)b.Mount;
             if(mountCge.DisableAdd) return;
         }
         else if([b.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
@@ -61,7 +59,7 @@
     
     if(messageType==kDWsetMount)
     {
-        b.Mount=[payload objectForKey:MOUNT];
+
     }
     
     if(messageType==kDWunsetMount)

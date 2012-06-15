@@ -247,7 +247,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             [cageContainer setPosition:ccp(i*(kPropXColumnSpacing*lx), ly*kCageYOrigin)];
             [cageContainer setOpacity:0];
             [cageContainer setTag:2];
-            [renderLayer addChild:cageContainer z:1];
+            [renderLayer addChild:cageContainer z:10];
             
             // create cage
             DWPlaceValueCageGameObject *cge=[DWPlaceValueCageGameObject alloc];
@@ -290,7 +290,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             [cageContainer setPosition:ccp(i*(kPropXColumnSpacing*lx), ly*kCageYOrigin)];
             [cageContainer setOpacity:0];
             [cageContainer setTag:2];
-            [renderLayer addChild:cageContainer z:-1];
+            [renderLayer addChild:cageContainer z:10];
             
             float colValueNeg = -([[currentColumnInfo objectForKey:COL_VALUE] floatValue]);
             // create cage
@@ -1522,7 +1522,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             }
             if([gw Blackboard].DropObject != nil)
             {
-                DWPlaceValueBlockGameObject *po=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
+
                 // TODO: check the isCage returns correct results - will checking dropobject return?
                 BOOL isCage;
                 

@@ -138,7 +138,7 @@
     {
         [mySprite setColor:ccc3(255,0,0)];
     }
-        [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:2];
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:50];
     
     //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
     b.mySprite=mySprite;

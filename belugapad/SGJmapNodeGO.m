@@ -20,7 +20,7 @@
 {   
     if(self=[super init])
     {
-        NodeRenderComponent=[[SGJmapNodeRender alloc] initWithGameObject:self];
+        self.NodeRenderComponent=[[SGJmapNodeRender alloc] initWithGameObject:self];
     }
     return self;
 }

@@ -1231,7 +1231,6 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         // if there's a pickup sprite defined, set the object to use it now
         if(pickupObject.PickupSprite && !gw.Blackboard.inProblemSetup)
         {
-//            CCSprite *mySprite=[[[gw Blackboard].PickupObject store] objectForKey:MY_SPRITE];
             CCSprite *mySprite=pickupObject.mySprite;
             [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(pickupObject.PickupSprite)]];
         }
@@ -1296,17 +1295,14 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         if([gw Blackboard].DropObject != nil)
         { 
             // if a proximity sprite is set, change he pickupobject sprite now
-            if(proximitySprite)
-                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(proximitySprite)]];
+            if(pickupSprite)
+                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).PickupSprite)]];
             
             // and set the colour for use in tinting our grid later
             currentColour=ccc3(0,255,0);
             
         }
         else {
-            // but if we have no dropobject, we need the grid to be white again
-            if(proximitySprite)
-                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gw.Blackboard.PickupObject store] objectForKey:PICKUP_SPRITE_FILENAME])]];
             
             currentColour=ccc3(255,255,255);
         }
@@ -1514,7 +1510,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 DWGameObject *go = gw.Blackboard.PickupObject;
                 if(![gw.Blackboard.SelectedObjects containsObject:go])
                 {
-                    [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];                
+                    [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];                
                 }
             }
             else 
@@ -1540,6 +1536,11 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 
                 if(isCage)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchEndedDropObjectOnCage withOptionalNote:nil];
                 else [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchEndedDropObjectOnGrid withOptionalNote:nil];
+                
+                CCSprite *mySprite=((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).mySprite;
+                
+                if(pickupSprite)
+                    [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).SpriteFilename)]];
                 
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
                 

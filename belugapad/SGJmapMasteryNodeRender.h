@@ -9,7 +9,7 @@
 #import "SGComponent.h"
 #import "SGJmapObjectProtocols.h"
 
-@interface SGJmapMNodeRender : SGComponent
+@interface SGJmapMasteryNodeRender : SGComponent
 {
     id<Transform> ParentGO;
 }

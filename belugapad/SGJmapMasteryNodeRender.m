@@ -6,11 +6,11 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "SGJmapMNodeRender.h"
+#import "SGJmapMasteryNodeRender.h"
 
-@implementation SGJmapMNodeRender
+@implementation SGJmapMasteryNodeRender
 
--(SGJmapMNodeRender*)initWithGameObject:(id<Transform>)aGameObject
+-(SGJmapMasteryNodeRender*)initWithGameObject:(id<Transform>)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {

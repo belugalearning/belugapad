@@ -7,7 +7,7 @@
 //
 
 #import "SGJmapMasteryNode.h"
-#import "SGJmapMNodeRender.h"
+#import "SGJmapMasteryNodeRender.h"
 
 @implementation SGJmapMasteryNode
 
@@ -20,7 +20,7 @@
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
-        self.MNodeRenderComponent=[[SGJmapMNodeRender alloc] initWithGameObject:self];
+        self.MNodeRenderComponent=[[SGJmapMasteryNodeRender alloc] initWithGameObject:self];
     }
     return self;
 }

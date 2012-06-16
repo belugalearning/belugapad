@@ -9,10 +9,10 @@
 #import "SGGameObject.h"
 #import "SGJmapObjectProtocols.h"
 
-@class SGJmapMNodeRender;
+@class SGJmapMasteryNodeRender;
 
 @interface SGJmapMasteryNode : SGGameObject <Transform>
 
-@property (retain) SGJmapMNodeRender* MNodeRenderComponent;
+@property (retain) SGJmapMasteryNodeRender* MNodeRenderComponent;
 
 @end

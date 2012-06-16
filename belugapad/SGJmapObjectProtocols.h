@@ -11,5 +11,6 @@
 @protocol Transform
 
 @property CGPoint Position;
+@property (retain) CCSpriteBatchNode *RenderBatch;
 
 @end

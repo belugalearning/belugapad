@@ -129,6 +129,9 @@ typedef enum {
     //game world
     SGGameWorld *gw;
     
+    //game world rendering
+    CCSpriteBatchNode *nodeRenderBatch;
+    
     //debug stuff
     BOOL debugEnabled;
     CCMenu *debugMenu;
@@ -206,12 +209,20 @@ typedef enum {
 
 -(void) setupGw;
 {
+    gw=[[SGGameWorld alloc] initWithGameScene:self];
+    
+    //setup render batch for nodes
+    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.plist")];
+    nodeRenderBatch=[CCSpriteBatchNode batchNodeWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.png")];
+    [mapLayer addChild:nodeRenderBatch];
     
 }
 
 -(void) setupMap
 {
     [self createLayers];
+    
+    [self setupGw];
     
     kcmIdIndex=[[NSMutableDictionary alloc] init];
     dotSprites=[[NSMutableArray alloc] init];

@@ -24,6 +24,7 @@
     {
         gameWorld=aGameWorld;
     
+        [gameWorld addGameObject:self];
     }
 	return self;
 }

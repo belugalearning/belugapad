@@ -17,6 +17,7 @@
 @property (readonly) NSArray *pipelines;
 @property (readonly) int x;
 @property (readonly) int y;
+@property (readonly) BOOL mastery;
 
 //not persisted
 @property (retain) CCSprite *journeySprite;

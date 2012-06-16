@@ -13,7 +13,7 @@
 @implementation ConceptNode
 
 @synthesize pipelines;
-@synthesize x, y;
+@synthesize x, y, mastery;
 @synthesize journeySprite, nodeSliceSprite, lightSprite;
 
 @dynamic isLit;
@@ -28,6 +28,8 @@
         
         x = [resultSet intForColumn:@"x"];
         y = [resultSet intForColumn:@"y"];
+        mastery = [resultSet boolForColumn:@"mastery"];
+                
     }
     return self;
 }

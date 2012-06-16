@@ -20,7 +20,6 @@
 -(void)doUpdate:(ccTime)delta;
 -(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel;
 -(void)handleMessage:(SGMessageType)messageType;
--(void)initComplete;
 
 -(void)cleanup;
 

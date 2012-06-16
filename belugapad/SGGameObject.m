@@ -13,11 +13,6 @@
 
 @synthesize gameWorld;
 
--(void)initComplete
-{
-    [self handleMessage:kSGonGameObjectInitComplete];
-}
-
 -(SGGameObject *) initWithGameWorld:(SGGameWorld*)aGameWorld
 {
     if( (self=[super init] )) 

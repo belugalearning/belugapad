@@ -13,7 +13,6 @@
 
 typedef enum {
 
-    kSGonGameObjectInitComplete=0,
-    kSGsetupStuff=1,
+    kSGmessageNone
         
 } SGMessageType;

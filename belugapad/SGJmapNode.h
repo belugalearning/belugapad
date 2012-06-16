@@ -15,4 +15,6 @@
 
 @property (retain) SGJmapNodeRender* NodeRenderComponent;
 
+-(SGJmapNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
+
 @end

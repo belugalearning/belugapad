@@ -215,7 +215,14 @@ typedef enum {
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.plist")];
     nodeRenderBatch=[CCSpriteBatchNode batchNodeWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.png")];
     [mapLayer addChild:nodeRenderBatch];
-    
+ 
+    for(int i=0;i<20;i++)
+    {
+        CCSprite *nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-complete.png"];
+        [nodeSprite setPosition:ccp(0, 0)];
+        [nodeRenderBatch addChild:nodeSprite];
+    }
+
 }
 
 -(void) setupMap
@@ -285,10 +292,10 @@ typedef enum {
 
     [self addChild:mapLayer];
 
-    //darkness layer
-    darknessLayer=[CCRenderTexture renderTextureWithWidth:lx height:ly];
-    [darknessLayer setPosition:ccp(cx, cy)];
-    [self addChild:darknessLayer];
+//    //darkness layer
+//    darknessLayer=[CCRenderTexture renderTextureWithWidth:lx height:ly];
+//    [darknessLayer setPosition:ccp(cx, cy)];
+//    [self addChild:darknessLayer];
 
     //fore layer
     foreLayer=[[CCLayer alloc] init];
@@ -391,6 +398,7 @@ typedef enum {
             else {
                 [removeNodes addObject:n];
             }
+    
         }
     }
 
@@ -400,6 +408,27 @@ typedef enum {
     nMinY=nMinY*kNodeScale;
     nMaxX=nMaxX*kNodeScale;
     nMaxY=nMaxY*kNodeScale;
+    
+    
+    //create nodes
+    for (int i=1; i<[kcmNodes count]; i++) {
+        ConceptNode *n=[kcmNodes objectAtIndex:i];
+        
+        //node position
+        CGPoint nodepos=ccp((float)n.x * kNodeScale, (nMaxY-(float)n.y) * kNodeScale);
+        
+        //create a node go
+        if(n.mastery)
+        {
+            SGJmapMasteryNode *masterynode=[[SGJmapMasteryNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos];
+        }
+        else {
+            SGJmapNode *node=[[SGJmapNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos];
+        }    
+        
+        //todo: set visibility / add to visibility batch?
+        
+    }
 }
 
 - (void)parseAndCreateSpritesForPreReqRelations

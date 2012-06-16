@@ -15,4 +15,6 @@
 
 @property (retain) SGJmapMasteryNodeRender* MNodeRenderComponent;
 
+-(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
+
 @end

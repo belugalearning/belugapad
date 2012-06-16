@@ -16,13 +16,14 @@
 //transform protocol properties
 @synthesize Position, RenderBatch;
 
--(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch
+-(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
-        self.MNodeRenderComponent=[[SGJmapMasteryNodeRender alloc] initWithGameObject:self];
-        
         self.RenderBatch=aRenderBatch;
+        self.Position=aPosition;
+        
+        self.MNodeRenderComponent=[[SGJmapMasteryNodeRender alloc] initWithGameObject:self];
     }
     return self;
 }

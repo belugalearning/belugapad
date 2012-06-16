@@ -8,6 +8,13 @@
 
 #import "SGJmapMasteryNodeRender.h"
 
+@interface SGJmapMasteryNodeRender()
+{
+    CCSprite *nodeSprite;
+}
+
+@end
+
 @implementation SGJmapMasteryNodeRender
 
 -(SGJmapMasteryNodeRender*)initWithGameObject:(id<Transform>)aGameObject
@@ -15,6 +22,8 @@
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
         ParentGO=aGameObject;
+        
+        [self setup];
     }
     
     return self;
@@ -28,6 +37,13 @@
 -(void)doUpdate:(ccTime)delta
 {
     
+}
+
+-(void)setup
+{
+    nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-incomplete.png"];
+    [nodeSprite setPosition:ParentGO.Position];
+    [ParentGO.RenderBatch addChild:nodeSprite];
 }
 
 @end

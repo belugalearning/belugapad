@@ -49,6 +49,7 @@ const float kLogOutBtnPadding = 8.0f;
 const CGSize kLogOutBtnSize = { 120.0f, 43.0f };
 
 static CGRect debugButtonBounds={{950, 0}, {100, 50}};
+static BOOL debugRestrictMovement=NO;
 
 typedef enum {
     kJuiStateNodeMap,
@@ -381,7 +382,6 @@ typedef enum {
 - (void)parseAndCreateSpritesForPreReqRelations
 {
     prereqRelations=[contentService relationMembersForName:@"Prerequisites"];
-    NSLog(@"relation count %d", [prereqRelations count]);
     
     //iterate relations and find start/end points
     for (NSArray *rel in prereqRelations) {
@@ -500,7 +500,6 @@ typedef enum {
                     
                     //if this is the node just completed, animate it
                     if (n==contentService.currentNode && contentService.lightUpProgressFromLastNode) {
-                        NSLog(@"got just completed node");
                         [n.lightSprite setTag:1];
 //                        [n.lightSprite setOpacity:0];
                         [n.lightSprite setScale:1.0f];
@@ -578,11 +577,9 @@ typedef enum {
         [s setOpacity:100];
     }
     else {
-        NSLog(@"pipelines %d", n.pipelines.count);
+
     }
-    
-    NSLog(@"id: %@ pipelines: %d", n._id, n.pipelines.count);
-    
+        
     [mapLayer addChild:s];
     [nodeSprites addObject:s];    
     
@@ -963,16 +960,17 @@ typedef enum {
         {
             CGPoint newpos=[BLMath AddVector:mapLayer.position toVector:[BLMath SubtractVector:lastTouch from:l]];
             
-            if (newpos.x > 100) newpos.x=100;
-            if (newpos.y > 4000) newpos.y=4000;
+            if(debugRestrictMovement)
+            {
+                if (newpos.x > 100) newpos.x=100;
+                if (newpos.y > 4000) newpos.y=4000;
 
-            if (newpos.x < -1400) newpos.x=-1400;
-            if (newpos.y < 2300) newpos.y=2300;
+                if (newpos.x < -1400) newpos.x=-1400;
+                if (newpos.y < 2300) newpos.y=2300;
+            }
             
             [mapLayer setPosition:newpos];
 
-            NSLog(@"new pos %@", NSStringFromCGPoint(newpos));
-            
             lastTouch=l;
             
 //            CGPoint lOnMap=[mapLayer convertToNodeSpace:l];

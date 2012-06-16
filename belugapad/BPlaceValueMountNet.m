@@ -78,7 +78,7 @@
                 mountedObject.AnimateMe=YES;
                 mountedObject.PosX=((DWPlaceValueNetGameObject*)moveToLeft).PosX;
                 mountedObject.PosY=((DWPlaceValueNetGameObject*)moveToLeft).PosY;
-                [mountedObject handleMessage:kDWupdateSprite];
+                [mountedObject handleMessage:kDWmoveSpriteToPosition];
                 [gameWorld handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
             }
             
@@ -122,7 +122,7 @@
                     moveObject.AnimateMe=YES;
                     moveObject.PosX=((DWPlaceValueNetGameObject*)moveObject.Mount).PosX;
                     moveObject.PosY=((DWPlaceValueNetGameObject*)moveObject.Mount).PosY;
-                    [moveObject handleMessage:kDWupdateSprite];
+                    [moveObject handleMessage:kDWmoveSpriteToPosition];
                 }
             }
         }            

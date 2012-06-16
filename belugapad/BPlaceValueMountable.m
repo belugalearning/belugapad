@@ -25,14 +25,14 @@
 {
     if(messageType==kDWsetMount)
     {
-//        //set the old mount
-        if(b.Mount && !gameWorld.Blackboard.inProblemSetup)
+
+        if(b.Mount && !gameWorld.Blackboard.inProblemSetup && gameWorld.Blackboard.DropObject)
         {
             [b.Mount handleMessage:kDWunsetMountedObject];
             b.Mount=gameWorld.Blackboard.DropObject;
         }
-//            
-//        //set the new mount for the GO
+            
+
         
         DWPlaceValueNetGameObject *newMount=(DWPlaceValueNetGameObject*)b.Mount;
         

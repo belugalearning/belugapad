@@ -38,15 +38,13 @@
         if(!mySprite) 
         {
             [self setSprite];
-            [self setSpritePosWithAnimation:NO];            
+            [self setSpritePosWithAnimation];            
         }
     }
     
     if (messageType==kDWmoveSpriteToPosition) {
-        BOOL useAnimation = b.AnimateMe;
-
-        
-        [self setSpritePosWithAnimation:useAnimation];
+        b.AnimateMe=YES;
+        [self setSpritePosWithAnimation];
     }
     
     if(messageType==kDWupdateSprite)
@@ -60,9 +58,9 @@
             [self setSprite];
         }
 
-        BOOL useAnimation = b.Selected;
+
         
-        [self setSpritePosWithAnimation:useAnimation];
+        [self setSpritePosWithAnimation];
     }
         
     if(messageType==kDWpickedUp)
@@ -142,12 +140,12 @@
     b.mySprite=mySprite;
 }
 
--(void)setSpritePosWithAnimation:(BOOL) animate
+-(void)setSpritePosWithAnimation
 {
 
     CCSprite *mySprite=b.mySprite;
     
-    if(animate == YES)
+    if(b.AnimateMe)
     {
         CGPoint newPos = ccp(b.PosX,b.PosY);
 
@@ -182,6 +180,8 @@
         n=(DWPlaceValueNetGameObject*)b.Mount;
         x=n.PosX;
         y=n.PosY;
+        b.Mount=n.MountedObject;
+        [n handleMessage:kDWresetPositionEval];
     }
         
     

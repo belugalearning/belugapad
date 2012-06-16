@@ -30,9 +30,10 @@
     contentService = ac.contentService;
     usersService = ac.usersService;
     
+    self=(BPlaceValueSelectionMgr *)[super initWithGameObject:aGameObject withData:data];
+    
     b=(DWPlaceValueBlockGameObject*)gameObject;
     
-    self=(BPlaceValueSelectionMgr *)[super initWithGameObject:aGameObject withData:data];
     return self;
 }
 -(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload

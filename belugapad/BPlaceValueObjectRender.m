@@ -52,10 +52,8 @@
     if(messageType==kDWupdateSprite)
     {
         
-        if(b.Selected)
-        { 
-            [self switchSelection:b.Selected];
-        }
+
+        [self switchSelection:b.Selected];
 
         CCSprite *mySprite=b.mySprite;
         if(!mySprite) { 

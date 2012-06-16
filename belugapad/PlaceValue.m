@@ -1466,7 +1466,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         if([BLMath DistanceBetween:touchStartPos and:touchEndPos] < fabs(kTapSlipThreshold) && potentialTap)
         {
             // check whether it's selected and we can deselect - or that it's deselected
-            if(!([[[gw.Blackboard.PickupObject store] objectForKey:SELECTED] boolValue]) || ([[[gw.Blackboard.PickupObject store] objectForKey:SELECTED] boolValue] && allowDeselect))
+            DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
+            if(!(block.Selected) || (block.Selected && allowDeselect))
                 [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
             
         }

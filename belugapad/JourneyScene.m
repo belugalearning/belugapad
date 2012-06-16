@@ -484,27 +484,28 @@ typedef enum {
                 
                 //setup light if required
                 BOOL isLit=[usersService hasCompletedNodeId:n._id];
+
+                // ============= removing -- was for fixed light positions ================================
+//                if(isLit || [n._id isEqualToString:@"5608a59d6797796ce9e11484fd180be3"])
+//                {
+//                    
+//                    if ([n._id isEqualToString:@"5608a59d6797796ce9e11484fd180be3"] && isLit) {
+//                        [n.journeySprite setColor:ccc3(0, 255, 0)];
+//                    }
+//                    else if (isLit) {
+//                        [n.journeySprite setColor:ccc3(0, 255, 0)];                        
+//                    }
+                // ========================================================================================
                 
-                if(isLit || [n._id isEqualToString:@"5608a59d6797796ce9e11484fd180be3"])
+                if(isLit)
                 {
-                    
-                    if ([n._id isEqualToString:@"5608a59d6797796ce9e11484fd180be3"] && isLit) {
-                        [n.journeySprite setColor:ccc3(0, 255, 0)];
-                    }
-                    else if (isLit) {
-                        [n.journeySprite setColor:ccc3(0, 255, 0)];                        
-                    }
-                    
                     n.lightSprite=[self createLight];
                     [n.lightSprite setPosition:[mapLayer convertToWorldSpace:n.journeySprite.position]];
                     
                     //if this is the node just completed, animate it
                     if (n==contentService.currentNode && contentService.lightUpProgressFromLastNode) {
                         [n.lightSprite setTag:1];
-//                        [n.lightSprite setOpacity:0];
                         [n.lightSprite setScale:1.0f];
-//                        [n.lightSprite runAction:[CCFadeIn actionWithDuration:1.0f]];
-//                        [n.lightSprite runAction:[CCScaleTo actionWithDuration:1.0f scale:10.0f]];
                         
                         int tagCount=3;
                         

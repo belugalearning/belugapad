@@ -18,7 +18,7 @@
 
 -(SGJmapNodeGO*) initWithGameWorld:(SGGameWorld*)aGameWorld
 {   
-    if(self=[super init])
+    if(self=[super initWithGameWorld:aGameWorld])
     {
         self.NodeRenderComponent=[[SGJmapNodeRender alloc] initWithGameObject:self];
     }

@@ -12,7 +12,7 @@
 
 -(SGJmapMNodeRender*)initWithGameObject:(id<Transform>)aGameObject
 {
-    if(self=[super init])
+    if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
         ParentGO=aGameObject;
     }

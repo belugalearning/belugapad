@@ -28,6 +28,10 @@
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchModelFactory.h>
 
+#import "SGGameWorld.h"
+#import "SGJmapNode.h"
+#import "SGJmapMasteryNode.h"
+
 static float kNodeScale=0.5f;
 //static CGPoint kStartMapPos={-3576, -2557};
 static CGPoint kStartMapPos={-611, 3713};
@@ -41,9 +45,11 @@ static float kNodeSliceHoldTime=1.0f;
 static CGPoint kPinOffset={-118, -162.5f};
 static float kPinTapRadius=80.0f;
 
-static float kLightInDelay=0.4f;
-static float kLightInTime=0.5f;
-static float kLightInScaleMax=10.0f;
+// ========= remove later -- was used for lighting up effects ===========================
+//static float kLightInDelay=0.4f;
+//static float kLightInTime=0.5f;
+//static float kLightInScaleMax=10.0f;
+// ======================================================================================
 
 const float kLogOutBtnPadding = 8.0f;
 const CGSize kLogOutBtnSize = { 120.0f, 43.0f };
@@ -120,6 +126,9 @@ typedef enum {
     CGPoint logOutBtnCentre;
     CGRect logOutBtnBounds;
     
+    //game world
+    SGGameWorld *gw;
+    
     //debug stuff
     BOOL debugEnabled;
     CCMenu *debugMenu;
@@ -195,7 +204,10 @@ typedef enum {
 
 #pragma mark - setup and parse
 
-
+-(void) setupGw;
+{
+    
+}
 
 -(void) setupMap
 {

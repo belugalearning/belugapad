@@ -6,17 +6,17 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "SGJmapMNodeGO.h"
+#import "SGJmapMasteryNode.h"
 #import "SGJmapMNodeRender.h"
 
-@implementation SGJmapMNodeGO
+@implementation SGJmapMasteryNode
 
 @synthesize MNodeRenderComponent;
 
 //transform protocol properties
 @synthesize Position;
 
--(SGJmapMNodeGO*) initWithGameWorld:(SGGameWorld*)aGameWorld
+-(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {

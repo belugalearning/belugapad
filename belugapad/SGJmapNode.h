@@ -1,5 +1,5 @@
 //
-//  SGJmapMNodeGO.h
+//  SGJmapNodeGO.h
 //  belugapad
 //
 //  Created by Gareth Jenkins on 15/06/2012.
@@ -9,10 +9,10 @@
 #import "SGGameObject.h"
 #import "SGJmapObjectProtocols.h"
 
-@class SGJmapMNodeRender;
+@class SGJmapNodeRender;
 
-@interface SGJmapMNodeGO : SGGameObject <Transform>
+@interface SGJmapNode : SGGameObject <Transform>
 
-@property (retain) SGJmapMNodeRender* MNodeRenderComponent;
+@property (retain) SGJmapNodeRender* NodeRenderComponent;
 
 @end

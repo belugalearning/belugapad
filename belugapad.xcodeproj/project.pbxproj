@@ -271,8 +271,8 @@
 		7F7336A6158B14CE00A37FC4 /* SGComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F73369F158B14CE00A37FC4 /* SGComponent.m */; };
 		7F7336A7158B14CE00A37FC4 /* SGGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336A1158B14CE00A37FC4 /* SGGameObject.m */; };
 		7F7336A8158B14CE00A37FC4 /* SGGameWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336A3158B14CE00A37FC4 /* SGGameWorld.m */; };
-		7F7336B3158B37A200A37FC4 /* SGJmapNodeGO.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336B2158B37A200A37FC4 /* SGJmapNodeGO.m */; };
-		7F7336B6158B383600A37FC4 /* SGJmapMNodeGO.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336B5158B383600A37FC4 /* SGJmapMNodeGO.m */; };
+		7F7336B3158B37A200A37FC4 /* SGJmapNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336B2158B37A200A37FC4 /* SGJmapNode.m */; };
+		7F7336B6158B383600A37FC4 /* SGJmapMasteryNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336B5158B383600A37FC4 /* SGJmapMasteryNode.m */; };
 		7F7336B9158B391400A37FC4 /* SGJmapNodeRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336B8158B391400A37FC4 /* SGJmapNodeRender.m */; };
 		7F7336BC158B3AF000A37FC4 /* SGJmapMNodeRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336BB158B3AF000A37FC4 /* SGJmapMNodeRender.m */; };
 		7F813D5514CCBA4300C1E997 /* IceDiv.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F813D5414CCBA4300C1E997 /* IceDiv.m */; };
@@ -914,10 +914,10 @@
 		7F7336A3158B14CE00A37FC4 /* SGGameWorld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGGameWorld.m; sourceTree = "<group>"; };
 		7F7336A4158B14CE00A37FC4 /* SGModelConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGModelConstants.h; sourceTree = "<group>"; };
 		7F7336AB158B362500A37FC4 /* SGJmapObjectProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapObjectProtocols.h; sourceTree = "<group>"; };
-		7F7336B1158B37A200A37FC4 /* SGJmapNodeGO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapNodeGO.h; sourceTree = "<group>"; };
-		7F7336B2158B37A200A37FC4 /* SGJmapNodeGO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapNodeGO.m; sourceTree = "<group>"; };
-		7F7336B4158B383600A37FC4 /* SGJmapMNodeGO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapMNodeGO.h; sourceTree = "<group>"; };
-		7F7336B5158B383600A37FC4 /* SGJmapMNodeGO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapMNodeGO.m; sourceTree = "<group>"; };
+		7F7336B1158B37A200A37FC4 /* SGJmapNode.h */ = {isa = PBXFileReference; fileEncoding = 4; path = SGJmapNode.h; sourceTree = "<group>"; };
+		7F7336B2158B37A200A37FC4 /* SGJmapNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapNode.m; sourceTree = "<group>"; };
+		7F7336B4158B383600A37FC4 /* SGJmapMasteryNode.h */ = {isa = PBXFileReference; fileEncoding = 4; path = SGJmapMasteryNode.h; sourceTree = "<group>"; };
+		7F7336B5158B383600A37FC4 /* SGJmapMasteryNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapMasteryNode.m; sourceTree = "<group>"; };
 		7F7336B7158B391400A37FC4 /* SGJmapNodeRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapNodeRender.h; sourceTree = "<group>"; };
 		7F7336B8158B391400A37FC4 /* SGJmapNodeRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapNodeRender.m; sourceTree = "<group>"; };
 		7F7336BA158B3AF000A37FC4 /* SGJmapMNodeRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapMNodeRender.h; sourceTree = "<group>"; };
@@ -2139,10 +2139,10 @@
 		7F7336AF158B374800A37FC4 /* Jmap */ = {
 			isa = PBXGroup;
 			children = (
-				7F7336B1158B37A200A37FC4 /* SGJmapNodeGO.h */,
-				7F7336B2158B37A200A37FC4 /* SGJmapNodeGO.m */,
-				7F7336B4158B383600A37FC4 /* SGJmapMNodeGO.h */,
-				7F7336B5158B383600A37FC4 /* SGJmapMNodeGO.m */,
+				7F7336B1158B37A200A37FC4 /* SGJmapNode.h */,
+				7F7336B2158B37A200A37FC4 /* SGJmapNode.m */,
+				7F7336B4158B383600A37FC4 /* SGJmapMasteryNode.h */,
+				7F7336B5158B383600A37FC4 /* SGJmapMasteryNode.m */,
 			);
 			name = Jmap;
 			sourceTree = "<group>";
@@ -2850,8 +2850,8 @@
 				7F7336A6158B14CE00A37FC4 /* SGComponent.m in Sources */,
 				7F7336A7158B14CE00A37FC4 /* SGGameObject.m in Sources */,
 				7F7336A8158B14CE00A37FC4 /* SGGameWorld.m in Sources */,
-				7F7336B3158B37A200A37FC4 /* SGJmapNodeGO.m in Sources */,
-				7F7336B6158B383600A37FC4 /* SGJmapMNodeGO.m in Sources */,
+				7F7336B3158B37A200A37FC4 /* SGJmapNode.m in Sources */,
+				7F7336B6158B383600A37FC4 /* SGJmapMasteryNode.m in Sources */,
 				7F7336B9158B391400A37FC4 /* SGJmapNodeRender.m in Sources */,
 				7F7336BC158B3AF000A37FC4 /* SGJmapMNodeRender.m in Sources */,
 			);

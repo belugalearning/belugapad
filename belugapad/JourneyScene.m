@@ -271,14 +271,6 @@ typedef enum {
     NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
 }
 
--(void)addTerrainAtPosition:(CGPoint)location withFile:(NSString*)thisImage
-{
-    
-    CCSprite *thisSprite=[CCSprite spriteWithFile:thisImage];
-    [thisSprite setPosition:location];
-    [mapLayer addChild:thisSprite];
-}
-
 - (void)createLayers
 {
     //base colour layer
@@ -301,31 +293,6 @@ typedef enum {
     foreLayer=[[CCLayer alloc] init];
     [self addChild:foreLayer];
     
-}
-
--(void)createLights
-{
-    //zubi light
-    zubiLight=[self createLight];
-    [zubiLight setScale:3.0f];
-    
-    //nodeslice light
-    nodeSliceLight=[self createLight];
-    [nodeSliceLight setScale:14.0f];
-    [nodeSliceLight setPosition:kNodeSliceOrigin];
-    //only add this when in the correct mode
-    [lightSprites removeObject:nodeSliceLight];
-}
-
--(CCSprite*)createLight
-{
-    CCSprite *l=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-light.png")];
-    [l setBlendFunc:(ccBlendFunc){GL_ZERO, GL_ONE_MINUS_SRC_ALPHA}];
-    [l setPosition:ccp(cx, cy)];
-    [l setScale:10.0f];
-    [l retain];
-    [lightSprites addObject:l];    
-    return l;
 }
 
 - (void)createAllBackgroundTileSprites
@@ -431,73 +398,9 @@ typedef enum {
     }
 }
 
-- (void)parseAndCreateSpritesForPreReqRelations
-{
-    prereqRelations=[contentService relationMembersForName:@"Prerequisites"];
-    
-    //iterate relations and find start/end points
-    for (NSArray *rel in prereqRelations) {
-        NSString *id1=[rel objectAtIndex:0];
-        NSString *id2=[rel objectAtIndex:1];
-        
-        NSNumber *idx1=[kcmIdIndex objectForKey:id1];
-        NSNumber *idx2=[kcmIdIndex objectForKey:id2];
-        
-        if(idx1 && idx2)
-        {
-            CCSprite *cs1=[nodeSprites objectAtIndex:[idx1 integerValue]];
-            CCSprite *cs2=[nodeSprites objectAtIndex:[idx2 integerValue]];
-            
-            CGPoint pos1=[cs1 position];
-            CGPoint pos2=[cs2 position];
-            
-            [self drawPathFrom:pos1 to:pos2];
-        }
-    }
-}
+
 
 #pragma mark drawing and sprite creation
-
--(void)drawPathFrom:(CGPoint)p1 to:(CGPoint)p2
-{
-    //get the lenth of the vector
-    float l=[BLMath DistanceBetween:p1 and:p2];
-    
-    //how many points to plot
-    float dotCount=l / 50.0f;
-    
-    //vector between
-    CGPoint diff=[BLMath SubtractVector:p2 from:p1];
-    
-    float gapx=diff.x / dotCount;
-    float gapy=diff.y / dotCount;
-    
-    if(dotCount>=1)
-    {
-        for(int i=1; i<=(int)dotCount; i++)
-        {
-            //put dot at p1 + (gapx * i, gapy * i)
-            CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-std.png")];
-            [s setScale:0.25];
-            [s setOpacity:100];
-            [s setPosition:ccpAdd(p1, ccp(i*gapx, i*gapy))];
-            [mapLayer addChild:s];
-            [dotSprites addObject:s];
-        }
-    }
-}
-
--(void)createNodeSprites
-{
-    //effectively depracated -- this iterates all nodes and draws them
-    
-    for(int i=0; i<kcmNodes.count; i++)
-    {
-        ConceptNode *n=[kcmNodes objectAtIndex:i];
-        
-        [self createASpriteForNode:n];
-    }
-}
 
 -(CGPoint)currentCentre
 {
@@ -505,188 +408,7 @@ typedef enum {
     return c;
 }
 
--(void)createNodeSpritesNearCentre
-{
-    [self createNodeSpritesNear:[self currentCentre]];
-}
 
--(void)createNodeSpritesNear:(CGPoint)loc
-{
-    //creates sprites within kPropXNodeDrawDist of loc, and destroys them outside of that
-    for(int i=0; i<kcmNodes.count; i++)
-    {
-        ConceptNode *n=[kcmNodes objectAtIndex:i];
-     
-        
-        CGPoint nlpos=ccp((float)n.x * kNodeScale, (nMaxY-(float)n.y) * kNodeScale);
-        float diff=[BLMath DistanceBetween:loc and:nlpos];
-        
-        if(diff<(kPropXNodeDrawDist*lx))
-        {
-            //create a sprite
-            if(!n.journeySprite || contentService.fullRedraw)
-            {
-                [self createASpriteForNode:n];
-                
-                if(!visibleNodes)
-                    visibleNodes=[[NSMutableArray alloc] init];
-                
-                //also add to visible nodes
-                [visibleNodes addObject:n];
-                
-                //setup light if required
-                BOOL isLit=[usersService hasCompletedNodeId:n._id];
-
-                // ============= removing -- was for fixed light positions ================================
-//                if(isLit || [n._id isEqualToString:@"5608a59d6797796ce9e11484fd180be3"])
-//                {
-//                    
-//                    if ([n._id isEqualToString:@"5608a59d6797796ce9e11484fd180be3"] && isLit) {
-//                        [n.journeySprite setColor:ccc3(0, 255, 0)];
-//                    }
-//                    else if (isLit) {
-//                        [n.journeySprite setColor:ccc3(0, 255, 0)];                        
-//                    }
-                // ========================================================================================
-                
-                if(isLit)
-                {
-                    n.lightSprite=[self createLight];
-                    [n.lightSprite setPosition:[mapLayer convertToWorldSpace:n.journeySprite.position]];
-                    
-                    //if this is the node just completed, animate it
-                    if (n==contentService.currentNode && contentService.lightUpProgressFromLastNode) {
-                        [n.lightSprite setTag:1];
-                        [n.lightSprite setScale:1.0f];
-                        
-                        int tagCount=3;
-                        
-                        //parse prereqs destinations and light them up
-                        for (NSArray *prq in prereqRelations) {
-                            NSString *id1=[prq objectAtIndex:0];
-                            NSString *id2=[prq objectAtIndex:1];
-                            
-                            if([id1 isEqualToString:n._id])
-                            {
-                                //draw a light at that end point
-                                for (ConceptNode *endpoint in visibleNodes) {
-                                    if([id2 isEqualToString:endpoint._id])
-                                    {
-                                        CCSprite *l=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-light-dest.png")];
-                                        [l setBlendFunc:(ccBlendFunc){GL_ZERO, GL_ONE_MINUS_SRC_ALPHA}];
-                                        CGPoint dlpos=ccp((float)endpoint.x * kNodeScale, (nMaxY-(float)endpoint.y) * kNodeScale);
-                                        [l setPosition:[mapLayer convertToWorldSpace: dlpos]];
-                                        [l setScale:1.0f];
-                                        [l retain];
-                                        [lightSprites addObject:l];  
-                                        [l setTag:tagCount];
-                                        tagCount++;
-                                        
-                                        endpoint.lightSprite=l;
-                                    }
-                                }
-                            }
-                        }
-                        
-                    }
-                }
-            }
-        }
-        else {
-            //destroy the sprite, if present
-            if(n.journeySprite)
-            {
-                [mapLayer removeChild:n.journeySprite cleanup:YES];
-                [nodeSprites removeObject:n.journeySprite];
-                
-                //[n.journeySprite release];
-                n.journeySprite=nil;
-                
-                //remove light if present
-                if(n.lightSprite)
-                {
-                    [lightSprites removeObject:n.lightSprite];
-                    n.lightSprite=nil;
-                }
-                
-                //remove from visible nodes
-                [visibleNodes removeObject:n];
-            }
-        }
-    
-    }   
-    
-    contentService.fullRedraw=NO;
-    contentService.lightUpProgressFromLastNode=NO;
-}
-
--(void)createASpriteForNode:(ConceptNode *)n
-{
-    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-std.png")];
-    [s setPosition:ccp((float)n.x * kNodeScale, (nMaxY-(float)n.y) * kNodeScale)];
-    
-    if(n.pipelines.count==0)
-    {
-        [s setOpacity:100];
-    }
-    else {
-
-    }
-        
-    [mapLayer addChild:s];
-    [nodeSprites addObject:s];    
-    
-    n.journeySprite=s;
-}
-
--(void)addFeaturesInEmptySpace
-{
-    int fCount=0;
-    float minDist=100.0f;
-    
-    int xDiff=(nMaxX - nMinX) + nMinX;
-    int yDiff=(nMaxY - nMinY) + nMinY;
-    
-    do {
-        int rx=arc4random() % xDiff;
-        int ry=arc4random() % yDiff;
-        
-//        float x=rx*xDiff;
-//        float y=ry*yDiff;
-        
-        CGPoint pos=ccp(rx, ry);
-        BOOL found=NO;
-        for (CCNode *n in nodeSprites) {
-            if(fabsf([BLMath DistanceBetween:pos and:n.position])<minDist)
-            {
-                found=YES;
-                return;
-            }
-        }
-        for (CCNode *n in dotSprites) {
-            if(fabsf([BLMath DistanceBetween:pos and:n.position])<minDist)
-            {
-                found=YES;
-                return;
-            }
-        }
-        
-        if(!found)
-        {
-            [self drawFeatureAt:pos];
-            fCount++;
-        }
-        
-    } while (fCount<100);
-}
-
--(void)drawFeatureAt:(CGPoint)pos
-{
-    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/features/large1.png")];
-    [s setPosition:pos];
-    [s setScale:0.25f];
-    [mapLayer addChild:s];
-}
 
 #pragma mark loops
 
@@ -733,23 +455,6 @@ typedef enum {
 //    glColorMask(1, 1, 1, 1);
 //    
 //    [darknessLayer end];
-}
-
--(void)updateLightPositions
-{
-    //[zubiLight setPosition:[daemon currentPosition]];
-    
-    for (ConceptNode *n in visibleNodes) {
-        if(n.lightSprite)
-        {
-            [n.lightSprite setPosition:[mapLayer convertToWorldSpace:n.journeySprite.position]];
-        }
-    }
-}
-
--(void) doUpdateCreateNodes:(ccTime)delta
-{
-    [self createNodeSpritesNearCentre];
 }
 
 #pragma mark location testing and queries
@@ -1102,5 +807,306 @@ typedef enum {
     
     [super dealloc];
 }
+
+#pragma mark - unused reference (original dynamic lit renderer)
+
+//-(void)createNodeSpritesNearCentre
+//{
+//    [self createNodeSpritesNear:[self currentCentre]];
+//}
+//
+//-(void)createNodeSprites
+//{
+//    //effectively depracated -- this iterates all nodes and draws them
+//    
+//    for(int i=0; i<kcmNodes.count; i++)
+//    {
+//        ConceptNode *n=[kcmNodes objectAtIndex:i];
+//        
+//        [self createASpriteForNode:n];
+//    }
+//}
+//
+//-(void)createNodeSpritesNear:(CGPoint)loc
+//{
+//    //creates sprites within kPropXNodeDrawDist of loc, and destroys them outside of that
+//    for(int i=0; i<kcmNodes.count; i++)
+//    {
+//        ConceptNode *n=[kcmNodes objectAtIndex:i];
+//        
+//        
+//        CGPoint nlpos=ccp((float)n.x * kNodeScale, (nMaxY-(float)n.y) * kNodeScale);
+//        float diff=[BLMath DistanceBetween:loc and:nlpos];
+//        
+//        if(diff<(kPropXNodeDrawDist*lx))
+//        {
+//            //create a sprite
+//            if(!n.journeySprite || contentService.fullRedraw)
+//            {
+//                [self createASpriteForNode:n];
+//                
+//                if(!visibleNodes)
+//                    visibleNodes=[[NSMutableArray alloc] init];
+//                
+//                //also add to visible nodes
+//                [visibleNodes addObject:n];
+//                
+//                //setup light if required
+//                BOOL isLit=[usersService hasCompletedNodeId:n._id];
+//                
+//                // ============= removing -- was for fixed light positions ================================
+//                //                if(isLit || [n._id isEqualToString:@"5608a59d6797796ce9e11484fd180be3"])
+//                //                {
+//                //                    
+//                //                    if ([n._id isEqualToString:@"5608a59d6797796ce9e11484fd180be3"] && isLit) {
+//                //                        [n.journeySprite setColor:ccc3(0, 255, 0)];
+//                //                    }
+//                //                    else if (isLit) {
+//                //                        [n.journeySprite setColor:ccc3(0, 255, 0)];                        
+//                //                    }
+//                // ========================================================================================
+//                
+//                if(isLit)
+//                {
+//                    n.lightSprite=[self createLight];
+//                    [n.lightSprite setPosition:[mapLayer convertToWorldSpace:n.journeySprite.position]];
+//                    
+//                    //if this is the node just completed, animate it
+//                    if (n==contentService.currentNode && contentService.lightUpProgressFromLastNode) {
+//                        [n.lightSprite setTag:1];
+//                        [n.lightSprite setScale:1.0f];
+//                        
+//                        int tagCount=3;
+//                        
+//                        //parse prereqs destinations and light them up
+//                        for (NSArray *prq in prereqRelations) {
+//                            NSString *id1=[prq objectAtIndex:0];
+//                            NSString *id2=[prq objectAtIndex:1];
+//                            
+//                            if([id1 isEqualToString:n._id])
+//                            {
+//                                //draw a light at that end point
+//                                for (ConceptNode *endpoint in visibleNodes) {
+//                                    if([id2 isEqualToString:endpoint._id])
+//                                    {
+//                                        CCSprite *l=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-light-dest.png")];
+//                                        [l setBlendFunc:(ccBlendFunc){GL_ZERO, GL_ONE_MINUS_SRC_ALPHA}];
+//                                        CGPoint dlpos=ccp((float)endpoint.x * kNodeScale, (nMaxY-(float)endpoint.y) * kNodeScale);
+//                                        [l setPosition:[mapLayer convertToWorldSpace: dlpos]];
+//                                        [l setScale:1.0f];
+//                                        [l retain];
+//                                        [lightSprites addObject:l];  
+//                                        [l setTag:tagCount];
+//                                        tagCount++;
+//                                        
+//                                        endpoint.lightSprite=l;
+//                                    }
+//                                }
+//                            }
+//                        }
+//                        
+//                    }
+//                }
+//            }
+//        }
+//        else {
+//            //destroy the sprite, if present
+//            if(n.journeySprite)
+//            {
+//                [mapLayer removeChild:n.journeySprite cleanup:YES];
+//                [nodeSprites removeObject:n.journeySprite];
+//                
+//                //[n.journeySprite release];
+//                n.journeySprite=nil;
+//                
+//                //remove light if present
+//                if(n.lightSprite)
+//                {
+//                    [lightSprites removeObject:n.lightSprite];
+//                    n.lightSprite=nil;
+//                }
+//                
+//                //remove from visible nodes
+//                [visibleNodes removeObject:n];
+//            }
+//        }
+//        
+//    }   
+//    
+//    contentService.fullRedraw=NO;
+//    contentService.lightUpProgressFromLastNode=NO;
+//}
+//
+//-(void)createASpriteForNode:(ConceptNode *)n
+//{
+//    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-std.png")];
+//    [s setPosition:ccp((float)n.x * kNodeScale, (nMaxY-(float)n.y) * kNodeScale)];
+//    
+//    if(n.pipelines.count==0)
+//    {
+//        [s setOpacity:100];
+//    }
+//    else {
+//        
+//    }
+//    
+//    [mapLayer addChild:s];
+//    [nodeSprites addObject:s];    
+//    
+//    n.journeySprite=s;
+//}
+//
+//-(void)addFeaturesInEmptySpace
+//{
+//    int fCount=0;
+//    float minDist=100.0f;
+//    
+//    int xDiff=(nMaxX - nMinX) + nMinX;
+//    int yDiff=(nMaxY - nMinY) + nMinY;
+//    
+//    do {
+//        int rx=arc4random() % xDiff;
+//        int ry=arc4random() % yDiff;
+//        
+//        //        float x=rx*xDiff;
+//        //        float y=ry*yDiff;
+//        
+//        CGPoint pos=ccp(rx, ry);
+//        BOOL found=NO;
+//        for (CCNode *n in nodeSprites) {
+//            if(fabsf([BLMath DistanceBetween:pos and:n.position])<minDist)
+//            {
+//                found=YES;
+//                return;
+//            }
+//        }
+//        for (CCNode *n in dotSprites) {
+//            if(fabsf([BLMath DistanceBetween:pos and:n.position])<minDist)
+//            {
+//                found=YES;
+//                return;
+//            }
+//        }
+//        
+//        if(!found)
+//        {
+//            [self drawFeatureAt:pos];
+//            fCount++;
+//        }
+//        
+//    } while (fCount<100);
+//}
+//
+//-(void)drawFeatureAt:(CGPoint)pos
+//{
+//    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/features/large1.png")];
+//    [s setPosition:pos];
+//    [s setScale:0.25f];
+//    [mapLayer addChild:s];
+//}
+//
+//-(void)drawPathFrom:(CGPoint)p1 to:(CGPoint)p2
+//{
+//    //get the lenth of the vector
+//    float l=[BLMath DistanceBetween:p1 and:p2];
+//    
+//    //how many points to plot
+//    float dotCount=l / 50.0f;
+//    
+//    //vector between
+//    CGPoint diff=[BLMath SubtractVector:p2 from:p1];
+//    
+//    float gapx=diff.x / dotCount;
+//    float gapy=diff.y / dotCount;
+//    
+//    if(dotCount>=1)
+//    {
+//        for(int i=1; i<=(int)dotCount; i++)
+//        {
+//            //put dot at p1 + (gapx * i, gapy * i)
+//            CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-std.png")];
+//            [s setScale:0.25];
+//            [s setOpacity:100];
+//            [s setPosition:ccpAdd(p1, ccp(i*gapx, i*gapy))];
+//            [mapLayer addChild:s];
+//            [dotSprites addObject:s];
+//        }
+//    }
+//}
+//
+//- (void)parseAndCreateSpritesForPreReqRelations
+//{
+//    prereqRelations=[contentService relationMembersForName:@"Prerequisites"];
+//    
+//    //iterate relations and find start/end points
+//    for (NSArray *rel in prereqRelations) {
+//        NSString *id1=[rel objectAtIndex:0];
+//        NSString *id2=[rel objectAtIndex:1];
+//        
+//        NSNumber *idx1=[kcmIdIndex objectForKey:id1];
+//        NSNumber *idx2=[kcmIdIndex objectForKey:id2];
+//        
+//        if(idx1 && idx2)
+//        {
+//            CCSprite *cs1=[nodeSprites objectAtIndex:[idx1 integerValue]];
+//            CCSprite *cs2=[nodeSprites objectAtIndex:[idx2 integerValue]];
+//            
+//            CGPoint pos1=[cs1 position];
+//            CGPoint pos2=[cs2 position];
+//            
+//            [self drawPathFrom:pos1 to:pos2];
+//        }
+//    }
+//}
+//
+//-(void)createLights
+//{
+//    //zubi light
+//    zubiLight=[self createLight];
+//    [zubiLight setScale:3.0f];
+//    
+//    //nodeslice light
+//    nodeSliceLight=[self createLight];
+//    [nodeSliceLight setScale:14.0f];
+//    [nodeSliceLight setPosition:kNodeSliceOrigin];
+//    //only add this when in the correct mode
+//    [lightSprites removeObject:nodeSliceLight];
+//}
+//
+//-(CCSprite*)createLight
+//{
+//    CCSprite *l=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/journeymap/node-light.png")];
+//    [l setBlendFunc:(ccBlendFunc){GL_ZERO, GL_ONE_MINUS_SRC_ALPHA}];
+//    [l setPosition:ccp(cx, cy)];
+//    [l setScale:10.0f];
+//    [l retain];
+//    [lightSprites addObject:l];    
+//    return l;
+//}
+//
+//-(void)addTerrainAtPosition:(CGPoint)location withFile:(NSString*)thisImage
+//{
+//    
+//    CCSprite *thisSprite=[CCSprite spriteWithFile:thisImage];
+//    [thisSprite setPosition:location];
+//    [mapLayer addChild:thisSprite];
+//}
+//
+//-(void)updateLightPositions
+//{
+//    //[zubiLight setPosition:[daemon currentPosition]];
+//    
+//    for (ConceptNode *n in visibleNodes) {
+//        if(n.lightSprite)
+//        {
+//            [n.lightSprite setPosition:[mapLayer convertToWorldSpace:n.journeySprite.position]];
+//        }
+//    }
+//}
+//
+//-(void) doUpdateCreateNodes:(ccTime)delta
+//{
+//    [self createNodeSpritesNearCentre];
+//}
 
 @end

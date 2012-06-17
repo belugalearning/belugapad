@@ -11,7 +11,7 @@
 
 @class SGJmapMasteryNodeRender;
 
-@interface SGJmapMasteryNode : SGGameObject <Transform>
+@interface SGJmapMasteryNode : SGGameObject <Transform, ProximityResponder>
 
 @property (retain) SGJmapMasteryNodeRender* MNodeRenderComponent;
 

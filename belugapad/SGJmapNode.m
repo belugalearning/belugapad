@@ -8,6 +8,7 @@
 
 #import "SGJmapNode.h"
 #import "SGJmapNodeRender.h"
+#import "SGJmapProximityEval.h"
 
 @implementation SGJmapNode
 
@@ -15,6 +16,9 @@
 
 //Transform protocol properties
 @synthesize Position, RenderBatch;
+
+//proximtyResponder properties
+@synthesize Visible, ProximityEvalComponent;
 
 -(SGJmapNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition
 {   
@@ -24,20 +28,24 @@
         self.Position=aPosition;
         
         self.NodeRenderComponent=[[SGJmapNodeRender alloc] initWithGameObject:self];
+        self.ProximityEvalComponent=[[SGJmapProximityEval alloc] initWithGameObject:self];
     }
     return self;
 }
+
 
 -(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel 
 {
     //re-broadcast messages to components
     [self.NodeRenderComponent handleMessage:messageType andPayload:payload];
+    [self.ProximityEvalComponent handleMessage:messageType andPayload:payload];
 }
 
 -(void)doUpdate:(ccTime)delta
 {
     //update of components
     [self.NodeRenderComponent doUpdate:delta];
+    [self.ProximityEvalComponent doUpdate:delta];
 }
 
 @end

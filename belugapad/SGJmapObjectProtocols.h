@@ -8,9 +8,23 @@
 
 #import <Foundation/Foundation.h>
 
+@class SGJmapProximityEval;
+
+
 @protocol Transform
 
 @property CGPoint Position;
+
 @property (retain) CCSpriteBatchNode *RenderBatch;
+
+@end
+
+
+@protocol ProximityResponder
+
+@property CGPoint Position;
+
+@property BOOL Visible;
+@property (retain) SGJmapProximityEval* ProximityEvalComponent;
 
 @end

@@ -175,18 +175,12 @@ typedef enum {
         usersService = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
         
         debugEnabled=!((AppController*)[[UIApplication sharedApplication] delegate]).ReleaseMode;
-        
         if(debugEnabled) [self buildDebugMenu];
         
         [self setupMap];
         
-        //create nodes near camera
-        [self createNodeSpritesNearCentre];
-        
         [self schedule:@selector(doUpdate:) interval:1.0f / 60.0f];
-        
-        [self schedule:@selector(doUpdateCreateNodes:) interval:1.0f / 4.0f];
-        
+                
 //        daemon=[[Daemon alloc] initWithLayer:foreLayer andRestingPostion:ccp(cx, cy) andLy:ly];
 //        [daemon setMode:kDaemonModeFollowing];
         
@@ -232,33 +226,12 @@ typedef enum {
     [self setupGw];
     
     kcmIdIndex=[[NSMutableDictionary alloc] init];
-    dotSprites=[[NSMutableArray alloc] init];
-    nodeSprites=[[NSMutableArray alloc] init];
-    nodeSliceNodes=[[NSMutableArray alloc] init];
-    lightSprites=[[NSMutableArray alloc] init];
     
     kcmNodes=[NSMutableArray arrayWithArray:[contentService allConceptNodes]];
     [kcmNodes retain];
     
-    prereqRelations=[[contentService relationMembersForName:@"Prerequisite"] retain];
-    
     [self parseForBoundsAndCreateKcmIndex];
-    
-    //shifting to proximity create
-    //[self createNodeSprites];
-
-    //not doing this at all atm
-    //[self parseAndCreateSpritesForPreReqRelations];
-    
-    //shifting to proximity features
-    //[self addFeaturesInEmptySpace];
-    
-    //we don't want to do this -- needs to move to dynamic draw
-    //[self createAllBackgroundTileSprites];
-
-    //no lights used
-    //[self createLights];
-        
+            
     //reposition if previous node
     if(contentService.currentNode)
     {
@@ -274,7 +247,6 @@ typedef enum {
 - (void)createLayers
 {
     //base colour layer
-//    CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(0, 59, 72, 255) width:lx height:ly];
     CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(54, 59, 59, 255) width:lx height:ly];
     [self addChild:cLayer];
     
@@ -283,11 +255,6 @@ typedef enum {
     [mapLayer setPosition:kStartMapPos];        
 
     [self addChild:mapLayer];
-
-//    //darkness layer
-//    darknessLayer=[CCRenderTexture renderTextureWithWidth:lx height:ly];
-//    [darknessLayer setPosition:ccp(cx, cy)];
-//    [self addChild:darknessLayer];
 
     //fore layer
     foreLayer=[[CCLayer alloc] init];
@@ -325,51 +292,19 @@ typedef enum {
         nMaxX=nMinX;
         nMaxY=nMaxY;
         
-        //clean up any left over sprite info from last use
-        n1.journeySprite=nil;
-        n1.lightSprite=nil;
-        n1.nodeSliceSprite=nil;
-        
         for (int i=1; i<[kcmNodes count]; i++) {
             ConceptNode *n=[kcmNodes objectAtIndex:i];
             
-            //force find -- was previously checking against specific include list
-            BOOL found=YES;
-//            for (int i=0; i<kInclNodeCount; i++) {
-//                if([n._id isEqualToString:inclNodes[i]])
-//                {
-//                    found=YES;
-//                    NSLog(@"found node %@", n._id);
-//                    //break;
-//                }
-//            }
+            if((float)n.x<nMinX)nMinX=(float)n.x;
+            if((float)n.y<nMinY)nMinY=(float)n.y;
+            if((float)n.x>nMaxX)nMaxX=(float)n.x;
+            if((float)n.y>nMaxY)nMaxY=(float)n.y;
             
-            if(found)
-            {
-                if((float)n.x<nMinX)nMinX=(float)n.x;
-                if((float)n.y<nMinY)nMinY=(float)n.y;
-                if((float)n.x>nMaxX)nMaxX=(float)n.x;
-                if((float)n.y>nMaxY)nMaxY=(float)n.y;
-                
-                //add reference
-                [kcmIdIndex setValue:[NSNumber numberWithInt:i] forKey:n._id];
-                
-                //force quit at max (e.g. 50) nodes
-                //if(i>=kNodeMax) break;
-
-                //clean up any left over sprite info from last use
-                n.journeySprite=nil;
-                n.lightSprite=nil;
-                n.nodeSliceSprite=nil;
-            }
-            else {
-                [removeNodes addObject:n];
-            }
-    
+            //add reference
+            [kcmIdIndex setValue:[NSNumber numberWithInt:i] forKey:n._id];
         }
+            
     }
-
-    [kcmNodes removeObjectsInArray:removeNodes];
     
     nMinX=nMinX*kNodeScale;
     nMinY=nMinY*kNodeScale;
@@ -394,7 +329,6 @@ typedef enum {
         }    
         
         //todo: set visibility / add to visibility batch?
-        
     }
 }
 
@@ -409,11 +343,12 @@ typedef enum {
 }
 
 
-
 #pragma mark loops
 
 -(void) doUpdate:(ccTime)delta
 {
+    [gw doUpdate:delta];
+    
     //[daemon doUpdate:delta];
     deltacum+=delta;
     
@@ -421,40 +356,6 @@ typedef enum {
     {
         nodeSliceTransitionHold+=delta;
     }
-    
-//    //update light positions
-//    [self updateLightPositions];
-//    
-//    //render darkness layer
-//    [darknessLayer clear:0.0f g:0.0f b:0.0f a:0.7f];
-//    
-//    [darknessLayer begin];
-//    
-//
-//    glColorMask(0, 0, 0, 1);
-//    
-//    for (CCSprite *l in lightSprites) {
-//        
-//        if(l.tag>0)
-//        {
-//            if(deltacum>l.tag * kLightInDelay)
-//            {
-//                float prop = deltacum - (l.tag * kLightInDelay);
-//                float newscale=kLightInScaleMax * (prop / kLightInTime);
-//                if(newscale>kLightInScaleMax)
-//                {
-//                    newscale=kLightInScaleMax;
-//                }
-//                [l setScale:newscale];
-//            }
-//        }
-//        
-//        [l visit];
-//    }
-//    
-//    glColorMask(1, 1, 1, 1);
-//    
-//    [darknessLayer end];
 }
 
 #pragma mark location testing and queries
@@ -480,113 +381,113 @@ typedef enum {
 
 #pragma mark transitions
 
--(void)createNodeSliceFrom:(ConceptNode*)n
-{
-    //establish if there are problems
-    currentNodeSliceHasProblems=n.pipelines.count>0;
-    if(currentNodeSliceHasProblems)
-    {
-        currentNodeSliceHasProblems=NO;
-        for (int i=0; i<n.pipelines.count; i++) {
-            Pipeline *p = [contentService pipelineWithId:[n.pipelines objectAtIndex:i]];
-            
-            if(p.problems.count>0 && [p.name isEqualToString:@"25May"])
-            {
-                currentNodeSliceHasProblems=YES;
-                break;
-            }
-        }
-    }
-    
-    NSString *bpath=BUNDLE_FULL_PATH(@"/images/journeymap/nodeslice-bkg.png");
-    if(!currentNodeSliceHasProblems) bpath=BUNDLE_FULL_PATH(@"/images/journeymap/nodeslice-bkg-nopin.png");
-    
-    CCSprite *ns=[CCSprite spriteWithFile:bpath];
-    [ns setScale:kNodeSliceStartScale];
-    [ns setPosition:n.journeySprite.position];
-
-    [mapLayer addChild:ns];
-    [nodeSliceNodes addObject:n];
-    
-    n.nodeSliceSprite=ns;
-    
-    float time1=0.1f;
-    float time2=0.9f;
-    float time3=0.2f;
-    
-    CCScaleTo *scale1=[CCScaleTo actionWithDuration:time1 scale:0.3f];
-    CCScaleTo *scale2=[CCScaleTo actionWithDuration:time2 scale:0.5f];
-    CCEaseOut *ease2=[CCEaseOut actionWithAction:scale2 rate:0.5f];
-    CCScaleTo *scale3=[CCScaleTo actionWithDuration:time3 scale:1.0f];
-    CCSequence *scaleSeq=[CCSequence actions:scale1, ease2, scale3, nil];
-    
-    CCDelayTime *move1=[CCDelayTime actionWithDuration:time1 + time2];
-    CCMoveTo *move2=[CCMoveTo actionWithDuration:time3 position:[mapLayer convertToNodeSpace:kNodeSliceOrigin]];
-    CCSequence *moveSeq=[CCSequence actions:move1, move2, nil];
-    
-    [ns runAction:scaleSeq];
-    [ns runAction:moveSeq];
-}
-
--(void)cancelNodeSliceTransition
-{
-    if(!currentNodeSliceNode) return;
-    
-    CCSprite *ns=currentNodeSliceNode.nodeSliceSprite;
-    
-    [ns stopAllActions];
-    
-    CCScaleTo *scaleto=[CCScaleTo actionWithDuration:0.2f scale:kNodeSliceStartScale];
-    CCFadeOut *fade=[CCFadeOut actionWithDuration:0.6f];
-    CCMoveTo *moveto=[CCMoveTo actionWithDuration:0.2f position:currentNodeSliceNode.journeySprite.position];
-    [ns runAction:scaleto];
-    [ns runAction:fade];
-    [ns runAction:moveto];
-    
-    currentNodeSliceNode=nil;
-}
-
--(void)tidyUpRemovedNodeSlices
-{
-    NSMutableArray *removedS=[[NSMutableArray alloc] init];
-    
-    for (ConceptNode *n in nodeSliceNodes) {
-        if(n.nodeSliceSprite.opacity==0)
-        {
-            [mapLayer removeChild:n.nodeSliceSprite cleanup:YES];
-            //[n.nodeSliceSprite release];
-            n.nodeSliceSprite=nil;
-            [removedS addObject:n];
-            
-        }
-    }
-    
-    [nodeSliceNodes removeObjectsInArray:removedS];
-    [removedS release];
-}
-
--(void)removeNodeSlices
-{
-    [self tidyUpRemovedNodeSlices];
-    
-    if([lightSprites containsObject:nodeSliceLight])[lightSprites removeObject:nodeSliceLight];
-    
-    for (ConceptNode *n in nodeSliceNodes) {
-        
-        CCSprite *ns=n.nodeSliceSprite;
-        
-        if(ns.opacity==255)
-        {
-            CCScaleTo *scaleto=[CCScaleTo actionWithDuration:0.2f scale:kNodeSliceStartScale];
-            CCFadeOut *fade=[CCFadeOut actionWithDuration:0.6f];
-            CCMoveTo *moveto=[CCMoveTo actionWithDuration:0.2f position:n.journeySprite.position];
-            [ns runAction:scaleto];
-            [ns runAction:fade];
-            [ns runAction:moveto];
-        }
-    }
-    
-}
+//-(void)createNodeSliceFrom:(ConceptNode*)n
+//{
+//    //establish if there are problems
+//    currentNodeSliceHasProblems=n.pipelines.count>0;
+//    if(currentNodeSliceHasProblems)
+//    {
+//        currentNodeSliceHasProblems=NO;
+//        for (int i=0; i<n.pipelines.count; i++) {
+//            Pipeline *p = [contentService pipelineWithId:[n.pipelines objectAtIndex:i]];
+//            
+//            if(p.problems.count>0 && [p.name isEqualToString:@"25May"])
+//            {
+//                currentNodeSliceHasProblems=YES;
+//                break;
+//            }
+//        }
+//    }
+//    
+//    NSString *bpath=BUNDLE_FULL_PATH(@"/images/journeymap/nodeslice-bkg.png");
+//    if(!currentNodeSliceHasProblems) bpath=BUNDLE_FULL_PATH(@"/images/journeymap/nodeslice-bkg-nopin.png");
+//    
+//    CCSprite *ns=[CCSprite spriteWithFile:bpath];
+//    [ns setScale:kNodeSliceStartScale];
+//    [ns setPosition:n.journeySprite.position];
+//
+//    [mapLayer addChild:ns];
+//    [nodeSliceNodes addObject:n];
+//    
+//    n.nodeSliceSprite=ns;
+//    
+//    float time1=0.1f;
+//    float time2=0.9f;
+//    float time3=0.2f;
+//    
+//    CCScaleTo *scale1=[CCScaleTo actionWithDuration:time1 scale:0.3f];
+//    CCScaleTo *scale2=[CCScaleTo actionWithDuration:time2 scale:0.5f];
+//    CCEaseOut *ease2=[CCEaseOut actionWithAction:scale2 rate:0.5f];
+//    CCScaleTo *scale3=[CCScaleTo actionWithDuration:time3 scale:1.0f];
+//    CCSequence *scaleSeq=[CCSequence actions:scale1, ease2, scale3, nil];
+//    
+//    CCDelayTime *move1=[CCDelayTime actionWithDuration:time1 + time2];
+//    CCMoveTo *move2=[CCMoveTo actionWithDuration:time3 position:[mapLayer convertToNodeSpace:kNodeSliceOrigin]];
+//    CCSequence *moveSeq=[CCSequence actions:move1, move2, nil];
+//    
+//    [ns runAction:scaleSeq];
+//    [ns runAction:moveSeq];
+//}
+//
+//-(void)cancelNodeSliceTransition
+//{
+//    if(!currentNodeSliceNode) return;
+//    
+//    CCSprite *ns=currentNodeSliceNode.nodeSliceSprite;
+//    
+//    [ns stopAllActions];
+//    
+//    CCScaleTo *scaleto=[CCScaleTo actionWithDuration:0.2f scale:kNodeSliceStartScale];
+//    CCFadeOut *fade=[CCFadeOut actionWithDuration:0.6f];
+//    CCMoveTo *moveto=[CCMoveTo actionWithDuration:0.2f position:currentNodeSliceNode.journeySprite.position];
+//    [ns runAction:scaleto];
+//    [ns runAction:fade];
+//    [ns runAction:moveto];
+//    
+//    currentNodeSliceNode=nil;
+//}
+//
+//-(void)tidyUpRemovedNodeSlices
+//{
+//    NSMutableArray *removedS=[[NSMutableArray alloc] init];
+//    
+//    for (ConceptNode *n in nodeSliceNodes) {
+//        if(n.nodeSliceSprite.opacity==0)
+//        {
+//            [mapLayer removeChild:n.nodeSliceSprite cleanup:YES];
+//            //[n.nodeSliceSprite release];
+//            n.nodeSliceSprite=nil;
+//            [removedS addObject:n];
+//            
+//        }
+//    }
+//    
+//    [nodeSliceNodes removeObjectsInArray:removedS];
+//    [removedS release];
+//}
+//
+//-(void)removeNodeSlices
+//{
+//    [self tidyUpRemovedNodeSlices];
+//    
+//    if([lightSprites containsObject:nodeSliceLight])[lightSprites removeObject:nodeSliceLight];
+//    
+//    for (ConceptNode *n in nodeSliceNodes) {
+//        
+//        CCSprite *ns=n.nodeSliceSprite;
+//        
+//        if(ns.opacity==255)
+//        {
+//            CCScaleTo *scaleto=[CCScaleTo actionWithDuration:0.2f scale:kNodeSliceStartScale];
+//            CCFadeOut *fade=[CCFadeOut actionWithDuration:0.6f];
+//            CCMoveTo *moveto=[CCMoveTo actionWithDuration:0.2f position:n.journeySprite.position];
+//            [ns runAction:scaleto];
+//            [ns runAction:fade];
+//            [ns runAction:moveto];
+//        }
+//    }
+//    
+//}
 
 #pragma mark user i/o
 
@@ -651,41 +552,41 @@ typedef enum {
 
     if (juiState==kJuiStateNodeMap) {
         
-        [self removeNodeSlices];
+        //[self removeNodeSlices];
         
         [self testForNodeSliceTransitionStartWithTouchAt:lOnMap];
         
         touchStartedInNodeMap=YES;
     }
     
-    else if(juiState==kJuiStateNodeSlice)
-    {
-        if([BLMath DistanceBetween:lOnMap and:currentNodeSliceNode.nodeSliceSprite.position] >= kNodeSliceRadius)
-        {
-            //handle as normal tap -- but reset to node map state in case a new node isn't hit
-            juiState=kJuiStateNodeMap;
-            
-            [self removeNodeSlices];
-            
-            [self testForNodeSliceTransitionStartWithTouchAt:lOnMap];
-            
-            touchStartedInNodeMap=YES;
-        }
-        else {
-            //handle as a tap in the nodeslice
-            
-            //look for tap on pin
-            if(currentNodeSliceHasProblems)
-            {
-                CGPoint pinOnMap=[mapLayer convertToNodeSpace:ccpAdd(kNodeSliceOrigin, kPinOffset)];
-                
-                if([BLMath DistanceBetween:pinOnMap and:lOnMap] <= kPinTapRadius)
-                {
-                    [self startSeletedPin];
-                }
-            }
-        }
-    }
+//    else if(juiState==kJuiStateNodeSlice)
+//    {
+//        if([BLMath DistanceBetween:lOnMap and:currentNodeSliceNode.nodeSliceSprite.position] >= kNodeSliceRadius)
+//        {
+//            //handle as normal tap -- but reset to node map state in case a new node isn't hit
+//            juiState=kJuiStateNodeMap;
+//            
+//            [self removeNodeSlices];
+//            
+//            [self testForNodeSliceTransitionStartWithTouchAt:lOnMap];
+//            
+//            touchStartedInNodeMap=YES;
+//        }
+//        else {
+//            //handle as a tap in the nodeslice
+//            
+//            //look for tap on pin
+//            if(currentNodeSliceHasProblems)
+//            {
+//                CGPoint pinOnMap=[mapLayer convertToNodeSpace:ccpAdd(kNodeSliceOrigin, kPinOffset)];
+//                
+//                if([BLMath DistanceBetween:pinOnMap and:lOnMap] <= kPinTapRadius)
+//                {
+//                    [self startSeletedPin];
+//                }
+//            }
+//        }
+//    }
 }
 
 - (void)testForNodeSliceTransitionStartWithTouchAt:(CGPoint)lOnMap
@@ -694,7 +595,7 @@ typedef enum {
     ConceptNode *n=[self nodeWithin:(kPropXNodeHitDist * lx) ofLocation:lOnMap];
     if(n)
     {
-        [self createNodeSliceFrom:n];
+        //[self createNodeSliceFrom:n];
         NSLog(@"hit node %@", n._id);
         
         //keep this to move there if the user pans during transition
@@ -757,7 +658,7 @@ typedef enum {
         }
         else {
             //cancel current transition
-            [self cancelNodeSliceTransition];
+            //[self cancelNodeSliceTransition];
             
             juiState=kJuiStateNodeMap;
         }

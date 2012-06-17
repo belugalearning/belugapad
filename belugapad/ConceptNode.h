@@ -20,9 +20,6 @@
 @property (readonly) BOOL mastery;
 
 //not persisted
-@property (retain) CCSprite *journeySprite;
-@property (retain) CCSprite *nodeSliceSprite;
-@property (retain) CCSprite *lightSprite;
 @property bool isLit;
 
 @end

@@ -14,9 +14,8 @@
 
 @synthesize pipelines;
 @synthesize x, y, mastery;
-@synthesize journeySprite, nodeSliceSprite, lightSprite;
 
-@dynamic isLit;
+@synthesize isLit;
 
 -(id)initWithFMResultSetRow:(FMResultSet*)resultSet
 {
@@ -37,9 +36,6 @@
 -(void) dealloc
 {
     [pipelines release];
-    if (journeySprite) [journeySprite release];
-    if (nodeSliceSprite) [nodeSliceSprite release];
-    if (lightSprite) [lightSprite release];
     [super dealloc];
 }
 

@@ -25,13 +25,16 @@
 {
     if(messageType==kDWsetMount)
     {
-//        //set the old mount
-//        if(b.Mount)
-//            [b.Mount handleMessage:kDWunsetMountedObject];
-//            
-//        //set the new mount for the GO
+
+        if(b.Mount && !gameWorld.Blackboard.inProblemSetup && gameWorld.Blackboard.DropObject)
+        {
+            [b.Mount handleMessage:kDWunsetMountedObject];
+            b.Mount=gameWorld.Blackboard.DropObject;
+        }
+            
+
+        
         DWPlaceValueNetGameObject *newMount=(DWPlaceValueNetGameObject*)b.Mount;
-//        b.Mount=newMount;
         
         //tell the mount that i'm there
         newMount.MountedObject=b;
@@ -39,6 +42,8 @@
         
         b.PosX=newMount.PosX;
         b.PosY=newMount.PosY; 
+        
+        if(gameWorld.Blackboard.inProblemSetup)NSLog(@"b posX = %f / b posY = %f // mount posX = %f / mount posY = %f", b.PosX, b.PosY, newMount.PosX, newMount.PosY);
         
         b.AnimateMe=YES;
 

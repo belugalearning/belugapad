@@ -22,16 +22,14 @@
     
     n=(DWPlaceValueNetGameObject*)gameObject;
     
-    NSMutableArray *mo=[[NSMutableArray alloc] init];
-    GOS_SET(mo, MOUNTED_OBJECTS);
-    [mo release];
+    seek=YES;
     
     return self;
 }
 -(void)doUpdate:(ccTime)delta
 {
     
-    if(n.MountedObject)
+    if(n.MountedObject && seek)
     {
         // set the row and column equal to the current container's position
         
@@ -47,6 +45,7 @@
         // then if we're at a position > 0
         if(myRope > 0)
         {
+            NSLog(@"start seek");
             
             for(int i=myRope; i>0; i--)
             {
@@ -56,17 +55,34 @@
                 if(!go.MountedObject)
                 {
                     moveToLeft = go;
+                    
+                    NSLog(@"found a valid object to the left");
+                }
+                else {
+                    seek=NO;
                 }
             }
             
+            NSLog(@"stop seek");
+            
             if(moveToLeft)
             {
+                NSLog(@"repositioning");
+                
                 DWPlaceValueBlockGameObject *mountedObject = (DWPlaceValueBlockGameObject*)n.MountedObject;
                 mountedObject.Mount=moveToLeft;
-                mountedObject.AnimateMe=YES;
                 
+                ((DWPlaceValueNetGameObject*)moveToLeft).MountedObject=mountedObject;
+                n.MountedObject=nil;
+                
+                mountedObject.AnimateMe=YES;
+                mountedObject.PosX=((DWPlaceValueNetGameObject*)moveToLeft).PosX;
+                mountedObject.PosY=((DWPlaceValueNetGameObject*)moveToLeft).PosY;
+                [mountedObject handleMessage:kDWmoveSpriteToPosition];
                 [gameWorld handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
             }
+            
+            NSLog(@"end reposition");
             
         }
         evalLeft=YES;
@@ -95,8 +111,18 @@
                 int rope=cgo.myRope;
                 if(moveObject)
                 {
+                    //nil old mount's ref
+                    ((DWPlaceValueNetGameObject*)moveObject.Mount).MountedObject=nil;
+                    
+                    //mount on new mount
                     moveObject.Mount=[[[gameWorld.Blackboard.AllStores objectAtIndex:myColumn] objectAtIndex:(myRow-1)] objectAtIndex:rope];
+                    //set that new mount's ref to me
+                    ((DWPlaceValueNetGameObject*)moveObject.Mount).MountedObject=moveObject;
+                    
                     moveObject.AnimateMe=YES;
+                    moveObject.PosX=((DWPlaceValueNetGameObject*)moveObject.Mount).PosX;
+                    moveObject.PosY=((DWPlaceValueNetGameObject*)moveObject.Mount).PosY;
+                    [moveObject handleMessage:kDWmoveSpriteToPosition];
                 }
             }
         }            
@@ -127,6 +153,11 @@
     {
         evalLeft=NO;
         evalUp=NO;
+    }
+    
+    if(messageType==kDWstartRespositionSeek)
+    {
+        seek=YES;
     }
 }
 

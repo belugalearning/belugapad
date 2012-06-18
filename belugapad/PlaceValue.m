@@ -247,7 +247,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             [cageContainer setPosition:ccp(i*(kPropXColumnSpacing*lx), ly*kCageYOrigin)];
             [cageContainer setOpacity:0];
             [cageContainer setTag:2];
-            [renderLayer addChild:cageContainer z:1];
+            [renderLayer addChild:cageContainer z:10];
             
             // create cage
             DWPlaceValueCageGameObject *cge=[DWPlaceValueCageGameObject alloc];
@@ -290,7 +290,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             [cageContainer setPosition:ccp(i*(kPropXColumnSpacing*lx), ly*kCageYOrigin)];
             [cageContainer setOpacity:0];
             [cageContainer setTag:2];
-            [renderLayer addChild:cageContainer z:-1];
+            [renderLayer addChild:cageContainer z:10];
             
             float colValueNeg = -([[currentColumnInfo objectForKey:COL_VALUE] floatValue]);
             // create cage
@@ -387,6 +387,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             [gw populateAndAddGameObject:block withTemplateName:@"TplaceValueObject"];
             
             block.Mount=[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:insRow] objectAtIndex:i];
+            
             block.ObjectValue=[[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue];
             
             // check whether a custom sprite has been set for this column, and if so, set it.
@@ -1230,9 +1231,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         // if there's a pickup sprite defined, set the object to use it now
         if(pickupObject.PickupSprite && !gw.Blackboard.inProblemSetup)
         {
-//            CCSprite *mySprite=[[[gw Blackboard].PickupObject store] objectForKey:MY_SPRITE];
             CCSprite *mySprite=pickupObject.mySprite;
-            [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[[gw Blackboard].PickupObject store] objectForKey:PICKUP_SPRITE_FILENAME])]];
+            [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(pickupObject.PickupSprite)]];
         }
         gw.Blackboard.PickupOffset = location;
         // At this point we can still cancel the tap
@@ -1295,17 +1295,14 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         if([gw Blackboard].DropObject != nil)
         { 
             // if a proximity sprite is set, change he pickupobject sprite now
-            if(proximitySprite)
-                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(proximitySprite)]];
+            if(pickupSprite)
+                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).PickupSprite)]];
             
             // and set the colour for use in tinting our grid later
             currentColour=ccc3(0,255,0);
             
         }
         else {
-            // but if we have no dropobject, we need the grid to be white again
-            if(proximitySprite)
-                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gw.Blackboard.PickupObject store] objectForKey:PICKUP_SPRITE_FILENAME])]];
             
             currentColour=ccc3(255,255,255);
         }
@@ -1469,7 +1466,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         if([BLMath DistanceBetween:touchStartPos and:touchEndPos] < fabs(kTapSlipThreshold) && potentialTap)
         {
             // check whether it's selected and we can deselect - or that it's deselected
-            if(!([[[gw.Blackboard.PickupObject store] objectForKey:SELECTED] boolValue]) || ([[[gw.Blackboard.PickupObject store] objectForKey:SELECTED] boolValue] && allowDeselect))
+            DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
+            if(!(block.Selected) || (block.Selected && allowDeselect))
                 [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
             
         }
@@ -1513,7 +1511,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 DWGameObject *go = gw.Blackboard.PickupObject;
                 if(![gw.Blackboard.SelectedObjects containsObject:go])
                 {
-                    [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];                
+                    [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];                
                 }
             }
             else 
@@ -1522,7 +1520,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             }
             if([gw Blackboard].DropObject != nil)
             {
-                
+
                 // TODO: check the isCage returns correct results - will checking dropobject return?
                 BOOL isCage;
                 
@@ -1530,10 +1528,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 else isCage=NO;
 
                 //tell the picked-up object to mount on the dropobject
-                [pl removeAllObjects];
-                [pl setObject:[gw Blackboard].DropObject forKey:MOUNT];
-                [pl setObject:[NSNumber numberWithBool:YES] forKey:ANIMATE_ME];
-                [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
+
+                [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
                 
                 [[gw Blackboard].PickupObject handleMessage:kDWputdown andPayload:nil withLogLevel:0];         
                 [[gw Blackboard].PickupObject logInfo:@"this object was mounted" withData:0];
@@ -1541,6 +1537,11 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 
                 if(isCage)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchEndedDropObjectOnCage withOptionalNote:nil];
                 else [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchEndedDropObjectOnGrid withOptionalNote:nil];
+                
+                CCSprite *mySprite=((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).mySprite;
+                
+                if(pickupSprite)
+                    [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).SpriteFilename)]];
                 
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
                 
@@ -1560,6 +1561,10 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         }
         
     }
+    
+    //get any auto reset / repositions to re-evaluate
+    [gw handleMessage:kDWstartRespositionSeek andPayload:nil withLogLevel:0];
+    
     potentialTap=NO;
     hasMovedBlock=NO;
     hasMovedLayer=NO;

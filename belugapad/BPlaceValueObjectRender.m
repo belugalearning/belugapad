@@ -38,33 +38,29 @@
         if(!mySprite) 
         {
             [self setSprite];
-            [self setSpritePosWithAnimation:NO];            
+            [self setSpritePosWithAnimation];            
         }
     }
     
     if (messageType==kDWmoveSpriteToPosition) {
-        BOOL useAnimation = b.AnimateMe;
-
-        
-        [self setSpritePosWithAnimation:useAnimation];
+        b.AnimateMe=YES;
+        [self setSpritePosWithAnimation];
     }
     
     if(messageType==kDWupdateSprite)
     {
         
-        if(b.Selected)
-        { 
-            [self switchSelection:b.Selected];
-        }
+
+        [self switchSelection:b.Selected];
 
         CCSprite *mySprite=b.mySprite;
         if(!mySprite) { 
             [self setSprite];
         }
 
-        BOOL useAnimation = b.Selected;
+
         
-        [self setSpritePosWithAnimation:useAnimation];
+        [self setSpritePosWithAnimation];
     }
         
     if(messageType==kDWpickedUp)
@@ -138,37 +134,37 @@
     {
         [mySprite setColor:ccc3(255,0,0)];
     }
-        [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:2];
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:50];
     
     //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
     b.mySprite=mySprite;
 }
 
--(void)setSpritePosWithAnimation:(BOOL) animate
+-(void)setSpritePosWithAnimation
 {
 
     CCSprite *mySprite=b.mySprite;
     
-    if(animate == YES)
+    if(b.AnimateMe)
     {
         CGPoint newPos = ccp(b.PosX,b.PosY);
 
         CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:newPos];
         [mySprite runAction:anim];
+        b.AnimateMe=NO;
     }
     else
     {
         [mySprite setPosition:ccp(b.PosX,b.PosY)];
     }
 
-    b.AnimateMe=NO;
     
 }
 
 -(void)resetSpriteToMount
 {
-    DWPlaceValueCageGameObject *c=[DWPlaceValueCageGameObject alloc];
-    DWPlaceValueNetGameObject *n=[DWPlaceValueNetGameObject alloc];
+    DWPlaceValueCageGameObject *c;
+    DWPlaceValueNetGameObject *n;
     
     float x;
     float y;
@@ -184,6 +180,8 @@
         n=(DWPlaceValueNetGameObject*)b.Mount;
         x=n.PosX;
         y=n.PosY;
+        b.Mount=n.MountedObject;
+        [n handleMessage:kDWresetPositionEval];
     }
         
     

@@ -13,7 +13,7 @@
 @implementation ConceptNode
 
 @synthesize pipelines;
-@synthesize x, y, mastery;
+@synthesize x, y, mastery, jtd;
 
 @synthesize isLit;
 
@@ -28,6 +28,7 @@
         x = [resultSet intForColumn:@"x"];
         y = [resultSet intForColumn:@"y"];
         mastery = [resultSet boolForColumn:@"mastery"];
+        jtd = [resultSet stringForColumn:@"jtd"];
                 
     }
     return self;

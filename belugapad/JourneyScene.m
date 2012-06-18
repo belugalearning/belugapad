@@ -268,7 +268,7 @@ typedef enum {
         //node position
         CGPoint nodepos=ccp((float)n.x * kNodeScale, (nMaxY-(float)n.y) * kNodeScale);
 
-        id<CouchDerived> newnode;
+        id<CouchDerived, Configurable> newnode;
         
         //create a node go
         if(n.mastery)
@@ -280,6 +280,9 @@ typedef enum {
         }   
         
         newnode._id=n._id;
+        newnode.UserVisibleString=n.jtd;
+        
+        [newnode setup];
     }
 }
 

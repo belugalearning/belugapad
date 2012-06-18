@@ -45,5 +45,13 @@
 @protocol CouchDerived
 
 @property (retain) NSString *_id;
+@property (retain) NSString *UserVisibleString;
+
+@end
+
+
+@protocol Configurable
+
+-(void) setup;
 
 @end

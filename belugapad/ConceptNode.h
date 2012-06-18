@@ -18,6 +18,7 @@
 @property (readonly) int x;
 @property (readonly) int y;
 @property (readonly) BOOL mastery;
+@property (readonly) NSString *jtd;
 
 //not persisted
 @property bool isLit;

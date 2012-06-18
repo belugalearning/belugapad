@@ -11,9 +11,10 @@
 
 @interface SGJmapMasteryNodeRender : SGComponent
 {
-    id<Transform> ParentGO;
+    id<Transform, CouchDerived> ParentGO;
 }
 
 -(void)draw;
+-(void)setup;
 
 @end

@@ -21,7 +21,7 @@
 @synthesize Visible, ProximityEvalComponent;
 
 //CouchDerived
-@synthesize _id;
+@synthesize _id, UserVisibleString;
 
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition
 {
@@ -58,6 +58,12 @@
     {
         [self.MNodeRenderComponent draw];
     }
+}
+
+-(void)setup
+{
+    [self.MNodeRenderComponent setup];
+    
 }
 
 -(void)dealloc

@@ -19,13 +19,13 @@
 
 @implementation SGJmapMasteryNodeRender
 
--(SGJmapMasteryNodeRender*)initWithGameObject:(id<Transform>)aGameObject
+-(SGJmapMasteryNodeRender*)initWithGameObject:(id<Transform, CouchDerived>)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
         ParentGO=aGameObject;
         
-        [self setup];
+        //[self setup];
     }
     
     return self;
@@ -84,6 +84,10 @@
     nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-incomplete.png"];
     [nodeSprite setPosition:ParentGO.Position];
     [ParentGO.RenderBatch addChild:nodeSprite];
+    
+    CCLabelTTF *label=[CCLabelTTF labelWithString:ParentGO.UserVisibleString fontName:@"Helvetica" fontSize:12.0f];
+    [label setPosition:ccpAdd(ccp(0, -40), ParentGO.Position)];
+    [ParentGO.RenderBatch.parent addChild:label];
 }
 
 @end

@@ -130,11 +130,11 @@
 -(NSArray*)relationMembersForName:(NSString *)name
 {
     [contentDatabase open];
-    FMResultSet *rs = [contentDatabase executeQuery:@"select pairs from BinaryRelations where name=?", name];
+    FMResultSet *rs = [contentDatabase executeQuery:@"select members from BinaryRelations where name=?", name];
     NSArray *pairs = nil;
     if ([rs next])
     {
-        pairs = [[rs stringForColumn:@"pairs"] objectFromJSONString];
+        pairs = [[rs stringForColumn:@"members"] objectFromJSONString];
     }
     [rs close];
     [contentDatabase close];

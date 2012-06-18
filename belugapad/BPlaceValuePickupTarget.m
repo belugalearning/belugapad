@@ -44,8 +44,6 @@
         float y=b.PosY;
         CGPoint myLoc=ccp(x,y);
         
-        NSLog(@"x %f y %f", x,y);
-        
         myLoc = [gameWorld.Blackboard.ComponentRenderLayer convertToWorldSpace:myLoc];
         
         CGPoint hitLoc=gameWorld.Blackboard.TestTouchLocation;
@@ -55,7 +53,6 @@
         {
             //tell gameScene we are a target for that pickup
             [gameWorld Blackboard].PickupObject=gameObject;
-                    NSLog(@"success x %f y %f", x,y);
         }        
     }
     

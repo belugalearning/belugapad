@@ -32,6 +32,8 @@
 #import "SGJmapNode.h"
 #import "SGJmapMasteryNode.h"
 
+#import "SGJmapProximityEval.h"
+
 static float kNodeScale=0.5f;
 //static CGPoint kStartMapPos={-3576, -2557};
 static CGPoint kStartMapPos={-611, 3713};
@@ -149,6 +151,8 @@ typedef enum {
         [self setupMap];
         
         [self schedule:@selector(doUpdate:) interval:1.0f / 60.0f];
+        
+        [self schedule:@selector(doUpdateProximity:) interval:15.0f / 60.0f];
                 
 //        daemon=[[Daemon alloc] initWithLayer:foreLayer andRestingPostion:ccp(cx, cy) andLy:ly];
 //        [daemon setMode:kDaemonModeFollowing];
@@ -324,6 +328,18 @@ typedef enum {
     if(juiState==kJuiStateNodeSliceTransition)
     {
         nodeSliceTransitionHold+=delta;
+    }
+}
+
+-(void) doUpdateProximity:(ccTime)delta
+{
+    CGPoint p=[self currentCentre];
+    
+    for (id go in [gw AllGameObjects]) {
+        if([go conformsToProtocol:@protocol(ProximityResponder)])
+        {
+            [((id<ProximityResponder>)go).ProximityEvalComponent actOnProximityTo:p];
+        }
     }
 }
 

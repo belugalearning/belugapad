@@ -7,6 +7,9 @@
 //
 
 #import "SGJmapProximityEval.h"
+#import "BLMath.h"
+
+static float visibleProximity=1024.0f;
 
 @implementation SGJmapProximityEval
 
@@ -22,7 +25,7 @@
 
 -(void)actOnProximityTo:(CGPoint)pos
 {
-    if(1==2)
+    if([BLMath DistanceBetween:pos and:ParentGO.Position]<visibleProximity)
     {
         ParentGO.Visible=YES;
     }

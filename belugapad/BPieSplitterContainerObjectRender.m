@@ -89,6 +89,11 @@
 -(void)setSprite
 {    
     
+    if(!cont.BaseNode){
+        cont.BaseNode=[[CCNode alloc]init];
+        [[gameWorld Blackboard].ComponentRenderLayer addChild:cont.BaseNode z:2];
+    }
+    
     NSString *spriteFileName=[[NSString alloc]init];
     
     
@@ -107,7 +112,7 @@
     
     
     
-        [[gameWorld Blackboard].ComponentRenderLayer addChild:cont.mySprite z:2];
+        [cont.BaseNode addChild:cont.mySprite z:2];
     
 }
 -(void)moveSprite

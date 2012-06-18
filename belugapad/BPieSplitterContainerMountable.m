@@ -9,6 +9,8 @@
 #import "global.h"
 #import "BPieSplitterContainerMountable.h"
 #import "DWPieSplitterContainerGameObject.h"
+#import "DWPieSplitterSliceGameObject.h"
+#import "DWPieSplitterPieGameObject.h"
 
 @implementation BPieSplitterContainerMountable
 
@@ -55,7 +57,9 @@
     if(gameWorld.Blackboard.PickupObject)
     {
         if(!cont.mySlices)cont.mySlices=[[NSMutableArray alloc]init];
+        
         [cont.mySlices addObject:gameWorld.Blackboard.PickupObject];
+        
     }
 }
 -(void)unMountObjectFromMe
@@ -64,6 +68,17 @@
     {
         [cont.mySlices removeObject:gameWorld.Blackboard.PickupObject];
         if(cont.myText)[cont.myText setString:[NSString stringWithFormat:@"%d", [cont.mySlices count]]];
+        
+        // reorder pie slices
+        for(int i=0;i<[cont.mySlices count];i++)
+        {
+            DWPieSplitterSliceGameObject *sl=[cont.mySlices objectAtIndex:i];
+            DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)sl.myPie;
+            
+            CCSprite *s=sl.mySprite;
+            [s runAction:[CCRotateTo actionWithDuration:0.1f angle:(360/p.numberOfSlices)*i]];
+        }
+        
     }
 }
 

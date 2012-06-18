@@ -19,5 +19,7 @@
 @property float myHeldValue;
 @property (retain) CCLabelTTF *myText;
 @property (retain) NSString *textString;
+@property (retain) CCNode *BaseNode;
+@property (retain) NSMutableArray *Nodes;
 
 @end

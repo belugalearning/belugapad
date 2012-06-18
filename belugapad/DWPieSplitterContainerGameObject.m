@@ -18,5 +18,7 @@
 @synthesize myHeldValue;
 @synthesize myText;
 @synthesize textString;
+@synthesize BaseNode;
+@synthesize Nodes;
 
 @end

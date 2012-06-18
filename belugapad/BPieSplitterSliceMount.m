@@ -66,7 +66,40 @@
         
         [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.1f angle:(360/p.numberOfSlices)*[c.mySlices count]]];
         
-        [c.mySprite addChild:slice.mySprite];
+        
+        BOOL GotPlaceInNode;
+        
+        if(!c.Nodes)c.Nodes=[[NSMutableArray alloc]init];
+        if([c.Nodes count]==0)
+        {
+            CCNode *thisNode=[[CCNode alloc]init];
+            [c.Nodes addObject:thisNode];
+            [c.BaseNode addChild:thisNode];
+            [thisNode setPosition:c.Position];
+            [thisNode addChild:slice.mySprite];
+        }
+        else {
+            for(CCNode *n in c.Nodes)
+            {
+                if([n.children count]<[p.mySlices count])
+                {
+                    [n addChild:slice.mySprite];
+                    return;
+                }
+            }
+            
+            if(!GotPlaceInNode)
+            {
+                CCNode *thisNode=[[CCNode alloc]init];
+                [c.Nodes addObject:thisNode];
+                [c.BaseNode addChild:thisNode];
+                [thisNode addChild:slice.mySprite];
+            }
+        
+        }
+        
+
+        
         
 
 

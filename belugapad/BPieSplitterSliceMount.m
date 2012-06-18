@@ -62,7 +62,9 @@
         [slice.mySprite removeFromParentAndCleanup:YES];
         slice.mySprite=nil;
         slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
-        [slice.mySprite setRotation:(360/p.numberOfSlices)*[c.mySlices count]];
+//        [slice.mySprite setRotation:(360/p.numberOfSlices)*[c.mySlices count]];
+        
+        [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.1f angle:(360/p.numberOfSlices)*[c.mySlices count]]];
         
         [c.mySprite addChild:slice.mySprite];
         
@@ -77,11 +79,12 @@
     DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie;        
     [slice.mySprite removeFromParentAndCleanup:YES];
     slice.mySprite=nil;
-    slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/slice.png")];
+    slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
     [p.mySprite addChild:slice.mySprite];
     [slice setPosition:[p.mySprite convertToNodeSpace:slice.Position]];
     slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
-    [slice.mySprite setRotation:slice.Rotation];
+    //[slice.mySprite setRotation:slice.Rotation];
+    [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.1f angle:slice.Rotation]];
     
     slice.myCont=nil;
 }

@@ -14,7 +14,7 @@
 @interface SGJmapMasteryNode : SGGameObject <Transform, ProximityResponder, Drawing, CouchDerived>
 
 @property (retain) SGJmapMasteryNodeRender* MNodeRenderComponent;
-@property (retain) NSMutableArray *PrereqNodes;
+@property (retain) NSMutableArray *ChildNodes;
 
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
 

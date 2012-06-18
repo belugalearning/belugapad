@@ -207,11 +207,11 @@ typedef enum {
     mapLayer=[[CCLayer alloc] init];
     [mapLayer setPosition:kStartMapPos];        
 
-    [self addChild:mapLayer z:-1];
+    [self addChild:mapLayer z:1];
 
     //fore layer
     foreLayer=[[CCLayer alloc] init];
-    [self addChild:foreLayer z:-1];
+    [self addChild:foreLayer z:1];
     
 }
 
@@ -285,13 +285,18 @@ typedef enum {
 
 -(void)parseNodesForEndPoints
 {
-    NSArray *prereqs=[contentService relationMembersForName:@"Prerequisite"];
-    for (NSString *rel in prereqs) {
-        NSArray *pair=[rel objectFromJSONString];
+    NSArray *prereqs=[contentService relationMembersForName:@"Mastery"];
+    for (NSArray *pair in prereqs) {
         id leftgo=[self gameObjectForCouchId:[pair objectAtIndex:0]];
         SGJmapMasteryNode *rightgo=[self gameObjectForCouchId:[pair objectAtIndex:1]];
         
-        [rightgo.PrereqNodes addObject:leftgo];
+        if(leftgo && rightgo)
+        {
+            [rightgo.ChildNodes addObject:leftgo];
+        }
+        else {
+            NSLog(@"could not find both end points for %@ and %@", [pair objectAtIndex:0], [pair objectAtIndex:1]);
+        }
     }
 }
 
@@ -632,6 +637,7 @@ typedef enum {
 -(void)dealloc
 {
     [kcmNodes release];
+    [gw release];
     
     [super dealloc];
 }

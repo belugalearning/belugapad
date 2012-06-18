@@ -54,13 +54,15 @@
     {
         slice.myCont=gameWorld.Blackboard.DropObject;      
         DWPieSplitterContainerGameObject *c=(DWPieSplitterContainerGameObject*)slice.myCont;
+        DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie;
         
         slice.Position=((DWPieSplitterContainerGameObject*)gameWorld.Blackboard.DropObject).Position;
         
         //flip ownership of the sprite from the pie to the container
         [slice.mySprite removeFromParentAndCleanup:YES];
         slice.mySprite=nil;
-        slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/slice.png")];
+        slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
+        [slice.mySprite setRotation:(360/p.numberOfSlices)*[c.mySlices count]];
         
         [c.mySprite addChild:slice.mySprite];
         
@@ -78,6 +80,8 @@
     slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/slice.png")];
     [p.mySprite addChild:slice.mySprite];
     [slice setPosition:[p.mySprite convertToNodeSpace:slice.Position]];
+    slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
+    [slice.mySprite setRotation:slice.Rotation];
     
     slice.myCont=nil;
 }

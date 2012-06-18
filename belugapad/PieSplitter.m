@@ -371,6 +371,8 @@ static float kTimeToPieShake=7.0f;
             [gw populateAndAddGameObject:slice withTemplateName:@"TpieSplitterSlice"];
             slice.Position=p.Position;
             slice.myPie=p;
+            slice.SpriteFileName=[NSString stringWithFormat:@"/images/piesplitter/slice%d.png", [activeCon count]];
+            slice.Rotation=(360/p.numberOfSlices)*i;
             [p.mySlices addObject:slice];
             [slice handleMessage:kDWsetupStuff];
         }
@@ -393,6 +395,8 @@ static float kTimeToPieShake=7.0f;
             [gw populateAndAddGameObject:slice withTemplateName:@"TpieSplitterSlice"];
             slice.Position=p.Position;
             slice.myPie=p;
+            slice.SpriteFileName=[NSString stringWithFormat:@"/images/piesplitter/slice%d.png", [activeCon count]];
+            slice.Rotation=(360/p.numberOfSlices)*i;
             [p.mySlices addObject:slice];
             [slice handleMessage:kDWsetupStuff];
         }

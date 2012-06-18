@@ -83,9 +83,14 @@
     DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie;
     NSString *spriteFileName=[[NSString alloc]init];
     
-    spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/slice.png"];
+    if(slice.SpriteFileName)
+        spriteFileName=slice.SpriteFileName;
+    
+    else
+        spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/slice.png"];
     
     slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+    [slice.mySprite setRotation:slice.Rotation];
     [slice.mySprite setPosition:[p.mySprite convertToNodeSpace:slice.Position]];
     
     

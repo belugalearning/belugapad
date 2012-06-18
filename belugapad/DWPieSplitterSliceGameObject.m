@@ -13,7 +13,8 @@
 @synthesize Position;
 @synthesize mySprite;
 @synthesize myPie;
-@synthesize sliceValue;
+@synthesize Rotation;
 @synthesize myCont;
+@synthesize SpriteFileName;
 
 @end

@@ -39,3 +39,11 @@
 -(void)draw;
 
 @end
+
+
+
+@protocol CouchDerived
+
+@property (retain) NSString *_id;
+
+@end

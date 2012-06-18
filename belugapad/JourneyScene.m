@@ -291,17 +291,19 @@ typedef enum {
         
         //node position
         CGPoint nodepos=ccp((float)n.x * kNodeScale, (nMaxY-(float)n.y) * kNodeScale);
+
+        id<CouchDerived> newnode;
         
         //create a node go
         if(n.mastery)
         {
-            SGJmapMasteryNode *masterynode=[[SGJmapMasteryNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos];
+            newnode=[[SGJmapMasteryNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos];
         }
         else {
-            SGJmapNode *node=[[SGJmapNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos];
-        }    
+            newnode=[[SGJmapNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos];
+        }   
         
-        //todo: set visibility / add to visibility batch?
+        newnode._id=n._id;
     }
 }
 

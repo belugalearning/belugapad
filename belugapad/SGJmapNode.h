@@ -11,7 +11,7 @@
 
 @class SGJmapNodeRender;
 
-@interface SGJmapNode : SGGameObject <Transform, ProximityResponder, Drawing>
+@interface SGJmapNode : SGGameObject <Transform, ProximityResponder, Drawing, CouchDerived>
 
 @property (retain) SGJmapNodeRender* NodeRenderComponent;
 

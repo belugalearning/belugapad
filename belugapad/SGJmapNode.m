@@ -20,6 +20,9 @@
 //proximtyResponder properties
 @synthesize Visible, ProximityEvalComponent;
 
+//CouchDerived
+@synthesize _id;
+
 -(SGJmapNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition
 {   
     if(self=[super initWithGameWorld:aGameWorld])

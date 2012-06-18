@@ -14,4 +14,6 @@
     id<Transform> ParentGO;
 }
 
+-(void)draw;
+
 @end

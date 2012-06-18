@@ -39,6 +39,15 @@
     
 }
 
+-(void)draw
+{
+    CGPoint lp=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];
+    
+    //glLineWidth(6.0f);
+    ccDrawColor4B(255, 200, 200, 50);
+    ccDrawLine(lp, ccpAdd(lp, ccp(100,200)));
+}
+
 -(void)setup
 {
     nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-incomplete.png"];

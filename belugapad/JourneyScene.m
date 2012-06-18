@@ -221,17 +221,17 @@ typedef enum {
 {
     //base colour layer
     CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(54, 59, 59, 255) width:lx height:ly];
-    [self addChild:cLayer];
+    [self addChild:cLayer z:-1];
     
     //base map layer
     mapLayer=[[CCLayer alloc] init];
     [mapLayer setPosition:kStartMapPos];        
 
-    [self addChild:mapLayer];
+    [self addChild:mapLayer z:-1];
 
     //fore layer
     foreLayer=[[CCLayer alloc] init];
-    [self addChild:foreLayer];
+    [self addChild:foreLayer z:-1];
     
 }
 
@@ -343,7 +343,17 @@ typedef enum {
     }
 }
 
-#pragma mark location testing and queries
+#pragma mark - draw
+
+-(void)draw
+{    
+    for(id go in [gw AllGameObjects]) {
+        if([go conformsToProtocol:@protocol(Drawing)])
+            [((id<Drawing>)go) draw];
+    }
+}
+
+#pragma mark - location testing and queries
 
 -(ConceptNode*) nodeWithin:(float)distance ofLocation:(CGPoint)location
 {
@@ -539,7 +549,7 @@ typedef enum {
         
         //[self removeNodeSlices];
         
-        [self testForNodeSliceTransitionStartWithTouchAt:lOnMap];
+        //[self testForNodeSliceTransitionStartWithTouchAt:lOnMap];
         
         touchStartedInNodeMap=YES;
     }

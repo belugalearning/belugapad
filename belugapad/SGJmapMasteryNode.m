@@ -47,4 +47,12 @@
     [self.ProximityEvalComponent doUpdate:delta];
 }
 
+-(void)draw
+{
+    if(self.Visible)
+    {
+        [self.MNodeRenderComponent draw];
+    }
+}
+
 @end

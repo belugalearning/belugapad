@@ -28,3 +28,14 @@
 @property (retain) SGJmapProximityEval* ProximityEvalComponent;
 
 @end
+
+
+
+@protocol Drawing
+
+@property CGPoint Position;
+@property BOOL Visible;
+
+-(void)draw;
+
+@end

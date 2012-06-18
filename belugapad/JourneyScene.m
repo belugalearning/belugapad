@@ -25,27 +25,16 @@
 
 #import "SimpleAudioEngine.h"
 
-#import <CouchCocoa/CouchCocoa.h>
-#import <CouchCocoa/CouchModelFactory.h>
-
 #import "SGGameWorld.h"
 #import "SGJmapNode.h"
 #import "SGJmapMasteryNode.h"
-
 #import "SGJmapProximityEval.h"
 
 static float kNodeScale=0.5f;
 //static CGPoint kStartMapPos={-3576, -2557};
 static CGPoint kStartMapPos={-611, 3713};
-static float kPropXNodeDrawDist=1.25f;
 static float kPropXNodeHitDist=0.065f;
 
-static float kNodeSliceStartScale=0.08f;
-static CGPoint kNodeSliceOrigin={600, 384};
-static float kNodeSliceRadius=350.0f;
-static float kNodeSliceHoldTime=1.0f;
-static CGPoint kPinOffset={-118, -162.5f};
-static float kPinTapRadius=80.0f;
 
 const float kLogOutBtnPadding = 8.0f;
 const CGSize kLogOutBtnSize = { 120.0f, 43.0f };
@@ -65,31 +54,14 @@ typedef enum {
     ContentService *contentService;
 
     NSMutableArray *kcmNodes;
-    NSDictionary *kcmIdIndex;
-    NSMutableArray *nodeSprites;
-    NSMutableArray *dotSprites;
-    NSMutableArray *visibleNodes;
         
-    NSArray *prereqRelations;
-    
-    NSMutableArray *nodeSliceNodes;
-    ConceptNode *currentNodeSliceNode;
-    BOOL currentNodeSliceHasProblems;
-    float nodeSliceTransitionHold;
-    CGPoint mapPosAtNodeSliceTransitionComplete;
-    
     JuiState juiState;
     
     float nMinX, nMinY, nMaxX, nMaxY;
     float scale;
     
     BOOL touchStartedInNodeMap;
-    
-    CCRenderTexture *darknessLayer;
-    NSMutableArray *lightSprites;
-    CCSprite *zubiLight;
-    CCSprite *nodeSliceLight;
-    
+        
     UsersService *usersService;
     
     float deltacum;
@@ -182,14 +154,7 @@ typedef enum {
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.plist")];
     nodeRenderBatch=[CCSpriteBatchNode batchNodeWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.png")];
     [mapLayer addChild:nodeRenderBatch];
- 
-    for(int i=0;i<20;i++)
-    {
-        CCSprite *nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-complete.png"];
-        [nodeSprite setPosition:ccp(0, 0)];
-        [nodeRenderBatch addChild:nodeSprite];
-    }
-
+    
 }
 
 -(void) setupMap
@@ -198,12 +163,14 @@ typedef enum {
     
     [self setupGw];
     
-    kcmIdIndex=[[NSMutableDictionary alloc] init];
-    
     kcmNodes=[NSMutableArray arrayWithArray:[contentService allConceptNodes]];
     [kcmNodes retain];
     
-    [self parseForBoundsAndCreateKcmIndex];
+    [self parseKcmForBounds];
+    
+    [self createNodesInGameWorld];
+    
+    [self parseNodesForEndPoints];
             
     //reposition if previous node
     if(contentService.currentNode)
@@ -251,12 +218,10 @@ typedef enum {
     }
 }
 
-- (void)parseForBoundsAndCreateKcmIndex
+- (void)parseKcmForBounds
 {
     //find bounds
     //set bounds to first element
-    NSMutableArray *removeNodes=[[NSMutableArray alloc] init];
-    
     if(kcmNodes.count>0)
     {
         ConceptNode *n1=[kcmNodes objectAtIndex:0];
@@ -272,19 +237,17 @@ typedef enum {
             if((float)n.y<nMinY)nMinY=(float)n.y;
             if((float)n.x>nMaxX)nMaxX=(float)n.x;
             if((float)n.y>nMaxY)nMaxY=(float)n.y;
-            
-            //add reference
-            [kcmIdIndex setValue:[NSNumber numberWithInt:i] forKey:n._id];
         }
-            
     }
     
     nMinX=nMinX*kNodeScale;
     nMinY=nMinY*kNodeScale;
     nMaxX=nMaxX*kNodeScale;
     nMaxY=nMaxY*kNodeScale;
-    
-    
+}
+
+-(void)createNodesInGameWorld
+{
     //create nodes
     for (int i=1; i<[kcmNodes count]; i++) {
         ConceptNode *n=[kcmNodes objectAtIndex:i];
@@ -307,7 +270,10 @@ typedef enum {
     }
 }
 
-
+-(void)parseNodesForEndPoints
+{
+    
+}
 
 #pragma mark drawing and sprite creation
 
@@ -326,11 +292,6 @@ typedef enum {
     
     //[daemon doUpdate:delta];
     deltacum+=delta;
-    
-    if(juiState==kJuiStateNodeSliceTransition)
-    {
-        nodeSliceTransitionHold+=delta;
-    }
 }
 
 -(void) doUpdateProximity:(ccTime)delta
@@ -488,26 +449,26 @@ typedef enum {
 
 #pragma mark user i/o
 
--(void)startSeletedPin
-{
-    NSLog(@"starting pipeline 0 for node %@", currentNodeSliceNode._id);
-    
-    if (currentNodeSliceNode.pipelines.count>0) {
-        //need to get the right pipeline -- named @"25May"
-        for (NSString *pid in currentNodeSliceNode.pipelines) {
-            Pipeline *p=[contentService pipelineWithId:pid];
-            if([p.name isEqualToString:@"25May"])
-            {
-                [contentService startPipelineWithId:pid forNode:currentNodeSliceNode];
-                [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
-                break;
-            }
-        }
-    }
-    else {
-        NSLog(@"failed to start -- no pipelines found");
-    }
-}
+//-(void)startSeletedPin
+//{
+//    NSLog(@"starting pipeline 0 for node %@", currentNodeSliceNode._id);
+//    
+//    if (currentNodeSliceNode.pipelines.count>0) {
+//        //need to get the right pipeline -- named @"25May"
+//        for (NSString *pid in currentNodeSliceNode.pipelines) {
+//            Pipeline *p=[contentService pipelineWithId:pid];
+//            if([p.name isEqualToString:@"25May"])
+//            {
+//                [contentService startPipelineWithId:pid forNode:currentNodeSliceNode];
+//                [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
+//                break;
+//            }
+//        }
+//    }
+//    else {
+//        NSLog(@"failed to start -- no pipelines found");
+//    }
+//}
 
 #pragma mark touch handling
 
@@ -548,42 +509,9 @@ typedef enum {
     touchStartedInNodeMap=NO;
 
     if (juiState==kJuiStateNodeMap) {
-        
-        //[self removeNodeSlices];
-        
-        //[self testForNodeSliceTransitionStartWithTouchAt:lOnMap];
-        
+                
         touchStartedInNodeMap=YES;
     }
-    
-//    else if(juiState==kJuiStateNodeSlice)
-//    {
-//        if([BLMath DistanceBetween:lOnMap and:currentNodeSliceNode.nodeSliceSprite.position] >= kNodeSliceRadius)
-//        {
-//            //handle as normal tap -- but reset to node map state in case a new node isn't hit
-//            juiState=kJuiStateNodeMap;
-//            
-//            [self removeNodeSlices];
-//            
-//            [self testForNodeSliceTransitionStartWithTouchAt:lOnMap];
-//            
-//            touchStartedInNodeMap=YES;
-//        }
-//        else {
-//            //handle as a tap in the nodeslice
-//            
-//            //look for tap on pin
-//            if(currentNodeSliceHasProblems)
-//            {
-//                CGPoint pinOnMap=[mapLayer convertToNodeSpace:ccpAdd(kNodeSliceOrigin, kPinOffset)];
-//                
-//                if([BLMath DistanceBetween:pinOnMap and:lOnMap] <= kPinTapRadius)
-//                {
-//                    [self startSeletedPin];
-//                }
-//            }
-//        }
-//    }
 }
 
 - (void)testForNodeSliceTransitionStartWithTouchAt:(CGPoint)lOnMap
@@ -595,12 +523,6 @@ typedef enum {
         //[self createNodeSliceFrom:n];
         NSLog(@"hit node %@", n._id);
         
-        //keep this to move there if the user pans during transition
-        mapPosAtNodeSliceTransitionComplete=mapLayer.position;
-        
-        juiState=kJuiStateNodeSliceTransition;
-        nodeSliceTransitionHold=0.0f;
-        currentNodeSliceNode=n;
     }
 }
 
@@ -640,26 +562,7 @@ typedef enum {
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if(juiState==kJuiStateNodeSliceTransition)
-    {
-        if(nodeSliceTransitionHold>=kNodeSliceHoldTime)
-        {
-            //alow the transition to complete, and change state
-            juiState=kJuiStateNodeSlice;
-            
-            //move the map layer to get nodeslice view in correct position if user panned
-            [mapLayer runAction:[CCEaseIn actionWithAction:[CCMoveTo actionWithDuration:0.2f position:mapPosAtNodeSliceTransitionComplete] rate:0.5f]];
-            
-            //add the nodeslice light
-            [lightSprites addObject:nodeSliceLight];
-        }
-        else {
-            //cancel current transition
-            //[self cancelNodeSliceTransition];
-            
-            juiState=kJuiStateNodeMap;
-        }
-    }
+
 }
 
 #pragma mark - debug
@@ -695,13 +598,6 @@ typedef enum {
 -(void)dealloc
 {
     [kcmNodes release];
-    [kcmIdIndex release];
-    [nodeSprites release];
-    [dotSprites release];
-    [visibleNodes release];
-    [prereqRelations release];
-    [nodeSliceNodes release];
-    [lightSprites release];
     
     [super dealloc];
 }

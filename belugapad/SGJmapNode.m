@@ -59,4 +59,11 @@
     }
 }
 
+-(void)dealloc
+{
+    [self.NodeRenderComponent release];
+    
+    [super dealloc];
+}
+
 @end

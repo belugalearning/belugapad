@@ -7,6 +7,7 @@
 //
 
 #import "SGJmapMasteryNodeRender.h"
+#import "SGJmapMasteryNode.h"
 
 @interface SGJmapMasteryNodeRender()
 {
@@ -41,11 +42,20 @@
 
 -(void)draw
 {
-    CGPoint lp=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];
+    CGPoint myWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];
+ 
+    SGJmapMasteryNode *mparent=(SGJmapMasteryNode*)ParentGO;
+    for (id<Transform> prnode in mparent.PrereqNodes) {
+        //draw prereq path to this node        
+        CGPoint theirWorldPos=[mparent.RenderBatch.parent convertToWorldSpace:prnode.Position];
+        
+        ccDrawColor4B(255, 200, 200, 50);
+        ccDrawLine(myWorldPos, theirWorldPos);        
+    }
     
     //glLineWidth(6.0f);
-    ccDrawColor4B(255, 200, 200, 50);
-    ccDrawLine(lp, ccpAdd(lp, ccp(100,200)));
+//    ccDrawColor4B(255, 200, 200, 50);
+//    ccDrawLine(myWorldPos, ccpAdd(myWorldPos, ccp(100,200)));
 }
 
 -(void)setup

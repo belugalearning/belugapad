@@ -12,7 +12,7 @@
 
 @implementation SGJmapMasteryNode
 
-@synthesize MNodeRenderComponent;
+@synthesize MNodeRenderComponent, PrereqNodes;
 
 //transform protocol properties
 @synthesize Position, RenderBatch;
@@ -32,6 +32,8 @@
         
         self.MNodeRenderComponent=[[SGJmapMasteryNodeRender alloc] initWithGameObject:self];
         self.ProximityEvalComponent=[[SGJmapProximityEval alloc] initWithGameObject:self];
+        
+        self.PrereqNodes=[[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -56,6 +58,14 @@
     {
         [self.MNodeRenderComponent draw];
     }
+}
+
+-(void)dealloc
+{
+    [self.MNodeRenderComponent release];
+    [self.PrereqNodes release];
+    
+    [super dealloc];
 }
 
 @end

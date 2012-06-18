@@ -30,6 +30,8 @@
 #import "SGJmapMasteryNode.h"
 #import "SGJmapProximityEval.h"
 
+#import "JSONKit.h"
+
 static float kNodeScale=0.5f;
 //static CGPoint kStartMapPos={-3576, -2557};
 static CGPoint kStartMapPos={-611, 3713};
@@ -163,14 +165,25 @@ typedef enum {
     
     [self setupGw];
     
+    NSLog(@"start build");
+    
     kcmNodes=[NSMutableArray arrayWithArray:[contentService allConceptNodes]];
     [kcmNodes retain];
     
+    NSLog(@"got kcm node");
+    
     [self parseKcmForBounds];
+    
+    NSLog(@"got kcm bounds");
     
     [self createNodesInGameWorld];
     
+    NSLog(@"created node, mastery game objects");
+    
     [self parseNodesForEndPoints];
+    
+    NSLog(@"completed end point parse");
+    NSLog(@"end build");
             
     //reposition if previous node
     if(contentService.currentNode)
@@ -272,7 +285,28 @@ typedef enum {
 
 -(void)parseNodesForEndPoints
 {
-    
+    NSArray *prereqs=[contentService relationMembersForName:@"Prerequisite"];
+    for (NSString *rel in prereqs) {
+        NSArray *pair=[rel objectFromJSONString];
+        id leftgo=[self gameObjectForCouchId:[pair objectAtIndex:0]];
+        SGJmapMasteryNode *rightgo=[self gameObjectForCouchId:[pair objectAtIndex:1]];
+        
+        [rightgo.PrereqNodes addObject:leftgo];
+    }
+}
+
+-(id)gameObjectForCouchId:(NSString*)findId
+{
+    for (id go in [gw AllGameObjects]) {
+        if([go conformsToProtocol:@protocol(CouchDerived)])
+        {
+            if([((id<CouchDerived>)go)._id isEqualToString:findId])
+            {
+                return go;
+            }
+        }
+    }
+    return nil;
 }
 
 #pragma mark drawing and sprite creation

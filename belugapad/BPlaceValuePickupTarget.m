@@ -53,7 +53,6 @@
         {
             //tell gameScene we are a target for that pickup
             [gameWorld Blackboard].PickupObject=gameObject;
-            [b.Mount handleMessage:kDWunsetMountedObject];
         }        
     }
     

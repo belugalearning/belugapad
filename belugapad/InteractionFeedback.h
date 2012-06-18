@@ -15,5 +15,6 @@
 +(CCAction*)shakeAction;
 +(CCAction*)enlargeTo1xAction;
 +(CCAction*)reduceTo1xAction;
++(CCAction*)reduceTo0xAndHide;
 
 @end

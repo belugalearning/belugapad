@@ -29,6 +29,7 @@
 #import "SGJmapNode.h"
 #import "SGJmapMasteryNode.h"
 #import "SGJmapProximityEval.h"
+#import "SGJmapNodeSelect.h"
 
 #import "JSONKit.h"
 
@@ -544,6 +545,8 @@ typedef enum {
  
     NSLog(@"touched at %@", NSStringFromCGPoint(lOnMap));
     
+    [self testForNodeTouchAt:lOnMap];
+    
 //    [daemon setTarget:l];
 //    [daemon setRestingPoint:l];
     
@@ -556,17 +559,28 @@ typedef enum {
     }
 }
 
-- (void)testForNodeSliceTransitionStartWithTouchAt:(CGPoint)lOnMap
+-(void)testForNodeTouchAt:(CGPoint)lOnMap
 {
-    //test for node hit and start transition
-    ConceptNode *n=[self nodeWithin:(kPropXNodeHitDist * lx) ofLocation:lOnMap];
-    if(n)
-    {
-        //[self createNodeSliceFrom:n];
-        NSLog(@"hit node %@", n._id);
-        
+    for (id go in [gw AllGameObjects]) {
+        if([go conformsToProtocol:@protocol(Selectable)])
+        {
+            id<Selectable>sgo=go;
+            [((id<Selectable>)sgo).NodeSelectComponent trySelectionForPosition:lOnMap];
+        }
     }
 }
+
+//- (void)testForNodeSliceTransitionStartWithTouchAt:(CGPoint)lOnMap
+//{
+//    //test for node hit and start transition
+//    ConceptNode *n=[self nodeWithin:(kPropXNodeHitDist * lx) ofLocation:lOnMap];
+//    if(n)
+//    {
+//        //[self createNodeSliceFrom:n];
+//        NSLog(@"hit node %@", n._id);
+//        
+//    }
+//}
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {

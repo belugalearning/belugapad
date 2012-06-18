@@ -11,7 +11,7 @@
 
 @class SGJmapMasteryNodeRender;
 
-@interface SGJmapMasteryNode : SGGameObject <Transform, ProximityResponder, Drawing, CouchDerived, Configurable>
+@interface SGJmapMasteryNode : SGGameObject <Transform, ProximityResponder, Drawing, CouchDerived, Configurable, Selectable>
 
 @property (retain) SGJmapMasteryNodeRender* MNodeRenderComponent;
 @property (retain) NSMutableArray *ChildNodes;

@@ -9,6 +9,7 @@
 #import "SGJmapMasteryNode.h"
 #import "SGJmapMasteryNodeRender.h"
 #import "SGJmapProximityEval.h"
+#import "SGJmapNodeSelect.h"
 
 @implementation SGJmapMasteryNode
 
@@ -23,6 +24,9 @@
 //CouchDerived
 @synthesize _id, UserVisibleString;
 
+//selectable
+@synthesize Selected, NodeSelectComponent;
+
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition
 {
     if(self=[super initWithGameWorld:aGameWorld])
@@ -32,6 +36,7 @@
         
         self.MNodeRenderComponent=[[SGJmapMasteryNodeRender alloc] initWithGameObject:self];
         self.ProximityEvalComponent=[[SGJmapProximityEval alloc] initWithGameObject:self];
+        self.NodeSelectComponent=[[SGJmapNodeSelect alloc] initWithGameObject:self];
         
         self.ChildNodes=[[NSMutableArray alloc] init];
     }
@@ -43,6 +48,7 @@
     //broadcast to components
     [self.MNodeRenderComponent handleMessage:messageType andPayload:payload];
     [self.ProximityEvalComponent handleMessage:messageType andPayload:payload];
+    [self.NodeSelectComponent handleMessage:messageType andPayload:payload];
 }
 
 -(void)doUpdate:(ccTime)delta
@@ -50,6 +56,7 @@
     //update components
     [self.MNodeRenderComponent doUpdate:delta];
     [self.ProximityEvalComponent doUpdate:delta];
+    [self.NodeSelectComponent doUpdate:delta];
 }
 
 -(void)draw

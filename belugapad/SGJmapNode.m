@@ -9,6 +9,7 @@
 #import "SGJmapNode.h"
 #import "SGJmapNodeRender.h"
 #import "SGJmapProximityEval.h"
+#import "SGJmapNodeSelect.h"
 
 @implementation SGJmapNode
 
@@ -23,15 +24,20 @@
 //CouchDerived
 @synthesize _id, UserVisibleString;
 
+//selectable
+@synthesize Selected, NodeSelectComponent;
+
 -(SGJmapNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition
 {   
     if(self=[super initWithGameWorld:aGameWorld])
     {
         self.RenderBatch=aRenderBatch;
         self.Position=aPosition;
+        self.Selected=NO;
         
         self.NodeRenderComponent=[[SGJmapNodeRender alloc] initWithGameObject:self];
         self.ProximityEvalComponent=[[SGJmapProximityEval alloc] initWithGameObject:self];
+        self.NodeSelectComponent=[[SGJmapNodeSelect alloc] initWithGameObject:self];
     }
     return self;
 }
@@ -42,6 +48,7 @@
     //re-broadcast messages to components
     [self.NodeRenderComponent handleMessage:messageType andPayload:payload];
     [self.ProximityEvalComponent handleMessage:messageType andPayload:payload];
+    [self.NodeSelectComponent handleMessage:messageType andPayload:payload];
 }
 
 -(void)doUpdate:(ccTime)delta
@@ -49,6 +56,7 @@
     //update of components
     [self.NodeRenderComponent doUpdate:delta];
     [self.ProximityEvalComponent doUpdate:delta];
+    [self.NodeSelectComponent doUpdate:delta];
 }
 
 -(void)draw

@@ -91,6 +91,7 @@
     
     if(!cont.BaseNode){
         cont.BaseNode=[[CCNode alloc]init];
+        [cont.BaseNode setPosition:cont.Position];
         [[gameWorld Blackboard].ComponentRenderLayer addChild:cont.BaseNode z:2];
     }
     
@@ -100,7 +101,7 @@
     spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/container.png"];
     
     cont.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-    [cont.mySprite setPosition:cont.Position];
+    //[cont.mySprite setPosition:cont.Position];
     if(!cont.ScaledUp)[cont.mySprite setScale:0.5f];
     else [cont.mySprite setScale:1.0f];
     
@@ -112,7 +113,7 @@
     
     
     
-        [cont.BaseNode addChild:cont.mySprite z:2];
+        [cont.BaseNode addChild:cont.mySprite];
     
 }
 -(void)moveSprite

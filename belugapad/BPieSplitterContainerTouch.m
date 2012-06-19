@@ -38,9 +38,6 @@
     contentService = ac.contentService;
     usersService = ac.usersService;
     
-    [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_X];
-    [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_Y];
-    
     
     return self;
 }
@@ -67,7 +64,7 @@
 
 -(void)checkTouch:(CGPoint)hitLoc
 {
-    if(CGRectContainsPoint(cont.mySprite.boundingBox, hitLoc) && [cont.mySlices count]==0)
+    if(CGRectContainsPoint(cont.mySprite.boundingBox, [cont.BaseNode convertToNodeSpace:hitLoc]) && [cont.mySlices count]==0)
     {
         gameWorld.Blackboard.PickupObject=gameObject;
     }

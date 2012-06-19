@@ -38,9 +38,6 @@
     contentService = ac.contentService;
     usersService = ac.usersService;
     
-    [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_X];
-    [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_Y];
-    
     
     return self;
 }

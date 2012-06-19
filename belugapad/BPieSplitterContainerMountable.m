@@ -46,7 +46,7 @@
 
 -(void)checkDropTarget:(CGPoint)hitLoc
 {
-    if(CGRectContainsPoint(cont.mySprite.boundingBox, hitLoc))
+    if(CGRectContainsPoint(cont.mySprite.boundingBox, [cont.BaseNode convertToNodeSpace:hitLoc]))
    {
        gameWorld.Blackboard.DropObject=cont;
    }
@@ -59,6 +59,8 @@
         if(!cont.mySlices)cont.mySlices=[[NSMutableArray alloc]init];
         
         [cont.mySlices addObject:gameWorld.Blackboard.PickupObject];
+        
+        [gameWorld.Blackboard.PickupObject handleMessage:kDWmoveSpriteToPosition];
         
     }
 }

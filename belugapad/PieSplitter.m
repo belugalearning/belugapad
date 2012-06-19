@@ -349,12 +349,19 @@ static float kTimeToPieShake=7.0f;
     for(int i=0;i<[activeCon count];i++)
     {
         DWPieSplitterContainerGameObject *c=[activeCon objectAtIndex:i];
+        if(!c.ScaledUp)continue;
+        
         c.Position=ccp((i+0.5)*(lx/[activeCon count]), conBox.position.y+((int)[activeCon count]/10)*100);
-        [c.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:c.Position]];
-        for(DWPieSplitterSliceGameObject *s in c.mySlices)
+        [c.BaseNode runAction:[CCMoveTo actionWithDuration:0.3f position:c.Position]];
+//        for(DWPieSplitterSliceGameObject *s in c.mySlices)
+//        {
+//            s.Position=c.mySprite.position;
+//            [s.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:[c.mySprite convertToNodeSpace:s.Position]]];
+//        }
+       
+        for(CCNode *n in c.Nodes)
         {
-            s.Position=c.mySprite.position;
-            [s.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:[c.mySprite convertToNodeSpace:s.Position]]];
+            [n runAction:[CCMoveTo actionWithDuration:0.3f position:c.Position]];
         }
     }
 }

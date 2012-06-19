@@ -109,11 +109,12 @@
 -(void)moveSprite
 {
     DWPieSplitterPieGameObject *pie=(DWPieSplitterPieGameObject*)slice.myPie;
-    DWPieSplitterContainerGameObject *c=(DWPieSplitterContainerGameObject*)slice.myCont;
-    NSLog(@"spritepos=%@", NSStringFromCGPoint(slice.Position));
     
     if(slice.myCont)
-        [slice.mySprite setPosition:[c.mySprite convertToNodeSpace:slice.Position]];
+    {
+        [slice.mySprite setPosition:[slice.mySprite.parent convertToNodeSpace:slice.Position]];
+        NSLog(@"slice has dat container");
+    }
     else 
         [slice.mySprite setPosition:[pie.mySprite convertToNodeSpace:slice.Position]];
 

@@ -56,7 +56,7 @@
         DWPieSplitterContainerGameObject *c=(DWPieSplitterContainerGameObject*)slice.myCont;
         DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie;
         
-        slice.Position=((DWPieSplitterContainerGameObject*)gameWorld.Blackboard.DropObject).Position;
+//        slice.Position=((DWPieSplitterContainerGameObject*)gameWorld.Blackboard.DropObject).Position;
         
         //flip ownership of the sprite from the pie to the container
         [slice.mySprite removeFromParentAndCleanup:YES];
@@ -74,13 +74,14 @@
         {
             CCNode *thisNode=[[CCNode alloc]init];
             [c.Nodes addObject:thisNode];
-            [c.BaseNode addChild:thisNode];
             [thisNode setPosition:c.Position];
+            [c.BaseNode addChild:thisNode];
             [thisNode addChild:slice.mySprite];
         }
         else {
             for(CCNode *n in c.Nodes)
             {
+                NSLog(@"check n for space. n=%d p=%d", [n.children count], [p.mySlices count]);
                 if([n.children count]<[p.mySlices count])
                 {
                     [n addChild:slice.mySprite];
@@ -92,19 +93,13 @@
             {
                 CCNode *thisNode=[[CCNode alloc]init];
                 [c.Nodes addObject:thisNode];
+                [thisNode setPosition:c.Position];
                 [c.BaseNode addChild:thisNode];
                 [thisNode addChild:slice.mySprite];
             }
         
         }
-        
-
-        
-        
-
-
-        
-        [slice handleMessage:kDWmoveSpriteToPosition];
+    
     }
 }
 -(void)unMountMeFromContainer

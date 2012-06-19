@@ -92,6 +92,7 @@
 		7F268AE514F2A2A300F1F65F /* ToolScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F268AE414F2A2A200F1F65F /* ToolScene.m */; };
 		7F2CAEDB154AB58B00BFBB6F /* LongDivision.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2CAEDA154AB58B00BFBB6F /* LongDivision.m */; };
 		7F2F2D74158F754600862302 /* SGJmapNodeSelect.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2F2D73158F754600862302 /* SGJmapNodeSelect.m */; };
+		7F2F2D7815908FE000862302 /* LRAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2F2D7715908FE000862302 /* LRAnimator.m */; };
 		7F3367DD155FC38A00A2E656 /* DProblemParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3367DC155FC38A00A2E656 /* DProblemParser.m */; };
 		7F40D88E14FF631C006A3A55 /* local-settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F40D88D14FF631C006A3A55 /* local-settings.plist */; };
 		7F40D89A14FFD8BE006A3A55 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113CC14A9EE63001AF372 /* UIKit.framework */; };
@@ -542,6 +543,8 @@
 		7F2CAEDA154AB58B00BFBB6F /* LongDivision.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LongDivision.m; sourceTree = "<group>"; };
 		7F2F2D72158F754500862302 /* SGJmapNodeSelect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapNodeSelect.h; sourceTree = "<group>"; };
 		7F2F2D73158F754600862302 /* SGJmapNodeSelect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapNodeSelect.m; sourceTree = "<group>"; };
+		7F2F2D7615908FDF00862302 /* LRAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRAnimator.h; sourceTree = "<group>"; };
+		7F2F2D7715908FE000862302 /* LRAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRAnimator.m; sourceTree = "<group>"; };
 		7F3367DB155FC38A00A2E656 /* DProblemParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DProblemParser.h; sourceTree = "<group>"; };
 		7F3367DC155FC38A00A2E656 /* DProblemParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DProblemParser.m; sourceTree = "<group>"; };
 		7F40D88D14FF631C006A3A55 /* local-settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "local-settings.plist"; sourceTree = "<group>"; };
@@ -1325,6 +1328,8 @@
 				7F2317C4156FA13400E2C941 /* NordicAnimator.m */,
 				7F0AE04B158782D100194644 /* InteractionFeedback.h */,
 				7F0AE04C158782D100194644 /* InteractionFeedback.m */,
+				7F2F2D7615908FDF00862302 /* LRAnimator.h */,
+				7F2F2D7715908FE000862302 /* LRAnimator.m */,
 			);
 			name = Animators;
 			sourceTree = "<group>";
@@ -2866,6 +2871,7 @@
 				7F7336BC158B3AF000A37FC4 /* SGJmapMasteryNodeRender.m in Sources */,
 				7F0E32B9158E9D7800E42C7B /* SGJmapProximityEval.m in Sources */,
 				7F2F2D74158F754600862302 /* SGJmapNodeSelect.m in Sources */,
+				7F2F2D7815908FE000862302 /* LRAnimator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

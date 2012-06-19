@@ -166,7 +166,7 @@ typedef enum {
 {
     //[[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
     
-    [[CCDirector sharedDirector] replaceScene:[CCTransitionShrinkGrow transitionWithDuration:0.5f scene:[ToolHost scene]]];
+    [[CCDirector sharedDirector] replaceScene:[CCTransitionCrossFade transitionWithDuration:0.5f scene:[ToolHost scene]]];
     
 }
 
@@ -209,14 +209,14 @@ typedef enum {
     NSLog(@"completed end point parse");
     NSLog(@"end build");
             
-    //reposition if previous node
-    if(contentService.currentNode)
-    {
-        //put map at this position
-        CGPoint p=ccp(contentService.currentNode.x * kNodeScale, -(nMaxY - contentService.currentNode.y) * kNodeScale);
-        p=ccpAdd(ccp(cx, cy), p);
-        [mapLayer setPosition:p];
-    }
+//    //reposition if previous node
+//    if(contentService.currentNode)
+//    {
+//        //put map at this position
+//        CGPoint p=ccp(contentService.currentNode.x * kNodeScale, -(nMaxY - contentService.currentNode.y) * kNodeScale);
+//        p=ccpAdd(ccp(cx, cy), p);
+//        [mapLayer setPosition:p];
+//    }
     
     NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
 }

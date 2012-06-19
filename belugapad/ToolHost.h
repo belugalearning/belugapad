@@ -34,6 +34,7 @@ typedef enum {
 @class UsersService;
 @class DProblemParser;
 @class NordicAnimator;
+@class LRAnimator;
 
 @interface ToolHost : CCLayer
 {
@@ -114,7 +115,7 @@ typedef enum {
     
     CCSprite *commitBtn;
     
-    NordicAnimator *animator;
+    LRAnimator *animator;
     int animPos;
     
     int currentToolDepth;

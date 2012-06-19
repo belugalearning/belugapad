@@ -334,13 +334,6 @@ static float kTimeToPieShake=7.0f;
     {
         p.Position=ccp(([activePie indexOfObject:p]+0.5)*(lx/[activePie count]), pieBox.position.y);
         [p.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:p.Position]];
-        
-        for(DWPieSplitterSliceGameObject *s in p.mySlices)
-        {
-            DWPieSplitterContainerGameObject *c=(DWPieSplitterContainerGameObject*)s.myCont;
-            s.Position=c.Position;
-            [s.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:[c.mySprite convertToNodeSpace:s.Position]]];
-        }
     }
 }
 

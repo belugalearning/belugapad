@@ -61,13 +61,14 @@
     }
     if(messageType==kDWupdateLabels)
     {
-        if(!cont.myText)
+        if(!cont.myText && cont.ScaledUp)
         {
             cont.myText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
             [cont.myText setPosition:ccp(50,-20)];
             [cont.mySprite addChild:cont.myText];
         }
-        [cont.myText setString:cont.textString];
+        if(cont.ScaledUp)[cont.myText setString:cont.textString];
+        else [cont.mySprite removeChild:cont.myText cleanup:YES];
     }
     if(messageType==kDWmoveSpriteToPosition)
     {
@@ -122,7 +123,7 @@
         [cont.mySprite runAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f]];
         cont.ScaledUp=YES;
     }
-    [cont.mySprite setPosition:cont.Position];
+    [cont.BaseNode setPosition:cont.Position];
 }
 -(void)moveSpriteHome
 {
@@ -130,7 +131,7 @@
         [cont.mySprite runAction:[CCScaleTo actionWithDuration:0.2f scale:0.5f]];
         cont.ScaledUp=NO;
     }
-    [cont.mySprite runAction:[CCMoveTo actionWithDuration:0.5f position:cont.MountPosition]];
+    [cont.BaseNode runAction:[CCMoveTo actionWithDuration:0.5f position:cont.MountPosition]];
 }
 -(void)handleTap
 {

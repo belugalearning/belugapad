@@ -111,10 +111,7 @@
     DWPieSplitterPieGameObject *pie=(DWPieSplitterPieGameObject*)slice.myPie;
     
     if(slice.myCont)
-    {
         [slice.mySprite setPosition:[slice.mySprite.parent convertToNodeSpace:slice.Position]];
-        NSLog(@"slice has dat container");
-    }
     else 
         [slice.mySprite setPosition:[pie.mySprite convertToNodeSpace:slice.Position]];
 

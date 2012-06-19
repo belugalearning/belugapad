@@ -359,10 +359,10 @@ static float kTimeToPieShake=7.0f;
 //            [s.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:[c.mySprite convertToNodeSpace:s.Position]]];
 //        }
        
-        for(CCNode *n in c.Nodes)
-        {
-            [n runAction:[CCMoveTo actionWithDuration:0.3f position:c.Position]];
-        }
+        //for(CCNode *n in c.Nodes)
+       // {
+        //    [n runAction:[CCMoveTo actionWithDuration:0.3f position:c.Position]];
+        //}
     }
 }
 
@@ -548,7 +548,7 @@ static float kTimeToPieShake=7.0f;
             [conBox setVisible:NO];
             
             // then check whether the touch end was in the bounding box 
-            if(CGRectContainsRect(conBox.boundingBox, cont.mySprite.boundingBox))
+            if(CGRectContainsPoint(conBox.boundingBox, location))
             {
                 // if this object isn't in the array, add it
                 if(![activeCon containsObject:cont])[activeCon addObject:cont];
@@ -577,7 +577,7 @@ static float kTimeToPieShake=7.0f;
             [pieBox setVisible:NO];
             
             // then check whether the touch end was in the bounding box 
-            if(CGRectContainsRect(pieBox.boundingBox, pie.mySprite.boundingBox))
+            if(CGRectContainsPoint(pieBox.boundingBox, location))
             {
                 // if this object isn't in the array, add it
                 if(![activePie containsObject:pie])[activePie addObject:pie];

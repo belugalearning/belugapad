@@ -74,37 +74,49 @@
         {
             CCNode *thisNode=[[CCNode alloc]init];
             [c.Nodes addObject:thisNode];
-            [thisNode setPosition:c.Position];
+            //[c.Nodes insertObject:thisNode atIndex:0];
             [c.BaseNode addChild:thisNode];
             [thisNode addChild:slice.mySprite];
         }
         else {
             for(CCNode *n in c.Nodes)
             {
-                NSLog(@"check n for space. n=%d p=%d", [n.children count], [p.mySlices count]);
                 if([n.children count]<[p.mySlices count])
                 {
                     [n addChild:slice.mySprite];
+                    //[slice.mySprite setPosition:n.position];
                     return;
+                }
+                if([n.children count]==[p.mySlices count])
+                {
+                    CGPoint adjPos=ccp(0,0);
+                    [n setPosition:ccp(adjPos.x, adjPos.y-(10*([c.Nodes indexOfObject:n]+1)))];
+                    for(CCSprite *s in n.children)
+                    {
+                        [s setOpacity:150];
+                    }
                 }
             }
             
             if(!GotPlaceInNode)
             {
                 CCNode *thisNode=[[CCNode alloc]init];
+                //[c.Nodes insertObject:thisNode atIndex:0];
                 [c.Nodes addObject:thisNode];
-                [thisNode setPosition:c.Position];
                 [c.BaseNode addChild:thisNode];
                 [thisNode addChild:slice.mySprite];
+
             }
         
         }
+//        [slice.mySprite setPosition: [slice.mySprite.parent convertToNodeSpace:c.Position]];
     
     }
 }
 -(void)unMountMeFromContainer
 {
-    DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie;        
+    DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie; 
+    DWPieSplitterContainerGameObject *c=(DWPieSplitterContainerGameObject*)slice.myCont;
     [slice.mySprite removeFromParentAndCleanup:YES];
     slice.mySprite=nil;
     slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
@@ -112,6 +124,59 @@
     [slice setPosition:[p.mySprite convertToNodeSpace:slice.Position]];
     //[slice.mySprite setRotation:slice.Rotation];
     [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.1f angle:slice.Rotation]];
+    
+    
+    // remove dead nodes from teh nodes array
+    NSMutableArray *deleteNodes=[[NSMutableArray alloc]init];
+    for(CCNode *n in c.Nodes)
+    {
+        if([n.children count]==0)
+        {
+            [deleteNodes addObject:n];
+        }
+    }
+    
+    if([deleteNodes count]>0)[c.Nodes removeObjectsInArray:deleteNodes];
+    
+    // and after they're removed - loop BACK through - repositioning the stacks
+    
+    for(CCNode *n in c.Nodes)
+    {
+        if([n.children count]==[p.mySlices count])
+        {
+            // if there's only 1 node then set opacity to full
+            if([c.Nodes count]<=1){
+                [n setPosition:ccp(0,0)];
+                for(CCSprite *s in n.children)
+                {
+                    [s setOpacity:255];
+                }
+            }
+            else {
+                // otherwise order them accordingly 
+                
+                // and if it's the last in the array, it'll be at the top, so set totally opaque
+                if([c.Nodes indexOfObject:n]==[c.Nodes count]-1)
+                {
+                    [n setPosition:ccp(0,0)];
+                    for(CCSprite *s in n.children)
+                    {
+                        [s setOpacity:255];
+                    }
+                }
+                // but if it's not, leave it tinted
+                else {
+                    CGPoint adjPos=ccp(0,0);
+                    [n setPosition:ccp(adjPos.x, adjPos.y-(10*([c.Nodes indexOfObject:n]+1)))];
+                    for(CCSprite *s in n.children)
+                    {
+                        [s setOpacity:150];
+                    }
+                }
+            }
+
+        }
+    }
     
     slice.myCont=nil;
 }

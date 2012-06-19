@@ -60,8 +60,6 @@
         
         [cont.mySlices addObject:gameWorld.Blackboard.PickupObject];
         
-        [gameWorld.Blackboard.PickupObject handleMessage:kDWmoveSpriteToPosition];
-        
     }
 }
 -(void)unMountObjectFromMe

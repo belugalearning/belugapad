@@ -56,13 +56,10 @@
         DWPieSplitterContainerGameObject *c=(DWPieSplitterContainerGameObject*)slice.myCont;
         DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie;
         
-//        slice.Position=((DWPieSplitterContainerGameObject*)gameWorld.Blackboard.DropObject).Position;
-        
         //flip ownership of the sprite from the pie to the container
         [slice.mySprite removeFromParentAndCleanup:YES];
         slice.mySprite=nil;
         slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
-//        [slice.mySprite setRotation:(360/p.numberOfSlices)*[c.mySlices count]];
         
         [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.1f angle:(360/p.numberOfSlices)*[c.mySlices count]]];
         
@@ -74,7 +71,6 @@
         {
             CCNode *thisNode=[[CCNode alloc]init];
             [c.Nodes addObject:thisNode];
-            //[c.Nodes insertObject:thisNode atIndex:0];
             [c.BaseNode addChild:thisNode];
             [thisNode addChild:slice.mySprite];
         }
@@ -84,7 +80,6 @@
                 if([n.children count]<[p.mySlices count])
                 {
                     [n addChild:slice.mySprite];
-                    //[slice.mySprite setPosition:n.position];
                     return;
                 }
                 if([n.children count]==[p.mySlices count])
@@ -101,7 +96,6 @@
             if(!GotPlaceInNode)
             {
                 CCNode *thisNode=[[CCNode alloc]init];
-                //[c.Nodes insertObject:thisNode atIndex:0];
                 [c.Nodes addObject:thisNode];
                 [c.BaseNode addChild:thisNode];
                 [thisNode addChild:slice.mySprite];
@@ -109,7 +103,6 @@
             }
         
         }
-//        [slice.mySprite setPosition: [slice.mySprite.parent convertToNodeSpace:c.Position]];
     
     }
 }
@@ -122,7 +115,6 @@
     slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
     [p.mySprite addChild:slice.mySprite];
     [slice setPosition:[p.mySprite convertToNodeSpace:slice.Position]];
-    //[slice.mySprite setRotation:slice.Rotation];
     [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.1f angle:slice.Rotation]];
     
     

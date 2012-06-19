@@ -346,16 +346,6 @@ static float kTimeToPieShake=7.0f;
         
         c.Position=ccp((i+0.5)*(lx/[activeCon count]), conBox.position.y+((int)[activeCon count]/10)*100);
         [c.BaseNode runAction:[CCMoveTo actionWithDuration:0.3f position:c.Position]];
-//        for(DWPieSplitterSliceGameObject *s in c.mySlices)
-//        {
-//            s.Position=c.mySprite.position;
-//            [s.mySprite runAction:[CCMoveTo actionWithDuration:0.3f position:[c.mySprite convertToNodeSpace:s.Position]]];
-//        }
-       
-        //for(CCNode *n in c.Nodes)
-       // {
-        //    [n runAction:[CCMoveTo actionWithDuration:0.3f position:c.Position]];
-        //}
     }
 }
 
@@ -434,7 +424,6 @@ static float kTimeToPieShake=7.0f;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
-    //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
     timeSinceInteractionOrShake=0;
     
@@ -468,7 +457,6 @@ static float kTimeToPieShake=7.0f;
     {
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterContainerGameObject class]] && !((DWPieSplitterContainerGameObject*)gw.Blackboard.PickupObject).ScaledUp)[self addGhostContainer];
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterPieGameObject class]] && !((DWPieSplitterPieGameObject*)gw.Blackboard.PickupObject).ScaledUp)[self addGhostPie];
-            //[pieBox setVisible:YES];
     }
 
     if (CGRectContainsPoint(kRectButtonReset, location) && showReset)

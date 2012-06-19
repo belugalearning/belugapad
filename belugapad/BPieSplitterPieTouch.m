@@ -32,7 +32,6 @@
 {
     self=(BPieSplitterPieTouch*)[super initWithGameObject:aGameObject withData:data];
     pie=(DWPieSplitterPieGameObject *)gameObject;
-    //init pos x & y in case they're not set elsewhere
     
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     contentService = ac.contentService;

@@ -36,8 +36,6 @@
     contentService = ac.contentService;
     usersService = ac.usersService;
     
-    //init pos x & y in case they're not set elsewhere
-    
     
     return self;
 }
@@ -102,7 +100,6 @@
     spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/container.png"];
     
     cont.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-    //[cont.mySprite setPosition:cont.Position];
     if(!cont.ScaledUp)[cont.mySprite setScale:0.5f];
     else [cont.mySprite setScale:1.0f];
     

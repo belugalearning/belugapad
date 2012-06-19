@@ -24,4 +24,6 @@
 
 +(CCScene *)scene;
 
+-(void)startTransitionToToolHostWithPos:(CGPoint)pos;
+
 @end

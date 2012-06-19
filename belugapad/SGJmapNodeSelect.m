@@ -11,7 +11,16 @@
 #import "global.h"
 #import "InteractionFeedback.h"
 
+#import "AppDelegate.h"
+#import "ContentService.h"
+
+#import "SGJmapNode.h"
+#import "SGJmapMasteryNode.h"
+
+#import "JourneyScene.h"
+
 static float hitProximity=40.0f;
+static float hitProximitySign=100.0f;
 
 @implementation SGJmapNodeSelect
 
@@ -27,12 +36,20 @@ static float hitProximity=40.0f;
 
 -(BOOL)trySelectionForPosition:(CGPoint)pos
 {
-    if([BLMath DistanceBetween:ParentGO.Position and:pos]<hitProximity)
+    if([BLMath DistanceBetween:ParentGO.Position and:pos]<(ParentGO.Selected ? hitProximitySign : hitProximity))
     {
       
         if(ParentGO.Selected)
         {
             //already selected -- start pipeline
+            ContentService *cs=(ContentService*)((AppController*)[UIApplication sharedApplication].delegate).contentService;
+            
+            if([cs createAndStartFunnelForNode:ParentGO._id])
+            {
+                //[((AppController*)[UIApplication sharedApplication].delegate) startToolHostFromJmapPos:ParentGO.Position];
+                
+                [((JourneyScene*)[gameWorld GameScene]) startTransitionToToolHostWithPos:ParentGO.Position];
+            }
             
             NSLog(@"i'm starting! %@", ParentGO._id);
             ParentGO.Selected=YES;
@@ -43,19 +60,38 @@ static float hitProximity=40.0f;
             //select me / show sign 
             //todo -- this should only work if enabled (otherwise resort to mastery node if applicable)
             
-            [self showSign];
-            
-            NSLog(@"i'm selected! %@", ParentGO._id);
-            ParentGO.Selected=YES;
+            //this is a bit hacky -- and a good demonstration of why this should potentially be two components
+            if([gameObject isKindOfClass:[SGJmapNode class]])
+            {
+                SGJmapNode *gom=(SGJmapNode*)gameObject;
+                if(gom.EnabledAndComplete)
+                {
+                    //show the sign on our own node
+                    [self showSignWithForce:NO];
+                }
+                else {
+                    //show the sign on our parent mastery
+                    [gom.MasteryNode.NodeSelectComponent showSignWithForce:YES];
+                }
+            }
+            else {
+                //this is mastery -- pop the sign
+                [self showSignWithForce:NO];
+            }
         }
         
     }
     else {
-        [self removeSign];
-        ParentGO.Selected=NO;
-
+        
+        //only remove if the node hasn't just been forced on (by another)
+        if(!forcedOn)
+        {
+            [self removeSign];
+            ParentGO.Selected=NO;
+        }
     }
     
+    forcedOn=NO;
     return ParentGO.Selected;
 }
 
@@ -64,8 +100,12 @@ static float hitProximity=40.0f;
     ParentGO.Selected=NO;
 }
 
--(void)showSign
+-(void)showSignWithForce:(BOOL)forceOn
 {
+    forcedOn=forceOn;
+    
+    ParentGO.Selected=YES;
+    
     if(!signSprite)
     {
         signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/sign.png")];
@@ -77,6 +117,8 @@ static float hitProximity=40.0f;
     [signSprite setPosition:ParentGO.Position];
     
     [signSprite runAction:[InteractionFeedback enlargeTo1xAction]];
+    
+    NSLog(@"i'm selected! %@", ParentGO._id);
 }
 
 -(void)removeSign

@@ -24,6 +24,7 @@
     {
         pipelines = [[resultSet stringForColumn:@"pipelines"] objectFromJSONString];
         [pipelines retain];
+        if([pipelines count]>0) NSLog(@"found pipelines for %@", self._id);
         
         x = [resultSet intForColumn:@"x"];
         y = [resultSet intForColumn:@"y"];

@@ -9,6 +9,7 @@
 #import "JourneyScene.h"
 
 #import "UsersService.h"
+#import "ToolHost.h"
 
 #import "Daemon.h"
 #import "global.h"
@@ -147,6 +148,28 @@ typedef enum {
     return self;
 }
 
+#pragma mark - transitions
+
+-(void)startTransitionToToolHostWithPos:(CGPoint)pos
+{
+//    mapLayer.anchorPoint=ccp(cx, cy);
+//    
+//    CCEaseInOut *ease=[CCEaseInOut actionWithAction:[CCScaleBy actionWithDuration:0.5f scale:4.0f] rate:2.0f];
+//    [mapLayer runAction:ease];
+//    
+//    [self scheduleOnce:@selector(gotoToolHost:) delay:0.5f];
+    
+    [self gotoToolHost:0];
+}
+
+-(void)gotoToolHost:(ccTime)delta
+{
+    //[[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
+    
+    [[CCDirector sharedDirector] replaceScene:[CCTransitionShrinkGrow transitionWithDuration:0.5f scene:[ToolHost scene]]];
+    
+}
+
 #pragma mark - setup and parse
 
 -(void) setupGw;
@@ -278,6 +301,12 @@ typedef enum {
         }
         else {
             newnode=[[SGJmapNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos];
+            
+            //todo: for now, if there are pipelines on the node, set it complete
+            if(n.pipelines.count>0)
+            {
+                ((SGJmapNode*)newnode).EnabledAndComplete=YES;
+            }
         }   
         
         newnode._id=n._id;
@@ -291,12 +320,16 @@ typedef enum {
 {
     NSArray *prereqs=[contentService relationMembersForName:@"Mastery"];
     for (NSArray *pair in prereqs) {
-        id leftgo=[self gameObjectForCouchId:[pair objectAtIndex:0]];
+        SGJmapNode *leftgo=[self gameObjectForCouchId:[pair objectAtIndex:0]];
         SGJmapMasteryNode *rightgo=[self gameObjectForCouchId:[pair objectAtIndex:1]];
         
         if(leftgo && rightgo)
         {
+            //add child to collection of children on mastery
             [rightgo.ChildNodes addObject:leftgo];
+            
+            //add ref to mastery on child
+            leftgo.MasteryNode=rightgo;
         }
         else {
             NSLog(@"could not find both end points for %@ and %@", [pair objectAtIndex:0], [pair objectAtIndex:1]);

@@ -13,7 +13,7 @@
 
 @implementation SGJmapNode
 
-@synthesize NodeRenderComponent;
+@synthesize NodeRenderComponent, EnabledAndComplete, MasteryNode;
 
 //Transform protocol properties
 @synthesize Position, RenderBatch;
@@ -70,7 +70,7 @@
 
 -(void)setup
 {
-    
+    [self.NodeRenderComponent setup];
 }
 
 -(void)dealloc

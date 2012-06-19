@@ -14,9 +14,11 @@
     id<Transform, CouchDerived, Selectable> ParentGO;
     
     CCSprite *signSprite;
+    BOOL forcedOn;
 }
 
 -(BOOL)trySelectionForPosition:(CGPoint)pos;
 -(void)deselect;
+-(void)showSignWithForce:(BOOL)forceOn;
 
 @end

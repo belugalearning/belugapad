@@ -7,6 +7,7 @@
 //
 
 #import "SGJmapNodeRender.h"
+#import "SGJmapNode.h"
 
 @interface SGJmapNodeRender()
 {
@@ -22,8 +23,6 @@
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
         ParentGO=aGameObject;
-        
-        [self setup];
     }
     
     return self;
@@ -51,7 +50,15 @@
 
 -(void)setup
 {
-    nodeSprite=[CCSprite spriteWithSpriteFrameName:@"node-incomplete.png"];
+    if(((SGJmapNode*)ParentGO).EnabledAndComplete)
+    {
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"node-complete.png"];
+    }
+    else 
+    {
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"node-incomplete.png"];
+    }
+    
     [nodeSprite setPosition:ParentGO.Position];
     [ParentGO.RenderBatch addChild:nodeSprite];
 }

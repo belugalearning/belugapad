@@ -25,11 +25,13 @@
 -(void)setPipelineNodeComplete;
 -(BOOL)isUsingTestPipeline;
 
+-(BOOL) createAndStartFunnelForNode:(NSString*)nodeId;
 
 -(void)startPipelineWithId:(NSString*)pipelineid forNode:(ConceptNode*)node;
 -(void)gotoNextProblemInPipeline;
 
 -(NSArray*)allConceptNodes;
+-(ConceptNode*)conceptNodeForId:(NSString*)nodeId;
 -(NSArray*)relationMembersForName:(NSString*)name;
 -(Pipeline*)pipelineWithId:(NSString*)plId;
 

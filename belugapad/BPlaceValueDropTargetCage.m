@@ -53,19 +53,13 @@
 
                     NSNumber *gameObjectValue = nil;
                     NSNumber *pickupObjectValue = nil;
-                    if(c.AllowMultipleMount)
-                    {
-                        gameObjectValue = [NSNumber numberWithFloat:c.ObjectValue];
-                        pickupObjectValue = [NSNumber numberWithFloat:addO.ObjectValue];
-                    }
-                    else
-                    {
-                        gameObjectValue = [NSNumber numberWithFloat:fabsf(c.ObjectValue)];
-                        pickupObjectValue = [NSNumber numberWithFloat:fabsf(addO.ObjectValue)];
-                    }
+                    gameObjectValue = [NSNumber numberWithFloat:c.ObjectValue];
+                    pickupObjectValue = [NSNumber numberWithFloat:addO.ObjectValue];
+
                     if([gameObjectValue isEqualToNumber:pickupObjectValue])
                     {
                         float dist=[BLMath DistanceBetween:myLoc and:hitLoc];
+                        NSLog(@"DropObjectDist = %f / dist = %f", gameWorld.Blackboard.DropObjectDistance, dist);
                         if(!gameWorld.Blackboard.DropObject || gameWorld.Blackboard.DropObjectDistance > dist)
                         {
                             gameWorld.Blackboard.DropObject=gameObject;

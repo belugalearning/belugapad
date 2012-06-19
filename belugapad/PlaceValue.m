@@ -256,6 +256,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             cge.PosX=i*(kPropXColumnSpacing*lx);
             cge.PosY=ly*kCageYOrigin;
             cge.ObjectValue=[[currentColumnInfo objectForKey:COL_VALUE]floatValue];
+            NSLog(@"cage assigned object value %g", cge.ObjectValue);
             
             // set our column specific options on the store
             

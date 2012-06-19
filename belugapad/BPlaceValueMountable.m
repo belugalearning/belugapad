@@ -43,8 +43,6 @@
         b.PosX=newMount.PosX;
         b.PosY=newMount.PosY; 
         
-        if(gameWorld.Blackboard.inProblemSetup)NSLog(@"b posX = %f / b posY = %f // mount posX = %f / mount posY = %f", b.PosX, b.PosY, newMount.PosX, newMount.PosY);
-        
         b.AnimateMe=YES;
 
     

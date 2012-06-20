@@ -34,6 +34,7 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     @private
     BOOL problemAttemptLoggingIsEnabled;
     NSString *contentSource;
+    NSString *loggingPath;
     
     NSString *installationUUID;
     Device *device;
@@ -49,7 +50,6 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     
     ProblemAttempt *currentProblemAttempt;
 }
--(NSString*)generateUUID;
 
 @property (readwrite, retain) NSString *currentProblemAttemptID;
 @end
@@ -116,10 +116,23 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
             return self;
         }
         
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES); 
+        loggingPath = [[[paths objectAtIndex:0] stringByAppendingPathComponent:@"logging"] retain];
+        // TODO: Move following into 'app first run' block beneath it. (For now I don't want to enforce app deletion prior to testing)
+        // Create logging directory
+        NSError *error = nil;
+        if (![[NSFileManager defaultManager] fileExistsAtPath:loggingPath])
+        {
+            // TODO: check for success / error? If error then what?
+            [[NSFileManager defaultManager] createDirectoryAtPath:loggingPath withIntermediateDirectories:NO attributes:nil error:&error];
+        }
+        
         NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
         if (![standardUserDefaults objectForKey:@"installationUUID"])
         {
             // This is the first run of the app on the device
+            
+            // create device doc
             CouchDocument *deviceDoc = [loggingDatabase untitledDocument];
             RESTOperation *op = [deviceDoc putProperties:[NSDictionary dictionaryWithObjectsAndKeys:
                                                           @"device", @"type"
@@ -245,315 +258,21 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     
     AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
     ContentService *cs = ad.contentService;
-        
-    currentProblemAttempt = [[ProblemAttempt alloc] initAndStartAttemptForUserSession:currentUserSession
-                                                                           andProblem:cs.currentProblem
-                                                                     andParentProblem:nil
-                                                                     andGeneratedPDEF:cs.currentStaticPdef];
+    
+    currentProblemAttempt = [[ProblemAttempt alloc] initAndStartForUserSession:currentUserSession
+                                                                       problem:cs.currentProblem
+                                                                 generatedPDef:cs.currentStaticPdef
+                                                          loggingDirectoryPath:loggingPath];
 
     //expose the id of the current event -- used in touch logging reconciliation
-    currentProblemAttemptID=currentProblemAttempt.document.documentID;
-    
-    [self logProblemAttemptEvent:kProblemAttemptStart withOptionalNote:nil];
-    [[currentProblemAttempt save] wait];
+    currentProblemAttemptID=currentProblemAttempt._id;
 }
 
--(void)logProblemAttemptEvent:(ProblemAttemptEvent)event
-             withOptionalNote:(NSString*)note
+-(void)logEvent:(NSString*)event withAdditionalData:(NSObject*)additionalData
 {
     if (!problemAttemptLoggingIsEnabled) return;
     if (!currentProblemAttempt) return;
-    
-    NSString *eventString = nil;
-    switch (event) {
-        case kProblemAttemptStart:
-            eventString = @"PROBLEM_ATTEMPT_START";
-            break;
-        case kProblemAttemptUserPause:
-            eventString = @"PROBLEM_ATTEMPT_USER_PAUSE";
-            break;
-        case kProblemAttemptUserResume:
-            eventString = @"PROBLEM_ATTEMPT_USER_RESUME";
-            break;
-        case kProblemAttemptAppResignActive:
-            eventString = @"APP_RESIGN_ACTIVE";
-            break;
-        case kProblemAttemptAppBecomeActive:
-            eventString = @"APP_BECOME_ACTIVE";
-            break;
-        case kProblemAttemptAppEnterBackground:
-            eventString = @"APP_ENTER_BACKGROUND";
-            break;
-        case kProblemAttemptAppEnterForeground:
-            eventString = @"APP_ENTER_FOREGROUND";
-            break;
-        case kProblemAttemptAbandonApp:
-            eventString = @"ABANDON_APP";
-            break;
-        case kProblemAttemptSuccess:
-            eventString = @"PROBLEM_ATTEMPT_SUCCESS";
-            break;
-        case kProblemAttemptExitToMap:
-            eventString = @"PROBLEM_ATTEMPT_EXIT_TO_MAP";
-            break;
-        case kProblemAttemptExitLogOut:
-            eventString = @"PROBLEM_ATTEMPT_EXIT_LOG_OUT";
-            break;
-        case kProblemAttemptUserReset:
-            eventString = @"PROBLEM_ATTEMPT_USER_RESET";
-            break;
-        case kProblemAttemptSkip:
-            eventString = @"PROBLEM_ATTEMPT_SKIP";
-            break;
-        case kProblemAttemptSkipWithSuggestion:
-            eventString = @"PROBLEM_ATTEMPT_SKIP_WITH_SUGGESTION";
-            break;
-        case kProblemAttemptSkipDebug:
-            eventString = @"PROBLEM_ATTEMPT_SKIP_DEBUG";
-            break;
-        case kProblemAttemptFail:
-            eventString = @"PROBLEM_ATTEMPT_FAIL";
-            break;
-        case kProblemAttemptFailWithChildProblem:
-            eventString = @"PROBLEM_ATTEMPT_FAIL_WITH_CHILD_PROBLEM";
-            break;
-        case kProblemAttemptUserCommit:
-            eventString = @"PROBLEM_ATTEMPT_USER_COMMIT";
-            break;
-            
-        case kProblemAttemptToolHostPinch:
-            eventString = @"PROBLEM_ATTEMPT_TOOLHOST_PINCH";
-            break;
-            
-        case kProblemAttemptNumberPickerNumberFromPicker:
-            eventString = @"PROBLEM_ATTEMPT_NUMBERPICKER_NUMBER_FROM_PICKER";
-            break;
-            
-        case kProblemAttemptNumberPickerNumberFromRegister:
-            eventString = @"PROBLEM_ATTEMPT_NUMBERPICKER_NUMBER_FROM_REGISTER";
-            break;
-            
-        case kProblemAttemptNumberPickerNumberMove:
-            eventString = @"PROBLEM_ATTEMPT_NUMBERPICKER_NUMBER_MOVE";
-            break;
-            
-        case kProblemAttemptNumberPickerNumberDelete:
-            eventString = @"PROBLEM_ATTEMPT_NUMBERPICKER_NUMBER_DELETE";
-            break;
-            
-        case kProblemAttemptMetaQuestionChangeAnswer:
-            eventString = @"PROBLEM_ATTEMPT_METAQUESTION_CHANGE_ANSWER";
-            break;
-            
-        case kProblemAttemptPartitionToolTouchBeganOnCagedObject:
-            eventString = @"PROBLEM_ATTEMPT_PARTITIONTOOL_TOUCH_BEGAN_ON_CAGED_OBJECT";
-            break;
-            
-        case kProblemAttemptPartitionToolTouchMovedMoveBlock:
-            eventString = @"PROBLEM_ATTEMPT_PARTITIONTOOL_TOUCH_MOVED_MOVE_BLOCK";
-            break;
-            
-        case kProblemAttemptPartitionToolTouchBeganOnRow:
-            eventString = @"PROBLEM_ATTEMPT_PARTITIONTOOL_TOUCH_BEGAN_ON_ROW";
-            break;
-            
-        case kProblemAttemptPartitionToolTouchEndedOnRow:
-            eventString = @"PROBLEM_ATTEMPT_PARTITIONTOOL_TOUCH_ENDED_ON_ROW";
-            break;
-            
-        case kProblemAttemptPartitionToolTouchEndedInSpace:
-            eventString = @"PROBLEM_ATTEMPT_PARTITIONTOOL_TOUCH_ENDED_IN_SPACE";
-            break;
-            
-        case kProblemAttemptPartitionToolTouchBeganOnLockedRow:
-            eventString = @"PROBLEM_ATTEMPT_PARTITIONTOOL_TOUCH_BEGAN_ON_LOCKED_ROW";
-            break;
-            
-        case kProblemAttemptDotGridTouchBeginCreateShape:
-            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_BEGAN_CREATE_SHAPE";
-            break;
-        
-        case kProblemAttemptDotGridTouchEndedCreateShape:
-            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_ENDED_CREATE_SHAPE";
-            break;
-            
-        case kProblemAttemptDotGridTouchBeginResizeShape:
-            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_BEGAN_RESIZE_SHAPE";
-            break;
-            
-        case kProblemAttemptDotGridTouchEndedResizeShape:
-            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_ENDED_CREATE_SHAPE";
-            break;
-            
-        case kProblemAttemptDotGridTouchBeginSelectTile:
-            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_BEGAN_SELECT_TILE";
-            break;
-            
-        case kProblemAttemptDotGridTouchBeginDeselectTile:
-            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_BEGAN_DESELECT_TILE";
-            break;
-            
-        case kProblemAttemptDotGridTouchEndedInvalidResizeHidden:
-            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_ENDED_INVALID_RESIZE_HIDDEN";
-            break;
-            
-        case kProblemAttemptDotGridTouchEndedInvalidResizeExistingTile:
-            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_ENDED_INVALID_RESIZE_EXISTING_TILE";
-            break;
-            
-        case kProblemAttemptDotGridTouchEndedInvalidCreateHidden:
-            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_ENDED_INVALID_CREATE_HIDDEN";
-            break;
-            
-        case kProblemAttemptDotGridTouchEndedInvalidCreateExistingTile:
-            eventString = @"PROBLEM_ATTEMPT_DOTGRID_TOUCH_ENDED_INVALID_CREATE_EXISTING_TILE";
-            break;
-            
-        case kProblemAttemptLongDivisionTouchEndedChangedActiveRow:
-            eventString = @"PROBLEM_ATTEMPT_LONGDIVISION_TOUCH_ENDED_CHANGED_ACTIVE_ROW";
-            break;
-            
-        case kProblemAttemptLongDivisionTouchMovedMoveRow:
-            eventString = @"PROBLEM_ATTEMPT_LONGDIVISION_TOUCH_MOVED_MOVE_ROW";
-            break;
-            
-        case kProblemAttemptLongDivisionTouchEndedIncrementActiveNumber:
-            eventString = @"PROBLEM_ATTEMPT_LONGDIVISION_TOUCH_ENDED_INCREMENT_ACTIVE_NUMBER";
-            break;
-            
-        case kProblemAttemptLongDivisionTouchEndedDecrementActiveNumber:
-            eventString = @"PROBLEM_ATTEMPT_LONGDIVISION_TOUCH_ENDED_DECREMENT_ACTIVE_NUMBER";
-            break;
-            
-        case kProblemAttemptLongDivisionTouchEndedPanningTopSection:
-            eventString = @"PROBLEM_ATTEMPT_LONGDIVISION_TOUCH_ENDED_PANNING_TOPSECTION";
-            break;
-            
-        case kProblemAttemptTimesTablesTouchBeginHighlightRow:
-            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_BEGIN_HIGHLIGHT_ROW";
-            break;
-            
-        case kProblemAttemptTimesTablesTouchBeginHighlightColumn:
-            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_BEGIN_HIGHLIGHT_COLUMN";
-            break;
-            
-        case kProblemAttemptTimesTablesTouchBeginUnhighlightRow:
-            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_BEGIN_UNHIGHLIGHT_ROW";
-            break;
-            
-        case kProblemAttemptTimesTablesTouchBeginUnhighlightColumn:
-            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_BEGIN_UNHIGHLIGHT_COLUMN";
-            break;
-            
-        case kProblemAttemptTimesTablesTouchBeginRevealAnswer:
-            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_BEGIN_REVEAL_ANSWER";
-            break;
-            
-        case kProblemAttemptTimesTablesTouchBeginSelectAnswer:
-            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_BEGIN_SELECT_ANSWER";
-            break;
-            
-        case kProblemAttemptTimesTablesTouchBeginDeselectAnswer:
-            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_BEGIN_DESELECT_ANSWER";
-            break;
-            
-        case kProblemAttemptTimesTablesTouchBeginTapDisabledBox:
-            eventString = @"PROBLEM_ATTEMPT_TIMESTABLES_TOUCH_BEGIN_TAP_DISABLED_BOX";
-            break;
-        
-        case kProblemAttemptNumberLineTouchBeginPickupBubble:
-            eventString = @"PROBLEM_ATTEMPT_NUMBERLINE_TOUCH_BEGIN_PICKUP_BUBBLE";
-            break;
-        
-        case kProblemAttemptNumberLineTouchEndedReleaseBubble:
-            eventString = @"PROBLEM_ATTEMPT_NUMBERLINE_TOUCH_ENDED_RELEASE_BUBBLE";
-            break;
-        
-        case kProblemAttemptNumberLineTouchMovedMoveBubble:
-            eventString = @"PROBLEM_ATTEMPT_NUMBERLINE_TOUCH_MOVED_MOVE_BUBBLE";
-            break;
-        
-        case kProblemAttemptNumberLineTouchEndedIncreaseSelection:
-            eventString = @"PROBLEM_ATTEMPT_NUMBERLINE_TOUCH_ENDED_INCREASE_SELECTION";
-            break;
-        
-        case kProblemAttemptNumberLineTouchEndedDecreaseSelection:
-            eventString = @"PROBLEM_ATTEMPT_NUMBERLINE_TOUCH_ENDED_DECREASE_SELECTION";
-            break;
-            
-        case kProblemAttemptNumberLineTouchMovedMoveLine:
-            eventString = @"PROBLEM_ATTEMPT_NUMBERLINE_TOUCH_MOVED_MOVE_LINE";
-            break;
-            
-        case kProblemAttemptPlaceValueTouchBeginPickupCageObject:
-            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_BEGIN_PICKUP_CAGE_OBJECT";
-            break;
-            
-        case kProblemAttemptPlaceValueTouchBeginPickupGridObject:
-            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_BEGIN_PICKUP_GRID_OBJECT";
-            break;
-            
-        case kProblemAttemptPlaceValueTouchEndedDropObjectOnCage:
-            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_ENDED_DROP_OBJECT_ON_CAGE";
-            break;
-            
-        case kProblemAttemptPlaceValueTouchEndedDropObjectOnGrid:
-            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_ENDED_DROP_OBJECT_ON_GRID";
-            break;
-            
-        case kProblemAttemptPlaceValueTouchEndedCondenseObject:
-            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_ENDED_CONDENSE_OBJECT";
-            break;
-            
-        case kProblemAttemptPlaceValueTouchEndedMulchObjects:
-            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_ENDED_MULCH_OBJECTS";
-            break;
-            
-        case kProblemAttemptPlaceValueTouchMovedMoveObject:
-            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_MOVED_MOVE_OBJECT";
-            break;
-            
-        case kProblemAttemptPlaceValueTouchMovedMoveObjects:
-            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_MOVED_MOVE_OBJECTS";
-            break;
-            
-        case kProblemAttemptPlaceValueTouchBeginSelectObject:
-            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_BEGIN_SELECT_OBJECT";
-            break;
-            
-        case kProblemAttemptPlaceValueTouchBeginDeselectObject:
-            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_BEGIN_DESELECT_OBJECT";
-            break;
-            
-        case kProblemAttemptPlaceValueTouchBeginCountObject:
-            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_BEGIN_COUNT_OBJECT";
-            break;
-            
-        case kProblemAttemptPlaceValueTouchBeginUncountObject:
-            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_BEGIN_UNCOUNT_OBJECT";
-            break;
-            
-        case kProblemAttemptPlaceValueTouchMovedMoveGrid:
-            eventString = @"PROBLEM_ATTEMPT_PLACEVALUE_TOUCH_MOVED_MOVE_GRID";
-            break;
-            
-
-            
-        default:
-            // TODO: ERROR - LOG TO DATABASE!
-            break;
-    }
-    if (eventString)
-    { 
-        NSMutableArray *events = [[currentProblemAttempt.events mutableCopy] autorelease];
-        NSDictionary *e = [NSDictionary dictionaryWithObjectsAndKeys:
-                                eventString, @"eventType",
-                                [RESTBody JSONObjectWithDate:[NSDate date]], @"date",
-                                note, @"note", nil];
-        [events addObject:e];
-        currentProblemAttempt.events = events;
-        [[currentProblemAttempt save] wait];
-    }
+    [currentProblemAttempt logEvent:event withAdditionalData:additionalData];
 }
 
 -(void)addCompletedNodeId:(NSString *)nodeId
@@ -571,22 +290,11 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     return [currentUser.nodesCompleted containsObject:nodeId];
 }
 
--(NSString*)generateUUID
-{
-    CFUUIDRef UUIDRef = CFUUIDCreate(kCFAllocatorDefault);
-    CFStringRef UUIDSRef = CFUUIDCreateString(kCFAllocatorDefault, UUIDRef);
-    NSString *uuid = [NSString stringWithFormat:@"%@", UUIDSRef];
-    
-    CFRelease(UUIDRef);
-    CFRelease(UUIDSRef);
-    
-    return uuid;
-}
-
 -(void)dealloc
 {
     if (currentUserSession) [currentUserSession release];
     [device release];
+    [loggingPath release];
     [usersPushReplication release];
     [usersPullReplication release];
     [loggingPushReplication release];

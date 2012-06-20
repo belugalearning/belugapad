@@ -232,8 +232,8 @@
         
         // check where our object was - no mount = cage. mount = row.
         DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
-        if(pogo.Mount) [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchBeganOnRow withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%f}",pogo.ObjectValue]];
-        else [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchBeganOnCagedObject withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%f}",pogo.ObjectValue]];
+        [usersService logEvent:(pogo.Mount ? BL_PA_NB_TOUCH_BEGIN_ON_ROW : BL_PA_NB_TOUCH_BEGIN_ON_CAGED_OBJECT)
+            withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:pogo.ObjectValue] forKey:@"objectValue"]];
         
         previousMount=((DWPartitionObjectGameObject*)gw.Blackboard.PickupObject).Mount;
         
@@ -267,8 +267,10 @@
         
         DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
 
-        //remove b/c of log perf
-//        [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchMovedMoveBlock withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%f}",pogo.ObjectValue]];
+        //previously removex b/c of log perf - restored for testing with sans-Couchbase logging
+        [usersService logEvent:BL_PA_NB_TOUCH_MOVE_MOVE_BLOCK
+            withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:pogo.ObjectValue] forKey:@"objectValue"]];
+        
         hasMovedBlock=YES;
 
         
@@ -295,7 +297,7 @@
     [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
     [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
     
-    if(hasMovedBlock)[usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchMovedMoveBlock withOptionalNote:nil];
+    if(hasMovedBlock)[usersService logEvent:BL_PA_NB_TOUCH_MOVE_MOVE_BLOCK withAdditionalData:nil];
     
     if([gw Blackboard].PickupObject!=nil)
     {
@@ -311,7 +313,8 @@
             [pogo handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:prgo forKey:MOUNT] withLogLevel:-1];
             
             // touch ended on a row so we've set it. log it's value
-            [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchEndedOnRow withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%f}",pogo.ObjectValue]];
+            [usersService logEvent:BL_PA_NB_TOUCH_END_ON_ROW
+                withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:pogo.ObjectValue] forKey:@"objectValue"]];
         }
         else
         {
@@ -324,7 +327,8 @@
                 [gw handleMessage:kDWhighlight andPayload:nil withLogLevel:-1];  
                 
                 // log that we dropped into space
-                [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchEndedInSpace withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%f}",pogo.ObjectValue]];
+                [usersService logEvent:BL_PA_NB_TOUCH_END_IN_SPACE
+                    withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:pogo.ObjectValue] forKey:@"objectValue"]];
             }
         }
     }

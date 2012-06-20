@@ -196,7 +196,7 @@
 // getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
-    [usersService logProblemAttemptEvent:kProblemAttemptAppResignActive withOptionalNote:nil];
+    [usersService logEvent:BL_APP_RESIGN_ACTIVE withAdditionalData:nil];
 	if( [navController_ visibleViewController] == director_ )
 		[director_ pause];
 }
@@ -204,21 +204,21 @@
 // call got rejected
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {
-    [usersService logProblemAttemptEvent:kProblemAttemptAppBecomeActive withOptionalNote:nil];
+    [usersService logEvent:BL_APP_BECOME_ACTIVE withAdditionalData:nil];
 	if( [navController_ visibleViewController] == director_ )
 		[director_ resume];
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
-    [usersService logProblemAttemptEvent:kProblemAttemptAppEnterBackground withOptionalNote:nil];
+    [usersService logEvent:BL_APP_ENTER_BACKGROUND withAdditionalData:nil];
 	if( [navController_ visibleViewController] == director_ )
 		[director_ stopAnimation];
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application
 {
-    [usersService logProblemAttemptEvent:kProblemAttemptAppEnterForeground withOptionalNote:nil];
+    [usersService logEvent:BL_APP_ENTER_FOREGROUND withAdditionalData:nil];
 	if( [navController_ visibleViewController] == director_ )
 		[director_ startAnimation];
 }
@@ -226,12 +226,14 @@
 // application will be killed
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+    [usersService logEvent:BL_APP_ABANDON withAdditionalData:nil];
 	CC_DIRECTOR_END();
 }
 
 // purge memory
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
+    [usersService logEvent:BL_APP_MEMORY_WARNING withAdditionalData:nil];
 	[[CCDirector sharedDirector] purgeCachedData];
 }
 

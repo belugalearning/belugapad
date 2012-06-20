@@ -890,7 +890,7 @@ static NSString *inclNodes[20]={
     
     if(CGRectContainsPoint(logOutBtnBounds, l))
     {
-        [usersService logProblemAttemptEvent:kProblemAttemptExitLogOut withOptionalNote:nil];
+        [usersService logEvent:BL_JS_LOG_OUT withAdditionalData:nil];
         usersService.currentUser = nil;
         [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
         return;

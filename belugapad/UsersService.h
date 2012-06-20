@@ -9,84 +9,6 @@
 #import <Foundation/Foundation.h>
 @class User, ProblemAttempt, CouchLiveQuery, CouchEmbeddedServer;
 
-// see ProblemAttempt#logEvent
-typedef enum {
-    kProblemAttemptError,
-    kProblemAttemptStart,
-    kProblemAttemptUserPause,
-    kProblemAttemptUserResume,
-    kProblemAttemptAppResignActive,
-    kProblemAttemptAppBecomeActive,
-    kProblemAttemptAppEnterBackground,
-    kProblemAttemptAppEnterForeground,
-    kProblemAttemptAbandonApp,
-    kProblemAttemptSuccess,
-    kProblemAttemptExitToMap,
-    kProblemAttemptExitLogOut,
-    kProblemAttemptUserReset,
-    kProblemAttemptSkip,
-    kProblemAttemptSkipWithSuggestion,
-    kProblemAttemptSkipDebug,
-    kProblemAttemptFail,
-    kProblemAttemptFailWithChildProblem,
-    kProblemAttemptUserCommit,
-    kProblemAttemptToolHostPinch,
-    kProblemAttemptNumberPickerNumberFromPicker,
-    kProblemAttemptNumberPickerNumberFromRegister,
-    kProblemAttemptNumberPickerNumberMove,
-    kProblemAttemptNumberPickerNumberDelete,
-    kProblemAttemptMetaQuestionChangeAnswer,
-    kProblemAttemptPartitionToolTouchBeganOnCagedObject,
-    kProblemAttemptPartitionToolTouchMovedMoveBlock,
-    kProblemAttemptPartitionToolTouchBeganOnRow,
-    kProblemAttemptPartitionToolTouchEndedOnRow,
-    kProblemAttemptPartitionToolTouchEndedInSpace,
-    kProblemAttemptPartitionToolTouchBeganOnLockedRow,
-    kProblemAttemptDotGridTouchBeginCreateShape,
-    kProblemAttemptDotGridTouchEndedCreateShape,
-    kProblemAttemptDotGridTouchBeginResizeShape,
-    kProblemAttemptDotGridTouchEndedResizeShape,
-    kProblemAttemptDotGridTouchBeginSelectTile,
-    kProblemAttemptDotGridTouchBeginDeselectTile,
-    kProblemAttemptDotGridTouchEndedInvalidResizeHidden,
-    kProblemAttemptDotGridTouchEndedInvalidResizeExistingTile,
-    kProblemAttemptDotGridTouchEndedInvalidCreateHidden,
-    kProblemAttemptDotGridTouchEndedInvalidCreateExistingTile,
-    kProblemAttemptLongDivisionTouchEndedChangedActiveRow,
-    kProblemAttemptLongDivisionTouchMovedMoveRow,
-    kProblemAttemptLongDivisionTouchEndedIncrementActiveNumber,
-    kProblemAttemptLongDivisionTouchEndedDecrementActiveNumber,
-    kProblemAttemptLongDivisionTouchEndedPanningTopSection,
-    kProblemAttemptTimesTablesTouchBeginHighlightRow,
-    kProblemAttemptTimesTablesTouchBeginHighlightColumn,
-    kProblemAttemptTimesTablesTouchBeginUnhighlightRow,
-    kProblemAttemptTimesTablesTouchBeginUnhighlightColumn,
-    kProblemAttemptTimesTablesTouchBeginRevealAnswer,
-    kProblemAttemptTimesTablesTouchBeginSelectAnswer,
-    kProblemAttemptTimesTablesTouchBeginDeselectAnswer,
-    kProblemAttemptTimesTablesTouchBeginTapDisabledBox,
-    kProblemAttemptNumberLineTouchBeginPickupBubble,
-    kProblemAttemptNumberLineTouchEndedReleaseBubble,
-    kProblemAttemptNumberLineTouchMovedMoveBubble,
-    kProblemAttemptNumberLineTouchMovedMoveLine,
-    kProblemAttemptNumberLineTouchEndedIncreaseSelection,
-    kProblemAttemptNumberLineTouchEndedDecreaseSelection,
-    kProblemAttemptPlaceValueTouchBeginPickupCageObject,
-    kProblemAttemptPlaceValueTouchBeginPickupGridObject,
-    kProblemAttemptPlaceValueTouchEndedDropObjectOnCage,
-    kProblemAttemptPlaceValueTouchEndedDropObjectOnGrid,
-    kProblemAttemptPlaceValueTouchEndedCondenseObject,
-    kProblemAttemptPlaceValueTouchEndedMulchObjects,
-    kProblemAttemptPlaceValueTouchMovedMoveObject,
-    kProblemAttemptPlaceValueTouchMovedMoveObjects,
-    kProblemAttemptPlaceValueTouchBeginSelectObject,
-    kProblemAttemptPlaceValueTouchBeginDeselectObject,
-    kProblemAttemptPlaceValueTouchBeginCountObject,
-    kProblemAttemptPlaceValueTouchBeginUncountObject,
-    kProblemAttemptPlaceValueTouchMovedMoveGrid,
-
-} ProblemAttemptEvent;
-
 @interface UsersService : NSObject
 
 @property (readonly, retain, nonatomic) NSString *installationUUID;
@@ -109,8 +31,7 @@ typedef enum {
                   andPassword:(NSString*)password;
 
 -(void)startProblemAttempt;
--(void)logProblemAttemptEvent:(ProblemAttemptEvent)event
-             withOptionalNote:(NSString*)note;
+-(void)logEvent:(NSString*)event withAdditionalData:(NSObject*)additionalData;
 
 -(void)addCompletedNodeId:(NSString*)nodeId;
 -(BOOL)hasCompletedNodeId:(NSString*)nodeId;

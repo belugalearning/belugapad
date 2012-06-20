@@ -361,8 +361,8 @@
         
         if(failedChecksExistingTile||failedChecksHidden)
         {
-            if(failedChecksExistingTile)[usersService logProblemAttemptEvent:kProblemAttemptDotGridTouchEndedInvalidCreateExistingTile withOptionalNote:nil];
-            if(failedChecksHidden)[usersService logProblemAttemptEvent:kProblemAttemptDotGridTouchEndedInvalidCreateHidden withOptionalNote:nil];
+            if(failedChecksExistingTile) [usersService logEvent:BL_PA_DG_TOUCH_END_INVALID_CREATE_EXISTING_TILE withAdditionalData:nil];
+            if(failedChecksHidden) [usersService logEvent:BL_PA_DG_TOUCH_END_INVALID_CREATE_HIDDEN withAdditionalData:nil];
             return;
         }
         
@@ -472,8 +472,8 @@
     {
         thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
         [thisShape.resizeHandle handleMessage:kDWupdateSprite];
-        if(failedChecksHidden)[usersService logProblemAttemptEvent:kProblemAttemptDotGridTouchEndedInvalidResizeHidden withOptionalNote:nil];
-        if(failedChecksExistingTile)[usersService logProblemAttemptEvent:kProblemAttemptDotGridTouchEndedInvalidResizeExistingTile withOptionalNote:nil];
+        if(failedChecksHidden) [usersService logEvent:BL_PA_DG_TOUCH_END_INVALID_RESIZE_HIDDEN withAdditionalData:nil];
+        if(failedChecksExistingTile) [usersService logEvent:BL_PA_DG_TOUCH_END_INVALID_RESIZE_EXISTING_TILE withAdditionalData:nil];
         return;
     }
     
@@ -549,8 +549,12 @@
         }
     
     [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
-    if(!gw.Blackboard.inProblemSetup)[usersService logProblemAttemptEvent:kProblemAttemptDotGridTouchEndedCreateShape withOptionalNote:[NSString stringWithFormat:@"{\"numberoftiles\":%d}", [anchors count]]];
     
+    if (!gw.Blackboard.inProblemSetup)
+    {
+        [usersService logEvent:BL_PA_DG_TOUCH_END_CREATE_SHAPE
+            withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:[anchors count]] forKey:@"numTiles"]];
+    }
 }
 
 -(void)modifyThisShape:(DWDotGridShapeGameObject*)thisShape withTheseAnchors:(NSArray*)anchors
@@ -632,7 +636,8 @@
     thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
     [thisShape.resizeHandle handleMessage:kDWmoveSpriteToPosition];
     
-    [usersService logProblemAttemptEvent:kProblemAttemptDotGridTouchEndedResizeShape withOptionalNote:[NSString stringWithFormat:@"{\"numberoftiles:\":%d}",[thisShape.tiles count]]];
+    [usersService logEvent:BL_PA_DG_TOUCH_END_RESIZE_SHAPE
+        withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:[thisShape.tiles count]] forKey:@"numTiles"]];
 }
 
 #pragma mark - touch events
@@ -670,7 +675,8 @@
             //        [tile.mySprite setOpacity:150];
             //    }
             
-            [usersService logProblemAttemptEvent:kProblemAttemptDotGridTouchBeginResizeShape withOptionalNote:[NSString stringWithFormat:@"{\"numberoftiles:\":%d}",[curShape.tiles count]]];
+            [usersService logEvent:BL_PA_DG_TOUCH_BEGIN_RESIZE_SHAPE
+                withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:[curShape.tiles count]] forKey:@"numTiles"]];
             
             [curShape handleMessage:kDWresizeShape];
                 
@@ -694,8 +700,8 @@
     
     if(gw.Blackboard.FirstAnchor && !((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).tile) {
         ((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Disabled=YES;
-        gameState=kStartAnchor; 
-        [usersService logProblemAttemptEvent:kProblemAttemptDotGridTouchBeginCreateShape withOptionalNote:nil];
+        gameState=kStartAnchor;
+        [usersService logEvent:BL_PA_DG_TOUCH_BEGIN_CREATE_SHAPE withAdditionalData:nil];
     }
     
     

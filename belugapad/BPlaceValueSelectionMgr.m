@@ -69,14 +69,14 @@
     
     if([isSelected boolValue])
     {
-        [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchBeginDeselectObject withOptionalNote:nil];
+        [usersService logEvent:BL_PA_PV_TOUCH_BEGIN_DESELECT_OBJECT withAdditionalData:nil];
         [[gameObject store] setObject:[NSNumber numberWithBool:NO] forKey:SELECTED];
         [gameWorld.Blackboard.SelectedObjects removeObject:gameObject];
         [[gameWorld GameScene] problemStateChanged];
     }
     else
     {
-      [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchBeginSelectObject withOptionalNote:nil];
+        [usersService logEvent:BL_PA_PV_TOUCH_BEGIN_SELECT_OBJECT withAdditionalData:nil];
         [[gameObject store] setObject:[NSNumber numberWithBool:YES] forKey:SELECTED]; 
         gameWorld.Blackboard.LastSelectedObject = gameObject;
         [gameWorld.Blackboard.SelectedObjects addObject:gameObject];

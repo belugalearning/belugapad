@@ -475,7 +475,7 @@ static float kMoveToNextProblemTime=2.0f;
         NSLog(@"pausing in problem document %@ in pipeline %@", contentService.currentProblem._id, contentService.currentPipeline._id);
     }
     
-    [usersService logProblemAttemptEvent:kProblemAttemptUserPause withOptionalNote:nil];
+    [usersService logEvent:BL_PA_PAUSE withAdditionalData:nil];
 }
 
 -(void) checkPauseTouches:(CGPoint)location
@@ -483,7 +483,7 @@ static float kMoveToNextProblemTime=2.0f;
     if(CGRectContainsPoint(kPauseMenuContinue, location))
     {
         //resume
-        [usersService logProblemAttemptEvent:kProblemAttemptUserResume withOptionalNote:nil];
+        [usersService logEvent:BL_PA_RESUME withAdditionalData:nil];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [pauseLayer setVisible:NO];
         isPaused=NO;
@@ -491,7 +491,7 @@ static float kMoveToNextProblemTime=2.0f;
     if(CGRectContainsPoint(kPauseMenuReset, location))
     {
         //reset
-        [usersService logProblemAttemptEvent:kProblemAttemptUserReset withOptionalNote:nil];
+        [usersService logEvent:BL_PA_USER_RESET withAdditionalData:nil];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self resetProblem];
         [pauseLayer setVisible:NO];
@@ -499,13 +499,13 @@ static float kMoveToNextProblemTime=2.0f;
     }
     if(CGRectContainsPoint(kPauseMenuMenu, location))
     {
-        [usersService logProblemAttemptEvent:kProblemAttemptExitToMap withOptionalNote:nil];
+        [usersService logEvent:BL_PA_EXIT_TO_MAP withAdditionalData:nil];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self returnToMenu];
     }
     if(CGRectContainsPoint(kPauseMenuLogOut, location))
     {
-        [usersService logProblemAttemptEvent:kProblemAttemptExitLogOut withOptionalNote:nil];
+        [usersService logEvent:BL_PA_LOG_OUT withAdditionalData:nil];
         usersService.currentUser = nil;
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
@@ -514,7 +514,7 @@ static float kMoveToNextProblemTime=2.0f;
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     if (!ac.ReleaseMode && location.x>cx && location.y < 768 - kButtonToolbarHitBaseYOffset)
     {
-        [usersService logProblemAttemptEvent:kProblemAttemptSkipDebug withOptionalNote:nil];
+        [usersService logEvent:BL_PA_SKIP_DEBUG withAdditionalData:nil];
         isPaused=NO;
         [pauseLayer setVisible:NO];
         [self gotoNewProblem];
@@ -894,7 +894,7 @@ static float kMoveToNextProblemTime=2.0f;
             [self playAudioPress];
             
             //effective user commit of number picker
-            [usersService logProblemAttemptEvent:kProblemAttemptUserCommit withOptionalNote:nil];
+            [usersService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
             
             [self evalNumberPicker];
         }
@@ -914,7 +914,8 @@ static float kMoveToNextProblemTime=2.0f;
                 [numberPickerLayer addChild:curSprite];
                 
                 // log pickup from register/dropbox
-                [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberFromPicker withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",i]];
+                [usersService logEvent:BL_PA_NP_NUMBER_FROM_PICKER
+                    withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:i] forKey:@"number"]];
                 
                 // check if we're animating our buttons or fading them in
                 if(animatePickedButtons) {
@@ -943,7 +944,9 @@ static float kMoveToNextProblemTime=2.0f;
         if(CGRectContainsPoint(s.boundingBox, origloc))
         {
             [self playAudioPress];
-            [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberFromRegister withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:s]]intValue]]];
+            [usersService logEvent:BL_PA_NP_NUMBER_FROM_REGISTER
+                withAdditionalData:[NSDictionary dictionaryWithObject:[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:s]]
+                                                               forKey:@"number"]];
             npMove=s;
             npMoveStartPos=npMove.position;
             return;
@@ -963,7 +966,8 @@ static float kMoveToNextProblemTime=2.0f;
         {
             NSLog(@"hit block index %d, index of moving block %d", i, [numberPickedSelection indexOfObject:npMove]);
             // log pickup from register/dropbox
-            [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberFromRegister withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",i]];
+            [usersService logEvent:BL_PA_NP_NUMBER_FROM_REGISTER
+                withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:i] forKey:@"number"]];
             
             CCSprite *repSprite=[numberPickedSelection objectAtIndex:i];
             [repSprite runAction:[CCMoveTo actionWithDuration:0.2 position:npMoveStartPos]];
@@ -983,10 +987,12 @@ static float kMoveToNextProblemTime=2.0f;
         }
     }
     
-    //removed b/c of log performance issues
-    if(!hasMovedNumber)hasMovedNumber=YES;
-//    [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberMove withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",moveNumber]];
-    
+    if(!hasMovedNumber) hasMovedNumber=YES;
+    // TODO: moveNumber isn't declared - what is it? Following was commented out b/c poor performance with CBM
+    // N.B. if after restoration performance is still poor, we can try having certain event types not immediately written to disk
+    /*    [usersService logEvent:BL_PA_NP_NUMBER_MOVE 
+     withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:moveNumber] forKey:@"number"]];
+     */  
     npMove.position=location;
 
 }
@@ -1124,7 +1130,7 @@ static float kMoveToNextProblemTime=2.0f;
     if (CGRectContainsPoint(kRectButtonCommit, location) && mqEvalMode==kMetaQuestionEvalOnCommit)
     {
         //effective user commit
-        [usersService logProblemAttemptEvent:kProblemAttemptUserCommit withOptionalNote:nil];
+        [usersService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
         
         [self evalMetaQuestion];
     }
@@ -1148,8 +1154,8 @@ static float kMoveToNextProblemTime=2.0f;
                 if(!isSelected)
                 {
                     // the user has changed their answer (even if they didn't have one before)
-                    
-                    [usersService logProblemAttemptEvent:kProblemAttemptMetaQuestionChangeAnswer withOptionalNote:[NSString stringWithFormat:@"{\"Selction\":%d}", i]];
+                    [usersService logEvent:BL_PA_MQ_CHANGE_ANSWER
+                        withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:i] forKey:@"selection"]];
                     // check what answer mode we have
                     // if single, we should only only be able to select one so we need to deselect the others and change the selected value
                     if(mqAnswerMode==kMetaQuestionAnswerSingle)
@@ -1250,7 +1256,7 @@ static float kMoveToNextProblemTime=2.0f;
 }
 -(void)doWinning
 {
-    [usersService logProblemAttemptEvent:kProblemAttemptSuccess withOptionalNote:nil];
+    [usersService logEvent:BL_PA_SUCCESS withAdditionalData:nil];
     [self removeMetaQuestionButtons];
     [self showProblemCompleteMessage];
     currentTool.ProblemComplete=YES;
@@ -1258,7 +1264,7 @@ static float kMoveToNextProblemTime=2.0f;
 }
 -(void)doIncomplete
 {   
-    [usersService logProblemAttemptEvent:kProblemAttemptFail withOptionalNote:nil];
+    [usersService logEvent:BL_PA_FAIL withAdditionalData:nil];
     [self showProblemIncompleteMessage];
     //[self deselectAnswersExcept:-1];
 }
@@ -1358,7 +1364,7 @@ static float kMoveToNextProblemTime=2.0f;
         [self playAudioPress];
         
         //effective user commit
-        [usersService logProblemAttemptEvent:kProblemAttemptUserCommit withOptionalNote:nil];
+        [usersService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
         
         [currentTool evalProblem];
     }
@@ -1405,7 +1411,7 @@ static float kMoveToNextProblemTime=2.0f;
         
         scale+=(scaleChange / cx);
         
-        [usersService logProblemAttemptEvent:kProblemAttemptToolHostPinch withOptionalNote:[NSString stringWithFormat:@"{\"scale\" : %f}", scale]];
+        [usersService logEvent:BL_PA_TH_PINCH withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:scale] forKey:@"scale"]];
         
         if(currentTool.PassThruScaling) [currentTool handlePassThruScaling:scale];
         else {
@@ -1447,17 +1453,24 @@ static float kMoveToNextProblemTime=2.0f;
         if(!CGRectContainsPoint(npDropbox.boundingBox, location) || (CGRectContainsPoint(npDropbox.boundingBox, location) && distance<7.0f))
         {
             
-            [usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberDelete withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]intValue]]];
-            
+            [usersService logEvent:BL_PA_NP_NUMBER_DELETE
+                withAdditionalData:[NSDictionary dictionaryWithObject:[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]
+                                                               forKey:@"number"]];
             
             [numberPickedValue removeObjectAtIndex:[numberPickedSelection indexOfObject:npMove]];
             [numberPickedSelection removeObject:npMove];
             [npMove removeFromParentAndCleanup:YES];
         }
         [self reorderNumberPickerSelections];
-        //int moveNumber=[[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]intValue];
         
-        //if(hasMovedNumber)[usersService logProblemAttemptEvent:kProblemAttemptNumberPickerNumberMove withOptionalNote:[NSString stringWithFormat:@"{\"Number\" : %d}",moveNumber]];
+        // previously removed b/c performance hit. Restored for testing with sans-Couchbase logging
+        // N.B. if performance still poor, we can try not writing certain log events to disk immediately
+        if(hasMovedNumber)
+        {
+            [usersService logEvent:BL_PA_NP_NUMBER_MOVE
+                withAdditionalData:[NSDictionary dictionaryWithObject:[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]
+                                                               forKey:@"number"]];
+        }
         
         npMove=nil;
         npLastMoved=nil;

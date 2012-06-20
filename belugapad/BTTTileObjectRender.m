@@ -129,26 +129,27 @@
 
 -(void)handleTap
 {
-    if(tile.Disabled)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginTapDisabledBox withOptionalNote:[NSString stringWithFormat:@"{\"tapdisabledx\":%d,\"tapdisabledy\":%d}", tile.myXpos, tile.myYpos]];
+    NSDictionary *tileCoords = [NSDictionary dictionaryWithObject:[NSArray arrayWithObjects:[NSNumber numberWithInt:tile.myXpos], [NSNumber numberWithInt:tile.myYpos], nil] forKey:@"tileCoords"];
     
-    if(!tile.Selected && !tile.Disabled)
+    if (tile.Disabled)
     {
-        [usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginSelectAnswer withOptionalNote:[NSString stringWithFormat:@"{\"selecttilex\":%d,\"selecttiley\":%d}", tile.myXpos, tile.myYpos]];
-        
-        tile.Selected=YES;
+        [usersService logEvent:BL_PA_TT_TOUCH_BEGIN_TAP_DISABLED_BOX withAdditionalData:tileCoords];
+    }    
+    else if(!tile.Selected)
+    {
+        [usersService logEvent:BL_PA_TT_TOUCH_BEGIN_SELECT_ANSWER withAdditionalData:tileCoords];
         [gameWorld.Blackboard.SelectedObjects addObject:tile];
+        tile.Selected=YES;
         tile.selSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/selectionbox%d.png"), tile.Size]];
-
         [tile.selSprite setPosition:tile.Position];
         [tile.mySprite.parent addChild:tile.selSprite z:1000];
         
     }
     else
-    { 
-        [usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginDeselectAnswer withOptionalNote:[NSString stringWithFormat:@"{\"deselecttilex\":%d,\"deselecttiley\":%d}", tile.myXpos, tile.myYpos]];
-        
-        tile.Selected=NO;
+    {
+        [usersService logEvent:BL_PA_TT_TOUCH_BEGIN_DESELECT_ANSWER withAdditionalData:tileCoords];
         [gameWorld.Blackboard.SelectedObjects removeObject:tile];
+        tile.Selected=NO;
         [tile.selSprite removeFromParentAndCleanup:YES];
     }
 }

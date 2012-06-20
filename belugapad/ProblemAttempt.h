@@ -6,23 +6,17 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import <CouchCocoa/CouchCocoa.h>
-#import "UsersService.h"
 @class UserSession, Problem;
 
-@interface ProblemAttempt : CouchModel
+@interface ProblemAttempt: NSObject
 
-@property (retain) NSString *type;
-@property (retain) UserSession *userSession;
-@property (retain) NSString *problem;
-@property (retain) NSString *problemRev;
-@property (retain) NSString *parentProblem;
-@property (retain) NSString *parentProblemRev;
-@property (retain) NSArray *events;
+@property (readonly) NSString* _id;
 
-- (id) initAndStartAttemptForUserSession:(UserSession*)userSession
-                              andProblem:(Problem*)problem
-                        andParentProblem:(Problem*)parentProblem
-                        andGeneratedPDEF:(NSDictionary*)pdef;
+-(id)initAndStartForUserSession:(UserSession*)userSession
+                        problem:(Problem*)problem //parentAttemptId:(NSString*)parentAttemptId
+                  generatedPDef:(NSDictionary*)pdef
+           loggingDirectoryPath:(NSString*)loggingDirectoryPath;
+
+-(void)logEvent:(NSString*)eventType withAdditionalData:(NSObject*)additionalData;
 
 @end

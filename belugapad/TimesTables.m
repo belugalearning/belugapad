@@ -430,19 +430,28 @@
         if(tinted)
         {
             //untint -- so long as it's not in a row
-            if (![[colTints objectAtIndex:i] boolValue]) {
+            if (![[colTints objectAtIndex:i] boolValue])
+            {
                 [tile.mySprite setColor:ccc3(255,255,255)];
             
-            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginUnhighlightRow withOptionalNote:[NSString stringWithFormat:@"{\"unhighlightrow\":%d}",thisRow]];
-            haveLogged=YES;
+                if(!haveLogged)
+                {
+                    [usersService logEvent:BL_PA_TT_TOUCH_BEGIN_UNHIGHLIGHT_ROW
+                        withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:thisRow] forKey:@"unhighlightRow"]];
+                    haveLogged=YES;
+                }
             }
         }
         else {
             //tint it
             [tile.mySprite setColor:ccc3(0,255,0)];
             
-            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginHighlightRow withOptionalNote:[NSString stringWithFormat:@"{\"highlightrow\":%d}",thisRow]];
-            haveLogged=YES;
+            if(!haveLogged)
+            {
+                [usersService logEvent:BL_PA_TT_TOUCH_BEGIN_HIGHLIGHT_ROW
+                    withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:thisRow] forKey:@"highlightRow"]];
+                haveLogged=YES;
+            }
         }
     }
     
@@ -463,11 +472,16 @@
         if(tinted)
         {
             //untint -- so long as it's not in a row
-            if (![[rowTints objectAtIndex:i] boolValue]) {
+            if (![[rowTints objectAtIndex:i] boolValue])
+            {
                 [tile.mySprite setColor:ccc3(255,255,255)];
             
-            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginUnhighlightColumn withOptionalNote:[NSString stringWithFormat:@"{\"unhighlightcol\":%d}",thisCol]];
-            haveLogged=YES;
+                if (!haveLogged)
+                {
+                    [usersService logEvent:BL_PA_TT_TOUCH_BEGIN_UNHIGHLIGHT_COLUMN
+                        withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:thisCol] forKey:@"unhighlightCol"]];
+                    haveLogged=YES;
+                }
                 
             }
         }
@@ -475,8 +489,12 @@
             //tint it
             [tile.mySprite setColor:ccc3(0,255,0)];
             
-            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginHighlightColumn withOptionalNote:[NSString stringWithFormat:@"{\"highlightcol\":%d}",thisCol]];
-            haveLogged=YES;
+            if(!haveLogged)
+            {
+                [usersService logEvent:BL_PA_TT_TOUCH_BEGIN_HIGHLIGHT_COLUMN
+                    withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:thisCol] forKey:@"highlightCol"]];
+                haveLogged=YES;
+            }
         }
     }
     

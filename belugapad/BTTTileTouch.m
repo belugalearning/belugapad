@@ -110,7 +110,11 @@
             NSLog(@"tile hit - my value is %d, myXpos %d, myYpos %d", tile.myXpos*tile.myYpos, tile.myXpos, tile.myYpos);
             if(!tile.myText)
             {
-                [usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginRevealAnswer withOptionalNote:[NSString stringWithFormat:@"{\"revealanswerx\":%d, \"revealanswery\":%d}", tile.myXpos, tile.myYpos]];
+                [usersService logEvent:BL_PA_TT_TOUCH_BEGIN_REVEAL_ANSWER
+                    withAdditionalData:[NSDictionary dictionaryWithObject:[NSArray arrayWithObjects:
+                                                                           [NSNumber numberWithInt:tile.myXpos],
+                                                                           [NSNumber numberWithInt:tile.myYpos], nil]
+                                                                   forKey:@"tileCoords"]];
                 
                 if(tile.operatorType==kOperatorAdd)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos+tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
                 

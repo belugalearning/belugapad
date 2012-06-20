@@ -61,7 +61,7 @@
         } 
         else if(CGRectContainsPoint(boundingBox, [pogo.BaseNode convertToNodeSpace:hitLoc]) && pogo.Mount.Locked)
         {
-            [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchBeganOnLockedRow withOptionalNote:nil];
+            [usersService logEvent:BL_PA_NB_TOUCH_BEGIN_ON_LOCKED_ROW withAdditionalData:nil];
         }
     }
     

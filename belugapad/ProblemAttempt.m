@@ -7,60 +7,94 @@
 //
 
 #import "ProblemAttempt.h"
+#import "global.h"
 #import "Problem.h"
 #import "UserSession.h"
-#import "UsersService.h"
-
-#import <CouchCocoa/CouchCocoa.h>
+#import "JSONKit.h"
 
 @interface ProblemAttempt()
 {
 @private
+    NSMutableArray *events;
+    NSMutableDictionary *doc;
+    NSString *docPath;
 }
+-(NSString*)generateUUID;
 @end
 
 @implementation ProblemAttempt
 
-@dynamic type;
-@dynamic userSession;
-@dynamic problem;
-@dynamic problemRev;
-@dynamic parentProblem;
-@dynamic parentProblemRev;
-@dynamic events;
-
-- (id) initAndStartAttemptForUserSession:(UserSession*)userSession
-                              andProblem:(Problem*)problem
-                        andParentProblem:(Problem*)parentProblem
-                        andGeneratedPDEF:(NSDictionary*)pdef
+-(NSString*) _id
 {
-    self = [super initWithDocument: nil];
+    return (NSString*)[doc objectForKey:@"_id"];
+}
+
+-(id)initAndStartForUserSession:(UserSession*)userSession
+                        problem:(Problem*)problem //parentAttemptId:(NSString*)parentAttemptId
+                  generatedPDef:(NSDictionary*)pdef
+           loggingDirectoryPath:(NSString*)loggingDirectoryPath
+{
+    self = [super init];
     if (self)
     {
-        self.database = userSession.database;
-        self.type = @"problem attempt";        
-        self.userSession = userSession;
-        self.problem = problem._id;
-        self.problemRev = problem._rev;
-        if (parentProblem)
-        {            
-            self.parentProblem = parentProblem._id;
-            self.parentProblemRev = parentProblem._rev;
-        }
-        self.events = [NSMutableArray array];        
-        if (pdef)
-        {
-            NSString *libDir = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-            NSString *filePath = [NSString stringWithFormat:@"%@/pdef.plist", libDir];
-            [pdef writeToFile:filePath atomically:NO];
-            [self createAttachmentWithName:@"pdef.plist" type:@"application/xml" body:[NSData dataWithContentsOfFile:filePath]];
-        }
+        events = [NSMutableArray array];
+        doc = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+               [self generateUUID], @"_id"
+               , userSession.document.documentID, @"userSession"
+               , @"ProblemAttempt", @"type"
+               , problem._id, @"problemId"
+               , problem._rev, @"problemRev"
+               , events, @"events"
+               , nil];
+        
+        if (pdef) [pdef writeToFile:[NSString stringWithFormat:@"%@/%@.pdef.plist", loggingDirectoryPath, self._id] atomically:NO];        
+        docPath = [[NSString stringWithFormat:@"%@/%@.json", loggingDirectoryPath, self._id] retain];
+        
+        [self logEvent:BL_PA_START withAdditionalData:nil];
     }
     return self;
 }
 
+
+-(void)logEvent:(NSString*)eventType withAdditionalData:(NSObject*)additionalData;
+{
+    NSNumber *now = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
+    NSMutableDictionary *event = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                  eventType, @"eventType"
+                                  , now, @"date"
+                                  , additionalData, @"additionalData", nil];
+    [events addObject:event];
+    
+    NSData *docData = [doc JSONData];
+    if (!docData)
+    {
+        [event setObject:@"JSON_SERIALIZATION_ERROR" forKey:@"additionalData"];
+        docData = [doc JSONData];
+    }
+    
+    NSError *error = nil;
+    [docData writeToFile:docPath options:NSDataWritingAtomic error:&error];
+    // TODO: Do something better with error
+    if (error) NSLog(@"ERROR WRITING LOG FILE:%@", [error debugDescription]);
+}
+                       
+
+-(NSString*)generateUUID
+{
+    CFUUIDRef UUIDRef = CFUUIDCreate(kCFAllocatorDefault);
+    CFStringRef UUIDSRef = CFUUIDCreateString(kCFAllocatorDefault, UUIDRef);
+    NSString *uuid = [NSString stringWithFormat:@"%@", UUIDSRef];
+    
+    CFRelease(UUIDRef);
+    CFRelease(UUIDSRef);
+    
+    return uuid;
+}
+
 -(void)dealloc
 {
+    [doc release];
+    [docPath release];
     [super dealloc];
 }
 

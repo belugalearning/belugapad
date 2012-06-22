@@ -117,8 +117,12 @@
     
         if(gameWorld.Blackboard.inProblemSetup)
         {
-            [cont.mySprite setTag:1];
-            [cont.mySprite setOpacity:0];
+            [cont.mySpriteTop setTag:1];
+            [cont.mySpriteMid setTag:1];
+            [cont.mySpriteBot setTag:1];
+            [cont.mySpriteTop setOpacity:0];
+            [cont.mySpriteMid setOpacity:0];
+            [cont.mySpriteBot setOpacity:0];
         }
     
     
@@ -131,7 +135,10 @@
 -(void)moveSprite
 {
     if(!cont.ScaledUp){
-        [cont.mySprite runAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f]];
+        
+        [cont.mySpriteTop runAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f]];
+        [cont.mySpriteMid runAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f]];
+        [cont.mySpriteBot runAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f]];
         cont.ScaledUp=YES;
     }
     [cont.BaseNode setPosition:cont.Position];
@@ -139,7 +146,9 @@
 -(void)moveSpriteHome
 {
     if(cont.ScaledUp){
-        [cont.mySprite runAction:[CCScaleTo actionWithDuration:0.2f scale:0.5f]];
+        [cont.mySpriteTop runAction:[CCScaleTo actionWithDuration:0.2f scale:0.5f]];
+        [cont.mySpriteMid runAction:[CCScaleTo actionWithDuration:0.2f scale:0.5f]];
+        [cont.mySpriteBot runAction:[CCScaleTo actionWithDuration:0.2f scale:0.5f]];
         cont.ScaledUp=NO;
     }
     [cont.BaseNode runAction:[CCMoveTo actionWithDuration:0.5f position:cont.MountPosition]];

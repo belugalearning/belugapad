@@ -277,7 +277,9 @@ static float kTimeToPieShake=7.0f;
     [gw populateAndAddGameObject:cont withTemplateName:@"TpieSplitterContainer"];
     cont.Position=ccp(0,conBox.position.y);
     cont.MountPosition=ccp(35,640);
-    [cont.mySprite setScale:1.0f];
+    [cont.mySpriteTop setScale:1.0f];
+    [cont.mySpriteMid setScale:1.0f];
+    [cont.mySpriteBot setScale:1.0f];
     cont.ScaledUp=YES;
     [activeCon addObject:cont];
 }
@@ -311,11 +313,15 @@ static float kTimeToPieShake=7.0f;
     [gw populateAndAddGameObject:cont withTemplateName:@"TpieSplitterContainer"];
     cont.Position=ccp(([activeCon count]+0.5)*(lx/[activeCon count]), conBox.position.y);
     cont.MountPosition=ccp(35,700);
-    [cont.mySprite setScale:1.0f];
+    [cont.mySpriteTop setScale:1.0f];
+    [cont.mySpriteMid setScale:1.0f];
+    [cont.mySpriteBot setScale:1.0f];
     cont.ScaledUp=YES;
     [activeCon addObject:cont];
     [cont handleMessage:kDWsetupStuff];
-    [cont.mySprite setOpacity:25];
+    [cont.mySpriteTop setOpacity:25];
+    [cont.mySpriteMid setOpacity:25];
+    [cont.mySpriteBot setOpacity:25];
     [self reorderActiveContainers];
 }
 
@@ -488,7 +494,7 @@ static float kTimeToPieShake=7.0f;
     // check the labels have been tapped, or not
     for(DWPieSplitterContainerGameObject *c in activeCon)
     {
-        if(CGRectContainsPoint(c.myText.boundingBox, [c.mySprite convertToNodeSpace:location]))
+        if(CGRectContainsPoint(c.myText.boundingBox, [c.mySpriteTop convertToNodeSpace:location]))
         {
             if(labelType==kLabelShowDecimal)labelType=kLabelShowFraction;
             else if(labelType==kLabelShowFraction)labelType=kLabelShowDecimal;

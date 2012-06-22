@@ -46,7 +46,10 @@
 
 -(void)checkDropTarget:(CGPoint)hitLoc
 {
-    if(CGRectContainsPoint(cont.mySprite.boundingBox, [cont.BaseNode convertToNodeSpace:hitLoc]))
+    CGRect baseNodeBound=CGRectNull;
+    baseNodeBound=CGRectUnion(cont.mySpriteTop.boundingBox, cont.mySpriteBot.boundingBox);
+    
+    if(CGRectContainsPoint(baseNodeBound, [cont.BaseNode convertToNodeSpace:hitLoc]))
    {
        gameWorld.Blackboard.DropObject=cont;
    }

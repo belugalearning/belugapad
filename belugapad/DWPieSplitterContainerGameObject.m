@@ -13,7 +13,7 @@
 @synthesize Position;
 @synthesize MountPosition;
 @synthesize RealYPosOffset;
-@synthesize mySprite;
+//@synthesize mySprite;
 @synthesize mySlices;
 @synthesize ScaledUp;
 @synthesize myText;

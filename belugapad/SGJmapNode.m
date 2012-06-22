@@ -35,9 +35,9 @@
         self.Position=aPosition;
         self.Selected=NO;
         
-        self.NodeRenderComponent=[[SGJmapNodeRender alloc] initWithGameObject:self];
-        self.ProximityEvalComponent=[[SGJmapProximityEval alloc] initWithGameObject:self];
-        self.NodeSelectComponent=[[SGJmapNodeSelect alloc] initWithGameObject:self];
+        NodeRenderComponent=[[[SGJmapNodeRender alloc] initWithGameObject:self] retain];
+        ProximityEvalComponent=[[[SGJmapProximityEval alloc] initWithGameObject:self] retain];
+        NodeSelectComponent=[[[SGJmapNodeSelect alloc] initWithGameObject:self] retain];
     }
     return self;
 }
@@ -75,7 +75,9 @@
 
 -(void)dealloc
 {
-    [self.NodeRenderComponent release];
+    [NodeRenderComponent release];
+    [ProximityEvalComponent release];
+    [NodeSelectComponent release];
     
     [super dealloc];
 }

@@ -37,7 +37,7 @@
 static float kNodeScale=0.5f;
 //static CGPoint kStartMapPos={-3576, -2557};
 static CGPoint kStartMapPos={-611, 3713};
-static float kPropXNodeHitDist=0.065f;
+//static float kPropXNodeHitDist=0.065f;
 
 
 const float kLogOutBtnPadding = 8.0f;
@@ -226,6 +226,7 @@ typedef enum {
     //base colour layer
     CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(54, 59, 59, 255) width:lx height:ly];
     [self addChild:cLayer z:-1];
+    [cLayer release];
     
     //base map layer
     mapLayer=[[CCLayer alloc] init];
@@ -297,10 +298,10 @@ typedef enum {
         //create a node go
         if(n.mastery)
         {
-            newnode=[[SGJmapMasteryNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos];
+            newnode=[[[SGJmapMasteryNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
         }
         else {
-            newnode=[[SGJmapNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos];
+            newnode=[[[SGJmapNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
             
             //todo: for now, if there are pipelines on the node, set it complete
             if(n.pipelines.count>0)
@@ -686,6 +687,7 @@ typedef enum {
 
 -(void)dealloc
 {
+    [mapLayer release];
     [kcmNodes release];
     [gw release];
     

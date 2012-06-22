@@ -56,7 +56,7 @@
 
 -(NSMutableArray*)getDistinctVarNames
 {
-    NSMutableArray *vars=[[NSMutableArray alloc] init];
+    NSMutableArray *vars=[[[NSMutableArray alloc] init] autorelease];
     
     [self getDistinctVarNamesFrom:Tree.root withArray:vars];
     

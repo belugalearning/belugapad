@@ -84,6 +84,8 @@
                 
                 testProblemList=[NSArray arrayWithArray:allFilePaths];
                 [testProblemList retain];
+                
+                [allFilePaths release];
             }
 
         }

@@ -242,7 +242,7 @@ static float kTimeToBubbleShake=7.0f;
 {
     if(evalMode==kProblemEvalAuto)
     {
-        self.ProblemComplete=[self evalProblem];
+        [self evalProblem];
         
         if(!self.ProblemComplete) 
         {
@@ -260,9 +260,9 @@ static float kTimeToBubbleShake=7.0f;
     [toolHost showProblemCompleteMessage];
 }
 
--(BOOL)evalProblem
+-(void)evalProblem
 {
-    return (evalTarget==lastBubbleLoc);
+    self.ProblemComplete = (evalTarget==lastBubbleLoc);
     
 }
 
@@ -351,7 +351,7 @@ static float kTimeToBubbleShake=7.0f;
     
     if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit)
     {
-        self.ProblemComplete=[self evalProblem];
+        [self evalProblem];
         
         if(!self.ProblemComplete) 
         {
@@ -580,9 +580,9 @@ static float kTimeToBubbleShake=7.0f;
 //    }
 
     
-    UITouch *touch=[touches anyObject];
-    CGPoint location=[touch locationInView: [touch view]];
-    location=[[CCDirector sharedDirector] convertToGL:location];
+//    UITouch *touch=[touches anyObject];
+//    CGPoint location=[touch locationInView: [touch view]];
+//    location=[[CCDirector sharedDirector] convertToGL:location];
     
     holdingBubbleOffset=0;
     holdingBubble=NO;

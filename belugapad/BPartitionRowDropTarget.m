@@ -28,9 +28,8 @@
     {
 
         //get current loc
-        CGPoint myLoc=prgo.Position;
-            
-        myLoc = [gameWorld.Blackboard.ComponentRenderLayer convertToNodeSpace:myLoc];
+        //CGPoint myLoc=prgo.Position;
+        //myLoc = [gameWorld.Blackboard.ComponentRenderLayer convertToNodeSpace:myLoc];
         
         
         //get coords from payload (i.e. the search target)

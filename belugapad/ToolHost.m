@@ -104,7 +104,7 @@ static float kMoveToNextProblemTime=2.0f;
         [self populatePerstLayer];
         
         //dynamic problem parser (persists to end of pipeline)
-        self.DynProblemParser=[[DProblemParser alloc] init];
+        DynProblemParser=[[[DProblemParser alloc] init] retain];
         
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         contentService = ac.contentService;
@@ -596,11 +596,11 @@ static float kMoveToNextProblemTime=2.0f;
     metaQuestionAnswerButtons = [[NSMutableArray alloc] init];
     metaQuestionAnswerLabels = [[NSMutableArray alloc] init];
     
-    float titleY=cy*1.75f;
+    //float titleY=cy*1.75f;
     float answersY=cy*0.40;
     if(currentTool)
     {
-        titleY=[currentTool metaQuestionTitleYLocation];
+        //titleY=[currentTool metaQuestionTitleYLocation];
         answersY=[currentTool metaQuestionAnswersYLocation];
     }
     
@@ -649,7 +649,7 @@ static float kMoveToNextProblemTime=2.0f;
         NSMutableDictionary *a=[NSMutableDictionary dictionaryWithDictionary:[pdefAnswers objectAtIndex:i]];
         [metaQuestionAnswers addObject:a];
         
-        CCSprite *answerBtn = [[CCSprite alloc]init];
+        CCSprite *answerBtn;
         CCLabelTTF *answerLabel = [CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
         
         // sort out the labels and buttons if there's an answer text
@@ -994,13 +994,13 @@ static float kMoveToNextProblemTime=2.0f;
 
 -(void)evalNumberPicker
 {
-    NSString *strEval=[[NSString alloc]init];
+    NSString *strEval=@"";
     
     for (int i=0;i<[numberPickedValue count];i++)
     {
         NSNumber *thisNo=[numberPickedValue objectAtIndex:i];
         int iThisNo=[thisNo intValue];
-        NSString *strThisNo=[[NSString alloc] init];
+        NSString *strThisNo;
         
         if(iThisNo==10)strThisNo=@".";
         else strThisNo=[NSString stringWithFormat:@"%d", iThisNo];
@@ -1536,6 +1536,8 @@ static float kMoveToNextProblemTime=2.0f;
     if(numberPickerButtons)[numberPickerButtons release];
     if(numberPickedSelection)[numberPickedSelection release];
     if(numberPickedValue)[numberPickedValue release];
+    
+    [DynProblemParser release];
     
     [super dealloc];
 }

@@ -54,7 +54,7 @@
 	aCopy->mRoot = nil;
     
     //copy the subs dict
-    aCopy.VariableSubstitutions=[self.VariableSubstitutions copyWithZone:theZone];
+    aCopy.VariableSubstitutions=[[self.VariableSubstitutions copyWithZone:theZone] autorelease];
     
 	[aCopy setRoot:[[[self root] copy] autorelease]];
 	return aCopy;

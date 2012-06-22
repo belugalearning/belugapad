@@ -136,9 +136,8 @@
 {
     if(!cont.ScaledUp){
         
-        [cont.mySpriteTop runAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f]];
-        [cont.mySpriteMid runAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f]];
-        [cont.mySpriteBot runAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f]];
+        [cont.BaseNode runAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f]];
+
         cont.ScaledUp=YES;
     }
     [cont.BaseNode setPosition:cont.Position];
@@ -146,9 +145,8 @@
 -(void)moveSpriteHome
 {
     if(cont.ScaledUp){
-        [cont.mySpriteTop runAction:[CCScaleTo actionWithDuration:0.2f scale:0.5f]];
-        [cont.mySpriteMid runAction:[CCScaleTo actionWithDuration:0.2f scale:0.5f]];
-        [cont.mySpriteBot runAction:[CCScaleTo actionWithDuration:0.2f scale:0.5f]];
+        [cont.BaseNode runAction:[CCScaleTo actionWithDuration:0.2f scale:0.5f]];
+      
         cont.ScaledUp=NO;
     }
     [cont.BaseNode runAction:[CCMoveTo actionWithDuration:0.5f position:cont.MountPosition]];

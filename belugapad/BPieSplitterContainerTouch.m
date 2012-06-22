@@ -64,7 +64,10 @@
 
 -(void)checkTouch:(CGPoint)hitLoc
 {
-    if(CGRectContainsPoint(cont.mySprite.boundingBox, [cont.BaseNode convertToNodeSpace:hitLoc]) && [cont.mySlices count]==0)
+    CGRect baseNodeBound=CGRectNull;
+    baseNodeBound=CGRectUnion(cont.mySpriteTop.boundingBox, cont.mySpriteBot.boundingBox);
+    
+    if(CGRectContainsPoint(baseNodeBound, [cont.BaseNode convertToNodeSpace:hitLoc]) && [cont.mySlices count]==0)
     {
         gameWorld.Blackboard.PickupObject=gameObject;
     }

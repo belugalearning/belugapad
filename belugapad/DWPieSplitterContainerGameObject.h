@@ -21,5 +21,8 @@
 @property (retain) NSString *textString;
 @property (retain) CCNode *BaseNode;
 @property (retain) NSMutableArray *Nodes;
+@property (retain) CCSprite *mySpriteTop;
+@property (retain) CCSprite *mySpriteMid;
+@property (retain) CCSprite *mySpriteBot;
 
 @end

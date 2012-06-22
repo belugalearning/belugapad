@@ -44,7 +44,7 @@
 {
     if(messageType==kDWsetupStuff)
     {
-        if(!cont.mySprite) 
+        if(!cont.mySpriteBot) 
         {
             [self setSprite];     
         }
@@ -52,7 +52,7 @@
     
     if(messageType==kDWupdateSprite)
     {
-        if(!cont.mySprite) { 
+        if(!cont.mySpriteBot) { 
             [self setSprite];
         }
         
@@ -62,11 +62,11 @@
         if(!cont.myText && cont.ScaledUp)
         {
             cont.myText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-            [cont.myText setPosition:ccp(50,120)];
-            [cont.mySprite addChild:cont.myText];
+            [cont.myText setPosition:ccp(50,40)];
+            [cont.mySpriteTop addChild:cont.myText];
         }
         if(cont.ScaledUp)[cont.myText setString:cont.textString];
-        else [cont.mySprite removeChild:cont.myText cleanup:YES];
+        else [cont.mySpriteTop removeChild:cont.myText cleanup:YES];
     }
     if(messageType==kDWmoveSpriteToPosition)
     {
@@ -78,7 +78,9 @@
     }
     if(messageType==kDWdismantle)
     {
-        [[cont.mySprite parent] removeChild:cont.mySprite cleanup:YES];
+        [[cont.mySpriteTop parent] removeChild:cont.mySpriteTop cleanup:YES];
+        [[cont.mySpriteMid parent] removeChild:cont.mySpriteMid cleanup:YES];
+        [[cont.mySpriteBot parent] removeChild:cont.mySpriteBot cleanup:YES];    
     } 
     
 }
@@ -94,14 +96,24 @@
         [[gameWorld Blackboard].ComponentRenderLayer addChild:cont.BaseNode z:2];
     }
     
-    NSString *spriteFileName=[[NSString alloc]init];
+//    NSString *spriteFileName=[[NSString alloc]init];
     
     
-    spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/container.png"];
+//    spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/container.png"];
     
-    cont.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-    if(!cont.ScaledUp)[cont.mySprite setScale:0.5f];
-    else [cont.mySprite setScale:1.0f];
+    NSString *spriteFileNameTop=@"/images/piesplitter/container-t.png";
+    NSString *spriteFileNameMid=@"/images/piesplitter/container-m.png";
+    NSString *spriteFileNameBot=@"/images/piesplitter/container-b.png";
+    
+//    cont.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+    cont.mySpriteTop=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileNameTop]))];
+    cont.mySpriteMid=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileNameMid]))];
+    cont.mySpriteBot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileNameBot]))];
+    if(!cont.ScaledUp)[cont.BaseNode setScale:0.5f];
+    else [cont.BaseNode setScale:1.0f];
+
+    [cont.mySpriteTop setPosition:ccp(0,(cont.mySpriteMid.contentSize.height)-(cont.mySpriteTop.contentSize.height/2))];
+    [cont.mySpriteBot setPosition:ccp(0,0-(cont.mySpriteMid.contentSize.height/2)-(cont.mySpriteTop.contentSize.height/2))];
     
         if(gameWorld.Blackboard.inProblemSetup)
         {
@@ -110,8 +122,10 @@
         }
     
     
-    
-        [cont.BaseNode addChild:cont.mySprite];
+    [cont.BaseNode addChild:cont.mySpriteMid];
+    [cont.BaseNode addChild:cont.mySpriteTop];
+    [cont.BaseNode addChild:cont.mySpriteBot];
+//        [cont.BaseNode addChild:cont.mySprite];
     
 }
 -(void)moveSprite

@@ -20,5 +20,8 @@
 @synthesize textString;
 @synthesize BaseNode;
 @synthesize Nodes;
+@synthesize mySpriteTop;
+@synthesize mySpriteMid;
+@synthesize mySpriteBot;
 
 @end

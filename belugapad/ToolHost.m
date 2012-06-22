@@ -26,6 +26,7 @@
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchModelFactory.h>
 #import "NordicAnimator.h"
+#import "LRAnimator.h"
 #import "BLFiles.h"
 
 @interface ToolHost()
@@ -76,7 +77,7 @@ static float kMoveToNextProblemTime=2.0f;
         perstLayer=[[CCLayer alloc] init];
         [self addChild:perstLayer z:0];
         
-        animator=[[NordicAnimator alloc] init];
+        animator=[[LRAnimator alloc] init];
         [animator setBackground:backgroundLayer withCx:cx withCy:cy];
         
         [animator animateBackgroundIn];
@@ -109,7 +110,7 @@ static float kMoveToNextProblemTime=2.0f;
         contentService = ac.contentService;
         usersService = ac.usersService;
         
-        [self scheduleOnce:@selector(gotoFirstProblem:) delay:3.0f];
+        [self scheduleOnce:@selector(gotoFirstProblem:) delay:0.0f];
         //[self gotoNewProblem];
         
         [self schedule:@selector(doUpdateOnTick:) interval:1.0f/60.0f];

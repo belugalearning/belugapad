@@ -36,4 +36,12 @@
     return [CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.15f scale:1.0f] rate:2.0f];
 }
 
++(CCAction*)reduceTo0xAndHide
+{
+    CCEaseInOut *ease=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.15f scale:0.0f] rate:2.0f];
+    CCFadeTo *fade=[CCFadeOut actionWithDuration:0.05f];
+    CCSequence *seq=[CCSequence actions:ease, fade, nil];
+    return seq;
+}
+
 @end

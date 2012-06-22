@@ -52,6 +52,8 @@
 @synthesize lightUpProgressFromLastNode;
 @synthesize currentNode;
 
+#pragma mark - init and setup
+
 // Designated initializer
 -(id)initWithProblemPipeline:(NSString*)source
 {
@@ -94,6 +96,104 @@
     return self;
 }
 
+#pragma mark - dynamic pipeline creation
+
+-(BOOL) createAndStartFunnelForNode:(NSString*)nodeId
+{
+    //get node by id
+    ConceptNode *n=[self conceptNodeForId:nodeId];
+    
+    if(n.mastery)
+    {
+        //if mastery, create a full funnel of incomplete nodes        
+        return NO;
+    }
+    else {
+        
+        //if node (incomplete) do same
+        
+        //if node (and that node is complete) funnel is that node's pipeline
+    
+        //todo: fake it -- direct to node for now
+        if(n.pipelines.count>0)
+        {
+            [self startPipelineWithId:[n.pipelines objectAtIndex:0] forNode:n];
+            return YES;
+        }
+        else {
+            NSLog(@"no pipeline found for node %@", nodeId);
+            return NO;
+        }
+    }
+    
+}
+
+
+#pragma mark - data access
+
+-(NSArray*)allConceptNodes
+{
+    NSMutableArray *nodes=[[[NSMutableArray alloc] init] autorelease];
+    [contentDatabase open];
+    FMResultSet *rs = [contentDatabase executeQuery:@"select * from ConceptNodes"];
+    while([rs next])
+    {
+        ConceptNode *n = [[[ConceptNode alloc] initWithFMResultSetRow:rs] autorelease];
+        [nodes addObject:n];
+    }
+    [rs close];
+    [contentDatabase close];
+    return nodes;
+}
+
+-(ConceptNode*)conceptNodeForId:(NSString*)nodeId
+{
+    [contentDatabase open];
+    ConceptNode *returnNode=nil;
+    FMResultSet *rs=[contentDatabase executeQuery:@"select * from ConceptNodes where id=?", nodeId];
+    if([rs next])
+    {
+        returnNode=[[[ConceptNode alloc] initWithFMResultSetRow:rs] autorelease];
+    }
+    else {
+        NSLog(@"ConceptNode with id %@ not found", nodeId);
+    }
+    [rs close];
+    [contentDatabase close];
+    return returnNode;
+}
+
+-(NSArray*)relationMembersForName:(NSString *)name
+{
+    [contentDatabase open];
+    FMResultSet *rs = [contentDatabase executeQuery:@"select members from BinaryRelations where name=?", name];
+    NSArray *pairs = nil;
+    if ([rs next])
+    {
+        pairs = [[rs stringForColumn:@"members"] objectFromJSONString];
+    }
+    [rs close];
+    [contentDatabase close];
+    return pairs;
+}
+
+-(Pipeline*)pipelineWithId:(NSString*)plId
+{
+    Pipeline *pl = nil;
+    [contentDatabase open];
+    FMResultSet *rs = [contentDatabase executeQuery:@"select * from Pipelines where id=?", plId];
+    if ([rs next])
+    {
+        pl = [[[Pipeline alloc] initWithFMResultSetRow:rs] autorelease];
+    }
+    [rs close];
+    [contentDatabase close];
+    return pl;
+}
+
+
+#pragma mark - the rest
+
 -(void)setCurrentStaticPdef:(NSMutableDictionary*)pdef
 {
     NSLog(@"setting currentStaticPdef");
@@ -110,49 +210,6 @@
 -(id)init
 {
     return [self initWithProblemPipeline:@"DATABASE"];
-}
-
--(NSArray*)allConceptNodes
-{
-    NSMutableArray *nodes=[[[NSMutableArray alloc] init] autorelease];
-    [contentDatabase open];
-    FMResultSet *rs = [contentDatabase executeQuery:@"select * from ConceptNodes"];
-    while([rs next])
-    {
-        ConceptNode *n = [[[ConceptNode alloc] initWithFMResultSetRow:rs] autorelease];
-        [nodes addObject:n];
-    }
-    [rs close];
-    [contentDatabase close];
-    return nodes;
-}
-    
--(NSArray*)relationMembersForName:(NSString *)name
-{
-    [contentDatabase open];
-    FMResultSet *rs = [contentDatabase executeQuery:@"select members from BinaryRelations where name=?", name];
-    NSArray *members = nil;
-    if ([rs next])
-    {
-        members = [[rs stringForColumn:@"pairs"] objectFromJSONString];
-    }
-    [rs close];
-    [contentDatabase close];
-    return members;
-}
-
--(Pipeline*)pipelineWithId:(NSString*)plId
-{
-    Pipeline *pl = nil;
-    [contentDatabase open];
-    FMResultSet *rs = [contentDatabase executeQuery:@"select * from Pipelines where id=?", plId];
-    if ([rs next])
-    {
-        pl = [[[Pipeline alloc] initWithFMResultSetRow:rs] autorelease];
-    }
-    [rs close];
-    [contentDatabase close];
-    return pl;
 }
 
 -(void)startPipelineWithId:(NSString*)pipelineid forNode:(ConceptNode*)node

@@ -62,7 +62,7 @@
         if(!cont.myText && cont.ScaledUp)
         {
             cont.myText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-            [cont.myText setPosition:ccp(50,-20)];
+            [cont.myText setPosition:ccp(50,120)];
             [cont.mySprite addChild:cont.myText];
         }
         if(cont.ScaledUp)[cont.myText setString:cont.textString];

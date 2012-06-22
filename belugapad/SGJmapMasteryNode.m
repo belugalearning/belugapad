@@ -34,9 +34,9 @@
         self.RenderBatch=aRenderBatch;
         self.Position=aPosition;
         
-        MNodeRenderComponent=[[[SGJmapMasteryNodeRender alloc] initWithGameObject:self] autorelease];
-        ProximityEvalComponent=[[[SGJmapProximityEval alloc] initWithGameObject:self] autorelease];
-        NodeSelectComponent=[[[SGJmapNodeSelect alloc] initWithGameObject:self] autorelease];
+        MNodeRenderComponent=[[[SGJmapMasteryNodeRender alloc] initWithGameObject:self] retain];
+        ProximityEvalComponent=[[[SGJmapProximityEval alloc] initWithGameObject:self] retain];
+        NodeSelectComponent=[[[SGJmapNodeSelect alloc] initWithGameObject:self] retain];
         
         ChildNodes=[[NSMutableArray alloc] init];
     }

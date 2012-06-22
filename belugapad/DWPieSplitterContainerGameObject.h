@@ -13,10 +13,10 @@
 
 @property CGPoint Position;
 @property CGPoint MountPosition;
+@property float RealYPosOffset;
 @property (retain) CCSprite *mySprite;
 @property (retain) NSMutableArray *mySlices;
 @property BOOL ScaledUp;
-@property float myHeldValue;
 @property (retain) CCLabelTTF *myText;
 @property (retain) NSString *textString;
 @property (retain) CCNode *BaseNode;

@@ -12,10 +12,10 @@
 
 @synthesize Position;
 @synthesize MountPosition;
+@synthesize RealYPosOffset;
 @synthesize mySprite;
 @synthesize mySlices;
 @synthesize ScaledUp;
-@synthesize myHeldValue;
 @synthesize myText;
 @synthesize textString;
 @synthesize BaseNode;

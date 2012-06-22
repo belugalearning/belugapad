@@ -415,6 +415,52 @@ static float kTimeToPieShake=7.0f;
     
 }
 
+-(void)balanceContainers
+{
+    int maxPXtoMove=100;
+    int stepper=20;
+    BOOL isGreater;
+    BOOL isLess;
+
+    
+    // loop through containers
+    for (int i=0;i<[activeCon count];i++)
+    {
+        DWPieSplitterContainerGameObject *c=[activeCon objectAtIndex:i];
+        
+        // set an amount to reposition by
+        float myYPos=stepper*[c.mySlices count];
+
+        // take the local nodespace of the container's world position
+        CGPoint adjPos=[c.BaseNode convertToNodeSpace:c.Position];
+        
+        
+        // if it's less we need to know as there're a couple of clauses to check against
+        if(myYPos<c.RealYPosOffset)isLess=YES;
+        
+        // but we set the offset first anyway in case it's greater
+        c.RealYPosOffset=myYPos; 
+        
+        if(isLess){
+//            [c.BaseNode runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:1.0f position:[c.BaseNode convertToWorldSpace:ccp(adjPos.x,myYPos)]]]];NSLog(@"myYPos %g",myYPos);}
+            
+            // if slices are 0 and we're decreasing - we need to be right to the top again
+            if(c.RealYPosOffset==stepper && [c.mySlices count]==0)c.RealYPosOffset=0;
+            // else - set mypos as normal
+            else c.RealYPosOffset=myYPos;
+
+        }
+        
+        // then set the position using our offset
+        [c.BaseNode setPosition:[c.BaseNode convertToWorldSpace:ccp(adjPos.x, adjPos.y-c.RealYPosOffset)]];
+             
+//        NSLog(@"mySlices = %d, myOffset = %g, myYPos = %g, yPos = %g", [c.mySlices count], c.RealYPosOffset, myYPos, c.BaseNode.position.y);
+        
+        isGreater=NO;
+        isLess=NO;
+    }
+}
+
 #pragma mark - touches events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -602,6 +648,7 @@ static float kTimeToPieShake=7.0f;
         
     }
     
+    [self balanceContainers];
     
     isTouching=NO;
     createdNewCon=NO;
@@ -614,6 +661,8 @@ static float kTimeToPieShake=7.0f;
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
+//    [self balanceContainers];
+    
     isTouching=NO;
     createdNewCon=NO;
     createdNewPie=NO;

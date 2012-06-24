@@ -14,7 +14,6 @@
 #import "ToolConsts.h"
 #import "BLMath.h"
 #import "LoggingService.h"
-#import "UsersService.h"
 #import "AppDelegate.h"
 
 @interface BDotGridShapeTouch()
@@ -22,7 +21,6 @@
 @private
     LoggingService *loggingService;
     ContentService *contentService;
-    UsersService *usersService;
 }
 @end
 
@@ -38,7 +36,6 @@
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     loggingService = ac.loggingService;
     contentService = ac.contentService;
-    usersService = ac.usersService;
     
     
     [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_X];

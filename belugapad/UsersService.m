@@ -7,28 +7,13 @@
 //
 
 #import "UsersService.h"
-#import "Device.h"
-#import "User.h"
-#import "LoggingService.h"
-#import "UserSession.h"
-#import "Problem.h"
+#import "global.h"
 #import "AppDelegate.h"
+#import "LoggingService.h"
 #import "ContentService.h"
+#import "User.h"
 #import "JSONKit.h"
-#import <CouchCocoa/CouchCocoa.h>
-#import <CouchCocoa/CouchDesignDocument_Embedded.h>
-#import <CouchCocoa/CouchModelFactory.h>
-
-NSString * const kRemoteUsersDatabaseURI = @"http://u.zubi.me:5984/may2012-users";
-NSString * const kRemoteLoggingDatabaseURI = @"http://u.zubi.me:5984/may2012-logging";
-NSString * const kLocalUserDatabaseName = @"may2012-users";
-NSString * const kLocalLoggingDatabaseName = @"may2012-logging";
-NSString * const kDefaultDesignDocName = @"users-views";
-NSString * const kDeviceUsersLastSessionStart = @"most-recent-session-start-per-device-user";
-NSString * const kUsersByNickName = @"users-by-nick-name";
-NSString * const kUsersByNickNamePassword = @"users-by-nick-name-password";
-NSString * const kUsersTimeInPlay = @"users-time-in-play";
-NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
+#import "FMDatabase.h"
 
 @interface UsersService()
 {
@@ -36,16 +21,9 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     LoggingService *loggingService;
     NSString *contentSource;
     
-    NSString *installationUUID;
-    Device *device;
+    FMDatabase *usersDatabase;
+    
     User *user;
-    
-    CouchDatabase *usersDatabase;
-    CouchDatabase *loggingDatabase;
-    
-    CouchReplication *usersPushReplication;
-    CouchReplication *usersPullReplication;
-    CouchReplication *loggingPushReplication;
 }
 @end
 
@@ -61,7 +39,10 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     [currentUser release];
     currentUser=ur;
     
-    [loggingService onUpdateObjectOfContext:BL_USER_SESSION_CONTEXT];
+    if (ur)
+    {
+        [loggingService logEvent:BL_USER_LOGIN withAdditionalData:nil];
+    }
 }
 
 -(id)initWithProblemPipeline:(NSString*)source
@@ -71,87 +52,25 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     if (self)
     {
         contentSource = source;
-        loggingService = [ls retain];
+        loggingService = ls;
         
-        [[CouchModelFactory sharedInstance] registerClass:[Device class] forDocumentType:@"device"];
-        [[CouchModelFactory sharedInstance] registerClass:[User class] forDocumentType:@"user"];
-        [[CouchModelFactory sharedInstance] registerClass:[UserSession class] forDocumentType:@"user session"];
         
-        CouchEmbeddedServer *server = [CouchEmbeddedServer sharedInstance];
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *usersDatabasePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"users.db"];
         
-        usersDatabase = [server databaseNamed:kLocalUserDatabaseName];
-        RESTOperation* op = [usersDatabase create];
-        if (![op wait] && op.error.code != 412)
+        NSFileManager *fm = [NSFileManager defaultManager];
+        if (![[NSFileManager defaultManager] fileExistsAtPath:usersDatabasePath])
         {
-            self = nil;
-            return self;
-        }
-        usersDatabase.tracksChanges = YES;
-        
-        loggingDatabase = [server databaseNamed:kLocalLoggingDatabaseName];
-        op = [loggingDatabase create];
-        if (![op wait] && op.error.code != 412)
-        {
-            self = nil;
-            return self;
-        }
-        
-        NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-        if (![standardUserDefaults objectForKey:@"installationUUID"])
-        {
-            // This is the first run of the app on the device
             
-            // create device doc
-            CouchDocument *deviceDoc = [loggingDatabase untitledDocument];
-            RESTOperation *op = [deviceDoc putProperties:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                          @"device", @"type"
-                                                          , [RESTBody JSONObjectWithDate:[NSDate date]], @"firstLaunchDateTime", nil]];
-            if (![op wait])
-            {
-                self = nil;
-                return self;
-            }
-            
-            [standardUserDefaults setObject:deviceDoc.documentID forKey:@"installationUUID"];
         }
-        
-        installationUUID = [standardUserDefaults objectForKey:@"installationUUID"];
-        device = [[[CouchModelFactory sharedInstance] modelForDocument:[loggingDatabase documentWithID:installationUUID]] retain];
-        device.autosaves = true;
-
-        usersPushReplication = [[usersDatabase pushToDatabaseAtURL:[NSURL URLWithString:kRemoteUsersDatabaseURI]] retain];
-        usersPushReplication.continuous = YES;
-        usersPullReplication = [[usersDatabase pullFromDatabaseAtURL:[NSURL URLWithString:kRemoteUsersDatabaseURI]] retain];
-        usersPullReplication.continuous = YES;
+        else
+        {
+            usersDatabase = [FMDatabase databaseWithPath:usersDatabasePath];
+        }
+        [usersDatabase retain];
     }
     
     return self;
-}
-
--(NSArray*)deviceUsersByLastSessionDate
-{
-    // The view named kDeviceUsersLastSessionStart will pull back the most recent session start for each user on each device
-    // key: [deviceId, userId]      value:sessionStart
-    CouchQuery *q = [[loggingDatabase designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kDeviceUsersLastSessionStart];
-    q.groupLevel = 2;
-    q.startKey = [NSArray arrayWithObjects:device.document.documentID, nil];
-    q.endKey = [NSArray arrayWithObjects:device.document.documentID, [NSDictionary dictionary], nil];
-    [[q start] wait];
-    
-    // now need to sort the users themselves by their most recent session start
-    NSArray *sortedBySessionStartDesc = [[q rows].allObjects sortedArrayUsingComparator:^(id a, id b) {
-        return [(NSString*)((CouchQueryRow*)b).value compare:(NSString*)((CouchQueryRow*)a).value];
-    }];
-    
-    NSMutableArray *users = [NSMutableArray array];
-    for (CouchQueryRow *row in sortedBySessionStartDesc)
-    {
-        CouchDocument *userDoc = [usersDatabase documentWithID:row.key1];
-        User *ur = [[CouchModelFactory sharedInstance] modelForDocument:userDoc];
-        if (ur) [users addObject:ur];
-    }
-    
-    return [[users copy] autorelease];
 }
 
 -(NSArray*)deviceUsersByNickName
@@ -233,11 +152,7 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 
 -(void)dealloc
 {
-    if (loggingService) [loggingService release];
-    [device release];
-    [usersPushReplication release];
-    [usersPullReplication release];
-    [loggingPushReplication release];
+    if (usersDatabase) [usersDatabase release];
     [super dealloc];
 }
 

@@ -79,6 +79,8 @@
         self.contentService = [[ContentService alloc] initWithProblemPipeline:pl];
         self.usersService = [[UsersService alloc] initWithProblemPipeline:pl andLoggingService:self.loggingService];
         
+        [self.loggingService logEvent:BL_APP_START withAdditionalData:nil];
+        
         //are we in release mode
         NSNumber *relmode=[self.LocalSettings objectForKey:@"RELEASE_MODE"];
         if(relmode) if ([relmode boolValue]) self.ReleaseMode=YES;

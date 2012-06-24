@@ -7,8 +7,10 @@
 //
 
 #import "SelectUserViewController.h"
+#import "global.h"
 #import "cocos2d.h"
 #import "AppDelegate.h"
+#import "LoggingService.h"
 #import "UsersService.h"
 #import "EditZubi.h"
 #import "User.h"
@@ -59,6 +61,8 @@
     
     app = (AppController*)[[UIApplication sharedApplication] delegate];
     usersService = app.usersService;
+    
+    [app.loggingService logEvent:BL_SUVC_LOAD withAdditionalData:nil];
     
     [self buildSelectUserView];
     [self buildEditUserView];

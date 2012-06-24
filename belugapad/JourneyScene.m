@@ -153,8 +153,12 @@ static NSString *inclNodes[20]={
         
         scale=1.0f;
         
-        contentService = ((AppController*)[[UIApplication sharedApplication] delegate]).contentService; 
-        usersService = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        loggingService = ac.loggingService;
+        usersService = ac.usersService;
+        contentService = ac.contentService;
+        
+        [loggingService logEvent:BL_JS_INIT withAdditionalData:nil];
         
         [self setupMap];
         
@@ -892,7 +896,7 @@ static NSString *inclNodes[20]={
     
     if(CGRectContainsPoint(logOutBtnBounds, l))
     {
-        [loggingService logEvent:BL_JS_LOG_OUT withAdditionalData:nil];
+        [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
         usersService.currentUser = nil;
         [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
         return;

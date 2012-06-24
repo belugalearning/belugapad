@@ -16,9 +16,9 @@ typedef enum {
 } BL_LOGGING_SETTING;
 
 typedef enum {
-    BL_DEVICE_LOGGING_CONTEXT,
-    BL_USER_SESSION_CONTEXT,
-    BL_JOURNEY_MAP_CONTEXT,
+    BL_DEVICE_CONTEXT,
+    BL_USER_CONTEXT,
+    //BL_JOURNEY_MAP_CONTEXT,
     BL_PROBLEM_ATTEMPT_CONTEXT
 } BL_LOGGING_CONTEXT;
 
@@ -31,11 +31,9 @@ typedef enum
 
 @property (readonly, retain) NSString *currentProblemAttemptID;
 
--(id)initWithProblemAttemptLoggingSetting:(BL_LOGGING_SETTING)paLogetting;
+-(id)initWithProblemAttemptLoggingSetting:(BL_LOGGING_SETTING)paLogSetting;
 
--(void)onUpdateObjectOfContext:(BL_LOGGING_CONTEXT)context;
-
--(void)logEvent:(NSString*)event withAdditionalData:(NSObject*)additionalData;
+-(void)logEvent:(NSString*)eventType withAdditionalData:(NSObject*)additionalData;
   
 -(void)sendData;
 

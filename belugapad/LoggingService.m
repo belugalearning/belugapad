@@ -7,18 +7,27 @@
 //
 
 #import "LoggingService.h"
+#import "global.h"
+#import "AppDelegate.h"
+#import "UsersService.h"
+#import "ContentService.h"
+#import "Problem.h"
+#import "User.h"
 #import "UserSession.h"
 #import "ProblemAttempt.h"
 #import "AFNetworking.h"
 #import <zlib.h>
 #import <CommonCrypto/CommonDigest.h>
+#import "JSONKit.h"
+
 
 NSString * const kLoggingWebServiceBaseURL = @"http://192.168.1.68:3000";
 NSString * const kLoggingWebServicePath = @"/app-logging/upload";
 
+
 @interface LoggingService()
 {
-@private
+@private    
     NSString *currDir;
     NSString *prevDir;
     
@@ -31,10 +40,9 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
     
     NSMutableDictionary *deviceSessionDoc;
     NSMutableDictionary *userSessionDoc;
-    NSMutableDictionary *journeyMapVisitDoc;
+    //NSMutableDictionary *journeyMapVisitDoc;
     NSMutableDictionary *problemAttemptDoc;
 }
--(void)startDeviceSession;
 -(void)sendCurrBatch;
 -(void)sendPrevBatches;
 -(NSMutableURLRequest*)generateURLRequestWithData:(NSData*)logData;
@@ -42,6 +50,7 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
                         forClientData:(NSData*)cData;
 -(NSString*)generateUUID;
 @end
+
 
 @implementation LoggingService
 
@@ -51,8 +60,6 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
     if (self)
     {
         problemAttemptLoggingSetting = paLogSetting;
-        
-        [self startDeviceSession];
         
         httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kLoggingWebServiceBaseURL]];
         opQueue = [[[NSOperationQueue alloc] init] retain];
@@ -77,74 +84,121 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
     return [problemAttemptDoc objectForKey:@"_id"];
 }
 
--(void)onUpdateObjectOfContext:(BL_LOGGING_CONTEXT)context
+-(void)logEvent:(NSString*)eventType withAdditionalData:(NSObject*)additionalData
 {
-    switch (context) {
-        case BL_DEVICE_LOGGING_CONTEXT:
+    if (BL_APP_START == eventType)
+    {
+        currentContext = BL_DEVICE_CONTEXT;
+        
+        NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+        NSString *installationId = [standardUserDefaults objectForKey:@"installationUUID"];
+        if (!installationId)
+        {
+            installationId = [self generateUUID];
+            [standardUserDefaults setObject:installationId forKey:@"installationUUID"];
+        }
+        
+        deviceSessionDoc = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                            [self generateUUID], @"_id"
+                            , [NSMutableArray array], @"events"
+                            , @"DeviceSession", @"type"
+                            , installationId, @"device"
+                            , nil];
+    }
+    else if (BL_SUVC_LOAD == eventType)
+    {
+        currentContext = BL_DEVICE_CONTEXT;
+    }
+    else if (BL_USER_LOGIN == eventType)
+    {
+        currentContext = BL_USER_CONTEXT;
+        if (userSessionDoc) [userSessionDoc release];
+        
+        if (!deviceSessionDoc) return; // error!
+        
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        User *u = ac.usersService.currentUser;        
+        
+        userSessionDoc = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                          [self generateUUID], @"_id"
+                          , [NSMutableArray array], @"events"
+                          , @"UserSession", @"type"
+                          , [deviceSessionDoc objectForKey:@"device"], @"device"
+                          , [deviceSessionDoc objectForKey:@"_id"], @"deviceSession"
+                          , u.document.documentID, @"user"
+                          , nil];
+    }
+    else if (BL_JS_INIT == eventType)
+    {
+        currentContext = BL_USER_CONTEXT;
+    }
+    else if (BL_PA_START == eventType)
+    {
+        currentContext = BL_PROBLEM_ATTEMPT_CONTEXT;
+        if (BL_LOGGING_DISABLED == problemAttemptLoggingSetting) return;
+        
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        Problem *p = ac.contentService.currentProblem;
+        
+        if (!p) return; // error!
+        if (!deviceSessionDoc) return; // error!
+        if (!userSessionDoc) return; // error!
+        
+        problemAttemptDoc = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                             [self generateUUID], @"_id"
+                             , [NSMutableArray array], @"events"
+                             , @"ProblemAttempt", @"type"
+                             , [deviceSessionDoc objectForKey:@"device"], @"device"
+                             , [deviceSessionDoc objectForKey:@"_id"], @"deviceSession"
+                             , [userSessionDoc objectForKey:@"user"], @"user"
+                             , [userSessionDoc objectForKey:@"_id"], @"userSession"
+                             , p._id, @"problemId"
+                             , p._rev, @"problemRev"
+                             , nil];
+    }
+    
+    if (BL_PROBLEM_ATTEMPT_CONTEXT == currentContext && BL_LOGGING_DISABLED == problemAttemptLoggingSetting) return;
+    
+    NSMutableDictionary *doc = nil;
+    switch (currentContext) {
+        case BL_DEVICE_CONTEXT:
+            doc = deviceSessionDoc;
             break;
-        case BL_USER_SESSION_CONTEXT:
-            /*if (currentUserSession)
-            {
-                // TODO - should call [self logEvent]...
-                currentUserSession.dateEnd = [NSDate date];
-                [[currentUserSession save] wait];
-                [currentUserSession release];
-                currentUserSession = nil;
-            }
-            
-            if (ur)
-             {    
-             currentUserSession = [[UserSession alloc] initWithNewDocumentInDatabase:loggingDatabase
-             AndStartSessionForUser:ur
-             onDevice:device
-             withContentSource:contentSource];
-             }*/
-            break;
-        case BL_JOURNEY_MAP_CONTEXT:
+        /*case BL_JOURNEY_MAP_CONTEXT:
+            doc = journeyMapVisitDoc;
+            break;*/
+        case BL_USER_CONTEXT:
+            doc = userSessionDoc;
             break;
         case BL_PROBLEM_ATTEMPT_CONTEXT:
+            doc = problemAttemptDoc;
             break;
     }
-}
-
--(void)logEvent:(NSString*)event withAdditionalData:(NSObject*)additionalData
-{
-    // TODO: DELETE THIS LINE AS SOON AS NON-PA LOGGING SUPPORTED
-    if (BL_PROBLEM_ATTEMPT_CONTEXT != currentContext) return;
     
-    if (BL_PROBLEM_ATTEMPT_CONTEXT == currentContext &&
-        BL_LOGGING_DISABLED == problemAttemptLoggingSetting) return;
+    if (!doc) return; // error!
     
-    /*
-     NSNumber *now = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
-     NSMutableDictionary *event = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-     eventType, @"eventType"
-     , now, @"date"
-     , additionalData, @"additionalData", nil];
-     [events addObject:event];
+    if (additionalData)
+    {
+        NSData *jsonData = nil;
+        if ([additionalData isKindOfClass:[NSDictionary class]]) jsonData = [(NSDictionary*)additionalData JSONData];
+        if ([additionalData isKindOfClass:[NSArray class]]) jsonData = [(NSArray*)additionalData JSONData];        
+        if (!jsonData && ![additionalData isKindOfClass:[NSString class]]) additionalData = @"JSON_SERIALIZATION_ERROR";
+    }
+    
+    NSMutableDictionary *event = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                  eventType, @"eventType"
+                                  , [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]], @"date"
+                                  , additionalData, @"additionalData"
+                                  , nil];
+    
+    [(NSMutableArray*)[doc objectForKey:@"events"] addObject:event];
      
-     NSData *docData = [doc JSONData];
-     if (!docData)
-     {
-     [event setObject:@"JSON_SERIALIZATION_ERROR" forKey:@"additionalData"];
-     docData = [doc JSONData];
-     }
-     
-     NSError *error = nil;
-     [docData writeToFile:docPath options:NSDataWritingAtomic error:&error];
-     // TODO: Do something better with error
-     if (error) NSLog(@"ERROR WRITING LOG FILE:%@", [error debugDescription]);
-     */
-}
-
--(void)startDeviceSession
-{
-    // device id, date
-    /*
-     deviceSessionDoc = [[NSMutableDictionary dictionaryWithObjectsAndKeys:
-     [self generateUUID], @"_id"
-     , nil] retain];
-     */
+    NSData *docData = [doc JSONData];
+    if (!docData) return; //error !
+    
+    [docData writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, [doc objectForKey:@"id"]]
+                 options:NSAtomicWrite
+                   error:nil];
 }
 
 -(NSString*)generateUUID
@@ -234,11 +288,8 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
         // delete files from currDir if they've either been successfully sent to server or have been saved in compressed form in prevDir
         if (BL_SLS_SUCCESS == status || queuedBatch)
         {
-            for (NSString *file in [fm contentsOfDirectoryAtPath:currDir error:nil])
-            {
-                // TODO: UNCOMMENT FOLLOWING LINE
-                //[fm removeItemAtPath:[NSString stringWithFormat:@"%@/%@", currDir, file] error:NULL];
-            }            
+            [fm removeItemAtPath:currDir error:nil];
+            [fm createDirectoryAtPath:currDir withIntermediateDirectories:NO attributes:nil error:nil];
             [self sendPrevBatches];
         }
     };    
@@ -332,7 +383,7 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
     if (prevDir) [prevDir release];
     if (deviceSessionDoc) [deviceSessionDoc release];
     if (userSessionDoc) [userSessionDoc release];
-    if (journeyMapVisitDoc) [journeyMapVisitDoc release];
+    //if (journeyMapVisitDoc) [journeyMapVisitDoc release];
     if (problemAttemptDoc) [problemAttemptDoc release];
     [super dealloc];
 }

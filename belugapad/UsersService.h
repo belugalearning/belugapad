@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class User, LoggingService, ProblemAttempt, CouchLiveQuery, CouchEmbeddedServer;
+@class User, LoggingService;
 
 @interface UsersService : NSObject
 
@@ -17,7 +17,6 @@
 -(id)initWithProblemPipeline:(NSString*)source
            andLoggingService:(LoggingService*)ls;
 
--(NSArray*)deviceUsersByLastSessionDate;
 -(NSArray*)deviceUsersByNickName;
 
 -(BOOL) nickNameIsAvailable:(NSString*)nickName;

@@ -351,6 +351,9 @@ static float kMoveToNextProblemTime=2.0f;
     
     //keep reference to the current static definition on the content service -- for logging etc
     contentService.currentStaticPdef=pdef;
+    
+    // TODO: maybe this, and dynamic pdef generation above, should really be coming from ContentService I think? Check with G
+    [loggingService logEvent:BL_PA_START withAdditionalData:[NSDictionary dictionaryWithObject:pdef forKey:@"pdef"]];
         
     NSString *toolKey=[pdef objectForKey:TOOL_KEY];
     
@@ -429,8 +432,6 @@ static float kMoveToNextProblemTime=2.0f;
         [self.Zubi hideZubi];
     }
     
-    [loggingService onUpdateObjectOfContext:BL_PROBLEM_ATTEMPT_CONTEXT];
-    
     //write the problem attempt id into the touch log for reconciliation
     [self logTouchProblemAttemptID:loggingService.currentProblemAttemptID];
 }
@@ -508,7 +509,7 @@ static float kMoveToNextProblemTime=2.0f;
     }
     if(CGRectContainsPoint(kPauseMenuLogOut, location))
     {
-        [loggingService logEvent:BL_PA_LOG_OUT withAdditionalData:nil];
+        [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
         usersService.currentUser = nil;
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];

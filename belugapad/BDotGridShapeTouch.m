@@ -13,12 +13,14 @@
 #import "global.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
+#import "LoggingService.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
 
 @interface BDotGridShapeTouch()
 {
 @private
+    LoggingService *loggingService;
     ContentService *contentService;
     UsersService *usersService;
 }
@@ -34,6 +36,7 @@
     //init pos x & y in case they're not set elsewhere
     
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    loggingService = ac.loggingService;
     contentService = ac.contentService;
     usersService = ac.usersService;
     
@@ -84,14 +87,14 @@
             if(!tile.Selected){
                 [tile.mySprite setColor:ccc3(89,133,136)];
                 tile.Selected=YES;
-                [usersService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
+                [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
             }
             
             // otherwise, make it white again
             else{
                 [tile.mySprite setColor:ccc3(255, 255, 255)];
                 tile.Selected=NO;
-                [usersService logEvent:BL_PA_DG_TOUCH_BEGIN_DESELECT_TILE withAdditionalData:nil];
+                [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_DESELECT_TILE withAdditionalData:nil];
             }
         }
     }

@@ -14,11 +14,13 @@
 #import "DWGameObject.h"
 #import "DWGameWorld.h"
 #import "AppDelegate.h"
+#import "LoggingService.h"
 #import "UsersService.h"
 
 @interface BTTTileObjectRender()
 {
 @private
+    LoggingService *loggingService;
     ContentService *contentService;
     UsersService *usersService;
 }
@@ -32,6 +34,7 @@
     self=(BTTTileObjectRender*)[super initWithGameObject:aGameObject withData:data];
     
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    loggingService = ac.loggingService;
     contentService = ac.contentService;
     usersService = ac.usersService;
     
@@ -133,11 +136,11 @@
     
     if (tile.Disabled)
     {
-        [usersService logEvent:BL_PA_TT_TOUCH_BEGIN_TAP_DISABLED_BOX withAdditionalData:tileCoords];
+        [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_TAP_DISABLED_BOX withAdditionalData:tileCoords];
     }    
     else if(!tile.Selected)
     {
-        [usersService logEvent:BL_PA_TT_TOUCH_BEGIN_SELECT_ANSWER withAdditionalData:tileCoords];
+        [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_SELECT_ANSWER withAdditionalData:tileCoords];
         [gameWorld.Blackboard.SelectedObjects addObject:tile];
         tile.Selected=YES;
         tile.selSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/selectionbox%d.png"), tile.Size]];
@@ -147,7 +150,7 @@
     }
     else
     {
-        [usersService logEvent:BL_PA_TT_TOUCH_BEGIN_DESELECT_ANSWER withAdditionalData:tileCoords];
+        [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_DESELECT_ANSWER withAdditionalData:tileCoords];
         [gameWorld.Blackboard.SelectedObjects removeObject:tile];
         tile.Selected=NO;
         [tile.selSprite removeFromParentAndCleanup:YES];

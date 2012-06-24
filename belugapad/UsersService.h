@@ -7,15 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-@class User, ProblemAttempt, CouchLiveQuery, CouchEmbeddedServer;
+@class User, LoggingService, ProblemAttempt, CouchLiveQuery, CouchEmbeddedServer;
 
 @interface UsersService : NSObject
 
 @property (readonly, retain, nonatomic) NSString *installationUUID;
 @property (retain, nonatomic) User *currentUser;
-@property (readonly, retain) NSString *currentProblemAttemptID;
 
--(id)initWithProblemPipeline:(NSString*)source;
+-(id)initWithProblemPipeline:(NSString*)source
+           andLoggingService:(LoggingService*)ls;
 
 -(NSArray*)deviceUsersByLastSessionDate;
 -(NSArray*)deviceUsersByNickName;
@@ -29,9 +29,6 @@
 
 -(User*) userMatchingNickName:(NSString*)nickName
                   andPassword:(NSString*)password;
-
--(void)startProblemAttempt;
--(void)logEvent:(NSString*)event withAdditionalData:(NSObject*)additionalData;
 
 -(void)addCompletedNodeId:(NSString*)nodeId;
 -(BOOL)hasCompletedNodeId:(NSString*)nodeId;

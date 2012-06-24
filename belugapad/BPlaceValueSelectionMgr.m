@@ -16,6 +16,7 @@
 @interface BPlaceValueSelectionMgr()
 {
 @private
+    LoggingService *loggingService;
     ContentService *contentService;
     UsersService *usersService;
 }
@@ -26,6 +27,7 @@
 -(BPlaceValueSelectionMgr*)initWithGameObject:(DWGameObject *)aGameObject withData:(NSDictionary *)data
 {
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    loggingService = ac.loggingService;
     contentService = ac.contentService;
     usersService = ac.usersService;
     
@@ -69,14 +71,14 @@
     
     if([isSelected boolValue])
     {
-        [usersService logEvent:BL_PA_PV_TOUCH_BEGIN_DESELECT_OBJECT withAdditionalData:nil];
+        [loggingService logEvent:BL_PA_PV_TOUCH_BEGIN_DESELECT_OBJECT withAdditionalData:nil];
         [[gameObject store] setObject:[NSNumber numberWithBool:NO] forKey:SELECTED];
         [gameWorld.Blackboard.SelectedObjects removeObject:gameObject];
         [[gameWorld GameScene] problemStateChanged];
     }
     else
     {
-        [usersService logEvent:BL_PA_PV_TOUCH_BEGIN_SELECT_OBJECT withAdditionalData:nil];
+        [loggingService logEvent:BL_PA_PV_TOUCH_BEGIN_SELECT_OBJECT withAdditionalData:nil];
         [[gameObject store] setObject:[NSNumber numberWithBool:YES] forKey:SELECTED]; 
         gameWorld.Blackboard.LastSelectedObject = gameObject;
         [gameWorld.Blackboard.SelectedObjects addObject:gameObject];

@@ -17,12 +17,14 @@
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
+#import "LoggingService.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
 
 @interface TimesTables()
 {
 @private
+    LoggingService *loggingService;
     ContentService *contentService;
     UsersService *usersService;
 }
@@ -436,7 +438,7 @@
             
                 if(!haveLogged)
                 {
-                    [usersService logEvent:BL_PA_TT_TOUCH_BEGIN_UNHIGHLIGHT_ROW
+                    [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_UNHIGHLIGHT_ROW
                         withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:thisRow] forKey:@"unhighlightRow"]];
                     haveLogged=YES;
                 }
@@ -448,7 +450,7 @@
             
             if(!haveLogged)
             {
-                [usersService logEvent:BL_PA_TT_TOUCH_BEGIN_HIGHLIGHT_ROW
+                [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_HIGHLIGHT_ROW
                     withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:thisRow] forKey:@"highlightRow"]];
                 haveLogged=YES;
             }
@@ -478,7 +480,7 @@
             
                 if (!haveLogged)
                 {
-                    [usersService logEvent:BL_PA_TT_TOUCH_BEGIN_UNHIGHLIGHT_COLUMN
+                    [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_UNHIGHLIGHT_COLUMN
                         withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:thisCol] forKey:@"unhighlightCol"]];
                     haveLogged=YES;
                 }
@@ -491,7 +493,7 @@
             
             if(!haveLogged)
             {
-                [usersService logEvent:BL_PA_TT_TOUCH_BEGIN_HIGHLIGHT_COLUMN
+                [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_HIGHLIGHT_COLUMN
                     withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:thisCol] forKey:@"highlightCol"]];
                 haveLogged=YES;
             }

@@ -9,11 +9,12 @@
 #import "UsersService.h"
 #import "Device.h"
 #import "User.h"
+#import "LoggingService.h"
 #import "UserSession.h"
 #import "Problem.h"
-#import "ProblemAttempt.h"
 #import "AppDelegate.h"
 #import "ContentService.h"
+#import "JSONKit.h"
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
 #import <CouchCocoa/CouchModelFactory.h>
@@ -32,14 +33,12 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 @interface UsersService()
 {
     @private
-    BOOL problemAttemptLoggingIsEnabled;
+    LoggingService *loggingService;
     NSString *contentSource;
-    NSString *loggingPath;
     
     NSString *installationUUID;
     Device *device;
     User *user;
-    UserSession *currentUserSession;
     
     CouchDatabase *usersDatabase;
     CouchDatabase *loggingDatabase;
@@ -47,55 +46,36 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     CouchReplication *usersPushReplication;
     CouchReplication *usersPullReplication;
     CouchReplication *loggingPushReplication;
-    
-    ProblemAttempt *currentProblemAttempt;
 }
-
-@property (readwrite, retain) NSString *currentProblemAttemptID;
 @end
 
 @implementation UsersService
 
 @synthesize installationUUID;
 @synthesize currentUser;
-@synthesize currentProblemAttemptID;
 
 -(void)setCurrentUser:(User*)ur
-{
-    if (currentUserSession)
-    {
-        currentUserSession.dateEnd = [NSDate date];
-        [[currentUserSession save] wait];
-        [currentUserSession release];
-        currentUserSession = nil;
-    }
-    
+{ 
     //user = ur;
     [ur retain];
     [currentUser release];
     currentUser=ur;
     
-    if (ur)
-    {    
-        currentUserSession = [[UserSession alloc] initWithNewDocumentInDatabase:loggingDatabase
-                                                         AndStartSessionForUser:ur
-                                                                       onDevice:device
-                                                              withContentSource:contentSource];
-    }
+    [loggingService onUpdateObjectOfContext:BL_USER_SESSION_CONTEXT];
 }
 
--(id)initWithProblemPipeline:(NSString*)source;
+-(id)initWithProblemPipeline:(NSString*)source
+           andLoggingService:(LoggingService *)ls
 {
     self = [super init];
     if (self)
     {
-        problemAttemptLoggingIsEnabled = [@"DATABASE" isEqualToString:source];
         contentSource = source;
+        loggingService = [ls retain];
         
         [[CouchModelFactory sharedInstance] registerClass:[Device class] forDocumentType:@"device"];
         [[CouchModelFactory sharedInstance] registerClass:[User class] forDocumentType:@"user"];
         [[CouchModelFactory sharedInstance] registerClass:[UserSession class] forDocumentType:@"user session"];
-        [[CouchModelFactory sharedInstance] registerClass:[ProblemAttempt class] forDocumentType:@"problem attempt"];
         
         CouchEmbeddedServer *server = [CouchEmbeddedServer sharedInstance];
         
@@ -114,17 +94,6 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
         {
             self = nil;
             return self;
-        }
-        
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES); 
-        loggingPath = [[[paths objectAtIndex:0] stringByAppendingPathComponent:@"logging"] retain];
-        // TODO: Move following into 'app first run' block beneath it. (For now I don't want to enforce app deletion prior to testing)
-        // Create logging directory
-        NSError *error = nil;
-        if (![[NSFileManager defaultManager] fileExistsAtPath:loggingPath])
-        {
-            // TODO: check for success / error? If error then what?
-            [[NSFileManager defaultManager] createDirectoryAtPath:loggingPath withIntermediateDirectories:NO attributes:nil error:&error];
         }
         
         NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
@@ -154,9 +123,8 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
         usersPushReplication.continuous = YES;
         usersPullReplication = [[usersDatabase pullFromDatabaseAtURL:[NSURL URLWithString:kRemoteUsersDatabaseURI]] retain];
         usersPullReplication.continuous = YES;
-        loggingPushReplication = [[loggingDatabase pushToDatabaseAtURL:[NSURL URLWithString:kRemoteLoggingDatabaseURI]] retain];
-        loggingPushReplication.continuous = YES;
     }
+    
     return self;
 }
 
@@ -188,6 +156,8 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 
 -(NSArray*)deviceUsersByNickName
 {
+    [loggingService sendData];
+    
     // The view named kDeviceUsersLastSessionStart will pull back the most recent session start for each user on each device
     // key: [deviceId, userId]      value:sessionStart
     CouchQuery *q = [[loggingDatabase designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kDeviceUsersLastSessionStart];
@@ -246,35 +216,6 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
     return u;
 }
 
--(void)startProblemAttempt
-{
-    if (!problemAttemptLoggingIsEnabled) return;
-    
-    if (currentProblemAttempt)
-    {
-        [currentProblemAttempt release];
-        currentProblemAttempt = nil;
-    }
-    
-    AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
-    ContentService *cs = ad.contentService;
-    
-    currentProblemAttempt = [[ProblemAttempt alloc] initAndStartForUserSession:currentUserSession
-                                                                       problem:cs.currentProblem
-                                                                 generatedPDef:cs.currentStaticPdef
-                                                          loggingDirectoryPath:loggingPath];
-
-    //expose the id of the current event -- used in touch logging reconciliation
-    currentProblemAttemptID=currentProblemAttempt._id;
-}
-
--(void)logEvent:(NSString*)event withAdditionalData:(NSObject*)additionalData
-{
-    if (!problemAttemptLoggingIsEnabled) return;
-    if (!currentProblemAttempt) return;
-    [currentProblemAttempt logEvent:event withAdditionalData:additionalData];
-}
-
 -(void)addCompletedNodeId:(NSString *)nodeId
 {
     NSMutableArray *nc = [currentUser.nodesCompleted mutableCopy];
@@ -292,9 +233,8 @@ NSString * const kProblemsCompletedByUser = @"problems-completed-by-user";
 
 -(void)dealloc
 {
-    if (currentUserSession) [currentUserSession release];
+    if (loggingService) [loggingService release];
     [device release];
-    [loggingPath release];
     [usersPushReplication release];
     [usersPullReplication release];
     [loggingPushReplication release];

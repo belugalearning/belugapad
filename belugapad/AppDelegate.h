@@ -11,7 +11,7 @@
 
 #import <Couchbase/CouchbaseMobile.h>
 
-@class RootViewController, ContentService, UsersService;
+@class RootViewController, LoggingService, ContentService, UsersService;
 
 @interface AppController : NSObject <UIApplicationDelegate, CCDirectorDelegate>
 {
@@ -29,9 +29,11 @@
 @property (readonly) UINavigationController *navController;
 @property (readonly) CCDirectorIOS *director;
 
-@property (nonatomic, retain) NSDictionary *LocalSettings;
+@property (nonatomic, readonly) LoggingService *loggingService;
 @property (nonatomic, readonly) ContentService *contentService;
 @property (nonatomic, readonly) UsersService *usersService;
+
+@property (nonatomic, retain) NSDictionary *LocalSettings;
 @property BOOL ReleaseMode;
 
 -(void)proceedFromLoginViaIntro:(BOOL)viaIntro;

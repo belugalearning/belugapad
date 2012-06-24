@@ -18,12 +18,14 @@
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
+#import "LoggingService.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
 
 @interface PartitionTool()
 {
 @private
+    LoggingService *loggingService;
     ContentService *contentService;
     UsersService *usersService;
 }
@@ -232,7 +234,7 @@
         
         // check where our object was - no mount = cage. mount = row.
         DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
-        [usersService logEvent:(pogo.Mount ? BL_PA_NB_TOUCH_BEGIN_ON_ROW : BL_PA_NB_TOUCH_BEGIN_ON_CAGED_OBJECT)
+        [loggingService logEvent:(pogo.Mount ? BL_PA_NB_TOUCH_BEGIN_ON_ROW : BL_PA_NB_TOUCH_BEGIN_ON_CAGED_OBJECT)
             withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:pogo.ObjectValue] forKey:@"objectValue"]];
         
         previousMount=((DWPartitionObjectGameObject*)gw.Blackboard.PickupObject).Mount;
@@ -268,7 +270,7 @@
         DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
 
         //previously removex b/c of log perf - restored for testing with sans-Couchbase logging
-        [usersService logEvent:BL_PA_NB_TOUCH_MOVE_MOVE_BLOCK
+        [loggingService logEvent:BL_PA_NB_TOUCH_MOVE_MOVE_BLOCK
             withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:pogo.ObjectValue] forKey:@"objectValue"]];
         
         hasMovedBlock=YES;
@@ -297,7 +299,7 @@
     [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
     [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
     
-    if(hasMovedBlock)[usersService logEvent:BL_PA_NB_TOUCH_MOVE_MOVE_BLOCK withAdditionalData:nil];
+    if(hasMovedBlock)[loggingService logEvent:BL_PA_NB_TOUCH_MOVE_MOVE_BLOCK withAdditionalData:nil];
     
     if([gw Blackboard].PickupObject!=nil)
     {
@@ -313,7 +315,7 @@
             [pogo handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:prgo forKey:MOUNT] withLogLevel:-1];
             
             // touch ended on a row so we've set it. log it's value
-            [usersService logEvent:BL_PA_NB_TOUCH_END_ON_ROW
+            [loggingService logEvent:BL_PA_NB_TOUCH_END_ON_ROW
                 withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:pogo.ObjectValue] forKey:@"objectValue"]];
         }
         else
@@ -327,7 +329,7 @@
                 [gw handleMessage:kDWhighlight andPayload:nil withLogLevel:-1];  
                 
                 // log that we dropped into space
-                [usersService logEvent:BL_PA_NB_TOUCH_END_IN_SPACE
+                [loggingService logEvent:BL_PA_NB_TOUCH_END_IN_SPACE
                     withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:pogo.ObjectValue] forKey:@"objectValue"]];
             }
         }

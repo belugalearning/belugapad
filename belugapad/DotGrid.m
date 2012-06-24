@@ -20,12 +20,14 @@
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
+#import "LoggingService.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
 
 @interface DotGrid()
 {
 @private
+    LoggingService *loggingService;
     ContentService *contentService;
     UsersService *usersService;
 }
@@ -361,8 +363,8 @@
         
         if(failedChecksExistingTile||failedChecksHidden)
         {
-            if(failedChecksExistingTile) [usersService logEvent:BL_PA_DG_TOUCH_END_INVALID_CREATE_EXISTING_TILE withAdditionalData:nil];
-            if(failedChecksHidden) [usersService logEvent:BL_PA_DG_TOUCH_END_INVALID_CREATE_HIDDEN withAdditionalData:nil];
+            if(failedChecksExistingTile) [loggingService logEvent:BL_PA_DG_TOUCH_END_INVALID_CREATE_EXISTING_TILE withAdditionalData:nil];
+            if(failedChecksHidden) [loggingService logEvent:BL_PA_DG_TOUCH_END_INVALID_CREATE_HIDDEN withAdditionalData:nil];
             return;
         }
         
@@ -472,8 +474,8 @@
     {
         thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
         [thisShape.resizeHandle handleMessage:kDWupdateSprite];
-        if(failedChecksHidden) [usersService logEvent:BL_PA_DG_TOUCH_END_INVALID_RESIZE_HIDDEN withAdditionalData:nil];
-        if(failedChecksExistingTile) [usersService logEvent:BL_PA_DG_TOUCH_END_INVALID_RESIZE_EXISTING_TILE withAdditionalData:nil];
+        if(failedChecksHidden) [loggingService logEvent:BL_PA_DG_TOUCH_END_INVALID_RESIZE_HIDDEN withAdditionalData:nil];
+        if(failedChecksExistingTile) [loggingService logEvent:BL_PA_DG_TOUCH_END_INVALID_RESIZE_EXISTING_TILE withAdditionalData:nil];
         return;
     }
     
@@ -552,7 +554,7 @@
     
     if (!gw.Blackboard.inProblemSetup)
     {
-        [usersService logEvent:BL_PA_DG_TOUCH_END_CREATE_SHAPE
+        [loggingService logEvent:BL_PA_DG_TOUCH_END_CREATE_SHAPE
             withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:[anchors count]] forKey:@"numTiles"]];
     }
 }
@@ -636,7 +638,7 @@
     thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
     [thisShape.resizeHandle handleMessage:kDWmoveSpriteToPosition];
     
-    [usersService logEvent:BL_PA_DG_TOUCH_END_RESIZE_SHAPE
+    [loggingService logEvent:BL_PA_DG_TOUCH_END_RESIZE_SHAPE
         withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:[thisShape.tiles count]] forKey:@"numTiles"]];
 }
 
@@ -675,7 +677,7 @@
             //        [tile.mySprite setOpacity:150];
             //    }
             
-            [usersService logEvent:BL_PA_DG_TOUCH_BEGIN_RESIZE_SHAPE
+            [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_RESIZE_SHAPE
                 withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:[curShape.tiles count]] forKey:@"numTiles"]];
             
             [curShape handleMessage:kDWresizeShape];
@@ -701,7 +703,7 @@
     if(gw.Blackboard.FirstAnchor && !((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).tile) {
         ((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Disabled=YES;
         gameState=kStartAnchor;
-        [usersService logEvent:BL_PA_DG_TOUCH_BEGIN_CREATE_SHAPE withAdditionalData:nil];
+        [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_CREATE_SHAPE withAdditionalData:nil];
     }
     
     

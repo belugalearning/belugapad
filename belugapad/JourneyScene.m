@@ -15,6 +15,7 @@
 #import "BLMath.h"
 
 #import "AppDelegate.h"
+#import "LoggingService.h"
 #import "ContentService.h"
 #import "UsersService.h"
 
@@ -83,7 +84,8 @@ static NSString *inclNodes[20]={
 
 @interface JourneyScene()
 {
-    @private
+@private
+    LoggingService *loggingService;
     ContentService *contentService;
 
     NSMutableArray *kcmNodes;
@@ -890,7 +892,7 @@ static NSString *inclNodes[20]={
     
     if(CGRectContainsPoint(logOutBtnBounds, l))
     {
-        [usersService logEvent:BL_JS_LOG_OUT withAdditionalData:nil];
+        [loggingService logEvent:BL_JS_LOG_OUT withAdditionalData:nil];
         usersService.currentUser = nil;
         [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
         return;

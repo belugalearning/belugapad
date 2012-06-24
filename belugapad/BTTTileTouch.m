@@ -18,6 +18,7 @@
 @interface BTTTileTouch()
 {
 @private
+    LoggingService *loggingService;
     ContentService *contentService;
     UsersService *usersService;
 }
@@ -33,6 +34,7 @@
     //init pos x & y in case they're not set elsewhere
     
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    loggingService = ac.loggingService;
     contentService = ac.contentService;
     usersService = ac.usersService;
     
@@ -110,7 +112,7 @@
             NSLog(@"tile hit - my value is %d, myXpos %d, myYpos %d", tile.myXpos*tile.myYpos, tile.myXpos, tile.myYpos);
             if(!tile.myText)
             {
-                [usersService logEvent:BL_PA_TT_TOUCH_BEGIN_REVEAL_ANSWER
+                [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_REVEAL_ANSWER
                     withAdditionalData:[NSDictionary dictionaryWithObject:[NSArray arrayWithObjects:
                                                                            [NSNumber numberWithInt:tile.myXpos],
                                                                            [NSNumber numberWithInt:tile.myYpos], nil]

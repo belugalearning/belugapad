@@ -275,7 +275,7 @@ static CGPoint hill2Pos2={1200, 0};
 
     //now translate all coordinates into layer space
     p1=[backgroundLayer convertToNodeSpace:p1];
-    p2=[backgroundLayer convertToNodeSpace:p2];
+    //p2=[backgroundLayer convertToNodeSpace:p2];
     b.controlPoint_1=[backgroundLayer convertToNodeSpace:b.controlPoint_1];
     b.controlPoint_2=[backgroundLayer convertToNodeSpace:b.controlPoint_2];
     b.endPosition=[backgroundLayer convertToNodeSpace:b.endPosition];
@@ -345,7 +345,7 @@ static CGPoint hill2Pos2={1200, 0};
     
     //now translate all coordinates into layer space
     p1=[backgroundLayer convertToNodeSpace:p1];
-    p2=[backgroundLayer convertToNodeSpace:p2];
+    //p2=[backgroundLayer convertToNodeSpace:p2];
     b.controlPoint_1=[backgroundLayer convertToNodeSpace:b.controlPoint_1];
     b.controlPoint_2=[backgroundLayer convertToNodeSpace:b.controlPoint_2];
     b.endPosition=[backgroundLayer convertToNodeSpace:b.endPosition];
@@ -469,7 +469,7 @@ static CGPoint hill2Pos2={1200, 0};
     
     //now translate all coordinates into layer space
     p1=[backgroundLayer convertToNodeSpace:p1];
-    p2=[backgroundLayer convertToNodeSpace:p2];
+    //p2=[backgroundLayer convertToNodeSpace:p2];
     b.controlPoint_1=[backgroundLayer convertToNodeSpace:b.controlPoint_1];
     b.controlPoint_2=[backgroundLayer convertToNodeSpace:b.controlPoint_2];
     b.endPosition=[backgroundLayer convertToNodeSpace:b.endPosition];
@@ -538,7 +538,7 @@ static CGPoint hill2Pos2={1200, 0};
     
     //now translate all coordinates into layer space
     p1=[backgroundLayer convertToNodeSpace:p1];
-    p2=[backgroundLayer convertToNodeSpace:p2];
+    //p2=[backgroundLayer convertToNodeSpace:p2];
     b.controlPoint_1=[backgroundLayer convertToNodeSpace:b.controlPoint_1];
     b.controlPoint_2=[backgroundLayer convertToNodeSpace:b.controlPoint_2];
     b.endPosition=[backgroundLayer convertToNodeSpace:b.endPosition];

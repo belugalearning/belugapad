@@ -74,8 +74,8 @@
         //load local settings
         self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
         
-        self.usersService = [[UsersService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
-        self.contentService = [[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]];
+        usersService = [[[UsersService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]] retain];
+        contentService = [[[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]] retain];
         
         //are we in release mode
         NSNumber *relmode=[self.LocalSettings objectForKey:@"RELEASE_MODE"];
@@ -185,6 +185,7 @@
     [window_ addSubview:selectUserViewController.view];
     [window_ makeKeyAndVisible];
 }
+
 
 // Supported orientations: Landscape. Customize it for your own needs
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

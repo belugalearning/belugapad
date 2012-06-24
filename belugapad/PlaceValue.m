@@ -895,7 +895,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 -(void)evalProblemMatrixMatch
 {
     float solutionsFound = 0;
-    BOOL canEval;
+    BOOL canEval=NO;
     NSArray *solutionMatrix = [solutionsDef objectForKey:SOLUTION_MATRIX];
     
     // for each column

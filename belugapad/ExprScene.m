@@ -47,6 +47,7 @@
         
         BATTreeViz *viz=[[BATTreeViz alloc] initWithExpr:toolHost.PpExpr.root andLayer:viz1Layer andBounds:CGRectMake(0, 0, lx, ly)];
         [viz initDraw];
+        [viz release];
     }
     
     return self;

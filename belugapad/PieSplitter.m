@@ -423,7 +423,7 @@ static float kTimeToPieShake=7.0f;
 
 -(void)balanceContainers
 {
-    int maxPXtoMove=100;
+    //int maxPXtoMove=100;
     int stepper=20;
     BOOL isGreater;
     BOOL isLess;

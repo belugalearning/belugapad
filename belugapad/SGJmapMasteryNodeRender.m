@@ -23,7 +23,7 @@
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
-        ParentGO=aGameObject;
+        ParentGO=(SGJmapMasteryNode*)aGameObject;
         
         //[self setup];
     }
@@ -43,17 +43,16 @@
 
 -(void)draw
 {
-    SGJmapMasteryNode *mparent=(SGJmapMasteryNode*)ParentGO;
-    
     CGPoint myWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];
  
     //perim points
-    CGPoint perimPoints[mparent.ChildNodes.count];
+    CGPoint perimPoints[ParentGO.ChildNodes.count];
     int perimIx=0;
 
-    for (id<Transform> prnode in mparent.ChildNodes) {
+    //lines to my child nodes
+    for (id<Transform> prnode in ParentGO.ChildNodes) {
         //world space pos of child node
-        CGPoint theirWorldPos=[mparent.RenderBatch.parent convertToWorldSpace:prnode.Position];
+        CGPoint theirWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:prnode.Position];
         
         //draw prereq path to this node        
         ccDrawColor4B(255, 255, 255, 255);
@@ -69,9 +68,19 @@
         perimIx++;
     }
     
+    //lines to inter mastery nodes
+    for(id<Transform> imnode in ParentGO.ConnectToMasteryNodes) {
+        //world space of their pos
+        CGPoint tWP=[ParentGO.RenderBatch.parent convertToWorldSpace:imnode.Position];
+        
+        ccDrawColor4B(255, 0, 0, 100);
+        ccDrawLine(myWorldPos, tWP);
+    }
+    
+    
     //draw perim poly
     CGPoint *first=&perimPoints[0];
-    ccDrawFilledPoly(first, mparent.ChildNodes.count,ccc4f(1.0f, 0.0f, 0.0f, 0.1f));
+    ccDrawFilledPoly(first, ParentGO.ChildNodes.count,ccc4f(1.0f, 0.0f, 0.0f, 0.1f));
     
     
     //glLineWidth(6.0f);
@@ -88,6 +97,29 @@
     CCLabelTTF *label=[CCLabelTTF labelWithString:ParentGO.UserVisibleString fontName:@"Helvetica" fontSize:12.0f];
     [label setPosition:ccpAdd(ccp(0, -40), ParentGO.Position)];
     [ParentGO.RenderBatch.parent addChild:label];
+    
+    sortedChildren=[[[NSMutableArray alloc] init] retain];
+    
+    //sort children
+    for (id<Transform> prnode in ParentGO.ChildNodes) {
+        if([sortedChildren count]==0)
+        {
+            //put this thing in the array at first position
+            [sortedChildren addObject:prnode];
+        }
+        else {
+            //iterate sorted array, looking for something larger (in rotation), or the end -- then insert
+            
+            //on insert, if increment from last is > 135, add an additional psuedo item
+        }
+    }
+}
+
+-(void)dealloc
+{
+    [sortedChildren release];
+    
+    [super dealloc];
 }
 
 @end

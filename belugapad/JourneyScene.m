@@ -319,6 +319,7 @@ typedef enum {
 
 -(void)parseNodesForEndPoints
 {
+    //mastery>child relations
     NSArray *prereqs=[contentService relationMembersForName:@"Mastery"];
     for (NSArray *pair in prereqs) {
         SGJmapNode *leftgo=[self gameObjectForCouchId:[pair objectAtIndex:0]];
@@ -336,6 +337,23 @@ typedef enum {
             NSLog(@"could not find both end points for %@ and %@", [pair objectAtIndex:0], [pair objectAtIndex:1]);
         }
     }
+    
+    //mastery>mastery relations
+    NSArray *ims=[contentService relationMembersForName:@"InterMastery"];
+    for(NSArray *pair in ims) {
+        SGJmapMasteryNode *leftgo=[self gameObjectForCouchId:[pair objectAtIndex:0]];
+        SGJmapMasteryNode *rightgo=[self gameObjectForCouchId:[pair objectAtIndex:1]];
+        
+        if(leftgo && rightgo)
+        {
+            [leftgo.ConnectFromMasteryNodes addObject:rightgo];
+            [rightgo.ConnectToMasteryNodes addObject:leftgo];
+        }
+        else {
+            NSLog(@"could not find both mastery nodes for %@ and %@", [pair objectAtIndex:0], [pair objectAtIndex:1]);
+        }
+    }
+
 }
 
 -(id)gameObjectForCouchId:(NSString*)findId

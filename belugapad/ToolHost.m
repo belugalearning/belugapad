@@ -24,8 +24,6 @@
 #import "DProblemParser.h"
 #import "Problem.h"
 #import "Pipeline.h"
-#import <CouchCocoa/CouchCocoa.h>
-#import <CouchCocoa/CouchModelFactory.h>
 #import "NordicAnimator.h"
 #import "BLFiles.h"
 

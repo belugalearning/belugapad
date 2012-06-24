@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import <CouchCocoa/CouchCocoa.h>
 #import "CouchDBDerivedDocument.h"
 @class CCSprite;
 

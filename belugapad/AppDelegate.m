@@ -17,7 +17,6 @@
 #import "ZubiIntro.h"
 #import "JourneyScene.h"
 #import "ToolHost.h"
-#import <CouchCocoa/CouchCocoa.h>
 
 @interface AppController()
 {
@@ -53,47 +52,37 @@
     [self.window makeKeyAndVisible];
     [lvc release];
     
-    CouchEmbeddedServer* server = [CouchEmbeddedServer sharedInstance];
+    // Try to use CADisplayLink director
+    // if it fails (SDK < 3.1) use the default director
     
-    // install canned copy of any databases that don't yet exist (i.e. all of them on first app launch, hopefully none of them afterwards)
-    [server.couchbase installDefaultDatabase:BUNDLE_FULL_PATH(@"/canned-dbs/may2012-users.couch")];    
-    [server.couchbase installDefaultDatabase:BUNDLE_FULL_PATH(@"/canned-dbs/may2012-logging.couch")];
+    //todo: no cc2 equiv
+    //if( ! [CCDirector setDirectorType:kCCDirectorTypeDisplayLink] )
+    //    [CCDirector setDirectorType:kCCDirectorTypeDefault];
     
-    [server start: ^{
-        NSAssert(!server.error, @"Error launching Couchbase: %@", server.error);
-        
-        // Try to use CADisplayLink director
-        // if it fails (SDK < 3.1) use the default director
-        
-        //todo: no cc2 equiv
-        //if( ! [CCDirector setDirectorType:kCCDirectorTypeDisplayLink] )
-        //    [CCDirector setDirectorType:kCCDirectorTypeDefault];
-        
-        //load local settings
-        self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
-        
-        NSString *pl = [self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"];
-        BL_LOGGING_SETTING paLogging = [@"DATABASE" isEqualToString:pl] ? BL_LOGGING_ENABLED : BL_LOGGING_DISABLED;
-        
-        self.loggingService = [[LoggingService alloc] initWithProblemAttemptLoggingSetting:paLogging];
-        self.contentService = [[ContentService alloc] initWithProblemPipeline:pl];
-        self.usersService = [[UsersService alloc] initWithProblemPipeline:pl andLoggingService:self.loggingService];
-        
-        [self.loggingService logEvent:BL_APP_START withAdditionalData:nil];
-        
-        //are we in release mode
-        NSNumber *relmode=[self.LocalSettings objectForKey:@"RELEASE_MODE"];
-        if(relmode) if ([relmode boolValue]) self.ReleaseMode=YES;
-        
-        //do cocos stuff
-        //director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
-        //[director_ enableRetinaDisplay:NO];
-        
-        selectUserViewController = [[SelectUserViewController alloc] init];
-        
-        [self.window addSubview:selectUserViewController.view];
-        [self.window makeKeyAndVisible];
-    }];
+    //load local settings
+    self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
+    
+    NSString *pl = [self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"];
+    BL_LOGGING_SETTING paLogging = [@"DATABASE" isEqualToString:pl] ? BL_LOGGING_ENABLED : BL_LOGGING_DISABLED;
+    
+    self.loggingService = [[LoggingService alloc] initWithProblemAttemptLoggingSetting:paLogging];
+    self.contentService = [[ContentService alloc] initWithProblemPipeline:pl];
+    self.usersService = [[UsersService alloc] initWithProblemPipeline:pl andLoggingService:self.loggingService];
+    
+    [self.loggingService logEvent:BL_APP_START withAdditionalData:nil];
+    
+    //are we in release mode
+    NSNumber *relmode=[self.LocalSettings objectForKey:@"RELEASE_MODE"];
+    if(relmode) if ([relmode boolValue]) self.ReleaseMode=YES;
+    
+    //do cocos stuff
+    //director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
+    //[director_ enableRetinaDisplay:NO];
+    
+    selectUserViewController = [[SelectUserViewController alloc] init];
+    
+    [self.window addSubview:selectUserViewController.view];
+    [self.window makeKeyAndVisible];
     
     return YES;
 }

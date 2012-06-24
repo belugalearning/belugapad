@@ -26,9 +26,6 @@
 
 #import "SimpleAudioEngine.h"
 
-#import <CouchCocoa/CouchCocoa.h>
-#import <CouchCocoa/CouchModelFactory.h>
-
 static float kNodeScale=0.5f;
 //static CGPoint kStartMapPos={-3576, -2557};
 static CGPoint kStartMapPos={-611, 3713};

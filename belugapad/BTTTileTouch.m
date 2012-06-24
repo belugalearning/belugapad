@@ -7,6 +7,7 @@
 //
 
 #import "BTTTileTouch.h"
+#import "LoggingService.h"
 #import "DWTTTileGameObject.h"
 #import "global.h"
 #import "ToolConsts.h"

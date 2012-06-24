@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "cocos2d.h"
 
-#import <Couchbase/CouchbaseMobile.h>
-
 @class RootViewController, LoggingService, ContentService, UsersService;
 
 @interface AppController : NSObject <UIApplicationDelegate, CCDirectorDelegate>

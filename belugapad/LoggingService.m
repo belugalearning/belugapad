@@ -12,16 +12,13 @@
 #import "UsersService.h"
 #import "ContentService.h"
 #import "Problem.h"
-#import "User.h"
-#import "UserSession.h"
-#import "ProblemAttempt.h"
 #import "AFNetworking.h"
 #import <zlib.h>
 #import <CommonCrypto/CommonDigest.h>
 #import "JSONKit.h"
 
 
-NSString * const kLoggingWebServiceBaseURL = @"http://192.168.1.68:3000";
+NSString * const kLoggingWebServiceBaseURL = @"http://u.zubi.me:3000";
 NSString * const kLoggingWebServicePath = @"/app-logging/upload";
 
 
@@ -117,7 +114,6 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
         if (!deviceSessionDoc) return; // error!
         
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
-        User *u = ac.usersService.currentUser;        
         
         userSessionDoc = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                           [self generateUUID], @"_id"
@@ -125,7 +121,7 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
                           , @"UserSession", @"type"
                           , [deviceSessionDoc objectForKey:@"device"], @"device"
                           , [deviceSessionDoc objectForKey:@"_id"], @"deviceSession"
-                          , u.document.documentID, @"user"
+                          , [ac.usersService.currentUser objectForKey:@"id"], @"user"
                           , nil];
     }
     else if (BL_JS_INIT == eventType)
@@ -164,7 +160,7 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
         case BL_DEVICE_CONTEXT:
             doc = deviceSessionDoc;
             break;
-        /*case BL_JOURNEY_MAP_CONTEXT:
+        /*case BL_JOURNEY_MAP_CONTEXT:  
             doc = journeyMapVisitDoc;
             break;*/
         case BL_USER_CONTEXT:

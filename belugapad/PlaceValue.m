@@ -8,6 +8,7 @@
 
 #import "PlaceValue.h"
 #import "global.h"
+#import "LoggingService.h"
 #import "BLMath.h"
 #import "SimpleAudioEngine.h"
 #import "IceDiv.h"

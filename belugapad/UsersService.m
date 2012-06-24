@@ -11,30 +11,28 @@
 #import "AppDelegate.h"
 #import "LoggingService.h"
 #import "ContentService.h"
-#import "User.h"
 #import "JSONKit.h"
 #import "FMDatabase.h"
+#import "FMDatabaseAdditions.h"
 
 @interface UsersService()
 {
-    @private
+@private
+    FMDatabase *usersDatabase;
     LoggingService *loggingService;
     NSString *contentSource;
-    
-    FMDatabase *usersDatabase;
-    
-    User *user;
 }
+-(NSDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs;
 @end
+
 
 @implementation UsersService
 
 @synthesize installationUUID;
 @synthesize currentUser;
 
--(void)setCurrentUser:(User*)ur
-{ 
-    //user = ur;
+-(void)setCurrentUser:(NSDictionary*)ur
+{
     [ur retain];
     [currentUser release];
     currentUser=ur;
@@ -58,16 +56,11 @@
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *usersDatabasePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"users.db"];
         
-        NSFileManager *fm = [NSFileManager defaultManager];
-        if (![[NSFileManager defaultManager] fileExistsAtPath:usersDatabasePath])
-        {
-            
-        }
-        else
-        {
-            usersDatabase = [FMDatabase databaseWithPath:usersDatabasePath];
-        }
-        [usersDatabase retain];
+        usersDatabase = [[FMDatabase databaseWithPath:usersDatabasePath] retain];
+        [usersDatabase open];        
+        if (![usersDatabase tableExists:@"users"]) [usersDatabase executeUpdate:@"CREATE TABLE users (id TEXT, nick TEXT, password TEXT, nodes_completed TEXT)"];
+        [usersDatabase close];
+        
     }
     
     return self;
@@ -77,77 +70,102 @@
 {
     [loggingService sendData];
     
-    // The view named kDeviceUsersLastSessionStart will pull back the most recent session start for each user on each device
-    // key: [deviceId, userId]      value:sessionStart
-    CouchQuery *q = [[loggingDatabase designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kDeviceUsersLastSessionStart];
-    q.groupLevel = 2;
-    q.startKey = [NSArray arrayWithObjects:device.document.documentID, nil];
-    q.endKey = [NSArray arrayWithObjects:device.document.documentID, [NSDictionary dictionary], nil];
-    [[q start] wait];
+    NSMutableArray *users = [[NSMutableArray array] retain];
     
-    NSMutableArray *users = [NSMutableArray array];
-    for (CouchQueryRow *row in q.rows)
-    {
-        CouchDocument *userDoc = [usersDatabase documentWithID:row.key1];
-        User *ur = [[CouchModelFactory sharedInstance] modelForDocument:userDoc];
-        if (ur) [users addObject:ur];
-    }
-    
-    return [users sortedArrayUsingComparator:^(id a, id b) {
-        return [[(NSString*)((User*)a).nickName lowercaseString] compare:[(NSString*)((User*)b).nickName lowercaseString]];
-    }];
+    [usersDatabase open];
+    FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick, nodes_completed FROM users ORDER BY nick"];
+    while([rs next])
+        [users addObject:[self userFromCurrentRowOfResultSet:rs]];
+    [rs close];
+    [usersDatabase close];
+    return users;
 }
 
 -(BOOL) nickNameIsAvailable:(NSString*)nickName
 {
-    CouchQuery *q = [[usersDatabase designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersByNickName];
-    q.keys = [NSArray arrayWithObject:nickName];
-    q.prefetch = YES;
-    [[q start] wait];
-    return [[q rows] count] == 0;
+    // TODO: This only checks local database of users - needs to check with server
+    [usersDatabase open];
+    FMResultSet *rs = [usersDatabase executeQuery:@"SELECT 1 FROM users WHERE nick = ?", nickName];
+    BOOL isAvailable = ![rs next];
+    [rs close];
+    [usersDatabase close];
+    return isAvailable;
 }
 
--(User*) userMatchingNickName:(NSString*)nickName
+-(NSDictionary*) userMatchingNickName:(NSString*)nickName
                   andPassword:(NSString*)password
 {
-    CouchQuery *q = [[usersDatabase designDocumentWithName:kDefaultDesignDocName] queryViewNamed:kUsersByNickNamePassword];
-    q.keys = [NSArray arrayWithObject:[NSArray arrayWithObjects:nickName, password, nil]];
-    [[q start] wait];
+    [usersDatabase open];
+    FMResultSet *rs = [usersDatabase executeQuery:@"SELECT 1 FROM users WHERE nick=? AND password=?", nickName, password];
+
+    if (![rs next]) return nil;
     
-    if ([[q rows] count] == 0) return nil;
+    NSDictionary *u = [self userFromCurrentRowOfResultSet:rs];
     
-    return [[CouchModelFactory sharedInstance] modelForDocument:((CouchQueryRow*)[[q rows].allObjects objectAtIndex:0]).document];
+    [rs close];
+    [usersDatabase close];
+    
+    return u;
 }
 
--(User*) getNewUserWithNickName:(NSString*)nickName
-                    andPassword:(NSString*)password
-                   andZubiColor:(NSData*)color // rgba
-              andZubiScreenshot:(UIImage*)image
+-(NSDictionary*) getNewUserWithNickName:(NSString*)nickName
+                            andPassword:(NSString*)password
+                           andZubiColor:(NSData*)color // rgba
+                      andZubiScreenshot:(UIImage*)image
 {
-    User *u = [[[User alloc] initWithNewDocumentInDatabase:usersDatabase] autorelease];
-    u.nickName = nickName;
-    u.password = password;
-    u.zubiColor = color;
-    u.zubiScreenshot = image;
-    u.autosaves = YES;
-    RESTOperation *op = [u save];
-    [op wait];
-    return u;
+    CFUUIDRef UUIDRef = CFUUIDCreate(kCFAllocatorDefault);
+    CFStringRef UUIDSRef = CFUUIDCreateString(kCFAllocatorDefault, UUIDRef);
+    NSString *urId = [NSString stringWithFormat:@"%@", UUIDSRef];
+    
+    CFRelease(UUIDRef);
+    CFRelease(UUIDSRef);
+    
+    [usersDatabase open];
+    [usersDatabase executeUpdate:@"INSERT INTO users(id,nick,password,nodes_completed) values(?,?,?,?)", urId, nickName, password, @"[]"];
+    FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick, nodes_completed FROM users WHERE id = ?", urId];
+    [rs next];
+    NSDictionary *ur = [self userFromCurrentRowOfResultSet:rs];
+    [rs close];
+    [usersDatabase close];
+    
+    return ur;
 }
 
 -(void)addCompletedNodeId:(NSString *)nodeId
 {
-    NSMutableArray *nc = [currentUser.nodesCompleted mutableCopy];
-    [nc addObject:nodeId];    
-    currentUser.nodesCompleted = nc;
-    [[currentUser save] wait];
-    [nc release];
+    NSString *urId = [currentUser objectForKey:@"id"];
+    NSMutableArray *nc = [[currentUser objectForKey:@"nodesCompleted"] mutableCopy];
+    [nc addObject:nodeId];
+    
+    [usersDatabase open];
+    
+    [usersDatabase executeUpdate:@"UPDATE users SET nodes_completed = ? WHERE id = ?)", [nc JSONString], urId];
+    
+    FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick, nodes_completed FROM users WHERE id = ?", urId];
+    [rs next];
+    
+    [currentUser release];
+    currentUser = [[self userFromCurrentRowOfResultSet:rs] retain];
+    
+    [rs close];
+    [usersDatabase close];
 }
 
 -(BOOL)hasCompletedNodeId:(NSString *)nodeId
 {
-    if (!currentUser.nodesCompleted) return NO;
-    return [currentUser.nodesCompleted containsObject:nodeId];
+    return [[currentUser objectForKey:@"nodesCompleted"] containsObject:nodeId];
+}
+
+-(NSDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs
+{
+    NSString *nodesCompletedText = [rs stringForColumn:@"nodes_completed"];
+    NSArray *nodesCompleted = [nodesCompletedText length] > 0 ? [nodesCompletedText objectFromJSONString] : [NSArray array];
+    
+    return [NSDictionary dictionaryWithObjectsAndKeys:
+            [rs stringForColumn:@"id"], @"id"
+            , [rs stringForColumn:@"nick"], @"nickName"
+            , nodesCompleted, @"nodesCompleted"
+            , nil];
 }
 
 -(void)dealloc

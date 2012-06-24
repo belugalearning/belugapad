@@ -8,6 +8,7 @@
 
 #import "BPlaceValueSelectionMgr.h"
 #import "global.h"
+#import "LoggingService.h"
 #import "PlaceValue.h"
 #import "ToolScene.h"
 #import "UsersService.h"

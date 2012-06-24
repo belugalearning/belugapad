@@ -12,7 +12,7 @@
 @interface UsersService : NSObject
 
 @property (readonly, retain, nonatomic) NSString *installationUUID;
-@property (retain, nonatomic) User *currentUser;
+@property (retain, nonatomic) NSDictionary *currentUser;
 
 -(id)initWithProblemPipeline:(NSString*)source
            andLoggingService:(LoggingService*)ls;
@@ -21,13 +21,13 @@
 
 -(BOOL) nickNameIsAvailable:(NSString*)nickName;
 
--(User*) getNewUserWithNickName:(NSString*)nickName
-                    andPassword:(NSString*)password
-                   andZubiColor:(NSData*)color // rgba
-              andZubiScreenshot:(UIImage*)image;
+-(NSDictionary*) getNewUserWithNickName:(NSString*)nickName
+                            andPassword:(NSString*)password
+                           andZubiColor:(NSData*)color // rgba
+                      andZubiScreenshot:(UIImage*)image;
 
--(User*) userMatchingNickName:(NSString*)nickName
-                  andPassword:(NSString*)password;
+-(NSDictionary*) userMatchingNickName:(NSString*)nickName
+                          andPassword:(NSString*)password;
 
 -(void)addCompletedNodeId:(NSString*)nodeId;
 -(BOOL)hasCompletedNodeId:(NSString*)nodeId;

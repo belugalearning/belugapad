@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>what is 1 x 1</string>
+		<key>INTERNAL_DESCRIPTION</key>
+		<string>1x1</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>1</integer>
+		<key>ANIMATE_FROM_PICKER</key>
+		<true/>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<integer>1</integer>
+	</dict>
+</dict>
+</plist>

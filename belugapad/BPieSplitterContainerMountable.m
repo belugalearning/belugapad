@@ -69,17 +69,13 @@
         if(scaleForMid>=1.0f)
         {
             [cont.mySpriteMid setScaleY:scaleForMid];
-//            float midTop=-(((cont.mySpriteTop.position.y-cont.mySpriteTop.contentSize.height)*[cont.Nodes count])*scaleForMid);
-            //float midTop=((((cont.mySpriteTop.contentSize.height))*[cont.Nodes count])*scaleForMid);
+
             float midHeight=cont.mySpriteMid.contentSize.height*scaleForMid;
             [cont.mySpriteMid setAnchorPoint:ccp(0.5,-1)];
-//            [cont.mySpriteMid setPosition:ccp(0,-(midHeight+(25*[cont.Nodes count])/scaleForMid))];
-//            [cont.mySpriteMid setPosition:ccp(0,0-(cont.mySpriteMid.contentSize.height*[cont.Nodes count])-((cont.mySpriteTop.contentSize.height*[cont.Nodes count])+(cont.mySpriteMid.contentSize.height*cont.mySpriteMid.scaleY)))];
             
-            [cont.mySpriteMid setPosition:ccp(0,
-                                              0-((cont.mySpriteMid.contentSize.height)+(cont.mySpriteMid.contentSize.height*cont.mySpriteMid.scaleY)))];
+            [cont.mySpriteMid setPosition:ccp(0,0-((cont.mySpriteTop.contentSize.height*[cont.Nodes count])+(cont.mySpriteMid.contentSize.height*cont.mySpriteMid.scaleY)-(cont.mySpriteTop.contentSize.height*(scaleForMid-1))))];
             
-            [cont.mySpriteBot setPosition:ccp(0,-(cont.mySpriteTop.contentSize.height+(cont.mySpriteMid.contentSize.height*cont.mySpriteMid.scaleY)))];
+            [cont.mySpriteBot setPosition:ccp(0,-(cont.mySpriteTop.contentSize.height+(cont.mySpriteMid.contentSize.height*cont.mySpriteMid.scaleY)-(cont.mySpriteTop.contentSize.height*(scaleForMid-1))))];
             //[cont.mySpriteMid runAction:[CCScaleTo actionWithDuration:0.5f scaleX:cont.mySpriteMid.scaleX scaleY:scaleForMid]];
             //[cont.mySpriteTop runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(0,(cont.mySpriteMid.contentSize.height)-(cont.mySpriteTop.contentSize.height/2))]];
             //[cont.mySpriteBot runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(0,0-(cont.mySpriteMid.contentSize.height/2)-(cont.mySpriteTop.contentSize.height/2))]];
@@ -102,8 +98,10 @@
             [cont.mySpriteMid setAnchorPoint:ccp(0.5,-1)];
             [cont.mySpriteBot setAnchorPoint:ccp(0.5,-1)];
             [cont.mySpriteMid setScaleY:scaleForMid];
-            [cont.mySpriteMid setPosition:ccp(0,0+(cont.mySpriteTop.contentSize.height))];
-            [cont.mySpriteBot setPosition:ccp(0,-(cont.mySpriteTop.contentSize.height+(cont.mySpriteMid.contentSize.height*cont.mySpriteMid.scaleY)))];
+            
+            [cont.mySpriteMid setPosition:ccp(0,0-((cont.mySpriteTop.contentSize.height*[cont.Nodes count])+(cont.mySpriteMid.contentSize.height*cont.mySpriteMid.scaleY)-(cont.mySpriteTop.contentSize.height*(scaleForMid-1))))];
+            
+            [cont.mySpriteBot setPosition:ccp(0,-(cont.mySpriteTop.contentSize.height+(cont.mySpriteMid.contentSize.height*cont.mySpriteMid.scaleY)-(cont.mySpriteTop.contentSize.height*(scaleForMid-1))))];
             //[cont.mySpriteMid runAction:[CCScaleTo actionWithDuration:0.5f scaleX:cont.mySpriteMid.scaleX scaleY:scaleForMid]];
             //[cont.mySpriteTop runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(0,(cont.mySpriteMid.contentSize.height)-(cont.mySpriteTop.contentSize.height/2))]];
             //[cont.mySpriteBot runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(0,0-(cont.mySpriteMid.contentSize.height/2)-(cont.mySpriteTop.contentSize.height/2))]];

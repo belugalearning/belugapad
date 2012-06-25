@@ -207,6 +207,11 @@ typedef enum {
     [self parseNodesForEndPoints];
     
     NSLog(@"completed end point parse");
+    
+    //setup rendering -- needs all node connections built
+    [gw handleMessage:kSGreadyRender andPayload:nil withLogLevel:nil];
+    NSLog(@"send readyRender message");
+    
     NSLog(@"end build");
             
 //    //reposition if previous node

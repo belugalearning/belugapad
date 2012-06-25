@@ -33,7 +33,10 @@
 
 -(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload
 {
-    
+    if(messageType==kSGreadyRender)
+    {
+        [self readyRender];
+    }
 }
 
 -(void)doUpdate:(ccTime)delta
@@ -46,13 +49,13 @@
     CGPoint myWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];
  
     //perim points
-    CGPoint perimPoints[ParentGO.ChildNodes.count];
+    CGPoint perimPoints[sortedChildren.count];
     int perimIx=0;
 
     //lines to my child nodes
-    for (id<Transform> prnode in ParentGO.ChildNodes) {
+    for (NSValue *cPosVal in sortedChildren) {
         //world space pos of child node
-        CGPoint theirWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:prnode.Position];
+        CGPoint theirWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:[cPosVal CGPointValue]];
         
         //draw prereq path to this node        
         ccDrawColor4B(255, 255, 255, 255);
@@ -80,7 +83,7 @@
     
     //draw perim poly
     CGPoint *first=&perimPoints[0];
-    ccDrawFilledPoly(first, ParentGO.ChildNodes.count,ccc4f(1.0f, 0.0f, 0.0f, 0.1f));
+    ccDrawFilledPoly(first, sortedChildren.count,ccc4f(1.0f, 0.0f, 0.0f, 0.1f));
     
     
     //glLineWidth(6.0f);
@@ -89,6 +92,11 @@
 }
 
 -(void)setup
+{
+    
+}
+
+-(void)readyRender
 {
     nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-incomplete.png"];
     [nodeSprite setPosition:ParentGO.Position];
@@ -102,15 +110,100 @@
     
     //sort children
     for (id<Transform> prnode in ParentGO.ChildNodes) {
+        float thisA=[BLMath angleForNormVector:[BLMath TruncateVector:[BLMath SubtractVector:ParentGO.Position from:prnode.Position] toMaxLength:1.0f]];
+        
+        if([ParentGO.UserVisibleString isEqualToString:@"counting forward"])
+        {
+            NSLog(@"counting forward");
+        }
+        
         if([sortedChildren count]==0)
         {
             //put this thing in the array at first position
-            [sortedChildren addObject:prnode];
+            [sortedChildren addObject:[NSValue valueWithCGPoint:prnode.Position]];
         }
         else {
             //iterate sorted array, looking for something larger (in rotation), or the end -- then insert
             
+            for(int i=0; i<sortedChildren.count; i++)
+            {
+                int insertat=0;
+                BOOL doInsert=NO;
+                
+                CGPoint snodePos=[[sortedChildren objectAtIndex:i] CGPointValue];
+                
+                float nextA=[BLMath angleForNormVector:[BLMath TruncateVector:[BLMath SubtractVector:ParentGO.Position from:snodePos] toMaxLength:1.0f]];
+                
+                if(nextA>thisA)
+                {
+                    doInsert=YES;
+                    insertat=i; //insert before node
+                }
+                else if (i==sortedChildren.count-1)
+                {
+                    doInsert=YES;
+                    insertat=sortedChildren.count; //insert at end of list
+                }
+                    
+                if(doInsert)
+                {
+                    //insert the node itself
+                    [sortedChildren insertObject:[NSValue valueWithCGPoint:prnode.Position] atIndex:insertat];
+                    
+                    NSLog(@"%d inserted at %d with count %d", (int)ParentGO, insertat, sortedChildren.count);
+                    
+                    //look for angle on previous node
+                    float prevA=0.0f;
+                    if(insertat>0) prevA=[BLMath angleForNormVector:[BLMath TruncateVector:[BLMath SubtractVector: ParentGO.Position from:[[sortedChildren objectAtIndex:insertat-1] CGPointValue]] toMaxLength:1.0f]];
+                    
+                    //insert any filler perimiter nodes
+                    if(thisA-prevA > 90.0f)
+                    {
+                        //insert new point                        
+                        float lOfV=[BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:prnode.Position]];
+                        //float newRot=lastA+((thisA-lastA)/2.0f);
+                        float newRot=prevA+((thisA-prevA)/2.0f);
+                        //float newRot=prevA+60.0f;
+                        
+                        CGPoint iPos=[BLMath ProjectMovementWithX:0 andY:lOfV forRotation:newRot];
+                        iPos=[BLMath AddVector:ParentGO.Position toVector:iPos];
+                        [sortedChildren insertObject:[NSValue valueWithCGPoint:iPos] atIndex:insertat];
+                        
+                        NSLog(@"%d inserted at %d with count %d << spacer", (int)ParentGO, insertat, sortedChildren.count);
+                        
+                        //NSLog(@"inserting %@ for diff of %f and %f with lOv %f and rot %f", NSStringFromCGPoint(iPos), thisA, lastA, lOfV, newRot);
+                        
+                    }
+                    
+                    break;
+
+                }
+            }
+            
             //on insert, if increment from last is > 135, add an additional psuedo item
+        }
+    }
+    
+    if([sortedChildren count]>0)
+    {
+        float firstnodeA=360+[BLMath angleForNormVector:[BLMath TruncateVector:[BLMath SubtractVector: ParentGO.Position from:[[sortedChildren objectAtIndex:0] CGPointValue]] toMaxLength:1.0f]];
+        
+        float endnodeA=[BLMath angleForNormVector:[BLMath TruncateVector:[BLMath SubtractVector: ParentGO.Position from:[[sortedChildren lastObject] CGPointValue]] toMaxLength:1.0f]];
+        
+        //insert any filler perimiter nodes
+        if(firstnodeA-endnodeA > 90.0f)
+        {
+            //insert new point                        
+            float lOfV=[BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:[[sortedChildren lastObject] CGPointValue]]];
+            //float newRot=lastA+((thisA-lastA)/2.0f);
+            float newRot=endnodeA+((firstnodeA-endnodeA)/2.0f);
+            //float newRot=prevA+60.0f;
+            
+            CGPoint iPos=[BLMath ProjectMovementWithX:0 andY:lOfV forRotation:newRot];
+            iPos=[BLMath AddVector:ParentGO.Position toVector:iPos];
+            [sortedChildren addObject:[NSValue valueWithCGPoint:iPos]];
+            
+            NSLog(@"%d inserted at %d with count %d << end spacer", (int)ParentGO, 999, sortedChildren.count);
         }
     }
 }

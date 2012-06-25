@@ -70,8 +70,9 @@
                 [cont.myText setOpacity:0];
             }
         }
+        if(cont.ScaledUp && cont.myText.visible==NO)[cont.myText setVisible:YES];
         if(cont.ScaledUp)[cont.myText setString:cont.textString];
-        else [cont.mySpriteTop removeChild:cont.myText cleanup:YES];
+        else [cont.myText setVisible:NO];
     }
     if(messageType==kDWmoveSpriteToPosition)
     {

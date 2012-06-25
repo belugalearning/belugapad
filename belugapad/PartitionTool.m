@@ -271,7 +271,6 @@
         gw.Blackboard.PickupOffset = location;
         
         // check where our object was - no mount = cage. mount = row.
-        DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
         [loggingService logEvent:(pogo.Mount ? BL_PA_NB_TOUCH_BEGIN_ON_ROW : BL_PA_NB_TOUCH_BEGIN_ON_CAGED_OBJECT)
             withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:pogo.ObjectValue] forKey:@"objectValue"]];
         

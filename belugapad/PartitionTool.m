@@ -173,8 +173,6 @@
             
             pogo.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3)); 
             
-            NSLog(@"pogo position %@ number stacked %d", NSStringFromCGPoint(pogo.Position), numberStacked);
-            
             pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
             
             if([[initCages objectAtIndex:i] objectForKey:LABEL])
@@ -223,6 +221,8 @@
 
 -(void)reorderMountedObjects
 {
+    // this reorders blocks on the active cages - so that we can't end up in a position where there are gaps in the stacking
+    // mountedobjects is handled in the touchesbegan, end and populategw
     for (int i=0;i<[mountedObjects count]; i++)
     {
         int qtyForThisStore=[[mountedObjects objectAtIndex:i] count];
@@ -232,8 +232,6 @@
             DWPartitionObjectGameObject *pogo=[[mountedObjects objectAtIndex:i] objectAtIndex:ic];
             
             pogo.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3)); 
-            
-            NSLog(@"pogo position %@ number stacked %d", NSStringFromCGPoint(pogo.Position), numberStacked);
             
             
             if(numberStacked<numberToStack)numberStacked++;

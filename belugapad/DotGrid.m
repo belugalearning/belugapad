@@ -178,7 +178,8 @@
             if((iRow==startX && iCol==startY) && drawMode==kSpecifiedStartAnchor)
             {
                 anch.Disabled=NO;
-                anch.StartAnchor=YES;
+                
+                //anch.StartAnchor=YES;
                 //NSLog(@"THIS ANCHOR IS *ENABLED* (x %d / y %d)", anch.myXpos, anch.myYpos);
             }
             else if((iRow==0 && iCol==0) && drawMode==kNoDrawing)
@@ -199,6 +200,15 @@
         [dotMatrix addObject:currentCol];
         
     }    
+    
+    // if we're using startanchor mode then we need to draw a 1x1 square from the startx/y pos
+    if(drawMode==kStartAnchor)
+    {
+        gw.Blackboard.FirstAnchor=[[dotMatrix objectAtIndex:startX] objectAtIndex:startY];
+        gw.Blackboard.LastAnchor=[[dotMatrix objectAtIndex:startX+1] objectAtIndex:startY+1];;
+        
+        [self checkAnchorsAndUseResizeHandle:YES andShowMove:NO andPrecount:nil andDisabled:NO];
+    }
     
     for(int i=0;i<[initObjects count];i++)
     {

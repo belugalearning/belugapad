@@ -70,7 +70,6 @@
         {
             [cont.mySpriteMid setScaleY:scaleForMid];
 
-            float midHeight=cont.mySpriteMid.contentSize.height*scaleForMid;
             [cont.mySpriteMid setAnchorPoint:ccp(0.5,-1)];
             
             [cont.mySpriteMid setPosition:ccp(0,0-((cont.mySpriteTop.contentSize.height*[cont.Nodes count])+(cont.mySpriteMid.contentSize.height*cont.mySpriteMid.scaleY)-(cont.mySpriteTop.contentSize.height*(scaleForMid-1))))];

@@ -13,6 +13,7 @@
 #import "DWGameWorld.h"
 #import "BLMath.h"
 #import "AppDelegate.h"
+#import "LoggingService.h"
 #import "UsersService.h"
 
 const float kSpaceBetweenNumbers=180.0f;
@@ -23,6 +24,7 @@ const float kScaleOfLesserBlocks=0.6f;
 @interface LongDivision()
 {
 @private
+    LoggingService *loggingService;
     ContentService *contentService;
     UsersService *usersService;
 }
@@ -580,8 +582,7 @@ const float kScaleOfLesserBlocks=0.6f;
     
     if(doingHorizontalDrag)
     {
-
-        [usersService logProblemAttemptEvent:kProblemAttemptLongDivisionTouchMovedMoveRow withOptionalNote:nil];
+        [loggingService logEvent:BL_PA_LD_TOUCH_MOVE_MOVE_ROW withAdditionalData:nil];
         CGPoint diff=[BLMath SubtractVector:location from:touchStart];
         diff = ccp(diff.x, 0);
         
@@ -602,9 +603,11 @@ const float kScaleOfLesserBlocks=0.6f;
         if(currentNumberPos>9)currentNumberPos=9;
         
         if(distMoved<0)
-            [usersService logProblemAttemptEvent:kProblemAttemptLongDivisionTouchEndedDecrementActiveNumber withOptionalNote:[NSString stringWithFormat:@"{\"selectednumber\":%d}",currentNumberPos]];
+            [loggingService logEvent:BL_PA_LD_TOUCH_END_DECREMENT_ACTIVE_NUMBER
+                withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:currentNumberPos] forKey:@"selectedNumber"]];
         else
-            [usersService logProblemAttemptEvent:kProblemAttemptLongDivisionTouchEndedIncrementActiveNumber withOptionalNote:[NSString stringWithFormat:@"{\"selectednumber\":%d}",currentNumberPos]];
+            [loggingService logEvent:BL_PA_LD_TOUCH_END_INCREMENT_ACTIVE_NUMBER
+                withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:currentNumberPos] forKey:@"selectedNumber"]];
         
         
         //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
@@ -645,9 +648,9 @@ const float kScaleOfLesserBlocks=0.6f;
         if(currentRowPos>7)currentRowPos=7;
   
         activeRow=currentRowPos;
-        [usersService logProblemAttemptEvent:kProblemAttemptLongDivisionTouchEndedChangedActiveRow withOptionalNote:[NSString stringWithFormat:@"{\"activerow\":%f}",activeRow]];
-        
-        
+        [loggingService logEvent:BL_PA_LD_TOUCH_END_CHANGE_ACTIVE_ROW
+            withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:activeRow] forKey:@"activeRow"]];
+                
         //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
         
         for(int i=0;i<[numberLayers count];i++)
@@ -657,7 +660,7 @@ const float kScaleOfLesserBlocks=0.6f;
         }
         
     }
-    if(movedTopSection)[usersService logProblemAttemptEvent:kProblemAttemptLongDivisionTouchEndedPanningTopSection withOptionalNote:nil];
+    if(movedTopSection) [loggingService logEvent:BL_PA_LD_TOUCH_END_PAN_TOP_SECTION withAdditionalData:nil];
     
     
     topTouch=NO;

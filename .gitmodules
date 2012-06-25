@@ -4,3 +4,6 @@
 [submodule "belugapad/libs/JSONKit"]
 	path = belugapad/libs/JSONKit
 	url = https://github.com/johnezang/JSONKit.git
+[submodule "belugapad/libs/AFNetworking"]
+	path = belugapad/libs/AFNetworking
+	url = https://github.com/AFNetworking/AFNetworking.git

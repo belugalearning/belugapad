@@ -39,7 +39,6 @@ uint const kMaxConsecutiveSendFails = 3;
     
     NSMutableDictionary *deviceSessionDoc;
     NSMutableDictionary *userSessionDoc;
-    //NSMutableDictionary *journeyMapVisitDoc;
     NSMutableDictionary *problemAttemptDoc;
     
     uint consecutiveSendFails;
@@ -167,9 +166,6 @@ uint const kMaxConsecutiveSendFails = 3;
         case BL_DEVICE_CONTEXT:
             doc = deviceSessionDoc;
             break;
-        /*case BL_JOURNEY_MAP_CONTEXT:  
-            doc = journeyMapVisitDoc;
-            break;*/
         case BL_USER_CONTEXT:
             doc = userSessionDoc;
             break;
@@ -403,7 +399,6 @@ uint const kMaxConsecutiveSendFails = 3;
     if (prevDir) [prevDir release];
     if (deviceSessionDoc) [deviceSessionDoc release];
     if (userSessionDoc) [userSessionDoc release];
-    //if (journeyMapVisitDoc) [journeyMapVisitDoc release];
     if (problemAttemptDoc) [problemAttemptDoc release];
     [super dealloc];
 }

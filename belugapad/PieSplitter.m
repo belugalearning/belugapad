@@ -228,7 +228,13 @@ static float kTimeToPieShake=7.0f;
         int slicesInCont=[cont.mySlices count];
         float thisVal=(float)slicesInCont/(float)[activeCon count];
         if(labelType==kLabelShowDecimal) thisConVal=[NSString stringWithFormat:@"%.02g", thisVal];
-        if(labelType==kLabelShowFraction) thisConVal=[NSString stringWithFormat:@"%d/%d", slicesInCont, [activeCon count]];
+        if(labelType==kLabelShowFraction) { 
+            int fullPies=slicesInCont/[activeCon count];
+            int extraSlices=slicesInCont-(fullPies*[activeCon count]);
+            if(fullPies==0)thisConVal=[NSString stringWithFormat:@"%d/%d", slicesInCont, [activeCon count]];
+            else if(fullPies>0 && extraSlices==0)thisConVal=[NSString stringWithFormat:@"%d", fullPies];
+            else if(fullPies>0 && extraSlices>0)thisConVal=[NSString stringWithFormat:@"%d %d/%d", fullPies, extraSlices, [activeCon count]];
+        }
         if(!cont.textString)cont.textString=[[NSString alloc]init];
         cont.textString=thisConVal;
     }
@@ -327,10 +333,13 @@ static float kTimeToPieShake=7.0f;
 
 -(void)removeGhost
 {
-    if([activePie containsObject:ghost])[activePie removeObject:ghost];
-    if([activeCon containsObject:ghost])[activeCon removeObject:ghost];
-    [ghost handleMessage:kDWdismantle];
-    ghost=nil;
+    if(ghost){
+        if([activePie containsObject:ghost])[activePie removeObject:ghost];
+        if([activeCon containsObject:ghost])[activeCon removeObject:ghost];
+        [ghost handleMessage:kDWdismantle];
+        [gw delayRemoveGameObject:ghost];
+        ghost=nil;
+    }
 }
 
 -(void)reorderActivePies
@@ -345,6 +354,7 @@ static float kTimeToPieShake=7.0f;
 
 -(void)reorderActiveContainers
 {
+    NSLog(@"current activeCon count %d", [activeCon count]);
     for(int i=0;i<[activeCon count];i++)
     {
         DWPieSplitterContainerGameObject *c=[activeCon objectAtIndex:i];
@@ -479,6 +489,9 @@ static float kTimeToPieShake=7.0f;
     lastTouch=location;
     timeSinceInteractionOrShake=0;
     
+    gw.Blackboard.PickupObject=nil;
+    gw.Blackboard.DropObject=nil;
+    
     if(gameState==kGameReadyToSplit || gameState==kGameSlicesActive)
     {
         for(DWPieSplitterPieGameObject *p in activePie)
@@ -565,17 +578,15 @@ static float kTimeToPieShake=7.0f;
     location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     
-    
+    NSLog(@"touch location %@", NSStringFromCGPoint(location));
     
     if(gw.Blackboard.PickupObject)
     {
-        
+        [self removeGhost];        
         // is a container?
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterContainerGameObject class]])
         {
             DWPieSplitterContainerGameObject *cont=(DWPieSplitterContainerGameObject*)gw.Blackboard.PickupObject;
-
-            [self removeGhost];
             
             // first hide the box again
             [conBox setVisible:NO];
@@ -590,12 +601,15 @@ static float kTimeToPieShake=7.0f;
             else {
                 // if we're not landing on the dropzone and were previously there, remove object from array
                 if([activeCon containsObject:cont])[activeCon removeObject:cont];
-                
+
                 // and if it wasn't - eject it back to it's mount
                 [gw.Blackboard.PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:-1];
             }
             
+            NSLog(@"(bef) this dropped object pos %@", NSStringFromCGPoint(cont.Position));
+            
             [self reorderActiveContainers];
+            NSLog(@"(aft) this dropped object pos %@", NSStringFromCGPoint(cont.Position));
         }
         
         
@@ -603,8 +617,6 @@ static float kTimeToPieShake=7.0f;
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterPieGameObject class]])
         {
             DWPieSplitterPieGameObject *pie=(DWPieSplitterPieGameObject*)gw.Blackboard.PickupObject;
-            
-            [self removeGhost];
             
             // hide the box
             [pieBox setVisible:NO];

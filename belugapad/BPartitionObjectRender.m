@@ -117,7 +117,6 @@
         if(i !=0 && i !=pogo.Length)
         {
             spriteFileName=@"/images/partition/block-m.png";
-            NSLog(@"pogo position x %f", pogo.Position.x);
             CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
             float thisXPos = i*50;
             [mySprite setPosition:ccp(thisXPos, 0)];
@@ -148,6 +147,14 @@
         
     }
     
+    if(pogo.InitedObject){
+        [pogo.BaseNode setScale:1.0f];
+        pogo.IsScaled=YES;
+    }
+    else{ 
+        [pogo.BaseNode setScale:0.5f];
+    }
+    
     if(pogo.Label) { 
         [pogo.Label setColor:ccc3(0,0,0)];
         [pogo.Label setPosition:ccp((pogo.Length * 50) * 0.5f, -3)];
@@ -165,6 +172,11 @@
     
     if(pogo.MovePosition.x || pogo.MovePosition.y)
     {
+        if(!pogo.IsScaled)
+        {
+            [pogo.BaseNode runAction:[CCScaleTo actionWithDuration:0.5f scale:1.0f]];
+            pogo.IsScaled=YES;
+        }
         
             if(withAnimation == YES)
             {
@@ -186,6 +198,8 @@
     [pogo.BaseNode runAction:[CCEaseIn actionWithAction:anim rate:0.5f]];
     pogo.Position=pogo.MountPosition;
     [pogo handleMessage:kDWunsetMount];
+    [self resetHalfScale];
+    
 }
 -(void)resetSpriteToMount
 {
@@ -199,7 +213,17 @@
     CCSprite *curSprite = [[gameObject store] objectForKey:MY_SPRITE];
     
     [curSprite runAction:[CCMoveTo actionWithDuration:kTimeObjectSnapBack position:ccp(x, y)]];
+    [self resetHalfScale];
     
+}
+
+-(void)resetHalfScale
+{
+    if(pogo.IsScaled && !pogo.InitedObject)
+    {
+        [pogo.BaseNode runAction:[CCScaleTo actionWithDuration:0.5f scale:0.5f]];
+        pogo.IsScaled=NO;
+    }
 }
 
 -(void) dealloc

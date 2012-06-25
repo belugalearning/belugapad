@@ -21,6 +21,7 @@
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
 #import "DProblemParser.h"
+#import "LoggingService.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
 #import "InteractionFeedback.h"
@@ -28,6 +29,7 @@
 @interface NLine()
 {
 @private
+    LoggingService *loggingService;
     ContentService *contentService;
     UsersService *usersService;
 }
@@ -382,8 +384,7 @@ static float kTimeToBubbleShake=7.0f;
         
         [self animPickupBubble];
         
-        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
-        [ac.usersService logProblemAttemptEvent:kProblemAttemptNumberLineTouchBeginPickupBubble withOptionalNote:nil];
+        [loggingService logEvent:BL_PA_NL_TOUCH_BEGIN_PICKUP_BUBBLE withAdditionalData:nil];
         
         //retain current pos to incr/decr log
         logLastBubblePos=lastBubbleLoc;
@@ -531,26 +532,25 @@ static float kTimeToBubbleShake=7.0f;
         [self animReleaseBubble];
         
         //do some logging
-        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
-        [ac.usersService logProblemAttemptEvent:kProblemAttemptNumberLineTouchEndedReleaseBubble withOptionalNote:nil];
+        [loggingService logEvent:BL_PA_NL_TOUCH_END_RELEASE_BUBBLE withAdditionalData:nil];
         
         if(lastBubbleLoc>logLastBubblePos)
         {
-            [ac.usersService logProblemAttemptEvent:kProblemAttemptNumberLineTouchEndedIncreaseSelection withOptionalNote:nil];
+            [loggingService logEvent:BL_PA_NL_TOUCH_END_INCREASE_SELECTION withAdditionalData:nil];
         }
         else if(lastBubbleLoc<logLastBubblePos)
         {
-            [ac.usersService logProblemAttemptEvent:kProblemAttemptNumberLineTouchEndedDecreaseSelection withOptionalNote:nil];            
+            [loggingService logEvent:BL_PA_NL_TOUCH_END_DECREASE_SELECTION withAdditionalData:nil];
         }
         
         //did we move the bubble, the line
         if(logBubbleDidMove)
         {
-            [ac.usersService logProblemAttemptEvent:kProblemAttemptNumberLineTouchMovedMoveBubble withOptionalNote:nil];
+            [loggingService logEvent:BL_PA_NL_TOUCH_MOVE_MOVE_BUBBLE withAdditionalData:nil];
         }
         if(logBubbleDidMoveLine)
         {
-            [ac.usersService logProblemAttemptEvent:kProblemAttemptNumberLineTouchMovedMoveBubble withOptionalNote:nil];            
+            [loggingService logEvent:BL_PA_NL_TOUCH_MOVE_MOVE_LINE withAdditionalData:nil];
         }
         
         logBubbleDidMove=NO;

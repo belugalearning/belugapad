@@ -16,6 +16,7 @@
 #import "BLMath.h"
 
 #import "AppDelegate.h"
+#import "LoggingService.h"
 #import "ContentService.h"
 #import "UsersService.h"
 
@@ -54,7 +55,8 @@ typedef enum {
 
 @interface JourneyScene()
 {
-    @private
+@private
+    LoggingService *loggingService;
     ContentService *contentService;
 
     NSMutableArray *kcmNodes;
@@ -118,8 +120,12 @@ typedef enum {
         
         scale=1.0f;
         
-        contentService = ((AppController*)[[UIApplication sharedApplication] delegate]).contentService; 
-        usersService = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        loggingService = ac.loggingService;
+        usersService = ac.usersService;
+        contentService = ac.contentService;
+        
+        [loggingService logEvent:BL_JS_INIT withAdditionalData:nil];
         
         debugEnabled=!((AppController*)[[UIApplication sharedApplication] delegate]).ReleaseMode;
         if(debugEnabled) [self buildDebugMenu];
@@ -583,7 +589,7 @@ typedef enum {
     
     if(CGRectContainsPoint(logOutBtnBounds, l))
     {
-        [usersService logProblemAttemptEvent:kProblemAttemptExitLogOut withOptionalNote:nil];
+        [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
         usersService.currentUser = nil;
         [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
         return;

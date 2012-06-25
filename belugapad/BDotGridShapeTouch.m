@@ -13,14 +13,14 @@
 #import "global.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
-#import "UsersService.h"
+#import "LoggingService.h"
 #import "AppDelegate.h"
 
 @interface BDotGridShapeTouch()
 {
 @private
+    LoggingService *loggingService;
     ContentService *contentService;
-    UsersService *usersService;
 }
 @end
 
@@ -34,8 +34,8 @@
     //init pos x & y in case they're not set elsewhere
     
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    loggingService = ac.loggingService;
     contentService = ac.contentService;
-    usersService = ac.usersService;
     
     
     [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_X];
@@ -84,14 +84,14 @@
             if(!tile.Selected){
                 [tile.mySprite setColor:ccc3(89,133,136)];
                 tile.Selected=YES;
-                [usersService logProblemAttemptEvent:kProblemAttemptDotGridTouchBeginSelectTile withOptionalNote:nil];
+                [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
             }
             
             // otherwise, make it white again
             else{
                 [tile.mySprite setColor:ccc3(255, 255, 255)];
                 tile.Selected=NO;
-                [usersService logProblemAttemptEvent:kProblemAttemptDotGridTouchBeginDeselectTile withOptionalNote:nil];
+                [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_DESELECT_TILE withAdditionalData:nil];
             }
         }
     }

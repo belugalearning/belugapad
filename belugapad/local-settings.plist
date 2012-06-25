@@ -6,7 +6,7 @@
 	<string>/pipeline-testing/pipeline_amalgamation.plist</string>
 	<key>PROBLEM_PIPELINE</key>
 	<string>DATABASE</string>
-	<key>PROBLEM_PIPELINE-e</key>
+	<key>PROBLEM_PIPELINE-da</key>
 	<string>/pipeline-testing/da-pipeline-test.plist</string>
 	<key>PROBLEM_PIPELINE-g</key>
 	<string>/pipeline-testing/gj-pipeline-test.plist</string>

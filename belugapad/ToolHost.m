@@ -355,9 +355,8 @@ static float kMoveToNextProblemTime=2.0f;
     NSArray *docsPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *tempPDefPath = [[docsPaths objectAtIndex:0] stringByAppendingPathComponent:@"temp-pdef.plist"];
     [pdef writeToFile:tempPDefPath atomically:YES];
-    [loggingService logEvent:BL_PA_START
-          withAdditionalData:[NSDictionary dictionaryWithObject:[NSData dataWithContentsOfFile:tempPDefPath] forKey:@"pdef"]];
-    
+    NSString *pdefString = [[[NSString alloc] initWithContentsOfFile:tempPDefPath encoding:NSUTF8StringEncoding error:nil] autorelease];
+    [loggingService logEvent:BL_PA_START withAdditionalData:[NSDictionary dictionaryWithObject:pdefString forKey:@"pdef"]];
     
     NSString *toolKey=[pdef objectForKey:TOOL_KEY];
     

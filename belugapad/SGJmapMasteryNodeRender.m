@@ -57,10 +57,6 @@
         //world space pos of child node
         CGPoint theirWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:[cPosVal CGPointValue]];
         
-        //draw prereq path to this node        
-        ccDrawColor4B(255, 255, 255, 255);
-        ccDrawLine(myWorldPos, theirWorldPos);        
-        
         //add to perim
         //get vector from here to there
         CGPoint vdiff=[BLMath SubtractVector:myWorldPos from:theirWorldPos];
@@ -69,6 +65,15 @@
         
         perimPoints[perimIx]=dest;
         perimIx++;
+    }
+    
+    for (id<Transform> prnode in ParentGO.ChildNodes) {
+        //world space pos of child node
+        CGPoint theirWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:prnode.Position];
+        
+        //draw prereq path to this node        
+        ccDrawColor4B(255, 255, 255, 255);
+        ccDrawLine(myWorldPos, theirWorldPos);        
     }
     
     //lines to inter mastery nodes

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>divide [$dividend] by [$divisor]</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>x divided by x, dividend 2-6, divisor 3-8</string>
+	<key>TOOL_KEY</key>
+	<string>PieSplitter</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>DIVIDEND</key>
+	<string>$dividend</string>
+	<key>DIVISOR</key>
+	<string>$divisor</string>
+	<key>NUMBER_ACTIVE_PIES</key>
+	<integer>20</integer>
+	<key>NUMBER_ACTIVE_SQUARES</key>
+	<integer>20</integer>
+	<key>START_PROBLEM_SPLIT</key>
+	<false/>
+	<key>DVARS</key>
+	<dict>
+		<key>$dividend</key>
+		<dict>
+			<key>MIN</key>
+			<string>2</string>
+			<key>MAX</key>
+			<string>6</string>
+		</dict>
+		<key>$divisor</key>
+		<dict>
+			<key>MIN</key>
+			<string>3</string>
+			<key>MAX</key>
+			<string>8</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

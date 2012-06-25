@@ -122,8 +122,16 @@
     rejectMode = [[pdef objectForKey:REJECT_MODE] intValue];
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
     
+    if([pdef objectForKey:NUMBER_TO_STACK])
+        numberToStack = [[pdef objectForKey:NUMBER_TO_STACK] intValue];
+    else
+        numberToStack = 2;
+    
     createdRows = [[NSMutableArray alloc]init];
     [createdRows retain];
+    
+    mountedObjects = [[NSMutableArray alloc]init];
+    [mountedObjects retain];
     
 }
 
@@ -131,7 +139,6 @@
 {
 
 
-    //DWPartitionStoreGameObject *psgo = 
 
     float yStartPos=582;
     // do stuff with our INIT_BARS (DWPartitionRowGameObject)
@@ -156,11 +163,18 @@
     for (int i=0;i<[initCages count]; i++)
     {
         int qtyForThisStore=[[[initCages objectAtIndex:i] objectForKey:QUANTITY] intValue];
+        int numberStacked=0;
+        NSMutableArray *currentVal=[[NSMutableArray alloc]init];
         for (int ic=0;ic<qtyForThisStore;ic++)
         {
             DWPartitionObjectGameObject *pogo = [DWPartitionObjectGameObject alloc];
             [gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];
-            pogo.Position=ccp(25-(ic*2),650-(i*65)+(ic*3));            
+            pogo.IndexPos=i;
+            
+            pogo.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3)); 
+            
+            NSLog(@"pogo position %@ number stacked %d", NSStringFromCGPoint(pogo.Position), numberStacked);
+            
             pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
             
             if([[initCages objectAtIndex:i] objectForKey:LABEL])
@@ -170,7 +184,11 @@
             
             pogo.MountPosition = pogo.Position;
             
+            
+            if(numberStacked<numberToStack)numberStacked++;
+            [currentVal addObject:pogo];
         }
+        [mountedObjects addObject:currentVal];
     }
     
     // do stuff with our INIT_OBJECTS (DWPartitionObjectGameObject)    
@@ -203,6 +221,27 @@
 
 }
 
+-(void)reorderMountedObjects
+{
+    for (int i=0;i<[mountedObjects count]; i++)
+    {
+        int qtyForThisStore=[[mountedObjects objectAtIndex:i] count];
+        int numberStacked=0;
+        for (int ic=0;ic<qtyForThisStore;ic++)
+        {
+            DWPartitionObjectGameObject *pogo=[[mountedObjects objectAtIndex:i] objectAtIndex:ic];
+            
+            pogo.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3)); 
+            
+            NSLog(@"pogo position %@ number stacked %d", NSStringFromCGPoint(pogo.Position), numberStacked);
+            
+            
+            if(numberStacked<numberToStack)numberStacked++;
+
+        }
+    }
+}
+
 #pragma mark - touches events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -213,7 +252,7 @@
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
-
+    
     
     [gw Blackboard].PickupObject=nil;
     
@@ -226,26 +265,32 @@
     
     if([gw Blackboard].PickupObject!=nil)
     {
+        DWPartitionObjectGameObject *pogo=(DWPartitionObjectGameObject*)gw.Blackboard.PickupObject;
         [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
         gw.Blackboard.DropObject=nil;
         gw.Blackboard.PickupOffset = location;
         
         // check where our object was - no mount = cage. mount = row.
-        DWPartitionObjectGameObject *pogo = (DWPartitionObjectGameObject*)[gw Blackboard].PickupObject;
         if(pogo.Mount) [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchBeganOnRow withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%f}",pogo.ObjectValue]];
         else [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchBeganOnCagedObject withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%f}",pogo.ObjectValue]];
         
-        previousMount=((DWPartitionObjectGameObject*)gw.Blackboard.PickupObject).Mount;
+        previousMount=pogo.Mount;
         
-        [((DWPartitionObjectGameObject*)gw.Blackboard.PickupObject) handleMessage:kDWunsetMount];
+        [pogo handleMessage:kDWunsetMount];
 
         
         //this is just a signal for the GO to us, pickup object is retained on the blackboard
-        [[gw Blackboard].PickupObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
+        [pogo handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
+        
+        // remove it from being a mounted object -- if it's not an init object
+        if(!pogo.InitedObject && [[mountedObjects objectAtIndex:pogo.IndexPos] containsObject:pogo])
+            [[mountedObjects objectAtIndex:pogo.IndexPos] removeObject:pogo];
+        
+        [self reorderMountedObjects];
         
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
         
-        [[gw Blackboard].PickupObject logInfo:@"this object was picked up" withData:0];
+        [pogo logInfo:@"this object was picked up" withData:0];
     }
 }
 
@@ -320,7 +365,9 @@
                 [gw.Blackboard.PickupObject handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:previousMount forKey:MOUNT] withLogLevel:0];
             }
             else {
-                [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToHome];
+                [pogo handleMessage:kDWmoveSpriteToHome];
+                [[mountedObjects objectAtIndex:pogo.IndexPos] addObject:gw.Blackboard.PickupObject];
+                
                 [gw handleMessage:kDWhighlight andPayload:nil withLogLevel:-1];  
                 
                 // log that we dropped into space
@@ -328,6 +375,8 @@
             }
         }
     }
+    
+    [self reorderMountedObjects];
     
     [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:-1];
     
@@ -454,6 +503,7 @@
     if(initCages) [initCages release];
     if(solutionsDef) [solutionsDef release];
     if(createdRows) [createdRows release];
+    if(mountedObjects) [mountedObjects release];
     [super dealloc];
 }
 

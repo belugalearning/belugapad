@@ -247,6 +247,7 @@
 #define LOCKED @"LOCKED"
 #define LABEL @"LABEL"
 #define QUANTITY @"QUANTITY"
+#define NUMBER_TO_STACK @"NUMBER_TO_STACK"
 
 // dotgrid tool
 

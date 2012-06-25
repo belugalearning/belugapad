@@ -21,5 +21,7 @@
 @property int Length;
 @property (retain) CCLabelTTF *Label;
 @property BOOL InitedObject;
+@property BOOL IsScaled;
+@property int IndexPos;
 
 @end

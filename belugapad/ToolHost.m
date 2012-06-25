@@ -351,8 +351,14 @@ static float kMoveToNextProblemTime=2.0f;
     contentService.currentStaticPdef=pdef;
     
     // TODO: maybe this, and dynamic pdef generation above, should really be coming from ContentService I think? Check with G
-    [loggingService logEvent:BL_PA_START withAdditionalData:[NSDictionary dictionaryWithObject:pdef forKey:@"pdef"]];
-        
+    // TODO: moreover is it writing this out to plist better than storing as json?
+    NSArray *docsPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *tempPDefPath = [[docsPaths objectAtIndex:0] stringByAppendingPathComponent:@"temp-pdef.plist"];
+    [pdef writeToFile:tempPDefPath atomically:YES];
+    [loggingService logEvent:BL_PA_START
+          withAdditionalData:[NSDictionary dictionaryWithObject:[NSData dataWithContentsOfFile:tempPDefPath] forKey:@"pdef"]];
+    
+    
     NSString *toolKey=[pdef objectForKey:TOOL_KEY];
     
     if(currentTool)

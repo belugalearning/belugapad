@@ -18,13 +18,15 @@
 #import "JSONKit.h"
 
 
-NSString * const kLoggingWebServiceBaseURL = @"http://u.zubi.me:3000";
-NSString * const kLoggingWebServicePath = @"/app-logging/upload";
+//NSString * const kLoggingWebServiceBaseURL = @"http://u.zubi.me:3000";
+NSString * const kLoggingWebServiceBaseURL = @"http://192.168.1.68:3000";
+NSString * const kLoggingWebServicePath = @"app-logging/upload";
+uint const kMaxConsecutiveSendFails = 3;
 
 
 @interface LoggingService()
 {
-@private    
+@private 
     NSString *currDir;
     NSString *prevDir;
     
@@ -39,10 +41,13 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
     NSMutableDictionary *userSessionDoc;
     //NSMutableDictionary *journeyMapVisitDoc;
     NSMutableDictionary *problemAttemptDoc;
+    
+    uint consecutiveSendFails;
+    __block BOOL isSending;
 }
 -(void)sendCurrBatch;
 -(void)sendPrevBatches;
--(NSMutableURLRequest*)generateURLRequestWithData:(NSData*)logData;
+-(void)sendBatchData:(NSData*)batchData withCompletionBlock:(void (^)(BL_SEND_LOG_STATUS status))onComplete;
 -(BL_SEND_LOG_STATUS)validateResponse:(id)result
                         forClientData:(NSData*)cData;
 -(NSString*)generateUUID;
@@ -57,6 +62,7 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
     if (self)
     {
         problemAttemptLoggingSetting = paLogSetting;
+        isSending = NO;
         
         httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kLoggingWebServiceBaseURL]];
         opQueue = [[[NSOperationQueue alloc] init] retain];
@@ -70,7 +76,8 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
         if (![fm fileExistsAtPath:currDir])
             [fm createDirectoryAtPath:currDir withIntermediateDirectories:YES attributes:nil error:nil];        
         if (![fm fileExistsAtPath:prevDir])
-            [fm createDirectoryAtPath:prevDir withIntermediateDirectories:YES attributes:nil error:nil];    }
+            [fm createDirectoryAtPath:prevDir withIntermediateDirectories:YES attributes:nil error:nil];
+    }
     return self;
 }
 
@@ -192,7 +199,7 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
     NSData *docData = [doc JSONData];
     if (!docData) return; //error !
     
-    [docData writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, [doc objectForKey:@"id"]]
+    [docData writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, [doc objectForKey:@"_id"]]
                  options:NSAtomicWrite
                    error:nil];
 }
@@ -211,6 +218,7 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
 
 -(void)sendData
 {
+    consecutiveSendFails = 0;
     [self sendCurrBatch];
 }
 
@@ -231,15 +239,15 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
     }
     
     NSMutableData *combinedFiles = [NSMutableData data];
-    BOOL first = YES;
+    
+    BOOL firstFile = YES;
     for (NSString *file in files)
     {
-        first ? first = NO : [combinedFiles appendData:interSep];
+        firstFile ? firstFile = NO : [combinedFiles appendData:interSep];
         [combinedFiles appendData:[file dataUsingEncoding:NSUTF8StringEncoding]];
         [combinedFiles appendData:intraSep];
         [combinedFiles appendData:[NSData dataWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", currDir, file]]];            
-    }
-    
+    }    
     
     // -----  Deflate Compress combinedFiles into NSMutableData: compressedData
     z_stream strm;
@@ -267,17 +275,25 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
     [compressedData setLength: strm.total_out];
     
     
+    // ----- create batchData by preprending current date to compressedData
+    uint batchDate = (uint)[[NSDate date] timeIntervalSince1970];
+    Byte batchDateBytes[4] =  { batchDate & 0xFF, batchDate>>8 & 0xFF, batchDate>>16 & 0xFF, batchDate>>24 & 0xFF,  };
+    
+    NSMutableData *batchData = [NSMutableData dataWithBytes:batchDateBytes length:4];
+    [batchData appendData:compressedData];
+    
+    
     // ----- HTTPRequest Completion Handler
-    void (^onComplete)() = ^(AFHTTPRequestOperation *op, id result)
+    __block LoggingService *trueSelf = self;
+    void (^onComplete)() = ^(BL_SEND_LOG_STATUS status)
     {
-        BL_SEND_LOG_STATUS status = [self validateResponse:result forClientData:compressedData];
         BOOL queuedBatch = NO;
         
         if (status != BL_SLS_SUCCESS)
         {
             // ---- store the compressed data in prevDir for future repeat attempt at saving
             NSString *filePath = [NSString stringWithFormat:@"%@/%d", prevDir, (int)[[NSDate date] timeIntervalSince1970]];
-            queuedBatch = [fm createFileAtPath:filePath contents:compressedData attributes:nil];            
+            queuedBatch = [fm createFileAtPath:filePath contents:batchData attributes:nil];            
             if (!queuedBatch) NSLog(@"Errr.... "); // TODO handle? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
         
@@ -286,15 +302,12 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
         {
             [fm removeItemAtPath:currDir error:nil];
             [fm createDirectoryAtPath:currDir withIntermediateDirectories:NO attributes:nil error:nil];
-            [self sendPrevBatches];
+            [trueSelf sendPrevBatches];
         }
     };    
     
-    // ----- Send compressedData in body of HTTPRequest
-    NSMutableURLRequest *req = [self generateURLRequestWithData:compressedData];
-    AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
-    [opQueue addOperation:reqOp];
-    [reqOp setCompletionBlockWithSuccess:onComplete failure:onComplete];
+    // ----- Send batchData in body of HTTPRequest
+    [self sendBatchData:batchData withCompletionBlock:onComplete];
 }
 
 -(void)sendPrevBatches
@@ -308,9 +321,9 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
     NSData *batch = [NSData dataWithContentsOfFile:batchPath];
     
     // ----- HTTPRequest Completion Handler
-    void (^onComplete)() = ^(AFHTTPRequestOperation *op, id result)
+    __block LoggingService *trueSelf = self;
+    void (^onComplete)() = ^(BL_SEND_LOG_STATUS status)
     {
-        BL_SEND_LOG_STATUS status = [self validateResponse:result forClientData:batch];
         BOOL requeued = NO;
         
         if (status != BL_SLS_SUCCESS)
@@ -325,41 +338,52 @@ NSString * const kLoggingWebServicePath = @"/app-logging/upload";
         if (BL_SLS_SUCCESS == status || requeued)
         {
             [fm removeItemAtPath:batchPath error:NULL];
-            [self sendPrevBatches];
+            //NSLog(@"consecutiveSendFails=%d kMaxConsecutiveSendFails=%d", consecutiveSendFails, kMaxConsecutiveSendFails);
+            if (consecutiveSendFails < kMaxConsecutiveSendFails) [trueSelf sendPrevBatches];
         }
     };
     
-    // -----  Send batch in body of HTTPRequest
-    NSMutableURLRequest *req = [self generateURLRequestWithData:batch];
-    AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
-    [opQueue addOperation:reqOp];
-    [reqOp setCompletionBlockWithSuccess:onComplete failure:onComplete];
+    // -----  Send batch in body of HTTPRequest    
+    [self sendBatchData:batch withCompletionBlock:onComplete];
 }
 
--(NSMutableURLRequest*)generateURLRequestWithData:(NSData*)logData
+-(void)sendBatchData:(NSData*)batchData withCompletionBlock:(void (^)(BL_SEND_LOG_STATUS status))onComplete
 {
     void (^bodyConstructor)(id) = ^(id<AFMultipartFormData>formData) {
-        [formData appendPartWithFileData:logData
-                                    name:@"logData"
-                                fileName:@"log-data.deflate"
+        [formData appendPartWithFileData:batchData
+                                    name:@"batchData"
+                                fileName:@"batch-data.deflate"
                                 mimeType:@"application/base64"];
     };
+    NSMutableURLRequest *req = [httpClient multipartFormRequestWithMethod:@"POST"
+                                                                     path:kLoggingWebServicePath
+                                                               parameters:nil
+                                                constructingBodyWithBlock:bodyConstructor];
     
-    NSNumber *date = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
+    void (^onCompleteWrapper)() = ^(AFHTTPRequestOperation *op, id res)
+    {
+        isSending = NO;
+        BL_SEND_LOG_STATUS status = [self validateResponse:res forClientData:batchData];
+        if (BL_SLS_REQUEST_FAIL == status)
+        {
+            consecutiveSendFails = status == BL_SLS_SUCCESS ? 0 : (consecutiveSendFails + 1);
+        }
+        onComplete(status);
+    };
     
-    return [httpClient multipartFormRequestWithMethod:@"POST"
-                                                 path:@"/app-logging/upload"
-                                           parameters:[NSDictionary dictionaryWithObject:date forKey:@"date"]
-                            constructingBodyWithBlock:bodyConstructor];
-}
+    AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
+    [reqOp setCompletionBlockWithSuccess:onCompleteWrapper failure:onCompleteWrapper];
+    [opQueue addOperation:reqOp];
+    isSending = YES;
+}    
 
--(BL_SEND_LOG_STATUS)validateResponse:(id)result
+-(BL_SEND_LOG_STATUS)validateResponse:(id)res
                         forClientData:(NSData*)cData
 {
-    if ([result isKindOfClass:[NSError class]]) return BL_SLS_REQUEST_FAIL;
+    if ([res isKindOfClass:[NSError class]]) return BL_SLS_REQUEST_FAIL;
     
     // md5 checksum generated by server
-    NSString *serverChecksum = [[[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding] autorelease];
+    NSString *serverChecksum = [[[NSString alloc] initWithData:res encoding:NSUTF8StringEncoding] autorelease];
     
     // ----- md5 checksum of sent client data
     unsigned char md5Data[16];

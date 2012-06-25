@@ -154,7 +154,7 @@
     }
     
     NSDictionary *user = [deviceUsers objectAtIndex:indexPath.row];     
-    cell.textLabel.text = [user objectForKey:@"nick"];
+    cell.textLabel.text = [user objectForKey:@"nickName"];
     cell.imageView.image = nil;
     return cell;
  }

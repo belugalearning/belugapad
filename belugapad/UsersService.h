@@ -7,110 +7,27 @@
 //
 
 #import <Foundation/Foundation.h>
-@class User, ProblemAttempt, CouchLiveQuery, CouchEmbeddedServer;
-
-// see ProblemAttempt#logEvent
-typedef enum {
-    kProblemAttemptError,
-    kProblemAttemptStart,
-    kProblemAttemptUserPause,
-    kProblemAttemptUserResume,
-    kProblemAttemptAppResignActive,
-    kProblemAttemptAppBecomeActive,
-    kProblemAttemptAppEnterBackground,
-    kProblemAttemptAppEnterForeground,
-    kProblemAttemptAbandonApp,
-    kProblemAttemptSuccess,
-    kProblemAttemptExitToMap,
-    kProblemAttemptExitLogOut,
-    kProblemAttemptUserReset,
-    kProblemAttemptSkip,
-    kProblemAttemptSkipWithSuggestion,
-    kProblemAttemptSkipDebug,
-    kProblemAttemptFail,
-    kProblemAttemptFailWithChildProblem,
-    kProblemAttemptUserCommit,
-    kProblemAttemptToolHostPinch,
-    kProblemAttemptNumberPickerNumberFromPicker,
-    kProblemAttemptNumberPickerNumberFromRegister,
-    kProblemAttemptNumberPickerNumberMove,
-    kProblemAttemptNumberPickerNumberDelete,
-    kProblemAttemptMetaQuestionChangeAnswer,
-    kProblemAttemptPartitionToolTouchBeganOnCagedObject,
-    kProblemAttemptPartitionToolTouchMovedMoveBlock,
-    kProblemAttemptPartitionToolTouchBeganOnRow,
-    kProblemAttemptPartitionToolTouchEndedOnRow,
-    kProblemAttemptPartitionToolTouchEndedInSpace,
-    kProblemAttemptPartitionToolTouchBeganOnLockedRow,
-    kProblemAttemptDotGridTouchBeginCreateShape,
-    kProblemAttemptDotGridTouchEndedCreateShape,
-    kProblemAttemptDotGridTouchBeginResizeShape,
-    kProblemAttemptDotGridTouchEndedResizeShape,
-    kProblemAttemptDotGridTouchBeginSelectTile,
-    kProblemAttemptDotGridTouchBeginDeselectTile,
-    kProblemAttemptDotGridTouchEndedInvalidResizeHidden,
-    kProblemAttemptDotGridTouchEndedInvalidResizeExistingTile,
-    kProblemAttemptDotGridTouchEndedInvalidCreateHidden,
-    kProblemAttemptDotGridTouchEndedInvalidCreateExistingTile,
-    kProblemAttemptLongDivisionTouchEndedChangedActiveRow,
-    kProblemAttemptLongDivisionTouchMovedMoveRow,
-    kProblemAttemptLongDivisionTouchEndedIncrementActiveNumber,
-    kProblemAttemptLongDivisionTouchEndedDecrementActiveNumber,
-    kProblemAttemptLongDivisionTouchEndedPanningTopSection,
-    kProblemAttemptTimesTablesTouchBeginHighlightRow,
-    kProblemAttemptTimesTablesTouchBeginHighlightColumn,
-    kProblemAttemptTimesTablesTouchBeginUnhighlightRow,
-    kProblemAttemptTimesTablesTouchBeginUnhighlightColumn,
-    kProblemAttemptTimesTablesTouchBeginRevealAnswer,
-    kProblemAttemptTimesTablesTouchBeginSelectAnswer,
-    kProblemAttemptTimesTablesTouchBeginDeselectAnswer,
-    kProblemAttemptTimesTablesTouchBeginTapDisabledBox,
-    kProblemAttemptNumberLineTouchBeginPickupBubble,
-    kProblemAttemptNumberLineTouchEndedReleaseBubble,
-    kProblemAttemptNumberLineTouchMovedMoveBubble,
-    kProblemAttemptNumberLineTouchMovedMoveLine,
-    kProblemAttemptNumberLineTouchEndedIncreaseSelection,
-    kProblemAttemptNumberLineTouchEndedDecreaseSelection,
-    kProblemAttemptPlaceValueTouchBeginPickupCageObject,
-    kProblemAttemptPlaceValueTouchBeginPickupGridObject,
-    kProblemAttemptPlaceValueTouchEndedDropObjectOnCage,
-    kProblemAttemptPlaceValueTouchEndedDropObjectOnGrid,
-    kProblemAttemptPlaceValueTouchEndedCondenseObject,
-    kProblemAttemptPlaceValueTouchEndedMulchObjects,
-    kProblemAttemptPlaceValueTouchMovedMoveObject,
-    kProblemAttemptPlaceValueTouchMovedMoveObjects,
-    kProblemAttemptPlaceValueTouchBeginSelectObject,
-    kProblemAttemptPlaceValueTouchBeginDeselectObject,
-    kProblemAttemptPlaceValueTouchBeginCountObject,
-    kProblemAttemptPlaceValueTouchBeginUncountObject,
-    kProblemAttemptPlaceValueTouchMovedMoveGrid,
-
-} ProblemAttemptEvent;
+@class User, LoggingService;
 
 @interface UsersService : NSObject
 
 @property (readonly, retain, nonatomic) NSString *installationUUID;
-@property (retain, nonatomic) User *currentUser;
-@property (readonly, retain) NSString *currentProblemAttemptID;
+@property (retain, nonatomic) NSDictionary *currentUser;
 
--(id)initWithProblemPipeline:(NSString*)source;
+-(id)initWithProblemPipeline:(NSString*)source
+           andLoggingService:(LoggingService*)ls;
 
--(NSArray*)deviceUsersByLastSessionDate;
 -(NSArray*)deviceUsersByNickName;
 
 -(BOOL) nickNameIsAvailable:(NSString*)nickName;
 
--(User*) getNewUserWithNickName:(NSString*)nickName
-                    andPassword:(NSString*)password
-                   andZubiColor:(NSData*)color // rgba
-              andZubiScreenshot:(UIImage*)image;
+-(NSDictionary*) getNewUserWithNickName:(NSString*)nickName
+                            andPassword:(NSString*)password
+                           andZubiColor:(NSData*)color // rgba
+                      andZubiScreenshot:(UIImage*)image;
 
--(User*) userMatchingNickName:(NSString*)nickName
-                  andPassword:(NSString*)password;
-
--(void)startProblemAttempt;
--(void)logProblemAttemptEvent:(ProblemAttemptEvent)event
-             withOptionalNote:(NSString*)note;
+-(NSDictionary*) userMatchingNickName:(NSString*)nickName
+                          andPassword:(NSString*)password;
 
 -(void)addCompletedNodeId:(NSString*)nodeId;
 -(BOOL)hasCompletedNodeId:(NSString*)nodeId;

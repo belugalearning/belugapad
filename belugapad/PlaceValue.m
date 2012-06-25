@@ -8,6 +8,7 @@
 
 #import "PlaceValue.h"
 #import "global.h"
+#import "LoggingService.h"
 #import "BLMath.h"
 #import "SimpleAudioEngine.h"
 #import "IceDiv.h"
@@ -22,6 +23,7 @@
 @interface PlaceValue()
 {
 @private
+    LoggingService *loggingService;
     ContentService *contentService;
     UsersService *usersService;
 }
@@ -825,7 +827,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         [countLabelBlock setPosition:pos];
         [countLayer addChild:countLabelBlock];
         
-        [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchBeginCountObject withOptionalNote:nil];
+        [loggingService logEvent:BL_PA_PV_TOUCH_BEGIN_COUNT_OBJECT withAdditionalData:nil];
         
         if(fadeCount)
         {
@@ -837,7 +839,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     }
     else if(showCountOnBlock && !fadeCount && gw.Blackboard.SelectedObjects.count < lastCount)
     {
-        [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchBeginUncountObject withOptionalNote:nil];
+        [loggingService logEvent:BL_PA_PV_TOUCH_BEGIN_UNCOUNT_OBJECT withAdditionalData:nil];
         [countLayer removeAllChildrenWithCleanup:YES];
     }
     lastCount = gw.Blackboard.SelectedObjects.count;
@@ -1072,13 +1074,13 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 
 -(BOOL)doCondenseFromLocation:(CGPoint)location
 {
-    [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchEndedCondenseObject withOptionalNote:nil];
+    [loggingService logEvent:BL_PA_PV_TOUCH_END_CONDENSE_OBJECT withAdditionalData:nil];
     return [self doTransitionWithIncrement:-1];
 }
 
 -(BOOL)doMulchFromLocation:(CGPoint)location
 {
-    [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchEndedMulchObjects withOptionalNote:nil];
+    [loggingService logEvent:BL_PA_PV_TOUCH_END_MULCH_OBJECTS withAdditionalData:nil];
     return [self doTransitionWithIncrement:1];
 }
 
@@ -1215,8 +1217,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         float objValue=[[[[gw Blackboard].PickupObject store] objectForKey:OBJECT_VALUE]floatValue];
         
         // log whether the user hit a cage or grid item
-        if(isCage)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchBeginPickupCageObject withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%d}",objValue]];
-        else [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchBeginPickupGridObject withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%d}",objValue]];
+        [loggingService logEvent:(isCage ? BL_PA_PV_TOUCH_BEGIN_PICKUP_CAGE_OBJECT : BL_PA_PV_TOUCH_BEGIN_PICKUP_GRID_OBJECT)
+            withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:objValue] forKey:@"objValue"]];
         
         // if there's a pickup sprite defined, set the object to use it now
         if([[[gw Blackboard].PickupObject store] objectForKey:PICKUP_SPRITE_FILENAME] && !gw.Blackboard.inProblemSetup)
@@ -1397,11 +1399,13 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     // log out if blocks are moved
     if(hasMovedBlock)
     {
-        float objValue=[[[[gw Blackboard].PickupObject store] objectForKey:OBJECT_VALUE]floatValue];
-        if([gw.Blackboard.SelectedObjects count]<=1)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchMovedMoveObject withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%d}",objValue]];
-        else if([gw.Blackboard.SelectedObjects count]>1)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchMovedMoveObjects withOptionalNote:[NSString stringWithFormat:@"{\"objectvalue\":%d}",objValue]];
+        NSNumber *objValue = [[[gw Blackboard].PickupObject store] objectForKey:OBJECT_VALUE];
+        
+        [loggingService logEvent:([gw.Blackboard.SelectedObjects count] > 1 ? BL_PA_PV_TOUCH_MOVE_MOVE_OBJECTS : BL_PA_PV_TOUCH_MOVE_MOVE_OBJECT)
+         withAdditionalData:[NSDictionary dictionaryWithObject:objValue forKey:@"objectValue"]];
     }
-    if(hasMovedLayer)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchMovedMoveGrid withOptionalNote:nil];
+    
+    if(hasMovedLayer) [loggingService logEvent:BL_PA_PV_TOUCH_MOVE_MOVE_GRID withAdditionalData:nil];
     
     //do mulching / condensing
     if (inMulchArea) {
@@ -1517,8 +1521,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 [[gw Blackboard].PickupObject logInfo:@"this object was mounted" withData:0];
                 [[gw Blackboard].DropObject logInfo:@"mounted object on this go" withData:0];
                 
-                if(isCage)[usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchEndedDropObjectOnCage withOptionalNote:nil];
-                else [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchEndedDropObjectOnGrid withOptionalNote:nil];
+                [loggingService logEvent:(isCage ? BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_CAGE : BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_GRID)
+                    withAdditionalData:nil];
                 
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
                 

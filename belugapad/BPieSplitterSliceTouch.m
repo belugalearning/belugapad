@@ -10,6 +10,7 @@
 #import "DWPieSplitterSliceGameObject.h"
 #import "DWPieSplitterPieGameObject.h"
 #import "global.h"
+#import "LoggingService.h"
 #import "ToolConsts.h"
 #import "ToolHost.h"
 #import "BLMath.h"

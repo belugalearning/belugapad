@@ -38,7 +38,7 @@
     
 }
 
--(void)draw
+-(void)drawL:(int)z
 {
 //    CGPoint lp=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];
 //    

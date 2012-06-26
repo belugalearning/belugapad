@@ -23,7 +23,7 @@
     ccColor4B stepColours[10];
 }
 
--(void)draw;
+-(void)draw:(int)z;
 -(void)setup;
 
 @end

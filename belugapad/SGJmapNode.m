@@ -59,11 +59,11 @@
     [self.NodeSelectComponent doUpdate:delta];
 }
 
--(void)draw
+-(void)draw:(int)z
 {
     if(self.Visible)
     {
-        [self.NodeRenderComponent draw];
+        [self.NodeRenderComponent draw:z];
     }
 }
 

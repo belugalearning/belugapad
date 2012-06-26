@@ -48,42 +48,64 @@ static int shadowSteps=10;
     
 }
 
--(void)draw
+-(void)draw:(int)z
 {
     CGPoint myWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];
     
-    //lines to inter mastery nodes
-    for(id<Transform> imnode in ParentGO.ConnectToMasteryNodes) {
-        //world space of their pos
-        CGPoint tWP=[ParentGO.RenderBatch.parent convertToWorldSpace:imnode.Position];
-        
-        ccDrawColor4B(userCol.r, userCol.g, userCol.b, userCol.a);
-        ccDrawLine(myWorldPos, tWP);
-        
-    }
-    
-    //upate position of all polys
-    CGPoint adjPoints[shadowSteps*sortedChildren.count];
-    for (int i=0; i<(shadowSteps*sortedChildren.count); i++) {
-        adjPoints[i]=[BLMath AddVector:myWorldPos toVector:allPerimPoints[i]];
-    }
-    
-    //perim polys -- overlapping
-    for(int ip=0; ip<shadowSteps; ip++)
+    if(z==0)
     {
-        CGPoint *first=&adjPoints[(ip==0) ? 0 : (ip*shadowSteps)-1];
-        ccDrawFilledPoly(first, sortedChildren.count, ccc4FFromccc4B(stepColours[ip]));
-    }
-    
-
-    for (id<Transform> prnode in ParentGO.ChildNodes) {
-        //world space pos of child node
-        CGPoint theirWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:prnode.Position];
+        //upate position of all polys
+        CGPoint adjPoints[shadowSteps*sortedChildren.count];
+        for (int i=0; i<(shadowSteps*sortedChildren.count); i++) {
+            adjPoints[i]=[BLMath AddVector:myWorldPos toVector:allPerimPoints[i]];
+        }
         
-        //draw prereq path to this node        
-        ccDrawColor4B(userHighCol.r, userHighCol.g, userHighCol.b, userHighCol.a);
-        ccDrawLine(myWorldPos, theirWorldPos);        
-    }    
+        //perim polys -- overlapping
+        for(int ip=0; ip<shadowSteps; ip++)
+        {
+            CGPoint *first=&adjPoints[(ip==0) ? 0 : (ip*shadowSteps)-1];
+            ccDrawFilledPoly(first, sortedChildren.count, ccc4FFromccc4B(stepColours[ip]));
+        }
+        
+        
+        for (id<Transform> prnode in ParentGO.ChildNodes) {
+            //world space pos of child node
+            CGPoint theirWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:prnode.Position];
+            
+            //draw prereq path to this node        
+            ccDrawColor4B(userHighCol.r, userHighCol.g, userHighCol.b, userHighCol.a);
+            ccDrawLine(myWorldPos, theirWorldPos);        
+        } 
+    }
+    else if (z==1)
+    {
+        
+        //lines to inter mastery nodes
+        for(id<Transform> imnode in ParentGO.ConnectToMasteryNodes) {
+            //world space of their pos
+            CGPoint tWP=[ParentGO.RenderBatch.parent convertToWorldSpace:imnode.Position];
+            
+            ccDrawColor4B(userCol.r, userCol.g, userCol.b, userCol.a);
+            ccDrawLine(myWorldPos, tWP);
+            
+            float width=10.0f;
+            float x1=myWorldPos.x;
+            float y1=myWorldPos.y;
+            float x2=tWP.x;
+            float y2=tWP.y;
+            
+            float L=sqrtf((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+            
+            float x1p=x1+width * (y2-y1) / L;
+            float x2p=x2+width * (y2-y1) / L;
+            float y1p=y1+width * (x1-x2) / L;
+            float y2p=y2+width * (x1-x2) / L;
+            
+            ccDrawColor4B(255, 255, 255, 255);
+            ccDrawLine(ccp(x1p, y1p), ccp(x2p, y2p));
+            
+        }    
+    }
 }
 
 -(void)setup

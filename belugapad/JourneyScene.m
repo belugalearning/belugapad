@@ -35,6 +35,8 @@
 
 #import "JSONKit.h"
 
+#define DRAW_DEPTH 2
+
 static float kNodeScale=0.5f;
 //static CGPoint kStartMapPos={-3576, -2557};
 static CGPoint kStartMapPos={-611, 3713};
@@ -415,10 +417,13 @@ typedef enum {
 #pragma mark - draw
 
 -(void)draw
-{    
-    for(id go in [gw AllGameObjects]) {
-        if([go conformsToProtocol:@protocol(Drawing)])
-            [((id<Drawing>)go) draw];
+{
+    for (int i=0; i<DRAW_DEPTH; i++)
+    {
+        for(id go in [gw AllGameObjects]) {
+            if([go conformsToProtocol:@protocol(Drawing)])
+                [((id<Drawing>)go) draw:i];
+        }
     }
 }
 

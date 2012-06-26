@@ -55,7 +55,7 @@
 	<key>SOLUTION</key>
 	<dict>
 		<key>SOLUTION_TYPE</key>
-		<string>COUNT_SEQUENCE</string>
+		<string>TOTAL_COUNT_AND_COUNT_SEQUENCE</string>
 		<key>SOLUTION_VALUE</key>
 		<integer>5</integer>
 	</dict>

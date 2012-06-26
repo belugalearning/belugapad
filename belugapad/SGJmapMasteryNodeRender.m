@@ -80,15 +80,16 @@ static int shadowSteps=10;
     else if (z==1)
     {
         
+        ccColor4F f4=ccc4FFromccc4B(userCol);
+        
         //lines to inter mastery nodes
         for(id<Transform> imnode in ParentGO.ConnectToMasteryNodes) {
             //world space of their pos
             CGPoint tWP=[ParentGO.RenderBatch.parent convertToWorldSpace:imnode.Position];
             
-            ccDrawColor4B(userCol.r, userCol.g, userCol.b, userCol.a);
-            ccDrawLine(myWorldPos, tWP);
+//            ccDrawColor4B(userCol.r, userCol.g, userCol.b, userCol.a);
+//            ccDrawLine(myWorldPos, tWP);
             
-            float width=10.0f;
             float x1=myWorldPos.x;
             float y1=myWorldPos.y;
             float x2=tWP.x;
@@ -96,13 +97,18 @@ static int shadowSteps=10;
             
             float L=sqrtf((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
             
-            float x1p=x1+width * (y2-y1) / L;
-            float x2p=x2+width * (y2-y1) / L;
-            float y1p=y1+width * (x1-x2) / L;
-            float y2p=y2+width * (x1-x2) / L;
-            
-            ccDrawColor4B(255, 255, 255, 255);
-            ccDrawLine(ccp(x1p, y1p), ccp(x2p, y2p));
+            for (float width=-5; width<6; width+=0.75f)
+            {
+                float x1p=x1+width * (y2-y1) / L;
+                float x2p=x2+width * (y2-y1) / L;
+                float y1p=y1+width * (x1-x2) / L;
+                float y2p=y2+width * (x1-x2) / L;
+                
+
+                ccDrawColor4F(f4.r, f4.g, f4.b, 1.0f);
+                //ccDrawColor4B(userCol.r, userCol.g, userCol.b, userCol.a);
+                ccDrawLine(ccp(x1p, y1p), ccp(x2p, y2p));
+            }
             
         }    
     }
@@ -256,9 +262,9 @@ static int shadowSteps=10;
     CGPoint pmid=ccp(xmean,ymean);
     
     ccColor4B stepColour=userCol;
-    stepColour.r=stepColour.r-40;
-    stepColour.g=stepColour.g-40;
-    stepColour.b=stepColour.b-40;
+    stepColour.r=stepColour.r-36;
+    stepColour.g=stepColour.g-36;
+    stepColour.b=stepColour.b-36;
     if(stepColour.r>userCol.r)stepColour.r=0;
     if(stepColour.g>userCol.g)stepColour.g=0;
     if(stepColour.b>userCol.b)stepColour.b=0;

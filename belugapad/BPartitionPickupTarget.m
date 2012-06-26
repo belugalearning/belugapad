@@ -12,13 +12,13 @@
 #import "DWPartitionObjectGameObject.h"
 #import "DWPartitionRowGameObject.h"
 #import "AppDelegate.h"
-#import "UsersService.h"
+#import "LoggingService.h"
 
 @interface BPartitionPickupTarget()
 {
 @private
+    LoggingService *loggingService;
     ContentService *contentService;
-    UsersService *usersService;
 }
 @end
 
@@ -27,8 +27,8 @@
 -(BPartitionPickupTarget *)initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    loggingService = ac.loggingService;
     contentService = ac.contentService;
-    usersService = ac.usersService;
     
     self=(BPartitionPickupTarget *)[super initWithGameObject:aGameObject withData:data];
     pogo=(DWPartitionObjectGameObject*)gameObject;
@@ -38,10 +38,7 @@
 -(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload
 {
     if(messageType==kDWareYouAPickupTarget)
-    {
-
-        
-        
+    {   
         CGRect boundingBox = CGRectZero;
         for(int i=0;i<pogo.BaseNode.children.count;i++)
         {
@@ -61,11 +58,9 @@
         } 
         else if(CGRectContainsPoint(boundingBox, [pogo.BaseNode convertToNodeSpace:hitLoc]) && pogo.Mount.Locked)
         {
-            [usersService logProblemAttemptEvent:kProblemAttemptPartitionToolTouchBeganOnLockedRow withOptionalNote:nil];
+            [loggingService logEvent:BL_PA_NB_TOUCH_BEGIN_ON_LOCKED_ROW withAdditionalData:nil];
         }
     }
-    
-
 }
 
 @end

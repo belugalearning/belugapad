@@ -10,6 +10,7 @@
 #import "DWPieSplitterSliceGameObject.h"
 #import "DWPieSplitterPieGameObject.h"
 #import "global.h"
+#import "LoggingService.h"
 #import "ToolConsts.h"
 #import "ToolHost.h"
 #import "BLMath.h"
@@ -66,7 +67,8 @@
 
 -(void)checkTouch:(CGPoint)hitLoc
 {
-    if(CGRectContainsPoint(slice.mySprite.boundingBox, [slice.mySprite.parent convertToNodeSpace:hitLoc]))
+    // if the slice doesn't have a container it can respond to this message
+    if(CGRectContainsPoint(slice.mySprite.boundingBox, [slice.mySprite.parent convertToNodeSpace:hitLoc]) && !slice.myCont)
     {
         gameWorld.Blackboard.PickupObject=slice;
     

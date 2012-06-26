@@ -24,5 +24,6 @@
 -(void)setSpritePos:(BOOL) withAnimation;
 -(void)moveSpriteHome;
 -(void)resetSpriteToMount;
+-(void)resetHalfScale;
 
 @end

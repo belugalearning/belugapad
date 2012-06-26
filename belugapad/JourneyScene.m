@@ -16,6 +16,7 @@
 #import "BLMath.h"
 
 #import "AppDelegate.h"
+#import "LoggingService.h"
 #import "ContentService.h"
 #import "UsersService.h"
 
@@ -33,6 +34,8 @@
 #import "SGJmapNodeSelect.h"
 
 #import "JSONKit.h"
+
+#define DRAW_DEPTH 2
 
 static float kNodeScale=0.5f;
 //static CGPoint kStartMapPos={-3576, -2557};
@@ -54,7 +57,8 @@ typedef enum {
 
 @interface JourneyScene()
 {
-    @private
+@private
+    LoggingService *loggingService;
     ContentService *contentService;
 
     NSMutableArray *kcmNodes;
@@ -118,8 +122,12 @@ typedef enum {
         
         scale=1.0f;
         
-        contentService = ((AppController*)[[UIApplication sharedApplication] delegate]).contentService; 
-        usersService = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        loggingService = ac.loggingService;
+        usersService = ac.usersService;
+        contentService = ac.contentService;
+        
+        [loggingService logEvent:BL_JS_INIT withAdditionalData:nil];
         
         debugEnabled=!((AppController*)[[UIApplication sharedApplication] delegate]).ReleaseMode;
         if(debugEnabled) [self buildDebugMenu];
@@ -207,6 +215,11 @@ typedef enum {
     [self parseNodesForEndPoints];
     
     NSLog(@"completed end point parse");
+    
+    //setup rendering -- needs all node connections built
+    [gw handleMessage:kSGreadyRender andPayload:nil withLogLevel:0];
+    NSLog(@"send readyRender message");
+    
     NSLog(@"end build");
             
 //    //reposition if previous node
@@ -224,7 +237,7 @@ typedef enum {
 - (void)createLayers
 {
     //base colour layer
-    CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(54, 59, 59, 255) width:lx height:ly];
+    CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(35, 35, 35, 255) width:lx height:ly];
     [self addChild:cLayer z:-1];
     [cLayer release];
     
@@ -304,7 +317,7 @@ typedef enum {
             newnode=[[[SGJmapNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
             
             //todo: for now, if there are pipelines on the node, set it complete
-            if(n.pipelines.count>0)
+            if([usersService hasCompletedNodeId:n._id])
             {
                 ((SGJmapNode*)newnode).EnabledAndComplete=YES;
             }
@@ -319,6 +332,7 @@ typedef enum {
 
 -(void)parseNodesForEndPoints
 {
+    //mastery>child relations
     NSArray *prereqs=[contentService relationMembersForName:@"Mastery"];
     for (NSArray *pair in prereqs) {
         SGJmapNode *leftgo=[self gameObjectForCouchId:[pair objectAtIndex:0]];
@@ -336,6 +350,23 @@ typedef enum {
             NSLog(@"could not find both end points for %@ and %@", [pair objectAtIndex:0], [pair objectAtIndex:1]);
         }
     }
+    
+    //mastery>mastery relations
+    NSArray *ims=[contentService relationMembersForName:@"InterMastery"];
+    for(NSArray *pair in ims) {
+        SGJmapMasteryNode *leftgo=[self gameObjectForCouchId:[pair objectAtIndex:0]];
+        SGJmapMasteryNode *rightgo=[self gameObjectForCouchId:[pair objectAtIndex:1]];
+        
+        if(leftgo && rightgo)
+        {
+            [leftgo.ConnectFromMasteryNodes addObject:rightgo];
+            [rightgo.ConnectToMasteryNodes addObject:leftgo];
+        }
+        else {
+            NSLog(@"could not find both mastery nodes for %@ and %@", [pair objectAtIndex:0], [pair objectAtIndex:1]);
+        }
+    }
+
 }
 
 -(id)gameObjectForCouchId:(NSString*)findId
@@ -386,10 +417,13 @@ typedef enum {
 #pragma mark - draw
 
 -(void)draw
-{    
-    for(id go in [gw AllGameObjects]) {
-        if([go conformsToProtocol:@protocol(Drawing)])
-            [((id<Drawing>)go) draw];
+{
+    for (int i=0; i<DRAW_DEPTH; i++)
+    {
+        for(id go in [gw AllGameObjects]) {
+            if([go conformsToProtocol:@protocol(Drawing)])
+                [((id<Drawing>)go) draw:i];
+        }
     }
 }
 
@@ -560,7 +594,7 @@ typedef enum {
     
     if(CGRectContainsPoint(logOutBtnBounds, l))
     {
-        [usersService logProblemAttemptEvent:kProblemAttemptExitLogOut withOptionalNote:nil];
+        [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
         usersService.currentUser = nil;
         [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
         return;

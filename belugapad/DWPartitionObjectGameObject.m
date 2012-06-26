@@ -20,6 +20,8 @@
 @synthesize Length;
 @synthesize Label;
 @synthesize InitedObject;
+@synthesize IsScaled;
+@synthesize IndexPos;
 
 -(DWGameObject *) initWithGameWorld:(DWGameWorld*)aGameWorld
 {

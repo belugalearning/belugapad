@@ -43,7 +43,7 @@
     @property CGPoint Position;
     @property BOOL Visible;
 
-    -(void)draw;
+-(void)draw:(int)z;
 
 @end
 

@@ -7,13 +7,12 @@
 //
 
 #import "SelectUserViewController.h"
+#import "global.h"
 #import "cocos2d.h"
 #import "AppDelegate.h"
+#import "LoggingService.h"
 #import "UsersService.h"
 #import "EditZubi.h"
-#import "User.h"
-
-#import <CouchCocoa/CouchCocoa.h>
 
 @interface SelectUserViewController ()
 {
@@ -59,6 +58,8 @@
     
     app = (AppController*)[[UIApplication sharedApplication] delegate];
     usersService = app.usersService;
+    
+    [app.loggingService logEvent:BL_SUVC_LOAD withAdditionalData:nil];
     
     [self buildSelectUserView];
     [self buildEditUserView];
@@ -152,9 +153,9 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    User *user = [deviceUsers objectAtIndex:indexPath.row];     
-    cell.textLabel.text = user.nickName;
-    cell.imageView.image = user.zubiScreenshot;
+    NSDictionary *user = [deviceUsers objectAtIndex:indexPath.row];     
+    cell.textLabel.text = [user objectForKey:@"nickName"];
+    cell.imageView.image = nil;
     return cell;
  }
 
@@ -162,7 +163,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    User *user = [deviceUsers objectAtIndex:indexPath.row];
+    NSDictionary *user = [deviceUsers objectAtIndex:indexPath.row];
     usersService.currentUser = user;
     [self.view removeFromSuperview];
     [app proceedFromLoginViaIntro:NO];
@@ -291,15 +292,15 @@
     NSString *screenshotPath = [layer takeScreenshot];
     
     UIImage *image = [UIImage imageWithContentsOfFile:screenshotPath];
-    User *newUser = [usersService getNewUserWithNickName:newUserNameTF.text
+    NSDictionary *newUser = [usersService getNewUserWithNickName:newUserNameTF.text
                                              andPassword:newUserPasswordTF.text    
                                             andZubiColor:colorWheel.lastColorRGBAData
                                        andZubiScreenshot:image];
     */
-    User *newUser = [usersService getNewUserWithNickName:newUserNameTF.text
-                                             andPassword:newUserPasswordTF.text    
-                                            andZubiColor:nil
-                                       andZubiScreenshot:nil];
+    NSDictionary *newUser = [usersService getNewUserWithNickName:newUserNameTF.text
+                                                     andPassword:newUserPasswordTF.text    
+                                                    andZubiColor:nil
+                                               andZubiScreenshot:nil];
     usersService.currentUser = newUser;
     [self.view removeFromSuperview];
     [app proceedFromLoginViaIntro:YES];
@@ -361,7 +362,7 @@
 
 - (void) handleLoadExistingUserClicked:(id*)button
 {
-    User *usr = [usersService userMatchingNickName:existingUserNameTF.text  andPassword:existingUserPasswordTF.text];    
+    NSDictionary *usr = [usersService userMatchingNickName:existingUserNameTF.text  andPassword:existingUserPasswordTF.text];    
     if (usr == nil)
     {
         UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"

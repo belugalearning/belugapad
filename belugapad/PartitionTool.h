@@ -33,8 +33,7 @@
     NSArray *solutionsDef;
     
     NSMutableArray *createdRows;
-    NSMutableArray *createdObjects;
-    NSMutableArray *createdCages;
+    NSMutableArray *mountedObjects;
     
     ProblemRejectMode rejectMode;
     ProbjemRejectType rejectType;
@@ -44,12 +43,14 @@
     BOOL autoMoveToNextProblem;
     
     BOOL hasMovedBlock;
+    int numberToStack;
     
     DWPartitionRowGameObject *previousMount;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)populateGW;
+-(void)reorderMountedObjects;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

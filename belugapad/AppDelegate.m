@@ -6,42 +6,40 @@
 //  Copyright __MyCompanyName__ 2011. All rights reserved.
 //
 
-#import "ZubiIntro.h"
-#import "JourneyScene.h"
-#import "global.h"
-#import "ContentService.h"
-#import "ToolHost.h"
-
-#import "cocos2d.h"
-
 #import "AppDelegate.h"
-
+#import "global.h"
+#import "cocos2d.h"
+#import "LoggingService.h"
+#import "ContentService.h"
 #import "UsersService.h"
 #import "SelectUserViewController.h"
 #import "LoadingViewController.h"
-#import <CouchCocoa/CouchCocoa.h>
+#import "ZubiIntro.h"
+#import "JourneyScene.h"
+#import "ToolHost.h"
 
 @interface AppController()
 {
 @private
     SelectUserViewController *selectUserViewController;
 }
-
+@property (nonatomic, readwrite) LoggingService *loggingService;
 @property (nonatomic, readwrite) ContentService *contentService;
 @property (nonatomic, readwrite) UsersService *usersService;
-
 @end
+
 
 @implementation AppController
 
 @synthesize window=window_, navController=navController_, director=director_;
 
+@synthesize loggingService;
+@synthesize contentService;
+@synthesize usersService;
+
 @synthesize LocalSettings;
 @synthesize ReleaseMode;
-
-@synthesize contentService;
-
-@synthesize usersService;
+@synthesize IsIpad1;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -55,41 +53,38 @@
     [self.window makeKeyAndVisible];
     [lvc release];
     
-    CouchEmbeddedServer* server = [CouchEmbeddedServer sharedInstance];
+    // Try to use CADisplayLink director
+    // if it fails (SDK < 3.1) use the default director
     
-    // install canned copy of any databases that don't yet exist (i.e. all of them on first app launch, hopefully none of them afterwards)
-    [server.couchbase installDefaultDatabase:BUNDLE_FULL_PATH(@"/canned-dbs/may2012-users.couch")];    
-    [server.couchbase installDefaultDatabase:BUNDLE_FULL_PATH(@"/canned-dbs/may2012-logging.couch")];
+    //todo: no cc2 equiv
+    //if( ! [CCDirector setDirectorType:kCCDirectorTypeDisplayLink] )
+    //    [CCDirector setDirectorType:kCCDirectorTypeDefault];
     
-    [server start: ^{
-        NSAssert(!server.error, @"Error launching Couchbase: %@", server.error);
-        
-        // Try to use CADisplayLink director
-        // if it fails (SDK < 3.1) use the default director
-        
-        //todo: no cc2 equiv
-        //if( ! [CCDirector setDirectorType:kCCDirectorTypeDisplayLink] )
-        //    [CCDirector setDirectorType:kCCDirectorTypeDefault];
-        
-        //load local settings
-        self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
-        
-        usersService = [[[UsersService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]] retain];
-        contentService = [[[ContentService alloc] initWithProblemPipeline:[self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"]] retain];
-        
-        //are we in release mode
-        NSNumber *relmode=[self.LocalSettings objectForKey:@"RELEASE_MODE"];
-        if(relmode) if ([relmode boolValue]) self.ReleaseMode=YES;
-        
-        //do cocos stuff
-        //director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
-        //[director_ enableRetinaDisplay:NO];
-        
-        selectUserViewController = [[SelectUserViewController alloc] init];
-        
-        [self.window addSubview:selectUserViewController.view];
-        [self.window makeKeyAndVisible];
-    }];
+    //load local settings
+    self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
+    
+    NSString *pl = [self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"];
+    BL_LOGGING_SETTING paLogging = [@"DATABASE" isEqualToString:pl] ? BL_LOGGING_ENABLED : BL_LOGGING_DISABLED;
+    
+    loggingService = [[LoggingService alloc] initWithProblemAttemptLoggingSetting:paLogging];
+    contentService = [[ContentService alloc] initWithProblemPipeline:pl];
+    usersService = [[UsersService alloc] initWithProblemPipeline:pl andLoggingService:self.loggingService];
+    
+    
+    [self.loggingService logEvent:BL_APP_START withAdditionalData:nil];
+    
+    //are we in release mode
+    NSNumber *relmode=[self.LocalSettings objectForKey:@"RELEASE_MODE"];
+    if(relmode) if ([relmode boolValue]) self.ReleaseMode=YES;
+    
+    //do cocos stuff
+    //director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
+    //[director_ enableRetinaDisplay:NO];
+    
+    selectUserViewController = [[SelectUserViewController alloc] init];
+    
+    [self.window addSubview:selectUserViewController.view];
+    [self.window makeKeyAndVisible];
     
     return YES;
 }
@@ -99,6 +94,9 @@
     //no purpose in getting this -- it's not used
     //NSDictionary *launchOptions=launchOptionsCache;
     
+    self.IsIpad1 = !(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad &&
+                    [UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]);
+    
     director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
     
 	// Create an CCGLView with a RGB565 color buffer, and a depth buffer of 0-bits
@@ -107,8 +105,8 @@
 								   depthFormat:0	//GL_DEPTH_COMPONENT24_OES
 							preserveBackbuffer:NO
 									sharegroup:nil
-								 multiSampling:NO
-							   numberOfSamples:0];
+								 multiSampling:!self.IsIpad1
+							   numberOfSamples:(self.IsIpad1 ? 0 : 4)];
     
 	director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
     
@@ -197,7 +195,7 @@
 // getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
-    [usersService logProblemAttemptEvent:kProblemAttemptAppResignActive withOptionalNote:nil];
+    [loggingService logEvent:BL_APP_RESIGN_ACTIVE withAdditionalData:nil];
 	if( [navController_ visibleViewController] == director_ )
 		[director_ pause];
 }
@@ -205,21 +203,21 @@
 // call got rejected
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {
-    [usersService logProblemAttemptEvent:kProblemAttemptAppBecomeActive withOptionalNote:nil];
+    [loggingService logEvent:BL_APP_BECOME_ACTIVE withAdditionalData:nil];
 	if( [navController_ visibleViewController] == director_ )
 		[director_ resume];
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
-    [usersService logProblemAttemptEvent:kProblemAttemptAppEnterBackground withOptionalNote:nil];
+    [loggingService logEvent:BL_APP_ENTER_BACKGROUND withAdditionalData:nil];
 	if( [navController_ visibleViewController] == director_ )
 		[director_ stopAnimation];
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application
 {
-    [usersService logProblemAttemptEvent:kProblemAttemptAppEnterForeground withOptionalNote:nil];
+    [loggingService logEvent:BL_APP_ENTER_FOREGROUND withAdditionalData:nil];
 	if( [navController_ visibleViewController] == director_ )
 		[director_ startAnimation];
 }
@@ -227,12 +225,14 @@
 // application will be killed
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+    [loggingService logEvent:BL_APP_ABANDON withAdditionalData:nil];
 	CC_DIRECTOR_END();
 }
 
 // purge memory
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
+    [loggingService logEvent:BL_APP_MEMORY_WARNING withAdditionalData:nil];
 	[[CCDirector sharedDirector] purgeCachedData];
 }
 
@@ -244,6 +244,7 @@
 
 - (void) dealloc
 {
+    [loggingService release];
     [contentService release];
     [usersService release];
     

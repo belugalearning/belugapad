@@ -64,9 +64,15 @@
             cont.myText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
             [cont.myText setPosition:ccp(50,40)];
             [cont.mySpriteTop addChild:cont.myText];
+            if(gameWorld.Blackboard.inProblemSetup)
+            {
+                [cont.myText setTag:1];
+                [cont.myText setOpacity:0];
+            }
         }
+        if(cont.ScaledUp && cont.myText.visible==NO)[cont.myText setVisible:YES];
         if(cont.ScaledUp)[cont.myText setString:cont.textString];
-        else [cont.mySpriteTop removeChild:cont.myText cleanup:YES];
+        else [cont.myText setVisible:NO];
     }
     if(messageType==kDWmoveSpriteToPosition)
     {
@@ -109,11 +115,17 @@
     cont.mySpriteTop=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileNameTop]))];
     cont.mySpriteMid=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileNameMid]))];
     cont.mySpriteBot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileNameBot]))];
+    [cont.mySpriteTop setAnchorPoint:ccp(0.5,-1)];    
+    [cont.mySpriteMid setAnchorPoint:ccp(0.5,-1)];
+    [cont.mySpriteBot setAnchorPoint:ccp(0.5,-1)];
     if(!cont.ScaledUp)[cont.BaseNode setScale:0.5f];
     else [cont.BaseNode setScale:1.0f];
 
-    [cont.mySpriteTop setPosition:ccp(0,(cont.mySpriteMid.contentSize.height)-(cont.mySpriteTop.contentSize.height/2))];
-    [cont.mySpriteBot setPosition:ccp(0,0-(cont.mySpriteMid.contentSize.height/2)-(cont.mySpriteTop.contentSize.height/2))];
+    //[cont.mySpriteTop setPosition:ccp(0,(cont.mySpriteMid.contentSize.height)-(cont.mySpriteTop.contentSize.height/2))];
+    //[cont.mySpriteBot setPosition:ccp(0,0-(cont.mySpriteMid.contentSize.height/2)-(cont.mySpriteTop.contentSize.height/2))];
+    
+    [cont.mySpriteMid setPosition:ccp(0,-50-(cont.mySpriteTop.contentSize.height))];
+    [cont.mySpriteBot setPosition:ccp(0,-(cont.mySpriteTop.contentSize.height+(cont.mySpriteMid.contentSize.height*cont.mySpriteMid.scaleY)))];
     
         if(gameWorld.Blackboard.inProblemSetup)
         {

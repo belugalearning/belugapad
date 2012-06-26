@@ -8,6 +8,7 @@
 
 #import "BPlaceValueSelectionMgr.h"
 #import "global.h"
+#import "LoggingService.h"
 #import "PlaceValue.h"
 #import "ToolScene.h"
 #import "UsersService.h"
@@ -19,6 +20,7 @@
 @private
     ContentService *contentService;
     UsersService *usersService;
+    LoggingService *loggingService;
 }
 
 @end
@@ -29,6 +31,7 @@
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     contentService = ac.contentService;
     usersService = ac.usersService;
+    loggingService = ac.loggingService;
     
     self=(BPlaceValueSelectionMgr *)[super initWithGameObject:aGameObject withData:data];
     
@@ -66,14 +69,14 @@
 {
     if(b.Selected)
     {
-        [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchBeginDeselectObject withOptionalNote:nil];
+        [loggingService logEvent:BL_PA_PV_TOUCH_BEGIN_DESELECT_OBJECT withAdditionalData:nil];
         b.Selected=NO;
         [gameWorld.Blackboard.SelectedObjects removeObject:gameObject];
         [[gameWorld GameScene] problemStateChanged];
     }
     else
     {
-       [usersService logProblemAttemptEvent:kProblemAttemptPlaceValueTouchBeginSelectObject withOptionalNote:nil];
+        [loggingService logEvent:BL_PA_PV_TOUCH_BEGIN_SELECT_OBJECT withAdditionalData:nil];
         b.Selected=YES;
         gameWorld.Blackboard.LastSelectedObject = gameObject;
         [gameWorld.Blackboard.SelectedObjects addObject:gameObject];

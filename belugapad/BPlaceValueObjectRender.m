@@ -175,12 +175,12 @@
         x=c.PosX;
         y=c.PosY;
     }
-    else
+    else if([b.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
     {
         n=(DWPlaceValueNetGameObject*)b.Mount;
         x=n.PosX;
         y=n.PosY;
-        b.Mount=n.MountedObject;
+        gameObject=n.MountedObject;
         [n handleMessage:kDWresetPositionEval];
     }
         

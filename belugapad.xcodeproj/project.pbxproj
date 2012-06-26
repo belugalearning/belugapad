@@ -50,21 +50,13 @@
 		5529F4D11529EA940085492E /* BPartitionStoreDropTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D01529EA940085492E /* BPartitionStoreDropTarget.m */; };
 		5529F4D4152A04320085492E /* BPartitionMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D3152A04310085492E /* BPartitionMount.m */; };
 		5529F4D7152A05EB0085492E /* BPartitionMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D6152A05EB0085492E /* BPartitionMountable.m */; };
-		5536B29014E4173E00D30BC0 /* BPlaceValueContainerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */; };
-		5536B2A414E4350800D30BC0 /* BPlaceValueObjectSpawn.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B2A314E4350800D30BC0 /* BPlaceValueObjectSpawn.m */; };
 		5536B2A714E43E1400D30BC0 /* PlaceValueConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5536B2A614E43E1400D30BC0 /* PlaceValueConsts.m */; };
 		553E80B8150FC57100263473 /* BNLineSelectorRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80B7150FC57100263473 /* BNLineSelectorRender.m */; };
 		553E80BB150FC60200263473 /* BNLineSelectorInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80BA150FC60100263473 /* BNLineSelectorInput.m */; };
 		553E80BE150FC78F00263473 /* DWSelectorGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80BD150FC78E00263473 /* DWSelectorGameObject.m */; };
 		553E80C1150FD3FD00263473 /* NLineConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80C0150FD3FD00263473 /* NLineConsts.m */; };
-		5569EA0314E943AA00E80C00 /* BPlaceValueSelectionMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5569EA0214E943AA00E80C00 /* BPlaceValueSelectionMgr.m */; };
 		5571BADD14E406220053A62B /* PlaceValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BADC14E406220053A62B /* PlaceValue.m */; };
 		5571BAE114E406630053A62B /* ToolConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE014E406630053A62B /* ToolConsts.m */; };
-		5571BAED14E4108F0053A62B /* BPlaceValueDropTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE414E4108F0053A62B /* BPlaceValueDropTarget.m */; };
-		5571BAEE14E4108F0053A62B /* BPlaceValueObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE614E4108F0053A62B /* BPlaceValueObjectRender.m */; };
-		5571BAEF14E4108F0053A62B /* BPlaceValuePickupTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE814E4108F0053A62B /* BPlaceValuePickupTarget.m */; };
-		5571BAF014E4108F0053A62B /* BPlaceValueMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAEA14E4108F0053A62B /* BPlaceValueMount.m */; };
-		5571BAF114E4108F0053A62B /* BPlaceValueMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAEC14E4108F0053A62B /* BPlaceValueMountable.m */; };
 		55AFD6A5156517FC00FF1886 /* TimesTables.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6A4156517FC00FF1886 /* TimesTables.m */; };
 		55AFD6AA15651B5800FF1886 /* DWTTTileGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6A815651B5800FF1886 /* DWTTTileGameObject.m */; };
 		55AFD6AE15651C4700FF1886 /* BTTTileObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6AD15651C4700FF1886 /* BTTTileObjectRender.m */; };
@@ -92,6 +84,17 @@
 		55E7CBEF157FDE3200A399CF /* BPieSplitterSliceTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBEE157FDE3000A399CF /* BPieSplitterSliceTouch.m */; };
 		55E7CBF2157FDE4E00A399CF /* BPieSplitterContainerMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBF1157FDE4D00A399CF /* BPieSplitterContainerMountable.m */; };
 		55E7CBF5157FE4AD00A399CF /* BPieSplitterSliceMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBF4157FE4AA00A399CF /* BPieSplitterSliceMount.m */; };
+		55F0562A159A0E0400ACA07C /* BPlaceValueContainerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F05613159A0E0400ACA07C /* BPlaceValueContainerRender.m */; };
+		55F0562B159A0E0400ACA07C /* BPlaceValueDropTargetCage.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F05615159A0E0400ACA07C /* BPlaceValueDropTargetCage.m */; };
+		55F0562C159A0E0400ACA07C /* BPlaceValueDropTargetNet.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F05617159A0E0400ACA07C /* BPlaceValueDropTargetNet.m */; };
+		55F0562D159A0E0400ACA07C /* BPlaceValueMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F05619159A0E0400ACA07C /* BPlaceValueMountable.m */; };
+		55F0562E159A0E0400ACA07C /* BPlaceValueMountCage.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F0561B159A0E0400ACA07C /* BPlaceValueMountCage.m */; };
+		55F0562F159A0E0400ACA07C /* BPlaceValueMountNet.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F0561D159A0E0400ACA07C /* BPlaceValueMountNet.m */; };
+		55F05630159A0E0400ACA07C /* BPlaceValueObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F0561F159A0E0400ACA07C /* BPlaceValueObjectRender.m */; };
+		55F05631159A0E0400ACA07C /* BPlaceValueObjectSpawn.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F05621159A0E0400ACA07C /* BPlaceValueObjectSpawn.m */; };
+		55F05632159A0E0400ACA07C /* BPlaceValuePickupTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F05623159A0E0400ACA07C /* BPlaceValuePickupTarget.m */; };
+		55F05633159A0E0400ACA07C /* BPlaceValuePickupTargetNet.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F05625159A0E0400ACA07C /* BPlaceValuePickupTargetNet.m */; };
+		55F05634159A0E0400ACA07C /* BPlaceValueSelectionMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F05627159A0E0400ACA07C /* BPlaceValueSelectionMgr.m */; };
 		55FDAEDF157F7CBB00943176 /* ToolTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FDAEDE157F7CBB00943176 /* ToolTemplate.m */; };
 		55FDAEE3157F802900943176 /* PieSplitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FDAEE2157F802900943176 /* PieSplitter.m */; };
 		7F0AE04D158782D100194644 /* InteractionFeedback.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0AE04C158782D100194644 /* InteractionFeedback.m */; };
@@ -466,10 +469,6 @@
 		5529F4D3152A04310085492E /* BPartitionMount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionMount.m; sourceTree = "<group>"; };
 		5529F4D5152A05EB0085492E /* BPartitionMountable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPartitionMountable.h; sourceTree = "<group>"; };
 		5529F4D6152A05EB0085492E /* BPartitionMountable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionMountable.m; sourceTree = "<group>"; };
-		5536B28E14E4173D00D30BC0 /* BPlaceValueContainerRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueContainerRender.h; sourceTree = "<group>"; };
-		5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueContainerRender.m; sourceTree = "<group>"; };
-		5536B2A214E4350700D30BC0 /* BPlaceValueObjectSpawn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueObjectSpawn.h; sourceTree = "<group>"; };
-		5536B2A314E4350800D30BC0 /* BPlaceValueObjectSpawn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueObjectSpawn.m; sourceTree = "<group>"; };
 		5536B2A514E43E1400D30BC0 /* PlaceValueConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceValueConsts.h; sourceTree = "<group>"; };
 		5536B2A614E43E1400D30BC0 /* PlaceValueConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceValueConsts.m; sourceTree = "<group>"; };
 		553E80B6150FC57100263473 /* BNLineSelectorRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNLineSelectorRender.h; sourceTree = "<group>"; };
@@ -480,22 +479,10 @@
 		553E80BD150FC78E00263473 /* DWSelectorGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWSelectorGameObject.m; sourceTree = "<group>"; };
 		553E80BF150FD3FD00263473 /* NLineConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NLineConsts.h; sourceTree = "<group>"; };
 		553E80C0150FD3FD00263473 /* NLineConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NLineConsts.m; sourceTree = "<group>"; };
-		5569EA0114E943AA00E80C00 /* BPlaceValueSelectionMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueSelectionMgr.h; sourceTree = "<group>"; };
-		5569EA0214E943AA00E80C00 /* BPlaceValueSelectionMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueSelectionMgr.m; sourceTree = "<group>"; };
 		5571BADB14E406220053A62B /* PlaceValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceValue.h; sourceTree = "<group>"; };
 		5571BADC14E406220053A62B /* PlaceValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceValue.m; sourceTree = "<group>"; };
 		5571BADF14E406630053A62B /* ToolConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolConsts.h; sourceTree = "<group>"; };
 		5571BAE014E406630053A62B /* ToolConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolConsts.m; sourceTree = "<group>"; };
-		5571BAE314E4108F0053A62B /* BPlaceValueDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueDropTarget.h; sourceTree = "<group>"; };
-		5571BAE414E4108F0053A62B /* BPlaceValueDropTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueDropTarget.m; sourceTree = "<group>"; };
-		5571BAE514E4108F0053A62B /* BPlaceValueObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueObjectRender.h; sourceTree = "<group>"; };
-		5571BAE614E4108F0053A62B /* BPlaceValueObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueObjectRender.m; sourceTree = "<group>"; };
-		5571BAE714E4108F0053A62B /* BPlaceValuePickupTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValuePickupTarget.h; sourceTree = "<group>"; };
-		5571BAE814E4108F0053A62B /* BPlaceValuePickupTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValuePickupTarget.m; sourceTree = "<group>"; };
-		5571BAE914E4108F0053A62B /* BPlaceValueMount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueMount.h; sourceTree = "<group>"; };
-		5571BAEA14E4108F0053A62B /* BPlaceValueMount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueMount.m; sourceTree = "<group>"; };
-		5571BAEB14E4108F0053A62B /* BPlaceValueMountable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueMountable.h; sourceTree = "<group>"; };
-		5571BAEC14E4108F0053A62B /* BPlaceValueMountable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueMountable.m; sourceTree = "<group>"; };
 		55AFD6A3156517FC00FF1886 /* TimesTables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimesTables.h; sourceTree = "<group>"; };
 		55AFD6A4156517FC00FF1886 /* TimesTables.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimesTables.m; sourceTree = "<group>"; };
 		55AFD6A815651B5800FF1886 /* DWTTTileGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWTTTileGameObject.m; sourceTree = "<group>"; };
@@ -550,6 +537,30 @@
 		55E7CBF1157FDE4D00A399CF /* BPieSplitterContainerMountable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPieSplitterContainerMountable.m; sourceTree = "<group>"; };
 		55E7CBF3157FE4A700A399CF /* BPieSplitterSliceMount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPieSplitterSliceMount.h; sourceTree = "<group>"; };
 		55E7CBF4157FE4AA00A399CF /* BPieSplitterSliceMount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPieSplitterSliceMount.m; sourceTree = "<group>"; };
+		55F05610159A0E0400ACA07C /* BPartitionRowDropTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionRowDropTarget.m; sourceTree = "<group>"; };
+		55F05611159A0E0400ACA07C /* BPartitionStoreDropTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionStoreDropTarget.m; sourceTree = "<group>"; };
+		55F05612159A0E0400ACA07C /* BPlaceValueContainerRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueContainerRender.h; sourceTree = "<group>"; };
+		55F05613159A0E0400ACA07C /* BPlaceValueContainerRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueContainerRender.m; sourceTree = "<group>"; };
+		55F05614159A0E0400ACA07C /* BPlaceValueDropTargetCage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueDropTargetCage.h; sourceTree = "<group>"; };
+		55F05615159A0E0400ACA07C /* BPlaceValueDropTargetCage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueDropTargetCage.m; sourceTree = "<group>"; };
+		55F05616159A0E0400ACA07C /* BPlaceValueDropTargetNet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueDropTargetNet.h; sourceTree = "<group>"; };
+		55F05617159A0E0400ACA07C /* BPlaceValueDropTargetNet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueDropTargetNet.m; sourceTree = "<group>"; };
+		55F05618159A0E0400ACA07C /* BPlaceValueMountable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueMountable.h; sourceTree = "<group>"; };
+		55F05619159A0E0400ACA07C /* BPlaceValueMountable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueMountable.m; sourceTree = "<group>"; };
+		55F0561A159A0E0400ACA07C /* BPlaceValueMountCage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueMountCage.h; sourceTree = "<group>"; };
+		55F0561B159A0E0400ACA07C /* BPlaceValueMountCage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueMountCage.m; sourceTree = "<group>"; };
+		55F0561C159A0E0400ACA07C /* BPlaceValueMountNet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueMountNet.h; sourceTree = "<group>"; };
+		55F0561D159A0E0400ACA07C /* BPlaceValueMountNet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueMountNet.m; sourceTree = "<group>"; };
+		55F0561E159A0E0400ACA07C /* BPlaceValueObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueObjectRender.h; sourceTree = "<group>"; };
+		55F0561F159A0E0400ACA07C /* BPlaceValueObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueObjectRender.m; sourceTree = "<group>"; };
+		55F05620159A0E0400ACA07C /* BPlaceValueObjectSpawn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueObjectSpawn.h; sourceTree = "<group>"; };
+		55F05621159A0E0400ACA07C /* BPlaceValueObjectSpawn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueObjectSpawn.m; sourceTree = "<group>"; };
+		55F05622159A0E0400ACA07C /* BPlaceValuePickupTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValuePickupTarget.h; sourceTree = "<group>"; };
+		55F05623159A0E0400ACA07C /* BPlaceValuePickupTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValuePickupTarget.m; sourceTree = "<group>"; };
+		55F05624159A0E0400ACA07C /* BPlaceValuePickupTargetNet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValuePickupTargetNet.h; sourceTree = "<group>"; };
+		55F05625159A0E0400ACA07C /* BPlaceValuePickupTargetNet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValuePickupTargetNet.m; sourceTree = "<group>"; };
+		55F05626159A0E0400ACA07C /* BPlaceValueSelectionMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueSelectionMgr.h; sourceTree = "<group>"; };
+		55F05627159A0E0400ACA07C /* BPlaceValueSelectionMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueSelectionMgr.m; sourceTree = "<group>"; };
 		55FDAEDD157F7CBB00943176 /* ToolTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolTemplate.h; sourceTree = "<group>"; };
 		55FDAEDE157F7CBB00943176 /* ToolTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolTemplate.m; sourceTree = "<group>"; };
 		55FDAEE1157F802900943176 /* PieSplitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieSplitter.h; sourceTree = "<group>"; };
@@ -1235,22 +1246,30 @@
 		5571BAE214E40FE90053A62B /* PlaceValue */ = {
 			isa = PBXGroup;
 			children = (
-				5571BAE314E4108F0053A62B /* BPlaceValueDropTarget.h */,
-				5571BAE414E4108F0053A62B /* BPlaceValueDropTarget.m */,
-				5571BAE514E4108F0053A62B /* BPlaceValueObjectRender.h */,
-				5571BAE614E4108F0053A62B /* BPlaceValueObjectRender.m */,
-				5571BAE714E4108F0053A62B /* BPlaceValuePickupTarget.h */,
-				5571BAE814E4108F0053A62B /* BPlaceValuePickupTarget.m */,
-				5571BAE914E4108F0053A62B /* BPlaceValueMount.h */,
-				5571BAEA14E4108F0053A62B /* BPlaceValueMount.m */,
-				5571BAEB14E4108F0053A62B /* BPlaceValueMountable.h */,
-				5571BAEC14E4108F0053A62B /* BPlaceValueMountable.m */,
-				5536B28E14E4173D00D30BC0 /* BPlaceValueContainerRender.h */,
-				5536B28F14E4173E00D30BC0 /* BPlaceValueContainerRender.m */,
-				5536B2A214E4350700D30BC0 /* BPlaceValueObjectSpawn.h */,
-				5536B2A314E4350800D30BC0 /* BPlaceValueObjectSpawn.m */,
-				5569EA0114E943AA00E80C00 /* BPlaceValueSelectionMgr.h */,
-				5569EA0214E943AA00E80C00 /* BPlaceValueSelectionMgr.m */,
+				55F05610159A0E0400ACA07C /* BPartitionRowDropTarget.m */,
+				55F05611159A0E0400ACA07C /* BPartitionStoreDropTarget.m */,
+				55F05612159A0E0400ACA07C /* BPlaceValueContainerRender.h */,
+				55F05613159A0E0400ACA07C /* BPlaceValueContainerRender.m */,
+				55F05614159A0E0400ACA07C /* BPlaceValueDropTargetCage.h */,
+				55F05615159A0E0400ACA07C /* BPlaceValueDropTargetCage.m */,
+				55F05616159A0E0400ACA07C /* BPlaceValueDropTargetNet.h */,
+				55F05617159A0E0400ACA07C /* BPlaceValueDropTargetNet.m */,
+				55F05618159A0E0400ACA07C /* BPlaceValueMountable.h */,
+				55F05619159A0E0400ACA07C /* BPlaceValueMountable.m */,
+				55F0561A159A0E0400ACA07C /* BPlaceValueMountCage.h */,
+				55F0561B159A0E0400ACA07C /* BPlaceValueMountCage.m */,
+				55F0561C159A0E0400ACA07C /* BPlaceValueMountNet.h */,
+				55F0561D159A0E0400ACA07C /* BPlaceValueMountNet.m */,
+				55F0561E159A0E0400ACA07C /* BPlaceValueObjectRender.h */,
+				55F0561F159A0E0400ACA07C /* BPlaceValueObjectRender.m */,
+				55F05620159A0E0400ACA07C /* BPlaceValueObjectSpawn.h */,
+				55F05621159A0E0400ACA07C /* BPlaceValueObjectSpawn.m */,
+				55F05622159A0E0400ACA07C /* BPlaceValuePickupTarget.h */,
+				55F05623159A0E0400ACA07C /* BPlaceValuePickupTarget.m */,
+				55F05624159A0E0400ACA07C /* BPlaceValuePickupTargetNet.h */,
+				55F05625159A0E0400ACA07C /* BPlaceValuePickupTargetNet.m */,
+				55F05626159A0E0400ACA07C /* BPlaceValueSelectionMgr.h */,
+				55F05627159A0E0400ACA07C /* BPlaceValueSelectionMgr.m */,
 			);
 			name = PlaceValue;
 			sourceTree = "<group>";
@@ -2673,15 +2692,7 @@
 				7F719C0314D739A600F30E89 /* Daemon.m in Sources */,
 				5571BADD14E406220053A62B /* PlaceValue.m in Sources */,
 				5571BAE114E406630053A62B /* ToolConsts.m in Sources */,
-				5571BAED14E4108F0053A62B /* BPlaceValueDropTarget.m in Sources */,
-				5571BAEE14E4108F0053A62B /* BPlaceValueObjectRender.m in Sources */,
-				5571BAEF14E4108F0053A62B /* BPlaceValuePickupTarget.m in Sources */,
-				5571BAF014E4108F0053A62B /* BPlaceValueMount.m in Sources */,
-				5571BAF114E4108F0053A62B /* BPlaceValueMountable.m in Sources */,
-				5536B29014E4173E00D30BC0 /* BPlaceValueContainerRender.m in Sources */,
-				5536B2A414E4350800D30BC0 /* BPlaceValueObjectSpawn.m in Sources */,
 				5536B2A714E43E1400D30BC0 /* PlaceValueConsts.m in Sources */,
-				5569EA0314E943AA00E80C00 /* BPlaceValueSelectionMgr.m in Sources */,
 				7FDBA52D14EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m in Sources */,
 				7FDBA52E14EBD560004D1CC9 /* CXMLNode_CreationExtensions.m in Sources */,
 				7FDBA52F14EBD560004D1CC9 /* CXHTMLDocument.m in Sources */,
@@ -2935,6 +2946,17 @@
 				0CDECB6615920C27004DE20D /* AFXMLRequestOperation.m in Sources */,
 				0CDECB6715920C27004DE20D /* UIImageView+AFNetworking.m in Sources */,
 				0C40751C1596354700E03C1F /* LoggingService.m in Sources */,
+				55F0562A159A0E0400ACA07C /* BPlaceValueContainerRender.m in Sources */,
+				55F0562B159A0E0400ACA07C /* BPlaceValueDropTargetCage.m in Sources */,
+				55F0562C159A0E0400ACA07C /* BPlaceValueDropTargetNet.m in Sources */,
+				55F0562D159A0E0400ACA07C /* BPlaceValueMountable.m in Sources */,
+				55F0562E159A0E0400ACA07C /* BPlaceValueMountCage.m in Sources */,
+				55F0562F159A0E0400ACA07C /* BPlaceValueMountNet.m in Sources */,
+				55F05630159A0E0400ACA07C /* BPlaceValueObjectRender.m in Sources */,
+				55F05631159A0E0400ACA07C /* BPlaceValueObjectSpawn.m in Sources */,
+				55F05632159A0E0400ACA07C /* BPlaceValuePickupTarget.m in Sources */,
+				55F05633159A0E0400ACA07C /* BPlaceValuePickupTargetNet.m in Sources */,
+				55F05634159A0E0400ACA07C /* BPlaceValueSelectionMgr.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

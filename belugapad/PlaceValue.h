@@ -144,6 +144,7 @@
 -(void)evalProblemMatrixMatch;
 -(void)snapLayerToPosition;
 -(void)tintGridColour:(ccColor3B)toThisColour;
+-(void)tintGridColour:(int)thisGrid toColour:(ccColor3B)toThisColour;
 -(BOOL)doCondenseFromLocation:(CGPoint)location;
 -(BOOL)doMulchFromLocation:(CGPoint)location;
 -(BOOL)doTransitionWithIncrement:(int)incr;

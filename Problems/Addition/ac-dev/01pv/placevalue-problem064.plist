@@ -114,7 +114,5 @@
 	</dict>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
-	<key>PLAY_SOUND</key>
-	<string>05pv/make 10 ones.m4a</string>
 </dict>
 </plist>

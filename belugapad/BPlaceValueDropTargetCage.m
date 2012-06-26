@@ -59,7 +59,7 @@
                     if([gameObjectValue isEqualToNumber:pickupObjectValue])
                     {
                         float dist=[BLMath DistanceBetween:myLoc and:hitLoc];
-                        NSLog(@"DropObjectDist = %f / dist = %f", gameWorld.Blackboard.DropObjectDistance, dist);
+
                         if(!gameWorld.Blackboard.DropObject || gameWorld.Blackboard.DropObjectDistance > dist)
                         {
                             gameWorld.Blackboard.DropObject=gameObject;

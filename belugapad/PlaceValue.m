@@ -824,7 +824,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     if(showCountOnBlock && gw.Blackboard.SelectedObjects.count > lastCount && !gw.Blackboard.inProblemSetup)
     {
         
-        CCSprite *s=[[gw.Blackboard.LastSelectedObject store] objectForKey:MY_SPRITE];
+        CCSprite *s=((DWPlaceValueBlockGameObject*)gw.Blackboard.LastSelectedObject).mySprite;
         CGPoint pos=[s position];
         countLabelBlock=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", gw.Blackboard.SelectedObjects.count] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
         [countLabelBlock setPosition:pos];
@@ -975,6 +975,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     int tranCount=1;
     if(incr>0) tranCount=10;
     int space=0;
+    int colIndexToTint=0;
     
     //work out if we have space
     for (int r=[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+incr] count]-1; r>=0; r--) {
@@ -1015,6 +1016,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         
     }
     
+    colIndexToTint=currentColumnIndex;
     //change column index
     currentColumnIndex+=incr;
     gw.Blackboard.CurrentStore=[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex];
@@ -1069,8 +1071,16 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 if(!co.MountedObject)
                 {
                     //use this as a mount
-                    NSDictionary *pl=[NSDictionary dictionaryWithObject:co forKey:MOUNT];
-                    [go handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
+                    go.Mount=co;
+                    go.AnimateMe=NO;
+                    co.MountedObject=go;
+                    [go handleMessage:kDWsetMount];
+                    [co handleMessage:kDWsetMountedObject];
+                    
+                    
+                    
+                    [self tintGridColour:colIndexToTint toColour:ccc3(255,255,255)];
+                    
 
                     break;
                 }
@@ -1092,15 +1102,19 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     return [self doTransitionWithIncrement:1];
 }
 
-
 -(void)tintGridColour:(ccColor3B)toThisColour
 {
-    for (int i=0; i<[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]; i++)
+    [self tintGridColour:currentColumnIndex toColour:toThisColour];
+}
+
+-(void)tintGridColour:(int)thisGrid toColour:(ccColor3B)toThisColour
+{
+    for (int i=0; i<[[gw.Blackboard.AllStores objectAtIndex:thisGrid]count]; i++)
     {
-        for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex] objectAtIndex:i]count]; o++)
+        for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:thisGrid] objectAtIndex:i]count]; o++)
         {
 
-            DWPlaceValueBlockGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex] objectAtIndex:(i)] objectAtIndex:o];
+            DWPlaceValueBlockGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:thisGrid] objectAtIndex:(i)] objectAtIndex:o];
             CCSprite *mySprite=goC.mySprite;
             [mySprite setColor:toThisColour]; 
         }
@@ -1412,10 +1426,10 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     // log out if blocks are moved
     if(hasMovedBlock)
     {
-        NSNumber *objValue = [[[gw Blackboard].PickupObject store] objectForKey:OBJECT_VALUE];
+        float objValue = ((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).ObjectValue;
         
         [loggingService logEvent:([gw.Blackboard.SelectedObjects count] > 1 ? BL_PA_PV_TOUCH_MOVE_MOVE_OBJECTS : BL_PA_PV_TOUCH_MOVE_MOVE_OBJECT)
-         withAdditionalData:[NSDictionary dictionaryWithObject:objValue forKey:@"objectValue"]];
+              withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:objValue] forKey:@"objectValue"]];
     }
     
     if(hasMovedLayer) [loggingService logEvent:BL_PA_PV_TOUCH_MOVE_MOVE_GRID withAdditionalData:nil];

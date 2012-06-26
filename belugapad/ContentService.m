@@ -107,7 +107,15 @@
     
     if(n.mastery)
     {
+        UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;    
+        
+        //step over child nodes and look for one that's not completed, if found start it's pipeline
+
+        
+        //otherwise pick a random child?
+        
         //if mastery, create a full funnel of incomplete nodes        
+        
         return NO;
     }
     else {

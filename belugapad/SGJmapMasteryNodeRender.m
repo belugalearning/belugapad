@@ -10,6 +10,9 @@
 #import "SGJmapMasteryNode.h"
 #import "BLMath.h"
 
+static ccColor4B userCol={241,90,36,255};
+static ccColor4B userHighCol={239,119,82,255};
+
 @interface SGJmapMasteryNodeRender()
 {
     CCSprite *nodeSprite;
@@ -66,30 +69,74 @@
         perimPoints[perimIx]=dest;
         perimIx++;
     }
-    
-    for (id<Transform> prnode in ParentGO.ChildNodes) {
-        //world space pos of child node
-        CGPoint theirWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:prnode.Position];
-        
-        //draw prereq path to this node        
-        ccDrawColor4B(255, 255, 255, 255);
-        ccDrawLine(myWorldPos, theirWorldPos);        
-    }
+
     
     //lines to inter mastery nodes
     for(id<Transform> imnode in ParentGO.ConnectToMasteryNodes) {
         //world space of their pos
         CGPoint tWP=[ParentGO.RenderBatch.parent convertToWorldSpace:imnode.Position];
         
-        ccDrawColor4B(255, 0, 0, 100);
+        ccDrawColor4B(userCol.r, userCol.g, userCol.b, userCol.a);
         ccDrawLine(myWorldPos, tWP);
+        
     }
     
     
-    //draw perim poly
-    CGPoint *first=&perimPoints[0];
-    ccDrawFilledPoly(first, sortedChildren.count,ccc4f(1.0f, 0.0f, 0.0f, 0.1f));
     
+    //get avg position of points
+    float xmean=0.0f;
+    float ymean=0.0f;
+    for(int i=0; i<sortedChildren.count; i++)
+    {
+        xmean+=perimPoints[i].x;
+        ymean+=perimPoints[i].y;
+    }
+    xmean=xmean/(float)sortedChildren.count;
+    ymean=ymean/(float)sortedChildren.count;
+    CGPoint pmid=ccp(xmean,ymean);
+    
+    ccColor4B stepColour=userCol;
+    stepColour.r=stepColour.r-40;
+    stepColour.g=stepColour.g-40;
+    stepColour.b=stepColour.b-40;
+    if(stepColour.r>userCol.r)stepColour.r=0;
+    if(stepColour.g>userCol.g)stepColour.g=0;
+    if(stepColour.b>userCol.b)stepColour.b=0;
+    
+    //draw first perim poly
+    CGPoint *first=&perimPoints[0];
+    ccDrawFilledPoly(first, sortedChildren.count, ccc4FFromccc4B(stepColour));
+
+    //draw interior versions of poly
+    for(int ip=0; ip<10; ip++)
+    {
+        for(int i=0; i<sortedChildren.count; i++)
+        {
+            CGPoint diff=[BLMath SubtractVector:pmid from:perimPoints[i]];
+            CGPoint neardiff=[BLMath MultiplyVector:diff byScalar:0.99f];
+            CGPoint newpos=[BLMath AddVector:neardiff toVector:pmid];
+            perimPoints[i]=newpos;
+        }
+        
+        //adjust colour
+        if(stepColour.r<252) stepColour.r+=4;
+        if(stepColour.g<252) stepColour.g+=4;
+        if(stepColour.b<252) stepColour.b+=4;
+
+        //draw poly
+        CGPoint *first=&perimPoints[0];
+        ccDrawFilledPoly(first, sortedChildren.count, ccc4FFromccc4B(stepColour));
+    }
+    
+
+    for (id<Transform> prnode in ParentGO.ChildNodes) {
+        //world space pos of child node
+        CGPoint theirWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:prnode.Position];
+        
+        //draw prereq path to this node        
+        ccDrawColor4B(userHighCol.r, userHighCol.g, userHighCol.b, userHighCol.a);
+        ccDrawLine(myWorldPos, theirWorldPos);        
+    }    
 }
 
 -(void)setup
@@ -205,6 +252,9 @@
             }
         }
     } while (looking);
+    
+    
+    //
     
 }
 

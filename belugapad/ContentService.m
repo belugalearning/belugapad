@@ -124,14 +124,21 @@
             }
         }
         
-        //just pick first available
-        for (ConceptNode *child in children) {
-            if(child.pipelines.count>0)
-            {
-                [self startPipelineWithId:[child.pipelines objectAtIndex:0] forNode:child];
-                return YES;
-            }
+        //pick random child
+        int ip=arc4random()%children.count;
+        
+        
+        ConceptNode *child=[children objectAtIndex:ip];
+    
+        if(child.pipelines.count>0)
+        {
+            [self startPipelineWithId:[child.pipelines objectAtIndex:0] forNode:child];
+            return YES;
         }
+        else {
+            NSLog(@"selected child doesn't have a pipeline");
+        }
+        
         return NO;
     }
     

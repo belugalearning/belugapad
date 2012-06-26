@@ -118,6 +118,9 @@ typedef enum {
         cx = lx / 2.0f;
         cy = ly / 2.0f;
         
+        dragVel=ccp(0,0);
+        dragLast=ccp(0,0);
+        
         juiState=kJuiStateNodeMap;
         
         scale=1.0f;
@@ -400,6 +403,21 @@ typedef enum {
     
     //[daemon doUpdate:delta];
     deltacum+=delta;
+    
+    
+    
+    //scrolling
+    float friction=0.85f;
+    
+    if(!isDragging)
+    {
+        dragVel=[BLMath MultiplyVector:dragVel byScalar:friction];
+        mapLayer.position=[BLMath AddVector:dragVel toVector:mapLayer.position];
+    }
+    else {
+        dragVel=[BLMath SubtractVector:dragLast from:mapLayer.position];
+        dragLast=mapLayer.position;
+    }
 }
 
 -(void) doUpdateProximity:(ccTime)delta
@@ -606,6 +624,8 @@ typedef enum {
         debugMenu.enabled=doat;
         debugMenu.visible=doat;
     }
+    
+    isDragging=YES;
  
     lastTouch=l;
     
@@ -625,6 +645,11 @@ typedef enum {
                 
         touchStartedInNodeMap=YES;
     }
+}
+
+-(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    isDragging=NO;
 }
 
 -(void)testForNodeTouchAt:(CGPoint)lOnMap
@@ -686,7 +711,7 @@ typedef enum {
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-
+    isDragging=NO;
 }
 
 #pragma mark - debug

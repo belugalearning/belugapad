@@ -20,6 +20,9 @@
     CCLayer *foreLayer;
     
     CGPoint lastTouch;
+    BOOL isDragging;
+    CGPoint dragVel;
+    CGPoint dragLast;
 }
 
 +(CCScene *)scene;

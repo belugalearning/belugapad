@@ -23,12 +23,12 @@
 @private
     BOOL useTestPipeline;
     
+    // local test pipeline
     NSArray *testProblemList;
     NSUInteger currentPIndex;
     
+    // kcm database pipelines
     FMDatabase *contentDatabase;
-
-    //kcm concept node pipeline progression
     int pipelineIndex;
 
 }
@@ -286,7 +286,6 @@
 
 -(void)gotoNextProblemInPipeline
 {
-    pipelineIndex++;
     self.currentPDef=nil;
     
     if (useTestPipeline)
@@ -303,7 +302,7 @@
         self.pathToTestDef=[testProblemList objectAtIndex:currentPIndex];
         NSLog(@"loaded test def: %@", self.pathToTestDef);        
     }    
-    else if(pipelineIndex>=self.currentPipeline.problems.count)
+    else if(++pipelineIndex>=self.currentPipeline.problems.count)
     {
         //don't progress, current pdef & ppexpr are set to nil above
     }
@@ -335,6 +334,8 @@
 
 -(void)setPipelineNodeComplete
 {
+    if (useTestPipeline) return;
+    
     NSLog(@"ContentService#setPipelineNodeComplete currentNode id=\"%@\"", currentNode._id);
     //effective placeholder for assessed complete -- e.g. lit on node
     UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;    

@@ -606,10 +606,7 @@ static float kTimeToPieShake=7.0f;
                 [gw.Blackboard.PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:-1];
             }
             
-            NSLog(@"(bef) this dropped object pos %@", NSStringFromCGPoint(cont.Position));
-            
             [self reorderActiveContainers];
-            NSLog(@"(aft) this dropped object pos %@", NSStringFromCGPoint(cont.Position));
         }
         
         
@@ -657,10 +654,11 @@ static float kTimeToPieShake=7.0f;
             else {
                 DWPieSplitterSliceGameObject *slice=(DWPieSplitterSliceGameObject *)gw.Blackboard.PickupObject;
                 DWPieSplitterContainerGameObject *cont=(DWPieSplitterContainerGameObject *)slice.myCont;
+                
                 slice.Position=location;
+                [slice handleMessage:kDWunsetMount];
                 [cont handleMessage:kDWunsetMountedObject];
-                [gw.Blackboard.PickupObject handleMessage:kDWunsetMount];
-                [gw.Blackboard.PickupObject handleMessage:kDWmoveSpriteToHome];
+                [slice handleMessage:kDWmoveSpriteToHome];
             }
         }
         

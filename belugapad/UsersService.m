@@ -100,6 +100,8 @@
 
     if (![rs next]) return nil;
     
+    
+    
     NSDictionary *u = [self userFromCurrentRowOfResultSet:rs];
     
     [rs close];
@@ -139,7 +141,9 @@
     
     [usersDatabase open];
     
-    [usersDatabase executeUpdate:@"UPDATE users SET nodes_completed = ? WHERE id = ?)", [nc JSONString], urId];
+    BOOL success=[usersDatabase executeUpdate:@"UPDATE users SET nodes_completed = ? WHERE id = ?", [nc JSONString], urId];
+    
+    NSLog(@"success %d", success);
     
     FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick, nodes_completed FROM users WHERE id = ?", urId];
     [rs next];

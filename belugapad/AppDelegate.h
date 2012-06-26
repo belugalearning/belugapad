@@ -34,6 +34,8 @@
 @property (nonatomic, retain) NSDictionary *LocalSettings;
 @property BOOL ReleaseMode;
 
+@property BOOL IsIpad1;
+
 -(void)proceedFromLoginViaIntro:(BOOL)viaIntro;
 -(void)returnToLogin;
 

@@ -213,6 +213,11 @@ typedef enum {
     [self parseNodesForEndPoints];
     
     NSLog(@"completed end point parse");
+    
+    //setup rendering -- needs all node connections built
+    [gw handleMessage:kSGreadyRender andPayload:nil withLogLevel:0];
+    NSLog(@"send readyRender message");
+    
     NSLog(@"end build");
             
 //    //reposition if previous node
@@ -310,7 +315,7 @@ typedef enum {
             newnode=[[[SGJmapNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
             
             //todo: for now, if there are pipelines on the node, set it complete
-            if(n.pipelines.count>0)
+            if([usersService hasCompletedNodeId:n._id])
             {
                 ((SGJmapNode*)newnode).EnabledAndComplete=YES;
             }
@@ -325,6 +330,7 @@ typedef enum {
 
 -(void)parseNodesForEndPoints
 {
+    //mastery>child relations
     NSArray *prereqs=[contentService relationMembersForName:@"Mastery"];
     for (NSArray *pair in prereqs) {
         SGJmapNode *leftgo=[self gameObjectForCouchId:[pair objectAtIndex:0]];
@@ -342,6 +348,23 @@ typedef enum {
             NSLog(@"could not find both end points for %@ and %@", [pair objectAtIndex:0], [pair objectAtIndex:1]);
         }
     }
+    
+    //mastery>mastery relations
+    NSArray *ims=[contentService relationMembersForName:@"InterMastery"];
+    for(NSArray *pair in ims) {
+        SGJmapMasteryNode *leftgo=[self gameObjectForCouchId:[pair objectAtIndex:0]];
+        SGJmapMasteryNode *rightgo=[self gameObjectForCouchId:[pair objectAtIndex:1]];
+        
+        if(leftgo && rightgo)
+        {
+            [leftgo.ConnectFromMasteryNodes addObject:rightgo];
+            [rightgo.ConnectToMasteryNodes addObject:leftgo];
+        }
+        else {
+            NSLog(@"could not find both mastery nodes for %@ and %@", [pair objectAtIndex:0], [pair objectAtIndex:1]);
+        }
+    }
+
 }
 
 -(id)gameObjectForCouchId:(NSString*)findId

@@ -39,6 +39,7 @@
 
 @synthesize LocalSettings;
 @synthesize ReleaseMode;
+@synthesize IsIpad1;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -92,6 +93,9 @@
     //no purpose in getting this -- it's not used
     //NSDictionary *launchOptions=launchOptionsCache;
     
+    self.IsIpad1 = !(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad &&
+                    [UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]);
+    
     director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
     
 	// Create an CCGLView with a RGB565 color buffer, and a depth buffer of 0-bits
@@ -100,8 +104,8 @@
 								   depthFormat:0	//GL_DEPTH_COMPONENT24_OES
 							preserveBackbuffer:NO
 									sharegroup:nil
-								 multiSampling:NO
-							   numberOfSamples:0];
+								 multiSampling:!self.IsIpad1
+							   numberOfSamples:(self.IsIpad1 ? 0 : 4)];
     
 	director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
     

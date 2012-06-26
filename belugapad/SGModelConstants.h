@@ -13,6 +13,7 @@
 
 typedef enum {
 
-    kSGmessageNone
+    kSGmessageNone,
+    kSGreadyRender
         
 } SGMessageType;

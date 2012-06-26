@@ -9,9 +9,13 @@
 #import "SGComponent.h"
 #import "SGJmapObjectProtocols.h"
 
+@class SGJmapMasteryNode;
+
 @interface SGJmapMasteryNodeRender : SGComponent
 {
-    id<Transform, CouchDerived> ParentGO;
+    SGJmapMasteryNode *ParentGO;
+    
+    NSMutableArray *sortedChildren;
 }
 
 -(void)draw;

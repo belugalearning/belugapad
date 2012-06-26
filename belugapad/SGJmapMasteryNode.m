@@ -13,7 +13,7 @@
 
 @implementation SGJmapMasteryNode
 
-@synthesize MNodeRenderComponent, ChildNodes;
+@synthesize MNodeRenderComponent, ChildNodes, ConnectToMasteryNodes, ConnectFromMasteryNodes;
 
 //transform protocol properties
 @synthesize Position, RenderBatch;
@@ -39,6 +39,8 @@
         NodeSelectComponent=[[[SGJmapNodeSelect alloc] initWithGameObject:self] retain];
         
         ChildNodes=[[NSMutableArray alloc] init];
+        ConnectFromMasteryNodes=[[NSMutableArray alloc] init];
+        ConnectToMasteryNodes=[[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -80,6 +82,8 @@
     [NodeSelectComponent release];
     
     [ChildNodes release];
+    [ConnectToMasteryNodes release];
+    [ConnectFromMasteryNodes release];
     
     [super dealloc];
 }

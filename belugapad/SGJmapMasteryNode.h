@@ -16,6 +16,9 @@
 @property (retain) SGJmapMasteryNodeRender* MNodeRenderComponent;
 @property (retain) NSMutableArray *ChildNodes;
 
+@property (retain) NSMutableArray *ConnectToMasteryNodes;
+@property (retain) NSMutableArray *ConnectFromMasteryNodes;
+
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
 
 @end

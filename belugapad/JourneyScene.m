@@ -215,7 +215,7 @@ typedef enum {
     NSLog(@"completed end point parse");
     
     //setup rendering -- needs all node connections built
-    [gw handleMessage:kSGreadyRender andPayload:nil withLogLevel:nil];
+    [gw handleMessage:kSGreadyRender andPayload:nil withLogLevel:0];
     NSLog(@"send readyRender message");
     
     NSLog(@"end build");
@@ -315,7 +315,7 @@ typedef enum {
             newnode=[[[SGJmapNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
             
             //todo: for now, if there are pipelines on the node, set it complete
-            if(n.pipelines.count>0)
+            if([usersService hasCompletedNodeId:n._id])
             {
                 ((SGJmapNode*)newnode).EnabledAndComplete=YES;
             }

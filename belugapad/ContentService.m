@@ -112,6 +112,12 @@
         //step over child nodes and look for one that's not completed, if found start it's pipeline
         NSMutableArray *children=[self childNodesForMasteryWithId:nodeId];
         
+        if(children.count==0)
+        {
+            NSLog(@"there are no children here");
+            return NO;
+        }
+        
         for (ConceptNode *child in children) {
             if(![us hasCompletedNodeId:child._id])
             {

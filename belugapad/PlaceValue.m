@@ -419,6 +419,11 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 
     [renderLayer setPosition:ccp(cx-(currentColumnIndex*(kPropXColumnSpacing*lx)+(xStartOffset*lx)), 0)];
     
+    
+    // define our rects for no-drag areas
+    noDragAreaBottom=CGRectMake(0,0,lx,120);
+    noDragAreaTop=CGRectMake(0, ly-120, lx, 120);
+    
 
 }
 
@@ -1287,7 +1292,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     }
     
     // moving the layer
-    else if(touching && ([gw Blackboard].PickupObject==nil) && numberOfColumns>1 && allowPanning)
+    else if(touching && ([gw Blackboard].PickupObject==nil) && numberOfColumns>1 && allowPanning && !CGRectContainsPoint(noDragAreaTop, location) && !CGRectContainsPoint(noDragAreaBottom, location))
     {
         hasMovedLayer=YES;
         CGPoint diff = ccpSub(location, prevLoc);

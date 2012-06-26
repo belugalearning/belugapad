@@ -119,6 +119,8 @@
     
     CGRect boundingBoxCondense;
     CGRect boundingBoxMulch;
+    CGRect noDragAreaTop;
+    CGRect noDragAreaBottom;
     
     BOOL inBlockTransition;
     BOOL inCondenseArea;

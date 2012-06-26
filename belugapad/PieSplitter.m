@@ -656,8 +656,8 @@ static float kTimeToPieShake=7.0f;
                 DWPieSplitterContainerGameObject *cont=(DWPieSplitterContainerGameObject *)slice.myCont;
                 
                 slice.Position=location;
-                [slice handleMessage:kDWunsetMount];
                 [cont handleMessage:kDWunsetMountedObject];
+                [slice handleMessage:kDWunsetMount];
                 [slice handleMessage:kDWmoveSpriteToHome];
             }
         }

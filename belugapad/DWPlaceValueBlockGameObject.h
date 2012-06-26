@@ -15,7 +15,10 @@
 @property (retain) NSString *PickupSprite;
 @property (retain) CCSprite *mySprite;
 @property (retain) NSString *SpriteFilename;
-
+@property float PosX;
+@property float PosY;
+@property BOOL AnimateMe;
+@property BOOL Selected;
 
 
 @end

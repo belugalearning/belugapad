@@ -19,6 +19,9 @@
 #import "ToolHost.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
+#import "DWPlaceValueBlockGameObject.h"
+#import "DWPlaceValueCageGameObject.h"
+#import "DWPlaceValueNetGameObject.h"
 
 @interface PlaceValue()
 {
@@ -223,16 +226,18 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             for(int iRope=0; iRope<currentColumnRopes; iRope++)
             {
                 CGPoint containerOrigin=ccp(rowOrigin.x+(iRope*ropeWidth), rowOrigin.y);
-                DWGameObject *go = [gw addGameObjectWithTemplate:@"TplaceValueContainer"];
-                [[go store] setObject:[NSNumber numberWithFloat:containerOrigin.x] forKey:POS_X];
-                [[go store] setObject:[NSNumber numberWithFloat:containerOrigin.y] forKey:POS_Y];
-                [[go store] setObject:[NSNumber numberWithFloat:iRow] forKey:PLACEVALUE_ROW];
-                [[go store] setObject:[NSNumber numberWithFloat:i] forKey:PLACEVALUE_COLUMN];
-                [[go store] setObject:[NSNumber numberWithFloat:iRope] forKey:PLACEVALUE_ROPE];
-                [[go store] setObject:[currentColumnInfo objectForKey:COL_VALUE] forKey:OBJECT_VALUE];
+                DWPlaceValueNetGameObject *c=[DWPlaceValueNetGameObject alloc];
+                [gw populateAndAddGameObject:c withTemplateName:@"TplaceValueContainer"];
                 
-                [RowArray addObject:go];
+                c.PosX=containerOrigin.x;
+                c.PosY=containerOrigin.y;
+                c.myRow=iRow;
+                c.myCol=i;
+                c.myRope=iRope;
+                c.ColumnValue=[[currentColumnInfo objectForKey:COL_VALUE] floatValue];
+
                 
+                [RowArray addObject:c];                
             }
             
             [RowArray release];
@@ -244,41 +249,42 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             [cageContainer setPosition:ccp(i*(kPropXColumnSpacing*lx), ly*kCageYOrigin)];
             [cageContainer setOpacity:0];
             [cageContainer setTag:2];
-            [renderLayer addChild:cageContainer z:1];
+            [renderLayer addChild:cageContainer z:10];
             
             // create cage
-            DWGameObject *colCage = [gw addGameObjectWithTemplate:@"TplaceValueCage"];
-            [[colCage store] setObject:[NSNumber numberWithBool:YES] forKey:ALLOW_MULTIPLE_MOUNT];
-            [[colCage store] setObject:[NSNumber numberWithFloat:i*(kPropXColumnSpacing*lx)] forKey:POS_X];
-            [[colCage store] setObject:[NSNumber numberWithFloat:ly*kCageYOrigin] forKey:POS_Y];
-            [[colCage store] setObject:[currentColumnInfo objectForKey:COL_VALUE] forKey:OBJECT_VALUE];
+            DWPlaceValueCageGameObject *cge=[DWPlaceValueCageGameObject alloc];
+            [gw populateAndAddGameObject:cge withTemplateName:@"TplaceValueCage"];
+            cge.AllowMultipleMount=YES;
+            cge.PosX=i*(kPropXColumnSpacing*lx);
+            cge.PosY=ly*kCageYOrigin;
+            cge.ObjectValue=[[currentColumnInfo objectForKey:COL_VALUE]floatValue];
+            NSLog(@"cage assigned object value %g", cge.ObjectValue);
             
             // set our column specific options on the store
             
             if([columnCagePosDisableAdd objectForKey:currentColumnValueKey])
-                [[colCage store] setObject:[NSNumber numberWithBool:[[columnCagePosDisableAdd objectForKey:currentColumnValueKey] boolValue]] forKey:DISABLE_ADD];
+                cge.DisableAdd=[[columnCagePosDisableAdd objectForKey:currentColumnValueKey] boolValue];
             
             
             if([columnCagePosDisableDel objectForKey:currentColumnValueKey])
-                [[colCage store] setObject:[NSNumber numberWithBool:[[columnCagePosDisableDel objectForKey:currentColumnValueKey] boolValue]] forKey:DISABLE_DEL];
+                cge.DisableDel=[[columnCagePosDisableDel objectForKey:currentColumnValueKey] boolValue];
             
             
             if([columnSprites objectForKey:currentColumnValueKey])
-                [[colCage store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
+                cge.SpriteFilename=[columnSprites objectForKey:currentColumnValueKey];
+
             else
-                [[colCage store] setObject:kDefaultSprite forKey:SPRITE_FILENAME];                
+                cge.SpriteFilename=kDefaultSprite;
+            
             
             
             if(pickupSprite)
-                [[colCage store] setObject:pickupSprite forKey:PICKUP_SPRITE_FILENAME];
+                cge.PickupSpriteFilename=pickupSprite;
             
-            
-            if(proximitySprite)
-                [[colCage store] setObject:proximitySprite forKey:PROXIMITY_SPRITE_FILENAME];
             
                 
                 if(!allCages) allCages=[[NSMutableArray alloc] init];
-                [allCages addObject:colCage];
+                [allCages addObject:cge];
             
         }
         if([[columnNegCages objectForKey:currentColumnValueKey] boolValue]==YES) 
@@ -287,40 +293,39 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             [cageContainer setPosition:ccp(i*(kPropXColumnSpacing*lx), ly*kCageYOrigin)];
             [cageContainer setOpacity:0];
             [cageContainer setTag:2];
-            [renderLayer addChild:cageContainer z:-1];
+            [renderLayer addChild:cageContainer z:10];
             
             float colValueNeg = -([[currentColumnInfo objectForKey:COL_VALUE] floatValue]);
             // create cage
-            DWGameObject *colCage = [gw addGameObjectWithTemplate:@"TplaceValueCage"];
-            [[colCage store] setObject:[NSNumber numberWithBool:YES] forKey:ALLOW_MULTIPLE_MOUNT];
-            [[colCage store] setObject:[NSNumber numberWithFloat:i*(kPropXColumnSpacing*lx)+100] forKey:POS_X];
-            [[colCage store] setObject:[NSNumber numberWithFloat:ly*kCageYOrigin] forKey:POS_Y];
-            [[colCage store] setObject:[NSNumber numberWithFloat:colValueNeg] forKey:OBJECT_VALUE];
+            DWPlaceValueCageGameObject *cge=[DWPlaceValueCageGameObject alloc];
+            [gw populateAndAddGameObject:cge withTemplateName:@"TplaceValueCage"];
+            cge.AllowMultipleMount=YES;
+            cge.PosX=i*(kPropXColumnSpacing*lx)+100;
+            cge.PosY=ly*kCageYOrigin;
+            cge.ObjectValue=colValueNeg;
+            
 
             if([columnCageNegDisableAdd objectForKey:currentColumnValueKey])
-                [[colCage store] setObject:[NSNumber numberWithBool:[[columnCageNegDisableAdd objectForKey:currentColumnValueKey] boolValue]] forKey:DISABLE_ADD];
+                cge.DisableAdd=[[columnCageNegDisableAdd objectForKey:currentColumnValueKey] boolValue];
             
             
             if([columnCageNegDisableDel objectForKey:currentColumnValueKey])
-                [[colCage store] setObject:[NSNumber numberWithBool:[[columnCageNegDisableDel objectForKey:currentColumnValueKey] boolValue]] forKey:DISABLE_DEL];
+                cge.DisableDel=[[columnCageNegDisableDel objectForKey:currentColumnValueKey] boolValue];
             
             
             if([columnSprites objectForKey:currentColumnValueKey])
-                [[colCage store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
+                cge.SpriteFilename=[columnSprites objectForKey:currentColumnValueKey];
             else
-                [[colCage store] setObject:kDefaultSprite forKey:SPRITE_FILENAME];                
+                cge.SpriteFilename=kDefaultSprite;
             
             
             if(pickupSprite)
-                [[colCage store] setObject:pickupSprite forKey:PICKUP_SPRITE_FILENAME];
+                cge.PickupSpriteFilename=pickupSprite;
             
-            
-            if(proximitySprite)
-                [[colCage store] setObject:proximitySprite forKey:PROXIMITY_SPRITE_FILENAME];
                         
             
             if(!allCages) allCages=[[NSMutableArray alloc] init];
-            [allCages addObject:colCage];
+            [allCages addObject:cge];
         }
     
         [newCol release];
@@ -381,31 +386,30 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 [boundCounts setObject:[NSNumber numberWithInt:boundCounter] forKey:[NSNumber numberWithInt:insCol]];
             }
             
-            DWGameObject *block = [gw addGameObjectWithTemplate:@"TplaceValueObject"];
+            DWPlaceValueBlockGameObject *block=[DWPlaceValueBlockGameObject alloc];
+            [gw populateAndAddGameObject:block withTemplateName:@"TplaceValueObject"];
             
-            NSDictionary *pl = [NSDictionary dictionaryWithObject:[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:insRow] objectAtIndex:i] forKey:MOUNT];
-            [[block store] setObject:[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] forKey:OBJECT_VALUE];
+            block.Mount=[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:insRow] objectAtIndex:i];
+            
+            block.ObjectValue=[[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue];
             
             // check whether a custom sprite has been set for this column, and if so, set it.
             NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue]];
             
             if([columnSprites objectForKey:currentColumnValueKey])
-                [[block store] setObject:[columnSprites objectForKey:currentColumnValueKey] forKey:SPRITE_FILENAME];
+                block.SpriteFilename=[columnSprites objectForKey:currentColumnValueKey];
             
             
             if(pickupSprite)
-                [[block store] setObject:pickupSprite forKey:PICKUP_SPRITE_FILENAME];
+                block.PickupSprite=pickupSprite;
             
-            
-            if(proximitySprite)
-                [[block store] setObject:proximitySprite forKey:PROXIMITY_SPRITE_FILENAME];
             
             
             if(numberPrecountedForRow<numberToPrecount)
-                [block handleMessage:kDWswitchSelection andPayload:pl withLogLevel:-1];
+                [block handleMessage:kDWswitchSelection andPayload:nil withLogLevel:-1];
                 numberPrecountedForRow++;
             
-            [block handleMessage:kDWsetMount andPayload:pl withLogLevel:-1];
+            [block handleMessage:kDWsetMount andPayload:nil withLogLevel:-1];
             
         }
         numberPrecountedForRow=0;
@@ -695,12 +699,11 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         {
             for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:i]count]; o++)
             {
-                DWGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:(i)] objectAtIndex:o];
-                DWGameObject *goO = [[goC store] objectForKey:MOUNTED_OBJECT];
+                DWPlaceValueNetGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:(i)] objectAtIndex:o];
+                DWPlaceValueBlockGameObject *goO = (DWPlaceValueBlockGameObject*)goC.MountedObject;
                 if(goO)
                 {
-                    float objectValue = [[[goO store] objectForKey:OBJECT_VALUE] floatValue];
-                    
+                    float objectValue=goO.ObjectValue;
                     totalObjectValue = totalObjectValue+objectValue;
                 }   
             }
@@ -855,11 +858,11 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         {
             for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:i]count]; o++)
             {
-                DWGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:(i)] objectAtIndex:o];
-                DWGameObject *goO = [[goC store] objectForKey:MOUNTED_OBJECT];
+                DWPlaceValueNetGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:(i)] objectAtIndex:o];
+                DWPlaceValueBlockGameObject *goO = (DWPlaceValueBlockGameObject*)goC.MountedObject;
                 if(goO)
                 {
-                    float objectValue = [[[goO store] objectForKey:OBJECT_VALUE] floatValue];
+                    float objectValue=goO.ObjectValue;
                     
                     totalCount = totalCount+objectValue;
                 }   
@@ -919,9 +922,10 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             // and check each row
             for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:i]count]; o++)
             {
-                DWGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:(i)] objectAtIndex:o];
+                DWPlaceValueNetGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:c] objectAtIndex:(i)] objectAtIndex:o];
                 
-                if([[goC store] objectForKey:MOUNTED_OBJECT])
+
+                if(goC.MountedObject)
                     countAtRow[i] ++;
                    
             }
@@ -977,8 +981,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         NSMutableArray *row=[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+incr] objectAtIndex:r];
         for (int c=[row count]-1; c>=0; c--)
         {
-            DWGameObject *co=[row objectAtIndex:c];
-            if(![[co store] objectForKey:MOUNTED_OBJECT])
+            DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
+            if(!co.MountedObject)
             {
                 space++;
             }
@@ -988,9 +992,10 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     // bail if not possible
     if(space<tranCount) return NO;
     
-    DWGameObject *cGO = gw.Blackboard.PickupObject;
+    DWPlaceValueBlockGameObject *cGO=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
     
-    if([[[cGO store] objectForKey:OBJECT_VALUE] floatValue]<0)
+
+    if(cGO.ObjectValue<0)
     {
         isNegativeNumber=YES;
     }
@@ -1031,25 +1036,26 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             fval = -fval;
             currentColumnValueKey=[NSNumber numberWithFloat:fval];
         }
-        DWGameObject *go=[gw addGameObjectWithTemplate:@"TplaceValueObject"];
+        
+        DWPlaceValueBlockGameObject *go=[DWPlaceValueBlockGameObject alloc];
+        [gw populateAndAddGameObject:go withTemplateName:@"TplaceValueObject"];
+
         
         //drop target
-        [[go store] setObject:currentColumnValueKey forKey:OBJECT_VALUE];
+
+        go.ObjectValue=[currentColumnValueKey floatValue];
         
         NSString *currentColumnValueString = [NSString stringWithFormat:@"%g", [currentColumnValueKey floatValue]];
         
         if([columnSprites objectForKey:currentColumnValueString])
         {
-            [[go store] setObject:[columnSprites objectForKey:currentColumnValueString] forKey:SPRITE_FILENAME];
+            go.SpriteFilename=[columnSprites objectForKey:currentColumnValueString];
         }
         if(pickupSprite)
         {
-            [[go store] setObject:pickupSprite forKey:PICKUP_SPRITE_FILENAME];
+            go.PickupSprite=pickupSprite;
         }
-        if(proximitySprite)
-        {
-            [[go store] setObject:proximitySprite forKey:PROXIMITY_SPRITE_FILENAME];
-        }
+
         [go handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
         //find a mount for this object
@@ -1057,8 +1063,10 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             NSMutableArray *row=[gw.Blackboard.CurrentStore objectAtIndex:r];
             for (int c=[row count]-1; c>=0; c--)
             {
-                DWGameObject *co=[row objectAtIndex:c];
-                if(![[co store] objectForKey:MOUNTED_OBJECT])
+
+                DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
+
+                if(!co.MountedObject)
                 {
                     //use this as a mount
                     NSDictionary *pl=[NSDictionary dictionaryWithObject:co forKey:MOUNT];
@@ -1091,9 +1099,9 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     {
         for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex] objectAtIndex:i]count]; o++)
         {
-            DWGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex] objectAtIndex:(i)] objectAtIndex:o];
-            
-            CCSprite *mySprite = [[goC store] objectForKey:MY_SPRITE];
+
+            DWPlaceValueBlockGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex] objectAtIndex:(i)] objectAtIndex:o];
+            CCSprite *mySprite=goC.mySprite;
             [mySprite setColor:toThisColour]; 
         }
     }
@@ -1163,8 +1171,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         {
             for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex-1] objectAtIndex:i]count]; o++)
             {
-                DWGameObject *go=[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex-1] objectAtIndex:i]objectAtIndex:o];
-                CCSprite *mySprite = [[go store] objectForKey:MY_SPRITE];
+                DWPlaceValueBlockGameObject *go=[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex-1] objectAtIndex:i]objectAtIndex:o];
+                CCSprite *mySprite = go.mySprite;
                 boundingBoxCondense=CGRectUnion(boundingBoxCondense, mySprite.boundingBox);
             }
         }
@@ -1178,10 +1186,9 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         {
             for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+1] objectAtIndex:i]count]; o++)
             {
-                DWGameObject *go=[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+1] objectAtIndex:i]objectAtIndex:o];
-                CCSprite *mySprite = [[go store] objectForKey:MY_SPRITE];
+                DWPlaceValueNetGameObject *go=[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+1] objectAtIndex:i]objectAtIndex:o];
+                CCSprite *mySprite = go.mySprite;
                 boundingBoxMulch=CGRectUnion(boundingBoxMulch, mySprite.boundingBox);
-                NSLog(@"Bounding box width %f", boundingBoxMulch.size.width);
             }
         }
     }
@@ -1200,31 +1207,35 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     // nil the pickupobject and initiate a search
     [gw Blackboard].PickupObject=nil;
     
-    NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
-    [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
-    [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
-    [pl setObject:[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] forKey:OBJECT_VALUE];
+    
+    gw.Blackboard.TestTouchLocation=location;
+    gw.Blackboard.CurrentColumnValue=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]floatValue];
     
     
     //broadcast search for pickup object gw
-    [gw handleMessage:kDWareYouAPickupTarget andPayload:pl withLogLevel:-1];
+    [gw handleMessage:kDWareYouAPickupTarget andPayload:nil withLogLevel:-1];
     
     // then if we get a response, do stuff
     if([gw Blackboard].PickupObject!=nil)
     { 
-        DWGameObject *curMount=[[[gw Blackboard].PickupObject store] objectForKey:MOUNT];
-        BOOL isCage=[[[curMount store] objectForKey:ALLOW_MULTIPLE_MOUNT]boolValue];
-        float objValue=[[[[gw Blackboard].PickupObject store] objectForKey:OBJECT_VALUE]floatValue];
+        DWPlaceValueBlockGameObject *pickupObject=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
+        
+        BOOL isCage;
+        
+        if([pickupObject.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])isCage=YES;
+        else isCage=NO;
+        
+        float objValue=pickupObject.ObjectValue;
         
         // log whether the user hit a cage or grid item
         [loggingService logEvent:(isCage ? BL_PA_PV_TOUCH_BEGIN_PICKUP_CAGE_OBJECT : BL_PA_PV_TOUCH_BEGIN_PICKUP_GRID_OBJECT)
             withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:objValue] forKey:@"objValue"]];
         
         // if there's a pickup sprite defined, set the object to use it now
-        if([[[gw Blackboard].PickupObject store] objectForKey:PICKUP_SPRITE_FILENAME] && !gw.Blackboard.inProblemSetup)
+        if(pickupObject.PickupSprite && !gw.Blackboard.inProblemSetup)
         {
-            CCSprite *mySprite=[[[gw Blackboard].PickupObject store] objectForKey:MY_SPRITE];
-            [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[[gw Blackboard].PickupObject store] objectForKey:PICKUP_SPRITE_FILENAME])]];
+            CCSprite *mySprite=pickupObject.mySprite;
+            [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(pickupObject.PickupSprite)]];
         }
         gw.Blackboard.PickupOffset = location;
         // At this point we can still cancel the tap
@@ -1273,31 +1284,28 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     // if we have a pickupobject, do stuff
     if([gw Blackboard].PickupObject!=nil)
     {
+        DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
         // first check for a valid place to drop
         ccColor3B currentColour = ccc3(0,0,0);
-        NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
-        [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
-        [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
+
+        gw.Blackboard.TestTouchLocation=location;
         
         
-        [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
+        [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
         
         
-        CCSprite *mySprite = [[gw.Blackboard.PickupObject store] objectForKey:MY_SPRITE];
+        CCSprite *mySprite = ((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).mySprite;
         if([gw Blackboard].DropObject != nil)
         { 
             // if a proximity sprite is set, change he pickupobject sprite now
-            if(proximitySprite)
-                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(proximitySprite)]];
+            if(pickupSprite)
+                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).PickupSprite)]];
             
             // and set the colour for use in tinting our grid later
             currentColour=ccc3(0,255,0);
             
         }
         else {
-            // but if we have no dropobject, we need the grid to be white again
-            if(proximitySprite)
-                [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gw.Blackboard.PickupObject store] objectForKey:PICKUP_SPRITE_FILENAME])]];
             
             currentColour=ccc3(255,255,255);
         }
@@ -1311,13 +1319,12 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         CGPoint diff=[BLMath SubtractVector:prevLoc from:location];
         
         //mod location by pickup offset
-        float posX = [[[gw.Blackboard.PickupObject store] objectForKey:POS_X] floatValue];
-        float posY = [[[gw.Blackboard.PickupObject store] objectForKey:POS_Y] floatValue];
+        float posX = block.PosX;
+        float posY = block.PosY;
         
         posX = posX + diff.x;
         posY = posY + diff.y;
         
-        //NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];        
         if(gw.Blackboard.SelectedObjects.count == columnBaseValue && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject] && allowCondensing)
         {
             //flag we're in inBlockTransition
@@ -1338,15 +1345,22 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             // when we're moving several blocks at once
             for(int go=0;go<gw.Blackboard.SelectedObjects.count;go++)
             {
-                DWGameObject *thisObject = [[[gw Blackboard] SelectedObjects] objectAtIndex:go];
+                //TODO: check this - i'm unsure - although a selectedobject should be a block - i've not seen any posx/y stuff for them elsewhere
+
+                DWPlaceValueBlockGameObject *thisObject=[[[gw Blackboard] SelectedObjects] objectAtIndex:go];
                 
-                float x=[[[thisObject store] objectForKey:POS_X] floatValue];
-                float y=[[[thisObject store] objectForKey:POS_Y] floatValue];
+
+
+
+                thisObject.PosX=thisObject.PosX+diff.x;
+                thisObject.PosY=thisObject.PosY+diff.y;
                 
-                [pl setObject:[NSNumber numberWithFloat:x+diff.x] forKey:POS_X];
-                [pl setObject:[NSNumber numberWithFloat:y+diff.y] forKey:POS_Y];
+                //gw.Blackboard.MoveTouchLocation=ccp(x+diff.x,y+diff.y);
                 
-                [thisObject handleMessage:kDWmoveSpriteToPosition andPayload:pl withLogLevel:-1];
+
+
+                
+                [thisObject handleMessage:kDWmoveSpriteToPosition andPayload:nil withLogLevel:-1];
                 hasMovedBlock=YES;
             }
         }
@@ -1355,7 +1369,6 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         else
         {
             
-            //if([BLMath rectContainsPoint:location x:lx-200 y:0 w:200 h:ly] && currentColumnIndex<([gw.Blackboard.AllStores count]-1))
             if(CGRectContainsPoint(boundingBoxMulch, location) && currentColumnIndex<([gw.Blackboard.AllStores count]-1) && allowMulching)
                 
             {
@@ -1371,9 +1384,9 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             // if their finger moved too much, we know we can update the sprite position
             if(!potentialTap)
             {
-                [pl setObject:[NSNumber numberWithFloat:posX] forKey:POS_X];
-                [pl setObject:[NSNumber numberWithFloat:posY] forKey:POS_Y];
-                [[gw Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:pl withLogLevel:-1];
+                block.PosX=posX;
+                block.PosY=posY;
+                [[gw Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:nil withLogLevel:-1];
                 hasMovedBlock=YES;
             }
         }
@@ -1458,7 +1471,8 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         if([BLMath DistanceBetween:touchStartPos and:touchEndPos] < fabs(kTapSlipThreshold) && potentialTap)
         {
             // check whether it's selected and we can deselect - or that it's deselected
-            if(!([[[gw.Blackboard.PickupObject store] objectForKey:SELECTED] boolValue]) || ([[[gw.Blackboard.PickupObject store] objectForKey:SELECTED] boolValue] && allowDeselect))
+            DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
+            if(!(block.Selected) || (block.Selected && allowDeselect))
                 [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
             
         }
@@ -1471,6 +1485,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 for(int go=0; go<gw.Blackboard.SelectedObjects.count; go++)
                 {
                     DWGameObject *goO = [[[gw Blackboard] SelectedObjects] objectAtIndex:go];
+
                     [goO handleMessage:kDWswitchBaseSelection andPayload:nil withLogLevel:0];
                 }
             }
@@ -1501,7 +1516,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 DWGameObject *go = gw.Blackboard.PickupObject;
                 if(![gw.Blackboard.SelectedObjects containsObject:go])
                 {
-                    [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];                
+                    [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];                
                 }
             }
             else 
@@ -1510,12 +1525,16 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             }
             if([gw Blackboard].DropObject != nil)
             {
-                BOOL isCage=[[[[gw Blackboard].DropObject store] objectForKey:ALLOW_MULTIPLE_MOUNT]boolValue];
+
+                // TODO: check the isCage returns correct results - will checking dropobject return?
+                BOOL isCage;
+                
+                if([[gw Blackboard].DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])isCage=YES;
+                else isCage=NO;
+
                 //tell the picked-up object to mount on the dropobject
-                [pl removeAllObjects];
-                [pl setObject:[gw Blackboard].DropObject forKey:MOUNT];
-                [pl setObject:[NSNumber numberWithBool:YES] forKey:ANIMATE_ME];
-                [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:pl withLogLevel:0];
+
+                [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
                 
                 [[gw Blackboard].PickupObject handleMessage:kDWputdown andPayload:nil withLogLevel:0];         
                 [[gw Blackboard].PickupObject logInfo:@"this object was mounted" withData:0];
@@ -1523,6 +1542,11 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
                 
                 [loggingService logEvent:(isCage ? BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_CAGE : BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_GRID)
                     withAdditionalData:nil];
+                
+                CCSprite *mySprite=((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).mySprite;
+                
+                if(pickupSprite)
+                    [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).SpriteFilename)]];
                 
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
                 
@@ -1542,6 +1566,10 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         }
         
     }
+    
+    //get any auto reset / repositions to re-evaluate
+    [gw handleMessage:kDWstartRespositionSeek andPayload:nil withLogLevel:0];
+    
     potentialTap=NO;
     hasMovedBlock=NO;
     hasMovedLayer=NO;

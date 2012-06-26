@@ -63,10 +63,9 @@ static int shadowSteps=10;
         //perim polys -- overlapping
         for(int ip=0; ip<shadowSteps; ip++)
         {
-            CGPoint *first=&adjPoints[(ip==0) ? 0 : (ip*shadowSteps)-1];
+            CGPoint *first=&adjPoints[(ip==0) ? 0 : (ip*sortedChildren.count)-1];
             ccDrawFilledPoly(first, sortedChildren.count, ccc4FFromccc4B(stepColours[ip]));
         }
-        
         
         for (id<Transform> prnode in ParentGO.ChildNodes) {
             //world space pos of child node
@@ -105,7 +104,7 @@ static int shadowSteps=10;
                 float y2p=y2+width * (x1-x2) / L;
                 
 
-                ccDrawColor4F(f4.r, f4.g, f4.b, 1.0f);
+                ccDrawColor4F(f4.r, f4.g, f4.b, f4.a);
                 //ccDrawColor4B(userCol.r, userCol.g, userCol.b, userCol.a);
                 ccDrawLine(ccp(x1p, y1p), ccp(x2p, y2p));
             }
@@ -129,7 +128,7 @@ static int shadowSteps=10;
     [label setPosition:ccpAdd(ccp(0, -40), ParentGO.Position)];
     [ParentGO.RenderBatch.parent addChild:label];
     
-    sortedChildren=[[[NSMutableArray alloc] init] retain];
+    sortedChildren=[[NSMutableArray alloc] init];
     
     //sort children
     for (id<Transform> prnode in ParentGO.ChildNodes) {
@@ -181,6 +180,8 @@ static int shadowSteps=10;
             //on insert, if increment from last is > 135, add an additional psuedo item
         }
     }
+    
+    if(sortedChildren.count==0)return;
     
     //iterate over sorted children repeatedly until we can't add any more spacers
     BOOL looking=YES;

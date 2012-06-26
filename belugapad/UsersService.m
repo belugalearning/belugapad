@@ -153,6 +153,7 @@
     
     [rs close];
     [usersDatabase close];
+    [nc release];
 }
 
 -(BOOL)hasCompletedNodeId:(NSString *)nodeId

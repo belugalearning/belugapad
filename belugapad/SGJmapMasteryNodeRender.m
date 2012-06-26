@@ -12,6 +12,7 @@
 
 static ccColor4B userCol={241,90,36,255};
 static ccColor4B userHighCol={239,119,82,255};
+static int shadowSteps=10;
 
 @interface SGJmapMasteryNodeRender()
 {
@@ -50,26 +51,6 @@ static ccColor4B userHighCol={239,119,82,255};
 -(void)draw
 {
     CGPoint myWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];
- 
-    //perim points
-    CGPoint perimPoints[sortedChildren.count];
-    int perimIx=0;
-
-    //lines to my child nodes
-    for (NSValue *cPosVal in sortedChildren) {
-        //world space pos of child node
-        CGPoint theirWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:[cPosVal CGPointValue]];
-        
-        //add to perim
-        //get vector from here to there
-        CGPoint vdiff=[BLMath SubtractVector:myWorldPos from:theirWorldPos];
-        CGPoint ediff=[BLMath MultiplyVector:vdiff byScalar:1.5f];
-        CGPoint dest=[BLMath AddVector:ediff toVector:myWorldPos];
-        
-        perimPoints[perimIx]=dest;
-        perimIx++;
-    }
-
     
     //lines to inter mastery nodes
     for(id<Transform> imnode in ParentGO.ConnectToMasteryNodes) {
@@ -81,51 +62,17 @@ static ccColor4B userHighCol={239,119,82,255};
         
     }
     
-    
-    
-    //get avg position of points
-    float xmean=0.0f;
-    float ymean=0.0f;
-    for(int i=0; i<sortedChildren.count; i++)
-    {
-        xmean+=perimPoints[i].x;
-        ymean+=perimPoints[i].y;
+    //upate position of all polys
+    CGPoint adjPoints[shadowSteps*sortedChildren.count];
+    for (int i=0; i<(shadowSteps*sortedChildren.count); i++) {
+        adjPoints[i]=[BLMath AddVector:myWorldPos toVector:allPerimPoints[i]];
     }
-    xmean=xmean/(float)sortedChildren.count;
-    ymean=ymean/(float)sortedChildren.count;
-    CGPoint pmid=ccp(xmean,ymean);
     
-    ccColor4B stepColour=userCol;
-    stepColour.r=stepColour.r-40;
-    stepColour.g=stepColour.g-40;
-    stepColour.b=stepColour.b-40;
-    if(stepColour.r>userCol.r)stepColour.r=0;
-    if(stepColour.g>userCol.g)stepColour.g=0;
-    if(stepColour.b>userCol.b)stepColour.b=0;
-    
-    //draw first perim poly
-    CGPoint *first=&perimPoints[0];
-    ccDrawFilledPoly(first, sortedChildren.count, ccc4FFromccc4B(stepColour));
-
-    //draw interior versions of poly
-    for(int ip=0; ip<10; ip++)
+    //perim polys -- overlapping
+    for(int ip=0; ip<shadowSteps; ip++)
     {
-        for(int i=0; i<sortedChildren.count; i++)
-        {
-            CGPoint diff=[BLMath SubtractVector:pmid from:perimPoints[i]];
-            CGPoint neardiff=[BLMath MultiplyVector:diff byScalar:0.99f];
-            CGPoint newpos=[BLMath AddVector:neardiff toVector:pmid];
-            perimPoints[i]=newpos;
-        }
-        
-        //adjust colour
-        if(stepColour.r<252) stepColour.r+=4;
-        if(stepColour.g<252) stepColour.g+=4;
-        if(stepColour.b<252) stepColour.b+=4;
-
-        //draw poly
-        CGPoint *first=&perimPoints[0];
-        ccDrawFilledPoly(first, sortedChildren.count, ccc4FFromccc4B(stepColour));
+        CGPoint *first=&adjPoints[(ip==0) ? 0 : (ip*shadowSteps)-1];
+        ccDrawFilledPoly(first, sortedChildren.count, ccc4FFromccc4B(stepColours[ip]));
     }
     
 
@@ -254,12 +201,94 @@ static ccColor4B userHighCol={239,119,82,255};
     } while (looking);
     
     
-    //
+    //================ calculate interior polys for drop shadow =============================
+    //perim points
+    CGPoint perimPoints[sortedChildren.count];
+    CGPoint myWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];
+    int perimIx=0;
+
+    for (NSValue *cPosVal in sortedChildren) {
+        //world space pos of child node
+        CGPoint theirWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:[cPosVal CGPointValue]];
+        
+        //add to perim
+        //get vector from here to there
+        CGPoint vdiff=[BLMath SubtractVector:myWorldPos from:theirWorldPos];
+        CGPoint ediff=[BLMath MultiplyVector:vdiff byScalar:1.5f];
+        //CGPoint dest=[BLMath AddVector:ediff toVector:myWorldPos];
+        
+        perimPoints[perimIx]=ediff;
+        perimIx++;
+    }
+    
+    //get avg position of points
+    float xmean=0.0f;
+    float ymean=0.0f;
+    for(int i=0; i<sortedChildren.count; i++)
+    {
+        xmean+=perimPoints[i].x;
+        ymean+=perimPoints[i].y;
+    }
+    xmean=xmean/(float)sortedChildren.count;
+    ymean=ymean/(float)sortedChildren.count;
+    CGPoint pmid=ccp(xmean,ymean);
+    
+    ccColor4B stepColour=userCol;
+    stepColour.r=stepColour.r-40;
+    stepColour.g=stepColour.g-40;
+    stepColour.b=stepColour.b-40;
+    if(stepColour.r>userCol.r)stepColour.r=0;
+    if(stepColour.g>userCol.g)stepColour.g=0;
+    if(stepColour.b>userCol.b)stepColour.b=0;
+    
+    //step the colours
+    for(int i=0; i<shadowSteps; i++)
+    {
+        stepColours[i]=stepColour;
+        
+        //adjust colour
+        if(stepColour.r<252) stepColour.r+=4;
+        if(stepColour.g<252) stepColour.g+=4;
+        if(stepColour.b<252) stepColour.b+=4;
+    }
+    
+    //create the total perim array -- polys * points
+    
+    //NSLog(@"mallocing at size %d with count %d for total %d", (int)(sizeof(CGPoint) * shadowSteps * sortedChildren.count), sortedChildren.count, shadowSteps*sortedChildren.count);
+    
+    allPerimPoints=malloc(sizeof(CGPoint) * shadowSteps * sortedChildren.count);
+    
+    //step the poly creation
+    for(int ip=0; ip<shadowSteps; ip++)
+    {
+        for(int i=0; i<sortedChildren.count; i++)
+        {
+            CGPoint diff=[BLMath SubtractVector:pmid from:perimPoints[i]];
+            CGPoint neardiff=[BLMath MultiplyVector:diff byScalar:(1-(0.01 * (ip+1)))];
+            CGPoint aPos=[BLMath AddVector:neardiff toVector:pmid];
+            //CGPoint prelPos=[BLMath SubtractVector:ParentGO.Position from:aPos];
+            CGPoint newpos=aPos;
+            
+            int insertChildPos=ip*sortedChildren.count;
+            if(ip>0)insertChildPos-=1;
+            
+            int actualinsert=insertChildPos+i;
+            
+            //NSLog(@"inserting at %d", actualinsert);
+            allPerimPoints[actualinsert]=newpos;
+            
+            //allPerimPoints[(ip==0 ? 0 : ((ip*shadowSteps)-1))+i]=newpos;
+        }
+    }
+    
+    //=======================================================================================
     
 }
 
 -(void)dealloc
 {
+    free(allPerimPoints);
+    
     [sortedChildren release];
     
     [super dealloc];

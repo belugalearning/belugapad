@@ -235,7 +235,7 @@ typedef enum {
 - (void)createLayers
 {
     //base colour layer
-    CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(54, 59, 59, 255) width:lx height:ly];
+    CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(35, 35, 35, 255) width:lx height:ly];
     [self addChild:cLayer z:-1];
     [cLayer release];
     

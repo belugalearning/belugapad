@@ -9,6 +9,8 @@
 #import "SGComponent.h"
 #import "SGJmapObjectProtocols.h"
 
+//const int shadowSteps=10;
+
 @class SGJmapMasteryNode;
 
 @interface SGJmapMasteryNodeRender : SGComponent
@@ -16,6 +18,9 @@
     SGJmapMasteryNode *ParentGO;
     
     NSMutableArray *sortedChildren;
+    
+    CGPoint *allPerimPoints;
+    ccColor4B stepColours[10];
 }
 
 -(void)draw;

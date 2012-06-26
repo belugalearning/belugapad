@@ -66,9 +66,10 @@
     NSString *pl = [self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"];
     BL_LOGGING_SETTING paLogging = [@"DATABASE" isEqualToString:pl] ? BL_LOGGING_ENABLED : BL_LOGGING_DISABLED;
     
-    self.loggingService = [[LoggingService alloc] initWithProblemAttemptLoggingSetting:paLogging];
-    self.contentService = [[ContentService alloc] initWithProblemPipeline:pl];
-    self.usersService = [[UsersService alloc] initWithProblemPipeline:pl andLoggingService:self.loggingService];
+    loggingService = [[LoggingService alloc] initWithProblemAttemptLoggingSetting:paLogging];
+    contentService = [[ContentService alloc] initWithProblemPipeline:pl];
+    usersService = [[UsersService alloc] initWithProblemPipeline:pl andLoggingService:self.loggingService];
+    
     
     [self.loggingService logEvent:BL_APP_START withAdditionalData:nil];
     
@@ -243,6 +244,7 @@
 
 - (void) dealloc
 {
+    [loggingService release];
     [contentService release];
     [usersService release];
     

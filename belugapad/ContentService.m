@@ -110,16 +110,32 @@
         UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;    
         
         //step over child nodes and look for one that's not completed, if found start it's pipeline
-
+        NSMutableArray *children=[self childNodesForMasteryWithId:nodeId];
         
-        //otherwise pick a random child?
+        for (ConceptNode *child in children) {
+            if(![us hasCompletedNodeId:child._id])
+            {
+                if(child.pipelines.count>0)
+                {
+                    [self startPipelineWithId:[child.pipelines objectAtIndex:0] forNode:child];
+                    
+                    return YES;
+                }
+            }
+        }
         
-        //if mastery, create a full funnel of incomplete nodes        
-        
+        //just pick first available
+        for (ConceptNode *child in children) {
+            if(child.pipelines.count>0)
+            {
+                [self startPipelineWithId:[child.pipelines objectAtIndex:0] forNode:child];
+                return YES;
+            }
+        }
         return NO;
     }
+    
     else {
-        
         //if node (incomplete) do same
         
         //if node (and that node is complete) funnel is that node's pipeline
@@ -135,7 +151,6 @@
             return NO;
         }
     }
-    
 }
 
 
@@ -199,6 +214,21 @@
     [rs close];
     [contentDatabase close];
     return pl;
+}
+
+-(NSMutableArray*)childNodesForMasteryWithId:(NSString*)masteryId
+{
+    NSMutableArray *ret=[[[NSMutableArray alloc] init] autorelease];
+    
+    NSArray *rel=[self relationMembersForName:@"Mastery"];
+    
+    for (NSArray *pair in rel) {
+        if ([[pair objectAtIndex:1] isEqualToString:masteryId]) {
+            [ret addObject:[self conceptNodeForId:[pair objectAtIndex:0]]];
+        }
+    }
+    
+    return ret;
 }
 
 

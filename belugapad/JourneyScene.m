@@ -44,10 +44,10 @@ static CGPoint kStartMapPos={-611, 3713};
 
 
 const float kLogOutBtnPadding = 8.0f;
-const CGSize kLogOutBtnSize = { 120.0f, 43.0f };
+const CGSize kLogOutBtnSize = { 80.0f, 33.0f };
 
 static CGRect debugButtonBounds={{950, 0}, {100, 50}};
-static BOOL debugRestrictMovement=NO;
+static BOOL debugRestrictMovement=YES;
 
 typedef enum {
     kJuiStateNodeMap,
@@ -143,15 +143,15 @@ typedef enum {
                 
 //        daemon=[[Daemon alloc] initWithLayer:foreLayer andRestingPostion:ccp(cx, cy) andLy:ly];
 //        [daemon setMode:kDaemonModeFollowing];
-        
-        logOutBtnBounds=CGRectMake(kLogOutBtnPadding, winsize.height - kLogOutBtnSize.height - kLogOutBtnPadding, kLogOutBtnSize.width, kLogOutBtnSize.height);
 //        
-//        logOutBtnBounds = CGRectMake(winsize.width-kLogOutBtnSize.width - kLogOutBtnPadding, kLogOutBtnPadding, 
-//                                     kLogOutBtnSize.width, kLogOutBtnSize.height);        
-        logOutBtnCentre = CGPointMake(logOutBtnBounds.origin.x + kLogOutBtnSize.width/2, logOutBtnBounds.origin.y + kLogOutBtnSize.height/2);
-        CCSprite *b=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/log-out.png")];
-        [b setPosition:logOutBtnCentre];
-        [foreLayer addChild:b];
+//        logOutBtnBounds=CGRectMake(kLogOutBtnPadding, winsize.height - kLogOutBtnSize.height - kLogOutBtnPadding, kLogOutBtnSize.width, kLogOutBtnSize.height);
+////        
+////        logOutBtnBounds = CGRectMake(winsize.width-kLogOutBtnSize.width - kLogOutBtnPadding, kLogOutBtnPadding, 
+////                                     kLogOutBtnSize.width, kLogOutBtnSize.height);        
+//        logOutBtnCentre = CGPointMake(logOutBtnBounds.origin.x + kLogOutBtnSize.width/2, logOutBtnBounds.origin.y + kLogOutBtnSize.height/2);
+//        CCSprite *b=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/log-out.png")];
+//        [b setPosition:logOutBtnCentre];
+//        [foreLayer addChild:b];
         
         [[SimpleAudioEngine sharedEngine] playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/mood.mp3") loop:YES];
     }
@@ -176,6 +176,9 @@ typedef enum {
 -(void)gotoToolHost:(ccTime)delta
 {
     //[[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
+    
+    contentService.resetPositionAfterTH=YES;
+    contentService.lastMapLayerPosition=mapLayer.position;
     
     [[CCDirector sharedDirector] replaceScene:[CCTransitionCrossFade transitionWithDuration:0.5f scene:[ToolHost scene]]];
     
@@ -248,7 +251,10 @@ typedef enum {
     
     //base map layer
     mapLayer=[[CCLayer alloc] init];
-    [mapLayer setPosition:kStartMapPos];        
+    if(contentService.resetPositionAfterTH)
+        [mapLayer setPosition:contentService.lastMapLayerPosition];
+    else
+        [mapLayer setPosition:kStartMapPos];        
 
     [self addChild:mapLayer z:1];
 
@@ -641,13 +647,13 @@ typedef enum {
     CGPoint l=[touch locationInView:[touch view]];
     l=[[CCDirector sharedDirector] convertToGL:l];
     
-    if(CGRectContainsPoint(logOutBtnBounds, l))
-    {
-        [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
-        usersService.currentUser = nil;
-        [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
-        return;
-    }
+//    if(CGRectContainsPoint(logOutBtnBounds, l))
+//    {
+//        [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
+//        usersService.currentUser = nil;
+//        [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
+//        return;
+//    }
     
     if(debugEnabled && CGRectContainsPoint(debugButtonBounds, l))
     {
@@ -689,7 +695,8 @@ typedef enum {
         if([go conformsToProtocol:@protocol(Selectable)])
         {
             id<Selectable>sgo=go;
-            [((id<Selectable>)sgo).NodeSelectComponent trySelectionForPosition:lOnMap];
+            if([((id<Selectable>)sgo).NodeSelectComponent trySelectionForPosition:lOnMap])
+                break;
         }
     }
 }

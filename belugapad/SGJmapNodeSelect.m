@@ -33,8 +33,11 @@
 
 -(BOOL)trySelectionForPosition:(CGPoint)pos
 {
+    BOOL ret=NO;
+    
     if([BLMath DistanceBetween:ParentGO.Position and:pos]<(ParentGO.Selected ? ParentGO.HitProximitySign : ParentGO.HitProximity))
     {
+        ret=YES;
       
         if(ParentGO.Selected)
         {
@@ -89,7 +92,7 @@
     }
     
     forcedOn=NO;
-    return ParentGO.Selected;
+    return ret;
 }
 
 -(void)deselect
@@ -107,8 +110,18 @@
     {
         if([gameObject isKindOfClass:[SGJmapNode class]])
         {
-            signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/sign.png")];
+            signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/NodeOverlayBackground.png")];
             
+            //show play again
+            CCSprite *playSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/PlayAgainButton.png")];
+            [playSprite setPosition:ccp(240, 30)];
+            [signSprite addChild:playSprite];
+            
+            //days ago
+            CCLabelTTF *days=[CCLabelTTF labelWithString:@"Today" dimensions:CGSizeMake(300, 100) alignment:UITextAlignmentLeft fontName:@"Helvetica" fontSize:48.0f];
+            [days setPosition:ccp(165, 32)];
+            [days setColor:ccc3(150, 150, 150)];
+            [signSprite addChild:days];
         }
         else {
             //mastery node
@@ -123,8 +136,8 @@
                 
                 //days ago
                 CCLabelTTF *days=[CCLabelTTF labelWithString:@"Today" dimensions:CGSizeMake(300, 100) alignment:UITextAlignmentLeft fontName:@"Helvetica" fontSize:48.0f];
-                [days setPosition:ccp(170, 10)];
-                [days setColor:ccc3(90, 90, 90)];
+                [days setPosition:ccp(165, 32)];
+                [days setColor:ccc3(150, 150, 150)];
                 [signSprite addChild:days];
             }
             else {
@@ -134,19 +147,19 @@
                 [signSprite addChild:playSprite];
                 
                 CCSprite *newSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/NewBanner.png")];
-                [newSprite setPosition:ccp(50, 50)];
+                [newSprite setPosition:ccp(270, 115)];
                 [signSprite addChild:newSprite];
         
                 //days ago
                 CCLabelTTF *days=[CCLabelTTF labelWithString:@"Never" dimensions:CGSizeMake(300, 100) alignment:UITextAlignmentLeft fontName:@"Helvetica" fontSize:48.0f];
-                [days setPosition:ccp(170, 10)];
-                [days setColor:ccc3(90, 90, 90)];
+                [days setPosition:ccp(165, 32)];
+                [days setColor:ccc3(150, 150, 150)];
                 [signSprite addChild:days];
             }
             
             //node title
             CCLabelTTF *title=[CCLabelTTF labelWithString:ParentGO.UserVisibleString dimensions:CGSizeMake(300, 150) alignment:UITextAlignmentLeft fontName:@"Helvetica" fontSize:18.0f];
-            [title setPosition:ccp(195, 60)];
+            [title setPosition:ccp(195, 63)];
             [title setColor:ccc3(90, 90, 90)];
             [signSprite addChild:title];
         }

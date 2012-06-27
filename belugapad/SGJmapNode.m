@@ -25,7 +25,7 @@
 @synthesize _id, UserVisibleString;
 
 //selectable
-@synthesize Selected, NodeSelectComponent;
+@synthesize Selected, NodeSelectComponent, HitProximity, HitProximitySign;
 
 -(SGJmapNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition
 {   

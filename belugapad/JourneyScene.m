@@ -309,12 +309,15 @@ typedef enum {
         //node position
         CGPoint nodepos=ccp((float)n.x * kNodeScale, (nMaxY-(float)n.y) * kNodeScale);
 
-        id<CouchDerived, Configurable> newnode;
+        id<CouchDerived, Configurable, Selectable> newnode;
         
         //create a node go
         if(n.mastery)
         {
             newnode=[[[SGJmapMasteryNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
+            
+            newnode.HitProximity=100.0f;
+            newnode.HitProximitySign=120.0f;
         }
         else {
             newnode=[[[SGJmapNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
@@ -324,6 +327,10 @@ typedef enum {
             {
                 ((SGJmapNode*)newnode).EnabledAndComplete=YES;
             }
+            
+            
+            newnode.HitProximity=40.0f;
+            newnode.HitProximitySign=120.0f;
         }   
         
         newnode._id=n._id;

@@ -8,10 +8,10 @@
 	<string>DATABASE</string>
 	<key>PROBLEM_PIPELINE-a</key>
 	<string>/pipeline-testing/da-pipeline-test.plist</string>
+	<key>PROBLEM_PIPELINE-s</key>
+	<string>/Problems/tokcm/counting-making-sets/5608a59d6797796ce9e11484fd182d0d</string>
 	<key>PROBLEM_PIPELINE</key>
 	<string>/pipeline-testing/05pv-pipeline.plist</string>
-	<key>PROBLEM_PIPELINE-g</key>
-	<string>/pipeline-testing/gj-pipeline-test.plist</string>
 	<key>RELEASE_MODE</key>
 	<false/>
 </dict>

@@ -7,54 +7,54 @@
             <key>mastery-complete.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{100,100}}</string>
+                <string>{{2,2},{113,156}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{0,-2}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{100,100}}</string>
+                <string>{{0,4},{113,156}}</string>
                 <key>sourceSize</key>
-                <string>{100,100}</string>
+                <string>{113,160}</string>
             </dict>
             <key>mastery-incomplete.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,104},{70,70}}</string>
+                <string>{{117,2},{113,156}}</string>
                 <key>offset</key>
-                <string>{-3,1}</string>
+                <string>{0,-2}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{12,14},{70,70}}</string>
+                <string>{{0,4},{113,156}}</string>
                 <key>sourceSize</key>
-                <string>{100,100}</string>
+                <string>{113,160}</string>
             </dict>
             <key>node-complete.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,176},{64,64}}</string>
+                <string>{{2,160},{56,81}}</string>
                 <key>offset</key>
-                <string>{-4,-3}</string>
+                <string>{1,-2}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{14,21},{64,64}}</string>
+                <string>{{2,4},{56,81}}</string>
                 <key>sourceSize</key>
-                <string>{100,100}</string>
+                <string>{58,85}</string>
             </dict>
             <key>node-incomplete.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{74,104},{50,52}}</string>
+                <string>{{60,160},{54,73}}</string>
                 <key>offset</key>
-                <string>{-4,-3}</string>
+                <string>{0,2}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{21,27},{50,52}}</string>
+                <string>{{2,4},{54,73}}</string>
                 <key>sourceSize</key>
-                <string>{100,100}</string>
+                <string>{58,85}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -64,9 +64,9 @@
             <key>realTextureFileName</key>
             <string>node-icons.png</string>
             <key>size</key>
-            <string>{128,256}</string>
+            <string>{256,256}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:7866621f8e118f891d481aaa581f1681$</string>
+            <string>$TexturePacker:SmartUpdate:6cde9af42ff181bb0ab52f6d897e4aa3$</string>
             <key>textureFileName</key>
             <string>node-icons.png</string>
         </dict>

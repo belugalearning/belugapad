@@ -354,6 +354,22 @@ typedef enum {
         }
     }
     
+    //establish completed state on mastery nodes
+    for(id go in [gw AllGameObjects])
+    {
+        if([go isKindOfClass:[SGJmapMasteryNode class]])
+        {
+            SGJmapMasteryNode *mgo=(SGJmapMasteryNode*)go;
+            //look at children and see if all are complete
+            BOOL allcomplete=YES;
+            for (SGJmapNode *n in mgo.ChildNodes) {
+                if(!n.EnabledAndComplete) allcomplete=NO;
+            }
+            
+            if(allcomplete)mgo.EnabledAndComplete=YES;
+        }
+    }
+    
     //mastery>mastery relations
     NSArray *ims=[contentService relationMembersForName:@"InterMastery"];
     for(NSArray *pair in ims) {

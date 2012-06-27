@@ -108,7 +108,49 @@ static float hitProximitySign=100.0f;
     
     if(!signSprite)
     {
-        signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/sign.png")];
+        if([gameObject isKindOfClass:[SGJmapNode class]])
+        {
+            signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/sign.png")];
+            
+        }
+        else {
+            //mastery node
+            signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/NodeOverlayBackground.png")];
+            
+            if(ParentGO.EnabledAndComplete)
+            {
+                //show play again
+                CCSprite *playSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/PlayAgainButton.png")];
+                [playSprite setPosition:ccp(50,-50)];
+                [signSprite addChild:playSprite];
+                
+                //days ago
+                CCLabelTTF *days=[CCLabelTTF labelWithString:@"Today" fontName:@"Helvetica" fontSize:18.0f];
+                [days setPosition:ccp(-50, -50)];
+                [signSprite addChild:days];
+            }
+            else {
+                //show play, new
+                CCSprite *playSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/PlayButton.png")];
+                [playSprite setPosition:ccp(50,-50)];
+                [signSprite addChild:playSprite];
+                
+                CCSprite *newSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/NewBanner.png")];
+                [newSprite setPosition:ccp(50, 50)];
+                [signSprite addChild:newSprite];
+        
+                //days ago
+                CCLabelTTF *days=[CCLabelTTF labelWithString:@"Never" fontName:@"Helvetica" fontSize:18.0f];
+                [days setPosition:ccp(-50, -50)];
+                [signSprite addChild:days];
+            }
+            
+            //node title
+            CCLabelTTF *title=[CCLabelTTF labelWithString:ParentGO.UserVisibleString fontName:@"Helvetica" fontSize:14.0f];
+            [title setPosition:ccp(-50, 50)];
+            [signSprite addChild:title];
+        }
+        
         [ParentGO.RenderBatch.parent addChild:signSprite];
     }
     

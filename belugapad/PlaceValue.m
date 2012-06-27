@@ -19,6 +19,7 @@
 #import "ToolHost.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
+#import "InteractionFeedback.h"
 #import "DWPlaceValueBlockGameObject.h"
 #import "DWPlaceValueCageGameObject.h"
 #import "DWPlaceValueNetGameObject.h"
@@ -38,6 +39,7 @@ static float kPropYColumnOrigin=0.75f;
 static float kCageYOrigin=0.08f;
 static float kPropYColumnHeader=0.85f;
 static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
+static float kTimeToCageShake=7.0f;
 
 @implementation PlaceValue
 
@@ -120,6 +122,17 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             autoHideStatusLabel=NO;
             timeToHideStatusLabel=0.0f;
         }
+    }
+    
+    timeSinceInteractionOrShake+=delta;
+    if(totalCount<[[solutionsDef objectForKey:SOLUTION_VALUE] intValue] && timeSinceInteractionOrShake>kTimeToCageShake)
+    {
+        for(DWPlaceValueCageGameObject *c in allCages)
+        {
+            NSLog(@"sprite width %f", c.mySprite.contentSize.width);
+            [c.mySprite runAction:[InteractionFeedback shakeAction]];
+        }
+        timeSinceInteractionOrShake=0.0f;
     }
 }
 

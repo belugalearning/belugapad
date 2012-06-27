@@ -107,6 +107,7 @@
     BOOL autoMoveToNextProblem;
     BOOL autoHideStatusLabel;
     float timeToHideStatusLabel;
+    float timeSinceInteractionOrShake;
     
     int lastCount;
     int totalCountedInProblem;

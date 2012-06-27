@@ -34,6 +34,8 @@
 
     @property BOOL Selected;
     @property (retain) SGJmapNodeSelect *NodeSelectComponent;
+    @property float HitProximity;
+    @property float HitProximitySign;
 
 @end
 

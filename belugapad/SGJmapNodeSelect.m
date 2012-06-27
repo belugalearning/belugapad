@@ -19,12 +19,9 @@
 
 #import "JourneyScene.h"
 
-static float hitProximity=40.0f;
-static float hitProximitySign=100.0f;
-
 @implementation SGJmapNodeSelect
 
--(SGJmapNodeSelect*)initWithGameObject:(id<Transform, CouchDerived, Selectable>)aGameObject
+-(SGJmapNodeSelect*)initWithGameObject:(id<Transform, CouchDerived, Selectable, Completable>)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
@@ -36,7 +33,7 @@ static float hitProximitySign=100.0f;
 
 -(BOOL)trySelectionForPosition:(CGPoint)pos
 {
-    if([BLMath DistanceBetween:ParentGO.Position and:pos]<(ParentGO.Selected ? hitProximitySign : hitProximity))
+    if([BLMath DistanceBetween:ParentGO.Position and:pos]<(ParentGO.Selected ? ParentGO.HitProximitySign : ParentGO.HitProximity))
     {
       
         if(ParentGO.Selected)

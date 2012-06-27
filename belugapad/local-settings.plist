@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_PIPELINE-2</key>
-	<string>/pipeline-testing/pipeline_amalgamation.plist</string>
+	<string>/pipeline-testing/05pv-pipeline.plist</string>
 	<key>PROBLEM_PIPELINE</key>
 	<string>DATABASE</string>
 	<key>PROBLEM_PIPELINE-da</key>

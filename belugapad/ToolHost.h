@@ -87,7 +87,9 @@ typedef enum {
     int npMaxNoInDropbox;
     CGRect pickerBox;
     BOOL hasMovedNumber;
+    BOOL hasUsedNumber;
     
+    float timeSinceInteractionOrShakeNP;
     
     BOOL isPaused;
     CCLabelTTF *pauseTestPathLabel;

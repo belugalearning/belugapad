@@ -41,6 +41,7 @@ static float kPropYColumnHeader=0.85f;
 static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 static float kTimeToCageShake=7.0f;
 
+
 @implementation PlaceValue
 
 #pragma mark - scene setup
@@ -789,8 +790,6 @@ static float kTimeToCageShake=7.0f;
 -(void)evalProblem
 {
     
-    NSString *solutionType = [solutionsDef objectForKey:SOLUTION_TYPE];
-    
     if([solutionType isEqualToString:COUNT_SEQUENCE]){
         [self evalProblemCountSeq:COUNT_SEQUENCE];
     }
@@ -1183,7 +1182,7 @@ static float kTimeToCageShake=7.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     timeSinceInteractionOrShake=0.0f;
-    
+    [gw handleMessage:kDWstopAllActions andPayload:nil withLogLevel:-1];
     //location=[renderLayer convertToNodeSpace:location];
     
     // work out, based on tap, which column we are over

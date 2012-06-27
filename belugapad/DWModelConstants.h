@@ -85,7 +85,7 @@ typedef enum {
     
     kDWcheckMyMountIsCage=37,
     kDWcheckMyMountIsNet=38,
-
+    kDWstopAllActions=39,
     
     kDWareYouProximateTo=101,
     kDWupdateObjectData=102,

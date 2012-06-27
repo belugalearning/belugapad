@@ -92,6 +92,11 @@
             [b.mySprite runAction:[InteractionFeedback shakeAction]];
     }
     
+    if(messageType==kDWstopAllActions)
+    {
+        [b.mySprite stopAllActions];
+    }
+    
     if(messageType==kDWsetMount)
     {
         //does this need to be set?

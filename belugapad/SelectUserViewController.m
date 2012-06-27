@@ -359,20 +359,27 @@
 
 - (void) handleLoadExistingUserClicked:(id*)button
 {
-    NSDictionary *usr = [usersService userMatchingNickName:existingUserNameTF.text  andPassword:existingUserPasswordTF.text];    
-    if (usr == nil)
-    {
-        UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
-                                                            message:@"We could not find a match for those login details. Please double-check and try again." delegate:self 
-                                                  cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
-        [alertView show];
-        return;
-    }
+    void (^callback)() = ^(NSDictionary* usr) {
+        if (usr == nil)
+        {
+            UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
+                                                                 message:@"We could not find a match for those login details. Please double-check and try again."
+                                                                delegate:self 
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles:nil] autorelease];
+            [alertView show];
+            return;
+        }
+        
+        usersService.currentUser = usr;
+        
+        [self.view removeFromSuperview];
+        [app proceedFromLoginViaIntro:NO];
+    };
     
-    usersService.currentUser = usr;
-    
-    [self.view removeFromSuperview];
-    [app proceedFromLoginViaIntro:NO];
+    [usersService downloadUserMatchingNickName:existingUserNameTF.text
+                                   andPassword:existingUserPasswordTF.text
+                                      callback:callback];
 }
 
 

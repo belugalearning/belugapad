@@ -18,7 +18,7 @@
 
 NSString * const kUsersWSBaseURL = @"http://192.168.1.68:3000";
 NSString * const kUsersWSSyncUsersPath = @"app-users/sync-users";
-NSString * const kUsersWSGetUserPath = @"app-users/get-user";
+NSString * const kUsersWSGetUserPath = @"app-users/get-user-matching-nick-password";
 NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-available";
 
 
@@ -95,7 +95,8 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     return users;
 }
 
--(void) nickNameIsAvailable:(NSString*)nickName callback:(void (^)(BL_USER_NICK_AVAILABILITY))callback
+-(void) nickNameIsAvailable:(NSString*)nickName
+                   callback:(void (^)(BL_USER_NICK_AVAILABILITY))callback
 {
     // TODO: This only checks local database of users - needs to check with server
     [usersDatabase open];
@@ -133,20 +134,61 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     [opQueue addOperation:reqOp];
 }
 
--(NSDictionary*) userMatchingNickName:(NSString*)nickName
-                          andPassword:(NSString*)password
+-(void)downloadUserMatchingNickName:(NSString*)nickName
+                        andPassword:(NSString*)password
+                           callback:(void (^)(NSDictionary*))callback
 {
-    [usersDatabase open];
-    FMResultSet *rs = [usersDatabase executeQuery:@"SELECT 1 FROM users WHERE nick=? AND password=?", nickName, password];
-
-    if (![rs next]) return nil;
+    NSMutableDictionary *d = [NSMutableDictionary dictionary];
+    [d setObject:nickName forKey:@"nick"];
+    [d setObject:password forKey:@"password"];
     
-    NSDictionary *u = [self userFromCurrentRowOfResultSet:rs];
+    NSMutableURLRequest *req = [httpClient requestWithMethod:@"POST"
+                                                        path:kUsersWSGetUserPath
+                                                  parameters:d];
     
-    [rs close];
-    [usersDatabase close];
+    void (^onCompletion)() = ^(AFHTTPRequestOperation *op, id res)
+    {
+        BOOL reqSuccess = res != nil && ![res isKindOfClass:[NSError class]];
+        
+        if (!reqSuccess) {
+            callback(nil);
+            return;
+        }
+        
+        NSString *resultString = [[NSString alloc] initWithBytes:[res bytes] length:[res length] encoding:NSUTF8StringEncoding];
+        NSDictionary *user = [resultString objectFromJSONString];
+        
+        if (!user)
+        {
+            callback(nil);
+            return;
+        }
+        
+        NSString *urId = [user objectForKey:@"id"];
+        NSString *nodesCompleted = [(NSArray*)[user objectForKey:@"nodesCompleted"] JSONString];
+        
+        if (!urId || !nodesCompleted)
+        {
+            callback(nil);
+            return;
+        }
+        
+        [usersDatabase open];
+        BOOL successInsert = [usersDatabase executeUpdate:@"INSERT INTO users(id,nick,password,nodes_completed) values(?,?,?,?)", urId, nickName, password, nodesCompleted];
+        [usersDatabase close];
+        
+        if (!successInsert)
+        {
+            callback(nil);
+            return;
+        }
+        
+        callback(user);
+    };
     
-    return u;
+    AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
+    [reqOp setCompletionBlockWithSuccess:onCompletion failure:onCompletion];
+    [opQueue addOperation:reqOp];
 }
 
 -(NSDictionary*) getNewUserWithNickName:(NSString*)nickName

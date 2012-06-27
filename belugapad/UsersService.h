@@ -32,8 +32,9 @@ typedef enum {
                            andZubiColor:(NSData*)color // rgba
                       andZubiScreenshot:(UIImage*)image;
 
--(NSDictionary*) userMatchingNickName:(NSString*)nickName
-                          andPassword:(NSString*)password;
+-(void)downloadUserMatchingNickName:(NSString*)nickName
+                        andPassword:(NSString*)password
+                           callback:(void (^)(NSDictionary*))callback;
 
 -(void)addCompletedNodeId:(NSString*)nodeId;
 -(BOOL)hasCompletedNodeId:(NSString*)nodeId;

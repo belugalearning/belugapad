@@ -11,6 +11,12 @@
 
 @interface UsersService : NSObject
 
+typedef enum {
+    BL_USER_NICK_IS_AVAILABLE,
+    BL_USER_NICK_IS_UNAVAILABLE,
+    BL_USER_NICK_AVAILABILITY_UNCONFIRMED
+} BL_USER_NICK_AVAILABILITY;
+
 @property (readonly, retain, nonatomic) NSString *installationUUID;
 @property (retain, nonatomic) NSDictionary *currentUser;
 
@@ -19,7 +25,7 @@
 
 -(NSArray*)deviceUsersByNickName;
 
--(BOOL) nickNameIsAvailable:(NSString*)nickName;
+-(void) nickNameIsAvailable:(NSString*)nickName callback:(void (^)(BL_USER_NICK_AVAILABILITY))callback;
 
 -(NSDictionary*) getNewUserWithNickName:(NSString*)nickName
                             andPassword:(NSString*)password

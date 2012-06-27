@@ -16,9 +16,10 @@
 #import "FMDatabaseAdditions.h"
 #import "AFNetworking.h"
 
-NSString * const kUsersWebServiceBaseURL = @"http://192.168.1.68:3000";
-NSString * const kUsersWebServiceSyncUsersPath = @"app-users/sync-users";
-NSString * const kUsersWebServiceGetUserPath = @"get-user";
+NSString * const kUsersWSBaseURL = @"http://192.168.1.68:3000";
+NSString * const kUsersWSSyncUsersPath = @"app-users/sync-users";
+NSString * const kUsersWSGetUserPath = @"app-users/get-user";
+NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-available";
 
 
 @interface UsersService()
@@ -74,7 +75,7 @@ NSString * const kUsersWebServiceGetUserPath = @"get-user";
         if (![usersDatabase tableExists:@"users"]) [usersDatabase executeUpdate:@"CREATE TABLE users (id TEXT, nick TEXT, password TEXT, nodes_completed TEXT)"];
         [usersDatabase close];
         
-        httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kUsersWebServiceBaseURL]];
+        httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kUsersWSBaseURL]];
         opQueue = [[[NSOperationQueue alloc] init] retain];
     }
     
@@ -94,15 +95,42 @@ NSString * const kUsersWebServiceGetUserPath = @"get-user";
     return users;
 }
 
--(BOOL) nickNameIsAvailable:(NSString*)nickName
+-(void) nickNameIsAvailable:(NSString*)nickName callback:(void (^)(BL_USER_NICK_AVAILABILITY))callback
 {
     // TODO: This only checks local database of users - needs to check with server
     [usersDatabase open];
     FMResultSet *rs = [usersDatabase executeQuery:@"SELECT 1 FROM users WHERE nick = ?", nickName];
-    BOOL isAvailable = ![rs next];
+    BOOL isAvailable = ![rs next];    
     [rs close];
     [usersDatabase close];
-    return isAvailable;
+    
+    if (!isAvailable)
+    {
+        callback(BL_USER_NICK_IS_UNAVAILABLE);
+        return;
+    }
+    
+    // available on device - is it available on the server?
+    
+    NSMutableURLRequest *req = [httpClient requestWithMethod:@"POST"
+                                                        path:kUsersWSCheckNickAvailablePath
+                                                  parameters:[NSDictionary dictionaryWithObject:nickName forKey:@"nick"]];
+    
+    void (^onCompletion)() = ^(AFHTTPRequestOperation *op, id res)
+    {
+        BOOL reqSuccess = res != nil && ![res isKindOfClass:[NSError class]];
+        BL_USER_NICK_AVAILABILITY avail = BL_USER_NICK_AVAILABILITY_UNCONFIRMED;
+        if (reqSuccess)
+        {
+            NSString *resultString = [[[NSString alloc] initWithBytes:[res bytes] length:[res length] encoding:NSUTF8StringEncoding] autorelease];
+            if ([@"true" isEqualToString:resultString]) avail = BL_USER_NICK_IS_AVAILABLE;
+            else if ([@"false" isEqualToString:resultString]) avail = BL_USER_NICK_IS_UNAVAILABLE;
+        }
+        callback(avail);
+    };
+    AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
+    [reqOp setCompletionBlockWithSuccess:onCompletion failure:onCompletion];
+    [opQueue addOperation:reqOp];
 }
 
 -(NSDictionary*) userMatchingNickName:(NSString*)nickName
@@ -198,7 +226,7 @@ NSString * const kUsersWebServiceGetUserPath = @"get-user";
     if (0 == [users count]) return;
     
     NSMutableURLRequest *req = [httpClient requestWithMethod:@"POST"
-                                                        path:kUsersWebServiceSyncUsersPath
+                                                        path:kUsersWSSyncUsersPath
                                                   parameters:[NSDictionary dictionaryWithObject:[users JSONString] forKey:@"users"]];
     
     void (^onCompletion)() = ^(AFHTTPRequestOperation *op, id res)

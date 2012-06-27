@@ -281,32 +281,26 @@
         return;
     }
     
-    if (![usersService nickNameIsAvailable:newUserNameTF.text])
-    {
-        UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
-                                                             message:@"This nickname is already in use. Please try another one." delegate:self 
-                                                   cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
-        [alertView show];
-        return;
-    }
-    
-    /*CCScene *scene = [[CCDirector sharedDirector] runningScene];
-    EditZubi *layer = [scene.children objectAtIndex:0];
-    NSString *screenshotPath = [layer takeScreenshot];
-    
-    UIImage *image = [UIImage imageWithContentsOfFile:screenshotPath];
-    NSDictionary *newUser = [usersService getNewUserWithNickName:newUserNameTF.text
-                                             andPassword:newUserPasswordTF.text    
-                                            andZubiColor:colorWheel.lastColorRGBAData
-                                       andZubiScreenshot:image];
-    */
-    NSDictionary *newUser = [usersService getNewUserWithNickName:newUserNameTF.text
-                                                     andPassword:newUserPasswordTF.text    
-                                                    andZubiColor:nil
-                                               andZubiScreenshot:nil];
-    usersService.currentUser = newUser;
-    [self.view removeFromSuperview];
-    [app proceedFromLoginViaIntro:YES];
+    void (^callback)() = ^(BL_USER_NICK_AVAILABILITY availability) {
+        if (availability == BL_USER_NICK_IS_UNAVAILABLE)
+        {
+            UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
+                                                                 message:@"This nickname is already in use. Please try another one." delegate:self 
+                                                       cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
+            [alertView show];
+        }
+        else
+        {
+            NSDictionary *newUser = [usersService getNewUserWithNickName:newUserNameTF.text
+                                                             andPassword:newUserPasswordTF.text    
+                                                            andZubiColor:nil
+                                                       andZubiScreenshot:nil];
+            usersService.currentUser = newUser;
+            [self.view removeFromSuperview];
+            [app proceedFromLoginViaIntro:YES];
+        }
+    };
+    [usersService nickNameIsAvailable:newUserNameTF.text callback:callback];
 }
 
 #pragma mark -

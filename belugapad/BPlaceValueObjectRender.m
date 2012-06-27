@@ -13,6 +13,7 @@
 #import "DWPlaceValueBlockGameObject.h"
 #import "DWPlaceValueCageGameObject.h"
 #import "DWPlaceValueNetGameObject.h"
+#import "InteractionFeedback.h"
 
 @implementation BPlaceValueObjectRender
 
@@ -77,6 +78,14 @@
         {
             [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(b.PickupSprite)]];
 
+        }
+    }
+    
+    if(messageType==kDWcheckMyMount)
+    {
+        if([b.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
+        {
+            [b.mySprite runAction:[InteractionFeedback shakeAction]];
         }
     }
     

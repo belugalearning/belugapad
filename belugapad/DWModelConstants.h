@@ -82,6 +82,8 @@ typedef enum {
     
     kDWsplitActivePies=35,
     kDWupdateLabels=36,
+    
+    kDWcheckMyMount=37,
 
     
     kDWareYouProximateTo=101,

@@ -114,6 +114,7 @@
     float maxSumReachedByUser;
     float expectedCount;
     float totalCount;
+    float lastTotalCount;
     
     CCSprite *condensePanel;
     CCSprite *mulchPanel;

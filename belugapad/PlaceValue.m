@@ -125,12 +125,11 @@ static float kTimeToCageShake=7.0f;
     }
     
     timeSinceInteractionOrShake+=delta;
-    if(totalCount<[[solutionsDef objectForKey:SOLUTION_VALUE] intValue] && timeSinceInteractionOrShake>kTimeToCageShake)
+    if(lastTotalCount<expectedCount && timeSinceInteractionOrShake>kTimeToCageShake)
     {
-        for(DWPlaceValueCageGameObject *c in allCages)
-        {
-            [gw handleMessage:kDWcheckMyMount andPayload:nil withLogLevel:-1];
-        }
+        NSLog(@"lastTotalCount %f, expectedCount %f", lastTotalCount, expectedCount);
+        [gw handleMessage:kDWcheckMyMount andPayload:nil withLogLevel:-1];
+
         timeSinceInteractionOrShake=0.0f;
     }
 }
@@ -431,6 +430,8 @@ static float kTimeToCageShake=7.0f;
 
     [renderLayer setPosition:ccp(cx-(currentColumnIndex*(kPropXColumnSpacing*lx)+(xStartOffset*lx)), 0)];
     
+    // send a problemstatechanged so that any total count eval, etc is done
+    [self problemStateChanged];
     
     // define our rects for no-drag areas
     noDragAreaBottom=CGRectMake(0,0,lx,120);
@@ -882,6 +883,7 @@ static float kTimeToCageShake=7.0f;
                     float objectValue=goO.ObjectValue;
                     
                     totalCount = totalCount+objectValue;
+                    lastTotalCount=totalCount;
                 }   
             }
         }
@@ -1577,6 +1579,7 @@ static float kTimeToCageShake=7.0f;
                 
                 // take away the colour from the grid
                 [self tintGridColour:ccc3(255,255,255)];
+                [self problemStateChanged];
                 
             }
             else

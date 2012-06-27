@@ -21,6 +21,9 @@
 @property BOOL lightUpProgressFromLastNode;
 @property (nonatomic, retain) ConceptNode *currentNode;
 
+@property BOOL resetPositionAfterTH;
+@property CGPoint lastMapLayerPosition;
+
 -(id)initWithProblemPipeline:(NSString*)source;
 -(void)setPipelineNodeComplete;
 -(BOOL)isUsingTestPipeline;

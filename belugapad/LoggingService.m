@@ -184,13 +184,13 @@ uint const kMaxConsecutiveSendFails = 3;
         if (!jsonData && ![additionalData isKindOfClass:[NSString class]]) additionalData = @"JSON_SERIALIZATION_ERROR";
     }
     
-    NSMutableDictionary *event = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                  eventType, @"eventType"
-                                  , [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]], @"date"
-                                  , additionalData, @"additionalData"
-                                  , nil];
+    NSMutableDictionary *event = [NSMutableDictionary dictionary];
+    [event setValue:eventType forKey:@"eventType"];
+    [event setValue:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"date"];
+    [event setValue:additionalData forKey:@"additionalData"];
     
-    [(NSMutableArray*)[doc objectForKey:@"events"] addObject:event];
+    NSMutableArray *events = [doc objectForKey:@"events"];
+    [events addObject:event];
      
     NSData *docData = [doc JSONData];
     if (!docData) return; //error !
@@ -280,7 +280,7 @@ uint const kMaxConsecutiveSendFails = 3;
     
     
     // ----- HTTPRequest Completion Handler
-    __block LoggingService *trueSelf = self;
+    __block LoggingService *bself = self;
     void (^onComplete)() = ^(BL_SEND_LOG_STATUS status)
     {
         BOOL queuedBatch = NO;
@@ -298,7 +298,7 @@ uint const kMaxConsecutiveSendFails = 3;
         {
             [fm removeItemAtPath:currDir error:nil];
             [fm createDirectoryAtPath:currDir withIntermediateDirectories:NO attributes:nil error:nil];
-            [trueSelf sendPrevBatches];
+            [bself sendPrevBatches];
         }
     };    
     
@@ -317,7 +317,7 @@ uint const kMaxConsecutiveSendFails = 3;
     NSData *batch = [NSData dataWithContentsOfFile:batchPath];
     
     // ----- HTTPRequest Completion Handler
-    __block LoggingService *trueSelf = self;
+    __block LoggingService *bself = self;
     void (^onComplete)() = ^(BL_SEND_LOG_STATUS status)
     {
         BOOL requeued = NO;
@@ -335,7 +335,7 @@ uint const kMaxConsecutiveSendFails = 3;
         {
             [fm removeItemAtPath:batchPath error:NULL];
             //NSLog(@"consecutiveSendFails=%d kMaxConsecutiveSendFails=%d", consecutiveSendFails, kMaxConsecutiveSendFails);
-            if (consecutiveSendFails < kMaxConsecutiveSendFails) [trueSelf sendPrevBatches];
+            if (consecutiveSendFails < kMaxConsecutiveSendFails) [bself sendPrevBatches];
         }
     };
     

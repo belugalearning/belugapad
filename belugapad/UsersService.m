@@ -14,6 +14,12 @@
 #import "JSONKit.h"
 #import "FMDatabase.h"
 #import "FMDatabaseAdditions.h"
+#import "AFNetworking.h"
+
+NSString * const kUsersWebServiceBaseURL = @"http://192.168.1.68:3000";
+NSString * const kUsersWebServiceSyncUsersPath = @"app-users/sync-users";
+NSString * const kUsersWebServiceGetUserPath = @"get-user";
+
 
 @interface UsersService()
 {
@@ -21,9 +27,13 @@
     FMDatabase *usersDatabase;
     LoggingService *loggingService;
     NSString *contentSource;
+    
+    AFHTTPClient *httpClient; 
+    NSOperationQueue *opQueue;
 }
 -(NSDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs;
 @end
+
 
 
 @implementation UsersService
@@ -61,6 +71,10 @@
         if (![usersDatabase tableExists:@"users"]) [usersDatabase executeUpdate:@"CREATE TABLE users (id TEXT, nick TEXT, password TEXT, nodes_completed TEXT)"];
         [usersDatabase close];
         
+        httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kUsersWebServiceBaseURL]];
+        opQueue = [[[NSOperationQueue alloc] init] retain];
+        
+        //[self syncDeviceUsers];        
     }
     
     return self;
@@ -68,9 +82,10 @@
 
 -(NSArray*)deviceUsersByNickName
 {
+    [self syncDeviceUsers]; // TODO: ****** DELTE LINE, DEBUG ONLY
     [loggingService sendData];
     
-    NSMutableArray *users = [[NSMutableArray array] retain];
+    NSMutableArray *users = [NSMutableArray array];
     
     [usersDatabase open];
     FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick, nodes_completed FROM users ORDER BY nick"];
@@ -93,7 +108,7 @@
 }
 
 -(NSDictionary*) userMatchingNickName:(NSString*)nickName
-                  andPassword:(NSString*)password
+                          andPassword:(NSString*)password
 {
     [usersDatabase open];
     FMResultSet *rs = [usersDatabase executeQuery:@"SELECT 1 FROM users WHERE nick=? AND password=?", nickName, password];
@@ -134,12 +149,14 @@
 -(void)addCompletedNodeId:(NSString *)nodeId
 {
     NSString *urId = [currentUser objectForKey:@"id"];
-    NSMutableArray *nc = [[currentUser objectForKey:@"nodesCompleted"] mutableCopy];
+    NSMutableArray *nc = [[[currentUser objectForKey:@"nodesCompleted"] mutableCopy] autorelease];
+    if (!nc) nc = [NSMutableArray array];
     [nc addObject:nodeId];
     
     [usersDatabase open];
     
-    [usersDatabase executeUpdate:@"UPDATE users SET nodes_completed = ? WHERE id = ?)", [nc JSONString], urId];
+    BOOL updateSuccess = [usersDatabase executeUpdate:@"UPDATE users SET nodes_completed = ? WHERE id = ?", [nc JSONString], urId];
+    if (!updateSuccess) NSLog(@"failed to update user");
     
     FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick, nodes_completed FROM users WHERE id = ?", urId];
     [rs next];
@@ -156,21 +173,93 @@
     return [[currentUser objectForKey:@"nodesCompleted"] containsObject:nodeId];
 }
 
+-(void)syncDeviceUsers
+{   
+    NSMutableArray *users = [NSMutableArray array];
+    
+    // get users date from on-device db
+    [usersDatabase open];
+    FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick, password, nodes_completed FROM users"];
+    while([rs next])
+    {
+        NSDictionary *user = [NSMutableDictionary dictionary];        
+        [user setValue:[rs stringForColumnIndex:0] forKey:@"id"];
+        [user setValue:[rs stringForColumnIndex:1] forKey:@"nick"];
+        [user setValue:[rs stringForColumnIndex:2] forKey:@"password"];
+        [user setValue:[[rs stringForColumnIndex:3] objectFromJSONString] forKey:@"nodesCompleted"];
+        user = [user copy];
+        [users addObject:user];
+        [user release];
+    }
+    [rs close];
+    [usersDatabase close];
+    
+    // if no users, no data to sync
+    if (0 == [users count]) return;
+    
+    NSMutableURLRequest *req = [httpClient requestWithMethod:@"POST"
+                                                        path:kUsersWebServiceSyncUsersPath
+                                                  parameters:[NSDictionary dictionaryWithObject:[users JSONString] forKey:@"users"]];
+    
+    void (^onCompletion)() = ^(AFHTTPRequestOperation *op, id res)
+    {
+        BOOL reqSuccess = res != nil && ![res isKindOfClass:[NSError class]];
+        NSLog(@"success = %@", reqSuccess ? @"YES" : @"NO");
+        if (reqSuccess)
+        {
+            NSArray *updates = [(NSData*)res objectFromJSONData];
+            NSLog(@"%@", updates);
+            [usersDatabase open];
+            for (NSDictionary *updatedUr in updates)
+            {
+                NSString *urId = [updatedUr objectForKey:@"id"];
+                
+                FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick, nodesCompleted FROM users WHERE id = ?", urId];
+                // chance user has been deleted since sync request sent
+                if ([rs next])
+                {
+                    // possibility that updated user has changed on client since request to server was made
+                    NSMutableSet *nodesCompletedSet = [NSSet setWithArray:[updatedUr objectForKey:@"nodesCompleted"]];
+                    [nodesCompletedSet addObjectsFromArray:[[rs stringForColumn:@"nodes_completed"] objectFromJSONString]];
+                    
+                    NSArray *nodesCompleted = [nodesCompletedSet allObjects];
+                    
+                    BOOL updateSuccess = [usersDatabase executeUpdate:@"UPDATE users SET nodes_completed = ? WHERE id = ?", [nodesCompleted JSONString], urId];                    
+                    NSLog(@"update success='%@': user id='%@', nick='%@',  nodesCompleted=%@"
+                          , updateSuccess?@"TRUE":@"FALSE", [updatedUr objectForKey:@"id"], [updatedUr objectForKey:@"nick"], [updatedUr objectForKey:@"nodesCompleted"]);
+                    
+                    if (currentUser && [[currentUser objectForKey:@"id"] isEqualToString:urId])
+                    {
+                        NSMutableDictionary *ur = [currentUser mutableCopy];
+                        [ur setValue:nodesCompleted forKey:@"nodesCompleted"];
+                        [currentUser release];
+                        currentUser = [ur copy];
+                        [ur release];
+                    }
+                }
+            }
+            [usersDatabase close];
+        }
+    };
+    AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
+    [reqOp setCompletionBlockWithSuccess:onCompletion failure:onCompletion];
+    [opQueue addOperation:reqOp];
+}
+
 -(NSDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs
 {
-    NSString *nodesCompletedText = [rs stringForColumn:@"nodes_completed"];
-    NSArray *nodesCompleted = [nodesCompletedText length] > 0 ? [nodesCompletedText objectFromJSONString] : [NSArray array];
-    
-    return [NSDictionary dictionaryWithObjectsAndKeys:
-            [rs stringForColumn:@"id"], @"id"
-            , [rs stringForColumn:@"nick"], @"nickName"
-            , nodesCompleted, @"nodesCompleted"
-            , nil];
+    NSMutableDictionary *user = [NSMutableDictionary dictionary];
+    [user setValue:[rs stringForColumn:@"id"] forKey:@"id"];
+    [user setValue:[rs stringForColumn:@"nick"] forKey:@"nickName"];
+    [user setValue:[rs stringForColumn:@"nodes_completed"] forKey:@"nodesCompleted"];
+    return [[user copy] autorelease];
 }
 
 -(void)dealloc
 {
     if (usersDatabase) [usersDatabase release];
+    if (httpClient) [httpClient release];
+    if (opQueue) [opQueue release];
     [super dealloc];
 }
 

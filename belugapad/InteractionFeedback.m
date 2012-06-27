@@ -24,6 +24,11 @@
     return oe;
 }
 
++(CCAction*)dropAndBounceAction
+{
+    return [self shakeAction];
+}
+
 +(CCAction*)enlargeTo1xAction
 {
     //todo: consider expanding to a "pickup" action, would need texture swap out params and fixed scaling

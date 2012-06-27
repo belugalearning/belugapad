@@ -13,6 +13,7 @@
 @interface InteractionFeedback : NSObject
 
 +(CCAction*)shakeAction;
++(CCAction*)dropAndBounceAction;
 +(CCAction*)enlargeTo1xAction;
 +(CCAction*)reduceTo1xAction;
 +(CCAction*)reduceTo0xAndHide;

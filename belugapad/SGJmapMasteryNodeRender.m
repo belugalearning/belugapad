@@ -11,7 +11,9 @@
 #import "BLMath.h"
 
 static ccColor4B userCol={241,90,36,255};
-static ccColor4B userHighCol={239,119,82,255};
+//static ccColor4B userCol={150,90,200,255};
+//static ccColor4B userHighCol={239,119,82,255};
+static ccColor4B userHighCol={150,119,200,255};
 static int shadowSteps=10;
 
 @interface SGJmapMasteryNodeRender()

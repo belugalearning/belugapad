@@ -437,19 +437,19 @@ typedef enum {
     
     
     
-    //scrolling
-    float friction=0.85f;
-    
-    if(!isDragging)
-    {
-        dragVel=[BLMath MultiplyVector:dragVel byScalar:friction];
-        if(dragVel.x<100.0f && dragVel.y<100.0f)
-            mapLayer.position=[BLMath AddVector:dragVel toVector:mapLayer.position];
-    }
-    else {
-        dragVel=[BLMath SubtractVector:dragLast from:mapLayer.position];
-        dragLast=mapLayer.position;
-    }
+//    //scrolling
+//    float friction=0.85f;
+//    
+//    if(!isDragging)
+//    {
+//        dragVel=[BLMath MultiplyVector:dragVel byScalar:friction];
+//        if(dragVel.x<100.0f && dragVel.y<100.0f)
+//            mapLayer.position=[BLMath AddVector:dragVel toVector:mapLayer.position];
+//    }
+//    else {
+//        dragVel=[BLMath SubtractVector:dragLast from:mapLayer.position];
+//        dragLast=mapLayer.position;
+//    }
 }
 
 -(void) doUpdateProximity:(ccTime)delta

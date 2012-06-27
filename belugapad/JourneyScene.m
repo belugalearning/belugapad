@@ -44,10 +44,10 @@ static CGPoint kStartMapPos={-611, 3713};
 
 
 const float kLogOutBtnPadding = 8.0f;
-const CGSize kLogOutBtnSize = { 120.0f, 43.0f };
+const CGSize kLogOutBtnSize = { 80.0f, 33.0f };
 
 static CGRect debugButtonBounds={{950, 0}, {100, 50}};
-static BOOL debugRestrictMovement=NO;
+static BOOL debugRestrictMovement=YES;
 
 typedef enum {
     kJuiStateNodeMap,
@@ -689,7 +689,8 @@ typedef enum {
         if([go conformsToProtocol:@protocol(Selectable)])
         {
             id<Selectable>sgo=go;
-            [((id<Selectable>)sgo).NodeSelectComponent trySelectionForPosition:lOnMap];
+            if([((id<Selectable>)sgo).NodeSelectComponent trySelectionForPosition:lOnMap])
+                break;
         }
     }
 }

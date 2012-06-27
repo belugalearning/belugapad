@@ -127,8 +127,12 @@ static float kTimeToCageShake=7.0f;
     timeSinceInteractionOrShake+=delta;
     if(lastTotalCount<expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
     {
-        [gw handleMessage:kDWcheckMyMount andPayload:nil withLogLevel:-1];
-
+        [gw handleMessage:kDWcheckMyMountIsCage andPayload:nil withLogLevel:-1];
+        timeSinceInteractionOrShake=0.0f;
+    }
+    else if(lastTotalCount>expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
+    {
+        [gw handleMessage:kDWcheckMyMountIsNet andPayload:nil withLogLevel:-1];
         timeSinceInteractionOrShake=0.0f;
     }
 }

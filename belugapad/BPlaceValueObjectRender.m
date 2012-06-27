@@ -81,12 +81,15 @@
         }
     }
     
-    if(messageType==kDWcheckMyMount)
+    if(messageType==kDWcheckMyMountIsCage)
     {
         if([b.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
-        {
             [b.mySprite runAction:[InteractionFeedback shakeAction]];
-        }
+    }
+    if(messageType==kDWcheckMyMountIsNet)
+    {
+        if([b.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
+            [b.mySprite runAction:[InteractionFeedback shakeAction]];
     }
     
     if(messageType==kDWsetMount)

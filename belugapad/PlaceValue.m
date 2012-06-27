@@ -1575,6 +1575,15 @@ static float kTimeToCageShake=7.0f;
                 if([[gw Blackboard].DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])isCage=YES;
                 else isCage=NO;
 
+                if(isCage)
+                {
+                    //deselect the object if selected
+                    // check whether it's selected and we can deselect - or that it's deselected
+                    DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
+                    if(block.Selected)
+                        [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
+                }
+                
                 //tell the picked-up object to mount on the dropobject
 
                 [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:nil withLogLevel:0];

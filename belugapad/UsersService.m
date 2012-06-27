@@ -16,7 +16,7 @@
 #import "FMDatabaseAdditions.h"
 #import "AFNetworking.h"
 
-NSString * const kUsersWSBaseURL = @"http://192.168.1.68:3000";
+NSString * const kUsersWSBaseURL = @"http://u.zubi.me:3000";
 NSString * const kUsersWSSyncUsersPath = @"app-users/sync-users";
 NSString * const kUsersWSGetUserPath = @"app-users/get-user-matching-nick-password";
 NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-available";

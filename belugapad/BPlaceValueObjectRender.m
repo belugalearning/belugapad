@@ -44,6 +44,9 @@
     }
     
     if (messageType==kDWmoveSpriteToPosition) {
+        
+        [b.mySprite stopAllActions];
+        
         b.AnimateMe=YES;
         [self setSpritePosWithAnimation];
     }

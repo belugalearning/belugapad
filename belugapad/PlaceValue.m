@@ -128,19 +128,22 @@ static float kTimeToCageShake=7.0f;
     timeSinceInteractionOrShake+=delta;
 
     // check the problem type
-    if([solutionType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE] || [solutionType isEqualToString:TOTAL_COUNT])
+    if(timeSinceInteractionOrShake>7.0f)
     {
-        // not enough items on - shake cage
-        if(lastTotalCount<expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
+        if([solutionType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE] || [solutionType isEqualToString:TOTAL_COUNT])
         {
-            [gw handleMessage:kDWcheckMyMountIsCage andPayload:nil withLogLevel:-1];
-            timeSinceInteractionOrShake=0.0f;
-        }
-        // too many items - shake netted items
-        else if(lastTotalCount>expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
-        {
-            [gw handleMessage:kDWcheckMyMountIsNet andPayload:nil withLogLevel:-1];
-            timeSinceInteractionOrShake=0.0f;
+            // not enough items on - shake cage
+            if(lastTotalCount<expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
+            {
+                [gw handleMessage:kDWcheckMyMountIsCage andPayload:nil withLogLevel:-1];
+                timeSinceInteractionOrShake=0.0f;
+            }
+            // too many items - shake netted items
+            else if(lastTotalCount>expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
+            {
+                [gw handleMessage:kDWcheckMyMountIsNet andPayload:nil withLogLevel:-1];
+                timeSinceInteractionOrShake=0.0f;
+            }
         }
     }
 }
@@ -1182,7 +1185,8 @@ static float kTimeToCageShake=7.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     timeSinceInteractionOrShake=0.0f;
-    [gw handleMessage:kDWstopAllActions andPayload:nil withLogLevel:-1];
+    
+    //[gw handleMessage:kDWstopAllActions andPayload:nil withLogLevel:-1];
     //location=[renderLayer convertToNodeSpace:location];
     
     // work out, based on tap, which column we are over

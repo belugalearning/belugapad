@@ -125,9 +125,8 @@ static float kTimeToCageShake=7.0f;
     }
     
     timeSinceInteractionOrShake+=delta;
-    if(lastTotalCount<expectedCount && timeSinceInteractionOrShake>kTimeToCageShake)
+    if(lastTotalCount<expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
     {
-        NSLog(@"lastTotalCount %f, expectedCount %f", lastTotalCount, expectedCount);
         [gw handleMessage:kDWcheckMyMount andPayload:nil withLogLevel:-1];
 
         timeSinceInteractionOrShake=0.0f;
@@ -1171,6 +1170,8 @@ static float kTimeToCageShake=7.0f;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    timeSinceInteractionOrShake=0.0f;
+    
     //location=[renderLayer convertToNodeSpace:location];
     
     // work out, based on tap, which column we are over

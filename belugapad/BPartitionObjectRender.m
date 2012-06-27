@@ -81,6 +81,11 @@
     {
         [self resetSpriteToMount];
     }
+    if(messageType==kDWstopAllActions)
+    {
+        [pogo.BaseNode stopAllActions];
+        [self resetSpriteToMount];
+    }
     if(messageType==kDWdismantle)
     {
         CCSprite *s=[[gameObject store] objectForKey:MY_SPRITE];

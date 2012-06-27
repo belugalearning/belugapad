@@ -7,10 +7,13 @@
 
 #import <Foundation/Foundation.h>
 
+@class CCLayer;
 
 @interface SGBlackboard : NSObject {
  
 }
+
+@property (retain) CCLayer *RenderLayer;
 
 
 @end

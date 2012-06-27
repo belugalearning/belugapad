@@ -41,6 +41,7 @@ static float kPropYColumnHeader=0.85f;
 static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 static float kTimeToCageShake=7.0f;
 
+
 @implementation PlaceValue
 
 #pragma mark - scene setup
@@ -125,13 +126,22 @@ static float kTimeToCageShake=7.0f;
     }
     
     timeSinceInteractionOrShake+=delta;
-    if(totalCount<[[solutionsDef objectForKey:SOLUTION_VALUE] intValue] && timeSinceInteractionOrShake>kTimeToCageShake)
+
+    // check the problem type
+    if([solutionType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE] || [solutionType isEqualToString:TOTAL_COUNT])
     {
-        for(DWPlaceValueCageGameObject *c in allCages)
+        // not enough items on - shake cage
+        if(lastTotalCount<expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
         {
-            [gw handleMessage:kDWcheckMyMount andPayload:nil withLogLevel:-1];
+            [gw handleMessage:kDWcheckMyMountIsCage andPayload:nil withLogLevel:-1];
+            timeSinceInteractionOrShake=0.0f;
         }
-        timeSinceInteractionOrShake=0.0f;
+        // too many items - shake netted items
+        else if(lastTotalCount>expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
+        {
+            [gw handleMessage:kDWcheckMyMountIsNet andPayload:nil withLogLevel:-1];
+            timeSinceInteractionOrShake=0.0f;
+        }
     }
 }
 
@@ -431,6 +441,8 @@ static float kTimeToCageShake=7.0f;
 
     [renderLayer setPosition:ccp(cx-(currentColumnIndex*(kPropXColumnSpacing*lx)+(xStartOffset*lx)), 0)];
     
+    // send a problemstatechanged so that any total count eval, etc is done
+    [self problemStateChanged];
     
     // define our rects for no-drag areas
     noDragAreaBottom=CGRectMake(0,0,lx,120);
@@ -619,6 +631,8 @@ static float kTimeToCageShake=7.0f;
         
         // set the expected count for a TOTAL_COUNT problem if there
         expectedCount = [[solutionsDef objectForKey:SOLUTION_VALUE] floatValue];
+
+        solutionType = [solutionsDef objectForKey:SOLUTION_TYPE];
         
     }
     else
@@ -728,7 +742,6 @@ static float kTimeToCageShake=7.0f;
     }
     
     // define our solution type to check against
-    NSString *solutionType = [solutionsDef objectForKey:SOLUTION_TYPE];
     
     if([solutionType isEqualToString:COUNT_SEQUENCE])
     {
@@ -776,8 +789,6 @@ static float kTimeToCageShake=7.0f;
 
 -(void)evalProblem
 {
-    
-    NSString *solutionType = [solutionsDef objectForKey:SOLUTION_TYPE];
     
     if([solutionType isEqualToString:COUNT_SEQUENCE]){
         [self evalProblemCountSeq:COUNT_SEQUENCE];
@@ -882,6 +893,7 @@ static float kTimeToCageShake=7.0f;
                     float objectValue=goO.ObjectValue;
                     
                     totalCount = totalCount+objectValue;
+                    lastTotalCount=totalCount;
                 }   
             }
         }
@@ -1169,6 +1181,8 @@ static float kTimeToCageShake=7.0f;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    timeSinceInteractionOrShake=0.0f;
+    [gw handleMessage:kDWstopAllActions andPayload:nil withLogLevel:-1];
     //location=[renderLayer convertToNodeSpace:location];
     
     // work out, based on tap, which column we are over
@@ -1577,6 +1591,7 @@ static float kTimeToCageShake=7.0f;
                 
                 // take away the colour from the grid
                 [self tintGridColour:ccc3(255,255,255)];
+                [self problemStateChanged];
                 
             }
             else

@@ -21,6 +21,7 @@
 #import "LoggingService.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
+#import "InteractionFeedback.h"
 
 @interface PartitionTool()
 {
@@ -31,6 +32,8 @@
 }
 
 @end
+
+static float kTimeToMountedShake=7.0f;
 
 @implementation PartitionTool
 #pragma mark - scene setup
@@ -96,7 +99,18 @@
             timeToAutoMoveToNextProblem=0.0f;
         }
     }   
-    
+    timeSinceInteractionOrShake+=delta;
+    if(timeSinceInteractionOrShake>kTimeToMountedShake && !hasUsedBlock)
+    {
+        for(NSArray *a in mountedObjects)
+        {
+            for(DWPartitionObjectGameObject *pogo in a)
+            {
+                [pogo.BaseNode runAction:[InteractionFeedback shakeAction]];
+            }
+        }
+        timeSinceInteractionOrShake=0.0f;
+    }
 
 }
 
@@ -252,6 +266,8 @@
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
+    timeSinceInteractionOrShake=0.0f;
+    [gw handleMessage:kDWstopAllActions andPayload:nil withLogLevel:-1];
     
     
     [gw Blackboard].PickupObject=nil;
@@ -356,6 +372,7 @@
             DWPartitionRowGameObject *prgo = (DWPartitionRowGameObject*)[gw Blackboard].DropObject;
             
             [pogo handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:prgo forKey:MOUNT] withLogLevel:-1];
+            hasUsedBlock=YES;
             
             // touch ended on a row so we've set it. log it's value
             [loggingService logEvent:BL_PA_NB_TOUCH_END_ON_ROW

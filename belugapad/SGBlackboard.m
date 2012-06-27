@@ -11,6 +11,8 @@
 
 @implementation SGBlackboard
 
+@synthesize RenderLayer;
+
 -(id) init
 {
     if((self=[super init]))

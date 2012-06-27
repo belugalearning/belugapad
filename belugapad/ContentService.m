@@ -49,6 +49,9 @@
 @synthesize fullRedraw;
 @synthesize currentPipeline;
 
+@synthesize resetPositionAfterTH;
+@synthesize lastMapLayerPosition;
+
 @synthesize lightUpProgressFromLastNode;
 @synthesize currentNode;
 

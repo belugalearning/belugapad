@@ -39,10 +39,12 @@
     ProbjemRejectType rejectType;
     ProblemEvalMode evalMode;
     
+    float timeSinceInteractionOrShake;
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
     
     BOOL hasMovedBlock;
+    BOOL hasUsedBlock;
     int numberToStack;
     
     DWPartitionRowGameObject *previousMount;

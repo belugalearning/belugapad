@@ -13,7 +13,7 @@
 #import "DWGameWorld.h"
 #import "BLMath.h"
 #import "DWTTTileGameObject.h"
-
+#import "InteractionFeedback.h"
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
@@ -30,6 +30,8 @@
 }
 
 @end
+
+static float kTimeToHeaderBounce=7.0f;
 
 @implementation TimesTables
 
@@ -97,6 +99,32 @@
             timeToAutoMoveToNextProblem=0.0f;
         }
     }   
+    
+    timeSinceInteractionOrDropHeader+=delta;
+    
+    if(timeSinceInteractionOrDropHeader>kTimeToHeaderBounce && !hasUsedHeaderX)
+    {
+
+        NSMutableArray *a=[headerLabels objectAtIndex:0];
+        
+        for(CCLabelTTF *l in a)
+        {
+            [l runAction:[InteractionFeedback dropAndBounceAction]];
+        }
+        
+        timeSinceInteractionOrDropHeader=0.0f;
+    }
+    else if(timeSinceInteractionOrDropHeader>kTimeToHeaderBounce && !hasUsedHeaderY)
+    {
+        NSMutableArray *a=[headerLabels objectAtIndex:1];
+        
+        for(CCLabelTTF *l in a)
+        {
+            [l runAction:[InteractionFeedback dropAndBounceAction]];
+        }
+        
+        timeSinceInteractionOrDropHeader=0.0f;
+    }
 }
 
 #pragma mark - gameworld setup and population
@@ -424,6 +452,7 @@
 
 -(void)tintRow:(int)thisRow
 {
+    hasUsedHeaderY=YES;
     BOOL haveLogged=NO;
     BOOL tinted=[[rowTints objectAtIndex:thisRow] boolValue];
     
@@ -466,6 +495,7 @@
 
 -(void)tintCol:(int)thisCol
 {
+    hasUsedHeaderX=YES;
     BOOL haveLogged=NO;
     BOOL tinted=[[colTints objectAtIndex:thisCol] boolValue];
 
@@ -517,6 +547,7 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
+    timeSinceInteractionOrDropHeader=0.0f;
     
     
     [gw Blackboard].PickupObject=nil;

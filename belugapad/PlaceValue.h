@@ -114,6 +114,7 @@
     float maxSumReachedByUser;
     float expectedCount;
     float totalCount;
+    float lastTotalCount;
     
     CCSprite *condensePanel;
     CCSprite *mulchPanel;
@@ -126,6 +127,8 @@
     BOOL inBlockTransition;
     BOOL inCondenseArea;
     BOOL inMulchArea;
+    
+    NSString *solutionType;
     
     //reference to cages
     NSMutableArray *allCages;

@@ -27,6 +27,7 @@
 #import "NordicAnimator.h"
 #import "LRAnimator.h"
 #import "BLFiles.h"
+#import "InteractionFeedback.h"
 
 @interface ToolHost()
 {
@@ -46,6 +47,7 @@
 @synthesize DynProblemParser;
 
 static float kMoveToNextProblemTime=2.0f;
+static float kTimeToShakeNumberPickerButtons=7.0f;
 
 +(CCScene *) scene
 {
@@ -214,6 +216,19 @@ static float kMoveToNextProblemTime=2.0f;
             autoMoveToNextProblem=NO;
             [self gotoNewProblem];
         }
+    }
+    
+    if(numberPickerForThisProblem)timeSinceInteractionOrShakeNP+=delta;
+    
+    if(timeSinceInteractionOrShakeNP>kTimeToShakeNumberPickerButtons && numberPickerForThisProblem && !hasUsedNumber)
+    {
+        
+        for(CCSprite *s in numberPickerButtons)
+        {
+            [s runAction:[InteractionFeedback dropAndBounceAction]];
+        }
+        
+        timeSinceInteractionOrShakeNP=0.0f;
     }
     
     //let tool do updates
@@ -894,6 +909,7 @@ static float kMoveToNextProblemTime=2.0f;
 {
     CGPoint origloc=location;
     location=[nPicker convertToNodeSpace:location];
+    timeSinceInteractionOrShakeNP=0.0f;
     
     if(numberPickerEvalMode==kNumberPickerEvalOnCommit)
     {
@@ -915,6 +931,7 @@ static float kMoveToNextProblemTime=2.0f;
             CCSprite *s=[numberPickerButtons objectAtIndex:i];
             if(CGRectContainsPoint(s.boundingBox, location))
             {
+                hasUsedNumber=YES;
                 //a valid click?
                 [self playAudioPress];
                 
@@ -1333,6 +1350,7 @@ static float kMoveToNextProblemTime=2.0f;
     lastTouch=location;
 
     [self logTouches:touches forEvent:@"b"];
+
     //testing block for stepping between tool positions
 //    if(animPos==0)
 //    {

@@ -129,8 +129,7 @@ static float kTimeToCageShake=7.0f;
     {
         for(DWPlaceValueCageGameObject *c in allCages)
         {
-            NSLog(@"sprite width %f", c.mySprite.contentSize.width);
-            [c.mySprite runAction:[InteractionFeedback shakeAction]];
+            [gw handleMessage:kDWcheckMyMount andPayload:nil withLogLevel:-1];
         }
         timeSinceInteractionOrShake=0.0f;
     }

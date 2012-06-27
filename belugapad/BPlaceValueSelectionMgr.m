@@ -13,13 +13,14 @@
 #import "ToolScene.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
+#import "DWPlaceValueBlockGameObject.h"
 
 @interface BPlaceValueSelectionMgr()
 {
 @private
-    LoggingService *loggingService;
     ContentService *contentService;
     UsersService *usersService;
+    LoggingService *loggingService;
 }
 
 @end
@@ -28,11 +29,14 @@
 -(BPlaceValueSelectionMgr*)initWithGameObject:(DWGameObject *)aGameObject withData:(NSDictionary *)data
 {
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
-    loggingService = ac.loggingService;
     contentService = ac.contentService;
     usersService = ac.usersService;
+    loggingService = ac.loggingService;
     
     self=(BPlaceValueSelectionMgr *)[super initWithGameObject:aGameObject withData:data];
+    
+    b=(DWPlaceValueBlockGameObject*)gameObject;
+    
     return self;
 }
 -(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload
@@ -51,7 +55,7 @@
     }
     if(messageType==kDWdeselectIfNotThisValue)
     {
-        float myV=[[[gameObject store] objectForKey:OBJECT_VALUE] floatValue];
+        float myV=b.ObjectValue;
         float theirV=[[payload objectForKey:OBJECT_VALUE] floatValue];
         if(myV!=theirV)
         {
@@ -63,30 +67,23 @@
 
 -(void)switchSelection
 {
-    NSNumber *isSelected = [[gameObject store] objectForKey:SELECTED];
-    
-    if(!isSelected)
-    {
-        isSelected = [NSNumber numberWithBool:NO]; 
-    }
-    
-    if([isSelected boolValue])
+    if(b.Selected)
     {
         [loggingService logEvent:BL_PA_PV_TOUCH_BEGIN_DESELECT_OBJECT withAdditionalData:nil];
-        [[gameObject store] setObject:[NSNumber numberWithBool:NO] forKey:SELECTED];
+        b.Selected=NO;
         [gameWorld.Blackboard.SelectedObjects removeObject:gameObject];
         [[gameWorld GameScene] problemStateChanged];
     }
     else
     {
         [loggingService logEvent:BL_PA_PV_TOUCH_BEGIN_SELECT_OBJECT withAdditionalData:nil];
-        [[gameObject store] setObject:[NSNumber numberWithBool:YES] forKey:SELECTED]; 
+        b.Selected=YES;
         gameWorld.Blackboard.LastSelectedObject = gameObject;
         [gameWorld.Blackboard.SelectedObjects addObject:gameObject];
         [[gameWorld GameScene] problemStateChanged];
         
         //force deselect of other objects that don't have this value
-        float myV=[[[gameObject store] objectForKey:OBJECT_VALUE] floatValue];
+        float myV=b.ObjectValue;
         NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:myV] forKey:OBJECT_VALUE];
         [gameWorld handleMessage:kDWdeselectIfNotThisValue andPayload:pl withLogLevel:0];
     }
@@ -95,17 +92,11 @@
 }
 
 -(void)deselect
-{
-    NSNumber *isSelected = [[gameObject store] objectForKey:SELECTED];
+{    
     
-    if(!isSelected)
+    if(b.Selected)
     {
-        isSelected = [NSNumber numberWithBool:NO]; 
-    }
-    
-    if([isSelected boolValue])
-    {
-        [[gameObject store] setObject:[NSNumber numberWithBool:NO] forKey:SELECTED];
+        b.Selected=NO;
         [gameWorld.Blackboard.SelectedObjects removeObject:gameObject];
         [[gameWorld GameScene] problemStateChanged];
     }

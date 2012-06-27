@@ -40,9 +40,9 @@
 		<dict>
 			<key>BPlaceValueContainerRender</key>
 			<dict/>
-			<key>BPlaceValueDropTarget</key>
+			<key>BPlaceValueDropTargetNet</key>
 			<dict/>
-			<key>BPlaceValueMount</key>
+			<key>BPlaceValueMountNet</key>
 			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>
@@ -56,9 +56,9 @@
 		<dict>
 			<key>BPlaceValueObjectSpawn</key>
 			<dict/>
-			<key>BPlaceValueDropTarget</key>
+			<key>BPlaceValueDropTargetCage</key>
 			<dict/>
-			<key>BPlaceValueMount</key>
+			<key>BPlaceValueMountCage</key>
 			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>

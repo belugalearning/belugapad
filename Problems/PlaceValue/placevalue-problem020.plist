@@ -32,17 +32,6 @@
 	<false/>
 	<key>SHOW_COUNT_BLOCK</key>
 	<true/>
-	<key>INIT_OBJECTS</key>
-	<array>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
-			<key>NUMBER</key>
-			<integer>3</integer>
-		</dict>
-	</array>
 	<key>SOLUTION</key>
 	<dict>
 		<key>SOLUTION_TYPE</key>

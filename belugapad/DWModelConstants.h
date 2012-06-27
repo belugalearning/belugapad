@@ -109,6 +109,8 @@ typedef enum {
     kDWhighlight=118,
     kDWunhighlight=119,
     
-    kDWdoSelection=120
+    kDWdoSelection=120,
+    
+    kDWstartRespositionSeek=121
     
 } DWMessageType;

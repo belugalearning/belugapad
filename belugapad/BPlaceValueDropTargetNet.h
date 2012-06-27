@@ -1,5 +1,5 @@
 //
-//  BContainerRender.h
+//  BDropTarget.h
 //  belugapad
 //
 //  Created by Dave Amphlett on 06/02/2012.
@@ -9,13 +9,11 @@
 #import "DWBehaviour.h"
 @class DWPlaceValueNetGameObject;
 
-@interface BPlaceValueContainerRender : DWBehaviour
+@interface BPlaceValueDropTargetNet : DWBehaviour
 {
     DWPlaceValueNetGameObject *n;
-    CCSprite *mySprite;
 }
 
--(BPlaceValueContainerRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
--(void)setSprite;
+-(BPlaceValueDropTargetNet *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
 
 @end

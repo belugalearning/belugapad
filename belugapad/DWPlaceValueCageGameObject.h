@@ -19,5 +19,7 @@
 @property (retain) NSString *SpriteFilename;
 @property (retain) NSString *PickupSpriteFilename;
 @property (retain) DWGameObject *MountedObject;
+@property (retain) CCSprite *mySprite;
+@property BOOL Hidden;
 
 @end

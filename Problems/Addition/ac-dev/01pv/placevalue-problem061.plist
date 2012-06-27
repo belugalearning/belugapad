@@ -21,9 +21,9 @@
 	<key>ROWS_PER_COL</key>
 	<integer>2</integer>
 	<key>ALLOW_CONDENSING</key>
-	<false/>
+	<true/>
 	<key>ALLOW_MULCHING</key>
-	<false/>
+	<true/>
 	<key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_NEG_CAGE</key>
@@ -103,7 +103,5 @@
 	</dict>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
-	<key>PLAY_SOUND</key>
-	<string>05pv/make 10 ones.m4a</string>
 </dict>
 </plist>

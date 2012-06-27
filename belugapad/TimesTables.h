@@ -49,6 +49,7 @@ typedef enum {
 
     
     float timeToAutoMoveToNextProblem;
+    float timeSinceInteractionOrShake;
     BOOL autoMoveToNextProblem;
     
     SelectionMode selectionMode;
@@ -58,6 +59,7 @@ typedef enum {
     BOOL showXAxis;
     BOOL showYAxis;
     BOOL showCalcBubble;
+    BOOL hasUsedHeader;
     NSMutableArray *ttMatrix;
     NSMutableArray *activeCols;
     NSMutableArray *activeRows;

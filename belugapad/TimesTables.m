@@ -31,6 +31,8 @@
 
 @end
 
+static float kTimeToHeaderBounce=7.0f;
+
 @implementation TimesTables
 
 #pragma mark - scene setup
@@ -97,6 +99,8 @@
             timeToAutoMoveToNextProblem=0.0f;
         }
     }   
+    
+    timeSinceInteractionOrShake+=delta;
 }
 
 #pragma mark - gameworld setup and population
@@ -424,6 +428,7 @@
 
 -(void)tintRow:(int)thisRow
 {
+    hasUsedHeader=YES;
     BOOL haveLogged=NO;
     BOOL tinted=[[rowTints objectAtIndex:thisRow] boolValue];
     
@@ -466,6 +471,7 @@
 
 -(void)tintCol:(int)thisCol
 {
+    hasUsedHeader=YES;
     BOOL haveLogged=NO;
     BOOL tinted=[[colTints objectAtIndex:thisCol] boolValue];
 

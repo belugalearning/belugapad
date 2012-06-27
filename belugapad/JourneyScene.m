@@ -438,6 +438,12 @@ typedef enum {
 
 -(void) doUpdateProximity:(ccTime)delta
 {
+    //don't do proximity on general view
+    if(!zoomedOut) [self evalProximityAcrossGW];
+}
+
+-(void) evalProximityAcrossGW
+{
     CGPoint p=[self currentCentre];
     
     for (id go in [gw AllGameObjects]) {
@@ -445,7 +451,7 @@ typedef enum {
         {
             [((id<ProximityResponder>)go).ProximityEvalComponent actOnProximityTo:p];
         }
-    }
+    }    
 }
 
 #pragma mark - draw
@@ -730,6 +736,27 @@ typedef enum {
     isDragging=NO;
 }
 
+#pragma mark - map views and zooming
+
+-(void)zoomToCityView
+{
+    zoomedOut=NO;
+    
+    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.5f scale:1.0f] rate:2.0f]];    
+}
+
+-(void)zoomToRegionView
+{
+    zoomedOut=YES;
+    
+    [mapLayer setAnchorPoint:ccp(0.5,0.5)];
+    
+    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.5f scale:0.15f] rate:2.0f]]; 
+    
+    //[mapLayer setPosition:ccp(-(nMaxX-nMinX) / 2.0f, -(nMaxY-nMinY) / 2.0f)];
+    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(-1574, -74)] rate:2.0f]];
+}
+
 #pragma mark - debug
 
 -(void)buildDebugMenu
@@ -737,7 +764,9 @@ typedef enum {
     CCMenuItemLabel *i1=[CCMenuItemFont itemWithString:@"relocate to home" target:self selector:@selector(debugRelocate:)];
     CCMenuItemLabel *i2=[CCMenuItemFont itemWithString:@"rebuild node tris" target:self selector:@selector(debugRebuildNodeTris:)];
     
-    debugMenu =[CCMenu menuWithItems:i1, i2, nil];
+    CCMenuItemLabel *i3=[CCMenuItemFont itemWithString:@"switch map view" target:self selector:@selector(debugSwitchZoom:)];
+    
+    debugMenu =[CCMenu menuWithItems:i1, i2, i3, nil];
     
     [debugMenu alignItemsVertically];
     
@@ -756,6 +785,12 @@ typedef enum {
 -(void)debugRebuildNodeTris:(id)sender
 {
     NSLog(@"debug did rebuild node tris");
+}
+
+-(void)debugSwitchZoom:(id)sender
+{
+    if(zoomedOut)[self zoomToCityView];
+    else [self zoomToRegionView];
 }
 
 #pragma mark - tear down

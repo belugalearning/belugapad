@@ -123,6 +123,13 @@ typedef enum {
     int currentToolDepth;
     
     NSString *touchLogPath;
+    
+    BOOL isGlossaryMock;
+    BOOL isGloassryDone1;
+    BOOL glossaryShowing;
+    CCSprite *glossary1;
+    CCSprite *glossary2;
+    CCSprite *glossaryPopup;
 }
 
 @property (retain) Daemon *Zubi;

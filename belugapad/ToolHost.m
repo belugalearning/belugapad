@@ -436,8 +436,15 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     
     
-
-
+    //glossary mockup
+    if([pdef objectForKey:@"GLOSSARY"])
+    {
+        isGlossaryMock=YES;
+        glossary1=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/glossary/GlossaryExample.png")];
+        [glossary1 setPosition:ccp(cx,cy)];
+        [self addChild:glossary1];
+        [problemDescLabel setVisible:NO];
+    }
     
     [self stageIntroActions];        
 
@@ -1376,6 +1383,32 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     {
         return;
     }  
+    
+    if(isGlossaryMock)
+    {
+        if (glossaryShowing) {
+            [self removeChild:glossaryPopup cleanup:YES];
+            glossaryShowing=NO;
+        }
+        
+        else if(CGRectContainsPoint(CGRectMake(450, 650, 200, 150), location))
+        {
+            glossaryPopup=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/glossary/GlossaryPopup.png")];
+            [glossaryPopup setPosition:ccp(cx, cy)];
+            [self addChild:glossaryPopup z:10];
+            glossaryShowing=YES;
+            
+            //swap to stage two?
+            if(!isGloassryDone1)
+            {
+                [self removeChild:glossary1 cleanup:YES];
+                glossary2=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/glossary/GlossaryExampleTapped.png")];
+                [glossary2 setPosition:ccp(cx,cy)];
+                [self addChild:glossary2];
+                isGloassryDone1=YES;
+            }
+        }
+    }
     
     if(metaQuestionForThisProblem)
         [self checkMetaQuestionTouches:location];

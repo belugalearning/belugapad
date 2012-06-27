@@ -23,6 +23,8 @@
     BOOL isDragging;
     CGPoint dragVel;
     CGPoint dragLast;
+    
+    BOOL zoomedOut;
 }
 
 +(CCScene *)scene;

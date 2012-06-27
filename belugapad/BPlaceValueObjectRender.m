@@ -10,16 +10,20 @@
 #import "global.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
+#import "DWPlaceValueBlockGameObject.h"
+#import "DWPlaceValueCageGameObject.h"
+#import "DWPlaceValueNetGameObject.h"
 
 @implementation BPlaceValueObjectRender
 
 -(BPlaceValueObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
     self=(BPlaceValueObjectRender*)[super initWithGameObject:aGameObject withData:data];
+    b=(DWPlaceValueBlockGameObject*)gameObject;
     
     //init pos x & y in case they're not set elsewhere
-    [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_X];
-    [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_Y];
+    b.PosX=0.0f;
+    b.PosY=0.0f;
     
     amPickedUp=NO;
     
@@ -30,42 +34,33 @@
 {
     if(messageType==kDWsetupStuff)
     {
-        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
+        CCSprite *mySprite=b.mySprite;
         if(!mySprite) 
         {
             [self setSprite];
-            [self setSpritePos:[gameObject store] withAnimation:NO];            
+            [self setSpritePosWithAnimation];            
         }
     }
     
     if (messageType==kDWmoveSpriteToPosition) {
-        BOOL useAnimation = NO;
-        if([payload objectForKey:ANIMATE_ME]) useAnimation = YES;
-        
-        [self setSpritePos:payload withAnimation:useAnimation];
+        b.AnimateMe=YES;
+        [self setSpritePosWithAnimation];
     }
     
     if(messageType==kDWupdateSprite)
     {
-        NSNumber *isSelected = [[gameObject store] objectForKey:SELECTED];
         
-        if(!isSelected)
-        { 
-        }
-        else
-        {
-            [self switchSelection:[isSelected boolValue]];
-        }
 
-        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
+        [self switchSelection:b.Selected];
+
+        CCSprite *mySprite=b.mySprite;
         if(!mySprite) { 
             [self setSprite];
         }
 
-        BOOL useAnimation = NO;
-        if([payload objectForKey:ANIMATE_ME]) useAnimation = YES;
+
         
-        [self setSpritePos:payload withAnimation:useAnimation];
+        [self setSpritePosWithAnimation];
     }
         
     if(messageType==kDWpickedUp)
@@ -77,10 +72,10 @@
     {
         amPickedUp=NO;
         
-        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
-        if([[gameObject store] objectForKey:PICKUP_SPRITE_FILENAME] && !gameWorld.Blackboard.inProblemSetup)
+        CCSprite *mySprite=b.mySprite;
+        if(b.PickupSprite && !gameWorld.Blackboard.inProblemSetup)
         {
-            [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH([[gameObject store] objectForKey:SPRITE_FILENAME])]];
+            [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(b.PickupSprite)]];
 
         }
     }
@@ -108,7 +103,7 @@
     }
     if(messageType==kDWdismantle)
     {
-        CCSprite *s=[[gameObject store] objectForKey:MY_SPRITE];
+        CCSprite *s=b.mySprite;
         [[s parent] removeChild:s cleanup:YES];
     }
 }
@@ -120,12 +115,12 @@
     NSString *spriteFileName=@"/images/placevalue/obj-placevalue-unit.png";
     //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
 
-    if(![[gameObject store] objectForKey:SPRITE_FILENAME])
+    if(!b.SpriteFilename)
     {
-        [[gameObject store] setObject:spriteFileName forKey:SPRITE_FILENAME];
+        b.SpriteFilename=spriteFileName;
     }
     else {
-        spriteFileName=[[gameObject store] objectForKey:SPRITE_FILENAME];
+        spriteFileName=b.SpriteFilename;
     }
     
     CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
@@ -135,59 +130,72 @@
         [mySprite setTag:2];
         [mySprite setOpacity:0];
     }
-    if(([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue])<0)
+    if(b.ObjectValue<0)
     {
         [mySprite setColor:ccc3(255,0,0)];
     }
-        [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:2];
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:50];
     
     //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
-    [[gameObject store] setObject:mySprite forKey:MY_SPRITE];
+    b.mySprite=mySprite;
 }
 
--(void)setSpritePos:(NSDictionary *)position withAnimation:(BOOL) animate
+-(void)setSpritePosWithAnimation
 {
-    if(position != nil)
-    {
-        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
-        
-        float x=[[position objectForKey:POS_X] floatValue];
-        float y=[[position objectForKey:POS_Y] floatValue];
-        
-        
-        //also set posx/y on store
-        GOS_SET([NSNumber numberWithFloat:x], POS_X);
-        GOS_SET([NSNumber numberWithFloat:y], POS_Y);
-        
-          if(animate == YES)
-        {
-            CGPoint newPos = ccp(x, y);
 
-            CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:newPos];
-            [mySprite runAction:anim];
-        }
-        else
-        {
-            [mySprite setPosition:ccp(x, y)];
-        }
+    CCSprite *mySprite=b.mySprite;
+    
+    if(b.AnimateMe)
+    {
+        CGPoint newPos = ccp(b.PosX,b.PosY);
+
+        CCMoveTo *anim = [CCMoveTo actionWithDuration:kTimeObjectSnapBack position:newPos];
+        [mySprite runAction:anim];
+        b.AnimateMe=NO;
     }
+    else
+    {
+        [mySprite setPosition:ccp(b.PosX,b.PosY)];
+    }
+
+    
 }
 
 -(void)resetSpriteToMount
 {
-    DWGameObject *mount = [[gameObject store] objectForKey:MOUNT];
-    float x = [[[mount store] objectForKey:POS_X] floatValue];
-    float y = [[[mount store] objectForKey:POS_Y] floatValue];
+    DWPlaceValueCageGameObject *c;
+    DWPlaceValueNetGameObject *n;
     
-    [[gameObject store] setObject:[NSNumber numberWithFloat:x] forKey:POS_X];
-    [[gameObject store] setObject:[NSNumber numberWithFloat:y] forKey:POS_Y];
+    float x;
+    float y;
     
-    CCSprite *curSprite = [[gameObject store] objectForKey:MY_SPRITE];
+    if([b.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
+    {
+        c=(DWPlaceValueCageGameObject*)b.Mount;
+        x=c.PosX;
+        y=c.PosY;
+    }
+    else if([b.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
+    {
+        n=(DWPlaceValueNetGameObject*)b.Mount;
+        x=n.PosX;
+        y=n.PosY;
+        gameObject=n.MountedObject;
+        [n handleMessage:kDWresetPositionEval];
+    }
+        
     
-    if([[gameObject store] objectForKey:PICKUP_SPRITE_FILENAME] && !gameWorld.Blackboard.inProblemSetup)
+
+    b.PosX=x;
+    b.PosY=y;
+    
+    
+    CCSprite *curSprite = b.mySprite;
+    
+    if(b.SpriteFilename && !gameWorld.Blackboard.inProblemSetup)
     {
         NSString *spriteFileName=@"/images/placevalue/obj-placevalue-unit.png";
-        if([[gameObject store] objectForKey:SPRITE_FILENAME]) spriteFileName=[[gameObject store] objectForKey:SPRITE_FILENAME];
+        if(b.SpriteFilename) spriteFileName=b.SpriteFilename;
         
         [curSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(spriteFileName)]];
     }
@@ -197,9 +205,9 @@
 
 -(void) switchSelection:(BOOL)isSelected
 {
-    CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
+    CCSprite *mySprite=b.mySprite;
     if(isSelected) {
-        if(([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue])<0)
+        if(b.ObjectValue<0)
         {
             // if the object is a negative, what colour do we tint selection
             [mySprite setColor:ccc3(255,0,255)];
@@ -211,7 +219,7 @@
     }
     else
     {
-        if(([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue])<0)
+        if(b.ObjectValue<0)
         {
             // default tint of a negative object
             [mySprite setColor:ccc3(255,0,0)];
@@ -225,10 +233,10 @@
 }
 -(void) switchBaseSelection:(BOOL)isSelected
 {
-    CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
+    CCSprite *mySprite=b.mySprite;
     if(isSelected)
     {
-        if(([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue])<0)
+        if(b.ObjectValue<0)
         {
             // base selection tint of negative numbers
             [mySprite setColor:ccc3(255,0,105)];
@@ -242,10 +250,10 @@
     else
     {
         // Check whether selected
-        if([[gameObject store] objectForKey:SELECTED])
+        if(b.Selected)
         {
             // then whether it's a +/- number
-            if(([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue])<0)
+            if(b.ObjectValue<0)
             {
                 //selection colour for a negative number
                 [mySprite setColor:ccc3(255,0,255)];
@@ -257,7 +265,7 @@
         }
         else
         {
-            if(([[[gameObject store] objectForKey:OBJECT_VALUE] floatValue])<0)
+            if(b.ObjectValue<0)
             {
                 [mySprite setColor:ccc3(255,0,105)];
             }

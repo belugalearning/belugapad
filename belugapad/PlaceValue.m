@@ -125,15 +125,22 @@ static float kTimeToCageShake=7.0f;
     }
     
     timeSinceInteractionOrShake+=delta;
-    if(lastTotalCount<expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
+
+    // check the problem type
+    if([solutionType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE] || [solutionType isEqualToString:TOTAL_COUNT])
     {
-        [gw handleMessage:kDWcheckMyMountIsCage andPayload:nil withLogLevel:-1];
-        timeSinceInteractionOrShake=0.0f;
-    }
-    else if(lastTotalCount>expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
-    {
-        [gw handleMessage:kDWcheckMyMountIsNet andPayload:nil withLogLevel:-1];
-        timeSinceInteractionOrShake=0.0f;
+        // not enough items on - shake cage
+        if(lastTotalCount<expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
+        {
+            [gw handleMessage:kDWcheckMyMountIsCage andPayload:nil withLogLevel:-1];
+            timeSinceInteractionOrShake=0.0f;
+        }
+        // too many items - shake netted items
+        else if(lastTotalCount>expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
+        {
+            [gw handleMessage:kDWcheckMyMountIsNet andPayload:nil withLogLevel:-1];
+            timeSinceInteractionOrShake=0.0f;
+        }
     }
 }
 
@@ -623,6 +630,8 @@ static float kTimeToCageShake=7.0f;
         
         // set the expected count for a TOTAL_COUNT problem if there
         expectedCount = [[solutionsDef objectForKey:SOLUTION_VALUE] floatValue];
+
+        solutionType = [solutionsDef objectForKey:SOLUTION_TYPE];
         
     }
     else
@@ -732,7 +741,6 @@ static float kTimeToCageShake=7.0f;
     }
     
     // define our solution type to check against
-    NSString *solutionType = [solutionsDef objectForKey:SOLUTION_TYPE];
     
     if([solutionType isEqualToString:COUNT_SEQUENCE])
     {

@@ -187,6 +187,8 @@ typedef enum {
 {
     gw=[[SGGameWorld alloc] initWithGameScene:self];
     
+    gw.Blackboard.RenderLayer=mapLayer;
+    
     //setup render batch for nodes
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.plist")];
     nodeRenderBatch=[CCSpriteBatchNode batchNodeWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.png")];
@@ -317,7 +319,7 @@ typedef enum {
             newnode=[[[SGJmapMasteryNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
             
             newnode.HitProximity=100.0f;
-            newnode.HitProximitySign=120.0f;
+            newnode.HitProximitySign=150.0f;
         }
         else {
             newnode=[[[SGJmapNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
@@ -330,7 +332,7 @@ typedef enum {
             
             
             newnode.HitProximity=40.0f;
-            newnode.HitProximitySign=120.0f;
+            newnode.HitProximitySign=150.0f;
         }   
         
         newnode._id=n._id;

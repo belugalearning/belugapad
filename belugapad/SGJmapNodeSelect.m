@@ -118,18 +118,19 @@
             {
                 //show play again
                 CCSprite *playSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/PlayAgainButton.png")];
-                [playSprite setPosition:ccp(50,-50)];
+                [playSprite setPosition:ccp(240, 30)];
                 [signSprite addChild:playSprite];
                 
                 //days ago
-                CCLabelTTF *days=[CCLabelTTF labelWithString:@"Today" fontName:@"Helvetica" fontSize:18.0f];
-                [days setPosition:ccp(-50, -50)];
+                CCLabelTTF *days=[CCLabelTTF labelWithString:@"Today" dimensions:CGSizeMake(300, 100) alignment:UITextAlignmentLeft fontName:@"Helvetica" fontSize:48.0f];
+                [days setPosition:ccp(170, 10)];
+                [days setColor:ccc3(90, 90, 90)];
                 [signSprite addChild:days];
             }
             else {
                 //show play, new
                 CCSprite *playSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/PlayButton.png")];
-                [playSprite setPosition:ccp(50,-50)];
+                [playSprite setPosition:ccp(240, 30)];
                 [signSprite addChild:playSprite];
                 
                 CCSprite *newSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/NewBanner.png")];
@@ -137,18 +138,20 @@
                 [signSprite addChild:newSprite];
         
                 //days ago
-                CCLabelTTF *days=[CCLabelTTF labelWithString:@"Never" fontName:@"Helvetica" fontSize:18.0f];
-                [days setPosition:ccp(-50, -50)];
+                CCLabelTTF *days=[CCLabelTTF labelWithString:@"Never" dimensions:CGSizeMake(300, 100) alignment:UITextAlignmentLeft fontName:@"Helvetica" fontSize:48.0f];
+                [days setPosition:ccp(170, 10)];
+                [days setColor:ccc3(90, 90, 90)];
                 [signSprite addChild:days];
             }
             
             //node title
-            CCLabelTTF *title=[CCLabelTTF labelWithString:ParentGO.UserVisibleString fontName:@"Helvetica" fontSize:14.0f];
-            [title setPosition:ccp(-50, 50)];
+            CCLabelTTF *title=[CCLabelTTF labelWithString:ParentGO.UserVisibleString dimensions:CGSizeMake(300, 150) alignment:UITextAlignmentLeft fontName:@"Helvetica" fontSize:18.0f];
+            [title setPosition:ccp(195, 60)];
+            [title setColor:ccc3(90, 90, 90)];
             [signSprite addChild:title];
         }
         
-        [ParentGO.RenderBatch.parent addChild:signSprite];
+        [gameWorld.Blackboard.RenderLayer addChild:signSprite];
     }
     
     [signSprite setOpacity:255];

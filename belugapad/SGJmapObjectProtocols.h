@@ -55,6 +55,11 @@
 
 @end
 
+@protocol Completable
+
+    @property BOOL EnabledAndComplete;
+
+@end
 
 @protocol Configurable
 

@@ -12,10 +12,9 @@
 @class SGJmapNodeRender;
 @class SGJmapMasteryNode;
 
-@interface SGJmapNode : SGGameObject <Transform, ProximityResponder, Drawing, CouchDerived, Configurable, Selectable>
+@interface SGJmapNode : SGGameObject <Transform, ProximityResponder, Drawing, CouchDerived, Configurable, Selectable, Completable>
 
 @property (retain) SGJmapNodeRender* NodeRenderComponent;
-@property BOOL EnabledAndComplete;
 @property (retain) SGJmapMasteryNode *MasteryNode;
 
 -(SGJmapNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;

@@ -120,8 +120,15 @@ static int shadowSteps=10;
 
 -(void)readyRender
 {
-    nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-incomplete.png"];
-    [nodeSprite setPosition:ParentGO.Position];
+    if(ParentGO.EnabledAndComplete)
+    {
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-complete.png"];
+    }
+    else
+    {
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-incomplete.png"];        
+    }
+    [nodeSprite setPosition:[BLMath AddVector:ParentGO.Position toVector:ccp(0, 50)]];
     [ParentGO.RenderBatch addChild:nodeSprite];
     
     CCLabelTTF *label=[CCLabelTTF labelWithString:ParentGO.UserVisibleString fontName:@"Helvetica" fontSize:12.0f];

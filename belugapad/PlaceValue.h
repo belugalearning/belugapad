@@ -128,6 +128,8 @@
     BOOL inCondenseArea;
     BOOL inMulchArea;
     
+    NSString *solutionType;
+    
     //reference to cages
     NSMutableArray *allCages;
     

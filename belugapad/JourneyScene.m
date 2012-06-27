@@ -443,7 +443,8 @@ typedef enum {
     if(!isDragging)
     {
         dragVel=[BLMath MultiplyVector:dragVel byScalar:friction];
-        mapLayer.position=[BLMath AddVector:dragVel toVector:mapLayer.position];
+        if(dragVel.x<100.0f && dragVel.y<100.0f)
+            mapLayer.position=[BLMath AddVector:dragVel toVector:mapLayer.position];
     }
     else {
         dragVel=[BLMath SubtractVector:dragLast from:mapLayer.position];
@@ -642,6 +643,7 @@ typedef enum {
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    isDragging=YES;
     
     UITouch *touch=[touches anyObject];
     CGPoint l=[touch locationInView:[touch view]];
@@ -662,8 +664,6 @@ typedef enum {
         debugMenu.visible=doat;
     }
     
-    isDragging=YES;
- 
     lastTouch=l;
     
     CGPoint lOnMap=[mapLayer convertToNodeSpace:l];

@@ -514,8 +514,8 @@ static float kTimeToBubbleShake=7.0f;
         
         
         //update the rambler value & last bubble location, using any offset
-        rambler.BubblePos=adjustedStepsFromCentre;
-        lastBubbleLoc=adjustedStepsFromCentre;
+        rambler.BubblePos=adjustedStepsFromCentre+startOffset;
+        lastBubbleLoc=adjustedStepsFromCentre+startOffset;
         
         
         //play some audio

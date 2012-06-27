@@ -1055,13 +1055,11 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         NSString *currentColumnValueString = [NSString stringWithFormat:@"%g", [currentColumnValueKey floatValue]];
         
         if([columnSprites objectForKey:currentColumnValueString])
-        {
             go.SpriteFilename=[columnSprites objectForKey:currentColumnValueString];
-        }
+
         if(pickupSprite)
-        {
             go.PickupSprite=pickupSprite;
-        }
+        
 
         [go handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
@@ -1423,6 +1421,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
     
     // set the touch end position for evaluation
     touchEndPos = location;
+    gw.Blackboard.TestTouchLocation=location;
     
     [toolHost.Zubi setTarget:location];
     
@@ -1523,12 +1522,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
         if([gw Blackboard].PickupObject!=nil && ([BLMath DistanceBetween:touchStartPos and:touchEndPos] > fabs(kTapSlipThreshold)))
         {
             [gw Blackboard].DropObject=nil;
-            
-            NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
-            [pl setObject:[NSNumber numberWithFloat:location.x] forKey:POS_X];
-            [pl setObject:[NSNumber numberWithFloat:location.y] forKey:POS_Y];
-            
-            
+                        
             if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
             {
                 // TODO: Decide behaviour when the column base amount is selected
@@ -1540,7 +1534,7 @@ static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
             }
             else 
             {
-                [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
+                [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
             }
             if([gw Blackboard].DropObject != nil)
             {

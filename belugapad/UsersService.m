@@ -30,6 +30,8 @@ NSString * const kUsersWebServiceGetUserPath = @"get-user";
     
     AFHTTPClient *httpClient; 
     NSOperationQueue *opQueue;
+    
+    __block BOOL isSyncing;
 }
 -(NSDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs;
 @end
@@ -62,6 +64,7 @@ NSString * const kUsersWebServiceGetUserPath = @"get-user";
         contentSource = source;
         loggingService = ls;
         
+        isSyncing = NO;
         
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *usersDatabasePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"users.db"];
@@ -73,18 +76,13 @@ NSString * const kUsersWebServiceGetUserPath = @"get-user";
         
         httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kUsersWebServiceBaseURL]];
         opQueue = [[[NSOperationQueue alloc] init] retain];
-        
-        //[self syncDeviceUsers];        
     }
     
     return self;
 }
 
 -(NSArray*)deviceUsersByNickName
-{
-    [self syncDeviceUsers]; // TODO: ****** DELTE LINE, DEBUG ONLY
-    [loggingService sendData];
-    
+{    
     NSMutableArray *users = [NSMutableArray array];
     
     [usersDatabase open];
@@ -174,7 +172,9 @@ NSString * const kUsersWebServiceGetUserPath = @"get-user";
 }
 
 -(void)syncDeviceUsers
-{   
+{
+    if (isSyncing) return;
+    
     NSMutableArray *users = [NSMutableArray array];
     
     // get users date from on-device db
@@ -239,11 +239,13 @@ NSString * const kUsersWebServiceGetUserPath = @"get-user";
                 }
             }
             [usersDatabase close];
+            isSyncing = NO;
         }
     };
     AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
     [reqOp setCompletionBlockWithSuccess:onCompletion failure:onCompletion];
     [opQueue addOperation:reqOp];
+    isSyncing = YES;
 }
 
 -(NSDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs

@@ -155,7 +155,10 @@ static NSString *inclNodes[20]={
         usersService = ac.usersService;
         contentService = ac.contentService;
         
+        [usersService syncDeviceUsers];
+        
         [loggingService logEvent:BL_JS_INIT withAdditionalData:nil];
+        [loggingService sendData];
         
         [self setupMap];
         

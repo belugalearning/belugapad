@@ -32,4 +32,6 @@
 -(void)addCompletedNodeId:(NSString*)nodeId;
 -(BOOL)hasCompletedNodeId:(NSString*)nodeId;
 
+-(void)syncDeviceUsers;
+
 @end

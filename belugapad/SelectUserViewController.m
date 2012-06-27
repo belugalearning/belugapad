@@ -61,6 +61,9 @@
     
     [app.loggingService logEvent:BL_SUVC_LOAD withAdditionalData:nil];
     
+    [app.usersService syncDeviceUsers];
+    [app.loggingService sendData];
+    
     [self buildSelectUserView];
     [self buildEditUserView];
     [self buildLoadExistingUserView];

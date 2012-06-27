@@ -13,7 +13,7 @@
 #import "DWGameWorld.h"
 #import "BLMath.h"
 #import "DWTTTileGameObject.h"
-
+#import "InteractionFeedback.h"
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
@@ -100,7 +100,31 @@ static float kTimeToHeaderBounce=7.0f;
         }
     }   
     
-    timeSinceInteractionOrShake+=delta;
+    timeSinceInteractionOrDropHeader+=delta;
+    
+    if(timeSinceInteractionOrDropHeader>kTimeToHeaderBounce && !hasUsedHeaderX)
+    {
+
+        NSMutableArray *a=[headerLabels objectAtIndex:0];
+        
+        for(CCLabelTTF *l in a)
+        {
+            [l runAction:[InteractionFeedback dropAndBounceAction]];
+        }
+        
+        timeSinceInteractionOrDropHeader=0.0f;
+    }
+    else if(timeSinceInteractionOrDropHeader>kTimeToHeaderBounce && !hasUsedHeaderY)
+    {
+        NSMutableArray *a=[headerLabels objectAtIndex:1];
+        
+        for(CCLabelTTF *l in a)
+        {
+            [l runAction:[InteractionFeedback dropAndBounceAction]];
+        }
+        
+        timeSinceInteractionOrDropHeader=0.0f;
+    }
 }
 
 #pragma mark - gameworld setup and population
@@ -428,7 +452,7 @@ static float kTimeToHeaderBounce=7.0f;
 
 -(void)tintRow:(int)thisRow
 {
-    hasUsedHeader=YES;
+    hasUsedHeaderY=YES;
     BOOL haveLogged=NO;
     BOOL tinted=[[rowTints objectAtIndex:thisRow] boolValue];
     
@@ -471,7 +495,7 @@ static float kTimeToHeaderBounce=7.0f;
 
 -(void)tintCol:(int)thisCol
 {
-    hasUsedHeader=YES;
+    hasUsedHeaderX=YES;
     BOOL haveLogged=NO;
     BOOL tinted=[[colTints objectAtIndex:thisCol] boolValue];
 

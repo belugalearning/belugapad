@@ -55,5 +55,7 @@
 	</array>
 	<key>RENDER_STITCHES_AT_INTERVAL</key>
 	<integer>0</integer>
+	<key>GLOSSARY</key>
+	<true/>
 </dict>
 </plist>

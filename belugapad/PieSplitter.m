@@ -94,7 +94,6 @@ static float kTimeToPieShake=7.0f;
     else if(((!hasSplit &&[activeCon count]>1 && [activePie count]>0 && !reqCorrectPieSquaresToSplit) || (!hasSplit && [activeCon count]==divisor && [activePie count]==dividend && reqCorrectPieSquaresToSplit)))gameState=kGameReadyToSplit;
 
     else if([activeCon count]>1 && [activePie count]>0 && hasSplit)gameState=kGameSlicesActive;
-    else gameState=kGameCannotSplit;
     
     if(autoMoveToNextProblem)
     {
@@ -509,6 +508,14 @@ static float kTimeToPieShake=7.0f;
     
     gw.Blackboard.PickupObject=nil;
     gw.Blackboard.DropObject=nil;
+    
+    // get our number of active slices
+    for(DWPieSplitterContainerGameObject *c in activeCon)
+    {
+        numberOfCagedSlices+=[c.mySlices count];
+    }
+    
+    
     if(gameState==kGameSlicesActive)
     {
         if(CGRectContainsPoint(resetSlices.boundingBox, location))
@@ -554,8 +561,16 @@ static float kTimeToPieShake=7.0f;
     
     if(gw.Blackboard.PickupObject)
     {
-        if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterContainerGameObject class]] && !((DWPieSplitterContainerGameObject*)gw.Blackboard.PickupObject).ScaledUp)[self addGhostContainer];
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterPieGameObject class]] && !((DWPieSplitterPieGameObject*)gw.Blackboard.PickupObject).ScaledUp)[self addGhostPie];
+        if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterContainerGameObject class]])
+        {
+            DWPieSplitterContainerGameObject *cont=(DWPieSplitterContainerGameObject*)gw.Blackboard.PickupObject;
+            
+            if(!cont.ScaledUp && numberOfCagedSlices==0) 
+                [self addGhostContainer];
+            else if(numberOfCagedSlices>0)
+                gw.Blackboard.PickupObject=nil;
+        }
     }
 
     if (CGRectContainsPoint(kRectButtonReset, location) && showReset)
@@ -577,7 +592,6 @@ static float kTimeToPieShake=7.0f;
         
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterContainerGameObject class]])
             ((DWPieSplitterContainerGameObject*)gw.Blackboard.PickupObject).Position=location;
-        
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterPieGameObject class]])
             ((DWPieSplitterPieGameObject*)gw.Blackboard.PickupObject).Position=location;
         
@@ -621,7 +635,7 @@ static float kTimeToPieShake=7.0f;
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterContainerGameObject class]])
         {
             DWPieSplitterContainerGameObject *cont=(DWPieSplitterContainerGameObject*)gw.Blackboard.PickupObject;
-            
+        
             // first hide the box again
             [conBox setVisible:NO];
             
@@ -703,6 +717,7 @@ static float kTimeToPieShake=7.0f;
     isTouching=NO;
     createdNewCon=NO;
     createdNewPie=NO;
+    numberOfCagedSlices=0;
     gw.Blackboard.PickupObject=nil;
     gw.Blackboard.DropObject=nil;
     
@@ -716,6 +731,7 @@ static float kTimeToPieShake=7.0f;
     isTouching=NO;
     createdNewCon=NO;
     createdNewPie=NO;
+    numberOfCagedSlices=0;
     gw.Blackboard.PickupObject=nil;
     gw.Blackboard.DropObject=nil;
 

@@ -62,6 +62,7 @@ typedef enum {
     int numberOfCagedContainers;
     int numberOfActivePies;
     int numberOfActiveContainers;
+    int numberOfCagedSlices;
     int dividend;
     int divisor;
     

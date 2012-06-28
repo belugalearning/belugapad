@@ -149,7 +149,7 @@
         
     }
     
-    if(pogo.InitedObject){
+    if(pogo.InitedObject || pogo.IsScaled){
         [pogo.BaseNode setScale:1.0f];
         pogo.IsScaled=YES;
     }
@@ -200,7 +200,7 @@
     [pogo.BaseNode runAction:[CCEaseIn actionWithAction:anim rate:0.5f]];
     pogo.Position=pogo.MountPosition;
     [pogo handleMessage:kDWunsetMount];
-    [self resetHalfScale];
+    if(!pogo.NoScaleBlock)[self resetHalfScale];
     
 }
 -(void)resetSpriteToMount

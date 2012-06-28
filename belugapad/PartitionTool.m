@@ -143,6 +143,11 @@ static float kTimeToMountedShake=7.0f;
     else
         numberToStack = 2;
     
+    if([pdef objectForKey:USE_BLOCK_SCALING])
+        useBlockScaling = [[pdef objectForKey:USE_BLOCK_SCALING] boolValue];
+    else
+        useBlockScaling=YES;
+    
     createdRows = [[NSMutableArray alloc]init];
     [createdRows retain];
     
@@ -194,6 +199,11 @@ static float kTimeToMountedShake=7.0f;
             if([[initCages objectAtIndex:i] objectForKey:LABEL])
             {
                 pogo.Label=[CCLabelTTF labelWithString:[[initCages objectAtIndex:i] objectForKey:LABEL] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            }
+            
+            if(!useBlockScaling){
+                pogo.IsScaled=YES;
+                pogo.NoScaleBlock=YES;
             }
             
             pogo.MountPosition = pogo.Position;

@@ -31,6 +31,7 @@
     NSArray *initObjects;
     NSArray *initCages;
     NSArray *solutionsDef;
+    BOOL useBlockScaling;
     
     NSMutableArray *createdRows;
     NSMutableArray *mountedObjects;

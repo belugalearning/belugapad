@@ -93,6 +93,7 @@
 -(void)unMountAllMountedObjectsFromMe
 {
     [cont.mySlices removeAllObjects];
+    [cont.Nodes removeAllObjects];
     if(cont.myText)[cont.myText setString:[NSString stringWithFormat:@"%d", [cont.mySlices count]]];
     
     [self scaleMidSection];

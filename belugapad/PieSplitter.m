@@ -91,7 +91,7 @@ static float kTimeToPieShake=7.0f;
     
     // compare our status to the gamestate
     if([activeCon count]<1 && [activePie count]<1)gameState=kGameCannotSplit;
-    else if(([activeCon count]>1 && [activePie count]>0 && !reqCorrectPieSquaresToSplit) || ([activeCon count]==divisor && [activePie count]==dividend && reqCorrectPieSquaresToSplit))gameState=kGameReadyToSplit;
+    else if(((!hasSplit &&[activeCon count]>1 && [activePie count]>0 && !reqCorrectPieSquaresToSplit) || (!hasSplit && [activeCon count]==divisor && [activePie count]==dividend && reqCorrectPieSquaresToSplit)))gameState=kGameReadyToSplit;
 
     else if([activeCon count]>1 && [activePie count]>0 && hasSplit)gameState=kGameSlicesActive;
     else gameState=kGameCannotSplit;
@@ -147,6 +147,12 @@ static float kTimeToPieShake=7.0f;
     else
         numberOfCagedContainers=20;
     
+    if([pdef objectForKey:SHOW_RESET_SLICES])
+        showResetSlicesToPies=[[pdef objectForKey:SHOW_RESET_SLICES]boolValue];
+    else 
+        showResetSlicesToPies=YES;
+    
+    
     numberOfActivePies=[[pdef objectForKey:NUMBER_ACTIVE_PIES]intValue];
     numberOfActiveContainers=[[pdef objectForKey:NUMBER_ACTIVE_SQUARES]intValue];
     dividend=[[pdef objectForKey:DIVIDEND]intValue];
@@ -162,7 +168,17 @@ static float kTimeToPieShake=7.0f;
         [resetBtn setTag:3];
         [resetBtn setOpacity:0];
         [self.ForeLayer addChild:resetBtn z:2];        
-    }    
+    }
+    
+    if(showResetSlicesToPies)
+    {
+        resetSlices=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/reset-slices.png")];
+        [resetSlices setPosition:ccp(35,580)];
+        [resetSlices setTag:3];
+        [resetSlices setOpacity:0];
+        [resetSlices setScale:0.5f];
+        [self.ForeLayer addChild:resetSlices];
+    }
     
     
     int totalSlices=dividend*divisor;
@@ -386,6 +402,7 @@ static float kTimeToPieShake=7.0f;
         
     
     hasSplit=YES;
+    gameState=kGameSlicesActive;
 }
 
 -(void)splitPies
@@ -411,6 +428,7 @@ static float kTimeToPieShake=7.0f;
         
         
         hasSplit=YES;
+        gameState=kGameSlicesActive;
     }
 }
 
@@ -491,6 +509,22 @@ static float kTimeToPieShake=7.0f;
     
     gw.Blackboard.PickupObject=nil;
     gw.Blackboard.DropObject=nil;
+    if(gameState==kGameSlicesActive)
+    {
+        if(CGRectContainsPoint(resetSlices.boundingBox, location))
+        {
+            for(DWPieSplitterContainerGameObject *c in activeCon)
+            {
+                for(DWPieSplitterSliceGameObject *s in c.mySlices)
+                {
+                    [c handleMessage:kDWunsetMountedObject];
+                    [s handleMessage:kDWunsetMount];
+                    [s handleMessage:kDWmoveSpriteToHome];
+                }
+            }
+        }
+
+    }
     
     if(gameState==kGameReadyToSplit || gameState==kGameSlicesActive)
     {

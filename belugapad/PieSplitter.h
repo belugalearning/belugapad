@@ -73,9 +73,11 @@ typedef enum {
     BOOL createdNewCon;
     BOOL createdNewPie;
     BOOL hasSplit;
+    BOOL showResetSlicesToPies;
     
     CCSprite *pieBox;
     CCSprite *conBox;
+    CCSprite *resetSlices;
     
     DWGameObject *ghost;
     

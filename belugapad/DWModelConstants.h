@@ -82,7 +82,12 @@ typedef enum {
     
     kDWsplitActivePies=35,
     kDWupdateLabels=36,
-
+    
+    kDWcheckMyMountIsCage=37,
+    kDWcheckMyMountIsNet=38,
+    kDWstopAllActions=39,
+    
+    kDWunsetAllMountedObjects=40,
     
     kDWareYouProximateTo=101,
     kDWupdateObjectData=102,
@@ -109,6 +114,8 @@ typedef enum {
     kDWhighlight=118,
     kDWunhighlight=119,
     
-    kDWdoSelection=120
+    kDWdoSelection=120,
+    
+    kDWstartRespositionSeek=121
     
 } DWMessageType;

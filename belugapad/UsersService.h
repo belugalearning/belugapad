@@ -40,5 +40,4 @@ typedef enum {
 -(BOOL)hasCompletedNodeId:(NSString*)nodeId;
 
 -(void)syncDeviceUsers;
-
 @end

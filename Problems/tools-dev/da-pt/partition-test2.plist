@@ -58,19 +58,19 @@
 	<array>
 		<dict>
 			<key>LENGTH</key>
-			<integer>2</integer>
+			<integer>1</integer>
 			<key>LABEL</key>
 			<string>2</string>
 			<key>QUANTITY</key>
-			<integer>1</integer>
+			<integer>30</integer>
 		</dict>
 		<dict>
 			<key>LENGTH</key>
-			<integer>1</integer>
+			<integer>2</integer>
 			<key>LABEL</key>
 			<string>1</string>
 			<key>QUANTITY</key>
-			<string>4</string>
+			<string>10</string>
 		</dict>
 		<dict>
 			<key>LENGTH</key>
@@ -80,9 +80,17 @@
 			<key>QUANTITY</key>
 			<string>1</string>
 		</dict>
+		<dict>
+			<key>LENGTH</key>
+			<integer>10</integer>
+			<key>LABEL</key>
+			<string>4</string>
+			<key>QUANTITY</key>
+			<string>1</string>
+		</dict>
 	</array>
 	<key>SOLUTIONS</key>
-	<array></array>
+	<array/>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>

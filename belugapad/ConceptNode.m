@@ -13,10 +13,9 @@
 @implementation ConceptNode
 
 @synthesize pipelines;
-@synthesize x, y;
-@synthesize journeySprite, nodeSliceSprite, lightSprite;
+@synthesize x, y, mastery, jtd;
 
-@dynamic isLit;
+@synthesize isLit;
 
 -(id)initWithFMResultSetRow:(FMResultSet*)resultSet
 {
@@ -25,9 +24,13 @@
     {
         pipelines = [[resultSet stringForColumn:@"pipelines"] objectFromJSONString];
         [pipelines retain];
+        if([pipelines count]>0) NSLog(@"found pipelines for %@", self._id);
         
         x = [resultSet intForColumn:@"x"];
         y = [resultSet intForColumn:@"y"];
+        mastery = [resultSet boolForColumn:@"mastery"];
+        jtd = [resultSet stringForColumn:@"jtd"];
+                
     }
     return self;
 }
@@ -35,9 +38,6 @@
 -(void) dealloc
 {
     [pipelines release];
-    if (journeySprite) [journeySprite release];
-    if (nodeSliceSprite) [nodeSliceSprite release];
-    if (lightSprite) [lightSprite release];
     [super dealloc];
 }
 

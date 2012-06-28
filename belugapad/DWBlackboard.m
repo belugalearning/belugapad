@@ -30,6 +30,9 @@
 @synthesize FirstAnchor;
 @synthesize LastAnchor;
 @synthesize CurrentHandle;
+@synthesize TestTouchLocation;
+@synthesize MoveTouchLocation;
+@synthesize CurrentColumnValue;
 
 
 -(id) init

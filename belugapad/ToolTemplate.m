@@ -151,9 +151,9 @@
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    UITouch *touch=[touches anyObject];
-    CGPoint location=[touch locationInView: [touch view]];
-    location=[[CCDirector sharedDirector] convertToGL:location];
+//    UITouch *touch=[touches anyObject];
+//    CGPoint location=[touch locationInView: [touch view]];
+//    location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     isTouching=NO;
     gw.Blackboard.LastSelectedObject=nil;

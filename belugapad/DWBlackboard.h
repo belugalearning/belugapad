@@ -36,6 +36,9 @@
 @property (retain) DWGameObject *FirstAnchor;
 @property (retain) DWGameObject *LastAnchor;
 @property (retain) DWGameObject *CurrentHandle;
+@property CGPoint TestTouchLocation;
+@property CGPoint MoveTouchLocation;
+@property float CurrentColumnValue;
 
 -(void)loadData;
 

@@ -45,7 +45,7 @@
         NSString *mode=[def objectForKey:@"MODE"];
         NSArray *data=[def objectForKey:@"DATA"];
         NSString *val=nil;
-        BOOL setString;
+        BOOL setString=NO;
         
         if([def objectForKey:@"RECALL"] && [retainedStrings objectForKey:key])
         {
@@ -140,7 +140,7 @@
     }
     
     //output value
-    NSNumber *outputvalue=[NSNumber numberWithInt:0];
+    NSNumber *outputvalue;
     
     //raw string expressions
     NSString *valexpr=[dv objectForKey:@"VALUE"];
@@ -216,7 +216,7 @@
     }
     if([casttype isEqualToString:@"%%"]) {
         //return a rounded int
-        float interf=[input floatValue] + (interf>0 ? 0.5 : -0.5);
+        float interf=[input floatValue] + ([input floatValue]>0 ? 0.5 : -0.5);
         outputvalue=[NSNumber numberWithInt:(int)interf];
     }
     if([casttype isEqualToString:@"&"]) {
@@ -309,7 +309,7 @@
     
     //NSMutableDictionary *lkpVars=[dVars copy];
     NSMutableDictionary *lkpVars=[NSMutableDictionary dictionaryWithDictionary:dVars];
-    NSString *parse=[input copy];
+    NSString *parse=[[input copy] autorelease];
     
     //if we're recalling, write into this recalled values
     if(recall)
@@ -481,9 +481,9 @@
 
 -(NSMutableDictionary*) createStaticPdefFromPdef:(NSDictionary*)dpdef
 {
-    //NSMutableDictionary *spdef=[dpdef mutableCopy];
-    
+    //make deep mutable copy -- mutableCopy doesn't do it
     NSMutableDictionary *spdef = (NSMutableDictionary *)CFPropertyListCreateDeepCopy(kCFAllocatorDefault, (CFDictionaryRef)dpdef, kCFPropertyListMutableContainers);
+    [spdef autorelease];
  
     [self cstatParseKeysInDict:spdef];
     

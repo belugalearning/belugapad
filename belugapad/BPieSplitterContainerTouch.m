@@ -9,6 +9,7 @@
 
 #import "BPieSplitterContainerTouch.h"
 #import "DWPieSplitterContainerGameObject.h"
+#import "DWPieSplitterSliceGameObject.h"
 
 #import "global.h"
 #import "ToolConsts.h"
@@ -38,9 +39,6 @@
     contentService = ac.contentService;
     usersService = ac.usersService;
     
-    [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_X];
-    [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_Y];
-    
     
     return self;
 }
@@ -67,9 +65,23 @@
 
 -(void)checkTouch:(CGPoint)hitLoc
 {
-    if(CGRectContainsPoint(cont.mySprite.boundingBox, hitLoc) && [cont.mySlices count]==0)
+    CGRect baseNodeBound=CGRectNull;
+    baseNodeBound=CGRectUnion(cont.mySpriteTop.boundingBox, cont.mySpriteBot.boundingBox);
+    
+    if(CGRectContainsPoint(baseNodeBound, [cont.BaseNode convertToNodeSpace:hitLoc]) && [cont.mySlices count]==0)
     {
         gameWorld.Blackboard.PickupObject=gameObject;
+    }
+    // but - if we do have slices associated, then we want the container to respond and not the slice so that the ordering is right
+    else if([cont.mySlices count]>0)
+    {
+        for(DWPieSplitterSliceGameObject *s in cont.mySlices)
+        {
+            if(CGRectContainsPoint(s.mySprite.boundingBox, [cont.BaseNode convertToNodeSpace:hitLoc]))
+            {
+                gameWorld.Blackboard.PickupObject=s;
+            }
+        }
     }
 }
 

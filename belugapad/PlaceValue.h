@@ -107,22 +107,28 @@
     BOOL autoMoveToNextProblem;
     BOOL autoHideStatusLabel;
     float timeToHideStatusLabel;
+    float timeSinceInteractionOrShake;
     
     int lastCount;
     int totalCountedInProblem;
     float maxSumReachedByUser;
     float expectedCount;
     float totalCount;
+    float lastTotalCount;
     
     CCSprite *condensePanel;
     CCSprite *mulchPanel;
     
     CGRect boundingBoxCondense;
     CGRect boundingBoxMulch;
+    CGRect noDragAreaTop;
+    CGRect noDragAreaBottom;
     
     BOOL inBlockTransition;
     BOOL inCondenseArea;
     BOOL inMulchArea;
+    
+    NSString *solutionType;
     
     //reference to cages
     NSMutableArray *allCages;
@@ -144,6 +150,7 @@
 -(void)evalProblemMatrixMatch;
 -(void)snapLayerToPosition;
 -(void)tintGridColour:(ccColor3B)toThisColour;
+-(void)tintGridColour:(int)thisGrid toColour:(ccColor3B)toThisColour;
 -(BOOL)doCondenseFromLocation:(CGPoint)location;
 -(BOOL)doMulchFromLocation:(CGPoint)location;
 -(BOOL)doTransitionWithIncrement:(int)incr;

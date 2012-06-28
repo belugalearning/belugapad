@@ -14,14 +14,21 @@
 {
     float cx, cy, lx, ly;
     
-    Daemon *daemon;
+    //Daemon *daemon;
     
     CCLayer *mapLayer;
     CCLayer *foreLayer;
     
     CGPoint lastTouch;
+    BOOL isDragging;
+    CGPoint dragVel;
+    CGPoint dragLast;
+    
+    BOOL zoomedOut;
 }
 
 +(CCScene *)scene;
+
+-(void)startTransitionToToolHostWithPos:(CGPoint)pos;
 
 @end

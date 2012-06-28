@@ -52,32 +52,129 @@
     
     if(gameWorld.Blackboard.DropObject)
     {
+        float curRotation=slice.mySprite.rotation;
+
         slice.myCont=gameWorld.Blackboard.DropObject;      
         DWPieSplitterContainerGameObject *c=(DWPieSplitterContainerGameObject*)slice.myCont;
-        
-        slice.Position=((DWPieSplitterContainerGameObject*)gameWorld.Blackboard.DropObject).Position;
+        DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie;
         
         //flip ownership of the sprite from the pie to the container
         [slice.mySprite removeFromParentAndCleanup:YES];
         slice.mySprite=nil;
-        slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/slice.png")];
-        
-        [c.mySprite addChild:slice.mySprite];
-        
-
+        slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
+        [slice setRotation:curRotation];
 
         
-        [slice handleMessage:kDWmoveSpriteToPosition];
+        [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.1f angle:(360/p.numberOfSlices)*[c.mySlices count]]];
+        
+        
+        BOOL GotPlaceInNode;
+        
+        if(!c.Nodes)c.Nodes=[[NSMutableArray alloc]init];
+        if([c.Nodes count]==0)
+        {
+            CCNode *thisNode=[[CCNode alloc]init];
+            [c.Nodes addObject:thisNode];
+            [c.BaseNode addChild:thisNode];
+            [thisNode addChild:slice.mySprite];
+        }
+        else {
+            for(CCNode *n in c.Nodes)
+            {
+                if([n.children count]<[p.mySlices count])
+                {
+                    [n addChild:slice.mySprite];
+                    return;
+                }
+                if([n.children count]==[p.mySlices count])
+                {
+                    CGPoint adjPos=ccp(0,0);
+                    [n setPosition:ccp(adjPos.x, adjPos.y-(10*([c.Nodes indexOfObject:n]+1)))];
+                    for(CCSprite *s in n.children)
+                    {
+                        [s setOpacity:150];
+                    }
+                }
+            }
+            
+            if(!GotPlaceInNode)
+            {
+                CCNode *thisNode=[[CCNode alloc]init];
+                [c.Nodes addObject:thisNode];
+                [c.BaseNode addChild:thisNode];
+                [thisNode addChild:slice.mySprite];
+
+            }
+        
+        }
+    
     }
 }
 -(void)unMountMeFromContainer
 {
-    DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie;        
+    DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie; 
+    DWPieSplitterContainerGameObject *c=(DWPieSplitterContainerGameObject*)slice.myCont;
+    float curRotation=slice.mySprite.rotation;
     [slice.mySprite removeFromParentAndCleanup:YES];
     slice.mySprite=nil;
-    slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/slice.png")];
+    slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
     [p.mySprite addChild:slice.mySprite];
-    [slice setPosition:[p.mySprite convertToNodeSpace:slice.Position]];
+    [slice.mySprite setPosition:[slice.mySprite.parent convertToNodeSpace:slice.Position]];
+    [slice.mySprite setRotation:curRotation];
+    [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.1f angle:slice.Rotation]];
+    
+    
+    // remove dead nodes from teh nodes array
+    NSMutableArray *deleteNodes=[[NSMutableArray alloc]init];
+    for(CCNode *n in c.Nodes)
+    {
+        if([n.children count]==0)
+        {
+            [deleteNodes addObject:n];
+        }
+    }
+    
+    if([deleteNodes count]>0)[c.Nodes removeObjectsInArray:deleteNodes];
+
+    // and after they're removed - loop BACK through - repositioning the stacks
+    
+    for(CCNode *n in c.Nodes)
+    {
+        if([n.children count]==[p.mySlices count])
+        {
+            // if there's only 1 node then set opacity to full
+            if([c.Nodes count]<=1){
+                [n setPosition:ccp(0,0)];
+                for(CCSprite *s in n.children)
+                {
+                    [s setOpacity:255];
+                }
+            }
+            else {
+                // otherwise order them accordingly 
+                
+                // and if it's the last in the array, it'll be at the top, so set totally opaque
+                if([c.Nodes indexOfObject:n]==[c.Nodes count]-1)
+                {
+                    [n setPosition:ccp(0,0)];
+                    for(CCSprite *s in n.children)
+                    {
+                        [s setOpacity:255];
+                    }
+                }
+                // but if it's not, leave it tinted
+                else {
+                    CGPoint adjPos=ccp(0,0);
+                    [n setPosition:ccp(adjPos.x, adjPos.y-(10*([c.Nodes indexOfObject:n]+1)))];
+                    for(CCSprite *s in n.children)
+                    {
+                        [s setOpacity:150];
+                    }
+                }
+            }
+
+        }
+    }
     
     slice.myCont=nil;
 }

@@ -23,12 +23,12 @@
 @private
     BOOL useTestPipeline;
     
+    // local test pipeline
     NSArray *testProblemList;
     NSUInteger currentPIndex;
     
+    // kcm database pipelines
     FMDatabase *contentDatabase;
-
-    //kcm concept node pipeline progression
     int pipelineIndex;
 
 }
@@ -49,8 +49,13 @@
 @synthesize fullRedraw;
 @synthesize currentPipeline;
 
+@synthesize resetPositionAfterTH;
+@synthesize lastMapLayerPosition;
+
 @synthesize lightUpProgressFromLastNode;
 @synthesize currentNode;
+
+#pragma mark - init and setup
 
 // Designated initializer
 -(id)initWithProblemPipeline:(NSString*)source
@@ -82,6 +87,8 @@
                 
                 testProblemList=[NSArray arrayWithArray:allFilePaths];
                 [testProblemList retain];
+                
+                [allFilePaths release];
             }
 
         }
@@ -94,23 +101,76 @@
     return self;
 }
 
--(void)setCurrentStaticPdef:(NSMutableDictionary*)pdef
+#pragma mark - dynamic pipeline creation
+
+-(BOOL) createAndStartFunnelForNode:(NSString*)nodeId
 {
-    NSLog(@"setting currentStaticPdef");
-    if (pdef) [pdef retain];
-    if (currentStaticPdef) [currentStaticPdef release];
-    currentStaticPdef = pdef;
+    //get node by id
+    ConceptNode *n=[self conceptNodeForId:nodeId];
+    
+    if(n.mastery)
+    {
+        UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;    
+        
+        //step over child nodes and look for one that's not completed, if found start it's pipeline
+        NSMutableArray *children=[self childNodesForMasteryWithId:nodeId];
+        
+        if(children.count==0)
+        {
+            NSLog(@"there are no children here");
+            return NO;
+        }
+        
+        for (ConceptNode *child in children) {
+            if(![us hasCompletedNodeId:child._id])
+            {
+                if(child.pipelines.count>0)
+                {
+                    [self startPipelineWithId:[child.pipelines objectAtIndex:0] forNode:child];
+                    
+                    return YES;
+                }
+            }
+        }
+        
+        //pick random child
+        int ip=arc4random()%children.count;
+        
+        
+        ConceptNode *child=[children objectAtIndex:ip];
+    
+        if(child.pipelines.count>0)
+        {
+            [self startPipelineWithId:[child.pipelines objectAtIndex:0] forNode:child];
+            return YES;
+        }
+        else {
+            NSLog(@"selected child doesn't have a pipeline");
+        }
+        
+        return NO;
+    }
+    
+    else {
+        //if node (incomplete) do same
+        
+        //if node (and that node is complete) funnel is that node's pipeline
+    
+        //todo: fake it -- direct to node for now
+        if(n.pipelines.count>0)
+        {
+            [self startPipelineWithId:[n.pipelines objectAtIndex:0] forNode:n];
+            return YES;
+        }
+        else {
+            NSLog(@"no pipeline found for node %@", nodeId);
+            return NO;
+        }
+    }
 }
 
--(BOOL)isUsingTestPipeline
-{
-    return useTestPipeline;
-}
 
--(id)init
-{
-    return [self initWithProblemPipeline:@"DATABASE"];
-}
+#pragma mark - data access
 
 -(NSArray*)allConceptNodes
 {
@@ -126,19 +186,36 @@
     [contentDatabase close];
     return nodes;
 }
-    
+
+-(ConceptNode*)conceptNodeForId:(NSString*)nodeId
+{
+    [contentDatabase open];
+    ConceptNode *returnNode=nil;
+    FMResultSet *rs=[contentDatabase executeQuery:@"select * from ConceptNodes where id=?", nodeId];
+    if([rs next])
+    {
+        returnNode=[[[ConceptNode alloc] initWithFMResultSetRow:rs] autorelease];
+    }
+    else {
+        NSLog(@"ConceptNode with id %@ not found", nodeId);
+    }
+    [rs close];
+    [contentDatabase close];
+    return returnNode;
+}
+
 -(NSArray*)relationMembersForName:(NSString *)name
 {
     [contentDatabase open];
     FMResultSet *rs = [contentDatabase executeQuery:@"select members from BinaryRelations where name=?", name];
-    NSArray *members = nil;
+    NSArray *pairs = nil;
     if ([rs next])
     {
-        members = [[rs stringForColumn:@"pairs"] objectFromJSONString];
+        pairs = [[rs stringForColumn:@"members"] objectFromJSONString];
     }
     [rs close];
     [contentDatabase close];
-    return members;
+    return pairs;
 }
 
 -(Pipeline*)pipelineWithId:(NSString*)plId
@@ -153,6 +230,42 @@
     [rs close];
     [contentDatabase close];
     return pl;
+}
+
+-(NSMutableArray*)childNodesForMasteryWithId:(NSString*)masteryId
+{
+    NSMutableArray *ret=[[[NSMutableArray alloc] init] autorelease];
+    
+    NSArray *rel=[self relationMembersForName:@"Mastery"];
+    
+    for (NSArray *pair in rel) {
+        if ([[pair objectAtIndex:1] isEqualToString:masteryId]) {
+            [ret addObject:[self conceptNodeForId:[pair objectAtIndex:0]]];
+        }
+    }
+    
+    return ret;
+}
+
+
+#pragma mark - the rest
+
+-(void)setCurrentStaticPdef:(NSMutableDictionary*)pdef
+{
+    NSLog(@"setting currentStaticPdef");
+    if (pdef) [pdef retain];
+    //if (currentStaticPdef) [currentStaticPdef release];
+    currentStaticPdef = pdef;
+}
+
+-(BOOL)isUsingTestPipeline
+{
+    return useTestPipeline;
+}
+
+-(id)init
+{
+    return [self initWithProblemPipeline:@"DATABASE"];
 }
 
 -(void)startPipelineWithId:(NSString*)pipelineid forNode:(ConceptNode*)node
@@ -189,7 +302,6 @@
 
 -(void)gotoNextProblemInPipeline
 {
-    pipelineIndex++;
     self.currentPDef=nil;
     
     if (useTestPipeline)
@@ -206,7 +318,7 @@
         self.pathToTestDef=[testProblemList objectAtIndex:currentPIndex];
         NSLog(@"loaded test def: %@", self.pathToTestDef);        
     }    
-    else if(pipelineIndex>=self.currentPipeline.problems.count)
+    else if(++pipelineIndex>=self.currentPipeline.problems.count)
     {
         //don't progress, current pdef & ppexpr are set to nil above
     }
@@ -238,6 +350,8 @@
 
 -(void)setPipelineNodeComplete
 {
+    if (useTestPipeline) return;
+    
     NSLog(@"ContentService#setPipelineNodeComplete currentNode id=\"%@\"", currentNode._id);
     //effective placeholder for assessed complete -- e.g. lit on node
     UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;    

@@ -62,6 +62,7 @@ typedef enum {
     int numberOfCagedContainers;
     int numberOfActivePies;
     int numberOfActiveContainers;
+    int numberOfCagedSlices;
     int dividend;
     int divisor;
     
@@ -73,9 +74,11 @@ typedef enum {
     BOOL createdNewCon;
     BOOL createdNewPie;
     BOOL hasSplit;
+    BOOL showResetSlicesToPies;
     
     CCSprite *pieBox;
     CCSprite *conBox;
+    CCSprite *resetSlices;
     
     DWGameObject *ghost;
     
@@ -102,6 +105,7 @@ typedef enum {
 -(void)reorderActiveContainers;
 -(void)splitPie:(DWPieSplitterPieGameObject*)p;
 -(void)splitPies;
+-(void)balanceContainers;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

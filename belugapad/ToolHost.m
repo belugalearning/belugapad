@@ -25,7 +25,9 @@
 #import "Problem.h"
 #import "Pipeline.h"
 #import "NordicAnimator.h"
+#import "LRAnimator.h"
 #import "BLFiles.h"
+#import "InteractionFeedback.h"
 
 @interface ToolHost()
 {
@@ -45,6 +47,7 @@
 @synthesize DynProblemParser;
 
 static float kMoveToNextProblemTime=2.0f;
+static float kTimeToShakeNumberPickerButtons=7.0f;
 
 +(CCScene *) scene
 {
@@ -76,7 +79,7 @@ static float kMoveToNextProblemTime=2.0f;
         perstLayer=[[CCLayer alloc] init];
         [self addChild:perstLayer z:0];
         
-        animator=[[NordicAnimator alloc] init];
+        animator=[[LRAnimator alloc] init];
         [animator setBackground:backgroundLayer withCx:cx withCy:cy];
         
         [animator animateBackgroundIn];
@@ -103,14 +106,14 @@ static float kMoveToNextProblemTime=2.0f;
         [self populatePerstLayer];
         
         //dynamic problem parser (persists to end of pipeline)
-        self.DynProblemParser=[[DProblemParser alloc] init];
+        DynProblemParser=[[[DProblemParser alloc] init] retain];
         
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         loggingService = ac.loggingService;
         contentService = ac.contentService;
         usersService = ac.usersService;
         
-        [self scheduleOnce:@selector(gotoFirstProblem:) delay:3.0f];
+        [self scheduleOnce:@selector(gotoFirstProblem:) delay:0.0f];
         //[self gotoNewProblem];
         
         [self schedule:@selector(doUpdateOnTick:) interval:1.0f/60.0f];
@@ -213,6 +216,19 @@ static float kMoveToNextProblemTime=2.0f;
             autoMoveToNextProblem=NO;
             [self gotoNewProblem];
         }
+    }
+    
+    if(numberPickerForThisProblem)timeSinceInteractionOrShakeNP+=delta;
+    
+    if(timeSinceInteractionOrShakeNP>kTimeToShakeNumberPickerButtons && numberPickerForThisProblem && !hasUsedNumber)
+    {
+        
+        for(CCSprite *s in numberPickerButtons)
+        {
+            [s runAction:[InteractionFeedback dropAndBounceAction]];
+        }
+        
+        timeSinceInteractionOrShakeNP=0.0f;
     }
     
     //let tool do updates
@@ -420,8 +436,20 @@ static float kMoveToNextProblemTime=2.0f;
     }
     
     
-
-
+    //glossary mockup
+    if([pdef objectForKey:@"GLOSSARY"])
+    {
+        isGlossaryMock=YES;
+        glossary1=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/glossary/GlossaryExample.png")];
+        [glossary1 setPosition:ccp(cx,cy)];
+        [self addChild:glossary1];
+        [problemDescLabel setVisible:NO];
+    }
+    else {
+        if(glossary1)[self removeChild:glossary1 cleanup:YES];
+        if(glossary2)[self removeChild:glossary2 cleanup:YES];
+        if(glossaryPopup)[self removeChild:glossaryPopup cleanup:YES];
+    }
     
     [self stageIntroActions];        
 
@@ -602,11 +630,11 @@ static float kMoveToNextProblemTime=2.0f;
     metaQuestionAnswerButtons = [[NSMutableArray alloc] init];
     metaQuestionAnswerLabels = [[NSMutableArray alloc] init];
     
-    float titleY=cy*1.75f;
+    //float titleY=cy*1.75f;
     float answersY=cy*0.40;
     if(currentTool)
     {
-        titleY=[currentTool metaQuestionTitleYLocation];
+        //titleY=[currentTool metaQuestionTitleYLocation];
         answersY=[currentTool metaQuestionAnswersYLocation];
     }
     
@@ -655,7 +683,7 @@ static float kMoveToNextProblemTime=2.0f;
         NSMutableDictionary *a=[NSMutableDictionary dictionaryWithDictionary:[pdefAnswers objectAtIndex:i]];
         [metaQuestionAnswers addObject:a];
         
-        CCSprite *answerBtn = [[CCSprite alloc]init];
+        CCSprite *answerBtn;
         CCLabelTTF *answerLabel = [CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
         
         // sort out the labels and buttons if there's an answer text
@@ -893,6 +921,7 @@ static float kMoveToNextProblemTime=2.0f;
 {
     CGPoint origloc=location;
     location=[nPicker convertToNodeSpace:location];
+    timeSinceInteractionOrShakeNP=0.0f;
     
     if(numberPickerEvalMode==kNumberPickerEvalOnCommit)
     {
@@ -914,6 +943,7 @@ static float kMoveToNextProblemTime=2.0f;
             CCSprite *s=[numberPickerButtons objectAtIndex:i];
             if(CGRectContainsPoint(s.boundingBox, location))
             {
+                hasUsedNumber=YES;
                 //a valid click?
                 [self playAudioPress];
                 
@@ -1006,13 +1036,13 @@ static float kMoveToNextProblemTime=2.0f;
 
 -(void)evalNumberPicker
 {
-    NSString *strEval=[[NSString alloc]init];
+    NSString *strEval=@"";
     
     for (int i=0;i<[numberPickedValue count];i++)
     {
         NSNumber *thisNo=[numberPickedValue objectAtIndex:i];
         int iThisNo=[thisNo intValue];
-        NSString *strThisNo=[[NSString alloc] init];
+        NSString *strThisNo;
         
         if(iThisNo==10)strThisNo=@".";
         else strThisNo=[NSString stringWithFormat:@"%d", iThisNo];
@@ -1332,6 +1362,7 @@ static float kMoveToNextProblemTime=2.0f;
     lastTouch=location;
 
     [self logTouches:touches forEvent:@"b"];
+
     //testing block for stepping between tool positions
 //    if(animPos==0)
 //    {
@@ -1357,6 +1388,32 @@ static float kMoveToNextProblemTime=2.0f;
     {
         return;
     }  
+    
+    if(isGlossaryMock)
+    {
+        if (glossaryShowing) {
+            [self removeChild:glossaryPopup cleanup:YES];
+            glossaryShowing=NO;
+        }
+        
+        else if(CGRectContainsPoint(CGRectMake(450, 650, 200, 150), location))
+        {
+            glossaryPopup=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/glossary/GlossaryPopup.png")];
+            [glossaryPopup setPosition:ccp(cx, cy)];
+            [self addChild:glossaryPopup z:10];
+            glossaryShowing=YES;
+            
+            //swap to stage two?
+            if(!isGloassryDone1)
+            {
+                [self removeChild:glossary1 cleanup:YES];
+                glossary2=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/glossary/GlossaryExampleTapped.png")];
+                [glossary2 setPosition:ccp(cx,cy)];
+                [self addChild:glossary2];
+                isGloassryDone1=YES;
+            }
+        }
+    }
     
     if(metaQuestionForThisProblem)
         [self checkMetaQuestionTouches:location];
@@ -1555,6 +1612,8 @@ static float kMoveToNextProblemTime=2.0f;
     if(numberPickerButtons)[numberPickerButtons release];
     if(numberPickedSelection)[numberPickedSelection release];
     if(numberPickedValue)[numberPickedValue release];
+    
+    [DynProblemParser release];
     
     [super dealloc];
 }

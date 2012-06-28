@@ -83,9 +83,14 @@
     DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie;
     NSString *spriteFileName=[[NSString alloc]init];
     
-    spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/slice.png"];
+    if(slice.SpriteFileName)
+        spriteFileName=slice.SpriteFileName;
+    
+    else
+        spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/slice.png"];
     
     slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+    [slice.mySprite setRotation:slice.Rotation];
     [slice.mySprite setPosition:[p.mySprite convertToNodeSpace:slice.Position]];
     
     
@@ -104,11 +109,9 @@
 -(void)moveSprite
 {
     DWPieSplitterPieGameObject *pie=(DWPieSplitterPieGameObject*)slice.myPie;
-    DWPieSplitterContainerGameObject *c=(DWPieSplitterContainerGameObject*)slice.myCont;
-    NSLog(@"spritepos=%@", NSStringFromCGPoint(slice.Position));
     
     if(slice.myCont)
-        [slice.mySprite setPosition:[c.mySprite convertToNodeSpace:slice.Position]];
+        [slice.mySprite setPosition:[slice.mySprite.parent convertToNodeSpace:slice.Position]];
     else 
         [slice.mySprite setPosition:[pie.mySprite convertToNodeSpace:slice.Position]];
 
@@ -118,8 +121,8 @@
 {
     DWPieSplitterPieGameObject *myPie=(DWPieSplitterPieGameObject*)slice.myPie;
     if(slice.myPie) {
-        slice.Position=myPie.Position;
-        [slice.mySprite runAction:[CCMoveTo actionWithDuration:0.5f position:[myPie.mySprite convertToNodeSpace: slice.Position]]];
+            [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.1f angle:(360/myPie.numberOfSlices)*[myPie.mySprite.children count]]];
+        [slice.mySprite runAction:[CCMoveTo actionWithDuration:0.5f position:[slice.mySprite.parent convertToNodeSpace:myPie.Position]]];
     }
 }
 -(void)handleTap

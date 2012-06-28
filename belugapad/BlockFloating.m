@@ -822,9 +822,9 @@ static void eachShape(void *ptr, void* unused)
         NSNumber *nuc =[o objectForKey:DIMENSION_UNIT_COUNT];
         int rows=[[o objectForKey:DIMENSION_ROWS] intValue];
         int cols=[[o objectForKey:DIMENSION_COLS] intValue];
-        NSString *filename = [[NSString alloc]init];
-        NSString *sepfilename = [[NSString alloc]init];
-        NSString *overlayfilename = [[NSString alloc]init];
+        NSString *filename;
+        NSString *sepfilename;
+        NSString *overlayfilename = [[[NSString alloc]init] autorelease];
         
         if([o objectForKey:SPRITE_FILENAME]) filename =[NSString stringWithFormat:@"%@", [o objectForKey:SPRITE_FILENAME]];
         else filename = [NSString stringWithFormat:@"/images/blocks/obj-float-50.png"];
@@ -1250,7 +1250,7 @@ static void eachShape(void *ptr, void* unused)
             NSMutableArray *matchesInSols=[[cont store]objectForKey:MATCHES_IN_SOLUTIONS];
             if(!matchesInSols)
             {
-                matchesInSols=[[NSMutableArray alloc]init];                
+                matchesInSols=[[[NSMutableArray alloc]init] autorelease];                
                 [[cont store] setObject:matchesInSols forKey:MATCHES_IN_SOLUTIONS];
             }
             
@@ -1259,6 +1259,8 @@ static void eachShape(void *ptr, void* unused)
             {
                 [matchesInSols addObject:[NSNumber numberWithInt:solIndex]];
             }
+            
+            //this should even be tracked -- given nothing happens with it
             
             if(![xpGrantedClauses containsObject:clause])
             {
@@ -1280,6 +1282,8 @@ static void eachShape(void *ptr, void* unused)
         }
 
     }
+    
+    [matchedObjects release];
     
     if(clausesPassed>=[clauses count])
         return YES;

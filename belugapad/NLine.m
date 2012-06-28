@@ -244,7 +244,7 @@ static float kTimeToBubbleShake=7.0f;
 {
     if(evalMode==kProblemEvalAuto)
     {
-        self.ProblemComplete=[self evalProblem];
+        [self evalProblem];
         
         if(!self.ProblemComplete) 
         {
@@ -262,9 +262,9 @@ static float kTimeToBubbleShake=7.0f;
     [toolHost showProblemCompleteMessage];
 }
 
--(BOOL)evalProblem
+-(void)evalProblem
 {
-    return (evalTarget==lastBubbleLoc);
+    self.ProblemComplete = (evalTarget==lastBubbleLoc);
     
 }
 
@@ -353,7 +353,7 @@ static float kTimeToBubbleShake=7.0f;
     
     if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit)
     {
-        self.ProblemComplete=[self evalProblem];
+        [self evalProblem];
         
         if(!self.ProblemComplete) 
         {
@@ -500,9 +500,6 @@ static float kTimeToBubbleShake=7.0f;
         int roundedStepsFromCentre=(int)(stepsFromCentre + 0.5f);
         if(stepsFromCentre<0) roundedStepsFromCentre=(int)(stepsFromCentre - 0.5f);
         
-        //NSLog(@"bubble pos %d", roundedStepsFromCentre);
-        
-        
         int startOffset=initStartVal;
         lastBubbleLoc = roundedStepsFromCentre+startOffset;
         int adjustedStepsFromCentre=roundedStepsFromCentre;
@@ -516,9 +513,9 @@ static float kTimeToBubbleShake=7.0f;
         [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
         
         
-        
-        //update the rambler value
-        rambler.BubblePos=lastBubbleLoc;
+        //update the rambler value & last bubble location, using any offset
+        rambler.BubblePos=adjustedStepsFromCentre+startOffset;
+        lastBubbleLoc=adjustedStepsFromCentre+startOffset;
         
         
         //play some audio
@@ -556,33 +553,7 @@ static float kTimeToBubbleShake=7.0f;
         logBubbleDidMove=NO;
         logBubbleDidMoveLine=NO;
         
-//        int roundedStepsFromActualCentre=roundedStepsFromCentre;
-//        
-//        roundedStepsFromCentre += [[problemDef objectForKey:START_VALUE] intValue];
-//        
-//        if(roundedStepsFromCentre>[rambler.MaxValue intValue])roundedStepsFromCentre=[rambler.MaxValue intValue] - [[problemDef objectForKey:START_VALUE] intValue];
-//        if(roundedStepsFromCentre<[rambler.MinValue intValue])roundedStepsFromCentre=[rambler.MinValue intValue] - [[problemDef objectForKey:START_VALUE] intValue];
-//        
-//        //lastBubbleLoc=roundedStepsFromCentre + [[problemDef objectForKey:START_VALUE] intValue];
-//        lastBubbleLoc=roundedStepsFromCentre;
-        
-//        //diff (moveby)
-//        float diffx=(roundedStepsFromActualCentre * rambler.DefaultSegmentSize)-distFromCentre;
-//        [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
     }
-    
-//    if(inRamblerArea)
-//    {
-//        [rambler handleMessage:kDWnlineReleaseRamblerAtOffset];
-//        
-//        inRamblerArea=NO;
-//        rambler.TouchXOffset=0;
-//    }
-
-    
-    UITouch *touch=[touches anyObject];
-    CGPoint location=[touch locationInView: [touch view]];
-    location=[[CCDirector sharedDirector] convertToGL:location];
     
     holdingBubbleOffset=0;
     holdingBubble=NO;

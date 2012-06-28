@@ -67,8 +67,8 @@
 
 -(void)checkTouch:(CGPoint)hitLoc
 {
-    DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie;
-    if(CGRectContainsPoint(slice.mySprite.boundingBox, [slice.mySprite.parent convertToNodeSpace:hitLoc]))
+    // if the slice doesn't have a container it can respond to this message
+    if(CGRectContainsPoint(slice.mySprite.boundingBox, [slice.mySprite.parent convertToNodeSpace:hitLoc]) && !slice.myCont)
     {
         gameWorld.Blackboard.PickupObject=slice;
     

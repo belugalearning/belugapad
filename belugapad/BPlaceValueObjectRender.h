@@ -7,18 +7,19 @@
 //
 
 #import "DWBehaviour.h"
-
+@class DWPlaceValueBlockGameObject;
 
 @interface BPlaceValueObjectRender : DWBehaviour
 {
     
+    DWPlaceValueBlockGameObject *b;
     BOOL amPickedUp;
     
 }
 
 -(BPlaceValueObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
 -(void)setSprite;
--(void)setSpritePos:(NSDictionary *)position withAnimation:(BOOL) animate;
+-(void)setSpritePosWithAnimation;
 -(void)resetSpriteToMount;
 -(void)switchSelection:(BOOL)isSelected;
 -(void)switchBaseSelection:(BOOL)isSelected;

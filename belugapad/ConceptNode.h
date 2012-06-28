@@ -16,11 +16,10 @@
 @property (readonly) NSArray *pipelines;
 @property (readonly) int x;
 @property (readonly) int y;
+@property (readonly) BOOL mastery;
+@property (readonly) NSString *jtd;
 
 //not persisted
-@property (retain) CCSprite *journeySprite;
-@property (retain) CCSprite *nodeSliceSprite;
-@property (retain) CCSprite *lightSprite;
 @property bool isLit;
 
 @end

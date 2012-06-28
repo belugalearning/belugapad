@@ -39,6 +39,7 @@
 
 @synthesize LocalSettings;
 @synthesize ReleaseMode;
+@synthesize IsIpad1;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -65,9 +66,10 @@
     NSString *pl = [self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"];
     BL_LOGGING_SETTING paLogging = [@"DATABASE" isEqualToString:pl] ? BL_LOGGING_ENABLED : BL_LOGGING_DISABLED;
     
-    self.loggingService = [[LoggingService alloc] initWithProblemAttemptLoggingSetting:paLogging];
-    self.contentService = [[ContentService alloc] initWithProblemPipeline:pl];
-    self.usersService = [[UsersService alloc] initWithProblemPipeline:pl andLoggingService:self.loggingService];
+    loggingService = [[LoggingService alloc] initWithProblemAttemptLoggingSetting:paLogging];
+    contentService = [[ContentService alloc] initWithProblemPipeline:pl];
+    usersService = [[UsersService alloc] initWithProblemPipeline:pl andLoggingService:self.loggingService];
+    
     
     [self.loggingService logEvent:BL_APP_START withAdditionalData:nil];
     
@@ -92,6 +94,9 @@
     //no purpose in getting this -- it's not used
     //NSDictionary *launchOptions=launchOptionsCache;
     
+    self.IsIpad1 = !(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad &&
+                    [UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]);
+    
     director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
     
 	// Create an CCGLView with a RGB565 color buffer, and a depth buffer of 0-bits
@@ -100,8 +105,8 @@
 								   depthFormat:0	//GL_DEPTH_COMPONENT24_OES
 							preserveBackbuffer:NO
 									sharegroup:nil
-								 multiSampling:NO
-							   numberOfSamples:0];
+								 multiSampling:!self.IsIpad1
+							   numberOfSamples:(self.IsIpad1 ? 0 : 4)];
     
 	director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
     
@@ -179,6 +184,7 @@
     [window_ makeKeyAndVisible];
 }
 
+
 // Supported orientations: Landscape. Customize it for your own needs
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -238,6 +244,7 @@
 
 - (void) dealloc
 {
+    [loggingService release];
     [contentService release];
     [usersService release];
     

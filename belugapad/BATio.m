@@ -21,7 +21,7 @@
 
 +(BAExpressionTree *)loadTreeFromMathMLData:(NSData*)xmlData
 {
-    CXMLDocument *doc=[[[CXMLDocument alloc] initWithData:xmlData options:0 error:nil] retain];
+    CXMLDocument *doc=[[[CXMLDocument alloc] initWithData:xmlData options:0 error:nil] autorelease];
     
     NSDictionary *nsmap=[NSDictionary dictionaryWithObject:MML_NAMESPACE forKey:@""];
     

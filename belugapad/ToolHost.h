@@ -34,6 +34,7 @@ typedef enum {
 @class UsersService;
 @class DProblemParser;
 @class NordicAnimator;
+@class LRAnimator;
 
 @interface ToolHost : CCLayer
 {
@@ -86,7 +87,9 @@ typedef enum {
     int npMaxNoInDropbox;
     CGRect pickerBox;
     BOOL hasMovedNumber;
+    BOOL hasUsedNumber;
     
+    float timeSinceInteractionOrShakeNP;
     
     BOOL isPaused;
     CCLabelTTF *pauseTestPathLabel;
@@ -114,12 +117,19 @@ typedef enum {
     
     CCSprite *commitBtn;
     
-    NordicAnimator *animator;
+    LRAnimator *animator;
     int animPos;
     
     int currentToolDepth;
     
     NSString *touchLogPath;
+    
+    BOOL isGlossaryMock;
+    BOOL isGloassryDone1;
+    BOOL glossaryShowing;
+    CCSprite *glossary1;
+    CCSprite *glossary2;
+    CCSprite *glossaryPopup;
 }
 
 @property (retain) Daemon *Zubi;

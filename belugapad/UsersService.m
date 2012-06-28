@@ -38,7 +38,6 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 @end
 
 
-
 @implementation UsersService
 
 @synthesize installationUUID;
@@ -217,7 +216,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 -(void)addCompletedNodeId:(NSString *)nodeId
 {
     NSString *urId = [currentUser objectForKey:@"id"];
-    NSMutableArray *nc = [[[currentUser objectForKey:@"nodesCompleted"] mutableCopy] autorelease];
+    NSMutableArray *nc = [[[currentUser objectForKey:@"nodesCompleted"] mutableCopy];
     if (!nc) nc = [NSMutableArray array];
     [nc addObject:nodeId];
     
@@ -234,6 +233,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     
     [rs close];
     [usersDatabase close];
+    [nc release];
 }
 
 -(BOOL)hasCompletedNodeId:(NSString *)nodeId

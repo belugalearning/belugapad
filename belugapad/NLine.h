@@ -73,6 +73,6 @@
 -(void)populateGW;
 -(void)readPlist:(NSDictionary*)pdef;
 
--(BOOL)evalProblem;
+-(void)evalProblem;
 
 @end

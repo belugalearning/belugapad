@@ -439,7 +439,9 @@ const float kScaleOfLesserBlocks=0.6f;
 //    }
     calc=-curBlock.contentSize.width*curBlock.scaleX;
     
+    //GJ: what is this set for -- curDict never goes anywhere
     [curDict setObject:[NSNumber numberWithFloat:calc] forKey:OFFSET];
+    [curDict release];
     
     [self.NoScaleLayer addChild:curBlock];
 }

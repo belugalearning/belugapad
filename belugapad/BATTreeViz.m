@@ -26,6 +26,7 @@ static float kNodeFontSize=24.0f;
     //depth is used to assed basic width
     BATQuery *q=[[BATQuery alloc] initWithExpr:self.Root];
     maxDepth=[q getMaxDepth];
+    [q release];
     
     [self drawNode:self.Root atDepth:0 withParentX:0 andSiblingIndex:0];
     

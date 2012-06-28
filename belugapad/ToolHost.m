@@ -445,6 +445,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [self addChild:glossary1];
         [problemDescLabel setVisible:NO];
     }
+    else {
+        if(glossary1)[self removeChild:glossary1 cleanup:YES];
+        if(glossary2)[self removeChild:glossary2 cleanup:YES];
+        if(glossaryPopup)[self removeChild:glossaryPopup cleanup:YES];
+    }
     
     [self stageIntroActions];        
 

@@ -157,7 +157,8 @@
         pogo.IsScaled=YES;
     }
     else{ 
-        [pogo.BaseNode setScale:0.5f];
+        //[pogo.BaseNode setScale:0.5f];
+        [pogo.BaseNode setScale:1.0f];
     }
     
     if(pogo.Label) { 
@@ -179,7 +180,7 @@
     {
         if(!pogo.IsScaled)
         {
-            [pogo.BaseNode runAction:[CCScaleTo actionWithDuration:0.5f scale:1.0f]];
+            //[pogo.BaseNode runAction:[CCScaleTo actionWithDuration:0.5f scale:1.0f]];
             pogo.IsScaled=YES;
         }
         
@@ -226,7 +227,7 @@
 {
     if(pogo.IsScaled && !pogo.InitedObject)
     {
-        [pogo.BaseNode runAction:[CCScaleTo actionWithDuration:0.5f scale:0.5f]];
+        //[pogo.BaseNode runAction:[CCScaleTo actionWithDuration:0.5f scale:0.5f]];
         pogo.IsScaled=NO;
     }
 }

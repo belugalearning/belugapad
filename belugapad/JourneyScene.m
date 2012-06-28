@@ -381,6 +381,8 @@ typedef enum {
                 if(!n.EnabledAndComplete) allcomplete=NO;
             }
             
+            if(mgo.ChildNodes.count==0) allcomplete=NO;
+            
             if(allcomplete)mgo.EnabledAndComplete=YES;
         }
     }

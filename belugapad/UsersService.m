@@ -323,7 +323,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     NSMutableDictionary *user = [NSMutableDictionary dictionary];
     [user setValue:[rs stringForColumn:@"id"] forKey:@"id"];
     [user setValue:[rs stringForColumn:@"nick"] forKey:@"nickName"];
-    [user setValue:[rs stringForColumn:@"nodes_completed"] forKey:@"nodesCompleted"];
+    [user setValue:[[rs stringForColumn:@"nodes_completed"] objectFromJSONString] forKey:@"nodesCompleted"];
     return [[user copy] autorelease];
 }
 

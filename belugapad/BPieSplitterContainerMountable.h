@@ -18,5 +18,6 @@
 -(void)checkDropTarget:(CGPoint)hitLoc;
 -(void)mountObjectToMe;
 -(void)unMountObjectFromMe;
+-(void)unMountAllMountedObjectsFromMe;
 -(void)scaleMidSection;
 @end

@@ -135,7 +135,7 @@
     }
     
     if([deleteNodes count]>0)[c.Nodes removeObjectsInArray:deleteNodes];
-    
+
     // and after they're removed - loop BACK through - repositioning the stacks
     
     for(CCNode *n in c.Nodes)

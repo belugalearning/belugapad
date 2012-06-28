@@ -87,6 +87,8 @@ typedef enum {
     kDWcheckMyMountIsNet=38,
     kDWstopAllActions=39,
     
+    kDWunsetAllMountedObjects=40,
+    
     kDWareYouProximateTo=101,
     kDWupdateObjectData=102,
     kDWdetachPhys=103,

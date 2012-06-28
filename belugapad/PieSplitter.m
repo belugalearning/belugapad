@@ -524,7 +524,7 @@ static float kTimeToPieShake=7.0f;
             {
                 for(DWPieSplitterSliceGameObject *s in c.mySlices)
                 {
-                    [c handleMessage:kDWunsetMountedObject];
+                    [c handleMessage:kDWunsetAllMountedObjects];
                     [s handleMessage:kDWunsetMount];
                     [s handleMessage:kDWmoveSpriteToHome];
                 }

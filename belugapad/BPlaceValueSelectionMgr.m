@@ -18,9 +18,9 @@
 @interface BPlaceValueSelectionMgr()
 {
 @private
+    LoggingService *loggingService;
     ContentService *contentService;
     UsersService *usersService;
-    LoggingService *loggingService;
 }
 
 @end
@@ -29,6 +29,7 @@
 -(BPlaceValueSelectionMgr*)initWithGameObject:(DWGameObject *)aGameObject withData:(NSDictionary *)data
 {
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    loggingService = ac.loggingService;
     contentService = ac.contentService;
     usersService = ac.usersService;
     loggingService = ac.loggingService;

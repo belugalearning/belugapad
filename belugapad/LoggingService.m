@@ -19,7 +19,6 @@
 
 
 NSString * const kLoggingWebServiceBaseURL = @"http://u.zubi.me:3000";
-//NSString * const kLoggingWebServiceBaseURL = @"http://192.168.1.68:3000";
 NSString * const kLoggingWebServicePath = @"app-logging/upload";
 uint const kMaxConsecutiveSendFails = 3;
 
@@ -39,7 +38,6 @@ uint const kMaxConsecutiveSendFails = 3;
     
     NSMutableDictionary *deviceSessionDoc;
     NSMutableDictionary *userSessionDoc;
-    //NSMutableDictionary *journeyMapVisitDoc;
     NSMutableDictionary *problemAttemptDoc;
     
     uint consecutiveSendFails;
@@ -128,7 +126,7 @@ uint const kMaxConsecutiveSendFails = 3;
                           , @"UserSession", @"type"
                           , [deviceSessionDoc objectForKey:@"device"], @"device"
                           , [deviceSessionDoc objectForKey:@"_id"], @"deviceSession"
-                          , [ac.usersService.currentUser objectForKey:@"id"], @"user"
+                          , [ac.usersService.currentUserClone objectForKey:@"id"], @"user"
                           , nil];
     }
     else if (BL_JS_INIT == eventType)
@@ -167,9 +165,6 @@ uint const kMaxConsecutiveSendFails = 3;
         case BL_DEVICE_CONTEXT:
             doc = deviceSessionDoc;
             break;
-        /*case BL_JOURNEY_MAP_CONTEXT:  
-            doc = journeyMapVisitDoc;
-            break;*/
         case BL_USER_CONTEXT:
             doc = userSessionDoc;
             break;
@@ -188,13 +183,13 @@ uint const kMaxConsecutiveSendFails = 3;
         if (!jsonData && ![additionalData isKindOfClass:[NSString class]]) additionalData = @"JSON_SERIALIZATION_ERROR";
     }
     
-    NSMutableDictionary *event = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                  eventType, @"eventType"
-                                  , [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]], @"date"
-                                  , additionalData, @"additionalData"
-                                  , nil];
+    NSMutableDictionary *event = [NSMutableDictionary dictionary];
+    [event setValue:eventType forKey:@"eventType"];
+    [event setValue:[NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]] forKey:@"date"];
+    [event setValue:additionalData forKey:@"additionalData"];
     
-    [(NSMutableArray*)[doc objectForKey:@"events"] addObject:event];
+    NSMutableArray *events = [doc objectForKey:@"events"];
+    [events addObject:event];
      
     NSData *docData = [doc JSONData];
     if (!docData) return; //error !
@@ -284,7 +279,7 @@ uint const kMaxConsecutiveSendFails = 3;
     
     
     // ----- HTTPRequest Completion Handler
-    __block LoggingService *trueSelf = self;
+    __block typeof(self) bself = self;
     void (^onComplete)() = ^(BL_SEND_LOG_STATUS status)
     {
         BOOL queuedBatch = NO;
@@ -292,17 +287,17 @@ uint const kMaxConsecutiveSendFails = 3;
         if (status != BL_SLS_SUCCESS)
         {
             // ---- store the compressed data in prevDir for future repeat attempt at saving
-            NSString *filePath = [NSString stringWithFormat:@"%@/%d", prevDir, (int)[[NSDate date] timeIntervalSince1970]];
-            queuedBatch = [fm createFileAtPath:filePath contents:batchData attributes:nil];            
+            NSString *filePath = [NSString stringWithFormat:@"%@/%d", bself->prevDir, (int)[[NSDate date] timeIntervalSince1970]];
+            queuedBatch = [bself->fm createFileAtPath:filePath contents:batchData attributes:nil];            
             if (!queuedBatch) NSLog(@"Errr.... "); // TODO handle? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
         
         // delete files from currDir if they've either been successfully sent to server or have been saved in compressed form in prevDir
         if (BL_SLS_SUCCESS == status || queuedBatch)
         {
-            [fm removeItemAtPath:currDir error:nil];
-            [fm createDirectoryAtPath:currDir withIntermediateDirectories:NO attributes:nil error:nil];
-            [trueSelf sendPrevBatches];
+            [bself->fm removeItemAtPath:bself->currDir error:nil];
+            [bself->fm createDirectoryAtPath:bself->currDir withIntermediateDirectories:NO attributes:nil error:nil];
+            [bself sendPrevBatches];
         }
     };    
     
@@ -321,7 +316,7 @@ uint const kMaxConsecutiveSendFails = 3;
     NSData *batch = [NSData dataWithContentsOfFile:batchPath];
     
     // ----- HTTPRequest Completion Handler
-    __block LoggingService *trueSelf = self;
+    __block typeof(self) bself = self;    
     void (^onComplete)() = ^(BL_SEND_LOG_STATUS status)
     {
         BOOL requeued = NO;
@@ -329,17 +324,16 @@ uint const kMaxConsecutiveSendFails = 3;
         if (status != BL_SLS_SUCCESS)
         {
             // ---- store the compressed data in prevDir for future repeat attempt at saving
-            NSString *filePath = [NSString stringWithFormat:@"%@/%d", prevDir, (int)[[NSDate date] timeIntervalSince1970]];
-            requeued = [fm createFileAtPath:filePath contents:batch attributes:nil];            
+            NSString *filePath = [NSString stringWithFormat:@"%@/%d", bself->prevDir, (int)[[NSDate date] timeIntervalSince1970]];
+            requeued = [bself->fm createFileAtPath:filePath contents:batch attributes:nil];            
             if (!requeued) NSLog(@"Errr.... "); // TODO handle? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
         
         // delete files from currDir if they've either been successfully sent to server or have been saved in compressed form in prevDir
         if (BL_SLS_SUCCESS == status || requeued)
         {
-            [fm removeItemAtPath:batchPath error:NULL];
-            //NSLog(@"consecutiveSendFails=%d kMaxConsecutiveSendFails=%d", consecutiveSendFails, kMaxConsecutiveSendFails);
-            if (consecutiveSendFails < kMaxConsecutiveSendFails) [trueSelf sendPrevBatches];
+            [bself->fm removeItemAtPath:batchPath error:NULL];
+            if (bself->consecutiveSendFails < kMaxConsecutiveSendFails) [bself sendPrevBatches];
         }
     };
     
@@ -360,13 +354,15 @@ uint const kMaxConsecutiveSendFails = 3;
                                                                parameters:nil
                                                 constructingBodyWithBlock:bodyConstructor];
     
+    __block typeof(self) bself = self;
+    
     void (^onCompleteWrapper)() = ^(AFHTTPRequestOperation *op, id res)
     {
-        isSending = NO;
+        bself->isSending = NO;
         BL_SEND_LOG_STATUS status = [self validateResponse:res forClientData:batchData];
         if (BL_SLS_REQUEST_FAIL == status)
         {
-            consecutiveSendFails = status == BL_SLS_SUCCESS ? 0 : (consecutiveSendFails + 1);
+            bself->consecutiveSendFails = status == BL_SLS_SUCCESS ? 0 : (bself->consecutiveSendFails + 1);
         }
         onComplete(status);
     };
@@ -403,7 +399,6 @@ uint const kMaxConsecutiveSendFails = 3;
     if (prevDir) [prevDir release];
     if (deviceSessionDoc) [deviceSessionDoc release];
     if (userSessionDoc) [userSessionDoc release];
-    //if (journeyMapVisitDoc) [journeyMapVisitDoc release];
     if (problemAttemptDoc) [problemAttemptDoc release];
     [super dealloc];
 }

@@ -21,7 +21,6 @@
     LoggingService *loggingService;
     ContentService *contentService;
     UsersService *usersService;
-    LoggingService *loggingService;
 }
 
 @end

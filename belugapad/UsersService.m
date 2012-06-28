@@ -216,7 +216,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 -(void)addCompletedNodeId:(NSString *)nodeId
 {
     NSString *urId = [currentUser objectForKey:@"id"];
-    NSMutableArray *nc = [[[currentUser objectForKey:@"nodesCompleted"] mutableCopy];
+    NSMutableArray *nc = [[currentUser objectForKey:@"nodesCompleted"] mutableCopy];
     if (!nc) nc = [NSMutableArray array];
     [nc addObject:nodeId];
     

@@ -12,10 +12,10 @@
 @interface UsersService : NSObject
 
 typedef enum {
-    BL_USER_NICK_IS_AVAILABLE,
-    BL_USER_NICK_IS_UNAVAILABLE,
-    BL_USER_NICK_AVAILABILITY_UNCONFIRMED
-} BL_USER_NICK_AVAILABILITY;
+    BL_USER_CREATION_SUCCESS_NICK_AVAILABLE,
+    BL_USER_CREATION_SUCCESS_NICK_AVAILABILITY_UNCONFIRMED,
+    BL_USER_CREATION_FAILURE_NICK_UNAVAILABLE
+} BL_USER_CREATION_STATUS;
 
 @property (readonly, retain, nonatomic) NSString *installationUUID;
 @property (retain, nonatomic) NSDictionary *currentUser;
@@ -25,12 +25,9 @@ typedef enum {
 
 -(NSArray*)deviceUsersByNickName;
 
--(void) nickNameIsAvailable:(NSString*)nickName callback:(void (^)(BL_USER_NICK_AVAILABILITY))callback;
-
--(NSDictionary*) getNewUserWithNickName:(NSString*)nickName
-                            andPassword:(NSString*)password
-                           andZubiColor:(NSData*)color // rgba
-                      andZubiScreenshot:(UIImage*)image;
+-(void)setCurrentUserToNewUserWithNick:(NSString*)nick
+                           andPassword:(NSString*)password
+                              callback:(void (^)(BL_USER_CREATION_STATUS))callback;
 
 -(void)downloadUserMatchingNickName:(NSString*)nickName
                         andPassword:(NSString*)password

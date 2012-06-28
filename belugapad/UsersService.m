@@ -94,41 +94,60 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     return users;
 }
 
--(void) nickNameIsAvailable:(NSString*)nickName
-                   callback:(void (^)(BL_USER_NICK_AVAILABILITY))callback
+-(void)setCurrentUserToNewUserWithNick:(NSString*)nick
+                           andPassword:(NSString*)password
+                              callback:(void (^)(BL_USER_CREATION_STATUS))callback
 {
-    // TODO: This only checks local database of users - needs to check with server
+    // ensure no other users on device with same nick
     [usersDatabase open];
-    FMResultSet *rs = [usersDatabase executeQuery:@"SELECT 1 FROM users WHERE nick = ?", nickName];
-    BOOL isAvailable = ![rs next];    
-    [rs close];
-    [usersDatabase close];
-    
-    if (!isAvailable)
+    FMResultSet *rs = [usersDatabase executeQuery:@"SELECT 1 FROM users WHERE nick = ?", nick];
+    BOOL nickTaken = [rs next];
+    [rs close];    
+    if (nickTaken)
     {
-        callback(BL_USER_NICK_IS_UNAVAILABLE);
+        callback(BL_USER_CREATION_FAILURE_NICK_UNAVAILABLE);
+        [usersDatabase close];
         return;
     }
     
-    // available on device - is it available on the server?
-    
+    // no nick conflict on device - send create user request to server
     NSMutableURLRequest *req = [httpClient requestWithMethod:@"POST"
                                                         path:kUsersWSCheckNickAvailablePath
-                                                  parameters:[NSDictionary dictionaryWithObject:nickName forKey:@"nick"]];
-    
+                                                  parameters:[NSDictionary dictionaryWithObject:nick forKey:@"nick"]];
+    __block typeof(self) bself = self;    
     void (^onCompletion)() = ^(AFHTTPRequestOperation *op, id res)
     {
+        BL_USER_CREATION_STATUS status = BL_USER_CREATION_SUCCESS_NICK_AVAILABILITY_UNCONFIRMED;
+        
         BOOL reqSuccess = res != nil && ![res isKindOfClass:[NSError class]];
-        BL_USER_NICK_AVAILABILITY avail = BL_USER_NICK_AVAILABILITY_UNCONFIRMED;
         if (reqSuccess)
         {
             NSString *resultString = [[[NSString alloc] initWithBytes:[res bytes] length:[res length] encoding:NSUTF8StringEncoding] autorelease];
-            if ([@"true" isEqualToString:resultString]) avail = BL_USER_NICK_IS_AVAILABLE;
-            else if ([@"false" isEqualToString:resultString]) avail = BL_USER_NICK_IS_UNAVAILABLE;
+            if ([@"true" isEqualToString:resultString]) status = BL_USER_CREATION_SUCCESS_NICK_AVAILABLE;
+            else if ([@"false" isEqualToString:resultString]) status = BL_USER_CREATION_FAILURE_NICK_UNAVAILABLE;
         }
-        callback(avail);
+        
+        if (BL_USER_CREATION_SUCCESS_NICK_AVAILABLE == status || BL_USER_CREATION_SUCCESS_NICK_AVAILABILITY_UNCONFIRMED == status)
+        {
+            CFUUIDRef UUIDRef = CFUUIDCreate(kCFAllocatorDefault);
+            CFStringRef UUIDSRef = CFUUIDCreateString(kCFAllocatorDefault, UUIDRef);
+            NSString *urId = [NSString stringWithFormat:@"%@", UUIDSRef];
+            
+            CFRelease(UUIDRef);
+            CFRelease(UUIDSRef);
+            
+            FMDatabase *db = bself->usersDatabase;
+            [db executeUpdate:@"INSERT INTO users(id,nick,password,nodes_completed) values(?,?,?,?)", urId, nick, password, @"[]"];
+            FMResultSet *rs = [db executeQuery:@"SELECT id, nick, nodes_completed FROM users WHERE id = ?", urId];
+            [rs next];
+            NSDictionary *ur = [bself userFromCurrentRowOfResultSet:rs];
+            [rs close];
+            [db close];
+            
+            bself.currentUser = ur;
+        }
+        callback(status);
     };
-    
     AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
     [reqOp setCompletionBlockWithSuccess:onCompletion failure:onCompletion];
     [opQueue addOperation:reqOp];
@@ -191,29 +210,6 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
     [reqOp setCompletionBlockWithSuccess:onCompletion failure:onCompletion];
     [opQueue addOperation:reqOp];
-}
-
--(NSDictionary*) getNewUserWithNickName:(NSString*)nickName
-                            andPassword:(NSString*)password
-                           andZubiColor:(NSData*)color // rgba
-                      andZubiScreenshot:(UIImage*)image
-{
-    CFUUIDRef UUIDRef = CFUUIDCreate(kCFAllocatorDefault);
-    CFStringRef UUIDSRef = CFUUIDCreateString(kCFAllocatorDefault, UUIDRef);
-    NSString *urId = [NSString stringWithFormat:@"%@", UUIDSRef];
-    
-    CFRelease(UUIDRef);
-    CFRelease(UUIDSRef);
-    
-    [usersDatabase open];
-    [usersDatabase executeUpdate:@"INSERT INTO users(id,nick,password,nodes_completed) values(?,?,?,?)", urId, nickName, password, @"[]"];
-    FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick, nodes_completed FROM users WHERE id = ?", urId];
-    [rs next];
-    NSDictionary *ur = [self userFromCurrentRowOfResultSet:rs];
-    [rs close];
-    [usersDatabase close];
-    
-    return ur;
 }
 
 -(void)addCompletedNodeId:(NSString *)nodeId

@@ -282,26 +282,26 @@
     }
     
     __block typeof(self) bself = self;
-    void (^callback)() = ^(BL_USER_NICK_AVAILABILITY availability) {
-        if (availability == BL_USER_NICK_IS_UNAVAILABLE)
+    void (^createSetUrCallback)() = ^(BL_USER_CREATION_STATUS status) {
+        if (BL_USER_CREATION_FAILURE_NICK_UNAVAILABLE == status)
         {
             UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
-                                                                 message:@"This nickname is already in use. Please try another one." delegate:self 
-                                                       cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
+                                                                 message:@"This nickname is already in use. Please try another one."
+                                                                delegate:bself
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles:nil] autorelease];
             [alertView show];
         }
-        else
+        else if (BL_USER_CREATION_SUCCESS_NICK_AVAILABLE == status || BL_USER_CREATION_SUCCESS_NICK_AVAILABILITY_UNCONFIRMED == status)
         {
-            NSDictionary *newUser = [bself->usersService getNewUserWithNickName:bself->newUserNameTF.text
-                                                             andPassword:bself->newUserPasswordTF.text    
-                                                            andZubiColor:nil
-                                                       andZubiScreenshot:nil];
-            bself->usersService.currentUser = newUser;
-            [self.view removeFromSuperview];
+            [bself.view removeFromSuperview];
             [bself->app proceedFromLoginViaIntro:YES];
         }
     };
-    [usersService nickNameIsAvailable:newUserNameTF.text callback:callback];
+    
+    [usersService setCurrentUserToNewUserWithNick:newUserNameTF.text
+                                      andPassword:newUserPasswordTF.text
+                                         callback:createSetUrCallback];
 }
 
 #pragma mark -

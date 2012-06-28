@@ -73,9 +73,9 @@
     } 
     if(messageType==kDWsplitActivePies)
     {
-        CCLabelTTF *lbl=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",pie.numberOfSlices] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-        [lbl setPosition:ccp(50,50)];
-        [pie.mySprite addChild:lbl];
+       // CCLabelTTF *lbl=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",pie.numberOfSlices] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        //[lbl setPosition:ccp(50,50)];
+        //[pie.mySprite addChild:lbl];
         [pie.mySprite removeChild:pie.touchOverlay cleanup:YES];
     }
     

@@ -279,7 +279,7 @@ uint const kMaxConsecutiveSendFails = 3;
     
     
     // ----- HTTPRequest Completion Handler
-    __block LoggingService *bself = self;
+    __block typeof(self) bself = self;
     void (^onComplete)() = ^(BL_SEND_LOG_STATUS status)
     {
         BOOL queuedBatch = NO;
@@ -287,16 +287,16 @@ uint const kMaxConsecutiveSendFails = 3;
         if (status != BL_SLS_SUCCESS)
         {
             // ---- store the compressed data in prevDir for future repeat attempt at saving
-            NSString *filePath = [NSString stringWithFormat:@"%@/%d", prevDir, (int)[[NSDate date] timeIntervalSince1970]];
-            queuedBatch = [fm createFileAtPath:filePath contents:batchData attributes:nil];            
+            NSString *filePath = [NSString stringWithFormat:@"%@/%d", bself->prevDir, (int)[[NSDate date] timeIntervalSince1970]];
+            queuedBatch = [bself->fm createFileAtPath:filePath contents:batchData attributes:nil];            
             if (!queuedBatch) NSLog(@"Errr.... "); // TODO handle? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
         
         // delete files from currDir if they've either been successfully sent to server or have been saved in compressed form in prevDir
         if (BL_SLS_SUCCESS == status || queuedBatch)
         {
-            [fm removeItemAtPath:currDir error:nil];
-            [fm createDirectoryAtPath:currDir withIntermediateDirectories:NO attributes:nil error:nil];
+            [bself->fm removeItemAtPath:bself->currDir error:nil];
+            [bself->fm createDirectoryAtPath:bself->currDir withIntermediateDirectories:NO attributes:nil error:nil];
             [bself sendPrevBatches];
         }
     };    
@@ -316,7 +316,7 @@ uint const kMaxConsecutiveSendFails = 3;
     NSData *batch = [NSData dataWithContentsOfFile:batchPath];
     
     // ----- HTTPRequest Completion Handler
-    __block LoggingService *bself = self;
+    __block typeof(self) bself = self;    
     void (^onComplete)() = ^(BL_SEND_LOG_STATUS status)
     {
         BOOL requeued = NO;
@@ -324,17 +324,16 @@ uint const kMaxConsecutiveSendFails = 3;
         if (status != BL_SLS_SUCCESS)
         {
             // ---- store the compressed data in prevDir for future repeat attempt at saving
-            NSString *filePath = [NSString stringWithFormat:@"%@/%d", prevDir, (int)[[NSDate date] timeIntervalSince1970]];
-            requeued = [fm createFileAtPath:filePath contents:batch attributes:nil];            
+            NSString *filePath = [NSString stringWithFormat:@"%@/%d", bself->prevDir, (int)[[NSDate date] timeIntervalSince1970]];
+            requeued = [bself->fm createFileAtPath:filePath contents:batch attributes:nil];            
             if (!requeued) NSLog(@"Errr.... "); // TODO handle? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
         
         // delete files from currDir if they've either been successfully sent to server or have been saved in compressed form in prevDir
         if (BL_SLS_SUCCESS == status || requeued)
         {
-            [fm removeItemAtPath:batchPath error:NULL];
-            //NSLog(@"consecutiveSendFails=%d kMaxConsecutiveSendFails=%d", consecutiveSendFails, kMaxConsecutiveSendFails);
-            if (consecutiveSendFails < kMaxConsecutiveSendFails) [bself sendPrevBatches];
+            [bself->fm removeItemAtPath:batchPath error:NULL];
+            if (bself->consecutiveSendFails < kMaxConsecutiveSendFails) [bself sendPrevBatches];
         }
     };
     
@@ -355,13 +354,15 @@ uint const kMaxConsecutiveSendFails = 3;
                                                                parameters:nil
                                                 constructingBodyWithBlock:bodyConstructor];
     
+    __block typeof(self) bself = self;
+    
     void (^onCompleteWrapper)() = ^(AFHTTPRequestOperation *op, id res)
     {
-        isSending = NO;
+        bself->isSending = NO;
         BL_SEND_LOG_STATUS status = [self validateResponse:res forClientData:batchData];
         if (BL_SLS_REQUEST_FAIL == status)
         {
-            consecutiveSendFails = status == BL_SLS_SUCCESS ? 0 : (consecutiveSendFails + 1);
+            bself->consecutiveSendFails = status == BL_SLS_SUCCESS ? 0 : (bself->consecutiveSendFails + 1);
         }
         onComplete(status);
     };

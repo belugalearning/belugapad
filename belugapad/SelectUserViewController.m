@@ -281,6 +281,7 @@
         return;
     }
     
+    __block typeof(self) bself = self;
     void (^callback)() = ^(BL_USER_NICK_AVAILABILITY availability) {
         if (availability == BL_USER_NICK_IS_UNAVAILABLE)
         {
@@ -291,13 +292,13 @@
         }
         else
         {
-            NSDictionary *newUser = [usersService getNewUserWithNickName:newUserNameTF.text
-                                                             andPassword:newUserPasswordTF.text    
+            NSDictionary *newUser = [bself->usersService getNewUserWithNickName:bself->newUserNameTF.text
+                                                             andPassword:bself->newUserPasswordTF.text    
                                                             andZubiColor:nil
                                                        andZubiScreenshot:nil];
-            usersService.currentUser = newUser;
+            bself->usersService.currentUser = newUser;
             [self.view removeFromSuperview];
-            [app proceedFromLoginViaIntro:YES];
+            [bself->app proceedFromLoginViaIntro:YES];
         }
     };
     [usersService nickNameIsAvailable:newUserNameTF.text callback:callback];
@@ -359,6 +360,7 @@
 
 - (void) handleLoadExistingUserClicked:(id*)button
 {
+    __block typeof(self) bself = self;
     void (^callback)() = ^(NSDictionary* usr) {
         if (usr == nil)
         {
@@ -371,10 +373,10 @@
             return;
         }
         
-        usersService.currentUser = usr;
+        bself->usersService.currentUser = usr;
         
         [self.view removeFromSuperview];
-        [app proceedFromLoginViaIntro:NO];
+        [bself->app proceedFromLoginViaIntro:NO];
     };
     
     [usersService downloadUserMatchingNickName:existingUserNameTF.text

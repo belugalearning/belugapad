@@ -267,7 +267,6 @@ static float kTimeToMountedShake=7.0f;
     location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     timeSinceInteractionOrShake=0.0f;
-    [gw handleMessage:kDWstopAllActions andPayload:nil withLogLevel:-1];
     
     
     [gw Blackboard].PickupObject=nil;
@@ -281,6 +280,7 @@ static float kTimeToMountedShake=7.0f;
     
     if([gw Blackboard].PickupObject!=nil)
     {
+        [gw.Blackboard.PickupObject handleMessage:kDWstopAllActions];
         DWPartitionObjectGameObject *pogo=(DWPartitionObjectGameObject*)gw.Blackboard.PickupObject;
         [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
         gw.Blackboard.DropObject=nil;

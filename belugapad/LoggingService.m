@@ -126,7 +126,7 @@ uint const kMaxConsecutiveSendFails = 3;
                           , @"UserSession", @"type"
                           , [deviceSessionDoc objectForKey:@"device"], @"device"
                           , [deviceSessionDoc objectForKey:@"_id"], @"deviceSession"
-                          , [ac.usersService.currentUser objectForKey:@"id"], @"user"
+                          , [ac.usersService.currentUserClone objectForKey:@"id"], @"user"
                           , nil];
     }
     else if (BL_JS_INIT == eventType)

@@ -18,16 +18,20 @@ typedef enum {
 } BL_USER_CREATION_STATUS;
 
 @property (readonly, retain, nonatomic) NSString *installationUUID;
-@property (retain, nonatomic) NSDictionary *currentUser;
+@property (readonly) NSDictionary *currentUserClone;
 
 -(id)initWithProblemPipeline:(NSString*)source
            andLoggingService:(LoggingService*)ls;
 
--(NSArray*)deviceUsersByNickName;
+-(void)setCurrentUserToUserWithId:(NSString*)urId;
 
 -(void)setCurrentUserToNewUserWithNick:(NSString*)nick
                            andPassword:(NSString*)password
                               callback:(void (^)(BL_USER_CREATION_STATUS))callback;
+
+-(NSArray*)deviceUsersByNickName;
+
+-(void)syncDeviceUsers;
 
 -(void)downloadUserMatchingNickName:(NSString*)nickName
                         andPassword:(NSString*)password
@@ -35,6 +39,4 @@ typedef enum {
 
 -(void)addCompletedNodeId:(NSString*)nodeId;
 -(BOOL)hasCompletedNodeId:(NSString*)nodeId;
-
--(void)syncDeviceUsers;
 @end

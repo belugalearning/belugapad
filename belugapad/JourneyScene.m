@@ -657,7 +657,7 @@ typedef enum {
 //    if(CGRectContainsPoint(logOutBtnBounds, l))
 //    {
 //        [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
-//        usersService.currentUser = nil;
+//        [usersService setCurrentUserToUserWithId:nil];
 //        [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
 //        return;
 //    }

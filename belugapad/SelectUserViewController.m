@@ -166,8 +166,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *user = [deviceUsers objectAtIndex:indexPath.row];
-    usersService.currentUser = user;
+    NSDictionary *ur = [deviceUsers objectAtIndex:indexPath.row];
+    [usersService setCurrentUserToUserWithId:[ur objectForKey:@"id"]];
     [self.view removeFromSuperview];
     [app proceedFromLoginViaIntro:NO];
 }
@@ -361,20 +361,19 @@
 - (void) handleLoadExistingUserClicked:(id*)button
 {
     __block typeof(self) bself = self;
-    void (^callback)() = ^(NSDictionary* usr) {
-        if (usr == nil)
+    void (^callback)() = ^(NSDictionary *ur) {
+        if (ur == nil)
         {
             UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
                                                                  message:@"We could not find a match for those login details. Please double-check and try again."
-                                                                delegate:self 
+                                                                delegate:bself 
                                                        cancelButtonTitle:@"OK"
                                                        otherButtonTitles:nil] autorelease];
             [alertView show];
             return;
-        }
+        }        
         
-        bself->usersService.currentUser = usr;
-        
+        [bself->usersService setCurrentUserToUserWithId:[ur objectForKey:@"id"]];        
         [self.view removeFromSuperview];
         [bself->app proceedFromLoginViaIntro:NO];
     };

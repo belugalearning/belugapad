@@ -33,24 +33,38 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     NSOperationQueue *opQueue;
     
     BOOL isSyncing;
+    
+    NSMutableDictionary *currentUser;
 }
--(NSDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs;
+-(NSMutableDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs;
 @end
 
 
 @implementation UsersService
 
 @synthesize installationUUID;
-@synthesize currentUser;
 
--(void)setCurrentUser:(NSDictionary*)ur
+-(NSDictionary*)currentUserClone
 {
-    [ur retain];
-    [currentUser release];
-    currentUser=ur;
-    
-    if (ur)
+    // deep copy
+    if (currentUser) return [[currentUser JSONData] objectFromJSONData];
+    return nil;
+}
+
+-(void)setCurrentUserToUserWithId:(NSString*)urId
+{
+    if (currentUser)
     {
+        [currentUser release];
+        currentUser = nil;
+    }
+    if (urId)
+    {
+        [usersDatabase open];
+        FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick, nodes_completed FROM users WHERE id = ?", urId];
+        if ([rs next]) currentUser = [[self userFromCurrentRowOfResultSet:rs] retain];
+        [rs close];
+        [usersDatabase close];
         [loggingService logEvent:BL_USER_LOGIN withAdditionalData:nil];
     }
 }
@@ -138,13 +152,8 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
             
             FMDatabase *db = bself->usersDatabase;
             [db executeUpdate:@"INSERT INTO users(id,nick,password,nodes_completed) values(?,?,?,?)", urId, nick, password, @"[]"];
-            FMResultSet *rs = [db executeQuery:@"SELECT id, nick, nodes_completed FROM users WHERE id = ?", urId];
-            [rs next];
-            NSDictionary *ur = [bself userFromCurrentRowOfResultSet:rs];
-            [rs close];
-            [db close];
             
-            bself.currentUser = ur;
+            [bself setCurrentUserToUserWithId:urId];
         }
         callback(status);
     };
@@ -212,27 +221,26 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     [opQueue addOperation:reqOp];
 }
 
--(void)addCompletedNodeId:(NSString *)nodeId
+-(void)addCompletedNodeId:(NSString*)nodeId
 {
-    NSString *urId = [currentUser objectForKey:@"id"];
-    NSMutableArray *nc = [[currentUser objectForKey:@"nodesCompleted"] mutableCopy];
-    if (!nc) nc = [NSMutableArray array];
+    if (!currentUser)
+    {
+        // TODO: LOG ERROR
+        return;
+    }
+    
+    NSMutableArray *nc = [currentUser objectForKey:@"nodesCompleted"];
     [nc addObject:nodeId];
     
-    [usersDatabase open];
-    
-    BOOL updateSuccess = [usersDatabase executeUpdate:@"UPDATE users SET nodes_completed = ? WHERE id = ?", [nc JSONString], urId];
-    if (!updateSuccess) NSLog(@"failed to update user");
-    
-    FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick, nodes_completed FROM users WHERE id = ?", urId];
-    [rs next];
-    
-    [currentUser release];
-    currentUser = [[self userFromCurrentRowOfResultSet:rs] retain];
-    
-    [rs close];
+    [usersDatabase open];    
+    BOOL updateSuccess = [usersDatabase executeUpdate:@"UPDATE users SET nodes_completed = ? WHERE id = ?", [nc JSONString], [currentUser objectForKey:@"id"]];
     [usersDatabase close];
-    [nc release];
+    
+    if (!updateSuccess)
+    {
+        // TODO: LOG ERROR
+        NSLog(@"failed to update user");
+    }
 }
 
 -(BOOL)hasCompletedNodeId:(NSString *)nodeId
@@ -284,33 +292,31 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
             {
                 NSString *urId = [updatedUr objectForKey:@"id"];
                 
-                FMResultSet *rs = [bself->usersDatabase executeQuery:@"SELECT id, nick, nodesCompleted FROM users WHERE id = ?", urId];
+                FMResultSet *rs = [bself->usersDatabase executeQuery:@"SELECT id, nick, nodes_completed FROM users WHERE id = ?", urId];
                 // chance user has been deleted since sync request sent
                 if ([rs next])
                 {
-                    // possibility that updated user has changed on client since request to server was made
-                    NSMutableSet *nodesCompletedSet = [NSSet setWithArray:[updatedUr objectForKey:@"nodesCompleted"]];
-                    [nodesCompletedSet addObjectsFromArray:[[rs stringForColumn:@"nodes_completed"] objectFromJSONString]];
+                    // possibility that user has completed node on client since request to server was made
+                    NSMutableSet *ncSet = [NSSet setWithArray:[updatedUr objectForKey:@"nodesCompleted"]];
+                    [ncSet addObjectsFromArray:[[rs stringForColumn:@"nodes_completed"] objectFromJSONString]];
                     
-                    NSArray *nodesCompleted = [nodesCompletedSet allObjects];
+                    NSArray *nc = [ncSet allObjects];
                     
-                    BOOL updateSuccess = [bself->usersDatabase executeUpdate:@"UPDATE users SET nodes_completed = ? WHERE id = ?", [nodesCompleted JSONString], urId];
+                    BOOL updateSuccess = [bself->usersDatabase executeUpdate:@"UPDATE users SET nodes_completed = ? WHERE id = ?", [nc JSONString], urId];
                     if (!updateSuccess)
                     {
-                        // handle - log it
+                        // TODO: LOG ERROR
                     }
                     
                     NSDictionary *currUr = bself->currentUser;
                     if (currUr && [[currUr objectForKey:@"id"] isEqualToString:urId])
                     {
-                        NSMutableDictionary *mutableCurrUr = [currUr mutableCopy];
-                        [currUr release];
-                        
-                        [mutableCurrUr setValue:nodesCompleted forKey:@"nodesCompleted"];
-                        bself->currentUser = [mutableCurrUr copy];
-                        [mutableCurrUr release];
+                        NSMutableArray *ncMutable = [nc mutableCopy];
+                        [currUr setValue:ncMutable forKey:@"nodesCompleted"];
+                        [ncMutable release];
                     }
                 }
+                [rs close];
             }
             [bself->usersDatabase close];
             bself->isSyncing = NO;
@@ -322,17 +328,22 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     isSyncing = YES;
 }
 
--(NSDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs
+-(NSMutableDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs
 {
     NSMutableDictionary *user = [NSMutableDictionary dictionary];
+    NSMutableArray *nodesCompleted = [[[rs stringForColumn:@"nodes_completed"] objectFromJSONString] mutableCopy];
+    
     [user setValue:[rs stringForColumn:@"id"] forKey:@"id"];
     [user setValue:[rs stringForColumn:@"nick"] forKey:@"nickName"];
-    [user setValue:[[rs stringForColumn:@"nodes_completed"] objectFromJSONString] forKey:@"nodesCompleted"];
-    return [[user copy] autorelease];
+    [user setValue:nodesCompleted forKey:@"nodesCompleted"];
+    
+    [nodesCompleted release];
+    return user;
 }
 
 -(void)dealloc
 {
+    if (currentUser) [currentUser release];
     if (usersDatabase) [usersDatabase release];
     if (httpClient) [httpClient release];
     if (opQueue) [opQueue release];

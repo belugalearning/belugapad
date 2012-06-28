@@ -18,6 +18,7 @@
 @synthesize HasSplit;
 @synthesize myValue;
 @synthesize numberOfSlices;
+@synthesize slicesInMe;
 @synthesize touchOverlay;
 
 @end

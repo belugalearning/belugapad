@@ -394,8 +394,9 @@ static float kTimeToPieShake=7.0f;
             slice.myPie=p;
             if(!p.mySlices)p.mySlices=[[NSMutableArray alloc]init];
             slice.SpriteFileName=[NSString stringWithFormat:@"/images/piesplitter/slice%d.png", [activeCon count]];
-            slice.Rotation=(360/p.numberOfSlices)*i;
+            slice.Rotation=(360/p.numberOfSlices)*p.slicesInMe;
             [p.mySlices addObject:slice];
+            p.slicesInMe++;
             [slice handleMessage:kDWsetupStuff];
         }
         
@@ -420,8 +421,9 @@ static float kTimeToPieShake=7.0f;
             slice.myPie=p;
             if(!p.mySlices)p.mySlices=[[NSMutableArray alloc]init];
             slice.SpriteFileName=[NSString stringWithFormat:@"/images/piesplitter/slice%d.png", [activeCon count]];
-            slice.Rotation=(360/p.numberOfSlices)*i;
+            slice.Rotation=(360/p.numberOfSlices)*p.slicesInMe;
             [p.mySlices addObject:slice];
+            p.slicesInMe++;
             [slice handleMessage:kDWsetupStuff];
         }
         

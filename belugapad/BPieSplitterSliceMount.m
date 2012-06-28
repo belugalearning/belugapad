@@ -63,6 +63,7 @@
         slice.mySprite=nil;
         slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
         [slice setRotation:curRotation];
+        p.slicesInMe--;
 
         
         [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.1f angle:(360/p.numberOfSlices)*[c.mySlices count]]];
@@ -114,14 +115,13 @@
 {
     DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie; 
     DWPieSplitterContainerGameObject *c=(DWPieSplitterContainerGameObject*)slice.myCont;
-    float curRotation=slice.mySprite.rotation;
     [slice.mySprite removeFromParentAndCleanup:YES];
     slice.mySprite=nil;
     slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
     [p.mySprite addChild:slice.mySprite];
     [slice.mySprite setPosition:[slice.mySprite.parent convertToNodeSpace:slice.Position]];
-    [slice.mySprite setRotation:curRotation];
-    [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.1f angle:slice.Rotation]];
+    [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.1f angle:(360/p.numberOfSlices)*p.slicesInMe]];
+    p.slicesInMe++;
     
     
     // remove dead nodes from teh nodes array

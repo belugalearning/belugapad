@@ -121,7 +121,8 @@
 {
     DWPieSplitterPieGameObject *myPie=(DWPieSplitterPieGameObject*)slice.myPie;
     if(slice.myPie) {
-            [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.1f angle:(360/myPie.numberOfSlices)*[myPie.mySprite.children count]]];
+        NSLog(@"myPie slices: %d, myPie mySprite children %d", myPie.numberOfSlices, myPie.slicesInMe);
+        //[slice.mySprite runAction:[CCRotateTo actionWithDuration:0.1f angle:(360/myPie.numberOfSlices)*myPie.slicesInMe]];
         [slice.mySprite runAction:[CCMoveTo actionWithDuration:0.5f position:[slice.mySprite.parent convertToNodeSpace:myPie.Position]]];
     }
 }

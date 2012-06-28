@@ -68,7 +68,6 @@
     
     if(messageType==kDWunsetMount)
     {
-        [[gameObject store] removeObjectForKey:MOUNT];
         if(pogo.Mount)
         {
             NSDictionary *pl=[NSDictionary dictionaryWithObject:pogo forKey:MOUNTED_OBJECT];

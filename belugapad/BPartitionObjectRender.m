@@ -35,8 +35,7 @@
 {
     if(messageType==kDWsetupStuff)
     {
-        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
-        if(!mySprite) 
+        if(!pogo.BaseNode) 
         {
             [self setSprite];
             [self setSpritePos:NO];            
@@ -56,13 +55,11 @@
     if(messageType==kDWupdateSprite)
     {
 
-        CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];
-        if(!mySprite) { 
+        if(!pogo.BaseNode) { 
             [self setSprite];
         }
 
         BOOL useAnimation = NO;
-        if([payload objectForKey:ANIMATE_ME]) useAnimation = YES;
         
         [self setSpritePos:useAnimation];
     }
@@ -88,8 +85,8 @@
     }
     if(messageType==kDWdismantle)
     {
-        CCSprite *s=[[gameObject store] objectForKey:MY_SPRITE];
-        [[s parent] removeChild:s cleanup:YES];
+        CCNode *b=pogo.BaseNode;
+        [[b parent] removeChild:pogo.BaseNode cleanup:YES];
     }
 }
 
@@ -152,13 +149,12 @@
         
     }
     
-    if(pogo.InitedObject){
+    if(pogo.InitedObject || pogo.IsScaled){
         [pogo.BaseNode setScale:1.0f];
         pogo.IsScaled=YES;
     }
     else{ 
-        //[pogo.BaseNode setScale:0.5f];
-        [pogo.BaseNode setScale:1.0f];
+        [pogo.BaseNode setScale:0.5f];
     }
     
     if(pogo.Label) { 
@@ -180,7 +176,7 @@
     {
         if(!pogo.IsScaled)
         {
-            //[pogo.BaseNode runAction:[CCScaleTo actionWithDuration:0.5f scale:1.0f]];
+            [pogo.BaseNode runAction:[CCScaleTo actionWithDuration:0.5f scale:1.0f]];
             pogo.IsScaled=YES;
         }
         
@@ -204,22 +200,12 @@
     [pogo.BaseNode runAction:[CCEaseIn actionWithAction:anim rate:0.5f]];
     pogo.Position=pogo.MountPosition;
     [pogo handleMessage:kDWunsetMount];
-    [self resetHalfScale];
+    if(!pogo.NoScaleBlock)[self resetHalfScale];
     
 }
 -(void)resetSpriteToMount
 {
-    DWGameObject *mount = [[gameObject store] objectForKey:MOUNT];
-    float x = [[[mount store] objectForKey:POS_X] floatValue];
-    float y = [[[mount store] objectForKey:POS_Y] floatValue];
-    
-    [[gameObject store] setObject:[NSNumber numberWithFloat:x] forKey:POS_X];
-    [[gameObject store] setObject:[NSNumber numberWithFloat:y] forKey:POS_Y];
-    
-    CCSprite *curSprite = [[gameObject store] objectForKey:MY_SPRITE];
-    
-    [curSprite runAction:[CCMoveTo actionWithDuration:kTimeObjectSnapBack position:ccp(x, y)]];
-    [self resetHalfScale];
+
     
 }
 
@@ -227,7 +213,7 @@
 {
     if(pogo.IsScaled && !pogo.InitedObject)
     {
-        //[pogo.BaseNode runAction:[CCScaleTo actionWithDuration:0.5f scale:0.5f]];
+        [pogo.BaseNode runAction:[CCScaleTo actionWithDuration:0.5f scale:0.5f]];
         pogo.IsScaled=NO;
     }
 }

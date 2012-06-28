@@ -248,6 +248,7 @@
 #define LABEL @"LABEL"
 #define QUANTITY @"QUANTITY"
 #define NUMBER_TO_STACK @"NUMBER_TO_STACK"
+#define USE_BLOCK_SCALING @"USE_BLOCK_SCALING"
 
 // dotgrid tool
 

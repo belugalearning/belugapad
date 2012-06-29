@@ -209,20 +209,19 @@ typedef enum {
     
     kcmNodes=[NSMutableArray arrayWithArray:[contentService allConceptNodes]];
     [kcmNodes retain];
-    
     NSLog(@"got kcm node");
     
     [self parseKcmForBounds];
-    
     NSLog(@"got kcm bounds");
     
     [self createNodesInGameWorld];
-    
     NSLog(@"created node, mastery game objects");
     
     [self parseNodesForEndPoints];
-    
     NSLog(@"completed end point parse");
+    
+    [self createRegions];
+    NSLog(@"created regions");
     
     //setup rendering -- needs all node connections built
     [gw handleMessage:kSGreadyRender andPayload:nil withLogLevel:0];
@@ -403,6 +402,15 @@ typedef enum {
         }
     }
 
+}
+
+-(void)createRegions
+{
+    NSArray *regions=[contentService allRegions];
+
+    for (NSString *r in regions) {
+        NSLog(@"region: %@", r);
+    }
 }
 
 -(id)gameObjectForCouchId:(NSString*)findId

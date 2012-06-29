@@ -14,22 +14,22 @@
 @synthesize Position, RenderBatch;
 @synthesize Visible;
 
-@synthesize RegionRenderComponent;
+@synthesize RegionRenderComponent, MasteryNodes;
 
--(SGJmapRegion*) initWithGameWorld:(SGGameWorld*)aGameWorld andPosition:(CGPoint)aPosition
+-(SGJmapRegion*) initWithGameWorld:(SGGameWorld*)aGameWorld
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
-        self.Position=aPosition;
-        
         //init components
         RegionRenderComponent=[[SGJmapRegionRender alloc] initWithGameObject:self];
+        
+        MasteryNodes=[[NSMutableArray alloc] init];
     }
     
     return self;
 }
 
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload
+-(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel
 {
     //rebroadcast to components
     [self.RegionRenderComponent handleMessage:messageType andPayload:payload];
@@ -54,6 +54,8 @@
 
 -(void)dealloc
 {
+    [MasteryNodes release];
+    [RegionRenderComponent release];
     
     [super dealloc];
 }

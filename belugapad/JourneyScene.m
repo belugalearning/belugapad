@@ -32,6 +32,7 @@
 #import "SGJmapMasteryNode.h"
 #import "SGJmapProximityEval.h"
 #import "SGJmapNodeSelect.h"
+#import "SGJmapRegion.h"
 
 #import "JSONKit.h"
 
@@ -328,6 +329,11 @@ typedef enum {
             
             newnode.HitProximity=100.0f;
             newnode.HitProximitySign=150.0f;
+            
+            if(n.regions.count>0)
+                ((SGJmapMasteryNode*)newnode).Region=[n.regions objectAtIndex:0];
+            else
+                ((SGJmapMasteryNode*)newnode).Region=@"";
         }
         else {
             newnode=[[[SGJmapNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
@@ -413,6 +419,24 @@ typedef enum {
 
     for (NSString *r in regions) {
         NSLog(@"region: %@", r);
+        
+        //create the region
+        SGJmapRegion *rgo=[[SGJmapRegion alloc] initWithGameWorld:gw];
+        
+        //find all mastery children
+        
+        //step over all nodes and compare region string -- this may need perf refactor long term
+        for (id go in [gw AllGameObjects]) {
+            if([go isKindOfClass:[SGJmapMasteryNode class]])
+            {
+                SGJmapMasteryNode *mgo=(SGJmapMasteryNode*)go;
+                if([mgo.Region isEqualToString: r])
+                {
+                    //add this mastery node to the region
+                    [rgo.MasteryNodes addObject:mgo];
+                }
+            }
+        }
     }
 }
 

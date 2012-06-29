@@ -36,7 +36,7 @@
 
 -(void)readyRender
 {
-    
+    NSLog(@"ready to render with %d mastery children", ParentGO.MasteryNodes.count);
 }
 
 -(void)draw:(int)z

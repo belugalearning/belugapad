@@ -15,6 +15,8 @@
 
 @property (retain) SGJmapRegionRender *RegionRenderComponent;
 
--(SGJmapRegion*) initWithGameWorld:(SGGameWorld*)aGameWorld andPosition:(CGPoint)aPosition;
+@property (retain) NSMutableArray *MasteryNodes;
+
+-(SGJmapRegion*) initWithGameWorld:(SGGameWorld*)aGameWorld;
 
 @end

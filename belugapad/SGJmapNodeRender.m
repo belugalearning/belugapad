@@ -63,6 +63,7 @@
     }
     
     [nodeSprite setPosition:ParentGO.Position];
+    [nodeSprite setVisible:ParentGO.Visible];
     [ParentGO.RenderBatch addChild:nodeSprite];
 }
 

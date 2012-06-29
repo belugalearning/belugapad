@@ -34,6 +34,7 @@
         self.RenderBatch=aRenderBatch;
         self.Position=aPosition;
         self.Selected=NO;
+        self.Visible=NO;
         
         NodeRenderComponent=[[[SGJmapNodeRender alloc] initWithGameObject:self] retain];
         ProximityEvalComponent=[[[SGJmapProximityEval alloc] initWithGameObject:self] retain];

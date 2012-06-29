@@ -33,6 +33,7 @@
     {
         self.RenderBatch=aRenderBatch;
         self.Position=aPosition;
+        self.Visible=NO;
         
         MNodeRenderComponent=[[[SGJmapMasteryNodeRender alloc] initWithGameObject:self] retain];
         ProximityEvalComponent=[[[SGJmapProximityEval alloc] initWithGameObject:self] retain];

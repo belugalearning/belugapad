@@ -14,6 +14,7 @@
 
 @synthesize pipelines;
 @synthesize x, y, mastery, jtd;
+@synthesize regions;
 
 @synthesize isLit;
 
@@ -24,13 +25,14 @@
     {
         pipelines = [[resultSet stringForColumn:@"pipelines"] objectFromJSONString];
         [pipelines retain];
-        if([pipelines count]>0) NSLog(@"found pipelines for %@", self._id);
         
         x = [resultSet intForColumn:@"x"];
         y = [resultSet intForColumn:@"y"];
         mastery = [resultSet boolForColumn:@"mastery"];
         jtd = [resultSet stringForColumn:@"jtd"];
-                
+        
+        regions=[[resultSet stringForColumn:@"region"] objectFromJSONString];
+        [regions retain];
     }
     return self;
 }

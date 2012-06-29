@@ -541,7 +541,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(CGRectContainsPoint(kPauseMenuLogOut, location))
     {
         [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
-        usersService.currentUser = nil;
+        [usersService setCurrentUserToUserWithId:nil];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
     }

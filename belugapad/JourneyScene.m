@@ -130,7 +130,10 @@ typedef enum {
         usersService = ac.usersService;
         contentService = ac.contentService;
         
+        [usersService syncDeviceUsers];
+        
         [loggingService logEvent:BL_JS_INIT withAdditionalData:nil];
+        [loggingService sendData];
         
         debugEnabled=!((AppController*)[[UIApplication sharedApplication] delegate]).ReleaseMode;
         if(debugEnabled) [self buildDebugMenu];
@@ -662,7 +665,7 @@ typedef enum {
 //    if(CGRectContainsPoint(logOutBtnBounds, l))
 //    {
 //        [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
-//        usersService.currentUser = nil;
+//        [usersService setCurrentUserToUserWithId:nil];
 //        [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
 //        return;
 //    }

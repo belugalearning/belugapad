@@ -431,6 +431,20 @@ static float kTimeToPieShake=7.0f;
     }
 }
 
+-(void)removeSlices
+{
+    for (DWPieSplitterContainerGameObject *p in activePie)
+    {
+        NSLog(@"hit pie");
+        for (DWPieSplitterSliceGameObject *s in p.mySlices)
+        {
+            NSLog(@"dismantle and remove GO");
+            [s handleMessage:kDWdismantle];
+            [gw delayRemoveGameObject:s];
+        }
+    }
+}
+
 #pragma mark - animation
 
 -(void)animShake
@@ -524,10 +538,10 @@ static float kTimeToPieShake=7.0f;
             {
                 for(DWPieSplitterSliceGameObject *s in c.mySlices)
                 {
-                    [c handleMessage:kDWunsetAllMountedObjects];
                     [s handleMessage:kDWunsetMount];
                     [s handleMessage:kDWmoveSpriteToHome];
                 }
+                [c handleMessage:kDWunsetAllMountedObjects];
             }
         }
 
@@ -644,6 +658,11 @@ static float kTimeToPieShake=7.0f;
             {
                 // if this object isn't in the array, add it
                 if(![activeCon containsObject:cont])[activeCon addObject:cont];
+                if(hasSplit && numberOfCagedSlices==0)
+                {
+                    [self removeSlices];
+                    [self splitPies];
+                }
                 
             }
             else {

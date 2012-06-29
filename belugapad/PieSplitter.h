@@ -105,6 +105,7 @@ typedef enum {
 -(void)reorderActiveContainers;
 -(void)splitPie:(DWPieSplitterPieGameObject*)p;
 -(void)splitPies;
+-(void)removeSlices;
 -(void)balanceContainers;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;

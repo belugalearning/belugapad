@@ -29,7 +29,10 @@
         x = [resultSet intForColumn:@"x"];
         y = [resultSet intForColumn:@"y"];
         mastery = [resultSet boolForColumn:@"mastery"];
-        jtd = [resultSet stringForColumn:@"jtd"];
+        
+        NSArray *jtds=[[resultSet stringForColumn:@"jtd"] objectFromJSONString];
+        if(jtds.count>0) jtd=[jtds objectAtIndex:0];
+        else jtd=@"";
         
         regions=[[resultSet stringForColumn:@"region"] objectFromJSONString];
         [regions retain];

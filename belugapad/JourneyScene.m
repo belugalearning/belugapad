@@ -48,7 +48,7 @@ const float kLogOutBtnPadding = 8.0f;
 const CGSize kLogOutBtnSize = { 80.0f, 33.0f };
 
 static CGRect debugButtonBounds={{950, 0}, {100, 50}};
-static BOOL debugRestrictMovement=YES;
+static BOOL debugRestrictMovement=NO;
 
 typedef enum {
     kJuiStateNodeMap,

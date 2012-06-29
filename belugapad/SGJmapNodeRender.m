@@ -18,7 +18,7 @@
 
 @implementation SGJmapNodeRender
 
--(SGJmapNodeRender*)initWithGameObject:(id<Transform>)aGameObject
+-(SGJmapNodeRender*)initWithGameObject:(id<Transform, ProximityResponder>)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
@@ -35,7 +35,7 @@
 
 -(void)doUpdate:(ccTime)delta
 {
-    
+    nodeSprite.visible=ParentGO.Visible;
 }
 
 -(void)draw:(int)z

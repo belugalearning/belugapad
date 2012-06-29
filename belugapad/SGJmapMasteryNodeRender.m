@@ -46,7 +46,7 @@ static int shadowSteps=10;
 
 -(void)doUpdate:(ccTime)delta
 {
-    
+    nodeSprite.visible=ParentGO.Visible;
 }
 
 -(void)draw:(int)z

@@ -151,11 +151,6 @@ static int shadowSteps=10;
     for (id<Transform> prnode in ParentGO.ChildNodes) {
         float thisA=[BLMath angleForNormVector:[BLMath TruncateVector:[BLMath SubtractVector:ParentGO.Position from:prnode.Position] toMaxLength:1.0f]];
         
-        if([ParentGO.UserVisibleString isEqualToString:@"counting forward"])
-        {
-            NSLog(@"counting forward");
-        }
-        
         if([sortedChildren count]==0)
         {
             //put this thing in the array at first position

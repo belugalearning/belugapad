@@ -247,6 +247,28 @@
     return ret;
 }
 
+-(NSArray*)allRegions
+{
+    [contentDatabase open];
+    NSMutableArray *regions=[[NSMutableArray alloc] init];
+    
+    FMResultSet *rs=[contentDatabase executeQuery:@"select distinct region from conceptnodes"];
+    
+    while ([rs next]) {
+        NSArray *rlist=[[rs stringForColumn:@"region"] objectFromJSONString];
+        if(rlist.count>0)
+            if(![[rlist objectAtIndex:0] isEqualToString:@""])
+                [regions addObject:[rlist objectAtIndex:0]];
+    }
+    
+    [rs close];
+    [contentDatabase close];
+
+    NSArray *ret=[NSArray arrayWithArray:regions];
+    [regions release];
+    return ret;
+}
+
 
 #pragma mark - the rest
 

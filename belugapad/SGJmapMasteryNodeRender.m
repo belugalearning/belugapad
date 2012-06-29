@@ -18,6 +18,7 @@ static int shadowSteps=10;
 @interface SGJmapMasteryNodeRender()
 {
     CCSprite *nodeSprite;
+    CCSprite *labelSprite;
 }
 
 @end
@@ -42,11 +43,17 @@ static int shadowSteps=10;
     {
         [self readyRender];
     }
+    
+    else if(messageType==kSGvisibilityChanged)
+    {
+        nodeSprite.visible=ParentGO.Visible;
+        labelSprite.visible=ParentGO.Visible;
+    }
 }
 
 -(void)doUpdate:(ccTime)delta
 {
-    nodeSprite.visible=ParentGO.Visible;
+
 }
 
 -(void)draw:(int)z
@@ -132,9 +139,9 @@ static int shadowSteps=10;
     [nodeSprite setPosition:[BLMath AddVector:ParentGO.Position toVector:ccp(0, 50)]];
     [ParentGO.RenderBatch addChild:nodeSprite];
     
-    CCLabelTTF *label=[CCLabelTTF labelWithString:ParentGO.UserVisibleString fontName:@"Helvetica" fontSize:12.0f];
-    [label setPosition:ccpAdd(ccp(0, -40), ParentGO.Position)];
-    [ParentGO.RenderBatch.parent addChild:label];
+    labelSprite=[CCLabelTTF labelWithString:ParentGO.UserVisibleString fontName:@"Helvetica" fontSize:12.0f];
+    [labelSprite setPosition:ccpAdd(ccp(0, -40), ParentGO.Position)];
+    [ParentGO.RenderBatch.parent addChild:labelSprite];
     
     sortedChildren=[[NSMutableArray alloc] init];
     

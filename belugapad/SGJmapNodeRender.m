@@ -30,12 +30,15 @@
 
 -(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload
 {
-    
+    if(messageType==kSGvisibilityChanged)
+    {
+        nodeSprite.visible=ParentGO.Visible;
+    }
 }
 
 -(void)doUpdate:(ccTime)delta
 {
-    nodeSprite.visible=ParentGO.Visible;
+
 }
 
 -(void)draw:(int)z

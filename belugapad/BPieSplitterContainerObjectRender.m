@@ -99,7 +99,7 @@
     if(!cont.BaseNode){
         cont.BaseNode=[[CCNode alloc]init];
         [cont.BaseNode setPosition:cont.Position];
-        [[gameWorld Blackboard].ComponentRenderLayer addChild:cont.BaseNode z:2];
+        [[gameWorld Blackboard].MovementLayer addChild:cont.BaseNode z:2];
     }
     
 //    NSString *spriteFileName=[[NSString alloc]init];

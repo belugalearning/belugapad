@@ -25,6 +25,7 @@
 @property (retain) NSMutableArray *AllStores;
 @property (retain) NSMutableArray *CurrentStore;
 @property (retain) CCLayer *ComponentRenderLayer;
+@property (retain) CCLayer *MovementLayer;
 @property CGPoint PickupOffset;
 @property float hostLX;
 @property float hostLY;

@@ -53,6 +53,7 @@ typedef enum {
     
     // and a default layer
     CCLayer *renderLayer;
+    CCLayer *movementLayer;
     
     // pdef options
     BOOL showReset;
@@ -106,6 +107,7 @@ typedef enum {
 -(void)splitPie:(DWPieSplitterPieGameObject*)p;
 -(void)splitPies;
 -(void)removeSlices;
+-(void)balanceLayers;
 -(void)balanceContainers;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;

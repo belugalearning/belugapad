@@ -125,6 +125,11 @@ static float kTimeToPieShake=7.0f;
     
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     
+    movementLayer = [[CCLayer alloc]init];
+    gw.Blackboard.MovementLayer=movementLayer;
+    [renderLayer addChild:movementLayer];
+    
+    
     // All our stuff needs to go into vars to read later
     
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
@@ -461,7 +466,22 @@ static float kTimeToPieShake=7.0f;
 
     
 }
-
+-(void)balanceLayer
+{
+    float incOffset=20.0f;
+    // first we need the average position of all of our nodes
+    float sumOfAllContainers=0.0f;
+    float layerOffset=0.0f;
+    
+    for(DWPieSplitterContainerGameObject *c in activeCon)
+    {
+        sumOfAllContainers+=[c.mySlices count];
+    }
+    
+    layerOffset=sumOfAllContainers/[activeCon count]*-(incOffset);
+    
+    [movementLayer runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(movementLayer.position.x, layerOffset)]];
+}
 -(void)balanceContainers
 {
     //int maxPXtoMove=100;

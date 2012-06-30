@@ -233,7 +233,10 @@
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
     [loggingService logEvent:BL_APP_MEMORY_WARNING withAdditionalData:nil];
-	[[CCDirector sharedDirector] purgeCachedData];
+    
+    NSLog(@"logging memory warning in appdelegate");
+    
+	//[[CCDirector sharedDirector] purgeCachedData];
 }
 
 // next delta time will be zero

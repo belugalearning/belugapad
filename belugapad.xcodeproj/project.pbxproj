@@ -278,6 +278,8 @@
 		7F5115A714A9EF67001AF372 /* DWGameWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A214A9EF67001AF372 /* DWGameWorld.m */; };
 		7F5115AA14A9EF9E001AF372 /* BlockFloating.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A914A9EF9E001AF372 /* BlockFloating.m */; };
 		7F5BD842154AB6A70092740B /* JourneyScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5BD841154AB6A70092740B /* JourneyScene.m */; };
+		7F66C88D159DC78C004E84C8 /* SGJmapRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F66C88C159DC78C004E84C8 /* SGJmapRegion.m */; };
+		7F66C891159DC9E5004E84C8 /* SGJmapRegionRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F66C890159DC9E5004E84C8 /* SGJmapRegionRender.m */; };
 		7F719C0314D739A600F30E89 /* Daemon.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F719C0214D739A600F30E89 /* Daemon.m */; };
 		7F71B40B150FBD9D0097A956 /* ExprScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B409150FBCB20097A956 /* ExprScene.m */; };
 		7F71B40C150FBDAA0097A956 /* BATQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B400150FBCA80097A956 /* BATQuery.m */; };
@@ -940,6 +942,10 @@
 		7F5115A914A9EF9E001AF372 /* BlockFloating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BlockFloating.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7F5BD840154AB6A70092740B /* JourneyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JourneyScene.h; sourceTree = "<group>"; };
 		7F5BD841154AB6A70092740B /* JourneyScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JourneyScene.m; sourceTree = "<group>"; };
+		7F66C88B159DC78C004E84C8 /* SGJmapRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapRegion.h; sourceTree = "<group>"; };
+		7F66C88C159DC78C004E84C8 /* SGJmapRegion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapRegion.m; sourceTree = "<group>"; };
+		7F66C88F159DC9E5004E84C8 /* SGJmapRegionRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapRegionRender.h; sourceTree = "<group>"; };
+		7F66C890159DC9E5004E84C8 /* SGJmapRegionRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapRegionRender.m; sourceTree = "<group>"; };
 		7F719C0114D739A600F30E89 /* Daemon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Daemon.h; sourceTree = "<group>"; };
 		7F719C0214D739A600F30E89 /* Daemon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Daemon.m; sourceTree = "<group>"; };
 		7F71B3FF150FBCA80097A956 /* BATQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATQuery.h; sourceTree = "<group>"; };
@@ -2222,6 +2228,8 @@
 				7F7336B2158B37A200A37FC4 /* SGJmapNode.m */,
 				7F7336B4158B383600A37FC4 /* SGJmapMasteryNode.h */,
 				7F7336B5158B383600A37FC4 /* SGJmapMasteryNode.m */,
+				7F66C88B159DC78C004E84C8 /* SGJmapRegion.h */,
+				7F66C88C159DC78C004E84C8 /* SGJmapRegion.m */,
 			);
 			name = Jmap;
 			sourceTree = "<group>";
@@ -2237,6 +2245,8 @@
 				7F0E32B8158E9D7700E42C7B /* SGJmapProximityEval.m */,
 				7F2F2D72158F754500862302 /* SGJmapNodeSelect.h */,
 				7F2F2D73158F754600862302 /* SGJmapNodeSelect.m */,
+				7F66C88F159DC9E5004E84C8 /* SGJmapRegionRender.h */,
+				7F66C890159DC9E5004E84C8 /* SGJmapRegionRender.m */,
 			);
 			name = Jmap;
 			sourceTree = "<group>";
@@ -2957,6 +2967,8 @@
 				55F05632159A0E0400ACA07C /* BPlaceValuePickupTarget.m in Sources */,
 				55F05633159A0E0400ACA07C /* BPlaceValuePickupTargetNet.m in Sources */,
 				55F05634159A0E0400ACA07C /* BPlaceValueSelectionMgr.m in Sources */,
+				7F66C88D159DC78C004E84C8 /* SGJmapRegion.m in Sources */,
+				7F66C891159DC9E5004E84C8 /* SGJmapRegionRender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

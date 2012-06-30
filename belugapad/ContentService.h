@@ -37,6 +37,7 @@
 -(ConceptNode*)conceptNodeForId:(NSString*)nodeId;
 -(NSArray*)relationMembersForName:(NSString*)name;
 -(Pipeline*)pipelineWithId:(NSString*)plId;
+-(NSArray*)allRegions;
 
 -(void)quitPipelineTracking;
 

@@ -19,6 +19,8 @@
 @property (retain) NSMutableArray *ConnectToMasteryNodes;
 @property (retain) NSMutableArray *ConnectFromMasteryNodes;
 
+@property (retain) NSString *Region;
+
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
 
 @end

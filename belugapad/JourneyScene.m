@@ -32,6 +32,7 @@
 #import "SGJmapMasteryNode.h"
 #import "SGJmapProximityEval.h"
 #import "SGJmapNodeSelect.h"
+#import "SGJmapRegion.h"
 
 #import "JSONKit.h"
 
@@ -47,7 +48,7 @@ const float kLogOutBtnPadding = 8.0f;
 const CGSize kLogOutBtnSize = { 80.0f, 33.0f };
 
 static CGRect debugButtonBounds={{950, 0}, {100, 50}};
-static BOOL debugRestrictMovement=YES;
+static BOOL debugRestrictMovement=NO;
 
 typedef enum {
     kJuiStateNodeMap,
@@ -212,20 +213,19 @@ typedef enum {
     
     kcmNodes=[NSMutableArray arrayWithArray:[contentService allConceptNodes]];
     [kcmNodes retain];
-    
     NSLog(@"got kcm node");
     
     [self parseKcmForBounds];
-    
     NSLog(@"got kcm bounds");
     
     [self createNodesInGameWorld];
-    
     NSLog(@"created node, mastery game objects");
     
     [self parseNodesForEndPoints];
-    
     NSLog(@"completed end point parse");
+    
+    [self createRegions];
+    NSLog(@"created regions");
     
     //setup rendering -- needs all node connections built
     [gw handleMessage:kSGreadyRender andPayload:nil withLogLevel:0];
@@ -329,6 +329,11 @@ typedef enum {
             
             newnode.HitProximity=100.0f;
             newnode.HitProximitySign=150.0f;
+            
+            if(n.regions.count>0)
+                ((SGJmapMasteryNode*)newnode).Region=[n.regions objectAtIndex:0];
+            else
+                ((SGJmapMasteryNode*)newnode).Region=@"";
         }
         else {
             newnode=[[[SGJmapNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
@@ -406,6 +411,33 @@ typedef enum {
         }
     }
 
+}
+
+-(void)createRegions
+{
+    NSArray *regions=[contentService allRegions];
+
+    for (NSString *r in regions) {
+        NSLog(@"region: %@", r);
+        
+        //create the region
+        SGJmapRegion *rgo=[[SGJmapRegion alloc] initWithGameWorld:gw];
+        
+        //find all mastery children
+        
+        //step over all nodes and compare region string -- this may need perf refactor long term
+        for (id go in [gw AllGameObjects]) {
+            if([go isKindOfClass:[SGJmapMasteryNode class]])
+            {
+                SGJmapMasteryNode *mgo=(SGJmapMasteryNode*)go;
+                if([mgo.Region isEqualToString: r])
+                {
+                    //add this mastery node to the region
+                    [rgo.MasteryNodes addObject:mgo];
+                }
+            }
+        }
+    }
 }
 
 -(id)gameObjectForCouchId:(NSString*)findId

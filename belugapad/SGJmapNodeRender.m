@@ -18,7 +18,7 @@
 
 @implementation SGJmapNodeRender
 
--(SGJmapNodeRender*)initWithGameObject:(id<Transform>)aGameObject
+-(SGJmapNodeRender*)initWithGameObject:(id<Transform, ProximityResponder>)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
@@ -30,12 +30,15 @@
 
 -(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload
 {
-    
+    if(messageType==kSGvisibilityChanged)
+    {
+        nodeSprite.visible=ParentGO.Visible;
+    }
 }
 
 -(void)doUpdate:(ccTime)delta
 {
-    
+
 }
 
 -(void)draw:(int)z
@@ -60,6 +63,7 @@
     }
     
     [nodeSprite setPosition:ParentGO.Position];
+    [nodeSprite setVisible:ParentGO.Visible];
     [ParentGO.RenderBatch addChild:nodeSprite];
 }
 

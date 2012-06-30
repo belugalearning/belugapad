@@ -14,6 +14,7 @@
 typedef enum {
 
     kSGmessageNone,
-    kSGreadyRender
+    kSGreadyRender,
+    kSGvisibilityChanged,
         
 } SGMessageType;

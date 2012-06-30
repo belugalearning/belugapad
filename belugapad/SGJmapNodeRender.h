@@ -11,7 +11,7 @@
 
 @interface SGJmapNodeRender : SGComponent
 {
-    id<Transform> ParentGO;
+    id<Transform, ProximityResponder> ParentGO;
 }
 
 -(void)draw:(int)z;

@@ -89,6 +89,11 @@ typedef enum {
     
     kDWunsetAllMountedObjects=40,
     
+    kDWswitchParentToMovementLayer=41,
+    kDWswitchParentToRenderLayer=42,
+    
+    kDWreorderPieSlices=43,
+    
     kDWareYouProximateTo=101,
     kDWupdateObjectData=102,
     kDWdetachPhys=103,

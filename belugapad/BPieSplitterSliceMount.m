@@ -52,21 +52,20 @@
     
     if(gameWorld.Blackboard.DropObject)
     {
-        float curRotation=slice.mySprite.rotation;
 
         slice.myCont=gameWorld.Blackboard.DropObject;      
         DWPieSplitterContainerGameObject *c=(DWPieSplitterContainerGameObject*)slice.myCont;
         DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie;
         
+        
         //flip ownership of the sprite from the pie to the container
         [slice.mySprite removeFromParentAndCleanup:YES];
         slice.mySprite=nil;
         slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
-        [slice setRotation:curRotation];
+        [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.5f angle:(360/p.numberOfSlices)*[c.mySlices count]]];
 
         
-        [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.1f angle:(360/p.numberOfSlices)*[c.mySlices count]]];
-        
+        [p.slicesInMe removeObject:slice];
         
         BOOL GotPlaceInNode;
         
@@ -114,15 +113,12 @@
 {
     DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie; 
     DWPieSplitterContainerGameObject *c=(DWPieSplitterContainerGameObject*)slice.myCont;
-    float curRotation=slice.mySprite.rotation;
     [slice.mySprite removeFromParentAndCleanup:YES];
     slice.mySprite=nil;
     slice.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(slice.SpriteFileName)];
     [p.mySprite addChild:slice.mySprite];
     [slice.mySprite setPosition:[slice.mySprite.parent convertToNodeSpace:slice.Position]];
-    [slice.mySprite setRotation:curRotation];
-    [slice.mySprite runAction:[CCRotateTo actionWithDuration:0.1f angle:slice.Rotation]];
-    
+    [p.slicesInMe addObject:slice];
     
     // remove dead nodes from teh nodes array
     NSMutableArray *deleteNodes=[[NSMutableArray alloc]init];

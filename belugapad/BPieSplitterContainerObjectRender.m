@@ -59,17 +59,6 @@
     }
     if(messageType==kDWupdateLabels)
     {
-        if(!cont.myText && cont.ScaledUp)
-        {
-            cont.myText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-            [cont.myText setPosition:ccp(50,40)];
-            [cont.mySpriteTop addChild:cont.myText];
-            if(gameWorld.Blackboard.inProblemSetup)
-            {
-                [cont.myText setTag:1];
-                [cont.myText setOpacity:0];
-            }
-        }
         if(cont.ScaledUp && cont.myText.visible==NO)[cont.myText setVisible:YES];
         if(cont.ScaledUp)[cont.myText setString:cont.textString];
         else [cont.myText setVisible:NO];
@@ -81,6 +70,20 @@
     if(messageType==kDWresetToMountPosition)
     {
         [self moveSpriteHome];
+    }
+    if(messageType==kDWswitchParentToRenderLayer)
+    {
+        [cont.BaseNode.parent removeChild:cont.BaseNode cleanup:NO];
+        [cont.BaseNode setPosition:[gameWorld.Blackboard.ComponentRenderLayer convertToNodeSpace:cont.Position]];
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:cont.BaseNode];
+        NSLog(@"this container changed parent (render layer)");
+    }
+    if(messageType==kDWswitchParentToMovementLayer)
+    {
+        [cont.BaseNode.parent removeChild:cont.BaseNode cleanup:NO];
+        [cont.BaseNode setPosition:[gameWorld.Blackboard.MovementLayer convertToNodeSpace:cont.Position]];
+        [gameWorld.Blackboard.MovementLayer addChild:cont.BaseNode];
+        NSLog(@"this container changed parent (movement layer)");
     }
     if(messageType==kDWdismantle)
     {
@@ -99,8 +102,9 @@
     if(!cont.BaseNode){
         cont.BaseNode=[[CCNode alloc]init];
         [cont.BaseNode setPosition:cont.Position];
-        [[gameWorld Blackboard].MovementLayer addChild:cont.BaseNode z:2];
+        [[gameWorld Blackboard].ComponentRenderLayer addChild:cont.BaseNode z:2];
     }
+
     
 //    NSString *spriteFileName=[[NSString alloc]init];
     
@@ -141,6 +145,18 @@
     [cont.BaseNode addChild:cont.mySpriteMid];
     [cont.BaseNode addChild:cont.mySpriteTop];
     [cont.BaseNode addChild:cont.mySpriteBot];
+    
+    if(!cont.myText && cont.ScaledUp)
+    {
+        cont.myText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        [cont.myText setPosition:ccp(50,40)];
+        [cont.mySpriteTop addChild:cont.myText];
+        if(gameWorld.Blackboard.inProblemSetup)
+        {
+            [cont.myText setTag:1];
+            [cont.myText setOpacity:0];
+        }
+    }
 //        [cont.BaseNode addChild:cont.mySprite];
     
 }

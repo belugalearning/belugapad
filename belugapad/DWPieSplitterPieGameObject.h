@@ -15,9 +15,9 @@
 @property CGPoint MountPosition;
 @property (retain) CCSprite *mySprite;
 @property (retain) NSMutableArray *mySlices;
+@property (retain) NSMutableArray *slicesInMe;
 @property BOOL ScaledUp;
 @property BOOL HasSplit;
-@property float myValue;
 @property int numberOfSlices;
 @property (retain) CCSprite *touchOverlay;
 

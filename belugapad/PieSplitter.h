@@ -69,6 +69,8 @@ typedef enum {
     
     int slicesInEachPie;
     
+    float lastLayerOffset;
+    
     // then our specifics
     DWPieSplitterContainerGameObject *newCon;
     DWPieSplitterPieGameObject *newPie;
@@ -107,7 +109,7 @@ typedef enum {
 -(void)splitPie:(DWPieSplitterPieGameObject*)p;
 -(void)splitPies;
 -(void)removeSlices;
--(void)balanceLayers;
+-(void)balanceLayer;
 -(void)balanceContainers;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;

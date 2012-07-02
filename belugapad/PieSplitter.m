@@ -308,6 +308,7 @@ static float kTimeToPieShake=7.0f;
     [cont.mySpriteBot setScale:1.0f];
     cont.ScaledUp=YES;
     [activeCon addObject:cont];
+    [cont handleMessage:kDWswitchParentToMovementLayer];
 }
 
 -(void)addGhostPie
@@ -468,19 +469,25 @@ static float kTimeToPieShake=7.0f;
 }
 -(void)balanceLayer
 {
-    float incOffset=20.0f;
+    NSLog(@"layer pos before: %@", NSStringFromCGPoint(movementLayer.position));
+    float incOffset=50.0f;
     // first we need the average position of all of our nodes
     float sumOfAllContainers=0.0f;
     float layerOffset=0.0f;
+    float objectValue=1.0f/activeCon.count;
     
     for(DWPieSplitterContainerGameObject *c in activeCon)
     {
-        sumOfAllContainers+=[c.mySlices count];
+        sumOfAllContainers+=[c.mySlices count]*objectValue;
     }
     
-    layerOffset=sumOfAllContainers/[activeCon count]*-(incOffset);
+    layerOffset=sumOfAllContainers/[activeCon count]*(incOffset);
+    lastLayerOffset=layerOffset;
     
+    NSLog(@"layerOffset: %f, sumOfAllContainers %f, activeCon count %d", layerOffset, sumOfAllContainers, [activeCon count]);
     [movementLayer runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(movementLayer.position.x, layerOffset)]];
+    NSLog(@"layer pos after: %@", NSStringFromCGPoint(movementLayer.position));
+    
 }
 -(void)balanceContainers
 {
@@ -519,9 +526,10 @@ static float kTimeToPieShake=7.0f;
         }
         
         // then set the position using our offset
-        [c.BaseNode setPosition:[c.BaseNode convertToWorldSpace:ccp(adjPos.x, adjPos.y-c.RealYPosOffset)]];
-             
-//        NSLog(@"mySlices = %d, myOffset = %g, myYPos = %g, yPos = %g", [c.mySlices count], c.RealYPosOffset, myYPos, c.BaseNode.position.y);
+        if([c.mySlices count]==0)
+            [c.BaseNode setPosition:[c.BaseNode convertToWorldSpace:ccp(adjPos.x, adjPos.y-c.RealYPosOffset-lastLayerOffset)]];
+        else
+            [c.BaseNode setPosition:[c.BaseNode convertToWorldSpace:ccp(adjPos.x, adjPos.y-c.RealYPosOffset)]];        
         
         isGreater=NO;
         isLess=NO;
@@ -676,8 +684,11 @@ static float kTimeToPieShake=7.0f;
             // then check whether the touch end was in the bounding box 
             if(CGRectContainsPoint(conBox.boundingBox, location))
             {
+                [cont handleMessage:kDWswitchParentToMovementLayer];
                 // if this object isn't in the array, add it
                 if(![activeCon containsObject:cont])[activeCon addObject:cont];
+                
+                // and if we've already split, and there are no active slices, remove existing and re-split for more containers
                 if(hasSplit && numberOfCagedSlices==0)
                 {
                     [self removeSlices];
@@ -688,9 +699,16 @@ static float kTimeToPieShake=7.0f;
             else {
                 // if we're not landing on the dropzone and were previously there, remove object from array
                 if([activeCon containsObject:cont])[activeCon removeObject:cont];
+                
+                if(hasSplit)
+                {
+                    [self removeSlices];
+                    [self splitPies];
+                }
 
                 // and if it wasn't - eject it back to it's mount
-                [gw.Blackboard.PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:-1];
+                [cont handleMessage:kDWswitchParentToRenderLayer];
+                [cont handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:-1];
             }
             
             [self reorderActiveContainers];
@@ -729,6 +747,7 @@ static float kTimeToPieShake=7.0f;
             [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
             
             DWPieSplitterContainerGameObject *cont=[[DWPieSplitterContainerGameObject alloc]init];
+            DWPieSplitterSliceGameObject *slice=(DWPieSplitterSliceGameObject *)gw.Blackboard.PickupObject;
             if(gw.Blackboard.DropObject)cont=(DWPieSplitterContainerGameObject*)gw.Blackboard.DropObject;
 
             
@@ -739,7 +758,7 @@ static float kTimeToPieShake=7.0f;
                 [gw.Blackboard.DropObject handleMessage:kDWsetMountedObject];
             }
             else {
-                DWPieSplitterSliceGameObject *slice=(DWPieSplitterSliceGameObject *)gw.Blackboard.PickupObject;
+
                 DWPieSplitterContainerGameObject *cont=(DWPieSplitterContainerGameObject *)slice.myCont;
                 
                 slice.Position=location;
@@ -747,10 +766,13 @@ static float kTimeToPieShake=7.0f;
                 [slice handleMessage:kDWunsetMount];
                 [slice handleMessage:kDWmoveSpriteToHome];
             }
+            
+            [slice.myPie handleMessage:kDWreorderPieSlices];
         }
         
     }
     
+    [self balanceLayer];
     [self balanceContainers];
     
     isTouching=NO;

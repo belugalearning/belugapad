@@ -14,10 +14,19 @@
 @synthesize MountPosition;
 @synthesize mySprite;
 @synthesize mySlices;
+@synthesize slicesInMe;
 @synthesize ScaledUp;
 @synthesize HasSplit;
-@synthesize myValue;
 @synthesize numberOfSlices;
 @synthesize touchOverlay;
+
+-(DWGameObject *) initWithGameWorld:(DWGameWorld*)aGameWorld
+{
+    if( (self=[super initWithGameWorld:aGameWorld] )) 
+    {
+        slicesInMe=[[NSMutableArray alloc]init];
+    }
+	return self;
+}
 
 @end

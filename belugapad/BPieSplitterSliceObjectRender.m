@@ -103,6 +103,7 @@
     
     
     [p.mySprite addChild:slice.mySprite];
+    [p.slicesInMe addObject:slice];
     
     
 }

@@ -8,6 +8,7 @@
 
 #import "BPieSplitterPieObjectRender.h"
 #import "DWPieSplitterPieGameObject.h"
+#import "DWPieSplitterSliceGameObject.h"
 #import "global.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
@@ -71,6 +72,17 @@
     {
         [[pie.mySprite parent] removeChild:pie.mySprite cleanup:YES];
     } 
+    if(messageType==kDWreorderPieSlices)
+    {
+        NSLog(@"slicesInMe=%d", [pie.slicesInMe count]);
+        for(int i=0;i<[pie.slicesInMe count];i++)
+        {
+            DWPieSplitterSliceGameObject *s=[pie.slicesInMe objectAtIndex:i];
+            s.Rotation=360/pie.numberOfSlices*i;
+            NSLog(@"thisSprite rotation %f", s.Rotation);
+            [s.mySprite runAction:[CCRotateTo actionWithDuration:0.5f angle:s.Rotation]];
+        }
+    }
     if(messageType==kDWsplitActivePies)
     {
        // CCLabelTTF *lbl=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",pie.numberOfSlices] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];

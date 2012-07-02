@@ -257,7 +257,8 @@ typedef enum {
 - (void)createLayers
 {
     //base colour layer
-    CCLayerGradient *cLayer=[[CCLayerGradient alloc] initWithColor:ccc4(35, 35, 75, 255) fadingTo:ccc4(35, 35, 145, 255)];
+//    CCLayerGradient *cLayer=[[CCLayerGradient alloc] initWithColor:ccc4(35, 35, 75, 255) fadingTo:ccc4(35, 35, 145, 255)];
+    CCLayerGradient *cLayer=[[CCLayerGradient alloc] initWithColor:ccc4(51, 71, 78, 255) fadingTo:ccc4(76, 105, 115, 255)];
     
     //CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(35, 35, 35, 255) width:lx height:ly];
     [self addChild:cLayer z:-1];

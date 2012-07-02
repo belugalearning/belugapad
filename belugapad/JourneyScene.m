@@ -36,7 +36,7 @@
 
 #import "JSONKit.h"
 
-#define DRAW_DEPTH 2
+#define DRAW_DEPTH 3
 
 static float kNodeScale=0.5f;
 //static CGPoint kStartMapPos={-3576, -2557};
@@ -422,6 +422,7 @@ typedef enum {
         
         //create the region
         SGJmapRegion *rgo=[[SGJmapRegion alloc] initWithGameWorld:gw];
+        rgo.RenderBatch=nodeRenderBatch;
         
         //find all mastery children
         
@@ -796,6 +797,11 @@ typedef enum {
     zoomedOut=NO;
     
     [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.5f scale:1.0f] rate:2.0f]];    
+    
+    [gw handleMessage:kSGzoomIn andPayload:nil withLogLevel:0];
+    
+    //needs immediate proximity check
+    [self evalProximityAcrossGW];
 }
 
 -(void)zoomToRegionView
@@ -804,10 +810,12 @@ typedef enum {
     
     [mapLayer setAnchorPoint:ccp(0.5,0.5)];
     
-    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.5f scale:0.15f] rate:2.0f]]; 
+    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.5f scale:REGION_ZOOM_LEVEL] rate:2.0f]]; 
     
     //[mapLayer setPosition:ccp(-(nMaxX-nMinX) / 2.0f, -(nMaxY-nMinY) / 2.0f)];
     [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(-1574, -74)] rate:2.0f]];
+    
+    [gw handleMessage:kSGzoomOut andPayload:nil withLogLevel:0];
 }
 
 #pragma mark - debug

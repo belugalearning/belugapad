@@ -20,6 +20,7 @@
     NSMutableArray *sortedChildren;
     
     CGPoint *allPerimPoints;
+    CGPoint *scaledPerimPoints;
     ccColor4B stepColours[10];
 }
 

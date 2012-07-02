@@ -44,6 +44,11 @@ static float visibleProximity=1024.0f;
 
 -(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload
 {
+    if(messageType==kSGzoomOut)
+    {
+        ParentGO.Visible=YES;
+        [ParentGO handleMessage:kSGvisibilityChanged andPayload:nil withLogLevel:0];        
+    }
     
 }
 

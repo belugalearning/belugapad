@@ -16,5 +16,8 @@ typedef enum {
     kSGmessageNone,
     kSGreadyRender,
     kSGvisibilityChanged,
+    
+    kSGzoomOut,
+    kSGzoomIn
         
 } SGMessageType;

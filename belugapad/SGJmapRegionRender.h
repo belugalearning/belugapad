@@ -15,6 +15,9 @@
 {
     SGJmapRegion *ParentGO;
     
+    CGPoint *allPerimPoints;
+    CGPoint *scaledPerimPoints;
+    int perimCount;
 }
 -(void)draw:(int)z;
 

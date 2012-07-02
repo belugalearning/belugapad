@@ -10,6 +10,7 @@
 #import "SGJmapRegion.h"
 #import "SGJmapMasteryNode.h"
 #import "BLMath.h"
+#import "global.h"
 
 @implementation SGJmapRegionRender
 
@@ -29,11 +30,28 @@
     {
         [self readyRender];
     }
+    
+    if(messageType==kSGzoomOut)
+    {
+        [self setPointScalesAt:REGION_ZOOM_LEVEL];
+    }
+    if(messageType==kSGzoomIn)
+    {
+        [self setPointScalesAt:1.0f];
+    }
 }
 
 -(void)doUpdate:(ccTime)delta
 {
     
+}
+
+-(void)setPointScalesAt:(float)scale
+{
+    for(int i=0;i<perimCount; i++)
+    {
+        scaledPerimPoints[i]=[BLMath MultiplyVector:allPerimPoints[i] byScalar:scale];
+    }
 }
 
 -(void)readyRender
@@ -42,13 +60,22 @@
     
     //===== get my position =============================================================
     float cumx=0.0f, cumy=0.0f;
+    
+    //crate avg node using node positions relative to first node -- then offset the original by the same amount
+    CGPoint firstPos;
+    if(ParentGO.MasteryNodes.count>0) firstPos=((SGJmapMasteryNode*)[ParentGO.MasteryNodes objectAtIndex:0]).Position;
+
     for(SGJmapMasteryNode *mnode in ParentGO.MasteryNodes)
     {
-        cumx+=mnode.Position.x;
-        cumy+=mnode.Position.y;
+        CGPoint npos=[BLMath SubtractVector:firstPos from:mnode.Position];
+        cumx+=npos.x;
+        cumy+=npos.y;
     }
     
-    ParentGO.Position=CGPointMake(cumx / (float)ParentGO.MasteryNodes.count, cumy / (float)ParentGO.MasteryNodes.count);
+    CGPoint relpos=CGPointMake(cumx / (float)ParentGO.MasteryNodes.count, cumy / (float)ParentGO.MasteryNodes.count);
+    ParentGO.Position=[BLMath AddVector:relpos toVector:firstPos];
+
+    NSLog(@"set my position to %@", NSStringFromCGPoint(ParentGO.Position));
     
     
     //====== create list of vertices, sorted from mastery nodes =========================
@@ -86,33 +113,117 @@
                 
                 if(doinsert)
                 {
-                    [verts insertObject:[NSValue valueWithCGPoint:snodePos] atIndex:insertat];
+                    [verts insertObject:[NSValue valueWithCGPoint:mnode.Position] atIndex:insertat];
                     break;
                 }
             }
         }
     }
     
-    //====== insert spacers as required ===============================================
+    for (NSValue *vp in verts) {
+        NSLog(@"point at %@", NSStringFromCGPoint([vp CGPointValue]));
+    }
     
+    //====== insert spacers as required ===============================================
+    BOOL looking=YES;
+    do {
+        //step all verts
+        for(int i=0;i<verts.count;i++)
+        {
+            CGPoint thisP=[[verts objectAtIndex:i] CGPointValue];
+            float thisA=[BLMath angleFromNorthToLineFrom:ParentGO.Position to:thisP];
+            
+            CGPoint nextP;
+            float nextA;
+            if(i==verts.count-1)
+            {
+                //at last node, use first
+                nextP=[[verts objectAtIndex:0] CGPointValue];
+                nextA=360.0f+[BLMath angleFromNorthToLineFrom:ParentGO.Position to:nextP];
+            }
+            else {
+                nextP=[[verts objectAtIndex:i+1] CGPointValue];
+                nextA=[BLMath angleFromNorthToLineFrom:ParentGO.Position to:nextP];
+            }
+            
+            if((nextA-thisA) > 50.0f)
+            {
+                float lOfV=1.05f * [BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:thisP]];
+                float newRot=thisA + ((nextA-thisA)*0.35);
+                
+                CGPoint newPos=[BLMath AddVector:ParentGO.Position toVector:[BLMath ProjectMovementWithX:0 andY:lOfV forRotation:newRot]];
+                
+                if(newRot>=360.0f)
+                {
+                    [verts insertObject:[NSValue valueWithCGPoint:newPos] atIndex:0];
+                }
+                else {
+                    [verts insertObject:[NSValue valueWithCGPoint:newPos] atIndex:i+1];
+                }
+                
+                break;
+            }
+            
+            
+            //stop looking when one from end
+            if(i==verts.count-1)
+            {
+                looking=NO;
+            }
+            
+        }
+    } while (looking);
+    
+    for (NSValue *vp in verts) {
+        NSLog(@"point or spacer at %@", NSStringFromCGPoint([vp CGPointValue]));
+    }
     
     //====== malloc array for points themselves =======================================
     
+    allPerimPoints=malloc(sizeof(CGPoint) * verts.count);
+    scaledPerimPoints=malloc(sizeof(CGPoint) * verts.count);
+    perimCount=verts.count;
     
     
     //====== iterate verts, scale up & out and add to the malloc'd array to render ====
+    //CGPoint myWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];
+    CGPoint myWorldPos=ParentGO.Position;
     
-    
-    
+    for (int i=0; i<verts.count; i++)
+    {
+        CGPoint p=[[verts objectAtIndex:i] CGPointValue];
+        //CGPoint pWP=[ParentGO.RenderBatch.parent convertToWorldSpace:p];
+        
+        CGPoint ep=[BLMath MultiplyVector:[BLMath SubtractVector:myWorldPos from:p] byScalar:2.5f];
+        allPerimPoints[i]=ep;
+        
+        NSLog(@"extended point %@ at index %d", NSStringFromCGPoint(ep), i);
+    }
 
+    [self setPointScalesAt:1.0f];
 }
 
 -(void)draw:(int)z
 {
+    if(z==0)
+    {
+        CGPoint myWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];
+
+        CGPoint adjPoints[perimCount];
+        for(int i=0; i<perimCount; i++)
+        {
+            adjPoints[i]=[BLMath AddVector:myWorldPos toVector:scaledPerimPoints[i]];
+        }
+        
+        CGPoint *f=&adjPoints[0];
+        ccDrawFilledPoly(f, perimCount, ccc4f(0, 0, 1.0f, 0.3f));
+    }
 }
 
 -(void)dealloc
 {
+    free(allPerimPoints);
+    free(scaledPerimPoints);
     
     [super dealloc];
 }

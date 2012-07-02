@@ -326,6 +326,9 @@
 #define START_PROBLEM_SPLIT @"START_PROBLEM_SPLIT"
 #define SHOW_RESET_SLICES @"SHOW_RESET_SLICES"
 
+//journey scene
+#define REGION_ZOOM_LEVEL 0.15f
+
 
 // Logging:
 

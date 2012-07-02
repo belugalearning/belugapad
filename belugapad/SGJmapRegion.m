@@ -14,7 +14,7 @@
 @synthesize Position, RenderBatch;
 @synthesize Visible;
 
-@synthesize RegionRenderComponent, MasteryNodes;
+@synthesize RegionRenderComponent, MasteryNodes, RegionNumber, Name;
 
 -(SGJmapRegion*) initWithGameWorld:(SGGameWorld*)aGameWorld
 {

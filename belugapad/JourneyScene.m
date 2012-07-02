@@ -87,6 +87,8 @@ typedef enum {
     //debug stuff
     BOOL debugEnabled;
     CCMenu *debugMenu;
+    
+    CCSprite *backarrow;
 }
 
 -(void)debugRelocate:(id)sender;
@@ -123,6 +125,8 @@ typedef enum {
         dragLast=ccp(0,0);
         
         juiState=kJuiStateNodeMap;
+        
+        zoomedOut=NO;
         
         scale=1.0f;
         
@@ -232,6 +236,11 @@ typedef enum {
     NSLog(@"send readyRender message");
     
     NSLog(@"end build");
+    
+    backarrow=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/backarrow.png")];
+    [backarrow setPosition:ccp(64, ly-64)];
+    [backarrow setOpacity:35];
+    [self addChild:backarrow];
             
 //    //reposition if previous node
 //    if(contentService.currentNode)
@@ -248,7 +257,9 @@ typedef enum {
 - (void)createLayers
 {
     //base colour layer
-    CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(35, 35, 35, 255) width:lx height:ly];
+    CCLayerGradient *cLayer=[[CCLayerGradient alloc] initWithColor:ccc4(35, 35, 75, 255) fadingTo:ccc4(35, 35, 145, 255)];
+    
+    //CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(35, 35, 35, 255) width:lx height:ly];
     [self addChild:cLayer z:-1];
     [cLayer release];
     
@@ -416,13 +427,16 @@ typedef enum {
 -(void)createRegions
 {
     NSArray *regions=[contentService allRegions];
-
+    int rindex=0;
+    
     for (NSString *r in regions) {
         NSLog(@"region: %@", r);
         
         //create the region
         SGJmapRegion *rgo=[[SGJmapRegion alloc] initWithGameWorld:gw];
         rgo.RenderBatch=nodeRenderBatch;
+        rgo.RegionNumber=rindex;
+        rgo.Name=r;
         
         //find all mastery children
         
@@ -438,6 +452,8 @@ typedef enum {
                 }
             }
         }
+        
+        rindex++;
     }
 }
 
@@ -702,23 +718,39 @@ typedef enum {
         debugMenu.visible=doat;
     }
     
-    lastTouch=l;
-    
-    CGPoint lOnMap=[mapLayer convertToNodeSpace:l];
- 
-    NSLog(@"touched at %@", NSStringFromCGPoint(lOnMap));
-    
-    [self testForNodeTouchAt:lOnMap];
-    
-//    [daemon setTarget:l];
-//    [daemon setRestingPoint:l];
-    
-    //assume touch didn't start in the node map
-    touchStartedInNodeMap=NO;
+    if(!zoomedOut && l.x<128 && l.y > (ly-128))
+    {
+        [self zoomToRegionView];
+    }
+    else if(l.x<128 && l.y > (ly-128))
+    {
+        [self zoomToCityView];
+        
+        [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(-611,3713)] rate:2.0f]];
+    }
+    else {
 
-    if (juiState==kJuiStateNodeMap) {
-                
-        touchStartedInNodeMap=YES;
+        lastTouch=l;
+        
+        CGPoint lOnMap=[mapLayer convertToNodeSpace:l];
+     
+        NSLog(@"touched at %@", NSStringFromCGPoint(lOnMap));
+        
+        if(!zoomedOut)
+        {
+            [self testForNodeTouchAt:lOnMap];
+        }
+        
+    //    [daemon setTarget:l];
+    //    [daemon setRestingPoint:l];
+        
+        //assume touch didn't start in the node map
+        touchStartedInNodeMap=NO;
+
+        if (juiState==kJuiStateNodeMap) {
+                    
+            touchStartedInNodeMap=YES;
+        }
     }
 }
 
@@ -795,6 +827,7 @@ typedef enum {
 -(void)zoomToCityView
 {
     zoomedOut=NO;
+    [backarrow setVisible:YES];
     
     [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.5f scale:1.0f] rate:2.0f]];    
     
@@ -807,13 +840,14 @@ typedef enum {
 -(void)zoomToRegionView
 {
     zoomedOut=YES;
+    [backarrow setVisible:NO];
     
     [mapLayer setAnchorPoint:ccp(0.5,0.5)];
     
     [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.5f scale:REGION_ZOOM_LEVEL] rate:2.0f]]; 
     
     //[mapLayer setPosition:ccp(-(nMaxX-nMinX) / 2.0f, -(nMaxY-nMinY) / 2.0f)];
-    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(-1574, -74)] rate:2.0f]];
+    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(-257, 212.5)] rate:2.0f]];
     
     [gw handleMessage:kSGzoomOut andPayload:nil withLogLevel:0];
 }

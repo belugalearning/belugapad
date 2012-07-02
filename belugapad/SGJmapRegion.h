@@ -17,6 +17,9 @@
 
 @property (retain) NSMutableArray *MasteryNodes;
 
+@property int RegionNumber;
+@property (retain) NSString *Name;
+
 -(SGJmapRegion*) initWithGameWorld:(SGGameWorld*)aGameWorld;
 
 @end

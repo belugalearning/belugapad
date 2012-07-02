@@ -34,10 +34,12 @@
     if(messageType==kSGzoomOut)
     {
         [self setPointScalesAt:REGION_ZOOM_LEVEL];
+        [rlabel setVisible:YES];
     }
     if(messageType==kSGzoomIn)
     {
         [self setPointScalesAt:1.0f];
+        [rlabel setVisible:NO];
     }
 }
 
@@ -75,7 +77,15 @@
     CGPoint relpos=CGPointMake(cumx / (float)ParentGO.MasteryNodes.count, cumy / (float)ParentGO.MasteryNodes.count);
     ParentGO.Position=[BLMath AddVector:relpos toVector:firstPos];
 
-    NSLog(@"set my position to %@", NSStringFromCGPoint(ParentGO.Position));
+    //NSLog(@"set my position to %@", NSStringFromCGPoint(ParentGO.Position));
+    
+    //====== region label ===============================================================
+    
+    rlabel=[CCLabelTTF labelWithString:ParentGO.Name fontName:@"Helvetica" fontSize:200];
+    [rlabel setPosition:ParentGO.Position];
+    [rlabel setColor:ccc3(255, 255, 255)];
+    [rlabel setVisible:NO];
+    [ParentGO.RenderBatch.parent addChild:rlabel z:5];
     
     
     //====== create list of vertices, sorted from mastery nodes =========================
@@ -120,9 +130,9 @@
         }
     }
     
-    for (NSValue *vp in verts) {
-        NSLog(@"point at %@", NSStringFromCGPoint([vp CGPointValue]));
-    }
+//    for (NSValue *vp in verts) {
+//        NSLog(@"point at %@", NSStringFromCGPoint([vp CGPointValue]));
+//    }
     
     //====== insert spacers as required ===============================================
     BOOL looking=YES;
@@ -174,9 +184,9 @@
         }
     } while (looking);
     
-    for (NSValue *vp in verts) {
-        NSLog(@"point or spacer at %@", NSStringFromCGPoint([vp CGPointValue]));
-    }
+//    for (NSValue *vp in verts) {
+//        NSLog(@"point or spacer at %@", NSStringFromCGPoint([vp CGPointValue]));
+//    }
     
     //====== malloc array for points themselves =======================================
     
@@ -197,7 +207,7 @@
         CGPoint ep=[BLMath MultiplyVector:[BLMath SubtractVector:myWorldPos from:p] byScalar:2.5f];
         allPerimPoints[i]=ep;
         
-        NSLog(@"extended point %@ at index %d", NSStringFromCGPoint(ep), i);
+        //NSLog(@"extended point %@ at index %d", NSStringFromCGPoint(ep), i);
     }
 
     [self setPointScalesAt:1.0f];
@@ -216,7 +226,9 @@
         }
         
         CGPoint *f=&adjPoints[0];
-        ccDrawFilledPoly(f, perimCount, ccc4f(0, 0, 1.0f, 0.3f));
+        float incr=ParentGO.RegionNumber * 0.02f;
+        
+        ccDrawFilledPoly(f, perimCount, ccc4f(0.3f+incr, 0.35f+incr, 0.3f+incr, 1.0f));
     }
 }
 

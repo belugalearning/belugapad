@@ -33,6 +33,8 @@ static int shadowSteps=10;
         ParentGO=(SGJmapMasteryNode*)aGameObject;
         
         //[self setup];
+        
+        zoomedOut=NO;
     }
     
     return self;
@@ -54,10 +56,14 @@ static int shadowSteps=10;
     if(messageType==kSGzoomOut)
     {
         [self setPointScalesAt:REGION_ZOOM_LEVEL];
+        [nodeSprite setVisible:NO];
+        [labelSprite setVisible:NO];
+        zoomedOut=YES;
     }
     if(messageType==kSGzoomIn)
     {
         [self setPointScalesAt:1.0f];
+        zoomedOut=NO;
     }
 }
 
@@ -79,20 +85,27 @@ static int shadowSteps=10;
         }
         
         //perim polys -- overlapping
-        for(int ip=0; ip<shadowSteps; ip++)
+        for(int ip=(zoomedOut ? shadowSteps-1 : 0); ip<shadowSteps; ip++)
         {
             CGPoint *first=&adjPoints[(ip==0) ? 0 : (ip*sortedChildren.count)-1];
+            
+            ccColor4F col=ccc4FFromccc4B(stepColours[ip]);
+            if(zoomedOut) col=ccc4f(col.r, col.g, col.b, 75);
+            
             ccDrawFilledPoly(first, sortedChildren.count, ccc4FFromccc4B(stepColours[ip]));
         }
         
-        for (id<Transform> prnode in ParentGO.ChildNodes) {
-            //world space pos of child node
-            CGPoint theirWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:prnode.Position];
-            
-            //draw prereq path to this node        
-            ccDrawColor4B(userHighCol.r, userHighCol.g, userHighCol.b, userHighCol.a);
-            ccDrawLine(myWorldPos, theirWorldPos);        
-        } 
+        if(!zoomedOut)
+        {
+            for (id<Transform> prnode in ParentGO.ChildNodes) {
+                //world space pos of child node
+                CGPoint theirWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:prnode.Position];
+                
+                //draw prereq path to this node        
+                ccDrawColor4B(userHighCol.r, userHighCol.g, userHighCol.b, userHighCol.a);
+                ccDrawLine(myWorldPos, theirWorldPos);        
+            }
+        }
     }
     else if (z==2)
     {
@@ -114,16 +127,19 @@ static int shadowSteps=10;
             
             float L=sqrtf((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
             
-            for (float width=-5; width<6; width+=0.75f)
+            int lines=5;
+            if(zoomedOut) lines=1;
+            
+            for (float width=-lines; width<(lines+1); width+=0.75f)
             {
                 float x1p=x1+width * (y2-y1) / L;
                 float x2p=x2+width * (y2-y1) / L;
                 float y1p=y1+width * (x1-x2) / L;
                 float y2p=y2+width * (x1-x2) / L;
                 
-
-                ccDrawColor4F(f4.r, f4.g, f4.b, f4.a);
-                //ccDrawColor4B(userCol.r, userCol.g, userCol.b, userCol.a);
+                if(zoomedOut) ccDrawColor4F(f4.r, f4.g, f4.b, 75);
+                else ccDrawColor4F(f4.r, f4.g, f4.b, f4.a);
+                
                 ccDrawLine(ccp(x1p, y1p), ccp(x2p, y2p));
             }
             

@@ -18,6 +18,8 @@
     CGPoint *allPerimPoints;
     CGPoint *scaledPerimPoints;
     int perimCount;
+    
+    CCLabelTTF *rlabel;
 }
 -(void)draw:(int)z;
 

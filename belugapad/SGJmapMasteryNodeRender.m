@@ -58,6 +58,7 @@ static int shadowSteps=10;
         [self setPointScalesAt:REGION_ZOOM_LEVEL];
         [nodeSprite setVisible:NO];
         [labelSprite setVisible:NO];
+        ParentGO.Visible=YES;
         zoomedOut=YES;
     }
     if(messageType==kSGzoomIn)
@@ -90,7 +91,7 @@ static int shadowSteps=10;
             CGPoint *first=&adjPoints[(ip==0) ? 0 : (ip*sortedChildren.count)-1];
             
             ccColor4F col=ccc4FFromccc4B(stepColours[ip]);
-            if(zoomedOut) col=ccc4f(col.r, col.g, col.b, 75);
+            if(zoomedOut) col=ccc4f(col.r, col.g, col.b, 0.3f);
             
             ccDrawFilledPoly(first, sortedChildren.count, ccc4FFromccc4B(stepColours[ip]));
         }
@@ -137,7 +138,7 @@ static int shadowSteps=10;
                 float y1p=y1+width * (x1-x2) / L;
                 float y2p=y2+width * (x1-x2) / L;
                 
-                if(zoomedOut) ccDrawColor4F(f4.r, f4.g, f4.b, 75);
+                if(zoomedOut) ccDrawColor4F(f4.r, f4.g, f4.b, 0.3f);
                 else ccDrawColor4F(f4.r, f4.g, f4.b, f4.a);
                 
                 ccDrawLine(ccp(x1p, y1p), ccp(x2p, y2p));

@@ -34,6 +34,16 @@
     {
         nodeSprite.visible=ParentGO.Visible;
     }
+    
+    if(messageType==kSGzoomOut)
+    {
+        [nodeSprite setVisible:YES];
+        [nodeSprite setOpacity:50];
+    }
+    if(messageType==kSGzoomIn)
+    {
+        [nodeSprite setOpacity:255];
+    }
 }
 
 -(void)doUpdate:(ccTime)delta

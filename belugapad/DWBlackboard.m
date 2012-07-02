@@ -19,6 +19,7 @@
 @synthesize AllStores;
 @synthesize CurrentStore;
 @synthesize ComponentRenderLayer;
+@synthesize MovementLayer;
 @synthesize PickupOffset;
 @synthesize hostLX;
 @synthesize hostLY;

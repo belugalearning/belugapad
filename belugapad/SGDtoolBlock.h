@@ -11,7 +11,7 @@
 
 @class SGDtoolBlockRender;
 
-@interface SGDtoolBlock : SGGameObject <Transform, Configurable, Selectable>
+@interface SGDtoolBlock : SGGameObject <Transform, Configurable, Selectable, Moveable>
 
 @property (retain) SGDtoolBlockRender *BlockRenderComponent;
 

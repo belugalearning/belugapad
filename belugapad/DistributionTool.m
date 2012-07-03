@@ -34,6 +34,10 @@
     //game world
     SGGameWorld *gw;
     
+    // and then any specifics we need for this tool
+    NSMutableArray *currentBlocks;
+    id<Moveable,Transform> currentPickupObject;
+    
 }
 
 @end
@@ -122,11 +126,17 @@
 
 -(void)populateGW
 {
+    // set our renderlayer
     gw.Blackboard.RenderLayer = renderLayer;
+    
+    // init our array for use with the created gameobjects
+    currentBlocks=[[NSMutableArray alloc]init];
+    
     id<Configurable, Selectable> newblock;
     newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,cy)] autorelease];
     
     [newblock setup];
+    [currentBlocks addObject:newblock];
     
 }
 
@@ -142,8 +152,16 @@
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
     
-    
-    
+    for(int i=0;i<[currentBlocks count];i++)
+    {
+        id <Moveable, Transform> thisObj=[currentBlocks objectAtIndex:i];
+        if(CGRectContainsPoint(thisObj.mySprite.boundingBox, location))
+        {
+            currentPickupObject=thisObj;
+            break;
+        }
+        
+    }
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -155,6 +173,12 @@
     
     lastTouch=location;
     
+    if(currentPickupObject)
+    {
+        currentPickupObject.Position=location;
+        [currentPickupObject move];
+    }
+    
     
 }
 
@@ -165,13 +189,14 @@
     //    location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     isTouching=NO;
-    
+    currentPickupObject=nil;
     
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouching=NO;
+    currentPickupObject=nil;
     // empty selected objects
 }
 
@@ -224,6 +249,8 @@
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
+    
+    [currentBlocks release];
     
     
     [super dealloc];

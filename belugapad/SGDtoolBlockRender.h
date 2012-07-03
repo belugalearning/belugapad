@@ -11,9 +11,10 @@
 
 @interface SGDtoolBlockRender : SGComponent
 {
-    id<Transform> ParentGO;
+    id<Transform,Moveable> ParentGO;
 }
 
 -(void)setup;
+-(void)move;
 
 @end

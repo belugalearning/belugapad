@@ -19,7 +19,7 @@
 
 @implementation SGDtoolBlockRender
 
--(SGDtoolBlockRender*)initWithGameObject:(id<Transform>)aGameObject
+-(SGDtoolBlockRender*)initWithGameObject:(id<Transform, Moveable>)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
@@ -44,12 +44,16 @@
 
     //blockSprite=[CCSprite spriteWithSpriteFrameName:@"node-complete.png"];
     blockSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/distribution/block.png")];
-    
+    ParentGO.mySprite=blockSprite;
     [blockSprite setPosition:ParentGO.Position];
     [blockSprite setVisible:ParentGO.Visible];
     [ParentGO.RenderLayer addChild:blockSprite];
 }
 
+-(void)move
+{
+    [blockSprite setPosition:ParentGO.Position];
+}
 
 
 @end

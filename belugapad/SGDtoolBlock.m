@@ -12,7 +12,7 @@
 @implementation SGDtoolBlock
 
 @synthesize BlockRenderComponent;
-
+@synthesize mySprite;
 
 //Transform protocol properties
 @synthesize Position, Visible, RenderLayer;
@@ -50,6 +50,10 @@
 
 }
 
+-(void)move
+{
+    [self.BlockRenderComponent move];
+}
 
 -(void)setup
 {

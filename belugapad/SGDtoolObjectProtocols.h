@@ -24,6 +24,15 @@
 
 @end
 
+@protocol Moveable
+
+@property CGPoint Position;
+@property (retain) CCSprite *mySprite;
+
+-(void)move;
+
+@end
+
 
 @protocol Selectable
 

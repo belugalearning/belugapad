@@ -15,21 +15,20 @@
 
 
 //Transform protocol properties
-@synthesize Position, Visible, RenderBatch;
+@synthesize Position, Visible, RenderLayer;
 
-@synthesize Selected, BlockSelectComponent, HitProximity;
+@synthesize Selected, HitProximity;
 
--(SGDtoolBlock*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition
+-(SGDtoolBlock*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
 {   
     if(self=[super initWithGameWorld:aGameWorld])
     {
-        self.RenderBatch=aRenderBatch;
+        self.RenderLayer=aRenderLayer;
         self.Position=aPosition;
         self.Selected=NO;
         self.Visible=NO;
-        
-        BlockRenderComponent=[[[SGDtoolBlockRender alloc] initWithGameObject:self] retain];
     }
+    BlockRenderComponent=[[SGDtoolBlockRender alloc] initWithGameObject:self];
     return self;
 }
 
@@ -48,10 +47,7 @@
 
 -(void)draw:(int)z
 {
-    if(self.Visible)
-    {
-        [self.BlockRenderComponent draw:z];
-    }
+
 }
 
 

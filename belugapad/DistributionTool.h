@@ -40,7 +40,6 @@
 -(void)populateGW;
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)doUpdate:(ccTime)delta;
--(void)doUpdateProximity:(ccTime)delta;
 -(void)draw;
 -(BOOL)evalExpression;
 -(void)evalProblem;

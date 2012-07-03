@@ -20,7 +20,7 @@
 
 @property CGPoint Position;
 @property BOOL Visible;
-@property (retain) CCSpriteBatchNode *RenderBatch;
+@property (retain) CCLayer *RenderLayer;
 
 @end
 
@@ -28,14 +28,13 @@
 @protocol Selectable
 
 @property BOOL Selected;
-@property (retain) SGDtoolBlockRender *BlockSelectComponent;
 @property float HitProximity;
 
 @end
 
 @protocol Configurable
 
--(void) setup;
+-(void)setup;
 
 @end
 

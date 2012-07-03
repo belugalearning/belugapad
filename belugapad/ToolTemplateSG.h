@@ -10,7 +10,7 @@
 #import "ToolConsts.h"
 #import "ToolScene.h"
 
-@interface ToolTemplateSG : CCLayer
+@interface ToolTemplateSG : ToolScene
 {
     // required toolhost stuff
     ToolHost *toolHost;
@@ -36,12 +36,10 @@
     CCLayer *renderLayer;
 }
 
-+(CCScene *)scene;
--(id)init;
+-(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;
 -(void)populateGW;
--(void)readPlist;
+-(void)readPlist:(NSDictionary*)pdef;
 -(void)doUpdate:(ccTime)delta;
--(void)doUpdateProximity:(ccTime)delta;
 -(void)draw;
 -(BOOL)evalExpression;
 -(void)evalProblem;

@@ -14,7 +14,6 @@
     id<Transform> ParentGO;
 }
 
--(void)draw:(int)z;
 -(void)setup;
 
 @end

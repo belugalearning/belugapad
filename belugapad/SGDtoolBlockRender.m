@@ -31,34 +31,11 @@
 
 -(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload
 {
-    if(messageType==kSGvisibilityChanged)
-    {
-        blockSprite.visible=ParentGO.Visible;
-    }
-    
-    if(messageType==kSGzoomOut)
-    {
-        [blockSprite setVisible:YES];
-        [blockSprite setOpacity:50];
-    }
-    if(messageType==kSGzoomIn)
-    {
-        [blockSprite setOpacity:255];
-    }
+
 }
 
 -(void)doUpdate:(ccTime)delta
 {
-    
-}
-
--(void)draw:(int)z
-{
-    //    CGPoint lp=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];
-    //    
-    //    //glLineWidth(6.0f);
-    //    ccDrawColor4B(255, 255, 255, 50);
-    //    ccDrawLine(lp, ccpAdd(lp, ccp(100,100)));
     
 }
 
@@ -70,7 +47,7 @@
     
     [blockSprite setPosition:ParentGO.Position];
     [blockSprite setVisible:ParentGO.Visible];
-    [ParentGO.RenderBatch addChild:blockSprite];
+    [ParentGO.RenderLayer addChild:blockSprite];
 }
 
 

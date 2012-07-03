@@ -15,6 +15,6 @@
 
 @property (retain) SGDtoolBlockRender *BlockRenderComponent;
 
--(SGDtoolBlock*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
+-(SGDtoolBlock*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition;
 
 @end

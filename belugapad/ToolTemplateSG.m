@@ -17,11 +17,6 @@
 #import "AppDelegate.h"
 
 #import "SGGameWorld.h"
-#import "SGJmapNode.h"
-#import "SGJmapMasteryNode.h"
-#import "SGJmapProximityEval.h"
-#import "SGJmapNodeSelect.h"
-#import "SGJmapRegion.h"
 
 
 @interface ToolTemplateSG()
@@ -34,159 +29,194 @@
     
     //game world
     SGGameWorld *gw;
-    
+
 }
 
 @end
 
 @implementation ToolTemplateSG
 
-#pragma mark - init
-
-+(CCScene *)scene
+#pragma mark - scene setup
+-(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
 {
-    CCScene *scene=[CCScene node];
-    ToolTemplateSG *layer=[ToolTemplateSG node];
-    [scene addChild:layer];
-    return scene;
-}
-
--(id)init
-{
+    toolHost=host;
+    
     if(self=[super init])
     {
-        self.isTouchEnabled=YES;
-        [[CCDirector sharedDirector] view].multipleTouchEnabled=NO;
+        //this will force override parent setting
+        //TODO: is multitouch actually required on this tool?
+        [[CCDirector sharedDirector] view].multipleTouchEnabled=YES;
         
         CGSize winsize=[[CCDirector sharedDirector] winSize];
+        winL=CGPointMake(winsize.width, winsize.height);
         lx=winsize.width;
         ly=winsize.height;
-        cx = lx / 2.0f;
-        cy = ly / 2.0f;
+        cx=lx / 2.0f;
+        cy=ly / 2.0f;
 
+        gw = [[SGGameWorld alloc] initWithGameScene:renderLayer];
+        gw.Blackboard.inProblemSetup = YES;
+        
+        self.BkgLayer=[[[CCLayer alloc]init] autorelease];
+        self.ForeLayer=[[[CCLayer alloc]init] autorelease];
+        
+        [toolHost addToolBackLayer:self.BkgLayer];
+        [toolHost addToolForeLayer:self.ForeLayer];
+        
+        renderLayer = [[CCLayer alloc] init];
+        [self.ForeLayer addChild:renderLayer];
         
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
-        loggingService = ac.loggingService;
-        usersService = ac.usersService;
         contentService = ac.contentService;
+        usersService = ac.usersService;
         
-        [usersService syncDeviceUsers];
         
-        [self schedule:@selector(doUpdate:) interval:1.0f / 60.0f];
+        [self readPlist:pdef];
+        [self populateGW];
         
-        [self schedule:@selector(doUpdateProximity:) interval:15.0f / 60.0f];
+        
+        gw.Blackboard.inProblemSetup = NO;
         
     }
     
     return self;
 }
 
-#pragma mark loops
+#pragma mark - loops
 
 -(void)doUpdate:(ccTime)delta
 {
-    [gw doUpdate:delta];
-    
-    //[daemon doUpdate:delta];
-    
+    if(autoMoveToNextProblem)
+    {
+        timeToAutoMoveToNextProblem+=delta;
+        if(timeToAutoMoveToNextProblem>=kTimeToAutoMove)
+        {
+            self.ProblemComplete=YES;
+            autoMoveToNextProblem=NO;
+            timeToAutoMoveToNextProblem=0.0f;
+        }
+    }   
 }
-
--(void)doUpdateProximity:(ccTime)delta
-{
-    //don't do proximity on general view
-}
-
-#pragma mark - draw
 
 -(void)draw
 {
     
 }
 
-#pragma mark - setup and parse
-
--(void)populateGW;
+#pragma mark - gameworld setup and population
+-(void)readPlist:(NSDictionary*)pdef
 {
-    gw=[[SGGameWorld alloc] initWithGameScene:self];
     
-    gw.Blackboard.RenderLayer=renderLayer;
+    // All our stuff needs to go into vars to read later
     
-    //setup render batch for nodes
-    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.plist")];
+    evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
+    rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];    
     
 }
 
--(void)readPlist
+-(void)populateGW
 {
+    gw.Blackboard.RenderLayer = renderLayer;
+    
     
 }
 
-#pragma mark - evaluation
-
--(BOOL)evalExpression
-{
-    return YES;
-}
-
--(void)evalProblem
-{
-
-}
-
--(void)resetProblem
-{
-
-}
-
-#pragma mark - meta question positioning
-
--(float)metaQuestionTitleYLocation
-{
-    return 700.0f;
-}
-
--(float)metaQuestionAnswersYLocation
-{
-    return 150.0f;
-}
-
-#pragma mark touch handling
-
+#pragma mark - touches events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if(isTouching)return;
     isTouching=YES;
     
     UITouch *touch=[touches anyObject];
-    CGPoint l=[touch locationInView:[touch view]];
-    l=[[CCDirector sharedDirector] convertToGL:l];
+    CGPoint location=[touch locationInView: [touch view]];
+    location=[[CCDirector sharedDirector] convertToGL:location];
+    //location=[self.ForeLayer convertToNodeSpace:location];
+    lastTouch=location;
+    
+    
     
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch=[touches anyObject];
-    CGPoint l=[touch locationInView:[touch view]];
-    l=[[CCDirector sharedDirector] convertToGL:l];
+    CGPoint location=[touch locationInView: [touch view]];
+    location=[[CCDirector sharedDirector] convertToGL:location];
+    location=[self.ForeLayer convertToNodeSpace:location];
+    
+    lastTouch=location;
+    
     
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    //    UITouch *touch=[touches anyObject];
+    //    CGPoint location=[touch locationInView: [touch view]];
+    //    location=[[CCDirector sharedDirector] convertToGL:location];
+    //location=[self.ForeLayer convertToNodeSpace:location];
     isTouching=NO;
+    
+    
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouching=NO;
+    // empty selected objects
 }
 
-#pragma mark - tear down
-
--(void)dealloc
+#pragma mark - evaluation
+-(BOOL)evalExpression
 {
+    return NO;
+}
+
+-(void)evalProblem
+{
+    BOOL isWinning=[self evalExpression];
+    
+    if(isWinning)
+    {
+        autoMoveToNextProblem=YES;
+        [toolHost showProblemCompleteMessage];
+    }
+    else {
+        if(evalMode==kProblemEvalOnCommit)[self resetProblem];
+    }
+    
+}
+
+#pragma mark - problem state
+-(void)resetProblem
+{
+    [toolHost showProblemIncompleteMessage];
+    [toolHost resetProblem];
+}
+
+#pragma mark - meta question
+-(float)metaQuestionTitleYLocation
+{
+    return kLabelTitleYOffsetHalfProp*cy;
+}
+
+-(float)metaQuestionAnswersYLocation
+{
+    return kMetaQuestionYOffsetPlaceValue*cy;
+}
+
+#pragma mark - dealloc
+-(void) dealloc
+{
+    //write log on problem switch
+    
+    //tear down
     [gw release];
+    
+    [self.ForeLayer removeAllChildrenWithCleanup:YES];
+    [self.BkgLayer removeAllChildrenWithCleanup:YES];
+    
     
     [super dealloc];
 }
-
 @end

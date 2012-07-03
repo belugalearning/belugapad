@@ -448,6 +448,7 @@ static float kTimeToPieShake=7.0f;
             [s handleMessage:kDWdismantle];
             [gw delayRemoveGameObject:s];
         }
+        
     }
 }
 
@@ -570,6 +571,11 @@ static float kTimeToPieShake=7.0f;
                     [s handleMessage:kDWmoveSpriteToHome];
                 }
                 [c handleMessage:kDWunsetAllMountedObjects];
+            }
+            
+            for(DWPieSplitterPieGameObject *p in activePie)
+            {
+                [p handleMessage:kDWreorderPieSlices];
             }
         }
 

@@ -124,7 +124,9 @@
 {
     gw.Blackboard.RenderLayer = renderLayer;
     id<Configurable, Selectable> newblock;
-    newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(50,50)] autorelease];
+    newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,cy)] autorelease];
+    
+    [newblock setup];
     
 }
 

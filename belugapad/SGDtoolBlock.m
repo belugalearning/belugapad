@@ -26,7 +26,7 @@
         self.RenderLayer=aRenderLayer;
         self.Position=aPosition;
         self.Selected=NO;
-        self.Visible=NO;
+        self.Visible=YES;
     }
     BlockRenderComponent=[[SGDtoolBlockRender alloc] initWithGameObject:self];
     return self;

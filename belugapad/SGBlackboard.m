@@ -12,6 +12,7 @@
 @implementation SGBlackboard
 
 @synthesize RenderLayer;
+@synthesize inProblemSetup;
 
 -(id) init
 {

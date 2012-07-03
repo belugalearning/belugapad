@@ -20,7 +20,6 @@
 -(SGComponent *)initWithGameObject:(SGGameObject *)aGameObject;
 -(void)doUpdate:(ccTime)delta;
 -(void)handleMessage:(SGMessageType)messageType;
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload;
 -(SGGameObject *)parentGameObject;
 -(void)cleanup;
 

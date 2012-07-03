@@ -22,13 +22,9 @@
 
 -(void)handleMessage:(SGMessageType)messageType;
 {
-    [self handleMessage:messageType andPayload:nil];
+    [self handleMessage:messageType];
 }
 
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload
-{
-   
-}
 
 -(SGGameObject *)parentGameObject
 {

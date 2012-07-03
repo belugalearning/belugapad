@@ -24,14 +24,9 @@
 	return self;
 }
 
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel
-{
-    @throw [NSException exceptionWithName:@"not implemented" reason:@"not implemented" userInfo:nil];
-}
-
 -(void)handleMessage:(SGMessageType)messageType
 {
-    [self handleMessage:messageType andPayload:nil withLogLevel:0];
+    [self handleMessage:messageType];
 }
 
 -(void)doUpdate:(ccTime)delta

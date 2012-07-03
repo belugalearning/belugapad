@@ -42,7 +42,7 @@ static float visibleProximity=1024.0f;
     }
 }
 
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload
+-(void)handleMessage:(SGMessageType)messageType
 {
 //    if(messageType==kSGzoomOut)
 //    {

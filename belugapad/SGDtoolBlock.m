@@ -33,10 +33,10 @@
 }
 
 
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel 
+-(void)handleMessage:(SGMessageType)messageType
 {
     //re-broadcast messages to components
-    [self.BlockRenderComponent handleMessage:messageType andPayload:payload];
+    [self.BlockRenderComponent handleMessage:messageType];
 }
 
 -(void)doUpdate:(ccTime)delta

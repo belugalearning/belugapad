@@ -46,12 +46,12 @@
     return self;
 }
 
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel
+-(void)handleMessage:(SGMessageType)messageType
 {
     //broadcast to components
-    [self.MNodeRenderComponent handleMessage:messageType andPayload:payload];
-    [self.ProximityEvalComponent handleMessage:messageType andPayload:payload];
-    [self.NodeSelectComponent handleMessage:messageType andPayload:payload];
+    [self.MNodeRenderComponent handleMessage:messageType];
+    [self.ProximityEvalComponent handleMessage:messageType];
+    [self.NodeSelectComponent handleMessage:messageType];
 }
 
 -(void)doUpdate:(ccTime)delta

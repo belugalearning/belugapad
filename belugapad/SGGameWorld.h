@@ -43,7 +43,7 @@
 
 -(void)addGameObject:(SGGameObject*)gameObject;
 -(void)doUpdate:(ccTime)delta;
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel;
+-(void)handleMessage:(SGMessageType)messageType;
 
 -(void)delayRemoveGameObject:(SGGameObject *)gameObject;
 

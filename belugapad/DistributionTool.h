@@ -1,5 +1,5 @@
 //
-//  ToolTemplateSG.h
+//  DistributionTool.h
 //  belugapad
 //
 //  Created by Gareth Jenkins on 23/04/2012.
@@ -10,7 +10,7 @@
 #import "ToolConsts.h"
 #import "ToolScene.h"
 
-@interface ToolTemplateSG : ToolScene
+@interface DistributionTool : ToolScene
 {
     // required toolhost stuff
     ToolHost *toolHost;

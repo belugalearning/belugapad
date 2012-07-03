@@ -38,6 +38,9 @@
 		5507087B15176A0600111BBB /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708791517625300111BBB /* ColumnAdditionConsts.m */; };
 		5507087C15176A0600111BBB /* ColumnAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708751517623E00111BBB /* ColumnAddition.m */; };
 		5508FEB015A2F2B8003720AF /* ToolTemplateSG.m in Sources */ = {isa = PBXBuildFile; fileRef = 5508FEAF15A2F2B7003720AF /* ToolTemplateSG.m */; };
+		5508FEB415A2FE8E003720AF /* DistributionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 5508FEB315A2FE8E003720AF /* DistributionTool.m */; };
+		5508FEB915A3068D003720AF /* SGDtoolBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 5508FEB815A3068D003720AF /* SGDtoolBlock.m */; };
+		5508FEBD15A309DE003720AF /* SGDtoolBlockRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5508FEBC15A309DE003720AF /* SGDtoolBlockRender.m */; };
 		551815631525EA920097E259 /* PartitionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815621525EA920097E259 /* PartitionTool.m */; };
 		5518156C1525F7500097E259 /* BPartitionRowDropTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815671525F7500097E259 /* BPartitionRowDropTarget.m */; };
 		5518156D1525F7500097E259 /* BPartitionObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815691525F7500097E259 /* BPartitionObjectRender.m */; };
@@ -449,6 +452,13 @@
 		550708791517625300111BBB /* ColumnAdditionConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAdditionConsts.m; sourceTree = "<group>"; };
 		5508FEAE15A2F2B7003720AF /* ToolTemplateSG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolTemplateSG.h; sourceTree = "<group>"; };
 		5508FEAF15A2F2B7003720AF /* ToolTemplateSG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolTemplateSG.m; sourceTree = "<group>"; };
+		5508FEB215A2FE8E003720AF /* DistributionTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistributionTool.h; sourceTree = "<group>"; };
+		5508FEB315A2FE8E003720AF /* DistributionTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DistributionTool.m; sourceTree = "<group>"; };
+		5508FEB515A30623003720AF /* SGDtoolObjectProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SGDtoolObjectProtocols.h; sourceTree = "<group>"; };
+		5508FEB715A3068D003720AF /* SGDtoolBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGDtoolBlock.h; sourceTree = "<group>"; };
+		5508FEB815A3068D003720AF /* SGDtoolBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGDtoolBlock.m; sourceTree = "<group>"; };
+		5508FEBB15A309DE003720AF /* SGDtoolBlockRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGDtoolBlockRender.h; sourceTree = "<group>"; };
+		5508FEBC15A309DE003720AF /* SGDtoolBlockRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGDtoolBlockRender.m; sourceTree = "<group>"; };
 		551815611525EA920097E259 /* PartitionTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartitionTool.h; sourceTree = "<group>"; };
 		551815621525EA920097E259 /* PartitionTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartitionTool.m; sourceTree = "<group>"; };
 		551815661525F7500097E259 /* BPartitionRowDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPartitionRowDropTarget.h; sourceTree = "<group>"; };
@@ -1229,6 +1239,24 @@
 			path = libs/AFNetworking/AFNetworking;
 			sourceTree = "<group>";
 		};
+		5508FEB615A30669003720AF /* Dtool */ = {
+			isa = PBXGroup;
+			children = (
+				5508FEB715A3068D003720AF /* SGDtoolBlock.h */,
+				5508FEB815A3068D003720AF /* SGDtoolBlock.m */,
+			);
+			name = Dtool;
+			sourceTree = "<group>";
+		};
+		5508FEBA15A30901003720AF /* Dtool */ = {
+			isa = PBXGroup;
+			children = (
+				5508FEBB15A309DE003720AF /* SGDtoolBlockRender.h */,
+				5508FEBC15A309DE003720AF /* SGDtoolBlockRender.m */,
+			);
+			name = Dtool;
+			sourceTree = "<group>";
+		};
 		551815651525F67F0097E259 /* Partition */ = {
 			isa = PBXGroup;
 			children = (
@@ -1426,6 +1454,8 @@
 			children = (
 				55FDAEDD157F7CBB00943176 /* ToolTemplate.h */,
 				55FDAEDE157F7CBB00943176 /* ToolTemplate.m */,
+				5508FEAE15A2F2B7003720AF /* ToolTemplateSG.h */,
+				5508FEAF15A2F2B7003720AF /* ToolTemplateSG.m */,
 				55AFD6A3156517FC00FF1886 /* TimesTables.h */,
 				55AFD6A4156517FC00FF1886 /* TimesTables.m */,
 				550708741517623E00111BBB /* ColumnAddition.h */,
@@ -1446,8 +1476,8 @@
 				7F2CAEDA154AB58B00BFBB6F /* LongDivision.m */,
 				55FDAEE1157F802900943176 /* PieSplitter.h */,
 				55FDAEE2157F802900943176 /* PieSplitter.m */,
-				5508FEAE15A2F2B7003720AF /* ToolTemplateSG.h */,
-				5508FEAF15A2F2B7003720AF /* ToolTemplateSG.m */,
+				5508FEB215A2FE8E003720AF /* DistributionTool.h */,
+				5508FEB315A2FE8E003720AF /* DistributionTool.m */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -2205,6 +2235,7 @@
 		7F7336A9158B353B00A37FC4 /* SGGameObjects */ = {
 			isa = PBXGroup;
 			children = (
+				5508FEB615A30669003720AF /* Dtool */,
 				7F7336AF158B374800A37FC4 /* Jmap */,
 			);
 			name = SGGameObjects;
@@ -2214,6 +2245,7 @@
 			isa = PBXGroup;
 			children = (
 				7F7336AB158B362500A37FC4 /* SGJmapObjectProtocols.h */,
+				5508FEB515A30623003720AF /* SGDtoolObjectProtocols.h */,
 			);
 			name = SGProtocols;
 			sourceTree = "<group>";
@@ -2221,6 +2253,7 @@
 		7F7336AE158B36EE00A37FC4 /* SGComponents */ = {
 			isa = PBXGroup;
 			children = (
+				5508FEBA15A30901003720AF /* Dtool */,
 				7F7336B0158B374F00A37FC4 /* Jmap */,
 			);
 			name = SGComponents;
@@ -2975,6 +3008,9 @@
 				7F66C88D159DC78C004E84C8 /* SGJmapRegion.m in Sources */,
 				7F66C891159DC9E5004E84C8 /* SGJmapRegionRender.m in Sources */,
 				5508FEB015A2F2B8003720AF /* ToolTemplateSG.m in Sources */,
+				5508FEB415A2FE8E003720AF /* DistributionTool.m in Sources */,
+				5508FEB915A3068D003720AF /* SGDtoolBlock.m in Sources */,
+				5508FEBD15A309DE003720AF /* SGDtoolBlockRender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

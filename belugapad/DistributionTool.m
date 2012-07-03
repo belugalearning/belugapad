@@ -1,10 +1,12 @@
 //
-//  ToolTemplateSG.m
+//  DistributionTool.m
 //  belugapad
 //
 //  Created by Gareth Jenkins on 23/04/2012.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
+
+#import "DistributionTool.h"
 
 #import "ToolTemplateSG.h"
 
@@ -17,9 +19,11 @@
 #import "AppDelegate.h"
 
 #import "SGGameWorld.h"
+#import "SGDtoolBlock.h"
+#import "SGDtoolBlockRender.h"
 
 
-@interface ToolTemplateSG()
+@interface DistributionTool()
 {
 @private
     LoggingService *loggingService;
@@ -29,12 +33,12 @@
     
     //game world
     SGGameWorld *gw;
-
+    
 }
 
 @end
 
-@implementation ToolTemplateSG
+@implementation DistributionTool
 
 #pragma mark - scene setup
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
@@ -53,7 +57,9 @@
         ly=winsize.height;
         cx=lx / 2.0f;
         cy=ly / 2.0f;
-
+        
+        
+        
         gw = [[SGGameWorld alloc] initWithGameScene:renderLayer];
         gw.Blackboard.inProblemSetup = YES;
         
@@ -117,7 +123,10 @@
 -(void)populateGW
 {
     gw.Blackboard.RenderLayer = renderLayer;
+    id<Configurable, Selectable> newblock;
+    newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,cy)] autorelease];
     
+    [newblock setup];
     
 }
 

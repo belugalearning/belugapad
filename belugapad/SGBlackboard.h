@@ -14,6 +14,7 @@
 }
 
 @property (retain) CCLayer *RenderLayer;
+@property BOOL inProblemSetup;
 
 
 @end

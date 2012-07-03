@@ -454,6 +454,7 @@ typedef enum {
             }
         }
         
+        [rgo release];
         rindex++;
     }
 }

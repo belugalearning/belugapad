@@ -30,19 +30,19 @@ static float visibleProximity=1024.0f;
         if(!ParentGO.Visible)
         {
             ParentGO.Visible=YES;
-            [ParentGO handleMessage:kSGvisibilityChanged andPayload:nil withLogLevel:0];
+            [ParentGO handleMessage:kSGvisibilityChanged];
         }
     }
     else {
         if(ParentGO.Visible)
         {
             ParentGO.Visible=NO;
-            [ParentGO handleMessage:kSGvisibilityChanged andPayload:nil withLogLevel:0];
+            [ParentGO handleMessage:kSGvisibilityChanged];
         }
     }
 }
 
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload
+-(void)handleMessage:(SGMessageType)messageType
 {
 //    if(messageType==kSGzoomOut)
 //    {

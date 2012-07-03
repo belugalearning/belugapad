@@ -232,7 +232,7 @@ typedef enum {
     NSLog(@"created regions");
     
     //setup rendering -- needs all node connections built
-    [gw handleMessage:kSGreadyRender andPayload:nil withLogLevel:0];
+    [gw handleMessage:kSGreadyRender];
     NSLog(@"send readyRender message");
     
     NSLog(@"end build");
@@ -454,6 +454,7 @@ typedef enum {
             }
         }
         
+        [rgo release];
         rindex++;
     }
 }
@@ -832,7 +833,7 @@ typedef enum {
     
     [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.25f scale:1.0f] rate:2.0f]];    
     
-    [gw handleMessage:kSGzoomIn andPayload:nil withLogLevel:0];
+    [gw handleMessage:kSGzoomIn];
     
     //needs immediate proximity check
     [self evalProximityAcrossGW];
@@ -850,7 +851,7 @@ typedef enum {
     //[mapLayer setPosition:ccp(-(nMaxX-nMinX) / 2.0f, -(nMaxY-nMinY) / 2.0f)];
     [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.25f position:ccp(-257, 212.5)] rate:2.0f]];
     
-    [gw handleMessage:kSGzoomOut andPayload:nil withLogLevel:0];
+    [gw handleMessage:kSGzoomOut];
 }
 
 #pragma mark - debug

@@ -49,14 +49,14 @@
 }
 
 
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel
+-(void)handleMessage:(SGMessageType)messageType
 {
 	if(!mPause)
 	{
         int ic=[gameObjects count];
         for(int i=0; i<ic; i++)
         {
-            [[gameObjects objectAtIndex:i] handleMessage:messageType andPayload:payload withLogLevel:logLevel];
+            [[gameObjects objectAtIndex:i] handleMessage:messageType];
         }
 	}
 }

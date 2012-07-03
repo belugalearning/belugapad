@@ -28,7 +28,7 @@
     return self;
 }
 
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload
+-(void)handleMessage:(SGMessageType)messageType
 {
     if(messageType==kSGvisibilityChanged)
     {

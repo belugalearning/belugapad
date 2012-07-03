@@ -29,10 +29,10 @@
     return self;
 }
 
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel
+-(void)handleMessage:(SGMessageType)messageType
 {
     //rebroadcast to components
-    [self.RegionRenderComponent handleMessage:messageType andPayload:payload];
+    [self.RegionRenderComponent handleMessage:messageType];
 }
 
 -(void)doUpdate:(ccTime)delta

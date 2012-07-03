@@ -10,12 +10,6 @@
 
 @class SGDtoolBlockRender;
 
-@protocol GameObject
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel;
--(void)doUpdate:(ccTime)delta;
-
-@end
-
 @protocol Transform
 
 @property CGPoint Position;

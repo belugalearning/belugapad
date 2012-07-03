@@ -37,6 +37,7 @@
 		0CF9187C14F54C1D00FAC58D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF9187B14F54C1D00FAC58D /* images */; };
 		5507087B15176A0600111BBB /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708791517625300111BBB /* ColumnAdditionConsts.m */; };
 		5507087C15176A0600111BBB /* ColumnAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708751517623E00111BBB /* ColumnAddition.m */; };
+		5508FEB015A2F2B8003720AF /* ToolTemplateSG.m in Sources */ = {isa = PBXBuildFile; fileRef = 5508FEAF15A2F2B7003720AF /* ToolTemplateSG.m */; };
 		551815631525EA920097E259 /* PartitionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815621525EA920097E259 /* PartitionTool.m */; };
 		5518156C1525F7500097E259 /* BPartitionRowDropTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815671525F7500097E259 /* BPartitionRowDropTarget.m */; };
 		5518156D1525F7500097E259 /* BPartitionObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815691525F7500097E259 /* BPartitionObjectRender.m */; };
@@ -446,6 +447,8 @@
 		550708751517623E00111BBB /* ColumnAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAddition.m; sourceTree = "<group>"; };
 		550708781517625300111BBB /* ColumnAdditionConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAdditionConsts.h; sourceTree = "<group>"; };
 		550708791517625300111BBB /* ColumnAdditionConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAdditionConsts.m; sourceTree = "<group>"; };
+		5508FEAE15A2F2B7003720AF /* ToolTemplateSG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolTemplateSG.h; sourceTree = "<group>"; };
+		5508FEAF15A2F2B7003720AF /* ToolTemplateSG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolTemplateSG.m; sourceTree = "<group>"; };
 		551815611525EA920097E259 /* PartitionTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartitionTool.h; sourceTree = "<group>"; };
 		551815621525EA920097E259 /* PartitionTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartitionTool.m; sourceTree = "<group>"; };
 		551815661525F7500097E259 /* BPartitionRowDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPartitionRowDropTarget.h; sourceTree = "<group>"; };
@@ -1443,6 +1446,8 @@
 				7F2CAEDA154AB58B00BFBB6F /* LongDivision.m */,
 				55FDAEE1157F802900943176 /* PieSplitter.h */,
 				55FDAEE2157F802900943176 /* PieSplitter.m */,
+				5508FEAE15A2F2B7003720AF /* ToolTemplateSG.h */,
+				5508FEAF15A2F2B7003720AF /* ToolTemplateSG.m */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -2969,6 +2974,7 @@
 				55F05634159A0E0400ACA07C /* BPlaceValueSelectionMgr.m in Sources */,
 				7F66C88D159DC78C004E84C8 /* SGJmapRegion.m in Sources */,
 				7F66C891159DC9E5004E84C8 /* SGJmapRegionRender.m in Sources */,
+				5508FEB015A2F2B8003720AF /* ToolTemplateSG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

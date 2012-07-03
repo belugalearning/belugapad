@@ -156,9 +156,9 @@
                 nextA=[BLMath angleFromNorthToLineFrom:ParentGO.Position to:nextP];
             }
             
-            if((nextA-thisA) > 50.0f)
+            if((nextA-thisA) > 8.0f)
             {
-                float lOfV=1.05f * [BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:thisP]];
+                float lOfV=0.9f * [BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:thisP]];
                 float newRot=thisA + ((nextA-thisA)*0.35);
                 
                 CGPoint newPos=[BLMath AddVector:ParentGO.Position toVector:[BLMath ProjectMovementWithX:0 andY:lOfV forRotation:newRot]];
@@ -228,7 +228,9 @@
         CGPoint *f=&adjPoints[0];
         float incr=ParentGO.RegionNumber * 0.02f;
         
-        ccDrawFilledPoly(f, perimCount, ccc4f(0.3f+incr, 0.35f+incr, 0.3f+incr, 1.0f));
+        ccColor4F c=ccc4FFromccc3B(ccc3(120, 153, 101));
+        
+        ccDrawFilledPoly(f, perimCount, ccc4f(c.r+incr, c.g+incr, c.b+incr, 1.0f));
     }
 }
 

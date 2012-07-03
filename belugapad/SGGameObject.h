@@ -10,6 +10,11 @@
 
 @class SGComponent;
 
+@protocol GameObject
+-(void)handleMessage:(SGMessageType)messageType;
+-(void)doUpdate:(ccTime)delta;
+@end
+
 @interface SGGameObject : NSObject {
 	SGGameWorld *gameWorld;
 }

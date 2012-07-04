@@ -69,7 +69,6 @@ static float kTimeToCageShake=7.0f;
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];
         self.ForeLayer=[[[CCLayer alloc]init] autorelease];
         self.NoScaleLayer=[[[CCLayer alloc]init] autorelease];
-        countLayer=[[[CCLayer alloc]init]autorelease];
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
         [toolHost addToolNoScaleLayer:self.NoScaleLayer];
@@ -158,7 +157,6 @@ static float kTimeToCageShake=7.0f;
 {
     renderLayer = [[CCLayer alloc] init];
     [self.ForeLayer addChild:renderLayer];
-    [renderLayer addChild:countLayer z:10];
     
     int currentColumnRows = 0;
     int currentColumnRopes = 0;
@@ -508,6 +506,8 @@ static float kTimeToCageShake=7.0f;
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
     enableAudioCounting = [[pdef objectForKey:ENABLE_AUDIO_COUNTING] boolValue];
+    
+    if(showCountOnBlock)countLabels=[[NSMutableArray alloc]init];
 
     
     // look at what positive columns are allowed to add/del
@@ -866,6 +866,8 @@ static float kTimeToCageShake=7.0f;
         [countLabelBlock setPosition:[s convertToNodeSpace:pos]];
         [s addChild:countLabelBlock];
         
+        [countLabels addObject:countLabelBlock];
+        
         [loggingService logEvent:BL_PA_PV_TOUCH_BEGIN_COUNT_OBJECT withAdditionalData:nil];
         
         if(fadeCount)
@@ -879,7 +881,10 @@ static float kTimeToCageShake=7.0f;
     else if(showCountOnBlock && !fadeCount && gw.Blackboard.SelectedObjects.count < lastCount)
     {
         [loggingService logEvent:BL_PA_PV_TOUCH_BEGIN_UNCOUNT_OBJECT withAdditionalData:nil];
-        [countLayer removeAllChildrenWithCleanup:YES];
+        for(CCLabelTTF *l in countLabels)
+        {
+            [l removeFromParentAndCleanup:YES];
+        }
     }
     lastCount = gw.Blackboard.SelectedObjects.count;
 

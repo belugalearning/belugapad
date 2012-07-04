@@ -29,12 +29,12 @@
     float cx, cy, lx, ly;
     
     CCLayer *renderLayer;
-    CCLayer *countLayer;
     
     CCLabelTTF *problemSubLabel;
     CCLabelTTF *problemCompleteLabel;
     CCLabelTTF *countLabel;
     CCLabelTTF *countLabelBlock;
+    NSMutableArray *countLabels;
 
     // GameWorld setup
 

@@ -505,7 +505,10 @@ static float kTimeToCageShake=7.0f;
     showCountOnBlock = [[pdef objectForKey:SHOW_COUNT_BLOCK] boolValue];
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
-    enableAudioCounting = [[pdef objectForKey:ENABLE_AUDIO_COUNTING] boolValue];
+    if([pdef objectForKey:DISABLE_AUDIO_COUNTING])
+        disableAudioCounting = [[pdef objectForKey:DISABLE_AUDIO_COUNTING] boolValue];
+    else
+        disableAudioCounting=NO;
     
     if(showCountOnBlock)countLabels=[[NSMutableArray alloc]init];
 
@@ -851,7 +854,7 @@ static float kTimeToCageShake=7.0f;
             [toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
     }
     
-    if(showCountOnBlock&&enableAudioCounting&&!gw.Blackboard.inProblemSetup&&gw.Blackboard.SelectedObjects.count<=20)
+    if(!disableAudioCounting&&!gw.Blackboard.inProblemSetup&&gw.Blackboard.SelectedObjects.count<=20)
     {
         NSString *path=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", gw.Blackboard.SelectedObjects.count];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(path)];

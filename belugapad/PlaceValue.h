@@ -66,6 +66,7 @@
     BOOL allowMulching;
     BOOL hasMovedBlock;
     BOOL hasMovedLayer;
+    BOOL enableAudioCounting;
     
     NSString *posCageSprite;
     NSString *negCageSprite;

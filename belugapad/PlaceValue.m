@@ -507,6 +507,7 @@ static float kTimeToCageShake=7.0f;
     showCountOnBlock = [[pdef objectForKey:SHOW_COUNT_BLOCK] boolValue];
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
+    enableAudioCounting = [[pdef objectForKey:ENABLE_AUDIO_COUNTING] boolValue];
 
     
     // look at what positive columns are allowed to add/del
@@ -850,16 +851,20 @@ static float kTimeToCageShake=7.0f;
             [toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
     }
     
-    
+    if(showCountOnBlock&&enableAudioCounting&&!gw.Blackboard.inProblemSetup&&gw.Blackboard.SelectedObjects.count<=20)
+    {
+        NSString *path=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", gw.Blackboard.SelectedObjects.count];
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(path)];
+    }
     
     if(showCountOnBlock && gw.Blackboard.SelectedObjects.count > lastCount && !gw.Blackboard.inProblemSetup)
     {
         
         CCSprite *s=((DWPlaceValueBlockGameObject*)gw.Blackboard.LastSelectedObject).mySprite;
-        CGPoint pos=[s position];
+        CGPoint pos=[renderLayer convertToWorldSpace:[s position]];
         countLabelBlock=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", gw.Blackboard.SelectedObjects.count] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-        [countLabelBlock setPosition:pos];
-        [countLayer addChild:countLabelBlock];
+        [countLabelBlock setPosition:[s convertToNodeSpace:pos]];
+        [s addChild:countLabelBlock];
         
         [loggingService logEvent:BL_PA_PV_TOUCH_BEGIN_COUNT_OBJECT withAdditionalData:nil];
         

@@ -232,7 +232,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     
     //let tool do updates
-    [currentTool doUpdateOnTick:delta];
+    if(!isPaused)[currentTool doUpdateOnTick:delta];
 }
 
 -(void)doUpdateOnSecond:(ccTime)delta

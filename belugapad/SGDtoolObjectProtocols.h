@@ -24,6 +24,8 @@
 @property (retain) CCSprite *mySprite;
 
 -(void)move;
+-(void)amIProximateTo:(CGPoint)location;
+-(void)resetTint;
 
 @end
 

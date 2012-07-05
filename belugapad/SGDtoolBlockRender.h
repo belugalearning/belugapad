@@ -16,5 +16,7 @@
 
 -(void)setup;
 -(void)move;
+-(void)amIProximateTo:(CGPoint)location;
+-(void)resetTint;
 
 @end

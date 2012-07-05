@@ -37,6 +37,8 @@
     NSMutableArray *countLabels;
 
     // GameWorld setup
+    
+    BOOL isProblemComplete;
 
     int ropesforColumn;
     int rows;    
@@ -68,6 +70,7 @@
     BOOL hasMovedLayer;
     BOOL disableAudioCounting;
     
+
     NSString *posCageSprite;
     NSString *negCageSprite;
     NSString *pickupSprite;
@@ -144,11 +147,11 @@
 -(void)problemStateChanged;
 -(void)evalProblem;
 -(void)doWinning;
--(BOOL)evalProblemCountSeq:(NSString*)problemType;
+-(BOOL)evalProblemCountSeq;
 -(void)calcProblemCountSequence;
 -(void)calcProblemTotalCount;
--(BOOL)evalProblemTotalCount:(NSString*)problemType;
--(void)evalProblemMatrixMatch;
+-(BOOL)evalProblemTotalCount;
+-(BOOL)evalProblemMatrixMatch;
 -(void)snapLayerToPosition;
 -(void)tintGridColour:(ccColor3B)toThisColour;
 -(void)tintGridColour:(int)thisGrid toColour:(ccColor3B)toThisColour;

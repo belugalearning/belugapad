@@ -129,6 +129,8 @@ static float kTimeToCageShake=7.0f;
     // check the problem type
     if(timeSinceInteractionOrShake>7.0f)
     {
+        [self isProblemComplete];
+        
         if([solutionType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE] || [solutionType isEqualToString:TOTAL_COUNT])
         {
             // not enough items on - shake cage
@@ -143,6 +145,10 @@ static float kTimeToCageShake=7.0f;
                 [gw handleMessage:kDWcheckMyMountIsNet andPayload:nil withLogLevel:-1];
                 timeSinceInteractionOrShake=0.0f;
             }
+        }
+        if(isProblemComplete)
+        {
+            
         }
     }
 }
@@ -714,9 +720,12 @@ static float kTimeToCageShake=7.0f;
 }
 -(void)doIncorrect
 {
+    if(evalMode==kProblemEvalOnCommit)
+    {
     // this method shows the incomplete message and deselects all selected objects
-    [toolHost showProblemIncompleteMessage];
-    [gw handleMessage:kDWdeselectAll andPayload:nil withLogLevel:-1];
+        [toolHost showProblemIncompleteMessage];
+        [gw handleMessage:kDWdeselectAll andPayload:nil withLogLevel:-1];
+    }
 }
 
 #pragma mark - calculation and evaluation
@@ -796,52 +805,60 @@ static float kTimeToCageShake=7.0f;
 
 -(void)evalProblem
 {
+    [self isProblemComplete];
     
-    if([solutionType isEqualToString:COUNT_SEQUENCE]){
-        [self evalProblemCountSeq:COUNT_SEQUENCE];
-    }
-    else if([solutionType isEqualToString:TOTAL_COUNT]){
-        [self evalProblemTotalCount:TOTAL_COUNT];
-    }    
+    if(isProblemComplete)
+        [self doWinning];
+    else
+        [self doIncorrect];
     
-    else if([solutionType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE]) {
-        BOOL seqIsOk = [self evalProblemCountSeq:TOTAL_COUNT_AND_COUNT_SEQUENCE];
-        BOOL countIsOk = [self evalProblemTotalCount:TOTAL_COUNT_AND_COUNT_SEQUENCE];
-        
-        if(seqIsOk && countIsOk)
-            [self doWinning];
-    }
-    else if([solutionType isEqualToString:MATRIX_MATCH]){
-        [self evalProblemMatrixMatch];
-    }
     
 }
 
--(BOOL)evalProblemCountSeq:(NSString*)problemType
+-(void)isProblemComplete
 {
-    if([problemType isEqualToString:COUNT_SEQUENCE])
-    {
-        if(gw.Blackboard.SelectedObjects.count == [[solutionsDef objectForKey:SOLUTION_VALUE] intValue])
-        {
-            [self doWinning];
-            return YES;
-        }
-        else if(gw.Blackboard.SelectedObjects.count != [[solutionsDef objectForKey:SOLUTION_VALUE] intValue] && evalMode==kProblemEvalOnCommit)
-        {
-            [self doIncorrect];
-            return NO;
-        }
+    if([solutionType isEqualToString:COUNT_SEQUENCE]){
+        isProblemComplete=[self evalProblemCountSeq];
     }
+    else if([solutionType isEqualToString:TOTAL_COUNT]){
+        isProblemComplete=[self evalProblemTotalCount];
+    }    
     
-    if([problemType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE])
-    {
-        if(gw.Blackboard.SelectedObjects.count == [[solutionsDef objectForKey:SOLUTION_VALUE] intValue])
-            return YES;
-
-        else if(gw.Blackboard.SelectedObjects.count != [[solutionsDef objectForKey:SOLUTION_VALUE] intValue] && evalMode==kProblemEvalOnCommit)
-            return NO;
-
+    else if([solutionType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE]) {
+        BOOL seqIsOk = [self evalProblemCountSeq];
+        BOOL countIsOk = [self evalProblemTotalCount];
+        
+        if(seqIsOk && countIsOk)
+            isProblemComplete=YES;
     }
+    else if([solutionType isEqualToString:MATRIX_MATCH]){
+        isProblemComplete=[self evalProblemMatrixMatch];
+    }  
+}
+
+-(BOOL)evalProblemCountSeq
+{
+//    if([problemType isEqualToString:COUNT_SEQUENCE])
+//    {
+        if(gw.Blackboard.SelectedObjects.count == [[solutionsDef objectForKey:SOLUTION_VALUE] intValue])
+        {
+            return YES;
+        }
+        else if(gw.Blackboard.SelectedObjects.count != [[solutionsDef objectForKey:SOLUTION_VALUE] intValue] && evalMode==kProblemEvalOnCommit)
+        {
+            return NO;
+        }
+//    }
+    
+//    if([problemType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE])
+//    {
+//        if(gw.Blackboard.SelectedObjects.count == [[solutionsDef objectForKey:SOLUTION_VALUE] intValue])
+//            return YES;
+//
+//        else if(gw.Blackboard.SelectedObjects.count != [[solutionsDef objectForKey:SOLUTION_VALUE] intValue] && evalMode==kProblemEvalOnCommit)
+//            return NO;
+//
+//    }
     // if we get to the end we've not met all our conditions anywya so return no
     return NO;
 }
@@ -915,34 +932,36 @@ static float kTimeToCageShake=7.0f;
         }
     }
 }
--(BOOL)evalProblemTotalCount:(NSString*)problemType
+-(BOOL)evalProblemTotalCount
 {
     [self calcProblemTotalCount];
-    if([problemType isEqualToString:TOTAL_COUNT])
-    {
+//    if([problemType isEqualToString:TOTAL_COUNT])
+//    {
         if(totalCount == expectedCount && !gw.Blackboard.inProblemSetup)
         {
-            [self doWinning];
             return YES;
         }
         else if(totalCount != expectedCount && evalMode==kProblemEvalOnCommit)
         {
-            [self doIncorrect];
             return NO;
         }
-    }
-    if([problemType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE])
-    {
-        if(totalCount == expectedCount && !gw.Blackboard.inProblemSetup)
-            return YES;
+        else {
+            return NO;
+        }
     
-        else if(totalCount != expectedCount && evalMode==kProblemEvalOnCommit)
-            return NO;
-    }
-    return NO;
+//    }
+//    if([problemType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE])
+//    {
+//        if(totalCount == expectedCount && !gw.Blackboard.inProblemSetup)
+//            return YES;
+//    
+//        else if(totalCount != expectedCount && evalMode==kProblemEvalOnCommit)
+//            return NO;
+//    }
+//    return NO;
 }
 
--(void)evalProblemMatrixMatch
+-(BOOL)evalProblemMatrixMatch
 {
     float solutionsFound = 0;
     BOOL canEval=NO;
@@ -994,10 +1013,12 @@ static float kTimeToCageShake=7.0f;
     }
     
     if(solutionsFound == solutionMatrix.count && canEval)
-        [self doWinning];
+        return YES;
 
     else if(solutionsFound != solutionMatrix.count && evalMode==kProblemEvalOnCommit && canEval)
-        [self doIncorrect];
+        return NO;
+    else 
+        return NO;
 
     
 }

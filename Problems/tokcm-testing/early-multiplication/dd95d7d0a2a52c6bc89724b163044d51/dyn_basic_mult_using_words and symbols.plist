@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>show that {$multiplier} [[$wordorsymbol]] 2 equals {$multiplier*2}</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>with 2 blocks switching between &quot;times&quot; and &quot;lots of&quot; and &quot;x&quot;</string>
+	<key>TOOL_KEY</key>
+	<string>PartitionTool</string>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>PUT_IN_ROW</key>
+			<integer>0</integer>
+			<key>LENGTH</key>
+			<string>{$multiplier*2}</string>
+			<key>LABEL</key>
+			<string>{$multiplier*2}</string>
+		</dict>
+	</array>
+	<key>INIT_BARS</key>
+	<array>
+		<dict>
+			<key>LOCKED</key>
+			<true/>
+			<key>LENGTH</key>
+			<string>{$multiplier*2}</string>
+		</dict>
+		<dict>
+			<key>LOCKED</key>
+			<false/>
+			<key>LENGTH</key>
+			<string>{$multiplier*2}</string>
+		</dict>
+	</array>
+	<key>INIT_CAGES</key>
+	<array>
+		<dict>
+			<key>LENGTH</key>
+			<integer>2</integer>
+			<key>LABEL</key>
+			<string>2</string>
+			<key>QUANTITY</key>
+			<string>{$multiplier}</string>
+		</dict>
+	</array>
+	<key>DVARS</key>
+	<dict>
+		<key>$multiplier</key>
+		<dict>
+			<key>MIN</key>
+			<string>2</string>
+			<key>MAX</key>
+			<string>6</string>
+		</dict>
+		<key>$interval</key>
+		<dict>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>19</string>
+		</dict>
+	</dict>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>$wordorsymbol</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>times</string>
+				<string>lots of</string>
+				<string>x</string>
+			</array>
+		</dict>
+	</dict>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>REJECT_MODE</key>
+	<integer>0</integer>
+</dict>
+</plist>

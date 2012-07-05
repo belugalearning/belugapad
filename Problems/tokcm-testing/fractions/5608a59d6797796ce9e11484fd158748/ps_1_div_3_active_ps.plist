@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>divide 1 by 3</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>1 divided by 3, active and pre-split</string>
+	<key>TOOL_KEY</key>
+	<string>PieSplitter</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>DIVIDEND</key>
+	<integer>1</integer>
+	<key>DIVISOR</key>
+	<integer>3</integer>
+	<key>NUMBER_ACTIVE_PIES</key>
+	<integer>1</integer>
+	<key>NUMBER_ACTIVE_SQUARES</key>
+	<integer>3</integer>
+	<key>START_PROBLEM_SPLIT</key>
+	<true/>
+</dict>
+</plist>

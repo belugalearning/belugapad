@@ -308,7 +308,6 @@ static float kTimeToPieShake=7.0f;
     [cont.mySpriteBot setScale:1.0f];
     cont.ScaledUp=YES;
     [activeCon addObject:cont];
-    [cont handleMessage:kDWswitchParentToMovementLayer];
 }
 
 -(void)addGhostPie
@@ -470,7 +469,7 @@ static float kTimeToPieShake=7.0f;
 }
 -(void)balanceLayer
 {
-    NSLog(@"layer pos before: %@", NSStringFromCGPoint(movementLayer.position));
+    //NSLog(@"layer pos before: %@", NSStringFromCGPoint(movementLayer.position));
     float incOffset=50.0f;
     // first we need the average position of all of our nodes
     float sumOfAllContainers=0.0f;
@@ -485,9 +484,9 @@ static float kTimeToPieShake=7.0f;
     layerOffset=sumOfAllContainers/[activeCon count]*(incOffset);
     lastLayerOffset=layerOffset;
     
-    NSLog(@"layerOffset: %f, sumOfAllContainers %f, activeCon count %d", layerOffset, sumOfAllContainers, [activeCon count]);
+    //NSLog(@"layerOffset: %f, sumOfAllContainers %f, activeCon count %d", layerOffset, sumOfAllContainers, [activeCon count]);
     [movementLayer runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(movementLayer.position.x, layerOffset)]];
-    NSLog(@"layer pos after: %@", NSStringFromCGPoint(movementLayer.position));
+    //NSLog(@"layer pos after: %@", NSStringFromCGPoint(movementLayer.position));
     
 }
 -(void)balanceContainers

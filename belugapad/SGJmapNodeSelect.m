@@ -31,6 +31,11 @@
     return self;
 }
 
+-(void)handleMessage:(SGMessageType)messageType
+{
+    
+}
+
 -(BOOL)trySelectionForPosition:(CGPoint)pos
 {
     BOOL ret=NO;

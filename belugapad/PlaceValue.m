@@ -146,9 +146,10 @@ static float kTimeToCageShake=7.0f;
                 timeSinceInteractionOrShake=0.0f;
             }
         }
-        if(isProblemComplete)
+        if(isProblemComplete && evalMode==kProblemEvalOnCommit)
         {
-            
+            [toolHost shakeCommitButton];
+            timeSinceInteractionOrShake=0.0f;
         }
     }
 }

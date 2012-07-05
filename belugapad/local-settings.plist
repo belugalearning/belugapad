@@ -11,6 +11,6 @@
 	<key>PROBLEM_PIPELINE-g</key>
 	<string>/pipeline-testing/gj-pipeline-test.plist</string>
 	<key>RELEASE_MODE</key>
-	<false/>
+	<true/>
 </dict>
 </plist>

@@ -44,6 +44,7 @@
     CCTexture2D *bubbleTexSelected;
     
     CCSprite *bubbleSprite;
+    BOOL usedBubble;
     BOOL holdingBubble;
     float holdingBubbleOffset;
     int bubblePushDir;

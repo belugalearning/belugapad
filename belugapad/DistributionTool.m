@@ -131,12 +131,15 @@
     
     // init our array for use with the created gameobjects
     currentBlocks=[[NSMutableArray alloc]init];
-    
-    id<Configurable, Selectable> newblock;
-    newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,cy)] autorelease];
-    
-    [newblock setup];
-    [currentBlocks addObject:newblock];
+    for(int i=0;i<3;i++)
+    {
+        id<Configurable, Selectable> newblock;
+        newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx+(100*i),cy)] autorelease];
+        
+        [newblock setup];
+        [currentBlocks addObject:newblock];
+        
+    }
     
 }
 
@@ -177,6 +180,14 @@
     {
         currentPickupObject.Position=location;
         [currentPickupObject move];
+        
+        for(id go in gw.AllGameObjects)
+        {
+            if([go conformsToProtocol:@protocol(Moveable)])
+            {
+                [go amIProximateTo:location];
+            }
+        }
     }
     
     
@@ -189,7 +200,20 @@
     //    location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     isTouching=NO;
+    
+    if(currentPickupObject)
+    {
+        for(id go in gw.AllGameObjects)
+        {
+            if([go conformsToProtocol:@protocol(Moveable)])
+            {
+                [go resetTint];
+            }
+        }
+    }
     currentPickupObject=nil;
+    
+    
     
 }
 

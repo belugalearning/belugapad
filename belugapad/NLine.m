@@ -132,8 +132,16 @@ static float kTimeToBubbleShake=7.0f;
     
     timeSinceInteractionOrShake+=delta;
     if(timeSinceInteractionOrShake>kTimeToBubbleShake)
-    {
-        [self animShakeBubble];
+    { 
+        if(!usedBubble)
+        {
+            [self animShakeBubble];            
+        }
+        // are we in the right place, but haven't pressed eval?
+        if(evalTarget==lastBubbleLoc && evalMode==kProblemEvalOnCommit)
+        {
+            [toolHost shakeCommitButton];
+        }
         timeSinceInteractionOrShake=0;
     }
     
@@ -379,6 +387,7 @@ static float kTimeToBubbleShake=7.0f;
     
     else if([BLMath DistanceBetween:location and:bubbleSprite.position]<kBubbleProx)
     {
+        if(!usedBubble)usedBubble=YES;
         holdingBubbleOffset=location.x - bubbleSprite.position.x;
         holdingBubble=YES;
         

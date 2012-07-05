@@ -296,13 +296,16 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [Zubi hideZubi];
 }
 
+-(void) shakeCommitButton
+{
+    [commitBtn runAction:[InteractionFeedback dropAndBounceAction]];
+}
+
 -(void) loadTool
 {
     //reset multitouch
     //if tool requires multitouch, it will need to reset accordingly
         [[CCDirector sharedDirector] view].multipleTouchEnabled=NO;
-
-    
 }
 
 -(void) gotoFirstProblem: (ccTime) delta

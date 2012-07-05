@@ -60,6 +60,16 @@
     [self.BlockRenderComponent setup];
 }
 
+-(void)amIProximateTo:(CGPoint)location
+{
+    [self.BlockRenderComponent amIProximateTo:location];
+}
+
+-(void)resetTint
+{
+    [self.BlockRenderComponent resetTint];
+}
+
 -(void)dealloc
 {
     [BlockRenderComponent release];

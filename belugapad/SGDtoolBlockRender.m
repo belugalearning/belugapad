@@ -9,6 +9,7 @@
 #import "global.h"
 #import "SGDtoolBlockRender.h"
 #import "SGDtoolBlock.h"
+#import "BLMath.h"
 
 @interface SGDtoolBlockRender()
 {
@@ -55,5 +56,20 @@
     [blockSprite setPosition:ParentGO.Position];
 }
 
+-(void)amIProximateTo:(CGPoint)location
+{
+    if([BLMath DistanceBetween:ParentGO.Position and:location]<100.0f)
+    {
+        [ParentGO.mySprite setColor:ccc3(0,255,0)];
+    }
+    else {
+        [ParentGO.mySprite setColor:ccc3(255,255,255)];
+    }
+}
+
+-(void)resetTint
+{
+    [ParentGO.mySprite setColor:ccc3(255,255,255)];
+}
 
 @end

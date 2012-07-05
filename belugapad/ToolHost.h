@@ -144,6 +144,7 @@ typedef enum {
 -(void) addToolForeLayer:(CCLayer *) foreLayer;
 -(void) addToolBackLayer:(CCLayer *) backLayer;
 -(void) populatePerstLayer;
+-(void) shakeCommitButton;
 -(void) gotoNewProblem;
 -(void) loadProblem;
 -(void) resetProblem;

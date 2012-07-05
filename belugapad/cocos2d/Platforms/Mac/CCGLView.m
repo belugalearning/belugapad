@@ -32,7 +32,8 @@
 #import "../../ccMacros.h"
 #ifdef __CC_PLATFORM_MAC
 
-#import "../../Platforms/CCGL.h"
+#import <OpenGL/gl.h>
+
 #import "CCGLView.h"
 #import "CCDirectorMac.h"
 #import "CCEventDispatcher.h"
@@ -64,8 +65,8 @@
 		NSOpenGLPFADoubleBuffer,
 		NSOpenGLPFADepthSize, 24,
 
-#if 0
 		// Must specify the 3.2 Core Profile to use OpenGL 3.2
+#if 0 
 		NSOpenGLPFAOpenGLProfile,
 		NSOpenGLProfileVersion3_2Core,
 #endif
@@ -112,11 +113,6 @@
 
 //	GLint order = -1;
 //	[[self openGLContext] setValues:&order forParameter:NSOpenGLCPSurfaceOrder];
-}
-
-- (NSUInteger) depthFormat
-{
-	return 24;
 }
 
 - (void) reshape

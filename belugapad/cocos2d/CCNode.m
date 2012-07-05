@@ -88,7 +88,7 @@ static NSUInteger globalOrderOfArrival = 1;
 @synthesize position = position_;
 @synthesize anchorPoint = anchorPoint_, anchorPointInPoints = anchorPointInPoints_;
 @synthesize contentSize = contentSize_;
-@synthesize ignoreAnchorPointForPosition = ignoreAnchorPointForPosition_;
+@synthesize isRelativeAnchorPoint = isRelativeAnchorPoint_;
 @synthesize skewX = skewX_, skewY = skewY_;
 
 #pragma mark CCNode - Init & cleanup
@@ -112,8 +112,8 @@ static NSUInteger globalOrderOfArrival = 1;
 		anchorPointInPoints_ = anchorPoint_ = CGPointZero;
 
 
-		// "whole screen" objects. like Scenes and Layers, should set ignoreAnchorPointForPosition to YES
-		ignoreAnchorPointForPosition_ = NO;
+		// "whole screen" objects. like Scenes and Layers, should set isRelativeAnchorPoint to NO
+		isRelativeAnchorPoint_ = YES;
 
 		isTransformDirty_ = isInverseDirty_ = YES;
 
@@ -167,7 +167,7 @@ static NSUInteger globalOrderOfArrival = 1;
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat:@"<%@ = %p | Tag = %i>", [self class], self, tag_];
+	return [NSString stringWithFormat:@"<%@ = %08X | Tag = %i>", [self class], self, tag_];
 }
 
 - (void) dealloc
@@ -230,12 +230,10 @@ static NSUInteger globalOrderOfArrival = 1;
 	isTransformDirty_ = isInverseDirty_ = YES;
 }
 
--(void) setIgnoreAnchorPointForPosition: (BOOL)newValue
+-(void) setIsRelativeAnchorPoint: (BOOL)newValue
 {
-	if( newValue != ignoreAnchorPointForPosition_ ) {
-		ignoreAnchorPointForPosition_ = newValue;
-		isTransformDirty_ = isInverseDirty_ = YES;
-	}
+	isRelativeAnchorPoint_ = newValue;
+	isTransformDirty_ = isInverseDirty_ = YES;
 }
 
 -(void) setAnchorPoint:(CGPoint)point
@@ -760,7 +758,7 @@ static NSUInteger globalOrderOfArrival = 1;
 		float x = position_.x;
 		float y = position_.y;
 
-		if ( ignoreAnchorPointForPosition_ ) {
+		if ( !isRelativeAnchorPoint_ ) {
 			x += anchorPointInPoints_.x;
 			y += anchorPointInPoints_.y;
 		}

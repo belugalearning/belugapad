@@ -35,7 +35,6 @@
 #import "CCDirector.h"
 #import "Support/CGPointExtension.h"
 #import "Support/TransformUtils.h"
-#import "Support/CCFileUtils.h"
 
 // external
 #import "kazmath/GL/matrix.h"
@@ -43,36 +42,14 @@
 @implementation CCLabelAtlas
 
 #pragma mark CCLabelAtlas - Creation & Init
-+(id) labelWithString:(NSString*)string charMapFile:(NSString*)charmapfile itemWidth:(NSUInteger)w itemHeight:(NSUInteger)h startCharMap:(NSUInteger)c
++(id) labelWithString:(NSString*)string charMapFile:(NSString*)charmapfile itemWidth:(NSUInteger)w itemHeight:(NSUInteger)h startCharMap:(unsigned char)c
 {
 	return [[[self alloc] initWithString:string charMapFile:charmapfile itemWidth:w itemHeight:h startCharMap:c] autorelease];
 }
 
-+(id) labelWithString:(NSString*)string fntFile:(NSString*)fntFile
+-(id) initWithString:(NSString*) theString charMapFile: (NSString*) charmapfile itemWidth:(NSUInteger)w itemHeight:(NSUInteger)h startCharMap:(unsigned char)c
 {
-	return [[[self alloc] initWithString:string fntFile:fntFile] autorelease];
-}
 
--(id) initWithString:(NSString*) theString fntFile:(NSString*)fntFile
-{
-	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:[[CCFileUtils sharedFileUtils] fullPathFromRelativePath:fntFile]];
-	
-	NSAssert( [[dict objectForKey:@"version"] intValue] == 1, @"Unsupported version. Upgrade cocos2d version");
-
-	NSString *textureFilename = [dict objectForKey:@"textureFilename"];
-	NSUInteger width = [[dict objectForKey:@"itemWidth"] unsignedIntValue]  / CC_CONTENT_SCALE_FACTOR();
-	NSUInteger height = [[dict objectForKey:@"itemHeight"] unsignedIntValue] / CC_CONTENT_SCALE_FACTOR();
-	NSUInteger startChar = [[dict objectForKey:@"firstChar"] unsignedIntValue];
-	
-	return [self initWithString:theString
-					charMapFile:textureFilename
-					  itemWidth:width
-					 itemHeight:height
-				   startCharMap:startChar];
-}
-
--(id) initWithString:(NSString*) theString charMapFile: (NSString*) charmapfile itemWidth:(NSUInteger)w itemHeight:(NSUInteger)h startCharMap:(NSUInteger)c
-{
 	if ((self=[super initWithTileFile:charmapfile tileWidth:w tileHeight:h itemsToRender:[theString length] ]) ) {
 
 		mapStartChar_ = c;

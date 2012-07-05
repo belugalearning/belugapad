@@ -61,7 +61,6 @@
 #import "CCActionGrid.h"
 #import "CCActionProgressTimer.h"
 #import "CCActionPageTurn3D.h"
-#import "CCActionCatmullRom.h"
 
 #import "CCAnimation.h"
 #import "CCAnimationCache.h"
@@ -103,7 +102,6 @@
 #import "CCCamera.h"
 #import "CCProtocols.h"
 #import "CCNode.h"
-#import "CCNode+Debug.h"
 #import "CCDirector.h"
 #import "CCAtlasNode.h"
 #import "CCGrabber.h"

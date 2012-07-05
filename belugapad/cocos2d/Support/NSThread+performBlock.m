@@ -18,7 +18,7 @@ typedef void (^BlockWithParam)(id param);
 	BlockWithParam block;
 	id param;
 }
-@property (nonatomic,copy) BlockWithParam block;
+@property (nonatomic,copy) id block;
 @property (nonatomic,readwrite,retain) id param;
 @end
 
@@ -44,7 +44,7 @@ typedef void (^BlockWithParam)(id param);
 {
     [self performSelector:@selector(executeBlock:) 
                  onThread:self
-			   withObject: [[block copy] autorelease]
+			   withObject: block
 			waitUntilDone: wait];
 }
 

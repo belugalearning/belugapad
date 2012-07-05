@@ -88,18 +88,9 @@ const NSUInteger defaultCapacity = 29;
 	return [[[self alloc] initWithFile:imageFile capacity:defaultCapacity] autorelease];
 }
 
--(id)init
-{
-    return [self initWithTexture:[[[CCTexture2D alloc] init] autorelease] capacity:0];
-}
-
--(id)initWithFile:(NSString *)fileImage capacity:(NSUInteger)capacity
-{
-	CCTexture2D *tex = [[CCTextureCache sharedTextureCache] addImage:fileImage];
-	return [self initWithTexture:tex capacity:capacity];
-}
-
-// Designated initializer
+/*
+ * init with CCTexture2D
+ */
 -(id)initWithTexture:(CCTexture2D *)tex capacity:(NSUInteger)capacity
 {
 	if( (self=[super init])) {
@@ -120,10 +111,18 @@ const NSUInteger defaultCapacity = 29;
 	return self;
 }
 
+/*
+ * init with FileImage
+ */
+-(id)initWithFile:(NSString *)fileImage capacity:(NSUInteger)capacity
+{
+	CCTexture2D *tex = [[CCTextureCache sharedTextureCache] addImage:fileImage];
+	return [self initWithTexture:tex capacity:capacity];
+}
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat:@"<%@ = %p | Tag = %i>", [self class], self, tag_ ];
+	return [NSString stringWithFormat:@"<%@ = %08X | Tag = %i>", [self class], self, tag_ ];
 }
 
 -(void)dealloc
@@ -395,7 +394,7 @@ const NSUInteger defaultCapacity = 29;
 
 	if( ! [textureAtlas_ resizeCapacity:quantity] ) {
 		// serious problems
-		CCLOGWARN(@"cocos2d: WARNING: Not enough memory to resize the atlas");
+		CCLOG(@"cocos2d: WARNING: Not enough memory to resize the atlas");
 		NSAssert(NO,@"XXX: CCSpriteBatchNode#increaseAtlasCapacity SHALL handle this assert");
 	}
 }

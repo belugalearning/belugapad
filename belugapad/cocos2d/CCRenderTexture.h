@@ -55,8 +55,7 @@ typedef enum
 @interface CCRenderTexture : CCNode
 {
 	GLuint				fbo_;
-  GLuint depthRenderBufffer_;
-  GLint				oldFBO_;
+	GLint				oldFBO_;
 	CCTexture2D*		texture_;
 	CCSprite*			sprite_;
 
@@ -70,9 +69,6 @@ typedef enum
 */
 @property (nonatomic,readwrite, assign) CCSprite* sprite;
 
-/** initializes a RenderTexture object with width and height in Points and a pixel format( only RGB and RGBA formats are valid ) and depthStencil format*/
-+(id)renderTextureWithWidth:(int)w height:(int)h pixelFormat:(CCTexture2DPixelFormat) format depthStencilFormat:(GLuint)depthStencilFormat;
-
 /** creates a RenderTexture object with width and height in Points and a pixel format, only RGB and RGBA formats are valid */
 +(id)renderTextureWithWidth:(int)w height:(int)h pixelFormat:(CCTexture2DPixelFormat) format;
 
@@ -82,9 +78,6 @@ typedef enum
 /** initializes a RenderTexture object with width and height in Points and a pixel format, only RGB and RGBA formats are valid */
 -(id)initWithWidth:(int)w height:(int)h pixelFormat:(CCTexture2DPixelFormat) format;
 
-/** initializes a RenderTexture object with width and height in Points and a pixel format( only RGB and RGBA formats are valid ) and depthStencil format*/
-- (id)initWithWidth:(int)w height:(int)h pixelFormat:(CCTexture2DPixelFormat)format depthStencilFormat:(GLuint)depthStencilFormat;
-
 /** starts grabbing */
 -(void)begin;
 
@@ -92,26 +85,11 @@ typedef enum
  This is more efficient then calling -clear first and then -begin */
 -(void)beginWithClear:(float)r g:(float)g b:(float)b a:(float)a;
 
-/** starts rendering to the texture while clearing the texture first.
- This is more efficient then calling -clear first and then -begin */
-- (void)beginWithClear:(float)r g:(float)g b:(float)b a:(float)a depth:(float)depthValue;
-
-/** starts rendering to the texture while clearing the texture first.
- This is more efficient then calling -clear first and then -begin */
-- (void)beginWithClear:(float)r g:(float)g b:(float)b a:(float)a depth:(float)depthValue stencil:(int)stencilValue;
-
-
 /** ends grabbing */
 -(void)end;
 
 /** clears the texture with a color */
 -(void)clear:(float)r g:(float)g b:(float)b a:(float)a;
-
-/** clears the texture with a specified depth value */
-- (void)clearDepth:(float)depthValue;
-
-/** clears the texture with a specified stencil value */
-- (void)clearStencil:(int)stencilValue;
 
 /* creates a new CGImage from with the texture's data.
  Caller is responsible for releasing it by calling CGImageRelease().

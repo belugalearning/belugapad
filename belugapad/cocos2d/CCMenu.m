@@ -98,7 +98,7 @@ enum {
 		// by default, menu in the center of the screen
 		CGSize s = [[CCDirector sharedDirector] winSize];
 		
-		self.ignoreAnchorPointForPosition = YES;
+		self.isRelativeAnchorPoint = NO;
 		anchorPoint_ = ccp(0.5f, 0.5f);
 		[self setContentSize:s];
 		

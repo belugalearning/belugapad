@@ -40,8 +40,7 @@
 @interface CCLabelTTF : CCSprite <CCLabelProtocol>
 {
 	CGSize dimensions_;
-	CCTextAlignment			hAlignment_;
-    CCVerticalTextAlignment vAlignment_;
+	CCTextAlignment alignment_;
 	NSString * fontName_;
 	CGFloat fontSize_;
 	CCLineBreakMode lineBreakMode_;
@@ -54,79 +53,35 @@
 @property (nonatomic,assign) float fontSize;
 /** Dimensions of the label in Points */
 @property (nonatomic,assign) CGSize dimensions;
-/** The alignment of the label */
-@property (nonatomic,assign) CCTextAlignment horizontalAlignment;
-/** The vertical alignment of the label */
-@property (nonatomic,assign) CCVerticalTextAlignment verticalAlignment;
 
-
-/** creates a CCLabelTTF with a font name and font size in points*/
-+ (id) labelWithString:(NSString*)string fontName:(NSString*)name fontSize:(CGFloat)size;
-
-/** creates a CCLabelTTF from a fontname, horizontal alignment, dimension in points,  and font size in points.
+/** creates a CCLabel from a fontname, alignment, dimension in points, line break mode, and font size in points.
  Supported lineBreakModes:
  - iOS: all UILineBreakMode supported modes
  - Mac: Only NSLineBreakByWordWrapping is supported.
  @since v1.0
  */
-+ (id) labelWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(CCTextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size;
-
-/** creates a CCLabelTTF from a fontname, horizontal alignment, dimension in points, line break mode, and font size in points.
- Supported lineBreakModes:
- - iOS: all UILineBreakMode supported modes
- - Mac: Only NSLineBreakByWordWrapping is supported.
- @since v1.0
- */
-+ (id) labelWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(CCTextAlignment)alignment lineBreakMode:(CCLineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size;
-
-/** creates a CCLabelTTF from a fontname, horizontal aligment, vertical alignment, dimension in points, line break mode, and font size in points.
- Supported lineBreakModes:
- - iOS: all UILineBreakMode supported modes
- - Mac: Only NSLineBreakByWordWrapping is supported.
- @since v1.0
- */
-+ (id) labelWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(CCTextAlignment)alignment vAlignment:(CCVerticalTextAlignment)vertAlignment lineBreakMode:(CCLineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size;
-
++ (id) labelWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(CCTextAlignment)alignment lineBreakMode:(CCLineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size;
 /** creates a CCLabel from a fontname, alignment, dimension in points and font size in points*/
-+ (id) labelWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(CCTextAlignment)alignment vAlignment:(CCVerticalTextAlignment)vertAlignment fontName:(NSString*)name fontSize:(CGFloat)size;
-
-
-/** initializes the CCLabelTTF with a font name and font size in points */
++ (id) labelWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(CCTextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size;
+/** creates a CCLabel from a fontname and font size in points*/
++ (id) labelWithString:(NSString*)string fontName:(NSString*)name fontSize:(CGFloat)size;
+/** initializes the CCLabel with a font name, alignment, dimension in points, line brea mode and font size in points.
+ Supported lineBreakModes:
+ - iOS: all UILineBreakMode supported modes
+ - Mac: Only NSLineBreakByWordWrapping is supported.
+ @since v1.0
+ */
+- (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions alignment:(CCTextAlignment)alignment lineBreakMode:(CCLineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size;
+/** initializes the CCLabel with a font name, alignment, dimension in points and font size in points */
+- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(CCTextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size;
+/** initializes the CCLabel with a font name and font size in points */
 - (id) initWithString:(NSString*)string  fontName:(NSString*)name fontSize:(CGFloat)size;
 
-/** initializes the CCLabelTTF with a font name, horizonal alignment, dimension in points, and font size in points.
- Default verticalAlignment: kCCVerticalTextAlignmentTop 
- Default lineBreakMode: CCLineBreakModeWordWrap
- @since v1.0
- */
-- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(CCTextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size;
-
-/** initializes the CCLabelTTF with a font name, horizontal alignment, dimension in points, line break mode and font size in points.
- Default verticalAlignment: kCCVerticalTextAlignmentTop 
-
- Supported lineBreakModes:
- - iOS: all UILineBreakMode supported modes
- - Mac: Only NSLineBreakByWordWrapping is supported.
- @since v1.0
- */
-- (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions hAlignment:(CCTextAlignment)alignment lineBreakMode:(CCLineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size;
-
-/** initializes the CCLabelTTF with a font name, horiozntal alignment, vertical alignment,  dimension in points and font size in points. 
- Default lineBreakMode: CCLineBreakModeWordWrap
- */
-- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(CCTextAlignment)alignment vAlignment:(CCVerticalTextAlignment)vertAlignment fontName:(NSString*)name fontSize:(CGFloat)size;
-
-/** initializes the CCLabelTTF with a font name, horizontal alignment, vertical aligment, dimension in points, line break mode and font size in points.
- Supported lineBreakModes:
- - iOS: all UILineBreakMode supported modes
- - Mac: Only NSLineBreakByWordWrapping is supported.
- @since v2.0
- */
-- (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions hAlignment:(CCTextAlignment)alignment vAlignment:(CCVerticalTextAlignment)vAlignment lineBreakMode:(CCLineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size;
-
 /** changes the string to render
- * @warning Changing the string is as expensive as creating a new CCLabelTTF. To obtain better performance use CCLabelAtlas or CCLabelBMFont.
+ * @warning Changing the string is as expensive as creating a new CCLabel. To obtain better performance use CCLabelAtlas
  */
 - (void) setString:(NSString*)str;
+
+
 
 @end

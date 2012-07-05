@@ -325,50 +325,18 @@ int compareInts (const void * a, const void * b);
 	[sprite setOpacity:opacity_];
 	
 	//issue 1264, flip can be undone as well
-	sprite.flipX = NO;
-	sprite.flipY = NO;
-	sprite.rotation = 0;
-	sprite.anchorPoint = ccp(0,0);
+	if (gid & kCCTMXTileHorizontalFlag)
+		sprite.flipX = YES;
+	else 
+		sprite.flipX = NO;
 	
-	// Rotation in tiled is achieved using 3 flipped states, flipping across the horizontal, vertical, and diagonal axes of the tiles.
-	if (gid & kCCTMXTileDiagonalFlag)
-	{
-		// put the anchor in the middle for ease of rotation.
-		sprite.anchorPoint = ccp(0.5f,0.5f);
-		[sprite setPosition: ccp([self positionAt:pos].x + sprite.contentSize.height/2,
-								 [self positionAt:pos].y + sprite.contentSize.width/2 )
-		 ];
-
-		uint32_t flag = gid & (kCCTMXTileHorizontalFlag | kCCTMXTileVerticalFlag );
-
-		// handle the 4 diagonally flipped states.
-		if (flag == kCCTMXTileHorizontalFlag)
-		{
-			sprite.rotation = 90;
-		}
-		else if (flag == kCCTMXTileVerticalFlag)
-		{
-			sprite.rotation = 270;
-		}
-		else if (flag == (kCCTMXTileVerticalFlag | kCCTMXTileHorizontalFlag) )
-		{
-			sprite.rotation = 90;
-			sprite.flipX = YES;
-		}
-		else
-		{
-			sprite.rotation = 270;
-			sprite.flipX = YES;
-		}
-	}
+	if (gid & kCCTMXTileVerticalFlag)
+		sprite.flipY = YES;
 	else
-	{
-		if (gid & kCCTMXTileHorizontalFlag)
-			sprite.flipX = YES;
-		
-		if (gid & kCCTMXTileVerticalFlag)
-			sprite.flipY = YES;
-	}
+		sprite.flipY = NO;
+	
+	if( gid & kCCTMXTileDiagonalFlag)
+		NSAssert(NO, @"Tiled Anti-Diagonally Flip not supported yet");
 }
 
 -(CCSprite*) insertTileForGID:(uint32_t)gid at:(CGPoint)pos

@@ -97,16 +97,15 @@ ccc4(const GLubyte r, const GLubyte g, const GLubyte b, const GLubyte o)
 /** RGBA color composed of 4 floats
 @since v0.8
 */
-struct ccColor4F {
+typedef struct _ccColor4F {
 	GLfloat r;
 	GLfloat g;
 	GLfloat b;
 	GLfloat a;
-};
-typedef struct ccColor4F ccColor4F;
-
+} ccColor4F;
 //! helper that creates a ccColor4f type
-static inline ccColor4F ccc4f(const GLfloat r, const GLfloat g, const GLfloat b, const GLfloat a)
+static inline ccColor4F 
+ccc4f(const GLfloat r, const GLfloat g, const GLfloat b, const GLfloat a)
 {
 	return (ccColor4F){r, g, b, a};
 }
@@ -317,7 +316,6 @@ typedef enum
 {
 	//! Unknonw resolution type
 	kCCResolutionUnknown,
-#ifdef __CC_PLATFORM_IOS
 	//! iPhone resolution type
 	kCCResolutioniPhone,
 	//! RetinaDisplay resolution type
@@ -326,45 +324,8 @@ typedef enum
 	kCCResolutioniPad,
 	//! iPad Retina Display resolution type
 	kCCResolutioniPadRetinaDisplay,
-	
-#elif defined(__CC_PLATFORM_MAC)
-	//! Mac resolution type
-	kCCResolutionMac,
-
-	//! Mac RetinaDisplay resolution type (???)
-	kCCResolutionMacRetinaDisplay,
-#endif // platform
 
 } ccResolutionType;
-
-// XXX: If any of these enums are edited and/or reordered, udpate CCTexture2D.m
-//! Vertical text alignment type
-typedef enum
-{
-    kCCVerticalTextAlignmentTop,
-    kCCVerticalTextAlignmentCenter,
-    kCCVerticalTextAlignmentBottom,
-} CCVerticalTextAlignment;
-
-// XXX: If any of these enums are edited and/or reordered, udpate CCTexture2D.m
-//! Horizontal text alignment type
-typedef enum
-{
-	kCCTextAlignmentLeft,
-	kCCTextAlignmentCenter,
-	kCCTextAlignmentRight,
-} CCTextAlignment;
-
-// XXX: If any of these enums are edited and/or reordered, udpate CCTexture2D.m
-//! Line break modes
-typedef enum {
-	kCCLineBreakModeWordWrap,
-	kCCLineBreakModeCharacterWrap,
-	kCCLineBreakModeClip,
-	kCCLineBreakModeHeadTruncation,
-	kCCLineBreakModeTailTruncation,
-	kCCLineBreakModeMiddleTruncation
-} CCLineBreakMode;
 
 //! delta time type
 //! if you want more resolution redefine it as a double

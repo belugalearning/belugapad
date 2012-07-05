@@ -59,8 +59,7 @@ CCBMFontConfiguration* FNTConfigLoadFile( NSString *fntFile)
 	ret = [configurations objectForKey:fntFile];
 	if( ret == nil ) {
 		ret = [CCBMFontConfiguration configurationWithFNTFile:fntFile];
-		if( ret )
-			[configurations setObject:ret forKey:fntFile];
+		[configurations setObject:ret forKey:fntFile];
 	}
 
 	return ret;
@@ -94,11 +93,12 @@ typedef struct _FontDefHashElement
 
 
 @interface CCBMFontConfiguration ()
--(BOOL) parseConfigFile:(NSString*)controlFile;
+-(void) parseConfigFile:(NSString*)controlFile;
 -(void) parseCharacterDefinition:(NSString*)line charDef:(ccBMFontDef*)characterDefinition;
 -(void) parseInfoArguments:(NSString*)line;
 -(void) parseCommonArguments:(NSString*)line;
 -(void) parseImageFileName:(NSString*)line fntFile:(NSString*)fntFile;
+-(void) parseKerningCapacity:(NSString*)line;
 -(void) parseKerningEntry:(NSString*)line;
 -(void) purgeKerningDictionary;
 -(void) purgeFontDefDictionary;
@@ -108,7 +108,6 @@ typedef struct _FontDefHashElement
 #pragma mark CCBMFontConfiguration
 
 @implementation CCBMFontConfiguration
-@synthesize atlasName=atlasName_;
 
 +(id) configurationWithFNTFile:(NSString*)FNTfile
 {
@@ -122,10 +121,7 @@ typedef struct _FontDefHashElement
 		kerningDictionary_ = NULL;
 		fontDefDictionary_ = NULL;
 
-		if( ! [self parseConfigFile:fntFile] ) {
-			[self release];
-			return nil;
-		}
+		[self parseConfigFile:fntFile];
 	}
 	return self;
 }
@@ -141,7 +137,7 @@ typedef struct _FontDefHashElement
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat:@"<%@ = %p | Glphys:%d Kernings:%d | Image = %@>", [self class], self,
+	return [NSString stringWithFormat:@"<%@ = %08X | Glphys:%d Kernings:%d | Image = %@>", [self class], self,
 			HASH_COUNT(fontDefDictionary_),
 			HASH_COUNT(kerningDictionary_),
 			atlasName_];
@@ -169,16 +165,14 @@ typedef struct _FontDefHashElement
 	}
 }
 
-- (BOOL)parseConfigFile:(NSString*)fntFile
+- (void)parseConfigFile:(NSString*)fntFile
 {
-	NSString *fullpath = [[CCFileUtils sharedFileUtils] fullPathFromRelativePath:fntFile];
+	NSString *fullpath = [CCFileUtils fullPathFromRelativePath:fntFile];
 	NSError *error;
 	NSString *contents = [NSString stringWithContentsOfFile:fullpath encoding:NSUTF8StringEncoding error:&error];
 
-	if( ! contents ) {
-		NSLog(@"cocos2d: Error parsing FNTfile %@: %@", fntFile, error);
-		return NO;
-	}
+	NSAssert1( contents, @"cocos2d: Error parsing FNTfile: %@", error);
+
 
 	// Move all lines in the string, which are denoted by \n, into an array
 	NSArray *lines = [[NSArray alloc] initWithArray:[contents componentsSeparatedByString:@"\n"]];
@@ -216,17 +210,15 @@ typedef struct _FontDefHashElement
 			element->key = element->fontDef.charID;
 			HASH_ADD_INT(fontDefDictionary_, key, element);
 		}
-//		else if([line hasPrefix:@"kernings count"]) {
-//			[self parseKerningCapacity:line];
-//		}
+		else if([line hasPrefix:@"kernings count"]) {
+			[self parseKerningCapacity:line];
+		}
 		else if([line hasPrefix:@"kerning first"]) {
 			[self parseKerningEntry:line];
 		}
 	}
 	// Finished with lines so release it
 	[lines release];
-	
-	return  YES;
 }
 
 -(void) parseImageFileName:(NSString*)line fntFile:(NSString*)fntFile
@@ -402,6 +394,28 @@ typedef struct _FontDefHashElement
 	characterDefinition->xAdvance = [propertyValue intValue];
 }
 
+-(void) parseKerningCapacity:(NSString*) line
+{
+	// When using uthash there is not need to parse the capacity.
+
+    //	NSAssert(!kerningDictionary, @"dictionary already initialized");
+    //
+    //	// Break the values for this line up using =
+    //	NSArray *values = [line componentsSeparatedByString:@"="];
+    //	NSEnumerator *nse = [values objectEnumerator];
+    //	NSString *propertyValue;
+    //
+    //	// We need to move past the first entry in the array before we start assigning values
+    //	[nse nextObject];
+    //
+    //	// count
+    //	propertyValue = [nse nextObject];
+    //	int capacity = [propertyValue intValue];
+    //
+    //	if( capacity != -1 )
+    //		kerningDictionary = ccHashSetNew(capacity, targetSetEql);
+}
+
 -(void) parseKerningEntry:(NSString*) line
 {
 	NSArray *values = [line componentsSeparatedByString:@"="];
@@ -461,7 +475,7 @@ typedef struct _FontDefHashElement
 
 +(id) labelWithString:(NSString *)string fntFile:(NSString *)fntFile
 {
-	return [[[self alloc] initWithString:string fntFile:fntFile width:kCCLabelAutomaticWidth alignment:kCCTextAlignmentLeft imageOffset:CGPointZero] autorelease];
+	return [[[self alloc] initWithString:string fntFile:fntFile width:kCCLabelAutomaticWidth alignment:CCTextAlignmentLeft imageOffset:CGPointZero] autorelease];
 }
 
 +(id) labelWithString:(NSString*)string fntFile:(NSString*)fntFile width:(float)width alignment:(CCTextAlignment)alignment
@@ -474,14 +488,9 @@ typedef struct _FontDefHashElement
     return [[[self alloc] initWithString:string fntFile:fntFile width:width alignment:alignment imageOffset:offset] autorelease];
 }
 
--(id) init
-{
-	return [self initWithString:nil fntFile:nil width:kCCLabelAutomaticWidth alignment:kCCTextAlignmentLeft imageOffset:CGPointZero];
-}
-
 -(id) initWithString:(NSString*)theString fntFile:(NSString*)fntFile
 {
-    return [self initWithString:theString fntFile:fntFile width:kCCLabelAutomaticWidth alignment:kCCTextAlignmentLeft];
+    return [self initWithString:theString fntFile:fntFile width:kCCLabelAutomaticWidth alignment:CCTextAlignmentLeft];
 }
 
 -(id) initWithString:(NSString*)theString fntFile:(NSString*)fntFile width:(float)width alignment:(CCTextAlignment)alignment
@@ -489,41 +498,29 @@ typedef struct _FontDefHashElement
 	return [self initWithString:theString fntFile:fntFile width:width alignment:alignment imageOffset:CGPointZero];
 }
 
-// designated initializer
 -(id) initWithString:(NSString*)theString fntFile:(NSString*)fntFile width:(float)width alignment:(CCTextAlignment)alignment imageOffset:(CGPoint)offset
 {
 	NSAssert(!configuration_, @"re-init is no longer supported");
-	
-	// if theString && fntfile are both nil, then it is OK
-	NSAssert( (theString && fntFile) || (theString==nil && fntFile==nil), @"Invalid params for CCLabelBMFont");
-	
-	CCTexture2D *texture = nil;
 
-	if( fntFile ) {
-		CCBMFontConfiguration *newConf = FNTConfigLoadFile(fntFile);
-		NSAssert( newConf, @"CCLabelBMFont: Impossible to create font. Please check file: '%@'", fntFile );
-
-		configuration_ = [newConf retain];
+	configuration_ = FNTConfigLoadFile(fntFile);
+	[configuration_ retain];
     
-		fntFile_ = [fntFile retain];
+    fntFile_ = [fntFile retain];
 
-		texture = [[CCTextureCache sharedTextureCache] addImage:configuration_.atlasName];
+	NSAssert( configuration_, @"Error creating config for LabelBMFont");
 
-	} else
-		texture = [[[CCTexture2D alloc] init] autorelease];
+	if ((self=[super initWithFile:configuration_->atlasName_ capacity:[theString length]])) {
 
-
-	if( (self=[super initWithTexture:texture capacity:[theString length]]) ) {
         width_ = width;
         alignment_ = alignment;
 
 		opacity_ = 255;
 		color_ = ccWHITE;
-		
+
 		contentSize_ = CGSizeZero;
-		
+
 		opacityModifyRGB_ = [[textureAtlas_ texture] hasPremultipliedAlpha];
-		
+
 		anchorPoint_ = ccp(0.5f, 0.5f);
 
 		imageOffset_ = offset;
@@ -639,7 +636,7 @@ typedef struct _FontDefHashElement
 	
     //Step 2: Make alignment
 	
-    if (self.alignment != kCCTextAlignmentLeft) {
+    if (self.alignment != CCTextAlignmentLeft) {
 		
         int i = 0;
         //Number of spaces skipped
@@ -661,10 +658,10 @@ typedef struct _FontDefHashElement
             //Figure out how much to shift each character in this line horizontally
             float shift = 0;
             switch (self.alignment) {
-                case kCCTextAlignmentCenter:
+                case CCTextAlignmentCenter:
                     shift = self.contentSize.width/2 - lineWidth/2;
                     break;
-                case kCCTextAlignmentRight:
+                case CCTextAlignmentRight:
                     shift = self.contentSize.width - lineWidth;
                 default:
                     break;
@@ -777,12 +774,11 @@ typedef struct _FontDefHashElement
 			fontChar.opacity = 255;
 		}
 
-		// See issue 1343. cast( signed short + unsigned integer ) == unsigned integer (sign is lost!)
-		NSInteger yOffset = configuration_->commonHeight_ - fontDef.yOffset;
-		CGPoint fontPos = ccp( (CGFloat)nextFontPositionX + fontDef.xOffset + fontDef.rect.size.width*0.5f + kerningAmount,
-							  (CGFloat)nextFontPositionY + yOffset - rect.size.height*0.5f * CC_CONTENT_SCALE_FACTOR() );
+		float yOffset = configuration_->commonHeight_ - fontDef.yOffset;
+		CGPoint fontPos = ccp( (float)nextFontPositionX + fontDef.xOffset + fontDef.rect.size.width*0.5f + kerningAmount,
+							  (float)nextFontPositionY + yOffset - rect.size.height*0.5f * CC_CONTENT_SCALE_FACTOR() );
         fontChar.position = CC_POINT_PIXELS_TO_POINTS(fontPos);
-		
+
 		// update kerning
 		nextFontPositionX += fontDef.xAdvance + kerningAmount;
 		prev = c;
@@ -900,18 +896,14 @@ typedef struct _FontDefHashElement
 - (void) setFntFile:(NSString*) fntFile
 {
 	if( fntFile != fntFile_ ) {
-		
-		CCBMFontConfiguration *newConf = FNTConfigLoadFile(fntFile);
-		
-		NSAssert( newConf, @"CCLabelBMFont: Impossible to create font. Please check file: '%@'", fntFile );
-		
 		[fntFile_ release];
 		fntFile_ = [fntFile retain];
 		
 		[configuration_ release];
-		configuration_ = [newConf retain];
+		configuration_ = FNTConfigLoadFile(fntFile);
+		[configuration_ retain];
 	
-		[self setTexture:[[CCTextureCache sharedTextureCache] addImage:configuration_.atlasName]];
+		[self setTexture:[[CCTextureCache sharedTextureCache] addImage:configuration_->atlasName_]];
 		[self createFontChars];
 	}
 }

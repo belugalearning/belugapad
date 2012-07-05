@@ -31,15 +31,13 @@
 #import "CCTextureCache.h"
 #import "CCGLProgram.h"
 #import "ccGLStateCache.h"
-#import "CCDirector.h"
-#import "CCConfiguration.h"
-
-#import "Support/NSThread+performBlock.h"
 #import "Support/OpenGL_Internal.h"
 
 @interface CCTextureAtlas ()
 -(void) setupIndices;
 -(void) mapBuffers;
+
+
 
 #if CC_TEXTURE_ATLAS_USE_VAO
 -(void) setupVBOandVAO;
@@ -126,7 +124,7 @@
 
 -(NSString*) description
 {
-	return [NSString stringWithFormat:@"<%@ = %p | totalQuads =  %i>", [self class], self, totalQuads_];
+	return [NSString stringWithFormat:@"<%@ = %08X | totalQuads =  %i>", [self class], self, totalQuads_];
 }
 
 -(void) dealloc
@@ -176,47 +174,36 @@
 #if CC_TEXTURE_ATLAS_USE_VAO
 -(void) setupVBOandVAO
 {
-	// VAO requires GL_APPLE_vertex_array_object in order to be created on a different thread
-	// https://devforums.apple.com/thread/145566?tstart=0
+	glGenVertexArrays(1, &VAOname_);
+	glBindVertexArray(VAOname_);
 
-	void (^createVAO)(void) = ^{
-		glGenVertexArrays(1, &VAOname_);
-		glBindVertexArray(VAOname_);
+#define kQuadSize sizeof(quads_[0].bl)
 
-	#define kQuadSize sizeof(quads_[0].bl)
+	glGenBuffers(2, &buffersVBO_[0]);
 
-		glGenBuffers(2, &buffersVBO_[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, buffersVBO_[0]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quads_[0]) * capacity_, quads_, GL_DYNAMIC_DRAW);
 
-		glBindBuffer(GL_ARRAY_BUFFER, buffersVBO_[0]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(quads_[0]) * capacity_, quads_, GL_DYNAMIC_DRAW);
+	// vertices
+	glEnableVertexAttribArray(kCCVertexAttrib_Position);
+	glVertexAttribPointer(kCCVertexAttrib_Position, 3, GL_FLOAT, GL_FALSE, kQuadSize, (GLvoid*) offsetof( ccV3F_C4B_T2F, vertices));
 
-		// vertices
-		glEnableVertexAttribArray(kCCVertexAttrib_Position);
-		glVertexAttribPointer(kCCVertexAttrib_Position, 3, GL_FLOAT, GL_FALSE, kQuadSize, (GLvoid*) offsetof( ccV3F_C4B_T2F, vertices));
+	// colors
+	glEnableVertexAttribArray(kCCVertexAttrib_Color);
+	glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_UNSIGNED_BYTE, GL_TRUE, kQuadSize, (GLvoid*) offsetof( ccV3F_C4B_T2F, colors));
 
-		// colors
-		glEnableVertexAttribArray(kCCVertexAttrib_Color);
-		glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_UNSIGNED_BYTE, GL_TRUE, kQuadSize, (GLvoid*) offsetof( ccV3F_C4B_T2F, colors));
+	// tex coords
+	glEnableVertexAttribArray(kCCVertexAttrib_TexCoords);
+	glVertexAttribPointer(kCCVertexAttrib_TexCoords, 2, GL_FLOAT, GL_FALSE, kQuadSize, (GLvoid*) offsetof( ccV3F_C4B_T2F, texCoords));
 
-		// tex coords
-		glEnableVertexAttribArray(kCCVertexAttrib_TexCoords);
-		glVertexAttribPointer(kCCVertexAttrib_TexCoords, 2, GL_FLOAT, GL_FALSE, kQuadSize, (GLvoid*) offsetof( ccV3F_C4B_T2F, texCoords));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffersVBO_[1]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_[0]) * capacity_ * 6, indices_, GL_STATIC_DRAW);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffersVBO_[1]);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_[0]) * capacity_ * 6, indices_, GL_STATIC_DRAW);
+	glBindVertexArray(0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-		glBindVertexArray(0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-		CHECK_GL_ERROR_DEBUG();
-	};
-	
-	NSThread *cocos2dThread = [[CCDirector sharedDirector] runningThread];
-	if( cocos2dThread == [NSThread currentThread] || [[CCConfiguration sharedConfiguration] supportsShareableVAO] )
-		createVAO();
-	else 
-		[cocos2dThread performBlock:createVAO waitUntilDone:YES];
+	CHECK_GL_ERROR_DEBUG();
 }
 #else // CC_TEXTURE_ATLAS_USE_VAO
 -(void) setupVBO

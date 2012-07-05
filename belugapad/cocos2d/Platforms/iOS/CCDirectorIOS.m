@@ -179,7 +179,7 @@ CGFloat	__ccContentScaleFactor = 1;
 	CGSize size = winSizeInPixels_;
 	CGSize sizePoint = winSizeInPoints_;
 
-	glViewport(0, 0, size.width, size.height );
+	glViewport(0, 0, size.width * CC_CONTENT_SCALE_FACTOR(), size.height * CC_CONTENT_SCALE_FACTOR() );
 
 	switch (projection) {
 		case kCCDirectorProjection2D:
@@ -188,7 +188,7 @@ CGFloat	__ccContentScaleFactor = 1;
 			kmGLLoadIdentity();
 
 			kmMat4 orthoMatrix;
-			kmMat4OrthographicProjection(&orthoMatrix, 0, size.width / CC_CONTENT_SCALE_FACTOR(), 0, size.height / CC_CONTENT_SCALE_FACTOR(), -1024, 1024 );
+			kmMat4OrthographicProjection(&orthoMatrix, 0, size.width, 0, size.height, -1024, 1024 );
 			kmGLMultMatrix( &orthoMatrix );
 
 			kmGLMatrixMode(KM_GL_MODELVIEW);
@@ -197,6 +197,10 @@ CGFloat	__ccContentScaleFactor = 1;
 
 		case kCCDirectorProjection3D:
 		{
+			// reset the viewport if 3d proj & retina display
+			if( CC_CONTENT_SCALE_FACTOR() != 1 )
+				glViewport(-size.width/2, -size.height/2, size.width * CC_CONTENT_SCALE_FACTOR(), size.height * CC_CONTENT_SCALE_FACTOR() );
+
 			float zeye = [self getZEye];
 
 			kmMat4 matrixPerspective, matrixLookup;
@@ -352,16 +356,14 @@ CGFloat	__ccContentScaleFactor = 1;
 	if( view != view_) {
 		[super setView:view];
 
-		if( view ) {
-			// set size
-			winSizeInPixels_ = CGSizeMake(winSizeInPoints_.width * __ccContentScaleFactor, winSizeInPoints_.height *__ccContentScaleFactor);
+		// set size
+		winSizeInPixels_ = CGSizeMake(winSizeInPoints_.width * __ccContentScaleFactor, winSizeInPoints_.height *__ccContentScaleFactor);
 
-			if( __ccContentScaleFactor != 1 )
-				[self updateContentScaleFactor];
+		if( __ccContentScaleFactor != 1 )
+			[self updateContentScaleFactor];
 
-			[view setTouchDelegate: touchDispatcher_];
-			[touchDispatcher_ setDispatchEvents: YES];
-		}
+		[view setTouchDelegate: touchDispatcher_];
+		[touchDispatcher_ setDispatchEvents: YES];
 	}
 }
 
@@ -410,7 +412,7 @@ CGFloat	__ccContentScaleFactor = 1;
 - (void)didReceiveMemoryWarning
 {
 	// Release any cached data, images, etc that aren't in use.
-	[super purgeCachedData];
+	//[super purgeCachedData];
 
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -457,8 +459,7 @@ CGFloat	__ccContentScaleFactor = 1;
 
 - (void) startAnimation
 {
-    if(isAnimating_)
-        return;
+	NSAssert( displayLink_ == nil, @"displayLink must be nil. Calling startAnimation twice?");
 
 	gettimeofday( &lastUpdate_, NULL);
 
@@ -481,14 +482,11 @@ CGFloat	__ccContentScaleFactor = 1;
 	[displayLink_ addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 #endif
 
-    isAnimating_ = YES;
+
 }
 
 - (void) stopAnimation
 {
-    if(!isAnimating_)
-        return;
-
 	CCLOG(@"cocos2d: animation stopped");
 
 #if CC_DIRECTOR_IOS_USE_BACKGROUND_THREAD
@@ -499,14 +497,13 @@ CGFloat	__ccContentScaleFactor = 1;
 
 	[displayLink_ invalidate];
 	displayLink_ = nil;
-    isAnimating_ = NO;
 }
 
 // Overriden in order to use a more stable delta time
 -(void) calculateDeltaTime
 {
-    // New delta time. Re-fixed issue #1277
-    if( nextDeltaTimeZero_ || lastDisplayTime_==0 ) {
+    // New delta time
+    if( nextDeltaTimeZero_ ) {
         dt = 0;
         nextDeltaTimeZero_ = NO;
     } else {

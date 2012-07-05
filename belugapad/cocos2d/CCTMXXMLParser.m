@@ -119,7 +119,7 @@
 /* initalises parsing of an XML string, either a tmx (Map) string or tsx (Tileset) string */
 - (void) parseXMLString:(NSString *)xmlString;
 /* handles the work of parsing for parseXMLFile: and parseXMLString: */
-- (void) parseXMLData:(NSData*)data;
+- (NSError*) parseXMLData:(NSData*)data;
 @end
 
 @implementation CCTMXMapInfo
@@ -186,7 +186,7 @@
 	[super dealloc];
 }
 
-- (void) parseXMLData:(NSData*)data
+- (NSError*) parseXMLData:(NSData*)data
 {
 	NSXMLParser *parser = [[[NSXMLParser alloc] initWithData:data] autorelease];
 
@@ -196,21 +196,25 @@
 	[parser setShouldReportNamespacePrefixes:NO];
 	[parser setShouldResolveExternalEntities:NO];
 	[parser parse];
-	
-     NSAssert1( ![parser parserError], @"Error parsing TMX data: %@.", [NSString stringWithCharacters:[data bytes] length:[data length]] );
+
+	return [parser parserError];
 }
 
 - (void) parseXMLString:(NSString *)xmlString
 {
 	NSData* data = [xmlString dataUsingEncoding:NSUTF8StringEncoding];
-	[self parseXMLData:data];	
+	NSError* err = [self parseXMLData:data];
+	(void)err;
+	NSAssert1( !err, @"Error parsing TMX data: %@.", [NSString stringWithCharacters:[data bytes] length:[data length]] );
 }
 
 - (void) parseXMLFile:(NSString *)xmlFilename
 {
-	NSURL *url = [NSURL fileURLWithPath:[[CCFileUtils sharedFileUtils] fullPathFromRelativePath:xmlFilename] ];
+	NSURL *url = [NSURL fileURLWithPath:[CCFileUtils fullPathFromRelativePath:xmlFilename] ];
 	NSData *data = [NSData dataWithContentsOfURL:url];
-	[self parseXMLData:data];
+	NSError* err = [self parseXMLData:data];
+	(void)err;
+	NSAssert3(!err, @"Error parsing TMX file: %@, %@ (%d).", xmlFilename, [err localizedDescription], [err code]);
 }
 
 // the XML parser calls here with all the elements
@@ -228,7 +232,7 @@
 		else if( [orientationStr isEqualToString:@"hexagonal"])
 			orientation_ = CCTMXOrientationHex;
 		else
-			CCLOG(@"cocos2d: TMXFomat: Unsupported orientation: %d", orientation_);
+			CCLOG(@"cocos2d: TMXFomat: Unsupported orientation: %@", orientation_);
 
 		mapSize_.width = [[attributeDict objectForKey:@"width"] intValue];
 		mapSize_.height = [[attributeDict objectForKey:@"height"] intValue];

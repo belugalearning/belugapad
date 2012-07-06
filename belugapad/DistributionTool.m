@@ -35,7 +35,6 @@
     SGGameWorld *gw;
     
     // and then any specifics we need for this tool
-    NSMutableArray *currentBlocks;
     id<Moveable,Transform> currentPickupObject;
     
 }
@@ -130,14 +129,12 @@
     gw.Blackboard.RenderLayer = renderLayer;
     
     // init our array for use with the created gameobjects
-    currentBlocks=[[NSMutableArray alloc]init];
     for(int i=0;i<3;i++)
     {
         id<Configurable, Selectable> newblock;
         newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx+(100*i),cy)] autorelease];
         
         [newblock setup];
-        [currentBlocks addObject:newblock];
         
     }
     
@@ -155,13 +152,19 @@
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
     
-    for(int i=0;i<[currentBlocks count];i++)
+    
+    // loop over 
+    for(id thisObj in gw.AllGameObjects)
     {
-        id <Moveable, Transform> thisObj=[currentBlocks objectAtIndex:i];
-        if(CGRectContainsPoint(thisObj.mySprite.boundingBox, location))
+        if([thisObj conformsToProtocol:@protocol(Moveable)])
         {
-            currentPickupObject=thisObj;
-            break;
+            id <Moveable, Transform> cObj=thisObj;
+            
+            if(CGRectContainsPoint(cObj.mySprite.boundingBox, location))
+            {
+                currentPickupObject=thisObj;
+                break;
+            }
         }
         
     }
@@ -178,9 +181,16 @@
     
     if(currentPickupObject)
     {
-        currentPickupObject.Position=location;
-        [currentPickupObject move];
+
+        // check that the shape is being moved within bounds of the screen
+        if((location.x>=35.0f&&location.x<=lx-35.0f) && (location.y>=35.0f&&location.y<=ly-35.0f))
+        {
+            // set it's position and move it!
+            currentPickupObject.Position=location;
+            [currentPickupObject move];
+        }
         
+        // then for each other moveable thing, check if we're proximate
         for(id go in gw.AllGameObjects)
         {
             if([go conformsToProtocol:@protocol(Moveable)])
@@ -195,19 +205,32 @@
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    //    UITouch *touch=[touches anyObject];
-    //    CGPoint location=[touch locationInView: [touch view]];
-    //    location=[[CCDirector sharedDirector] convertToGL:location];
+    UITouch *touch=[touches anyObject];
+    CGPoint location=[touch locationInView: [touch view]];
+    location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     isTouching=NO;
     
+    // check there's a pickupobject
     if(currentPickupObject)
     {
+        CGPoint curPOPos=currentPickupObject.Position;
+        // check all the gamobjects and search for a moveable object
         for(id go in gw.AllGameObjects)
         {
-            if([go conformsToProtocol:@protocol(Moveable)])
+            if(go==currentPickupObject)
             {
                 [go resetTint];
+                continue;
+            }
+            if([go conformsToProtocol:@protocol(Moveable)])
+            {
+                // return whether the object is proximate to our current pickuobject
+                BOOL proximateToPickupObject=[go amIProximateTo:curPOPos];
+                [go resetTint];
+                if(proximateToPickupObject)[go pairMeWith:currentPickupObject];
+                else [go unpairMeFrom:currentPickupObject];
+                
             }
         }
     }
@@ -273,8 +296,6 @@
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
-    
-    [currentBlocks release];
     
     
     [super dealloc];

@@ -8,16 +8,21 @@
 
 #import "SGDtoolBlock.h"
 #import "SGDtoolBlockRender.h"
+#import "SGDtoolBlockPairing.h"
 
 @implementation SGDtoolBlock
 
 @synthesize BlockRenderComponent;
+@synthesize BlockPairComponent;
 @synthesize mySprite;
 
 //Transform protocol properties
 @synthesize Position, Visible, RenderLayer;
 
 @synthesize Selected, HitProximity;
+
+// Pairable protocol properties
+@synthesize PairedObjects;
 
 -(SGDtoolBlock*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
 {   
@@ -29,6 +34,7 @@
         self.Visible=YES;
     }
     BlockRenderComponent=[[SGDtoolBlockRender alloc] initWithGameObject:self];
+    BlockPairComponent=[[SGDtoolBlockPairing alloc] initWithGameObject:self];
     return self;
 }
 
@@ -60,14 +66,24 @@
     [self.BlockRenderComponent setup];
 }
 
--(void)amIProximateTo:(CGPoint)location
+-(BOOL)amIProximateTo:(CGPoint)location
 {
-    [self.BlockRenderComponent amIProximateTo:location];
+    return [self.BlockRenderComponent amIProximateTo:location];
 }
 
 -(void)resetTint
 {
     [self.BlockRenderComponent resetTint];
+}
+
+-(void)pairMeWith:(id)thisObject
+{
+    [self.BlockPairComponent pairMeWith:thisObject];
+}
+
+-(void)unpairMeFrom:(id)thisObject
+{
+    [self.BlockPairComponent unpairMeFrom:thisObject];
 }
 
 -(void)dealloc

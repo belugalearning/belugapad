@@ -100,16 +100,21 @@ static float kTimeToMountedShake=7.0f;
         }
     }   
     timeSinceInteractionOrShake+=delta;
-    if(timeSinceInteractionOrShake>kTimeToMountedShake && !hasUsedBlock)
+    if(timeSinceInteractionOrShake>kTimeToMountedShake)
     {
-        for(NSArray *a in mountedObjects)
-        {
-            for(DWPartitionObjectGameObject *pogo in a)
+        BOOL isWinning=[self evalExpression];
+        
+        if(!hasUsedBlock) {
+            for(NSArray *a in mountedObjects)
             {
-                [pogo.BaseNode runAction:[InteractionFeedback shakeAction]];
+                for(DWPartitionObjectGameObject *pogo in a)
+                {
+                    [pogo.BaseNode runAction:[InteractionFeedback shakeAction]];
+                }
             }
+            timeSinceInteractionOrShake=0.0f;
         }
-        timeSinceInteractionOrShake=0.0f;
+        if(isWinning)[toolHost shakeCommitButton];
     }
 
 }

@@ -59,6 +59,7 @@
 		553E80BB150FC60200263473 /* BNLineSelectorInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80BA150FC60100263473 /* BNLineSelectorInput.m */; };
 		553E80BE150FC78F00263473 /* DWSelectorGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80BD150FC78E00263473 /* DWSelectorGameObject.m */; };
 		553E80C1150FD3FD00263473 /* NLineConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80C0150FD3FD00263473 /* NLineConsts.m */; };
+		556A2D6015A7064500F4B825 /* SGDtoolBlockPairing.m in Sources */ = {isa = PBXBuildFile; fileRef = 556A2D5F15A7064500F4B825 /* SGDtoolBlockPairing.m */; };
 		5571BADD14E406220053A62B /* PlaceValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BADC14E406220053A62B /* PlaceValue.m */; };
 		5571BAE114E406630053A62B /* ToolConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE014E406630053A62B /* ToolConsts.m */; };
 		55AFD6A5156517FC00FF1886 /* TimesTables.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6A4156517FC00FF1886 /* TimesTables.m */; };
@@ -494,6 +495,8 @@
 		553E80BD150FC78E00263473 /* DWSelectorGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWSelectorGameObject.m; sourceTree = "<group>"; };
 		553E80BF150FD3FD00263473 /* NLineConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NLineConsts.h; sourceTree = "<group>"; };
 		553E80C0150FD3FD00263473 /* NLineConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NLineConsts.m; sourceTree = "<group>"; };
+		556A2D5E15A7064500F4B825 /* SGDtoolBlockPairing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGDtoolBlockPairing.h; sourceTree = "<group>"; };
+		556A2D5F15A7064500F4B825 /* SGDtoolBlockPairing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGDtoolBlockPairing.m; sourceTree = "<group>"; };
 		5571BADB14E406220053A62B /* PlaceValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceValue.h; sourceTree = "<group>"; };
 		5571BADC14E406220053A62B /* PlaceValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceValue.m; sourceTree = "<group>"; };
 		5571BADF14E406630053A62B /* ToolConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolConsts.h; sourceTree = "<group>"; };
@@ -1253,6 +1256,8 @@
 			children = (
 				5508FEBB15A309DE003720AF /* SGDtoolBlockRender.h */,
 				5508FEBC15A309DE003720AF /* SGDtoolBlockRender.m */,
+				556A2D5E15A7064500F4B825 /* SGDtoolBlockPairing.h */,
+				556A2D5F15A7064500F4B825 /* SGDtoolBlockPairing.m */,
 			);
 			name = Dtool;
 			sourceTree = "<group>";
@@ -3011,6 +3016,7 @@
 				5508FEB415A2FE8E003720AF /* DistributionTool.m in Sources */,
 				5508FEB915A3068D003720AF /* SGDtoolBlock.m in Sources */,
 				5508FEBD15A309DE003720AF /* SGDtoolBlockRender.m in Sources */,
+				556A2D6015A7064500F4B825 /* SGDtoolBlockPairing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -205,19 +205,30 @@
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    //    UITouch *touch=[touches anyObject];
-    //    CGPoint location=[touch locationInView: [touch view]];
-    //    location=[[CCDirector sharedDirector] convertToGL:location];
+    UITouch *touch=[touches anyObject];
+    CGPoint location=[touch locationInView: [touch view]];
+    location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     isTouching=NO;
     
+    // check there's a pickupobject
     if(currentPickupObject)
     {
+        CGPoint curPOPos=currentPickupObject.Position;
+        // check all the gamobjects and search for a moveable object
         for(id go in gw.AllGameObjects)
         {
+            if(go==currentPickupObject)continue;
             if([go conformsToProtocol:@protocol(Moveable)])
             {
+                // return whether the object is proximate to our current pickuobject
+                BOOL proximateToPickupObject=[go amIProximateTo:curPOPos];
                 [go resetTint];
+                if(proximateToPickupObject)[go pairMeWith:currentPickupObject];
+                
+                id <Pairable>curObj=go;
+                
+                NSLog(@"Objects paired with this object: %d", [curObj.PairedObjects count]);
             }
         }
     }

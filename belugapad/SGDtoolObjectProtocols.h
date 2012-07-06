@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class SGDtoolBlockRender;
+@class SGDtoolBlockPairing;
 
 @protocol Transform
 
@@ -24,7 +25,7 @@
 @property (retain) CCSprite *mySprite;
 
 -(void)move;
--(void)amIProximateTo:(CGPoint)location;
+-(BOOL)amIProximateTo:(CGPoint)location;
 -(void)resetTint;
 
 @end
@@ -34,6 +35,15 @@
 
 @property BOOL Selected;
 @property float HitProximity;
+
+@end
+
+@protocol Pairable
+
+@property CGPoint Position;
+@property (retain) NSMutableArray *PairedObjects;
+
+-(void)pairMeWith:(id)thisObject;
 
 @end
 

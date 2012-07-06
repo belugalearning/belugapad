@@ -10,10 +10,12 @@
 #import "SGDtoolObjectProtocols.h"
 
 @class SGDtoolBlockRender;
+@class SGDtoolBlockPairing;
 
-@interface SGDtoolBlock : SGGameObject <Transform, Configurable, Selectable, Moveable>
+@interface SGDtoolBlock : SGGameObject <Transform, Configurable, Selectable, Moveable, Pairable>
 
 @property (retain) SGDtoolBlockRender *BlockRenderComponent;
+@property (retain) SGDtoolBlockPairing *BlockPairComponent;
 
 -(SGDtoolBlock*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition;
 

@@ -102,28 +102,34 @@ static float kTimeToHeaderBounce=7.0f;
     
     timeSinceInteractionOrDropHeader+=delta;
     
-    if(timeSinceInteractionOrDropHeader>kTimeToHeaderBounce && !hasUsedHeaderX)
+    if(timeSinceInteractionOrDropHeader>kTimeToHeaderBounce)
     {
+        BOOL isWinning=[self evalExpression];
+        if(!hasUsedHeaderX)
+        {
 
-        NSMutableArray *a=[headerLabels objectAtIndex:0];
-        
-        for(CCLabelTTF *l in a)
+            NSMutableArray *a=[headerLabels objectAtIndex:0];
+            
+            for(CCLabelTTF *l in a)
+            {
+                [l runAction:[InteractionFeedback dropAndBounceAction]];
+            }
+            
+            timeSinceInteractionOrDropHeader=0.0f;
+        }
+        else if(!hasUsedHeaderY)
         {
-            [l runAction:[InteractionFeedback dropAndBounceAction]];
+            NSMutableArray *a=[headerLabels objectAtIndex:1];
+            
+            for(CCLabelTTF *l in a)
+            {
+                [l runAction:[InteractionFeedback dropAndBounceAction]];
+            }
+            
+            timeSinceInteractionOrDropHeader=0.0f;
         }
         
-        timeSinceInteractionOrDropHeader=0.0f;
-    }
-    else if(timeSinceInteractionOrDropHeader>kTimeToHeaderBounce && !hasUsedHeaderY)
-    {
-        NSMutableArray *a=[headerLabels objectAtIndex:1];
-        
-        for(CCLabelTTF *l in a)
-        {
-            [l runAction:[InteractionFeedback dropAndBounceAction]];
-        }
-        
-        timeSinceInteractionOrDropHeader=0.0f;
+        if(isWinning)[toolHost shakeCommitButton];
     }
 }
 

@@ -236,7 +236,7 @@
     
     NSLog(@"logging memory warning in appdelegate");
     
-	//[[CCDirector sharedDirector] purgeCachedData];
+	[[CCDirector sharedDirector] purgeCachedData];
 }
 
 // next delta time will be zero

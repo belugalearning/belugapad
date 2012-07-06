@@ -11,12 +11,12 @@
 #import "BLMath.h"
 #import "global.h"
 
-static ccColor4B userCol={90, 115, 76, 255};
+static ccColor4B userCol={80, 110, 146, 255};
 //static ccColor4B userCol={101, 140, 153, 255};
 //static ccColor4B userCol={0, 51, 98, 255};
 //static ccColor4B userCol={150,90,200,255};
 //static ccColor4B userCol={150,90,200,255};
-static ccColor4B userHighCol={120, 135, 106, 255};
+static ccColor4B userHighCol={85, 115, 156, 255};
 //static ccColor4B userHighCol={239,119,82,255};
 static int shadowSteps=10;
 
@@ -306,9 +306,9 @@ static int shadowSteps=10;
     CGPoint pmid=ccp(xmean,ymean);
     
     ccColor4B stepColour=userCol;
-    stepColour.r=stepColour.r-36;
-    stepColour.g=stepColour.g-36;
-    stepColour.b=stepColour.b-36;
+    stepColour.r=stepColour.r-5;
+    stepColour.g=stepColour.g-5;
+    stepColour.b=stepColour.b-10;
     if(stepColour.r>userCol.r)stepColour.r=0;
     if(stepColour.g>userCol.g)stepColour.g=0;
     if(stepColour.b>userCol.b)stepColour.b=0;
@@ -319,9 +319,9 @@ static int shadowSteps=10;
         stepColours[i]=stepColour;
         
         //adjust colour
-        if(stepColour.r<252) stepColour.r+=4;
-        if(stepColour.g<252) stepColour.g+=4;
-        if(stepColour.b<252) stepColour.b+=4;
+        if(stepColour.r<252) stepColour.r+=0.5f;
+        if(stepColour.g<252) stepColour.g+=0.5f;
+        if(stepColour.b<252) stepColour.b+=1;
     }
     
     //create the total perim array -- polys * points

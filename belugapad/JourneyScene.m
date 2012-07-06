@@ -239,7 +239,7 @@ typedef enum {
     
     backarrow=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/backarrow.png")];
     [backarrow setPosition:ccp(64, ly-64)];
-    [backarrow setOpacity:35];
+    [backarrow setOpacity:70];
     [self addChild:backarrow];
             
 //    //reposition if previous node
@@ -258,7 +258,7 @@ typedef enum {
 {
     //base colour layer
 //    CCLayerGradient *cLayer=[[CCLayerGradient alloc] initWithColor:ccc4(35, 35, 75, 255) fadingTo:ccc4(35, 35, 145, 255)];
-    CCLayerGradient *cLayer=[[CCLayerGradient alloc] initWithColor:ccc4(51, 71, 78, 255) fadingTo:ccc4(76, 105, 115, 255)];
+    CCLayerGradient *cLayer=[[CCLayerGradient alloc] initWithColor:ccc4(49, 65, 83, 255) fadingTo:ccc4(55, 77, 101, 255)];
     
     //CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(35, 35, 35, 255) width:lx height:ly];
     [self addChild:cLayer z:-1];
@@ -829,7 +829,8 @@ typedef enum {
 -(void)zoomToCityView
 {
     zoomedOut=NO;
-    [backarrow setVisible:YES];
+    //[backarrow setVisible:YES];
+    [backarrow setFlipX:NO];
     
     [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.25f scale:1.0f] rate:2.0f]];    
     
@@ -842,7 +843,8 @@ typedef enum {
 -(void)zoomToRegionView
 {
     zoomedOut=YES;
-    [backarrow setVisible:NO];
+//    [backarrow setVisible:NO];
+    [backarrow setFlipX:YES];
     
     [mapLayer setAnchorPoint:ccp(0.5,0.5)];
     

@@ -228,9 +228,9 @@
         CGPoint *f=&adjPoints[0];
         float incr=ParentGO.RegionNumber * 0.02f;
         
-        ccColor4F c=ccc4FFromccc3B(ccc3(120, 153, 101));
+        ccColor4F c=ccc4FFromccc3B(ccc3(80, 110, 146));
         
-        ccDrawFilledPoly(f, perimCount, ccc4f(c.r+incr, c.g+incr, c.b+incr, 1.0f));
+        ccDrawFilledPoly(f, perimCount, ccc4f(c.r+incr, c.g+incr, c.b+(incr*2.0f), 1.0f));
     }
 }
 

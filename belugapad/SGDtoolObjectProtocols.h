@@ -45,6 +45,7 @@
 
 -(void)pairMeWith:(id)thisObject;
 -(void)unpairMeFrom:(id)thisObject;
+-(void)draw:(int)z;
 
 @end
 

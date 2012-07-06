@@ -22,6 +22,8 @@
 #import "SGDtoolBlock.h"
 #import "SGDtoolBlockRender.h"
 
+#define DRAW_DEPTH 1
+
 
 @interface DistributionTool()
 {
@@ -109,7 +111,13 @@
 
 -(void)draw
 {
-    
+    for (int i=0; i<DRAW_DEPTH; i++)
+    {
+        for(id go in [gw AllGameObjects]) {
+            if([go conformsToProtocol:@protocol(Pairable)])
+                [((id<Pairable>)go) draw:i];
+        }
+    } 
 }
 
 #pragma mark - gameworld setup and population

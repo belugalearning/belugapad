@@ -40,6 +40,21 @@
     
 }
 
+-(void)draw:(int)z
+{
+    if(z==0)
+    {
+        if([ParentGO.PairedObjects count]>0)
+        {
+            for(int i=0;i<[ParentGO.PairedObjects count];i++)
+            {
+                id<Transform, Moveable, Pairable> curObj=[ParentGO.PairedObjects objectAtIndex:i];
+                ccDrawLine(curObj.Position, ParentGO.Position);
+            }
+        }
+    }
+}
+
 -(void)pairMeWith:(id)thisObject
 {
     if(!ParentGO.PairedObjects)ParentGO.PairedObjects=[[NSMutableArray alloc]init];

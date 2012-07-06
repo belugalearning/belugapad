@@ -53,7 +53,7 @@
 
 -(void)draw:(int)z
 {
-
+    [self.BlockPairComponent draw:z];
 }
 
 -(void)move

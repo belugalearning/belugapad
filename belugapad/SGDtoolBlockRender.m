@@ -20,7 +20,7 @@
 
 @implementation SGDtoolBlockRender
 
--(SGDtoolBlockRender*)initWithGameObject:(id<Transform, Moveable>)aGameObject
+-(SGDtoolBlockRender*)initWithGameObject:(id<Transform, Moveable, Pairable>)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {

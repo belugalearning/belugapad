@@ -81,6 +81,11 @@
     [self.BlockPairComponent pairMeWith:thisObject];
 }
 
+-(void)unpairMeFrom:(id)thisObject
+{
+    [self.BlockPairComponent unpairMeFrom:thisObject];
+}
+
 -(void)dealloc
 {
     [BlockRenderComponent release];

@@ -44,6 +44,7 @@
 @property (retain) NSMutableArray *PairedObjects;
 
 -(void)pairMeWith:(id)thisObject;
+-(void)unpairMeFrom:(id)thisObject;
 
 @end
 

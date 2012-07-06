@@ -225,10 +225,8 @@
                 BOOL proximateToPickupObject=[go amIProximateTo:curPOPos];
                 [go resetTint];
                 if(proximateToPickupObject)[go pairMeWith:currentPickupObject];
+                else [go unpairMeFrom:currentPickupObject];
                 
-                id <Pairable>curObj=go;
-                
-                NSLog(@"Objects paired with this object: %d", [curObj.PairedObjects count]);
             }
         }
     }

@@ -218,7 +218,11 @@
         // check all the gamobjects and search for a moveable object
         for(id go in gw.AllGameObjects)
         {
-            if(go==currentPickupObject)continue;
+            if(go==currentPickupObject)
+            {
+                [go resetTint];
+                continue;
+            }
             if([go conformsToProtocol:@protocol(Moveable)])
             {
                 // return whether the object is proximate to our current pickuobject

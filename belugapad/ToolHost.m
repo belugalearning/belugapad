@@ -20,7 +20,7 @@
 #import "LoggingService.h"
 #import "ContentService.h"
 #import "UsersService.h"
-#import "JourneyScene.h"
+#import "JMap.h"
 #import "DProblemParser.h"
 #import "Problem.h"
 #import "Pipeline.h"
@@ -345,7 +345,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         
         //[contentService.currentStaticPdef release];
         
-        [[CCDirector sharedDirector] replaceScene:[JourneyScene scene]];
+        [[CCDirector sharedDirector] replaceScene:[JMap scene]];
     }
 }
 
@@ -454,6 +454,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [problemDescLabel setVisible:NO];
     }
     else {
+        isGlossaryMock=NO;
         if(glossary1)[self removeChild:glossary1 cleanup:YES];
         if(glossary2)[self removeChild:glossary2 cleanup:YES];
         if(glossaryPopup)[self removeChild:glossaryPopup cleanup:YES];
@@ -566,7 +567,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void) returnToMenu
 {
-    [[CCDirector sharedDirector] replaceScene:[JourneyScene scene]];
+    [[CCDirector sharedDirector] replaceScene:[JMap scene]];
 }
 
 -(void) showProblemCompleteMessage

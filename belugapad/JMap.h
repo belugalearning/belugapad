@@ -10,7 +10,7 @@
 
 @class Daemon;
 
-@interface JourneyScene : CCLayer
+@interface JMap : CCLayer
 {
     float cx, cy, lx, ly;
     
@@ -25,6 +25,9 @@
     CGPoint dragLast;
     
     BOOL zoomedOut;
+    
+    int touchCount;
+    BOOL didJustChangeZoom;
 }
 
 +(CCScene *)scene;

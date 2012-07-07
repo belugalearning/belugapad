@@ -188,9 +188,13 @@
             {
                 anch.Disabled=YES;
             }
-            else if((iRow!=startX || iCol!=startY) && (drawMode==kSpecifiedStartAnchor || drawMode==kNoDrawing)) {
+            else if((iRow!=startX || iCol!=startY) && drawMode==kNoDrawing) {
                 //NSLog(@"THIS ANCHOR IS *DISABLED* (x %d / y %d)", anch.myXpos, anch.myYpos);
                 anch.Disabled=YES;
+            }
+            else if((iRow!=startX || iCol!=startY) && drawMode==kStartAnchor) {
+                //NSLog(@"THIS ANCHOR IS *DISABLED* (x %d / y %d)", anch.myXpos, anch.myYpos);
+                anch.Disabled=NO;
             }
             
             [currentCol addObject:anch];
@@ -343,7 +347,7 @@
                     for(int y=anchStart.myYpos;y<anchEnd.myYpos;y++)
                     {
                         DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
-                        if(((curAnch.Disabled || curAnch.Hidden) && !gw.Blackboard.inProblemSetup && !gameState==kStartAnchor))failedChecksHidden=YES;
+                        if(((curAnch.Disabled || curAnch.Hidden) && !gw.Blackboard.inProblemSetup && !gameState==kSpecifiedStartAnchor))failedChecksHidden=YES;
                         if(curAnch.tile)failedChecksExistingTile=YES;
                         [anchorsForShape addObject:curAnch];
                         
@@ -358,7 +362,7 @@
                     for(int y=anchStart.myYpos-1;y>anchEnd.myYpos-1;y--)
                     {
                         DWDotGridAnchorGameObject *curAnch = [[dotMatrix objectAtIndex:x]objectAtIndex:y];
-                        if(((curAnch.Disabled || curAnch.Hidden) && !gw.Blackboard.inProblemSetup && !gameState==kStartAnchor))failedChecksHidden=YES;
+                        if(((curAnch.Disabled || curAnch.Hidden) && !gw.Blackboard.inProblemSetup && !gameState==kSpecifiedStartAnchor))failedChecksHidden=YES;
                         if(curAnch.tile)failedChecksExistingTile=YES;
                         [anchorsForShape addObject:curAnch];
                         if(x==anchEnd.myXpos+1 && y==anchEnd.myYpos && showResize)
@@ -576,7 +580,7 @@
     int dupeAnchors=0;
     
     
-    if([anchors count]==0)return;
+    if([anchors count]<=1)return;
     
     for(int i=0;i<[anchors count];i++)
     {
@@ -588,13 +592,13 @@
         }
     }
     
-    if(dupeAnchors<1)
-    {
-        thisShape.resizeHandle.Position=ccp(rsAnchor.Position.x+spaceBetweenAnchors,rsAnchor.Position.y);
-        [thisShape.resizeHandle handleMessage:kDWmoveSpriteToPosition];
-        
-        return;
-    }
+//    if(dupeAnchors<1)
+//    {
+//        thisShape.resizeHandle.Position=ccp(rsAnchor.Position.x+spaceBetweenAnchors,rsAnchor.Position.y);
+//        [thisShape.resizeHandle handleMessage:kDWmoveSpriteToPosition];
+//        
+//        return;
+//    }
     
     // we are deleting
 

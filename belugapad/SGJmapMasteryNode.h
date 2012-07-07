@@ -20,6 +20,11 @@
 @property (retain) NSMutableArray *ConnectFromMasteryNodes;
 
 @property (retain) NSString *Region;
+@property BOOL Disabled;
+
+@property int PrereqCount;
+@property int PrereqComplete;
+@property float PrereqPercentage;
 
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
 

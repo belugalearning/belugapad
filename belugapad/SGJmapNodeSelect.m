@@ -17,7 +17,7 @@
 #import "SGJmapNode.h"
 #import "SGJmapMasteryNode.h"
 
-#import "JourneyScene.h"
+#import "JMap.h"
 
 @implementation SGJmapNodeSelect
 
@@ -40,6 +40,10 @@
 {
     BOOL ret=NO;
     
+    if([gameObject isKindOfClass:[SGJmapMasteryNode class]])
+        if(((SGJmapMasteryNode*)gameObject).Disabled)
+            return NO;
+    
     if([BLMath DistanceBetween:ParentGO.Position and:pos]<(ParentGO.Selected ? ParentGO.HitProximitySign : ParentGO.HitProximity))
     {
         ret=YES;
@@ -53,7 +57,7 @@
             {
                 //[((AppController*)[UIApplication sharedApplication].delegate) startToolHostFromJmapPos:ParentGO.Position];
                 
-                [((JourneyScene*)[gameWorld GameScene]) startTransitionToToolHostWithPos:ParentGO.Position];
+                [((JMap*)[gameWorld GameScene]) startTransitionToToolHostWithPos:ParentGO.Position];
             }
             
             NSLog(@"i'm starting! %@", ParentGO._id);

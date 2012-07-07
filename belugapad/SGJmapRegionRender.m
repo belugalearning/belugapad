@@ -226,7 +226,7 @@
         }
         
         CGPoint *f=&adjPoints[0];
-        float incr=ParentGO.RegionNumber * 0.02f;
+        float incr=(ParentGO.RegionNumber+2) * 0.005f;
         
         ccColor4F c=ccc4FFromccc3B(ccc3(80, 110, 146));
         

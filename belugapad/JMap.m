@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "JourneyScene.h"
+#import "JMap.h"
 
 #import "UsersService.h"
 #import "ToolHost.h"
@@ -56,7 +56,7 @@ typedef enum {
     kJuiStateNodeSlice
 } JuiState;
 
-@interface JourneyScene()
+@interface JMap()
 {
 @private
     LoggingService *loggingService;
@@ -96,14 +96,14 @@ typedef enum {
 
 @end
 
-@implementation JourneyScene
+@implementation JMap
 
 #pragma mark - init
 
 +(CCScene *)scene
 {
     CCScene *scene=[CCScene node];
-    JourneyScene *layer=[JourneyScene node];
+    JMap *layer=[JMap node];
     [scene addChild:layer];
     return scene;
 }
@@ -113,7 +113,7 @@ typedef enum {
     if(self=[super init])
     {
         self.isTouchEnabled=YES;
-        [[CCDirector sharedDirector] view].multipleTouchEnabled=NO;
+        [[CCDirector sharedDirector] view].multipleTouchEnabled=YES;
         
         CGSize winsize=[[CCDirector sharedDirector] winSize];
         lx=winsize.width;
@@ -389,7 +389,24 @@ typedef enum {
         }
     }
     
-    //establish completed state on mastery nodes
+    //pre-req relations
+    NSArray *prqs=[contentService relationMembersForName:@"Prerequisite"];
+    for(NSArray *pair in prqs)
+    {
+        SGJmapNode *left=[self gameObjectForCouchId:[pair objectAtIndex:0]];
+        SGJmapNode *right=[self gameObjectForCouchId:[pair objectAtIndex:1]];
+        
+        if (left && right)
+        {
+            //add left as pre-requisite of left
+            [right.PrereqNodes addObject:left];
+        }
+        else {
+            NSLog(@"could not find both pre-req end points for %@ and %@", [pair objectAtIndex:0], [pair objectAtIndex:1]);
+        }
+    }
+    
+    //establish completed state on mastery nodes; pre-req completion
     for(id go in [gw AllGameObjects])
     {
         if([go isKindOfClass:[SGJmapMasteryNode class]])
@@ -401,9 +418,50 @@ typedef enum {
                 if(!n.EnabledAndComplete) allcomplete=NO;
             }
             
-            if(mgo.ChildNodes.count==0) allcomplete=NO;
+            if(mgo.ChildNodes.count==0)
+            {
+                allcomplete=NO;
+                mgo.Disabled=YES;
+            }
             
             if(allcomplete)mgo.EnabledAndComplete=YES;
+        }
+    }
+    
+    //second pass on mastery nodes to establish completion
+    for(id go in [gw AllGameObjects])
+    {
+        if([go isKindOfClass:[SGJmapMasteryNode class]])
+        {    
+            SGJmapMasteryNode *mgo=(SGJmapMasteryNode*)go;
+            
+            int prqcount=0;
+            int prqcomplete=0;
+            for(SGJmapNode *n in mgo.ChildNodes)
+            {
+                for (SGJmapNode *prqn in n.PrereqNodes) {
+                    prqcount++;
+                    if(prqn.EnabledAndComplete) prqcomplete++;
+                }
+            }
+            
+            mgo.PrereqCount=prqcount;
+            mgo.PrereqComplete=prqcomplete;
+            
+            if(mgo.PrereqCount>0)
+            {
+                mgo.PrereqPercentage=(prqcomplete / prqcount) * 100.0f;                
+            }
+            else if(mgo.ChildNodes.count>0)
+            {
+                mgo.PrereqPercentage=100;
+            }
+            else {
+                mgo.PrereqPercentage=0;
+            }
+
+            
+            NSLog(@"mastery prq percentage %f for complete %d of %d", mgo.PrereqPercentage, mgo.PrereqComplete, mgo.PrereqCount);
         }
     }
     
@@ -713,6 +771,8 @@ typedef enum {
 //        return;
 //    }
     
+    touchCount+=touches.count;
+    
     if(debugEnabled && CGRectContainsPoint(debugButtonBounds, l))
     {
         BOOL doat=!debugMenu.enabled;
@@ -727,8 +787,6 @@ typedef enum {
     else if(l.x<128 && l.y > (ly-128))
     {
         [self zoomToCityView];
-        
-        [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.25f position:ccp(-611,3713)] rate:2.0f]];
     }
     else {
 
@@ -759,6 +817,9 @@ typedef enum {
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isDragging=NO;
+    didJustChangeZoom=NO;
+    
+    touchCount=0;
 }
 
 -(void)testForNodeTouchAt:(CGPoint)lOnMap
@@ -791,7 +852,7 @@ typedef enum {
     CGPoint l=[touch locationInView:[touch view]];
     l=[[CCDirector sharedDirector] convertToGL:l];
     
-    if (touches.count==1) {
+    if (touchCount==1 && !didJustChangeZoom) {
         
         if(touchStartedInNodeMap)
         {
@@ -816,12 +877,46 @@ typedef enum {
 //            [daemon setRestingPoint:l];
         }
     }
+    //pinch handling
+    if([touches count]>1 && !didJustChangeZoom)
+    {
+        UITouch *t1=[[touches allObjects] objectAtIndex:0];
+        UITouch *t2=[[touches allObjects] objectAtIndex:1];
+        
+        CGPoint t1a=[[CCDirector sharedDirector] convertToGL:[t1 previousLocationInView:t1.view]];
+        CGPoint t1b=[[CCDirector sharedDirector] convertToGL:[t1 locationInView:t1.view]];
+        CGPoint t2a=[[CCDirector sharedDirector] convertToGL:[t2 previousLocationInView:t2.view]];
+        CGPoint t2b=[[CCDirector sharedDirector] convertToGL:[t2 locationInView:t2.view]];
+        
+        float da=[BLMath DistanceBetween:t1a and:t2a];
+        float db=[BLMath DistanceBetween:t1b and:t2b];
+        
+        float scaleChange=db-da;
+        
+        if(scaleChange<-2 && !zoomedOut)
+        {
+            [self zoomToRegionView];
+            didJustChangeZoom=YES;
+        }
+        else if(scaleChange>2 && zoomedOut)
+        {
+            [self zoomToCityView];
+            didJustChangeZoom=YES;
+        }
+    }
     
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    isDragging=NO;
+    touchCount-=touches.count;
+    
+    if(touchCount==0)
+    {
+        didJustChangeZoom=NO;
+        isDragging=NO;
+    }
+    
 }
 
 #pragma mark - map views and zooming
@@ -833,6 +928,8 @@ typedef enum {
     [backarrow setFlipX:NO];
     
     [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.25f scale:1.0f] rate:2.0f]];    
+
+    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.25f position:ccp(-611,3713)] rate:2.0f]];
     
     [gw handleMessage:kSGzoomIn];
     

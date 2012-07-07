@@ -63,6 +63,8 @@ typedef enum {
     NSMutableArray *shardsExpiring;
     float expireShardsCooldown;
     int retainedXP;
+    
+    BOOL hidden;
 }
 
 -(id)initWithLayer:(CCLayer*)theHostLayer andRestingPostion:(CGPoint)theRestingPos andLy:(float)hostLy;

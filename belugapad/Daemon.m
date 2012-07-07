@@ -85,6 +85,7 @@ static float kSubParticleOffset=10.0f;
     [primaryParticle setVisible:NO];
     [secondParticle setVisible:NO];
     [thirdParticle setVisible:NO];
+    hidden=YES;
 }
 
 -(void)showZubi
@@ -92,6 +93,7 @@ static float kSubParticleOffset=10.0f;
     [primaryParticle setVisible:YES];
     [secondParticle setVisible:YES];
     [thirdParticle setVisible:YES];    
+    hidden=NO;
 }
 
 -(void)createXPshards:(int)numShards fromLocation:(CGPoint)baseLocation
@@ -261,30 +263,36 @@ static float kSubParticleOffset=10.0f;
 {
     standbyTime+=delta;
     
-    //keep in sync with targetted follow object -- if one present
-    if(followObject)
-    {
-        target=[followObject position];
-        standbyTime=0.0f;
-    }
-    
-    CGPoint desiredSteer=[self getSteeringVelocity];
-    
-    CGPoint pos=[self getNewPositionWithDesiredSteer:desiredSteer andDelta:delta];
-    
-    //shouldn't ever be a need to move to position -- so long as this is running on tick delta
-    [primaryParticle setPosition:pos];
-    
-    //update breathing ryhthm
-    //disabled during testing peffect perf
-    [self updateBreatheVars:delta];
-    
-    if(standbyTime>standbyExpiry)
-    {
-        [self setMode:kDaemonModeResting];
-    }
     
     [self tickManageShards:delta];
+    
+    //for the moment, completely disable movement if hidden
+    if(!hidden)
+    {
+        //keep in sync with targetted follow object -- if one present
+        if(followObject)
+        {
+            target=[followObject position];
+            standbyTime=0.0f;
+        }
+        
+        CGPoint desiredSteer=[self getSteeringVelocity];
+        
+        CGPoint pos=[self getNewPositionWithDesiredSteer:desiredSteer andDelta:delta];
+        
+        //shouldn't ever be a need to move to position -- so long as this is running on tick delta
+        [primaryParticle setPosition:pos];
+        
+        //update breathing ryhthm
+        //disabled during testing peffect perf
+        [self updateBreatheVars:delta];
+        
+        if(standbyTime>standbyExpiry)
+        {
+            [self setMode:kDaemonModeResting];
+        }
+    }
+    
 }
 
 -(CGPoint)currentPosition
@@ -304,7 +312,12 @@ static float kSubParticleOffset=10.0f;
         if(diff<50 || (arc4random()%chanceDiff)==1)
         {
             //collect it
-            CCMoveTo *mt=[CCMoveTo actionWithDuration:0.25f position:[primaryParticle position]];
+            CGPoint diffPos=[BLMath SubtractVector:ccp(512, 384) from:shard.position];
+            CGPoint dest=[BLMath MultiplyVector:diffPos byScalar:5.0f];
+            
+            
+            //CCMoveTo *mt=[CCMoveTo actionWithDuration:0.25f position:[primaryParticle position]];
+            CCMoveTo *mt=[CCMoveTo actionWithDuration:0.25f position:dest];
             CCEaseOut *eo=[CCEaseOut actionWithAction:mt rate:0.5f];
             CCFadeOut *fo=[CCFadeOut actionWithDuration:0.3f];
             [shard stopAllActions];
@@ -315,7 +328,7 @@ static float kSubParticleOffset=10.0f;
             [shardsExpiring addObject:shard];
             
             //reset disposal timer
-            expireShardsCooldown=2.0f;
+            //expireShardsCooldown=2.0f;
         }
     }
     
@@ -337,7 +350,7 @@ static float kSubParticleOffset=10.0f;
         [shardsExpiring removeAllObjects];
         
         //reset expiry
-        expireShardsCooldown=2.0f;
+        expireShardsCooldown=0.2f;
     }
     
 }

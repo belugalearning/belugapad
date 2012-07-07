@@ -172,6 +172,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(file)];
 }
 
+-(void)playAudioFlourish
+{
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/integrated/blpress-flourish.wav")];
+}
+
 #pragma mark
 
 
@@ -1428,12 +1433,20 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit)
     {
-        [self playAudioPress];
+        
         
         //effective user commit
         [loggingService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
         
         [currentTool evalProblem];
+        
+        if(currentTool.ProblemComplete)
+        {
+            [self playAudioFlourish];
+        }
+        else {
+            [self playAudioPress];
+        }
     }
     if (location.x > 944 && location.y > 688 && !isPaused)
     {

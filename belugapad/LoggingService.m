@@ -18,7 +18,7 @@
 #import "JSONKit.h"
 
 
-NSString * const kLoggingWebServiceBaseURL = @"http://u.zubi.me:3000";
+NSString * const kLoggingWebServiceBaseURL = @"http://log.zubi.me:3000";
 NSString * const kLoggingWebServicePath = @"app-logging/upload";
 uint const kMaxConsecutiveSendFails = 3;
 

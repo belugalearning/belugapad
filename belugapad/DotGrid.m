@@ -188,15 +188,11 @@
             {
                 anch.Disabled=YES;
             }
-            else if((iRow!=startX || iCol!=startY) && drawMode==kNoDrawing) {
+            else if((iRow!=startX || iCol!=startY) && (drawMode==kNoDrawing || drawMode==kStartAnchor)) {
                 //NSLog(@"THIS ANCHOR IS *DISABLED* (x %d / y %d)", anch.myXpos, anch.myYpos);
                 anch.Disabled=YES;
             }
-            else if((iRow!=startX || iCol!=startY) && drawMode==kStartAnchor) {
-                //NSLog(@"THIS ANCHOR IS *DISABLED* (x %d / y %d)", anch.myXpos, anch.myYpos);
-                anch.Disabled=NO;
-            }
-            
+
             [currentCol addObject:anch];
             
 

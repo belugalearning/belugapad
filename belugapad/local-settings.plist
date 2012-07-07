@@ -2,9 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>PROBLEM_PIPELINE-2</key>
-	<string>/pipeline-testing/05pv-pipeline.plist</string>
 	<key>PROBLEM_PIPELINE</key>
+	<string>/Problems/dotgrid-demo</string>
+	<key>PROBLEM_PIPELINE-d</key>
 	<string>DATABASE</string>
 	<key>PROBLEM_PIPELINE-tt</key>
 	<string>/pipeline-testing/da-pipeline-test.plist</string>

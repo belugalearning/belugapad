@@ -13,7 +13,7 @@
 
 @implementation SGJmapNode
 
-@synthesize NodeRenderComponent, EnabledAndComplete, MasteryNode;
+@synthesize NodeRenderComponent, EnabledAndComplete, MasteryNode, PrereqNodes;
 
 //Transform protocol properties
 @synthesize Position, RenderBatch;
@@ -35,6 +35,8 @@
         self.Position=aPosition;
         self.Selected=NO;
         self.Visible=NO;
+        
+        PrereqNodes=[[NSMutableArray alloc] init];
         
         NodeRenderComponent=[[[SGJmapNodeRender alloc] initWithGameObject:self] retain];
         ProximityEvalComponent=[[[SGJmapProximityEval alloc] initWithGameObject:self] retain];
@@ -76,6 +78,8 @@
 
 -(void)dealloc
 {
+    [PrereqNodes release];
+    
     [NodeRenderComponent release];
     [ProximityEvalComponent release];
     [NodeSelectComponent release];

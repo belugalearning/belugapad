@@ -21,6 +21,10 @@
 
 @property (retain) NSString *Region;
 
+@property int PrereqCount;
+@property int PrereqComplete;
+@property float PrereqPercentage;
+
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
 
 @end

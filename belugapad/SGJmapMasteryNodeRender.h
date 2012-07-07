@@ -24,6 +24,8 @@
     ccColor4B stepColours[10];
     
     BOOL zoomedOut;
+    
+    ccColor4B currentCol;
 }
 
 -(void)draw:(int)z;

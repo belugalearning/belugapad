@@ -12,11 +12,12 @@
 #import "global.h"
 
 static ccColor4B userCol={80, 110, 146, 255};
+static ccColor4B userCol2={120, 168, 221, 255};
 //static ccColor4B userCol={101, 140, 153, 255};
 //static ccColor4B userCol={0, 51, 98, 255};
 //static ccColor4B userCol={150,90,200,255};
 //static ccColor4B userCol={150,90,200,255};
-static ccColor4B userHighCol={85, 115, 156, 255};
+static ccColor4B userHighCol={255, 255, 255, 50};
 //static ccColor4B userHighCol={239,119,82,255};
 static int shadowSteps=10;
 
@@ -115,7 +116,7 @@ static int shadowSteps=10;
     else if (z==2)
     {
         
-        ccColor4F f4=ccc4FFromccc4B(userCol);
+        ccColor4F f4=ccc4FFromccc4B(currentCol);
         
         //lines to inter mastery nodes
         for(id<Transform> imnode in ParentGO.ConnectToMasteryNodes) {
@@ -142,8 +143,8 @@ static int shadowSteps=10;
                 float y1p=y1+width * (x1-x2) / L;
                 float y2p=y2+width * (x1-x2) / L;
                 
-                if(zoomedOut) ccDrawColor4F(f4.r, f4.g, f4.b, 0.3f);
-                else ccDrawColor4F(f4.r, f4.g, f4.b, f4.a);
+                if(zoomedOut) ccDrawColor4F(f4.r, f4.g, f4.b, 0.15f);
+                else ccDrawColor4F(f4.r, f4.g, f4.b, 0.35f);
                 
                 ccDrawLine(ccp(x1p, y1p), ccp(x2p, y2p));
             }
@@ -177,6 +178,11 @@ static int shadowSteps=10;
     [ParentGO.RenderBatch.parent addChild:labelSprite];
     
     sortedChildren=[[NSMutableArray alloc] init];
+ 
+    float r=userCol.r + (userCol2.r - userCol.r) * (ParentGO.PrereqPercentage / 100.0f);
+    float g=userCol.g + (userCol2.g - userCol.g) * (ParentGO.PrereqPercentage / 100.0f);
+    float b=userCol.b + (userCol2.b - userCol.b) * (ParentGO.PrereqPercentage / 100.0f);
+    currentCol=ccc4(r, g, b, 255);
     
     //sort children
     for (id<Transform> prnode in ParentGO.ChildNodes) {
@@ -305,13 +311,13 @@ static int shadowSteps=10;
     ymean=ymean/(float)sortedChildren.count;
     CGPoint pmid=ccp(xmean,ymean);
     
-    ccColor4B stepColour=userCol;
+    ccColor4B stepColour=currentCol;
     stepColour.r=stepColour.r-5;
     stepColour.g=stepColour.g-5;
     stepColour.b=stepColour.b-10;
-    if(stepColour.r>userCol.r)stepColour.r=0;
-    if(stepColour.g>userCol.g)stepColour.g=0;
-    if(stepColour.b>userCol.b)stepColour.b=0;
+    if(stepColour.r>currentCol.r)stepColour.r=0;
+    if(stepColour.g>currentCol.g)stepColour.g=0;
+    if(stepColour.b>currentCol.b)stepColour.b=0;
     
     //step the colours
     for(int i=0; i<shadowSteps; i++)

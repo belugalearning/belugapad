@@ -389,7 +389,24 @@ typedef enum {
         }
     }
     
-    //establish completed state on mastery nodes
+    //pre-req relations
+    NSArray *prqs=[contentService relationMembersForName:@"Prerequisite"];
+    for(NSArray *pair in prqs)
+    {
+        SGJmapNode *left=[self gameObjectForCouchId:[pair objectAtIndex:0]];
+        SGJmapNode *right=[self gameObjectForCouchId:[pair objectAtIndex:1]];
+        
+        if (left && right)
+        {
+            //add left as pre-requisite of left
+            [right.PrereqNodes addObject:left];
+        }
+        else {
+            NSLog(@"could not find both pre-req end points for %@ and %@", [pair objectAtIndex:0], [pair objectAtIndex:1]);
+        }
+    }
+    
+    //establish completed state on mastery nodes; pre-req completion
     for(id go in [gw AllGameObjects])
     {
         if([go isKindOfClass:[SGJmapMasteryNode class]])
@@ -404,6 +421,43 @@ typedef enum {
             if(mgo.ChildNodes.count==0) allcomplete=NO;
             
             if(allcomplete)mgo.EnabledAndComplete=YES;
+        }
+    }
+    
+    //second pass on mastery nodes to establish completion
+    for(id go in [gw AllGameObjects])
+    {
+        if([go isKindOfClass:[SGJmapMasteryNode class]])
+        {    
+            SGJmapMasteryNode *mgo=(SGJmapMasteryNode*)go;
+            
+            int prqcount=0;
+            int prqcomplete=0;
+            for(SGJmapNode *n in mgo.ChildNodes)
+            {
+                for (SGJmapNode *prqn in n.PrereqNodes) {
+                    prqcount++;
+                    if(prqn.EnabledAndComplete) prqcomplete++;
+                }
+            }
+            
+            mgo.PrereqCount=prqcount;
+            mgo.PrereqComplete=prqcomplete;
+            
+            if(mgo.PrereqCount>0)
+            {
+                mgo.PrereqPercentage=(prqcomplete / prqcount) * 100.0f;                
+            }
+            else if(mgo.ChildNodes.count>0)
+            {
+                mgo.PrereqPercentage=100;
+            }
+            else {
+                mgo.PrereqPercentage=0;
+            }
+
+            
+            NSLog(@"mastery prq percentage %f for complete %d of %d", mgo.PrereqPercentage, mgo.PrereqComplete, mgo.PrereqCount);
         }
     }
     

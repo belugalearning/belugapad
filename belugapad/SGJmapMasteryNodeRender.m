@@ -170,11 +170,13 @@ static int shadowSteps=10;
     }
     [nodeSprite setPosition:[BLMath AddVector:ParentGO.Position toVector:ccp(0, 50)]];
     [nodeSprite setVisible:ParentGO.Visible];
+    if(ParentGO.Disabled) [nodeSprite setOpacity:100];
     [ParentGO.RenderBatch addChild:nodeSprite];
     
     labelSprite=[CCLabelTTF labelWithString:ParentGO.UserVisibleString fontName:@"Helvetica" fontSize:14.0f];
     [labelSprite setPosition:ccpAdd(ccp(0, -40), ParentGO.Position)];
     [labelSprite setVisible:ParentGO.Visible];
+    if(ParentGO.Disabled) [labelSprite setOpacity:100];
     [ParentGO.RenderBatch.parent addChild:labelSprite];
     
     sortedChildren=[[NSMutableArray alloc] init];

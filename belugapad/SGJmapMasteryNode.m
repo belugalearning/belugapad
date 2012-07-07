@@ -13,7 +13,7 @@
 
 @implementation SGJmapMasteryNode
 
-@synthesize MNodeRenderComponent, ChildNodes, ConnectToMasteryNodes, ConnectFromMasteryNodes, EnabledAndComplete, Region, PrereqCount, PrereqComplete, PrereqPercentage;
+@synthesize MNodeRenderComponent, ChildNodes, ConnectToMasteryNodes, ConnectFromMasteryNodes, EnabledAndComplete, Region, PrereqCount, PrereqComplete, PrereqPercentage, Disabled;
 
 //transform protocol properties
 @synthesize Position, RenderBatch;

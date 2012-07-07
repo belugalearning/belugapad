@@ -20,6 +20,7 @@
 @property (retain) NSMutableArray *ConnectFromMasteryNodes;
 
 @property (retain) NSString *Region;
+@property BOOL Disabled;
 
 @property int PrereqCount;
 @property int PrereqComplete;

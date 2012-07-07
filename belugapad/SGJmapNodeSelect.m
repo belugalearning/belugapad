@@ -40,6 +40,10 @@
 {
     BOOL ret=NO;
     
+    if([gameObject isKindOfClass:[SGJmapMasteryNode class]])
+        if(((SGJmapMasteryNode*)gameObject).Disabled)
+            return NO;
+    
     if([BLMath DistanceBetween:ParentGO.Position and:pos]<(ParentGO.Selected ? ParentGO.HitProximitySign : ParentGO.HitProximity))
     {
         ret=YES;

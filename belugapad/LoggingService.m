@@ -295,7 +295,12 @@ uint const kMaxConsecutiveSendFails = 3;
             // ---- store the compressed data in prevDir for future repeat attempt at saving
             NSString *filePath = [NSString stringWithFormat:@"%@/%d", bself->prevDir, (int)[[NSDate date] timeIntervalSince1970]];
             queuedBatch = [bself->fm createFileAtPath:filePath contents:batchData attributes:nil];            
-            if (!queuedBatch) NSLog(@"Errr.... "); // TODO handle? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            if (!queuedBatch)
+            {
+                NSMutableDictionary *d = [NSMutableDictionary dictionary];
+                [d setValue:BL_APP_ERROR_TYPE_FAIL_QUEUE_BATCH forKey:@"type"];
+                [bself logEvent:BL_APP_ERROR withAdditionalData:d];
+            }
         }
         
         // delete files from currDir if they've either been successfully sent to server or have been saved in compressed form in prevDir
@@ -332,7 +337,12 @@ uint const kMaxConsecutiveSendFails = 3;
             // ---- store the compressed data in prevDir for future repeat attempt at saving
             NSString *filePath = [NSString stringWithFormat:@"%@/%d", bself->prevDir, (int)[[NSDate date] timeIntervalSince1970]];
             requeued = [bself->fm createFileAtPath:filePath contents:batch attributes:nil];            
-            if (!requeued) NSLog(@"Errr.... "); // TODO handle? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            if (!requeued)
+            {
+                NSMutableDictionary *d = [NSMutableDictionary dictionary];
+                [d setValue:BL_APP_ERROR_TYPE_FAIL_REQUEUE_BATCH forKey:@"type"];
+                [bself logEvent:BL_APP_ERROR withAdditionalData:d];
+            }
         }
         
         // delete files from currDir if they've either been successfully sent to server or have been saved in compressed form in prevDir

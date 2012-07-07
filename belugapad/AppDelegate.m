@@ -15,7 +15,7 @@
 #import "SelectUserViewController.h"
 #import "LoadingViewController.h"
 #import "ZubiIntro.h"
-#import "JourneyScene.h"
+#import "JMap.h"
 #import "ToolHost.h"
 
 @interface AppController()
@@ -167,7 +167,7 @@
     }
     else
     {
-        [director_ pushScene:[JourneyScene scene]];
+        [director_ pushScene:[JMap scene]];
     }    
 }
 

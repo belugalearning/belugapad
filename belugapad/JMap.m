@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "JourneyScene.h"
+#import "JMap.h"
 
 #import "UsersService.h"
 #import "ToolHost.h"
@@ -56,7 +56,7 @@ typedef enum {
     kJuiStateNodeSlice
 } JuiState;
 
-@interface JourneyScene()
+@interface JMap()
 {
 @private
     LoggingService *loggingService;
@@ -96,14 +96,14 @@ typedef enum {
 
 @end
 
-@implementation JourneyScene
+@implementation JMap
 
 #pragma mark - init
 
 +(CCScene *)scene
 {
     CCScene *scene=[CCScene node];
-    JourneyScene *layer=[JourneyScene node];
+    JMap *layer=[JMap node];
     [scene addChild:layer];
     return scene;
 }

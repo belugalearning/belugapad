@@ -17,7 +17,7 @@
 #import "SGJmapNode.h"
 #import "SGJmapMasteryNode.h"
 
-#import "JourneyScene.h"
+#import "JMap.h"
 
 @implementation SGJmapNodeSelect
 
@@ -53,7 +53,7 @@
             {
                 //[((AppController*)[UIApplication sharedApplication].delegate) startToolHostFromJmapPos:ParentGO.Position];
                 
-                [((JourneyScene*)[gameWorld GameScene]) startTransitionToToolHostWithPos:ParentGO.Position];
+                [((JMap*)[gameWorld GameScene]) startTransitionToToolHostWithPos:ParentGO.Position];
             }
             
             NSLog(@"i'm starting! %@", ParentGO._id);

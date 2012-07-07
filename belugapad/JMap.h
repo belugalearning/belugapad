@@ -10,7 +10,7 @@
 
 @class Daemon;
 
-@interface JourneyScene : CCLayer
+@interface JMap : CCLayer
 {
     float cx, cy, lx, ly;
     

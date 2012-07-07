@@ -172,7 +172,7 @@ static int shadowSteps=10;
     [nodeSprite setVisible:ParentGO.Visible];
     [ParentGO.RenderBatch addChild:nodeSprite];
     
-    labelSprite=[CCLabelTTF labelWithString:ParentGO.UserVisibleString fontName:@"Helvetica" fontSize:12.0f];
+    labelSprite=[CCLabelTTF labelWithString:ParentGO.UserVisibleString fontName:@"Helvetica" fontSize:14.0f];
     [labelSprite setPosition:ccpAdd(ccp(0, -40), ParentGO.Position)];
     [labelSprite setVisible:ParentGO.Visible];
     [ParentGO.RenderBatch.parent addChild:labelSprite];

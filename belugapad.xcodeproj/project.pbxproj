@@ -282,7 +282,7 @@
 		7F5115A614A9EF67001AF372 /* DWGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A014A9EF67001AF372 /* DWGameObject.m */; };
 		7F5115A714A9EF67001AF372 /* DWGameWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A214A9EF67001AF372 /* DWGameWorld.m */; };
 		7F5115AA14A9EF9E001AF372 /* BlockFloating.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A914A9EF9E001AF372 /* BlockFloating.m */; };
-		7F5BD842154AB6A70092740B /* JourneyScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5BD841154AB6A70092740B /* JourneyScene.m */; };
+		7F5BD842154AB6A70092740B /* JMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5BD841154AB6A70092740B /* JMap.m */; };
 		7F66C88D159DC78C004E84C8 /* SGJmapRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F66C88C159DC78C004E84C8 /* SGJmapRegion.m */; };
 		7F66C891159DC9E5004E84C8 /* SGJmapRegionRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F66C890159DC9E5004E84C8 /* SGJmapRegionRender.m */; };
 		7F719C0314D739A600F30E89 /* Daemon.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F719C0214D739A600F30E89 /* Daemon.m */; };
@@ -956,8 +956,8 @@
 		7F5115A314A9EF67001AF372 /* DWModelConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWModelConstants.h; sourceTree = "<group>"; };
 		7F5115A814A9EF9E001AF372 /* BlockFloating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockFloating.h; sourceTree = "<group>"; };
 		7F5115A914A9EF9E001AF372 /* BlockFloating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BlockFloating.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		7F5BD840154AB6A70092740B /* JourneyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JourneyScene.h; sourceTree = "<group>"; };
-		7F5BD841154AB6A70092740B /* JourneyScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JourneyScene.m; sourceTree = "<group>"; };
+		7F5BD840154AB6A70092740B /* JMap.h */ = {isa = PBXFileReference; fileEncoding = 4; path = JMap.h; sourceTree = "<group>"; };
+		7F5BD841154AB6A70092740B /* JMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMap.m; sourceTree = "<group>"; };
 		7F66C88B159DC78C004E84C8 /* SGJmapRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapRegion.h; sourceTree = "<group>"; };
 		7F66C88C159DC78C004E84C8 /* SGJmapRegion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapRegion.m; sourceTree = "<group>"; };
 		7F66C88F159DC9E5004E84C8 /* SGJmapRegionRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapRegionRender.h; sourceTree = "<group>"; };
@@ -1507,8 +1507,8 @@
 				7FB8264814F262080053F221 /* ZubiIntro.m */,
 				7FA38AD0154534340031E59D /* EditZubi.h */,
 				7FA38AD1154534340031E59D /* EditZubi.m */,
-				7F5BD840154AB6A70092740B /* JourneyScene.h */,
-				7F5BD841154AB6A70092740B /* JourneyScene.m */,
+				7F5BD840154AB6A70092740B /* JMap.h */,
+				7F5BD841154AB6A70092740B /* JMap.m */,
 			);
 			name = Menus;
 			sourceTree = "<group>";
@@ -2942,7 +2942,7 @@
 				7FBE96991549819300D993AC /* LoadingViewController.m in Sources */,
 				7FDABAC3154AABF300F3F1A5 /* ConceptNode.m in Sources */,
 				7F2CAEDB154AB58B00BFBB6F /* LongDivision.m in Sources */,
-				7F5BD842154AB6A70092740B /* JourneyScene.m in Sources */,
+				7F5BD842154AB6A70092740B /* JMap.m in Sources */,
 				7F85187C1558E85F002E9F07 /* Pipeline.m in Sources */,
 				7F3367DD155FC38A00A2E656 /* DProblemParser.m in Sources */,
 				55AFD6A5156517FC00FF1886 /* TimesTables.m in Sources */,

@@ -58,7 +58,7 @@ uint const kMaxConsecutiveSendFails = 3;
 {
     self = [super init];
     if (self)
-    {
+    {        
         problemAttemptLoggingSetting = paLogSetting;
         isSending = NO;
         
@@ -270,12 +270,18 @@ uint const kMaxConsecutiveSendFails = 3;
     [compressedData setLength: strm.total_out];
     
     
-    // ----- create batchData by preprending current date to compressedData
+    // ----- create batchData by prefixing compressedData with date and batch uuid
     uint batchDate = (uint)[[NSDate date] timeIntervalSince1970];
-    Byte batchDateBytes[4] =  { batchDate & 0xFF, batchDate>>8 & 0xFF, batchDate>>16 & 0xFF, batchDate>>24 & 0xFF,  };
-    
-    NSMutableData *batchData = [NSMutableData dataWithBytes:batchDateBytes length:4];
+    CFUUIDRef uuidRef = CFUUIDCreate(kCFAllocatorDefault);
+    CFUUIDBytes uuid = CFUUIDGetUUIDBytes(uuidRef);
+    Byte prefixBytes[36] =  {
+        batchDate>>24 & 0xFF,   batchDate>>16 & 0xFF,     batchDate>>8 & 0xFF,      batchDate & 0xFF,
+        uuid.byte0, uuid.byte1, uuid.byte2,  uuid.byte3,  uuid.byte4,  uuid.byte5,  uuid.byte6,  uuid.byte7,
+        uuid.byte8, uuid.byte9, uuid.byte10, uuid.byte11, uuid.byte12, uuid.byte13, uuid.byte14, uuid.byte15
+    };
+    NSMutableData *batchData = [NSMutableData dataWithBytes:prefixBytes length:20];
     [batchData appendData:compressedData];
+    CFRelease(uuidRef);
     
     
     // ----- HTTPRequest Completion Handler

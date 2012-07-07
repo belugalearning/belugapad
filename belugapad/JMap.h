@@ -25,6 +25,9 @@
     CGPoint dragLast;
     
     BOOL zoomedOut;
+    
+    int touchCount;
+    BOOL didJustChangeZoom;
 }
 
 +(CCScene *)scene;

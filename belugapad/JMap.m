@@ -113,7 +113,7 @@ typedef enum {
     if(self=[super init])
     {
         self.isTouchEnabled=YES;
-        [[CCDirector sharedDirector] view].multipleTouchEnabled=NO;
+        [[CCDirector sharedDirector] view].multipleTouchEnabled=YES;
         
         CGSize winsize=[[CCDirector sharedDirector] winSize];
         lx=winsize.width;
@@ -771,6 +771,8 @@ typedef enum {
 //        return;
 //    }
     
+    touchCount+=touches.count;
+    
     if(debugEnabled && CGRectContainsPoint(debugButtonBounds, l))
     {
         BOOL doat=!debugMenu.enabled;
@@ -785,8 +787,6 @@ typedef enum {
     else if(l.x<128 && l.y > (ly-128))
     {
         [self zoomToCityView];
-        
-        [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.25f position:ccp(-611,3713)] rate:2.0f]];
     }
     else {
 
@@ -817,6 +817,9 @@ typedef enum {
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isDragging=NO;
+    didJustChangeZoom=NO;
+    
+    touchCount=0;
 }
 
 -(void)testForNodeTouchAt:(CGPoint)lOnMap
@@ -849,7 +852,7 @@ typedef enum {
     CGPoint l=[touch locationInView:[touch view]];
     l=[[CCDirector sharedDirector] convertToGL:l];
     
-    if (touches.count==1) {
+    if (touchCount==1 && !didJustChangeZoom) {
         
         if(touchStartedInNodeMap)
         {
@@ -874,12 +877,46 @@ typedef enum {
 //            [daemon setRestingPoint:l];
         }
     }
+    //pinch handling
+    if([touches count]>1 && !didJustChangeZoom)
+    {
+        UITouch *t1=[[touches allObjects] objectAtIndex:0];
+        UITouch *t2=[[touches allObjects] objectAtIndex:1];
+        
+        CGPoint t1a=[[CCDirector sharedDirector] convertToGL:[t1 previousLocationInView:t1.view]];
+        CGPoint t1b=[[CCDirector sharedDirector] convertToGL:[t1 locationInView:t1.view]];
+        CGPoint t2a=[[CCDirector sharedDirector] convertToGL:[t2 previousLocationInView:t2.view]];
+        CGPoint t2b=[[CCDirector sharedDirector] convertToGL:[t2 locationInView:t2.view]];
+        
+        float da=[BLMath DistanceBetween:t1a and:t2a];
+        float db=[BLMath DistanceBetween:t1b and:t2b];
+        
+        float scaleChange=db-da;
+        
+        if(scaleChange<-2 && !zoomedOut)
+        {
+            [self zoomToRegionView];
+            didJustChangeZoom=YES;
+        }
+        else if(scaleChange>2 && zoomedOut)
+        {
+            [self zoomToCityView];
+            didJustChangeZoom=YES;
+        }
+    }
     
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    isDragging=NO;
+    touchCount-=touches.count;
+    
+    if(touchCount==0)
+    {
+        didJustChangeZoom=NO;
+        isDragging=NO;
+    }
+    
 }
 
 #pragma mark - map views and zooming
@@ -891,6 +928,8 @@ typedef enum {
     [backarrow setFlipX:NO];
     
     [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.25f scale:1.0f] rate:2.0f]];    
+
+    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.25f position:ccp(-611,3713)] rate:2.0f]];
     
     [gw handleMessage:kSGzoomIn];
     

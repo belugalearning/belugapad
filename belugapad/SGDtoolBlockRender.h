@@ -18,5 +18,7 @@
 -(void)move;
 -(BOOL)amIProximateTo:(CGPoint)location;
 -(void)resetTint;
+-(void)drawProximateLines:(CGPoint)location;
+-(void)drawNotProximateLines:(CGPoint)location;
 
 @end

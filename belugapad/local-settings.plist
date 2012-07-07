@@ -6,7 +6,7 @@
 	<string>/Problems/dotgrid-demo</string>
 	<key>PROBLEM_PIPELINE-d</key>
 	<string>DATABASE</string>
-	<key>PROBLEM_PIPELINE-tt</key>
+	<key>PROBLEM_PIPELINE-da</key>
 	<string>/pipeline-testing/da-pipeline-test.plist</string>
 	<key>PROBLEM_PIPELINE-g</key>
 	<string>/pipeline-testing/gj-pipeline-test.plist</string>

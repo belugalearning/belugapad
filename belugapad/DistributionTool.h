@@ -42,6 +42,7 @@
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)doUpdate:(ccTime)delta;
 -(void)draw;
+-(NSMutableArray*)evalUniqueShapes;
 -(BOOL)evalExpression;
 -(void)evalProblem;
 -(void)resetProblem;

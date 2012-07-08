@@ -137,10 +137,10 @@
     gw.Blackboard.RenderLayer = renderLayer;
     
     // init our array for use with the created gameobjects
-    for(int i=0;i<3;i++)
+    for(int i=0;i<5;i++)
     {
         id<Configurable, Selectable> newblock;
-        newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx+(100*i),cy)] autorelease];
+        newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx-200+(100*i),cy)] autorelease];
         
         [newblock setup];
         
@@ -239,6 +239,8 @@
                 if(proximateToPickupObject)[go pairMeWith:currentPickupObject];
                 else [go unpairMeFrom:currentPickupObject];
                 
+                [self evalUniqueShapes];
+                
             }
         }
     }
@@ -256,6 +258,90 @@
 }
 
 #pragma mark - evaluation
+
+-(NSMutableArray*)evalUniqueShapes
+{
+    NSMutableArray *checkedObjects=[[NSMutableArray alloc]init];
+    NSMutableArray *foundShapes=[[NSMutableArray alloc]init];
+    
+    // loop through each object in the gameworld
+    for(id go in gw.AllGameObjects)
+    {
+        if([go conformsToProtocol:@protocol(Pairable)])
+        {
+            // cast the go as a pairable to use properties
+            id<Pairable> pairableGO=(id<Pairable>)go;
+            
+            // for each object in the pairedobjects array
+            for(id<Pairable> pairedObj in pairableGO.PairedObjects)
+            {
+                // we need to know if this is already in checked objects - if it's not, add it
+                if(![checkedObjects containsObject:pairedObj])
+                    [checkedObjects addObject:pairedObj];
+                else
+                    continue;
+                
+                //we need our arrays to contain arrays of each shape so
+                //if the count of fondshapes is <1 we must be starting so we need to add a shape
+                if([foundShapes count]<1)
+                {
+                    NSMutableArray *shape=[[NSMutableArray alloc]init];
+                    [shape addObject:pairedObj];
+                    [foundShapes addObject:shape];
+                }
+                
+                else if([foundShapes count]>0)
+                {
+                    BOOL noArrayFound;
+                    // but if it's greater we need to loop through the existing shape arrays
+                    for (NSMutableArray *a in foundShapes)
+                    {
+                        // loop through each object in the current paired objects paired objects
+                        for(id<Pairable> fsGO in pairedObj.PairedObjects)
+                        {
+                            // and if the array contains one of the paired objects - we know it already exists
+                            if([a containsObject:fsGO])
+                            {
+                                // so add it to the current shape and set the bool to NO and break the loop
+                                [a addObject:pairedObj];
+                                noArrayFound=NO;
+                                break;
+                            }
+                            else
+                            {
+                                // but if after all this we find no array to stick our object in, confirm that we've not found an array
+                                noArrayFound=YES;
+                            }
+                        }
+                    }
+                    
+                    // and if we haven't found a matching array, stick it into a new array that we add to found shapes
+                    if(noArrayFound)
+                    {
+                        NSMutableArray *shape=[[NSMutableArray alloc]init];
+                        [shape addObject:pairedObj];
+                        [foundShapes addObject:shape];
+                    }
+                }
+                
+            }
+            
+        }
+    }
+    
+    for(int i=0;i<[foundShapes count];i++)
+    {
+        NSLog(@"recurse shape %d", i);
+        for(int fs=0; fs<[[foundShapes objectAtIndex:i] count];fs++)
+        {
+            NSLog(@"object %d", fs);
+        }
+    }
+    
+    return foundShapes;
+    
+}
+
 -(BOOL)evalExpression
 {
     return NO;

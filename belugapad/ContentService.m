@@ -8,6 +8,7 @@
 
 #import "ContentService.h"
 #import "UsersService.h"
+#import "LoggingService.h"
 #import "global.h"
 #import "AppDelegate.h"
 #import "BAExpressionHeaders.h"
@@ -294,16 +295,26 @@
 {
     if (![node.pipelines containsObject:pipelineid])
     {
-        // TODO: Discuss with G
-        NSLog(@"ContentService#startPipelineWithId error. Node id=\"%@\" doesn't contain pipeline id=\"%@\"", node._id, pipelineid);
+        NSMutableDictionary *d = [NSMutableDictionary dictionary];
+        [d setValue:BL_APP_ERROR_TYPE_BAD_ARG forKey:@"type"];
+        [d setValue:@"ContentService#startPipelineWithId" forKey:@"method"];
+        [d setValue:node._id forKey:@"nodeId"];
+        [d setValue:pipelineid forKey:@"pipelineId"];
+        [d setValue:@"node does contain pipelineid" forKey:@"description"];        
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        [ac.loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
     }
     
     [contentDatabase open];
     FMResultSet *rs = [contentDatabase executeQuery:@"select * from Pipelines where id=?", pipelineid];
     if (![rs next])
     {
-        // TODO: Discuss with G
-        NSLog(@"ContentService#startPipelineWithId error. Pipeline id=\"%@\" not found on database", pipelineid);
+        NSMutableDictionary *d = [NSMutableDictionary dictionary];
+        [d setValue:BL_APP_ERROR_TYPE_DB_TABLE_MISSING_ROW forKey:@"type"];
+        [d setValue:@"Pipelines" forKey:@"table"];
+        [d setValue:pipelineid forKey:@"key"];        
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        [ac.loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
     }    
     self.currentPipeline = [[[Pipeline alloc] initWithFMResultSetRow:rs] autorelease];
     [rs close];
@@ -352,8 +363,12 @@
         FMResultSet *rs = [contentDatabase executeQuery:@"select id, rev from Problems where id=?", pId];
         if (![rs next])
         {
-            // TODO: Discuss with G
-            NSLog(@"ContentService#gotoNextProblemInPipeline error. Problem id=\"%@\" not found on database", pId);
+            NSMutableDictionary *d = [NSMutableDictionary dictionary];
+            [d setValue:BL_APP_ERROR_TYPE_DB_TABLE_MISSING_ROW forKey:@"type"];
+            [d setValue:@"Problems" forKey:@"table"];
+            [d setValue:pId forKey:@"key"];        
+            AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+            [ac.loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
         }
         self.currentProblem = [[[Problem alloc] initWithFMResultSetRow:rs] autorelease];
         [rs close];
@@ -364,8 +379,12 @@
         
         if (!self.currentPDef)
         {
-            // TODO: Discuss with G
-            NSLog(@"self.currentPDef == nil. pdefpath:\"%@\"", relPath);
+            NSMutableDictionary *d = [NSMutableDictionary dictionary];
+            [d setValue:BL_APP_ERROR_TYPE_MISSING_PDEF forKey:@"type"];
+            [d setValue:pId forKey:@"problemId"];
+            [d setValue:relPath forKey:@"path"];
+            AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+            [ac.loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
         }
     }
 }

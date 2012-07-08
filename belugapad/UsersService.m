@@ -225,7 +225,11 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 {
     if (!currentUser)
     {
-        // TODO: LOG ERROR
+        NSMutableDictionary *d = [NSMutableDictionary dictionary];
+        [d setValue:BL_APP_ERROR_TYPE_UNEXPECTED_NULL_VALUE forKey:@"type"];
+        [d setValue:@"UsersService#addCompletedNodeId" forKey:@"codeLocation"];
+        [d setValue:@"currentUser" forKey:@"value"];
+        [loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
         return;
     }
     
@@ -238,8 +242,13 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     
     if (!updateSuccess)
     {
-        // TODO: LOG ERROR
-        NSLog(@"failed to update user");
+        NSString *statement = [NSString stringWithFormat:@"UPDATE users SET nodes_completed = \"%s\" WHERE id = \"%s\"", [nc JSONString], [currentUser objectForKey:@"id"]];
+        
+        NSMutableDictionary *d = [NSMutableDictionary dictionary];
+        [d setValue:BL_APP_ERROR_TYPE_DB_OPERATION_FAILURE forKey:@"type"];
+        [d setValue:@"UsersService#addCompletedNodeId" forKey:@"codeLocation"];
+        [d setValue:statement forKey:@"statement"];
+        [loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
     }
 }
 
@@ -305,7 +314,12 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
                     BOOL updateSuccess = [bself->usersDatabase executeUpdate:@"UPDATE users SET nodes_completed = ? WHERE id = ?", [nc JSONString], urId];
                     if (!updateSuccess)
                     {
-                        // TODO: LOG ERROR
+                        NSString *statement = [NSString stringWithFormat:@"UPDATE users SET nodes_completed = \"%s\" WHERE id = \"%s\"", [nc JSONString], urId];                        
+                        NSMutableDictionary *d = [NSMutableDictionary dictionary];
+                        [d setValue:BL_APP_ERROR_TYPE_DB_OPERATION_FAILURE forKey:@"type"];
+                        [d setValue:@"UsersService#addCompletedNodeId" forKey:@"codeLocation"];
+                        [d setValue:statement forKey:@"statement"];
+                        [bself->loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
                     }
                     
                     NSDictionary *currUr = bself->currentUser;

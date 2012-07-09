@@ -95,7 +95,7 @@
 
 #pragma mark - loops
 
--(void)doUpdate:(ccTime)delta
+-(void)doUpdateOnTick:(ccTime)delta
 {
     if(autoMoveToNextProblem)
     {
@@ -152,7 +152,7 @@
 #pragma mark - objects
 -(void)createShapeWith:(int)blocks andWith:(NSDictionary*)theseSettings
 {
-    id lastObj;
+    id lastObj=nil;
     int posX=0;
     int posY=0;
     
@@ -169,10 +169,9 @@
     for(int i=0;i<blocks;i++)
     {
         id<Configurable, Selectable,Pairable> newblock;
-        newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(posX+(100*i),posY)] autorelease];
+        newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(posX+(70*i),posY)] autorelease];
         
         [newblock setup];
-        
         if(lastObj)[newblock pairMeWith:lastObj];
         lastObj=newblock;
         
@@ -290,7 +289,7 @@
 
 #pragma mark - evaluation
 
--(NSMutableArray*)evalUniqueShapes
+-(NSArray*)evalUniqueShapes
 {
     NSMutableArray *checkedObjects=[[NSMutableArray alloc]init];
     NSMutableArray *foundShapes=[[NSMutableArray alloc]init];
@@ -303,58 +302,69 @@
             // cast the go as a pairable to use properties
             id<Pairable> pairableGO=(id<Pairable>)go;
             
-            // for each object in the pairedobjects array
-            for(id<Pairable> pairedObj in pairableGO.PairedObjects)
-            {
-                // we need to know if this is already in checked objects - if it's not, add it
-                if(![checkedObjects containsObject:pairedObj])
-                    [checkedObjects addObject:pairedObj];
-                else
-                    continue;
-                
-                //we need our arrays to contain arrays of each shape so
-                //if the count of fondshapes is <1 we must be starting so we need to add a shape
-                if([foundShapes count]<1)
+            //check if we're a lonesome object
+            if ([pairableGO.PairedObjects count]==0) {
+                NSMutableArray *shape=[[NSMutableArray alloc]init];
+                [shape addObject:pairableGO];
+                [foundShapes addObject:shape];       
+            }
+            // and if not, run our normal checks
+            else {
+                // for each object in the pairedobjects array
+                for(id<Pairable> pairedObj in pairableGO.PairedObjects)
                 {
-                    NSMutableArray *shape=[[NSMutableArray alloc]init];
-                    [shape addObject:pairedObj];
-                    [foundShapes addObject:shape];
-                }
-                
-                else if([foundShapes count]>0)
-                {
-                    BOOL noArrayFound;
-                    // but if it's greater we need to loop through the existing shape arrays
-                    for (NSMutableArray *a in foundShapes)
-                    {
-                        // loop through each object in the current paired objects paired objects
-                        for(id<Pairable> fsGO in pairedObj.PairedObjects)
-                        {
-                            // and if the array contains one of the paired objects - we know it already exists
-                            if([a containsObject:fsGO])
-                            {
-                                // so add it to the current shape and set the bool to NO and break the loop
-                                [a addObject:pairedObj];
-                                noArrayFound=NO;
-                                break;
-                            }
-                            else
-                            {
-                                // but if after all this we find no array to stick our object in, confirm that we've not found an array
-                                noArrayFound=YES;
-                            }
-                        }
-                    }
+                    // we need to know if this is already in checked objects - if it's not, add it
+                    if(![checkedObjects containsObject:pairedObj])
+                        [checkedObjects addObject:pairedObj];
+                    else
+                        continue;
                     
-                    // and if we haven't found a matching array, stick it into a new array that we add to found shapes
-                    if(noArrayFound)
+                    //we need our arrays to contain arrays of each shape so
+                    //if the count of fondshapes is <1 we must be starting so we need to add a shape
+                    if([foundShapes count]<1)
                     {
                         NSMutableArray *shape=[[NSMutableArray alloc]init];
                         [shape addObject:pairedObj];
                         [foundShapes addObject:shape];
                     }
+                    
+                    else if([foundShapes count]>0)
+                    {
+                        BOOL noArrayFound;
+                        
+                        // but if it's greater we need to loop through the existing shape arrays
+                        for (NSMutableArray *a in foundShapes)
+                        {
+                            // loop through each object in the current paired objects paired objects
+                            for(id<Pairable> fsGO in pairedObj.PairedObjects)
+                            {
+                                // and if the array contains one of the paired objects - we know it already exists
+                                if([a containsObject:fsGO])
+                                {
+                                    // so add it to the current shape and set the bool to NO and break the loop
+                                    [a addObject:pairedObj];
+                                    noArrayFound=NO;
+                                    break;
+                                }
+                                else
+                                {
+                                    // but if after all this we find no array to stick our object in, confirm that we've not found an array
+                                    noArrayFound=YES;
+                                }
+                            }
+                        }
+
+                        
+                        // and if we haven't found a matching array, stick it into a new array that we add to found shapes
+                        if(noArrayFound)
+                        {
+                            NSMutableArray *shape=[[NSMutableArray alloc]init];
+                            [shape addObject:pairedObj];
+                            [foundShapes addObject:shape];
+                        }
+                    }
+                    
                 }
-                
             }
             
         }
@@ -375,7 +385,32 @@
 
 -(BOOL)evalExpression
 {
-    return NO;
+    int solutionsFound=0;
+    int solutionsExpected=[solutionsDef count];
+    NSMutableArray *shapesMatched=[[NSMutableArray alloc]init];
+    NSArray *shapesHere=[self evalUniqueShapes];
+    
+    NSLog(@"solutionsExpected %d", solutionsExpected);
+    
+    for(int i=0;i<[solutionsDef count];i++)
+    {
+        int thisSolution=[[solutionsDef objectAtIndex:i]intValue];
+        NSLog(@"required solution %d", thisSolution);
+        for(NSArray *a in shapesHere)
+        {
+            if([a count]==thisSolution&&![shapesMatched containsObject:a]){
+                [shapesMatched addObject:a];
+                solutionsFound++;
+            
+            NSLog(@"match solution. a count %d, thisSolution %d, solutionsFound %d", [a count], thisSolution, solutionsFound);
+            }
+        }
+    }
+    
+    if(solutionsFound==solutionsExpected)
+        return YES;
+    else
+        return NO;
 }
 
 -(void)evalProblem

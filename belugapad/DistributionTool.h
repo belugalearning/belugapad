@@ -42,16 +42,16 @@ typedef enum
     CCLayer *renderLayer;
     
     // and stuff we want to add!
-    NSMutableArray *initObjects;
-    NSDictionary *solutionsDef;
+    NSArray *initObjects;
+    NSArray *solutionsDef;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;
 -(void)populateGW;
 -(void)readPlist:(NSDictionary*)pdef;
--(void)doUpdate:(ccTime)delta;
+-(void)doUpdateOnTick:(ccTime)delta;
 -(void)draw;
--(NSMutableArray*)evalUniqueShapes;
+-(NSArray*)evalUniqueShapes;
 -(BOOL)evalExpression;
 -(void)evalProblem;
 -(void)resetProblem;

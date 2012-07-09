@@ -6,5 +6,18 @@
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Poopoo</string>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>QUANTITY</key>
+			<string></string>
+			<key>POS_X</key>
+			<string></string>
+			<key>POS_Y</key>
+			<string></string>
+		</dict>
+	</array>
+	<key>SOLUTION</key>
+	<dict/>
 </dict>
 </plist>

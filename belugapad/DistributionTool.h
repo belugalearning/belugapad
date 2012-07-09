@@ -10,6 +10,10 @@
 #import "ToolConsts.h"
 #import "ToolScene.h"
 
+typedef enum 
+{
+    kCheckShapeSizes=0,
+}DistributionEvalType;
 
 @interface DistributionTool : ToolScene
 {
@@ -20,6 +24,7 @@
     ProblemEvalMode evalMode;
     ProblemRejectMode rejectMode;
     ProbjemRejectType rejectType;
+    DistributionEvalType evalType;
     
     // default positional bits
     CGPoint winL;
@@ -35,6 +40,10 @@
     
     // and a default layer
     CCLayer *renderLayer;
+    
+    // and stuff we want to add!
+    NSMutableArray *initObjects;
+    NSDictionary *solutionsDef;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;
@@ -48,6 +57,7 @@
 -(void)resetProblem;
 -(float)metaQuestionTitleYLocation;
 -(float)metaQuestionAnswersYLocation;
+-(void)createShapeWith:(int)blocks andWith:(NSDictionary*)theseSettings;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

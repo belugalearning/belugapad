@@ -127,7 +127,10 @@
     // All our stuff needs to go into vars to read later
     
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
-    rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];    
+    evalType=[[pdef objectForKey:DISTRIBUTION_EVAL_TYPE] intValue];
+    rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
+    if([pdef objectForKey:INIT_OBJECTS])initObjects=[pdef objectForKey:INIT_OBJECTS];
+    if([pdef objectForKey:SOLUTION])solutionsDef=[pdef objectForKey:SOLUTION];
     
 }
 
@@ -137,15 +140,43 @@
     gw.Blackboard.RenderLayer = renderLayer;
     
     // init our array for use with the created gameobjects
-    for(int i=0;i<5;i++)
+    for(int i=0;i<[initObjects count];i++)
     {
-        id<Configurable, Selectable> newblock;
-        newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx-200+(100*i),cy)] autorelease];
+        NSDictionary *d=[initObjects objectAtIndex:i];
+        int blocksInShape=[[d objectForKey:QUANTITY]intValue];
+        [self createShapeWith:blocksInShape andWith:d];
+    }
+    
+}
+
+#pragma mark - objects
+-(void)createShapeWith:(int)blocks andWith:(NSDictionary*)theseSettings
+{
+    id lastObj;
+    int posX=0;
+    int posY=0;
+    
+    if([theseSettings objectForKey:POS_X])
+        posX=[[theseSettings objectForKey:POS_X]intValue];
+    else
+        posX=(arc4random() % 960) + 30;
+
+    if([theseSettings objectForKey:POS_Y])
+        posY=[[theseSettings objectForKey:POS_Y]intValue];
+    else
+        posY=(arc4random() % 730) + 30;
+    
+    for(int i=0;i<blocks;i++)
+    {
+        id<Configurable, Selectable,Pairable> newblock;
+        newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(posX+(100*i),posY)] autorelease];
         
         [newblock setup];
         
-    }
-    
+        if(lastObj)[newblock pairMeWith:lastObj];
+        lastObj=newblock;
+        
+    }    
 }
 
 #pragma mark - touches events

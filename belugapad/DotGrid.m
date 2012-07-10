@@ -122,7 +122,12 @@
     evalDividend=[[pdef objectForKey:DOTGRID_EVAL_DIVIDEND] intValue];
     evalDivisor=[[pdef objectForKey:DOTGRID_EVAL_DIVISOR] intValue];
     evalTotalSize=[[pdef objectForKey:DOTGRID_EVAL_TOTALSIZE] intValue];
-    spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
+    
+    if([pdef objectForKey:ANCHOR_SPACE])
+        spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
+    else 
+        spaceBetweenAnchors=85;
+    
     startX=[[pdef objectForKey:START_X] intValue];
     startY=[[pdef objectForKey:START_Y] intValue];
     if([pdef objectForKey:INIT_OBJECTS])initObjects=[pdef objectForKey:INIT_OBJECTS];

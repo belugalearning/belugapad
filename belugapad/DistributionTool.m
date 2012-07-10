@@ -21,9 +21,10 @@
 #import "SGGameWorld.h"
 #import "SGDtoolBlock.h"
 #import "SGDtoolBlockRender.h"
+#import "InteractionFeedback.h"
 
 #define DRAW_DEPTH 1
-
+static float kTimeSinceAction=7.0f;
 
 @interface DistributionTool()
 {
@@ -106,7 +107,25 @@
             autoMoveToNextProblem=NO;
             timeToAutoMoveToNextProblem=0.0f;
         }
-    }   
+    }  
+    timeSinceInteraction+=delta;
+    
+    if(timeSinceInteraction>kTimeSinceAction)
+    {
+        BOOL isWinning=[self evalExpression];
+        if(!hasMovedBlock)
+        {
+            for(id<Moveable> go in gw.AllGameObjects)
+            {
+                [go.mySprite runAction:[InteractionFeedback shakeAction]];
+            }
+        }
+        
+        if(isWinning)[toolHost shakeCommitButton];
+        
+        timeSinceInteraction=0.0f;
+    }
+
 }
 
 -(void)draw
@@ -219,7 +238,7 @@
     
     if(currentPickupObject)
     {
-
+        if(!hasMovedBlock)hasMovedBlock=YES;
         // check that the shape is being moved within bounds of the screen
         if((location.x>=35.0f&&location.x<=lx-35.0f) && (location.y>=35.0f&&location.y<=ly-35.0f))
         {
@@ -270,6 +289,7 @@
                 else [go unpairMeFrom:currentPickupObject];
                 
                 [self evalUniqueShapes];
+                if(evalMode==kProblemEvalAuto)[self evalProblem];
                 
             }
         }
@@ -389,20 +409,16 @@
     int solutionsExpected=[solutionsDef count];
     NSMutableArray *shapesMatched=[[NSMutableArray alloc]init];
     NSArray *shapesHere=[self evalUniqueShapes];
-    
-    NSLog(@"solutionsExpected %d", solutionsExpected);
+
     
     for(int i=0;i<[solutionsDef count];i++)
     {
         int thisSolution=[[solutionsDef objectAtIndex:i]intValue];
-        NSLog(@"required solution %d", thisSolution);
         for(NSArray *a in shapesHere)
         {
             if([a count]==thisSolution&&![shapesMatched containsObject:a]){
                 [shapesMatched addObject:a];
                 solutionsFound++;
-            
-            NSLog(@"match solution. a count %d, thisSolution %d, solutionsFound %d", [a count], thisSolution, solutionsFound);
             }
         }
     }

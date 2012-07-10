@@ -25,6 +25,7 @@ typedef enum
     ProblemRejectMode rejectMode;
     ProbjemRejectType rejectType;
     DistributionEvalType evalType;
+    float timeSinceInteraction;
     
     // default positional bits
     CGPoint winL;
@@ -37,6 +38,7 @@ typedef enum
     // standard to move between problems
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
+    BOOL hasMovedBlock;
     
     // and a default layer
     CCLayer *renderLayer;

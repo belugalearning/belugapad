@@ -253,17 +253,17 @@ static float kTimeSinceAction=7.0f;
     if(reqXPos)
     {
         if(pickupShapePos.x>mountedShapePos.x)
-           retval=ccp(mountedShapePos.x+100, mountedShapePos.y);
+           retval=ccp(mountedShapePos.x+75, mountedShapePos.y);
         else
-           retval=ccp(mountedShapePos.x-100, mountedShapePos.y);           
+           retval=ccp(mountedShapePos.x-75, mountedShapePos.y);           
        
     }
     else 
     {
         if(pickupShapePos.y>mountedShapePos.y)
-            retval=ccp(mountedShapePos.x, mountedShapePos.y+100);
+            retval=ccp(mountedShapePos.x, mountedShapePos.y+75);
         else
-            retval=ccp(mountedShapePos.x, mountedShapePos.y-100);           
+            retval=ccp(mountedShapePos.x, mountedShapePos.y-75);           
    
     }
     

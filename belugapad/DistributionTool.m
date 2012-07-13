@@ -38,7 +38,7 @@ static float kTimeSinceAction=7.0f;
     SGGameWorld *gw;
     
     // and then any specifics we need for this tool
-    id<Moveable,Transform> currentPickupObject;
+    id<Moveable,Transform,Pairable> currentPickupObject;
     
 }
 
@@ -197,7 +197,7 @@ static float kTimeSinceAction=7.0f;
     }    
 }
 
--(void)checkWhereIShouldMount:(id<Pairable>)gameObject;
+-(CGPoint)checkWhereIShouldMount:(id<Pairable>)gameObject;
 {
     NSArray *existingShapes=[self evalUniqueShapes];
     float minXPos=0.0f;
@@ -234,6 +234,40 @@ static float kTimeSinceAction=7.0f;
         }
     }
     
+    CGPoint retval=ccp(maxXPos+100,maxYPos);
+    return retval;
+}
+
+-(CGPoint)findMountPositionForThisShape:(id<Pairable>)pickupObject toThisShape:(id<Pairable>)mountedShape
+{
+    CGPoint mountedShapePos=mountedShape.Position;
+    CGPoint pickupShapePos=pickupObject.Position;
+    CGPoint retval=CGPointZero;
+    float distBetweenX=[BLMath DistanceBetween:ccp(mountedShape.Position.x,0) and:ccp(pickupObject.Position.x,0)];
+    float distBetweenY=[BLMath DistanceBetween:ccp(0,mountedShape.Position.x) and:ccp(0,mountedShape.Position.x)];
+
+    BOOL reqXPos;
+    
+    if(distBetweenX<distBetweenY)reqXPos=YES;
+    
+    if(reqXPos)
+    {
+        if(pickupShapePos.x>mountedShapePos.x)
+           retval=ccp(mountedShapePos.x+100, mountedShapePos.y);
+        else
+           retval=ccp(mountedShapePos.x-100, mountedShapePos.y);           
+       
+    }
+    else 
+    {
+        if(pickupShapePos.y>mountedShapePos.y)
+            retval=ccp(mountedShapePos.x, mountedShapePos.y+100);
+        else
+            retval=ccp(mountedShapePos.x, mountedShapePos.y-100);           
+   
+    }
+    
+    return retval;
 }
 
 #pragma mark - touches events
@@ -324,8 +358,15 @@ static float kTimeSinceAction=7.0f;
                 // return whether the object is proximate to our current pickuobject
                 BOOL proximateToPickupObject=[go amIProximateTo:curPOPos];
                 [go resetTint];
-                if(proximateToPickupObject)[go pairMeWith:currentPickupObject];
-                else [go unpairMeFrom:currentPickupObject];
+                if(proximateToPickupObject){
+                    [go pairMeWith:currentPickupObject];
+                    currentPickupObject.Position=[self findMountPositionForThisShape:currentPickupObject toThisShape:go];
+                    [currentPickupObject animateToPosition];
+                    
+                }
+                else {
+                    [go unpairMeFrom:currentPickupObject];
+                }
                 
                 [self evalUniqueShapes];
                 if(evalMode==kProblemEvalAuto)[self evalProblem];

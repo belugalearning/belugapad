@@ -77,7 +77,7 @@
 
 -(void)animateToPosition
 {
-    [blockSprite runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ParentGO.Position]]];
+    [blockSprite runAction:[CCMoveTo actionWithDuration:0.2f position:ParentGO.Position]];
 }
 
 -(BOOL)amIProximateTo:(CGPoint)location

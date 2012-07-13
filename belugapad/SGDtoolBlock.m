@@ -61,6 +61,11 @@
     [self.BlockRenderComponent move];
 }
 
+-(void)animateToPosition
+{
+    [self.BlockRenderComponent animateToPosition];
+}
+
 -(void)setup
 {
     [self.BlockRenderComponent setup];

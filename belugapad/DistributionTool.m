@@ -197,6 +197,45 @@ static float kTimeSinceAction=7.0f;
     }    
 }
 
+-(void)checkWhereIShouldMount:(id<Pairable>)gameObject;
+{
+    NSArray *existingShapes=[self evalUniqueShapes];
+    float minXPos=0.0f;
+    float maxXPos=0.0f;
+    float minYPos=0.0f;
+    float maxYPos=0.0f;
+    int shapeIndex=0;
+    
+    for(int i=0;i<[existingShapes count];i++)
+    {
+        NSArray *a=[existingShapes objectAtIndex:i];
+        if([a containsObject:gameObject])
+        {
+            shapeIndex=i;
+            break;
+        }
+    }
+    
+    NSArray *thisShape=[existingShapes objectAtIndex:shapeIndex];
+    
+    for(id<Pairable> go in thisShape)
+    {
+        if(go.Position.x>maxXPos)maxXPos=go.Position.x;
+        if(go.Position.y>maxYPos)maxYPos=go.Position.y;
+        
+        if([thisShape indexOfObject:go]==0)
+        {
+            minXPos=go.Position.x;
+            minYPos=go.Position.y;
+        }
+        else {
+            if(go.Position.x<minXPos)minXPos=go.Position.x;
+            if(go.Position.y<minYPos)minYPos=go.Position.y;
+        }
+    }
+    
+}
+
 #pragma mark - touches events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {

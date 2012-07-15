@@ -192,16 +192,26 @@
 
 -(NSNumber *)randomNumberWithParams:(NSDictionary*)params
 {
-    int min=[[params objectForKey:@"MIN"] floatValue];
-    int max=[[params objectForKey:@"MAX"] floatValue];
-    
-    int interval=max-min;
-    
-    int fbase=arc4random() % (int)interval;
-    
-    int ret=fbase+min;
-    
-    return [NSNumber numberWithInt:ret];
+    if([params objectForKey:@"SELECT_FROM"])
+    {
+        //pick a random number from those listed
+        NSArray *list=[params objectForKey:@"SELECT_FROM"];
+        int p=arc4random() % list.count;
+        return [NSNumber numberWithFloat:[[list objectAtIndex:p] floatValue]];
+    }
+    else {
+        //create a random number between min and max
+        int min=[[params objectForKey:@"MIN"] floatValue];
+        int max=[[params objectForKey:@"MAX"] floatValue];
+        
+        int interval=max-min;
+        
+        int fbase=arc4random() % (int)interval;
+        
+        int ret=fbase+min;
+        
+        return [NSNumber numberWithInt:ret];        
+    }
 }
 
 -(NSNumber *)numberFromString:(NSString*)input withCastType:(NSString*)casttype

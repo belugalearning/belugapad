@@ -22,7 +22,7 @@
 		<key>SCALING_PASS_THRU</key>
 		<false/>
 	</dict>
-	<key>PartitionTool</key>
+	<key>NumberBonds</key>
 	<dict>
 		<key>SCALE_MIN</key>
 		<real>0.7</real>

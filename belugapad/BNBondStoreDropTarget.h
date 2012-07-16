@@ -9,11 +9,11 @@
 #import "DWBehaviour.h"
 
 
-@interface BPartitionStoreDropTarget : DWBehaviour
+@interface BNBondStoreDropTarget : DWBehaviour
 {
 
 }
 
--(BPartitionStoreDropTarget *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
+-(BNBondStoreDropTarget *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
 
 @end

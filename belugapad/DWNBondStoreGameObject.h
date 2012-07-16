@@ -1,5 +1,5 @@
 //
-//  DWPartitionStoreGameObject.h
+//  DWNBondStoreGameObject.h
 //  belugapad
 //
 //  Created by David Amphlett on 30/03/2012.
@@ -8,7 +8,7 @@
 
 #import "DWGameObject.h"
 
-@interface DWPartitionStoreGameObject : DWGameObject
+@interface DWNBondStoreGameObject : DWGameObject
 
 @property float AcceptedObjectValue;
 @property (retain) NSMutableArray *MountedObjects;

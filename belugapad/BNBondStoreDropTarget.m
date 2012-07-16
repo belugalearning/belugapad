@@ -6,15 +6,15 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "BPartitionStoreDropTarget.h"
+#import "BNBondStoreDropTarget.h"
 #import "global.h"
 #import "BLMath.h"
 
-@implementation BPartitionStoreDropTarget
+@implementation BNBondStoreDropTarget
 
--(BPartitionStoreDropTarget *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
+-(BNBondStoreDropTarget *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
-    self=(BPartitionStoreDropTarget*)[super initWithGameObject:aGameObject withData:data];
+    self=(BNBondStoreDropTarget*)[super initWithGameObject:aGameObject withData:data];
     
     return self;
 }

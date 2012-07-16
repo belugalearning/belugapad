@@ -6,15 +6,15 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "BPartitionPickupTarget.h"
+#import "BNBondPickupTarget.h"
 #import "BLMath.h"
 #import "global.h"
-#import "DWPartitionObjectGameObject.h"
-#import "DWPartitionRowGameObject.h"
+#import "DWNBondObjectGameObject.h"
+#import "DWNBondRowGameObject.h"
 #import "AppDelegate.h"
 #import "LoggingService.h"
 
-@interface BPartitionPickupTarget()
+@interface BNBondPickupTarget()
 {
 @private
     LoggingService *loggingService;
@@ -22,16 +22,16 @@
 }
 @end
 
-@implementation BPartitionPickupTarget
+@implementation BNBondPickupTarget
 
--(BPartitionPickupTarget *)initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
+-(BNBondPickupTarget *)initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     loggingService = ac.loggingService;
     contentService = ac.contentService;
     
-    self=(BPartitionPickupTarget *)[super initWithGameObject:aGameObject withData:data];
-    pogo=(DWPartitionObjectGameObject*)gameObject;
+    self=(BNBondPickupTarget *)[super initWithGameObject:aGameObject withData:data];
+    pogo=(DWNBondObjectGameObject*)gameObject;
     return self;
 }
 

@@ -6,18 +6,31 @@
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Poopoo</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
 			<key>QUANTITY</key>
-			<string></string>
+			<integer>5</integer>
 			<key>POS_X</key>
-			<string></string>
+			<integer>80</integer>
 			<key>POS_Y</key>
-			<string></string>
+			<integer>300</integer>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>3</integer>
+			<key>POS_X</key>
+			<integer>700</integer>
+			<key>POS_Y</key>
+			<integer>80</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
-	<dict/>
+	<array>
+		<integer>4</integer>
+		<integer>4</integer>
+	</array>
 </dict>
 </plist>

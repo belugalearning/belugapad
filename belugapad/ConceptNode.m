@@ -42,7 +42,9 @@
 
 -(void) dealloc
 {
+    [regions release];
     [pipelines release];
+    
     [super dealloc];
 }
 

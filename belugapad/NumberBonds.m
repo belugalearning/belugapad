@@ -175,7 +175,7 @@ static float kTimeToMountedShake=7.0f;
         float xStartPos=(cx-((([[[initBars objectAtIndex:i] objectForKey:LENGTH] intValue]+2)*50)/2)+25);
 
             DWNBondRowGameObject *prgo = [DWNBondRowGameObject alloc];
-            [gw populateAndAddGameObject:prgo withTemplateName:@"TpartitionRow"];
+            [gw populateAndAddGameObject:prgo withTemplateName:@"TnBondRow"];
             prgo.Position=ccp(xStartPos,yStartPos);
             prgo.Length = [[[initBars objectAtIndex:i] objectForKey:LENGTH] intValue];
             prgo.Locked = [[[initBars objectAtIndex:i] objectForKey:LOCKED] boolValue];
@@ -194,7 +194,7 @@ static float kTimeToMountedShake=7.0f;
         for (int ic=0;ic<qtyForThisStore;ic++)
         {
             DWNBondObjectGameObject *pogo = [DWNBondObjectGameObject alloc];
-            [gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];
+            [gw populateAndAddGameObject:pogo withTemplateName:@"TnBondObject"];
             pogo.IndexPos=i;
             
             pogo.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3)); 
@@ -228,7 +228,7 @@ static float kTimeToMountedShake=7.0f;
         int insLength=[[[initObjects objectAtIndex:i] objectForKey:LENGTH] intValue];
         NSString *fillText=[[NSString alloc]init];
         DWNBondObjectGameObject *pogo = [DWNBondObjectGameObject alloc];
-        [gw populateAndAddGameObject:pogo withTemplateName:@"TpartitionObject"];   
+        [gw populateAndAddGameObject:pogo withTemplateName:@"TnBondObject"];   
         
         //[pogo.Mounts addObject:[createdRows objectAtIndex:insRow]];
         pogo.Length = insLength;

@@ -161,7 +161,7 @@ typedef enum {
 //        [b setPosition:logOutBtnCentre];
 //        [foreLayer addChild:b];
         
-        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/mood.mp3") loop:YES];
+        //[[SimpleAudioEngine sharedEngine] playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/mood.mp3") loop:YES];
     }
     
     return self;

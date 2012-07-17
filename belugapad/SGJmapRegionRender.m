@@ -165,10 +165,10 @@
                 
                 if(newRot>=360.0f)
                 {
-                    [verts insertObject:[[NSValue valueWithCGPoint:newPos] autorelease] atIndex:0];
+                    [verts insertObject:[NSValue valueWithCGPoint:newPos] atIndex:0];
                 }
                 else {
-                    [verts insertObject:[[NSValue valueWithCGPoint:newPos] autorelease] atIndex:i+1];
+                    [verts insertObject:[NSValue valueWithCGPoint:newPos] atIndex:i+1];
                 }
                 
                 break;
@@ -211,6 +211,8 @@
     }
 
     [self setPointScalesAt:1.0f];
+    
+    [verts release];
 }
 
 -(void)draw:(int)z

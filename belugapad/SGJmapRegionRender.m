@@ -96,7 +96,7 @@
     {
         if(verts.count==0)
         {
-            [verts addObject:[NSValue valueWithCGPoint:mnode.Position]];
+            [verts addObject:[[NSValue valueWithCGPoint:mnode.Position] autorelease]];
         }
         else {
             float thisA=[BLMath angleFromNorthToLineFrom:ParentGO.Position to:mnode.Position];
@@ -123,7 +123,7 @@
                 
                 if(doinsert)
                 {
-                    [verts insertObject:[NSValue valueWithCGPoint:mnode.Position] atIndex:insertat];
+                    [verts insertObject:[[NSValue valueWithCGPoint:mnode.Position] autorelease] atIndex:insertat];
                     break;
                 }
             }

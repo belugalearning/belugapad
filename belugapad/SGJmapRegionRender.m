@@ -81,11 +81,11 @@
     
     //====== region label ===============================================================
     
-    rlabel=[CCLabelTTF labelWithString:ParentGO.Name fontName:@"Helvetica" fontSize:150];
-    [rlabel setPosition:ParentGO.Position];
-    [rlabel setColor:ccc3(255, 255, 255)];
-    [rlabel setVisible:NO];
-    [ParentGO.RenderBatch.parent addChild:rlabel z:5];
+//    rlabel=[CCLabelTTF labelWithString:ParentGO.Name fontName:@"Helvetica" fontSize:150];
+//    [rlabel setPosition:ParentGO.Position];
+//    [rlabel setColor:ccc3(255, 255, 255)];
+//    [rlabel setVisible:NO];
+//    [ParentGO.RenderBatch.parent addChild:rlabel z:5];
     
     
     //====== create list of vertices, sorted from mastery nodes =========================

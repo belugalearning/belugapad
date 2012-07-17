@@ -23,8 +23,22 @@
     self=[super initWithFMResultSetRow:resultSet];
     if (self)
     {
-        pipelines = [[resultSet stringForColumn:@"pipelines"] objectFromJSONString];
-        [pipelines retain];
+//        pipelines=[[NSArray alloc] init];
+//        
+//        x = [resultSet intForColumn:@"x"];
+//        y = [resultSet intForColumn:@"y"];
+//        mastery = [resultSet boolForColumn:@"mastery"];
+//        
+//        jtd=@"test";
+//
+//        regions=[[NSArray alloc] init];
+
+        NSString *pstring=[resultSet stringForColumn:@"pipelines"];
+        NSData  *pdata=[pstring dataUsingEncoding:NSUTF8StringEncoding];
+        pipelines=[pdata objectFromJSONData];
+         
+//        pipelines = [[resultSet stringForColumn:@"pipelines"] objectFromJSONString];
+//        [pipelines retain];
         
         x = [resultSet intForColumn:@"x"];
         y = [resultSet intForColumn:@"y"];
@@ -34,16 +48,23 @@
         if(jtds.count>0) jtd=[jtds objectAtIndex:0];
         else jtd=@"";
         
-        regions=[[resultSet stringForColumn:@"region"] objectFromJSONString];
-        [regions retain];
+        NSString *rstring=[resultSet stringForColumn:@"region"];
+        NSData *rdata=[rstring dataUsingEncoding:NSUTF8StringEncoding];
+        regions=[rdata objectFromJSONData];
+        
+//        regions=[[resultSet stringForColumn:@"region"] objectFromJSONString];
+//        [regions retain];
+        
+        
     }
+    
     return self;
 }
 
 -(void) dealloc
 {
-    [regions release];
-    [pipelines release];
+    //[regions release];
+    //[pipelines release];
     
     [super dealloc];
 }

@@ -6,18 +6,18 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "BPartitionObjectRender.h"
+#import "BNBondObjectRender.h"
 #import "global.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
-#import "DWPartitionObjectGameObject.h"
+#import "DWNBondObjectGameObject.h"
 
-@implementation BPartitionObjectRender
+@implementation BNBondObjectRender
 
--(BPartitionObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
+-(BNBondObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
-    self=(BPartitionObjectRender*)[super initWithGameObject:aGameObject withData:data];
-    pogo = (DWPartitionObjectGameObject*)gameObject;
+    self=(BNBondObjectRender*)[super initWithGameObject:aGameObject withData:data];
+    pogo = (DWNBondObjectGameObject*)gameObject;
     
     //init pos x & y in case they're not set elsewhere
     

@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>PT problem</string>
 	<key>TOOL_KEY</key>
-	<string>PartitionTool</string>
+	<string>NumberBonds</string>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict/>
@@ -45,6 +45,6 @@
 		</dict>
 	</array>
 	<key>SOLUTIONS</key>
-	<array></array>
+	<array/>
 </dict>
 </plist>

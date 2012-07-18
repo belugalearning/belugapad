@@ -7,19 +7,19 @@
 //
 
 #import "DWBehaviour.h"
-@class DWPartitionRowGameObject;
-@class DWPartitionStoreGameObject;
-@class DWPartitionObjectGameObject;
+@class DWNBondRowGameObject;
+@class DWNBondStoreGameObject;
+@class DWNBondObjectGameObject;
 
-@interface BPartitionObjectRender : DWBehaviour
+@interface BNBondObjectRender : DWBehaviour
 {
     
     BOOL amPickedUp;
-    DWPartitionObjectGameObject *pogo;
+    DWNBondObjectGameObject *pogo;
     
 }
 
--(BPartitionObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
+-(BNBondObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
 -(void)setSprite;
 -(void)setSpritePos:(BOOL) withAnimation;
 -(void)moveSpriteHome;

@@ -23,22 +23,9 @@
     self=[super initWithFMResultSetRow:resultSet];
     if (self)
     {
-//        pipelines=[[NSArray alloc] init];
-//        
-//        x = [resultSet intForColumn:@"x"];
-//        y = [resultSet intForColumn:@"y"];
-//        mastery = [resultSet boolForColumn:@"mastery"];
-//        
-//        jtd=@"test";
-//
-//        regions=[[NSArray alloc] init];
-
         NSString *pstring=[resultSet stringForColumn:@"pipelines"];
         NSData  *pdata=[pstring dataUsingEncoding:NSUTF8StringEncoding];
         pipelines=[pdata objectFromJSONData];
-         
-//        pipelines = [[resultSet stringForColumn:@"pipelines"] objectFromJSONString];
-//        [pipelines retain];
         
         x = [resultSet intForColumn:@"x"];
         y = [resultSet intForColumn:@"y"];
@@ -52,9 +39,6 @@
         NSData *rdata=[rstring dataUsingEncoding:NSUTF8StringEncoding];
         regions=[rdata objectFromJSONData];
         
-//        regions=[[resultSet stringForColumn:@"region"] objectFromJSONString];
-//        [regions retain];
-        
         
     }
     
@@ -63,9 +47,6 @@
 
 -(void) dealloc
 {
-    //[regions release];
-    //[pipelines release];
-    
     [super dealloc];
 }
 

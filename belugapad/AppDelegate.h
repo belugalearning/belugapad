@@ -38,5 +38,6 @@
 
 -(void)proceedFromLoginViaIntro:(BOOL)viaIntro;
 -(void)returnToLogin;
+-(void)writeLogMemoryUsage;
 
 @end

@@ -92,10 +92,8 @@
     {
         gameWorld=aGameWorld;
         behaviours=[[NSMutableArray alloc] init];
-        [behaviours retain];
         
         localStore=[[NSMutableDictionary alloc] init];
-        [localStore retain];
     }
 	return self;
 }
@@ -235,7 +233,7 @@
 
 -(void)dealloc
 {
-    
+    [gameWorld release];   
 	[behaviours release];
 	[localStore release];
 	

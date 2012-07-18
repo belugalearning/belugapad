@@ -111,7 +111,9 @@
 {
 	[gameObjects release];
 
+    [blackboard release];
     [removeObjects release];
+    
 	[super dealloc];
 }
 

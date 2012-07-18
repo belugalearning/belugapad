@@ -41,6 +41,7 @@
 
 -(void)dealloc
 {
+    [gameWorld release];
     	
 	[super dealloc];
 }

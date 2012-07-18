@@ -215,29 +215,29 @@ typedef enum {
     
     [self setupGw];
     
-    NSLog(@"start build");
+//    NSLog(@"start build");
     
     kcmNodes=[NSMutableArray arrayWithArray:[contentService allConceptNodes]];
     [kcmNodes retain];
-    NSLog(@"got kcm node");
+//    NSLog(@"got kcm node");
     
     [self parseKcmForBounds];
-    NSLog(@"got kcm bounds");
+//    NSLog(@"got kcm bounds");
     
     [self createNodesInGameWorld];
-    NSLog(@"created node, mastery game objects");
+//    NSLog(@"created node, mastery game objects");
     
     [self parseNodesForEndPoints];
-    NSLog(@"completed end point parse");
+//    NSLog(@"completed end point parse");
     
     [self createRegions];
-    NSLog(@"created regions");
+//    NSLog(@"created regions");
     
     //setup rendering -- needs all node connections built
     [gw handleMessage:kSGreadyRender];
-    NSLog(@"send readyRender message");
+//    NSLog(@"send readyRender message");
     
-    NSLog(@"end build");
+//    NSLog(@"end build");
     
     backarrow=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/backarrow.png")];
     [backarrow setPosition:ccp(64, ly-64)];
@@ -463,7 +463,7 @@ typedef enum {
             }
 
             
-            NSLog(@"mastery prq percentage %f for complete %d of %d", mgo.PrereqPercentage, mgo.PrereqComplete, mgo.PrereqCount);
+            //NSLog(@"mastery prq percentage %f for complete %d of %d", mgo.PrereqPercentage, mgo.PrereqComplete, mgo.PrereqCount);
         }
     }
     
@@ -491,7 +491,7 @@ typedef enum {
     int rindex=0;
     
     for (NSString *r in regions) {
-        NSLog(@"region: %@", r);
+//        NSLog(@"region: %@", r);
         
         //create the region
         SGJmapRegion *rgo=[[SGJmapRegion alloc] initWithGameWorld:gw];
@@ -996,6 +996,7 @@ typedef enum {
 -(void)dealloc
 {
     [mapLayer release];
+    [foreLayer release];
     [kcmNodes release];
     [gw release];
     

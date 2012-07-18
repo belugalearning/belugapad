@@ -4,9 +4,9 @@
 <dict>
 	<key>PROBLEM_PIPELINE-tools</key>
 	<string>/Problems/dotgrid-demo</string>
-	<key>PROBLEM_PIPELINE-aa</key>
-	<string>DATABASE</string>
 	<key>PROBLEM_PIPELINE</key>
+	<string>DATABASE</string>
+	<key>PROBLEM_PIPELINE-da</key>
 	<string>/pipeline-testing/da-pipeline-test.plist</string>
 	<key>PROBLEM_PIPELINE-g</key>
 	<string>/pipeline-testing/gj-pipeline-test.plist</string>

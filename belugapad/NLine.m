@@ -573,4 +573,18 @@ static float kTimeToBubbleShake=7.0f;
     touching=NO;
     inRamblerArea=NO;
 }
+
+-(void)dealloc
+{
+    [bubbleTexRegular release];
+    [bubbleTexSelected release];
+    [rambler release];
+    [selector release];
+    
+    [gw release];
+
+    
+    [super dealloc];
+}
+
 @end

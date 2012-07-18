@@ -85,9 +85,8 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     [assEndTerminator setVisible:NO];
     [gameWorld.Blackboard.ComponentRenderLayer addChild:assEndTerminator];
     
-    assLabels=[[[NSMutableDictionary alloc] init] retain];
+    assLabels=[[NSMutableDictionary alloc] init];
     labelLayer=[[CCLayer alloc] init];
-    [labelLayer retain];
     [gameWorld.Blackboard.ComponentRenderLayer addChild:labelLayer];
 }
 
@@ -265,6 +264,17 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     for (int i=assIndicatorIndex; i<[assIndicators count]; i++) {
         [[assIndicators objectAtIndex:i] setVisible:NO];
     }
+}
+
+-(void)dealloc
+{
+    [assBlankSegments release];
+    [assLineSegments release];
+    [assIndicators release];
+    [assLabels release];
+    [labelLayer release];
+    
+    [super dealloc];
 }
 
 @end

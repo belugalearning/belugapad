@@ -1629,8 +1629,20 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(numberPickerButtons)[numberPickerButtons release];
     if(numberPickedSelection)[numberPickedSelection release];
     if(numberPickedValue)[numberPickedValue release];
+    if(nPicker)[nPicker release];
     
     [DynProblemParser release];
+    
+    [backgroundLayer release];
+    [perstLayer release];
+    [animator release];
+    [metaQuestionLayer release];
+    [problemDefLayer release];
+    [pauseLayer release];
+    [DynProblemParser release];
+    
+    [Zubi release];
+    
     
     [super dealloc];
 }

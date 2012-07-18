@@ -119,4 +119,13 @@
     
 }
 
+-(void)dealloc
+{
+    if(BkgLayer)[BkgLayer release];
+    if(NoScaleLayer)[NoScaleLayer release];
+    if(ForeLayer)[ForeLayer release];
+    
+    [super dealloc];
+}
+
 @end

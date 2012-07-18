@@ -58,7 +58,7 @@
 
 -(void)readyRender
 {
-    NSLog(@"ready to render region with %d mastery children", ParentGO.MasteryNodes.count);
+    //NSLog(@"ready to render region with %d mastery children", ParentGO.MasteryNodes.count);
     
     //===== get my position =============================================================
     float cumx=0.0f, cumy=0.0f;

@@ -46,7 +46,7 @@
 	[self parseTemplate:templateName inTemplateDefs:templateDefs forObject:theObject];
     [theObject initComplete];
 	
-    [theObject autorelease];    
+    //[theObject autorelease];    
 }
 
 +(void) parseTemplate:(NSString *)templateName inTemplateDefs:(NSDictionary *)templateDefs forObject:(DWGameObject *)gameObject
@@ -233,7 +233,6 @@
 
 -(void)dealloc
 {
-    [gameWorld release];   
 	[behaviours release];
 	[localStore release];
 	

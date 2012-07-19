@@ -242,13 +242,8 @@ static float kDistanceBetweenBlocks=70.0f;
 -(CGPoint)findMountPositionForThisShape:(id<Pairable>)pickupObject toThisShape:(id<Pairable>)mountedShape
 {
     CGPoint mountedShapePos=mountedShape.Position;
-    CGPoint pickupShapePos=pickupObject.Position;
     CGPoint retval=CGPointZero;
-    float distBetweenX=[BLMath DistanceBetween:ccp(mountedShape.Position.x,0) and:ccp(pickupObject.Position.x,0)];
-    float distBetweenY=[BLMath DistanceBetween:ccp(0,mountedShape.Position.x) and:ccp(0,mountedShape.Position.x)];
 
-    BOOL reqXPos;
-    BOOL posMove;
     BOOL freeSpaceNegX=YES;
     BOOL freeSpaceNegY=YES;
     BOOL freeSpacePosX=YES;
@@ -393,6 +388,8 @@ static float kDistanceBetweenBlocks=70.0f;
                 else {
                     [go unpairMeFrom:currentPickupObject];
                 }
+                
+                //TODO: add bit in here to check existing links - ie, at the minute, if a block is dragged out of the middle of the row, it doesn't seem to update all of them
                 
                 [self evalUniqueShapes];
                 if(evalMode==kProblemEvalAuto)[self evalProblem];

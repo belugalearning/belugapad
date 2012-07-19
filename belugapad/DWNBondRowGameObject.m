@@ -26,4 +26,13 @@
 	return self;
 }
 
+-(void)dealloc
+{
+    [MountedObjects release];
+    
+    if(BaseNode)[BaseNode release];
+    
+    [super dealloc];
+}
+
 @end

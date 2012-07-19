@@ -1064,8 +1064,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void)tearDownNumberPicker
 {
     [numberPickerLayer removeAllChildrenWithCleanup:YES];
-    
     numberPickerForThisProblem=NO;
+    [numberPickerLayer release];
+    numberPickerLayer=nil;
 }
 
 -(void)tearDownMetaQuestion
@@ -1612,6 +1613,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(numberPickedSelection)[numberPickedSelection release];
     if(numberPickedValue)[numberPickedValue release];
     if(nPicker)[nPicker release];
+    
+    //this is released and nil referenced in tear down -- but might not hit this on bail from toolhost
+    if(numberPickerLayer)[numberPickerLayer release];
     
     if(touchLogPath)[touchLogPath release];
     

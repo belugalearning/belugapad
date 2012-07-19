@@ -57,8 +57,8 @@ const float kScaleOfLesserBlocks=0.6f;
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];
         self.ForeLayer=[[[CCLayer alloc]init] autorelease];
         self.NoScaleLayer=[[[CCLayer alloc]init] autorelease];
-        topSection=[[[CCLayer alloc]init] autorelease];
-        bottomSection=[[[CCLayer alloc]init] autorelease];
+        topSection=[[CCLayer alloc]init];
+        bottomSection=[[CCLayer alloc]init];
         
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolNoScaleLayer:self.NoScaleLayer];
@@ -723,11 +723,10 @@ const float kScaleOfLesserBlocks=0.6f;
 
 -(void) dealloc
 {
-    //write log on problem switch
-    [gw writeLogBufferToDiskWithKey:@"LongDivision"];
+    [topSection release];
+    [bottomSection release];
     
     //tear down
-    [gw release];
     if(numberRows)[numberRows release];
     if(numberLayers)[numberLayers release];
     if(selectedNumbers)[selectedNumbers release];
@@ -737,6 +736,8 @@ const float kScaleOfLesserBlocks=0.6f;
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
+    
+    [gw release];
     
     
     [super dealloc];

@@ -7,7 +7,7 @@
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>cm: building 2^3 to show it is 8</string>
 	<key>TOOL_KEY</key>
-	<string>PartitionTool</string>
+	<string>NumberBonds</string>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>

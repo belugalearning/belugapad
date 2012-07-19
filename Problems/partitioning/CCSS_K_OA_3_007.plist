@@ -7,7 +7,7 @@
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Find ? in 6 + ? = 10</string>
 	<key>TOOL_KEY</key>
-	<string>PartitionTool</string>
+	<string>NumberBonds</string>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
@@ -40,7 +40,7 @@
 			<false/>
 			<key>LENGTH</key>
 			<string>10</string>
-		</dict>		
+		</dict>
 	</array>
 	<key>INIT_CAGES</key>
 	<array>

@@ -16,6 +16,7 @@
 
 -(void)setup;
 -(void)move;
+-(void)animateToPosition;
 -(BOOL)amIProximateTo:(CGPoint)location;
 -(void)resetTint;
 -(void)drawProximateLines:(CGPoint)location;

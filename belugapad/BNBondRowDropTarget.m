@@ -6,18 +6,18 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "BPartitionRowDropTarget.h"
-#import "DWPartitionRowGameObject.h"
+#import "BNBondRowDropTarget.h"
+#import "DWNBondRowGameObject.h"
 #import "global.h"
 #import "BLMath.h"
-#import "DWPartitionObjectGameObject.h"
+#import "DWNBondObjectGameObject.h"
 
-@implementation BPartitionRowDropTarget
+@implementation BNBondRowDropTarget
 
--(BPartitionRowDropTarget *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
+-(BNBondRowDropTarget *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
-    self=(BPartitionRowDropTarget*)[super initWithGameObject:aGameObject withData:data];
-    prgo = (DWPartitionRowGameObject*)gameObject;
+    self=(BNBondRowDropTarget*)[super initWithGameObject:aGameObject withData:data];
+    prgo = (DWNBondRowGameObject*)gameObject;
     
     return self;
 }
@@ -52,10 +52,10 @@
                 float myHeldValue=0.0f;
                 for(int i=0;i<prgo.MountedObjects.count;i++)
                 {
-                    DWPartitionObjectGameObject *mo = [prgo.MountedObjects objectAtIndex:i];
+                    DWNBondObjectGameObject *mo = [prgo.MountedObjects objectAtIndex:i];
                     myHeldValue=myHeldValue+mo.Length;
                 }
-                DWPartitionObjectGameObject *newO = (DWPartitionObjectGameObject*)gameWorld.Blackboard.PickupObject;
+                DWNBondObjectGameObject *newO = (DWNBondObjectGameObject*)gameWorld.Blackboard.PickupObject;
                 if(myHeldValue+newO.Length<=prgo.Length)
                 {           
                     // change the hover-over tint colour

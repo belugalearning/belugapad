@@ -6,20 +6,20 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "BPartitionMount.h"
+#import "BNBondMount.h"
 #import "global.h"
 #import "SimpleAudioEngine.h"
 #import "PlaceValue.h"
-#import "DWPartitionRowGameObject.h"
-#import "DWPartitionObjectGameObject.h"
+#import "DWNBondRowGameObject.h"
+#import "DWNBondObjectGameObject.h"
 
-@implementation BPartitionMount
+@implementation BNBondMount
 
--(BPartitionMount *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
+-(BNBondMount *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
-    self=(BPartitionMount*)[super initWithGameObject:aGameObject withData:data];
+    self=(BNBondMount*)[super initWithGameObject:aGameObject withData:data];
     
-    prgo=(DWPartitionRowGameObject*)gameObject;
+    prgo=(DWNBondRowGameObject*)gameObject;
     
     return self;
 }
@@ -44,7 +44,7 @@
     
     if(messageType==kDWunsetMountedObject)
     {
-        DWPartitionObjectGameObject *removeO=[payload objectForKey:MOUNTED_OBJECT];
+        DWNBondObjectGameObject *removeO=[payload objectForKey:MOUNTED_OBJECT];
         removeO.Mount=nil;
         
         [prgo.MountedObjects removeObject:removeO];
@@ -56,7 +56,7 @@
         float myHeldValue=0.0f;
         for(int i=0;i<prgo.MountedObjects.count;i++)
         {
-            DWPartitionObjectGameObject *mo = [prgo.MountedObjects objectAtIndex:i];
+            DWNBondObjectGameObject *mo = [prgo.MountedObjects objectAtIndex:i];
             mo.MovePosition=ccp(prgo.Position.x+(50*myHeldValue), prgo.Position.y);
             mo.Position=mo.MovePosition;
             NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:ANIMATE_ME];

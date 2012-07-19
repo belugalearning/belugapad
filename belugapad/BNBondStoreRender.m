@@ -6,18 +6,18 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "BPartitionRowRender.h"
+#import "BNBondStoreRender.h"
 #import "global.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
-#import "DWPartitionRowGameObject.h"
+#import "DWNBondStoreGameObject.h"
 
-@implementation BPartitionRowRender
+@implementation BNBondStoreRender
 
--(BPartitionRowRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
+-(BNBondStoreRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
-    self=(BPartitionRowRender*)[super initWithGameObject:aGameObject withData:data];
-    pogo = (DWPartitionRowGameObject*)gameObject;
+    self=(BNBondStoreRender*)[super initWithGameObject:aGameObject withData:data];
+    pogo = (DWNBondStoreGameObject*)gameObject;
     
     //init pos x & y in case they're not set elsewhere
     
@@ -83,53 +83,37 @@
         CCSprite *s=[[gameObject store] objectForKey:MY_SPRITE];
         [[s parent] removeChild:s cleanup:YES];
     }
-    
-    if(messageType==kDWhighlight)
-    {
-        for(CCSprite *s in pogo.BaseNode.children)
-        {
-            [s setColor:ccc3(255,255,255)];
-        }
-    }
 }
 
 
 
 -(void)setSprite
 {
-    pogo.BaseNode = [[CCNode alloc]init];
-    NSString *spriteFileName=[[NSString alloc]init];
-    int lengthWithStops=pogo.Length+2;
     
-    for(int i=0;i<lengthWithStops;i++)
-    {
-    
-        if(i==0)spriteFileName=@"/images/partition/row-left.png";
-        else if(i==lengthWithStops-1 && pogo.Locked)spriteFileName=@"/images/partition/row-right.png";
-        else if(i==lengthWithStops-1 && !pogo.Locked)spriteFileName=@"/images/partition/row-right-open.png";
-        else spriteFileName=@"/images/partition/row.png";
-        
+    for(int i=0;i<pogo.Length;i++) {
+        NSString *spriteFileName=@"/images/partition/store.png";
+        //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
+
         
         CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-        [mySprite setPosition:ccp((i*50)-25,0)];
-            
-            
-            if(gameWorld.Blackboard.inProblemSetup)
-            {
-                [mySprite setTag:1];
-                [mySprite setOpacity:0];
-            }
+        [mySprite setPosition:ccp(pogo.Position.x+(i*50), pogo.Position.y)];
+        
+        if(gameWorld.Blackboard.inProblemSetup)
+        {
+            [mySprite setTag:2];
+            [mySprite setOpacity:0];
+        }
 
-            [pogo.BaseNode addChild:mySprite z:2];
-
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:2];
+        
+        //keep a gos ref for sprite -- it's used for position lookups on child sprites (at least at the moment it is)
+        [[gameObject store] setObject:mySprite forKey:MY_SPRITE];
     }
-    pogo.BaseNode.position = pogo.Position;
-    [[gameWorld Blackboard].ComponentRenderLayer addChild:pogo.BaseNode z:2];
 }
 
 -(void)setSpritePos:(BOOL) withAnimation
 {
-    
+
     if(pogo.Position.x || pogo.Position.y)
     {
         CCSprite *mySprite=[[gameObject store] objectForKey:MY_SPRITE];

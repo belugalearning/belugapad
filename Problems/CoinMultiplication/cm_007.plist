@@ -7,7 +7,7 @@
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>cm: showing that 3^5 x 3^-2 is the same as 3^3</string>
 	<key>TOOL_KEY</key>
-	<string>PartitionTool</string>
+	<string>NumberBonds</string>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>

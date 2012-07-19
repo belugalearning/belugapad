@@ -75,6 +75,11 @@
     [blockSprite setPosition:ParentGO.Position];
 }
 
+-(void)animateToPosition
+{
+    [blockSprite runAction:[CCMoveTo actionWithDuration:0.2f position:ParentGO.Position]];
+}
+
 -(BOOL)amIProximateTo:(CGPoint)location
 {
     if([BLMath DistanceBetween:ParentGO.Position and:location]<100.0f)

@@ -495,7 +495,7 @@ static NSString *kSpriteFileOperatorMode = @"/images/blocks/obj-float-50-operato
     }
     
     CGPoint offsetPos=[BLMath offsetPosFrom:[self avgPosForFloatObject:gameObject] to:[self avgPosForFloatObject:targetGo]];
-    DLog(@"subtract operation from %@", NSStringFromCGPoint(offsetPos));
+    NSLog(@"subtract operation from %@", NSStringFromCGPoint(offsetPos));
     
     int removeCount=0;
     

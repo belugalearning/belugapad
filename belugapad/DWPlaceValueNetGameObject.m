@@ -20,4 +20,12 @@
 @synthesize mySprite;
 @synthesize Hidden;
 
+-(void)dealloc
+{
+    if(MountedObject)[MountedObject release];
+    if(mySprite)[mySprite release];
+    
+    [super dealloc];
+}
+
 @end

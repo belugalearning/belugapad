@@ -159,13 +159,16 @@ static float kTimeToMountedShake=7.0f;
     mountedObjects = [[NSMutableArray alloc]init];
     [mountedObjects retain];
     
+    //see if we have eval_target for eval against fixed figure
+    if([pdef objectForKey:@"EVAL_TARGET"])
+    {
+        hasEvalTarget=YES;
+        explicitEvalTarget=[[pdef objectForKey:@"EVAL_TARGET"] integerValue];
+    }
 }
 
 -(void)populateGW
 {
-
-
-
     float yStartPos=582;
     // do stuff with our INIT_BARS (DWPartitionRowGameObject)
     
@@ -432,6 +435,12 @@ static float kTimeToMountedShake=7.0f;
 {
     //returns YES if the tool expression evaluates succesfully
     toolHost.PpExpr=[BAExpressionTree treeWithRoot:[BAEqualsOperator operator]];
+    
+    //add an initial integer to the chained equality if eval_target is in use
+    if(hasEvalTarget)
+    {
+        [toolHost.PpExpr.root addChild:[BAInteger integerWithIntValue:explicitEvalTarget]];
+    }
     
     //loop rows
     for (DWPartitionRowGameObject *prgo in createdRows) {

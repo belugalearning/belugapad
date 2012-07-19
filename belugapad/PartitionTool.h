@@ -48,6 +48,9 @@
     BOOL hasUsedBlock;
     int numberToStack;
     
+    BOOL hasEvalTarget;
+    int explicitEvalTarget;
+    
     DWPartitionRowGameObject *previousMount;
 }
 

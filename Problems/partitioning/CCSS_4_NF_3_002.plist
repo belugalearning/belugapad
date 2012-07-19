@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>build 3/4</string>
 	<key>TOOL_KEY</key>
-	<string>PartitionTool</string>
+	<string>NumberBonds</string>
 	<key>INIT_BARS</key>
 	<array>
 		<dict>
@@ -35,7 +35,7 @@
 		</dict>
 	</array>
 	<key>SOLUTIONS</key>
-	<array></array>
+	<array/>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>

@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>show that 6 + 4 = 10</string>
 	<key>TOOL_KEY</key>
-	<string>PartitionTool</string>
+	<string>NumberBonds</string>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>

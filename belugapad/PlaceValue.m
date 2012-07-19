@@ -173,7 +173,6 @@ static float kTimeToCageShake=7.0f;
     float ropeWidth = kPropXNetSpace*lx;
 
     columnInfo = [[NSMutableArray alloc] init];
-    [columnInfo retain];
     
     float currentColumnValue = firstColumnValue;
     
@@ -268,6 +267,8 @@ static float kTimeToCageShake=7.0f;
 
                 
                 [RowArray addObject:c];                
+                
+                [c release];
             }
             
             [RowArray release];
@@ -313,8 +314,9 @@ static float kTimeToCageShake=7.0f;
             
             
                 
-                if(!allCages) allCages=[[NSMutableArray alloc] init];
-                [allCages addObject:cge];
+            if(!allCages) allCages=[[NSMutableArray alloc] init];
+            [allCages addObject:cge];
+            [cge release];
             
         }
         if([[columnNegCages objectForKey:currentColumnValueKey] boolValue]==YES) 
@@ -356,6 +358,7 @@ static float kTimeToCageShake=7.0f;
             
             if(!allCages) allCages=[[NSMutableArray alloc] init];
             [allCages addObject:cge];
+            [cge release];
         }
     
         [newCol release];
@@ -366,6 +369,7 @@ static float kTimeToCageShake=7.0f;
     
 
     int numberPrecountedForRow=0;
+    
     
     for(int i=0; i<(initObjects.count); i++)
     {
@@ -402,8 +406,14 @@ static float kTimeToCageShake=7.0f;
             }
         }
         
+        int blocksAddedToThisRow=0;
+        int ropesHere=[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:insRow] count]-1;
+        
         for(int i=0; i<count; i++)
         {
+            NSLog(@"populate this row. blocks added to this row: %d", blocksAddedToThisRow);
+            NSLog(@"ropesHere %d, insRow %d", ropesHere,(int)i/ropesHere);
+            
             if(boundCol)
             {
                 //incr the total count in this bound col
@@ -416,10 +426,14 @@ static float kTimeToCageShake=7.0f;
                 [boundCounts setObject:[NSNumber numberWithInt:boundCounter] forKey:[NSNumber numberWithInt:insCol]];
             }
             
+            
             DWPlaceValueBlockGameObject *block=[DWPlaceValueBlockGameObject alloc];
             [gw populateAndAddGameObject:block withTemplateName:@"TplaceValueObject"];
             
-            block.Mount=[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:insRow] objectAtIndex:i];
+            if([curDict objectForKey:PUT_IN_ROW])
+                block.Mount=[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:insRow] objectAtIndex:i];
+            else
+                block.Mount=[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:(int)i/(ropesHere+1)] objectAtIndex:blocksAddedToThisRow];
             
             block.ObjectValue=[[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue];
             
@@ -440,6 +454,12 @@ static float kTimeToCageShake=7.0f;
                 numberPrecountedForRow++;
             
             [block handleMessage:kDWsetMount andPayload:nil withLogLevel:-1];
+            if(blocksAddedToThisRow==ropesHere)
+                blocksAddedToThisRow=0;            
+            else
+                blocksAddedToThisRow++;
+            
+            [block release];
             
         }
         numberPrecountedForRow=0;
@@ -1151,6 +1171,8 @@ static float kTimeToCageShake=7.0f;
                 }
             }
         }
+        
+        [go release];
     }
     return YES;
 }
@@ -1683,11 +1705,7 @@ static float kTimeToCageShake=7.0f;
 #pragma mark - dealloc
 -(void) dealloc
 {
-    //write log on problem switch
-    [gw writeLogBufferToDiskWithKey:@"PlaceValue"];
-    
-    //tear down
-    [gw release];
+    [renderLayer release];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
@@ -1710,6 +1728,12 @@ static float kTimeToCageShake=7.0f;
     if(negCageSprite) [negCageSprite release];
     if(pickupSprite) [pickupSprite release];
     if(proximitySprite) [proximitySprite release];
+
+    if(allCages)[allCages release];
+    if(boundCounts)[boundCounts release];
+    if(countLabels)[countLabels release];
+    
+    [gw release];
     
     [super dealloc];
 }

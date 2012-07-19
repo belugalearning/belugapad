@@ -46,7 +46,7 @@
 	[self parseTemplate:templateName inTemplateDefs:templateDefs forObject:theObject];
     [theObject initComplete];
 	
-    [theObject autorelease];    
+    //[theObject autorelease];    
 }
 
 +(void) parseTemplate:(NSString *)templateName inTemplateDefs:(NSDictionary *)templateDefs forObject:(DWGameObject *)gameObject
@@ -92,10 +92,8 @@
     {
         gameWorld=aGameWorld;
         behaviours=[[NSMutableArray alloc] init];
-        [behaviours retain];
         
         localStore=[[NSMutableDictionary alloc] init];
-        [localStore retain];
     }
 	return self;
 }
@@ -235,7 +233,6 @@
 
 -(void)dealloc
 {
-    
 	[behaviours release];
 	[localStore release];
 	

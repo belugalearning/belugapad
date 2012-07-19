@@ -3,6 +3,7 @@
 <plist version="1.0">
 <array>
 	<string>/Problems/tools-dev/da-dt/dt1.plist</string>
+	<string>/Problems/tools-dev/da-pv/placevalue-problem001.plist</string>
 	<string>/Problems/tools-dev/nline-dev/nline_count_to_3.plist</string>
 	<string>/Problems/tools-dev/nline-dev/nline_count_to_4.plist</string>
 	<string>/Problems/tools-dev/nline-dev/nline_count_to_5.plist</string>

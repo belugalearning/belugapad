@@ -7,7 +7,7 @@
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>show that 2+3 = 5</string>
 	<key>TOOL_KEY</key>
-	<string>PartitionTool</string>
+	<string>NumberBonds</string>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>

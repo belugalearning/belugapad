@@ -516,6 +516,16 @@ static float kSubParticleOffset=10.0f;
     return returnPoints;
 }
 
+-(void)dealloc
+{
+    [shardsActive release];
+    [shardsExpiring release];
+    
+    
+    
+    [super dealloc];
+}
+
 @end
 
 

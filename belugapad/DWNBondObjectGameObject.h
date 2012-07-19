@@ -1,5 +1,5 @@
 //
-//  DWPartitionObjectGameObject.h
+//  DWNBondObjectGameObject.h
 //  belugapad
 //
 //  Created by David Amphlett on 30/03/2012.
@@ -8,15 +8,15 @@
 
 #import "DWGameObject.h"
 
-@class DWPartitionRowGameObject;
+@class DWNBondRowGameObject;
 
-@interface DWPartitionObjectGameObject : DWGameObject
+@interface DWNBondObjectGameObject : DWGameObject
 
 @property float ObjectValue;
 @property CGPoint Position;
 @property CGPoint MovePosition;
 @property CGPoint MountPosition;
-@property (retain) DWPartitionRowGameObject *Mount;
+@property (retain) DWNBondRowGameObject *Mount;
 @property (retain) CCNode *BaseNode;
 @property int Length;
 @property (retain) CCLabelTTF *Label;

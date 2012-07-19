@@ -6,18 +6,18 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "BPartitionMountable.h"
+#import "BNBondMountable.h"
 #import "global.h"
-#import "DWPartitionRowGameObject.h"
-#import "DWPartitionObjectGameObject.h"
+#import "DWNBondRowGameObject.h"
+#import "DWNBondObjectGameObject.h"
 
-@implementation BPartitionMountable
+@implementation BNBondMountable
 
--(BPartitionMountable *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
+-(BNBondMountable *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
-    self=(BPartitionMountable*)[super initWithGameObject:aGameObject withData:data];
+    self=(BNBondMountable*)[super initWithGameObject:aGameObject withData:data];
     
-    pogo=(DWPartitionObjectGameObject*)gameObject;
+    pogo=(DWNBondObjectGameObject*)gameObject;
     
     return self;
 }
@@ -36,7 +36,7 @@
     
     if(messageType==kDWsetMount)
     {
-        DWPartitionRowGameObject *prgo=[payload objectForKey:MOUNT];
+        DWNBondRowGameObject *prgo=[payload objectForKey:MOUNT];
         
         //if we had a mount previously, tell that mount to unmount me
         if(pogo.Mount)
@@ -50,7 +50,7 @@
         float myHeldValue=0.0f;
         for(int i=0;i<prgo.MountedObjects.count;i++)
         {
-            DWPartitionObjectGameObject *mo = [prgo.MountedObjects objectAtIndex:i];
+            DWNBondObjectGameObject *mo = [prgo.MountedObjects objectAtIndex:i];
             myHeldValue=myHeldValue+mo.Length;
         }
         

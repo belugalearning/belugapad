@@ -20,4 +20,14 @@
 @synthesize AnimateMe;
 @synthesize Selected;
 
+-(void)dealloc
+{
+    if(Mount)[Mount release];
+    if(PickupSprite)[PickupSprite release];
+    if(mySprite)[mySprite release];
+    if(SpriteFilename)[SpriteFilename release];
+    
+    [super dealloc];
+}
+
 @end

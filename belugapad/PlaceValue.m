@@ -173,7 +173,6 @@ static float kTimeToCageShake=7.0f;
     float ropeWidth = kPropXNetSpace*lx;
 
     columnInfo = [[NSMutableArray alloc] init];
-    [columnInfo retain];
     
     float currentColumnValue = firstColumnValue;
     
@@ -268,6 +267,8 @@ static float kTimeToCageShake=7.0f;
 
                 
                 [RowArray addObject:c];                
+                
+                [c release];
             }
             
             [RowArray release];
@@ -313,8 +314,9 @@ static float kTimeToCageShake=7.0f;
             
             
                 
-                if(!allCages) allCages=[[NSMutableArray alloc] init];
-                [allCages addObject:cge];
+            if(!allCages) allCages=[[NSMutableArray alloc] init];
+            [allCages addObject:cge];
+            [cge release];
             
         }
         if([[columnNegCages objectForKey:currentColumnValueKey] boolValue]==YES) 
@@ -356,6 +358,7 @@ static float kTimeToCageShake=7.0f;
             
             if(!allCages) allCages=[[NSMutableArray alloc] init];
             [allCages addObject:cge];
+            [cge release];
         }
     
         [newCol release];
@@ -455,6 +458,8 @@ static float kTimeToCageShake=7.0f;
                 blocksAddedToThisRow=0;            
             else
                 blocksAddedToThisRow++;
+            
+            [block release];
             
         }
         numberPrecountedForRow=0;
@@ -1166,6 +1171,8 @@ static float kTimeToCageShake=7.0f;
                 }
             }
         }
+        
+        [go release];
     }
     return YES;
 }
@@ -1698,11 +1705,7 @@ static float kTimeToCageShake=7.0f;
 #pragma mark - dealloc
 -(void) dealloc
 {
-    //write log on problem switch
-    [gw writeLogBufferToDiskWithKey:@"PlaceValue"];
-    
-    //tear down
-    [gw release];
+    [renderLayer release];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
@@ -1725,6 +1728,12 @@ static float kTimeToCageShake=7.0f;
     if(negCageSprite) [negCageSprite release];
     if(pickupSprite) [pickupSprite release];
     if(proximitySprite) [proximitySprite release];
+
+    if(allCages)[allCages release];
+    if(boundCounts)[boundCounts release];
+    if(countLabels)[countLabels release];
+    
+    [gw release];
     
     [super dealloc];
 }

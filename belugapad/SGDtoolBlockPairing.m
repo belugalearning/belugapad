@@ -44,7 +44,7 @@
 {
     if(z==0)
     {
-        if([ParentGO.PairedObjects count]>0)
+        if([ParentGO.PairedObjects count]>0 && !ParentGO.SeekingPair)
         {
             for(int i=0;i<[ParentGO.PairedObjects count];i++)
             {
@@ -69,8 +69,8 @@
                 for(int i=0;i<linesToDraw/2;i++)
                 {
                         ccDrawLine(curObj.Position, ParentGO.Position);
-                        ccDrawLine(ccp(curObj.Position.x-i, curObj.Position.y-i), ParentGO.Position);
-                        ccDrawLine(ccp(curObj.Position.x+i, curObj.Position.y+i), ParentGO.Position);
+                        ccDrawLine(ccp(curObj.Position.x-i, curObj.Position.y-i), ccp(ParentGO.Position.x-i, ParentGO.Position.y-i));
+                        ccDrawLine(ccp(curObj.Position.x+i, curObj.Position.y+i), ccp(ParentGO.Position.x+i, ParentGO.Position.y+i));
                 }
             }
         }

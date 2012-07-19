@@ -15,4 +15,12 @@
 @synthesize PopulateVariableNames;
 @synthesize WatchRambler;
 
+-(void)dealloc
+{
+    if(PopulateVariableNames)[PopulateVariableNames release];
+    if(WatchRambler)[WatchRambler release];
+    
+    [super dealloc];
+}
+
 @end

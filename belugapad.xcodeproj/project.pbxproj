@@ -460,30 +460,30 @@
 		5508FEB815A3068D003720AF /* SGDtoolBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGDtoolBlock.m; sourceTree = "<group>"; };
 		5508FEBB15A309DE003720AF /* SGDtoolBlockRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGDtoolBlockRender.h; sourceTree = "<group>"; };
 		5508FEBC15A309DE003720AF /* SGDtoolBlockRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGDtoolBlockRender.m; sourceTree = "<group>"; };
-		551815611525EA920097E259 /* NumberBonds.h */ = {isa = PBXFileReference; fileEncoding = 4; path = NumberBonds.h; sourceTree = "<group>"; };
+		551815611525EA920097E259 /* NumberBonds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberBonds.h; sourceTree = "<group>"; };
 		551815621525EA920097E259 /* NumberBonds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberBonds.m; sourceTree = "<group>"; };
-		551815661525F7500097E259 /* BNBondRowDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BNBondRowDropTarget.h; sourceTree = "<group>"; };
+		551815661525F7500097E259 /* BNBondRowDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondRowDropTarget.h; sourceTree = "<group>"; };
 		551815671525F7500097E259 /* BNBondRowDropTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondRowDropTarget.m; sourceTree = "<group>"; };
-		551815681525F7500097E259 /* BNBondObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BNBondObjectRender.h; sourceTree = "<group>"; };
+		551815681525F7500097E259 /* BNBondObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondObjectRender.h; sourceTree = "<group>"; };
 		551815691525F7500097E259 /* BNBondObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondObjectRender.m; sourceTree = "<group>"; };
-		5518156A1525F7500097E259 /* BNBondPickupTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BNBondPickupTarget.h; sourceTree = "<group>"; };
+		5518156A1525F7500097E259 /* BNBondPickupTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondPickupTarget.h; sourceTree = "<group>"; };
 		5518156B1525F7500097E259 /* BNBondPickupTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondPickupTarget.m; sourceTree = "<group>"; };
-		551815701525F9880097E259 /* DWNBondObjectGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; path = DWNBondObjectGameObject.h; sourceTree = "<group>"; };
+		551815701525F9880097E259 /* DWNBondObjectGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWNBondObjectGameObject.h; sourceTree = "<group>"; };
 		551815711525F9880097E259 /* DWNBondObjectGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWNBondObjectGameObject.m; sourceTree = "<group>"; };
-		551815731525FD3C0097E259 /* DWNBondStoreGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; path = DWNBondStoreGameObject.h; sourceTree = "<group>"; };
+		551815731525FD3C0097E259 /* DWNBondStoreGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWNBondStoreGameObject.h; sourceTree = "<group>"; };
 		551815741525FD3C0097E259 /* DWNBondStoreGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWNBondStoreGameObject.m; sourceTree = "<group>"; };
-		551815761525FDDF0097E259 /* DWNBondRowGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; path = DWNBondRowGameObject.h; sourceTree = "<group>"; };
+		551815761525FDDF0097E259 /* DWNBondRowGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWNBondRowGameObject.h; sourceTree = "<group>"; };
 		551815771525FDDF0097E259 /* DWNBondRowGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWNBondRowGameObject.m; sourceTree = "<group>"; };
-		5518157D1526210C0097E259 /* BNBondRowRender.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BNBondRowRender.h; sourceTree = "<group>"; };
+		5518157D1526210C0097E259 /* BNBondRowRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondRowRender.h; sourceTree = "<group>"; };
 		5518157E1526210C0097E259 /* BNBondRowRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondRowRender.m; sourceTree = "<group>"; };
-		5518157F1526210C0097E259 /* BNBondStoreRender.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BNBondStoreRender.h; sourceTree = "<group>"; };
+		5518157F1526210C0097E259 /* BNBondStoreRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondStoreRender.h; sourceTree = "<group>"; };
 		551815801526210C0097E259 /* BNBondStoreRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondStoreRender.m; sourceTree = "<group>"; };
 		552478651536BF5C00BA5C4E /* tooldef.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tooldef.plist; sourceTree = "<group>"; };
-		5529F4CF1529EA940085492E /* BNBondStoreDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BNBondStoreDropTarget.h; sourceTree = "<group>"; };
+		5529F4CF1529EA940085492E /* BNBondStoreDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondStoreDropTarget.h; sourceTree = "<group>"; };
 		5529F4D01529EA940085492E /* BNBondStoreDropTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondStoreDropTarget.m; sourceTree = "<group>"; };
-		5529F4D2152A04310085492E /* BNBondMount.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BNBondMount.h; sourceTree = "<group>"; };
+		5529F4D2152A04310085492E /* BNBondMount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondMount.h; sourceTree = "<group>"; };
 		5529F4D3152A04310085492E /* BNBondMount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondMount.m; sourceTree = "<group>"; };
-		5529F4D5152A05EB0085492E /* BNBondMountable.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BNBondMountable.h; sourceTree = "<group>"; };
+		5529F4D5152A05EB0085492E /* BNBondMountable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondMountable.h; sourceTree = "<group>"; };
 		5529F4D6152A05EB0085492E /* BNBondMountable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondMountable.m; sourceTree = "<group>"; };
 		5536B2A514E43E1400D30BC0 /* PlaceValueConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceValueConsts.h; sourceTree = "<group>"; };
 		5536B2A614E43E1400D30BC0 /* PlaceValueConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceValueConsts.m; sourceTree = "<group>"; };
@@ -900,7 +900,7 @@
 		7F5005C81522478C0038D251 /* fps_images-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fps_images-hd.png"; sourceTree = "<group>"; };
 		7F5005C91522478C0038D251 /* fps_images-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fps_images-ipadhd.png"; sourceTree = "<group>"; };
 		7F5005CA1522478C0038D251 /* fps_images.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fps_images.png; sourceTree = "<group>"; };
-		7F5113BE14A9EE62001AF372 /* beluga july '12.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "beluga july '12.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F5113BE14A9EE62001AF372 /* beluga july '12.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "beluga july '12.app"; path = "beluga tools.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F5113C214A9EE62001AF372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7F5113C414A9EE62001AF372 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		7F5113C614A9EE62001AF372 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
@@ -2552,9 +2552,9 @@
 			productReference = 7F40D89714FFD8BE006A3A55 /* GeneralTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
-		7F5113BD14A9EE62001AF372 /* beluga july '12 */ = {
+		7F5113BD14A9EE62001AF372 /* beluga tools */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7F51158E14A9EE67001AF372 /* Build configuration list for PBXNativeTarget "beluga july '12" */;
+			buildConfigurationList = 7F51158E14A9EE67001AF372 /* Build configuration list for PBXNativeTarget "beluga tools" */;
 			buildPhases = (
 				7F5113BA14A9EE62001AF372 /* Sources */,
 				7F5113BB14A9EE62001AF372 /* Frameworks */,
@@ -2565,7 +2565,7 @@
 			);
 			dependencies = (
 			);
-			name = "beluga july '12";
+			name = "beluga tools";
 			productName = belugapad;
 			productReference = 7F5113BE14A9EE62001AF372 /* beluga july '12.app */;
 			productType = "com.apple.product-type.application";
@@ -2590,7 +2590,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7F5113BD14A9EE62001AF372 /* beluga july '12 */,
+				7F5113BD14A9EE62001AF372 /* beluga tools */,
 				7F40D89614FFD8BE006A3A55 /* GeneralTests */,
 			);
 		};
@@ -3025,7 +3025,7 @@
 /* Begin PBXTargetDependency section */
 		7F40D90314FFECBE006A3A55 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 7F5113BD14A9EE62001AF372 /* beluga july '12 */;
+			target = 7F5113BD14A9EE62001AF372 /* beluga tools */;
 			targetProxy = 7F40D90214FFECBE006A3A55 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -3229,7 +3229,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7F51158E14A9EE67001AF372 /* Build configuration list for PBXNativeTarget "beluga july '12" */ = {
+		7F51158E14A9EE67001AF372 /* Build configuration list for PBXNativeTarget "beluga tools" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7F51158F14A9EE67001AF372 /* Debug */,

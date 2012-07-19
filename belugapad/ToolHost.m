@@ -106,7 +106,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [self populatePerstLayer];
         
         //dynamic problem parser (persists to end of pipeline)
-        DynProblemParser=[[[DProblemParser alloc] init] retain];
+        DynProblemParser=[[DProblemParser alloc] init];
         
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         loggingService = ac.loggingService;
@@ -576,22 +576,19 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [problemComplete setPosition:ccp(cx, cy)];
     [problemDefLayer addChild:problemComplete];
     showingProblemComplete=YES;
-    [problemComplete retain];
 }
 
 -(void) showProblemIncompleteMessage
 {
-    BOOL addToLayer=NO;
-    if(!problemIncomplete)
-    {
-        problemIncomplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/failed-overlay.png")];
-        addToLayer=YES;
-    }
+    if(showingProblemIncomplete) return;
+    
+    if(problemIncomplete) [problemDefLayer removeChild:problemIncomplete cleanup:YES];
+    
+    problemIncomplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/failed-overlay.png")];
+    
     [problemIncomplete setPosition:ccp(cx,cy)];
-    [problemIncomplete setOpacity:255];
-    if(addToLayer) [problemDefLayer addChild:problemIncomplete];
+    [problemDefLayer addChild:problemIncomplete];
     showingProblemIncomplete=YES;
-    [problemIncomplete retain];
 }
 
 -(void)setupProblemOnToolHost:(NSDictionary *)curpdef
@@ -735,12 +732,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         // set a new value in the array so we can see that it's not currently selected
         [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
     }
-        
-    [metaQuestionAnswers retain];
-    [metaQuestionAnswerButtons retain];
-    [metaQuestionAnswerLabels retain];
-    [metaQuestionCompleteText retain];
-    [metaQuestionIncompleteText retain];
     
     // if eval mode is commit, render a commit button
     if(mqEvalMode==kMetaQuestionEvalOnCommit)
@@ -777,19 +768,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     else
         npMaxNoInDropbox=4;
 
-    
-    
     numberPickerButtons=[[NSMutableArray alloc]init];
-    [numberPickerButtons retain];
-    
     numberPickedSelection=[[NSMutableArray alloc]init];
-    [numberPickedSelection retain];
-    
     numberPickedValue=[[NSMutableArray alloc]init];
-    [numberPickedValue retain];
-    
-
-    
+        
     nPicker=[[CCNode alloc]init];
     [nPicker setPosition:ccp(npOriginX,npOriginY)];
     
@@ -1082,8 +1064,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void)tearDownNumberPicker
 {
     [numberPickerLayer removeAllChildrenWithCleanup:YES];
-    
     numberPickerForThisProblem=NO;
+    [numberPickerLayer release];
+    numberPickerLayer=nil;
 }
 
 -(void)tearDownMetaQuestion
@@ -1629,8 +1612,24 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(numberPickerButtons)[numberPickerButtons release];
     if(numberPickedSelection)[numberPickedSelection release];
     if(numberPickedValue)[numberPickedValue release];
+    if(nPicker)[nPicker release];
+    
+    //this is released and nil referenced in tear down -- but might not hit this on bail from toolhost
+    if(numberPickerLayer)[numberPickerLayer release];
+    
+    if(touchLogPath)[touchLogPath release];
     
     [DynProblemParser release];
+    
+    [backgroundLayer release];
+    [perstLayer release];
+    [animator release];
+    [metaQuestionLayer release];
+    [problemDefLayer release];
+    [pauseLayer release];
+    
+    [Zubi release];
+    
     
     [super dealloc];
 }

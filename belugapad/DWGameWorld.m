@@ -22,7 +22,6 @@
         mGameScene=scene;
         gameObjects=[[NSMutableArray alloc] init];        
         localStore=[[NSMutableDictionary alloc] init];
-		[localStore retain];
 		
 		mPause = false;
 		
@@ -204,12 +203,12 @@
 -(void)dealloc
 {
 	[localStore release];
-    
-
-    
 	[gameObjects release];
-
     [removeObjects release];
+    
+    [blackboard release];
+    [LogBuffer release];
+    
 	[super dealloc];
 }
 

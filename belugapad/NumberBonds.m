@@ -174,15 +174,16 @@ static float kTimeToMountedShake=7.0f;
         
         float xStartPos=(cx-((([[[initBars objectAtIndex:i] objectForKey:LENGTH] intValue]+2)*50)/2)+25);
 
-            DWNBondRowGameObject *prgo = [DWNBondRowGameObject alloc];
-            [gw populateAndAddGameObject:prgo withTemplateName:@"TnBondRow"];
-            prgo.Position=ccp(xStartPos,yStartPos);
-            prgo.Length = [[[initBars objectAtIndex:i] objectForKey:LENGTH] intValue];
-            prgo.Locked = [[[initBars objectAtIndex:i] objectForKey:LOCKED] boolValue];
-        
-        
+        DWNBondRowGameObject *prgo = [DWNBondRowGameObject alloc];
+        [gw populateAndAddGameObject:prgo withTemplateName:@"TnBondRow"];
+        prgo.Position=ccp(xStartPos,yStartPos);
+        prgo.Length = [[[initBars objectAtIndex:i] objectForKey:LENGTH] intValue];
+        prgo.Locked = [[[initBars objectAtIndex:i] objectForKey:LOCKED] boolValue];
+    
         [createdRows addObject:prgo];
-    yStartPos = yStartPos-100;
+        yStartPos = yStartPos-100;
+        
+        [prgo release];
     }
     
     // do stuff with our INIT_CAGES (DWNBondStoreGameObject)
@@ -218,6 +219,8 @@ static float kTimeToMountedShake=7.0f;
             [currentVal addObject:pogo];
         }
         [mountedObjects addObject:currentVal];
+        
+        [currentVal release];
     }
     
     // do stuff with our INIT_OBJECTS (DWNBondObjectGameObject)    
@@ -246,6 +249,8 @@ static float kTimeToMountedShake=7.0f;
         pogo.Position = prgo.Position;
         pogo.MountPosition = prgo.Position;
         [prgo handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
+        
+        [fillText release];
     }
 
 }
@@ -460,7 +465,11 @@ static float kTimeToMountedShake=7.0f;
     
     BATQuery *q=[[BATQuery alloc] initWithExpr:toolHost.PpExpr.root andTree:toolHost.PpExpr];
     
-    return [q assumeAndEvalEqualityAtRoot];
+    BOOL ret= [q assumeAndEvalEqualityAtRoot];
+    
+    [q release];
+    
+    return ret;
 }
 
 -(void)evalProblem
@@ -525,11 +534,7 @@ static float kTimeToMountedShake=7.0f;
 #pragma mark - dealloc
 -(void) dealloc
 {
-    //write log on problem switch
-    [gw writeLogBufferToDiskWithKey:@"NumberBonds"];
-    
-    //tear down
-    [gw release];
+    [renderLayer release];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
@@ -540,6 +545,11 @@ static float kTimeToMountedShake=7.0f;
     if(solutionsDef) [solutionsDef release];
     if(createdRows) [createdRows release];
     if(mountedObjects) [mountedObjects release];
+    
+    
+    //tear down
+    [gw release];
+    
     [super dealloc];
 }
 

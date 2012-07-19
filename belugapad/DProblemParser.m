@@ -330,7 +330,14 @@
             
             NSNumber *val=[[retainedVars allValues] objectAtIndex:i];
             NSString *key=[[retainedVars allKeys] objectAtIndex:i];
-            [lkpVars setObject:[val copy] forKey:[key copy]];
+            
+            NSNumber *valcopy=[val copy];
+            NSString *keycopy=[key copy];
+            
+            [lkpVars setObject:valcopy forKey:keycopy];
+            
+            [valcopy release];
+            [keycopy release];
             
             NSLog(@"recalling a retained value: %@ for key %@", [val stringValue], key);
         }
@@ -587,6 +594,16 @@
         //return it as is
         return val;
     }
+}
+
+-(void)dealloc
+{
+    [dVars release];
+    [dStrings release];
+    [retainedVars release];
+    [retainedStrings release];
+    
+    [super dealloc];
 }
 
 #pragma mark

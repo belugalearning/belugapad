@@ -208,11 +208,8 @@ const float kScaleOfLesserBlocks=0.6f;
     [renderLayer addChild:bottomSection];
     
     selectedNumbers=[[NSMutableArray alloc]init];
-    [selectedNumbers retain];
     rowMultipliers=[[NSMutableArray alloc]init];
-    [rowMultipliers retain];
     renderedBlocks=[[NSMutableArray alloc]init];
-    [renderedBlocks retain];
     
     // add the selector to the middle of the screen
     
@@ -262,8 +259,6 @@ const float kScaleOfLesserBlocks=0.6f;
 {
     numberRows=[[NSMutableArray alloc]init];
     numberLayers=[[NSMutableArray alloc]init];
-    [numberRows retain];
-    [numberLayers retain];
 
     float rowMultiplierT=0.001f;
     
@@ -297,6 +292,8 @@ const float kScaleOfLesserBlocks=0.6f;
         [numberLayers addObject:thisLayer];
         
         rowMultiplierT=rowMultiplierT*10;
+        
+        [thisRow release];
     }
     
     currentRowPos=startRow;
@@ -723,6 +720,11 @@ const float kScaleOfLesserBlocks=0.6f;
 
 -(void) dealloc
 {
+    [self.ForeLayer removeAllChildrenWithCleanup:YES];
+    [self.BkgLayer removeAllChildrenWithCleanup:YES];
+    
+    [renderLayer release];
+    
     [topSection release];
     [bottomSection release];
     
@@ -733,13 +735,8 @@ const float kScaleOfLesserBlocks=0.6f;
     if(rowMultipliers)[rowMultipliers release];
     if(renderedBlocks)[renderedBlocks release];
 
-    
-    [self.ForeLayer removeAllChildrenWithCleanup:YES];
-    [self.BkgLayer removeAllChildrenWithCleanup:YES];
-    
     [gw release];
-    
-    
+        
     [super dealloc];
 }
 @end

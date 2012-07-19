@@ -1623,7 +1623,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [metaQuestionLayer release];
     [problemDefLayer release];
     [pauseLayer release];
-    [DynProblemParser release];
     
     [Zubi release];
     

@@ -162,6 +162,7 @@ typedef enum {
 //        [foreLayer addChild:b];
         
         //[[SimpleAudioEngine sharedEngine] playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/mood.mp3") loop:YES];
+        
     }
     
     return self;
@@ -188,9 +189,18 @@ typedef enum {
     contentService.resetPositionAfterTH=YES;
     contentService.lastMapLayerPosition=mapLayer.position;
     
-    [[CCDirector sharedDirector] replaceScene:[CCTransitionCrossFade transitionWithDuration:0.5f scene:[ToolHost scene]]];
+    AppController *ac=(AppController*)[[UIApplication sharedApplication] delegate];
     
-//    [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
+    if(ac.IsIpad1)
+    {
+        [[CCDirector sharedDirector] replaceScene:[ToolHost scene]];        
+    }
+    else {
+        [[CCDirector sharedDirector] replaceScene:[CCTransitionCrossFade transitionWithDuration:0.5f scene:[ToolHost scene]]];
+    }
+
+    
+
     
 }
 

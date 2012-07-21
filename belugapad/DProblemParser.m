@@ -41,12 +41,8 @@
 {
     for (int i=0; i<[[dstringsdef allKeys] count]; i++) {
         NSString *key=[[dstringsdef allKeys] objectAtIndex:i];
-        NSString *origKey=[[key copy] autorelease];
         
-        //to support old and new syntax, we'll replace $ with @ in the string << to be deprecated
-        key=[key stringByReplacingOccurrencesOfString:@"$" withString:@"@"];
-        
-        NSDictionary *def=[dstringsdef objectForKey:origKey];
+        NSDictionary *def=[dstringsdef objectForKey:key];
         NSString *mode=[def objectForKey:@"MODE"];
         NSArray *data=[def objectForKey:@"DATA"];
         NSString *val=nil;
@@ -438,29 +434,6 @@
         r=[parse rangeOfString:@"{"];
     }
     
-    
-    //DSTRING replacements << old-style, to be depracated
-    NSRange dsrange=[parse rangeOfString:@"[["];
-    while (dsrange.location!=NSNotFound) {
-        //string from [[ +2 to end
-        NSString *rstring=[parse substringFromIndex:dsrange.location+2];
-        
-        //position of close
-        NSRange rend=[rstring rangeOfString:@"]]"];
-        
-        //middle of string
-        NSString *mid=rstring;
-        if(rend.location!=NSNotFound) mid=[rstring substringToIndex:rend.location];
-        
-        //the range in the parse string that we're going to replace
-        NSRange replacerange={dsrange.location, rend.location+4};
-        
-        [self replaceDStringWithKey:mid inString:&parse atRange:replacerange];
-        
-        //look for next replacement
-        dsrange=[parse rangeOfString:@"[["];
-    }
-    
     return parse;
 }
 
@@ -471,9 +444,6 @@
           *parse,
           [dStrings objectForKey:key],
           key);
-    
-    //replace $ for @ in key to lookup for old syntax << old-style, to be depracted
-    key=[key stringByReplacingOccurrencesOfString:@"$" withString:@"@"];
     
     //do straight swap of @____  in parse
     *parse=[*parse stringByReplacingCharactersInRange:replacerange withString:[dStrings objectForKey:key]];

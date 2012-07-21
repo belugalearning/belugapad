@@ -6,9 +6,9 @@
 	<string>/Problems/dotgrid-demo</string>
 	<key>PROBLEM_PIPELINE-tools-dev</key>
 	<string>/Problems/tools-dev</string>
-	<key>PROBLEM_PIPELINE-dvars</key>
-	<string>/Problems/tools-dev/dvars/</string>
 	<key>PROBLEM_PIPELINE</key>
+	<string>/Problems/tools-dev/dvars/</string>
+	<key>PROBLEM_PIPELINE-db</key>
 	<string>DATABASE</string>
 	<key>PROBLEM_PIPELINE-da</key>
 	<string>/pipeline-testing/da-pipeline-test.plist</string>

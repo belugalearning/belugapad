@@ -44,12 +44,34 @@
 {
     if(z==0)
     {
-        if([ParentGO.PairedObjects count]>0)
+        if([ParentGO.PairedObjects count]>0 && !ParentGO.SeekingPair)
         {
             for(int i=0;i<[ParentGO.PairedObjects count];i++)
             {
                 id<Transform, Moveable, Pairable> curObj=[ParentGO.PairedObjects objectAtIndex:i];
-                ccDrawLine(curObj.Position, ParentGO.Position);
+                float dist=[BLMath DistanceBetween:curObj.Position and:ParentGO.Position];
+                int linesToDraw=0;
+                
+                if(dist<10.0f)
+                    linesToDraw=31;
+                    
+                else if(dist>10.0f<30.0f)
+                    linesToDraw=25;
+                
+                else if(dist>30.0f<50.0f)
+                    linesToDraw=15;
+                
+                else if(dist>75.0f)
+                    linesToDraw=2;
+                else
+                    linesToDraw=2;
+                
+                for(int i=0;i<linesToDraw/2;i++)
+                {
+                        ccDrawLine(curObj.Position, ParentGO.Position);
+                        ccDrawLine(ccp(curObj.Position.x-i, curObj.Position.y-i), ccp(ParentGO.Position.x-i, ParentGO.Position.y-i));
+                        ccDrawLine(ccp(curObj.Position.x+i, curObj.Position.y+i), ccp(ParentGO.Position.x+i, ParentGO.Position.y+i));
+                }
             }
         }
     }

@@ -43,6 +43,7 @@
 
 @property CGPoint Position;
 @property (retain) NSMutableArray *PairedObjects;
+@property BOOL SeekingPair;
 
 -(void)pairMeWith:(id)thisObject;
 -(void)unpairMeFrom:(id)thisObject;

@@ -38,7 +38,7 @@
 	</dict>
 	<key>DSTRINGS</key>
 	<dict>
-		<key>$operator</key>
+		<key>@operator</key>
 		<dict>
 			<key>MODE</key>
 			<string>RANDOM</string>

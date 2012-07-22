@@ -130,6 +130,14 @@ typedef enum {
     CCSprite *glossary1;
     CCSprite *glossary2;
     CCSprite *glossaryPopup;
+    
+    
+    //scoring
+    int pipelineScore;          //the total score accumulated in this pipeline
+    float scoreMultiplier;      //the current multiplier
+    int multiplierStage;        //the stage of the multiplier (0 for first problem)
+    BOOL hasResetMultiplier;    //has the multiplier been reset this problem (e.g. problem failed & restarted)
+    
 }
 
 @property (retain) Daemon *Zubi;
@@ -182,5 +190,7 @@ typedef enum {
 
 -(void)playAudioClick;
 -(void)playAudioPress;
+
+-(void)resetScoreMultiplier;
 
 @end

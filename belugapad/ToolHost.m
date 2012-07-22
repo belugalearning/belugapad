@@ -260,6 +260,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         if(moveToNextProblemTime<0)
         {
             autoMoveToNextProblem=NO;
+            
             [self gotoNewProblem];
         }
     }
@@ -344,6 +345,41 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [Zubi hideZubi];
 }
 
+#pragma mark - scoring
+
+-(void)incrementScoreAndMultiplier
+{
+    //increment the score if we're past init (e.g. in first scoring problem)
+    if(multiplierStage>0)
+    {
+        [self scoreProblemSuccess];
+    }
+    
+    //increment the multiplier
+    if(multiplierStage==0)
+    {
+        scoreMultiplier=1;
+    }
+    else if (multiplierStage<SCORE_STAGE_CAP && !hasResetMultiplier)
+    {
+        scoreMultiplier*=SCORE_STAGE_MULTIPLIER;
+    }
+
+    multiplierStage++;
+}
+
+-(void)resetScoreMultiplier
+{
+    scoreMultiplier=1;
+    multiplierStage=1;
+    hasResetMultiplier=YES;
+}
+
+-(void)scoreProblemSuccess
+{
+    pipelineScore+=scoreMultiplier * SCORE_BASE_AWARD;
+}
+
 #pragma mark - tool and problem load
 
 -(void) loadTool
@@ -365,6 +401,14 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [self tearDownProblemDef];
     self.PpExpr = nil;
     
+    //score and increment multiplier if appropriate
+    [self incrementScoreAndMultiplier];
+    
+    //this problem will award multiplier if not subsequently reset
+    hasResetMultiplier=NO;
+    
+    NSLog(@"score: %d multiplier: %f hasReset: %d multiplierStage: %d", pipelineScore, scoreMultiplier, hasResetMultiplier, multiplierStage);
+    
     [contentService gotoNextProblemInPipeline];
     
     //check that the content service found a pdef (this will be the raw dynamic one)
@@ -378,6 +422,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         
         //assume completion
         [contentService setPipelineNodeComplete];
+        [contentService setPipelineScore:pipelineScore];
+        
         contentService.fullRedraw=YES;
         contentService.lightUpProgressFromLastNode=YES;
         
@@ -557,6 +603,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 {
     if(problemDescLabel)[problemDescLabel removeFromParentAndCleanup:YES];
     if(commitBtn)[commitBtn removeFromParentAndCleanup:YES];
+    
+    [self resetScoreMultiplier];
     
     skipNextStagedIntroAnim=YES;
     

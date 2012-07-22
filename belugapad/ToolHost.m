@@ -49,6 +49,8 @@
 static float kMoveToNextProblemTime=2.0f;
 static float kTimeToShakeNumberPickerButtons=7.0f;
 
+#pragma mark - init and setup
+
 +(CCScene *) scene
 {
     CCScene *scene=[CCScene node];
@@ -155,6 +157,45 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [animator moveToTool3:delta];
 }
 
+-(void) shakeCommitButton
+{
+    [commitBtn runAction:[InteractionFeedback dropAndBounceAction]];
+}
+
+-(void)stageIntroActions
+{
+    //TODO tags are currently fixed to 2 phases -- either parse tool tree or pre-populate with design-fixed max
+    for (int i=1; i<=3; i++) {
+        
+        int time=i;
+        if(skipNextStagedIntroAnim) time=0;
+        
+        [self recurseSetIntroFor:toolBackLayer withTime:time forTag:i];
+        [self recurseSetIntroFor:toolForeLayer withTime:time forTag:i];
+        [self recurseSetIntroFor:toolNoScaleLayer withTime:time forTag:i];
+        [self recurseSetIntroFor:metaQuestionLayer withTime:time forTag:i];
+        [self recurseSetIntroFor:problemDefLayer withTime:time forTag:i];
+        [self recurseSetIntroFor:numberPickerLayer withTime:time forTag:i];
+    }
+    
+    skipNextStagedIntroAnim=NO;
+}
+
+-(void)recurseSetIntroFor:(CCNode*)node withTime:(float)time forTag:(int)tag
+{
+    for (CCNode *cn in [node children]) {
+        if([cn tag]==tag)
+        {
+            CCDelayTime *d=[CCDelayTime actionWithDuration:time];
+            CCFadeIn *f=[CCFadeIn actionWithDuration:0.1f];
+            CCSequence *s=[CCSequence actions:d, f, nil];
+            [cn runAction:s];
+        }
+        [self recurseSetIntroFor:cn withTime:time forTag:tag];
+    }
+}
+
+
 #pragma mark
 
 #pragma mark audio generic methods
@@ -177,7 +218,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/integrated/blpress-flourish.wav")];
 }
 
-#pragma mark
+#pragma mark draw and ticks
 
 
 
@@ -277,6 +318,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [currentTool doUpdateOnQuarterSecond:delta];
 }
 
+#pragma mark - add layers
+
 -(void) addToolNoScaleLayer:(CCLayer *) noScaleLayer
 {
     toolNoScaleLayer=noScaleLayer;
@@ -301,10 +344,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [Zubi hideZubi];
 }
 
--(void) shakeCommitButton
-{
-    [commitBtn runAction:[InteractionFeedback dropAndBounceAction]];
-}
+#pragma mark - tool and problem load
 
 -(void) loadTool
 {
@@ -476,6 +516,43 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [self logTouchProblemAttemptID:loggingService.currentProblemAttemptID];
 }
 
+-(void)setupProblemOnToolHost:(NSDictionary *)curpdef
+{
+    NSNumber *eMode=[curpdef objectForKey:EVAL_MODE];
+    if(eMode) evalMode=[eMode intValue];
+    else if(eMode && numberPickerForThisProblem) evalMode=kProblemEvalOnCommit;
+    else evalMode=kProblemEvalAuto;
+    
+    if([curpdef objectForKey:DEFAULT_SCALE])
+        scale=[[curpdef objectForKey:DEFAULT_SCALE]floatValue];
+    else 
+        scale=1.0f;
+    
+    [toolBackLayer setScale:scale];
+    [toolForeLayer setScale:scale];
+    
+    NSString *labelDesc=[self.DynProblemParser parseStringFromValueWithKey:PROBLEM_DESCRIPTION inDef:curpdef];
+    
+    //problemDescLabel=[CCLabelTTF labelWithString:labelDesc fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    problemDescLabel=[CCLabelTTF labelWithString:labelDesc dimensions:CGSizeMake(lx*kLabelTitleXMarginProp, cy) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
+    //[problemDescLabel setPosition:ccp(cx, cy)];
+    //[problemDescLabel setColor:kLabelTitleColor];
+    [problemDescLabel setTag:3];
+    [problemDescLabel setOpacity:0];
+    [problemDefLayer addChild:problemDescLabel];
+    
+    if(evalMode==kProblemEvalOnCommit)
+    {
+        commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
+        [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
+        [commitBtn setTag:3];
+        [commitBtn setOpacity:0];
+        [problemDefLayer addChild:commitBtn z:2];
+    }
+}
+
+
 -(void) resetProblem
 {
     if(problemDescLabel)[problemDescLabel removeFromParentAndCleanup:YES];
@@ -485,6 +562,52 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     [self loadProblem];
 }
+
+-(void)readToolOptions:(NSString *)currentToolKey
+{
+    if(currentToolKey)
+    {
+        NSDictionary *toolDef=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/tooldef.plist")];
+        
+        NSDictionary *toolOpt=[toolDef objectForKey:currentToolKey];
+        
+        if([toolOpt objectForKey:SCALE_MAX])
+            currentTool.ScaleMax=[[toolOpt objectForKey:SCALE_MAX] floatValue];
+        else
+            currentTool.ScaleMax=1.0f;
+        
+        if([toolOpt objectForKey:SCALE_MIN])
+            currentTool.ScaleMin=[[toolOpt objectForKey:SCALE_MIN] floatValue];
+        else
+            currentTool.ScaleMin=1.0f;
+        
+        if([toolOpt objectForKey:SCALING_PASS_THRU])
+            currentTool.PassThruScaling=[[toolOpt objectForKey:SCALING_PASS_THRU] boolValue];
+        else 
+            currentTool.PassThruScaling=NO;
+        
+        
+        //get tool depth
+        if([toolOpt objectForKey:@"TOOL_DEPTH"])
+        {
+            currentToolDepth=[(NSNumber *)[toolOpt objectForKey:@"TOOL_DEPTH"] intValue];
+        }
+        else {
+            currentToolDepth=2; // put tool default in middle
+        }
+        
+    }
+    else {
+        currentToolDepth=2;
+    }
+}
+
+-(void)tearDownProblemDef
+{
+    [problemDefLayer removeAllChildrenWithCleanup:YES];
+}
+
+#pragma mark - pause show and touch handling
 
 -(void) showPauseMenu
 {
@@ -565,6 +688,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
 }
 
+#pragma mark - completion and user flow
+
 -(void) returnToMenu
 {
     [[CCDirector sharedDirector] replaceScene:[JMap scene]];
@@ -591,41 +716,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     showingProblemIncomplete=YES;
 }
 
--(void)setupProblemOnToolHost:(NSDictionary *)curpdef
-{
-    NSNumber *eMode=[curpdef objectForKey:EVAL_MODE];
-    if(eMode) evalMode=[eMode intValue];
-    else if(eMode && numberPickerForThisProblem) evalMode=kProblemEvalOnCommit;
-    else evalMode=kProblemEvalAuto;
-    
-    if([curpdef objectForKey:DEFAULT_SCALE])
-        scale=[[curpdef objectForKey:DEFAULT_SCALE]floatValue];
-    else 
-        scale=1.0f;
-    
-    [toolBackLayer setScale:scale];
-    [toolForeLayer setScale:scale];
-    
-    NSString *labelDesc=[self.DynProblemParser parseStringFromValueWithKey:PROBLEM_DESCRIPTION inDef:curpdef];
-    
-    //problemDescLabel=[CCLabelTTF labelWithString:labelDesc fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    problemDescLabel=[CCLabelTTF labelWithString:labelDesc dimensions:CGSizeMake(lx*kLabelTitleXMarginProp, cy) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
-    //[problemDescLabel setPosition:ccp(cx, cy)];
-    //[problemDescLabel setColor:kLabelTitleColor];
-    [problemDescLabel setTag:3];
-    [problemDescLabel setOpacity:0];
-    [problemDefLayer addChild:problemDescLabel];
-    
-    if(evalMode==kProblemEvalOnCommit)
-    {
-        commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
-        [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
-        [commitBtn setTag:3];
-        [commitBtn setOpacity:0];
-        [problemDefLayer addChild:commitBtn z:2];
-    }
-}
+#pragma mark - meta question
 
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ
 {
@@ -744,6 +835,174 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     
 }
+
+
+-(void)tearDownMetaQuestion
+{
+    [metaQuestionLayer removeAllChildrenWithCleanup:YES];
+    
+    metaQuestionForThisProblem=NO;
+    metaQuestionForceComplete=NO;
+}
+
+
+-(void)checkMetaQuestionTouches:(CGPoint)location
+{
+    if (CGRectContainsPoint(kRectButtonCommit, location) && mqEvalMode==kMetaQuestionEvalOnCommit)
+    {
+        //effective user commit
+        [loggingService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
+        
+        [self evalMetaQuestion];
+    }
+    if(metaQuestionForThisProblem)
+    {
+        for(int i=0; i<metaQuestionAnswerCount; i++)
+        {
+            CCSprite *answerBtn=[metaQuestionAnswerButtons objectAtIndex:i];
+            
+            float aLabelPosXLeft = answerBtn.position.x-((answerBtn.contentSize.width*answerBtn.scale)/2);
+            float aLabelPosYleft = answerBtn.position.y-((answerBtn.contentSize.height*answerBtn.scale)/2);
+            
+            CGRect hitBox = CGRectMake(aLabelPosXLeft, aLabelPosYleft, (answerBtn.contentSize.width*answerBtn.scale), (answerBtn.contentSize.height*answerBtn.scale));
+            // create a dynamic hitbox
+            if(CGRectContainsPoint(hitBox, location))
+            {
+                // and check its current selected value
+                BOOL isSelected=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_SELECTED] boolValue];
+                
+                // then if it's an answer and isn't currently selected
+                if(!isSelected)
+                {
+                    // the user has changed their answer (even if they didn't have one before)
+                    [loggingService logEvent:BL_PA_MQ_CHANGE_ANSWER
+                          withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:i] forKey:@"selection"]];
+                    // check what answer mode we have
+                    // if single, we should only only be able to select one so we need to deselect the others and change the selected value
+                    if(mqAnswerMode==kMetaQuestionAnswerSingle)
+                    {
+                        [self deselectAnswersExcept:i];
+                        
+                        // if this is an auto eval, run the eval now
+                        if(mqEvalMode==kMetaQuestionEvalAuto)
+                        {
+                            [self evalMetaQuestion];
+                        }
+                    }
+                    
+                    // otherwise we can select multiple
+                    else if(mqAnswerMode==kMetaQuestionAnswerMulti)
+                    {
+                        [answerBtn setColor:kMetaQuestionButtonSelected];
+                        [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
+                    }
+                }
+                else
+                {
+                    // return to full button colour and set the dictionary selected value to no
+                    [answerBtn setColor:kMetaQuestionButtonDeselected];
+                    [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
+                }
+            }
+            
+        }
+    }
+    
+    return;
+    
+}
+-(void)evalMetaQuestion
+{
+    if(metaQuestionForThisProblem)
+    {
+        
+        
+        int countRequired=0;
+        int countFound=0;
+        int countSelected=0;
+        
+        for(int i=0; i<metaQuestionAnswerCount; i++)
+        {
+            // check whether the hit answer is an answer
+            BOOL isAnswer=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_VALUE] boolValue];
+            
+            // and check its current selected value
+            BOOL isSelected=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_SELECTED] boolValue];
+            
+            // check current iteration is an answer and is selected
+            if(isAnswer)
+            {
+                countRequired++;
+            }
+            if(isSelected)
+            {
+                countSelected++;
+            }
+            // if it's an answer and selected then it's been found by the user
+            if(isAnswer && isSelected)
+            {
+                countFound++;
+            }
+        }
+        
+        
+        
+        if(countRequired==countFound && countFound==countSelected)
+        {
+            [self doWinning];
+        }
+        else
+        {
+            [self doIncomplete];
+        }
+        
+    }
+}
+-(void)deselectAnswersExcept:(int)answerNumber
+{
+    for(int i=0; i<metaQuestionAnswerCount; i++)
+    {
+        CCSprite *answerBtn=[metaQuestionAnswerButtons objectAtIndex:i];
+        if(i == answerNumber)
+        {
+            [answerBtn setColor:kMetaQuestionButtonSelected];
+            [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
+        }
+        else 
+        {
+            [answerBtn setColor:kMetaQuestionButtonDeselected];
+            [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
+        }
+    }
+}
+-(void)doWinning
+{
+    [loggingService logEvent:BL_PA_SUCCESS withAdditionalData:nil];
+    [self removeMetaQuestionButtons];
+    [self showProblemCompleteMessage];
+    currentTool.ProblemComplete=YES;
+    metaQuestionForceComplete=YES;
+}
+-(void)doIncomplete
+{   
+    [loggingService logEvent:BL_PA_FAIL withAdditionalData:nil];
+    [self showProblemIncompleteMessage];
+    //[self deselectAnswersExcept:-1];
+}
+-(void)removeMetaQuestionButtons
+{
+    for(int i=0;i<metaQuestionAnswerLabels.count;i++)
+    {
+        [metaQuestionLayer removeChild:[metaQuestionAnswerLabels objectAtIndex:i] cleanup:YES];
+    } 
+    for(int i=0;i<metaQuestionAnswerButtons.count;i++)
+    {
+        [metaQuestionLayer removeChild:[metaQuestionAnswerButtons objectAtIndex:i] cleanup:YES];
+    } 
+    
+}
+
+#pragma mark - number picker
 
 -(void)setupNumberPicker:(NSDictionary *)pdefNP
 {
@@ -1069,246 +1328,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     numberPickerLayer=nil;
 }
 
--(void)tearDownMetaQuestion
-{
-    [metaQuestionLayer removeAllChildrenWithCleanup:YES];
-    
-    metaQuestionForThisProblem=NO;
-    metaQuestionForceComplete=NO;
-}
 
--(void)tearDownProblemDef
-{
-    [problemDefLayer removeAllChildrenWithCleanup:YES];
-}
-
--(void)readToolOptions:(NSString *)currentToolKey
-{
-    if(currentToolKey)
-    {
-        NSDictionary *toolDef=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/tooldef.plist")];
-        
-        NSDictionary *toolOpt=[toolDef objectForKey:currentToolKey];
-
-        if([toolOpt objectForKey:SCALE_MAX])
-            currentTool.ScaleMax=[[toolOpt objectForKey:SCALE_MAX] floatValue];
-        else
-            currentTool.ScaleMax=1.0f;
-        
-        if([toolOpt objectForKey:SCALE_MIN])
-            currentTool.ScaleMin=[[toolOpt objectForKey:SCALE_MIN] floatValue];
-        else
-            currentTool.ScaleMin=1.0f;
-        
-        if([toolOpt objectForKey:SCALING_PASS_THRU])
-            currentTool.PassThruScaling=[[toolOpt objectForKey:SCALING_PASS_THRU] boolValue];
-        else 
-            currentTool.PassThruScaling=NO;
-        
-     
-        //get tool depth
-        if([toolOpt objectForKey:@"TOOL_DEPTH"])
-        {
-            currentToolDepth=[(NSNumber *)[toolOpt objectForKey:@"TOOL_DEPTH"] intValue];
-        }
-        else {
-            currentToolDepth=2; // put tool default in middle
-        }
-            
-    }
-    else {
-        currentToolDepth=2;
-    }
-}
-
--(void)stageIntroActions
-{
-    //TODO tags are currently fixed to 2 phases -- either parse tool tree or pre-populate with design-fixed max
-    for (int i=1; i<=3; i++) {
-        
-        int time=i;
-        if(skipNextStagedIntroAnim) time=0;
-        
-        [self recurseSetIntroFor:toolBackLayer withTime:time forTag:i];
-        [self recurseSetIntroFor:toolForeLayer withTime:time forTag:i];
-        [self recurseSetIntroFor:toolNoScaleLayer withTime:time forTag:i];
-        [self recurseSetIntroFor:metaQuestionLayer withTime:time forTag:i];
-        [self recurseSetIntroFor:problemDefLayer withTime:time forTag:i];
-        [self recurseSetIntroFor:numberPickerLayer withTime:time forTag:i];
-    }
-    
-    skipNextStagedIntroAnim=NO;
-}
-
--(void)recurseSetIntroFor:(CCNode*)node withTime:(float)time forTag:(int)tag
-{
-    for (CCNode *cn in [node children]) {
-        if([cn tag]==tag)
-        {
-            CCDelayTime *d=[CCDelayTime actionWithDuration:time];
-            CCFadeIn *f=[CCFadeIn actionWithDuration:0.1f];
-            CCSequence *s=[CCSequence actions:d, f, nil];
-            [cn runAction:s];
-        }
-        [self recurseSetIntroFor:cn withTime:time forTag:tag];
-    }
-}
-
--(void)checkMetaQuestionTouches:(CGPoint)location
-{
-    if (CGRectContainsPoint(kRectButtonCommit, location) && mqEvalMode==kMetaQuestionEvalOnCommit)
-    {
-        //effective user commit
-        [loggingService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
-        
-        [self evalMetaQuestion];
-    }
-    if(metaQuestionForThisProblem)
-    {
-        for(int i=0; i<metaQuestionAnswerCount; i++)
-        {
-            CCSprite *answerBtn=[metaQuestionAnswerButtons objectAtIndex:i];
-            
-            float aLabelPosXLeft = answerBtn.position.x-((answerBtn.contentSize.width*answerBtn.scale)/2);
-            float aLabelPosYleft = answerBtn.position.y-((answerBtn.contentSize.height*answerBtn.scale)/2);
-            
-            CGRect hitBox = CGRectMake(aLabelPosXLeft, aLabelPosYleft, (answerBtn.contentSize.width*answerBtn.scale), (answerBtn.contentSize.height*answerBtn.scale));
-            // create a dynamic hitbox
-            if(CGRectContainsPoint(hitBox, location))
-            {
-                // and check its current selected value
-                BOOL isSelected=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_SELECTED] boolValue];
-                
-                // then if it's an answer and isn't currently selected
-                if(!isSelected)
-                {
-                    // the user has changed their answer (even if they didn't have one before)
-                    [loggingService logEvent:BL_PA_MQ_CHANGE_ANSWER
-                        withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:i] forKey:@"selection"]];
-                    // check what answer mode we have
-                    // if single, we should only only be able to select one so we need to deselect the others and change the selected value
-                    if(mqAnswerMode==kMetaQuestionAnswerSingle)
-                    {
-                        [self deselectAnswersExcept:i];
-                        
-                        // if this is an auto eval, run the eval now
-                        if(mqEvalMode==kMetaQuestionEvalAuto)
-                        {
-                            [self evalMetaQuestion];
-                        }
-                    }
-                    
-                    // otherwise we can select multiple
-                    else if(mqAnswerMode==kMetaQuestionAnswerMulti)
-                    {
-                        [answerBtn setColor:kMetaQuestionButtonSelected];
-                        [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
-                    }
-                }
-                else
-                {
-                    // return to full button colour and set the dictionary selected value to no
-                    [answerBtn setColor:kMetaQuestionButtonDeselected];
-                    [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
-                }
-            }
-            
-        }
-    }
-    
-    return;
-
-}
--(void)evalMetaQuestion
-{
-    if(metaQuestionForThisProblem)
-    {
-        
-    
-        int countRequired=0;
-        int countFound=0;
-        int countSelected=0;
-
-        for(int i=0; i<metaQuestionAnswerCount; i++)
-        {
-            // check whether the hit answer is an answer
-            BOOL isAnswer=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_VALUE] boolValue];
-            
-            // and check its current selected value
-            BOOL isSelected=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_SELECTED] boolValue];
-            
-            // check current iteration is an answer and is selected
-            if(isAnswer)
-            {
-                countRequired++;
-            }
-            if(isSelected)
-            {
-                countSelected++;
-            }
-            // if it's an answer and selected then it's been found by the user
-            if(isAnswer && isSelected)
-            {
-                countFound++;
-            }
-        }
-        
-        
-        
-        if(countRequired==countFound && countFound==countSelected)
-        {
-            [self doWinning];
-        }
-        else
-        {
-            [self doIncomplete];
-        }
-
-    }
-}
--(void)deselectAnswersExcept:(int)answerNumber
-{
-    for(int i=0; i<metaQuestionAnswerCount; i++)
-    {
-        CCSprite *answerBtn=[metaQuestionAnswerButtons objectAtIndex:i];
-        if(i == answerNumber)
-        {
-            [answerBtn setColor:kMetaQuestionButtonSelected];
-            [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
-        }
-        else 
-        {
-            [answerBtn setColor:kMetaQuestionButtonDeselected];
-            [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
-        }
-    }
-}
--(void)doWinning
-{
-    [loggingService logEvent:BL_PA_SUCCESS withAdditionalData:nil];
-    [self removeMetaQuestionButtons];
-    [self showProblemCompleteMessage];
-    currentTool.ProblemComplete=YES;
-    metaQuestionForceComplete=YES;
-}
--(void)doIncomplete
-{   
-    [loggingService logEvent:BL_PA_FAIL withAdditionalData:nil];
-    [self showProblemIncompleteMessage];
-    //[self deselectAnswersExcept:-1];
-}
--(void)removeMetaQuestionButtons
-{
-    for(int i=0;i<metaQuestionAnswerLabels.count;i++)
-    {
-        [metaQuestionLayer removeChild:[metaQuestionAnswerLabels objectAtIndex:i] cleanup:YES];
-    } 
-    for(int i=0;i<metaQuestionAnswerButtons.count;i++)
-    {
-        [metaQuestionLayer removeChild:[metaQuestionAnswerButtons objectAtIndex:i] cleanup:YES];
-    } 
-
-}
+#pragma mark - logging
 
 -(void)setupTouchLogging
 {
@@ -1345,6 +1366,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [myHandle writeData:[item dataUsingEncoding:NSUTF8StringEncoding]];
     [myHandle closeFile];
 }
+
+#pragma mark - touch handing
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -1586,6 +1609,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(npMove)npMove=nil;
     [currentTool ccTouchCancelled:touch withEvent:event];
 }
+
+#pragma mark - tear down
 
 -(void) dealloc
 {

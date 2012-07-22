@@ -75,6 +75,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         cx=lx / 2.0f;
         cy=ly / 2.0f;
         
+        multiplierStage=1;
+        scoreMultiplier=1;
+        
         //setup layer sequence
         backgroundLayer=[[CCLayer alloc] init];
         [self addChild:backgroundLayer z:-2];
@@ -290,8 +293,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     //don't eval if we're in an auto move to next problem
     if((currentTool.ProblemComplete || metaQuestionForceComplete) && !autoMoveToNextProblem)
     {   
-        [Zubi createXPshards:100 fromLocation:ccp(cx, cy)];
-
+        [self incrementScoreAndMultiplier];
+        
         moveToNextProblemTime=kMoveToNextProblemTime;
         autoMoveToNextProblem=YES;
     }
@@ -343,6 +346,17 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 {
     Zubi=[[Daemon alloc] initWithLayer:perstLayer andRestingPostion:ccp(50,50) andLy:ly];
     [Zubi hideZubi];
+    
+    //score labels
+    multiplierLabel=[CCLabelTTF labelWithString:@"(1x)" dimensions:CGSizeMake(100, 50) alignment:UITextAlignmentLeft fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    [multiplierLabel setOpacity:75];
+    [multiplierLabel setPosition:ccp(300, 20)];
+    [perstLayer addChild:multiplierLabel];
+    
+    scoreLabel=[CCLabelTTF labelWithString:@"score: 0" dimensions:CGSizeMake(300, 50) alignment:UITextAlignmentLeft fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    [scoreLabel setOpacity:150];
+    [scoreLabel setPosition:ccp(160, 20)];
+    [perstLayer addChild:scoreLabel];
 }
 
 #pragma mark - scoring
@@ -363,9 +377,13 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     else if (multiplierStage<SCORE_STAGE_CAP && !hasResetMultiplier)
     {
         scoreMultiplier*=SCORE_STAGE_MULTIPLIER;
+        
+        [multiplierLabel runAction:[InteractionFeedback highlightIncreaseAction]];
     }
 
     multiplierStage++;
+    
+    [self updateScoreLabels];
 }
 
 -(void)resetScoreMultiplier
@@ -373,12 +391,43 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     scoreMultiplier=1;
     multiplierStage=1;
     hasResetMultiplier=YES;
+    
+    [self scheduleOnce:@selector(updateScoreLabels) delay:0.5f];
+    
+    [multiplierLabel runAction:[InteractionFeedback fadeOutInTo:75]];
+    [multiplierLabel runAction:[InteractionFeedback scaleOutReturn]];
 }
 
 -(void)scoreProblemSuccess
 {
-    pipelineScore+=scoreMultiplier * SCORE_BASE_AWARD;
+    int newScore=scoreMultiplier * SCORE_BASE_AWARD;
+    pipelineScore+=newScore;
+
+    int shards=(int)((float)newScore*SCORE_SHARDS_PER_SCORE);
+    displayPerShard=(int)((float)newScore / (float)shards);
+    int rem=newScore - displayPerShard*shards;
+    
+    //get the remainder on the display score right away
+    displayScore+=rem;
+    
+    [Zubi createXPshards:shards fromLocation:ccp(cx, cy) withCallback:@selector(incrementDisplayScore:) fromCaller:(NSObject*)self];
 }
+
+
+-(void)updateScoreLabels
+{
+    [multiplierLabel setString:[NSString stringWithFormat:@"(%dx)", (int)scoreMultiplier]];
+    
+    //this isn't going to do this ultiamtely -- it'll be based on shards
+    [scoreLabel setString:[NSString stringWithFormat:@"score: %d", displayScore]];
+}
+
+-(void)incrementDisplayScore: (id)sender
+{
+    displayScore+=displayPerShard;
+    [self updateScoreLabels];
+}
+
 
 #pragma mark - tool and problem load
 
@@ -402,7 +451,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     self.PpExpr = nil;
     
     //score and increment multiplier if appropriate
-    [self incrementScoreAndMultiplier];
+    //[self incrementScoreAndMultiplier];
     
     //this problem will award multiplier if not subsequently reset
     hasResetMultiplier=NO;

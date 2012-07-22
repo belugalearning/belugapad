@@ -26,6 +26,7 @@
 
 -(id)initWithProblemPipeline:(NSString*)source;
 -(void)setPipelineNodeComplete;
+-(void)setPipelineScore:(int)score;
 -(BOOL)isUsingTestPipeline;
 
 -(BOOL) createAndStartFunnelForNode:(NSString*)nodeId;

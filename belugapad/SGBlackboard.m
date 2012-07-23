@@ -31,6 +31,13 @@
 
 }
 
+-(void)dealloc
+{
+    if(RenderLayer)[RenderLayer release];
+    
+    [super dealloc];
+}
+
 
 
 @end

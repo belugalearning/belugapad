@@ -2,13 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>PROBLEM_PIPELINE-tools</key>
+	<key>PROBLEM_PIPELINE-toolsdemo</key>
 	<string>/Problems/dotgrid-demo</string>
-	<key>PROBLEM_PIPELINE-aa</key>
-	<string>DATABASE</string>
+	<key>PROBLEM_PIPELINE-tools-dev</key>
+	<string>/Problems/tools-dev</string>
+	<key>PROBLEM_PIPELINE-dvars</key>
+	<string>/Problems/tools-dev/dvars/</string>
 	<key>PROBLEM_PIPELINE</key>
+	<string>DATABASE</string>
+	<key>PROBLEM_PIPELINE-da</key>
 	<string>/pipeline-testing/da-pipeline-test.plist</string>
-	<key>PROBLEM_PIPELINE-g</key>
+	<key>PROBLEM_PIPELINE-gj</key>
 	<string>/pipeline-testing/gj-pipeline-test.plist</string>
 	<key>RELEASE_MODE</key>
 	<true/>

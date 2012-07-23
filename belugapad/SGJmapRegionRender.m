@@ -58,7 +58,7 @@
 
 -(void)readyRender
 {
-    NSLog(@"ready to render region with %d mastery children", ParentGO.MasteryNodes.count);
+    //NSLog(@"ready to render region with %d mastery children", ParentGO.MasteryNodes.count);
     
     //===== get my position =============================================================
     float cumx=0.0f, cumy=0.0f;
@@ -81,7 +81,8 @@
     
     //====== region label ===============================================================
     
-    rlabel=[CCLabelTTF labelWithString:ParentGO.Name fontName:@"Helvetica" fontSize:150];
+    rlabel=[CCLabelTTF labelWithString:ParentGO.Name fontName:@"Helvetica" fontSize:22.5f];
+    [rlabel setScale:1 / REGION_ZOOM_LEVEL];
     [rlabel setPosition:ParentGO.Position];
     [rlabel setColor:ccc3(255, 255, 255)];
     [rlabel setVisible:NO];
@@ -211,6 +212,8 @@
     }
 
     [self setPointScalesAt:1.0f];
+    
+    [verts release];
 }
 
 -(void)draw:(int)z

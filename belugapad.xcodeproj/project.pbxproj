@@ -100,6 +100,9 @@
 		55F05632159A0E0400ACA07C /* BPlaceValuePickupTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F05623159A0E0400ACA07C /* BPlaceValuePickupTarget.m */; };
 		55F05633159A0E0400ACA07C /* BPlaceValuePickupTargetNet.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F05625159A0E0400ACA07C /* BPlaceValuePickupTargetNet.m */; };
 		55F05634159A0E0400ACA07C /* BPlaceValueSelectionMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F05627159A0E0400ACA07C /* BPlaceValueSelectionMgr.m */; };
+		55FBB2F815BD6E4A0034B081 /* FractionBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FBB2F715BD6E4A0034B081 /* FractionBuilder.m */; };
+		55FBB2FE15BD76AE0034B081 /* SGFractionBuilderRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FBB2FD15BD76AE0034B081 /* SGFractionBuilderRender.m */; };
+		55FBB30115BD78EF0034B081 /* SGFractionObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FBB30015BD78EF0034B081 /* SGFractionObject.m */; };
 		55FDAEDF157F7CBB00943176 /* ToolTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FDAEDE157F7CBB00943176 /* ToolTemplate.m */; };
 		55FDAEE3157F802900943176 /* PieSplitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FDAEE2157F802900943176 /* PieSplitter.m */; };
 		7F0AE04D158782D100194644 /* InteractionFeedback.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0AE04C158782D100194644 /* InteractionFeedback.m */; };
@@ -460,30 +463,30 @@
 		5508FEB815A3068D003720AF /* SGDtoolBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGDtoolBlock.m; sourceTree = "<group>"; };
 		5508FEBB15A309DE003720AF /* SGDtoolBlockRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGDtoolBlockRender.h; sourceTree = "<group>"; };
 		5508FEBC15A309DE003720AF /* SGDtoolBlockRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGDtoolBlockRender.m; sourceTree = "<group>"; };
-		551815611525EA920097E259 /* NumberBonds.h */ = {isa = PBXFileReference; fileEncoding = 4; path = NumberBonds.h; sourceTree = "<group>"; };
+		551815611525EA920097E259 /* NumberBonds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberBonds.h; sourceTree = "<group>"; };
 		551815621525EA920097E259 /* NumberBonds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberBonds.m; sourceTree = "<group>"; };
-		551815661525F7500097E259 /* BNBondRowDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BNBondRowDropTarget.h; sourceTree = "<group>"; };
+		551815661525F7500097E259 /* BNBondRowDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondRowDropTarget.h; sourceTree = "<group>"; };
 		551815671525F7500097E259 /* BNBondRowDropTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondRowDropTarget.m; sourceTree = "<group>"; };
-		551815681525F7500097E259 /* BNBondObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BNBondObjectRender.h; sourceTree = "<group>"; };
+		551815681525F7500097E259 /* BNBondObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondObjectRender.h; sourceTree = "<group>"; };
 		551815691525F7500097E259 /* BNBondObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondObjectRender.m; sourceTree = "<group>"; };
-		5518156A1525F7500097E259 /* BNBondPickupTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BNBondPickupTarget.h; sourceTree = "<group>"; };
+		5518156A1525F7500097E259 /* BNBondPickupTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondPickupTarget.h; sourceTree = "<group>"; };
 		5518156B1525F7500097E259 /* BNBondPickupTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondPickupTarget.m; sourceTree = "<group>"; };
-		551815701525F9880097E259 /* DWNBondObjectGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; path = DWNBondObjectGameObject.h; sourceTree = "<group>"; };
+		551815701525F9880097E259 /* DWNBondObjectGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWNBondObjectGameObject.h; sourceTree = "<group>"; };
 		551815711525F9880097E259 /* DWNBondObjectGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWNBondObjectGameObject.m; sourceTree = "<group>"; };
-		551815731525FD3C0097E259 /* DWNBondStoreGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; path = DWNBondStoreGameObject.h; sourceTree = "<group>"; };
+		551815731525FD3C0097E259 /* DWNBondStoreGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWNBondStoreGameObject.h; sourceTree = "<group>"; };
 		551815741525FD3C0097E259 /* DWNBondStoreGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWNBondStoreGameObject.m; sourceTree = "<group>"; };
-		551815761525FDDF0097E259 /* DWNBondRowGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; path = DWNBondRowGameObject.h; sourceTree = "<group>"; };
+		551815761525FDDF0097E259 /* DWNBondRowGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWNBondRowGameObject.h; sourceTree = "<group>"; };
 		551815771525FDDF0097E259 /* DWNBondRowGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWNBondRowGameObject.m; sourceTree = "<group>"; };
-		5518157D1526210C0097E259 /* BNBondRowRender.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BNBondRowRender.h; sourceTree = "<group>"; };
+		5518157D1526210C0097E259 /* BNBondRowRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondRowRender.h; sourceTree = "<group>"; };
 		5518157E1526210C0097E259 /* BNBondRowRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondRowRender.m; sourceTree = "<group>"; };
-		5518157F1526210C0097E259 /* BNBondStoreRender.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BNBondStoreRender.h; sourceTree = "<group>"; };
+		5518157F1526210C0097E259 /* BNBondStoreRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondStoreRender.h; sourceTree = "<group>"; };
 		551815801526210C0097E259 /* BNBondStoreRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondStoreRender.m; sourceTree = "<group>"; };
 		552478651536BF5C00BA5C4E /* tooldef.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tooldef.plist; sourceTree = "<group>"; };
-		5529F4CF1529EA940085492E /* BNBondStoreDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BNBondStoreDropTarget.h; sourceTree = "<group>"; };
+		5529F4CF1529EA940085492E /* BNBondStoreDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondStoreDropTarget.h; sourceTree = "<group>"; };
 		5529F4D01529EA940085492E /* BNBondStoreDropTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondStoreDropTarget.m; sourceTree = "<group>"; };
-		5529F4D2152A04310085492E /* BNBondMount.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BNBondMount.h; sourceTree = "<group>"; };
+		5529F4D2152A04310085492E /* BNBondMount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondMount.h; sourceTree = "<group>"; };
 		5529F4D3152A04310085492E /* BNBondMount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondMount.m; sourceTree = "<group>"; };
-		5529F4D5152A05EB0085492E /* BNBondMountable.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BNBondMountable.h; sourceTree = "<group>"; };
+		5529F4D5152A05EB0085492E /* BNBondMountable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondMountable.h; sourceTree = "<group>"; };
 		5529F4D6152A05EB0085492E /* BNBondMountable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondMountable.m; sourceTree = "<group>"; };
 		5536B2A514E43E1400D30BC0 /* PlaceValueConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceValueConsts.h; sourceTree = "<group>"; };
 		5536B2A614E43E1400D30BC0 /* PlaceValueConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceValueConsts.m; sourceTree = "<group>"; };
@@ -579,6 +582,13 @@
 		55F05625159A0E0400ACA07C /* BPlaceValuePickupTargetNet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValuePickupTargetNet.m; sourceTree = "<group>"; };
 		55F05626159A0E0400ACA07C /* BPlaceValueSelectionMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueSelectionMgr.h; sourceTree = "<group>"; };
 		55F05627159A0E0400ACA07C /* BPlaceValueSelectionMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueSelectionMgr.m; sourceTree = "<group>"; };
+		55FBB2F615BD6E4A0034B081 /* FractionBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FractionBuilder.h; sourceTree = "<group>"; };
+		55FBB2F715BD6E4A0034B081 /* FractionBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FractionBuilder.m; sourceTree = "<group>"; };
+		55FBB2FB15BD75610034B081 /* SGFractionObjectProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SGFractionObjectProtocols.h; sourceTree = "<group>"; };
+		55FBB2FC15BD76AE0034B081 /* SGFractionBuilderRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionBuilderRender.h; sourceTree = "<group>"; };
+		55FBB2FD15BD76AE0034B081 /* SGFractionBuilderRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionBuilderRender.m; sourceTree = "<group>"; };
+		55FBB2FF15BD78EF0034B081 /* SGFractionObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionObject.h; sourceTree = "<group>"; };
+		55FBB30015BD78EF0034B081 /* SGFractionObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionObject.m; sourceTree = "<group>"; };
 		55FDAEDD157F7CBB00943176 /* ToolTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolTemplate.h; sourceTree = "<group>"; };
 		55FDAEDE157F7CBB00943176 /* ToolTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolTemplate.m; sourceTree = "<group>"; };
 		55FDAEE1157F802900943176 /* PieSplitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieSplitter.h; sourceTree = "<group>"; };
@@ -1432,6 +1442,24 @@
 			name = PieSplitter;
 			sourceTree = "<group>";
 		};
+		55FBB2F915BD6FAA0034B081 /* Fractions */ = {
+			isa = PBXGroup;
+			children = (
+				55FBB2FC15BD76AE0034B081 /* SGFractionBuilderRender.h */,
+				55FBB2FD15BD76AE0034B081 /* SGFractionBuilderRender.m */,
+			);
+			name = Fractions;
+			sourceTree = "<group>";
+		};
+		55FBB2FA15BD700B0034B081 /* Fraction */ = {
+			isa = PBXGroup;
+			children = (
+				55FBB2FF15BD78EF0034B081 /* SGFractionObject.h */,
+				55FBB30015BD78EF0034B081 /* SGFractionObject.m */,
+			);
+			name = Fraction;
+			sourceTree = "<group>";
+		};
 		7F2317C1156FA0FB00E2C941 /* Animators */ = {
 			isa = PBXGroup;
 			children = (
@@ -1457,18 +1485,13 @@
 		7F2317CB1572B23300E2C941 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				7FED41F615BD869400A70EC3 /* unsupported */,
 				55FDAEDD157F7CBB00943176 /* ToolTemplate.h */,
 				55FDAEDE157F7CBB00943176 /* ToolTemplate.m */,
 				5508FEAE15A2F2B7003720AF /* ToolTemplateSG.h */,
 				5508FEAF15A2F2B7003720AF /* ToolTemplateSG.m */,
 				55AFD6A3156517FC00FF1886 /* TimesTables.h */,
 				55AFD6A4156517FC00FF1886 /* TimesTables.m */,
-				550708741517623E00111BBB /* ColumnAddition.h */,
-				550708751517623E00111BBB /* ColumnAddition.m */,
-				7F5115A814A9EF9E001AF372 /* BlockFloating.h */,
-				7F5115A914A9EF9E001AF372 /* BlockFloating.m */,
-				7F813D5314CCBA4300C1E997 /* IceDiv.h */,
-				7F813D5414CCBA4300C1E997 /* IceDiv.m */,
 				551815611525EA920097E259 /* NumberBonds.h */,
 				551815621525EA920097E259 /* NumberBonds.m */,
 				5571BADB14E406220053A62B /* PlaceValue.h */,
@@ -1483,6 +1506,8 @@
 				55FDAEE2157F802900943176 /* PieSplitter.m */,
 				5508FEB215A2FE8E003720AF /* DistributionTool.h */,
 				5508FEB315A2FE8E003720AF /* DistributionTool.m */,
+				55FBB2F615BD6E4A0034B081 /* FractionBuilder.h */,
+				55FBB2F715BD6E4A0034B081 /* FractionBuilder.m */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -2240,6 +2265,7 @@
 		7F7336A9158B353B00A37FC4 /* SGGameObjects */ = {
 			isa = PBXGroup;
 			children = (
+				55FBB2FA15BD700B0034B081 /* Fraction */,
 				5508FEB615A30669003720AF /* Dtool */,
 				7F7336AF158B374800A37FC4 /* Jmap */,
 			);
@@ -2251,6 +2277,7 @@
 			children = (
 				7F7336AB158B362500A37FC4 /* SGJmapObjectProtocols.h */,
 				5508FEB515A30623003720AF /* SGDtoolObjectProtocols.h */,
+				55FBB2FB15BD75610034B081 /* SGFractionObjectProtocols.h */,
 			);
 			name = SGProtocols;
 			sourceTree = "<group>";
@@ -2258,6 +2285,7 @@
 		7F7336AE158B36EE00A37FC4 /* SGComponents */ = {
 			isa = PBXGroup;
 			children = (
+				55FBB2F915BD6FAA0034B081 /* Fractions */,
 				5508FEBA15A30901003720AF /* Dtool */,
 				7F7336B0158B374F00A37FC4 /* Jmap */,
 			);
@@ -2528,6 +2556,19 @@
 				7FDBA52B14EBD560004D1CC9 /* CTidy.m */,
 			);
 			path = Tidy;
+			sourceTree = "<group>";
+		};
+		7FED41F615BD869400A70EC3 /* unsupported */ = {
+			isa = PBXGroup;
+			children = (
+				550708741517623E00111BBB /* ColumnAddition.h */,
+				550708751517623E00111BBB /* ColumnAddition.m */,
+				7F5115A814A9EF9E001AF372 /* BlockFloating.h */,
+				7F5115A914A9EF9E001AF372 /* BlockFloating.m */,
+				7F813D5314CCBA4300C1E997 /* IceDiv.h */,
+				7F813D5414CCBA4300C1E997 /* IceDiv.m */,
+			);
+			name = unsupported;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3017,6 +3058,9 @@
 				5508FEB915A3068D003720AF /* SGDtoolBlock.m in Sources */,
 				5508FEBD15A309DE003720AF /* SGDtoolBlockRender.m in Sources */,
 				556A2D6015A7064500F4B825 /* SGDtoolBlockPairing.m in Sources */,
+				55FBB2F815BD6E4A0034B081 /* FractionBuilder.m in Sources */,
+				55FBB2FE15BD76AE0034B081 /* SGFractionBuilderRender.m in Sources */,
+				55FBB30115BD78EF0034B081 /* SGFractionObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -16,5 +16,12 @@
 @synthesize Label;
 @synthesize Length;
 
+-(void)dealloc
+{
+    if(MountedObjects)[MountedObjects release];
+    if(Label)[Label release];
+    
+    [super dealloc];
+}
 
 @end

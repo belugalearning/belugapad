@@ -82,17 +82,19 @@
 
 -(BOOL)amIProximateTo:(CGPoint)location
 {
+    ParentGO.SeekingPair=YES;
     if([BLMath DistanceBetween:ParentGO.Position and:location]<100.0f)
     {
         [ParentGO.mySprite setColor:ccc3(0,255,0)];
-        [self drawProximateLines:location];
+        //[self drawProximateLines:location];
         return YES;
     }
     else {
         [ParentGO.mySprite setColor:ccc3(255,255,255)];
-        [self drawNotProximateLines:location];
+        //[self drawNotProximateLines:location];
         return NO;
     }
+    ParentGO.SeekingPair=NO;
 }
 
 -(void)resetTint

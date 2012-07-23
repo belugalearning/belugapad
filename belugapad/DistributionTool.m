@@ -25,6 +25,7 @@
 
 #define DRAW_DEPTH 1
 static float kTimeSinceAction=7.0f;
+static float kDistanceBetweenBlocks=70.0f;
 
 @interface DistributionTool()
 {
@@ -188,7 +189,7 @@ static float kTimeSinceAction=7.0f;
     for(int i=0;i<blocks;i++)
     {
         id<Configurable, Selectable,Pairable> newblock;
-        newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(posX+(70*i),posY)] autorelease];
+        newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(posX+(kDistanceBetweenBlocks*i),posY)] autorelease];
         
         [newblock setup];
         if(lastObj)[newblock pairMeWith:lastObj];
@@ -241,31 +242,51 @@ static float kTimeSinceAction=7.0f;
 -(CGPoint)findMountPositionForThisShape:(id<Pairable>)pickupObject toThisShape:(id<Pairable>)mountedShape
 {
     CGPoint mountedShapePos=mountedShape.Position;
-    CGPoint pickupShapePos=pickupObject.Position;
     CGPoint retval=CGPointZero;
-    float distBetweenX=[BLMath DistanceBetween:ccp(mountedShape.Position.x,0) and:ccp(pickupObject.Position.x,0)];
-    float distBetweenY=[BLMath DistanceBetween:ccp(0,mountedShape.Position.x) and:ccp(0,mountedShape.Position.x)];
 
-    BOOL reqXPos;
+    BOOL freeSpaceNegX=YES;
+    BOOL freeSpaceNegY=YES;
+    BOOL freeSpacePosX=YES;
+    BOOL freeSpacePosY=YES;
     
-    if(distBetweenX<distBetweenY)reqXPos=YES;
+
     
-    if(reqXPos)
+    for(id<Moveable,Pairable> go in mountedShape.PairedObjects)
     {
-        if(pickupShapePos.x>mountedShapePos.x)
-           retval=ccp(mountedShapePos.x+75, mountedShapePos.y);
-        else
-           retval=ccp(mountedShapePos.x-75, mountedShapePos.y);           
-       
+        NSLog(@"go Position %@, current retVal %@", NSStringFromCGPoint(go.Position), NSStringFromCGPoint(mountedShapePos));
+        if(go==pickupObject)continue;
+        
+        if(mountedShapePos.x-kDistanceBetweenBlocks==go.Position.x && freeSpaceNegX)
+            freeSpaceNegX=NO;
+        else if(mountedShapePos.x+kDistanceBetweenBlocks==go.Position.x && freeSpacePosX)
+            freeSpacePosX=NO;
+        else if(mountedShapePos.y-kDistanceBetweenBlocks==go.Position.y && freeSpaceNegY)
+            freeSpaceNegY=NO;
+        else if(mountedShapePos.y+kDistanceBetweenBlocks==go.Position.y && freeSpacePosY)
+            freeSpacePosY=NO;
+           
+           //NSLog(@"go Position %@, final retVal %@, found other shape? %@", NSStringFromCGPoint(go.Position), NSStringFromCGPoint(retval), foundAnotherShape? @"YES":@"NO");
     }
-    else 
-    {
-        if(pickupShapePos.y>mountedShapePos.y)
-            retval=ccp(mountedShapePos.x, mountedShapePos.y+75);
-        else
-            retval=ccp(mountedShapePos.x, mountedShapePos.y-75);           
+           
+    NSLog(@"-x %@, +x %@, -y %@, +y %@", freeSpaceNegX? @"YES":@"NO", freeSpacePosX? @"YES":@"NO", freeSpaceNegY? @"YES":@"NO", freeSpacePosY? @"YES":@"NO");
+    
+
+        if(freeSpacePosX)
+        
+            retval=ccp(mountedShapePos.x+kDistanceBetweenBlocks, mountedShapePos.y);
+        
+        else if(freeSpaceNegX)
+        
+            retval=ccp(mountedShapePos.x-kDistanceBetweenBlocks, mountedShapePos.y);   
+        
+        else if(freeSpacePosY)
+            retval=ccp(mountedShapePos.x, mountedShapePos.y+kDistanceBetweenBlocks);
+
+        else if(freeSpaceNegY)
+            retval=ccp(mountedShapePos.x, mountedShapePos.y-kDistanceBetweenBlocks);    
+        
    
-    }
+
     
     return retval;
 }
@@ -367,6 +388,8 @@ static float kTimeSinceAction=7.0f;
                 else {
                     [go unpairMeFrom:currentPickupObject];
                 }
+                
+                //TODO: add bit in here to check existing links - ie, at the minute, if a block is dragged out of the middle of the row, it doesn't seem to update all of them
                 
                 [self evalUniqueShapes];
                 if(evalMode==kProblemEvalAuto)[self evalProblem];
@@ -472,10 +495,10 @@ static float kTimeSinceAction=7.0f;
     
     for(int i=0;i<[foundShapes count];i++)
     {
-        NSLog(@"recurse shape %d", i);
+        //NSLog(@"recurse shape %d", i);
         for(int fs=0; fs<[[foundShapes objectAtIndex:i] count];fs++)
         {
-            NSLog(@"object %d", fs);
+            //NSLog(@"object %d", fs);
         }
     }
     

@@ -98,7 +98,18 @@ static float kSubParticleOffset=10.0f;
 
 -(void)createXPshards:(int)numShards fromLocation:(CGPoint)baseLocation
 {
+    [self createXPshards:numShards fromLocation:baseLocation withCallback:nil fromCaller:nil];
+}
+
+-(void)createXPshards:(int)numShards fromLocation:(CGPoint)baseLocation withCallback:(SEL)callback fromCaller:(NSObject*)caller
+{
     if(shardsActive.count>30) return;
+    
+    if(callback)
+    {
+        shardCollectCallback=callback;
+        shardCollectCaller=caller;
+    }
     
     for (int i=0;i<numShards;i++)
     {
@@ -312,17 +323,26 @@ static float kSubParticleOffset=10.0f;
         if(diff<50 || (arc4random()%chanceDiff)==1)
         {
             //collect it
-            CGPoint diffPos=[BLMath SubtractVector:ccp(512, 384) from:shard.position];
-            CGPoint dest=[BLMath MultiplyVector:diffPos byScalar:5.0f];
             
+            //dispersing shards -- not used
+            //CGPoint diffPos=[BLMath SubtractVector:ccp(512, 384) from:shard.position];
+            //CGPoint dest=[BLMath MultiplyVector:diffPos byScalar:5.0f];
+            //CCMoveTo *mt=[CCMoveTo actionWithDuration:0.25f position:dest];
             
-            //CCMoveTo *mt=[CCMoveTo actionWithDuration:0.25f position:[primaryParticle position]];
-            CCMoveTo *mt=[CCMoveTo actionWithDuration:0.25f position:dest];
+            CCMoveTo *mt=[CCMoveTo actionWithDuration:0.25f position:[primaryParticle position]];
             CCEaseOut *eo=[CCEaseOut actionWithAction:mt rate:0.5f];
             CCFadeOut *fo=[CCFadeOut actionWithDuration:0.3f];
             [shard stopAllActions];
             [shard runAction:eo];
             [shard runAction:fo];
+            
+            //indicate to any interested caller that we collected this shard
+            if(shardCollectCallback)
+            {
+//                [shardCollectCaller performSelectorOnMainThread:shardCollectCallback withObject:self waitUntilDone:YES];
+                
+                [shardCollectCaller performSelector:shardCollectCallback withObject:self afterDelay:0.25f];
+            }
             
             //dispose of it in the future
             [shardsExpiring addObject:shard];
@@ -514,6 +534,16 @@ static float kSubParticleOffset=10.0f;
     }
     
     return returnPoints;
+}
+
+-(void)dealloc
+{
+    [shardsActive release];
+    [shardsExpiring release];
+    
+    
+    
+    [super dealloc];
 }
 
 @end

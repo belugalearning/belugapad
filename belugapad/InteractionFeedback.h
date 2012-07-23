@@ -17,5 +17,10 @@
 +(CCAction*)enlargeTo1xAction;
 +(CCAction*)reduceTo1xAction;
 +(CCAction*)reduceTo0xAndHide;
++(CCAction*)highlightIncreaseAction;
++(CCAction*)fallAndReturn;
++(CCAction*)fadeOutIn;
++(CCAction*)fadeOutInTo:(GLubyte)opacity;
++(CCAction*)scaleOutReturn;
 
 @end

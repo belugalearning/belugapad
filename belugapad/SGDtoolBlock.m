@@ -22,7 +22,7 @@
 @synthesize Selected, HitProximity;
 
 // Pairable protocol properties
-@synthesize PairedObjects;
+@synthesize PairedObjects, SeekingPair;
 
 -(SGDtoolBlock*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
 {   

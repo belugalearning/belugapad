@@ -33,4 +33,14 @@
 	return self;
 }
 
+-(void)dealloc
+{
+    [Label release];
+    
+    if(Mount)[Mount release];
+    if(BaseNode)[BaseNode release];
+    
+    [super dealloc];
+}
+
 @end

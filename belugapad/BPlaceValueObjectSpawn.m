@@ -49,6 +49,7 @@
     
     [block handleMessage:kDWsetupStuff];
 
+    [block release];
     
     //[block handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
 }

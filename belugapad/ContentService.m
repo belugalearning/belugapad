@@ -399,6 +399,13 @@
     [us addCompletedNodeId:self.currentNode._id];
 }
 
+-(void)setPipelineScore:(int)score
+{
+    //if this is greater than previous score for this pipeline, persist it as score for that pipeline / node
+    
+    
+}
+
 - (void)dealloc
 {
     if (contentDatabase)

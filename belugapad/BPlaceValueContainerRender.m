@@ -67,7 +67,6 @@
 
 -(void) dealloc
 {
-    [mySprite release];
     [super dealloc];
 }
 

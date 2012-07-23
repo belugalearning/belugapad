@@ -10,7 +10,7 @@
 	<string>/Problems/tools-dev/dvars/</string>
 	<key>PROBLEM_PIPELINE</key>
 	<string>DATABASE</string>
-	<key>PROBLEM_PIPELINE-da</key>
+	<key>PROBLEM_PIPELINE-bb</key>
 	<string>/pipeline-testing/da-pipeline-test.plist</string>
 	<key>PROBLEM_PIPELINE-gj</key>
 	<string>/pipeline-testing/gj-pipeline-test.plist</string>

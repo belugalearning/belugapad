@@ -31,6 +31,7 @@ typedef enum {
 
 -(NSArray*)deviceUsersByNickName;
 
+-(void)flagRemoveUserFromDevice:(NSString*)userId;
 -(void)syncDeviceUsers;
 
 -(void)downloadUserMatchingNickName:(NSString*)nickName

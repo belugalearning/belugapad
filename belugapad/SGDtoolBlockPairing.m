@@ -68,12 +68,13 @@
                     linesToDraw=2;
                 }
                 
-                if(dist<71 && ParentGO.SeekingPair)
+                if(dist<=70 && ParentGO.SeekingPair)
                     ccDrawColor4F(0, 255, 0, 255);
                 else if(dist>70 && ParentGO.SeekingPair)
                     ccDrawColor4F(255, 0, 0, 255);
                 else
-                    ccDrawColor4F(255, 255, 255, 255);                
+                    ccDrawColor4F(255, 255, 255, 255);    
+                
                 for(int i=0;i<linesToDraw/2;i++)
                 {
                         ccDrawLine(curObj.Position, ParentGO.Position);

@@ -36,7 +36,6 @@
 		0CDECB6715920C27004DE20D /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB5D15920C27004DE20D /* UIImageView+AFNetworking.m */; };
 		0CF9187C14F54C1D00FAC58D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF9187B14F54C1D00FAC58D /* images */; };
 		5507087B15176A0600111BBB /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708791517625300111BBB /* ColumnAdditionConsts.m */; };
-		5507087C15176A0600111BBB /* ColumnAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708751517623E00111BBB /* ColumnAddition.m */; };
 		5508FEB015A2F2B8003720AF /* ToolTemplateSG.m in Sources */ = {isa = PBXBuildFile; fileRef = 5508FEAF15A2F2B7003720AF /* ToolTemplateSG.m */; };
 		5508FEB415A2FE8E003720AF /* DistributionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 5508FEB315A2FE8E003720AF /* DistributionTool.m */; };
 		5508FEB915A3068D003720AF /* SGDtoolBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 5508FEB815A3068D003720AF /* SGDtoolBlock.m */; };
@@ -284,7 +283,6 @@
 		7F5115A514A9EF67001AF372 /* DWBlackboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51159E14A9EF67001AF372 /* DWBlackboard.m */; };
 		7F5115A614A9EF67001AF372 /* DWGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A014A9EF67001AF372 /* DWGameObject.m */; };
 		7F5115A714A9EF67001AF372 /* DWGameWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A214A9EF67001AF372 /* DWGameWorld.m */; };
-		7F5115AA14A9EF9E001AF372 /* BlockFloating.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A914A9EF9E001AF372 /* BlockFloating.m */; };
 		7F5BD842154AB6A70092740B /* JMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5BD841154AB6A70092740B /* JMap.m */; };
 		7F66C88D159DC78C004E84C8 /* SGJmapRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F66C88C159DC78C004E84C8 /* SGJmapRegion.m */; };
 		7F66C891159DC9E5004E84C8 /* SGJmapRegionRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F66C890159DC9E5004E84C8 /* SGJmapRegionRender.m */; };
@@ -301,7 +299,6 @@
 		7F7336B6158B383600A37FC4 /* SGJmapMasteryNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336B5158B383600A37FC4 /* SGJmapMasteryNode.m */; };
 		7F7336B9158B391400A37FC4 /* SGJmapNodeRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336B8158B391400A37FC4 /* SGJmapNodeRender.m */; };
 		7F7336BC158B3AF000A37FC4 /* SGJmapMasteryNodeRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7336BB158B3AF000A37FC4 /* SGJmapMasteryNodeRender.m */; };
-		7F813D5514CCBA4300C1E997 /* IceDiv.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F813D5414CCBA4300C1E997 /* IceDiv.m */; };
 		7F813D5814CCBDDD00C1E997 /* fire1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5714CCBDDD00C1E997 /* fire1.plist */; };
 		7F813D5C14CCC3A100C1E997 /* fire2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5B14CCC3A100C1E997 /* fire2.plist */; };
 		7F813D6B14CCD8CF00C1E997 /* fire3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D6A14CCD8CF00C1E997 /* fire3.plist */; };
@@ -319,13 +316,7 @@
 		7FABE68F14B33D5100ED2D0C /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */; };
 		7FABE69114B33D5600ED2D0C /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */; };
 		7FABE6A214B4BF0F00ED2D0C /* templatedefs-general.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE6A114B4BF0F00ED2D0C /* templatedefs-general.plist */; };
-		7FABE6A614B4C5F100ED2D0C /* BContainerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6A514B4C5F100ED2D0C /* BContainerRender.m */; };
-		7FABE6A914B4C60600ED2D0C /* BMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6A814B4C60600ED2D0C /* BMount.m */; };
-		7FABE6AC14B4C62300ED2D0C /* BDropTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6AB14B4C62300ED2D0C /* BDropTarget.m */; };
-		7FABE6B214B4C64E00ED2D0C /* BMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6B114B4C64D00ED2D0C /* BMountable.m */; };
 		7FABE6BF14B661B400ED2D0C /* BLMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6BE14B661B400ED2D0C /* BLMath.m */; };
-		7FABE6CA14B8F67200ED2D0C /* BFloatPickupTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6C914B8F67100ED2D0C /* BFloatPickupTarget.m */; };
-		7FABE6CD14B8F68100ED2D0C /* BFloatObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6CC14B8F68000ED2D0C /* BFloatObjectRender.m */; };
 		7FAEC26114BB5BA000E60983 /* visgrad1.fnt in Resources */ = {isa = PBXBuildFile; fileRef = 7FAEC25F14BB5BA000E60983 /* visgrad1.fnt */; };
 		7FAEC26214BB5BA000E60983 /* visgrad1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FAEC26014BB5BA000E60983 /* visgrad1.png */; };
 		7FB11DC31595277200095669 /* DWPlaceValueBlockGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB11DBE1595277200095669 /* DWPlaceValueBlockGameObject.m */; };
@@ -450,8 +441,6 @@
 		0CDECB5C15920C27004DE20D /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
 		0CDECB5D15920C27004DE20D /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		0CF9187B14F54C1D00FAC58D /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = SOURCE_ROOT; };
-		550708741517623E00111BBB /* ColumnAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAddition.h; sourceTree = "<group>"; };
-		550708751517623E00111BBB /* ColumnAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAddition.m; sourceTree = "<group>"; };
 		550708781517625300111BBB /* ColumnAdditionConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAdditionConsts.h; sourceTree = "<group>"; };
 		550708791517625300111BBB /* ColumnAdditionConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAdditionConsts.m; sourceTree = "<group>"; };
 		5508FEAE15A2F2B7003720AF /* ToolTemplateSG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolTemplateSG.h; sourceTree = "<group>"; };
@@ -964,8 +953,6 @@
 		7F5115A114A9EF67001AF372 /* DWGameWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWGameWorld.h; sourceTree = "<group>"; };
 		7F5115A214A9EF67001AF372 /* DWGameWorld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWGameWorld.m; sourceTree = "<group>"; };
 		7F5115A314A9EF67001AF372 /* DWModelConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWModelConstants.h; sourceTree = "<group>"; };
-		7F5115A814A9EF9E001AF372 /* BlockFloating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockFloating.h; sourceTree = "<group>"; };
-		7F5115A914A9EF9E001AF372 /* BlockFloating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BlockFloating.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7F5BD840154AB6A70092740B /* JMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMap.h; sourceTree = "<group>"; };
 		7F5BD841154AB6A70092740B /* JMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMap.m; sourceTree = "<group>"; };
 		7F66C88B159DC78C004E84C8 /* SGJmapRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapRegion.h; sourceTree = "<group>"; };
@@ -1000,8 +987,6 @@
 		7F7336B8158B391400A37FC4 /* SGJmapNodeRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapNodeRender.m; sourceTree = "<group>"; };
 		7F7336BA158B3AF000A37FC4 /* SGJmapMasteryNodeRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapMasteryNodeRender.h; sourceTree = "<group>"; };
 		7F7336BB158B3AF000A37FC4 /* SGJmapMasteryNodeRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapMasteryNodeRender.m; sourceTree = "<group>"; };
-		7F813D5314CCBA4300C1E997 /* IceDiv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IceDiv.h; sourceTree = "<group>"; };
-		7F813D5414CCBA4300C1E997 /* IceDiv.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = IceDiv.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7F813D5714CCBDDD00C1E997 /* fire1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = fire1.plist; sourceTree = "<group>"; };
 		7F813D5B14CCC3A100C1E997 /* fire2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = fire2.plist; sourceTree = "<group>"; };
 		7F813D6A14CCD8CF00C1E997 /* fire3.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = fire3.plist; sourceTree = "<group>"; };
@@ -1027,20 +1012,8 @@
 		7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		7FABE69214B33E5800ED2D0C /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = global.h; sourceTree = "<group>"; };
 		7FABE6A114B4BF0F00ED2D0C /* templatedefs-general.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "templatedefs-general.plist"; sourceTree = "<group>"; };
-		7FABE6A414B4C5F100ED2D0C /* BContainerRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BContainerRender.h; sourceTree = "<group>"; };
-		7FABE6A514B4C5F100ED2D0C /* BContainerRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BContainerRender.m; sourceTree = "<group>"; };
-		7FABE6A714B4C60500ED2D0C /* BMount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMount.h; sourceTree = "<group>"; };
-		7FABE6A814B4C60600ED2D0C /* BMount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BMount.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		7FABE6AA14B4C62300ED2D0C /* BDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDropTarget.h; sourceTree = "<group>"; };
-		7FABE6AB14B4C62300ED2D0C /* BDropTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDropTarget.m; sourceTree = "<group>"; };
-		7FABE6B014B4C64D00ED2D0C /* BMountable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMountable.h; sourceTree = "<group>"; };
-		7FABE6B114B4C64D00ED2D0C /* BMountable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMountable.m; sourceTree = "<group>"; };
 		7FABE6BD14B661B400ED2D0C /* BLMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLMath.h; sourceTree = "<group>"; };
 		7FABE6BE14B661B400ED2D0C /* BLMath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLMath.m; sourceTree = "<group>"; };
-		7FABE6C814B8F67000ED2D0C /* BFloatPickupTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFloatPickupTarget.h; sourceTree = "<group>"; };
-		7FABE6C914B8F67100ED2D0C /* BFloatPickupTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BFloatPickupTarget.m; sourceTree = "<group>"; };
-		7FABE6CB14B8F67F00ED2D0C /* BFloatObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFloatObjectRender.h; sourceTree = "<group>"; };
-		7FABE6CC14B8F68000ED2D0C /* BFloatObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BFloatObjectRender.m; sourceTree = "<group>"; };
 		7FAEC25F14BB5BA000E60983 /* visgrad1.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = visgrad1.fnt; sourceTree = "<group>"; };
 		7FAEC26014BB5BA000E60983 /* visgrad1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = visgrad1.png; sourceTree = "<group>"; };
 		7FB11DBD1595277200095669 /* DWPlaceValueBlockGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPlaceValueBlockGameObject.h; sourceTree = "<group>"; };
@@ -1485,7 +1458,6 @@
 		7F2317CB1572B23300E2C941 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				7FED41F615BD869400A70EC3 /* unsupported */,
 				55FDAEDD157F7CBB00943176 /* ToolTemplate.h */,
 				55FDAEDE157F7CBB00943176 /* ToolTemplate.m */,
 				5508FEAE15A2F2B7003720AF /* ToolTemplateSG.h */,
@@ -2365,7 +2337,6 @@
 			isa = PBXGroup;
 			children = (
 				55E7CBE0157FC86C00A399CF /* PieSplitter */,
-				7FC642901572B7600043D575 /* FloatingBlocks */,
 				55AFD6AB15651BD500FF1886 /* TimesTables */,
 				55C5F72B15388A84009D8906 /* DotGrid */,
 				551815651525F67F0097E259 /* NumberBonds */,
@@ -2480,25 +2451,6 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
-		7FC642901572B7600043D575 /* FloatingBlocks */ = {
-			isa = PBXGroup;
-			children = (
-				7FABE6A414B4C5F100ED2D0C /* BContainerRender.h */,
-				7FABE6A514B4C5F100ED2D0C /* BContainerRender.m */,
-				7FABE6A714B4C60500ED2D0C /* BMount.h */,
-				7FABE6A814B4C60600ED2D0C /* BMount.m */,
-				7FABE6AA14B4C62300ED2D0C /* BDropTarget.h */,
-				7FABE6AB14B4C62300ED2D0C /* BDropTarget.m */,
-				7FABE6B014B4C64D00ED2D0C /* BMountable.h */,
-				7FABE6B114B4C64D00ED2D0C /* BMountable.m */,
-				7FABE6C814B8F67000ED2D0C /* BFloatPickupTarget.h */,
-				7FABE6C914B8F67100ED2D0C /* BFloatPickupTarget.m */,
-				7FABE6CB14B8F67F00ED2D0C /* BFloatObjectRender.h */,
-				7FABE6CC14B8F68000ED2D0C /* BFloatObjectRender.m */,
-			);
-			name = FloatingBlocks;
-			sourceTree = "<group>";
-		};
 		7FC642911572B79B0043D575 /* ExpressionEngine */ = {
 			isa = PBXGroup;
 			children = (
@@ -2556,19 +2508,6 @@
 				7FDBA52B14EBD560004D1CC9 /* CTidy.m */,
 			);
 			path = Tidy;
-			sourceTree = "<group>";
-		};
-		7FED41F615BD869400A70EC3 /* unsupported */ = {
-			isa = PBXGroup;
-			children = (
-				550708741517623E00111BBB /* ColumnAddition.h */,
-				550708751517623E00111BBB /* ColumnAddition.m */,
-				7F5115A814A9EF9E001AF372 /* BlockFloating.h */,
-				7F5115A914A9EF9E001AF372 /* BlockFloating.m */,
-				7F813D5314CCBA4300C1E997 /* IceDiv.h */,
-				7F813D5414CCBA4300C1E997 /* IceDiv.m */,
-			);
-			name = unsupported;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2752,7 +2691,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5507087B15176A0600111BBB /* ColumnAdditionConsts.m in Sources */,
-				5507087C15176A0600111BBB /* ColumnAddition.m in Sources */,
 				7F71B40B150FBD9D0097A956 /* ExprScene.m in Sources */,
 				7F71B40C150FBDAA0097A956 /* BATQuery.m in Sources */,
 				7F71B40D150FBDAD0097A956 /* BATTreeViz.m in Sources */,
@@ -2774,15 +2712,7 @@
 				7F5115A514A9EF67001AF372 /* DWBlackboard.m in Sources */,
 				7F5115A614A9EF67001AF372 /* DWGameObject.m in Sources */,
 				7F5115A714A9EF67001AF372 /* DWGameWorld.m in Sources */,
-				7F5115AA14A9EF9E001AF372 /* BlockFloating.m in Sources */,
-				7FABE6A614B4C5F100ED2D0C /* BContainerRender.m in Sources */,
-				7FABE6A914B4C60600ED2D0C /* BMount.m in Sources */,
-				7FABE6AC14B4C62300ED2D0C /* BDropTarget.m in Sources */,
-				7FABE6B214B4C64E00ED2D0C /* BMountable.m in Sources */,
 				7FABE6BF14B661B400ED2D0C /* BLMath.m in Sources */,
-				7FABE6CA14B8F67200ED2D0C /* BFloatPickupTarget.m in Sources */,
-				7FABE6CD14B8F68100ED2D0C /* BFloatObjectRender.m in Sources */,
-				7F813D5514CCBA4300C1E997 /* IceDiv.m in Sources */,
 				7F719C0314D739A600F30E89 /* Daemon.m in Sources */,
 				5571BADD14E406220053A62B /* PlaceValue.m in Sources */,
 				5571BAE114E406630053A62B /* ToolConsts.m in Sources */,

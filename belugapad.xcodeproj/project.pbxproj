@@ -106,6 +106,7 @@
 		55FDAEE3157F802900943176 /* PieSplitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FDAEE2157F802900943176 /* PieSplitter.m */; };
 		7F0AE04D158782D100194644 /* InteractionFeedback.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0AE04C158782D100194644 /* InteractionFeedback.m */; };
 		7F0E32B9158E9D7800E42C7B /* SGJmapProximityEval.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0E32B8158E9D7700E42C7B /* SGJmapProximityEval.m */; };
+		7F1A3B5115BDEC8C0060CB15 /* SGFractionBuilderMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F1A3B5015BDEC8C0060CB15 /* SGFractionBuilderMarker.m */; };
 		7F2317C5156FA13400E2C941 /* NordicAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2317C4156FA13400E2C941 /* NordicAnimator.m */; };
 		7F2586AF15697EBD00C439F6 /* ExprSimplifyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2586AE15697EBD00C439F6 /* ExprSimplifyTests.m */; };
 		7F268ADE14F28DE500F1F65F /* ToolHost.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F268ADD14F28DE500F1F65F /* ToolHost.m */; };
@@ -586,6 +587,8 @@
 		7F0AE04C158782D100194644 /* InteractionFeedback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionFeedback.m; sourceTree = "<group>"; };
 		7F0E32B7158E9D7700E42C7B /* SGJmapProximityEval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapProximityEval.h; sourceTree = "<group>"; };
 		7F0E32B8158E9D7700E42C7B /* SGJmapProximityEval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapProximityEval.m; sourceTree = "<group>"; };
+		7F1A3B4F15BDEC8C0060CB15 /* SGFractionBuilderMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionBuilderMarker.h; sourceTree = "<group>"; };
+		7F1A3B5015BDEC8C0060CB15 /* SGFractionBuilderMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionBuilderMarker.m; sourceTree = "<group>"; };
 		7F2317C3156FA13400E2C941 /* NordicAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NordicAnimator.h; sourceTree = "<group>"; };
 		7F2317C4156FA13400E2C941 /* NordicAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NordicAnimator.m; sourceTree = "<group>"; };
 		7F2586AE15697EBD00C439F6 /* ExprSimplifyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprSimplifyTests.m; sourceTree = "<group>"; };
@@ -1418,6 +1421,8 @@
 		55FBB2F915BD6FAA0034B081 /* Fractions */ = {
 			isa = PBXGroup;
 			children = (
+				7F1A3B4F15BDEC8C0060CB15 /* SGFractionBuilderMarker.h */,
+				7F1A3B5015BDEC8C0060CB15 /* SGFractionBuilderMarker.m */,
 				55FBB2FC15BD76AE0034B081 /* SGFractionBuilderRender.h */,
 				55FBB2FD15BD76AE0034B081 /* SGFractionBuilderRender.m */,
 			);
@@ -2991,6 +2996,7 @@
 				55FBB2F815BD6E4A0034B081 /* FractionBuilder.m in Sources */,
 				55FBB2FE15BD76AE0034B081 /* SGFractionBuilderRender.m in Sources */,
 				55FBB30115BD78EF0034B081 /* SGFractionObject.m in Sources */,
+				7F1A3B5115BDEC8C0060CB15 /* SGFractionBuilderMarker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

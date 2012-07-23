@@ -210,12 +210,13 @@
 {
     //write log on problem switch
     
-    //tear down
-    [gw release];
+    [renderLayer release];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
     
+    //tear down
+    [gw release];
     
     [super dealloc];
 }

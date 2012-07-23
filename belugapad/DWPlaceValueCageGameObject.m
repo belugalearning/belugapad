@@ -22,4 +22,14 @@
 @synthesize Hidden;
 @synthesize mySprite;
 
+-(void)dealloc
+{
+    if(SpriteFilename)[SpriteFilename release];
+    if(PickupSpriteFilename)[PickupSpriteFilename release];
+    if(MountedObject)[MountedObject release];
+    if(mySprite)[mySprite release];
+    
+    [super dealloc];
+}
+
 @end

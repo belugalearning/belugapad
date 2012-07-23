@@ -19,7 +19,7 @@
 	SGGameWorld *gameWorld;
 }
 
-@property (nonatomic, retain) SGGameWorld *gameWorld;
+@property (nonatomic, assign) SGGameWorld *gameWorld;
 
 -(SGGameObject *)initWithGameWorld:(SGGameWorld *)aGameWorld;
 -(void)doUpdate:(ccTime)delta;

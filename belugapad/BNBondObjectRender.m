@@ -167,6 +167,8 @@
     pogo.BaseNode.position=pogo.Position;
     [[gameWorld Blackboard].ComponentRenderLayer addChild:pogo.BaseNode z:2];
     
+    [spriteFileName release];
+    
 }
 
 -(void)setSpritePos:(BOOL) withAnimation
@@ -220,6 +222,8 @@
 
 -(void) dealloc
 {
+    [pogo.BaseNode release];
+    
     [super dealloc];
 }
 

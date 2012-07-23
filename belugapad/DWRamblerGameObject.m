@@ -35,6 +35,16 @@
 @synthesize HideAllNotches;
 @synthesize ShowNotchesAtIntervals;
 
+-(void)dealloc
+{
+    if(MinValue)[MinValue release];
+    if(MaxValue)[MaxValue release];
+    
+    if(ShowNumbersAtIntervals)[ShowNumbersAtIntervals release];
+    if(ShowNotchesAtIntervals)[ShowNotchesAtIntervals release];
+    
+    [super dealloc];
+}
 
 
 @end

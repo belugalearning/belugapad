@@ -213,8 +213,6 @@ static float kTimeToHeaderBounce=7.0f;
 {
     NSString *operatorFileName=[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/operator-%@.png"), operatorName];
     ttMatrix=[[NSMutableArray alloc]init];
-    [ttMatrix retain];
-    renderLayer = [[CCLayer alloc] init];
     [self.ForeLayer addChild:renderLayer];
     
     gw.Blackboard.ComponentRenderLayer = renderLayer;
@@ -235,7 +233,6 @@ static float kTimeToHeaderBounce=7.0f;
     NSMutableArray *yHeaders=[[NSMutableArray alloc]init];
     [headerLabels addObject:xHeaders];
     [headerLabels addObject:yHeaders];
-    [headerLabels retain];
     
     // render the times table grid
     
@@ -317,6 +314,7 @@ static float kTimeToHeaderBounce=7.0f;
 
             [currentCol addObject:tile];
             
+            [tile release];
 
         }
         
@@ -326,9 +324,6 @@ static float kTimeToHeaderBounce=7.0f;
 
         [currentCol release];
     }    
-    
-    [xHeaders release];
-    [yHeaders release];
     
     if(activeCols || activeRows)
     {
@@ -367,8 +362,9 @@ static float kTimeToHeaderBounce=7.0f;
             }
         }
     }
-
-
+    
+    [xHeaders release];
+    [yHeaders release];
 }
 
 #pragma mark - grid interaction
@@ -736,11 +732,8 @@ static float kTimeToHeaderBounce=7.0f;
 #pragma mark - dealloc
 -(void) dealloc
 {
-    //write log on problem switch
-    [gw writeLogBufferToDiskWithKey:@"TimesTables"];
+    [renderLayer release];
     
-    //tear down
-    [gw release];
     if(ttMatrix)[ttMatrix release];
     if(activeCols)[activeCols release];
     if(activeRows)[activeRows release];
@@ -750,9 +743,13 @@ static float kTimeToHeaderBounce=7.0f;
     if(revealCols)[revealCols release];
     if(revealTiles)[revealTiles release];
     
+    [rowTints release];
+    [colTints release];
+    
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
-    
+
+    [gw release];
 
     [super dealloc];
 }

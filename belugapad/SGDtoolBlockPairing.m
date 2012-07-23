@@ -44,7 +44,7 @@
 {
     if(z==0)
     {
-        if([ParentGO.PairedObjects count]>0 && !ParentGO.SeekingPair)
+        if([ParentGO.PairedObjects count]>0)
         {
             for(int i=0;i<[ParentGO.PairedObjects count];i++)
             {
@@ -52,19 +52,28 @@
                 float dist=[BLMath DistanceBetween:curObj.Position and:ParentGO.Position];
                 int linesToDraw=0;
                 
-                if(dist<10.0f)
+                if(dist<10.0f){
                     linesToDraw=31;
-                    
-                else if(dist>10.0f<30.0f)
+                }
+                else if(dist>10.0f<30.0f){
                     linesToDraw=25;
-                
-                else if(dist>30.0f<50.0f)
+                }
+                else if(dist>30.0f<50.0f){
                     linesToDraw=15;
+                }
+                else if(dist>75.0f){
+                    linesToDraw=2;
+                }
+                else{
+                    linesToDraw=2;
+                }
                 
-                else if(dist>75.0f)
-                    linesToDraw=2;
+                if(dist<=70 && ParentGO.SeekingPair)
+                    ccDrawColor4F(0, 255, 0, 255);
+                else if(dist>70 && ParentGO.SeekingPair)
+                    ccDrawColor4F(255, 0, 0, 255);
                 else
-                    linesToDraw=2;
+                    ccDrawColor4F(255, 255, 255, 255);    
                 
                 for(int i=0;i<linesToDraw/2;i++)
                 {

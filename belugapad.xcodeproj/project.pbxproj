@@ -910,7 +910,7 @@
 		7F5005C81522478C0038D251 /* fps_images-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fps_images-hd.png"; sourceTree = "<group>"; };
 		7F5005C91522478C0038D251 /* fps_images-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fps_images-ipadhd.png"; sourceTree = "<group>"; };
 		7F5005CA1522478C0038D251 /* fps_images.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fps_images.png; sourceTree = "<group>"; };
-		7F5113BE14A9EE62001AF372 /* beluga tools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "beluga tools.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F5113BE14A9EE62001AF372 /* beluga july '12.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "beluga july '12.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F5113C214A9EE62001AF372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7F5113C414A9EE62001AF372 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		7F5113C614A9EE62001AF372 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
@@ -1485,18 +1485,13 @@
 		7F2317CB1572B23300E2C941 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				7FED41F615BD869400A70EC3 /* unsupported */,
 				55FDAEDD157F7CBB00943176 /* ToolTemplate.h */,
 				55FDAEDE157F7CBB00943176 /* ToolTemplate.m */,
 				5508FEAE15A2F2B7003720AF /* ToolTemplateSG.h */,
 				5508FEAF15A2F2B7003720AF /* ToolTemplateSG.m */,
 				55AFD6A3156517FC00FF1886 /* TimesTables.h */,
 				55AFD6A4156517FC00FF1886 /* TimesTables.m */,
-				550708741517623E00111BBB /* ColumnAddition.h */,
-				550708751517623E00111BBB /* ColumnAddition.m */,
-				7F5115A814A9EF9E001AF372 /* BlockFloating.h */,
-				7F5115A914A9EF9E001AF372 /* BlockFloating.m */,
-				7F813D5314CCBA4300C1E997 /* IceDiv.h */,
-				7F813D5414CCBA4300C1E997 /* IceDiv.m */,
 				551815611525EA920097E259 /* NumberBonds.h */,
 				551815621525EA920097E259 /* NumberBonds.m */,
 				5571BADB14E406220053A62B /* PlaceValue.h */,
@@ -2020,7 +2015,7 @@
 		7F5113BF14A9EE62001AF372 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7F5113BE14A9EE62001AF372 /* beluga tools.app */,
+				7F5113BE14A9EE62001AF372 /* beluga july '12.app */,
 				7F40D89714FFD8BE006A3A55 /* GeneralTests.octest */,
 			);
 			name = Products;
@@ -2563,6 +2558,19 @@
 			path = Tidy;
 			sourceTree = "<group>";
 		};
+		7FED41F615BD869400A70EC3 /* unsupported */ = {
+			isa = PBXGroup;
+			children = (
+				550708741517623E00111BBB /* ColumnAddition.h */,
+				550708751517623E00111BBB /* ColumnAddition.m */,
+				7F5115A814A9EF9E001AF372 /* BlockFloating.h */,
+				7F5115A914A9EF9E001AF372 /* BlockFloating.m */,
+				7F813D5314CCBA4300C1E997 /* IceDiv.h */,
+				7F813D5414CCBA4300C1E997 /* IceDiv.m */,
+			);
+			name = unsupported;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2600,7 +2608,7 @@
 			);
 			name = "beluga july '12";
 			productName = belugapad;
-			productReference = 7F5113BE14A9EE62001AF372 /* beluga tools.app */;
+			productReference = 7F5113BE14A9EE62001AF372 /* beluga july '12.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */

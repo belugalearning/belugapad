@@ -28,6 +28,9 @@ typedef enum
 @property (retain) CCSprite *FractionSprite;
 @property (retain) CCSprite *SliderSprite;
 @property (retain) CCSprite *SliderMarkerSprite;
+@property (retain) CCNode *BaseNode;
+
+-(void)setup;
 
 
 @end

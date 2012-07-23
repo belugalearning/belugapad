@@ -13,7 +13,7 @@
 @implementation SGFractionObject
 
 // configurable properties
-@synthesize RenderLayer, HasSlider, CreateChunksOnInit, CreateChunks, FractionMode, Position, FractionSprite, SliderSprite, SliderMarkerSprite;
+@synthesize RenderLayer, HasSlider, CreateChunksOnInit, CreateChunks, FractionMode, Position, FractionSprite, SliderSprite, SliderMarkerSprite, BaseNode;
 
 // interactive properties
 @synthesize Divisions, Chunks;
@@ -26,6 +26,7 @@
     {
         self.RenderLayer=aRenderLayer;
         self.Position=aPosition;
+        self.BaseNode=[[CCNode alloc]init];
 
     }
     RenderComponent=[[SGFractionBuilderRender alloc] initWithGameObject:self];

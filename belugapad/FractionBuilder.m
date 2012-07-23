@@ -17,6 +17,8 @@
 #import "AppDelegate.h"
 
 #import "SGGameWorld.h"
+#import "SGFractionObject.h"
+#import "SGFractionBuilderRender.h"
 
 
 @interface FractionBuilder()
@@ -118,6 +120,11 @@
 {
     gw.Blackboard.RenderLayer = renderLayer;
     
+    id<Configurable, Interactive> fraction;
+    fraction=[[[SGFractionObject alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,cy)] autorelease];
+    fraction.HasSlider=YES;
+    
+    [fraction setup];
     
 }
 

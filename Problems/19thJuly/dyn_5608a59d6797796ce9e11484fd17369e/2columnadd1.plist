@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ColumnAddition</string>
+	<key>NUMBER_A</key>
+	<string>{$price1}</string>
+	<key>NUMBER_B</key>
+	<string>{$price1}</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>[[$name]] wants to buy 2 [[$object1]]. [[$object1]] cost {$price1}p and [[$object2]] costs {$price2}p. How much will [[$name]] pay?</string>
+	<key>DVARS</key>
+	<dict>
+		<key>$price1</key>
+		<dict>
+			<key>MAX</key>
+			<string>10</string>
+			<key>MIN</key>
+			<string>5</string>
+		</dict>
+		<key>$price2</key>
+		<dict>
+			<key>MAX</key>
+			<string>9</string>
+			<key>MIN</key>
+			<string>3</string>
+		</dict>
+	</dict>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>$object1</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>haribos</string>
+				<string>wine gums</string>
+				<string>chocolates</string>
+				<string>packs of crisps</string>
+				<string>drinks</string>
+			</array>
+		</dict>
+		<key>$object2</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>cookies</string>
+				<string>chewing gum</string>
+				<string>strawberry laces</string>
+			</array>
+		</dict>
+		<key>$name</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>Sarah</string>
+				<string>Claire</string>
+				<string>Scott</string>
+				<string>Gareth</string>
+				<string>Dave</string>
+				<string>Nick</string>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

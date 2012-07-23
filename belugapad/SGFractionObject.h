@@ -10,10 +10,12 @@
 #import "SGFractionObjectProtocols.h"
 
 @class SGFractionBuilderRender;
+@class SGFractionBuilderMarker;
 
-@interface SGFractionObject: SGGameObject <Configurable, Interactive>
+@interface SGFractionObject: SGGameObject <Configurable, Interactive, Moveable>
 
 @property (retain) SGFractionBuilderRender *RenderComponent;
+@property (retain) SGFractionBuilderMarker *MarkerComponent;
 
 
 -(SGFractionObject*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition;

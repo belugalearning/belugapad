@@ -43,3 +43,12 @@ typedef enum
 @end
 
 
+@protocol Moveable
+
+@property CGPoint Position;
+
+-(BOOL)amIProximateTo:(CGPoint)location;
+-(void)moveMarkerTo:(CGPoint)location;
+
+@end
+

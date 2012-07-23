@@ -35,6 +35,7 @@
 		0CDECB6615920C27004DE20D /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB5B15920C27004DE20D /* AFXMLRequestOperation.m */; };
 		0CDECB6715920C27004DE20D /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB5D15920C27004DE20D /* UIImageView+AFNetworking.m */; };
 		0CF9187C14F54C1D00FAC58D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF9187B14F54C1D00FAC58D /* images */; };
+		5502A71915BDBB05002CE180 /* SGFractionBuilderMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5502A71815BDBB05002CE180 /* SGFractionBuilderMarker.m */; };
 		5507087B15176A0600111BBB /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708791517625300111BBB /* ColumnAdditionConsts.m */; };
 		5507087C15176A0600111BBB /* ColumnAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708751517623E00111BBB /* ColumnAddition.m */; };
 		5508FEB015A2F2B8003720AF /* ToolTemplateSG.m in Sources */ = {isa = PBXBuildFile; fileRef = 5508FEAF15A2F2B7003720AF /* ToolTemplateSG.m */; };
@@ -450,6 +451,8 @@
 		0CDECB5C15920C27004DE20D /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
 		0CDECB5D15920C27004DE20D /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		0CF9187B14F54C1D00FAC58D /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = SOURCE_ROOT; };
+		5502A71715BDBB05002CE180 /* SGFractionBuilderMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionBuilderMarker.h; sourceTree = "<group>"; };
+		5502A71815BDBB05002CE180 /* SGFractionBuilderMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionBuilderMarker.m; sourceTree = "<group>"; };
 		550708741517623E00111BBB /* ColumnAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAddition.h; sourceTree = "<group>"; };
 		550708751517623E00111BBB /* ColumnAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAddition.m; sourceTree = "<group>"; };
 		550708781517625300111BBB /* ColumnAdditionConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAdditionConsts.h; sourceTree = "<group>"; };
@@ -1447,6 +1450,8 @@
 			children = (
 				55FBB2FC15BD76AE0034B081 /* SGFractionBuilderRender.h */,
 				55FBB2FD15BD76AE0034B081 /* SGFractionBuilderRender.m */,
+				5502A71715BDBB05002CE180 /* SGFractionBuilderMarker.h */,
+				5502A71815BDBB05002CE180 /* SGFractionBuilderMarker.m */,
 			);
 			name = Fractions;
 			sourceTree = "<group>";
@@ -3061,6 +3066,7 @@
 				55FBB2F815BD6E4A0034B081 /* FractionBuilder.m in Sources */,
 				55FBB2FE15BD76AE0034B081 /* SGFractionBuilderRender.m in Sources */,
 				55FBB30115BD78EF0034B081 /* SGFractionObject.m in Sources */,
+				5502A71915BDBB05002CE180 /* SGFractionBuilderMarker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -4,13 +4,17 @@
 <dict>
 	<key>PROBLEM_PIPELINE-tools</key>
 	<string>/Problems/dotgrid-demo</string>
-	<key>PROBLEM_PIPELINE-aa</key>
+	<key>PROBLEM_PIPELINE-d</key>
 	<string>DATABASE</string>
 	<key>PROBLEM_PIPELINE</key>
-	<string>/pipeline-testing/da-pipeline-test.plist</string>
-	<key>PROBLEM_PIPELINE-g</key>
-	<string>/pipeline-testing/gj-pipeline-test.plist</string>
+	<string>/pipeline-testing/sarah-pipeline2.plist</string>
+	<key>PROBLEM_PIPELINE-0</key>
+	<string>/pipeline-testing/sarah-pipeline.plist</string>
+	<key>PROBLEM-PIPELINE-99</key>
+	<string>/pipeline-testing/02count-pipeline.plist</string>
+	<key>New item</key>
+	<string>/pipeline-testing/01sort-pipeline.plist</string>
 	<key>RELEASE_MODE</key>
-	<true/>
+	<false/>
 </dict>
 </plist>

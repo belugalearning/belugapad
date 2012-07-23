@@ -5,7 +5,7 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Poopoo</string>
+	<string>Tom has 3 sweets. Gareth has 5 sweets. Gareth gives Tom 2 sweets, how many sweets does Tom have?</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>INIT_OBJECTS</key>
@@ -29,8 +29,8 @@
 	</array>
 	<key>SOLUTION</key>
 	<array>
-		<integer>4</integer>
-		<integer>4</integer>
+		<integer>5</integer>
+		<integer>3</integer>
 	</array>
 </dict>
 </plist>

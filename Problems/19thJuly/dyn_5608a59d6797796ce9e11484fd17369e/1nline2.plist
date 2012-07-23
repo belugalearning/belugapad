@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+<<<<<<< HEAD
+	<string>[[$name]] [[$action]] {$augend} [[$objects]]. [[$friend]] gave her/him another {$addend} [[$object]]. How many does [[$name]] have now?</string>
+=======
+	<string>[[$name]] [[$action]] {$augend} [[$object]]. [[$friend]] gave her/him another {$addend} [[$object]]. How many does [[$name]] have now?</string>
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>count on from 6 to 15</string>
+	<key>TOOL_KEY</key>
+	<string>NLine</string>
+	<key>START_VALUE</key>
+	<string>{$augend}</string>
+	<key>MIN_VALUE</key>
+	<string>0</string>
+	<key>MAX_VALUE</key>
+	<string>20</string>
+	<key>EVAL_MODE</key>
+<<<<<<< HEAD
+	<integer>1</integer>
+	<key>REJECT_MODE</key>
+	<integer>0</integer>
+	<key>EVAL_TARGET</key>
+	<real>0</real>
+=======
+	<string>1</string>
+	<key>REJECT_MODE</key>
+	<integer>0</integer>
+	<key>EVAL_TARGET</key>
+	<string>{$augend+$addend}</string>
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
+	<key>HIDE_ALL_NUMBERS</key>
+	<false/>
+	<key>SHOW_NUMBERS_AT_INTERVALS</key>
+	<array>
+		<string>3</string>
+	</array>
+<<<<<<< HEAD
+=======
+	<key>New item</key>
+	<integer>2</integer>
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
+	<key>HIDE_ALL_NOTCHES</key>
+	<false/>
+	<key>SHOW_NOTCHES_AT_INTERVALS</key>
+	<array/>
+	<key>HIDE_START_NUMBER</key>
+	<false/>
+	<key>HIDE_END_NUMBER</key>
+	<false/>
+	<key>HIDE_START_NOTCH</key>
+	<false/>
+	<key>HIDE_END_NOTCH</key>
+	<false/>
+	<key>DISABLE_SNAPPING_TO_NOTCH</key>
+	<false/>
+	<key>EVAL_PLUS_MINUS_THRESHOLD</key>
+	<integer>0</integer>
+	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
+	<array>
+		<integer>1</integer>
+	</array>
+	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
+	<array/>
+	<key>USER_POPULATED_NUMBERS</key>
+	<array>
+		<string>2</string>
+		<string>4</string>
+		<string>6</string>
+		<string>8</string>
+	</array>
+	<key>RENDER_STITCHES_AT_INTERVAL</key>
+	<integer>0</integer>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>$action</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>ate</string>
+				<string>took</string>
+<<<<<<< HEAD
+=======
+				<string>bought</string>
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
+				<string>was given</string>
+			</array>
+		</dict>
+		<key>$friend</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>Samantha</string>
+				<string>Julia</string>
+<<<<<<< HEAD
+				<string>Simon</string>
+			</array>
+		</dict>
+		<key>$objects</key>
+=======
+				<string>Beluga</string>
+				<string>Simon</string>
+			</array>
+		</dict>
+		<key>$object</key>
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>cookies</string>
+				<string>chocolates</string>
+<<<<<<< HEAD
+=======
+				<string>packets of crisps</string>
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
+				<string>biscuits</string>
+			</array>
+		</dict>
+		<key>$name</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>Sarah</string>
+				<string>Claire</string>
+				<string>Scott</string>
+<<<<<<< HEAD
+=======
+				<string>Gareth</string>
+				<string>Dave</string>
+				<string>Nick</string>
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
+			</array>
+		</dict>
+	</dict>
+	<key>DVARS</key>
+	<dict>
+		<key>$addend</key>
+		<dict>
+			<key>MAX</key>
+			<string>7</string>
+			<key>MIN</key>
+			<string>1</string>
+		</dict>
+		<key>$augend</key>
+		<dict>
+			<key>MAX</key>
+			<string>10</string>
+			<key>MIN</key>
+			<string>1</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

@@ -17,4 +17,15 @@
 @synthesize firstAnchor;
 @synthesize lastAnchor;
 
+-(void)dealloc
+{
+    if(tiles)[tiles release];
+    if(moveHandle)[moveHandle release];
+    if(resizeHandle)[resizeHandle release];
+    if(firstAnchor)[firstAnchor release];
+    if(lastAnchor)[lastAnchor release];
+    
+    [super dealloc];
+}
+
 @end

@@ -17,4 +17,12 @@
 @synthesize tileSize;
 @synthesize myAnchor;
 
+-(void)dealloc
+{
+    if(mySprite)[mySprite release];
+    if(myAnchor)[myAnchor release];
+    
+    [super dealloc];
+}
+
 @end

@@ -88,6 +88,8 @@
         
 
         [[gameWorld Blackboard].ComponentRenderLayer addChild:anch.mySprite z:2];
+        
+        [spriteFileName release];
     }
 }
 

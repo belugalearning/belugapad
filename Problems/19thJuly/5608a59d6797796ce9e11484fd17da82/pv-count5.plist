@@ -3,7 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Tom has 4 sweets, he gets 6 more, how many does he have?</string>
+	<string>Tom finds 5 gold coins in a treasure chest. He then puts 7 more in the chest. How many gold coins are in the chest?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>count on 7 from 5</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -17,21 +19,28 @@
 	<key>ROPES_PER_COL</key>
 	<integer>10</integer>
 	<key>ROWS_PER_COL</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
 	<false/>
 	<key>EVAL_MODE</key>
-	<string>1</string>
+	<integer>1</integer>
 	<key>REJECT_MODE</key>
-	<string>0</string>
+	<integer>0</integer>
 	<key>SHOW_CAGE</key>
 	<true/>
+	<key>SHOW_COUNT</key>
+	<false/>
 	<key>SHOW_COUNT_BLOCK</key>
 	<true/>
-	<key>SHOW_COUNT</key>
+	<key>CUSTOM_COLUMN_HEADERS</key>
 	<true/>
+	<key>COLUMN_HEADERS</key>
+	<dict>
+		<key>0</key>
+		<string>ones</string>
+	</dict>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
@@ -40,15 +49,15 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>4</integer>
+			<integer>5</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
 	<dict>
 		<key>SOLUTION_TYPE</key>
-		<string>COUNT_SEQUENCE</string>
+		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>10</integer>
+		<integer>12</integer>
 	</dict>
 </dict>
 </plist>

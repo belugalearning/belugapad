@@ -5,7 +5,11 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
+<<<<<<< HEAD
 		<string>[[$name]] went to [[$action]] for {$augend} minutes before taking a {$time2} minutes break. S/He continued playing [[$tennis]] for a further {$augadd} minutes. How many minutes did s/he spend doing the activity?</string>
+=======
+		<string>[[$name]] went to [[$action]] for {$time1} minutes before taking a {$break} minute break. S/He continues playing for a further {$time2} minutes. How many minutes did s/he spend doing the activity?</string>
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>PICKER_ORIGIN_X</key>
@@ -17,7 +21,11 @@
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
+<<<<<<< HEAD
 		<string>{$augend+$augadd}</string>
+=======
+		<string>{$time1+$time2}</string>
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
 		<key>DSTRINGS</key>
 		<dict>
 			<key>$action</key>
@@ -30,8 +38,11 @@
 					<string>badminton</string>
 					<string>football</string>
 					<string>cricket</string>
+<<<<<<< HEAD
 					<string>gym</string>
 					<string>table tennis</string>
+=======
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
 					<string>swimming</string>
 					<string>lacrosse</string>
 				</array>
@@ -53,6 +64,7 @@
 		</dict>
 		<key>DVARS</key>
 		<dict>
+<<<<<<< HEAD
 			<key>$addend</key>
 			<dict>
 				<key>MAX</key>
@@ -64,6 +76,26 @@
 			<dict>
 				<key>MAX</key>
 				<string>20</string>
+=======
+			<key>$break</key>
+			<dict>
+				<key>MAX</key>
+				<string>10</string>
+				<key>MIN</key>
+				<string>1</string>
+			</dict>
+			<key>$time1</key>
+			<dict>
+				<key>MAX</key>
+				<string>10</string>
+				<key>MIN</key>
+				<string>1</string>
+			</dict>
+			<key>$time2</key>
+			<dict>
+				<key>MAX</key>
+				<string>10</string>
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
 				<key>MIN</key>
 				<string>1</string>
 			</dict>

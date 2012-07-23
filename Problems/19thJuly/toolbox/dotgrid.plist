@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>This is 1/4. make 2/4.</string>
+	<key>TOOL_KEY</key>
+	<string>DotGrid</string>
+	<key>ANCHOR_SPACE</key>
+	<integer>85</integer>
+	<key>START_X</key>
+	<integer>2</integer>
+	<key>START_Y</key>
+	<integer>3</integer>
+	<key>DRAW_MODE</key>
+	<integer>2</integer>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>START_X</key>
+			<integer>0</integer>
+			<key>START_Y</key>
+			<integer>0</integer>
+			<key>END_X</key>
+			<integer>1</integer>
+			<key>END_Y</key>
+			<integer>1</integer>
+			<key>SHOW_RESIZE</key>
+			<true/>
+			<key>SHOW_MOVE</key>
+			<false/>
+			<key>SHOW_LABELS</key>
+			<false/>
+			<key>DISABLE_COUNTING</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>START_X</key>
+			<integer>2</integer>
+			<key>START_Y</key>
+			<integer>5</integer>
+			<key>END_X</key>
+			<integer>6</integer>
+			<key>END_Y</key>
+			<integer>6</integer>
+			<key>SHOW_RESIZE</key>
+			<false/>
+			<key>SHOW_MOVE</key>
+			<false/>
+			<key>SHOW_LABELS</key>
+			<false/>
+			<key>PRE_COUNTED_TILES</key>
+			<array>
+				<dict>
+					<key>POS_X</key>
+					<integer>2</integer>
+					<key>POS_Y</key>
+					<integer>5</integer>
+				</dict>
+			</array>
+			<key>DISABLE_COUNTING</key>
+			<true/>
+		</dict>
+	</array>
+	<key>HIDDEN_ROWS</key>
+	<dict>
+		<key>4</key>
+		<true/>
+	</dict>
+</dict>
+</plist>

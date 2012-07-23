@@ -5,11 +5,7 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-<<<<<<< HEAD
 	<string>Tom has 3 sweets. Gareth has 5 sweets. Gareth gives Tom 2 sweets, how many sweets does Tom have?</string>
-=======
-	<string>Create 2 equal groups of 4</string>
->>>>>>> a4b44a3e9f18116e71e58dac037ba8d63c9575f7
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>INIT_OBJECTS</key>

@@ -3,7 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
+<<<<<<< HEAD
 	<string>[[$name]] [[$action]] {$augend} [[$objects]]. [[$friend]] gave her/him another {$addend} [[$object]]. How many does [[$name]] have now?</string>
+=======
+	<string>[[$name]] [[$action]] {$augend} [[$object]]. [[$friend]] gave her/him another {$addend} [[$object]]. How many does [[$name]] have now?</string>
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>count on from 6 to 15</string>
 	<key>TOOL_KEY</key>
@@ -15,17 +19,30 @@
 	<key>MAX_VALUE</key>
 	<string>20</string>
 	<key>EVAL_MODE</key>
+<<<<<<< HEAD
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
 	<real>0</real>
+=======
+	<string>1</string>
+	<key>REJECT_MODE</key>
+	<integer>0</integer>
+	<key>EVAL_TARGET</key>
+	<string>{$augend+$addend}</string>
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
 	<array>
 		<string>3</string>
 	</array>
+<<<<<<< HEAD
+=======
+	<key>New item</key>
+	<integer>2</integer>
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
@@ -67,6 +84,10 @@
 			<array>
 				<string>ate</string>
 				<string>took</string>
+<<<<<<< HEAD
+=======
+				<string>bought</string>
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
 				<string>was given</string>
 			</array>
 		</dict>
@@ -78,10 +99,18 @@
 			<array>
 				<string>Samantha</string>
 				<string>Julia</string>
+<<<<<<< HEAD
 				<string>Simon</string>
 			</array>
 		</dict>
 		<key>$objects</key>
+=======
+				<string>Beluga</string>
+				<string>Simon</string>
+			</array>
+		</dict>
+		<key>$object</key>
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
 		<dict>
 			<key>MODE</key>
 			<string>RANDOM</string>
@@ -89,6 +118,10 @@
 			<array>
 				<string>cookies</string>
 				<string>chocolates</string>
+<<<<<<< HEAD
+=======
+				<string>packets of crisps</string>
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
 				<string>biscuits</string>
 			</array>
 		</dict>
@@ -101,6 +134,12 @@
 				<string>Sarah</string>
 				<string>Claire</string>
 				<string>Scott</string>
+<<<<<<< HEAD
+=======
+				<string>Gareth</string>
+				<string>Dave</string>
+				<string>Nick</string>
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
 			</array>
 		</dict>
 	</dict>

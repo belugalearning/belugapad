@@ -85,7 +85,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         
         usersDatabase = [[FMDatabase databaseWithPath:usersDatabasePath] retain];
         [usersDatabase open];        
-        if (![usersDatabase tableExists:@"users"]) [usersDatabase executeUpdate:@"CREATE TABLE users (id TEXT, nick TEXT, password TEXT, nodes_completed TEXT)"];
+        if (![usersDatabase tableExists:@"users"]) [usersDatabase executeUpdate:@"CREATE TABLE users (id TEXT, nick TEXT, password TEXT, nodes_completed TEXT, flag_remove INTEGER)"];
         [usersDatabase close];
         
         httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kUsersWSBaseURL]];
@@ -242,6 +242,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     
     if (!updateSuccess)
     {
+        // log failure
         NSString *statement = [NSString stringWithFormat:@"UPDATE users SET nodes_completed = \"%s\" WHERE id = \"%s\"", [nc JSONString], [currentUser objectForKey:@"id"]];
         
         NSMutableDictionary *d = [NSMutableDictionary dictionary];
@@ -257,6 +258,28 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     return [[currentUser objectForKey:@"nodesCompleted"] containsObject:nodeId];
 }
 
+-(void)flagRemoveUserFromDevice:(NSString*)userId
+{
+    [usersDatabase open];
+    NSString *sqlStatement = [NSString stringWithFormat:@"UPDATE users SET flag_remove = 1 WHERE id = ?", userId];
+    BOOL updateSuccess = [usersDatabase executeUpdate:sqlStatement];
+    [usersDatabase close];
+    
+    if (!updateSuccess)
+    {
+        // log failure        
+        NSMutableDictionary *d = [NSMutableDictionary dictionary];
+        [d setValue:BL_APP_ERROR_TYPE_DB_OPERATION_FAILURE forKey:@"type"];
+        [d setValue:CODE_LOCATION() forKey:@"codeLocation"];
+        [d setValue:sqlStatement forKey:@"statement"];
+        [loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
+    }
+    else
+    {
+        [loggingService logEvent:BL_APP_FLAG_REMOVE_USER withAdditionalData:[NSDictionary dictionaryWithObject:userId forKey:@"userId"]];
+    }
+}
+
 -(void)syncDeviceUsers
 {
     if (isSyncing) return;
@@ -265,7 +288,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     
     // get users date from on-device db
     [usersDatabase open];
-    FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick, password, nodes_completed FROM users"];
+    FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick, password, nodes_completed, flag_remove FROM users"];
     while([rs next])
     {
         NSDictionary *user = [NSMutableDictionary dictionary];        
@@ -273,6 +296,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         [user setValue:[rs stringForColumnIndex:1] forKey:@"nick"];
         [user setValue:[rs stringForColumnIndex:2] forKey:@"password"];
         [user setValue:[[rs stringForColumnIndex:3] objectFromJSONString] forKey:@"nodesCompleted"];
+        [user setValue:[rs stringForColumnIndex:4] forKey:@"flagRemove"];
         user = [user copy];
         [users addObject:user];
         [user release];
@@ -331,6 +355,26 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
                     }
                 }
                 [rs close];
+                
+                // remove users flagged for removal (getting list of these users so that we can log them)
+                NSArray *usersToRemove = [[users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"flagRemove == 1"]] valueForKey:@"id"];
+                if ([usersToRemove count])
+                {
+                    [bself->loggingService logEvent:BL_APP_REMOVE_USERS withAdditionalData:[NSDictionary dictionaryWithObject:usersToRemove forKey:@"userIds"]];
+                    
+                    NSString *sqlStatement = [NSString stringWithFormat:@"DELETE FROM users WEHERE id IN %@", [usersToRemove componentsJoinedByString:@","]];
+                    BOOL updateSuccess = [bself->usersDatabase executeUpdate:sqlStatement];
+                    
+                    if (!updateSuccess)
+                    {
+                        // log failure to remove users
+                        NSMutableDictionary *d = [NSMutableDictionary dictionary];
+                        [d setValue:BL_APP_ERROR_TYPE_DB_OPERATION_FAILURE forKey:@"type"];
+                        [d setValue:CODE_LOCATION() forKey:@"codeLocation"];
+                        [d setValue:sqlStatement forKey:@"statement"];
+                        [bself->loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
+                    }
+                }
             }
             [bself->usersDatabase close];
             bself->isSyncing = NO;

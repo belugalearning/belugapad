@@ -334,6 +334,12 @@
 #define REGION_ZOOM_LEVEL 0.15f
 
 
+//scoring
+#define SCORE_STAGE_CAP 5
+#define SCORE_STAGE_MULTIPLIER 2
+#define SCORE_BASE_AWARD 1024
+#define SCORE_SHARDS_PER_SCORE 0.011
+
 // Logging:
 
 #define CODE_LOCATION() [NSString stringWithFormat:@"<%@:%@:%d>", NSStringFromClass([self class]), NSStringFromSelector(_cmd), __LINE__]

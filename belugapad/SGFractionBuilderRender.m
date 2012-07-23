@@ -44,12 +44,26 @@
 
 -(void)setup
 {
+    [ParentGO.BaseNode setPosition:ParentGO.Position];
     
     //blockSprite=[CCSprite spriteWithSpriteFrameName:@"node-complete.png"];
-    fractionSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/distribution/block.png")];
+    fractionSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/fractions/fraction.png")];
+    sliderSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/fractions/slider.png")];
+    sliderMarkerSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/fractions/marker.png")];
     ParentGO.FractionSprite=fractionSprite;
-    [fractionSprite setPosition:ParentGO.Position];
-    [ParentGO.RenderLayer addChild:fractionSprite];
+    ParentGO.SliderSprite=sliderSprite;
+    ParentGO.SliderMarkerSprite=sliderMarkerSprite;
+    
+    [fractionSprite setPosition:ccp(0,0)];
+    [sliderSprite setPosition:ccp(0,-100)];
+    [sliderMarkerSprite setPosition:ccp(0,-80)];
+    
+    [ParentGO.BaseNode addChild:fractionSprite];
+    [ParentGO.BaseNode addChild:sliderSprite];
+    [ParentGO.BaseNode addChild:sliderMarkerSprite];
+    
+    [ParentGO.RenderLayer addChild:ParentGO.BaseNode];
 }
+
 
 @end

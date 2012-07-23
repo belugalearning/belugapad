@@ -28,6 +28,9 @@ typedef enum
 @property (retain) CCSprite *FractionSprite;
 @property (retain) CCSprite *SliderSprite;
 @property (retain) CCSprite *SliderMarkerSprite;
+@property (retain) CCNode *BaseNode;
+
+-(void)setup;
 
 
 @end
@@ -39,4 +42,13 @@ typedef enum
 
 @end
 
+
+@protocol Moveable
+
+@property CGPoint Position;
+
+-(BOOL)amIProximateTo:(CGPoint)location;
+-(void)moveMarkerTo:(CGPoint)location;
+
+@end
 

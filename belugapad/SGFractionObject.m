@@ -8,17 +8,19 @@
 
 #import "SGFractionObject.h"
 #import "SGFractionBuilderRender.h"
+#import "SGFractionBuilderMarker.h"
 
 
 @implementation SGFractionObject
 
 // configurable properties
-@synthesize RenderLayer, HasSlider, CreateChunksOnInit, CreateChunks, FractionMode, Position, FractionSprite, SliderSprite, SliderMarkerSprite;
+@synthesize RenderLayer, HasSlider, CreateChunksOnInit, CreateChunks, FractionMode, Position, FractionSprite, SliderSprite, SliderMarkerSprite, BaseNode;
 
 // interactive properties
 @synthesize Divisions, Chunks;
 
 @synthesize RenderComponent;
+@synthesize MarkerComponent;
 
 -(SGFractionObject*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
 {   
@@ -26,9 +28,11 @@
     {
         self.RenderLayer=aRenderLayer;
         self.Position=aPosition;
+        self.BaseNode=[[CCNode alloc]init];
 
     }
     RenderComponent=[[SGFractionBuilderRender alloc] initWithGameObject:self];
+    MarkerComponent=[[SGFractionBuilderMarker alloc] initWithGameObject:self];
     return self;
 }
 
@@ -55,6 +59,15 @@
     [self.RenderComponent setup];
 }
 
+-(BOOL)amIProximateTo:(CGPoint)location
+{
+    return [self.MarkerComponent amIProximateTo:location];
+}
+
+-(void)moveMarkerTo:(CGPoint)location
+{
+    [self.MarkerComponent moveMarkerTo:location];
+}
 
 -(void)dealloc
 {

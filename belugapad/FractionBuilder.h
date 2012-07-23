@@ -34,6 +34,7 @@
     
     // and a default layer
     CCLayer *renderLayer;
+    
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;

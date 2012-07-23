@@ -17,6 +17,8 @@
 #import "AppDelegate.h"
 
 #import "SGGameWorld.h"
+#import "SGFractionObject.h"
+#import "SGFractionBuilderRender.h"
 
 
 @interface FractionBuilder()
@@ -29,6 +31,7 @@
     
     //game world
     SGGameWorld *gw;
+    id<Moveable>currentMarker;
     
 }
 
@@ -118,6 +121,11 @@
 {
     gw.Blackboard.RenderLayer = renderLayer;
     
+    id<Configurable, Interactive> fraction;
+    fraction=[[[SGFractionObject alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,cy)] autorelease];
+    fraction.HasSlider=YES;
+    
+    [fraction setup];
     
 }
 
@@ -133,6 +141,21 @@
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
     
+    for(id thisObj in gw.AllGameObjects)
+    {
+        if([thisObj conformsToProtocol:@protocol(Moveable)])
+        {
+            id <Moveable> cObj=thisObj;
+            
+            if([cObj amIProximateTo:location])
+            {
+                currentMarker=cObj;
+                break;
+            }
+        }
+        
+    }
+    
     
     
 }
@@ -146,6 +169,8 @@
     
     lastTouch=location;
     
+    if(currentMarker)
+        [currentMarker moveMarkerTo:location];
     
 }
 
@@ -156,13 +181,14 @@
     //    location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     isTouching=NO;
-    
+    currentMarker=nil;
     
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouching=NO;
+    currentMarker=nil;
     // empty selected objects
 }
 

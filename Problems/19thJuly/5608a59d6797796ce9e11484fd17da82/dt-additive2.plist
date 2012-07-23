@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>DistributionTool</string>
+	<key>PROBLEM_DESCRIPTION</key>
+<<<<<<< HEAD
+	<string>Last week, [[$name]] took a test and scored 8 marks. On top of this, [[$name]]&apos;s teacher gave him {$addend} bonus marks out of a possible 5. What is [[$name]]&apos;s overall score?</string>
+	<key>EVAL_MODE</key>
+	<integer>0</integer>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$addend</string>
+			<key>MIN</key>
+			<string>0</string>
+			<key>MAX</key>
+			<string>5</string>
+		</dict>
+	</array>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>$name</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>Gareth</string>
+				<string>Scott</string>
+				<string>Nick</string>
+			</array>
+		</dict>
+	</dict>
+=======
+	<string>Tom has 8 sweets. Gareth has 5 sweets. Gareth gives Tom 4 sweets, how many sweets does Tom have?</string>
+	<key>EVAL_MODE</key>
+	<integer>0</integer>
+>>>>>>> ccd0877fad85af61472bfceee56ea8d74fe82db3
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>8</integer>
+			<key>POS_X</key>
+			<integer>80</integer>
+			<key>POS_Y</key>
+			<integer>400</integer>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>5</integer>
+			<key>POS_X</key>
+			<integer>700</integer>
+			<key>POS_Y</key>
+			<integer>400</integer>
+		</dict>
+	</array>
+	<key>SOLUTION</key>
+	<array>
+		<integer>12</integer>
+		<integer>1</integer>
+	</array>
+</dict>
+</plist>

@@ -191,9 +191,8 @@ static float kTimeToPieShake=7.0f;
 
 -(void)populateGW
 {
-    renderLayer = [[CCLayer alloc] init];
-    activeCon=[[[NSMutableArray alloc]init]retain];
-    activePie=[[[NSMutableArray alloc]init]retain];
+    activeCon=[[NSMutableArray alloc]init];
+    activePie=[[NSMutableArray alloc]init];
     
     [self.ForeLayer addChild:renderLayer];
     
@@ -255,8 +254,11 @@ static float kTimeToPieShake=7.0f;
             else if(fullPies>0 && extraSlices==0)thisConVal=[NSString stringWithFormat:@"%d", fullPies];
             else if(fullPies>0 && extraSlices>0)thisConVal=[NSString stringWithFormat:@"%d %d/%d", fullPies, extraSlices, [activeCon count]];
         }
-        if(!cont.textString)cont.textString=[[NSString alloc]init];
+        if(!cont.textString)cont.textString=@"";
         cont.textString=thisConVal;
+        
+        [cont release];
+        [thisConVal release];
     }
     [gw handleMessage:kDWupdateLabels andPayload:nil withLogLevel:-1];
 }
@@ -271,6 +273,8 @@ static float kTimeToPieShake=7.0f;
     //if(hasSplit)[self splitPie:pie];
     newPie=pie;
     createdPies++;
+    
+    [pie release];
 }
 
 -(void)createContainerAtMount
@@ -281,6 +285,8 @@ static float kTimeToPieShake=7.0f;
     cont.MountPosition=cont.Position;
     newCon=cont;
     createdCont++;
+    
+    [cont release];
 }
 
 -(void)createActivePie
@@ -295,6 +301,8 @@ static float kTimeToPieShake=7.0f;
         [self splitPie:pie];
     
     [activePie addObject:pie];
+    
+    [pie release];
 }
 
 -(void)createActiveContainer
@@ -308,6 +316,8 @@ static float kTimeToPieShake=7.0f;
     [cont.mySpriteBot setScale:1.0f];
     cont.ScaledUp=YES;
     [activeCon addObject:cont];
+    
+    [cont release];
 }
 
 -(void)addGhostPie
@@ -327,6 +337,8 @@ static float kTimeToPieShake=7.0f;
     [pie.mySprite setOpacity:25];
     [pie.touchOverlay setOpacity:25];
     [self reorderActivePies];
+    
+    [pie release];
 }
 
 -(void)addGhostContainer
@@ -349,6 +361,8 @@ static float kTimeToPieShake=7.0f;
     [cont.mySpriteMid setOpacity:25];
     [cont.mySpriteBot setOpacity:25];
     [self reorderActiveContainers];
+    
+    [cont release];
 }
 
 -(void)removeGhost
@@ -397,11 +411,13 @@ static float kTimeToPieShake=7.0f;
             [gw populateAndAddGameObject:slice withTemplateName:@"TpieSplitterSlice"];
             slice.Position=p.Position;
             slice.myPie=p;
-            if(!p.mySlices)p.mySlices=[[NSMutableArray alloc]init];
+            if(!p.mySlices)p.mySlices=[[[NSMutableArray alloc]init]autorelease];
             slice.SpriteFileName=[NSString stringWithFormat:@"/images/piesplitter/slice%d.png", [activeCon count]];
             slice.Rotation=(360/p.numberOfSlices)*i;
             [p.mySlices addObject:slice];
             [slice handleMessage:kDWsetupStuff];
+            
+            [slice release];
         }
         
     
@@ -423,11 +439,13 @@ static float kTimeToPieShake=7.0f;
             [gw populateAndAddGameObject:slice withTemplateName:@"TpieSplitterSlice"];
             slice.Position=p.Position;
             slice.myPie=p;
-            if(!p.mySlices)p.mySlices=[[NSMutableArray alloc]init];
+            if(!p.mySlices)p.mySlices=[[[NSMutableArray alloc]init] autorelease];
             slice.SpriteFileName=[NSString stringWithFormat:@"/images/piesplitter/slice%d.png", [activeCon count]];
             slice.Rotation=(360/p.numberOfSlices)*i;
             [p.mySlices addObject:slice];
             [slice handleMessage:kDWsetupStuff];
+            
+            [slice release];
         }
         
         
@@ -751,10 +769,7 @@ static float kTimeToPieShake=7.0f;
             NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
             [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
             
-            DWPieSplitterContainerGameObject *cont=[[DWPieSplitterContainerGameObject alloc]init];
             DWPieSplitterSliceGameObject *slice=(DWPieSplitterSliceGameObject *)gw.Blackboard.PickupObject;
-            if(gw.Blackboard.DropObject)cont=(DWPieSplitterContainerGameObject*)gw.Blackboard.DropObject;
-
             
             // if we have a dropobject then we need to be mounted to it
             if(gw.Blackboard.DropObject)
@@ -861,18 +876,18 @@ static float kTimeToPieShake=7.0f;
 #pragma mark - dealloc
 -(void) dealloc
 {
-    //write log on problem switch
-    [gw writeLogBufferToDiskWithKey:@"PieSplitter"];
-    
-    //tear down
-    [gw release];
     
     if(activePie)[activePie release];
     if(activeCon)[activeCon release];
+
+    [renderLayer release];
+    [movementLayer release];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
     
+    [gw release];
+
     
     [super dealloc];
 }

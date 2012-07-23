@@ -24,4 +24,18 @@
 @synthesize mySpriteMid;
 @synthesize mySpriteBot;
 
+-(void)dealloc
+{
+    if(mySlices)[mySlices release];
+    if(myText)[myText release];
+    if(textString)[textString release];
+    if(BaseNode)[BaseNode release];
+    if(Nodes)[Nodes release];
+    if(mySpriteTop)[mySpriteTop release];
+    if(mySpriteMid)[mySpriteMid release];
+    if(mySpriteBot)[mySpriteBot release];
+    
+    [super dealloc];
+}
+
 @end

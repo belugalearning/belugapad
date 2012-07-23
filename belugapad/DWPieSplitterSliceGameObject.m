@@ -17,4 +17,14 @@
 @synthesize myCont;
 @synthesize SpriteFileName;
 
+-(void)dealloc
+{
+    if(mySprite)[mySprite release];
+    if(myPie)[myPie release];
+    if(myCont)[myCont release];
+    if(SpriteFileName)[SpriteFileName release];
+    
+    [super dealloc];
+}
+
 @end

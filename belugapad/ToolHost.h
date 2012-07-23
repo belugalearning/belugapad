@@ -130,6 +130,19 @@ typedef enum {
     CCSprite *glossary1;
     CCSprite *glossary2;
     CCSprite *glossaryPopup;
+    
+    
+    //scoring
+    int pipelineScore;          //the total score accumulated in this pipeline
+    int displayScore;           //the score currently being displayed (not actual -- based on sharding)
+    int displayPerShard;        //the displayed score accumulation per shard
+    float scoreMultiplier;      //the current multiplier
+    int multiplierStage;        //the stage of the multiplier (0 for first problem)
+    BOOL hasResetMultiplier;    //has the multiplier been reset this problem (e.g. problem failed & restarted)
+    
+    CCLabelTTF *scoreLabel;
+    CCLabelTTF *multiplierLabel;
+    
 }
 
 @property (retain) Daemon *Zubi;
@@ -175,6 +188,7 @@ typedef enum {
 -(void)tearDownMetaQuestion;
 -(void)tearDownProblemDef;
 -(void)readToolOptions:(NSString*)currentTool;
+-(void)incrementDisplayScore: (id)sender;
 
 
 -(void) moveToTool1: (ccTime) delta;
@@ -182,5 +196,7 @@ typedef enum {
 
 -(void)playAudioClick;
 -(void)playAudioPress;
+
+-(void)resetScoreMultiplier;
 
 @end

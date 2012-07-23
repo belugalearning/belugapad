@@ -41,7 +41,12 @@
 {
     for (int i=0; i<[[dstringsdef allKeys] count]; i++) {
         NSString *key=[[dstringsdef allKeys] objectAtIndex:i];
-        NSDictionary *def=[dstringsdef objectForKey:key];
+        NSString *origKey=[[key copy] autorelease];
+        
+        //to support old and new syntax, we'll replace $ with @ in the string << to be deprecated
+        key=[key stringByReplacingOccurrencesOfString:@"$" withString:@"@"];
+        
+        NSDictionary *def=[dstringsdef objectForKey:origKey];
         NSString *mode=[def objectForKey:@"MODE"];
         NSArray *data=[def objectForKey:@"DATA"];
         NSString *val=nil;
@@ -381,11 +386,27 @@
                   parse,
                   [self numberFromVarLiteralString:mid withLkpSource:lkpVars]);
             
-            //presume one variable, get as literal replacement
-            parse=[parse stringByReplacingCharactersInRange:replacerange withString:[[self numberFromVarLiteralString:mid withLkpSource:lkpVars] stringValue]];
+            if([mid rangeOfString:@"@"].location != NSNotFound)
+            {
+                //dstring replacement
+                [self replaceDStringWithKey:mid inString:&parse atRange:replacerange];
+            }
             
+            else
+            {
+                //presume one variable, get as literal replacement
+                parse=[parse stringByReplacingCharactersInRange:replacerange withString:[[self numberFromVarLiteralString:mid withLkpSource:lkpVars] stringValue]];                
+            }
         }
+        
         else {
+            //check there isn't also a string replace char in here -- we can't handle those
+            if([mid rangeOfString:@"@"].location!=NSNotFound)
+            {
+                NSLog(@"cannot parse a string with dstring and dvar operators: %@", mid);
+                return @"";
+            }
+            
             //we have operators, get vars and operate
             NSString *lstring=[mid substringToIndex:rop.location];
             NSString *rstring=[mid substringFromIndex:rop.location+1];
@@ -418,7 +439,7 @@
     }
     
     
-    //DSTRING replacements
+    //DSTRING replacements << old-style, to be depracated
     NSRange dsrange=[parse rangeOfString:@"[["];
     while (dsrange.location!=NSNotFound) {
         //string from [[ +2 to end
@@ -434,20 +455,28 @@
         //the range in the parse string that we're going to replace
         NSRange replacerange={dsrange.location, rend.location+4};
         
-        NSLog(@"dstring replacing range |%@| in string |%@| with string |%@| for key |%@|",
-              NSStringFromRange(replacerange),
-              parse,
-              [dStrings objectForKey:mid],
-              mid);
-        
-        //do straight swap of [[$____]]  in parse
-        parse=[parse stringByReplacingCharactersInRange:replacerange withString:[dStrings objectForKey:mid]];
+        [self replaceDStringWithKey:mid inString:&parse atRange:replacerange];
         
         //look for next replacement
         dsrange=[parse rangeOfString:@"[["];
     }
     
     return parse;
+}
+
+- (void)replaceDStringWithKey:(NSString *)key inString:(NSString **)parse atRange:(NSRange)replacerange
+{
+    NSLog(@"dstring replacing range |%@| in string |%@| with string |%@| for key |%@|",
+          NSStringFromRange(replacerange),
+          *parse,
+          [dStrings objectForKey:key],
+          key);
+    
+    //replace $ for @ in key to lookup for old syntax << old-style, to be depracted
+    key=[key stringByReplacingOccurrencesOfString:@"$" withString:@"@"];
+    
+    //do straight swap of @____  in parse
+    *parse=[*parse stringByReplacingCharactersInRange:replacerange withString:[dStrings objectForKey:key]];
 }
 
 -(NSString*)parseStringFromString:(NSString*)input

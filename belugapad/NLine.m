@@ -368,6 +368,7 @@ static float kTimeToBubbleShake=7.0f;
             //automate reset here
             
             [self resetBubble];
+            [toolHost resetScoreMultiplier];
             
             //toolHost.flagResetProblem=YES;
         }

@@ -29,6 +29,7 @@ typedef enum
 @property (retain) CCSprite *SliderSprite;
 @property (retain) CCSprite *SliderMarkerSprite;
 @property (retain) CCNode *BaseNode;
+@property int MarkerStartPosition;
 
 -(void)setup;
 

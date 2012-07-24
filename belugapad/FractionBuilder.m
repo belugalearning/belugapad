@@ -124,6 +124,7 @@
     id<Configurable, Interactive> fraction;
     fraction=[[[SGFractionObject alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,cy)] autorelease];
     fraction.HasSlider=YES;
+    fraction.MarkerStartPosition=20;
     
     [fraction setup];
     

@@ -40,9 +40,11 @@ typedef enum
 
 @property int Divisions;
 @property (retain) NSMutableArray *Chunks;
+@property (retain) NSMutableArray *GhostChunks;
 @property int MarkerPosition;
 
 -(void)snapToNearestPos;
+-(void)ghostChunk;
 
 @end
 

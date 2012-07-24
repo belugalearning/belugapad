@@ -11,10 +11,11 @@
 
 @interface SGFractionBuilderMarker : SGComponent
 {
-    id<Configurable,Moveable> ParentGO;
+    id<Configurable,Moveable,Interactive> ParentGO;
 }
 
 -(BOOL)amIProximateTo:(CGPoint)location;
 -(void)moveMarkerTo:(CGPoint)location;
+-(void)snapToNearestPos;
 
 @end

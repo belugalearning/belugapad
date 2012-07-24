@@ -25,7 +25,7 @@
 
 @implementation SGFractionBuilderMarker
 
--(SGFractionBuilderMarker*)initWithGameObject:(id<Configurable, Moveable>)aGameObject
+-(SGFractionBuilderMarker*)initWithGameObject:(id<Configurable, Moveable, Interactive>)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
@@ -97,11 +97,23 @@
         else
             markerPosition=(int)exactPos;
         
+        ParentGO.MarkerPosition=markerPosition;
+        
         // and flip the values (ie - right to left 0-20)
         markerPosition=fabsf(markerPosition-kNumbersAlongFractionSlider);
         
         NSLog(@"markerPos? %d", markerPosition);
     }
+}
+
+-(void)snapToNearestPos
+{
+    float markerZeroPosition=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
+    float markerCurPosition=markerZeroPosition+((fractionSprite.contentSize.width/kNumbersAlongFractionSlider)*ParentGO.MarkerPosition);
+    
+    [sliderMarkerSprite runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(markerCurPosition,sliderMarkerSprite.position.y)]];
+    
+    //[sliderMarkerSprite setPosition:ccp(markerStartPosition,-80)];
 }
 
 

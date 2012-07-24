@@ -31,7 +31,7 @@
     
     //game world
     SGGameWorld *gw;
-    id<Moveable>currentMarker;
+    id<Moveable,Interactive>currentMarker;
     
 }
 
@@ -146,7 +146,7 @@
     {
         if([thisObj conformsToProtocol:@protocol(Moveable)])
         {
-            id <Moveable> cObj=thisObj;
+            id <Moveable,Interactive> cObj=thisObj;
             
             if([cObj amIProximateTo:location])
             {
@@ -181,6 +181,10 @@
     //    CGPoint location=[touch locationInView: [touch view]];
     //    location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
+    
+    if(currentMarker)
+        [currentMarker snapToNearestPos];
+    
     isTouching=NO;
     currentMarker=nil;
     
@@ -188,6 +192,10 @@
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if(currentMarker)
+        [currentMarker snapToNearestPos];
+    
+    
     isTouching=NO;
     currentMarker=nil;
     // empty selected objects

@@ -154,11 +154,8 @@ static float kTimeToMountedShake=7.0f;
         useBlockScaling=YES;
     
     createdRows = [[NSMutableArray alloc]init];
-    [createdRows retain];
     
     mountedObjects = [[NSMutableArray alloc]init];
-    [mountedObjects retain];
-    
 }
 
 -(void)populateGW
@@ -251,6 +248,7 @@ static float kTimeToMountedShake=7.0f;
         [prgo handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
         
         [fillText release];
+        [pogo release];
     }
 
 }
@@ -539,10 +537,11 @@ static float kTimeToMountedShake=7.0f;
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
     
-    if(initBars) [initBars release];
-    if(initObjects) [initObjects release];
-    if(initCages) [initCages release];
-    if(solutionsDef) [solutionsDef release];
+    //removing manual releases here -- causing msg_send issue
+//    if(initBars) [initBars release];
+//    if(initObjects) [initObjects release];
+//    if(initCages) [initCages release];
+//    if(solutionsDef) [solutionsDef release];
     if(createdRows) [createdRows release];
     if(mountedObjects) [mountedObjects release];
     

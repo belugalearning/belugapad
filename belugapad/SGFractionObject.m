@@ -9,6 +9,7 @@
 #import "SGFractionObject.h"
 #import "SGFractionBuilderRender.h"
 #import "SGFractionBuilderMarker.h"
+#import "SGFractionBuilderChunk.h"
 
 
 @implementation SGFractionObject
@@ -17,10 +18,11 @@
 @synthesize RenderLayer, HasSlider, CreateChunksOnInit, CreateChunks, FractionMode, Position, FractionSprite, SliderSprite, SliderMarkerSprite, BaseNode, MarkerStartPosition;
 
 // interactive properties
-@synthesize Divisions, Chunks, MarkerPosition;
+@synthesize Divisions, Chunks, GhostChunks, MarkerPosition;
 
 @synthesize RenderComponent;
 @synthesize MarkerComponent;
+@synthesize ChunkComponent;
 
 -(SGFractionObject*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
 {   
@@ -29,10 +31,13 @@
         self.RenderLayer=aRenderLayer;
         self.Position=aPosition;
         self.BaseNode=[[CCNode alloc]init];
+        self.Chunks=[[NSMutableArray alloc]init];
+        self.GhostChunks=[[NSMutableArray alloc]init];
 
     }
     RenderComponent=[[SGFractionBuilderRender alloc] initWithGameObject:self];
     MarkerComponent=[[SGFractionBuilderMarker alloc] initWithGameObject:self];
+    ChunkComponent=[[SGFractionBuilderChunk alloc] initWithGameObject:self];
     return self;
 }
 
@@ -69,6 +74,11 @@
     [self.MarkerComponent moveMarkerTo:location];
 }
 
+-(void)ghostChunk
+{
+    [self.ChunkComponent ghostChunk];
+}
+
 -(void)snapToNearestPos
 {
     [self.MarkerComponent snapToNearestPos];
@@ -77,6 +87,10 @@
 -(void)dealloc
 {
     [RenderComponent release];
+    [MarkerComponent release];
+    if(self.BaseNode)[self.BaseNode release];
+    if(self.Chunks)[self.Chunks release];
+    if(self.GhostChunks)[self.GhostChunks release];
     
     [super dealloc];
 }

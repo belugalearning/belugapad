@@ -94,6 +94,7 @@
 -(void)dealloc
 {
     [BlockRenderComponent release];
+    [BlockPairComponent release];
     
     [super dealloc];
 }

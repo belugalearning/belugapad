@@ -14,4 +14,13 @@
 @synthesize Position;
 @synthesize mySprite;
 @synthesize myShape;
+
+-(void)dealloc
+{
+    if(mySprite)[mySprite release];
+    if(myShape)[myShape release];
+    
+    [super dealloc];
+}
+
 @end

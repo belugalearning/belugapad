@@ -100,14 +100,13 @@
 {    
     
     if(!cont.BaseNode){
-        cont.BaseNode=[[CCNode alloc]init];
+        cont.BaseNode=[[[CCNode alloc]init] autorelease];
         [cont.BaseNode setPosition:cont.Position];
         if(!cont.ScaledUp)[[gameWorld Blackboard].ComponentRenderLayer addChild:cont.BaseNode z:2];
         else [[gameWorld Blackboard].MovementLayer addChild:cont.BaseNode z:2];
+        
     }
 
-    
-//    NSString *spriteFileName=[[NSString alloc]init];
     
     
 //    spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/container.png"];

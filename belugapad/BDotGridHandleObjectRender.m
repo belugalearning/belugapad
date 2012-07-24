@@ -90,6 +90,7 @@
     
     [[gameWorld Blackboard].ComponentRenderLayer addChild:handle.mySprite z:10];
     
+    [spriteFileName release];
 }
 
 -(void)setSpritePos

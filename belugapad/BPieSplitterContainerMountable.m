@@ -63,7 +63,7 @@
 {
     if(gameWorld.Blackboard.PickupObject)
     {
-        if(!cont.mySlices)cont.mySlices=[[NSMutableArray alloc]init];
+        if(!cont.mySlices)cont.mySlices=[[[NSMutableArray alloc]init] autorelease];
         
         [cont.mySlices addObject:gameWorld.Blackboard.PickupObject];
         [self scaleMidSection];

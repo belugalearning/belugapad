@@ -56,17 +56,6 @@
 		<key>SCALING_PASS_THRU</key>
 		<true/>
 	</dict>
-	<key>BlockFloating</key>
-	<dict>
-		<key>TOOL_DEPTH</key>
-		<string>1</string>
-		<key>SCALING_PASS_THRU</key>
-		<false/>
-		<key>SCALE_MIN</key>
-		<integer>1</integer>
-		<key>SCALE_MAX</key>
-		<integer>1</integer>
-	</dict>
 	<key>TimesTables</key>
 	<dict>
 		<key>SCALING_PASS_THRU</key>

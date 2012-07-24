@@ -8,7 +8,6 @@
 
 #import "ToolHost.h"
 #import "ToolConsts.h"
-#import "BlockFloating.h"
 #import "global.h"
 #import "SimpleAudioEngine.h"
 #import "BLMath.h"

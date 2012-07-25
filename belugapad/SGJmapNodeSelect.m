@@ -134,7 +134,7 @@
         }
         else {
             //mastery node
-            signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/NodeOverlayBackground.png")];
+            signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/MasteryNodeOverlayBackground.png")];
             
             if(ParentGO.EnabledAndComplete)
             {

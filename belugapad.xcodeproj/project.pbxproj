@@ -35,6 +35,7 @@
 		0CDECB6615920C27004DE20D /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB5B15920C27004DE20D /* AFXMLRequestOperation.m */; };
 		0CDECB6715920C27004DE20D /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB5D15920C27004DE20D /* UIImageView+AFNetworking.m */; };
 		0CF9187C14F54C1D00FAC58D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF9187B14F54C1D00FAC58D /* images */; };
+		5501947215C038300067E22C /* SGFractionChunk.m in Sources */ = {isa = PBXBuildFile; fileRef = 5501947115C038300067E22C /* SGFractionChunk.m */; };
 		5502A72115BEC576002CE180 /* SGFractionBuilderChunk.m in Sources */ = {isa = PBXBuildFile; fileRef = 5502A72015BEC575002CE180 /* SGFractionBuilderChunk.m */; };
 		5507087B15176A0600111BBB /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708791517625300111BBB /* ColumnAdditionConsts.m */; };
 		5508FEB015A2F2B8003720AF /* ToolTemplateSG.m in Sources */ = {isa = PBXBuildFile; fileRef = 5508FEAF15A2F2B7003720AF /* ToolTemplateSG.m */; };
@@ -443,6 +444,8 @@
 		0CDECB5C15920C27004DE20D /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
 		0CDECB5D15920C27004DE20D /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		0CF9187B14F54C1D00FAC58D /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = SOURCE_ROOT; };
+		5501947015C038300067E22C /* SGFractionChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionChunk.h; sourceTree = "<group>"; };
+		5501947115C038300067E22C /* SGFractionChunk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionChunk.m; sourceTree = "<group>"; };
 		5502A71F15BEC575002CE180 /* SGFractionBuilderChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionBuilderChunk.h; sourceTree = "<group>"; };
 		5502A72015BEC575002CE180 /* SGFractionBuilderChunk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionBuilderChunk.m; sourceTree = "<group>"; };
 		550708781517625300111BBB /* ColumnAdditionConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAdditionConsts.h; sourceTree = "<group>"; };
@@ -1439,6 +1442,8 @@
 			children = (
 				55FBB2FF15BD78EF0034B081 /* SGFractionObject.h */,
 				55FBB30015BD78EF0034B081 /* SGFractionObject.m */,
+				5501947015C038300067E22C /* SGFractionChunk.h */,
+				5501947115C038300067E22C /* SGFractionChunk.m */,
 			);
 			name = Fraction;
 			sourceTree = "<group>";
@@ -2542,9 +2547,9 @@
 			productReference = 7F40D89714FFD8BE006A3A55 /* GeneralTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
-		7F5113BD14A9EE62001AF372 /* beluga july '12 */ = {
+		7F5113BD14A9EE62001AF372 /* beluga aug '12 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7F51158E14A9EE67001AF372 /* Build configuration list for PBXNativeTarget "beluga july '12" */;
+			buildConfigurationList = 7F51158E14A9EE67001AF372 /* Build configuration list for PBXNativeTarget "beluga aug '12" */;
 			buildPhases = (
 				7F5113BA14A9EE62001AF372 /* Sources */,
 				7F5113BB14A9EE62001AF372 /* Frameworks */,
@@ -2555,7 +2560,7 @@
 			);
 			dependencies = (
 			);
-			name = "beluga july '12";
+			name = "beluga aug '12";
 			productName = belugapad;
 			productReference = 7F5113BE14A9EE62001AF372 /* beluga july '12.app */;
 			productType = "com.apple.product-type.application";
@@ -2580,7 +2585,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7F5113BD14A9EE62001AF372 /* beluga july '12 */,
+				7F5113BD14A9EE62001AF372 /* beluga aug '12 */,
 				7F40D89614FFD8BE006A3A55 /* GeneralTests */,
 			);
 		};
@@ -3003,6 +3008,7 @@
 				55FBB30115BD78EF0034B081 /* SGFractionObject.m in Sources */,
 				7F1A3B5115BDEC8C0060CB15 /* SGFractionBuilderMarker.m in Sources */,
 				5502A72115BEC576002CE180 /* SGFractionBuilderChunk.m in Sources */,
+				5501947215C038300067E22C /* SGFractionChunk.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3011,7 +3017,7 @@
 /* Begin PBXTargetDependency section */
 		7F40D90314FFECBE006A3A55 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 7F5113BD14A9EE62001AF372 /* beluga july '12 */;
+			target = 7F5113BD14A9EE62001AF372 /* beluga aug '12 */;
 			targetProxy = 7F40D90214FFECBE006A3A55 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -3215,7 +3221,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7F51158E14A9EE67001AF372 /* Build configuration list for PBXNativeTarget "beluga july '12" */ = {
+		7F51158E14A9EE67001AF372 /* Build configuration list for PBXNativeTarget "beluga aug '12" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7F51158F14A9EE67001AF372 /* Debug */,

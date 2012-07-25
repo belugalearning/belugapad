@@ -23,6 +23,7 @@
 {
 @private
     SelectUserViewController *selectUserViewController;
+    BOOL cocosIsInitialised;
 }
 @property (nonatomic, readwrite) LoggingService *loggingService;
 @property (nonatomic, readwrite) ContentService *contentService;
@@ -89,16 +90,12 @@
     [self.window addSubview:selectUserViewController.view];
     [self.window makeKeyAndVisible];
     
-    return YES;
-}
-
--(void)proceedFromLoginViaIntro:(BOOL)viaIntro
-{
+    
     //no purpose in getting this -- it's not used
     //NSDictionary *launchOptions=launchOptionsCache;
     
     self.IsIpad1 = !(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad &&
-                    [UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]);
+                     [UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]);
     
     director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
     
@@ -135,17 +132,6 @@
 	if( ! [director_ enableRetinaDisplay:NO] )
 		CCLOG(@"Retina Display Not supported");
     
-	// Create a Navigation Controller with the Director
-	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
-	navController_.navigationBarHidden = YES;
-    
-	// set the Navigation Controller as the root view controller
-    //	[window_ setRootViewController:rootViewController_];
-	[window_ addSubview:navController_.view];
-    
-	// make main window visible
-	[window_ makeKeyAndVisible];
-    
 	// Default texture format for PNG/BMP/TIFF/JPEG/GIF images
 	// It can be RGBA8888, RGBA4444, RGB5_A1, RGB565
 	// You can change anytime.
@@ -159,10 +145,23 @@
     
 	// Assume that PVR images have premultiplied alpha
 	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
-
     
-    // and add the scene to the stack. The director will run it when it automatically when the view is displayed.
-	//[director_ pushScene: (viaIntro ? [ZubiIntro scene] : [JourneyScene scene])]; 
+    return YES;
+}
+
+-(void)proceedFromLoginViaIntro:(BOOL)viaIntro
+{
+    
+	// Create a Navigation Controller with the Director
+	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
+	navController_.navigationBarHidden = YES;
+    
+	// set the Navigation Controller as the root view controller
+    //	[window_ setRootViewController:rootViewController_];
+	[window_ addSubview:navController_.view];
+    
+	// make main window visible
+	[window_ makeKeyAndVisible]; 
     
     if(contentService.isUsingTestPipeline)
     {

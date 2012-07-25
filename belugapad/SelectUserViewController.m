@@ -389,7 +389,6 @@
 
 - (void)dealloc
 {
-    [[CCDirector sharedDirector] end];
     [deviceUsers release];
     if (colorWheel) [colorWheel removeObserver:self forKeyPath:@"lastColorRGBAData"];
     [backgroundImageView release];
@@ -403,7 +402,6 @@
 
 - (void)viewDidUnload
 {
-    [[CCDirector sharedDirector] end];
     [deviceUsers release];
     deviceUsers = nil;
     if (colorWheel) [colorWheel removeObserver:self forKeyPath:@"lastColorRGBAData"];

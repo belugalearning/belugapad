@@ -172,12 +172,12 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         int time=i;
         if(skipNextStagedIntroAnim) time=0;
         
-        [self recurseSetIntroFor:toolBackLayer withTime:time forTag:i];
-        [self recurseSetIntroFor:toolForeLayer withTime:time forTag:i];
-        [self recurseSetIntroFor:toolNoScaleLayer withTime:time forTag:i];
-        [self recurseSetIntroFor:metaQuestionLayer withTime:time forTag:i];
-        [self recurseSetIntroFor:problemDefLayer withTime:time forTag:i];
-        [self recurseSetIntroFor:numberPickerLayer withTime:time forTag:i];
+        if(toolBackLayer) [self recurseSetIntroFor:toolBackLayer withTime:time forTag:i];
+        if(toolForeLayer)[self recurseSetIntroFor:toolForeLayer withTime:time forTag:i];
+        if(toolNoScaleLayer)[self recurseSetIntroFor:toolNoScaleLayer withTime:time forTag:i];
+        if(metaQuestionLayer)[self recurseSetIntroFor:metaQuestionLayer withTime:time forTag:i];
+        if(problemDefLayer)[self recurseSetIntroFor:problemDefLayer withTime:time forTag:i];
+        if(numberPickerLayer)[self recurseSetIntroFor:numberPickerLayer withTime:time forTag:i];
     }
     
     skipNextStagedIntroAnim=NO;
@@ -520,9 +520,25 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     if(currentTool)
     {
-        [self removeChild:toolBackLayer cleanup:YES];
-        [self removeChild:toolForeLayer cleanup:YES];
-        [self removeChild:toolNoScaleLayer cleanup:YES];
+        if(toolBackLayer)
+        {
+            [self removeChild:toolBackLayer cleanup:YES];
+            toolBackLayer=nil;
+        }
+        
+        if(toolForeLayer)
+        {
+            [self removeChild:toolForeLayer cleanup:YES];            
+            toolForeLayer=nil;
+        }
+        
+        if(toolNoScaleLayer)
+        {
+            [self removeChild:toolNoScaleLayer cleanup:YES];
+            //stop looking at it -- tool should clean it up
+            toolNoScaleLayer=nil;
+        }
+        
         [currentTool release];
         currentTool=nil;
     }

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>[[$name]] has {$start_value} [[$object]] and gets {$interval} more. How many does [[$name]] have?</string>
+	<string>{@name} has {$start_value} {@object} and gets {$interval} more. How many does {@name} have?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Tom has n objects and gets some more. How many do they have?</string>
 	<key>TOOL_KEY</key>
@@ -39,7 +39,7 @@
 	</dict>
 	<key>DSTRINGS</key>
 	<dict>
-		<key>$name</key>
+		<key>@name</key>
 		<dict>
 			<key>RECALL</key>
 			<true/>
@@ -53,7 +53,7 @@
 				<string>Kim</string>
 			</array>
 		</dict>
-		<key>$object</key>
+		<key>@object</key>
 		<dict>
 			<key>MODE</key>
 			<string>RANDOM</string>

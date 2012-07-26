@@ -88,7 +88,7 @@
 
 -(void)pairMeWith:(id)thisObject
 {
-    if(!ParentGO.PairedObjects)ParentGO.PairedObjects=[[NSMutableArray alloc]init];
+    if(!ParentGO.PairedObjects)ParentGO.PairedObjects=[[[NSMutableArray alloc]init]autorelease];
     
     // if the array already contains the object - don't readd it
     if(![ParentGO.PairedObjects containsObject:thisObject])[ParentGO.PairedObjects addObject:thisObject];
@@ -101,7 +101,7 @@
     id<Pairable> currentPickupObject=pickupObject;
     
     // check whether the array exists - if not, create it 
-    if(!currentPickupObject.PairedObjects)currentPickupObject.PairedObjects=[[NSMutableArray alloc]init];
+    if(!currentPickupObject.PairedObjects)currentPickupObject.PairedObjects=[[[NSMutableArray alloc]init] autorelease];
     // then, pair our pickupObject with our current GO
     if(![currentPickupObject.PairedObjects containsObject:ParentGO])[currentPickupObject.PairedObjects addObject:ParentGO];
 }

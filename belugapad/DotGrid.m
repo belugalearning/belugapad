@@ -76,12 +76,7 @@
         
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
-        gw.Blackboard.inProblemSetup = NO;
-        gw.Blackboard.FirstAnchor=(DWDotGridAnchorGameObject*)[[DWGameObject alloc]init];
-        gw.Blackboard.LastAnchor=(DWDotGridAnchorGameObject*)[[DWGameObject alloc]init];
-        gw.Blackboard.FirstAnchor=nil;
-        gw.Blackboard.LastAnchor=nil;
-        
+        gw.Blackboard.inProblemSetup = NO;        
     }
     
     return self;
@@ -145,7 +140,6 @@
 {
     gameState=kNoState;
     dotMatrix=[[NSMutableArray alloc]init];
-    [dotMatrix retain];
     renderLayer = [[CCLayer alloc] init];
     [self.ForeLayer addChild:renderLayer];
     
@@ -199,12 +193,13 @@
             }
 
             [currentCol addObject:anch];
-            
+            [anch release];
 
         }
         
         xStartPos=xStartPos+spaceBetweenAnchors;
         [dotMatrix addObject:currentCol];
+        [currentCol release];
         
     }    
     
@@ -390,6 +385,7 @@
             NSLog(@"shape in matrix (%d/%d): x %d / y %d", i, [anchorsForShape count], wanch.myXpos, wanch.myYpos);
         }
 
+        [anchorsForShape release];
     }
 }
 
@@ -502,6 +498,8 @@
     
     thisShape.lastAnchor=anchEnd;
     [self modifyThisShape:thisShape withTheseAnchors:anchorsForShape];
+
+    [anchorsForShape release];
 }
 
 -(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled
@@ -540,6 +538,8 @@
                     numberCounted++;
                     tile.Selected=YES;
                 }
+                
+                [thisTile release];
             }
             
             if(curAnch.resizeHandle)
@@ -551,6 +551,8 @@
                 shape.resizeHandle=rshandle;
                 rshandle.myShape=shape;
                 
+                [rshandle release];
+                
             }
             
             if(curAnch.moveHandle)
@@ -561,8 +563,13 @@
                 mvhandle.Position=ccp(curAnch.Position.x, curAnch.Position.y+spaceBetweenAnchors);
                 shape.moveHandle=mvhandle;
                 mvhandle.myShape=shape;
+                
+                [mvhandle release];
 
             }
+            
+            [curAnch release];
+            [tile release];
         }
     
     [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
@@ -572,6 +579,8 @@
         [loggingService logEvent:BL_PA_DG_TOUCH_END_CREATE_SHAPE
             withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:[anchors count]] forKey:@"numTiles"]];
     }
+    
+    [shape release];
 }
 
 -(void)modifyThisShape:(DWDotGridShapeGameObject*)thisShape withTheseAnchors:(NSArray*)anchors
@@ -639,6 +648,8 @@
                 [thisShape.tiles addObject:tile];
                 curAnch.tile=tile;
                 tile.myAnchor=curAnch;
+                
+                [tile release];
             }
 
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
@@ -655,6 +666,9 @@
     
     [loggingService logEvent:BL_PA_DG_TOUCH_END_RESIZE_SHAPE
         withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:[thisShape.tiles count]] forKey:@"numTiles"]];
+    
+    [removeObjects release];
+    [rsAnchor release];
 }
 
 #pragma mark - touch events
@@ -816,8 +830,8 @@
     //create base equality
     toolHost.PpExpr=[BAExpressionTree treeWithRoot:[BAEqualsOperator operator]];
     
-    NSMutableArray *tileCounts=[[NSMutableArray alloc] init];
-    NSMutableArray *selectedCounts=[[NSMutableArray alloc] init];
+    NSMutableArray *tileCounts=[[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *selectedCounts=[[[NSMutableArray alloc] init] autorelease];
     
     for (DWGameObject *go in [gw AllGameObjects]) {
         if([go isKindOfClass:[DWDotGridShapeGameObject class]])
@@ -925,7 +939,9 @@
     }
     else {
         BATQuery *q=[[BATQuery alloc] initWithExpr:toolHost.PpExpr.root andTree:toolHost.PpExpr];
-        return [q assumeAndEvalEqualityAtRoot];        
+        BOOL res=[q assumeAndEvalEqualityAtRoot];
+        [q release];
+        return res;
     }
 }
 
@@ -963,18 +979,16 @@
 #pragma mark - dealloc
 -(void) dealloc
 {
-    //write log on problem switch
-    [gw writeLogBufferToDiskWithKey:@"DotGrid"];
-    
-    //tear down
-    [gw release];
     if(dotMatrix)[dotMatrix release];
     if(initObjects)[initObjects release];
     if(hiddenRows)[hiddenRows release];
     
+    [renderLayer release];
+    
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
-    
+
+    [gw release];
 
     [super dealloc];
 }

@@ -430,6 +430,7 @@ static float kDistanceBetweenBlocks=70.0f;
                 NSMutableArray *shape=[[NSMutableArray alloc]init];
                 [shape addObject:pairableGO];
                 [foundShapes addObject:shape];       
+                [shape release];
             }
             // and if not, run our normal checks
             else {
@@ -449,6 +450,7 @@ static float kDistanceBetweenBlocks=70.0f;
                         NSMutableArray *shape=[[NSMutableArray alloc]init];
                         [shape addObject:pairedObj];
                         [foundShapes addObject:shape];
+                        [shape release];
                     }
                     
                     else if([foundShapes count]>0)
@@ -484,6 +486,7 @@ static float kDistanceBetweenBlocks=70.0f;
                             NSMutableArray *shape=[[NSMutableArray alloc]init];
                             [shape addObject:pairedObj];
                             [foundShapes addObject:shape];
+                            [shape release];
                         }
                     }
                     
@@ -502,7 +505,9 @@ static float kDistanceBetweenBlocks=70.0f;
         }
     }
     
-    return foundShapes;
+    [checkedObjects release];
+    
+    return [foundShapes autorelease];
     
 }
 
@@ -525,6 +530,8 @@ static float kDistanceBetweenBlocks=70.0f;
             }
         }
     }
+    
+    [shapesMatched release];
     
     if(solutionsFound==solutionsExpected)
         return YES;
@@ -568,14 +575,14 @@ static float kDistanceBetweenBlocks=70.0f;
 #pragma mark - dealloc
 -(void) dealloc
 {
-    //write log on problem switch
-    
-    //tear down
-    [gw release];
+
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
     
+    [renderLayer release];
+    
+    [gw release];
     
     [super dealloc];
 }

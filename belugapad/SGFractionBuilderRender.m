@@ -10,6 +10,8 @@
 #import "SGFractionBuilderRender.h"
 #import "SGFractionObject.h"
 #import "BLMath.h"
+#import "ToolConsts.h"
+
 
 @interface SGFractionBuilderRender()
 {
@@ -44,12 +46,34 @@
 
 -(void)setup
 {
+    [ParentGO.BaseNode setPosition:ParentGO.Position];
     
     //blockSprite=[CCSprite spriteWithSpriteFrameName:@"node-complete.png"];
-    fractionSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/distribution/block.png")];
+    fractionSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/fractions/fraction.png")];
+    
     ParentGO.FractionSprite=fractionSprite;
-    [fractionSprite setPosition:ParentGO.Position];
-    [ParentGO.RenderLayer addChild:fractionSprite];
+    [fractionSprite setPosition:ccp(0,0)];
+    [ParentGO.BaseNode addChild:fractionSprite];
+    
+    
+    if(ParentGO.HasSlider){
+        
+        float markerZeroPosition=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
+        float markerStartPosition=markerZeroPosition+((fractionSprite.contentSize.width/kNumbersAlongFractionSlider)*ParentGO.MarkerStartPosition);
+        ParentGO.MarkerPosition=ParentGO.MarkerStartPosition;
+        
+        sliderSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/fractions/slider.png")];
+        sliderMarkerSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/fractions/marker.png")];
+        ParentGO.SliderSprite=sliderSprite;
+        ParentGO.SliderMarkerSprite=sliderMarkerSprite;
+        [sliderSprite setPosition:ccp(0,-100)];
+        [sliderMarkerSprite setPosition:ccp(markerStartPosition,-80)];    
+        [ParentGO.BaseNode addChild:sliderSprite];
+        [ParentGO.BaseNode addChild:sliderMarkerSprite];
+    }
+    
+    [ParentGO.RenderLayer addChild:ParentGO.BaseNode];
 }
+
 
 @end

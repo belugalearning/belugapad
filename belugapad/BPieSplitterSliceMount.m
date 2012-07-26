@@ -69,13 +69,14 @@
         
         BOOL GotPlaceInNode;
         
-        if(!c.Nodes)c.Nodes=[[NSMutableArray alloc]init];
+        if(!c.Nodes)c.Nodes=[[[NSMutableArray alloc]init] autorelease];
         if([c.Nodes count]==0)
         {
             CCNode *thisNode=[[CCNode alloc]init];
             [c.Nodes addObject:thisNode];
             [c.BaseNode addChild:thisNode];
             [thisNode addChild:slice.mySprite];
+            [thisNode release];
         }
         else {
             for(CCNode *n in c.Nodes)
@@ -102,6 +103,7 @@
                 [c.Nodes addObject:thisNode];
                 [c.BaseNode addChild:thisNode];
                 [thisNode addChild:slice.mySprite];
+                [thisNode release];
 
             }
         
@@ -131,6 +133,7 @@
     }
     
     if([deleteNodes count]>0)[c.Nodes removeObjectsInArray:deleteNodes];
+    [deleteNodes release];
 
     // and after they're removed - loop BACK through - repositioning the stacks
     
@@ -175,4 +178,9 @@
     slice.myCont=nil;
 }
 
+-(void)dealloc
+{
+    
+    [super dealloc];
+}
 @end

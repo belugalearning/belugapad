@@ -20,15 +20,6 @@
 	<integer>10</integer>
 	<key>ROWS_PER_COL</key>
 	<integer>2</integer>
-	<key>MAX_OBJECTS_IN_COLS</key>
-	<array>
-		<dict>
-			<key>COL</key>
-			<integer>0</integer>
-			<key>NUMBER</key>
-			<string>{$number}</string>
-		</dict>
-	</array>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
@@ -60,18 +51,8 @@
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>10</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>1</integer>
-			<key>NUMBER</key>
-			<integer>10</integer>
+			<string>{$number}</string>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -85,6 +66,8 @@
 	<dict>
 		<key>$number</key>
 		<dict>
+			<key>RECALL</key>
+			<string>{$interval}</string>
 			<key>RETAIN</key>
 			<true/>
 			<key>MIN</key>
@@ -94,6 +77,8 @@
 		</dict>
 		<key>$interval</key>
 		<dict>
+			<key>RECALL</key>
+			<string>{$number}</string>
 			<key>RETAIN</key>
 			<true/>
 			<key>MIN</key>

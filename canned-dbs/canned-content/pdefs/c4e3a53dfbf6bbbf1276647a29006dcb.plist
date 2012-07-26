@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>this is {$number}. subtract {$interval} and count</string>
+	<string>this is {$number}. add {$interval} and count</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>subtracting 1-5 to 1-5</string>
+	<string>adding 1-5 to 1-5</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -20,15 +20,6 @@
 	<integer>10</integer>
 	<key>ROWS_PER_COL</key>
 	<integer>2</integer>
-	<key>MAX_OBJECTS_IN_COLS</key>
-	<array>
-		<dict>
-			<key>COL</key>
-			<integer>0</integer>
-			<key>NUMBER</key>
-			<string>{$number}</string>
-		</dict>
-	</array>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
@@ -60,18 +51,8 @@
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>10</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>1</integer>
-			<key>NUMBER</key>
-			<integer>10</integer>
+			<string>{$number}</string>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -79,14 +60,12 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT_AND_COUNT_SEQUENCE</string>
 		<key>SOLUTION_VALUE</key>
-		<string>{$number-$interval}</string>
+		<string>{$number+$interval}</string>
 	</dict>
 	<key>DVARS</key>
 	<dict>
 		<key>$number</key>
 		<dict>
-			<key>RECALL</key>
-			<string>{$number}</string>
 			<key>RETAIN</key>
 			<true/>
 			<key>MIN</key>
@@ -96,8 +75,6 @@
 		</dict>
 		<key>$interval</key>
 		<dict>
-			<key>RECALL</key>
-			<string>{$interval}</string>
 			<key>RETAIN</key>
 			<true/>
 			<key>MIN</key>

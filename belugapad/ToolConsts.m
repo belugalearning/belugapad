@@ -64,3 +64,8 @@ const CGRect kPauseMenuLogOut={{8.0f,717.0f},{120.0f,43.0f}};
 const CGRect kPauseMenuMenu={{374.0f,478.0f},{275.0f,80.0f}};
 const CGRect kPauseMenuReset={{374.0f,378.0f},{275.0f,80.0f}};
 const CGRect kPauseMenuContinue={{299.0f,213.0f},{424.0f,80.0f}};
+
+
+// fraction builder
+
+const float kNumbersAlongFractionSlider=19;

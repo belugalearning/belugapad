@@ -81,7 +81,7 @@
 -(void)setSprite
 {    
     DWPieSplitterPieGameObject *p=(DWPieSplitterPieGameObject*)slice.myPie;
-    NSString *spriteFileName=[[NSString alloc]init];
+    NSString *spriteFileName=[[[NSString alloc]init] autorelease];
     
     if(slice.SpriteFileName)
         spriteFileName=slice.SpriteFileName;

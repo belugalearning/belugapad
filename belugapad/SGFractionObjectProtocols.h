@@ -28,7 +28,23 @@ typedef enum
 @property (retain) CCSprite *FractionSprite;
 @property (retain) CCSprite *SliderSprite;
 @property (retain) CCSprite *SliderMarkerSprite;
+@property (retain) CCNode *BaseNode;
+@property int MarkerStartPosition;
 
+-(void)setup;
+
+
+@end
+
+@protocol ConfigurableChunk
+
+@property (retain) CCLayer *RenderLayer;
+@property (retain) id MyParent;
+@property (retain) id CurrentHost;
+@property CGPoint Position;
+@property (retain) CCSprite *MySprite;
+
+-(void)setup;
 
 @end
 
@@ -36,7 +52,21 @@ typedef enum
 
 @property int Divisions;
 @property (retain) NSMutableArray *Chunks;
+@property (retain) NSMutableArray *GhostChunks;
+@property int MarkerPosition;
+
+-(void)snapToNearestPos;
+-(void)ghostChunk;
 
 @end
 
+
+@protocol Moveable
+
+@property CGPoint Position;
+
+-(BOOL)amIProximateTo:(CGPoint)location;
+-(void)moveMarkerTo:(CGPoint)location;
+
+@end
 

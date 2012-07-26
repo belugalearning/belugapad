@@ -29,4 +29,15 @@
 	return self;
 }
 
+-(void)dealloc
+{
+    [slicesInMe release];
+    
+    if(mySprite)[mySprite release];
+    if(mySlices)[mySlices release];
+    if(touchOverlay)[touchOverlay release];
+    
+    [super dealloc];
+}
+
 @end

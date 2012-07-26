@@ -6,11 +6,12 @@
 	<string>/Problems/dotgrid-demo</string>
 	<key>PROBLEM_PIPELINE-tools-dev</key>
 	<string>/Problems/tools-dev</string>
+	<key>PROBLEM_PIPELINE-dt</key>
+	<string>/Problems/tools-dev/da-dt/</string>
 	<key>PROBLEM_PIPELINE-dvars</key>
 	<string>/Problems/tools-dev/dvars/</string>
 	<key>PROBLEM_PIPELINE-database</key>
-	<string>DATABASE</string>
-	<key>PROBLEM_PIPELINE-cf</key>
+	<string>DATABASE</string>	<key>PROBLEM_PIPELINE-cf</key>
 	<string>/pipeline-testing/countingforward.plist</string>
 	<key>PROBLEM_PIPELINE-3</key>
 	<string>/pipeline-testing/countingback.plist</string>

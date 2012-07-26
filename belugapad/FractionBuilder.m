@@ -17,6 +17,8 @@
 #import "AppDelegate.h"
 
 #import "SGGameWorld.h"
+#import "SGFractionObject.h"
+#import "SGFractionBuilderRender.h"
 
 
 @interface FractionBuilder()
@@ -29,6 +31,7 @@
     
     //game world
     SGGameWorld *gw;
+    id<Moveable,Interactive>currentMarker;
     
 }
 
@@ -118,6 +121,12 @@
 {
     gw.Blackboard.RenderLayer = renderLayer;
     
+    id<Configurable, Interactive> fraction;
+    fraction=[[[SGFractionObject alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,cy)] autorelease];
+    fraction.HasSlider=YES;
+    fraction.MarkerStartPosition=1;
+    
+    [fraction setup];
     
 }
 
@@ -133,6 +142,22 @@
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
     
+    for(id thisObj in gw.AllGameObjects)
+    {
+        if([thisObj conformsToProtocol:@protocol(Moveable)])
+        {
+            id <Moveable,Interactive> cObj=thisObj;
+            
+            if([cObj amIProximateTo:location])
+            {
+                currentMarker=cObj;
+                startMarkerPos=cObj.MarkerPosition;
+                break;
+            }
+        }
+        
+    }
+    
     
     
 }
@@ -146,6 +171,8 @@
     
     lastTouch=location;
     
+    if(currentMarker)
+        [currentMarker moveMarkerTo:location];
     
 }
 
@@ -155,14 +182,30 @@
     //    CGPoint location=[touch locationInView: [touch view]];
     //    location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
-    isTouching=NO;
     
+    if(currentMarker)
+    {
+        [currentMarker snapToNearestPos];
+        
+        if(startMarkerPos!=currentMarker.MarkerPosition)
+        {
+            [currentMarker ghostChunk];
+            //TODO: make this divide the gameobject up
+        }
+    }
+    isTouching=NO;
+    currentMarker=nil;
     
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if(currentMarker)
+        [currentMarker snapToNearestPos];
+    
+    
     isTouching=NO;
+    currentMarker=nil;
     // empty selected objects
 }
 

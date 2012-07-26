@@ -21,4 +21,12 @@
 @synthesize moveHandle;
 @synthesize tile;
 
+-(void)dealloc
+{
+    if(mySprite)[mySprite release];
+    if(tile)[tile release];
+    
+    [super dealloc];
+}
+
 @end

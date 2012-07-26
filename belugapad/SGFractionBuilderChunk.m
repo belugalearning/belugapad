@@ -7,8 +7,10 @@
 //
 
 #import "global.h"
+#import "SGFractionObjectProtocols.h"
 #import "SGFractionBuilderChunk.h"
 #import "SGFractionObject.h"
+#import "SGFractionChunk.h"
 #import "BLMath.h"
 #import "ToolConsts.h"
 
@@ -43,12 +45,54 @@
 
 -(void)createChunk
 {
+    fractionSprite=ParentGO.FractionSprite;
+    float leftPos=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
+    float posOnFraction=fractionSprite.contentSize.width/ParentGO.MarkerPosition;
+    float adjPosOnFraction=posOnFraction*[ParentGO.Chunks count];
+    CGPoint startPos=ccp(leftPos+adjPosOnFraction,fractionSprite.position.y);
+    NSLog(@"startPos bef %@", NSStringFromCGPoint(startPos));
+    startPos=[fractionSprite.parent convertToWorldSpace:startPos];
+    NSLog(@"startPos aft %@", NSStringFromCGPoint(startPos));    
+    id<ConfigurableChunk> chunk;
+    chunk=[[[SGFractionChunk alloc] initWithGameWorld:gameWorld andRenderLayer:ParentGO.RenderLayer andPosition:startPos] autorelease];
+    chunk.MyParent=ParentGO;
+    chunk.CurrentHost=ParentGO;
+    chunk.Value=ParentGO.Value/ParentGO.MarkerPosition;
     
+    [ParentGO.Chunks addObject:chunk];
+    
+    [chunk setup];
+
 }
 
--(void)removeChunk
+-(void)removeChunks
 {
+    fractionSprite=ParentGO.FractionSprite;
+    float leftPos=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
+    NSMutableArray *removeObj=[[NSMutableArray alloc]init];
+    if([ParentGO.Chunks count]>0)
+    {
+        for(id<ConfigurableChunk> go in ParentGO.Chunks)
+        {
+            CCSprite *s=go.MySprite;
+            // animate the existing chunks off to the side to make it look super duper awesome
+            CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:ccp(leftPos,s.position.y)];
+            CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
+            CCSequence *sequence=[CCSequence actions:moveAct, cleanUp, nil];
+            [removeObj addObject:go];
+            [s runAction:sequence];
+        }
+        
+        [ParentGO.Chunks removeAllObjects];
+        
+        for (id go in removeObj)
+        {
+            [gameWorld delayRemoveGameObject:go];
+        }
     
+    }  
+
+    [removeObj release];
 }
 
 -(void)ghostChunk

@@ -130,6 +130,19 @@
     
 }
 
+#pragma mark - interaction
+-(void)splitThisBar:(id)thisBar into:(int)thisManyChunks
+{
+    id<Interactive> curBar=thisBar;
+    if([curBar.Chunks count]>0)
+        [curBar removeChunks];
+    
+    for(int i=0;i<thisManyChunks;i++)
+    {
+        [thisBar createChunk];
+    }
+}
+
 #pragma mark - touches events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -190,7 +203,12 @@
         if(startMarkerPos!=currentMarker.MarkerPosition)
         {
             [currentMarker ghostChunk];
-            //TODO: make this divide the gameobject up
+
+        }
+        
+        if (currentMarker.MarkerPosition>0)
+        {
+            [self splitThisBar:currentMarker into:currentMarker.MarkerPosition+1];
         }
     }
     isTouching=NO;

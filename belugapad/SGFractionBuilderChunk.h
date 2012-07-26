@@ -15,7 +15,7 @@
 }
 
 -(void)createChunk;
--(void)removeChunk;
+-(void)removeChunks;
 -(void)ghostChunk;
 
 @end

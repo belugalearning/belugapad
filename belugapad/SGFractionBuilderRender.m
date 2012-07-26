@@ -59,7 +59,7 @@
     if(ParentGO.HasSlider){
         
         float markerZeroPosition=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
-        float markerStartPosition=markerZeroPosition+((fractionSprite.contentSize.width/kNumbersAlongFractionSlider)*ParentGO.MarkerStartPosition);
+        float markerStartPosition=markerZeroPosition+((fractionSprite.contentSize.width/kNumbersAlongFractionSlider)*(ParentGO.MarkerStartPosition-1));
         ParentGO.MarkerPosition=ParentGO.MarkerStartPosition;
         
         sliderSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/fractions/slider.png")];

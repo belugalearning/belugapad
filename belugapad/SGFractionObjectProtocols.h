@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "cocos2d.h"
 
 @class SGDtoolBlockRender;
 @class SGDtoolBlockPairing;
@@ -42,6 +43,7 @@ typedef enum
 @property (retain) id MyParent;
 @property (retain) id CurrentHost;
 @property CGPoint Position;
+@property float Value;
 @property (retain) CCSprite *MySprite;
 
 -(void)setup;
@@ -51,12 +53,15 @@ typedef enum
 @protocol Interactive
 
 @property int Divisions;
+@property float Value;
 @property (retain) NSMutableArray *Chunks;
 @property (retain) NSMutableArray *GhostChunks;
 @property int MarkerPosition;
 
 -(void)snapToNearestPos;
 -(void)ghostChunk;
+-(void)createChunk;
+-(void)removeChunks;
 
 @end
 

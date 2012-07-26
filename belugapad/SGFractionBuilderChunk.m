@@ -61,12 +61,11 @@
     {
         for(CCSprite *s in ParentGO.GhostChunks)
         {
+            // animate the existing chunks off to the side to make it look super duper awesome
             CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:ccp(leftPos,s.position.y)];
             CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
             CCSequence *sequence=[CCSequence actions:moveAct, cleanUp, nil];
             [s runAction:sequence];
-//            [s removeFromParentAndCleanup:YES];
-            
         }
     }
     

@@ -1631,6 +1631,13 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     if(npMove)
     {
+        if(hasMovedNumber)
+        {
+            [loggingService logEvent:BL_PA_NP_NUMBER_MOVE
+                  withAdditionalData:[NSDictionary dictionaryWithObject:[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]
+                                                                 forKey:@"number"]];
+        }
+        
         float distance=[BLMath DistanceBetween:lastTouch and:location];
         //if([BLMath DistanceBetween:myLoc and:hitLoc] <= (kPropXDropProximity*[gameWorld Blackboard].hostLX))
         if(!CGRectContainsPoint(npDropbox.boundingBox, location) || (CGRectContainsPoint(npDropbox.boundingBox, location) && distance<7.0f))
@@ -1648,12 +1655,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         
         // previously removed b/c performance hit. Restored for testing with sans-Couchbase logging
         // N.B. if performance still poor, we can try not writing certain log events to disk immediately
-        if(hasMovedNumber)
-        {
-            [loggingService logEvent:BL_PA_NP_NUMBER_MOVE
-                withAdditionalData:[NSDictionary dictionaryWithObject:[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:npMove]]
-                                                               forKey:@"number"]];
-        }
         
         npMove=nil;
         npLastMoved=nil;

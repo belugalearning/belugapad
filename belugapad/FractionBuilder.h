@@ -1,5 +1,5 @@
 //
-//  ToolTemplateSG.h
+//  FractionBuilder.h
 //  belugapad
 //
 //  Created by Gareth Jenkins on 23/04/2012.
@@ -34,6 +34,8 @@
     
     // and a default layer
     CCLayer *renderLayer;
+    
+    int startMarkerPos;
     
 }
 

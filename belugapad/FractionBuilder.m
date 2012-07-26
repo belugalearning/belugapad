@@ -124,7 +124,7 @@
     id<Configurable, Interactive> fraction;
     fraction=[[[SGFractionObject alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,cy)] autorelease];
     fraction.HasSlider=YES;
-    fraction.MarkerStartPosition=20;
+    fraction.MarkerStartPosition=1;
     
     [fraction setup];
     
@@ -151,6 +151,7 @@
             if([cObj amIProximateTo:location])
             {
                 currentMarker=cObj;
+                startMarkerPos=cObj.MarkerPosition;
                 break;
             }
         }
@@ -183,8 +184,15 @@
     //location=[self.ForeLayer convertToNodeSpace:location];
     
     if(currentMarker)
+    {
         [currentMarker snapToNearestPos];
-    
+        
+        if(startMarkerPos!=currentMarker.MarkerPosition)
+        {
+            [currentMarker ghostChunk];
+            //TODO: make this divide the gameobject up
+        }
+    }
     isTouching=NO;
     currentMarker=nil;
     

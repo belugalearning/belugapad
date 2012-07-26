@@ -36,13 +36,27 @@ typedef enum
 
 @end
 
+@protocol ConfigurableChunk
+
+@property (retain) CCLayer *RenderLayer;
+@property (retain) id MyParent;
+@property (retain) id CurrentHost;
+@property CGPoint Position;
+@property (retain) CCSprite *MySprite;
+
+-(void)setup;
+
+@end
+
 @protocol Interactive
 
 @property int Divisions;
 @property (retain) NSMutableArray *Chunks;
+@property (retain) NSMutableArray *GhostChunks;
 @property int MarkerPosition;
 
 -(void)snapToNearestPos;
+-(void)ghostChunk;
 
 @end
 

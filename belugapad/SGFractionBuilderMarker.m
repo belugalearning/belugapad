@@ -18,7 +18,6 @@
     CCSprite *sliderMarkerSprite;
     CCSprite *fractionSprite;
     int markerPosition;
-    int markerPreviousPosition;
 }
 
 @end
@@ -67,7 +66,7 @@
 -(void)moveMarkerTo:(CGPoint)location
 {
     location=[ParentGO.BaseNode convertToNodeSpace:location];
-    float halfOfSlider=(sliderSprite.contentSize.width-40)/2;
+    float halfOfSlider=(fractionSprite.contentSize.width)/2;
     
     // set out the bounds of the marker 
     float furthestLeft=sliderSprite.position.x-halfOfSlider;
@@ -97,12 +96,13 @@
         else
             markerPosition=(int)exactPos;
         
-        ParentGO.MarkerPosition=markerPosition;
-        
         // and flip the values (ie - right to left 0-20)
-        markerPosition=fabsf(markerPosition-kNumbersAlongFractionSlider);
+        //markerPosition=fabsf(markerPosition-kNumbersAlongFractionSlider);
         
-        NSLog(@"markerPos? %d", markerPosition);
+        NSLog(@"marker position %d", markerPosition);
+        
+        ParentGO.MarkerPosition=markerPosition;
+    
     }
 }
 

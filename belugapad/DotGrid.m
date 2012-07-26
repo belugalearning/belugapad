@@ -533,7 +533,7 @@
 
                 if(numberCounted<[preCountedTiles count]) 
                 {
-                    NSDictionary *thisTile=[[NSDictionary alloc]init];                
+                    NSDictionary *thisTile=[preCountedTiles objectAtIndex:numberCounted];              
                 
                     if(curAnch.myXpos == [[thisTile objectForKey:POS_X] intValue] && curAnch.myYpos == [[thisTile objectForKey:POS_Y]intValue])
                     {

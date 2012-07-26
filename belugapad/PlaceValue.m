@@ -67,7 +67,7 @@ static float kTimeToCageShake=7.0f;
         
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];
         self.ForeLayer=[[[CCLayer alloc]init] autorelease];
-        self.NoScaleLayer=[[[CCLayer alloc]init] autorelease];
+        self.NoScaleLayer=[[CCLayer alloc]init];
         [toolHost addToolBackLayer:self.BkgLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
         [toolHost addToolNoScaleLayer:self.NoScaleLayer];
@@ -1705,6 +1705,7 @@ static float kTimeToCageShake=7.0f;
 -(void) dealloc
 {
     [renderLayer release];
+    [self.NoScaleLayer release];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

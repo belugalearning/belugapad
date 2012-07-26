@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>show that {$multiplier} [[$wordorsymbol]] 2 equals {$multiplier*2}</string>
+	<string>show that {$multiplier} {@wordorsymbol} 2 equals {$multiplier*2}</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>with 2 blocks switching between &quot;times&quot; and &quot;lots of&quot; and &quot;x&quot;</string>
 	<key>TOOL_KEY</key>
@@ -64,7 +64,7 @@
 	</dict>
 	<key>DSTRINGS</key>
 	<dict>
-		<key>$wordorsymbol</key>
+		<key>@wordorsymbol</key>
 		<dict>
 			<key>MODE</key>
 			<string>RANDOM</string>

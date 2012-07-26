@@ -213,7 +213,6 @@ static float kTimeToHeaderBounce=7.0f;
 {
     NSString *operatorFileName=[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/operator-%@.png"), operatorName];
     ttMatrix=[[NSMutableArray alloc]init];
-    [self.ForeLayer addChild:renderLayer];
     
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     

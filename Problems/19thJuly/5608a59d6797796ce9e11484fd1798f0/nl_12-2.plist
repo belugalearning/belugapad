@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Count to 20.</string>
+	<string>Starting at 12, count back to 2.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Count to 20.</string>
+	<string>Count to 2.</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>1</string>
+	<string>12</string>
 	<key>MIN_VALUE</key>
 	<string>1</string>
 	<key>MAX_VALUE</key>
@@ -19,15 +19,19 @@
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<string>20</string>
+	<string>2</string>
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
-	<array/>
+	<array>
+		<string>2</string>
+	</array>
 	<key>HIDE_ALL_NOTCHES</key>
-	<false/>
+	<true/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
-	<array/>
+	<array>
+		<string>2</string>
+	</array>
 	<key>HIDE_START_NUMBER</key>
 	<false/>
 	<key>HIDE_END_NUMBER</key>

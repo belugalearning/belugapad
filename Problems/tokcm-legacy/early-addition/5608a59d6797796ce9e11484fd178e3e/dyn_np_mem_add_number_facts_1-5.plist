@@ -5,7 +5,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>what is {$augend} [[$operator]] {$addend}</string>
+		<string>what is {$augend} {@operator} {$addend}</string>
 		<key>INTERNAL_DESCRIPTION</key>
 		<string>memorising addition number facts</string>
 		<key>PICKER_LAYOUT</key>
@@ -38,7 +38,7 @@
 	</dict>
 	<key>DSTRINGS</key>
 	<dict>
-		<key>$operator</key>
+		<key>@operator</key>
 		<dict>
 			<key>MODE</key>
 			<string>RANDOM</string>

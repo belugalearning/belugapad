@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>show that 3 [[$wordorsymbol]] 2 equals 6</string>
+	<string>show that 3 {@wordorsymbol} 2 equals 6</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>switching between &quot;times&quot; and &quot;lots of&quot; and &quot;x&quot;</string>
 	<key>TOOL_KEY</key>
@@ -47,7 +47,7 @@
 	</array>
 	<key>DSTRINGS</key>
 	<dict>
-		<key>$wordorsymbol</key>
+		<key>@wordorsymbol</key>
 		<dict>
 			<key>MODE</key>
 			<string>RANDOM</string>

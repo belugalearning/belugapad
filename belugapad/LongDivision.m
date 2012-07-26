@@ -56,7 +56,7 @@ const float kScaleOfLesserBlocks=0.6f;
         
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];
         self.ForeLayer=[[[CCLayer alloc]init] autorelease];
-        self.NoScaleLayer=[[[CCLayer alloc]init] autorelease];
+        self.NoScaleLayer=[[CCLayer alloc]init];
         topSection=[[CCLayer alloc]init];
         bottomSection=[[CCLayer alloc]init];
         
@@ -724,6 +724,7 @@ const float kScaleOfLesserBlocks=0.6f;
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
     
     [renderLayer release];
+    [self.NoScaleLayer release];
     
     [topSection release];
     [bottomSection release];

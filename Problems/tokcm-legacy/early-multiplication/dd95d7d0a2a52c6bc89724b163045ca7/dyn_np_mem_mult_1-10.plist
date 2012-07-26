@@ -5,7 +5,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>what is {$multiplicand} [[$operator]] {$multiplier}</string>
+		<string>what is {$multiplicand} {@operator} {$multiplier}</string>
 		<key>INTERNAL_DESCRIPTION</key>
 		<string>1-10 x 1-10</string>
 		<key>PICKER_LAYOUT</key>
@@ -38,7 +38,7 @@
 	</dict>
 	<key>DSTRINGS</key>
 	<dict>
-		<key>$operator</key>
+		<key>@operator</key>
 		<dict>
 			<key>MODE</key>
 			<string>RANDOM</string>

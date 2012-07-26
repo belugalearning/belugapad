@@ -12,7 +12,7 @@
 @class SGFractionBuilderChunk;
 @class SGFractionBuilderChunkRender;
 
-@interface SGFractionChunk: SGGameObject <ConfigurableChunk,Moveable>
+@interface SGFractionChunk: SGGameObject <ConfigurableChunk,MoveableChunk>
 
 
 

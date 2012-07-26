@@ -23,7 +23,7 @@
 
 @implementation SGFractionBuilderChunkRender
 
--(SGFractionBuilderChunkRender*)initWithGameObject:(id<ConfigurableChunk, Moveable>)aGameObject
+-(SGFractionBuilderChunkRender*)initWithGameObject:(id<ConfigurableChunk, MoveableChunk>)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
@@ -57,7 +57,19 @@
 
 -(BOOL)amIProximateTo:(CGPoint)location
 {
-    return NO;   
+    CCSprite *curSprite=ParentGO.MySprite;
+    NSLog(@"loc: %@ bb: %@", NSStringFromCGPoint(location), NSStringFromCGRect(curSprite.boundingBox));
+    //location=[ParentGO.MySprite convertToNodeSpace:location];
+    
+    if(CGRectContainsPoint(curSprite.boundingBox, location))
+    {
+        NSLog(@"got chunk!");
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
 }
 
 -(void)moveMarkerTo:(CGPoint)location

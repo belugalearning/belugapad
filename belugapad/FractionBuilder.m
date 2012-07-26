@@ -169,6 +169,15 @@
             }
         }
         
+        if([thisObj conformsToProtocol:@protocol(MoveableChunk)])
+        {
+            id<ConfigurableChunk,MoveableChunk> cObj=thisObj;
+            if([cObj amIProximateTo:location])
+            {
+                NSLog(@"obj!");
+            }
+        }
+        
     }
     
     

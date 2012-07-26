@@ -11,9 +11,10 @@
 
 @interface SGFractionBuilderChunkRender : SGComponent
 {
-    id<ConfigurableChunk,Moveable> ParentGO;
+    id<ConfigurableChunk,MoveableChunk> ParentGO;
 }
 
 -(void)setup;
+-(BOOL)amIProximateTo:(CGPoint)location;
 
 @end

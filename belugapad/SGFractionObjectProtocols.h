@@ -75,3 +75,12 @@ typedef enum
 
 @end
 
+@protocol MoveableChunk
+
+@property CGPoint Position;
+
+-(BOOL)amIProximateTo:(CGPoint)location;
+-(void)moveChunkTo:(CGPoint)location;
+
+@end
+

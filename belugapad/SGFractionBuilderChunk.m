@@ -45,23 +45,26 @@
 
 -(void)createChunk
 {
-    fractionSprite=ParentGO.FractionSprite;
-    float leftPos=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
-    float posOnFraction=fractionSprite.contentSize.width/ParentGO.MarkerPosition;
-    float adjPosOnFraction=posOnFraction*[ParentGO.Chunks count];
-    CGPoint startPos=ccp(leftPos+adjPosOnFraction,fractionSprite.position.y);
-    NSLog(@"startPos bef %@", NSStringFromCGPoint(startPos));
-    startPos=[fractionSprite.parent convertToWorldSpace:startPos];
-    NSLog(@"startPos aft %@", NSStringFromCGPoint(startPos));    
-    id<ConfigurableChunk> chunk;
-    chunk=[[[SGFractionChunk alloc] initWithGameWorld:gameWorld andRenderLayer:ParentGO.RenderLayer andPosition:startPos] autorelease];
-    chunk.MyParent=ParentGO;
-    chunk.CurrentHost=ParentGO;
-    chunk.Value=ParentGO.Value/ParentGO.MarkerPosition;
-    
-    [ParentGO.Chunks addObject:chunk];
-    
-    [chunk setup];
+    if(ParentGO.FractionMode==0 && ParentGO.MarkerPosition>0)
+    {
+        fractionSprite=ParentGO.FractionSprite;
+        float leftPos=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
+        float posOnFraction=fractionSprite.contentSize.width/ParentGO.MarkerPosition;
+        float adjPosOnFraction=posOnFraction*[ParentGO.Chunks count];
+        CGPoint startPos=ccp(leftPos+adjPosOnFraction,fractionSprite.position.y);
+        NSLog(@"startPos bef %@", NSStringFromCGPoint(startPos));
+        startPos=[fractionSprite.parent convertToWorldSpace:startPos];
+        NSLog(@"startPos aft %@", NSStringFromCGPoint(startPos));    
+        id<ConfigurableChunk> chunk;
+        chunk=[[[SGFractionChunk alloc] initWithGameWorld:gameWorld andRenderLayer:ParentGO.RenderLayer andPosition:startPos] autorelease];
+        chunk.MyParent=ParentGO;
+        chunk.CurrentHost=ParentGO;
+        chunk.Value=ParentGO.Value/ParentGO.MarkerPosition;
+        
+        [ParentGO.Chunks addObject:chunk];
+        
+        [chunk setup];
+    }
 
 }
 
@@ -97,37 +100,45 @@
 
 -(void)ghostChunk
 {
-    fractionSprite=ParentGO.FractionSprite;
-    int adjMarkerPos=ParentGO.MarkerPosition+1;
-    float leftPos=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
-    
-    if([ParentGO.GhostChunks count]>0)
+    if(ParentGO.FractionMode==0)
     {
-        for(CCSprite *s in ParentGO.GhostChunks)
+        fractionSprite=ParentGO.FractionSprite;
+        int adjMarkerPos=ParentGO.MarkerPosition+1;
+        float leftPos=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
+        
+        if([ParentGO.GhostChunks count]>0)
         {
-            // animate the existing chunks off to the side to make it look super duper awesome
-            CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:ccp(leftPos,s.position.y)];
-            CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
-            CCSequence *sequence=[CCSequence actions:moveAct, cleanUp, nil];
-            [s runAction:sequence];
+            for(CCSprite *s in ParentGO.GhostChunks)
+            {
+                // animate the existing chunks off to the side to make it look super duper awesome
+                CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:ccp(leftPos,s.position.y)];
+                CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
+                CCSequence *sequence=[CCSequence actions:moveAct, cleanUp, nil];
+                [s runAction:sequence];
+            }
+        }
+        
+        [ParentGO.GhostChunks removeAllObjects];
+        
+        for(int i=0;i<adjMarkerPos;i++)
+        {
+            CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/fractions/separator.png")];
+            float xPos=fractionSprite.position.x+(fractionSprite.contentSize.width/2);
+            float sectionSize=fractionSprite.contentSize.width/adjMarkerPos;
+            
+            [s setPosition:ccp(xPos, fractionSprite.position.y)];
+            
+            [ParentGO.BaseNode addChild:s];
+            [s runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(leftPos+((i+1)*sectionSize),0)]];
+            
+            [ParentGO.GhostChunks addObject:s];
         }
     }
-    
-    [ParentGO.GhostChunks removeAllObjects];
-    
-    for(int i=0;i<adjMarkerPos;i++)
-    {
-        CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/fractions/separator.png")];
-        float xPos=fractionSprite.position.x+(fractionSprite.contentSize.width/2);
-        float sectionSize=fractionSprite.contentSize.width/adjMarkerPos;
-        
-        [s setPosition:ccp(xPos, fractionSprite.position.y)];
-        
-        [ParentGO.BaseNode addChild:s];
-        [s runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(leftPos+((i+1)*sectionSize),0)]];
-        
-        [ParentGO.GhostChunks addObject:s];
-    }
+}
+
+-(void)changeChunkOwnerFrom:(id)parentObject to:(id)newObject
+{
+
 }
 
 

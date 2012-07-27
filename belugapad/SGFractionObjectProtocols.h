@@ -33,6 +33,7 @@ typedef enum
 @property int MarkerStartPosition;
 
 -(void)setup;
+-(void)changeChunkOwnerFrom:(id)parentObject to:(id)newObject;
 
 
 @end
@@ -45,6 +46,7 @@ typedef enum
 @property CGPoint Position;
 @property float Value;
 @property (retain) CCSprite *MySprite;
+@property BOOL Selected;
 
 -(void)setup;
 
@@ -78,9 +80,12 @@ typedef enum
 @protocol MoveableChunk
 
 @property CGPoint Position;
+@property BOOL Selected;
 
 -(BOOL)amIProximateTo:(CGPoint)location;
 -(void)moveChunk;
+-(void)changeChunkSelection;
+-(BOOL)checkForChunkDropIn:(id<Configurable>)thisObject;
 
 @end
 

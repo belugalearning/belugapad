@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is 10 subtract 4?</string>
+	<string>Count up to {$number}.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>10-4</string>
+	<string>Count from 1 to x.</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -19,23 +19,23 @@
 	<key>ROPES_PER_COL</key>
 	<integer>10</integer>
 	<key>ROWS_PER_COL</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
 	<false/>
 	<key>EVAL_MODE</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_COUNT</key>
-	<true/>
+	<false/>
 	<key>SHOW_COUNT_BLOCK</key>
 	<true/>
 	<key>FADE_COUNT</key>
-	<true/>
+	<false/>
 	<key>CUSTOM_COLUMN_HEADERS</key>
 	<true/>
 	<key>COLUMN_HEADERS</key>
@@ -51,7 +51,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>10</integer>
+			<integer>0</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -59,7 +59,17 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT_AND_COUNT_SEQUENCE</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>6</integer>
+		<string>{$number}</string>
+	</dict>
+	<key>DVARS</key>
+	<dict>
+		<key>$number</key>
+		<dict>
+			<key>MAX</key>
+			<string>20</string>
+			<key>MIN</key>
+			<string>5</string>
+		</dict>
 	</dict>
 </dict>
 </plist>

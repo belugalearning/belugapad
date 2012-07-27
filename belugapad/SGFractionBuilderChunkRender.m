@@ -72,9 +72,10 @@
     }
 }
 
--(void)moveChunkTo:(CGPoint)location
+-(void)moveChunk
 {
-    
+    CCSprite *curSprite=ParentGO.MySprite;
+    [curSprite setPosition:ParentGO.Position];
 }
 
 @end

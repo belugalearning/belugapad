@@ -32,6 +32,7 @@
     //game world
     SGGameWorld *gw;
     id<Moveable,Interactive>currentMarker;
+    id<MoveableChunk,ConfigurableChunk>currentChunk;
     
 }
 
@@ -191,7 +192,8 @@
             id<ConfigurableChunk,MoveableChunk> cObj=thisObj;
             if([cObj amIProximateTo:location])
             {
-                NSLog(@"obj!");
+                currentChunk=cObj;
+                break;
             }
         }
         
@@ -212,6 +214,12 @@
     
     if(currentMarker)
         [currentMarker moveMarkerTo:location];
+    
+    if(currentChunk)
+    {
+        currentChunk.Position=location;
+        [currentChunk moveChunk];
+    }
     
 }
 
@@ -239,6 +247,7 @@
     }
     isTouching=NO;
     currentMarker=nil;
+    currentChunk=nil;
     
 }
 
@@ -250,6 +259,7 @@
     
     isTouching=NO;
     currentMarker=nil;
+    currentChunk=nil;
     // empty selected objects
 }
 

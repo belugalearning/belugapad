@@ -80,7 +80,7 @@ typedef enum
 @property CGPoint Position;
 
 -(BOOL)amIProximateTo:(CGPoint)location;
--(void)moveChunkTo:(CGPoint)location;
+-(void)moveChunk;
 
 @end
 

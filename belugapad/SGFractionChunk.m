@@ -59,9 +59,9 @@
     return [self.ChunkRenderComponent amIProximateTo:(CGPoint)location];
 }
 
--(void)moveChunkTo:(CGPoint)location
+-(void)moveChunk
 {
-    
+    [self.ChunkRenderComponent moveChunk];
 }
 
 -(void)dealloc

@@ -16,5 +16,6 @@
 
 -(void)setup;
 -(BOOL)amIProximateTo:(CGPoint)location;
+-(void)moveChunk;
 
 @end

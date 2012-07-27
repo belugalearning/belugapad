@@ -37,6 +37,11 @@
     
     int startMarkerPos;
     
+    NSArray *initFractions;
+    int dividend;
+    int divisor;
+    
+    
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;

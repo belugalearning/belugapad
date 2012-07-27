@@ -72,7 +72,7 @@
     }
 }
 
--(void)moveMarkerTo:(CGPoint)location
+-(void)moveChunkTo:(CGPoint)location
 {
     
 }

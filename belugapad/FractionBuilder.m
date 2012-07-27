@@ -109,9 +109,22 @@
 #pragma mark - gameworld setup and population
 -(void)readPlist:(NSDictionary*)pdef
 {
-    
     // All our stuff needs to go into vars to read later
+//INIT_FRACTIONS: Array
+//    INIT_FRACTIONS\Item: Dictionary
+//    
+//    INIT_FRACTIONS\Item\FRACTION_MODE: Number
+//    INIT_FRACTIONS\Item\POS_Y: Number
+//    INIT_FRACTIONS\Item\MARKER_START_POSITION: Number (implicitly splits the fraction into chunks)
+//    INIT_FRACTIONS\Item\VALUE: Number
+//    
+//DIVIDEND: Number
+//DIVISOR: Number
+    initFractions=[pdef objectForKey:INIT_FRACTIONS];
+    [initFractions retain];
     
+    dividend=[[pdef objectForKey:DIVIDEND] intValue];
+    divisor=[[pdef objectForKey:DIVISOR] intValue];
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];    
     
@@ -121,12 +134,16 @@
 {
     gw.Blackboard.RenderLayer = renderLayer;
     
-    id<Configurable, Interactive> fraction;
-    fraction=[[[SGFractionObject alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,cy)] autorelease];
-    fraction.HasSlider=YES;
-    fraction.MarkerStartPosition=1;
-    
-    [fraction setup];
+    for(NSDictionary *d in initFractions)
+    {
+        id<Configurable, Interactive> fraction;
+        fraction=[[[SGFractionObject alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,[[d objectForKey:POS_Y]floatValue])] autorelease];
+        fraction.FractionMode=[[d objectForKey:FRACTION_MODE]intValue];
+        fraction.MarkerStartPosition=[[d objectForKey:MARKER_START_POSITION]intValue];
+        fraction.Value=[[d objectForKey:VALUE]floatValue];
+        
+        [fraction setup];
+    }
     
 }
 
@@ -281,6 +298,7 @@
     //write log on problem switch
     
     [renderLayer release];
+    if(initFractions)[initFractions release];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

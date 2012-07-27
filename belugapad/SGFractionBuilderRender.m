@@ -56,7 +56,7 @@
     [ParentGO.BaseNode addChild:fractionSprite];
     
     
-    if(ParentGO.HasSlider){
+    if(ParentGO.HasSlider || ParentGO.FractionMode==0){
         
         float markerZeroPosition=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
         float markerStartPosition=markerZeroPosition+((fractionSprite.contentSize.width/kNumbersAlongFractionSlider)*(ParentGO.MarkerStartPosition-1));

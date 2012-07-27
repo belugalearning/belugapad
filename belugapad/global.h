@@ -318,6 +318,12 @@
 //distribution tool
 #define DISTRIBUTION_EVAL_TYPE @"DISTRIBUTION_EVAL_TYPE"
 
+//fraction builder
+#define INIT_FRACTIONS @"INIT_FRACTIONS"
+#define FRACTION_MODE @"FRACTION_MODE"
+#define MARKER_START_POSITION @"MARKER_START_POSITION"
+#define VALUE @"VALUE"
+
 //journey scene
 #define REGION_ZOOM_LEVEL 0.15f
 

@@ -56,10 +56,10 @@
 
 -(BOOL)amIProximateTo:(CGPoint)location
 {
-    [self.ChunkRenderComponent amIProximateTo:(CGPoint)location];    
+    return [self.ChunkRenderComponent amIProximateTo:(CGPoint)location];
 }
 
--(void)moveMarkerTo:(CGPoint)location
+-(void)moveChunkTo:(CGPoint)location
 {
     
 }

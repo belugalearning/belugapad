@@ -2,10 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
-	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/number_bonds/5608a59d6797796ce9e11484fd17267c/comm-dyn.plist</string>
-	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/number_bonds/5608a59d6797796ce9e11484fd17267c/mq-bigger-dyn.plist</string>
 	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/number_bonds/5608a59d6797796ce9e11484fd17267c/10-3comm.plist</string>
+	<string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/creating_sets/5608a59d6797796ce9e11484fd181755/pv_7.plist</string>
+	<string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/creating_sets/5608a59d6797796ce9e11484fd181755/pv_15.plist</string>
+	<string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/creating_sets/5608a59d6797796ce9e11484fd181755/pv_16.plist</string>
+	<string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/creating_sets/5608a59d6797796ce9e11484fd181755/pv_18_extra_row.plist</string>
+	<string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/creating_sets/5608a59d6797796ce9e11484fd181755/pv__same_4.plist</string>
+	<string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/creating_sets/5608a59d6797796ce9e11484fd181755/pv_same_5.plist</string>
 	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/number_bonds/5608a59d6797796ce9e11484fd17267c/8-2comm.plist</string>
 	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/number_bonds/5608a59d6797796ce9e11484fd17267c/mq-bigger.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/number_bonds/5608a59d6797796ce9e11484fd17267c/max49comm-dyn.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/number_bonds/5608a59d6797796ce9e11484fd17267c/mq-bigger-dyn.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/number_bonds/5608a59d6797796ce9e11484fd17267c/max915comm-dyn.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/number_bonds/5608a59d6797796ce9e11484fd17267c/mq-bigger-dyn.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/number_bonds/5608a59d6797796ce9e11484fd17267c/1420comm-dyn.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/number_bonds/5608a59d6797796ce9e11484fd17267c/mq-bigger-dyn.plist</string>
 </array>
 </plist>

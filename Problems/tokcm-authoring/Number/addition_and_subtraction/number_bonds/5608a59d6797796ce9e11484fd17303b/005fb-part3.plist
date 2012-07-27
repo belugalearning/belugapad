@@ -6,6 +6,10 @@
 	<string>Put the ice cubes in the containers.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>partition 3 into 2 parts</string>
+	<key>REJECT_MODE</key>
+	<string>0</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
 	<key>TOOL_KEY</key>
 	<string>BlockFloating</string>
 	<key>INIT_OBJECTS</key>
@@ -36,6 +40,74 @@
 		</dict>
 	</array>
 	<key>INIT_CONTAINERS</key>
-	<array/>
+	<array>
+		<dict>
+			<key>TAG</key>
+			<string>bin1</string>
+		</dict>
+		<dict>
+			<key>TAG</key>
+			<string>bin2</string>
+		</dict>
+	</array>
+	<key>SOLUTIONS</key>
+	<array>
+		<array>
+			<dict>
+				<key>ITEM1_VALUE</key>
+				<integer>0</integer>
+				<key>CLAUSE_TYPE</key>
+				<string>OBJECT_OF_SIZE</string>
+			</dict>
+			<dict>
+				<key>ITEM1_VALUE</key>
+				<integer>3</integer>
+				<key>CLAUSE_TYPE</key>
+				<string>OBJECT_OF_SIZE</string>
+			</dict>
+		</array>
+		<array>
+			<dict>
+				<key>ITEM1_VALUE</key>
+				<integer>1</integer>
+				<key>CLAUSE_TYPE</key>
+				<string>OBJECT_OF_SIZE</string>
+			</dict>
+			<dict>
+				<key>ITEM1_VALUE</key>
+				<integer>2</integer>
+				<key>CLAUSE_TYPE</key>
+				<string>OBJECT_OF_SIZE</string>
+			</dict>
+		</array>
+		<array>
+			<dict>
+				<key>ITEM1_VALUE</key>
+				<integer>2</integer>
+				<key>CLAUSE_TYPE</key>
+				<string>OBJECT_OF_SIZE</string>
+			</dict>
+			<dict>
+				<key>ITEM1_VALUE</key>
+				<integer>1</integer>
+				<key>CLAUSE_TYPE</key>
+				<string>OBJECT_OF_SIZE</string>
+			</dict>
+		</array>
+		<array>
+			<dict>
+				<key>ITEM1_VALUE</key>
+				<integer>3</integer>
+				<key>CLAUSE_TYPE</key>
+				<string>OBJECT_OF_SIZE</string>
+			</dict>
+			<dict>
+				<key>ITEM1_VALUE</key>
+				<integer>0</integer>
+				<key>CLAUSE_TYPE</key>
+				<string>OBJECT_OF_SIZE</string>
+			</dict>
+		</array>
+	</array>
 </dict>
 </plist>

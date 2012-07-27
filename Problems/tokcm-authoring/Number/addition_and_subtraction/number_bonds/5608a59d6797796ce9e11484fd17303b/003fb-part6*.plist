@@ -60,6 +60,25 @@
 		</dict>
 	</array>
 	<key>INIT_CONTAINERS</key>
-	<array/>
+	<array>
+		<dict>
+			<key>TAG</key>
+			<string>bin1</string>
+		</dict>
+		<dict>
+			<key>TAG</key>
+			<string>bin2</string>
+		</dict>
+		<dict>
+			<key>TAG</key>
+			<string>bin3</string>
+		</dict>
+	</array>
+	<key>SOLUTIONS</key>
+	<array>
+		<string></string>
+		<string></string>
+		<string></string>
+	</array>
 </dict>
 </plist>

@@ -57,6 +57,7 @@ typedef enum
 @property (retain) NSMutableArray *Chunks;
 @property (retain) NSMutableArray *GhostChunks;
 @property int MarkerPosition;
+@property int Tag;
 
 -(void)snapToNearestPos;
 -(void)ghostChunk;

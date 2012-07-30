@@ -123,10 +123,13 @@
     initFractions=[pdef objectForKey:INIT_FRACTIONS];
     [initFractions retain];
     
+    solutionsDef=[pdef objectForKey:SOLUTIONS];
+    [solutionsDef retain];
+    
     dividend=[[pdef objectForKey:DIVIDEND] intValue];
     divisor=[[pdef objectForKey:DIVISOR] intValue];
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
-    rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];    
+    rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
     
 }
 
@@ -139,8 +142,14 @@
         id<Configurable, Interactive> fraction;
         fraction=[[[SGFractionObject alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,[[d objectForKey:POS_Y]floatValue])] autorelease];
         fraction.FractionMode=[[d objectForKey:FRACTION_MODE]intValue];
-        fraction.MarkerStartPosition=[[d objectForKey:MARKER_START_POSITION]intValue];
+        
+        if([d objectForKey:MARKER_START_POSITION])
+            fraction.MarkerStartPosition=[[d objectForKey:MARKER_START_POSITION]intValue];
+        else
+            fraction.MarkerStartPosition=1;
+        
         fraction.Value=[[d objectForKey:VALUE]floatValue];
+        fraction.Tag=[[d objectForKey:TAG]intValue];
         
         [fraction setup];
     }
@@ -256,7 +265,29 @@
 #pragma mark - evaluation
 -(BOOL)evalExpression
 {
-    return NO;
+    int solutionsFound=0;
+    
+    for(NSDictionary *s in solutionsDef)
+    {
+        for(id go in gw.AllGameObjects)
+        {
+            if([go conformsToProtocol:@protocol(Interactive)])
+            {
+                id<Interactive> thisFraction=go;
+                if(thisFraction.Tag==[[s objectForKey:TAG]intValue])
+                {                
+                    if(thisFraction.Value/[thisFraction.Chunks count])
+                        solutionsFound++;
+            
+                }
+            }
+        }
+    }
+    
+    if(solutionsFound==[solutionsDef count])
+        return YES;
+    else
+        return NO;
 }
 
 -(void)evalProblem
@@ -299,6 +330,7 @@
     
     [renderLayer release];
     if(initFractions)[initFractions release];
+    if(solutionsDef)[solutionsDef release];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

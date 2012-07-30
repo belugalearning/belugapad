@@ -22,6 +22,7 @@
     
     // default positional bits
     CGPoint winL;
+    CGPoint touchStartPos;
     float cx, cy, lx, ly;
     
     // common touch interactions
@@ -36,6 +37,11 @@
     CCLayer *renderLayer;
     
     int startMarkerPos;
+    
+    NSArray *initFractions;
+    int dividend;
+    int divisor;
+    
     
 }
 

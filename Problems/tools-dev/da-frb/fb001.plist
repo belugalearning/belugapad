@@ -6,5 +6,26 @@
 	<string>fractions!</string>
 	<key>TOOL_KEY</key>
 	<string>FractionBuilder</string>
+	<key>INIT_FRACTIONS</key>
+	<array>
+		<dict>
+			<key>POS_Y</key>
+			<string>600</string>
+			<key>FRACTION_MODE</key>
+			<string>1</string>
+			<key>MARKER_START_POSITION</key>
+			<string>5</string>
+			<key>VALUE</key>
+			<string>1</string>
+		</dict>
+		<dict>
+			<key>POS_Y</key>
+			<string>300</string>
+			<key>FRACTION_MODE</key>
+			<string>0</string>
+			<key>VALUE</key>
+			<string>1</string>
+		</dict>
+	</array>
 </dict>
 </plist>

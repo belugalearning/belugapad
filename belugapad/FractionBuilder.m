@@ -32,6 +32,7 @@
     //game world
     SGGameWorld *gw;
     id<Moveable,Interactive>currentMarker;
+    id<MoveableChunk,ConfigurableChunk>currentChunk;
     
 }
 
@@ -109,9 +110,22 @@
 #pragma mark - gameworld setup and population
 -(void)readPlist:(NSDictionary*)pdef
 {
-    
     // All our stuff needs to go into vars to read later
+//INIT_FRACTIONS: Array
+//    INIT_FRACTIONS\Item: Dictionary
+//    
+//    INIT_FRACTIONS\Item\FRACTION_MODE: Number
+//    INIT_FRACTIONS\Item\POS_Y: Number
+//    INIT_FRACTIONS\Item\MARKER_START_POSITION: Number (implicitly splits the fraction into chunks)
+//    INIT_FRACTIONS\Item\VALUE: Number
+//    
+//DIVIDEND: Number
+//DIVISOR: Number
+    initFractions=[pdef objectForKey:INIT_FRACTIONS];
+    [initFractions retain];
     
+    dividend=[[pdef objectForKey:DIVIDEND] intValue];
+    divisor=[[pdef objectForKey:DIVISOR] intValue];
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];    
     
@@ -121,13 +135,30 @@
 {
     gw.Blackboard.RenderLayer = renderLayer;
     
-    id<Configurable, Interactive> fraction;
-    fraction=[[[SGFractionObject alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,cy)] autorelease];
-    fraction.HasSlider=YES;
-    fraction.MarkerStartPosition=1;
+    for(NSDictionary *d in initFractions)
+    {
+        id<Configurable, Interactive> fraction;
+        fraction=[[[SGFractionObject alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,[[d objectForKey:POS_Y]floatValue])] autorelease];
+        fraction.FractionMode=[[d objectForKey:FRACTION_MODE]intValue];
+        fraction.MarkerStartPosition=[[d objectForKey:MARKER_START_POSITION]intValue];
+        fraction.Value=[[d objectForKey:VALUE]floatValue];
+        
+        [fraction setup];
+    }
     
-    [fraction setup];
+}
+
+#pragma mark - interaction
+-(void)splitThisBar:(id)thisBar into:(int)thisManyChunks
+{
+    id<Interactive> curBar=thisBar;
+    if([curBar.Chunks count]>0)
+        [curBar removeChunks];
     
+    for(int i=0;i<thisManyChunks;i++)
+    {
+        [thisBar createChunk];
+    }
 }
 
 #pragma mark - touches events
@@ -141,6 +172,7 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
+    touchStartPos=location;
     
     for(id thisObj in gw.AllGameObjects)
     {
@@ -152,7 +184,17 @@
             {
                 currentMarker=cObj;
                 startMarkerPos=cObj.MarkerPosition;
-                break;
+                return;
+            }
+        }
+        
+        if([thisObj conformsToProtocol:@protocol(MoveableChunk)])
+        {
+            id<ConfigurableChunk,MoveableChunk> cObj=thisObj;
+            if([cObj amIProximateTo:location])
+            {
+                currentChunk=cObj;
+                return;
             }
         }
         
@@ -174,14 +216,22 @@
     if(currentMarker)
         [currentMarker moveMarkerTo:location];
     
+    if(currentChunk)
+    {
+        currentChunk.Position=location;
+        [currentChunk moveChunk];
+    }
+    
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    //    UITouch *touch=[touches anyObject];
-    //    CGPoint location=[touch locationInView: [touch view]];
-    //    location=[[CCDirector sharedDirector] convertToGL:location];
-    //location=[self.ForeLayer convertToNodeSpace:location];
+    UITouch *touch=[touches anyObject];
+    CGPoint location=[touch locationInView: [touch view]];
+    location=[[CCDirector sharedDirector] convertToGL:location];
+    location=[self.ForeLayer convertToNodeSpace:location];
+    
+    float distFromStartToEnd=[BLMath DistanceBetween:touchStartPos and:location];
     
     if(currentMarker)
     {
@@ -190,11 +240,35 @@
         if(startMarkerPos!=currentMarker.MarkerPosition)
         {
             [currentMarker ghostChunk];
-            //TODO: make this divide the gameobject up
+
+        }
+        
+        if (currentMarker.MarkerPosition>0)
+        {
+            [self splitThisBar:currentMarker into:currentMarker.MarkerPosition+1];
         }
     }
+    
+    if(currentChunk)
+    {
+        if(distFromStartToEnd<10)
+            [currentChunk changeChunkSelection];
+        
+        for(id go in gw.AllGameObjects)
+        {
+            if([go conformsToProtocol:@protocol(Configurable)])
+            {
+                if([currentChunk checkForChunkDropIn:go])
+                    NSLog(@"dropped in new parent");
+                    //TODO: this is when we'd check the parent vs current host
+                    // if different, we need to reassign
+            }
+        }
+    }
+    
     isTouching=NO;
     currentMarker=nil;
+    currentChunk=nil;
     
 }
 
@@ -206,6 +280,7 @@
     
     isTouching=NO;
     currentMarker=nil;
+    currentChunk=nil;
     // empty selected objects
 }
 
@@ -254,6 +329,7 @@
     //write log on problem switch
     
     [renderLayer release];
+    if(initFractions)[initFractions release];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

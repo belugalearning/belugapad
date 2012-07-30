@@ -15,7 +15,8 @@
 }
 
 -(void)createChunk;
--(void)removeChunk;
+-(void)removeChunks;
 -(void)ghostChunk;
+-(void)changeChunkOwnerFrom:(id)parentObject to:(id)newObject;
 
 @end

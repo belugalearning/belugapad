@@ -18,7 +18,7 @@
 @synthesize RenderLayer, HasSlider, CreateChunksOnInit, CreateChunks, FractionMode, Position, FractionSprite, SliderSprite, SliderMarkerSprite, BaseNode, MarkerStartPosition;
 
 // interactive properties
-@synthesize Divisions, Chunks, GhostChunks, MarkerPosition;
+@synthesize Divisions, Chunks, GhostChunks, MarkerPosition, Value;
 
 @synthesize RenderComponent;
 @synthesize MarkerComponent;
@@ -72,6 +72,16 @@
 -(void)moveMarkerTo:(CGPoint)location
 {
     [self.MarkerComponent moveMarkerTo:location];
+}
+
+-(void)createChunk
+{
+    [self.ChunkComponent createChunk];
+}
+
+-(void)removeChunks
+{
+    [self.ChunkComponent removeChunks];
 }
 
 -(void)ghostChunk

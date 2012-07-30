@@ -58,23 +58,49 @@
 -(BOOL)amIProximateTo:(CGPoint)location
 {
     CCSprite *curSprite=ParentGO.MySprite;
-    NSLog(@"loc: %@ bb: %@", NSStringFromCGPoint(location), NSStringFromCGRect(curSprite.boundingBox));
+    //NSLog(@"loc: %@ bb: %@", NSStringFromCGPoint(location), NSStringFromCGRect(curSprite.boundingBox));
     //location=[ParentGO.MySprite convertToNodeSpace:location];
     
     if(CGRectContainsPoint(curSprite.boundingBox, location))
-    {
-        NSLog(@"got chunk!");
         return YES;
+
+    else
+        return NO;
+}
+
+-(void)moveChunk
+{
+    CCSprite *curSprite=ParentGO.MySprite;
+    [curSprite setPosition:ParentGO.Position];
+}
+
+-(void)changeChunkSelection
+{
+    CCSprite *curSprite=ParentGO.MySprite;
+    
+    if(ParentGO.Selected)
+    {
+        ParentGO.Selected=NO;
+        [curSprite setColor:ccc3(255,255,255)];
     }
     else
     {
-        return NO;
+        ParentGO.Selected=YES;
+        [curSprite setColor:ccc3(0,255,0)];
     }
 }
 
--(void)moveChunkTo:(CGPoint)location
+-(BOOL)checkForChunkDropIn:(id<Configurable>)thisObject
 {
+    fractionSprite=thisObject.FractionSprite;
     
+    CGPoint adjPos=[thisObject.BaseNode convertToNodeSpace:ParentGO.Position];
+    
+    if(CGRectContainsPoint(fractionSprite.boundingBox, adjPos))
+        return YES;
+    else
+        return NO;
 }
+
 
 @end

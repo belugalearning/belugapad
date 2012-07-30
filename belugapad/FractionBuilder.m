@@ -32,6 +32,7 @@
     //game world
     SGGameWorld *gw;
     id<Moveable,Interactive>currentMarker;
+    id<MoveableChunk,ConfigurableChunk>currentChunk;
     
 }
 
@@ -180,6 +181,7 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
+    touchStartPos=location;
     
     for(id thisObj in gw.AllGameObjects)
     {
@@ -191,7 +193,7 @@
             {
                 currentMarker=cObj;
                 startMarkerPos=cObj.MarkerPosition;
-                break;
+                return;
             }
         }
         
@@ -200,7 +202,8 @@
             id<ConfigurableChunk,MoveableChunk> cObj=thisObj;
             if([cObj amIProximateTo:location])
             {
-                NSLog(@"obj!");
+                currentChunk=cObj;
+                return;
             }
         }
         
@@ -222,14 +225,22 @@
     if(currentMarker)
         [currentMarker moveMarkerTo:location];
     
+    if(currentChunk)
+    {
+        currentChunk.Position=location;
+        [currentChunk moveChunk];
+    }
+    
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    //    UITouch *touch=[touches anyObject];
-    //    CGPoint location=[touch locationInView: [touch view]];
-    //    location=[[CCDirector sharedDirector] convertToGL:location];
-    //location=[self.ForeLayer convertToNodeSpace:location];
+    UITouch *touch=[touches anyObject];
+    CGPoint location=[touch locationInView: [touch view]];
+    location=[[CCDirector sharedDirector] convertToGL:location];
+    location=[self.ForeLayer convertToNodeSpace:location];
+    
+    float distFromStartToEnd=[BLMath DistanceBetween:touchStartPos and:location];
     
     if(currentMarker)
     {
@@ -246,8 +257,27 @@
             [self splitThisBar:currentMarker into:currentMarker.MarkerPosition+1];
         }
     }
+    
+    if(currentChunk)
+    {
+        if(distFromStartToEnd<10)
+            [currentChunk changeChunkSelection];
+        
+        for(id go in gw.AllGameObjects)
+        {
+            if([go conformsToProtocol:@protocol(Configurable)])
+            {
+                if([currentChunk checkForChunkDropIn:go])
+                    NSLog(@"dropped in new parent");
+                    //TODO: this is when we'd check the parent vs current host
+                    // if different, we need to reassign
+            }
+        }
+    }
+    
     isTouching=NO;
     currentMarker=nil;
+    currentChunk=nil;
     
 }
 
@@ -259,6 +289,7 @@
     
     isTouching=NO;
     currentMarker=nil;
+    currentChunk=nil;
     // empty selected objects
 }
 

@@ -16,5 +16,8 @@
 
 -(void)setup;
 -(BOOL)amIProximateTo:(CGPoint)location;
+-(void)moveChunk;
+-(void)changeChunkSelection;
+-(BOOL)checkForChunkDropIn:(id<Configurable>)thisObject;
 
 @end

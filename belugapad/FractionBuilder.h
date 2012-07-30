@@ -22,6 +22,7 @@
     
     // default positional bits
     CGPoint winL;
+    CGPoint touchStartPos;
     float cx, cy, lx, ly;
     
     // common touch interactions

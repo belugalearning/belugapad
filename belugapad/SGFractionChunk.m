@@ -14,7 +14,7 @@
 @implementation SGFractionChunk
 
 // configurable properties
-@synthesize RenderLayer, MyParent, CurrentHost, Position, MySprite, Value;
+@synthesize RenderLayer, MyParent, CurrentHost, Position, MySprite, Value, Selected;
 
 @synthesize ChunkComponent;
 @synthesize ChunkRenderComponent;
@@ -56,12 +56,22 @@
 
 -(BOOL)amIProximateTo:(CGPoint)location
 {
-    [self.ChunkRenderComponent amIProximateTo:(CGPoint)location];    
+    return [self.ChunkRenderComponent amIProximateTo:(CGPoint)location];
 }
 
--(void)moveMarkerTo:(CGPoint)location
+-(void)moveChunk
 {
-    
+    [self.ChunkRenderComponent moveChunk];
+}
+
+-(void)changeChunkSelection
+{
+    [self.ChunkRenderComponent changeChunkSelection];
+}
+
+-(BOOL)checkForChunkDropIn:(id<Configurable>)thisObject
+{
+    return [self.ChunkRenderComponent checkForChunkDropIn:thisObject];
 }
 
 -(void)dealloc

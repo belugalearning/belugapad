@@ -268,7 +268,7 @@
             if([go conformsToProtocol:@protocol(Configurable)])
             {
                 if([currentChunk checkForChunkDropIn:go])
-                    NSLog(@"dropped in new parent");
+                    [currentChunk changeChunk:currentChunk toBelongTo:go];
                     //TODO: this is when we'd check the parent vs current host
                     // if different, we need to reassign
             }
@@ -305,10 +305,13 @@
             if([go conformsToProtocol:@protocol(Interactive)])
             {
                 id<Interactive> thisFraction=go;
+            
                 if(thisFraction.Tag==[[s objectForKey:TAG]intValue])
-                {                
-                    if(thisFraction.Value/[thisFraction.Chunks count])
+                {      
+                    if(thisFraction.Value/[thisFraction.Chunks count]==[[s objectForKey:VALUE]floatValue]){
+                        NSLog(@"found solution!");
                         solutionsFound++;
+                    }
             
                 }
             }

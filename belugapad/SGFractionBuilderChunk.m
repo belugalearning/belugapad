@@ -136,10 +136,68 @@
     }
 }
 
--(void)changeChunkOwnerFrom:(id)parentObject to:(id)newObject
+-(void)changeChunk:(id<ConfigurableChunk>)thisChunk toBelongTo:(id<Interactive>)newFraction
 {
-
+    id<Interactive> oldFraction=thisChunk.CurrentHost;
+    
+    [oldFraction.Chunks removeObject:thisChunk];
+    thisChunk.CurrentHost=newFraction;
+    [newFraction.Chunks addObject:thisChunk];
+    [self orderStepChildrenToRightOn:(id<Configurable,Interactive>)newFraction];
 }
 
+-(void)orderStepChildrenToRightOn:(id<Configurable,Interactive>)newFraction
+{
+    fractionSprite=newFraction.FractionSprite;
+    int amountOfChunksThatDontBelongHere=0;
+    int amountIveReorderedSoFar=0;
+    float leftPos=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
+    float widthOfFraction=fractionSprite.contentSize.width;
+    
+    for(id<ConfigurableChunk> go in newFraction.Chunks)
+    {
+        if(go.CurrentHost!=go.MyParent)
+            amountOfChunksThatDontBelongHere++;
+            
+    }
+    
+    for(id<ConfigurableChunk> go in newFraction.Chunks)
+    {
+        CGPoint myNewPos=ccp((leftPos+widthOfFraction)-(amountIveReorderedSoFar*go.MySprite.contentSize.width),fractionSprite.position.y);
+        
+        if(go.CurrentHost!=go.MyParent)
+        {
+            [go.MySprite setPosition:myNewPos];
+            amountIveReorderedSoFar++;
+        }
+        
+    }
+}
+
+-(void)orderChildrenToLeftOn:(id<Configurable,Interactive>)newFraction
+{
+    fractionSprite=newFraction.FractionSprite;
+    int amountOfChunksThatBelongHere=0;
+    int amountIveReorderedSoFar=0;
+    float leftPos=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
+    
+    for(id<ConfigurableChunk> go in newFraction.Chunks)
+    {
+        if(go.CurrentHost==go.MyParent)
+            amountOfChunksThatBelongHere++;
+        
+    }
+    
+    for(id<ConfigurableChunk> go in newFraction.Chunks)
+    {
+        CGPoint myNewPos=ccp(leftPos+(amountIveReorderedSoFar*go.MySprite.contentSize.width),fractionSprite.position.y);
+        if(go.CurrentHost==go.MyParent)
+        {
+            [go.MySprite setPosition:[go.MySprite.parent convertToWorldSpace:myNewPos]];
+            amountIveReorderedSoFar++;
+        }
+        
+    }    
+}
 
 @end

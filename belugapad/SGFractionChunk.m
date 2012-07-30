@@ -74,6 +74,11 @@
     return [self.ChunkRenderComponent checkForChunkDropIn:thisObject];
 }
 
+-(void)changeChunk:(id<ConfigurableChunk>)thisChunk toBelongTo:(id<Interactive>)newFraction
+{
+    [self.ChunkComponent changeChunk:thisChunk toBelongTo:newFraction];
+}
+
 -(void)dealloc
 {
     [super dealloc];

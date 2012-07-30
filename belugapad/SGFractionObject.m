@@ -94,6 +94,11 @@
     [self.MarkerComponent snapToNearestPos];
 }
 
+-(void)changeChunk:(id<ConfigurableChunk>)thisChunk toBelongTo:(id<Interactive>)newFraction
+{
+    [self.ChunkComponent changeChunk:thisChunk toBelongTo:newFraction];
+}
+
 -(void)dealloc
 {
     [RenderComponent release];

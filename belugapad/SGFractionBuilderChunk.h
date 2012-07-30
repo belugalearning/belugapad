@@ -17,6 +17,6 @@
 -(void)createChunk;
 -(void)removeChunks;
 -(void)ghostChunk;
--(void)changeChunkOwnerFrom:(id)parentObject to:(id)newObject;
+-(void)changeChunk:(id<ConfigurableChunk>)thisChunk toBelongTo:(id<Interactive>)newFraction;
 
 @end

@@ -33,22 +33,8 @@ typedef enum
 @property int MarkerStartPosition;
 
 -(void)setup;
--(void)changeChunkOwnerFrom:(id)parentObject to:(id)newObject;
 
 
-@end
-
-@protocol ConfigurableChunk
-
-@property (retain) CCLayer *RenderLayer;
-@property (retain) id MyParent;
-@property (retain) id CurrentHost;
-@property CGPoint Position;
-@property float Value;
-@property (retain) CCSprite *MySprite;
-@property BOOL Selected;
-
--(void)setup;
 
 @end
 
@@ -68,6 +54,20 @@ typedef enum
 
 @end
 
+@protocol ConfigurableChunk
+
+@property (retain) CCLayer *RenderLayer;
+@property (retain) id MyParent;
+@property (retain) id CurrentHost;
+@property CGPoint Position;
+@property float Value;
+@property (retain) CCSprite *MySprite;
+@property BOOL Selected;
+
+-(void)setup;
+-(void)changeChunk:(id<ConfigurableChunk>)thisChunk toBelongTo:(id<Interactive>)newFraction;
+
+@end
 
 @protocol Moveable
 

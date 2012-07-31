@@ -17,9 +17,9 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>5</integer>
-	<key>ROWS_PER_COL</key>
 	<integer>2</integer>
+	<key>ROWS_PER_COL</key>
+	<integer>5</integer>
 	<key>ALLOW_CONDENSING</key>
 	<true/>
 	<key>ALLOW_MULCHING</key>

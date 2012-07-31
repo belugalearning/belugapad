@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Is 16 nearer to 10 or 20?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>Is 16 nearer to 10 or 20?</string>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_EVAL_MODE</key>
@@ -12,29 +16,25 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>15 + 3</string>
+				<string>10</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>3 + 15</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>They are the same.</string>
+				<string>20</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>Neither</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Which of these is bigger?</string>
-		<key>INTERNAL_DESCRIPTION</key>
-		<string>commutativity</string>
-		<key>PROBLEM_DESCRIPTION</key>
-		<string>Which of these is bigger?</string>
+		<string>Is 16 nearer to 10 or 20?</string>
 	</dict>
 </dict>
 </plist>

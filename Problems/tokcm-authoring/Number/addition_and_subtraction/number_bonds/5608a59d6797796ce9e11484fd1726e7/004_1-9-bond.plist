@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What do we add to 1 to make 10?</string>
+	<string>Make 10 by adding one block.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>10 - 1 = 9</string>
 	<key>TOOL_KEY</key>

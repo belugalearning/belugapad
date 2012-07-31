@@ -10,13 +10,15 @@
 #import "SGFractionObjectProtocols.h"
 
 @class SGFractionBuilderChunk;
+@class SGFractionBuilderChunkRender;
 
-@interface SGFractionChunk: SGGameObject <ConfigurableChunk,Moveable>
+@interface SGFractionChunk: SGGameObject <ConfigurableChunk,MoveableChunk>
 
 
 
 -(SGFractionChunk*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition;
 
 @property (retain) SGFractionBuilderChunk *ChunkComponent;
+@property (retain) SGFractionBuilderChunkRender *ChunkRenderComponent;
 
 @end

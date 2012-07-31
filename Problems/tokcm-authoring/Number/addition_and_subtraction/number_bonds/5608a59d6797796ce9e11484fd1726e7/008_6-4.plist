@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is the difference between 10 and 4?</string>
+	<string>How much more than 4 is 10?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>10 - 4 = ?, ? = 6</string>
 	<key>TOOL_KEY</key>

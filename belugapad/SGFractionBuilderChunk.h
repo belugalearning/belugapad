@@ -15,7 +15,8 @@
 }
 
 -(void)createChunk;
--(void)removeChunk;
+-(void)removeChunks;
 -(void)ghostChunk;
+-(void)changeChunk:(id<ConfigurableChunk>)thisChunk toBelongTo:(id<Interactive>)newFraction;
 
 @end

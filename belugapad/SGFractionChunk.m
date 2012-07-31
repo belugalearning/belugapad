@@ -8,14 +8,16 @@
 
 #import "SGFractionChunk.h"
 #import "SGFractionBuilderChunk.h"
+#import "SGFractionBuilderChunkRender.h"
 
 
 @implementation SGFractionChunk
 
 // configurable properties
-@synthesize RenderLayer, MyParent, CurrentHost, Position, MySprite;
+@synthesize RenderLayer, MyParent, CurrentHost, Position, MySprite, Value, Selected;
 
 @synthesize ChunkComponent;
+@synthesize ChunkRenderComponent;
 
 -(SGFractionChunk*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
 {   
@@ -24,6 +26,7 @@
         self.RenderLayer=aRenderLayer;
         self.Position=aPosition;
         ChunkComponent=[[SGFractionBuilderChunk alloc]initWithGameObject:self];
+        ChunkRenderComponent=[[SGFractionBuilderChunkRender alloc]initWithGameObject:self];
         
     }
     
@@ -48,17 +51,32 @@
 
 -(void)setup
 {
-    
+    [self.ChunkRenderComponent setup];
 }
 
 -(BOOL)amIProximateTo:(CGPoint)location
 {
-    return NO;    
+    return [self.ChunkRenderComponent amIProximateTo:(CGPoint)location];
 }
 
--(void)moveMarkerTo:(CGPoint)location
+-(void)moveChunk
 {
-    
+    [self.ChunkRenderComponent moveChunk];
+}
+
+-(void)changeChunkSelection
+{
+    [self.ChunkRenderComponent changeChunkSelection];
+}
+
+-(BOOL)checkForChunkDropIn:(id<Configurable>)thisObject
+{
+    return [self.ChunkRenderComponent checkForChunkDropIn:thisObject];
+}
+
+-(void)changeChunk:(id<ConfigurableChunk>)thisChunk toBelongTo:(id<Interactive>)newFraction
+{
+    [self.ChunkComponent changeChunk:thisChunk toBelongTo:newFraction];
 }
 
 -(void)dealloc

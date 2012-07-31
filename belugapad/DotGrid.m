@@ -530,16 +530,20 @@
             curAnch.tile=tile;
             // if we have pre counting tiles on
             if(preCountedTiles){
-                NSDictionary *thisTile=[[NSDictionary alloc]init];
-                if(numberCounted<[preCountedTiles count]) thisTile=[preCountedTiles objectAtIndex:numberCounted];
-                
-                if(curAnch.myXpos == [[thisTile objectForKey:POS_X] intValue] && curAnch.myYpos == [[thisTile objectForKey:POS_Y]intValue])
+
+                if(numberCounted<[preCountedTiles count]) 
                 {
-                    numberCounted++;
-                    tile.Selected=YES;
-                }
+                    NSDictionary *thisTile=[preCountedTiles objectAtIndex:numberCounted];              
                 
-                [thisTile release];
+                    if(curAnch.myXpos == [[thisTile objectForKey:POS_X] intValue] && curAnch.myYpos == [[thisTile objectForKey:POS_Y]intValue])
+                    {
+                        numberCounted++;
+                        tile.Selected=YES;
+                    }
+                    
+                    [thisTile release];
+                }
+
             }
             
             if(curAnch.resizeHandle)

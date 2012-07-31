@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "cocos2d.h"
 
 @class SGDtoolBlockRender;
 @class SGDtoolBlockPairing;
@@ -34,6 +35,23 @@ typedef enum
 -(void)setup;
 
 
+
+@end
+
+@protocol Interactive
+
+@property int Divisions;
+@property float Value;
+@property (retain) NSMutableArray *Chunks;
+@property (retain) NSMutableArray *GhostChunks;
+@property int MarkerPosition;
+@property int Tag;
+
+-(void)snapToNearestPos;
+-(void)ghostChunk;
+-(void)createChunk;
+-(void)removeChunks;
+
 @end
 
 @protocol ConfigurableChunk
@@ -42,24 +60,14 @@ typedef enum
 @property (retain) id MyParent;
 @property (retain) id CurrentHost;
 @property CGPoint Position;
+@property float Value;
 @property (retain) CCSprite *MySprite;
+@property BOOL Selected;
 
 -(void)setup;
+-(void)changeChunk:(id<ConfigurableChunk>)thisChunk toBelongTo:(id<Interactive>)newFraction;
 
 @end
-
-@protocol Interactive
-
-@property int Divisions;
-@property (retain) NSMutableArray *Chunks;
-@property (retain) NSMutableArray *GhostChunks;
-@property int MarkerPosition;
-
--(void)snapToNearestPos;
--(void)ghostChunk;
-
-@end
-
 
 @protocol Moveable
 
@@ -67,6 +75,18 @@ typedef enum
 
 -(BOOL)amIProximateTo:(CGPoint)location;
 -(void)moveMarkerTo:(CGPoint)location;
+
+@end
+
+@protocol MoveableChunk
+
+@property CGPoint Position;
+@property BOOL Selected;
+
+-(BOOL)amIProximateTo:(CGPoint)location;
+-(void)moveChunk;
+-(void)changeChunkSelection;
+-(BOOL)checkForChunkDropIn:(id<Configurable>)thisObject;
 
 @end
 

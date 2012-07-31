@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_PIPELINE-toolsdemo</key>
+	<string>/Problems/dotgrid-demo</string>
+	<key>PROBLEM_PIPELINE-tools-dev</key>
+	<string>/Problems/tools-dev</string>
+	<key>PROBLEM_PIPELINE-dt</key>
+	<string>/Problems/tools-dev/da-dt/</string>
+	<key>PROBLEM_PIPELINE-dvars</key>
+	<string>/Problems/tools-dev/dvars/</string>
+	<key>PROBLEM_PIPELINE-database</key>
+	<string>DATABASE</string>
+	<key>PROBLEM_PIPELINE-cf</key>
+	<string>/pipeline-testing/countingforward.plist</string>
+	<key>PROBLEM_PIPELINE-3</key>
+	<string>/pipeline-testing/countingback.plist</string>
+	<key>PROBLEM_PIPELINE</key>
+	<string>/pipeline-testing/da-pipeline-test.plist</string>
+	<key>PROBLEM_PIPELINE-gj</key>
+	<string>/pipeline-testing/gj-pipeline-test.plist</string>
+	<key>PROBLEM_PIPELINE-c</key>
+	<string>/pipeline-testing/countingforward10.plist</string>
+	<key>PROBLEM_PIPELINE-1</key>
+	<string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/counting_forward/5608a59d6797796ce9e11484fd11e438/</string>
+	<key>RELEASE_MODE</key>
+	<false/>
+	<key>PROBLEM_PIPELINE-segments</key>
+	<string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/counting_forward/5608a59d6797796ce9e11484fd17ff5a/countin10s 006.plist</string>
+	<key>PROBLEM_PIPELINE-fds</key>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/number_bonds/5608a59d6797796ce9e11484fd1726e7/cr.plist</string>
+	<key>PROBLEM_PIPELINE-partitioning</key>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/number_bonds/5608a59d6797796ce9e11484fd17303b/cr.plist</string>
+</dict>
+</plist>

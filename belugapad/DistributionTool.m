@@ -192,7 +192,10 @@ static float kDistanceBetweenBlocks=70.0f;
         newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(posX+(kDistanceBetweenBlocks*i),posY)] autorelease];
         
         [newblock setup];
-        if(lastObj)[newblock pairMeWith:lastObj];
+        if(lastObj){
+            [newblock pairMeWith:lastObj];
+            [self findMountPositionForThisShape:newblock toThisShape:lastObj];
+        }
         lastObj=newblock;
         
     }    
@@ -249,6 +252,8 @@ static float kDistanceBetweenBlocks=70.0f;
     BOOL freeSpacePosX=YES;
     BOOL freeSpacePosY=YES;
     
+    NSMutableArray *possCoords=[[NSMutableArray alloc]init];
+    
 
     
     for(id<Moveable,Pairable> go in mountedShape.PairedObjects)
@@ -272,22 +277,39 @@ static float kDistanceBetweenBlocks=70.0f;
     
 
         if(freeSpacePosX)
-        
-            retval=ccp(mountedShapePos.x+kDistanceBetweenBlocks, mountedShapePos.y);
-        
-        else if(freeSpaceNegX)
-        
-            retval=ccp(mountedShapePos.x-kDistanceBetweenBlocks, mountedShapePos.y);   
-        
-        else if(freeSpacePosY)
-            retval=ccp(mountedShapePos.x, mountedShapePos.y+kDistanceBetweenBlocks);
-
-        else if(freeSpaceNegY)
-            retval=ccp(mountedShapePos.x, mountedShapePos.y-kDistanceBetweenBlocks);    
-        
+        {
+            CGPoint retvalPX=ccp(mountedShapePos.x+kDistanceBetweenBlocks, mountedShapePos.y);
+            [possCoords addObject:[NSValue valueWithCGPoint:retvalPX]];
+        }
+        if(freeSpaceNegX)
+        {
+            CGPoint retvalNX=ccp(mountedShapePos.x-kDistanceBetweenBlocks, mountedShapePos.y); 
+            [possCoords addObject:[NSValue valueWithCGPoint:retvalNX]];
+        }
+        if(freeSpacePosY)
+        {
+            CGPoint retvalPY=ccp(mountedShapePos.x, mountedShapePos.y+kDistanceBetweenBlocks);
+            [possCoords addObject:[NSValue valueWithCGPoint:retvalPY]];
+        }
+        if(freeSpaceNegY)
+        {
+            CGPoint retvalNY=ccp(mountedShapePos.x, mountedShapePos.y-kDistanceBetweenBlocks);
+            [possCoords addObject:[NSValue valueWithCGPoint:retvalNY]];
+        }
    
 
-    
+
+    if([possCoords count]>0)
+    {
+        int retValNum=(arc4random() % [possCoords count]);
+        NSLog(@"retval posscords count is %d chosennum is %d", [possCoords count], retValNum);
+        retval=[[possCoords objectAtIndex:retValNum]CGPointValue];
+    }
+    else
+    {
+        // TODO: decide what a no-mount-point scenario does - for now we just move it down
+        retval=ccp(10,10);
+    }
     return retval;
 }
 

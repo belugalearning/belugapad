@@ -43,7 +43,7 @@
     
 }
 
--(void)createChunk
+-(id)createChunk
 {
     if(ParentGO.FractionMode==0 && ParentGO.MarkerPosition>0)
     {
@@ -65,9 +65,11 @@
         [ParentGO.Chunks addObject:chunk];
         
         [chunk setup];
-        
+     
+        return chunk;
     }
 
+    return nil;
 }
 
 -(void)removeChunks

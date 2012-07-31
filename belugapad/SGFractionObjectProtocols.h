@@ -50,7 +50,7 @@ typedef enum
 
 -(void)snapToNearestPos;
 -(void)ghostChunk;
--(void)createChunk;
+-(id)createChunk;
 -(void)removeChunks;
 
 @end

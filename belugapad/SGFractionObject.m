@@ -74,9 +74,9 @@
     [self.MarkerComponent moveMarkerTo:location];
 }
 
--(void)createChunk
+-(id)createChunk
 {
-    [self.ChunkComponent createChunk];
+    return [self.ChunkComponent createChunk];
 }
 
 -(void)removeChunks

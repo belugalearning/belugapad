@@ -17,7 +17,7 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>10</integer>
+	<integer>9</integer>
 	<key>ROWS_PER_COL</key>
 	<integer>3</integer>
 	<key>ALLOW_CONDENSING</key>
@@ -27,7 +27,7 @@
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
-	<integer>2</integer>
+	<integer>1</integer>
 	<key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_COUNT</key>
@@ -55,7 +55,7 @@
 	<key>SOLUTION</key>
 	<dict>
 		<key>SOLUTION_TYPE</key>
-		<string>TOTAL_COUNT_AND_COUNT_SEQUENCE</string>
+		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
 		<integer>25</integer>
 	</dict>

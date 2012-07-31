@@ -33,8 +33,24 @@ typedef enum
 @property int MarkerStartPosition;
 
 -(void)setup;
--(void)changeChunkOwnerFrom:(id)parentObject to:(id)newObject;
 
+
+
+@end
+
+@protocol Interactive
+
+@property int Divisions;
+@property float Value;
+@property (retain) NSMutableArray *Chunks;
+@property (retain) NSMutableArray *GhostChunks;
+@property int MarkerPosition;
+@property int Tag;
+
+-(void)snapToNearestPos;
+-(void)ghostChunk;
+-(void)createChunk;
+-(void)removeChunks;
 
 @end
 
@@ -49,24 +65,9 @@ typedef enum
 @property BOOL Selected;
 
 -(void)setup;
+-(void)changeChunk:(id<ConfigurableChunk>)thisChunk toBelongTo:(id<Interactive>)newFraction;
 
 @end
-
-@protocol Interactive
-
-@property int Divisions;
-@property float Value;
-@property (retain) NSMutableArray *Chunks;
-@property (retain) NSMutableArray *GhostChunks;
-@property int MarkerPosition;
-
--(void)snapToNearestPos;
--(void)ghostChunk;
--(void)createChunk;
--(void)removeChunks;
-
-@end
-
 
 @protocol Moveable
 

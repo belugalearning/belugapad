@@ -39,6 +39,7 @@
     int startMarkerPos;
     
     NSArray *initFractions;
+    NSArray *solutionsDef;
     int dividend;
     int divisor;
     

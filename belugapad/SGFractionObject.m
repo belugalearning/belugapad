@@ -18,7 +18,7 @@
 @synthesize RenderLayer, HasSlider, CreateChunksOnInit, CreateChunks, FractionMode, Position, FractionSprite, SliderSprite, SliderMarkerSprite, BaseNode, MarkerStartPosition;
 
 // interactive properties
-@synthesize Divisions, Chunks, GhostChunks, MarkerPosition, Value;
+@synthesize Divisions, Chunks, GhostChunks, MarkerPosition, Value, Tag;
 
 @synthesize RenderComponent;
 @synthesize MarkerComponent;
@@ -92,6 +92,11 @@
 -(void)snapToNearestPos
 {
     [self.MarkerComponent snapToNearestPos];
+}
+
+-(void)changeChunk:(id<ConfigurableChunk>)thisChunk toBelongTo:(id<Interactive>)newFraction
+{
+    [self.ChunkComponent changeChunk:thisChunk toBelongTo:newFraction];
 }
 
 -(void)dealloc

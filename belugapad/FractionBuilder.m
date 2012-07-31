@@ -162,13 +162,22 @@
 #pragma mark - interaction
 -(void)splitThisBar:(id)thisBar into:(int)thisManyChunks
 {
-    id<Interactive> curBar=thisBar;
+    id<Interactive,Configurable> curBar=thisBar;
     if([curBar.Chunks count]>0)
         [curBar removeChunks];
     
     for(int i=0;i<thisManyChunks;i++)
     {
-        [thisBar createChunk];
+        // return the created object
+        id<ConfigurableChunk> go=[thisBar createChunk];
+        
+        // if it's been selected (ie if the fraction has auto shade switched on)
+        // alloc the array and add the object
+        if(go.Selected)
+        {
+            if(!selectedChunks)selectedChunks=[[NSMutableArray alloc] init];
+            [selectedChunks addObject:go];
+        }
     }
 }
 
@@ -389,6 +398,7 @@
     [renderLayer release];
     if(initFractions)[initFractions release];
     if(solutionsDef)[solutionsDef release];
+    if(selectedChunks)[selectedChunks release];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

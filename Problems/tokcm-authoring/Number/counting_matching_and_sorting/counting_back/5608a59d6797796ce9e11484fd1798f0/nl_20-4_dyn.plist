@@ -3,27 +3,29 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>starting at 7, count on 20.</string>
+	<string>Starting at {$number1}, count back to {$number2}.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Count to 27.</string>
+	<string>Count to 6.</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>1</string>
+	<string>{$number1}</string>
 	<key>MIN_VALUE</key>
-	<string>1</string>
+	<string>0</string>
 	<key>MAX_VALUE</key>
-	<string>35</string>
+	<string>20</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>EVAL_TARGET</key>
-	<string>27</string>
+	<string>{$number2}</string>
 	<key>HIDE_ALL_NUMBERS</key>
-	<false/>
+	<true/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
-	<array/>
+	<array>
+		<string>5</string>
+	</array>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
@@ -55,5 +57,22 @@
 	</array>
 	<key>RENDER_STITCHES_AT_INTERVAL</key>
 	<integer>0</integer>
+	<key>DVARS</key>
+	<dict>
+		<key>$number2</key>
+		<dict>
+			<key>MAX</key>
+			<string>14</string>
+			<key>MIN</key>
+			<string>4</string>
+		</dict>
+		<key>$number1</key>
+		<dict>
+			<key>MAX</key>
+			<string>20</string>
+			<key>MIN</key>
+			<string>15</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

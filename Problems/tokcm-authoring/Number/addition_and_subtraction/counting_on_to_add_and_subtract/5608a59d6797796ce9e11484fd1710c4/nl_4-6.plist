@@ -9,21 +9,23 @@
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>1</string>
+	<string>4</string>
 	<key>MIN_VALUE</key>
-	<string>1</string>
+	<string>0</string>
 	<key>MAX_VALUE</key>
-	<string>10</string>
+	<string>12</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>EVAL_TARGET</key>
 	<string>10</string>
 	<key>HIDE_ALL_NUMBERS</key>
-	<false/>
+	<true/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
-	<array/>
+	<array>
+		<string>3</string>
+	</array>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>

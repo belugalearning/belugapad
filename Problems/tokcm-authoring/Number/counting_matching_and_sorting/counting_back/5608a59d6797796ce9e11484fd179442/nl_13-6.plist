@@ -3,31 +3,35 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 7. Count back 4 steps. What is 7 subtract 4?</string>
+	<string>Starting at 13, count back 6.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>7-4</string>
+	<string>Count to 7</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>7</string>
+	<string>13</string>
 	<key>MIN_VALUE</key>
-	<string>3</string>
+	<string>0</string>
 	<key>MAX_VALUE</key>
-	<string>7</string>
+	<string>15</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<string>3</string>
+	<string>7</string>
 	<key>HIDE_ALL_NUMBERS</key>
-	<false/>
+	<true/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
-	<array/>
+	<array>
+		<string>5</string>
+	</array>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
-	<array/>
+	<array>
+		<string>5</string>
+	</array>
 	<key>HIDE_START_NUMBER</key>
 	<false/>
 	<key>HIDE_END_NUMBER</key>
@@ -42,7 +46,7 @@
 	<integer>0</integer>
 	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
 	<array>
-		<integer>1</integer>
+		<integer>5</integer>
 	</array>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array/>

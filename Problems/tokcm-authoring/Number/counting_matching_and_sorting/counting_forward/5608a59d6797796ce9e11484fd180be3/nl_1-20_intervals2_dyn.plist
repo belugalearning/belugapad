@@ -5,15 +5,15 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Count to {$number}.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Count to x with intervals of 2.</string>
+	<string>Count to x with intervals of 5.</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
 	<string>1</string>
 	<key>MIN_VALUE</key>
-	<string>1</string>
+	<string>0</string>
 	<key>MAX_VALUE</key>
-	<string>20</string>
+	<string>26</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
@@ -21,15 +21,17 @@
 	<key>EVAL_TARGET</key>
 	<string>{$number}</string>
 	<key>HIDE_ALL_NUMBERS</key>
-	<false/>
+	<true/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
 	<array>
-		<integer>2</integer>
+		<integer>4</integer>
 	</array>
 	<key>HIDE_ALL_NOTCHES</key>
-	<false/>
+	<true/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
-	<array/>
+	<array>
+		<string>4</string>
+	</array>
 	<key>HIDE_START_NUMBER</key>
 	<false/>
 	<key>HIDE_END_NUMBER</key>
@@ -44,7 +46,7 @@
 	<integer>0</integer>
 	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
 	<array>
-		<integer>2</integer>
+		<integer>4</integer>
 	</array>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array/>

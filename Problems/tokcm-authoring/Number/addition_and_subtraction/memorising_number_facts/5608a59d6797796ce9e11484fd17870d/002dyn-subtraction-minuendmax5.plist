@@ -30,8 +30,6 @@
 				<string>subtract</string>
 				<string>take away</string>
 				<string>-</string>
-				<string>minus</string>
-				<string>decreased by</string>
 			</array>
 		</dict>
 	</dict>
@@ -43,13 +41,13 @@
 			<key>MIN</key>
 			<string>1</string>
 			<key>MAX</key>
-			<string>10</string>
+			<string>4</string>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
 			<string>$subtrahend</string>
 			<key>MIN</key>
-			<string>0</string>
+			<string>1</string>
 			<key>MAX</key>
 			<string>{$minuend}</string>
 		</dict>

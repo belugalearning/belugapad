@@ -15,7 +15,7 @@
 @implementation SGFractionObject
 
 // configurable properties
-@synthesize RenderLayer, HasSlider, CreateChunksOnInit, CreateChunks, FractionMode, Position, FractionSprite, SliderSprite, SliderMarkerSprite, BaseNode, MarkerStartPosition;
+@synthesize RenderLayer, HasSlider, CreateChunksOnInit, CreateChunks, FractionMode, Position, FractionSprite, SliderSprite, SliderMarkerSprite, BaseNode, MarkerStartPosition, AutoShadeNewChunks;
 
 // interactive properties
 @synthesize Divisions, Chunks, GhostChunks, MarkerPosition, Value, Tag;

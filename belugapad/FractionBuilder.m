@@ -88,7 +88,7 @@
 
 #pragma mark - loops
 
--(void)doUpdate:(ccTime)delta
+-(void)doUpdateOnTick:(ccTime)delta
 {
     if(autoMoveToNextProblem)
     {
@@ -153,6 +153,8 @@
         fraction.Tag=[[d objectForKey:TAG]intValue];
         
         [fraction setup];
+        
+        if([[d objectForKey:CREATE_CHUNKS_ON_INIT]boolValue])[self splitThisBar:fraction into:fraction.MarkerStartPosition];
     }
     
 }
@@ -229,6 +231,16 @@
     {
         currentChunk.Position=location;
         [currentChunk moveChunk];
+        
+//        for(id<MoveableChunk> chunk in selectedChunks)
+//        {
+//            if(chunk==currentChunk)continue;
+//            float diffX=[BLMath DistanceBetween:ccp(currentChunk.Position.x,0) and:ccp(chunk.Position.x,0)];
+//            float diffY=[BLMath DistanceBetween:ccp(0,currentChunk.Position.y) and:ccp(0,currentChunk.Position.y)];
+//            NSLog(@"diffX %f, diffY %f", diffX, diffY);
+//            chunk.Position=ccp(location.x+diffX,location.y+diffY);
+//            [chunk moveChunk];
+//        }
     }
     
 }
@@ -252,16 +264,20 @@
 
         }
         
-        if (currentMarker.MarkerPosition>0)
-        {
-            [self splitThisBar:currentMarker into:currentMarker.MarkerPosition+1];
-        }
+        [self splitThisBar:currentMarker into:currentMarker.MarkerPosition+1];
+        
     }
     
     if(currentChunk)
     {
-        if(distFromStartToEnd<10)
+        if(distFromStartToEnd<10.0f)
+        {
+            if(!selectedChunks)selectedChunks=[[NSMutableArray alloc]init];
+            
+            if(!currentChunk.Selected)[selectedChunks addObject:currentChunk];
+            else [selectedChunks removeObject:currentChunk];
             [currentChunk changeChunkSelection];
+        }
         
         for(id go in gw.AllGameObjects)
         {
@@ -305,14 +321,22 @@
             if([go conformsToProtocol:@protocol(Interactive)])
             {
                 id<Interactive> thisFraction=go;
-            
+                NSLog(@"found interactive obj (tag %d)", thisFraction.Tag);
+                
                 if(thisFraction.Tag==[[s objectForKey:TAG]intValue])
                 {      
-                    if(thisFraction.Value/[thisFraction.Chunks count]==[[s objectForKey:VALUE]floatValue]){
-                        NSLog(@"found solution!");
-                        solutionsFound++;
+                    float foundValue=0.0f;
+                    float expectedTotal=[[s objectForKey:VALUE]floatValue];
+                    
+                    for(id<ConfigurableChunk> thisGO in thisFraction.Chunks)
+                    {
+                        NSLog(@"this chunk is worth %f", thisGO.Value);
+                        foundValue+=thisGO.Value;
                     }
-            
+                 
+                    if(foundValue==expectedTotal)
+                        solutionsFound++;
+                    
                 }
             }
         }

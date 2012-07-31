@@ -31,6 +31,7 @@ typedef enum
 @property (retain) CCSprite *SliderMarkerSprite;
 @property (retain) CCNode *BaseNode;
 @property int MarkerStartPosition;
+@property BOOL AutoShadeNewChunks;
 
 -(void)setup;
 

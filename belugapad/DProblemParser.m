@@ -206,8 +206,12 @@
     }
     else {
         //create a random number between min and max
-        int min=[[params objectForKey:@"MIN"] floatValue];
-        int max=[[params objectForKey:@"MAX"] floatValue];
+//        int min=[[params objectForKey:@"MIN"] floatValue];
+//        int max=[[params objectForKey:@"MAX"] floatValue];
+        
+        //parse min and max using internal parser
+        int min=[self parseIntFromString:[params objectForKey:@"MIN"]];
+        int max=[self parseIntFromString:[params objectForKey:@"MAX"]];
         
         int interval=max-min;
         

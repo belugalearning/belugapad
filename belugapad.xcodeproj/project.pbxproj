@@ -118,7 +118,6 @@
 		7F2F2D74158F754600862302 /* SGJmapNodeSelect.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2F2D73158F754600862302 /* SGJmapNodeSelect.m */; };
 		7F2F2D7815908FE000862302 /* LRAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2F2D7715908FE000862302 /* LRAnimator.m */; };
 		7F3367DD155FC38A00A2E656 /* DProblemParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3367DC155FC38A00A2E656 /* DProblemParser.m */; };
-		7F40D88E14FF631C006A3A55 /* local-settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F40D88D14FF631C006A3A55 /* local-settings.plist */; };
 		7F40D89A14FFD8BE006A3A55 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113CC14A9EE63001AF372 /* UIKit.framework */; };
 		7F40D89B14FFD8BE006A3A55 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113CE14A9EE63001AF372 /* Foundation.framework */; };
 		7F40D8A114FFD8BE006A3A55 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7F40D89F14FFD8BE006A3A55 /* InfoPlist.strings */; };
@@ -383,6 +382,7 @@
 		7FDBA53914EBD560004D1CC9 /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA52B14EBD560004D1CC9 /* CTidy.m */; };
 		7FDBA56314EC4271004D1CC9 /* bm11.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FDBA56214EC4271004D1CC9 /* bm11.plist */; };
 		7FEDCE1C1535DCA400C8C9F3 /* ExprEvalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */; };
+		B772E7B615C7EA350097DF2E /* local-settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = B772E7B515C7EA350097DF2E /* local-settings.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -613,7 +613,6 @@
 		7F2F2D7715908FE000862302 /* LRAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRAnimator.m; sourceTree = "<group>"; };
 		7F3367DB155FC38A00A2E656 /* DProblemParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DProblemParser.h; sourceTree = "<group>"; };
 		7F3367DC155FC38A00A2E656 /* DProblemParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DProblemParser.m; sourceTree = "<group>"; };
-		7F40D88D14FF631C006A3A55 /* local-settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "local-settings.plist"; sourceTree = "<group>"; };
 		7F40D89714FFD8BE006A3A55 /* GeneralTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GeneralTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F40D89E14FFD8BE006A3A55 /* GeneralTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GeneralTests-Info.plist"; sourceTree = "<group>"; };
 		7F40D8A014FFD8BE006A3A55 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1117,6 +1116,7 @@
 		7FDBA52C14EBD560004D1CC9 /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchXML.h; sourceTree = "<group>"; };
 		7FDBA56214EC4271004D1CC9 /* bm11.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bm11.plist; sourceTree = "<group>"; };
 		7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprEvalTests.m; sourceTree = "<group>"; };
+		B772E7B515C7EA350097DF2E /* local-settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "local-settings.plist"; path = "../../../Dropbox/local-settings.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2060,7 +2060,7 @@
 				552478651536BF5C00BA5C4E /* tooldef.plist */,
 				7F5113E414A9EE63001AF372 /* Info.plist */,
 				7F5113E514A9EE63001AF372 /* iTunesArtwork */,
-				7F40D88D14FF631C006A3A55 /* local-settings.plist */,
+				B772E7B515C7EA350097DF2E /* local-settings.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2623,7 +2623,6 @@
 				0C427C3714F529CC0033AFE2 /* sfx in Resources */,
 				0CF9187C14F54C1D00FAC58D /* images in Resources */,
 				0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */,
-				7F40D88E14FF631C006A3A55 /* local-settings.plist in Resources */,
 				7F5003791521B24C0038D251 /* ChangeLog in Resources */,
 				7F50037A1521B24C0038D251 /* CMakeLists-kazmath.txt in Resources */,
 				7F5005A61521B3060038D251 /* chipmunk-docs.html in Resources */,
@@ -2641,6 +2640,7 @@
 				0C35A9F81576272500D47517 /* canned-dbs in Resources */,
 				0C712C0D1580C392004B716F /* CHANGELOG.md in Resources */,
 				0C712C0F1580C392004B716F /* README.md in Resources */,
+				B772E7B615C7EA350097DF2E /* local-settings.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

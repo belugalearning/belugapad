@@ -45,12 +45,19 @@
 
 -(void)setup
 {
+    id<Configurable> myParent=ParentGO.MyParent;
+    
     CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/fractions/chunk.png")];
     ParentGO.MySprite=s;
     [s setOpacity:0];
     [s setPosition:ParentGO.Position];
     
     [s runAction:[CCFadeIn actionWithDuration:0.5f]];
+    
+    if(myParent.AutoShadeNewChunks){
+        [s setColor:ccc3(0,255,0)];
+        ParentGO.Selected=YES;
+    }
     
     [ParentGO.RenderLayer addChild:s];
 }

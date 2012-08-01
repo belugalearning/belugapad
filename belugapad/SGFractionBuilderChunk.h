@@ -14,7 +14,7 @@
     id<Configurable,Moveable,Interactive> ParentGO;
 }
 
--(void)createChunk;
+-(id)createChunk;
 -(void)removeChunks;
 -(void)ghostChunk;
 -(void)changeChunk:(id<ConfigurableChunk>)thisChunk toBelongTo:(id<Interactive>)newFraction;

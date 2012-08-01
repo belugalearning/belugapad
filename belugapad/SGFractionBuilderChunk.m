@@ -43,7 +43,7 @@
     
 }
 
--(void)createChunk
+-(id)createChunk
 {
     if(ParentGO.FractionMode==0 && ParentGO.MarkerPosition>0)
     {
@@ -59,13 +59,17 @@
         chunk=[[[SGFractionChunk alloc] initWithGameWorld:gameWorld andRenderLayer:ParentGO.RenderLayer andPosition:startPos] autorelease];
         chunk.MyParent=ParentGO;
         chunk.CurrentHost=ParentGO;
-        chunk.Value=ParentGO.Value/ParentGO.MarkerPosition;
+        
+        chunk.Value=ParentGO.Value/(ParentGO.MarkerPosition+1);
         
         [ParentGO.Chunks addObject:chunk];
         
         [chunk setup];
+     
+        return chunk;
     }
 
+    return nil;
 }
 
 -(void)removeChunks
@@ -144,6 +148,7 @@
     thisChunk.CurrentHost=newFraction;
     [newFraction.Chunks addObject:thisChunk];
     [self orderStepChildrenToRightOn:(id<Configurable,Interactive>)newFraction];
+    [self orderChildrenToLeftOn:(id<Configurable,Interactive>)newFraction];
 }
 
 -(void)orderStepChildrenToRightOn:(id<Configurable,Interactive>)newFraction
@@ -167,7 +172,8 @@
         
         if(go.CurrentHost!=go.MyParent)
         {
-            [go.MySprite setPosition:myNewPos];
+            NSLog(@"thisPos: %@", NSStringFromCGPoint(myNewPos));
+            [go.MySprite setPosition:[newFraction.BaseNode convertToWorldSpace:myNewPos]];
             amountIveReorderedSoFar++;
         }
         
@@ -193,7 +199,7 @@
         CGPoint myNewPos=ccp(leftPos+(amountIveReorderedSoFar*go.MySprite.contentSize.width),fractionSprite.position.y);
         if(go.CurrentHost==go.MyParent)
         {
-            [go.MySprite setPosition:[go.MySprite.parent convertToWorldSpace:myNewPos]];
+            [go.MySprite setPosition:[newFraction.BaseNode convertToWorldSpace:myNewPos]];
             amountIveReorderedSoFar++;
         }
         

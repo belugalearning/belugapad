@@ -40,6 +40,7 @@
     
     NSArray *initFractions;
     NSArray *solutionsDef;
+    NSMutableArray *selectedChunks;
     int dividend;
     int divisor;
     
@@ -49,7 +50,7 @@
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;
 -(void)populateGW;
 -(void)readPlist:(NSDictionary*)pdef;
--(void)doUpdate:(ccTime)delta;
+-(void)doUpdateOnTick:(ccTime)delta;
 -(void)draw;
 -(BOOL)evalExpression;
 -(void)evalProblem;

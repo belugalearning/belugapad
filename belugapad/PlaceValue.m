@@ -136,20 +136,19 @@ static float kTimeToCageShake=7.0f;
             if(lastTotalCount<expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
             {
                 [gw handleMessage:kDWcheckMyMountIsCage andPayload:nil withLogLevel:-1];
-                timeSinceInteractionOrShake=0.0f;
             }
             // too many items - shake netted items
             else if(lastTotalCount>expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
             {
                 [gw handleMessage:kDWcheckMyMountIsNet andPayload:nil withLogLevel:-1];
-                timeSinceInteractionOrShake=0.0f;
             }
         }
         if(isProblemComplete && evalMode==kProblemEvalOnCommit)
         {
             [toolHost shakeCommitButton];
-            timeSinceInteractionOrShake=0.0f;
         }
+        
+        timeSinceInteractionOrShake=0.0f;
     }
 }
 
@@ -984,13 +983,14 @@ static float kTimeToCageShake=7.0f;
 -(BOOL)evalProblemMatrixMatch
 {
     float solutionsFound = 0;
+    int thisCol = 0;
     BOOL canEval=NO;
     NSArray *solutionMatrix = [solutionsDef objectForKey:SOLUTION_MATRIX];
     
     // for each column
     for(int c=0; c<gw.Blackboard.AllStores.count; c++)
     {
-        
+        thisCol=c;
         int countAtRow[[[gw.Blackboard.AllStores objectAtIndex:c]count]];
         
         
@@ -1020,8 +1020,10 @@ static float kTimeToCageShake=7.0f;
             NSDictionary *solDict = [solutionMatrix objectAtIndex:o];
             int curRow = [[solDict objectForKey:PUT_IN_ROW] intValue];
             
-            if(countAtRow[curRow] == [[solDict objectForKey:NUMBER] intValue])
+            if(countAtRow[curRow] == [[solDict objectForKey:NUMBER] intValue] && thisCol== [[solDict objectForKey:PUT_IN_COL]intValue])
                 solutionsFound++;
+            
+
                 // Attach XP/partial progress here
                 //[toolHost.Zubi createXPshards:20 fromLocation:pos];
         
@@ -1576,7 +1578,15 @@ static float kTimeToCageShake=7.0f;
         {
             // check whether it's selected and we can deselect - or that it's deselected
             DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
-            if(!(block.Selected) || (block.Selected && allowDeselect))
+            
+            BOOL isCage;
+            
+            if([block.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
+                isCage=YES;
+            else 
+                isCage=NO;
+
+            if((!block.Selected && !isCage) || (block.Selected && allowDeselect && !isCage))
                 [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
             
         }

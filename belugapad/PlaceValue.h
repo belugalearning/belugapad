@@ -153,6 +153,7 @@
 -(BOOL)evalProblemTotalCount;
 -(BOOL)evalProblemMatrixMatch;
 -(void)snapLayerToPosition;
+-(int)freeSpacesOnGrid:(int)thisGrid;
 -(void)tintGridColour:(ccColor3B)toThisColour;
 -(void)tintGridColour:(int)thisGrid toColour:(ccColor3B)toThisColour;
 -(BOOL)doCondenseFromLocation:(CGPoint)location;

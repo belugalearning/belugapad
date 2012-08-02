@@ -486,12 +486,14 @@ static float kTimeToMountedShake=7.0f;
     {
         int foundSolutions=0;
         NSMutableArray *correctRows=[[NSMutableArray alloc]init];
+        NSMutableArray *usedSolutions=[[NSMutableArray alloc]init];
         
 //        NSMutableArray *solCopy=[NSMutableArray arrayWithArray:solutionsDef
         
         // for each row, we need to find whether their make-up is a solution
         for(DWNBondRowGameObject *r in createdRows)
         {
+            if([correctRows containsObject:r])continue;
             // for each row, check each solution
             for(NSArray *a in solutionsDef)
             {
@@ -499,7 +501,7 @@ static float kTimeToMountedShake=7.0f;
                 BOOL matchedAllObjects=YES; 
                 // if there's no objects in this row, continue - if the row's already correct, continue
                 if([r.MountedObjects count]==0)continue;
-                if([correctRows containsObject:r])continue;
+                if([usedSolutions containsObject:a])continue;
                 
                 // loop through each mounted object
                 for(int v=0;v<[r.MountedObjects count];v++)
@@ -536,6 +538,7 @@ static float kTimeToMountedShake=7.0f;
                 {
                     // if they match, add to a correctrows array and increase the found solutions
                     [correctRows addObject:r];
+                    [usedSolutions addObject:a];
                     foundSolutions++;
                     continue;
                 }

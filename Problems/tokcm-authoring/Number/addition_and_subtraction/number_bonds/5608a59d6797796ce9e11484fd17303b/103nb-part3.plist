@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Can you find another way?</string>
+	<string>And another?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>partition 3 into 2 parts</string>
 	<key>TOOL_KEY</key>
@@ -36,6 +36,22 @@
 	</array>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>SOLUTION_MODE</key>
+	<integer>1</integer>
+	<key>SOLUTIONS</key>
+	<array>
+		<array>
+			<integer>3</integer>
+		</array>
+		<array>
+			<string>2</string>
+			<string>1</string>
+		</array>
+		<array>
+			<string>1</string>
+			<string>2</string>
+		</array>
+	</array>
 	<key>INIT_CAGES</key>
 	<array>
 		<dict>

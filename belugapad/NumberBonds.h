@@ -14,6 +14,12 @@
 @class DWNBondRowGameObject;
 @class DWNBondStoreGameObject;
 
+typedef enum {
+    kSolutionTopRow=0,   // solution comes from the value of the top row
+    kSolutionRowMatch=1, // solution comes from the SOLUTIONS dictionary
+    kSolutionFreeform=2  // solution comes any way - so long as the rows match SOLUTION_VALUE
+} NumberBondSolutionMode;
+
 @interface NumberBonds : ToolScene
 {
     ToolHost *toolHost;
@@ -31,6 +37,7 @@
     NSArray *initObjects;
     NSArray *initCages;
     NSArray *solutionsDef;
+    int solutionValue;
     BOOL useBlockScaling;
     
     NSMutableArray *createdRows;
@@ -39,6 +46,7 @@
     ProblemRejectMode rejectMode;
     ProbjemRejectType rejectType;
     ProblemEvalMode evalMode;
+    NumberBondSolutionMode solutionMode;
     
     float timeSinceInteractionOrShake;
     float timeToAutoMoveToNextProblem;

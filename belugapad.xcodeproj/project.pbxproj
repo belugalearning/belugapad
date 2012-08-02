@@ -555,8 +555,6 @@
 		55E7CBF1157FDE4D00A399CF /* BPieSplitterContainerMountable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPieSplitterContainerMountable.m; sourceTree = "<group>"; };
 		55E7CBF3157FE4A700A399CF /* BPieSplitterSliceMount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPieSplitterSliceMount.h; sourceTree = "<group>"; };
 		55E7CBF4157FE4AA00A399CF /* BPieSplitterSliceMount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPieSplitterSliceMount.m; sourceTree = "<group>"; };
-		55F05610159A0E0400ACA07C /* BPartitionRowDropTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionRowDropTarget.m; sourceTree = "<group>"; };
-		55F05611159A0E0400ACA07C /* BPartitionStoreDropTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPartitionStoreDropTarget.m; sourceTree = "<group>"; };
 		55F05612159A0E0400ACA07C /* BPlaceValueContainerRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueContainerRender.h; sourceTree = "<group>"; };
 		55F05613159A0E0400ACA07C /* BPlaceValueContainerRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueContainerRender.m; sourceTree = "<group>"; };
 		55F05614159A0E0400ACA07C /* BPlaceValueDropTargetCage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueDropTargetCage.h; sourceTree = "<group>"; };
@@ -1283,8 +1281,6 @@
 		5571BAE214E40FE90053A62B /* PlaceValue */ = {
 			isa = PBXGroup;
 			children = (
-				55F05610159A0E0400ACA07C /* BPartitionRowDropTarget.m */,
-				55F05611159A0E0400ACA07C /* BPartitionStoreDropTarget.m */,
 				55F05612159A0E0400ACA07C /* BPlaceValueContainerRender.h */,
 				55F05613159A0E0400ACA07C /* BPlaceValueContainerRender.m */,
 				55F05614159A0E0400ACA07C /* BPlaceValueDropTargetCage.h */,

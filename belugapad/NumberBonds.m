@@ -112,8 +112,8 @@ static float kTimeToMountedShake=7.0f;
                     [pogo.BaseNode runAction:[InteractionFeedback shakeAction]];
                 }
             }
-            timeSinceInteractionOrShake=0.0f;
         }
+        timeSinceInteractionOrShake=0.0f;
         if(isWinning)[toolHost shakeCommitButton];
     }
 
@@ -135,8 +135,19 @@ static float kTimeToMountedShake=7.0f;
     [initObjects retain];
     initCages = [pdef objectForKey:INIT_CAGES];
     [initCages retain];
-    solutionsDef = [pdef objectForKey:SOLUTIONS];
-    [solutionsDef retain];
+    
+    solutionMode = [[pdef objectForKey:SOLUTION_MODE]intValue];
+    
+    if(solutionMode==kSolutionRowMatch)
+    {
+        solutionsDef = [pdef objectForKey:SOLUTIONS];
+        [solutionsDef retain];
+    }
+    else if(solutionMode==kSolutionFreeform)
+    {
+        solutionValue = [[pdef objectForKey:SOLUTION_VALUE]intValue];
+    }
+
     
     evalMode = [[pdef objectForKey:EVAL_MODE] intValue];
     
@@ -433,41 +444,135 @@ static float kTimeToMountedShake=7.0f;
 #pragma mark - evaluation and reject
 -(BOOL)evalExpression
 {
-    //returns YES if the tool expression evaluates succesfully
-    toolHost.PpExpr=[BAExpressionTree treeWithRoot:[BAEqualsOperator operator]];
-    
-    //loop rows
-    for (DWNBondRowGameObject *prgo in createdRows) {
+    if(solutionMode==kSolutionTopRow)
+    {
+        //returns YES if the tool expression evaluates succesfully
+        toolHost.PpExpr=[BAExpressionTree treeWithRoot:[BAEqualsOperator operator]];
+        
+        //loop rows
+        for (DWNBondRowGameObject *prgo in createdRows) {
 
-        //create child to the equality
-        //BAAdditionOperator *rowAdd=[BAAdditionOperator operator];
-        //[toolHost.PpExpr.root addChild:rowAdd];
-        
-        int cumRowLength=0;
-        
-        for(DWNBondObjectGameObject *pogo in prgo.MountedObjects)
-        {
-            //create child to the addition
-            //disabled -- we can't add more or less than two values, sum internally
-            //[rowAdd addChild:[BAInteger integerWithIntValue:pogo.Length]];
+            //create child to the equality
+            //BAAdditionOperator *rowAdd=[BAAdditionOperator operator];
+            //[toolHost.PpExpr.root addChild:rowAdd];
             
-            cumRowLength+=pogo.Length;
+            int cumRowLength=0;
+            
+            for(DWNBondObjectGameObject *pogo in prgo.MountedObjects)
+            {
+                //create child to the addition
+                //disabled -- we can't add more or less than two values, sum internally
+                //[rowAdd addChild:[BAInteger integerWithIntValue:pogo.Length]];
+                
+                cumRowLength+=pogo.Length;
+            }
+            
+            //add the accumulated row length as an integer child to the equality
+            [toolHost.PpExpr.root addChild:[BAInteger integerWithIntValue:cumRowLength]];
         }
         
-        //add the accumulated row length as an integer child to the equality
-        [toolHost.PpExpr.root addChild:[BAInteger integerWithIntValue:cumRowLength]];
+        //print expression
+        NSLog(@"%@", [toolHost.PpExpr xmlStringValue]);
+        
+        BATQuery *q=[[BATQuery alloc] initWithExpr:toolHost.PpExpr.root andTree:toolHost.PpExpr];
+        
+        BOOL ret= [q assumeAndEvalEqualityAtRoot];
+        
+        [q release];
+        
+        return ret;
     }
-    
-    //print expression
-    NSLog(@"%@", [toolHost.PpExpr xmlStringValue]);
-    
-    BATQuery *q=[[BATQuery alloc] initWithExpr:toolHost.PpExpr.root andTree:toolHost.PpExpr];
-    
-    BOOL ret= [q assumeAndEvalEqualityAtRoot];
-    
-    [q release];
-    
-    return ret;
+    else if(solutionMode==kSolutionRowMatch)
+    {
+        int foundSolutions=0;
+        NSMutableArray *correctRows=[[NSMutableArray alloc]init];
+        
+//        NSMutableArray *solCopy=[NSMutableArray arrayWithArray:solutionsDef
+        
+        // for each row, we need to find whether their make-up is a solution
+        for(DWNBondRowGameObject *r in createdRows)
+        {
+            // for each row, check each solution
+            for(NSArray *a in solutionsDef)
+            {
+                // we assume at the start that everything is right
+                BOOL matchedAllObjects=YES; 
+                // if there's no objects in this row, continue - if the row's already correct, continue
+                if([r.MountedObjects count]==0)continue;
+                if([correctRows containsObject:r])continue;
+                
+                // loop through each mounted object
+                for(int v=0;v<[r.MountedObjects count];v++)
+                {
+                    if(matchedAllObjects)
+                    {
+                        // if the count in the array and amount of objects differ, we know we're in the wrong place
+                        if(![a count]==[r.MountedObjects count])
+                        {
+                            matchedAllObjects=NO;
+                            break;
+                        }
+                        
+                        // get our 2 values to compare
+                        int reqVal=[[a objectAtIndex:v]intValue];
+                        int thisVal=((DWNBondObjectGameObject*)[r.MountedObjects objectAtIndex:v]).Length;
+                        
+
+                        // then check them - and either set them as matched, or not
+                        if(reqVal!=thisVal)
+                        {
+                            matchedAllObjects=NO;
+                            continue;
+                        }
+                        if(matchedAllObjects && reqVal==thisVal)
+                        {
+                            matchedAllObjects=YES;
+                        }
+                    }
+                    
+                }
+                
+                if(matchedAllObjects)
+                {
+                    // if they match, add to a correctrows array and increase the found solutions
+                    [correctRows addObject:r];
+                    foundSolutions++;
+                    continue;
+                }
+            }
+            
+        }
+        if(foundSolutions==[createdRows count])
+            return YES;
+        else 
+            return NO;
+        
+    }
+    else if(solutionMode==kSolutionFreeform)
+    {
+        BOOL ret=YES;
+        
+        for(DWNBondRowGameObject *prgo in createdRows)
+        {
+            int thisRowVal=0;
+            
+            for(DWNBondObjectGameObject *pogo in prgo.MountedObjects)
+            {
+                thisRowVal+=pogo.Length;
+            }
+            
+            if(thisRowVal==solutionValue && ret)
+                ret=YES;
+            else 
+                ret=NO;
+        }
+        
+        return ret;
+    }
+    else 
+    {
+        return NO;
+    }
 }
 
 -(void)evalProblem

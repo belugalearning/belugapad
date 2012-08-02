@@ -545,6 +545,10 @@ static float kTimeToMountedShake=7.0f;
             }
             
         }
+        
+        [usedSolutions release];
+        [correctRows release];
+        
         if(foundSolutions==[createdRows count])
             return YES;
         else 

@@ -81,6 +81,7 @@
     NSDictionary *showCustomColumnHeader;
     
     NSMutableArray *columnInfo;
+    NSMutableArray *blocksToCreate;
     
     NSArray *problemFiles;
     int currentProblemIndex;
@@ -95,6 +96,7 @@
     NSDictionary *columnCagePosDisableDel;
     NSDictionary *columnCageNegDisableAdd;
     NSDictionary *columnCageNegDisableDel;
+    NSDictionary *multipleBlockPickup;
     
     DWGameWorld *gw;
 
@@ -110,6 +112,7 @@
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
     BOOL autoHideStatusLabel;
+    BOOL showMultipleControls;
     float timeToHideStatusLabel;
     float timeSinceInteractionOrShake;
     
@@ -136,6 +139,10 @@
     
     //reference to cages
     NSMutableArray *allCages;
+    // reference to plus and minus sprites and labels for block creation
+    NSMutableArray *multiplePlusSprites;
+    NSMutableArray *multipleMinusSprites;
+    NSMutableArray *multipleLabels;
     
     NSMutableDictionary *boundCounts;
 }

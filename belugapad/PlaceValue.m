@@ -1045,6 +1045,23 @@ static float kTimeToCageShake=7.0f;
     
 }
 
+-(int)freeSpacesOnGrid:(int)thisGrid
+{
+    int freeSpace=0;
+    
+    for (int r=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] count]-1; r>=0; r--) {
+        NSMutableArray *row=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] objectAtIndex:r];
+        for (int c=[row count]-1; c>=0; c--)
+        {
+            DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
+            if(!co.MountedObject)
+            {
+                freeSpace++;
+            }
+        }
+    }
+    return freeSpace;
+}
 
 #pragma mark - environment interaction
 -(void)snapLayerToPosition
@@ -1062,21 +1079,8 @@ static float kTimeToCageShake=7.0f;
     BOOL isNegativeNumber=NO;
     int tranCount=1;
     if(incr>0) tranCount=10;
-    int space=0;
+    int space=[self freeSpacesOnGrid:currentColumnIndex+incr];
     int colIndexToTint=0;
-    
-    //work out if we have space
-    for (int r=[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+incr] count]-1; r>=0; r--) {
-        NSMutableArray *row=[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex+incr] objectAtIndex:r];
-        for (int c=[row count]-1; c>=0; c--)
-        {
-            DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
-            if(!co.MountedObject)
-            {
-                space++;
-            }
-        }
-    }
     
     // bail if not possible
     if(space<tranCount) return NO;

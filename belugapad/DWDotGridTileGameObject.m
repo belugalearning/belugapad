@@ -19,8 +19,8 @@
 
 -(void)dealloc
 {
-    if(mySprite)[mySprite release];
-    if(myAnchor)[myAnchor release];
+    self.mySprite=nil;
+    self.myAnchor=nil;
     
     [super dealloc];
 }

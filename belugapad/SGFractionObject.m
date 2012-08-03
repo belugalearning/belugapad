@@ -101,11 +101,16 @@
 
 -(void)dealloc
 {
-    [RenderComponent release];
-    [MarkerComponent release];
-    if(self.BaseNode)[self.BaseNode release];
-    if(self.Chunks)[self.Chunks release];
-    if(self.GhostChunks)[self.GhostChunks release];
+    self.RenderLayer=nil;
+    self.FractionSprite=nil;
+    self.SliderSprite=nil;
+    self.SliderMarkerSprite=nil;
+    self.BaseNode=nil;
+    self.Chunks=nil;
+    self.GhostChunks=nil;
+    self.RenderComponent=nil;
+    self.MarkerComponent=nil;
+    self.ChunkComponent=nil;
     
     [super dealloc];
 }

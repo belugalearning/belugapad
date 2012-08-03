@@ -28,9 +28,8 @@
 
 -(void)dealloc
 {
-    [MountedObjects release];
-    
-    if(BaseNode)[BaseNode release];
+    self.MountedObjects=nil;
+    self.BaseNode=nil;
     
     [super dealloc];
 }

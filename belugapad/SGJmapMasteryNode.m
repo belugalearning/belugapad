@@ -78,13 +78,16 @@
 
 -(void)dealloc
 {
-    [MNodeRenderComponent release];
-    [ProximityEvalComponent release];
-    [NodeSelectComponent release];
-    
-    [ChildNodes release];
-    [ConnectToMasteryNodes release];
-    [ConnectFromMasteryNodes release];
+    self.MNodeRenderComponent=nil;
+    self.ChildNodes=nil;
+    self.ConnectToMasteryNodes=nil;
+    self.ConnectFromMasteryNodes=nil;
+    self.Region=nil;
+    self.RenderBatch=nil;
+    self.ProximityEvalComponent=nil;
+    self._id=nil;
+    self.UserVisibleString=nil;
+    self.NodeSelectComponent=nil;
     
     [super dealloc];
 }

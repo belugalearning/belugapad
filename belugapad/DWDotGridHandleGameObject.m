@@ -17,8 +17,8 @@
 
 -(void)dealloc
 {
-    if(mySprite)[mySprite release];
-    if(myShape)[myShape release];
+    self.mySprite=nil;
+    self.myShape=nil;
     
     [super dealloc];
 }

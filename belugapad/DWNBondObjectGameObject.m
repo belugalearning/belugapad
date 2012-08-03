@@ -35,10 +35,9 @@
 
 -(void)dealloc
 {
-    [Label release];
-    
-    if(Mount)[Mount release];
-    if(BaseNode)[BaseNode release];
+    self.Mount=nil;
+    self.BaseNode=nil;
+    self.Label=nil;
     
     [super dealloc];
 }

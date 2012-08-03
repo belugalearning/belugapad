@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>{@name1} has 12 {@objects}, and {@name2} has 19, who has more?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>two-digit inequalities</string>
+	<key>TOOL_KEY</key>
+	<string>NumberBonds</string>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_COMPLETE_TEXT</key>
+		<string>Great!</string>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{@name1}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{@name2}</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>{@name1} has 12 {@objects}, and {@name2} has 19, who has more?</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again.</string>
+	</dict>
+	<key>DSTRINGS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>@name1</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>Claire</string>
+				<string>Sarah</string>
+				<string>Ed</string>
+			</array>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>@name2</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>Gareth</string>
+				<string>Scott</string>
+				<string>Nick</string>
+				<string>Dave</string>
+			</array>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>@objects</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>books</string>
+				<string>fish</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

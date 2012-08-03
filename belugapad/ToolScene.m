@@ -121,9 +121,9 @@
 
 -(void)dealloc
 {
-    if(BkgLayer)[BkgLayer release];
-    if(NoScaleLayer)[NoScaleLayer release];
-    if(ForeLayer)[ForeLayer release];
+    self.BkgLayer=nil;
+    self.NoScaleLayer=nil;
+    self.ForeLayer=nil;
     
     [super dealloc];
 }

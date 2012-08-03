@@ -23,8 +23,8 @@
 
 -(void)dealloc
 {
-    if(mySprite)[mySprite release];
-    if(tile)[tile release];
+    self.mySprite=nil;
+    self.tile=nil;
     
     [super dealloc];
 }

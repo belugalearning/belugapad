@@ -1752,7 +1752,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     if(touchLogPath)[touchLogPath release];
     
-    [DynProblemParser release];
+    self.DynProblemParser=nil;
+    self.PpExpr=nil;
     
     [backgroundLayer release];
     [perstLayer release];
@@ -1761,7 +1762,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [problemDefLayer release];
     [pauseLayer release];
     
-    [Zubi release];
+    self.Zubi=nil;
     
     
     [super dealloc];

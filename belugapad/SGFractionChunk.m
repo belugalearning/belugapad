@@ -81,6 +81,13 @@
 
 -(void)dealloc
 {
+    self.RenderLayer=nil;
+    self.MyParent=nil;
+    self.CurrentHost=nil;
+    self.MySprite=nil;
+    self.ChunkComponent=nil;
+    self.ChunkRenderComponent=nil;
+    
     [super dealloc];
 }
 

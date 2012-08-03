@@ -18,8 +18,8 @@
 
 -(void)dealloc
 {
-    if(MountedObjects)[MountedObjects release];
-    if(Label)[Label release];
+    self.MountedObjects=nil;
+    self.Label=nil;
     
     [super dealloc];
 }

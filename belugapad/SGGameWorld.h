@@ -32,7 +32,7 @@
 }
 @property (nonatomic, readonly) SGBlackboard *Blackboard;
 
-@property (retain, readonly) NSMutableArray *LogBuffer;
+//@property (retain, readonly) NSMutableArray *LogBuffer;
 
 
 -(SGGameWorld *)initWithGameScene:(CCLayer *)scene;

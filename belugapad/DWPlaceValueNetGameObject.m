@@ -22,8 +22,8 @@
 
 -(void)dealloc
 {
-    if(MountedObject)[MountedObject release];
-    if(mySprite)[mySprite release];
+    self.MountedObject=nil;
+    self.mySprite=nil;
     
     [super dealloc];
 }

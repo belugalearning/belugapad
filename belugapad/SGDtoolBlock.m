@@ -93,8 +93,11 @@
 
 -(void)dealloc
 {
-    [BlockRenderComponent release];
-    [BlockPairComponent release];
+    self.BlockRenderComponent=nil;
+    self.BlockPairComponent=nil;
+    self.mySprite=nil;
+    self.RenderLayer=nil;
+    self.PairedObjects=nil;
     
     [super dealloc];
 }

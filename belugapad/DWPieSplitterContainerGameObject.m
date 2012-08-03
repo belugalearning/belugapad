@@ -26,14 +26,14 @@
 
 -(void)dealloc
 {
-    if(mySlices)[mySlices release];
-    if(myText)[myText release];
-    if(textString)[textString release];
-    if(BaseNode)[BaseNode release];
-    if(Nodes)[Nodes release];
-    if(mySpriteTop)[mySpriteTop release];
-    if(mySpriteMid)[mySpriteMid release];
-    if(mySpriteBot)[mySpriteBot release];
+    self.mySlices=nil;
+    self.myText=nil;
+    self.textString=nil;
+    self.BaseNode=nil;
+    self.Nodes=nil;
+    self.mySpriteTop=nil;
+    self.mySpriteMid=nil;
+    self.mySpriteBot=nil;
     
     [super dealloc];
 }

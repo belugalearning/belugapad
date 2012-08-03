@@ -12,7 +12,7 @@
 
 @implementation SGGameWorld
 
-@synthesize LogBuffer;
+//@synthesize LogBuffer;
 
 -(SGGameWorld *)initWithGameScene:(CCLayer*)scene
 {
@@ -109,6 +109,7 @@
 
 -(void)dealloc
 {
+    
 	[gameObjects release];
 
     [blackboard release];

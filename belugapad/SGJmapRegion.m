@@ -54,8 +54,10 @@
 
 -(void)dealloc
 {
-    [MasteryNodes release];
-    [RegionRenderComponent release];
+    self.RenderBatch=nil;
+    self.RegionRenderComponent=nil;
+    self.MasteryNodes=nil;
+    self.Name=nil;
     
     [super dealloc];
 }

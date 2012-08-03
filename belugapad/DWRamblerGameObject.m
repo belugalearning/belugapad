@@ -37,11 +37,10 @@
 
 -(void)dealloc
 {
-    if(MinValue)[MinValue release];
-    if(MaxValue)[MaxValue release];
-    
-    if(ShowNumbersAtIntervals)[ShowNumbersAtIntervals release];
-    if(ShowNotchesAtIntervals)[ShowNotchesAtIntervals release];
+    self.MinValue=nil;
+    self.MaxValue=nil;
+    self.ShowNumbersAtIntervals=nil;
+    self.ShowNotchesAtIntervals=nil;
     
     [super dealloc];
 }

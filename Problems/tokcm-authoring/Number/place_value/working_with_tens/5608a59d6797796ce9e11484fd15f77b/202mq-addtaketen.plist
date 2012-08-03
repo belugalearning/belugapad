@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>What is 10 more than {$start}?</string>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_COMPLETE_TEXT</key>
+		<string>Great!</string>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$start+10)}</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$start+100}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$start-10}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>What is 10 more than {$start}?</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again.</string>
+	</dict>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$start</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>590</string>
+				<string>691</string>
+				<string>792</string>
+				<string>893</string>
+				<string>494</string>
+				<string>395</string>
+				<string>296</string>
+				<string>197</string>
+				<string>598</string>
+				<string>699</string>
+				<string>790</string>
+				<string>891</string>
+				<string>492</string>
+				<string>393</string>
+				<string>292</string>
+				<string>196</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

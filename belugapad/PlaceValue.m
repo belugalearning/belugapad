@@ -371,7 +371,7 @@ static float kTimeToCageShake=7.0f;
             [allCages addObject:cge];
             [cge release];
         }
-    
+        
         if(showMultipleDragging)
         {
             if(!multipleLabels)multipleLabels=[[NSMutableArray alloc]init];
@@ -401,6 +401,25 @@ static float kTimeToCageShake=7.0f;
             [renderLayer addChild:posiSprite];
             [renderLayer addChild:label];
             
+        }
+        else {
+            if(multipleBlockPickup)
+            {
+                int defaultBlocksToMake=1;
+                [blocksToCreate addObject:[NSNumber numberWithInt:defaultBlocksToMake]];
+
+//                CCSprite *minusSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/minus40.png")];
+//                CCSprite *posiSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/plus40.png")];
+//                CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", defaultBlocksToMake] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+                
+                CCSprite *minusSprite;
+                CCSprite *posiSprite;
+                CCLabelTTF *label;
+                
+                [multipleMinusSprites addObject:minusSprite];
+                [multiplePlusSprites addObject:posiSprite];
+                [multipleLabels addObject:label];
+            }
         }
         
         [newCol release];

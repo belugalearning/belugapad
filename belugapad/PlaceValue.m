@@ -150,6 +150,16 @@ static float kTimeToCageShake=7.0f;
         
         timeSinceInteractionOrShake=0.0f;
     }
+    
+    // update our labels for thinging
+    if(showMultipleControls||multipleBlockPickup)
+    {
+        for(int i=0;i<[multipleLabels count];i++)
+        {
+            CCLabelTTF *l=[multipleLabels objectAtIndex:i];
+            [l setString:[NSString stringWithFormat:@"%d", [[blocksToCreate objectAtIndex:i]intValue]]];
+        }
+    }
 }
 
 #pragma mark gameworld setup and population
@@ -177,7 +187,7 @@ static float kTimeToCageShake=7.0f;
     for (int i=0; i<numberOfColumns; i++)
     {
 
-        
+        BOOL showMultipleDragging=NO;
         NSMutableDictionary *currentColumnInfo = [[[NSMutableDictionary alloc] init] autorelease];
         [currentColumnInfo setObject:[NSNumber numberWithFloat:currentColumnValue] forKey:COL_VALUE];
         [currentColumnInfo setObject:[NSString stringWithFormat:@"%gs", currentColumnValue] forKey:COL_LABEL];
@@ -233,6 +243,9 @@ static float kTimeToCageShake=7.0f;
         else currentColumnRopes = ropesforColumn;
         if([columnRows objectForKey:currentColumnValueKey]) currentColumnRows = [[columnRows objectForKey:currentColumnValueKey] intValue];
         else currentColumnRows = rows;
+        
+        // check whether this row is showing multiple block facilities
+        if([multipleBlockPickup objectForKey:currentColumnValueKey] || showMultipleControls)showMultipleDragging=YES;
 
         CGPoint thisColumnOrigin = ccp(-((ropeWidth*ropesforColumn)/2.0f)+(ropeWidth/2.0f)+(i*(kPropXColumnSpacing*lx)), ly*kPropYColumnOrigin);
 
@@ -358,7 +371,57 @@ static float kTimeToCageShake=7.0f;
             [allCages addObject:cge];
             [cge release];
         }
-    
+        
+        if(showMultipleDragging)
+        {
+            if(!multipleLabels)multipleLabels=[[NSMutableArray alloc]init];
+            if(!multipleMinusSprites)multipleMinusSprites=[[NSMutableArray alloc]init];
+            if(!multiplePlusSprites)multiplePlusSprites=[[NSMutableArray alloc]init];
+            
+            int defaultBlocksToMake=1;
+            [blocksToCreate addObject:[NSNumber numberWithInt:defaultBlocksToMake]];
+            
+            NSLog(@"need to show dragging controls for column %@", currentColumnValueKey);
+            CCSprite *minusSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/minus40.png")];
+            CCSprite *posiSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/plus40.png")];
+            CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", defaultBlocksToMake] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            
+            float PosX=i*(kPropXColumnSpacing*lx)-60;
+            float PosY=ly*kCageYOrigin;
+            
+            [minusSprite setPosition:ccp(PosX,PosY-25)];
+            [posiSprite setPosition:ccp(PosX,PosY+25)];
+            [label setPosition:ccp(PosX-40,PosY)];
+            
+            [multipleMinusSprites addObject:minusSprite];
+            [multiplePlusSprites addObject:posiSprite];
+            [multipleLabels addObject:label];
+            
+            [renderLayer addChild:minusSprite];
+            [renderLayer addChild:posiSprite];
+            [renderLayer addChild:label];
+            
+        }
+        else {
+            if(multipleBlockPickup)
+            {
+                int defaultBlocksToMake=1;
+                [blocksToCreate addObject:[NSNumber numberWithInt:defaultBlocksToMake]];
+
+//                CCSprite *minusSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/minus40.png")];
+//                CCSprite *posiSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/plus40.png")];
+//                CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", defaultBlocksToMake] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+                
+                CCSprite *minusSprite;
+                CCSprite *posiSprite;
+                CCLabelTTF *label;
+                
+                [multipleMinusSprites addObject:minusSprite];
+                [multiplePlusSprites addObject:posiSprite];
+                [multipleLabels addObject:label];
+            }
+        }
+        
         [newCol release];
 
         //decrement for next column
@@ -535,6 +598,11 @@ static float kTimeToCageShake=7.0f;
     else
         disableAudioCounting=NO;
     
+    if([pdef objectForKey:SHOW_MULTIPLE_BLOCKS_FROM_CAGE])
+        showMultipleControls = [[pdef objectForKey:SHOW_MULTIPLE_BLOCKS_FROM_CAGE]boolValue];
+    else
+        showMultipleControls = YES;
+    
     if(showCountOnBlock)countLabels=[[NSMutableArray alloc]init];
 
     
@@ -595,6 +663,11 @@ static float kTimeToCageShake=7.0f;
         columnRows = [pdef objectForKey:COLUMN_ROWS];
     
     [columnRows retain];
+    
+    if([pdef objectForKey:MULTIPLE_BLOCK_PICKUP])
+        multipleBlockPickup = [pdef objectForKey:MULTIPLE_BLOCK_PICKUP];
+    
+    [multipleBlockPickup retain];
     
 
     // can we deselect objects?
@@ -725,7 +798,7 @@ static float kTimeToCageShake=7.0f;
         [self.NoScaleLayer addChild:countLabel z:10];
     }
 
-    
+    if(showMultipleControls||multipleBlockPickup)blocksToCreate=[[NSMutableArray alloc]init];
 }
 
 #pragma mark - status messages
@@ -1519,6 +1592,34 @@ static float kTimeToCageShake=7.0f;
     
     inBlockTransition=NO;
     
+    for(int i=0;i<[multiplePlusSprites count];i++)
+    {
+        CCSprite *s=[multiplePlusSprites objectAtIndex:i];
+        if(CGRectContainsPoint(s.boundingBox, location))
+        {
+            int curNum=[[blocksToCreate objectAtIndex:i]intValue];
+            curNum++;
+            if(curNum>9)curNum=9;
+            
+            [blocksToCreate replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
+            return;
+        }
+    }
+    
+    for(int i=0;i<[multipleMinusSprites count];i++)
+    {
+        CCSprite *s=[multipleMinusSprites objectAtIndex:i];
+        if(CGRectContainsPoint(s.boundingBox, location))
+        {
+            int curNum=[[blocksToCreate objectAtIndex:i]intValue];
+            curNum--;
+            if(curNum<1)curNum=1;
+            
+            [blocksToCreate replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
+            return;
+        }
+    }
+    
     // log out if blocks are moved
     if(hasMovedBlock)
     {
@@ -1733,6 +1834,7 @@ static float kTimeToCageShake=7.0f;
     if(columnCagePosDisableDel) [columnCagePosDisableDel release];
     if(columnCageNegDisableAdd) [columnCageNegDisableAdd release];
     if(columnCageNegDisableDel) [columnCageNegDisableDel release];
+    if(multipleBlockPickup) [multipleBlockPickup release];
     if(columnSprites) [columnSprites release];
     if(columnCages) [columnCages release];
     if(columnNegCages) [columnNegCages release];
@@ -1742,6 +1844,10 @@ static float kTimeToCageShake=7.0f;
     if(negCageSprite) [negCageSprite release];
     if(pickupSprite) [pickupSprite release];
     if(proximitySprite) [proximitySprite release];
+    if(blocksToCreate) [blocksToCreate release];
+    if(multiplePlusSprites) [multiplePlusSprites release];
+    if(multipleMinusSprites) [multipleMinusSprites release];
+    if(multipleLabels) [multipleLabels release];
 
     if(allCages)[allCages release];
     if(boundCounts)[boundCounts release];

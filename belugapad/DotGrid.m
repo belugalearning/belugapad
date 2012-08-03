@@ -540,8 +540,6 @@
                         numberCounted++;
                         tile.Selected=YES;
                     }
-                    
-                    [thisTile release];
                 }
 
             }

@@ -19,11 +19,11 @@
 
 -(void)dealloc
 {
-    if(tiles)[tiles release];
-    if(moveHandle)[moveHandle release];
-    if(resizeHandle)[resizeHandle release];
-    if(firstAnchor)[firstAnchor release];
-    if(lastAnchor)[lastAnchor release];
+    self.tiles=nil;
+    self.moveHandle=nil;
+    self.resizeHandle=nil;
+    self.firstAnchor=nil;
+    self.lastAnchor=nil;
     
     [super dealloc];
 }

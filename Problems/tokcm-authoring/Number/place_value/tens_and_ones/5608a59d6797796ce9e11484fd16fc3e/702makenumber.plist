@@ -33,7 +33,7 @@
 	<key>SHOW_COL_HEADER</key>
 	<false/>
 	<key>SHOW_VALUE</key>
-	<true/>
+	<false/>
 	<key>SHOW_BASE_SELECTION</key>
 	<true/>
 	<key>PICKUP_SPRITE_FILENAME</key>

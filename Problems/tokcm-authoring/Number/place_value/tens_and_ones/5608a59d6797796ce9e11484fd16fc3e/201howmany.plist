@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Here is 36. How many tens are there?</string>
+	<string>How many tens are there in 36?</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -37,7 +37,7 @@
 	<key>SHOW_COL_HEADER</key>
 	<true/>
 	<key>SHOW_VALUE</key>
-	<true/>
+	<false/>
 	<key>SHOW_BASE_SELECTION</key>
 	<true/>
 	<key>PICKUP_SPRITE_FILENAME</key>
@@ -186,7 +186,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Here is 36. How many tens are there?</string>
+		<string>How many tens are there in 36?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again.</string>
 	</dict>

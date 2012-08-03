@@ -35,7 +35,7 @@
 	<key>SHOW_COUNT_BLOCK</key>
 	<false/>
 	<key>SHOW_COL_HEADER</key>
-	<true/>
+	<false/>
 	<key>CAGE_POS_DISABLE_ADD</key>
 	<dict>
 		<key>1</key>

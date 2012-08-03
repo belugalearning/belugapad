@@ -35,9 +35,9 @@
 	<key>SHOW_COUNT_BLOCK</key>
 	<true/>
 	<key>SHOW_COL_HEADER</key>
-	<true/>
+	<false/>
 	<key>SHOW_VALUE</key>
-	<true/>
+	<false/>
 	<key>SHOW_BASE_SELECTION</key>
 	<true/>
 	<key>PICKUP_SPRITE_FILENAME</key>
@@ -117,13 +117,6 @@
 	</dict>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
-	<key>COLUMN_SPRITES</key>
-	<dict>
-		<key>10</key>
-		<string>/images/placevalue/obj-placevalue-unit10.png</string>
-		<key>1</key>
-		<string>/images/placevalue/obj-placevalue-unit1.png</string>
-	</dict>
 	<key>COLUMN_NEG_CAGES</key>
 	<dict>
 		<key>10</key>

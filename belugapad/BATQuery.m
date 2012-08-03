@@ -106,4 +106,11 @@
     return evalResult;
 }
 
+-(void)dealloc
+{
+    self.Root=nil;
+    self.Tree=nil;
+    [super dealloc];
+}
+
 @end

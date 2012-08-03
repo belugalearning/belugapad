@@ -31,11 +31,10 @@
 
 -(void)dealloc
 {
-    [slicesInMe release];
-    
-    if(mySprite)[mySprite release];
-    if(mySlices)[mySlices release];
-    if(touchOverlay)[touchOverlay release];
+    self.mySprite=nil;
+    self.mySlices=nil;
+    self.slicesInMe=nil;
+    self.touchOverlay=nil;
     
     [super dealloc];
 }

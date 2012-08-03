@@ -17,9 +17,9 @@
 
 -(void)dealloc
 {
-    if(PopulateVariableNames)[PopulateVariableNames release];
-    if(WatchRambler)[WatchRambler release];
-    
+    self.PopulateVariableNames=nil;
+    self.WatchRambler=nil;
+
     [super dealloc];
 }
 

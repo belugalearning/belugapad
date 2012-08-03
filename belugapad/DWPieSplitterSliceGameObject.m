@@ -19,10 +19,10 @@
 
 -(void)dealloc
 {
-    if(mySprite)[mySprite release];
-    if(myPie)[myPie release];
-    if(myCont)[myCont release];
-    if(SpriteFileName)[SpriteFileName release];
+    self.mySprite=nil;
+    self.myPie=nil;
+    self.myCont=nil;
+    self.SpriteFileName=nil;
     
     [super dealloc];
 }

@@ -33,7 +33,7 @@
 
 -(void)dealloc
 {
-    if(RenderLayer)[RenderLayer release];
+    self.RenderLayer=nil;
     
     [super dealloc];
 }

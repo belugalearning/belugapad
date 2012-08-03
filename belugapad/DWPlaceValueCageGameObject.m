@@ -24,10 +24,10 @@
 
 -(void)dealloc
 {
-    if(SpriteFilename)[SpriteFilename release];
-    if(PickupSpriteFilename)[PickupSpriteFilename release];
-    if(MountedObject)[MountedObject release];
-    if(mySprite)[mySprite release];
+    self.SpriteFilename=nil;
+    self.PickupSpriteFilename=nil;
+    self.MountedObject=nil;
+    self.mySprite=nil;
     
     [super dealloc];
 }

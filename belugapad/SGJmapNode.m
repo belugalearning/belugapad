@@ -78,11 +78,14 @@
 
 -(void)dealloc
 {
-    [PrereqNodes release];
-    
-    [NodeRenderComponent release];
-    [ProximityEvalComponent release];
-    [NodeSelectComponent release];
+    self.NodeRenderComponent=nil;
+    self.MasteryNode=nil;
+    self.PrereqNodes=nil;
+    self.RenderBatch=nil;
+    self.ProximityEvalComponent=nil;
+    self._id=nil;
+    self.UserVisibleString=nil;
+    self.NodeSelectComponent=nil;
     
     [super dealloc];
 }

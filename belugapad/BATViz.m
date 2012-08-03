@@ -50,4 +50,11 @@
     //this shouldn't really do anything -- implement in subclass implementations
 }
 
+-(void)dealloc
+{
+    self.DrawLayer=nil;
+    self.Root=nil;
+    [super dealloc];
+}
+
 @end

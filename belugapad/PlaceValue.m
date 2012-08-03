@@ -1818,7 +1818,11 @@ static float kTimeToCageShake=7.0f;
                     }
                     else
                     {
-                        NSLog(@"not enough space for these objects");
+                        // TODO: reject these things back to their mounts
+                        for(DWPlaceValueBlockGameObject *go in pickupObjects)
+                        {
+                            [go handleMessage:kDWresetToMountPosition];
+                        }
                     }
                 }
                 else {

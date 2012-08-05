@@ -46,6 +46,7 @@
     block.PickupSprite=c.PickupSpriteFilename;
 
     block.Mount=gameObject;
+    c.MountedObject=block;
     
     [block handleMessage:kDWsetupStuff];
 

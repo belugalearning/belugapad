@@ -75,5 +75,21 @@
     [ParentGO.RenderLayer addChild:ParentGO.BaseNode];
 }
 
+-(void)showFraction
+{
+    if(!ParentGO.BaseNode.visible)
+    {
+        [ParentGO.BaseNode setVisible:YES];
+    }
+}
+
+-(void)hideFraction
+{
+    if(ParentGO.BaseNode.visible)
+    {
+        [ParentGO.BaseNode setVisible:NO];
+    }
+}
+
 
 @end

@@ -6,12 +6,12 @@
 //  Copyright (c) 2012 Productivity Balloon Ltd. All rights reserved.
 //
 
-#import "SGFractionChunk.h"
+#import "SGFbuilderChunk.h"
 #import "SGFractionBuilderChunk.h"
 #import "SGFractionBuilderChunkRender.h"
 
 
-@implementation SGFractionChunk
+@implementation SGFbuilderChunk
 
 // configurable properties
 @synthesize RenderLayer, MyParent, CurrentHost, Position, MySprite, Value, Selected;
@@ -19,7 +19,7 @@
 @synthesize ChunkComponent;
 @synthesize ChunkRenderComponent;
 
--(SGFractionChunk*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
+-(SGFbuilderChunk*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
 {   
     if(self=[super initWithGameWorld:aGameWorld])
     {

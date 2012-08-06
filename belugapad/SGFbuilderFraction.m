@@ -6,13 +6,13 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "SGFractionObject.h"
+#import "SGFbuilderFraction.h"
 #import "SGFractionBuilderRender.h"
 #import "SGFractionBuilderMarker.h"
 #import "SGFractionBuilderChunk.h"
 
 
-@implementation SGFractionObject
+@implementation SGFbuilderFraction
 
 // configurable properties
 @synthesize RenderLayer, HasSlider, CreateChunksOnInit, CreateChunks, FractionMode, Position, FractionSprite, SliderSprite, SliderMarkerSprite, BaseNode, MarkerStartPosition, AutoShadeNewChunks;
@@ -24,7 +24,7 @@
 @synthesize MarkerComponent;
 @synthesize ChunkComponent;
 
--(SGFractionObject*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
+-(SGFbuilderFraction*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
 {   
     if(self=[super initWithGameWorld:aGameWorld])
     {

@@ -9,8 +9,8 @@
 #import "global.h"
 #import "SGFractionObjectProtocols.h"
 #import "SGFractionBuilderChunkRender.h"
-#import "SGFractionObject.h"
-#import "SGFractionChunk.h"
+#import "SGFbuilderFraction.h"
+#import "SGFbuilderChunk.h"
 #import "BLMath.h"
 #import "ToolConsts.h"
 

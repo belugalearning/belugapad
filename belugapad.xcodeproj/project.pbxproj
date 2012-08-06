@@ -35,7 +35,7 @@
 		0CDECB6615920C27004DE20D /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB5B15920C27004DE20D /* AFXMLRequestOperation.m */; };
 		0CDECB6715920C27004DE20D /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB5D15920C27004DE20D /* UIImageView+AFNetworking.m */; };
 		0CF9187C14F54C1D00FAC58D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF9187B14F54C1D00FAC58D /* images */; };
-		5501947215C038300067E22C /* SGFractionChunk.m in Sources */ = {isa = PBXBuildFile; fileRef = 5501947115C038300067E22C /* SGFractionChunk.m */; };
+		5501947215C038300067E22C /* SGFbuilderChunk.m in Sources */ = {isa = PBXBuildFile; fileRef = 5501947115C038300067E22C /* SGFbuilderChunk.m */; };
 		5502A72115BEC576002CE180 /* SGFractionBuilderChunk.m in Sources */ = {isa = PBXBuildFile; fileRef = 5502A72015BEC575002CE180 /* SGFractionBuilderChunk.m */; };
 		5507087B15176A0600111BBB /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708791517625300111BBB /* ColumnAdditionConsts.m */; };
 		5508FEB015A2F2B8003720AF /* ToolTemplateSG.m in Sources */ = {isa = PBXBuildFile; fileRef = 5508FEAF15A2F2B7003720AF /* ToolTemplateSG.m */; };
@@ -104,7 +104,7 @@
 		55F5B96A15C17D0400FD6C5D /* SGFractionBuilderChunkRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F5B96915C17D0400FD6C5D /* SGFractionBuilderChunkRender.m */; };
 		55FBB2F815BD6E4A0034B081 /* FractionBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FBB2F715BD6E4A0034B081 /* FractionBuilder.m */; };
 		55FBB2FE15BD76AE0034B081 /* SGFractionBuilderRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FBB2FD15BD76AE0034B081 /* SGFractionBuilderRender.m */; };
-		55FBB30115BD78EF0034B081 /* SGFractionObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FBB30015BD78EF0034B081 /* SGFractionObject.m */; };
+		55FBB30115BD78EF0034B081 /* SGFbuilderFraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FBB30015BD78EF0034B081 /* SGFbuilderFraction.m */; };
 		55FDAEDF157F7CBB00943176 /* ToolTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FDAEDE157F7CBB00943176 /* ToolTemplate.m */; };
 		55FDAEE3157F802900943176 /* PieSplitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FDAEE2157F802900943176 /* PieSplitter.m */; };
 		7F0AE04D158782D100194644 /* InteractionFeedback.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0AE04C158782D100194644 /* InteractionFeedback.m */; };
@@ -445,8 +445,8 @@
 		0CDECB5C15920C27004DE20D /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
 		0CDECB5D15920C27004DE20D /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		0CF9187B14F54C1D00FAC58D /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = SOURCE_ROOT; };
-		5501947015C038300067E22C /* SGFractionChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionChunk.h; sourceTree = "<group>"; };
-		5501947115C038300067E22C /* SGFractionChunk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionChunk.m; sourceTree = "<group>"; };
+		5501947015C038300067E22C /* SGFbuilderChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFbuilderChunk.h; sourceTree = "<group>"; };
+		5501947115C038300067E22C /* SGFbuilderChunk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFbuilderChunk.m; sourceTree = "<group>"; };
 		5502A71F15BEC575002CE180 /* SGFractionBuilderChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionBuilderChunk.h; sourceTree = "<group>"; };
 		5502A72015BEC575002CE180 /* SGFractionBuilderChunk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionBuilderChunk.m; sourceTree = "<group>"; };
 		550708781517625300111BBB /* ColumnAdditionConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAdditionConsts.h; sourceTree = "<group>"; };
@@ -584,8 +584,8 @@
 		55FBB2FB15BD75610034B081 /* SGFractionObjectProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SGFractionObjectProtocols.h; sourceTree = "<group>"; };
 		55FBB2FC15BD76AE0034B081 /* SGFractionBuilderRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionBuilderRender.h; sourceTree = "<group>"; };
 		55FBB2FD15BD76AE0034B081 /* SGFractionBuilderRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionBuilderRender.m; sourceTree = "<group>"; };
-		55FBB2FF15BD78EF0034B081 /* SGFractionObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionObject.h; sourceTree = "<group>"; };
-		55FBB30015BD78EF0034B081 /* SGFractionObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionObject.m; sourceTree = "<group>"; };
+		55FBB2FF15BD78EF0034B081 /* SGFbuilderFraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFbuilderFraction.h; sourceTree = "<group>"; };
+		55FBB30015BD78EF0034B081 /* SGFbuilderFraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFbuilderFraction.m; sourceTree = "<group>"; };
 		55FDAEDD157F7CBB00943176 /* ToolTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolTemplate.h; sourceTree = "<group>"; };
 		55FDAEDE157F7CBB00943176 /* ToolTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolTemplate.m; sourceTree = "<group>"; };
 		55FDAEE1157F802900943176 /* PieSplitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieSplitter.h; sourceTree = "<group>"; };
@@ -1441,10 +1441,10 @@
 		55FBB2FA15BD700B0034B081 /* Fraction */ = {
 			isa = PBXGroup;
 			children = (
-				55FBB2FF15BD78EF0034B081 /* SGFractionObject.h */,
-				55FBB30015BD78EF0034B081 /* SGFractionObject.m */,
-				5501947015C038300067E22C /* SGFractionChunk.h */,
-				5501947115C038300067E22C /* SGFractionChunk.m */,
+				55FBB2FF15BD78EF0034B081 /* SGFbuilderFraction.h */,
+				55FBB30015BD78EF0034B081 /* SGFbuilderFraction.m */,
+				5501947015C038300067E22C /* SGFbuilderChunk.h */,
+				5501947115C038300067E22C /* SGFbuilderChunk.m */,
 			);
 			name = Fraction;
 			sourceTree = "<group>";
@@ -3006,10 +3006,10 @@
 				556A2D6015A7064500F4B825 /* SGDtoolBlockPairing.m in Sources */,
 				55FBB2F815BD6E4A0034B081 /* FractionBuilder.m in Sources */,
 				55FBB2FE15BD76AE0034B081 /* SGFractionBuilderRender.m in Sources */,
-				55FBB30115BD78EF0034B081 /* SGFractionObject.m in Sources */,
+				55FBB30115BD78EF0034B081 /* SGFbuilderFraction.m in Sources */,
 				7F1A3B5115BDEC8C0060CB15 /* SGFractionBuilderMarker.m in Sources */,
 				5502A72115BEC576002CE180 /* SGFractionBuilderChunk.m in Sources */,
-				5501947215C038300067E22C /* SGFractionChunk.m in Sources */,
+				5501947215C038300067E22C /* SGFbuilderChunk.m in Sources */,
 				55F5B96A15C17D0400FD6C5D /* SGFractionBuilderChunkRender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

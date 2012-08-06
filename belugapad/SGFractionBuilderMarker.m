@@ -8,7 +8,7 @@
 
 #import "global.h"
 #import "SGFractionBuilderMarker.h"
-#import "SGFractionObject.h"
+#import "SGFbuilderFraction.h"
 #import "BLMath.h"
 #import "ToolConsts.h"
 

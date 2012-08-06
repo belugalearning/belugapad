@@ -12,11 +12,11 @@
 @class SGFractionBuilderChunk;
 @class SGFractionBuilderChunkRender;
 
-@interface SGFractionChunk: SGGameObject <ConfigurableChunk,MoveableChunk>
+@interface SGFbuilderChunk: SGGameObject <ConfigurableChunk,MoveableChunk>
 
 
 
--(SGFractionChunk*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition;
+-(SGFbuilderChunk*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition;
 
 @property (retain) SGFractionBuilderChunk *ChunkComponent;
 @property (retain) SGFractionBuilderChunkRender *ChunkRenderComponent;

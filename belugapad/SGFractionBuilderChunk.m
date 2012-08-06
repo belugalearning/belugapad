@@ -9,8 +9,8 @@
 #import "global.h"
 #import "SGFractionObjectProtocols.h"
 #import "SGFractionBuilderChunk.h"
-#import "SGFractionObject.h"
-#import "SGFractionChunk.h"
+#import "SGFbuilderFraction.h"
+#import "SGFbuilderChunk.h"
 #import "BLMath.h"
 #import "ToolConsts.h"
 
@@ -56,7 +56,7 @@
         startPos=[fractionSprite.parent convertToWorldSpace:startPos];
         NSLog(@"startPos aft %@", NSStringFromCGPoint(startPos));    
         id<ConfigurableChunk> chunk;
-        chunk=[[[SGFractionChunk alloc] initWithGameWorld:gameWorld andRenderLayer:ParentGO.RenderLayer andPosition:startPos] autorelease];
+        chunk=[[[SGFbuilderChunk alloc] initWithGameWorld:gameWorld andRenderLayer:ParentGO.RenderLayer andPosition:startPos] autorelease];
         chunk.MyParent=ParentGO;
         chunk.CurrentHost=ParentGO;
         

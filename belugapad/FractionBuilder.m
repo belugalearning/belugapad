@@ -17,7 +17,7 @@
 #import "AppDelegate.h"
 
 #import "SGGameWorld.h"
-#import "SGFractionObject.h"
+#import "SGFbuilderFraction.h"
 #import "SGFractionBuilderRender.h"
 
 
@@ -141,7 +141,7 @@
     for(NSDictionary *d in initFractions)
     {
         id<Configurable, Interactive> fraction;
-        fraction=[[[SGFractionObject alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,[[d objectForKey:POS_Y]floatValue])] autorelease];
+        fraction=[[[SGFbuilderFraction alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,[[d objectForKey:POS_Y]floatValue])] autorelease];
         fraction.FractionMode=[[d objectForKey:FRACTION_MODE]intValue];
         
         if([d objectForKey:MARKER_START_POSITION])

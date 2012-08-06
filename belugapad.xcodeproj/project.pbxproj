@@ -36,7 +36,7 @@
 		0CDECB6715920C27004DE20D /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB5D15920C27004DE20D /* UIImageView+AFNetworking.m */; };
 		0CF9187C14F54C1D00FAC58D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF9187B14F54C1D00FAC58D /* images */; };
 		5501947215C038300067E22C /* SGFbuilderChunk.m in Sources */ = {isa = PBXBuildFile; fileRef = 5501947115C038300067E22C /* SGFbuilderChunk.m */; };
-		5502A72115BEC576002CE180 /* SGFractionBuilderChunk.m in Sources */ = {isa = PBXBuildFile; fileRef = 5502A72015BEC575002CE180 /* SGFractionBuilderChunk.m */; };
+		5502A72115BEC576002CE180 /* SGFractionBuilderChunkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5502A72015BEC575002CE180 /* SGFractionBuilderChunkManager.m */; };
 		5507087B15176A0600111BBB /* ColumnAdditionConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 550708791517625300111BBB /* ColumnAdditionConsts.m */; };
 		5508FEB015A2F2B8003720AF /* ToolTemplateSG.m in Sources */ = {isa = PBXBuildFile; fileRef = 5508FEAF15A2F2B7003720AF /* ToolTemplateSG.m */; };
 		5508FEB415A2FE8E003720AF /* DistributionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 5508FEB315A2FE8E003720AF /* DistributionTool.m */; };
@@ -447,8 +447,8 @@
 		0CF9187B14F54C1D00FAC58D /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = SOURCE_ROOT; };
 		5501947015C038300067E22C /* SGFbuilderChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFbuilderChunk.h; sourceTree = "<group>"; };
 		5501947115C038300067E22C /* SGFbuilderChunk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFbuilderChunk.m; sourceTree = "<group>"; };
-		5502A71F15BEC575002CE180 /* SGFractionBuilderChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionBuilderChunk.h; sourceTree = "<group>"; };
-		5502A72015BEC575002CE180 /* SGFractionBuilderChunk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionBuilderChunk.m; sourceTree = "<group>"; };
+		5502A71F15BEC575002CE180 /* SGFractionBuilderChunkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionBuilderChunkManager.h; sourceTree = "<group>"; };
+		5502A72015BEC575002CE180 /* SGFractionBuilderChunkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionBuilderChunkManager.m; sourceTree = "<group>"; };
 		550708781517625300111BBB /* ColumnAdditionConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnAdditionConsts.h; sourceTree = "<group>"; };
 		550708791517625300111BBB /* ColumnAdditionConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnAdditionConsts.m; sourceTree = "<group>"; };
 		5508FEAE15A2F2B7003720AF /* ToolTemplateSG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolTemplateSG.h; sourceTree = "<group>"; };
@@ -1430,8 +1430,8 @@
 				7F1A3B5015BDEC8C0060CB15 /* SGFractionBuilderMarker.m */,
 				55FBB2FC15BD76AE0034B081 /* SGFractionBuilderRender.h */,
 				55FBB2FD15BD76AE0034B081 /* SGFractionBuilderRender.m */,
-				5502A71F15BEC575002CE180 /* SGFractionBuilderChunk.h */,
-				5502A72015BEC575002CE180 /* SGFractionBuilderChunk.m */,
+				5502A71F15BEC575002CE180 /* SGFractionBuilderChunkManager.h */,
+				5502A72015BEC575002CE180 /* SGFractionBuilderChunkManager.m */,
 				55F5B96815C17D0400FD6C5D /* SGFractionBuilderChunkRender.h */,
 				55F5B96915C17D0400FD6C5D /* SGFractionBuilderChunkRender.m */,
 			);
@@ -3008,7 +3008,7 @@
 				55FBB2FE15BD76AE0034B081 /* SGFractionBuilderRender.m in Sources */,
 				55FBB30115BD78EF0034B081 /* SGFbuilderFraction.m in Sources */,
 				7F1A3B5115BDEC8C0060CB15 /* SGFractionBuilderMarker.m in Sources */,
-				5502A72115BEC576002CE180 /* SGFractionBuilderChunk.m in Sources */,
+				5502A72115BEC576002CE180 /* SGFractionBuilderChunkManager.m in Sources */,
 				5501947215C038300067E22C /* SGFbuilderChunk.m in Sources */,
 				55F5B96A15C17D0400FD6C5D /* SGFractionBuilderChunkRender.m in Sources */,
 			);

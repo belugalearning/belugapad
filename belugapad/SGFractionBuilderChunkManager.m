@@ -8,22 +8,22 @@
 
 #import "global.h"
 #import "SGFractionObjectProtocols.h"
-#import "SGFractionBuilderChunk.h"
+#import "SGFractionBuilderChunkManager.h"
 #import "SGFbuilderFraction.h"
 #import "SGFbuilderChunk.h"
 #import "BLMath.h"
 #import "ToolConsts.h"
 
-@interface SGFractionBuilderChunk()
+@interface SGFractionBuilderChunkManager()
 {
     CCSprite *fractionSprite;
 }
 
 @end
 
-@implementation SGFractionBuilderChunk
+@implementation SGFractionBuilderChunkManager
 
--(SGFractionBuilderChunk*)initWithGameObject:(id<Configurable, Moveable, Interactive>)aGameObject
+-(SGFractionBuilderChunkManager*)initWithGameObject:(id<Configurable, Moveable, Interactive>)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {

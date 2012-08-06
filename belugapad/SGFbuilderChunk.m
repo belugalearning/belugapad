@@ -7,7 +7,7 @@
 //
 
 #import "SGFbuilderChunk.h"
-#import "SGFractionBuilderChunk.h"
+#import "SGFractionBuilderChunkManager.h"
 #import "SGFractionBuilderChunkRender.h"
 
 
@@ -25,7 +25,7 @@
     {
         self.RenderLayer=aRenderLayer;
         self.Position=aPosition;
-        ChunkComponent=[[SGFractionBuilderChunk alloc]initWithGameObject:self];
+        ChunkComponent=[[SGFractionBuilderChunkManager alloc]initWithGameObject:self];
         ChunkRenderComponent=[[SGFractionBuilderChunkRender alloc]initWithGameObject:self];
         
     }

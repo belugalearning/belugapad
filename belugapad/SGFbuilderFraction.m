@@ -9,7 +9,7 @@
 #import "SGFbuilderFraction.h"
 #import "SGFractionBuilderRender.h"
 #import "SGFractionBuilderMarker.h"
-#import "SGFractionBuilderChunk.h"
+#import "SGFractionBuilderChunkManager.h"
 
 
 @implementation SGFbuilderFraction
@@ -37,7 +37,7 @@
     }
     RenderComponent=[[SGFractionBuilderRender alloc] initWithGameObject:self];
     MarkerComponent=[[SGFractionBuilderMarker alloc] initWithGameObject:self];
-    ChunkComponent=[[SGFractionBuilderChunk alloc] initWithGameObject:self];
+    ChunkComponent=[[SGFractionBuilderChunkManager alloc] initWithGameObject:self];
     return self;
 }
 

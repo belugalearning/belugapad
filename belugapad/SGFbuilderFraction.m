@@ -64,6 +64,16 @@
     [self.RenderComponent setup];
 }
 
+-(void)showFraction
+{
+    [self.RenderComponent showFraction];
+}
+
+-(void)hideFraction
+{
+    [self.RenderComponent hideFraction];
+}
+
 -(BOOL)amIProximateTo:(CGPoint)location
 {
     return [self.MarkerComponent amIProximateTo:location];

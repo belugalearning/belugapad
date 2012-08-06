@@ -9,7 +9,7 @@
 #import "SGComponent.h"
 #import "SGFractionObjectProtocols.h"
 
-@interface SGFractionBuilderChunk : SGComponent
+@interface SGFractionBuilderChunkManager : SGComponent
 {
     id<Configurable,Moveable,Interactive> ParentGO;
 }

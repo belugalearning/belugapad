@@ -32,9 +32,11 @@ typedef enum
 @property (retain) CCNode *BaseNode;
 @property int MarkerStartPosition;
 @property BOOL AutoShadeNewChunks;
+@property BOOL ShowEquivalentFractions;
 
 -(void)setup;
-
+-(void)showFraction;
+-(void)hideFraction;
 
 
 @end
@@ -62,6 +64,7 @@ typedef enum
 @property (retain) id CurrentHost;
 @property CGPoint Position;
 @property float Value;
+@property float ScaleX;
 @property (retain) CCSprite *MySprite;
 @property BOOL Selected;
 

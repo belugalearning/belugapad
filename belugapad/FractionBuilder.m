@@ -17,7 +17,7 @@
 #import "AppDelegate.h"
 
 #import "SGGameWorld.h"
-#import "SGFractionObject.h"
+#import "SGFbuilderFraction.h"
 #import "SGFractionBuilderRender.h"
 
 
@@ -137,11 +137,11 @@
 -(void)populateGW
 {
     gw.Blackboard.RenderLayer = renderLayer;
-    
+
     for(NSDictionary *d in initFractions)
     {
         id<Configurable, Interactive> fraction;
-        fraction=[[[SGFractionObject alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,[[d objectForKey:POS_Y]floatValue])] autorelease];
+        fraction=[[[SGFbuilderFraction alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,[[d objectForKey:POS_Y]floatValue])] autorelease];
         fraction.FractionMode=[[d objectForKey:FRACTION_MODE]intValue];
         
         if([d objectForKey:MARKER_START_POSITION])
@@ -152,9 +152,13 @@
         fraction.Value=[[d objectForKey:VALUE]floatValue];
         fraction.Tag=[[d objectForKey:TAG]intValue];
         
+        if([d objectForKey:SHOW_EQUIVALENT_FRACTIONS])
+            fraction.ShowEquivalentFractions=[[d objectForKey:SHOW_EQUIVALENT_FRACTIONS]boolValue];
+        
         [fraction setup];
         
         if([[d objectForKey:CREATE_CHUNKS_ON_INIT]boolValue])[self splitThisBar:fraction into:fraction.MarkerStartPosition];
+        if([[d objectForKey:START_HIDDEN]boolValue])[fraction hideFraction];
     }
     
 }

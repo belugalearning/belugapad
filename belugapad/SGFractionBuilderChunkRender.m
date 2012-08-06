@@ -9,8 +9,8 @@
 #import "global.h"
 #import "SGFractionObjectProtocols.h"
 #import "SGFractionBuilderChunkRender.h"
-#import "SGFractionObject.h"
-#import "SGFractionChunk.h"
+#import "SGFbuilderFraction.h"
+#import "SGFbuilderChunk.h"
 #import "BLMath.h"
 #import "ToolConsts.h"
 
@@ -49,7 +49,9 @@
     
     CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/fractions/chunk.png")];
     ParentGO.MySprite=s;
+    ParentGO.Position=ccp(ParentGO.Position.x+((s.contentSize.width*ParentGO.ScaleX)/2),ParentGO.Position.y);
     [s setOpacity:0];
+    [s setScaleX:ParentGO.ScaleX];
     [s setPosition:ParentGO.Position];
     
     [s runAction:[CCFadeIn actionWithDuration:0.5f]];

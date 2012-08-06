@@ -11,15 +11,15 @@
 
 @class SGFractionBuilderRender;
 @class SGFractionBuilderMarker;
-@class SGFractionBuilderChunk;
+@class SGFractionBuilderChunkManager;
 
-@interface SGFractionObject: SGGameObject <Configurable, Interactive, Moveable>
+@interface SGFbuilderFraction: SGGameObject <Configurable, Interactive, Moveable>
 
 @property (retain) SGFractionBuilderRender *RenderComponent;
 @property (retain) SGFractionBuilderMarker *MarkerComponent;
-@property (retain) SGFractionBuilderChunk *ChunkComponent;
+@property (retain) SGFractionBuilderChunkManager *ChunkComponent;
 
 
--(SGFractionObject*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition;
+-(SGFbuilderFraction*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition;
 
 @end

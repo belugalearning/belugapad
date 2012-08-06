@@ -148,7 +148,7 @@
     [oldFraction.Chunks removeObject:thisChunk];
     thisChunk.CurrentHost=newFraction;
     [newFraction.Chunks addObject:thisChunk];
-    [self orderStepChildrenToRightOn:(id<Configurable,Interactive>)newFraction];
+//    [self orderStepChildrenToRightOn:(id<Configurable,Interactive>)newFraction];
     [self orderChildrenToLeftOn:(id<Configurable,Interactive>)newFraction];
 }
 
@@ -175,6 +175,7 @@
         {
             NSLog(@"thisPos: %@", NSStringFromCGPoint(myNewPos));
             [go.MySprite setPosition:[newFraction.BaseNode convertToWorldSpace:myNewPos]];
+            
             amountIveReorderedSoFar++;
         }
         
@@ -184,16 +185,16 @@
 -(void)orderChildrenToLeftOn:(id<Configurable,Interactive>)newFraction
 {
     fractionSprite=newFraction.FractionSprite;
-    int amountOfChunksThatBelongHere=0;
+//    int amountOfChunksThatBelongHere=0;
     int amountIveReorderedSoFar=0;
     float leftPos=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
 
-    for(id<ConfigurableChunk> go in newFraction.Chunks)
-    {
-        if(go.CurrentHost==go.MyParent)
-            amountOfChunksThatBelongHere++;
-        
-    }
+//    for(id<ConfigurableChunk> go in newFraction.Chunks)
+//    {
+//        if(go.CurrentHost==go.MyParent)
+//            amountOfChunksThatBelongHere++;
+//        
+//    }
     
     for(id<ConfigurableChunk> go in newFraction.Chunks)
     {
@@ -206,11 +207,12 @@
         
         CGPoint myNewPos=ccp(leftPos+halfOfChunk+adjPosOnFraction,fractionSprite.position.y);
         
-        if(go.CurrentHost==go.MyParent)
-        {
+//        if(go.CurrentHost==go.MyParent)
+//        {
             [go.MySprite setPosition:[newFraction.BaseNode convertToWorldSpace:myNewPos]];
+            go.Position=myNewPos;
             amountIveReorderedSoFar++;
-        }
+//        }
         
     }    
 }

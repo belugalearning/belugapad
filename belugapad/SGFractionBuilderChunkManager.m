@@ -49,6 +49,7 @@
     {
         fractionSprite=ParentGO.FractionSprite;
         float leftPos=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
+//        float leftPos=fractionSprite.position.x;
         float posOnFraction=fractionSprite.contentSize.width/ParentGO.MarkerPosition;
         float adjPosOnFraction=posOnFraction*[ParentGO.Chunks count];
         CGPoint startPos=ccp(leftPos+adjPosOnFraction,fractionSprite.position.y);
@@ -59,6 +60,7 @@
         chunk=[[[SGFbuilderChunk alloc] initWithGameWorld:gameWorld andRenderLayer:ParentGO.RenderLayer andPosition:startPos] autorelease];
         chunk.MyParent=ParentGO;
         chunk.CurrentHost=ParentGO;
+        chunk.ScaleX=20/ParentGO.MarkerPosition;
         
         chunk.Value=ParentGO.Value/(ParentGO.MarkerPosition+1);
         

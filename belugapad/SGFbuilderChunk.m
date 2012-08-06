@@ -14,7 +14,7 @@
 @implementation SGFbuilderChunk
 
 // configurable properties
-@synthesize RenderLayer, MyParent, CurrentHost, Position, MySprite, Value, Selected;
+@synthesize RenderLayer, MyParent, CurrentHost, Position, MySprite, Value, ScaleX, Selected;
 
 @synthesize ChunkComponent;
 @synthesize ChunkRenderComponent;

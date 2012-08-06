@@ -145,6 +145,9 @@
     NSMutableArray *multipleLabels;
     
     NSMutableDictionary *boundCounts;
+    
+    // use this array in a case we need to drag more than 1  object
+    NSMutableArray *pickupObjects;
 }
 
 -(void)populateGW;

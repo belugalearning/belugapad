@@ -50,24 +50,24 @@
         fractionSprite=ParentGO.FractionSprite;
         float leftPos=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
 //        float leftPos=fractionSprite.position.x;
-        float posOnFraction=fractionSprite.contentSize.width/ParentGO.MarkerPosition;
-        float adjPosOnFraction=posOnFraction*[ParentGO.Chunks count];
+        float posOnFraction=fractionSprite.contentSize.width/(ParentGO.MarkerPosition+1);
+        float adjPosOnFraction=posOnFraction*([ParentGO.Chunks count]);
         CGPoint startPos=ccp(leftPos+adjPosOnFraction,fractionSprite.position.y);
-        NSLog(@"startPos bef %@", NSStringFromCGPoint(startPos));
+        NSLog(@"leftPos %f, posOnFraction %f=fraction.contentSize.width(%f)/ParentGO.MarkerPosition+1(%d), adjPosOnFraction %f=posOnFraction(%f)*[ParentGO.Chunks count](%d), Chunks %d", leftPos, posOnFraction, fractionSprite.contentSize.width, ParentGO.MarkerPosition+1, adjPosOnFraction, posOnFraction, [ParentGO.Chunks count], [ParentGO.Chunks count]);
         startPos=[fractionSprite.parent convertToWorldSpace:startPos];
-        NSLog(@"startPos aft %@", NSStringFromCGPoint(startPos));    
+ 
         id<ConfigurableChunk> chunk;
         chunk=[[[SGFbuilderChunk alloc] initWithGameWorld:gameWorld andRenderLayer:ParentGO.RenderLayer andPosition:startPos] autorelease];
         chunk.MyParent=ParentGO;
         chunk.CurrentHost=ParentGO;
-        chunk.ScaleX=20/ParentGO.MarkerPosition;
-        
+        chunk.ScaleX=20.0f/(ParentGO.MarkerPosition+1);
+        NSLog(@"this chunk's scale is %f. 20/MarkerPos=%f, MarkerPos=%d", chunk.ScaleX, 20.0f/ParentGO.MarkerPosition, ParentGO.MarkerPosition);
         chunk.Value=ParentGO.Value/(ParentGO.MarkerPosition+1);
         
-        [ParentGO.Chunks addObject:chunk];
         
         [chunk setup];
-     
+        [ParentGO.Chunks addObject:chunk];
+        
         return chunk;
     }
 

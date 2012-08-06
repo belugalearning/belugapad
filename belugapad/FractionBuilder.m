@@ -137,7 +137,7 @@
 -(void)populateGW
 {
     gw.Blackboard.RenderLayer = renderLayer;
-    
+
     for(NSDictionary *d in initFractions)
     {
         id<Configurable, Interactive> fraction;

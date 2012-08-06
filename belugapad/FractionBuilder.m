@@ -152,9 +152,13 @@
         fraction.Value=[[d objectForKey:VALUE]floatValue];
         fraction.Tag=[[d objectForKey:TAG]intValue];
         
+        if([d objectForKey:SHOW_EQUIVALENT_FRACTIONS])
+            fraction.ShowEquivalentFractions=[[d objectForKey:SHOW_EQUIVALENT_FRACTIONS]boolValue];
+        
         [fraction setup];
         
         if([[d objectForKey:CREATE_CHUNKS_ON_INIT]boolValue])[self splitThisBar:fraction into:fraction.MarkerStartPosition];
+        if([[d objectForKey:START_HIDDEN]boolValue])[fraction hideFraction];
     }
     
 }

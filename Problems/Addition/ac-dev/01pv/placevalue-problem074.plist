@@ -82,7 +82,7 @@
 		<key>100</key>
 		<false/>
 		<key>10</key>
-		<false/>
+		<true/>
 	</dict>
 	<key>SOLUTION</key>
 	<dict>
@@ -114,5 +114,10 @@
 	</dict>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>MULTIPLE_BLOCK_PICKUP_DEFAULTS</key>
+	<dict>
+		<key>10</key>
+		<integer>10</integer>
+	</dict>
 </dict>
 </plist>

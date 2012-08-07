@@ -17,7 +17,7 @@
 #import "AppDelegate.h"
 
 #import "SGGameWorld.h"
-#import "SGFractionObject.h"
+#import "SGFbuilderFraction.h"
 #import "SGFractionBuilderRender.h"
 
 
@@ -137,11 +137,11 @@
 -(void)populateGW
 {
     gw.Blackboard.RenderLayer = renderLayer;
-    
+
     for(NSDictionary *d in initFractions)
     {
         id<Configurable, Interactive> fraction;
-        fraction=[[[SGFractionObject alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,[[d objectForKey:POS_Y]floatValue])] autorelease];
+        fraction=[[[SGFbuilderFraction alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,[[d objectForKey:POS_Y]floatValue])] autorelease];
         fraction.FractionMode=[[d objectForKey:FRACTION_MODE]intValue];
         
         if([d objectForKey:MARKER_START_POSITION])
@@ -151,10 +151,15 @@
         
         fraction.Value=[[d objectForKey:VALUE]floatValue];
         fraction.Tag=[[d objectForKey:TAG]intValue];
+        fraction.ShowCurrentFraction=[[d objectForKey:SHOW_CURRENT_FRACTION]boolValue];
+        
+        if([d objectForKey:SHOW_EQUIVALENT_FRACTIONS])
+            fraction.ShowEquivalentFractions=[[d objectForKey:SHOW_EQUIVALENT_FRACTIONS]boolValue];
         
         [fraction setup];
         
         if([[d objectForKey:CREATE_CHUNKS_ON_INIT]boolValue])[self splitThisBar:fraction into:fraction.MarkerStartPosition];
+        if([[d objectForKey:START_HIDDEN]boolValue])[fraction hideFraction];
     }
     
 }
@@ -334,18 +339,28 @@
                 
                 if(thisFraction.Tag==[[s objectForKey:TAG]intValue])
                 {      
-                    float foundValue=0.0f;
-                    float expectedTotal=[[s objectForKey:VALUE]floatValue];
+                    int totalSelectedChunks=0;
+                    BOOL dividendMatch=NO;
+                    BOOL divisorMatch=NO;
                     
-                    for(id<ConfigurableChunk> thisGO in thisFraction.Chunks)
+                    for(id<ConfigurableChunk> chunk in thisFraction.Chunks)
                     {
-                        NSLog(@"this chunk is worth %f", thisGO.Value);
-                        foundValue+=thisGO.Value;
+                        if(chunk.Selected)
+                            totalSelectedChunks++;
+                        if(chunk.Selected)
+                            NSLog(@"chunk selected!");
                     }
-                 
-                    if(foundValue==expectedTotal)
-                        solutionsFound++;
                     
+                    if(totalSelectedChunks==[[s objectForKey:DIVIDEND]intValue])
+                        dividendMatch=YES;
+                    
+                    if(thisFraction.MarkerPosition+1==[[s objectForKey:DIVISOR]intValue])
+                        divisorMatch=YES;
+                    
+                    if(dividendMatch && divisorMatch)
+                        solutionsFound++;
+                    if(dividendMatch && divisorMatch)
+                        NSLog(@"solutions found: %d", solutionsFound);
                 }
             }
         }

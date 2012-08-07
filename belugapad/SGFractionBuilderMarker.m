@@ -8,7 +8,7 @@
 
 #import "global.h"
 #import "SGFractionBuilderMarker.h"
-#import "SGFractionObject.h"
+#import "SGFbuilderFraction.h"
 #import "BLMath.h"
 #import "ToolConsts.h"
 
@@ -102,7 +102,14 @@
         NSLog(@"marker position %d", markerPosition);
         
         ParentGO.MarkerPosition=markerPosition;
-    
+        
+        if(ParentGO.ShowCurrentFraction)
+        {
+            if(ParentGO.MarkerPosition>1)
+                [ParentGO.CurrentFraction setString:[NSString stringWithFormat:@"/%d", markerPosition+1]];
+            else
+                [ParentGO.CurrentFraction setString:@""];
+        }
     }
 }
 

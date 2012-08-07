@@ -95,5 +95,12 @@
 	</dict>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
+	<false/>
+	<key>MULTIPLE_BLOCK_PICKUP</key>
+	<dict>
+		<key>10</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

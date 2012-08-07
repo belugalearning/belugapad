@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>I start at 227. What is the nearest multiple of 10?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Round 229 to the nearest 10.</string>
+	<string>Round 2277 to the nearest 10.</string>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_EVAL_MODE</key>
@@ -34,7 +34,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>I start at 229. What is the nearest multiple of 10?</string>
+		<string>I start at 227. What is the nearest multiple of 10?</string>
 	</dict>
 </dict>
 </plist>

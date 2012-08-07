@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>3 blocks! add 1 more and count how many you have. (totcount+sequence)</string>
+	<string>place 20 blocks on the grid</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -17,7 +17,7 @@
 	<key>ROPES_PER_COL</key>
 	<integer>5</integer>
 	<key>ROWS_PER_COL</key>
-	<integer>1</integer>
+	<integer>4</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
@@ -48,13 +48,17 @@
 	<key>SOLUTION</key>
 	<dict>
 		<key>SOLUTION_TYPE</key>
-		<string>TOTAL_COUNT_AND_COUNT_SEQUENCE</string>
+		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>4</integer>
+		<integer>20</integer>
 		<key>INCOMPLETE_DISPLAY_TEXT</key>
 		<string>solution incomplete, try again.</string>
 	</dict>
 	<key>DEFAULT_SCALE</key>
 	<real>0.7</real>
+	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
+	<true/>
+	<key>SHOW_BASE_SELECTION</key>
+	<true/>
 </dict>
 </plist>

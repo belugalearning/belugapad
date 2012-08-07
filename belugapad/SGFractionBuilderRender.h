@@ -15,5 +15,7 @@
 }
 
 -(void)setup;
+-(void)showFraction;
+-(void)hideFraction;
 
 @end

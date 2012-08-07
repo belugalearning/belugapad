@@ -53,7 +53,7 @@
         float posOnFraction=fractionSprite.contentSize.width/(ParentGO.MarkerPosition+1);
         float adjPosOnFraction=posOnFraction*([ParentGO.Chunks count]);
         CGPoint startPos=ccp(leftPos+adjPosOnFraction,fractionSprite.position.y);
-        NSLog(@"leftPos %f, posOnFraction %f=fraction.contentSize.width(%f)/ParentGO.MarkerPosition+1(%d), adjPosOnFraction %f=posOnFraction(%f)*[ParentGO.Chunks count](%d), Chunks %d", leftPos, posOnFraction, fractionSprite.contentSize.width, ParentGO.MarkerPosition+1, adjPosOnFraction, posOnFraction, [ParentGO.Chunks count], [ParentGO.Chunks count]);
+        
         startPos=[fractionSprite.parent convertToWorldSpace:startPos];
  
         id<ConfigurableChunk> chunk;
@@ -148,7 +148,7 @@
     [oldFraction.Chunks removeObject:thisChunk];
     thisChunk.CurrentHost=newFraction;
     [newFraction.Chunks addObject:thisChunk];
-    [self orderStepChildrenToRightOn:(id<Configurable,Interactive>)newFraction];
+//    [self orderStepChildrenToRightOn:(id<Configurable,Interactive>)newFraction];
     [self orderChildrenToLeftOn:(id<Configurable,Interactive>)newFraction];
 }
 
@@ -175,6 +175,7 @@
         {
             NSLog(@"thisPos: %@", NSStringFromCGPoint(myNewPos));
             [go.MySprite setPosition:[newFraction.BaseNode convertToWorldSpace:myNewPos]];
+            
             amountIveReorderedSoFar++;
         }
         
@@ -184,25 +185,34 @@
 -(void)orderChildrenToLeftOn:(id<Configurable,Interactive>)newFraction
 {
     fractionSprite=newFraction.FractionSprite;
-    int amountOfChunksThatBelongHere=0;
+//    int amountOfChunksThatBelongHere=0;
     int amountIveReorderedSoFar=0;
     float leftPos=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
+
+//    for(id<ConfigurableChunk> go in newFraction.Chunks)
+//    {
+//        if(go.CurrentHost==go.MyParent)
+//            amountOfChunksThatBelongHere++;
+//        
+//    }
     
     for(id<ConfigurableChunk> go in newFraction.Chunks)
     {
-        if(go.CurrentHost==go.MyParent)
-            amountOfChunksThatBelongHere++;
+        //float adjLeftPos=leftPos+(go.MySprite.contentSize.width/2);
+        //CGPoint myNewPos=ccp(adjLeftPos+(amountIveReorderedSoFar*(go.MySprite.contentSize.width*go.MySprite.scaleX)),fractionSprite.position.y);
         
-    }
-    
-    for(id<ConfigurableChunk> go in newFraction.Chunks)
-    {
-        CGPoint myNewPos=ccp(leftPos+(amountIveReorderedSoFar*go.MySprite.contentSize.width),fractionSprite.position.y);
-        if(go.CurrentHost==go.MyParent)
-        {
+        float halfOfChunk=(go.MySprite.contentSize.width*go.MySprite.scaleX)/2;
+        float posOnFraction=fractionSprite.contentSize.width/(newFraction.MarkerPosition+1);
+        float adjPosOnFraction=posOnFraction*amountIveReorderedSoFar;
+        
+        CGPoint myNewPos=ccp(leftPos+halfOfChunk+adjPosOnFraction,fractionSprite.position.y);
+        
+//        if(go.CurrentHost==go.MyParent)
+//        {
             [go.MySprite setPosition:[newFraction.BaseNode convertToWorldSpace:myNewPos]];
+            go.Position=myNewPos;
             amountIveReorderedSoFar++;
-        }
+//        }
         
     }    
 }

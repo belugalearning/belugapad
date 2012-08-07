@@ -15,7 +15,7 @@
 @implementation SGFbuilderFraction
 
 // configurable properties
-@synthesize RenderLayer, HasSlider, CreateChunksOnInit, CreateChunks, FractionMode, Position, FractionSprite, SliderSprite, SliderMarkerSprite, BaseNode, MarkerStartPosition, AutoShadeNewChunks;
+@synthesize RenderLayer, HasSlider, CreateChunksOnInit, CreateChunks, FractionMode, Position, FractionSprite, SliderSprite, SliderMarkerSprite, BaseNode, MarkerStartPosition, AutoShadeNewChunks, ShowEquivalentFractions, ShowCurrentFraction, CurrentFraction;
 
 // interactive properties
 @synthesize Divisions, Chunks, GhostChunks, MarkerPosition, Value, Tag;
@@ -121,6 +121,7 @@
     self.RenderComponent=nil;
     self.MarkerComponent=nil;
     self.ChunkComponent=nil;
+    self.CurrentFraction=nil;
     
     [super dealloc];
 }

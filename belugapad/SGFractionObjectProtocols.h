@@ -33,6 +33,8 @@ typedef enum
 @property int MarkerStartPosition;
 @property BOOL AutoShadeNewChunks;
 @property BOOL ShowEquivalentFractions;
+@property BOOL ShowCurrentFraction;
+@property (retain) CCLabelTTF *CurrentFraction;
 
 -(void)setup;
 -(void)showFraction;

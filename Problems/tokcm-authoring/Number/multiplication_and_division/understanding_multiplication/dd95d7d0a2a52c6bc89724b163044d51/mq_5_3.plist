@@ -5,48 +5,15 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>10/5</string>
+	<string>8/4</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
-	<key>INIT_OBJECTS</key>
-	<array>
-		<dict>
-			<key>QUANTITY</key>
-			<integer>10</integer>
-			<key>POS_X</key>
-			<integer>200</integer>
-			<key>POS_Y</key>
-			<integer>400</integer>
-		</dict>
-	</array>
-	<key>SOLUTION</key>
-	<array>
-		<integer>11</integer>
-	</array>
-	<key>DSTRINGS</key>
-	<dict>
-		<key>@bname</key>
-		<dict>
-			<key>MODE</key>
-			<string>RANDOM</string>
-			<key>DATA</key>
-			<array>
-				<string>Gareth</string>
-				<string>Nick</string>
-				<string>Ed</string>
-				<string>Dave</string>
-				<string>Richard</string>
-				<string>Mark</string>
-				<string>Scott</string>
-			</array>
-		</dict>
-	</dict>
 	<key>HOST_BACKGROUND_IMAGE</key>
 	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
-		<string>well done!!</string>
+		<string>Yes!! 15= 5 x 3 = 3+3+3+3+3 !!</string>
 		<key>META_QUESTION_EVAL_MODE</key>
 		<integer>0</integer>
 		<key>META_QUESTION_ANSWER_MODE</key>
@@ -55,25 +22,31 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>2</string>
+				<string>5+5=10</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>5-3=2</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>3+5=8</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>5x3=15</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>25</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>10</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There are 10 50p coins. The coins are divided fairly between {@bname} and his 4 sisters. How many coins does {@bname} get?</string>
+		<string>3+3+3+3+3 is equivalent to which of the following?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

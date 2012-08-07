@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 9. Add 5. what is 9+5?</string>
+	<string>Show that to make 6 blocks into 8 blocks, you must add 2 blocks of 1. </string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>9+5</string>
+	<string>6+2=8</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -13,21 +13,21 @@
 	<key>FIRST_COL_VALUE</key>
 	<integer>1</integer>
 	<key>COL_BASE_VALUE</key>
-	<string>10</string>
+	<string>8</string>
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>8</integer>
-	<key>ROWS_PER_COL</key>
 	<integer>2</integer>
+	<key>ROWS_PER_COL</key>
+	<integer>4</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
 	<false/>
 	<key>EVAL_MODE</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>REJECT_MODE</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_COUNT</key>
@@ -35,7 +35,7 @@
 	<key>SHOW_COUNT_BLOCK</key>
 	<true/>
 	<key>FADE_COUNT</key>
-	<true/>
+	<false/>
 	<key>CUSTOM_COLUMN_HEADERS</key>
 	<true/>
 	<key>COLUMN_HEADERS</key>
@@ -51,7 +51,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>4</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
@@ -59,7 +59,15 @@
 			<key>PUT_IN_ROW</key>
 			<integer>1</integer>
 			<key>NUMBER</key>
-			<integer>5</integer>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
+			<integer>0</integer>
+			<key>PUT_IN_ROW</key>
+			<integer>2</integer>
+			<key>NUMBER</key>
+			<integer>2</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -67,7 +75,7 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>14</integer>
+		<integer>8</integer>
 	</dict>
 </dict>
 </plist>

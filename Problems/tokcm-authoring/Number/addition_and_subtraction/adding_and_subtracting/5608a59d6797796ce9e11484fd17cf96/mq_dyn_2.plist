@@ -2,27 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>TOOL_KEY</key>
-	<string>DistributionTool</string>
-	<key>PROBLEM_DESCRIPTION</key>
-	<string>meta</string>
-	<key>EVAL_MODE</key>
-	<integer>1</integer>
-	<key>INIT_OBJECTS</key>
-	<array>
-		<dict>
-			<key>QUANTITY</key>
-			<integer>12</integer>
-			<key>POS_X</key>
-			<integer>150</integer>
-			<key>POS_Y</key>
-			<integer>500</integer>
-		</dict>
-	</array>
-	<key>SOLUTION</key>
-	<array>
-		<integer>14</integer>
-	</array>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
@@ -35,30 +14,53 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>6</string>
+				<string>{$number_larger-8}</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>4</string>
+				<string>{$number_larger-9}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$number_larger-10}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$number_larger-$number_smaller}</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>3</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There are 12 {@item}. Share out the {@item} equally between 3 people. How many {@item} does one person get?</string>
+		<string>{@bname} had {$number_smaller} {@item}. {@gname} gives him some more. He now has {$number_larger}. How many {@item} did {@gname} give to {@bname}?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>
 	<key>HOST_BACKGROUND_IMAGE</key>
 	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<key>DVARS</key>
+	<dict>
+		<key>$number_larger</key>
+		<dict>
+			<key>MAX</key>
+			<string>20</string>
+			<key>MIN</key>
+			<string>14</string>
+		</dict>
+		<key>$number_smaller</key>
+		<dict>
+			<key>MAX</key>
+			<string>9</string>
+			<key>MIN</key>
+			<string>2</string>
+		</dict>
+	</dict>
 	<key>DSTRINGS</key>
 	<dict>
 		<key>@bname</key>
@@ -100,7 +102,6 @@
 				<string>crayons</string>
 				<string>coins</string>
 				<string>batteries</string>
-				<string>packs of crisps</string>
 				<string>drinks</string>
 			</array>
 		</dict>

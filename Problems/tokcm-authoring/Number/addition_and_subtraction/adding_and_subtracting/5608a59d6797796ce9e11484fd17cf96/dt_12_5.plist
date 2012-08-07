@@ -5,60 +5,14 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>meta</string>
+	<string>{@bname} had 5 {@item}. {@gname} gives him some more. He now has 12. Show that {@gname} gave him 7 {@item}.</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
-	<key>INIT_OBJECTS</key>
-	<array>
-		<dict>
-			<key>QUANTITY</key>
-			<integer>12</integer>
-			<key>POS_X</key>
-			<integer>150</integer>
-			<key>POS_Y</key>
-			<integer>500</integer>
-		</dict>
-	</array>
 	<key>SOLUTION</key>
 	<array>
-		<integer>14</integer>
+		<integer>5</integer>
+		<integer>7</integer>
 	</array>
-	<key>META_QUESTION</key>
-	<dict>
-		<key>META_QUESTION_COMPLETE_TEXT</key>
-		<string>well done!!</string>
-		<key>META_QUESTION_EVAL_MODE</key>
-		<integer>0</integer>
-		<key>META_QUESTION_ANSWER_MODE</key>
-		<integer>0</integer>
-		<key>META_QUESTION_ANSWERS</key>
-		<array>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>6</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>4</string>
-				<key>META_ANSWER_VALUE</key>
-				<true/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>3</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-		</array>
-		<key>META_QUESTION_TITLE</key>
-		<string>There are 12 {@item}. Share out the {@item} equally between 3 people. How many {@item} does one person get?</string>
-		<key>META_QUESTION_INCOMPLETE_TEXT</key>
-		<string>Try again</string>
-	</dict>
-	<key>HOST_BACKGROUND_IMAGE</key>
-	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
 	<key>DSTRINGS</key>
 	<dict>
 		<key>@bname</key>
@@ -100,10 +54,22 @@
 				<string>crayons</string>
 				<string>coins</string>
 				<string>batteries</string>
-				<string>packs of crisps</string>
 				<string>drinks</string>
 			</array>
 		</dict>
 	</dict>
+	<key>HOST_BACKGROUND_IMAGE</key>
+	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>12</integer>
+			<key>POS_X</key>
+			<integer>100</integer>
+			<key>POS_Y</key>
+			<integer>450</integer>
+		</dict>
+	</array>
 </dict>
 </plist>

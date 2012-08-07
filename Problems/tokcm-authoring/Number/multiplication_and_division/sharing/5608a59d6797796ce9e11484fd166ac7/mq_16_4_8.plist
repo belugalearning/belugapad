@@ -79,7 +79,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>They decide that a birthday cake looks better if there are less candles on each slice. Would it be better to share 16 candles between 8 slices or 4 slices?</string>
+		<string>They decide that a birthday cake looks better if there are less candles on each slice. Is it better to share 16 candles evenly between 8 slices or 4 slices?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

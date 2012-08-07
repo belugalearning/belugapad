@@ -5,67 +5,46 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>8/2</string>
+	<string>What is </string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
 	<key>SOLUTION</key>
 	<array>
-		<integer>20</integer>
+		<integer>16</integer>
 	</array>
-	<key>DSTRINGS</key>
-	<dict>
-		<key>@bname</key>
-		<dict>
-			<key>MODE</key>
-			<string>RANDOM</string>
-			<key>DATA</key>
-			<array>
-				<string>Gareth</string>
-				<string>Nick</string>
-				<string>Ed</string>
-				<string>Dave</string>
-				<string>Richard</string>
-				<string>Mark</string>
-				<string>Scott</string>
-			</array>
-		</dict>
-		<key>@gname</key>
-		<dict>
-			<key>DATA</key>
-			<array>
-				<string>Claire</string>
-				<string>Winnie</string>
-				<string>Sarah</string>
-				<string>Simone</string>
-				<string>Elaine</string>
-			</array>
-			<key>MODE</key>
-			<string>RANDOM</string>
-		</dict>
-		<key>@item</key>
-		<dict>
-			<key>MODE</key>
-			<string>RANDOM</string>
-			<key>DATA</key>
-			<array>
-				<string>cookies</string>
-				<string>pens</string>
-				<string>crayons</string>
-				<string>coins</string>
-				<string>batteries</string>
-				<string>drinks</string>
-			</array>
-		</dict>
-	</dict>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>8</integer>
+			<integer>2</integer>
 			<key>POS_X</key>
-			<integer>350</integer>
+			<integer>300</integer>
 			<key>POS_Y</key>
-			<integer>450</integer>
+			<integer>550</integer>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>2</integer>
+			<key>POS_X</key>
+			<integer>750</integer>
+			<key>POS_Y</key>
+			<integer>550</integer>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>2</integer>
+			<key>POS_X</key>
+			<integer>300</integer>
+			<key>POS_Y</key>
+			<integer>300</integer>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>2</integer>
+			<key>POS_X</key>
+			<integer>750</integer>
+			<key>POS_Y</key>
+			<integer>300</integer>
 		</dict>
 	</array>
 	<key>HOST_BACKGROUND_IMAGE</key>
@@ -82,25 +61,31 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>8</string>
+				<string>4+4+4+4</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>16</string>
+				<string>4-2</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>2+2+2+2</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>4</string>
+				<string>4+2</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Eight pizzas are ordered for a party. Each guest gets 1/2 a pizza. How many guests were at the party?</string>
+		<string>What can 4x2 be expressed as?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

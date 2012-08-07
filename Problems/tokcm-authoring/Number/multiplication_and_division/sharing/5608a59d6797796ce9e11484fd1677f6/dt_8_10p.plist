@@ -53,7 +53,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There are 8 10p coins. The number of coins are shared equally between {@gname} and {@bname}. What is the total amount of money {@bname} receives?</string>
+		<string>There are 8 10p coins.The coins are shared equally between {@gname} and {@bname}. How much money does {@bname} get?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

@@ -5,44 +5,42 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>10/5</string>
+	<string>There are 3 groups of objects. Each group has 3 objects in it. How many objects are there in total?</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
-	<key>INIT_OBJECTS</key>
-	<array>
-		<dict>
-			<key>QUANTITY</key>
-			<integer>10</integer>
-			<key>POS_X</key>
-			<integer>200</integer>
-			<key>POS_Y</key>
-			<integer>400</integer>
-		</dict>
-	</array>
 	<key>SOLUTION</key>
 	<array>
 		<integer>11</integer>
 	</array>
-	<key>DSTRINGS</key>
-	<dict>
-		<key>@bname</key>
-		<dict>
-			<key>MODE</key>
-			<string>RANDOM</string>
-			<key>DATA</key>
-			<array>
-				<string>Gareth</string>
-				<string>Nick</string>
-				<string>Ed</string>
-				<string>Dave</string>
-				<string>Richard</string>
-				<string>Mark</string>
-				<string>Scott</string>
-			</array>
-		</dict>
-	</dict>
 	<key>HOST_BACKGROUND_IMAGE</key>
 	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>3</integer>
+			<key>POS_X</key>
+			<integer>500</integer>
+			<key>POS_Y</key>
+			<integer>450</integer>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>3</integer>
+			<key>POS_X</key>
+			<integer>750</integer>
+			<key>POS_Y</key>
+			<integer>450</integer>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>3</integer>
+			<key>POS_X</key>
+			<integer>250</integer>
+			<key>POS_Y</key>
+			<integer>450</integer>
+		</dict>
+	</array>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
@@ -55,25 +53,31 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>2</string>
+				<string>8</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>3</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>9</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>25</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>10</string>
+				<string>6</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There are 10 50p coins. The coins are divided fairly between {@bname} and his 4 sisters. How many coins does {@bname} get?</string>
+		<string>What is 3 x 3?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

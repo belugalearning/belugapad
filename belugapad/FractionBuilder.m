@@ -138,28 +138,43 @@
 {
     gw.Blackboard.RenderLayer = renderLayer;
 
+    // loop through our init fractions
     for(NSDictionary *d in initFractions)
     {
+        // set up the fraction
         id<Configurable, Interactive> fraction;
         fraction=[[[SGFbuilderFraction alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,[[d objectForKey:POS_Y]floatValue])] autorelease];
+        
+        // determine its mode
         fraction.FractionMode=[[d objectForKey:FRACTION_MODE]intValue];
         
+        // and where the marker starts
         if([d objectForKey:MARKER_START_POSITION])
             fraction.MarkerStartPosition=[[d objectForKey:MARKER_START_POSITION]intValue];
         else
             fraction.MarkerStartPosition=1;
         
+        // give it a value (ie, 1)
         fraction.Value=[[d objectForKey:VALUE]floatValue];
+        
+        // and a tag - a way of later identifying it
         fraction.Tag=[[d objectForKey:TAG]intValue];
+        
+        // shoow a label with the current expressed fraction?
         fraction.ShowCurrentFraction=[[d objectForKey:SHOW_CURRENT_FRACTION]boolValue];
         
+        // and should this label be able to show equivs?
         if([d objectForKey:SHOW_EQUIVALENT_FRACTIONS])
             fraction.ShowEquivalentFractions=[[d objectForKey:SHOW_EQUIVALENT_FRACTIONS]boolValue];
         
         [fraction setup];
         
-        if([[d objectForKey:CREATE_CHUNKS_ON_INIT]boolValue])[self splitThisBar:fraction into:fraction.MarkerStartPosition];
-        if([[d objectForKey:START_HIDDEN]boolValue])[fraction hideFraction];
+        // if this is set, split the fraction
+        if([[d objectForKey:CREATE_CHUNKS_ON_INIT]boolValue])
+            [self splitThisBar:fraction into:fraction.MarkerStartPosition];
+        // and if it should start hidden, hide!
+        if([[d objectForKey:START_HIDDEN]boolValue])
+            [fraction hideFraction];
     }
     
 }
@@ -167,10 +182,12 @@
 #pragma mark - interaction
 -(void)splitThisBar:(id)thisBar into:(int)thisManyChunks
 {
+    // choose the bar and check it has no chunks - if it does, remove them
     id<Interactive,Configurable> curBar=thisBar;
     if([curBar.Chunks count]>0)
         [curBar removeChunks];
     
+    // loop ofver to create our number of chunks
     for(int i=0;i<thisManyChunks;i++)
     {
         // return the created object
@@ -199,6 +216,7 @@
     lastTouch=location;
     touchStartPos=location;
     
+    // loop through to check for fraction touches or chunk touches
     for(id thisObj in gw.AllGameObjects)
     {
         if([thisObj conformsToProtocol:@protocol(Moveable)])
@@ -238,6 +256,8 @@
     
     lastTouch=location;
     
+    // if we have these things, handle them differently
+    
     if(currentMarker)
         [currentMarker moveMarkerTo:location];
     
@@ -246,15 +266,16 @@
         currentChunk.Position=location;
         [currentChunk moveChunk];
         
-//        for(id<MoveableChunk> chunk in selectedChunks)
-//        {
-//            if(chunk==currentChunk)continue;
-//            float diffX=[BLMath DistanceBetween:ccp(currentChunk.Position.x,0) and:ccp(chunk.Position.x,0)];
-//            float diffY=[BLMath DistanceBetween:ccp(0,currentChunk.Position.y) and:ccp(0,currentChunk.Position.y)];
-//            NSLog(@"diffX %f, diffY %f", diffX, diffY);
-//            chunk.Position=ccp(location.x+diffX,location.y+diffY);
-//            [chunk moveChunk];
-//        }
+        for(id<MoveableChunk> chunk in selectedChunks)
+        {
+            if(chunk==currentChunk)continue;
+            float diffX=[BLMath DistanceBetween:ccp(currentChunk.Position.x,0) and:ccp(chunk.Position.x,0)];
+            float diffY=[BLMath DistanceBetween:ccp(0,currentChunk.Position.y) and:ccp(0,currentChunk.Position.y)];
+            
+            NSLog(@"diffX %f, diffY %f", diffX, diffY);
+            chunk.Position=ccp(location.x+diffX,location.y+diffY);
+            [chunk moveChunk];
+        }
     }
     
 }
@@ -268,22 +289,25 @@
     
     float distFromStartToEnd=[BLMath DistanceBetween:touchStartPos and:location];
     
+    // if we were moving the marker
     if(currentMarker)
     {
+        // first snap it to a number
         [currentMarker snapToNearestPos];
         
+        // then if the 2 numbers differ, make out ghost chunks
         if(startMarkerPos!=currentMarker.MarkerPosition)
-        {
             [currentMarker ghostChunk];
 
-        }
-        
+        // and split dat bar!
         [self splitThisBar:currentMarker into:currentMarker.MarkerPosition+1];
         
     }
     
+    // if we were moving a chunk
     if(currentChunk)
     {
+        // and distance <10, select the chunk
         if(distFromStartToEnd<10.0f)
         {
             if(!selectedChunks)selectedChunks=[[NSMutableArray alloc]init];
@@ -293,6 +317,7 @@
             [currentChunk changeChunkSelection];
         }
         
+        // then check for a chunk drop in a fraction
         for(id go in gw.AllGameObjects)
         {
             if([go conformsToProtocol:@protocol(Configurable)])
@@ -301,6 +326,8 @@
                     [currentChunk changeChunk:currentChunk toBelongTo:go];
                     //TODO: this is when we'd check the parent vs current host
                     // if different, we need to reassign
+                else
+                    [currentChunk returnToParentSlice];
             }
         }
     }
@@ -327,12 +354,16 @@
 -(BOOL)evalExpression
 {
     int solutionsFound=0;
+    NSMutableArray *foundSolution=[[NSMutableArray alloc]init];
+    NSMutableArray *solvedFractions=[[NSMutableArray alloc]init];
     
     for(NSDictionary *s in solutionsDef)
     {
+        if([foundSolution containsObject:s])continue;
+        
         for(id go in gw.AllGameObjects)
         {
-            if([go conformsToProtocol:@protocol(Interactive)])
+            if([go conformsToProtocol:@protocol(Interactive)] && ![solvedFractions containsObject:go])
             {
                 id<Interactive> thisFraction=go;
                 NSLog(@"found interactive obj (tag %d)", thisFraction.Tag);
@@ -357,8 +388,11 @@
                     if(thisFraction.MarkerPosition+1==[[s objectForKey:DIVISOR]intValue])
                         divisorMatch=YES;
                     
-                    if(dividendMatch && divisorMatch)
+                    if(dividendMatch && divisorMatch){
                         solutionsFound++;
+                        [foundSolution addObject:s];
+                        [solvedFractions addObject:thisFraction];
+                    }
                     if(dividendMatch && divisorMatch)
                         NSLog(@"solutions found: %d", solutionsFound);
                 }

@@ -18,7 +18,7 @@
 
 -(SGFbuilderChunk*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition;
 
-@property (retain) SGFractionBuilderChunkManager *ChunkComponent;
+@property (retain) SGFractionBuilderChunkManager *ChunkManagerComponent;
 @property (retain) SGFractionBuilderChunkRender *ChunkRenderComponent;
 
 @end

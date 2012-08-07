@@ -18,5 +18,8 @@
 -(void)removeChunks;
 -(void)ghostChunk;
 -(void)changeChunk:(id<ConfigurableChunk>)thisChunk toBelongTo:(id<Interactive>)newFraction;
+-(void)orderChildrenToLeftOn:(id<Configurable,Interactive>)newFraction;
+
+
 
 @end

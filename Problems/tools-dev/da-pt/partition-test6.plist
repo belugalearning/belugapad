@@ -3,12 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>PT problem</string>
+	<string>make 2</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>INIT_OBJECTS</key>
 	<array>
-		<dict/>
+		<dict>
+			<key>LENGTH</key>
+			<integer>2</integer>
+			<key>PUT_IN_ROW</key>
+			<integer>0</integer>
+		</dict>
 	</array>
 	<key>INIT_BARS</key>
 	<array>
@@ -16,35 +21,27 @@
 			<key>LOCKED</key>
 			<true/>
 			<key>LENGTH</key>
-			<integer>4</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>LOCKED</key>
 			<false/>
 			<key>LENGTH</key>
-			<string>4</string>
+			<string>2</string>
 		</dict>
 	</array>
 	<key>INIT_CAGES</key>
 	<array>
 		<dict>
 			<key>LENGTH</key>
-			<integer>2</integer>
-			<key>LABEL</key>
-			<string>2</string>
-			<key>QUANTITY</key>
-			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>LENGTH</key>
 			<integer>1</integer>
 			<key>LABEL</key>
 			<string>1</string>
 			<key>QUANTITY</key>
-			<string>2</string>
+			<integer>2</integer>
 		</dict>
 	</array>
-	<key>SOLUTIONS</key>
-	<array/>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
 </dict>
 </plist>

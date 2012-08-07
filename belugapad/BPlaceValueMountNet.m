@@ -45,7 +45,7 @@
         // then if we're at a position > 0
         if(myRope > 0)
         {
-            NSLog(@"start seek");
+//            NSLog(@"start seek");
             
             for(int i=myRope; i>0; i--)
             {
@@ -56,18 +56,18 @@
                 {
                     moveToLeft = go;
                     
-                    NSLog(@"found a valid object to the left");
+//                    NSLog(@"found a valid object to the left");
                 }
                 else {
                     seek=NO;
                 }
             }
             
-            NSLog(@"stop seek");
+//            NSLog(@"stop seek");
             
             if(moveToLeft)
             {
-                NSLog(@"repositioning");
+//                NSLog(@"repositioning");
                 
                 DWPlaceValueBlockGameObject *mountedObject = (DWPlaceValueBlockGameObject*)n.MountedObject;
                 mountedObject.Mount=moveToLeft;
@@ -82,7 +82,7 @@
                 [gameWorld handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
             }
             
-            NSLog(@"end reposition");
+//            NSLog(@"end reposition");
             
         }
         evalLeft=YES;

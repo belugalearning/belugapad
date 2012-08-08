@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>What is {$torh} more than {$start}?</string>
+	<key>MASTERY</key>
+	<true/>
 	<key>META_QUESTION*</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>

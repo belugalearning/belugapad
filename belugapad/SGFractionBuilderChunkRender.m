@@ -111,5 +111,21 @@
         return NO;
 }
 
+-(void)returnToParentSlice
+{
+    id<Configurable,Interactive>fraction=ParentGO.CurrentHost;
+    fractionSprite=fraction.FractionSprite;
+    
+    float leftPos=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
+    float halfOfChunk=(ParentGO.MySprite.contentSize.width*ParentGO.MySprite.scaleX)/2;
+    float posOnFraction=fractionSprite.contentSize.width/(fraction.MarkerPosition+1);
+    float adjPosOnFraction=posOnFraction*[fraction.Chunks indexOfObject:ParentGO];
+    
+
+    CGPoint myNewPos=ccp(leftPos+halfOfChunk+adjPosOnFraction,fractionSprite.position.y);
+    myNewPos=[fraction.BaseNode convertToWorldSpace:myNewPos];
+    
+    [ParentGO.MySprite runAction:[CCMoveTo actionWithDuration:0.1f position:myNewPos]];
+}
 
 @end

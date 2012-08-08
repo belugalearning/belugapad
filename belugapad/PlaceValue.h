@@ -97,6 +97,7 @@
     NSDictionary *columnCageNegDisableAdd;
     NSDictionary *columnCageNegDisableDel;
     NSDictionary *multipleBlockPickup;
+    NSDictionary *multipleBlockPickupDefaults;
     
     DWGameWorld *gw;
 

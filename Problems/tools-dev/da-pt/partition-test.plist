@@ -3,23 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>make 6</string>
+	<string>PT problem</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>INIT_OBJECTS</key>
 	<array>
-		<dict>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
-			<key>LENGTH</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
-			<key>LENGTH</key>
-			<integer>5</integer>
-		</dict>
+		<dict/>
 	</array>
 	<key>INIT_BARS</key>
 	<array>
@@ -27,44 +16,24 @@
 			<key>LOCKED</key>
 			<true/>
 			<key>LENGTH</key>
-			<integer>6</integer>
+			<integer>4</integer>
 		</dict>
 		<dict>
 			<key>LOCKED</key>
 			<false/>
 			<key>LENGTH</key>
-			<string>6</string>
-		</dict>
-		<dict>
-			<key>LOCKED</key>
-			<false/>
-			<key>LENGTH</key>
-			<string>6</string>
-		</dict>
-		<dict>
-			<key>LOCKED</key>
-			<false/>
-			<key>LENGTH</key>
-			<string>6</string>
+			<string>4</string>
 		</dict>
 	</array>
 	<key>INIT_CAGES</key>
 	<array>
 		<dict>
 			<key>LENGTH</key>
-			<integer>4</integer>
+			<integer>2</integer>
 			<key>LABEL</key>
-			<string>4</string>
+			<string>2</string>
 			<key>QUANTITY</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>LENGTH</key>
 			<integer>3</integer>
-			<key>LABEL</key>
-			<string>3</string>
-			<key>QUANTITY</key>
-			<string>3</string>
 		</dict>
 		<dict>
 			<key>LENGTH</key>
@@ -72,14 +41,10 @@
 			<key>LABEL</key>
 			<string>1</string>
 			<key>QUANTITY</key>
-			<string>6</string>
+			<string>2</string>
 		</dict>
 	</array>
 	<key>SOLUTIONS</key>
 	<array/>
-	<key>EVAL_MODE</key>
-	<integer>1</integer>
-	<key>REJECT_MODE</key>
-	<integer>0</integer>
 </dict>
 </plist>

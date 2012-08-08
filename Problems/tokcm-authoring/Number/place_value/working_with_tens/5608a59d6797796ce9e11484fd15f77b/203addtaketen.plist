@@ -6,6 +6,8 @@
 	<string>This is 200. What is 200 minus 10?</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
+	<key>MASTERY</key>
+	<true/>
 	<key>COL_BASE_VALUE</key>
 	<integer>10</integer>
 	<key>FIRST_COL_VALUE</key>

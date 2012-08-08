@@ -44,7 +44,7 @@
 	<array>
 		<string>5</string>
 	</array>
-	<key>RENDER_STITCHES_AT_INTERVAL</key>
-	<integer>0</integer>
+	<key>SEGMENT_VALUE</key>
+	<integer>5</integer>
 </dict>
 </plist>

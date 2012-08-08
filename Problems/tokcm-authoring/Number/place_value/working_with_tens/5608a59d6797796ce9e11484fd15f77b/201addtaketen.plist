@@ -6,6 +6,8 @@
 	<string>This is 190. What is 10 more than 190?</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
+	<key>MASTERY</key>
+	<true/>
 	<key>COL_BASE_VALUE</key>
 	<integer>10</integer>
 	<key>FIRST_COL_VALUE</key>

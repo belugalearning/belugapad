@@ -250,7 +250,7 @@ static float kTimeToCageShake=7.0f;
         else currentColumnRows = rows;
         
         // check whether this row is showing multiple block facilities
-        if([multipleBlockPickup objectForKey:currentColumnValueKey] || showMultipleControls)showMultipleDragging=YES;
+        if([[multipleBlockPickup objectForKey:currentColumnValueKey]boolValue] || showMultipleControls)showMultipleDragging=YES;
 
         CGPoint thisColumnOrigin = ccp(-((ropeWidth*ropesforColumn)/2.0f)+(ropeWidth/2.0f)+(i*(kPropXColumnSpacing*lx)), ly*kPropYColumnOrigin);
 
@@ -305,7 +305,7 @@ static float kTimeToCageShake=7.0f;
             cge.PosX=i*(kPropXColumnSpacing*lx);
             cge.PosY=ly*kCageYOrigin;
             cge.ObjectValue=[[currentColumnInfo objectForKey:COL_VALUE]floatValue];
-            NSLog(@"cage assigned object value %g", cge.ObjectValue);
+//            NSLog(@"cage assigned object value %g", cge.ObjectValue);
             
             // set our column specific options on the store
             
@@ -380,9 +380,14 @@ static float kTimeToCageShake=7.0f;
         if(showMultipleDragging)
         {
             int defaultBlocksToMake=1;
+            
+            if([multipleBlockPickupDefaults objectForKey:currentColumnValueKey])
+                defaultBlocksToMake=[[multipleBlockPickupDefaults objectForKey:currentColumnValueKey]intValue];
+            else
+                defaultBlocksToMake=1;
+            
             [blocksToCreate addObject:[NSNumber numberWithInt:defaultBlocksToMake]];
             
-            NSLog(@"need to show dragging controls for column %@", currentColumnValueKey);
             CCSprite *minusSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/minus40.png")];
             CCSprite *posiSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/plus40.png")];
             CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", defaultBlocksToMake] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
@@ -473,8 +478,8 @@ static float kTimeToCageShake=7.0f;
         
         for(int i=0; i<count; i++)
         {
-            NSLog(@"populate this row. blocks added to this row: %d", blocksAddedToThisRow);
-            NSLog(@"ropesHere %d, insRow %d", ropesHere,(int)i/ropesHere);
+//            NSLog(@"populate this row. blocks added to this row: %d", blocksAddedToThisRow);
+//            NSLog(@"ropesHere %d, insRow %d", ropesHere,(int)i/ropesHere);
             
             if(boundCol)
             {
@@ -602,7 +607,7 @@ static float kTimeToCageShake=7.0f;
     if([pdef objectForKey:SHOW_MULTIPLE_BLOCKS_FROM_CAGE])
         showMultipleControls = [[pdef objectForKey:SHOW_MULTIPLE_BLOCKS_FROM_CAGE]boolValue];
     else
-        showMultipleControls = YES;
+        showMultipleControls = NO;
     
     if(showCountOnBlock)countLabels=[[NSMutableArray alloc]init];
 
@@ -669,7 +674,12 @@ static float kTimeToCageShake=7.0f;
         multipleBlockPickup = [pdef objectForKey:MULTIPLE_BLOCK_PICKUP];
     
     [multipleBlockPickup retain];
+
+    if([pdef objectForKey:MULTIPLE_BLOCK_PICKUP_DEFAULTS])
+        multipleBlockPickupDefaults = [pdef objectForKey:MULTIPLE_BLOCK_PICKUP_DEFAULTS];
     
+    [multipleBlockPickupDefaults retain];
+
 
     // can we deselect objects?
     if([pdef objectForKey:ALLOW_DESELECTION]) 
@@ -1156,6 +1166,9 @@ static float kTimeToCageShake=7.0f;
     int space=[self freeSpacesOnGrid:currentColumnIndex+incr];
     int colIndexToTint=0;
     
+//    NSLog(@"incr: %d trancount %d", incr, tranCount);
+    
+    
     // bail if not possible
     if(space<tranCount) return NO;
     
@@ -1215,6 +1228,8 @@ static float kTimeToCageShake=7.0f;
         
         NSString *currentColumnValueString = [NSString stringWithFormat:@"%g", [currentColumnValueKey floatValue]];
         
+//        NSLog(@"currentColumnValueKey %f, currentColumnIndex %d", [currentColumnValueKey floatValue], currentColumnIndex);
+        
         if([columnSprites objectForKey:currentColumnValueString])
             go.SpriteFilename=[columnSprites objectForKey:currentColumnValueString];
 
@@ -1224,17 +1239,24 @@ static float kTimeToCageShake=7.0f;
 
         [go handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
+        BOOL stop=NO;
+        
         //find a mount for this object
         for (int r=[gw.Blackboard.CurrentStore count]-1; r>=0; r--) {
+            if(stop)break;
+
+            
             NSMutableArray *row=[gw.Blackboard.CurrentStore objectAtIndex:r];
             for (int c=[row count]-1; c>=0; c--)
             {
+                if(stop)break;
 
                 DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
 
                 if(!co.MountedObject)
                 {
                     //use this as a mount
+//                    NSLog(@"set mount to row %d col %d", r,c);
                     go.Mount=co;
                     go.AnimateMe=NO;
                     co.MountedObject=go;
@@ -1246,7 +1268,7 @@ static float kTimeToCageShake=7.0f;
                     [self tintGridColour:colIndexToTint toColour:ccc3(255,255,255)];
                     
 
-                    break;
+                    stop=YES;
                 }
             }
         }
@@ -1341,7 +1363,7 @@ static float kTimeToCageShake=7.0f;
     if(currentColumnIndex>numberOfColumns-1)currentColumnIndex=numberOfColumns-1;
     if(currentColumnIndex<0)currentColumnIndex=0;
     
-    NSLog(@"currentColIndex: %d, colW %f, locationInNS X %f, shiftedLocationInNS X %f", currentColumnIndex, colW, locationInNS.x, shiftedLocationInNS.x);
+//    NSLog(@"currentColIndex: %d, colW %f, locationInNS X %f, shiftedLocationInNS X %f", currentColumnIndex, colW, locationInNS.x, shiftedLocationInNS.x);
     
     
     // create the 2 bounding boxes for condensing and mulching on a touchbegan
@@ -1425,7 +1447,8 @@ static float kTimeToCageShake=7.0f;
                         [pickupObjects addObject:cge.MountedObject];
                         //this is just a signal for the GO to us, pickup object is retained on the blackboard
                         [cge.MountedObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
-                        NSLog(@"this many pickupObjects: %d", [pickupObjects count]);}
+//                        NSLog(@"this many pickupObjects: %d", [pickupObjects count]);
+                    }
                 }
             }
             else
@@ -1499,7 +1522,7 @@ static float kTimeToCageShake=7.0f;
         DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
         // first check for a valid place to drop
         ccColor3B currentColour = ccc3(0,0,0);
-
+        
         gw.Blackboard.TestTouchLocation=location;
         
         
@@ -1642,7 +1665,7 @@ static float kTimeToCageShake=7.0f;
         {
             int curNum=[[blocksToCreate objectAtIndex:i]intValue];
             curNum++;
-            if(curNum>9)curNum=9;
+            if(curNum>10)curNum=10;
             
             [blocksToCreate replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
             return;
@@ -1804,10 +1827,8 @@ static float kTimeToCageShake=7.0f;
                 {
                     if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
                     {
-                        NSLog(@"touches ended pickupObjects count %d", [pickupObjects count]);
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
-                            NSLog(@"enter pickupObjects loop");
                             [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
                             [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
                             if([pickupObjects count]>1){
@@ -1821,7 +1842,12 @@ static float kTimeToCageShake=7.0f;
                         // TODO: reject these things back to their mounts
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
-                            [go handleMessage:kDWresetToMountPosition];
+                            if(go==gw.Blackboard.PickupObject)
+                                [go handleMessage:kDWresetToMountPosition];
+                            else
+                                [go handleMessage:kDWresetToMountPositionAndDestroy];
+//                                [gw delayRemoveGameObject:go];
+//                                [go.mySprite removeFromParentAndCleanup:YES];
                         }
                     }
                 }
@@ -1835,11 +1861,16 @@ static float kTimeToCageShake=7.0f;
                 [loggingService logEvent:(isCage ? BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_CAGE : BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_GRID)
                     withAdditionalData:nil];
                 
-                CCSprite *mySprite=((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).mySprite;
+//                CCSprite *mySprite=((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).mySprite;
                 
-                if(pickupSprite)
-                    [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).SpriteFilename)]];
-                
+                if(pickupSprite){
+                    for(DWPlaceValueBlockGameObject *b in pickupObjects)
+                    {
+                        CCSprite *mySprite=b.mySprite;
+                        [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).SpriteFilename)]];
+                    
+                    }
+                }
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
                 
                 // take away the colour from the grid
@@ -1920,6 +1951,7 @@ static float kTimeToCageShake=7.0f;
     if(multipleMinusSprites) [multipleMinusSprites release];
     if(multipleLabels) [multipleLabels release];
     if(pickupObjects) [pickupObjects release];
+    if(multipleBlockPickupDefaults)[multipleBlockPickupDefaults release];
 
     if(allCages)[allCages release];
     if(boundCounts)[boundCounts release];

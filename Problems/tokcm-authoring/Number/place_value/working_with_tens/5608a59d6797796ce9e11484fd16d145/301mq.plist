@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>What is {$multiple} + 10?</string>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_COMPLETE_TEXT</key>
+		<string>Great!</string>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$multiple+10}</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$multiple-10}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$multiple+1}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>What is {$multiple} + 10?</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again.</string>
+	</dict>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>9</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$multiple</string>
+			<key>VALUE</key>
+			<string>{$x*10}</string>
+		</dict>
+	</array>
+</dict>
+</plist>

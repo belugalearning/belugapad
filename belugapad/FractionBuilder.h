@@ -33,6 +33,9 @@
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
     
+    BOOL hasMovedChunk;
+    BOOL hasMovedMarker;
+    
     // and a default layer
     CCLayer *renderLayer;
     

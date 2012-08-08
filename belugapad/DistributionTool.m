@@ -17,7 +17,7 @@
 #import "BLMath.h"
 
 #import "AppDelegate.h"
-
+#import "LoggingService.h"
 #import "SGGameWorld.h"
 #import "SGDtoolBlock.h"
 #import "SGDtoolBlockRender.h"
@@ -366,6 +366,7 @@ static float kDistanceBetweenBlocks=70.0f;
             
             if(CGRectContainsPoint(cObj.mySprite.boundingBox, location))
             {
+                [loggingService logEvent:BL_PA_DT_TOUCH_START_PICKUP_BLOCK withAdditionalData:nil];
                 currentPickupObject=thisObj;
                 break;
             }
@@ -386,6 +387,11 @@ static float kDistanceBetweenBlocks=70.0f;
     if(currentPickupObject)
     {
         if(!hasMovedBlock)hasMovedBlock=YES;
+        if(!hasLoggedMovedBlock)
+        {
+            [loggingService logEvent:BL_PA_DT_TOUCH_MOVE_MOVE_BLOCK withAdditionalData:nil];
+            hasLoggedMovedBlock=YES;
+        }
         // check that the shape is being moved within bounds of the screen
         if((location.x>=35.0f&&location.x<=lx-35.0f) && (location.y>=35.0f&&location.y<=ly-35.0f))
         {
@@ -399,7 +405,8 @@ static float kDistanceBetweenBlocks=70.0f;
         {
             if([go conformsToProtocol:@protocol(Moveable)])
             {
-                [go amIProximateTo:location];
+                BOOL prx=[go amIProximateTo:location];
+                if(prx)hasBeenProximate=YES;
             }
         }
     }
@@ -434,6 +441,9 @@ static float kDistanceBetweenBlocks=70.0f;
                 [go resetTint];
                 if(proximateToPickupObject){
                     [go pairMeWith:currentPickupObject];
+                    
+                    [loggingService logEvent:BL_PA_DT_TOUCH_END_PAIR_BLOCK withAdditionalData:nil];
+                    
                     currentPickupObject.Position=[self findMountPositionForThisShape:currentPickupObject toThisShape:go];
                     [currentPickupObject animateToPosition];
                     
@@ -450,6 +460,13 @@ static float kDistanceBetweenBlocks=70.0f;
             }
         }
     }
+    
+    if(hasBeenProximate)
+    {
+        hasBeenProximate=NO;
+        [loggingService logEvent:BL_PA_DT_TOUCH_MOVE_PROXIMITY_OF_BLOCK withAdditionalData:nil];
+    }
+    
     currentPickupObject=nil;
     
     

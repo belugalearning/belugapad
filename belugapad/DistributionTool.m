@@ -172,9 +172,21 @@ static float kDistanceBetweenBlocks=70.0f;
 #pragma mark - objects
 -(void)createShapeWith:(int)blocks andWith:(NSDictionary*)theseSettings
 {
+    NSMutableArray *createdBlocksForShape;
+    CCLabelTTF *labelForShape;
     id lastObj=nil;
     int posX=0;
     int posY=0;
+    float avgPosX=0;
+    float avgPosY=0;
+    BOOL hasLabel;
+    
+    if([theseSettings objectForKey:LABEL]){
+        createdBlocksForShape=[[NSMutableArray alloc]init];
+        hasLabel=YES;
+    }
+    
+
     
     if([theseSettings objectForKey:POS_X])
         posX=[[theseSettings objectForKey:POS_X]intValue];
@@ -196,9 +208,28 @@ static float kDistanceBetweenBlocks=70.0f;
             [newblock pairMeWith:lastObj];
             [self findMountPositionForThisShape:newblock toThisShape:lastObj];
         }
+        
+        if(hasLabel){
+            [createdBlocksForShape addObject:newblock];
+            avgPosX+=posX;
+            avgPosY+=posY;
+        }
+        
         lastObj=newblock;
         
-    }    
+    }
+    
+    if(hasLabel)
+    {
+        NSLog(@"(before) avgPosX %f, avgPosY %f", avgPosX, avgPosY);
+        avgPosX=avgPosX/2;
+        avgPosY=avgPosY/[createdBlocksForShape count];
+        NSLog(@"(after) avgPosX %f, avgPosY %f", avgPosX, avgPosY);
+        labelForShape=[CCLabelTTF labelWithString:[theseSettings objectForKey:LABEL] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        [labelForShape setPosition:ccp(avgPosX,avgPosY+40)];
+        [renderLayer addChild:labelForShape];
+    }
+
 }
 
 -(CGPoint)checkWhereIShouldMount:(id<Pairable>)gameObject;

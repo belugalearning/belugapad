@@ -16,7 +16,7 @@
 // configurable properties
 @synthesize RenderLayer, MyParent, CurrentHost, Position, MySprite, Value, ScaleX, Selected;
 
-@synthesize ChunkComponent;
+@synthesize ChunkManagerComponent;
 @synthesize ChunkRenderComponent;
 
 -(SGFbuilderChunk*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
@@ -25,7 +25,7 @@
     {
         self.RenderLayer=aRenderLayer;
         self.Position=aPosition;
-        ChunkComponent=[[SGFractionBuilderChunkManager alloc]initWithGameObject:self];
+        ChunkManagerComponent=[[SGFractionBuilderChunkManager alloc]initWithGameObject:self];
         ChunkRenderComponent=[[SGFractionBuilderChunkRender alloc]initWithGameObject:self];
         
     }
@@ -76,7 +76,12 @@
 
 -(void)changeChunk:(id<ConfigurableChunk>)thisChunk toBelongTo:(id<Interactive>)newFraction
 {
-    [self.ChunkComponent changeChunk:thisChunk toBelongTo:newFraction];
+    [self.ChunkManagerComponent changeChunk:thisChunk toBelongTo:newFraction];
+}
+
+-(void)returnToParentSlice
+{
+    [self.ChunkRenderComponent returnToParentSlice];
 }
 
 -(void)dealloc
@@ -85,7 +90,7 @@
     self.MyParent=nil;
     self.CurrentHost=nil;
     self.MySprite=nil;
-    self.ChunkComponent=nil;
+    self.ChunkManagerComponent=nil;
     self.ChunkRenderComponent=nil;
     
     [super dealloc];

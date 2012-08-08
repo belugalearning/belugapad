@@ -69,7 +69,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>200 people entered a competition where there were only 5 winners. The winners get an even share of the prize money. One of the winners were {@bname}, who received £{$money}. {@gname} was also a winner, how much money did she get?  </string>
+		<string>200 people entered a competition but only 5 won. The winners get an even share of the prize money. {@bname} won and got £{$money}. {@gname} also, how much money did she get?  </string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

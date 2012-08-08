@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Is 206 nearer to 200 or 210?</string>
+	<string>Round 206 to the nearest ten.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Is 206 nearer to 200 or 210?</string>
 	<key>META_QUESTION</key>

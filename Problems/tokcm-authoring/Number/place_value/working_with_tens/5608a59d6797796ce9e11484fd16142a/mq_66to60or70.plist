@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Is 66 nearer to 60 or 70?</string>
+	<string>Round sixty-six to the nearest 10.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Is 66 nearer to 60 or 70?</string>
 	<key>META_QUESTION</key>

@@ -4,7 +4,9 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>What is {$multiple1*10} - {$multiple2*10}?</string>
-		<key>META_QUESTION</key>
+	<key>MASTERY</key>
+	<true/>
+	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
 		<string>Great!</string>

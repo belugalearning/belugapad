@@ -250,7 +250,7 @@ static float kTimeToCageShake=7.0f;
         else currentColumnRows = rows;
         
         // check whether this row is showing multiple block facilities
-        if([multipleBlockPickup objectForKey:currentColumnValueKey] || showMultipleControls)showMultipleDragging=YES;
+        if([[multipleBlockPickup objectForKey:currentColumnValueKey]boolValue] || showMultipleControls)showMultipleDragging=YES;
 
         CGPoint thisColumnOrigin = ccp(-((ropeWidth*ropesforColumn)/2.0f)+(ropeWidth/2.0f)+(i*(kPropXColumnSpacing*lx)), ly*kPropYColumnOrigin);
 
@@ -607,7 +607,7 @@ static float kTimeToCageShake=7.0f;
     if([pdef objectForKey:SHOW_MULTIPLE_BLOCKS_FROM_CAGE])
         showMultipleControls = [[pdef objectForKey:SHOW_MULTIPLE_BLOCKS_FROM_CAGE]boolValue];
     else
-        showMultipleControls = YES;
+        showMultipleControls = NO;
     
     if(showCountOnBlock)countLabels=[[NSMutableArray alloc]init];
 
@@ -1842,7 +1842,12 @@ static float kTimeToCageShake=7.0f;
                         // TODO: reject these things back to their mounts
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
-                            [go handleMessage:kDWresetToMountPosition];
+                            if(go==gw.Blackboard.PickupObject)
+                                [go handleMessage:kDWresetToMountPosition];
+                            else
+                                [go handleMessage:kDWresetToMountPositionAndDestroy];
+//                                [gw delayRemoveGameObject:go];
+//                                [go.mySprite removeFromParentAndCleanup:YES];
                         }
                     }
                 }

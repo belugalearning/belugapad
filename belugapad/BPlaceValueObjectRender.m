@@ -113,6 +113,10 @@
     {
         [self resetSpriteToMount];
     }
+    if(messageType==kDWresetToMountPositionAndDestroy)
+    {
+        [self resetSpriteToMountAndDestroy];
+    }
     if(messageType==kDWswitchBaseSelection)
     {
         [self switchBaseSelection:YES];
@@ -221,6 +225,34 @@
     }
     [curSprite runAction:[CCMoveTo actionWithDuration:kTimeObjectSnapBack position:ccp(x, y)]];
     
+}
+
+-(void)resetSpriteToMountAndDestroy
+{
+    DWPlaceValueCageGameObject *c;
+    
+    if([b.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
+    {
+        c=(DWPlaceValueCageGameObject*)b.Mount;
+        b.PosX=c.PosX;
+        b.PosY=c.PosY;
+    }
+    
+    CCSprite *curSprite = b.mySprite;
+    
+    if(b.SpriteFilename && !gameWorld.Blackboard.inProblemSetup)
+    {
+        NSString *spriteFileName=@"/images/placevalue/obj-placevalue-unit.png";
+        if(b.SpriteFilename) spriteFileName=b.SpriteFilename;
+        
+        [curSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(spriteFileName)]];
+    }
+    
+    CCMoveTo *moveAct=[CCMoveTo actionWithDuration:kTimeObjectSnapBack position:ccp(b.PosX, b.PosY)];
+    CCAction *cleanUpSprite=[CCCallBlock actionWithBlock:^{[curSprite removeFromParentAndCleanup:YES];}];
+    CCAction *cleanUpGO=[CCCallBlock actionWithBlock:^{[gameWorld delayRemoveGameObject:b];}];
+    CCSequence *sequence=[CCSequence actions:moveAct, cleanUpSprite, cleanUpGO, nil];
+    [curSprite runAction:sequence];
 }
 
 -(void) switchSelection:(BOOL)isSelected

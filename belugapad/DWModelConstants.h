@@ -93,6 +93,7 @@ typedef enum {
     kDWswitchParentToRenderLayer=42,
     
     kDWreorderPieSlices=43,
+    kDWresetToMountPositionAndDestroy=44,
     
     kDWareYouProximateTo=101,
     kDWupdateObjectData=102,

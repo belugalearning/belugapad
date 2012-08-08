@@ -21,6 +21,7 @@
 -(void)setSprite;
 -(void)setSpritePosWithAnimation;
 -(void)resetSpriteToMount;
+-(void)resetSpriteToMountAndDestroy;
 -(void)switchSelection:(BOOL)isSelected;
 -(void)switchBaseSelection:(BOOL)isSelected;
 

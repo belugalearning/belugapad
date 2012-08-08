@@ -89,6 +89,10 @@ typedef enum {
     NSMutableArray *activeCon;
     NSMutableArray *activeLabels;
     
+    BOOL hasMovedSlice;
+    BOOL hasMovedPie;
+    BOOL hasMovedSquare;
+    
     int createdPies;
     int createdCont;
     

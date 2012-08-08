@@ -305,7 +305,7 @@
 
         // and split dat bar!
         [self splitThisBar:currentMarker into:currentMarker.MarkerPosition+1];
-        [loggingService logEvent:BL_PA_FB_CREATE_CHUNKS withAdditionalData:[NSString stringWithFormat:@"{ chunks : %d }",currentMarker.MarkerPosition+1]];
+        [loggingService logEvent:BL_PA_FB_CREATE_CHUNKS withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:currentMarker.MarkerPosition+1] forKey:@"CHUNKS"]];
         
     }
     

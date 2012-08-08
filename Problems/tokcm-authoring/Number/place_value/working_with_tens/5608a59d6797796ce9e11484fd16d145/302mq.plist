@@ -3,13 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>I start at {$x}. What is the nearest multiple of 10?</string>
-	<key>INTERNAL_DESCRIPTION</key>
-	<string>Round x to the nearest 10.</string>
-	<key>MASTERY</key>
-	<true/>
-	<key>META_QUESTION</key>
+	<string>What is {$multiple} - 10?</string>
+		<key>META_QUESTION</key>
 	<dict>
+		<key>META_QUESTION_COMPLETE_TEXT</key>
+		<string>Great!</string>
 		<key>META_QUESTION_EVAL_MODE</key>
 		<integer>0</integer>
 		<key>META_QUESTION_ANSWER_MODE</key>
@@ -18,25 +16,27 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>140</string>
+				<string>{$multiple +10}</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>160</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>150</string>
+				<string>{$multiple-10}</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$multiple-1}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>I start at {$x}. What is the nearest multiple of 10?</string>
+		<string>What is {$multiple} - 10?</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again.</string>
 	</dict>
 	<key>DVARS</key>
 	<array>
@@ -44,9 +44,15 @@
 			<key>VAR_NAME</key>
 			<string>$x</string>
 			<key>MIN</key>
-			<string>145</string>
+			<string>1</string>
 			<key>MAX</key>
-			<string>154</string>
+			<string>9</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$multiple</string>
+			<key>VALUE</key>
+			<string>{$x*10}</string>
 		</dict>
 	</array>
 </dict>

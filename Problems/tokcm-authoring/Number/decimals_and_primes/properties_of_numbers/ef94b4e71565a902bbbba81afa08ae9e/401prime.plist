@@ -3,11 +3,29 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>I start at {$x}. What is the nearest multiple of 10?</string>
-	<key>INTERNAL_DESCRIPTION</key>
-	<string>Round x to the nearest 10.</string>
-	<key>MASTERY</key>
-	<true/>
+	<string>Is 1 prime?</string>
+	<key>TOOL_KEY</key>
+	<string>DotGrid</string>
+	<key>ANCHOR_SPACE</key>
+	<integer>75</integer>
+	<key>START_X</key>
+	<integer>0</integer>
+	<key>START_Y</key>
+	<integer>0</integer>
+	<key>DRAW_MODE</key>
+	<integer>0</integer>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>DOTGRID_EVAL_TYPE</key>
+	<integer>0</integer>
+	<key>DOTGRID_EVAL_TOTALSIZE</key>
+	<integer>1</integer>
+	<key>DO_NOT_SIMPLIFY_FRACTIONS</key>
+	<false/>
+	<key>SHOW_RESIZE</key>
+	<false/>
+	<key>INIT_OBJECTS</key>
+	<array/>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_EVAL_MODE</key>
@@ -18,36 +36,19 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>140</string>
+				<string>YES</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>160</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>150</string>
+				<string>NO</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>I start at {$x}. What is the nearest multiple of 10?</string>
+		<string>Is 1 prime?</string>
 	</dict>
-	<key>DVARS</key>
-	<array>
-		<dict>
-			<key>VAR_NAME</key>
-			<string>$x</string>
-			<key>MIN</key>
-			<string>145</string>
-			<key>MAX</key>
-			<string>154</string>
-		</dict>
-	</array>
 </dict>
 </plist>

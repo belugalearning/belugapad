@@ -2,10 +2,36 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>TOOL_KEY</key>
+	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is 10 less than {$start}?</string>
-	<key>MASTERY</key>
-	<true/>
+	<string>Split 19 into groups of tens and ones.</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>19</integer>
+			<key>POS_X</key>
+			<integer>80</integer>
+			<key>POS_Y</key>
+			<integer>400</integer>
+		</dict>
+	</array>
+	<key>SOLUTION</key>
+	<array>
+		<integer>10</integer>
+		<integer>1</integer>
+		<integer>1</integer>
+		<integer>1</integer>
+		<integer>1</integer>
+		<integer>1</integer>
+		<integer>1</integer>
+		<integer>1</integer>
+		<integer>1</integer>
+		<integer>1</integer>
+	</array>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
@@ -18,38 +44,27 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>{$start+10)}</string>
+				<string>19</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>{$start-1}</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>{$start-10}</string>
+				<string>9</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>10</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>What is 10 less than {$start}?</string>
+		<string>Split 19 into groups of tens and ones. How many ones are there?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again.</string>
 	</dict>
-	<key>DVARS</key>
-	<array>
-		<dict>
-			<key>VAR_NAME</key>
-			<string>$start</string>
-			<key>MIN</key>
-			<string>20</string>
-			<key>MAX</key>
-			<string>99</string>
-		</dict>
-	</array>
 </dict>
 </plist>

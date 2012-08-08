@@ -19,5 +19,6 @@
 -(void)moveChunk;
 -(void)changeChunkSelection;
 -(BOOL)checkForChunkDropIn:(id<Configurable>)thisObject;
+-(void)returnToParentSlice;
 
 @end

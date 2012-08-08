@@ -179,14 +179,13 @@ static float kDistanceBetweenBlocks=70.0f;
     int posY=0;
     float avgPosX=0;
     float avgPosY=0;
-    BOOL hasLabel;
+    BOOL hasLabel = NO;
     
     if([theseSettings objectForKey:LABEL]){
         createdBlocksForShape=[[NSMutableArray alloc]init];
         hasLabel=YES;
     }
     
-
     
     if([theseSettings objectForKey:POS_X])
         posX=[[theseSettings objectForKey:POS_X]intValue];

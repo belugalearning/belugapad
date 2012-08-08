@@ -73,7 +73,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There are 10 50p coins. The number of coins are divided fairly between {@bname} and his 4 siblings. How many coins does {@bname} get?</string>
+		<string>There are 10 50p coins. The coins are divided fairly between {@bname} and his 4 sisters. How many coins does {@bname} get?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

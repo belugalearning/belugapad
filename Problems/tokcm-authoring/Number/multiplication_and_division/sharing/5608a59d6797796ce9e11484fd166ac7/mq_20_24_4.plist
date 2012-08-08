@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>MASTERY</key>
+	<true/>
 	<key>HOST_BACKGROUND_IMAGE</key>
 	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
 	<key>META_QUESTION</key>
@@ -34,7 +36,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>The number of haribos are split equally into 4 bags. Would there be more haribos in each bag if there were 20 haribos or 24 haribos to begin with?</string>
+		<string>The number of haribos are split equally into 4 bags. Would there be more haribos in each bag if there were 20 haribos or 24 haribos to start with?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

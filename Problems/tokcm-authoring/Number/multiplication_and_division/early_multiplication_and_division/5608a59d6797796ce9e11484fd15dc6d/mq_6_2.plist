@@ -5,12 +5,23 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>8/2</string>
+	<string>6/2</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>6</integer>
+			<key>POS_X</key>
+			<integer>450</integer>
+			<key>POS_Y</key>
+			<integer>500</integer>
+		</dict>
+	</array>
 	<key>SOLUTION</key>
 	<array>
-		<integer>20</integer>
+		<integer>7</integer>
 	</array>
 	<key>DSTRINGS</key>
 	<dict>
@@ -57,17 +68,6 @@
 			</array>
 		</dict>
 	</dict>
-	<key>INIT_OBJECTS</key>
-	<array>
-		<dict>
-			<key>QUANTITY</key>
-			<integer>8</integer>
-			<key>POS_X</key>
-			<integer>350</integer>
-			<key>POS_Y</key>
-			<integer>450</integer>
-		</dict>
-	</array>
 	<key>HOST_BACKGROUND_IMAGE</key>
 	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
 	<key>META_QUESTION</key>
@@ -82,15 +82,9 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>8</string>
+				<string>26</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>16</string>
-				<key>META_ANSWER_VALUE</key>
-				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
@@ -98,9 +92,21 @@
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>3</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>8</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Eight pizzas are ordered for a party. Each guest gets 1/2 a pizza. How many guests were at the party?</string>
+		<string>What is 6÷2?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

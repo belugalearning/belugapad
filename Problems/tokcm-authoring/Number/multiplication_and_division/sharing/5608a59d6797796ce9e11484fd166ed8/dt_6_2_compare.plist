@@ -88,7 +88,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There are 3 packs of {@item}, with 2 {@item} in each pack. The total number of items are shared fairly between Claire and Sarah. How many does Claire get compared to Sarah?</string>
+		<string>There are 3 packs of {@item}, with 2 {@item} in each pack. it is shared fairly between Claire and Sarah. How many does Claire get compared to Sarah?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

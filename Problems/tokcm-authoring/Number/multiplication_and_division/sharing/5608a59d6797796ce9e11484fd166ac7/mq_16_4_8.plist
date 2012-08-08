@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>MASTERY</key>
+	<true/>
 	<key>DSTRINGS</key>
 	<dict>
 		<key>@bname</key>
@@ -79,7 +81,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>They decide that a birthday cake looks better if there are less candles on each slice. Would it be better to share 16 candles between 8 slices or 4 slices?</string>
+		<string>They decide that a birthday cake looks better if there are less candles on each slice. Is it better to share 16 candles evenly between 8 slices or 4 slices?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

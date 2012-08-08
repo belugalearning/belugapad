@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>MASTERY</key>
+	<true/>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
@@ -32,7 +34,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Christina gives a bag of sweets to Elaine and Sarah, and split the number of gummy bears equally between the two of them. Sarah gets 7 gummy bears, how many did Elaine get?</string>
+		<string>Christina gave Elaine and Sarah a bag of gummy bears. They split it fairly between the two of them. Sarah gets 7 gummy bears, how many did Elaine get?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

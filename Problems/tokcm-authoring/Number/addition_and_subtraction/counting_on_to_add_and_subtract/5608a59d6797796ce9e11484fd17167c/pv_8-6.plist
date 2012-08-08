@@ -31,7 +31,7 @@
 	<key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_COUNT</key>
-	<true/>
+	<false/>
 	<key>SHOW_COUNT_BLOCK</key>
 	<true/>
 	<key>FADE_COUNT</key>
@@ -68,6 +68,26 @@
 		<string>TOTAL_COUNT_AND_COUNT_SEQUENCE</string>
 		<key>SOLUTION_VALUE</key>
 		<integer>2</integer>
+	</dict>
+	<key>CAGE_NEG_DISABLE_ADD</key>
+	<dict>
+		<key>CAGE_NEG_DISABLE_ADD</key>
+		<false/>
+	</dict>
+	<key>CAGE_NEG_DISABLE_DELETE</key>
+	<dict>
+		<key>CAGE_NEG_DISABLE_DELETE</key>
+		<false/>
+	</dict>
+	<key>CAGE_POS_DISABLE_ADD</key>
+	<dict>
+		<key>CAGE_POS_DISABLE_ADD</key>
+		<false/>
+	</dict>
+	<key>CAGE_POS_DISABLE_DELETE</key>
+	<dict>
+		<key>CAGE_POS_DISABLE_DELETE</key>
+		<false/>
 	</dict>
 </dict>
 </plist>

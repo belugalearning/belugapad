@@ -53,7 +53,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There are 12 {@item}. Share out the {@item} between 3 people so each person has the same number of {@item}.How many {@item} does one person get?</string>
+		<string>There are 12 {@item}. Share out the {@item} equally between 3 people. How many {@item} does one person get?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

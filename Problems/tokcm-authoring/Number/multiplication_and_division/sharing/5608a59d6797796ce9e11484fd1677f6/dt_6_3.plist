@@ -71,7 +71,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There are 6 {@item}. Share out the {@item} fairly between 3 people so each person has the same number of {@item}.What is the number of {@item} that one person gets?</string>
+		<string>6 {@item} are shared fairly between 3 people. What is the number of {@item} that one person gets?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

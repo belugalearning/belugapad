@@ -310,11 +310,12 @@
         // and distance <10, select the chunk
         if(distFromStartToEnd<10.0f)
         {
+            [currentChunk changeChunkSelection];
             if(!selectedChunks)selectedChunks=[[NSMutableArray alloc]init];
             
             if(!currentChunk.Selected)[selectedChunks addObject:currentChunk];
             else [selectedChunks removeObject:currentChunk];
-            [currentChunk changeChunkSelection];
+            return;
         }
         
         // then check for a chunk drop in a fraction

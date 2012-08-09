@@ -493,7 +493,8 @@ static float kTimeToBubbleShake=7.0f;
         
         
         //update the rambler value
-        rambler.BubblePos=lastBubbleLoc;
+        //do not update rambler -- causes render to carry on scrolling, and eval is at end anyway
+        //rambler.BubblePos=lastBubbleLoc;
 
     }
     

@@ -21,6 +21,10 @@
 #import "SGFractionBuilderRender.h"
 
 
+#import "BAExpressionHeaders.h"
+#import "BAExpressionTree.h"
+#import "BATQuery.h"
+
 @interface FractionBuilder()
 {
 @private
@@ -446,6 +450,26 @@
                 }
                 
                 NSLog(@"got tagged fraction of %d / %d", fdividend, fdivisor);
+                
+                //build expression -- eq with simplified div on left (from solution dive/divi)
+                toolHost.PpExpr=[BAExpressionTree treeWithRoot:[BAEqualsOperator operator]];
+                BADivisionOperator *divleft=[BADivisionOperator operator];
+                [divleft addChild:[BAInteger integerWithIntValue:solutionDividend]];
+                [divleft addChild:[BAInteger integerWithIntValue:solutionDivisor]];
+                [divleft simplifyIntegerDivision];
+                [toolHost.PpExpr.root addChild:divleft];
+                
+                //right div -- built from this fractions dive/divi
+                BADivisionOperator *divright=[BADivisionOperator operator];
+                [divright addChild:[BAInteger integerWithIntValue:fdividend]];
+                [divright addChild:[BAInteger integerWithIntValue:fdivisor]];
+                [divright simplifyIntegerDivision];
+                [toolHost.PpExpr.root addChild:divright];
+                
+                BATQuery *q=[[BATQuery alloc] initWithExpr:toolHost.PpExpr.root andTree:toolHost.PpExpr];
+                BOOL res=[q assumeAndEvalEqualityAtRoot];
+                [q release];
+                return res;
             }
         }
     }

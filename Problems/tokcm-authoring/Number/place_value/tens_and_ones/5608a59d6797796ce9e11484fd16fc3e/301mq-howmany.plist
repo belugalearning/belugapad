@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>How many tens are there in 64?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>MQ How many...</string>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>

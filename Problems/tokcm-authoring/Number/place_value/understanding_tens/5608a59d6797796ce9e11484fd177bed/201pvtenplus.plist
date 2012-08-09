@@ -3,7 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Make 19.</string>
+	<string>Here is 12. How many tens and how many ones?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>Split 12</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -15,7 +17,7 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>2</integer>
+	<integer>4</integer>
 	<key>ROWS_PER_COL</key>
 	<integer>5</integer>
 	<key>ALLOW_CONDENSING</key>
@@ -41,29 +43,32 @@
 	<key>PROXIMITY_SPRITE_FILENAME</key>
 	<string>/images/placevalue/cage-pos.png</string>
 	<key>CUSTOM_COLUMN_HEADERS</key>
-	<dict>
-		<key>10</key>
-		<string>tens</string>
-		<key>1</key>
-		<string>ones</string>
-	</dict>
+	<dict/>
 	<key>INIT_OBJECTS</key>
 	<array>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
-			<key>NUMBER</key>
-			<integer>0</integer>
-		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>1</integer>
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>0</integer>
+			<integer>4</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
+			<integer>1</integer>
+			<key>PUT_IN_ROW</key>
+			<integer>1</integer>
+			<key>NUMBER</key>
+			<integer>4</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
+			<integer>1</integer>
+			<key>PUT_IN_ROW</key>
+			<integer>2</integer>
+			<key>NUMBER</key>
+			<integer>4</integer>
 		</dict>
 	</array>
 	<key>REJECT_MODE</key>
@@ -91,38 +96,6 @@
 				<integer>0</integer>
 				<key>NUMBER</key>
 				<integer>2</integer>
-			</dict>
-			<dict>
-				<key>PUT_IN_COL</key>
-				<integer>1</integer>
-				<key>PUT_IN_ROW</key>
-				<integer>1</integer>
-				<key>NUMBER</key>
-				<integer>2</integer>
-			</dict>
-			<dict>
-				<key>PUT_IN_COL</key>
-				<integer>1</integer>
-				<key>PUT_IN_ROW</key>
-				<integer>2</integer>
-				<key>NUMBER</key>
-				<integer>2</integer>
-			</dict>
-			<dict>
-				<key>PUT_IN_COL</key>
-				<integer>1</integer>
-				<key>PUT_IN_ROW</key>
-				<integer>3</integer>
-				<key>NUMBER</key>
-				<integer>2</integer>
-			</dict>
-			<dict>
-				<key>PUT_IN_COL</key>
-				<integer>1</integer>
-				<key>PUT_IN_ROW</key>
-				<integer>4</integer>
-				<key>NUMBER</key>
-				<integer>1</integer>
 			</dict>
 		</array>
 		<key>SOLUTION_DISPLAY_TEXT</key>

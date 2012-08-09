@@ -19,7 +19,7 @@
 //Transform protocol properties
 @synthesize Position, Visible, RenderLayer;
 
-@synthesize Selected, HitProximity;
+@synthesize Selected, HitProximity, MyContainer;
 
 // Pairable protocol properties
 @synthesize PairedObjects, SeekingPair;

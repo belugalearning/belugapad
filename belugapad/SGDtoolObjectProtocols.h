@@ -23,6 +23,7 @@
 
 @property CGPoint Position;
 @property (retain) CCSprite *mySprite;
+@property (retain) id MyContainer;
 
 -(void)move;
 -(void)animateToPosition;
@@ -57,5 +58,16 @@
 
 @end
 
+@protocol Container
+
+@property (retain) NSMutableArray *BlocksInShape;
+@property (retain) CCLabelTTF *Label;
+@property (retain) CCNode *BaseNode;
+
+-(void)addBlockToMe:(id)thisBlock;
+-(void)removeBlockFromMe:(id)thisBlock;
+-(int)blocksInShape;
+
+@end
 
 

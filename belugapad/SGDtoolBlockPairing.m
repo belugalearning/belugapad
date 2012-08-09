@@ -88,6 +88,13 @@
 
 -(void)pairMeWith:(id)thisObject
 {
+    if(((id <Moveable>)ParentGO).MyContainer){
+        [((id <Moveable>)ParentGO).MyContainer addBlockToMe:thisObject];
+    }
+    else
+    {
+        // create new container object for containers without a group
+    }
     if(!ParentGO.PairedObjects)ParentGO.PairedObjects=[[[NSMutableArray alloc]init]autorelease];
     
     // if the array already contains the object - don't readd it
@@ -108,6 +115,9 @@
 
 -(void)unpairMeFrom:(id)thisObject
 {
+    if(((id <Moveable>)ParentGO).MyContainer){
+        [((id <Moveable>)ParentGO).MyContainer removeBlockFromMe:thisObject];
+    }
     if([ParentGO.PairedObjects containsObject:thisObject])[ParentGO.PairedObjects removeObject:thisObject];
     [self unpairPickupObjectFromMe:thisObject];
 }

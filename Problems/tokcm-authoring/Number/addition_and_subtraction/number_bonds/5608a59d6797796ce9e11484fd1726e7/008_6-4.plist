@@ -8,6 +8,8 @@
 	<string>10 - 4 = ?, ? = 6</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
+	<key>MASTERY</key>
+	<true/>
 	<key>INIT_BARS</key>
 	<array>
 		<dict>

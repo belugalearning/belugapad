@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Show that 10 = 3 + 7.</string>
+	<string>Show that 10 +3 = 3 + 10.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>10 = 3 + 7</string>
 	<key>TOOL_KEY</key>
@@ -12,15 +12,15 @@
 	<array>
 		<dict>
 			<key>LOCKED</key>
-			<true/>
+			<false/>
 			<key>LENGTH</key>
-			<integer>10</integer>
+			<integer>13</integer>
 		</dict>
 		<dict>
 			<key>LOCKED</key>
 			<false/>
 			<key>LENGTH</key>
-			<integer>10</integer>
+			<integer>13</integer>
 		</dict>
 	</array>
 	<key>INIT_OBJECTS</key>
@@ -32,6 +32,14 @@
 			<integer>0</integer>
 			<key>LENGTH</key>
 			<integer>10</integer>
+		</dict>
+		<dict>
+			<key>LABEL</key>
+			<string>3</string>
+			<key>PUT_IN_ROW</key>
+			<integer>1</integer>
+			<key>LENGTH</key>
+			<integer>3</integer>
 		</dict>
 	</array>
 	<key>INIT_CAGES</key>
@@ -46,23 +54,14 @@
 		</dict>
 		<dict>
 			<key>LENGTH</key>
-			<integer>7</integer>
+			<integer>10</integer>
 			<key>LABEL</key>
-			<string>7</string>
+			<string>10</string>
 			<key>QUANTITY</key>
 			<integer>1</integer>
 		</dict>
 	</array>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
-	<key>SOLUTION_MODE</key>
-	<string>1</string>
-	<key>SOLUTIONS</key>
-	<array>
-		<array>
-			<integer>3</integer>
-			<integer>7</integer>
-		</array>
-	</array>
 </dict>
 </plist>

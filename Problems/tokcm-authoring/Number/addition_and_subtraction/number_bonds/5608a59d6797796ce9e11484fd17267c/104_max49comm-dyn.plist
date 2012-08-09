@@ -3,66 +3,84 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Show that 10 = 3 + 7.</string>
+	<string>Show that {$augend} + {$addend} = {$addend} + {$augend}.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>10 = 3 + 7</string>
+	<string>commutativity</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>INIT_BARS</key>
 	<array>
 		<dict>
 			<key>LOCKED</key>
-			<true/>
+			<false/>
 			<key>LENGTH</key>
-			<integer>10</integer>
+			<string>{$addend+$augend}</string>
 		</dict>
 		<dict>
 			<key>LOCKED</key>
 			<false/>
 			<key>LENGTH</key>
-			<integer>10</integer>
+			<string>{$addend+$augend}</string>
 		</dict>
 	</array>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
 			<key>LABEL</key>
-			<string>10</string>
+			<string>{$augend}</string>
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>LENGTH</key>
-			<integer>10</integer>
+			<string>{$augend}</string>
+		</dict>
+		<dict>
+			<key>LABEL</key>
+			<string>{$addend}</string>
+			<key>PUT_IN_ROW</key>
+			<integer>1</integer>
+			<key>LENGTH</key>
+			<string>{$addend}</string>
 		</dict>
 	</array>
 	<key>INIT_CAGES</key>
 	<array>
 		<dict>
 			<key>LENGTH</key>
-			<integer>3</integer>
+			<string>{$augend}</string>
 			<key>LABEL</key>
-			<string>3</string>
+			<string>{$augend}</string>
 			<key>QUANTITY</key>
 			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>LENGTH</key>
-			<integer>7</integer>
+			<string> {$addend}</string>
 			<key>LABEL</key>
-			<string>7</string>
+			<string> {$addend}</string>
 			<key>QUANTITY</key>
 			<integer>1</integer>
 		</dict>
 	</array>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
-	<key>SOLUTION_MODE</key>
-	<string>1</string>
-	<key>SOLUTIONS</key>
+	<key>DVARS</key>
 	<array>
-		<array>
-			<integer>3</integer>
-			<integer>7</integer>
-		</array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$augend</string>
+			<key>MIN</key>
+			<string>5</string>
+			<key>MAX</key>
+			<string>9</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$addend</string>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>4</string>
+		</dict>
 	</array>
 </dict>
 </plist>

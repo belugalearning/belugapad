@@ -7,7 +7,7 @@
 		<key>NUMBER_PICKER_DESCRIPTION</key>
 		<string>What is {$addend} {@operator} {$augend}?</string>
 		<key>INTERNAL_DESCRIPTION</key>
-		<string>memorise number facts for addition within 5 </string>
+		<string>002 memorise number facts for addition within 5 - 10</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>ANIMATE_FROM_PICKER</key>

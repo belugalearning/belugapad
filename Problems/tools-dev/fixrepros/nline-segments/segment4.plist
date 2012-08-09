@@ -26,7 +26,7 @@
 	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
 	<array>
-		<string>5</string>
+		<string>4</string>
 	</array>
 	<key>HIDE_START_NUMBER</key>
 	<false/>

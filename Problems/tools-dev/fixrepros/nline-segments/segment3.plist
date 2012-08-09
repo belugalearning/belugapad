@@ -13,7 +13,7 @@
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
-	<string>20</string>
+	<string>30</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
@@ -21,7 +21,7 @@
 	<key>EVAL_TARGET</key>
 	<integer>15</integer>
 	<key>HIDE_ALL_NUMBERS</key>
-	<true/>
+	<false/>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>

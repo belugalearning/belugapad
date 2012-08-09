@@ -18,7 +18,7 @@
 @synthesize RenderLayer, HasSlider, CreateChunksOnInit, CreateChunks, FractionMode, Position, FractionSprite, SliderSprite, SliderMarkerSprite, BaseNode, MarkerStartPosition, AutoShadeNewChunks, ShowEquivalentFractions, ShowCurrentFraction, CurrentFraction;
 
 // interactive properties
-@synthesize Divisions, Chunks, GhostChunks, MarkerPosition, Value, Tag;
+@synthesize Chunks, Divisions, GhostChunks, MarkerPosition, Value, Tag;
 
 @synthesize RenderComponent;
 @synthesize MarkerComponent;

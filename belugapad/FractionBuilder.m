@@ -314,8 +314,8 @@
             [currentMarker ghostChunk];
 
         // and split dat bar!
-        [self splitThisBar:currentMarker into:currentMarker.MarkerPosition+1];
-        [loggingService logEvent:BL_PA_FB_CREATE_CHUNKS withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:currentMarker.MarkerPosition+1] forKey:@"CHUNKS"]];
+        [self splitThisBar:currentMarker into:currentMarker.Divisions];
+        [loggingService logEvent:BL_PA_FB_CREATE_CHUNKS withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:currentMarker.Divisions] forKey:@"CHUNKS"]];
         
     }
     
@@ -464,7 +464,7 @@
                     if(totalSelectedChunks==[[s objectForKey:DIVIDEND]intValue])
                         dividendMatch=YES;
                     
-                    if(thisFraction.MarkerPosition+1==[[s objectForKey:DIVISOR]intValue])
+                    if(thisFraction.Divisions==[[s objectForKey:DIVISOR]intValue])
                         divisorMatch=YES;
                     
                     if(dividendMatch && divisorMatch){

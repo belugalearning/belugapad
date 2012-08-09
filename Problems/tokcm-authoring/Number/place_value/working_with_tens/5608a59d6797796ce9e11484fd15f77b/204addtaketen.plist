@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>This is 709. Take away 10.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>204</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -184,7 +186,7 @@
 				<key>NUMBER</key>
 				<integer>1</integer>
 			</dict>
-            <dict>
+			<dict>
 				<key>PUT_IN_COL</key>
 				<integer>2</integer>
 				<key>PUT_IN_ROW</key>
@@ -224,7 +226,6 @@
 				<key>NUMBER</key>
 				<integer>1</integer>
 			</dict>
-
 		</array>
 		<key>SOLUTION_DISPLAY_TEXT</key>
 		<string>406</string>

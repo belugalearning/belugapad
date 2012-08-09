@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>This is 190. What is 10 more than 190?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>201</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>MASTERY</key>

@@ -45,7 +45,7 @@ typedef enum
 
 @protocol Interactive
 
-@property int Divisions;
+@property (readonly) int Divisions;
 @property float Value;
 @property (retain) NSMutableArray *Chunks;
 @property (retain) NSMutableArray *GhostChunks;

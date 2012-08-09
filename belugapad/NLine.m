@@ -441,7 +441,7 @@ static float kTimeToBubbleShake=7.0f;
         //lastBubbleLoc = roundedStepsFromCentre+startOffset;
         lastBubbleLoc=(roundedStepsFromCentre+startOffset) * rambler.CurrentSegmentValue;
         
-        int adjustedStepsFromCentre=roundedStepsFromCentre;
+        int adjustedStepsFromCentre=roundedStepsFromCentre * rambler.CurrentSegmentValue;
         
         BOOL stopLine=NO;
         
@@ -464,7 +464,7 @@ static float kTimeToBubbleShake=7.0f;
         if(stopLine)
         {
             //diff (moveby)
-            float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
+            float diffx=((adjustedStepsFromCentre/rambler.CurrentSegmentValue) * rambler.DefaultSegmentSize)-distFromCentre;
             [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
         }
         

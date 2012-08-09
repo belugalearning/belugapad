@@ -113,7 +113,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     for (int iValue=minValuePos; iValue<=maxValuePos; iValue+=ramblerGameObject.CurrentSegmentValue) {
         
         float diffInValFromCentre=iValue-ramblerGameObject.Value;
-        CGPoint segStartPos=CGPointMake(ramblerGameObject.Pos.x + ramblerGameObject.TouchXOffset + diffInValFromCentre * ramblerGameObject.DefaultSegmentSize, ramblerGameObject.Pos.y);
+        CGPoint segStartPos=CGPointMake(ramblerGameObject.Pos.x + ramblerGameObject.TouchXOffset + (diffInValFromCentre / ramblerGameObject.CurrentSegmentValue) * ramblerGameObject.DefaultSegmentSize, ramblerGameObject.Pos.y);
         CGPoint segStartPosForLine = CGPointMake(segStartPos.x + ramblerGameObject.DefaultSegmentSize / 2.0f, segStartPos.y);
         
         if(segStartPos.x > -ramblerGameObject.DefaultSegmentSize && segStartPos.x < (2*gameWorld.Blackboard.hostCX))

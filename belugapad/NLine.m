@@ -236,6 +236,16 @@ static float kTimeToBubbleShake=7.0f;
     
     initSegmentVal=[[pdef objectForKey:SEGMENT_VALUE] intValue];
     
+    if([initMaxVal intValue] % initSegmentVal)
+    {
+        @throw [NSException exceptionWithName:@"nline load pdef error" reason:@"cannot specify a MAX_VALUE that's not an integer multiple of SEGMENT_VALUE " userInfo:nil];
+    }
+    
+    if([initMinVal intValue] % initSegmentVal)
+    {
+        @throw [NSException exceptionWithName:@"nline load pdef error" reason:@"cannot specify a MIN_VALUE that's not an integer multiple of SEGMENT_VALUE" userInfo:nil];
+    }
+    
     //this stuff still works -- direct parse is okay, but it's redundant as the toolhost will create dynamic content anyway
 //    evalTarget=[toolHost.DynProblemParser parseIntFromValueWithKey:@"EVAL_TARGET" inDef:pdef];
 //    

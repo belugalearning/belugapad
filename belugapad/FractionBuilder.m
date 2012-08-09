@@ -451,6 +451,8 @@
                 
                 NSLog(@"got tagged fraction of %d / %d", fdividend, fdivisor);
                 
+                if(fdivisor==0 || fdividend==0) return NO;
+                
                 //build expression -- eq with simplified div on left (from solution dive/divi)
                 toolHost.PpExpr=[BAExpressionTree treeWithRoot:[BAEqualsOperator operator]];
                 BADivisionOperator *divleft=[BADivisionOperator operator];

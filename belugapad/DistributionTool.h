@@ -40,6 +40,8 @@ typedef enum
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
     BOOL hasMovedBlock;
+    BOOL hasLoggedMovedBlock;
+    BOOL hasBeenProximate;
     
     // and a default layer
     CCLayer *renderLayer;

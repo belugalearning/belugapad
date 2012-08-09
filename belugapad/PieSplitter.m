@@ -12,7 +12,7 @@
 #import "ToolConsts.h"
 #import "DWGameWorld.h"
 #import "BLMath.h"
-
+#import "LoggingService.h"
 #import "DWPieSplitterContainerGameObject.h"
 #import "DWPieSplitterPieGameObject.h"
 #import "DWPieSplitterSliceGameObject.h"
@@ -30,6 +30,7 @@ static float kTimeToPieShake=7.0f;
 @private
     ContentService *contentService;
     UsersService *usersService;
+    LoggingService *loggingService;
 }
 
 @end
@@ -580,6 +581,8 @@ static float kTimeToPieShake=7.0f;
     {
         if(CGRectContainsPoint(resetSlices.boundingBox, location))
         {
+            [loggingService logEvent:BL_PA_PS_RETURN_SLICES_TO_PIE withAdditionalData:nil];
+            
             for(DWPieSplitterContainerGameObject *c in activeCon)
             {
                 for(DWPieSplitterSliceGameObject *s in c.mySlices)
@@ -605,6 +608,7 @@ static float kTimeToPieShake=7.0f;
             if(CGRectContainsPoint(p.mySprite.boundingBox, location) && !p.HasSplit)
             {
                 [self splitPie:p];
+                [loggingService logEvent:BL_PA_PS_SPLIT_PIE withAdditionalData:nil];
                 return;
             }
         }
@@ -626,15 +630,31 @@ static float kTimeToPieShake=7.0f;
     
     if(gw.Blackboard.PickupObject)
     {
-        if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterPieGameObject class]] && !((DWPieSplitterPieGameObject*)gw.Blackboard.PickupObject).ScaledUp)[self addGhostPie];
+        if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterPieGameObject class]] && !((DWPieSplitterPieGameObject*)gw.Blackboard.PickupObject).ScaledUp){
+            [self addGhostPie];
+            [loggingService logEvent:BL_PA_PS_TOUCH_BEGIN_TOUCH_CAGED_PIE withAdditionalData:nil];
+        }
+        else
+        {
+            [loggingService logEvent:BL_PA_PS_TOUCH_BEGIN_TOUCH_MOUNTED_PIE withAdditionalData:nil];
+        }
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterContainerGameObject class]])
         {
             DWPieSplitterContainerGameObject *cont=(DWPieSplitterContainerGameObject*)gw.Blackboard.PickupObject;
             
-            if(!cont.ScaledUp && numberOfCagedSlices==0) 
+            if(!cont.ScaledUp && numberOfCagedSlices==0)
+            {
                 [self addGhostContainer];
+                [loggingService logEvent:BL_PA_PS_TOUCH_BEGIN_TOUCH_CAGED_SQUARE withAdditionalData:nil];
+            }
+            else if(cont.ScaledUp)
+            {
+                [loggingService logEvent:BL_PA_PS_TOUCH_BEGIN_TOUCH_MOUNTED_SQUARE withAdditionalData:nil];
+            }
             else if(numberOfCagedSlices>0)
+            {
                 gw.Blackboard.PickupObject=nil;
+            }
         }
     }
 
@@ -656,12 +676,22 @@ static float kTimeToPieShake=7.0f;
 
         
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterContainerGameObject class]])
+        {
             ((DWPieSplitterContainerGameObject*)gw.Blackboard.PickupObject).Position=location;
+            hasMovedSquare=YES;
+        }
+        
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterPieGameObject class]])
+        {
             ((DWPieSplitterPieGameObject*)gw.Blackboard.PickupObject).Position=location;
+            hasMovedPie=YES;
+        }
         
         if([gw.Blackboard.PickupObject isKindOfClass:[DWPieSplitterSliceGameObject class]])
+        {
             ((DWPieSplitterSliceGameObject*)gw.Blackboard.PickupObject).Position=location;
+            hasMovedSlice=YES;
+        }
         
         [gw.Blackboard.PickupObject handleMessage:kDWmoveSpriteToPosition andPayload:nil withLogLevel:-1];
         
@@ -707,6 +737,7 @@ static float kTimeToPieShake=7.0f;
             // then check whether the touch end was in the bounding box 
             if(CGRectContainsPoint(conBox.boundingBox, location))
             {
+                [loggingService logEvent:BL_PA_PS_TOUCH_END_MOUNT_CAGED_SQUARE withAdditionalData:nil];
                 [cont handleMessage:kDWswitchParentToMovementLayer];
                 // if this object isn't in the array, add it
                 if(![activeCon containsObject:cont])[activeCon addObject:cont];
@@ -721,6 +752,7 @@ static float kTimeToPieShake=7.0f;
             }
             else {
                 // if we're not landing on the dropzone and were previously there, remove object from array
+                [loggingService logEvent:BL_PA_PS_TOUCH_END_RETURN_CAGED_SQUARE withAdditionalData:nil];
                 if([activeCon containsObject:cont])[activeCon removeObject:cont];
                 
                 if(hasSplit)
@@ -749,11 +781,13 @@ static float kTimeToPieShake=7.0f;
             // then check whether the touch end was in the bounding box 
             if(CGRectContainsPoint(pieBox.boundingBox, location))
             {
+                [loggingService logEvent:BL_PA_PS_TOUCH_END_MOUNT_CAGED_PIE withAdditionalData:nil];
                 // if this object isn't in the array, add it
                 if(![activePie containsObject:pie])[activePie addObject:pie];
             }
             else {
                 // if we're not landing on the dropzone and were previously there, remove object from array
+                [loggingService logEvent:BL_PA_PS_TOUCH_END_RETURN_CAGED_PIE withAdditionalData:nil];
                 if([activePie containsObject:pie])[activePie removeObject:pie];
                 
                 // and if it wasn't - eject it back to it's mount
@@ -774,13 +808,14 @@ static float kTimeToPieShake=7.0f;
             // if we have a dropobject then we need to be mounted to it
             if(gw.Blackboard.DropObject)
             {
+                [loggingService logEvent:BL_PA_PS_TOUCH_END_MOUNT_SLICE_TO_PIE withAdditionalData:nil];
                 [gw.Blackboard.PickupObject handleMessage:kDWsetMount];
                 [gw.Blackboard.DropObject handleMessage:kDWsetMountedObject];
             }
             else {
 
                 DWPieSplitterContainerGameObject *cont=(DWPieSplitterContainerGameObject *)slice.myCont;
-                
+                [loggingService logEvent:BL_PA_PS_TOUCH_END_MOUNT_SLICE_TO_SQUARE withAdditionalData:nil];
                 slice.Position=location;
                 [cont handleMessage:kDWunsetMountedObject];
                 [slice handleMessage:kDWunsetMount];
@@ -795,6 +830,18 @@ static float kTimeToPieShake=7.0f;
     [self balanceLayer];
     [self balanceContainers];
     
+    if(hasMovedSquare)
+        [loggingService logEvent:BL_PA_PS_TOUCH_MOVE_MOVE_SQUARE withAdditionalData:nil];
+        
+    if(hasMovedPie)
+        [loggingService logEvent:BL_PA_PS_TOUCH_MOVE_MOVE_PIE withAdditionalData:nil];
+        
+    if(hasMovedSlice)
+        [loggingService logEvent:BL_PA_PS_TOUCH_MOVE_MOVE_SLICE withAdditionalData:nil];
+    
+    hasMovedSquare=NO;
+    hasMovedPie=NO;
+    hasMovedSlice=NO;
     isTouching=NO;
     createdNewCon=NO;
     createdNewPie=NO;
@@ -808,7 +855,9 @@ static float kTimeToPieShake=7.0f;
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
 //    [self balanceContainers];
-    
+    hasMovedSquare=NO;
+    hasMovedPie=NO;
+    hasMovedSlice=NO;
     isTouching=NO;
     createdNewCon=NO;
     createdNewPie=NO;

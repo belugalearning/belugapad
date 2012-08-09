@@ -13,7 +13,7 @@
 
 #import "global.h"
 #import "BLMath.h"
-
+#import "LoggingService.h"
 #import "AppDelegate.h"
 
 #import "SGGameWorld.h"
@@ -236,6 +236,7 @@
             id<ConfigurableChunk,MoveableChunk> cObj=thisObj;
             if([cObj amIProximateTo:location])
             {
+                [loggingService logEvent:BL_PA_FB_TOUCH_BEGIN_PICKUP_CHUNK withAdditionalData:nil];
                 currentChunk=cObj;
                 return;
             }
@@ -259,10 +260,13 @@
     // if we have these things, handle them differently
     
     if(currentMarker)
+    {
+        hasMovedMarker=YES;
         [currentMarker moveMarkerTo:location];
-    
+    }
     if(currentChunk)
     {
+        hasMovedChunk=YES;
         currentChunk.Position=location;
         [currentChunk moveChunk];
         
@@ -301,6 +305,7 @@
 
         // and split dat bar!
         [self splitThisBar:currentMarker into:currentMarker.MarkerPosition+1];
+        [loggingService logEvent:BL_PA_FB_CREATE_CHUNKS withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:currentMarker.MarkerPosition+1] forKey:@"CHUNKS"]];
         
     }
     
@@ -310,11 +315,12 @@
         // and distance <10, select the chunk
         if(distFromStartToEnd<10.0f)
         {
+            [currentChunk changeChunkSelection];
             if(!selectedChunks)selectedChunks=[[NSMutableArray alloc]init];
             
             if(!currentChunk.Selected)[selectedChunks addObject:currentChunk];
             else [selectedChunks removeObject:currentChunk];
-            [currentChunk changeChunkSelection];
+            return;
         }
         
         // then check for a chunk drop in a fraction
@@ -323,15 +329,26 @@
             if([go conformsToProtocol:@protocol(Configurable)])
             {
                 if([currentChunk checkForChunkDropIn:go])
+                {
+                    [loggingService logEvent:BL_PA_FB_MOUNT_TO_FRACTION withAdditionalData:[NSString stringWithFormat:@"{ tag : %d }", ((id<Interactive>)go).Tag]];
                     [currentChunk changeChunk:currentChunk toBelongTo:go];
+                }
                     //TODO: this is when we'd check the parent vs current host
                     // if different, we need to reassign
-                else
+                else{
                     [currentChunk returnToParentSlice];
+                }
             }
         }
     }
     
+    if(hasMovedChunk)
+        [loggingService logEvent:BL_PA_FB_TOUCH_MOVE_MOVE_CHUNK withAdditionalData:nil];
+    if(hasMovedMarker)
+        [loggingService logEvent:BL_PA_FB_TOUCH_MOVE_MOVE_MARKER withAdditionalData:nil];
+    
+    hasMovedChunk=NO;
+    hasMovedMarker=NO;
     isTouching=NO;
     currentMarker=nil;
     currentChunk=nil;
@@ -345,6 +362,8 @@
     
     
     isTouching=NO;
+    hasMovedChunk=NO;
+    hasMovedMarker=NO;
     currentMarker=nil;
     currentChunk=nil;
     // empty selected objects

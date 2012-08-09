@@ -1666,6 +1666,7 @@ static float kTimeToCageShake=7.0f;
             int curNum=[[blocksToCreate objectAtIndex:i]intValue];
             curNum++;
             if(curNum>10)curNum=10;
+            [loggingService logEvent:BL_PA_PV_TOUCH_END_BLOCKSTOCREATE_UP withAdditionalData:[NSNumber numberWithInt:curNum]];
             
             [blocksToCreate replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
             return;
@@ -1681,6 +1682,7 @@ static float kTimeToCageShake=7.0f;
             curNum--;
             if(curNum<1)curNum=1;
             
+            [loggingService logEvent:BL_PA_PV_TOUCH_END_BLOCKSTOCREATE_DOWN withAdditionalData:[NSNumber numberWithInt:curNum]];
             [blocksToCreate replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
             return;
         }

@@ -412,7 +412,7 @@
         {
             id<Interactive> thisFraction=go;
             
-            int fdivisor=thisFraction.Chunks.count;
+            int fdivisor=thisFraction.Divisions;
             int fdividend=0;
             
             for(id<ConfigurableChunk> chunk in thisFraction.Chunks)
@@ -429,6 +429,27 @@
 
 -(BOOL)evalSolutionAddition
 {
+    for(id go in gw.AllGameObjects)
+    {
+        if([go conformsToProtocol:@protocol(Interactive)])
+        {
+            id<Interactive> thisFraction=go;
+            
+            if(thisFraction.Tag==solutionTag)
+            {
+                int fdivisor=thisFraction.Divisions;
+                int fdividend=0;
+                
+                for(id<ConfigurableChunk> chunk in thisFraction.Chunks)
+                {
+                    if(chunk.Selected)fdividend++;
+                }
+                
+                NSLog(@"got tagged fraction of %d / %d", fdividend, fdivisor);
+            }
+        }
+    }
+    
     return NO;
 }
 

@@ -448,7 +448,11 @@ static float kTimeToBubbleShake=7.0f;
         //NSLog(@"bubble pos %d", roundedStepsFromCentre);
                 
         int startOffset=initStartVal;
-        lastBubbleLoc = roundedStepsFromCentre+startOffset;
+        
+        
+        //lastBubbleLoc = roundedStepsFromCentre+startOffset;
+        lastBubbleLoc=(roundedStepsFromCentre+startOffset) * rambler.CurrentSegmentValue;
+        
         int adjustedStepsFromCentre=roundedStepsFromCentre;
         
         BOOL stopLine=NO;
@@ -511,21 +515,24 @@ static float kTimeToBubbleShake=7.0f;
         if(stepsFromCentre<0) roundedStepsFromCentre=(int)(stepsFromCentre - 0.5f);
         
         int startOffset=initStartVal;
-        lastBubbleLoc = roundedStepsFromCentre+startOffset;
-        int adjustedStepsFromCentre=roundedStepsFromCentre;
+        lastBubbleLoc = (roundedStepsFromCentre+startOffset) * rambler.CurrentSegmentValue;
+        int adjustedStepsFromCentre=roundedStepsFromCentre * rambler.CurrentSegmentValue;
         
-        if (lastBubbleLoc>[rambler.MaxValue intValue]) adjustedStepsFromCentre = [rambler.MaxValue intValue] - startOffset;
+        if (lastBubbleLoc>[rambler.MaxValue intValue]) adjustedStepsFromCentre = [rambler.MaxValue intValue]  - startOffset;
         
         if(lastBubbleLoc<[rambler.MinValue intValue]) adjustedStepsFromCentre = [rambler.MinValue intValue] - startOffset;
+        
+        //mod this to closest valid segment value
+        adjustedStepsFromCentre=rambler.CurrentSegmentValue * ((int)(adjustedStepsFromCentre / rambler.CurrentSegmentValue));
 
         //diff (moveby)
-        float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
+        float diffx=((adjustedStepsFromCentre / rambler.CurrentSegmentValue) * rambler.DefaultSegmentSize)-distFromCentre;
         [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
         
         
         //update the rambler value & last bubble location, using any offset
-        rambler.BubblePos=adjustedStepsFromCentre+startOffset;
-        lastBubbleLoc=adjustedStepsFromCentre+startOffset;
+        lastBubbleLoc=adjustedStepsFromCentre + startOffset;
+        rambler.BubblePos=lastBubbleLoc;
         
         
         //play some audio

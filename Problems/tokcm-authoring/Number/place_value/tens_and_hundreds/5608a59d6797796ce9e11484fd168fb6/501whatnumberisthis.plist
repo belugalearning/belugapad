@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>What number is this?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>write five-hundred-and-sixty-one in numerals.</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -178,8 +180,6 @@
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
 		<string>What number is this?</string>
-		<key>INTERNAL_DESCRIPTION</key>
-		<string>write five-hundred-and-sixty-one in numerals.</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>ANIMATE_FROM_PICKER</key>

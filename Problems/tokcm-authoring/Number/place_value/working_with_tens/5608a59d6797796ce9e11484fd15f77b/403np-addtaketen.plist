@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>What is {$torh} more than {$start}?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>402 np</string>
 	<key>MASTERY</key>
 	<true/>
 	<key>META_QUESTION*</key>

@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>What is {$torh} less than {$start}?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>401 mq</string>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>

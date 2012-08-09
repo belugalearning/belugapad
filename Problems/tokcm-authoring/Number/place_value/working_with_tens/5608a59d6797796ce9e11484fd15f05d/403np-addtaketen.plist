@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>What is 10 more than {$start}?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>403 np addtaketen</string>
 	<key>MASTERY</key>
 	<true/>
 	<key>META_QUESTION</key>

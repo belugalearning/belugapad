@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Show that 11 = 10 + 5.</string>
+	<string>Show that 15 = 10 + 5.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>11 = 10 + 5</string>
+	<string>15 = 10 + 5</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>INIT_BARS</key>

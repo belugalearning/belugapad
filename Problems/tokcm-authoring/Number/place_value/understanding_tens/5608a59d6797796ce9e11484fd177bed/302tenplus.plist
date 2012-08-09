@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>DistributionTool</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Split 13 into groups of tens and units.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>Split 13</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>13</integer>
+			<key>POS_X</key>
+			<integer>80</integer>
+			<key>POS_Y</key>
+			<integer>400</integer>
+		</dict>
+	</array>
+	<key>SOLUTION</key>
+	<array>
+		<integer>10</integer>
+		<integer>1</integer>
+		<integer>1</integer>
+		<integer>1</integer>
+	</array>
+</dict>
+</plist>

@@ -97,8 +97,8 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     //scale these up by three -- allows for full screen scroll in either direction without new draw
 //    float minValuePos=ramblerGameObject.Value - (segsInCX * 4);
 //    float maxValuePos=ramblerGameObject.Value + (segsInCX * 4);
-    float minValuePos=ramblerGameObject.BubblePos - (segsInCX * 4);
-    float maxValuePos=ramblerGameObject.BubblePos + (segsInCX * 4);
+    float minValuePos=ramblerGameObject.BubblePos - ((segsInCX * 4) * ramblerGameObject.CurrentSegmentValue);
+    float maxValuePos=ramblerGameObject.BubblePos + ((segsInCX * 4) * ramblerGameObject.CurrentSegmentValue);
     
     
     int assBlankIndex=0;
@@ -113,7 +113,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     for (int iValue=minValuePos; iValue<=maxValuePos; iValue+=ramblerGameObject.CurrentSegmentValue) {
         
         float diffInValFromCentre=iValue-ramblerGameObject.Value;
-        CGPoint segStartPos=CGPointMake(ramblerGameObject.Pos.x + ramblerGameObject.TouchXOffset + diffInValFromCentre * ramblerGameObject.DefaultSegmentSize, ramblerGameObject.Pos.y);
+        CGPoint segStartPos=CGPointMake(ramblerGameObject.Pos.x + ramblerGameObject.TouchXOffset + (diffInValFromCentre / ramblerGameObject.CurrentSegmentValue) * ramblerGameObject.DefaultSegmentSize, ramblerGameObject.Pos.y);
         CGPoint segStartPosForLine = CGPointMake(segStartPos.x + ramblerGameObject.DefaultSegmentSize / 2.0f, segStartPos.y);
         
         if(segStartPos.x > -ramblerGameObject.DefaultSegmentSize && segStartPos.x < (2*gameWorld.Blackboard.hostCX))

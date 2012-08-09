@@ -3,7 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Make 705.</string>
+	<string>Make seven hundred and five.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>make 705</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>

@@ -48,6 +48,8 @@
 	</array>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>SOLUTION_MODE</key>
+	<integer>0</integer>
 	<key>INIT_CAGES</key>
 	<array>
 		<dict>

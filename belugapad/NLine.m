@@ -121,13 +121,9 @@ static float kTimeToBubbleShake=7.0f;
 -(void)doUpdateOnTick:(ccTime)delta
 {
 	[gw doUpdate:delta];
-    
-//    float distFromCentre=-rambler.TouchXOffset + ((bubbleSprite.position.x + holdingBubbleOffset) - cx);
-//    if (distFromCentre <= ([rambler.MaxValue floatValue] * rambler.DefaultSegmentSize)
-//        && distFromCentre >= ([rambler.MinValue floatValue] * rambler.DefaultSegmentSize)) {
-        
-        rambler.TouchXOffset+=bubblePushDir * kBubblePushSpeed * delta;
-//    }    
+
+    rambler.TouchXOffset+=bubblePushDir * kBubblePushSpeed * delta;
+
     
     
     timeSinceInteractionOrShake+=delta;
@@ -236,13 +232,15 @@ static float kTimeToBubbleShake=7.0f;
     
     initSegmentVal=[[pdef objectForKey:SEGMENT_VALUE] intValue];
     
-    //this stuff still works -- direct parse is okay, but it's redundant as the toolhost will create dynamic content anyway
-//    evalTarget=[toolHost.DynProblemParser parseIntFromValueWithKey:@"EVAL_TARGET" inDef:pdef];
-//    
-//    initStartVal=[toolHost.DynProblemParser parseIntFromValueWithKey:START_VALUE inDef:pdef];
-//    initMinVal=[NSNumber numberWithInt:[toolHost.DynProblemParser parseIntFromValueWithKey:MIN_VALUE inDef:pdef]];
-//    initMaxVal=[NSNumber numberWithInt:[toolHost.DynProblemParser parseIntFromValueWithKey:MAX_VALUE inDef:pdef]];
-//    initSegmentVal=[toolHost.DynProblemParser parseIntFromValueWithKey:SEGMENT_VALUE inDef:pdef];
+    if([initMaxVal intValue] % initSegmentVal)
+    {
+        @throw [NSException exceptionWithName:@"nline load pdef error" reason:@"cannot specify a MAX_VALUE that's not an integer multiple of SEGMENT_VALUE " userInfo:nil];
+    }
+    
+    if([initMinVal intValue] % initSegmentVal)
+    {
+        @throw [NSException exceptionWithName:@"nline load pdef error" reason:@"cannot specify a MIN_VALUE that's not an integer multiple of SEGMENT_VALUE" userInfo:nil];
+    }
     
     //force default on segment value if not specified
     if(initSegmentVal==0)initSegmentVal=1;
@@ -370,21 +368,11 @@ static float kTimeToBubbleShake=7.0f;
             [self resetBubble];
             [toolHost resetScoreMultiplier];
             
-            //toolHost.flagResetProblem=YES;
         }
         else {
             [self showComplete];
         }
     }
-//    else if (location.y < kRamblerYMax)
-//    {
-//        inRamblerArea=YES;
-//    }
-//    else 
-//    {
-//        NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
-//        [gw handleMessage:kDWhandleTap andPayload:pl withLogLevel:-1];
-//    }
     
     else if([BLMath DistanceBetween:location and:bubbleSprite.position]<kBubbleProx)
     {
@@ -448,8 +436,12 @@ static float kTimeToBubbleShake=7.0f;
         //NSLog(@"bubble pos %d", roundedStepsFromCentre);
                 
         int startOffset=initStartVal;
-        lastBubbleLoc = roundedStepsFromCentre+startOffset;
-        int adjustedStepsFromCentre=roundedStepsFromCentre;
+        
+        
+        //lastBubbleLoc = roundedStepsFromCentre+startOffset;
+        lastBubbleLoc=(roundedStepsFromCentre+startOffset) * rambler.CurrentSegmentValue;
+        
+        int adjustedStepsFromCentre=roundedStepsFromCentre * rambler.CurrentSegmentValue;
         
         BOOL stopLine=NO;
         
@@ -472,24 +464,15 @@ static float kTimeToBubbleShake=7.0f;
         if(stopLine)
         {
             //diff (moveby)
-            float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
+            float diffx=((adjustedStepsFromCentre/rambler.CurrentSegmentValue) * rambler.DefaultSegmentSize)-distFromCentre;
             [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
         }
         
-        
-        
-        //update the rambler value
-        rambler.BubblePos=lastBubbleLoc;
+
+        //do not update rambler -- causes render to carry on scrolling, and eval is at end anyway
+        //rambler.BubblePos=lastBubbleLoc;
 
     }
-    
-//    if(inRamblerArea)
-//    {
-//        CGPoint a = [[CCDirector sharedDirector] convertToGL:[touch previousLocationInView:touch.view]];
-//        CGPoint b = [[CCDirector sharedDirector] convertToGL:[touch locationInView:touch.view]];
-//    
-//        rambler.TouchXOffset+=b.x-a.x;
-//    }
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -511,21 +494,24 @@ static float kTimeToBubbleShake=7.0f;
         if(stepsFromCentre<0) roundedStepsFromCentre=(int)(stepsFromCentre - 0.5f);
         
         int startOffset=initStartVal;
-        lastBubbleLoc = roundedStepsFromCentre+startOffset;
-        int adjustedStepsFromCentre=roundedStepsFromCentre;
+        lastBubbleLoc = (roundedStepsFromCentre+startOffset) * rambler.CurrentSegmentValue;
+        int adjustedStepsFromCentre=roundedStepsFromCentre * rambler.CurrentSegmentValue;
         
-        if (lastBubbleLoc>[rambler.MaxValue intValue]) adjustedStepsFromCentre = [rambler.MaxValue intValue] - startOffset;
+        if (lastBubbleLoc>[rambler.MaxValue intValue]) adjustedStepsFromCentre = [rambler.MaxValue intValue]  - startOffset;
         
         if(lastBubbleLoc<[rambler.MinValue intValue]) adjustedStepsFromCentre = [rambler.MinValue intValue] - startOffset;
+        
+        //mod this to closest valid segment value
+        adjustedStepsFromCentre=rambler.CurrentSegmentValue * ((int)(adjustedStepsFromCentre / rambler.CurrentSegmentValue));
 
         //diff (moveby)
-        float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
+        float diffx=((adjustedStepsFromCentre / rambler.CurrentSegmentValue) * rambler.DefaultSegmentSize)-distFromCentre;
         [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
         
         
         //update the rambler value & last bubble location, using any offset
-        rambler.BubblePos=adjustedStepsFromCentre+startOffset;
-        lastBubbleLoc=adjustedStepsFromCentre+startOffset;
+        lastBubbleLoc=adjustedStepsFromCentre + startOffset;
+        rambler.BubblePos=lastBubbleLoc;
         
         
         //play some audio

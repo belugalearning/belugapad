@@ -387,67 +387,100 @@
     
     if(solutionType==kSolutionMatch)
     {
-        int solutionsFound=0;
-        NSMutableArray *foundSolution=[[NSMutableArray alloc]init];
-        NSMutableArray *solvedFractions=[[NSMutableArray alloc]init];
-        
-        for(NSDictionary *s in solutionsDef)
-        {
-            if([foundSolution containsObject:s])continue;
-            
-            for(id go in gw.AllGameObjects)
-            {
-                if([go conformsToProtocol:@protocol(Interactive)] && ![solvedFractions containsObject:go])
-                {
-                    id<Interactive> thisFraction=go;
-                    NSLog(@"found interactive obj (tag %d)", thisFraction.Tag);
-                    
-                    if(thisFraction.Tag==[[s objectForKey:TAG]intValue])
-                    {      
-                        int totalSelectedChunks=0;
-                        BOOL dividendMatch=NO;
-                        BOOL divisorMatch=NO;
-                        
-                        for(id<ConfigurableChunk> chunk in thisFraction.Chunks)
-                        {
-                            if(chunk.Selected)
-                                totalSelectedChunks++;
-                        }
-                        
-                        if(totalSelectedChunks==[[s objectForKey:DIVIDEND]intValue])
-                            dividendMatch=YES;
-                        
-                        if(thisFraction.MarkerPosition+1==[[s objectForKey:DIVISOR]intValue])
-                            divisorMatch=YES;
-                        
-                        if(dividendMatch && divisorMatch){
-                            solutionsFound++;
-                            [foundSolution addObject:s];
-                            [solvedFractions addObject:thisFraction];
-                        }
-                    }
-                }
-            }
-        }
-        
-        if(solutionsFound==[solutionsDef count])
-            return YES;
-        else
-            return NO;
+        return [self evalSolutionMatch];
     }
     else if(solutionType==kSolutionEquivalents)
     {
-        return NO;
+        return [self evalSolutionEquivalents];
     }
     
     else if(solutionType==kSolutionAddition)
     {
-        return NO;
+        return [self evalSolutionAddition];
     }
     else
     {
         return NO;
     }
+}
+
+-(BOOL)evalSolutionEquivalents
+{
+    for(id go in gw.AllGameObjects)
+    {
+        if([go conformsToProtocol:@protocol(Interactive)])
+        {
+            id<Interactive> thisFraction=go;
+            
+            int fdivisor=thisFraction.Chunks.count;
+            int fdividend=0;
+            
+            for(id<ConfigurableChunk> chunk in thisFraction.Chunks)
+            {
+                if(chunk.Selected)fdividend++;
+            }
+            
+            NSLog(@"got fraction of %d / %d", fdividend, fdivisor);
+        }
+    }
+    
+    return NO;
+}
+
+-(BOOL)evalSolutionAddition
+{
+    return NO;
+}
+
+-(BOOL)evalSolutionMatch
+{
+    int solutionsFound=0;
+    NSMutableArray *foundSolution=[[NSMutableArray alloc]init];
+    NSMutableArray *solvedFractions=[[NSMutableArray alloc]init];
+    
+    for(NSDictionary *s in solutionsDef)
+    {
+        if([foundSolution containsObject:s])continue;
+        
+        for(id go in gw.AllGameObjects)
+        {
+            if([go conformsToProtocol:@protocol(Interactive)] && ![solvedFractions containsObject:go])
+            {
+                id<Interactive> thisFraction=go;
+                NSLog(@"found interactive obj (tag %d)", thisFraction.Tag);
+                
+                if(thisFraction.Tag==[[s objectForKey:TAG]intValue])
+                {
+                    int totalSelectedChunks=0;
+                    BOOL dividendMatch=NO;
+                    BOOL divisorMatch=NO;
+                    
+                    for(id<ConfigurableChunk> chunk in thisFraction.Chunks)
+                    {
+                        if(chunk.Selected)
+                            totalSelectedChunks++;
+                    }
+                    
+                    if(totalSelectedChunks==[[s objectForKey:DIVIDEND]intValue])
+                        dividendMatch=YES;
+                    
+                    if(thisFraction.MarkerPosition+1==[[s objectForKey:DIVISOR]intValue])
+                        divisorMatch=YES;
+                    
+                    if(dividendMatch && divisorMatch){
+                        solutionsFound++;
+                        [foundSolution addObject:s];
+                        [solvedFractions addObject:thisFraction];
+                    }
+                }
+            }
+        }
+    }
+    
+    if(solutionsFound==[solutionsDef count])
+        return YES;
+    else
+        return NO;
 }
 
 -(void)evalProblem

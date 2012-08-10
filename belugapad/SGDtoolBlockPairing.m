@@ -118,46 +118,45 @@
 
 -(void)unpairPickupObjectFromMe:(id)pickupObject
 {
-    [self removeObjectFromContainer:pickupObject];
     // declare the current PickupObject as a pairable item
     id<Pairable> currentPickupObject=pickupObject;
     // then, pair our pickupObject with our current GO
     if([currentPickupObject.PairedObjects containsObject:ParentGO])[currentPickupObject.PairedObjects removeObject:ParentGO];
 }
 
--(void)createContainerAndAdd:(NSArray*)theseObjects
-{
-    id<Container> container;
-    container=[[SGDtoolContainer alloc]initWithGameWorld:gameWorld andLabel:nil andRenderLayer:nil];
-    
-    for(id go in theseObjects)
-        [container addBlockToMe:go];
-    
-}
-
--(void)addObjectToContainer:(id)thisObject
-{
-    if(((id<Moveable>)ParentGO).MyContainer)
-    {
-        if(((id<Moveable>)ParentGO).MyContainer!=((id<Moveable>)thisObject).MyContainer)
-        {
-            id<Container> myContainer=((id<Moveable>)ParentGO).MyContainer;
-            [myContainer addBlockToMe:thisObject];
-        }
-    }
-    else
-    {
-        [self createContainerAndAdd:[NSArray arrayWithObjects:ParentGO, thisObject, nil]];
-    }
-}
-
--(void)removeObjectFromContainer:(id)pickupObject
-{
-    id<Container> myContainer=((id<Moveable>)ParentGO).MyContainer;
-    
-    if(myContainer)
-        [myContainer removeBlockFromMe:pickupObject];
-}
+//-(void)createContainerAndAdd:(NSArray*)theseObjects
+//{
+//    id<Container> container;
+//    container=[[SGDtoolContainer alloc]initWithGameWorld:gameWorld andLabel:nil andRenderLayer:nil];
+//    
+//    for(id go in theseObjects)
+//        [container addBlockToMe:go];
+//    
+//}
+//
+//-(void)addObjectToContainer:(id)thisObject
+//{
+//    if(((id<Moveable>)ParentGO).MyContainer)
+//    {
+//        if(((id<Moveable>)ParentGO).MyContainer!=((id<Moveable>)thisObject).MyContainer)
+//        {
+//            id<Container> myContainer=((id<Moveable>)ParentGO).MyContainer;
+//            [myContainer addBlockToMe:thisObject];
+//        }
+//    }
+//    else
+//    {
+//        [self createContainerAndAdd:[NSArray arrayWithObjects:ParentGO, thisObject, nil]];
+//    }
+//}
+//
+//-(void)removeObjectFromContainer:(id)pickupObject
+//{
+//    id<Container> myContainer=((id<Moveable>)ParentGO).MyContainer;
+//    
+//    if(myContainer)
+//        [myContainer removeBlockFromMe:pickupObject];
+//}
  
 @end
 

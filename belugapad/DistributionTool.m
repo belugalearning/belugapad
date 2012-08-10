@@ -100,6 +100,7 @@ static float kDistanceBetweenBlocks=70.0f;
 
 -(void)doUpdateOnTick:(ccTime)delta
 {
+    	[gw doUpdate:delta];
     if(autoMoveToNextProblem)
     {
         timeToAutoMoveToNextProblem+=delta;
@@ -239,6 +240,61 @@ static float kDistanceBetweenBlocks=70.0f;
     NSLog(@"create container");
     container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:nil andRenderLayer:nil];
     [container addBlockToMe:Object];
+}
+
+-(void)lookForOrphanedObjects
+{
+    NSArray *allGWGO=[NSArray arrayWithArray:gw.AllGameObjects];
+    
+    for(id go in allGWGO)
+    {
+        if([go conformsToProtocol:@protocol(Moveable)])
+        {
+            id <Moveable> cObj=go;
+            if(!cObj.MyContainer)
+                [self createContainerWithOne:cObj];
+        }
+
+    }
+}
+
+-(void)updateContainerForNewlyAddedBlock:(id<Moveable,Pairable>)thisBlock
+{
+    // if there are no paired objects - make sure i am removed from any container i may be part of
+    if([thisBlock.PairedObjects count]==0)
+    {
+        if(thisBlock.MyContainer)
+            [thisBlock.MyContainer removeBlockFromMe:thisBlock];
+            
+    }
+    else
+    {
+        // set a new container by assuming the same container as any of the paired objects (not resetting if part of this container)
+        id<Moveable,Pairable>pairedObj=[thisBlock.PairedObjects objectAtIndex:0];
+        if(thisBlock.MyContainer != pairedObj.MyContainer)
+        {
+            if(thisBlock.MyContainer)
+                [thisBlock.MyContainer removeBlockFromMe:thisBlock];
+            
+            [pairedObj.MyContainer addBlockToMe:thisBlock];
+        }
+    }
+}
+
+-(void)tidyUpEmptyGroups
+{
+    NSArray *allGWGO=[NSArray arrayWithArray:gw.AllGameObjects];
+    
+    for(id go in allGWGO)
+    {
+        if([go conformsToProtocol:@protocol(Container)])
+        {
+            id <Container> cObj=go;
+            if([cObj.BlocksInShape count]==0)
+                [cObj destroyThisObject];
+        }
+        
+    }
 }
 
 -(CGPoint)checkWhereIShouldMount:(id<Pairable>)gameObject;
@@ -439,6 +495,8 @@ static float kDistanceBetweenBlocks=70.0f;
         CGPoint curPOPos=currentPickupObject.Position;
         // check all the gamobjects and search for a moveable object
         
+        id previousObjectContainer=nil;
+        
         for(id go in allGWCopy)
         {
             if([go conformsToProtocol:@protocol(Moveable)])
@@ -455,24 +513,37 @@ static float kDistanceBetweenBlocks=70.0f;
                     [go unpairMeFrom:currentPickupObject];
                 }
                 else {
-                    [go pairMeWith:currentPickupObject];
                     
-                    [loggingService logEvent:BL_PA_DT_TOUCH_END_PAIR_BLOCK withAdditionalData:nil];
+                    id<Moveable,Pairable>cObj=(id<Moveable,Pairable>)go;
                     
-                    currentPickupObject.Position=[self findMountPositionForThisShape:currentPickupObject toThisShape:go];
-                    [currentPickupObject animateToPosition];
+                    // we only want to be pairable with a container with objects of the same group - so check that here
                     
+                    if(!previousObjectContainer || previousObjectContainer==cObj.MyContainer)
+                    {
+                        [go pairMeWith:currentPickupObject];
+                    
+                        previousObjectContainer=cObj.MyContainer;
+                        
+                        
+                        [loggingService logEvent:BL_PA_DT_TOUCH_END_PAIR_BLOCK withAdditionalData:nil];
+                        
+                        currentPickupObject.Position=[self findMountPositionForThisShape:currentPickupObject toThisShape:go];
+                        [currentPickupObject animateToPosition];
+                    }
                 }
                 
                 //TODO: add bit in here to check existing links - ie, at the minute, if a block is dragged out of the middle of the row, it doesn't seem to update all of them
                 
-                [self evalUniqueShapes];
-                if(evalMode==kProblemEvalAuto)[self evalProblem];
                 
             }
 
         }
-
+        [self updateContainerForNewlyAddedBlock:currentPickupObject];
+        [self lookForOrphanedObjects];
+        [self tidyUpEmptyGroups];
+        
+        //[self evalUniqueShapes];
+        if(evalMode==kProblemEvalAuto)[self evalProblem];
     }
     
     for(id go in gw.AllGameObjects)

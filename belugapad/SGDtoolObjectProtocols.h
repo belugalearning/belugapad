@@ -67,6 +67,7 @@
 -(void)addBlockToMe:(id)thisBlock;
 -(void)removeBlockFromMe:(id)thisBlock;
 -(int)blocksInShape;
+-(void)destroyThisObject;
 
 @end
 

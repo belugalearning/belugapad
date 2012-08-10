@@ -24,7 +24,7 @@
 @property BOOL resetPositionAfterTH;
 @property CGPoint lastMapLayerPosition;
 
--(id)initWithProblemPipeline:(NSString*)source;
+-(id)initWithLocalSettings:(NSDictionary*)settings;
 -(void)setPipelineNodeComplete;
 -(void)setPipelineScore:(int)score;
 -(BOOL)isUsingTestPipeline;

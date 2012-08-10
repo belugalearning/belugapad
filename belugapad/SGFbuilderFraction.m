@@ -41,6 +41,10 @@
     return self;
 }
 
+-(int)Divisions
+{
+    return MarkerPosition+1;
+}
 
 -(void)handleMessage:(SGMessageType)messageType
 {

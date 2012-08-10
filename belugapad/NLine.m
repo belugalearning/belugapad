@@ -230,7 +230,14 @@ static float kTimeToBubbleShake=7.0f;
     initMinVal=(NSNumber*)[pdef objectForKey:MIN_VALUE];
     initMaxVal=(NSNumber*)[pdef objectForKey:MAX_VALUE];
     
-    initSegmentVal=[[pdef objectForKey:SEGMENT_VALUE] intValue];
+    if([pdef objectForKey:SEGMENT_VALUE])
+    {
+        initSegmentVal=[[pdef objectForKey:SEGMENT_VALUE] intValue];
+    }
+    else {
+        initSegmentVal=1;
+    }
+    
     
     if([initMaxVal intValue] % initSegmentVal)
     {

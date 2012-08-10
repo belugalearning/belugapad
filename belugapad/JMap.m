@@ -338,7 +338,7 @@ typedef enum {
 -(void)createNodesInGameWorld
 {
     //create nodes
-    for (int i=1; i<[kcmNodes count]; i++) {
+    for (int i=0; i<[kcmNodes count]; i++) {
         ConceptNode *n=[kcmNodes objectAtIndex:i];
         
         //node position

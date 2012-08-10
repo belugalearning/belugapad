@@ -290,7 +290,7 @@
             float diffX=[BLMath DistanceBetween:ccp(currentChunk.Position.x,0) and:ccp(chunk.Position.x,0)];
             float diffY=[BLMath DistanceBetween:ccp(0,currentChunk.Position.y) and:ccp(0,currentChunk.Position.y)];
             
-            NSLog(@"diffX %f, diffY %f", diffX, diffY);
+//            NSLog(@"diffX %f, diffY %f", diffX, diffY);
             chunk.Position=ccp(location.x+diffX,location.y+diffY);
             [chunk moveChunk];
         }
@@ -410,6 +410,23 @@
 
 -(BOOL)evalSolutionEquivalents
 {
+    //we want to check that all the fractions are equivilent, but that they also all use different divisors
+    // to do this we'll do two paralell evaluations:
+    // 1. build an expression that chains evaluation of fractions (that are simplified)
+    // 2. check that each divisor is different from the last
+    
+    //container expression for chained eval to solution required
+    toolHost.PpExpr=[BAExpressionTree treeWithRoot:[BAEqualsOperator operator]];
+    BADivisionOperator *divleft=[BADivisionOperator operator];
+    [divleft addChild:[BAInteger integerWithIntValue:solutionDividend]];
+    [divleft addChild:[BAInteger integerWithIntValue:solutionDivisor]];
+    [divleft simplifyIntegerDivision];
+    [toolHost.PpExpr.root addChild:divleft];
+    
+    //tracking divisor
+    int lastDivisor=0;
+    BOOL divisorWasTheSame=NO;
+    
     for(id go in gw.AllGameObjects)
     {
         if([go conformsToProtocol:@protocol(Interactive)])
@@ -424,8 +441,31 @@
                 if(chunk.Selected)fdividend++;
             }
             
-            NSLog(@"got fraction of %d / %d", fdividend, fdivisor);
+            BADivisionOperator *d=[BADivisionOperator operator];
+            [d addChild:[BAInteger integerWithIntValue:fdividend]];
+            [d addChild:[BAInteger integerWithIntValue:fdivisor]];
+            [d simplifyIntegerDivision];
+            [toolHost.PpExpr.root addChild:d];
+            
+            if(lastDivisor!=0 && lastDivisor==fdivisor) divisorWasTheSame=YES;
+            lastDivisor=fdivisor;
         }
+    }
+    
+    
+    if(divisorWasTheSame)
+    {
+        //return no -- fractions must be different
+        //TODO: log that failure was a result of this
+        return NO;
+    }
+    else
+    {
+        //query the expression for equality
+        BATQuery *q=[[BATQuery alloc] initWithExpr:toolHost.PpExpr.root andTree:toolHost.PpExpr];
+        BOOL res=[q assumeAndEvalEqualityAtRoot];
+        [q release];
+        return res;
     }
     
     return NO;
@@ -448,8 +488,6 @@
                 {
                     if(chunk.Selected)fdividend++;
                 }
-                
-                NSLog(@"got tagged fraction of %d / %d", fdividend, fdivisor);
                 
                 if(fdivisor==0 || fdividend==0) return NO;
                 
@@ -494,7 +532,7 @@
             if([go conformsToProtocol:@protocol(Interactive)] && ![solvedFractions containsObject:go])
             {
                 id<Interactive> thisFraction=go;
-                NSLog(@"found interactive obj (tag %d)", thisFraction.Tag);
+//                NSLog(@"found interactive obj (tag %d)", thisFraction.Tag);
                 
                 if(thisFraction.Tag==[[s objectForKey:TAG]intValue])
                 {

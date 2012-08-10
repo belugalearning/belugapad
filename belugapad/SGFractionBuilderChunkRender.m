@@ -67,10 +67,17 @@
 -(BOOL)amIProximateTo:(CGPoint)location
 {
     CCSprite *curSprite=ParentGO.MySprite;
+    
+    float PosXLeft = curSprite.position.x-((curSprite.contentSize.width*curSprite.scaleX)/2);
+    float PosYleft = curSprite.position.y-((curSprite.contentSize.height*curSprite.scaleY)/2);
+    
+    CGRect hitBox = CGRectMake(PosXLeft, PosYleft, (curSprite.contentSize.width*curSprite.scaleX), (curSprite.contentSize.height*curSprite.scaleY));
+    
+    
     //NSLog(@"loc: %@ bb: %@", NSStringFromCGPoint(location), NSStringFromCGRect(curSprite.boundingBox));
     //location=[ParentGO.MySprite convertToNodeSpace:location];
     
-    if(CGRectContainsPoint(curSprite.boundingBox, location))
+    if(CGRectContainsPoint(hitBox, location))
         return YES;
 
     else
@@ -103,7 +110,13 @@
 {
     fractionSprite=thisObject.FractionSprite;
     
+    id<Configurable,Interactive>OldHost=ParentGO.CurrentHost;
+    id<Configurable,Interactive>PotentialNewHost=(id<Configurable,Interactive>)thisObject;
+    
+    if(OldHost.Divisions!=PotentialNewHost.Divisions)return NO;
+    
     CGPoint adjPos=[thisObject.BaseNode convertToNodeSpace:ParentGO.Position];
+//    CGPoint adjPos=ParentGO.Position;
     
     if(CGRectContainsPoint(fractionSprite.boundingBox, adjPos))
         return YES;

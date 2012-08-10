@@ -10,6 +10,12 @@
 #import "ToolConsts.h"
 #import "ToolScene.h"
 
+typedef enum {
+    kSolutionMatch=0,
+    kSolutionEquivalents=1,
+    kSolutionAddition=2
+} SolutionType;
+
 @interface FractionBuilder : ToolScene
 {
     // required toolhost stuff
@@ -19,6 +25,11 @@
     ProblemEvalMode evalMode;
     ProblemRejectMode rejectMode;
     ProbjemRejectType rejectType;
+    SolutionType solutionType;
+    
+    int solutionDividend;
+    int solutionDivisor;
+    int solutionTag;
     
     // default positional bits
     CGPoint winL;

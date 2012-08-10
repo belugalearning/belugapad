@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>What is 100 more than {$start}?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>301 mq</string>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>

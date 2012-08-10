@@ -6,6 +6,8 @@
 	<string>Complete the number bonds below to make up 10.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>summary of number bonds to 10.</string>
+	<key>MASTERY</key>
+	<true/>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>INIT_BARS</key>

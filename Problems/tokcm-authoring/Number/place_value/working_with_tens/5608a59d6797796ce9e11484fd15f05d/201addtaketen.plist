@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>This is 44. What is 10 more than 44?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>201 addtaketen</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>

@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Here is 12. How many tens are there?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>How many...</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -35,7 +37,7 @@
 	<key>SHOW_COUNT_BLOCK</key>
 	<true/>
 	<key>SHOW_COL_HEADER</key>
-	<false/>
+	<true/>
 	<key>SHOW_VALUE</key>
 	<false/>
 	<key>SHOW_BASE_SELECTION</key>

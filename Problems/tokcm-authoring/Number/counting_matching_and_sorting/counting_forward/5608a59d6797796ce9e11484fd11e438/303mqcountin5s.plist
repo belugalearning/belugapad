@@ -2,36 +2,30 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>MASTERY</key>
+	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>If you start counting in tens at 0, and take 2 jumps, where do you land?</string>
+	<string>what number is the bubble on?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>count on from 10 to 20</string>
+	<string>what number is the bubble on?</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>10</string>
+	<string>{$x*5}</string>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
-	<string>30</string>
+	<string>50</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<integer>20</integer>
+	<integer>50</integer>
 	<key>HIDE_ALL_NUMBERS</key>
-	<false/>
-	<key>SHOW_NUMBERS_AT_INTERVALS</key>
-	<array>
-		<string>10</string>
-	</array>
+	<true/>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
-	<key>SHOW_NOTCHES_AT_INTERVALS</key>
-	<array>
-		<string>1</string>
-	</array>
 	<key>HIDE_START_NUMBER</key>
 	<false/>
 	<key>HIDE_END_NUMBER</key>
@@ -44,10 +38,8 @@
 	<false/>
 	<key>EVAL_PLUS_MINUS_THRESHOLD</key>
 	<integer>0</integer>
-	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
-	<array>
-		<integer>10</integer>
-	</array>
+	<key>SEGMENT_VALUE</key>
+	<integer>5</integer>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array>
 		<string>10</string>
@@ -66,27 +58,44 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>10</string>
+				<string>{$answer}</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$answer + 5}</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>30</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>20</string>
+				<string>{$answer - 5}</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>If you start counting in tens at 0, and take 2 jumps, where do you land?</string>
+		<string>What number is the bubble on?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again.</string>
 	</dict>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<integer>1</integer>
+			<key>MAX</key>
+			<integer>9</integer>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$answer</string>
+			<key>VALUE</key>
+			<string>{$x*10}</string>
+		</dict>
+	</array>
 </dict>
 </plist>

@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 22. Count on 10.</string>
+	<string>This is 10. Count on in tens twice.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>count on from 10 to 90</string>
+	<string>count on from 10 to 30</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>22</string>
+	<string>10</string>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
-	<string>40</string>
+	<string>30</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<integer>32</integer>
+	<integer>30</integer>
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
@@ -28,10 +28,6 @@
 	</array>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
-	<key>SHOW_NOTCHES_AT_INTERVALS</key>
-	<array>
-		<string>10</string>
-	</array>
 	<key>HIDE_START_NUMBER</key>
 	<false/>
 	<key>HIDE_END_NUMBER</key>
@@ -44,11 +40,17 @@
 	<false/>
 	<key>EVAL_PLUS_MINUS_THRESHOLD</key>
 	<integer>0</integer>
+	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
+	<array>
+		<integer>10</integer>
+	</array>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array>
 		<string>10</string>
 	</array>
 	<key>RENDER_STITCHES_AT_INTERVAL</key>
 	<integer>0</integer>
+	<key>SEGMENT_VALUE</key>
+	<integer>10</integer>
 </dict>
 </plist>

@@ -3,35 +3,31 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Count on in fives.</string>
+	<string>This is 10. Count on 10 steps.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>count on from 0 to 5</string>
+	<string>count on from 10 to 20</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>0</string>
+	<string>10</string>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
-	<string>5</string>
+	<string>20</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<integer>5</integer>
+	<integer>20</integer>
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
 	<array>
-		<string>5</string>
+		<string>10</string>
 	</array>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
-	<key>SHOW_NOTCHES_AT_INTERVALS</key>
-	<array>
-		<string>1</string>
-	</array>
 	<key>HIDE_START_NUMBER</key>
 	<false/>
 	<key>HIDE_END_NUMBER</key>
@@ -46,13 +42,15 @@
 	<integer>0</integer>
 	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
 	<array>
-		<integer>5</integer>
+		<integer>10</integer>
 	</array>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array>
-		<string>5</string>
+		<string>10</string>
 	</array>
 	<key>RENDER_STITCHES_AT_INTERVAL</key>
 	<integer>0</integer>
+	<key>SEGMENT_VALUE</key>
+	<integer>10</integer>
 </dict>
 </plist>

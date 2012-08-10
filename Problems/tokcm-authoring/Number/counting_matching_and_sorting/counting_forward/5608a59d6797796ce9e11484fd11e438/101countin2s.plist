@@ -21,9 +21,11 @@
 	<key>EVAL_TARGET</key>
 	<integer>10</integer>
 	<key>HIDE_ALL_NUMBERS</key>
-	<true/>
+	<false/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
-	<array/>
+	<array>
+		<string>2</string>
+	</array>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
@@ -46,7 +48,16 @@
 	<array>
 		<string>2</string>
 	</array>
+	<key>USER_POPULATED_NUMBERS</key>
+	<array>
+		<string>2</string>
+		<string>4</string>
+		<string>6</string>
+		<string>8</string>
+	</array>
 	<key>RENDER_STITCHES_AT_INTERVAL</key>
 	<integer>0</integer>
+	<key>SEGMENT_VALUE</key>
+	<integer>2</integer>
 </dict>
 </plist>

@@ -10,6 +10,7 @@
 #import "SGDtoolBlockPairing.h"
 #import "SGDtoolBlock.h"
 #import "SGDtoolContainer.h"
+#import "SGDtoolObjectProtocols.h"
 #import "BLMath.h"
 
 @interface SGDtoolBlockPairing()
@@ -89,9 +90,6 @@
 
 -(void)pairMeWith:(id)thisObject
 {
-    // thisobj = pickupobj
-    // parent = one it's been mvoed to
-    [self addObjectToContainer:thisObject];
     if(!ParentGO.PairedObjects)ParentGO.PairedObjects=[[[NSMutableArray alloc]init]autorelease];
     
     // if the array already contains the object - don't readd it
@@ -114,19 +112,15 @@
 -(void)unpairMeFrom:(id)thisObject
 {
     if([ParentGO.PairedObjects containsObject:thisObject])[ParentGO.PairedObjects removeObject:thisObject];
-    
-    if([ParentGO.PairedObjects count]==0)[self removeObjectFromContainer:thisObject];
-    
+
     [self unpairPickupObjectFromMe:thisObject];
 }
 
 -(void)unpairPickupObjectFromMe:(id)pickupObject
 {
-
     [self removeObjectFromContainer:pickupObject];
     // declare the current PickupObject as a pairable item
     id<Pairable> currentPickupObject=pickupObject;
-    
     // then, pair our pickupObject with our current GO
     if([currentPickupObject.PairedObjects containsObject:ParentGO])[currentPickupObject.PairedObjects removeObject:ParentGO];
 }

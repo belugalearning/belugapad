@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Count to {$number}.</string>
+	<string>nl_1-20_dyn. Count to {$number}.</string>
 	<key>DVARS</key>
 	<dict>
 		<key>$number</key>

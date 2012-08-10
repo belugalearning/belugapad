@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Each taxi can hold 4 people. 3 taxis were ordered to take them to a restaurant. How many people are going to the restaurant?</string>
+	<string>To get from 1 to 13, how many groups of 6 must i add?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>4.3=12</string>
+	<string>To get from 1 to 13, how many groups of 6 must i add?</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>INIT_BARS</key>
@@ -14,32 +14,32 @@
 			<key>LOCKED</key>
 			<true/>
 			<key>LENGTH</key>
-			<integer>14</integer>
+			<integer>13</integer>
 		</dict>
 		<dict>
 			<key>LOCKED</key>
 			<false/>
 			<key>LENGTH</key>
-			<integer>14</integer>
+			<integer>13</integer>
 		</dict>
 	</array>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
 			<key>LABEL</key>
-			<string>2</string>
-			<key>PUT_IN_ROW</key>
-			<integer>1</integer>
-			<key>LENGTH</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>LABEL</key>
-			<string>14</string>
+			<string>13</string>
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>LENGTH</key>
-			<integer>14</integer>
+			<integer>13</integer>
+		</dict>
+		<dict>
+			<key>LABEL</key>
+			<string>1</string>
+			<key>PUT_IN_ROW</key>
+			<integer>1</integer>
+			<key>LENGTH</key>
+			<integer>1</integer>
 		</dict>
 	</array>
 	<key>EVAL_MODE</key>
@@ -48,9 +48,9 @@
 	<array>
 		<dict>
 			<key>LENGTH</key>
-			<integer>3</integer>
+			<integer>6</integer>
 			<key>LABEL</key>
-			<string>3</string>
+			<string>6</string>
 			<key>QUANTITY</key>
 			<integer>6</integer>
 		</dict>
@@ -67,31 +67,31 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>10</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>5</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
 				<string>4</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>3</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>8</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>2</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>12</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>How many groups of 3 must I add to make 2 into 14?</string>
+		<string>To get from 1 to 13, how many groups of 6 must i add?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

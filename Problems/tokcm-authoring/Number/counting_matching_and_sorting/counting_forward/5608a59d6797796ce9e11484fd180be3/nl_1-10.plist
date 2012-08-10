@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Count to 10.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Count to 10.</string>
+	<string>nl_1-10. Count to 10.</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>

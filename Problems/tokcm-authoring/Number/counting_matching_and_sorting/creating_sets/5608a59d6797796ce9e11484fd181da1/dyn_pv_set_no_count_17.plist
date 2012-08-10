@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Create a set of {$number}.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>create a number</string>
+	<string>dyn_pv_set_no_count_17</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>

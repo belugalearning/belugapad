@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>This is 8. Count back 6 steps. What is 8 subtract 6?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>8-6</string>
+	<string>nl_8-6</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>

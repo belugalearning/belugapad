@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Count up to 20.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Count from 1 to 20.</string>
+	<string>pv_1-20. Count up to 20.</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>

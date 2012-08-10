@@ -147,13 +147,27 @@
 -(void)populateGW
 {
     gw.Blackboard.RenderLayer = renderLayer;
-
+    int fractionsDisplayed=0;
+    
     // loop through our init fractions
     for(NSDictionary *d in initFractions)
     {
+        
+        int ySpaceBetweenFractions=0;
+        float thisFractionYPos=0;
+        if([initFractions count]==2)ySpaceBetweenFractions=300;
+        else if([initFractions count]==3)ySpaceBetweenFractions=225;
         // set up the fraction
+        
+        if([d objectForKey:POS_Y])
+            thisFractionYPos=[[d objectForKey:POS_Y]floatValue];
+        else
+            thisFractionYPos=600-(ySpaceBetweenFractions*fractionsDisplayed);
+        
+        NSLog(@"thisFractionYPos=%f, ySpaceBetweenFractions=%d, fractionsDisplayed=%d", thisFractionYPos, ySpaceBetweenFractions, fractionsDisplayed);
+        
         id<Configurable, Interactive> fraction;
-        fraction=[[[SGFbuilderFraction alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,[[d objectForKey:POS_Y]floatValue])] autorelease];
+        fraction=[[[SGFbuilderFraction alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,thisFractionYPos)] autorelease];
         
         // determine its mode
         fraction.FractionMode=[[d objectForKey:FRACTION_MODE]intValue];
@@ -185,6 +199,8 @@
         // and if it should start hidden, hide!
         if([[d objectForKey:START_HIDDEN]boolValue])
             [fraction hideFraction];
+        
+        fractionsDisplayed++;
     }
     
 }
@@ -196,7 +212,7 @@
     id<Interactive,Configurable> curBar=thisBar;
     if([curBar.Chunks count]>0)
         [curBar removeChunks];
-    
+        
     // loop ofver to create our number of chunks
     for(int i=0;i<thisManyChunks;i++)
     {
@@ -323,7 +339,7 @@
     if(currentChunk)
     {
         // and distance <10, select the chunk
-        if(distFromStartToEnd<10.0f)
+        if(distFromStartToEnd<15.0f)
         {
             [currentChunk changeChunkSelection];
             if(!selectedChunks)selectedChunks=[[NSMutableArray alloc]init];

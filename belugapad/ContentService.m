@@ -32,6 +32,9 @@
     // kcm database pipelines
     FMDatabase *contentDatabase;
     int pipelineIndex;
+    
+    NSFileManager *fm;
+    NSString *contentDir;
 }
 
 @property (nonatomic, readwrite, retain) Problem *currentProblem;
@@ -64,6 +67,11 @@
     self = [super init];
     if (self)
     {
+        fm = [NSFileManager defaultManager];
+        
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        contentDir = [[[paths objectAtIndex:0] stringByAppendingPathComponent:@"content"] retain];
+        
         NSString *source = [settings objectForKey:@"PROBLEM_PIPELINE"];
         useTestPipeline = ![@"DATABASE" isEqualToString:source];
         
@@ -95,10 +103,11 @@
         } else {
             NSNumber *importContent = [settings objectForKey:@"IMPORT_CONTENT_ON_LAUNCH"];
             NSString *kcmLoginName = [settings objectForKey:@"KCM_LOGIN_NAME"];
+            
+            [fm removeItemAtPath:contentDir error:nil];
+            
             if (importContent && [importContent boolValue] && kcmLoginName)
             {
-                NSLog(@"import content");
-                
                 NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://authoring.zubi.me:3001/kcm/app-import-content/%@", kcmLoginName]];
                 NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
                 NSHTTPURLResponse *response = nil;
@@ -106,17 +115,20 @@
                 NSData *result = [NSURLConnection sendSynchronousRequest:req returningResponse:&response error:&error];
                 
                 if (error || !response || [response statusCode] != 200)
-                {
+                {   
                     NSString *resultString = [[[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding] autorelease];
-                    NSLog(@"Error importing kcm: %@", resultString);
+                    NSLog(@"Failed to retrieve content from database. (Use Alert Box?) -- %@", resultString);
                 } else {
-                    NSString *zipPath = BUNDLE_FULL_PATH(@"/canned-dbs/canned-content.zip");
+                    NSString *zipPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/canned-content.zip"];
                     [result writeToFile:zipPath atomically:NO];
-                    [SSZipArchive unzipFileAtPath:zipPath toDestination:BUNDLE_FULL_PATH(@"/canned-dbs/")];
-                    NSLog(@"success");
+                    [SSZipArchive unzipFileAtPath:zipPath toDestination:contentDir];
                 }
+            } else {
+                NSString *bundledContentDir = BUNDLE_FULL_PATH(@"/canned-dbs/canned-content");            
+                [fm copyItemAtPath:bundledContentDir toPath:contentDir error:nil];
             }
-            contentDatabase = [FMDatabase databaseWithPath:BUNDLE_FULL_PATH(@"/canned-dbs/canned-content/content.db")];
+            
+            contentDatabase = [FMDatabase databaseWithPath:[contentDir stringByAppendingString:@"/content.db"]];
             [contentDatabase retain];
         }
     }
@@ -307,11 +319,6 @@
     return useTestPipeline;
 }
 
--(id)init
-{
-    return [self initWithProblemPipeline:@"DATABASE"];
-}
-
 -(void)startPipelineWithId:(NSString*)pipelineid forNode:(ConceptNode*)node
 {
     if (![node.pipelines containsObject:pipelineid])
@@ -395,15 +402,15 @@
         [rs close];
         [contentDatabase close];
         
-        NSString *relPath = [NSString stringWithFormat:@"/canned-dbs/canned-content/pdefs/%@.plist", pId];
-        self.currentPDef = [NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(relPath)];
+        NSString *pdefPath = [NSString stringWithFormat:@"%@/pdefs/%@.plist", contentDir, pId];
+        self.currentPDef = [NSDictionary dictionaryWithContentsOfFile:pdefPath];
         
         if (!self.currentPDef)
         {
             NSMutableDictionary *d = [NSMutableDictionary dictionary];
             [d setValue:BL_APP_ERROR_TYPE_MISSING_PDEF forKey:@"type"];
             [d setValue:pId forKey:@"problemId"];
-            [d setValue:relPath forKey:@"path"];
+            [d setValue:pdefPath forKey:@"path"];
             AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
             [ac.loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
         }
@@ -434,6 +441,7 @@
         [contentDatabase close];
         [contentDatabase release];
     }
+    if (contentDir) [contentDir release];
     if (currentProblem) [currentProblem release];
     if (currentPDef) [currentPDef release];
     if (testProblemList) [testProblemList release];

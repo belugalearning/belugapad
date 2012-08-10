@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>MASTERY</key>
-	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>6/2</string>
 	<key>EVAL_MODE</key>
@@ -67,31 +65,31 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>5</string>
+				<string>10</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>3</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>12</string>
+				<string>20</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>6</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>15</string>
+				<string>5</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>What is 15÷3?</string>
+		<string>What is 15÷5?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

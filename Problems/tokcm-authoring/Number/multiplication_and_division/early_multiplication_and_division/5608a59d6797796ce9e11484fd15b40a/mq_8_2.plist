@@ -67,13 +67,7 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>5</string>
-				<key>META_ANSWER_VALUE</key>
-				<true/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>12</string>
+				<string>16</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
@@ -85,13 +79,19 @@
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>15</string>
+				<string>4</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>10</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>What is 15÷3?</string>
+		<string>What is 8÷2?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

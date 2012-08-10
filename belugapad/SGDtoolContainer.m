@@ -20,10 +20,10 @@
         if(aLabel){
             self.BaseNode=[[CCNode alloc]init];
             self.Label=[CCLabelTTF labelWithString:aLabel fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-            self.BlocksInShape=[[NSMutableArray alloc]init];
             [self.BaseNode addChild:self.Label];
             [aRenderLayer addChild:self.BaseNode];
         }
+            self.BlocksInShape=[[NSMutableArray alloc]init];
     }
     return self;
 }
@@ -47,21 +47,27 @@
 
 -(void)addBlockToMe:(id)thisBlock
 {
+
     if(![BlocksInShape containsObject:thisBlock])
         [BlocksInShape addObject:thisBlock];
+
     ((id<Moveable>)thisBlock).MyContainer=self;
     
-    [self repositionLabel];
-    NSLog(@"add block to shape %d blocks", [self.BlocksInShape count]);
+    if(Label)[self repositionLabel];
 }
 
 -(void)removeBlockFromMe:(id)thisBlock
 {
     if([BlocksInShape containsObject:thisBlock])
         [BlocksInShape removeObject:thisBlock];
+    
     ((id<Moveable>)thisBlock).MyContainer=nil;
-    [self repositionLabel];
-    NSLog(@"remove block to shape %d blocks", [self.BlocksInShape count]);
+    
+    
+    if([BlocksInShape count]==0)
+        [self destroyThisObject];
+    else
+        if(Label)[self repositionLabel];
 }
 
 -(void)repositionLabel
@@ -85,6 +91,13 @@
 -(int)blocksInShape
 {
     return [self.BlocksInShape count];
+}
+
+-(void)destroyThisObject
+{
+    [self.Label removeFromParentAndCleanup:YES];
+    [self.BaseNode removeFromParentAndCleanup:YES];
+    [gameWorld delayRemoveGameObject:self];
 }
 
 -(void)dealloc

@@ -20,6 +20,7 @@
 #import "LoggingService.h"
 #import "SGGameWorld.h"
 #import "SGDtoolBlock.h"
+#import "SGDtoolContainer.h"
 #import "SGDtoolBlockRender.h"
 #import "InteractionFeedback.h"
 
@@ -116,9 +117,10 @@ static float kDistanceBetweenBlocks=70.0f;
         BOOL isWinning=[self evalExpression];
         if(!hasMovedBlock)
         {
-            for(id<Moveable> go in gw.AllGameObjects)
+            for(id go in gw.AllGameObjects)
             {
-                [go.mySprite runAction:[InteractionFeedback shakeAction]];
+                if([go conformsToProtocol:@protocol(Moveable)])
+                    [((id<Moveable>)go).mySprite runAction:[InteractionFeedback shakeAction]];
             }
         }
         
@@ -172,20 +174,19 @@ static float kDistanceBetweenBlocks=70.0f;
 #pragma mark - objects
 -(void)createShapeWith:(int)blocks andWith:(NSDictionary*)theseSettings
 {
-    NSMutableArray *createdBlocksForShape;
-    CCLabelTTF *labelForShape;
+//    CCLabelTTF *labelForShape;
     id lastObj=nil;
+    id<Container> container;
     int posX=0;
     int posY=0;
-    float avgPosX=0;
-    float avgPosY=0;
-    BOOL hasLabel = NO;
+//    float avgPosX=0;
+//    float avgPosY=0;
     
-    if([theseSettings objectForKey:LABEL]){
-        createdBlocksForShape=[[NSMutableArray alloc]init];
-        hasLabel=YES;
-    }
-    
+    if([theseSettings objectForKey:LABEL])
+        container=[[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:[theseSettings objectForKey:LABEL] andRenderLayer:renderLayer];
+    else
+        container=[[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:nil andRenderLayer:renderLayer];
+
     
     if([theseSettings objectForKey:POS_X])
         posX=[[theseSettings objectForKey:POS_X]intValue];
@@ -199,36 +200,45 @@ static float kDistanceBetweenBlocks=70.0f;
     
     for(int i=0;i<blocks;i++)
     {
-        id<Configurable, Selectable,Pairable> newblock;
+        id<Configurable,Selectable,Pairable,Moveable> newblock;
         newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(posX+(kDistanceBetweenBlocks*i),posY)] autorelease];
-        
         [newblock setup];
+        newblock.MyContainer=container;
+        
         if(lastObj){
             [newblock pairMeWith:lastObj];
             [self findMountPositionForThisShape:newblock toThisShape:lastObj];
         }
-        
-        if(hasLabel){
-            [createdBlocksForShape addObject:newblock];
-            avgPosX+=posX;
-            avgPosY+=posY;
-        }
-        
+
+        [container addBlockToMe:newblock];
         lastObj=newblock;
         
     }
-    
-    if(hasLabel)
-    {
-        NSLog(@"(before) avgPosX %f, avgPosY %f", avgPosX, avgPosY);
-        avgPosX=avgPosX/2;
-        avgPosY=avgPosY/[createdBlocksForShape count];
-        NSLog(@"(after) avgPosX %f, avgPosY %f", avgPosX, avgPosY);
-        labelForShape=[CCLabelTTF labelWithString:[theseSettings objectForKey:LABEL] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-        [labelForShape setPosition:ccp(avgPosX,avgPosY+40)];
-        [renderLayer addChild:labelForShape];
-    }
 
+        
+    
+//    if(hasLabel)
+//    {
+//
+//        
+//        
+//        NSLog(@"(before) avgPosX %f, avgPosY %f", avgPosX, avgPosY);
+//        avgPosX=avgPosX/2;
+//        avgPosY=avgPosY/[createdBlocksForShape count];
+//        NSLog(@"(after) avgPosX %f, avgPosY %f", avgPosX, avgPosY);
+//        labelForShape=[CCLabelTTF labelWithString:[theseSettings objectForKey:LABEL] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+//        [labelForShape setPosition:ccp(avgPosX,avgPosY+40)];
+//        [renderLayer addChild:labelForShape];
+//    }
+
+}
+
+-(void)createContainerWithOne:(id)Object
+{
+    id<Container> container;
+    
+    container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:nil andRenderLayer:nil];
+    [container addBlockToMe:Object];
 }
 
 -(CGPoint)checkWhereIShouldMount:(id<Pairable>)gameObject;
@@ -288,7 +298,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
     for(id<Moveable,Pairable> go in mountedShape.PairedObjects)
     {
-        NSLog(@"go Position %@, current retVal %@", NSStringFromCGPoint(go.Position), NSStringFromCGPoint(mountedShapePos));
+//        NSLog(@"go Position %@, current retVal %@", NSStringFromCGPoint(go.Position), NSStringFromCGPoint(mountedShapePos));
         if(go==pickupObject)continue;
         
         if(mountedShapePos.x-kDistanceBetweenBlocks==go.Position.x && freeSpaceNegX)
@@ -303,7 +313,7 @@ static float kDistanceBetweenBlocks=70.0f;
            //NSLog(@"go Position %@, final retVal %@, found other shape? %@", NSStringFromCGPoint(go.Position), NSStringFromCGPoint(retval), foundAnotherShape? @"YES":@"NO");
     }
            
-    NSLog(@"-x %@, +x %@, -y %@, +y %@", freeSpaceNegX? @"YES":@"NO", freeSpacePosX? @"YES":@"NO", freeSpaceNegY? @"YES":@"NO", freeSpacePosY? @"YES":@"NO");
+//    NSLog(@"-x %@, +x %@, -y %@, +y %@", freeSpaceNegX? @"YES":@"NO", freeSpacePosX? @"YES":@"NO", freeSpaceNegY? @"YES":@"NO", freeSpacePosY? @"YES":@"NO");
     
 
         if(freeSpacePosX)
@@ -332,7 +342,7 @@ static float kDistanceBetweenBlocks=70.0f;
     if([possCoords count]>0)
     {
         int retValNum=(arc4random() % [possCoords count]);
-        NSLog(@"retval posscords count is %d chosennum is %d", [possCoords count], retValNum);
+//        NSLog(@"retval posscords count is %d chosennum is %d", [possCoords count], retValNum);
         retval=[[possCoords objectAtIndex:retValNum]CGPointValue];
     }
     else
@@ -426,20 +436,26 @@ static float kDistanceBetweenBlocks=70.0f;
     {
         CGPoint curPOPos=currentPickupObject.Position;
         // check all the gamobjects and search for a moveable object
-        for(id go in gw.AllGameObjects)
+        NSArray *gocopy=[NSArray arrayWithArray:gw.AllGameObjects];
+        
+        for(id go in gocopy)
         {
-            if(go==currentPickupObject)
-            {
-                [go resetTint];
-                continue;
-            }
             if([go conformsToProtocol:@protocol(Moveable)])
             {
+                if(go==currentPickupObject)
+                {
+                    [go resetTint];
+                    continue;
+                }
                 // return whether the object is proximate to our current pickuobject
                 BOOL proximateToPickupObject=[go amIProximateTo:curPOPos];
                 [go resetTint];
-                if(proximateToPickupObject){
+                if(!proximateToPickupObject){
+                    [go unpairMeFrom:currentPickupObject];
+                }
+                else {
                     [go pairMeWith:currentPickupObject];
+                    
                     
                     [loggingService logEvent:BL_PA_DT_TOUCH_END_PAIR_BLOCK withAdditionalData:nil];
                     
@@ -447,9 +463,10 @@ static float kDistanceBetweenBlocks=70.0f;
                     [currentPickupObject animateToPosition];
                     
                 }
-                else {
-                    [go unpairMeFrom:currentPickupObject];
-                }
+                
+                if(!((id<Moveable>)go).MyContainer)
+                    [self createContainerWithOne:go];
+                
                 
                 //TODO: add bit in here to check existing links - ie, at the minute, if a block is dragged out of the middle of the row, it doesn't seem to update all of them
                 
@@ -457,8 +474,19 @@ static float kDistanceBetweenBlocks=70.0f;
                 if(evalMode==kProblemEvalAuto)[self evalProblem];
                 
             }
+
+        }
+        for(id go in gocopy)
+        {
+            if([go conformsToProtocol:@protocol(Container)])
+            {
+                id<Container>go2=(id<Container>)go;
+                NSLog(@"count of group %d", [go2.BlocksInShape count]);
+            }
         }
     }
+    
+    
     
     if(hasBeenProximate)
     {

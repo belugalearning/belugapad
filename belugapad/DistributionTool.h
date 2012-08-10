@@ -63,6 +63,7 @@ typedef enum
 -(float)metaQuestionTitleYLocation;
 -(float)metaQuestionAnswersYLocation;
 -(void)createShapeWith:(int)blocks andWith:(NSDictionary*)theseSettings;
+-(void)createContainerWithOne:(id)Object;
 -(CGPoint)checkWhereIShouldMount:(id<Pairable>)gameObject;
 -(CGPoint)findMountPositionForThisShape:(id<Pairable>)pickupObject toThisShape:(id<Pairable>)mountedShape;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;

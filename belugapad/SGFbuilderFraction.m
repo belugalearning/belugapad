@@ -41,6 +41,7 @@
     return self;
 }
 
+
 -(int)Divisions
 {
     return MarkerPosition+1;

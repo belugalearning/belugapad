@@ -71,9 +71,8 @@
     BL_LOGGING_SETTING paLogging = [@"DATABASE" isEqualToString:pl] ? BL_LOGGING_ENABLED : BL_LOGGING_DISABLED;
     
     loggingService = [[LoggingService alloc] initWithProblemAttemptLoggingSetting:paLogging];
-    contentService = [[ContentService alloc] initWithProblemPipeline:pl];
+    contentService = [[ContentService alloc] initWithLocalSettings:self.LocalSettings];
     usersService = [[UsersService alloc] initWithProblemPipeline:pl andLoggingService:self.loggingService];
-    
     
     [self.loggingService logEvent:BL_APP_START withAdditionalData:nil];
     

@@ -102,7 +102,6 @@
         NSLog(@"marker position %d", markerPosition);
         
         ParentGO.MarkerPosition=markerPosition;
-        ParentGO.Divisions=markerPosition+1;
         
         if(ParentGO.ShowCurrentFraction)
         {

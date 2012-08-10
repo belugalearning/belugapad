@@ -72,6 +72,8 @@
 		55AFD6AA15651B5800FF1886 /* DWTTTileGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6A815651B5800FF1886 /* DWTTTileGameObject.m */; };
 		55AFD6AE15651C4700FF1886 /* BTTTileObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6AD15651C4700FF1886 /* BTTTileObjectRender.m */; };
 		55AFD6B115651C5500FF1886 /* BTTTileTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6B015651C5500FF1886 /* BTTTileTouch.m */; };
+		55B4018D15D571570068BCAA /* SGDtoolContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B4018C15D571570068BCAA /* SGDtoolContainer.m */; };
+		55B4019015D571670068BCAA /* local-settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55B4018F15D571670068BCAA /* local-settings.plist */; };
 		55BBB5D31580C3FC0031B1F5 /* BPieSplitterPieTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BBB5D21580C3FC0031B1F5 /* BPieSplitterPieTouch.m */; };
 		55BBB5D71580C4350031B1F5 /* BPieSplitterContainerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BBB5D61580C4350031B1F5 /* BPieSplitterContainerTouch.m */; };
 		55C5F71A153874C4009D8906 /* DotGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F719153874C3009D8906 /* DotGrid.m */; };
@@ -387,7 +389,6 @@
 		7FDBA53914EBD560004D1CC9 /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA52B14EBD560004D1CC9 /* CTidy.m */; };
 		7FDBA56314EC4271004D1CC9 /* bm11.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FDBA56214EC4271004D1CC9 /* bm11.plist */; };
 		7FEDCE1C1535DCA400C8C9F3 /* ExprEvalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */; };
-		B77E795815CBD68200FA3B39 /* local-settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = B77E795715CBD68200FA3B39 /* local-settings.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -525,6 +526,9 @@
 		55AFD6AD15651C4700FF1886 /* BTTTileObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTTTileObjectRender.m; sourceTree = "<group>"; };
 		55AFD6AF15651C5500FF1886 /* BTTTileTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTTTileTouch.h; sourceTree = "<group>"; };
 		55AFD6B015651C5500FF1886 /* BTTTileTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTTTileTouch.m; sourceTree = "<group>"; };
+		55B4018B15D571570068BCAA /* SGDtoolContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGDtoolContainer.h; sourceTree = "<group>"; };
+		55B4018C15D571570068BCAA /* SGDtoolContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGDtoolContainer.m; sourceTree = "<group>"; };
+		55B4018F15D571670068BCAA /* local-settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "local-settings.plist"; sourceTree = "<group>"; };
 		55BBB5D11580C3FC0031B1F5 /* BPieSplitterPieTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPieSplitterPieTouch.h; sourceTree = "<group>"; };
 		55BBB5D21580C3FC0031B1F5 /* BPieSplitterPieTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPieSplitterPieTouch.m; sourceTree = "<group>"; };
 		55BBB5D51580C4350031B1F5 /* BPieSplitterContainerTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPieSplitterContainerTouch.h; sourceTree = "<group>"; };
@@ -1130,7 +1134,6 @@
 		7FDBA52C14EBD560004D1CC9 /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchXML.h; sourceTree = "<group>"; };
 		7FDBA56214EC4271004D1CC9 /* bm11.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bm11.plist; sourceTree = "<group>"; };
 		7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprEvalTests.m; sourceTree = "<group>"; };
-		B77E795715CBD68200FA3B39 /* local-settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "local-settings.plist"; path = "../../../Desktop/local-settings.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1283,6 +1286,8 @@
 			children = (
 				5508FEB715A3068D003720AF /* SGDtoolBlock.h */,
 				5508FEB815A3068D003720AF /* SGDtoolBlock.m */,
+				55B4018B15D571570068BCAA /* SGDtoolContainer.h */,
+				55B4018C15D571570068BCAA /* SGDtoolContainer.m */,
 			);
 			name = Dtool;
 			sourceTree = "<group>";
@@ -2092,7 +2097,7 @@
 				0CF9187B14F54C1D00FAC58D /* images */,
 				7F5113E414A9EE63001AF372 /* Info.plist */,
 				7F5113E514A9EE63001AF372 /* iTunesArtwork */,
-				B77E795715CBD68200FA3B39 /* local-settings.plist */,
+				55B4018F15D571670068BCAA /* local-settings.plist */,
 				7F813D5914CCC38100C1E997 /* particles */,
 				0C9FEFF514F572FB00E64138 /* pipeline-testing */,
 				0C0AB7AC14F5116600437F07 /* Problems */,
@@ -2680,7 +2685,7 @@
 				0C35A9F81576272500D47517 /* canned-dbs in Resources */,
 				0C712C0D1580C392004B716F /* CHANGELOG.md in Resources */,
 				0C712C0F1580C392004B716F /* README.md in Resources */,
-				B77E795815CBD68200FA3B39 /* local-settings.plist in Resources */,
+				55B4019015D571670068BCAA /* local-settings.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3060,6 +3065,7 @@
 				0C33EEBE15D4EE5900EA6A11 /* unzip.c in Sources */,
 				0C33EEBF15D4EE5900EA6A11 /* zip.c in Sources */,
 				0C33EEC015D4EE5900EA6A11 /* SSZipArchive.m in Sources */,
+				55B4018D15D571570068BCAA /* SGDtoolContainer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

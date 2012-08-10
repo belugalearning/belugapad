@@ -21,6 +21,10 @@
 #import "SGFractionBuilderRender.h"
 
 
+#import "BAExpressionHeaders.h"
+#import "BAExpressionTree.h"
+#import "BATQuery.h"
+
 @interface FractionBuilder()
 {
 @private
@@ -130,7 +134,17 @@
     dividend=[[pdef objectForKey:DIVIDEND] intValue];
     divisor=[[pdef objectForKey:DIVISOR] intValue];
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
-    rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
+    rejectType=[[pdef objectForKey:REJECT_TYPE] intValue];
+    solutionType=[[pdef objectForKey:SOLUTION_TYPE] intValue];
+    
+    if([pdef objectForKey:SOLUTION_DIVIDEND])
+        solutionDividend=[[pdef objectForKey:SOLUTION_DIVIDEND]intValue];
+    
+    if([pdef objectForKey:SOLUTION_DIVISOR])
+        solutionDivisor=[[pdef objectForKey:SOLUTION_DIVISOR]intValue];
+    
+    if([pdef objectForKey:SOLUTION_EVAL_FRACTION_TAG])
+        solutionTag=[[pdef objectForKey:SOLUTION_EVAL_FRACTION_TAG]intValue];
     
 }
 
@@ -347,6 +361,8 @@
     if(hasMovedMarker)
         [loggingService logEvent:BL_PA_FB_TOUCH_MOVE_MOVE_MARKER withAdditionalData:nil];
     
+    if(evalMode==kProblemEvalAuto)[self evalProblem];
+    
     hasMovedChunk=NO;
     hasMovedMarker=NO;
     isTouching=NO;
@@ -372,6 +388,99 @@
 #pragma mark - evaluation
 -(BOOL)evalExpression
 {
+    
+    if(solutionType==kSolutionMatch)
+    {
+        return [self evalSolutionMatch];
+    }
+    else if(solutionType==kSolutionEquivalents)
+    {
+        return [self evalSolutionEquivalents];
+    }
+    
+    else if(solutionType==kSolutionAddition)
+    {
+        return [self evalSolutionAddition];
+    }
+    else
+    {
+        return NO;
+    }
+}
+
+-(BOOL)evalSolutionEquivalents
+{
+    for(id go in gw.AllGameObjects)
+    {
+        if([go conformsToProtocol:@protocol(Interactive)])
+        {
+            id<Interactive> thisFraction=go;
+            
+            int fdivisor=thisFraction.Divisions;
+            int fdividend=0;
+            
+            for(id<ConfigurableChunk> chunk in thisFraction.Chunks)
+            {
+                if(chunk.Selected)fdividend++;
+            }
+            
+            NSLog(@"got fraction of %d / %d", fdividend, fdivisor);
+        }
+    }
+    
+    return NO;
+}
+
+-(BOOL)evalSolutionAddition
+{
+    for(id go in gw.AllGameObjects)
+    {
+        if([go conformsToProtocol:@protocol(Interactive)])
+        {
+            id<Interactive> thisFraction=go;
+            
+            if(thisFraction.Tag==solutionTag)
+            {
+                int fdivisor=thisFraction.Divisions;
+                int fdividend=0;
+                
+                for(id<ConfigurableChunk> chunk in thisFraction.Chunks)
+                {
+                    if(chunk.Selected)fdividend++;
+                }
+                
+                NSLog(@"got tagged fraction of %d / %d", fdividend, fdivisor);
+                
+                if(fdivisor==0 || fdividend==0) return NO;
+                
+                //build expression -- eq with simplified div on left (from solution dive/divi)
+                toolHost.PpExpr=[BAExpressionTree treeWithRoot:[BAEqualsOperator operator]];
+                BADivisionOperator *divleft=[BADivisionOperator operator];
+                [divleft addChild:[BAInteger integerWithIntValue:solutionDividend]];
+                [divleft addChild:[BAInteger integerWithIntValue:solutionDivisor]];
+                [divleft simplifyIntegerDivision];
+                [toolHost.PpExpr.root addChild:divleft];
+                
+                //right div -- built from this fractions dive/divi
+                BADivisionOperator *divright=[BADivisionOperator operator];
+                [divright addChild:[BAInteger integerWithIntValue:fdividend]];
+                [divright addChild:[BAInteger integerWithIntValue:fdivisor]];
+                [divright simplifyIntegerDivision];
+                [toolHost.PpExpr.root addChild:divright];
+                
+                BATQuery *q=[[BATQuery alloc] initWithExpr:toolHost.PpExpr.root andTree:toolHost.PpExpr];
+                BOOL res=[q assumeAndEvalEqualityAtRoot];
+                [q release];
+                return res;
+            }
+        }
+    }
+    
+    return NO;
+}
+
+-(BOOL)evalSolutionMatch
+{
     int solutionsFound=0;
     NSMutableArray *foundSolution=[[NSMutableArray alloc]init];
     NSMutableArray *solvedFractions=[[NSMutableArray alloc]init];
@@ -388,7 +497,7 @@
                 NSLog(@"found interactive obj (tag %d)", thisFraction.Tag);
                 
                 if(thisFraction.Tag==[[s objectForKey:TAG]intValue])
-                {      
+                {
                     int totalSelectedChunks=0;
                     BOOL dividendMatch=NO;
                     BOOL divisorMatch=NO;
@@ -397,8 +506,6 @@
                     {
                         if(chunk.Selected)
                             totalSelectedChunks++;
-                        if(chunk.Selected)
-                            NSLog(@"chunk selected!");
                     }
                     
                     if(totalSelectedChunks==[[s objectForKey:DIVIDEND]intValue])
@@ -412,8 +519,6 @@
                         [foundSolution addObject:s];
                         [solvedFractions addObject:thisFraction];
                     }
-                    if(dividendMatch && divisorMatch)
-                        NSLog(@"solutions found: %d", solutionsFound);
                 }
             }
         }

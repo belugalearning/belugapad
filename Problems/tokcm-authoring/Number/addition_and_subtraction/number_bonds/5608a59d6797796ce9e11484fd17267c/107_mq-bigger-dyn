@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>MASTERY</key>
+	<true/>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$augend} + {$addend}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$addend} + {$augend}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>They are the same.</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>Which of these is bigger?</string>
+		<key>INTERNAL_DESCRIPTION</key>
+		<string>commutativity</string>
+		<key>PROBLEM_DESCRIPTION</key>
+		<string>Which of these is bigger?</string>
+	</dict>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$augend</string>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>4</string>
+			<key>RETAIN</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$addend</string>
+			<key>MIN</key>
+			<string>5</string>
+			<key>MAX</key>
+			<string>9</string>
+			<key>RETAIN</key>
+			<true/>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>How many units are there in 491?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>units in 491</string>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>

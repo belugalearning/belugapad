@@ -6,6 +6,8 @@
 	<string>Show that {$augend} + {$addend} = {$addend} + {$augend}.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>commutativity</string>
+	<key>MASTERY</key>
+	<true/>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>INIT_BARS</key>

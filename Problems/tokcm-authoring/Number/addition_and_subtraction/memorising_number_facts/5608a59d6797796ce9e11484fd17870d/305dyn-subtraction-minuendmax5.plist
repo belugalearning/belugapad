@@ -7,7 +7,7 @@
 		<key>NUMBER_PICKER_DESCRIPTION</key>
 		<string>What is {$minuend} {@operator} {$subtrahend}?</string>
 		<key>INTERNAL_DESCRIPTION</key>
-		<string>memorise number facts for subtraction with within max minuend 5 (e.g. 5-2) </string>
+		<string>305 memorise number facts for subtraction with within max minuend 5 (e.g. 5-2) </string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>ANIMATE_FROM_PICKER</key>

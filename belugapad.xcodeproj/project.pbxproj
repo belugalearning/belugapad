@@ -2042,21 +2042,21 @@
 			isa = PBXGroup;
 			children = (
 				0C35A9F71576272500D47517 /* canned-dbs */,
-				7FBE969215497DDF00D993AC /* select-edit-user-images */,
+				7F813D5D14CCC3AF00C1E997 /* fonts */,
 				7F5005C81522478C0038D251 /* fps_images-hd.png */,
 				7F5005C91522478C0038D251 /* fps_images-ipadhd.png */,
 				7F5005CA1522478C0038D251 /* fps_images.png */,
 				0CF9187B14F54C1D00FAC58D /* images */,
-				0C9FEFF514F572FB00E64138 /* pipeline-testing */,
-				0C0AB7AC14F5116600437F07 /* Problems */,
-				0C427C3614F529CC0033AFE2 /* sfx */,
-				7F813D5D14CCC3AF00C1E997 /* fonts */,
-				7F813D5914CCC38100C1E997 /* particles */,
-				7FABE6A114B4BF0F00ED2D0C /* templatedefs-general.plist */,
-				552478651536BF5C00BA5C4E /* tooldef.plist */,
 				7F5113E414A9EE63001AF372 /* Info.plist */,
 				7F5113E514A9EE63001AF372 /* iTunesArtwork */,
 				B77E795715CBD68200FA3B39 /* local-settings.plist */,
+				7F813D5914CCC38100C1E997 /* particles */,
+				0C9FEFF514F572FB00E64138 /* pipeline-testing */,
+				0C0AB7AC14F5116600437F07 /* Problems */,
+				7FBE969215497DDF00D993AC /* select-edit-user-images */,
+				0C427C3614F529CC0033AFE2 /* sfx */,
+				7FABE6A114B4BF0F00ED2D0C /* templatedefs-general.plist */,
+				552478651536BF5C00BA5C4E /* tooldef.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";

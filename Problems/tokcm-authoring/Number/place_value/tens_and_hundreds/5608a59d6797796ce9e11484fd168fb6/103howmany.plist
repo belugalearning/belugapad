@@ -4,6 +4,8 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Here is 436. How many ones are there?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>units in 436</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>

@@ -55,5 +55,14 @@
 	</array>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>SOLUTION_MODE</key>
+	<string>1</string>
+	<key>SOLUTIONS</key>
+	<array>
+		<array>
+			<integer>7</integer>
+			<integer>3</integer>
+		</array>
+	</array>
 </dict>
 </plist>

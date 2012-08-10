@@ -236,7 +236,7 @@ static float kDistanceBetweenBlocks=70.0f;
 -(void)createContainerWithOne:(id)Object
 {
     id<Container> container;
-    
+    NSLog(@"create container");
     container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:nil andRenderLayer:nil];
     [container addBlockToMe:Object];
 }
@@ -432,13 +432,14 @@ static float kDistanceBetweenBlocks=70.0f;
     isTouching=NO;
     
     // check there's a pickupobject
+    NSArray *allGWCopy=[NSArray arrayWithArray:gw.AllGameObjects];
+    
     if(currentPickupObject)
     {
         CGPoint curPOPos=currentPickupObject.Position;
         // check all the gamobjects and search for a moveable object
-        NSArray *gocopy=[NSArray arrayWithArray:gw.AllGameObjects];
         
-        for(id go in gocopy)
+        for(id go in allGWCopy)
         {
             if([go conformsToProtocol:@protocol(Moveable)])
             {
@@ -456,17 +457,12 @@ static float kDistanceBetweenBlocks=70.0f;
                 else {
                     [go pairMeWith:currentPickupObject];
                     
-                    
                     [loggingService logEvent:BL_PA_DT_TOUCH_END_PAIR_BLOCK withAdditionalData:nil];
                     
                     currentPickupObject.Position=[self findMountPositionForThisShape:currentPickupObject toThisShape:go];
                     [currentPickupObject animateToPosition];
                     
                 }
-                
-                if(!((id<Moveable>)go).MyContainer)
-                    [self createContainerWithOne:go];
-                
                 
                 //TODO: add bit in here to check existing links - ie, at the minute, if a block is dragged out of the middle of the row, it doesn't seem to update all of them
                 
@@ -476,17 +472,17 @@ static float kDistanceBetweenBlocks=70.0f;
             }
 
         }
-        for(id go in gocopy)
-        {
-            if([go conformsToProtocol:@protocol(Container)])
-            {
-                id<Container>go2=(id<Container>)go;
-                NSLog(@"count of group %d", [go2.BlocksInShape count]);
-            }
-        }
+
     }
     
-    
+    for(id go in gw.AllGameObjects)
+    {
+        if([go conformsToProtocol:@protocol(Container)])
+        {
+            id<Container>go2=(id<Container>)go;
+            NSLog(@"count of group %d", [go2.BlocksInShape count]);
+        }
+    }
     
     if(hasBeenProximate)
     {

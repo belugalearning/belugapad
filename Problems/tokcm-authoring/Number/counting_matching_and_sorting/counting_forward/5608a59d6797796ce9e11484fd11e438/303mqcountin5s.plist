@@ -36,6 +36,10 @@
 	<false/>
 	<key>DISABLE_SNAPPING_TO_NOTCH</key>
 	<false/>
+	<key>SHOW_NUMBERS_AT_INTERVALS</key>
+	<array>
+		<string>20</string>
+	</array>
 	<key>EVAL_PLUS_MINUS_THRESHOLD</key>
 	<integer>0</integer>
 	<key>SEGMENT_VALUE</key>
@@ -64,15 +68,15 @@
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>{$answer + 5}</string>
+				<string>{$answer+5}</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>{$answer - 5}</string>
+				<string>{$answer-5}</string>
 				<key>META_ANSWER_VALUE</key>
-				<true/>
+				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
@@ -86,15 +90,15 @@
 			<key>VAR_NAME</key>
 			<string>$x</string>
 			<key>MIN</key>
-			<integer>1</integer>
+			<string>1</string>
 			<key>MAX</key>
-			<integer>9</integer>
+			<string>9</string>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
 			<string>$answer</string>
 			<key>VALUE</key>
-			<string>{$x*10}</string>
+			<string>{$x*5}</string>
 		</dict>
 	</array>
 </dict>

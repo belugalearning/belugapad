@@ -18,6 +18,7 @@
 #import "Pipeline.h"
 #import "FMDatabase.h"
 #import "JSONKit.h"
+#import "SSZipArchive.h"
 
 @interface ContentService()
 {
@@ -31,7 +32,6 @@
     // kcm database pipelines
     FMDatabase *contentDatabase;
     int pipelineIndex;
-
 }
 
 @property (nonatomic, readwrite, retain) Problem *currentProblem;
@@ -59,11 +59,12 @@
 #pragma mark - init and setup
 
 // Designated initializer
--(id)initWithProblemPipeline:(NSString*)source
+-(id)initWithLocalSettings:(NSDictionary*)settings
 {
     self = [super init];
     if (self)
     {
+        NSString *source = [settings objectForKey:@"PROBLEM_PIPELINE"];
         useTestPipeline = ![@"DATABASE" isEqualToString:source];
         
         if (useTestPipeline)
@@ -73,8 +74,7 @@
                 //load from this array
                 currentPIndex = NSUIntegerMax;
                 testProblemList = [[NSArray arrayWithContentsOfFile:BUNDLE_FULL_PATH(source)] retain];
-            }
-            else {
+            } else {
                 //build an array from this location
                 currentPIndex = NSUIntegerMax;
                 NSString *pathOfProblems=BUNDLE_FULL_PATH(source);
@@ -92,9 +92,30 @@
                 [allFilePaths release];
             }
 
-        }
-        else
-        {
+        } else {
+            NSNumber *importContent = [settings objectForKey:@"IMPORT_CONTENT_ON_LAUNCH"];
+            NSString *kcmLoginName = [settings objectForKey:@"KCM_LOGIN_NAME"];
+            if (importContent && [importContent boolValue] && kcmLoginName)
+            {
+                NSLog(@"import content");
+                
+                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://authoring.zubi.me:3001/kcm/app-import-content/%@", kcmLoginName]];
+                NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
+                NSHTTPURLResponse *response = nil;
+                NSError *error = nil;
+                NSData *result = [NSURLConnection sendSynchronousRequest:req returningResponse:&response error:&error];
+                
+                if (error || !response || [response statusCode] != 200)
+                {
+                    NSString *resultString = [[[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding] autorelease];
+                    NSLog(@"Error importing kcm: %@", resultString);
+                } else {
+                    NSString *zipPath = BUNDLE_FULL_PATH(@"/canned-dbs/canned-content.zip");
+                    [result writeToFile:zipPath atomically:NO];
+                    [SSZipArchive unzipFileAtPath:zipPath toDestination:BUNDLE_FULL_PATH(@"/canned-dbs/")];
+                    NSLog(@"success");
+                }
+            }
             contentDatabase = [FMDatabase databaseWithPath:BUNDLE_FULL_PATH(@"/canned-dbs/canned-content/content.db")];
             [contentDatabase retain];
         }

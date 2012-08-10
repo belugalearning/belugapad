@@ -7,3 +7,6 @@
 [submodule "belugapad/libs/AFNetworking"]
 	path = belugapad/libs/AFNetworking
 	url = https://github.com/AFNetworking/AFNetworking.git
+[submodule "belugapad/libs/SSZipArchive"]
+	path = belugapad/libs/SSZipArchive
+	url = git://github.com/samsoffes/ssziparchive.git

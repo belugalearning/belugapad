@@ -18,6 +18,7 @@
 @protocol Bounding
 
 @property (readonly) CGSize size;
+@property CGPoint position;
 
 -(void) calculateSize;
 

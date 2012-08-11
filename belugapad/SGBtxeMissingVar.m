@@ -10,7 +10,7 @@
 
 @implementation SGBtxeMissingVar
 
-@synthesize size;
+@synthesize size, position;
 @synthesize text;
 @synthesize enabled, tag;
 
@@ -20,6 +20,7 @@
     {
         text=@"";
         size=CGSizeZero;
+        position=CGPointZero;
         tag=@"";
         enabled=YES;
     }

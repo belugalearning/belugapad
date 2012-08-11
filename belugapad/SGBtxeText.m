@@ -10,7 +10,7 @@
 
 @implementation SGBtxeText
 
-@synthesize size;
+@synthesize size, position;
 @synthesize text;
 
 -(SGBtxeText*)initWithGameWorld:(SGGameWorld*)aGameWorld
@@ -19,6 +19,7 @@
     {
         text=@"";
         size=CGSizeZero;
+        position=CGPointZero;
     }
     
     return self;

@@ -11,7 +11,7 @@
 @implementation SGBtxeRow
 
 @synthesize children;   //Container properties
-@synthesize size;       //Bounding properties
+@synthesize size, position;       //Bounding properties
 
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -19,6 +19,7 @@
     {
         children=[[NSMutableArray alloc] init];
         size=CGSizeZero;
+        position=CGPointZero;
     }
     return self;
 }

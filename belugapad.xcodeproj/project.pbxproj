@@ -374,6 +374,9 @@
 		7FCA646615D69CAC00C5C020 /* SGBtxeText.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA646515D69CAC00C5C020 /* SGBtxeText.m */; };
 		7FCA646915D69CBF00C5C020 /* SGBtxeObjectText.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA646815D69CBF00C5C020 /* SGBtxeObjectText.m */; };
 		7FCA646C15D69CDD00C5C020 /* SGBtxeMissingVar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA646B15D69CDD00C5C020 /* SGBtxeMissingVar.m */; };
+		7FCA646F15D6C63E00C5C020 /* SGBtxeContainerMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA646E15D6C63E00C5C020 /* SGBtxeContainerMgr.m */; };
+		7FCA647215D6C7E800C5C020 /* SGBtxeRowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA647115D6C7E800C5C020 /* SGBtxeRowLayout.m */; };
+		7FCA647515D6C7F900C5C020 /* SGBtxeTextRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA647415D6C7F900C5C020 /* SGBtxeTextRender.m */; };
 		7FCBC3E415100CF700066426 /* BATio.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E315100CF700066426 /* BATio.m */; };
 		7FCBC3E815100F3D00066426 /* MathMLConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E715100F3D00066426 /* MathMLConsts.m */; };
 		7FCBC3EB1510195F00066426 /* ExprIOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3EA1510195F00066426 /* ExprIOTests.m */; };
@@ -1111,6 +1114,12 @@
 		7FCA646815D69CBF00C5C020 /* SGBtxeObjectText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeObjectText.m; sourceTree = "<group>"; };
 		7FCA646A15D69CDD00C5C020 /* SGBtxeMissingVar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeMissingVar.h; sourceTree = "<group>"; };
 		7FCA646B15D69CDD00C5C020 /* SGBtxeMissingVar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeMissingVar.m; sourceTree = "<group>"; };
+		7FCA646D15D6C63E00C5C020 /* SGBtxeContainerMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeContainerMgr.h; sourceTree = "<group>"; };
+		7FCA646E15D6C63E00C5C020 /* SGBtxeContainerMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeContainerMgr.m; sourceTree = "<group>"; };
+		7FCA647015D6C7E800C5C020 /* SGBtxeRowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeRowLayout.h; sourceTree = "<group>"; };
+		7FCA647115D6C7E800C5C020 /* SGBtxeRowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeRowLayout.m; sourceTree = "<group>"; };
+		7FCA647315D6C7F900C5C020 /* SGBtxeTextRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeTextRender.h; sourceTree = "<group>"; };
+		7FCA647415D6C7F900C5C020 /* SGBtxeTextRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeTextRender.m; sourceTree = "<group>"; };
 		7FCBC3E215100CF700066426 /* BATio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATio.h; sourceTree = "<group>"; };
 		7FCBC3E315100CF700066426 /* BATio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATio.m; sourceTree = "<group>"; };
 		7FCBC3E615100F3D00066426 /* MathMLConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathMLConsts.h; sourceTree = "<group>"; };
@@ -2559,6 +2568,12 @@
 		7FCA646015D69BF300C5C020 /* BTXE */ = {
 			isa = PBXGroup;
 			children = (
+				7FCA646D15D6C63E00C5C020 /* SGBtxeContainerMgr.h */,
+				7FCA646E15D6C63E00C5C020 /* SGBtxeContainerMgr.m */,
+				7FCA647015D6C7E800C5C020 /* SGBtxeRowLayout.h */,
+				7FCA647115D6C7E800C5C020 /* SGBtxeRowLayout.m */,
+				7FCA647315D6C7F900C5C020 /* SGBtxeTextRender.h */,
+				7FCA647415D6C7F900C5C020 /* SGBtxeTextRender.m */,
 			);
 			name = BTXE;
 			sourceTree = "<group>";
@@ -3108,6 +3123,9 @@
 				7FCA646615D69CAC00C5C020 /* SGBtxeText.m in Sources */,
 				7FCA646915D69CBF00C5C020 /* SGBtxeObjectText.m in Sources */,
 				7FCA646C15D69CDD00C5C020 /* SGBtxeMissingVar.m in Sources */,
+				7FCA646F15D6C63E00C5C020 /* SGBtxeContainerMgr.m in Sources */,
+				7FCA647215D6C7E800C5C020 /* SGBtxeRowLayout.m in Sources */,
+				7FCA647515D6C7F900C5C020 /* SGBtxeTextRender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

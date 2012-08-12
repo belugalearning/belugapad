@@ -65,6 +65,7 @@ static float kTimeToHeaderBounce=7.0f;
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         contentService = ac.contentService;
         usersService = ac.usersService;
+        loggingService = ac.loggingService;
         
         [gw Blackboard].hostCX = cx;
         [gw Blackboard].hostCY = cy;

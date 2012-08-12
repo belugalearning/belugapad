@@ -14,4 +14,6 @@
     id<Container> ParentGO;
 }
 
+-(void)addObjectToContainer:(id<Bounding>)object;
+
 @end

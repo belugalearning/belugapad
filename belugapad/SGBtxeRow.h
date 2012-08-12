@@ -9,8 +9,13 @@
 #import "SGGameObject.h"
 #import "SGBtxeProtocols.h"
 
+@class SGBtxeRowLayout;
+
 @interface SGBtxeRow : SGGameObject <Container, Bounding, Parser>
 {
     NSMutableArray *children;
 }
+
+@property (retain) SGBtxeRowLayout *rowLayoutComponent;
+
 @end

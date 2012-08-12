@@ -14,6 +14,7 @@
 typedef enum 
 {
     kCheckShapeSizes=0,
+    kCheckNamedGroups=1
 }DistributionEvalType;
 
 @interface DistributionTool : ToolScene

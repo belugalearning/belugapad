@@ -677,30 +677,63 @@ static float kDistanceBetweenBlocks=70.0f;
 
 -(BOOL)evalExpression
 {
-    int solutionsFound=0;
-    int solutionsExpected=[solutionsDef count];
-    NSMutableArray *shapesMatched=[[NSMutableArray alloc]init];
-    NSArray *shapesHere=[self evalUniqueShapes];
-
-    
-    for(int i=0;i<[solutionsDef count];i++)
+    if(evalType==kCheckShapeSizes)
     {
-        int thisSolution=[[solutionsDef objectAtIndex:i]intValue];
-        for(NSArray *a in shapesHere)
+        int solutionsFound=0;
+        int solutionsExpected=[solutionsDef count];
+        NSMutableArray *shapesMatched=[[NSMutableArray alloc]init];
+        NSArray *shapesHere=[self evalUniqueShapes];
+
+        
+        for(int i=0;i<[solutionsDef count];i++)
         {
-            if([a count]==thisSolution&&![shapesMatched containsObject:a]){
-                [shapesMatched addObject:a];
-                solutionsFound++;
+            int thisSolution=[[solutionsDef objectAtIndex:i]intValue];
+            for(NSArray *a in shapesHere)
+            {
+                if([a count]==thisSolution&&![shapesMatched containsObject:a]){
+                    [shapesMatched addObject:a];
+                    solutionsFound++;
+                }
             }
         }
+        
+        [shapesMatched release];
+        
+        if(solutionsFound==solutionsExpected)
+            return YES;
+        else
+            return NO;
+    }
+    else if(evalType==kCheckNamedGroups)
+    {
+        NSDictionary *d=[solutionsDef objectAtIndex:0];
+        int solutionsExpected=[d count];
+        int solutionsFound=0;
+        
+        for(id cont in gw.AllGameObjects)
+        {
+                if([cont conformsToProtocol:@protocol(Container)])
+                {
+                    id <Container> thisCont=cont;
+                    NSString *thisKey=[thisCont.Label string];
+                    if([d objectForKey:thisKey])
+                    {
+                        int thisVal=[[d objectForKey:thisKey] intValue];
+                         NSLog(@"this group %d, required for key %d", [thisCont.BlocksInShape count], thisVal);
+                        if([thisCont.BlocksInShape count]==thisVal)
+                            solutionsFound++;
+                    }
+                }
+        }
+        
+        if (solutionsFound==solutionsExpected)
+            return YES;
+        else
+            return NO;
     }
     
-    [shapesMatched release];
-    
-    if(solutionsFound==solutionsExpected)
-        return YES;
-    else
-        return NO;
+
+return NO;
 }
 
 -(void)evalProblem

@@ -164,12 +164,7 @@
         else if([initFractions count]==3)ySpaceBetweenFractions=225;
         // set up the fraction
         
-        if([d objectForKey:POS_Y])
-            thisFractionYPos=[[d objectForKey:POS_Y]floatValue];
-        else
-            thisFractionYPos=600-(ySpaceBetweenFractions*fractionsDisplayed);
-        
-        NSLog(@"thisFractionYPos=%f, ySpaceBetweenFractions=%d, fractionsDisplayed=%d", thisFractionYPos, ySpaceBetweenFractions, fractionsDisplayed);
+        thisFractionYPos=600-(ySpaceBetweenFractions*fractionsDisplayed);
         
         id<Configurable, Interactive> fraction;
         fraction=[[[SGFbuilderFraction alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,thisFractionYPos)] autorelease];
@@ -354,6 +349,8 @@
             return;
         }
         
+        BOOL returnThisChunk=NO;
+        id<Interactive> successfulGO;
         // then check for a chunk drop in a fraction
         for(id go in gw.AllGameObjects)
         {
@@ -361,15 +358,21 @@
             {
                 if([currentChunk checkForChunkDropIn:go])
                 {
-                    [loggingService logEvent:BL_PA_FB_MOUNT_TO_FRACTION withAdditionalData:[NSString stringWithFormat:@"{ tag : %d }", ((id<Interactive>)go).Tag]];
-                    [currentChunk changeChunk:currentChunk toBelongTo:go];
+                    successfulGO=go;
+                    returnThisChunk=YES;
                 }
-                    //TODO: this is when we'd check the parent vs current host
-                    // if different, we need to reassign
-                else{
-                    [currentChunk returnToParentSlice];
-                }
+
             }
+        }
+        
+        if(returnThisChunk)
+        {
+            [loggingService logEvent:BL_PA_FB_MOUNT_TO_FRACTION withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:((id<Interactive>)successfulGO).Tag] forKey:@"TAG"]];
+            [currentChunk changeChunk:currentChunk toBelongTo:successfulGO];
+        }
+        else
+        {
+            [currentChunk returnToParentSlice];
         }
     }
     

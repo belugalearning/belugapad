@@ -10,4 +10,13 @@
 
 @implementation SGBtxeContainerMgr
 
+-(SGBtxeContainerMgr*)initWithGameObject:(id<Container>)aGameObject
+{
+    if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
+    {
+        ParentGO=aGameObject;
+    }
+    return self;
+}
+
 @end

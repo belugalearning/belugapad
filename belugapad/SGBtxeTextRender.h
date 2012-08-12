@@ -7,7 +7,10 @@
 //
 
 #import "SGComponent.h"
+#import "SGBtxeProtocols.h"
 
 @interface SGBtxeTextRender : SGComponent
-
+{
+    id<Bounding, Text> ParentGO;
+}
 @end

@@ -10,4 +10,13 @@
 
 @implementation SGBtxeTextRender
 
+-(SGBtxeTextRender*)initWithGameObject:(id<Bounding, Text>)aGameObject
+{
+    if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
+    {
+        
+    }
+    return self;
+    
+}
 @end

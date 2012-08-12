@@ -10,4 +10,13 @@
 
 @implementation SGBtxeRowLayout
 
+-(SGBtxeRowLayout*)initWithGameObject:(id<Bounding, Container>)aGameObject
+{
+    if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
+    {
+        
+    }
+    return self;
+}
+
 @end

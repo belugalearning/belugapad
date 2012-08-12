@@ -7,7 +7,12 @@
 //
 
 #import "SGComponent.h"
+#import "SGBtxeProtocols.h"
 
 @interface SGBtxeRowLayout : SGComponent
+{
+    id<Bounding, Container> ParentGo;
+}
+
 
 @end

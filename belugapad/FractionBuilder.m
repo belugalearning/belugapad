@@ -163,12 +163,7 @@
         else if([initFractions count]==3)ySpaceBetweenFractions=225;
         // set up the fraction
         
-        if([d objectForKey:POS_Y])
-            thisFractionYPos=[[d objectForKey:POS_Y]floatValue];
-        else
-            thisFractionYPos=600-(ySpaceBetweenFractions*fractionsDisplayed);
-        
-        NSLog(@"thisFractionYPos=%f, ySpaceBetweenFractions=%d, fractionsDisplayed=%d", thisFractionYPos, ySpaceBetweenFractions, fractionsDisplayed);
+        thisFractionYPos=600-(ySpaceBetweenFractions*fractionsDisplayed);
         
         id<Configurable, Interactive> fraction;
         fraction=[[[SGFbuilderFraction alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,thisFractionYPos)] autorelease];

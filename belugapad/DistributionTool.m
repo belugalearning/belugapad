@@ -641,8 +641,10 @@ static float kDistanceBetweenBlocks=70.0f;
         if([go conformsToProtocol:@protocol(Pairable)])
         {
             // cast the go as a pairable to use properties
-            id<Pairable> pairableGO=(id<Pairable>)go;
-            
+            id<Pairable,Moveable> pairableGO=(id<Pairable,Moveable>)go;
+            if(![pairableGO.MyContainer conformsToProtocol:@protocol(Container)])
+                continue;
+                
             //check if we're a lonesome object
             if ([pairableGO.PairedObjects count]==0) {
                 NSMutableArray *shape=[[NSMutableArray alloc]init];

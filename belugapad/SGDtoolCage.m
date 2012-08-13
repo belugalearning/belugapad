@@ -45,6 +45,7 @@
 {
     id<Configurable,Selectable,Pairable,Moveable> newblock;
     newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gameWorld andRenderLayer:self.RenderLayer andPosition:self.Position] autorelease];
+    newblock.MyContainer=self;
     [newblock setup];
 
 }

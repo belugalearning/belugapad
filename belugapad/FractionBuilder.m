@@ -77,6 +77,7 @@
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         contentService = ac.contentService;
         usersService = ac.usersService;
+        loggingService = ac.loggingService;
         
         
         [self readPlist:pdef];
@@ -151,13 +152,22 @@
 -(void)populateGW
 {
     gw.Blackboard.RenderLayer = renderLayer;
-
+    int fractionsDisplayed=0;
+    
     // loop through our init fractions
     for(NSDictionary *d in initFractions)
     {
+        
+        int ySpaceBetweenFractions=0;
+        float thisFractionYPos=0;
+        if([initFractions count]==2)ySpaceBetweenFractions=300;
+        else if([initFractions count]==3)ySpaceBetweenFractions=225;
         // set up the fraction
+        
+        thisFractionYPos=600-(ySpaceBetweenFractions*fractionsDisplayed);
+        
         id<Configurable, Interactive> fraction;
-        fraction=[[[SGFbuilderFraction alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,[[d objectForKey:POS_Y]floatValue])] autorelease];
+        fraction=[[[SGFbuilderFraction alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,thisFractionYPos)] autorelease];
         
         // determine its mode
         fraction.FractionMode=[[d objectForKey:FRACTION_MODE]intValue];
@@ -189,6 +199,8 @@
         // and if it should start hidden, hide!
         if([[d objectForKey:START_HIDDEN]boolValue])
             [fraction hideFraction];
+        
+        fractionsDisplayed++;
     }
     
 }
@@ -200,7 +212,7 @@
     id<Interactive,Configurable> curBar=thisBar;
     if([curBar.Chunks count]>0)
         [curBar removeChunks];
-    
+        
     // loop ofver to create our number of chunks
     for(int i=0;i<thisManyChunks;i++)
     {
@@ -290,7 +302,7 @@
             float diffX=[BLMath DistanceBetween:ccp(currentChunk.Position.x,0) and:ccp(chunk.Position.x,0)];
             float diffY=[BLMath DistanceBetween:ccp(0,currentChunk.Position.y) and:ccp(0,currentChunk.Position.y)];
             
-            NSLog(@"diffX %f, diffY %f", diffX, diffY);
+//            NSLog(@"diffX %f, diffY %f", diffX, diffY);
             chunk.Position=ccp(location.x+diffX,location.y+diffY);
             [chunk moveChunk];
         }
@@ -318,8 +330,8 @@
             [currentMarker ghostChunk];
 
         // and split dat bar!
-        [self splitThisBar:currentMarker into:currentMarker.MarkerPosition+1];
-        [loggingService logEvent:BL_PA_FB_CREATE_CHUNKS withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:currentMarker.MarkerPosition+1] forKey:@"CHUNKS"]];
+        [self splitThisBar:currentMarker into:currentMarker.Divisions];
+        [loggingService logEvent:BL_PA_FB_CREATE_CHUNKS withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:currentMarker.Divisions] forKey:@"CHUNKS"]];
         
     }
     
@@ -327,7 +339,7 @@
     if(currentChunk)
     {
         // and distance <10, select the chunk
-        if(distFromStartToEnd<10.0f)
+        if(distFromStartToEnd<15.0f)
         {
             [currentChunk changeChunkSelection];
             if(!selectedChunks)selectedChunks=[[NSMutableArray alloc]init];
@@ -337,6 +349,8 @@
             return;
         }
         
+        BOOL returnThisChunk=NO;
+        id<Interactive> successfulGO;
         // then check for a chunk drop in a fraction
         for(id go in gw.AllGameObjects)
         {
@@ -344,15 +358,21 @@
             {
                 if([currentChunk checkForChunkDropIn:go])
                 {
-                    [loggingService logEvent:BL_PA_FB_MOUNT_TO_FRACTION withAdditionalData:[NSString stringWithFormat:@"{ tag : %d }", ((id<Interactive>)go).Tag]];
-                    [currentChunk changeChunk:currentChunk toBelongTo:go];
+                    successfulGO=go;
+                    returnThisChunk=YES;
                 }
-                    //TODO: this is when we'd check the parent vs current host
-                    // if different, we need to reassign
-                else{
-                    [currentChunk returnToParentSlice];
-                }
+
             }
+        }
+        
+        if(returnThisChunk)
+        {
+            [loggingService logEvent:BL_PA_FB_MOUNT_TO_FRACTION withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:((id<Interactive>)successfulGO).Tag] forKey:@"TAG"]];
+            [currentChunk changeChunk:currentChunk toBelongTo:successfulGO];
+        }
+        else
+        {
+            [currentChunk returnToParentSlice];
         }
     }
     
@@ -410,6 +430,23 @@
 
 -(BOOL)evalSolutionEquivalents
 {
+    //we want to check that all the fractions are equivilent, but that they also all use different divisors
+    // to do this we'll do two paralell evaluations:
+    // 1. build an expression that chains evaluation of fractions (that are simplified)
+    // 2. check that each divisor is different from the last
+    
+    //container expression for chained eval to solution required
+    toolHost.PpExpr=[BAExpressionTree treeWithRoot:[BAEqualsOperator operator]];
+    BADivisionOperator *divleft=[BADivisionOperator operator];
+    [divleft addChild:[BAInteger integerWithIntValue:solutionDividend]];
+    [divleft addChild:[BAInteger integerWithIntValue:solutionDivisor]];
+    [divleft simplifyIntegerDivision];
+    [toolHost.PpExpr.root addChild:divleft];
+    
+    //tracking divisor
+    int lastDivisor=0;
+    BOOL divisorWasTheSame=NO;
+    
     for(id go in gw.AllGameObjects)
     {
         if([go conformsToProtocol:@protocol(Interactive)])
@@ -424,8 +461,31 @@
                 if(chunk.Selected)fdividend++;
             }
             
-            NSLog(@"got fraction of %d / %d", fdividend, fdivisor);
+            BADivisionOperator *d=[BADivisionOperator operator];
+            [d addChild:[BAInteger integerWithIntValue:fdividend]];
+            [d addChild:[BAInteger integerWithIntValue:fdivisor]];
+            [d simplifyIntegerDivision];
+            [toolHost.PpExpr.root addChild:d];
+            
+            if(lastDivisor!=0 && lastDivisor==fdivisor) divisorWasTheSame=YES;
+            lastDivisor=fdivisor;
         }
+    }
+    
+    
+    if(divisorWasTheSame)
+    {
+        //return no -- fractions must be different
+        //TODO: log that failure was a result of this
+        return NO;
+    }
+    else
+    {
+        //query the expression for equality
+        BATQuery *q=[[BATQuery alloc] initWithExpr:toolHost.PpExpr.root andTree:toolHost.PpExpr];
+        BOOL res=[q assumeAndEvalEqualityAtRoot];
+        [q release];
+        return res;
     }
     
     return NO;
@@ -448,8 +508,6 @@
                 {
                     if(chunk.Selected)fdividend++;
                 }
-                
-                NSLog(@"got tagged fraction of %d / %d", fdividend, fdivisor);
                 
                 if(fdivisor==0 || fdividend==0) return NO;
                 
@@ -494,7 +552,7 @@
             if([go conformsToProtocol:@protocol(Interactive)] && ![solvedFractions containsObject:go])
             {
                 id<Interactive> thisFraction=go;
-                NSLog(@"found interactive obj (tag %d)", thisFraction.Tag);
+//                NSLog(@"found interactive obj (tag %d)", thisFraction.Tag);
                 
                 if(thisFraction.Tag==[[s objectForKey:TAG]intValue])
                 {
@@ -511,7 +569,7 @@
                     if(totalSelectedChunks==[[s objectForKey:DIVIDEND]intValue])
                         dividendMatch=YES;
                     
-                    if(thisFraction.MarkerPosition+1==[[s objectForKey:DIVISOR]intValue])
+                    if(thisFraction.Divisions==[[s objectForKey:DIVISOR]intValue])
                         divisorMatch=YES;
                     
                     if(dividendMatch && divisorMatch){

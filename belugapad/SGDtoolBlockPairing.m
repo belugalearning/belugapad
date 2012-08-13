@@ -9,6 +9,8 @@
 #import "global.h"
 #import "SGDtoolBlockPairing.h"
 #import "SGDtoolBlock.h"
+#import "SGDtoolContainer.h"
+#import "SGDtoolObjectProtocols.h"
 #import "BLMath.h"
 
 @interface SGDtoolBlockPairing()
@@ -93,6 +95,7 @@
     // if the array already contains the object - don't readd it
     if(![ParentGO.PairedObjects containsObject:thisObject])[ParentGO.PairedObjects addObject:thisObject];
     [self pairPickupObjectToMe:thisObject];
+    
 }
 
 -(void)pairPickupObjectToMe:(id)pickupObject
@@ -109,6 +112,7 @@
 -(void)unpairMeFrom:(id)thisObject
 {
     if([ParentGO.PairedObjects containsObject:thisObject])[ParentGO.PairedObjects removeObject:thisObject];
+
     [self unpairPickupObjectFromMe:thisObject];
 }
 
@@ -116,10 +120,43 @@
 {
     // declare the current PickupObject as a pairable item
     id<Pairable> currentPickupObject=pickupObject;
-    
     // then, pair our pickupObject with our current GO
     if([currentPickupObject.PairedObjects containsObject:ParentGO])[currentPickupObject.PairedObjects removeObject:ParentGO];
 }
 
+//-(void)createContainerAndAdd:(NSArray*)theseObjects
+//{
+//    id<Container> container;
+//    container=[[SGDtoolContainer alloc]initWithGameWorld:gameWorld andLabel:nil andRenderLayer:nil];
+//    
+//    for(id go in theseObjects)
+//        [container addBlockToMe:go];
+//    
+//}
+//
+//-(void)addObjectToContainer:(id)thisObject
+//{
+//    if(((id<Moveable>)ParentGO).MyContainer)
+//    {
+//        if(((id<Moveable>)ParentGO).MyContainer!=((id<Moveable>)thisObject).MyContainer)
+//        {
+//            id<Container> myContainer=((id<Moveable>)ParentGO).MyContainer;
+//            [myContainer addBlockToMe:thisObject];
+//        }
+//    }
+//    else
+//    {
+//        [self createContainerAndAdd:[NSArray arrayWithObjects:ParentGO, thisObject, nil]];
+//    }
+//}
+//
+//-(void)removeObjectFromContainer:(id)pickupObject
+//{
+//    id<Container> myContainer=((id<Moveable>)ParentGO).MyContainer;
+//    
+//    if(myContainer)
+//        [myContainer removeBlockFromMe:pickupObject];
+//}
+ 
 @end
 

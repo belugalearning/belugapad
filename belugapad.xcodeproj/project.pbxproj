@@ -72,6 +72,8 @@
 		55AFD6AA15651B5800FF1886 /* DWTTTileGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6A815651B5800FF1886 /* DWTTTileGameObject.m */; };
 		55AFD6AE15651C4700FF1886 /* BTTTileObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6AD15651C4700FF1886 /* BTTTileObjectRender.m */; };
 		55AFD6B115651C5500FF1886 /* BTTTileTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6B015651C5500FF1886 /* BTTTileTouch.m */; };
+		55B4018D15D571570068BCAA /* SGDtoolContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B4018C15D571570068BCAA /* SGDtoolContainer.m */; };
+		55B4019015D571670068BCAA /* local-settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55B4018F15D571670068BCAA /* local-settings.plist */; };
 		55BBB5D31580C3FC0031B1F5 /* BPieSplitterPieTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BBB5D21580C3FC0031B1F5 /* BPieSplitterPieTouch.m */; };
 		55BBB5D71580C4350031B1F5 /* BPieSplitterContainerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BBB5D61580C4350031B1F5 /* BPieSplitterContainerTouch.m */; };
 		55C5F71A153874C4009D8906 /* DotGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F719153874C3009D8906 /* DotGrid.m */; };
@@ -368,6 +370,13 @@
 		7FC27F7F150FB19B00E16A44 /* BNLineRamblerInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F7E150FB19B00E16A44 /* BNLineRamblerInput.m */; };
 		7FC27F82150FB1AD00E16A44 /* BNLineRamblerRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F81150FB1AD00E16A44 /* BNLineRamblerRender.m */; };
 		7FC642941572F64A0043D575 /* BLFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC642931572F64A0043D575 /* BLFiles.m */; };
+		7FCA646315D69C5000C5C020 /* SGBtxeRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA646215D69C5000C5C020 /* SGBtxeRow.m */; };
+		7FCA646615D69CAC00C5C020 /* SGBtxeText.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA646515D69CAC00C5C020 /* SGBtxeText.m */; };
+		7FCA646915D69CBF00C5C020 /* SGBtxeObjectText.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA646815D69CBF00C5C020 /* SGBtxeObjectText.m */; };
+		7FCA646C15D69CDD00C5C020 /* SGBtxeMissingVar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA646B15D69CDD00C5C020 /* SGBtxeMissingVar.m */; };
+		7FCA646F15D6C63E00C5C020 /* SGBtxeContainerMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA646E15D6C63E00C5C020 /* SGBtxeContainerMgr.m */; };
+		7FCA647215D6C7E800C5C020 /* SGBtxeRowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA647115D6C7E800C5C020 /* SGBtxeRowLayout.m */; };
+		7FCA647515D6C7F900C5C020 /* SGBtxeTextRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCA647415D6C7F900C5C020 /* SGBtxeTextRender.m */; };
 		7FCBC3E415100CF700066426 /* BATio.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E315100CF700066426 /* BATio.m */; };
 		7FCBC3E815100F3D00066426 /* MathMLConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E715100F3D00066426 /* MathMLConsts.m */; };
 		7FCBC3EB1510195F00066426 /* ExprIOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3EA1510195F00066426 /* ExprIOTests.m */; };
@@ -387,7 +396,6 @@
 		7FDBA53914EBD560004D1CC9 /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA52B14EBD560004D1CC9 /* CTidy.m */; };
 		7FDBA56314EC4271004D1CC9 /* bm11.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FDBA56214EC4271004D1CC9 /* bm11.plist */; };
 		7FEDCE1C1535DCA400C8C9F3 /* ExprEvalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */; };
-		B77E795815CBD68200FA3B39 /* local-settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = B77E795715CBD68200FA3B39 /* local-settings.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -525,6 +533,9 @@
 		55AFD6AD15651C4700FF1886 /* BTTTileObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTTTileObjectRender.m; sourceTree = "<group>"; };
 		55AFD6AF15651C5500FF1886 /* BTTTileTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTTTileTouch.h; sourceTree = "<group>"; };
 		55AFD6B015651C5500FF1886 /* BTTTileTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTTTileTouch.m; sourceTree = "<group>"; };
+		55B4018B15D571570068BCAA /* SGDtoolContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGDtoolContainer.h; sourceTree = "<group>"; };
+		55B4018C15D571570068BCAA /* SGDtoolContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGDtoolContainer.m; sourceTree = "<group>"; };
+		55B4018F15D571670068BCAA /* local-settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "local-settings.plist"; sourceTree = "<group>"; };
 		55BBB5D11580C3FC0031B1F5 /* BPieSplitterPieTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPieSplitterPieTouch.h; sourceTree = "<group>"; };
 		55BBB5D21580C3FC0031B1F5 /* BPieSplitterPieTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPieSplitterPieTouch.m; sourceTree = "<group>"; };
 		55BBB5D51580C4350031B1F5 /* BPieSplitterContainerTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPieSplitterContainerTouch.h; sourceTree = "<group>"; };
@@ -1094,6 +1105,21 @@
 		7FC27F81150FB1AD00E16A44 /* BNLineRamblerRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNLineRamblerRender.m; sourceTree = "<group>"; };
 		7FC642921572F64A0043D575 /* BLFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLFiles.h; sourceTree = "<group>"; };
 		7FC642931572F64A0043D575 /* BLFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLFiles.m; sourceTree = "<group>"; };
+		7FCA645B15D6940700C5C020 /* SGBtxeProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeProtocols.h; sourceTree = "<group>"; };
+		7FCA646115D69C5000C5C020 /* SGBtxeRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeRow.h; sourceTree = "<group>"; };
+		7FCA646215D69C5000C5C020 /* SGBtxeRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeRow.m; sourceTree = "<group>"; };
+		7FCA646415D69CAC00C5C020 /* SGBtxeText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeText.h; sourceTree = "<group>"; };
+		7FCA646515D69CAC00C5C020 /* SGBtxeText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeText.m; sourceTree = "<group>"; };
+		7FCA646715D69CBF00C5C020 /* SGBtxeObjectText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeObjectText.h; sourceTree = "<group>"; };
+		7FCA646815D69CBF00C5C020 /* SGBtxeObjectText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeObjectText.m; sourceTree = "<group>"; };
+		7FCA646A15D69CDD00C5C020 /* SGBtxeMissingVar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeMissingVar.h; sourceTree = "<group>"; };
+		7FCA646B15D69CDD00C5C020 /* SGBtxeMissingVar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeMissingVar.m; sourceTree = "<group>"; };
+		7FCA646D15D6C63E00C5C020 /* SGBtxeContainerMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeContainerMgr.h; sourceTree = "<group>"; };
+		7FCA646E15D6C63E00C5C020 /* SGBtxeContainerMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeContainerMgr.m; sourceTree = "<group>"; };
+		7FCA647015D6C7E800C5C020 /* SGBtxeRowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeRowLayout.h; sourceTree = "<group>"; };
+		7FCA647115D6C7E800C5C020 /* SGBtxeRowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeRowLayout.m; sourceTree = "<group>"; };
+		7FCA647315D6C7F900C5C020 /* SGBtxeTextRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeTextRender.h; sourceTree = "<group>"; };
+		7FCA647415D6C7F900C5C020 /* SGBtxeTextRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeTextRender.m; sourceTree = "<group>"; };
 		7FCBC3E215100CF700066426 /* BATio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATio.h; sourceTree = "<group>"; };
 		7FCBC3E315100CF700066426 /* BATio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATio.m; sourceTree = "<group>"; };
 		7FCBC3E615100F3D00066426 /* MathMLConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathMLConsts.h; sourceTree = "<group>"; };
@@ -1130,7 +1156,6 @@
 		7FDBA52C14EBD560004D1CC9 /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchXML.h; sourceTree = "<group>"; };
 		7FDBA56214EC4271004D1CC9 /* bm11.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bm11.plist; sourceTree = "<group>"; };
 		7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprEvalTests.m; sourceTree = "<group>"; };
-		B77E795715CBD68200FA3B39 /* local-settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "local-settings.plist"; path = "../../../Desktop/local-settings.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1283,6 +1308,8 @@
 			children = (
 				5508FEB715A3068D003720AF /* SGDtoolBlock.h */,
 				5508FEB815A3068D003720AF /* SGDtoolBlock.m */,
+				55B4018B15D571570068BCAA /* SGDtoolContainer.h */,
+				55B4018C15D571570068BCAA /* SGDtoolContainer.m */,
 			);
 			name = Dtool;
 			sourceTree = "<group>";
@@ -2092,6 +2119,7 @@
 				0CF9187B14F54C1D00FAC58D /* images */,
 				7F5113E414A9EE63001AF372 /* Info.plist */,
 				7F5113E514A9EE63001AF372 /* iTunesArtwork */,
+				55B4018F15D571670068BCAA /* local-settings.plist */,
 				7F813D5914CCC38100C1E997 /* particles */,
 				0C9FEFF514F572FB00E64138 /* pipeline-testing */,
 				0C0AB7AC14F5116600437F07 /* Problems */,
@@ -2099,7 +2127,6 @@
 				0C427C3614F529CC0033AFE2 /* sfx */,
 				7FABE6A114B4BF0F00ED2D0C /* templatedefs-general.plist */,
 				552478651536BF5C00BA5C4E /* tooldef.plist */,
-				B77E795715CBD68200FA3B39 /* local-settings.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2297,6 +2324,7 @@
 		7F7336A9158B353B00A37FC4 /* SGGameObjects */ = {
 			isa = PBXGroup;
 			children = (
+				7FCA645F15D69BE300C5C020 /* BTXE */,
 				55FBB2FA15BD700B0034B081 /* Fraction */,
 				5508FEB615A30669003720AF /* Dtool */,
 				7F7336AF158B374800A37FC4 /* Jmap */,
@@ -2310,6 +2338,7 @@
 				7F7336AB158B362500A37FC4 /* SGJmapObjectProtocols.h */,
 				5508FEB515A30623003720AF /* SGDtoolObjectProtocols.h */,
 				55FBB2FB15BD75610034B081 /* SGFractionObjectProtocols.h */,
+				7FCA645B15D6940700C5C020 /* SGBtxeProtocols.h */,
 			);
 			name = SGProtocols;
 			sourceTree = "<group>";
@@ -2317,6 +2346,7 @@
 		7F7336AE158B36EE00A37FC4 /* SGComponents */ = {
 			isa = PBXGroup;
 			children = (
+				7FCA646015D69BF300C5C020 /* BTXE */,
 				55FBB2F915BD6FAA0034B081 /* Fractions */,
 				5508FEBA15A30901003720AF /* Dtool */,
 				7F7336B0158B374F00A37FC4 /* Jmap */,
@@ -2520,6 +2550,34 @@
 			name = ExpressionEngine;
 			sourceTree = "<group>";
 		};
+		7FCA645F15D69BE300C5C020 /* BTXE */ = {
+			isa = PBXGroup;
+			children = (
+				7FCA646115D69C5000C5C020 /* SGBtxeRow.h */,
+				7FCA646215D69C5000C5C020 /* SGBtxeRow.m */,
+				7FCA646415D69CAC00C5C020 /* SGBtxeText.h */,
+				7FCA646515D69CAC00C5C020 /* SGBtxeText.m */,
+				7FCA646715D69CBF00C5C020 /* SGBtxeObjectText.h */,
+				7FCA646815D69CBF00C5C020 /* SGBtxeObjectText.m */,
+				7FCA646A15D69CDD00C5C020 /* SGBtxeMissingVar.h */,
+				7FCA646B15D69CDD00C5C020 /* SGBtxeMissingVar.m */,
+			);
+			name = BTXE;
+			sourceTree = "<group>";
+		};
+		7FCA646015D69BF300C5C020 /* BTXE */ = {
+			isa = PBXGroup;
+			children = (
+				7FCA646D15D6C63E00C5C020 /* SGBtxeContainerMgr.h */,
+				7FCA646E15D6C63E00C5C020 /* SGBtxeContainerMgr.m */,
+				7FCA647015D6C7E800C5C020 /* SGBtxeRowLayout.h */,
+				7FCA647115D6C7E800C5C020 /* SGBtxeRowLayout.m */,
+				7FCA647315D6C7F900C5C020 /* SGBtxeTextRender.h */,
+				7FCA647415D6C7F900C5C020 /* SGBtxeTextRender.m */,
+			);
+			name = BTXE;
+			sourceTree = "<group>";
+		};
 		7FDBA50F14EBD550004D1CC9 /* TouchXML */ = {
 			isa = PBXGroup;
 			children = (
@@ -2680,7 +2738,7 @@
 				0C35A9F81576272500D47517 /* canned-dbs in Resources */,
 				0C712C0D1580C392004B716F /* CHANGELOG.md in Resources */,
 				0C712C0F1580C392004B716F /* README.md in Resources */,
-				B77E795815CBD68200FA3B39 /* local-settings.plist in Resources */,
+				55B4019015D571670068BCAA /* local-settings.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3060,6 +3118,14 @@
 				0C33EEBE15D4EE5900EA6A11 /* unzip.c in Sources */,
 				0C33EEBF15D4EE5900EA6A11 /* zip.c in Sources */,
 				0C33EEC015D4EE5900EA6A11 /* SSZipArchive.m in Sources */,
+				55B4018D15D571570068BCAA /* SGDtoolContainer.m in Sources */,
+				7FCA646315D69C5000C5C020 /* SGBtxeRow.m in Sources */,
+				7FCA646615D69CAC00C5C020 /* SGBtxeText.m in Sources */,
+				7FCA646915D69CBF00C5C020 /* SGBtxeObjectText.m in Sources */,
+				7FCA646C15D69CDD00C5C020 /* SGBtxeMissingVar.m in Sources */,
+				7FCA646F15D6C63E00C5C020 /* SGBtxeContainerMgr.m in Sources */,
+				7FCA647215D6C7E800C5C020 /* SGBtxeRowLayout.m in Sources */,
+				7FCA647515D6C7F900C5C020 /* SGBtxeTextRender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -160,7 +160,12 @@
         
         int ySpaceBetweenFractions=0;
         float thisFractionYPos=600;
-        if([initFractions count]==2)
+        if([initFractions count]==1)
+        {
+            thisFractionYPos=cx;
+            ySpaceBetweenFractions=0;
+        }
+        else if([initFractions count]==2)
         {
             thisFractionYPos=600;
             ySpaceBetweenFractions=300;
@@ -500,6 +505,7 @@
         return res;
     }
     
+    [loggingService logEvent:BL_PA_FB_FAILED_EVAL_EQUIVALENT withAdditionalData:nil];
     return NO;
 }
 
@@ -546,6 +552,7 @@
         }
     }
     
+    [loggingService logEvent:BL_PA_FB_FAILED_EVAL_ADDITION withAdditionalData:nil];
     return NO;
 }
 
@@ -595,9 +602,13 @@
     }
     
     if(solutionsFound==[solutionsDef count])
+    {
         return YES;
+    }
     else
+    {
         return NO;
+    }
 }
 
 -(void)evalProblem

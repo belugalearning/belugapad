@@ -32,6 +32,8 @@
 	<real>0.3</real>
 	<key>COLUMN_SPACING</key>
 	<real>0.3</real>
+	<key>DEFAULT_SCALE</key>
+	<real>0.9</real>
 	<key>SHOW_NEG_CAGE</key>
 	<true/>
 	<key>SHOW_COL_HEADER</key>

@@ -223,7 +223,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>{@bname} has 6 {@item}. {@gname} has 4 {@item}. How much many does {@bname} have than {@gname}?</string>
+		<string>{@bname} has 6 {@item}. {@gname} has 4 {@item}. How many more does {@bname} have than {@gname}?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

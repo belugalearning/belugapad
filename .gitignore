@@ -14,5 +14,5 @@ xcuserdata
 
 .hg/
 .hgignore
-belugapad/local-settings.plist
+settings/local-settings.plist
 belugapad.xcodeproj/project.pbxproj

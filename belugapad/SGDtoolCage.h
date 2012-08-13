@@ -6,8 +6,11 @@
 //
 //
 
-#import <UIKit/UIKit.h>
+#import "SGGameObject.h"
+#import "SGDtoolObjectProtocols.h"
 
-@interface SGDtoolCage : NSObject
+@interface SGDtoolCage : SGGameObject <Cage>
+
+-(SGDtoolCage*) initWithGameWorld:(SGGameWorld*)aGameWorld atPosition:(CGPoint)thisPosition andRenderLayer:(CCLayer*)aRenderLayer;
 
 @end

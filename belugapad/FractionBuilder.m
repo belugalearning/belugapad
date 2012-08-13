@@ -159,12 +159,20 @@
     {
         
         int ySpaceBetweenFractions=0;
-        float thisFractionYPos=0;
-        if([initFractions count]==2)ySpaceBetweenFractions=300;
-        else if([initFractions count]==3)ySpaceBetweenFractions=225;
+        float thisFractionYPos=600;
+        if([initFractions count]==2)
+        {
+            thisFractionYPos=600;
+            ySpaceBetweenFractions=300;
+        }
+        else if([initFractions count]==3)
+        {
+            thisFractionYPos=630;
+            ySpaceBetweenFractions=225;
+        }
         // set up the fraction
         
-        thisFractionYPos=600-(ySpaceBetweenFractions*fractionsDisplayed);
+        thisFractionYPos=thisFractionYPos-(ySpaceBetweenFractions*fractionsDisplayed);
         
         id<Configurable, Interactive> fraction;
         fraction=[[[SGFbuilderFraction alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,thisFractionYPos)] autorelease];

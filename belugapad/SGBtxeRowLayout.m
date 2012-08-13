@@ -19,4 +19,21 @@
     return self;
 }
 
+-(void)layoutChildren
+{
+    //step children, position (set their position property)
+    
+    //get total width (width + padding)
+    
+    //set start (-half)
+    
+    //step items
+    
+    //  put left of first item at far left of this
+    
+    //  increment cum width (w/ width + spacer)
+    
+    
+}
+
 @end

@@ -13,11 +13,12 @@
 @implementation SGBtxeRow
 
 @synthesize children, containerMgrComponent;   //Container properties
+@synthesize renderLayer;
 @synthesize size, position;       //Bounding properties
 
 @synthesize rowLayoutComponent;
 
--(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld
+-(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
@@ -26,6 +27,7 @@
         position=CGPointZero;
         containerMgrComponent=[[SGBtxeContainerMgr alloc] initWithGameObject:(SGGameObject*)self];
         rowLayoutComponent=[[SGBtxeRowLayout alloc] initWithGameObject:(SGGameObject*)self];
+        self.renderLayer=renderLayerTarget;
     }
     return self;
 }
@@ -40,9 +42,26 @@
     
 }
 
--(void)calculateSize
+-(void)setupDraw
 {
+    //create base node
+    baseNode=[[CCNode alloc] init];
+    baseNode.position=self.position;
+    [renderLayer addChild:baseNode];
     
+    //render each child
+    for (id<Bounding, RenderObject> c in children) {
+        [c setupDraw];
+        
+        //we could potentially do this separately (create, layout, attach) -- but for the moment
+        // this shouldn't have a performance impact as Cocos won't do stuff with this until we
+        // release the run loop
+        [c attachToRenderBase:baseNode];
+    }
+    
+    //layout position of stuff
+    [self.rowLayoutComponent layoutChildren];
+
 }
 
 -(void)parseXML:(NSString *)xmlString
@@ -55,6 +74,10 @@
     self.children=nil;
     self.containerMgrComponent=nil;
     self.rowLayoutComponent=nil;
+    self.renderLayer=nil;
+    
+    [children release];
+    [baseNode release];
     
     [super dealloc];
 }

@@ -13,4 +13,9 @@
 {
     id<Bounding, Text> ParentGO;
 }
+
+@property (retain) CCLabelTTF *label;
+
+-(void)setupDraw;
+
 @end

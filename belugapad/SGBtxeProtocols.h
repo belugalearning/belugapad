@@ -21,12 +21,27 @@
 @end
 
 
+@protocol RenderContainer
+
+@property (retain) CCLayer *renderLayer;
+
+@end
+
+
+@protocol RenderObject
+
+-(void)attachToRenderBase:(CCNode*)renderBase;
+
+@end
+
+
+
 @protocol Bounding
 
-@property (readonly) CGSize size;
+@property CGSize size;
 @property CGPoint position;
 
--(void) calculateSize;
+-(void) setupDraw;
 
 @end
 

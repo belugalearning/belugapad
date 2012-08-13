@@ -10,13 +10,28 @@
 
 @implementation SGBtxeTextRender
 
+@synthesize label;
+
 -(SGBtxeTextRender*)initWithGameObject:(id<Bounding, Text>)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
-        
+        self.label=nil;
     }
     return self;
     
 }
+
+-(void)setupDraw
+{
+    self.label=[CCLabelTTF labelWithString:ParentGO.text fontName:@"Helvetica" fontSize:18];
+}
+
+-(void)dealloc
+{
+    self.label=nil;
+    
+    [super dealloc];
+}
+
 @end

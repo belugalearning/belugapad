@@ -184,10 +184,15 @@ static float kDistanceBetweenBlocks=70.0f;
 //    float avgPosY=0;
     
     if([theseSettings objectForKey:LABEL])
+    {
         container=[[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:[theseSettings objectForKey:LABEL] andRenderLayer:renderLayer];
+        if(!existingGroups)existingGroups=[[NSMutableArray alloc]init];
+        [existingGroups addObject:[container.Label string]];
+    }
     else
+    {
         container=[[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:nil andRenderLayer:renderLayer];
-
+    }
     
     if([theseSettings objectForKey:POS_X])
         posX=[[theseSettings objectForKey:POS_X]intValue];
@@ -237,9 +242,21 @@ static float kDistanceBetweenBlocks=70.0f;
 -(void)createContainerWithOne:(id)Object
 {
     id<Container> container;
-    NSLog(@"create container");
-    container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:nil andRenderLayer:nil];
+    NSLog(@"create container - there are %d destroyed labelled groups", [destroyedLabelledGroups count]);
+    if([destroyedLabelledGroups count]==0)
+    {
+        container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:nil andRenderLayer:nil];
+    }
+    else
+    {
+        NSLog(@"creating labelled group: %@",[destroyedLabelledGroups objectAtIndex:0]);
+        container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:[destroyedLabelledGroups objectAtIndex:0] andRenderLayer:renderLayer];
+        [destroyedLabelledGroups removeObjectAtIndex:0];
+        [existingGroups addObject:[container.Label string]];
+    }
+    
     [container addBlockToMe:Object];
+    
 }
 
 -(void)lookForOrphanedObjects
@@ -290,10 +307,36 @@ static float kDistanceBetweenBlocks=70.0f;
         if([go conformsToProtocol:@protocol(Container)])
         {
             id <Container> cObj=go;
+            
             if([cObj.BlocksInShape count]==0)
+            {
+                
+                if([existingGroups containsObject:[cObj.Label string]])
+                {
+                    [existingGroups removeObject:[cObj.Label string]];
+                    if(!destroyedLabelledGroups)destroyedLabelledGroups=[[NSMutableArray alloc]init];
+                    [destroyedLabelledGroups addObject:[cObj.Label string]];
+                }
+            
+                
                 [cObj destroyThisObject];
+            }
+            
         }
         
+    }
+}
+
+-(void)updateContainerLabels
+{
+    for(id go in gw.AllGameObjects)
+    {
+        if([go conformsToProtocol:@protocol(Container)])
+        {
+            id<Container>c=(id<Container>)go;
+            [c repositionLabel];
+            NSLog(@"count of group %d", [c.BlocksInShape count]);
+        }
     }
 }
 
@@ -540,20 +583,13 @@ static float kDistanceBetweenBlocks=70.0f;
         }
         [self updateContainerForNewlyAddedBlock:currentPickupObject];
         [self lookForOrphanedObjects];
+        [self updateContainerLabels];
         [self tidyUpEmptyGroups];
         
         //[self evalUniqueShapes];
         if(evalMode==kProblemEvalAuto)[self evalProblem];
     }
     
-    for(id go in gw.AllGameObjects)
-    {
-        if([go conformsToProtocol:@protocol(Container)])
-        {
-            id<Container>go2=(id<Container>)go;
-            NSLog(@"count of group %d", [go2.BlocksInShape count]);
-        }
-    }
     
     if(hasBeenProximate)
     {
@@ -718,6 +754,7 @@ static float kDistanceBetweenBlocks=70.0f;
                     NSString *thisKey=[thisCont.Label string];
                     if([d objectForKey:thisKey])
                     {
+
                         int thisVal=[[d objectForKey:thisKey] intValue];
                          NSLog(@"this group %d, required for key %d", [thisCont.BlocksInShape count], thisVal);
                         if([thisCont.BlocksInShape count]==thisVal)
@@ -773,6 +810,10 @@ return NO;
 -(void) dealloc
 {
 
+    initObjects=nil;
+    solutionsDef=nil;
+    existingGroups=nil;
+    destroyedLabelledGroups=nil;
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

@@ -50,6 +50,8 @@ typedef enum
     // and stuff we want to add!
     NSArray *initObjects;
     NSArray *solutionsDef;
+    NSMutableArray *existingGroups;
+    NSMutableArray *destroyedLabelledGroups;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;
@@ -68,6 +70,7 @@ typedef enum
 -(void)lookForOrphanedObjects;
 -(void)updateContainerForNewlyAddedBlock:(id<Moveable,Pairable>)thisBlock;
 -(void)tidyUpEmptyGroups;
+-(void)updateContainerLabels;
 -(CGPoint)checkWhereIShouldMount:(id<Pairable>)gameObject;
 -(CGPoint)findMountPositionForThisShape:(id<Pairable>)pickupObject toThisShape:(id<Pairable>)mountedShape;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;

@@ -8,9 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+@class SGBtxeContainerMgr;
+@class SGBtxeTextRender;
+
+
 @protocol Container
 
-@property (readonly) NSArray *children;
+@property (retain) NSMutableArray *children;
+
+@property (retain) SGBtxeContainerMgr *containerMgrComponent;
 
 @end
 
@@ -29,6 +35,8 @@
 @protocol Text
 
 @property (retain) NSString *text;
+
+@property (retain) SGBtxeTextRender *textRenderComponent;
 
 @end
 

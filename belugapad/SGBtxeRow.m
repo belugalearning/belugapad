@@ -7,11 +7,15 @@
 //
 
 #import "SGBtxeRow.h"
+#import "SGBtxeContainerMgr.h"
+#import "SGBtxeRowLayout.h"
 
 @implementation SGBtxeRow
 
-@synthesize children;   //Container properties
+@synthesize children, containerMgrComponent;   //Container properties
 @synthesize size, position;       //Bounding properties
+
+@synthesize rowLayoutComponent;
 
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -20,6 +24,8 @@
         children=[[NSMutableArray alloc] init];
         size=CGSizeZero;
         position=CGPointZero;
+        containerMgrComponent=[[SGBtxeContainerMgr alloc] initWithGameObject:(SGGameObject*)self];
+        rowLayoutComponent=[[SGBtxeRowLayout alloc] initWithGameObject:(SGGameObject*)self];
     }
     return self;
 }
@@ -44,15 +50,11 @@
     
 }
 
-
--(NSArray*)children
-{
-    return [NSArray arrayWithArray:children];
-}
-
 -(void)dealloc
 {
-    [children release];
+    self.children=nil;
+    self.containerMgrComponent=nil;
+    self.rowLayoutComponent=nil;
     
     [super dealloc];
 }

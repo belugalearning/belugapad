@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_PIPELINE</key>
+	<string>DATABASE</string>
+	<key>RELEASE_MODE</key>
+	<false/>
+	<key>IMPORT_CONTENT_ON_LAUNCH</key>
+	<true/>
+	<key>KCM_LOGIN_NAME</key>
+	<string>cr</string>
+	<key>PROBLEM_PIPELINE-test</key>
+	<string>/Problems/tokcm-authoring/Number/place_value/working_with_tens/5608a59d6797796ce9e11484fd15f77b/cr.plist</string>
+</dict>
+</plist>

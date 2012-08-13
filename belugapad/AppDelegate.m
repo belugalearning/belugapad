@@ -65,7 +65,7 @@
     //    [CCDirector setDirectorType:kCCDirectorTypeDefault];
     
     //load local settings
-    self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/local-settings.plist")];
+    self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/settings/local-settings.plist")];
     
     NSString *pl = [self.LocalSettings objectForKey:@"PROBLEM_PIPELINE"];
     BL_LOGGING_SETTING paLogging = [@"DATABASE" isEqualToString:pl] ? BL_LOGGING_ENABLED : BL_LOGGING_DISABLED;

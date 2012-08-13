@@ -7,11 +7,12 @@
 //
 
 #import "SGBtxeObjectText.h"
+#import "SGBtxeTextRender.h"
 
 @implementation SGBtxeObjectText
 
 @synthesize size, position;
-@synthesize text;
+@synthesize text, textRenderComponent;
 @synthesize enabled, tag;
 
 -(SGBtxeObjectText*)initWithGameWorld:(SGGameWorld*)aGameWorld
@@ -23,6 +24,7 @@
         position=CGPointZero;
         tag=@"";
         enabled=YES;
+        textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
     }
     
     return self;
@@ -47,6 +49,7 @@
 {
     self.text=nil;
     self.tag=nil;
+    self.textRenderComponent=nil;
     
     [super dealloc];
 }

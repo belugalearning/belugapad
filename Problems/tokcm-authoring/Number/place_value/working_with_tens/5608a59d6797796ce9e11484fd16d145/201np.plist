@@ -30,6 +30,8 @@
 	<true/>
 	<key>X_OFFSET</key>
 	<string>-0.25</string>
+	<key>DEFAULT_SCALE</key>
+	<real>0.9</real>
 	<key>SHOW_NEG_CAGE</key>
 	<true/>
 	<key>SHOW_COL_HEADER</key>

@@ -71,6 +71,8 @@
         return chunk;
     }
 
+    [self orderChildrenToLeftOn:ParentGO];
+    
     return nil;
 }
 
@@ -203,7 +205,7 @@
         
         float halfOfChunk=(go.MySprite.contentSize.width*go.MySprite.scaleX)/2;
         float posOnFraction=fractionSprite.contentSize.width/(newFraction.MarkerPosition+1);
-        float adjPosOnFraction=posOnFraction*amountIveReorderedSoFar;
+        float adjPosOnFraction=posOnFraction*[newFraction.Chunks indexOfObject:go];
 //        float adjPosOnFraction=posOnFraction*[newFraction.Chunks indexOfObject:go];
         
         CGPoint myNewPos=ccp(leftPos+halfOfChunk+adjPosOnFraction,fractionSprite.position.y);

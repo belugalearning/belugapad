@@ -322,6 +322,7 @@
 
 //distribution tool
 #define DISTRIBUTION_EVAL_TYPE @"DISTRIBUTION_EVAL_TYPE"
+#define HAS_CAGE @"HAS_CAGE"
 
 //fraction builder
 #define INIT_FRACTIONS @"INIT_FRACTIONS"

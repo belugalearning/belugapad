@@ -73,3 +73,11 @@
 @end
 
 
+@protocol Cage
+
+@property CGPoint Position;
+@property (retain) CCLayer *RenderLayer;
+
+-(void)spawnNewBlock;
+
+@end

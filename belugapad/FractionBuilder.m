@@ -339,13 +339,17 @@
     if(currentChunk)
     {
         // and distance <10, select the chunk
-        if(distFromStartToEnd<15.0f)
+        if(distFromStartToEnd<20.0f)
         {
             [currentChunk changeChunkSelection];
             if(!selectedChunks)selectedChunks=[[NSMutableArray alloc]init];
             
-            if(!currentChunk.Selected)[selectedChunks addObject:currentChunk];
-            else [selectedChunks removeObject:currentChunk];
+            if(!currentChunk.Selected)
+                [selectedChunks addObject:currentChunk];
+            else
+                [selectedChunks removeObject:currentChunk];
+            
+            
             return;
         }
         

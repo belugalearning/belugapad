@@ -43,6 +43,7 @@ typedef enum
     BOOL hasMovedBlock;
     BOOL hasLoggedMovedBlock;
     BOOL hasBeenProximate;
+    BOOL problemHasCage;
     
     // and a default layer
     CCLayer *renderLayer;

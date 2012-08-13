@@ -20,6 +20,7 @@
 #import "LoggingService.h"
 #import "SGGameWorld.h"
 #import "SGDtoolBlock.h"
+#import "SGDtoolCage.h"
 #import "SGDtoolContainer.h"
 #import "SGDtoolBlockRender.h"
 #import "InteractionFeedback.h"
@@ -41,6 +42,8 @@ static float kDistanceBetweenBlocks=70.0f;
     
     // and then any specifics we need for this tool
     id<Moveable,Transform,Pairable> currentPickupObject;
+    id<Cage> cage;
+    CGPoint pickupPos;
     
 }
 
@@ -152,6 +155,7 @@ static float kDistanceBetweenBlocks=70.0f;
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
     evalType=[[pdef objectForKey:DISTRIBUTION_EVAL_TYPE] intValue];
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
+    problemHasCage=[[pdef objectForKey:HAS_CAGE]boolValue];
     if([pdef objectForKey:INIT_OBJECTS])initObjects=[pdef objectForKey:INIT_OBJECTS];
     if([pdef objectForKey:SOLUTION])solutionsDef=[pdef objectForKey:SOLUTION];
     
@@ -168,6 +172,13 @@ static float kDistanceBetweenBlocks=70.0f;
         NSDictionary *d=[initObjects objectAtIndex:i];
         int blocksInShape=[[d objectForKey:QUANTITY]intValue];
         [self createShapeWith:blocksInShape andWith:d];
+    }
+    
+    if(problemHasCage)
+    {
+        cage=[[SGDtoolCage alloc]initWithGameWorld:gw atPosition:ccp(cx, 80) andRenderLayer:renderLayer];
+        [cage spawnNewBlock];
+        
     }
     
 }
@@ -476,6 +487,7 @@ static float kDistanceBetweenBlocks=70.0f;
             {
                 [loggingService logEvent:BL_PA_DT_TOUCH_START_PICKUP_BLOCK withAdditionalData:nil];
                 currentPickupObject=thisObj;
+                pickupPos=((id<Moveable>)currentPickupObject).Position;
                 break;
             }
         }
@@ -499,6 +511,12 @@ static float kDistanceBetweenBlocks=70.0f;
         {
             [loggingService logEvent:BL_PA_DT_TOUCH_MOVE_MOVE_BLOCK withAdditionalData:nil];
             hasLoggedMovedBlock=YES;
+        }
+        // check the pickup start position against a cage position. if they matched, then spawn a new block
+        if(problemHasCage && CGPointEqualToPoint(pickupPos,cage.Position))
+        {
+            [cage spawnNewBlock];
+            pickupPos=CGPointZero;
         }
         // check that the shape is being moved within bounds of the screen
         if((location.x>=35.0f&&location.x<=lx-35.0f) && (location.y>=35.0f&&location.y<=ly-35.0f))

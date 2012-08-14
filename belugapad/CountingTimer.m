@@ -89,24 +89,43 @@
 -(void)doUpdateOnTick:(ccTime)delta
 {
     // increase our overall timer
-    if(!gw.Blackboard.inProblemSetup)timeElapsed+=delta;
-    if((int)timeElapsed!=lastNumber)
+    // if the problem hasn't expired - increase
+    if(!expired)timeElapsed+=delta;
+    
+    // update our tool variables
+    if((int)timeElapsed!=trackNumber)
     {
-        lastNumber=(int)timeElapsed;
+        trackNumber=(int)timeElapsed;
         
-        if(countType==kCountBeep)
-            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
+        lastNumber+=numIncrement;
         
-        else if(countType==kCountWords)
-            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];            
-        
-        else if(countType==kCountNumbers)
-            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
-        
+        // play sound if required
+        if(countType==kCountBeep){
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/click_b1.wav")];
+        }
+        else if(countType==kCountNumbers && lastNumber>0<20){
+            NSString *file=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", lastNumber];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(file)];
+        }
+
     }
     
+    // if we're showing the count - update the label
     if(showCount)[currentNumber setString:[NSString stringWithFormat:@"%d",lastNumber]];
     
+    // problem expiring clauses
+    if(numIncrement<0 && lastNumber<=countMin && !expired)
+    {
+        NSLog(@"reach the end of the problem (hit count min on count-back number");
+        expired=YES;
+    }
+    
+    else if(numIncrement>=0 && lastNumber>=countMax && !expired)
+    {
+        NSLog(@"reach the end of the problem (hit count max on count-on number");
+        expired=YES;
+    }
+        
     if(autoMoveToNextProblem)
     {
         timeToAutoMoveToNextProblem+=delta;
@@ -129,10 +148,17 @@
 {
     countMin=[[pdef objectForKey:COUNT_MIN]intValue];
     countMax=[[pdef objectForKey:COUNT_MAX]intValue];
+    numIncrement=[[pdef objectForKey:INCREMENT]intValue];
     solutionNumber=[[pdef objectForKey:SOLUTION]intValue];
     displayNumicon=[[pdef objectForKey:USE_NUMICON_NUMBERS]boolValue];
     showCount=[[pdef objectForKey:SHOW_COUNT]boolValue];
     countType=[[pdef objectForKey:COUNT_TYPE]intValue];
+    buttonFlash=[[pdef objectForKey:FLASHING_BUTTON]boolValue];
+    
+    if(numIncrement>=0)
+        lastNumber=countMin;
+    else
+        lastNumber=countMax;
 }
 
 -(void)populateGW
@@ -166,9 +192,7 @@
     
     if(CGRectContainsPoint(buttonOfWin.boundingBox, location))
     {
-        NSLog(@"hit that button");
-        if(lastNumber==solutionNumber)
-            NSLog(@"btw u got it ryt!");
+        [self evalProblem];
     }
     
     
@@ -208,7 +232,10 @@
 #pragma mark - evaluation
 -(BOOL)evalExpression
 {
-    return NO;
+    if(lastNumber==solutionNumber)
+        return YES;
+    else
+        return NO;
 }
 
 -(void)evalProblem
@@ -217,6 +244,7 @@
     
     if(isWinning)
     {
+        expired=YES;
         autoMoveToNextProblem=YES;
         [toolHost showProblemCompleteMessage];
     }

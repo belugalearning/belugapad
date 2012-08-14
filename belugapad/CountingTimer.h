@@ -13,8 +13,7 @@
 typedef enum {
     kCountNone=0,
     kCountBeep=1,
-    kCountWords=2,
-    kCountNumbers=3
+    kCountNumbers=2
 } CountType;
 
 @interface CountingTimer : ToolScene
@@ -47,16 +46,19 @@ typedef enum {
     float timeElapsed;
     int countMax;
     int countMin;
+    int numIncrement;
     int solutionNumber;
     BOOL displayNumicon;
     BOOL showCount;
+    BOOL buttonFlash;
     CountType countType;
     
     // tool stuff
     CCSprite *buttonOfWin;
     CCLabelTTF *currentNumber;
+    int trackNumber;
     int lastNumber;
-    
+    BOOL expired;
     
 }
 

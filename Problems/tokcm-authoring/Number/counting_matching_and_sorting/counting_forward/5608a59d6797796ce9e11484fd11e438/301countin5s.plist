@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Count on in jumps of 5.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>count on from 0 to 20</string>
+	<string>count on from 0 to 50</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
@@ -13,13 +13,13 @@
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
-	<string>20</string>
+	<string>50</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<integer>20</integer>
+	<integer>50</integer>
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>

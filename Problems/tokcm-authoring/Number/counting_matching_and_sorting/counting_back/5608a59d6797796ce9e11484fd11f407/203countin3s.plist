@@ -3,34 +3,34 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Count to 35 in fives.</string>
+	<string>Count from 12 to 0 in threes.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>count on from 0 to 12</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>0</string>
+	<string>12</string>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
-	<string>100</string>
+	<string>12</string>
+	<key>SEGMENT_VALUE</key>
+	<integer>3</integer>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<integer>35</integer>
+	<integer>0</integer>
 	<key>HIDE_ALL_NUMBERS</key>
 	<true/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
-	<array>
-		<string>10</string>
-	</array>
+	<array/>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
 	<array>
-		<string>5</string>
+		<string>3</string>
 	</array>
 	<key>HIDE_START_NUMBER</key>
 	<false/>
@@ -46,11 +46,41 @@
 	<integer>0</integer>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array>
-		<string>5</string>
+		<string>3</string>
 	</array>
 	<key>RENDER_STITCHES_AT_INTERVAL</key>
 	<integer>0</integer>
-	<key>SEGMENT_VALUE</key>
-	<integer>5</integer>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>8</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>10</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>12</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>Kevin is counting in threes. He starts at a number and counts backwards 4 times. If he ended up at 0, where did he start?</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again.</string>
+	</dict>
 </dict>
 </plist>

@@ -4,7 +4,7 @@
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>What is {$multiple} - 10?</string>
-		<key>META_QUESTION</key>
+	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
 		<string>Great!</string>
@@ -16,7 +16,7 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>{$multiple +10}</string>
+				<string>{$multiple+10}</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>

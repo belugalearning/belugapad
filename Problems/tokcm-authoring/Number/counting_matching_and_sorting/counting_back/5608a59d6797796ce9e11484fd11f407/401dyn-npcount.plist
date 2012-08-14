@@ -5,25 +5,25 @@
 	<key>MASTERY</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Place the bubble on {$x*$int}</string>
+	<string>what number is the bubble on?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>count on from 0 to a multiple of 2, 3 or 5.</string>
+	<string>intervals of 2 and 5 what number is the bubble on?</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>0</string>
+	<string>{$x*$int}</string>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
-	<string>120</string>
+	<integer>100</integer>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<string>{$x*$int}</string>
+	<integer>50</integer>
 	<key>HIDE_ALL_NUMBERS</key>
-	<true/>
+	<false/>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>HIDE_START_NUMBER</key>
@@ -36,7 +36,7 @@
 	<false/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
 	<array>
-		<string>{5*$int}</string>
+		<string>20</string>
 	</array>
 	<key>DISABLE_SNAPPING_TO_NOTCH</key>
 	<false/>
@@ -58,7 +58,7 @@
 			<key>MIN</key>
 			<string>1</string>
 			<key>MAX</key>
-			<string>15</string>
+			<string>9</string>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
@@ -66,10 +66,26 @@
 			<key>SELECT_FROM</key>
 			<array>
 				<string>2</string>
-				<string>3</string>
 				<string>5</string>
 			</array>
 		</dict>
 	</array>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>what number is the bubble on?</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>1</integer>
+		<key>PICKER_ORIGIN_X</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_Y</key>
+		<integer>0</integer>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<string>{$x*$int}</string>
+	</dict>
 </dict>
 </plist>

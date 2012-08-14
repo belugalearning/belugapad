@@ -15,7 +15,7 @@
 	<key>NUMBER_COLS</key>
 	<integer>3</integer>
 	<key>DEFAULT_COL</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>ROPES_PER_COL</key>
 	<integer>2</integer>
 	<key>ROWS_PER_COL</key>

@@ -21,7 +21,7 @@
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<integer>0</integer>
+	<string>{$x*10}</string>
 	<key>HIDE_ALL_NUMBERS</key>
 	<true/>
 	<key>HIDE_ALL_NOTCHES</key>

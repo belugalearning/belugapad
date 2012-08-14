@@ -6,6 +6,8 @@
 	<string>What is 10 more than {$start}?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>202</string>
+	<key>MASTERY</key>
+	<true/>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>

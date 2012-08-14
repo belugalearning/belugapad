@@ -9,6 +9,7 @@
 #import "cocos2d.h"
 #import "ToolConsts.h"
 #import "ToolScene.h"
+#import "SGBtxeProtocols.h"
 
 @interface ExprBuilder : ToolScene
 {
@@ -34,6 +35,10 @@
     
     // and a default layer
     CCLayer *renderLayer;
+    
+    BOOL isHoldingObject;
+    id<MovingInteractive> heldObject;
+    CGPoint heldOffset;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;

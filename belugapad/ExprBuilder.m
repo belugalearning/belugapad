@@ -18,7 +18,6 @@
 
 #import "SGGameWorld.h"
 
-#import "SGBtxeProtocols.h"
 #import "SGBtxeRow.h"
 #import "SGBtxeText.h"
 #import "SGBtxeObjectText.h"
@@ -145,9 +144,13 @@
     t2.text=@"3";
     [row.containerMgrComponent addObjectToContainer:t2];
     
-    SGBtxeText *t3=[[SGBtxeText alloc] initWithGameWorld:gw];
-    t3.text=@"apples";
-    [row.containerMgrComponent addObjectToContainer:t3];
+//    SGBtxeText *t3=[[SGBtxeText alloc] initWithGameWorld:gw];
+//    t3.text=@"apples";
+//    [row.containerMgrComponent addObjectToContainer:t3];
+    
+    SGBtxeObjectText *o3=[[SGBtxeObjectText alloc]initWithGameWorld:gw];
+    o3.text=@"apples";
+    [row.containerMgrComponent addObjectToContainer:o3];
 
     [row setupDraw];
 
@@ -160,7 +163,7 @@
     tt1.text=@"gareth has";
     [row2.containerMgrComponent addObjectToContainer:tt1];
     
-    SGBtxeText *tt2=[[SGBtxeText alloc] initWithGameWorld:gw];
+    SGBtxeObjectText *tt2=[[SGBtxeObjectText alloc] initWithGameWorld:gw];
     tt2.text=@"4";
     [row2.containerMgrComponent addObjectToContainer:tt2];
     
@@ -183,7 +186,19 @@
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
     
-    
+    if(isHoldingObject) return;  // no multi-touch but let's be sure
+
+    for(id<MovingInteractive, NSObject> o in gw.AllGameObjects)
+    {
+        if([o conformsToProtocol:@protocol(MovingInteractive)])
+        {
+            if(o.enabled && [BLMath DistanceBetween:o.worldPosition and:location] <= BTXE_PICKUP_PROXIMITY)
+            {
+                heldObject=o;
+                isHoldingObject=YES;
+            }
+        }
+    }
     
 }
 
@@ -195,8 +210,12 @@
     location=[self.ForeLayer convertToNodeSpace:location];
     
     lastTouch=location;
-    
-    
+
+    if(isHoldingObject)
+    {
+        //track that object's position
+        heldObject.worldPosition=location;
+    }
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -207,7 +226,13 @@
     //location=[self.ForeLayer convertToNodeSpace:location];
     isTouching=NO;
     
-    
+    if(heldObject)
+    {
+        [heldObject returnToBase];
+        
+        heldObject=nil;
+        isHoldingObject=NO;
+    }
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event

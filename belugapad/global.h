@@ -342,6 +342,10 @@
 
 //btxe
 #define BTXE_HPAD 12.0f
+#define BTXE_OTBKG_SPRITE_W 100.0f
+#define BTXE_OTBKG_SPRITE_H 30.0f
+#define BTXE_OTBKG_WIDTH_OVERDRAW_PAD 10.0f
+#define BTXE_PICKUP_PROXIMITY 25.0f
 
 //scoring
 #define SCORE_STAGE_CAP 5

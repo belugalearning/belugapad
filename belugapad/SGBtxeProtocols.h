@@ -57,7 +57,7 @@
 
 
 
-@protocol Interactive
+@protocol Interactive <Bounding>
 
 @property BOOL enabled;
 @property (retain) NSString *tag;

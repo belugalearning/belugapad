@@ -7,6 +7,7 @@
 //
 
 #import "SGBtxeTextBackgroundRender.h"
+#import "global.h"
 
 @implementation SGBtxeTextBackgroundRender
 
@@ -24,12 +25,14 @@
 
 -(void)setupDrawWithSize:(CGSize)size
 {
-    
+    self.sprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/btxe/ot-bkg.png")];
+    self.sprite.scaleX = (size.width + BTXE_OTBKG_WIDTH_OVERDRAW_PAD )/ BTXE_OTBKG_SPRITE_W;
+    self.sprite.scaleY = size.height / BTXE_OTBKG_SPRITE_H;
 }
 
 -(void)updatePosition:(CGPoint)position
 {
-    
+    self.sprite.position=position;
 }
 
 -(void)dealloc

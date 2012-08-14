@@ -8,12 +8,14 @@
 
 #import "SGBtxeObjectText.h"
 #import "SGBtxeTextRender.h"
+#import "SGBtxeTextBackgroundRender.h"
 
 @implementation SGBtxeObjectText
 
 @synthesize size, position;
 @synthesize text, textRenderComponent;
 @synthesize enabled, tag;
+@synthesize textBackgroundRenderComponent;
 
 -(SGBtxeObjectText*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -25,6 +27,7 @@
         tag=@"";
         enabled=YES;
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
+        textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
     }
     
     return self;
@@ -42,7 +45,7 @@
 
 -(void)attachToRenderBase:(CCNode*)renderBase;
 {
-    //TODO: add background (at z-1)
+    [renderBase addChild:textBackgroundRenderComponent.sprite];
     
     [renderBase addChild:textRenderComponent.label];
 }
@@ -54,7 +57,8 @@
     //update positioning in text render
     [self.textRenderComponent updatePosition:position];
     
-    //TODO: update positioning in background
+    //update positioning in background
+    [self.textBackgroundRenderComponent updatePosition:position];
     
 }
 
@@ -66,7 +70,8 @@
     //set size to size of cclabelttf
     self.size=self.textRenderComponent.label.contentSize;
     
-    //TODO: create background (to same width as text)
+    //background sprite to text (using same size)
+    [textBackgroundRenderComponent setupDrawWithSize:self.size];
     
 }
 
@@ -75,6 +80,7 @@
     self.text=nil;
     self.tag=nil;
     self.textRenderComponent=nil;
+    self.textBackgroundRenderComponent=nil;
     
     [super dealloc];
 }

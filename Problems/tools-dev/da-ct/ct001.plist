@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>shade 1/4 (there&apos;s no equivalents here!)</string>
+	<key>TOOL_KEY</key>
+	<string>CountingTimer</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>SOLUTION</key>
+	<integer>5</integer>
+	<key>SHOW_COUNT</key>
+	<true/>
+	<key>COUNT_TYPE</key>
+	<integer>1</integer>
+</dict>
+</plist>

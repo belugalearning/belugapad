@@ -340,6 +340,9 @@
 #define REGION_ZOOM_LEVEL 0.15f
 
 
+//btxe
+#define BTXE_HPAD 12.0f
+
 //scoring
 #define SCORE_STAGE_CAP 5
 #define SCORE_STAGE_MULTIPLIER 2

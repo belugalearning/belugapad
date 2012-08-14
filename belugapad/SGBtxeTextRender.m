@@ -28,6 +28,11 @@
     self.label=[CCLabelTTF labelWithString:ParentGO.text fontName:@"Helvetica" fontSize:24];
 }
 
+-(void)updatePosition:(CGPoint)position
+{
+    self.label.position=position;
+}
+
 -(void)dealloc
 {
     self.label=nil;

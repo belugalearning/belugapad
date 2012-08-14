@@ -7,6 +7,7 @@
 //
 
 #import "SGBtxeRowLayout.h"
+#import "global.h"
 
 @implementation SGBtxeRowLayout
 
@@ -21,19 +22,30 @@
 
 -(void)layoutChildren
 {
-    //step children, position (set their position property)
+    float totalW=0, maxH=0;
     
-    //get total width (width + padding)
+    //get max height, total width
+    for(id<Bounding> c in ParentGo.children)
+    {
+        if(c.size.height > maxH)maxH=c.size.height;
+        totalW+=c.size.width + BTXE_HPAD;
+    }
+    
+    //remove last lot (effectively) of horiz padding
+    if(totalW>0)totalW-=BTXE_HPAD;
     
     //set start (-half)
+    float headXPos=-totalW / 2.0f;
     
     //step items
-    
-    //  put left of first item at far left of this
-    
-    //  increment cum width (w/ width + spacer)
-    
-    
+    for(id<Bounding> c in ParentGo.children)
+    {
+        //place object here (offset for centre position)
+        c.position=CGPointMake(headXPos + (c.size.width / 2.0), 0);
+        
+        //  increment cum width (w/ width + spacer)
+        headXPos+=c.size.width + BTXE_HPAD;
+    }
 }
 
 @end

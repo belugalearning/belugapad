@@ -42,6 +42,15 @@
     [renderBase addChild:textRenderComponent.label];
 }
 
+-(void)setPosition:(CGPoint)thePosition
+{
+    position=thePosition;
+    
+    //update positioning in text render
+    [self.textRenderComponent updatePosition:position];
+    
+}
+
 -(void)setupDraw
 {
     //text render to create it's label

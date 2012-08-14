@@ -19,8 +19,5 @@
 -(void)pairPickupObjectToMe:(id)pickupObject;
 -(void)unpairMeFrom:(id)thisObject;
 -(void)unpairPickupObjectFromMe:(id)pickupObject;
--(void)createContainerAndAdd:(NSArray*)theseObjects;
--(void)addObjectToContainer:(id)thisObject;
--(void)removeObjectFromContainer:(id)pickupObject;
 
 @end

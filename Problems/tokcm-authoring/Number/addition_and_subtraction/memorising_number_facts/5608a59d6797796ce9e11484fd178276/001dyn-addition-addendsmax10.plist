@@ -37,7 +37,7 @@
 			<key>VAR_NAME</key>
 			<string>$addend</string>
 			<key>MIN</key>
-			<string>0</string>
+			<string>1</string>
 			<key>MAX</key>
 			<string>3</string>
 		</dict>

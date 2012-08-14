@@ -71,9 +71,9 @@
 			<key>VAR_NAME</key>
 			<string>$augend</string>
 			<key>MIN</key>
-			<string>15</string>
+			<string>10</string>
 			<key>MAX</key>
-			<string>20</string>
+			<string>15</string>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
@@ -81,7 +81,7 @@
 			<key>MIN</key>
 			<string>1</string>
 			<key>MAX</key>
-			<string>14</string>
+			<string>5</string>
 		</dict>
 	</array>
 </dict>

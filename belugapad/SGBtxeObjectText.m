@@ -16,6 +16,8 @@
 @synthesize text, textRenderComponent;
 @synthesize enabled, tag;
 @synthesize textBackgroundRenderComponent;
+@synthesize originalPosition;
+
 
 -(SGBtxeObjectText*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -43,8 +45,20 @@
     
 }
 
--(void)attachToRenderBase:(CCNode*)renderBase;
+-(CGPoint)worldPosition
 {
+    return [renderBase convertToWorldSpace:self.position];
+}
+
+-(void)setWorldPosition:(CGPoint)worldPosition
+{
+    self.position=[renderBase convertToNodeSpace:worldPosition];
+}
+
+-(void)attachToRenderBase:(CCNode*)theRenderBase;
+{
+    renderBase=theRenderBase;
+    
     [renderBase addChild:textBackgroundRenderComponent.sprite];
     
     [renderBase addChild:textRenderComponent.label];
@@ -53,6 +67,8 @@
 -(void)setPosition:(CGPoint)thePosition
 {
     position=thePosition;
+
+    //TODO: auto-animate any large moves?
     
     //update positioning in text render
     [self.textRenderComponent updatePosition:position];
@@ -73,6 +89,11 @@
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];
     
+}
+
+-(void)returnToBase
+{
+    self.position=self.originalPosition;
 }
 
 -(void)dealloc

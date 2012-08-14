@@ -40,6 +40,7 @@
 
 @property CGSize size;
 @property CGPoint position;
+@property CGPoint worldPosition;
 
 -(void) setupDraw;
 
@@ -61,6 +62,16 @@
 
 @property BOOL enabled;
 @property (retain) NSString *tag;
+
+@end
+
+
+
+@protocol MovingInteractive <Interactive>
+
+@property CGPoint originalPosition;
+
+-(void)returnToBase;
 
 @end
 

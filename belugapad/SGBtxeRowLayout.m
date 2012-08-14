@@ -14,7 +14,7 @@
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
-        
+        ParentGo=aGameObject;
     }
     return self;
 }

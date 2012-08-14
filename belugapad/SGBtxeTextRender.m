@@ -16,15 +16,16 @@
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
+        ParentGO=aGameObject;
         self.label=nil;
     }
     return self;
-    
+
 }
 
 -(void)setupDraw
 {
-    self.label=[CCLabelTTF labelWithString:ParentGO.text fontName:@"Helvetica" fontSize:18];
+    self.label=[CCLabelTTF labelWithString:ParentGO.text fontName:@"Helvetica" fontSize:24];
 }
 
 -(void)dealloc

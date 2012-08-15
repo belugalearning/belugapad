@@ -28,6 +28,8 @@
 	<false/>
 	<key>X_OFFSET</key>
 	<string>-0.25</string>
+	<key>DEFAULT_SCALE</key>
+	<string>0.9</string>
 	<key>SHOW_CAGE</key>
 	<false/>
 	<key>SHOW_NEG_CAGE</key>

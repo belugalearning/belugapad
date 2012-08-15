@@ -30,6 +30,8 @@
 	<true/>
 	<key>X_OFFSET</key>
 	<string>0.3</string>
+	<key>DEFAULT_SCALE</key>
+	<string>0.9</string>
 	<key>COLUMN_SPACING</key>
 	<real>0.3</real>
 	<key>SHOW_NEG_CAGE</key>

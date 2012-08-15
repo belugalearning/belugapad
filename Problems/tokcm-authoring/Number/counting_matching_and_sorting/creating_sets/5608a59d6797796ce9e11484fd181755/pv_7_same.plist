@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Create a set of the same number amd same ordering.</string>
+	<string>Create a set of the same number and same ordering.</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -128,13 +128,6 @@
 			<integer>3</integer>
 		</dict>
 	</array>
-	<key>COLUMN_SPRITES</key>
-	<dict>
-		<key>10</key>
-		<string>/images/placevalue/obj-placevalue-unit1.png</string>
-		<key>1</key>
-		<string>/images/placevalue/obj-placevalue-unit1.png</string>
-	</dict>
 	<key>COLUMN_CAGES</key>
 	<dict>
 		<key>10</key>

@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 8. Take away 6 blocks and count the total number of blocks. What is 8 subtract 6?</string>
+	<string>Subtract 6 from 8, and count the total number of blocks.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>8-3</string>
+	<string>pv_8-6</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>

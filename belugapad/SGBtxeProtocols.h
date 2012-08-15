@@ -21,12 +21,28 @@
 @end
 
 
+@protocol RenderContainer
+
+@property (retain) CCLayer *renderLayer;
+
+@end
+
+
+@protocol RenderObject
+
+-(void)attachToRenderBase:(CCNode*)renderBase;
+
+@end
+
+
+
 @protocol Bounding
 
-@property (readonly) CGSize size;
+@property CGSize size;
 @property CGPoint position;
+@property CGPoint worldPosition;
 
--(void) calculateSize;
+-(void) setupDraw;
 
 @end
 
@@ -42,13 +58,40 @@
 
 
 
-@protocol Interactive
+@protocol Interactive <Bounding>
 
 @property BOOL enabled;
 @property (retain) NSString *tag;
 
+-(void)activate;
+
 @end
 
+
+
+@protocol MovingInteractive <Interactive>
+
+@property CGPoint originalPosition;
+
+-(void)returnToBase;
+
+@end
+
+
+@protocol Tappable <Bounding>
+
+-(void) actOnTap;
+
+@end
+
+
+@protocol NumberPicker <Tappable>
+
+@property float targetNumber;
+@property BOOL usePicker;
+
+
+@end
 
 
 @protocol Parser

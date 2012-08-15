@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>mq_20_24_4</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>mq_20_24_4</string>
 	<key>MASTERY</key>
 	<true/>
 	<key>HOST_BACKGROUND_IMAGE</key>

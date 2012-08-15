@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>More people than expected turned up to go to the restaurant, so another 2 taxis were ordered on top of the original 3. Each taxi holds 4 people. How many people are going to the restaurant now?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>4.5=20</string>
+	<string>nb_4_5_20_taxi</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>INIT_BARS</key>

@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Show that to make 5 blocks into 10 blocks, you must add 5 blocks of 1. </string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>5+5=10</string>
+	<string>pv_mq_5-10</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>

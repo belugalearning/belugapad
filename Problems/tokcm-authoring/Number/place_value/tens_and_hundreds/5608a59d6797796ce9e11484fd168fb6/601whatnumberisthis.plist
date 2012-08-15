@@ -82,45 +82,37 @@
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
 			<integer>1</integer>
-			<key>NUMBER</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
 			<key>PUT_IN_ROW</key>
-			<integer>2</integer>
+			<integer>0</integer>
 			<key>New item</key>
 			<string>2</string>
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
-			<integer>2</integer>
+			<integer>1</integer>
 			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
+			<integer>1</integer>
 			<key>NUMBER</key>
 			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
-			<integer>2</integer>
-			<key>PUT_IN_ROW</key>
 			<integer>1</integer>
+			<key>PUT_IN_ROW</key>
+			<integer>2</integer>
 			<key>NUMBER</key>
 			<integer>1</integer>
 		</dict>
 	</array>
 	<key>REJECT_MODE</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>SOLUTION</key>
 	<dict>
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<string>403</string>
+		<string>206</string>
 		<key>SOLUTION_DISPLAY_TEXT</key>
 		<string>that&apos;s 12!</string>
 		<key>PLAY_SOUND</key>
@@ -166,7 +158,7 @@
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
-		<string>403</string>
+		<string>206</string>
 	</dict>
 </dict>
 </plist>

@@ -105,7 +105,7 @@
 			</dict>
 		</array>
 		<key>SOLUTION_TYPE</key>
-		<string>TOTAL_COUNT</string>
+		<string>MATRIX_MATCH</string>
 		<key>SOLUTION_VALUE</key>
 		<integer>154</integer>
 		<key>SOLUTION_DISPLAY_TEXT</key>
@@ -160,13 +160,6 @@
 			<integer>2</integer>
 		</dict>
 	</array>
-	<key>COLUMN_SPRITES</key>
-	<dict>
-		<key>10</key>
-		<string>/images/placevalue/obj-placevalue-unit1.png</string>
-		<key>1</key>
-		<string>/images/placevalue/obj-placevalue-unit1.png</string>
-	</dict>
 	<key>COLUMN_CAGES</key>
 	<dict>
 		<key>10</key>
@@ -201,6 +194,8 @@
 		<key>100</key>
 		<false/>
 	</dict>
+	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
+	<true/>
 	<key>X_OFFSET</key>
 	<real>-0.28</real>
 </dict>

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>A set of 6 blocks are shown. Create a set of 6 blocks so that both sets are equivalent.</string>
+	<string>A set of 6 blocks are shown. Create a set that is the same. </string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -112,13 +112,6 @@
 			<integer>4</integer>
 		</dict>
 	</array>
-	<key>COLUMN_SPRITES</key>
-	<dict>
-		<key>10</key>
-		<string>/images/placevalue/obj-placevalue-unit1.png</string>
-		<key>1</key>
-		<string>/images/placevalue/obj-placevalue-unit1.png</string>
-	</dict>
 	<key>COLUMN_CAGES</key>
 	<dict>
 		<key>10</key>

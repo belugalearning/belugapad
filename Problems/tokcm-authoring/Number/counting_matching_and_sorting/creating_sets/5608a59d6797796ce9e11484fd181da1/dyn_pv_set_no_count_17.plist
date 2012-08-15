@@ -71,5 +71,7 @@
 			<string>1</string>
 		</dict>
 	</dict>
+	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
+	<true/>
 </dict>
 </plist>

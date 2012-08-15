@@ -36,7 +36,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>{@bname} has 20 pounds, and spends all his money to buy drinks that cost 2 pounds each. How many did he buy?</string>
+		<string>{@bname} has £20, and spends all his money to buy drinks that cost £2 each. How many did he buy?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

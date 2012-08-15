@@ -37,7 +37,7 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>YES-5 pounds</string>
+				<string>YES-£5</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
@@ -49,13 +49,13 @@
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>YES-2 pounds</string>
+				<string>YES-£2</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There are 10 pound coins that are shared equally between 5 people. Is each person&apos;s share of money the same? If so, how much does each person get?</string>
+		<string>There are 10 £1 coins that are shared equally between 5 people. Is each person&apos;s share of money the same? If so, how much does each person get?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

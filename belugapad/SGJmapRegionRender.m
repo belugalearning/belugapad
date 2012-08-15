@@ -176,8 +176,8 @@
             }
             
             
-            //stop looking when one from end
-            if(i==verts.count-1)
+            //stop looking when one from end -- added hard stop at 100 (calculation overflow error in some datasets)
+            if(i==verts.count-1 || verts.count>100)
             {
                 looking=NO;
             }

@@ -17,7 +17,7 @@
 @synthesize enabled, tag;
 @synthesize textBackgroundRenderComponent;
 @synthesize originalPosition;
-
+@synthesize usePicker;
 
 -(SGBtxeObjectText*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -28,6 +28,7 @@
         position=CGPointZero;
         tag=@"";
         enabled=YES;
+        usePicker=NO;
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
         textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
     }
@@ -83,12 +84,25 @@
     //text render to create it's label
     [textRenderComponent setupDraw];
     
+    //don't show the label if it's not enabled
+    if(!self.enabled || self.usePicker)
+    {
+        textRenderComponent.label.visible=NO;
+    }
+    
     //set size to size of cclabelttf
     self.size=self.textRenderComponent.label.contentSize;
     
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];
     
+}
+
+-(void)activate
+{
+    self.enabled=YES;
+    
+    self.textRenderComponent.label.visible=self.enabled;
 }
 
 -(void)returnToBase

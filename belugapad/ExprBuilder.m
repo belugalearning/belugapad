@@ -137,20 +137,26 @@
     
     //create some children
     SGBtxeText *t1=[[SGBtxeText alloc] initWithGameWorld:gw];
-    t1.text=@"tom has";
+    t1.text=@"Tom had";
     [row.containerMgrComponent addObjectToContainer:t1];
     
-    SGBtxeText *t2=[[SGBtxeText alloc] initWithGameWorld:gw];
-    t2.text=@"3";
+    SGBtxeObjectText *t2=[[SGBtxeObjectText alloc] initWithGameWorld:gw];
+    t2.text=@"5 sweets.";
+    t2.tag=@"a";
     [row.containerMgrComponent addObjectToContainer:t2];
     
-//    SGBtxeText *t3=[[SGBtxeText alloc] initWithGameWorld:gw];
-//    t3.text=@"apples";
-//    [row.containerMgrComponent addObjectToContainer:t3];
+    SGBtxeText *t3=[[SGBtxeText alloc] initWithGameWorld:gw];
+    t3.text=@"He gets";
+    [row.containerMgrComponent addObjectToContainer:t3];
     
     SGBtxeObjectText *o3=[[SGBtxeObjectText alloc]initWithGameWorld:gw];
-    o3.text=@"apples";
+    o3.text=@"4 more.";
+    o3.tag=@"b";
     [row.containerMgrComponent addObjectToContainer:o3];
+    
+    SGBtxeText *t4=[[SGBtxeText alloc] initWithGameWorld:gw];
+    t4.text=@"How many does he have?";
+    [row.containerMgrComponent addObjectToContainer:t4];
 
     [row setupDraw];
 
@@ -159,17 +165,33 @@
     row2.position=ccp(cx, cy-100);
     
     //create some children
+
+    SGBtxeObjectText *tt2=[[SGBtxeObjectText alloc] initWithGameWorld:gw];
+    tt2.text=@"5 sweets";
+    tt2.tag=@"a";
+    tt2.enabled=NO;
+    [row2.containerMgrComponent addObjectToContainer:tt2];
+
     SGBtxeText *tt1=[[SGBtxeText alloc] initWithGameWorld:gw];
-    tt1.text=@"gareth has";
+    tt1.text=@"+";
     [row2.containerMgrComponent addObjectToContainer:tt1];
     
-    SGBtxeObjectText *tt2=[[SGBtxeObjectText alloc] initWithGameWorld:gw];
-    tt2.text=@"4";
-    [row2.containerMgrComponent addObjectToContainer:tt2];
-    
-    SGBtxeText *tt3=[[SGBtxeText alloc] initWithGameWorld:gw];
-    tt3.text=@"apples";
+    SGBtxeObjectText *tt3=[[SGBtxeObjectText alloc] initWithGameWorld:gw];
+    tt3.text=@"4 sweets";
+    tt3.enabled=NO;
+    tt3.tag=@"b";
     [row2.containerMgrComponent addObjectToContainer:tt3];
+    
+    SGBtxeText *tt4=[[SGBtxeText alloc] initWithGameWorld:gw];
+    tt4.text=@" = ";
+    [row2.containerMgrComponent addObjectToContainer:tt4];
+    
+    SGBtxeObjectText *tt5=[[SGBtxeObjectText alloc] initWithGameWorld:gw];
+    tt5.text=@"9 sweets";
+    tt5.enabled=NO;
+    tt5.tag=@"c";
+    [row2.containerMgrComponent addObjectToContainer:tt5];
+    
     
     [row2 setupDraw];
 }
@@ -220,14 +242,29 @@
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    //    UITouch *touch=[touches anyObject];
-    //    CGPoint location=[touch locationInView: [touch view]];
-    //    location=[[CCDirector sharedDirector] convertToGL:location];
-    //location=[self.ForeLayer convertToNodeSpace:location];
+    UITouch *touch=[touches anyObject];
+    CGPoint location=[touch locationInView: [touch view]];
+    location=[[CCDirector sharedDirector] convertToGL:location];
+    location=[self.ForeLayer convertToNodeSpace:location];
     isTouching=NO;
     
     if(heldObject)
     {
+        //test new location for target / drop
+        for(id<Interactive, NSObject> o in gw.AllGameObjects)
+        {
+            if([o conformsToProtocol:@protocol(Interactive)])
+            {
+                if(!o.enabled
+                   && [heldObject.tag isEqualToString:o.tag]
+                   && [BLMath DistanceBetween:o.worldPosition and:location]<=BTXE_PICKUP_PROXIMITY)
+                {
+                    //this object is proximate, disabled and the same tag
+                    [o activate];
+                }
+            }
+        }
+        
         [heldObject returnToBase];
         
         heldObject=nil;

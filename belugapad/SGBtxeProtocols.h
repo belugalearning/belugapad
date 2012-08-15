@@ -63,6 +63,8 @@
 @property BOOL enabled;
 @property (retain) NSString *tag;
 
+-(void)activate;
+
 @end
 
 
@@ -75,6 +77,21 @@
 
 @end
 
+
+@protocol Tappable <Bounding>
+
+-(void) actOnTap;
+
+@end
+
+
+@protocol NumberPicker <Tappable>
+
+@property float targetNumber;
+@property BOOL usePicker;
+
+
+@end
 
 
 @protocol Parser

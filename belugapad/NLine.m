@@ -443,7 +443,7 @@ static float kTimeToBubbleShake=7.0f;
         
         //NSLog(@"bubble pos %d", roundedStepsFromCentre);
                 
-        int startOffset=initStartVal;
+        int startOffset=initStartVal / initSegmentVal;
         
         
         //lastBubbleLoc = roundedStepsFromCentre+startOffset;
@@ -501,7 +501,7 @@ static float kTimeToBubbleShake=7.0f;
         int roundedStepsFromCentre=(int)(stepsFromCentre + 0.5f);
         if(stepsFromCentre<0) roundedStepsFromCentre=(int)(stepsFromCentre - 0.5f);
         
-        int startOffset=initStartVal;
+        int startOffset=initStartVal / initSegmentVal;
         lastBubbleLoc = (roundedStepsFromCentre+startOffset) * rambler.CurrentSegmentValue;
         int adjustedStepsFromCentre=roundedStepsFromCentre * rambler.CurrentSegmentValue;
         

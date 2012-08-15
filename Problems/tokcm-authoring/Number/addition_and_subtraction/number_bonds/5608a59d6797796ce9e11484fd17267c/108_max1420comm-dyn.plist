@@ -71,17 +71,17 @@
 			<key>VAR_NAME</key>
 			<string>$augend</string>
 			<key>MIN</key>
-			<string>10</string>
+			<string>3</string>
 			<key>MAX</key>
-			<string>15</string>
+			<string>7</string>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
 			<string>$addend</string>
 			<key>MIN</key>
-			<string>1</string>
+			<string>4</string>
 			<key>MAX</key>
-			<string>5</string>
+			<string>8</string>
 		</dict>
 	</array>
 </dict>

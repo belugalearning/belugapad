@@ -5,9 +5,9 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>4 {@operator} 1</string>
+		<string>What is {$minuend} {@operator} {$subtrahend}?</string>
 		<key>INTERNAL_DESCRIPTION</key>
-		<string>102 memorise number facts for subtraction with within max minuend 5 (e.g. 5-2) </string>
+		<string>004 memorise subtraction facts with 5 &lt; minuend &lt; 10</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>ANIMATE_FROM_PICKER</key>
@@ -17,7 +17,7 @@
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
-		<string>3</string>
+		<string>{$minuend-$subtrahend}</string>
 	</dict>
 	<key>DSTRINGS</key>
 	<dict>
@@ -27,9 +27,32 @@
 			<string>RANDOM</string>
 			<key>DATA</key>
 			<array>
+				<string>subtract</string>
+				<string>take away</string>
 				<string>-</string>
+				<string>minus</string>
+				<string>decreased by</string>
 			</array>
 		</dict>
 	</dict>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$minuend</string>
+			<key>MIN</key>
+			<string>5</string>
+			<key>MAX</key>
+			<string>10</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$subtrahend</string>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>{$minuend}</string>
+		</dict>
+	</array>
 </dict>
 </plist>

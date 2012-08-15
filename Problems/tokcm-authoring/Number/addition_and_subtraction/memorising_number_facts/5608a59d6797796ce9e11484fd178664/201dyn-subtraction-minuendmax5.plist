@@ -5,9 +5,9 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>What is {$addend} {@operator} {$augend}?</string>
+		<string>What is {$minuend} {@operator} {$subtrahend}?</string>
 		<key>INTERNAL_DESCRIPTION</key>
-		<string>005 memorise number facts for addition within 5 - 10</string>
+		<string>002 memorise subtraction facts with 5 &lt; minuend &lt; 10</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>ANIMATE_FROM_PICKER</key>
@@ -17,7 +17,7 @@
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
-		<string>{$addend+$augend}</string>
+		<string>{$minuend-$subtrahend}</string>
 	</dict>
 	<key>DSTRINGS</key>
 	<dict>
@@ -27,11 +27,11 @@
 			<string>RANDOM</string>
 			<key>DATA</key>
 			<array>
-				<string>plus</string>
-				<string>add</string>
-				<string>+</string>
-				<string>more than</string>
-				<string>and</string>
+				<string>subtract</string>
+				<string>take away</string>
+				<string>-</string>
+				<string>minus</string>
+				<string>decreased by</string>
 			</array>
 		</dict>
 	</dict>
@@ -39,19 +39,19 @@
 	<array>
 		<dict>
 			<key>VAR_NAME</key>
-			<string>$addend</string>
+			<string>$minuend</string>
 			<key>MIN</key>
-			<string>1</string>
+			<string>5</string>
 			<key>MAX</key>
-			<string>3</string>
+			<string>7</string>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
-			<string>$augend</string>
+			<string>$subtrahend</string>
 			<key>MIN</key>
 			<string>3</string>
 			<key>MAX</key>
-			<string>7</string>
+			<string>{$minuend}</string>
 		</dict>
 	</array>
 </dict>

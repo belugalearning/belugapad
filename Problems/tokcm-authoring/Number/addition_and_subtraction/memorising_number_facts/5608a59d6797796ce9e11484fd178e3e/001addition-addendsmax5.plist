@@ -5,9 +5,9 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>What is {$addend} {@operator} {$augend}?</string>
+		<string>What is 1 {@operator} 2?</string>
 		<key>INTERNAL_DESCRIPTION</key>
-		<string>005 memorise number facts for addition within 5 - 10</string>
+		<string>001 memorise number facts for addition within 5 </string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>ANIMATE_FROM_PICKER</key>
@@ -17,7 +17,7 @@
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
-		<string>{$addend+$augend}</string>
+		<string>3</string>
 	</dict>
 	<key>DSTRINGS</key>
 	<dict>
@@ -27,32 +27,9 @@
 			<string>RANDOM</string>
 			<key>DATA</key>
 			<array>
-				<string>plus</string>
-				<string>add</string>
 				<string>+</string>
-				<string>more than</string>
-				<string>and</string>
 			</array>
 		</dict>
 	</dict>
-	<key>DVARS</key>
-	<array>
-		<dict>
-			<key>VAR_NAME</key>
-			<string>$addend</string>
-			<key>MIN</key>
-			<string>1</string>
-			<key>MAX</key>
-			<string>3</string>
-		</dict>
-		<dict>
-			<key>VAR_NAME</key>
-			<string>$augend</string>
-			<key>MIN</key>
-			<string>3</string>
-			<key>MAX</key>
-			<string>7</string>
-		</dict>
-	</array>
 </dict>
 </plist>

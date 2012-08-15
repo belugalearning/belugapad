@@ -59,11 +59,14 @@ typedef enum {
     int trackNumber;
     int lastNumber;
     BOOL expired;
+    BOOL started;
     
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;
 -(void)populateGW;
+-(void)startProblem;
+-(void)expireProblemForRestart;
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)doUpdateOnTick:(ccTime)delta;
 -(void)draw;

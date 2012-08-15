@@ -19,6 +19,7 @@
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
+#import "InteractionFeedback.h"
 
 @interface CountingTimer()
 {
@@ -90,10 +91,11 @@
 {
     // increase our overall timer
     // if the problem hasn't expired - increase
-    if(!expired)timeElapsed+=delta;
+    if(!expired)
+        if(started)timeElapsed+=delta;
     
     // update our tool variables
-    if((int)timeElapsed!=trackNumber)
+    if((int)timeElapsed!=trackNumber && started)
     {
         trackNumber=(int)timeElapsed;
         
@@ -117,13 +119,13 @@
     if(numIncrement<0 && lastNumber<=countMin && !expired)
     {
         NSLog(@"reach the end of the problem (hit count min on count-back number");
-        expired=YES;
+        [self expireProblemForRestart];
     }
     
     else if(numIncrement>=0 && lastNumber>=countMax && !expired)
     {
         NSLog(@"reach the end of the problem (hit count max on count-on number");
-        expired=YES;
+        [self expireProblemForRestart];
     }
         
     if(autoMoveToNextProblem)
@@ -146,9 +148,16 @@
 #pragma mark - gameworld setup and population
 -(void)readPlist:(NSDictionary*)pdef
 {
+    started=NO;
+    
     countMin=[[pdef objectForKey:COUNT_MIN]intValue];
     countMax=[[pdef objectForKey:COUNT_MAX]intValue];
-    numIncrement=[[pdef objectForKey:INCREMENT]intValue];
+    
+    if([pdef objectForKey:INCREMENT])
+        numIncrement=[[pdef objectForKey:INCREMENT]intValue];
+    else
+        numIncrement=1;
+    
     solutionNumber=[[pdef objectForKey:SOLUTION]intValue];
     displayNumicon=[[pdef objectForKey:USE_NUMICON_NUMBERS]boolValue];
     showCount=[[pdef objectForKey:SHOW_COUNT]boolValue];
@@ -166,6 +175,7 @@
     gw.Blackboard.RenderLayer = renderLayer;
     buttonOfWin=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/countingtimer/button-red.png")];
     [buttonOfWin setPosition:ccp(cx,cy)];
+    [buttonOfWin setColor:ccc3(0,255,0)];
     [renderLayer addChild:buttonOfWin];
     
     if(showCount)
@@ -176,6 +186,27 @@
     }
 }
 
+#pragma mark - problem state
+-(void)startProblem
+{
+    [buttonOfWin setColor:ccc3(255,255,255)];
+    started=YES;
+    expired=NO;
+}
+
+-(void)expireProblemForRestart
+{
+    expired=YES;
+    started=NO;
+    timeElapsed=0.0f;
+    trackNumber=0;
+    [buttonOfWin setColor:ccc3(0,255,0)];
+    
+    if(numIncrement>=0)
+        lastNumber=countMin;
+    else
+        lastNumber=countMax;
+}
 
 #pragma mark - touches events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -192,7 +223,8 @@
     
     if(CGRectContainsPoint(buttonOfWin.boundingBox, location))
     {
-        [self evalProblem];
+        if(!started)[self startProblem];
+        else[self evalProblem];
     }
     
     
@@ -249,7 +281,8 @@
         [toolHost showProblemCompleteMessage];
     }
     else {
-        if(evalMode==kProblemEvalOnCommit)[self resetProblem];
+//        if(evalMode==kProblemEvalOnCommit)[self resetProblem];
+        [buttonOfWin runAction:[InteractionFeedback shakeAction]];
     }
     
 }

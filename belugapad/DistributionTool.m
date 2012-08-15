@@ -289,6 +289,9 @@ static float kDistanceBetweenBlocks=70.0f;
 -(void)updateContainerForNewlyAddedBlock:(id<Moveable,Pairable>)thisBlock
 {
     // if there are no paired objects - make sure i am removed from any container i may be part of
+    
+    NSLog(@"this block paired to %d", [thisBlock.PairedObjects count]);
+    
     if([thisBlock.PairedObjects count]==0)
     {
         if(thisBlock.MyContainer)
@@ -304,7 +307,9 @@ static float kDistanceBetweenBlocks=70.0f;
             if(thisBlock.MyContainer)
                 [thisBlock.MyContainer removeBlockFromMe:thisBlock];
             
-            [pairedObj.MyContainer addBlockToMe:thisBlock];
+            //TODO: this is causing a crash if dragged from a cage
+            if(![pairedObj.MyContainer conformsToProtocol:@protocol(Cage)])
+                [pairedObj.MyContainer addBlockToMe:thisBlock];
         }
     }
 }
@@ -348,6 +353,28 @@ static float kDistanceBetweenBlocks=70.0f;
             [c repositionLabel];
             NSLog(@"count of group %d", [c.BlocksInShape count]);
         }
+    }
+}
+
+-(void)removeBlockByCage
+{
+    
+    if(currentPickupObject)
+    {
+        for(id<Pairable> pairedObj in currentPickupObject.PairedObjects)
+        {
+            [pairedObj unpairMeFrom:currentPickupObject];
+        }
+        
+        SGGameObject *go=(SGGameObject*)currentPickupObject;
+        CCSprite *s=currentPickupObject.mySprite;
+        CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:cage.Position];
+        CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.1f];
+        CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES]; [gw delayRemoveGameObject:go];}];
+        CCSequence *sequence=[CCSequence actions:moveAct, fadeAct, cleanUp, nil];
+        [s runAction:sequence];
+        currentPickupObject=nil;
+
     }
 }
 
@@ -555,6 +582,12 @@ static float kDistanceBetweenBlocks=70.0f;
     {
         CGPoint curPOPos=currentPickupObject.Position;
         // check all the gamobjects and search for a moveable object
+        
+        if([BLMath DistanceBetween:curPOPos and:cage.Position]<90.0f && problemHasCage)
+        {
+            [self removeBlockByCage];
+            return;
+        }
         
         id previousObjectContainer=nil;
         

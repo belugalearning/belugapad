@@ -79,5 +79,6 @@
 @property (retain) CCLayer *RenderLayer;
 
 -(void)spawnNewBlock;
+-(void)removeBlockFromMe:(id)thisBlock;
 
 @end

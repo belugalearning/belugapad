@@ -50,6 +50,11 @@
 
 }
 
+-(void)removeBlockFromMe:(id)thisBlock
+{
+    ((id<Moveable>)thisBlock).MyContainer=nil;
+}
+
 -(void)dealloc
 {
     [super dealloc];

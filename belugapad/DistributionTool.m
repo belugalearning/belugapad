@@ -289,6 +289,9 @@ static float kDistanceBetweenBlocks=70.0f;
 -(void)updateContainerForNewlyAddedBlock:(id<Moveable,Pairable>)thisBlock
 {
     // if there are no paired objects - make sure i am removed from any container i may be part of
+    
+    NSLog(@"this block paired to %d", [thisBlock.PairedObjects count]);
+    
     if([thisBlock.PairedObjects count]==0)
     {
         if(thisBlock.MyContainer)
@@ -304,7 +307,9 @@ static float kDistanceBetweenBlocks=70.0f;
             if(thisBlock.MyContainer)
                 [thisBlock.MyContainer removeBlockFromMe:thisBlock];
             
-            [pairedObj.MyContainer addBlockToMe:thisBlock];
+            //TODO: this is causing a crash if dragged from a cage
+            if(![pairedObj.MyContainer conformsToProtocol:@protocol(Cage)])
+                [pairedObj.MyContainer addBlockToMe:thisBlock];
         }
     }
 }

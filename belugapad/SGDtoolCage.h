@@ -13,4 +13,5 @@
 
 -(SGDtoolCage*) initWithGameWorld:(SGGameWorld*)aGameWorld atPosition:(CGPoint)thisPosition andRenderLayer:(CCLayer*)aRenderLayer;
 
+-(void)removeBlockFromMe:(id)thisBlock;
 @end

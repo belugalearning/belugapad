@@ -49,6 +49,7 @@
     float holdingBubbleOffset;
     int bubblePushDir;
     int lastBubbleLoc;
+    int lastBubbleValue;
     int evalTarget;
     
     int initStartVal;

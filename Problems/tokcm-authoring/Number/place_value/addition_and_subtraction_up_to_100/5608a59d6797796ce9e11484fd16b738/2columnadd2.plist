@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ColumnAddition</string>
+	<key>NUMBER_A</key>
+	<integer>12</integer>
+	<key>NUMBER_B</key>
+	<integer>4</integer>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>There are 12 rocks in a pool. Another 4 added. How many in total?</string>
+</dict>
+</plist>

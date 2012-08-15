@@ -64,8 +64,6 @@
 		</dict>
 		<key>$var3</key>
 		<dict>
-			<key>New item</key>
-			<string></string>
 			<key>VALUE</key>
 			<string>{$var1+$var2}</string>
 		</dict>

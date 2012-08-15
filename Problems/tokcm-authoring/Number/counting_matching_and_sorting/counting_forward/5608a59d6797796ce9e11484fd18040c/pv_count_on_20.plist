@@ -59,5 +59,7 @@
 		<key>SOLUTION_VALUE</key>
 		<integer>25</integer>
 	</dict>
+	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
+	<true/>
 </dict>
 </plist>

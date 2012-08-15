@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 10. Subtract 4. What is 10 minus 4?</string>
+	<string>What is 10 minus 4?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>10-4</string>
+	<string>pv_10-4</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>

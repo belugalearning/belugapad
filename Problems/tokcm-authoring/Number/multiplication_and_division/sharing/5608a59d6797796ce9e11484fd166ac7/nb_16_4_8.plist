@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Distribute 16 candles equally between 4 slices of cake. Then distribute 16 candles equally between 8 slices of cake.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>16/8. 16/4.</string>
+	<string>nb_16_4_8</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>SOLUTION_MODE</key>
@@ -31,9 +31,6 @@
 			<integer>2</integer>
 			<string>2</string>
 		</array>
-		<array>
-			<integer>16</integer>
-		</array>
 	</array>
 	<key>INIT_BARS</key>
 	<array>
@@ -55,12 +52,6 @@
 			<key>LENGTH</key>
 			<integer>16</integer>
 		</dict>
-		<dict>
-			<key>LOCKED</key>
-			<true/>
-			<key>LENGTH</key>
-			<integer>16</integer>
-		</dict>
 	</array>
 	<key>INIT_OBJECTS</key>
 	<array>
@@ -69,14 +60,6 @@
 			<string>16 candles</string>
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
-			<key>LENGTH</key>
-			<integer>16</integer>
-		</dict>
-		<dict>
-			<key>LABEL</key>
-			<string>1 cake</string>
-			<key>PUT_IN_ROW</key>
-			<integer>3</integer>
 			<key>LENGTH</key>
 			<integer>16</integer>
 		</dict>

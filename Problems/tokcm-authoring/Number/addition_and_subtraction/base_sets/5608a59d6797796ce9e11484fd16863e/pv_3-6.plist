@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Show that to make 3 blocks into 6 blocks, you must add 3 blocks of 1. </string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>5+4=9</string>
+	<string>pv_3-6</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>

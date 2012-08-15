@@ -356,6 +356,28 @@ static float kDistanceBetweenBlocks=70.0f;
     }
 }
 
+-(void)removeBlockByCage
+{
+    
+    if(currentPickupObject)
+    {
+        for(id<Pairable> pairedObj in currentPickupObject.PairedObjects)
+        {
+            [pairedObj unpairMeFrom:currentPickupObject];
+        }
+        
+        SGGameObject *go=(SGGameObject*)currentPickupObject;
+        CCSprite *s=currentPickupObject.mySprite;
+        CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:cage.Position];
+        CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.1f];
+        CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES]; [gw delayRemoveGameObject:go];}];
+        CCSequence *sequence=[CCSequence actions:moveAct, fadeAct, cleanUp, nil];
+        [s runAction:sequence];
+        currentPickupObject=nil;
+
+    }
+}
+
 -(CGPoint)checkWhereIShouldMount:(id<Pairable>)gameObject;
 {
     NSArray *existingShapes=[self evalUniqueShapes];
@@ -560,6 +582,12 @@ static float kDistanceBetweenBlocks=70.0f;
     {
         CGPoint curPOPos=currentPickupObject.Position;
         // check all the gamobjects and search for a moveable object
+        
+        if([BLMath DistanceBetween:curPOPos and:cage.Position]<90.0f && problemHasCage)
+        {
+            [self removeBlockByCage];
+            return;
+        }
         
         id previousObjectContainer=nil;
         

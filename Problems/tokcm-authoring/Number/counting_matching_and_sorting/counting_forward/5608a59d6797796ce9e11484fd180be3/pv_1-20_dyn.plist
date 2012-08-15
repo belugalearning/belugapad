@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Count up to {$number}.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Count from 1 to x.</string>
+	<string>pv_1-20_dyn. Count up to {$number}.</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -71,5 +71,7 @@
 			<string>5</string>
 		</dict>
 	</dict>
+	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
+	<true/>
 </dict>
 </plist>

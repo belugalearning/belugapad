@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Separate the 8 friends equally into 2 taxis, then 4 taxis. </string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>8/2.8/4.</string>
+	<string>nb_8_4_2</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>SOLUTION_MODE</key>

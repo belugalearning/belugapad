@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Show that to make 2 blocks into 4 blocks, you must add 2 blocks of 1.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>2+2=4</string>
+	<string>pv_2-4</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>

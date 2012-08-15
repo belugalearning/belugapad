@@ -37,9 +37,27 @@
     
 }
 
--(void)calculateSize
+-(void)attachToRenderBase:(CCNode*)renderBase;
 {
+    [renderBase addChild:textRenderComponent.label];
+}
+
+-(void)setPosition:(CGPoint)thePosition
+{
+    position=thePosition;
     
+    //update positioning in text render
+    [self.textRenderComponent updatePosition:position];
+    
+}
+
+-(void)setupDraw
+{
+    //text render to create it's label
+    [textRenderComponent setupDraw];
+    
+    //set size to size of cclabelttf
+    self.size=self.textRenderComponent.label.contentSize;
 }
 
 -(void)dealloc

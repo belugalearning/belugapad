@@ -11,11 +11,16 @@
 
 @class SGBtxeRowLayout;
 
-@interface SGBtxeRow : SGGameObject <Container, Bounding, Parser>
+@interface SGBtxeRow : SGGameObject <Container, Bounding, Parser, RenderContainer>
 {
     NSMutableArray *children;
+    CCNode *baseNode;
 }
 
 @property (retain) SGBtxeRowLayout *rowLayoutComponent;
+
+
+-(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget;
+
 
 @end

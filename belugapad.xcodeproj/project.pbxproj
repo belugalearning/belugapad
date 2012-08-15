@@ -269,6 +269,8 @@
 		7F5005CB1522478C0038D251 /* fps_images-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5005C81522478C0038D251 /* fps_images-hd.png */; };
 		7F5005CC1522478C0038D251 /* fps_images-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5005C91522478C0038D251 /* fps_images-ipadhd.png */; };
 		7F5005CD1522478C0038D251 /* fps_images.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F5005CA1522478C0038D251 /* fps_images.png */; };
+		7F50C4AD15DBCD44009345B5 /* ExprBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F50C4AC15DBCD44009345B5 /* ExprBuilder.m */; };
+		7F50C4B115DBCDA3009345B5 /* SGBtxeTextBackgroundRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F50C4AF15DBCDA3009345B5 /* SGBtxeTextBackgroundRender.m */; };
 		7F5113C314A9EE62001AF372 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C214A9EE62001AF372 /* QuartzCore.framework */; };
 		7F5113C514A9EE62001AF372 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C414A9EE62001AF372 /* OpenGLES.framework */; };
 		7F5113C714A9EE62001AF372 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113C614A9EE62001AF372 /* OpenAL.framework */; };
@@ -941,6 +943,10 @@
 		7F5005C81522478C0038D251 /* fps_images-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fps_images-hd.png"; sourceTree = "<group>"; };
 		7F5005C91522478C0038D251 /* fps_images-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fps_images-ipadhd.png"; sourceTree = "<group>"; };
 		7F5005CA1522478C0038D251 /* fps_images.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fps_images.png; sourceTree = "<group>"; };
+		7F50C4AB15DBCD44009345B5 /* ExprBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExprBuilder.h; sourceTree = "<group>"; };
+		7F50C4AC15DBCD44009345B5 /* ExprBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprBuilder.m; sourceTree = "<group>"; };
+		7F50C4AF15DBCDA3009345B5 /* SGBtxeTextBackgroundRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeTextBackgroundRender.m; sourceTree = "<group>"; };
+		7F50C4B015DBCDA3009345B5 /* SGBtxeTextBackgroundRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeTextBackgroundRender.h; sourceTree = "<group>"; };
 		7F5113BE14A9EE62001AF372 /* beluga aug '12.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "beluga aug '12.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F5113C214A9EE62001AF372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7F5113C414A9EE62001AF372 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -1576,6 +1582,8 @@
 				55FBB2F715BD6E4A0034B081 /* FractionBuilder.m */,
 				559A33D515DA382C00CA97E2 /* CountingTimer.h */,
 				559A33D615DA382C00CA97E2 /* CountingTimer.m */,
+				7F50C4AB15DBCD44009345B5 /* ExprBuilder.h */,
+				7F50C4AC15DBCD44009345B5 /* ExprBuilder.m */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -2584,6 +2592,8 @@
 				7FCA647115D6C7E800C5C020 /* SGBtxeRowLayout.m */,
 				7FCA647315D6C7F900C5C020 /* SGBtxeTextRender.h */,
 				7FCA647415D6C7F900C5C020 /* SGBtxeTextRender.m */,
+				7F50C4AF15DBCDA3009345B5 /* SGBtxeTextBackgroundRender.m */,
+				7F50C4B015DBCDA3009345B5 /* SGBtxeTextBackgroundRender.h */,
 			);
 			name = BTXE;
 			sourceTree = "<group>";
@@ -3138,6 +3148,8 @@
 				7FCA647515D6C7F900C5C020 /* SGBtxeTextRender.m in Sources */,
 				5501FC4C15D929EC007E124A /* SGDtoolCage.m in Sources */,
 				559A33D715DA382C00CA97E2 /* CountingTimer.m in Sources */,
+				7F50C4AD15DBCD44009345B5 /* ExprBuilder.m in Sources */,
+				7F50C4B115DBCDA3009345B5 /* SGBtxeTextBackgroundRender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

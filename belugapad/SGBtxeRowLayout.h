@@ -14,5 +14,6 @@
     id<Bounding, Container> ParentGo;
 }
 
+-(void)layoutChildren;
 
 @end

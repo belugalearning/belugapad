@@ -9,6 +9,6 @@
 #import "SGGameObject.h"
 #import "SGBtxeProtocols.h"
 
-@interface SGBtxeText : SGGameObject <Bounding, Text>
+@interface SGBtxeText : SGGameObject <Bounding, Text, RenderObject>
 
 @end

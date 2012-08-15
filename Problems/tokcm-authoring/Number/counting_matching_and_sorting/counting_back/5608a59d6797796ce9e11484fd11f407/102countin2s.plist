@@ -22,6 +22,8 @@
 	<integer>0</integer>
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
+	<key>SEGMENT_VALUE</key>
+	<integer>2</integer>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
 	<array>
 		<string>2</string>
@@ -41,7 +43,7 @@
 	<key>HIDE_END_NOTCH</key>
 	<false/>
 	<key>DISABLE_SNAPPING_TO_NOTCH</key>
-	<false/>
+	<true/>
 	<key>EVAL_PLUS_MINUS_THRESHOLD</key>
 	<integer>0</integer>
 	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>

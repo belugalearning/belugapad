@@ -14,6 +14,8 @@
 	<string>0</string>
 	<key>MAX_VALUE</key>
 	<string>5</string>
+	<key>SEGMENT_VALUE</key>
+	<integer>5</integer>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>

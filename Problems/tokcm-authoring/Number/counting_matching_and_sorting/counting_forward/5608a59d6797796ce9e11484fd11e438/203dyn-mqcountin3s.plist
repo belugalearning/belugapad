@@ -5,23 +5,23 @@
 	<key>MASTERY</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>{@name} was counting forward in threes. He started at 10 and stopped at {$ans*3}. How many twos did he count?</string>
+	<string>{@name} was counting forward in threes. He started at 0 and stopped at {$ans*3}. How many threes did he count?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>dynamic how many jumps</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>10</string>
+	<string>0</string>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
-	<string>100</string>
+	<string>51</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<integer>50</integer>
+	<string>{$ans*3}</string>
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
@@ -84,16 +84,17 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>{@name} was counting forward in tens. He started at 10 and stopped at {$ans*2}. How many twos did he count?</string>
+		<string>{@name} was counting forward in threes. He started at 0 and stopped at {$ans*3}. How many threes did he count?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again.</string>
 	</dict>
 	<key>DSTRINGS</key>
-	<array>
+	<dict>
+		<key>@name</key>
 		<dict>
-			<key>VAR_NAME</key>
-			<string>@name</string>
-			<key>SELECT_FROM</key>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
 			<array>
 				<string>Nick</string>
 				<string>Ed</string>
@@ -102,7 +103,7 @@
 				<string>Dave</string>
 			</array>
 		</dict>
-	</array>
+	</dict>
 	<key>DVARS</key>
 	<array>
 		<dict>
@@ -128,7 +129,6 @@
 			<string>$err2</string>
 			<key>SELECT_FROM</key>
 			<array>
-				<string>0</string>
 				<string>2</string>
 				<string>-1</string>
 			</array>

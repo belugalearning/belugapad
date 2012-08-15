@@ -52,5 +52,9 @@
 	<integer>0</integer>
 	<key>SEGMENT_VALUE</key>
 	<integer>3</integer>
+	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
+	<array>
+		<integer>3</integer>
+	</array>
 </dict>
 </plist>

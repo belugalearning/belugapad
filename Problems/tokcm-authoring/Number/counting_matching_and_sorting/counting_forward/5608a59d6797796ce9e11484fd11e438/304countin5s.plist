@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Count to 50 in fives.</string>
+	<string>Count to 35 in fives.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>count on from 0 to 12</string>
 	<key>TOOL_KEY</key>
@@ -19,7 +19,7 @@
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<integer>50</integer>
+	<integer>35</integer>
 	<key>HIDE_ALL_NUMBERS</key>
 	<true/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>

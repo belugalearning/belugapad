@@ -56,13 +56,6 @@
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>SOLUTION_MODE</key>
-	<string>1</string>
-	<key>SOLUTIONS</key>
-	<array>
-		<array>
-			<integer>3</integer>
-			<integer>7</integer>
-		</array>
-	</array>
+	<string>0</string>
 </dict>
 </plist>

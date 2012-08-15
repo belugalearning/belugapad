@@ -11,8 +11,6 @@
 	<key>INIT_FRACTIONS</key>
 	<array>
 		<dict>
-			<key>POS_Y</key>
-			<integer>600</integer>
 			<key>FRACTION_MODE</key>
 			<integer>0</integer>
 			<key>VALUE</key>
@@ -21,8 +19,6 @@
 			<true/>
 		</dict>
 		<dict>
-			<key>POS_Y</key>
-			<integer>300</integer>
 			<key>FRACTION_MODE</key>
 			<integer>0</integer>
 			<key>VALUE</key>

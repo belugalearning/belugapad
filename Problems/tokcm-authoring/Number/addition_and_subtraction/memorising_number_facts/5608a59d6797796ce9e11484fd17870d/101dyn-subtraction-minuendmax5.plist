@@ -37,7 +37,7 @@
 			<key>VAR_NAME</key>
 			<string>$minuend</string>
 			<key>MIN</key>
-			<string>1</string>
+			<string>2</string>
 			<key>MAX</key>
 			<string>3</string>
 		</dict>
@@ -45,7 +45,7 @@
 			<key>VAR_NAME</key>
 			<string>$subtrahend</string>
 			<key>MIN</key>
-			<string>0</string>
+			<string>1</string>
 			<key>MAX</key>
 			<string>{$minuend}</string>
 		</dict>

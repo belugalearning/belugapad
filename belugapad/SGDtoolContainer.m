@@ -22,6 +22,7 @@
             self.Label=[CCLabelTTF labelWithString:aLabel fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
             [self.BaseNode addChild:self.Label];
             [aRenderLayer addChild:self.BaseNode];
+            [self repositionLabel];
         }
             self.BlocksInShape=[[NSMutableArray alloc]init];
     }

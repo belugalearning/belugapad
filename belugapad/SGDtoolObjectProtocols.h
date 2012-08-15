@@ -66,9 +66,18 @@
 
 -(void)addBlockToMe:(id)thisBlock;
 -(void)removeBlockFromMe:(id)thisBlock;
+-(void)repositionLabel;
 -(int)blocksInShape;
 -(void)destroyThisObject;
 
 @end
 
 
+@protocol Cage
+
+@property CGPoint Position;
+@property (retain) CCLayer *RenderLayer;
+
+-(void)spawnNewBlock;
+
+@end

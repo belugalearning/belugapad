@@ -56,7 +56,11 @@
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>SOLUTION_MODE</key>
-	<string>1</string>
+	<integer>1</integer>
+	<key>REJECT_MODE</key>
+	<integer>1</integer>
+	<key>REJECT_TYPE</key>
+	<integer>1</integer>
 	<key>SOLUTIONS</key>
 	<array>
 		<array>

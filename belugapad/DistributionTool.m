@@ -546,7 +546,7 @@ static float kDistanceBetweenBlocks=70.0f;
             pickupPos=CGPointZero;
         }
         // check that the shape is being moved within bounds of the screen
-        if((location.x>=35.0f&&location.x<=lx-35.0f) && (location.y>=35.0f&&location.y<=ly-35.0f))
+        if((location.x>=60.0f&&location.x<=lx-60.0f) && (location.y>=60.0f&&location.y<=ly-60.0f))
         {
             // set it's position and move it!
             currentPickupObject.Position=location;

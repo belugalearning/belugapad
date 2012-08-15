@@ -20,6 +20,7 @@
 #import "LoggingService.h"
 #import "SGGameWorld.h"
 #import "SGDtoolBlock.h"
+#import "SGDtoolCage.h"
 #import "SGDtoolContainer.h"
 #import "SGDtoolBlockRender.h"
 #import "InteractionFeedback.h"
@@ -41,6 +42,8 @@ static float kDistanceBetweenBlocks=70.0f;
     
     // and then any specifics we need for this tool
     id<Moveable,Transform,Pairable> currentPickupObject;
+    id<Cage> cage;
+    CGPoint pickupPos;
     
 }
 
@@ -152,6 +155,7 @@ static float kDistanceBetweenBlocks=70.0f;
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
     evalType=[[pdef objectForKey:DISTRIBUTION_EVAL_TYPE] intValue];
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
+    problemHasCage=[[pdef objectForKey:HAS_CAGE]boolValue];
     if([pdef objectForKey:INIT_OBJECTS])initObjects=[pdef objectForKey:INIT_OBJECTS];
     if([pdef objectForKey:SOLUTION])solutionsDef=[pdef objectForKey:SOLUTION];
     
@@ -170,6 +174,13 @@ static float kDistanceBetweenBlocks=70.0f;
         [self createShapeWith:blocksInShape andWith:d];
     }
     
+    if(problemHasCage)
+    {
+        cage=[[SGDtoolCage alloc]initWithGameWorld:gw atPosition:ccp(cx, 80) andRenderLayer:renderLayer];
+        [cage spawnNewBlock];
+        
+    }
+    
 }
 
 #pragma mark - objects
@@ -184,10 +195,15 @@ static float kDistanceBetweenBlocks=70.0f;
 //    float avgPosY=0;
     
     if([theseSettings objectForKey:LABEL])
+    {
         container=[[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:[theseSettings objectForKey:LABEL] andRenderLayer:renderLayer];
+        if(!existingGroups)existingGroups=[[NSMutableArray alloc]init];
+        [existingGroups addObject:[container.Label string]];
+    }
     else
+    {
         container=[[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:nil andRenderLayer:renderLayer];
-
+    }
     
     if([theseSettings objectForKey:POS_X])
         posX=[[theseSettings objectForKey:POS_X]intValue];
@@ -237,9 +253,21 @@ static float kDistanceBetweenBlocks=70.0f;
 -(void)createContainerWithOne:(id)Object
 {
     id<Container> container;
-    NSLog(@"create container");
-    container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:nil andRenderLayer:nil];
+    NSLog(@"create container - there are %d destroyed labelled groups", [destroyedLabelledGroups count]);
+    if([destroyedLabelledGroups count]==0)
+    {
+        container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:nil andRenderLayer:nil];
+    }
+    else
+    {
+        NSLog(@"creating labelled group: %@",[destroyedLabelledGroups objectAtIndex:0]);
+        container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:[destroyedLabelledGroups objectAtIndex:0] andRenderLayer:renderLayer];
+        [destroyedLabelledGroups removeObjectAtIndex:0];
+        [existingGroups addObject:[container.Label string]];
+    }
+    
     [container addBlockToMe:Object];
+    
 }
 
 -(void)lookForOrphanedObjects
@@ -261,6 +289,9 @@ static float kDistanceBetweenBlocks=70.0f;
 -(void)updateContainerForNewlyAddedBlock:(id<Moveable,Pairable>)thisBlock
 {
     // if there are no paired objects - make sure i am removed from any container i may be part of
+    
+    NSLog(@"this block paired to %d", [thisBlock.PairedObjects count]);
+    
     if([thisBlock.PairedObjects count]==0)
     {
         if(thisBlock.MyContainer)
@@ -276,7 +307,9 @@ static float kDistanceBetweenBlocks=70.0f;
             if(thisBlock.MyContainer)
                 [thisBlock.MyContainer removeBlockFromMe:thisBlock];
             
-            [pairedObj.MyContainer addBlockToMe:thisBlock];
+            //TODO: this is causing a crash if dragged from a cage
+            if(![pairedObj.MyContainer conformsToProtocol:@protocol(Cage)])
+                [pairedObj.MyContainer addBlockToMe:thisBlock];
         }
     }
 }
@@ -290,10 +323,58 @@ static float kDistanceBetweenBlocks=70.0f;
         if([go conformsToProtocol:@protocol(Container)])
         {
             id <Container> cObj=go;
+            
             if([cObj.BlocksInShape count]==0)
+            {
+                
+                if([existingGroups containsObject:[cObj.Label string]])
+                {
+                    [existingGroups removeObject:[cObj.Label string]];
+                    if(!destroyedLabelledGroups)destroyedLabelledGroups=[[NSMutableArray alloc]init];
+                    [destroyedLabelledGroups addObject:[cObj.Label string]];
+                }
+            
+                
                 [cObj destroyThisObject];
+            }
+            
         }
         
+    }
+}
+
+-(void)updateContainerLabels
+{
+    for(id go in gw.AllGameObjects)
+    {
+        if([go conformsToProtocol:@protocol(Container)])
+        {
+            id<Container>c=(id<Container>)go;
+            [c repositionLabel];
+            NSLog(@"count of group %d", [c.BlocksInShape count]);
+        }
+    }
+}
+
+-(void)removeBlockByCage
+{
+    
+    if(currentPickupObject)
+    {
+        for(id<Pairable> pairedObj in currentPickupObject.PairedObjects)
+        {
+            [pairedObj unpairMeFrom:currentPickupObject];
+        }
+        
+        SGGameObject *go=(SGGameObject*)currentPickupObject;
+        CCSprite *s=currentPickupObject.mySprite;
+        CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:cage.Position];
+        CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.1f];
+        CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES]; [gw delayRemoveGameObject:go];}];
+        CCSequence *sequence=[CCSequence actions:moveAct, fadeAct, cleanUp, nil];
+        [s runAction:sequence];
+        currentPickupObject=nil;
+
     }
 }
 
@@ -433,6 +514,7 @@ static float kDistanceBetweenBlocks=70.0f;
             {
                 [loggingService logEvent:BL_PA_DT_TOUCH_START_PICKUP_BLOCK withAdditionalData:nil];
                 currentPickupObject=thisObj;
+                pickupPos=((id<Moveable>)currentPickupObject).Position;
                 break;
             }
         }
@@ -456,6 +538,12 @@ static float kDistanceBetweenBlocks=70.0f;
         {
             [loggingService logEvent:BL_PA_DT_TOUCH_MOVE_MOVE_BLOCK withAdditionalData:nil];
             hasLoggedMovedBlock=YES;
+        }
+        // check the pickup start position against a cage position. if they matched, then spawn a new block
+        if(problemHasCage && CGPointEqualToPoint(pickupPos,cage.Position))
+        {
+            [cage spawnNewBlock];
+            pickupPos=CGPointZero;
         }
         // check that the shape is being moved within bounds of the screen
         if((location.x>=35.0f&&location.x<=lx-35.0f) && (location.y>=35.0f&&location.y<=ly-35.0f))
@@ -494,6 +582,12 @@ static float kDistanceBetweenBlocks=70.0f;
     {
         CGPoint curPOPos=currentPickupObject.Position;
         // check all the gamobjects and search for a moveable object
+        
+        if([BLMath DistanceBetween:curPOPos and:cage.Position]<90.0f && problemHasCage)
+        {
+            [self removeBlockByCage];
+            return;
+        }
         
         id previousObjectContainer=nil;
         
@@ -540,20 +634,13 @@ static float kDistanceBetweenBlocks=70.0f;
         }
         [self updateContainerForNewlyAddedBlock:currentPickupObject];
         [self lookForOrphanedObjects];
+        [self updateContainerLabels];
         [self tidyUpEmptyGroups];
         
         //[self evalUniqueShapes];
         if(evalMode==kProblemEvalAuto)[self evalProblem];
     }
     
-    for(id go in gw.AllGameObjects)
-    {
-        if([go conformsToProtocol:@protocol(Container)])
-        {
-            id<Container>go2=(id<Container>)go;
-            NSLog(@"count of group %d", [go2.BlocksInShape count]);
-        }
-    }
     
     if(hasBeenProximate)
     {
@@ -587,8 +674,10 @@ static float kDistanceBetweenBlocks=70.0f;
         if([go conformsToProtocol:@protocol(Pairable)])
         {
             // cast the go as a pairable to use properties
-            id<Pairable> pairableGO=(id<Pairable>)go;
-            
+            id<Pairable,Moveable> pairableGO=(id<Pairable,Moveable>)go;
+            if(![pairableGO.MyContainer conformsToProtocol:@protocol(Container)])
+                continue;
+                
             //check if we're a lonesome object
             if ([pairableGO.PairedObjects count]==0) {
                 NSMutableArray *shape=[[NSMutableArray alloc]init];
@@ -718,6 +807,7 @@ static float kDistanceBetweenBlocks=70.0f;
                     NSString *thisKey=[thisCont.Label string];
                     if([d objectForKey:thisKey])
                     {
+
                         int thisVal=[[d objectForKey:thisKey] intValue];
                          NSLog(@"this group %d, required for key %d", [thisCont.BlocksInShape count], thisVal);
                         if([thisCont.BlocksInShape count]==thisVal)
@@ -773,6 +863,10 @@ return NO;
 -(void) dealloc
 {
 
+    initObjects=nil;
+    solutionsDef=nil;
+    existingGroups=nil;
+    destroyedLabelledGroups=nil;
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

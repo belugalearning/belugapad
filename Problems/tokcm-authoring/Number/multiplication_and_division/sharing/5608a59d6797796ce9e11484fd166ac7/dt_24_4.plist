@@ -5,12 +5,12 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>40/4</string>
+	<string>dt_24_4</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
 	<key>SOLUTION</key>
 	<array>
-		<integer>20</integer>
+		<integer>50</integer>
 	</array>
 	<key>DSTRINGS</key>
 	<dict>

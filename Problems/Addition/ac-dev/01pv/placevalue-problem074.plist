@@ -114,6 +114,13 @@
 	</dict>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>MULTIPLE_BLOCK_PICKUP</key>
+	<dict>
+		<key>10</key>
+		<true/>
+		<key>100</key>
+		<false/>
+	</dict>
 	<key>MULTIPLE_BLOCK_PICKUP_DEFAULTS</key>
 	<dict>
 		<key>10</key>

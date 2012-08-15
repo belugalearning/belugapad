@@ -65,7 +65,7 @@
 		<array>
 			<dict>
 				<key>PUT_IN_COL</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>PUT_IN_ROW</key>
 				<integer>0</integer>
 				<key>NUMBER</key>
@@ -73,7 +73,7 @@
 			</dict>
 			<dict>
 				<key>PUT_IN_COL</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>PUT_IN_ROW</key>
 				<integer>1</integer>
 				<key>NUMBER</key>
@@ -112,13 +112,6 @@
 			<integer>3</integer>
 		</dict>
 	</array>
-	<key>COLUMN_SPRITES</key>
-	<dict>
-		<key>10</key>
-		<string>/images/placevalue/obj-placevalue-unit1.png</string>
-		<key>1</key>
-		<string>/images/placevalue/obj-placevalue-unit1.png</string>
-	</dict>
 	<key>COLUMN_CAGES</key>
 	<dict>
 		<key>10</key>

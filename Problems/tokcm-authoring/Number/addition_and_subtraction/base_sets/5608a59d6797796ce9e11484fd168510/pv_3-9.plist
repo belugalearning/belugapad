@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>How many blocks of 3 must you add to make 3 blocks into 9 blocks?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>3+6=9</string>
+	<string>How many blocks of 3 must you add to make 3 blocks into 9 blocks?</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -37,6 +37,8 @@
 	<key>FADE_COUNT</key>
 	<false/>
 	<key>CUSTOM_COLUMN_HEADERS</key>
+	<true/>
+	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
 	<true/>
 	<key>COLUMN_HEADERS</key>
 	<dict>

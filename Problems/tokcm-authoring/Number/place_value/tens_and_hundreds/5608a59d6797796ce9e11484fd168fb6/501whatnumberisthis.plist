@@ -15,7 +15,7 @@
 	<key>NUMBER_COLS</key>
 	<integer>3</integer>
 	<key>DEFAULT_COL</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>ROPES_PER_COL</key>
 	<integer>2</integer>
 	<key>ROWS_PER_COL</key>
@@ -143,7 +143,7 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<string>46</string>
+		<string>561</string>
 		<key>SOLUTION_DISPLAY_TEXT</key>
 		<string>that&apos;s 12!</string>
 		<key>PLAY_SOUND</key>

@@ -38,6 +38,8 @@
 	<false/>
 	<key>CUSTOM_COLUMN_HEADERS</key>
 	<true/>
+	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
+	<true/>
 	<key>COLUMN_HEADERS</key>
 	<dict>
 		<key>0</key>

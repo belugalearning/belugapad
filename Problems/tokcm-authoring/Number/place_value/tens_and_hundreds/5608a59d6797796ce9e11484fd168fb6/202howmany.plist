@@ -123,7 +123,7 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<string>84</string>
+		<string>824</string>
 		<key>SOLUTION_DISPLAY_TEXT</key>
 		<string>that&apos;s 12!</string>
 		<key>PLAY_SOUND</key>
@@ -175,40 +175,6 @@
 	<dict>
 		<key>100</key>
 		<true/>
-	</dict>
-	<key>META_QUESTION*</key>
-	<dict>
-		<key>META_QUESTION_COMPLETE_TEXT</key>
-		<string>Great!</string>
-		<key>META_QUESTION_EVAL_MODE</key>
-		<integer>0</integer>
-		<key>META_QUESTION_ANSWER_MODE</key>
-		<integer>0</integer>
-		<key>META_QUESTION_ANSWERS</key>
-		<array>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>2</string>
-				<key>META_ANSWER_VALUE</key>
-				<true/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>4</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>8</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-		</array>
-		<key>META_QUESTION_TITLE</key>
-		<string>Here is 824. How many tens are there?</string>
-		<key>META_QUESTION_INCOMPLETE_TEXT</key>
-		<string>Try again.</string>
 	</dict>
 	<key>NUMBER_PICKER</key>
 	<dict>

@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Show that to make 2 blocks into 6 blocks, you must add 2 blocks of 2.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>2+2=4</string>
+	<string>Show that to make 2 blocks into 6 blocks, you must add 2 blocks of 2.</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -37,6 +37,8 @@
 	<key>FADE_COUNT</key>
 	<false/>
 	<key>CUSTOM_COLUMN_HEADERS</key>
+	<true/>
+	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
 	<true/>
 	<key>COLUMN_HEADERS</key>
 	<dict>

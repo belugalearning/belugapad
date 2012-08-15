@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Subtract 8 from 12.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>12-8</string>
+	<string>nl_12-8</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>

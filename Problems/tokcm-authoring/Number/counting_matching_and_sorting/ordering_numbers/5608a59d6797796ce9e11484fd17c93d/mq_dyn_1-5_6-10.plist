@@ -16,31 +16,31 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>{$number_larger-$number_smaller}</string>
+				<string>{$var1-$var2}</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>{$number_smaller}</string>
+				<string>{$var2}</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>{$number_larger-2}</string>
+				<string>{$var3-1}</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>{$number_larger-1}</string>
+				<string>{$var3+1}</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>{@gname} has {$number_larger} {@item}, and {@bname} has {$number_smaller} {@item}. How many more does {@gname} have?</string>
+		<string>{@gname} has {$var1} {@item}, and {@bname} has {$var2} {@item}. How many more does {@gname} have?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>
@@ -48,19 +48,24 @@
 	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
 	<key>DVARS</key>
 	<dict>
-		<key>$number_larger</key>
+		<key>$var1</key>
 		<dict>
 			<key>MAX</key>
 			<string>10</string>
 			<key>MIN</key>
 			<string>6</string>
 		</dict>
-		<key>$number_smaller</key>
+		<key>$var2</key>
 		<dict>
 			<key>MAX</key>
 			<string>5</string>
 			<key>MIN</key>
-			<string>1</string>
+			<string>2</string>
+		</dict>
+		<key>$var3</key>
+		<dict>
+			<key>VALUE</key>
+			<string>{$var1+$var2}</string>
 		</dict>
 	</dict>
 	<key>DSTRINGS</key>

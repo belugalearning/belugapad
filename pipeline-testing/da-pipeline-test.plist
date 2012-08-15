@@ -2,7 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>/Problems/tools-dev/da-ct/ct001.plist</string>
+	<string>/Problems/tools-dev/da-ct/ct002.plist</string>
 	<string>/Problems/tools-dev/da-dt/dt2.plist</string>
+	<string>/Problems/tools-dev/featuredemo/fractionbuilder/fb-addition.plist</string>
 	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem074.plist</string>
 	<string>/Problems/tools-dev/da-frb/fb001.plist</string>
 	<string>/Problems/tools-dev/da-frb/fb002.plist</string>

@@ -159,12 +159,25 @@
     {
         
         int ySpaceBetweenFractions=0;
-        float thisFractionYPos=0;
-        if([initFractions count]==2)ySpaceBetweenFractions=300;
-        else if([initFractions count]==3)ySpaceBetweenFractions=225;
+        float thisFractionYPos=600;
+        if([initFractions count]==1)
+        {
+            thisFractionYPos=cx;
+            ySpaceBetweenFractions=0;
+        }
+        else if([initFractions count]==2)
+        {
+            thisFractionYPos=600;
+            ySpaceBetweenFractions=300;
+        }
+        else if([initFractions count]==3)
+        {
+            thisFractionYPos=630;
+            ySpaceBetweenFractions=225;
+        }
         // set up the fraction
         
-        thisFractionYPos=600-(ySpaceBetweenFractions*fractionsDisplayed);
+        thisFractionYPos=thisFractionYPos-(ySpaceBetweenFractions*fractionsDisplayed);
         
         id<Configurable, Interactive> fraction;
         fraction=[[[SGFbuilderFraction alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(cx,thisFractionYPos)] autorelease];
@@ -253,7 +266,6 @@
             {
                 currentMarker=cObj;
                 startMarkerPos=cObj.MarkerPosition;
-                return;
             }
         }
         
@@ -264,9 +276,10 @@
             {
                 [loggingService logEvent:BL_PA_FB_TOUCH_BEGIN_PICKUP_CHUNK withAdditionalData:nil];
                 currentChunk=cObj;
-                return;
             }
         }
+        
+        if(currentChunk||currentMarker)return;
         
     }
     
@@ -339,13 +352,18 @@
     if(currentChunk)
     {
         // and distance <10, select the chunk
-        if(distFromStartToEnd<15.0f)
+        if(distFromStartToEnd<20.0f)
         {
             [currentChunk changeChunkSelection];
             if(!selectedChunks)selectedChunks=[[NSMutableArray alloc]init];
             
-            if(!currentChunk.Selected)[selectedChunks addObject:currentChunk];
-            else [selectedChunks removeObject:currentChunk];
+            if(!currentChunk.Selected)
+                [selectedChunks addObject:currentChunk];
+            else
+                [selectedChunks removeObject:currentChunk];
+            
+            currentChunk=nil;
+            
             return;
         }
         
@@ -488,6 +506,7 @@
         return res;
     }
     
+    [loggingService logEvent:BL_PA_FB_FAILED_EVAL_EQUIVALENT withAdditionalData:nil];
     return NO;
 }
 
@@ -534,6 +553,7 @@
         }
     }
     
+    [loggingService logEvent:BL_PA_FB_FAILED_EVAL_ADDITION withAdditionalData:nil];
     return NO;
 }
 
@@ -583,9 +603,13 @@
     }
     
     if(solutionsFound==[solutionsDef count])
+    {
         return YES;
+    }
     else
+    {
         return NO;
+    }
 }
 
 -(void)evalProblem

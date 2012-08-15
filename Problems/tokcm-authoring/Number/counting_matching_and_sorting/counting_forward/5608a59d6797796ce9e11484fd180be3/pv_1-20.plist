@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Count up to 20.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Count from 1 to 20.</string>
+	<string>pv_1-20. Count up to 20.</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -17,7 +17,7 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>11</integer>
+	<integer>9</integer>
 	<key>ROWS_PER_COL</key>
 	<integer>3</integer>
 	<key>ALLOW_CONDENSING</key>
@@ -61,5 +61,9 @@
 		<key>SOLUTION_VALUE</key>
 		<integer>20</integer>
 	</dict>
+	<key>New item</key>
+	<string></string>
+	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
+	<true/>
 </dict>
 </plist>

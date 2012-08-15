@@ -54,7 +54,7 @@
 			<key>VAR_NAME</key>
 			<string>$y</string>
 			<key>MIN</key>
-			<string>0</string>
+			<string>1</string>
 			<key>MAX</key>
 			<string>{$x}</string>
 		</dict>

@@ -569,6 +569,17 @@ static float kTimeToBubbleShake=7.0f;
     inRamblerArea=NO;
 }
 
+#pragma mark - meta question
+-(float)metaQuestionTitleYLocation
+{
+    return kLabelTitleYOffsetHalfProp*cy;
+}
+
+-(float)metaQuestionAnswersYLocation
+{
+    return 150;
+}
+
 -(void)dealloc
 {
     [bubbleTexRegular release];

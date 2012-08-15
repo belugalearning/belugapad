@@ -72,6 +72,7 @@ typedef enum
 -(void)updateContainerForNewlyAddedBlock:(id<Moveable,Pairable>)thisBlock;
 -(void)tidyUpEmptyGroups;
 -(void)updateContainerLabels;
+-(void)removeBlockByCage;
 -(CGPoint)checkWhereIShouldMount:(id<Pairable>)gameObject;
 -(CGPoint)findMountPositionForThisShape:(id<Pairable>)pickupObject toThisShape:(id<Pairable>)mountedShape;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;

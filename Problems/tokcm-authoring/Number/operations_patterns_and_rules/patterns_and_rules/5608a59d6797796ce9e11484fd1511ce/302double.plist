@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Add 5 again</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>arithmetic seq +5 start on 1</string>
+	<key>TOOL_KEY</key>
+	<string>PlaceValue</string>
+</dict>
+</plist>

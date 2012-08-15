@@ -28,8 +28,6 @@
 	<false/>
 	<key>SHOW_CAGE</key>
 	<true/>
-	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
-	<true/>
 	<key>COLUMN_SPACING</key>
 	<real>0.3</real>
 	<key>X_OFFSET</key>
@@ -42,8 +40,17 @@
 	<false/>
 	<key>SHOW_COUNT_BLOCK</key>
 	<false/>
+	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
+	<true/>
 	<key>SHOW_COL_HEADER</key>
-	<false/>
+	<true/>
+	<key>CUSTOM_COLUMN_HEADERS</key>
+	<dict>
+		<key>10</key>
+		<string>3</string>
+		<key>1</key>
+		<string></string>
+	</dict>
 	<key>SHOW_VALUE</key>
 	<false/>
 	<key>SHOW_BASE_SELECTION</key>
@@ -135,6 +142,13 @@
 	<dict>
 		<key>100</key>
 		<true/>
+	</dict>
+	<key>MULTIPLE_BLOCK_PICKUP </key>
+	<dict>
+		<key>1</key>
+		<true/>
+		<key>10</key>
+		<false/>
 	</dict>
 </dict>
 </plist>

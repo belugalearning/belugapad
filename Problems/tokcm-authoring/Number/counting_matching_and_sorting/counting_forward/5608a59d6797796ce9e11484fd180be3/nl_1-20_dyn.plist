@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>nl_1-20_dyn. Count to {$number}.</string>
+	<string> Count to {$number}.</string>
 	<key>DVARS</key>
 	<dict>
 		<key>$number</key>
@@ -15,7 +15,7 @@
 		</dict>
 	</dict>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Count to x.</string>
+	<string>Count to x.nl_1-20_dyn.</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>

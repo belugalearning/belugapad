@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>nl_1-20_intervals2. Count to 20 with intervals of 2.</string>
-	<key>INTERNAL_DESCRIPTION</key>
 	<string>Count to 20 with intervals of 2.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>Count to 20 with intervals of 2. nl_1-20_intervals2. </string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>

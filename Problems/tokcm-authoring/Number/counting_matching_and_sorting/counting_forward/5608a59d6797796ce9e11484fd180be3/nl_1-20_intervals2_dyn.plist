@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>nl_1-20_intervals2_dyn. Count to {$number}.</string>
+	<string>Count to {$number}.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Count to x with intervals of 5.</string>
+	<string>Count to x with intervals of 5.nl_1-20_intervals2_dyn. </string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>

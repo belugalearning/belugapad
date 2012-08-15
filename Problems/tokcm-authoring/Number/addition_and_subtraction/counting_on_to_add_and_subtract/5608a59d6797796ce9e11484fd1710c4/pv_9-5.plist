@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 9. Add 5. what is 9+5?</string>
+	<string>What is 9 plus 5?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>9+5</string>
 	<key>TOOL_KEY</key>

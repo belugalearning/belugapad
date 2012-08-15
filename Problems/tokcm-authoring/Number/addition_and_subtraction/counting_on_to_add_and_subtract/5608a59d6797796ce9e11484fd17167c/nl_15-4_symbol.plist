@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 15. Subtract 4. What is 15-4?</string>
+	<string>What is 15-4?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>nl_15-4</string>
 	<key>TOOL_KEY</key>

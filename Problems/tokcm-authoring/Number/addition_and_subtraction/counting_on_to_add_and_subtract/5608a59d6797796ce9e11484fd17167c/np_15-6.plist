@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is 15-6?</string>
+	<string>What is 15 minus 6?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>np_15-6</string>
 	<key>NUMBER_PICKER</key>

@@ -74,7 +74,8 @@
 
 -(void)populateGW;
 -(void)readPlist:(NSDictionary*)pdef;
-
+-(float)metaQuestionTitleYLocation;
+-(float)metaQuestionAnswersYLocation;
 -(void)evalProblem;
 
 @end

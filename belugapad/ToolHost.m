@@ -1301,8 +1301,16 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if([numberPickedSelection count] <npMaxNoInDropbox) {
         for(int i=0;i<[numberPickerButtons count];i++)
         {
+            if(i==10)
+            {
+                for(NSNumber *n in numberPickedValue)
+                {
+                    if([n intValue]==10)return;
+                }
+            }
             // check each of the buttons to see if it was them that were hit
             CCSprite *s=[numberPickerButtons objectAtIndex:i];
+
             if(CGRectContainsPoint(s.boundingBox, location))
             {
                 hasUsedNumber=YES;

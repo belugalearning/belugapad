@@ -363,6 +363,7 @@
                 [selectedChunks removeObject:currentChunk];
             
             currentChunk=nil;
+            isTouching=NO;
             
             return;
         }

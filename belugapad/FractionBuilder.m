@@ -266,7 +266,6 @@
             {
                 currentMarker=cObj;
                 startMarkerPos=cObj.MarkerPosition;
-                return;
             }
         }
         
@@ -277,9 +276,10 @@
             {
                 [loggingService logEvent:BL_PA_FB_TOUCH_BEGIN_PICKUP_CHUNK withAdditionalData:nil];
                 currentChunk=cObj;
-                return;
             }
         }
+        
+        if(currentChunk||currentMarker)return;
         
     }
     
@@ -362,6 +362,7 @@
             else
                 [selectedChunks removeObject:currentChunk];
             
+            currentChunk=nil;
             
             return;
         }

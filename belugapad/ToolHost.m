@@ -1543,19 +1543,14 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     
     if(metaQuestionForThisProblem)
-    {
         [self checkMetaQuestionTouches:location];
-        return;
-    }
+
     else if(numberPickerForThisProblem)
-    {
         [self checkNumberPickerTouches:location];
-        return;
-    }
     
     // TODO: This should be made proportional
     
-    if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit)
+    if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem)
     {
         
         

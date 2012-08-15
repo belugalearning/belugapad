@@ -28,14 +28,14 @@
 	<false/>
 	<key>SHOW_CAGE</key>
 	<true/>
-	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
-	<true/>
 	<key>SHOW_NEG_CAGE</key>
 	<false/>
 	<key>SHOW_COUNT</key>
 	<false/>
 	<key>SHOW_COUNT_BLOCK</key>
 	<false/>
+	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
+	<true/>
 	<key>SHOW_COL_HEADER</key>
 	<false/>
 	<key>SHOW_VALUE</key>
@@ -77,5 +77,10 @@
 	</dict>
 	<key>DEFAULT_SCALE</key>
 	<real>0.9</real>
+	<key>MULTIPLE_BLOCK_PICKUP </key>
+	<dict>
+		<key>1</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

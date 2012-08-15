@@ -278,7 +278,7 @@ static float kTimeToBubbleShake=7.0f;
 
 -(void)evalProblem
 {
-    self.ProblemComplete = (evalTarget==lastBubbleLoc);
+    self.ProblemComplete = (evalTarget==lastBubbleValue);
     
 }
 
@@ -447,23 +447,26 @@ static float kTimeToBubbleShake=7.0f;
         
         
         //lastBubbleLoc = roundedStepsFromCentre+startOffset;
-        lastBubbleLoc=(roundedStepsFromCentre+startOffset) * rambler.CurrentSegmentValue;
+        lastBubbleLoc=(roundedStepsFromCentre+startOffset);
+        lastBubbleValue=lastBubbleLoc*initSegmentVal;
         
         int adjustedStepsFromCentre=roundedStepsFromCentre * rambler.CurrentSegmentValue;
         
         BOOL stopLine=NO;
         
-        if (lastBubbleLoc>[rambler.MaxValue intValue]) 
+        if (lastBubbleValue>[rambler.MaxValue intValue])
         {
-            adjustedStepsFromCentre = [rambler.MaxValue intValue] - startOffset;
+            adjustedStepsFromCentre = ([rambler.MaxValue intValue] / initSegmentVal) - startOffset;
+            //adjustedStepsFromCentre = [rambler.MaxValue intValue] - (startOffset * initSegmentVal);
             stopLine=YES;
             bubbleAtBounds=1;
             bubblePushDir=0;
         }
         
-        if(lastBubbleLoc<[rambler.MinValue intValue]) 
+        if(lastBubbleValue<[rambler.MinValue intValue])
         {
-            adjustedStepsFromCentre = [rambler.MinValue intValue] - startOffset;
+            adjustedStepsFromCentre = ([rambler.MinValue intValue] / initSegmentVal) - startOffset;
+            //adjustedStepsFromCentre = [rambler.MinValue intValue] - (startOffset * initSegmentVal);
             stopLine=YES;
             bubbleAtBounds=-1;
             bubblePushDir=0;
@@ -472,7 +475,7 @@ static float kTimeToBubbleShake=7.0f;
         if(stopLine)
         {
             //diff (moveby)
-            float diffx=((adjustedStepsFromCentre/rambler.CurrentSegmentValue) * rambler.DefaultSegmentSize)-distFromCentre;
+            float diffx=((adjustedStepsFromCentre) * rambler.DefaultSegmentSize)-distFromCentre;
             [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
         }
         
@@ -480,6 +483,8 @@ static float kTimeToBubbleShake=7.0f;
         //do not update rambler -- causes render to carry on scrolling, and eval is at end anyway
         //rambler.BubblePos=lastBubbleLoc;
 
+        lastBubbleLoc = adjustedStepsFromCentre;
+        lastBubbleValue = lastBubbleLoc * initSegmentVal;
     }
 }
 
@@ -502,30 +507,35 @@ static float kTimeToBubbleShake=7.0f;
         if(stepsFromCentre<0) roundedStepsFromCentre=(int)(stepsFromCentre - 0.5f);
         
         int startOffset=initStartVal / initSegmentVal;
-        lastBubbleLoc = (roundedStepsFromCentre+startOffset) * rambler.CurrentSegmentValue;
-        int adjustedStepsFromCentre=roundedStepsFromCentre * rambler.CurrentSegmentValue;
+        lastBubbleLoc = (roundedStepsFromCentre+startOffset);
+        lastBubbleValue=lastBubbleLoc*initSegmentVal;
         
-        if (lastBubbleLoc>[rambler.MaxValue intValue]) adjustedStepsFromCentre = [rambler.MaxValue intValue]  - startOffset;
+        //int adjustedStepsFromCentre=roundedStepsFromCentre * rambler.CurrentSegmentValue;
+        int adjustedStepsFromCentre=roundedStepsFromCentre;
         
-        if(lastBubbleLoc<[rambler.MinValue intValue]) adjustedStepsFromCentre = [rambler.MinValue intValue] - startOffset;
+        if (lastBubbleValue>[rambler.MaxValue intValue]) adjustedStepsFromCentre = ([rambler.MaxValue intValue] / initSegmentVal)  - startOffset;
+        
+        if(lastBubbleValue<[rambler.MinValue intValue]) adjustedStepsFromCentre = ([rambler.MinValue intValue] / initSegmentVal) - startOffset;
         
         //mod this to closest valid segment value
-        adjustedStepsFromCentre=rambler.CurrentSegmentValue * ((int)(adjustedStepsFromCentre / rambler.CurrentSegmentValue));
+        //adjustedStepsFromCentre=rambler.CurrentSegmentValue * ((int)(adjustedStepsFromCentre / rambler.CurrentSegmentValue));
 
         //diff (moveby)
-        float diffx=((adjustedStepsFromCentre / rambler.CurrentSegmentValue) * rambler.DefaultSegmentSize)-distFromCentre;
+        float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
         [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
         
         
         //update the rambler value & last bubble location, using any offset
         lastBubbleLoc=adjustedStepsFromCentre + startOffset;
-        rambler.BubblePos=lastBubbleLoc;
+        lastBubbleValue=lastBubbleLoc*initSegmentVal;
+        
+        rambler.BubblePos=lastBubbleValue;
         
         
         //play some audio
         if(enableAudioCounting && lastBubbleLoc!=logLastBubblePos)
         {
-            NSString *path=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", lastBubbleLoc];
+            NSString *path=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", lastBubbleValue];
             [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(path)];
         }
         

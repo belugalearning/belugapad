@@ -39,6 +39,9 @@
     BOOL isHoldingObject;
     id<MovingInteractive> heldObject;
     CGPoint heldOffset;
+    
+    //expressions
+    NSArray *exprStages;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;

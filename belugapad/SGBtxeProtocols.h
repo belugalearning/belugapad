@@ -10,7 +10,7 @@
 
 @class SGBtxeContainerMgr;
 @class SGBtxeTextRender;
-
+@class SGBtxeParser;
 
 @protocol Container
 
@@ -96,6 +96,7 @@
 
 @protocol Parser
 
+@property (retain) SGBtxeParser *parserComponent;
 -(void) parseXML:(NSString*)xmlString;
 
 @end

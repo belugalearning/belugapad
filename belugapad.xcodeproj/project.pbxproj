@@ -384,6 +384,7 @@
 		7FCBC3E415100CF700066426 /* BATio.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E315100CF700066426 /* BATio.m */; };
 		7FCBC3E815100F3D00066426 /* MathMLConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3E715100F3D00066426 /* MathMLConsts.m */; };
 		7FCBC3EB1510195F00066426 /* ExprIOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FCBC3EA1510195F00066426 /* ExprIOTests.m */; };
+		7FD9842015DC21A700DA71D7 /* SGBtxeParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD9841F15DC21A600DA71D7 /* SGBtxeParser.m */; };
 		7FDABAC3154AABF300F3F1A5 /* ConceptNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDABAC2154AABF300F3F1A5 /* ConceptNode.m */; };
 		7FDBA52D14EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51214EBD560004D1CC9 /* CXMLDocument_CreationExtensions.m */; };
 		7FDBA52E14EBD560004D1CC9 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA51414EBD560004D1CC9 /* CXMLNode_CreationExtensions.m */; };
@@ -1137,6 +1138,8 @@
 		7FCBC3E615100F3D00066426 /* MathMLConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathMLConsts.h; sourceTree = "<group>"; };
 		7FCBC3E715100F3D00066426 /* MathMLConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MathMLConsts.m; sourceTree = "<group>"; };
 		7FCBC3EA1510195F00066426 /* ExprIOTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprIOTests.m; sourceTree = "<group>"; };
+		7FD9841E15DC21A600DA71D7 /* SGBtxeParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeParser.h; sourceTree = "<group>"; };
+		7FD9841F15DC21A600DA71D7 /* SGBtxeParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeParser.m; sourceTree = "<group>"; };
 		7FDABAC1154AABF300F3F1A5 /* ConceptNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConceptNode.h; sourceTree = "<group>"; };
 		7FDABAC2154AABF300F3F1A5 /* ConceptNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConceptNode.m; sourceTree = "<group>"; };
 		7FDBA51114EBD560004D1CC9 /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
@@ -2594,6 +2597,8 @@
 				7FCA647415D6C7F900C5C020 /* SGBtxeTextRender.m */,
 				7F50C4AF15DBCDA3009345B5 /* SGBtxeTextBackgroundRender.m */,
 				7F50C4B015DBCDA3009345B5 /* SGBtxeTextBackgroundRender.h */,
+				7FD9841E15DC21A600DA71D7 /* SGBtxeParser.h */,
+				7FD9841F15DC21A600DA71D7 /* SGBtxeParser.m */,
 			);
 			name = BTXE;
 			sourceTree = "<group>";
@@ -3150,6 +3155,7 @@
 				559A33D715DA382C00CA97E2 /* CountingTimer.m in Sources */,
 				7F50C4AD15DBCD44009345B5 /* ExprBuilder.m in Sources */,
 				7F50C4B115DBCDA3009345B5 /* SGBtxeTextBackgroundRender.m in Sources */,
+				7FD9842015DC21A700DA71D7 /* SGBtxeParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

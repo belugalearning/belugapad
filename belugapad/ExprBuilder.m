@@ -116,7 +116,17 @@
     // All our stuff needs to go into vars to read later
     
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
-    rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];    
+    rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
+    
+    if([pdef objectForKey:@"EXPR_STAGES"])
+    {
+        exprStages=[[pdef objectForKey:@"EXPR_STAGES"] copy];
+    }
+    else
+    {
+        @throw [NSException exceptionWithName:@"expr plist read exception" reason:@"EXPR_STAGES not found" userInfo:nil];
+    }
+    
     
 }
 
@@ -132,68 +142,82 @@
 -(void)populateDemo
 {
     //create row
-    id<Container, Bounding> row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
+    id<Container, Bounding, Parser> row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
     row.position=ccp(cx, cy+100);
     
-    //create some children
-    SGBtxeText *t1=[[SGBtxeText alloc] initWithGameWorld:gw];
-    t1.text=@"Tom had";
-    [row.containerMgrComponent addObjectToContainer:t1];
-    
-    SGBtxeObjectText *t2=[[SGBtxeObjectText alloc] initWithGameWorld:gw];
-    t2.text=@"5 sweets.";
-    t2.tag=@"a";
-    [row.containerMgrComponent addObjectToContainer:t2];
-    
-    SGBtxeText *t3=[[SGBtxeText alloc] initWithGameWorld:gw];
-    t3.text=@"He gets";
-    [row.containerMgrComponent addObjectToContainer:t3];
-    
-    SGBtxeObjectText *o3=[[SGBtxeObjectText alloc]initWithGameWorld:gw];
-    o3.text=@"4 more.";
-    o3.tag=@"b";
-    [row.containerMgrComponent addObjectToContainer:o3];
-    
-    SGBtxeText *t4=[[SGBtxeText alloc] initWithGameWorld:gw];
-    t4.text=@"How many does he have?";
-    [row.containerMgrComponent addObjectToContainer:t4];
-
-    [row setupDraw];
+//    //create some children
+//    SGBtxeText *t1=[[SGBtxeText alloc] initWithGameWorld:gw];
+//    t1.text=@"Tom had";
+//    [row.containerMgrComponent addObjectToContainer:t1];
+//    
+//    SGBtxeObjectText *t2=[[SGBtxeObjectText alloc] initWithGameWorld:gw];
+//    t2.text=@"5 sweets.";
+//    t2.tag=@"a";
+//    [row.containerMgrComponent addObjectToContainer:t2];
+//    
+//    SGBtxeText *t3=[[SGBtxeText alloc] initWithGameWorld:gw];
+//    t3.text=@"He gets";
+//    [row.containerMgrComponent addObjectToContainer:t3];
+//    
+//    SGBtxeObjectText *o3=[[SGBtxeObjectText alloc]initWithGameWorld:gw];
+//    o3.text=@"4 more.";
+//    o3.tag=@"b";
+//    [row.containerMgrComponent addObjectToContainer:o3];
+//    
+//    SGBtxeText *t4=[[SGBtxeText alloc] initWithGameWorld:gw];
+//    t4.text=@"How many does he have?";
+//    [row.containerMgrComponent addObjectToContainer:t4];
+//
+//    [row setupDraw];
 
     //create row
-    id<Container, Bounding> row2=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
+    id<Container, Bounding, Parser> row2=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
     row2.position=ccp(cx, cy-100);
     
-    //create some children
-
-    SGBtxeObjectText *tt2=[[SGBtxeObjectText alloc] initWithGameWorld:gw];
-    tt2.text=@"5 sweets";
-    tt2.tag=@"a";
-    tt2.enabled=NO;
-    [row2.containerMgrComponent addObjectToContainer:tt2];
-
-    SGBtxeText *tt1=[[SGBtxeText alloc] initWithGameWorld:gw];
-    tt1.text=@"+";
-    [row2.containerMgrComponent addObjectToContainer:tt1];
+//    //create some children
+//
+//    SGBtxeObjectText *tt2=[[SGBtxeObjectText alloc] initWithGameWorld:gw];
+//    tt2.text=@"5 sweets";
+//    tt2.tag=@"a";
+//    tt2.enabled=NO;
+//    [row2.containerMgrComponent addObjectToContainer:tt2];
+//
+//    SGBtxeText *tt1=[[SGBtxeText alloc] initWithGameWorld:gw];
+//    tt1.text=@"+";
+//    [row2.containerMgrComponent addObjectToContainer:tt1];
+//    
+//    SGBtxeObjectText *tt3=[[SGBtxeObjectText alloc] initWithGameWorld:gw];
+//    tt3.text=@"4 sweets";
+//    tt3.enabled=NO;
+//    tt3.tag=@"b";
+//    [row2.containerMgrComponent addObjectToContainer:tt3];
+//    
+//    SGBtxeText *tt4=[[SGBtxeText alloc] initWithGameWorld:gw];
+//    tt4.text=@" = ";
+//    [row2.containerMgrComponent addObjectToContainer:tt4];
+//    
+//    SGBtxeObjectText *tt5=[[SGBtxeObjectText alloc] initWithGameWorld:gw];
+//    tt5.text=@"9 sweets";
+//    tt5.enabled=NO;
+//    tt5.tag=@"c";
+//    [row2.containerMgrComponent addObjectToContainer:tt5];
+//    
+//    
+//    [row2 setupDraw];
     
-    SGBtxeObjectText *tt3=[[SGBtxeObjectText alloc] initWithGameWorld:gw];
-    tt3.text=@"4 sweets";
-    tt3.enabled=NO;
-    tt3.tag=@"b";
-    [row2.containerMgrComponent addObjectToContainer:tt3];
     
-    SGBtxeText *tt4=[[SGBtxeText alloc] initWithGameWorld:gw];
-    tt4.text=@" = ";
-    [row2.containerMgrComponent addObjectToContainer:tt4];
+    //get the row to try and parse something
+    if(exprStages.count>0)
+    {
+        [row parseXML:[exprStages objectAtIndex:0]];
+        [row setupDraw];
+    }
+    if(exprStages.count>1)
+    {
+        [row2 parseXML:[exprStages objectAtIndex:1]];
+        [row2 setupDraw];
+    }
     
-    SGBtxeObjectText *tt5=[[SGBtxeObjectText alloc] initWithGameWorld:gw];
-    tt5.text=@"9 sweets";
-    tt5.enabled=NO;
-    tt5.tag=@"c";
-    [row2.containerMgrComponent addObjectToContainer:tt5];
-    
-    
-    [row2 setupDraw];
 }
 
 #pragma mark - touches events
@@ -320,6 +344,8 @@
 #pragma mark - dealloc
 -(void) dealloc
 {
+    [exprStages release];
+    
     //write log on problem switch
     
     [renderLayer release];

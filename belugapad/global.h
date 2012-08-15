@@ -357,6 +357,10 @@
 #define BTXE_OTBKG_SPRITE_H 30.0f
 #define BTXE_OTBKG_WIDTH_OVERDRAW_PAD 10.0f
 #define BTXE_PICKUP_PROXIMITY 25.0f
+#define BTXE_NAMESPACE @"http://zubi.me/namespaces/2012/BTXE"
+#define BTXE_T @"t"
+#define BTXE_OT @"ot"
+#define BTXE_OP @"op"
 
 //scoring
 #define SCORE_STAGE_CAP 5

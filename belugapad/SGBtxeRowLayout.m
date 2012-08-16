@@ -31,6 +31,9 @@
         totalW+=c.size.width + BTXE_HPAD;
     }
     
+    //increase maxH
+    maxH+=BTXE_VPAD;
+    
     //remove last lot (effectively) of horiz padding
     if(totalW>0)totalW-=BTXE_HPAD;
     
@@ -52,7 +55,7 @@
     
     //start Y at half of one line down from half of total container
     // ... a render mode may want this to flow down from top (not centre it) (e.g. for toolhost problem descriptions)
-    float headYPos=(-totalH / 2.0f) + (lineH / 2.0f);
+    float headYPos=(totalH / 2.0f) - (lineH / 2.0f);
     
     //step items
     for(id<Bounding, NSObject> c in ParentGo.children)
@@ -62,7 +65,7 @@
         {
             //flow onto next line
             headXPos=-lineW / 2.0f;
-            headYPos+=lineH;
+            headYPos-=lineH;
         }
         
         //place object here (offset for centre position)

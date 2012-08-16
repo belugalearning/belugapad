@@ -1570,13 +1570,17 @@ static float kTimeToCageShake=7.0f;
                 //if([BLMath rectContainsPoint:location x:0 y:0 w:200 h:ly] && currentColumnIndex>0)
             {
                 inCondenseArea=YES;
-                [condensePanel setVisible:YES];
+//                [condensePanel setVisible:YES];
+                currentColour=ccc3(255,255,0);
             }
             else
             {
                 inCondenseArea=NO;
-                [condensePanel setVisible:NO];
+//                [condensePanel setVisible:NO];
+                currentColour=ccc3(255,255,255);
             }
+            if(currentColumnIndex-1>0)
+                [self tintGridColour:currentColumnIndex-1 toColour:currentColour];
             
             // when we're moving several blocks at once
             for(int go=0;go<gw.Blackboard.SelectedObjects.count;go++)
@@ -1609,13 +1613,18 @@ static float kTimeToCageShake=7.0f;
                 
             {
                 inMulchArea=YES;
-                [mulchPanel setVisible:YES];
+                //[mulchPanel setVisible:YES];
+                
+                currentColour=ccc3(255,255,0);
             }
             else
             {
                 inMulchArea=NO;
-                [mulchPanel setVisible:NO];
+                //[mulchPanel setVisible:NO];
+                currentColour=ccc3(255,255,255);
             }
+            if(currentColumnIndex+1<numberOfColumns)
+                [self tintGridColour:currentColumnIndex+1 toColour:currentColour];
             
             // if their finger moved too much, we know we can update the sprite position
             if(!potentialTap)

@@ -1538,18 +1538,23 @@ static float kTimeToCageShake=7.0f;
                 [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).PickupSprite)]];
             
             // and set the colour for use in tinting our grid later
-            currentColour=ccc3(0,255,0);
+            if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                currentColour=ccc3(0,255,0);
+            if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+                currentColour=ccc3(255,255,255);
             
         }
         else {
             
             currentColour=ccc3(255,255,255);
         }
+
+        [self tintGridColour:currentColour];
+        
         gw.Blackboard.DropObject = nil;
         
         // now we loop through the current column index for all the net spacer sprites to tint them            
         
-        [self tintGridColour:currentColour];
         
         
         CGPoint diff=[BLMath SubtractVector:prevLoc from:location];

@@ -91,12 +91,10 @@
 		<key>10</key>
 		<true/>
 		<key>1</key>
-		<false/>
+		<true/>
 	</dict>
-	<key>COLUMN_NEG_CAGES</key>
+	<key>CAGE_POS_DISABLE_ADD</key>
 	<dict>
-		<key>10</key>
-		<false/>
 		<key>1</key>
 		<true/>
 	</dict>

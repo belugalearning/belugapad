@@ -5,14 +5,14 @@
 	<key>TOOL_KEY</key>
 	<string>ExprBuilder</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>tom&apos;s apples</string>
+	<string>tom&apos;s apples -- more text</string>
 	<key>EXPR_STAGES</key>
 	<array>
-		<string>&lt;b:t&gt;Tom had&lt;/b:t&gt;
-&lt;b:ot tag=&quot;a&quot;&gt;5 sweets&lt;/b:ot&gt;
-&lt;b:t&gt;He gets&lt;/b:t&gt;
-&lt;b:ot tag=&quot;b&quot;&gt;4 more.&lt;/b:ot&gt;
-&lt;b:t&gt;How many does he have?&lt;/b:t&gt;</string>
+		<string>&lt;b:t&gt;Once upon a time, Tom had&lt;/b:t&gt;
+&lt;b:ot tag=&quot;a&quot;&gt;5 big juicy sweets.&lt;/b:ot&gt;
+&lt;b:t&gt;After an eventful day chasing meerkats on the moors he was given, as a reward, &lt;/b:t&gt;
+&lt;b:ot tag=&quot;b&quot;&gt;4 more sweets.&lt;/b:ot&gt;
+&lt;b:t&gt;How many sweets does he have in total?&lt;/b:t&gt;</string>
 		<string>&lt;b:ot tag=&quot;a&quot; enabled=&quot;no&quot;&gt;5 sweets&lt;/b:ot&gt;
 &lt;b:op op=&quot;+&quot; picker=&quot;yes&quot; /&gt;
 &lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt;4 sweets&lt;/b:ot&gt;

@@ -90,6 +90,7 @@ typedef enum {
     BOOL hasUsedNumber;
     
     float timeSinceInteractionOrShakeNP;
+    float timeBeforeUserInteraction;
     
     BOOL isPaused;
     CCLabelTTF *pauseTestPathLabel;
@@ -127,6 +128,7 @@ typedef enum {
     BOOL isGlossaryMock;
     BOOL isGloassryDone1;
     BOOL glossaryShowing;
+    BOOL isAnimatingIn;
     CCSprite *glossary1;
     CCSprite *glossary2;
     CCSprite *glossaryPopup;

@@ -30,7 +30,7 @@
 
 -(void)parseXML:(NSString*)xmlString
 {
-    NSString *fullxml=[NSString stringWithFormat:@"<?xml version='1.0'?><root>%@</root>", xmlString];
+    NSString *fullxml=[NSString stringWithFormat:@"<?xml version='1.0'?><root xmlns:b='http://zubi.me/namespaces/2012/BTXE'>%@</root>", xmlString];
     
     CXMLDocument *doc=[[[CXMLDocument alloc] initWithXMLString:fullxml options:0 error:nil] autorelease];
 
@@ -48,9 +48,15 @@
     
     if([element.name isEqualToString:BTXE_T])
     {
-        SGBtxeText *t=[[SGBtxeText alloc] initWithGameWorld:gameWorld];
-        t.text=[element stringValue];
-        [ParentGO.containerMgrComponent addObjectToContainer:t];
+        NSString *fulltext=[element stringValue];
+        NSArray *strings=[fulltext componentsSeparatedByString:@" "];
+        
+        for(NSString *s in strings)
+        {
+            SGBtxeText *t=[[SGBtxeText alloc] initWithGameWorld:gameWorld];
+            t.text=s;
+            [ParentGO.containerMgrComponent addObjectToContainer:t];
+        }
     }
     else if([element.name isEqualToString:BTXE_OT])
     {

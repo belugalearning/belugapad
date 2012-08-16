@@ -9,14 +9,16 @@
 #import "SGBtxeRow.h"
 #import "SGBtxeContainerMgr.h"
 #import "SGBtxeRowLayout.h"
+#import "SGBtxeParser.h"
 
 @implementation SGBtxeRow
 
 @synthesize children, containerMgrComponent;   //Container properties
 @synthesize renderLayer;
-@synthesize size, position;       //Bounding properties
+@synthesize size, position, worldPosition;       //Bounding properties
 
 @synthesize rowLayoutComponent;
+@synthesize parserComponent;
 
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget
 {
@@ -27,6 +29,8 @@
         position=CGPointZero;
         containerMgrComponent=[[SGBtxeContainerMgr alloc] initWithGameObject:(SGGameObject*)self];
         rowLayoutComponent=[[SGBtxeRowLayout alloc] initWithGameObject:(SGGameObject*)self];
+        parserComponent=[[SGBtxeParser alloc] initWithGameObject:(SGGameObject*)self];
+        
         self.renderLayer=renderLayerTarget;
     }
     return self;
@@ -66,7 +70,7 @@
 
 -(void)parseXML:(NSString *)xmlString
 {
-    
+    [self.parserComponent parseXML:xmlString];
 }
 
 -(void)dealloc
@@ -74,6 +78,7 @@
     self.children=nil;
     self.containerMgrComponent=nil;
     self.rowLayoutComponent=nil;
+    self.parserComponent=nil;
     self.renderLayer=nil;
     
     [children release];

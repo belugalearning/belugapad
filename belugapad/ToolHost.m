@@ -167,10 +167,14 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void)stageIntroActions
 {
     //TODO tags are currently fixed to 2 phases -- either parse tool tree or pre-populate with design-fixed max
+    
+    isAnimatingIn=YES;
+    
     for (int i=1; i<=3; i++) {
         
         int time=i;
         if(skipNextStagedIntroAnim) time=0;
+        timeBeforeUserInteraction=time;
         
         if(toolBackLayer) [self recurseSetIntroFor:toolBackLayer withTime:time forTag:i];
         if(toolForeLayer)[self recurseSetIntroFor:toolForeLayer withTime:time forTag:i];
@@ -179,6 +183,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         if(problemDefLayer)[self recurseSetIntroFor:problemDefLayer withTime:time forTag:i];
         if(numberPickerLayer)[self recurseSetIntroFor:numberPickerLayer withTime:time forTag:i];
     }
+    
     
     skipNextStagedIntroAnim=NO;
 }
@@ -278,6 +283,13 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         }
         
         timeSinceInteractionOrShakeNP=0.0f;
+    }
+    
+    if(isAnimatingIn){
+        timeBeforeUserInteraction-=delta;
+        
+        if(timeBeforeUserInteraction<0)
+            isAnimatingIn=NO;
     }
     
     //let tool do updates
@@ -960,6 +972,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)checkMetaQuestionTouches:(CGPoint)location
 {
+    if(isAnimatingIn)return;
+    
     if (CGRectContainsPoint(kRectButtonCommit, location) && mqEvalMode==kMetaQuestionEvalOnCommit)
     {
         //effective user commit
@@ -1281,6 +1295,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)checkNumberPickerTouches:(CGPoint)location
 {
+    if(isAnimatingIn)return;
+    
     CGPoint origloc=location;
     location=[nPicker convertToNodeSpace:location];
     timeSinceInteractionOrShakeNP=0.0f;
@@ -1558,7 +1574,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     // TODO: This should be made proportional
     
-    if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem)
+    if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn)
     {
         
         

@@ -30,7 +30,7 @@
 
 -(void)parseXML:(NSString*)xmlString
 {
-    NSString *fullxml=[NSString stringWithFormat:@"<?xml version='1.0'?><root>%@</root>", xmlString];
+    NSString *fullxml=[NSString stringWithFormat:@"<?xml version='1.0'?><root xmlns:b='http://zubi.me/namespaces/2012/BTXE'>%@</root>", xmlString];
     
     CXMLDocument *doc=[[[CXMLDocument alloc] initWithXMLString:fullxml options:0 error:nil] autorelease];
 
@@ -48,9 +48,15 @@
     
     if([element.name isEqualToString:BTXE_T])
     {
-        SGBtxeText *t=[[SGBtxeText alloc] initWithGameWorld:gameWorld];
-        t.text=[element stringValue];
-        [ParentGO.containerMgrComponent addObjectToContainer:t];
+        NSString *fulltext=[element stringValue];
+        NSArray *strings=[fulltext componentsSeparatedByString:@" "];
+        
+        for(NSString *s in strings)
+        {
+            SGBtxeText *t=[[SGBtxeText alloc] initWithGameWorld:gameWorld];
+            t.text=s;
+            [ParentGO.containerMgrComponent addObjectToContainer:t];
+        }
     }
     else if([element.name isEqualToString:BTXE_OT])
     {
@@ -66,6 +72,22 @@
         
         [ParentGO.containerMgrComponent addObjectToContainer:ot];
     }
+    
+    else if([element.name isEqualToString:BTXE_COMMOT])
+    {
+        //for now parse commot to a regular ot, using the sample text and the preference tag
+        
+        SGBtxeObjectText *ot=[[SGBtxeObjectText alloc] initWithGameWorld:gameWorld];
+        ot.text=[[element attributeForName:@"sample"] stringValue];
+        
+        CXMLNode *tagNode=[element attributeForName:@"preftag"];
+        if(tagNode)ot.tag=tagNode.stringValue;
+        
+        ot.enabled=NO;
+
+        [ParentGO.containerMgrComponent addObjectToContainer:ot];
+    }
+    
     else if ([element.name isEqualToString:BTXE_OP])
     {
         //this isn't long term -- create as text for now

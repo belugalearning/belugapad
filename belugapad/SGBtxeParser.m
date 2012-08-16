@@ -72,6 +72,22 @@
         
         [ParentGO.containerMgrComponent addObjectToContainer:ot];
     }
+    
+    else if([element.name isEqualToString:BTXE_COMMOT])
+    {
+        //for now parse commot to a regular ot, using the sample text and the preference tag
+        
+        SGBtxeObjectText *ot=[[SGBtxeObjectText alloc] initWithGameWorld:gameWorld];
+        ot.text=[[element attributeForName:@"sample"] stringValue];
+        
+        CXMLNode *tagNode=[element attributeForName:@"preftag"];
+        if(tagNode)ot.tag=tagNode.stringValue;
+        
+        ot.enabled=NO;
+
+        [ParentGO.containerMgrComponent addObjectToContainer:ot];
+    }
+    
     else if ([element.name isEqualToString:BTXE_OP])
     {
         //this isn't long term -- create as text for now

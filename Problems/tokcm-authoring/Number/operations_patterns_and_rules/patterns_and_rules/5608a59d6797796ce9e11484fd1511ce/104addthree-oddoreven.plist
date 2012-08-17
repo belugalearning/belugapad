@@ -29,7 +29,7 @@
 	<key>SHOW_CAGE</key>
 	<false/>
 	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
-	<true/>
+	<false/>
 	<key>COLUMN_SPACING</key>
 	<real>0.3</real>
 	<key>X_OFFSET</key>
@@ -43,7 +43,16 @@
 	<key>SHOW_COUNT_BLOCK</key>
 	<false/>
 	<key>SHOW_COL_HEADER</key>
-	<false/>
+	<true/>
+	<key>CUSTOM_COLUMN_HEADERS</key>
+	<dict>
+		<key>100</key>
+		<string>3</string>
+		<key>10</key>
+		<string>6</string>
+		<key>1</key>
+		<string>9</string>
+	</dict>
 	<key>SHOW_VALUE</key>
 	<false/>
 	<key>SHOW_BASE_SELECTION</key>

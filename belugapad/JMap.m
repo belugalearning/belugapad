@@ -253,7 +253,22 @@ typedef enum {
     [backarrow setPosition:ccp(64, ly-64)];
     [backarrow setOpacity:70];
     [self addChild:backarrow];
-            
+    
+
+    // position map so that bottom-most included node in view, bottom-left
+    if (!contentService.resetPositionAfterTH)
+    {
+        CGPoint mappos = ccp(NSIntegerMax, NSIntegerMax);
+        for (id go in [gw AllGameObjects]) {
+            if([go isKindOfClass:[SGJmapMasteryNode class]])
+            {
+                CGPoint mnpos = ((SGJmapMasteryNode*)go).Position;
+                if (mnpos.y < mappos.y || (mnpos.y == mappos.y && mnpos.x < mappos.x)) mappos = mnpos;
+            }
+        }
+        if (mappos.y != NSIntegerMax) [mapLayer setPosition:ccp(300-mappos.x, 300-mappos.y)];
+    }
+    
 //    //reposition if previous node
 //    if(contentService.currentNode)
 //    {

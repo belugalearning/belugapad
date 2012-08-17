@@ -1906,7 +1906,6 @@ static float kTimeToCageShake=7.0f;
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
                 
                 // take away the colour from the grid
-                [self tintGridColour:ccc3(255,255,255)];
                 [self problemStateChanged];
                 
             }
@@ -1921,6 +1920,11 @@ static float kTimeToCageShake=7.0f;
             [self resetPickupObjectPos];
         }
         
+    }
+    
+    for(int i=0;i<numberOfColumns;i++)
+    {
+        [self tintGridColour:i toColour:ccc3(255,255,255)];
     }
     
     //get any auto reset / repositions to re-evaluate

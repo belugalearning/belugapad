@@ -1916,7 +1916,7 @@ static float kTimeToCageShake=7.0f;
     //get any auto reset / repositions to re-evaluate
     [gw handleMessage:kDWstartRespositionSeek andPayload:nil withLogLevel:0];
     
-    lastNet=nil;
+
     potentialTap=NO;
     hasMovedBlock=NO;
     hasMovedLayer=NO;
@@ -1928,7 +1928,6 @@ static float kTimeToCageShake=7.0f;
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     //remove all condense/mulch/transition state
-    lastNet=nil;
     inBlockTransition=NO;
     inCondenseArea=NO;
     inMulchArea=NO;

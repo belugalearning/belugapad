@@ -1540,7 +1540,6 @@ static float kTimeToCageShake=7.0f;
             // and set the colour for use in tinting our grid later
             if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
             {
-                lastNet=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
                 currentColour=ccc3(0,255,0);
             }
             if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
@@ -1828,28 +1827,6 @@ static float kTimeToCageShake=7.0f;
             }
             if([gw Blackboard].DropObject != nil)
             {
-
-                if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
-                {
-                    if(lastNet){
-                        DWPlaceValueCageGameObject *cage=(DWPlaceValueCageGameObject*)gw.Blackboard.DropObject;
-                        
-                        CGPoint cagePos=ccp(cage.PosX, cage.PosY);
-                        CGPoint netPos=ccp(lastNet.PosX, lastNet.PosY);
-                        
-                        float distBetweenTouchAndCage=[BLMath DistanceBetween:cagePos and:location];
-                        float distBetweenTouchAndNet=[BLMath DistanceBetween:netPos and:location];
-                        
-                        float diffBetweenNetAndCage=fabsf(distBetweenTouchAndCage-distBetweenTouchAndNet);
-                        
-                        NSLog(@"diff between cagepos and netpos %f", diffBetweenNetAndCage);
-                        
-                        if(diffBetweenNetAndCage<=50.0f)
-                            gw.Blackboard.DropObject=(DWGameObject*)lastNet;
-                        
-                    }
-                    
-                }
                 
                 // TODO: check the isCage returns correct results - will checking dropobject return?
                 BOOL isCage;

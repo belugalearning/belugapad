@@ -48,7 +48,7 @@
                 
                 
                 //get coords from payload (i.e. the search target)
-                CGPoint hitLoc=gameWorld.Blackboard.TestTouchLocation;
+                CGPoint hitLoc=[gameWorld.Blackboard.ComponentRenderLayer convertToWorldSpace:gameWorld.Blackboard.TestTouchLocation];
                 
 
                     NSNumber *gameObjectValue = nil;

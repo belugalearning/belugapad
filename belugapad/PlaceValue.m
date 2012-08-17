@@ -1526,7 +1526,7 @@ static float kTimeToCageShake=7.0f;
         
         gw.Blackboard.TestTouchLocation=location;
         
-        
+        gw.Blackboard.DropObject=nil;
         [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
         
         
@@ -1539,10 +1539,13 @@ static float kTimeToCageShake=7.0f;
             
             // and set the colour for use in tinting our grid later
             if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+            {
                 currentColour=ccc3(0,255,0);
+            }
             if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+            {
                 currentColour=ccc3(255,255,255);
-            
+            }
         }
         else {
             
@@ -1551,7 +1554,7 @@ static float kTimeToCageShake=7.0f;
 
         [self tintGridColour:currentColour];
         
-        gw.Blackboard.DropObject = nil;
+        //gw.Blackboard.DropObject = nil;
         
         // now we loop through the current column index for all the net spacer sprites to tint them            
         
@@ -1605,7 +1608,7 @@ static float kTimeToCageShake=7.0f;
 
 
                 
-                [thisObject handleMessage:kDWmoveSpriteToPosition andPayload:nil withLogLevel:-1];
+                [thisObject handleMessage:kDWmoveSpriteToPositionWithoutAnimation andPayload:nil withLogLevel:-1];
                 hasMovedBlock=YES;
             }
         }
@@ -1672,6 +1675,8 @@ static float kTimeToCageShake=7.0f;
     [toolHost.Zubi setTarget:location];
     
     inBlockTransition=NO;
+    
+
     
     for(int i=0;i<[multiplePlusSprites count];i++)
     {
@@ -1805,7 +1810,7 @@ static float kTimeToCageShake=7.0f;
         
         if([gw Blackboard].PickupObject!=nil && ([BLMath DistanceBetween:touchStartPos and:touchEndPos] > fabs(kTapSlipThreshold)))
         {
-            [gw Blackboard].DropObject=nil;
+            
                         
             if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
             {
@@ -1813,16 +1818,18 @@ static float kTimeToCageShake=7.0f;
                 DWGameObject *go = gw.Blackboard.PickupObject;
                 if(![gw.Blackboard.SelectedObjects containsObject:go])
                 {
+                    [gw Blackboard].DropObject=nil;
                     [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];                
                 }
             }
             else 
             {
-                [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
+                //[gw Blackboard].DropObject=nil;
+                //[gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
             }
             if([gw Blackboard].DropObject != nil)
             {
-
+                
                 // TODO: check the isCage returns correct results - will checking dropobject return?
                 BOOL isCage;
                 
@@ -1844,10 +1851,14 @@ static float kTimeToCageShake=7.0f;
                 {
                     if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
                     {
+                        
+                        gw.Blackboard.TestTouchLocation = ccp(gw.Blackboard.TestTouchLocation.x, gw.Blackboard.TestTouchLocation.y + 1000);
+                        
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
                             [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
                             [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+                            
                             if([pickupObjects count]>1){
                                 gw.Blackboard.DropObject=nil;
                                 [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
@@ -1911,6 +1922,7 @@ static float kTimeToCageShake=7.0f;
     //get any auto reset / repositions to re-evaluate
     [gw handleMessage:kDWstartRespositionSeek andPayload:nil withLogLevel:0];
     
+
     potentialTap=NO;
     hasMovedBlock=NO;
     hasMovedLayer=NO;

@@ -52,9 +52,9 @@
 			<key>VAR_NAME</key>
 			<string>$x</string>
 			<key>MIN</key>
-			<integer>1</integer>
+			<string>1</string>
 			<key>MAX</key>
-			<integer>9</integer>
+			<string>9</string>
 		</dict>
 	</array>
 </dict>

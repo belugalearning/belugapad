@@ -61,8 +61,11 @@
 	<integer>1</integer>
 	<key>REJECT_TYPE</key>
 	<integer>1</integer>
-    <key>SOLUTIONS</key>
+	<key>SOLUTIONS</key>
 	<array>
+		<array>
+			<string>10</string>
+		</array>
 		<array>
 			<integer>3</integer>
 			<integer>7</integer>

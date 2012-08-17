@@ -119,5 +119,17 @@
 			<integer>5</integer>
 		</dict>
 	</array>
+	<key>SOLUTIONS</key>
+	<array>
+		<array>
+			<string>10</string>
+		</array>
+		<array>
+			<integer>9</integer>
+			<integer>1</integer>
+		</array>
+	</array>
+	<key>SOLUTION_MODE</key>
+	<integer>1</integer>
 </dict>
 </plist>

@@ -4,6 +4,8 @@
 <dict>
 	<key>TOOL_KEY</key>
 	<string>ExprBuilder</string>
+	<key>MASTERY</key>
+	<true/>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>two-digit inequalities tens units conflict</string>
 	<key>PROBLEM_DESCRIPTION</key>

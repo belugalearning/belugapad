@@ -41,7 +41,7 @@
         
         
         //get coords from payload (i.e. the search target)
-        CGPoint hitLoc=gameWorld.Blackboard.TestTouchLocation;
+        CGPoint hitLoc=[gameWorld.Blackboard.ComponentRenderLayer convertToWorldSpace:gameWorld.Blackboard.TestTouchLocation];
         
         
         NSNumber *gameObjectValue = nil;
@@ -49,7 +49,8 @@
         gameObjectValue=[NSNumber numberWithFloat:n.ColumnValue];
         pickupObjectValue=[NSNumber numberWithFloat:addO.ObjectValue];
         
-        if([gameObjectValue isEqualToNumber:pickupObjectValue])
+        //if([gameObjectValue isEqualToNumber:pickupObjectValue])
+        if(n.ColumnValue==addO.ObjectValue)
         {
             float dist=[BLMath DistanceBetween:myLoc and:hitLoc];
             if(!gameWorld.Blackboard.DropObject || gameWorld.Blackboard.DropObjectDistance > dist)
@@ -58,6 +59,8 @@
                 {
                     gameWorld.Blackboard.DropObject=gameObject;
                     gameWorld.Blackboard.DropObjectDistance=dist;
+                    
+                    //NSLog(@"net sets droptarget dist %f val %f", dist, n.ColumnValue);
                 }
             }
         }

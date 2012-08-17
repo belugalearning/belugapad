@@ -16,7 +16,7 @@
 &lt;b:ot tag=&quot;b&quot;&gt;is equal to&lt;/b:ot&gt;
 &lt;b:ot tag=&quot;c&quot;&gt;is less than&lt;/b:ot&gt;</string>
 		<string>&lt;b:t&gt;73&lt;/b:t&gt;
-&lt;b:ot tag=&quot;a&quot; enabled=&quot;no&quot;&gt; is greater than &lt;/b:ot&gt;
+&lt;b:ot tag=&quot;a&quot; enabled=&quot;no&quot;&gt; &amp;gt; &lt;/b:ot&gt;
 &lt;b:t&gt;52&lt;/b:t&gt;</string>
 	</array>
 </dict>

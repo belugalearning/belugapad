@@ -40,10 +40,6 @@
 	<integer>0</integer>
 	<key>SEGMENT_VALUE</key>
 	<integer>10</integer>
-	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
-	<array>
-		<string>10</string>
-	</array>
 	<key>RENDER_STITCHES_AT_INTERVAL</key>
 	<integer>0</integer>
 	<key>META_QUESTION</key>
@@ -72,7 +68,7 @@
 				<key>META_ANSWER_TEXT</key>
 				<string>{$answer - 10}</string>
 				<key>META_ANSWER_VALUE</key>
-				<true/>
+				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
@@ -86,9 +82,9 @@
 			<key>VAR_NAME</key>
 			<string>$x</string>
 			<key>MIN</key>
-			<integer>1</integer>
+			<string>1</string>
 			<key>MAX</key>
-			<integer>9</integer>
+			<string>9</string>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>

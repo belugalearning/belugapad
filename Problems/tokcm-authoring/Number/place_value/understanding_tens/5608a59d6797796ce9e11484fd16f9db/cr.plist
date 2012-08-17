@@ -2,23 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
-	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd177bed/101tenplus.plist</string>
-	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd177bed/102tenplus.plist</string>
-	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd177bed/201tenplus.plist</string>
-	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd177bed/202tenplus.plist</string>
-	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd177bed/301tenplus.plist</string>
-	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd177bed/302tenplus.plist</string>
-	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd177bed/401tenplus.plist</string>
-	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd177bed/402tenplus.plist</string>
-	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd177bed/501tenplus.plist</string>
-	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd177bed/502tenplus.plist</string>
-	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd177bed/601tenplus.plist</string>
-	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd177bed/602tenplus.plist</string>
-	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd177bed/701tenplus.plist</string>
-	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd177bed/702tenplus.plist</string>
-	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd177bed/801tenplus.plist</string>
-	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd177bed/802tenplus.plist</string>
-	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd177bed/901tenplus.plist</string>
-	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd177bed/902tenplus.plist</string>
+	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd16f9db/101understandingplacevalue-problem.plist</string>
+	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd16f9db/102understandingplacevalue-problem.plist</string>
+	<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd16f9db/103understandingplacevalue-problem.plist</string>
 </array>
 </plist>

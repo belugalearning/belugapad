@@ -69,9 +69,9 @@
 			<key>VAR_NAME</key>
 			<string>$augend</string>
 			<key>MAX</key>
-			<string>1</string>
-			<key>MIN</key>
 			<string>4</string>
+			<key>MIN</key>
+			<string>1</string>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>

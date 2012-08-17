@@ -51,6 +51,13 @@
         [self setSpritePosWithAnimation];
     }
     
+    if(messageType==kDWmoveSpriteToPositionWithoutAnimation){
+        [b.mySprite stopAllActions];
+        
+        b.AnimateMe=NO;
+        [self setSpritePosWithAnimation];
+    }
+    
     if(messageType==kDWupdateSprite)
     {
         

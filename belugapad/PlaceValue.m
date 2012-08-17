@@ -1426,7 +1426,7 @@ static float kTimeToCageShake=7.0f;
     {
         
         DWPlaceValueBlockGameObject *pickupObject=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
-        
+                
         BOOL isCage;
         
         if([pickupObject.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])isCage=YES;
@@ -1462,6 +1462,8 @@ static float kTimeToCageShake=7.0f;
         {
             [pickupObjects addObject:pickupObject];
             [[gw Blackboard].PickupObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
+//            [pickupObject handleMessage:kDWunsetMount];
+            [pickupObject.Mount handleMessage:kDWunsetMountedObject];
         }
         
         float objValue=pickupObject.ObjectValue;
@@ -1608,7 +1610,7 @@ static float kTimeToCageShake=7.0f;
 
 
                 
-                [thisObject handleMessage:kDWmoveSpriteToPosition andPayload:nil withLogLevel:-1];
+                [thisObject handleMessage:kDWmoveSpriteToPositionWithoutAnimation andPayload:nil withLogLevel:-1];
                 hasMovedBlock=YES;
             }
         }
@@ -1851,27 +1853,33 @@ static float kTimeToCageShake=7.0f;
                 {
                     if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
                     {
+                        
+                        gw.Blackboard.TestTouchLocation = ccp(gw.Blackboard.TestTouchLocation.x, gw.Blackboard.TestTouchLocation.y + 1000);
+                        
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
                             [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
                             [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+                            
                             if([pickupObjects count]>1){
                                 gw.Blackboard.DropObject=nil;
                                 [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
                             }
                         }
                     }
-                    else
+                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && ![gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
                     {
                         // TODO: reject these things back to their mounts
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
-                            if(go==gw.Blackboard.PickupObject)
                                 [go handleMessage:kDWresetToMountPosition];
-                            else
-                                [go handleMessage:kDWresetToMountPositionAndDestroy];
-//                                [gw delayRemoveGameObject:go];
-//                                [go.mySprite removeFromParentAndCleanup:YES];
+                        }
+                    }
+                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+                    {
+                        for(DWPlaceValueBlockGameObject *go in pickupObjects){
+                        [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
+                        [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
                         }
                     }
                 }
@@ -1898,7 +1906,6 @@ static float kTimeToCageShake=7.0f;
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
                 
                 // take away the colour from the grid
-                [self tintGridColour:ccc3(255,255,255)];
                 [self problemStateChanged];
                 
             }
@@ -1913,6 +1920,11 @@ static float kTimeToCageShake=7.0f;
             [self resetPickupObjectPos];
         }
         
+    }
+    
+    for(int i=0;i<numberOfColumns;i++)
+    {
+        [self tintGridColour:i toColour:ccc3(255,255,255)];
     }
     
     //get any auto reset / repositions to re-evaluate

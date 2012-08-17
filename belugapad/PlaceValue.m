@@ -1426,7 +1426,7 @@ static float kTimeToCageShake=7.0f;
     {
         
         DWPlaceValueBlockGameObject *pickupObject=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
-        
+                
         BOOL isCage;
         
         if([pickupObject.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])isCage=YES;
@@ -1462,6 +1462,8 @@ static float kTimeToCageShake=7.0f;
         {
             [pickupObjects addObject:pickupObject];
             [[gw Blackboard].PickupObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
+//            [pickupObject handleMessage:kDWunsetMount];
+            [pickupObject.Mount handleMessage:kDWunsetMountedObject];
         }
         
         float objValue=pickupObject.ObjectValue;
@@ -1865,17 +1867,19 @@ static float kTimeToCageShake=7.0f;
                             }
                         }
                     }
-                    else
+                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && ![gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
                     {
                         // TODO: reject these things back to their mounts
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
-                            if(go==gw.Blackboard.PickupObject)
                                 [go handleMessage:kDWresetToMountPosition];
-                            else
-                                [go handleMessage:kDWresetToMountPositionAndDestroy];
-//                                [gw delayRemoveGameObject:go];
-//                                [go.mySprite removeFromParentAndCleanup:YES];
+                        }
+                    }
+                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+                    {
+                        for(DWPlaceValueBlockGameObject *go in pickupObjects){
+                        [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
+                        [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
                         }
                     }
                 }

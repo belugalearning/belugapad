@@ -48,7 +48,7 @@
                 
                 
                 //get coords from payload (i.e. the search target)
-                CGPoint hitLoc=gameWorld.Blackboard.TestTouchLocation;
+                CGPoint hitLoc=[gameWorld.Blackboard.ComponentRenderLayer convertToWorldSpace:gameWorld.Blackboard.TestTouchLocation];
                 
 
                     NSNumber *gameObjectValue = nil;
@@ -64,6 +64,8 @@
                         {
                             gameWorld.Blackboard.DropObject=gameObject;
                             gameWorld.Blackboard.DropObjectDistance=dist;
+                            
+                            //NSLog(@"cage sets droptarget dist %f val %f", dist, c.ObjectValue);
                         }
                     }
                     

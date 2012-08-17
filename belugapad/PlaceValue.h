@@ -13,6 +13,7 @@
 #import "ToolScene.h"
 
 @class DWGameWorld;
+@class DWPlaceValueNetGameObject;
 @class Daemon;
 @class ToolHost;
 
@@ -149,6 +150,7 @@
     
     // use this array in a case we need to drag more than 1  object
     NSMutableArray *pickupObjects;
+//    DWPlaceValueNetGameObject *lastNet;
 }
 
 -(void)populateGW;

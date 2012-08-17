@@ -1851,10 +1851,14 @@ static float kTimeToCageShake=7.0f;
                 {
                     if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
                     {
+                        
+                        gw.Blackboard.TestTouchLocation = ccp(gw.Blackboard.TestTouchLocation.x, gw.Blackboard.TestTouchLocation.y + 1000);
+                        
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
                             [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
                             [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+                            
                             if([pickupObjects count]>1){
                                 gw.Blackboard.DropObject=nil;
                                 [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];

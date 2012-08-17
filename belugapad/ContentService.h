@@ -29,6 +29,8 @@
 -(void)setPipelineScore:(int)score;
 -(BOOL)isUsingTestPipeline;
 
+-(void)updateContentDatabaseWithSettings:(NSDictionary*)settings;
+
 -(BOOL) createAndStartFunnelForNode:(NSString*)nodeId;
 
 -(void)startPipelineWithId:(NSString*)pipelineid forNode:(ConceptNode*)node;

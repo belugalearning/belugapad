@@ -1,4 +1,4 @@
-//
+ //
 //  ContentService.m
 //  belugapad
 //
@@ -69,8 +69,8 @@
     {
         fm = [NSFileManager defaultManager];
         
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        contentDir = [[[paths objectAtIndex:0] stringByAppendingPathComponent:@"content"] retain];
+        NSString *docsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        contentDir = [[docsDir stringByAppendingPathComponent:@"content"] retain];
         
         NSString *source = [settings objectForKey:@"PROBLEM_PIPELINE"];
         useTestPipeline = ![@"DATABASE" isEqualToString:source];
@@ -101,38 +101,58 @@
             }
 
         } else {
-            NSNumber *importContent = [settings objectForKey:@"IMPORT_CONTENT_ON_LAUNCH"];
-            NSString *kcmLoginName = [settings objectForKey:@"KCM_LOGIN_NAME"];
-            
-            [fm removeItemAtPath:contentDir error:nil];
-            
-            if (importContent && [importContent boolValue] && kcmLoginName)
-            {
-                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://authoring.zubi.me:3001/kcm/app-import-content/%@", kcmLoginName]];
-                NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
-                NSHTTPURLResponse *response = nil;
-                NSError *error = nil;
-                NSData *result = [NSURLConnection sendSynchronousRequest:req returningResponse:&response error:&error];
-                
-                if (error || !response || [response statusCode] != 200)
-                {   
-                    NSString *resultString = [[[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding] autorelease];
-                    NSLog(@"Failed to retrieve content from database. (Use Alert Box?) -- %@", resultString);
-                } else {
-                    NSString *zipPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"/canned-content.zip"];
-                    [result writeToFile:zipPath atomically:NO];
-                    [SSZipArchive unzipFileAtPath:zipPath toDestination:contentDir];
-                }
-            } else {
-                NSString *bundledContentDir = BUNDLE_FULL_PATH(@"/canned-dbs/canned-content");            
-                [fm copyItemAtPath:bundledContentDir toPath:contentDir error:nil];
-            }
-            
-            contentDatabase = [FMDatabase databaseWithPath:[contentDir stringByAppendingString:@"/content.db"]];
-            [contentDatabase retain];
+            [self updateContentDatabaseWithSettings:settings];
         }
     }
     return self;
+}
+
+-(void)updateContentDatabaseWithSettings:(NSDictionary*)settings
+{
+    NSNumber *importContent = [settings objectForKey:@"IMPORT_CONTENT_ON_LAUNCH"];
+    NSString *kcmLoginName = [settings objectForKey:@"KCM_LOGIN_NAME"];
+    
+    if (contentDatabase)
+    {
+        if (importContent && [importContent boolValue] && kcmLoginName)
+        {
+            [contentDatabase close];
+            [contentDatabase release];
+        } else {
+            return; // no point continuing as this function was already called at init & would now def be replacing bundled database with itself
+        }
+    }
+    
+    NSError *error = nil;
+    
+    if (importContent && [importContent boolValue] && kcmLoginName)
+    {
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://authoring.zubi.me:3001/kcm/app-import-content/%@", kcmLoginName]];
+        NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
+        NSHTTPURLResponse *response = nil;
+        NSData *result = [NSURLConnection sendSynchronousRequest:req returningResponse:&response error:&error];
+        
+        if (error || !response || [response statusCode] != 200)
+        {
+            NSString *resultString = [[[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding] autorelease];
+            NSLog(@"Failed to retrieve content from database. (Use Alert Box?) -- %@", resultString);
+        } else {
+            NSString *docsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+            NSString *zipPath = [docsDir stringByAppendingPathComponent:@"/canned-content.zip"];
+            [result writeToFile:zipPath atomically:NO];
+            [SSZipArchive unzipFileAtPath:zipPath toDestination:contentDir];
+        }
+    }
+    
+    if (![fm fileExistsAtPath:contentDir])
+    {
+        error = nil;
+        NSString *bundledContentDir = BUNDLE_FULL_PATH(@"/canned-dbs/canned-content");
+        [fm copyItemAtPath:bundledContentDir toPath:contentDir error:&error];
+    }
+    
+    contentDatabase = [FMDatabase databaseWithPath:[contentDir stringByAppendingString:@"/content.db"]];
+    [contentDatabase retain];    
 }
 
 #pragma mark - dynamic pipeline creation

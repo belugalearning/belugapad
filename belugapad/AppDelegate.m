@@ -180,6 +180,9 @@
         [selectUserViewController release];
         selectUserViewController = nil;
     }
+    
+    [self.contentService updateContentDatabaseWithSettings:self.LocalSettings];
+    
     selectUserViewController = [[SelectUserViewController alloc] init];    
     [window_ addSubview:selectUserViewController.view];
     [window_ makeKeyAndVisible];

@@ -676,7 +676,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     {
         if(commitBtn)
         {
-            [commitBtn removeFromParentAndCleanup:YES];
+            //[commitBtn removeFromParentAndCleanup:YES];
             commitBtn=nil;
         }
     }

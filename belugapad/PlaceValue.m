@@ -1608,7 +1608,7 @@ static float kTimeToCageShake=7.0f;
 
 
                 
-                [thisObject handleMessage:kDWmoveSpriteToPosition andPayload:nil withLogLevel:-1];
+                [thisObject handleMessage:kDWmoveSpriteToPositionWithoutAnimation andPayload:nil withLogLevel:-1];
                 hasMovedBlock=YES;
             }
         }

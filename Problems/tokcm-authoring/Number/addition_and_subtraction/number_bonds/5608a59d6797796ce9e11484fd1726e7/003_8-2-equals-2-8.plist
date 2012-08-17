@@ -70,6 +70,9 @@
 	<key>SOLUTIONS</key>
 	<array>
 		<array>
+			<string>10</string>
+		</array>
+		<array>
 			<integer>2</integer>
 			<integer>8</integer>
 		</array>

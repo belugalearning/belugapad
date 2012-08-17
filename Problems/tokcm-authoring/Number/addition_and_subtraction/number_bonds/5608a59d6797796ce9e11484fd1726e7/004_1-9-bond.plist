@@ -44,6 +44,8 @@
 	</array>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>SOLUTION_MODE</key>
+	<integer>1</integer>
 	<key>INIT_CAGES</key>
 	<array>
 		<dict>
@@ -118,6 +120,16 @@
 			<key>QUANTITY</key>
 			<integer>5</integer>
 		</dict>
+	</array>
+	<key>SOLUTIONS</key>
+	<array>
+		<array>
+			<string>10</string>
+		</array>
+		<array>
+			<integer>1</integer>
+			<integer>9</integer>
+		</array>
 	</array>
 </dict>
 </plist>

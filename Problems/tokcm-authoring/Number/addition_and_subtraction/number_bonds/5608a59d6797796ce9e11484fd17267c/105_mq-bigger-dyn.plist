@@ -47,8 +47,6 @@
 			<string>1</string>
 			<key>MAX</key>
 			<string>4</string>
-			<key>RETAIN</key>
-			<true/>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
@@ -57,8 +55,6 @@
 			<string>5</string>
 			<key>MAX</key>
 			<string>9</string>
-			<key>RETAIN</key>
-			<true/>
 		</dict>
 	</array>
 </dict>

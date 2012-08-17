@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>/Problems/tools-dev/ExprBuilder/exprbuilder-dev1.plist</string>
+	<string>/Problems/tokcm-authoring/Number/operations_patterns_and_rules/order_of_operations/5608a59d6797796ce9e11484fd14680d/501biggest.plist</string>
+	<string>/Problems/tokcm-authoring/Number/place_value/tens_and_ones/5608a59d6797796ce9e11484fd16fc3e/502eb.plist</string>
+	<string>/Problems/tokcm-authoring/Number/multiplication_and_division/early_strategies_for_multiplication/5608a59d6797796ce9e11484fd15c087/101inverse.plist</string>
+	<string>/Problems/tokcm-authoring/Number/operations_patterns_and_rules/order_of_operations/5608a59d6797796ce9e11484fd14680d/601biggest.plist</string>
+	<string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/counting_forward/5608a59d6797796ce9e11484fd180214/102sortingnumerals.plist</string>
+	<string>/Problems/tokcm-authoring/Number/place_value/tens_and_hundreds/5608a59d6797796ce9e11484fd168fb6/402eb.plist</string>
+	<string>/Problems/tokcm-authoring/Number/place_value/tens_and_ones/5608a59d6797796ce9e11484fd16fc3e/502eb.plist</string>
 	<string>/Problems/tokcm-authoring/Number/place_value/tens_and_ones/5608a59d6797796ce9e11484fd16fc3e/101howmany.plist</string>
 	<string>/Problems/tokcm-authoring/Number/place_value/tens_and_ones/5608a59d6797796ce9e11484fd16fc3e/102howmany.plist</string>
 	<string>/Problems/tokcm-authoring/Number/place_value/tens_and_ones/5608a59d6797796ce9e11484fd16fc3e/201howmany.plist</string>

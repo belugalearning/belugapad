@@ -11,7 +11,7 @@
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>0</string>
+	<string>{$ans+$err}</string>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
@@ -48,8 +48,6 @@
 	<array>
 		<string>10</string>
 	</array>
-	<key>RENDER_STITCHES_AT_INTERVAL</key>
-	<integer>0</integer>
 	<key>DVARS</key>
 	<array>
 		<dict>
@@ -69,6 +67,26 @@
 				<string>3</string>
 				<string>5</string>
 			</array>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$ans</string>
+			<key>VALUE</key>
+			<string>{$x*$int}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>7</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$err</string>
+			<key>VALUE</key>
+			<string>{$y*$int}</string>
 		</dict>
 	</array>
 </dict>

@@ -672,13 +672,25 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [commitBtn setOpacity:0];
         [problemDefLayer addChild:commitBtn z:2];
     }
+    else
+    {
+        if(commitBtn)
+        {
+            //[commitBtn removeFromParentAndCleanup:YES];
+            commitBtn=nil;
+        }
+    }
 }
 
 
 -(void) resetProblem
 {
     if(problemDescLabel)[problemDescLabel removeFromParentAndCleanup:YES];
-    if(commitBtn)[commitBtn removeFromParentAndCleanup:YES];
+    if(commitBtn)
+    {
+        [commitBtn removeFromParentAndCleanup:YES];
+        commitBtn=nil;
+    }
     
     [self resetScoreMultiplier];
     

@@ -64,6 +64,9 @@
 	<key>SOLUTIONS</key>
 	<array>
 		<array>
+			<string>10</string>
+		</array>
+		<array>
 			<integer>7</integer>
 			<integer>3</integer>
 		</array>

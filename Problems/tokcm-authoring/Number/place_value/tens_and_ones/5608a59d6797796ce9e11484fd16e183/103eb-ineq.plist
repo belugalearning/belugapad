@@ -2,39 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>PROBLEM_DESCRIPTION</key>
-	<string>Which number is smaller?</string>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>two-digit inequalities same tens diff units</string>
-	<key>TOOL_KEY</key>
-	<string>NumberBonds</string>
-	<key>META_QUESTION</key>
-	<dict>
-		<key>META_QUESTION_COMPLETE_TEXT</key>
-		<string>Great!</string>
-		<key>META_QUESTION_EVAL_MODE</key>
-		<integer>0</integer>
-		<key>META_QUESTION_ANSWER_MODE</key>
-		<integer>0</integer>
-		<key>META_QUESTION_ANSWERS</key>
-		<array>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>63</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>61</string>
-				<key>META_ANSWER_VALUE</key>
-				<true/>
-			</dict>
-		</array>
-		<key>META_QUESTION_TITLE</key>
-		<string>Which number is smaller?</string>
-		<key>META_QUESTION_INCOMPLETE_TEXT</key>
-		<string>Try again.</string>
-	</dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Complete the number sentence.</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:ot tag=&quot;a&quot;&gt;is bigger than&lt;/b:ot&gt;
+                &lt;b:ot tag=&quot;b&quot;&gt;is equal to&lt;/b:ot&gt;
+                &lt;b:ot tag=&quot;c&quot;&gt;is smaller than&lt;/b:ot&gt;</string>
+		<string>&lt;b:t&gt;87&lt;/b:t&gt;
+                &lt;b:ot tag=&quot;c&quot; enabled=&quot;no&quot;&gt; is smaller than &lt;/b:ot&gt;
+                &lt;b:t&gt;88&lt;/b:t&gt;</string>
+	</array>
 </dict>
 </plist>

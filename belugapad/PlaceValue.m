@@ -1526,7 +1526,7 @@ static float kTimeToCageShake=7.0f;
         
         gw.Blackboard.TestTouchLocation=location;
         
-        
+        gw.Blackboard.DropObject=nil;
         [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
         
         
@@ -1554,7 +1554,7 @@ static float kTimeToCageShake=7.0f;
 
         [self tintGridColour:currentColour];
         
-        gw.Blackboard.DropObject = nil;
+        //gw.Blackboard.DropObject = nil;
         
         // now we loop through the current column index for all the net spacer sprites to tint them            
         
@@ -1810,7 +1810,7 @@ static float kTimeToCageShake=7.0f;
         
         if([gw Blackboard].PickupObject!=nil && ([BLMath DistanceBetween:touchStartPos and:touchEndPos] > fabs(kTapSlipThreshold)))
         {
-            [gw Blackboard].DropObject=nil;
+            
                         
             if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
             {
@@ -1818,12 +1818,14 @@ static float kTimeToCageShake=7.0f;
                 DWGameObject *go = gw.Blackboard.PickupObject;
                 if(![gw.Blackboard.SelectedObjects containsObject:go])
                 {
+                    [gw Blackboard].DropObject=nil;
                     [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];                
                 }
             }
             else 
             {
-                [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
+                //[gw Blackboard].DropObject=nil;
+                //[gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
             }
             if([gw Blackboard].DropObject != nil)
             {

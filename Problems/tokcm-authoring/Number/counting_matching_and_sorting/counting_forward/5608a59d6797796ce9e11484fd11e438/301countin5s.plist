@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Count on in jumps of 5.</string>
+	<string>Count on to 50 in jumps of 5.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>count on from 0 to 50</string>
 	<key>TOOL_KEY</key>

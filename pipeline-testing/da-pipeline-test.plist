@@ -2,6 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>/Problems/tools-dev/da-pv/placevalue-problem023.plist</string>
+	<string>/Problems/tools-dev/da-pv/placevalue-problem024.plist</string>
+	<string>/Problems/tools-dev/da-pv/placevalue-problem021.plist</string>
+	<string>/Problems/tools-dev/da-pv/placevalue-problem001.plist</string>
+	<string>/Problems/tools-dev/da-np/np2.plist</string>
+	<string>/Problems/tokcm-authoring/Number/operations_patterns_and_rules/patterns_and_rules/5608a59d6797796ce9e11484fd1511ce/101addthree.plist</string>
+	<string>/Problems/tokcm-authoring/Number/place_value/tens_and_ones/5608a59d6797796ce9e11484fd16fc3e/403makenumber.plist</string>
+	<string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd167ab6/dt_6.plist</string>
+	<string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/counting_forward/5608a59d6797796ce9e11484fd11e438/103mqcountin2s.plist</string>
 	<string>/Problems/tools-dev/da-ct/ct001.plist</string>
 	<string>/Problems/tools-dev/da-ct/ct002.plist</string>
 	<string>/Problems/tools-dev/da-dt/dt2.plist</string>
@@ -20,7 +29,6 @@
 	<string>/Problems/tools-dev/da-np/np4.plist</string>
 	<string>/Problems/tools-dev/da-tt/tt2.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test2.plist</string>
-	<string>/Problems/tools-dev/da-pv/placevalue-problem001.plist</string>
 	<string>/Problems/tools-dev/nline-dev/nline_count_to_3.plist</string>
 	<string>/Problems/tools-dev/nline-dev/nline_count_to_4.plist</string>
 	<string>/Problems/tools-dev/nline-dev/nline_count_to_5.plist</string>
@@ -29,13 +37,10 @@
 	<string>/Problems/tools-dev/da-ps/ps1.plist</string>
 	<string>/Problems/tools-dev/da-ps/ps2.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg1.plist</string>
-	<string>/Problems/tools-dev/da-pv/placevalue-problem024.plist</string>
-	<string>/Problems/tools-dev/da-pv/placevalue-problem021.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem022.plist</string>
 	<string>/Problems/tools-dev/da-ps/ps1.plist</string>
 	<string>/Problems/tools-dev/da-ld/ld2.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test2.plist</string>
-	<string>/Problems/tools-dev/da-ld/ld1.plist</string>
 	<string>/Problems/Addition/ac-dev/97amalgamation/am_017.plist</string>
 	<string>/Problems/tools-dev/da-ld/ld1.plist</string>
 	<string>/Problems/tools-dev/da-ld/ld2.plist</string>
@@ -43,7 +48,6 @@
 	<string>/Problems/tools-dev/da-dg/dg2.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg3.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg4.plist</string>
-	<string>/Problems/tools-dev/da-pv/placevalue-problem023.plist</string>
 	<string>/Problems/tools-dev/da-fb/float-problem0002.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test2.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test3.plist</string>

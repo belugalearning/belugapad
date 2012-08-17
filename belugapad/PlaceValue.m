@@ -1539,10 +1539,13 @@ static float kTimeToCageShake=7.0f;
             
             // and set the colour for use in tinting our grid later
             if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+            {
                 currentColour=ccc3(0,255,0);
+            }
             if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+            {
                 currentColour=ccc3(255,255,255);
-            
+            }
         }
         else {
             
@@ -1672,6 +1675,8 @@ static float kTimeToCageShake=7.0f;
     [toolHost.Zubi setTarget:location];
     
     inBlockTransition=NO;
+    
+
     
     for(int i=0;i<[multiplePlusSprites count];i++)
     {
@@ -1822,7 +1827,7 @@ static float kTimeToCageShake=7.0f;
             }
             if([gw Blackboard].DropObject != nil)
             {
-
+                
                 // TODO: check the isCage returns correct results - will checking dropobject return?
                 BOOL isCage;
                 
@@ -1911,6 +1916,7 @@ static float kTimeToCageShake=7.0f;
     //get any auto reset / repositions to re-evaluate
     [gw handleMessage:kDWstartRespositionSeek andPayload:nil withLogLevel:0];
     
+
     potentialTap=NO;
     hasMovedBlock=NO;
     hasMovedLayer=NO;

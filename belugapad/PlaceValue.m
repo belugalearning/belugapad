@@ -1538,18 +1538,23 @@ static float kTimeToCageShake=7.0f;
                 [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).PickupSprite)]];
             
             // and set the colour for use in tinting our grid later
-            currentColour=ccc3(0,255,0);
+            if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                currentColour=ccc3(0,255,0);
+            if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+                currentColour=ccc3(255,255,255);
             
         }
         else {
             
             currentColour=ccc3(255,255,255);
         }
+
+        [self tintGridColour:currentColour];
+        
         gw.Blackboard.DropObject = nil;
         
         // now we loop through the current column index for all the net spacer sprites to tint them            
         
-        [self tintGridColour:currentColour];
         
         
         CGPoint diff=[BLMath SubtractVector:prevLoc from:location];
@@ -1570,13 +1575,17 @@ static float kTimeToCageShake=7.0f;
                 //if([BLMath rectContainsPoint:location x:0 y:0 w:200 h:ly] && currentColumnIndex>0)
             {
                 inCondenseArea=YES;
-                [condensePanel setVisible:YES];
+//                [condensePanel setVisible:YES];
+                currentColour=ccc3(255,255,0);
             }
             else
             {
                 inCondenseArea=NO;
-                [condensePanel setVisible:NO];
+//                [condensePanel setVisible:NO];
+                currentColour=ccc3(255,255,255);
             }
+            if(currentColumnIndex-1>0)
+                [self tintGridColour:currentColumnIndex-1 toColour:currentColour];
             
             // when we're moving several blocks at once
             for(int go=0;go<gw.Blackboard.SelectedObjects.count;go++)
@@ -1609,13 +1618,18 @@ static float kTimeToCageShake=7.0f;
                 
             {
                 inMulchArea=YES;
-                [mulchPanel setVisible:YES];
+                //[mulchPanel setVisible:YES];
+                
+                currentColour=ccc3(255,255,0);
             }
             else
             {
                 inMulchArea=NO;
-                [mulchPanel setVisible:NO];
+                //[mulchPanel setVisible:NO];
+                currentColour=ccc3(255,255,255);
             }
+            if(currentColumnIndex+1<numberOfColumns)
+                [self tintGridColour:currentColumnIndex+1 toColour:currentColour];
             
             // if their finger moved too much, we know we can update the sprite position
             if(!potentialTap)

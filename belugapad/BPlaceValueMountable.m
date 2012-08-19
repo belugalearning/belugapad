@@ -10,6 +10,7 @@
 #import "global.h"
 #import "DWPlaceValueBlockGameObject.h"
 #import "DWPlaceValueNetGameObject.h"
+#import "DWPlaceValueCageGameObject.h"
 
 @implementation BPlaceValueMountable
 
@@ -32,16 +33,30 @@
             b.Mount=gameWorld.Blackboard.DropObject;
         }
             
-
+        DWPlaceValueCageGameObject *newMountC=[[DWPlaceValueCageGameObject alloc]init];
+        DWPlaceValueNetGameObject *newMountN=[[DWPlaceValueNetGameObject alloc]init];
         
-        DWPlaceValueNetGameObject *newMount=(DWPlaceValueNetGameObject*)b.Mount;
+        if([b.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
+        {
+            newMountN=(DWPlaceValueNetGameObject*)b.Mount;
+            newMountN.MountedObject=b;
+            
+            
+            b.PosX=newMountN.PosX;
+            b.PosY=newMountN.PosY;
+        }
+        else if([b.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
+        {
+            newMountC=(DWPlaceValueCageGameObject*)b.Mount;
         
+            newMountC.MountedObject=b;
+            
+            
+            b.PosX=newMountC.PosX;
+            b.PosY=newMountC.PosY+20;
+        }
         //tell the mount that i'm there
-        newMount.MountedObject=b;
-        
-        
-        b.PosX=newMount.PosX;
-        b.PosY=newMount.PosY; 
+
         
         b.AnimateMe=YES;
 

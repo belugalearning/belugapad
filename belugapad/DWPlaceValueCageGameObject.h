@@ -21,5 +21,6 @@
 @property (retain) DWGameObject *MountedObject;
 @property (retain) CCSprite *mySprite;
 @property BOOL Hidden;
+@property int cageType;
 
 @end

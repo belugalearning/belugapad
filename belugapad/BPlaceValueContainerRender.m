@@ -50,7 +50,7 @@
         sname=@"/images/placevalue/grid-bottom.png";
     
     mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", sname]))];
-    [mySprite setOpacity:120];
+    [mySprite setOpacity:127];
     n.mySprite=mySprite;
 
     float x=n.PosX;
@@ -64,8 +64,8 @@
     
     if(gameWorld.Blackboard.inProblemSetup)
     {
-        [mySprite setTag:1];
-        [mySprite setOpacity:0];
+//        [mySprite setTag:1];
+//        [mySprite setOpacity:0];
     }
     [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:0];
 

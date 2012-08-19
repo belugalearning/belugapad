@@ -273,7 +273,7 @@
         }
         else {
             // tint for selection (+ number)
-            [mySprite setColor:ccc3(255, 128, 0)]; 
+            [mySprite setColor:ccc3(128, 195, 194)];
         }
     }
     else
@@ -319,7 +319,7 @@
             }
             else
             {
-                [mySprite setColor:ccc3(255,128,0)];             
+                [mySprite setColor:ccc3(128, 195, 194)];
             }
         }
         else

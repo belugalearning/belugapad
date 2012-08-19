@@ -278,6 +278,12 @@ static float kTimeToCageShake=7.0f;
                 c.PosX=containerOrigin.x;
                 c.PosY=containerOrigin.y;
                 c.myRow=iRow;
+                
+                if(c.myRow==0)
+                    c.renderType=1;
+                else if(c.myRow=currentColumnRopes-1)
+                    c.renderType=2;
+                
                 c.myCol=i;
                 c.myRope=iRope;
                 c.ColumnValue=[[currentColumnInfo objectForKey:COL_VALUE] floatValue];
@@ -415,9 +421,6 @@ static float kTimeToCageShake=7.0f;
                 int defaultBlocksToMake=1;
                 [blocksToCreate addObject:[NSNumber numberWithInt:defaultBlocksToMake]];
 
-//                CCSprite *minusSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/minus40.png")];
-//                CCSprite *posiSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/plus40.png")];
-//                CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", defaultBlocksToMake] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
                 
                 CCSprite *minusSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/minus40.png")];;
                 CCSprite *posiSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/plus40.png")];;
@@ -641,7 +644,7 @@ static float kTimeToCageShake=7.0f;
     // are there any custom cage sprites defined?
     if([[pdef objectForKey:CAGE_SPRITES] objectForKey:POS_CAGE])
         posCageSprite = [NSString stringWithFormat:@"%@", BUNDLE_FULL_PATH([[pdef objectForKey:CAGE_SPRITES] objectForKey:POS_CAGE])];
-    else posCageSprite=BUNDLE_FULL_PATH(@"/images/placevalue/cage-pos.png");
+    else posCageSprite=BUNDLE_FULL_PATH(@"/images/placevalue/cage-single.png");
             
     [posCageSprite retain];
     

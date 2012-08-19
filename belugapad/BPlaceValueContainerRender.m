@@ -40,7 +40,14 @@
 
 -(void)setSprite
 {
-    NSString *sname=@"/images/placevalue/netspacer.png";
+    NSString *sname=[[NSString alloc]init];
+    
+    if(n.renderType==0)
+        sname=@"/images/placevalue/grid-middle.png";
+    else if(n.renderType==1)
+        sname=@"/images/placevalue/grid-top.png";
+    else if(n.renderType==2)
+        sname=@"/images/placevalue/grid-bottom.png";
     
     mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", sname]))];
     [mySprite setOpacity:120];

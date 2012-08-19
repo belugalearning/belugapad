@@ -19,6 +19,7 @@
 @synthesize MountedObject;
 @synthesize mySprite;
 @synthesize Hidden;
+@synthesize renderType;
 
 -(void)dealloc
 {

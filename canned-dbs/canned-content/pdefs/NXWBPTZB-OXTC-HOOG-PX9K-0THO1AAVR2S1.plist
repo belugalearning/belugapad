@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>MASTERY</key>
+	<true/>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Place the bubble on {$x*$int}</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>count on from 0 to a multiple of 2, 3 or 5.</string>
+	<key>TOOL_KEY</key>
+	<string>NLine</string>
+	<key>START_VALUE</key>
+	<string>0</string>
+	<key>MIN_VALUE</key>
+	<string>0</string>
+	<key>MAX_VALUE</key>
+	<string>120</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>REJECT_MODE</key>
+	<integer>0</integer>
+	<key>EVAL_TARGET</key>
+	<string>{$x*$int}</string>
+	<key>HIDE_ALL_NUMBERS</key>
+	<true/>
+	<key>HIDE_ALL_NOTCHES</key>
+	<false/>
+	<key>HIDE_START_NUMBER</key>
+	<false/>
+	<key>HIDE_END_NUMBER</key>
+	<false/>
+	<key>HIDE_START_NOTCH</key>
+	<false/>
+	<key>HIDE_END_NOTCH</key>
+	<false/>
+	<key>SHOW_NUMBERS_AT_INTERVALS</key>
+	<array>
+		<string>{5*$int}</string>
+	</array>
+	<key>DISABLE_SNAPPING_TO_NOTCH</key>
+	<false/>
+	<key>EVAL_PLUS_MINUS_THRESHOLD</key>
+	<integer>0</integer>
+	<key>SEGMENT_VALUE</key>
+	<string>{$int}</string>
+	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
+	<array>
+		<string>10</string>
+	</array>
+	<key>RENDER_STITCHES_AT_INTERVAL</key>
+	<integer>0</integer>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>15</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$int</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>2</string>
+				<string>3</string>
+				<string>5</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

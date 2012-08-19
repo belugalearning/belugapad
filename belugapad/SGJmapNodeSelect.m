@@ -173,7 +173,7 @@
             [signSprite addChild:title];
         }
         
-        [gameWorld.Blackboard.RenderLayer addChild:signSprite];
+        [gameWorld.Blackboard.RenderLayer addChild:signSprite z:3];
     }
     
     [signSprite setOpacity:255];

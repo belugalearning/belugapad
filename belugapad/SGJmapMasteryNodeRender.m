@@ -30,15 +30,6 @@ static int shadowSteps=5;
 
 @end
 
-@interface MasteryDrawNode : CCLayer
-{
-    SGJmapMasteryNodeRender *renderParent;
-}
-
--(MasteryDrawNode*)initWithParent:(SGJmapMasteryNodeRender*)masteryNodeRender;
-
-@end
-
 @implementation SGJmapMasteryNodeRender
 
 @synthesize ParentGO, sortedChildren, allPerimPoints, scaledPerimPoints, zoomedOut;
@@ -147,24 +138,6 @@ static int shadowSteps=5;
 
 -(void)readyRender
 {
-    if(ParentGO.EnabledAndComplete)
-    {
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-complete.png"];
-    }
-    else
-    {
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-incomplete.png"];        
-    }
-    [nodeSprite setPosition:[BLMath AddVector:ParentGO.Position toVector:ccp(0, 50)]];
-    [nodeSprite setVisible:ParentGO.Visible];
-    if(ParentGO.Disabled) [nodeSprite setOpacity:100];
-    [ParentGO.RenderBatch addChild:nodeSprite];
-    
-    labelSprite=[CCLabelTTF labelWithString:ParentGO.UserVisibleString fontName:@"Helvetica" fontSize:14.0f];
-    [labelSprite setPosition:ccpAdd(ccp(0, -40), ParentGO.Position)];
-    [labelSprite setVisible:ParentGO.Visible];
-    if(ParentGO.Disabled) [labelSprite setOpacity:100];
-    [ParentGO.RenderBatch.parent addChild:labelSprite];
     
     sortedChildren=[[NSMutableArray alloc] init];
  
@@ -186,8 +159,8 @@ static int shadowSteps=5;
         CGPoint newPos=[BLMath AddVector:[BLMath ProjectMovementWithX:0 andY:startLength forRotation:angleInRange] toVector:ParentGO.Position];
         prnode.Position=newPos;
         
-        NSLog(@"parentGO.pos %@ prnode pos %@", NSStringFromCGPoint(ParentGO.Position), NSStringFromCGPoint(prnode.Position));
-        NSLog(@"diff is %@, startAngle %f, startLength %f, angleInRange %f, newPos %@", NSStringFromCGPoint(diff), startAngle, startLength, angleInRange, NSStringFromCGPoint(newPos));
+//        NSLog(@"parentGO.pos %@ prnode pos %@", NSStringFromCGPoint(ParentGO.Position), NSStringFromCGPoint(prnode.Position));
+//        NSLog(@"diff is %@, startAngle %f, startLength %f, angleInRange %f, newPos %@", NSStringFromCGPoint(diff), startAngle, startLength, angleInRange, NSStringFromCGPoint(newPos));
     }
     
     // ------------------------------------------------------------------------------------------------------
@@ -420,6 +393,46 @@ static int shadowSteps=5;
     PRFilledPolygon *poly=[PRFilledPolygon filledPolygonWithPoints:texturePoints andTexture:[[CCTextureCache sharedTextureCache] textureForKey:BUNDLE_FULL_PATH(file)]];
     
     [ParentGO.RenderBatch.parent addChild:poly];
+    
+    if(ParentGO.EnabledAndComplete)
+    {
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-complete.png"];
+    }
+    else
+    {
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-incomplete.png"];
+    }
+    [nodeSprite setPosition:[BLMath AddVector:ParentGO.Position toVector:ccp(0, 0)]];
+    [nodeSprite setVisible:ParentGO.Visible];
+    if(ParentGO.Disabled) [nodeSprite setOpacity:100];
+    [ParentGO.RenderBatch addChild:nodeSprite];
+    
+    CGPoint labelCentre=ccpAdd(ccp(0,60), ParentGO.Position);
+    
+    labelSprite=[CCLabelTTF labelWithString:[ParentGO.UserVisibleString uppercaseString] fontName:@"Source Sans Pro" fontSize:14.0f];
+    [labelSprite setPosition:ccpAdd(labelCentre, ccp(0, 4))];
+    [labelSprite setVisible:ParentGO.Visible];
+    if(ParentGO.Disabled) [labelSprite setOpacity:100];
+    
+    [ParentGO.RenderBatch.parent addChild:labelSprite z:2];
+    
+    //left end
+    CCSprite *lend=[CCSprite spriteWithSpriteFrameName:@"sign-left.png"];
+    CGPoint loffset=ccp(-labelSprite.contentSize.width / 2.0f - 6.0f, 0);
+    [lend setPosition:ccpAdd(labelCentre, loffset)];
+    [ParentGO.RenderBatch addChild:lend];
+    
+    //mid
+    CCSprite *mid=[CCSprite spriteWithSpriteFrameName:@"sign-middle.png"];
+    [mid setScaleX: labelSprite.contentSize.width / mid.contentSize.width];
+    [mid setPosition:labelCentre];
+    [ParentGO.RenderBatch addChild:mid];
+    
+    //right end
+    CCSprite *rend=[CCSprite spriteWithSpriteFrameName:@"sign-right.png"];
+    CGPoint roffset=ccp(labelSprite.contentSize.width / 2.0f + 6.0f, 0);
+    [rend setPosition:ccpAdd(labelCentre, roffset)];
+    [ParentGO.RenderBatch addChild:rend];
     
     //=======================================================================================
     

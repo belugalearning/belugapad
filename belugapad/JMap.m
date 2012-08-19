@@ -212,11 +212,6 @@ typedef enum {
     
     gw.Blackboard.RenderLayer=mapLayer;
     
-    //setup render batch for nodes
-    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.plist")];
-    nodeRenderBatch=[CCSpriteBatchNode batchNodeWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.png")];
-    [mapLayer addChild:nodeRenderBatch];
-    
 }
 
 -(void)populateImageCache
@@ -329,10 +324,22 @@ typedef enum {
         [mapLayer setPosition:kStartMapPos];        
 
     [self addChild:mapLayer z:1];
+    
+    //setup render batch for nodes
+    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.plist")];
+    nodeRenderBatch=[CCSpriteBatchNode batchNodeWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.png")];
+    
+    [mapLayer addChild:nodeRenderBatch z:2];
 
     //fore layer
     foreLayer=[[CCLayer alloc] init];
     [self addChild:foreLayer z:1];
+    
+    //ui layer elements -- top bar etc
+    CCLayer *topbar=[CCLayerGradient layerWithColor:ccc4(0, 0, 0, 200) fadingTo:ccc4(0, 0, 0, 160) alongVector:ccp(0, 70)];
+    [topbar setContentSize:CGSizeMake(2*cx, 70)];
+    [topbar setPosition:ccp(0, (2*cy)-70)];
+    [foreLayer addChild:topbar];
     
 }
 
@@ -611,7 +618,7 @@ typedef enum {
     if(setUnderwaterLastMapPos)
     {
         CGPoint posDiff=[BLMath SubtractVector:underwaterLastMapPos from:mapLayer.position];
-        posDiff=[BLMath MultiplyVector:posDiff byScalar:0.9f];
+        posDiff=[BLMath MultiplyVector:posDiff byScalar:0.2f];
         [underwaterLayer setPosition:[BLMath AddVector:posDiff toVector:underwaterLayer.position]];
     }
     

@@ -53,6 +53,7 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>LucidaGrande.ttc</string>
+		<string>SourceSansPro-Bold.ttf</string>
 	</array>
 	<key>UIPrerenderedIcon</key>
 	<true/>

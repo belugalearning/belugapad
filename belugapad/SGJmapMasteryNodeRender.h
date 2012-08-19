@@ -40,3 +40,13 @@
 -(void)setup;
 
 @end
+
+
+@interface MasteryDrawNode : CCLayer
+{
+    SGJmapMasteryNodeRender *renderParent;
+}
+
+-(MasteryDrawNode*)initWithParent:(SGJmapMasteryNodeRender*)masteryNodeRender;
+
+@end

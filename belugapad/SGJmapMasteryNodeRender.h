@@ -21,12 +21,20 @@
     
     CGPoint *allPerimPoints;
     CGPoint *scaledPerimPoints;
+    NSMutableArray *texturePoints;
+    
     ccColor4B stepColours[10];
     
     BOOL zoomedOut;
     
     ccColor4B currentCol;
 }
+
+@property (readonly) SGJmapMasteryNode *ParentGO;
+@property (readonly) NSMutableArray *sortedChildren;
+@property CGPoint *allPerimPoints;
+@property CGPoint *scaledPerimPoints;
+@property BOOL zoomedOut;
 
 -(void)draw:(int)z;
 -(void)setup;

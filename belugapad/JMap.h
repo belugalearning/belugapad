@@ -14,10 +14,16 @@
 {
     float cx, cy, lx, ly;
     
+    
     //Daemon *daemon;
+    
+    CCLayer *underwaterLayer;
+    CGPoint underwaterLastMapPos;
+    BOOL setUnderwaterLastMapPos;
     
     CCLayer *mapLayer;
     CCLayer *foreLayer;
+    
     
     CGPoint lastTouch;
     BOOL isDragging;

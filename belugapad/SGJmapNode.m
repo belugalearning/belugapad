@@ -32,7 +32,7 @@
     if(self=[super initWithGameWorld:aGameWorld])
     {
         self.RenderBatch=aRenderBatch;
-        self.Position=aPosition;
+        Position=aPosition;
         self.Selected=NO;
         self.Visible=NO;
         
@@ -60,6 +60,12 @@
     [self.NodeRenderComponent doUpdate:delta];
     [self.ProximityEvalComponent doUpdate:delta];
     [self.NodeSelectComponent doUpdate:delta];
+}
+
+-(void)setPosition:(CGPoint)aPosition
+{
+    Position=aPosition;
+    [NodeRenderComponent updatePosition:Position];
 }
 
 -(void)draw:(int)z

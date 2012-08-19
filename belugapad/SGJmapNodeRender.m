@@ -61,6 +61,11 @@
 
 }
 
+-(void)updatePosition:(CGPoint)pos
+{
+    [nodeSprite setPosition:pos];
+}
+
 -(void)setup
 {
     if(((SGJmapNode*)ParentGO).EnabledAndComplete)

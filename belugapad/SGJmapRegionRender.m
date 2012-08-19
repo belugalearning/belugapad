@@ -58,6 +58,9 @@
 
 -(void)readyRender
 {
+    //disabling for the moment
+    return;
+    
     //NSLog(@"ready to render region with %d mastery children", ParentGO.MasteryNodes.count);
     
     //===== get my position =============================================================
@@ -218,6 +221,9 @@
 
 -(void)draw:(int)z
 {
+    //disabling for the moment
+    return;
+    
     if(z==0)
     {
         CGPoint myWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];

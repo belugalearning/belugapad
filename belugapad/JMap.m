@@ -262,15 +262,15 @@ typedef enum {
     // position map so that bottom-most included node in view, bottom-left
     if (!contentService.resetPositionAfterTH)
     {
-        CGPoint mappos = ccp(NSIntegerMax, NSIntegerMax);
+        CGPoint p = ccp(NSIntegerMax, NSIntegerMax);
         for (id go in [gw AllGameObjects]) {
             if([go isKindOfClass:[SGJmapMasteryNode class]])
             {
                 CGPoint mnpos = ((SGJmapMasteryNode*)go).Position;
-                if (mnpos.y < mappos.y || (mnpos.y == mappos.y && mnpos.x < mappos.x)) mappos = mnpos;
+                if (mnpos.y < p.y || (mnpos.y == p.y && mnpos.x < p.x)) p = mnpos;
             }
         }
-        if (mappos.y != NSIntegerMax) [mapLayer setPosition:ccp(300-mappos.x, 300-mappos.y)];
+        if (p.y != NSIntegerMax) [mapLayer setPosition:ccp(300-p.x, 300-p.y)]; // offset to make most of node visible
     }
     
 //    //reposition if previous node

@@ -21,6 +21,7 @@
 @synthesize MountedObject;
 @synthesize Hidden;
 @synthesize mySprite;
+@synthesize cageType;
 
 -(void)dealloc
 {

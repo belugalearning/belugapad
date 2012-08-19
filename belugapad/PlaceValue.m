@@ -94,6 +94,10 @@ static float kTimeToCageShake=7.0f;
         
         gw.Blackboard.inProblemSetup = NO;
         
+        for (int i=0;i<numberOfColumns;i++)
+        {
+            [self setGridOpacity:i toOpacity:127];
+        }
     }
     
     return self;
@@ -251,7 +255,15 @@ static float kTimeToCageShake=7.0f;
         else currentColumnRows = rows;
         
         // check whether this row is showing multiple block facilities
-        if([[multipleBlockPickup objectForKey:currentColumnValueKey]boolValue] || showMultipleControls)showMultipleDragging=YES;
+        if([[multipleBlockPickup objectForKey:currentColumnValueKey]boolValue] || showMultipleControls) {
+            showMultipleDragging=YES;
+            posCageSprite=BUNDLE_FULL_PATH(@"/images/placevalue/cage-variable.png");
+        }
+        else
+        {
+            showMultipleDragging=NO;
+            posCageSprite=BUNDLE_FULL_PATH(@"/images/placevalue/cage-single.png");
+        }
 
         CGPoint thisColumnOrigin = ccp(-((ropeWidth*ropesforColumn)/2.0f)+(ropeWidth/2.0f)+(i*(kPropXColumnSpacing*lx)), ly*kPropYColumnOrigin);
 
@@ -278,6 +290,12 @@ static float kTimeToCageShake=7.0f;
                 c.PosX=containerOrigin.x;
                 c.PosY=containerOrigin.y;
                 c.myRow=iRow;
+                
+                if(c.myRow==0)
+                    c.renderType=1;
+                else if(c.myRow=currentColumnRopes-1)
+                    c.renderType=2;
+                
                 c.myCol=i;
                 c.myRope=iRope;
                 c.ColumnValue=[[currentColumnInfo objectForKey:COL_VALUE] floatValue];
@@ -389,24 +407,30 @@ static float kTimeToCageShake=7.0f;
             
             [blocksToCreate addObject:[NSNumber numberWithInt:defaultBlocksToMake]];
             
-            CCSprite *minusSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/minus40.png")];
-            CCSprite *posiSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/plus40.png")];
+            //CCSprite *minusSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/minus40.png")];
+            //CCSprite *posiSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/plus40.png")];
             CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", defaultBlocksToMake] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
             
-            float PosX=i*(kPropXColumnSpacing*lx)-80;
-            float PosY=ly*kCageYOrigin;
+            float PosX=i*(kPropXColumnSpacing*lx)-120;
+            float PosY=(ly*kCageYOrigin)-41;
             
-            [minusSprite setPosition:ccp(PosX,PosY-25)];
-            [posiSprite setPosition:ccp(PosX,PosY+25)];
-            [label setPosition:ccp(PosX-40,PosY)];
+            CGRect minus=CGRectMake(PosX, PosY, 70, 82);
+            CGRect plus=CGRectMake(PosX+170, PosY, 70, 82);
             
-            [multipleMinusSprites addObject:minusSprite];
-            [multiplePlusSprites addObject:posiSprite];
+            //[minusSprite setPosition:ccp(PosX,PosY-25)];
+            //[posiSprite setPosition:ccp(PosX,PosY+25)];
+            [label setPosition:ccp(PosX+120,PosY+61)];
+            
+            [multipleMinusSprites addObject:[NSValue valueWithCGRect:minus]];
+            [multiplePlusSprites addObject:[NSValue valueWithCGRect:plus]];
             [multipleLabels addObject:label];
+            [label setTag:3];
+            [label setOpacity:0];
+            [label setColor:ccc3(0,0,0)];
             
-            [renderLayer addChild:minusSprite];
-            [renderLayer addChild:posiSprite];
-            [renderLayer addChild:label];
+            //[renderLayer addChild:minusSprite];
+            //[renderLayer addChild:posiSprite];
+            [renderLayer addChild:label z:100];
             
         }
         else {
@@ -415,16 +439,14 @@ static float kTimeToCageShake=7.0f;
                 int defaultBlocksToMake=1;
                 [blocksToCreate addObject:[NSNumber numberWithInt:defaultBlocksToMake]];
 
-//                CCSprite *minusSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/minus40.png")];
-//                CCSprite *posiSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/plus40.png")];
-//                CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", defaultBlocksToMake] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-                
-                CCSprite *minusSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/minus40.png")];;
-                CCSprite *posiSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/plus40.png")];;
+                CGRect minus=CGRectZero;
+                CGRect plus=CGRectZero;
+
                 CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", defaultBlocksToMake] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
                 
-                [multipleMinusSprites addObject:minusSprite];
-                [multiplePlusSprites addObject:posiSprite];
+                [multipleMinusSprites addObject:[NSValue valueWithCGRect:minus]];
+                [multiplePlusSprites addObject:[NSValue valueWithCGRect:plus]];
+                
                 [multipleLabels addObject:label];
             }
         }
@@ -641,7 +663,7 @@ static float kTimeToCageShake=7.0f;
     // are there any custom cage sprites defined?
     if([[pdef objectForKey:CAGE_SPRITES] objectForKey:POS_CAGE])
         posCageSprite = [NSString stringWithFormat:@"%@", BUNDLE_FULL_PATH([[pdef objectForKey:CAGE_SPRITES] objectForKey:POS_CAGE])];
-    else posCageSprite=BUNDLE_FULL_PATH(@"/images/placevalue/cage-pos.png");
+    else posCageSprite=BUNDLE_FULL_PATH(@"/images/placevalue/cage-single.png");
             
     [posCageSprite retain];
     
@@ -1291,6 +1313,26 @@ static float kTimeToCageShake=7.0f;
     return [self doTransitionWithIncrement:1];
 }
 
+-(void)setGridOpacity:(GLbyte)toThisOpacity
+{
+    [self setGridOpacity:currentColumnIndex toOpacity:toThisOpacity];
+}
+
+-(void)setGridOpacity:(int)thisGrid toOpacity:(GLbyte)toThisOpacity
+{
+    for (int i=0; i<[[gw.Blackboard.AllStores objectAtIndex:thisGrid]count]; i++)
+    {
+        for(int o=0; o<[[[gw.Blackboard.AllStores objectAtIndex:thisGrid] objectAtIndex:i]count]; o++)
+        {
+            
+            DWPlaceValueBlockGameObject *goC = [[[gw.Blackboard.AllStores objectAtIndex:thisGrid] objectAtIndex:(i)] objectAtIndex:o];
+            CCSprite *mySprite=goC.mySprite;
+            [mySprite setOpacity:toThisOpacity];
+        }
+    }
+    
+}
+
 -(void)tintGridColour:(ccColor3B)toThisColour
 {
     [self tintGridColour:currentColumnIndex toColour:toThisColour];
@@ -1426,7 +1468,7 @@ static float kTimeToCageShake=7.0f;
     {
         
         DWPlaceValueBlockGameObject *pickupObject=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
-        
+                
         BOOL isCage;
         
         if([pickupObject.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])isCage=YES;
@@ -1462,6 +1504,8 @@ static float kTimeToCageShake=7.0f;
         {
             [pickupObjects addObject:pickupObject];
             [[gw Blackboard].PickupObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
+//            [pickupObject handleMessage:kDWunsetMount];
+            //[pickupObject.Mount handleMessage:kDWunsetMountedObject];
         }
         
         float objValue=pickupObject.ObjectValue;
@@ -1523,6 +1567,7 @@ static float kTimeToCageShake=7.0f;
         DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
         // first check for a valid place to drop
         ccColor3B currentColour = ccc3(0,0,0);
+        GLbyte currentOpacity=127;
         
         gw.Blackboard.TestTouchLocation=location;
         
@@ -1541,18 +1586,23 @@ static float kTimeToCageShake=7.0f;
             if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
             {
                 currentColour=ccc3(0,255,0);
+                currentOpacity=255;
             }
             if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
             {
                 currentColour=ccc3(255,255,255);
+                currentOpacity=127;
             }
         }
         else {
             
             currentColour=ccc3(255,255,255);
+            currentOpacity=127;
         }
 
-        [self tintGridColour:currentColour];
+//        [self tintGridColour:currentColour];
+        
+        [self setGridOpacity:currentOpacity];
         
         //gw.Blackboard.DropObject = nil;
         
@@ -1580,15 +1630,18 @@ static float kTimeToCageShake=7.0f;
                 inCondenseArea=YES;
 //                [condensePanel setVisible:YES];
                 currentColour=ccc3(255,255,0);
+                currentOpacity=255;
             }
             else
             {
                 inCondenseArea=NO;
 //                [condensePanel setVisible:NO];
                 currentColour=ccc3(255,255,255);
+                currentOpacity=127;
             }
             if(currentColumnIndex-1>0)
-                [self tintGridColour:currentColumnIndex-1 toColour:currentColour];
+                [self setGridOpacity:currentColumnIndex-1 toOpacity:currentOpacity];
+//                [self tintGridColour:currentColumnIndex-1 toColour:currentColour];
             
             // when we're moving several blocks at once
             for(int go=0;go<gw.Blackboard.SelectedObjects.count;go++)
@@ -1624,15 +1677,18 @@ static float kTimeToCageShake=7.0f;
                 //[mulchPanel setVisible:YES];
                 
                 currentColour=ccc3(255,255,0);
+                currentOpacity=255;
             }
             else
             {
                 inMulchArea=NO;
                 //[mulchPanel setVisible:NO];
                 currentColour=ccc3(255,255,255);
+                currentOpacity=127;
             }
             if(currentColumnIndex+1<numberOfColumns)
-                [self tintGridColour:currentColumnIndex+1 toColour:currentColour];
+//                [self tintGridColour:currentColumnIndex+1 toColour:currentColour];
+                [self setGridOpacity:currentColumnIndex+1 toOpacity:currentOpacity];
             
             // if their finger moved too much, we know we can update the sprite position
             if(!potentialTap)
@@ -1680,8 +1736,9 @@ static float kTimeToCageShake=7.0f;
     
     for(int i=0;i<[multiplePlusSprites count];i++)
     {
-        CCSprite *s=[multiplePlusSprites objectAtIndex:i];
-        if(CGRectContainsPoint(s.boundingBox, [renderLayer convertToNodeSpace:location]))
+        CGRect boundingBox=[[multiplePlusSprites objectAtIndex:i]CGRectValue];
+        //CCSprite *s=[multiplePlusSprites objectAtIndex:i];
+        if(CGRectContainsPoint(boundingBox, [renderLayer convertToNodeSpace:location]))
         {
             int curNum=[[blocksToCreate objectAtIndex:i]intValue];
             curNum++;
@@ -1695,8 +1752,9 @@ static float kTimeToCageShake=7.0f;
     
     for(int i=0;i<[multipleMinusSprites count];i++)
     {
-        CCSprite *s=[multipleMinusSprites objectAtIndex:i];
-        if(CGRectContainsPoint(s.boundingBox, [renderLayer convertToNodeSpace:location]))
+        CGRect boundingBox=[[multipleMinusSprites objectAtIndex:i]CGRectValue];
+        //CCSprite *s=[multipleMinusSprites objectAtIndex:i];
+        if(CGRectContainsPoint(boundingBox, [renderLayer convertToNodeSpace:location]))
         {
             int curNum=[[blocksToCreate objectAtIndex:i]intValue];
             curNum--;
@@ -1865,17 +1923,19 @@ static float kTimeToCageShake=7.0f;
                             }
                         }
                     }
-                    else
+                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && ![gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
                     {
                         // TODO: reject these things back to their mounts
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
-                            if(go==gw.Blackboard.PickupObject)
                                 [go handleMessage:kDWresetToMountPosition];
-                            else
-                                [go handleMessage:kDWresetToMountPositionAndDestroy];
-//                                [gw delayRemoveGameObject:go];
-//                                [go.mySprite removeFromParentAndCleanup:YES];
+                        }
+                    }
+                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+                    {
+                        for(DWPlaceValueBlockGameObject *go in pickupObjects){
+                        [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
+                        [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
                         }
                     }
                 }
@@ -1902,7 +1962,6 @@ static float kTimeToCageShake=7.0f;
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
                 
                 // take away the colour from the grid
-                [self tintGridColour:ccc3(255,255,255)];
                 [self problemStateChanged];
                 
             }
@@ -1917,6 +1976,12 @@ static float kTimeToCageShake=7.0f;
             [self resetPickupObjectPos];
         }
         
+    }
+    
+    for(int i=0;i<numberOfColumns;i++)
+    {
+        [self tintGridColour:i toColour:ccc3(255,255,255)];
+        [self setGridOpacity:i toOpacity:127];
     }
     
     //get any auto reset / repositions to re-evaluate

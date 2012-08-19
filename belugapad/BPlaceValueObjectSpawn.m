@@ -41,7 +41,7 @@
     block.ObjectValue=c.ObjectValue;
     block.SpriteFilename=c.SpriteFilename;
     block.PosX=c.PosX;
-    block.PosY=c.PosY;
+    block.PosY=c.PosY+20;
     
     block.PickupSprite=c.PickupSpriteFilename;
 

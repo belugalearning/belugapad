@@ -1282,7 +1282,7 @@ static float kTimeToCageShake=7.0f;
                     go.AnimateMe=NO;
                     co.MountedObject=go;
                     go.PosX=co.PosX;
-                    go.PosX=co.PosY;
+                    go.PosY=co.PosY;
 //                    [go handleMessage:kDWsetMount];
                     [co handleMessage:kDWsetMountedObject];
                     [go handleMessage:kDWupdateSprite];

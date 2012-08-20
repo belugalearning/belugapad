@@ -126,17 +126,26 @@
             
             //show play again
             CCSprite *playSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/play-button-normal.png")];
-            [playSprite setPosition:ccp(240, 30)];
+            [playSprite setPosition:ccp(signSprite.contentSize.width / 2.0f, 40)];
             [signSprite addChild:playSprite];
             
-            CCLabelTTF *playlabel=[CCLabelTTF labelWithString:@"PLAY AGAIN" fontName:@"Chango" fontSize:60.0f];
+            CCLabelTTF *playlabel=[CCLabelTTF labelWithString:@"PLAY AGAIN" fontName:@"Chango" fontSize:18.0f];
+            playlabel.position=ccp(playSprite.contentSize.width / 2.0f, playSprite.contentSize.height / 2.0f);
             [playSprite addChild:playlabel];
             
+            CCLabelTTF *score=[CCLabelTTF labelWithString:@"BEST SCORE: 96,412" dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:15.0f];
+            [score setPosition:ccp(100, 85)];
+            [score setColor:ccc3(255, 255, 255)];
+            [signSprite addChild:score];
+            
+            CCSprite *newSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ribbon-perfect.png")];
+            [newSprite setPosition:ccp(signSprite.contentSize.width - (newSprite.contentSize.width / 2.0f), (signSprite.contentSize.height - (newSprite.contentSize.height / 2.0f)))];
+            [signSprite addChild:newSprite];
             
             //days ago
-            CCLabelTTF *days=[CCLabelTTF labelWithString:@"LAST PLAYED: TODAY" dimensions:CGSizeMake(300, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:48.0f];
-            [days setPosition:ccp(165, 32)];
-            [days setColor:ccc3(150, 150, 150)];
+            CCLabelTTF *days=[CCLabelTTF labelWithString:@"LAST PLAYED: TODAY" dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:14.0f];
+            [days setPosition:ccp(100, 45)];
+            [days setColor:ccc3(200, 200, 200)];
             [signSprite addChild:days];
         }
         else {
@@ -147,27 +156,44 @@
                 signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/tooltip-base-small.png")];
             
             CCSprite *playSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/play-button-normal.png")];
-            [playSprite setPosition:ccp(240, 30)];
+            [playSprite setPosition:ccp(signSprite.contentSize.width / 2.0f, 40)];
             [signSprite addChild:playSprite];
             
             if(ParentGO.EnabledAndComplete)
             {
                 //days ago
-                CCLabelTTF *days=[CCLabelTTF labelWithString:@"LAST PLAYED: TODAY" dimensions:CGSizeMake(300, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:48.0f];
-                [days setPosition:ccp(165, 32)];
-                [days setColor:ccc3(150, 150, 150)];
+                CCLabelTTF *days=[CCLabelTTF labelWithString:@"LAST PLAYED: TODAY" dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:14.0f];
+                [days setPosition:ccp(100, 45)];
+                [days setColor:ccc3(200, 200, 200)];
                 [signSprite addChild:days];
+                
+                CCLabelTTF *playlabel=[CCLabelTTF labelWithString:@"PLAY AGAIN" fontName:@"Chango" fontSize:18.0f];
+                playlabel.position=ccp(playSprite.contentSize.width / 2.0f, playSprite.contentSize.height / 2.0f);
+                [playSprite addChild:playlabel];
+                
+                CCLabelTTF *score=[CCLabelTTF labelWithString:@"BEST SCORE: 16,024" dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:15.0f];
+                [score setPosition:ccp(100, 85)];
+                [score setColor:ccc3(255, 255, 255)];
+                [signSprite addChild:score];
+                
+                CCSprite *newSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ribbon-perfect.png")];
+                [newSprite setPosition:ccp(signSprite.contentSize.width - (newSprite.contentSize.width / 2.0f), (signSprite.contentSize.height - (newSprite.contentSize.height / 2.0f)))];
+                [signSprite addChild:newSprite];
             }
             else {
+                CCLabelTTF *playlabel=[CCLabelTTF labelWithString:@"PLAY NOW" fontName:@"Chango" fontSize:18.0f];
+                playlabel.position=ccp(playSprite.contentSize.width / 2.0f, playSprite.contentSize.height / 2.0f);
+                [playSprite addChild:playlabel];
+                
                 //new sprite
                 CCSprite *newSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ribbon-new.png")];
-                [newSprite setPosition:ccp(270, 115)];
+                [newSprite setPosition:ccp(signSprite.contentSize.width - (newSprite.contentSize.width / 2.0f) - 1, 83)];
                 [signSprite addChild:newSprite];
         
                 //days ago
-                CCLabelTTF *days=[CCLabelTTF labelWithString:@"NEVER PLAYED" dimensions:CGSizeMake(300, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:48.0f];
-                [days setPosition:ccp(165, 32)];
-                [days setColor:ccc3(150, 150, 150)];
+                CCLabelTTF *days=[CCLabelTTF labelWithString:@"NEVER PLAYED" dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:14.0f];
+                [days setPosition:ccp(100, 45)];
+                [days setColor:ccc3(255, 255, 255)];
                 [signSprite addChild:days];
             }
         }
@@ -177,7 +203,7 @@
     
     [signSprite setOpacity:255];
     [signSprite setScale:0];
-    [signSprite setPosition:ParentGO.Position];
+    [signSprite setPosition:[BLMath AddVector:ccp(0, 30 + (signSprite.contentSize.height / 2.0f)) toVector:ParentGO.Position]];
     
     [signSprite runAction:[InteractionFeedback enlargeTo1xAction]];
     

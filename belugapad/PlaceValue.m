@@ -1186,8 +1186,9 @@ static float kTimeToCageShake=7.0f;
     BOOL isNegativeNumber=NO;
     int tranCount=1;
     if(incr>0) tranCount=10;
+    currentColumnIndex+=incr;
     int space=[self freeSpacesOnGrid:currentColumnIndex+incr];
-    int colIndexToTint=0;
+
     
 //    NSLog(@"incr: %d trancount %d", incr, tranCount);
     
@@ -1217,10 +1218,7 @@ static float kTimeToCageShake=7.0f;
         [gw.Blackboard.SelectedObjects removeAllObjects];
         
     }
-    
-    colIndexToTint=currentColumnIndex;
-    //change column index
-    currentColumnIndex+=incr;
+
     gw.Blackboard.CurrentStore=[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex];
     
     //[self snapLayerToPosition];
@@ -1279,16 +1277,12 @@ static float kTimeToCageShake=7.0f;
                 if(!co.MountedObject)
                 {
                     //use this as a mount
-//                    NSLog(@"set mount to row %d col %d", r,c);
+                     NSLog(@"set mount to row %d col %d", r,c);
                     go.Mount=co;
                     go.AnimateMe=NO;
                     co.MountedObject=go;
                     [go handleMessage:kDWsetMount];
                     [co handleMessage:kDWsetMountedObject];
-                    
-                    
-                    
-                    [self tintGridColour:colIndexToTint toColour:ccc3(255,255,255)];
                     
 
                     stop=YES;
@@ -1515,11 +1509,7 @@ static float kTimeToCageShake=7.0f;
             withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:objValue] forKey:@"objValue"]];
         
         // if there's a pickup sprite defined, set the object to use it now
-        if(pickupObject.PickupSprite && !gw.Blackboard.inProblemSetup)
-        {
-            CCSprite *mySprite=pickupObject.mySprite;
-            [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(pickupObject.PickupSprite)]];
-        }
+
         gw.Blackboard.PickupOffset = location;
         // At this point we can still cancel the tap
         potentialTap = YES;
@@ -1565,6 +1555,15 @@ static float kTimeToCageShake=7.0f;
     if([gw Blackboard].PickupObject!=nil)
     {
         DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
+        
+        float distMoved=[BLMath DistanceBetween:touchStartPos and:[renderLayer convertToWorldSpace:location]];
+        
+        if(block.PickupSprite && !gw.Blackboard.inProblemSetup && distMoved>40.0f)
+        {
+            CCSprite *mySprite=block.mySprite;
+            [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(block.PickupSprite)]];
+        }
+        
         // first check for a valid place to drop
         ccColor3B currentColour = ccc3(0,0,0);
         GLbyte currentOpacity=127;

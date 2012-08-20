@@ -1494,7 +1494,6 @@ static float kTimeToCageShake=7.0f;
     // then if we get a response, do stuff
     if([gw Blackboard].PickupObject!=nil)
     {
-        
         DWPlaceValueBlockGameObject *pickupObject=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
         
         DWPlaceValueNetGameObject *netMount=nil;
@@ -1989,6 +1988,15 @@ static float kTimeToCageShake=7.0f;
                         [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
                         [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
                         }
+                    }
+                }
+                else if(gw.Blackboard.SelectedObjects.count==columnBaseValue)
+                {
+                    //reset positions of all selected objects (inc pickup object)
+                    for(DWPlaceValueBlockGameObject *b in gw.Blackboard.SelectedObjects)
+                    {
+                        [b handleMessage:kDWresetToMountPosition];
+                        [b handleMessage:kDWputdown];
                     }
                 }
                 else {

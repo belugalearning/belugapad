@@ -1187,7 +1187,7 @@ static float kTimeToCageShake=7.0f;
     int tranCount=1;
     if(incr>0) tranCount=10;
     currentColumnIndex+=incr;
-    int space=[self freeSpacesOnGrid:currentColumnIndex+incr];
+    int space=[self freeSpacesOnGrid:currentColumnIndex];
 
     
 //    NSLog(@"incr: %d trancount %d", incr, tranCount);
@@ -1257,8 +1257,8 @@ static float kTimeToCageShake=7.0f;
         if(pickupSprite)
             go.PickupSprite=pickupSprite;
         
-
         [go handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
+        
         
         BOOL stop=NO;
         
@@ -1277,14 +1277,15 @@ static float kTimeToCageShake=7.0f;
                 if(!co.MountedObject)
                 {
                     //use this as a mount
-                     NSLog(@"set mount to row %d col %d", r,c);
+                     NSLog(@"set mount colindex %d to row %d col %d", currentColumnIndex, r,c);
                     go.Mount=co;
                     go.AnimateMe=NO;
                     co.MountedObject=go;
-                    [go handleMessage:kDWsetMount];
+                    go.PosX=co.PosX;
+                    go.PosX=co.PosY;
+//                    [go handleMessage:kDWsetMount];
                     [co handleMessage:kDWsetMountedObject];
-                    
-
+                    [go handleMessage:kDWupdateSprite];
                     stop=YES;
                 }
             }

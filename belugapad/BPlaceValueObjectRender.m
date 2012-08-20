@@ -212,7 +212,7 @@
         x=n.PosX;
         y=n.PosY;
         gameObject=n.MountedObject;
-        [n handleMessage:kDWresetPositionEval];
+        //[n handleMessage:kDWresetPositionEval];
     }
         
     

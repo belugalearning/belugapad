@@ -33,6 +33,8 @@
 			<integer>2</integer>
 			<key>SHOW_CURRENT_FRACTIONS</key>
 			<false/>
+			<key>MARKER_START_POSITION</key>
+			<string>10</string>
 		</dict>
 	</array>
 	<key>SOLUTIONS</key>

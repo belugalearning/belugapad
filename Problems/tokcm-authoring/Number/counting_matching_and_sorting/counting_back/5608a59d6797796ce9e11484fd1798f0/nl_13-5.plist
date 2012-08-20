@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>MASTERY</key>
+	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Starting at 13, count back to 5.</string>
 	<key>INTERNAL_DESCRIPTION</key>
@@ -29,7 +31,9 @@
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
-	<array/>
+	<array>
+		<string>1</string>
+	</array>
 	<key>HIDE_START_NUMBER</key>
 	<false/>
 	<key>HIDE_END_NUMBER</key>

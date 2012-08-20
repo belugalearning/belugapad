@@ -65,7 +65,9 @@
 			<key>POS_X</key>
 			<integer>350</integer>
 			<key>POS_Y</key>
-			<integer>350</integer>
+			<integer>300</integer>
+			<key>LABEL</key>
+			<string>Bag 4</string>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
@@ -74,14 +76,8 @@
 			<integer>350</integer>
 			<key>POS_Y</key>
 			<integer>400</integer>
-		</dict>
-		<dict>
-			<key>QUANTITY</key>
-			<integer>7</integer>
-			<key>POS_X</key>
-			<integer>350</integer>
-			<key>POS_Y</key>
-			<integer>450</integer>
+			<key>LABEL</key>
+			<string>Bag 3</string>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
@@ -90,6 +86,18 @@
 			<integer>350</integer>
 			<key>POS_Y</key>
 			<integer>500</integer>
+			<key>LABEL</key>
+			<string>Bag 2</string>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>7</integer>
+			<key>POS_X</key>
+			<integer>350</integer>
+			<key>POS_Y</key>
+			<integer>600</integer>
+			<key>LABEL</key>
+			<string>Bag 1 </string>
 		</dict>
 	</array>
 	<key>HOST_BACKGROUND_IMAGE</key>
@@ -114,17 +122,17 @@
 				<key>META_ANSWER_TEXT</key>
 				<string>12</string>
 				<key>META_ANSWER_VALUE</key>
-				<true/>
+				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>6</string>
+				<string>7</string>
 				<key>META_ANSWER_VALUE</key>
-				<false/>
+				<true/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>The number of haribos is doubled. There are now 28 haribos to share out between 4 bags. How many haribos are placed in each bag?</string>
+		<string>There are now 28 haribos to share out between 4 bags. How many haribos are placed in each bag?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

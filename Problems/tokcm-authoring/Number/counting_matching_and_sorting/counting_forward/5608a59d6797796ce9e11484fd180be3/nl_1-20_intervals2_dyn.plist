@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>MASTERY</key>
+	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Count to {$number}.</string>
 	<key>INTERNAL_DESCRIPTION</key>
@@ -11,7 +13,7 @@
 	<key>START_VALUE</key>
 	<string>1</string>
 	<key>MIN_VALUE</key>
-	<string>0</string>
+	<string>1</string>
 	<key>MAX_VALUE</key>
 	<string>26</string>
 	<key>EVAL_MODE</key>
@@ -30,7 +32,7 @@
 	<true/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
 	<array>
-		<string>4</string>
+		<string>1</string>
 	</array>
 	<key>HIDE_START_NUMBER</key>
 	<false/>

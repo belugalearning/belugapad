@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>MASTERY</key>
+	<true/>
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
@@ -72,25 +74,25 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>4x2=8</string>
+				<string>4 x 2 = 8</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>4+2=6</string>
+				<string>4 + 2 = 6</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>4x4=16</string>
+				<string>4 x 4 = 16</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>4+4=8</string>
+				<string>4 + 4 = 8</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>

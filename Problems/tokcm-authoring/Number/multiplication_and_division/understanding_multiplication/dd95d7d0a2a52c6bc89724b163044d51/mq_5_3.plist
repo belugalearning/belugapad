@@ -13,7 +13,7 @@
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
-		<string>Yes!! 15= 5 x 3 = 3+3+3+3+3 !!</string>
+		<string>well done!!</string>
 		<key>META_QUESTION_EVAL_MODE</key>
 		<integer>0</integer>
 		<key>META_QUESTION_ANSWER_MODE</key>
@@ -22,31 +22,31 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>5+5=10</string>
+				<string>5 + 5</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>5-3=2</string>
+				<string>5 - 3</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>3+5=8</string>
+				<string>3 + 5</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>5x3=15</string>
+				<string>5 x 3</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>3+3+3+3+3 is equivalent to which of the following?</string>
+		<string>3 + 3 + 3 + 3 + 3 is equivalent to which of the following?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

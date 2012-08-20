@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>MASTERY</key>
+	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Starting at 8, count to 15.</string>
 	<key>INTERNAL_DESCRIPTION</key>

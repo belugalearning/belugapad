@@ -4,8 +4,10 @@
 <dict>
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
+	<key>DISTRIBUTION_EVAL_TYPE</key>
+	<integer>1</integer>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>There are 3 packs of {@item}, with 2 {@item} in each. Share the total number of items fairly between 2 people.</string>
+	<string>There are 3 packs of {@item}, with 2 {@item} in each. Share the total amount fairly between Scott and Ed.</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>INIT_OBJECTS</key>
@@ -17,6 +19,8 @@
 			<integer>450</integer>
 			<key>POS_Y</key>
 			<integer>500</integer>
+			<key>LABEL</key>
+			<string>Scott</string>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
@@ -33,12 +37,18 @@
 			<integer>450</integer>
 			<key>POS_Y</key>
 			<integer>300</integer>
+			<key>LABEL</key>
+			<string>Ed</string>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
 	<array>
-		<integer>3</integer>
-		<integer>3</integer>
+		<dict>
+			<key>Scott</key>
+			<integer>3</integer>
+			<key>Ed</key>
+			<integer>3</integer>
+		</dict>
 	</array>
 	<key>DSTRINGS</key>
 	<dict>
@@ -53,7 +63,6 @@
 				<string>crayons</string>
 				<string>coins</string>
 				<string>batteries</string>
-				<string>packs of crisps</string>
 				<string>drinks</string>
 			</array>
 		</dict>

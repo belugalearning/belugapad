@@ -1241,7 +1241,11 @@ static float kTimeToCageShake=7.0f;
         
         DWPlaceValueBlockGameObject *go=[DWPlaceValueBlockGameObject alloc];
         [gw populateAndAddGameObject:go withTemplateName:@"TplaceValueObject"];
-
+        
+        CGPoint locationToAnimateFrom=[renderLayer convertToNodeSpace:gw.Blackboard.TestTouchLocation];
+        
+        go.PosX=locationToAnimateFrom.x;
+        go.PosY=locationToAnimateFrom.y;
         
         //drop target
 
@@ -1279,10 +1283,10 @@ static float kTimeToCageShake=7.0f;
                     //use this as a mount
                      NSLog(@"set mount colindex %d to row %d col %d", currentColumnIndex, r,c);
                     go.Mount=co;
-                    go.AnimateMe=NO;
+                    go.AnimateMe=YES;
                     co.MountedObject=go;
                     go.PosX=co.PosX;
-                    go.PosX=co.PosY;
+                    go.PosY=co.PosY;
 //                    [go handleMessage:kDWsetMount];
                     [co handleMessage:kDWsetMountedObject];
                     [go handleMessage:kDWupdateSprite];

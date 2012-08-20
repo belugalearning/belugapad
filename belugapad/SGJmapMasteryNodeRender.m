@@ -411,9 +411,10 @@ static int shadowSteps=5;
     [ParentGO.RenderBatch addChild:nodeSprite];
     
     CGPoint labelCentre=ccpAdd(ccp(0,60), ParentGO.Position);
+    labelCentre=ccp((int)labelCentre.x, (int)labelCentre.y);
     
     labelSprite=[CCLabelTTF labelWithString:[ParentGO.UserVisibleString uppercaseString] fontName:@"Source Sans Pro" fontSize:14.0f];
-    [labelSprite setPosition:ccpAdd(labelCentre, ccp(0, 4))];
+    [labelSprite setPosition:ccpAdd(labelCentre, ccp(-2, 4))];
     [labelSprite setVisible:ParentGO.Visible];
     if(ParentGO.Disabled) [labelSprite setOpacity:100];
     
@@ -424,12 +425,21 @@ static int shadowSteps=5;
     CGPoint loffset=ccp(-labelSprite.contentSize.width / 2.0f - 6.0f, 0);
     [lend setPosition:ccpAdd(labelCentre, loffset)];
     [ParentGO.RenderBatch addChild:lend];
+
+//    CCSprite *mid=[CCSprite spriteWithSpriteFrameName:@"sign-middle.png"];
+//    [mid setScaleX: labelSprite.contentSize.width / mid.contentSize.width];
+//    [mid setPosition: labelCentre];
+//    [ParentGO.RenderBatch addChild:mid];
     
     //mid
-    CCSprite *mid=[CCSprite spriteWithSpriteFrameName:@"sign-middle.png"];
-    [mid setScaleX: labelSprite.contentSize.width / mid.contentSize.width];
-    [mid setPosition:labelCentre];
-    [ParentGO.RenderBatch addChild:mid];
+    for (int i=0; i<labelSprite.contentSize.width+3; i++)
+    {
+        CCSprite *mid=[CCSprite spriteWithSpriteFrameName:@"sign-middle.png"];
+        //[mid setScaleX: labelSprite.contentSize.width / mid.contentSize.width];
+        [mid setPosition:ccp((labelCentre.x - (labelSprite.contentSize.width / 2.0f)) + i, labelCentre.y)];
+        [ParentGO.RenderBatch addChild:mid];
+    }
+
     
     //right end
     CCSprite *rend=[CCSprite spriteWithSpriteFrameName:@"sign-right.png"];

@@ -1497,8 +1497,19 @@ static float kTimeToCageShake=7.0f;
         
         DWPlaceValueBlockGameObject *pickupObject=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
         
-        [pickupObject handleMessage:kDWunsetMount];
-                
+        DWPlaceValueNetGameObject *netMount=nil;
+        
+        if([pickupObject.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
+        {
+            netMount=(DWPlaceValueNetGameObject*)pickupObject.Mount;
+            netMount.MountedObject=nil;
+            pickupObject.Mount=nil;
+        }
+        else if([pickupObject.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
+        {
+            [pickupObject.Mount handleMessage:kDWsetupStuff];
+        }
+        
         BOOL isCage;
         
         if([pickupObject.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])isCage=YES;
@@ -1767,6 +1778,8 @@ static float kTimeToCageShake=7.0f;
     
     inBlockTransition=NO;
     
+    BOOL doNotResetToMount=NO;
+    
     for(int i=0;i<[multiplePlusSprites count];i++)
     {
         CGRect boundingBox=[[multiplePlusSprites objectAtIndex:i]CGRectValue];
@@ -1871,8 +1884,10 @@ static float kTimeToCageShake=7.0f;
                 isCage=NO;
 
             if((!block.Selected && !isCage) || (block.Selected && allowDeselect && !isCage))
+            {
                 [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
-            
+                doNotResetToMount=YES;
+            }
         }
         
         // switch colour if the base value is selected
@@ -1920,6 +1935,10 @@ static float kTimeToCageShake=7.0f;
             }
             if([gw Blackboard].DropObject != nil)
             {
+                DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
+                
+                b.Mount=gw.Blackboard.DropObject;
+                
                 
                 // TODO: check the isCage returns correct results - will checking dropobject return?
                 BOOL isCage;
@@ -1931,8 +1950,8 @@ static float kTimeToCageShake=7.0f;
                 {
                     //deselect the object if selected
                     // check whether it's selected and we can deselect - or that it's deselected
-                    DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
-                    if(block.Selected)
+                
+                    if(b.Selected)
                         [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
                 }
                 
@@ -2000,13 +2019,13 @@ static float kTimeToCageShake=7.0f;
             }
             else
             {
-                [self resetPickupObjectPos];
+                if(!doNotResetToMount)[self resetPickupObjectPos];
             }
             [gw Blackboard].PickupObject = nil;
         }
         
         else {
-            [self resetPickupObjectPos];
+            if(!doNotResetToMount)[self resetPickupObjectPos];
         }
         
     }

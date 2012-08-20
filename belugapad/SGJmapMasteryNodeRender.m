@@ -238,8 +238,10 @@ static int shadowSteps=5;
     }
     avgL=avgL / (float)sortedChildren.count;
     
+    float seekr=110.0f;
+    
     NSMutableArray *newChildren=[[NSMutableArray alloc] init];
-    for(int r=0; r<360; r+=4)
+    for(int r=0; r<360; r+=2)
     {
         float newL=avgL;
         
@@ -250,13 +252,13 @@ static int shadowSteps=5;
             float inspr=[BLMath angleForVector:inspd];
             
             float rdiff=fabsf(inspr-r);
-            if(inspr<50 && r>310) rdiff=fabsf((inspr+360) - r);
-            if(r<50 && inspr>310) rdiff=fabsf(inspr - (360+r));
+            if(inspr<seekr && r>(360-seekr)) rdiff=fabsf((inspr+360) - r);
+            if(r<seekr && inspr>(360-seekr)) rdiff=fabsf(inspr - (360+r));
 
-            if(rdiff<50.0)
+            if(rdiff<seekr)
             {
                 float inspl=[BLMath LengthOfVector:inspd];
-                newL=newL+((inspl-newL) * ((50-rdiff) / 50.0f));
+                newL=newL+((inspl-newL) * ((seekr-rdiff) / seekr));
             }
         }
         

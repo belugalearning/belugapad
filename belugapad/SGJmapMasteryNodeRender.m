@@ -231,24 +231,46 @@ static int shadowSteps=5;
     //[self insertSpacerPointsWithRotGap:10.0f andScale:1.0f];
     
     //start smooth from avg
-//    float avgL=0.0f;
-//    for (NSValue *p in sortedChildren)
-//    {
-//        float l=[BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:[p CGPointValue]]];
-//        avgL+=l;
-//    }
-//    avgL=avgL / (float)sortedChildren.count;
-//    
-
-    //start smooth from max
     float avgL=0.0f;
     for (NSValue *p in sortedChildren)
     {
         float l=[BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:[p CGPointValue]]];
-        if(l>avgL)avgL=l;
+        avgL+=l;
     }
-    avgL=avgL*1.25f;
-    //avgL=avgL / (float)sortedChildren.count;
+    avgL=avgL / (float)sortedChildren.count;
+    
+    
+    //now extend draw positions for those past avg
+    for(int ip=0; ip<sortedChildren.count; ip++)
+    {
+        NSValue *p=[sortedChildren objectAtIndex:ip];
+        CGPoint diff=[BLMath SubtractVector:ParentGO.Position from:[p CGPointValue]];
+        float l=[BLMath LengthOfVector:diff];
+        if(l>avgL)
+        {
+            //the point is past the average, multiply it's length (for the point) by the distance over the 
+            l = l/avgL;
+            
+            //add to that an amount
+            CGPoint add=[BLMath ProjectMovementWithX:0 andY:50 forRotation:[BLMath angleForVector:diff]];
+            
+            CGPoint addedlocal=[BLMath AddVector:add toVector:diff];
+            
+            p=[NSValue valueWithCGPoint:[BLMath AddVector:ParentGO.Position toVector:addedlocal]];
+            [sortedChildren replaceObjectAtIndex:ip withObject:p];
+        }
+    }
+    
+
+//    //start smooth from max
+//    float avgL=0.0f;
+//    for (NSValue *p in sortedChildren)
+//    {
+//        float l=[BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:[p CGPointValue]]];
+//        if(l>avgL)avgL=l;
+//    }
+//    avgL=avgL*1.25f;
+//    //avgL=avgL / (float)sortedChildren.count;
     
     
     float seekr=110.0f;
@@ -271,7 +293,11 @@ static int shadowSteps=5;
             if(rdiff<seekr)
             {
                 float inspl=[BLMath LengthOfVector:inspd];
-                newL=newL+((inspl-newL) * ((seekr-rdiff) / seekr));
+                
+                float mult=((seekr-rdiff) / seekr);
+                mult *= mult;
+                
+                newL=newL+((inspl-newL) * mult);
             }
         }
         

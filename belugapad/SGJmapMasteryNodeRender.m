@@ -217,52 +217,50 @@ static int shadowSteps=5;
     
     if(sortedChildren.count==0)return;
     
+    //insert top positions?
+    [sortedChildren insertObject:[NSValue valueWithCGPoint:[BLMath AddVector:ParentGO.Position toVector:ccp(0, 90)]] atIndex:0];
+    [sortedChildren insertObject:[NSValue valueWithCGPoint:[BLMath AddVector:ParentGO.Position toVector:ccp(-40, 80)]] atIndex:0];
+    [sortedChildren insertObject:[NSValue valueWithCGPoint:[BLMath AddVector:ParentGO.Position toVector:ccp(40, 80)]] atIndex:0];
     
-    //iterate over sorted children repeatedly until we can't add any more spacers
-    BOOL looking=YES;
-    do {
-        for (int i=0; i<sortedChildren.count; i++) {
-            CGPoint thisP=[[sortedChildren objectAtIndex:i] CGPointValue];
-            float thisA=[BLMath angleForNormVector:[BLMath TruncateVector:[BLMath SubtractVector:ParentGO.Position from:thisP] toMaxLength:1.0f]];
+    //big spacers
+    [self insertSpacerPointsWithRotGap:40.0f andScale:1.25f];
+    
+    //[self insertSpacerPointsWithRotGap:10.0f andScale:1.0f];
+    
+    float avgL=0.0f;
+    for (NSValue *p in sortedChildren)
+    {
+        float l=[BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:[p CGPointValue]]];
+        avgL+=l;
+    }
+    avgL=avgL / (float)sortedChildren.count;
+    
+    NSMutableArray *newChildren=[[NSMutableArray alloc] init];
+    for(int r=0; r<360; r+=4)
+    {
+        float newL=avgL;
+        
+        //look for close rotations and adjust
+        for (NSValue *p in sortedChildren)
+        {
+            CGPoint inspd=[BLMath SubtractVector:ParentGO.Position from:[p CGPointValue]];
+            float inspr=[BLMath angleForVector:inspd];
             
-            CGPoint nextP;
-            float nextA;
-            if (i==sortedChildren.count-1) {
-                //at end node, use position of first
-                nextP=[[sortedChildren objectAtIndex:0] CGPointValue];
-                nextA=360.0f + [BLMath angleForNormVector:[BLMath TruncateVector:[BLMath SubtractVector:ParentGO.Position from:nextP] toMaxLength:1.0f]];
-            }
-            else {
-                nextP=[[sortedChildren objectAtIndex:i+1] CGPointValue];
-                nextA=[BLMath angleForNormVector:[BLMath TruncateVector:[BLMath SubtractVector:ParentGO.Position from:nextP] toMaxLength:1.0f]];
-            }
-            
-            if((nextA-thisA) > 10.0f)
+            float rdiff=fabsf(inspr-r);
+
+            if(rdiff<20.0)
             {
-                float lOfV=1.0f * [BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:thisP]];
-                float newrot=thisA + ((nextA-thisA)*0.35f);
-                //float newrot=thisA+ 50.0f;
-                
-                CGPoint newpos=[BLMath AddVector:ParentGO.Position toVector:[BLMath ProjectMovementWithX:0 andY:lOfV forRotation:newrot]];
-                
-                if(newrot>=360.0f)
-                {
-                    [sortedChildren insertObject:[NSValue valueWithCGPoint:newpos] atIndex:0];
-                }
-                else {
-                    [sortedChildren insertObject:[NSValue valueWithCGPoint:newpos] atIndex:i+1];
-                }
-                    
-                break;
-            }
-            
-            //if we got to the last node and didn't add a spacer and break, stop looking for new spacer requirements
-            if(i==sortedChildren.count-1)
-            {
-                looking=NO;    
+                float inspl=[BLMath LengthOfVector:inspd];
+                newL=newL+((inspl-newL) * ((20-rdiff) / 20.0f));
             }
         }
-    } while (looking);
+        
+        CGPoint pos=[BLMath AddVector:ParentGO.Position toVector:[BLMath ProjectMovementWithX:0 andY:newL forRotation:r]];
+        [newChildren addObject:[NSValue valueWithCGPoint:pos]];
+    }
+    
+    [sortedChildren release];
+    sortedChildren=newChildren;
     
     
     //================ calculate interior polys for drop shadow =============================
@@ -436,6 +434,64 @@ static int shadowSteps=5;
     
     //=======================================================================================
     
+}
+
+- (void)insertSpacerPointsWithRotGap:(float)rotGap andScale:(float)scale
+{
+    //iterate over sorted children repeatedly until we can't add any more spacers
+    BOOL looking=YES;
+    do {
+        for (int i=0; i<sortedChildren.count; i++) {
+            CGPoint thisP=[[sortedChildren objectAtIndex:i] CGPointValue];
+            float thisA=[BLMath angleForNormVector:[BLMath TruncateVector:[BLMath SubtractVector:ParentGO.Position from:thisP] toMaxLength:1.0f]];
+            
+            CGPoint nextP;
+            float nextA;
+            if (i==sortedChildren.count-1) {
+                //at end node, use position of first
+                nextP=[[sortedChildren objectAtIndex:0] CGPointValue];
+                nextA=360.0f + [BLMath angleForNormVector:[BLMath TruncateVector:[BLMath SubtractVector:ParentGO.Position from:nextP] toMaxLength:1.0f]];
+            }
+            else {
+                nextP=[[sortedChildren objectAtIndex:i+1] CGPointValue];
+                nextA=[BLMath angleForNormVector:[BLMath TruncateVector:[BLMath SubtractVector:ParentGO.Position from:nextP] toMaxLength:1.0f]];
+            }
+            
+            if((nextA-thisA) > rotGap)
+            {
+                float lOfThisV=[BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:thisP]];
+                float lOfNextV=[BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:nextP]];
+                
+                float rotOffset=0.5f;
+                float lOfV=(lOfThisV * rotOffset) + (lOfNextV * (1-rotOffset));
+                
+                lOfV=lOfV * scale;
+                
+                //float lOfV=scale * [BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:thisP]];
+                
+                float newrot=thisA + ((nextA-thisA)*0.35f);
+                //float newrot=thisA+ 50.0f;
+                
+                CGPoint newpos=[BLMath AddVector:ParentGO.Position toVector:[BLMath ProjectMovementWithX:0 andY:lOfV forRotation:newrot]];
+                
+                if(newrot>=360.0f)
+                {
+                    [sortedChildren insertObject:[NSValue valueWithCGPoint:newpos] atIndex:0];
+                }
+                else {
+                    [sortedChildren insertObject:[NSValue valueWithCGPoint:newpos] atIndex:i+1];
+                }
+                
+                break;
+            }
+            
+            //if we got to the last node and didn't add a spacer and break, stop looking for new spacer requirements
+            if(i==sortedChildren.count-1)
+            {
+                looking=NO;
+            }
+        }
+    } while (looking);
 }
 
 -(void)setPointScalesAt:(float)scale

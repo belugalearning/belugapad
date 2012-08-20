@@ -1505,6 +1505,20 @@ static float kTimeToCageShake=7.0f;
             netMount=(DWPlaceValueNetGameObject*)pickupObject.Mount;
             netMount.MountedObject=nil;
             pickupObject.Mount=nil;
+            
+            if(isBasePickup)
+            {
+                for(DWPlaceValueBlockGameObject *b in gw.Blackboard.SelectedObjects)
+                {
+                    DWPlaceValueNetGameObject *n=nil;
+                    if([b.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
+                    {
+                        n=(DWPlaceValueNetGameObject*)b.Mount;
+                        b.Mount=nil;
+                        n.MountedObject=nil;
+                    }
+                }
+            }
         }
         else if([pickupObject.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
         {
@@ -1997,7 +2011,13 @@ static float kTimeToCageShake=7.0f;
                     for(int igo=0; igo<gw.Blackboard.SelectedObjects.count; igo++)
                     {
                         DWGameObject *go = [[[gw Blackboard] SelectedObjects] objectAtIndex:igo];
-                        [go handleMessage:kDWresetToMountPosition];
+//                        [go handleMessage:kDWresetToMountPosition];
+                        [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
+                        [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+                        
+                        gw.Blackboard.DropObject=nil;
+                        [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
+
                         //[go handleMessage:kDWputdown];
                     }
                     

@@ -169,7 +169,7 @@ static int shadowSteps=5;
     
     //sort children
     for (id<Transform> prnode in ParentGO.ChildNodes) {
-        NSLog(@"parentGO.pos %@ prnode pos %@", NSStringFromCGPoint(ParentGO.Position), NSStringFromCGPoint(prnode.Position));
+        //NSLog(@"parentGO.pos %@ prnode pos %@", NSStringFromCGPoint(ParentGO.Position), NSStringFromCGPoint(prnode.Position));
         
         float thisA=[BLMath angleForNormVector:[BLMath TruncateVector:[BLMath SubtractVector:ParentGO.Position from:prnode.Position] toMaxLength:1.0f]];
         
@@ -230,16 +230,31 @@ static int shadowSteps=5;
     
     //[self insertSpacerPointsWithRotGap:10.0f andScale:1.0f];
     
+    //start smooth from avg
+//    float avgL=0.0f;
+//    for (NSValue *p in sortedChildren)
+//    {
+//        float l=[BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:[p CGPointValue]]];
+//        avgL+=l;
+//    }
+//    avgL=avgL / (float)sortedChildren.count;
+//    
+
+    //start smooth from max
     float avgL=0.0f;
     for (NSValue *p in sortedChildren)
     {
         float l=[BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:[p CGPointValue]]];
-        avgL+=l;
+        if(l>avgL)avgL=l;
     }
-    avgL=avgL / (float)sortedChildren.count;
+    avgL=avgL*1.25f;
+    //avgL=avgL / (float)sortedChildren.count;
+    
+    
+    float seekr=110.0f;
     
     NSMutableArray *newChildren=[[NSMutableArray alloc] init];
-    for(int r=0; r<360; r+=4)
+    for(int r=0; r<360; r+=2)
     {
         float newL=avgL;
         
@@ -250,13 +265,13 @@ static int shadowSteps=5;
             float inspr=[BLMath angleForVector:inspd];
             
             float rdiff=fabsf(inspr-r);
-            if(inspr<50 && r>310) rdiff=fabsf((inspr+360) - r);
-            if(r<50 && inspr>310) rdiff=fabsf(inspr - (360+r));
+            if(inspr<seekr && r>(360-seekr)) rdiff=fabsf((inspr+360) - r);
+            if(r<seekr && inspr>(360-seekr)) rdiff=fabsf(inspr - (360+r));
 
-            if(rdiff<50.0)
+            if(rdiff<seekr)
             {
                 float inspl=[BLMath LengthOfVector:inspd];
-                newL=newL+((inspl-newL) * ((50-rdiff) / 50.0f));
+                newL=newL+((inspl-newL) * ((seekr-rdiff) / seekr));
             }
         }
         
@@ -391,7 +406,10 @@ static int shadowSteps=5;
     
     [ParentGO.RenderBatch.parent addChild:[[MasteryDrawNode alloc] initWithParent:self]];
     
-    int texID=((int)ParentGO.Position.x % 9) + 1;
+    int texID=(abs((int)ParentGO.Position.x) % 9) + 1;
+    
+    NSLog(@"%@ texture %d", ParentGO.UserVisibleString, texID);
+    
     NSString *file=[NSString stringWithFormat:@"/images/jmap/island-tex%d.png", texID];
     PRFilledPolygon *poly=[PRFilledPolygon filledPolygonWithPoints:texturePoints andTexture:[[CCTextureCache sharedTextureCache] textureForKey:BUNDLE_FULL_PATH(file)]];
     
@@ -411,9 +429,10 @@ static int shadowSteps=5;
     [ParentGO.RenderBatch addChild:nodeSprite];
     
     CGPoint labelCentre=ccpAdd(ccp(0,60), ParentGO.Position);
+    labelCentre=ccp((int)labelCentre.x, (int)labelCentre.y);
     
     labelSprite=[CCLabelTTF labelWithString:[ParentGO.UserVisibleString uppercaseString] fontName:@"Source Sans Pro" fontSize:14.0f];
-    [labelSprite setPosition:ccpAdd(labelCentre, ccp(0, 4))];
+    [labelSprite setPosition:ccpAdd(labelCentre, ccp(-2, 4))];
     [labelSprite setVisible:ParentGO.Visible];
     if(ParentGO.Disabled) [labelSprite setOpacity:100];
     
@@ -424,12 +443,21 @@ static int shadowSteps=5;
     CGPoint loffset=ccp(-labelSprite.contentSize.width / 2.0f - 6.0f, 0);
     [lend setPosition:ccpAdd(labelCentre, loffset)];
     [ParentGO.RenderBatch addChild:lend];
+
+//    CCSprite *mid=[CCSprite spriteWithSpriteFrameName:@"sign-middle.png"];
+//    [mid setScaleX: labelSprite.contentSize.width / mid.contentSize.width];
+//    [mid setPosition: labelCentre];
+//    [ParentGO.RenderBatch addChild:mid];
     
     //mid
-    CCSprite *mid=[CCSprite spriteWithSpriteFrameName:@"sign-middle.png"];
-    [mid setScaleX: labelSprite.contentSize.width / mid.contentSize.width];
-    [mid setPosition:labelCentre];
-    [ParentGO.RenderBatch addChild:mid];
+    for (int i=0; i<labelSprite.contentSize.width+3; i++)
+    {
+        CCSprite *mid=[CCSprite spriteWithSpriteFrameName:@"sign-middle.png"];
+        //[mid setScaleX: labelSprite.contentSize.width / mid.contentSize.width];
+        [mid setPosition:ccp((labelCentre.x - (labelSprite.contentSize.width / 2.0f)) + i, labelCentre.y)];
+        [ParentGO.RenderBatch addChild:mid];
+    }
+
     
     //right end
     CCSprite *rend=[CCSprite spriteWithSpriteFrameName:@"sign-right.png"];

@@ -917,7 +917,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [metaQuestionAnswers addObject:a];
         
         CCSprite *answerBtn;
-        CCLabelTTF *answerLabel = [CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        CCLabelTTF *answerLabel = [CCLabelTTF labelWithString:@"" fontName:@"Chango" fontSize:16.0f];
         
         // sort out the labels and buttons if there's an answer text
         if([[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT])

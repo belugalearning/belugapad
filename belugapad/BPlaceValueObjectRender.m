@@ -211,7 +211,7 @@
         n=(DWPlaceValueNetGameObject*)b.Mount;
         x=n.PosX;
         y=n.PosY;
-        gameObject=n.MountedObject;
+//        gameObject=n.MountedObject;
         //[n handleMessage:kDWresetPositionEval];
     }
         

@@ -1506,23 +1506,23 @@ static float kTimeToCageShake=7.0f;
             netMount.MountedObject=nil;
             pickupObject.Mount=nil;
             
-            if(isBasePickup)
-            {
-                for(DWPlaceValueBlockGameObject *b in gw.Blackboard.SelectedObjects)
-                {
-                    DWPlaceValueNetGameObject *n=nil;
-                    if([b.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
-                    {
-                        n=(DWPlaceValueNetGameObject*)b.Mount;
-                        b.Mount=nil;
-                        n.MountedObject=nil;
-                    }
-                }
-            }
         }
         else if([pickupObject.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
         {
             [pickupObject.Mount handleMessage:kDWsetupStuff];
+        }
+        if(isBasePickup)
+        {
+            for(DWPlaceValueBlockGameObject *b in gw.Blackboard.SelectedObjects)
+            {
+                DWPlaceValueNetGameObject *n=nil;
+                if([b.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
+                {
+                    n=(DWPlaceValueNetGameObject*)b.Mount;
+                    b.Mount=nil;
+                    n.MountedObject=nil;
+                }
+            }
         }
         
         BOOL isCage;
@@ -1891,6 +1891,12 @@ static float kTimeToCageShake=7.0f;
             // check whether it's selected and we can deselect - or that it's deselected
             DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
             
+            [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:0];
+            
+            if(gw.Blackboard.DropObject)
+                [block handleMessage:kDWsetMount];
+
+            
             BOOL isCage;
             
             if([block.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
@@ -1901,7 +1907,7 @@ static float kTimeToCageShake=7.0f;
             if((!block.Selected && !isCage) || (block.Selected && allowDeselect && !isCage))
             {
                 [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
-                doNotResetToMount=YES;
+                //doNotResetToMount=YES;
             }
             
             

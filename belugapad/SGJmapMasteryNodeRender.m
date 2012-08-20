@@ -169,7 +169,7 @@ static int shadowSteps=5;
     
     //sort children
     for (id<Transform> prnode in ParentGO.ChildNodes) {
-        NSLog(@"parentGO.pos %@ prnode pos %@", NSStringFromCGPoint(ParentGO.Position), NSStringFromCGPoint(prnode.Position));
+        //NSLog(@"parentGO.pos %@ prnode pos %@", NSStringFromCGPoint(ParentGO.Position), NSStringFromCGPoint(prnode.Position));
         
         float thisA=[BLMath angleForNormVector:[BLMath TruncateVector:[BLMath SubtractVector:ParentGO.Position from:prnode.Position] toMaxLength:1.0f]];
         
@@ -230,13 +230,26 @@ static int shadowSteps=5;
     
     //[self insertSpacerPointsWithRotGap:10.0f andScale:1.0f];
     
+    //start smooth from avg
+//    float avgL=0.0f;
+//    for (NSValue *p in sortedChildren)
+//    {
+//        float l=[BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:[p CGPointValue]]];
+//        avgL+=l;
+//    }
+//    avgL=avgL / (float)sortedChildren.count;
+//    
+
+    //start smooth from max
     float avgL=0.0f;
     for (NSValue *p in sortedChildren)
     {
         float l=[BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:[p CGPointValue]]];
-        avgL+=l;
+        if(l>avgL)avgL=l;
     }
-    avgL=avgL / (float)sortedChildren.count;
+    avgL=avgL*1.25f;
+    //avgL=avgL / (float)sortedChildren.count;
+    
     
     float seekr=110.0f;
     
@@ -393,7 +406,10 @@ static int shadowSteps=5;
     
     [ParentGO.RenderBatch.parent addChild:[[MasteryDrawNode alloc] initWithParent:self]];
     
-    int texID=((int)ParentGO.Position.x % 9) + 1;
+    int texID=(abs((int)ParentGO.Position.x) % 9) + 1;
+    
+    NSLog(@"%@ texture %d", ParentGO.UserVisibleString, texID);
+    
     NSString *file=[NSString stringWithFormat:@"/images/jmap/island-tex%d.png", texID];
     PRFilledPolygon *poly=[PRFilledPolygon filledPolygonWithPoints:texturePoints andTexture:[[CCTextureCache sharedTextureCache] textureForKey:BUNDLE_FULL_PATH(file)]];
     

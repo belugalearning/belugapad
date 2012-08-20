@@ -119,58 +119,57 @@
     {
         if([gameObject isKindOfClass:[SGJmapNode class]])
         {
-            signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/NodeOverlayBackground.png")];
+            if(ParentGO.EnabledAndComplete)
+                signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/tooltip-base-tall.png")];
+            else
+                signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/tooltip-base-small.png")];
             
             //show play again
-            CCSprite *playSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/PlayAgainButton.png")];
+            CCSprite *playSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/play-button-normal.png")];
             [playSprite setPosition:ccp(240, 30)];
             [signSprite addChild:playSprite];
             
+            CCLabelTTF *playlabel=[CCLabelTTF labelWithString:@"PLAY AGAIN" fontName:@"Chango" fontSize:60.0f];
+            [playSprite addChild:playlabel];
+            
+            
             //days ago
-            CCLabelTTF *days=[CCLabelTTF labelWithString:@"Today" dimensions:CGSizeMake(300, 100) alignment:UITextAlignmentLeft fontName:@"Helvetica" fontSize:48.0f];
+            CCLabelTTF *days=[CCLabelTTF labelWithString:@"LAST PLAYED: TODAY" dimensions:CGSizeMake(300, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:48.0f];
             [days setPosition:ccp(165, 32)];
             [days setColor:ccc3(150, 150, 150)];
             [signSprite addChild:days];
         }
         else {
             //mastery node
-            signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/MasteryNodeOverlayBackground.png")];
+            if(ParentGO.EnabledAndComplete)
+                signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/tooltip-base-tall.png")];
+            else
+                signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/tooltip-base-small.png")];
+            
+            CCSprite *playSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/play-button-normal.png")];
+            [playSprite setPosition:ccp(240, 30)];
+            [signSprite addChild:playSprite];
             
             if(ParentGO.EnabledAndComplete)
             {
-                //show play again
-                CCSprite *playSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/PlayAgainButton.png")];
-                [playSprite setPosition:ccp(240, 30)];
-                [signSprite addChild:playSprite];
-                
                 //days ago
-                CCLabelTTF *days=[CCLabelTTF labelWithString:@"Today" dimensions:CGSizeMake(300, 100) alignment:UITextAlignmentLeft fontName:@"Helvetica" fontSize:48.0f];
+                CCLabelTTF *days=[CCLabelTTF labelWithString:@"LAST PLAYED: TODAY" dimensions:CGSizeMake(300, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:48.0f];
                 [days setPosition:ccp(165, 32)];
                 [days setColor:ccc3(150, 150, 150)];
                 [signSprite addChild:days];
             }
             else {
-                //show play, new
-                CCSprite *playSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/PlayButton.png")];
-                [playSprite setPosition:ccp(240, 30)];
-                [signSprite addChild:playSprite];
-                
-                CCSprite *newSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/NewBanner.png")];
+                //new sprite
+                CCSprite *newSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ribbon-new.png")];
                 [newSprite setPosition:ccp(270, 115)];
                 [signSprite addChild:newSprite];
         
                 //days ago
-                CCLabelTTF *days=[CCLabelTTF labelWithString:@"Never" dimensions:CGSizeMake(300, 100) alignment:UITextAlignmentLeft fontName:@"Helvetica" fontSize:48.0f];
+                CCLabelTTF *days=[CCLabelTTF labelWithString:@"NEVER PLAYED" dimensions:CGSizeMake(300, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:48.0f];
                 [days setPosition:ccp(165, 32)];
                 [days setColor:ccc3(150, 150, 150)];
                 [signSprite addChild:days];
             }
-            
-            //node title
-            CCLabelTTF *title=[CCLabelTTF labelWithString:ParentGO.UserVisibleString dimensions:CGSizeMake(300, 150) alignment:UITextAlignmentLeft fontName:@"Helvetica" fontSize:18.0f];
-            [title setPosition:ccp(195, 63)];
-            [title setColor:ccc3(90, 90, 90)];
-            [signSprite addChild:title];
         }
         
         [gameWorld.Blackboard.RenderLayer addChild:signSprite z:3];

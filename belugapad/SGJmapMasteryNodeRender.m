@@ -219,9 +219,11 @@ static int shadowSteps=5;
     
     //insert top positions?
 
-    [sortedChildren insertObject:[NSValue valueWithCGPoint:[BLMath AddVector:ParentGO.Position toVector:ccp(-40, 80)]] atIndex:0];
-    [sortedChildren insertObject:[NSValue valueWithCGPoint:[BLMath AddVector:ParentGO.Position toVector:ccp(0, 50)]] atIndex:0];
-    [sortedChildren insertObject:[NSValue valueWithCGPoint:[BLMath AddVector:ParentGO.Position toVector:ccp(40, 80)]] atIndex:0];
+    float ildwidth= 30 + (2 * ParentGO.UserVisibleString.length);
+    
+    [sortedChildren insertObject:[NSValue valueWithCGPoint:[BLMath AddVector:ParentGO.Position toVector:ccp(-ildwidth, 10)]] atIndex:0];
+//    [sortedChildren insertObject:[NSValue valueWithCGPoint:[BLMath AddVector:ParentGO.Position toVector:ccp(0, 10)]] atIndex:0];
+    [sortedChildren insertObject:[NSValue valueWithCGPoint:[BLMath AddVector:ParentGO.Position toVector:ccp(ildwidth, 10)]] atIndex:0];
     
     //big spacers
     [self insertSpacerPointsWithRotGap:40.0f andScale:1.25f];

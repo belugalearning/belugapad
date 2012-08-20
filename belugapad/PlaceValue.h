@@ -13,6 +13,7 @@
 #import "ToolScene.h"
 
 @class DWGameWorld;
+@class DWGameObject;
 @class DWPlaceValueNetGameObject;
 @class Daemon;
 @class ToolHost;
@@ -153,6 +154,8 @@
 //    DWPlaceValueNetGameObject *lastNet;
     
     BOOL isBasePickup;
+    
+    DWGameObject *lastMount;
 }
 
 -(void)populateGW;

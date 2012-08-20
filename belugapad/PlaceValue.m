@@ -1504,6 +1504,7 @@ static float kTimeToCageShake=7.0f;
         {
             netMount=(DWPlaceValueNetGameObject*)pickupObject.Mount;
             netMount.MountedObject=nil;
+            lastMount=pickupObject.Mount;
             pickupObject.Mount=nil;
             
         }
@@ -1891,11 +1892,8 @@ static float kTimeToCageShake=7.0f;
             // check whether it's selected and we can deselect - or that it's deselected
             DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
             
-            [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:0];
-            
-            if(gw.Blackboard.DropObject)
-                [block handleMessage:kDWsetMount];
-
+            block.Mount=lastMount;
+            ((DWPlaceValueNetGameObject*)block.Mount).MountedObject=block;
             
             BOOL isCage;
             
@@ -2085,7 +2083,7 @@ static float kTimeToCageShake=7.0f;
     //get any auto reset / repositions to re-evaluate
     [gw handleMessage:kDWstartRespositionSeek andPayload:nil withLogLevel:0];
     
-
+    lastMount=nil;
     potentialTap=NO;
     hasMovedBlock=NO;
     hasMovedLayer=NO;
@@ -2108,6 +2106,7 @@ static float kTimeToCageShake=7.0f;
     hasMovedBlock=NO;
     hasMovedLayer=NO;
     isBasePickup=NO;
+    lastMount=nil;
     [pickupObjects removeAllObjects];
     
     touching=NO;

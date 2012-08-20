@@ -103,7 +103,10 @@ static float kDistanceBetweenBlocks=70.0f;
 
 -(void)doUpdateOnTick:(ccTime)delta
 {
-    	[gw doUpdate:delta];
+    [gw doUpdate:delta];
+    
+    [self tidyUpEmptyGroups];
+    
     if(autoMoveToNextProblem)
     {
         timeToAutoMoveToNextProblem+=delta;
@@ -339,6 +342,10 @@ static float kDistanceBetweenBlocks=70.0f;
             }
             
         }
+        
+        
+        
+        
         
     }
 }
@@ -634,8 +641,8 @@ static float kDistanceBetweenBlocks=70.0f;
         }
         [self updateContainerForNewlyAddedBlock:currentPickupObject];
         [self lookForOrphanedObjects];
-        [self updateContainerLabels];
         [self tidyUpEmptyGroups];
+        [self updateContainerLabels];
         
         //[self evalUniqueShapes];
         if(evalMode==kProblemEvalAuto)[self evalProblem];
@@ -766,33 +773,74 @@ static float kDistanceBetweenBlocks=70.0f;
 
 -(BOOL)evalExpression
 {
+//    if(evalType==kCheckShapeSizes)
+//    {
+//        int solutionsFound=0;
+//        int solutionsExpected=[solutionsDef count];
+//        NSMutableArray *shapesMatched=[[NSMutableArray alloc]init];
+//        NSArray *shapesHere=[self evalUniqueShapes];
+//
+//        
+//        for(int i=0;i<[solutionsDef count];i++)
+//        {
+//            int thisSolution=[[solutionsDef objectAtIndex:i]intValue];
+//            for(NSArray *a in shapesHere)
+//            {
+//                if([a count]==thisSolution&&![shapesMatched containsObject:a]){
+//                    [shapesMatched addObject:a];
+//                    solutionsFound++;
+//                }
+//            }
+//        }
+//        
+//        [shapesMatched release];
+//        
+//        if(solutionsFound==solutionsExpected)
+//            return YES;
+//        else
+//            return NO;
+//    }
     if(evalType==kCheckShapeSizes)
     {
-        int solutionsFound=0;
+        NSMutableArray *shapesFound=[[NSMutableArray alloc]init];
+        NSMutableArray *solFound=[[NSMutableArray alloc]init];
         int solutionsExpected=[solutionsDef count];
-        NSMutableArray *shapesMatched=[[NSMutableArray alloc]init];
-        NSArray *shapesHere=[self evalUniqueShapes];
-
+        int solutionsFound=0;
         
-        for(int i=0;i<[solutionsDef count];i++)
+        
+        for(NSNumber *n in solutionsDef)
         {
-            int thisSolution=[[solutionsDef objectAtIndex:i]intValue];
-            for(NSArray *a in shapesHere)
+            if([solFound containsObject:n])continue;
+            
+            for (id cont in gw.AllGameObjects)
             {
-                if([a count]==thisSolution&&![shapesMatched containsObject:a]){
-                    [shapesMatched addObject:a];
-                    solutionsFound++;
+                if([shapesFound containsObject:cont])continue;
+                
+                if([cont conformsToProtocol:@protocol(Container)])
+                {
+                    id<Container>thisCont=cont;
+                    
+                    if([thisCont.BlocksInShape count]==[n intValue])
+                    {
+                        solutionsFound++;
+                        [shapesFound addObject:cont];
+                        [solFound addObject:n];
+                        continue;
+                    }
                 }
             }
         }
         
-        [shapesMatched release];
         
-        if(solutionsFound==solutionsExpected)
+          
+        NSLog(@"solutions found %d required %d", solutionsFound, solutionsExpected);
+        if (solutionsFound==solutionsExpected)
             return YES;
         else
             return NO;
+
     }
+    
     else if(evalType==kCheckNamedGroups)
     {
         NSDictionary *d=[solutionsDef objectAtIndex:0];

@@ -96,8 +96,9 @@
 
 -(void)destroyThisObject
 {
-    [self.Label removeFromParentAndCleanup:YES];
-    [self.BaseNode removeFromParentAndCleanup:YES];
+    if(self.Label)[self.Label removeFromParentAndCleanup:YES];
+    if(self.BaseNode)[self.BaseNode removeFromParentAndCleanup:YES];
+    if(self.BlocksInShape)[self.BlocksInShape release];
     [gameWorld delayRemoveGameObject:self];
 }
 

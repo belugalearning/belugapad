@@ -969,6 +969,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [commitBtn setOpacity:0];
         [metaQuestionLayer addChild:commitBtn z:2];
     }
+    else
+    {
+        commitBtn=nil;
+    }
     
 }
 
@@ -1302,7 +1306,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [commitBtn setOpacity:0];
         [metaQuestionLayer addChild:commitBtn z:2];
     }
-    
+    else
+    {
+        commitBtn=nil;
+    }
 }
 
 -(void)checkNumberPickerTouches:(CGPoint)location

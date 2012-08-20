@@ -133,7 +133,7 @@
             playlabel.position=ccp(playSprite.contentSize.width / 2.0f, playSprite.contentSize.height / 2.0f);
             [playSprite addChild:playlabel];
             
-            CCLabelTTF *score=[CCLabelTTF labelWithString:@"BEST SCORE: 96,412" dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:15.0f];
+            CCLabelTTF *score=[CCLabelTTF labelWithString:@"BEST SCORE: 16,024" dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:15.0f];
             [score setPosition:ccp(100, 85)];
             [score setColor:ccc3(255, 255, 255)];
             [signSprite addChild:score];
@@ -171,7 +171,7 @@
                 playlabel.position=ccp(playSprite.contentSize.width / 2.0f, playSprite.contentSize.height / 2.0f);
                 [playSprite addChild:playlabel];
                 
-                CCLabelTTF *score=[CCLabelTTF labelWithString:@"BEST SCORE: 16,024" dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:15.0f];
+                CCLabelTTF *score=[CCLabelTTF labelWithString:@"BEST SCORE: 96,418" dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:15.0f];
                 [score setPosition:ccp(100, 85)];
                 [score setColor:ccc3(255, 255, 255)];
                 [signSprite addChild:score];

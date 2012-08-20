@@ -44,51 +44,48 @@
         if(((SGJmapMasteryNode*)gameObject).Disabled)
             return NO;
     
-    if([BLMath DistanceBetween:ParentGO.Position and:pos]<(ParentGO.Selected ? ParentGO.HitProximitySign : ParentGO.HitProximity))
+    if(ParentGO.Selected && CGRectContainsPoint(hitbox, pos))
+    {
+        ret=YES;
+        //already selected -- start pipeline
+        ContentService *cs=(ContentService*)((AppController*)[UIApplication sharedApplication].delegate).contentService;
+        
+        if([cs createAndStartFunnelForNode:ParentGO._id])
+        {
+            //[((AppController*)[UIApplication sharedApplication].delegate) startToolHostFromJmapPos:ParentGO.Position];
+            
+            [((JMap*)[gameWorld GameScene]) startTransitionToToolHostWithPos:ParentGO.Position];
+        }
+        
+        NSLog(@"i'm starting! %@", ParentGO._id);
+        ParentGO.Selected=YES;
+    }
+    else if ([BLMath DistanceBetween:ParentGO.Position and:pos]<ParentGO.HitProximity)
     {
         ret=YES;
       
-        if(ParentGO.Selected)
-        {
-            //already selected -- start pipeline
-            ContentService *cs=(ContentService*)((AppController*)[UIApplication sharedApplication].delegate).contentService;
-            
-            if([cs createAndStartFunnelForNode:ParentGO._id])
-            {
-                //[((AppController*)[UIApplication sharedApplication].delegate) startToolHostFromJmapPos:ParentGO.Position];
-                
-                [((JMap*)[gameWorld GameScene]) startTransitionToToolHostWithPos:ParentGO.Position];
-            }
-            
-            NSLog(@"i'm starting! %@", ParentGO._id);
-            ParentGO.Selected=YES;
-        }
+        //select me / show sign
+        //todo -- this should only work if enabled (otherwise resort to mastery node if applicable)
         
-        else
+        //this is a bit hacky -- and a good demonstration of why this should potentially be two components
+        if([gameObject isKindOfClass:[SGJmapNode class]])
         {
-            //select me / show sign 
-            //todo -- this should only work if enabled (otherwise resort to mastery node if applicable)
-            
-            //this is a bit hacky -- and a good demonstration of why this should potentially be two components
-            if([gameObject isKindOfClass:[SGJmapNode class]])
+            SGJmapNode *gom=(SGJmapNode*)gameObject;
+            if(gom.EnabledAndComplete)
             {
-                SGJmapNode *gom=(SGJmapNode*)gameObject;
-                if(gom.EnabledAndComplete)
-                {
-                    //show the sign on our own node
-                    [self showSignWithForce:NO];
-                }
-                else {
-                    //show the sign on our parent mastery
-                    [gom.MasteryNode.NodeSelectComponent showSignWithForce:YES];
-                }
-            }
-            else {
-                //this is mastery -- pop the sign
+                //show the sign on our own node
                 [self showSignWithForce:NO];
             }
+            else {
+                //show the sign on our parent mastery
+                [gom.MasteryNode.NodeSelectComponent showSignWithForce:YES];
+            }
         }
-        
+        else {
+            //this is mastery -- pop the sign
+            [self showSignWithForce:NO];
+        }
+    
     }
     else {
         
@@ -206,6 +203,8 @@
     [signSprite setPosition:[BLMath AddVector:ccp(0, 30 + (signSprite.contentSize.height / 2.0f)) toVector:ParentGO.Position]];
     
     [signSprite runAction:[InteractionFeedback enlargeTo1xAction]];
+    
+    hitbox=CGRectMake(signSprite.position.x-(signSprite.contentSize.width / 2.0f), signSprite.position.y-(signSprite.contentSize.height / 2.0f), signSprite.contentSize.width, 60);
     
     NSLog(@"i'm selected! %@", ParentGO._id);
 }

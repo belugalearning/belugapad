@@ -409,7 +409,7 @@ static float kTimeToCageShake=7.0f;
             
             //CCSprite *minusSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/minus40.png")];
             //CCSprite *posiSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/plus40.png")];
-            CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", defaultBlocksToMake] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", defaultBlocksToMake] fontName:@"Chango" fontSize:PROBLEM_DESC_FONT_SIZE];
             
             float PosX=i*(kPropXColumnSpacing*lx)-120;
             float PosY=(ly*kCageYOrigin)-41;

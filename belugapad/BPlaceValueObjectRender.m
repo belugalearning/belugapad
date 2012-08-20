@@ -220,6 +220,7 @@
     b.PosX=x;
     b.PosY=y;
     
+    CGPoint moveLoc=ccp(b.PosX, b.PosY);
     
     CCSprite *curSprite = b.mySprite;
     
@@ -230,7 +231,7 @@
         
         [curSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(spriteFileName)]];
     }
-    [curSprite runAction:[CCMoveTo actionWithDuration:kTimeObjectSnapBack position:ccp(x, y)]];
+    [curSprite runAction:[CCMoveTo actionWithDuration:kTimeObjectSnapBack position:moveLoc]];
     
 }
 

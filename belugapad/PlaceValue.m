@@ -1267,33 +1267,62 @@ static float kTimeToCageShake=7.0f;
         BOOL stop=NO;
         
         //find a mount for this object
-        for (int r=[gw.Blackboard.CurrentStore count]-1; r>=0; r--) {
-            if(stop)break;
+//        for (int r=[gw.Blackboard.CurrentStore count]-1; r>=0; r--) {
+//            if(stop)break;
+//            
+//            
+//            NSMutableArray *row=[gw.Blackboard.CurrentStore objectAtIndex:r];
+//            for (int c=[row count]-1; c>=0; c--)
+//            {
+//                if(stop)break;
+//                
+//                DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
+//                
+//                if(!co.MountedObject)
+//                {
+//                    //use this as a mount
+//                    NSLog(@"set mount colindex %d to row %d col %d", currentColumnIndex, r,c);
+//                    go.Mount=co;
+//                    go.AnimateMe=YES;
+//                    co.MountedObject=go;
+//                    go.PosX=co.PosX;
+//                    go.PosY=co.PosY;
+//                    //                    [go handleMessage:kDWsetMount];
+//                    [co handleMessage:kDWsetMountedObject];
+//                    [go handleMessage:kDWupdateSprite];
+//                    stop=YES;
+//                }
+//            }
+//        }
 
+        for (int r=0; r<[gw.Blackboard.CurrentStore count]; r++) {
+            if(stop)break;
+            
             
             NSMutableArray *row=[gw.Blackboard.CurrentStore objectAtIndex:r];
-            for (int c=[row count]-1; c>=0; c--)
+            for (int c=0; c<[row count]; c++)
             {
                 if(stop)break;
-
+                
                 DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
-
+                
                 if(!co.MountedObject)
                 {
                     //use this as a mount
-                     NSLog(@"set mount colindex %d to row %d col %d", currentColumnIndex, r,c);
+                    NSLog(@"set mount colindex %d to row %d col %d", currentColumnIndex, r,c);
                     go.Mount=co;
                     go.AnimateMe=YES;
                     co.MountedObject=go;
                     go.PosX=co.PosX;
                     go.PosY=co.PosY;
-//                    [go handleMessage:kDWsetMount];
+                    //                    [go handleMessage:kDWsetMount];
                     [co handleMessage:kDWsetMountedObject];
                     [go handleMessage:kDWupdateSprite];
                     stop=YES;
                 }
             }
         }
+
         
         [go release];
     }
@@ -1467,6 +1496,8 @@ static float kTimeToCageShake=7.0f;
     {
         
         DWPlaceValueBlockGameObject *pickupObject=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
+        
+        [pickupObject handleMessage:kDWunsetMount];
                 
         BOOL isCage;
         
@@ -1736,8 +1767,6 @@ static float kTimeToCageShake=7.0f;
     
     inBlockTransition=NO;
     
-
-    
     for(int i=0;i<[multiplePlusSprites count];i++)
     {
         CGRect boundingBox=[[multiplePlusSprites objectAtIndex:i]CGRectValue];
@@ -1908,7 +1937,7 @@ static float kTimeToCageShake=7.0f;
                 }
                 
                 //tell the picked-up object to mount on the dropobject
-                // TODO: buoild in support for dropping of multiple
+
                 if(multipleBlockPickup||showMultipleControls)
                 {
                     if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])

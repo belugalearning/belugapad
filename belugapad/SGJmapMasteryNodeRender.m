@@ -218,8 +218,9 @@ static int shadowSteps=5;
     if(sortedChildren.count==0)return;
     
     //insert top positions?
-    [sortedChildren insertObject:[NSValue valueWithCGPoint:[BLMath AddVector:ParentGO.Position toVector:ccp(0, 90)]] atIndex:0];
+
     [sortedChildren insertObject:[NSValue valueWithCGPoint:[BLMath AddVector:ParentGO.Position toVector:ccp(-40, 80)]] atIndex:0];
+    [sortedChildren insertObject:[NSValue valueWithCGPoint:[BLMath AddVector:ParentGO.Position toVector:ccp(0, 50)]] atIndex:0];
     [sortedChildren insertObject:[NSValue valueWithCGPoint:[BLMath AddVector:ParentGO.Position toVector:ccp(40, 80)]] atIndex:0];
     
     //big spacers
@@ -247,11 +248,13 @@ static int shadowSteps=5;
             float inspr=[BLMath angleForVector:inspd];
             
             float rdiff=fabsf(inspr-r);
+            if(inspr<50 && r>310) rdiff=fabsf((inspr+360) - r);
+            if(r<50 && inspr>310) rdiff=fabsf(inspr - (360+r));
 
-            if(rdiff<20.0)
+            if(rdiff<50.0)
             {
                 float inspl=[BLMath LengthOfVector:inspd];
-                newL=newL+((inspl-newL) * ((20-rdiff) / 20.0f));
+                newL=newL+((inspl-newL) * ((50-rdiff) / 50.0f));
             }
         }
         

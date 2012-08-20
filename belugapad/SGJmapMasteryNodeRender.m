@@ -8,6 +8,7 @@
 
 #import "SGJmapMasteryNodeRender.h"
 #import "SGJmapMasteryNode.h"
+#import "PRFilledPolygon.h"
 #import "BLMath.h"
 #import "global.h"
 
@@ -19,7 +20,7 @@ static ccColor4B userCol2={120, 168, 221, 255};
 //static ccColor4B userCol={150,90,200,255};
 static ccColor4B userHighCol={255, 255, 255, 50};
 //static ccColor4B userHighCol={239,119,82,255};
-static int shadowSteps=10;
+static int shadowSteps=5;
 
 @interface SGJmapMasteryNodeRender()
 {
@@ -30,6 +31,8 @@ static int shadowSteps=10;
 @end
 
 @implementation SGJmapMasteryNodeRender
+
+@synthesize ParentGO, sortedChildren, allPerimPoints, scaledPerimPoints, zoomedOut;
 
 -(SGJmapMasteryNodeRender*)initWithGameObject:(id<Transform, CouchDerived>)aGameObject
 {
@@ -80,76 +83,51 @@ static int shadowSteps=10;
 
 -(void)draw:(int)z
 {
-    CGPoint myWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];
+
+    
+//    CGPoint myWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];
     
     if(z==1)
     {
-        //upate position of all polys
-        CGPoint adjPoints[shadowSteps*sortedChildren.count];
-        for (int i=0; i<(shadowSteps*sortedChildren.count); i++) {
-            adjPoints[i]=[BLMath AddVector:myWorldPos toVector:scaledPerimPoints[i]];
-        }
-        
-        //perim polys -- overlapping
-        for(int ip=(zoomedOut ? shadowSteps-1 : 0); ip<shadowSteps; ip++)
-        {
-            CGPoint *first=&adjPoints[(ip==0) ? 0 : (ip*sortedChildren.count)-1];
-            
-            ccColor4F col=ccc4FFromccc4B(stepColours[ip]);
-            if(zoomedOut) col=ccc4f(col.r, col.g, col.b, 0.3f);
-            
-            ccDrawFilledPoly(first, sortedChildren.count, ccc4FFromccc4B(stepColours[ip]));
-        }
-        
-        if(!zoomedOut)
-        {
-            for (id<Transform> prnode in ParentGO.ChildNodes) {
-                //world space pos of child node
-                CGPoint theirWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:prnode.Position];
-                
-                //draw prereq path to this node        
-                ccDrawColor4B(userHighCol.r, userHighCol.g, userHighCol.b, userHighCol.a);
-                ccDrawLine(myWorldPos, theirWorldPos);        
-            }
-        }
+        //this was island base colour -- now in render node
     }
     else if (z==2)
     {
         
-        ccColor4F f4=ccc4FFromccc4B(currentCol);
-        
-        //lines to inter mastery nodes
-        for(id<Transform> imnode in ParentGO.ConnectToMasteryNodes) {
-            //world space of their pos
-            CGPoint tWP=[ParentGO.RenderBatch.parent convertToWorldSpace:imnode.Position];
-            
-//            ccDrawColor4B(userCol.r, userCol.g, userCol.b, userCol.a);
-//            ccDrawLine(myWorldPos, tWP);
-            
-            float x1=myWorldPos.x;
-            float y1=myWorldPos.y;
-            float x2=tWP.x;
-            float y2=tWP.y;
-            
-            float L=sqrtf((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
-            
-            int lines=5;
-            if(zoomedOut) lines=1;
-            
-            for (float width=-lines; width<(lines+1); width+=0.75f)
-            {
-                float x1p=x1+width * (y2-y1) / L;
-                float x2p=x2+width * (y2-y1) / L;
-                float y1p=y1+width * (x1-x2) / L;
-                float y2p=y2+width * (x1-x2) / L;
-                
-                if(zoomedOut) ccDrawColor4F(f4.r, f4.g, f4.b, 0.15f);
-                else ccDrawColor4F(f4.r, f4.g, f4.b, 0.35f);
-                
-                ccDrawLine(ccp(x1p, y1p), ccp(x2p, y2p));
-            }
-            
-        }    
+//        ccColor4F f4=ccc4FFromccc4B(currentCol);
+//        
+//        //lines to inter mastery nodes
+//        for(id<Transform> imnode in ParentGO.ConnectToMasteryNodes) {
+//            //world space of their pos
+//            CGPoint tWP=[ParentGO.RenderBatch.parent convertToWorldSpace:imnode.Position];
+//            
+////            ccDrawColor4B(userCol.r, userCol.g, userCol.b, userCol.a);
+////            ccDrawLine(myWorldPos, tWP);
+//            
+//            float x1=myWorldPos.x;
+//            float y1=myWorldPos.y;
+//            float x2=tWP.x;
+//            float y2=tWP.y;
+//            
+//            float L=sqrtf((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+//            
+//            int lines=5;
+//            if(zoomedOut) lines=1;
+//            
+//            for (float width=-lines; width<(lines+1); width+=0.75f)
+//            {
+//                float x1p=x1+width * (y2-y1) / L;
+//                float x2p=x2+width * (y2-y1) / L;
+//                float y1p=y1+width * (x1-x2) / L;
+//                float y2p=y2+width * (x1-x2) / L;
+//                
+//                if(zoomedOut) ccDrawColor4F(f4.r, f4.g, f4.b, 0.15f);
+//                else ccDrawColor4F(f4.r, f4.g, f4.b, 0.35f);
+//                
+//                ccDrawLine(ccp(x1p, y1p), ccp(x2p, y2p));
+//            }
+//            
+//        }    
     }
 }
 
@@ -160,24 +138,6 @@ static int shadowSteps=10;
 
 -(void)readyRender
 {
-    if(ParentGO.EnabledAndComplete)
-    {
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-complete.png"];
-    }
-    else
-    {
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-incomplete.png"];        
-    }
-    [nodeSprite setPosition:[BLMath AddVector:ParentGO.Position toVector:ccp(0, 50)]];
-    [nodeSprite setVisible:ParentGO.Visible];
-    if(ParentGO.Disabled) [nodeSprite setOpacity:100];
-    [ParentGO.RenderBatch addChild:nodeSprite];
-    
-    labelSprite=[CCLabelTTF labelWithString:ParentGO.UserVisibleString fontName:@"Helvetica" fontSize:14.0f];
-    [labelSprite setPosition:ccpAdd(ccp(0, -40), ParentGO.Position)];
-    [labelSprite setVisible:ParentGO.Visible];
-    if(ParentGO.Disabled) [labelSprite setOpacity:100];
-    [ParentGO.RenderBatch.parent addChild:labelSprite];
     
     sortedChildren=[[NSMutableArray alloc] init];
  
@@ -186,8 +146,31 @@ static int shadowSteps=10;
     float b=userCol.b + (userCol2.b - userCol.b) * (ParentGO.PrereqPercentage / 100.0f);
     currentCol=ccc4(r, g, b, 255);
     
+    // ------- force points into bottom section of island ---------------------------------------------------
+    
+    //range of nodes is 140deg from 110 to 250 (direction doesn't matter here as they're sorted later)
+    
+    for(id<Transform>prnode in ParentGO.ChildNodes)
+    {
+        CGPoint diff=[BLMath SubtractVector:ParentGO.Position from:prnode.Position];
+        float startAngle=[BLMath angleForVector:diff];
+        float startLength=[BLMath LengthOfVector:diff];
+        float angleInRange=startAngle * (140.0f / 360.0f) + 110.0f;
+        CGPoint newPos=[BLMath AddVector:[BLMath ProjectMovementWithX:0 andY:startLength forRotation:angleInRange] toVector:ParentGO.Position];
+        prnode.Position=newPos;
+        
+//        NSLog(@"parentGO.pos %@ prnode pos %@", NSStringFromCGPoint(ParentGO.Position), NSStringFromCGPoint(prnode.Position));
+//        NSLog(@"diff is %@, startAngle %f, startLength %f, angleInRange %f, newPos %@", NSStringFromCGPoint(diff), startAngle, startLength, angleInRange, NSStringFromCGPoint(newPos));
+    }
+    
+    // ------------------------------------------------------------------------------------------------------
+    
+    
+    
     //sort children
     for (id<Transform> prnode in ParentGO.ChildNodes) {
+        NSLog(@"parentGO.pos %@ prnode pos %@", NSStringFromCGPoint(ParentGO.Position), NSStringFromCGPoint(prnode.Position));
+        
         float thisA=[BLMath angleForNormVector:[BLMath TruncateVector:[BLMath SubtractVector:ParentGO.Position from:prnode.Position] toMaxLength:1.0f]];
         
         if([sortedChildren count]==0)
@@ -234,6 +217,7 @@ static int shadowSteps=10;
     
     if(sortedChildren.count==0)return;
     
+    
     //iterate over sorted children repeatedly until we can't add any more spacers
     BOOL looking=YES;
     do {
@@ -253,9 +237,9 @@ static int shadowSteps=10;
                 nextA=[BLMath angleForNormVector:[BLMath TruncateVector:[BLMath SubtractVector:ParentGO.Position from:nextP] toMaxLength:1.0f]];
             }
             
-            if((nextA-thisA) > 90.0f)
+            if((nextA-thisA) > 10.0f)
             {
-                float lOfV=0.85f * [BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:thisP]];
+                float lOfV=1.0f * [BLMath LengthOfVector:[BLMath SubtractVector:ParentGO.Position from:thisP]];
                 float newrot=thisA + ((nextA-thisA)*0.35f);
                 //float newrot=thisA+ 50.0f;
                 
@@ -286,6 +270,8 @@ static int shadowSteps=10;
     CGPoint perimPoints[sortedChildren.count];
     CGPoint myWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];
     int perimIx=0;
+    
+    //CGPoint offsetForTexture=[BLMath SubtractVector:myWorldPos from:ParentGO.Position];
 
     for (NSValue *cPosVal in sortedChildren) {
         //world space pos of child node
@@ -312,32 +298,33 @@ static int shadowSteps=10;
     xmean=xmean/(float)sortedChildren.count;
     ymean=ymean/(float)sortedChildren.count;
     CGPoint pmid=ccp(xmean,ymean);
-    
-    ccColor4B stepColour=currentCol;
-    stepColour.r=stepColour.r-5;
-    stepColour.g=stepColour.g-5;
-    stepColour.b=stepColour.b-10;
-    if(stepColour.r>currentCol.r)stepColour.r=0;
-    if(stepColour.g>currentCol.g)stepColour.g=0;
-    if(stepColour.b>currentCol.b)stepColour.b=0;
-    
-    //step the colours
-    for(int i=0; i<shadowSteps; i++)
-    {
-        stepColours[i]=stepColour;
-        
-        //adjust colour
-        if(stepColour.r<252) stepColour.r+=0.5f;
-        if(stepColour.g<252) stepColour.g+=0.5f;
-        if(stepColour.b<252) stepColour.b+=1;
-    }
+
+    // === stepping colour creation -- not used currently due to fixed colouring of islands ===
+//    ccColor4B stepColour=currentCol;
+//    stepColour.r=stepColour.r-5;
+//    stepColour.g=stepColour.g-5;
+//    stepColour.b=stepColour.b-10;
+//    if(stepColour.r>currentCol.r)stepColour.r=0;
+//    if(stepColour.g>currentCol.g)stepColour.g=0;
+//    if(stepColour.b>currentCol.b)stepColour.b=0;
+//    
+//    //step the colours
+//    for(int i=0; i<shadowSteps; i++)
+//    {
+//        stepColours[i]=stepColour;
+//        
+//        //adjust colour
+//        if(stepColour.r<252) stepColour.r+=3.5f;
+//        if(stepColour.g<252) stepColour.g+=3.5f;
+//        if(stepColour.b<252) stepColour.b+=7;
+//    }
+    // =========================================================================================
     
     //create the total perim array -- polys * points
-    
-    //NSLog(@"mallocing at size %d with count %d for total %d", (int)(sizeof(CGPoint) * shadowSteps * sortedChildren.count), sortedChildren.count, shadowSteps*sortedChildren.count);
-    
     allPerimPoints=malloc(sizeof(CGPoint) * shadowSteps * sortedChildren.count);
     scaledPerimPoints=malloc(sizeof(CGPoint) * shadowSteps * sortedChildren.count);
+    
+    texturePoints=[[NSMutableArray alloc] init];
     
     //step the poly creation
     for(int ip=0; ip<shadowSteps; ip++)
@@ -345,9 +332,30 @@ static int shadowSteps=10;
         for(int i=0; i<sortedChildren.count; i++)
         {
             CGPoint diff=[BLMath SubtractVector:pmid from:perimPoints[i]];
-            CGPoint neardiff=[BLMath MultiplyVector:diff byScalar:(1-(0.01 * (ip+1)))];
+            
+            CGPoint neardiff=CGPointZero;
+            if(ip<3) // first two blue bands + the dark blue band
+                neardiff=[BLMath MultiplyVector:diff byScalar:(1-(0.04 * (ip+1)))];
+            if(ip==3) // the sand band
+            {
+                neardiff=[BLMath MultiplyVector:diff byScalar:(1-(0.042 * (ip)))];
+                neardiff=CGPointMake(neardiff.x-2, neardiff.y-6);
+            }
+            if(ip==4) // the grass
+            {
+                neardiff=[BLMath MultiplyVector:diff byScalar:(1-(0.043 * (ip-1)))];
+                neardiff=CGPointMake(neardiff.x-1, neardiff.y+1);
+            }
+            
+            
+            //CGPoint neardiff=diff; //don't scale -- just offset it
+            
             CGPoint aPos=[BLMath AddVector:neardiff toVector:pmid];
             //CGPoint prelPos=[BLMath SubtractVector:ParentGO.Position from:aPos];
+            
+            //also offset the thing
+            //aPos=[BLMath AddVector:ccp(5, 5) toVector:aPos];
+            
             CGPoint newpos=aPos;
             
             int insertChildPos=ip*sortedChildren.count;
@@ -358,6 +366,14 @@ static int shadowSteps=10;
             //NSLog(@"inserting at %d", actualinsert);
             allPerimPoints[actualinsert]=newpos;
             
+            if(ip==4)
+            {
+                //newpos is point on this poly -- adjusted to what? * see the draw code
+                
+                CGPoint offp=[BLMath AddVector:newpos toVector:ParentGO.Position];
+                [texturePoints addObject:[NSValue valueWithCGPoint:offp]];
+            }
+            
             //allPerimPoints[(ip==0 ? 0 : ((ip*shadowSteps)-1))+i]=newpos;
         }
     }
@@ -365,6 +381,60 @@ static int shadowSteps=10;
     //=======================================================================================
     
     [self setPointScalesAt:1.0f];
+
+    //====== create nodes and such ==========================================================
+    
+    //add a draw node the for the above
+    
+    [ParentGO.RenderBatch.parent addChild:[[MasteryDrawNode alloc] initWithParent:self]];
+    
+    int texID=((int)ParentGO.Position.x % 9) + 1;
+    NSString *file=[NSString stringWithFormat:@"/images/jmap/island-tex%d.png", texID];
+    PRFilledPolygon *poly=[PRFilledPolygon filledPolygonWithPoints:texturePoints andTexture:[[CCTextureCache sharedTextureCache] textureForKey:BUNDLE_FULL_PATH(file)]];
+    
+    [ParentGO.RenderBatch.parent addChild:poly];
+    
+    if(ParentGO.EnabledAndComplete)
+    {
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-complete.png"];
+    }
+    else
+    {
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-incomplete.png"];
+    }
+    [nodeSprite setPosition:[BLMath AddVector:ParentGO.Position toVector:ccp(0, 0)]];
+    [nodeSprite setVisible:ParentGO.Visible];
+    if(ParentGO.Disabled) [nodeSprite setOpacity:100];
+    [ParentGO.RenderBatch addChild:nodeSprite];
+    
+    CGPoint labelCentre=ccpAdd(ccp(0,60), ParentGO.Position);
+    
+    labelSprite=[CCLabelTTF labelWithString:[ParentGO.UserVisibleString uppercaseString] fontName:@"Source Sans Pro" fontSize:14.0f];
+    [labelSprite setPosition:ccpAdd(labelCentre, ccp(0, 4))];
+    [labelSprite setVisible:ParentGO.Visible];
+    if(ParentGO.Disabled) [labelSprite setOpacity:100];
+    
+    [ParentGO.RenderBatch.parent addChild:labelSprite z:2];
+    
+    //left end
+    CCSprite *lend=[CCSprite spriteWithSpriteFrameName:@"sign-left.png"];
+    CGPoint loffset=ccp(-labelSprite.contentSize.width / 2.0f - 6.0f, 0);
+    [lend setPosition:ccpAdd(labelCentre, loffset)];
+    [ParentGO.RenderBatch addChild:lend];
+    
+    //mid
+    CCSprite *mid=[CCSprite spriteWithSpriteFrameName:@"sign-middle.png"];
+    [mid setScaleX: labelSprite.contentSize.width / mid.contentSize.width];
+    [mid setPosition:labelCentre];
+    [ParentGO.RenderBatch addChild:mid];
+    
+    //right end
+    CCSprite *rend=[CCSprite spriteWithSpriteFrameName:@"sign-right.png"];
+    CGPoint roffset=ccp(labelSprite.contentSize.width / 2.0f + 6.0f, 0);
+    [rend setPosition:ccpAdd(labelCentre, roffset)];
+    [ParentGO.RenderBatch addChild:rend];
+    
+    //=======================================================================================
     
 }
 
@@ -383,8 +453,78 @@ static int shadowSteps=10;
     free(scaledPerimPoints);
     
     [sortedChildren release];
+    [texturePoints release];
     
     [super dealloc];
+}
+
+@end
+
+
+
+
+@implementation MasteryDrawNode
+
+-(MasteryDrawNode*)initWithParent:(SGJmapMasteryNodeRender*)masteryNodeRender;
+{
+    if(self=[super init])
+    {
+        renderParent=masteryNodeRender;
+    }
+    return self;
+}
+
+-(void) draw
+{
+//    CGPoint myWorldPos=[renderParent.ParentGO.RenderBatch.parent convertToWorldSpace:renderParent.ParentGO.Position];
+
+    CGPoint myWorldPos=renderParent.ParentGO.Position;
+    
+    //upate position of all polys
+    CGPoint adjPoints[shadowSteps*renderParent.sortedChildren.count];
+    for (int i=0; i<(shadowSteps*renderParent.sortedChildren.count); i++) {
+        adjPoints[i]=[BLMath AddVector:myWorldPos toVector:renderParent.scaledPerimPoints[i]];
+    }
+    
+    //perim polys -- overlapping
+    for(int ip=0; ip<shadowSteps; ip++)
+    {
+        CGPoint *first=&adjPoints[(ip==0) ? 0 : (ip*renderParent.sortedChildren.count)-1];
+        
+        //ccColor4F col=ccc4FFromccc4B(stepColours[ip]);
+        //ccColor4F col=ccc4f(0.243f, 0.420f, 0.541, 1.0f);
+        //if (ip==1) col=ccc4f(0.302f, 0.463f, 0.576f, 1.0f);
+        
+        //opacity-based were white, 0.15f
+        
+        ccColor4F col=ccc4f(0.343f, 0.520f, 0.641, 1.0f);
+        if (ip==1) col=ccc4f(0.402f, 0.563f, 0.676f, 1.0f);
+        
+        if (ip==2) col=ccc4f(0.220f, 0.373f, 0.471f, 1.0f);
+        if (ip==3) col=ccc4f(0.851f, 0.780f, 0.624f, 1.0f);
+        if (ip==4) col=ccc4f(0.451f, 0.608f, 0.259f, 1.0f);
+        
+        //if(renderParent.zoomedOut) col=ccc4f(col.r, col.g, col.b, 0.3f);
+        
+        ccDrawFilledPoly(first, renderParent.sortedChildren.count, col);
+    }
+
+    
+    // ======= mastery > node lines -- not currently used ===============================
+    
+//    if(!renderParent.zoomedOut)
+//    {
+//        for (id<Transform> prnode in renderParent.ParentGO.ChildNodes) {
+//            //world space pos of child node
+//            CGPoint theirWorldPos=[renderParent.ParentGO.RenderBatch.parent convertToWorldSpace:prnode.Position];
+//            
+//            //draw prereq path to this node
+//            ccDrawColor4B(userHighCol.r, userHighCol.g, userHighCol.b, userHighCol.a);
+//            ccDrawLine(myWorldPos, theirWorldPos);
+//        }
+//    }
+    
+    // ==================================================================================
 }
 
 @end

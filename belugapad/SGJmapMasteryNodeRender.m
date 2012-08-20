@@ -553,10 +553,9 @@ static int shadowSteps=5;
         CGPoint *first=&adjPoints[(ip==0) ? 0 : (ip*renderParent.sortedChildren.count)-1];
         
         //ccColor4F col=ccc4FFromccc4B(stepColours[ip]);
-        //ccColor4F col=ccc4f(0.243f, 0.420f, 0.541, 1.0f);
-        //if (ip==1) col=ccc4f(0.302f, 0.463f, 0.576f, 1.0f);
-        
+
         //opacity-based were white, 0.15f
+        //ccColor4F col=ccc4f(1.0f, 1.0f, 1.0f, 0.15f);
         
         ccColor4F col=ccc4f(0.343f, 0.520f, 0.641, 1.0f);
         if (ip==1) col=ccc4f(0.402f, 0.563f, 0.676f, 1.0f);

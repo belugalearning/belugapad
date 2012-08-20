@@ -54,6 +54,7 @@
 	<array>
 		<string>LucidaGrande.ttc</string>
 		<string>SourceSansPro-Bold.ttf</string>
+        <string>Chango-Regular.ttf</string>
 	</array>
 	<key>UIPrerenderedIcon</key>
 	<true/>

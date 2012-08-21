@@ -1842,7 +1842,7 @@ static float kTimeToCageShake=7.0f;
     if(hasMovedLayer) [loggingService logEvent:BL_PA_PV_TOUCH_MOVE_MOVE_GRID withAdditionalData:nil];
     
     //do mulching / condensing
-    if (inMulchArea && isBasePickup) {
+    if (inMulchArea) {
         
         aTransitionHappened = [self doMulchFromLocation:location];
         inMulchArea=NO;
@@ -2026,7 +2026,7 @@ static float kTimeToCageShake=7.0f;
                         go.PosX=((DWPlaceValueNetGameObject*)go.Mount).PosX;
                         go.PosY=((DWPlaceValueNetGameObject*)go.Mount).PosY;
                         
-                        [go handleMessage:kDWupdateSprite];
+                        [go handleMessage:kDWmoveSpriteToPosition];
                         
                         //[go handleMessage:kDWputdown];
                     }

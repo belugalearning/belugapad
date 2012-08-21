@@ -47,14 +47,14 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.6</string>
+	<string>1.0.7</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>LucidaGrande.ttc</string>
 		<string>SourceSansPro-Bold.ttf</string>
-        <string>Chango-Regular.ttf</string>
+		<string>Chango-Regular.ttf</string>
 	</array>
 	<key>UIPrerenderedIcon</key>
 	<true/>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Put the numbers in order.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>sort numbers up to 15</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:ot tag=&quot;a&quot;&gt;7&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;b&quot;&gt;4&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;c&quot;&gt;10&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;d&quot;&gt;1&lt;/b:ot&gt;</string>
+		<string>&lt;b:ot tag=&quot;d&quot; enabled=&quot;no&quot;&gt;1&lt;/b:ot&gt;
+&lt;b:t&gt;3&lt;/b:t&gt;
+&lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt;4&lt;/b:ot&gt;
+&lt;b:t&gt;5&lt;/b:t&gt;
+&lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt;7&lt;/b:ot&gt;
+&lt;b:t&gt;9&lt;/b:t&gt;
+&lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt;10&lt;/b:ot&gt;
+&lt;b:t&gt;15&lt;/b:t&gt;</string>
+	</array>
+</dict>
+</plist>

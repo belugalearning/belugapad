@@ -155,7 +155,6 @@
     
     BOOL isBasePickup;
     
-    DWGameObject *lastMount;
 }
 
 -(void)populateGW;

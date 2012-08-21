@@ -154,6 +154,7 @@
 //    DWPlaceValueNetGameObject *lastNet;
     
     BOOL isBasePickup;
+    BOOL hasMovedBasePickup;
     
 }
 

@@ -1496,9 +1496,11 @@ static float kTimeToCageShake=7.0f;
     {
         DWPlaceValueBlockGameObject *pickupObject=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
         
-        if(gw.Blackboard.SelectedObjects.count==columnBaseValue) isBasePickup=YES;
+
         
         DWPlaceValueNetGameObject *netMount=nil;
+        
+        if(gw.Blackboard.SelectedObjects.count==columnBaseValue) isBasePickup=YES;
         
         if([pickupObject.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
         {
@@ -1511,8 +1513,10 @@ static float kTimeToCageShake=7.0f;
         else if([pickupObject.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
         {
             [pickupObject.Mount handleMessage:kDWsetupStuff];
+            pickupObject.LastMount=pickupObject.Mount;
         }
-        if(isBasePickup)
+
+        if(isBasePickup && !hasMovedBasePickup)
         {
             for(DWPlaceValueBlockGameObject *b in gw.Blackboard.SelectedObjects)
             {
@@ -1687,6 +1691,7 @@ static float kTimeToCageShake=7.0f;
         {
             //flag we're in inBlockTransition
             inBlockTransition=YES;
+            hasMovedBasePickup=YES;
             
             if(CGRectContainsPoint(boundingBoxCondense, location) && currentColumnIndex>0)
                 //if([BLMath rectContainsPoint:location x:0 y:0 w:200 h:ly] && currentColumnIndex>0)
@@ -1905,6 +1910,7 @@ static float kTimeToCageShake=7.0f;
             if((!block.Selected && !isCage) || (block.Selected && allowDeselect && !isCage))
             {
                 [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
+                hasMovedBasePickup=NO;
                 //doNotResetToMount=YES;
             }
             

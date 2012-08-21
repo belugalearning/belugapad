@@ -55,12 +55,12 @@
             float dist=[BLMath DistanceBetween:myLoc and:hitLoc];
             if(!gameWorld.Blackboard.DropObject || gameWorld.Blackboard.DropObjectDistance > dist)
             {
-                if(!n.MountedObject)
+                if(n.MountedObject==nil)
                 {
                     gameWorld.Blackboard.DropObject=gameObject;
                     gameWorld.Blackboard.DropObjectDistance=dist;
                     
-                    //NSLog(@"net sets droptarget dist %f val %f", dist, n.ColumnValue);
+                    NSLog(@"net sets droptarget dist %f val %f", dist, n.ColumnValue);
                 }
             }
         }

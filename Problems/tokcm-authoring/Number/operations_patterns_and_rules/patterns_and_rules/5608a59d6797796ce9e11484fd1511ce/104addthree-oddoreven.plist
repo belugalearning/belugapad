@@ -73,13 +73,13 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>ODD</string>
+				<string>Odd</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>EVEN</string>
+				<string>Even</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>

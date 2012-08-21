@@ -50,9 +50,7 @@
 				<string>cookies</string>
 				<string>pens</string>
 				<string>crayons</string>
-				<string>coins</string>
 				<string>batteries</string>
-				<string>drinks</string>
 			</array>
 		</dict>
 	</dict>
@@ -88,7 +86,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There are 3 packs of {@item}, with 2 {@item} in each pack. it is shared fairly between Claire and Sarah. How many does Claire get compared to Sarah?</string>
+		<string>Claire and Sarah share 3 packs of {@item} fairly. Each pack has 2 {@item}. How many does Claire get compared to Sarah?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

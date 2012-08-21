@@ -30,7 +30,7 @@
 	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
 	<array>
-		<string>3</string>
+		<string>1</string>
 	</array>
 	<key>HIDE_START_NUMBER</key>
 	<false/>

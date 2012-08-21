@@ -12,11 +12,61 @@
 	<array>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>10</integer>
+			<integer>1</integer>
 			<key>POS_X</key>
 			<integer>200</integer>
 			<key>POS_Y</key>
-			<integer>400</integer>
+			<integer>550</integer>
+			<key>LABEL</key>
+			<string>Mark</string>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>1</integer>
+			<key>POS_X</key>
+			<integer>350</integer>
+			<key>POS_Y</key>
+			<integer>550</integer>
+			<key>LABEL</key>
+			<string>Sister 1</string>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>1</integer>
+			<key>POS_X</key>
+			<integer>500</integer>
+			<key>POS_Y</key>
+			<integer>550</integer>
+			<key>LABEL</key>
+			<string>Sister 2</string>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>1</integer>
+			<key>POS_X</key>
+			<integer>650</integer>
+			<key>POS_Y</key>
+			<integer>550</integer>
+			<key>LABEL</key>
+			<string>Sister 3</string>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>1</integer>
+			<key>POS_X</key>
+			<integer>800</integer>
+			<key>POS_Y</key>
+			<integer>550</integer>
+			<key>LABEL</key>
+			<string>Sister 4</string>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>5</integer>
+			<key>POS_X</key>
+			<integer>350</integer>
+			<key>POS_Y</key>
+			<integer>350</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -61,7 +111,7 @@
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>25</string>
+				<string>3</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
@@ -73,7 +123,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There are 10 50p coins. The coins are divided fairly between {@bname} and his 4 sisters. How many coins does {@bname} get?</string>
+		<string>10 coins are divided fairly between {@bname} and his 4 sisters. How many coins does {@bname} get?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

@@ -3,10 +3,18 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Add 5 again</string>
+	<string>Continue the pattern by doubling.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>arithmetic seq +5 start on 1</string>
+	<string>doubling sequence starting on x</string>
 	<key>TOOL_KEY</key>
-	<string>PlaceValue</string>
+	<string>ExprBuilder</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Tom had&lt;/b:t&gt;
+                &lt;b:ot tag=&quot;a&quot;&gt;5 sweets&lt;/b:ot&gt;
+                &lt;b:t&gt;He gets&lt;/b:t&gt;
+                &lt;b:ot tag=&quot;b&quot;&gt;4 more.&lt;/b:ot&gt;
+                &lt;b:t&gt;How many does he have?&lt;/b:t&gt;</string>
+	</array>
 </dict>
 </plist>

@@ -53,7 +53,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There are 8 10p coins. The number of coins are shared equally between Claire and Ed. How much does Claire get compared to Ed?</string>
+		<string>8 coins are shared equally between Claire and Ed. How much does Claire get compared to Ed?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

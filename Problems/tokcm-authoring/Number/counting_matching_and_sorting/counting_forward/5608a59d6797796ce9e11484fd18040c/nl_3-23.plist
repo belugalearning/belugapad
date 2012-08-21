@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>starting at 3, count on 20.</string>
+	<string>Starting at 3, count on 20.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Count to 23.</string>
 	<key>TOOL_KEY</key>
@@ -24,13 +24,13 @@
 	<true/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
 	<array>
-		<string>2</string>
+		<string>3</string>
 	</array>
 	<key>HIDE_ALL_NOTCHES</key>
 	<true/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
 	<array>
-		<string>2</string>
+		<string>1</string>
 	</array>
 	<key>HIDE_START_NUMBER</key>
 	<false/>

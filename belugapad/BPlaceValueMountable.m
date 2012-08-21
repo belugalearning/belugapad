@@ -33,14 +33,15 @@
             b.Mount=gameWorld.Blackboard.DropObject;
         }
             
-        DWPlaceValueCageGameObject *newMountC=[[DWPlaceValueCageGameObject alloc]init];
-        DWPlaceValueNetGameObject *newMountN=[[DWPlaceValueNetGameObject alloc]init];
+        DWPlaceValueCageGameObject *newMountC=nil;
+        DWPlaceValueNetGameObject *newMountN=nil;
         
         if([b.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
         {
             newMountN=(DWPlaceValueNetGameObject*)b.Mount;
             newMountN.MountedObject=b;
-            
+        
+
             
             b.PosX=newMountN.PosX;
             b.PosY=newMountN.PosY;

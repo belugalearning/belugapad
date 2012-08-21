@@ -336,11 +336,14 @@ typedef enum {
     [self addChild:foreLayer z:1];
     
     //ui layer elements -- top bar etc
-    CCLayer *topbar=[CCLayerGradient layerWithColor:ccc4(0, 0, 0, 200) fadingTo:ccc4(0, 0, 0, 160) alongVector:ccp(0, 70)];
-    [topbar setContentSize:CGSizeMake(2*cx, 70)];
-    [topbar setPosition:ccp(0, (2*cy)-70)];
-    [foreLayer addChild:topbar];
+//    CCLayer *topbar=[CCLayerGradient layerWithColor:ccc4(0, 0, 0, 200) fadingTo:ccc4(0, 0, 0, 160) alongVector:ccp(0, 70)];
+//    [topbar setContentSize:CGSizeMake(2*cx, 70)];
+//    [topbar setPosition:ccp(0, (2*cy)-70)];
+//    [foreLayer addChild:topbar];
     
+    CCSprite *topsprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/top-bar.png")];
+    [topsprite setPosition:ccp(cx, 2*cy-38)];
+    [foreLayer addChild:topsprite];
 }
 
 - (void)createAllBackgroundTileSprites

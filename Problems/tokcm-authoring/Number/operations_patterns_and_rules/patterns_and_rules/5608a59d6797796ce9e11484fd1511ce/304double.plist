@@ -1,46 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>PROBLEM_DESCRIPTION</key>
-	<string>What will the last digit of the next number in the pattern be?</string>
-	<key>INTERNAL_DESCRIPTION</key>
-	<string>end in 6 or 1?</string>
-	<key>META_QUESTION</key>
-	<dict>
-		<key>META_QUESTION_EVAL_MODE</key>
-		<integer>0</integer>
-		<key>META_QUESTION_ANSWER_MODE</key>
-		<integer>0</integer>
-		<key>META_QUESTION_ANSWERS</key>
-		<array>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>6</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>5</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>0</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>1</string>
-				<key>META_ANSWER_VALUE</key>
-				<true/>
-			</dict>
-		</array>
-		<key>META_QUESTION_TITLE</key>
-		<string>What will the last digit of the next number in the pattern be?</string>
-	</dict>
-</dict>
+    <dict>
+        <key>PROBLEM_DESCRIPTION</key>
+        <string>Continue the pattern by doubling.</string>
+        <key>INTERNAL_DESCRIPTION</key>
+        <string>doubling sequence</string>
+        <key>TOOL_KEY</key>
+        <string>ExprBuilder</string>
+        <key>EXPR_STAGES</key>
+        <array>
+            <string>&lt;b:t&gt;Tom had&lt;/b:t&gt;
+                &lt;b:ot tag=&quot;a&quot;&gt;5 sweets&lt;/b:ot&gt;
+                &lt;b:t&gt;He gets&lt;/b:t&gt;
+                &lt;b:ot tag=&quot;b&quot;&gt;4 more.&lt;/b:ot&gt;
+                &lt;b:t&gt;How many does he have?&lt;/b:t&gt;</string>
+            <string>&lt;b:ot tag=&quot;a&quot; enabled=&quot;no&quot;&gt;5 sweets&lt;/b:ot&gt;
+                &lt;b:op op=&quot;+&quot; picker=&quot;yes&quot; /&gt;
+                &lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt;4 sweets&lt;/b:ot&gt;
+                &lt;b:op op=&quot;=&quot; /&gt;
+                &lt;b:ot picker=&quot;yes&quot; pickerTarget=&quot;9&quot;&gt;9 sweets&lt;/b:ot&gt;</string>
+        </array>
+    </dict>
 </plist>

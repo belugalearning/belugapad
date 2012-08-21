@@ -11,6 +11,7 @@
 @implementation DWPlaceValueBlockGameObject
 
 @synthesize Mount;
+@synthesize LastMount;
 @synthesize ObjectValue;
 @synthesize PickupSprite;
 @synthesize mySprite;
@@ -23,6 +24,7 @@
 -(void)dealloc
 {
     self.Mount=nil;
+    self.LastMount=nil;
     self.PickupSprite=nil;
     self.mySprite=nil;
     self.SpriteFilename=nil;

@@ -3,11 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Shade in 1/{$den} of the rectangle.</string>
+	<string>What is the next shape in the pattern?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>shade fraction</string>
-	<key>MASTERY</key>
-	<true/>
+	<string>square numbers</string>
 	<key>TOOL_KEY</key>
 	<string>DotGrid</string>
 	<key>ANCHOR_SPACE</key>
@@ -21,13 +19,11 @@
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>DOTGRID_EVAL_TYPE</key>
-	<integer>1</integer>
-	<key>DOTGRID_EVAL_DIVIDEND</key>
-	<integer>1</integer>
-	<key>DOTGRID_EVAL_DIVISOR</key>
-	<string>{$den}</string>
+	<integer>0</integer>
 	<key>DOTGRID_EVAL_TOTALSIZE</key>
-	<string>{$mult*$den}</string>
+	<integer>30</integer>
+	<key>DO_NOT_SIMPLIFY_FRACTIONS</key>
+	<false/>
 	<key>SHOW_RESIZE</key>
 	<false/>
 	<key>INIT_OBJECTS</key>
@@ -38,34 +34,47 @@
 			<key>START_X</key>
 			<integer>2</integer>
 			<key>END_X</key>
-			<string>{2+$mult}</string>
+			<integer>3</integer>
 			<key>START_Y</key>
-			<integer>2</integer>
+			<integer>5</integer>
 			<key>END_Y</key>
-			<string>{2+$den}</string>
+			<integer>6</integer>
 			<key>POS_X</key>
 			<integer>0</integer>
 			<key>POS_Y</key>
 			<integer>0</integer>
 		</dict>
-	</array>
-	<key>DVARS</key>
-	<array>
 		<dict>
-			<key>VAR_NAME</key>
-			<string>$mult</string>
-			<key>MIN</key>
-			<string>1</string>
-			<key>MAX</key>
-			<string>3</string>
+			<key>SHOW_RESIZE</key>
+			<false/>
+			<key>START_X</key>
+			<integer>4</integer>
+			<key>END_X</key>
+			<integer>6</integer>
+			<key>START_Y</key>
+			<integer>5</integer>
+			<key>END_Y</key>
+			<integer>7</integer>
+			<key>POS_X</key>
+			<integer>0</integer>
+			<key>POS_Y</key>
+			<integer>0</integer>
 		</dict>
 		<dict>
-			<key>VAR_NAME</key>
-			<string>$den</string>
-			<key>MIN</key>
-			<string>2</string>
-			<key>MAX</key>
-			<string>5</string>
+			<key>SHOW_RESIZE</key>
+			<false/>
+			<key>START_X</key>
+			<integer>7</integer>
+			<key>END_X</key>
+			<integer>10</integer>
+			<key>START_Y</key>
+			<integer>5</integer>
+			<key>END_Y</key>
+			<integer>8</integer>
+			<key>POS_X</key>
+			<integer>0</integer>
+			<key>POS_Y</key>
+			<integer>0</integer>
 		</dict>
 	</array>
 </dict>

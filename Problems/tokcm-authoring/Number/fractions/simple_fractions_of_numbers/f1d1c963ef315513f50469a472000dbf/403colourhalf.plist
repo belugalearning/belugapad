@@ -3,11 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Shade in 1/{$den} of the rectangle.</string>
+	<string>Here are 24 squares. Shade half of the squares. How many squares have you shaded?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>shade fraction</string>
-	<key>MASTERY</key>
-	<true/>
+	<string>colour half</string>
 	<key>TOOL_KEY</key>
 	<string>DotGrid</string>
 	<key>ANCHOR_SPACE</key>
@@ -17,7 +15,7 @@
 	<key>START_Y</key>
 	<integer>0</integer>
 	<key>DRAW_MODE</key>
-	<integer>0</integer>
+	<integer>2</integer>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>DOTGRID_EVAL_TYPE</key>
@@ -25,9 +23,9 @@
 	<key>DOTGRID_EVAL_DIVIDEND</key>
 	<integer>1</integer>
 	<key>DOTGRID_EVAL_DIVISOR</key>
-	<string>{$den}</string>
-	<key>DOTGRID_EVAL_TOTALSIZE</key>
-	<string>{$mult*$den}</string>
+	<integer>2</integer>
+	<key>DO_NOT_SIMPLIFY_FRACTIONS</key>
+	<false/>
 	<key>SHOW_RESIZE</key>
 	<false/>
 	<key>INIT_OBJECTS</key>
@@ -38,35 +36,33 @@
 			<key>START_X</key>
 			<integer>2</integer>
 			<key>END_X</key>
-			<string>{2+$mult}</string>
+			<integer>8</integer>
 			<key>START_Y</key>
-			<integer>2</integer>
+			<integer>5</integer>
 			<key>END_Y</key>
-			<string>{2+$den}</string>
+			<integer>9</integer>
 			<key>POS_X</key>
 			<integer>0</integer>
 			<key>POS_Y</key>
 			<integer>0</integer>
 		</dict>
 	</array>
-	<key>DVARS</key>
-	<array>
-		<dict>
-			<key>VAR_NAME</key>
-			<string>$mult</string>
-			<key>MIN</key>
-			<string>1</string>
-			<key>MAX</key>
-			<string>5</string>
-		</dict>
-		<dict>
-			<key>VAR_NAME</key>
-			<string>$den</string>
-			<key>MIN</key>
-			<string>2</string>
-			<key>MAX</key>
-			<string>5</string>
-		</dict>
-	</array>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>Here are 24 squares. Shade half of the squares. How many squares have you shaded?</string>
+		<key>INTERNAL_DESCRIPTION</key>
+		<string>halving numbers</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>1</integer>
+		<key>ANIMATE_FROM_PICKER</key>
+		<true/>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<string>12</string>
+	</dict>
 </dict>
 </plist>

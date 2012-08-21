@@ -8,6 +8,16 @@
 		<string>build_1.06</string>
 		<key>PROBLEMS</key>
 		<array>
-		</array>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd165fa9/dt_mq_4_2_cookies.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd165fa9/dt_mq_6_2_cookies.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd165fa9/dt_mq_6_3_cookies.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd165fa9/nb_4_3_12_taxi.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd165fa9/nb_4_5_20_taxi.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd165fa9/mq_10_5_drinks.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd165fa9/mq_16_8_haribos.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd165fa9/mq_11_7_jar_sweets.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd165fa9/mq_40_4_cans.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd165fa9/mq_9_5_cake.plist</string>
+        </array>
 	</dict>
 </plist>

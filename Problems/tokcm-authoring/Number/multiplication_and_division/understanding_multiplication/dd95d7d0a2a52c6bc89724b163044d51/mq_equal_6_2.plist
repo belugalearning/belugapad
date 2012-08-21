@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>MASTERY</key>
+	<true/>
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
@@ -13,7 +15,7 @@
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
-		<string>Yes!! 15= 5 x 3 = 3+3+3+3+3 !!</string>
+		<string>well done!!</string>
 		<key>META_QUESTION_EVAL_MODE</key>
 		<integer>0</integer>
 		<key>META_QUESTION_ANSWER_MODE</key>
@@ -34,7 +36,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Is 6x2 equivalent to 2x6?</string>
+		<string>Is 6 x 2 equivalent to 2 x 6?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

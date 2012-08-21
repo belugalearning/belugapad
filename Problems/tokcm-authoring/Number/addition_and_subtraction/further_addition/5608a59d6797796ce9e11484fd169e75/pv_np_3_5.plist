@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>pv_mq_3_5</string>
+	<string>pv_np_3_5</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>pv_mq_3_5</string>
+	<string>pv_np_3_5</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -25,7 +25,7 @@
 	<key>ALLOW_MULCHING</key>
 	<false/>
 	<key>EVAL_MODE</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>SHOW_COUNT</key>
@@ -100,7 +100,7 @@
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
-		<integer>25</integer>
+		<integer>15</integer>
 	</dict>
 </dict>
 </plist>

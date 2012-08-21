@@ -26,25 +26,25 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>5x5=25</string>
+				<string>25</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>5+2=7</string>
+				<string>7</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>5x2=10</string>
+				<string>10</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>5-2=3</string>
+				<string>3</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>

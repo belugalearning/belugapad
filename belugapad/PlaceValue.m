@@ -1504,6 +1504,7 @@ static float kTimeToCageShake=7.0f;
         {
             netMount=(DWPlaceValueNetGameObject*)pickupObject.Mount;
             netMount.MountedObject=nil;
+            pickupObject.LastMount=pickupObject.Mount;
             lastMount=pickupObject.Mount;
             pickupObject.Mount=nil;
             
@@ -1520,6 +1521,7 @@ static float kTimeToCageShake=7.0f;
                 if([b.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
                 {
                     n=(DWPlaceValueNetGameObject*)b.Mount;
+                    b.LastMount=b.Mount;
                     b.Mount=nil;
                     n.MountedObject=nil;
                 }
@@ -2014,14 +2016,18 @@ static float kTimeToCageShake=7.0f;
                     //reset positions of all selected objects (inc pickup object)
                     for(int igo=0; igo<gw.Blackboard.SelectedObjects.count; igo++)
                     {
-                        DWGameObject *go = [[[gw Blackboard] SelectedObjects] objectAtIndex:igo];
-//                        [go handleMessage:kDWresetToMountPosition];
-                        [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
-                        [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+                        DWPlaceValueBlockGameObject *go = [[[gw Blackboard] SelectedObjects] objectAtIndex:igo];
+                        go.Mount=go.LastMount;
                         
-                        gw.Blackboard.DropObject=nil;
-                        [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
-
+                        ((DWPlaceValueNetGameObject*)go.Mount).MountedObject=go;
+                        
+                        go.AnimateMe=YES;
+                        
+                        go.PosX=((DWPlaceValueNetGameObject*)go.Mount).PosX;
+                        go.PosY=((DWPlaceValueNetGameObject*)go.Mount).PosY;
+                        
+                        [go handleMessage:kDWupdateSprite];
+                        
                         //[go handleMessage:kDWputdown];
                     }
                     

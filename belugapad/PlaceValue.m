@@ -1516,6 +1516,7 @@ static float kTimeToCageShake=7.0f;
         {
             for(DWPlaceValueBlockGameObject *b in gw.Blackboard.SelectedObjects)
             {
+                if(b==pickupObject)continue;
                 DWPlaceValueNetGameObject *n=nil;
                 if([b.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
                 {
@@ -1795,8 +1796,6 @@ static float kTimeToCageShake=7.0f;
     
     inBlockTransition=NO;
     
-    BOOL doNotResetToMount=NO;
-    
     for(int i=0;i<[multiplePlusSprites count];i++)
     {
         CGRect boundingBox=[[multiplePlusSprites objectAtIndex:i]CGRectValue];
@@ -1932,6 +1931,9 @@ static float kTimeToCageShake=7.0f;
                     [goO handleMessage:kDWswitchBaseSelectionBack andPayload:nil withLogLevel:0];
                 }
             }
+            
+            [self setTouchVarsToOff];
+            return;
         }
         
         if([gw Blackboard].PickupObject!=nil && ([BLMath DistanceBetween:touchStartPos and:touchEndPos] > fabs(kTapSlipThreshold)))
@@ -2068,13 +2070,13 @@ static float kTimeToCageShake=7.0f;
             }
             else
             {
-                if(!doNotResetToMount)[self resetPickupObjectPos];
+                [self resetPickupObjectPos];
             }
             [gw Blackboard].PickupObject = nil;
         }
         
         else {
-            if(!doNotResetToMount)[self resetPickupObjectPos];
+            [self resetPickupObjectPos];
         }
         
     }
@@ -2088,16 +2090,15 @@ static float kTimeToCageShake=7.0f;
     //get any auto reset / repositions to re-evaluate
     [gw handleMessage:kDWstartRespositionSeek andPayload:nil withLogLevel:0];
     
-    potentialTap=NO;
-    hasMovedBlock=NO;
-    hasMovedLayer=NO;
-    boundingBoxCondense=CGRectNull;
-    boundingBoxMulch=CGRectNull;
-    isBasePickup=NO;
-    [pickupObjects removeAllObjects];
+    [self setTouchVarsToOff];
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self setTouchVarsToOff];
+}
+
+-(void)setTouchVarsToOff
 {
     //remove all condense/mulch/transition state
     inBlockTransition=NO;
@@ -2114,6 +2115,7 @@ static float kTimeToCageShake=7.0f;
     
     touching=NO;
 }
+
 #pragma mark - dealloc
 -(void) dealloc
 {

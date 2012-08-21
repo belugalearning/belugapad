@@ -176,5 +176,6 @@
 -(BOOL)doCondenseFromLocation:(CGPoint)location;
 -(BOOL)doMulchFromLocation:(CGPoint)location;
 -(BOOL)doTransitionWithIncrement:(int)incr;
+-(void)setTouchVarsToOff;
 
 @end

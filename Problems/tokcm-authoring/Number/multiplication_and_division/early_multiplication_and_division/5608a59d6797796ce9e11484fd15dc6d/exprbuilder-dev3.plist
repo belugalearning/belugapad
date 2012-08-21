@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>tom&apos;s apples -- more text</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Once upon a time, Tom had&lt;/b:t&gt;
+&lt;b:ot tag=&quot;a&quot;&gt;5 big juicy sweets.&lt;/b:ot&gt;
+&lt;b:t&gt;After an eventful day chasing meerkats on the moors he was given, as a reward, &lt;/b:t&gt;
+&lt;b:ot tag=&quot;b&quot;&gt;4 more sweets.&lt;/b:ot&gt;
+&lt;b:t&gt;How many sweets does he have in total?&lt;/b:t&gt;</string>
+		<string>&lt;b:ot tag=&quot;a&quot; enabled=&quot;no&quot;&gt;5 sweets&lt;/b:ot&gt;
+&lt;b:op op=&quot;+&quot; picker=&quot;yes&quot; /&gt;
+&lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt;4 sweets&lt;/b:ot&gt;
+&lt;b:op op=&quot;=&quot; /&gt;
+&lt;b:ot picker=&quot;yes&quot; pickerTarget=&quot;9&quot;&gt;9 sweets&lt;/b:ot&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<dict>
+		<key>$apples</key>
+		<dict>
+			<key>MIN</key>
+			<string>4</string>
+			<key>MAX</key>
+			<string>9</string>
+		</dict>
+		<key>$decrementor</key>
+		<dict>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>3</string>
+		</dict>
+		<key>$tomsapples</key>
+		<dict>
+			<key>VALUE</key>
+			<string>{$apples-$decrementor}</string>
+		</dict>
+	</dict>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>$operator</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>x</string>
+				<string>multiplied by</string>
+				<string>times</string>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

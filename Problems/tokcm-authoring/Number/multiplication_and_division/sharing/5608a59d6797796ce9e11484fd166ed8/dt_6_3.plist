@@ -77,7 +77,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There are 6 {@item}. Share out the {@item} fairly between Jack, Elaine and Joseph. Who gets the most?</string>
+		<string>6 {@item} are split evenly between Jack, Elaine and Joseph. Who gets the most?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

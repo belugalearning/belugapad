@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Create a set of the same size but different ordering.</string>
+	<string>Create a set of the same size but a different shape.</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -149,6 +149,13 @@
 	<key>CAGE_NEG_DISABLE_DELETE</key>
 	<dict>
 		<key>100</key>
+		<false/>
+	</dict>
+	<key>MULTIPLE_BLOCK_PICKUP</key>
+	<dict>
+		<key>1</key>
+		<true/>
+		<key>0</key>
 		<false/>
 	</dict>
 	<key>X_OFFSET</key>

@@ -9,7 +9,7 @@
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>3</string>
+	<string>2</string>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
@@ -24,7 +24,7 @@
 	<true/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
 	<array>
-		<string>5</string>
+		<string>2</string>
 	</array>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>

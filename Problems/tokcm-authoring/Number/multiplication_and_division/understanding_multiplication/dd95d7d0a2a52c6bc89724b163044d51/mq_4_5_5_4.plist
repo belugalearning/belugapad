@@ -13,7 +13,7 @@
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
-		<string>Yes!! 15= 5 x 3 = 3+3+3+3+3 !!</string>
+		<string>well done!!</string>
 		<key>META_QUESTION_EVAL_MODE</key>
 		<integer>0</integer>
 		<key>META_QUESTION_ANSWER_MODE</key>
@@ -40,7 +40,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Which phrase represents {$var1}x{$var2}?</string>
+		<string>Which phrase represents {$var1} x {$var2}?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

@@ -12,11 +12,49 @@
 	<array>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>9</integer>
+			<integer>1</integer>
 			<key>POS_X</key>
-			<integer>250</integer>
+			<integer>450</integer>
 			<key>POS_Y</key>
-			<integer>400</integer>
+			<integer>600</integer>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>2</integer>
+			<key>POS_X</key>
+			<integer>415</integer>
+			<key>POS_Y</key>
+			<integer>525</integer>
+			<key>LABEL</key>
+			<string>Jack</string>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>3</integer>
+			<key>POS_X</key>
+			<integer>375</integer>
+			<key>POS_Y</key>
+			<integer>450</integer>
+			<key>LABEL</key>
+			<string>{@bname}</string>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>2</integer>
+			<key>POS_X</key>
+			<integer>415</integer>
+			<key>POS_Y</key>
+			<integer>375</integer>
+			<key>LABEL</key>
+			<string>{@gname}</string>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>1</integer>
+			<key>POS_X</key>
+			<integer>450</integer>
+			<key>POS_Y</key>
+			<integer>300</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -53,7 +91,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There are 9 {@item}. It is shared evenly between {@gname}, {@bname} and Jack. How many {@item} does {@gname} get?</string>
+		<string>9 {@item} are shared evenly between {@gname}, {@bname} and Jack. How many {@item} does {@gname} get?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

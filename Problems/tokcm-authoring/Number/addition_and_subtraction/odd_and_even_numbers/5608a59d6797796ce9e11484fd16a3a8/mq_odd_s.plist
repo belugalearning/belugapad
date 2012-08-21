@@ -2,32 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>DVARS</key>
-	<dict>
-		<key>$var1</key>
-		<dict>
-			<key>MAX</key>
-			<string>19</string>
-			<key>MIN</key>
-			<string>9</string>
-		</dict>
-		<key>$var2</key>
-		<dict>
-			<key>MAX</key>
-			<string>17</string>
-			<key>MIN</key>
-			<string>4</string>
-		</dict>
-		<key>$var3</key>
-		<dict>
-			<key>VALUE</key>
-			<string>{$var2+$var1}</string>
-		</dict>
-	</dict>
-	<key>INTERNAL_DESCRIPTION</key>
-	<string>x -{$var2} = {$var1}. What is x?</string>
-	<key>EVAL_MODE</key>
-	<integer>1</integer>
+	<key>MASTERY</key>
+	<true/>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
@@ -40,31 +16,19 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>{$var3+3}</string>
+				<string>Even</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>{$var2+$var1}</string>
+				<string>Odd</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>{$var3-1}</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>{$var3-3}</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>x -{$var2} = {$var1}. What is x?</string>
+		<string>There is a shape made of 33 blocks. When it is split into blocks of 2&apos;s, there is one left over. Is 33 odd or even?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

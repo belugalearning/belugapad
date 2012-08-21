@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>tom&apos;s apples</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Emily ordered&lt;/b:t&gt;
+&lt;b:ot tag=&quot;a&quot;&gt;24 books.&lt;/b:ot&gt;
+&lt;b:t&gt;On Monday,&lt;/b:t&gt;
+&lt;b:ot tag=&quot;b&quot;&gt;5 books&lt;/b:ot&gt;
+&lt;b:t&gt; arrive. Another &lt;/b:t&gt; 
+&lt;b:ot tag=&quot;c&quot;&gt; 8 books&lt;/b:ot&gt;
+ &lt;b:t&gt;arrive on Tuesday. How many books still haven&apos;t been delivered?&lt;/b:t&gt;</string>
+		<string>&lt;b:ot tag=&quot;a&quot; enabled=&quot;no&quot;&gt;24&lt;/b:ot&gt;
+&lt;b:op op=&quot;-&quot; picker=&quot;yes&quot; /&gt;
+&lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt;5&lt;/b:ot&gt;
+&lt;b:op op=&quot;-&quot; picker=&quot;yes&quot; /&gt;
+&lt;b:ot tag=&quot;c&quot; enabled=&quot;no&quot;&gt;8&lt;/b:ot&gt;
+&lt;b:op op=&quot;=&quot; /&gt;
+&lt;b:ot picker=&quot;yes&quot; pickerTarget=&quot;11&quot;&gt;11&lt;/b:ot&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<dict>
+		<key>$apples</key>
+		<dict>
+			<key>MIN</key>
+			<string>4</string>
+			<key>MAX</key>
+			<string>9</string>
+		</dict>
+		<key>$decrementor</key>
+		<dict>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>3</string>
+		</dict>
+		<key>$tomsapples</key>
+		<dict>
+			<key>VALUE</key>
+			<string>{$apples-$decrementor}</string>
+		</dict>
+	</dict>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>$operator</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>x</string>
+				<string>multiplied by</string>
+				<string>times</string>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

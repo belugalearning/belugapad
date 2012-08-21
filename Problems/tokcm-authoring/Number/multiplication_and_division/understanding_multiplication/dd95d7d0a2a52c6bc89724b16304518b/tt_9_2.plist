@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is 6 x 2?</string>
+	<string>What is 9 x 2?</string>
 	<key>TOOL_KEY</key>
 	<string>TimesTables</string>
 	<key>ANCHOR_SPACE</key>
@@ -42,7 +42,7 @@
 	</array>
 	<key>REVEAL_COLS</key>
 	<array>
-		<integer>6</integer>
+		<integer>9</integer>
 	</array>
 	<key>REVEAL_TILES</key>
 	<array/>
@@ -50,7 +50,7 @@
 	<array>
 		<dict>
 			<key>POS_X</key>
-			<integer>6</integer>
+			<integer>9</integer>
 			<key>POS_Y</key>
 			<integer>2</integer>
 		</dict>
@@ -58,7 +58,7 @@
 			<key>POS_X</key>
 			<integer>2</integer>
 			<key>POS_Y</key>
-			<integer>6</integer>
+			<integer>9</integer>
 		</dict>
 	</array>
 	<key>TIMER</key>

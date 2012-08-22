@@ -205,7 +205,8 @@ static float kDistanceBetweenBlocks=70.0f;
         CGPoint p = ccp(posX + i * kDistanceBetweenBlocks,  posY);
         SGDtoolBlock *block =  [[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:p] autorelease];
         [block setup];
-        block.MyContainer = container;
+        block.MyContainer = container;        
+        [container addBlockToMe:block];
         
         if (i)
         {
@@ -213,10 +214,7 @@ static float kDistanceBetweenBlocks=70.0f;
             [block pairMeWith:prevBlock];
             [self findMountPositionForThisShape:block toThisShape:prevBlock];
         }
-
-        [container addBlockToMe:block];
     }
-
         
     
 //    if(hasLabel)

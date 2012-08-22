@@ -1171,6 +1171,41 @@ static float kTimeToCageShake=7.0f;
 }
 
 #pragma mark - environment interaction
+-(void)checkForMultipleControlTouchesAt:(CGPoint)thisLocation
+{
+    for(int i=0;i<[multiplePlusSprites count];i++)
+    {
+        CGRect boundingBox=[[multiplePlusSprites objectAtIndex:i]CGRectValue];
+        //CCSprite *s=[multiplePlusSprites objectAtIndex:i];
+        if(CGRectContainsPoint(boundingBox, [renderLayer convertToNodeSpace:thisLocation]))
+        {
+            int curNum=[[blocksToCreate objectAtIndex:i]intValue];
+            curNum++;
+            if(curNum>10)curNum=10;
+            [loggingService logEvent:BL_PA_PV_TOUCH_END_BLOCKSTOCREATE_UP withAdditionalData:[NSNumber numberWithInt:curNum]];
+            
+            [blocksToCreate replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
+            return;
+        }
+    }
+    
+    for(int i=0;i<[multipleMinusSprites count];i++)
+    {
+        CGRect boundingBox=[[multipleMinusSprites objectAtIndex:i]CGRectValue];
+        //CCSprite *s=[multipleMinusSprites objectAtIndex:i];
+        if(CGRectContainsPoint(boundingBox, [renderLayer convertToNodeSpace:thisLocation]))
+        {
+            int curNum=[[blocksToCreate objectAtIndex:i]intValue];
+            curNum--;
+            if(curNum<1)curNum=1;
+            
+            [loggingService logEvent:BL_PA_PV_TOUCH_END_BLOCKSTOCREATE_DOWN withAdditionalData:[NSNumber numberWithInt:curNum]];
+            [blocksToCreate replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
+            return;
+        }
+    }
+
+}
 -(void)snapLayerToPosition
 {
     // code for changing the layer position to the current column 
@@ -1476,7 +1511,6 @@ static float kTimeToCageShake=7.0f;
     [toolHost.Zubi setTarget:location];    
     
     
-    // TODO: This should be made proportional
     if (CGRectContainsPoint(kRectButtonReset, location) && showReset)
         [toolHost resetProblem];
     
@@ -1488,7 +1522,7 @@ static float kTimeToCageShake=7.0f;
     gw.Blackboard.CurrentColumnValue=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]floatValue];
     
     
-    //broadcast search for pickup object gw
+    //broadcast search for pickup object gw§
     [gw handleMessage:kDWareYouAPickupTarget andPayload:nil withLogLevel:-1];
     
     // then if we get a response, do stuff
@@ -1801,37 +1835,8 @@ static float kTimeToCageShake=7.0f;
     
     inBlockTransition=NO;
     
-    for(int i=0;i<[multiplePlusSprites count];i++)
-    {
-        CGRect boundingBox=[[multiplePlusSprites objectAtIndex:i]CGRectValue];
-        //CCSprite *s=[multiplePlusSprites objectAtIndex:i];
-        if(CGRectContainsPoint(boundingBox, [renderLayer convertToNodeSpace:location]))
-        {
-            int curNum=[[blocksToCreate objectAtIndex:i]intValue];
-            curNum++;
-            if(curNum>10)curNum=10;
-            [loggingService logEvent:BL_PA_PV_TOUCH_END_BLOCKSTOCREATE_UP withAdditionalData:[NSNumber numberWithInt:curNum]];
-            
-            [blocksToCreate replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
-            return;
-        }
-    }
-    
-    for(int i=0;i<[multipleMinusSprites count];i++)
-    {
-        CGRect boundingBox=[[multipleMinusSprites objectAtIndex:i]CGRectValue];
-        //CCSprite *s=[multipleMinusSprites objectAtIndex:i];
-        if(CGRectContainsPoint(boundingBox, [renderLayer convertToNodeSpace:location]))
-        {
-            int curNum=[[blocksToCreate objectAtIndex:i]intValue];
-            curNum--;
-            if(curNum<1)curNum=1;
-            
-            [loggingService logEvent:BL_PA_PV_TOUCH_END_BLOCKSTOCREATE_DOWN withAdditionalData:[NSNumber numberWithInt:curNum]];
-            [blocksToCreate replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
-            return;
-        }
-    }
+    if(multipleBlockPickup||showMultipleControls)
+        [self checkForMultipleControlTouchesAt:location];
     
     // log out if blocks are moved
     if(hasMovedBlock)
@@ -1842,7 +1847,8 @@ static float kTimeToCageShake=7.0f;
               withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:objValue] forKey:@"objectValue"]];
     }
     
-    if(hasMovedLayer) [loggingService logEvent:BL_PA_PV_TOUCH_MOVE_MOVE_GRID withAdditionalData:nil];
+    if(hasMovedLayer)
+        [loggingService logEvent:BL_PA_PV_TOUCH_MOVE_MOVE_GRID withAdditionalData:nil];
     
     //do mulching / condensing
     if (inMulchArea) {
@@ -1861,37 +1867,9 @@ static float kTimeToCageShake=7.0f;
     }
     if(!aTransitionHappened)
     {
-        if(fabsf(touchStartPos.x-touchEndPos.x)>kMovementForSnapColumn && [gw Blackboard].PickupObject==nil)
-        {
-            if(touchStartPos.x < touchEndPos.x)
-            {
-                
-                if(currentColumnIndex < 1) { currentColumnIndex = 0; }
-                else { currentColumnIndex--; }
-                
-                gw.Blackboard.CurrentStore = [gw.Blackboard.AllStores objectAtIndex:currentColumnIndex];   
-                
-                //[self snapLayerToPosition];
-            }
-            else
-            {
-                
-                if(currentColumnIndex >= (numberOfColumns-1)) { currentColumnIndex = numberOfColumns-1; }
-                else { currentColumnIndex++; }
-                
-                gw.Blackboard.CurrentStore = [gw.Blackboard.AllStores objectAtIndex:currentColumnIndex];   
-                
-                //[self snapLayerToPosition];
-                
-            }
-        }
-        else if(fabsf(touchStartPos.x-touchEndPos.x)<kMovementForSnapColumn && [gw Blackboard].PickupObject==nil && numberOfColumns>1)
-        {
-            //[self snapLayerToPosition];
-        }
         
         // evaluate the distance between start/end pos.
-        
+        // if we've not moved over our tap slip threshold
         if([BLMath DistanceBetween:touchStartPos and:touchEndPos] < fabs(kTapSlipThreshold) && potentialTap)
         {
             // check whether it's selected and we can deselect - or that it's deselected
@@ -1907,9 +1885,11 @@ static float kTimeToCageShake=7.0f;
             else 
                 isCage=NO;
 
+            // if we're selected and not in a cage or if we are and we're allowed to deselect, AND are not in a cage, switch selection
             if((!block.Selected && !isCage) || (block.Selected && allowDeselect && !isCage))
             {
                 [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
+        
                 hasMovedBasePickup=NO;
                 //doNotResetToMount=YES;
             }
@@ -1918,15 +1898,13 @@ static float kTimeToCageShake=7.0f;
             // switch colour if the base value is selected
             if(gw.Blackboard.SelectedObjects.count == columnBaseValue && showBaseSelection)
             {
-                if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
+                for(int go=0; go<gw.Blackboard.SelectedObjects.count; go++)
                 {
-                    for(int go=0; go<gw.Blackboard.SelectedObjects.count; go++)
-                    {
-                        DWGameObject *goO = [[[gw Blackboard] SelectedObjects] objectAtIndex:go];
+                    DWGameObject *goO = [[[gw Blackboard] SelectedObjects] objectAtIndex:go];
 
-                        [goO handleMessage:kDWswitchBaseSelection andPayload:nil withLogLevel:0];
-                    }
+                    [goO handleMessage:kDWswitchBaseSelection andPayload:nil withLogLevel:0];
                 }
+                
             }
             // or switch back if it's not
             else
@@ -1941,10 +1919,9 @@ static float kTimeToCageShake=7.0f;
             [self setTouchVarsToOff];
             return;
         }
-        
+        // if we've moved more than our 'tap slip' threshold
         if([gw Blackboard].PickupObject!=nil && ([BLMath DistanceBetween:touchStartPos and:touchEndPos] > fabs(kTapSlipThreshold)))
         {
-            
                         
             if(gw.Blackboard.SelectedObjects.count == columnBaseValue && isBasePickup)
             {
@@ -1975,7 +1952,6 @@ static float kTimeToCageShake=7.0f;
                 {
                     //deselect the object if selected
                     // check whether it's selected and we can deselect - or that it's deselected
-                
                     if(b.Selected)
                         [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
                 }
@@ -1986,7 +1962,6 @@ static float kTimeToCageShake=7.0f;
                 {
                     if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
                     {
-                        
                         gw.Blackboard.TestTouchLocation = ccp(gw.Blackboard.TestTouchLocation.x, gw.Blackboard.TestTouchLocation.y + 1000);
                         
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
@@ -2020,6 +1995,7 @@ static float kTimeToCageShake=7.0f;
                 // ===== return a selection (a base selection) back to where they came from ===
                 else if(gw.Blackboard.SelectedObjects.count==columnBaseValue && isBasePickup)
                 {
+                                NSLog(@"columnbasevalue selected and is base pickup");
                     //reset positions of all selected objects (inc pickup object)
                     for(int igo=0; igo<gw.Blackboard.SelectedObjects.count; igo++)
                     {
@@ -2038,15 +2014,25 @@ static float kTimeToCageShake=7.0f;
                         //[go handleMessage:kDWputdown];
                     }
                     
-//                    for(DWPlaceValueBlockGameObject *b in gw.Blackboard.SelectedObjects)
-//                    {
-//                        [b handleMessage:kDWresetToMountPosition];
-//                        [b handleMessage:kDWputdown];
-//                        [b handleMessage:kDWswitchBaseSelectionBack];
-//                        //[b handleMessage:kDWswitchSelection];
-//                    }
                 }
-                // ============================================================================
+
+                else if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && [b.LastMount isKindOfClass:[DWPlaceValueNetGameObject class]])
+                {
+                    
+                    DWPlaceValueNetGameObject *drop=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
+                    DWPlaceValueNetGameObject *last=(DWPlaceValueNetGameObject*)b.LastMount;
+                    if(last.ColumnValue==drop.ColumnValue)
+                    {
+                        b.Mount=last;
+                        last.MountedObject=b;
+                        b.AnimateMe=YES;
+                        
+                        b.PosX=((DWPlaceValueNetGameObject*)b.Mount).PosX;
+                        b.PosY=((DWPlaceValueNetGameObject*)b.Mount).PosY;
+                        
+                        [b handleMessage:kDWmoveSpriteToPosition];
+                    }
+                }
                 
                 else {
                     [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
@@ -2078,6 +2064,7 @@ static float kTimeToCageShake=7.0f;
             {
                 [self resetPickupObjectPos];
             }
+            
             [gw Blackboard].PickupObject = nil;
         }
         

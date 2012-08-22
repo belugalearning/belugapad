@@ -50,12 +50,7 @@ typedef struct
 -(void)resetAndStartPolling
 {
     [tickState removeAllObjects];
-    if (timer) [timer invalidate];
-    timer = [NSTimer scheduledTimerWithTimeInterval:0.1
-                                             target:self
-                                           selector:@selector(tick)
-                                           userInfo:nil
-                                            repeats:YES];
+    [self resumePolling];
 }
 
 -(void)stopPolling
@@ -69,14 +64,12 @@ typedef struct
 
 -(void)resumePolling
 {
-    if (!timer)
-    {
-        timer = [NSTimer scheduledTimerWithTimeInterval:0.1
-                                                 target:self
-                                               selector:@selector(tick)
-                                               userInfo:nil
-                                                repeats:YES];
-    }
+    if (timer) [timer invalidate];
+    timer = [NSTimer scheduledTimerWithTimeInterval:0.1
+                                             target:self
+                                           selector:@selector(tick:)
+                                           userInfo:nil
+                                            repeats:YES];
 }
 
 -(void)registerPollee:(id<LogPolling,NSObject>)pollee

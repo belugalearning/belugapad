@@ -16,6 +16,7 @@
 		0C35A9F81576272500D47517 /* canned-dbs in Resources */ = {isa = PBXBuildFile; fileRef = 0C35A9F71576272500D47517 /* canned-dbs */; };
 		0C40751C1596354700E03C1F /* LoggingService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C40751B1596354700E03C1F /* LoggingService.m */; };
 		0C427C3714F529CC0033AFE2 /* sfx in Resources */ = {isa = PBXBuildFile; fileRef = 0C427C3614F529CC0033AFE2 /* sfx */; };
+		0C4CD67B15E3A5430037BBD0 /* LogPoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C4CD67A15E3A5430037BBD0 /* LogPoller.m */; };
 		0C51649715D9068F008E7C72 /* settings in Resources */ = {isa = PBXBuildFile; fileRef = 0C51649615D9068D008E7C72 /* settings */; };
 		0C692E4A157F973D009307DB /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C692E49157F973D009307DB /* libsqlite3.dylib */; };
 		0C692E50157F9794009307DB /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C692E4B157F9794009307DB /* FMDatabase.m */; };
@@ -430,6 +431,9 @@
 		0C40751A1596354700E03C1F /* LoggingService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggingService.h; sourceTree = "<group>"; };
 		0C40751B1596354700E03C1F /* LoggingService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoggingService.m; sourceTree = "<group>"; };
 		0C427C3614F529CC0033AFE2 /* sfx */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sfx; sourceTree = SOURCE_ROOT; };
+		0C4CD67815E253190037BBD0 /* LogPollingProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogPollingProtocols.h; sourceTree = "<group>"; };
+		0C4CD67915E3A5430037BBD0 /* LogPoller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogPoller.h; sourceTree = "<group>"; };
+		0C4CD67A15E3A5430037BBD0 /* LogPoller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogPoller.m; sourceTree = "<group>"; };
 		0C51649615D9068D008E7C72 /* settings */ = {isa = PBXFileReference; lastKnownFileType = folder; path = settings; sourceTree = SOURCE_ROOT; };
 		0C692E38157F9413009307DB /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		0C692E3A157F9413009307DB /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
@@ -1238,8 +1242,18 @@
 			children = (
 				0C40751A1596354700E03C1F /* LoggingService.h */,
 				0C40751B1596354700E03C1F /* LoggingService.m */,
+				0C4CD67815E253190037BBD0 /* LogPollingProtocols.h */,
+				0C4CD67915E3A5430037BBD0 /* LogPoller.h */,
+				0C4CD67A15E3A5430037BBD0 /* LogPoller.m */,
 			);
 			name = Logging;
+			sourceTree = "<group>";
+		};
+		0C4CD67615E2529F0037BBD0 /* CommonProtocols */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = CommonProtocols;
 			sourceTree = "<group>";
 		};
 		0C692E37157F9413009307DB /* fmdb */ = {
@@ -2257,6 +2271,7 @@
 		7F51159814A9EF2B001AF372 /* CompArchitecture */ = {
 			isa = PBXGroup;
 			children = (
+				0C4CD67615E2529F0037BBD0 /* CommonProtocols */,
 				7F7336AE158B36EE00A37FC4 /* SGComponents */,
 				7F7336AA158B356B00A37FC4 /* SGProtocols */,
 				7F7336A9158B353B00A37FC4 /* SGGameObjects */,
@@ -3156,6 +3171,7 @@
 				7F50C4AD15DBCD44009345B5 /* ExprBuilder.m in Sources */,
 				7F50C4B115DBCDA3009345B5 /* SGBtxeTextBackgroundRender.m in Sources */,
 				7FD9842015DC21A700DA71D7 /* SGBtxeParser.m in Sources */,
+				0C4CD67B15E3A5430037BBD0 /* LogPoller.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

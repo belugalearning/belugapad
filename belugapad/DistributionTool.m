@@ -18,6 +18,7 @@
 
 #import "AppDelegate.h"
 #import "LoggingService.h"
+#import "LogPoller.h"
 #import "SGGameWorld.h"
 #import "SGDtoolBlock.h"
 #import "SGDtoolCage.h"
@@ -214,6 +215,8 @@ static float kDistanceBetweenBlocks=70.0f;
             [block pairMeWith:prevBlock];
             [self findMountPositionForThisShape:block toThisShape:prevBlock];
         }
+        
+        [loggingService.logPoller registerPollee:block];
     }
         
     

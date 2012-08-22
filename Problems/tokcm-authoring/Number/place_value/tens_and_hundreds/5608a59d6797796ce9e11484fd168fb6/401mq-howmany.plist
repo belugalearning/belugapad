@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>How many units are there in 491?</string>
+	<string>How many ones are there in 491?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>units in 491</string>
+	<string>ones in 491</string>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
@@ -36,7 +36,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>How many units are there in 491?</string>
+		<string>How many ones are there in 491?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again.</string>
 	</dict>

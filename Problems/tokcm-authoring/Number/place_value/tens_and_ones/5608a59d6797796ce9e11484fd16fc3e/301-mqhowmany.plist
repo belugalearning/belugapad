@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Here is 84. How many units are there?</string>
+	<string>Here is 84. How many ones are there?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>How many...</string>
 	<key>TOOL_KEY</key>

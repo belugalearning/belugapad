@@ -1530,7 +1530,8 @@ static float kTimeToCageShake=7.0f;
     {
         DWPlaceValueBlockGameObject *pickupObject=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
         
-
+        pickupObject.lastZIndex=pickupObject.mySprite.zOrder;
+        [pickupObject.mySprite setZOrder:10000];
         
         DWPlaceValueNetGameObject *netMount=nil;
         
@@ -1779,7 +1780,7 @@ static float kTimeToCageShake=7.0f;
                 inMulchArea=YES;
                 //[mulchPanel setVisible:YES];
                 
-                currentColour=ccc3(255,255,0);
+                currentColour=ccc3(196,184,120);
                 currentOpacity=255;
             }
             else
@@ -1940,6 +1941,8 @@ static float kTimeToCageShake=7.0f;
                 DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
                 
                 b.Mount=gw.Blackboard.DropObject;
+                
+                [b.mySprite setZOrder:b.lastZIndex];
                 
                 
                 // TODO: check the isCage returns correct results - will checking dropobject return?

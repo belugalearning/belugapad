@@ -20,6 +20,7 @@
 @property float PosY;
 @property BOOL AnimateMe;
 @property BOOL Selected;
+@property int lastZIndex;
 
 
 @end

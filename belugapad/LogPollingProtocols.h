@@ -12,12 +12,12 @@
 @protocol LogPolling
 
 @property (readwrite, retain) NSString *logPollId;
-@property (readwrite, retain) NSString *logPollType;
+@property (readonly, retain) NSString *logPollType;
 @end
 
 
 @protocol LogPollPositioning
 
-@property CGPoint logPollPosition;
+@property (readonly) CGPoint logPollPosition;
 
 @end

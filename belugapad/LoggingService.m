@@ -173,7 +173,7 @@ uint const kMaxConsecutiveSendFails = 3;
     }
     else if (BL_PA_SUCCESS == eventType || BL_PA_EXIT_TO_MAP == eventType || BL_PA_USER_RESET == eventType || BL_PA_SKIP == eventType ||
              BL_PA_SKIP_WITH_SUGGESTION == eventType || BL_PA_SKIP_DEBUG == eventType || BL_PA_FAIL == eventType ||
-             BL_PA_FAIL_WITH_CHILD_PROBLEM == eventType || (BL_USER_LOGOUT && BL_PROBLEM_ATTEMPT_CONTEXT == currentContext))
+             BL_PA_FAIL_WITH_CHILD_PROBLEM == eventType || (BL_USER_LOGOUT == eventType && BL_PROBLEM_ATTEMPT_CONTEXT == currentContext))
     {
         NSArray *deltas = self.logPoller.ticksDeltas;
         if ([deltas count])

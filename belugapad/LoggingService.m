@@ -162,6 +162,8 @@ uint const kMaxConsecutiveSendFails = 3;
                              , p._id, @"problemId"
                              , p._rev, @"problemRev"
                              , nil];
+        
+        [self.logPoller resetAndStartPolling];
     }
     else if (BL_PA_PAUSE == eventType)
     {

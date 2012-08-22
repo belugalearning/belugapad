@@ -43,6 +43,8 @@ typedef struct
     self = [super init];
     if (self)
     {
+        ticksDeltas = [[NSMutableArray alloc] init];
+        tickState = [[NSMutableSet alloc] init];
     }
     return self;
 }
@@ -177,7 +179,7 @@ typedef struct
     
     if ([tickDelta count])
     {
-        NSNumber *date = [NSNumber numberWithFloat:[[NSDate date] timeIntervalSince1970]];
+        NSNumber *date = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]];
         [ticksDeltas addObject:[NSDictionary dictionaryWithObjectsAndKeys:date, @"date", tickDelta, @"delta", nil]];
     }
 }

@@ -169,7 +169,7 @@ uint const kMaxConsecutiveSendFails = 3;
     }
     else if (BL_PA_RESUME == eventType)
     {
-        [self.logPoller stopPolling];
+        [self.logPoller resumePolling];
     }
     else if (BL_PA_SUCCESS == eventType || BL_PA_EXIT_TO_MAP == eventType || BL_PA_USER_RESET == eventType || BL_PA_SKIP == eventType ||
              BL_PA_SKIP_WITH_SUGGESTION == eventType || BL_PA_SKIP_DEBUG == eventType || BL_PA_FAIL == eventType ||

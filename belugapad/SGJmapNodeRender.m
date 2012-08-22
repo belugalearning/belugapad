@@ -61,6 +61,11 @@
 
 }
 
+-(void)updatePosition:(CGPoint)pos
+{
+    [nodeSprite setPosition:pos];
+}
+
 -(void)setup
 {
     if(((SGJmapNode*)ParentGO).EnabledAndComplete)
@@ -74,7 +79,7 @@
     
     [nodeSprite setPosition:ParentGO.Position];
     [nodeSprite setVisible:ParentGO.Visible];
-    [ParentGO.RenderBatch addChild:nodeSprite];
+    [ParentGO.RenderBatch addChild:nodeSprite z:2];
 }
 
 

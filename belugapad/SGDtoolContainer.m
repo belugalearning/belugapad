@@ -20,8 +20,9 @@
         if(aLabel){
             self.BaseNode=[[CCNode alloc]init];
             self.Label=[CCLabelTTF labelWithString:aLabel fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            [self.Label setColor:ccc3(255,0,0)];
             [self.BaseNode addChild:self.Label];
-            [aRenderLayer addChild:self.BaseNode];
+            [aRenderLayer addChild:self.BaseNode z:500];
             [self repositionLabel];
         }
             self.BlocksInShape=[[NSMutableArray alloc]init];
@@ -96,8 +97,9 @@
 
 -(void)destroyThisObject
 {
-    [self.Label removeFromParentAndCleanup:YES];
-    [self.BaseNode removeFromParentAndCleanup:YES];
+    if(self.Label)[self.Label removeFromParentAndCleanup:YES];
+    if(self.BaseNode)[self.BaseNode removeFromParentAndCleanup:YES];
+    if(self.BlocksInShape)[self.BlocksInShape release];
     [gameWorld delayRemoveGameObject:self];
 }
 

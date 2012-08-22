@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>MASTERY</key>
+	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Build a set of the same size.</string>
 	<key>TOOL_KEY</key>
@@ -125,6 +127,13 @@
 	<key>CAGE_NEG_DISABLE_DELETE</key>
 	<dict>
 		<key>100</key>
+		<false/>
+	</dict>
+	<key>MULTIPLE_BLOCK_PICKUP</key>
+	<dict>
+		<key>1</key>
+		<true/>
+		<key>0</key>
 		<false/>
 	</dict>
 	<key>X_OFFSET</key>

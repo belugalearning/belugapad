@@ -688,7 +688,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(problemDescLabel)[problemDescLabel removeFromParentAndCleanup:YES];
     if(commitBtn)
     {
-        [commitBtn removeFromParentAndCleanup:YES];
+        //[commitBtn removeFromParentAndCleanup:YES];
         commitBtn=nil;
     }
     
@@ -917,7 +917,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [metaQuestionAnswers addObject:a];
         
         CCSprite *answerBtn;
-        CCLabelTTF *answerLabel = [CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        CCLabelTTF *answerLabel = [CCLabelTTF labelWithString:@"" fontName:@"Chango" fontSize:16.0f];
         
         // sort out the labels and buttons if there's an answer text
         if([[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT])
@@ -937,9 +937,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         }
         
         // render buttons
-        [answerBtn setPosition:ccp((i+1)*(lx/(metaQuestionAnswerCount+1)), answersY)];
+        float sectionW=lx / metaQuestionAnswerCount;
+        
+        [answerBtn setPosition:ccp((i+0.5) * sectionW, answersY)];
         [answerBtn setTag:3];
-        [answerBtn setScale:0.5f];
+        //[answerBtn setScale:0.5f];
         [answerBtn setOpacity:0];
         [metaQuestionLayer addChild:answerBtn];
         [metaQuestionAnswerButtons addObject:answerBtn];
@@ -948,7 +950,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         // check for text, render if nesc
         if(![answerLabel.string isEqualToString:@""])
         {
-            [answerLabel setPosition:ccp((i+1)*(lx/(metaQuestionAnswerCount+1)), answersY)];
+            [answerLabel setPosition:ccp((i+0.5) * sectionW, answersY)];
             [answerLabel setColor:kMetaAnswerLabelColor];
             [answerLabel setOpacity:0];
             [answerLabel setTag: 3];
@@ -968,6 +970,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [commitBtn setTag:3];
         [commitBtn setOpacity:0];
         [metaQuestionLayer addChild:commitBtn z:2];
+    }
+    else
+    {
+        commitBtn=nil;
     }
     
 }
@@ -1302,7 +1308,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [commitBtn setOpacity:0];
         [metaQuestionLayer addChild:commitBtn z:2];
     }
-    
+    else
+    {
+        commitBtn=nil;
+    }
 }
 
 -(void)checkNumberPickerTouches:(CGPoint)location

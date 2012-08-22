@@ -245,7 +245,7 @@ static float kTimeToPieShake=7.0f;
     for(int i=0;i<[activeCon count];i++)
     {
         DWPieSplitterContainerGameObject *cont=[activeCon objectAtIndex:i];
-        NSString *thisConVal=[[NSString alloc]init];
+        NSString *thisConVal=[NSString alloc];
         int slicesInCont=[cont.mySlices count];
         float thisVal=(float)slicesInCont/(float)[activeCon count];
         if(labelType==kLabelShowDecimal) thisConVal=[NSString stringWithFormat:@"%.02g", thisVal];
@@ -259,8 +259,6 @@ static float kTimeToPieShake=7.0f;
         if(!cont.textString)cont.textString=@"";
         cont.textString=thisConVal;
         
-        [cont release];
-        [thisConVal release];
     }
     [gw handleMessage:kDWupdateLabels andPayload:nil withLogLevel:-1];
 }
@@ -460,10 +458,9 @@ static float kTimeToPieShake=7.0f;
 {
     for (DWPieSplitterContainerGameObject *p in activePie)
     {
-        NSLog(@"hit pie");
+
         for (DWPieSplitterSliceGameObject *s in p.mySlices)
         {
-            NSLog(@"dismantle and remove GO");
             [s handleMessage:kDWdismantle];
             [gw delayRemoveGameObject:s];
         }

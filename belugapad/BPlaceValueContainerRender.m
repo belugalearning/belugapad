@@ -40,10 +40,17 @@
 
 -(void)setSprite
 {
-    NSString *sname=@"/images/placevalue/netspacer.png";
+    NSString *sname=[[NSString alloc]init];
+    
+    if(n.renderType==0)
+        sname=@"/images/placevalue/grid-middle.png";
+    else if(n.renderType==1)
+        sname=@"/images/placevalue/grid-top.png";
+    else if(n.renderType==2)
+        sname=@"/images/placevalue/grid-bottom.png";
     
     mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", sname]))];
-    [mySprite setOpacity:120];
+    [mySprite setOpacity:127];
     n.mySprite=mySprite;
 
     float x=n.PosX;
@@ -57,8 +64,8 @@
     
     if(gameWorld.Blackboard.inProblemSetup)
     {
-        [mySprite setTag:1];
-        [mySprite setOpacity:0];
+//        [mySprite setTag:1];
+//        [mySprite setOpacity:0];
     }
     [gameWorld.Blackboard.ComponentRenderLayer addChild:mySprite z:0];
 

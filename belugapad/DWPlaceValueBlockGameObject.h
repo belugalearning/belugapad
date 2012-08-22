@@ -11,6 +11,7 @@
 @interface DWPlaceValueBlockGameObject : DWGameObject
 
 @property (retain) DWGameObject *Mount;
+@property (retain) DWGameObject *LastMount;
 @property float ObjectValue;
 @property (retain) NSString *PickupSprite;
 @property (retain) CCSprite *mySprite;

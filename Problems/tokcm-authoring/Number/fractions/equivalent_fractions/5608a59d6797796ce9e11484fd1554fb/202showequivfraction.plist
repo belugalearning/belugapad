@@ -21,6 +21,8 @@
 			<integer>1</integer>
 			<key>SHOW_CURRENT_FRACTIONS</key>
 			<true/>
+			<key>MARKER_START_POSITION</key>
+			<string>3</string>
 		</dict>
 		<dict>
 			<key>POS_Y</key>

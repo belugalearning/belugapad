@@ -13,7 +13,7 @@
 	<key>ROW_MULTIPLIER</key>
 	<integer>10</integer>
 	<key>START_ROW</key>
-	<integer>3</integer>
+	<integer>4</integer>
 	<key>GOOD_BAD_HIGHLIGHT</key>
 	<true/>
 	<key>EVAL_MODE</key>

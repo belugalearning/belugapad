@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>What is 10 less than {$start}?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>205 mq</string>
+	<key>MASTERY</key>
+	<true/>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_COMPLETE_TEXT</key>
+		<string>Great!</string>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$start+10)}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$start-100}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$start-10}</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>What is 10 less than {$start}?</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again.</string>
+	</dict>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$start</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>100</string>
+				<string>101</string>
+				<string>102</string>
+				<string>103</string>
+				<string>104</string>
+				<string>205</string>
+				<string>206</string>
+				<string>207</string>
+				<string>208</string>
+				<string>209</string>
+				<string>301</string>
+				<string>402</string>
+				<string>303</string>
+				<string>404</string>
+				<string>305</string>
+				<string>406</string>
+				<string>307</string>
+				<string>408</string>
+				<string>309</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

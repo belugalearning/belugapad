@@ -3,8 +3,20 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Add 5</string>
+	<string>Continue the pattern by adding 5 each time.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>arithmetic seq +5 start on 1</string>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;1&lt;/b:t&gt;
+&lt;b:ot picker=&quot;yes&quot; pickerTarget=&quot;6&quot;&gt;6&lt;/b:ot&gt;
+&lt;b:ot picker=&quot;yes&quot; pickerTarget=&quot;11&quot;&gt;11&lt;/b:ot&gt;
+&lt;b:ot picker=&quot;yes&quot; pickerTarget=&quot;16&quot;&gt;16&lt;/b:ot&gt;
+&lt;b:ot picker=&quot;yes&quot; pickerTarget=&quot;21&quot;&gt;21&lt;/b:ot&gt;
+&lt;b:ot picker=&quot;yes&quot; pickerTarget=&quot;26&quot;&gt;26&lt;/b:ot&gt;
+&lt;b:t&gt;…&lt;/b:t&gt;</string>
+	</array>
 </dict>
 </plist>

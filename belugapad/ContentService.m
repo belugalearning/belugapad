@@ -70,7 +70,9 @@
         fm = [NSFileManager defaultManager];
         
         NSString *docsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        contentDir = [[docsDir stringByAppendingPathComponent:@"content"] retain];
+        NSString *libraryDir=[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        
+        contentDir = [[libraryDir stringByAppendingPathComponent:@"content"] retain];
         
         NSString *source = [settings objectForKey:@"PROBLEM_PIPELINE"];
         useTestPipeline = ![@"DATABASE" isEqualToString:source];
@@ -150,6 +152,11 @@
         NSString *bundledContentDir = BUNDLE_FULL_PATH(@"/canned-dbs/canned-content");
         [fm copyItemAtPath:bundledContentDir toPath:contentDir error:&error];
     }
+
+    //tested without import
+//    NSError *error=nil;
+//    NSString *bundledContentDir = BUNDLE_FULL_PATH(@"/canned-dbs/canned-content");
+//    [fm copyItemAtPath:bundledContentDir toPath:contentDir error:&error];
     
     contentDatabase = [FMDatabase databaseWithPath:[contentDir stringByAppendingString:@"/content.db"]];
     [contentDatabase retain];    

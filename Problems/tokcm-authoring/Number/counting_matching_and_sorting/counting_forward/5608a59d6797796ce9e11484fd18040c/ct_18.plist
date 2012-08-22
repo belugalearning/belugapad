@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Starting at 13, press when it is at 18.</string>
+	<key>TOOL_KEY</key>
+	<string>CountingTimer</string>
+	<key>SOLUTION</key>
+	<string>18</string>
+	<key>SHOW_COUNT</key>
+	<true/>
+	<key>COUNT_TYPE</key>
+	<integer>1</integer>
+	<key>INCREMENT</key>
+	<integer>1</integer>
+	<key>COUNT_MIN</key>
+	<integer>13</integer>
+	<key>COUNT_MAX</key>
+	<integer>20</integer>
+</dict>
+</plist>

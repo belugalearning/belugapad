@@ -16,5 +16,7 @@
 
 -(void)draw:(int)z;
 -(void)setup;
+-(void)updatePosition:(CGPoint)pos;
+
 
 @end

@@ -28,6 +28,7 @@
 }
 -(void)doUpdate:(ccTime)delta
 {
+    return;
     
     if(n.MountedObject && seek)
     {

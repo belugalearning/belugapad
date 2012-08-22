@@ -212,42 +212,46 @@ typedef enum {
     
     gw.Blackboard.RenderLayer=mapLayer;
     
-    //setup render batch for nodes
-    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.plist")];
-    nodeRenderBatch=[CCSpriteBatchNode batchNodeWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.png")];
-    [mapLayer addChild:nodeRenderBatch];
+}
+
+-(void)populateImageCache
+{
+    //load some cached images
+    
+    //island texture bases (determined id generated from mastery pos)
+    for(int i=1; i<10; i++)
+    {
+        NSString *file=[NSString stringWithFormat:@"/images/jmap/island-tex%d.png", i];
+        [[CCTextureCache sharedTextureCache] addImage:BUNDLE_FULL_PATH(file)];
+    }
+
+    //water / base tile
+    [[CCTextureCache sharedTextureCache] addImage:BUNDLE_FULL_PATH(@"/image/jmap/base-tile.png")];
     
 }
 
 -(void) setupMap
 {
+    [self populateImageCache];
+ 
     [self createLayers];
     
     [self setupGw];
     
-//    NSLog(@"start build");
-    
     kcmNodes=[NSMutableArray arrayWithArray:[contentService allConceptNodes]];
     [kcmNodes retain];
-//    NSLog(@"got kcm node");
     
     [self parseKcmForBounds];
-//    NSLog(@"got kcm bounds");
     
     [self createNodesInGameWorld];
-//    NSLog(@"created node, mastery game objects");
     
     [self parseNodesForEndPoints];
-//    NSLog(@"completed end point parse");
     
     [self createRegions];
-//    NSLog(@"created regions");
     
     //setup rendering -- needs all node connections built
     [gw handleMessage:kSGreadyRender];
-//    NSLog(@"send readyRender message");
     
-//    NSLog(@"end build");
     
     backarrow=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/backarrow.png")];
     [backarrow setPosition:ccp(64, ly-64)];
@@ -284,11 +288,32 @@ typedef enum {
 - (void)createLayers
 {
     //base colour layer
-//    CCLayerGradient *cLayer=[[CCLayerGradient alloc] initWithColor:ccc4(35, 35, 75, 255) fadingTo:ccc4(35, 35, 145, 255)];
-    CCLayerGradient *cLayer=[[CCLayerGradient alloc] initWithColor:ccc4(49, 65, 83, 255) fadingTo:ccc4(55, 77, 101, 255)];
+//    CCLayerGradient *cLayer=[[CCLayerGradient alloc] initWithColor:ccc4(49, 65, 83, 255) fadingTo:ccc4(55, 77, 101, 255)];
+//    
+    underwaterLayer=[[CCLayer alloc] init];
+    
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/base-tile.png") rect:CGRectMake(0, 0, 10*cx, 10*cy)];
+    [s setPosition:ccp(-5*cx,-5*cy)];
+    [s setAnchorPoint:ccp(0,0)];
+    ccTexParams params={GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT};
+    [s.texture setTexParameters:&params];
+    [underwaterLayer addChild:s];
+    
+    [self addChild:underwaterLayer];
+    
+    CCLayer *cLayer=[[CCLayer alloc] init];
+    
+    //put on overlay texture -- ipad1 only??
+    AppController *ac=(AppController*)[[UIApplication sharedApplication] delegate];
+    if(!ac.IsIpad1)
+    {
+        CCSprite *overlay=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/base-overlay.png")];
+        [overlay setPosition:ccp(cx,cy)];
+        [cLayer addChild:overlay];
+    }
     
     //CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(35, 35, 35, 255) width:lx height:ly];
-    [self addChild:cLayer z:-1];
+    [self addChild:cLayer];
     [cLayer release];
     
     //base map layer
@@ -299,11 +324,26 @@ typedef enum {
         [mapLayer setPosition:kStartMapPos];        
 
     [self addChild:mapLayer z:1];
+    
+    //setup render batch for nodes
+    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.plist")];
+    nodeRenderBatch=[CCSpriteBatchNode batchNodeWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.png")];
+    
+    [mapLayer addChild:nodeRenderBatch z:2];
 
     //fore layer
     foreLayer=[[CCLayer alloc] init];
     [self addChild:foreLayer z:1];
     
+    //ui layer elements -- top bar etc
+//    CCLayer *topbar=[CCLayerGradient layerWithColor:ccc4(0, 0, 0, 200) fadingTo:ccc4(0, 0, 0, 160) alongVector:ccp(0, 70)];
+//    [topbar setContentSize:CGSizeMake(2*cx, 70)];
+//    [topbar setPosition:ccp(0, (2*cy)-70)];
+//    [foreLayer addChild:topbar];
+    
+    CCSprite *topsprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/top-bar.png")];
+    [topsprite setPosition:ccp(cx, 2*cy-38)];
+    [foreLayer addChild:topsprite];
 }
 
 - (void)createAllBackgroundTileSprites
@@ -577,6 +617,16 @@ typedef enum {
     deltacum+=delta;
     
     
+    //underwater tracking
+    if(setUnderwaterLastMapPos)
+    {
+        CGPoint posDiff=[BLMath SubtractVector:underwaterLastMapPos from:mapLayer.position];
+        posDiff=[BLMath MultiplyVector:posDiff byScalar:0.2f];
+        [underwaterLayer setPosition:[BLMath AddVector:posDiff toVector:underwaterLayer.position]];
+    }
+    
+    underwaterLastMapPos=mapLayer.position;
+    setUnderwaterLastMapPos=YES;
     
 //    //scrolling
 //    float friction=0.85f;

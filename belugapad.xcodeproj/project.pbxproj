@@ -318,6 +318,8 @@
 		7F813D5C14CCC3A100C1E997 /* fire2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D5B14CCC3A100C1E997 /* fire2.plist */; };
 		7F813D6B14CCD8CF00C1E997 /* fire3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F813D6A14CCD8CF00C1E997 /* fire3.plist */; };
 		7F85187C1558E85F002E9F07 /* Pipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F85187B1558E85F002E9F07 /* Pipeline.m */; };
+		7F884D8815E197AD004B0DF3 /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7F884D8715E197AD004B0DF3 /* SourceSansPro-Bold.ttf */; };
+		7F884D8B15E28F24004B0DF3 /* Chango-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7F884D8A15E28F24004B0DF3 /* Chango-Regular.ttf */; };
 		7F9D414F15751E1600AFA1A0 /* NGNineGridSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9D414E15751E1600AFA1A0 /* NGNineGridSprite.m */; };
 		7FA38AA4154532260031E59D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38AA3154532260031E59D /* Security.framework */; };
 		7FA38AA61545322E0031E59D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38AA51545322E0031E59D /* SystemConfiguration.framework */; };
@@ -401,6 +403,9 @@
 		7FDBA53814EBD560004D1CC9 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA52814EBD560004D1CC9 /* CXMLNode.m */; };
 		7FDBA53914EBD560004D1CC9 /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDBA52B14EBD560004D1CC9 /* CTidy.m */; };
 		7FDBA56314EC4271004D1CC9 /* bm11.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FDBA56214EC4271004D1CC9 /* bm11.plist */; };
+		7FEB663D15DEE68100F6E782 /* PRFilledPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEB663715DEE68100F6E782 /* PRFilledPolygon.m */; };
+		7FEB663E15DEE68100F6E782 /* PRRatcliffTriangulator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7FEB663915DEE68100F6E782 /* PRRatcliffTriangulator.mm */; };
+		7FEB663F15DEE68100F6E782 /* triangulate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FEB663B15DEE68100F6E782 /* triangulate.cpp */; };
 		7FEDCE1C1535DCA400C8C9F3 /* ExprEvalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */; };
 /* End PBXBuildFile section */
 
@@ -1045,6 +1050,8 @@
 		7F813D6A14CCD8CF00C1E997 /* fire3.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = fire3.plist; sourceTree = "<group>"; };
 		7F85187A1558E85F002E9F07 /* Pipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pipeline.h; sourceTree = "<group>"; };
 		7F85187B1558E85F002E9F07 /* Pipeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Pipeline.m; sourceTree = "<group>"; };
+		7F884D8715E197AD004B0DF3 /* SourceSansPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Bold.ttf"; sourceTree = "<group>"; };
+		7F884D8A15E28F24004B0DF3 /* Chango-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Chango-Regular.ttf"; sourceTree = "<group>"; };
 		7F9D414D15751E1600AFA1A0 /* NGNineGridSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGNineGridSprite.h; sourceTree = "<group>"; };
 		7F9D414E15751E1600AFA1A0 /* NGNineGridSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NGNineGridSprite.m; sourceTree = "<group>"; };
 		7FA38AA3154532260031E59D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -1174,6 +1181,13 @@
 		7FDBA52B14EBD560004D1CC9 /* CTidy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTidy.m; sourceTree = "<group>"; };
 		7FDBA52C14EBD560004D1CC9 /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchXML.h; sourceTree = "<group>"; };
 		7FDBA56214EC4271004D1CC9 /* bm11.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bm11.plist; sourceTree = "<group>"; };
+		7FEB663615DEE68100F6E782 /* PRFilledPolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRFilledPolygon.h; sourceTree = "<group>"; };
+		7FEB663715DEE68100F6E782 /* PRFilledPolygon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRFilledPolygon.m; sourceTree = "<group>"; };
+		7FEB663815DEE68100F6E782 /* PRRatcliffTriangulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRRatcliffTriangulator.h; sourceTree = "<group>"; };
+		7FEB663915DEE68100F6E782 /* PRRatcliffTriangulator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PRRatcliffTriangulator.mm; sourceTree = "<group>"; };
+		7FEB663A15DEE68100F6E782 /* PRTriangulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRTriangulator.h; sourceTree = "<group>"; };
+		7FEB663B15DEE68100F6E782 /* triangulate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = triangulate.cpp; sourceTree = "<group>"; };
+		7FEB663C15DEE68100F6E782 /* triangulate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = triangulate.h; sourceTree = "<group>"; };
 		7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprEvalTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2169,6 +2183,7 @@
 		7F5113E714A9EE63001AF372 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				7FEB663515DEE68100F6E782 /* PRKit */,
 				0C33EEC215D4EE6900EA6A11 /* SSZipArchive */,
 				0CDECB4815920C27004DE20D /* AFNetworking */,
 				0C712C081580C392004B716F /* JSONKit */,
@@ -2434,6 +2449,8 @@
 		7F813D5D14CCC3AF00C1E997 /* fonts */ = {
 			isa = PBXGroup;
 			children = (
+				7F884D8A15E28F24004B0DF3 /* Chango-Regular.ttf */,
+				7F884D8715E197AD004B0DF3 /* SourceSansPro-Bold.ttf */,
 				7FAEC25F14BB5BA000E60983 /* visgrad1.fnt */,
 				7FAEC26014BB5BA000E60983 /* visgrad1.png */,
 			);
@@ -2668,6 +2685,20 @@
 			path = Tidy;
 			sourceTree = "<group>";
 		};
+		7FEB663515DEE68100F6E782 /* PRKit */ = {
+			isa = PBXGroup;
+			children = (
+				7FEB663615DEE68100F6E782 /* PRFilledPolygon.h */,
+				7FEB663715DEE68100F6E782 /* PRFilledPolygon.m */,
+				7FEB663815DEE68100F6E782 /* PRRatcliffTriangulator.h */,
+				7FEB663915DEE68100F6E782 /* PRRatcliffTriangulator.mm */,
+				7FEB663A15DEE68100F6E782 /* PRTriangulator.h */,
+				7FEB663B15DEE68100F6E782 /* triangulate.cpp */,
+				7FEB663C15DEE68100F6E782 /* triangulate.h */,
+			);
+			path = PRKit;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2779,6 +2810,8 @@
 				0C712C0D1580C392004B716F /* CHANGELOG.md in Resources */,
 				0C712C0F1580C392004B716F /* README.md in Resources */,
 				0C51649715D9068F008E7C72 /* settings in Resources */,
+				7F884D8815E197AD004B0DF3 /* SourceSansPro-Bold.ttf in Resources */,
+				7F884D8B15E28F24004B0DF3 /* Chango-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3172,6 +3205,9 @@
 				7F50C4B115DBCDA3009345B5 /* SGBtxeTextBackgroundRender.m in Sources */,
 				7FD9842015DC21A700DA71D7 /* SGBtxeParser.m in Sources */,
 				0C4CD67B15E3A5430037BBD0 /* LogPoller.m in Sources */,
+				7FEB663D15DEE68100F6E782 /* PRFilledPolygon.m in Sources */,
+				7FEB663E15DEE68100F6E782 /* PRRatcliffTriangulator.mm in Sources */,
+				7FEB663F15DEE68100F6E782 /* triangulate.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

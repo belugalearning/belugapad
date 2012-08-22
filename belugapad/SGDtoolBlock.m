@@ -24,6 +24,14 @@
 // Pairable protocol properties
 @synthesize PairedObjects, SeekingPair;
 
+// LogPolling properties
+@synthesize logPollId, logPollType;
+-(NSString*)logPollType { return @"SGDtoolBlock"; }
+
+// LogPollPositioning properties
+@synthesize logPollPosition;
+-(CGPoint)logPollPosition { return self.Position; }
+
 -(SGDtoolBlock*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
 {   
     if(self=[super initWithGameWorld:aGameWorld])
@@ -100,6 +108,9 @@
     self.mySprite=nil;
     self.RenderLayer=nil;
     self.PairedObjects=nil;
+    self.logPollId = nil;
+    if (logPollId) [logPollId release];
+    logPollId = nil;
     
     [super dealloc];
 }

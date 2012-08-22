@@ -187,54 +187,34 @@ static float kDistanceBetweenBlocks=70.0f;
 }
 
 #pragma mark - objects
--(void)createShapeWith:(int)blocks andWith:(NSDictionary*)theseSettings
+-(void)createShapeWith:(int)numBlocks andWith:(NSDictionary*)theseSettings
 {
 //    CCLabelTTF *labelForShape;
-    id lastObj=nil;
-    id<Container> container;
-    int posX=0;
-    int posY=0;
 //    float avgPosX=0;
 //    float avgPosY=0;
     
-    if([theseSettings objectForKey:LABEL])
-    {
-        container=[[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:[theseSettings objectForKey:LABEL] andRenderLayer:renderLayer];
-        if(!existingGroups)existingGroups=[[NSMutableArray alloc]init];
-        [existingGroups addObject:[container.Label string]];
-    }
-    else
-    {
-        container=[[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:nil andRenderLayer:renderLayer];
-    }
+    NSString *label = [theseSettings objectForKey:LABEL];
+    SGDtoolContainer *container = [[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:label andRenderLayer:renderLayer];
+    if (label && !existingGroups) existingGroups = [[NSMutableArray arrayWithObject:label] retain];
     
-    if([theseSettings objectForKey:POS_X])
-        posX=[[theseSettings objectForKey:POS_X]intValue];
-    else
-        posX=(arc4random() % 960) + 30;
-
-    if([theseSettings objectForKey:POS_Y])
-        posY=[[theseSettings objectForKey:POS_Y]intValue];
-    else
-        posY=(arc4random() % 730) + 30;
+    int posX = [theseSettings objectForKey:POS_X] ? [[theseSettings objectForKey:POS_X]intValue] : (arc4random() % 960) + 30;
+    int posY = [theseSettings objectForKey:POS_Y] ? [[theseSettings objectForKey:POS_Y]intValue] : (arc4random() % 730) + 30;
     
-    for(int i=0;i<blocks;i++)
+    for (int i=0; i<numBlocks; i++)
     {
-        id<Configurable,Selectable,Pairable,Moveable> newblock;
-        newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:ccp(posX+(kDistanceBetweenBlocks*i),posY)] autorelease];
-        [newblock setup];
-        newblock.MyContainer=container;
+        CGPoint p = ccp(posX + i * kDistanceBetweenBlocks,  posY);
+        SGDtoolBlock *block =  [[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:p] autorelease];
+        [block setup];
+        block.MyContainer = container;        
+        [container addBlockToMe:block];
         
-        if(lastObj){
-            [newblock pairMeWith:lastObj];
-            [self findMountPositionForThisShape:newblock toThisShape:lastObj];
+        if (i)
+        {
+            SGDtoolBlock *prevBlock = [container.BlocksInShape objectAtIndex:i-1];
+            [block pairMeWith:prevBlock];
+            [self findMountPositionForThisShape:block toThisShape:prevBlock];
         }
-
-        [container addBlockToMe:newblock];
-        lastObj=newblock;
-        
     }
-
         
     
 //    if(hasLabel)

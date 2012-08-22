@@ -2,8 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
-	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14a327/ps1.plist</string>
-	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14a327/fb001.plist</string>
+	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14c173/exprbuilder_1.plist</string>
+	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14c173/exprbuilder_2.plist</string>
+	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14c173/fb002.plist</string>
+	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14b856/nb_1-1-3.plist</string>
+	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14b856/nb_3-1-8.plist</string>
+	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14b856/nb_2-1-8.plist</string>
+	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14b856/nb_3-8.plist</string>
 	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14a327/fb002.plist</string>
 	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14a327/ps2.plist</string>
 </array>

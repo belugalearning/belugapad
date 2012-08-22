@@ -163,6 +163,37 @@ uint const kMaxConsecutiveSendFails = 3;
                              , p._rev, @"problemRev"
                              , nil];
     }
+    else if (BL_PA_PAUSE == eventType)
+    {
+        [self.logPoller stopPolling];
+    }
+    else if (BL_PA_RESUME == eventType)
+    {
+        [self.logPoller stopPolling];
+    }
+    else if (BL_PA_SUCCESS == eventType || BL_PA_EXIT_TO_MAP == eventType || BL_PA_USER_RESET == eventType || BL_PA_SKIP == eventType ||
+             BL_PA_SKIP_WITH_SUGGESTION == eventType || BL_PA_SKIP_DEBUG == eventType || BL_PA_FAIL == eventType ||
+             BL_PA_FAIL_WITH_CHILD_PROBLEM == eventType || (BL_USER_LOGOUT && BL_PROBLEM_ATTEMPT_CONTEXT == currentContext))
+    {
+        NSArray *deltas = self.logPoller.ticksDeltas;
+        if ([deltas count])
+        {
+            NSMutableDictionary *paPoll = [NSMutableDictionary dictionary];
+            [paPoll setObject:deltas forKey:@"deltas"];
+            [paPoll setObject:[self generateUUID] forKey:@"_id"];
+            [paPoll setObject:@"ProblemAttemptGOPoll" forKey:@"type"];
+            [paPoll setObject:[problemAttemptDoc objectForKey:@"_id"] forKey:@"problemAttempt"];
+            [paPoll setObject:[deviceSessionDoc objectForKey:@"device"] forKey:@"device"];
+            [paPoll setObject:[deviceSessionDoc objectForKey:@"_id"] forKey:@"deviceSession"];
+            [paPoll setObject:[userSessionDoc objectForKey:@"user"] forKey:@"user"];
+            [paPoll setObject:[userSessionDoc objectForKey:@"_id"] forKey:@"userSession"];
+            
+            NSData *pollData = [paPoll JSONData];
+            [pollData writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, [paPoll objectForKey:@"_id"]]
+                          options:NSAtomicWrite
+                            error:nil];
+        }
+    }
     
     if (BL_PROBLEM_ATTEMPT_CONTEXT == currentContext && BL_LOGGING_DISABLED == problemAttemptLoggingSetting) return;
     
@@ -198,7 +229,7 @@ uint const kMaxConsecutiveSendFails = 3;
     [events addObject:event];
      
     NSData *docData = [doc JSONData];
-    if (!docData) return; //error !
+    if (!docData) return; //TODO: Log App error !
     
     [docData writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, [doc objectForKey:@"_id"]]
                  options:NSAtomicWrite

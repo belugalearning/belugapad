@@ -43,6 +43,8 @@ typedef struct
     self = [super init];
     if (self)
     {
+        ticksDeltas = [[NSMutableArray alloc] init];
+        tickState = [[NSMutableSet alloc] init];
     }
     return self;
 }

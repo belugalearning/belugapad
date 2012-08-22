@@ -17,7 +17,7 @@
 -(void)stopPolling;
 -(void)resumePolling;
 
--(void)registerPollee:(id<LogPolling>)o;
--(void)unregisterPollee:(id<LogPolling>)o;
+-(void)registerPollee:(id<LogPolling>)pollee;
+-(void)unregisterPollee:(id<LogPolling>)pollee;
 
 @end

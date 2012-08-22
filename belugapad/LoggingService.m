@@ -7,6 +7,7 @@
 //
 
 #import "LoggingService.h"
+#import "LogPoller.h"
 #import "global.h"
 #import "AppDelegate.h"
 #import "UsersService.h"
@@ -43,6 +44,9 @@ uint const kMaxConsecutiveSendFails = 3;
     uint consecutiveSendFails;
     __block BOOL isSending;
 }
+
+@property (readwrite, retain) LogPoller *logPoller;
+
 -(void)sendCurrBatch;
 -(void)sendPrevBatches;
 -(void)sendBatchData:(NSData*)batchData withCompletionBlock:(void (^)(BL_SEND_LOG_STATUS status))onComplete;
@@ -58,7 +62,9 @@ uint const kMaxConsecutiveSendFails = 3;
 {
     self = [super init];
     if (self)
-    {        
+    {
+        self.logPoller = [[[LogPoller alloc] init] autorelease];
+        
         problemAttemptLoggingSetting = paLogSetting;
         isSending = NO;
         
@@ -409,6 +415,7 @@ uint const kMaxConsecutiveSendFails = 3;
 
 -(void)dealloc
 {
+    self.logPoller = nil;
     if (httpClient) [httpClient release];
     if (opQueue) [opQueue release];
     if (currDir) [currDir release];

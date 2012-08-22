@@ -179,7 +179,7 @@ typedef struct
     
     if ([tickDelta count])
     {
-        NSNumber *date = [NSNumber numberWithFloat:[[NSDate date] timeIntervalSince1970]];
+        NSNumber *date = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]];
         [ticksDeltas addObject:[NSDictionary dictionaryWithObjectsAndKeys:date, @"date", tickDelta, @"delta", nil]];
     }
 }

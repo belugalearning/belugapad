@@ -224,7 +224,7 @@ uint const kMaxConsecutiveSendFails = 3;
     
     NSMutableDictionary *event = [NSMutableDictionary dictionary];
     [event setValue:eventType forKey:@"eventType"];
-    [event setValue:[NSNumber numberWithFloat:[[NSDate date] timeIntervalSince1970]] forKey:@"date"];
+    [event setValue:[NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]] forKey:@"date"];
     [event setValue:additionalData forKey:@"additionalData"];
     
     NSMutableArray *events = [doc objectForKey:@"events"];

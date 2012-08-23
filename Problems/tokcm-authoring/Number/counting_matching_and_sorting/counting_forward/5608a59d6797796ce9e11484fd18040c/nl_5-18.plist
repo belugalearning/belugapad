@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Starting at 5, count on 18.</string>
+	<string>Starting at 5, count on 18 more.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Count to 23.</string>
 	<key>TOOL_KEY</key>

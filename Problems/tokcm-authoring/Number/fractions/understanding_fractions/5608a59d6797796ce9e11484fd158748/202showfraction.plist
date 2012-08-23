@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Split the bar into three, and select one third.</string>
+	<string>Split the bar equally into three, and select one third.</string>
 	<key>TOOL_KEY</key>
 	<string>FractionBuilder</string>
 	<key>EVAL_MODE</key>

@@ -51,6 +51,7 @@ typedef struct
 
 -(void)resetAndStartPolling
 {
+    [ticksDeltas removeAllObjects];
     [tickState removeAllObjects];
     [self resumePolling];
 }

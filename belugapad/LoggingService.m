@@ -177,6 +177,8 @@ uint const kMaxConsecutiveSendFails = 3;
              BL_PA_SKIP_WITH_SUGGESTION == eventType || BL_PA_SKIP_DEBUG == eventType || BL_PA_FAIL == eventType ||
              BL_PA_FAIL_WITH_CHILD_PROBLEM == eventType || (BL_USER_LOGOUT == eventType && BL_PROBLEM_ATTEMPT_CONTEXT == currentContext))
     {
+        [self.logPoller stopPolling];
+        
         NSArray *deltas = self.logPoller.ticksDeltas;
         if ([deltas count])
         {

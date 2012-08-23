@@ -304,7 +304,7 @@
         else
         {
             // base selection tint of positive numbers
-            [mySprite setColor:ccc3(255,255,0)]; 
+            [mySprite setColor:ccc3(194,186,120)];
         }
     }
     else

@@ -2082,7 +2082,7 @@ static float kTimeToCageShake=7.0f;
     
     for(int i=0;i<numberOfColumns;i++)
     {
-        [self tintGridColour:i toColour:ccc3(255,255,255)];
+
         [self setGridOpacity:i toOpacity:127];
     }
     

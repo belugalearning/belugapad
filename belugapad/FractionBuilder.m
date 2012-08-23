@@ -168,7 +168,7 @@
         else if([initFractions count]==2)
         {
             thisFractionYPos=600;
-            ySpaceBetweenFractions=300;
+            ySpaceBetweenFractions=280;
         }
         else if([initFractions count]==3)
         {

@@ -59,7 +59,8 @@ extern const float kTimeObjectSnapBack;
 extern const ccColor3B kLabelCountColor;
 
 extern const ccColor3B kMetaQuestionLabelColor;
-extern const ccColor3B kMetaAnswerLabelColor;
+extern const ccColor3B kMetaAnswerLabelColorSelected;
+extern const ccColor3B kMetaAnswerLabelColorDeselected;
 extern const ccColor3B kMetaQuestionButtonSelected;
 extern const ccColor3B kMetaQuestionButtonDeselected;
 

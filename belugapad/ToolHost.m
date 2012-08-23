@@ -928,6 +928,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             // then the answer label
             NSString *answerLabelString=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
             [answerLabel setString:answerLabelString];
+            
+            if(answerLabelString.length>9)
+                [answerLabel setFontSize:16.0f];
+            else
+                [answerLabel setFontSize:22.0f];
         }
         // there should never be both an answer text and custom sprite defined - so if no answer text, only render the SPRITE_FILENAME
         else
@@ -951,7 +956,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         if(![answerLabel.string isEqualToString:@""])
         {
             [answerLabel setPosition:ccp((i+0.5) * sectionW, answersY)];
-            [answerLabel setColor:kMetaAnswerLabelColor];
+            [answerLabel setColor:kMetaAnswerLabelColorSelected];
             [answerLabel setOpacity:0];
             [answerLabel setTag: 3];
             [metaQuestionLayer addChild:answerLabel];
@@ -987,8 +992,12 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     metaQuestionForceComplete=NO;
 }
 
-
 -(void)checkMetaQuestionTouches:(CGPoint)location
+{
+    [self checkMetaQuestionTouches:location andTouchType:0];
+}
+
+-(void)checkMetaQuestionTouches:(CGPoint)location andTouchType:(int)touchType
 {
     if(isAnimatingIn)return;
     
@@ -1004,6 +1013,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         for(int i=0; i<metaQuestionAnswerCount; i++)
         {
             CCSprite *answerBtn=[metaQuestionAnswerButtons objectAtIndex:i];
+            CCLabelTTF *answerLabel=[metaQuestionAnswerLabels objectAtIndex:i];
             
             float aLabelPosXLeft = answerBtn.position.x-((answerBtn.contentSize.width*answerBtn.scale)/2);
             float aLabelPosYleft = answerBtn.position.y-((answerBtn.contentSize.height*answerBtn.scale)/2);
@@ -1028,7 +1038,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
                         [self deselectAnswersExcept:i];
                         
                         // if this is an auto eval, run the eval now
-                        if(mqEvalMode==kMetaQuestionEvalAuto)
+                        if(mqEvalMode==kMetaQuestionEvalAuto && touchType==2)
                         {
                             [self evalMetaQuestion];
                         }
@@ -1037,15 +1047,26 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
                     // otherwise we can select multiple
                     else if(mqAnswerMode==kMetaQuestionAnswerMulti)
                     {
-                        [answerBtn setColor:kMetaQuestionButtonSelected];
+                        [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-button-selected.png")]];
+                        [answerLabel setColor:kMetaAnswerLabelColorSelected];
+                        //                        [answerBtn setColor:kMetaQuestionButtonSelected];
                         [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
                     }
                 }
                 else
                 {
                     // return to full button colour and set the dictionary selected value to no
-                    [answerBtn setColor:kMetaQuestionButtonDeselected];
+                    [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton")]];
+                    [answerLabel setColor:kMetaAnswerLabelColorDeselected];;
+//                    [answerBtn setColor:kMetaQuestionButtonDeselected];
                     [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
+                }
+            }
+            else
+            {
+                if(mqAnswerMode==kMetaQuestionAnswerSingle && touchType==2)
+                {
+                    [self deselectAnswersExcept:-1];
                 }
             }
             
@@ -1107,14 +1128,21 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     for(int i=0; i<metaQuestionAnswerCount; i++)
     {
         CCSprite *answerBtn=[metaQuestionAnswerButtons objectAtIndex:i];
+        CCLabelTTF *answerLabel=[metaQuestionAnswerLabels objectAtIndex:i];
         if(i == answerNumber)
         {
-            [answerBtn setColor:kMetaQuestionButtonSelected];
+            NSLog(@"answer %d selected", answerNumber);
+            [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-button-selected.png")]];
+            [answerLabel setColor:kMetaAnswerLabelColorSelected];
+//            [answerBtn setColor:kMetaQuestionButtonSelected];
             [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
         }
-        else 
+        else
         {
-            [answerBtn setColor:kMetaQuestionButtonDeselected];
+            NSLog(@"answer %d deselected", answerNumber);
+            [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")]];
+            [answerLabel setColor:kMetaAnswerLabelColorDeselected];
+//            [answerBtn setColor:kMetaQuestionButtonDeselected];
             [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
         }
     }
@@ -1689,6 +1717,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     {
         [self checkPauseTouches:location];
         return;
+    }
+    if(metaQuestionForThisProblem)
+    {
+        [self checkMetaQuestionTouches:location andTouchType:2];
     }
     if(npMove)
     {

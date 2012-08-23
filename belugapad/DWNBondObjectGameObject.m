@@ -23,6 +23,7 @@
 @synthesize IsScaled;
 @synthesize IndexPos;
 @synthesize NoScaleBlock;
+@synthesize lastZIndex;
 
 -(DWGameObject *) initWithGameWorld:(DWGameWorld*)aGameWorld
 {

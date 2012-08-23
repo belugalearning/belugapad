@@ -20,6 +20,7 @@
 @synthesize PosY;
 @synthesize AnimateMe;
 @synthesize Selected;
+@synthesize lastZIndex;
 
 -(void)dealloc
 {

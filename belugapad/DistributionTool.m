@@ -428,13 +428,13 @@ static float kDistanceBetweenBlocks=70.0f;
 //        NSLog(@"go Position %@, current retVal %@", NSStringFromCGPoint(go.Position), NSStringFromCGPoint(mountedShapePos));
         if(go==pickupObject)continue;
         
-        if(mountedShapePos.x-kDistanceBetweenBlocks==go.Position.x && freeSpaceNegX)
+        if(mountedShapePos.x-kDistanceBetweenBlocks==go.Position.x && freeSpaceNegX && mountedShapePos.x-kDistanceBetweenBlocks>50.0f)
             freeSpaceNegX=NO;
-        else if(mountedShapePos.x+kDistanceBetweenBlocks==go.Position.x && freeSpacePosX)
+        else if(mountedShapePos.x+kDistanceBetweenBlocks==go.Position.x && freeSpacePosX && mountedShapePos.x+kDistanceBetweenBlocks<(lx-50.0f))
             freeSpacePosX=NO;
-        else if(mountedShapePos.y-kDistanceBetweenBlocks==go.Position.y && freeSpaceNegY)
+        else if(mountedShapePos.y-kDistanceBetweenBlocks==go.Position.y && freeSpaceNegY && mountedShapePos.y-kDistanceBetweenBlocks>50.0f)
             freeSpaceNegY=NO;
-        else if(mountedShapePos.y+kDistanceBetweenBlocks==go.Position.y && freeSpacePosY)
+        else if(mountedShapePos.y+kDistanceBetweenBlocks==go.Position.y && freeSpacePosY && mountedShapePos.y+kDistanceBetweenBlocks>(lx-50.0f))
             freeSpacePosY=NO;
            
            //NSLog(@"go Position %@, final retVal %@, found other shape? %@", NSStringFromCGPoint(go.Position), NSStringFromCGPoint(retval), foundAnotherShape? @"YES":@"NO");

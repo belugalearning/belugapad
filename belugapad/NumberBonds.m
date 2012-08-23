@@ -312,6 +312,8 @@ static float kTimeToMountedShake=7.0f;
     {
         [gw.Blackboard.PickupObject handleMessage:kDWstopAllActions];
         DWNBondObjectGameObject *pogo=(DWNBondObjectGameObject*)gw.Blackboard.PickupObject;
+        pogo.lastZIndex=[pogo.BaseNode zOrder];
+        [pogo.BaseNode setZOrder:10000];
         [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
         gw.Blackboard.DropObject=nil;
         gw.Blackboard.PickupOffset = location;
@@ -395,6 +397,7 @@ static float kTimeToMountedShake=7.0f;
         gw.Blackboard.DropObject = nil;
         [gw handleMessage:kDWareYouADropTarget andPayload:pl withLogLevel:-1];
         DWNBondObjectGameObject *pogo = (DWNBondObjectGameObject*)[gw Blackboard].PickupObject;
+        [pogo.BaseNode setZOrder:pogo.lastZIndex];
         
         if([gw Blackboard].DropObject!=nil)
         {

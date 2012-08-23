@@ -24,5 +24,6 @@
 @property BOOL IsScaled;
 @property BOOL NoScaleBlock;
 @property int IndexPos;
+@property int lastZIndex;
 
 @end

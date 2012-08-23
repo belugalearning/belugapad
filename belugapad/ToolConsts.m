@@ -45,7 +45,8 @@ const ccColor3B kLabelCountColor={255, 0, 0};
 
 
 const ccColor3B kMetaQuestionLabelColor={255, 255, 170};
-const ccColor3B kMetaAnswerLabelColor={45, 65, 72};
+const ccColor3B kMetaAnswerLabelColorSelected={88, 88, 88};
+const ccColor3B kMetaAnswerLabelColorDeselected={108, 108, 108};
 const ccColor3B kMetaQuestionButtonSelected={240, 240, 240};
 const ccColor3B kMetaQuestionButtonDeselected={255, 255, 255};
 

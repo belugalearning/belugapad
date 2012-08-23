@@ -34,6 +34,12 @@
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>4/6</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
 		<string>How much does each person get?</string>

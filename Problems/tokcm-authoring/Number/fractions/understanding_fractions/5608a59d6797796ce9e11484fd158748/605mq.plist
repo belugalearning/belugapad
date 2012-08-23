@@ -30,6 +30,12 @@
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
+				<string>5/1</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
 				<string>6/5</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>

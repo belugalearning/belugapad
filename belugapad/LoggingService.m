@@ -180,11 +180,15 @@ uint const kMaxConsecutiveSendFails = 3;
         NSArray *deltas = self.logPoller.ticksDeltas;
         if ([deltas count])
         {
+            NSArray *paEvents = [problemAttemptDoc objectForKey:@"events"];
+            NSNumber *paStart = [((NSDictionary*)[paEvents objectAtIndex:0]) objectForKey:@"date"];
+            
             NSMutableDictionary *paPoll = [NSMutableDictionary dictionary];
             [paPoll setObject:deltas forKey:@"deltas"];
             [paPoll setObject:[self generateUUID] forKey:@"_id"];
             [paPoll setObject:@"ProblemAttemptGOPoll" forKey:@"type"];
             [paPoll setObject:[problemAttemptDoc objectForKey:@"_id"] forKey:@"problemAttempt"];
+            [paPoll setObject:paStart forKey:@"problemAttemptStartDate"];
             [paPoll setObject:[deviceSessionDoc objectForKey:@"device"] forKey:@"device"];
             [paPoll setObject:[deviceSessionDoc objectForKey:@"_id"] forKey:@"deviceSession"];
             [paPoll setObject:[userSessionDoc objectForKey:@"user"] forKey:@"user"];

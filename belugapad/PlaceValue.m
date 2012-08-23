@@ -1530,7 +1530,8 @@ static float kTimeToCageShake=7.0f;
     {
         DWPlaceValueBlockGameObject *pickupObject=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
         
-
+        pickupObject.lastZIndex=pickupObject.mySprite.zOrder;
+        [pickupObject.mySprite setZOrder:10000];
         
         DWPlaceValueNetGameObject *netMount=nil;
         
@@ -1779,7 +1780,7 @@ static float kTimeToCageShake=7.0f;
                 inMulchArea=YES;
                 //[mulchPanel setVisible:YES];
                 
-                currentColour=ccc3(255,255,0);
+                currentColour=ccc3(196,184,120);
                 currentOpacity=255;
             }
             else
@@ -1941,20 +1942,17 @@ static float kTimeToCageShake=7.0f;
                 
                 b.Mount=gw.Blackboard.DropObject;
                 
+                [b.mySprite setZOrder:b.lastZIndex];
+                
                 
                 // TODO: check the isCage returns correct results - will checking dropobject return?
                 BOOL isCage;
+                BOOL doNotSwitchSelection=NO;
                 
                 if([[gw Blackboard].DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])isCage=YES;
                 else isCage=NO;
 
-                if(isCage)
-                {
-                    //deselect the object if selected
-                    // check whether it's selected and we can deselect - or that it's deselected
-                    if(b.Selected)
-                        [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
-                }
+
                 
                 //tell the picked-up object to mount on the dropobject
 
@@ -2013,6 +2011,7 @@ static float kTimeToCageShake=7.0f;
                         
                         //[go handleMessage:kDWputdown];
                     }
+                    doNotSwitchSelection=YES;
                     
                 }
 
@@ -2052,6 +2051,13 @@ static float kTimeToCageShake=7.0f;
                         CCSprite *mySprite=b.mySprite;
                         [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).SpriteFilename)]];
                     
+                    }
+                    if(isCage && doNotSwitchSelection)
+                    {
+                        //deselect the object if selected
+                        // check whether it's selected and we can deselect - or that it's deselected
+                        if(b.Selected)
+                            [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
                     }
                 }
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];

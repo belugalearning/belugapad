@@ -101,7 +101,7 @@ typedef struct
                 if (touch.phase == UITouchPhaseCancelled || touch.phase == UITouchPhaseEnded)
                 {
                     [activeTouches removeObject:nearestTVAddress];
-                    free(nearestTVAddress);
+                    free(nearestTV);
                 }
             }
             else

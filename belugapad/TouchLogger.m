@@ -51,7 +51,8 @@ typedef struct
     
     for (UITouch *touch in touches)
     {
-        CGPoint p = [touch locationInView:nil];
+        CGPoint p = [touch locationInView:touch.view];
+        
         NSDictionary *e = @{
             @"date": date
             , @"phase": [self touchPhaseToString:touch.phase]
@@ -72,7 +73,7 @@ typedef struct
         }
         else // match the touch with a Touch & add touch to its events
         {
-            CGPoint prevPos = [touch previousLocationInView:nil];
+            CGPoint prevPos = [touch previousLocationInView:touch.view];
             float nearestDSq;
             NSValue *nearestTVAddress = nil;
             TouchVals *nearestTV = nil;

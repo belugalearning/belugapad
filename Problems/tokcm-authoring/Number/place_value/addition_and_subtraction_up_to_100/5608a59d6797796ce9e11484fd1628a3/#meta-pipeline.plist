@@ -8,6 +8,22 @@
 		<string>build_1.06</string>
 		<key>PROBLEMS</key>
 		<array>
-		</array>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_100/5608a59d6797796ce9e11484fd1628a3/3_pv_75.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_100/5608a59d6797796ce9e11484fd1628a3/3_columnadd_75.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_100/5608a59d6797796ce9e11484fd1628a3/3_pv_76.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_100/5608a59d6797796ce9e11484fd1628a3/3_columnadd_76.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_100/5608a59d6797796ce9e11484fd1628a3/3_pv_100.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_100/5608a59d6797796ce9e11484fd1628a3/3_columnadd_100.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_100/5608a59d6797796ce9e11484fd1628a3/4_pv_40.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_100/5608a59d6797796ce9e11484fd1628a3/4_columnadd_40.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_100/5608a59d6797796ce9e11484fd1628a3/4_pv_62.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_100/5608a59d6797796ce9e11484fd1628a3/4_columnadd_62.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_100/5608a59d6797796ce9e11484fd1628a3/4_pv_71.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_100/5608a59d6797796ce9e11484fd1628a3/4_columnadd_71.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_100/5608a59d6797796ce9e11484fd1628a3/4_pv_75.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_100/5608a59d6797796ce9e11484fd1628a3/4_columnadd_75.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_100/5608a59d6797796ce9e11484fd1628a3/4_pv_100.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_100/5608a59d6797796ce9e11484fd1628a3/4_columnadd_100.plist</string>
+        </array>
 	</dict>
 </plist>

@@ -7,7 +7,17 @@
 		<key>PIPELINE_NAME</key>
 		<string>build_1.06</string>
 		<key>PROBLEMS</key>
-		<array>
-		</array>
+        <array>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd16480b/segment_5_260_test.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd16480b/segment_5_40.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd16480b/segment_5_260.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd16480b/segment_5_585.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd16480b/segment_10_350.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd16480b/segment_10_680.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd16480b/segment_10_760.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd16480b/segment_100_400.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd16480b/segment_100_600.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd16480b/segment_100_900.plist</string>
+        </array>
 	</dict>
 </plist>

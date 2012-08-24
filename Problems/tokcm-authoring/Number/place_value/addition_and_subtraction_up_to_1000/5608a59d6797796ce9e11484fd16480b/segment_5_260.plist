@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Count to 260 in steps of 5.</string>
+	<string>Count to 260 in 5s.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Count to 260 in steps of 5.</string>
+	<string>Count to 260 in 5s.</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>

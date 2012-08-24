@@ -12,6 +12,7 @@
 @interface LogPoller()
 {
     @private
+    NSMutableArray *ticksDeltas;
     NSMutableSet *tickState;
     NSTimer *timer;
 }
@@ -36,7 +37,6 @@ typedef struct
 
 
 @implementation LogPoller
-@synthesize ticksDeltas;
 
 -(id)init
 {
@@ -49,11 +49,33 @@ typedef struct
     return self;
 }
 
--(void)resetAndStartPolling
+-(NSArray*)flush
 {
+    NSArray *tsDs = [[ticksDeltas copy] autorelease];
     [ticksDeltas removeAllObjects];
+    return tsDs;
+}
+
+-(void)reset
+{
+    if (timer)
+    {
+        [timer invalidate];
+        timer = nil;
+    }    
+    for (NSValue *psAddress in tickState) free([psAddress pointerValue]);
     [tickState removeAllObjects];
-    [self resumePolling];
+    [ticksDeltas removeAllObjects];
+}
+
+-(void)startPolling
+{
+    if (timer) [timer invalidate];
+    timer = [NSTimer scheduledTimerWithTimeInterval:0.1
+                                             target:self
+                                           selector:@selector(tick:)
+                                           userInfo:nil
+                                            repeats:YES];
 }
 
 -(void)stopPolling
@@ -63,16 +85,6 @@ typedef struct
         [timer invalidate];
         timer = nil;
     }
-}
-
--(void)resumePolling
-{
-    if (timer) [timer invalidate];
-    timer = [NSTimer scheduledTimerWithTimeInterval:0.1
-                                             target:self
-                                           selector:@selector(tick:)
-                                           userInfo:nil
-                                            repeats:YES];
 }
 
 -(void)registerPollee:(id<LogPolling,NSObject>)pollee
@@ -199,15 +211,11 @@ typedef struct
 
 -(void)dealloc
 {
-    if (timer) [timer invalidate];
+    if (timer) [timer invalidate]; // although don't think it's possible to arrive here if timer still valid is self is target => self retains timer
     if (ticksDeltas) [ticksDeltas release];
     if (tickState)
     {
-        for (NSValue *psAddress in tickState)
-        {
-            PolleeState *ps = [psAddress pointerValue];
-            free(ps);
-        }
+        for (NSValue *psAddress in tickState) free([psAddress pointerValue]);
         [tickState release];
     }
     

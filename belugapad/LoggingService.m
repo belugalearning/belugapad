@@ -168,7 +168,8 @@ uint const kMaxConsecutiveSendFails = 3;
                              , p._rev, @"problemRev"
                              , nil];
         
-        [self.logPoller resetAndStartPolling];
+        [self.logPoller reset];
+        [self.logPoller startPolling];
     }
     else if (BL_PA_PAUSE == eventType)
     {
@@ -176,7 +177,7 @@ uint const kMaxConsecutiveSendFails = 3;
     }
     else if (BL_PA_RESUME == eventType)
     {
-        [self.logPoller resumePolling];
+        [self.logPoller startPolling];
     }
     else if (BL_PA_SUCCESS == eventType || BL_PA_EXIT_TO_MAP == eventType || BL_PA_USER_RESET == eventType || BL_PA_SKIP == eventType ||
              BL_PA_SKIP_WITH_SUGGESTION == eventType || BL_PA_SKIP_DEBUG == eventType || BL_PA_FAIL == eventType ||
@@ -184,8 +185,8 @@ uint const kMaxConsecutiveSendFails = 3;
     {
         NSNumber *paStart = [((NSDictionary*)[[problemAttemptDoc objectForKey:@"events"] objectAtIndex:0]) objectForKey:@"date"];
 
-        [self.logPoller stopPolling];
-        NSArray *deltas = self.logPoller.ticksDeltas;
+        NSArray *deltas = [self.logPoller flush];
+        [self.logPoller reset];
         if ([deltas count])
         {
             NSString *pollDocId = [self generateUUID];
@@ -207,7 +208,7 @@ uint const kMaxConsecutiveSendFails = 3;
         {
             NSString *touchDocId = [self generateUUID];
             [[@{
-                @"touches": [paTouches allObjects]
+                @"touches": paTouches
                 , @"_id": touchDocId
                 , @"type": @"TouchLog"
                 , @"context": @"ProblemAttempt"

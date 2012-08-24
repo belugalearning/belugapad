@@ -8,6 +8,7 @@
 
 #import "LoggingService.h"
 #import "LogPoller.h"
+#import "TouchLogger.h"
 #import "global.h"
 #import "AppDelegate.h"
 #import "UsersService.h"
@@ -46,6 +47,7 @@ uint const kMaxConsecutiveSendFails = 3;
 }
 
 @property (readwrite, retain) LogPoller *logPoller;
+@property (readwrite, retain) TouchLogger *touchLogger;
 
 -(void)sendCurrBatch;
 -(void)sendPrevBatches;
@@ -64,6 +66,7 @@ uint const kMaxConsecutiveSendFails = 3;
     if (self)
     {
         self.logPoller = [[[LogPoller alloc] init] autorelease];
+        self.touchLogger = [[[TouchLogger alloc] init] autorelease];
         
         problemAttemptLoggingSetting = paLogSetting;
         isSending = NO;
@@ -144,6 +147,8 @@ uint const kMaxConsecutiveSendFails = 3;
         currentContext = BL_PROBLEM_ATTEMPT_CONTEXT;
         if (BL_LOGGING_DISABLED == problemAttemptLoggingSetting) return;
         
+        [self.touchLogger flush];
+        
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         Problem *p = ac.contentService.currentProblem;
         
@@ -177,29 +182,42 @@ uint const kMaxConsecutiveSendFails = 3;
              BL_PA_SKIP_WITH_SUGGESTION == eventType || BL_PA_SKIP_DEBUG == eventType || BL_PA_FAIL == eventType ||
              BL_PA_FAIL_WITH_CHILD_PROBLEM == eventType || (BL_USER_LOGOUT == eventType && BL_PROBLEM_ATTEMPT_CONTEXT == currentContext))
     {
+        NSNumber *paStart = [((NSDictionary*)[[problemAttemptDoc objectForKey:@"events"] objectAtIndex:0]) objectForKey:@"date"];
+
         [self.logPoller stopPolling];
-        
         NSArray *deltas = self.logPoller.ticksDeltas;
         if ([deltas count])
         {
-            NSArray *paEvents = [problemAttemptDoc objectForKey:@"events"];
-            NSNumber *paStart = [((NSDictionary*)[paEvents objectAtIndex:0]) objectForKey:@"date"];
-            
-            NSMutableDictionary *paPoll = [NSMutableDictionary dictionary];
-            [paPoll setObject:deltas forKey:@"deltas"];
-            [paPoll setObject:[self generateUUID] forKey:@"_id"];
-            [paPoll setObject:@"ProblemAttemptGOPoll" forKey:@"type"];
-            [paPoll setObject:[problemAttemptDoc objectForKey:@"_id"] forKey:@"problemAttempt"];
-            [paPoll setObject:paStart forKey:@"problemAttemptStartDate"];
-            [paPoll setObject:[deviceSessionDoc objectForKey:@"device"] forKey:@"device"];
-            [paPoll setObject:[deviceSessionDoc objectForKey:@"_id"] forKey:@"deviceSession"];
-            [paPoll setObject:[userSessionDoc objectForKey:@"user"] forKey:@"user"];
-            [paPoll setObject:[userSessionDoc objectForKey:@"_id"] forKey:@"userSession"];
-            
-            NSData *pollData = [paPoll JSONData];
-            [pollData writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, [paPoll objectForKey:@"_id"]]
-                          options:NSAtomicWrite
-                            error:nil];
+            NSString *pollDocId = [self generateUUID];
+            [[@{
+              @"deltas": deltas
+              , @"_id": pollDocId
+              , @"type": @"ProblemAttemptGOPoll"
+              , @"problemAttempt": [problemAttemptDoc objectForKey:@"_id"]
+              , @"problemAttemptStartDate": paStart
+              , @"device": [deviceSessionDoc objectForKey:@"device"]
+              , @"deviceSession": [deviceSessionDoc objectForKey:@"_id"]
+              , @"user": [userSessionDoc objectForKey:@"user"]
+              , @"userSession": [userSessionDoc objectForKey:@"_id"]
+            } JSONData] writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, pollDocId] options:NSAtomicWrite error:nil];
+        }
+        
+        NSArray *paTouches = [[self.touchLogger flush] allObjects];
+        if ([paTouches count])
+        {
+            NSString *touchDocId = [self generateUUID];
+            [[@{
+                @"touches": [paTouches allObjects]
+                , @"_id": touchDocId
+                , @"type": @"TouchLog"
+                , @"context": @"ProblemAttempt"
+                , @"problemAttempt": [problemAttemptDoc objectForKey:@"_id"]
+                , @"problemAttemptStartDate": paStart
+                , @"device": [deviceSessionDoc objectForKey:@"device"]
+                , @"deviceSession": [deviceSessionDoc objectForKey:@"_id"]
+                , @"user": [userSessionDoc objectForKey:@"user"]
+                , @"userSession": [userSessionDoc objectForKey:@"_id"]
+             } JSONData] writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, touchDocId] options:NSAtomicWrite error:nil];
         }
     }
     
@@ -455,6 +473,7 @@ uint const kMaxConsecutiveSendFails = 3;
 -(void)dealloc
 {
     self.logPoller = nil;
+    self.touchLogger = nil;
     if (httpClient) [httpClient release];
     if (opQueue) [opQueue release];
     if (currDir) [currDir release];

@@ -290,20 +290,21 @@ static float kTimeToCageShake=7.0f;
                 c.PosX=containerOrigin.x;
                 c.PosY=containerOrigin.y;
                 c.myRow=iRow;
+                c.myCol=i;
+                c.myRope=iRope;
                 
                 if(c.myRow==0)
                     c.renderType=1;
-                else if(c.myRow=currentColumnRopes-1)
+                else if(c.myRow==currentColumnRopes-1)
                     c.renderType=2;
                 
-                c.myCol=i;
-                c.myRope=iRope;
+
                 c.ColumnValue=[[currentColumnInfo objectForKey:COL_VALUE] floatValue];
 
                 
                 [RowArray addObject:c];                
                 
-                [c release];
+                //[c release];
             }
             
             [RowArray release];
@@ -1170,6 +1171,27 @@ static float kTimeToCageShake=7.0f;
     return freeSpace;
 }
 
+-(void)logOutGameObjectsPositions:(int)thisGrid
+{
+    for (int r=0; r<[[gw.Blackboard.AllStores objectAtIndex:thisGrid] count]; r++) {
+        NSMutableArray *row=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] objectAtIndex:r];
+        for (int c=0; c<[row count]; c++)
+        {
+            DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
+            if(!co.MountedObject)
+            {
+                NSLog(@"empty space at x %d / y %d -- mount says pos x %d / y %d", r, c, co.myRow, co.myRope);
+            }
+            else
+            {
+                NSLog(@"this mount pos x %d y %d", co.myRow, co.myRope);
+                DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)co.MountedObject;
+                NSLog(@"object on grid (#%d) believes mount to be x %d / y %d", [gw.AllGameObjects indexOfObject:b], ((DWPlaceValueNetGameObject*)b.Mount).myRow,((DWPlaceValueNetGameObject*)b.Mount).myRope);
+            }
+        }
+    }
+}
+
 #pragma mark - environment interaction
 -(void)checkForMultipleControlTouchesAt:(CGPoint)thisLocation
 {
@@ -1543,6 +1565,7 @@ static float kTimeToCageShake=7.0f;
             netMount.MountedObject=nil;
             pickupObject.LastMount=pickupObject.Mount;
             pickupObject.Mount=nil;
+            NSLog(@"(start-single) free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
             
         }
         else if([pickupObject.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
@@ -1563,6 +1586,7 @@ static float kTimeToCageShake=7.0f;
                     b.LastMount=b.Mount;
                     b.Mount=nil;
                     n.MountedObject=nil;
+                    NSLog(@"(start-multi) free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
                 }
             }
         }
@@ -1637,7 +1661,7 @@ static float kTimeToCageShake=7.0f;
     
     [toolHost.Zubi setTarget:location];
     
-    
+
     // if the distance is greater than the 'slipped tap' threshold, it's no longer a tap and is definitely moving
     if([BLMath DistanceBetween:[renderLayer convertToNodeSpace:touchStartPos] and:location] >= fabs(kTapSlipResetThreshold) && potentialTap)
     {
@@ -1917,6 +1941,8 @@ static float kTimeToCageShake=7.0f;
                 }
             }
             
+            NSLog(@"free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
+            
             [self setTouchVarsToOff];
             return;
         }
@@ -1940,7 +1966,13 @@ static float kTimeToCageShake=7.0f;
             {
                 DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
                 
+                if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]]){
+                    DWPlaceValueNetGameObject *d=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
+                    NSLog(@"droptarget coords x %d / y %d", d.myRow, d.myRope);
+                }
                 b.Mount=gw.Blackboard.DropObject;
+                
+
                 
                 [b.mySprite setZOrder:b.lastZIndex];
                 
@@ -2014,24 +2046,24 @@ static float kTimeToCageShake=7.0f;
                     doNotSwitchSelection=YES;
                     
                 }
-
-                else if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && [b.LastMount isKindOfClass:[DWPlaceValueNetGameObject class]])
-                {
-                    
-                    DWPlaceValueNetGameObject *drop=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
-                    DWPlaceValueNetGameObject *last=(DWPlaceValueNetGameObject*)b.LastMount;
-                    if(last.ColumnValue==drop.ColumnValue)
-                    {
-                        b.Mount=last;
-                        last.MountedObject=b;
-                        b.AnimateMe=YES;
-                        
-                        b.PosX=((DWPlaceValueNetGameObject*)b.Mount).PosX;
-                        b.PosY=((DWPlaceValueNetGameObject*)b.Mount).PosY;
-                        
-                        [b handleMessage:kDWmoveSpriteToPosition];
-                    }
-                }
+//
+//                else if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && [b.LastMount isKindOfClass:[DWPlaceValueNetGameObject class]])
+//                {
+//                    
+//                    DWPlaceValueNetGameObject *drop=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
+//                    DWPlaceValueNetGameObject *last=(DWPlaceValueNetGameObject*)b.LastMount;
+//                    if(last.ColumnValue==drop.ColumnValue)
+//                    {
+//                        b.Mount=last;
+//                        last.MountedObject=b;
+//                        b.AnimateMe=YES;
+//                        
+//                        b.PosX=((DWPlaceValueNetGameObject*)b.Mount).PosX;
+//                        b.PosY=((DWPlaceValueNetGameObject*)b.Mount).PosY;
+//                        
+//                        [b handleMessage:kDWmoveSpriteToPosition];
+//                    }
+//                }
                 
                 else {
                     [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
@@ -2088,6 +2120,9 @@ static float kTimeToCageShake=7.0f;
     
     //get any auto reset / repositions to re-evaluate
     [gw handleMessage:kDWstartRespositionSeek andPayload:nil withLogLevel:0];
+
+    NSLog(@"free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
+    [self logOutGameObjectsPositions:currentColumnIndex];
     
     [self setTouchVarsToOff];
 }

@@ -57,6 +57,7 @@ typedef enum {
     NSMutableArray *selectedChunks;
     int dividend;
     int divisor;
+    int lastMarkerPosition;
     
     
 }

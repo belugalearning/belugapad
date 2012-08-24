@@ -79,7 +79,7 @@
 -(void)removeChunks
 {
     fractionSprite=ParentGO.FractionSprite;
-    float leftPos=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
+    //float leftPos=fractionSprite.position.x-(fractionSprite.contentSize.width/2);
     NSMutableArray *removeObj=[[NSMutableArray alloc]init];
     if([ParentGO.Chunks count]>0)
     {
@@ -87,9 +87,9 @@
         {
             CCSprite *s=go.MySprite;
             // animate the existing chunks off to the side to make it look super duper awesome
-            CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:ccp(leftPos,s.position.y)];
+            CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.3f];
             CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
-            CCSequence *sequence=[CCSequence actions:moveAct, cleanUp, nil];
+            CCSequence *sequence=[CCSequence actions:fadeAct, cleanUp, nil];
             [removeObj addObject:go];
             [s runAction:sequence];
         }
@@ -117,9 +117,9 @@
         for(CCSprite *s in ParentGO.GhostChunks)
         {
             // animate the existing chunks off to the side to make it look super duper awesome
-            CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:ccp(leftPos,s.position.y)];
+            CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.3f];
             CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES];}];
-            CCSequence *sequence=[CCSequence actions:moveAct, cleanUp, nil];
+            CCSequence *sequence=[CCSequence actions:fadeAct, cleanUp, nil];
             [s runAction:sequence];
         }
     }
@@ -132,11 +132,11 @@
         float xPos=fractionSprite.position.x+(fractionSprite.contentSize.width/2);
         float sectionSize=fractionSprite.contentSize.width/adjMarkerPos;
         
-        [s setPosition:ccp(xPos, fractionSprite.position.y)];
-        
+        //[s setPosition:ccp(xPos, fractionSprite.position.y)];
+        [s setPosition:ccp(leftPos+((i+1)*sectionSize),0)];
         [ParentGO.BaseNode addChild:s];
-        [s runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(leftPos+((i+1)*sectionSize),0)]];
-        
+        //[s runAction:[CCMoveTo actionWithDuration:0.5f position:ccp(leftPos+((i+1)*sectionSize),0)]];
+        [s runAction:[CCFadeIn actionWithDuration:0.3f]];
         [ParentGO.GhostChunks addObject:s];
     }
 }

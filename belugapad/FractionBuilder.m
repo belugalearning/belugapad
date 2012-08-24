@@ -168,7 +168,7 @@
         else if([initFractions count]==2)
         {
             thisFractionYPos=600;
-            ySpaceBetweenFractions=300;
+            ySpaceBetweenFractions=280;
         }
         else if([initFractions count]==3)
         {
@@ -220,12 +220,7 @@
 
 #pragma mark - interaction
 -(void)splitThisBar:(id)thisBar into:(int)thisManyChunks
-{
-    // choose the bar and check it has no chunks - if it does, remove them
-    id<Interactive,Configurable> curBar=thisBar;
-    if([curBar.Chunks count]>0)
-        [curBar removeChunks];
-        
+{    
     // loop ofver to create our number of chunks
     for(int i=0;i<thisManyChunks;i++)
     {
@@ -279,6 +274,14 @@
             }
         }
         
+        if(currentMarker)
+        {
+            // choose the bar and check it has no chunks - if it does, remove them
+            if([currentMarker.Chunks count]>0)
+                [currentMarker removeChunks];
+            
+        }
+        
         if(currentChunk||currentMarker)return;
         
     }
@@ -302,6 +305,11 @@
     {
         hasMovedMarker=YES;
         [currentMarker moveMarkerTo:location];
+        if(currentMarker.MarkerPosition!=startMarkerPos)
+        {
+            startMarkerPos=currentMarker.MarkerPosition;
+            [currentMarker ghostChunk];
+        }
     }
     if(currentChunk)
     {

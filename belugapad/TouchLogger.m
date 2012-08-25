@@ -13,13 +13,12 @@
 {
     @private
     uint nextTouchIndex;
-    NSMutableSet *allTouches;
     NSMutableSet *activeTouches;
 }
 
 -(NSString*)touchPhaseToString:(UITouchPhase)phase;
 
-// TouchVals exists to obviate NSDictionary look-ups thus improving performance
+// TouchVals exists to obviate NSDictionary look-ups
 typedef struct
 {
     NSMutableArray *events;
@@ -29,6 +28,7 @@ typedef struct
 
 
 @implementation TouchLogger
+@synthesize allTouches;
 
 -(id)init
 {
@@ -43,9 +43,7 @@ typedef struct
 }
 
 -(void)logTouches:(NSSet*)touches
-{
-    // Touch: id/index + events
-    
+{   
     NSNumber *date = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]];
     NSMutableSet *unmatchedActiveTouches = [[activeTouches mutableCopy] autorelease];
     
@@ -63,8 +61,7 @@ typedef struct
         if (touch.phase == UITouchPhaseBegan) // new Touch
         {
             NSMutableArray *events = [NSMutableArray arrayWithObject:e];
-            NSDictionary *Touch = @{ @"index":[NSNumber numberWithInt:nextTouchIndex++], @"events":events };
-            [allTouches addObject:Touch];
+            [(NSMutableSet*)allTouches addObject:@{ @"index":[NSNumber numberWithInt:nextTouchIndex++], @"events":events }];
             
             TouchVals *tv = malloc(sizeof(TouchVals));
             tv->events = events;
@@ -94,8 +91,8 @@ typedef struct
             }
             if (nearestTV)
             {
-                [tv->events addObject:e];
-                tv->lastPoint = p;
+                [nearestTV->events addObject:e];
+                nearestTV->lastPoint = p;
                 [unmatchedActiveTouches removeObject:nearestTVAddress];
                 
                 if (touch.phase == UITouchPhaseCancelled || touch.phase == UITouchPhaseEnded)
@@ -112,18 +109,12 @@ typedef struct
     }
 }
 
--(NSSet*)flush
+-(void)reset
 {
-    NSSet *Touches = [[allTouches copy] autorelease];
-    [allTouches removeAllObjects];
-    for (NSValue *tvAddress in activeTouches)
-    {
-        TouchVals *tv = [tvAddress pointerValue];
-        free(tv);
-    }
+    for (NSValue *tvAddress in activeTouches) free([tvAddress pointerValue]);
     [activeTouches removeAllObjects];
+    [(NSMutableSet*)allTouches removeAllObjects];
     nextTouchIndex = 0;
-    return Touches;
 }
 
 -(NSString*)touchPhaseToString:(UITouchPhase)phase
@@ -140,14 +131,12 @@ typedef struct
 -(void)dealloc
 {
     if (allTouches) [allTouches release];
+    allTouches = nil;
     if (activeTouches)
     {
-        for (NSValue *tvAddress in activeTouches)
-        {
-            TouchVals *tv = [tvAddress pointerValue];
-            free(tv);
-        }
+        for (NSValue *tvAddress in activeTouches) free([tvAddress pointerValue]);
         [activeTouches release];
+        activeTouches = nil;
     }
     [super dealloc];
 }

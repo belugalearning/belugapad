@@ -10,7 +10,9 @@
 
 @interface TouchLogger : NSObject
 
--(NSSet*)flush;
+@property (readonly) NSSet *allTouches;
+
 -(void)logTouches:(NSSet*)touches;
+-(void)reset;
 
 @end

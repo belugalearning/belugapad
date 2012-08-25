@@ -11,10 +11,11 @@
 
 @interface LogPoller : NSObject
 
--(NSMutableArray*)flush;
--(void)startPolling;
+@property (readonly) NSArray* ticksDeltas;
+
+-(void)resetAndStartPolling;
 -(void)stopPolling;
--(void)reset;
+-(void)resumePolling;
 -(void)registerPollee:(id<LogPolling>)pollee;
 -(void)unregisterPollee:(id<LogPolling>)pollee;
 

@@ -12,7 +12,6 @@
 @interface LogPoller()
 {
     @private
-    NSMutableArray *ticksDeltas;
     NSMutableSet *tickState;
     NSTimer *timer;
 }
@@ -37,6 +36,7 @@ typedef struct
 
 
 @implementation LogPoller
+@synthesize ticksDeltas;
 
 -(id)init
 {
@@ -49,14 +49,7 @@ typedef struct
     return self;
 }
 
--(NSArray*)flush
-{
-    NSArray *tsDs = [[ticksDeltas copy] autorelease];
-    [ticksDeltas removeAllObjects];
-    return tsDs;
-}
-
--(void)reset
+-(void)resetAndStartPolling
 {
     if (timer)
     {
@@ -65,10 +58,11 @@ typedef struct
     }    
     for (NSValue *psAddress in tickState) free([psAddress pointerValue]);
     [tickState removeAllObjects];
-    [ticksDeltas removeAllObjects];
+    [(NSMutableArray*)ticksDeltas removeAllObjects];
+    [self resumePolling];
 }
 
--(void)startPolling
+-(void)resumePolling
 {
     if (timer) [timer invalidate];
     timer = [NSTimer scheduledTimerWithTimeInterval:0.1
@@ -193,7 +187,7 @@ typedef struct
     if ([tickDelta count])
     {
         NSNumber *date = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]];
-        [ticksDeltas addObject:[NSDictionary dictionaryWithObjectsAndKeys:date, @"date", tickDelta, @"delta", nil]];
+        [(NSMutableArray*)ticksDeltas addObject:@{ @"date":date, @"delta": tickDelta }];
     }
 }
 
@@ -211,8 +205,11 @@ typedef struct
 
 -(void)dealloc
 {
-    if (timer) [timer invalidate]; // although don't think it's possible to arrive here if timer still valid is self is target => self retains timer
+    // don't think possible to arrive here with valid timer? target=self => self retains timer
+    if (timer) [timer invalidate];
+    timer = nil;
     if (ticksDeltas) [ticksDeltas release];
+    ticksDeltas = nil;
     if (tickState)
     {
         for (NSValue *psAddress in tickState) free([psAddress pointerValue]);

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class LogPoller;
+@class LogPoller, TouchLogger;
 
 @interface LoggingService : NSObject
 
@@ -30,6 +30,7 @@ typedef enum
 } BL_SEND_LOG_STATUS;
 
 @property (readonly, retain) LogPoller *logPoller;
+@property (readonly, retain) TouchLogger *touchLogger;
 @property (readonly, retain) NSString *currentProblemAttemptID;
 
 -(id)initWithProblemAttemptLoggingSetting:(BL_LOGGING_SETTING)paLogSetting;

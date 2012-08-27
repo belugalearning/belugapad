@@ -17,6 +17,7 @@
 #import "BAExpressionHeaders.h"
 #import "BATio.h"
 #import "LoggingService.h"
+#import "TouchLogger.h"
 #import "ContentService.h"
 #import "UsersService.h"
 #import "JMap.h"
@@ -1553,6 +1554,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [loggingService.touchLogger logTouches:touches];
+    
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
@@ -1648,6 +1651,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [loggingService.touchLogger logTouches:touches];
+    
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
@@ -1702,6 +1707,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [loggingService.touchLogger logTouches:touches];
+    
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
@@ -1756,6 +1763,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [loggingService.touchLogger logTouches:touches];
+    
     hasMovedNumber=NO;
     if(npMove)npMove=nil;
     npLastMoved=nil;

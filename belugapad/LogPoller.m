@@ -51,18 +51,15 @@ typedef struct
 
 -(void)resetAndStartPolling
 {
-    [ticksDeltas removeAllObjects];
-    [tickState removeAllObjects];
-    [self resumePolling];
-}
-
--(void)stopPolling
-{
     if (timer)
     {
         [timer invalidate];
         timer = nil;
-    }
+    }    
+    for (NSValue *psAddress in tickState) free([psAddress pointerValue]);
+    [tickState removeAllObjects];
+    [(NSMutableArray*)ticksDeltas removeAllObjects];
+    [self resumePolling];
 }
 
 -(void)resumePolling
@@ -73,6 +70,15 @@ typedef struct
                                            selector:@selector(tick:)
                                            userInfo:nil
                                             repeats:YES];
+}
+
+-(void)stopPolling
+{
+    if (timer)
+    {
+        [timer invalidate];
+        timer = nil;
+    }
 }
 
 -(void)registerPollee:(id<LogPolling,NSObject>)pollee
@@ -181,7 +187,7 @@ typedef struct
     if ([tickDelta count])
     {
         NSNumber *date = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]];
-        [ticksDeltas addObject:[NSDictionary dictionaryWithObjectsAndKeys:date, @"date", tickDelta, @"delta", nil]];
+        [(NSMutableArray*)ticksDeltas addObject:@{ @"date":date, @"delta": tickDelta }];
     }
 }
 
@@ -199,15 +205,14 @@ typedef struct
 
 -(void)dealloc
 {
+    // don't think possible to arrive here with valid timer? target=self => self retains timer
     if (timer) [timer invalidate];
+    timer = nil;
     if (ticksDeltas) [ticksDeltas release];
+    ticksDeltas = nil;
     if (tickState)
     {
-        for (NSValue *psAddress in tickState)
-        {
-            PolleeState *ps = [psAddress pointerValue];
-            free(ps);
-        }
+        for (NSValue *psAddress in tickState) free([psAddress pointerValue]);
         [tickState release];
     }
     

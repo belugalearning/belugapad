@@ -14,6 +14,7 @@
 		0C33EEBF15D4EE5900EA6A11 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 0C33EEB815D4EE5900EA6A11 /* zip.c */; };
 		0C33EEC015D4EE5900EA6A11 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C33EEBB15D4EE5900EA6A11 /* SSZipArchive.m */; };
 		0C35A9F81576272500D47517 /* canned-dbs in Resources */ = {isa = PBXBuildFile; fileRef = 0C35A9F71576272500D47517 /* canned-dbs */; };
+		0C3955BB15E7A3440043DD4F /* TouchLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C3955BA15E7A3440043DD4F /* TouchLogger.m */; };
 		0C40751C1596354700E03C1F /* LoggingService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C40751B1596354700E03C1F /* LoggingService.m */; };
 		0C427C3714F529CC0033AFE2 /* sfx in Resources */ = {isa = PBXBuildFile; fileRef = 0C427C3614F529CC0033AFE2 /* sfx */; };
 		0C4CD67B15E3A5430037BBD0 /* LogPoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C4CD67A15E3A5430037BBD0 /* LogPoller.m */; };
@@ -433,6 +434,8 @@
 		0C33EEBA15D4EE5900EA6A11 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSZipArchive.h; path = libs/SSZipArchive/SSZipArchive.h; sourceTree = "<group>"; };
 		0C33EEBB15D4EE5900EA6A11 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSZipArchive.m; path = libs/SSZipArchive/SSZipArchive.m; sourceTree = "<group>"; };
 		0C35A9F71576272500D47517 /* canned-dbs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "canned-dbs"; sourceTree = SOURCE_ROOT; };
+		0C3955B915E7A3440043DD4F /* TouchLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchLogger.h; sourceTree = "<group>"; };
+		0C3955BA15E7A3440043DD4F /* TouchLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchLogger.m; sourceTree = "<group>"; };
 		0C40751A1596354700E03C1F /* LoggingService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggingService.h; sourceTree = "<group>"; };
 		0C40751B1596354700E03C1F /* LoggingService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoggingService.m; sourceTree = "<group>"; };
 		0C427C3614F529CC0033AFE2 /* sfx */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sfx; sourceTree = SOURCE_ROOT; };
@@ -1259,6 +1262,8 @@
 				0C4CD67815E253190037BBD0 /* LogPollingProtocols.h */,
 				0C4CD67915E3A5430037BBD0 /* LogPoller.h */,
 				0C4CD67A15E3A5430037BBD0 /* LogPoller.m */,
+				0C3955B915E7A3440043DD4F /* TouchLogger.h */,
+				0C3955BA15E7A3440043DD4F /* TouchLogger.m */,
 			);
 			name = Logging;
 			sourceTree = "<group>";
@@ -3208,6 +3213,7 @@
 				7FEB663D15DEE68100F6E782 /* PRFilledPolygon.m in Sources */,
 				7FEB663E15DEE68100F6E782 /* PRRatcliffTriangulator.mm in Sources */,
 				7FEB663F15DEE68100F6E782 /* triangulate.cpp in Sources */,
+				0C3955BB15E7A3440043DD4F /* TouchLogger.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

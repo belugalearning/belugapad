@@ -562,7 +562,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [[CCDirector sharedDirector] view].multipleTouchEnabled=YES;
     
     //reset scale
-    scale=1.0f;
+    if([pdef objectForKey:DEFAULT_SCALE])
+        scale=[[pdef objectForKey:DEFAULT_SCALE]floatValue];
+    else
+        scale=1.0f;
+    
     
     if(toolKey)
     {
@@ -606,6 +610,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [self setupProblemOnToolHost:pdef];
     }
     
+    // set scale using the value we got earlier
+    [toolBackLayer setScale:scale];
+    [toolForeLayer setScale:scale];
     
     //glossary mockup
     if([pdef objectForKey:@"GLOSSARY"])
@@ -645,14 +652,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(eMode) evalMode=[eMode intValue];
     else if(eMode && numberPickerForThisProblem) evalMode=kProblemEvalOnCommit;
     else evalMode=kProblemEvalAuto;
-    
-    if([curpdef objectForKey:DEFAULT_SCALE])
-        scale=[[curpdef objectForKey:DEFAULT_SCALE]floatValue];
-    else 
-        scale=1.0f;
-    
-    [toolBackLayer setScale:scale];
-    [toolForeLayer setScale:scale];
     
     NSString *labelDesc=[self.DynProblemParser parseStringFromValueWithKey:PROBLEM_DESCRIPTION inDef:curpdef];
     

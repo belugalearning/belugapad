@@ -9,6 +9,9 @@
 #import "DWGameObject.h"
 
 @interface DWPlaceValueBlockGameObject : DWGameObject
+{
+    DWGameObject *Mount1;
+}
 
 @property (retain) DWGameObject *Mount;
 @property (retain) DWGameObject *LastMount;
@@ -21,6 +24,8 @@
 @property BOOL AnimateMe;
 @property BOOL Selected;
 @property int lastZIndex;
+
+
 
 
 @end

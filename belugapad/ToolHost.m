@@ -1618,7 +1618,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [self checkMetaQuestionTouchesAt:location andTouchEnd:NO];
 
     else if(numberPickerForThisProblem)
-        [self checkMetaQuestionTouchesAt:location andTouchEnd:NO];
+        [self checkNumberPickerTouches:location];
     
     // TODO: This should be made proportional
     

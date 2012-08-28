@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Shade in 1/{$den} of the rectangle.</string>
+	<string>Which is bigger?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>shade fraction</string>
+	<string>comparing fractions of quantities</string>
 	<key>MASTERY</key>
 	<true/>
 	<key>TOOL_KEY</key>
@@ -25,9 +25,9 @@
 	<key>DOTGRID_EVAL_DIVIDEND</key>
 	<integer>1</integer>
 	<key>DOTGRID_EVAL_DIVISOR</key>
-	<string>{$den}</string>
+	<string>3</string>
 	<key>DOTGRID_EVAL_TOTALSIZE</key>
-	<string>{$mult*$den}</string>
+	<string>15</string>
 	<key>SHOW_RESIZE</key>
 	<false/>
 	<key>INIT_OBJECTS</key>
@@ -36,37 +36,58 @@
 			<key>SHOW_RESIZE</key>
 			<false/>
 			<key>START_X</key>
-			<integer>2</integer>
+			<integer>1</integer>
 			<key>END_X</key>
-			<string>{2+$den}</string>
+			<string>3</string>
 			<key>START_Y</key>
 			<integer>2</integer>
 			<key>END_Y</key>
-			<string>{2+$mult}</string>
+			<string>4</string>
+			<key>POS_X</key>
+			<integer>0</integer>
+			<key>POS_Y</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>SHOW_RESIZE</key>
+			<false/>
+			<key>START_X</key>
+			<integer>5</integer>
+			<key>END_X</key>
+			<string>8</string>
+			<key>START_Y</key>
+			<integer>2</integer>
+			<key>END_Y</key>
+			<string>5</string>
 			<key>POS_X</key>
 			<integer>0</integer>
 			<key>POS_Y</key>
 			<integer>0</integer>
 		</dict>
 	</array>
-	<key>DVARS</key>
-	<array>
-		<dict>
-			<key>VAR_NAME</key>
-			<string>$mult</string>
-			<key>MIN</key>
-			<string>2</string>
-			<key>MAX</key>
-			<string>4</string>
-		</dict>
-		<dict>
-			<key>VAR_NAME</key>
-			<string>$den</string>
-			<key>MIN</key>
-			<string>3</string>
-			<key>MAX</key>
-			<string>5</string>
-		</dict>
-	</array>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>1/4 of 4</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>1/4 of 12</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>Which is bigger? 1/4 of 4 or 1/4 of 12?</string>
+	</dict>
 </dict>
 </plist>

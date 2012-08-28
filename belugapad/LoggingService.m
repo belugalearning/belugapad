@@ -184,7 +184,10 @@ uint const kMaxConsecutiveSendFails = 3;
     
     if (self.currPAPollDocId) // currPollDocId != nil <=> currTouchDocId != nil
     {
-        NSNumber *paStart = [((NSDictionary*)[[problemAttemptDoc objectForKey:@"events"] objectAtIndex:0]) objectForKey:@"date"];
+        NSArray *paEvents = [problemAttemptDoc objectForKey:@"events"];
+        if (!paEvents.count) return;
+        
+        NSNumber *paStart = [((NSDictionary*)[paEvents objectAtIndex:0]) objectForKey:@"date"];
         
         NSArray *deltas = self.logPoller.ticksDeltas;
         if ([deltas count])

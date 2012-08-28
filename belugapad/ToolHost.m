@@ -562,7 +562,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [[CCDirector sharedDirector] view].multipleTouchEnabled=YES;
     
     //reset scale
-    scale=1.0f;
+    if([pdef objectForKey:DEFAULT_SCALE])
+        scale=[[pdef objectForKey:DEFAULT_SCALE]floatValue];
+    else
+        scale=1.0f;
+    
     
     if(toolKey)
     {
@@ -606,6 +610,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [self setupProblemOnToolHost:pdef];
     }
     
+    // set scale using the value we got earlier
+    [toolBackLayer setScale:scale];
+    [toolForeLayer setScale:scale];
     
     //glossary mockup
     if([pdef objectForKey:@"GLOSSARY"])
@@ -645,14 +652,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(eMode) evalMode=[eMode intValue];
     else if(eMode && numberPickerForThisProblem) evalMode=kProblemEvalOnCommit;
     else evalMode=kProblemEvalAuto;
-    
-    if([curpdef objectForKey:DEFAULT_SCALE])
-        scale=[[curpdef objectForKey:DEFAULT_SCALE]floatValue];
-    else 
-        scale=1.0f;
-    
-    [toolBackLayer setScale:scale];
-    [toolForeLayer setScale:scale];
     
     NSString *labelDesc=[self.DynProblemParser parseStringFromValueWithKey:PROBLEM_DESCRIPTION inDef:curpdef];
     
@@ -993,14 +992,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     metaQuestionForceComplete=NO;
 }
 
--(void)checkMetaQuestionTouches:(CGPoint)location
+-(void)checkMetaQuestionTouchesAt:(CGPoint)location andTouchEnd:(BOOL)touchEnd
 {
-    [self checkMetaQuestionTouches:location andTouchType:0];
-}
-
--(void)checkMetaQuestionTouches:(CGPoint)location andTouchType:(int)touchType
-{
-    if(isAnimatingIn)return;
+    
+    if(isAnimatingIn)
+        return;
     
     if (CGRectContainsPoint(kRectButtonCommit, location) && mqEvalMode==kMetaQuestionEvalOnCommit)
     {
@@ -1027,7 +1023,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
                 BOOL isSelected=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_SELECTED] boolValue];
                 
                 // then if it's an answer and isn't currently selected
-                if(!isSelected)
+                if(!isSelected||touchEnd)
                 {
                     // the user has changed their answer (even if they didn't have one before)
                     [loggingService logEvent:BL_PA_MQ_CHANGE_ANSWER
@@ -1039,10 +1035,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
                         [self deselectAnswersExcept:i];
                         
                         // if this is an auto eval, run the eval now
-                        if(mqEvalMode==kMetaQuestionEvalAuto && touchType==2)
-                        {
+                        if(mqEvalMode==kMetaQuestionEvalAuto && touchEnd)
                             [self evalMetaQuestion];
-                        }
+                        
                     }
                     
                     // otherwise we can select multiple
@@ -1053,6 +1048,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
                         //                        [answerBtn setColor:kMetaQuestionButtonSelected];
                         [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
                     }
+                    return;
                 }
                 else
                 {
@@ -1065,7 +1061,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             }
             else
             {
-                if(mqAnswerMode==kMetaQuestionAnswerSingle && touchType==2)
+                if(mqAnswerMode==kMetaQuestionAnswerSingle && touchEnd)
                 {
                     [self deselectAnswersExcept:-1];
                 }
@@ -1619,10 +1615,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     
     if(metaQuestionForThisProblem)
-        [self checkMetaQuestionTouches:location];
+        [self checkMetaQuestionTouchesAt:location andTouchEnd:NO];
 
     else if(numberPickerForThisProblem)
-        [self checkNumberPickerTouches:location];
+        [self checkMetaQuestionTouchesAt:location andTouchEnd:NO];
     
     // TODO: This should be made proportional
     
@@ -1727,7 +1723,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     if(metaQuestionForThisProblem)
     {
-        [self checkMetaQuestionTouches:location andTouchType:2];
+        [self checkMetaQuestionTouchesAt:location andTouchEnd:YES];
     }
     if(npMove)
     {

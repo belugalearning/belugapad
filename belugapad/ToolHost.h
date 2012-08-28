@@ -175,7 +175,7 @@ typedef enum {
 -(void)stageIntroActions;
 -(void)setupProblemOnToolHost:(NSDictionary *)pdef;
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ;
--(void)checkMetaQuestionTouches:(CGPoint)location;
+-(void)checkMetaQuestionTouchesAt:(CGPoint)location andTouchEnd:(BOOL)touchEnd;
 -(void)setupNumberPicker:(NSDictionary *)pdefNP;
 -(void)checkNumberPickerTouches:(CGPoint)location;
 -(void)checkNumberPickerTouchOnRegister:(CGPoint)location;

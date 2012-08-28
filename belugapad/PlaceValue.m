@@ -1180,13 +1180,13 @@ static float kTimeToCageShake=7.0f;
             DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
             if(!co.MountedObject)
             {
-                NSLog(@"empty space at x %d / y %d -- mount says pos x %d / y %d", r, c, co.myRow, co.myRope);
+                //NSLog(@"empty space at x %d / y %d -- mount says pos x %d / y %d", r, c, co.myRow, co.myRope);
             }
             else
             {
-                NSLog(@"this mount pos x %d y %d", co.myRow, co.myRope);
+                //NSLog(@"this mount pos x %d y %d", co.myRow, co.myRope);
                 DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)co.MountedObject;
-                NSLog(@"object on grid (#%d) believes mount to be x %d / y %d", [gw.AllGameObjects indexOfObject:b], ((DWPlaceValueNetGameObject*)b.Mount).myRow,((DWPlaceValueNetGameObject*)b.Mount).myRope);
+                //NSLog(@"object on grid (#%d) believes mount to be x %d / y %d", [gw.AllGameObjects indexOfObject:b], ((DWPlaceValueNetGameObject*)b.Mount).myRow,((DWPlaceValueNetGameObject*)b.Mount).myRope);
             }
         }
     }
@@ -2025,7 +2025,7 @@ static float kTimeToCageShake=7.0f;
                 // ===== return a selection (a base selection) back to where they came from ===
                 else if(gw.Blackboard.SelectedObjects.count==columnBaseValue && isBasePickup)
                 {
-                                NSLog(@"columnbasevalue selected and is base pickup");
+                                //NSLog(@"columnbasevalue selected and is base pickup");
                     //reset positions of all selected objects (inc pickup object)
                     for(int igo=0; igo<gw.Blackboard.SelectedObjects.count; igo++)
                     {
@@ -2121,7 +2121,7 @@ static float kTimeToCageShake=7.0f;
     //get any auto reset / repositions to re-evaluate
     [gw handleMessage:kDWstartRespositionSeek andPayload:nil withLogLevel:0];
 
-    NSLog(@"free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
+    //NSLog(@"free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
     [self logOutGameObjectsPositions:currentColumnIndex];
     
     [self setTouchVarsToOff];

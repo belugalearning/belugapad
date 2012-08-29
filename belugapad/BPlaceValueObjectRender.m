@@ -202,6 +202,9 @@
     
     if([b.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
     {
+        if([b.LastMount isKindOfClass:[DWPlaceValueNetGameObject class]] && gameWorld.Blackboard.DropObject!=b.LastMount)
+            ((DWPlaceValueNetGameObject*)b.LastMount).MountedObject=nil;
+            
         c=(DWPlaceValueCageGameObject*)b.Mount;
         x=c.PosX;
         y=c.PosY;
@@ -241,6 +244,9 @@
     
     if([b.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
     {
+        if([b.LastMount isKindOfClass:[DWPlaceValueNetGameObject class]])
+            ((DWPlaceValueNetGameObject*)b.LastMount).MountedObject=nil;
+        
         c=(DWPlaceValueCageGameObject*)b.Mount;
         b.PosX=c.PosX;
         b.PosY=c.PosY+20;

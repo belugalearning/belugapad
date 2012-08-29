@@ -172,6 +172,7 @@ static float kTimeToCageShake=7.0f;
         isBasePickup=NO;
     
     [self flipToBaseSelection];
+    //[self checkMountPositionsForBlocks];
 }
 
 #pragma mark gameworld setup and population
@@ -182,6 +183,7 @@ static float kTimeToCageShake=7.0f;
 
 -(void)populateGW
 {
+    thisLog=0;
     renderLayer = [[CCLayer alloc] init];
     [self.ForeLayer addChild:renderLayer];
     
@@ -1180,23 +1182,30 @@ static float kTimeToCageShake=7.0f;
 
 -(void)logOutGameObjectsPositions:(int)thisGrid
 {
-    for (int r=0; r<[[gw.Blackboard.AllStores objectAtIndex:thisGrid] count]; r++) {
-        NSMutableArray *row=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] objectAtIndex:r];
-        for (int c=0; c<[row count]; c++)
+ 
+    int goNumber=0;
+    
+    for(DWGameObject *go in gw.AllGameObjects)
+    {
+        if([go isKindOfClass:[DWPlaceValueBlockGameObject class]])
         {
-            DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
-            if(!co.MountedObject)
+            DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)go;
+            if([block.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
             {
-                NSLog(@"empty space at x %d / y %d -- mount says pos x %d / y %d", r, c, co.myRow, co.myRope);
+                DWPlaceValueNetGameObject *net=(DWPlaceValueNetGameObject*)block.Mount;
+
+                if(net.myCol==thisGrid)
+                {
+                    NSLog(@"(%d-%d) block mounted at x %d y %d", thisLog, goNumber, net.myRow, net.myRope);
+                    goNumber++;
+                }
             }
-            else
-            {
-//                NSLog(@"this mount pos x %d y %d", co.myRow, co.myRope);
-                DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)co.MountedObject;
-                NSLog(@"object on grid (#%d) believes mount to be x %d / y %d", [gw.AllGameObjects indexOfObject:b], ((DWPlaceValueNetGameObject*)b.Mount).myRow,((DWPlaceValueNetGameObject*)b.Mount).myRope);
-            }
+            
         }
+         
     }
+    thisLog++;
+    
 }
 
 #pragma mark - environment interaction
@@ -1235,6 +1244,7 @@ static float kTimeToCageShake=7.0f;
     }
 
 }
+
 -(void)switchSpritesBack
 {
     if(!pickupSprite)return;
@@ -1250,6 +1260,7 @@ static float kTimeToCageShake=7.0f;
         }
     }
 }
+
 -(void)snapLayerToPosition
 {
     // code for changing the layer position to the current column
@@ -1259,6 +1270,45 @@ static float kTimeToCageShake=7.0f;
     [renderLayer runAction:moveLayerGently]; 
 }
 
+-(void)checkMountPositionsForBlocks
+{
+    if(!touching) {
+        for(DWGameObject *go in gw.AllGameObjects)
+        {
+            if([go isKindOfClass:[DWPlaceValueBlockGameObject class]])
+            {
+                DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)go;
+                if([block.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
+                {
+                    DWPlaceValueNetGameObject *net=(DWPlaceValueNetGameObject*)block.Mount;
+                    if(!net.MountedObject)
+                    {
+                        net.MountedObject=block;
+                        block.AnimateMe=NO;
+                        [block handleMessage:kDWresetToMountPosition];
+                    }
+                }
+                
+            }
+            if([go isKindOfClass:[DWPlaceValueNetGameObject class]])
+            {
+                DWPlaceValueNetGameObject *net=(DWPlaceValueNetGameObject*)go;
+                if(net.MountedObject)
+                {
+                    DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)net.MountedObject;
+                    if(!block.Mount)
+                    {
+                    block.Mount=net;
+                    block.AnimateMe=NO;
+                    [block handleMessage:kDWresetToMountPosition];
+                    }
+                }
+                
+            }
+
+        }
+    }
+}
 
 -(BOOL)doTransitionWithIncrement:(int)incr
 {
@@ -1614,7 +1664,7 @@ static float kTimeToCageShake=7.0f;
             netMount=(DWPlaceValueNetGameObject*)pickupObject.Mount;
             netMount.MountedObject=nil;
             pickupObject.LastMount=pickupObject.Mount;
-            pickupObject.Mount=nil;
+
             NSLog(@"(start-single) free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
             
         }
@@ -1665,7 +1715,6 @@ static float kTimeToCageShake=7.0f;
                         [pickupObjects addObject:cge.MountedObject];
                         
                         DWPlaceValueBlockGameObject *newBlock=(DWPlaceValueBlockGameObject*)cge.MountedObject;
-                        newBlock.Mount=nil;
                         newBlock.LastMount=cge;
                         
                         //this is just a signal for the GO to us, pickup object is retained on the blackboard
@@ -1684,6 +1733,7 @@ static float kTimeToCageShake=7.0f;
         }
         else
         {
+//            netMount.MountedObject=nil;
             [pickupObjects addObject:pickupObject];
             pickupObject.LastMount=pickupObject.Mount;
             pickupObject.Mount=nil;
@@ -1966,8 +2016,34 @@ static float kTimeToCageShake=7.0f;
             // check whether it's selected and we can deselect - or that it's deselected
             DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
             
-            block.Mount=block.LastMount;
-            ((DWPlaceValueNetGameObject*)block.Mount).MountedObject=block;
+            if(isBasePickup)
+            {
+                for(int igo=0; igo<gw.Blackboard.SelectedObjects.count; igo++)
+                {
+                    DWPlaceValueBlockGameObject *go = [[[gw Blackboard] SelectedObjects] objectAtIndex:igo];
+                    go.Mount=go.LastMount;
+                    
+                    ((DWPlaceValueNetGameObject*)go.Mount).MountedObject=go;
+                    
+                    go.AnimateMe=YES;
+                    
+                    go.PosX=((DWPlaceValueNetGameObject*)go.Mount).PosX;
+                    go.PosY=((DWPlaceValueNetGameObject*)go.Mount).PosY;
+                    
+                    [go handleMessage:kDWmoveSpriteToPosition];
+                    [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+                    
+                    //[go handleMessage:kDWputdown];
+                }
+            }
+            else
+            {
+                block.Mount=block.LastMount;
+                ((DWPlaceValueNetGameObject*)block.Mount).MountedObject=block;
+            }
+            [block handleMessage:kDWresetToMountPosition];
+            
+//            [block handleMessage:kDWupdateSprite];
             
             BOOL isCage;
             
@@ -1998,7 +2074,7 @@ static float kTimeToCageShake=7.0f;
         if([gw Blackboard].PickupObject!=nil && ([BLMath DistanceBetween:touchStartPos and:touchEndPos] > fabs(kTapSlipThreshold)))
         {
                         
-            if(gw.Blackboard.SelectedObjects.count == columnBaseValue && isBasePickup)
+            if(isBasePickup)
             {
                 DWGameObject *go = gw.Blackboard.PickupObject;
                 if(![gw.Blackboard.SelectedObjects containsObject:go])
@@ -2038,6 +2114,8 @@ static float kTimeToCageShake=7.0f;
                     if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
                     {
                         gw.Blackboard.TestTouchLocation = ccp(gw.Blackboard.TestTouchLocation.x, gw.Blackboard.TestTouchLocation.y + 1000);
+                        gw.Blackboard.DropObject=nil;
+                        [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
                         
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
@@ -2130,6 +2208,14 @@ static float kTimeToCageShake=7.0f;
 //                }
                 
                 else {
+                    DWPlaceValueBlockGameObject *pickupObject=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
+                    
+                    if([pickupObject.LastMount isKindOfClass:[DWPlaceValueNetGameObject class]])
+                    {
+                        DWPlaceValueNetGameObject *lastNet=(DWPlaceValueNetGameObject*)pickupObject.LastMount;
+                        lastNet.MountedObject=nil;
+                    }
+                    
                     [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
                     
                     [[gw Blackboard].PickupObject handleMessage:kDWputdown andPayload:nil withLogLevel:0];

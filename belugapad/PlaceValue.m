@@ -165,6 +165,13 @@ static float kTimeToCageShake=7.0f;
             [l setString:[NSString stringWithFormat:@"%d", [[blocksToCreate objectAtIndex:i]intValue]]];
         }
     }
+    
+    if([gw.Blackboard SelectedObjects].count==columnBaseValue && showBaseSelection && allowCondensing)
+        isBasePickup=YES;
+    else
+        isBasePickup=NO;
+    
+    [self flipToBaseSelection];
 }
 
 #pragma mark gameworld setup and population
@@ -1228,9 +1235,24 @@ static float kTimeToCageShake=7.0f;
     }
 
 }
+-(void)switchSpritesBack
+{
+    if(!pickupSprite)return;
+    
+    for(DWGameObject *go in gw.AllGameObjects)
+    {
+        if([go isKindOfClass:[DWPlaceValueBlockGameObject class]])
+        {
+            DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)go;
+            
+            CCSprite *mySprite=b.mySprite;
+            [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(((DWPlaceValueBlockGameObject*)go).SpriteFilename)]];
+        }
+    }
+}
 -(void)snapLayerToPosition
 {
-    // code for changing the layer position to the current column 
+    // code for changing the layer position to the current column
     float layerPositionX = (cx-(currentColumnIndex*(kPropXColumnSpacing*lx)));
     CCMoveTo *moveLayer = [CCMoveTo actionWithDuration:kLayerSnapAnimationTime position:ccp(layerPositionX, 0)];
     CCEaseIn *moveLayerGently = [CCEaseIn actionWithAction:moveLayer rate:kLayerSnapAnimationTime];
@@ -1418,6 +1440,30 @@ static float kTimeToCageShake=7.0f;
     
 }
 
+-(void)flipToBaseSelection
+{
+    // switch colour if the base value is selected
+    if(isBasePickup && showBaseSelection)
+    {
+        for(int go=0; go<gw.Blackboard.SelectedObjects.count; go++)
+        {
+            DWGameObject *goO = [[[gw Blackboard] SelectedObjects] objectAtIndex:go];
+            
+            [goO handleMessage:kDWswitchBaseSelection andPayload:nil withLogLevel:0];
+        }
+        
+    }
+    // or switch back if it's not
+    else
+    {
+        for(int go=0; go<gw.Blackboard.SelectedObjects.count; go++)
+        {
+            DWGameObject *goO = [[[gw Blackboard] SelectedObjects] objectAtIndex:go];
+            [goO handleMessage:kDWswitchBaseSelectionBack andPayload:nil withLogLevel:0];
+        }
+    }
+}
+
 -(void)tintGridColour:(ccColor3B)toThisColour
 {
     [self tintGridColour:currentColumnIndex toColour:toThisColour];
@@ -1439,7 +1485,7 @@ static float kTimeToCageShake=7.0f;
 
 -(void)resetPickupObjectPos
 {
-    if(gw.Blackboard.SelectedObjects.count == columnBaseValue)
+    if(isBasePickup)
     {
         for(int goC=0; goC<gw.Blackboard.SelectedObjects.count; goC++)
         {
@@ -1561,7 +1607,7 @@ static float kTimeToCageShake=7.0f;
         
         DWPlaceValueNetGameObject *netMount=nil;
         
-        if(gw.Blackboard.SelectedObjects.count==columnBaseValue && showBaseSelection && allowCondensing) isBasePickup=YES;
+        //if(gw.Blackboard.SelectedObjects.count==columnBaseValue && showBaseSelection && allowCondensing) isBasePickup=YES;
         
         if([pickupObject.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
         {
@@ -1754,7 +1800,8 @@ static float kTimeToCageShake=7.0f;
         posX = posX + diff.x;
         posY = posY + diff.y;
         
-        if(gw.Blackboard.SelectedObjects.count == columnBaseValue && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject] && allowCondensing)
+        //if(gw.Blackboard.SelectedObjects.count == columnBaseValue && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject] && allowCondensing)
+        if(isBasePickup && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject] && allowCondensing)
         {
             //flag we're in inBlockTransition
             inBlockTransition=YES;
@@ -1928,30 +1975,9 @@ static float kTimeToCageShake=7.0f;
                 hasMovedBasePickup=NO;
                 //doNotResetToMount=YES;
             }
-            
-            
-            // switch colour if the base value is selected
-            if(gw.Blackboard.SelectedObjects.count == columnBaseValue && showBaseSelection)
-            {
-                for(int go=0; go<gw.Blackboard.SelectedObjects.count; go++)
-                {
-                    DWGameObject *goO = [[[gw Blackboard] SelectedObjects] objectAtIndex:go];
-
-                    [goO handleMessage:kDWswitchBaseSelection andPayload:nil withLogLevel:0];
-                }
-                
-            }
-            // or switch back if it's not
-            else
-            {
-                for(int go=0; go<gw.Blackboard.SelectedObjects.count; go++)
-                {
-                    DWGameObject *goO = [[[gw Blackboard] SelectedObjects] objectAtIndex:go];
-                    [goO handleMessage:kDWswitchBaseSelectionBack andPayload:nil withLogLevel:0];
-                }
-            }
         
             
+            [self switchSpritesBack];
             [self setTouchVarsToOff];
             return;
         }
@@ -1991,8 +2017,6 @@ static float kTimeToCageShake=7.0f;
                 
                 if([[gw Blackboard].DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])isCage=YES;
                 else isCage=NO;
-
-
                 
                 //tell the picked-up object to mount on the dropobject
 
@@ -2031,7 +2055,8 @@ static float kTimeToCageShake=7.0f;
                 }
                 
                 // ===== return a selection (a base selection) back to where they came from ===
-                else if(gw.Blackboard.SelectedObjects.count==columnBaseValue && isBasePickup)
+//                else if(gw.Blackboard.SelectedObjects.count==columnBaseValue && isBasePickup)
+                else if(isBasePickup)
                 {
                                 //NSLog(@"columnbasevalue selected and is base pickup");
                     //reset positions of all selected objects (inc pickup object)
@@ -2048,6 +2073,7 @@ static float kTimeToCageShake=7.0f;
                         go.PosY=((DWPlaceValueNetGameObject*)go.Mount).PosY;
                         
                         [go handleMessage:kDWmoveSpriteToPosition];
+                        [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
                         
                         //[go handleMessage:kDWputdown];
                     }
@@ -2093,15 +2119,6 @@ static float kTimeToCageShake=7.0f;
 //                CCSprite *mySprite=((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).mySprite;
                 
                 if(pickupSprite){
-                    for(DWPlaceValueBlockGameObject *b in pickupObjects)
-                    {
-                        CCSprite *mySprite=b.mySprite;
-                        [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).SpriteFilename)]];
-                    
-                    }
-                    DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
-                    CCSprite *mySprite=b.mySprite;
-                    [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).SpriteFilename)]];
                     
                     if(isCage && doNotSwitchSelection)
                     {
@@ -2142,6 +2159,7 @@ static float kTimeToCageShake=7.0f;
     //NSLog(@"free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
     [self logOutGameObjectsPositions:currentColumnIndex];
     
+    [self switchSpritesBack];
     [self setTouchVarsToOff];
 }
 

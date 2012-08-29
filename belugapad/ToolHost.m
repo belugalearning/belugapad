@@ -686,9 +686,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void) resetProblem
 {
     if(problemDescLabel)[problemDescLabel removeFromParentAndCleanup:YES];
-    if(commitBtn)
+    if(evalMode==kProblemEvalOnCommit)
     {
-        //[commitBtn removeFromParentAndCleanup:YES];
+        [commitBtn removeFromParentAndCleanup:YES];
         commitBtn=nil;
     }
     
@@ -1004,6 +1004,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [loggingService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
         
         [self evalMetaQuestion];
+        return;
     }
     if(metaQuestionForThisProblem)
     {
@@ -1023,7 +1024,15 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
                 BOOL isSelected=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_SELECTED] boolValue];
                 
                 // then if it's an answer and isn't currently selected
-                if(!isSelected||touchEnd)
+                
+                if(isSelected && touchEnd)
+                {
+                    // if this is an auto eval, run the eval now
+                    if(mqAnswerMode==kMetaQuestionAnswerSingle && mqEvalMode==kMetaQuestionEvalAuto)
+                        [self evalMetaQuestion];
+                }
+                
+                if(!isSelected && !touchEnd)
                 {
                     // the user has changed their answer (even if they didn't have one before)
                     [loggingService logEvent:BL_PA_MQ_CHANGE_ANSWER
@@ -1034,9 +1043,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
                     {
                         [self deselectAnswersExcept:i];
                         
-                        // if this is an auto eval, run the eval now
-                        if(mqEvalMode==kMetaQuestionEvalAuto && touchEnd)
-                            [self evalMetaQuestion];
                         
                     }
                     
@@ -1050,18 +1056,18 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
                     }
                     return;
                 }
-                else
+                else if(isSelected && !touchEnd)
                 {
                     // return to full button colour and set the dictionary selected value to no
-                    [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton")]];
-                    [answerLabel setColor:kMetaAnswerLabelColorDeselected];;
+                    [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")]];
+                    [answerLabel setColor:kMetaAnswerLabelColorDeselected];
 //                    [answerBtn setColor:kMetaQuestionButtonDeselected];
                     [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
                 }
             }
             else
             {
-                if(mqAnswerMode==kMetaQuestionAnswerSingle && touchEnd)
+                if(mqAnswerMode==kMetaQuestionAnswerSingle && !touchEnd)
                 {
                     [self deselectAnswersExcept:-1];
                 }

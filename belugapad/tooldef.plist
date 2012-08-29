@@ -34,11 +34,11 @@
 	<key>PlaceValue</key>
 	<dict>
 		<key>SCALE_MIN</key>
-		<real>0.3</real>
+		<real>1</real>
 		<key>SCALE_MAX</key>
-		<real>1.2</real>
+		<integer>1</integer>
 		<key>SCALING_PASS_THRU</key>
-		<false/>
+		<true/>
 	</dict>
 	<key>DotGrid</key>
 	<dict>

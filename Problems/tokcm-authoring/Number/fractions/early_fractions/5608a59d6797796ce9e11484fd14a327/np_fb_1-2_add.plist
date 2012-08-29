@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>shade half (2/4, 4/8)</string>
+	<string>What is 1/2 add 1/2?</string>
 	<key>TOOL_KEY</key>
 	<string>FractionBuilder</string>
 	<key>EVAL_MODE</key>
@@ -30,7 +30,7 @@
 			<key>VALUE</key>
 			<integer>1</integer>
 			<key>TAG</key>
-			<integer>1</integer>
+			<integer>2</integer>
 			<key>SHOW_CURRENT_FRACTIONS</key>
 			<true/>
 		</dict>
@@ -42,7 +42,7 @@
 			<key>VALUE</key>
 			<integer>1</integer>
 			<key>TAG</key>
-			<integer>2</integer>
+			<integer>3</integer>
 			<key>SHOW_CURRENT_FRACTIONS</key>
 			<true/>
 		</dict>
@@ -53,18 +53,43 @@
 			<key>TAG</key>
 			<integer>1</integer>
 			<key>DIVIDEND</key>
-			<integer>2</integer>
+			<integer>0</integer>
 			<key>DIVISOR</key>
-			<string>4</string>
+			<string>2</string>
 		</dict>
 		<dict>
 			<key>TAG</key>
 			<integer>2</integer>
 			<key>DIVIDEND</key>
-			<integer>4</integer>
+			<integer>0</integer>
 			<key>DIVISOR</key>
-			<string>8</string>
+			<string>2</string>
+		</dict>
+		<dict>
+			<key>TAG</key>
+			<integer>3</integer>
+			<key>DIVIDEND</key>
+			<integer>2</integer>
+			<key>DIVISOR</key>
+			<string>2</string>
 		</dict>
 	</array>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>What is 1/2 + 1/2?</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>3</integer>
+		<key>PICKER_ORIGIN_X</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_Y</key>
+		<integer>200</integer>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<integer>1</integer>
+	</dict>
 </dict>
 </plist>

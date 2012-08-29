@@ -9,9 +9,12 @@
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
 	<key>SOLUTION</key>
-	<array>
-		<integer>16</integer>
-	</array>
+	<dict>
+		<key>{@bname}</key>
+		<string>{5-$augend}</string>
+		<key>{@gname}</key>
+		<string>{$addend+$augend}</string>
+	</dict>
 	<key>DSTRINGS</key>
 	<dict>
 		<key>@bname</key>
@@ -62,12 +65,24 @@
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
+			<key>LABEL</key>
+			<string>{@gname}</string>
 			<key>QUANTITY</key>
-			<integer>4</integer>
+			<string>{$addend}</string>
 			<key>POS_X</key>
 			<integer>350</integer>
 			<key>POS_Y</key>
 			<integer>450</integer>
+		</dict>
+		<dict>
+			<key>LABEL</key>
+			<string>{@bname}</string>
+			<key>QUANTITY</key>
+			<string>{$augend}</string>
+			<key>POS_X</key>
+			<integer>250</integer>
+			<key>POS_Y</key>
+			<integer>250</integer>
 		</dict>
 	</array>
 	<key>META_QUESTION</key>
@@ -82,13 +97,13 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>1</string>
+				<string>{$addend-$augend}</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>2</string>
+				<string>{$addend+$augend}</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
@@ -98,17 +113,30 @@
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>4</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Some friends share a bag of 4 cookies fairly. {@gname} gets 2, how many people shared the bag of cookies?</string>
+		<string>{@gname} has {$addend} {@item}. {@bname} gives her {$augend} of his. How many does {@gname} have now?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$addend</string>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>4</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$augend</string>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>4</string>
+		</dict>
+	</array>
 </dict>
 </plist>

@@ -175,6 +175,7 @@
 -(BOOL)evalProblemMatrixMatch;
 -(void)checkForMultipleControlTouchesAt:(CGPoint)thisLocation;
 -(void)switchSpritesBack;
+-(void)createCondenseAndMulchBoxes;
 -(void)snapLayerToPosition;
 -(void)checkMountPositionsForBlocks;
 -(void)flipToBaseSelection;

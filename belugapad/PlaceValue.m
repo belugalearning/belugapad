@@ -1472,6 +1472,10 @@ static float kTimeToCageShake=7.0f;
     location=[[CCDirector sharedDirector] convertToGL:location];
     timeSinceInteractionOrShake=0.0f;
     
+    NSLog(@"THIS TOUCH BEGAN CONSISTS (%d touches)", [touches count]);
+    
+    gw.Blackboard.PickupObject=nil;
+    
     //[gw handleMessage:kDWstopAllActions andPayload:nil withLogLevel:-1];
     //location=[renderLayer convertToNodeSpace:location];
     
@@ -1591,6 +1595,9 @@ static float kTimeToCageShake=7.0f;
             }
         }
         
+        gw.Blackboard.DropObject=nil;
+        [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
+        
         BOOL isCage;
         
         if([pickupObject.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])isCage=YES;
@@ -1661,6 +1668,7 @@ static float kTimeToCageShake=7.0f;
     
     [toolHost.Zubi setTarget:location];
     
+    NSLog(@"THIS TOUCH MOVED CONSISTS (%d touches)", [touches count]);
 
     // if the distance is greater than the 'slipped tap' threshold, it's no longer a tap and is definitely moving
     if([BLMath DistanceBetween:[renderLayer convertToNodeSpace:touchStartPos] and:location] >= fabs(kTapSlipResetThreshold) && potentialTap)
@@ -1852,6 +1860,8 @@ static float kTimeToCageShake=7.0f;
     location=[[CCDirector sharedDirector] convertToGL:location];
     BOOL aTransitionHappened=NO;
     
+    NSLog(@"THIS TOUCH END CONSISTS (%d touches)", [touches count]);
+    
     // set the touch end position for evaluation
     touchEndPos = location;
     gw.Blackboard.TestTouchLocation=location;
@@ -1940,17 +1950,6 @@ static float kTimeToCageShake=7.0f;
                     [goO handleMessage:kDWswitchBaseSelectionBack andPayload:nil withLogLevel:0];
                 }
             }
-            
-//            if(isBasePickup && !hasMovedBasePickup)
-//            {
-//                DWGameObject *go = gw.Blackboard.PickupObject;
-//                gw.Blackboard.TestTouchLocation=ccp(gw.Blackboard.TestTouchLocation.x, gw.Blackboard.TestTouchLocation.y+1000);
-//                for(DWPlaceValueBlockGameObject *b in gw.Blackboard.SelectedObjects)
-//                {
-//                    b.Mount=b.LastMount;
-//                    [b.LastMount handleMessage:kDWsetMountedObject];
-//                }
-//            }
         
             
             [self setTouchVarsToOff];
@@ -2055,6 +2054,13 @@ static float kTimeToCageShake=7.0f;
                     doNotSwitchSelection=YES;
                     
                 }
+//                else if(gw.Blackboard.SelectedObjects.count==1 && [b.LastMount isKindOfClass:[DWPlaceValueNetGameObject class]])
+//                {
+//                    DWPlaceValueNetGameObject *thisObj=(DWPlaceValueNetGameObject*)b.LastMount;
+//                    b.Mount=b.LastMount;
+//                    thisObj.MountedObject=b;
+//                    
+//                }
 //
 //                else if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && [b.LastMount isKindOfClass:[DWPlaceValueNetGameObject class]])
 //                {
@@ -2077,7 +2083,7 @@ static float kTimeToCageShake=7.0f;
                 else {
                     [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
                     
-                    [[gw Blackboard].PickupObject handleMessage:kDWputdown andPayload:nil withLogLevel:0];         
+                    [[gw Blackboard].PickupObject handleMessage:kDWputdown andPayload:nil withLogLevel:0];
                     [[gw Blackboard].PickupObject logInfo:@"this object was mounted" withData:0];
                     [[gw Blackboard].DropObject logInfo:@"mounted object on this go" withData:0];
                 }
@@ -2093,6 +2099,10 @@ static float kTimeToCageShake=7.0f;
                         [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).SpriteFilename)]];
                     
                     }
+                    DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
+                    CCSprite *mySprite=b.mySprite;
+                    [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).SpriteFilename)]];
+                    
                     if(isCage && doNotSwitchSelection)
                     {
                         //deselect the object if selected
@@ -2109,10 +2119,9 @@ static float kTimeToCageShake=7.0f;
             }
             else
             {
+                
                 [self resetPickupObjectPos];
             }
-            
-            [gw Blackboard].PickupObject = nil;
         }
         
         else {
@@ -2131,7 +2140,7 @@ static float kTimeToCageShake=7.0f;
     [gw handleMessage:kDWstartRespositionSeek andPayload:nil withLogLevel:0];
 
     //NSLog(@"free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
-    //[self logOutGameObjectsPositions:currentColumnIndex];
+    [self logOutGameObjectsPositions:currentColumnIndex];
     
     [self setTouchVarsToOff];
 }
@@ -2144,6 +2153,8 @@ static float kTimeToCageShake=7.0f;
 -(void)setTouchVarsToOff
 {
     //remove all condense/mulch/transition state
+    [gw Blackboard].PickupObject = nil;
+    //gw.Blackboard.DropObject=nil;
     inBlockTransition=NO;
     inCondenseArea=NO;
     inMulchArea=NO;
@@ -2183,8 +2194,6 @@ static float kTimeToCageShake=7.0f;
     if(columnNegCages) [columnNegCages release];
     if(columnRows) [columnRows release];
     if(columnRopes) [columnRopes release];
-//    if(posCageSprite) [posCageSprite release];
-//    if(negCageSprite) [negCageSprite release];
     posCageSprite=nil;
     negCageSprite=nil;
     if(pickupSprite) [pickupSprite release];

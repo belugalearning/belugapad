@@ -243,7 +243,7 @@
     {
         c=(DWPlaceValueCageGameObject*)b.Mount;
         b.PosX=c.PosX;
-        b.PosY=c.PosY;
+        b.PosY=c.PosY+20;
     }
     
     CCSprite *curSprite = b.mySprite;

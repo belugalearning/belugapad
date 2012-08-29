@@ -438,7 +438,7 @@ static float kTimeToCageShake=7.0f;
             
             //[renderLayer addChild:minusSprite];
             //[renderLayer addChild:posiSprite];
-            [renderLayer addChild:label z:100];
+            [renderLayer addChild:label z:99999];
             
         }
         else {
@@ -1663,6 +1663,11 @@ static float kTimeToCageShake=7.0f;
                     else{
                         [cge handleMessage:kDWsetupStuff];
                         [pickupObjects addObject:cge.MountedObject];
+                        
+                        DWPlaceValueBlockGameObject *newBlock=(DWPlaceValueBlockGameObject*)cge.MountedObject;
+                        newBlock.Mount=nil;
+                        newBlock.LastMount=cge;
+                        
                         //this is just a signal for the GO to us, pickup object is retained on the blackboard
                         [cge.MountedObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
 //                        NSLog(@"this many pickupObjects: %d", [pickupObjects count]);
@@ -1672,12 +1677,16 @@ static float kTimeToCageShake=7.0f;
             else
             {
                 [pickupObjects addObject:pickupObject];
+                pickupObject.LastMount=pickupObject.Mount;
+                pickupObject.Mount=nil;
                 [[gw Blackboard].PickupObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
             }
         }
         else
         {
             [pickupObjects addObject:pickupObject];
+            pickupObject.LastMount=pickupObject.Mount;
+            pickupObject.Mount=nil;
             [[gw Blackboard].PickupObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
 //            [pickupObject handleMessage:kDWunsetMount];
             //[pickupObject.Mount handleMessage:kDWunsetMountedObject];
@@ -1976,6 +1985,10 @@ static float kTimeToCageShake=7.0f;
                 //doNotResetToMount=YES;
             }
         
+            if([block.LastMount isKindOfClass:[DWPlaceValueCageGameObject class]])
+            {
+                [block handleMessage:kDWresetToMountPositionAndDestroy];
+            }
             
             [self switchSpritesBack];
             [self setTouchVarsToOff];
@@ -2028,6 +2041,12 @@ static float kTimeToCageShake=7.0f;
                         
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
+                            if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]] && [go.LastMount isKindOfClass:[DWPlaceValueCageGameObject class]])
+                            {
+                                [b handleMessage:kDWresetToMountPositionAndDestroy];
+                                continue;
+                            }
+
                             [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
                             [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
                             
@@ -2079,6 +2098,10 @@ static float kTimeToCageShake=7.0f;
                     }
                     doNotSwitchSelection=YES;
                     
+                }
+                else if(b.Mount==nil && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]] && [b.LastMount isKindOfClass:[DWPlaceValueCageGameObject class]])
+                {
+                    [b handleMessage:kDWresetToMountPositionAndDestroy];
                 }
 //                else if(gw.Blackboard.SelectedObjects.count==1 && [b.LastMount isKindOfClass:[DWPlaceValueNetGameObject class]])
 //                {
@@ -2136,8 +2159,12 @@ static float kTimeToCageShake=7.0f;
             }
             else
             {
+                DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
                 
-                [self resetPickupObjectPos];
+                if([b.LastMount isKindOfClass:[DWPlaceValueCageGameObject class]])
+                    [b handleMessage:kDWresetToMountPositionAndDestroy];
+                else
+                    [self resetPickupObjectPos];
             }
         }
         

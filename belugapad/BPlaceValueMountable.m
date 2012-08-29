@@ -48,6 +48,8 @@
         }
         else if([b.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
         {
+            if(b.Selected)[b handleMessage:kDWswitchSelection];
+            
             newMountC=(DWPlaceValueCageGameObject*)b.Mount;
         
             newMountC.MountedObject=b;

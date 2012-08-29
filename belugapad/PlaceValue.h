@@ -171,7 +171,9 @@
 -(BOOL)evalProblemTotalCount;
 -(BOOL)evalProblemMatrixMatch;
 -(void)checkForMultipleControlTouchesAt:(CGPoint)thisLocation;
+-(void)switchSpritesBack;
 -(void)snapLayerToPosition;
+-(void)flipToBaseSelection;
 -(int)freeSpacesOnGrid:(int)thisGrid;
 -(void)tintGridColour:(ccColor3B)toThisColour;
 -(void)tintGridColour:(int)thisGrid toColour:(ccColor3B)toThisColour;

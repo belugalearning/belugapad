@@ -1180,13 +1180,13 @@ static float kTimeToCageShake=7.0f;
             DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
             if(!co.MountedObject)
             {
-                //NSLog(@"empty space at x %d / y %d -- mount says pos x %d / y %d", r, c, co.myRow, co.myRope);
+                NSLog(@"empty space at x %d / y %d -- mount says pos x %d / y %d", r, c, co.myRow, co.myRope);
             }
             else
             {
-                //NSLog(@"this mount pos x %d y %d", co.myRow, co.myRope);
+//                NSLog(@"this mount pos x %d y %d", co.myRow, co.myRope);
                 DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)co.MountedObject;
-                //NSLog(@"object on grid (#%d) believes mount to be x %d / y %d", [gw.AllGameObjects indexOfObject:b], ((DWPlaceValueNetGameObject*)b.Mount).myRow,((DWPlaceValueNetGameObject*)b.Mount).myRope);
+                NSLog(@"object on grid (#%d) believes mount to be x %d / y %d", [gw.AllGameObjects indexOfObject:b], ((DWPlaceValueNetGameObject*)b.Mount).myRow,((DWPlaceValueNetGameObject*)b.Mount).myRope);
             }
         }
     }
@@ -1557,7 +1557,7 @@ static float kTimeToCageShake=7.0f;
         
         DWPlaceValueNetGameObject *netMount=nil;
         
-        if(gw.Blackboard.SelectedObjects.count==columnBaseValue) isBasePickup=YES;
+        if(gw.Blackboard.SelectedObjects.count==columnBaseValue && showBaseSelection && allowCondensing) isBasePickup=YES;
         
         if([pickupObject.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
         {
@@ -1941,7 +1941,17 @@ static float kTimeToCageShake=7.0f;
                 }
             }
             
-            NSLog(@"free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
+//            if(isBasePickup && !hasMovedBasePickup)
+//            {
+//                DWGameObject *go = gw.Blackboard.PickupObject;
+//                gw.Blackboard.TestTouchLocation=ccp(gw.Blackboard.TestTouchLocation.x, gw.Blackboard.TestTouchLocation.y+1000);
+//                for(DWPlaceValueBlockGameObject *b in gw.Blackboard.SelectedObjects)
+//                {
+//                    b.Mount=b.LastMount;
+//                    [b.LastMount handleMessage:kDWsetMountedObject];
+//                }
+//            }
+        
             
             [self setTouchVarsToOff];
             return;
@@ -1952,7 +1962,6 @@ static float kTimeToCageShake=7.0f;
                         
             if(gw.Blackboard.SelectedObjects.count == columnBaseValue && isBasePickup)
             {
-                // TODO: Decide behaviour when the column base amount is selected
                 DWGameObject *go = gw.Blackboard.PickupObject;
                 if(![gw.Blackboard.SelectedObjects containsObject:go])
                 {
@@ -2122,7 +2131,7 @@ static float kTimeToCageShake=7.0f;
     [gw handleMessage:kDWstartRespositionSeek andPayload:nil withLogLevel:0];
 
     //NSLog(@"free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
-    [self logOutGameObjectsPositions:currentColumnIndex];
+    //[self logOutGameObjectsPositions:currentColumnIndex];
     
     [self setTouchVarsToOff];
 }

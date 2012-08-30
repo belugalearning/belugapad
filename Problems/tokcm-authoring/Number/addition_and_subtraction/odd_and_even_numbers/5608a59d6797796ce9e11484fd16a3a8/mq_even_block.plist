@@ -28,7 +28,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There is a shape made of 344 blocks. When it is split into blocks of 2, there are no blocks left over. Is 344 odd or even?</string>
+		<string>There is a shape made of some blocks. When split into blocks of 2, there are no blocks left over. Is the number of blocks odd or even?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

@@ -1073,28 +1073,40 @@ static float kTimeToCageShake=7.0f;
     [self calcProblemTotalCount];
 //    if([problemType isEqualToString:TOTAL_COUNT])
 //    {
-        if(totalCount == expectedCount && !gw.Blackboard.inProblemSetup)
-        {
-            return YES;
-        }
-        else if(totalCount != expectedCount && evalMode==kProblemEvalOnCommit)
-        {
-            return NO;
-        }
-        else {
-            return NO;
-        }
+    
+    if(debugLogging)
+        NSLog(@"total count %g, expected count %g", totalCount, expectedCount);
+    
+    NSString *totCount=[NSString stringWithFormat:@"%g", totalCount];
+    NSString *expCount=[NSString stringWithFormat:@"%g", expectedCount];
+    
+    if([totCount isEqualToString:expCount] && !gw.Blackboard.inProblemSetup)
+    {
+        return YES;
+    }
+    else if(![totCount isEqualToString:expCount] && evalMode==kProblemEvalOnCommit)
+    {
+        return NO;
+    }
+    else {
+        return NO;
+    }
+    
+    
+//    if(totalCount == expectedCount && !gw.Blackboard.inProblemSetup)
+//    {
+//        return YES;
+//    }
+//    else if(totalCount != expectedCount && evalMode==kProblemEvalOnCommit)
+//    {
+//        return NO;
+//    }
+//    else {
+//        return NO;
+//    }
     
 //    }
-//    if([problemType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE])
-//    {
-//        if(totalCount == expectedCount && !gw.Blackboard.inProblemSetup)
-//            return YES;
-//    
-//        else if(totalCount != expectedCount && evalMode==kProblemEvalOnCommit)
-//            return NO;
-//    }
-//    return NO;
+
 }
 
 -(BOOL)evalProblemMatrixMatch
@@ -1699,7 +1711,6 @@ static float kTimeToCageShake=7.0f;
                 {
                     n=(DWPlaceValueNetGameObject*)b.Mount;
                     b.LastMount=b.Mount;
-                    b.Mount=nil;
                     n.MountedObject=nil;
                 }
             }
@@ -1737,8 +1748,6 @@ static float kTimeToCageShake=7.0f;
             else
             {
                 [pickupObjects addObject:pickupObject];
-                pickupObject.LastMount=pickupObject.Mount;
-                pickupObject.Mount=nil;
                 [[gw Blackboard].PickupObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
             }
         }
@@ -1747,7 +1756,6 @@ static float kTimeToCageShake=7.0f;
         {
             [pickupObjects addObject:pickupObject];
             pickupObject.LastMount=pickupObject.Mount;
-            pickupObject.Mount=nil;
             [[gw Blackboard].PickupObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
         }
         
@@ -1758,7 +1766,9 @@ static float kTimeToCageShake=7.0f;
         [loggingService logEvent:(isCage ? BL_PA_PV_TOUCH_BEGIN_PICKUP_CAGE_OBJECT : BL_PA_PV_TOUCH_BEGIN_PICKUP_GRID_OBJECT)
             withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:objValue] forKey:@"objValue"]];
         
-
+        // nill the current pickupobject mount
+        pickupObject.Mount=nil;
+        
         gw.Blackboard.PickupOffset = location;
         // At this point we can still cancel the tap
         potentialTap = YES;
@@ -2003,6 +2013,19 @@ static float kTimeToCageShake=7.0f;
             // check whether it's selected and we can deselect - or that it's deselected
             DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
             BOOL isCage;
+            
+            // check whether this mount is a cage
+            if([block.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
+                isCage=YES;
+            else
+                isCage=NO;
+            
+            // if we're selected and not in a cage or if we are and we're allowed to deselect, AND are not in a cage, switch selection
+            if((!block.Selected && !isCage) || (block.Selected && allowDeselect && !isCage))
+            {
+                [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
+                hasMovedBasePickup=NO;
+            }
             // if we have a base pickup -- then set all their mounts back to what they should be - update their positions and tell them to animate to their rightful place - otherwise just do it for the current block
             if(isBasePickup)
             {
@@ -2026,23 +2049,12 @@ static float kTimeToCageShake=7.0f;
             }
             else
             {
-                block.Mount=block.LastMount;
-                ((DWPlaceValueNetGameObject*)block.Mount).MountedObject=block;
-                [block handleMessage:kDWresetToMountPosition];
-            }
-
-
-            // check whether this mount is a cage
-            if([block.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
-                isCage=YES;
-            else 
-                isCage=NO;
-
-            // if we're selected and not in a cage or if we are and we're allowed to deselect, AND are not in a cage, switch selection
-            if((!block.Selected && !isCage) || (block.Selected && allowDeselect && !isCage))
-            {
-                [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
-                hasMovedBasePickup=NO;
+                if([block.LastMount isKindOfClass:[DWPlaceValueNetGameObject class]])
+                {
+                    block.Mount=block.LastMount;
+                    ((DWPlaceValueNetGameObject*)block.Mount).MountedObject=block;
+                    [block handleMessage:kDWresetToMountPosition];
+                }
             }
             
             // but if our lastmount was a cage - return it there and destroy it
@@ -2052,6 +2064,7 @@ static float kTimeToCageShake=7.0f;
             }
             
             // switch our sprites back to the main sprite - and set our touchvars to off
+            [self problemStateChanged];
             [self switchSpritesBack];
             [self setTouchVarsToOff];
             return;

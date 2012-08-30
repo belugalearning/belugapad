@@ -223,6 +223,11 @@ static float kTimeToBubbleShake=7.0f;
     {
         rambler.AutoStitchIncrement=[[problemDef objectForKey:@"AUTO_STITCH_INCREMENT"] intValue];
     }
+    
+    if(markerValuePositions)
+    {
+        rambler.MarkerValuePositions=markerValuePositions;
+    }
 }
 
 -(void)readPlist:(NSDictionary*)pdef
@@ -269,6 +274,11 @@ static float kTimeToBubbleShake=7.0f;
     if([pdef objectForKey:@"JUMP_MODE"])
     {
         jumpMode=[[pdef objectForKey:@"JUMP_MODE"] boolValue];
+    }
+    
+    if([pdef objectForKey:@"MARKER_POSITIONS"])
+    {
+        markerValuePositions=[pdef objectForKey:@"MARKER_POSITIONS"];
     }
 }
 
@@ -590,14 +600,14 @@ static float kTimeToBubbleShake=7.0f;
         float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
         
         float diffy=0.0f;
-        if(jumpMode)
+        
+        if(jumpMode)  // === stitching stuff ======================================
         {
-            // === stitching stuff ======================================
             diffy=cy - bubbleSprite.position.y;
             drawStitchLine=NO;
             drawStitchCurve=NO;
-            // ==========================================================
-        }
+            
+        }  // =====================================================================
         
         [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, diffy)]];
         

@@ -23,6 +23,8 @@
     
     NSMutableDictionary *assLabels;
     CCLayer *labelLayer;
+    
+    NSMutableArray *markerSprites;
 }
 
 -(BNLineRamblerRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

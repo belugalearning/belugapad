@@ -85,7 +85,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There is a competition where the winner receives £14. But there can be more than one winner. Would each person get more money if there were 2 winners or 7 winners? </string>
+		<string>A competition has a prize of £50. The money is split equally between the winners. Would each person get more money if there are 2 winners or 7 winners? </string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

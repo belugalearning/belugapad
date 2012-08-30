@@ -95,7 +95,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Some girls share a bag of 4 cookies fairly. {@gname} gets 2, how many people shared the bag of cookies?</string>
+		<string>Some girls share a bag of 4 cookies fairly. {@gname} gets 2. How many people shared the bag of cookies?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

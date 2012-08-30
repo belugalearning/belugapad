@@ -1073,28 +1073,40 @@ static float kTimeToCageShake=7.0f;
     [self calcProblemTotalCount];
 //    if([problemType isEqualToString:TOTAL_COUNT])
 //    {
-        if(totalCount == expectedCount && !gw.Blackboard.inProblemSetup)
-        {
-            return YES;
-        }
-        else if(totalCount != expectedCount && evalMode==kProblemEvalOnCommit)
-        {
-            return NO;
-        }
-        else {
-            return NO;
-        }
+    
+    if(debugLogging)
+        NSLog(@"total count %g, expected count %g", totalCount, expectedCount);
+    
+    NSString *totCount=[NSString stringWithFormat:@"%g", totalCount];
+    NSString *expCount=[NSString stringWithFormat:@"%g", expectedCount];
+    
+    if([totCount isEqualToString:expCount] && !gw.Blackboard.inProblemSetup)
+    {
+        return YES;
+    }
+    else if(![totCount isEqualToString:expCount] && evalMode==kProblemEvalOnCommit)
+    {
+        return NO;
+    }
+    else {
+        return NO;
+    }
+    
+    
+//    if(totalCount == expectedCount && !gw.Blackboard.inProblemSetup)
+//    {
+//        return YES;
+//    }
+//    else if(totalCount != expectedCount && evalMode==kProblemEvalOnCommit)
+//    {
+//        return NO;
+//    }
+//    else {
+//        return NO;
+//    }
     
 //    }
-//    if([problemType isEqualToString:TOTAL_COUNT_AND_COUNT_SEQUENCE])
-//    {
-//        if(totalCount == expectedCount && !gw.Blackboard.inProblemSetup)
-//            return YES;
-//    
-//        else if(totalCount != expectedCount && evalMode==kProblemEvalOnCommit)
-//            return NO;
-//    }
-//    return NO;
+
 }
 
 -(BOOL)evalProblemMatrixMatch

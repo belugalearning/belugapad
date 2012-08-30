@@ -1699,7 +1699,6 @@ static float kTimeToCageShake=7.0f;
                 {
                     n=(DWPlaceValueNetGameObject*)b.Mount;
                     b.LastMount=b.Mount;
-                    b.Mount=nil;
                     n.MountedObject=nil;
                 }
             }
@@ -1737,8 +1736,6 @@ static float kTimeToCageShake=7.0f;
             else
             {
                 [pickupObjects addObject:pickupObject];
-                pickupObject.LastMount=pickupObject.Mount;
-                pickupObject.Mount=nil;
                 [[gw Blackboard].PickupObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
             }
         }
@@ -1747,7 +1744,6 @@ static float kTimeToCageShake=7.0f;
         {
             [pickupObjects addObject:pickupObject];
             pickupObject.LastMount=pickupObject.Mount;
-            pickupObject.Mount=nil;
             [[gw Blackboard].PickupObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
         }
         
@@ -1758,7 +1754,9 @@ static float kTimeToCageShake=7.0f;
         [loggingService logEvent:(isCage ? BL_PA_PV_TOUCH_BEGIN_PICKUP_CAGE_OBJECT : BL_PA_PV_TOUCH_BEGIN_PICKUP_GRID_OBJECT)
             withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:objValue] forKey:@"objValue"]];
         
-
+        // nill the current pickupobject mount
+        pickupObject.Mount=nil;
+        
         gw.Blackboard.PickupOffset = location;
         // At this point we can still cancel the tap
         potentialTap = YES;
@@ -2039,9 +2037,12 @@ static float kTimeToCageShake=7.0f;
             }
             else
             {
-                block.Mount=block.LastMount;
-                ((DWPlaceValueNetGameObject*)block.Mount).MountedObject=block;
-                [block handleMessage:kDWresetToMountPosition];
+                if([block.LastMount isKindOfClass:[DWPlaceValueNetGameObject class]])
+                {
+                    block.Mount=block.LastMount;
+                    ((DWPlaceValueNetGameObject*)block.Mount).MountedObject=block;
+                    [block handleMessage:kDWresetToMountPosition];
+                }
             }
             
             // but if our lastmount was a cage - return it there and destroy it
@@ -2051,6 +2052,7 @@ static float kTimeToCageShake=7.0f;
             }
             
             // switch our sprites back to the main sprite - and set our touchvars to off
+            [self problemStateChanged];
             [self switchSpritesBack];
             [self setTouchVarsToOff];
             return;

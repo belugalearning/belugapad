@@ -65,7 +65,7 @@
 			<key>POS_X</key>
 			<integer>350</integer>
 			<key>POS_Y</key>
-			<integer>600</integer>
+			<integer>550</integer>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
@@ -73,7 +73,7 @@
 			<key>POS_X</key>
 			<integer>350</integer>
 			<key>POS_Y</key>
-			<integer>500</integer>
+			<integer>450</integer>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
@@ -81,7 +81,7 @@
 			<key>POS_X</key>
 			<integer>350</integer>
 			<key>POS_Y</key>
-			<integer>400</integer>
+			<integer>350</integer>
 		</dict>
 	</array>
 	<key>HOST_BACKGROUND_IMAGE</key>
@@ -116,7 +116,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>They decide to buy a bigger cake. The 16th birthday party now has a cake with 8 slices. How many candles will be on each slice of the cake?</string>
+		<string>The cake is cut again, and now has 8 slices. 16 candles are shared out equally on the cake. How many candles will be on each slice of cake?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

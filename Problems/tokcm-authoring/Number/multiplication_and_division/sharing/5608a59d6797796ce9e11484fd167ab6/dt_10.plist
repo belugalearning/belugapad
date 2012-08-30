@@ -14,7 +14,7 @@
 	<array>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>4</integer>
+			<integer>1</integer>
 			<key>POS_X</key>
 			<integer>400</integer>
 			<key>POS_Y</key>
@@ -24,7 +24,7 @@
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>4</integer>
+			<integer>3</integer>
 			<key>POS_X</key>
 			<integer>500</integer>
 			<key>POS_Y</key>
@@ -34,7 +34,7 @@
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>2</integer>
+			<integer>6</integer>
 			<key>POS_X</key>
 			<integer>600</integer>
 			<key>POS_Y</key>

@@ -95,7 +95,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There are 20 pens in a set. It is distributed evenly by {@gname} to her 4 students. How many pens did she give to one student?</string>
+		<string>There are 20 pens in a set. They are distributed evenly by {@gname} to her 4 students. How many pens did she give to each student?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

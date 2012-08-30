@@ -89,7 +89,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>The taxi company misheard the number of taxis the friends booked. There sent 4 taxis for the 8 friends. How many people will be in each taxi?</string>
+		<string>4 friends in the group of 8 can drive. If they split the group equally into 4 cars, how many people will be in each car?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

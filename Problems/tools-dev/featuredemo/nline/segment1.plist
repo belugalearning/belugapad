@@ -48,5 +48,10 @@
 	<array>
 		<string>5</string>
 	</array>
+	<key>MARKER_POSITIONS</key>
+	<array>
+		<string>10</string>
+		<string>50</string>
+	</array>
 </dict>
 </plist>

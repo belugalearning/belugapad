@@ -2003,6 +2003,19 @@ static float kTimeToCageShake=7.0f;
             // check whether it's selected and we can deselect - or that it's deselected
             DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
             BOOL isCage;
+            
+            // check whether this mount is a cage
+            if([block.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
+                isCage=YES;
+            else
+                isCage=NO;
+            
+            // if we're selected and not in a cage or if we are and we're allowed to deselect, AND are not in a cage, switch selection
+            if((!block.Selected && !isCage) || (block.Selected && allowDeselect && !isCage))
+            {
+                [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
+                hasMovedBasePickup=NO;
+            }
             // if we have a base pickup -- then set all their mounts back to what they should be - update their positions and tell them to animate to their rightful place - otherwise just do it for the current block
             if(isBasePickup)
             {
@@ -2029,20 +2042,6 @@ static float kTimeToCageShake=7.0f;
                 block.Mount=block.LastMount;
                 ((DWPlaceValueNetGameObject*)block.Mount).MountedObject=block;
                 [block handleMessage:kDWresetToMountPosition];
-            }
-
-
-            // check whether this mount is a cage
-            if([block.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
-                isCage=YES;
-            else 
-                isCage=NO;
-
-            // if we're selected and not in a cage or if we are and we're allowed to deselect, AND are not in a cage, switch selection
-            if((!block.Selected && !isCage) || (block.Selected && allowDeselect && !isCage))
-            {
-                [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
-                hasMovedBasePickup=NO;
             }
             
             // but if our lastmount was a cage - return it there and destroy it

@@ -70,6 +70,14 @@
     int touchResetDir;
     
     BOOL enableAudioCounting;
+    
+    BOOL jumpMode;
+    
+    CGPoint stitchStartPos;
+    CGPoint stitchEndPos;
+    CGPoint stitchApexPos;
+    BOOL drawStitchLine;
+    BOOL drawStitchCurve;
 }
 
 -(void)populateGW;

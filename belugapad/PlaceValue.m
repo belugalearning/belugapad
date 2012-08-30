@@ -334,7 +334,7 @@ static float kTimeToCageShake=7.0f;
             cge.PosX=i*(kPropXColumnSpacing*lx);
             cge.PosY=ly*kCageYOrigin;
             cge.ObjectValue=[[currentColumnInfo objectForKey:COL_VALUE]floatValue];
-//            NSLog(@"cage assigned object value %g", cge.ObjectValue);
+
             
             // set our column specific options on the store
             
@@ -511,8 +511,6 @@ static float kTimeToCageShake=7.0f;
         
         for(int i=0; i<count; i++)
         {
-//            NSLog(@"populate this row. blocks added to this row: %d", blocksAddedToThisRow);
-//            NSLog(@"ropesHere %d, insRow %d", ropesHere,(int)i/ropesHere);
             
             if(boundCol)
             {
@@ -1196,7 +1194,7 @@ static float kTimeToCageShake=7.0f;
 
                 if(net.myCol==thisGrid)
                 {
-                    NSLog(@"(%d-%d) block mounted at x %d y %d", thisLog, goNumber, net.myRow, net.myRope);
+                    //NSLog(@"(%d-%d) block mounted at x %d y %d", thisLog, goNumber, net.myRow, net.myRope);
                     goNumber++;
                 }
             }
@@ -1609,7 +1607,7 @@ static float kTimeToCageShake=7.0f;
     
     [gw Blackboard].PickupObject=nil;
     
-    NSLog(@"THIS TOUCH BEGAN CONSISTS (%d touches)", [touches count]);
+//    NSLog(@"THIS TOUCH BEGAN CONSISTS (%d touches)", [touches count]);
     
     gw.Blackboard.PickupObject=nil;
         
@@ -1770,7 +1768,7 @@ static float kTimeToCageShake=7.0f;
     
     [toolHost.Zubi setTarget:location];
     
-    NSLog(@"THIS TOUCH MOVED CONSISTS (%d touches)", [touches count]);
+//    NSLog(@"THIS TOUCH MOVED CONSISTS (%d touches)", [touches count]);
 
     // if the distance is greater than the 'slipped tap' threshold, it's no longer a tap and is definitely moving
     if([BLMath DistanceBetween:[renderLayer convertToNodeSpace:touchStartPos] and:location] >= fabs(kTapSlipResetThreshold) && potentialTap)
@@ -1936,7 +1934,7 @@ static float kTimeToCageShake=7.0f;
     location=[[CCDirector sharedDirector] convertToGL:location];
     BOOL aTransitionHappened=NO;
     
-    NSLog(@"THIS TOUCH END CONSISTS (%d touches)", [touches count]);
+//    NSLog(@"THIS TOUCH END CONSISTS (%d touches)", [touches count]);
     
     // set the touch end position for evaluation
     touchEndPos = location;
@@ -2153,13 +2151,6 @@ static float kTimeToCageShake=7.0f;
                 
                 else {
                     // otherwise the pickupobject should be remounted and
-                    DWPlaceValueBlockGameObject *pickupObject=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
-                    
-                    if([pickupObject.LastMount isKindOfClass:[DWPlaceValueNetGameObject class]])
-                    {
-                        DWPlaceValueNetGameObject *lastNet=(DWPlaceValueNetGameObject*)pickupObject.LastMount;
-                        lastNet.MountedObject=nil;
-                    }
                     
                     [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
                     
@@ -2217,7 +2208,7 @@ static float kTimeToCageShake=7.0f;
     [gw handleMessage:kDWstartRespositionSeek andPayload:nil withLogLevel:0];
     
     // TODO: remove when p/v sorted
-    [self logOutGameObjectsPositions:currentColumnIndex];
+//    [self logOutGameObjectsPositions:currentColumnIndex];
     
     [self switchSpritesBack];
     [self setTouchVarsToOff];

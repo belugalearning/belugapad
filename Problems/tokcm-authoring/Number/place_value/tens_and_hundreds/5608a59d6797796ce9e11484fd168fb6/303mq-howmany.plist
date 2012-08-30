@@ -2,10 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>MASTERY</key>
-	<true/>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>If you have 9 hundreds blocks and 6 tens blocks, how many ones blocks would you need to make 964?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>MQ tens in 964</string>
 	<key>META_QUESTION</key>
 	<dict>
+		<key>META_QUESTION_COMPLETE_TEXT</key>
+		<string>Great!</string>
 		<key>META_QUESTION_EVAL_MODE</key>
 		<integer>0</integer>
 		<key>META_QUESTION_ANSWER_MODE</key>
@@ -14,48 +18,33 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>{$augend} + {$addend}</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>{$addend} + {$augend}</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>{$addend+$augend} + 1</string>
+				<string>4</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>6</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>9</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>40</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Which of these is bigger?</string>
-		<key>INTERNAL_DESCRIPTION</key>
-		<string>commutativity</string>
-		<key>PROBLEM_DESCRIPTION</key>
-		<string>Which of these is bigger?</string>
+		<string>If you have 9 hundreds blocks and 6 tens blocks, how many ones blocks would you need to make 964?</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again.</string>
 	</dict>
-	<key>DVARS</key>
-	<array>
-		<dict>
-			<key>VAR_NAME</key>
-			<string>$augend</string>
-			<key>MIN</key>
-			<string>1</string>
-			<key>MAX</key>
-			<string>4</string>
-		</dict>
-		<dict>
-			<key>VAR_NAME</key>
-			<string>$addend</string>
-			<key>MIN</key>
-			<string>5</string>
-			<key>MAX</key>
-			<string>9</string>
-		</dict>
-	</array>
 </dict>
 </plist>

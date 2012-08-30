@@ -5,7 +5,7 @@
 	<key>TOOL_KEY</key>
 	<string>ExprBuilder</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>tom&apos;s apples</string>
+	<string>how many tens? hundreds? ones?</string>
 	<key>EXPR_STAGES</key>
 	<array>
 		<string>&lt;b:ot tag=&quot;a&quot;&gt;hundreds&lt;/b:ot&gt;

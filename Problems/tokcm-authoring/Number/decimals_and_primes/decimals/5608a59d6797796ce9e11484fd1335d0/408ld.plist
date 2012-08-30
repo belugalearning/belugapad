@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>LongDivision</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>0.9 ÷ 0.36</string>
+	<key>DIVIDEND</key>
+	<real>0.9</real>
+	<key>DIVISOR</key>
+	<real>0.36</real>
+	<key>ROW_MULTIPLIER</key>
+	<integer>10</integer>
+	<key>START_ROW</key>
+	<integer>3</integer>
+	<key>GOOD_BAD_HIGHLIGHT</key>
+	<true/>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>RENDERBLOCK_LABELS</key>
+	<true/>
+</dict>
+</plist>

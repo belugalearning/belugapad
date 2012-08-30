@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Make seven hundred and five.</string>
+	<string>Show that 123.4 = 100 + 20 + 3 + 0.4</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>make 705</string>
+	<string>partition into powers of ten</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -13,9 +13,9 @@
 	<key>FIRST_COL_VALUE</key>
 	<integer>100</integer>
 	<key>NUMBER_COLS</key>
-	<integer>3</integer>
+	<integer>4</integer>
 	<key>DEFAULT_COL</key>
-	<integer>2</integer>
+	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
 	<integer>2</integer>
 	<key>ROWS_PER_COL</key>
@@ -26,46 +26,30 @@
 	<true/>
 	<key>ALLOW_PANNING</key>
 	<false/>
-	<key>SHOW_CAGE</key>
-	<true/>
 	<key>X_OFFSET</key>
-	<string>0.3</string>
+	<string>-0.12</string>
+	<key>COLUMN_SPACING</key>
+	<string>0.25</string>
 	<key>DEFAULT_SCALE</key>
 	<string>0.9</string>
-	<key>COLUMN_SPACING</key>
-	<real>0.3</real>
+	<key>SHOW_CAGE</key>
+	<true/>
 	<key>SHOW_NEG_CAGE</key>
+	<false/>
+	<key>SHOW_COUNT</key>
+	<false/>
+	<key>SHOW_COUNT_BLOCK</key>
 	<false/>
 	<key>SHOW_COL_HEADER</key>
 	<false/>
 	<key>SHOW_VALUE</key>
-	<false/>
+	<true/>
 	<key>SHOW_BASE_SELECTION</key>
 	<true/>
 	<key>PICKUP_SPRITE_FILENAME</key>
 	<string>/images/placevalue/cage-neg.png</string>
 	<key>PROXIMITY_SPRITE_FILENAME</key>
 	<string>/images/placevalue/cage-pos.png</string>
-	<key>INIT_OBJECTS</key>
-	<array>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
-			<key>NUMBER</key>
-			<integer>0</integer>
-		</dict>
-	</array>
-	<key>CUSTOM_COLUMN_HEADERS</key>
-	<dict>
-		<key>10</key>
-		<string>tens</string>
-		<key>100</key>
-		<string>hundreds</string>
-		<key>1</key>
-		<string>ones</string>
-	</dict>
 	<key>REJECT_MODE</key>
 	<integer>1</integer>
 	<key>EVAL_MODE</key>
@@ -75,7 +59,7 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<string>705</string>
+		<string>123.4</string>
 		<key>SOLUTION_DISPLAY_TEXT</key>
 		<string>that&apos;s 10!</string>
 		<key>PLAY_SOUND</key>
@@ -83,24 +67,23 @@
 	</dict>
 	<key>COLUMN_SPRITES</key>
 	<dict>
-		<key>10</key>
-		<string>/images/placevalue/obj-placevalue-unit10.png</string>
+		<key>0.1</key>
+		<string>/images/placevalue/obj-placevalue-unit1tenth.png</string>
 		<key>100</key>
 		<string>/images/placevalue/obj-placevalue-unit100.png</string>
+		<key>10</key>
+		<string>/images/placevalue/obj-placevalue-unit10.png</string>
 		<key>1</key>
 		<string>/images/placevalue/obj-placevalue-unit1.png</string>
 	</dict>
 	<key>COLUMN_CAGES</key>
 	<dict>
-		<key>10</key>
+		<key>0.1</key>
 		<true/>
-		<key>1</key>
+		<key>10</key>
 		<true/>
 		<key>100</key>
 		<true/>
-	</dict>
-	<key>CAGE_POS_DISABLE_ADD</key>
-	<dict>
 		<key>1</key>
 		<true/>
 	</dict>

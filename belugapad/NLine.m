@@ -213,17 +213,6 @@ static float kTimeToBubbleShake=7.0f;
     selector.WatchRambler=rambler;
     selector.pos=ccp(cx,cy + 75.0f);
     
-    //stiching -- should we render stitches?
-    if ([problemDef objectForKey:@"RENDER_STITCHES"]) {
-        rambler.RenderStitches=[[problemDef objectForKey:@"RENDER_STITCHES"] boolValue];
-    }
-    
-    //sould the line auto stitch -- non zero values will cause the values
-    if([problemDef objectForKey:@"AUTO_STITCH_INCREMENT"])
-    {
-        rambler.AutoStitchIncrement=[[problemDef objectForKey:@"AUTO_STITCH_INCREMENT"] intValue];
-    }
-    
     if(markerValuePositions)
     {
         rambler.MarkerValuePositions=markerValuePositions;

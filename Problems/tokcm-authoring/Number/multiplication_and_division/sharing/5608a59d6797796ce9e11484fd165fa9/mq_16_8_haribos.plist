@@ -89,7 +89,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>{@bname} buys a large pack of 16 haribos tp share fairly. he gets 8. How many people shared the pack of haribos with?</string>
+		<string>{@bname} buys a large pack of 16 sweets to share fairly. He gets 8. How many people shared the pack of sweets?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

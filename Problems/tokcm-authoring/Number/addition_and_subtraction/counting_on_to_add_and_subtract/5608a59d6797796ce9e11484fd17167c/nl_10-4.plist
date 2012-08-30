@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is 10 minus 4?</string>
+	<string>This is 10. Take away 4.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>nl_10-4</string>
 	<key>TOOL_KEY</key>
@@ -44,7 +44,7 @@
 	<integer>0</integer>
 	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
 	<array>
-		<integer>1</integer>
+		<integer>3</integer>
 	</array>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array/>

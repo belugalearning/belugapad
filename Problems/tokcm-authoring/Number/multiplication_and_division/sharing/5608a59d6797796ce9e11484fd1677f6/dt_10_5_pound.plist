@@ -55,7 +55,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>10 pound coins are shared equally between 5 people. How much money does one person get?</string>
+		<string>10 pound coins are shared equally between 5 people. How much money does each person get?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Starting at 9, press when it counts back 6.</string>
+	<string>You start at 9, press when it counts back 6. </string>
 	<key>TOOL_KEY</key>
 	<string>CountingTimer</string>
 	<key>SOLUTION</key>

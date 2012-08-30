@@ -7,7 +7,23 @@
 		<key>PIPELINE_NAME</key>
 		<string>build_1.06</string>
 		<key>PROBLEMS</key>
-		<array>
-		</array>
+        <array>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/odd_and_even_numbers/5608a59d6797796ce9e11484fd16a3a8/dt_3_odd.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/odd_and_even_numbers/5608a59d6797796ce9e11484fd16a3a8/dt_5_odd.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/odd_and_even_numbers/5608a59d6797796ce9e11484fd16a3a8/dt_7_odd.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/odd_and_even_numbers/5608a59d6797796ce9e11484fd16a3a8/mq_7_odd.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/odd_and_even_numbers/5608a59d6797796ce9e11484fd16a3a8/dt_2_even.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/odd_and_even_numbers/5608a59d6797796ce9e11484fd16a3a8/dt_4_even.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/odd_and_even_numbers/5608a59d6797796ce9e11484fd16a3a8/dt_6_even.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/odd_and_even_numbers/5608a59d6797796ce9e11484fd16a3a8/mq_6_even.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/odd_and_even_numbers/5608a59d6797796ce9e11484fd16a3a8/dt_9_odd.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/odd_and_even_numbers/5608a59d6797796ce9e11484fd16a3a8/mq_9_odd.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/odd_and_even_numbers/5608a59d6797796ce9e11484fd16a3a8/mq_odd_block.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/odd_and_even_numbers/5608a59d6797796ce9e11484fd16a3a8/mq_even_block.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/odd_and_even_numbers/5608a59d6797796ce9e11484fd16a3a8/mq_even_s.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/odd_and_even_numbers/5608a59d6797796ce9e11484fd16a3a8/mq_odd_s.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/odd_and_even_numbers/5608a59d6797796ce9e11484fd16a3a8/mq_even.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/odd_and_even_numbers/5608a59d6797796ce9e11484fd16a3a8/mq_odd.plist</string>
+        </array>
 	</dict>
 </plist>

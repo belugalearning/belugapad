@@ -26,7 +26,7 @@
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>They are the same.</string>
+				<string>{$addend+$augend} + 1</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>

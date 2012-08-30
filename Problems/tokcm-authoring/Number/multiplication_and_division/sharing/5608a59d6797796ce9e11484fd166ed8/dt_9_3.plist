@@ -47,7 +47,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There are 9 {@item}. It is shared evenly between {@gname}, {@bname} and Jack. Do all 3 people get the same amount?</string>
+		<string>There are 9 {@item}. They are shared evenly between {@gname}, {@bname} and Jack. Do all 3 people get the same amount?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

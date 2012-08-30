@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 834. Add 100.</string>
+	<string>What is 100 more than 834?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>104</string>
 	<key>TOOL_KEY</key>
@@ -192,7 +192,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>This is 834. Add 100.</string>
+		<string>What is 100 more than 834?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again.</string>
 	</dict>

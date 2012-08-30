@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is 8 - 6?</string>
+	<string>This is 8. Take away 6.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>nl_8-6</string>
 	<key>TOOL_KEY</key>
@@ -29,9 +29,7 @@
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
-	<array>
-		<string>2</string>
-	</array>
+	<array/>
 	<key>HIDE_START_NUMBER</key>
 	<false/>
 	<key>HIDE_END_NUMBER</key>
@@ -46,7 +44,7 @@
 	<integer>0</integer>
 	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
 	<array>
-		<integer>1</integer>
+		<integer>2</integer>
 	</array>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array/>

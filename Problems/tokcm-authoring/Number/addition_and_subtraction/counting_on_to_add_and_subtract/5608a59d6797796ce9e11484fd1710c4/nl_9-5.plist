@@ -5,7 +5,7 @@
 	<key>MASTERY</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is 9 add 5?</string>
+	<string>This is 9. Add 5.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>5+9</string>
 	<key>TOOL_KEY</key>

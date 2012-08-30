@@ -90,21 +90,19 @@
 		<key>1</key>
 		<string>/images/placevalue/obj-placevalue-unit1.png</string>
 	</dict>
-	<key>COLUMN_NEG_CAGES</key>
-	<dict>
-		<key>10</key>
-		<false/>
-		<key>1</key>
-		<false/>
-	</dict>
 	<key>COLUMN_CAGES</key>
 	<dict>
 		<key>10</key>
 		<true/>
 		<key>1</key>
-		<string>YES</string>
+		<true/>
 		<key>100</key>
-		<string>YES</string>
+		<true/>
+	</dict>
+	<key>CAGE_POS_DISABLE_ADD</key>
+	<dict>
+		<key>1</key>
+		<true/>
 	</dict>
 </dict>
 </plist>

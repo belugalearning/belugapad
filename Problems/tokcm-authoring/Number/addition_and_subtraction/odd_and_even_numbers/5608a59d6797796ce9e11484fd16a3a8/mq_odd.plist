@@ -28,7 +28,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There is a shape made of 235 blocks. When it is split into blocks of 2&apos;s, there is one left over. Is 235 odd or even?</string>
+		<string>There is a shape made of 235 blocks. When it is split into blocks of 2, there is one left over. Is 235 odd or even?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is 16-5?</string>
+	<string>What is 16 - 5?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>nl_16-5</string>
 	<key>TOOL_KEY</key>
@@ -44,7 +44,7 @@
 	<integer>0</integer>
 	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
 	<array>
-		<integer>1</integer>
+		<integer>5</integer>
 	</array>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array/>

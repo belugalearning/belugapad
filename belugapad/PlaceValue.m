@@ -1609,13 +1609,20 @@ static float kTimeToCageShake=7.0f;
     // set the touch start pos for evaluation
     touchStartPos = location;
     gw.Blackboard.TestTouchLocation=location;
+    float baseSelectionColumnValue=0;
+    DWPlaceValueBlockGameObject *firstSelectedObject=nil;
+    
+    if(isBasePickup)
+    {
+        firstSelectedObject=[gw.Blackboard.SelectedObjects objectAtIndex:0];
+        baseSelectionColumnValue=firstSelectedObject.ObjectValue;
+    }
     
     [gw Blackboard].PickupObject=nil;
     
     if(debugLogging)
         NSLog(@"THIS TOUCH BEGAN CONSISTS (%d touches)", [touches count]);
     
-    gw.Blackboard.PickupObject=nil;
         
     //the touch location in the node space of the render layer
     CGPoint locationInNS=[renderLayer convertToNodeSpace:location];
@@ -1682,7 +1689,7 @@ static float kTimeToCageShake=7.0f;
         }
 
         // but if we have a base pickup - we need to loop over every object that we have selected
-        if(isBasePickup && !hasMovedBasePickup)
+        if(isBasePickup && !hasMovedBasePickup && baseSelectionColumnValue==gw.Blackboard.CurrentColumnValue)
         {
             for(DWPlaceValueBlockGameObject *b in gw.Blackboard.SelectedObjects)
             {
@@ -1891,7 +1898,7 @@ static float kTimeToCageShake=7.0f;
         {
             
             // if we're hovering over a mulch location - either say we are and make it evvident we can move there, or tint it back to how it 'should' be
-            if(CGRectContainsPoint(boundingBoxMulch, location) && currentColumnIndex<([gw.Blackboard.AllStores count]-1) && allowMulching)
+            if(CGRectContainsPoint(boundingBoxMulch, location) && currentColumnIndex<([gw.Blackboard.AllStores count]-1) && allowMulching && [self freeSpacesOnGrid:currentColumnIndex+1]>=columnBaseValue)
             {
                 inMulchArea=YES;
                 currentOpacity=255;

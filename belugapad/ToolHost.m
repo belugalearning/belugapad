@@ -90,8 +90,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [animator animateBackgroundIn];
         animPos=1;
         
-        [self setupTouchLogging];
-        
         //[self scheduleOnce:@selector(moveToTool1:) delay:1.5f];
         
         //add a pause button but keep it hidden -- to be brought in by the fader
@@ -642,8 +640,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [self.Zubi hideZubi];
     }
     
-    //write the problem attempt id into the touch log for reconciliation
-    [self logTouchProblemAttemptID:loggingService.currentProblemAttemptID];
 }
 
 -(void)setupProblemOnToolHost:(NSDictionary *)curpdef
@@ -1516,47 +1512,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     numberPickerLayer=nil;
 }
 
-
-#pragma mark - logging
-
--(void)setupTouchLogging
-{
-    //get logging path
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    touchLogPath=[documentsDirectory stringByAppendingPathComponent:[[BLFiles generateUuidString] stringByAppendingString:@".log"]];
-    [touchLogPath retain];
-    
-    NSString *header=[NSString stringWithFormat:@"logging at %f: ", [[NSDate date] timeIntervalSince1970]];
-    [header writeToFile:touchLogPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
-}
-
--(void)logTouchProblemAttemptID:(NSString*)paid
-{
-    NSString *item=[NSString stringWithFormat:@" problemattempt %@ ", paid];
-    
-    NSFileHandle *myHandle = [NSFileHandle fileHandleForUpdatingAtPath:touchLogPath];
-    [myHandle seekToEndOfFile];
-    [myHandle writeData:[item dataUsingEncoding:NSUTF8StringEncoding]];
-    [myHandle closeFile];
-}
-
--(void)logTouches:(NSSet*)touches forEvent:(NSString*)event
-{
-    NSString *item=[NSString stringWithFormat:@" %@ %f ", event, [[NSDate date] timeIntervalSince1970]];
-    
-    for (UITouch *t in touches) {
-        item=[item stringByAppendingString:[NSString stringWithFormat:@"{%@,%@},", NSStringFromCGPoint([t locationInView:t.view]), NSStringFromCGPoint([t previousLocationInView:t.view])]];
-    }
-    
-    NSFileHandle *myHandle = [NSFileHandle fileHandleForUpdatingAtPath:touchLogPath];
-    [myHandle seekToEndOfFile];
-    [myHandle writeData:[item dataUsingEncoding:NSUTF8StringEncoding]];
-    [myHandle closeFile];
-}
-
-#pragma mark - touch handing
-
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [loggingService.touchLogger logTouches:touches];
@@ -1565,8 +1520,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     lastTouch=location;
-
-    [self logTouches:touches forEvent:@"b"];
 
     //testing block for stepping between tool positions
 //    if(animPos==0)
@@ -1662,8 +1615,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
-    [self logTouches:touches forEvent:@"m"];
-    
     if(isPaused)
     {
         return;
@@ -1717,8 +1668,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
-    
-    [self logTouches:touches forEvent:@"e"];
     
     // if we're paused - check if any menu options were valid.
     // touches ended event becase otherwise these touches go through to the tool
@@ -1774,8 +1723,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(npMove)npMove=nil;
     npLastMoved=nil;
     [currentTool ccTouchesCancelled:touches withEvent:event];
-    
-    [self logTouches:touches forEvent:@"c"];
 }
 
 -(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event

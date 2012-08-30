@@ -31,11 +31,6 @@
 
 -(void)setMount:(DWGameObject *)newMount
 {
-    if(LastMount && newMount==nil && [LastMount isKindOfClass:[DWPlaceValueNetGameObject class]])
-    {
-        NSLog(@"last mount position was x %d y %d", ((DWPlaceValueNetGameObject*)LastMount).myRow,((DWPlaceValueNetGameObject*)LastMount).myRope);
-    }
-    
     if(Mount1!=newMount)
     {
         [Mount1 release];

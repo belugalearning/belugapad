@@ -156,7 +156,7 @@
     BOOL isBasePickup;
     BOOL hasMovedBasePickup;
     
-    //TODO: remove this - purely used for logging
+    BOOL debugLogging;
     int thisLog;
     
 }

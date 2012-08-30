@@ -94,6 +94,8 @@ static float kTimeToCageShake=7.0f;
         
         gw.Blackboard.inProblemSetup = NO;
         
+        debugLogging=NO;
+        
         for (int i=0;i<numberOfColumns;i++)
         {
             [self setGridOpacity:i toOpacity:127];
@@ -1194,7 +1196,8 @@ static float kTimeToCageShake=7.0f;
 
                 if(net.myCol==thisGrid)
                 {
-                    //NSLog(@"(%d-%d) block mounted at x %d y %d", thisLog, goNumber, net.myRow, net.myRope);
+                    NSLog(@"(%d-%d) block mounted at x %d y %d", thisLog, goNumber, net.myRow, net.myRope);
+                    
                     goNumber++;
                 }
             }
@@ -1316,8 +1319,8 @@ static float kTimeToCageShake=7.0f;
     currentColumnIndex+=incr;
     int space=[self freeSpacesOnGrid:currentColumnIndex];
 
-    
-//    NSLog(@"incr: %d trancount %d", incr, tranCount);
+    if(debugLogging)
+        NSLog(@"incr: %d trancount %d", incr, tranCount);
     
     
     // bail if not possible
@@ -1380,7 +1383,8 @@ static float kTimeToCageShake=7.0f;
         
         NSString *currentColumnValueString = [NSString stringWithFormat:@"%g", [currentColumnValueKey floatValue]];
         
-//        NSLog(@"currentColumnValueKey %f, currentColumnIndex %d", [currentColumnValueKey floatValue], currentColumnIndex);
+        if(debugLogging)
+            NSLog(@"currentColumnValueKey %f, currentColumnIndex %d", [currentColumnValueKey floatValue], currentColumnIndex);
         
         if([columnSprites objectForKey:currentColumnValueString])
             go.SpriteFilename=[columnSprites objectForKey:currentColumnValueString];
@@ -1436,7 +1440,8 @@ static float kTimeToCageShake=7.0f;
                 if(!co.MountedObject)
                 {
                     //use this as a mount
-                    NSLog(@"set mount colindex %d to row %d col %d", currentColumnIndex, r,c);
+                    if(debugLogging)
+                        NSLog(@"set mount colindex %d to row %d col %d", currentColumnIndex, r,c);
                     go.Mount=co;
                     go.AnimateMe=YES;
                     co.MountedObject=go;
@@ -1607,7 +1612,8 @@ static float kTimeToCageShake=7.0f;
     
     [gw Blackboard].PickupObject=nil;
     
-//    NSLog(@"THIS TOUCH BEGAN CONSISTS (%d touches)", [touches count]);
+    if(debugLogging)
+        NSLog(@"THIS TOUCH BEGAN CONSISTS (%d touches)", [touches count]);
     
     gw.Blackboard.PickupObject=nil;
         
@@ -1625,7 +1631,8 @@ static float kTimeToCageShake=7.0f;
     if(currentColumnIndex>numberOfColumns-1)currentColumnIndex=numberOfColumns-1;
     if(currentColumnIndex<0)currentColumnIndex=0;
     
-//    NSLog(@"currentColIndex: %d, colW %f, locationInNS X %f, shiftedLocationInNS X %f", currentColumnIndex, colW, locationInNS.x, shiftedLocationInNS.x);
+    if(debugLogging)
+        NSLog(@"currentColIndex: %d, colW %f, locationInNS X %f, shiftedLocationInNS X %f", currentColumnIndex, colW, locationInNS.x, shiftedLocationInNS.x);
     
     // create our bounding boxes for condensing and mulching
     [self createCondenseAndMulchBoxes];
@@ -1768,7 +1775,8 @@ static float kTimeToCageShake=7.0f;
     
     [toolHost.Zubi setTarget:location];
     
-//    NSLog(@"THIS TOUCH MOVED CONSISTS (%d touches)", [touches count]);
+    if(debugLogging)
+        NSLog(@"THIS TOUCH MOVED CONSISTS (%d touches)", [touches count]);
 
     // if the distance is greater than the 'slipped tap' threshold, it's no longer a tap and is definitely moving
     if([BLMath DistanceBetween:[renderLayer convertToNodeSpace:touchStartPos] and:location] >= fabs(kTapSlipResetThreshold) && potentialTap)
@@ -1934,7 +1942,8 @@ static float kTimeToCageShake=7.0f;
     location=[[CCDirector sharedDirector] convertToGL:location];
     BOOL aTransitionHappened=NO;
     
-//    NSLog(@"THIS TOUCH END CONSISTS (%d touches)", [touches count]);
+    if(debugLogging)
+        NSLog(@"THIS TOUCH END CONSISTS (%d touches)", [touches count]);
     
     // set the touch end position for evaluation
     touchEndPos = location;
@@ -2121,7 +2130,7 @@ static float kTimeToCageShake=7.0f;
                 }
                 
                 // ===== return a selection (a base selection) back to where they came from by resetting mounts etc ===
-                else if(isBasePickup)
+                else if(isBasePickup && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject])
                 {
                     for(int igo=0; igo<gw.Blackboard.SelectedObjects.count; igo++)
                     {
@@ -2143,6 +2152,11 @@ static float kTimeToCageShake=7.0f;
                     doNotSwitchSelection=YES;
                     
                 }
+                else if(isBasePickup && ![gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject] && [self freeSpacesOnGrid:currentColumnIndex]==0)
+                {
+                    b.Mount=b.LastMount;
+                    [b handleMessage:kDWresetToMountPositionAndDestroy andPayload:nil withLogLevel:0];
+                }
                 // if there's no mount, there's a dropobject that's a cage, and the last mount was a cage - return and destroy
                 else if(b.Mount==nil && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]] && [b.LastMount isKindOfClass:[DWPlaceValueCageGameObject class]])
                 {
@@ -2152,11 +2166,12 @@ static float kTimeToCageShake=7.0f;
                 else {
                     // otherwise the pickupobject should be remounted and
                     
+                
                     [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
-                    
                     [[gw Blackboard].PickupObject handleMessage:kDWputdown andPayload:nil withLogLevel:0];
                     [[gw Blackboard].PickupObject logInfo:@"this object was mounted" withData:0];
                     [[gw Blackboard].DropObject logInfo:@"mounted object on this go" withData:0];
+                    
                 }
                 // then log stuff
                 [loggingService logEvent:(isCage ? BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_CAGE : BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_GRID)
@@ -2207,8 +2222,8 @@ static float kTimeToCageShake=7.0f;
     //get any auto reset / repositions to re-evaluate
     [gw handleMessage:kDWstartRespositionSeek andPayload:nil withLogLevel:0];
     
-    // TODO: remove when p/v sorted
-//    [self logOutGameObjectsPositions:currentColumnIndex];
+    if(debugLogging)
+        [self logOutGameObjectsPositions:currentColumnIndex];
     
     [self switchSpritesBack];
     [self setTouchVarsToOff];

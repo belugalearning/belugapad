@@ -110,7 +110,6 @@
 		55F05630159A0E0400ACA07C /* BPlaceValueObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F0561F159A0E0400ACA07C /* BPlaceValueObjectRender.m */; };
 		55F05631159A0E0400ACA07C /* BPlaceValueObjectSpawn.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F05621159A0E0400ACA07C /* BPlaceValueObjectSpawn.m */; };
 		55F05632159A0E0400ACA07C /* BPlaceValuePickupTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F05623159A0E0400ACA07C /* BPlaceValuePickupTarget.m */; };
-		55F05633159A0E0400ACA07C /* BPlaceValuePickupTargetNet.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F05625159A0E0400ACA07C /* BPlaceValuePickupTargetNet.m */; };
 		55F05634159A0E0400ACA07C /* BPlaceValueSelectionMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F05627159A0E0400ACA07C /* BPlaceValueSelectionMgr.m */; };
 		55F5B96A15C17D0400FD6C5D /* SGFractionBuilderChunkRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F5B96915C17D0400FD6C5D /* SGFractionBuilderChunkRender.m */; };
 		55FBB2F815BD6E4A0034B081 /* FractionBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FBB2F715BD6E4A0034B081 /* FractionBuilder.m */; };
@@ -621,8 +620,6 @@
 		55F05621159A0E0400ACA07C /* BPlaceValueObjectSpawn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueObjectSpawn.m; sourceTree = "<group>"; };
 		55F05622159A0E0400ACA07C /* BPlaceValuePickupTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValuePickupTarget.h; sourceTree = "<group>"; };
 		55F05623159A0E0400ACA07C /* BPlaceValuePickupTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValuePickupTarget.m; sourceTree = "<group>"; };
-		55F05624159A0E0400ACA07C /* BPlaceValuePickupTargetNet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValuePickupTargetNet.h; sourceTree = "<group>"; };
-		55F05625159A0E0400ACA07C /* BPlaceValuePickupTargetNet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValuePickupTargetNet.m; sourceTree = "<group>"; };
 		55F05626159A0E0400ACA07C /* BPlaceValueSelectionMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPlaceValueSelectionMgr.h; sourceTree = "<group>"; };
 		55F05627159A0E0400ACA07C /* BPlaceValueSelectionMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPlaceValueSelectionMgr.m; sourceTree = "<group>"; };
 		55F5B96815C17D0400FD6C5D /* SGFractionBuilderChunkRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionBuilderChunkRender.h; sourceTree = "<group>"; };
@@ -1419,8 +1416,6 @@
 				55F05621159A0E0400ACA07C /* BPlaceValueObjectSpawn.m */,
 				55F05622159A0E0400ACA07C /* BPlaceValuePickupTarget.h */,
 				55F05623159A0E0400ACA07C /* BPlaceValuePickupTarget.m */,
-				55F05624159A0E0400ACA07C /* BPlaceValuePickupTargetNet.h */,
-				55F05625159A0E0400ACA07C /* BPlaceValuePickupTargetNet.m */,
 				55F05626159A0E0400ACA07C /* BPlaceValueSelectionMgr.h */,
 				55F05627159A0E0400ACA07C /* BPlaceValueSelectionMgr.m */,
 			);
@@ -3175,7 +3170,6 @@
 				55F05630159A0E0400ACA07C /* BPlaceValueObjectRender.m in Sources */,
 				55F05631159A0E0400ACA07C /* BPlaceValueObjectSpawn.m in Sources */,
 				55F05632159A0E0400ACA07C /* BPlaceValuePickupTarget.m in Sources */,
-				55F05633159A0E0400ACA07C /* BPlaceValuePickupTargetNet.m in Sources */,
 				55F05634159A0E0400ACA07C /* BPlaceValueSelectionMgr.m in Sources */,
 				7F66C88D159DC78C004E84C8 /* SGJmapRegion.m in Sources */,
 				7F66C891159DC9E5004E84C8 /* SGJmapRegionRender.m in Sources */,

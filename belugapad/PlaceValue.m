@@ -94,7 +94,7 @@ static float kTimeToCageShake=7.0f;
         
         gw.Blackboard.inProblemSetup = NO;
         
-        debugLogging=NO;
+        debugLogging=YES;
         
         for (int i=0;i<numberOfColumns;i++)
         {
@@ -1653,6 +1653,9 @@ static float kTimeToCageShake=7.0f;
     if(debugLogging)
         NSLog(@"currentColIndex: %d, colW %f, locationInNS X %f, shiftedLocationInNS X %f", currentColumnIndex, colW, locationInNS.x, shiftedLocationInNS.x);
     
+    if(debugLogging)
+        NSLog(@"(touchbegan) free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
+    
     // create our bounding boxes for condensing and mulching
     [self createCondenseAndMulchBoxes];
 
@@ -1701,7 +1704,7 @@ static float kTimeToCageShake=7.0f;
         }
 
         // but if we have a base pickup - we need to loop over every object that we have selected
-        if(isBasePickup && !hasMovedBasePickup && baseSelectionColumnValue==gw.Blackboard.CurrentColumnValue)
+        if(isBasePickup && !hasMovedBasePickup && baseSelectionColumnValue==gw.Blackboard.CurrentColumnValue && [gw.Blackboard.SelectedObjects containsObject:pickupObject])
         {
             for(DWPlaceValueBlockGameObject *b in gw.Blackboard.SelectedObjects)
             {
@@ -1776,6 +1779,9 @@ static float kTimeToCageShake=7.0f;
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
         
         [[gw Blackboard].PickupObject logInfo:@"this object was picked up" withData:0];
+        
+        if(debugLogging)
+            NSLog(@"(touchbegan-end) free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
     }
     
 }
@@ -2063,6 +2069,9 @@ static float kTimeToCageShake=7.0f;
                 [block handleMessage:kDWresetToMountPositionAndDestroy];
             }
             
+            if(debugLogging)
+                NSLog(@"(touchend-notransition) free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
+            
             // switch our sprites back to the main sprite - and set our touchvars to off
             [self problemStateChanged];
             [self switchSpritesBack];
@@ -2086,6 +2095,8 @@ static float kTimeToCageShake=7.0f;
             
             if([gw Blackboard].DropObject != nil)
             {
+                if(debugLogging)
+                    NSLog(@"(touchend-gotdroptarget) free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
                 DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
                 // set the pickup object's mount to the dropobject
                 b.Mount=gw.Blackboard.DropObject;

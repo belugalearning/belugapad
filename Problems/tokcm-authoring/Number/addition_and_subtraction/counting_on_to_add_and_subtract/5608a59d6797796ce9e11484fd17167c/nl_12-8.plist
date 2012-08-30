@@ -5,7 +5,7 @@
 	<key>MASTERY</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Subtract 8 from 12.</string>
+	<string>This is 12. Take away 8.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>nl_12-8</string>
 	<key>TOOL_KEY</key>
@@ -46,7 +46,7 @@
 	<integer>0</integer>
 	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
 	<array>
-		<integer>1</integer>
+		<integer>4</integer>
 	</array>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array/>

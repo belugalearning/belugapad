@@ -156,6 +156,9 @@
     BOOL isBasePickup;
     BOOL hasMovedBasePickup;
     
+    //TODO: remove this - purely used for logging
+    int thisLog;
+    
 }
 
 -(void)populateGW;
@@ -172,7 +175,9 @@
 -(BOOL)evalProblemMatrixMatch;
 -(void)checkForMultipleControlTouchesAt:(CGPoint)thisLocation;
 -(void)switchSpritesBack;
+-(void)createCondenseAndMulchBoxes;
 -(void)snapLayerToPosition;
+-(void)checkMountPositionsForBlocks;
 -(void)flipToBaseSelection;
 -(int)freeSpacesOnGrid:(int)thisGrid;
 -(void)tintGridColour:(ccColor3B)toThisColour;

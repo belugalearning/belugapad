@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is 3 x 3?</string>
+	<string>What is 3 x 5?</string>
 	<key>TOOL_KEY</key>
 	<string>TimesTables</string>
 	<key>ANCHOR_SPACE</key>
@@ -38,7 +38,7 @@
 	</array>
 	<key>REVEAL_ROWS</key>
 	<array>
-		<integer>3</integer>
+		<integer>5</integer>
 	</array>
 	<key>REVEAL_COLS</key>
 	<array>
@@ -52,7 +52,7 @@
 			<key>POS_X</key>
 			<integer>3</integer>
 			<key>POS_Y</key>
-			<integer>3</integer>
+			<integer>5</integer>
 		</dict>
 	</array>
 	<key>TIMER</key>

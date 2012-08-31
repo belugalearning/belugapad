@@ -5,7 +5,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>What is 1 larger than {$number}?</string>
+		<string>What is 1 larger than {@number}?</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>PICKER_ORIGIN_X</key>
@@ -21,7 +21,7 @@
 	</dict>
 	<key>DVARS</key>
 	<dict>
-		<key>$number</key>
+		<key>@number</key>
 		<dict>
 			<key>MIN</key>
 			<integer>1</integer>

@@ -2050,17 +2050,14 @@ static float kTimeToCageShake=7.0f;
                     [go handleMessage:kDWmoveSpriteToPosition];
                     [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
                     
-                    //[go handleMessage:kDWputdown];
                 }
             }
-            else
+
+            if([block.LastMount isKindOfClass:[DWPlaceValueNetGameObject class]])
             {
-                if([block.LastMount isKindOfClass:[DWPlaceValueNetGameObject class]])
-                {
-                    block.Mount=block.LastMount;
-                    ((DWPlaceValueNetGameObject*)block.Mount).MountedObject=block;
-                    [block handleMessage:kDWresetToMountPosition];
-                }
+                block.Mount=block.LastMount;
+                ((DWPlaceValueNetGameObject*)block.Mount).MountedObject=block;
+                [block handleMessage:kDWresetToMountPosition];
             }
             
             // but if our lastmount was a cage - return it there and destroy it

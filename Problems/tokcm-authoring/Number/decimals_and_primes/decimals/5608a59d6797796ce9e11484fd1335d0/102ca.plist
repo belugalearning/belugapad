@@ -5,10 +5,12 @@
 	<key>TOOL_KEY</key>
 	<string>ColumnAddition</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>col. add. decimals</string>
+	<string>What is the total of 29.6 and 10.3?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>col add no carrying</string>
 	<key>NUMBER_A</key>
 	<real>29.6</real>
 	<key>NUMBER_B</key>
-	<real>12.3</real>
+	<real>10.3</real>
 </dict>
 </plist>

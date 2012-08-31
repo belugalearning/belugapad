@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is 9 x 2?</string>
+	<string>Find both solutions for 9 x 2.</string>
 	<key>TOOL_KEY</key>
 	<string>TimesTables</string>
 	<key>ANCHOR_SPACE</key>
@@ -11,7 +11,7 @@
 	<key>START_X</key>
 	<integer>1</integer>
 	<key>START_Y</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>OPERATOR_MODE</key>
@@ -37,13 +37,9 @@
 		<integer>5</integer>
 	</array>
 	<key>REVEAL_ROWS</key>
-	<array>
-		<integer>2</integer>
-	</array>
+	<array/>
 	<key>REVEAL_COLS</key>
-	<array>
-		<integer>9</integer>
-	</array>
+	<array/>
 	<key>REVEAL_TILES</key>
 	<array/>
 	<key>SOLUTIONS</key>

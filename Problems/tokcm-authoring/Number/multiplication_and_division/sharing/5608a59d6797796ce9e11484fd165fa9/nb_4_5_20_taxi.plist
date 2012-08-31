@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>More people than expected turned up to go to the restaurant, so another 2 taxis were ordered on top of the original 3. Each taxi holds 4 people. How many people are going to the restaurant now?</string>
+	<string>More people want to go to the restaurant. 2 more taxis were ordered on top of the original 3. Each taxi holds 4 people. How many people are going to the restaurant now?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>nb_4_5_20_taxi</string>
 	<key>TOOL_KEY</key>
@@ -14,19 +14,19 @@
 			<key>LOCKED</key>
 			<true/>
 			<key>LENGTH</key>
-			<integer>16</integer>
+			<integer>8</integer>
 		</dict>
 		<dict>
 			<key>LOCKED</key>
 			<false/>
 			<key>LENGTH</key>
-			<integer>16</integer>
+			<integer>8</integer>
 		</dict>
 		<dict>
 			<key>LOCKED</key>
 			<false/>
 			<key>LENGTH</key>
-			<integer>16</integer>
+			<integer>8</integer>
 		</dict>
 	</array>
 	<key>INIT_OBJECTS</key>
@@ -37,7 +37,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>2</integer>
 			<key>LENGTH</key>
-			<integer>4</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>LABEL</key>
@@ -45,7 +45,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>1</integer>
 			<key>LENGTH</key>
-			<integer>4</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>LABEL</key>
@@ -53,7 +53,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>LENGTH</key>
-			<integer>16</integer>
+			<integer>8</integer>
 		</dict>
 	</array>
 	<key>EVAL_MODE</key>
@@ -62,7 +62,7 @@
 	<array>
 		<dict>
 			<key>LENGTH</key>
-			<integer>4</integer>
+			<integer>2</integer>
 			<key>LABEL</key>
 			<string>Taxi</string>
 			<key>QUANTITY</key>
@@ -70,7 +70,7 @@
 		</dict>
 		<dict>
 			<key>LENGTH</key>
-			<integer>4</integer>
+			<integer>2</integer>
 			<key>LABEL</key>
 			<string>4 </string>
 			<key>QUANTITY</key>

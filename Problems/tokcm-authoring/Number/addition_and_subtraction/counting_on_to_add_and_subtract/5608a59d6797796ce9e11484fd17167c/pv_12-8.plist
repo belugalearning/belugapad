@@ -31,7 +31,7 @@
 	<key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_COUNT</key>
-	<true/>
+	<false/>
 	<key>SHOW_COUNT_BLOCK</key>
 	<true/>
 	<key>FADE_COUNT</key>
@@ -83,6 +83,23 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
+		<integer>4</integer>
+	</dict>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>What is 12 - 8?</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_X</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_Y</key>
+		<integer>0</integer>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
 		<integer>4</integer>
 	</dict>
 </dict>

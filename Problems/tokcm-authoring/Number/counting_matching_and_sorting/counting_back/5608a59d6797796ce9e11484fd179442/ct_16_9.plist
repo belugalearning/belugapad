@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Starting at 16, press when it counts back 7.</string>
+	<string>You start at 16, press when it counts back 7.</string>
 	<key>TOOL_KEY</key>
 	<string>CountingTimer</string>
 	<key>SOLUTION</key>
@@ -11,7 +11,7 @@
 	<key>SHOW_COUNT</key>
 	<true/>
 	<key>COUNT_TYPE</key>
-	<integer>2</integer>
+	<integer>1</integer>
 	<key>INCREMENT</key>
 	<integer>-1</integer>
 	<key>COUNT_MIN</key>

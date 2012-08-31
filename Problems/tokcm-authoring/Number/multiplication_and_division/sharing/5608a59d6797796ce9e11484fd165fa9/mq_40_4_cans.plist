@@ -89,7 +89,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>A class is collecting cans to recycle. Each student collects 4 cans each. 40 cans were collected in total. How many students are there in the class?</string>
+		<string>A class collects cans to recycle. Each student collects 4 cans. 40 cans were collected in total. How many students are there in the class?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

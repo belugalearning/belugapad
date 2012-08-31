@@ -89,7 +89,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>{@gname} wins a jar of 77 sweets. She gives it out to her classmates, who get 7 sweets each. How many classmates does she have?</string>
+		<string>{@gname} wins a jar of 77 sweets. She gives it out to her classmates, who get 7 sweets each. How many people are in Claire&apos;s class?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

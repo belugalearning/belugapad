@@ -67,13 +67,13 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>2 taxis</string>
+				<string>2 cars</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>4 taxis</string>
+				<string>4 cars</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
@@ -85,7 +85,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>It costs £14 for each taxi to travel to the {@place}. Is it cheaper for the 8 friends to use 4 taxis or 2 taxis?</string>
+		<string>It costs £6 for each car to park at the {@place}. Is it cheaper for the 8 friends to use 4 cars or 2 cars?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

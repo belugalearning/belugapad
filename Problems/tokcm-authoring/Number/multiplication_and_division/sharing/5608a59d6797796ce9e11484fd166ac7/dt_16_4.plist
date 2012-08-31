@@ -89,7 +89,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>An 16th birthday party had a cake with 4 slices. Candles are placed evenly on the cake- how many candles will be on each slice?</string>
+		<string>16 candles are placed evenly on a birthday cake with 4 slices- how many candles will be on each slice?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>
@@ -101,7 +101,7 @@
 			<key>POS_X</key>
 			<integer>350</integer>
 			<key>POS_Y</key>
-			<integer>600</integer>
+			<integer>500</integer>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
@@ -109,7 +109,7 @@
 			<key>POS_X</key>
 			<integer>350</integer>
 			<key>POS_Y</key>
-			<integer>500</integer>
+			<integer>400</integer>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
@@ -117,7 +117,7 @@
 			<key>POS_X</key>
 			<integer>350</integer>
 			<key>POS_Y</key>
-			<integer>400</integer>
+			<integer>300</integer>
 		</dict>
 	</array>
 </dict>

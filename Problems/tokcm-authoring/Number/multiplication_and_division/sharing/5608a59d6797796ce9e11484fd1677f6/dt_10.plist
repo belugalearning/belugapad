@@ -18,7 +18,7 @@
 			<key>POS_Y</key>
 			<integer>550</integer>
 			<key>LABEL</key>
-			<string>Mark</string>
+			<string>{@bname}</string>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
@@ -62,9 +62,9 @@
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>5</integer>
+			<integer>10</integer>
 			<key>POS_X</key>
-			<integer>350</integer>
+			<integer>200</integer>
 			<key>POS_Y</key>
 			<integer>350</integer>
 		</dict>
@@ -105,25 +105,25 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>2</string>
+				<string>3</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>3</string>
+				<string>2</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>10</string>
+				<string>5</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>10 coins are divided fairly between {@bname} and his 4 sisters. How many coins does {@bname} get?</string>
+		<string>15 coins are divided fairly between {@bname} and his 4 sisters. How many coins does {@bname} get?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

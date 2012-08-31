@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Separate the 8 friends equally into 2 taxis, then 4 taxis. </string>
+	<string>Separate the 8 friends equally into 2 cars, then 4 cars. </string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>nb_8_4_2</string>
 	<key>TOOL_KEY</key>
@@ -64,19 +64,19 @@
 	<array>
 		<dict>
 			<key>LENGTH</key>
-			<integer>4</integer>
-			<key>LABEL</key>
-			<string>4 </string>
-			<key>QUANTITY</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>LENGTH</key>
 			<integer>2</integer>
 			<key>LABEL</key>
 			<string>2 </string>
 			<key>QUANTITY</key>
 			<integer>4</integer>
+		</dict>
+		<dict>
+			<key>LENGTH</key>
+			<integer>4</integer>
+			<key>LABEL</key>
+			<string>4 </string>
+			<key>QUANTITY</key>
+			<integer>2</integer>
 		</dict>
 	</array>
 </dict>

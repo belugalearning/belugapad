@@ -40,7 +40,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>The number of haribos are split equally into 4 bags. Would there be more haribos in each bag if there were 20 haribos or 24 haribos to start with?</string>
+		<string>The number of sweets are split equally into 4 bags. Would there be more sweets in each bag if there were 20 sweets or 24 sweets to start with?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

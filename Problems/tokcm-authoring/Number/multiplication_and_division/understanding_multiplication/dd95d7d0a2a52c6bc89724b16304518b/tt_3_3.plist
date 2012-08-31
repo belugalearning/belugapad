@@ -54,12 +54,6 @@
 			<key>POS_Y</key>
 			<integer>3</integer>
 		</dict>
-		<dict>
-			<key>POS_X</key>
-			<integer>3</integer>
-			<key>POS_Y</key>
-			<integer>3</integer>
-		</dict>
 	</array>
 	<key>TIMER</key>
 	<dict>

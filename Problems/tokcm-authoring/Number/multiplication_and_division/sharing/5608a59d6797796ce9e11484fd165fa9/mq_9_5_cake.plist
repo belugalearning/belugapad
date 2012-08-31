@@ -89,7 +89,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>It is {@bname}&apos;s dads&apos; 45th birthday. He places the candles evenly on the cake. Each slice has 5 candles. How many slices of cake was there?</string>
+		<string>45 candles are placed evenly on a cake. Each slice has 5 candles. How many slices of cake were there?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

@@ -36,6 +36,7 @@
 @property BOOL HideAllNotches;
 @property (retain) NSArray *ShowNotchesAtIntervals;
 
+@property NSMutableArray *MarkerValuePositions;
 
 
 @end

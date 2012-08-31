@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>count to 40</string>
+	<string>count to 40 (jump mode)</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>count on from 0 to 15</string>
 	<key>TOOL_KEY</key>
@@ -42,9 +42,16 @@
 	<false/>
 	<key>EVAL_PLUS_MINUS_THRESHOLD</key>
 	<integer>0</integer>
+	<key>JUMP_MODE</key>
+	<true/>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array>
 		<string>5</string>
+	</array>
+	<key>MARKER_POSITIONS</key>
+	<array>
+		<string>10</string>
+		<string>50</string>
 	</array>
 </dict>
 </plist>

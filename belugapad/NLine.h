@@ -70,6 +70,18 @@
     int touchResetDir;
     
     BOOL enableAudioCounting;
+    
+    
+    // == jump mode
+    BOOL jumpMode;
+    CGPoint stitchStartPos;
+    CGPoint stitchEndPos;
+    CGPoint stitchApexPos;
+    BOOL drawStitchLine;
+    BOOL drawStitchCurve;
+    
+    // == markers
+    NSMutableArray *markerValuePositions;
 }
 
 -(void)populateGW;

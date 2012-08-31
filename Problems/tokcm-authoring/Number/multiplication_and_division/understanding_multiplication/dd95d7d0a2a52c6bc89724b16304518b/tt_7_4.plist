@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is 7 x 4?</string>
+	<string>Find both solutions for 7 x 4.</string>
 	<key>TOOL_KEY</key>
 	<string>TimesTables</string>
 	<key>ANCHOR_SPACE</key>
@@ -37,13 +37,9 @@
 		<integer>5</integer>
 	</array>
 	<key>REVEAL_ROWS</key>
-	<array>
-		<integer>4</integer>
-	</array>
+	<array/>
 	<key>REVEAL_COLS</key>
-	<array>
-		<integer>7</integer>
-	</array>
+	<array/>
 	<key>REVEAL_TILES</key>
 	<array/>
 	<key>SOLUTIONS</key>

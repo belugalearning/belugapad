@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>What is 1 larger than 5?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>5-6</string>
+	<string>What is 1 larger than 5?</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>

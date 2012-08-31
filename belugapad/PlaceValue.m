@@ -2021,12 +2021,15 @@ static float kTimeToCageShake=7.0f;
             BOOL isCage;
             
             // check whether this mount is a cage
-            if([block.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
+            if([block.LastMount isKindOfClass:[DWPlaceValueCageGameObject class]])
                 isCage=YES;
             else
                 isCage=NO;
             
             // if we're selected and not in a cage or if we are and we're allowed to deselect, AND are not in a cage, switch selection
+            
+            NSLog(@"block selected? %@, isCage? %@", block.Selected? @"YES":@"NO", isCage? @"YES":@"NO");
+            
             if((!block.Selected && !isCage) || (block.Selected && allowDeselect && !isCage))
             {
                 [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];

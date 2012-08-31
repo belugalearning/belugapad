@@ -223,7 +223,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>6 is larger than 3 by how many blocks?</string>
+		<string>How much larger is 6 than 3?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

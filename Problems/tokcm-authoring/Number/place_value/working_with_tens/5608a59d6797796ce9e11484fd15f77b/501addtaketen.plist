@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 396. Add 10.</string>
+	<string>What is the sum of 396 and 10?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>200</string>
 	<key>MASTERY</key>
@@ -251,7 +251,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>This is 396. Add 10.</string>
+		<string>What is the sum of 396 and 10?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again.</string>
 	</dict>

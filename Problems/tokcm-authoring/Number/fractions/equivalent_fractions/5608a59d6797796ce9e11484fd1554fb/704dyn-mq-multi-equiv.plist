@@ -6,6 +6,8 @@
 	<string>Which of these are equivalent to {$a}/{$b}?</string>
 	<key>TOOL_KEY</key>
 	<string>FractionBuilder</string>
+	<key>MASTERY</key>
+	<true/>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>INIT_FRACTIONS</key>

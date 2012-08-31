@@ -40,7 +40,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>How much larger is {$var1} compared to {$var2}?</string>
+		<string>How much larger is {$var1} than {$var2}?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

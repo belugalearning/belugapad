@@ -46,16 +46,7 @@
 		<string>ones</string>
 	</dict>
 	<key>INIT_OBJECTS</key>
-	<array>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
-			<key>NUMBER</key>
-			<integer>0</integer>
-		</dict>
-	</array>
+	<array/>
 	<key>SOLUTION</key>
 	<dict>
 		<key>SOLUTION_TYPE</key>
@@ -75,5 +66,15 @@
 	</dict>
 	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
 	<true/>
+	<key>CAGE_POS_DISABLE_DELETE</key>
+	<dict>
+		<key>1</key>
+		<false/>
+	</dict>
+	<key>CAGE_NEG_DISABLE_DELETE</key>
+	<dict>
+		<key>1</key>
+		<false/>
+	</dict>
 </dict>
 </plist>

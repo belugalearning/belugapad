@@ -15,7 +15,7 @@
 	<key>NUMBER_COLS</key>
 	<integer>2</integer>
 	<key>DEFAULT_COL</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>ROPES_PER_COL</key>
 	<integer>3</integer>
 	<key>ROWS_PER_COL</key>
@@ -50,16 +50,6 @@
 		<string></string>
 		<key>1</key>
 		<string></string>
-	</dict>
-	<key>COLUMN_ROPES</key>
-	<dict>
-		<key>1</key>
-		<integer>3</integer>
-	</dict>
-	<key>COLUMN_ROWS</key>
-	<dict>
-		<key>1</key>
-		<integer>5</integer>
 	</dict>
 	<key>SOLUTION</key>
 	<dict>
@@ -204,6 +194,6 @@
 		<false/>
 	</dict>
 	<key>X_OFFSET</key>
-	<real>-0.28</real>
+	<real>0.3</real>
 </dict>
 </plist>

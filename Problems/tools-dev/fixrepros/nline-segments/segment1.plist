@@ -13,7 +13,7 @@
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
-	<string>50</string>
+	<string>500</string>
 	<key>SEGMENT_VALUE</key>
 	<integer>10</integer>
 	<key>EVAL_MODE</key>

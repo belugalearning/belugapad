@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Here are 7 blocks. Add 1 block. Count the total number of blocks now.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>7-8</string>
+	<string>Here are 7 blocks. Add 1 block. Count the total number of blocks now.</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>

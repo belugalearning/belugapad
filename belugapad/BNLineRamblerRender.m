@@ -88,6 +88,16 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     assLabels=[[NSMutableDictionary alloc] init];
     labelLayer=[[CCLayer alloc] init];
     [gameWorld.Blackboard.ComponentRenderLayer addChild:labelLayer];
+    
+    if(ramblerGameObject.MarkerValuePositions)
+    {
+        markerSprites=[[NSMutableArray alloc] init];
+        for (NSNumber *n in ramblerGameObject.MarkerValuePositions) {
+            CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/marker.png")];
+            [gameWorld.Blackboard.ComponentRenderLayer addChild:s];
+            [markerSprites addObject:s];
+        }
+    }
 }
 
 -(void)doUpdate:(ccTime)delta
@@ -163,6 +173,22 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                 [assEndTerminator setPosition:segStartPos];
             }
             //-------------------------------------------------------------------------------------------------------------
+            
+            
+            //markers -----------------------------------------------------------------------------------------------------
+            if(ramblerGameObject.MarkerValuePositions)
+            {
+                for(int i=0; i<ramblerGameObject.MarkerValuePositions.count; i++)
+                {
+                    NSNumber *n=[ramblerGameObject.MarkerValuePositions objectAtIndex:i];
+                    if(n.intValue==iValue)
+                    {
+                        CCSprite *s=[markerSprites objectAtIndex:i];
+                        [s setPosition:segStartPos];
+                    }
+                }
+            }
+            // ------------------------------------------------------------------------------------------------------------
             
             //render number indicator -------------------------------------------------------------------------------------
 
@@ -273,6 +299,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     [assIndicators release];
     [assLabels release];
     [labelLayer release];
+    [markerSprites release];
     
     [super dealloc];
 }

@@ -150,6 +150,19 @@ static float kTimeToBubbleShake=7.0f;
     }
 }
 
+-(void)draw
+{
+    if(drawStitchLine)
+    {
+        ccDrawLine(stitchStartPos, stitchEndPos);
+    }
+    
+    if(drawStitchCurve)
+    {
+        ccDrawQuadBezier(stitchStartPos, stitchApexPos, stitchEndPos, 40);
+    }
+}
+
 -(void)populateGW
 {
     rambler=[DWRamblerGameObject alloc];
@@ -200,15 +213,9 @@ static float kTimeToBubbleShake=7.0f;
     selector.WatchRambler=rambler;
     selector.pos=ccp(cx,cy + 75.0f);
     
-    //stiching -- should we render stitches?
-    if ([problemDef objectForKey:@"RENDER_STITCHES"]) {
-        rambler.RenderStitches=[[problemDef objectForKey:@"RENDER_STITCHES"] boolValue];
-    }
-    
-    //sould the line auto stitch -- non zero values will cause the values
-    if([problemDef objectForKey:@"AUTO_STITCH_INCREMENT"])
+    if(markerValuePositions)
     {
-        rambler.AutoStitchIncrement=[[problemDef objectForKey:@"AUTO_STITCH_INCREMENT"] intValue];
+        rambler.MarkerValuePositions=markerValuePositions;
     }
 }
 
@@ -252,6 +259,16 @@ static float kTimeToBubbleShake=7.0f;
     
     //force default on segment value if not specified
     if(initSegmentVal==0)initSegmentVal=1;
+    
+    if([pdef objectForKey:@"JUMP_MODE"])
+    {
+        jumpMode=[[pdef objectForKey:@"JUMP_MODE"] boolValue];
+    }
+    
+    if([pdef objectForKey:@"MARKER_POSITIONS"])
+    {
+        markerValuePositions=[pdef objectForKey:@"MARKER_POSITIONS"];
+    }
 }
 
 -(void)problemStateChanged
@@ -396,6 +413,12 @@ static float kTimeToBubbleShake=7.0f;
         logLastBubblePos=lastBubbleLoc;
         
         timeSinceInteractionOrShake=0;
+        
+        if(jumpMode)
+        {
+            //retain start pos for stitch draw
+            stitchStartPos=bubbleSprite.position;
+        }
     }
 }
 
@@ -420,8 +443,50 @@ static float kTimeToBubbleShake=7.0f;
             logBubbleDidMove=YES;
         }
         else {
-            CGPoint newloc=ccp(location.x - holdingBubbleOffset, bubbleSprite.position.y);
-            //CGPoint newloc=ccp(location.x, bubbleSprite.position.y);
+            
+            float moveY=0;
+            
+            if(jumpMode)
+            {
+                // ===== stitching stuff ===============================================
+                //get ypos --
+                float threshold=100.0f;
+                float diffY=location.y - cy;
+                if(diffY>0)
+                {
+                    float dampY = diffY<threshold ? diffY / threshold : 1.0f;
+                    dampY*=dampY * dampY;
+                    moveY = diffY * dampY;
+                }
+                
+                if(diffY>=threshold)
+                {
+                    //user is dragging up or past threshold, draw a stitch line
+                    drawStitchLine=YES;
+                    drawStitchCurve=NO;
+                    stitchEndPos=location;
+                }
+                else
+                {
+                    // user is below threshold, if they were previously above it, draw a curve
+                    if(drawStitchLine)
+                    {
+                        drawStitchLine=NO;
+                        drawStitchCurve=YES;
+                        stitchApexPos=location;
+                    }
+                    // otherwise update the end pos -- used to track the end point of the curve, if being drawn
+                    else
+                    {
+                        stitchEndPos=location;
+                    }
+                }
+                // =====================================================================
+            }
+            
+            //CGPoint newloc=ccp(location.x - holdingBubbleOffset, bubbleSprite.position.y);
+            CGPoint newloc=ccp(location.x - holdingBubbleOffset, cy + moveY);
+            
             float xdiff=newloc.x-bubbleSprite.position.x;
             
             if((bubbleAtBounds>0 && xdiff<0) || (bubbleAtBounds<0 && xdiff>0) || bubbleAtBounds==0)
@@ -522,7 +587,18 @@ static float kTimeToBubbleShake=7.0f;
 
         //diff (moveby)
         float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
-        [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
+        
+        float diffy=0.0f;
+        
+        if(jumpMode)  // === stitching stuff ======================================
+        {
+            diffy=cy - bubbleSprite.position.y;
+            drawStitchLine=NO;
+            drawStitchCurve=NO;
+            
+        }  // =====================================================================
+        
+        [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, diffy)]];
         
         
         //update the rambler value & last bubble location, using any offset

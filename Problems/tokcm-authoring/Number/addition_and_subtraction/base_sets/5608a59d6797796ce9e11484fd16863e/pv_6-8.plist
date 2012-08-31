@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Show that to make 6 blocks into 8 blocks, you must add 2 blocks of 1. </string>
+	<string>Show that to make 3 blocks into 8 blocks, you must add 5 blocks of 1. </string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>pv_6-8</string>
 	<key>TOOL_KEY</key>
@@ -59,15 +59,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>1</integer>
 			<key>NUMBER</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>2</integer>
-			<key>NUMBER</key>
-			<integer>2</integer>
+			<integer>1</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

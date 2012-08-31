@@ -35,12 +35,16 @@
 @synthesize HideAllNotches;
 @synthesize ShowNotchesAtIntervals;
 
+@synthesize MarkerValuePositions;
+
 -(void)dealloc
 {
     self.MinValue=nil;
     self.MaxValue=nil;
     self.ShowNumbersAtIntervals=nil;
     self.ShowNotchesAtIntervals=nil;
+    
+    self.MarkerValuePositions=nil;
     
     [super dealloc];
 }

@@ -295,7 +295,14 @@ static float kTimeToBubbleShake=7.0f;
 
 -(void)evalProblem
 {
-    self.ProblemComplete = (evalTarget==lastBubbleValue);
+    BOOL Complete=NO;
+    Complete = (evalTarget==lastBubbleValue);
+    
+    if(Complete)
+    {
+        self.ProblemComplete=YES;
+        [self showComplete];
+    }
     
 }
 
@@ -382,24 +389,7 @@ static float kTimeToBubbleShake=7.0f;
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
     
-    if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit)
-    {
-        [self evalProblem];
-        
-        if(!self.ProblemComplete) 
-        {
-            //automate reset here
-            
-            [self resetBubble];
-            [toolHost resetScoreMultiplier];
-            
-        }
-        else {
-            [self showComplete];
-        }
-    }
-    
-    else if([BLMath DistanceBetween:location and:bubbleSprite.position]<kBubbleProx)
+    if([BLMath DistanceBetween:location and:bubbleSprite.position]<kBubbleProx)
     {
         if(!usedBubble)usedBubble=YES;
         holdingBubbleOffset=location.x - bubbleSprite.position.x;

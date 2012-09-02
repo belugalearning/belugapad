@@ -33,6 +33,7 @@
     FMDatabase *contentDatabase;
     int pipelineIndex;
     
+    
     NSFileManager *fm;
     NSString *contentDir;
 }
@@ -394,24 +395,20 @@
     
     if (useTestPipeline)
     {
-        currentPIndex = (currentPIndex == NSUIntegerMax) ? 0 : (currentPIndex + 1) % [testProblemList count];
-        
-        NSString *problemPath=[testProblemList objectAtIndex:currentPIndex];
-        
-        if([problemPath rangeOfString:@".app"].location==NSNotFound)
-            problemPath=BUNDLE_FULL_PATH(problemPath);
-        
-        self.currentPDef = [NSDictionary dictionaryWithContentsOfFile:problemPath];
-        
-        self.pathToTestDef=[testProblemList objectAtIndex:currentPIndex];
-        NSLog(@"loaded test def: %@", self.pathToTestDef);        
+        [self gotoNextProblemInTestPipeline];
     }    
     else if(++pipelineIndex>=self.currentPipeline.problems.count)
     {
-        //don't progress, current pdef & ppexpr are set to nil above
+        //don't progress -- end of pipeline
+        //current pdef & ppexpr are set to nil above
+        
+        //todo: close episode
     }
     else
     {
+        //progress to next problem
+        //todo: decide on whether to insert more problems into episode
+        
         NSString *pId = [self.currentPipeline.problems objectAtIndex:pipelineIndex];
         
         [contentDatabase open];
@@ -442,6 +439,21 @@
             [ac.loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
         }
     }
+}
+
+-(void)gotoNextProblemInTestPipeline
+{
+    currentPIndex = (currentPIndex == NSUIntegerMax) ? 0 : (currentPIndex + 1) % [testProblemList count];
+    
+    NSString *problemPath=[testProblemList objectAtIndex:currentPIndex];
+    
+    if([problemPath rangeOfString:@".app"].location==NSNotFound)
+        problemPath=BUNDLE_FULL_PATH(problemPath);
+    
+    self.currentPDef = [NSDictionary dictionaryWithContentsOfFile:problemPath];
+    
+    self.pathToTestDef=[testProblemList objectAtIndex:currentPIndex];
+    NSLog(@"loaded test def: %@", self.pathToTestDef);
 }
 
 -(void)setPipelineNodeComplete

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class User, LoggingService;
+@class User, LoggingService, FMDatabase;
 
 @interface UsersService : NSObject
 
@@ -19,6 +19,8 @@ typedef enum {
 
 @property (readonly, retain, nonatomic) NSString *installationUUID;
 @property (readonly) NSDictionary *currentUserClone;
+@property (readonly) FMDatabase *usersDatabase;
+@property (readonly) NSString *currentUserId;
 
 -(id)initWithProblemPipeline:(NSString*)source
            andLoggingService:(LoggingService*)ls;

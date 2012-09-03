@@ -24,6 +24,10 @@
 @property BOOL resetPositionAfterTH;
 @property CGPoint lastMapLayerPosition;
 
+//episode
+@property (retain) NSMutableArray *currentEpisode;
+@property (readonly) BOOL isUserAtEpisodeHead;
+
 -(id)initWithLocalSettings:(NSDictionary*)settings;
 -(void)setPipelineNodeComplete;
 -(void)setPipelineScore:(int)score;

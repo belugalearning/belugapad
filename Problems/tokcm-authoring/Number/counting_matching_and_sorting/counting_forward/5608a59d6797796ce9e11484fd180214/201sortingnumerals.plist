@@ -5,9 +5,9 @@
 	<key>TOOL_KEY</key>
 	<string>ExprBuilder</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Put the numbers in order.</string>
+	<string>Put the numbers in descending order.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>sort numbers up to 15</string>
+	<string>sort numbers up to 15, descending order</string>
 	<key>EXPR_STAGES</key>
 	<array>
 		<string>&lt;b:ot tag=&quot;a&quot;&gt;7&lt;/b:ot&gt;

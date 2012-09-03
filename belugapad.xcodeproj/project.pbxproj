@@ -69,6 +69,10 @@
 		553E80BB150FC60200263473 /* BNLineSelectorInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80BA150FC60100263473 /* BNLineSelectorInput.m */; };
 		553E80BE150FC78F00263473 /* DWSelectorGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80BD150FC78E00263473 /* DWSelectorGameObject.m */; };
 		553E80C1150FD3FD00263473 /* NLineConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80C0150FD3FD00263473 /* NLineConsts.m */; };
+		554FB01515F4A805006F6D3A /* FloatingBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 554FB01415F4A805006F6D3A /* FloatingBlock.m */; };
+		554FB01A15F4AD59006F6D3A /* SGFBlockBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 554FB01915F4AD59006F6D3A /* SGFBlockBlock.m */; };
+		554FB01D15F4AD6C006F6D3A /* SGFBlockBubble.m in Sources */ = {isa = PBXBuildFile; fileRef = 554FB01C15F4AD6C006F6D3A /* SGFBlockBubble.m */; };
+		554FB02015F4AD77006F6D3A /* SGFBlockGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 554FB01F15F4AD77006F6D3A /* SGFBlockGroup.m */; };
 		556A2D6015A7064500F4B825 /* SGDtoolBlockPairing.m in Sources */ = {isa = PBXBuildFile; fileRef = 556A2D5F15A7064500F4B825 /* SGDtoolBlockPairing.m */; };
 		5571BADD14E406220053A62B /* PlaceValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BADC14E406220053A62B /* PlaceValue.m */; };
 		5571BAE114E406630053A62B /* ToolConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE014E406630053A62B /* ToolConsts.m */; };
@@ -538,6 +542,15 @@
 		553E80BD150FC78E00263473 /* DWSelectorGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWSelectorGameObject.m; sourceTree = "<group>"; };
 		553E80BF150FD3FD00263473 /* NLineConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NLineConsts.h; sourceTree = "<group>"; };
 		553E80C0150FD3FD00263473 /* NLineConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NLineConsts.m; sourceTree = "<group>"; };
+		554FB01315F4A805006F6D3A /* FloatingBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatingBlock.h; sourceTree = "<group>"; };
+		554FB01415F4A805006F6D3A /* FloatingBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FloatingBlock.m; sourceTree = "<group>"; };
+		554FB01815F4AD59006F6D3A /* SGFBlockBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBlockBlock.h; sourceTree = "<group>"; };
+		554FB01915F4AD59006F6D3A /* SGFBlockBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBlockBlock.m; sourceTree = "<group>"; };
+		554FB01B15F4AD6C006F6D3A /* SGFBlockBubble.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBlockBubble.h; sourceTree = "<group>"; };
+		554FB01C15F4AD6C006F6D3A /* SGFBlockBubble.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBlockBubble.m; sourceTree = "<group>"; };
+		554FB01E15F4AD77006F6D3A /* SGFBlockGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBlockGroup.h; sourceTree = "<group>"; };
+		554FB01F15F4AD77006F6D3A /* SGFBlockGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBlockGroup.m; sourceTree = "<group>"; };
+		554FB02115F4ADC5006F6D3A /* SGFBlockObjectProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SGFBlockObjectProtocols.h; sourceTree = "<group>"; };
 		556A2D5E15A7064500F4B825 /* SGDtoolBlockPairing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGDtoolBlockPairing.h; sourceTree = "<group>"; };
 		556A2D5F15A7064500F4B825 /* SGDtoolBlockPairing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGDtoolBlockPairing.m; sourceTree = "<group>"; };
 		5571BADB14E406220053A62B /* PlaceValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceValue.h; sourceTree = "<group>"; };
@@ -1395,6 +1408,19 @@
 			name = NumberBonds;
 			sourceTree = "<group>";
 		};
+		554FB01715F4AC58006F6D3A /* FloatingBlock */ = {
+			isa = PBXGroup;
+			children = (
+				554FB01815F4AD59006F6D3A /* SGFBlockBlock.h */,
+				554FB01915F4AD59006F6D3A /* SGFBlockBlock.m */,
+				554FB01B15F4AD6C006F6D3A /* SGFBlockBubble.h */,
+				554FB01C15F4AD6C006F6D3A /* SGFBlockBubble.m */,
+				554FB01E15F4AD77006F6D3A /* SGFBlockGroup.h */,
+				554FB01F15F4AD77006F6D3A /* SGFBlockGroup.m */,
+			);
+			name = FloatingBlock;
+			sourceTree = "<group>";
+		};
 		5571BAE214E40FE90053A62B /* PlaceValue */ = {
 			isa = PBXGroup;
 			children = (
@@ -1615,6 +1641,8 @@
 				559A33D615DA382C00CA97E2 /* CountingTimer.m */,
 				7F50C4AB15DBCD44009345B5 /* ExprBuilder.h */,
 				7F50C4AC15DBCD44009345B5 /* ExprBuilder.m */,
+				554FB01315F4A805006F6D3A /* FloatingBlock.h */,
+				554FB01415F4A805006F6D3A /* FloatingBlock.m */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -2375,6 +2403,7 @@
 		7F7336A9158B353B00A37FC4 /* SGGameObjects */ = {
 			isa = PBXGroup;
 			children = (
+				554FB01715F4AC58006F6D3A /* FloatingBlock */,
 				7FCA645F15D69BE300C5C020 /* BTXE */,
 				55FBB2FA15BD700B0034B081 /* Fraction */,
 				5508FEB615A30669003720AF /* Dtool */,
@@ -2390,6 +2419,7 @@
 				5508FEB515A30623003720AF /* SGDtoolObjectProtocols.h */,
 				55FBB2FB15BD75610034B081 /* SGFractionObjectProtocols.h */,
 				7FCA645B15D6940700C5C020 /* SGBtxeProtocols.h */,
+				554FB02115F4ADC5006F6D3A /* SGFBlockObjectProtocols.h */,
 			);
 			name = SGProtocols;
 			sourceTree = "<group>";
@@ -3208,6 +3238,10 @@
 				7FEB663E15DEE68100F6E782 /* PRRatcliffTriangulator.mm in Sources */,
 				7FEB663F15DEE68100F6E782 /* triangulate.cpp in Sources */,
 				0C3955BB15E7A3440043DD4F /* TouchLogger.m in Sources */,
+				554FB01515F4A805006F6D3A /* FloatingBlock.m in Sources */,
+				554FB01A15F4AD59006F6D3A /* SGFBlockBlock.m in Sources */,
+				554FB01D15F4AD6C006F6D3A /* SGFBlockBubble.m in Sources */,
+				554FB02015F4AD77006F6D3A /* SGFBlockGroup.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

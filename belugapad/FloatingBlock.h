@@ -16,7 +16,7 @@ typedef enum {
     kSolutionAddition=2
 } SolutionType;
 
-@interface ToolTemplateSG : ToolScene
+@interface FloatingBlock : ToolScene
 {
     // required toolhost stuff
     ToolHost *toolHost;
@@ -39,9 +39,19 @@ typedef enum {
     // standard to move between problems
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
-    
+        
     // and a default layer
     CCLayer *renderLayer;
+    
+    CCSprite *commitPipe;
+    CCSprite *newPipe;
+    
+    // init stuff
+    int initBubbles;
+    NSArray *initObjects;
+    BOOL bubbleAutoOperate;
+    int maxObjectsInGroup;
+    
     
     float expSolution;
 }
@@ -51,6 +61,7 @@ typedef enum {
 -(void)draw;
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)populateGW;
+-(void)createShapeWith:(NSDictionary*)theseSettings;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

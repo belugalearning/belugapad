@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "ToolTemplateSG.h"
+#import "FloatingBlock.h"
 
 #import "UsersService.h"
 #import "ToolHost.h"
@@ -17,12 +17,16 @@
 #import "AppDelegate.h"
 
 #import "SGGameWorld.h"
+#import "SGFBlockObjectProtocols.h"
+#import "SGFBlockBlock.h"
+#import "SGFBlockBubble.h"
+#import "SGFBlockGroup.h"
 
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
 
-@interface ToolTemplateSG()
+@interface FloatingBlock()
 {
 @private
     LoggingService *loggingService;
@@ -33,11 +37,13 @@
     //game world
     SGGameWorld *gw;
     
+    id pickupObject;
+    
 }
 
 @end
 
-@implementation ToolTemplateSG
+@implementation FloatingBlock
 
 #pragma mark - scene setup
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
@@ -110,11 +116,15 @@
 #pragma mark - gameworld setup and population
 -(void)readPlist:(NSDictionary*)pdef
 {
-    
+
     
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
     rejectType=[[pdef objectForKey:REJECT_TYPE] intValue];
     solutionType=[[pdef objectForKey:SOLUTION_TYPE] intValue];
+    initBubbles=[[pdef objectForKey:INIT_BUBBLES]intValue];
+    initObjects=[pdef objectForKey:INIT_OBJECTS];
+    bubbleAutoOperate=[[pdef objectForKey:BUBBLE_AUTO_OPERATE]boolValue];
+    maxObjectsInGroup=[[pdef objectForKey:MAX_GROUP_SIZE]intValue];
     
     
 }
@@ -123,12 +133,61 @@
 {
     gw.Blackboard.RenderLayer = renderLayer;
     
-    // loop through our init fractions
+    // create our bubbles!
+    for(int i=0;i<initBubbles;i++)
+    {
+        float xPos=(lx/initBubbles)*(i+0.5);
+        
+        id<Rendered> newbubble;
+        newbubble=[[SGFBlockBubble alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,300)];
+        [newbubble setup];
+    }
+    
+    // create our shapes
+    for(int i=0;i<[initObjects count];i++)
+    {
+        NSDictionary *d=[initObjects objectAtIndex:i];
+        [self createShapeWith:d];
+    }
+    
+    
+    // and our commit pipe
+    commitPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/pipe.png")];
+    [commitPipe setPosition:ccp(lx-150,70)];
+    [renderLayer addChild:commitPipe];
+    
+    newPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/pipe.png")];
+    [newPipe setRotation:45.0f];
+    [newPipe setPosition:ccp(25,550)];
+    [renderLayer addChild:newPipe];
+    
     
 }
 
 #pragma mark - interaction
-
+-(void)createShapeWith:(NSDictionary*)theseSettings
+{
+    
+    int numberInShape=[[theseSettings objectForKey:NUMBER]intValue];
+    id<Group> thisGroup=[[SGFBlockGroup alloc]initWithGameWorld:gw];
+    thisGroup.MaxObjects=maxObjectsInGroup;
+    
+    float xPos=arc4random()%1000;
+    float yPos=arc4random()%700;
+    
+    for(int i=0;i<numberInShape;i++)
+    {
+        id<Rendered,Moveable> newblock;
+        newblock=[[SGFBlockBlock alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos+(i*52),yPos)];
+        newblock.MyGroup=(id)thisGroup;
+        
+        [newblock setup];
+        
+        [thisGroup addObject:newblock];
+    }
+    
+    
+}
 
 #pragma mark - touches events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -143,8 +202,23 @@
     lastTouch=location;
     touchStartPos=location;
     
-    // loop through to check for fraction touches or chunk touches
+    if(CGRectContainsPoint(newPipe.boundingBox, location))
+    {
+        NSDictionary *d=[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:1] forKey:NUMBER];
+        [self createShapeWith:d];
+    }
     
+    for(id go in gw.AllGameObjects)
+    {
+        if([go conformsToProtocol:@protocol(Group)])
+        {
+            id<Group>thisGroup=go;
+            
+            if([thisGroup checkTouchInGroupAt:location])
+                pickupObject=thisGroup;
+            
+        }
+    }
     
     
 }
@@ -155,12 +229,20 @@
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
-    
-    lastTouch=location;
-    
+
     // if we have these things, handle them differently
-    
-    
+    if(pickupObject)
+    {
+        if([pickupObject conformsToProtocol:@protocol(Group)])
+        {
+            id<Group>grp=(id<Group>)pickupObject;
+            [grp moveGroupPositionFrom:lastTouch To:location];
+            [grp checkIfInBubbleAt:location];
+        }
+    }
+   
+    lastTouch=location;
+ 
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -172,15 +254,17 @@
     
     
     // if we were moving the marker
-    
+
+    pickupObject=nil;
     isTouching=NO;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    
+{    
+
+    pickupObject=nil;
     isTouching=NO;
-    
+
     // empty selected objects
 }
 
@@ -230,7 +314,7 @@
     //write log on problem switch
     
     [renderLayer release];
-    
+
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

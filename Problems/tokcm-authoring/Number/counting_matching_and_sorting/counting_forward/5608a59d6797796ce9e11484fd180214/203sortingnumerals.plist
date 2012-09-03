@@ -10,12 +10,11 @@
 	<string>sort numbers up to 20</string>
 	<key>EXPR_STAGES</key>
 	<array>
-		<string>&lt;b:ot tag=&quot;a&quot;&gt; {$b} &lt;/b:ot&gt;
-&lt;b:ot tag=&quot;c&quot;&gt; {$c} &lt;/b:ot&gt;
-&lt;b:ot tag=&quot;b&quot;&gt; {$d} &lt;/b:ot&gt;</string>
+		<string>&lt;b:ot tag=&quot;a&quot;&gt;{$b}&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;b&quot;&gt;{$d}&lt;/b:ot&gt;</string>
 		<string>&lt;b:t&gt;{$a}&lt;/b:t&gt;
 &lt;b:ot tag=&quot;a&quot; enabled=&quot;no&quot;&gt; {$b} &lt;/b:ot&gt;
-&lt;b:ot tag=&quot;c&quot; enabled=&quot;no&quot;&gt; {$c} &lt;/b:ot&gt;
+&lt;b:t&gt;{$c}&lt;/b:t&gt;
 &lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt; {$d} &lt;/b:ot&gt;
 &lt;b:t&gt;{$e}&lt;/b:t&gt;</string>
 	</array>
@@ -25,17 +24,17 @@
 			<key>VAR_NAME</key>
 			<string>$a</string>
 			<key>MIN</key>
-			<string>1</string>
+			<string>16</string>
 			<key>MAX</key>
-			<string>3</string>
+			<string>20</string>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
 			<string>$b</string>
 			<key>MIN</key>
-			<string>4</string>
+			<string>12</string>
 			<key>MAX</key>
-			<string>7</string>
+			<string>15</string>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
@@ -49,17 +48,17 @@
 			<key>VAR_NAME</key>
 			<string>$d</string>
 			<key>MIN</key>
-			<string>12</string>
+			<string>4</string>
 			<key>MAX</key>
-			<string>15</string>
+			<string>7</string>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
 			<string>$e</string>
 			<key>MIN</key>
-			<string>16</string>
+			<string>1</string>
 			<key>MAX</key>
-			<string>20</string>
+			<string>3</string>
 		</dict>
 	</array>
 </dict>

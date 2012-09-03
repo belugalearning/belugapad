@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Share 3 objects between 4 people.</string>
+	<string>Share 3 objects fairly between 4 people.</string>
 	<key>TOOL_KEY</key>
 	<string>PieSplitter</string>
 	<key>EVAL_MODE</key>

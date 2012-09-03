@@ -1,0 +1,61 @@
+<b:t> {@namea} had</b:t>
+<b:ot tag="a">{$addend} {@item}</b:ot>
+<b:t>and gets</b:t>
+<b:ot tag="b">{$augend} more.</b:ot>
+<b:t>How many does he have?</b:t>
+
+<b:commlkp lkpid="cl1">
+ <b:lkpitem tag="a">{$addend} {@item}</b:lkpitem>
+ <b:lkpitem tag="b">{$augend} {@item}</b:lkpitem>
+</b:commlkp>
+
+<b:commot lkpid="cl1" sample="{$addend} {@item}" preftag="a" />
+<b:op op="+" picker="yes" />
+<b:commot lkpid="cl1" sample="{$augend} {@item}" preftag="b" />
+<b:op op="=" />
+<b:ot picker="yes" pickerTarget="{$addend+$augend}">{$addend+$augend} {@item}</b:ot>
+___________________________________________________________________________________
+
+<b:t> {@namea} had</b:t>
+<b:ot tag="a">{$addend} {@item}</b:ot>
+<b:t>{@nameb} has</b:t>
+<b:ot tag="b">{$augend}.</b:ot>
+<b:t>How many do they have altogether?</b:t>
+
+<b:commlkp lkpid="cl1">
+ <b:lkpitem tag="a">{$addend} {@item}</b:lkpitem>
+ <b:lkpitem tag="b">{$augend} {@item}</b:lkpitem>
+</b:commlkp>
+
+<b:commot lkpid="cl1" sample="{$addend} {@item}" preftag="a" />
+<b:op op="+" picker="yes" />
+<b:commot lkpid="cl1" sample="{$augend} {@item}" preftag="b" />
+<b:op op="=" />
+<b:ot picker="yes" pickerTarget="{$addend+$augend}">{$addend+$augend} {@item}</b:ot>
+___________________________________________________________________________________
+
+<b:t> {@namea} had</b:t>
+<b:ot tag="a">{$minuend} {@item}</b:ot>
+<b:t>{@nameb} took</b:t>
+<b:ot tag="b">{$subtrahend}</b:ot>
+<b:t> of {$namea}'s {@item}. How many does {@namea} have now?</b:t>
+
+<b:ot tag="a" enabled="no">{$minuend} {@item}</b:ot>
+<b:op op="-" picker="yes" />
+<b:ot tag="b" enabled="no">{$subtrahend} {@item}</b:ot>
+<b:op op="=" />
+<b:ot picker="yes" pickerTarget="{$minuend-$subtrahend}">{$minuend-$subtrahend} {@item}</b:ot>
+___________________________________________________________________________________
+
+<b:t> {@namea} had</b:t>
+<b:ot tag="a">{$minuend} {@item}</b:ot>
+<b:t>and gave</b:t>
+<b:ot tag="b">{$subtrahend} {@item}</b:ot>
+<b:t> to {@nameb}. How many does {@namea} have now?</b:t>
+
+<b:ot tag="a" enabled="no">{$minuend} {@item}</b:ot>
+<b:op op="-" picker="yes" />
+<b:ot tag="b" enabled="no">{$subtrahend} {@item}</b:ot>
+<b:op op="=" />
+<b:ot picker="yes" pickerTarget="{$minuend-$subtrahend}">{$minuend-$subtrahend} {@item}</b:ot>
+___________________________________________________________________________________

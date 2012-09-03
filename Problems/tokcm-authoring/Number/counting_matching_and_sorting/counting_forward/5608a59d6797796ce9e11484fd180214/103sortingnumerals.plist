@@ -10,12 +10,11 @@
 	<string>sort numbers up to 20</string>
 	<key>EXPR_STAGES</key>
 	<array>
-		<string>&lt;b:ot tag=&quot;a&quot;&gt; {$b} &lt;/b:ot&gt;
-&lt;b:ot tag=&quot;c&quot;&gt; {$c} &lt;/b:ot&gt;
-&lt;b:ot tag=&quot;b&quot;&gt; {$d} &lt;/b:ot&gt;</string>
+		<string>&lt;b:ot tag=&quot;a&quot;&gt;{$b}&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;b&quot;&gt;{$d}&lt;/b:ot&gt;</string>
 		<string>&lt;b:t&gt;{$a}&lt;/b:t&gt;
 &lt;b:ot tag=&quot;a&quot; enabled=&quot;no&quot;&gt; {$b} &lt;/b:ot&gt;
-&lt;b:ot tag=&quot;c&quot; enabled=&quot;no&quot;&gt; {$c} &lt;/b:ot&gt;
+&lt;b:t&gt;{$c}&lt;/b:t&gt;
 &lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt; {$d} &lt;/b:ot&gt;
 &lt;b:t&gt;{$e}&lt;/b:t&gt;</string>
 	</array>

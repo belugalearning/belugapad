@@ -15,11 +15,11 @@
 		<string>&lt;b:ot tag=&quot;a&quot;&gt;5&lt;/b:ot&gt;
 &lt;b:ot tag=&quot;b&quot;&gt; 3 &lt;/b:ot&gt;
 &lt;b:ot tag=&quot;c&quot;&gt;4&lt;/b:ot&gt;</string>
-		<string>&lt;b:t&gt;&amp;#040;&lt;/b:t&gt;
+		<string>&lt;b:t&gt;(&lt;/b:t&gt;
 &lt;b:ot tag=&quot;a&quot; enabled=&quot;no&quot;&gt; 5 &lt;/b:ot&gt;
 &lt;b:op op=&quot;*&quot; /&gt;
 &lt;b:ot tag=&quot;c&quot; enabled=&quot;no&quot;&gt; 4 &lt;/b:ot&gt;
-&lt;b:t&gt;&amp;#041;&lt;/b:t&gt;
+&lt;b:t&gt;)&lt;/b:t&gt;
 &lt;b:op op=&quot;+&quot; /&gt;
 &lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt; 3 &lt;/b:ot&gt;
 &lt;b:op op=&quot;=&quot; /&gt;

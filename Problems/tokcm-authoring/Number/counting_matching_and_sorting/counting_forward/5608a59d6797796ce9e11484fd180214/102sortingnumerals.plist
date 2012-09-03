@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Put the numbers in order.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>sort numbers up to five</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:ot tag=&quot;a&quot;&gt;{$a}&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;b&quot;&gt;{$b}&lt;/b:ot&gt;</string>
+		<string>&lt;b:t&gt;1&lt;/b:t&gt;
+&lt;b:ot tag=&quot;a&quot; enabled=&quot;no&quot;&gt;{$a}&lt;/b:ot&gt;
+&lt;b:t&gt;5&lt;/b:t&gt;
+&lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt;{$b}&lt;/b:ot&gt;
+&lt;b:t&gt;10&lt;/b:t&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$a</string>
+			<key>MIN</key>
+			<string>2</string>
+			<key>MAX</key>
+			<string>4</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$b</string>
+			<key>MIN</key>
+			<string>6</string>
+			<key>MAX</key>
+			<string>9</string>
+		</dict>
+	</array>
+</dict>
+</plist>

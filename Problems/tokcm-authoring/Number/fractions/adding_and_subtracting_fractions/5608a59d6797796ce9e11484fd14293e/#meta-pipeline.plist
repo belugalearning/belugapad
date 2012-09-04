@@ -7,7 +7,19 @@
 		<key>PIPELINE_NAME</key>
 		<string>build_1.06</string>
 		<key>PROBLEMS</key>
-		<array>
-		</array>
+        <array>
+            <string>/Problems/tokcm-authoring/Number/fractions/adding_and_subtracting_fractions/5608a59d6797796ce9e11484fd14293e/fb_1-6_add.plist</string>
+            <string>/Problems/tokcm-authoring/Number/fractions/adding_and_subtracting_fractions/5608a59d6797796ce9e11484fd14293e/fb_1-6_add2.plist</string>
+            <string>/Problems/tokcm-authoring/Number/fractions/adding_and_subtracting_fractions/5608a59d6797796ce9e11484fd14293e/fb_1-8_add.plist</string>
+            <string>/Problems/tokcm-authoring/Number/fractions/adding_and_subtracting_fractions/5608a59d6797796ce9e11484fd14293e/fb_1-9_add.plist</string>
+            <string>/Problems/tokcm-authoring/Number/fractions/adding_and_subtracting_fractions/5608a59d6797796ce9e11484fd14293e/fb_1-10_add.plist</string>
+            <string>/Problems/tokcm-authoring/Number/fractions/adding_and_subtracting_fractions/5608a59d6797796ce9e11484fd14293e/fb_1-12_add.plist</string>
+            <string>/Problems/tokcm-authoring/Number/fractions/adding_and_subtracting_fractions/5608a59d6797796ce9e11484fd14293e/fb_1-12_add2.plist</string>
+            <string>/Problems/tokcm-authoring/Number/fractions/adding_and_subtracting_fractions/5608a59d6797796ce9e11484fd14293e/fb_1-14_add.plist</string>
+            <string>/Problems/tokcm-authoring/Number/fractions/adding_and_subtracting_fractions/5608a59d6797796ce9e11484fd14293e/fb_1_add_d.plist</string>
+            <string>/Problems/tokcm-authoring/Number/fractions/adding_and_subtracting_fractions/5608a59d6797796ce9e11484fd14293e/fb_2_add_d.plist</string>
+            <string>/Problems/tokcm-authoring/Number/fractions/adding_and_subtracting_fractions/5608a59d6797796ce9e11484fd14293e/fb_3_add_d.plist</string>
+            <string>/Problems/tokcm-authoring/Number/fractions/adding_and_subtracting_fractions/5608a59d6797796ce9e11484fd14293e/fb_4_add_d.plist</string>
+        </array>
 	</dict>
 </plist>

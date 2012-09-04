@@ -11,15 +11,16 @@
 
 @implementation SGFBlockBubble
 
-@synthesize MySprite, Position, RenderLayer, IsOperatorBubble, OperatorType, GroupsInMe;
+@synthesize MySprite, Position, RenderLayer, GroupsInMe, Replacement;
 
--(SGFBlockBubble*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
+-(SGFBlockBubble*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition andReplacement:(BOOL)isReplacement
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
         self.RenderLayer=aRenderLayer;
         self.Position=aPosition;
         self.GroupsInMe=[[NSMutableArray alloc]init];
+        self.Replacement=isReplacement;
     }
     
     return self;
@@ -31,18 +32,23 @@
     [MySprite setPosition:Position];
     [gameWorld.Blackboard.RenderLayer addChild:MySprite];
     
-    if(IsOperatorBubble)
+    if(Replacement)
     {
-        NSString *str=nil;
-        if(OperatorType==1)
-            str=@"+";
-        else if(OperatorType==2)
-            str=@"x";
-            
-        [MySprite setScale:0.4f];
-        CCLabelTTF *lbl=[CCLabelTTF labelWithString:str fontName:@"Chango" fontSize:16.0f];
-        [MySprite addChild:lbl];
+        [MySprite runAction:[CCMoveTo actionWithDuration:0.75f position:ccp(Position.x,300)]];
     }
+    
+//    if(IsOperatorBubble)
+//    {
+//        NSString *str=nil;
+//        if(OperatorType==1)
+//            str=@"+";
+//        else if(OperatorType==2)
+//            str=@"x";
+//            
+//        [MySprite setScale:0.4f];
+//        CCLabelTTF *lbl=[CCLabelTTF labelWithString:str fontName:@"Chango" fontSize:16.0f];
+//        [MySprite addChild:lbl];
+//    }
     
 }
 
@@ -69,8 +75,23 @@
     return [GroupsInMe count];
 }
 
+-(void)fadeAndDestroy
+{
+    
+    [GroupsInMe removeAllObjects];
+    
+    CCMoveTo *fadeAct=[CCFadeOut actionWithDuration:0.5f];
+    CCAction *cleanUpSprite=[CCCallBlock actionWithBlock:^{[MySprite removeFromParentAndCleanup:YES];}];
+    CCAction *cleanUpGO=[CCCallBlock actionWithBlock:^{[gameWorld delayRemoveGameObject:self];}];
+    CCSequence *sequence=[CCSequence actions:fadeAct, cleanUpSprite, cleanUpGO, nil];
+    [MySprite runAction:sequence];
+    
+    MySprite=nil;
+}
+
 -(void)dealloc
 {
+    RenderLayer=nil;
     MySprite=nil;
     GroupsInMe=nil;
     [super dealloc];

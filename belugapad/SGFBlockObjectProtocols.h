@@ -21,6 +21,7 @@
 -(BOOL)checkTouchInGroupAt:(CGPoint)location;
 -(void)moveGroupPositionFrom:(CGPoint)fromHere To:(CGPoint)here;
 -(void)checkIfInBubbleAt:(CGPoint)location;
+-(void)tintBlocksTo:(ccColor3B)thisColour;
 -(void)destroy;
 
 
@@ -37,6 +38,7 @@
 
 @protocol Rendered
 
+@property BOOL Replacement;
 @property (retain) CCSprite *MySprite;
 @property (retain) CCLayer *RenderLayer;
 @property CGPoint Position;
@@ -48,12 +50,19 @@
 
 @protocol Target
 
-@property BOOL IsOperatorBubble;
-@property int OperatorType;
 @property (retain) NSMutableArray *GroupsInMe;
 
 -(void)addGroup:(id)thisGroup;
 -(void)removeGroup:(id)thisGroup;
 -(int)containedGroups;
+-(void)fadeAndDestroy;
+
+
+@end
+
+@protocol Operator
+
+@property BOOL IsOperatorBubble;
+@property int OperatorType;
 
 @end

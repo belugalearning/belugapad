@@ -21,6 +21,7 @@
 -(BOOL)checkTouchInGroupAt:(CGPoint)location;
 -(void)moveGroupPositionFrom:(CGPoint)fromHere To:(CGPoint)here;
 -(void)checkIfInBubbleAt:(CGPoint)location;
+-(void)destroy;
 
 
 @end
@@ -49,7 +50,10 @@
 
 @property BOOL IsOperatorBubble;
 @property int OperatorType;
+@property (retain) NSMutableArray *GroupsInMe;
 
--(void)amIProximateTo:(id)thisObject;
+-(void)addGroup:(id)thisGroup;
+-(void)removeGroup:(id)thisGroup;
+-(int)containedGroups;
 
 @end

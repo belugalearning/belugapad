@@ -125,6 +125,7 @@
     initObjects=[pdef objectForKey:INIT_OBJECTS];
     bubbleAutoOperate=[[pdef objectForKey:BUBBLE_AUTO_OPERATE]boolValue];
     maxObjectsInGroup=[[pdef objectForKey:MAX_GROUP_SIZE]intValue];
+    expSolution=[[pdef objectForKey:SOLUTION]intValue];
     
     
 }
@@ -187,6 +188,40 @@
     }
     
     
+}
+
+-(void)handleMergeShapes
+{
+    for(id go in gw.AllGameObjects)
+    {
+        if([go conformsToProtocol:@protocol(Target)])
+        {
+            go=(id<Target>)go;
+            
+            if([go containedGroups]>1)
+            {
+                // get the list of blocks, move to index 0 group
+                // for each group we go through, remove it's game object at the end
+                id<Group>targetGroup=[((id<Target>)go).GroupsInMe objectAtIndex:0];
+                
+                // loop through all the groups in this current bubble
+                for(id<Group>thisGroup in ((id<Target>)go).GroupsInMe)
+                {
+                    if(thisGroup==targetGroup)continue;
+                    
+                    NSMutableArray *theseBlocks=[NSMutableArray arrayWithArray:thisGroup.MyBlocks];
+                    // and the blocks in that group
+                    for(id<Moveable> block in theseBlocks)
+                    {
+                        [thisGroup removeObject:block];
+                        [targetGroup addObject:block];
+                        if([thisGroup.MyBlocks count]==0)
+                            [thisGroup destroy];
+                    }
+                }
+            }
+        }
+    }
 }
 
 #pragma mark - touches events
@@ -252,6 +287,17 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
     
+    if(bubbleAutoOperate)
+        [self handleMergeShapes];
+    
+    if(pickupObject)
+    {
+        if([pickupObject isKindOfClass:[SGFBlockGroup class]])
+        {
+            if(CGRectContainsPoint(commitPipe.boundingBox, location))
+                [self evalProblem];
+        }
+    }
     
     // if we were moving the marker
 
@@ -271,6 +317,16 @@
 #pragma mark - evaluation
 -(BOOL)evalExpression
 {
+    for(id go in gw.AllGameObjects)
+    {
+        if([go conformsToProtocol:@protocol(Group)])
+        {
+            id<Group>thisGroup=(id<Group>)go;
+            if([thisGroup.MyBlocks count]==expSolution)
+                return YES;
+        }
+    }
+    
     return NO;
 }
 

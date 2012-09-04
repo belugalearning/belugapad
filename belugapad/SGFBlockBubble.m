@@ -11,7 +11,7 @@
 
 @implementation SGFBlockBubble
 
-@synthesize MySprite, Position, RenderLayer, IsOperatorBubble, OperatorType;
+@synthesize MySprite, Position, RenderLayer, IsOperatorBubble, OperatorType, GroupsInMe;
 
 -(SGFBlockBubble*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
 {
@@ -19,6 +19,7 @@
     {
         self.RenderLayer=aRenderLayer;
         self.Position=aPosition;
+        self.GroupsInMe=[[NSMutableArray alloc]init];
     }
     
     return self;
@@ -45,14 +46,33 @@
     
 }
 
--(void)amIProximateTo:(id)thisObject
+-(void)addGroup:(id)thisGroup
 {
-    
+    if(![GroupsInMe containsObject:thisGroup])
+    {
+        [GroupsInMe addObject:thisGroup];
+        NSLog(@"add group - count %d", [GroupsInMe count]);
+    }
+}
+
+-(void)removeGroup:(id)thisGroup
+{
+    if([GroupsInMe containsObject:thisGroup])
+    {
+        [GroupsInMe removeObject:thisGroup];
+        NSLog(@"remove group - count %d", [GroupsInMe count]);
+    }
+}
+
+-(int)containedGroups
+{
+    return [GroupsInMe count];
 }
 
 -(void)dealloc
 {
     MySprite=nil;
+    GroupsInMe=nil;
     [super dealloc];
 }
 

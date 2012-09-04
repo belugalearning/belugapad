@@ -53,7 +53,7 @@ typedef enum {
     int maxObjectsInGroup;
     
     
-    float expSolution;
+    int expSolution;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;
@@ -62,6 +62,7 @@ typedef enum {
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)populateGW;
 -(void)createShapeWith:(NSDictionary*)theseSettings;
+-(void)handleMergeShapes;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

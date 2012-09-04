@@ -33,6 +33,8 @@
 
       else if(MaxObjects==0)
           [MyBlocks addObject:thisObject];
+        
+        ((id<Moveable>)thisObject).MyGroup=self;
 
     }
 }
@@ -41,6 +43,7 @@
 {
     if([MyBlocks containsObject:thisObject])
         [MyBlocks removeObject:thisObject];
+    ((id<Moveable>)thisObject).MyGroup=nil;
 }
 
 -(BOOL)checkTouchInGroupAt:(CGPoint)location
@@ -85,11 +88,13 @@
             
             if(CGRectContainsPoint(s.boundingBox, location))
             {
+                [thisBubble addGroup:self];
                 [self tintBlocksTo:ccc3(0,255,0)];
                 return;
             }
             else
             {
+                [thisBubble removeGroup:self];
                 [self tintBlocksTo:ccc3(255,255,255)];
             }
         }
@@ -103,6 +108,12 @@
         CCSprite *s=block.MySprite;
         [s setColor:thisColour];
     }
+}
+
+-(void)destroy
+{
+    if([self.MyBlocks count]==0)
+        [gameWorld delayRemoveGameObject:self];
 }
 
 -(void)dealloc

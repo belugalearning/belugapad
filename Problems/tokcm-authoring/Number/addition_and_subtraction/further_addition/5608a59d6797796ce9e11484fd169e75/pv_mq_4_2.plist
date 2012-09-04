@@ -96,7 +96,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>The rectangle is made of 2 rows of 4 blocks. Which equations correctly express the total number of blocks as a sum of the same number?</string>
+		<string>The rectangle is made of 2 rows of 4 blocks. Which of these could describe the rectangle?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

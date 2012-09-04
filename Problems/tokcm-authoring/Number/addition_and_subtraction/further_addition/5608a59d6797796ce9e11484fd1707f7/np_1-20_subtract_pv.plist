@@ -145,7 +145,7 @@
 		<key>NUMBER_PICKER_DESCRIPTION</key>
 		<string>{$var2} - x = {$var1}. What is x?</string>
 		<key>PICKER_LAYOUT</key>
-		<integer>2</integer>
+		<integer>1</integer>
 		<key>PICKER_ORIGIN_X</key>
 		<integer>0</integer>
 		<key>PICKER_ORIGIN_Y</key>

@@ -80,7 +80,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>The rectangle is made of 2 rows of 5. What is the total number of blocks?</string>
+		<string>The rectangle is made of 2 rows of 5. How many blocks are there?</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>PICKER_ORIGIN_X</key>

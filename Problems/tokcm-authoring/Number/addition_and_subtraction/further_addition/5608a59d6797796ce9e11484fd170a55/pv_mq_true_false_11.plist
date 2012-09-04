@@ -151,6 +151,22 @@
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
+			<integer>1</integer>
+			<key>PUT_IN_ROW</key>
+			<integer>1</integer>
+			<key>NUMBER</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
+			<integer>1</integer>
+			<key>PUT_IN_ROW</key>
+			<integer>2</integer>
+			<key>NUMBER</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
 			<integer>0</integer>
 			<key>PUT_IN_ROW</key>
 			<integer>1</integer>

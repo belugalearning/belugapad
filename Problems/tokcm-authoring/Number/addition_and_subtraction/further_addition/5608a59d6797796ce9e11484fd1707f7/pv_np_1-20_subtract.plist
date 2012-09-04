@@ -107,7 +107,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>1</integer>
 			<key>NUMBER</key>
-			<integer>5</integer>
+			<string>{$var2-10}</string>
 		</dict>
 	</array>
 	<key>COLUMN_SPRITES</key>

@@ -5,9 +5,9 @@
 	<key>MASTERY</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>How many blocks of 3 must you add to make 3 blocks into 15 blocks?</string>
+	<string>How many blocks of 3 need to be added to 3 to make 15?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>How many blocks of 3 must you add to make 3 blocks into 15 blocks?</string>
+	<string>How many blocks of 3 need to be added to 3 to make 15?</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>

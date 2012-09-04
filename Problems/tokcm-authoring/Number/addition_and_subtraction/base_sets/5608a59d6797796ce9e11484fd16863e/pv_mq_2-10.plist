@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Show that to make 5 blocks into 10 blocks, you must add 5 blocks of 1. </string>
+	<string>How many 1s must I add to 2 to get 10?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>pv_mq_5-10</string>
+	<string>How many 1s must I add to 2 to get 10?</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -51,7 +51,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>5</integer>
+			<integer>2</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -59,7 +59,7 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>20</integer>
+		<integer>4</integer>
 	</dict>
 	<key>META_QUESTION</key>
 	<dict>
@@ -73,7 +73,7 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>6</string>
+				<string>9</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
@@ -81,25 +81,29 @@
 				<key>META_ANSWER_TEXT</key>
 				<string>8</string>
 				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>3</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>5</string>
-				<key>META_ANSWER_VALUE</key>
 				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>7</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>6</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>How many 1s must I add to 5 to get 10?</string>
+		<string>How many 1s must I add to 2 to get 10?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>
+	<key>MASTERY</key>
+	<true/>
+	<key>HOST_BACKGROUND_IMAGE</key>
+	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
 </dict>
 </plist>

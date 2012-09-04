@@ -4,12 +4,14 @@
 <dict>
 	<key>TOOL_KEY</key>
 	<string>LongDivision</string>
+	<key>MASTERY</key>
+	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is 9 divided by 8?</string>
+	<string>Find {$x}/{$y}</string>
 	<key>DIVIDEND</key>
-	<integer>9</integer>
+	<string>{$x}</string>
 	<key>DIVISOR</key>
-	<integer>8</integer>
+	<string>{$y}</string>
 	<key>ROW_MULTIPLIER</key>
 	<integer>10</integer>
 	<key>START_ROW</key>
@@ -20,5 +22,22 @@
 	<integer>1</integer>
 	<key>RENDERBLOCK_LABELS</key>
 	<true/>
+	<key>DVARS</key>
+	<dict>
+		<key>$y</key>
+		<dict>
+			<key>MIN</key>
+			<string>2</string>
+			<key>MAX</key>
+			<string>5</string>
+		</dict>
+		<key>$x </key>
+		<dict>
+			<key>MIN</key>
+			<string>5</string>
+			<key>MAX</key>
+			<string>10</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

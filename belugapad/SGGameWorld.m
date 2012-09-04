@@ -86,6 +86,11 @@
     return gameObjects;
 }
 
+-(NSMutableArray*)AllGameObjectsCopy
+{
+    return [[gameObjects copy] autorelease];
+}
+
 -(void)delayRemoveGameObject:(SGGameObject*)gameObject
 {
 	[removeObjects addObject:gameObject];

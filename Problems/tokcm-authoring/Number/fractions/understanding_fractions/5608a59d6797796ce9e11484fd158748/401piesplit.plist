@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 1/6. How many are there in a whole?</string>
+	<string>This pie has been split into sixths. How many sixths in a whole?</string>
 	<key>TOOL_KEY</key>
 	<string>PieSplitter</string>
 	<key>EVAL_MODE</key>

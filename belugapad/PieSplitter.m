@@ -196,8 +196,6 @@ static float kTimeToPieShake=7.0f;
     activeCon=[[NSMutableArray alloc]init];
     activePie=[[NSMutableArray alloc]init];
     
-    [self.ForeLayer addChild:renderLayer];
-    
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     
     pieBox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/piesplitter/dropzone.png")];

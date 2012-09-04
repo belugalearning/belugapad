@@ -4,14 +4,14 @@
 <dict>
 	<key>TOOL_KEY</key>
 	<string>LongDivision</string>
+	<key>MASTERY</key>
+	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>0.36 ÷ 0.9</string>
-	<key>INTERNAL_DESCRIPTION</key>
-	<string>long division decimal</string>
+	<string>Find {$x}/{$y}</string>
 	<key>DIVIDEND</key>
-	<real>0.36</real>
+	<string>{$x}</string>
 	<key>DIVISOR</key>
-	<real>0.9</real>
+	<string>{$y}</string>
 	<key>ROW_MULTIPLIER</key>
 	<integer>10</integer>
 	<key>START_ROW</key>
@@ -22,5 +22,27 @@
 	<integer>1</integer>
 	<key>RENDERBLOCK_LABELS</key>
 	<true/>
+	<key>DVARS</key>
+	<dict>
+		<key>$x</key>
+		<dict>
+			<key>MIN</key>
+			<string>5</string>
+			<key>MAX</key>
+			<string>10</string>
+		</dict>
+		<key>$y</key>
+		<dict>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>7</string>
+				<string>3</string>
+				<string>11</string>
+				<string>9</string>
+				<string>6</string>
+				<string>13</string>
+			</array>
+		</dict>
+	</dict>
 </dict>
 </plist>

@@ -12,7 +12,7 @@
 @implementation SGFBlockBlock
 
 @synthesize Position, MyGroup;
-@synthesize MySprite, RenderLayer;
+@synthesize MySprite, RenderLayer, Replacement;
 
 -(SGFBlockBlock*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
 {

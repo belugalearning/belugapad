@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 1/2. How many are there in a whole?</string>
+	<string>Share the pie equally.</string>
 	<key>TOOL_KEY</key>
 	<string>PieSplitter</string>
 	<key>EVAL_MODE</key>
@@ -52,7 +52,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>This is 1/2. How many are there in a whole?</string>
+		<string>Share the pie equally between 2. How many halves are there in a whole?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again.</string>
 	</dict>

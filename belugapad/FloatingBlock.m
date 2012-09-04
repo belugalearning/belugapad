@@ -140,7 +140,7 @@
         float xPos=(lx/initBubbles)*(i+0.5);
         
         id<Rendered> newbubble;
-        newbubble=[[SGFBlockBubble alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,300)];
+        newbubble=[[SGFBlockBubble alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,300) andReplacement:NO];
         [newbubble setup];
     }
     
@@ -192,7 +192,7 @@
 
 -(void)handleMergeShapes
 {
-    for(id go in gw.AllGameObjects)
+    for(id go in gw.AllGameObjectsCopy)
     {
         if([go conformsToProtocol:@protocol(Target)])
         {
@@ -211,15 +211,39 @@
                     
                     NSMutableArray *theseBlocks=[NSMutableArray arrayWithArray:thisGroup.MyBlocks];
                     // and the blocks in that group
-                    for(id<Moveable> block in theseBlocks)
+                    for(id<Moveable,Rendered> block in theseBlocks)
                     {
                         [thisGroup removeObject:block];
                         [targetGroup addObject:block];
                         if([thisGroup.MyBlocks count]==0)
                             [thisGroup destroy];
+                        
+                        [block.MySprite runAction:[CCMoveBy actionWithDuration:0.5f position:ccp(0,50)]];
+                        
                     }
+                    
+                    float xPos=((id<Rendered>)go).MySprite.position.x;
+                    
+                    // kill the existing bubble - create a new one
+                    [go fadeAndDestroy];
+                    id<Rendered> newbubble;
+                    newbubble=[[SGFBlockBubble alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,-50) andReplacement:YES];
+                    [newbubble setup];
+
+                    
                 }
+                
+                // then animate
+                for(id<Rendered> block in targetGroup.MyBlocks)
+                {
+                    [block.MySprite runAction:[CCMoveBy actionWithDuration:0.5f position:ccp(0,250)]];
+                    block.Position=ccp(block.MySprite.position.x, block.MySprite.position.y+250);
+                    
+                }
+                [targetGroup tintBlocksTo:ccc3(255,255,255)];
             }
+            
+            
         }
     }
 }

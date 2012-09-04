@@ -40,6 +40,7 @@
 -(CCLayer *)GameScene;
 
 -(NSMutableArray*)AllGameObjects;
+-(NSMutableArray*)AllGameObjectsCopy;
 
 -(void)addGameObject:(SGGameObject*)gameObject;
 -(void)doUpdate:(ccTime)delta;

@@ -79,7 +79,7 @@
 
 -(void)checkIfInBubbleAt:(CGPoint)location
 {
-    for(id go in gameWorld.AllGameObjects)
+    for(id go in gameWorld.AllGameObjectsCopy)
     {
         if([go conformsToProtocol:@protocol(Target)])
         {

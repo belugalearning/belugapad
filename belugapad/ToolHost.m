@@ -946,8 +946,13 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             answerBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")];
             
             // then the answer label
-            NSString *answerLabelString=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
+            NSString *raw=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
+            
+            //reading this value directly causes issue #161 - in which the string is no longer a string post copy, so forcing it through a string formatter back to a string
+            NSString *answerLabelString=[NSString stringWithFormat:@"%@", raw];
+            
             [answerLabel setString:answerLabelString];
+            NSLog(@"before answerLabelString: %@", answerLabelString);
             
             if(answerLabelString.length>9)
                 [answerLabel setFontSize:16.0f];

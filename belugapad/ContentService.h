@@ -24,6 +24,8 @@
 @property BOOL resetPositionAfterTH;
 @property CGPoint lastMapLayerPosition;
 
+@property (readonly) int pipelineIndex;
+
 //episode
 @property (retain) NSMutableArray *currentEpisode;
 @property (readonly) BOOL isUserAtEpisodeHead;
@@ -47,5 +49,7 @@
 -(NSArray*)allRegions;
 
 -(void)quitPipelineTracking;
+
+-(void)adaptPipelineByInsertingWithTriggerData:(NSDictionary*)triggerData;
 
 @end

@@ -301,10 +301,19 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     //do internal mgmt updates
     //don't eval if we're in an auto move to next problem
+    
+    //if the problem is complete and we aren't already moving to the next one
     if((currentTool.ProblemComplete || metaQuestionForceComplete) && !autoMoveToNextProblem)
     {   
         [self incrementScoreAndMultiplier];
         
+        moveToNextProblemTime=kMoveToNextProblemTime;
+        autoMoveToNextProblem=YES;
+    }
+    
+    //if the problem is to be skipped b/c of triggered insertion and we aren't already moving to the next one
+    if(adpSkipProblemAndInsert && !autoMoveToNextProblem)
+    {
         moveToNextProblemTime=kMoveToNextProblemTime;
         autoMoveToNextProblem=YES;
     }
@@ -468,7 +477,20 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     NSLog(@"score: %d multiplier: %f hasReset: %d multiplierStage: %d", pipelineScore, scoreMultiplier, hasResetMultiplier, multiplierStage);
     
+    if(adpSkipProblemAndInsert)
+    {
+        //user failed problem past commit threshold, indicate as such, insert problems and then progress
+        //todo: contentservice fail problem call
+        
+        //request that we insert problems in the pipeline
+        [contentService adaptPipelineByInsertingWithTriggerData:triggerData];
+        
+        adpSkipProblemAndInsert=NO;
+    }
+    
+    //this is the goto next problem bit -- actually next problem in episode, as there's no effetive success/fail thing
     [contentService gotoNextProblemInPipeline];
+    
     
     //check that the content service found a pdef (this will be the raw dynamic one)
     if(contentService.currentPDef)
@@ -478,6 +500,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     else
     {
         //no more problems in this sequence, bail to menu
+        
+        //todo: completion shouldn't be assumed here -- we can get here by progressing into an inserter that produces no viable insertions
         
         //assume completion
         [contentService setPipelineNodeComplete];
@@ -1512,6 +1536,50 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     numberPickerLayer=nil;
 }
 
+- (void)checkUserCommit
+{
+    //effective user commit
+    [loggingService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
+    
+    [currentTool evalProblem];
+    
+    if(currentTool.ProblemComplete)
+    {
+        [self playAudioFlourish];
+    }
+    else {
+        [self playAudioPress];
+        
+        //check commit threshold for insertion
+        AppController *ac=(AppController*)[UIApplication sharedApplication].delegate;
+        
+        //only assess triggers if the insertion mode is enabled, and if we're at the episode head (e.g. don't nest insertions)
+        if([(NSNumber*)[ac.AdplineSettings objectForKey:@"USE_INSERTERS"] boolValue] && contentService.isUserAtEpisodeHead)
+        {
+            //increment the number of commits
+            commitCount++;
+            
+            //see if the number of commits is past the threshold (threshold of 1 means the 2nd incorrect commit will bail it)
+            int threshold=[[ac.AdplineSettings objectForKey:@"TRIGGER_COMMIT_INCORRECT_THRESHOLD"] intValue];
+            if(commitCount>threshold)
+            {
+                //create the trigger data -- passed for contextual ref to what caused this insertion trigger
+                if(triggerData)[triggerData release];
+                
+                triggerData=@{ @"TRIGGER_TYPE" : @"COMMIT_THRESHOLD", @"COMMIT_COUNT" : [NSNumber numberWithInt:commitCount] };
+                
+                [triggerData retain];
+                
+                //we'll skip this problem
+                adpSkipProblemAndInsert=YES;
+                
+                //reset the commit count trigger
+                commitCount=0;
+            }
+        }
+    }
+}
+
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [loggingService.touchLogger logTouches:touches];
@@ -1583,20 +1651,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn)
     {
-        
-        
-        //effective user commit
-        [loggingService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
-        
-        [currentTool evalProblem];
-        
-        if(currentTool.ProblemComplete)
-        {
-            [self playAudioFlourish];
-        }
-        else {
-            [self playAudioPress];
-        }
+        //user pressed commit button
+        [self checkUserCommit];
     }
     if (location.x > 944 && location.y > 688 && !isPaused)
     {
@@ -1796,6 +1852,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [metaQuestionLayer release];
     [problemDefLayer release];
     [pauseLayer release];
+    
+    if(triggerData)[triggerData release];
     
     self.Zubi=nil;
     

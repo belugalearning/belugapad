@@ -145,6 +145,11 @@ typedef enum {
     CCLabelTTF *scoreLabel;
     CCLabelTTF *multiplierLabel;
     
+    //adpline trgigers
+    BOOL adpSkipProblemAndInsert;
+    int commitCount;
+    NSDictionary *triggerData;
+    
 }
 
 @property (retain) Daemon *Zubi;

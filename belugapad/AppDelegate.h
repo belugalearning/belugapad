@@ -32,6 +32,8 @@
 @property (nonatomic, readonly) UsersService *usersService;
 
 @property (nonatomic, retain) NSDictionary *LocalSettings;
+@property (retain) NSDictionary *AdplineSettings;
+
 @property BOOL ReleaseMode;
 
 @property BOOL IsIpad1;

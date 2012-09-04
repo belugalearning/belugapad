@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Show that 4/9 is the sum of 4 1/9&apos;s. </string>
+	<string>Show that 4/9 is the sum of 4 1/9s. </string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Show that 4/9 is the sum of 4 1/9&apos;s. </string>
+	<string>Show that 4/9 is the sum of 4 1/9s. </string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>SOLUTION_MODE</key>

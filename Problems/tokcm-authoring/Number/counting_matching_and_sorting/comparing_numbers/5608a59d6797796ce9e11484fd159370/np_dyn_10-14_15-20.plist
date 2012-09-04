@@ -4,10 +4,29 @@
 <dict>
 	<key>MASTERY</key>
 	<true/>
+	<key>HOST_BACKGROUND_IMAGE</key>
+	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<key>DVARS</key>
+	<dict>
+		<key>$number_larger</key>
+		<dict>
+			<key>MAX</key>
+			<string>20</string>
+			<key>MIN</key>
+			<string>15</string>
+		</dict>
+		<key>$number_smaller</key>
+		<dict>
+			<key>MAX</key>
+			<string>13</string>
+			<key>MIN</key>
+			<string>11</string>
+		</dict>
+	</dict>
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>What is 1 larger than {$number}?</string>
+		<string>How much larger is {$number_larger} than {$number_smaller}?</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>PICKER_ORIGIN_X</key>
@@ -19,17 +38,7 @@
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
-		<string>{$number+1}</string>
-	</dict>
-	<key>DVARS</key>
-	<dict>
-		<key>$number</key>
-		<dict>
-			<key>MIN</key>
-			<string>16</string>
-			<key>MAX</key>
-			<string>19</string>
-		</dict>
+		<string>{$number_larger-$number_smaller}</string>
 	</dict>
 </dict>
 </plist>

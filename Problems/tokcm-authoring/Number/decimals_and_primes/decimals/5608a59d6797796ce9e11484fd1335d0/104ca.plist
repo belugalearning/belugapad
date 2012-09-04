@@ -7,7 +7,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>What is the sum of 15.5 and 84.5?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>col add carrying</string>
+	<string>col add carrying twice</string>
 	<key>NUMBER_A</key>
 	<real>15.5</real>
 	<key>NUMBER_B</key>

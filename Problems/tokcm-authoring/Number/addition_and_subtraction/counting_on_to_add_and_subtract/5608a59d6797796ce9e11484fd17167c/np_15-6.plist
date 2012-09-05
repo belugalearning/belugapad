@@ -11,7 +11,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>15-6</string>
+		<string>What is 15 minus 6?</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>PICKER_ORIGIN_X</key>

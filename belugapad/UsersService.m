@@ -35,6 +35,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     BOOL isSyncing;
     
     NSMutableDictionary *currentUser;
+    NSString *currentUserId;
 }
 -(NSMutableDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs;
 @end
@@ -43,6 +44,16 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 @implementation UsersService
 
 @synthesize installationUUID;
+
+-(NSString*)currentUserId
+{
+    return currentUserId;
+}
+
+-(FMDatabase*)usersDatabase
+{
+    return usersDatabase;
+}
 
 -(NSDictionary*)currentUserClone
 {
@@ -66,6 +77,8 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         [rs close];
         [usersDatabase close];
         [loggingService logEvent:BL_USER_LOGIN withAdditionalData:nil];
+        
+        currentUserId=[urId copy];
     }
 }
 
@@ -405,6 +418,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     if (usersDatabase) [usersDatabase release];
     if (httpClient) [httpClient release];
     if (opQueue) [opQueue release];
+    if (currentUserId) [currentUserId release];
     [super dealloc];
 }
 

@@ -5,9 +5,9 @@
 	<key>MASTERY</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>To get from 1 to 13, how many groups of 6 must i add?</string>
+	<string>How many blocks of 6 need to be added to 1 to make 13?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>To get from 1 to 13, how many groups of 6 must i add?</string>
+	<string>How many blocks of 6 need to be added to 1 to make 13?</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>INIT_BARS</key>
@@ -93,7 +93,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>To get from 1 to 13, how many groups of 6 must i add?</string>
+		<string>How many blocks of 6 need to be added to 1 to make 13?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

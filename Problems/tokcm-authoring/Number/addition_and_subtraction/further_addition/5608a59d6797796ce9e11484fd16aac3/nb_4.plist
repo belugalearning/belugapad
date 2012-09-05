@@ -5,9 +5,9 @@
 	<key>MASTERY</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Show that 4 is made of two 2s.</string>
+	<string>Make 4 using 2 bars of the same size.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Show that 4 is made of two 2s.</string>
+	<string>Make 4 using 2 bars of the same size.</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>INIT_BARS</key>

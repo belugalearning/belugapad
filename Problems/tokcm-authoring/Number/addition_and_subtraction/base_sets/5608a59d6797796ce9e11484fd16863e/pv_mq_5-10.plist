@@ -17,9 +17,9 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>2</integer>
-	<key>ROWS_PER_COL</key>
 	<integer>5</integer>
+	<key>ROWS_PER_COL</key>
+	<integer>2</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
@@ -51,39 +51,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>1</integer>
-			<key>NUMBER</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>2</integer>
-			<key>NUMBER</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>3</integer>
-			<key>NUMBER</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>4</integer>
-			<key>NUMBER</key>
-			<integer>1</integer>
+			<integer>5</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

@@ -7,7 +7,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>17 is 1 more than which number?</string>
+		<string>{$number} is 1 more than which number?</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>PICKER_ORIGIN_X</key>
@@ -19,16 +19,16 @@
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
-		<string>16</string>
+		<string>{$number-1}</string>
 	</dict>
 	<key>DVARS</key>
 	<dict>
 		<key>$number</key>
 		<dict>
 			<key>MIN</key>
-			<integer>17</integer>
+			<string>17</string>
 			<key>MAX</key>
-			<integer>20</integer>
+			<string>20</string>
 		</dict>
 	</dict>
 </dict>

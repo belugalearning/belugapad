@@ -5,9 +5,9 @@
 	<key>MASTERY</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Show 6 is the sum of two of the same numbers.</string>
+	<string>Make 6 using 2 bars of the same size.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Show 6 is the sum of two of the same numbers.</string>
+	<string>Make 6 using 2 bars of the same size.</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>INIT_BARS</key>

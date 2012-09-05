@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>shade half (2/4, 4/8)</string>
+	<string>What is 2/3 + 1/4?</string>
 	<key>TOOL_KEY</key>
 	<string>FractionBuilder</string>
 	<key>EVAL_MODE</key>
@@ -30,7 +30,7 @@
 			<key>VALUE</key>
 			<integer>1</integer>
 			<key>TAG</key>
-			<integer>1</integer>
+			<integer>2</integer>
 			<key>SHOW_CURRENT_FRACTIONS</key>
 			<true/>
 		</dict>
@@ -42,7 +42,7 @@
 			<key>VALUE</key>
 			<integer>1</integer>
 			<key>TAG</key>
-			<integer>2</integer>
+			<integer>3</integer>
 			<key>SHOW_CURRENT_FRACTIONS</key>
 			<true/>
 		</dict>
@@ -53,17 +53,25 @@
 			<key>TAG</key>
 			<integer>1</integer>
 			<key>DIVIDEND</key>
-			<integer>2</integer>
+			<integer>0</integer>
 			<key>DIVISOR</key>
-			<string>4</string>
+			<string>12</string>
 		</dict>
 		<dict>
 			<key>TAG</key>
 			<integer>2</integer>
 			<key>DIVIDEND</key>
-			<integer>4</integer>
+			<integer>0</integer>
 			<key>DIVISOR</key>
-			<string>8</string>
+			<string>12</string>
+		</dict>
+		<dict>
+			<key>TAG</key>
+			<integer>3</integer>
+			<key>DIVIDEND</key>
+			<integer>11</integer>
+			<key>DIVISOR</key>
+			<string>12</string>
 		</dict>
 	</array>
 </dict>

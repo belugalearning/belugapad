@@ -81,9 +81,9 @@
 		<key>$var2</key>
 		<dict>
 			<key>MAX</key>
-			<string>15</string>
+			<string>11</string>
 			<key>MIN</key>
-			<string>10</string>
+			<string>8</string>
 		</dict>
 	</dict>
 </dict>

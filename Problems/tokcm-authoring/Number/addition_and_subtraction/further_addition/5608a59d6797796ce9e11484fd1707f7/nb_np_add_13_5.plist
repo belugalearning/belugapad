@@ -88,25 +88,9 @@
 		</dict>
 		<dict>
 			<key>LENGTH</key>
-			<integer>7</integer>
-			<key>LABEL</key>
-			<string>7</string>
-			<key>QUANTITY</key>
-			<integer>10</integer>
-		</dict>
-		<dict>
-			<key>LENGTH</key>
 			<integer>8</integer>
 			<key>LABEL</key>
 			<string>8</string>
-			<key>QUANTITY</key>
-			<integer>10</integer>
-		</dict>
-		<dict>
-			<key>LENGTH</key>
-			<integer>9</integer>
-			<key>LABEL</key>
-			<string>9</string>
 			<key>QUANTITY</key>
 			<integer>10</integer>
 		</dict>

@@ -5,11 +5,13 @@
 	<key>TOOL_KEY</key>
 	<string>LongDivision</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>62.35 ÷ 15.5</string>
-	<key>DIVIDEND</key>
-	<real>62.35</real>
+	<string>66.65 ÷ 15.5</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>long division decimal</string>
 	<key>DIVISOR</key>
 	<real>15.5</real>
+	<key>DIVIDEND</key>
+	<real>66.65</real>
 	<key>ROW_MULTIPLIER</key>
 	<integer>10</integer>
 	<key>START_ROW</key>

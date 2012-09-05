@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>1/4 is placed in the number bond. How many more 3/4&apos;s are needed to make 3 1/4?</string>
+	<string>1/4 is placed in the number bond. How many more 3/4s are needed to make 3 1/4?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>1/4 is placed in the number bond. How many more 3/4&apos;s are needed to make 3 1/4?</string>
+	<string>1/4 is placed in the number bond. How many more 3/4s are needed to make 3 1/4?</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>SOLUTION_MODE</key>

@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>How many 1/10&apos;s are there in 8/10?</string>
+	<string>How many 1/10s are there in 8/10?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>How many 1/10&apos;s are there in 8/10?</string>
+	<string>How many 1/10s are there in 8/10?</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>SOLUTION_MODE</key>

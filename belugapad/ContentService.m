@@ -348,6 +348,11 @@
 
 #pragma mark - the rest
 
+-(NSString*)contentDir
+{
+    return contentDir;
+}
+
 -(void)setCurrentStaticPdef:(NSMutableDictionary*)pdef
 {
     NSLog(@"setting currentStaticPdef");
@@ -428,13 +433,17 @@
     {
         //increment the episode index (this is initialized as -1 so will work for moving into first problem)
         episodeIndex++;
+        
+        NSLog(@"count of episode %d, index incremented to %d", currentEpisode.count, episodeIndex);
 
         //if the user is at the episide head (also the case at start of pipeline), try and insert a problem into the episode
-        if(self.isUserAtEpisodeHead)
+        if(self.isUserPastEpisodeHead)
         {
             //attempt to insert another problem from the pipeline into the episode
             if([self insertNextProblemIntoEpisode])
             {
+                NSLog(@"inserting problem into episode");
+                
                 //a new problem was inserted into the episode, start it
                 [self startProblemWithId:[currentEpisode lastObject]];
             }
@@ -443,6 +452,8 @@
         //if the user isn't at the head of the episode, there are more problems to complete in the episode
         else
         {
+            NSLog(@"moving to already queued problem");
+            
             [self startProblemWithId:[currentEpisode objectAtIndex:episodeIndex]];
             
         }
@@ -520,11 +531,23 @@
     return pipelineIndex;
 }
 
--(BOOL)isUserAtEpisodeHead
+-(int)episodeIndex
+{
+    return episodeIndex;
+}
+
+-(BOOL)isUserPastEpisodeHead
 {
     //has the user progressed through all of the problems in the current episode
+    BOOL head=(episodeIndex>=[currentEpisode count]) || [currentEpisode count]==0;
     
-    BOOL head=(episodeIndex>=[currentEpisode count]-1) || [currentEpisode count]==0;
+    return head;
+}
+
+-(BOOL)isUserAtEpisodeHead
+{
+    //is the user on the head problem -- e.g. the last (current) problem in the episode
+    BOOL head=(episodeIndex>=[currentEpisode count]<1) || [currentEpisode count]==0;
     
     return head;
 }
@@ -620,7 +643,7 @@
             // (e.g. if an inserted problem inserted more problems
             NSNumber *insertIndex=[NSNumber numberWithInt:currentEpisode.count-1];
             
-            [usersService.usersDatabase executeUpdate:@"INSERT INTO EpisodeProblems (id, episode_index, episode_id, episodeinserts_id, problem_id, dvar_data) VALUES (?, ?, ?, ?, ?, NULL)", epid, insertIndex, episodeId, episodeInsertId, [self.currentPipeline.problems objectAtIndex:pipelineIndex]];
+            [usersService.usersDatabase executeUpdate:@"INSERT INTO EpisodeProblems (id, episode_index, episode_id, episodeinserts_id, problem_id, dvar_data) VALUES (?, ?, ?, ?, ?, NULL)", epid, insertIndex, episodeId, episodeInsertId, pid];
         }
         
         //now insert the a copy of the current problem
@@ -634,11 +657,14 @@
         //index/sequence -- offset back from the count of the epsidoe as above
         NSNumber *insertIndex=[NSNumber numberWithInt:currentEpisode.count-1];
         
-        [usersService.usersDatabase executeUpdate:@"INSERT INTO EpisodeProblems (id, episode_index, episode_id, episodeinserts_id, problem_id, dvar_data) VALUES (?, ?, ?, ?, ?, NULL)", epid, insertIndex, episodeId, episodeInsertId, [self.currentPipeline.problems objectAtIndex:pipelineIndex]];
+        [usersService.usersDatabase executeUpdate:@"INSERT INTO EpisodeProblems (id, episode_index, episode_id, episodeinserts_id, problem_id, dvar_data) VALUES (?, ?, ?, ?, ?, NULL)", epid, insertIndex, episodeId, episodeInsertId, [currentEpisode objectAtIndex:episodeIndex]];
+        
         [self insertIntoEpsiodeTheProblemWithId:[currentEpisode objectAtIndex:episodeIndex]];
 
         //insert inserter record -- inc current epproblem_id, problem_id and episode_id, decision_data, trigger_data
-        [usersService.usersDatabase executeUpdate:@"INSERT INTO EpisodeInserts (id, episode_id, inserter_type, trigger_data, decision_data) VALUES (?, ?, ?, ?, ?)", episodeInsertId, episodeId, useThisInserter.inserterName, [triggerData JSONString],[allDecisionsData JSONString]];
+//        [usersService.usersDatabase executeUpdate:@"INSERT INTO EpisodeInserts (id, episode_id, inserter_type, trigger_data, decision_data) VALUES (?, ?, ?, ?, ?)", episodeInsertId, episodeId, useThisInserter.inserterName, [triggerData JSONString],[allDecisionsData JSONString]];
+        
+        [usersService.usersDatabase executeUpdate:@"INSERT INTO EpisodeInserts (id, episode_id, source_problem_id, inserter_type, trigger_data, decision_data) VALUES (?, ?, ?, ?, ?, ?)", episodeInsertId, episodeId, [currentEpisode objectAtIndex:episodeIndex], useThisInserter.inserterName, [triggerData JSONString],[allDecisionsData JSONString]];
         
         [usersService.usersDatabase close];
     }
@@ -653,7 +679,7 @@
     
     [usersService.usersDatabase open];
     
-    FMResultSet *rs=[usersService.usersDatabase executeQuery:@"SELECT * FROM EpisodeInserts WHERE episode_id=? AND problem_id=?", seekEpisodeId, seekProblemId];
+    FMResultSet *rs=[usersService.usersDatabase executeQuery:@"SELECT * FROM EpisodeInserts WHERE episode_id=? AND source_problem_id=?", seekEpisodeId, seekProblemId];
     
     while ([rs next]) {
         NSString *iname=[rs stringForColumn:@"inserter_type"];
@@ -748,12 +774,113 @@
     }
     if(![usersService.usersDatabase tableExists:@"EpisodeInserts"])
     {
-        [usersService.usersDatabase executeUpdate:@"CREATE TABLE EpisodeInserts (id TEXT PRIMARY_KEY, episode_id TEXT, inserter_type TEXT, trigger_data TEXT, decision_data TEXT)"];
+        [usersService.usersDatabase executeUpdate:@"CREATE TABLE EpisodeInserts (id TEXT PRIMARY_KEY, episode_id TEXT, source_problem_id TEXT, inserter_type TEXT, trigger_data TEXT, decision_data TEXT)"];
     }
     if(![usersService.usersDatabase tableExists:@"EpisodeProblems"])
     {
         [usersService.usersDatabase executeUpdate:@"CREATE TABLE EpisodeProblems (id TEXT PRIMARY_KEY, episode_index INTEGER, episode_id TEXT, episodeinserts_id TEXT, problem_id TEXT, dvar_data TEXT)"];
     }
+}
+
+#pragma mark - debug data
+
+-(NSString*)debugPipelineString
+{
+    NSMutableString *html=[[NSMutableString alloc] init];
+    
+    [usersService.usersDatabase open];
+    
+    [html appendFormat:@"<h2>current episode problems</h2>"];
+    
+    NSString *lastEpInsId=nil;
+    
+    //current problems in episode
+    FMResultSet *rs=[usersService.usersDatabase executeQuery:@"select * from EpisodeProblems where episode_id=? order by episode_index", episodeId];
+    while([rs next])
+    {
+        NSString *style=@"";
+        NSString *insertsection=@"";
+        if([rs intForColumn:@"episode_index"]==episodeIndex) style=@";font-weight:bold";
+        if([rs stringForColumn:@"episodeinserts_id"] != nil)
+        {
+            //pad in
+            style=[style stringByAppendingFormat:@"; border-left: 5px #4c86ce dotted; padding-left:20px; margin-left:20px"];
+            
+            //is this the first in an insertion (check by looking at the insertion id)
+            NSString *thisInsId=[rs stringForColumn:@"episodeinserts_id"];
+            if(![thisInsId isEqualToString:lastEpInsId])
+            {
+                insertsection=[NSString stringWithFormat:@"<p style='padding-left:20px; margin-left:20px; color:#4c86ce'>(insert %@)</p>", thisInsId];
+            }
+            lastEpInsId=thisInsId;
+        }
+        
+        [html appendFormat:@"%@<p style='%@'>%03d: %@ -- <span style=''>%@</span></p>", insertsection, style, [rs intForColumn:@"episode_index"], [rs stringForColumn:@"problem_id"], [self debugProblemDescStringFor:[rs stringForColumn:@"problem_id"]]];
+    }
+    
+    //remaining problems
+    if(pipelineIndex<currentPipeline.problems.count-1)
+    {
+        for(int i=pipelineIndex+1; i<currentPipeline.problems.count; i++)
+        {
+            [html appendFormat:@"<p style='color:#bcbcbc'>*%02d: %@ -- <span style=''>%@</span></p>", i, [currentPipeline.problems objectAtIndex:i], [self debugProblemDescStringFor:[currentPipeline.problems objectAtIndex:i]]];
+        }
+    }
+    
+    [html appendFormat:@"<h2>episode inserts</h2>"];
+    
+    //insert data
+    FMResultSet *rsei=[usersService.usersDatabase executeQuery:@"select * from EpisodeInserts where episode_id=?", episodeId];
+    while([rsei next])
+    {
+        [html appendFormat:@"<p style='font-size:9pt'>"];
+        [html appendFormat:@"<b>id:</b>%@</br>", [rsei stringForColumn:@"id"]];
+        [html appendFormat:@"<b>source problem id:</b>%@<br />", [rsei stringForColumn:@"source_problem_id"]];
+        [html appendFormat:@"<b>inserter type:</b>%@<br />", [rsei stringForColumn:@"inserter_type"]];
+        [html appendFormat:@"<b>trigger data:</b><br />%@<br />", [rsei stringForColumn:@"trigger_data"]];
+        [html appendFormat:@"<b>decision data:</b><br />%@<br />", [[rsei stringForColumn:@"decision_data"] stringByReplacingOccurrencesOfString:@",{" withString:@",<br/>{"]];
+        [html appendFormat:@"</p>"];
+    }
+    
+    
+    [html appendFormat:@"<h2>adpline settings</h2>"];
+    AppController *ac=(AppController*)[[UIApplication sharedApplication] delegate];
+    [html appendFormat:@"<pre>%@</pre>", [ac.AdplineSettings description]];
+    
+    [usersService.usersDatabase close];
+    
+    NSString *ret=[NSString stringWithString:html];
+    [html release];
+    return ret;
+    
+    
+}
+
+-(NSString*)debugProblemDescStringFor:(NSString*)pId
+{
+    NSString *pdefPath = [NSString stringWithFormat:@"%@/pdefs/%@.plist", contentDir, pId];
+    NSDictionary *pdef=[NSDictionary dictionaryWithContentsOfFile:pdefPath];
+    
+    NSString *tool=@"";
+    NSString *title=@"";
+    if([pdef objectForKey:@"TOOL_KEY"]) tool=[pdef objectForKey:@"TOOL_KEY"];
+    
+    if([pdef objectForKey:@"PROBLEM_DESCRIPTION"])
+    {
+        title= [pdef objectForKey:@"PROBLEM_DESCRIPTION"];
+    }
+    if([pdef objectForKey:@"META_QUESTION"])
+    {
+        title= [[pdef objectForKey:@"META_QUESTION"] objectForKey:@"META_QUESTION_TITLE"];
+        tool=[tool stringByAppendingFormat:@" (MQ)"];
+    }
+    if([pdef objectForKey:@"NUMBER_PICKER"])
+    {
+        title= [[pdef objectForKey:@"NUMBER_PICKER"] objectForKey:@"NUMBER_PICKER_DESCRIPTION"];
+        tool=[tool stringByAppendingFormat:@" (NP)"];
+    }
+    
+    return [NSString stringWithFormat:@"%@ -- %@", tool, title];
 }
 
 #pragma mark - tear down

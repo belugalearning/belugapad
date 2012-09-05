@@ -835,12 +835,28 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    
+    //bottom right tap for debug skip problem
     if (!ac.ReleaseMode && location.x>cx && location.y < 768 - kButtonToolbarHitBaseYOffset)
     {
         [loggingService logEvent:BL_PA_SKIP_DEBUG withAdditionalData:nil];
         isPaused=NO;
         [pauseLayer setVisible:NO];
         [self gotoNewProblem];
+        
+        if(debugShowingPipelineState) [self debugHidePipelineState];
+    }
+    
+    if(!ac.ReleaseMode && location.x<cx && location.y < 768 - kButtonToolbarHitBaseYOffset)
+    {
+        if(debugShowingPipelineState)
+        {
+            [self debugHidePipelineState];
+        }
+        else
+        {
+            [self debugShowPipelineState];
+        }
     }
 }
 
@@ -1568,9 +1584,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             int threshold=[[ac.AdplineSettings objectForKey:@"TRIGGER_COMMIT_INCORRECT_THRESHOLD"] intValue];
             if(commitCount>threshold)
             {
-                //create the trigger data -- passed for contextual ref to what caused this insertion trigger
                 if(triggerData)[triggerData release];
                 
+                //create the trigger data -- passed for contextual ref to what caused this insertion trigger
                 triggerData=@{ @"TRIGGER_TYPE" : @"COMMIT_THRESHOLD", @"COMMIT_COUNT" : [NSNumber numberWithInt:commitCount] };
                 
                 [triggerData retain];
@@ -1817,6 +1833,36 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 {
     if(npMove)npMove=nil;
     [currentTool ccTouchCancelled:touch withEvent:event];
+}
+
+#pragma mark - debug pipeline views
+
+-(void)debugShowPipelineState
+{
+//    CGRect f=CGRectMake(100, 100, (2*cx)-200, (2*cy)-200);
+    CGRect f=CGRectMake(0, 0, lx, ly-30);
+    debugWebView=[[UIWebView alloc] initWithFrame:f];
+    debugWebView.backgroundColor=[UIColor whiteColor];
+    debugWebView.opaque=NO;
+    debugWebView.alpha=0.7f;
+    
+    //get the pipeline state
+    NSString *pstate=[contentService debugPipelineString];
+    
+    [debugWebView loadHTMLString:[NSString stringWithFormat:@"<html><body style='font-family:Courier; color:black'>%@</body></html>", pstate] baseURL:[NSURL URLWithString:@""]];
+    
+    [[[CCDirector sharedDirector] view] addSubview:debugWebView];
+    
+    debugShowingPipelineState=YES;
+}
+
+-(void)debugHidePipelineState
+{
+    [debugWebView removeFromSuperview];
+    [debugWebView release];
+    debugWebView=nil;
+    
+    debugShowingPipelineState=NO;
 }
 
 #pragma mark - tear down

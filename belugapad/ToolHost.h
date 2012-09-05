@@ -150,6 +150,10 @@ typedef enum {
     int commitCount;
     NSDictionary *triggerData;
     
+    //web debug view
+    UIWebView *debugWebView;
+    BOOL debugShowingPipelineState;
+    
 }
 
 @property (retain) Daemon *Zubi;

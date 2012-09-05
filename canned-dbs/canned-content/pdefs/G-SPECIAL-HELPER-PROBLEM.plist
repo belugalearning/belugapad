@@ -7,9 +7,9 @@
 		<string>G-SPECIAL-HELPER-PROBLEM</string>
 	</array>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Count on to 10 in twos.</string>
+	<string>Press the circle with your finger and drag it to the right.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>count on from 0 to 10</string>
+	<string>nline helper problem</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
@@ -17,24 +17,24 @@
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
-	<string>10</string>
+	<string>1</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<integer>10</integer>
+	<integer>1</integer>
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
 	<array>
-		<string>2</string>
+		<string>1</string>
 	</array>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
 	<array>
-		<string>2</string>
+		<string>1</string>
 	</array>
 	<key>HIDE_START_NUMBER</key>
 	<false/>
@@ -50,7 +50,7 @@
 	<integer>0</integer>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array>
-		<string>2</string>
+		<string>1</string>
 	</array>
 	<key>USER_POPULATED_NUMBERS</key>
 	<array>
@@ -62,10 +62,10 @@
 	<key>RENDER_STITCHES_AT_INTERVAL</key>
 	<integer>0</integer>
 	<key>SEGMENT_VALUE</key>
-	<integer>2</integer>
+	<integer>1</integer>
 	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
 	<array>
-		<integer>2</integer>
+		<integer>1</integer>
 	</array>
 </dict>
 </plist>

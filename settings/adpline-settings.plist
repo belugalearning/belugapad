@@ -7,6 +7,13 @@
 	<key>INSERTER_ORDER</key>
 	<array>
 		<string>AdpRepeatThisPipelineInserter</string>
+		<string>AdpRepeatProblemInserter</string>
+		<string>AdpLinkedProblemInserter</string>
+		<string>AdpPresentIncompletePrereqsInserter</string>
+		<string>AdpRepeatPainfullyCompletedPrereqsInserter</string>
+		<string>AdpRepeatOldestCompletedPrereqInserter</string>
+		<string>AdpRepeatAllCompletedPrereqInserter</string>
+		<string>AdpPresentRouteFromClosestCompletedPrereqAncestorInserter</string>
 	</array>
 	<key>TRIGGER_COMMIT_INCORRECT_THRESHOLD</key>
 	<integer>2</integer>

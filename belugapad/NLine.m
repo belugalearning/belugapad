@@ -303,6 +303,11 @@ static float kTimeToBubbleShake=7.0f;
         self.ProblemComplete=YES;
         [self showComplete];
     }
+    else
+    {
+        [toolHost showProblemIncompleteMessage];
+        [toolHost resetProblem];
+    }
     
 }
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>USE_INSERTERS</key>
+	<true/>
+	<key>INSERTER_ORDER</key>
+	<array>
+		<string>AdpRepeatThisPipelineInserter</string>
+		<string>AdpRepeatProblemInserter</string>
+		<string>AdpLinkedProblemInserter</string>
+		<string>AdpPresentIncompletePrereqsInserter</string>
+		<string>AdpRepeatPainfullyCompletedPrereqsInserter</string>
+		<string>AdpRepeatOldestCompletedPrereqInserter</string>
+		<string>AdpRepeatAllCompletedPrereqInserter</string>
+		<string>AdpPresentRouteFromClosestCompletedPrereqAncestorInserter</string>
+	</array>
+	<key>TRIGGER_COMMIT_INCORRECT_THRESHOLD</key>
+	<integer>2</integer>
+	<key>INSERTER_REPEAT_PROBLEM_COUNT</key>
+	<integer>3</integer>
+</dict>
+</plist>

@@ -326,6 +326,15 @@
 		7F884D8815E197AD004B0DF3 /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7F884D8715E197AD004B0DF3 /* SourceSansPro-Bold.ttf */; };
 		7F884D8B15E28F24004B0DF3 /* Chango-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7F884D8A15E28F24004B0DF3 /* Chango-Regular.ttf */; };
 		7F9D414F15751E1600AFA1A0 /* NGNineGridSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9D414E15751E1600AFA1A0 /* NGNineGridSprite.m */; };
+		7FA0FCD615F74DB000C241A8 /* AdpInserter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0FCC515F74DB000C241A8 /* AdpInserter.m */; };
+		7FA0FCD715F74DB000C241A8 /* AdpLinkedProblemInserter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0FCC715F74DB000C241A8 /* AdpLinkedProblemInserter.m */; };
+		7FA0FCD815F74DB000C241A8 /* AdpPresentIncompletePrereqsInserter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0FCC915F74DB000C241A8 /* AdpPresentIncompletePrereqsInserter.m */; };
+		7FA0FCD915F74DB000C241A8 /* AdpPresentRouteFromClosestCompletedPrereqAncestorInserter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0FCCB15F74DB000C241A8 /* AdpPresentRouteFromClosestCompletedPrereqAncestorInserter.m */; };
+		7FA0FCDA15F74DB000C241A8 /* AdpRepeatAllCompletedPrereqInserter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0FCCD15F74DB000C241A8 /* AdpRepeatAllCompletedPrereqInserter.m */; };
+		7FA0FCDB15F74DB000C241A8 /* AdpRepeatOldestCompletedPrereqInserter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0FCCF15F74DB000C241A8 /* AdpRepeatOldestCompletedPrereqInserter.m */; };
+		7FA0FCDC15F74DB000C241A8 /* AdpRepeatPainfullyCompletedPrereqsInserter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0FCD115F74DB000C241A8 /* AdpRepeatPainfullyCompletedPrereqsInserter.m */; };
+		7FA0FCDD15F74DB000C241A8 /* AdpRepeatProblemInserter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0FCD315F74DB000C241A8 /* AdpRepeatProblemInserter.m */; };
+		7FA0FCDE15F74DB000C241A8 /* AdpRepeatThisPipelineInserter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0FCD515F74DB000C241A8 /* AdpRepeatThisPipelineInserter.m */; };
 		7FA38AA4154532260031E59D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38AA3154532260031E59D /* Security.framework */; };
 		7FA38AA61545322E0031E59D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38AA51545322E0031E59D /* SystemConfiguration.framework */; };
 		7FA38AA8154532370031E59D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38AA7154532360031E59D /* libz.dylib */; };
@@ -1070,6 +1079,24 @@
 		7F884D8A15E28F24004B0DF3 /* Chango-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Chango-Regular.ttf"; sourceTree = "<group>"; };
 		7F9D414D15751E1600AFA1A0 /* NGNineGridSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGNineGridSprite.h; sourceTree = "<group>"; };
 		7F9D414E15751E1600AFA1A0 /* NGNineGridSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NGNineGridSprite.m; sourceTree = "<group>"; };
+		7FA0FCC415F74DB000C241A8 /* AdpInserter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdpInserter.h; sourceTree = "<group>"; };
+		7FA0FCC515F74DB000C241A8 /* AdpInserter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdpInserter.m; sourceTree = "<group>"; };
+		7FA0FCC615F74DB000C241A8 /* AdpLinkedProblemInserter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdpLinkedProblemInserter.h; sourceTree = "<group>"; };
+		7FA0FCC715F74DB000C241A8 /* AdpLinkedProblemInserter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdpLinkedProblemInserter.m; sourceTree = "<group>"; };
+		7FA0FCC815F74DB000C241A8 /* AdpPresentIncompletePrereqsInserter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdpPresentIncompletePrereqsInserter.h; sourceTree = "<group>"; };
+		7FA0FCC915F74DB000C241A8 /* AdpPresentIncompletePrereqsInserter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdpPresentIncompletePrereqsInserter.m; sourceTree = "<group>"; };
+		7FA0FCCA15F74DB000C241A8 /* AdpPresentRouteFromClosestCompletedPrereqAncestorInserter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdpPresentRouteFromClosestCompletedPrereqAncestorInserter.h; sourceTree = "<group>"; };
+		7FA0FCCB15F74DB000C241A8 /* AdpPresentRouteFromClosestCompletedPrereqAncestorInserter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdpPresentRouteFromClosestCompletedPrereqAncestorInserter.m; sourceTree = "<group>"; };
+		7FA0FCCC15F74DB000C241A8 /* AdpRepeatAllCompletedPrereqInserter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdpRepeatAllCompletedPrereqInserter.h; sourceTree = "<group>"; };
+		7FA0FCCD15F74DB000C241A8 /* AdpRepeatAllCompletedPrereqInserter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdpRepeatAllCompletedPrereqInserter.m; sourceTree = "<group>"; };
+		7FA0FCCE15F74DB000C241A8 /* AdpRepeatOldestCompletedPrereqInserter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdpRepeatOldestCompletedPrereqInserter.h; sourceTree = "<group>"; };
+		7FA0FCCF15F74DB000C241A8 /* AdpRepeatOldestCompletedPrereqInserter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdpRepeatOldestCompletedPrereqInserter.m; sourceTree = "<group>"; };
+		7FA0FCD015F74DB000C241A8 /* AdpRepeatPainfullyCompletedPrereqsInserter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdpRepeatPainfullyCompletedPrereqsInserter.h; sourceTree = "<group>"; };
+		7FA0FCD115F74DB000C241A8 /* AdpRepeatPainfullyCompletedPrereqsInserter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdpRepeatPainfullyCompletedPrereqsInserter.m; sourceTree = "<group>"; };
+		7FA0FCD215F74DB000C241A8 /* AdpRepeatProblemInserter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdpRepeatProblemInserter.h; sourceTree = "<group>"; };
+		7FA0FCD315F74DB000C241A8 /* AdpRepeatProblemInserter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdpRepeatProblemInserter.m; sourceTree = "<group>"; };
+		7FA0FCD415F74DB000C241A8 /* AdpRepeatThisPipelineInserter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdpRepeatThisPipelineInserter.h; sourceTree = "<group>"; };
+		7FA0FCD515F74DB000C241A8 /* AdpRepeatThisPipelineInserter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdpRepeatThisPipelineInserter.m; sourceTree = "<group>"; };
 		7FA38AA3154532260031E59D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		7FA38AA51545322E0031E59D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		7FA38AA7154532360031E59D /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -1321,6 +1348,7 @@
 		0C92B2501515700100342094 /* Content */ = {
 			isa = PBXGroup;
 			children = (
+				7FA0FCC215F74D9200C241A8 /* AdpInserters */,
 				0C692E551580BCF4009307DB /* CouchDBDerivedDocument.h */,
 				0C692E561580BCF4009307DB /* CouchDBDerivedDocument.m */,
 				0C92B2521515702700342094 /* ContentService.h */,
@@ -2492,6 +2520,31 @@
 			name = fonts;
 			sourceTree = "<group>";
 		};
+		7FA0FCC215F74D9200C241A8 /* AdpInserters */ = {
+			isa = PBXGroup;
+			children = (
+				7FA0FCC415F74DB000C241A8 /* AdpInserter.h */,
+				7FA0FCC515F74DB000C241A8 /* AdpInserter.m */,
+				7FA0FCC615F74DB000C241A8 /* AdpLinkedProblemInserter.h */,
+				7FA0FCC715F74DB000C241A8 /* AdpLinkedProblemInserter.m */,
+				7FA0FCC815F74DB000C241A8 /* AdpPresentIncompletePrereqsInserter.h */,
+				7FA0FCC915F74DB000C241A8 /* AdpPresentIncompletePrereqsInserter.m */,
+				7FA0FCCA15F74DB000C241A8 /* AdpPresentRouteFromClosestCompletedPrereqAncestorInserter.h */,
+				7FA0FCCB15F74DB000C241A8 /* AdpPresentRouteFromClosestCompletedPrereqAncestorInserter.m */,
+				7FA0FCCC15F74DB000C241A8 /* AdpRepeatAllCompletedPrereqInserter.h */,
+				7FA0FCCD15F74DB000C241A8 /* AdpRepeatAllCompletedPrereqInserter.m */,
+				7FA0FCCE15F74DB000C241A8 /* AdpRepeatOldestCompletedPrereqInserter.h */,
+				7FA0FCCF15F74DB000C241A8 /* AdpRepeatOldestCompletedPrereqInserter.m */,
+				7FA0FCD015F74DB000C241A8 /* AdpRepeatPainfullyCompletedPrereqsInserter.h */,
+				7FA0FCD115F74DB000C241A8 /* AdpRepeatPainfullyCompletedPrereqsInserter.m */,
+				7FA0FCD215F74DB000C241A8 /* AdpRepeatProblemInserter.h */,
+				7FA0FCD315F74DB000C241A8 /* AdpRepeatProblemInserter.m */,
+				7FA0FCD415F74DB000C241A8 /* AdpRepeatThisPipelineInserter.h */,
+				7FA0FCD515F74DB000C241A8 /* AdpRepeatThisPipelineInserter.m */,
+			);
+			name = AdpInserters;
+			sourceTree = "<group>";
+		};
 		7FA38AA9154532EF0031E59D /* Users */ = {
 			isa = PBXGroup;
 			children = (
@@ -3248,6 +3301,15 @@
 				554FB01D15F4AD6C006F6D3A /* SGFBlockBubble.m in Sources */,
 				554FB02015F4AD77006F6D3A /* SGFBlockGroup.m in Sources */,
 				55C908D015F62BD900BD64F2 /* SGFBlockOpBubble.m in Sources */,
+				7FA0FCD615F74DB000C241A8 /* AdpInserter.m in Sources */,
+				7FA0FCD715F74DB000C241A8 /* AdpLinkedProblemInserter.m in Sources */,
+				7FA0FCD815F74DB000C241A8 /* AdpPresentIncompletePrereqsInserter.m in Sources */,
+				7FA0FCD915F74DB000C241A8 /* AdpPresentRouteFromClosestCompletedPrereqAncestorInserter.m in Sources */,
+				7FA0FCDA15F74DB000C241A8 /* AdpRepeatAllCompletedPrereqInserter.m in Sources */,
+				7FA0FCDB15F74DB000C241A8 /* AdpRepeatOldestCompletedPrereqInserter.m in Sources */,
+				7FA0FCDC15F74DB000C241A8 /* AdpRepeatPainfullyCompletedPrereqsInserter.m in Sources */,
+				7FA0FCDD15F74DB000C241A8 /* AdpRepeatProblemInserter.m in Sources */,
+				7FA0FCDE15F74DB000C241A8 /* AdpRepeatThisPipelineInserter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

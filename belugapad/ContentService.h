@@ -24,6 +24,16 @@
 @property BOOL resetPositionAfterTH;
 @property CGPoint lastMapLayerPosition;
 
+@property (readonly) int pipelineIndex;
+@property (readonly) int episodeIndex;
+
+@property (readonly) NSString *contentDir;
+
+//episode
+@property (retain) NSMutableArray *currentEpisode;
+@property (readonly) BOOL isUserAtEpisodeHead;
+@property (readonly) BOOL isUserPastEpisodeHead;
+
 -(id)initWithLocalSettings:(NSDictionary*)settings;
 -(void)setPipelineNodeComplete;
 -(void)setPipelineScore:(int)score;
@@ -43,5 +53,8 @@
 -(NSArray*)allRegions;
 
 -(void)quitPipelineTracking;
+
+-(void)adaptPipelineByInsertingWithTriggerData:(NSDictionary*)triggerData;
+-(NSString*)debugPipelineString;
 
 @end

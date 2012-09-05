@@ -7,7 +7,18 @@
 		<key>PIPELINE_NAME</key>
 		<string>build_1.06</string>
 		<key>PROBLEMS</key>
-		<array>
-		</array>
+        <array>
+            <string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/creating_sets/5608a59d6797796ce9e11484fd168bd4/fb001.plist</string>
+            <string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/creating_sets/5608a59d6797796ce9e11484fd168bd4/fb001_np.plist</string>
+            <string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/creating_sets/5608a59d6797796ce9e11484fd168bd4/fb002.plist</string>
+            <string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/creating_sets/5608a59d6797796ce9e11484fd168bd4/fb002_np.plist</string>
+            <string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/creating_sets/5608a59d6797796ce9e11484fd168bd4/fb003.plist</string>
+            <string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/creating_sets/5608a59d6797796ce9e11484fd168bd4/fb003_np.plist</string>
+            <string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/creating_sets/5608a59d6797796ce9e11484fd168bd4/fb004.plist</string>
+            <string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/creating_sets/5608a59d6797796ce9e11484fd168bd4/fb004_np.plist</string>
+            <string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/creating_sets/5608a59d6797796ce9e11484fd168bd4/fb005_np.plist</string>
+            <string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/creating_sets/5608a59d6797796ce9e11484fd168bd4/fb006_np.plist</string>
+            <string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/creating_sets/5608a59d6797796ce9e11484fd168bd4/fb007_np.plist</string>
+        </array>
 	</dict>
 </plist>

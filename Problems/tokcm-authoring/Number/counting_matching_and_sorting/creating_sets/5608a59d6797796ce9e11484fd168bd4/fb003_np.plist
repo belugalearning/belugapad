@@ -2,16 +2,29 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>MASTERY</key>
-	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is 15 minus 6?</string>
-	<key>INTERNAL_DESCRIPTION</key>
-	<string>np_15-6</string>
+	<string>How many blocks must be added to 7 to make 13?</string>
+	<key>TOOL_KEY</key>
+	<string>FloatingBlock</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>SOLUTION</key>
+	<integer>13</integer>
+	<key>INIT_BUBBLES</key>
+	<integer>1</integer>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>NUMBER</key>
+			<integer>7</integer>
+		</dict>
+	</array>
+	<key>BUBBLE_AUTO_OPERATE</key>
+	<true/>
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>What is 15 minus 6?</string>
+		<string>How many blocks must be added to 7 to make 13?</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>PICKER_ORIGIN_X</key>
@@ -23,7 +36,7 @@
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
-		<string>9</string>
+		<string>6</string>
 	</dict>
 </dict>
 </plist>

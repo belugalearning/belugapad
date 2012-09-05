@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Whis is 4. Add 6.</string>
+	<string>This is 4. Add 6.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>4+6</string>
 	<key>TOOL_KEY</key>

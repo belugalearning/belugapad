@@ -6,8 +6,11 @@
 //
 //
 
-#import <Foundation/Foundation.h>
+#import "SGGameObject.h"
+#import "SGFBlockObjectProtocols.h"
 
-@interface SGFBlockOpBubble : NSObject
+@interface SGFBlockOpBubble : SGGameObject <Rendered, Operator>
+
+-(SGFBlockOpBubble*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition;
 
 @end

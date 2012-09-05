@@ -62,7 +62,10 @@
 
 @protocol Operator
 
-@property BOOL IsOperatorBubble;
 @property int OperatorType;
+@property (retain) CCLabelTTF *Label;
+
+-(BOOL)amIProximateTo:(CGPoint)location;
+-(void)fadeAndDestroy;
 
 @end

@@ -20,6 +20,7 @@
 #import "SGFBlockObjectProtocols.h"
 #import "SGFBlockBlock.h"
 #import "SGFBlockBubble.h"
+#import "SGFBlockOpBubble.h"
 #import "SGFBlockGroup.h"
 
 #import "BAExpressionHeaders.h"
@@ -38,6 +39,7 @@
     SGGameWorld *gw;
     
     id pickupObject;
+    id opBubble;
     
 }
 
@@ -121,11 +123,15 @@
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
     rejectType=[[pdef objectForKey:REJECT_TYPE] intValue];
     solutionType=[[pdef objectForKey:SOLUTION_TYPE] intValue];
-    initBubbles=[[pdef objectForKey:INIT_BUBBLES]intValue];
     initObjects=[pdef objectForKey:INIT_OBJECTS];
     bubbleAutoOperate=[[pdef objectForKey:BUBBLE_AUTO_OPERATE]boolValue];
     maxObjectsInGroup=[[pdef objectForKey:MAX_GROUP_SIZE]intValue];
     expSolution=[[pdef objectForKey:SOLUTION]intValue];
+    
+    if(bubbleAutoOperate)
+        initBubbles=1;
+    else
+        initBubbles=2;
     
     
 }
@@ -248,6 +254,142 @@
     }
 }
 
+-(void)showOperatorBubble
+{
+    BOOL isValid=YES;
+    
+    for(id go in gw.AllGameObjectsCopy)
+    {
+        if([go conformsToProtocol:@protocol(Target)])
+        {
+            go=(id<Target>)go;
+            
+            if([go containedGroups]!=1)
+            {
+                isValid=NO;
+            }
+        }
+    }
+    
+    if(showingOperatorBubble && !isValid)
+    {
+        id<Operator,Rendered>curBubble=(id<Operator,Rendered>)opBubble;
+        [curBubble fadeAndDestroy];
+        curBubble=nil;
+        showingOperatorBubble=NO;
+    }
+    
+    if(!showingOperatorBubble && isValid)
+    {
+        id<Operator,Rendered>op=[[SGFBlockOpBubble alloc] initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(cx, 375)];
+        op.OperatorType=1;
+        [op setup];
+        opBubble=op;
+        showingOperatorBubble=YES;
+    }
+}
+
+-(void)mergeGroupsFromBubbles
+{
+    NSMutableArray *groups=[[NSMutableArray alloc]init];
+    
+    for(id go in gw.AllGameObjectsCopy)
+    {
+        if([go conformsToProtocol:@protocol(Target)])
+        {
+            id<Target> current=(id<Target>)go;
+            if([go containedGroups]==1)
+            {
+                [groups addObject:[current.GroupsInMe objectAtIndex:0]];
+                
+            }
+        }
+    }
+    
+    id<Group> targetGroup=[groups objectAtIndex:0];
+    id<Rendered,Moveable> firstBlock=[targetGroup.MyBlocks objectAtIndex:0];
+    float xPosOfFirstBlock=firstBlock.Position.x;
+    float yPosOfFirstBlock=firstBlock.Position.y-52;
+    
+    
+    for(id<Group> grp in groups)
+    {
+        if(grp==targetGroup)continue;
+        
+        int blocksMoved=0;
+        
+        NSMutableArray *theseBlocks=[NSMutableArray arrayWithArray:grp.MyBlocks];
+        // and the blocks in that group
+        for(id<Moveable,Rendered> block in theseBlocks)
+        {
+            float thisXPos=xPosOfFirstBlock+blocksMoved*52;
+            [grp removeObject:block];
+            [targetGroup addObject:block];
+            if([grp.MyBlocks count]==0)
+                [grp destroy];
+            
+            blocksMoved++;
+            
+            block.Position=ccp(thisXPos,yPosOfFirstBlock);
+            
+        }
+        
+        
+        // kill the existing bubble - create a new one
+            
+            
+//        float avgPosX=0;
+//        float avgPosY=0;
+//        
+//        for(id<Rendered> block in targetGroup.MyBlocks)
+//        {
+//            avgPosX+=block.Position.x;
+//            avgPosY+=block.Position.y;
+//        }
+//        
+//        avgPosX=avgPosX/[targetGroup.MyBlocks count];
+//        avgPosY=avgPosY/[targetGroup.MyBlocks count];
+    
+        
+        // then animate
+
+        //[grp moveGroupPositionFrom:ccp(avgPosX,avgPosY) To:ccp(cx,cy)];
+        
+        for(id<Rendered> block in targetGroup.MyBlocks)
+        {
+//            CGPoint diffBetweenFirstAndThis=[BLMath SubtractVector:firstBlock.Position from:block.Position];
+//            CGPoint diffBetweenThisAndCX=[BLMath SubtractVector:diffBetweenFirstAndThis from:ccp(cx,cy)];
+            CGPoint newPos=ccp(block.Position.x,block.Position.y+200);
+            
+            [block.MySprite runAction:[CCMoveTo actionWithDuration:0.5f position:newPos]];
+            block.Position=newPos;
+            
+        }
+        [targetGroup tintBlocksTo:ccc3(255,255,255)];
+
+        
+    }
+    
+    for(id bubble in gw.AllGameObjectsCopy)
+    {
+        if([bubble conformsToProtocol:@protocol(Target)])
+        {
+            float xPos=((id<Rendered>)bubble).MySprite.position.x;
+            
+            // kill the existing bubble - create a new one
+            
+            
+            id<Target> bubbleid=(id<Target>)bubble;
+            [bubbleid fadeAndDestroy];
+            id<Rendered> newbubble;
+            newbubble=[[SGFBlockBubble alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,-50) andReplacement:YES];
+            [newbubble setup];
+        }
+    }
+    
+    [self showOperatorBubble];
+}
+
 #pragma mark - touches events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -267,8 +409,10 @@
         [self createShapeWith:d];
     }
     
+    // check whether we have a pickupobject or not
     for(id go in gw.AllGameObjects)
     {
+        // check for an object in a group
         if([go conformsToProtocol:@protocol(Group)])
         {
             id<Group>thisGroup=go;
@@ -276,6 +420,15 @@
             if([thisGroup checkTouchInGroupAt:location])
                 pickupObject=thisGroup;
             
+        }
+        
+        // check for an operator tap
+        else if([go conformsToProtocol:@protocol(Operator)])
+        {
+            id<Operator>thisOperator=go;
+            if([thisOperator amIProximateTo:location])
+                pickupObject=thisOperator;
+
         }
     }
     
@@ -313,6 +466,8 @@
     
     if(bubbleAutoOperate)
         [self handleMergeShapes];
+    else
+        [self showOperatorBubble];
     
     if(pickupObject)
     {
@@ -320,6 +475,10 @@
         {
             if(CGRectContainsPoint(commitPipe.boundingBox, location))
                 [self evalProblem];
+        }
+        if([pickupObject isKindOfClass:[SGFBlockOpBubble class]])
+        {
+            [self mergeGroupsFromBubbles];
         }
     }
     

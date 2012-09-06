@@ -7,7 +7,21 @@
 		<key>PIPELINE_NAME</key>
 		<string>build_1.06</string>
 		<key>PROBLEMS</key>
-		<array>
-		</array>
+        <array>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd161de5/112_224_add.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd161de5/112_224_add_mq.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd161de5/345_244_add.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd161de5/345_244_add_mq.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd161de5/457_235_add.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd161de5/457_235_add_mq.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd161de5/349_238_add.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd161de5/349_238_add_mq.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd161de5/368_251_add.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd161de5/368_251_add_mq.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd161de5/476_148_add.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd161de5/476_148_add_mq.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd161de5/372_628_add.plist</string>
+            <string>/Problems/tokcm-authoring/Number/place_value/addition_and_subtraction_up_to_1000/5608a59d6797796ce9e11484fd161de5/372_628_add_mq.plist</string>
+        </array>
 	</dict>
 </plist>

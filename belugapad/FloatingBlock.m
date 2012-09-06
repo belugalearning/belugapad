@@ -147,6 +147,8 @@
     else
         defaultBlocksFromPipe=1;
     
+    blocksFromPipe=defaultBlocksFromPipe;
+    
     if(bubbleAutoOperate)
         initBubbles=1;
     else

@@ -131,6 +131,8 @@ static float kTimeToPieShake=7.0f;
     gw.Blackboard.MovementLayer=movementLayer;
     [renderLayer addChild:movementLayer];
     
+    createdCont=1;
+    createdPies=1;
     
     // All our stuff needs to go into vars to read later
     
@@ -139,8 +141,6 @@ static float kTimeToPieShake=7.0f;
     showReset=[[pdef objectForKey:SHOW_RESET]boolValue];
     startProblemSplit=[[pdef objectForKey:START_PROBLEM_SPLIT]boolValue];
     reqCorrectPieSquaresToSplit=[[pdef objectForKey:SPLIT_WITH_CORRECT_NUMBERS]boolValue];
-    numberOfCagedPies=[[pdef objectForKey:NUMBER_CAGED_PIES]intValue];
-    numberOfCagedContainers=[[pdef objectForKey:NUMBER_CAGED_SQUARES]intValue];
 
     
     if([pdef objectForKey:NUMBER_CAGED_PIES])
@@ -264,25 +264,25 @@ static float kTimeToPieShake=7.0f;
 #pragma mark - object interaction
 -(void)createPieAtMount
 {
+    createdPies++;
     DWPieSplitterPieGameObject *pie = [DWPieSplitterPieGameObject alloc];
     [gw populateAndAddGameObject:pie withTemplateName:@"TpieSplitterPie"];
     pie.Position=ccp(35,700);
     pie.MountPosition=pie.Position;
     //if(hasSplit)[self splitPie:pie];
-    newPie=pie;
-    createdPies++;
+    newPie=pie; 
     
     [pie release];
 }
 
 -(void)createContainerAtMount
 {
+    createdCont++;
     DWPieSplitterContainerGameObject *cont = [DWPieSplitterContainerGameObject alloc];
     [gw populateAndAddGameObject:cont withTemplateName:@"TpieSplitterContainer"];
     cont.Position=ccp(35,640);
     cont.MountPosition=cont.Position;
     newCon=cont;
-    createdCont++;
     
     [cont release];
 }

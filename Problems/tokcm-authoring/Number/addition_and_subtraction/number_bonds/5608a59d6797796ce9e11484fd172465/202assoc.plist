@@ -40,6 +40,7 @@
 	<true/>
 	<key>EVAL_JUMP_SET</key>
 	<array>
+		<string>{$x}</string>
 		<string>10</string>
 		<string>{10+$y}</string>
 	</array>
@@ -47,6 +48,7 @@
 	<true/>
 	<key>MARKER_POSITIONS</key>
 	<array>
+		<string>{$x}</string>
 		<string>10</string>
 		<string>{10+$y}</string>
 	</array>

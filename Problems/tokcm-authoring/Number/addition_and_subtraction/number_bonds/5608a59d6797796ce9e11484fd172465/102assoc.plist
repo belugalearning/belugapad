@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Add {10-$x} and {$y} to {$x}.</string>
+	<string>This is {$x}. Add {10-$x} and {$y}.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>assoc start</string>
 	<key>TOOL_KEY</key>

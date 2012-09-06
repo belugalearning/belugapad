@@ -1575,7 +1575,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         AppController *ac=(AppController*)[UIApplication sharedApplication].delegate;
         
         //only assess triggers if the insertion mode is enabled, and if we're at the episode head (e.g. don't nest insertions)
-        if([(NSNumber*)[ac.AdplineSettings objectForKey:@"USE_INSERTERS"] boolValue] && contentService.isUserAtEpisodeHead)
+        if([(NSNumber*)[ac.AdplineSettings objectForKey:@"USE_INSERTERS"] boolValue] && contentService.isUserAtEpisodeHead && ![contentService isUsingTestPipeline])
         {
             //increment the number of commits
             commitCount++;

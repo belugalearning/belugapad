@@ -5,11 +5,11 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Which fraction is the bubble on?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>label 1/2</string>
+	<string>label 1 as 3/3</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>0.5</string>
+	<string>1</string>
 	<key>MIN_VALUE</key>
 	<string>-20</string>
 	<key>MAX_VALUE</key>
@@ -44,5 +44,41 @@
 	<array>
 		<string>0.5</string>
 	</array>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>1</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>2/2</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>2/1</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>2/3</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>3/2</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>Which fraction is the bubble on?</string>
+	</dict>
 </dict>
 </plist>

@@ -18,7 +18,7 @@
 			<key>POS_X</key>
 			<integer>250</integer>
 			<key>POS_Y</key>
-			<integer>300</integer>
+			<integer>550</integer>
 			<key>LABEL</key>
 			<string>Sarah</string>
 		</dict>
@@ -26,9 +26,9 @@
 			<key>QUANTITY</key>
 			<integer>1</integer>
 			<key>POS_X</key>
-			<integer>250</integer>
+			<integer>650</integer>
 			<key>POS_Y</key>
-			<integer>400</integer>
+			<integer>250</integer>
 			<key>LABEL</key>
 			<string>Claire</string>
 		</dict>
@@ -36,9 +36,9 @@
 			<key>QUANTITY</key>
 			<integer>5</integer>
 			<key>POS_X</key>
-			<integer>250</integer>
+			<integer>450</integer>
 			<key>POS_Y</key>
-			<integer>500</integer>
+			<integer>400</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

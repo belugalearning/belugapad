@@ -14,9 +14,9 @@
 			<key>QUANTITY</key>
 			<integer>4</integer>
 			<key>POS_X</key>
-			<integer>450</integer>
-			<key>POS_Y</key>
 			<integer>400</integer>
+			<key>POS_Y</key>
+			<integer>450</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

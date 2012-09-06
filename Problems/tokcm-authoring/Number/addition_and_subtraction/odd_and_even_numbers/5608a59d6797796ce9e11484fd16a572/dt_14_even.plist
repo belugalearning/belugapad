@@ -16,17 +16,17 @@
 			<key>QUANTITY</key>
 			<integer>7</integer>
 			<key>POS_X</key>
-			<integer>200</integer>
+			<integer>330</integer>
 			<key>POS_Y</key>
-			<integer>500</integer>
+			<integer>525</integer>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
 			<integer>7</integer>
 			<key>POS_X</key>
-			<integer>200</integer>
+			<integer>330</integer>
 			<key>POS_Y</key>
-			<integer>350</integer>
+			<integer>400</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

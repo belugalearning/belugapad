@@ -58,6 +58,7 @@ typedef enum {
     NSArray *initObjects;
     BOOL bubbleAutoOperate;
     BOOL showMultipleControls;
+    BOOL showSolutionOnPipe;
     int maxBlocksInGroup;
     int minBlocksFromPipe;
     int maxBlocksFromPipe;

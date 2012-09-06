@@ -12,17 +12,23 @@
 
 @implementation SGFBlockOpBubble
 
-@synthesize MySprite, Position, RenderLayer, OperatorType, Replacement, Label;
+@synthesize MySprite, Position, RenderLayer, OperatorType, Replacement, Label, SupportedOperators;
 
--(SGFBlockOpBubble*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
+-(SGFBlockOpBubble*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition andOperators:(NSArray*)theseOperators;
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
         self.RenderLayer=aRenderLayer;
         self.Position=aPosition;
+        self.SupportedOperators=theseOperators;
     }
     
     return self;
+}
+
+-(void)doUpdate:(ccTime)delta
+{
+    //update of components
 }
 
 -(void)setup
@@ -33,17 +39,25 @@
     
     
     NSString *str=nil;
-    if(OperatorType==1)
-        str=@"+";
-    else if(OperatorType==2)
-        str=@"x";
 
-    float lblXPos=MySprite.contentSize.width/2;
-    float lblYPos=MySprite.contentSize.height/2;
-    
-    Label=[CCLabelTTF labelWithString:str fontName:@"Chango" fontSize:40.0f];
-    [Label setPosition:ccp(lblXPos,lblYPos)];
-    [MySprite addChild:Label];
+    if([SupportedOperators count]==1)
+    {
+        float lblXPos=MySprite.contentSize.width/2;
+        float lblYPos=MySprite.contentSize.height/2;
+        str=[SupportedOperators objectAtIndex:0];
+        Label=[CCLabelTTF labelWithString:str fontName:@"Chango" fontSize:40.0f];
+        [Label setPosition:ccp(lblXPos,lblYPos)];
+        [MySprite addChild:Label];
+    }
+    else if([SupportedOperators count]>1)
+    {
+       for(NSString *s in SupportedOperators)
+       {
+           NSLog(@"supported operator: %@", s);
+       }
+    }
+
+
     
     [MySprite runAction:[CCMoveTo actionWithDuration:0.4f position:Position]];
 }
@@ -72,6 +86,14 @@
     [Label runAction:sequenceLabel];
     
     MySprite=nil;
+}
+
+-(void)dealloc
+{
+    MySprite=nil;
+    Label=nil;
+    SupportedOperators=nil;
+    [super dealloc];
 }
 
 @end

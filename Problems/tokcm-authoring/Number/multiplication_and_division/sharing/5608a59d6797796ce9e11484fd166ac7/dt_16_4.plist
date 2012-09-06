@@ -101,7 +101,7 @@
 			<key>POS_X</key>
 			<integer>350</integer>
 			<key>POS_Y</key>
-			<integer>500</integer>
+			<integer>550</integer>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
@@ -109,7 +109,7 @@
 			<key>POS_X</key>
 			<integer>350</integer>
 			<key>POS_Y</key>
-			<integer>400</integer>
+			<integer>425</integer>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>

@@ -11,19 +11,23 @@
 	<key>EXPR_STAGES</key>
 	<array>
 		<string>&lt;b:commlkp lkpid=&quot;num&quot;&gt;
+	&lt;b:lkpitem tag=&quot;a&quot;&gt;{$a}&lt;/b:lkpitem&gt;
 	&lt;b:lkpitem tag=&quot;b&quot;&gt;{$b}&lt;/b:lkpitem&gt;
 	&lt;b:lkpitem tag=&quot;c&quot;&gt;{$c}&lt;/b:lkpitem&gt;
 	&lt;b:lkpitem tag=&quot;d&quot;&gt;{$d}&lt;/b:lkpitem&gt;
+	&lt;b:lkpitem tag=&quot;e&quot;&gt;{$e}&lt;/b:lkpitem&gt;
 &lt;/b:commlkp&gt;
 
 &lt;b:commot resortrandom=&quot;yes&quot; sample=&quot;one&quot; /&gt;
 &lt;b:commot resortrandom=&quot;yes&quot; sample=&quot;one&quot; /&gt;
+&lt;b:commot resortrandom=&quot;yes&quot; sample=&quot;one&quot; /&gt;
+&lt;b:commot resortrandom=&quot;yes&quot; sample=&quot;one&quot; /&gt;
 &lt;b:commot resortrandom=&quot;yes&quot; sample=&quot;one&quot; /&gt;</string>
-		<string>&lt;b:t&gt;{$a}&lt;/b:t&gt;
+		<string>&lt;b:ot tag=&quot;a&quot; enabled=&quot;no&quot;&gt; {$a} &lt;/b:ot&gt;
 &lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt; {$b} &lt;/b:ot&gt;
 &lt;b:ot tag=&quot;c&quot; enabled=&quot;no&quot;&gt; {$c} &lt;/b:ot&gt;
 &lt;b:ot tag=&quot;d&quot; enabled=&quot;no&quot;&gt; {$d} &lt;/b:ot&gt;
-&lt;b:t&gt;{$e}&lt;/b:t&gt;</string>
+&lt;b:ot tag=&quot;e&quot; enabled=&quot;no&quot;&gt; {$e} &lt;/b:ot&gt;</string>
 	</array>
 	<key>DVARS</key>
 	<array>

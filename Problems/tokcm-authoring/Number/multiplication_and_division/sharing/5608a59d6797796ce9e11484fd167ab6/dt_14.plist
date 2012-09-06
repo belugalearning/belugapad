@@ -20,7 +20,7 @@
 			<key>POS_X</key>
 			<integer>100</integer>
 			<key>POS_Y</key>
-			<integer>200</integer>
+			<integer>250</integer>
 			<key>LABEL</key>
 			<string>Sophia</string>
 		</dict>
@@ -28,9 +28,9 @@
 			<key>QUANTITY</key>
 			<integer>3</integer>
 			<key>POS_X</key>
-			<integer>250</integer>
+			<integer>500</integer>
 			<key>POS_Y</key>
-			<integer>300</integer>
+			<integer>550</integer>
 			<key>LABEL</key>
 			<string>Brett</string>
 		</dict>

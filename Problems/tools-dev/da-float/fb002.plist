@@ -25,5 +25,7 @@
 	</array>
 	<key>BUBBLE_AUTO_OPERATE</key>
 	<false/>
+	<key>SHOW_MULTIPLE_CONTROLS</key>
+	<true/>
 </dict>
 </plist>

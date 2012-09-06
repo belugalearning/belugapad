@@ -98,6 +98,8 @@
 
 -(void)doUpdateOnTick:(ccTime)delta
 {
+    [newPipeLabel setString:[NSString stringWithFormat:@"%d", blocksFromPipe]];
+    
     if(autoMoveToNextProblem)
     {
         timeToAutoMoveToNextProblem+=delta;
@@ -125,8 +127,27 @@
     solutionType=[[pdef objectForKey:SOLUTION_TYPE] intValue];
     initObjects=[pdef objectForKey:INIT_OBJECTS];
     bubbleAutoOperate=[[pdef objectForKey:BUBBLE_AUTO_OPERATE]boolValue];
-    maxObjectsInGroup=[[pdef objectForKey:MAX_GROUP_SIZE]intValue];
+    maxBlocksInGroup=[[pdef objectForKey:MAX_GROUP_SIZE]intValue];
     expSolution=[[pdef objectForKey:SOLUTION]intValue];
+    
+    showMultipleControls=[[pdef objectForKey:SHOW_MULTIPLE_CONTROLS]boolValue];
+    
+    if([pdef objectForKey:MIN_BLOCKS_FROM_PIPE])
+        minBlocksFromPipe=[[pdef objectForKey:MIN_BLOCKS_FROM_PIPE]intValue];
+    else
+        minBlocksFromPipe=1;
+    
+    if([pdef objectForKey:MAX_BLOCKS_FROM_PIPE])
+        maxBlocksFromPipe=[[pdef objectForKey:MAX_BLOCKS_FROM_PIPE]intValue];
+    else
+        maxBlocksFromPipe=10;
+    
+    if([pdef objectForKey:DEFAULT_BLOCKS_FROM_PIPE])
+        defaultBlocksFromPipe=[[pdef objectForKey:DEFAULT_BLOCKS_FROM_PIPE]intValue];
+    else
+        defaultBlocksFromPipe=1;
+    
+    blocksFromPipe=defaultBlocksFromPipe;
     
     if(bubbleAutoOperate)
         initBubbles=1;
@@ -163,11 +184,22 @@
     [commitPipe setPosition:ccp(lx-150,70)];
     [renderLayer addChild:commitPipe];
     
+    CCLabelTTF *targetSol=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", expSolution] fontName:@"Chango" fontSize:50.0f];
+    [targetSol setPosition:ccp(lx-150,100)];
+    [renderLayer addChild:targetSol];
+    
     newPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/pipe.png")];
     [newPipe setRotation:45.0f];
     [newPipe setPosition:ccp(25,550)];
     [renderLayer addChild:newPipe];
     
+    if(showMultipleControls)
+    {
+        newPipeLabel=[CCLabelTTF labelWithString:@"dickhead" fontName:@"Chango" fontSize:50.0f];
+        [newPipeLabel setPosition:ccp(100, 550)];
+        [renderLayer addChild:newPipeLabel];
+        
+    }
     
 }
 
@@ -177,7 +209,7 @@
     
     int numberInShape=[[theseSettings objectForKey:NUMBER]intValue];
     id<Group> thisGroup=[[SGFBlockGroup alloc]initWithGameWorld:gw];
-    thisGroup.MaxObjects=maxObjectsInGroup;
+    thisGroup.MaxObjects=maxBlocksInGroup;
     
     float xPos=arc4random()%1000;
     float yPos=arc4random()%700;
@@ -403,9 +435,15 @@
     lastTouch=location;
     touchStartPos=location;
     
+    if(CGRectContainsPoint(newPipeLabel.boundingBox, location))
+    {
+        touchingNewPipeLabel=YES;
+        return;
+    }
+    
     if(CGRectContainsPoint(newPipe.boundingBox, location))
     {
-        NSDictionary *d=[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:1] forKey:NUMBER];
+        NSDictionary *d=[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:blocksFromPipe] forKey:NUMBER];
         [self createShapeWith:d];
     }
     
@@ -442,6 +480,7 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
 
+    
     // if we have these things, handle them differently
     if(pickupObject)
     {
@@ -451,6 +490,27 @@
             [grp moveGroupPositionFrom:lastTouch To:location];
             [grp checkIfInBubbleAt:location];
         }
+    }
+    
+    if(touchingNewPipeLabel)
+    {
+        CGPoint touchStart=ccp(0, touchStartPos.y);
+        CGPoint thisTouch=ccp(0, location.y);
+        
+        int differenceMoved=[BLMath DistanceBetween:touchStart and:thisTouch];
+        
+        NSLog(@"differenced Moved %d / with div %d", differenceMoved, (int)differenceMoved/20);
+        
+//        if(touchStartPos.y>location.y)
+//            differenceMoved=-differenceMoved;
+            
+        blocksFromPipe=(differenceMoved/20);
+        
+        if(blocksFromPipe>maxBlocksFromPipe)
+            blocksFromPipe=maxBlocksFromPipe;
+        else if (blocksFromPipe<minBlocksFromPipe)
+            blocksFromPipe=minBlocksFromPipe;
+        
     }
    
     lastTouch=location;
@@ -486,6 +546,7 @@
 
     pickupObject=nil;
     isTouching=NO;
+    touchingNewPipeLabel=NO;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -493,7 +554,7 @@
 
     pickupObject=nil;
     isTouching=NO;
-
+    touchingNewPipeLabel=NO;
     // empty selected objects
 }
 

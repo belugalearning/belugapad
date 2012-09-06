@@ -14,15 +14,15 @@
 			<key>QUANTITY</key>
 			<integer>7</integer>
 			<key>POS_X</key>
-			<integer>200</integer>
+			<integer>300</integer>
 			<key>POS_Y</key>
-			<integer>500</integer>
+			<integer>550</integer>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
 			<integer>8</integer>
 			<key>POS_X</key>
-			<integer>200</integer>
+			<integer>300</integer>
 			<key>POS_Y</key>
 			<integer>350</integer>
 		</dict>

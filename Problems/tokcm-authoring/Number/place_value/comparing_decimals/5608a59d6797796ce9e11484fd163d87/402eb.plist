@@ -8,12 +8,31 @@
 	<string>Complete the sentence:</string>
 	<key>EXPR_STAGES</key>
 	<array>
-		<string>&lt;b:ot tag=&quot;a&quot;&gt;is bigger than&lt;/b:ot&gt;
-&lt;b:ot tag=&quot;b&quot;&gt;is equal to&lt;/b:ot&gt;
-&lt;b:ot tag=&quot;c&quot;&gt;is smaller than&lt;/b:ot&gt;</string>
-		<string>&lt;b:t&gt;165&lt;/b:t&gt;
-&lt;b:ot tag=&quot;c&quot; enabled=&quot;no&quot;&gt; is smaller than &lt;/b:ot&gt;
-&lt;b:t&gt;265&lt;/b:t&gt;</string>
+		<string>&lt;b:ot tag=&quot;a&quot;&gt; &amp;lt; &lt;/b:ot&gt;
+&lt;b:ot tag=&quot;b&quot;&gt; = &lt;/b:ot&gt;
+&lt;b:ot tag=&quot;c&quot;&gt; &amp;gt; &lt;/b:ot&gt;</string>
+		<string>&lt;b:t&gt;{$x}&lt;/b:t&gt;
+&lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt; = &lt;/b:ot&gt;
+&lt;b:t&gt;{$x}&lt;/b:t&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>400</string>
+			<key>MAX</key>
+			<string>599</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>600</string>
+			<key>MAX</key>
+			<string>750</string>
+		</dict>
 	</array>
 </dict>
 </plist>

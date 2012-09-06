@@ -48,12 +48,22 @@ typedef enum {
     
     CCSprite *commitPipe;
     CCSprite *newPipe;
+    CCLabelTTF *commitLabel;
+    CCLabelTTF *newPipeLabel;
+    BOOL touchingNewPipeLabel;
     
     // init stuff
     int initBubbles;
+    NSArray *supportedOperators;
     NSArray *initObjects;
     BOOL bubbleAutoOperate;
-    int maxObjectsInGroup;
+    BOOL showMultipleControls;
+    int maxBlocksInGroup;
+    int minBlocksFromPipe;
+    int maxBlocksFromPipe;
+    int defaultBlocksFromPipe;
+    
+    int blocksFromPipe;
     
     
     int expSolution;

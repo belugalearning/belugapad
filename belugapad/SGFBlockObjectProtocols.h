@@ -63,10 +63,12 @@
 @protocol Operator
 
 @property (retain) NSArray *SupportedOperators;
-@property int OperatorType;
+@property (retain) NSString *OperatorType;
 @property (retain) CCLabelTTF *Label;
+@property (retain) NSMutableArray *ChildOperators;
 
 -(BOOL)amIProximateTo:(CGPoint)location;
 -(void)fadeAndDestroy;
+-(void)showOtherOperators;
 
 @end

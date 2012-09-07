@@ -300,6 +300,7 @@
 
 -(void)showOperatorBubbleOrMerge
 {
+    // this only gets called from a multi-bubble problem - so we must check it's valid by seeing that there's only 1 group in each bubble - if not, it's not valid
     BOOL isValid=YES;
     
     for(id go in gw.AllGameObjectsCopy)
@@ -316,6 +317,7 @@
         }
     }
     
+    // if we're showing a bubble already and it's no longer valid - remove the operator bubble
     if(showingOperatorBubble && !isValid)
     {
         id<Operator,Rendered>curBubble=(id<Operator,Rendered>)opBubble;
@@ -323,26 +325,53 @@
         curBubble=nil;
         opBubble=nil;
         showingOperatorBubble=NO;
+        return;
     }
-    
+    // or create it if need be
     else if(!showingOperatorBubble && isValid)
     {
         id<Operator,Rendered>op=[[SGFBlockOpBubble alloc] initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(cx, 375) andOperators:supportedOperators];
         [op setup];
         opBubble=op;
         showingOperatorBubble=YES;
+        return;
     }
-    
+    // but if we have an operator bubble, it's still valid and we have a pickupobject as such
     else if(showingOperatorBubble && isValid && [pickupObject isKindOfClass:[SGFBlockOpBubble class]])
     {
+        // then if we only have 1 operator - merge the bubbles 
         if([supportedOperators count]==1)
         {
             [self mergeGroupsFromBubbles];
         }
-        
-        else if([supportedOperators count]>1)
+        // if we have no current childoperators and there's more than 1 supported operator, then show them
+        else if([supportedOperators count]>1 && [[opBubble ChildOperators]count]==0)
         {
-            NSLog(@"i need to show operators now!");
+            [opBubble showOtherOperators];
+        }
+        // but if there's more and it's already showing the childoperators, then check for a touch on one of them
+        else if([supportedOperators count]>1 && [[opBubble ChildOperators]count]>1)
+        {
+            NSLog(@"we must check for an actual operator hit!");
+            // by looping over the childoperator array
+            for(id<Operator,Rendered>oper in [opBubble ChildOperators])
+            {
+                // then if we have a valid hit - check the string and run whichever operation's appropriate
+                if(CGRectContainsPoint(oper.MySprite.boundingBox, touchStartPos))
+                {
+                    NSString *s=[oper.SupportedOperators objectAtIndex:0];
+                    
+                    if([s isEqualToString:@"+"])
+                        [self mergeGroupsFromBubbles];
+                    else if([s isEqualToString:@"x"])
+                            [self multiplyGroupsInBubbles];
+                    else if([s isEqualToString:@"-"])
+                        [self subtractGroupsInBubbles];
+                    else if([s isEqualToString:@"/"])
+                        [self divideGroupsInBubbles];
+                }
+            }
+            
         }
     }
     
@@ -424,6 +453,21 @@
         }
     }
     [self showOperatorBubbleOrMerge];
+}
+
+-(void)multiplyGroupsInBubbles
+{
+    
+}
+
+-(void)subtractGroupsInBubbles
+{
+    
+}
+
+-(void)divideGroupsInBubbles
+{
+    
 }
 
 #pragma mark - touches events

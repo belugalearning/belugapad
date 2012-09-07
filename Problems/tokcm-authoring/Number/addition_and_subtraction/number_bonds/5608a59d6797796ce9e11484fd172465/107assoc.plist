@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Use number bonds to add these three numbers together: 4, 9, 6</string>
+	<string>Add {30-$x} and {$y} to {$x}.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>assoc start</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>0</string>
+	<string>{$x}</string>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
@@ -19,7 +19,7 @@
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<string>19</string>
+	<string>{30+$y}</string>
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
 	<key>HIDE_ALL_NOTCHES</key>
@@ -40,17 +40,34 @@
 	<true/>
 	<key>EVAL_JUMP_SET</key>
 	<array>
-		<string>4</string>
-		<string>10</string>
-		<string>19</string>
+		<string>30</string>
+		<string>{30+$y}</string>
 	</array>
 	<key>EVAL_JUMP_REQUIRES_STRICT_ORDER</key>
 	<true/>
 	<key>MARKER_POSITIONS</key>
 	<array>
-		<string>4</string>
 		<string>10</string>
 		<string>19</string>
+	</array>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>11</string>
+			<key>MAX</key>
+			<string>19</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>6</string>
+			<key>MAX</key>
+			<string>15</string>
+		</dict>
 	</array>
 </dict>
 </plist>

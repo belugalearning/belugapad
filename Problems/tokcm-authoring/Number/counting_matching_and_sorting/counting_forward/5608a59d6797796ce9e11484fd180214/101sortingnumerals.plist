@@ -7,16 +7,40 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Put the numbers in order.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>sort numbers up to five</string>
+	<string>sort numbers up to ten</string>
 	<key>EXPR_STAGES</key>
 	<array>
-		<string>&lt;b:ot tag=&quot;a&quot;&gt;two&lt;/b:ot&gt;
-&lt;b:ot tag=&quot;b&quot;&gt;four&lt;/b:ot&gt;</string>
-		<string>&lt;b:t&gt;one&lt;/b:t&gt;
-&lt;b:ot tag=&quot;a&quot; enabled=&quot;no&quot;&gt; two &lt;/b:ot&gt;
-&lt;b:t&gt;three&lt;/b:t&gt;
-&lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt; four &lt;/b:ot&gt;
-&lt;b:t&gt;five&lt;/b:t&gt;</string>
+		<string>&lt;b:commlkp lkpid=&quot;num&quot;&gt;
+	&lt;b:lkpitem tag=&quot;b&quot;&gt;{$b}&lt;/b:lkpitem&gt;
+	&lt;b:lkpitem tag=&quot;d&quot;&gt;{$d}&lt;/b:lkpitem&gt;
+&lt;/b:commlkp&gt;
+
+&lt;b:commot resortrandom=&quot;yes&quot; sample=&quot;one&quot; /&gt;
+&lt;b:commot resortrandom=&quot;yes&quot; sample=&quot;one&quot; /&gt;</string>
+		<string>&lt;b:t&gt;1&lt;/b:t&gt;
+&lt;b:ot tag=&quot;a&quot; enabled=&quot;no&quot;&gt; {$b} &lt;/b:ot&gt;
+&lt;b:t&gt;5&lt;/b:t&gt;
+&lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt; {$d} &lt;/b:ot&gt;
+&lt;b:t&gt;10&lt;/b:t&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$b</string>
+			<key>MIN</key>
+			<string>2</string>
+			<key>MAX</key>
+			<string>4</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$d</string>
+			<key>MIN</key>
+			<string>6</string>
+			<key>MAX</key>
+			<string>9</string>
+		</dict>
 	</array>
 </dict>
 </plist>

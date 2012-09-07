@@ -5,15 +5,42 @@
 	<key>TOOL_KEY</key>
 	<string>ExprBuilder</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Complete the sentence:</string>
+	<string>same hundreds, same tens, diff units</string>
 	<key>EXPR_STAGES</key>
 	<array>
-		<string>&lt;b:ot tag=&quot;a&quot;&gt;is bigger than&lt;/b:ot&gt;
+		<string>&lt;b:ot tag=&quot;a&quot;&gt;is smaller than&lt;/b:ot&gt;
 &lt;b:ot tag=&quot;b&quot;&gt;is equal to&lt;/b:ot&gt;
-&lt;b:ot tag=&quot;c&quot;&gt;is smaller than&lt;/b:ot&gt;</string>
-		<string>&lt;b:t&gt;843&lt;/b:t&gt;
-&lt;b:ot tag=&quot;c&quot; enabled=&quot;no&quot;&gt; is greater than &lt;/b:ot&gt;
-&lt;b:t&gt;842&lt;/b:t&gt;</string>
+&lt;b:ot tag=&quot;c&quot;&gt;is bigger than&lt;/b:ot&gt;</string>
+		<string>&lt;b:t&gt;{$a}{$y}&lt;/b:t&gt;
+&lt;b:ot tag=&quot;c&quot; enabled=&quot;no&quot;&gt; is more than &lt;/b:ot&gt;
+&lt;b:t&gt;{$a}{$x}&lt;/b:t&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$a</string>
+			<key>MIN</key>
+			<string>10</string>
+			<key>MAX</key>
+			<string>99</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>04</string>
+			<key>MAX</key>
+			<string>7</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>5</string>
+			<key>MAX</key>
+			<string>9</string>
+		</dict>
 	</array>
 </dict>
 </plist>

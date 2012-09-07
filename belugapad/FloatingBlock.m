@@ -202,7 +202,7 @@
     
     if(showMultipleControls)
     {
-        newPipeLabel=[CCLabelTTF labelWithString:@"dickhead" fontName:@"Chango" fontSize:50.0f];
+        newPipeLabel=[CCLabelTTF labelWithString:@"" fontName:@"Chango" fontSize:50.0f];
         [newPipeLabel setPosition:ccp(100, 550)];
         [renderLayer addChild:newPipeLabel];
         
@@ -377,7 +377,7 @@
     
 }
 
--(void)mergeGroupsFromBubbles
+-(NSMutableArray*)returnCurrentValidGroups
 {
     NSMutableArray *groups=[[NSMutableArray alloc]init];
     
@@ -393,6 +393,33 @@
             }
         }
     }
+    
+    return groups;
+}
+
+-(void)destroyBubblesAndCreateNew
+{
+    for(id bubble in gw.AllGameObjectsCopy)
+    {
+        if([bubble conformsToProtocol:@protocol(Target)])
+        {
+            float xPos=((id<Rendered>)bubble).MySprite.position.x;
+            
+            // kill the existing bubble - create a new one
+            
+            
+            id<Target> bubbleid=(id<Target>)bubble;
+            [bubbleid fadeAndDestroy];
+            id<Rendered> newbubble;
+            newbubble=[[SGFBlockBubble alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,-50) andReplacement:YES];
+            [newbubble setup];
+        }
+    }
+}
+
+-(void)mergeGroupsFromBubbles
+{
+    NSMutableArray *groups=[self returnCurrentValidGroups];
     
     id<Group> targetGroup=[groups objectAtIndex:0];
     id<Rendered,Moveable> firstBlock=[targetGroup.MyBlocks objectAtIndex:0];
@@ -436,28 +463,43 @@
         
     }
     
-    for(id bubble in gw.AllGameObjectsCopy)
-    {
-        if([bubble conformsToProtocol:@protocol(Target)])
-        {
-            float xPos=((id<Rendered>)bubble).MySprite.position.x;
-            
-            // kill the existing bubble - create a new one
-            
-            
-            id<Target> bubbleid=(id<Target>)bubble;
-            [bubbleid fadeAndDestroy];
-            id<Rendered> newbubble;
-            newbubble=[[SGFBlockBubble alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,-50) andReplacement:YES];
-            [newbubble setup];
-        }
-    }
+    [self destroyBubblesAndCreateNew];
     [self showOperatorBubbleOrMerge];
 }
 
 -(void)multiplyGroupsInBubbles
 {
+    NSMutableArray *groups=[self returnCurrentValidGroups];
+    id<Group> targetGroup=[groups objectAtIndex:0];
+    id<Group> operatedGroup=[groups objectAtIndex:1];
     
+    int result=[targetGroup.MyBlocks count]*[operatedGroup.MyBlocks count];
+    int existing=[targetGroup.MyBlocks count]+[operatedGroup.MyBlocks count];
+    int needed=result-existing;
+    
+
+    if(needed>1)
+        [self mergeGroupsFromBubbles];
+    
+
+    
+    for(int i=0;i<needed;i++)
+    {
+        int lastindex=[targetGroup.MyBlocks count]-1;
+        id<Moveable>lastObj=[targetGroup.MyBlocks objectAtIndex:lastindex];
+        float xPos=lastObj.Position.x+52;
+        float yPos=lastObj.Position.y;
+        
+        id<Rendered,Moveable> newblock;
+        newblock=[[SGFBlockBlock alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,yPos)];
+        newblock.MyGroup=(id)targetGroup;
+        
+        [newblock setup];
+        
+        [targetGroup addObject:newblock];
+    }
+    
+
 }
 
 -(void)subtractGroupsInBubbles

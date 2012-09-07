@@ -62,6 +62,7 @@
 
 @protocol Operator
 
+@property (retain) NSArray *SupportedOperators;
 @property int OperatorType;
 @property (retain) CCLabelTTF *Label;
 

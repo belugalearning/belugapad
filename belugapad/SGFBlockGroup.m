@@ -24,6 +24,11 @@
     return self;
 }
 
+-(void)doUpdate:(ccTime)delta
+{
+    //update of components
+}
+
 -(void)addObject:(id)thisObject
 {
     if(![MyBlocks containsObject:thisObject])

@@ -98,6 +98,8 @@
 
 -(void)doUpdateOnTick:(ccTime)delta
 {
+    [gw doUpdate:delta];
+    
     [newPipeLabel setString:[NSString stringWithFormat:@"%d", blocksFromPipe]];
     
     if(autoMoveToNextProblem)
@@ -120,7 +122,6 @@
 #pragma mark - gameworld setup and population
 -(void)readPlist:(NSDictionary*)pdef
 {
-
     
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
     rejectType=[[pdef objectForKey:REJECT_TYPE] intValue];
@@ -130,7 +131,11 @@
     maxBlocksInGroup=[[pdef objectForKey:MAX_GROUP_SIZE]intValue];
     expSolution=[[pdef objectForKey:SOLUTION]intValue];
     
+    showSolutionOnPipe=[[pdef objectForKey:SHOW_SOLUTION_ON_PIPE]boolValue];
     showMultipleControls=[[pdef objectForKey:SHOW_MULTIPLE_CONTROLS]boolValue];
+    
+    if([pdef objectForKey:SUPPORTED_OPERATORS])
+        supportedOperators=[pdef objectForKey:SUPPORTED_OPERATORS];
     
     if([pdef objectForKey:MIN_BLOCKS_FROM_PIPE])
         minBlocksFromPipe=[[pdef objectForKey:MIN_BLOCKS_FROM_PIPE]intValue];
@@ -183,11 +188,13 @@
     commitPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/pipe.png")];
     [commitPipe setPosition:ccp(lx-150,70)];
     [renderLayer addChild:commitPipe];
-    
-    CCLabelTTF *targetSol=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", expSolution] fontName:@"Chango" fontSize:50.0f];
-    [targetSol setPosition:ccp(lx-150,100)];
-    [renderLayer addChild:targetSol];
-    
+
+    if(showSolutionOnPipe)
+    {
+        CCLabelTTF *targetSol=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", expSolution] fontName:@"Chango" fontSize:50.0f];
+        [targetSol setPosition:ccp(lx-150,100)];
+        [renderLayer addChild:targetSol];
+    }
     newPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/pipe.png")];
     [newPipe setRotation:45.0f];
     [newPipe setPosition:ccp(25,550)];
@@ -198,6 +205,11 @@
         newPipeLabel=[CCLabelTTF labelWithString:@"dickhead" fontName:@"Chango" fontSize:50.0f];
         [newPipeLabel setPosition:ccp(100, 550)];
         [renderLayer addChild:newPipeLabel];
+        
+    }
+    
+    if(supportedOperators)
+    {
         
     }
     
@@ -298,6 +310,7 @@
             
             if([go containedGroups]!=1)
             {
+                NSLog(@"not valid");
                 isValid=NO;
             }
         }
@@ -308,13 +321,13 @@
         id<Operator,Rendered>curBubble=(id<Operator,Rendered>)opBubble;
         [curBubble fadeAndDestroy];
         curBubble=nil;
+        opBubble=nil;
         showingOperatorBubble=NO;
     }
     
     if(!showingOperatorBubble && isValid)
     {
-        id<Operator,Rendered>op=[[SGFBlockOpBubble alloc] initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(cx, 375)];
-        op.OperatorType=1;
+        id<Operator,Rendered>op=[[SGFBlockOpBubble alloc] initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(cx, 375) andOperators:supportedOperators];
         [op setup];
         opBubble=op;
         showingOperatorBubble=YES;
@@ -366,31 +379,9 @@
             
         }
         
-        
-        // kill the existing bubble - create a new one
-            
-            
-//        float avgPosX=0;
-//        float avgPosY=0;
-//        
-//        for(id<Rendered> block in targetGroup.MyBlocks)
-//        {
-//            avgPosX+=block.Position.x;
-//            avgPosY+=block.Position.y;
-//        }
-//        
-//        avgPosX=avgPosX/[targetGroup.MyBlocks count];
-//        avgPosY=avgPosY/[targetGroup.MyBlocks count];
-    
-        
-        // then animate
-
-        //[grp moveGroupPositionFrom:ccp(avgPosX,avgPosY) To:ccp(cx,cy)];
-        
+                    
         for(id<Rendered> block in targetGroup.MyBlocks)
         {
-//            CGPoint diffBetweenFirstAndThis=[BLMath SubtractVector:firstBlock.Position from:block.Position];
-//            CGPoint diffBetweenThisAndCX=[BLMath SubtractVector:diffBetweenFirstAndThis from:ccp(cx,cy)];
             CGPoint newPos=ccp(block.Position.x,block.Position.y+200);
             
             [block.MySprite runAction:[CCMoveTo actionWithDuration:0.5f position:newPos]];
@@ -418,7 +409,6 @@
             [newbubble setup];
         }
     }
-    
     [self showOperatorBubble];
 }
 

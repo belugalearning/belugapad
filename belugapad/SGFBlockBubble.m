@@ -26,6 +26,11 @@
     return self;
 }
 
+-(void)doUpdate:(ccTime)delta
+{
+    //update of components
+}
+
 -(void)setup
 {
     MySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/bubble.png")];
@@ -79,6 +84,10 @@
 {
     
     [GroupsInMe removeAllObjects];
+
+//    [MySprite removeFromParentAndCleanup:YES];
+    
+//    [gameWorld delayRemoveGameObject:self];
     
     CCMoveTo *fadeAct=[CCFadeOut actionWithDuration:0.5f];
     CCAction *cleanUpSprite=[CCCallBlock actionWithBlock:^{[MySprite removeFromParentAndCleanup:YES];}];
@@ -86,7 +95,6 @@
     CCSequence *sequence=[CCSequence actions:fadeAct, cleanUpSprite, cleanUpGO, nil];
     [MySprite runAction:sequence];
     
-    MySprite=nil;
 }
 
 -(void)dealloc

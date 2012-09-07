@@ -3,15 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>make 6</string>
+	<string>test</string>
 	<key>TOOL_KEY</key>
 	<string>FloatingBlock</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
 	<key>SOLUTION</key>
 	<integer>6</integer>
-	<key>INIT_BUBBLES</key>
-	<integer>1</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
@@ -24,6 +22,13 @@
 		</dict>
 	</array>
 	<key>BUBBLE_AUTO_OPERATE</key>
+	<false/>
+	<key>SHOW_MULTIPLE_CONTROLS</key>
 	<true/>
+	<key>SUPPORTED_OPERATORS</key>
+	<array>
+		<string>+</string>
+		<string>x</string>
+	</array>
 </dict>
 </plist>

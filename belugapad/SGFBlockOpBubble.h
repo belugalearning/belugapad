@@ -9,8 +9,9 @@
 #import "SGGameObject.h"
 #import "SGFBlockObjectProtocols.h"
 
+
 @interface SGFBlockOpBubble : SGGameObject <Rendered, Operator>
 
--(SGFBlockOpBubble*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition;
+-(SGFBlockOpBubble*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition andOperators:(NSArray*)theseOperators;
 
 @end

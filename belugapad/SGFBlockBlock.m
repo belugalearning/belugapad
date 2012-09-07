@@ -25,6 +25,11 @@
     return self;
 }
 
+-(void)doUpdate:(ccTime)delta
+{
+    //update of components
+}
+
 -(void)setup
 {
     MySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/block.png")];

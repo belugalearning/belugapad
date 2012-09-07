@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Add 9 and 3 to 7.</string>
+	<string>This is 7. Add 3 and 9.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>assoc start</string>
 	<key>TOOL_KEY</key>

@@ -5,7 +5,7 @@
 	<key>MASTERY</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Find |-12|.</string>
+	<string>A fish is swimming -12m from sea level. How many metres underwater is it? </string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Find |-12|.</string>
 	<key>TOOL_KEY</key>

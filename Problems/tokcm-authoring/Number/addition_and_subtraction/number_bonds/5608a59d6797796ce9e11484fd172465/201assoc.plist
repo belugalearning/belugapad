@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Add these 3 numbers:</string>
+	<string>Use number bonds to add these three numbers together: 4, 9, 6</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>assoc start</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>7</string>
+	<string>0</string>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
@@ -19,7 +19,7 @@
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<string>15</string>
+	<string>19</string>
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
 	<key>HIDE_ALL_NOTCHES</key>
@@ -40,6 +40,7 @@
 	<true/>
 	<key>EVAL_JUMP_SET</key>
 	<array>
+		<string>4</string>
 		<string>10</string>
 		<string>19</string>
 	</array>
@@ -47,6 +48,7 @@
 	<true/>
 	<key>MARKER_POSITIONS</key>
 	<array>
+		<string>4</string>
 		<string>10</string>
 		<string>19</string>
 	</array>

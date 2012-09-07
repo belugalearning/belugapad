@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Add {30-$x} and {$y} to {$x}.</string>
+	<string>If I start on {$x}, where do I end up after adding {20-$x} and {$y}?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>assoc start</string>
 	<key>TOOL_KEY</key>
@@ -19,7 +19,7 @@
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<string>{30+$y}</string>
+	<string>{20+$y}</string>
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
 	<key>HIDE_ALL_NOTCHES</key>
@@ -40,15 +40,15 @@
 	<true/>
 	<key>EVAL_JUMP_SET</key>
 	<array>
-		<string>30</string>
-		<string>{30+$y}</string>
+		<string>20</string>
+		<string>{20+$y}</string>
 	</array>
 	<key>EVAL_JUMP_REQUIRES_STRICT_ORDER</key>
 	<true/>
 	<key>MARKER_POSITIONS</key>
 	<array>
-		<string>10</string>
-		<string>19</string>
+		<string>20</string>
+		<string>{20+$y}</string>
 	</array>
 	<key>DVARS</key>
 	<array>
@@ -64,9 +64,9 @@
 			<key>VAR_NAME</key>
 			<string>$y</string>
 			<key>MIN</key>
-			<string>6</string>
+			<string>1</string>
 			<key>MAX</key>
-			<string>15</string>
+			<string>9</string>
 		</dict>
 	</array>
 </dict>

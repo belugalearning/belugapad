@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is {$x} - {$y}?</string>
+	<string>What is {$x} + {$y}?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>3 - 3 = 0</string>
+	<string>positive+positive</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
 	<string>{$x}</string>
 	<key>MIN_VALUE</key>
-	<string>{$x-$y}</string>
+	<string>0</string>
 	<key>MAX_VALUE</key>
-	<string>{$x+$y}</string>
+	<string>100</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<string>{$x-$y}</string>
+	<string>{$x+$y}</string>
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
 	<key>HIDE_ALL_NOTCHES</key>
@@ -42,13 +42,21 @@
 	<dict>
 		<key>$x</key>
 		<dict>
-			<key>RECALL</key>
-			<string>{$x}</string>
+			<key>RETAIN</key>
+			<true/>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>15</string>
 		</dict>
 		<key>$y</key>
 		<dict>
-			<key>RECALL</key>
-			<string>{$y}</string>
+			<key>RETAIN</key>
+			<true/>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>4</string>
 		</dict>
 	</dict>
 </dict>

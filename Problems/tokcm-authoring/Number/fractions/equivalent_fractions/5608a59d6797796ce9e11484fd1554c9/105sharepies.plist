@@ -3,34 +3,56 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Which number is smaller?</string>
-	<key>INTERNAL_DESCRIPTION</key>
-	<string>two-digit inequalities</string>
+	<string>Share eight pies between eight.</string>
+	<key>TOOL_KEY</key>
+	<string>PieSplitter</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>DIVIDEND</key>
+	<integer>8</integer>
+	<key>DIVISOR</key>
+	<integer>8</integer>
+	<key>NUMBER_ACTIVE_PIES</key>
+	<integer>2</integer>
+	<key>NUMBER_ACTIVE_SQUARES</key>
+	<integer>2</integer>
+	<key>START_PROBLEM_SPLIT</key>
+	<true/>
+	<key>NUMBER_CAGED_PIES</key>
+	<integer>10</integer>
+	<key>NUMBER_CAGED_SQUARES</key>
+	<integer>10</integer>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
 		<string>Great!</string>
 		<key>META_QUESTION_EVAL_MODE</key>
-		<integer>0</integer>
+		<integer>1</integer>
 		<key>META_QUESTION_ANSWER_MODE</key>
-		<integer>0</integer>
+		<integer>1</integer>
 		<key>META_QUESTION_ANSWERS</key>
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>28</string>
+				<string>1</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>58</string>
+				<string>3/3</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>2</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Which number is smaller?</string>
+		<string>Which of these are the same as 8/8?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again.</string>
 	</dict>

@@ -22,19 +22,11 @@
 		<dict>
 			<key>$x</key>
 			<dict>
-				<key>MIN</key>
-				<string>1</string>
-				<key>MAX</key>
-				<string>30</string>
 				<key>RECALL</key>
 				<string>{$x}</string>
 			</dict>
 			<key>$y</key>
 			<dict>
-				<key>MIN</key>
-				<string>1</string>
-				<key>MAX</key>
-				<string>3</string>
 				<key>RECALL</key>
 				<string>{$y}</string>
 			</dict>

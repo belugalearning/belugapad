@@ -36,25 +36,17 @@
 	<false/>
 	<key>EVAL_PLUS_MINUS_THRESHOLD</key>
 	<integer>0</integer>
-	<key>RENDER_STITCHES_AT_INTERVAL</key>
-	<integer>0</integer>
+	<key>SEGMENT_VALUE</key>
+	<integer>2</integer>
 	<key>DVARS</key>
 	<dict>
 		<key>$x</key>
 		<dict>
-			<key>MIN</key>
-			<string>1</string>
-			<key>MAX</key>
-			<string>30</string>
-			<key>RECALL</key>
+            <key>RECALL</key>
 			<string>{$x}</string>
 		</dict>
 		<key>$y</key>
 		<dict>
-			<key>MIN</key>
-			<string>1</string>
-			<key>MAX</key>
-			<string>10</string>
 			<key>RECALL</key>
 			<string>{$y}</string>
 		</dict>

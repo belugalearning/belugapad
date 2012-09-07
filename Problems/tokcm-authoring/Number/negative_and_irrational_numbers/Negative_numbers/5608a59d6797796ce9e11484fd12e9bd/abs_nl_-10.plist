@@ -5,7 +5,7 @@
 	<key>MASTERY</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Find |-10|.</string>
+	<string>Sarah has -£10 in her bank account. How much money does she owe?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Find |-10|.</string>
 	<key>TOOL_KEY</key>

@@ -5,23 +5,23 @@
 	<key>MASTERY</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>A fish is swimming -12m from sea level. How many metres underwater is it? </string>
+	<string>How many degrees (C) colder is -10 C than -8 C?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Find |-12|.</string>
+	<string>How many degrees (C) colder is -10 C than -8 C?</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>0</string>
+	<string>-8</string>
 	<key>MIN_VALUE</key>
-	<string>-15</string>
+	<string>-10</string>
 	<key>MAX_VALUE</key>
-	<string>15</string>
+	<string>2</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>1</integer>
 	<key>EVAL_TARGET</key>
-	<integer>12</integer>
+	<integer>-3</integer>
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
@@ -54,5 +54,22 @@
 	</array>
 	<key>RENDER_STITCHES_AT_INTERVAL</key>
 	<integer>0</integer>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>How many degrees (C) colder is -10 C than -8 C?</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>1</integer>
+		<key>PICKER_ORIGIN_X</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_Y</key>
+		<integer>0</integer>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<string>2</string>
+	</dict>
 </dict>
 </plist>

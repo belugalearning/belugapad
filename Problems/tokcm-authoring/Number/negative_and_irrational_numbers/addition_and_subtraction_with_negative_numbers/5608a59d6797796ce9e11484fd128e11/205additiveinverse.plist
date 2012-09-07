@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 3. Take away 3.</string>
+	<string>This is {$x}. Add {0-$x}</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>3 - 3 = 0</string>
+	<string>x, -x additive inverses</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>3</string>
+	<string>{$x}</string>
 	<key>MIN_VALUE</key>
 	<string>-25</string>
 	<key>MAX_VALUE</key>
@@ -38,5 +38,16 @@
 	<integer>0</integer>
 	<key>RENDER_STITCHES_AT_INTERVAL</key>
 	<integer>0</integer>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>-25</string>
+			<key>MAX</key>
+			<string>25</string>
+		</dict>
+	</array>
 </dict>
 </plist>

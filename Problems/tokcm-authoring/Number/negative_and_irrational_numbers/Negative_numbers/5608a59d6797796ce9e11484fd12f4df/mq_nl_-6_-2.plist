@@ -11,7 +11,7 @@
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>-6</string>
+	<string>-2</string>
 	<key>MIN_VALUE</key>
 	<string>-10</string>
 	<key>MAX_VALUE</key>
@@ -66,15 +66,15 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>-6 C</string>
-				<key>META_ANSWER_VALUE</key>
-				<true/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
 				<string>-2 C</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>-6 C</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>

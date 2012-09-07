@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>MASTERY</key>
-	<true/>
+	<false/>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>|-5| represents the absolute value of -5. Find |-5|.</string>
 	<key>INTERNAL_DESCRIPTION</key>

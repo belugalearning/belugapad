@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>MASTERY</key>
-	<true/>
+	<false/>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Is the difference between 0 to 20 the same as 0 to -20?</string>
 	<key>INTERNAL_DESCRIPTION</key>

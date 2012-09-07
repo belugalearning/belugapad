@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>MASTERY</key>
-	<true/>
+	<false/>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>The absolute value is the distance from 0. What is the absolute value of 4?</string>
 	<key>INTERNAL_DESCRIPTION</key>

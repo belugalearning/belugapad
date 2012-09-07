@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>MASTERY</key>
-	<true/>
+	<false/>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Show that the absolute value of -3 is 3. </string>
 	<key>INTERNAL_DESCRIPTION</key>

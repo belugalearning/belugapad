@@ -77,7 +77,7 @@ typedef enum {
 -(void)populateGW;
 -(void)createShapeWith:(NSDictionary*)theseSettings;
 -(void)handleMergeShapes;
--(void)showOperatorBubble;
+-(void)showOperatorBubbleOrMerge;
 -(void)mergeGroupsFromBubbles;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;

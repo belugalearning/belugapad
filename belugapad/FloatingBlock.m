@@ -298,7 +298,7 @@
     }
 }
 
--(void)showOperatorBubble
+-(void)showOperatorBubbleOrMerge
 {
     BOOL isValid=YES;
     
@@ -325,13 +325,27 @@
         showingOperatorBubble=NO;
     }
     
-    if(!showingOperatorBubble && isValid)
+    else if(!showingOperatorBubble && isValid)
     {
         id<Operator,Rendered>op=[[SGFBlockOpBubble alloc] initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(cx, 375) andOperators:supportedOperators];
         [op setup];
         opBubble=op;
         showingOperatorBubble=YES;
     }
+    
+    else if(showingOperatorBubble && isValid && [pickupObject isKindOfClass:[SGFBlockOpBubble class]])
+    {
+        if([supportedOperators count]==1)
+        {
+            [self mergeGroupsFromBubbles];
+        }
+        
+        else if([supportedOperators count]>1)
+        {
+            NSLog(@"i need to show operators now!");
+        }
+    }
+    
 }
 
 -(void)mergeGroupsFromBubbles
@@ -409,7 +423,7 @@
             [newbubble setup];
         }
     }
-    [self showOperatorBubble];
+    [self showOperatorBubbleOrMerge];
 }
 
 #pragma mark - touches events
@@ -517,7 +531,7 @@
     if(bubbleAutoOperate)
         [self handleMergeShapes];
     else
-        [self showOperatorBubble];
+        [self showOperatorBubbleOrMerge];
     
     if(pickupObject)
     {
@@ -525,10 +539,6 @@
         {
             if(CGRectContainsPoint(commitPipe.boundingBox, location))
                 [self evalProblem];
-        }
-        if([pickupObject isKindOfClass:[SGFBlockOpBubble class]])
-        {
-            [self mergeGroupsFromBubbles];
         }
     }
     

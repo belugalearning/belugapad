@@ -72,7 +72,7 @@
         for(NSString *s in SupportedOperators)
         {
             NSArray *a=[NSArray arrayWithObject:s];
-            id<Operator,Rendered>op=[[SGFBlockOpBubble alloc] initWithGameWorld:gameWorld andRenderLayer:gameWorld.Blackboard.RenderLayer andPosition:ccp(self.Position.x, self.Position.y+80+([SupportedOperators indexOfObject:s]*50)) andOperators:a];
+            id<Operator,Rendered>op=[[SGFBlockOpBubble alloc] initWithGameWorld:gameWorld andRenderLayer:gameWorld.Blackboard.RenderLayer andPosition:ccp(self.Position.x, self.Position.y+100+([SupportedOperators indexOfObject:s]*80)) andOperators:a];
             
             [self.ChildOperators addObject:op];
             

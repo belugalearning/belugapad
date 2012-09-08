@@ -45,6 +45,7 @@
 
 
 -(void)setup;
+-(void)fadeAndDestroy;
 
 @end
 

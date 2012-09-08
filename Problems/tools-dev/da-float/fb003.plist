@@ -29,6 +29,8 @@
 	<array>
 		<string>+</string>
 		<string>x</string>
+		<string>/</string>
+		<string>-</string>
 	</array>
 </dict>
 </plist>

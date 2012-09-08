@@ -352,7 +352,6 @@
         // but if there's more and it's already showing the childoperators, then check for a touch on one of them
         else if([supportedOperators count]>1 && [[opBubble ChildOperators]count]>1)
         {
-            NSLog(@"we must check for an actual operator hit!");
             // by looping over the childoperator array
             for(id<Operator,Rendered>oper in [opBubble ChildOperators])
             {
@@ -477,9 +476,9 @@
     int existing=[targetGroup.MyBlocks count]+[operatedGroup.MyBlocks count];
     int needed=result-existing;
     
+    NSLog(@"multiply result %d, existing %d, needed %d", result, existing, needed);
 
-    if(needed>1)
-        [self mergeGroupsFromBubbles];
+    [self mergeGroupsFromBubbles];
     
 
     
@@ -489,6 +488,8 @@
         id<Moveable>lastObj=[targetGroup.MyBlocks objectAtIndex:lastindex];
         float xPos=lastObj.Position.x+52;
         float yPos=lastObj.Position.y;
+        
+        NSLog(@"create existing at x %f y %f", xPos, yPos);
         
         id<Rendered,Moveable> newblock;
         newblock=[[SGFBlockBlock alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,yPos)];
@@ -504,12 +505,56 @@
 
 -(void)subtractGroupsInBubbles
 {
+    NSMutableArray *groups=[self returnCurrentValidGroups];
+    id<Group> targetGroup=[groups objectAtIndex:1];
+    id<Group> operatedGroup=[groups objectAtIndex:0];
+
+    NSLog(@"target group count %d, oper group count %d", [targetGroup.MyBlocks count], [operatedGroup.MyBlocks count]);
+    
+    if([targetGroup.MyBlocks count]>=[operatedGroup.MyBlocks count])
+    {
+
+        int result=[targetGroup.MyBlocks count]-[operatedGroup.MyBlocks count];
+        
+        NSLog(@"result %d", result);
+        
+        [self mergeGroupsFromBubbles];
+
+        for(int i=[operatedGroup.MyBlocks count]-1;i>=result;i--)
+        {
+            NSLog(@"remove block");
+            id<Rendered,Moveable> obj=[operatedGroup.MyBlocks objectAtIndex:i];
+            [targetGroup removeObject:obj];
+            [obj fadeAndDestroy];
+        }
+
+    }
     
 }
 
 -(void)divideGroupsInBubbles
 {
+    NSMutableArray *groups=[self returnCurrentValidGroups];
+    id<Group> targetGroup=[groups objectAtIndex:1];
+    id<Group> operatedGroup=[groups objectAtIndex:0];
     
+    if([targetGroup.MyBlocks count]>[operatedGroup.MyBlocks count])
+    {
+        int result=[targetGroup.MyBlocks count]/[operatedGroup.MyBlocks count];
+        
+        NSLog(@"result %d", result);
+        
+        [self mergeGroupsFromBubbles];
+        
+        for(int i=[operatedGroup.MyBlocks count]-1;i>=result;i--)
+        {
+            NSLog(@"remove block");
+            id<Rendered,Moveable> obj=[operatedGroup.MyBlocks objectAtIndex:i];
+            [targetGroup removeObject:obj];
+            [obj fadeAndDestroy];
+        }
+        
+    }
 }
 
 #pragma mark - touches events

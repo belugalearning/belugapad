@@ -49,6 +49,8 @@
     CCAction *cleanUpGO=[CCCallBlock actionWithBlock:^{[gameWorld delayRemoveGameObject:self];}];
     CCSequence *sequence=[CCSequence actions:fadeAct, cleanUpSprite, cleanUpGO, nil];
     [MySprite runAction:sequence];
+    MyGroup=nil;
+    MySprite=nil;
     
 }
 

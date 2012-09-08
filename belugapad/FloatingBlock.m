@@ -380,15 +380,29 @@
 {
     NSMutableArray *groups=[[NSMutableArray alloc]init];
     
+    float xPos=lx;
+    
     for(id go in gw.AllGameObjectsCopy)
     {
         if([go conformsToProtocol:@protocol(Target)])
         {
-            id<Target> current=(id<Target>)go;
+            id<Target,Rendered> current=(id<Target,Rendered>)go;
             if([go containedGroups]==1)
             {
-                [groups addObject:[current.GroupsInMe objectAtIndex:0]];
-                
+                if(current.Position.x<xPos)
+                {
+                    xPos=current.Position.x;
+                    
+                    [groups insertObject:[current.GroupsInMe objectAtIndex:0] atIndex:0];
+                    id<Group> grp=[current.GroupsInMe objectAtIndex:0];
+                    NSLog(@"got furthest left obj %d", [grp.MyBlocks count]);
+                }
+                else
+                {
+                    id<Group> grp=[current.GroupsInMe objectAtIndex:0];
+                    NSLog(@"got rightmost %d", [grp.MyBlocks count]);
+                    [groups addObject:[current.GroupsInMe objectAtIndex:0]];
+                }
             }
         }
     }
@@ -422,8 +436,9 @@
     
     id<Group> targetGroup=[groups objectAtIndex:0];
     id<Rendered,Moveable> firstBlock=[targetGroup.MyBlocks objectAtIndex:0];
+    id<Rendered,Moveable> lastBlock=[targetGroup.MyBlocks objectAtIndex:[targetGroup.MyBlocks count]-1];
     float xPosOfFirstBlock=firstBlock.Position.x;
-    float yPosOfFirstBlock=firstBlock.Position.y-52;
+    float yPosOfFirstBlock=lastBlock.Position.y-52;
     
     
     for(id<Group> grp in groups)
@@ -468,6 +483,7 @@
 
 -(void)multiplyGroupsInBubbles
 {
+    // TODO: is now not running the fade ani -- sort! probably due to updated returnCurrentValidGroups
     NSMutableArray *groups=[self returnCurrentValidGroups];
     id<Group> targetGroup=[groups objectAtIndex:0];
     id<Group> operatedGroup=[groups objectAtIndex:1];
@@ -506,24 +522,28 @@
 -(void)subtractGroupsInBubbles
 {
     NSMutableArray *groups=[self returnCurrentValidGroups];
-    id<Group> targetGroup=[groups objectAtIndex:1];
-    id<Group> operatedGroup=[groups objectAtIndex:0];
+    id<Group> targetGroup=[groups objectAtIndex:0];
+    id<Group> operatedGroup=[groups objectAtIndex:1];
+    
 
     NSLog(@"target group count %d, oper group count %d", [targetGroup.MyBlocks count], [operatedGroup.MyBlocks count]);
     
     if([targetGroup.MyBlocks count]>=[operatedGroup.MyBlocks count])
     {
 
+        NSMutableArray *blocks=targetGroup.MyBlocks;
         int result=[targetGroup.MyBlocks count]-[operatedGroup.MyBlocks count];
         
-        NSLog(@"result %d", result);
+        NSLog(@"(subtract) result %d", result);
         
         [self mergeGroupsFromBubbles];
 
-        for(int i=[operatedGroup.MyBlocks count]-1;i>=result;i--)
+        NSLog(@"total objects in target now are %d", [targetGroup.MyBlocks count]);
+        
+        for(int i=[blocks count]-1;i>=result;i--)
         {
             NSLog(@"remove block");
-            id<Rendered,Moveable> obj=[operatedGroup.MyBlocks objectAtIndex:i];
+            id<Rendered,Moveable> obj=[blocks objectAtIndex:i];
             [targetGroup removeObject:obj];
             [obj fadeAndDestroy];
         }
@@ -535,21 +555,22 @@
 -(void)divideGroupsInBubbles
 {
     NSMutableArray *groups=[self returnCurrentValidGroups];
-    id<Group> targetGroup=[groups objectAtIndex:1];
-    id<Group> operatedGroup=[groups objectAtIndex:0];
+    id<Group> targetGroup=[groups objectAtIndex:0];
+    id<Group> operatedGroup=[groups objectAtIndex:1];
     
     if([targetGroup.MyBlocks count]>[operatedGroup.MyBlocks count])
     {
         int result=[targetGroup.MyBlocks count]/[operatedGroup.MyBlocks count];
+        NSMutableArray *blocks=targetGroup.MyBlocks;
         
-        NSLog(@"result %d", result);
+        NSLog(@"result %d, total block count %d", result, [blocks count]);
         
         [self mergeGroupsFromBubbles];
         
-        for(int i=[operatedGroup.MyBlocks count]-1;i>=result;i--)
+        for(int i=[blocks count]-1;i>=result;i--)
         {
             NSLog(@"remove block");
-            id<Rendered,Moveable> obj=[operatedGroup.MyBlocks objectAtIndex:i];
+            id<Rendered,Moveable> obj=[blocks objectAtIndex:i];
             [targetGroup removeObject:obj];
             [obj fadeAndDestroy];
         }

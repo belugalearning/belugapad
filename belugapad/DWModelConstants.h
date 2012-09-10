@@ -96,6 +96,7 @@ typedef enum {
     kDWresetToMountPositionAndDestroy=44,
     
     kDWdestroy=45,
+    kDWfadeAndDestroy=46,
     
     kDWareYouProximateTo=101,
     kDWupdateObjectData=102,

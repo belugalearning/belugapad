@@ -94,7 +94,7 @@ static float kTimeToCageShake=7.0f;
         
         gw.Blackboard.inProblemSetup = NO;
         
-        debugLogging=YES;
+        debugLogging=NO;
         
         for (int i=0;i<numberOfColumns;i++)
         {
@@ -351,7 +351,7 @@ static float kTimeToCageShake=7.0f;
             cge.PosY=ly*kCageYOrigin;
             
             if(isNegativeProblem)
-                cge.ObjectValue=cageDefaultValue;
+                cge.ObjectValue=cageDefaultValue*currentColumnValue;
             else
                 cge.ObjectValue=[[currentColumnInfo objectForKey:COL_VALUE]floatValue];
 
@@ -1285,8 +1285,9 @@ static float kTimeToCageShake=7.0f;
             [cge.MountedObject handleMessage:kDWdestroy];
             
             int curNum=[[currentBlockValues objectAtIndex:i]intValue];
-            curNum++;
-            if(curNum>1)curNum=1;
+            float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]floatValue];
+            curNum+=1*colVal;
+            if(curNum>1*colVal)curNum=1*colVal;
             
             cge.ObjectValue=curNum;
             
@@ -1310,8 +1311,9 @@ static float kTimeToCageShake=7.0f;
             [cge.MountedObject handleMessage:kDWdestroy];
             
             int curNum=[[currentBlockValues objectAtIndex:i]intValue];
-            curNum--;
-            if(curNum<-1)curNum=-1;
+            float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]floatValue];
+            curNum-=1*colVal;
+            if(curNum<-1*colVal)curNum=-1*colVal;
             
             cge.ObjectValue=curNum;
             
@@ -2174,6 +2176,11 @@ static float kTimeToCageShake=7.0f;
                 // set the zindex back to what it was
                 [b.mySprite setZOrder:b.lastZIndex];
                 
+                if(isNegativeProblem && b.ObjectValue==0)
+                {
+                    [b handleMessage:kDWfadeAndDestroy];
+                    return;
+                }
                 
                 // set a bool saying whether our dropobject is a cage or not
                 BOOL isCage;

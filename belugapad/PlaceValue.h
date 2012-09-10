@@ -131,6 +131,7 @@
     float lastTotalCount;
     
     int cageDefaultValue;
+    BOOL explodeMode;
     
     CCSprite *condensePanel;
     CCSprite *mulchPanel;

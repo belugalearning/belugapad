@@ -317,6 +317,10 @@ static float kTimeToCageShake=7.0f;
                 c.myCol=i;
                 c.myRope=iRope;
                 
+                // if we want to be able to have items cancel each other out -- we need explode mode to be on
+                if(isNegativeProblem && explodeMode)
+                    c.AllowMultipleMount=YES;
+                
                 if(c.myRow==0)
                     c.renderType=1;
                 else if(c.myRow==currentColumnRopes-1)
@@ -354,7 +358,6 @@ static float kTimeToCageShake=7.0f;
                 cge.ObjectValue=cageDefaultValue*currentColumnValue;
             else
                 cge.ObjectValue=[[currentColumnInfo objectForKey:COL_VALUE]floatValue];
-
             
             // set our column specific options on the store
             
@@ -646,6 +649,7 @@ static float kTimeToCageShake=7.0f;
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
     cageDefaultValue = [[pdef objectForKey:CAGE_DEFAULT_VALUE] intValue];
+    explodeMode = [[pdef objectForKey:EXPLODE_MODE]boolValue];
     
     if([pdef objectForKey:DISABLE_AUDIO_COUNTING])
         disableAudioCounting = [[pdef objectForKey:DISABLE_AUDIO_COUNTING] boolValue];
@@ -2170,17 +2174,18 @@ static float kTimeToCageShake=7.0f;
                 if(debugLogging)
                     NSLog(@"(touchend-gotdroptarget) free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
                 DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
+                DWPlaceValueNetGameObject *n=nil;
+                
+                if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                    n=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
+
+                
                 // set the pickup object's mount to the dropobject
                 b.Mount=gw.Blackboard.DropObject;
                 
                 // set the zindex back to what it was
                 [b.mySprite setZOrder:b.lastZIndex];
                 
-                if(isNegativeProblem && b.ObjectValue==0)
-                {
-                    [b handleMessage:kDWfadeAndDestroy];
-                    return;
-                }
                 
                 // set a bool saying whether our dropobject is a cage or not
                 BOOL isCage;
@@ -2235,6 +2240,16 @@ static float kTimeToCageShake=7.0f;
                         [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
                         }
                     }
+                }
+                else if(isNegativeProblem && b.ObjectValue==0)
+                {
+                    [b handleMessage:kDWfadeAndDestroy];
+                    [self setTouchVarsToOff];
+                    return;
+                }
+                else if(isNegativeProblem && explodeMode && n.MountedObject && !n.CancellingObject)
+                {
+                    NSLog(@"we need to move and destroy this bitch!");
                 }
                 
                 // ===== return a selection (a base selection) back to where they came from by resetting mounts etc ===

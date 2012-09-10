@@ -22,7 +22,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>{$var1} + x = {$var2}. What is x?</string>
+		<string>{$var1} + {$var2} = x. What is x?</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>PICKER_ORIGIN_X</key>
@@ -34,7 +34,7 @@
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
-		<string>{$var2-$var1}</string>
+		<string>{$var2+$var1}</string>
 	</dict>
 </dict>
 </plist>

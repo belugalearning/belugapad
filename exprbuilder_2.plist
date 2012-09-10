@@ -2,24 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>MASTERY</key>
-	<true/>
 	<key>TOOL_KEY</key>
 	<string>ExprBuilder</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>tom&apos;s apples</string>
+	<string>fractions</string>
 	<key>EXPR_STAGES</key>
 	<array>
-		<string>&lt;b:t&gt;Tom had&lt;/b:t&gt;
-&lt;b:ot tag=&quot;a&quot;&gt;5 sweets&lt;/b:ot&gt;
-&lt;b:t&gt;He gets&lt;/b:t&gt;
-&lt;b:ot tag=&quot;b&quot;&gt;4 more.&lt;/b:ot&gt;
-&lt;b:t&gt;How many does he have?&lt;/b:t&gt;</string>
-		<string>&lt;b:ot tag=&quot;a&quot; enabled=&quot;no&quot;&gt;5 sweets&lt;/b:ot&gt;
+		<string>&lt;b:t&gt;Sarah had a birthday cake that was cut into 8 slices. Fiona got&lt;/b:t&gt;
+&lt;b:ot tag=&quot;a&quot;&gt;1 slice of cake,&lt;/b:ot&gt;
+&lt;b:t&gt;and ate the &lt;/b:t&gt;
+&lt;b:ot tag=&quot;b&quot;&gt;extra slice of cake&lt;/b:ot&gt;
+&lt;b:t&gt;leftover too. What fraction of the whole cake did she eat?&lt;/b:t&gt;</string>
+		<string>&lt;b:ot tag=&quot;a&quot; enabled=&quot;no&quot;&gt;1/8&lt;/b:ot&gt;
 &lt;b:op op=&quot;+&quot; picker=&quot;yes&quot; /&gt;
-&lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt;4 sweets&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt;1/8&lt;/b:ot&gt;
 &lt;b:op op=&quot;=&quot; /&gt;
-&lt;b:ot picker=&quot;yes&quot; pickerTarget=&quot;9&quot;&gt;9 sweets&lt;/b:ot&gt;</string>
+&lt;b:ot picker=&quot;yes&quot; pickerTarget=&quot;1&quot;&gt;2/8&lt;/b:ot&gt;</string>
 	</array>
 	<key>DVARS</key>
 	<dict>

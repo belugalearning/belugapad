@@ -132,6 +132,10 @@
     {
         [self switchBaseSelection:NO];        
     }
+    if(messageType==kDWdestroy)
+    {
+        [self destroy];
+    }
     if(messageType==kDWdismantle)
     {
         CCSprite *s=b.mySprite;
@@ -266,6 +270,16 @@
     CCAction *cleanUpSprite=[CCCallBlock actionWithBlock:^{[curSprite removeFromParentAndCleanup:YES];}];
     CCAction *cleanUpGO=[CCCallBlock actionWithBlock:^{[gameWorld delayRemoveGameObject:b];}];
     CCSequence *sequence=[CCSequence actions:moveAct, cleanUpSprite, cleanUpGO, nil];
+    [curSprite runAction:sequence];
+}
+
+-(void)destroy
+{
+    CCSprite *curSprite = b.mySprite;
+    CCMoveTo *fadeOut=[CCFadeOut actionWithDuration:0.01f];
+    CCAction *cleanUpSprite=[CCCallBlock actionWithBlock:^{[curSprite removeFromParentAndCleanup:YES];}];
+    CCAction *cleanUpGO=[CCCallBlock actionWithBlock:^{[gameWorld delayRemoveGameObject:b];}];
+    CCSequence *sequence=[CCSequence actions:fadeOut, cleanUpSprite, cleanUpGO, nil];
     [curSprite runAction:sequence];
 }
 

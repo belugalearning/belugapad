@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is −3. Add 3.</string>
+	<string>What is {$x} + {0-$y}?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>- 3 + 3 = 0</string>
+	<string>positive+negative</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>-3</string>
+	<string>{$x}</string>
 	<key>MIN_VALUE</key>
-	<string>-25</string>
+	<string>{$x-$y}</string>
 	<key>MAX_VALUE</key>
-	<string>25</string>
+	<string>{$x+$y}</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<string>0</string>
+	<string>{$x-$y}</string>
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
 	<key>HIDE_ALL_NOTCHES</key>
@@ -38,5 +38,18 @@
 	<integer>0</integer>
 	<key>RENDER_STITCHES_AT_INTERVAL</key>
 	<integer>0</integer>
+	<key>DVARS</key>
+	<dict>
+		<key>$x</key>
+		<dict>
+			<key>RECALL</key>
+			<string>{$x}</string>
+		</dict>
+		<key>$y</key>
+		<dict>
+			<key>RECALL</key>
+			<string>{$y}</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

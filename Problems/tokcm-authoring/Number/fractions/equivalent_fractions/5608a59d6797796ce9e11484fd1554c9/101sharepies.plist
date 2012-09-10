@@ -3,9 +3,25 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Which number is smaller?</string>
-	<key>INTERNAL_DESCRIPTION</key>
-	<string>two-digit inequalities same tens diff units</string>
+	<string>Share two pies between two.</string>
+	<key>TOOL_KEY</key>
+	<string>PieSplitter</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>DIVIDEND</key>
+	<integer>2</integer>
+	<key>DIVISOR</key>
+	<integer>2</integer>
+	<key>NUMBER_ACTIVE_PIES</key>
+	<integer>2</integer>
+	<key>NUMBER_ACTIVE_SQUARES</key>
+	<integer>2</integer>
+	<key>START_PROBLEM_SPLIT</key>
+	<true/>
+	<key>NUMBER_CAGED_PIES</key>
+	<integer>0</integer>
+	<key>NUMBER_CAGED_SQUARES</key>
+	<integer>0</integer>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
@@ -18,19 +34,25 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>59</string>
+				<string>1</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>0.5</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>54</string>
+				<string>2</string>
 				<key>META_ANSWER_VALUE</key>
-				<true/>
+				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Which number is smaller?</string>
+		<string>Share two pies between two. How much is 2/2?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again.</string>
 	</dict>

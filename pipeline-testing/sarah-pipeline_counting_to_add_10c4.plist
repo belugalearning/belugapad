@@ -2,13 +2,21 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
-	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/pv_3-5.plist</string>
-	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/pv_4-6.plist</string>
-	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/nl_4-6.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/nline_3-2.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/fbl_3-2.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/nline_3-2_count_on.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/nline_3-5.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/fbl_3-5.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/nline_3-5_count_on.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/nline_5-6.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/fbl_5-6.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/nline_5-6_count_on.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/nline_9-5.plist</string>
 	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/pv_9-5.plist</string>
-	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/nl_9-5.plist</string>
-	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/pv_10-4.plist</string>
-	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/nl_10-4.plist</string>
-	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/nl_6-8.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/nline_9-5_count_on.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/nline_4-6.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/fbl_4-6.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/nline_10-4.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/counting_on_to_add_and_subtract/5608a59d6797796ce9e11484fd1710c4/fbl_10-4.plist</string>
 </array>
 </plist>

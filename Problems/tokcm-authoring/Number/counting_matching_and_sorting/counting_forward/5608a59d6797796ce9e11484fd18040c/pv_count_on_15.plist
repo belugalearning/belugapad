@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 5. Count on 15 more.</string>
+	<string>This is 5. Add 15 blocks and count the total number of blocks. </string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>count on 15 from 5</string>
 	<key>TOOL_KEY</key>

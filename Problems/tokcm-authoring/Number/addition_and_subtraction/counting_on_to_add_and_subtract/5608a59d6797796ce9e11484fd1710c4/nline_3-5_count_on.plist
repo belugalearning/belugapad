@@ -2,16 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>MASTERY</key>
-	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 9. Add 5.</string>
+	<string>Starting at 3, count to 8. </string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>5+9</string>
+	<string>Start at 3, count on to 8. </string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>9</string>
+	<string>3</string>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
@@ -21,19 +19,17 @@
 	<key>REJECT_MODE</key>
 	<integer>1</integer>
 	<key>EVAL_TARGET</key>
-	<string>14</string>
+	<integer>8</integer>
 	<key>HIDE_ALL_NUMBERS</key>
-	<false/>
+	<true/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
 	<array>
 		<string>1</string>
 	</array>
 	<key>HIDE_ALL_NOTCHES</key>
-	<true/>
+	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
-	<array>
-		<string>1</string>
-	</array>
+	<array/>
 	<key>HIDE_START_NUMBER</key>
 	<false/>
 	<key>HIDE_END_NUMBER</key>

@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Show that the total of 3 and 2 is 5.</string>
+	<string>Show that 3 add 5 is 8.</string>
 	<key>TOOL_KEY</key>
 	<string>FloatingBlock</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
 	<key>SOLUTION</key>
-	<integer>5</integer>
+	<integer>8</integer>
 	<key>INIT_BUBBLES</key>
 	<integer>2</integer>
 	<key>INIT_OBJECTS</key>
@@ -20,7 +20,7 @@
 		</dict>
 		<dict>
 			<key>NUMBER</key>
-			<integer>2</integer>
+			<integer>5</integer>
 		</dict>
 	</array>
 	<key>BUBBLE_AUTO_OPERATE</key>

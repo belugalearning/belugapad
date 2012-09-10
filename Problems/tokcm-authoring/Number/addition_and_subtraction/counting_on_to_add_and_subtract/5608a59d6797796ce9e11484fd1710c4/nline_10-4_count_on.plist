@@ -2,38 +2,34 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>MASTERY</key>
-	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 6. Add 8.</string>
+	<string>Starting at 10, count to 14. </string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>6+8</string>
+	<string>Start at 10, count on to 14. </string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>6</string>
+	<string>10</string>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
-	<string>21</string>
+	<string>20</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>1</integer>
 	<key>EVAL_TARGET</key>
-	<string>14</string>
+	<integer>14</integer>
 	<key>HIDE_ALL_NUMBERS</key>
-	<false/>
+	<true/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
 	<array>
-		<string>3</string>
+		<string>1</string>
 	</array>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
-	<array>
-		<string>1</string>
-	</array>
+	<array/>
 	<key>HIDE_START_NUMBER</key>
 	<false/>
 	<key>HIDE_END_NUMBER</key>
@@ -48,7 +44,7 @@
 	<integer>0</integer>
 	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
 	<array>
-		<integer>3</integer>
+		<integer>1</integer>
 	</array>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array/>

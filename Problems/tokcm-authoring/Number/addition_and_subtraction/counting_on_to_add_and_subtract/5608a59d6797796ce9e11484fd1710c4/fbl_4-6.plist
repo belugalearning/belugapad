@@ -3,24 +3,24 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Show that the total of 3 and 2 is 5.</string>
+	<string>Show that 4 + 6 is 10.</string>
 	<key>TOOL_KEY</key>
 	<string>FloatingBlock</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
 	<key>SOLUTION</key>
-	<integer>5</integer>
+	<integer>10</integer>
 	<key>INIT_BUBBLES</key>
 	<integer>2</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
 			<key>NUMBER</key>
-			<integer>3</integer>
+			<integer>4</integer>
 		</dict>
 		<dict>
 			<key>NUMBER</key>
-			<integer>2</integer>
+			<integer>6</integer>
 		</dict>
 	</array>
 	<key>BUBBLE_AUTO_OPERATE</key>

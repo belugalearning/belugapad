@@ -2249,7 +2249,10 @@ static float kTimeToCageShake=7.0f;
                 }
                 else if(isNegativeProblem && explodeMode && n.MountedObject && !n.CancellingObject)
                 {
-                    NSLog(@"we need to move and destroy this bitch!");
+                    [b handleMessage:kDWresetToMountPosition];
+                    [n.MountedObject handleMessage:kDWfadeAndDestroy];
+                    [b handleMessage:kDWfadeAndDestroy];
+                    n.MountedObject=nil;
                 }
                 
                 // ===== return a selection (a base selection) back to where they came from by resetting mounts etc ===

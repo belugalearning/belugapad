@@ -168,6 +168,15 @@ static float kTimeToCageShake=7.0f;
         }
     }
     
+    if(isNegativeProblem)
+    {
+        for(int i=0;i<[blockLabels count];i++)
+        {
+            CCLabelTTF *l=[blockLabels objectAtIndex:i];
+            [l setString:[NSString stringWithFormat:@"%d", [[currentBlockValues objectAtIndex:i]intValue]]];
+        }
+    }
+    
     if([gw.Blackboard SelectedObjects].count==columnBaseValue && showBaseSelection && allowCondensing)
         isBasePickup=YES;
     else
@@ -270,6 +279,10 @@ static float kTimeToCageShake=7.0f;
             showMultipleDragging=YES;
             posCageSprite=BUNDLE_FULL_PATH(@"/images/placevalue/cage-variable.png");
         }
+        else if(isNegativeProblem)
+        {
+            posCageSprite=BUNDLE_FULL_PATH(@"/images/placevalue/cage-variable.png");            
+        }
         else
         {
             showMultipleDragging=NO;
@@ -320,7 +333,8 @@ static float kTimeToCageShake=7.0f;
             
             [RowArray release];
         }
-        
+
+
         if(!([columnCages objectForKey:currentColumnValueKey]) || ([[columnCages objectForKey:currentColumnValueKey] boolValue]==YES)) 
         {
             CCSprite *cageContainer = [CCSprite spriteWithFile:posCageSprite];
@@ -335,7 +349,11 @@ static float kTimeToCageShake=7.0f;
             cge.AllowMultipleMount=YES;
             cge.PosX=i*(kPropXColumnSpacing*lx);
             cge.PosY=ly*kCageYOrigin;
-            cge.ObjectValue=[[currentColumnInfo objectForKey:COL_VALUE]floatValue];
+            
+            if(isNegativeProblem)
+                cge.ObjectValue=cageDefaultValue;
+            else
+                cge.ObjectValue=[[currentColumnInfo objectForKey:COL_VALUE]floatValue];
 
             
             // set our column specific options on the store
@@ -365,47 +383,6 @@ static float kTimeToCageShake=7.0f;
             [allCages addObject:cge];
             [cge release];
             
-        }
-        if([[columnNegCages objectForKey:currentColumnValueKey] boolValue]==YES) 
-        {
-            CCSprite *cageContainer = [CCSprite spriteWithFile:negCageSprite];
-            [cageContainer setPosition:ccp(i*(kPropXColumnSpacing*lx), ly*kCageYOrigin)];
-            [cageContainer setOpacity:0];
-            [cageContainer setTag:2];
-            [renderLayer addChild:cageContainer z:10];
-            
-            float colValueNeg = -([[currentColumnInfo objectForKey:COL_VALUE] floatValue]);
-            // create cage
-            DWPlaceValueCageGameObject *cge=[DWPlaceValueCageGameObject alloc];
-            [gw populateAndAddGameObject:cge withTemplateName:@"TplaceValueCage"];
-            cge.AllowMultipleMount=YES;
-            cge.PosX=i*(kPropXColumnSpacing*lx)+100;
-            cge.PosY=ly*kCageYOrigin;
-            cge.ObjectValue=colValueNeg;
-            
-
-            if([columnCageNegDisableAdd objectForKey:currentColumnValueKey])
-                cge.DisableAdd=[[columnCageNegDisableAdd objectForKey:currentColumnValueKey] boolValue];
-            
-            
-            if([columnCageNegDisableDel objectForKey:currentColumnValueKey])
-                cge.DisableDel=[[columnCageNegDisableDel objectForKey:currentColumnValueKey] boolValue];
-            
-            
-            if([columnSprites objectForKey:currentColumnValueKey])
-                cge.SpriteFilename=[columnSprites objectForKey:currentColumnValueKey];
-            else
-                cge.SpriteFilename=kDefaultSprite;
-            
-            
-            if(pickupSprite)
-                cge.PickupSpriteFilename=pickupSprite;
-            
-                        
-            
-            if(!allCages) allCages=[[NSMutableArray alloc] init];
-            [allCages addObject:cge];
-            [cge release];
         }
         
         if(showMultipleDragging)
@@ -445,6 +422,41 @@ static float kTimeToCageShake=7.0f;
             [renderLayer addChild:label z:99999];
             
         }
+        else if(isNegativeProblem)
+        {
+            NSLog(@"isNegativeProblem!");
+            [currentBlockValues addObject:[NSNumber numberWithInt:cageDefaultValue]];
+            
+            CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", cageDefaultValue] fontName:@"Chango" fontSize:PROBLEM_DESC_FONT_SIZE];
+            
+            float PosX=i*(kPropXColumnSpacing*lx)-120;
+            float PosY=(ly*kCageYOrigin)-41;
+            
+            CGRect minus=CGRectMake(PosX, PosY, 70, 82);
+            CGRect plus=CGRectMake(PosX+170, PosY, 70, 82);
+            
+            //[minusSprite setPosition:ccp(PosX,PosY-25)];
+            //[posiSprite setPosition:ccp(PosX,PosY+25)];
+            [label setPosition:ccp(PosX+120,PosY+61)];
+            
+            [multipleMinusSprites addObject:[NSValue valueWithCGRect:minus]];
+            [multiplePlusSprites addObject:[NSValue valueWithCGRect:plus]];
+            [blockLabels addObject:label];
+            
+            if(debugLogging)
+            {
+                NSLog(@"currentBlockValues count %d, minusSprites count %d, plusSprites count %d, blockLabels count %d", [currentBlockValues count], [multipleMinusSprites count], [multiplePlusSprites count], [blockLabels count]);
+            }
+        
+            [label setTag:3];
+            [label setOpacity:0];
+            [label setColor:ccc3(0,0,0)];
+            
+            //[renderLayer addChild:minusSprite];
+            //[renderLayer addChild:posiSprite];
+            [renderLayer addChild:label z:99999];
+
+        }
         else {
             if(multipleBlockPickup)
             {
@@ -462,7 +474,7 @@ static float kTimeToCageShake=7.0f;
                 [multipleLabels addObject:label];
             }
         }
-        
+         
         [newCol release];
 
         //decrement for next column
@@ -604,6 +616,7 @@ static float kTimeToCageShake=7.0f;
     [gw logInfo:[NSString stringWithFormat:@"started problem"] withData:0];
     
 
+    isNegativeProblem=[[pdef objectForKey:IS_NEGATIVE_PROBLEM]boolValue];
     
     if([[pdef objectForKey:DEFAULT_COL] intValue])
         defaultColumn = [[pdef objectForKey:DEFAULT_COL] intValue]; 
@@ -632,6 +645,8 @@ static float kTimeToCageShake=7.0f;
     showCountOnBlock = [[pdef objectForKey:SHOW_COUNT_BLOCK] boolValue];
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
+    cageDefaultValue = [[pdef objectForKey:CAGE_DEFAULT_VALUE] intValue];
+    
     if([pdef objectForKey:DISABLE_AUDIO_COUNTING])
         disableAudioCounting = [[pdef objectForKey:DISABLE_AUDIO_COUNTING] boolValue];
     else
@@ -818,11 +833,6 @@ static float kTimeToCageShake=7.0f;
         [columnCages retain];
     }
     
-    if([pdef objectForKey:COLUMN_NEG_CAGES]) {
-        // look for negative column cages
-        columnNegCages = [pdef objectForKey:COLUMN_NEG_CAGES];
-        [columnNegCages retain];
-    }
     
     // define how we show our count/sum labels if applicable
     if(showCount||showValue)
@@ -843,6 +853,11 @@ static float kTimeToCageShake=7.0f;
     }
 
     if(showMultipleControls||multipleBlockPickup)blocksToCreate=[[NSMutableArray alloc]init];
+    if(isNegativeProblem)
+    {
+        currentBlockValues=[[NSMutableArray alloc]init];
+        blockLabels=[[NSMutableArray alloc]init];
+    }
 }
 
 #pragma mark - status messages
@@ -1255,7 +1270,59 @@ static float kTimeToCageShake=7.0f;
             return;
         }
     }
+    
+}
 
+-(void)checkForBlockValueTouchesAt:(CGPoint)thisLocation
+{
+    for(int i=0;i<[multiplePlusSprites count];i++)
+    {
+        CGRect boundingBox=[[multiplePlusSprites objectAtIndex:i]CGRectValue];
+        //CCSprite *s=[multiplePlusSprites objectAtIndex:i];
+        if(CGRectContainsPoint(boundingBox, [renderLayer convertToNodeSpace:thisLocation]))
+        {
+            DWPlaceValueCageGameObject *cge=[allCages objectAtIndex:i];
+            [cge.MountedObject handleMessage:kDWdestroy];
+            
+            int curNum=[[currentBlockValues objectAtIndex:i]intValue];
+            curNum++;
+            if(curNum>1)curNum=1;
+            
+            cge.ObjectValue=curNum;
+            
+            [cge handleMessage:kDWsetupStuff];
+            
+            //TODO: Change this logging event
+            [loggingService logEvent:BL_PA_PV_TOUCH_END_BLOCKSTOCREATE_UP withAdditionalData:[NSNumber numberWithInt:curNum]];
+            
+            [currentBlockValues replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
+            return;
+        }
+    }
+    
+    for(int i=0;i<[multipleMinusSprites count];i++)
+    {
+        CGRect boundingBox=[[multipleMinusSprites objectAtIndex:i]CGRectValue];
+        //CCSprite *s=[multipleMinusSprites objectAtIndex:i];
+        if(CGRectContainsPoint(boundingBox, [renderLayer convertToNodeSpace:thisLocation]))
+        {
+            DWPlaceValueCageGameObject *cge=[allCages objectAtIndex:i];
+            [cge.MountedObject handleMessage:kDWdestroy];
+            
+            int curNum=[[currentBlockValues objectAtIndex:i]intValue];
+            curNum--;
+            if(curNum<-1)curNum=-1;
+            
+            cge.ObjectValue=curNum;
+            
+            [cge handleMessage:kDWsetupStuff];
+            
+            [loggingService logEvent:BL_PA_PV_TOUCH_END_BLOCKSTOCREATE_DOWN withAdditionalData:[NSNumber numberWithInt:curNum]];
+            [currentBlockValues replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
+            return;
+        }
+    }
+    
 }
 
 -(void)switchSpritesBack
@@ -1980,6 +2047,9 @@ static float kTimeToCageShake=7.0f;
     if(multipleBlockPickup||showMultipleControls)
         [self checkForMultipleControlTouchesAt:location];
     
+    if(isNegativeProblem)
+        [self checkForBlockValueTouchesAt:location];
+    
     // log out if blocks are moved
     if(hasMovedBlock)
     {
@@ -2306,9 +2376,10 @@ static float kTimeToCageShake=7.0f;
     if(multipleBlockPickup) [multipleBlockPickup release];
     if(columnSprites) [columnSprites release];
     if(columnCages) [columnCages release];
-    if(columnNegCages) [columnNegCages release];
     if(columnRows) [columnRows release];
     if(columnRopes) [columnRopes release];
+    if(currentBlockValues)[currentBlockValues release];
+    if(blockLabels)[blockLabels release];
     posCageSprite=nil;
     negCageSprite=nil;
     if(pickupSprite) [pickupSprite release];

@@ -22,5 +22,6 @@
 @property (retain) CCSprite *mySprite;
 @property BOOL Hidden;
 @property int renderType;
+@property BOOL AllowNegMultipleMount;
 
 @end

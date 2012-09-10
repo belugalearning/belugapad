@@ -50,13 +50,8 @@
                 //get coords from payload (i.e. the search target)
                 CGPoint hitLoc=[gameWorld.Blackboard.ComponentRenderLayer convertToWorldSpace:gameWorld.Blackboard.TestTouchLocation];
                 
-
-                    NSNumber *gameObjectValue = nil;
-                    NSNumber *pickupObjectValue = nil;
-                    gameObjectValue = [NSNumber numberWithFloat:c.ObjectValue];
-                    pickupObjectValue = [NSNumber numberWithFloat:addO.ObjectValue];
-
-                    if([gameObjectValue isEqualToNumber:pickupObjectValue])
+                
+                    if(c.ObjectValue==addO.ObjectValue)
                     {
                         float dist=[BLMath DistanceBetween:myLoc and:hitLoc];
 

@@ -20,6 +20,7 @@
 @synthesize mySprite;
 @synthesize Hidden;
 @synthesize renderType;
+@synthesize AllowNegMultipleMount;
 
 -(void)dealloc
 {

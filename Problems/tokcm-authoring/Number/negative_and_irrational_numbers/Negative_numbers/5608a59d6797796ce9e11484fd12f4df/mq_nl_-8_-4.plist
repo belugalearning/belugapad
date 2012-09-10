@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>MASTERY</key>
-	<true/>
+	<false/>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>-8 C &lt; -4 C. Which temperature is colder?</string>
 	<key>INTERNAL_DESCRIPTION</key>

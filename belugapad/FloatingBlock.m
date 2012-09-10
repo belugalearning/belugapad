@@ -202,7 +202,7 @@
     
     if(showMultipleControls)
     {
-        newPipeLabel=[CCLabelTTF labelWithString:@"dickhead" fontName:@"Chango" fontSize:50.0f];
+        newPipeLabel=[CCLabelTTF labelWithString:@"" fontName:@"Chango" fontSize:50.0f];
         [newPipeLabel setPosition:ccp(100, 550)];
         [renderLayer addChild:newPipeLabel];
         
@@ -298,8 +298,9 @@
     }
 }
 
--(void)showOperatorBubble
+-(void)showOperatorBubbleOrMerge
 {
+    // this only gets called from a multi-bubble problem - so we must check it's valid by seeing that there's only 1 group in each bubble - if not, it's not valid
     BOOL isValid=YES;
     
     for(id go in gw.AllGameObjectsCopy)
@@ -316,6 +317,7 @@
         }
     }
     
+    // if we're showing a bubble already and it's no longer valid - remove the operator bubble
     if(showingOperatorBubble && !isValid)
     {
         id<Operator,Rendered>curBubble=(id<Operator,Rendered>)opBubble;
@@ -323,38 +325,120 @@
         curBubble=nil;
         opBubble=nil;
         showingOperatorBubble=NO;
+        return;
     }
-    
-    if(!showingOperatorBubble && isValid)
+    // or create it if need be
+    else if(!showingOperatorBubble && isValid)
     {
         id<Operator,Rendered>op=[[SGFBlockOpBubble alloc] initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(cx, 375) andOperators:supportedOperators];
         [op setup];
         opBubble=op;
         showingOperatorBubble=YES;
+        return;
     }
+    // but if we have an operator bubble, it's still valid and we have a pickupobject as such
+    else if(showingOperatorBubble && isValid && [pickupObject isKindOfClass:[SGFBlockOpBubble class]])
+    {
+        // then if we only have 1 operator - merge the bubbles 
+        if([supportedOperators count]==1)
+        {
+            [self mergeGroupsFromBubbles];
+        }
+        // if we have no current childoperators and there's more than 1 supported operator, then show them
+        else if([supportedOperators count]>1 && [[opBubble ChildOperators]count]==0)
+        {
+            [opBubble showOtherOperators];
+        }
+        // but if there's more and it's already showing the childoperators, then check for a touch on one of them
+        else if([supportedOperators count]>1 && [[opBubble ChildOperators]count]>1)
+        {
+            // by looping over the childoperator array
+            for(id<Operator,Rendered>oper in [opBubble ChildOperators])
+            {
+                // then if we have a valid hit - check the string and run whichever operation's appropriate
+                if(CGRectContainsPoint(oper.MySprite.boundingBox, touchStartPos))
+                {
+                    NSString *s=[oper.SupportedOperators objectAtIndex:0];
+                    
+                    if([s isEqualToString:@"+"])
+                        [self mergeGroupsFromBubbles];
+                    else if([s isEqualToString:@"x"])
+                            [self multiplyGroupsInBubbles];
+                    else if([s isEqualToString:@"-"])
+                        [self subtractGroupsInBubbles];
+                    else if([s isEqualToString:@"/"])
+                        [self divideGroupsInBubbles];
+                }
+            }
+            
+        }
+    }
+    
 }
 
--(void)mergeGroupsFromBubbles
+-(NSMutableArray*)returnCurrentValidGroups
 {
     NSMutableArray *groups=[[NSMutableArray alloc]init];
+    
+    float xPos=lx;
     
     for(id go in gw.AllGameObjectsCopy)
     {
         if([go conformsToProtocol:@protocol(Target)])
         {
-            id<Target> current=(id<Target>)go;
+            id<Target,Rendered> current=(id<Target,Rendered>)go;
             if([go containedGroups]==1)
             {
-                [groups addObject:[current.GroupsInMe objectAtIndex:0]];
-                
+                if(current.Position.x<xPos)
+                {
+                    xPos=current.Position.x;
+                    
+                    [groups insertObject:[current.GroupsInMe objectAtIndex:0] atIndex:0];
+                    id<Group> grp=[current.GroupsInMe objectAtIndex:0];
+                    NSLog(@"got furthest left obj %d", [grp.MyBlocks count]);
+                }
+                else
+                {
+                    id<Group> grp=[current.GroupsInMe objectAtIndex:0];
+                    NSLog(@"got rightmost %d", [grp.MyBlocks count]);
+                    [groups addObject:[current.GroupsInMe objectAtIndex:0]];
+                }
             }
         }
     }
     
+    return groups;
+}
+
+-(void)destroyBubblesAndCreateNew
+{
+    for(id bubble in gw.AllGameObjectsCopy)
+    {
+        if([bubble conformsToProtocol:@protocol(Target)])
+        {
+            float xPos=((id<Rendered>)bubble).MySprite.position.x;
+            
+            // kill the existing bubble - create a new one
+            
+            
+            id<Target> bubbleid=(id<Target>)bubble;
+            [bubbleid fadeAndDestroy];
+            id<Rendered> newbubble;
+            newbubble=[[SGFBlockBubble alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,-50) andReplacement:YES];
+            [newbubble setup];
+        }
+    }
+}
+
+-(void)mergeGroupsFromBubbles
+{
+    NSMutableArray *groups=[self returnCurrentValidGroups];
+    
     id<Group> targetGroup=[groups objectAtIndex:0];
     id<Rendered,Moveable> firstBlock=[targetGroup.MyBlocks objectAtIndex:0];
+    id<Rendered,Moveable> lastBlock=[targetGroup.MyBlocks objectAtIndex:[targetGroup.MyBlocks count]-1];
     float xPosOfFirstBlock=firstBlock.Position.x;
-    float yPosOfFirstBlock=firstBlock.Position.y-52;
+    float yPosOfFirstBlock=lastBlock.Position.y-52;
     
     
     for(id<Group> grp in groups)
@@ -393,23 +477,105 @@
         
     }
     
-    for(id bubble in gw.AllGameObjectsCopy)
+    [self destroyBubblesAndCreateNew];
+    [self showOperatorBubbleOrMerge];
+}
+
+-(void)multiplyGroupsInBubbles
+{
+    // TODO: is now not running the fade ani -- sort! probably due to updated returnCurrentValidGroups
+    NSMutableArray *groups=[self returnCurrentValidGroups];
+    id<Group> targetGroup=[groups objectAtIndex:0];
+    id<Group> operatedGroup=[groups objectAtIndex:1];
+    
+    int result=[targetGroup.MyBlocks count]*[operatedGroup.MyBlocks count];
+    int existing=[targetGroup.MyBlocks count]+[operatedGroup.MyBlocks count];
+    int needed=result-existing;
+    
+    NSLog(@"multiply result %d, existing %d, needed %d", result, existing, needed);
+
+    [self mergeGroupsFromBubbles];
+    
+
+    
+    for(int i=0;i<needed;i++)
     {
-        if([bubble conformsToProtocol:@protocol(Target)])
-        {
-            float xPos=((id<Rendered>)bubble).MySprite.position.x;
-            
-            // kill the existing bubble - create a new one
-            
-            
-            id<Target> bubbleid=(id<Target>)bubble;
-            [bubbleid fadeAndDestroy];
-            id<Rendered> newbubble;
-            newbubble=[[SGFBlockBubble alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,-50) andReplacement:YES];
-            [newbubble setup];
-        }
+        int lastindex=[targetGroup.MyBlocks count]-1;
+        id<Moveable>lastObj=[targetGroup.MyBlocks objectAtIndex:lastindex];
+        float xPos=lastObj.Position.x+52;
+        float yPos=lastObj.Position.y;
+        
+        NSLog(@"create existing at x %f y %f", xPos, yPos);
+        
+        id<Rendered,Moveable> newblock;
+        newblock=[[SGFBlockBlock alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,yPos)];
+        newblock.MyGroup=(id)targetGroup;
+        
+        [newblock setup];
+        
+        [targetGroup addObject:newblock];
     }
-    [self showOperatorBubble];
+    
+
+}
+
+-(void)subtractGroupsInBubbles
+{
+    NSMutableArray *groups=[self returnCurrentValidGroups];
+    id<Group> targetGroup=[groups objectAtIndex:0];
+    id<Group> operatedGroup=[groups objectAtIndex:1];
+    
+
+    NSLog(@"target group count %d, oper group count %d", [targetGroup.MyBlocks count], [operatedGroup.MyBlocks count]);
+    
+    if([targetGroup.MyBlocks count]>=[operatedGroup.MyBlocks count])
+    {
+
+        NSMutableArray *blocks=targetGroup.MyBlocks;
+        int result=[targetGroup.MyBlocks count]-[operatedGroup.MyBlocks count];
+        
+        NSLog(@"(subtract) result %d", result);
+        
+        [self mergeGroupsFromBubbles];
+
+        NSLog(@"total objects in target now are %d", [targetGroup.MyBlocks count]);
+        
+        for(int i=[blocks count]-1;i>=result;i--)
+        {
+            NSLog(@"remove block");
+            id<Rendered,Moveable> obj=[blocks objectAtIndex:i];
+            [targetGroup removeObject:obj];
+            [obj fadeAndDestroy];
+        }
+
+    }
+    
+}
+
+-(void)divideGroupsInBubbles
+{
+    NSMutableArray *groups=[self returnCurrentValidGroups];
+    id<Group> targetGroup=[groups objectAtIndex:0];
+    id<Group> operatedGroup=[groups objectAtIndex:1];
+    
+    if([targetGroup.MyBlocks count]>[operatedGroup.MyBlocks count])
+    {
+        int result=[targetGroup.MyBlocks count]/[operatedGroup.MyBlocks count];
+        NSMutableArray *blocks=targetGroup.MyBlocks;
+        
+        NSLog(@"result %d, total block count %d", result, [blocks count]);
+        
+        [self mergeGroupsFromBubbles];
+        
+        for(int i=[blocks count]-1;i>=result;i--)
+        {
+            NSLog(@"remove block");
+            id<Rendered,Moveable> obj=[blocks objectAtIndex:i];
+            [targetGroup removeObject:obj];
+            [obj fadeAndDestroy];
+        }
+        
+    }
 }
 
 #pragma mark - touches events
@@ -517,7 +683,7 @@
     if(bubbleAutoOperate)
         [self handleMergeShapes];
     else
-        [self showOperatorBubble];
+        [self showOperatorBubbleOrMerge];
     
     if(pickupObject)
     {
@@ -525,10 +691,6 @@
         {
             if(CGRectContainsPoint(commitPipe.boundingBox, location))
                 [self evalProblem];
-        }
-        if([pickupObject isKindOfClass:[SGFBlockOpBubble class]])
-        {
-            [self mergeGroupsFromBubbles];
         }
     }
     

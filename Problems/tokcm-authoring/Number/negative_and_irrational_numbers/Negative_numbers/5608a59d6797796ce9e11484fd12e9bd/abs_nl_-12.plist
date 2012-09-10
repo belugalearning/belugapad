@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>MASTERY</key>
-	<true/>
+	<false/>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>A fish is swimming -12m from sea level. How many metres underwater is it? </string>
 	<key>INTERNAL_DESCRIPTION</key>

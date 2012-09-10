@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>MASTERY</key>
-	<true/>
+	<false/>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>0 _ _ = 4. What is the missing operator and number?</string>
 	<key>INTERNAL_DESCRIPTION</key>

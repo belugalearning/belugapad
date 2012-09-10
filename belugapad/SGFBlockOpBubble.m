@@ -12,7 +12,7 @@
 
 @implementation SGFBlockOpBubble
 
-@synthesize MySprite, Position, RenderLayer, OperatorType, Replacement, Label, SupportedOperators;
+@synthesize MySprite, Position, RenderLayer, OperatorType, Replacement, Label, SupportedOperators, ChildOperators;
 
 -(SGFBlockOpBubble*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition andOperators:(NSArray*)theseOperators;
 {
@@ -62,6 +62,25 @@
     [MySprite runAction:[CCMoveTo actionWithDuration:0.4f position:Position]];
 }
 
+-(void)showOtherOperators
+{
+    if(!self.ChildOperators)
+        self.ChildOperators=[[NSMutableArray alloc]init];
+    
+    if([self.ChildOperators count]==0)
+    {
+        for(NSString *s in SupportedOperators)
+        {
+            NSArray *a=[NSArray arrayWithObject:s];
+            id<Operator,Rendered>op=[[SGFBlockOpBubble alloc] initWithGameWorld:gameWorld andRenderLayer:gameWorld.Blackboard.RenderLayer andPosition:ccp(self.Position.x, self.Position.y+100+([SupportedOperators indexOfObject:s]*80)) andOperators:a];
+            
+            [self.ChildOperators addObject:op];
+            
+            [op setup];
+        }
+    }
+}
+
 -(BOOL)amIProximateTo:(CGPoint)location
 {
     if(CGRectContainsPoint(MySprite.boundingBox, location))
@@ -74,6 +93,16 @@
 
 -(void)fadeAndDestroy
 {
+    if([ChildOperators count]>0)
+    {
+        for (id<Operator,Rendered>thisOp in ChildOperators)
+        {
+            [thisOp fadeAndDestroy];
+        }
+    }
+    
+    
+    
     CCMoveTo *fadeAct=[CCFadeOut actionWithDuration:0.5f];
     CCAction *cleanUpSprite=[CCCallBlock actionWithBlock:^{[MySprite removeFromParentAndCleanup:YES];}];
     CCAction *cleanUpGO=[CCCallBlock actionWithBlock:^{[gameWorld delayRemoveGameObject:self];}];
@@ -93,6 +122,7 @@
     MySprite=nil;
     Label=nil;
     SupportedOperators=nil;
+    ChildOperators=nil;
     [super dealloc];
 }
 

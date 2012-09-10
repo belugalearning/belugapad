@@ -42,6 +42,18 @@
     [MySprite setPosition:Position];
 }
 
+-(void)fadeAndDestroy
+{
+    CCMoveTo *fadeAct=[CCFadeOut actionWithDuration:0.5f];
+    CCAction *cleanUpSprite=[CCCallBlock actionWithBlock:^{[MySprite removeFromParentAndCleanup:YES];}];
+    CCAction *cleanUpGO=[CCCallBlock actionWithBlock:^{[gameWorld delayRemoveGameObject:self];}];
+    CCSequence *sequence=[CCSequence actions:fadeAct, cleanUpSprite, cleanUpGO, nil];
+    [MySprite runAction:sequence];
+    MyGroup=nil;
+    MySprite=nil;
+    
+}
+
 -(void)dealloc
 {
     MyGroup=nil;

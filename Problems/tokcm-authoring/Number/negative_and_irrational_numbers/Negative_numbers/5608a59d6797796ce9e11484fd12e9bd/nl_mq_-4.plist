@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>MASTERY</key>
-	<true/>
+	<false/>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>What number is the bubble on?</string>
 	<key>INTERNAL_DESCRIPTION</key>

@@ -6,6 +6,8 @@
 	<string>ExprBuilder</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>tom&apos;s apples</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
 	<key>EVAL_TYPE</key>
 	<string>ALL_ENABLED</string>
 	<key>EXPR_STAGES</key>
@@ -17,9 +19,7 @@
 &lt;b:t&gt;How many does he have?&lt;/b:t&gt;</string>
 		<string>&lt;b:ot tag=&quot;a&quot; enabled=&quot;no&quot;&gt;5 sweets&lt;/b:ot&gt;
 &lt;b:op op=&quot;+&quot; picker=&quot;yes&quot; /&gt;
-&lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt;4 sweets&lt;/b:ot&gt;
-&lt;b:op op=&quot;=&quot; /&gt;
-&lt;b:ot picker=&quot;yes&quot; pickerTarget=&quot;9&quot;&gt;9 sweets&lt;/b:ot&gt;</string>
+&lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt;4 sweets&lt;/b:ot&gt;</string>
 	</array>
 	<key>DVARS</key>
 	<dict>

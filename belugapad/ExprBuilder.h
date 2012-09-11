@@ -42,6 +42,8 @@
     
     //expressions
     NSArray *exprStages;
+    
+    NSString *evalType;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;

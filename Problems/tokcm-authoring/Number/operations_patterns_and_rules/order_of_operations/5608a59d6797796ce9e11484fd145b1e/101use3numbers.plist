@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Make 31.</string>
+	<string>Make 16.</string>
 	<key>TOOL_KEY</key>
 	<string>FloatingBlock</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
 	<key>SOLUTION</key>
-	<integer>31</integer>
+	<integer>16</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
@@ -18,7 +18,7 @@
 		</dict>
 		<dict>
 			<key>NUMBER</key>
-			<integer>6</integer>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>NUMBER</key>

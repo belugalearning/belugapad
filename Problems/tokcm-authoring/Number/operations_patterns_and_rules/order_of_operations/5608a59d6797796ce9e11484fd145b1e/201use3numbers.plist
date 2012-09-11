@@ -3,22 +3,22 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Make 27</string>
+	<string>Make 15</string>
 	<key>TOOL_KEY</key>
 	<string>FloatingBlock</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
 	<key>SOLUTION</key>
-	<integer>27</integer>
+	<integer>15</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
 			<key>NUMBER</key>
-			<integer>3</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>NUMBER</key>
-			<integer>6</integer>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>NUMBER</key>

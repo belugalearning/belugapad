@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Which of these is equal to 27?</string>
+	<string>Which of these is equal to 15?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>202brackets</string>
 	<key>META_QUESTION</key>
@@ -16,25 +16,25 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>(3 + 6) × 3</string>
+				<string>(3 + 2) × 3</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>3 + (6 × 3)</string>
+				<string>3 + (2 × 3)</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>(6 × 3) + 3</string>
+				<string>(2 × 3) + 3</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Which of these is equal to 27?</string>
+		<string>Which of these is equal to 15?</string>
 	</dict>
 </dict>
 </plist>

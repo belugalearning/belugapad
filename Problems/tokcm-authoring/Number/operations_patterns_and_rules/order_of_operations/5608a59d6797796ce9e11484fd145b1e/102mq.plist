@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Which of these makes 31?</string>
+	<string>Which of these makes 16?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>102brackets</string>
 	<key>META_QUESTION</key>
@@ -16,25 +16,25 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>(5 × 6) + 1</string>
+				<string>(5 × 3) + 1</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>5 × (6 + 1)</string>
+				<string>5 × (3 + 1)</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>(5 + 6) x 1</string>
+				<string>(5 + 3) x 1</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Which of these makes 31?</string>
+		<string>Which of these makes 16?</string>
 	</dict>
 </dict>
 </plist>

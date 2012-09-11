@@ -2,20 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>MASTERY</key>
-	<true/>
-	<key>TOOL_KEY</key>
-	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>8/4</string>
-	<key>EVAL_MODE</key>
-	<integer>0</integer>
-	<key>HOST_BACKGROUND_IMAGE</key>
-	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<string>Which expression is the same as 5?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>302brackets</string>
 	<key>META_QUESTION</key>
 	<dict>
-		<key>META_QUESTION_COMPLETE_TEXT</key>
-		<string>well done!!</string>
 		<key>META_QUESTION_EVAL_MODE</key>
 		<integer>0</integer>
 		<key>META_QUESTION_ANSWER_MODE</key>
@@ -24,21 +16,25 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>YES</string>
+				<string>(3 × 4) - 7</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>NO</string>
+				<string>3 × (4 - 7)</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>7 - (3 × 4)</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Is 6 x 2 equivalent to 2 x 6?</string>
-		<key>META_QUESTION_INCOMPLETE_TEXT</key>
-		<string>Try again</string>
+		<string>Which expression is the same as 5?</string>
 	</dict>
 </dict>
 </plist>

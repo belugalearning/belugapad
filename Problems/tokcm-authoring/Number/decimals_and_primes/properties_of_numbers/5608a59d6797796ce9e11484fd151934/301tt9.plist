@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>TimesTables problem HHHHHHHHHHHHHH</string>
+	<string>Which times tables is 9 in?</string>
 	<key>TOOL_KEY</key>
 	<string>TimesTables</string>
 	<key>ANCHOR_SPACE</key>
@@ -63,36 +63,22 @@
 	<array>
 		<dict>
 			<key>POS_X</key>
-			<integer>5</integer>
+			<integer>1</integer>
 			<key>POS_Y</key>
-			<integer>3</integer>
+			<integer>9</integer>
+		</dict>
+		<dict>
+			<key>POS_X</key>
+			<integer>9</integer>
+			<key>POS_Y</key>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>POS_X</key>
 			<integer>3</integer>
 			<key>POS_Y</key>
-			<integer>5</integer>
+			<integer>3</integer>
 		</dict>
 	</array>
-	<key>TIMER</key>
-	<dict>
-		<key>TIMER_DURATION</key>
-		<integer>0</integer>
-		<key>TIMER_ACTIONS</key>
-		<dict>
-			<key>REVEAL_ROWS</key>
-			<array/>
-			<key>REVEAL_COLS</key>
-			<array/>
-			<key>REVEAL_TILES</key>
-			<array/>
-			<key>SHOW_X_AXIS</key>
-			<false/>
-			<key>SHOW_Y_AXIS</key>
-			<false/>
-			<key>SHOW_CALC_BUBBLE</key>
-			<string></string>
-		</dict>
-	</dict>
 </dict>
 </plist>

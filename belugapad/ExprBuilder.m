@@ -117,6 +117,7 @@
     
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
+    evalType=[pdef objectForKey:EVAL_TYPE];
     
     if([pdef objectForKey:@"EXPR_STAGES"])
     {
@@ -241,7 +242,29 @@
 #pragma mark - evaluation
 -(BOOL)evalExpression
 {
-    return NO;
+    if([evalType isEqualToString:@"ALL_ENABLED"])
+    {
+        //check for interactive components that are disabled -- if in that mode
+        for(SGGameObject *o in gw.AllGameObjects)
+        {
+            if([o conformsToProtocol:@protocol(Interactive)])
+            {
+                id<Interactive> io=(id<Interactive>)o;
+                if(io.enabled==NO)
+                {
+                    //first disbled element fails the evaluation
+                    return NO;
+                }
+            }
+        }
+
+        //none found, assume yes
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
 }
 
 -(void)evalProblem
@@ -250,6 +273,7 @@
     
     if(isWinning)
     {
+        self.ProblemComplete=YES;
         autoMoveToNextProblem=YES;
         [toolHost showProblemCompleteMessage];
     }

@@ -7,7 +7,20 @@
 		<key>PIPELINE_NAME</key>
 		<string>build_1.06</string>
 		<key>PROBLEMS</key>
-		<array>
-		</array>
+        <array>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/understanding_multiplication/dd95d7d0a2a52c6bc89724b163045ca7/fbl_3_2.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/understanding_multiplication/dd95d7d0a2a52c6bc89724b163045ca7/fbl_4_3.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/understanding_multiplication/dd95d7d0a2a52c6bc89724b163045ca7/fbl_5_2.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/understanding_multiplication/dd95d7d0a2a52c6bc89724b163045ca7/dyn_groups_of.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/understanding_multiplication/dd95d7d0a2a52c6bc89724b163045ca7/dyn_multiplied.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/understanding_multiplication/dd95d7d0a2a52c6bc89724b163045ca7/dyn_x.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/understanding_multiplication/dd95d7d0a2a52c6bc89724b163045ca7/dyn.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/understanding_multiplication/dd95d7d0a2a52c6bc89724b163045ca7/dyn.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/understanding_multiplication/dd95d7d0a2a52c6bc89724b163045ca7/dyn.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/understanding_multiplication/dd95d7d0a2a52c6bc89724b163045ca7/dyn.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/understanding_multiplication/dd95d7d0a2a52c6bc89724b163045ca7/dyn.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/understanding_multiplication/dd95d7d0a2a52c6bc89724b163045ca7/dyn.plist</string>
+            <string>/Problems/tokcm-authoring/Number/multiplication_and_division/understanding_multiplication/dd95d7d0a2a52c6bc89724b163045ca7/dyn.plist</string>
+        </array>
 	</dict>
 </plist>

@@ -2321,6 +2321,8 @@ static float kTimeToCageShake=7.0f;
                         
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
+                            
+                            gw.Blackboard.PickupObject=go;
                             // if there's not one or it's a cage (and the lastmount was a cage), reset to mount and destroy it
                             if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]] && [go.LastMount isKindOfClass:[DWPlaceValueCageGameObject class]])
                             {
@@ -2328,23 +2330,33 @@ static float kTimeToCageShake=7.0f;
                                 continue;
                             }
                             
-                            if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                            if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && lastDrop!=gw.Blackboard.DropObject)
                             {
-                                if(lastDrop!=gw.Blackboard.DropObject && ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject && !((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).CancellingObject)
-                                {
-                                    lastDrop=gw.Blackboard.DropObject;
+                                lastDrop=gw.Blackboard.DropObject;
+//                                if(lastDrop!=gw.Blackboard.DropObject && ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject && !((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).CancellingObject)
+//                                {
+//                                    lastDrop=gw.Blackboard.DropObject;
+//                                    go.LastMount=go.Mount;
+//                                    go.Mount=lastDrop;
+//                                    [go handleMessage:kDWresetToMountPosition];
+//                                    [((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject handleMessage:kDWfadeAndDestroy];
+//                                    [go handleMessage:kDWfadeAndDestroy];
+//                                    ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject=nil;
+//                                }
+//                                else
+//                                {
                                     go.LastMount=go.Mount;
-                                    go.Mount=lastDrop;
-                                    [go handleMessage:kDWresetToMountPosition];
-                                    [((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject handleMessage:kDWfadeAndDestroy];
-                                    [go handleMessage:kDWfadeAndDestroy];
-                                    ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject=nil;
-                                }
+                                    go.Mount=gw.Blackboard.DropObject;
+                                
+                                if(!((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject)
+                                    ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject=go;
                                 else
-                                {
-                                    [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
+                                    ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).CancellingObject=go;
+                                
+                                
+                                    [go handleMessage:kDWresetToMountPosition];
                                     [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
-                                }
+//                                }
                             }
                             
                             

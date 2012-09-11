@@ -94,7 +94,7 @@ static float kTimeToCageShake=7.0f;
         
         gw.Blackboard.inProblemSetup = NO;
         
-        debugLogging=NO;
+        debugLogging=YES;
         
         for (int i=0;i<numberOfColumns;i++)
         {
@@ -1291,9 +1291,14 @@ static float kTimeToCageShake=7.0f;
             int curNum=[[currentBlockValues objectAtIndex:i]intValue];
             float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]floatValue];
             curNum+=1*colVal;
-            if(curNum>1*colVal)curNum=1*colVal;
+            if(curNum>10*colVal)curNum=10*colVal;
             
-            cge.ObjectValue=curNum;
+            if(curNum>0)
+                cge.ObjectValue=colVal;
+            else if(curNum==0)
+                cge.ObjectValue=0;
+            else
+                cge.ObjectValue=-colVal;
             
             [cge handleMessage:kDWsetupStuff];
             
@@ -1317,9 +1322,14 @@ static float kTimeToCageShake=7.0f;
             int curNum=[[currentBlockValues objectAtIndex:i]intValue];
             float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]floatValue];
             curNum-=1*colVal;
-            if(curNum<-1*colVal)curNum=-1*colVal;
+            if(curNum<-10*colVal)curNum=-10*colVal;
             
-            cge.ObjectValue=curNum;
+            if(curNum>0)
+                cge.ObjectValue=colVal;
+            else if(curNum==0)
+                cge.ObjectValue=0;
+            else
+                cge.ObjectValue=-colVal;
             
             [cge handleMessage:kDWsetupStuff];
             
@@ -1827,6 +1837,36 @@ static float kTimeToCageShake=7.0f;
                 [[gw Blackboard].PickupObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
             }
         }
+        
+        else if(isNegativeProblem && isCage)
+        {
+            int blocks=fabsf([[currentBlockValues objectAtIndex:currentColumnIndex] intValue]);
+            if(blocks>1)
+            {
+                DWPlaceValueBlockGameObject *pgo=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
+                DWPlaceValueCageGameObject *cge=(DWPlaceValueCageGameObject*)pgo.Mount;
+                
+                for(int i=0;i<blocks;i++)
+                {
+                    if(i==0){[pickupObjects addObject:pickupObject];}
+                    else{
+                        [cge handleMessage:kDWsetupStuff];
+                        [pickupObjects addObject:cge.MountedObject];
+                        
+                        DWPlaceValueBlockGameObject *newBlock=(DWPlaceValueBlockGameObject*)cge.MountedObject;
+                        newBlock.LastMount=cge;
+                        
+                        //this is just a signal for the GO to us, pickup object is retained on the blackboard
+                        [cge.MountedObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
+                    }
+                }
+            }
+            else
+            {
+                [pickupObjects addObject:pickupObject];
+                [[gw Blackboard].PickupObject handleMessage:kDWpickedUp andPayload:nil withLogLevel:0];
+            }
+        }
         // if we're not - just add the pickupobject to the array
         else
         {
@@ -2018,6 +2058,18 @@ static float kTimeToCageShake=7.0f;
                         }
                     }
                 }
+                if(isNegativeProblem)
+                {
+                    if([pickupObjects count]>0)
+                    {
+                        for(DWPlaceValueBlockGameObject *go in pickupObjects)
+                        {
+                            go.PosX=posX;
+                            go.PosY=posY+85 *[pickupObjects indexOfObject:go];
+                            [go handleMessage:kDWupdateSprite andPayload:nil withLogLevel:-1];
+                        }
+                    }
+                }
                 
                 // otherwise set just the block to the posx/y positions and update the position
                 block.PosX=posX;
@@ -2197,7 +2249,8 @@ static float kTimeToCageShake=7.0f;
                 // if we have multiple controls
                 if(multipleBlockPickup||showMultipleControls)
                 {
-                    // and if there's enough space - then droptarget is modified to allow each to mount 
+                    // and if there's enough space - then droptarget is modified to allow each to mount
+                    
                     if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
                     {
                         gw.Blackboard.TestTouchLocation = ccp(gw.Blackboard.TestTouchLocation.x, gw.Blackboard.TestTouchLocation.y + 1000);
@@ -2212,7 +2265,7 @@ static float kTimeToCageShake=7.0f;
                                 [b handleMessage:kDWresetToMountPositionAndDestroy];
                                 continue;
                             }
-
+                            
                             [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
                             [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
                             
@@ -2229,32 +2282,113 @@ static float kTimeToCageShake=7.0f;
                         // TODO: reject these things back to their mounts
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
-                                [go handleMessage:kDWresetToMountPosition];
+                            [go handleMessage:kDWresetToMountPosition];
                         }
                     }
                     // but if we have a cage then set each one's mount and drop it
                     else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
                     {
                         for(DWPlaceValueBlockGameObject *go in pickupObjects){
-                        [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
-                        [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+                            [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
+                            [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
                         }
                     }
+                    
                 }
-                else if(isNegativeProblem && b.ObjectValue==0)
+                else if(isNegativeProblem)
                 {
-                    [b handleMessage:kDWfadeAndDestroy];
-                    [self setTouchVarsToOff];
-                    return;
-                }
-                else if(isNegativeProblem && explodeMode && n.MountedObject && !n.CancellingObject)
-                {
-                    [b handleMessage:kDWresetToMountPosition];
-                    [n.MountedObject handleMessage:kDWfadeAndDestroy];
-                    [b handleMessage:kDWfadeAndDestroy];
-                    n.MountedObject=nil;
+                    // and if there's enough space - then droptarget is modified to allow each to mount
+                    
+                    if(b.ObjectValue==0)
+                    {
+                        [b handleMessage:kDWfadeAndDestroy];
+                        [self setTouchVarsToOff];
+                        return;
+                    }
+//                    else if(explodeMode && n.MountedObject && !n.CancellingObject)
+//                    {
+//                        [b handleMessage:kDWresetToMountPosition];
+//                        [n.MountedObject handleMessage:kDWfadeAndDestroy];
+//                        [b handleMessage:kDWfadeAndDestroy];
+//                        n.MountedObject=nil;
+//                    }
+                    if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
+                    {
+                        gw.Blackboard.TestTouchLocation = ccp(gw.Blackboard.TestTouchLocation.x, gw.Blackboard.TestTouchLocation.y + 1000);
+                        gw.Blackboard.DropObject=nil;
+                        [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
+                        DWGameObject *lastDrop=nil;
+                        
+                        for(DWPlaceValueBlockGameObject *go in pickupObjects)
+                        {
+                            // if there's not one or it's a cage (and the lastmount was a cage), reset to mount and destroy it
+                            if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]] && [go.LastMount isKindOfClass:[DWPlaceValueCageGameObject class]])
+                            {
+                                [b handleMessage:kDWresetToMountPositionAndDestroy];
+                                continue;
+                            }
+                            
+                            if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                            {
+                                if(lastDrop!=gw.Blackboard.DropObject && ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject && !((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).CancellingObject)
+                                {
+                                    lastDrop=gw.Blackboard.DropObject;
+                                    go.LastMount=go.Mount;
+                                    go.Mount=lastDrop;
+                                    [go handleMessage:kDWresetToMountPosition];
+                                    [((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject handleMessage:kDWfadeAndDestroy];
+                                    [go handleMessage:kDWfadeAndDestroy];
+                                    ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject=nil;
+                                }
+                                else
+                                {
+                                    [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
+                                    [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+                                }
+                            }
+                            
+                            
+                            // if we have mroe than one - reset the dropobject and re-droptarget
+                            if([pickupObjects count]>1){
+                                gw.Blackboard.DropObject=nil;
+                                [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
+                            }
+                        }
+                    }
+                    // if there's not enough space for all pickups
+                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && ![gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+                    {
+                        // TODO: reject these things back to their mounts
+                        for(DWPlaceValueBlockGameObject *go in pickupObjects)
+                        {
+                            [go handleMessage:kDWresetToMountPosition];
+                        }
+                    }
+                    // but if we have a cage then set each one's mount and drop it
+                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+                    {
+                        for(DWPlaceValueBlockGameObject *go in pickupObjects){
+                            [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
+                            [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+                        }
+                    }
+                    
                 }
                 
+                // other negatives code was here
+//                if(b.ObjectValue==0)
+//                {
+//                    [b handleMessage:kDWfadeAndDestroy];
+//                    [self setTouchVarsToOff];
+//                    return;
+//                }
+//                else if(explodeMode && n.MountedObject && !n.CancellingObject)
+//                {
+//                    [b handleMessage:kDWresetToMountPosition];
+//                    [n.MountedObject handleMessage:kDWfadeAndDestroy];
+//                    [b handleMessage:kDWfadeAndDestroy];
+//                    n.MountedObject=nil;
+//                }
                 // ===== return a selection (a base selection) back to where they came from by resetting mounts etc ===
                 else if(isBasePickup && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject])
                 {

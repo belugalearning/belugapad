@@ -50,7 +50,7 @@
             float dist=[BLMath DistanceBetween:myLoc and:hitLoc];
             if(!gameWorld.Blackboard.DropObject || gameWorld.Blackboard.DropObjectDistance > dist)
             {
-                if(!n.MountedObject||(n.MountedObject&&!n.CancellingObject&&n.AllowMultipleMount&&addO.ObjectValue==-n.ColumnValue))
+                if((!n.MountedObject&&n.ColumnValue==addO.ObjectValue)||(n.MountedObject&&!n.CancellingObject&&n.AllowMultipleMount&&-n.ColumnValue==addO.ObjectValue))
                 {
                     gameWorld.Blackboard.DropObject=gameObject;
                     gameWorld.Blackboard.DropObjectDistance=dist;

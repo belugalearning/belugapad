@@ -12,6 +12,10 @@
 	<string>NLine</string>
 	<key>START_VALUE</key>
 	<string>{$x*5}</string>
+	<key>MARKER_POSITIONS</key>
+	<array>
+		<string>{$x*5}</string>
+	</array>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>

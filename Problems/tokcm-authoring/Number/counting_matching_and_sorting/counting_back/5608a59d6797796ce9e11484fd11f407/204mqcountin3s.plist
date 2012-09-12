@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>count on from 0 to 10</string>
+	<string>count back from 21 to 3</string>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>

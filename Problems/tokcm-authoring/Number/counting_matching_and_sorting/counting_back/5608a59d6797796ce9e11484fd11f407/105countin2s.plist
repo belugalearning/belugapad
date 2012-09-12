@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Count backwards in twos from 14 to 0.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>count on from 0 to 12</string>
+	<string>count on from 0 to 14</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>

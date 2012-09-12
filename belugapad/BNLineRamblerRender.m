@@ -59,6 +59,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     assBlankSegments=[[NSMutableArray alloc] init];
     assLineSegments=[[NSMutableArray alloc] init];
     assIndicators=[[NSMutableArray alloc] init];
+    jumpSprites=[[NSMutableArray alloc] init];
     
     for (int i=0; i<baseSegs; i++) {
         CCSprite *blank=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/seg_blank.png")];
@@ -74,7 +75,13 @@ static NSString *kLabelFont=@"visgrad1.fnt";
         CCSprite *ind=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/indicator_bar.png")];
         [ind setVisible:NO];
         [assIndicators addObject:ind];
-        [gameWorld.Blackboard.ComponentRenderLayer addChild:ind];   
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:ind];
+        
+        CCSprite *jump=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/jump_section.png")];
+        [jump setVisible:NO];
+        [jump setPosition:ccp(512, 384)];
+        [jumpSprites addObject:jump];
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:jump z:2];
     }
     
     assStartTerminator=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/line_stop.png")];
@@ -114,6 +121,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     int assBlankIndex=0;
     int assLineIndex=0;
     int assIndicatorIndex=0;
+    int jumpSpriteIndex=0;
     
     [labelLayer removeAllChildrenWithCleanup:YES];
     
@@ -262,7 +270,6 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                 }
             }
             
-
     //        CCLabelBMFont *lbl=[assLabels objectForKey:numRender];
     //        if(!lbl)
     //        {
@@ -274,6 +281,36 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     //        [lbl setVisible:YES];
     //        [lbl setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
             //-------------------------------------------------------------------------------------------------------------
+
+            
+            // segments render -----------------------------------------------------------------------------------------
+
+            if(ramblerGameObject.UserJumps)
+            {
+                for(NSValue *jumpVal in ramblerGameObject.UserJumps)
+                {
+                    CGPoint jump=[jumpVal CGPointValue];
+                    int jumpStart=jump.x;
+                    int jumpLength=jump.y;
+                    
+                    if(iValue>=jumpStart && iValue<(jumpStart+jumpLength))
+                    {
+                        
+                        //draw a jump section
+                        CCSprite *s=[jumpSprites objectAtIndex:jumpSpriteIndex];
+                        [s setVisible:YES];
+                        [s setPosition:segStartPosForLine];
+                        
+                        NSLog(@"jstart %d, jlength %d, ivalue %d atPos %@", jumpStart, jumpLength, iValue, NSStringFromCGPoint(s.position));
+                        
+                        jumpSpriteIndex++;
+                    }
+                }
+            }
+            
+            
+            //-------------------------------------------------------------------------------------------------------------
+            
 
         }
     }
@@ -290,6 +327,10 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     for (int i=assIndicatorIndex; i<[assIndicators count]; i++) {
         [[assIndicators objectAtIndex:i] setVisible:NO];
     }
+    for (int i=jumpSpriteIndex; i<[jumpSprites count]; i++)
+    {
+        [[jumpSprites objectAtIndex:i] setVisible:NO];
+    }
 }
 
 -(void)dealloc
@@ -300,6 +341,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     [assLabels release];
     [labelLayer release];
     [markerSprites release];
+    [jumpSprites release];
     
     [super dealloc];
 }

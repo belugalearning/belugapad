@@ -25,6 +25,8 @@
     CCLayer *labelLayer;
     
     NSMutableArray *markerSprites;
+    
+    NSMutableArray *jumpSprites;
 }
 
 -(BNLineRamblerRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;

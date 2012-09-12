@@ -201,6 +201,14 @@ static float kTimeToBubbleShake=7.0f;
     NSArray *showNotchesAtIntervals=[problemDef objectForKey:@"SHOW_NOTCHES_AT_INTERVALS"];
     if(showNotchesAtIntervals) if(showNotchesAtIntervals.count>0) rambler.ShowNotchesAtIntervals=showNotchesAtIntervals;
     
+    //jump sections
+    rambler.UserJumps=[[NSMutableArray alloc]init];
+    
+    //test jumps
+    [rambler.UserJumps addObject:[NSValue valueWithCGPoint:ccp(2, 2)]];
+    [rambler.UserJumps addObject:[NSValue valueWithCGPoint:ccp(4, 2)]];
+    [rambler.UserJumps addObject:[NSValue valueWithCGPoint:ccp(8, 1)]];
+    
     
     //positioning
     rambler.DefaultSegmentSize=115;

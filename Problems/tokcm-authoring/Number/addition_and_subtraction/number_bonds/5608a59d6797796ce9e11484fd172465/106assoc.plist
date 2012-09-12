@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>If I start on {30-$x} and jump {$x} steps, then jump another {$y}, where do I finish?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>assoc start</string>
+	<string>106assoc start</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
@@ -38,18 +38,13 @@
 	<integer>0</integer>
 	<key>JUMP_MODE</key>
 	<true/>
-	<key>EVAL_JUMP_SET</key>
+	<key>EVAL_JUMP_SEQUENCE</key>
 	<array>
-		<string>30</string>
-		<string>{30+$y}</string>
+		<string>{10-$x}</string>
+		<string>{$y}</string>
 	</array>
 	<key>EVAL_JUMP_REQUIRES_STRICT_ORDER</key>
 	<true/>
-	<key>MARKER_POSITIONS</key>
-	<array>
-		<string>10</string>
-		<string>19</string>
-	</array>
 	<key>DVARS</key>
 	<array>
 		<dict>

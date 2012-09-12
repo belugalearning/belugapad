@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>This is 7. Add 3 and 9.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>assoc start</string>
+	<string>101assoc start</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
@@ -19,7 +19,7 @@
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<string>15</string>
+	<string>19</string>
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
 	<key>HIDE_ALL_NOTCHES</key>
@@ -38,10 +38,10 @@
 	<integer>0</integer>
 	<key>JUMP_MODE</key>
 	<true/>
-	<key>EVAL_JUMP_SET</key>
+	<key>EVAL_JUMP_SEQUENCE</key>
 	<array>
-		<string>10</string>
-		<string>19</string>
+		<string>3</string>
+		<string>9</string>
 	</array>
 	<key>EVAL_JUMP_REQUIRES_STRICT_ORDER</key>
 	<true/>

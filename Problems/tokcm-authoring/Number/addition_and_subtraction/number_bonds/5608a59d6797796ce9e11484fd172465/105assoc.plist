@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Add {20-$x} and {$y} to {$x}.</string>
+	<string>Use number bonds to add {20-$x} and {$y} to {$x}.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>assoc start</string>
+	<string>105assoc start</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
@@ -38,18 +38,13 @@
 	<integer>0</integer>
 	<key>JUMP_MODE</key>
 	<true/>
-	<key>EVAL_JUMP_SET</key>
+	<key>EVAL_JUMP_SEQUENCE</key>
 	<array>
-		<string>20</string>
-		<string>{20+$y}</string>
+		<string>{20-$x}</string>
+		<string>{$y}</string>
 	</array>
 	<key>EVAL_JUMP_REQUIRES_STRICT_ORDER</key>
 	<true/>
-	<key>MARKER_POSITIONS</key>
-	<array>
-		<string>20</string>
-		<string>{20+$y}</string>
-	</array>
 	<key>DVARS</key>
 	<array>
 		<dict>

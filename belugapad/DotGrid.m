@@ -836,7 +836,7 @@
     NSMutableArray *tileCounts=[[[NSMutableArray alloc] init] autorelease];
     NSMutableArray *selectedCounts=[[[NSMutableArray alloc] init] autorelease];
     
-    for (DWGameObject *go in [gw AllGameObjects]) {
+    for (DWGameObject *go in gw.AllGameObjects) {
         if([go isKindOfClass:[DWDotGridShapeGameObject class]])
         {
             DWDotGridShapeGameObject *sgo=(DWDotGridShapeGameObject*)go;

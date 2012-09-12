@@ -204,12 +204,6 @@ static float kTimeToBubbleShake=7.0f;
     //jump sections
     rambler.UserJumps=[[NSMutableArray alloc]init];
     
-    //test jumps
-    [rambler.UserJumps addObject:[NSValue valueWithCGPoint:ccp(2, 2)]];
-    [rambler.UserJumps addObject:[NSValue valueWithCGPoint:ccp(4, 2)]];
-    [rambler.UserJumps addObject:[NSValue valueWithCGPoint:ccp(8, 1)]];
-    
-    
     //positioning
     rambler.DefaultSegmentSize=115;
     rambler.Pos=ccp(cx,cy);
@@ -468,6 +462,12 @@ static float kTimeToBubbleShake=7.0f;
                     drawStitchLine=YES;
                     drawStitchCurve=NO;
                     stitchEndPos=location;
+                    
+                    if(!hasSetJumpStartValue)
+                    {
+                        hasSetJumpStartValue=YES;
+                        jumpStartValue=lastBubbleValue;
+                    }
                 }
                 else
                 {
@@ -599,6 +599,12 @@ static float kTimeToBubbleShake=7.0f;
             drawStitchLine=NO;
             drawStitchCurve=NO;
             
+            if(hasSetJumpStartValue && lastBubbleValue!=jumpStartValue)
+            {
+                //add a segment
+                [rambler.UserJumps addObject:[NSValue valueWithCGPoint:ccp(jumpStartValue, lastBubbleValue - jumpStartValue)]];
+            }
+            
         }  // =====================================================================
         
         [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, diffy)]];
@@ -650,12 +656,16 @@ static float kTimeToBubbleShake=7.0f;
     
     holdingBubbleOffset=0;
     holdingBubble=NO;
+    hasSetJumpStartValue=NO;
+    lastBubbleValue=0;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     touching=NO;
     inRamblerArea=NO;
+    hasSetJumpStartValue=NO;
+    lastBubbleValue=0;
 }
 
 #pragma mark - meta question

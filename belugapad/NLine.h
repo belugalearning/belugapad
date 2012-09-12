@@ -80,6 +80,9 @@
     BOOL drawStitchLine;
     BOOL drawStitchCurve;
     
+    int jumpStartValue;
+    BOOL hasSetJumpStartValue;
+    
     // == markers
     NSMutableArray *markerValuePositions;
 }

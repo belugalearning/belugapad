@@ -301,8 +301,6 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                         [s setVisible:YES];
                         [s setPosition:segStartPosForLine];
                         
-                        NSLog(@"jstart %d, jlength %d, ivalue %d atPos %@", jumpStart, jumpLength, iValue, NSStringFromCGPoint(s.position));
-                        
                         jumpSpriteIndex++;
                     }
                 }

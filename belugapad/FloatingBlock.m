@@ -223,8 +223,8 @@
     id<Group> thisGroup=[[SGFBlockGroup alloc]initWithGameWorld:gw];
     thisGroup.MaxObjects=maxBlocksInGroup;
     
-    float xPos=arc4random()%1000;
-    float yPos=arc4random()%700;
+    float xPos=(arc4random()%800)+100;
+    float yPos=(arc4random()%600)+100;
     
     for(int i=0;i<numberInShape;i++)
     {
@@ -612,8 +612,10 @@
             id<Group>thisGroup=go;
             
             if([thisGroup checkTouchInGroupAt:location])
+            {
                 pickupObject=thisGroup;
-            
+                [thisGroup inflateZIndexOfMyObjects];
+            }
         }
         
         // check for an operator tap
@@ -689,6 +691,10 @@
     {
         if([pickupObject isKindOfClass:[SGFBlockGroup class]])
         {
+            id<Group> pickupGroup=(id<Group>)pickupObject;
+            
+            [pickupGroup resetZIndexOfMyObjects];
+            
             if(CGRectContainsPoint(commitPipe.boundingBox, location))
                 [self evalProblem];
         }

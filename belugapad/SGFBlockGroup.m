@@ -65,6 +65,24 @@
     return NO;
 }
 
+-(void)inflateZIndexOfMyObjects
+{
+    for(id<Rendered,Moveable>block in MyBlocks)
+    {
+        block.zIndex=[block.MySprite zOrder];
+        [block.MySprite setZOrder:99999];
+    }
+}
+
+-(void)resetZIndexOfMyObjects
+{
+    for(id<Rendered,Moveable>block in MyBlocks)
+    {
+        block.zIndex=[block.MySprite zOrder];
+        [block.MySprite setZOrder:block.zIndex];
+    }
+}
+
 -(void)moveGroupPositionFrom:(CGPoint)fromHere To:(CGPoint)here;
 {
     for(id<Rendered,Moveable>block in MyBlocks)

@@ -10,6 +10,7 @@
 #import "ToolConsts.h"
 #import "ToolScene.h"
 #import "SGDtoolObjectProtocols.h"
+#import "NumberLayout.h"
 
 typedef enum 
 {
@@ -75,6 +76,7 @@ typedef enum
 -(void)removeBlockByCage;
 -(CGPoint)checkWhereIShouldMount:(id<Pairable>)gameObject;
 -(CGPoint)findMountPositionForThisShape:(id<Pairable>)pickupObject toThisShape:(id<Pairable>)mountedShape;
+-(CGPoint)returnNextMountPointForThisShape:(id<Container>)thisShape;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

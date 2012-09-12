@@ -12,7 +12,7 @@
 
 @implementation SGFBlockOpBubble
 
-@synthesize MySprite, Position, RenderLayer, OperatorType, Replacement, Label, SupportedOperators, ChildOperators;
+@synthesize MySprite, Position, RenderLayer, OperatorType, Replacement, Label, SupportedOperators, ChildOperators, zIndex;
 
 -(SGFBlockOpBubble*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition andOperators:(NSArray*)theseOperators;
 {

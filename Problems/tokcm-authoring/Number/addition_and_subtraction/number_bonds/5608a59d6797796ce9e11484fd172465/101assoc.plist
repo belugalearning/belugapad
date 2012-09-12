@@ -14,6 +14,8 @@
 	<string>0</string>
 	<key>MAX_VALUE</key>
 	<string>50</string>
+	<key>EVAL_TYPE</key>
+	<string>JUMP_SEQUENCE</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>

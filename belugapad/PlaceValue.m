@@ -151,7 +151,7 @@ static float kTimeToCageShake=7.0f;
                 [gw handleMessage:kDWcheckMyMountIsNet andPayload:nil withLogLevel:-1];
             }
             
-            if(multipleLabels)
+            if(multipleLabels && !touching && lastTotalCount<expectedCount)
             {
                 for(CCLabelTTF *l in multipleLabels)
                 {
@@ -2154,22 +2154,27 @@ static float kTimeToCageShake=7.0f;
                         }
                     }
                     // if there's not enough space for all pickups
-                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && ![gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count])
                     {
-                        // TODO: reject these things back to their mounts
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
+                            if([go.LastMount isKindOfClass:[DWPlaceValueNetGameObject class]])
+                            {
                                 [go handleMessage:kDWresetToMountPosition];
+                            }
+                            else
+                                [go handleMessage:kDWresetToMountPositionAndDestroy];
                         }
                     }
                     // but if we have a cage then set each one's mount and drop it
-                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
-                    {
-                        for(DWPlaceValueBlockGameObject *go in pickupObjects){
-                        [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
-                        [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
-                        }
-                    }
+//                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+//                    {
+//                        for(DWPlaceValueBlockGameObject *go in pickupObjects){
+//                            [go handleMessage:kDWresetToMountPosition];
+////                        [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
+////                        [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+//                        }
+//                    }
                 }
                 
                 // ===== return a selection (a base selection) back to where they came from by resetting mounts etc ===

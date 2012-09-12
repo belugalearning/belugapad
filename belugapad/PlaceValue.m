@@ -150,6 +150,14 @@ static float kTimeToCageShake=7.0f;
             {
                 [gw handleMessage:kDWcheckMyMountIsNet andPayload:nil withLogLevel:-1];
             }
+            
+            if(multipleLabels)
+            {
+                for(CCLabelTTF *l in multipleLabels)
+                {
+                    [l runAction:[InteractionFeedback shakeAction]];
+                }
+            }
         }
         if(isProblemComplete && evalMode==kProblemEvalOnCommit)
         {

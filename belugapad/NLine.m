@@ -124,7 +124,7 @@ static float kTimeToBubbleShake=7.0f;
 	[gw doUpdate:delta];
 
     rambler.TouchXOffset+=bubblePushDir * kBubblePushSpeed * delta;
-
+    stitchOffsetX+=bubblePushDir * kBubblePushSpeed * delta;
     
     
     timeSinceInteractionOrShake+=delta;
@@ -152,14 +152,16 @@ static float kTimeToBubbleShake=7.0f;
 
 -(void)draw
 {
+    CGPoint actualStitchStart=ccp(stitchStartPos.x + stitchOffsetX, stitchStartPos.y);
+    
     if(drawStitchLine)
     {
-        ccDrawLine(stitchStartPos, stitchEndPos);
+        ccDrawLine(actualStitchStart, stitchEndPos);
     }
     
     if(drawStitchCurve)
     {
-        ccDrawQuadBezier(stitchStartPos, stitchApexPos, stitchEndPos, 40);
+        ccDrawQuadBezier(actualStitchStart, stitchApexPos, stitchEndPos, 40);
     }
 }
 
@@ -740,6 +742,7 @@ static float kTimeToBubbleShake=7.0f;
     holdingBubble=NO;
     hasSetJumpStartValue=NO;
     jumpStartValue=0;
+    stitchOffsetX=0;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -748,6 +751,7 @@ static float kTimeToBubbleShake=7.0f;
     inRamblerArea=NO;
     hasSetJumpStartValue=NO;
     jumpStartValue=0;
+    stitchOffsetX=0;
 }
 
 #pragma mark - meta question

@@ -79,6 +79,7 @@
     // == jump mode
     BOOL jumpMode;
     CGPoint stitchStartPos;
+    float stitchOffsetX;
     CGPoint stitchEndPos;
     CGPoint stitchApexPos;
     BOOL drawStitchLine;

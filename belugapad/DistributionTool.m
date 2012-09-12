@@ -630,9 +630,9 @@ static float kDistanceBetweenBlocks=70.0f;
                         
                         [loggingService logEvent:BL_PA_DT_TOUCH_END_PAIR_BLOCK withAdditionalData:nil];
                         
-//                        currentPickupObject.Position=[self returnNextMountPointForThisShape:cObj.MyContainer];
+                        //currentPickupObject.Position=[self returnNextMountPointForThisShape:cObj.MyContainer];
                         [cObj.MyContainer layoutMyBlocks];
-                        [currentPickupObject animateToPosition];
+                        //[currentPickupObject animateToPosition];
                     }
                 }
                 

@@ -16,6 +16,12 @@
 	<string>100</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+    <key>EVAL_TYPE</key>
+	<string>REPEATED_ADDITION</string>
+	<key>EVAL_INTERVAL</key>
+	<string>2</string>
+	<key>JUMP_MODE</key>
+	<true/>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>

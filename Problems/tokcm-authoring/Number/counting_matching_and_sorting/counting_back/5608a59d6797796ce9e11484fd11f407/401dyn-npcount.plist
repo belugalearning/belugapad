@@ -10,6 +10,10 @@
 	<string>intervals of 2 and 5 what number is the bubble on?</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
+	<key>MARKER_POSITIONS</key>
+	<array>
+		<string>{$x*$int}</string>
+	</array>
 	<key>START_VALUE</key>
 	<string>{$x*$int}</string>
 	<key>MIN_VALUE</key>
@@ -32,6 +36,8 @@
 	<false/>
 	<key>HIDE_START_NOTCH</key>
 	<false/>
+	<key>JUMP_MODE</key>
+	<true/>
 	<key>HIDE_END_NOTCH</key>
 	<false/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>

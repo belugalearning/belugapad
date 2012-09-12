@@ -16,6 +16,12 @@
 	<string>50</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+    <key>EVAL_TYPE</key>
+	<string>REPEATED_ADDITION</string>
+	<key>EVAL_INTERVAL</key>
+	<string>5</string>
+	<key>JUMP_MODE</key>
+	<true/>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
@@ -24,10 +30,6 @@
 	<true/>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
-	<key>SHOW_NOTCHES_AT_INTERVALS</key>
-	<array>
-		<string>5</string>
-	</array>
 	<key>HIDE_START_NUMBER</key>
 	<false/>
 	<key>HIDE_END_NUMBER</key>
@@ -44,7 +46,5 @@
 	<array>
 		<string>5</string>
 	</array>
-	<key>SEGMENT_VALUE</key>
-	<integer>5</integer>
 </dict>
 </plist>

@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>If I start on {$x}, where do I end up after adding {20-$x} and {$y}?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>assoc start</string>
+	<string>104assoc start</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
@@ -16,6 +16,8 @@
 	<string>50</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>EVAL_TYPE</key>
+	<string>JUMP_SEQUENCE</string>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
@@ -38,18 +40,13 @@
 	<integer>0</integer>
 	<key>JUMP_MODE</key>
 	<true/>
-	<key>EVAL_JUMP_SET</key>
+	<key>EVAL_JUMP_SEQUENCE</key>
 	<array>
-		<string>20</string>
-		<string>{20+$y}</string>
+		<string>{20-$x}</string>
+		<string>{$y}</string>
 	</array>
 	<key>EVAL_JUMP_REQUIRES_STRICT_ORDER</key>
 	<true/>
-	<key>MARKER_POSITIONS</key>
-	<array>
-		<string>20</string>
-		<string>{20+$y}</string>
-	</array>
 	<key>DVARS</key>
 	<array>
 		<dict>

@@ -49,7 +49,6 @@
         [layout replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:p2]];
     }
     NSArray *ret=[NSArray arrayWithArray:layout];
-    [layout release];
     return ret;
 }
 
@@ -63,7 +62,6 @@
         [layout replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:p2]];
     }
     NSArray *ret=[NSArray arrayWithArray:layout];
-    [layout release];
     return ret;
 }
 

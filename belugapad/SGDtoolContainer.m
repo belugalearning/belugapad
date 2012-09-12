@@ -7,7 +7,10 @@
 //
 
 #import "SGDtoolContainer.h"
+#import "SGDtoolBlock.h"
+#import "SGDtoolObjectProtocols.h"
 #import "global.h"
+#import "NumberLayout.h"
 
 @implementation SGDtoolContainer
 
@@ -70,6 +73,25 @@
         [self destroyThisObject];
     else
         if(Label)[self repositionLabel];
+}
+
+-(void)layoutMyBlocks
+{
+    NSArray *blockPos=[NumberLayout physicalLayoutUpToNumber:[BlocksInShape count] withSpacing:52.0f];
+    
+    id<Moveable> firstBlock=[BlocksInShape objectAtIndex:0];
+    float posX=firstBlock.Position.x;
+    float posY=firstBlock.Position.y;
+    
+    
+    for(int i=0;i<[BlocksInShape count];i++)
+    {
+        id<Moveable> thisBlock=[BlocksInShape objectAtIndex:i];
+        CGPoint thisPos=[[blockPos objectAtIndex:i]CGPointValue];
+        
+        thisBlock.Position=ccp(posX+thisPos.x, posY+thisPos.y);
+        [thisBlock move];
+    }
 }
 
 -(void)repositionLabel

@@ -7,7 +7,17 @@
 		<key>PIPELINE_NAME</key>
 		<string>build_1.06</string>
 		<key>PROBLEMS</key>
-		<array>
-		</array>
+        <array>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17a521/fbl_9_4.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17a521/dt_8_3.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17a521/dt_12_4.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17a521/nline_14_8.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17a521/dt_14_8.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17a521/dt_16_5.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17a521/fbl_12_2.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17a521/fbl_13_9.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17a521/nline_18_9.plist</string>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17a521/nline_20_6.plist</string>
+        </array>
 	</dict>
 </plist>

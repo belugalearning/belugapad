@@ -1633,7 +1633,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 //        animPos=0;
 //        [self moveToTool0:0];
 //    }
-    if(isPaused)
+    if(isPaused||autoMoveToNextProblem)
     {
         return;
     }  
@@ -1694,7 +1694,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
-    if(isPaused)
+    if(isPaused||autoMoveToNextProblem)
     {
         return;
     } 
@@ -1750,7 +1750,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     // if we're paused - check if any menu options were valid.
     // touches ended event becase otherwise these touches go through to the tool
-    if(isPaused)
+    if(isPaused||autoMoveToNextProblem)
     {
         [self checkPauseTouches:location];
         return;
@@ -1806,7 +1806,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    if(isPaused)
+    if(isPaused||autoMoveToNextProblem)
     {
         return NO;
     }  
@@ -1815,7 +1815,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    if(isPaused)
+    if(isPaused||autoMoveToNextProblem)
     {
         return;
     }  
@@ -1824,7 +1824,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    if(isPaused)
+    if(isPaused||autoMoveToNextProblem)
     {
         return;
     }  

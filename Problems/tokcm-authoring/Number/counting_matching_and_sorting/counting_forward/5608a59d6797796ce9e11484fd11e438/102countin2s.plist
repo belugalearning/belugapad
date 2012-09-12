@@ -16,6 +16,10 @@
 	<string>10</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+    <key>EVAL_TYPE</key>
+	<string>REPEATED_ADDITION</string>
+	<key>EVAL_INTERVAL</key>
+	<string>2</string>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
@@ -26,10 +30,6 @@
 	<array/>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
-	<key>SHOW_NOTCHES_AT_INTERVALS</key>
-	<array>
-		<string>2</string>
-	</array>
 	<key>HIDE_START_NUMBER</key>
 	<false/>
 	<key>HIDE_END_NUMBER</key>
@@ -42,13 +42,11 @@
 	<false/>
 	<key>EVAL_PLUS_MINUS_THRESHOLD</key>
 	<integer>0</integer>
+	<key>JUMP_MODE</key>
+	<true/>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array>
 		<string>2</string>
 	</array>
-	<key>RENDER_STITCHES_AT_INTERVAL</key>
-	<integer>0</integer>
-	<key>SEGMENT_VALUE</key>
-	<integer>2</integer>
 </dict>
 </plist>

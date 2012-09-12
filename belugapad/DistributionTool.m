@@ -216,9 +216,9 @@ static float kDistanceBetweenBlocks=70.0f;
         {
             SGDtoolBlock *prevBlock = [container.BlocksInShape objectAtIndex:i-1];
             [block pairMeWith:prevBlock];
-            [self findMountPositionForThisShape:block toThisShape:prevBlock];
+            [self returnNextMountPointForThisShape:container];
         }
-        
+        [container layoutMyBlocks];
         [loggingService.logPoller registerPollee:block];
     }
        
@@ -257,7 +257,7 @@ static float kDistanceBetweenBlocks=70.0f;
     }
     
     [container addBlockToMe:Object];
-    
+    [container layoutMyBlocks];
 }
 
 -(void)lookForOrphanedObjects
@@ -300,6 +300,8 @@ static float kDistanceBetweenBlocks=70.0f;
             //TODO: this is causing a crash if dragged from a cage
             if(![pairedObj.MyContainer conformsToProtocol:@protocol(Cage)])
                 [pairedObj.MyContainer addBlockToMe:thisBlock];
+            
+            [pairedObj.MyContainer layoutMyBlocks];
         }
     }
 }
@@ -486,7 +488,7 @@ static float kDistanceBetweenBlocks=70.0f;
 
 -(CGPoint)returnNextMountPointForThisShape:(id<Container>)thisShape
 {
-    id<Moveable>firstShape=[thisShape.BlocksInShape objectAtIndex:[thisShape.BlocksInShape count]-1];
+    id<Moveable>firstShape=[thisShape.BlocksInShape objectAtIndex:0];
     
     NSArray *newObjects=[NumberLayout physicalLayoutUpToNumber:[thisShape.BlocksInShape count] withSpacing:kDistanceBetweenBlocks];
     
@@ -628,8 +630,9 @@ static float kDistanceBetweenBlocks=70.0f;
                         
                         [loggingService logEvent:BL_PA_DT_TOUCH_END_PAIR_BLOCK withAdditionalData:nil];
                         
-                        currentPickupObject.Position=[self returnNextMountPointForThisShape:cObj.MyContainer];
-                        [currentPickupObject animateToPosition];
+                        //currentPickupObject.Position=[self returnNextMountPointForThisShape:cObj.MyContainer];
+                        [cObj.MyContainer layoutMyBlocks];
+                        //[currentPickupObject animateToPosition];
                     }
                 }
                 

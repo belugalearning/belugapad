@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Add these three numbers together: {20-$x}, {$y}, {$x}.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>assoc start</string>
+	<string>204assoc start</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
@@ -16,10 +16,12 @@
 	<string>50</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>EVAL_TYPE</key>
+	<string>JUMP_SEQUENCE</string>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<string>{10+$y}</string>
+	<string>{20+$y}</string>
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
 	<key>HIDE_ALL_NOTCHES</key>
@@ -38,20 +40,14 @@
 	<integer>0</integer>
 	<key>JUMP_MODE</key>
 	<true/>
-	<key>EVAL_JUMP_SET</key>
+	<key>EVAL_JUMP_SEQUENCE</key>
 	<array>
 		<string>{$x}</string>
-		<string>20</string>
-		<string>{20+$y}</string>
+		<string>{20-x}</string>
+		<string>{$y}</string>
 	</array>
 	<key>EVAL_JUMP_REQUIRES_STRICT_ORDER</key>
 	<true/>
-	<key>MARKER_POSITIONS</key>
-	<array>
-		<string>{$x}</string>
-		<string>20</string>
-		<string>{20+$y}</string>
-	</array>
 	<key>DVARS</key>
 	<array>
 		<dict>

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>count on from 0 to 10</string>
+	<string>count back from 21 to 3</string>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
@@ -46,8 +46,14 @@
 	<string>0</string>
 	<key>MAX_VALUE</key>
 	<string>30</string>
+	<key>JUMP_MODE</key>
+	<true/>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>EVAL_TYPE</key>
+	<string>REPEATED_ADDITION</string>
+	<key>EVAL_INTERVAL</key>
+	<string>3</string>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>

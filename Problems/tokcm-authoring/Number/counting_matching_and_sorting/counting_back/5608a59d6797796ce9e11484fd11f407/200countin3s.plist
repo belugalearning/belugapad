@@ -14,10 +14,12 @@
 	<string>0</string>
 	<key>MAX_VALUE</key>
 	<string>3</string>
-	<key>SEGMENT_VALUE</key>
-	<integer>3</integer>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>EVAL_TYPE</key>
+	<string>REPEATED_ADDITION</string>
+	<key>EVAL_INTERVAL</key>
+	<string>3</string>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
@@ -38,6 +40,8 @@
 	<false/>
 	<key>HIDE_END_NUMBER</key>
 	<false/>
+	<key>JUMP_MODE</key>
+	<true/>
 	<key>HIDE_START_NOTCH</key>
 	<false/>
 	<key>HIDE_END_NOTCH</key>
@@ -54,7 +58,5 @@
 	<array>
 		<string>3</string>
 	</array>
-	<key>RENDER_STITCHES_AT_INTERVAL</key>
-	<integer>0</integer>
 </dict>
 </plist>

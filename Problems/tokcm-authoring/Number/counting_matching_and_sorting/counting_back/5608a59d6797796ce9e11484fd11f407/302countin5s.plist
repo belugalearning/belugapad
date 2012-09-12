@@ -14,14 +14,18 @@
 	<string>0</string>
 	<key>MAX_VALUE</key>
 	<string>20</string>
-	<key>SEGMENT_VALUE</key>
-	<integer>5</integer>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>EVAL_TYPE</key>
+	<string>REPEATED_ADDITION</string>
+	<key>EVAL_INTERVAL</key>
+	<string>5</string>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
 	<integer>0</integer>
+	<key>JUMP_MODE</key>
+	<true/>
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>

@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Show that 6 is made of 3 groups of 2.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Show that 5 groups of 3 is 15.</string>
+	<string>Show that 6 is made of 3 groups of 2.</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>SOLUTION_MODE</key>

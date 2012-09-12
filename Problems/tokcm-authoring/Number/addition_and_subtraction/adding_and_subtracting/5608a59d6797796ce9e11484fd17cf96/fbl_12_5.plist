@@ -2,45 +2,36 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>TOOL_KEY</key>
-	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>6/3</string>
+	<string>{@bname} had 5 {@item}. {@gname} gives him some more. He now has 12. How many {@item} did {@gname} give to {@bname}?</string>
+	<key>TOOL_KEY</key>
+	<string>FloatingBlock</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
+	<key>SOLUTION</key>
+	<integer>12</integer>
+	<key>INIT_BUBBLES</key>
+	<integer>2</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
-			<key>QUANTITY</key>
-			<integer>6</integer>
-			<key>POS_X</key>
-			<integer>350</integer>
-			<key>POS_Y</key>
-			<integer>500</integer>
+			<key>NUMBER</key>
+			<integer>5</integer>
 		</dict>
 	</array>
-	<key>SOLUTION</key>
+	<key>BUBBLE_AUTO_OPERATE</key>
+	<false/>
+	<key>SUPPORTED_OPERATORS</key>
 	<array>
-		<integer>7</integer>
+		<string>+</string>
+		<string>-</string>
+		<string>x</string>
+		<string>/</string>
 	</array>
-	<key>DSTRINGS</key>
-	<dict>
-		<key>@item</key>
-		<dict>
-			<key>MODE</key>
-			<string>RANDOM</string>
-			<key>DATA</key>
-			<array>
-				<string>cookies</string>
-				<string>pens</string>
-				<string>crayons</string>
-				<string>coins</string>
-				<string>batteries</string>
-				<string>packs of crisps</string>
-				<string>drinks</string>
-			</array>
-		</dict>
-	</dict>
+	<key>SHOW_MULTIPLE_CONTROLS</key>
+	<true/>
+	<key>SHOW_SOLUTION_ON_PIPE</key>
+	<true/>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
@@ -53,7 +44,13 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>3</string>
+				<string>6</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>5</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
@@ -65,17 +62,15 @@
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>2</string>
+				<string>7</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>6 {@item} are shared fairly between 3 people. How many {@item} does one person gets?</string>
+		<string>{@bname} had 5 {@item}. {@gname} gives him some more. He now has 12. How many {@item} did {@gname} give to {@bname}?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>
-	<key>HOST_BACKGROUND_IMAGE</key>
-	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
 </dict>
 </plist>

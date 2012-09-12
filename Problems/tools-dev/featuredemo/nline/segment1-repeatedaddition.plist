@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>jump! (target 8)</string>
+	<string>jump! (to 6 in 2s)</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>jump!</string>
 	<key>TOOL_KEY</key>
@@ -19,13 +19,15 @@
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>EVAL_TYPE</key>
-	<string>TARGET</string>
+	<string>REPEATED_ADDITION</string>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<integer>8</integer>
+	<integer>6</integer>
+	<key>EVAL_INTERVAL</key>
+	<string>2</string>
 	<key>HIDE_ALL_NUMBERS</key>
-	<false/>
+	<true/>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>

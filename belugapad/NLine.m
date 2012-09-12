@@ -234,6 +234,15 @@ static float kTimeToBubbleShake=7.0f;
     
     evalTarget=[[pdef objectForKey:@"EVAL_TARGET"] intValue];
     
+    evalType=[pdef objectForKey:EVAL_TYPE];
+    if(!evalType)evalType=@"TARGET";
+    
+    if([pdef objectForKey:@"EVAL_INTERVAL"])
+    {
+        evalInterval=[[pdef objectForKey:@"EVAL_INTERVAL"] integerValue];
+    }
+    evalJumpSequence=[pdef objectForKey:@"EVAL_JUMP_SEQUENCE"];
+    
     initStartVal=[[pdef objectForKey:START_VALUE] intValue];
     lastBubbleLoc=initStartVal;
     
@@ -298,7 +307,67 @@ static float kTimeToBubbleShake=7.0f;
 -(void)evalProblem
 {
     BOOL Complete=NO;
-    Complete = (evalTarget==lastBubbleValue);
+    
+    if([evalType isEqualToString:@"TARGET"])
+    {
+        Complete = (evalTarget==lastBubbleValue);
+    }
+    else if([evalType isEqualToString:@"REPEATED_ADDITION"])
+    {
+        //evaltarget met, and all jumps of same interval
+        if(evalTarget==lastBubbleValue)
+        {
+            
+            //look at right count of invervals from initstartval
+            int range=lastBubbleValue - initStartVal;
+            int correctSteps=range / evalInterval;
+            if (correctSteps != [rambler.UserJumps count]) {
+                Complete=NO;
+            }
+            else
+            {
+                Complete=YES;
+            
+                for(NSValue *jumpval in rambler.UserJumps)
+                {
+                    CGPoint jump=[jumpval CGPointValue];
+                    if(jump.y!=evalInterval)
+                    {
+                        //this jump isn't the right interval, bail complete
+                        Complete=NO;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    else if([evalType isEqualToString:@"JUMP_SEQUENCE"])
+    {
+        //check sequence of jump sizes and eval target
+        if(evalTarget==lastBubbleValue)
+        {
+            if(rambler.UserJumps.count < evalJumpSequence.count)
+            {
+                Complete=NO;
+            }
+            else {
+                    
+                Complete=YES;
+                for(int i=0; i<[evalJumpSequence count]; i++)
+                {
+                    CGPoint jump=[[rambler.UserJumps objectAtIndex:i] CGPointValue];
+                    int sequenceJumpSize=[[evalJumpSequence objectAtIndex:i] integerValue];
+                    if(jump.y!=sequenceJumpSize)
+                    {
+                        //this jump isn't the right interval, bail complete
+                        Complete=NO;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     
     if(Complete)
     {
@@ -466,7 +535,7 @@ static float kTimeToBubbleShake=7.0f;
                     if(!hasSetJumpStartValue)
                     {
                         hasSetJumpStartValue=YES;
-                        jumpStartValue=lastBubbleValue;
+                        jumpStartValue=logLastBubblePos;
                     }
                 }
                 else
@@ -484,6 +553,7 @@ static float kTimeToBubbleShake=7.0f;
                         stitchEndPos=location;
                     }
                 }
+                
                 // =====================================================================
             }
             
@@ -547,6 +617,18 @@ static float kTimeToBubbleShake=7.0f;
             [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
         }
         
+        //check if they moved through a current stitch -- if so delete that stich
+        NSValue *remJump=nil;
+        for(NSValue *jumpval in rambler.UserJumps)
+        {
+            CGPoint jump=[jumpval CGPointValue];
+            if(lastBubbleValue>=jump.x && lastBubbleValue<(jump.x + jump.y))
+            {
+                remJump=jumpval;
+            }
+        }
+        if(remJump)[rambler.UserJumps removeObject:remJump];
+        remJump=nil;
 
         //do not update rambler -- causes render to carry on scrolling, and eval is at end anyway
         //rambler.BubblePos=lastBubbleLoc;
@@ -657,7 +739,7 @@ static float kTimeToBubbleShake=7.0f;
     holdingBubbleOffset=0;
     holdingBubble=NO;
     hasSetJumpStartValue=NO;
-    lastBubbleValue=0;
+    jumpStartValue=0;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -665,7 +747,7 @@ static float kTimeToBubbleShake=7.0f;
     touching=NO;
     inRamblerArea=NO;
     hasSetJumpStartValue=NO;
-    lastBubbleValue=0;
+    jumpStartValue=0;
 }
 
 #pragma mark - meta question

@@ -36,6 +36,10 @@
     ProblemRejectMode rejectMode;
     ProbjemRejectType rejectType;
     ProblemEvalMode evalMode;
+    NSString *evalType;
+    int evalInterval;
+    NSArray *evalJumpSequence;
+    
     CCLabelTTF *problemDescLabel;
 
     CCLabelTTF *problemCompleteLabel;

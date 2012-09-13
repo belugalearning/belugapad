@@ -2406,7 +2406,10 @@ static float kTimeToCageShake=7.0f;
 //                    }
                 for(DWPlaceValueBlockGameObject *b in pickupObjects)
                 {
-                
+                    if([pickupObjects count]>1){
+                        gw.Blackboard.DropObject=nil;
+                        [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
+                    }
                     // if this is a multiple block pickup problem check below
                     if(multipleBlockPickup||showMultipleControls)
                     {
@@ -2490,6 +2493,8 @@ static float kTimeToCageShake=7.0f;
                         [[gw Blackboard].DropObject logInfo:@"mounted object on this go" withData:0];
                         
                     }
+                    
+
                 }
                 // then log stuff
                 [loggingService logEvent:(isCage ? BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_CAGE : BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_GRID)

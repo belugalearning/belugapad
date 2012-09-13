@@ -25,11 +25,11 @@
         [layout addObject:[NSValue valueWithCGPoint:p]];
         
         if (x==0) {
-            x++;
+            x--;
         }
         else
         {
-            y++;
+            y--;
             x=0;
         }
     }

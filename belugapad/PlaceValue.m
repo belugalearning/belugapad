@@ -2125,11 +2125,12 @@ static float kTimeToCageShake=7.0f;
                 else isCage=NO;
                 
                 // if we have multiple controls
-                if(multipleBlockPickup||showMultipleControls)
+                if((multipleBlockPickup||showMultipleControls) && [pickupObjects count]>1)
                 {
                     // and if there's enough space - then droptarget is modified to allow each to mount 
                     if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
                     {
+                        
                         gw.Blackboard.TestTouchLocation = ccp(gw.Blackboard.TestTouchLocation.x, gw.Blackboard.TestTouchLocation.y + 1000);
                         gw.Blackboard.DropObject=nil;
                         [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];

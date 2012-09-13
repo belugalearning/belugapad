@@ -2487,9 +2487,9 @@ static float kTimeToCageShake=7.0f;
                         // otherwise the pickupobject should be remounted and
                         
                     
-                        [[gw Blackboard].PickupObject handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
-                        [[gw Blackboard].PickupObject handleMessage:kDWputdown andPayload:nil withLogLevel:0];
-                        [[gw Blackboard].PickupObject logInfo:@"this object was mounted" withData:0];
+                        [b handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
+                        [b handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+                        [b logInfo:@"this object was mounted" withData:0];
                         [[gw Blackboard].DropObject logInfo:@"mounted object on this go" withData:0];
                         
                     }

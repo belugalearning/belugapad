@@ -9,7 +9,7 @@
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>20</string>
+	<string>18</string>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
@@ -60,7 +60,7 @@
 		<key>NUMBER_PICKER_DESCRIPTION</key>
 		<string>Some yellow goos were mixed with red goos. There were 18 yellow goos to begin with, now there are 9. How many yellow goos were mixed?</string>
 		<key>PICKER_LAYOUT</key>
-		<integer>0</integer>
+		<integer>1</integer>
 		<key>PICKER_ORIGIN_X</key>
 		<integer>0</integer>
 		<key>PICKER_ORIGIN_Y</key>

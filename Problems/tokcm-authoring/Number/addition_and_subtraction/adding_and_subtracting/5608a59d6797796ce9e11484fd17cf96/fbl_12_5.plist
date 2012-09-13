@@ -9,11 +9,15 @@
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
 	<key>SOLUTION</key>
-	<integer>12</integer>
+	<integer>7</integer>
 	<key>INIT_BUBBLES</key>
 	<integer>2</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
+		<dict>
+			<key>NUMBER</key>
+			<integer>12</integer>
+		</dict>
 		<dict>
 			<key>NUMBER</key>
 			<integer>5</integer>
@@ -31,46 +35,51 @@
 	<key>SHOW_MULTIPLE_CONTROLS</key>
 	<true/>
 	<key>SHOW_SOLUTION_ON_PIPE</key>
-	<true/>
-	<key>META_QUESTION</key>
+	<false/>
+	<key>DSTRINGS</key>
 	<dict>
-		<key>META_QUESTION_COMPLETE_TEXT</key>
-		<string>well done!!</string>
-		<key>META_QUESTION_EVAL_MODE</key>
-		<integer>0</integer>
-		<key>META_QUESTION_ANSWER_MODE</key>
-		<integer>0</integer>
-		<key>META_QUESTION_ANSWERS</key>
-		<array>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>6</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>5</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>4</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>7</string>
-				<key>META_ANSWER_VALUE</key>
-				<true/>
-			</dict>
-		</array>
-		<key>META_QUESTION_TITLE</key>
-		<string>{@bname} had 5 {@item}. {@gname} gives him some more. He now has 12. How many {@item} did {@gname} give to {@bname}?</string>
-		<key>META_QUESTION_INCOMPLETE_TEXT</key>
-		<string>Try again</string>
+		<key>@bname</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>Gareth</string>
+				<string>Nick</string>
+				<string>Ed</string>
+				<string>Dave</string>
+				<string>Richard</string>
+				<string>Mark</string>
+				<string>Scott</string>
+			</array>
+		</dict>
+		<key>@gname</key>
+		<dict>
+			<key>DATA</key>
+			<array>
+				<string>Claire</string>
+				<string>Winnie</string>
+				<string>Sarah</string>
+				<string>Simone</string>
+				<string>Elaine</string>
+			</array>
+			<key>MODE</key>
+			<string>RANDOM</string>
+		</dict>
+		<key>@item</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>cookies</string>
+				<string>pens</string>
+				<string>crayons</string>
+				<string>coins</string>
+				<string>batteries</string>
+				<string>drinks</string>
+			</array>
+		</dict>
 	</dict>
 </dict>
 </plist>

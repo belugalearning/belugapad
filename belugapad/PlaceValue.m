@@ -2247,7 +2247,7 @@ static float kTimeToCageShake=7.0f;
                 else isCage=NO;
                 
                 // if we have multiple controls
-                if(multipleBlockPickup||showMultipleControls)
+                if((multipleBlockPickup||showMultipleControls)&&[pickupObjects count]>1)
                 {
                     // and if there's enough space - then droptarget is modified to allow each to mount
                     
@@ -2295,16 +2295,11 @@ static float kTimeToCageShake=7.0f;
                     }
                     
                 }
-                else if(isNegativeProblem)
+                else if(isNegativeProblem&&[pickupObjects count]>1)
                 {
                     // and if there's enough space - then droptarget is modified to allow each to mount
                     
-                    if(b.ObjectValue==0)
-                    {
-                        [b handleMessage:kDWfadeAndDestroy];
-                        [self setTouchVarsToOff];
-                        return;
-                    }
+
 //                    else if(explodeMode && n.MountedObject && !n.CancellingObject)
 //                    {
 //                        [b handleMessage:kDWresetToMountPosition];
@@ -2333,18 +2328,18 @@ static float kTimeToCageShake=7.0f;
                             if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && lastDrop!=gw.Blackboard.DropObject)
                             {
                                 lastDrop=gw.Blackboard.DropObject;
-//                                if(lastDrop!=gw.Blackboard.DropObject && ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject && !((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).CancellingObject)
-//                                {
-//                                    lastDrop=gw.Blackboard.DropObject;
-//                                    go.LastMount=go.Mount;
-//                                    go.Mount=lastDrop;
-//                                    [go handleMessage:kDWresetToMountPosition];
-//                                    [((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject handleMessage:kDWfadeAndDestroy];
-//                                    [go handleMessage:kDWfadeAndDestroy];
-//                                    ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject=nil;
-//                                }
-//                                else
-//                                {
+                                if(lastDrop!=gw.Blackboard.DropObject && ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject && !((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).CancellingObject)
+                                {
+                                    lastDrop=gw.Blackboard.DropObject;
+                                    go.LastMount=go.Mount;
+                                    go.Mount=lastDrop;
+                                    [go handleMessage:kDWresetToMountPosition];
+                                    [((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject handleMessage:kDWfadeAndDestroy];
+                                    [go handleMessage:kDWfadeAndDestroy];
+                                    ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject=nil;
+                                }
+                                else
+                                {
                                     go.LastMount=go.Mount;
                                     go.Mount=gw.Blackboard.DropObject;
                                 
@@ -2356,7 +2351,7 @@ static float kTimeToCageShake=7.0f;
                                 
                                     [go handleMessage:kDWresetToMountPosition];
                                     [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
-//                                }
+                                }
                             }
                             
                             
@@ -2388,19 +2383,19 @@ static float kTimeToCageShake=7.0f;
                 }
                 
                 // other negatives code was here
-//                if(b.ObjectValue==0)
-//                {
-//                    [b handleMessage:kDWfadeAndDestroy];
-//                    [self setTouchVarsToOff];
-//                    return;
-//                }
-//                else if(explodeMode && n.MountedObject && !n.CancellingObject)
-//                {
-//                    [b handleMessage:kDWresetToMountPosition];
-//                    [n.MountedObject handleMessage:kDWfadeAndDestroy];
-//                    [b handleMessage:kDWfadeAndDestroy];
-//                    n.MountedObject=nil;
-//                }
+                if(b.ObjectValue==0)
+                {
+                    [b handleMessage:kDWfadeAndDestroy];
+                    [self setTouchVarsToOff];
+                    return;
+                }
+                else if(explodeMode && n.MountedObject && !n.CancellingObject)
+                {
+                    [b handleMessage:kDWresetToMountPosition];
+                    [n.MountedObject handleMessage:kDWfadeAndDestroy];
+                    [b handleMessage:kDWfadeAndDestroy];
+                    n.MountedObject=nil;
+                }
                 // ===== return a selection (a base selection) back to where they came from by resetting mounts etc ===
                 else if(isBasePickup && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject])
                 {

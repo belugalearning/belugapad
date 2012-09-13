@@ -14,10 +14,10 @@
 	<string>0</string>
 	<key>MAX_VALUE</key>
 	<string>50</string>
+	<key>JUMP_MODE</key>
+	<true/>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
-	<key>EVAL_TYPE</key>
-	<string>REPEATED_ADDITION</string>
 	<key>EVAL_TYPE</key>
 	<string>REPEATED_ADDITION</string>
 	<key>EVAL_INTERVAL</key>

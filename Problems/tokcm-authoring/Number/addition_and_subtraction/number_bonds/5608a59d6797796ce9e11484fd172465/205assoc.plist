@@ -38,12 +38,15 @@
 	<false/>
 	<key>EVAL_PLUS_MINUS_THRESHOLD</key>
 	<integer>0</integer>
+	<key>SHOW_NUMBERS_AT_INTERVALS</key>
+	<array>
+		<string>10</string>
+	</array>
 	<key>JUMP_MODE</key>
 	<true/>
 	<key>EVAL_JUMP_SEQUENCE</key>
 	<array>
-		<string>{$x}</string>
-		<string>{20-x}</string>
+		<string>{20-$x}</string>
 		<string>{$y}</string>
 	</array>
 	<key>EVAL_JUMP_REQUIRES_STRICT_ORDER</key>

@@ -38,6 +38,10 @@
 	<false/>
 	<key>EVAL_PLUS_MINUS_THRESHOLD</key>
 	<integer>0</integer>
+	<key>SHOW_NUMBERS_AT_INTERVALS</key>
+	<array>
+		<string>10</string>
+	</array>
 	<key>JUMP_MODE</key>
 	<true/>
 	<key>EVAL_JUMP_SEQUENCE</key>

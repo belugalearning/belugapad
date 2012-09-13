@@ -20,6 +20,8 @@
 	<string>0</string>
 	<key>MAX_VALUE</key>
 	<string>100</string>
+	<key>JUMP_MODE</key>
+	<true/>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>

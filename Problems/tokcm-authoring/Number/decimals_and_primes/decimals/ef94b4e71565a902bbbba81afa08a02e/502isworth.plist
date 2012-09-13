@@ -35,19 +35,19 @@
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>the same as {$x} thousandths</string>
+				<string>{$x} thousandths</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>worth {$x}0 hundredths</string>
+				<string>{$x}0 hundredths</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>a hundred times smaller than 0.{$x}</string>
+				<string>100 times smaller than 0.{$x}</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>

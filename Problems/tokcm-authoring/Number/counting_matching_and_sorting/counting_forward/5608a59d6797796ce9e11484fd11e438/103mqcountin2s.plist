@@ -18,12 +18,12 @@
 	<integer>1</integer>
 	<key>EVAL_TYPE</key>
 	<string>REPEATED_ADDITION</string>
+	<key>EVAL_TARGET</key>
+	<integer>12</integer>
 	<key>EVAL_INTERVAL</key>
 	<string>2</string>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
-	<key>EVAL_TARGET</key>
-	<integer>12</integer>
 	<key>JUMP_MODE</key>
 	<true/>
 	<key>HIDE_ALL_NUMBERS</key>

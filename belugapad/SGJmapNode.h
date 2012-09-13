@@ -19,5 +19,5 @@
 @property (retain) NSMutableArray *PrereqNodes;
 
 -(SGJmapNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
-
 @end
+

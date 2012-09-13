@@ -303,6 +303,10 @@
 		7F5115A514A9EF67001AF372 /* DWBlackboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F51159E14A9EF67001AF372 /* DWBlackboard.m */; };
 		7F5115A614A9EF67001AF372 /* DWGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A014A9EF67001AF372 /* DWGameObject.m */; };
 		7F5115A714A9EF67001AF372 /* DWGameWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5115A214A9EF67001AF372 /* DWGameWorld.m */; };
+		7F588F521602796F0015F504 /* SGJmapCloud.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F588F511602796F0015F504 /* SGJmapCloud.m */; };
+		7F588F5616027B010015F504 /* SGJmapCloudRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F588F5516027B010015F504 /* SGJmapCloudRender.m */; };
+		7F588F5916027B280015F504 /* SGJmapCloudSeeker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F588F5816027B280015F504 /* SGJmapCloudSeeker.m */; };
+		7F588F5C16027B380015F504 /* SGJmapCloudMotion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F588F5B16027B380015F504 /* SGJmapCloudMotion.m */; };
 		7F5BD842154AB6A70092740B /* JMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5BD841154AB6A70092740B /* JMap.m */; };
 		7F66C88D159DC78C004E84C8 /* SGJmapRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F66C88C159DC78C004E84C8 /* SGJmapRegion.m */; };
 		7F66C891159DC9E5004E84C8 /* SGJmapRegionRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F66C890159DC9E5004E84C8 /* SGJmapRegionRender.m */; };
@@ -1037,6 +1041,14 @@
 		7F5115A114A9EF67001AF372 /* DWGameWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWGameWorld.h; sourceTree = "<group>"; };
 		7F5115A214A9EF67001AF372 /* DWGameWorld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWGameWorld.m; sourceTree = "<group>"; };
 		7F5115A314A9EF67001AF372 /* DWModelConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWModelConstants.h; sourceTree = "<group>"; };
+		7F588F501602796F0015F504 /* SGJmapCloud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapCloud.h; sourceTree = "<group>"; };
+		7F588F511602796F0015F504 /* SGJmapCloud.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapCloud.m; sourceTree = "<group>"; };
+		7F588F5416027B010015F504 /* SGJmapCloudRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapCloudRender.h; sourceTree = "<group>"; };
+		7F588F5516027B010015F504 /* SGJmapCloudRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapCloudRender.m; sourceTree = "<group>"; };
+		7F588F5716027B280015F504 /* SGJmapCloudSeeker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapCloudSeeker.h; sourceTree = "<group>"; };
+		7F588F5816027B280015F504 /* SGJmapCloudSeeker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapCloudSeeker.m; sourceTree = "<group>"; };
+		7F588F5A16027B370015F504 /* SGJmapCloudMotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapCloudMotion.h; sourceTree = "<group>"; };
+		7F588F5B16027B380015F504 /* SGJmapCloudMotion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapCloudMotion.m; sourceTree = "<group>"; };
 		7F5BD840154AB6A70092740B /* JMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMap.h; sourceTree = "<group>"; };
 		7F5BD841154AB6A70092740B /* JMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMap.m; sourceTree = "<group>"; };
 		7F66C88B159DC78C004E84C8 /* SGJmapRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapRegion.h; sourceTree = "<group>"; };
@@ -2482,6 +2494,8 @@
 				7F7336B5158B383600A37FC4 /* SGJmapMasteryNode.m */,
 				7F66C88B159DC78C004E84C8 /* SGJmapRegion.h */,
 				7F66C88C159DC78C004E84C8 /* SGJmapRegion.m */,
+				7F588F501602796F0015F504 /* SGJmapCloud.h */,
+				7F588F511602796F0015F504 /* SGJmapCloud.m */,
 			);
 			name = Jmap;
 			sourceTree = "<group>";
@@ -2499,6 +2513,12 @@
 				7F2F2D73158F754600862302 /* SGJmapNodeSelect.m */,
 				7F66C88F159DC9E5004E84C8 /* SGJmapRegionRender.h */,
 				7F66C890159DC9E5004E84C8 /* SGJmapRegionRender.m */,
+				7F588F5416027B010015F504 /* SGJmapCloudRender.h */,
+				7F588F5516027B010015F504 /* SGJmapCloudRender.m */,
+				7F588F5716027B280015F504 /* SGJmapCloudSeeker.h */,
+				7F588F5816027B280015F504 /* SGJmapCloudSeeker.m */,
+				7F588F5A16027B370015F504 /* SGJmapCloudMotion.h */,
+				7F588F5B16027B380015F504 /* SGJmapCloudMotion.m */,
 			);
 			name = Jmap;
 			sourceTree = "<group>";
@@ -3316,6 +3336,10 @@
 				7FA0FCDD15F74DB000C241A8 /* AdpRepeatProblemInserter.m in Sources */,
 				7FA0FCDE15F74DB000C241A8 /* AdpRepeatThisPipelineInserter.m in Sources */,
 				7F97879515FFA2CA00225967 /* NumberLayout.m in Sources */,
+				7F588F521602796F0015F504 /* SGJmapCloud.m in Sources */,
+				7F588F5616027B010015F504 /* SGJmapCloudRender.m in Sources */,
+				7F588F5916027B280015F504 /* SGJmapCloudSeeker.m in Sources */,
+				7F588F5C16027B380015F504 /* SGJmapCloudMotion.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

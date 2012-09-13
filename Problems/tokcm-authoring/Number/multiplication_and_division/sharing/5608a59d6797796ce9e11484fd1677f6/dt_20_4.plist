@@ -18,7 +18,7 @@
 			<key>POS_X</key>
 			<integer>300</integer>
 			<key>POS_Y</key>
-			<integer>350</integer>
+			<integer>320</integer>
 			<key>LABEL</key>
 			<string>Student 1</string>
 		</dict>
@@ -28,7 +28,7 @@
 			<key>POS_X</key>
 			<integer>600</integer>
 			<key>POS_Y</key>
-			<integer>350</integer>
+			<integer>320</integer>
 			<key>LABEL</key>
 			<string>Student 2</string>
 		</dict>
@@ -38,7 +38,7 @@
 			<key>POS_X</key>
 			<integer>450</integer>
 			<key>POS_Y</key>
-			<integer>450</integer>
+			<integer>420</integer>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
@@ -46,7 +46,7 @@
 			<key>POS_X</key>
 			<integer>300</integer>
 			<key>POS_Y</key>
-			<integer>550</integer>
+			<integer>520</integer>
 			<key>LABEL</key>
 			<string>Student 3</string>
 		</dict>
@@ -56,14 +56,14 @@
 			<key>POS_X</key>
 			<integer>600</integer>
 			<key>POS_Y</key>
-			<integer>550</integer>
+			<integer>520</integer>
 			<key>LABEL</key>
 			<string>Student 4</string>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
 	<array>
-		<integer>21</integer>
+		<integer>100</integer>
 	</array>
 	<key>META_QUESTION</key>
 	<dict>

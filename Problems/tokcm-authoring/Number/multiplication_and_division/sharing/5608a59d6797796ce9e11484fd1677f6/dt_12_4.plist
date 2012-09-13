@@ -2,61 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>MASTERY</key>
+	<true/>
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>dt_20_4</string>
+	<string>21/3</string>
 	<key>EVAL_MODE</key>
-	<integer>0</integer>
-	<key>SOLUTION</key>
-	<array>
-		<integer>21</integer>
-	</array>
-	<key>DSTRINGS</key>
-	<dict>
-		<key>@bname</key>
-		<dict>
-			<key>MODE</key>
-			<string>RANDOM</string>
-			<key>DATA</key>
-			<array>
-				<string>Gareth</string>
-				<string>Nick</string>
-				<string>Ed</string>
-				<string>Dave</string>
-				<string>Richard</string>
-				<string>Mark</string>
-				<string>Scott</string>
-			</array>
-		</dict>
-		<key>@gname</key>
-		<dict>
-			<key>DATA</key>
-			<array>
-				<string>Claire</string>
-				<string>Winnie</string>
-				<string>Sarah</string>
-				<string>Simone</string>
-				<string>Elaine</string>
-			</array>
-			<key>MODE</key>
-			<string>RANDOM</string>
-		</dict>
-		<key>@item</key>
-		<dict>
-			<key>MODE</key>
-			<string>RANDOM</string>
-			<key>DATA</key>
-			<array>
-				<string>cookies</string>
-				<string>pens</string>
-				<string>crayons</string>
-				<string>coins</string>
-				<string>batteries</string>
-				<string>drinks</string>
-			</array>
-		</dict>
-	</dict>
+	<integer>1</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
@@ -65,9 +18,9 @@
 			<key>POS_X</key>
 			<integer>200</integer>
 			<key>POS_Y</key>
-			<integer>350</integer>
+			<integer>375</integer>
 			<key>LABEL</key>
-			<string>Bag 1</string>
+			<string>Friend 1</string>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
@@ -75,9 +28,9 @@
 			<key>POS_X</key>
 			<integer>350</integer>
 			<key>POS_Y</key>
-			<integer>350</integer>
+			<integer>375</integer>
 			<key>LABEL</key>
-			<string>Bag 2</string>
+			<string>Friend 2</string>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
@@ -85,9 +38,9 @@
 			<key>POS_X</key>
 			<integer>500</integer>
 			<key>POS_Y</key>
-			<integer>350</integer>
+			<integer>500</integer>
 			<key>LABEL</key>
-			<string>Bag 3</string>
+			<string>Friend 3</string>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
@@ -95,21 +48,23 @@
 			<key>POS_X</key>
 			<integer>650</integer>
 			<key>POS_Y</key>
-			<integer>350</integer>
+			<integer>500</integer>
 			<key>LABEL</key>
-			<string>Bag 4</string>
+			<string>Friend 4</string>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>16</integer>
+			<integer>8</integer>
 			<key>POS_X</key>
 			<integer>800</integer>
 			<key>POS_Y</key>
-			<integer>250</integer>
+			<integer>350</integer>
 		</dict>
 	</array>
-	<key>HOST_BACKGROUND_IMAGE</key>
-	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<key>SOLUTION</key>
+	<array>
+		<integer>100</integer>
+	</array>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
@@ -124,25 +79,43 @@
 				<key>META_ANSWER_TEXT</key>
 				<string>3</string>
 				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>5</string>
-				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>2</string>
+				<string>4</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>8</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There are 20 sweets that need to be separated into 4 bags. How many sweets will be in each bag?</string>
+		<string>There are 12 sweets in a bag. Share this evenly between 4 friends. </string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
+	</dict>
+	<key>HOST_BACKGROUND_IMAGE</key>
+	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@gname</key>
+		<dict>
+			<key>DATA</key>
+			<array>
+				<string>Claire</string>
+				<string>Winnie</string>
+				<string>Sarah</string>
+				<string>Simone</string>
+				<string>Elaine</string>
+			</array>
+			<key>MODE</key>
+			<string>RANDOM</string>
+		</dict>
 	</dict>
 </dict>
 </plist>

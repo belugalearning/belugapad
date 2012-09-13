@@ -62,16 +62,24 @@
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>10</integer>
+			<integer>5</integer>
 			<key>POS_X</key>
-			<integer>200</integer>
+			<integer>700</integer>
+			<key>POS_Y</key>
+			<integer>350</integer>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>5</integer>
+			<key>POS_X</key>
+			<integer>300</integer>
 			<key>POS_Y</key>
 			<integer>350</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
 	<array>
-		<integer>11</integer>
+		<integer>100</integer>
 	</array>
 	<key>DSTRINGS</key>
 	<dict>

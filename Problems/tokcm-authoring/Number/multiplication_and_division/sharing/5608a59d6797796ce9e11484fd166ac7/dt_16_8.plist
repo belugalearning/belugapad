@@ -61,25 +61,17 @@
 	<array>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>5</integer>
+			<integer>8</integer>
 			<key>POS_X</key>
-			<integer>350</integer>
+			<integer>300</integer>
 			<key>POS_Y</key>
-			<integer>550</integer>
+			<integer>350</integer>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>5</integer>
+			<integer>8</integer>
 			<key>POS_X</key>
-			<integer>350</integer>
-			<key>POS_Y</key>
-			<integer>450</integer>
-		</dict>
-		<dict>
-			<key>QUANTITY</key>
-			<integer>6</integer>
-			<key>POS_X</key>
-			<integer>350</integer>
+			<integer>600</integer>
 			<key>POS_Y</key>
 			<integer>350</integer>
 		</dict>

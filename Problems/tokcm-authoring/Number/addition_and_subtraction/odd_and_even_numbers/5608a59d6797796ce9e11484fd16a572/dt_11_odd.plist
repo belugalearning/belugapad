@@ -5,7 +5,7 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Divide the 6 blocks into as many blocks of 2&apos;s as possible.</string>
+	<string>Is the number 11 odd or even?</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>INIT_OBJECTS</key>
@@ -14,9 +14,9 @@
 			<key>QUANTITY</key>
 			<integer>11</integer>
 			<key>POS_X</key>
-			<integer>200</integer>
+			<integer>550</integer>
 			<key>POS_Y</key>
-			<integer>400</integer>
+			<integer>550</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

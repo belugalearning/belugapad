@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Count to 8.</string>
+	<string>Count to 8 in jumps of two.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>count on from 0 to 8</string>
 	<key>TOOL_KEY</key>
@@ -14,9 +14,11 @@
 	<string>0</string>
 	<key>MAX_VALUE</key>
 	<string>10</string>
+	<key>JUMP_MODE</key>
+	<true/>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
-    <key>EVAL_TYPE</key>
+	<key>EVAL_TYPE</key>
 	<string>REPEATED_ADDITION</string>
 	<key>EVAL_INTERVAL</key>
 	<string>2</string>
@@ -27,7 +29,9 @@
 	<key>HIDE_ALL_NUMBERS</key>
 	<true/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
-	<array/>
+	<array>
+		<string>4</string>
+	</array>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>HIDE_START_NUMBER</key>
@@ -42,8 +46,6 @@
 	<false/>
 	<key>EVAL_PLUS_MINUS_THRESHOLD</key>
 	<integer>0</integer>
-	<key>JUMP_MODE</key>
-	<true/>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array>
 		<string>2</string>

@@ -16,7 +16,7 @@
 	<string>15</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
-    <key>EVAL_TYPE</key>
+	<key>EVAL_TYPE</key>
 	<string>REPEATED_ADDITION</string>
 	<key>EVAL_INTERVAL</key>
 	<string>3</string>
@@ -29,7 +29,9 @@
 	<key>HIDE_ALL_NUMBERS</key>
 	<true/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
-	<array/>
+	<array>
+		<string>5</string>
+	</array>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>HIDE_START_NUMBER</key>

@@ -161,12 +161,7 @@
 		</dict>
 	</array>
 	<key>COLUMN_SPRITES</key>
-	<dict>
-		<key>10</key>
-		<string>/images/placevalue/obj-placevalue-unit1.png</string>
-		<key>1</key>
-		<string>/images/placevalue/obj-placevalue-unit1.png</string>
-	</dict>
+	<dict/>
 	<key>COLUMN_CAGES</key>
 	<dict>
 		<key>10</key>

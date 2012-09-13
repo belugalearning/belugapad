@@ -5,7 +5,7 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>8/4</string>
+	<string>{@bname} had 5 {@item}. {@gname} gives him some more. He now has 12. How many {@item} did {@gname} give to {@bname}?</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
 	<key>SOLUTION</key>
@@ -65,9 +65,9 @@
 			<key>QUANTITY</key>
 			<integer>12</integer>
 			<key>POS_X</key>
-			<integer>100</integer>
+			<integer>550</integer>
 			<key>POS_Y</key>
-			<integer>450</integer>
+			<integer>550</integer>
 		</dict>
 	</array>
 	<key>META_QUESTION</key>

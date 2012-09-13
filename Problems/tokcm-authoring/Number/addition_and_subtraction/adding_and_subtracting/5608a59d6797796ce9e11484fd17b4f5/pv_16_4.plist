@@ -88,9 +88,9 @@
 		<string>complete.wav</string>
 	</dict>
 	<key>REJECT_MODE</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>EVAL_MODE</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>

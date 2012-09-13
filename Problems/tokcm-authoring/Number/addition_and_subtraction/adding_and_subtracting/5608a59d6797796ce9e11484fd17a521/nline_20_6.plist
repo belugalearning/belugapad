@@ -13,7 +13,7 @@
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
-	<string>20</string>
+	<string>30</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
@@ -60,7 +60,7 @@
 		<key>NUMBER_PICKER_DESCRIPTION</key>
 		<string>There are 20 red goos. Some red goo is mixed with blue goo to make purple goo. There are 6 red goos left. How many red goos were used?</string>
 		<key>PICKER_LAYOUT</key>
-		<integer>0</integer>
+		<integer>1</integer>
 		<key>PICKER_ORIGIN_X</key>
 		<integer>0</integer>
 		<key>PICKER_ORIGIN_Y</key>

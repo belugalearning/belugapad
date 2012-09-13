@@ -11,9 +11,9 @@
 		<key>$number_larger</key>
 		<dict>
 			<key>MAX</key>
-			<string>20</string>
+			<string>15</string>
 			<key>MIN</key>
-			<string>14</string>
+			<string>10</string>
 		</dict>
 		<key>$number_smaller</key>
 		<dict>

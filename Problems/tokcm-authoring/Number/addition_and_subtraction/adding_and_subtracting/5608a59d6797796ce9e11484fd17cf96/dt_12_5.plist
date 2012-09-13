@@ -66,9 +66,9 @@
 			<key>QUANTITY</key>
 			<integer>12</integer>
 			<key>POS_X</key>
-			<integer>100</integer>
+			<integer>550</integer>
 			<key>POS_Y</key>
-			<integer>450</integer>
+			<integer>550</integer>
 		</dict>
 	</array>
 </dict>

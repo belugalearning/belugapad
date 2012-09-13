@@ -38,9 +38,9 @@
         
         PrereqNodes=[[NSMutableArray alloc] init];
         
-        NodeRenderComponent=[[[SGJmapNodeRender alloc] initWithGameObject:self] retain];
-        ProximityEvalComponent=[[[SGJmapProximityEval alloc] initWithGameObject:self] retain];
-        NodeSelectComponent=[[[SGJmapNodeSelect alloc] initWithGameObject:self] retain];
+        NodeRenderComponent=[[SGJmapNodeRender alloc] initWithGameObject:self];
+        ProximityEvalComponent=[[SGJmapProximityEval alloc] initWithGameObject:self];
+        NodeSelectComponent=[[SGJmapNodeSelect alloc] initWithGameObject:self];
     }
     return self;
 }

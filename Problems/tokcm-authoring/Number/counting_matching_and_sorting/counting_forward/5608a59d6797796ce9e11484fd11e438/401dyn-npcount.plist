@@ -12,6 +12,10 @@
 	<string>NLine</string>
 	<key>START_VALUE</key>
 	<string>{$x*$int}</string>
+	<key>MARKER_POSITIONS</key>
+	<array>
+		<string>{$x*$int}</string>
+	</array>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
@@ -73,7 +77,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>what number is the bubble on?</string>
+		<string>What number is the bubble on?</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>PICKER_ORIGIN_X</key>

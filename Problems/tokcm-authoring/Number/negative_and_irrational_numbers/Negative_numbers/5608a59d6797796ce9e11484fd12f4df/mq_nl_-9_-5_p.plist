@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>MASTERY</key>
-	<true/>
+	<false/>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>-9 C _ -5 C. What is the missing symbol?</string>
 	<key>INTERNAL_DESCRIPTION</key>
@@ -13,7 +13,7 @@
 	<key>START_VALUE</key>
 	<string>-9</string>
 	<key>MIN_VALUE</key>
-	<string>-10</string>
+	<string>-20</string>
 	<key>MAX_VALUE</key>
 	<string>3</string>
 	<key>EVAL_MODE</key>

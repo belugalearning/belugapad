@@ -823,7 +823,7 @@ static float kTimeToPieShake=7.0f;
         
     }
     
-    [self balanceLayer];
+    //[self balanceLayer];
     [self balanceContainers];
     
     if(hasMovedSquare)

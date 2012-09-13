@@ -270,11 +270,16 @@
         [curSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(spriteFileName)]];
     }
     
-    CCMoveTo *moveAct=[CCMoveTo actionWithDuration:kTimeObjectSnapBack position:ccp(b.PosX, b.PosY)];
-    CCAction *cleanUpSprite=[CCCallBlock actionWithBlock:^{[curSprite removeFromParentAndCleanup:YES];}];
-    CCAction *cleanUpGO=[CCCallBlock actionWithBlock:^{[gameWorld delayRemoveGameObject:b];}];
-    CCSequence *sequence=[CCSequence actions:moveAct, cleanUpSprite, cleanUpGO, nil];
-    [curSprite runAction:sequence];
+    if([b.mySprite numberOfRunningActions]==0)
+    {
+    
+        CCMoveTo *moveAct=[CCMoveTo actionWithDuration:kTimeObjectSnapBack position:ccp(b.PosX, b.PosY)];
+        CCAction *cleanUpSprite=[CCCallBlock actionWithBlock:^{[curSprite removeFromParentAndCleanup:YES];}];
+        CCAction *cleanUpGO=[CCCallBlock actionWithBlock:^{[gameWorld delayRemoveGameObject:b];}];
+        CCSequence *sequence=[CCSequence actions:moveAct, cleanUpSprite, cleanUpGO, nil];
+        [curSprite runAction:sequence];
+
+    }
 }
 
 -(void)destroy

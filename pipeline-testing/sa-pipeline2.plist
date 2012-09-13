@@ -2,14 +2,23 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
-	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14c173/exprbuilder_1.plist</string>
-	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14c173/exprbuilder_2.plist</string>
-	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14c173/fb002.plist</string>
-	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14b856/nb_1-1-3.plist</string>
-	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14b856/nb_3-1-8.plist</string>
-	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14b856/nb_2-1-8.plist</string>
-	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14b856/nb_3-8.plist</string>
-	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14a327/fb002.plist</string>
-	<string>/Problems/tokcm-authoring/Number/fractions/early_fractions/5608a59d6797796ce9e11484fd14a327/ps2.plist</string>
+	<string>/Problems/tools-dev/featuredemo/nline/segment1.plist</string>
+	<string>/Problems/tools-dev/featuredemo/nline/segment1-jumpsequence.plist</string>
+	<string>/Problems/tools-dev/featuredemo/nline/segment1-repeatedaddition.plist</string>
+	<string>/Problems/tools-dev/ExprBuilder/exprbuilder-dev3.plist</string>
+	<string>/Problems/tools-dev/ExprBuilder/exprbuilder-dev2.plist</string>
+	<string>/Problems/tools-dev/ExprBuilder/exprbuilder-dev1.plist</string>
+	<string>/Problems/tools-dev/da-float/fb002.plist</string>
+	<string>/Problems/tools-dev/da-float/fb003.plist</string>
+	<string>/Problems/tools-dev/da-float/fb004.plist</string>
+	<string>/Problems/tools-dev/da-float/fb005.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/Negative_numbers/5608a59d6797796ce9e11484fd12e627/mq_nl_-30_less.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/Negative_numbers/5608a59d6797796ce9e11484fd12e627/mq_nl_-30_more.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/Negative_numbers/5608a59d6797796ce9e11484fd12e627/np_nl_-80.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/Negative_numbers/5608a59d6797796ce9e11484fd12e627/mq_nl_-80_less.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/Negative_numbers/5608a59d6797796ce9e11484fd12e627/mq_nl_-50_more.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/Negative_numbers/5608a59d6797796ce9e11484fd12e627/mq_nl_-10_less.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/Negative_numbers/5608a59d6797796ce9e11484fd12e627/mq_nl_-45.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/Negative_numbers/5608a59d6797796ce9e11484fd12e627/mq_nl_-150.plist</string>
 </array>
 </plist>

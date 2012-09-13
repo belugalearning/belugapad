@@ -22,6 +22,8 @@
 -(void)moveGroupPositionFrom:(CGPoint)fromHere To:(CGPoint)here;
 -(void)checkIfInBubbleAt:(CGPoint)location;
 -(void)tintBlocksTo:(ccColor3B)thisColour;
+-(void)inflateZIndexOfMyObjects;
+-(void)resetZIndexOfMyObjects;
 -(void)destroy;
 
 
@@ -42,6 +44,7 @@
 @property (retain) CCSprite *MySprite;
 @property (retain) CCLayer *RenderLayer;
 @property CGPoint Position;
+@property int zIndex;
 
 
 -(void)setup;

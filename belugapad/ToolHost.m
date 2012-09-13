@@ -862,12 +862,12 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 #pragma mark - completion and user flow
 
--(void) returnToMenu
+-(void)returnToMenu
 {
     [[CCDirector sharedDirector] replaceScene:[JMap scene]];
 }
 
--(void) showProblemCompleteMessage
+-(void)showProblemCompleteMessage
 {
     problemComplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/complete-overlay.png")];
     [problemComplete setPosition:ccp(cx, cy)];
@@ -875,7 +875,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     showingProblemComplete=YES;
 }
 
--(void) showProblemIncompleteMessage
+-(void)showProblemIncompleteMessage
 {
     if(showingProblemIncomplete) return;
     
@@ -923,8 +923,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if (aMode) mqAnswerMode=[aMode intValue];
     
     // check the eval mode and assign
-    NSNumber *eMode=[pdefMQ objectForKey:META_QUESTION_EVAL_MODE];
-    if(eMode) mqEvalMode=[eMode intValue];
+//    NSNumber *eMode=[pdefMQ objectForKey:META_QUESTION_EVAL_MODE];
+//    if(eMode) mqEvalMode=[eMode intValue];
+    mqEvalMode=kMetaQuestionEvalOnCommit;
     
     // put our array of answers in an ivar
 //    metaQuestionAnswers = [pdefMQ objectForKey:META_QUESTION_ANSWERS];
@@ -1066,12 +1067,12 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
                 
                 // then if it's an answer and isn't currently selected
                 
-                if(isSelected && touchEnd)
-                {
+                //if(isSelected && touchEnd)
+                //{
                     // if this is an auto eval, run the eval now
-                    if(mqAnswerMode==kMetaQuestionAnswerSingle && mqEvalMode==kMetaQuestionEvalAuto)
-                        [self evalMetaQuestion];
-                }
+                //    if(mqAnswerMode==kMetaQuestionAnswerSingle && mqEvalMode==kMetaQuestionEvalAuto)
+                //        [self evalMetaQuestion];
+                //}
                 
                 if(!isSelected && !touchEnd)
                 {
@@ -1102,7 +1103,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
                     // return to full button colour and set the dictionary selected value to no
                     [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")]];
                     [answerLabel setColor:kMetaAnswerLabelColorDeselected];
-//                    [answerBtn setColor:kMetaQuestionButtonDeselected];
+                    //                    [answerBtn setColor:kMetaQuestionButtonDeselected];
                     [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
                 }
             }
@@ -1120,6 +1121,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     return;
     
 }
+
 -(void)evalMetaQuestion
 {
     if(metaQuestionForThisProblem)
@@ -1631,7 +1633,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 //        animPos=0;
 //        [self moveToTool0:0];
 //    }
-    if(isPaused)
+    if(isPaused||autoMoveToNextProblem)
     {
         return;
     }  
@@ -1692,7 +1694,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
-    if(isPaused)
+    if(isPaused||autoMoveToNextProblem)
     {
         return;
     } 
@@ -1748,7 +1750,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     // if we're paused - check if any menu options were valid.
     // touches ended event becase otherwise these touches go through to the tool
-    if(isPaused)
+    if(isPaused||autoMoveToNextProblem)
     {
         [self checkPauseTouches:location];
         return;
@@ -1804,7 +1806,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    if(isPaused)
+    if(isPaused||autoMoveToNextProblem)
     {
         return NO;
     }  
@@ -1813,7 +1815,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    if(isPaused)
+    if(isPaused||autoMoveToNextProblem)
     {
         return;
     }  
@@ -1822,7 +1824,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    if(isPaused)
+    if(isPaused||autoMoveToNextProblem)
     {
         return;
     }  

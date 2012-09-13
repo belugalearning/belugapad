@@ -5,7 +5,7 @@
 	<key>MASTERY</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 5. Count on 20 more.</string>
+	<string>This is 5. Add 20 blocks and count the total number of blocks. </string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>count on 20 from 5</string>
 	<key>TOOL_KEY</key>

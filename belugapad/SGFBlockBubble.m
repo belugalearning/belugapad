@@ -11,7 +11,7 @@
 
 @implementation SGFBlockBubble
 
-@synthesize MySprite, Position, RenderLayer, GroupsInMe, Replacement;
+@synthesize MySprite, Position, RenderLayer, GroupsInMe, Replacement, zIndex;
 
 -(SGFBlockBubble*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition andReplacement:(BOOL)isReplacement
 {

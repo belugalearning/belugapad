@@ -34,6 +34,8 @@
 	<false/>
 	<key>HIDE_END_NOTCH</key>
 	<false/>
+	<key>JUMP_MODE</key>
+	<true/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
 	<array>
 		<string>{5*$int}</string>

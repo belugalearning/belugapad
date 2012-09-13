@@ -36,6 +36,7 @@
 @synthesize ShowNotchesAtIntervals;
 
 @synthesize MarkerValuePositions;
+@synthesize UserJumps;
 
 -(void)dealloc
 {
@@ -45,6 +46,8 @@
     self.ShowNotchesAtIntervals=nil;
     
     self.MarkerValuePositions=nil;
+
+    self.UserJumps=nil;
     
     [super dealloc];
 }

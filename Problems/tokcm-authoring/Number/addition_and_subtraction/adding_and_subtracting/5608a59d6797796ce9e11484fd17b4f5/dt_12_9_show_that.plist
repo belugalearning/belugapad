@@ -7,7 +7,7 @@
 	<key>DISTRIBUTION_EVAL_TYPE</key>
 	<integer>1</integer>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Gareth has 15 blue goos and Nick has 9. Claire gives Sarah 9 of her blue goos. Show that Claire is left with 6 goos. </string>
+	<string>Gareth has 13 blue goos and Nick has 6. Claire gives Sarah 9 of her blue goos. Show that Claire is left with 6 goos. </string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>INIT_OBJECTS</key>

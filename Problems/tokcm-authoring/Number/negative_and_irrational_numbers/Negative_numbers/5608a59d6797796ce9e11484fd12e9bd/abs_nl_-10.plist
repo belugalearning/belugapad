@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>MASTERY</key>
-	<true/>
+	<false/>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Sarah has -£10 in her bank account. How much money does she owe?</string>
 	<key>INTERNAL_DESCRIPTION</key>

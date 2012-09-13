@@ -38,5 +38,7 @@
 
 @property NSMutableArray *MarkerValuePositions;
 
+@property NSMutableArray *UserJumps;
+
 
 @end

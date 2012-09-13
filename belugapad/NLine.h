@@ -36,6 +36,10 @@
     ProblemRejectMode rejectMode;
     ProbjemRejectType rejectType;
     ProblemEvalMode evalMode;
+    NSString *evalType;
+    int evalInterval;
+    NSArray *evalJumpSequence;
+    
     CCLabelTTF *problemDescLabel;
 
     CCLabelTTF *problemCompleteLabel;
@@ -75,10 +79,14 @@
     // == jump mode
     BOOL jumpMode;
     CGPoint stitchStartPos;
+    float stitchOffsetX;
     CGPoint stitchEndPos;
     CGPoint stitchApexPos;
     BOOL drawStitchLine;
     BOOL drawStitchCurve;
+    
+    int jumpStartValue;
+    BOOL hasSetJumpStartValue;
     
     // == markers
     NSMutableArray *markerValuePositions;

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>MASTERY</key>
-	<true/>
+	<false/>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>How many degrees (C) warmer is -3 C than -7 C?</string>
 	<key>INTERNAL_DESCRIPTION</key>

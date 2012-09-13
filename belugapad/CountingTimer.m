@@ -128,6 +128,11 @@
         [self expireProblemForRestart];
     }
         
+    if([buttonOfWin numberOfRunningActions]==0 && !CGPointEqualToPoint([buttonOfWin position], ccp(cx,cy)))
+    {
+        [buttonOfWin setPosition:ccp(cx,cy)];
+    }
+    
     if(autoMoveToNextProblem)
     {
         timeToAutoMoveToNextProblem+=delta;
@@ -250,7 +255,6 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
     
-    float distFromStartToEnd=[BLMath DistanceBetween:touchStartPos and:location];
     
     isTouching=NO;
     
@@ -282,7 +286,10 @@
     }
     else {
 //        if(evalMode==kProblemEvalOnCommit)[self resetProblem];
-        [buttonOfWin runAction:[InteractionFeedback shakeAction]];
+        
+        if([buttonOfWin numberOfRunningActions]==0)
+            [buttonOfWin runAction:[InteractionFeedback shakeAction]];
+        
     }
     
 }

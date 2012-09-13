@@ -193,17 +193,20 @@ static float kDistanceBetweenBlocks=70.0f;
 //    CCLabelTTF *labelForShape;
 //    float avgPosX=0;
 //    float avgPosY=0;
+    NSArray *thesePositions=[NSArray arrayWithArray:[NumberLayout physicalLayoutUpToNumber:numBlocks withSpacing:kDistanceBetweenBlocks]];
     
     NSString *label = [theseSettings objectForKey:LABEL];
     SGDtoolContainer *container = [[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:label andRenderLayer:renderLayer];
     if (label && !existingGroups) existingGroups = [[NSMutableArray arrayWithObject:label] retain];
     
-    int posX = [theseSettings objectForKey:POS_X] ? [[theseSettings objectForKey:POS_X]intValue] : (arc4random() % 960) + 30;
-    int posY = [theseSettings objectForKey:POS_Y] ? [[theseSettings objectForKey:POS_Y]intValue] : (arc4random() % 730) + 30;
+    int startPosX = [theseSettings objectForKey:POS_X] ? [[theseSettings objectForKey:POS_X]intValue] : (arc4random() % 960) + 30;
+    int startPosY = [theseSettings objectForKey:POS_Y] ? [[theseSettings objectForKey:POS_Y]intValue] : (arc4random() % 730) + 30;
     
     for (int i=0; i<numBlocks; i++)
     {
-        CGPoint p = ccp(posX + i * kDistanceBetweenBlocks,  posY);
+        CGPoint thisPoint=[[thesePositions objectAtIndex:i]CGPointValue];
+        
+        CGPoint p = ccp(startPosX+thisPoint.x,  startPosY+thisPoint.y);
         SGDtoolBlock *block =  [[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:p] autorelease];
         [block setup];
         block.MyContainer = container;        
@@ -213,12 +216,13 @@ static float kDistanceBetweenBlocks=70.0f;
         {
             SGDtoolBlock *prevBlock = [container.BlocksInShape objectAtIndex:i-1];
             [block pairMeWith:prevBlock];
-            [self findMountPositionForThisShape:block toThisShape:prevBlock];
+            [self returnNextMountPointForThisShape:container];
         }
-        
+        [container layoutMyBlocks];
         [loggingService.logPoller registerPollee:block];
     }
-        
+       
+    thesePositions=nil;
     
 //    if(hasLabel)
 //    {
@@ -253,7 +257,7 @@ static float kDistanceBetweenBlocks=70.0f;
     }
     
     [container addBlockToMe:Object];
-    
+    [container layoutMyBlocks];
 }
 
 -(void)lookForOrphanedObjects
@@ -296,13 +300,15 @@ static float kDistanceBetweenBlocks=70.0f;
             //TODO: this is causing a crash if dragged from a cage
             if(![pairedObj.MyContainer conformsToProtocol:@protocol(Cage)])
                 [pairedObj.MyContainer addBlockToMe:thisBlock];
+            
+            [pairedObj.MyContainer layoutMyBlocks];
         }
     }
 }
 
 -(void)tidyUpEmptyGroups
 {
-    NSArray *allGWGO=[NSArray arrayWithArray:gw.AllGameObjects];
+    NSArray *allGWGO=gw.AllGameObjectsCopy;
     
     for(id go in allGWGO)
     {
@@ -480,6 +486,19 @@ static float kDistanceBetweenBlocks=70.0f;
     return retval;
 }
 
+-(CGPoint)returnNextMountPointForThisShape:(id<Container>)thisShape
+{
+    id<Moveable>firstShape=[thisShape.BlocksInShape objectAtIndex:0];
+    
+    NSArray *newObjects=[NumberLayout physicalLayoutUpToNumber:[thisShape.BlocksInShape count] withSpacing:kDistanceBetweenBlocks];
+    
+    CGPoint newVal=[[newObjects objectAtIndex:[newObjects count]-1] CGPointValue];
+    
+    newVal=[BLMath AddVector:newVal toVector:firstShape.Position];
+    
+    return newVal;
+}
+
 #pragma mark - touches events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -611,8 +630,9 @@ static float kDistanceBetweenBlocks=70.0f;
                         
                         [loggingService logEvent:BL_PA_DT_TOUCH_END_PAIR_BLOCK withAdditionalData:nil];
                         
-                        currentPickupObject.Position=[self findMountPositionForThisShape:currentPickupObject toThisShape:go];
-                        [currentPickupObject animateToPosition];
+                        //currentPickupObject.Position=[self returnNextMountPointForThisShape:cObj.MyContainer];
+                        [cObj.MyContainer layoutMyBlocks];
+                        //[currentPickupObject animateToPosition];
                     }
                 }
                 

@@ -6,8 +6,6 @@
 	<string>Which number is smaller?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>two-digit inequalities same tens diff units</string>
-	<key>TOOL_KEY</key>
-	<string>NumberBonds</string>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>

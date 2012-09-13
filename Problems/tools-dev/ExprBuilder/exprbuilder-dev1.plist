@@ -6,6 +6,8 @@
 	<string>ExprBuilder</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>tom&apos;s apples</string>
+	<key>EVAL_TYPE</key>
+	<string>ALL_ENABLED</string>
 	<key>EXPR_STAGES</key>
 	<array>
 		<string>&lt;b:t&gt;Tom had&lt;/b:t&gt;

@@ -22,6 +22,7 @@
 #import "DWPlaceValueBlockGameObject.h"
 #import "DWPlaceValueCageGameObject.h"
 #import "DWPlaceValueNetGameObject.h"
+#import "NumberLayout.h"
 
 @interface PlaceValue()
 {
@@ -148,6 +149,14 @@ static float kTimeToCageShake=7.0f;
             else if(lastTotalCount>expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
             {
                 [gw handleMessage:kDWcheckMyMountIsNet andPayload:nil withLogLevel:-1];
+            }
+            
+            if(multipleLabels && !touching && lastTotalCount<expectedCount)
+            {
+                for(CCLabelTTF *l in multipleLabels)
+                {
+                    [l runAction:[InteractionFeedback shakeAction]];
+                }
             }
         }
         if(isProblemComplete && evalMode==kProblemEvalOnCommit)
@@ -2050,10 +2059,13 @@ static float kTimeToCageShake=7.0f;
                 {
                     if([pickupObjects count]>0)
                     {
+                        NSArray *thesePositions=[NumberLayout physicalLayoutUpToNumber:[pickupObjects count] withSpacing:85.0f];
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
-                            go.PosX=posX;
-                            go.PosY=posY+85 *[pickupObjects indexOfObject:go];
+                            CGPoint thisPos=[[thesePositions objectAtIndex:[pickupObjects indexOfObject:go]] CGPointValue];
+                            
+                            go.PosX=posX+thisPos.x+diff.x;
+                            go.PosY=posY+thisPos.y+diff.y;
                             [go handleMessage:kDWupdateSprite andPayload:nil withLogLevel:-1];
                         }
                     }
@@ -2247,12 +2259,14 @@ static float kTimeToCageShake=7.0f;
                 else isCage=NO;
                 
                 // if we have multiple controls
+
                 if((multipleBlockPickup||showMultipleControls)&&[pickupObjects count]>1)
                 {
                     // and if there's enough space - then droptarget is modified to allow each to mount
                     
                     if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
                     {
+                        
                         gw.Blackboard.TestTouchLocation = ccp(gw.Blackboard.TestTouchLocation.x, gw.Blackboard.TestTouchLocation.y + 1000);
                         gw.Blackboard.DropObject=nil;
                         [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
@@ -2277,9 +2291,8 @@ static float kTimeToCageShake=7.0f;
                         }
                     }
                     // if there's not enough space for all pickups
-                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && ![gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count])
                     {
-                        // TODO: reject these things back to their mounts
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
                             [go handleMessage:kDWresetToMountPosition];
@@ -2380,7 +2393,18 @@ static float kTimeToCageShake=7.0f;
                         }
                     }
                     
-                }
+
+                    }
+                    // but if we have a cage then set each one's mount and drop it
+//                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+//                    {
+//                        for(DWPlaceValueBlockGameObject *go in pickupObjects){
+//                            [go handleMessage:kDWresetToMountPosition];
+////                        [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
+////                        [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+//                        }
+//                    }
+                
                 
                 // other negatives code was here
                 if(b.ObjectValue==0)

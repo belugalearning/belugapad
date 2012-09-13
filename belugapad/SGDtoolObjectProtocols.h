@@ -68,6 +68,7 @@
 -(void)removeBlockFromMe:(id)thisBlock;
 -(void)repositionLabel;
 -(int)blocksInShape;
+-(void)layoutMyBlocks;
 -(void)destroyThisObject;
 
 @end

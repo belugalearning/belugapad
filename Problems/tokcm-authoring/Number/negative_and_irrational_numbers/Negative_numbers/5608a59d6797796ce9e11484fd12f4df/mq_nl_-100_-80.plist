@@ -15,7 +15,7 @@
 	<key>MIN_VALUE</key>
 	<string>-150</string>
 	<key>MAX_VALUE</key>
-	<string>0</string>
+	<string>100</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
@@ -43,7 +43,7 @@
 	<key>EVAL_PLUS_MINUS_THRESHOLD</key>
 	<integer>0</integer>
 	<key>SEGMENT_VALUE</key>
-	<integer>1</integer>
+	<integer>10</integer>
 	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
 	<array>
 		<integer>1</integer>

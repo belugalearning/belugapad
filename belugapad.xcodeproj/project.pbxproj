@@ -325,6 +325,7 @@
 		7F85187C1558E85F002E9F07 /* Pipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F85187B1558E85F002E9F07 /* Pipeline.m */; };
 		7F884D8815E197AD004B0DF3 /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7F884D8715E197AD004B0DF3 /* SourceSansPro-Bold.ttf */; };
 		7F884D8B15E28F24004B0DF3 /* Chango-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7F884D8A15E28F24004B0DF3 /* Chango-Regular.ttf */; };
+		7F97879515FFA2CA00225967 /* NumberLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F97879415FFA2CA00225967 /* NumberLayout.m */; };
 		7F9D414F15751E1600AFA1A0 /* NGNineGridSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9D414E15751E1600AFA1A0 /* NGNineGridSprite.m */; };
 		7FA0FCD615F74DB000C241A8 /* AdpInserter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0FCC515F74DB000C241A8 /* AdpInserter.m */; };
 		7FA0FCD715F74DB000C241A8 /* AdpLinkedProblemInserter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0FCC715F74DB000C241A8 /* AdpLinkedProblemInserter.m */; };
@@ -1077,6 +1078,8 @@
 		7F85187B1558E85F002E9F07 /* Pipeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Pipeline.m; sourceTree = "<group>"; };
 		7F884D8715E197AD004B0DF3 /* SourceSansPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Bold.ttf"; sourceTree = "<group>"; };
 		7F884D8A15E28F24004B0DF3 /* Chango-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Chango-Regular.ttf"; sourceTree = "<group>"; };
+		7F97879315FFA2CA00225967 /* NumberLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberLayout.h; sourceTree = "<group>"; };
+		7F97879415FFA2CA00225967 /* NumberLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberLayout.m; sourceTree = "<group>"; };
 		7F9D414D15751E1600AFA1A0 /* NGNineGridSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGNineGridSprite.h; sourceTree = "<group>"; };
 		7F9D414E15751E1600AFA1A0 /* NGNineGridSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NGNineGridSprite.m; sourceTree = "<group>"; };
 		7FA0FCC415F74DB000C241A8 /* AdpInserter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdpInserter.h; sourceTree = "<group>"; };
@@ -1632,6 +1635,8 @@
 				7F0AE04C158782D100194644 /* InteractionFeedback.m */,
 				7F2F2D7615908FDF00862302 /* LRAnimator.h */,
 				7F2F2D7715908FE000862302 /* LRAnimator.m */,
+				7F97879315FFA2CA00225967 /* NumberLayout.h */,
+				7F97879415FFA2CA00225967 /* NumberLayout.m */,
 			);
 			name = Animators;
 			sourceTree = "<group>";
@@ -3310,6 +3315,7 @@
 				7FA0FCDC15F74DB000C241A8 /* AdpRepeatPainfullyCompletedPrereqsInserter.m in Sources */,
 				7FA0FCDD15F74DB000C241A8 /* AdpRepeatProblemInserter.m in Sources */,
 				7FA0FCDE15F74DB000C241A8 /* AdpRepeatThisPipelineInserter.m in Sources */,
+				7F97879515FFA2CA00225967 /* NumberLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

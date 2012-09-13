@@ -16,6 +16,7 @@
 
 @synthesize Position, RenderBatch;
 @synthesize Visible, ProximityEvalComponent;
+@synthesize particleRenderLayer;
 
 -(SGJmapCloud*)initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition
 {
@@ -31,6 +32,18 @@
     }
     
     return self;
+}
+
+-(void)handleMessage:(SGMessageType)messageType
+{
+//    [self.seekerComponent handleMessage:messageType];
+//    [self.motionComponent handleMessage:messageType];
+    [self.renderComponent handleMessage:messageType];
+}
+
+-(void)doUpdate:(ccTime)delta
+{
+    
 }
 
 -(void)dealloc

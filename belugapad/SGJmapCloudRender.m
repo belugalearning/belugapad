@@ -7,6 +7,10 @@
 //
 
 #import "SGJmapCloudRender.h"
+#import "SGJMapCloud.h"
+#import "global.h"
+
+#define ENABLE NO
 
 @implementation SGJmapCloudRender
 
@@ -18,6 +22,36 @@
     }
     
     return self;
+}
+
+-(void)setupParticle
+{
+    particle=[CCParticleSystemQuad particleWithFile:BUNDLE_FULL_PATH(@"/images/jmap/cloud1.plist")];
+    [parentGO.particleRenderLayer addChild:particle z:3];
+    [particle setPosition:parentGO.Position];
+//    [particle setVisible:parentGO.Visible];
+    [particle setVisible:YES];
+}
+
+-(void)handleMessage:(SGMessageType)messageType
+{
+//    if(messageType==kSGvisibilityChanged)
+//    {
+//        particle.visible=parentGO.Visible;
+//    }
+//    if(messageType==kSGzoomIn)
+//    {
+//        particle.visible=parentGO.Visible;
+//    }
+//    if(messageType==kSGzoomOut)
+//    {
+//        particle.visible=NO;
+//    }
+    
+    if(messageType==kSGreadyRender && ENABLE)
+    {
+        [self setupParticle];
+    }
 }
 
 @end

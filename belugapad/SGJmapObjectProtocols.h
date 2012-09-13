@@ -70,5 +70,9 @@
 
 @end
 
+@protocol ParticleRender
 
+    @property (retain) CCLayer *particleRenderLayer;
+
+@end
 

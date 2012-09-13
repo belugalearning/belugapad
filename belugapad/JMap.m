@@ -33,6 +33,7 @@
 #import "SGJmapProximityEval.h"
 #import "SGJmapNodeSelect.h"
 #import "SGJmapRegion.h"
+#import "SGJmapCloud.h"
 
 #import "JSONKit.h"
 
@@ -281,7 +282,7 @@ typedef enum {
 //        p=ccpAdd(ccp(cx, cy), p);
 //        [mapLayer setPosition:p];
 //    }
-    
+        
     NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
 }
 
@@ -399,7 +400,7 @@ typedef enum {
         //node position
         CGPoint nodepos=ccp((float)n.x * kNodeScale, (nMaxY-(float)n.y) * kNodeScale);
 
-        id<CouchDerived, Configurable, Selectable> newnode;
+        id<CouchDerived, Configurable, Selectable, Transform> newnode;
         
         //create a node go
         if(n.mastery)
@@ -413,6 +414,9 @@ typedef enum {
                 ((SGJmapMasteryNode*)newnode).Region=[n.regions objectAtIndex:0];
             else
                 ((SGJmapMasteryNode*)newnode).Region=@"";
+            
+            //create a cloud go here as well
+            [self createCloudAt:newnode.Position];
         }
         else {
             newnode=[[[SGJmapNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
@@ -433,6 +437,13 @@ typedef enum {
         
         [newnode setup];
     }
+}
+
+-(void)createCloudAt:(CGPoint)p
+{
+    SGJmapCloud *c=[[SGJmapCloud alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:p];
+    c.particleRenderLayer=mapLayer;
+    [c release];
 }
 
 -(void)parseNodesForEndPoints

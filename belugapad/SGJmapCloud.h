@@ -13,10 +13,13 @@
 @class SGJmapCloudSeeker;
 @class SGJmapCloudRender;
 
-@interface SGJmapCloud : SGGameObject <Transform, ProximityResponder>
+@interface SGJmapCloud : SGGameObject <Transform, ProximityResponder, ParticleRender>
 
-@property SGJmapCloudMotion *motionComponent;
-@property SGJmapCloudSeeker *seekerComponent;
-@property SGJmapCloudRender *renderComponent;
+@property (retain) SGJmapCloudMotion *motionComponent;
+@property (retain) SGJmapCloudSeeker *seekerComponent;
+@property (retain) SGJmapCloudRender *renderComponent;
+
+
+-(SGJmapCloud*)initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
 
 @end

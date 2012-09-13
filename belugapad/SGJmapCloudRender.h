@@ -13,6 +13,8 @@
 @interface SGJmapCloudRender : SGComponent
 {
     SGJmapCloud *parentGO;
+    
+    CCParticleSystemQuad *particle;
 }
 
 -(SGJmapCloudRender*)initWithGameObject:(SGJmapCloud*)aGameObject;

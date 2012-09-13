@@ -14,14 +14,14 @@
 			<key>QUANTITY</key>
 			<integer>6</integer>
 			<key>POS_X</key>
-			<integer>350</integer>
+			<integer>475</integer>
 			<key>POS_Y</key>
-			<integer>500</integer>
+			<integer>350</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
 	<array>
-		<integer>7</integer>
+		<integer>100</integer>
 	</array>
 	<key>DSTRINGS</key>
 	<dict>

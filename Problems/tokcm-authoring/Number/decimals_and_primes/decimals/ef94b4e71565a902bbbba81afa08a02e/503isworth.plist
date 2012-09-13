@@ -18,7 +18,7 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>the same as 10 thousandths</string>
+				<string>the same as 10/1000</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
@@ -30,7 +30,7 @@
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>a hundred times smaller than 1</string>
+				<string>100 times smaller than 1</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>

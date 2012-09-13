@@ -99,7 +99,7 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<string>802.1</string>
+		<string>792.1</string>
 		<key>PLAY_SOUND</key>
 		<string>complete.wav</string>
 	</dict>
@@ -122,7 +122,7 @@
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
-		<string>802.1</string>
+		<string>792.1</string>
 	</dict>
 </dict>
 </plist>

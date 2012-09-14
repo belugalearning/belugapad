@@ -50,9 +50,14 @@
             float dist=[BLMath DistanceBetween:myLoc and:hitLoc];
             if(!gameWorld.Blackboard.DropObject || gameWorld.Blackboard.DropObjectDistance > dist)
             {
-                NSLog(@"obj Value %f, col Value %f, MountedObject? %@, CancellingObject? %@", addO.ObjectValue, n.ColumnValue, n.MountedObject? @"YES":@"NO", n.CancellingObject? @"YES":@"NO");
+                NSLog(@"(#%d) obj Value %f, col Value %f, MountedObject? %@, CancellingObject? %@", [gameWorld.AllGameObjects indexOfObject:n], addO.ObjectValue, n.ColumnValue, n.MountedObject? @"YES":@"NO", n.CancellingObject? @"YES":@"NO");
                 
-                if((n.MountedObject&&!n.CancellingObject&&n.AllowMultipleMount&&((DWPlaceValueBlockGameObject*)n.MountedObject).ObjectValue==-addO.ObjectValue)||(!n.MountedObject&&!n.CancellingObject&&n.ColumnValue==addO.ObjectValue)||(!n.MountedObject&&!n.CancellingObject&&n.ColumnValue==-addO.ObjectValue))
+//                if((n.MountedObject&&!n.CancellingObject&&n.AllowMultipleMount&&((DWPlaceValueBlockGameObject*)n.MountedObject).ObjectValue==-addO.ObjectValue)
+//                   ||
+//                   (!n.MountedObject&&!n.CancellingObject&&n.ColumnValue==addO.ObjectValue)
+//                   ||
+//                   (!n.MountedObject&&!n.CancellingObject&&n.ColumnValue==-addO.ObjectValue))
+                if(!n.MountedObject||(n.MountedObject && n.AllowMultipleMount && !n.CancellingObject && ((DWPlaceValueBlockGameObject*)n.MountedObject).ObjectValue==-addO.ObjectValue))
                 {
                     gameWorld.Blackboard.DropObject=gameObject;
                     gameWorld.Blackboard.DropObjectDistance=dist;

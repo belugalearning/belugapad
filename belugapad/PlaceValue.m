@@ -95,7 +95,7 @@ static float kTimeToCageShake=7.0f;
         
         gw.Blackboard.inProblemSetup = NO;
         
-        debugLogging=YES;
+        debugLogging=NO;
         
         for (int i=0;i<numberOfColumns;i++)
         {
@@ -436,7 +436,6 @@ static float kTimeToCageShake=7.0f;
         }
         else if(isNegativeProblem)
         {
-            NSLog(@"isNegativeProblem!");
             [currentBlockValues addObject:[NSNumber numberWithInt:cageDefaultValue]];
             
             CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", cageDefaultValue] fontName:@"Chango" fontSize:PROBLEM_DESC_FONT_SIZE];
@@ -2239,9 +2238,6 @@ static float kTimeToCageShake=7.0f;
                     NSLog(@"(touchend-gotdroptarget) free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
                 DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
                 DWPlaceValueNetGameObject *n=nil;
-                
-                if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
-                    n=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
 
                 
                 // set the pickup object's mount to the dropobject
@@ -2258,159 +2254,20 @@ static float kTimeToCageShake=7.0f;
                 if([[gw Blackboard].DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])isCage=YES;
                 else isCage=NO;
                 
-                // if we have multiple controls
 
-                if((multipleBlockPickup||showMultipleControls)&&[pickupObjects count]>10)
-                {
-                    // and if there's enough space - then droptarget is modified to allow each to mount
-                    
-                    if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
-                    {
-                        
-                        gw.Blackboard.TestTouchLocation = ccp(gw.Blackboard.TestTouchLocation.x, gw.Blackboard.TestTouchLocation.y + 1000);
-                        gw.Blackboard.DropObject=nil;
-                        [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
-                        
-                        for(DWPlaceValueBlockGameObject *go in pickupObjects)
-                        {
-                            // if there's not one or it's a cage (and the lastmount was a cage), reset to mount and destroy it
-                            if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]] && [go.LastMount isKindOfClass:[DWPlaceValueCageGameObject class]])
-                            {
-                                [b handleMessage:kDWresetToMountPositionAndDestroy];
-                                continue;
-                            }
-                            
-                            [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
-                            [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
-                            
-                            // if we have mroe than one - reset the dropobject and re-droptarget
-                            if([pickupObjects count]>1){
-                                gw.Blackboard.DropObject=nil;
-                                [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
-                            }
-                        }
-                    }
-                    // if there's not enough space for all pickups
-                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count])
-                    {
-                        for(DWPlaceValueBlockGameObject *go in pickupObjects)
-                        {
-                            [go handleMessage:kDWresetToMountPosition];
-                        }
-                    }
-                    // but if we have a cage then set each one's mount and drop it
-                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
-                    {
-                        for(DWPlaceValueBlockGameObject *go in pickupObjects){
-                            [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
-                            [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
-                        }
-                    }
-                    
-                }
-                else if(isNegativeProblem&&[pickupObjects count]>10)
-                {
-                    // and if there's enough space - then droptarget is modified to allow each to mount
-                    
-
-//                    else if(explodeMode && n.MountedObject && !n.CancellingObject)
-//                    {
-//                        [b handleMessage:kDWresetToMountPosition];
-//                        [n.MountedObject handleMessage:kDWfadeAndDestroy];
-//                        [b handleMessage:kDWfadeAndDestroy];
-//                        n.MountedObject=nil;
-//                    }
-                    if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
-                    {
-                        gw.Blackboard.TestTouchLocation = ccp(gw.Blackboard.TestTouchLocation.x, gw.Blackboard.TestTouchLocation.y + 1000);
-                        gw.Blackboard.DropObject=nil;
-                        [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
-                        DWGameObject *lastDrop=nil;
-                        
-                        for(DWPlaceValueBlockGameObject *go in pickupObjects)
-                        {
-                            
-                            gw.Blackboard.PickupObject=go;
-                            // if there's not one or it's a cage (and the lastmount was a cage), reset to mount and destroy it
-                            if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]] && [go.LastMount isKindOfClass:[DWPlaceValueCageGameObject class]])
-                            {
-                                [b handleMessage:kDWresetToMountPositionAndDestroy];
-                                continue;
-                            }
-                            
-                            if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && lastDrop!=gw.Blackboard.DropObject)
-                            {
-                                lastDrop=gw.Blackboard.DropObject;
-                                if(lastDrop!=gw.Blackboard.DropObject && ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject && !((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).CancellingObject)
-                                {
-                                    lastDrop=gw.Blackboard.DropObject;
-                                    go.LastMount=go.Mount;
-                                    go.Mount=lastDrop;
-                                    [go handleMessage:kDWresetToMountPosition];
-                                    [((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject handleMessage:kDWfadeAndDestroy];
-                                    [go handleMessage:kDWfadeAndDestroy];
-                                    ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject=nil;
-                                }
-                                else
-                                {
-                                    go.LastMount=go.Mount;
-                                    go.Mount=gw.Blackboard.DropObject;
-                                
-                                if(!((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject)
-                                    ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject=go;
-                                else
-                                    ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).CancellingObject=go;
-                                
-                                
-                                    [go handleMessage:kDWresetToMountPosition];
-                                    [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
-                                }
-                            }
-                            
-                            
-                            // if we have mroe than one - reset the dropobject and re-droptarget
-                            if([pickupObjects count]>1){
-                                gw.Blackboard.DropObject=nil;
-                                [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
-                            }
-                        }
-                    }
-                    // if there's not enough space for all pickups
-                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && ![gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
-                    {
-                        // TODO: reject these things back to their mounts
-                        for(DWPlaceValueBlockGameObject *go in pickupObjects)
-                        {
-                            [go handleMessage:kDWresetToMountPosition];
-                        }
-                    }
-                    // but if we have a cage then set each one's mount and drop it
-                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
-                    {
-                        for(DWPlaceValueBlockGameObject *go in pickupObjects){
-                            [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
-                            [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
-                        }
-                    }
-                    
-
-                    }
-                    // but if we have a cage then set each one's mount and drop it
-//                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
-//                    {
-//                        for(DWPlaceValueBlockGameObject *go in pickupObjects){
-//                            [go handleMessage:kDWresetToMountPosition];
-////                        [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
-////                        [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
-//                        }
-//                    }
                 BOOL enoughSpaceInGrid=NO;
+                NSMutableArray *blocksToDestroy=nil;
+                
+                NSLog(@"GOT TO THE TOUCHEND LOOP");
+                
                 for(DWPlaceValueBlockGameObject *b in pickupObjects)
                 {
-                    if([pickupObjects count]>1){
-                        gw.Blackboard.DropObject=nil;
-                        [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
-                    }
+//                    if([pickupObjects count]>1){
+                    gw.Blackboard.DropObject=nil;
+                    [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
+                    if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                        n=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
+//                    }
                     // if this is a multiple block pickup problem check below
                     if(multipleBlockPickup||showMultipleControls)
                     {
@@ -2425,7 +2282,7 @@ static float kTimeToCageShake=7.0f;
                                 if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
                                 {
                                     [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
-                                    [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+                                      [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
                                 }
                                 else if(![gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
                                 {
@@ -2449,10 +2306,36 @@ static float kTimeToCageShake=7.0f;
                     }
                     else if(explodeMode && n.MountedObject && !n.CancellingObject)
                     {
-                        [b handleMessage:kDWresetToMountPosition];
-                        [n.MountedObject handleMessage:kDWfadeAndDestroy];
-                        [b handleMessage:kDWfadeAndDestroy];
-                        n.MountedObject=nil;
+                        
+                        if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                        {
+                            DWPlaceValueNetGameObject *netDrop=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
+                            
+                            if(!blocksToDestroy)
+                                blocksToDestroy=[[[NSMutableArray alloc]init]autorelease];
+                            
+                            netDrop.CancellingObject=b;
+                            
+                            if(netDrop.CancellingObject)
+                                NSLog(@"(%d) net object has cancellation", [gw.AllGameObjects indexOfObject:netDrop]);
+                            if(netDrop.MountedObject)
+                                NSLog(@"(%d) net object has cancellation", [gw.AllGameObjects indexOfObject:netDrop]);
+                            
+                            b.Mount=gw.Blackboard.DropObject;
+                            
+    //                        b.PosX=((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).PosX;
+    //                        b.PosY=((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).PosY;
+                            
+    //                        [b handleMessage:kDWmoveSpriteToPosition];
+                            [blocksToDestroy addObject:b];
+                            [blocksToDestroy addObject:n.MountedObject];
+                            
+                            NSLog(@"addobjects to blockstodestroy (#%d) and (#%d) with mount %d", [gw.AllGameObjects indexOfObject:b], [gw.AllGameObjects indexOfObject:n.MountedObject], [gw.AllGameObjects indexOfObject:b.Mount]);
+                        }
+//                        [b handleMessage:kDWresetToMountPosition];
+//                        [n.MountedObject handleMessage:kDWfadeAndDestroy];
+//                        [b handleMessage:kDWfadeAndDestroy];
+//                        n.MountedObject=nil;
                     }
                     // ===== return a selection (a base selection) back to where they came from by resetting mounts etc ===
                     else if(isBasePickup && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject])
@@ -2493,7 +2376,22 @@ static float kTimeToCageShake=7.0f;
                         // otherwise the pickupobject should be remounted and
                         b.Mount=gw.Blackboard.DropObject;
                     
-                        [b handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
+                        if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                        {
+                        
+                            if(!((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject)
+                                ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject=b;
+                            else
+                                ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).CancellingObject=b;
+                            [b handleMessage:kDWresetToMountPosition];
+                        }
+                        else
+                        {
+                          [b handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
+                        }
+                        
+                        
+                        //
                         [b handleMessage:kDWputdown andPayload:nil withLogLevel:0];
                         [b logInfo:@"this object was mounted" withData:0];
                         [[gw Blackboard].DropObject logInfo:@"mounted object on this go" withData:0];
@@ -2517,6 +2415,26 @@ static float kTimeToCageShake=7.0f;
                             [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
                     }
                 }
+                
+                if(blocksToDestroy)
+                {
+                    
+                    NSLog(@"blocks to destroy count is %d", [blocksToDestroy count]);
+                    
+                    for(DWPlaceValueBlockGameObject *thisBlock in blocksToDestroy)
+                    {
+                        DWPlaceValueNetGameObject *thisNet=(DWPlaceValueNetGameObject*)thisBlock.Mount;
+                        [thisBlock handleMessage:kDWresetToMountPosition];
+//                        [thisNet.MountedObject handleMessage:kDWfadeAndDestroy];
+                        [thisBlock handleMessage:kDWfadeAndDestroy];
+                        thisNet.MountedObject=nil;
+                        
+                        if([thisNet.MountedObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                            thisNet.CancellingObject=nil;
+                    }
+                    
+                    blocksToDestroy=nil;
+                }
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
                 
                 // tell the tool that the problem state changed - so an auto eval will run now
@@ -2533,6 +2451,7 @@ static float kTimeToCageShake=7.0f;
                 else
                     [self resetPickupObjectPos];
             }
+            
         }
         
         else {

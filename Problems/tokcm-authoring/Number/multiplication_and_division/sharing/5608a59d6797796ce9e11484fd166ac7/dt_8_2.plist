@@ -65,7 +65,7 @@
 			<key>POS_X</key>
 			<integer>600</integer>
 			<key>POS_Y</key>
-			<integer>375</integer>
+			<integer>550</integer>
 			<key>LABEL</key>
 			<string>Car 2</string>
 		</dict>
@@ -75,7 +75,7 @@
 			<key>POS_X</key>
 			<integer>300</integer>
 			<key>POS_Y</key>
-			<integer>375</integer>
+			<integer>550</integer>
 			<key>LABEL</key>
 			<string>Car 1</string>
 		</dict>

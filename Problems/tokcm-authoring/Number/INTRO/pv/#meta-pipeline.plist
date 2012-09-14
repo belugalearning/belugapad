@@ -8,10 +8,10 @@
 	<string>build_1.06</string>
 	<key>PROBLEMS</key>
     <array>
-        <string>/Problems/tokcm-authoring/Number/INTRO/pv/pv_count_4.plist</string>
+        <string>/Problems/tokcm-authoring/Number/INTRO/pv/pv_add_1.plist</string>
+        <string>/Problems/tokcm-authoring/Number/INTRO/pv/pv_add_2.plist</string>
+        <string>/Problems/tokcm-authoring/Number/INTRO/pv/pv_add_3.plist</string>
         <string>/Problems/tokcm-authoring/Number/INTRO/pv/pv_add_4.plist</string>
-        <string>/Problems/tokcm-authoring/Number/INTRO/pv/pv_subtract_2.plist</string>
-        <string>/Problems/tokcm-authoring/Number/INTRO/pv/pv_make_10.plist</string>
     </array>
 </dict>
 </plist>

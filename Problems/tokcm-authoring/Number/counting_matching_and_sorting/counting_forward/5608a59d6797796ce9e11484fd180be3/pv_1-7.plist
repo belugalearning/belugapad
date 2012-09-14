@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Add 20 blocks. </string>
+	<string>Add 7 blocks. </string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Add 20 blocks. </string>
+	<string>Add 7 blocks. </string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -19,7 +19,7 @@
 	<key>ROPES_PER_COL</key>
 	<integer>10</integer>
 	<key>ROWS_PER_COL</key>
-	<integer>2</integer>
+	<integer>1</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
@@ -59,7 +59,7 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>20</integer>
+		<integer>7</integer>
 	</dict>
 	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
 	<false/>

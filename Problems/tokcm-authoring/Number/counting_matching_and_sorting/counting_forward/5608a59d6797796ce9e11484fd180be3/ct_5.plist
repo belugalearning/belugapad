@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Press the button at 7.</string>
+	<string>Press the button at 5.</string>
 	<key>TOOL_KEY</key>
 	<string>CountingTimer</string>
 	<key>SOLUTION</key>
-	<integer>7</integer>
+	<integer>5</integer>
 	<key>SHOW_COUNT</key>
-	<false/>
+	<true/>
 	<key>COUNT_TYPE</key>
 	<integer>2</integer>
 	<key>INCREMENT</key>

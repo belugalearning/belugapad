@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Add 20 blocks. </string>
+	<string>Add 13 blocks. </string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Add 20 blocks. </string>
+	<string>Add 13 blocks. </string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -59,7 +59,7 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>20</integer>
+		<integer>13</integer>
 	</dict>
 	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
 	<false/>

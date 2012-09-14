@@ -441,9 +441,19 @@ typedef enum {
 
 -(void)createCloudAt:(CGPoint)p
 {
-    SGJmapCloud *c=[[SGJmapCloud alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:p];
+    CGPoint adj1=[BLMath ProjectMovementWithX:100 andY:50 forRotation:(arc4random() % 130)+110];
+    CGPoint p1=[BLMath AddVector:p toVector:adj1];
+    
+    SGJmapCloud *c=[[SGJmapCloud alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:p1];
     c.particleRenderLayer=mapLayer;
     [c release];
+    
+    CGPoint adj2=[BLMath ProjectMovementWithX:100 andY:50 forRotation:(arc4random() % 130)+110];
+    CGPoint p2=[BLMath AddVector:p toVector:adj2];
+    
+    SGJmapCloud *c1=[[SGJmapCloud alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:p2];
+    c1.particleRenderLayer=mapLayer;
+    [c1 release];
 }
 
 -(void)parseNodesForEndPoints

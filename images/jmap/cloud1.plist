@@ -71,11 +71,11 @@
 	<key>speedVariance</key>
 	<integer>2</integer>
 	<key>startColorAlpha</key>
-	<real>0.09000000357627869</real>
+	<real>0.08</real>
 	<key>startColorBlue</key>
-	<real>0</real>
+	<integer>1</integer>
 	<key>startColorGreen</key>
-	<real>0</real>
+	<integer>1</integer>
 	<key>startColorRed</key>
 	<real>1</real>
 	<key>startColorVarianceAlpha</key>

@@ -426,7 +426,6 @@
 		7FEB663E15DEE68100F6E782 /* PRRatcliffTriangulator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7FEB663915DEE68100F6E782 /* PRRatcliffTriangulator.mm */; };
 		7FEB663F15DEE68100F6E782 /* triangulate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FEB663B15DEE68100F6E782 /* triangulate.cpp */; };
 		7FEDCE1C1535DCA400C8C9F3 /* ExprEvalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */; };
-		7FEFF77E160290C60085A06C /* cloud1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FEFF77D160290C60085A06C /* cloud1.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1248,7 +1247,6 @@
 		7FEB663B15DEE68100F6E782 /* triangulate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = triangulate.cpp; sourceTree = "<group>"; };
 		7FEB663C15DEE68100F6E782 /* triangulate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = triangulate.h; sourceTree = "<group>"; };
 		7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprEvalTests.m; sourceTree = "<group>"; };
-		7FEFF77D160290C60085A06C /* cloud1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = cloud1.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2528,7 +2526,6 @@
 		7F813D5914CCC38100C1E997 /* particles */ = {
 			isa = PBXGroup;
 			children = (
-				7FEFF77D160290C60085A06C /* cloud1.plist */,
 				7FDBA56214EC4271004D1CC9 /* bm11.plist */,
 				7F813D6A14CCD8CF00C1E997 /* fire3.plist */,
 				7F813D5B14CCC3A100C1E997 /* fire2.plist */,
@@ -2928,7 +2925,6 @@
 				0C51649715D9068F008E7C72 /* settings in Resources */,
 				7F884D8815E197AD004B0DF3 /* SourceSansPro-Bold.ttf in Resources */,
 				7F884D8B15E28F24004B0DF3 /* Chango-Regular.ttf in Resources */,
-				7FEFF77E160290C60085A06C /* cloud1.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

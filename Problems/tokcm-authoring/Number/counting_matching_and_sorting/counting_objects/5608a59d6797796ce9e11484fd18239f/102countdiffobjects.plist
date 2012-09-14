@@ -8,15 +8,13 @@
 	<string>How many objects are there?</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
-	<key>SOLUTION</key>
-	<array/>
 	<key>HOST_BACKGROUND_IMAGE</key>
 	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>2</integer>
+			<string>{$x}</string>
 			<key>POS_X</key>
 			<integer>350</integer>
 			<key>POS_Y</key>
@@ -24,7 +22,7 @@
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>1</integer>
+			<string>{$y}</string>
 			<key>POS_X</key>
 			<integer>550</integer>
 			<key>POS_Y</key>
@@ -46,7 +44,24 @@
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
-		<integer>3</integer>
+		<string>{$x+$y}</string>
+	</dict>
+	<key>DVARS</key>
+	<dict>
+		<key>$x</key>
+		<dict>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>3</string>
+		</dict>
+		<key>$y</key>
+		<dict>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>3</string>
+		</dict>
 	</dict>
 </dict>
 </plist>

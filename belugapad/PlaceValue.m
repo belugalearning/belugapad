@@ -2404,6 +2404,7 @@ static float kTimeToCageShake=7.0f;
 ////                        [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
 //                        }
 //                    }
+                BOOL enoughSpaceInGrid=NO;
                 for(DWPlaceValueBlockGameObject *b in pickupObjects)
                 {
                     if([pickupObjects count]>1){
@@ -2413,7 +2414,11 @@ static float kTimeToCageShake=7.0f;
                     // if this is a multiple block pickup problem check below
                     if(multipleBlockPickup||showMultipleControls)
                     {
-                        if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count])
+                        if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
+                        {
+                            enoughSpaceInGrid=YES;
+                        }
+                        if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && !enoughSpaceInGrid)
                         {
                             for(DWPlaceValueBlockGameObject *go in pickupObjects){
                                 
@@ -2480,12 +2485,13 @@ static float kTimeToCageShake=7.0f;
                     // if there's no mount, there's a dropobject that's a cage, and the last mount was a cage - return and destroy
                     else if(b.Mount==nil && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]] && [b.LastMount isKindOfClass:[DWPlaceValueCageGameObject class]])
                     {
+                        NSLog(@"mount nil, droptarget class %@ lastmount class %@", NSStringFromClass([gw.Blackboard.DropObject class]), NSStringFromClass([b.LastMount class]));
                         [b handleMessage:kDWresetToMountPositionAndDestroy];
                     }
                     
                     else {
                         // otherwise the pickupobject should be remounted and
-                        
+                        b.Mount=gw.Blackboard.DropObject;
                     
                         [b handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
                         [b handleMessage:kDWputdown andPayload:nil withLogLevel:0];

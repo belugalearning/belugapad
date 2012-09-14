@@ -95,7 +95,7 @@ static float kTimeToCageShake=7.0f;
         
         gw.Blackboard.inProblemSetup = NO;
         
-        debugLogging=NO;
+        debugLogging=YES;
         
         for (int i=0;i<numberOfColumns;i++)
         {
@@ -1785,6 +1785,7 @@ static float kTimeToCageShake=7.0f;
         {
             netMount=(DWPlaceValueNetGameObject*)pickupObject.Mount;
             netMount.MountedObject=nil;
+            netMount.CancellingObject=nil;
             pickupObject.LastMount=pickupObject.Mount;
             
         }
@@ -1806,6 +1807,7 @@ static float kTimeToCageShake=7.0f;
                     n=(DWPlaceValueNetGameObject*)b.Mount;
                     b.LastMount=b.Mount;
                     n.MountedObject=nil;
+                    n.CancellingObject=nil;
                 }
             }
         }
@@ -2167,7 +2169,8 @@ static float kTimeToCageShake=7.0f;
             
             // if we're selected and not in a cage or if we are and we're allowed to deselect, AND are not in a cage, switch selection
             
-            NSLog(@"block selected? %@, isCage? %@", block.Selected? @"YES":@"NO", isCage? @"YES":@"NO");
+            if(debugLogging)
+                NSLog(@"block selected? %@, isCage? %@", block.Selected? @"YES":@"NO", isCage? @"YES":@"NO");
             
             if((!block.Selected && !isCage) || (block.Selected && allowDeselect && !isCage))
             {
@@ -2258,8 +2261,6 @@ static float kTimeToCageShake=7.0f;
                 BOOL enoughSpaceInGrid=NO;
                 NSMutableArray *blocksToDestroy=nil;
                 
-                NSLog(@"GOT TO THE TOUCHEND LOOP");
-                
                 for(DWPlaceValueBlockGameObject *b in pickupObjects)
                 {
 //                    if([pickupObjects count]>1){
@@ -2316,17 +2317,7 @@ static float kTimeToCageShake=7.0f;
                             
                             netDrop.CancellingObject=b;
                             
-                            if(netDrop.CancellingObject)
-                                NSLog(@"(%d) net object has cancellation", [gw.AllGameObjects indexOfObject:netDrop]);
-                            if(netDrop.MountedObject)
-                                NSLog(@"(%d) net object has cancellation", [gw.AllGameObjects indexOfObject:netDrop]);
-                            
                             b.Mount=gw.Blackboard.DropObject;
-                            
-    //                        b.PosX=((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).PosX;
-    //                        b.PosY=((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).PosY;
-                            
-    //                        [b handleMessage:kDWmoveSpriteToPosition];
                             [blocksToDestroy addObject:b];
                             [blocksToDestroy addObject:n.MountedObject];
                             
@@ -2368,27 +2359,31 @@ static float kTimeToCageShake=7.0f;
                     // if there's no mount, there's a dropobject that's a cage, and the last mount was a cage - return and destroy
                     else if(b.Mount==nil && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]] && [b.LastMount isKindOfClass:[DWPlaceValueCageGameObject class]])
                     {
-                        NSLog(@"mount nil, droptarget class %@ lastmount class %@", NSStringFromClass([gw.Blackboard.DropObject class]), NSStringFromClass([b.LastMount class]));
+                        //NSLog(@"mount nil, droptarget class %@ lastmount class %@", NSStringFromClass([gw.Blackboard.DropObject class]), NSStringFromClass([b.LastMount class]));
                         [b handleMessage:kDWresetToMountPositionAndDestroy];
                     }
                     
                     else {
                         // otherwise the pickupobject should be remounted and
+                        
+                        if([b.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
+                            [b.Mount handleMessage:kDWunsetMountedObject];
+                        
                         b.Mount=gw.Blackboard.DropObject;
                     
-                        if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
-                        {
-                        
-                            if(!((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject)
-                                ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject=b;
-                            else
-                                ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).CancellingObject=b;
-                            [b handleMessage:kDWresetToMountPosition];
-                        }
-                        else
-                        {
+//                        if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+//                        {
+//                        
+//                            if(!((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject)
+//                                ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).MountedObject=b;
+//                            else
+//                                ((DWPlaceValueNetGameObject*)gw.Blackboard.DropObject).CancellingObject=b;
+//                            [b handleMessage:kDWresetToMountPosition];
+//                        }
+//                        else
+//                        {
                           [b handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
-                        }
+//                        }
                         
                         
                         //

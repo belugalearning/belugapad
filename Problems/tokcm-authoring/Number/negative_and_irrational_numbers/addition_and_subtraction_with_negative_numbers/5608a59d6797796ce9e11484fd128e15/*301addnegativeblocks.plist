@@ -3,7 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is -3. Add positive blocks to make 0.</string>
+	<string>This is 3. Add negative blocks to make 0.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>more negative blocks than positive blocks</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -23,9 +25,9 @@
 	<key>ALLOW_MULCHING</key>
 	<false/>
 	<key>SHOW_CAGE</key>
-	<true/>
-	<key>SHOW_NEG_CAGE</key>
 	<false/>
+	<key>SHOW_NEG_CAGE</key>
+	<true/>
 	<key>SHOW_COUNT</key>
 	<true/>
 	<key>SHOW_COUNT_BLOCK</key>
@@ -42,9 +44,9 @@
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>-3</integer>
+			<integer>3</integer>
 			<key>NUMBER_PRE_COUNTED</key>
-			<integer>-3</integer>
+			<integer>3</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

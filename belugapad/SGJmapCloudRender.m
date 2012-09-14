@@ -10,7 +10,7 @@
 #import "SGJMapCloud.h"
 #import "global.h"
 
-#define ENABLE NO
+#define ENABLE YES
 
 @implementation SGJmapCloudRender
 
@@ -29,6 +29,7 @@
     particle=[CCParticleSystemQuad particleWithFile:BUNDLE_FULL_PATH(@"/images/jmap/cloud1.plist")];
     [parentGO.particleRenderLayer addChild:particle z:3];
     [particle setPosition:parentGO.Position];
+    [particle setScale:3.0f];
 //    [particle setVisible:parentGO.Visible];
     [particle setVisible:YES];
 }

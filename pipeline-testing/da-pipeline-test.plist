@@ -2,6 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem074.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem024.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem025.plist</string>
 	<string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/comparing_numbers/5608a59d6797796ce9e11484fd1748a8/mq_dyn_larger_left.plist</string>
@@ -31,7 +32,6 @@
 	<string>/Problems/tools-dev/da-ct/ct002.plist</string>
 	<string>/Problems/tools-dev/da-dt/dt2.plist</string>
 	<string>/Problems/tools-dev/featuredemo/fractionbuilder/fb-addition.plist</string>
-	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem074.plist</string>
 	<string>/Problems/tools-dev/da-frb/fb001.plist</string>
 	<string>/Problems/tools-dev/da-frb/fb002.plist</string>
 	<string>/Problems/tokcm-legacy/fractions/5608a59d6797796ce9e11484fd1554fb/CCSS_3_NF_3b_001.plist</string>

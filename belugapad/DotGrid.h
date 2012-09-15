@@ -60,7 +60,10 @@ typedef enum {
     
     CGPoint lastTouch;
     
-
+    BOOL showDraggableBlock;
+    BOOL renderWidthHeightOnShape;
+    BOOL selectWholeShape;
+    
     
     NSMutableArray *dotMatrix;
     NSDictionary *hiddenRows;

@@ -54,7 +54,12 @@
     if(messageType==kDWswitchSelection)
     {
         CGPoint loc=[[payload objectForKey:POS] CGPointValue];
-        [self checkTouchSwitchSelection:loc];
+        
+        if(!shape.SelectAllTiles)
+            [self checkTouchSwitchSelection:loc];
+        else
+            [self checkTouchAndSwitchAll:loc];
+            
     }
     if(messageType==kDWmoveShape)
     {
@@ -69,6 +74,40 @@
     }
 
 }
+
+-(void)checkTouchAndSwitchAll:(CGPoint)location
+{
+    for(DWDotGridTileGameObject *tile in shape.tiles)
+    {
+        // and for each one see if the hit was in a tile box
+        if(CGRectContainsPoint(tile.mySprite.boundingBox, location) && !shape.Disabled)
+        {
+            
+            // then if that tile is not selected, make it red
+            if(!tile.Selected){
+                for(DWDotGridTileGameObject *t in shape.tiles)
+                {
+                    [t.mySprite setColor:ccc3(89,133,136)];
+                    t.Selected=YES;
+                    [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
+                }
+                return;
+            }
+            // otherwise, make it white again
+            else{
+                for(DWDotGridTileGameObject *t in shape.tiles)
+                {
+                    [t.mySprite setColor:ccc3(255,255,255)];
+                    t.Selected=YES;
+                    [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
+                }
+                return;
+            }
+        }
+    }
+}
+ 
+
 
 -(void)checkTouchSwitchSelection:(CGPoint)location
 {

@@ -14,8 +14,10 @@
 @synthesize moveHandle;
 @synthesize resizeHandle;
 @synthesize Disabled;
+@synthesize SelectAllTiles;
 @synthesize firstAnchor;
 @synthesize lastAnchor;
+@synthesize RenderDimensions;
 
 -(void)dealloc
 {

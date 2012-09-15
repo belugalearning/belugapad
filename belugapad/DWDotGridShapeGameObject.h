@@ -16,6 +16,8 @@
 @property (retain) DWDotGridHandleGameObject *moveHandle;
 @property (retain) DWDotGridHandleGameObject *resizeHandle;
 @property BOOL Disabled;
+@property BOOL SelectAllTiles;
+@property BOOL RenderDimensions;
 @property (retain) DWDotGridAnchorGameObject *firstAnchor;
 @property (retain) DWDotGridAnchorGameObject *lastAnchor;
 

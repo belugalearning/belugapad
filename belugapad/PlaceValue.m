@@ -509,6 +509,7 @@ static float kTimeToCageShake=7.0f;
         int insCol = [[curDict objectForKey:PUT_IN_COL] intValue];
         int insRow = [[curDict objectForKey:PUT_IN_ROW] intValue];
         int count = [[curDict objectForKey:NUMBER] intValue];
+        int countneg = [[curDict objectForKey:NUMBER_NEGATIVE]intValue];
         int numberToPrecount = [[curDict objectForKey:NUMBER_PRE_COUNTED] intValue];
         
         //check if there is a max setting on objects to populate -- acts as bounds for dvar problems
@@ -541,7 +542,7 @@ static float kTimeToCageShake=7.0f;
         int blocksAddedToThisRow=0;
         int ropesHere=[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:insRow] count]-1;
         
-        for(int i=0; i<count; i++)
+        for(int i=0; i<count+countneg; i++)
         {
             
             if(boundCol)
@@ -564,8 +565,10 @@ static float kTimeToCageShake=7.0f;
                 block.Mount=[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:insRow] objectAtIndex:i];
             else
                 block.Mount=[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:(int)i/(ropesHere+1)] objectAtIndex:blocksAddedToThisRow];
-            
-            block.ObjectValue=[[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue];
+            if(i<count)
+                block.ObjectValue=[[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue];
+            else
+                block.ObjectValue=-[[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue];
             
             // check whether a custom sprite has been set for this column, and if so, set it.
             NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue]];

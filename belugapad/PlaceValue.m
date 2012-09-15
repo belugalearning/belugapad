@@ -377,6 +377,13 @@ static float kTimeToCageShake=7.0f;
             if([columnCagePosDisableDel objectForKey:currentColumnValueKey])
                 cge.DisableDel=[[columnCagePosDisableDel objectForKey:currentColumnValueKey] boolValue];
             
+            if([columnCageNegDisableAdd objectForKey:currentColumnValueKey])
+                cge.DisableAddNeg=[[columnCageNegDisableAdd objectForKey:currentColumnValueKey] boolValue];
+            
+            
+            if([columnCageNegDisableDel objectForKey:currentColumnValueKey])
+                cge.DisableDelNeg=[[columnCageNegDisableDel objectForKey:currentColumnValueKey] boolValue];
+            
             
             if([columnSprites objectForKey:currentColumnValueKey])
                 cge.SpriteFilename=[columnSprites objectForKey:currentColumnValueKey];

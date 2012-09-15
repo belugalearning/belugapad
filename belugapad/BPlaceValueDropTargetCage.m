@@ -30,7 +30,8 @@
 //        DWGameObject *addO=gameWorld.Blackboard.PickupObject;
         DWPlaceValueBlockGameObject *addO=(DWPlaceValueBlockGameObject*)gameWorld.Blackboard.PickupObject;
         BOOL inactive=c.Hidden;
-        if(c.DisableDel)return;
+        if(c.DisableDel && addO.ObjectValue>0)return;
+        if(c.DisableDelNeg && addO.ObjectValue<0)return;
 
         
         
@@ -51,7 +52,7 @@
                 CGPoint hitLoc=[gameWorld.Blackboard.ComponentRenderLayer convertToWorldSpace:gameWorld.Blackboard.TestTouchLocation];
                 
                 
-                    if(c.ObjectValue==addO.ObjectValue)
+                    if(c.ObjectValue==addO.ObjectValue||c.ObjectValue==-addO.ObjectValue)
                     {
                         float dist=[BLMath DistanceBetween:myLoc and:hitLoc];
 

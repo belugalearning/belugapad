@@ -16,6 +16,8 @@
 @synthesize ObjectValue;
 @synthesize DisableAdd;
 @synthesize DisableDel;
+@synthesize DisableAddNeg;
+@synthesize DisableDelNeg;
 @synthesize SpriteFilename;
 @synthesize PickupSpriteFilename;
 @synthesize MountedObject;

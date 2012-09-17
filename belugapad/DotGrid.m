@@ -121,6 +121,8 @@
     showDraggableBlock=[[pdef objectForKey:SHOW_DRAGGABLE_BLOCK]boolValue];
     renderWidthHeightOnShape=[[pdef objectForKey:RENDER_SHAPE_DIMENSIONS]boolValue];
     selectWholeShape=[[pdef objectForKey:SELECT_WHOLE_SHAPE]boolValue];
+    useShapeGroups=[[pdef objectForKey:USE_SHAPE_GROUPS]boolValue];
+    shapeGroupSize=[[pdef objectForKey:SHAPE_GROUP_SIZE]floatValue];
     
     if([pdef objectForKey:ANCHOR_SPACE])
         spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
@@ -389,7 +391,12 @@
             return;
         }
         
-        [self createShapeWithAnchorPoints:anchorsForShape andPrecount:preCountedTiles andDisabled:Disabled];        
+        if(!useShapeGroups)
+            [self createShapeWithAnchorPoints:anchorsForShape andPrecount:preCountedTiles andDisabled:Disabled];
+        else
+            [self createShapeGroupAndShapesWithAnchorPoints:anchorsForShape andPrecount:preCountedTiles andDisabled:Disabled];
+        
+        
         for(int i=0;i<[anchorsForShape count];i++)
         {
             DWDotGridAnchorGameObject *wanch = [anchorsForShape objectAtIndex:i];
@@ -511,6 +518,40 @@
     [self modifyThisShape:thisShape withTheseAnchors:anchorsForShape];
 
     [anchorsForShape release];
+}
+
+-(void)createShapeGroupAndShapesWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled
+{
+
+    float shapesRequired=[anchors count]/shapeGroupSize;
+    float full=(int)shapesRequired;
+    float remainder=shapesRequired-full;
+    
+    if(remainder>0.0f)
+        shapesRequired+=1;
+    
+    NSLog(@"shapes required %d - anchor count %d - remainder %g", (int)shapesRequired, [anchors count], remainder);
+    
+    NSMutableArray *shapeAnchors=[[[NSMutableArray alloc]init]autorelease];
+    
+    for(int i=0;i<(int)shapesRequired;i++)
+    {
+        NSMutableArray *shape=[[NSMutableArray alloc]init];
+        [shapeAnchors addObject:shape];
+    }
+    
+    
+    for(int i=0;i<[anchors count];i++)
+    {
+        int thisArray=i/shapeGroupSize;
+        DWDotGridAnchorGameObject *a=[anchors objectAtIndex:i];
+        [[shapeAnchors objectAtIndex:thisArray] addObject:a];
+    }
+    
+    for(NSMutableArray *a in shapeAnchors)
+    {
+        NSLog(@"this shape count %d", [a count]);
+    }
 }
 
 -(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled

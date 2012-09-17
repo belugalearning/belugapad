@@ -68,6 +68,10 @@ typedef enum {
     CCSprite *newBlock;
     BOOL hitDragBlock;
     
+    BOOL useShapeGroups;
+    float shapeGroupSize;
+    
+    
     NSMutableArray *dotMatrix;
     NSDictionary *hiddenRows;
     

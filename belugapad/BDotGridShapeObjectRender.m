@@ -35,6 +35,7 @@
 {
     if(messageType==kDWsetupStuff)
     {
+        if(!s.tiles||[s.tiles count]==0)return;
         if(s.RenderDimensions)
         {
             DWDotGridAnchorGameObject *fa=(DWDotGridAnchorGameObject*)s.firstAnchor;

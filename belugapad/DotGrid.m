@@ -682,8 +682,8 @@
     [loggingService logEvent:BL_PA_DG_TOUCH_END_RESIZE_SHAPE
         withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:[thisShape.tiles count]] forKey:@"numTiles"]];
     
-    [removeObjects release];
-    [rsAnchor release];
+//    [removeObjects release];
+//    [rsAnchor release];
 }
 
 #pragma mark - touch events

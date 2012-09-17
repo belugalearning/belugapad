@@ -3,27 +3,29 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Starting at 9, count back to 3.</string>
+	<string>Starting at 12, count back to 6.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Starting at 9, count back to 3.</string>
+	<string>Starting at 12, count back to 6.</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>9</string>
+	<string>12</string>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
-	<string>9</string>
+	<string>15</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>1</integer>
 	<key>EVAL_TARGET</key>
-	<string>3</string>
+	<string>6</string>
 	<key>HIDE_ALL_NUMBERS</key>
-	<false/>
+	<true/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
-	<array/>
+	<array>
+		<string>2</string>
+	</array>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
@@ -44,15 +46,15 @@
 	<integer>0</integer>
 	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
 	<array>
-		<integer>1</integer>
+		<integer>2</integer>
 	</array>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array/>
 	<key>USER_POPULATED_NUMBERS</key>
 	<array>
-		<string>0</string>
-		<string>1</string>
-		<string>7</string>
+		<string>2</string>
+		<string>4</string>
+		<string>6</string>
 		<string>8</string>
 	</array>
 	<key>RENDER_STITCHES_AT_INTERVAL</key>

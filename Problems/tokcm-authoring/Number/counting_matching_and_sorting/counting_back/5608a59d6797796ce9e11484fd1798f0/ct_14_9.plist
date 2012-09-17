@@ -2,8 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>MASTERY</key>
+	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Counting down from 16, press when it reaches 9.</string>
+	<string>Counting down from 14, press at 9.</string>
 	<key>TOOL_KEY</key>
 	<string>CountingTimer</string>
 	<key>SOLUTION</key>
@@ -15,8 +17,8 @@
 	<key>INCREMENT</key>
 	<integer>-1</integer>
 	<key>COUNT_MIN</key>
-	<integer>0</integer>
+	<integer>6</integer>
 	<key>COUNT_MAX</key>
-	<integer>16</integer>
+	<integer>14</integer>
 </dict>
 </plist>

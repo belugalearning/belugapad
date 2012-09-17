@@ -5,13 +5,13 @@
 	<key>MASTERY</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Counting down from 9, press at 3.</string>
+	<string>Counting down from 7, press at 2.</string>
 	<key>TOOL_KEY</key>
 	<string>CountingTimer</string>
 	<key>SOLUTION</key>
-	<integer>3</integer>
+	<integer>2</integer>
 	<key>SHOW_COUNT</key>
-	<true/>
+	<false/>
 	<key>COUNT_TYPE</key>
 	<integer>2</integer>
 	<key>INCREMENT</key>
@@ -19,6 +19,6 @@
 	<key>COUNT_MIN</key>
 	<integer>0</integer>
 	<key>COUNT_MAX</key>
-	<integer>9</integer>
+	<integer>7</integer>
 </dict>
 </plist>

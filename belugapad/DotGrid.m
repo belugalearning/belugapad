@@ -523,6 +523,7 @@
     shape.lastAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
     shape.tiles=[[NSMutableArray alloc]init];
     shape.SelectAllTiles=selectWholeShape;
+    shape.RenderDimensions=renderWidthHeightOnShape;
     int numberCounted=0;
 
 

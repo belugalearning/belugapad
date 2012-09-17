@@ -20,6 +20,8 @@
 @property BOOL RenderDimensions;
 @property (retain) DWDotGridAnchorGameObject *firstAnchor;
 @property (retain) DWDotGridAnchorGameObject *lastAnchor;
+@property (retain) CCLabelTTF *myWidth;
+@property (retain) CCLabelTTF *myHeight;
 
 
 @end

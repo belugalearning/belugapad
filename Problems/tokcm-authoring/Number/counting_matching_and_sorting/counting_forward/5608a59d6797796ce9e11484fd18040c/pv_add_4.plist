@@ -3,9 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 5. Add 15 more blocks. </string>
-	<key>INTERNAL_DESCRIPTION</key>
-	<string>This is 5. Add 15 more blocks. </string>
+	<string>Add 3 blocks and press the green button. </string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -17,9 +15,9 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>10</integer>
+	<integer>4</integer>
 	<key>ROWS_PER_COL</key>
-	<integer>2</integer>
+	<integer>1</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
@@ -31,7 +29,7 @@
 	<key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_COUNT</key>
-	<false/>
+	<true/>
 	<key>SHOW_COUNT_BLOCK</key>
 	<true/>
 	<key>CUSTOM_COLUMN_HEADERS</key>
@@ -39,27 +37,16 @@
 	<key>COLUMN_HEADERS</key>
 	<dict>
 		<key>0</key>
-		<string>ones</string>
+		<string>Ones</string>
 	</dict>
 	<key>INIT_OBJECTS</key>
-	<array>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
-			<key>NUMBER</key>
-			<integer>5</integer>
-		</dict>
-	</array>
+	<array/>
 	<key>SOLUTION</key>
 	<dict>
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>20</integer>
+		<integer>3</integer>
 	</dict>
-	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
-	<true/>
 </dict>
 </plist>

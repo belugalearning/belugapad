@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 5. Add 15 more blocks. </string>
+	<string>This is 5. Add 4 more blocks. How many blocks are there now?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>This is 5. Add 15 more blocks. </string>
+	<string>This is 5. Add 4 more blocks. How many blocks are there now?</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -19,7 +19,7 @@
 	<key>ROPES_PER_COL</key>
 	<integer>10</integer>
 	<key>ROWS_PER_COL</key>
-	<integer>2</integer>
+	<integer>1</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
@@ -31,7 +31,7 @@
 	<key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_COUNT</key>
-	<false/>
+	<true/>
 	<key>SHOW_COUNT_BLOCK</key>
 	<true/>
 	<key>CUSTOM_COLUMN_HEADERS</key>
@@ -57,9 +57,26 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>20</integer>
+		<integer>9</integer>
 	</dict>
 	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
 	<true/>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>This is 5. Add 4 more blocks. How many blocks are there now?</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_X</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_Y</key>
+		<integer>0</integer>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<integer>9</integer>
+	</dict>
 </dict>
 </plist>

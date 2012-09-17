@@ -64,6 +64,9 @@ typedef enum {
     BOOL renderWidthHeightOnShape;
     BOOL selectWholeShape;
     
+    CCSprite *dragBlock;
+    CCSprite *newBlock;
+    BOOL hitDragBlock;
     
     NSMutableArray *dotMatrix;
     NSDictionary *hiddenRows;

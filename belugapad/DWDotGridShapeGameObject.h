@@ -9,6 +9,7 @@
 #import "DWGameObject.h"
 @class DWDotGridHandleGameObject;
 @class DWDotGridAnchorGameObject;
+@class DWDotGridShapeGroupGameObject;
 
 @interface DWDotGridShapeGameObject : DWGameObject
 
@@ -20,6 +21,9 @@
 @property BOOL RenderDimensions;
 @property (retain) DWDotGridAnchorGameObject *firstAnchor;
 @property (retain) DWDotGridAnchorGameObject *lastAnchor;
+@property (retain) CCLabelTTF *myWidth;
+@property (retain) CCLabelTTF *myHeight;
+@property (retain) DWDotGridShapeGroupGameObject *shapeGroup;
 
 
 @end

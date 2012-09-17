@@ -3,20 +3,20 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>You start at 14, press when it counts back 9.</string>
+	<string>Starting at 11, press when it counts back 6.  </string>
 	<key>TOOL_KEY</key>
 	<string>CountingTimer</string>
 	<key>SOLUTION</key>
 	<integer>5</integer>
 	<key>SHOW_COUNT</key>
-	<true/>
+	<false/>
 	<key>COUNT_TYPE</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>INCREMENT</key>
 	<integer>-1</integer>
 	<key>COUNT_MIN</key>
-	<integer>0</integer>
+	<integer>2</integer>
 	<key>COUNT_MAX</key>
-	<integer>14</integer>
+	<integer>11</integer>
 </dict>
 </plist>

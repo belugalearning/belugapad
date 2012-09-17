@@ -42,7 +42,11 @@
         CGPoint loc=[[payload objectForKey:POS] CGPointValue];
         [self checkTouch:loc];
     }
-    
+    if(messageType==kDWareYouADropTarget)
+    {
+        CGPoint loc=[[payload objectForKey:POS] CGPointValue];
+        [self checkDrop:loc];
+    }
     if(messageType==kDWaddMeToSelection)
     {
         
@@ -68,7 +72,7 @@
         //tell gameScene we are a target for that pickup
         
         if(anch.Disabled) {
-            //NSLog(@"got touched but i'm disabled pos x %d / y %d", anch.myXpos, anch.myYpos);  
+            //NSLog(@"got touched but i'm disabled pos x %d / y %d", anch.myXpos, anch.myYpos);
         }
         else if(!anch.Disabled) {
             //NSLog(@"got touched and i'm enabled! pos x %d / y %d", anch.myXpos, anch.myYpos);
@@ -84,7 +88,28 @@
         gameWorld.Blackboard.LastAnchor=anch;
         
         //[anch handleMessage:kDWswitchSelection];
-    }    
+    }
+}
+-(void)checkDrop:(CGPoint)hitLoc
+{
+    
+    
+    if([BLMath DistanceBetween:anch.Position and:hitLoc] <= (0.045f*[gameWorld Blackboard].hostLX))
+    {
+        //tell gameScene we are a target for that pickup
+        
+        if(anch.Disabled) {
+            //NSLog(@"got touched but i'm disabled pos x %d / y %d", anch.myXpos, anch.myYpos);
+        }
+        else if(!anch.Disabled) {
+            //NSLog(@"got touched and i'm enabled! pos x %d / y %d", anch.myXpos, anch.myYpos);
+            // we only want our first anchor to be set if there isn't one already.
+            // this will be cleared on touchesended/cancelled
+            gameWorld.Blackboard.FirstAnchor=anch;
+            
+        }
+        
+    }
 }
 
 -(void) dealloc

@@ -92,19 +92,16 @@
 }
 -(void)checkDrop:(CGPoint)hitLoc
 {
-    
+    // this method is for dragging a 1x1 square on. we want to constanty evaluate for a new firstanchor - then we manually manipulate the last anchor in the gamescene
     
     if([BLMath DistanceBetween:anch.Position and:hitLoc] <= (0.045f*[gameWorld Blackboard].hostLX))
     {
         //tell gameScene we are a target for that pickup
         
         if(anch.Disabled) {
-            //NSLog(@"got touched but i'm disabled pos x %d / y %d", anch.myXpos, anch.myYpos);
+            gameWorld.Blackboard.FirstAnchor=nil;
         }
         else if(!anch.Disabled) {
-            //NSLog(@"got touched and i'm enabled! pos x %d / y %d", anch.myXpos, anch.myYpos);
-            // we only want our first anchor to be set if there isn't one already.
-            // this will be cleared on touchesended/cancelled
             gameWorld.Blackboard.FirstAnchor=anch;
             
         }

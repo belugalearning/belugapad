@@ -62,6 +62,6 @@
 		<integer>13</integer>
 	</dict>
 	<key>SHOW_MULTIPLE_BLOCKS_FROM_CAGE</key>
-	<false/>
+	<true/>
 </dict>
 </plist>

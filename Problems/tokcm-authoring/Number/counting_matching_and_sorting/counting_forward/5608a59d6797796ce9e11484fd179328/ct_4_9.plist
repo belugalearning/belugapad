@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Starting at 4, press when it is at 9.</string>
+	<string>Starting at 4, press when it counts to 9.</string>
 	<key>TOOL_KEY</key>
 	<string>CountingTimer</string>
 	<key>SOLUTION</key>
@@ -11,7 +11,7 @@
 	<key>SHOW_COUNT</key>
 	<true/>
 	<key>COUNT_TYPE</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>INCREMENT</key>
 	<integer>1</integer>
 	<key>COUNT_MIN</key>

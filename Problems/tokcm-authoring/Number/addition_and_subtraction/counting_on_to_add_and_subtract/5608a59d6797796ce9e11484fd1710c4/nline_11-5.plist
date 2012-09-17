@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Starting at 3, count to 8. </string>
+	<string>What is 11 + 5 ?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Start at 3, count on to 8. </string>
+	<string>What is 11 + 5 ?</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>3</string>
+	<string>11</string>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
@@ -19,7 +19,7 @@
 	<key>REJECT_MODE</key>
 	<integer>1</integer>
 	<key>EVAL_TARGET</key>
-	<integer>8</integer>
+	<integer>16</integer>
 	<key>HIDE_ALL_NUMBERS</key>
 	<true/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>

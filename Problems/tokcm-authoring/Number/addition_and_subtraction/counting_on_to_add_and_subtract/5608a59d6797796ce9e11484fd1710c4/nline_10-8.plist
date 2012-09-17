@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Starting at 10, count to 14. </string>
+	<string>What is 10 + 8 ?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Start at 10, count on to 14. </string>
+	<string>What is 10 + 8 ?</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
@@ -19,12 +19,12 @@
 	<key>REJECT_MODE</key>
 	<integer>1</integer>
 	<key>EVAL_TARGET</key>
-	<integer>14</integer>
+	<integer>18</integer>
 	<key>HIDE_ALL_NUMBERS</key>
 	<true/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
 	<array>
-		<string>1</string>
+		<string>2</string>
 	</array>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
@@ -44,7 +44,7 @@
 	<integer>0</integer>
 	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
 	<array>
-		<integer>1</integer>
+		<integer>2</integer>
 	</array>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array/>

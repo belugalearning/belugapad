@@ -88,7 +88,8 @@ typedef enum {
 -(void)checkAnchors;
 -(void)checkAnchorsAndUseResizeHandle:(BOOL)showResize andShowMove:(BOOL)showMove andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled;
 -(void)checkAnchorsOfExistingShape:(DWDotGridShapeGameObject*)thisShape;
--(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled;
+-(DWDotGridShapeGameObject*)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled;
+-(DWDotGridShapeGameObject*)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled andGroup:(DWGameObject*)shapeGroup;
 -(void)modifyThisShape:(DWDotGridShapeGameObject*)thisShape withTheseAnchors:(NSArray*)anchors;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;

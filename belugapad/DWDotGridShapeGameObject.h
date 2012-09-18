@@ -23,7 +23,7 @@
 @property (retain) DWDotGridAnchorGameObject *lastAnchor;
 @property (retain) CCLabelTTF *myWidth;
 @property (retain) CCLabelTTF *myHeight;
-@property (retain) DWDotGridShapeGroupGameObject *shapeGroup;
+@property (retain) DWGameObject *shapeGroup;
 
 
 @end

@@ -15,6 +15,7 @@
 #import "DWDotGridHandleGameObject.h"
 #import "DWDotGridTileGameObject.h"
 #import "DWDotGridShapeGameObject.h"
+#import "DWDotGridShapeGroupGameObject.h"
 #import "BLMath.h"
 
 #import "BAExpressionHeaders.h"
@@ -550,11 +551,19 @@
     
     for(NSMutableArray *a in shapeAnchors)
     {
-        NSLog(@"this shape count %d", [a count]);
+        DWDotGridShapeGroupGameObject *shapegrp=[DWDotGridShapeGroupGameObject alloc];
+        [gw populateAndAddGameObject:shapegrp withTemplateName:@"TdotgridShapeGroup"];
+        
+        [shapegrp.shapesInMe addObject:[self createShapeWithAnchorPoints:a andPrecount:nil andDisabled:NO andGroup:shapegrp]];
     }
 }
 
--(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled
+-(DWDotGridShapeGameObject*)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled
+{
+    return [self createShapeWithAnchorPoints:anchors andPrecount:preCountedTiles andDisabled:Disabled andGroup:nil];
+}
+
+-(DWDotGridShapeGameObject*)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled andGroup:(DWGameObject*)shapeGroup
 {
     
     DWDotGridShapeGameObject *shape=[DWDotGridShapeGameObject alloc];           
@@ -565,6 +574,9 @@
     shape.tiles=[[NSMutableArray alloc]init];
     shape.SelectAllTiles=selectWholeShape;
     shape.RenderDimensions=renderWidthHeightOnShape;
+    
+    shape.shapeGroup=shapeGroup;
+    
     int numberCounted=0;
 
 
@@ -636,7 +648,7 @@
             withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:[anchors count]] forKey:@"numTiles"]];
     }
     
-    [shape release];
+    return shape;
 }
 
 -(void)modifyThisShape:(DWDotGridShapeGameObject*)thisShape withTheseAnchors:(NSArray*)anchors

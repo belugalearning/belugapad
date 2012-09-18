@@ -20,6 +20,7 @@
 @synthesize RenderDimensions;
 @synthesize myWidth;
 @synthesize myHeight;
+@synthesize shapeGroup;
 
 -(void)dealloc
 {

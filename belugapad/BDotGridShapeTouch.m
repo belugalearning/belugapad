@@ -98,7 +98,7 @@
                 for(DWDotGridTileGameObject *t in shape.tiles)
                 {
                     [t.mySprite setColor:ccc3(255,255,255)];
-                    t.Selected=YES;
+                    t.Selected=NO;
                     [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
                 }
                 return;

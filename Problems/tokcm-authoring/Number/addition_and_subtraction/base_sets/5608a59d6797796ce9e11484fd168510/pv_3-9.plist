@@ -99,7 +99,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>How many blocks of 3 must you add to make 3 blocks into 9 blocks?</string>
+		<string>How many blocks of 3 need to be added to 3 to make 9?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

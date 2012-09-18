@@ -107,7 +107,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>How many blocks of 2 must you add to make 2 blocks into 10 blocks?</string>
+		<string>How many blocks of 2 need to be added to 2 to make 10?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

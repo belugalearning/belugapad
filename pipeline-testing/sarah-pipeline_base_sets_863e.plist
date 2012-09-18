@@ -2,18 +2,26 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_add_1.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_add_2.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_add_3.plist</string>
 	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_2-4.plist</string>
 	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_4-6.plist</string>
 	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_6-8.plist</string>
 	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_2-8.plist</string>
-	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/mq_2-6.plist</string>
-	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/mq_2-10.plist</string>
-	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_3-6.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_mq_2-6.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_mq_2-10.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_3-7.plist</string>
 	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_3-9.plist</string>
-	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_mq_5-10.plist</string>
-	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/mq_dyn_1-15.plist</string>
-	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/mq_dyn_1-15.plist</string>
-	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/mq_dyn_1-15.plist</string>
-	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/mq_dyn_1-15.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_1-9.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_7.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_13.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_15.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_19.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_np_6.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_np_5-10.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_np_14.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_np_17.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/base_sets/5608a59d6797796ce9e11484fd16863e/pv_np_20.plist</string>
 </array>
 </plist>

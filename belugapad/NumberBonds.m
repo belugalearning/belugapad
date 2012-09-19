@@ -250,7 +250,7 @@ static float kTimeToMountedShake=7.0f;
             
             if([[initCages objectAtIndex:i] objectForKey:LABEL])
             {
-                pogo.Label=[CCLabelTTF labelWithString:[[initCages objectAtIndex:i] objectForKey:LABEL] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+                pogo.Label=[CCLabelTTF labelWithString:[[initCages objectAtIndex:i] objectForKey:LABEL] fontName:@"Source Sans Pro" fontSize:PROBLEM_DESC_FONT_SIZE];
             }
             
             if(!useBlockScaling){

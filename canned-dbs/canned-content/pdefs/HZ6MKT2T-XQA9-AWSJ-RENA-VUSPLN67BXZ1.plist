@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LINKED_HELPER_PROBLEMS</key>
-	<array>
-		<string>G-SPECIAL-HELPER-PROBLEM</string>
-	</array>
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Count on to 10 in twos.</string>
 	<key>INTERNAL_DESCRIPTION</key>

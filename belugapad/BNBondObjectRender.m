@@ -147,6 +147,8 @@
             
         }
         
+        
+        
     }
     
     if(pogo.InitedObject || pogo.IsScaled){

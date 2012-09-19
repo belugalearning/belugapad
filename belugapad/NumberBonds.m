@@ -173,6 +173,31 @@ static float kTimeToMountedShake=7.0f;
 -(void)populateGW
 {
 
+    int dockSize=[initBars count]+2;
+    float dockPieceYPos=650.0f;
+    
+    for(int i=0;i<dockSize;i++)
+    {
+        CCSprite *dockPiece=nil;
+        
+        if(i==0)
+            dockPiece=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/partition/NB_Dock_Top.png")];
+        else if(i==dockSize-1)
+            dockPiece=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/partition/NB_Dock_Bottom.png")];
+        else
+            dockPiece=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/partition/NB_Dock_Middle.png")];
+
+        
+        [dockPiece setPosition:ccp(25,dockPieceYPos)];
+        [renderLayer addChild:dockPiece];
+        
+        if(i==0)
+            dockPieceYPos-=45;
+        else if(i==dockSize-2)
+            dockPieceYPos-=42;
+        else
+            dockPieceYPos-=48;
+    }
 
 
     float yStartPos=582;
@@ -181,8 +206,8 @@ static float kTimeToMountedShake=7.0f;
     for (int i=0;i<[initBars count]; i++)
     {
         
-        float xStartPos=(cx-((([[[initBars objectAtIndex:i] objectForKey:LENGTH] intValue]+2)*50)/2)+25);
-
+        float xStartPos=(cx+200-((([[[initBars objectAtIndex:i] objectForKey:LENGTH] intValue]+2)*50)/2)+25);
+        
         DWNBondRowGameObject *prgo = [DWNBondRowGameObject alloc];
         [gw populateAndAddGameObject:prgo withTemplateName:@"TnBondRow"];
         prgo.Position=ccp(xStartPos,yStartPos);
@@ -207,8 +232,8 @@ static float kTimeToMountedShake=7.0f;
             [gw populateAndAddGameObject:pogo withTemplateName:@"TnBondObject"];
             pogo.IndexPos=i;
             
-            pogo.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3)); 
-            
+            //pogo.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3));
+            pogo.Position=ccp(20,615-(i*50));
             pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
             
             if([[initCages objectAtIndex:i] objectForKey:LABEL])
@@ -334,7 +359,7 @@ static float kTimeToMountedShake=7.0f;
         if(!pogo.InitedObject && [[mountedObjects objectAtIndex:pogo.IndexPos] containsObject:pogo])
             [[mountedObjects objectAtIndex:pogo.IndexPos] removeObject:pogo];
         
-        [self reorderMountedObjects];
+        //[self reorderMountedObjects];
         
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
         
@@ -430,7 +455,7 @@ static float kTimeToMountedShake=7.0f;
         }
     }
     
-    [self reorderMountedObjects];
+    //[self reorderMountedObjects];
     
     [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:-1];
     

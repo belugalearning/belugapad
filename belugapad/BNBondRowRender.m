@@ -101,19 +101,35 @@
     NSString *spriteFileName=[[NSString alloc]init];
     int lengthWithStops=pogo.Length+2;
     
+    float xPos=0;
+    
     for(int i=0;i<lengthWithStops;i++)
     {
     
-        if(i==0)spriteFileName=@"/images/partition/row-left.png";
-        else if(i==lengthWithStops-1 && pogo.Locked)spriteFileName=@"/images/partition/row-right.png";
-        else if(i==lengthWithStops-1 && !pogo.Locked)spriteFileName=@"/images/partition/row-right-open.png";
-        else spriteFileName=@"/images/partition/row.png";
+        if(i==0)spriteFileName=@"/images/partition/NB_Grid_Solid_End_Left.png";
+        else if(i==lengthWithStops-1 && pogo.Locked)spriteFileName=@"/images/partition/NB_Grid_Solid_End_Right.png";
+        else if(i==lengthWithStops-1 && !pogo.Locked)spriteFileName=@"/images/partition/NB_Grid_Open_End_Right.png";
+        else spriteFileName=@"/images/partition/NB_Grid_Middle50.png";
         
         
         CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-        [mySprite setPosition:ccp((i*50)-25,0)];
+//        [mySprite setPosition:ccp((i*50)-25,0)];
+
+        [mySprite setPosition:ccp(xPos,0)];
             
+        
+        if(i==0)
+            xPos+=32;
             
+        else if(i==lengthWithStops-2 && pogo.Locked)
+            xPos+=34;
+        
+        else if(i==lengthWithStops-2 && !pogo.Locked)
+            xPos+=42;
+        
+        else
+            xPos+=50;
+        
             if(gameWorld.Blackboard.inProblemSetup)
             {
                 [mySprite setTag:1];

@@ -118,6 +118,9 @@
     evalDividend=[[pdef objectForKey:DOTGRID_EVAL_DIVIDEND] intValue];
     evalDivisor=[[pdef objectForKey:DOTGRID_EVAL_DIVISOR] intValue];
     evalTotalSize=[[pdef objectForKey:DOTGRID_EVAL_TOTALSIZE] intValue];
+    showDraggableBlock=[[pdef objectForKey:SHOW_DRAGGABLE_BLOCK]boolValue];
+    renderWidthHeightOnShape=[[pdef objectForKey:RENDER_SHAPE_DIMENSIONS]boolValue];
+    selectWholeShape=[[pdef objectForKey:SELECT_WHOLE_SHAPE]boolValue];
     
     if([pdef objectForKey:ANCHOR_SPACE])
         spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
@@ -231,6 +234,13 @@
 
         
         [self checkAnchorsAndUseResizeHandle:showResize andShowMove:showMove andPrecount:preCountedTiles andDisabled:disabled];
+    }
+    
+    if(showDraggableBlock)
+    {
+        dragBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/dragsquare.png")];
+        [dragBlock setPosition:ccp(70,650)];
+        [renderLayer addChild:dragBlock];
     }
 
 }
@@ -512,6 +522,8 @@
     shape.firstAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
     shape.lastAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
     shape.tiles=[[NSMutableArray alloc]init];
+    shape.SelectAllTiles=selectWholeShape;
+    shape.RenderDimensions=renderWidthHeightOnShape;
     int numberCounted=0;
 
 
@@ -670,8 +682,8 @@
     [loggingService logEvent:BL_PA_DG_TOUCH_END_RESIZE_SHAPE
         withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:[thisShape.tiles count]] forKey:@"numTiles"]];
     
-    [removeObjects release];
-    [rsAnchor release];
+//    [removeObjects release];
+//    [rsAnchor release];
 }
 
 #pragma mark - touch events
@@ -692,6 +704,13 @@
     NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
     [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
     
+    if(showDraggableBlock && CGRectContainsPoint(dragBlock.boundingBox, location))
+    {
+        hitDragBlock=YES;
+        newBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/1x1square85px.png")];
+        [newBlock setPosition:location];
+        [renderLayer addChild:newBlock];
+    }
     
     // if a handle responds saying it's been touched
     if(gw.Blackboard.CurrentHandle) {
@@ -751,6 +770,29 @@
     lastTouch=location;
     NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
     
+    if(hitDragBlock && CGRectContainsPoint(newBlock.boundingBox, location))
+    {
+        [newBlock setPosition:location];
+
+        // set the search location to the bottom left of the square
+        NSMutableDictionary *nb=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:ccp(newBlock.position.x-(newBlock.contentSize.width/2), newBlock.position.y-(newBlock.contentSize.height/2))] forKey:POS];
+        [gw handleMessage:kDWareYouADropTarget andPayload:nb withLogLevel:-1];
+        
+        if(gw.Blackboard.FirstAnchor)
+        {
+            DWDotGridAnchorGameObject *fa=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
+            
+            //NSLog(@"fa.myXPos+1 = %d, dotMatrix count = %d, fa.myYPos+1 = %d, dotMatrix objAtIndex(%d) count = %d", fa.myXpos+1, [dotMatrix count], fa.myYpos+1, fa.myXpos+1, [[dotMatrix objectAtIndex:fa.myXpos+1] count]);
+            
+            if(fa.myXpos+1<=[dotMatrix count]-1)
+            {
+                if(fa.myYpos+1<=[[dotMatrix objectAtIndex:fa.myXpos] count]-1)
+                    gw.Blackboard.LastAnchor=[[dotMatrix objectAtIndex:fa.myXpos+1] objectAtIndex:fa.myYpos+1];
+            }
+        }
+        
+    }
+    
     if(gameState==kNoState)
     {
         
@@ -785,6 +827,11 @@
     //location=[self.ForeLayer convertToNodeSpace:location];
     isTouching=NO;
     
+    if(hitDragBlock && CGRectContainsPoint(newBlock.boundingBox, location))
+    {
+        [self checkAnchors];
+    }
+    
     // Draw object, empty selected objects - make sure that no objects say they're selected
     if(gameState==kStartAnchor) { 
         [self checkAnchors];
@@ -801,6 +848,8 @@
     gw.Blackboard.FirstAnchor=nil;
     gw.Blackboard.LastAnchor=nil;
     gw.Blackboard.CurrentHandle=nil;
+    if(hitDragBlock)[newBlock removeFromParentAndCleanup:YES];
+    hitDragBlock=NO;
     
     
     [gw.Blackboard.SelectedObjects removeAllObjects];
@@ -816,7 +865,8 @@
     gw.Blackboard.FirstAnchor=nil;
     gw.Blackboard.LastAnchor=nil;    
     gw.Blackboard.CurrentHandle=nil;
-
+    if(hitDragBlock)[newBlock removeFromParentAndCleanup:YES];
+    hitDragBlock=NO;
 
     [gw.Blackboard.SelectedObjects removeAllObjects];
 }

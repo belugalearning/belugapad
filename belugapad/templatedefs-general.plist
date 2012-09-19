@@ -250,6 +250,8 @@
 		<dict>
 			<key>BDotGridShapeTouch</key>
 			<dict/>
+			<key>BDotGridShapeObjectRender</key>
+			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>
 		<array/>

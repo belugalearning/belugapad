@@ -69,6 +69,7 @@
 		553E80BB150FC60200263473 /* BNLineSelectorInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80BA150FC60100263473 /* BNLineSelectorInput.m */; };
 		553E80BE150FC78F00263473 /* DWSelectorGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80BD150FC78E00263473 /* DWSelectorGameObject.m */; };
 		553E80C1150FD3FD00263473 /* NLineConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 553E80C0150FD3FD00263473 /* NLineConsts.m */; };
+		554EA4A7160777F900A68BFF /* DWDotGridShapeGroupGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 554EA4A6160777F900A68BFF /* DWDotGridShapeGroupGameObject.m */; };
 		554FB01515F4A805006F6D3A /* FloatingBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 554FB01415F4A805006F6D3A /* FloatingBlock.m */; };
 		554FB01A15F4AD59006F6D3A /* SGFBlockBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 554FB01915F4AD59006F6D3A /* SGFBlockBlock.m */; };
 		554FB01D15F4AD6C006F6D3A /* SGFBlockBubble.m in Sources */ = {isa = PBXBuildFile; fileRef = 554FB01C15F4AD6C006F6D3A /* SGFBlockBubble.m */; };
@@ -557,6 +558,8 @@
 		553E80BD150FC78E00263473 /* DWSelectorGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWSelectorGameObject.m; sourceTree = "<group>"; };
 		553E80BF150FD3FD00263473 /* NLineConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NLineConsts.h; sourceTree = "<group>"; };
 		553E80C0150FD3FD00263473 /* NLineConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NLineConsts.m; sourceTree = "<group>"; };
+		554EA4A5160777F900A68BFF /* DWDotGridShapeGroupGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWDotGridShapeGroupGameObject.h; sourceTree = "<group>"; };
+		554EA4A6160777F900A68BFF /* DWDotGridShapeGroupGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWDotGridShapeGroupGameObject.m; sourceTree = "<group>"; };
 		554FB01315F4A805006F6D3A /* FloatingBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatingBlock.h; sourceTree = "<group>"; };
 		554FB01415F4A805006F6D3A /* FloatingBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FloatingBlock.m; sourceTree = "<group>"; };
 		554FB01815F4AD59006F6D3A /* SGFBlockBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBlockBlock.h; sourceTree = "<group>"; };
@@ -1551,6 +1554,8 @@
 				55C5F72415388A40009D8906 /* DWDotGridShapeGameObject.m */,
 				55C5F72515388A40009D8906 /* DWDotGridTileGameObject.h */,
 				55C5F72615388A40009D8906 /* DWDotGridTileGameObject.m */,
+				554EA4A5160777F900A68BFF /* DWDotGridShapeGroupGameObject.h */,
+				554EA4A6160777F900A68BFF /* DWDotGridShapeGroupGameObject.m */,
 			);
 			name = DotGrid;
 			sourceTree = "<group>";
@@ -3340,6 +3345,7 @@
 				7F588F5616027B010015F504 /* SGJmapCloudRender.m in Sources */,
 				7F588F5916027B280015F504 /* SGJmapCloudSeeker.m in Sources */,
 				7F588F5C16027B380015F504 /* SGJmapCloudMotion.m in Sources */,
+				554EA4A7160777F900A68BFF /* DWDotGridShapeGroupGameObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

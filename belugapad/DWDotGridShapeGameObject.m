@@ -14,8 +14,12 @@
 @synthesize moveHandle;
 @synthesize resizeHandle;
 @synthesize Disabled;
+@synthesize SelectAllTiles;
 @synthesize firstAnchor;
 @synthesize lastAnchor;
+@synthesize RenderDimensions;
+@synthesize myWidth;
+@synthesize myHeight;
 
 -(void)dealloc
 {
@@ -24,6 +28,8 @@
     self.resizeHandle=nil;
     self.firstAnchor=nil;
     self.lastAnchor=nil;
+    self.myHeight=nil;
+    self.myWidth=nil;
     
     [super dealloc];
 }

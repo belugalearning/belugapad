@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Show that to make 1 block into 9 blocks, you must add 8 blocks of 1. </string>
+	<string>Add 8 blocks to 1 to make 9. </string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>pv_3-9</string>
+	<string>Add 8 blocks to 1 to make 9. </string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>

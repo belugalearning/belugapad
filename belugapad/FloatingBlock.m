@@ -16,6 +16,8 @@
 #import "LoggingService.h"
 #import "AppDelegate.h"
 
+#import "NumberLayout.h"
+
 #import "SGGameWorld.h"
 #import "SGFBlockObjectProtocols.h"
 #import "SGFBlockBlock.h"
@@ -223,13 +225,18 @@
     id<Group> thisGroup=[[SGFBlockGroup alloc]initWithGameWorld:gw];
     thisGroup.MaxObjects=maxBlocksInGroup;
     
-    float xPos=(arc4random()%800)+100;
-    float yPos=(arc4random()%600)+100;
+    float xStartPos=(arc4random()%800)+100;
+    float yStartPos=(arc4random()%600)+100;
+    
+    NSArray *blockPos=[NumberLayout physicalLayoutUpToNumber:numberInShape withSpacing:52.0f];
     
     for(int i=0;i<numberInShape;i++)
     {
+        CGPoint thisPos=[[blockPos objectAtIndex:i]CGPointValue];
+        thisPos=ccp(thisPos.x+xStartPos, thisPos.y+yStartPos);
+        
         id<Rendered,Moveable> newblock;
-        newblock=[[SGFBlockBlock alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos+(i*52),yPos)];
+        newblock=[[SGFBlockBlock alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:thisPos];
         newblock.MyGroup=(id)thisGroup;
         
         [newblock setup];
@@ -282,14 +289,7 @@
 
                     
                 }
-                
-                // then animate
-                for(id<Rendered> block in targetGroup.MyBlocks)
-                {
-                    [block.MySprite runAction:[CCMoveBy actionWithDuration:0.5f position:ccp(0,250)]];
-                    block.Position=ccp(block.MySprite.position.x, block.MySprite.position.y+250);
-                    
-                }
+                [self rearrangeBlocksInGroup:targetGroup];
                 [targetGroup tintBlocksTo:ccc3(255,255,255)];
             }
             
@@ -463,15 +463,9 @@
             
         }
         
-                    
-        for(id<Rendered> block in targetGroup.MyBlocks)
-        {
-            CGPoint newPos=ccp(block.Position.x,block.Position.y+200);
-            
-            [block.MySprite runAction:[CCMoveTo actionWithDuration:0.5f position:newPos]];
-            block.Position=newPos;
-            
-        }
+
+        [self rearrangeBlocksInGroup:targetGroup];
+        
         [targetGroup tintBlocksTo:ccc3(255,255,255)];
 
         
@@ -516,6 +510,7 @@
         [targetGroup addObject:newblock];
     }
     
+    [self rearrangeBlocksInGroup:targetGroup];
 
 }
 
@@ -547,6 +542,8 @@
             [targetGroup removeObject:obj];
             [obj fadeAndDestroy];
         }
+        
+        [self rearrangeBlocksInGroup:targetGroup];
 
     }
     
@@ -574,6 +571,28 @@
             [targetGroup removeObject:obj];
             [obj fadeAndDestroy];
         }
+        
+    }
+    
+    [self rearrangeBlocksInGroup:targetGroup];
+}
+
+-(void)rearrangeBlocksInGroup:(id<Group>)targetGroup
+{
+    NSArray *blockPos=[NumberLayout physicalLayoutUpToNumber:[targetGroup.MyBlocks count] withSpacing:52.0f];
+    int xOffsetPos=([targetGroup.MyBlocks count]/10)*52.0f;
+    int yOffsetPos=([targetGroup.MyBlocks count]/2)*52.0f;
+    float xStartPos=cx+xOffsetPos;
+    float yStartPos=cy+yOffsetPos;
+    
+    // then animate
+    for(id<Rendered> block in targetGroup.MyBlocks)
+    {
+        CGPoint thisPos=[[blockPos objectAtIndex:[targetGroup.MyBlocks indexOfObject:block]]CGPointValue];
+        thisPos=ccp(thisPos.x+xStartPos, thisPos.y+yStartPos);
+        
+        [block.MySprite runAction:[CCMoveTo actionWithDuration:0.5f position:thisPos]];
+        block.Position=thisPos;
         
     }
 }
@@ -695,7 +714,7 @@
             
             [pickupGroup resetZIndexOfMyObjects];
             
-            if(CGRectContainsPoint(commitPipe.boundingBox, location))
+            if(CGRectContainsPoint(commitPipe.boundingBox, location) && evalMode==kProblemEvalAuto)
                 [self evalProblem];
         }
     }

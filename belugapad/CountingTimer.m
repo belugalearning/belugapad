@@ -178,9 +178,8 @@
 -(void)populateGW
 {
     gw.Blackboard.RenderLayer = renderLayer;
-    buttonOfWin=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/countingtimer/button-red.png")];
+    buttonOfWin=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/countingtimer/counter_start.png")];
     [buttonOfWin setPosition:ccp(cx,cy)];
-    [buttonOfWin setColor:ccc3(0,255,0)];
     [renderLayer addChild:buttonOfWin];
     
     if(showCount)
@@ -194,7 +193,7 @@
 #pragma mark - problem state
 -(void)startProblem
 {
-    [buttonOfWin setColor:ccc3(255,255,255)];
+    [buttonOfWin setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/countingtimer/counter_stop.png")]];
     started=YES;
     expired=NO;
 }
@@ -205,7 +204,7 @@
     started=NO;
     timeElapsed=0.0f;
     trackNumber=0;
-    [buttonOfWin setColor:ccc3(0,255,0)];
+    [buttonOfWin setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/countingtimer/counter_start.png")]];
     
     if(numIncrement>=0)
         lastNumber=countMin;

@@ -5,7 +5,7 @@
 	<key>MASTERY</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Counting down from 9, press when it reaches 3.</string>
+	<string>Counting down from 9, press at 3.</string>
 	<key>TOOL_KEY</key>
 	<string>CountingTimer</string>
 	<key>SOLUTION</key>

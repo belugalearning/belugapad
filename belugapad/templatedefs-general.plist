@@ -258,6 +258,15 @@
 		<key>OBJECT_DATA</key>
 		<dict/>
 	</dict>
+	<key>TdotgridShapeGroup</key>
+	<dict>
+		<key>BEHAVIOURS</key>
+		<dict/>
+		<key>IMPLEMENT_TEMPLATES</key>
+		<array/>
+		<key>OBJECT_DATA</key>
+		<dict/>
+	</dict>
 	<key>TtimestablesTile</key>
 	<dict>
 		<key>BEHAVIOURS</key>

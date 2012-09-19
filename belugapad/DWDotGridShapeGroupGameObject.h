@@ -13,5 +13,7 @@
 
 @property (retain) NSMutableArray *shapesInMe;
 @property (retain) DWDotGridShapeGameObject *resizeShape;
+@property (retain) DWDotGridAnchorGameObject *firstAnchor;
+@property (retain) DWDotGridAnchorGameObject *lastAnchor;
 
 @end

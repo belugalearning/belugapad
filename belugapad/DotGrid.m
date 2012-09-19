@@ -516,9 +516,21 @@
     }
     
     thisShape.lastAnchor=anchEnd;
-    [self modifyThisShape:thisShape withTheseAnchors:anchorsForShape];
-
+    if(!useShapeGroups)
+        [self modifyThisShape:thisShape withTheseAnchors:anchorsForShape];
+    else
+        NSLog(@"modify a shapegroup shape");
+    
     [anchorsForShape release];
+}
+
+-(void)checkAnchorsOfExistingShapeGroup:(DWDotGridShapeGroupGameObject*)thisShapeGroup
+{
+    gw.Blackboard.FirstAnchor=thisShapeGroup.firstAnchor;
+    gw.Blackboard.LastAnchor=thisShapeGroup.lastAnchor;
+    
+    
+    
 }
 
 -(void)createShapeGroupAndShapesWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled
@@ -549,13 +561,16 @@
         [[shapeAnchors objectAtIndex:thisArray] addObject:a];
     }
     
+    DWDotGridShapeGroupGameObject *shapegrp=[DWDotGridShapeGroupGameObject alloc];
+    [gw populateAndAddGameObject:shapegrp withTemplateName:@"TdotgridShapeGroup"];
+    
     for(NSMutableArray *a in shapeAnchors)
     {
-        DWDotGridShapeGroupGameObject *shapegrp=[DWDotGridShapeGroupGameObject alloc];
-        [gw populateAndAddGameObject:shapegrp withTemplateName:@"TdotgridShapeGroup"];
-        
         [shapegrp.shapesInMe addObject:[self createShapeWithAnchorPoints:a andPrecount:nil andDisabled:NO andGroup:shapegrp]];
     }
+    
+    shapegrp.firstAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
+    shapegrp.lastAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
 }
 
 -(DWDotGridShapeGameObject*)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled
@@ -893,8 +908,11 @@
     
     if(gameState==kResizeShape)
     {
-        [self checkAnchorsOfExistingShape:((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).myShape];
-        
+        DWDotGridHandleGameObject * cHandle=(DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle;
+        if(!useShapeGroups)
+            [self checkAnchorsOfExistingShape:cHandle.myShape];
+        else
+            [self checkAnchorsOfExistingShapeGroup:cHandle.myShape.shapeGroup];
     }
     
     

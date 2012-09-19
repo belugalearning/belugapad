@@ -12,5 +12,7 @@
 
 @synthesize shapesInMe;
 @synthesize resizeShape;
+@synthesize firstAnchor;
+@synthesize lastAnchor;
 
 @end

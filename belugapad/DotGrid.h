@@ -11,6 +11,7 @@
 #import "ToolScene.h"
 
 @class DWDotGridShapeGameObject;
+@class DWDotGridShapeGroupGameObject;
 
 typedef enum {
     kAnyStartAnchorValid=0,
@@ -88,6 +89,7 @@ typedef enum {
 -(void)checkAnchors;
 -(void)checkAnchorsAndUseResizeHandle:(BOOL)showResize andShowMove:(BOOL)showMove andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled;
 -(void)checkAnchorsOfExistingShape:(DWDotGridShapeGameObject*)thisShape;
+-(void)checkAnchorsOfExistingShapeGroup:(DWDotGridShapeGroupGameObject*)thisShapeGroup;
 -(DWDotGridShapeGameObject*)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled;
 -(DWDotGridShapeGameObject*)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled andGroup:(DWGameObject*)shapeGroup;
 -(void)modifyThisShape:(DWDotGridShapeGameObject*)thisShape withTheseAnchors:(NSArray*)anchors;

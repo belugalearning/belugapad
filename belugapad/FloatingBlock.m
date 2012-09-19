@@ -714,7 +714,7 @@
             
             [pickupGroup resetZIndexOfMyObjects];
             
-            if(CGRectContainsPoint(commitPipe.boundingBox, location))
+            if(CGRectContainsPoint(commitPipe.boundingBox, location) && evalMode==kProblemEvalAuto)
                 [self evalProblem];
         }
     }

@@ -278,6 +278,11 @@ static float kTimeToMountedShake=7.0f;
             [renderLayer addChild:thisBadge z:1000];
             [thisBadge addChild:thisLabel];
             
+            [thisBadge setTag:3];
+            [thisLabel setTag:3];
+            [thisBadge setOpacity:0];
+            [thisLabel setOpacity:0];
+            
             [mountedObjectLabels addObject:thisLabel];
             [mountedObjectBadges addObject:thisBadge];
         }

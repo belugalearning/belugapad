@@ -198,6 +198,8 @@ static float kTimeToMountedShake=7.0f;
 
         
         [dockPiece setPosition:ccp(25,dockPieceYPos)];
+        [dockPiece setTag:1];
+        [dockPiece setOpacity:0];
         [renderLayer addChild:dockPiece];
         
         if(i==0)

@@ -9,9 +9,9 @@
 	<key>blendFuncDestination</key>
 	<integer>1</integer>
 	<key>blendFuncSource</key>
-	<integer>770</integer>
+	<integer>1</integer>
 	<key>duration</key>
-	<real>-1</real>
+	<integer>-1</integer>
 	<key>emitterType</key>
 	<real>0</real>
 	<key>finishColorAlpha</key>

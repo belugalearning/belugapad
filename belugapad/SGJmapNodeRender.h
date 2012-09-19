@@ -9,9 +9,13 @@
 #import "SGComponent.h"
 #import "SGJmapObjectProtocols.h"
 
+@class SGJmapNode;
+
 @interface SGJmapNodeRender : SGComponent
 {
-    id<Transform, ProximityResponder> ParentGO;
+    SGJmapNode *ParentGO;
+    
+    CGPoint positionAsOffset;
 }
 
 -(void)draw:(int)z;

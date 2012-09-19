@@ -11,7 +11,7 @@
 
 @class SGBtxeRowLayout;
 
-@interface SGBtxeRow : SGGameObject <Container, Bounding, Parser, RenderContainer>
+@interface SGBtxeRow : SGGameObject <Container, Bounding, Parser, RenderContainer, FadeIn>
 {
     NSMutableArray *children;
     CCNode *baseNode;

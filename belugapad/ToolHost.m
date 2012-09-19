@@ -28,6 +28,9 @@
 #import "LRAnimator.h"
 #import "BLFiles.h"
 #import "InteractionFeedback.h"
+#import "SGGameWorld.h"
+#import "SGBtxeRow.h"
+#import "SGBtxeProtocols.h"
 
 @interface ToolHost()
 {
@@ -102,6 +105,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [self addChild:metaQuestionLayer z:2];
         problemDefLayer=[[CCLayer alloc] init];
         [self addChild:problemDefLayer z:3];
+        
+        btxeDescLayer=[[CCLayer alloc] init];
+        [self addChild:btxeDescLayer z:3];
         
         pauseLayer=[[CCLayer alloc]init];
         [self addChild:pauseLayer z:4];
@@ -708,6 +714,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     [self resetScoreMultiplier];
     
+    skipNextDescDraw=YES;
     skipNextStagedIntroAnim=YES;
     
     [self loadProblem];
@@ -755,6 +762,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void)tearDownProblemDef
 {
     [problemDefLayer removeAllChildrenWithCleanup:YES];
+    [btxeDescLayer removeAllChildrenWithCleanup:YES];
+    
+    [descGw release];
+    descGw=nil;
     
     //nil pointers to things on there
     problemDescLabel=nil;
@@ -1611,26 +1622,66 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)setProblemDescription:(NSString*)descString
 {
-    if(!problemDescLabel)
+    if(skipNextDescDraw)
     {
-        problemDescLabel=[CCLabelTTF labelWithString:descString dimensions:CGSizeMake(lx*kLabelTitleXMarginProp, cy) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-        [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
-        [problemDescLabel setTag:3];
-        [problemDescLabel setOpacity:0];
-        [problemDefLayer addChild:problemDescLabel];
+        skipNextDescDraw=NO;
+        return;
     }
-    else {
-        [problemDescLabel setString:descString];
-
-        //assume it should be visible
-        problemDescLabel.visible=YES;
+    
+    //always re-create the game world
+    if(descGw)
+    {
+        [descGw release];
+        descGw=nil;
     }
+    
+    descGw=[[SGGameWorld alloc] initWithGameScene:self];
+    descGw.Blackboard.inProblemSetup=YES;
+    
+    descGw.Blackboard.RenderLayer = btxeDescLayer;
+    
+    //create row
+    id<Container, Bounding, Parser, FadeIn> row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
+    row.position=ccp(cx, (cy*2) - 80);
+    
+    //assume the string needs wrapping in b:t
+    descString=[NSString stringWithFormat:@"<b:t>%@</b:t>", descString];
+    
+    [row parseXML:descString];
+    [row setupDraw];
+    
+    [row fadeInElementsFrom:1.0f andIncrement:0.1f];
+    
+    descGw.Blackboard.inProblemSetup=NO;
 }
 
 -(void)setProblemDescriptionVisible:(BOOL)visible
 {
-    if(problemDescLabel) [problemDescLabel setVisible:visible];
+    //hide everything int he btxe gw
 }
+
+//-(void)setProblemDescription:(NSString*)descString
+//{
+//    if(!problemDescLabel)
+//    {
+//        problemDescLabel=[CCLabelTTF labelWithString:descString dimensions:CGSizeMake(lx*kLabelTitleXMarginProp, cy) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+//        [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
+//        [problemDescLabel setTag:3];
+//        [problemDescLabel setOpacity:0];
+//        [problemDefLayer addChild:problemDescLabel];
+//    }
+//    else {
+//        [problemDescLabel setString:descString];
+//
+//        //assume it should be visible
+//        problemDescLabel.visible=YES;
+//    }
+//}
+
+//-(void)setProblemDescriptionVisible:(BOOL)visible
+//{
+//    if(problemDescLabel) [problemDescLabel setVisible:visible];
+//}
 
 
 #pragma mark - touch handling
@@ -1937,6 +1988,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [metaQuestionLayer release];
     [problemDefLayer release];
     [pauseLayer release];
+    [btxeDescLayer release];
     
     if(triggerData)[triggerData release];
     

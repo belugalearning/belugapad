@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>mq_8_4_2</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>mq_8_4_2</string>
+	<key>MASTERY</key>
+	<true/>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@bname</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>Gareth</string>
+				<string>Nick</string>
+				<string>Ed</string>
+				<string>Dave</string>
+				<string>Richard</string>
+				<string>Mark</string>
+				<string>Scott</string>
+			</array>
+		</dict>
+		<key>@gname</key>
+		<dict>
+			<key>DATA</key>
+			<array>
+				<string>Claire</string>
+				<string>Winnie</string>
+				<string>Sarah</string>
+				<string>Simone</string>
+				<string>Elaine</string>
+			</array>
+			<key>MODE</key>
+			<string>RANDOM</string>
+		</dict>
+		<key>@place</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>cinema</string>
+				<string>theme park</string>
+				<string>arcade</string>
+				<string>restaurant</string>
+				<string>shopping centre</string>
+				<string>football match</string>
+			</array>
+		</dict>
+	</dict>
+	<key>HOST_BACKGROUND_IMAGE</key>
+	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_COMPLETE_TEXT</key>
+		<string>well done!!</string>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>2 cars</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>4 cars</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>Same price</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>It costs £6 for each car to park at the {@place}. Is it cheaper for the 8 friends to use 4 cars or 2 cars?</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again</string>
+	</dict>
+</dict>
+</plist>

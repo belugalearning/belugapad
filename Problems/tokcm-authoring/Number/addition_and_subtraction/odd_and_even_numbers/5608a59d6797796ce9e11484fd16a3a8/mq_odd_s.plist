@@ -28,7 +28,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>There is a shape made of 33 blocks. When it is split into blocks of 2, there is one left over. Is 33 odd or even?</string>
+		<string>There is a shape made of 33 blocks. When split into blocks of 2, there is one left over. Is 33 even or odd?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

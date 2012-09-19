@@ -890,6 +890,18 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 #pragma mark - meta question
 
+-(NSMutableArray*)randomizeAnswers:(NSMutableArray*)thisArray
+{
+    NSUInteger count = [thisArray count];
+    for (int i=0; i<count; i++) {
+        // Select a random element between i and end of array to swap with.
+        int nElements = count - i;
+        int n = (arc4random() % nElements) + i;
+        [thisArray exchangeObjectAtIndex:i withObjectAtIndex:n];
+    }
+    return thisArray;
+}
+
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ
 {
     metaQuestionForThisProblem=YES;
@@ -930,7 +942,16 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     // put our array of answers in an ivar
 //    metaQuestionAnswers = [pdefMQ objectForKey:META_QUESTION_ANSWERS];
     metaQuestionAnswerCount = [[pdefMQ objectForKey:META_QUESTION_ANSWERS] count];
-    NSArray *pdefAnswers=[pdefMQ objectForKey:META_QUESTION_ANSWERS];
+    
+    if([pdefMQ objectForKey:META_QUESTION_RANDOMISE_ANSWERS])
+        metaQuestionRandomizeAnswers = [[pdefMQ objectForKey:META_QUESTION_RANDOMISE_ANSWERS]boolValue];
+    else
+        metaQuestionRandomizeAnswers = YES;
+    
+    NSMutableArray *pdefAnswers=[pdefMQ objectForKey:META_QUESTION_ANSWERS];;
+    
+    if(metaQuestionRandomizeAnswers)
+        pdefAnswers=[self randomizeAnswers:pdefAnswers];
     
     // assign our complete and incomplete text to show later
     metaQuestionCompleteText = [pdefMQ objectForKey:META_QUESTION_COMPLETE_TEXT];

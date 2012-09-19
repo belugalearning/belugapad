@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Add 8 blocks to 1 to make 9. </string>
+	<string>Add blocks to 6 to make 13. </string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Add 8 blocks to 1 to make 9. </string>
+	<string>Add blocks to 6 to make 13. </string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -13,11 +13,11 @@
 	<key>FIRST_COL_VALUE</key>
 	<integer>1</integer>
 	<key>COL_BASE_VALUE</key>
-	<string>8</string>
+	<string>10</string>
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>5</integer>
+	<integer>10</integer>
 	<key>ROWS_PER_COL</key>
 	<integer>2</integer>
 	<key>ALLOW_CONDENSING</key>
@@ -37,7 +37,7 @@
 	<key>FADE_COUNT</key>
 	<false/>
 	<key>CUSTOM_COLUMN_HEADERS</key>
-	<true/>
+	<false/>
 	<key>COLUMN_HEADERS</key>
 	<dict>
 		<key>0</key>
@@ -51,7 +51,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>1</integer>
+			<integer>6</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -59,7 +59,7 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>9</integer>
+		<integer>13</integer>
 	</dict>
 </dict>
 </plist>

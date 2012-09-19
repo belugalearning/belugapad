@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>How many 1s must I add to 2 to get 10?</string>
+	<string>How many ones must I add to 2 to get 10?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>How many 1s must I add to 2 to get 10?</string>
+	<string>How many ones must I add to 2 to get 10?</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -25,9 +25,9 @@
 	<key>ALLOW_MULCHING</key>
 	<false/>
 	<key>EVAL_MODE</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>REJECT_MODE</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_COUNT</key>
@@ -59,7 +59,7 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>4</integer>
+		<integer>25</integer>
 	</dict>
 	<key>META_QUESTION</key>
 	<dict>
@@ -71,12 +71,6 @@
 		<integer>0</integer>
 		<key>META_QUESTION_ANSWERS</key>
 		<array>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>9</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
 				<string>8</string>
@@ -97,7 +91,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>How many 1s must I add to 2 to get 10?</string>
+		<string>How many ones must I add to 2 to make 10?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

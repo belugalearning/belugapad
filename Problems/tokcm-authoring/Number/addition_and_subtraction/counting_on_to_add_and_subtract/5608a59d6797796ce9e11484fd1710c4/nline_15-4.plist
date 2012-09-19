@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is 14 + 6 ?</string>
+	<string>What is 15 + 4 ?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>What is 14 + 6 ?</string>
+	<string>What is 15 + 4 ?</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>14</string>
+	<string>15</string>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
@@ -19,7 +19,7 @@
 	<key>REJECT_MODE</key>
 	<integer>1</integer>
 	<key>EVAL_TARGET</key>
-	<integer>20</integer>
+	<integer>25</integer>
 	<key>HIDE_ALL_NUMBERS</key>
 	<true/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
@@ -60,7 +60,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>What is 14 + 6 ?</string>
+		<string>What is 15 + 4 ?</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>PICKER_ORIGIN_X</key>
@@ -72,7 +72,7 @@
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
-		<integer>20</integer>
+		<integer>19</integer>
 	</dict>
 </dict>
 </plist>

@@ -5,7 +5,7 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>7 is an odd number. Divide the 7 blocks into as many blocks of 2 as possible.</string>
+	<string>7 is an odd number. Divide into as many blocks of 2 as possible.</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>INIT_OBJECTS</key>
@@ -16,7 +16,7 @@
 			<key>POS_X</key>
 			<integer>525</integer>
 			<key>POS_Y</key>
-			<integer>475</integer>
+			<integer>550</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

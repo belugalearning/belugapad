@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>How many blocks of 4 need to be added to 3 to make 15?</string>
+	<string>How many blocks of 4 need to be added to 2 to make 18?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>How many blocks of 4 need to be added to 3 to make 15?</string>
+	<string>How many blocks of 4 need to be added to 2 to make 18?</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -17,7 +17,7 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>8</integer>
+	<integer>9</integer>
 	<key>ROWS_PER_COL</key>
 	<integer>2</integer>
 	<key>ALLOW_CONDENSING</key>
@@ -51,17 +51,9 @@
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
 			<key>PUT_IN_ROW</key>
-			<integer>1</integer>
+			<integer>0</integer>
 			<key>NUMBER</key>
 			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
-			<key>NUMBER</key>
-			<integer>1</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -83,7 +75,7 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>3</string>
+				<string>4</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
@@ -95,7 +87,7 @@
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>4</string>
+				<string>3</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
@@ -107,7 +99,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>How many blocks of 4 must you add to make 3 blocks into 15 blocks?</string>
+		<string>How many blocks of 4 need to be added to 2 to make 18?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

@@ -5,7 +5,7 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Is the number 10 odd or even?</string>
+	<string>Is the number 10 even or odd?</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>INIT_OBJECTS</key>
@@ -35,19 +35,19 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>Odd</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
 				<string>Even</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>Odd</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Is the number 10 odd or even?</string>
+		<string>Is the number 10 even or odd?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

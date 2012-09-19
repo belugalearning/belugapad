@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Show that to make 2 blocks into 6 blocks, you must add 2 blocks of 2.</string>
+	<string>Add 2 blocks of 2 to make 2 into 6.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Show that to make 2 blocks into 6 blocks, you must add 2 blocks of 2.</string>
+	<string>Add 2 blocks of 2 to make 2 into 6.</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>

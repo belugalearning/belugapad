@@ -16,7 +16,7 @@
 			<key>POS_X</key>
 			<integer>525</integer>
 			<key>POS_Y</key>
-			<integer>400</integer>
+			<integer>450</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -47,7 +47,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Is the number 2 odd or even?</string>
+		<string>Is 2 even or odd?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

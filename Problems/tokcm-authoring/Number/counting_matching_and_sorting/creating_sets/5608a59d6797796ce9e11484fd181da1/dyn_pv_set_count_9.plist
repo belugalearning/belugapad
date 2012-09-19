@@ -7,7 +7,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>Create a set of {$number}.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>dyn_pv_set_count_9</string>
+	<string>5-10</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -19,9 +19,9 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>3</integer>
+	<integer>5</integer>
 	<key>ROWS_PER_COL</key>
-	<integer>3</integer>
+	<integer>2</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
@@ -68,9 +68,9 @@
 		<key>$number</key>
 		<dict>
 			<key>MAX</key>
-			<string>9</string>
+			<string>10</string>
 			<key>MIN</key>
-			<string>7</string>
+			<string>5</string>
 		</dict>
 	</dict>
 </dict>

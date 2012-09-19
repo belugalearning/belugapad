@@ -16,7 +16,7 @@
 			<key>POS_X</key>
 			<integer>450</integer>
 			<key>POS_Y</key>
-			<integer>400</integer>
+			<integer>500</integer>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
@@ -24,7 +24,7 @@
 			<key>POS_X</key>
 			<integer>600</integer>
 			<key>POS_Y</key>
-			<integer>400</integer>
+			<integer>500</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -55,7 +55,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Is the number 3 odd or even?</string>
+		<string>Is 3 even or odd?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

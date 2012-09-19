@@ -36,7 +36,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Is the number 9 odd or even?</string>
+		<string>Is the number 9 even or odd?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>
@@ -50,7 +50,7 @@
 			<key>POS_X</key>
 			<integer>525</integer>
 			<key>POS_Y</key>
-			<integer>450</integer>
+			<integer>550</integer>
 		</dict>
 	</array>
 </dict>

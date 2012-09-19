@@ -65,6 +65,7 @@
     {
         CCSprite *s=tile.mySprite;
         [[s parent] removeChild:s cleanup:YES];
+        [gameWorld delayRemoveGameObject:tile];
     }
 }
 

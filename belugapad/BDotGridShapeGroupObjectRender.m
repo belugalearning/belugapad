@@ -117,6 +117,8 @@
             [s handleMessage:kDWdismantle];
         }
         
+        [gameWorld delayRemoveGameObject:sg];
+        
         //destroy own game object
     }
 }
@@ -138,6 +140,9 @@
 -(void) dealloc
 {
     [super dealloc];
+    sg.shapesInMe=nil;
+    sg.firstAnchor=nil;
+    sg.lastAnchor=nil;
 }
 
 @end

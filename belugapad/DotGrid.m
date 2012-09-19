@@ -527,9 +527,9 @@
 -(void)checkAnchorsOfExistingShapeGroup:(DWDotGridShapeGroupGameObject*)thisShapeGroup
 {
     gw.Blackboard.FirstAnchor=thisShapeGroup.firstAnchor;
-    gw.Blackboard.LastAnchor=thisShapeGroup.lastAnchor;
+    gw.Blackboard.LastAnchor=gw.Blackboard.LastAnchor;
     
-    
+    [thisShapeGroup handleMessage:kDWdismantle];
     
 }
 

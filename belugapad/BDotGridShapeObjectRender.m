@@ -13,6 +13,7 @@
 #import "DWGameObject.h"
 #import "DWDotGridShapeGameObject.h"
 #import "DWDotGridAnchorGameObject.h"
+#import "DWDotGridTileGameObject.h"
 
 @implementation BDotGridShapeObjectRender
 
@@ -111,8 +112,14 @@
 
     if(messageType==kDWdismantle)
     {
-        CCSprite *spr=[[gameObject store] objectForKey:MY_SPRITE];
-        [[spr parent] removeChild:spr cleanup:YES];
+        for(DWDotGridTileGameObject *t in s.tiles)
+        {
+            [t handleMessage:kDWdismantle];
+        }
+        
+        [s.myHeight removeFromParentAndCleanup:YES];
+        [s.myWidth removeFromParentAndCleanup:YES];
+        [gameWorld delayRemoveGameObject:s];
     }
 }
 
@@ -133,6 +140,10 @@
 -(void) dealloc
 {
     [super dealloc];
+    s.tiles=nil;
+    s.firstAnchor=nil;
+    s.lastAnchor=nil;
+    s.shapeGroup=nil;
 }
 
 @end

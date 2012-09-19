@@ -165,9 +165,12 @@ static float kTimeToMountedShake=7.0f;
     if([pdef objectForKey:USE_BLOCK_SCALING])
         useBlockScaling = [[pdef objectForKey:USE_BLOCK_SCALING] boolValue];
     else
-        useBlockScaling=YES;
+        useBlockScaling = YES;
     
-    showBadgesOnCages=YES;
+    if([pdef objectForKey:SHOW_BADGES])
+        showBadgesOnCages = [[pdef objectForKey:SHOW_BADGES]boolValue];
+    else
+    showBadgesOnCages = YES;
     
     createdRows = [[NSMutableArray alloc]init];
     

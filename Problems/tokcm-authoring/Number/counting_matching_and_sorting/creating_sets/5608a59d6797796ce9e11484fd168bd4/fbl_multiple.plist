@@ -3,23 +3,28 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 3. Add blocks to make a set of 9.</string>
+	<string>Hold the top pipe and move your finger up. Tap at 5. Put 5 blocks in the bottom pipe. </string>
 	<key>TOOL_KEY</key>
 	<string>FloatingBlock</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
 	<key>SOLUTION</key>
-	<integer>9</integer>
+	<integer>5</integer>
 	<key>INIT_BUBBLES</key>
 	<integer>1</integer>
 	<key>INIT_OBJECTS</key>
-	<array>
-		<dict>
-			<key>NUMBER</key>
-			<integer>3</integer>
-		</dict>
-	</array>
+	<array/>
 	<key>BUBBLE_AUTO_OPERATE</key>
+	<false/>
+	<key>SUPPORTED_OPERATORS</key>
+	<array>
+		<string>+</string>
+	</array>
+	<key>SHOW_MULTIPLE_CONTROLS</key>
 	<true/>
+	<key>SHOW_SOLUTION_ON_PIPE</key>
+	<true/>
+	<key>MAX_BLOCKS_FROM_PIPE</key>
+	<string>5</string>
 </dict>
 </plist>

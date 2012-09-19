@@ -35,6 +35,7 @@ typedef enum {
 @class DProblemParser;
 @class NordicAnimator;
 @class LRAnimator;
+@class SGGameWorld;
 
 @interface ToolHost : CCLayer
 {
@@ -45,6 +46,7 @@ typedef enum {
     CCLayer *metaQuestionLayer;
     CCLayer *numberPickerLayer;
     CCLayer *problemDefLayer;
+    CCLayer *btxeDescLayer;
     CCLayer *pauseLayer;
 
     CCLayer *toolBackLayer;
@@ -103,6 +105,7 @@ typedef enum {
     NSMutableDictionary *pdef;
     
     BOOL skipNextStagedIntroAnim;
+    BOOL skipNextDescDraw;
     
     CCSprite *hostBackground;
     CCSprite *pauseMenu;
@@ -154,6 +157,9 @@ typedef enum {
     //web debug view
     UIWebView *debugWebView;
     BOOL debugShowingPipelineState;
+    
+    //btxe for description
+    SGGameWorld *descGw;
     
 }
 

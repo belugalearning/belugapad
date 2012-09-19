@@ -68,6 +68,20 @@
 
 }
 
+-(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime
+{
+    float incr=startTime;
+    
+    for(id c in children)
+    {
+        if([c conformsToProtocol:@protocol(FadeIn)])
+        {
+            [c fadeInElementsFrom:incr andIncrement:incrTime];
+            incr+=incrTime;
+        }
+    }
+}
+
 -(void)parseXML:(NSString *)xmlString
 {
     [self.parserComponent parseXML:xmlString];

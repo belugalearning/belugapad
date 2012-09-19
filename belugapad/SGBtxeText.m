@@ -37,8 +37,14 @@
     
 }
 
+-(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime
+{
+    [textRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];
+}
+
 -(void)attachToRenderBase:(CCNode*)renderBase;
 {
+    [renderBase addChild:textRenderComponent.label0];
     [renderBase addChild:textRenderComponent.label];
 }
 

@@ -71,6 +71,7 @@ typedef enum {
     BOOL showMetaQuestionIncomplete;
     float shownMetaQuestionIncompleteFor;
     BOOL metaQuestionForceComplete;
+    BOOL metaQuestionRandomizeAnswers;
     
     BOOL numberPickerForThisProblem;
     BOOL animatePickedButtons;
@@ -183,6 +184,7 @@ typedef enum {
 -(void)recurseSetIntroFor:(CCNode*)node withTime:(float)time forTag:(int)tag;
 -(void)stageIntroActions;
 -(void)setupProblemOnToolHost:(NSDictionary *)pdef;
+-(NSMutableArray*)randomizeAnswers:(NSMutableArray*)thisArray;
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ;
 -(void)checkMetaQuestionTouchesAt:(CGPoint)location andTouchEnd:(BOOL)touchEnd;
 -(void)setupNumberPicker:(NSDictionary *)pdefNP;

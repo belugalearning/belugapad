@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Count 1 block. </string>
+	<string>Press the right arrow 6 times. Add 7 blocks and press the green button. </string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -15,7 +15,7 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>1</integer>
+	<integer>7</integer>
 	<key>ROWS_PER_COL</key>
 	<integer>1</integer>
 	<key>ALLOW_CONDENSING</key>
@@ -23,9 +23,9 @@
 	<key>ALLOW_MULCHING</key>
 	<false/>
 	<key>EVAL_MODE</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>REJECT_MODE</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_COUNT</key>
@@ -40,22 +40,18 @@
 		<string>Ones</string>
 	</dict>
 	<key>INIT_OBJECTS</key>
-	<array>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
-			<key>NUMBER</key>
-			<integer>1</integer>
-		</dict>
-	</array>
+	<array/>
 	<key>SOLUTION</key>
 	<dict>
 		<key>SOLUTION_TYPE</key>
-		<string>TOTAL_COUNT_AND_COUNT_SEQUENCE</string>
+		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>1</integer>
+		<integer>7</integer>
+	</dict>
+	<key>MULTIPLE_BLOCK_PICKUP</key>
+	<dict>
+		<key>1</key>
+		<true/>
 	</dict>
 </dict>
 </plist>

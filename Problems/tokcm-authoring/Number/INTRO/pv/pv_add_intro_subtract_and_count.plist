@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Count all the blocks. </string>
+	<string>Take away 2 blocks and press the green button.</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -15,17 +15,17 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>2</integer>
-	<key>ROWS_PER_COL</key>
 	<integer>5</integer>
+	<key>ROWS_PER_COL</key>
+	<integer>1</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
 	<false/>
 	<key>EVAL_MODE</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>REJECT_MODE</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_COUNT</key>
@@ -47,23 +47,22 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>1</integer>
-			<key>NUMBER</key>
-			<integer>2</integer>
+			<integer>5</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
 	<dict>
 		<key>SOLUTION_TYPE</key>
-		<string>TOTAL_COUNT_AND_COUNT_SEQUENCE</string>
+		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>4</integer>
+		<integer>3</integer>
+	</dict>
+	<key>CAGE_POS_DISABLE_ADD</key>
+	<dict>
+		<key>10</key>
+		<true/>
+		<key>1</key>
+		<true/>
 	</dict>
 </dict>
 </plist>

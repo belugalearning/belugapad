@@ -44,6 +44,8 @@
 	</array>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>SHOW_BADGES</key>
+	<false/>
 	<key>INIT_CAGES</key>
 	<array>
 		<dict>
@@ -52,7 +54,7 @@
 			<key>LABEL</key>
 			<string>1</string>
 			<key>QUANTITY</key>
-			<integer>10</integer>
+			<integer>4</integer>
 		</dict>
 	</array>
 </dict>

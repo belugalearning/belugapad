@@ -55,5 +55,7 @@
 			<integer>4</integer>
 		</dict>
 	</array>
+	<key>SHOW_BADGES</key>
+	<false/>
 </dict>
 </plist>

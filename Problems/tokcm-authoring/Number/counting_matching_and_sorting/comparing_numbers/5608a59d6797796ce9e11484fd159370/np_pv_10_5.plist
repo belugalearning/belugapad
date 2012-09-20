@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>6 and 4</string>
+	<string>How much larger is 10 than 5?</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -17,7 +17,7 @@
 	<key>ROPES_PER_COL</key>
 	<integer>2</integer>
 	<key>ROWS_PER_COL</key>
-	<integer>3</integer>
+	<integer>5</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
@@ -57,7 +57,7 @@
 	<key>COLUMN_ROWS</key>
 	<dict>
 		<key>1</key>
-		<integer>3</integer>
+		<integer>5</integer>
 	</dict>
 	<key>SOLUTION</key>
 	<dict>
@@ -105,6 +105,46 @@
 	<array>
 		<dict>
 			<key>PUT_IN_COL</key>
+			<integer>0</integer>
+			<key>PUT_IN_ROW</key>
+			<integer>0</integer>
+			<key>NUMBER</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
+			<integer>0</integer>
+			<key>PUT_IN_ROW</key>
+			<integer>1</integer>
+			<key>NUMBER</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
+			<integer>0</integer>
+			<key>PUT_IN_ROW</key>
+			<integer>2</integer>
+			<key>NUMBER</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
+			<integer>0</integer>
+			<key>PUT_IN_ROW</key>
+			<integer>3</integer>
+			<key>NUMBER</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
+			<integer>0</integer>
+			<key>PUT_IN_ROW</key>
+			<integer>4</integer>
+			<key>NUMBER</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
 			<integer>1</integer>
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
@@ -121,36 +161,15 @@
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>2</integer>
-			<key>NUMBER</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
-			<key>NUMBER</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
 			<integer>1</integer>
-			<key>NUMBER</key>
+			<key>PUT_IN_ROW</key>
 			<integer>2</integer>
+			<key>NUMBER</key>
+			<integer>1</integer>
 		</dict>
 	</array>
 	<key>COLUMN_SPRITES</key>
-	<dict>
-		<key>10</key>
-		<string>/images/placevalue/obj-placevalue-unit1.png</string>
-		<key>1</key>
-		<string>/images/placevalue/obj-placevalue-unit1.png</string>
-	</dict>
+	<dict/>
 	<key>COLUMN_CAGES</key>
 	<dict>
 		<key>10</key>
@@ -190,7 +209,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>6 is how many more than 4?</string>
+		<string>How much larger is 10 than 5?</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>PICKER_ORIGIN_X</key>
@@ -202,7 +221,7 @@
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
-		<integer>2</integer>
+		<integer>5</integer>
 	</dict>
 	<key>HOST_BACKGROUND_IMAGE</key>
 	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>

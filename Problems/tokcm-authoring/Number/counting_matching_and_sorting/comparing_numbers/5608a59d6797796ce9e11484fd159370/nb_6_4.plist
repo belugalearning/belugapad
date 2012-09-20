@@ -52,8 +52,10 @@
 			<key>LABEL</key>
 			<string>1</string>
 			<key>QUANTITY</key>
-			<integer>10</integer>
+			<integer>2</integer>
 		</dict>
 	</array>
+	<key>SHOW_BADGES</key>
+	<false/>
 </dict>
 </plist>

@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Add 2 bars of 2.</string>
+	<string>Add 2 bars of 2. Press the green button. </string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Add 2 bars of 2.</string>
+	<string>Add 2 bars of 2. Press the green button. </string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>INIT_BARS</key>
@@ -46,5 +46,7 @@
 	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
 	<key>SOLUTION_MODE</key>
 	<string>2</string>
+	<key>SHOW_BADGES</key>
+	<false/>
 </dict>
 </plist>

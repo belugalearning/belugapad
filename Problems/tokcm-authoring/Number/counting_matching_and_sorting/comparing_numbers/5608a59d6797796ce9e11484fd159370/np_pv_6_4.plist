@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>How many blocks is 6 bigger than 3?</string>
+	<string>How much larger is 6 than 4?</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -117,7 +117,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>1</integer>
 			<key>NUMBER</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
@@ -145,12 +145,7 @@
 		</dict>
 	</array>
 	<key>COLUMN_SPRITES</key>
-	<dict>
-		<key>10</key>
-		<string>/images/placevalue/obj-placevalue-unit1.png</string>
-		<key>1</key>
-		<string>/images/placevalue/obj-placevalue-unit1.png</string>
-	</dict>
+	<dict/>
 	<key>COLUMN_CAGES</key>
 	<dict>
 		<key>10</key>
@@ -190,7 +185,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>How much larger is 6 than 3?</string>
+		<string>How much larger is 6 than 4?</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>PICKER_ORIGIN_X</key>
@@ -202,7 +197,7 @@
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
-		<integer>3</integer>
+		<integer>2</integer>
 	</dict>
 	<key>HOST_BACKGROUND_IMAGE</key>
 	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>

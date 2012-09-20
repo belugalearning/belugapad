@@ -117,6 +117,8 @@ static float kTimeToMountedShake=7.0f;
         timeSinceInteractionOrShake=0.0f;
         if(isWinning)[toolHost shakeCommitButton];
     }
+    
+    [self updateLabels];
 
 }
 
@@ -163,16 +165,50 @@ static float kTimeToMountedShake=7.0f;
     if([pdef objectForKey:USE_BLOCK_SCALING])
         useBlockScaling = [[pdef objectForKey:USE_BLOCK_SCALING] boolValue];
     else
-        useBlockScaling=YES;
+        useBlockScaling = YES;
+    
+    if([pdef objectForKey:SHOW_BADGES])
+        showBadgesOnCages = [[pdef objectForKey:SHOW_BADGES]boolValue];
+    else
+    showBadgesOnCages = YES;
     
     createdRows = [[NSMutableArray alloc]init];
     
     mountedObjects = [[NSMutableArray alloc]init];
+    mountedObjectBadges = [[NSMutableArray alloc]init];
+    mountedObjectLabels = [[NSMutableArray alloc]init];
 }
 
 -(void)populateGW
 {
 
+    int dockSize=[initBars count]+2;
+    float dockPieceYPos=650.0f;
+    
+    for(int i=0;i<dockSize;i++)
+    {
+        CCSprite *dockPiece=nil;
+        
+        if(i==0)
+            dockPiece=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/partition/NB_Dock_Top.png")];
+        else if(i==dockSize-1)
+            dockPiece=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/partition/NB_Dock_Bottom.png")];
+        else
+            dockPiece=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/partition/NB_Dock_Middle.png")];
+
+        
+        [dockPiece setPosition:ccp(25,dockPieceYPos)];
+        [dockPiece setTag:1];
+        [dockPiece setOpacity:0];
+        [renderLayer addChild:dockPiece];
+        
+        if(i==0)
+            dockPieceYPos-=45;
+        else if(i==dockSize-2)
+            dockPieceYPos-=42;
+        else
+            dockPieceYPos-=48;
+    }
 
 
     float yStartPos=582;
@@ -181,8 +217,8 @@ static float kTimeToMountedShake=7.0f;
     for (int i=0;i<[initBars count]; i++)
     {
         
-        float xStartPos=(cx-((([[[initBars objectAtIndex:i] objectForKey:LENGTH] intValue]+2)*50)/2)+25);
-
+        float xStartPos=(cx+200-((([[[initBars objectAtIndex:i] objectForKey:LENGTH] intValue]+2)*50)/2)+25);
+        
         DWNBondRowGameObject *prgo = [DWNBondRowGameObject alloc];
         [gw populateAndAddGameObject:prgo withTemplateName:@"TnBondRow"];
         prgo.Position=ccp(xStartPos,yStartPos);
@@ -199,7 +235,7 @@ static float kTimeToMountedShake=7.0f;
     for (int i=0;i<[initCages count]; i++)
     {
         int qtyForThisStore=[[[initCages objectAtIndex:i] objectForKey:QUANTITY] intValue];
-        int numberStacked=0;
+        int thisLength=0;
         NSMutableArray *currentVal=[[NSMutableArray alloc]init];
         for (int ic=0;ic<qtyForThisStore;ic++)
         {
@@ -207,13 +243,14 @@ static float kTimeToMountedShake=7.0f;
             [gw populateAndAddGameObject:pogo withTemplateName:@"TnBondObject"];
             pogo.IndexPos=i;
             
-            pogo.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3)); 
-            
+            //pogo.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3));
+            pogo.Position=ccp(20,615-(i*50));
             pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
+            thisLength=pogo.Length;
             
             if([[initCages objectAtIndex:i] objectForKey:LABEL])
             {
-                pogo.Label=[CCLabelTTF labelWithString:[[initCages objectAtIndex:i] objectForKey:LABEL] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+                pogo.Label=[CCLabelTTF labelWithString:[[initCages objectAtIndex:i] objectForKey:LABEL] fontName:@"Source Sans Pro" fontSize:PROBLEM_DESC_FONT_SIZE];
             }
             
             if(!useBlockScaling){
@@ -224,10 +261,33 @@ static float kTimeToMountedShake=7.0f;
             pogo.MountPosition = pogo.Position;
             
             
-            if(numberStacked<numberToStack)numberStacked++;
             [currentVal addObject:pogo];
         }
         [mountedObjects addObject:currentVal];
+        
+        if(showBadgesOnCages)
+        {
+            
+            CCSprite *thisBadge=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/partition/NB_Notification.png")];
+            CCLabelTTF *thisLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",[[mountedObjects objectAtIndex:i]count]] fontName:@"Source Sans Pro" fontSize:16.0f];
+            
+            if(!useBlockScaling)
+                [thisBadge setPosition:ccp(20+(50*thisLength),620-(i*50))];
+            else
+                [thisBadge setPosition:ccp(20+(50*(thisLength*0.5)),620-(i*50))];
+            [thisLabel setPosition:ccp(17,12)];
+            
+            [renderLayer addChild:thisBadge z:1000];
+            [thisBadge addChild:thisLabel];
+            
+            [thisBadge setTag:3];
+            [thisLabel setTag:3];
+            [thisBadge setOpacity:0];
+            [thisLabel setOpacity:0];
+            
+            [mountedObjectLabels addObject:thisLabel];
+            [mountedObjectBadges addObject:thisBadge];
+        }
         
         [currentVal release];
     }
@@ -263,6 +323,28 @@ static float kTimeToMountedShake=7.0f;
         [pogo release];
     }
 
+}
+
+-(void)updateLabels
+{
+    for(int i=0;i<[mountedObjectLabels count];i++)
+    {
+        NSArray *thisArray=[mountedObjects objectAtIndex:i];
+        CCLabelTTF *thisLabel=[mountedObjectLabels objectAtIndex:i];
+        CCSprite *thisSprite=[mountedObjectBadges objectAtIndex:i];
+        
+        if([thisArray count]>0)
+        {
+            [thisSprite setVisible:YES];
+            [thisLabel setVisible:YES];
+            thisLabel.string=[NSString stringWithFormat:@"%d",[thisArray count]];
+        }
+        else
+        {
+            [thisSprite setVisible:NO];
+            [thisLabel setVisible:NO];
+        }
+    }
 }
 
 -(void)reorderMountedObjects
@@ -334,7 +416,7 @@ static float kTimeToMountedShake=7.0f;
         if(!pogo.InitedObject && [[mountedObjects objectAtIndex:pogo.IndexPos] containsObject:pogo])
             [[mountedObjects objectAtIndex:pogo.IndexPos] removeObject:pogo];
         
-        [self reorderMountedObjects];
+        //[self reorderMountedObjects];
         
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
         
@@ -430,7 +512,7 @@ static float kTimeToMountedShake=7.0f;
         }
     }
     
-    [self reorderMountedObjects];
+    //[self reorderMountedObjects];
     
     [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:-1];
     
@@ -660,7 +742,8 @@ static float kTimeToMountedShake=7.0f;
 //    if(solutionsDef) [solutionsDef release];
     if(createdRows) [createdRows release];
     if(mountedObjects) [mountedObjects release];
-    
+    if(mountedObjectLabels) [mountedObjectLabels release];
+    if(mountedObjectBadges) [mountedObjectBadges release];
     
     //tear down
     [gw release];

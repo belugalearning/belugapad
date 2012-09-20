@@ -105,6 +105,7 @@
         {
             spriteFileName=@"/images/partition/block-l.png";
             CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+            [mySprite setColor:kNumberBondColour[pogo.Length-1]];
             float thisXPos = 0;
             [mySprite setPosition:ccp(thisXPos, 0)];
             [pogo.BaseNode addChild:mySprite z:2];
@@ -120,6 +121,7 @@
         {
             spriteFileName=@"/images/partition/block-m.png";
             CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+            [mySprite setColor:kNumberBondColour[pogo.Length-1]];
             float thisXPos = i*50;
             [mySprite setPosition:ccp(thisXPos, 0)];
 
@@ -136,6 +138,7 @@
         {
             spriteFileName=@"/images/partition/block-r.png";
             CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+            [mySprite setColor:kNumberBondColour[pogo.Length-1]];
             float thisXPos = i*50;
             [mySprite setPosition:ccp(thisXPos, 0)];
             [pogo.BaseNode addChild:mySprite z:2];
@@ -146,6 +149,8 @@
             }
             
         }
+        
+    
         
     }
     

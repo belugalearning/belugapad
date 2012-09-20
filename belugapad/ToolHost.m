@@ -28,6 +28,9 @@
 #import "LRAnimator.h"
 #import "BLFiles.h"
 #import "InteractionFeedback.h"
+#import "SGGameWorld.h"
+#import "SGBtxeRow.h"
+#import "SGBtxeProtocols.h"
 
 @interface ToolHost()
 {
@@ -102,6 +105,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [self addChild:metaQuestionLayer z:2];
         problemDefLayer=[[CCLayer alloc] init];
         [self addChild:problemDefLayer z:3];
+        
+        btxeDescLayer=[[CCLayer alloc] init];
+        [self addChild:btxeDescLayer z:3];
         
         pauseLayer=[[CCLayer alloc]init];
         [self addChild:pauseLayer z:4];
@@ -643,7 +649,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         glossary1=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/glossary/GlossaryExample.png")];
         [glossary1 setPosition:ccp(cx,cy)];
         [self addChild:glossary1];
-        [problemDescLabel setVisible:NO];
+        [self setProblemDescriptionVisible:NO];
     }
     else {
         isGlossaryMock=NO;
@@ -674,15 +680,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     else evalMode=kProblemEvalAuto;
     
     NSString *labelDesc=[self.DynProblemParser parseStringFromValueWithKey:PROBLEM_DESCRIPTION inDef:curpdef];
-    
-    //problemDescLabel=[CCLabelTTF labelWithString:labelDesc fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    problemDescLabel=[CCLabelTTF labelWithString:labelDesc dimensions:CGSizeMake(lx*kLabelTitleXMarginProp, cy) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
-    //[problemDescLabel setPosition:ccp(cx, cy)];
-    //[problemDescLabel setColor:kLabelTitleColor];
-    [problemDescLabel setTag:3];
-    [problemDescLabel setOpacity:0];
-    [problemDefLayer addChild:problemDescLabel];
+        
+    [self setProblemDescription:labelDesc];
     
     if(evalMode==kProblemEvalOnCommit)
     {
@@ -705,7 +704,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void) resetProblem
 {
-    if(problemDescLabel)[problemDescLabel removeFromParentAndCleanup:YES];
+    //if(problemDescLabel)[problemDescLabel removeFromParentAndCleanup:YES];
+    
     if(evalMode==kProblemEvalOnCommit)
     {
         [commitBtn removeFromParentAndCleanup:YES];
@@ -714,6 +714,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     [self resetScoreMultiplier];
     
+    skipNextDescDraw=YES;
     skipNextStagedIntroAnim=YES;
     
     [self loadProblem];
@@ -761,6 +762,14 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void)tearDownProblemDef
 {
     [problemDefLayer removeAllChildrenWithCleanup:YES];
+    [btxeDescLayer removeAllChildrenWithCleanup:YES];
+    
+    [descGw release];
+    descGw=nil;
+    
+    //nil pointers to things on there
+    problemDescLabel=nil;
+    
 }
 
 #pragma mark - pause show and touch handling
@@ -919,16 +928,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         answersY=[currentTool metaQuestionAnswersYLocation];
     }
     
-    //render problem label
-    //problemDescLabel=[CCLabelTTF labelWithString:[pdefMQ objectForKey:META_QUESTION_TITLE] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    problemDescLabel=[CCLabelTTF labelWithString:[pdefMQ objectForKey:META_QUESTION_TITLE] dimensions:CGSizeMake(lx*kLabelTitleXMarginProp, cy) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    
-    [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
-    [problemDescLabel setColor:kMetaQuestionLabelColor];
-    [problemDescLabel setOpacity:0];
-    [problemDescLabel setTag:3];
-    
-    [metaQuestionLayer addChild:problemDescLabel];
+    [self setProblemDescription:[pdefMQ objectForKey:META_QUESTION_TITLE]];
     
     // check the answer mode and assign
     NSNumber *aMode=[pdefMQ objectForKey:META_QUESTION_ANSWER_MODE];
@@ -1277,15 +1277,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [self addChild:numberPickerLayer z:2];
     [numberPickerLayer addChild:nPicker];
     
-    //render problem label
-    //problemDescLabel=[CCLabelTTF labelWithString:[pdefNP objectForKey:NUMBER_PICKER_DESCRIPTION] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    problemDescLabel=[CCLabelTTF labelWithString:[pdefNP objectForKey:NUMBER_PICKER_DESCRIPTION] dimensions:CGSizeMake(lx*kLabelTitleXMarginProp, cy) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
-    [problemDescLabel setColor:kMetaQuestionLabelColor];
-    [problemDescLabel setOpacity:0];
-    [problemDescLabel setTag:3];
+    [self setProblemDescription: [pdefNP objectForKey:NUMBER_PICKER_DESCRIPTION]];
     
-    [numberPickerLayer addChild:problemDescLabel];
+    //[numberPickerLayer addChild:problemDescLabel];
 
     // if we have the dropbox defined, then we need to set it up here
     npDropbox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberpicker/np_dropbox.png")];
@@ -1624,6 +1618,74 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
 }
 
+#pragma mark - problem description
+
+-(void)setProblemDescription:(NSString*)descString
+{
+    if(skipNextDescDraw)
+    {
+        skipNextDescDraw=NO;
+        return;
+    }
+    
+    //always re-create the game world
+    if(descGw)
+    {
+        [descGw release];
+        descGw=nil;
+    }
+    
+    descGw=[[SGGameWorld alloc] initWithGameScene:self];
+    descGw.Blackboard.inProblemSetup=YES;
+    
+    descGw.Blackboard.RenderLayer = btxeDescLayer;
+    
+    //create row
+    id<Container, Bounding, Parser, FadeIn> row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
+    row.position=ccp(cx, (cy*2) - 80);
+    
+    //assume the string needs wrapping in b:t
+    descString=[NSString stringWithFormat:@"<b:t>%@</b:t>", descString];
+    
+    [row parseXML:descString];
+    [row setupDraw];
+    
+    [row fadeInElementsFrom:1.0f andIncrement:0.1f];
+    
+    descGw.Blackboard.inProblemSetup=NO;
+}
+
+-(void)setProblemDescriptionVisible:(BOOL)visible
+{
+    //hide everything int he btxe gw
+}
+
+//-(void)setProblemDescription:(NSString*)descString
+//{
+//    if(!problemDescLabel)
+//    {
+//        problemDescLabel=[CCLabelTTF labelWithString:descString dimensions:CGSizeMake(lx*kLabelTitleXMarginProp, cy) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+//        [problemDescLabel setPosition:ccp(cx, kLabelTitleYOffsetHalfProp*cy)];
+//        [problemDescLabel setTag:3];
+//        [problemDescLabel setOpacity:0];
+//        [problemDefLayer addChild:problemDescLabel];
+//    }
+//    else {
+//        [problemDescLabel setString:descString];
+//
+//        //assume it should be visible
+//        problemDescLabel.visible=YES;
+//    }
+//}
+
+//-(void)setProblemDescriptionVisible:(BOOL)visible
+//{
+//    if(problemDescLabel) [problemDescLabel setVisible:visible];
+//}
+
+
+#pragma mark - touch handling
+
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [loggingService.touchLogger logTouches:touches];
@@ -1926,6 +1988,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [metaQuestionLayer release];
     [problemDefLayer release];
     [pauseLayer release];
+    [btxeDescLayer release];
     
     if(triggerData)[triggerData release];
     

@@ -248,6 +248,18 @@ typedef enum {
     
     [self parseNodesForEndPoints];
     
+    //get nodes to calculate their offset from parent / mastery
+    [gw handleMessage:kSGretainOffsetPosition];
+    
+    //force layout mastery
+    for(int i=0; i<50; i++)
+    {
+        [gw handleMessage:kSGforceLayout];
+    }
+    
+    //re-set node positions
+    [gw handleMessage:kSGresetPositionUsingOffset];
+    
     [self createRegions];
     
     //setup rendering -- needs all node connections built

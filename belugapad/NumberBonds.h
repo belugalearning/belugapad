@@ -39,9 +39,12 @@ typedef enum {
     NSArray *solutionsDef;
     int solutionValue;
     BOOL useBlockScaling;
+    BOOL showBadgesOnCages;
     
     NSMutableArray *createdRows;
     NSMutableArray *mountedObjects;
+    NSMutableArray *mountedObjectLabels;
+    NSMutableArray *mountedObjectBadges;
     
     ProblemRejectMode rejectMode;
     ProbjemRejectType rejectType;
@@ -61,6 +64,7 @@ typedef enum {
 
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)populateGW;
+-(void)updateLabels;
 -(void)reorderMountedObjects;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;

@@ -66,6 +66,8 @@ const CGRect kPauseMenuMenu={{374.0f,478.0f},{275.0f,80.0f}};
 const CGRect kPauseMenuReset={{374.0f,378.0f},{275.0f,80.0f}};
 const CGRect kPauseMenuContinue={{299.0f,213.0f},{424.0f,80.0f}};
 
+const ccColor3B kNumberBondColour[10]={{191,255,193},{191,255,244},{223,191,255},{255,178,178},{204,240,255},{255,211,178},{254,255,204},{255,217,244},{220,244,222},{217,174,174}};
+
 
 // fraction builder
 

@@ -4,6 +4,8 @@
 <dict>
 	<key>META_QUESTION</key>
 	<dict>
+		<key>META_QUESTION_RANDOMISE_ANSWERS</key>
+		<true/>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
 		<string>well done!!</string>
 		<key>META_QUESTION_EVAL_MODE</key>
@@ -14,19 +16,19 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>YES</string>
+				<string>{$number_larger}</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>NO</string>
+				<string>{$number_smaller}</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Is {$number_smaller} smaller than {$number_larger}?</string>
+		<string>Which number is larger?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>
@@ -44,7 +46,7 @@
 		<key>$number_smaller</key>
 		<dict>
 			<key>MAX</key>
-			<string>4</string>
+			<string>5</string>
 			<key>MIN</key>
 			<string>1</string>
 		</dict>

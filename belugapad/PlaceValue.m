@@ -463,7 +463,7 @@ static float kTimeToCageShake=7.0f;
                 CGRect minus=CGRectZero;
                 CGRect plus=CGRectZero;
 
-                CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", defaultBlocksToMake] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+                CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", defaultBlocksToMake] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
                 
                 [multipleMinusSprites addObject:[NSValue valueWithCGRect:minus]];
                 [multiplePlusSprites addObject:[NSValue valueWithCGRect:plus]];
@@ -837,13 +837,13 @@ static float kTimeToCageShake=7.0f;
     if(showCount||showValue)
     {
         if(showCount && !showValue)
-            countLabel=[CCLabelTTF labelWithString:@"count" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            countLabel=[CCLabelTTF labelWithString:@"count" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
         
         else if(!showCount && showValue)
-            countLabel=[CCLabelTTF labelWithString:@"sum" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            countLabel=[CCLabelTTF labelWithString:@"sum" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
         
         else if(showCount && showValue)
-            countLabel=[CCLabelTTF labelWithString:@"count x sum y" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            countLabel=[CCLabelTTF labelWithString:@"count x sum y" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
         
         [countLabel setTag:3];
         [countLabel setOpacity:0];
@@ -1027,7 +1027,7 @@ static float kTimeToCageShake=7.0f;
         
         CCSprite *s=((DWPlaceValueBlockGameObject*)gw.Blackboard.LastSelectedObject).mySprite;
         CGPoint pos=[renderLayer convertToWorldSpace:[s position]];
-        countLabelBlock=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", gw.Blackboard.SelectedObjects.count] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        countLabelBlock=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", gw.Blackboard.SelectedObjects.count] fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
         [countLabelBlock setPosition:[s convertToNodeSpace:pos]];
         [s addChild:countLabelBlock];
         

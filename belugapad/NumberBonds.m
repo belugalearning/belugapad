@@ -310,7 +310,7 @@ static float kTimeToMountedShake=7.0f;
         if([[initObjects objectAtIndex:i]objectForKey:LABEL]) fillText = [[initObjects objectAtIndex:i]objectForKey:LABEL];
         else fillText=[NSString stringWithFormat:@"%d", insLength];
         
-        pogo.Label = [CCLabelTTF labelWithString:fillText fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        pogo.Label = [CCLabelTTF labelWithString:fillText fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
         
         DWNBondRowGameObject *prgo = (DWNBondRowGameObject*)[createdRows objectAtIndex:insRow];
         NSDictionary *pl=[NSDictionary dictionaryWithObject:prgo forKey:MOUNT];

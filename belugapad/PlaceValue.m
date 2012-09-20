@@ -95,7 +95,7 @@ static float kTimeToCageShake=7.0f;
         
         gw.Blackboard.inProblemSetup = NO;
         
-        debugLogging=YES;
+        debugLogging=NO;
         
         for (int i=0;i<numberOfColumns;i++)
         {
@@ -1014,12 +1014,6 @@ static float kTimeToCageShake=7.0f;
         totalCountedInProblem=gw.Blackboard.SelectedObjects.count;
         if(!(totalCountedInProblem > [[solutionsDef objectForKey:SOLUTION_VALUE] intValue]) && !gw.Blackboard.inProblemSetup)
             [toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
-    }
-    
-    if(!disableAudioCounting&&!gw.Blackboard.inProblemSetup&&gw.Blackboard.SelectedObjects.count<=20)
-    {
-        NSString *path=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", gw.Blackboard.SelectedObjects.count];
-        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(path)];
     }
     
     if(showCountOnBlock && gw.Blackboard.SelectedObjects.count > lastCount && !gw.Blackboard.inProblemSetup)
@@ -2046,6 +2040,12 @@ static float kTimeToCageShake=7.0f;
             {
                 [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
                 hasMovedBasePickup=NO;
+                
+                if(!disableAudioCounting&&!gw.Blackboard.inProblemSetup&&gw.Blackboard.SelectedObjects.count<=20)
+                {
+                    NSString *path=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", gw.Blackboard.SelectedObjects.count];
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(path)];
+                }
             }
             // if we have a base pickup -- then set all their mounts back to what they should be - update their positions and tell them to animate to their rightful place - otherwise just do it for the current block
             if(isBasePickup)

@@ -198,13 +198,7 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>5</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>4</string>
+				<string>7</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
@@ -216,13 +210,13 @@
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>3</string>
+				<string>12</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>{@bname} has 9 {@item}. {@gname} has 3 {@item}. How many more does {@bname} have compared to {@gname}?</string>
+		<string>{@bname} has 9 {@item}. {@gname} has 3 {@item}. How many more does {@bname} have than {@gname}?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

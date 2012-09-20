@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Show that 10 is larger than 6 by 4 ones.</string>
+	<string>Show that 8 is larger than 5 by 3 ones.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>4</string>
+	<string>Show that 8 is larger than 5 by 3 ones.</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>INIT_BARS</key>
@@ -14,32 +14,32 @@
 			<key>LOCKED</key>
 			<true/>
 			<key>LENGTH</key>
-			<integer>10</integer>
+			<integer>8</integer>
 		</dict>
 		<dict>
 			<key>LOCKED</key>
 			<false/>
 			<key>LENGTH</key>
-			<integer>10</integer>
+			<integer>8</integer>
 		</dict>
 	</array>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
 			<key>LABEL</key>
-			<string>10</string>
+			<string>8</string>
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>LENGTH</key>
-			<integer>10</integer>
+			<integer>8</integer>
 		</dict>
 		<dict>
 			<key>LABEL</key>
-			<string>6</string>
+			<string>5</string>
 			<key>PUT_IN_ROW</key>
 			<integer>1</integer>
 			<key>LENGTH</key>
-			<integer>6</integer>
+			<integer>5</integer>
 		</dict>
 	</array>
 	<key>EVAL_MODE</key>
@@ -52,7 +52,7 @@
 			<key>LABEL</key>
 			<string>1</string>
 			<key>QUANTITY</key>
-			<integer>4</integer>
+			<integer>10</integer>
 		</dict>
 	</array>
 </dict>

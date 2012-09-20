@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Show that 10 is larger than 4 by 6 units.</string>
+	<string>Show that 10 is larger than 4 by 6 ones.</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>6</string>
 	<key>TOOL_KEY</key>

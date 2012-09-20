@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Add 1 block to 7 blocks. Count the total number of blocks.</string>
+	<string>What is 1 larger than 6?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Add 1 block to 7 blocks. Count the total number of blocks.</string>
+	<string>What is 1 larger than 6?</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -17,7 +17,7 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>8</integer>
+	<integer>7</integer>
 	<key>ROWS_PER_COL</key>
 	<integer>1</integer>
 	<key>ALLOW_CONDENSING</key>
@@ -25,7 +25,7 @@
 	<key>ALLOW_MULCHING</key>
 	<false/>
 	<key>EVAL_MODE</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>1</integer>
 	<key>SHOW_CAGE</key>
@@ -33,7 +33,7 @@
 	<key>SHOW_COUNT</key>
 	<false/>
 	<key>SHOW_COUNT_BLOCK</key>
-	<true/>
+	<false/>
 	<key>CUSTOM_COLUMN_HEADERS</key>
 	<true/>
 	<key>COLUMN_HEADERS</key>
@@ -49,15 +49,34 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>7</integer>
+			<integer>6</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
 	<dict>
 		<key>SOLUTION_TYPE</key>
-		<string>TOTAL_COUNT_AND_COUNT_SEQUENCE</string>
+		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>8</integer>
+		<integer>50</integer>
+	</dict>
+	<key>HOST_BACKGROUND_IMAGE</key>
+	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>What is 1 larger than 6?</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>1</integer>
+		<key>PICKER_ORIGIN_X</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_Y</key>
+		<integer>0</integer>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<integer>7</integer>
 	</dict>
 </dict>
 </plist>

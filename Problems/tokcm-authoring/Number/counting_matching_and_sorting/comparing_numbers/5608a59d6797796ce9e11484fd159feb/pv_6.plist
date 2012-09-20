@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Add 1 block to 7 blocks. Count the total number of blocks.</string>
+	<string>Add 1 block to 6 blocks. Count the total number of blocks.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Add 1 block to 7 blocks. Count the total number of blocks.</string>
+	<string>Add 1 block to 6 blocks. Count the total number of blocks.</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -17,7 +17,7 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>8</integer>
+	<integer>7</integer>
 	<key>ROWS_PER_COL</key>
 	<integer>1</integer>
 	<key>ALLOW_CONDENSING</key>
@@ -49,7 +49,7 @@
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>7</integer>
+			<integer>6</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -57,7 +57,7 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT_AND_COUNT_SEQUENCE</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>8</integer>
+		<integer>7</integer>
 	</dict>
 </dict>
 </plist>

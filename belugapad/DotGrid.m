@@ -97,7 +97,7 @@
             autoMoveToNextProblem=NO;
             timeToAutoMoveToNextProblem=0.0f;
         }
-    }   
+    }
 }
 
 
@@ -324,8 +324,12 @@
 
                         if(((curAnch.Disabled || curAnch.Hidden) && !gw.Blackboard.inProblemSetup && !gameState==kStartAnchor))failedChecksHidden=YES;
                         if(curAnch.tile)failedChecksExistingTile=YES;
-                        if(x==anchEnd.myXpos-1 && y==anchStart.myYpos && showResize)curAnch.resizeHandle=YES;
-                        if(x==anchStart.myXpos && y==anchEnd.myYpos-1 && showMove)curAnch.moveHandle=YES;
+                        if(x==anchEnd.myXpos-1 && y==anchStart.myYpos && showResize)
+                            curAnch.resizeHandle=YES;
+                         
+                        if(x==anchStart.myXpos && y==anchEnd.myYpos-1 && showMove)
+                            curAnch.moveHandle=YES;
+                        
                         [anchorsForShape addObject:curAnch];
                     }
                 }
@@ -339,7 +343,10 @@
                         if(curAnch.tile)failedChecksExistingTile=YES;
                         if(x==anchEnd.myXpos-1 && y==anchEnd.myYpos && showResize)
                             curAnch.resizeHandle=YES;
-                        if(x==anchStart.myXpos && y==anchStart.myYpos-1 && showMove)curAnch.moveHandle=YES;
+
+                        if(x==anchStart.myXpos && y==anchStart.myYpos-1 && showMove)
+                            curAnch.moveHandle=YES;
+
                         [anchorsForShape addObject:curAnch];
                     } 
                 }
@@ -362,9 +369,10 @@
                         [anchorsForShape addObject:curAnch];
                         
                         if(x==anchStart.myXpos-1 && y==anchStart.myYpos && showResize)
-                                curAnch.resizeHandle=YES;
+                            curAnch.resizeHandle=YES;
+
                         if(x==anchEnd.myXpos && y==anchEnd.myYpos-1 && showMove)
-                                curAnch.moveHandle=YES;
+                            curAnch.moveHandle=YES;
                     }
                 }
                 else {
@@ -376,10 +384,12 @@
                         if(curAnch.tile)failedChecksExistingTile=YES;
                         [anchorsForShape addObject:curAnch];
                         if(x==anchEnd.myXpos+1 && y==anchEnd.myYpos && showResize)
-                                curAnch.resizeHandle=YES;
+                            curAnch.resizeHandle=YES;
+
                         if(x==anchEnd.myXpos && y==anchStart.myYpos-1 && showMove)
                                 curAnch.moveHandle=YES;
-                    } 
+                        
+                    }
                 }
             }
 
@@ -516,10 +526,8 @@
     }
     
     thisShape.lastAnchor=anchEnd;
-    if(!useShapeGroups)
-        [self modifyThisShape:thisShape withTheseAnchors:anchorsForShape];
-    else
-        NSLog(@"modify a shapegroup shape");
+    
+    [self modifyThisShape:thisShape withTheseAnchors:anchorsForShape];
     
     [anchorsForShape release];
 }
@@ -527,9 +535,10 @@
 -(void)checkAnchorsOfExistingShapeGroup:(DWDotGridShapeGroupGameObject*)thisShapeGroup
 {
     gw.Blackboard.FirstAnchor=thisShapeGroup.firstAnchor;
-    gw.Blackboard.LastAnchor=gw.Blackboard.LastAnchor;
     
     [thisShapeGroup handleMessage:kDWdismantle];
+    
+    [self checkAnchors];
     
 }
 
@@ -566,7 +575,13 @@
     
     for(NSMutableArray *a in shapeAnchors)
     {
-        [shapegrp.shapesInMe addObject:[self createShapeWithAnchorPoints:a andPrecount:nil andDisabled:NO andGroup:shapegrp]];
+        DWDotGridShapeGameObject *newShape=[self createShapeWithAnchorPoints:a andPrecount:nil andDisabled:NO andGroup:shapegrp];
+        
+        [shapegrp.shapesInMe addObject:newShape];
+        
+        if(newShape.resizeHandle && !shapegrp.resizeHandle)
+            shapegrp.resizeHandle=newShape.resizeHandle;
+            
     }
     
     shapegrp.firstAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
@@ -912,7 +927,7 @@
         if(!useShapeGroups)
             [self checkAnchorsOfExistingShape:cHandle.myShape];
         else
-            [self checkAnchorsOfExistingShapeGroup:cHandle.myShape.shapeGroup];
+            [self checkAnchorsOfExistingShapeGroup:(DWDotGridShapeGroupGameObject*)cHandle.myShape.shapeGroup];
     }
     
     

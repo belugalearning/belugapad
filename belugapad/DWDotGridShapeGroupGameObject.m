@@ -11,8 +11,16 @@
 @implementation DWDotGridShapeGroupGameObject
 
 @synthesize shapesInMe;
-@synthesize resizeShape;
+@synthesize resizeHandle;
 @synthesize firstAnchor;
 @synthesize lastAnchor;
+@synthesize hasLabels;
 
+-(void)dealloc
+{
+    self.shapesInMe=nil;
+    self.firstAnchor=nil;
+    self.lastAnchor=nil;
+    [super dealloc];
+}
 @end

@@ -12,7 +12,9 @@
 #import "BLMath.h"
 #import "DWGameObject.h"
 #import "DWDotGridShapeGameObject.h"
+#import "DWDotGridShapeGroupGameObject.h"
 #import "DWDotGridAnchorGameObject.h"
+#import "DWDotGridHandleGameObject.h"
 #import "DWDotGridTileGameObject.h"
 
 @implementation BDotGridShapeObjectRender
@@ -37,6 +39,16 @@
     if(messageType==kDWsetupStuff)
     {
         if(!s.tiles||[s.tiles count]==0)return;
+        
+        if(s.shapeGroup)
+        {
+            DWDotGridShapeGroupGameObject *sg=(DWDotGridShapeGroupGameObject*)s.shapeGroup;
+            if(!sg.hasLabels)
+                sg.hasLabels=YES;
+            else
+                return;
+        }
+        
         if(s.RenderDimensions)
         {
             DWDotGridAnchorGameObject *fa=(DWDotGridAnchorGameObject*)s.firstAnchor;
@@ -117,6 +129,11 @@
             [t handleMessage:kDWdismantle];
         }
         
+        if(s.resizeHandle)
+        {
+            [s.resizeHandle handleMessage:kDWdismantle];
+            ((DWDotGridHandleGameObject*)s.resizeHandle).myShape=nil;
+        }
         [s.myHeight removeFromParentAndCleanup:YES];
         [s.myWidth removeFromParentAndCleanup:YES];
         [gameWorld delayRemoveGameObject:s];

@@ -24,6 +24,7 @@
     //init pos x & y in case they're not set elsewhere
     
     sg=(DWDotGridShapeGroupGameObject*)gameObject;
+    sg.shapesInMe=[[NSMutableArray alloc]init];
     
     [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_X];
     [[gameObject store] setObject:[NSNumber numberWithFloat:0.0f] forKey:POS_Y];
@@ -112,10 +113,13 @@
     
     if(messageType==kDWdismantle)
     {
+        NSLog(@"count of shapes in shape group %d", [sg.shapesInMe count]);
         for(DWDotGridShapeGameObject *s in sg.shapesInMe)
         {
             [s handleMessage:kDWdismantle];
         }
+        
+        [sg.resizeHandle handleMessage:kDWdismantle];
         
         [gameWorld delayRemoveGameObject:sg];
         
@@ -135,14 +139,6 @@
 {
     
     
-}
-
--(void) dealloc
-{
-    [super dealloc];
-    sg.shapesInMe=nil;
-    sg.firstAnchor=nil;
-    sg.lastAnchor=nil;
 }
 
 @end

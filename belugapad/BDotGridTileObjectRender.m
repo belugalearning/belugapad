@@ -8,6 +8,7 @@
 
 #import "BDotGridTileObjectRender.h"
 #import "DWDotGridTileGameObject.h"
+#import "DWDotGridAnchorGameObject.h"
 #import "global.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
@@ -64,6 +65,14 @@
     if(messageType==kDWdismantle)
     {
         CCSprite *s=tile.mySprite;
+        
+        if(tile.myAnchor)
+        {
+            DWDotGridAnchorGameObject *anch=tile.myAnchor;
+            anch.tile=nil;
+            tile.myAnchor=nil;
+        }
+        
         [[s parent] removeChild:s cleanup:YES];
         [gameWorld delayRemoveGameObject:tile];
     }

@@ -261,7 +261,10 @@
 	<key>TdotgridShapeGroup</key>
 	<dict>
 		<key>BEHAVIOURS</key>
-		<dict/>
+		<dict>
+			<key>BDotGridShapeGroupObjectRender</key>
+			<dict/>
+		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>
 		<array/>
 		<key>OBJECT_DATA</key>

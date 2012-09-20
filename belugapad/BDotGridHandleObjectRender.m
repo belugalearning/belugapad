@@ -59,6 +59,7 @@
     if(messageType==kDWdismantle)
     {
         [[handle.mySprite parent] removeChild:handle.mySprite cleanup:YES];
+        [gameWorld delayRemoveGameObject:handle];
     }
 }
 

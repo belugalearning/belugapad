@@ -48,6 +48,8 @@
 			<integer>0</integer>
 			<key>NUMBER</key>
 			<integer>10</integer>
+			<key>NUMBER_PRE_COUNTED</key>
+			<integer>10</integer>
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
@@ -55,6 +57,8 @@
 			<key>PUT_IN_ROW</key>
 			<integer>1</integer>
 			<key>NUMBER</key>
+			<integer>4</integer>
+			<key>NUMBER_PRE_COUNTED</key>
 			<integer>4</integer>
 		</dict>
 	</array>

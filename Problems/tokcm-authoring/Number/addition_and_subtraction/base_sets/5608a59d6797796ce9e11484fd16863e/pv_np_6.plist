@@ -52,6 +52,8 @@
 			<integer>0</integer>
 			<key>NUMBER</key>
 			<integer>2</integer>
+			<key>NUMBER_PRE_COUNTED</key>
+			<integer>2</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

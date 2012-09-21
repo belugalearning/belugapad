@@ -65,7 +65,7 @@
 
 -(void)checkTouch:(CGPoint)hitLoc
 {
-    
+    hitLoc=[anch.RenderLayer convertToNodeSpace:hitLoc];
     
     if([BLMath DistanceBetween:anch.Position and:hitLoc] <= (0.045f*[gameWorld Blackboard].hostLX))
     {

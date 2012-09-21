@@ -24,6 +24,7 @@
 @property (retain) CCLabelTTF *myWidth;
 @property (retain) CCLabelTTF *myHeight;
 @property (retain) DWGameObject *shapeGroup;
+@property (retain) CCLayer *RenderLayer;
 
 
 @end

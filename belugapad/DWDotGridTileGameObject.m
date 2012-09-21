@@ -16,6 +16,7 @@
 @synthesize Selected;
 @synthesize tileSize;
 @synthesize myAnchor;
+@synthesize RenderLayer;
 
 -(void)dealloc
 {

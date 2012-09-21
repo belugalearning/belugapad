@@ -54,6 +54,7 @@
             [self setSprite];
         }
         
+        
         [self setSpritePos];
     }
     if(messageType==kDWdismantle)
@@ -89,14 +90,14 @@
     
     
     
-    [[gameWorld Blackboard].ComponentRenderLayer addChild:handle.mySprite z:10];
+    [handle.RenderLayer addChild:handle.mySprite z:10];
     
     [spriteFileName release];
 }
 
 -(void)setSpritePos
 {
-    [handle.mySprite setPosition:handle.Position];
+    [handle.mySprite setPosition:[gameWorld.Blackboard.ComponentRenderLayer convertToNodeSpace:handle.Position]];
 }
 
 -(void) dealloc

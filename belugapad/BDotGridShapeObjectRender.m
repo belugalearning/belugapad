@@ -92,7 +92,7 @@
             {
                 s.myHeight=[CCLabelTTF labelWithString:strHeight fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
                 [s.myHeight setPosition:ccp(xPosForHeightLabel,yPosForHeightLabel)];
-                [gameWorld.Blackboard.ComponentRenderLayer addChild:s.myHeight];
+                [s.RenderLayer addChild:s.myHeight];
             }
             else
             {
@@ -103,7 +103,7 @@
             {
                 s.myWidth=[CCLabelTTF labelWithString:strWidth fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
                 [s.myWidth setPosition:ccp(xPosForWidthLabel,yPosForWidthLabel)];
-                [gameWorld.Blackboard.ComponentRenderLayer addChild:s.myWidth];
+                [s.RenderLayer addChild:s.myWidth];
             }
             else
             {
@@ -122,6 +122,19 @@
         [self setPos];
     }
 
+    if(messageType==kDWupdateSprite)
+    {
+//        if(s.myHeight)
+//            [s.myHeight setPosition:[s.RenderLayer convertToWorldSpace:s.myHeight.position]];
+//        if(s.myWidth)
+//            [s.myWidth setPosition:[s.RenderLayer convertToWorldSpace:s.myWidth.position]];
+    }
+    
+    if(messageType==kDWupdatePosition)
+    {
+        
+    }
+    
     if(messageType==kDWdismantle)
     {
         for(DWDotGridTileGameObject *t in s.tiles)

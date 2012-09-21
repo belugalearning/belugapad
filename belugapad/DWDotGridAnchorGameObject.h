@@ -20,5 +20,6 @@
 @property BOOL resizeHandle;
 @property BOOL moveHandle;
 @property (retain) DWGameObject *tile;
+@property (retain) CCLayer *RenderLayer;
 
 @end

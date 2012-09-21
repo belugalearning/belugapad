@@ -148,19 +148,27 @@
     gameState=kNoState;
     dotMatrix=[[NSMutableArray alloc]init];
     renderLayer = [[CCLayer alloc] init];
+    anchorLayer = [[CCLayer alloc]init];
     [self.ForeLayer addChild:renderLayer];
+    [self.ForeLayer addChild:anchorLayer];
     
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     
 
     float xStartPos=spaceBetweenAnchors*1.5;
     
-    for (int iRow=0; iRow<(int)(lx-spaceBetweenAnchors*2)/spaceBetweenAnchors; iRow++)
+    int anchorsOnX=(lx-spaceBetweenAnchors*2)/spaceBetweenAnchors;
+    int anchorsOnY=(ly-spaceBetweenAnchors*2)/spaceBetweenAnchors;
+
+    anchorsOnX=anchorsOnX*3;
+    anchorsOnY=anchorsOnY*3;
+    
+    for (int iRow=0; iRow<anchorsOnX; iRow++)
     {
         NSMutableArray *currentCol=[[NSMutableArray alloc]init];
         BOOL currentRowHidden=NO;
         
-        for(int iCol=0; iCol<(int)(ly-spaceBetweenAnchors*2)/spaceBetweenAnchors; iCol++)
+        for(int iCol=0; iCol<anchorsOnY; iCol++)
         {
             // create our start position and gameobject
             float yStartPos=(iCol+1)*spaceBetweenAnchors;
@@ -169,6 +177,7 @@
             anch.Position=ccp(xStartPos,yStartPos);
             anch.myXpos=iRow;
             anch.myYpos=iCol;
+            anch.RenderLayer=anchorLayer;
             
             // set the hidden property for every anchor on this row if 
             if(hiddenRows && [hiddenRows objectForKey:[NSString stringWithFormat:@"%d", iCol]]) {
@@ -251,11 +260,20 @@
 #pragma mark - drawing methods
 -(void)draw
 {
+    CGPoint firstAnchor=((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Position;
+    
+    CGPoint lastAnchor=((DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor).Position;
+    
+    firstAnchor=[anchorLayer convertToWorldSpace:firstAnchor];
+    lastAnchor=[anchorLayer convertToWorldSpace:lastAnchor];
+    
+    CGPoint nodeLastTouch=lastTouch;
+    
     if(gameState==kStartAnchor)
     {
         CGPoint points[4];
-        points[0]=((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Position;
-        points[2]=lastTouch;
+        points[0]=firstAnchor;
+        points[2]=nodeLastTouch;
         points[1]=CGPointMake(points[2].x, points[0].y);
         points[3]=CGPointMake(points[0].x, points[2].y);
         
@@ -263,7 +281,7 @@
         
         ccDrawPoly(first, 4, YES);
         
-        points[2]=((DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor).Position;
+        points[2]=lastAnchor;
         points[1]=CGPointMake(points[2].x, points[0].y);
         points[3]=CGPointMake(points[0].x, points[2].y);
         
@@ -274,10 +292,11 @@
     
     if(gameState==kResizeShape)
     {
-        CGPoint points[4];
-        points[0]=((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Position;
         
-        points[2]=lastTouch;
+        CGPoint points[4];
+        points[0]=firstAnchor;
+        
+        points[2]=nodeLastTouch;
         points[1]=CGPointMake(points[2].x, points[0].y);
         points[3]=CGPointMake(points[0].x, points[2].y);
         
@@ -285,7 +304,7 @@
         
         ccDrawPoly(first, 4, YES);
         
-        points[2]=((DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor).Position;
+        points[2]=lastAnchor;
         points[1]=CGPointMake(points[2].x, points[0].y);
         points[3]=CGPointMake(points[0].x, points[2].y);
         
@@ -599,6 +618,7 @@
     DWDotGridShapeGameObject *shape=[DWDotGridShapeGameObject alloc];           
     [gw populateAndAddGameObject:shape withTemplateName:@"TdotgridShape"];
     shape.Disabled=Disabled;
+    shape.RenderLayer=anchorLayer;
     shape.firstAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
     shape.lastAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
     shape.tiles=[[NSMutableArray alloc]init];
@@ -620,6 +640,7 @@
             tile.myAnchor=curAnch;
             tile.tileType=kNoBorder;
             tile.tileSize=spaceBetweenAnchors;
+            tile.RenderLayer=anchorLayer;
             tile.Position=ccp(curAnch.Position.x+spaceBetweenAnchors/2, curAnch.Position.y+spaceBetweenAnchors/2);
             //[tile handleMessage:kDWsetupStuff];
             [shape.tiles addObject:tile];
@@ -644,6 +665,7 @@
             {
                 DWDotGridHandleGameObject *rshandle = [DWDotGridHandleGameObject alloc];
                 [gw populateAndAddGameObject:rshandle withTemplateName:@"TdotgridHandle"];
+                rshandle.RenderLayer=anchorLayer;
                 rshandle.handleType=kResizeHandle;
                 rshandle.Position=ccp(curAnch.Position.x+spaceBetweenAnchors,curAnch.Position.y);
                 shape.resizeHandle=rshandle;
@@ -840,6 +862,10 @@
         [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_CREATE_SHAPE withAdditionalData:nil];
     }
     
+    else
+    {
+        movingLayer=YES;
+    }
     
  }
 
@@ -849,10 +875,18 @@
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
+    CGPoint prevLoc = [touch previousLocationInView:[touch view]];
+    prevLoc = [[CCDirector sharedDirector] convertToGL: prevLoc];
     
     lastTouch=location;
     NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
-    
+    if(movingLayer)
+    {
+        CGPoint diff=ccpSub(location, prevLoc);
+        [anchorLayer setPosition:ccpAdd(anchorLayer.position, diff)];
+        
+        return;
+    }
     if(hitDragBlock && CGRectContainsPoint(newBlock.boundingBox, location))
     {
         [newBlock setPosition:location];
@@ -890,7 +924,7 @@
     {
         [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
             
-        ((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).Position=location;
+        ((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).Position=[anchorLayer convertToNodeSpace:location];
 
         [gw.Blackboard.CurrentHandle handleMessage:kDWmoveSpriteToPosition];
     }
@@ -936,6 +970,7 @@
     gw.Blackboard.CurrentHandle=nil;
     if(hitDragBlock)[newBlock removeFromParentAndCleanup:YES];
     hitDragBlock=NO;
+    movingLayer=NO;
     
     
     [gw.Blackboard.SelectedObjects removeAllObjects];
@@ -953,6 +988,7 @@
     gw.Blackboard.CurrentHandle=nil;
     if(hitDragBlock)[newBlock removeFromParentAndCleanup:YES];
     hitDragBlock=NO;
+    movingLayer=NO;
 
     [gw.Blackboard.SelectedObjects removeAllObjects];
 }

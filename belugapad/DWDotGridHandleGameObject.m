@@ -14,6 +14,7 @@
 @synthesize Position;
 @synthesize mySprite;
 @synthesize myShape;
+@synthesize RenderLayer;
 
 -(void)dealloc
 {

@@ -111,6 +111,7 @@
 
 -(void)checkTouchSwitchSelection:(CGPoint)location
 {
+    location=[shape.RenderLayer convertToNodeSpace:location];
     // THE TINTING BEHAVIOUR HERE CAN ALSO BE APPLIED BY THE TILE OBJECT RENDER
     // check through this shape's tiles
     for(DWDotGridTileGameObject *tile in shape.tiles)

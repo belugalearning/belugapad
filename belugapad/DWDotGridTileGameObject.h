@@ -30,5 +30,6 @@ typedef enum {
 @property BOOL Selected;
 @property int tileSize;
 @property (retain) DWDotGridAnchorGameObject *myAnchor;
+@property (retain) CCLayer *RenderLayer;
 
 @end

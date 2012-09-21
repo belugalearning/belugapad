@@ -95,6 +95,8 @@ typedef enum {
     kDWreorderPieSlices=43,
     kDWresetToMountPositionAndDestroy=44,
     
+    kDWupdatePosition=45,
+    
     kDWareYouProximateTo=101,
     kDWupdateObjectData=102,
     kDWdetachPhys=103,

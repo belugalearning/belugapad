@@ -55,6 +55,7 @@ typedef enum {
     BOOL isTouching;
     
     CCLayer *renderLayer;
+    CCLayer *anchorLayer;
     
     NSArray *initObjects;
     NSArray *solutionsDef;
@@ -72,6 +73,7 @@ typedef enum {
     BOOL useShapeGroups;
     float shapeGroupSize;
     
+    BOOL movingLayer;
     
     NSMutableArray *dotMatrix;
     NSDictionary *hiddenRows;

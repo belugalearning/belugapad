@@ -146,7 +146,7 @@
     
     
     
-    [[gameWorld Blackboard].ComponentRenderLayer addChild:tile.mySprite z:2];
+    [tile.RenderLayer addChild:tile.mySprite z:2];
     
     [spriteFileName release];
 }

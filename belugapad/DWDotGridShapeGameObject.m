@@ -21,6 +21,7 @@
 @synthesize myWidth;
 @synthesize myHeight;
 @synthesize shapeGroup;
+@synthesize RenderLayer;
 
 -(void)dealloc
 {

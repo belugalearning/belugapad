@@ -20,6 +20,7 @@
 @synthesize resizeHandle;
 @synthesize moveHandle;
 @synthesize tile;
+@synthesize RenderLayer;
 
 -(void)dealloc
 {

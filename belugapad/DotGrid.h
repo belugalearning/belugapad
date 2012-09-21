@@ -62,6 +62,8 @@ typedef enum {
     
     CGPoint lastTouch;
     
+    
+    BOOL disableDrawing;
     BOOL showDraggableBlock;
     BOOL renderWidthHeightOnShape;
     BOOL selectWholeShape;

@@ -124,6 +124,7 @@
     selectWholeShape=[[pdef objectForKey:SELECT_WHOLE_SHAPE]boolValue];
     useShapeGroups=[[pdef objectForKey:USE_SHAPE_GROUPS]boolValue];
     shapeGroupSize=[[pdef objectForKey:SHAPE_GROUP_SIZE]floatValue];
+    disableDrawing=[[pdef objectForKey:DISABLE_DRAWING]boolValue];
     
     if([pdef objectForKey:ANCHOR_SPACE])
         spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
@@ -856,7 +857,7 @@
     // if we get past having a handle, then send a switchselection
     [gw handleMessage:kDWswitchSelection andPayload:pl withLogLevel:-1];
     
-    if(gw.Blackboard.FirstAnchor && !((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).tile) {
+    if(gw.Blackboard.FirstAnchor && !((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).tile && !disableDrawing) {
         ((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Disabled=YES;
         gameState=kStartAnchor;
         [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_CREATE_SHAPE withAdditionalData:nil];
@@ -866,6 +867,9 @@
     {
         movingLayer=YES;
     }
+    
+    if(disableDrawing)
+        gw.Blackboard.FirstAnchor=nil;
     
  }
 

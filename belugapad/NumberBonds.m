@@ -290,7 +290,7 @@ static float kTimeToMountedShake=7.0f;
                 [thisBadge setPosition:ccp(20+(50*thisLength),initCageBadgePos-(i*dockMidSpacing-10))];
             else
                 [thisBadge setPosition:ccp(20+(50*(thisLength*0.5)),initCageBadgePos-(i*dockMidSpacing-10))];
-            [thisLabel setPosition:ccp(17,12)];
+            [thisLabel setPosition:ccp(15,12)];
             
             [renderLayer addChild:thisBadge z:1000];
             [thisBadge addChild:thisLabel];

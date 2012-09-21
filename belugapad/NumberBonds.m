@@ -182,8 +182,20 @@ static float kTimeToMountedShake=7.0f;
 -(void)populateGW
 {
 
-    int dockSize=[initBars count]+2;
+    int dockSize=[initCages count]+2;
     float dockPieceYPos=650.0f;
+    float initBarStartYPos=582;
+    float initCageStartYPos=dockPieceYPos-43;
+    float initCageBadgePos=initCageStartYPos+2;
+    
+    float dockMidSpacing=0.0f;
+    
+    if(useBlockScaling)
+        dockMidSpacing=35.0f;
+    else
+        dockMidSpacing=60.0f;
+    
+    NSString *middleAsset=[NSString stringWithFormat:@"/images/partition/NB_Dock_Middle%d.png",(int)dockMidSpacing];
     
     for(int i=0;i<dockSize;i++)
     {
@@ -194,8 +206,8 @@ static float kTimeToMountedShake=7.0f;
         else if(i==dockSize-1)
             dockPiece=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/partition/NB_Dock_Bottom.png")];
         else
-            dockPiece=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/partition/NB_Dock_Middle.png")];
-
+            dockPiece=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(middleAsset)];
+        
         
         [dockPiece setPosition:ccp(25,dockPieceYPos)];
         [dockPiece setTag:1];
@@ -203,15 +215,15 @@ static float kTimeToMountedShake=7.0f;
         [renderLayer addChild:dockPiece];
         
         if(i==0)
-            dockPieceYPos-=45;
+            dockPieceYPos-=43.0f;
         else if(i==dockSize-2)
-            dockPieceYPos-=45;
+            dockPieceYPos-=42.0f;
         else
-            dockPieceYPos-=40;
+            dockPieceYPos-=dockMidSpacing;
+        
+        NSLog(@"dockPieceYPos=%f",dockPieceYPos);
     }
 
-
-    float yStartPos=582;
     // do stuff with our INIT_BARS (DWNBondRowGameObject)
     
     for (int i=0;i<[initBars count]; i++)
@@ -221,12 +233,12 @@ static float kTimeToMountedShake=7.0f;
         
         DWNBondRowGameObject *prgo = [DWNBondRowGameObject alloc];
         [gw populateAndAddGameObject:prgo withTemplateName:@"TnBondRow"];
-        prgo.Position=ccp(xStartPos,yStartPos);
+        prgo.Position=ccp(xStartPos,initBarStartYPos);
         prgo.Length = [[[initBars objectAtIndex:i] objectForKey:LENGTH] intValue];
         prgo.Locked = [[[initBars objectAtIndex:i] objectForKey:LOCKED] boolValue];
     
         [createdRows addObject:prgo];
-        yStartPos = yStartPos-100;
+        initBarStartYPos-=100;
         
         [prgo release];
     }
@@ -244,7 +256,6 @@ static float kTimeToMountedShake=7.0f;
             pogo.IndexPos=i;
             
             //pogo.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3));
-            pogo.Position=ccp(20,605-(i*40));
             pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
             thisLength=pogo.Length;
             
@@ -256,6 +267,11 @@ static float kTimeToMountedShake=7.0f;
             if(!useBlockScaling){
                 pogo.IsScaled=YES;
                 pogo.NoScaleBlock=YES;
+                pogo.Position=ccp(20,initCageStartYPos-(i*dockMidSpacing));
+            }
+            else
+            {
+                pogo.Position=ccp(20,initCageStartYPos-(i*dockMidSpacing));
             }
             
             pogo.MountPosition = pogo.Position;
@@ -272,9 +288,9 @@ static float kTimeToMountedShake=7.0f;
             CCLabelTTF *thisLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",[[mountedObjects objectAtIndex:i]count]] fontName:@"Source Sans Pro" fontSize:16.0f];
             
             if(!useBlockScaling)
-                [thisBadge setPosition:ccp(20+(50*thisLength),620-(i*50))];
+                [thisBadge setPosition:ccp(20+(50*thisLength),initCageBadgePos-(i*dockMidSpacing-10))];
             else
-                [thisBadge setPosition:ccp(20+(50*(thisLength*0.5)),620-(i*50))];
+                [thisBadge setPosition:ccp(20+(50*(thisLength*0.5)),initCageBadgePos-(i*dockMidSpacing-10))];
             [thisLabel setPosition:ccp(17,12)];
             
             [renderLayer addChild:thisBadge z:1000];

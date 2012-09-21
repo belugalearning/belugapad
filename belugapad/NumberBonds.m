@@ -183,8 +183,8 @@ static float kTimeToMountedShake=7.0f;
 {
 
     int dockSize=[initCages count]+2;
-    float dockPieceYPos=650.0f;
-    float initBarStartYPos=582;
+    float dockPieceYPos=582.0f;
+    float initBarStartYPos=582.0f;
     float initCageStartYPos=dockPieceYPos-43;
     float initCageBadgePos=initCageStartYPos+2;
     
@@ -221,7 +221,6 @@ static float kTimeToMountedShake=7.0f;
         else
             dockPieceYPos-=dockMidSpacing;
         
-        NSLog(@"dockPieceYPos=%f",dockPieceYPos);
     }
 
     // do stuff with our INIT_BARS (DWNBondRowGameObject)

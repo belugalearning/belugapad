@@ -52,6 +52,8 @@
 			<integer>0</integer>
 			<key>NUMBER</key>
 			<string>{$number1}</string>
+			<key>New item</key>
+			<string>{$number1}</string>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

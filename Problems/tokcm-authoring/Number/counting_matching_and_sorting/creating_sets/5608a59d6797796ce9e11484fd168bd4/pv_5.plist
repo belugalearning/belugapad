@@ -52,6 +52,8 @@
 			<integer>0</integer>
 			<key>NUMBER</key>
 			<string>1</string>
+			<key>New item</key>
+			<string>1</string>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

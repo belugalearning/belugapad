@@ -205,9 +205,9 @@ static float kTimeToMountedShake=7.0f;
         if(i==0)
             dockPieceYPos-=45;
         else if(i==dockSize-2)
-            dockPieceYPos-=42;
+            dockPieceYPos-=45;
         else
-            dockPieceYPos-=48;
+            dockPieceYPos-=40;
     }
 
 
@@ -244,7 +244,7 @@ static float kTimeToMountedShake=7.0f;
             pogo.IndexPos=i;
             
             //pogo.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3));
-            pogo.Position=ccp(20,615-(i*50));
+            pogo.Position=ccp(20,605-(i*40));
             pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
             thisLength=pogo.Length;
             

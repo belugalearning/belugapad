@@ -5,13 +5,12 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Split 8 goos between 2 containers. </string>
+	<string>dt_16_4</string>
 	<key>EVAL_MODE</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>SOLUTION</key>
 	<array>
-		<string>4</string>
-		<string>4</string>
+		<integer>16</integer>
 	</array>
 	<key>DSTRINGS</key>
 	<dict>
@@ -58,18 +57,60 @@
 			</array>
 		</dict>
 	</dict>
+	<key>HOST_BACKGROUND_IMAGE</key>
+	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_COMPLETE_TEXT</key>
+		<string>well done!!</string>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>5</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>3</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>4</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>16 candles are placed evenly on a birthday cake with 4 slices- how many candles will be on each slice?</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again</string>
+	</dict>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>8</integer>
+			<integer>6</integer>
 			<key>POS_X</key>
-			<integer>540</integer>
+			<integer>300</integer>
 			<key>POS_Y</key>
-			<integer>550</integer>
+			<integer>350</integer>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>6</integer>
+			<key>POS_X</key>
+			<integer>600</integer>
+			<key>POS_Y</key>
+			<integer>350</integer>
 		</dict>
 	</array>
-	<key>HOST_BACKGROUND_IMAGE</key>
-	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
 </dict>
 </plist>

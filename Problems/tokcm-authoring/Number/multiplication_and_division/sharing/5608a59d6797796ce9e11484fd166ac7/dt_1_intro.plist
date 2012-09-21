@@ -5,13 +5,13 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Split 8 goos between 2 containers. </string>
+	<string>Split the 2 goos by moving one away from the other. </string>
 	<key>EVAL_MODE</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>SOLUTION</key>
 	<array>
-		<string>4</string>
-		<string>4</string>
+		<string>1</string>
+		<string>1</string>
 	</array>
 	<key>DSTRINGS</key>
 	<dict>
@@ -62,7 +62,7 @@
 	<array>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>8</integer>
+			<integer>2</integer>
 			<key>POS_X</key>
 			<integer>540</integer>
 			<key>POS_Y</key>

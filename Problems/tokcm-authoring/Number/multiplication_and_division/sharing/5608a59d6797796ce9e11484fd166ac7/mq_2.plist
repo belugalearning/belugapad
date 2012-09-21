@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Goos are split between some containers. Will there be more goo in each container if there is a large or small number of goos?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>202brackets</string>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_RANDOMISE_ANSWERS</key>
+		<false/>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>LARGE</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>SMALL</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>Goos are split between some containers. Will there be more goo in each container if there is a large or small number of goos?</string>
+	</dict>
+</dict>
+</plist>

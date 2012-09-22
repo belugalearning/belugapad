@@ -188,7 +188,7 @@
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>4</string>
+				<string>10</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
@@ -197,12 +197,6 @@
 				<string>2</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>6</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>

@@ -187,19 +187,18 @@
     
     
     // and our commit pipe
-    commitPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/pipe.png")];
-    [commitPipe setPosition:ccp(lx-150,70)];
+    commitPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/FB_Pipe_In.png")];
+    [commitPipe setPosition:ccp(cx,55)];
     [renderLayer addChild:commitPipe];
 
     if(showSolutionOnPipe)
     {
         CCLabelTTF *targetSol=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", expSolution] fontName:@"Chango" fontSize:50.0f];
-        [targetSol setPosition:ccp(lx-150,100)];
+        [targetSol setPosition:ccp(cx,70)];
         [renderLayer addChild:targetSol];
     }
-    newPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/pipe.png")];
-    [newPipe setRotation:45.0f];
-    [newPipe setPosition:ccp(25,550)];
+    newPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/FB_Pipe_Out.png")];
+    [newPipe setPosition:ccp(45,650)];
     [renderLayer addChild:newPipe];
     
     if(showMultipleControls)

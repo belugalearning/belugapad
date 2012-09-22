@@ -59,47 +59,24 @@
 		<key>SOLUTION_VALUE</key>
 		<integer>50</integer>
 	</dict>
-	<key>META_QUESTION</key>
-	<dict>
-		<key>META_QUESTION_COMPLETE_TEXT</key>
-		<string>well done!!</string>
-		<key>META_QUESTION_EVAL_MODE</key>
-		<integer>0</integer>
-		<key>META_QUESTION_ANSWER_MODE</key>
-		<integer>0</integer>
-		<key>META_QUESTION_ANSWERS</key>
-		<array>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>8</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>7</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>6</string>
-				<key>META_ANSWER_VALUE</key>
-				<true/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>4</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-		</array>
-		<key>META_QUESTION_TITLE</key>
-		<string>What is 1 larger than 5?</string>
-		<key>META_QUESTION_INCOMPLETE_TEXT</key>
-		<string>Try again</string>
-	</dict>
 	<key>HOST_BACKGROUND_IMAGE</key>
 	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>What is 1 larger than 5?</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>1</integer>
+		<key>PICKER_ORIGIN_X</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_Y</key>
+		<integer>0</integer>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<integer>6</integer>
+	</dict>
 </dict>
 </plist>

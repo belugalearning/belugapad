@@ -52,6 +52,8 @@
 			<integer>0</integer>
 			<key>NUMBER</key>
 			<string>{$number1}</string>
+			<key>NUMBER_PRE_COUNTED</key>
+			<real>0</real>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

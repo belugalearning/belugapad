@@ -148,7 +148,7 @@
     
     if(!cont.myText && cont.ScaledUp)
     {
-        cont.myText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        cont.myText=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
         [cont.myText setPosition:ccp(50,40)];
         [cont.mySpriteTop addChild:cont.myText];
         if(gameWorld.Blackboard.inProblemSetup)

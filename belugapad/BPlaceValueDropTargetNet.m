@@ -59,8 +59,6 @@
                 {
                     gameWorld.Blackboard.DropObject=gameObject;
                     gameWorld.Blackboard.DropObjectDistance=dist;
-                    
-                    NSLog(@"net sets droptarget dist %f val %f", dist, n.ColumnValue);
                 }
             }
         }

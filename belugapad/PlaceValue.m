@@ -95,7 +95,7 @@ static float kTimeToCageShake=7.0f;
         
         gw.Blackboard.inProblemSetup = NO;
         
-        debugLogging=YES;
+        debugLogging=NO;
         
         for (int i=0;i<numberOfColumns;i++)
         {
@@ -463,7 +463,7 @@ static float kTimeToCageShake=7.0f;
                 CGRect minus=CGRectZero;
                 CGRect plus=CGRectZero;
 
-                CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", defaultBlocksToMake] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+                CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", defaultBlocksToMake] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
                 
                 [multipleMinusSprites addObject:[NSValue valueWithCGRect:minus]];
                 [multiplePlusSprites addObject:[NSValue valueWithCGRect:plus]];
@@ -837,13 +837,13 @@ static float kTimeToCageShake=7.0f;
     if(showCount||showValue)
     {
         if(showCount && !showValue)
-            countLabel=[CCLabelTTF labelWithString:@"count" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            countLabel=[CCLabelTTF labelWithString:@"count" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
         
         else if(!showCount && showValue)
-            countLabel=[CCLabelTTF labelWithString:@"sum" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            countLabel=[CCLabelTTF labelWithString:@"sum" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
         
         else if(showCount && showValue)
-            countLabel=[CCLabelTTF labelWithString:@"count x sum y" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            countLabel=[CCLabelTTF labelWithString:@"count x sum y" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
         
         [countLabel setTag:3];
         [countLabel setOpacity:0];
@@ -1016,18 +1016,12 @@ static float kTimeToCageShake=7.0f;
             [toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
     }
     
-    if(!disableAudioCounting&&!gw.Blackboard.inProblemSetup&&gw.Blackboard.SelectedObjects.count<=20)
-    {
-        NSString *path=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", gw.Blackboard.SelectedObjects.count];
-        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(path)];
-    }
-    
     if(showCountOnBlock && gw.Blackboard.SelectedObjects.count > lastCount && !gw.Blackboard.inProblemSetup)
     {
         
         CCSprite *s=((DWPlaceValueBlockGameObject*)gw.Blackboard.LastSelectedObject).mySprite;
         CGPoint pos=[renderLayer convertToWorldSpace:[s position]];
-        countLabelBlock=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", gw.Blackboard.SelectedObjects.count] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        countLabelBlock=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", gw.Blackboard.SelectedObjects.count] fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
         [countLabelBlock setPosition:[s convertToNodeSpace:pos]];
         [s addChild:countLabelBlock];
         
@@ -2046,6 +2040,12 @@ static float kTimeToCageShake=7.0f;
             {
                 [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
                 hasMovedBasePickup=NO;
+                
+                if(!disableAudioCounting&&!gw.Blackboard.inProblemSetup&&gw.Blackboard.SelectedObjects.count<=20)
+                {
+                    NSString *path=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", gw.Blackboard.SelectedObjects.count];
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(path)];
+                }
             }
             // if we have a base pickup -- then set all their mounts back to what they should be - update their positions and tell them to animate to their rightful place - otherwise just do it for the current block
             if(isBasePickup)

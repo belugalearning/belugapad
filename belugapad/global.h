@@ -60,6 +60,9 @@
 #define PROBLEM_DESC_FONT_SIZE 35
 #define PROBLEM_SUBTITLE_FONT_SIZE 20
 
+#define SOURCE @"Source Sans Pro"
+#define CHANGO @"Chango"
+
 #define MY_SPRITE @"MY_SPRITE"
 
 #define RENDER_IMAGE_NAME @"RENDER_IMAGE_NAME"
@@ -244,6 +247,7 @@
 #define QUANTITY @"QUANTITY"
 #define NUMBER_TO_STACK @"NUMBER_TO_STACK"
 #define USE_BLOCK_SCALING @"USE_BLOCK_SCALING"
+#define SHOW_BADGES @"SHOW_BADGES"
 
 // dotgrid tool
 

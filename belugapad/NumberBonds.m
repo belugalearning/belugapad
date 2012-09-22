@@ -117,6 +117,8 @@ static float kTimeToMountedShake=7.0f;
         timeSinceInteractionOrShake=0.0f;
         if(isWinning)[toolHost shakeCommitButton];
     }
+    
+    [self updateLabels];
 
 }
 
@@ -163,18 +165,37 @@ static float kTimeToMountedShake=7.0f;
     if([pdef objectForKey:USE_BLOCK_SCALING])
         useBlockScaling = [[pdef objectForKey:USE_BLOCK_SCALING] boolValue];
     else
-        useBlockScaling=YES;
+        useBlockScaling = YES;
+    
+    if([pdef objectForKey:SHOW_BADGES])
+        showBadgesOnCages = [[pdef objectForKey:SHOW_BADGES]boolValue];
+    else
+    showBadgesOnCages = YES;
     
     createdRows = [[NSMutableArray alloc]init];
     
     mountedObjects = [[NSMutableArray alloc]init];
+    mountedObjectBadges = [[NSMutableArray alloc]init];
+    mountedObjectLabels = [[NSMutableArray alloc]init];
 }
 
 -(void)populateGW
 {
 
-    int dockSize=[initBars count]+2;
-    float dockPieceYPos=650.0f;
+    int dockSize=[initCages count]+2;
+    float dockPieceYPos=582.0f;
+    float initBarStartYPos=582.0f;
+    float initCageStartYPos=dockPieceYPos-43;
+    float initCageBadgePos=initCageStartYPos+2;
+    
+    float dockMidSpacing=0.0f;
+    
+    if(useBlockScaling)
+        dockMidSpacing=35.0f;
+    else
+        dockMidSpacing=60.0f;
+    
+    NSString *middleAsset=[NSString stringWithFormat:@"/images/partition/NB_Dock_Middle%d.png",(int)dockMidSpacing];
     
     for(int i=0;i<dockSize;i++)
     {
@@ -185,22 +206,23 @@ static float kTimeToMountedShake=7.0f;
         else if(i==dockSize-1)
             dockPiece=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/partition/NB_Dock_Bottom.png")];
         else
-            dockPiece=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/partition/NB_Dock_Middle.png")];
-
+            dockPiece=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(middleAsset)];
+        
         
         [dockPiece setPosition:ccp(25,dockPieceYPos)];
+        [dockPiece setTag:1];
+        [dockPiece setOpacity:0];
         [renderLayer addChild:dockPiece];
         
         if(i==0)
-            dockPieceYPos-=45;
+            dockPieceYPos-=43.0f;
         else if(i==dockSize-2)
-            dockPieceYPos-=42;
+            dockPieceYPos-=42.0f;
         else
-            dockPieceYPos-=48;
+            dockPieceYPos-=dockMidSpacing;
+        
     }
 
-
-    float yStartPos=582;
     // do stuff with our INIT_BARS (DWNBondRowGameObject)
     
     for (int i=0;i<[initBars count]; i++)
@@ -210,12 +232,12 @@ static float kTimeToMountedShake=7.0f;
         
         DWNBondRowGameObject *prgo = [DWNBondRowGameObject alloc];
         [gw populateAndAddGameObject:prgo withTemplateName:@"TnBondRow"];
-        prgo.Position=ccp(xStartPos,yStartPos);
+        prgo.Position=ccp(xStartPos,initBarStartYPos);
         prgo.Length = [[[initBars objectAtIndex:i] objectForKey:LENGTH] intValue];
         prgo.Locked = [[[initBars objectAtIndex:i] objectForKey:LOCKED] boolValue];
     
         [createdRows addObject:prgo];
-        yStartPos = yStartPos-100;
+        initBarStartYPos-=100;
         
         [prgo release];
     }
@@ -224,7 +246,7 @@ static float kTimeToMountedShake=7.0f;
     for (int i=0;i<[initCages count]; i++)
     {
         int qtyForThisStore=[[[initCages objectAtIndex:i] objectForKey:QUANTITY] intValue];
-        int numberStacked=0;
+        int thisLength=0;
         NSMutableArray *currentVal=[[NSMutableArray alloc]init];
         for (int ic=0;ic<qtyForThisStore;ic++)
         {
@@ -233,26 +255,54 @@ static float kTimeToMountedShake=7.0f;
             pogo.IndexPos=i;
             
             //pogo.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3));
-            pogo.Position=ccp(20,615-(i*50));
             pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
+            thisLength=pogo.Length;
             
             if([[initCages objectAtIndex:i] objectForKey:LABEL])
             {
-                pogo.Label=[CCLabelTTF labelWithString:[[initCages objectAtIndex:i] objectForKey:LABEL] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+                pogo.Label=[CCLabelTTF labelWithString:[[initCages objectAtIndex:i] objectForKey:LABEL] fontName:@"Source Sans Pro" fontSize:PROBLEM_DESC_FONT_SIZE];
             }
             
             if(!useBlockScaling){
                 pogo.IsScaled=YES;
                 pogo.NoScaleBlock=YES;
+                pogo.Position=ccp(20,initCageStartYPos-(i*dockMidSpacing));
+            }
+            else
+            {
+                pogo.Position=ccp(20,initCageStartYPos-(i*dockMidSpacing));
             }
             
             pogo.MountPosition = pogo.Position;
             
             
-            if(numberStacked<numberToStack)numberStacked++;
             [currentVal addObject:pogo];
         }
         [mountedObjects addObject:currentVal];
+        
+        if(showBadgesOnCages)
+        {
+            
+            CCSprite *thisBadge=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/partition/NB_Notification.png")];
+            CCLabelTTF *thisLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",[[mountedObjects objectAtIndex:i]count]] fontName:@"Source Sans Pro" fontSize:16.0f];
+            
+            if(!useBlockScaling)
+                [thisBadge setPosition:ccp(20+(50*thisLength),initCageBadgePos-(i*dockMidSpacing-10))];
+            else
+                [thisBadge setPosition:ccp(20+(50*(thisLength*0.5)),initCageBadgePos-(i*dockMidSpacing-10))];
+            [thisLabel setPosition:ccp(15,12)];
+            
+            [renderLayer addChild:thisBadge z:1000];
+            [thisBadge addChild:thisLabel];
+            
+            [thisBadge setTag:3];
+            [thisLabel setTag:3];
+            [thisBadge setOpacity:0];
+            [thisLabel setOpacity:0];
+            
+            [mountedObjectLabels addObject:thisLabel];
+            [mountedObjectBadges addObject:thisBadge];
+        }
         
         [currentVal release];
     }
@@ -275,7 +325,7 @@ static float kTimeToMountedShake=7.0f;
         if([[initObjects objectAtIndex:i]objectForKey:LABEL]) fillText = [[initObjects objectAtIndex:i]objectForKey:LABEL];
         else fillText=[NSString stringWithFormat:@"%d", insLength];
         
-        pogo.Label = [CCLabelTTF labelWithString:fillText fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        pogo.Label = [CCLabelTTF labelWithString:fillText fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
         
         DWNBondRowGameObject *prgo = (DWNBondRowGameObject*)[createdRows objectAtIndex:insRow];
         NSDictionary *pl=[NSDictionary dictionaryWithObject:prgo forKey:MOUNT];
@@ -288,6 +338,28 @@ static float kTimeToMountedShake=7.0f;
         [pogo release];
     }
 
+}
+
+-(void)updateLabels
+{
+    for(int i=0;i<[mountedObjectLabels count];i++)
+    {
+        NSArray *thisArray=[mountedObjects objectAtIndex:i];
+        CCLabelTTF *thisLabel=[mountedObjectLabels objectAtIndex:i];
+        CCSprite *thisSprite=[mountedObjectBadges objectAtIndex:i];
+        
+        if([thisArray count]>0)
+        {
+            [thisSprite setVisible:YES];
+            [thisLabel setVisible:YES];
+            thisLabel.string=[NSString stringWithFormat:@"%d",[thisArray count]];
+        }
+        else
+        {
+            [thisSprite setVisible:NO];
+            [thisLabel setVisible:NO];
+        }
+    }
 }
 
 -(void)reorderMountedObjects
@@ -685,7 +757,8 @@ static float kTimeToMountedShake=7.0f;
 //    if(solutionsDef) [solutionsDef release];
     if(createdRows) [createdRows release];
     if(mountedObjects) [mountedObjects release];
-    
+    if(mountedObjectLabels) [mountedObjectLabels release];
+    if(mountedObjectBadges) [mountedObjectBadges release];
     
     //tear down
     [gw release];

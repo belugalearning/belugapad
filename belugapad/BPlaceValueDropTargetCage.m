@@ -64,8 +64,6 @@
                         {
                             gameWorld.Blackboard.DropObject=gameObject;
                             gameWorld.Blackboard.DropObjectDistance=dist;
-                            
-                            NSLog(@"cage sets droptarget dist %f val %f", dist, c.ObjectValue);
                         }
                     }
                     

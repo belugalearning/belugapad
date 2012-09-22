@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>A set of 4 blocks is shown. Create a set of 4 blocks so that it is equivalent to the first set.</string>
+	<string>This is a set of 4. Build a set of the same number. </string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>

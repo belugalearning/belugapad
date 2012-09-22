@@ -184,7 +184,7 @@
     
     if(showCount)
     {
-        currentNumber=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        currentNumber=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
         [currentNumber setPosition:ccp(50,50)];
         [renderLayer addChild:currentNumber];
     }

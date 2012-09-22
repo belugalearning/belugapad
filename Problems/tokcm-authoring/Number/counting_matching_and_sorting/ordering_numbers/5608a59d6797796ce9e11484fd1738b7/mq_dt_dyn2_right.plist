@@ -12,23 +12,23 @@
 	<array>
 		<dict>
 			<key>QUANTITY</key>
+			<string>{$number_larger}</string>
+			<key>POS_X</key>
+			<integer>850</integer>
+			<key>POS_Y</key>
+			<integer>550</integer>
+			<key>LABEL</key>
+			<string>{@bname}</string>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
 			<string>{$number_smaller}</string>
 			<key>POS_X</key>
-			<integer>300</integer>
+			<integer>250</integer>
 			<key>POS_Y</key>
 			<integer>550</integer>
 			<key>LABEL</key>
 			<string>{@gname}</string>
-		</dict>
-		<dict>
-			<key>QUANTITY</key>
-			<string>{$number_larger}</string>
-			<key>POS_X</key>
-			<integer>100</integer>
-			<key>POS_Y</key>
-			<integer>350</integer>
-			<key>LABEL</key>
-			<string>{@bname}</string>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -37,6 +37,8 @@
 	</array>
 	<key>META_QUESTION</key>
 	<dict>
+		<key>META_QUESTION_RANDOMISE_ANSWERS</key>
+		<false/>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
 		<string>well done!!</string>
 		<key>META_QUESTION_EVAL_MODE</key>
@@ -47,13 +49,13 @@
 		<array>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>NO</string>
+				<string>Yes</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>YES</string>
+				<string>No</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>

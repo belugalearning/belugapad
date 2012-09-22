@@ -12,11 +12,21 @@
 	<array>
 		<dict>
 			<key>QUANTITY</key>
+			<string>{$number_larger}</string>
+			<key>POS_X</key>
+			<integer>850</integer>
+			<key>POS_Y</key>
+			<integer>570</integer>
+			<key>LABEL</key>
+			<string>{@bname}</string>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
 			<string>{$number_smaller}</string>
 			<key>POS_X</key>
-			<integer>300</integer>
+			<integer>250</integer>
 			<key>POS_Y</key>
-			<integer>550</integer>
+			<integer>570</integer>
 			<key>LABEL</key>
 			<string>{@gname}</string>
 		</dict>
@@ -24,21 +34,11 @@
 			<key>QUANTITY</key>
 			<string>6</string>
 			<key>POS_X</key>
-			<integer>450</integer>
+			<integer>550</integer>
 			<key>POS_Y</key>
-			<integer>400</integer>
+			<integer>570</integer>
 			<key>LABEL</key>
 			<string>Jill</string>
-		</dict>
-		<dict>
-			<key>QUANTITY</key>
-			<string>{$number_larger}</string>
-			<key>POS_X</key>
-			<integer>100</integer>
-			<key>POS_Y</key>
-			<integer>350</integer>
-			<key>LABEL</key>
-			<string>{@bname}</string>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -47,6 +47,8 @@
 	</array>
 	<key>META_QUESTION</key>
 	<dict>
+		<key>META_QUESTION_RANDOMISE_ANSWERS</key>
+		<false/>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
 		<string>well done!!</string>
 		<key>META_QUESTION_EVAL_MODE</key>
@@ -69,7 +71,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>{@bname} has {$number_larger} {@item}, {@gname} has {$number_smaller}, and Jill has 6. Does Jill have more {@item}?</string>
+		<string>{@bname} has {$number_larger} {@item}, {@gname} has {$number_smaller}, and Jill has 6. Does Jill have the most {@item}?</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>

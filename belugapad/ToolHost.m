@@ -1644,8 +1644,23 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     id<Container, Bounding, Parser, FadeIn> row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
     row.position=ccp(cx, (cy*2) - 80);
     
-    //assume the string needs wrapping in b:t
-    descString=[NSString stringWithFormat:@"<b:t>%@</b:t>", descString];
+    if(descString.length<5)
+    {
+        //this can't have a <b:t> at the begining
+        
+        //assume the string needs wrapping in b:t
+        descString=[NSString stringWithFormat:@"<b:t>%@</b:t>", descString];
+    }
+    else if([[descString substringToIndex:5] isEqualToString:@"<b:t>"])
+    {
+        //doesn't need wrapping
+    }
+    else
+    {
+        //assume the string needs wrapping in b:t
+        descString=[NSString stringWithFormat:@"<b:t>%@</b:t>", descString];
+    }
+
     
     [row parseXML:descString];
     [row setupDraw];

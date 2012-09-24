@@ -16,6 +16,9 @@
 #import "SGBtxeObjectText.h"
 #import "SGBtxeMissingVar.h"
 #import "SGBtxeContainerMgr.h"
+#import "SGBtxeObjectNumber.h"
+
+const NSString *matchNumbers=@"0123456789";
 
 @implementation SGBtxeParser
 
@@ -42,6 +45,19 @@
     }
 }
 
+-(BOOL)doesStringContainNumber:(NSString*)theString
+{
+    for(int i=0; i<theString.length; i++)
+    {
+        NSString *s=[theString substringWithRange:NSMakeRange(i, 1)];
+        if([matchNumbers rangeOfString:s].location!=NSNotFound)
+        {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 -(void)parseElement:(CXMLElement*)element withNSMap:(NSDictionary*)nsmap
 {
     NSLog(@"parsing element %@", element.name);
@@ -53,9 +69,22 @@
         
         for(NSString *s in strings)
         {
-            SGBtxeText *t=[[SGBtxeText alloc] initWithGameWorld:gameWorld];
-            t.text=s;
-            [ParentGO.containerMgrComponent addObjectToContainer:t];
+            //is this word a number
+            if([self doesStringContainNumber:s])
+            {
+                //create object number, have it parsed
+                SGBtxeObjectNumber *on=[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld];
+                on.text=s;
+                
+                [ParentGO.containerMgrComponent addObjectToContainer:on];
+            }
+            else
+            {
+                //create text
+                SGBtxeText *t=[[SGBtxeText alloc] initWithGameWorld:gameWorld];
+                t.text=s;
+                [ParentGO.containerMgrComponent addObjectToContainer:t];
+            }
         }
     }
     else if([element.name isEqualToString:BTXE_OT])
@@ -95,6 +124,16 @@
         SGBtxeText *t=[[SGBtxeText alloc] initWithGameWorld:gameWorld];
         t.text=[[element attributeForName:@"op"] stringValue];
         [ParentGO.containerMgrComponent addObjectToContainer:t];
+    }
+    
+    else if ([element.name isEqualToString:BTXE_ON])
+    {
+        SGBtxeObjectNumber *on=[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld];
+        on.numberText=[[element attributeForName:@"number"] stringValue];
+        on.prefixText=[[element attributeForName:@"prefix"] stringValue];
+        on.suffixText=[[element attributeForName:@"suffix"] stringValue];
+        
+        [ParentGO.containerMgrComponent addObjectToContainer:on];
     }
 }
 

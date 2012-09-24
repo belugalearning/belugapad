@@ -16,6 +16,7 @@
 
 @property (retain) CCLabelTTF *label;
 @property (retain) CCLabelTTF *label0;
+@property bool useAlternateFont;
 
 -(void)setupDraw;
 -(void)updatePosition:(CGPoint)position;

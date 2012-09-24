@@ -53,7 +53,8 @@
     window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     LoadingViewController *lvc=[[LoadingViewController alloc] init];
-    [self.window addSubview:lvc.view];
+    [window_ setRootViewController:lvc];
+    //[self.window addSubview:lvc.view];
     [self.window makeKeyAndVisible];
     [lvc release];
     
@@ -89,7 +90,8 @@
     
     selectUserViewController = [[SelectUserViewController alloc] init];
     
-    [self.window addSubview:selectUserViewController.view];
+    //[self.window addSubview:selectUserViewController.view];
+    [self.window setRootViewController:selectUserViewController];
     [self.window makeKeyAndVisible];
     
     
@@ -159,8 +161,8 @@
 	navController_.navigationBarHidden = YES;
     
 	// set the Navigation Controller as the root view controller
-    //	[window_ setRootViewController:rootViewController_];
-	[window_ addSubview:navController_.view];
+    [window_ setRootViewController:navController_];
+	//[window_ addSubview:navController_.view];
     
 	// make main window visible
 	[window_ makeKeyAndVisible]; 

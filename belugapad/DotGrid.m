@@ -361,11 +361,16 @@
 
                         if(((curAnch.Disabled || curAnch.Hidden) && !gw.Blackboard.inProblemSetup && !gameState==kStartAnchor))failedChecksHidden=YES;
                         if(curAnch.tile)failedChecksExistingTile=YES;
+                        
                         if(x==anchEnd.myXpos-1 && y==anchStart.myYpos && showResize)
                             curAnch.resizeHandle=YES;
+                        else
+                            curAnch.resizeHandle=NO;
                          
                         if(x==anchStart.myXpos && y==anchEnd.myYpos-1 && showMove)
                             curAnch.moveHandle=YES;
+                        else
+                            curAnch.moveHandle=NO;
                         
                         [anchorsForShape addObject:curAnch];
                     }
@@ -378,11 +383,16 @@
                         
                         if(((curAnch.Disabled || curAnch.Hidden) && !gw.Blackboard.inProblemSetup && !gameState==kStartAnchor))failedChecksHidden=YES;
                         if(curAnch.tile)failedChecksExistingTile=YES;
+                        
                         if(x==anchEnd.myXpos-1 && y==anchEnd.myYpos && showResize)
                             curAnch.resizeHandle=YES;
-
+                        else
+                            curAnch.resizeHandle=NO;
+                        
                         if(x==anchStart.myXpos && y==anchStart.myYpos-1 && showMove)
                             curAnch.moveHandle=YES;
+                        else
+                            curAnch.moveHandle=NO;
 
                         [anchorsForShape addObject:curAnch];
                     } 
@@ -407,9 +417,13 @@
                         
                         if(x==anchStart.myXpos-1 && y==anchStart.myYpos && showResize)
                             curAnch.resizeHandle=YES;
+                        else
+                            curAnch.resizeHandle=NO;
 
                         if(x==anchEnd.myXpos && y==anchEnd.myYpos-1 && showMove)
                             curAnch.moveHandle=YES;
+                        else
+                            curAnch.moveHandle=NO;
                     }
                 }
                 else {
@@ -420,11 +434,16 @@
                         if(((curAnch.Disabled || curAnch.Hidden) && !gw.Blackboard.inProblemSetup && !gameState==kSpecifiedStartAnchor))failedChecksHidden=YES;
                         if(curAnch.tile)failedChecksExistingTile=YES;
                         [anchorsForShape addObject:curAnch];
+                        
                         if(x==anchEnd.myXpos+1 && y==anchEnd.myYpos && showResize)
                             curAnch.resizeHandle=YES;
-
+                        else
+                            curAnch.resizeHandle=NO;
+                        
                         if(x==anchEnd.myXpos && y==anchStart.myYpos-1 && showMove)
-                                curAnch.moveHandle=YES;
+                            curAnch.moveHandle=YES;
+                        else
+                            curAnch.moveHandle=NO;
                         
                     }
                 }
@@ -756,6 +775,8 @@
             {
                 DWDotGridAnchorGameObject *anch=tile.myAnchor;
                 anch.tile=nil;
+                anch.resizeHandle=NO;
+                anch.moveHandle=NO;
                 [removeObjects addObject:tile];
                 
             }

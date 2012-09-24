@@ -2254,7 +2254,10 @@ static float kTimeToCageShake=7.0f;
 
                 
                 // set the pickup object's mount to the dropobject
-                b.Mount=gw.Blackboard.DropObject;
+                if(gw.Blackboard.PriorityDropObject && explodeMode)
+                    b.Mount=gw.Blackboard.PriorityDropObject;
+                else
+                    b.Mount=gw.Blackboard.DropObject;
                 
                 // set the zindex back to what it was
                 [b.mySprite setZOrder:b.lastZIndex];
@@ -2275,6 +2278,7 @@ static float kTimeToCageShake=7.0f;
                 {
 //                    if([pickupObjects count]>1){
                     gw.Blackboard.DropObject=nil;
+                    gw.Blackboard.PriorityDropObject=nil;
                     [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
                     if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
                         n=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
@@ -2315,19 +2319,24 @@ static float kTimeToCageShake=7.0f;
                         [self setTouchVarsToOff];
                         return;
                     }
-                    else if(explodeMode && n.MountedObject && !n.CancellingObject)
+                    else if(explodeMode && isNegativeProblem)
                     {
                         
                         if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
                         {
-                            DWPlaceValueNetGameObject *netDrop=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
+                            DWPlaceValueNetGameObject *n=nil;
                             
+                            if(gw.Blackboard.PriorityDropObject)
+                                n=(DWPlaceValueNetGameObject*)gw.Blackboard.PriorityDropObject;
+                            else
+                                n=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
+                                
                             if(!blocksToDestroy)
                                 blocksToDestroy=[[[NSMutableArray alloc]init]autorelease];
                             
-                            netDrop.CancellingObject=b;
+                            n.CancellingObject=b;
                             
-                            b.Mount=gw.Blackboard.DropObject;
+                            b.Mount=n;
                             [blocksToDestroy addObject:b];
                             [blocksToDestroy addObject:n.MountedObject];
                             
@@ -2491,6 +2500,7 @@ static float kTimeToCageShake=7.0f;
 {
     //remove all condense/mulch/transition state
     [gw Blackboard].PickupObject = nil;
+    [gw Blackboard].PriorityDropObject = nil;
     //gw.Blackboard.DropObject=nil;
     inBlockTransition=NO;
     inCondenseArea=NO;

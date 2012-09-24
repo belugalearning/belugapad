@@ -884,7 +884,7 @@
     
     lastTouch=location;
     NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
-    if(movingLayer)
+    if(movingLayer && !hitDragBlock)
     {
         CGPoint diff=ccpSub(location, prevLoc);
         [anchorLayer setPosition:ccpAdd(anchorLayer.position, diff)];
@@ -895,8 +895,9 @@
     {
         [newBlock setPosition:location];
 
+        CGPoint searchLoc=ccp(newBlock.position.x-(newBlock.contentSize.width/2), newBlock.position.y-(newBlock.contentSize.height/2));
         // set the search location to the bottom left of the square
-        NSMutableDictionary *nb=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:ccp(newBlock.position.x-(newBlock.contentSize.width/2), newBlock.position.y-(newBlock.contentSize.height/2))] forKey:POS];
+        NSMutableDictionary *nb=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:[anchorLayer convertToNodeSpace:searchLoc]] forKey:POS];
         [gw handleMessage:kDWareYouADropTarget andPayload:nb withLogLevel:-1];
         
         if(gw.Blackboard.FirstAnchor)

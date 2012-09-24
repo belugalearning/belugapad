@@ -67,6 +67,10 @@ typedef enum {
     BOOL showDraggableBlock;
     BOOL renderWidthHeightOnShape;
     BOOL selectWholeShape;
+    BOOL isMovingLeft;
+    BOOL isMovingRight;
+    BOOL isMovingUp;
+    BOOL isMovingDown;
     
     CCSprite *dragBlock;
     CCSprite *newBlock;

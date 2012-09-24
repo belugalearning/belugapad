@@ -98,6 +98,21 @@
             timeToAutoMoveToNextProblem=0.0f;
         }
     }
+    
+    if(disableDrawing && drawMode==kAnyStartAnchorValid)
+    {
+        if(isMovingDown)
+            [anchorLayer setPosition:ccp(anchorLayer.position.x,anchorLayer.position.y+10)];
+            
+        if(isMovingUp)
+            [anchorLayer setPosition:ccp(anchorLayer.position.x,anchorLayer.position.y-10)];
+            
+        if(isMovingLeft)
+            [anchorLayer setPosition:ccp(anchorLayer.position.x+10,anchorLayer.position.y)];
+        
+        if(isMovingRight)
+            [anchorLayer setPosition:ccp(anchorLayer.position.x-10,anchorLayer.position.y)];
+    }
 }
 
 
@@ -885,6 +900,27 @@
     prevLoc = [[CCDirector sharedDirector] convertToGL: prevLoc];
     
     lastTouch=location;
+    
+    if(location.x>lx-80)
+        isMovingRight=YES;
+    else
+        isMovingRight=NO;
+    
+    if(location.x<80)
+        isMovingLeft=YES;
+    else
+        isMovingLeft=NO;
+    
+    if(location.y>ly-80)
+        isMovingUp=YES;
+    else
+        isMovingUp=NO;
+    
+    if(location.y<80)
+        isMovingDown=YES;
+    else
+        isMovingDown=NO;
+    
     NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
     
     // if they can move the layer and haven't picked up a new block
@@ -981,6 +1017,10 @@
     hitDragBlock=NO;
     movingLayer=NO;
     
+    isMovingLeft=NO;
+    isMovingRight=NO;
+    isMovingUp=NO;
+    isMovingDown=NO;
     
     [gw.Blackboard.SelectedObjects removeAllObjects];
     gameState=kNoState;
@@ -998,6 +1038,11 @@
     if(hitDragBlock)[newBlock removeFromParentAndCleanup:YES];
     hitDragBlock=NO;
     movingLayer=NO;
+    
+    isMovingLeft=NO;
+    isMovingRight=NO;
+    isMovingUp=NO;
+    isMovingDown=NO;
 
     [gw.Blackboard.SelectedObjects removeAllObjects];
 }

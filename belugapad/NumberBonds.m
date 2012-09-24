@@ -185,7 +185,13 @@ static float kTimeToMountedShake=7.0f;
     int dockSize=[initCages count]+2;
     float dockPieceYPos=582.0f;
     float initBarStartYPos=582.0f;
-    float initCageStartYPos=dockPieceYPos-43;
+    float initCageStartYPos=0.0f;
+    
+    if(useBlockScaling)
+        initCageStartYPos=dockPieceYPos-43;
+    else
+        initCageStartYPos=dockPieceYPos-48;
+    
     float initCageBadgePos=initCageStartYPos+2;
     
     float dockMidSpacing=0.0f;
@@ -214,8 +220,10 @@ static float kTimeToMountedShake=7.0f;
         [dockPiece setOpacity:0];
         [renderLayer addChild:dockPiece];
         
-        if(i==0)
-            dockPieceYPos-=43.0f;
+        if(i==0 && useBlockScaling)
+            dockPieceYPos-=42.0f;
+        else if(i==0 && !useBlockScaling)
+            dockPieceYPos-=55.0f;
         else if(i==dockSize-2)
             dockPieceYPos-=42.0f;
         else

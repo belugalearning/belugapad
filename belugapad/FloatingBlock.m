@@ -341,7 +341,16 @@
         // then if we only have 1 operator - merge the bubbles 
         if([supportedOperators count]==1)
         {
-            [self mergeGroupsFromBubbles];
+            NSString *s=[supportedOperators objectAtIndex:0];
+            
+            if([s isEqualToString:@"+"])
+                [self mergeGroupsFromBubbles];
+            else if([s isEqualToString:@"x"])
+                [self multiplyGroupsInBubbles];
+            else if([s isEqualToString:@"-"])
+                [self subtractGroupsInBubbles];
+            else if([s isEqualToString:@"/"])
+                [self divideGroupsInBubbles];
         }
         // if we have no current childoperators and there's more than 1 supported operator, then show them
         else if([supportedOperators count]>1 && [[opBubble ChildOperators]count]==0)

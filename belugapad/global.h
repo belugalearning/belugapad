@@ -382,6 +382,7 @@
 #define BTXE_T @"b:t"
 #define BTXE_OT @"b:ot"
 #define BTXE_OP @"b:op"
+#define BTXE_ON @"b:on"
 #define BTXE_COMMOT @"b:commot"
 
 //scoring

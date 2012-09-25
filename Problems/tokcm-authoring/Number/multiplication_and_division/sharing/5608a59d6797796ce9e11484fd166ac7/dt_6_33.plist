@@ -5,7 +5,7 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>6 goos are split between 3 containers. How many goos in each container?</string>
+	<string>6 goo are split between 3 containers. How many goo in each container?</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>SOLUTION</key>
@@ -75,7 +75,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>6 goos are split between 3 containers. How many goos in each container?</string>
+		<string>6 goo are split between 3 containers. How many goo in each container?</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>PICKER_ORIGIN_X</key>

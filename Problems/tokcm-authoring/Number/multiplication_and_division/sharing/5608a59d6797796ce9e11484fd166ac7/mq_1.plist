@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Goos are split between 5 containers. Is there more goo in each container if there are 10 goos or 15 goos?</string>
+	<string>Goo are split between 5 containers. Is there more goo in each container if there are 10 goo or 15 goo?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>202brackets</string>
 	<key>META_QUESTION</key>
@@ -30,7 +30,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>Goos are split between 5 containers. Will there be more goo in each container if there are 10 goos or 15 goos?</string>
+		<string>Goo are split between 5 containers. Is there more goo in each container if there are 10 goo or 15 goo?</string>
 	</dict>
 </dict>
 </plist>

@@ -98,7 +98,6 @@
 		55C5F73F1538A8F2009D8906 /* BDotGridShapeTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7371538A8F2009D8906 /* BDotGridShapeTouch.m */; };
 		55C5F7401538A8F2009D8906 /* BDotGridTileObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7391538A8F2009D8906 /* BDotGridTileObjectRender.m */; };
 		55C908D015F62BD900BD64F2 /* SGFBlockOpBubble.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C908CF15F62BD900BD64F2 /* SGFBlockOpBubble.m */; };
-		55CF399F1611B96300BD0C5E /* CCPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CF399E1611B96300BD0C5E /* CCPickerView.m */; };
 		55E7CBDA157FC82400A399CF /* DWPieSplitterPieGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBD9157FC82400A399CF /* DWPieSplitterPieGameObject.m */; };
 		55E7CBDF157FC85200A399CF /* DWPieSplitterSliceGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBDE157FC85200A399CF /* DWPieSplitterSliceGameObject.m */; };
 		55E7CBE3157FC8B800A399CF /* DWPieSplitterContainerGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBE2157FC8B800A399CF /* DWPieSplitterContainerGameObject.m */; };
@@ -351,6 +350,7 @@
 		7FA38ABA1545334B0031E59D /* SelectUserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FA38AB81545334B0031E59D /* SelectUserViewController.xib */; };
 		7FA38AC01545335A0031E59D /* UsersService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38ABE1545335A0031E59D /* UsersService.m */; };
 		7FA38AD2154534340031E59D /* EditZubi.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38AD1154534340031E59D /* EditZubi.m */; };
+		7FA84BC516107569001FEA82 /* SGBtxeObjectNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA84BC416107569001FEA82 /* SGBtxeObjectNumber.m */; };
 		7FABE68F14B33D5100ED2D0C /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */; };
 		7FABE69114B33D5600ED2D0C /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */; };
 		7FABE6A214B4BF0F00ED2D0C /* templatedefs-general.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE6A114B4BF0F00ED2D0C /* templatedefs-general.plist */; };
@@ -618,8 +618,6 @@
 		55C5F7391538A8F2009D8906 /* BDotGridTileObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDotGridTileObjectRender.m; sourceTree = "<group>"; };
 		55C908CE15F62BD800BD64F2 /* SGFBlockOpBubble.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBlockOpBubble.h; sourceTree = "<group>"; };
 		55C908CF15F62BD900BD64F2 /* SGFBlockOpBubble.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBlockOpBubble.m; sourceTree = "<group>"; };
-		55CF399D1611B96300BD0C5E /* CCPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPickerView.h; sourceTree = "<group>"; };
-		55CF399E1611B96300BD0C5E /* CCPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPickerView.m; sourceTree = "<group>"; };
 		55E7CBD8157FC82400A399CF /* DWPieSplitterPieGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPieSplitterPieGameObject.h; sourceTree = "<group>"; };
 		55E7CBD9157FC82400A399CF /* DWPieSplitterPieGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWPieSplitterPieGameObject.m; sourceTree = "<group>"; };
 		55E7CBDD157FC85200A399CF /* DWPieSplitterSliceGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPieSplitterSliceGameObject.h; sourceTree = "<group>"; };
@@ -1132,6 +1130,8 @@
 		7FA38ABE1545335A0031E59D /* UsersService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersService.m; sourceTree = "<group>"; };
 		7FA38AD0154534340031E59D /* EditZubi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditZubi.h; sourceTree = "<group>"; };
 		7FA38AD1154534340031E59D /* EditZubi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditZubi.m; sourceTree = "<group>"; };
+		7FA84BC316107569001FEA82 /* SGBtxeObjectNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeObjectNumber.h; sourceTree = "<group>"; };
+		7FA84BC416107569001FEA82 /* SGBtxeObjectNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeObjectNumber.m; sourceTree = "<group>"; };
 		7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		7FABE69214B33E5800ED2D0C /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = global.h; sourceTree = "<group>"; };
@@ -1582,15 +1582,6 @@
 				55C5F7391538A8F2009D8906 /* BDotGridTileObjectRender.m */,
 			);
 			name = DotGrid;
-			sourceTree = "<group>";
-		};
-		55CF399B1611B67400BD0C5E /* CCPickerView */ = {
-			isa = PBXGroup;
-			children = (
-				55CF399D1611B96300BD0C5E /* CCPickerView.h */,
-				55CF399E1611B96300BD0C5E /* CCPickerView.m */,
-			);
-			name = CCPickerView;
 			sourceTree = "<group>";
 		};
 		55E7CBDC157FC82B00A399CF /* PieSplitter */ = {
@@ -2278,7 +2269,6 @@
 		7F5113E714A9EE63001AF372 /* libs */ = {
 			isa = PBXGroup;
 			children = (
-				55CF399B1611B67400BD0C5E /* CCPickerView */,
 				7FEB663515DEE68100F6E782 /* PRKit */,
 				0C33EEC215D4EE6900EA6A11 /* SSZipArchive */,
 				0CDECB4815920C27004DE20D /* AFNetworking */,
@@ -2745,6 +2735,8 @@
 				7FCA646815D69CBF00C5C020 /* SGBtxeObjectText.m */,
 				7FCA646A15D69CDD00C5C020 /* SGBtxeMissingVar.h */,
 				7FCA646B15D69CDD00C5C020 /* SGBtxeMissingVar.m */,
+				7FA84BC316107569001FEA82 /* SGBtxeObjectNumber.h */,
+				7FA84BC416107569001FEA82 /* SGBtxeObjectNumber.m */,
 			);
 			name = BTXE;
 			sourceTree = "<group>";
@@ -3359,7 +3351,7 @@
 				7F588F5916027B280015F504 /* SGJmapCloudSeeker.m in Sources */,
 				7F588F5C16027B380015F504 /* SGJmapCloudMotion.m in Sources */,
 				554EA4A7160777F900A68BFF /* DWDotGridShapeGroupGameObject.m in Sources */,
-				55CF399F1611B96300BD0C5E /* CCPickerView.m in Sources */,
+				7FA84BC516107569001FEA82 /* SGBtxeObjectNumber.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

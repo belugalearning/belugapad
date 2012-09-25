@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>You start at 3. Count on to 10. </string>
+	<string>You start at 3. Count on 7. </string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>You start at 3. Count on to 10. </string>
+	<string>You start at 3. Count on 7. </string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>

@@ -5,7 +5,7 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>6 {@item} are shared fairly between 3 sisters. Show that they get 2 each. </string>
+	<string>Claire and Sarah share 6 {@item} fairly. Show that they get 3 each. </string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
 	<key>INIT_OBJECTS</key>
@@ -21,9 +21,8 @@
 	</array>
 	<key>SOLUTION</key>
 	<array>
-		<integer>2</integer>
-		<integer>2</integer>
-		<string>2</string>
+		<integer>3</integer>
+		<string>3</string>
 	</array>
 	<key>DSTRINGS</key>
 	<dict>
@@ -36,7 +35,6 @@
 				<string>blue goo</string>
 				<string>red goo</string>
 				<string>cookies</string>
-				<string>pens</string>
 				<string>crayons</string>
 				<string>yellow goo</string>
 				<string>green goo</string>

@@ -97,6 +97,7 @@
 		55C5F73E1538A8F2009D8906 /* BDotGridShapeObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7351538A8F2009D8906 /* BDotGridShapeObjectRender.m */; };
 		55C5F73F1538A8F2009D8906 /* BDotGridShapeTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7371538A8F2009D8906 /* BDotGridShapeTouch.m */; };
 		55C5F7401538A8F2009D8906 /* BDotGridTileObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7391538A8F2009D8906 /* BDotGridTileObjectRender.m */; };
+		55C873D61611D0F400434DEB /* CCPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C873D51611D0F400434DEB /* CCPickerView.m */; };
 		55C908D015F62BD900BD64F2 /* SGFBlockOpBubble.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C908CF15F62BD900BD64F2 /* SGFBlockOpBubble.m */; };
 		55E7CBDA157FC82400A399CF /* DWPieSplitterPieGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBD9157FC82400A399CF /* DWPieSplitterPieGameObject.m */; };
 		55E7CBDF157FC85200A399CF /* DWPieSplitterSliceGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBDE157FC85200A399CF /* DWPieSplitterSliceGameObject.m */; };
@@ -616,6 +617,8 @@
 		55C5F7371538A8F2009D8906 /* BDotGridShapeTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDotGridShapeTouch.m; sourceTree = "<group>"; };
 		55C5F7381538A8F2009D8906 /* BDotGridTileObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDotGridTileObjectRender.h; sourceTree = "<group>"; };
 		55C5F7391538A8F2009D8906 /* BDotGridTileObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDotGridTileObjectRender.m; sourceTree = "<group>"; };
+		55C873D41611D0F400434DEB /* CCPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPickerView.h; sourceTree = "<group>"; };
+		55C873D51611D0F400434DEB /* CCPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPickerView.m; sourceTree = "<group>"; };
 		55C908CE15F62BD800BD64F2 /* SGFBlockOpBubble.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBlockOpBubble.h; sourceTree = "<group>"; };
 		55C908CF15F62BD900BD64F2 /* SGFBlockOpBubble.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBlockOpBubble.m; sourceTree = "<group>"; };
 		55E7CBD8157FC82400A399CF /* DWPieSplitterPieGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPieSplitterPieGameObject.h; sourceTree = "<group>"; };
@@ -1502,6 +1505,15 @@
 			name = PlaceValue;
 			sourceTree = "<group>";
 		};
+		55A16EEE1611D043003E46DD /* CCPickerView */ = {
+			isa = PBXGroup;
+			children = (
+				55C873D41611D0F400434DEB /* CCPickerView.h */,
+				55C873D51611D0F400434DEB /* CCPickerView.m */,
+			);
+			name = CCPickerView;
+			sourceTree = "<group>";
+		};
 		55AFD6A715651A6800FF1886 /* TimesTables */ = {
 			isa = PBXGroup;
 			children = (
@@ -2269,6 +2281,7 @@
 		7F5113E714A9EE63001AF372 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				55A16EEE1611D043003E46DD /* CCPickerView */,
 				7FEB663515DEE68100F6E782 /* PRKit */,
 				0C33EEC215D4EE6900EA6A11 /* SSZipArchive */,
 				0CDECB4815920C27004DE20D /* AFNetworking */,
@@ -3352,6 +3365,7 @@
 				7F588F5C16027B380015F504 /* SGJmapCloudMotion.m in Sources */,
 				554EA4A7160777F900A68BFF /* DWDotGridShapeGroupGameObject.m in Sources */,
 				7FA84BC516107569001FEA82 /* SGBtxeObjectNumber.m in Sources */,
+				55C873D61611D0F400434DEB /* CCPickerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

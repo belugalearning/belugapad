@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Press the button to start, and press at 5.</string>
+	<string>Press the button to start, and press stop at 5.</string>
 	<key>TOOL_KEY</key>
 	<string>CountingTimer</string>
 	<key>SOLUTION</key>

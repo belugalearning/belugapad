@@ -2,37 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e11/101addnegativeblocks.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e11/102additiveinverse.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e11/103addpositiveblocks.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e11/104additiveinverse.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e11/201addnegativeblocks.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e11/202additiveinverse.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e11/203np-additiveinverse.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e11/204addpositiveblocks.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e11/205additiveinverse.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e11/206np-additiveinverse.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e11/301addingdistance.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e11/302np-addingdistance.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e11/303addingdistance.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e11/304np-addingdistance.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e11/401addingdistance.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e11/402addingdistance.plist</string>
-	<string>/Problems/tools-dev/featuredemo/nline/segment1-repeatedaddition.plist</string>
-	<string>/Problems/tools-dev/ExprBuilder/exprbuilder-dev3.plist</string>
-	<string>/Problems/tools-dev/ExprBuilder/exprbuilder-dev2.plist</string>
+	<string>/Problems/tools-dev/ExprBuilder/exprbuilder-a1.plist</string>
 	<string>/Problems/tools-dev/ExprBuilder/exprbuilder-dev1.plist</string>
-	<string>/Problems/tools-dev/da-float/fb002.plist</string>
-	<string>/Problems/tools-dev/da-float/fb003.plist</string>
-	<string>/Problems/tools-dev/da-float/fb004.plist</string>
-	<string>/Problems/tools-dev/da-float/fb005.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/Negative_numbers/5608a59d6797796ce9e11484fd12e627/mq_nl_-30_less.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/Negative_numbers/5608a59d6797796ce9e11484fd12e627/mq_nl_-30_more.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/Negative_numbers/5608a59d6797796ce9e11484fd12e627/np_nl_-80.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/Negative_numbers/5608a59d6797796ce9e11484fd12e627/mq_nl_-80_less.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/Negative_numbers/5608a59d6797796ce9e11484fd12e627/mq_nl_-50_more.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/Negative_numbers/5608a59d6797796ce9e11484fd12e627/mq_nl_-10_less.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/Negative_numbers/5608a59d6797796ce9e11484fd12e627/mq_nl_-45.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/Negative_numbers/5608a59d6797796ce9e11484fd12e627/mq_nl_-150.plist</string>
+	<string>/Problems/tools-dev/ExprBuilder/exprbuilder-dev2.plist</string>
+	<string>/Problems/tools-dev/ExprBuilder/exprbuilder-dev3.plist</string>
+	<string>/Problems/tools-dev/ExprBuilder/exprbuilder-dev4-comm.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17a521/exprbuilder_1.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17c99c/exprbuilder_1.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17c99c/exprbuilder_1.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17c99c/exprbuilder_1.plist</string>
+	<string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17c99c/exprbuilder_1.plist</string>
 </array>
 </plist>

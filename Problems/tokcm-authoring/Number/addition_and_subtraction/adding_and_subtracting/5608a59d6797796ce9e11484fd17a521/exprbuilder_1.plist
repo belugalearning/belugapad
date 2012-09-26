@@ -4,8 +4,12 @@
 <dict>
 	<key>TOOL_KEY</key>
 	<string>ExprBuilder</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>exprbuilder</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>fractions</string>
+	<key>EVAL_TYPE</key>
+	<string>ALL_ENABLED</string>
 	<key>EXPR_STAGES</key>
 	<array>
 		<string>&lt;b:t&gt;Ed has some pens, he gives away&lt;/b:t&gt;

@@ -2,7 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
-	<string>/Problems/tools-dev/featuredemo/nline/segment1.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/test/0.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/test/8_3_exp.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/test/9_3_exp.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/test/12_4_exp.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/test/0.plist</string>
 	<string>/Problems/tools-dev/featuredemo/nline/segment1-jumpsequence.plist</string>
 	<string>/Problems/tools-dev/featuredemo/nline/segment1-repeatedaddition.plist</string>
 	<string>/Problems/tools-dev/ExprBuilder/exprbuilder-dev3.plist</string>

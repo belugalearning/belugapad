@@ -2,20 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is 56 + 8?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>What is 56 + 8?</string>
+	<string>What is 94 + 6?</string>
+	<key>MASTERY</key>
+	<true/>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>What is 94 + 6?</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
 	<integer>10</integer>
 	<key>FIRST_COL_VALUE</key>
-	<integer>10</integer>
+	<integer>100</integer>
 	<key>NUMBER_COLS</key>
-	<integer>2</integer>
+	<integer>3</integer>
 	<key>DEFAULT_COL</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>ROPES_PER_COL</key>
 	<integer>2</integer>
 	<key>ROWS_PER_COL</key>
@@ -27,7 +29,11 @@
 	<key>ALLOW_PANNING</key>
 	<false/>
 	<key>X_OFFSET</key>
-	<string>-0.25</string>
+	<string>0.3</string>
+	<key>DEFAULT_SCALE</key>
+	<string>0.9</string>
+	<key>COLUMN_SPACING</key>
+	<real>0.3</real>
 	<key>SHOW_CAGE</key>
 	<false/>
 	<key>SHOW_NEG_CAGE</key>
@@ -42,23 +48,30 @@
 	<string>/images/placevalue/cage-neg.png</string>
 	<key>PROXIMITY_SPRITE_FILENAME</key>
 	<string>/images/placevalue/cage-pos.png</string>
-	<key>CUSTOM_COLUMN_HEADERS</key>
-	<dict/>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
 			<key>PUT_IN_COL</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>NUMBER</key>
-			<integer>5</integer>
+			<integer>4</integer>
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>1</integer>
 			<key>NUMBER</key>
-			<integer>6</integer>
+			<integer>9</integer>
 		</dict>
 	</array>
+	<key>CUSTOM_COLUMN_HEADERS</key>
+	<dict>
+		<key>10</key>
+		<string>tens</string>
+		<key>100</key>
+		<string>hundreds</string>
+		<key>1</key>
+		<string>ones</string>
+	</dict>
 	<key>REJECT_MODE</key>
 	<integer>1</integer>
 	<key>EVAL_MODE</key>
@@ -68,7 +81,7 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>64</integer>
+		<string>100</string>
 		<key>SOLUTION_DISPLAY_TEXT</key>
 		<string>that&apos;s 10!</string>
 		<key>PLAY_SOUND</key>
@@ -78,8 +91,19 @@
 	<dict>
 		<key>10</key>
 		<string>/images/placevalue/obj-placevalue-unit10.png</string>
+		<key>100</key>
+		<string>/images/placevalue/obj-placevalue-unit100.png</string>
 		<key>1</key>
 		<string>/images/placevalue/obj-placevalue-unit1.png</string>
+	</dict>
+	<key>COLUMN_CAGES</key>
+	<dict>
+		<key>10</key>
+		<true/>
+		<key>1</key>
+		<string>YES</string>
+		<key>100</key>
+		<string>YES</string>
 	</dict>
 	<key>COLUMN_NEG_CAGES</key>
 	<dict>
@@ -87,6 +111,23 @@
 		<false/>
 		<key>1</key>
 		<false/>
+	</dict>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>What is 94 + 6?</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>1</integer>
+		<key>PICKER_ORIGIN_X</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_Y</key>
+		<integer>0</integer>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<integer>100</integer>
 	</dict>
 </dict>
 </plist>

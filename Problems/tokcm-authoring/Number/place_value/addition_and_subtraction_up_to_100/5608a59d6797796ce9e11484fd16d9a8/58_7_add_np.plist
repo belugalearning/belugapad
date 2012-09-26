@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>What is 24 + 3?</string>
+	<string>What is 58 + 7?</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>What is 24 + 3?</string>
+	<string>What is 58 + 7?</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -49,42 +49,14 @@
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>1</integer>
-			<key>NUMBER</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>2</integer>
-			<key>NUMBER</key>
-			<integer>2</integer>
+			<integer>5</integer>
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>1</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>1</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>1</integer>
-			<key>NUMBER</key>
-			<integer>1</integer>
+			<integer>8</integer>
 		</dict>
 	</array>
 	<key>REJECT_MODE</key>
@@ -116,45 +88,22 @@
 		<key>1</key>
 		<false/>
 	</dict>
-	<key>META_QUESTION</key>
+	<key>NUMBER_PICKER</key>
 	<dict>
-		<key>META_QUESTION_COMPLETE_TEXT</key>
-		<string>well done!!</string>
-		<key>META_QUESTION_EVAL_MODE</key>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>What is 58 + 7?</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>1</integer>
+		<key>PICKER_ORIGIN_X</key>
 		<integer>0</integer>
-		<key>META_QUESTION_ANSWER_MODE</key>
+		<key>PICKER_ORIGIN_Y</key>
 		<integer>0</integer>
-		<key>META_QUESTION_ANSWERS</key>
-		<array>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>30</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>29</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>27</string>
-				<key>META_ANSWER_VALUE</key>
-				<true/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>21</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-		</array>
-		<key>META_QUESTION_TITLE</key>
-		<string>What is 24 + 3?</string>
-		<key>META_QUESTION_INCOMPLETE_TEXT</key>
-		<string>Try again</string>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<integer>65</integer>
 	</dict>
 	<key>HOST_BACKGROUND_IMAGE</key>
 	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>

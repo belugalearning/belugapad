@@ -71,6 +71,8 @@
     BOOL hasMovedBlock;
     BOOL hasMovedLayer;
     BOOL disableAudioCounting;
+    BOOL autoBaseSelection;
+    
     
 
     NSString *posCageSprite;

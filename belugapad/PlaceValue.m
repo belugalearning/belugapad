@@ -781,6 +781,11 @@ static float kTimeToCageShake=7.0f;
     else 
         allowMulching=YES;
     
+    if([pdef objectForKey:AUTO_SELECT_BASE_VALUE])
+        autoBaseSelection=[[pdef objectForKey:AUTO_SELECT_BASE_VALUE]boolValue];
+    else
+        autoBaseSelection=NO;
+    
     
     //objects
     NSArray *objects=[pdef objectForKey:INIT_OBJECTS];
@@ -1227,6 +1232,67 @@ static float kTimeToCageShake=7.0f;
         }
     }
     return freeSpace;
+}
+
+-(int)usedSpacesOnGrid:(int)thisGrid
+{
+    int usedSpace=0;
+    
+    for (int r=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] count]-1; r>=0; r--) {
+        NSMutableArray *row=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] objectAtIndex:r];
+        for (int c=[row count]-1; c>=0; c--)
+        {
+            DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
+            if(co.MountedObject)
+            {
+                usedSpace++;
+            }
+        }
+    }
+    return usedSpace;
+}
+
+-(void)selectBaseObjectsOnGrid:(int)thisGrid
+{
+    if(!autoBaseSelection)return;
+    
+    NSMutableArray *SelectedObjects=gw.Blackboard.SelectedObjects;
+    if([SelectedObjects count]>0){
+        
+        DWPlaceValueBlockGameObject *thisB=[SelectedObjects objectAtIndex:0];
+        float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] floatValue];
+        if(thisB.ObjectValue==colVal)return;
+        
+        [self flipToBaseSelection];
+        
+        for(int i=0;i<[SelectedObjects count];i++)
+        {
+            DWPlaceValueBlockGameObject *b=[SelectedObjects objectAtIndex:i];
+            b.Selected=YES;
+            [b handleMessage:kDWswitchSelection];
+        }
+    }
+    
+    for (int r=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] count]-1; r>=0; r--) {
+        NSMutableArray *row=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] objectAtIndex:r];
+        for (int c=[row count]-1; c>=0; c--)
+        {
+            DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
+            if(co.MountedObject)
+            {
+                ((DWPlaceValueBlockGameObject*)co.MountedObject).Selected=NO;
+                [co.MountedObject handleMessage:kDWswitchSelection];
+                if(![gw.Blackboard.SelectedObjects containsObject:co.MountedObject])
+                    [gw.Blackboard.SelectedObjects addObject:co.MountedObject];
+                
+                NSLog(@"count of selectedobjects %d", [gw.Blackboard.SelectedObjects count]);
+            }
+        }
+    }
+    
+    isBasePickup=YES;
+    
+
 }
 
 -(void)logOutGameObjectsPositions:(int)thisGrid
@@ -1917,6 +1983,14 @@ static float kTimeToCageShake=7.0f;
             NSLog(@"(touchbegan-end) free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
     }
     
+    int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
+    
+    if(objectsOnGrid==columnBaseValue)
+    {
+        isBasePickup=YES;
+        [self selectBaseObjectsOnGrid:currentColumnIndex];
+    }
+    
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -2348,14 +2422,14 @@ static float kTimeToCageShake=7.0f;
 //                        n.MountedObject=nil;
                     }
                     // ===== return a selection (a base selection) back to where they came from by resetting mounts etc ===
-                    else if(isBasePickup && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject])
+                    else if(isBasePickup && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject] && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
                     {
                         for(int igo=0; igo<gw.Blackboard.SelectedObjects.count; igo++)
                         {
                             DWPlaceValueBlockGameObject *go = [[[gw Blackboard] SelectedObjects] objectAtIndex:igo];
                             go.Mount=go.LastMount;
                             
-                            ((DWPlaceValueNetGameObject*)go.Mount).MountedObject=go;
+                            ((DWPlaceValueNetGameObject*)go.Mount).MountedObject=b;
                             
                             go.AnimateMe=YES;
                             
@@ -2365,7 +2439,33 @@ static float kTimeToCageShake=7.0f;
                             [go handleMessage:kDWmoveSpriteToPosition];
                             [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
                             
-                            //[go handleMessage:kDWputdown];
+                            [go handleMessage:kDWputdown];
+                        }
+                        doNotSwitchSelection=YES;
+                        
+                    }
+                    else if(isBasePickup && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject] && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+                    {
+                        NSMutableArray *SelectedObjects=[NSMutableArray arrayWithArray:gw.Blackboard.SelectedObjects];
+                        for(int igo=0; igo<SelectedObjects.count; igo++)
+                        {
+                            DWPlaceValueBlockGameObject *go = [SelectedObjects objectAtIndex:igo];
+                            ((DWPlaceValueNetGameObject*)go.Mount).MountedObject=nil;
+                            go.Mount=gw.Blackboard.DropObject;
+                        
+                        
+                            go.AnimateMe=YES;
+                        
+                            go.PosX=((DWPlaceValueNetGameObject*)go.Mount).PosX;
+                            go.PosY=((DWPlaceValueNetGameObject*)go.Mount).PosY;
+                            go.Selected=NO;
+                            if([gw.Blackboard.SelectedObjects containsObject:go])
+                               [gw.Blackboard.SelectedObjects removeObject:go];
+                            
+                            [go handleMessage:kDWresetToMountPositionAndDestroy];
+                            [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+                        
+                        //[go handleMessage:kDWputdown];
                         }
                         doNotSwitchSelection=YES;
                         
@@ -2414,6 +2514,14 @@ static float kTimeToCageShake=7.0f;
                     
 
                 }
+                
+                int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
+                
+                if(objectsOnGrid==columnBaseValue)
+                {
+                    [self selectBaseObjectsOnGrid:currentColumnIndex];
+                }
+                
                 // then log stuff
                 [loggingService logEvent:(isCage ? BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_CAGE : BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_GRID)
                     withAdditionalData:nil];

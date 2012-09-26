@@ -166,6 +166,7 @@
 #define IS_NEGATIVE_PROBLEM @"IS_NEGATIVE_PROBLEM"
 #define CAGE_DEFAULT_VALUE @"CAGE_DEFAULT_VALUE"
 #define EXPLODE_MODE @"EXPLODE_MODE"
+#define AUTO_SELECT_BASE_VALUE @"AUTO_SELECT_BASE_VALUE"
 
 
 // generic tools keys -- formerly from BlockFloating

@@ -20,7 +20,14 @@ typedef enum {
     kBorderRight=5,
     kBorderTop=6,
     kBorderBottom=7,
-    kNoBorder=8
+    kEndCapLeft=8,
+    kEndCapRight=9,
+    kEndCapTop=10,
+    kEndCapBottom=11,
+    kMidPieceVertical=12,
+    kMidPieceHorizontal=13,
+    kNoBorder=14,
+    kFullBorder=15
 } TileType;
 
 typedef struct {

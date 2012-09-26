@@ -123,42 +123,66 @@
     CGPoint this=ccp(tile.myAnchor.myXpos, tile.myAnchor.myYpos);
     
     
+    float differenceX=fabsf(fa.myXpos-la.myXpos);
+    float differenceY=fabsf(fa.myYpos-la.myYpos);
     
-    if(CGPointEqualToPoint(first, this))
-        NSLog(@"kBottomLeft. first x %g y %g / last x %g y %g / this x %g y %g", first.x,first.y,last.x,last.y,this.x,this.y);
-    else if(CGPointEqualToPoint(last, this))
-        NSLog(@"kTopRight. first x %g y %g / last x %g y %g / this x %g y %g", first.x,first.y,last.x,last.y,this.x,this.y);
-    else if(CGPointEqualToPoint(ccp(first.x,last.y), this))
-        NSLog(@"kTopLeft. first x %g y %g / last x %g y %g / this x %g y %g", first.x,first.y,last.x,last.y,this.x,this.y);
-    else if(CGPointEqualToPoint(ccp(last.x,first.y), this))
-        NSLog(@"kBottomRight. first x %g y %g / last x %g y %g / this x %g y %g", first.x,first.y,last.x,last.y,this.x,this.y);
-    else if(first.x==this.x && this.y!=first.y && this.y!=last.y)
-        NSLog(@"kBorderLeft. first x %g y %g / last x %g y %g / this x %g y %g", first.x,first.y,last.x,last.y,this.x,this.y);
-    else if(last.x==this.x && this.y!=first.y && this.y!=last.y)
-        NSLog(@"kBorderRight. first x %g y %g / last x %g y %g / this x %g y %g", first.x,first.y,last.x,last.y,this.x,this.y);
-    else if(first.y==this.y && this.x!=first.x && this.x!=last.x)
-        NSLog(@"kBorderBottom. first x %g y %g / last x %g y %g / this x %g y %g", first.x,first.y,last.x,last.y,this.x,this.y);
-    else if(last.y==this.y && this.x!=first.x && this.x!=last.x)
-        NSLog(@"kBorderTop. first x %g y %g / last x %g y %g / this x %g y %g", first.x,first.y,last.x,last.y,this.x,this.y);
+    BOOL isNormal=NO;
+    BOOL is1pxX=NO;
+    BOOL is1pxY=NO;
+    BOOL is1x1=NO;
     
-    if(CGPointEqualToPoint(first, this))
-        tile.tileType=kBottomLeft;
-    else if(CGPointEqualToPoint(ccp(last.x-1,last.y-1), this))
-        tile.tileType=kTopRight;
-    else if(CGPointEqualToPoint(ccp(first.x,last.y-1), this))
-        tile.tileType=kTopLeft;
-    else if(CGPointEqualToPoint(ccp(last.x-1,first.y), this))
-        tile.tileType=kBottomRight;
-    else if(first.x==this.x && this.y!=first.y && this.y!=last.y)
-        tile.tileType=kBorderLeft;
-    else if(last.x-1==this.x && this.y!=first.y && this.y!=last.y)
-        tile.tileType=kBorderRight;
-    else if(first.y==this.y && this.x!=first.x && this.x!=last.x)
-        tile.tileType=kBorderBottom;
-    else if(last.y-1==this.y && this.x!=first.x && this.x!=last.x)
-        tile.tileType=kBorderTop;
-    else
-        tile.tileType=kNoBorder;
+    if(differenceX>1 && differenceY>1)
+        isNormal=YES;
+    else if(differenceX>1 && differenceY==1)
+        is1pxY=YES;
+    else if(differenceX==1 && differenceY>1)
+        is1pxX=YES;
+    else if(differenceX==1 && differenceY==1)
+        is1x1=YES;
+    
+    if(isNormal)
+    {
+        if(CGPointEqualToPoint(first, this))
+            tile.tileType=kBottomLeft;
+        else if(CGPointEqualToPoint(ccp(last.x-1,last.y-1), this))
+            tile.tileType=kTopRight;
+        else if(CGPointEqualToPoint(ccp(first.x,last.y-1), this))
+            tile.tileType=kTopLeft;
+        else if(CGPointEqualToPoint(ccp(last.x-1,first.y), this))
+            tile.tileType=kBottomRight;
+        else if(first.x==this.x && this.y!=first.y && this.y!=last.y)
+            tile.tileType=kBorderLeft;
+        else if(last.x-1==this.x && this.y!=first.y && this.y!=last.y)
+            tile.tileType=kBorderRight;
+        else if(first.y==this.y && this.x!=first.x && this.x!=last.x)
+            tile.tileType=kBorderBottom;
+        else if(last.y-1==this.y && this.x!=first.x && this.x!=last.x)
+            tile.tileType=kBorderTop;
+        else
+            tile.tileType=kNoBorder;
+    }
+    else if(is1pxX)
+    {
+        if(CGPointEqualToPoint(first, this))
+            tile.tileType=kEndCapBottom;
+        else if(CGPointEqualToPoint(ccp(last.x-1,last.y-1), this))
+            tile.tileType=kEndCapTop;
+        else
+            tile.tileType=kMidPieceVertical;
+    }
+    else if(is1pxY)
+    {
+        if(CGPointEqualToPoint(first, this))
+            tile.tileType=kEndCapLeft;
+        else if(CGPointEqualToPoint(ccp(last.x-1, last.y-1), this))
+            tile.tileType=kEndCapRight;
+        else
+            tile.tileType=kMidPieceHorizontal;
+    }
+    else if(is1x1)
+    {
+        tile.tileType=kFullBorder;
+    }
     
     // check the requested tile type, then like, set our sprite to reflect this
     if(tile.tileType==kTopLeft)
@@ -205,6 +229,44 @@
     {
         spriteFileName=@"/images/dotgrid/DG_Border_None";
     }
+    if(tile.tileType==kFullBorder)
+    {
+        spriteFileName=@"/images/dotgrid/DG_sq";
+    }
+    if(tile.tileType==kEndCapLeft)
+    {
+        spriteFileName=@"/images/dotgrid/DG_3sides";
+        reqRotation=0.0f;
+    }
+    if(tile.tileType==kEndCapRight)
+    {
+        spriteFileName=@"/images/dotgrid/DG_3sides";
+        reqRotation=180.0f;
+    }
+    if(tile.tileType==kEndCapTop)
+    {
+        spriteFileName=@"/images/dotgrid/DG_3sides";
+        reqRotation=90.0f;
+    }
+    if(tile.tileType==kEndCapBottom)
+    {
+        spriteFileName=@"/images/dotgrid/DG_3sides";
+        reqRotation=270.0f;
+    }
+    if(tile.tileType==kMidPieceHorizontal)
+    {
+        spriteFileName=@"/images/dotgrid/DG_Top&Bottom";
+    }
+    if(tile.tileType==kMidPieceVertical)
+    {
+        spriteFileName=@"/images/dotgrid/DG_Top&Bottom";
+        reqRotation=90.0f;
+    }
+
+
+
+
+
     
     thisTile.spriteFileName=spriteFileName;
     thisTile.Rotation=reqRotation;

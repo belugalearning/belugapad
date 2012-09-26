@@ -87,7 +87,7 @@
             if(!tile.Selected){
                 for(DWDotGridTileGameObject *t in shape.tiles)
                 {
-                    [t.mySprite setColor:ccc3(89,133,136)];
+                    [t.selectedSprite setVisible:YES];
                     t.Selected=YES;
                     [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
                 }
@@ -97,7 +97,7 @@
             else{
                 for(DWDotGridTileGameObject *t in shape.tiles)
                 {
-                    [t.mySprite setColor:ccc3(255,255,255)];
+                    [t.selectedSprite setVisible:NO];
                     t.Selected=NO;
                     [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
                 }
@@ -122,14 +122,14 @@
             
             // then if that tile is not selected, make it red
             if(!tile.Selected){
-                [tile.mySprite setColor:ccc3(89,133,136)];
+                [tile.selectedSprite setVisible:YES];
                 tile.Selected=YES;
                 [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
             }
             
             // otherwise, make it white again
             else{
-                [tile.mySprite setColor:ccc3(255, 255, 255)];
+                [tile.selectedSprite setVisible:NO];
                 tile.Selected=NO;
                 [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_DESELECT_TILE withAdditionalData:nil];
             }

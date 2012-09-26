@@ -70,12 +70,9 @@
 {    
     NSString *spriteFileName=[[NSString alloc]init];
 
-    NSLog(@"type of sprite: %d", handle.handleType);
     
     if(handle.handleType==kMoveHandle) spriteFileName=@"/images/dotgrid/move.png";
     if(handle.handleType==kResizeHandle) spriteFileName=@"/images/dotgrid/resize.png";
-    
-    NSLog(@"file: %@", spriteFileName);
     
     handle.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
     [handle.mySprite setPosition:handle.Position];

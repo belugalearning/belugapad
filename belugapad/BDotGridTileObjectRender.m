@@ -9,6 +9,7 @@
 #import "BDotGridTileObjectRender.h"
 #import "DWDotGridTileGameObject.h"
 #import "DWDotGridAnchorGameObject.h"
+#import "DWDotGridShapeGameObject.h"
 #import "global.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
@@ -40,6 +41,10 @@
         {
             [self setSprite];
             [self setSpritePos:NO];            
+        }
+        else
+        {
+            [self resetSprite];
         }
     }
     
@@ -78,64 +83,167 @@
     }
 }
 
-
-
--(void)setSprite
-{    
+-(tileProperties)decideTileType
+{
+    tileProperties thisTile;
+    
     NSString *spriteFileName=[[NSString alloc]init];
-    //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
+    float reqRotation=0.0f;
+    DWDotGridAnchorGameObject *fa=((DWDotGridShapeGameObject*)tile.myShape).firstAnchor;
+    DWDotGridAnchorGameObject *la=((DWDotGridShapeGameObject*)tile.myShape).lastAnchor;
+    
+    CGPoint first=CGPointZero;
+    CGPoint last=CGPointZero;
+    
+    if(fa.myYpos<la.myYpos)
+    {
+        if(fa.myXpos<la.myXpos){
+            first=ccp(fa.myXpos,fa.myYpos);
+            last=ccp(la.myXpos,la.myYpos);
+        }
+        else
+        {
+            first=ccp(la.myXpos,fa.myYpos);
+            last=ccp(fa.myXpos,la.myYpos);
+        }
+    }
+    else
+    {
+        if(fa.myXpos<la.myXpos){
+            first=ccp(fa.myXpos,la.myYpos);
+            last=ccp(la.myXpos,fa.myYpos);
+        }
+        else
+        {
+            first=ccp(la.myXpos,la.myYpos);
+            last=ccp(fa.myXpos,fa.myYpos);
+        }
+    }
+    
+    CGPoint this=ccp(tile.myAnchor.myXpos, tile.myAnchor.myYpos);
+    
+    
+    
+    if(CGPointEqualToPoint(first, this))
+        NSLog(@"kBottomLeft. first x %g y %g / last x %g y %g / this x %g y %g", first.x,first.y,last.x,last.y,this.x,this.y);
+    else if(CGPointEqualToPoint(last, this))
+        NSLog(@"kTopRight. first x %g y %g / last x %g y %g / this x %g y %g", first.x,first.y,last.x,last.y,this.x,this.y);
+    else if(CGPointEqualToPoint(ccp(first.x,last.y), this))
+        NSLog(@"kTopLeft. first x %g y %g / last x %g y %g / this x %g y %g", first.x,first.y,last.x,last.y,this.x,this.y);
+    else if(CGPointEqualToPoint(ccp(last.x,first.y), this))
+        NSLog(@"kBottomRight. first x %g y %g / last x %g y %g / this x %g y %g", first.x,first.y,last.x,last.y,this.x,this.y);
+    else if(first.x==this.x && this.y!=first.y && this.y!=last.y)
+        NSLog(@"kBorderLeft. first x %g y %g / last x %g y %g / this x %g y %g", first.x,first.y,last.x,last.y,this.x,this.y);
+    else if(last.x==this.x && this.y!=first.y && this.y!=last.y)
+        NSLog(@"kBorderRight. first x %g y %g / last x %g y %g / this x %g y %g", first.x,first.y,last.x,last.y,this.x,this.y);
+    else if(first.y==this.y && this.x!=first.x && this.x!=last.x)
+        NSLog(@"kBorderBottom. first x %g y %g / last x %g y %g / this x %g y %g", first.x,first.y,last.x,last.y,this.x,this.y);
+    else if(last.y==this.y && this.x!=first.x && this.x!=last.x)
+        NSLog(@"kBorderTop. first x %g y %g / last x %g y %g / this x %g y %g", first.x,first.y,last.x,last.y,this.x,this.y);
+    
+    if(CGPointEqualToPoint(first, this))
+        tile.tileType=kBottomLeft;
+    else if(CGPointEqualToPoint(ccp(last.x-1,last.y-1), this))
+        tile.tileType=kTopRight;
+    else if(CGPointEqualToPoint(ccp(first.x,last.y-1), this))
+        tile.tileType=kTopLeft;
+    else if(CGPointEqualToPoint(ccp(last.x-1,first.y), this))
+        tile.tileType=kBottomRight;
+    else if(first.x==this.x && this.y!=first.y && this.y!=last.y)
+        tile.tileType=kBorderLeft;
+    else if(last.x-1==this.x && this.y!=first.y && this.y!=last.y)
+        tile.tileType=kBorderRight;
+    else if(first.y==this.y && this.x!=first.x && this.x!=last.x)
+        tile.tileType=kBorderBottom;
+    else if(last.y-1==this.y && this.x!=first.x && this.x!=last.x)
+        tile.tileType=kBorderTop;
+    else
+        tile.tileType=kNoBorder;
     
     // check the requested tile type, then like, set our sprite to reflect this
     if(tile.tileType==kTopLeft)
     {
-        spriteFileName=@"/images/dotgrid/tile-corner";
-        [tile.mySprite setRotation:0.0f];
+        spriteFileName=@"/images/dotgrid/DG_Corner";
+        reqRotation=0.0f;
     }
     if(tile.tileType==kTopRight)
     {
-        spriteFileName=@"/images/dotgrid/tile-corner";
-        [tile.mySprite setRotation:90.0f];
+        spriteFileName=@"/images/dotgrid/DG_Corner";
+        reqRotation=90.0f;
     }
     if(tile.tileType==kBottomLeft)
     {
-        spriteFileName=@"/images/dotgrid/tile-corner";
-        [tile.mySprite setRotation:270.0f];
+        spriteFileName=@"/images/dotgrid/DG_Corner";
+        reqRotation=270.0f;
     }
     if(tile.tileType==kBottomRight)
     {
-        spriteFileName=@"/images/dotgrid/tile-corner";
-        [tile.mySprite setRotation:180.0f];
+        spriteFileName=@"/images/dotgrid/DG_Corner";
+        reqRotation=180.0f;
     }
     if(tile.tileType==kBorderLeft)
     {
-        spriteFileName=@"/images/dotgrid/tile-border-single";
-        [tile.mySprite setRotation:0.0f];
+        spriteFileName=@"/images/dotgrid/DG_OneSide";
+        reqRotation=270.0f;
     }
     if(tile.tileType==kBorderRight)
     {
-        spriteFileName=@"/images/dotgrid/tile-border-single";
-        [tile.mySprite setRotation:180.0f];
+        spriteFileName=@"/images/dotgrid/DG_OneSide";
+        reqRotation=90.0f;
     }
     if(tile.tileType==kBorderTop)
     {
-        spriteFileName=@"/images/dotgrid/tile-border-single";
-        [tile.mySprite setRotation:90.0f];
+        spriteFileName=@"/images/dotgrid/DG_OneSide";
+        reqRotation=0.0f;
     }
     if(tile.tileType==kBorderBottom)
     {
-        spriteFileName=@"/images/dotgrid/tile-border-single";
-        [tile.mySprite setRotation:270.0f];
+        spriteFileName=@"/images/dotgrid/DG_OneSide";
+        reqRotation=180.0f;
     }
     if(tile.tileType==kNoBorder)
     {
-        spriteFileName=@"/images/dotgrid/tile-border-none";
+        spriteFileName=@"/images/dotgrid/DG_Border_None";
     }
+    
+    thisTile.spriteFileName=spriteFileName;
+    thisTile.Rotation=reqRotation;
+
+    return thisTile;
+
+}
+
+-(void)resetSprite
+{
+    tileProperties thisTile=[self decideTileType];
+    
+    NSLog(@"(resetsprite) filename %@", thisTile.spriteFileName);
+    
+    NSString *spriteFileName=[NSString stringWithFormat:@"%@%d.png", thisTile.spriteFileName, tile.tileSize];
+    
+    [tile.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(spriteFileName)]];
+    [tile.mySprite setRotation:thisTile.Rotation];
+}
+
+-(void)setSprite
+{    
+    tileProperties thisTile=[self decideTileType];
+    //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
+    NSLog(@"(setsprite) filename %@", thisTile.spriteFileName);
+    NSString *spriteFileName=thisTile.spriteFileName;
+    float reqRotation=thisTile.Rotation;
     
     tile.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@%d.png", spriteFileName, tile.tileSize]))];
     [tile.mySprite setPosition:tile.Position];
+    [tile.mySprite setRotation:reqRotation];
+    
+    tile.selectedSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/dotgrid/DG_SelectedSq%d.png", tile.tileSize]))];
+    [tile.selectedSprite setPosition:tile.Position];
+    [tile.RenderLayer addChild:tile.selectedSprite];
     
     // THE TINTING BEHAVIOUR HERE CAN ALSO BE APPLIED BY THE SHAPE TOUCH BEHAVIOUR    
-    if(tile.Selected)[tile.mySprite setColor:ccc3(89,133,136)];
+    if(tile.Selected)[tile.selectedSprite setVisible:YES];
+    else([tile.selectedSprite setVisible:NO]);
     
     if(gameWorld.Blackboard.inProblemSetup)
     {

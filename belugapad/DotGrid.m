@@ -146,6 +146,9 @@
     else 
         spaceBetweenAnchors=85;
     
+    if(spaceBetweenAnchors==85)
+        spaceBetweenAnchors=82;
+    
     startX=[[pdef objectForKey:START_X] intValue];
     startY=[[pdef objectForKey:START_Y] intValue];
     if([pdef objectForKey:INIT_OBJECTS])initObjects=[pdef objectForKey:INIT_OBJECTS];
@@ -678,6 +681,7 @@
             tile.tileType=kNoBorder;
             tile.tileSize=spaceBetweenAnchors;
             tile.RenderLayer=anchorLayer;
+            tile.myShape=shape;
             tile.Position=ccp(curAnch.Position.x+spaceBetweenAnchors/2, curAnch.Position.y+spaceBetweenAnchors/2);
             //[tile handleMessage:kDWsetupStuff];
             [shape.tiles addObject:tile];
@@ -803,16 +807,21 @@
                 tile.tileType=kNoBorder;
                 tile.tileSize=spaceBetweenAnchors;
                 tile.Position=ccp(curAnch.Position.x+spaceBetweenAnchors/2, curAnch.Position.y+spaceBetweenAnchors/2);
+                tile.RenderLayer=thisShape.RenderLayer;
                 //[tile handleMessage:kDWsetupStuff];
                 [thisShape.tiles addObject:tile];
                 curAnch.tile=tile;
                 tile.myAnchor=curAnch;
+                tile.myShape=thisShape;
                 
                 [tile release];
             }
 
-        [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
-    }
+        }
+
+    thisShape.firstAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
+    thisShape.lastAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+    [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
 
 //    for(int i=0;i<[thisShape.tiles count];i++)
 //    {

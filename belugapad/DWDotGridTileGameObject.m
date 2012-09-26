@@ -17,6 +17,7 @@
 @synthesize tileSize;
 @synthesize myAnchor;
 @synthesize RenderLayer;
+@synthesize myShape;
 
 -(void)dealloc
 {

@@ -174,7 +174,7 @@
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     
 
-    float xStartPos=spaceBetweenAnchors*1.5;
+    float xStartPos=spaceBetweenAnchors*1.8;
     
     int anchorsOnX=(lx-spaceBetweenAnchors*2)/spaceBetweenAnchors;
     int anchorsOnY=(ly-spaceBetweenAnchors*2)/spaceBetweenAnchors;
@@ -910,7 +910,7 @@
         [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_CREATE_SHAPE withAdditionalData:nil];
     }
     
-    else
+    else if(disableDrawing)
     {
         movingLayer=YES;
     }

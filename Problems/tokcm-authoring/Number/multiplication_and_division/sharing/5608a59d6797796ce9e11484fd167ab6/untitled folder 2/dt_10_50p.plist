@@ -4,10 +4,10 @@
 <dict>
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
-	<key>PROBLEM_DESCRIPTION</key>
-	<string>Share 14 blocks equally between Amanda and Phil.</string>
 	<key>DISTRIBUTION_EVAL_TYPE</key>
 	<integer>1</integer>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>There are 10 coins. Distribute the coins evenly between Gareth and Mark. </string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>INIT_OBJECTS</key>
@@ -16,57 +16,39 @@
 			<key>QUANTITY</key>
 			<integer>1</integer>
 			<key>POS_X</key>
-			<integer>300</integer>
+			<integer>250</integer>
 			<key>POS_Y</key>
 			<integer>350</integer>
 			<key>LABEL</key>
-			<string>Amanda</string>
+			<string>Gareth</string>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
 			<integer>1</integer>
 			<key>POS_X</key>
-			<integer>800</integer>
+			<integer>700</integer>
 			<key>POS_Y</key>
 			<integer>350</integer>
 			<key>LABEL</key>
-			<string>Phil</string>
+			<string>Mark</string>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>12</integer>
+			<integer>8</integer>
 			<key>POS_X</key>
-			<integer>550</integer>
+			<integer>475</integer>
 			<key>POS_Y</key>
-			<integer>500</integer>
+			<integer>350</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
 	<array>
 		<dict>
-			<key>Amanda</key>
-			<integer>7</integer>
-			<key>Phil</key>
-			<integer>7</integer>
+			<key>Gareth</key>
+			<integer>5</integer>
+			<key>Mark</key>
+			<integer>5</integer>
 		</dict>
 	</array>
-	<key>DSTRINGS</key>
-	<dict>
-		<key>@item</key>
-		<dict>
-			<key>MODE</key>
-			<string>RANDOM</string>
-			<key>DATA</key>
-			<array>
-				<string>cookies</string>
-				<string>pens</string>
-				<string>crayons</string>
-				<string>coins</string>
-				<string>batteries</string>
-				<string>packs of crisps</string>
-				<string>drinks</string>
-			</array>
-		</dict>
-	</dict>
 </dict>
 </plist>

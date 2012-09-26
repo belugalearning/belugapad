@@ -5,7 +5,7 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Share 14 blocks equally between Amanda and Phil.</string>
+	<string>Share the blocks fairly between Jo and Simon.</string>
 	<key>DISTRIBUTION_EVAL_TYPE</key>
 	<integer>1</integer>
 	<key>EVAL_MODE</key>
@@ -20,7 +20,7 @@
 			<key>POS_Y</key>
 			<integer>350</integer>
 			<key>LABEL</key>
-			<string>Amanda</string>
+			<string>Jo</string>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
@@ -30,11 +30,11 @@
 			<key>POS_Y</key>
 			<integer>350</integer>
 			<key>LABEL</key>
-			<string>Phil</string>
+			<string>Simon</string>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>12</integer>
+			<integer>2</integer>
 			<key>POS_X</key>
 			<integer>550</integer>
 			<key>POS_Y</key>
@@ -44,10 +44,10 @@
 	<key>SOLUTION</key>
 	<array>
 		<dict>
-			<key>Amanda</key>
-			<integer>7</integer>
-			<key>Phil</key>
-			<integer>7</integer>
+			<key>Jo</key>
+			<integer>2</integer>
+			<key>Simon</key>
+			<integer>2</integer>
 		</dict>
 	</array>
 	<key>DSTRINGS</key>

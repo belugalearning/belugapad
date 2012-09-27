@@ -67,10 +67,8 @@
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
-			<key>NUMBER</key>
-			<integer>-3</integer>
-			<key>NUMBER_PRE_COUNTED</key>
-			<integer>-3</integer>
+			<key>NUMBER_NEGATIVE</key>
+			<integer>3</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

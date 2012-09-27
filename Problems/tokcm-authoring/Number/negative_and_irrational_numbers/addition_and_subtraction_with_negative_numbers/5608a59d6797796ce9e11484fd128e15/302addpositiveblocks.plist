@@ -80,10 +80,14 @@
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
-			<key>NUMBER</key>
-			<string>{$x}</string>
 			<key>NUMBER_NEGATIVE</key>
 			<string>{$x-4}</string>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
+			<integer>0</integer>
+			<key>NUMBER</key>
+			<string>{$x}</string>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

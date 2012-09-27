@@ -71,10 +71,12 @@
 			<integer>0</integer>
 			<key>NUMBER</key>
 			<string>{$x}</string>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
+			<integer>0</integer>
 			<key>NUMBER_NEGATIVE</key>
 			<string>1</string>
-			<key>NUMBER_PRE_COUNTED</key>
-			<integer>3</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

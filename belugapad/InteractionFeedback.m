@@ -112,9 +112,9 @@
 {
     CCDelayTime *d1=[CCDelayTime actionWithDuration:1.0f];
     
-    CCRepeatForever *rf1=[CCRepeatForever actionWithAction:[CCRotateBy actionWithDuration:0.1f angle:360.0f]];
+    CCRotateBy *r1=[CCRotateBy actionWithDuration:0.1f angle:360.0f];
     
-    CCSequence *s=[CCSequence actions: d1, rf1, nil];
+    CCSequence *s=[CCSequence actions: d1, r1, nil];
     
     return s;
 }

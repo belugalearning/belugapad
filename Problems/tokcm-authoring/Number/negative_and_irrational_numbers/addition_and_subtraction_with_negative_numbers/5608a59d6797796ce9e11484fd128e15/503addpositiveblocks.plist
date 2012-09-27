@@ -5,7 +5,7 @@
 	<key>PROBLEM_DESCRIPTION</key>
 	<string>This is 3. Add positive blocks to make 0.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>some negatives and some positives. Ask ‘This is x. Make y’. Remove positives.</string>
+	<string>switch to notation of adding/subtracting negative numbers</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -24,7 +24,33 @@
 	<false/>
 	<key>ALLOW_MULCHING</key>
 	<false/>
-	<key>SHOW_CAGE</key>
+	<key>IS_NEGATIVE_PROBLEM</key>
+	<true/>
+	<key>EXPLODE_MODE</key>
+	<true/>
+	<key>CAGE_DEFAULT_VALUE</key>
+	<integer>1</integer>
+    <key>CAGE_POS_DISABLE_ADD</key>
+	<dict>
+		<key>1</key>
+		<true/>
+	</dict>
+	<key>CAGE_POS_DISABLE_DELETE</key>
+	<dict>
+		<key>1</key>
+		<true/>
+	</dict>
+	<key>CAGE_NEG_DISABLE_ADD</key>
+	<dict>
+		<key>1</key>
+		<false/>
+	</dict>
+	<key>CAGE_NEG_DISABLE_DELETE</key>
+	<dict>
+		<key>1</key>
+		<false/>
+	</dict>
+    <key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_NEG_CAGE</key>
 	<false/>

@@ -108,7 +108,7 @@
     return s;
 }
 
-+(CCAction*)spinFast
++(CCAction*)delaySpinFast
 {
     CCDelayTime *d1=[CCDelayTime actionWithDuration:1.0f];
     

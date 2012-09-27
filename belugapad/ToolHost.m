@@ -454,8 +454,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 {
     if(multiplierBadge)
     {
-        [multiplierBadge runAction:[InteractionFeedback spinFast]];
-        [multiplierBadge runAction:[InteractionFeedback moveOutAndDown]];
+        [multiplierBadge runAction:[InteractionFeedback delaySpinFast]];
+        [multiplierBadge runAction:[InteractionFeedback delayMoveOutAndDown]];
     }
 }
 

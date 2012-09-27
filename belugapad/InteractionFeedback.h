@@ -14,6 +14,10 @@
 
 +(CCAction*)shakeAction;
 +(CCAction*)dropAndBounceAction;
++(CCAction*)stampAction;
++(CCAction*)fadeInOutHoldFor:(float)hold to:(float)to;
++(CCAction*)spinFast;
++(CCAction*)moveOutAndDown;
 +(CCAction*)enlargeTo1xAction;
 +(CCAction*)reduceTo1xAction;
 +(CCAction*)reduceTo0xAndHide;

@@ -32,6 +32,10 @@
 #import "SGBtxeRow.h"
 #import "SGBtxeProtocols.h"
 
+#define HD_HEADER_HEIGHT 65.0f
+#define HD_BUTTON_INSET 40.0f
+#define HD_SCORE_INSET 40.0f
+
 @interface ToolHost()
 {
     @private
@@ -96,10 +100,19 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         //[self scheduleOnce:@selector(moveToTool1:) delay:1.5f];
         
         //add a pause button but keep it hidden -- to be brought in by the fader
-        CCSprite *pause=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/button-pause.png")];
-        [pause setPosition:ccp(lx-(kPropXPauseButtonPadding*lx), ly-(kPropXPauseButtonPadding*lx))];
-        [perstLayer addChild:pause z:3];        
-
+        //CCSprite *pause=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/button-pause.png")];
+        //[pause setPosition:ccp(lx-(kPropXPauseButtonPadding*lx), ly-(kPropXPauseButtonPadding*lx))];
+        //[perstLayer addChild:pause z:3];
+        
+        //add header
+        CCSprite *hd=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_HeaderBar.png")];
+        hd.position=ccp(cx, 2*cy - HD_HEADER_HEIGHT / 2.0f);
+        [perstLayer addChild:hd z:3];
+        
+        //add disabled commit
+        CCSprite *commdis=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Disabled.png")];
+        commdis.position=ccp(2*cx-HD_BUTTON_INSET, 2*cy - 32);
+        [perstLayer addChild:commdis z:3];
 
         metaQuestionLayer=[[CCLayer alloc] init];
         [self addChild:metaQuestionLayer z:2];
@@ -111,6 +124,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         
         pauseLayer=[[CCLayer alloc]init];
         [self addChild:pauseLayer z:4];
+        
+        contextProgressLayer=[[CCLayer alloc] init];
+        [self addChild:contextProgressLayer z:6];
         
         [self populatePerstLayer];
         
@@ -369,19 +385,18 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void) populatePerstLayer
 {
-    Zubi=[[Daemon alloc] initWithLayer:perstLayer andRestingPostion:ccp(50,50) andLy:ly];
+    Zubi=[[Daemon alloc] initWithLayer:perstLayer andRestingPostion:ccp(cx, 2*cy-HD_SCORE_INSET) andLy:ly];
     [Zubi hideZubi];
     
     //score labels
-    multiplierLabel=[CCLabelTTF labelWithString:@"(1x)" dimensions:CGSizeMake(100, 50) alignment:UITextAlignmentLeft fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [multiplierLabel setOpacity:75];
-    [multiplierLabel setPosition:ccp(300, 20)];
-    [perstLayer addChild:multiplierLabel];
+//    multiplierLabel=[CCLabelTTF labelWithString:@"(1x)" dimensions:CGSizeMake(100, 50) alignment:UITextAlignmentLeft fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+//    [multiplierLabel setOpacity:75];
+//    [multiplierLabel setPosition:ccp(300, 20)];
+//    [perstLayer addChild:multiplierLabel];
     
-    scoreLabel=[CCLabelTTF labelWithString:@"score: 0" dimensions:CGSizeMake(300, 50) alignment:UITextAlignmentLeft fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [scoreLabel setOpacity:150];
-    [scoreLabel setPosition:ccp(160, 20)];
-    [perstLayer addChild:scoreLabel];
+    scoreLabel=[CCLabelTTF labelWithString:@"0" fontName:@"Chango" fontSize:18];;
+    [scoreLabel setPosition:ccp(cx, 2*cy-HD_SCORE_INSET)];
+    [perstLayer addChild:scoreLabel z:4];
 }
 
 #pragma mark - scoring
@@ -398,17 +413,44 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(multiplierStage==0)
     {
         scoreMultiplier=1;
+        
+        //reject any current multiplier
+        [self rejectMultiplierButton];
+        
     }
     else if (multiplierStage<SCORE_STAGE_CAP && !hasResetMultiplier)
     {
         scoreMultiplier*=SCORE_STAGE_MULTIPLIER;
         
-        [multiplierLabel runAction:[InteractionFeedback highlightIncreaseAction]];
+        [self setMultiplierButtonTo:(int)scoreMultiplier];
+        
+        //[multiplierLabel runAction:[InteractionFeedback highlightIncreaseAction]];
     }
 
     multiplierStage++;
     
     [self updateScoreLabels];
+}
+
+-(void)setMultiplierButtonTo:(int)m
+{
+    if(!(m==2 || m==4 || m==8 || m==16)) return;
+    
+    NSString *bf=[NSString stringWithFormat:@"/images/menu/HR_Multiplier_%d.png", m];
+    multiplierBadge=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(bf)];
+    multiplierBadge.position=ccp(700, 2*cy-32);
+    [perstLayer addChild:multiplierBadge z:5];
+    
+    //[multiplierBadge runAction:[InteractionFeedback dropAndBounceAction]];
+}
+
+-(void)rejectMultiplierButton
+{
+    if(multiplierBadge)
+    {
+        [multiplierBadge runAction:[InteractionFeedback spinFast]];
+        [multiplierBadge runAction:[InteractionFeedback moveOutAndDown]];
+    }
 }
 
 -(void)resetScoreMultiplier
@@ -419,8 +461,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     [self scheduleOnce:@selector(updateScoreLabels) delay:0.5f];
     
-    [multiplierLabel runAction:[InteractionFeedback fadeOutInTo:75]];
-    [multiplierLabel runAction:[InteractionFeedback scaleOutReturn]];
+    [self rejectMultiplierButton];
+    
+    //[multiplierLabel runAction:[InteractionFeedback fadeOutInTo:75]];
+    //[multiplierLabel runAction:[InteractionFeedback scaleOutReturn]];
 }
 
 -(void)scoreProblemSuccess
@@ -441,10 +485,15 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)updateScoreLabels
 {
-    [multiplierLabel setString:[NSString stringWithFormat:@"(%dx)", (int)scoreMultiplier]];
+    //[multiplierLabel setString:[NSString stringWithFormat:@"(%dx)", (int)scoreMultiplier]];
+    
+    //show correct multiplier
+    if(multiplierBadge)[perstLayer removeChild:multiplierBadge cleanup:YES];
+    
+    
     
     //this isn't going to do this ultiamtely -- it'll be based on shards
-    [scoreLabel setString:[NSString stringWithFormat:@"score: %d", displayScore]];
+    [scoreLabel setString:[NSString stringWithFormat:@"%d", displayScore]];
 }
 
 -(void)incrementDisplayScore: (id)sender
@@ -685,8 +734,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     if(evalMode==kProblemEvalOnCommit)
     {
-        commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
-        [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
+        commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+        commitBtn.position=ccp(2*cx-HD_BUTTON_INSET, 2*cy - HD_HEADER_HEIGHT / 2.0f);
+        //[commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
         [commitBtn setTag:3];
         [commitBtn setOpacity:0];
         [problemDefLayer addChild:commitBtn z:2];
@@ -835,13 +885,13 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self returnToMenu];
     }
-    if(CGRectContainsPoint(kPauseMenuLogOut, location))
-    {
-        [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
-        [usersService setCurrentUserToUserWithId:nil];
-        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-        [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
-    }
+//    if(CGRectContainsPoint(kPauseMenuLogOut, location))
+//    {
+//        [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
+//        [usersService setCurrentUserToUserWithId:nil];
+//        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
+//        [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
+//    }
     
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     
@@ -878,10 +928,13 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)showProblemCompleteMessage
 {
-    problemComplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/complete-overlay.png")];
+    problemComplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/Question_Status/stamp_tick.png")];
     [problemComplete setPosition:ccp(cx, cy)];
-    [problemDefLayer addChild:problemComplete];
+    [problemComplete runAction:[InteractionFeedback stampAction]];
+    [contextProgressLayer addChild:problemComplete];
     showingProblemComplete=YES;
+    
+    [self showBlackOverlay];
 }
 
 -(void)showProblemIncompleteMessage
@@ -890,11 +943,24 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     if(problemIncomplete) [problemDefLayer removeChild:problemIncomplete cleanup:YES];
     
-    problemIncomplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/failed-overlay.png")];
-    
+    problemIncomplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/Question_Status/stamp_cross.png")];
     [problemIncomplete setPosition:ccp(cx,cy)];
-    [problemDefLayer addChild:problemIncomplete];
+    [problemIncomplete runAction:[InteractionFeedback stampAction]];
+    [contextProgressLayer addChild:problemIncomplete];
     showingProblemIncomplete=YES;
+    
+    [self showBlackOverlay];
+}
+
+-(void)showBlackOverlay
+{
+    if(!blackOverlay)
+    {
+        blackOverlay=[CCLayerColor layerWithColor:ccc4(0, 0, 0, 100) width:2*cx height:2*cy];
+        [self addChild:blackOverlay z:5]; // fits between everything else and the context progress layer
+    }
+    
+    [blackOverlay runAction:[InteractionFeedback fadeInOutHoldFor:1.0f to:200]];
 }
 
 #pragma mark - meta question
@@ -1775,7 +1841,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         //user pressed commit button
         [self checkUserCommit];
     }
-    if (location.x > 944 && location.y > 688 && !isPaused)
+    if (location.x < 100 && location.y > 688 && !isPaused)
     {
         [self showPauseMenu];
         return;

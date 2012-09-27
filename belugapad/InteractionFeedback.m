@@ -51,6 +51,64 @@
     return oe;
 }
 
++(CCAction*)stampAction
+{
+    CCScaleTo *s1=[CCScaleTo actionWithDuration:0.0f scale:5.0f];
+    
+    //stamp it
+    CCEaseInOut *ml2=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.2f scale:0.75f] rate:2.0f];
+    
+    //pick it up
+    CCEaseInOut *ml3=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.1f scale:1.75f] rate:2.0f];
+    
+    //drop it
+    CCEaseInOut *ml4=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.2f scale:0.87f] rate:2.0f];
+    
+    //pick it up
+    CCEaseInOut *ml5=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.1f scale:1.35f] rate:2.0f];
+    
+    //drop it
+    CCEaseInOut *ml6=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f] rate:2.0f];
+    
+    CCSequence *s=[CCSequence actions:s1, ml2, ml3, ml4, ml5, ml6, nil];
+    
+    CCEaseInOut *oe=[CCEaseInOut actionWithAction:s rate:2.0f];
+    
+    return oe;
+}
+
++(CCAction*)fadeInOutHoldFor:(float)hold to:(float)to
+{
+    CCFadeTo *f1=[CCFadeTo actionWithDuration:0.0f opacity:0];
+
+    CCFadeTo *f2=[CCFadeTo actionWithDuration:0.25f opacity:to];
+    
+    CCDelayTime *d1=[CCDelayTime actionWithDuration:hold];
+    
+    CCFadeTo *f3=[CCFadeTo actionWithDuration:0.25f opacity:0];
+    
+    CCSequence *s=[CCSequence actions:f1, f2, d1, f3, nil];
+    
+    return s;
+}
+
++(CCAction*)moveOutAndDown
+{
+    ccBezierConfig bc;
+    bc.controlPoint_1=ccp(20, 20);
+    bc.controlPoint_2=ccp(100, -200);
+    bc.endPosition=ccp(150, -1024);
+    
+    CCBezierBy *b1=[CCBezierBy actionWithDuration:0.5f bezier:bc];
+    
+    return b1;
+}
+
++(CCAction*)spinFast
+{
+    return [CCRepeatForever actionWithAction:[CCRotateBy actionWithDuration:0.1f angle:360.0f]];
+}
+
 +(CCAction*)highlightIncreaseAction
 {
     //short cut this to drop and bouce for now

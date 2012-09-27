@@ -161,6 +161,10 @@ typedef enum {
     //btxe for description
     SGGameWorld *descGw;
     
+    //ui
+    CCSprite *multiplierBadge;
+    CCLayerColor *blackOverlay;
+    CCLayer *contextProgressLayer;
 }
 
 @property (retain) Daemon *Zubi;

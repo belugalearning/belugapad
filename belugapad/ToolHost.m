@@ -1108,8 +1108,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     // if eval mode is commit, render a commit button
     if(mqEvalMode==kMetaQuestionEvalOnCommit)
     {
-        commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
-        [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
+        commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+        commitBtn.position=ccp(2*cx-HD_BUTTON_INSET, 2*cy - 30);
         [commitBtn setTag:3];
         [commitBtn setOpacity:0];
         [metaQuestionLayer addChild:commitBtn z:2];
@@ -1466,8 +1466,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     // if eval mode is commit, render a commit button
     if(numberPickerEvalMode==kNumberPickerEvalOnCommit)
     {
-        commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/commit.png")];
-        [commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
+        commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+        commitBtn.position=ccp(2*cx-HD_BUTTON_INSET, 2*cy - 30);
         [commitBtn setTag:3];
         [commitBtn setOpacity:0];
         [metaQuestionLayer addChild:commitBtn z:2];

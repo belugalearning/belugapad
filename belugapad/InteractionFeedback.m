@@ -54,6 +54,8 @@
 +(CCAction*)stampAction
 {
     CCScaleTo *s1=[CCScaleTo actionWithDuration:0.0f scale:5.0f];
+
+    CCFadeIn *f1=[CCFadeIn actionWithDuration:0.0f];
     
     //stamp it
     CCEaseInOut *ml2=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.2f scale:0.75f] rate:2.0f];
@@ -70,7 +72,10 @@
     //drop it
     CCEaseInOut *ml6=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f] rate:2.0f];
     
-    CCSequence *s=[CCSequence actions:s1, ml2, ml3, ml4, ml5, ml6, nil];
+    //fade
+    CCFadeOut *f2=[CCFadeOut actionWithDuration:0.25f];
+    
+    CCSequence *s=[CCSequence actions:f1, s1, ml2, ml3, ml4, ml5, ml6, f2, nil];
     
     CCEaseInOut *oe=[CCEaseInOut actionWithAction:s rate:2.0f];
     

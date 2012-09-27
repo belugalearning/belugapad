@@ -50,7 +50,7 @@
             float dist=[BLMath DistanceBetween:myLoc and:hitLoc];
             if(!gameWorld.Blackboard.DropObject || gameWorld.Blackboard.DropObjectDistance > dist)
             {
-                NSLog(@"(#%d) obj Value %f, col Value %f, MountedObject? %@, CancellingObject? %@", [gameWorld.AllGameObjects indexOfObject:n], addO.ObjectValue, n.ColumnValue, n.MountedObject? @"YES":@"NO", n.CancellingObject? @"YES":@"NO");
+                //NSLog(@"(#%d) obj Value %f, col Value %f, MountedObject? %@, CancellingObject? %@", [gameWorld.AllGameObjects indexOfObject:n], addO.ObjectValue, n.ColumnValue, n.MountedObject? @"YES":@"NO", n.CancellingObject? @"YES":@"NO");
                 
                 if(!gameWorld.Blackboard.PriorityDropObject && n.AllowMultipleMount && n.MountedObject && !n.CancellingObject)
                 {
@@ -63,7 +63,7 @@
                     gameWorld.Blackboard.DropObject=gameObject;
                     gameWorld.Blackboard.DropObjectDistance=dist;
                     
-                    NSLog(@"net sets droptarget dist %f val %f", dist, n.ColumnValue);
+                    //NSLog(@"net sets droptarget dist %f val %f", dist, n.ColumnValue);
                 }
             }
         }

@@ -95,7 +95,7 @@ static float kTimeToCageShake=7.0f;
         
         gw.Blackboard.inProblemSetup = NO;
         
-        debugLogging=YES;
+        debugLogging=NO;
         
         for (int i=0;i<numberOfColumns;i++)
         {
@@ -784,7 +784,7 @@ static float kTimeToCageShake=7.0f;
     if([pdef objectForKey:AUTO_SELECT_BASE_VALUE])
         autoBaseSelection=[[pdef objectForKey:AUTO_SELECT_BASE_VALUE]boolValue];
     else
-        autoBaseSelection=NO;
+        autoBaseSelection=YES;
     
     
     //objects
@@ -2068,6 +2068,7 @@ static float kTimeToCageShake=7.0f;
 
             currentOpacity=127;
         }
+        
 
         // set our grid opacity dependent on what was done above
         [self setGridOpacity:currentOpacity];
@@ -2100,7 +2101,7 @@ static float kTimeToCageShake=7.0f;
                 inCondenseArea=NO;
                 currentOpacity=127;
             }
-            if(currentColumnIndex-1>0)
+            if(currentColumnIndex-1>=0)
                 [self setGridOpacity:currentColumnIndex-1 toOpacity:currentOpacity];
             
             // when we're moving several blocks at once
@@ -2230,7 +2231,7 @@ static float kTimeToCageShake=7.0f;
     {
         aTransitionHappened = [self doCondenseFromLocation:location];
         inCondenseArea=NO;
-        [condensePanel setVisible:NO];        
+        [condensePanel setVisible:NO];
         
     }
     // if a transition hasn't happened

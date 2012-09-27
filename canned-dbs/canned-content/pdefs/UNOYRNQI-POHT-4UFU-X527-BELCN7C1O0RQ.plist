@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Add 2 bars of 2 and press the green button.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>Add 2 bars of 2 and press the green button.</string>
+	<key>TOOL_KEY</key>
+	<string>NumberBonds</string>
+	<key>INIT_BARS</key>
+	<array>
+		<dict>
+			<key>LOCKED</key>
+			<false/>
+			<key>LENGTH</key>
+			<integer>4</integer>
+		</dict>
+	</array>
+	<key>INIT_OBJECTS</key>
+	<array/>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>INIT_CAGES</key>
+	<array>
+		<dict>
+			<key>LENGTH</key>
+			<integer>2</integer>
+			<key>LABEL</key>
+			<string>2</string>
+			<key>QUANTITY</key>
+			<integer>10</integer>
+		</dict>
+	</array>
+	<key>HOST_BACKGROUND_IMAGE</key>
+	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<key>SHOW_BADGES</key>
+	<false/>
+</dict>
+</plist>

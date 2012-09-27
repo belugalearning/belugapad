@@ -92,21 +92,31 @@
     return s;
 }
 
-+(CCAction*)moveOutAndDown
++(CCAction*)delayMoveOutAndDown
 {
     ccBezierConfig bc;
     bc.controlPoint_1=ccp(20, 20);
     bc.controlPoint_2=ccp(100, -200);
     bc.endPosition=ccp(150, -1024);
     
-    CCBezierBy *b1=[CCBezierBy actionWithDuration:0.5f bezier:bc];
+    CCDelayTime *d1=[CCDelayTime actionWithDuration:1.0f];
     
-    return b1;
+    CCBezierBy *b1=[CCBezierBy actionWithDuration:1.0f bezier:bc];
+    
+    CCSequence *s=[CCSequence actions: d1, b1, nil];
+    
+    return s;
 }
 
 +(CCAction*)spinFast
 {
-    return [CCRepeatForever actionWithAction:[CCRotateBy actionWithDuration:0.1f angle:360.0f]];
+    CCDelayTime *d1=[CCDelayTime actionWithDuration:1.0f];
+    
+    CCRepeatForever *rf1=[CCRepeatForever actionWithAction:[CCRotateBy actionWithDuration:0.1f angle:360.0f]];
+    
+    CCSequence *s=[CCSequence actions: d1, rf1, nil];
+    
+    return s;
 }
 
 +(CCAction*)highlightIncreaseAction

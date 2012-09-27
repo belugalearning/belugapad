@@ -436,12 +436,18 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 {
     if(!(m==2 || m==4 || m==8 || m==16)) return;
     
+    if(multiplierBadge)
+    {
+        [self removeChild:multiplierBadge cleanup:YES];
+    }
+    
     NSString *bf=[NSString stringWithFormat:@"/images/menu/HR_Multiplier_%d.png", m];
     multiplierBadge=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(bf)];
     multiplierBadge.position=ccp(700, 2*cy-32);
-    [perstLayer addChild:multiplierBadge z:5];
+    //multiplierBadge.position=ccp(cx,cy);
+    [self addChild:multiplierBadge z:4];
     
-    //[multiplierBadge runAction:[InteractionFeedback dropAndBounceAction]];
+    [multiplierBadge runAction:[InteractionFeedback dropAndBounceAction]];
 }
 
 -(void)rejectMultiplierButton
@@ -950,6 +956,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     showingProblemIncomplete=YES;
     
     [self showBlackOverlay];
+    
+    //reject multiplier
+    [self resetScoreMultiplier];
 }
 
 -(void)showBlackOverlay

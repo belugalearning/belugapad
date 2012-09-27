@@ -22,6 +22,12 @@
 	<false/>
 	<key>ALLOW_MULCHING</key>
 	<false/>
+    <key>IS_NEGATIVE_PROBLEM</key>
+	<true/>
+	<key>EXPLODE_MODE</key>
+	<true/>
+	<key>CAGE_DEFAULT_VALUE</key>
+	<integer>1</integer>
 	<key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_NEG_CAGE</key>

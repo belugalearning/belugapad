@@ -111,7 +111,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         
         //add disabled commit
         CCSprite *commdis=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Disabled.png")];
-        commdis.position=ccp(2*cx-HD_BUTTON_INSET, 2*cy - 32);
+        commdis.position=ccp(2*cx-HD_BUTTON_INSET, 2*cy - 30);
         [perstLayer addChild:commdis z:3];
 
         metaQuestionLayer=[[CCLayer alloc] init];
@@ -385,7 +385,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void) populatePerstLayer
 {
-    Zubi=[[Daemon alloc] initWithLayer:perstLayer andRestingPostion:ccp(cx, 2*cy-HD_SCORE_INSET) andLy:ly];
+    Zubi=[[Daemon alloc] initWithLayer:contextProgressLayer andRestingPostion:ccp(cx, 2*cy-HD_SCORE_INSET) andLy:ly];
     [Zubi hideZubi];
     
     //score labels
@@ -741,7 +741,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(evalMode==kProblemEvalOnCommit)
     {
         commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
-        commitBtn.position=ccp(2*cx-HD_BUTTON_INSET, 2*cy - HD_HEADER_HEIGHT / 2.0f);
+        commitBtn.position=ccp(2*cx-HD_BUTTON_INSET, 2*cy - 30);
         //[commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
         [commitBtn setTag:3];
         [commitBtn setOpacity:0];

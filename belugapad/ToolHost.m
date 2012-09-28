@@ -297,7 +297,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         timeBeforeUserInteraction-=delta;
         
         if(timeBeforeUserInteraction<0)
+        {
             isAnimatingIn=NO;
+            timeBeforeUserInteraction=kDisableInteractionTime;
+        }
     }
     
     if(numberPickerForThisProblem)timeSinceInteractionOrShakeNP+=delta;
@@ -936,6 +939,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)showProblemCompleteMessage
 {
+    NSLog(@"show problem complete");
     problemComplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/Question_Status/stamp_tick.png")];
     [problemComplete setPosition:ccp(cx, cy)];
     [problemComplete runAction:[InteractionFeedback stampAction]];
@@ -1293,11 +1297,17 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 }
 -(void)doWinning
 {
+    timeBeforeUserInteraction=kDisableInteractionTime;
+    isAnimatingIn=YES;
     [loggingService logEvent:BL_PA_SUCCESS withAdditionalData:nil];
-    [self removeMetaQuestionButtons];
+    
+    if(metaQuestionForThisProblem)
+    {
+        [self removeMetaQuestionButtons];
+        metaQuestionForceComplete=YES;
+    }
     [self showProblemCompleteMessage];
     currentTool.ProblemComplete=YES;
-    metaQuestionForceComplete=YES;
 }
 -(void)doIncomplete
 {   
@@ -1662,7 +1672,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     {
         [self playAudioFlourish];
         
-        isAnimatingIn=YES;
         timeBeforeUserInteraction=kDisableInteractionTime;
     }
     else {

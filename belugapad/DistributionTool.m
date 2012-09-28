@@ -107,17 +107,7 @@ static float kDistanceBetweenBlocks=70.0f;
     [gw doUpdate:delta];
     
     [self tidyUpEmptyGroups];
-    
-    if(autoMoveToNextProblem)
-    {
-        timeToAutoMoveToNextProblem+=delta;
-        if(timeToAutoMoveToNextProblem>=kTimeToAutoMove)
-        {
-            self.ProblemComplete=YES;
-            autoMoveToNextProblem=NO;
-            timeToAutoMoveToNextProblem=0.0f;
-        }
-    }  
+     
     timeSinceInteraction+=delta;
     
     if(timeSinceInteraction>kTimeSinceAction)
@@ -883,8 +873,7 @@ return NO;
     
     if(isWinning)
     {
-        autoMoveToNextProblem=YES;
-        [toolHost showProblemCompleteMessage];
+        [toolHost doWinning];
     }
     else {
         if(evalMode==kProblemEvalOnCommit)[self resetProblem];

@@ -110,27 +110,7 @@ static float kTimeToCageShake=7.0f;
 {
 	[gw doUpdate:delta];
     
-    if(autoMoveToNextProblem)
-    {
-        timeToAutoMoveToNextProblem+=delta;
-        if(timeToAutoMoveToNextProblem>=kTimeToAutoMove)
-        {
-            self.ProblemComplete=YES;
-            autoMoveToNextProblem=NO;
-            timeToAutoMoveToNextProblem=0.0f;
-        }
-    }    
-    if(autoHideStatusLabel)
-    {
-        timeToHideStatusLabel+=delta;
-        if(timeToHideStatusLabel>=kTimeToAutoMove)
-        {
-            [problemCompleteLabel setVisible:NO];
-            autoHideStatusLabel=NO;
-            timeToHideStatusLabel=0.0f;
-        }
-    }
-    
+
     timeSinceInteractionOrShake+=delta;
 
     // check the problem type
@@ -590,12 +570,6 @@ static float kTimeToCageShake=7.0f;
 
 -(void)setupBkgAndTitle
 {
-    problemCompleteLabel=[CCLabelTTF labelWithString:solutionDisplayText fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    [problemCompleteLabel setColor:kLabelCompleteColor];
-    [problemCompleteLabel setPosition:ccp(cx, cy*kLabelCompletePVYOffsetHalfProp)];
-    [problemCompleteLabel setVisible:NO];
-    [self.ForeLayer addChild:problemCompleteLabel z:5];
-    
     condensePanel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/cmpanel.png")];
     [condensePanel setPosition:ccp(100, cy)];
     [condensePanel setVisible:NO];
@@ -951,15 +925,6 @@ static float kTimeToCageShake=7.0f;
         //[self isProblemComplete];
 
     }
-}
-
--(void)doAutoEval
-{
-    [self isProblemComplete];
-    
-    if(isProblemComplete)
-        [toolHost problemIsComplete];
-
 }
 
 -(void)evalProblem

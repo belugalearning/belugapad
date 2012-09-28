@@ -90,16 +90,6 @@ static float kTimeToMountedShake=7.0f;
 {
 	[gw doUpdate:delta];
     
-    if(autoMoveToNextProblem)
-    {
-        timeToAutoMoveToNextProblem+=delta;
-        if(timeToAutoMoveToNextProblem>=kTimeToAutoMove)
-        {
-            self.ProblemComplete=YES;
-            autoMoveToNextProblem=NO;
-            timeToAutoMoveToNextProblem=0.0f;
-        }
-    }   
     timeSinceInteractionOrShake+=delta;
     if(timeSinceInteractionOrShake>kTimeToMountedShake)
     {
@@ -697,13 +687,12 @@ static float kTimeToMountedShake=7.0f;
     
     if(isWinning)
     {
-        autoMoveToNextProblem=YES;
-        [toolHost showProblemCompleteMessage];
+        [toolHost doWinning];
     }
     else {
         if(rejectMode==kProblemRejectOnCommit && rejectType==kProblemAutomatedTransition)[self resetProblemFromReject];
         else if(rejectType==kProblemResetOnReject)[toolHost resetProblem];
-        else [toolHost showProblemIncompleteMessage];
+        else [toolHost doIncomplete];
     }
 }
 

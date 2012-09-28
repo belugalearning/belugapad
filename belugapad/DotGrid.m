@@ -86,17 +86,6 @@
 -(void)doUpdateOnTick:(ccTime)delta
 {
 	[gw doUpdate:delta];
-    
-    if(autoMoveToNextProblem)
-    {
-        timeToAutoMoveToNextProblem+=delta;
-        if(timeToAutoMoveToNextProblem>=kTimeToAutoMove)
-        {
-            self.ProblemComplete=YES;
-            autoMoveToNextProblem=NO;
-            timeToAutoMoveToNextProblem=0.0f;
-        }
-    }   
 }
 
 
@@ -1004,8 +993,7 @@
     
     if(isWinning)
     {
-        autoMoveToNextProblem=YES;
-        [toolHost showProblemCompleteMessage];
+        [toolHost doWinning];
     }
     else {
         if(evalMode==kProblemEvalOnCommit)[self resetProblem];

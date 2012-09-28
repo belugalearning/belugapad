@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 5. Add </string>
+	<string>This is 5. Add 2 blocks.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Add 7 blocks. </string>
+	<string>This is 5. Add 2 blocks.</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>

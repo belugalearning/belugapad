@@ -71,5 +71,12 @@
 		<key>1</key>
 		<true/>
 	</dict>
+	<key>COLUMN_CAGES</key>
+	<dict>
+		<key>1</key>
+		<false/>
+		<key>10</key>
+		<false/>
+	</dict>
 </dict>
 </plist>

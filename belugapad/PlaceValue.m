@@ -858,17 +858,20 @@ static float kTimeToCageShake=7.0f;
 -(void)doWinning
 {
     // this method creates shards and displays the complete message
-    CGPoint pos=ccp(cx,cy);
-    autoMoveToNextProblem=YES; 
-    [toolHost showProblemCompleteMessage];
-    [toolHost.Zubi createXPshards:20 fromLocation:pos];
+//    CGPoint pos=ccp(cx,cy);
+//    autoMoveToNextProblem=YES; 
+//    [toolHost showProblemCompleteMessage];
+//    [toolHost.Zubi createXPshards:20 fromLocation:pos];
+
+    [toolHost doWinning];
 }
 -(void)doIncorrect
 {
     if(evalMode==kProblemEvalOnCommit)
     {
     // this method shows the incomplete message and deselects all selected objects
-        [toolHost showProblemIncompleteMessage];
+//        [toolHost showProblemIncompleteMessage];
+        [toolHost doIncomplete];
         [gw handleMessage:kDWdeselectAll andPayload:nil withLogLevel:-1];
     }
 }
@@ -945,7 +948,18 @@ static float kTimeToCageShake=7.0f;
     if(evalMode == kProblemEvalAuto)
     {
         [self evalProblem];
+        //[self isProblemComplete];
+
     }
+}
+
+-(void)doAutoEval
+{
+    [self isProblemComplete];
+    
+    if(isProblemComplete)
+        [toolHost problemIsComplete];
+
 }
 
 -(void)evalProblem

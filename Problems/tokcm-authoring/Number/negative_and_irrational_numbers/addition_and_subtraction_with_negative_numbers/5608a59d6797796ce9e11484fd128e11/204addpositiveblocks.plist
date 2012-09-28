@@ -22,6 +22,32 @@
 	<false/>
 	<key>ALLOW_MULCHING</key>
 	<false/>
+	<key>IS_NEGATIVE_PROBLEM</key>
+	<true/>
+	<key>EXPLODE_MODE</key>
+	<true/>
+	<key>CAGE_DEFAULT_VALUE</key>
+	<integer>1</integer>
+	<key>CAGE_POS_DISABLE_ADD</key>
+	<dict>
+		<key>1</key>
+		<true/>
+	</dict>
+	<key>CAGE_POS_DISABLE_DELETE</key>
+	<dict>
+		<key>1</key>
+		<true/>
+	</dict>
+	<key>CAGE_NEG_DISABLE_ADD</key>
+	<dict>
+		<key>1</key>
+		<false/>
+	</dict>
+	<key>CAGE_NEG_DISABLE_DELETE</key>
+	<dict>
+		<key>1</key>
+		<false/>
+	</dict>
 	<key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_NEG_CAGE</key>
@@ -41,10 +67,8 @@
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
-			<key>NUMBER</key>
-			<string>{0-$x}</string>
-			<key>NUMBER_PRE_COUNTED</key>
-			<string>{0-$x}</string>
+			<key>NUMBER_NEGATIVE</key>
+			<string>{$x}</string>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

@@ -8,6 +8,7 @@
 		<string>build_1.06</string>
 		<key>PROBLEMS</key>
         <array>
+            <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17a521/exprbuilder_1.plist</string>
             <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17a521/fbl_9_4.plist</string>
             <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17a521/dt_8_3.plist</string>
             <string>/Problems/tokcm-authoring/Number/addition_and_subtraction/adding_and_subtracting/5608a59d6797796ce9e11484fd17a521/dt_12_4.plist</string>

@@ -6,6 +6,8 @@
 	<string>ExprBuilder</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>tom&apos;s apples</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>tom&apos;s apples</string>
 	<key>EXPR_STAGES</key>
 	<array>
 		<string>&lt;b:t&gt;Rosa and Andrew blow up balloons for a birthday party. Andrew blows up&lt;/b:t&gt;

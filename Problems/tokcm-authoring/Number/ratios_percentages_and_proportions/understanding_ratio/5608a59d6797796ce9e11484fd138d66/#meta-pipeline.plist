@@ -7,7 +7,11 @@
 		<key>PIPELINE_NAME</key>
 		<string>build_1.06</string>
 		<key>PROBLEMS</key>
-		<array>
-		</array>
+        <array>
+            <string>/Problems/tokcm-authoring/Number/ratios_percentages_and_proportions/understanding_ratio/5608a59d6797796ce9e11484fd138d66/exprbuilder_1.plist</string>
+            <string>/Problems/tokcm-authoring/Number/ratios_percentages_and_proportions/understanding_ratio/5608a59d6797796ce9e11484fd138d66/exprbuilder_2.plist</string>
+            <string>/Problems/tokcm-authoring/Number/ratios_percentages_and_proportions/understanding_ratio/5608a59d6797796ce9e11484fd138d66/exprbuilder_3.plist</string>
+            <string>/Problems/tokcm-authoring/Number/ratios_percentages_and_proportions/understanding_ratio/5608a59d6797796ce9e11484fd138d66/exprbuilder_4.plist</string>
+        </array>
 	</dict>
 </plist>

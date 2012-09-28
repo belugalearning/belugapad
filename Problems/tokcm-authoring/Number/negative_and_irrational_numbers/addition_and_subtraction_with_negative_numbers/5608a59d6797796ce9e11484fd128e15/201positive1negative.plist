@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 3. Add negative blocks to make 0.</string>
+	<string>What number is this?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string> &lt;10 positive blocks and 1 negative block</string>
 	<key>TOOL_KEY</key>
@@ -48,12 +48,12 @@
 		<key>1</key>
 		<false/>
 	</dict>
-    <key>CAGE_DEFAULT_VALUE</key>
+	<key>CAGE_DEFAULT_VALUE</key>
 	<integer>1</integer>
-    <key>SHOW_CAGE</key>
+	<key>SHOW_CAGE</key>
 	<false/>
 	<key>SHOW_NEG_CAGE</key>
-	<true/>
+	<false/>
 	<key>SHOW_COUNT</key>
 	<true/>
 	<key>SHOW_COUNT_BLOCK</key>
@@ -70,7 +70,9 @@
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>3</integer>
+			<string>{$x}</string>
+			<key>NUMBER_NEGATIVE</key>
+			<string>1</string>
 			<key>NUMBER_PRE_COUNTED</key>
 			<integer>3</integer>
 		</dict>
@@ -88,5 +90,22 @@
 	<integer>1</integer>
 	<key>DISABLE_CAGE_DELETE</key>
 	<true/>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>Which number is this?</string>
+		<key>INTERNAL_DESCRIPTION</key>
+		<string>identify positive number</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>1</integer>
+		<key>ANIMATE_FROM_PICKER</key>
+		<true/>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<string>{$x}</string>
+	</dict>
 </dict>
 </plist>

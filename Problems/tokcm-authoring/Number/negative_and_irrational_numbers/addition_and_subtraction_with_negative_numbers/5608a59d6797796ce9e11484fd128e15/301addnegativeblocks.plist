@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 3. Add negative blocks to make 0.</string>
+	<string>What is this number?</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>more negative blocks than positive blocks</string>
 	<key>TOOL_KEY</key>
@@ -48,12 +48,12 @@
 		<key>1</key>
 		<false/>
 	</dict>
-    <key>CAGE_DEFAULT_VALUE</key>
+	<key>CAGE_DEFAULT_VALUE</key>
 	<integer>1</integer>
-    <key>SHOW_CAGE</key>
+	<key>SHOW_CAGE</key>
 	<false/>
 	<key>SHOW_NEG_CAGE</key>
-	<true/>
+	<false/>
 	<key>SHOW_COUNT</key>
 	<true/>
 	<key>SHOW_COUNT_BLOCK</key>
@@ -64,15 +64,36 @@
 	<false/>
 	<key>SHOW_BASE_SELECTION</key>
 	<false/>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>2</string>
+			<key>MAX</key>
+			<string>5</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>0</string>
+			<key>MAX</key>
+			<string>{$x}</string>
+		</dict>
+	</array>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>3</integer>
+			<string>{$y}</string>
 			<key>NUMBER_PRE_COUNTED</key>
 			<integer>3</integer>
+			<key>NUMBER_NEGATIVE</key>
+			<string>{$x}</string>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

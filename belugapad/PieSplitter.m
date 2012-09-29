@@ -891,8 +891,7 @@ static float kTimeToPieShake=7.0f;
     
     if(isWinning)
     {
-        autoMoveToNextProblem=YES;
-        [toolHost showProblemCompleteMessage];
+        [toolHost doWinning];
     }
     else {
         if(evalMode==kProblemEvalOnCommit)[self resetProblem];

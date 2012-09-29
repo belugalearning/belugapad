@@ -133,16 +133,6 @@
         [buttonOfWin setPosition:ccp(cx,cy)];
     }
     
-    if(autoMoveToNextProblem)
-    {
-        timeToAutoMoveToNextProblem+=delta;
-        if(timeToAutoMoveToNextProblem>=kTimeToAutoMove)
-        {
-            self.ProblemComplete=YES;
-            autoMoveToNextProblem=NO;
-            timeToAutoMoveToNextProblem=0.0f;
-        }
-    }
 }
 
 -(void)draw
@@ -280,8 +270,7 @@
     if(isWinning)
     {
         expired=YES;
-        autoMoveToNextProblem=YES;
-        [toolHost showProblemCompleteMessage];
+        [toolHost doWinning];
     }
     else {
 //        if(evalMode==kProblemEvalOnCommit)[self resetProblem];

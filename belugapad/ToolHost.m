@@ -53,7 +53,8 @@
 @synthesize flagResetProblem;
 @synthesize DynProblemParser;
 
-static float kMoveToNextProblemTime=2.0f;
+static float kMoveToNextProblemTime=0.5f;
+static float kDisableInteractionTime=0.5f;
 static float kTimeToShakeNumberPickerButtons=7.0f;
 
 #pragma mark - init and setup
@@ -292,6 +293,15 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             [self gotoNewProblem];
         }
     }
+    else if(isAnimatingIn){
+        timeBeforeUserInteraction-=delta;
+        
+        if(timeBeforeUserInteraction<0)
+        {
+            isAnimatingIn=NO;
+            timeBeforeUserInteraction=kDisableInteractionTime;
+        }
+    }
     
     if(numberPickerForThisProblem)timeSinceInteractionOrShakeNP+=delta;
     
@@ -306,12 +316,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         timeSinceInteractionOrShakeNP=0.0f;
     }
     
-    if(isAnimatingIn){
-        timeBeforeUserInteraction-=delta;
-        
-        if(timeBeforeUserInteraction<0)
-            isAnimatingIn=NO;
-    }
+
     
     //let tool do updates
     if(!isPaused)[currentTool doUpdateOnTick:delta];
@@ -934,6 +939,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)showProblemCompleteMessage
 {
+    NSLog(@"show problem complete");
     problemComplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/Question_Status/stamp_tick.png")];
     [problemComplete setPosition:ccp(cx, cy)];
     [problemComplete runAction:[InteractionFeedback stampAction]];
@@ -1291,11 +1297,17 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 }
 -(void)doWinning
 {
+    timeBeforeUserInteraction=kDisableInteractionTime;
+    isAnimatingIn=YES;
     [loggingService logEvent:BL_PA_SUCCESS withAdditionalData:nil];
-    [self removeMetaQuestionButtons];
+    
+    if(metaQuestionForThisProblem)
+    {
+        [self removeMetaQuestionButtons];
+        metaQuestionForceComplete=YES;
+    }
     [self showProblemCompleteMessage];
     currentTool.ProblemComplete=YES;
-    metaQuestionForceComplete=YES;
 }
 -(void)doIncomplete
 {   
@@ -1659,6 +1671,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(currentTool.ProblemComplete)
     {
         [self playAudioFlourish];
+        
+        timeBeforeUserInteraction=kDisableInteractionTime;
     }
     else {
         [self playAudioPress];
@@ -1806,35 +1820,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 //        animPos=0;
 //        [self moveToTool0:0];
 //    }
-    if(isPaused||autoMoveToNextProblem)
+    if(isPaused||autoMoveToNextProblem||isAnimatingIn)
     {
         return;
-    }  
-    
-    if(isGlossaryMock)
-    {
-        if (glossaryShowing) {
-            [self removeChild:glossaryPopup cleanup:YES];
-            glossaryShowing=NO;
-        }
-        
-        else if(CGRectContainsPoint(CGRectMake(450, 650, 200, 150), location))
-        {
-            glossaryPopup=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/glossary/GlossaryPopup.png")];
-            [glossaryPopup setPosition:ccp(cx, cy)];
-            [self addChild:glossaryPopup z:10];
-            glossaryShowing=YES;
-            
-            //swap to stage two?
-            if(!isGloassryDone1)
-            {
-                [self removeChild:glossary1 cleanup:YES];
-                glossary2=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/glossary/GlossaryExampleTapped.png")];
-                [glossary2 setPosition:ccp(cx,cy)];
-                [self addChild:glossary2];
-                isGloassryDone1=YES;
-            }
-        }
     }
     
     if(metaQuestionForThisProblem)
@@ -1867,7 +1855,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
-    if(isPaused||autoMoveToNextProblem)
+    if(isPaused||autoMoveToNextProblem||isAnimatingIn)
     {
         return;
     } 
@@ -1923,7 +1911,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     // if we're paused - check if any menu options were valid.
     // touches ended event becase otherwise these touches go through to the tool
-    if(isPaused||autoMoveToNextProblem)
+    if(isPaused||autoMoveToNextProblem||isAnimatingIn)
     {
         [self checkPauseTouches:location];
         return;

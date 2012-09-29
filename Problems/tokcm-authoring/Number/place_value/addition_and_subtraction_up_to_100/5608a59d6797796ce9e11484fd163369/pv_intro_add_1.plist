@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Tap to count.</string>
+	<string>Add 1 block. </string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -40,29 +40,13 @@
 		<string>Ones</string>
 	</dict>
 	<key>INIT_OBJECTS</key>
-	<array>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
-			<key>NUMBER</key>
-			<integer>1</integer>
-		</dict>
-	</array>
+	<array/>
 	<key>SOLUTION</key>
 	<dict>
 		<key>SOLUTION_TYPE</key>
-		<string>TOTAL_COUNT_AND_COUNT_SEQUENCE</string>
+		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
 		<integer>1</integer>
-	</dict>
-	<key>COLUMN_CAGES</key>
-	<dict>
-		<key>1</key>
-		<false/>
-		<key>10</key>
-		<false/>
 	</dict>
 </dict>
 </plist>

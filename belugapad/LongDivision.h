@@ -58,6 +58,8 @@
     BOOL movedTopSection;
     BOOL hideRenderLayer;
     
+    BOOL hasEvaluated;
+    
     float dividend;
     float divisor;
     

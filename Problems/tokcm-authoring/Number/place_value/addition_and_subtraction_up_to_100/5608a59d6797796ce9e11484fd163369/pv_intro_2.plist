@@ -27,7 +27,7 @@
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>SHOW_CAGE</key>
-	<true/>
+	<false/>
 	<key>SHOW_COUNT</key>
 	<true/>
 	<key>SHOW_COUNT_BLOCK</key>
@@ -56,6 +56,20 @@
 		<string>TOTAL_COUNT_AND_COUNT_SEQUENCE</string>
 		<key>SOLUTION_VALUE</key>
 		<integer>1</integer>
+	</dict>
+	<key>CAGE_POS_DISABLE_ADD</key>
+	<dict>
+		<key>10</key>
+		<true/>
+		<key>1</key>
+		<true/>
+	</dict>
+	<key>CAGE_POS_DISABLE_DELETE</key>
+	<dict>
+		<key>10</key>
+		<true/>
+		<key>1</key>
+		<true/>
 	</dict>
 	<key>COLUMN_CAGES</key>
 	<dict>

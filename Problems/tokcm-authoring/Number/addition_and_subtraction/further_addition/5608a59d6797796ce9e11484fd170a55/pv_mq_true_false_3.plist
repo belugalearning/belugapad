@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>5 + 1 = 6. True or false?</string>
+	<string>6 = 6. True or false?</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -151,6 +151,8 @@
 	</dict>
 	<key>META_QUESTION</key>
 	<dict>
+		<key>META_QUESTION_RANDOMISE_ANSWERS</key>
+		<false/>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
 		<string>well done!!</string>
 		<key>META_QUESTION_EVAL_MODE</key>

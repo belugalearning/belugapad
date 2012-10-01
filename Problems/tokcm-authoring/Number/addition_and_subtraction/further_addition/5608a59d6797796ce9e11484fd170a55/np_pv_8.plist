@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>6 + __ = 4 + 4. Fill the gap.</string>
+	<string>6 + __ = 4 + 4. FIll in the gap.</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>COL_BASE_VALUE</key>
@@ -69,24 +69,12 @@
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>4</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>1</integer>
-			<key>NUMBER</key>
-			<integer>2</integer>
+			<integer>6</integer>
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>1</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
 			<key>NUMBER</key>
 			<integer>4</integer>
 		</dict>
@@ -128,7 +116,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>6 + __ = 4 + 4. Fill the gap.</string>
+		<string>6 + __ = 4 + 4. FIll in the gap.</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>PICKER_ORIGIN_X</key>

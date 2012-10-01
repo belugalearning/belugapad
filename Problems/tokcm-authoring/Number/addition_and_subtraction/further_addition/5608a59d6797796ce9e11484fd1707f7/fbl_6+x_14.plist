@@ -3,17 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>6 + x = 14. Find x and perform the calculation.</string>
+	<string>6 + x = 14. What is x?</string>
 	<key>TOOL_KEY</key>
 	<string>FloatingBlock</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
 	<key>SOLUTION</key>
-	<integer>14</integer>
+	<integer>8</integer>
 	<key>INIT_BUBBLES</key>
 	<integer>2</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
+		<dict>
+			<key>NUMBER</key>
+			<integer>14</integer>
+		</dict>
 		<dict>
 			<key>NUMBER</key>
 			<integer>6</integer>
@@ -31,6 +35,8 @@
 	<key>SHOW_MULTIPLE_CONTROLS</key>
 	<true/>
 	<key>SHOW_SOLUTION_ON_PIPE</key>
-	<true/>
+	<false/>
+	<key>MAX_BLOCKS_FROM_PIPE</key>
+	<integer>15</integer>
 </dict>
 </plist>

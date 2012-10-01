@@ -19,7 +19,7 @@
 	<key>ROPES_PER_COL</key>
 	<integer>5</integer>
 	<key>ROWS_PER_COL</key>
-	<integer>2</integer>
+	<integer>4</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
@@ -70,9 +70,9 @@
 			<key>VAR_NAME</key>
 			<string>$x</string>
 			<key>MIN</key>
-			<string>2</string>
+			<string>4</string>
 			<key>MAX</key>
-			<string>5</string>
+			<string>6</string>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>

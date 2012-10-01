@@ -51,6 +51,7 @@ typedef enum {
     CCLabelTTF *commitLabel;
     CCLabelTTF *newPipeLabel;
     BOOL touchingNewPipeLabel;
+    BOOL showNewPipe;
     
     // init stuff
     int initBubbles;

@@ -8,6 +8,7 @@
 
 #import "cocos2d.h"
 #import "ToolConsts.h"
+#import "CCPickerView.h"
 
 typedef enum {
     kMetaQuestionAnswerSingle=0,
@@ -37,7 +38,7 @@ typedef enum {
 @class LRAnimator;
 @class SGGameWorld;
 
-@interface ToolHost : CCLayer
+@interface ToolHost : CCLayer <CCPickerViewDataSource, CCPickerViewDelegate>
 {
     float cx, cy, lx, ly;
     
@@ -171,6 +172,7 @@ typedef enum {
 @property (retain) BAExpressionTree *PpExpr;
 @property BOOL flagResetProblem;
 @property (retain) DProblemParser *DynProblemParser;
+@property (nonatomic, retain) CCPickerView *pickerView;
 
 +(CCScene *) scene;
 

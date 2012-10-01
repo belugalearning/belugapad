@@ -89,17 +89,6 @@ const float kScaleOfLesserBlocks=0.6f;
 -(void)doUpdateOnTick:(ccTime)delta
 {
 	[gw doUpdate:delta];
-    
-    if(autoMoveToNextProblem)
-    {
-        timeToAutoMoveToNextProblem+=delta;
-        if(timeToAutoMoveToNextProblem>=kTimeToAutoMove)
-        {
-            self.ProblemComplete=YES;
-            autoMoveToNextProblem=NO;
-            timeToAutoMoveToNextProblem=0.0f;
-        }
-    }  
 
     // work out the current total
     currentTotal=0;
@@ -177,7 +166,8 @@ const float kScaleOfLesserBlocks=0.6f;
         }
         [self updateBlock];
     }       
-    if(evalMode==kProblemEvalAuto)[self evalProblem];
+    if(evalMode==kProblemEvalAuto && !hasEvaluated)
+        [self evalProblem];
 
 }
 
@@ -197,8 +187,6 @@ const float kScaleOfLesserBlocks=0.6f;
     renderBlockLabels=[[pdef objectForKey:RENDERBLOCK_LABELS] boolValue];
     hideRenderLayer=[[pdef objectForKey:HIDE_RENDERLAYER] boolValue];
     startRow=[[pdef objectForKey:START_ROW]floatValue];
-    
-
     
     
 }
@@ -695,8 +683,8 @@ const float kScaleOfLesserBlocks=0.6f;
     
     if(isWinning)
     {
-        autoMoveToNextProblem=YES;
-        [toolHost showProblemCompleteMessage];
+        hasEvaluated=YES;
+        [toolHost doWinning];
     }
     else {
         if(evalMode==kProblemEvalOnCommit)

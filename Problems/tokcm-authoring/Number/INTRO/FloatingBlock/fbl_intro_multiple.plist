@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Hold the top pipe and move your finger up. Tap at 5. Put 5 blocks in the bottom pipe. </string>
+	<string>Hold the number by the pipe and your finger up to 5. Tap the pipe Put 5 blocks in the bottom pipe. </string>
 	<key>TOOL_KEY</key>
 	<string>FloatingBlock</string>
 	<key>EVAL_MODE</key>

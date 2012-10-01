@@ -24,7 +24,7 @@
 	<false/>
 	<key>SHOW_NUMBERS_AT_INTERVALS</key>
 	<array>
-		<string>5</string>
+		<string>3</string>
 	</array>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
@@ -46,7 +46,7 @@
 	<integer>0</integer>
 	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
 	<array>
-		<integer>1</integer>
+		<integer>3</integer>
 	</array>
 	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
 	<array/>

@@ -36,6 +36,13 @@
 #define HD_BUTTON_INSET 40.0f
 #define HD_SCORE_INSET 40.0f
 
+//CCPickerView
+#define kComponentWidth 54
+#define kComponentHeight 32
+#define kComponentSpacing 10
+
+#define SHOW_NUMBER_WHEEL NO
+
 @interface ToolHost()
 {
     @private
@@ -52,8 +59,10 @@
 @synthesize PpExpr;
 @synthesize flagResetProblem;
 @synthesize DynProblemParser;
+@synthesize pickerView;
 
-static float kMoveToNextProblemTime=2.0f;
+static float kMoveToNextProblemTime=0.5f;
+static float kDisableInteractionTime=0.5f;
 static float kTimeToShakeNumberPickerButtons=7.0f;
 
 #pragma mark - init and setup
@@ -292,6 +301,15 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             [self gotoNewProblem];
         }
     }
+    else if(isAnimatingIn){
+        timeBeforeUserInteraction-=delta;
+        
+        if(timeBeforeUserInteraction<0)
+        {
+            isAnimatingIn=NO;
+            timeBeforeUserInteraction=kDisableInteractionTime;
+        }
+    }
     
     if(numberPickerForThisProblem)timeSinceInteractionOrShakeNP+=delta;
     
@@ -306,12 +324,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         timeSinceInteractionOrShakeNP=0.0f;
     }
     
-    if(isAnimatingIn){
-        timeBeforeUserInteraction-=delta;
-        
-        if(timeBeforeUserInteraction<0)
-            isAnimatingIn=NO;
-    }
+
     
     //let tool do updates
     if(!isPaused)[currentTool doUpdateOnTick:delta];
@@ -693,6 +706,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [self setupProblemOnToolHost:pdef];
     }
     
+    //setup number wheel if required
+    if (SHOW_NUMBER_WHEEL) {
+        [self setupNumberWheel];
+    }
+    
     // set scale using the value we got earlier
     [toolBackLayer setScale:scale];
     [toolForeLayer setScale:scale];
@@ -934,6 +952,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)showProblemCompleteMessage
 {
+    NSLog(@"show problem complete");
     problemComplete = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/Question_Status/stamp_tick.png")];
     [problemComplete setPosition:ccp(cx, cy)];
     [problemComplete runAction:[InteractionFeedback stampAction]];
@@ -1291,11 +1310,17 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 }
 -(void)doWinning
 {
+    timeBeforeUserInteraction=kDisableInteractionTime;
+    isAnimatingIn=YES;
     [loggingService logEvent:BL_PA_SUCCESS withAdditionalData:nil];
-    [self removeMetaQuestionButtons];
+    
+    if(metaQuestionForThisProblem)
+    {
+        [self removeMetaQuestionButtons];
+        metaQuestionForceComplete=YES;
+    }
     [self showProblemCompleteMessage];
     currentTool.ProblemComplete=YES;
-    metaQuestionForceComplete=YES;
 }
 -(void)doIncomplete
 {   
@@ -1659,6 +1684,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(currentTool.ProblemComplete)
     {
         [self playAudioFlourish];
+        
+        timeBeforeUserInteraction=kDisableInteractionTime;
     }
     else {
         [self playAudioPress];
@@ -1806,35 +1833,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 //        animPos=0;
 //        [self moveToTool0:0];
 //    }
-    if(isPaused||autoMoveToNextProblem)
+    if(isPaused||autoMoveToNextProblem||isAnimatingIn)
     {
         return;
-    }  
-    
-    if(isGlossaryMock)
-    {
-        if (glossaryShowing) {
-            [self removeChild:glossaryPopup cleanup:YES];
-            glossaryShowing=NO;
-        }
-        
-        else if(CGRectContainsPoint(CGRectMake(450, 650, 200, 150), location))
-        {
-            glossaryPopup=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/glossary/GlossaryPopup.png")];
-            [glossaryPopup setPosition:ccp(cx, cy)];
-            [self addChild:glossaryPopup z:10];
-            glossaryShowing=YES;
-            
-            //swap to stage two?
-            if(!isGloassryDone1)
-            {
-                [self removeChild:glossary1 cleanup:YES];
-                glossary2=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/glossary/GlossaryExampleTapped.png")];
-                [glossary2 setPosition:ccp(cx,cy)];
-                [self addChild:glossary2];
-                isGloassryDone1=YES;
-            }
-        }
     }
     
     if(metaQuestionForThisProblem)
@@ -1867,7 +1868,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
-    if(isPaused||autoMoveToNextProblem)
+    if(isPaused||autoMoveToNextProblem||isAnimatingIn)
     {
         return;
     } 
@@ -1923,7 +1924,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     // if we're paused - check if any menu options were valid.
     // touches ended event becase otherwise these touches go through to the tool
-    if(isPaused||autoMoveToNextProblem)
+    if(isPaused||autoMoveToNextProblem||isAnimatingIn)
     {
         [self checkPauseTouches:location];
         return;
@@ -2010,6 +2011,100 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [currentTool ccTouchCancelled:touch withEvent:event];
 }
 
+#pragma mark - CCPickerView for number wheel
+
+-(void)setupNumberWheel
+{
+    if(self.pickerView) return;
+    
+    self.pickerView = [CCPickerView node];
+    pickerView.position = ccp(2*cx-150, 2*cy-150);
+    pickerView.dataSource = self;
+    pickerView.delegate = self;
+    
+    [self addChild:self.pickerView z:20];
+}
+
+#pragma mark CCPickerView delegate methods
+
+- (NSInteger)numberOfComponentsInPickerView:(CCPickerView *)pickerView {
+    return 3;
+}
+
+- (NSInteger)pickerView:(CCPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    
+    NSInteger numRows = 0;
+    
+    switch (component) {
+        case 0:
+            numRows = 10;
+            break;
+        case 1:
+            numRows = 10;
+            break;
+        case 2:
+            numRows = 10;
+            break;
+        default:
+            break;
+    }
+    
+    return numRows;
+}
+
+- (CGFloat)pickerView:(CCPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
+    return kComponentHeight;
+}
+
+- (CGFloat)pickerView:(CCPickerView *)pickerView widthForComponent:(NSInteger)component {
+    return kComponentWidth;
+}
+
+- (NSString *)pickerView:(CCPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    return @"Not used";
+}
+
+- (CCNode *)pickerView:(CCPickerView *)pickerView nodeForRow:(NSInteger)row forComponent:(NSInteger)component reusingNode:(CCNode *)node {
+    
+    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", row]fontName:@"Chango" fontSize:24];
+    return l;
+    
+//    temp.color = ccYELLOW;
+//    temp.textureRect = CGRectMake(0, 0, kComponentWidth, kComponentHeight);
+//    
+//    NSString *rowString = [NSString stringWithFormat:@"%d", row];
+//    CCLabelBMFont *label = [CCLabelBMFont labelWithString:rowString fntFile:@"bitmapFont.fnt"];
+//    label.position = ccp(kComponentWidth/2, kComponentHeight/2-5);
+//    [temp addChild:label];
+//    return temp;
+    
+}
+
+- (void)pickerView:(CCPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    CCLOG(@"didSelect row = %d, component = %d", row, component);
+}
+
+- (CGFloat)spaceBetweenComponents:(CCPickerView *)pickerView {
+    return kComponentSpacing;
+}
+
+- (CGSize)sizeOfPickerView:(CCPickerView *)pickerView {
+    CGSize size = CGSizeMake(200, 100);
+    
+    return size;
+}
+
+- (CCNode *)overlayImage:(CCPickerView *)pickerView {
+    CCSprite *sprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/3slots.png")];
+    return sprite;
+}
+
+- (void)onDoneSpinning:(CCPickerView *)pickerView component:(NSInteger)component {
+    
+    NSLog(@"Component %d stopped spinning.", component);
+}
+
+
 #pragma mark - debug pipeline views
 
 -(void)debugShowPipelineState
@@ -2084,6 +2179,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     self.Zubi=nil;
     
+    //number wheel / picker view
+    if(pickerView)[pickerView release];
     
     [super dealloc];
 }

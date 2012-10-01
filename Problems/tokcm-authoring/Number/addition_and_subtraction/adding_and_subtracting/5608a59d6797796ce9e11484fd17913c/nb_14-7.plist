@@ -3,13 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Subtract 7 from 14, by finding the number that makes 14 when added to 7.</string>
+	<string>Find the number that makes 14 when added to 7.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Subtract 7 from 14, by finding the number that makes 14 when added to 7.</string>
+	<string>Find the number that makes 14 when added to 7.</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>SOLUTION_MODE</key>
-	<integer>0</integer>
+	<integer>1</integer>
+	<key>SOLUTIONS</key>
+	<array>
+		<array>
+			<string>14</string>
+		</array>
+		<array>
+			<string>7</string>
+			<string>7</string>
+		</array>
+	</array>
 	<key>INIT_BARS</key>
 	<array>
 		<dict>
@@ -107,5 +117,7 @@
 	</array>
 	<key>HOST_BACKGROUND_IMAGE</key>
 	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<key>SHOW_BADGES</key>
+	<false/>
 </dict>
 </plist>

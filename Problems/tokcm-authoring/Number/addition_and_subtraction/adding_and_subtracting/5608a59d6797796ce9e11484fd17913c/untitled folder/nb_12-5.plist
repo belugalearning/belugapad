@@ -3,23 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Find the number that makes 12 when added to 5. </string>
+	<string>Subtract 5 from 12, by finding the number that makes 12 when added to 5.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Find the number that makes 12 when added to 5. </string>
+	<string>Subtract 5 from 12, by finding the number that makes 12 when added to 5.</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>SOLUTION_MODE</key>
-	<integer>1</integer>
-	<key>SOLUTIONS</key>
-	<array>
-		<array>
-			<string>12</string>
-		</array>
-		<array>
-			<string>5</string>
-			<string>7</string>
-		</array>
-	</array>
+	<integer>0</integer>
 	<key>INIT_BARS</key>
 	<array>
 		<dict>
@@ -117,7 +107,5 @@
 	</array>
 	<key>HOST_BACKGROUND_IMAGE</key>
 	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
-	<key>SHOW_BADGES</key>
-	<false/>
 </dict>
 </plist>

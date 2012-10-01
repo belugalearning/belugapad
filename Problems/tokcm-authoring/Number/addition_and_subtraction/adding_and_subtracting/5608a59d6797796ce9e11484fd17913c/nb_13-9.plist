@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Find the number that makes 12 when added to 5. </string>
+	<string>Do 13 subtract 9 , by finding the number that makes 13 when added to 9.</string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Find the number that makes 12 when added to 5. </string>
+	<string>Do 13 subtract 9 , by finding the number that makes 13 when added to 9.</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>SOLUTION_MODE</key>
@@ -13,11 +13,11 @@
 	<key>SOLUTIONS</key>
 	<array>
 		<array>
-			<string>12</string>
+			<string>13</string>
 		</array>
 		<array>
-			<string>5</string>
-			<string>7</string>
+			<string>9</string>
+			<string>4</string>
 		</array>
 	</array>
 	<key>INIT_BARS</key>
@@ -26,32 +26,32 @@
 			<key>LOCKED</key>
 			<true/>
 			<key>LENGTH</key>
-			<integer>12</integer>
+			<integer>13</integer>
 		</dict>
 		<dict>
 			<key>LOCKED</key>
 			<false/>
 			<key>LENGTH</key>
-			<integer>12</integer>
+			<integer>13</integer>
 		</dict>
 	</array>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
 			<key>LABEL</key>
-			<string>12</string>
+			<string>13</string>
 			<key>PUT_IN_ROW</key>
 			<integer>0</integer>
 			<key>LENGTH</key>
-			<integer>12</integer>
+			<integer>13</integer>
 		</dict>
 		<dict>
 			<key>LABEL</key>
-			<string>5</string>
+			<string>9</string>
 			<key>PUT_IN_ROW</key>
 			<integer>1</integer>
 			<key>LENGTH</key>
-			<integer>5</integer>
+			<integer>9</integer>
 		</dict>
 	</array>
 	<key>EVAL_MODE</key>

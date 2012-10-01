@@ -92,6 +92,17 @@
 	<integer>1</integer>
 	<key>DISABLE_CAGE_DELETE</key>
 	<true/>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>2</string>
+			<key>MAX</key>
+			<string>6</string>
+		</dict>
+	</array>
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
@@ -107,7 +118,7 @@
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
-		<string>{$x}</string>
+		<string>{$x-1}</string>
 	</dict>
 </dict>
 </plist>

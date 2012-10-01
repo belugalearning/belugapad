@@ -68,9 +68,9 @@
 			<key>VAR_NAME</key>
 			<string>$x</string>
 			<key>MIN</key>
-			<string>0</string>
+			<string>2</string>
 			<key>MAX</key>
-			<string>10</string>
+			<string>6</string>
 		</dict>
 	</array>
 	<key>NUMBER_PICKER</key>
@@ -78,7 +78,7 @@
 		<key>NUMBER_PICKER_DESCRIPTION</key>
 		<string>Which number is this?</string>
 		<key>INTERNAL_DESCRIPTION</key>
-		<string>identify positive number</string>
+		<string>identify negative number</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>ANIMATE_FROM_PICKER</key>

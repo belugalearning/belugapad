@@ -70,9 +70,9 @@
 			<key>VAR_NAME</key>
 			<string>$x</string>
 			<key>MIN</key>
-			<string>2</string>
-			<key>MAX</key>
 			<string>5</string>
+			<key>MAX</key>
+			<string>10</string>
 		</dict>
 	</array>
 	<key>INIT_OBJECTS</key>
@@ -80,10 +80,14 @@
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
-			<key>NUMBER</key>
-			<string>{$x}</string>
 			<key>NUMBER_NEGATIVE</key>
 			<string>{$x-4}</string>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
+			<integer>0</integer>
+			<key>NUMBER</key>
+			<string>{$x}</string>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

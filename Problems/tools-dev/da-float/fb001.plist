@@ -10,8 +10,6 @@
 	<integer>0</integer>
 	<key>SOLUTION</key>
 	<integer>6</integer>
-	<key>INIT_BUBBLES</key>
-	<integer>1</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>

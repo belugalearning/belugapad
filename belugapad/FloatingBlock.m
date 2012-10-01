@@ -126,8 +126,8 @@
     showSolutionOnPipe=[[pdef objectForKey:SHOW_SOLUTION_ON_PIPE]boolValue];
     showMultipleControls=[[pdef objectForKey:SHOW_MULTIPLE_CONTROLS]boolValue];
     
-    if([pdef objectForKey:SHOW_NEW_PIPE])
-        showNewPipe=[[pdef objectForKey:SHOW_NEW_PIPE]boolValue];
+    if([pdef objectForKey:SHOW_INPUT_PIPE])
+        showNewPipe=[[pdef objectForKey:SHOW_INPUT_PIPE]boolValue];
     else
         showNewPipe=YES;
     

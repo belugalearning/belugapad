@@ -1533,7 +1533,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             {
                 for(NSNumber *n in numberPickedValue)
                 {
-                    if([n intValue]==10)return;
+                    if([n intValue]==10)continue;
                 }
             }
             // check each of the buttons to see if it was them that were hit

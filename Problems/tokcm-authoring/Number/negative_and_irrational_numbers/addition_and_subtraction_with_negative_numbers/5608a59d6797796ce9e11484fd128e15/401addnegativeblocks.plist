@@ -27,7 +27,7 @@
 	<key>IS_NEGATIVE_PROBLEM</key>
 	<true/>
 	<key>EXPLODE_MODE</key>
-	<true/>
+	<false/>
 	<key>CAGE_DEFAULT_VALUE</key>
 	<integer>1</integer>
 	<key>CAGE_POS_DISABLE_ADD</key>

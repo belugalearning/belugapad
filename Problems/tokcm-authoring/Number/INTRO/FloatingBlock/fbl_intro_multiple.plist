@@ -11,9 +11,18 @@
 	<key>SOLUTION</key>
 	<integer>5</integer>
 	<key>INIT_BUBBLES</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>INIT_OBJECTS</key>
-	<array/>
+	<array>
+		<dict>
+			<key>NUMBER</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>NUMBER</key>
+			<integer>3</integer>
+		</dict>
+	</array>
 	<key>BUBBLE_AUTO_OPERATE</key>
 	<false/>
 	<key>SUPPORTED_OPERATORS</key>
@@ -21,10 +30,10 @@
 		<string>+</string>
 	</array>
 	<key>SHOW_MULTIPLE_CONTROLS</key>
-	<true/>
+	<false/>
 	<key>SHOW_SOLUTION_ON_PIPE</key>
 	<true/>
 	<key>MAX_BLOCKS_FROM_PIPE</key>
-	<string>5</string>
+	<string>1</string>
 </dict>
 </plist>

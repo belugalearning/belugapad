@@ -89,13 +89,13 @@
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
 			<key>NUMBER_NEGATIVE</key>
-			<string>{$y-$x}</string>
+			<string>{$y}</string>
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<string>{$y}</string>
+			<string>{$x+$y}</string>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

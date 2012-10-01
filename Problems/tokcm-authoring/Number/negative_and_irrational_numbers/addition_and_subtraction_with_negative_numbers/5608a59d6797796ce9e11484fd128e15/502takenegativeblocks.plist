@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Show that 2 - -3 = 5</string>
+	<string>This is 2. Show that 2 - -3 = 5</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>switch to notation of adding/subtracting negative numbers</string>
 	<key>TOOL_KEY</key>

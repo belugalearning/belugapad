@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>this is 5. make 4.</string>
+	<string>This is 12. Make 4. (explode)</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -15,7 +15,7 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>3</integer>
+	<integer>6</integer>
 	<key>ROWS_PER_COL</key>
 	<integer>2</integer>
 	<key>ALLOW_CONDENSING</key>
@@ -23,9 +23,9 @@
 	<key>ALLOW_MULCHING</key>
 	<false/>
 	<key>EVAL_MODE</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>REJECT_MODE</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_COUNT</key>
@@ -42,8 +42,18 @@
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
+			<key>PUT_IN_ROW</key>
+			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>5</integer>
+			<integer>6</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
+			<integer>0</integer>
+			<key>PUT_IN_ROW</key>
+			<integer>1</integer>
+			<key>NUMBER</key>
+			<integer>6</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -62,6 +72,8 @@
 	<key>IS_NEGATIVE_PROBLEM</key>
 	<true/>
 	<key>CAGE_DEFAULT_VALUE</key>
-	<integer>1</integer>
+	<integer>-2</integer>
+	<key>EXPLODE_MODE</key>
+	<true/>
 </dict>
 </plist>

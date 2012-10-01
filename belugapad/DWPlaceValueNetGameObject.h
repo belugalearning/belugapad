@@ -19,8 +19,10 @@
 @property int myRope;
 @property float ColumnValue;
 @property (retain) DWGameObject *MountedObject;
+@property (retain) DWGameObject *CancellingObject;
 @property (retain) CCSprite *mySprite;
 @property BOOL Hidden;
 @property int renderType;
+@property BOOL AllowMultipleMount;
 
 @end

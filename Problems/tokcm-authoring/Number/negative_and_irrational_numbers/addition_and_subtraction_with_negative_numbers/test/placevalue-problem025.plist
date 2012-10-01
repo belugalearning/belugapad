@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>this is 5. make 4.</string>
+	<string>this is 5. make 4. (explode mode)</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -63,5 +63,7 @@
 	<true/>
 	<key>CAGE_DEFAULT_VALUE</key>
 	<integer>1</integer>
+	<key>EXPLODE_MODE</key>
+	<true/>
 </dict>
 </plist>

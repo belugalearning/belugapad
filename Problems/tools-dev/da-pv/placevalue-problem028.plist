@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>this is 5. make 4.</string>
+	<string>this is 2. make 3.</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -43,7 +43,9 @@
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>5</integer>
+			<integer>4</integer>
+			<key>NUMBER_NEGATIVE</key>
+			<integer>2</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -62,6 +64,21 @@
 	<key>IS_NEGATIVE_PROBLEM</key>
 	<true/>
 	<key>CAGE_DEFAULT_VALUE</key>
-	<integer>1</integer>
+	<integer>-1</integer>
+	<key>CAGE_POS_DISABLE_ADD</key>
+	<dict>
+		<key>1</key>
+		<true/>
+	</dict>
+	<key>CAGE_NEG_DISABLE_ADD</key>
+	<dict>
+		<key>1</key>
+		<true/>
+	</dict>
+	<key>CAGE_POS_DISABLE_DELETE</key>
+	<dict>
+		<key>1</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

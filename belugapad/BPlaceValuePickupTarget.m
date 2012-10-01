@@ -33,7 +33,8 @@
         if([b.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
         {
             DWPlaceValueCageGameObject *mountCge=(DWPlaceValueCageGameObject*)b.Mount;
-            if(mountCge.DisableAdd) return;
+            if(mountCge.DisableAdd && mountCge.ObjectValue>0) return;
+            if(mountCge.DisableAddNeg && mountCge.ObjectValue<0) return;
         }
         else if([b.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
         {

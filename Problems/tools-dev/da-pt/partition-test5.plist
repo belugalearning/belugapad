@@ -82,5 +82,7 @@
 	<integer>2</integer>
 	<key>SOLUTION_VALUE</key>
 	<integer>5</integer>
+	<key>USE_BLOCK_SCALING</key>
+	<true/>
 </dict>
 </plist>

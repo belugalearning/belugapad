@@ -77,7 +77,7 @@
 	isTouching = YES;
 	touchStartedPoint = [self convertTouchToNodeSpaceAR:touch];
 	touchStartedWorldPosition = world.position;
-	CCLOG(@"touch handle");
+	//CCLOG(@"touch handle");
 	return YES;
 	
 }
@@ -85,7 +85,7 @@
     didMove = YES;
 	CGPoint n = [self convertTouchToNodeSpaceAR:touch];
 	world.position = ccp(touchStartedWorldPosition.x, touchStartedWorldPosition.y + n.y - touchStartedPoint.y);
-    CCLOG(@"moved %f %f", world.position.x, world.position.y);
+    //CCLOG(@"moved %f %f", world.position.x, world.position.y);
 }
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
@@ -106,7 +106,7 @@
 	isTouching = NO;
     [delegate onDoneSelecting:self];
     
-    CCLOG(@"ended %f %f", world.position.x, world.position.y);    
+    //CCLOG(@"ended %f %f", world.position.x, world.position.y);
 }
 
 - (void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event {
@@ -118,7 +118,7 @@
  
     // Always return a value in the first page.
     int retVal = currentPage % pageSize;
-    CCLOG(@"currentPage %d, retVal %d", currentPage, retVal);
+    //CCLOG(@"currentPage %d, retVal %d", currentPage, retVal);
 	return retVal;
 }
 
@@ -149,7 +149,7 @@
 	CGPoint positionNow = world.position;
 	CGSize s = self.contentSize;
 	float diffY = fabs( (positionNow.y) - (-s.height /2 -s.height * currentPage) );
-	CCLOG(@"positionNow %f, diff[%f]",positionNow.y, diffY);
+	//CCLOG(@"positionNow %f, diff[%f]",positionNow.y, diffY);
 	
     CCFiniteTimeAction *moveAction = nil;
     CCFiniteTimeAction *instantAction = nil;

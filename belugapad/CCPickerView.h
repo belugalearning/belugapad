@@ -17,6 +17,9 @@
     id <CCPickerViewDelegate> delegate;
     CGRect rect;
     BOOL repeatNodes;
+    
+    CGRect clippingRegion;
+    
 }
 @property (nonatomic, assign) id <CCPickerViewDataSource> dataSource;
 @property (nonatomic, assign) id <CCPickerViewDelegate> delegate;

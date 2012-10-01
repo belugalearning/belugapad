@@ -41,6 +41,8 @@
 #define kComponentHeight 32
 #define kComponentSpacing 10
 
+#define SHOW_NUMBER_WHEEL YES
+
 @interface ToolHost()
 {
     @private
@@ -702,7 +704,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     
     //setup number wheel if required
-    {
+    if (SHOW_NUMBER_WHEEL) {
         [self setupNumberWheel];
     }
     
@@ -2007,7 +2009,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(self.pickerView) return;
     
     self.pickerView = [CCPickerView node];
-    pickerView.position = ccp(cx, cy);
+    pickerView.position = ccp(2*cx-150, 2*cy-150);
     pickerView.dataSource = self;
     pickerView.delegate = self;
     

@@ -38,6 +38,9 @@
     
     rect = CGRectMake(self.position.x - size.width/2, self.position.y - size.height/2, size.width, size.height);
     
+//    clippingRegion=CGRectMake(-rect.size.width / 2.0f, -rect.size.height / 2.0f, rect.size.width, rect.size.height);
+    clippingRegion=CC_RECT_POINTS_TO_PIXELS(rect);
+    
     [self reloadAllComponents];    
 }
 
@@ -155,30 +158,23 @@
     return [scrollLayer getChildByTag:row];
 }
 
-//http://www.cocos2d-iphone.org/forum/topic/10270
 - (void) visit {
 	if (!self.visible)
 		return;
     
-    ScrollLayer *sl=(ScrollLayer*)[self getChildByTag:0];
+    glEnable(GL_SCISSOR_TEST);
     
-    for (CCNode *c in sl.children) {
-        CGPoint p=[self convertToWorldSpace:c.position];
-        float diffy=fabsf(p.y - self.position.y);
-        NSLog(@"diffy %f", diffy);
-        
-        if(diffy > 50.0f)
-        {
-            c.visible=false;
-        }
-        else
-        {
-            c.visible=true;
-        }
-    }
+//    CGRect clip=CGRectMake(position_.x - 150, position_.y -100, 300, 300);
+//    clip=CC_RECT_POINTS_TO_PIXELS(clip);
     
+    glScissor(clippingRegion.origin.x, clippingRegion.origin.y, clippingRegion.size.width, clippingRegion.size.height);
     
-	[super visit];
+//    glScissor(clip.origin.x + position_.x, clip.origin.y + position_.y,
+//              clip.size.width, clip.size.height);
+    
+    [super visit];
+    
+    glDisable(GL_SCISSOR_TEST);
 }
 
 #pragma mark - ScrollLayerDelegate

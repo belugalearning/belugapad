@@ -188,7 +188,7 @@
         [renderLayer addChild:targetSol];
     }
     newPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/FB_Pipe_Out.png")];
-    [newPipe setPosition:ccp(45,650)];
+    [newPipe setPosition:ccp(45,600)];
     [renderLayer addChild:newPipe];
     
     if(showMultipleControls)

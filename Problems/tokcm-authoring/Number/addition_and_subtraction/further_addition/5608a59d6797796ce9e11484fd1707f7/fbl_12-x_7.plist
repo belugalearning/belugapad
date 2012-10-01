@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>12 - x = 5. Find x and perform the calculation.</string>
+	<string>12 - x = 7. What is x?</string>
 	<key>TOOL_KEY</key>
 	<string>FloatingBlock</string>
 	<key>EVAL_MODE</key>
@@ -14,6 +14,10 @@
 	<integer>2</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
+		<dict>
+			<key>NUMBER</key>
+			<integer>7</integer>
+		</dict>
 		<dict>
 			<key>NUMBER</key>
 			<integer>12</integer>
@@ -31,7 +35,11 @@
 	<key>SHOW_MULTIPLE_CONTROLS</key>
 	<true/>
 	<key>SHOW_SOLUTION_ON_PIPE</key>
-	<true/>
+	<false/>
+	<key>MIN_BLOCKS_FROM_PIPE</key>
+	<integer>1</integer>
+	<key>MAX_BLOCKS_FROM_PIPE </key>
+	<integer>9</integer>
 	<key>DVARS</key>
 	<dict>
 		<key>$var1</key>

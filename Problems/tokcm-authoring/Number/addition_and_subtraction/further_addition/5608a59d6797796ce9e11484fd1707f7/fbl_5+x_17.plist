@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>5 + x = 11. Find x and perform the calculation.</string>
+	<string>5 + x = 11. What is x?</string>
 	<key>TOOL_KEY</key>
 	<string>FloatingBlock</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
 	<key>SOLUTION</key>
-	<integer>11</integer>
+	<integer>6</integer>
 	<key>INIT_BUBBLES</key>
 	<integer>2</integer>
 	<key>INIT_OBJECTS</key>
@@ -17,6 +17,10 @@
 		<dict>
 			<key>NUMBER</key>
 			<integer>5</integer>
+		</dict>
+		<dict>
+			<key>NUMBER</key>
+			<integer>11</integer>
 		</dict>
 	</array>
 	<key>BUBBLE_AUTO_OPERATE</key>
@@ -31,6 +35,8 @@
 	<key>SHOW_MULTIPLE_CONTROLS</key>
 	<true/>
 	<key>SHOW_SOLUTION_ON_PIPE</key>
-	<true/>
+	<false/>
+	<key>MAX_BLOCKS_FROM_PIPE</key>
+	<integer>12</integer>
 </dict>
 </plist>

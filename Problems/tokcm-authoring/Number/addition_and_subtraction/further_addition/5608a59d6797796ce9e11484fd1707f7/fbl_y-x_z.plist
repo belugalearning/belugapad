@@ -3,17 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>{$var2} - x = {$var1}. Find x and perform the calculation.</string>
+	<string>{$var2} - x = {$var1}. What is x?</string>
 	<key>TOOL_KEY</key>
 	<string>FloatingBlock</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
 	<key>SOLUTION</key>
-	<string>{$var1}</string>
+	<string>{$var2-$var1}</string>
 	<key>INIT_BUBBLES</key>
 	<integer>2</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
+		<dict>
+			<key>NUMBER</key>
+			<string>{$var1}</string>
+		</dict>
 		<dict>
 			<key>NUMBER</key>
 			<string>{$var2}</string>
@@ -31,7 +35,7 @@
 	<key>SHOW_MULTIPLE_CONTROLS</key>
 	<true/>
 	<key>SHOW_SOLUTION_ON_PIPE</key>
-	<true/>
+	<false/>
 	<key>DVARS</key>
 	<dict>
 		<key>$var1</key>

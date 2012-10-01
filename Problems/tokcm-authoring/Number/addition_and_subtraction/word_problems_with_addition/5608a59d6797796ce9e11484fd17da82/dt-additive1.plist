@@ -5,9 +5,13 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Tom has 3 sweets. Gareth has 4 sweets. Gareth gives Tom 2 sweets, how many sweets does Tom have?</string>
+	<string>&lt;b:oi @by=&quot;thing_1&quot;/&gt; has 3</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>character test</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
+	<key>ICON_SET</key>
+	<string>goo_things.plist</string>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>

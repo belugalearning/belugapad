@@ -45,9 +45,9 @@
 	<key>CUSTOM_COLUMN_HEADERS</key>
 	<dict>
 		<key>10</key>
-		<string>8</string>
-		<key>1</key>
 		<string>3</string>
+		<key>1</key>
+		<string>8</string>
 	</dict>
 	<key>SOLUTION</key>
 	<dict>

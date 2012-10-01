@@ -165,6 +165,7 @@
         
         id<Rendered> newbubble;
         newbubble=[[SGFBlockBubble alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,300) andReplacement:NO];
+        
         [newbubble setup];
     }
     
@@ -179,28 +180,31 @@
     // and our commit pipe
     commitPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/FB_Pipe_In.png")];
     [commitPipe setPosition:ccp(cx,55)];
+    [commitPipe setOpacity:0];
+    [commitPipe setTag:1];
     [renderLayer addChild:commitPipe];
 
     if(showSolutionOnPipe)
     {
         CCLabelTTF *targetSol=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", expSolution] fontName:@"Chango" fontSize:50.0f];
         [targetSol setPosition:ccp(cx,70)];
+        [targetSol setOpacity:0];
+        [targetSol setTag:3];
         [renderLayer addChild:targetSol];
     }
     newPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/FB_Pipe_Out.png")];
     [newPipe setPosition:ccp(45,600)];
+    [newPipe setOpacity:0];
+    [newPipe setTag:1];
     [renderLayer addChild:newPipe];
     
     if(showMultipleControls)
     {
         newPipeLabel=[CCLabelTTF labelWithString:@"" fontName:@"Chango" fontSize:50.0f];
         [newPipeLabel setPosition:ccp(100, 550)];
+        [newPipeLabel setOpacity:0];
+        [newPipeLabel setTag:3];
         [renderLayer addChild:newPipeLabel];
-        
-    }
-    
-    if(supportedOperators)
-    {
         
     }
     
@@ -300,7 +304,6 @@
             
             if([go containedGroups]!=1)
             {
-                NSLog(@"not valid");
                 isValid=NO;
             }
         }
@@ -674,7 +677,6 @@
         
         int differenceMoved=[BLMath DistanceBetween:touchStart and:thisTouch];
         
-        NSLog(@"differenced Moved %d / with div %d", differenceMoved, (int)differenceMoved/20);
         
 //        if(touchStartPos.y>location.y)
 //            differenceMoved=-differenceMoved;

@@ -116,13 +116,13 @@
     if(showCount)[currentNumber setString:[NSString stringWithFormat:@"%d",lastNumber]];
     
     // problem expiring clauses
-    if(numIncrement<0 && lastNumber<=countMin && !expired)
+    if(numIncrement<0 && lastNumber<countMin && !expired)
     {
         NSLog(@"reach the end of the problem (hit count min on count-back number");
         [self expireProblemForRestart];
     }
     
-    else if(numIncrement>=0 && lastNumber>=countMax && !expired)
+    else if(numIncrement>=0 && lastNumber>countMax && !expired)
     {
         NSLog(@"reach the end of the problem (hit count max on count-on number");
         [self expireProblemForRestart];
@@ -170,12 +170,16 @@
     gw.Blackboard.RenderLayer = renderLayer;
     buttonOfWin=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/countingtimer/counter_start.png")];
     [buttonOfWin setPosition:ccp(cx,cy)];
+    [buttonOfWin setOpacity:0];
+    [buttonOfWin setTag:2];
     [renderLayer addChild:buttonOfWin];
     
     if(showCount)
     {
         currentNumber=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
         [currentNumber setPosition:ccp(50,50)];
+        [currentNumber setOpacity:0];
+        [currentNumber setTag:3];
         [renderLayer addChild:currentNumber];
     }
 }

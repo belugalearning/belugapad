@@ -79,7 +79,7 @@
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
-		<string>{$x}</string>
+		<string>{$x-$y}</string>
 	</dict>
 	<key>INIT_OBJECTS</key>
 	<array>
@@ -88,6 +88,10 @@
 			<integer>0</integer>
 			<key>NUMBER</key>
 			<string>{$x}</string>
+		</dict>
+		<dict>
+			<key>PUT_IN_COL</key>
+			<integer>0</integer>
 			<key>NUMBER_NEGATIVE</key>
 			<string>{$y}</string>
 		</dict>
@@ -115,7 +119,7 @@
 			<key>VAR_NAME</key>
 			<string>$y</string>
 			<key>MIN</key>
-			<string>0</string>
+			<string>1</string>
 			<key>MAX</key>
 			<string>{$x}</string>
 		</dict>

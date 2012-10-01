@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 3. Add positive blocks to make 0.</string>
+	<string>Show that 3 + -2 = 1</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>switch to notation of adding/subtracting negative numbers</string>
 	<key>TOOL_KEY</key>
@@ -30,7 +30,7 @@
 	<true/>
 	<key>CAGE_DEFAULT_VALUE</key>
 	<integer>1</integer>
-    <key>CAGE_POS_DISABLE_ADD</key>
+	<key>CAGE_POS_DISABLE_ADD</key>
 	<dict>
 		<key>1</key>
 		<true/>
@@ -50,7 +50,7 @@
 		<key>1</key>
 		<false/>
 	</dict>
-    <key>SHOW_CAGE</key>
+	<key>SHOW_CAGE</key>
 	<true/>
 	<key>SHOW_NEG_CAGE</key>
 	<false/>
@@ -69,10 +69,8 @@
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
-			<key>NUMBER</key>
-			<integer>-3</integer>
-			<key>NUMBER_PRE_COUNTED</key>
-			<integer>-3</integer>
+			<key>NUMBER_NEGATIVE</key>
+			<integer>3</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -80,7 +78,7 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>0</integer>
+		<integer>1</integer>
 	</dict>
 	<key>REJECT_MODE</key>
 	<integer>1</integer>

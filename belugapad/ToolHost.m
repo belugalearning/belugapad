@@ -41,7 +41,7 @@
 #define kComponentHeight 32
 #define kComponentSpacing 10
 
-#define SHOW_NUMBER_WHEEL YES
+#define SHOW_NUMBER_WHEEL NO
 
 @interface ToolHost()
 {

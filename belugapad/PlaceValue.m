@@ -1337,6 +1337,9 @@ static float kTimeToCageShake=7.0f;
             [loggingService logEvent:BL_PA_PV_TOUCH_END_BLOCKSTOCREATE_UP withAdditionalData:[NSNumber numberWithInt:curNum]];
             
             [blocksToCreate replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
+            
+            changedBlockCountOrValue=YES;
+            
             return;
         }
     }
@@ -1364,6 +1367,9 @@ static float kTimeToCageShake=7.0f;
             
             [loggingService logEvent:BL_PA_PV_TOUCH_END_BLOCKSTOCREATE_DOWN withAdditionalData:[NSNumber numberWithInt:curNum]];
             [blocksToCreate replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
+            
+            changedBlockCountOrValue=YES;
+            
             return;
         }
     }
@@ -1400,6 +1406,9 @@ static float kTimeToCageShake=7.0f;
             [loggingService logEvent:BL_PA_PV_TOUCH_END_BLOCKSTOCREATE_UP withAdditionalData:[NSNumber numberWithInt:curNum]];
             
             [currentBlockValues replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
+            
+            changedBlockCountOrValue=YES;
+            
             return;
         }
     }
@@ -1431,6 +1440,9 @@ static float kTimeToCageShake=7.0f;
             
             [loggingService logEvent:BL_PA_PV_TOUCH_END_BLOCKSTOCREATE_DOWN withAdditionalData:[NSNumber numberWithInt:curNum]];
             [currentBlockValues replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
+            
+            changedBlockCountOrValue=YES;
+            
             return;
         }
     }
@@ -1857,6 +1869,15 @@ static float kTimeToCageShake=7.0f;
         baseSelectionColumnValue=firstSelectedObject.ObjectValue;
     }
     
+    // if we have controls showing - check for touches upon them using an alternate method
+    if(multipleBlockPickup||showMultipleControls)
+        [self checkForMultipleControlTouchesAt:location];
+    
+    if(isNegativeProblem)
+        [self checkForBlockValueTouchesAt:location];
+    
+    if(changedBlockCountOrValue)return;
+    
     [gw Blackboard].PickupObject=nil;
     
     if(debugLogging)
@@ -2258,13 +2279,6 @@ static float kTimeToCageShake=7.0f;
     [toolHost.Zubi setTarget:location];
     
     inBlockTransition=NO;
-    
-    // if we have controls showing - check for touches upon them using an alternate method
-    if(multipleBlockPickup||showMultipleControls)
-        [self checkForMultipleControlTouchesAt:location];
-    
-    if(isNegativeProblem)
-        [self checkForBlockValueTouchesAt:location];
     
     // log out if blocks are moved
     if(hasMovedBlock)
@@ -2687,6 +2701,7 @@ static float kTimeToCageShake=7.0f;
     hasMovedBlock=NO;
     hasMovedLayer=NO;
     isBasePickup=NO;
+    changedBlockCountOrValue=NO;
     [pickupObjects removeAllObjects];
     
     touching=NO;

@@ -147,6 +147,8 @@
     BOOL inCondenseArea;
     BOOL inMulchArea;
     
+    BOOL changedBlockCountOrValue;
+    
     NSString *solutionType;
     
     //reference to cages

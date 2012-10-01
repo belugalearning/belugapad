@@ -311,6 +311,8 @@
 		7F5BD842154AB6A70092740B /* JMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5BD841154AB6A70092740B /* JMap.m */; };
 		7F5F4D61161906EB005F6311 /* CCPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5F4D5E161906EB005F6311 /* CCPickerView.m */; };
 		7F5F4D62161906EB005F6311 /* ScrollLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5F4D60161906EB005F6311 /* ScrollLayer.m */; };
+		7F5F4D6E1619E6B9005F6311 /* SGBtxeObjectIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5F4D6D1619E6B9005F6311 /* SGBtxeObjectIcon.m */; };
+		7F5F4D721619E714005F6311 /* SGBtxeIconRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5F4D711619E714005F6311 /* SGBtxeIconRender.m */; };
 		7F66C88D159DC78C004E84C8 /* SGJmapRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F66C88C159DC78C004E84C8 /* SGJmapRegion.m */; };
 		7F66C891159DC9E5004E84C8 /* SGJmapRegionRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F66C890159DC9E5004E84C8 /* SGJmapRegionRender.m */; };
 		7F719C0314D739A600F30E89 /* Daemon.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F719C0214D739A600F30E89 /* Daemon.m */; };
@@ -1061,6 +1063,10 @@
 		7F5F4D5E161906EB005F6311 /* CCPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPickerView.m; sourceTree = "<group>"; };
 		7F5F4D5F161906EB005F6311 /* ScrollLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollLayer.h; sourceTree = "<group>"; };
 		7F5F4D60161906EB005F6311 /* ScrollLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollLayer.m; sourceTree = "<group>"; };
+		7F5F4D6C1619E6B9005F6311 /* SGBtxeObjectIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeObjectIcon.h; sourceTree = "<group>"; };
+		7F5F4D6D1619E6B9005F6311 /* SGBtxeObjectIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeObjectIcon.m; sourceTree = "<group>"; };
+		7F5F4D701619E714005F6311 /* SGBtxeIconRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeIconRender.h; sourceTree = "<group>"; };
+		7F5F4D711619E714005F6311 /* SGBtxeIconRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeIconRender.m; sourceTree = "<group>"; };
 		7F66C88B159DC78C004E84C8 /* SGJmapRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapRegion.h; sourceTree = "<group>"; };
 		7F66C88C159DC78C004E84C8 /* SGJmapRegion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapRegion.m; sourceTree = "<group>"; };
 		7F66C88F159DC9E5004E84C8 /* SGJmapRegionRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapRegionRender.h; sourceTree = "<group>"; };
@@ -2755,6 +2761,8 @@
 				7FCA646B15D69CDD00C5C020 /* SGBtxeMissingVar.m */,
 				7FA84BC316107569001FEA82 /* SGBtxeObjectNumber.h */,
 				7FA84BC416107569001FEA82 /* SGBtxeObjectNumber.m */,
+				7F5F4D6C1619E6B9005F6311 /* SGBtxeObjectIcon.h */,
+				7F5F4D6D1619E6B9005F6311 /* SGBtxeObjectIcon.m */,
 			);
 			name = BTXE;
 			sourceTree = "<group>";
@@ -2772,6 +2780,8 @@
 				7F50C4B015DBCDA3009345B5 /* SGBtxeTextBackgroundRender.h */,
 				7FD9841E15DC21A600DA71D7 /* SGBtxeParser.h */,
 				7FD9841F15DC21A600DA71D7 /* SGBtxeParser.m */,
+				7F5F4D701619E714005F6311 /* SGBtxeIconRender.h */,
+				7F5F4D711619E714005F6311 /* SGBtxeIconRender.m */,
 			);
 			name = BTXE;
 			sourceTree = "<group>";
@@ -3372,6 +3382,8 @@
 				7FA84BC516107569001FEA82 /* SGBtxeObjectNumber.m in Sources */,
 				7F5F4D61161906EB005F6311 /* CCPickerView.m in Sources */,
 				7F5F4D62161906EB005F6311 /* ScrollLayer.m in Sources */,
+				7F5F4D6E1619E6B9005F6311 /* SGBtxeObjectIcon.m in Sources */,
+				7F5F4D721619E714005F6311 /* SGBtxeIconRender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

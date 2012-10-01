@@ -41,14 +41,14 @@
 	<key>CAGE_NEG_DISABLE_ADD</key>
 	<dict>
 		<key>1</key>
-		<true/>
+		<false/>
 	</dict>
 	<key>CAGE_NEG_DISABLE_DELETE</key>
 	<dict>
 		<key>1</key>
-		<true/>
+		<false/>
 	</dict>
-    <key>SHOW_CAGE</key>
+	<key>SHOW_CAGE</key>
 	<false/>
 	<key>SHOW_NEG_CAGE</key>
 	<true/>

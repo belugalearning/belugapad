@@ -78,7 +78,7 @@
 			<key>VAR_NAME</key>
 			<string>$y</string>
 			<key>MIN</key>
-			<string>0</string>
+			<string>1</string>
 			<key>MAX</key>
 			<string>{$x}</string>
 		</dict>
@@ -89,13 +89,13 @@
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
 			<key>NUMBER_NEGATIVE</key>
-			<string>{$x-$y}</string>
+			<string>{$y}</string>
 		</dict>
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<string>{$y}</string>
+			<string>{$x+$y}</string>
 		</dict>
 	</array>
 	<key>SOLUTION</key>

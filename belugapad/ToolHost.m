@@ -36,6 +36,13 @@
 #define HD_BUTTON_INSET 40.0f
 #define HD_SCORE_INSET 40.0f
 
+//CCPickerView
+#define kComponentWidth 54
+#define kComponentHeight 32
+#define kComponentSpacing 10
+
+#define SHOW_NUMBER_WHEEL NO
+
 @interface ToolHost()
 {
     @private
@@ -52,6 +59,7 @@
 @synthesize PpExpr;
 @synthesize flagResetProblem;
 @synthesize DynProblemParser;
+@synthesize pickerView;
 
 static float kMoveToNextProblemTime=0.5f;
 static float kDisableInteractionTime=0.5f;
@@ -696,6 +704,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     else {
         [self setupProblemOnToolHost:pdef];
+    }
+    
+    //setup number wheel if required
+    if (SHOW_NUMBER_WHEEL) {
+        [self setupNumberWheel];
     }
     
     // set scale using the value we got earlier
@@ -1998,6 +2011,100 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [currentTool ccTouchCancelled:touch withEvent:event];
 }
 
+#pragma mark - CCPickerView for number wheel
+
+-(void)setupNumberWheel
+{
+    if(self.pickerView) return;
+    
+    self.pickerView = [CCPickerView node];
+    pickerView.position = ccp(2*cx-150, 2*cy-150);
+    pickerView.dataSource = self;
+    pickerView.delegate = self;
+    
+    [self addChild:self.pickerView z:20];
+}
+
+#pragma mark CCPickerView delegate methods
+
+- (NSInteger)numberOfComponentsInPickerView:(CCPickerView *)pickerView {
+    return 3;
+}
+
+- (NSInteger)pickerView:(CCPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    
+    NSInteger numRows = 0;
+    
+    switch (component) {
+        case 0:
+            numRows = 10;
+            break;
+        case 1:
+            numRows = 10;
+            break;
+        case 2:
+            numRows = 10;
+            break;
+        default:
+            break;
+    }
+    
+    return numRows;
+}
+
+- (CGFloat)pickerView:(CCPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
+    return kComponentHeight;
+}
+
+- (CGFloat)pickerView:(CCPickerView *)pickerView widthForComponent:(NSInteger)component {
+    return kComponentWidth;
+}
+
+- (NSString *)pickerView:(CCPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    return @"Not used";
+}
+
+- (CCNode *)pickerView:(CCPickerView *)pickerView nodeForRow:(NSInteger)row forComponent:(NSInteger)component reusingNode:(CCNode *)node {
+    
+    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", row]fontName:@"Chango" fontSize:24];
+    return l;
+    
+//    temp.color = ccYELLOW;
+//    temp.textureRect = CGRectMake(0, 0, kComponentWidth, kComponentHeight);
+//    
+//    NSString *rowString = [NSString stringWithFormat:@"%d", row];
+//    CCLabelBMFont *label = [CCLabelBMFont labelWithString:rowString fntFile:@"bitmapFont.fnt"];
+//    label.position = ccp(kComponentWidth/2, kComponentHeight/2-5);
+//    [temp addChild:label];
+//    return temp;
+    
+}
+
+- (void)pickerView:(CCPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    CCLOG(@"didSelect row = %d, component = %d", row, component);
+}
+
+- (CGFloat)spaceBetweenComponents:(CCPickerView *)pickerView {
+    return kComponentSpacing;
+}
+
+- (CGSize)sizeOfPickerView:(CCPickerView *)pickerView {
+    CGSize size = CGSizeMake(200, 100);
+    
+    return size;
+}
+
+- (CCNode *)overlayImage:(CCPickerView *)pickerView {
+    CCSprite *sprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/3slots.png")];
+    return sprite;
+}
+
+- (void)onDoneSpinning:(CCPickerView *)pickerView component:(NSInteger)component {
+    
+    NSLog(@"Component %d stopped spinning.", component);
+}
+
+
 #pragma mark - debug pipeline views
 
 -(void)debugShowPipelineState
@@ -2072,6 +2179,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     self.Zubi=nil;
     
+    //number wheel / picker view
+    if(pickerView)[pickerView release];
     
     [super dealloc];
 }

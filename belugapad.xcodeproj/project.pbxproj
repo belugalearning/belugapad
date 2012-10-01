@@ -309,6 +309,8 @@
 		7F588F5916027B280015F504 /* SGJmapCloudSeeker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F588F5816027B280015F504 /* SGJmapCloudSeeker.m */; };
 		7F588F5C16027B380015F504 /* SGJmapCloudMotion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F588F5B16027B380015F504 /* SGJmapCloudMotion.m */; };
 		7F5BD842154AB6A70092740B /* JMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5BD841154AB6A70092740B /* JMap.m */; };
+		7F5F4D61161906EB005F6311 /* CCPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5F4D5E161906EB005F6311 /* CCPickerView.m */; };
+		7F5F4D62161906EB005F6311 /* ScrollLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5F4D60161906EB005F6311 /* ScrollLayer.m */; };
 		7F66C88D159DC78C004E84C8 /* SGJmapRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F66C88C159DC78C004E84C8 /* SGJmapRegion.m */; };
 		7F66C891159DC9E5004E84C8 /* SGJmapRegionRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F66C890159DC9E5004E84C8 /* SGJmapRegionRender.m */; };
 		7F719C0314D739A600F30E89 /* Daemon.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F719C0214D739A600F30E89 /* Daemon.m */; };
@@ -1055,6 +1057,10 @@
 		7F588F5B16027B380015F504 /* SGJmapCloudMotion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapCloudMotion.m; sourceTree = "<group>"; };
 		7F5BD840154AB6A70092740B /* JMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMap.h; sourceTree = "<group>"; };
 		7F5BD841154AB6A70092740B /* JMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMap.m; sourceTree = "<group>"; };
+		7F5F4D5D161906EB005F6311 /* CCPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPickerView.h; sourceTree = "<group>"; };
+		7F5F4D5E161906EB005F6311 /* CCPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPickerView.m; sourceTree = "<group>"; };
+		7F5F4D5F161906EB005F6311 /* ScrollLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollLayer.h; sourceTree = "<group>"; };
+		7F5F4D60161906EB005F6311 /* ScrollLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollLayer.m; sourceTree = "<group>"; };
 		7F66C88B159DC78C004E84C8 /* SGJmapRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapRegion.h; sourceTree = "<group>"; };
 		7F66C88C159DC78C004E84C8 /* SGJmapRegion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapRegion.m; sourceTree = "<group>"; };
 		7F66C88F159DC9E5004E84C8 /* SGJmapRegionRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapRegionRender.h; sourceTree = "<group>"; };
@@ -2269,6 +2275,7 @@
 		7F5113E714A9EE63001AF372 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				7F5F4D5B161906CE005F6311 /* CCPickerView */,
 				7FEB663515DEE68100F6E782 /* PRKit */,
 				0C33EEC215D4EE6900EA6A11 /* SSZipArchive */,
 				0CDECB4815920C27004DE20D /* AFNetworking */,
@@ -2416,6 +2423,17 @@
 				550708791517625300111BBB /* ColumnAdditionConsts.m */,
 			);
 			name = App;
+			sourceTree = "<group>";
+		};
+		7F5F4D5B161906CE005F6311 /* CCPickerView */ = {
+			isa = PBXGroup;
+			children = (
+				7F5F4D5D161906EB005F6311 /* CCPickerView.h */,
+				7F5F4D5E161906EB005F6311 /* CCPickerView.m */,
+				7F5F4D5F161906EB005F6311 /* ScrollLayer.h */,
+				7F5F4D60161906EB005F6311 /* ScrollLayer.m */,
+			);
+			name = CCPickerView;
 			sourceTree = "<group>";
 		};
 		7F719C0014D7397000F30E89 /* Daemon */ = {
@@ -3352,6 +3370,8 @@
 				7F588F5C16027B380015F504 /* SGJmapCloudMotion.m in Sources */,
 				554EA4A7160777F900A68BFF /* DWDotGridShapeGroupGameObject.m in Sources */,
 				7FA84BC516107569001FEA82 /* SGBtxeObjectNumber.m in Sources */,
+				7F5F4D61161906EB005F6311 /* CCPickerView.m in Sources */,
+				7F5F4D62161906EB005F6311 /* ScrollLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

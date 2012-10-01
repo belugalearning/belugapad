@@ -36,6 +36,8 @@
 			<integer>4</integer>
 		</dict>
 	</array>
+	<key>SHOW_BADGES</key>
+	<false/>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>INIT_CAGES</key>

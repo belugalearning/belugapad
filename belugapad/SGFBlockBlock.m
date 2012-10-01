@@ -34,6 +34,13 @@
 {
     MySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/block.png")];
     [MySprite setPosition:Position];
+    
+    if(gameWorld.Blackboard.inProblemSetup)
+    {
+        [MySprite setOpacity:0];
+        [MySprite setTag:3];
+    }
+    
     [RenderLayer addChild:MySprite];
 }
 

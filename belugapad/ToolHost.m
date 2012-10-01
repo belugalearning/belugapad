@@ -1323,7 +1323,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     currentTool.ProblemComplete=YES;
 }
 -(void)doIncomplete
-{   
+{
+    timeBeforeUserInteraction=kDisableInteractionTime;
+    isAnimatingIn=YES;
     [loggingService logEvent:BL_PA_FAIL withAdditionalData:nil];
     [self showProblemIncompleteMessage];
     //[self deselectAnswersExcept:-1];
@@ -1621,11 +1623,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     
     if(!hasMovedNumber) hasMovedNumber=YES;
-    // TODO: moveNumber isn't declared - what is it? Following was commented out b/c poor performance with CBM
-    // N.B. if after restoration performance is still poor, we can try having certain event types not immediately written to disk
-    /*    [loggingService logEvent:BL_PA_NP_NUMBER_MOVE 
-     withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:moveNumber] forKey:@"number"]];
-     */  
+
     npMove.position=location;
 
 }

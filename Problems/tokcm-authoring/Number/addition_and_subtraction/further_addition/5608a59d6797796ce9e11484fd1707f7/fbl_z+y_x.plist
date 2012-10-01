@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>{$var2} + {$var1} = x. Find x and perform the calculation.</string>
+	<string>{$var2} + {$var1} = x. What is x?</string>
 	<key>TOOL_KEY</key>
 	<string>FloatingBlock</string>
 	<key>EVAL_MODE</key>
@@ -36,6 +36,8 @@
 	<true/>
 	<key>SHOW_SOLUTION_ON_PIPE</key>
 	<false/>
+	<key>MAX_BLOCKS_FROM_PIPE</key>
+	<integer>15</integer>
 	<key>DVARS</key>
 	<dict>
 		<key>$var1</key>

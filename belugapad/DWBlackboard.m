@@ -11,6 +11,7 @@
 @implementation DWBlackboard
 
 @synthesize DropObject;
+@synthesize PriorityDropObject;
 @synthesize DropObjectDistance;
 @synthesize PickupObject;
 @synthesize ProximateObject;

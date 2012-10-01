@@ -68,7 +68,7 @@
 			<key>VAR_NAME</key>
 			<string>$x</string>
 			<key>MIN</key>
-			<string>0</string>
+			<string>2</string>
 			<key>MAX</key>
 			<string>10</string>
 		</dict>

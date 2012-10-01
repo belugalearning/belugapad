@@ -64,6 +64,23 @@
 	<false/>
 	<key>SHOW_BASE_SELECTION</key>
 	<false/>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>Which number is this?</string>
+		<key>INTERNAL_DESCRIPTION</key>
+		<string>identify positive number</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>1</integer>
+		<key>ANIMATE_FROM_PICKER</key>
+		<true/>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<string>{$x-$y}</string>
+	</dict>
 	<key>DVARS</key>
 	<array>
 		<dict>

@@ -70,9 +70,9 @@
 			<key>VAR_NAME</key>
 			<string>$x</string>
 			<key>MIN</key>
-			<string>2</string>
-			<key>MAX</key>
 			<string>5</string>
+			<key>MAX</key>
+			<string>10</string>
 		</dict>
 	</array>
 	<key>INIT_OBJECTS</key>

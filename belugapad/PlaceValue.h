@@ -184,6 +184,8 @@
 -(BOOL)evalProblemMatrixMatch;
 -(void)checkForMultipleControlTouchesAt:(CGPoint)thisLocation;
 -(void)checkForBlockValueTouchesAt:(CGPoint)thisLocation;
+-(void)checkAndChangeCageSpritesForMultiple;
+-(void)checkAndChangeCageSpritesForNegative;
 -(void)switchSpritesBack;
 -(void)createCondenseAndMulchBoxes;
 -(void)snapLayerToPosition;

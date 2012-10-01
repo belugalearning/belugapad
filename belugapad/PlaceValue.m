@@ -150,6 +150,7 @@ static float kTimeToCageShake=7.0f;
     // update our labels for thinging
     if(showMultipleControls||multipleBlockPickup)
     {
+        [self checkAndChangeCageSpritesForMultiple];
         for(int i=0;i<[multipleLabels count];i++)
         {
             CCLabelTTF *l=[multipleLabels objectAtIndex:i];
@@ -159,6 +160,7 @@ static float kTimeToCageShake=7.0f;
     
     if(isNegativeProblem)
     {
+        [self checkAndChangeCageSpritesForNegative];
         for(int i=0;i<[blockLabels count];i++)
         {
             CCLabelTTF *l=[blockLabels objectAtIndex:i];
@@ -336,12 +338,15 @@ static float kTimeToCageShake=7.0f;
             [cageContainer setTag:2];
             [renderLayer addChild:cageContainer z:10];
             
+            
             // create cage
             DWPlaceValueCageGameObject *cge=[DWPlaceValueCageGameObject alloc];
             [gw populateAndAddGameObject:cge withTemplateName:@"TplaceValueCage"];
             cge.AllowMultipleMount=YES;
             cge.PosX=i*(kPropXColumnSpacing*lx);
             cge.PosY=ly*kCageYOrigin;
+            
+            cge.mySprite=cageContainer;
             
             if(isNegativeProblem)
                 cge.ObjectValue=cageDefaultValue*currentColumnValue;
@@ -378,10 +383,15 @@ static float kTimeToCageShake=7.0f;
             
             
                 
-            if(!allCages) allCages=[[NSMutableArray alloc] init];
+            if(!allCages) allCages=[[[NSMutableArray alloc] init]retain];
             [allCages addObject:cge];
             [cge release];
             
+        }
+        else
+        {
+            if(!allCages) allCages=[[[NSMutableArray alloc] init]retain];
+            [allCages addObject:[NSNull null]];
         }
         
         if(showMultipleDragging)
@@ -1306,9 +1316,24 @@ static float kTimeToCageShake=7.0f;
         //CCSprite *s=[multiplePlusSprites objectAtIndex:i];
         if(CGRectContainsPoint(boundingBox, [renderLayer convertToNodeSpace:thisLocation]))
         {
+            
+            DWPlaceValueCageGameObject *c=[allCages objectAtIndex:i];
+            
             int curNum=[[blocksToCreate objectAtIndex:i]intValue];
             curNum++;
-            if(curNum>10)curNum=10;
+            
+            if(curNum>=10)
+            {
+                curNum=10;
+                [c.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage_variable_down_only.png")]];
+                NSLog(@"down only cage %d", i);
+            }
+            else
+            {
+                [c.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage-variable.png")]];                
+                NSLog(@"normal cage %d", i);
+            }
+            
             [loggingService logEvent:BL_PA_PV_TOUCH_END_BLOCKSTOCREATE_UP withAdditionalData:[NSNumber numberWithInt:curNum]];
             
             [blocksToCreate replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
@@ -1322,9 +1347,20 @@ static float kTimeToCageShake=7.0f;
         //CCSprite *s=[multipleMinusSprites objectAtIndex:i];
         if(CGRectContainsPoint(boundingBox, [renderLayer convertToNodeSpace:thisLocation]))
         {
+            DWPlaceValueCageGameObject *c=[allCages objectAtIndex:i];
             int curNum=[[blocksToCreate objectAtIndex:i]intValue];
             curNum--;
-            if(curNum<1)curNum=1;
+            if(curNum<=1)
+            {
+                curNum=1;
+                [c.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage_variable_up_only.png")]];
+                NSLog(@"up only cage %d", i);
+            }
+            else
+            {
+                [c.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage-variable.png")]];
+                NSLog(@"normal cage %d", i);
+            }
             
             [loggingService logEvent:BL_PA_PV_TOUCH_END_BLOCKSTOCREATE_DOWN withAdditionalData:[NSNumber numberWithInt:curNum]];
             [blocksToCreate replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
@@ -1348,7 +1384,8 @@ static float kTimeToCageShake=7.0f;
             int curNum=[[currentBlockValues objectAtIndex:i]intValue];
             float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]floatValue];
             curNum+=1*colVal;
-            if(curNum>10*colVal)curNum=10*colVal;
+            if(curNum>10*colVal)
+                curNum=10*colVal;
             
             if(curNum>0)
                 cge.ObjectValue=colVal;
@@ -1379,7 +1416,9 @@ static float kTimeToCageShake=7.0f;
             int curNum=[[currentBlockValues objectAtIndex:i]intValue];
             float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]floatValue];
             curNum-=1*colVal;
-            if(curNum<-10*colVal)curNum=-10*colVal;
+            if(curNum<-10*colVal)
+                curNum=-10*colVal;
+            
             
             if(curNum>0)
                 cge.ObjectValue=colVal;
@@ -1397,6 +1436,54 @@ static float kTimeToCageShake=7.0f;
     }
     
 }
+
+-(void)checkAndChangeCageSpritesForMultiple
+{
+    
+    for(int i=0;i<[allCages count];i++)
+    {
+        if(![[allCages objectAtIndex:i] isKindOfClass:[NSNull class]])
+        {
+            DWPlaceValueCageGameObject *cge=[allCages objectAtIndex:i];
+            
+            int curNum=[[blocksToCreate objectAtIndex:i]intValue];
+            
+            if(curNum==10)
+                [cge.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage_variable_down_only.png")]];
+            else if(curNum==1)
+                [cge.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage_variable_up_only.png")]];
+            else
+                [cge.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage-variable.png")]];
+        }
+    }
+    
+}
+
+-(void)checkAndChangeCageSpritesForNegative
+{
+    
+    for(int i=0;i<[allCages count];i++)
+    {
+        if(![[allCages objectAtIndex:i] isKindOfClass:[NSNull class]])
+        {
+            DWPlaceValueCageGameObject *cge=[allCages objectAtIndex:i];
+            
+            int curNum=[[currentBlockValues objectAtIndex:i]intValue];
+            float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]floatValue];
+            
+            if(curNum==10*colVal)
+                [cge.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage_variable_down_only.png")]];
+            else if(curNum==-10*colVal)
+                [cge.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage_variable_up_only.png")]];
+            else
+                [cge.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage-variable.png")]];
+        }
+    }
+    
+    
+    
+}
+
 
 -(void)switchSpritesBack
 {

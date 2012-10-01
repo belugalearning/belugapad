@@ -30,7 +30,7 @@
 		<string>+</string>
 	</array>
 	<key>SHOW_MULTIPLE_CONTROLS</key>
-	<true/>
+	<false/>
 	<key>SHOW_SOLUTION_ON_PIPE</key>
 	<true/>
 </dict>

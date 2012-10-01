@@ -70,7 +70,7 @@
 			<key>MIN</key>
 			<string>2</string>
 			<key>MAX</key>
-			<string>10</string>
+			<string>6</string>
 		</dict>
 	</array>
 	<key>NUMBER_PICKER</key>

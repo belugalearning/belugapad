@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Show that 2 - -3 = 5</string>
+	<string>Show that 3 + -2 = 1</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>switch to notation of adding/subtracting negative numbers</string>
 	<key>TOOL_KEY</key>
@@ -69,14 +69,8 @@
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
-			<key>NUMBER_NEGATIVE</key>
-			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>5</integer>
+			<integer>3</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -84,7 +78,7 @@
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
-		<integer>5</integer>
+		<integer>1</integer>
 	</dict>
 	<key>REJECT_MODE</key>
 	<integer>1</integer>

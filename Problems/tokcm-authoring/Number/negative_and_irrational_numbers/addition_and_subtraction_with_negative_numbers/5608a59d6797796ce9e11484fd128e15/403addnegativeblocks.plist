@@ -27,7 +27,7 @@
 	<key>IS_NEGATIVE_PROBLEM</key>
 	<true/>
 	<key>EXPLODE_MODE</key>
-	<true/>
+	<false/>
 	<key>CAGE_DEFAULT_VALUE</key>
 	<integer>1</integer>
 	<key>CAGE_POS_DISABLE_ADD</key>
@@ -76,9 +76,9 @@
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
-			<string>$x</string>
+			<string>$y</string>
 			<key>MIN</key>
-			<string>0</string>
+			<string>1</string>
 			<key>MAX</key>
 			<string>{$x}</string>
 		</dict>

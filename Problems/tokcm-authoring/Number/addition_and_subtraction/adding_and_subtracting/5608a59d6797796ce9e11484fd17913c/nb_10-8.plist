@@ -3,13 +3,25 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Subtract 8 from 10, by finding the number that makes 10 when added to 8.</string>
+	<string>Find the number that makes 10 when added to 8. </string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>Subtract 8 from 10, by finding the number that makes 10 when added to 8.</string>
+	<string>Find the number that makes 10 when added to 8. </string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
+	<key>SHOW_BADGES</key>
+	<false/>
 	<key>SOLUTION_MODE</key>
-	<integer>0</integer>
+	<integer>1</integer>
+	<key>SOLUTIONS</key>
+	<array>
+		<array>
+			<string>10</string>
+		</array>
+		<array>
+			<string>8</string>
+			<string>2</string>
+		</array>
+	</array>
 	<key>INIT_BARS</key>
 	<array>
 		<dict>
@@ -48,14 +60,6 @@
 	<integer>1</integer>
 	<key>INIT_CAGES</key>
 	<array>
-		<dict>
-			<key>LENGTH</key>
-			<integer>1</integer>
-			<key>LABEL</key>
-			<string>1</string>
-			<key>QUANTITY</key>
-			<integer>10</integer>
-		</dict>
 		<dict>
 			<key>LENGTH</key>
 			<integer>2</integer>

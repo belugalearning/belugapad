@@ -126,6 +126,11 @@
     showSolutionOnPipe=[[pdef objectForKey:SHOW_SOLUTION_ON_PIPE]boolValue];
     showMultipleControls=[[pdef objectForKey:SHOW_MULTIPLE_CONTROLS]boolValue];
     
+    if([pdef objectForKey:SHOW_NEW_PIPE])
+        showNewPipe=[[pdef objectForKey:SHOW_NEW_PIPE]boolValue];
+    else
+        showNewPipe=YES;
+    
     if([pdef objectForKey:SUPPORTED_OPERATORS])
         supportedOperators=[pdef objectForKey:SUPPORTED_OPERATORS];
     
@@ -192,21 +197,24 @@
         [targetSol setTag:3];
         [renderLayer addChild:targetSol];
     }
-    newPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/FB_Pipe_Out.png")];
-    [newPipe setPosition:ccp(45,600)];
-    [newPipe setOpacity:0];
-    [newPipe setTag:1];
-    [renderLayer addChild:newPipe];
     
-    if(showMultipleControls)
-    {
-        newPipeLabel=[CCLabelTTF labelWithString:@"" fontName:@"Chango" fontSize:50.0f];
-        [newPipeLabel setPosition:ccp(100, 550)];
-        [newPipeLabel setOpacity:0];
-        [newPipeLabel setTag:3];
-        [renderLayer addChild:newPipeLabel];
-        
+    if(showNewPipe) {
+        newPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/FB_Pipe_Out.png")];
+        [newPipe setPosition:ccp(45,600)];
+        [newPipe setOpacity:0];
+        [newPipe setTag:1];
+        [renderLayer addChild:newPipe];
+        if(showMultipleControls)
+        {
+            newPipeLabel=[CCLabelTTF labelWithString:@"" fontName:@"Chango" fontSize:50.0f];
+            [newPipeLabel setPosition:ccp(100, 550)];
+            [newPipeLabel setOpacity:0];
+            [newPipeLabel setTag:3];
+            [renderLayer addChild:newPipeLabel];
+            
+        }
     }
+
     
 }
 

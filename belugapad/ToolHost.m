@@ -221,9 +221,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void)recurseSetIntroFor:(CCNode*)node withTime:(float)time forTag:(int)tag
 {
     for (CCNode *cn in [node children]) {
-        if([cn tag]==tag)
+        if([cn tag]==tag && [cn isKindOfClass:[CCSprite class]])
         {
-            CCDelayTime *d=[CCDelayTime actionWithDuration:time];
+            CCDelayTime *d=[CCDelayTime actionWithDuration:time]; 
             CCFadeIn *f=[CCFadeIn actionWithDuration:0.1f];
             CCSequence *s=[CCSequence actions:d, f, nil];
             [cn runAction:s];

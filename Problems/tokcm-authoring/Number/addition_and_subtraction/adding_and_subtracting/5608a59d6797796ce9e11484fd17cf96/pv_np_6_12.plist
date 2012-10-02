@@ -27,7 +27,7 @@
 	<key>REJECT_MODE</key>
 	<integer>1</integer>
 	<key>SHOW_CAGE</key>
-	<true/>
+	<false/>
 	<key>SHOW_COUNT</key>
 	<false/>
 	<key>SHOW_COUNT_BLOCK</key>

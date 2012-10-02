@@ -1741,17 +1741,20 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     descGw.Blackboard.RenderLayer = btxeDescLayer;
     
     //create row
-    id<Container, Bounding, Parser, FadeIn> row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
-    row.position=ccp(cx, (cy*2) - 80);
+    id<Container, RenderContainer, Bounding, Parser, FadeIn> row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
+    row.position=ccp(cx, (cy*2) - 100);
+
+    //top down valign
+    row.forceVAlignTop=YES;
     
-    if(descString.length<5)
+    if(descString.length<3)
     {
         //this can't have a <b:t> at the begining
         
         //assume the string needs wrapping in b:t
         descString=[NSString stringWithFormat:@"<b:t>%@</b:t>", descString];
     }
-    else if([[descString substringToIndex:5] isEqualToString:@"<b:t>"])
+    else if([[descString substringToIndex:3] isEqualToString:@"<b:"])
     {
         //doesn't need wrapping
     }

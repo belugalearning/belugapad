@@ -7,7 +7,15 @@
 //
 
 #import "SGGameObject.h"
+#import "SGBtxeProtocols.h"
 
-@interface SGBtxeObjectIcon : SGGameObject
+@class SGBtxeIconRender;
+
+@interface SGBtxeObjectIcon : SGGameObject <MovingInteractive, Icon, FadeIn>
+{
+    CCNode *renderBase;
+}
+
+@property (retain) SGBtxeIconRender *iconRenderComponent;
 
 @end

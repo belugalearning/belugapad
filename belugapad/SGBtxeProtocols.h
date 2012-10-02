@@ -18,12 +18,16 @@
 
 @property (retain) SGBtxeContainerMgr *containerMgrComponent;
 
+
+
 @end
 
 
 @protocol RenderContainer
 
 @property (retain) CCLayer *renderLayer;
+@property BOOL forceVAlignTop;
+
 
 @end
 
@@ -105,5 +109,12 @@
 @protocol FadeIn
 
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime;
+
+@end
+
+
+@protocol Icon
+
+@property (retain) NSString *iconTag;
 
 @end

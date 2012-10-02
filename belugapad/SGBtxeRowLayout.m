@@ -11,7 +11,7 @@
 
 @implementation SGBtxeRowLayout
 
--(SGBtxeRowLayout*)initWithGameObject:(id<Bounding, Container>)aGameObject
+-(SGBtxeRowLayout*)initWithGameObject:(id<Bounding, Container, RenderContainer>)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
@@ -55,7 +55,13 @@
     
     //start Y at half of one line down from half of total container
     // ... a render mode may want this to flow down from top (not centre it) (e.g. for toolhost problem descriptions)
+    //default is centre valign
     float headYPos=(totalH / 2.0f) - (lineH / 2.0f);
+    if(ParentGo.forceVAlignTop)
+    {
+        //force alignment top down
+        headYPos=0;
+    }
     
     //step items
     for(id<Bounding, NSObject> c in ParentGo.children)

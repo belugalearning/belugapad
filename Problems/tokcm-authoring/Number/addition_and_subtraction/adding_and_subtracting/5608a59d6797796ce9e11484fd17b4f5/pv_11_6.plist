@@ -26,8 +26,6 @@
 	<string>NO</string>
 	<key>SHOW_CAGE</key>
 	<true/>
-	<key>SHOW_NEG_CAGE</key>
-	<false/>
 	<key>SHOW_COUNT</key>
 	<false/>
 	<key>SHOW_COUNT_BLOCK</key>
@@ -37,7 +35,7 @@
 	<key>SHOW_VALUE</key>
 	<false/>
 	<key>SHOW_BASE_SELECTION</key>
-	<true/>
+	<false/>
 	<key>PICKUP_SPRITE_FILENAME</key>
 	<string>/images/placevalue/cage-neg.png</string>
 	<key>PROXIMITY_SPRITE_FILENAME</key>
@@ -51,33 +49,6 @@
 	</dict>
 	<key>SOLUTION</key>
 	<dict>
-		<key>SOLUTION_MATRIX</key>
-		<array>
-			<dict>
-				<key>PUT_IN_COL</key>
-				<integer>1</integer>
-				<key>PUT_IN_ROW</key>
-				<integer>0</integer>
-				<key>NUMBER</key>
-				<integer>1</integer>
-			</dict>
-			<dict>
-				<key>PUT_IN_COL</key>
-				<integer>1</integer>
-				<key>PUT_IN_ROW</key>
-				<integer>1</integer>
-				<key>NUMBER</key>
-				<integer>3</integer>
-			</dict>
-			<dict>
-				<key>PUT_IN_COL</key>
-				<integer>1</integer>
-				<key>PUT_IN_ROW</key>
-				<integer>2</integer>
-				<key>NUMBER</key>
-				<integer>3</integer>
-			</dict>
-		</array>
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
@@ -96,18 +67,8 @@
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
 			<key>NUMBER</key>
-			<string>10</string>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>1</integer>
-			<key>NUMBER</key>
-			<string>6</string>
+			<string>11</string>
 		</dict>
 	</array>
 	<key>COLUMN_CAGES</key>

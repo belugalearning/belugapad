@@ -2,19 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>TOOL_KEY</key>
-	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>dt_mq_4_2_cookies. </string>
+	<string>A takes B&apos;s goo.</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
-	<key>SOLUTION</key>
-	<dict>
-		<key>{@bname}</key>
-		<string>{5-$augend}</string>
-		<key>{@gname}</key>
-		<string>{$addend+$augend}</string>
-	</dict>
+	<key>MASTERY</key>
+	<true/>
 	<key>DSTRINGS</key>
 	<dict>
 		<key>@bname</key>
@@ -39,27 +32,6 @@
 			<string>RANDOM</string>
 		</dict>
 	</dict>
-	<key>HOST_BACKGROUND_IMAGE</key>
-	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
-	<key>INIT_OBJECTS</key>
-	<array>
-		<dict>
-			<key>QUANTITY</key>
-			<string>{$addend}</string>
-			<key>POS_X</key>
-			<integer>350</integer>
-			<key>POS_Y</key>
-			<integer>450</integer>
-		</dict>
-		<dict>
-			<key>QUANTITY</key>
-			<string>{$augend}</string>
-			<key>POS_X</key>
-			<integer>250</integer>
-			<key>POS_Y</key>
-			<integer>250</integer>
-		</dict>
-	</array>
 	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
@@ -74,13 +46,13 @@
 				<key>META_ANSWER_TEXT</key>
 				<string>{$addend-$augend}</string>
 				<key>META_ANSWER_VALUE</key>
-				<false/>
+				<true/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
 				<string>{$addend+$augend}</string>
 				<key>META_ANSWER_VALUE</key>
-				<true/>
+				<false/>
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
@@ -90,7 +62,7 @@
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>{@gname} &lt;b:t&gt;has {$addend} more goo than&lt;/b:t&gt; {@bname}&lt;b:t&gt;.&lt;/b:t&gt;{@bname}&lt;b:t&gt;has {$augend} goo. How many does &lt;/b:t&gt;{@gname}&lt;b:t&gt; have altogether?&lt;/b:t&gt;</string>
+		<string>{@gname} &lt;b:t&gt;has {$addend} goo.&lt;/b:t&gt; {@bname}&lt;b:t&gt; takes {$augend} of his. How many does &lt;/b:t&gt;{@gname}&lt;b:t&gt; have now?&lt;/b:t&gt;</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>
@@ -100,9 +72,9 @@
 			<key>VAR_NAME</key>
 			<string>$addend</string>
 			<key>MIN</key>
-			<string>4</string>
+			<string>3</string>
 			<key>MAX</key>
-			<string>7</string>
+			<string>6</string>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
@@ -110,7 +82,32 @@
 			<key>MIN</key>
 			<string>1</string>
 			<key>MAX</key>
-			<string>4</string>
+			<string>{$addend}</string>
+		</dict>
+	</array>
+    <key>TOOL_KEY</key>
+	<string>DistributionTool</string>
+	<key>DISTRIBUTION_EVAL_TYPE</key>
+	<integer>1</integer>
+	<key>HAS_CAGE</key>
+	<true/>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>QUANTITY</key>
+			<real>0</real>
+			<key>POS_X</key>
+			<integer>80</integer>
+			<key>POS_Y</key>
+			<integer>300</integer>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<real>0</real>
+			<key>POS_X</key>
+			<integer>400</integer>
+			<key>POS_Y</key>
+			<integer>500</integer>
 		</dict>
 	</array>
 </dict>

@@ -7,14 +7,14 @@
 	<key>DISTRIBUTION_EVAL_TYPE</key>
 	<integer>1</integer>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:oi tag=&quot;a&quot; icontag=&quot;thing_2&quot;/&gt;&lt;b:t&gt; had 8 goo, he gave some to &lt;/b:t&gt;&lt;b:oi tag=&quot;a&quot; icontag=&quot;thing_5&quot;/&gt;&lt;b:t&gt;. Now &lt;/b:t&gt;&lt;b:oi tag=&quot;a&quot; icontag=&quot;thing_2&quot;/&gt;&lt;b:t&gt; has 3 goo, how many were given away?&lt;/b:t&gt;</string>
+	<string>&lt;b:oi tag=&quot;a&quot; icontag=&quot;thing_2&quot;/&gt;&lt;b:t&gt; had 5 goo, he gave some to &lt;/b:t&gt;&lt;b:oi tag=&quot;a&quot; icontag=&quot;thing_5&quot;/&gt;&lt;b:t&gt;. Now &lt;/b:t&gt;&lt;b:oi tag=&quot;a&quot; icontag=&quot;thing_2&quot;/&gt;&lt;b:t&gt; has 2 goo, how many were given away?&lt;/b:t&gt;</string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>8</integer>
+			<integer>5</integer>
 			<key>POS_X</key>
 			<integer>550</integer>
 			<key>POS_Y</key>
@@ -52,7 +52,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>&lt;b:oi tag=&quot;a&quot; icontag=&quot;thing_2&quot;/&gt;&lt;b:t&gt; had 8 goo, he gave some to &lt;/b:t&gt;&lt;b:oi tag=&quot;a&quot; icontag=&quot;thing_5&quot;/&gt;&lt;b:t&gt;. Now &lt;/b:t&gt;&lt;b:oi tag=&quot;a&quot; icontag=&quot;thing_2&quot;/&gt;&lt;b:t&gt; has 3 goo, how many were given away?&lt;/b:t&gt;</string>
+		<string>&lt;b:oi tag=&quot;a&quot; icontag=&quot;thing_2&quot;/&gt;&lt;b:t&gt; had 5 goo, he gave some to &lt;/b:t&gt;&lt;b:oi tag=&quot;a&quot; icontag=&quot;thing_5&quot;/&gt;&lt;b:t&gt;. Now &lt;/b:t&gt;&lt;b:oi tag=&quot;a&quot; icontag=&quot;thing_2&quot;/&gt;&lt;b:t&gt; has 2 goo, how many were given away?&lt;/b:t&gt;</string>
 		<key>PICKER_LAYOUT</key>
 		<integer>1</integer>
 		<key>PICKER_ORIGIN_X</key>
@@ -64,7 +64,7 @@
 		<key>PICKER_EVAL_MODE</key>
 		<integer>1</integer>
 		<key>EVAL_VALUE</key>
-		<integer>5</integer>
+		<integer>3</integer>
 	</dict>
 </dict>
 </plist>

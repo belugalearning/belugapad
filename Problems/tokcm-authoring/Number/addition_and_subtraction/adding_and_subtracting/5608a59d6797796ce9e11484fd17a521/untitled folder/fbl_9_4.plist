@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Claire has 9 red goos and Ed has 7 red goos. Claire gives some to Ed, and is left with 4 red goos. How many did she give away?</string>
+	<string>&lt;b:oi tag=&quot;thing_1&quot;/&gt;&lt;b:t&gt; has 9 red goos and &lt;/b:t&gt;&lt;b:oi tag=&quot;thing_3&quot;/&gt;&lt;b:t&gt; has 7 red goos.&lt;/b:t&gt;&lt;b:oi tag=&quot;thing_1&quot;/&gt;&lt;b:t&gt; gives some to &lt;/b:t&gt;&lt;b:oi tag=&quot;thing_3&quot;/&gt;&lt;b:t&gt;, and is left with 4 red goos. How many were given away? &lt;/b:t&gt;</string>
 	<key>TOOL_KEY</key>
 	<string>FloatingBlock</string>
 	<key>EVAL_MODE</key>

@@ -25,6 +25,8 @@
 	<false/>
 	<key>SHOW_MULTIPLE_CONTROLS</key>
 	<true/>
+	<key>DEFAULT_BLOCKS_FROM_PIPE</key>
+	<integer>4</integer>
 	<key>SUPPORTED_OPERATORS</key>
 	<array>
 		<string>+</string>

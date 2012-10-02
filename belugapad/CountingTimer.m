@@ -21,6 +21,9 @@
 #import "BATQuery.h"
 #import "InteractionFeedback.h"
 
+#define kEarlyHitAllowance 0.25
+#define kHitFromExactSecond 0.75
+
 @interface CountingTimer()
 {
 @private
@@ -128,10 +131,10 @@
         [self expireProblemForRestart];
     }
         
-    if([buttonOfWin numberOfRunningActions]==0 && !CGPointEqualToPoint([buttonOfWin position], ccp(cx,cy)))
-    {
-        [buttonOfWin setPosition:ccp(cx,cy)];
-    }
+//    if([buttonOfWin numberOfRunningActions]==0 && !CGPointEqualToPoint([buttonOfWin position], ccp(cx,cy)))
+//    {
+//        [buttonOfWin setPosition:ccp(cx,cy)];
+//    }
     
 }
 
@@ -169,15 +172,15 @@
 {
     gw.Blackboard.RenderLayer = renderLayer;
     buttonOfWin=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/countingtimer/counter_start.png")];
-    [buttonOfWin setPosition:ccp(cx,cy)];
+    [buttonOfWin setPosition:ccp(cx,cy-80)];
     [buttonOfWin setOpacity:0];
     [buttonOfWin setTag:2];
     [renderLayer addChild:buttonOfWin];
     
     if(showCount)
     {
-        currentNumber=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
-        [currentNumber setPosition:ccp(50,50)];
+        currentNumber=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:50.0f];
+        [currentNumber setPosition:ccp(cx,cy+100)];
         [currentNumber setOpacity:0];
         [currentNumber setTag:3];
         [renderLayer addChild:currentNumber];
@@ -261,10 +264,38 @@
 #pragma mark - evaluation
 -(BOOL)evalExpression
 {
-    if(lastNumber==solutionNumber)
-        return YES;
+    float curNumber=lastNumber;
+    float earliestHit=0.0f;
+    float latestHit=0.0f;
+    
+    NSLog(@"time elapsed %f", timeElapsed);
+    
+    if(numIncrement>=0)
+    {
+        // count up
+        earliestHit=curNumber-kEarlyHitAllowance;
+        latestHit=curNumber+kHitFromExactSecond;
+        
+        if(timeElapsed>earliestHit && curNumber<timeElapsed)
+            return YES;
+        else
+            return NO;
+            
+    }
     else
-        return NO;
+    {
+        // count down
+        earliestHit=curNumber+kEarlyHitAllowance;
+        latestHit=curNumber-kHitFromExactSecond;
+        
+        if(timeElapsed>latestHit && timeElapsed<earliestHit)
+            return YES;
+        else
+            return NO;
+    }
+    
+    return NO;
+    
 }
 
 -(void)evalProblem
@@ -279,8 +310,11 @@
     else {
 //        if(evalMode==kProblemEvalOnCommit)[self resetProblem];
         
-        if([buttonOfWin numberOfRunningActions]==0)
-            [buttonOfWin runAction:[InteractionFeedback shakeAction]];
+        [toolHost doIncomplete];
+        [toolHost resetProblem];
+        
+        //if([buttonOfWin numberOfRunningActions]==0)
+ //           [buttonOfWin runAction:[InteractionFeedback shakeAction]];
         
     }
     

@@ -66,12 +66,6 @@
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>{$a*$rand2}/{$b*$rand2}</string>
-				<key>META_ANSWER_VALUE</key>
-				<true/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
 				<string>{$a*$rand3}/{$b*$rand3}</string>
 				<key>META_ANSWER_VALUE</key>
 				<true/>
@@ -79,12 +73,6 @@
 			<dict>
 				<key>META_ANSWER_TEXT</key>
 				<string>{$a+1}/{$b+1}</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>{$a+$b}/{$b+$b}</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
@@ -104,7 +92,7 @@
 			<key>VAR_NAME</key>
 			<string>$b</string>
 			<key>MIN</key>
-			<string>2</string>
+			<string>3</string>
 			<key>MAX</key>
 			<string>10</string>
 		</dict>
@@ -112,7 +100,7 @@
 			<key>VAR_NAME</key>
 			<string>$a</string>
 			<key>MIN</key>
-			<string>1</string>
+			<string>2</string>
 			<key>MAX</key>
 			<string>{$b}</string>
 		</dict>

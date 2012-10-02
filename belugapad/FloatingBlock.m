@@ -29,6 +29,11 @@
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
 
+//CCPickerView
+#define kComponentWidth 54
+#define kComponentHeight 32
+#define kComponentSpacing 10
+
 @interface FloatingBlock()
 {
 @private
@@ -42,12 +47,14 @@
     
     id pickupObject;
     id opBubble;
-    
+
 }
 
 @end
 
 @implementation FloatingBlock
+
+@synthesize pickerView;
 
 #pragma mark - scene setup
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
@@ -101,8 +108,6 @@
 -(void)doUpdateOnTick:(ccTime)delta
 {
     [gw doUpdate:delta];
-    
-    [newPipeLabel setString:[NSString stringWithFormat:@"%d", blocksFromPipe]];
     
 }
 
@@ -208,11 +213,12 @@
         
         if(showMultipleControls)
         {
-            newPipeLabel=[CCLabelTTF labelWithString:@"" fontName:@"Chango" fontSize:50.0f];
-            [newPipeLabel setPosition:ccp(100, 550)];
-            [newPipeLabel setOpacity:0];
-            [newPipeLabel setTag:3];
-            [renderLayer addChild:newPipeLabel];
+            [self setupNumberWheel];
+//            newPipeLabel=[CCLabelTTF labelWithString:@"" fontName:@"Chango" fontSize:50.0f];
+//            [newPipeLabel setPosition:ccp(100, 550)];
+//            [newPipeLabel setOpacity:0];
+//            [newPipeLabel setTag:3];
+//            [renderLayer addChild:newPipeLabel];
             
         }
     }
@@ -352,6 +358,8 @@
                 [self multiplyGroupsInBubbles];
             else if([s isEqualToString:@"-"])
                 [self subtractGroupsInBubbles];
+            else if([s isEqualToString:@"%"])
+                [self divideGroupsInBubbles];
             else if([s isEqualToString:@"/"])
                 [self divideGroupsInBubbles];
         }
@@ -377,6 +385,8 @@
                             [self multiplyGroupsInBubbles];
                     else if([s isEqualToString:@"-"])
                         [self subtractGroupsInBubbles];
+                    else if([s isEqualToString:@"%"])
+                        [self divideGroupsInBubbles];
                     else if([s isEqualToString:@"/"])
                         [self divideGroupsInBubbles];
                 }
@@ -608,6 +618,136 @@
     }
 }
 
+
+#pragma mark - CCPickerView for number wheel
+
+-(void)setupNumberWheel
+{
+    if(!pickerViewSelection)pickerViewSelection=[[[NSMutableArray alloc]init]retain];
+    
+    if(self.pickerView) return;
+    
+    self.pickerView = [CCPickerView node];
+    pickerView.position = ccp(150, 2*cy-250);
+    pickerView.dataSource = self;
+    pickerView.delegate = self;
+    [pickerView autoRepeatNodes:NO];
+    [pickerView spinComponent:0 speed:0 easeRate:0 repeat:1 stopRow:0];
+    [pickerView spinComponent:1 speed:0 easeRate:0 repeat:1 stopRow:0];
+    [pickerView spinComponent:2 speed:5 easeRate:5 repeat:1 stopRow:1];
+    
+    [pickerViewSelection addObject:[NSNumber numberWithInt:0]];
+    [pickerViewSelection addObject:[NSNumber numberWithInt:0]];
+    [pickerViewSelection addObject:[NSNumber numberWithInt:0]];
+    
+    
+    [renderLayer addChild:self.pickerView z:20];
+}
+
+#pragma mark CCPickerView delegate methods
+
+- (NSInteger)numberOfComponentsInPickerView:(CCPickerView *)pickerView {
+    return 3;
+}
+
+- (NSInteger)pickerView:(CCPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    
+    NSInteger numRows = 0;
+    
+    switch (component) {
+        case 0:
+            numRows = 1;
+            break;
+        case 1:
+            numRows = 2;
+            break;
+        case 2:
+            numRows=10;
+            break;
+        default:
+            break;
+    }
+    
+    return numRows;
+}
+
+- (CGFloat)pickerView:(CCPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
+    return kComponentHeight;
+}
+
+- (CGFloat)pickerView:(CCPickerView *)pickerView widthForComponent:(NSInteger)component {
+    return kComponentWidth;
+}
+
+- (NSString *)pickerView:(CCPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    return @"Not used";
+}
+
+- (CCNode *)pickerView:(CCPickerView *)pickerView nodeForRow:(NSInteger)row forComponent:(NSInteger)component reusingNode:(CCNode *)node {
+    
+    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", row]fontName:@"Chango" fontSize:24];
+    return l;
+    
+    //    temp.color = ccYELLOW;
+    //    temp.textureRect = CGRectMake(0, 0, kComponentWidth, kComponentHeight);
+    //
+    //    NSString *rowString = [NSString stringWithFormat:@"%d", row];
+    //    CCLabelBMFont *label = [CCLabelBMFont labelWithString:rowString fntFile:@"bitmapFont.fnt"];
+    //    label.position = ccp(kComponentWidth/2, kComponentHeight/2-5);
+    //    [temp addChild:label];
+    //    return temp;
+    
+}
+
+- (void)pickerView:(CCPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    
+    [pickerViewSelection replaceObjectAtIndex:component withObject:[NSNumber numberWithInteger:row]];
+    
+    if([self returnPickerNumber]>10)
+        [self.pickerView spinComponent:1 speed:5 easeRate:3 repeat:0 stopRow:0];
+    
+    NSLog(@"didSelect row = %d, component = %d, totSum = %d", row, component, [self returnPickerNumber]);
+
+    blocksFromPipe=[self returnPickerNumber];
+}
+
+- (CGFloat)spaceBetweenComponents:(CCPickerView *)pickerView {
+    return kComponentSpacing;
+}
+
+- (CGSize)sizeOfPickerView:(CCPickerView *)pickerView {
+    CGSize size = CGSizeMake(200, 100);
+    
+    return size;
+}
+
+- (CCNode *)overlayImage:(CCPickerView *)pickerView {
+    CCSprite *sprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/3slots.png")];
+    return sprite;
+}
+
+- (void)onDoneSpinning:(CCPickerView *)pickerView component:(NSInteger)component {
+
+    NSLog(@"Component %d stopped spinning.", component);
+}
+
+-(int)returnPickerNumber
+{
+    int retNum=0;
+    int power=0;
+    
+    for(int i=[pickerViewSelection count]-1;i>=0;i--)
+    {
+        NSNumber *n=[pickerViewSelection objectAtIndex:i];
+        int thisNum=[n intValue];
+        thisNum=thisNum*(pow((double)10,power));
+        retNum+=thisNum;
+        power++;
+    }
+    
+    return retNum;
+}
+
 #pragma mark - touches events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -620,12 +760,6 @@
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
     touchStartPos=location;
-    
-    if(CGRectContainsPoint(newPipeLabel.boundingBox, location))
-    {
-        touchingNewPipeLabel=YES;
-        return;
-    }
     
     if(CGRectContainsPoint(newPipe.boundingBox, location))
     {
@@ -679,26 +813,6 @@
             [grp checkIfInBubbleAt:location];
         }
     }
-    
-    if(touchingNewPipeLabel)
-    {
-        CGPoint touchStart=ccp(0, touchStartPos.y);
-        CGPoint thisTouch=ccp(0, location.y);
-        
-        int differenceMoved=[BLMath DistanceBetween:touchStart and:thisTouch];
-        
-        
-//        if(touchStartPos.y>location.y)
-//            differenceMoved=-differenceMoved;
-            
-        blocksFromPipe=(differenceMoved/20);
-        
-        if(blocksFromPipe>maxBlocksFromPipe)
-            blocksFromPipe=maxBlocksFromPipe;
-        else if (blocksFromPipe<minBlocksFromPipe)
-            blocksFromPipe=minBlocksFromPipe;
-        
-    }
    
     lastTouch=location;
  
@@ -733,7 +847,6 @@
 
     pickupObject=nil;
     isTouching=NO;
-    touchingNewPipeLabel=NO;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -741,7 +854,6 @@
 
     pickupObject=nil;
     isTouching=NO;
-    touchingNewPipeLabel=NO;
     // empty selected objects
 }
 
@@ -797,10 +909,12 @@
 #pragma mark - dealloc
 -(void) dealloc
 {
-    //write log on problem switch
     
     [renderLayer release];
-
+    
+    if(pickerViewSelection)[pickerViewSelection release];
+    if(supportedOperators)[supportedOperators release];
+    initObjects=nil;
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

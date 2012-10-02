@@ -1741,8 +1741,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     descGw.Blackboard.RenderLayer = btxeDescLayer;
     
     //create row
-    id<Container, Bounding, Parser, FadeIn> row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
+    id<Container, RenderContainer, Bounding, Parser, FadeIn> row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
     row.position=ccp(cx, (cy*2) - 100);
+
+    //top down valign
+    row.forceVAlignTop=YES;
     
     if(descString.length<3)
     {

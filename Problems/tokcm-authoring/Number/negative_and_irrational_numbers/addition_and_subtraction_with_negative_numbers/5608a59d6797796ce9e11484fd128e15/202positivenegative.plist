@@ -31,7 +31,7 @@
 	<key>CAGE_DEFAULT_VALUE</key>
 	<integer>1</integer>
 	<key>SHOW_CAGE</key>
-	<false/>
+	<true/>
 	<key>SHOW_NEG_CAGE</key>
 	<false/>
 	<key>CAGE_POS_DISABLE_ADD</key>

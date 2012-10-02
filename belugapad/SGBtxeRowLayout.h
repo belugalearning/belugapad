@@ -11,7 +11,7 @@
 
 @interface SGBtxeRowLayout : SGComponent
 {
-    id<Bounding, Container> ParentGo;
+    id<Bounding, Container, RenderContainer> ParentGo;
 }
 
 -(void)layoutChildren;

@@ -18,12 +18,16 @@
 
 @property (retain) SGBtxeContainerMgr *containerMgrComponent;
 
+
+
 @end
 
 
 @protocol RenderContainer
 
 @property (retain) CCLayer *renderLayer;
+@property BOOL forceVAlignTop;
+
 
 @end
 

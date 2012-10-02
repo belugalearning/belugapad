@@ -14,7 +14,7 @@
 @implementation SGBtxeRow
 
 @synthesize children, containerMgrComponent;   //Container properties
-@synthesize renderLayer;
+@synthesize renderLayer, forceVAlignTop;
 @synthesize size, position, worldPosition;       //Bounding properties
 
 @synthesize rowLayoutComponent;
@@ -27,6 +27,7 @@
         children=[[NSMutableArray alloc] init];
         size=CGSizeZero;
         position=CGPointZero;
+        forceVAlignTop=NO;
         containerMgrComponent=[[SGBtxeContainerMgr alloc] initWithGameObject:(SGGameObject*)self];
         rowLayoutComponent=[[SGBtxeRowLayout alloc] initWithGameObject:(SGGameObject*)self];
         parserComponent=[[SGBtxeParser alloc] initWithGameObject:(SGGameObject*)self];

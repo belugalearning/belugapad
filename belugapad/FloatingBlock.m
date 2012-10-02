@@ -32,7 +32,7 @@
 //CCPickerView
 #define kComponentWidth 54
 #define kComponentHeight 32
-#define kComponentSpacing 10
+#define kComponentSpacing 0
 
 @interface FloatingBlock()
 {
@@ -206,7 +206,7 @@
     
     if(showNewPipe) {
         newPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/FB_Pipe_Out.png")];
-        [newPipe setPosition:ccp(45,600)];
+        [newPipe setPosition:ccp(45,560)];
         [newPipe setOpacity:0];
         [newPipe setTag:1];
         [renderLayer addChild:newPipe];
@@ -214,6 +214,7 @@
         if(showMultipleControls)
         {
             [self setupNumberWheel];
+            [pickerView spinComponent:0 speed:15 easeRate:3 repeat:3 stopRow:defaultBlocksFromPipe];
 //            newPipeLabel=[CCLabelTTF labelWithString:@"" fontName:@"Chango" fontSize:50.0f];
 //            [newPipeLabel setPosition:ccp(100, 550)];
 //            [newPipeLabel setOpacity:0];
@@ -628,16 +629,10 @@
     if(self.pickerView) return;
     
     self.pickerView = [CCPickerView node];
-    pickerView.position = ccp(150, 2*cy-250);
+    pickerView.position = ccp(35, 425);
     pickerView.dataSource = self;
     pickerView.delegate = self;
-    [pickerView autoRepeatNodes:NO];
-    [pickerView spinComponent:0 speed:0 easeRate:0 repeat:1 stopRow:0];
-    [pickerView spinComponent:1 speed:0 easeRate:0 repeat:1 stopRow:0];
-    [pickerView spinComponent:2 speed:5 easeRate:5 repeat:1 stopRow:1];
-    
-    [pickerViewSelection addObject:[NSNumber numberWithInt:0]];
-    [pickerViewSelection addObject:[NSNumber numberWithInt:0]];
+
     [pickerViewSelection addObject:[NSNumber numberWithInt:0]];
     
     
@@ -647,7 +642,7 @@
 #pragma mark CCPickerView delegate methods
 
 - (NSInteger)numberOfComponentsInPickerView:(CCPickerView *)pickerView {
-    return 3;
+    return 1;
 }
 
 - (NSInteger)pickerView:(CCPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
@@ -656,7 +651,7 @@
     
     switch (component) {
         case 0:
-            numRows = 1;
+            numRows = 11;
             break;
         case 1:
             numRows = 2;
@@ -703,9 +698,6 @@
     
     [pickerViewSelection replaceObjectAtIndex:component withObject:[NSNumber numberWithInteger:row]];
     
-    if([self returnPickerNumber]>10)
-        [self.pickerView spinComponent:1 speed:5 easeRate:3 repeat:0 stopRow:0];
-    
     NSLog(@"didSelect row = %d, component = %d, totSum = %d", row, component, [self returnPickerNumber]);
 
     blocksFromPipe=[self returnPickerNumber];
@@ -716,13 +708,13 @@
 }
 
 - (CGSize)sizeOfPickerView:(CCPickerView *)pickerView {
-    CGSize size = CGSizeMake(200, 100);
+    CGSize size = CGSizeMake(68, 100);
     
     return size;
 }
 
 - (CCNode *)overlayImage:(CCPickerView *)pickerView {
-    CCSprite *sprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/3slots.png")];
+    CCSprite *sprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/1slot.png")];
     return sprite;
 }
 

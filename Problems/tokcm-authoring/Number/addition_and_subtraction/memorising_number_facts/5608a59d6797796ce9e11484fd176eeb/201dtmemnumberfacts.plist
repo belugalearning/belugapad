@@ -60,7 +60,7 @@
 			<integer>250</integer>
 		</dict>
 	</array>
-	<key>META_QUESTION*</key>
+	<key>META_QUESTION</key>
 	<dict>
 		<key>META_QUESTION_COMPLETE_TEXT</key>
 		<string>well done!!</string>
@@ -84,13 +84,13 @@
 			</dict>
 			<dict>
 				<key>META_ANSWER_TEXT</key>
-				<string>{$total-1}</string>
+				<string>6</string>
 				<key>META_ANSWER_VALUE</key>
 				<false/>
 			</dict>
 		</array>
 		<key>META_QUESTION_TITLE</key>
-		<string>{@gname} &lt;b:t&gt;has {$addend} goo.&lt;/b:t&gt; {@bname} &lt;b:t&gt;has {$augend} goo. How many goo do&lt;/b:t&gt; {@bname} &lt;b:t&gt; and &lt;/b:t&gt; {@gname} &lt;b:t&gt; have together?&lt;/b:t&gt;</string>
+		<string>{@gname} &lt;b:t&gt;has {$addend} goo.&lt;/b:t&gt; {@bname}&lt;b:t&gt; gives her {$augend} of his. How many does &lt;/b:t&gt;{@gname}&lt;b:t&gt; have now?&lt;/b:t&gt;</string>
 		<key>META_QUESTION_INCOMPLETE_TEXT</key>
 		<string>Try again</string>
 	</dict>
@@ -100,41 +100,18 @@
 			<key>VAR_NAME</key>
 			<string>$addend</string>
 			<key>MIN</key>
-			<string>3</string>
+			<string>1</string>
 			<key>MAX</key>
-			<string>6</string>
+			<string>4</string>
 		</dict>
 		<dict>
 			<key>VAR_NAME</key>
 			<string>$augend</string>
 			<key>MIN</key>
-			<string>3</string>
+			<string>1</string>
 			<key>MAX</key>
-			<string>6</string>
-		</dict>
-		<dict>
-			<key>VAR_NAME</key>
-			<string>$total</string>
-			<key>VALUE</key>
-			<string>{$addend+$augend}</string>
+			<string>4</string>
 		</dict>
 	</array>
-	<key>NUMBER_PICKER</key>
-	<dict>
-		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>{@gname} &lt;b:t&gt;has {$addend} goo.&lt;/b:t&gt; {@bname} &lt;b:t&gt;has {$augend} goo. How many goo do&lt;/b:t&gt; {@bname} &lt;b:t&gt; and &lt;/b:t&gt; {@gname} &lt;b:t&gt; have together?&lt;/b:t&gt;</string>
-		<key>INTERNAL_DESCRIPTION</key>
-		<string>002 memorise number facts for addition within 5 - 10</string>
-		<key>PICKER_LAYOUT</key>
-		<integer>1</integer>
-		<key>ANIMATE_FROM_PICKER</key>
-		<true/>
-		<key>SHOW_DROPBOX</key>
-		<true/>
-		<key>PICKER_EVAL_MODE</key>
-		<integer>1</integer>
-		<key>EVAL_VALUE</key>
-		<string>{$addend+$augend}</string>
-	</dict>
 </dict>
 </plist>

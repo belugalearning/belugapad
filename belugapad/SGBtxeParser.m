@@ -17,6 +17,7 @@
 #import "SGBtxeMissingVar.h"
 #import "SGBtxeContainerMgr.h"
 #import "SGBtxeObjectNumber.h"
+#import "SGBtxeObjectIcon.h"
 
 const NSString *matchNumbers=@"0123456789";
 
@@ -102,6 +103,19 @@ const NSString *matchNumbers=@"0123456789";
         [ParentGO.containerMgrComponent addObjectToContainer:ot];
     }
     
+    else if([element.name isEqualToString:BTXE_OI])
+    {
+        SGBtxeObjectIcon *oi=[[SGBtxeObjectIcon alloc] initWithGameWorld:gameWorld];
+        CXMLNode *tagNode=[element attributeForName:@"tag"];
+        if(tagNode)oi.tag=tagNode.stringValue;
+        CXMLNode *iconTagNode=[element attributeForName:@"icontag"];
+        if(iconTagNode)oi.iconTag=iconTagNode.stringValue;
+        
+        oi.enabled=[self enabledBoolFor:element];
+        
+        [ParentGO.containerMgrComponent addObjectToContainer:oi];
+    }
+    
     else if([element.name isEqualToString:BTXE_COMMOT])
     {
         //for now parse commot to a regular ot, using the sample text and the preference tag
@@ -139,6 +153,8 @@ const NSString *matchNumbers=@"0123456789";
 
 -(BOOL)enabledBoolFor:(CXMLElement *)e
 {
+    //this assumes element is enabled, unless explicitly disabled
+    
     CXMLNode *enabled=[e attributeForName:@"enabled"];
     if(enabled)
     {

@@ -387,6 +387,7 @@
 #define BTXE_NAMESPACE @"http://zubi.me/namespaces/2012/BTXE"
 #define BTXE_T @"b:t"
 #define BTXE_OT @"b:ot"
+#define BTXE_OI @"b:oi"
 #define BTXE_OP @"b:op"
 #define BTXE_ON @"b:on"
 #define BTXE_COMMOT @"b:commot"

@@ -107,3 +107,10 @@
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime;
 
 @end
+
+
+@protocol Icon
+
+@property (retain) NSString *iconTag;
+
+@end

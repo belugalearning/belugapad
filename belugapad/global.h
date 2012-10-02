@@ -370,7 +370,7 @@
 #define SHOW_MULTIPLE_CONTROLS @"SHOW_MULTIPLE_CONTROLS"
 #define SHOW_SOLUTION_ON_PIPE @"SHOW_SOLUTION_ON_PIPE"
 #define SUPPORTED_OPERATORS @"SUPPORTED_OPERATORS"
-#define SHOW_NEW_PIPE @"SHOW_NEW_PIPE"
+#define SHOW_INPUT_PIPE @"SHOW_INPUT_PIPE"
 
 //journey scene
 #define REGION_ZOOM_LEVEL 0.15f
@@ -387,6 +387,7 @@
 #define BTXE_NAMESPACE @"http://zubi.me/namespaces/2012/BTXE"
 #define BTXE_T @"b:t"
 #define BTXE_OT @"b:ot"
+#define BTXE_OI @"b:oi"
 #define BTXE_OP @"b:op"
 #define BTXE_ON @"b:on"
 #define BTXE_COMMOT @"b:commot"

@@ -34,6 +34,7 @@
 -(void)dealloc
 {
     self.RenderLayer=nil;
+    self.btxeIconBatch=nil;
     
     [super dealloc];
 }

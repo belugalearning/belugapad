@@ -1742,7 +1742,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     //create row
     id<Container, Bounding, Parser, FadeIn> row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
-    row.position=ccp(cx, (cy*2) - 80);
+    row.position=ccp(cx, (cy*2) - 100);
     
     if(descString.length<5)
     {

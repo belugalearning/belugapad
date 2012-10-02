@@ -808,6 +808,9 @@ static float kTimeToCageShake=7.0f;
         expectedCount = [[solutionsDef objectForKey:SOLUTION_VALUE] floatValue];
 
         solutionType = [solutionsDef objectForKey:SOLUTION_TYPE];
+
+        if([solutionType isEqualToString:@"TOTAL_COUNT_AND_COUNT_SEQUENCE"])
+            solutionType=@"TOTAL_COUNT";
         
     }
     else
@@ -2447,18 +2450,18 @@ static float kTimeToCageShake=7.0f;
                         }
                         if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && !enoughSpaceInGrid)
                         {
-                            for(DWPlaceValueBlockGameObject *go in pickupObjects){
-                                
+//                            for(DWPlaceValueBlockGameObject *go in pickupObjects){
+                            
                                 if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
                                 {
-                                    [go handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
-                                      [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+                                    [b handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
+                                      [b handleMessage:kDWputdown andPayload:nil withLogLevel:0];
                                 }
                                 else if(![gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
                                 {
-                                    [go handleMessage:kDWresetToMountPositionAndDestroy];
+                                    [b handleMessage:kDWresetToMountPositionAndDestroy];
                                 }
-                            }
+//                            }
                         }
 
                     }

@@ -1276,6 +1276,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         if(countRequired==countFound && countFound==countSelected)
         {
             [self doWinning];
+            autoMoveToNextProblem=YES;
         }
         else
         {
@@ -1649,9 +1650,14 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     float onDropbox=[strEval floatValue];
     if(onDropbox==npEval)
+    {
+        autoMoveToNextProblem=YES;
         [self doWinning];
+    }
     else
+    {
         [self doIncomplete];
+    }
 }
 
 -(void)reorderNumberPickerSelections

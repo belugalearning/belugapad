@@ -904,8 +904,8 @@
     
     [renderLayer release];
     
-    if(pickerViewSelection)[pickerViewSelection release];
-    if(supportedOperators)[supportedOperators release];
+    pickerViewSelection=nil;
+    supportedOperators=nil;
     initObjects=nil;
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];

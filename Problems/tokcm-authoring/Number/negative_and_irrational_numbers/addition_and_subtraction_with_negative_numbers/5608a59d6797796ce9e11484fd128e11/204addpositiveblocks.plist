@@ -31,22 +31,22 @@
 	<key>CAGE_POS_DISABLE_ADD</key>
 	<dict>
 		<key>1</key>
-		<true/>
+		<false/>
 	</dict>
 	<key>CAGE_POS_DISABLE_DELETE</key>
 	<dict>
 		<key>1</key>
-		<true/>
+		<false/>
 	</dict>
 	<key>CAGE_NEG_DISABLE_ADD</key>
 	<dict>
 		<key>1</key>
-		<false/>
+		<true/>
 	</dict>
 	<key>CAGE_NEG_DISABLE_DELETE</key>
 	<dict>
 		<key>1</key>
-		<false/>
+		<true/>
 	</dict>
 	<key>SHOW_CAGE</key>
 	<true/>

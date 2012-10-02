@@ -3,15 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Tap the top pipe. Put 1 block in the bottom pipe. </string>
+	<string>Tap the top pipe and drag up to create a block of 5. Put the block of 5 in the bottom pipe. </string>
 	<key>TOOL_KEY</key>
 	<string>FloatingBlock</string>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
 	<key>SOLUTION</key>
-	<integer>1</integer>
+	<integer>5</integer>
 	<key>INIT_BUBBLES</key>
-	<integer>0</integer>
+	<integer>2</integer>
 	<key>INIT_OBJECTS</key>
 	<array/>
 	<key>BUBBLE_AUTO_OPERATE</key>
@@ -21,10 +21,10 @@
 		<string>+</string>
 	</array>
 	<key>SHOW_MULTIPLE_CONTROLS</key>
-	<false/>
+	<true/>
 	<key>SHOW_SOLUTION_ON_PIPE</key>
 	<true/>
-	<key>DEFAULT_BLOCKS_FROM_PIPE</key>
-	<string>1</string>
+	<key>MAX_BLOCKS_FROM_PIPE</key>
+	<string>5</string>
 </dict>
 </plist>

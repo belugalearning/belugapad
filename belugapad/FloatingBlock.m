@@ -126,8 +126,8 @@
     showSolutionOnPipe=[[pdef objectForKey:SHOW_SOLUTION_ON_PIPE]boolValue];
     showMultipleControls=[[pdef objectForKey:SHOW_MULTIPLE_CONTROLS]boolValue];
     
-    if([pdef objectForKey:SHOW_NEW_PIPE])
-        showNewPipe=[[pdef objectForKey:SHOW_NEW_PIPE]boolValue];
+    if([pdef objectForKey:SHOW_INPUT_PIPE])
+        showNewPipe=[[pdef objectForKey:SHOW_INPUT_PIPE]boolValue];
     else
         showNewPipe=YES;
     
@@ -191,8 +191,9 @@
 
     if(showSolutionOnPipe)
     {
-        CCLabelTTF *targetSol=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", expSolution] fontName:@"Chango" fontSize:50.0f];
-        [targetSol setPosition:ccp(cx,70)];
+        CCLabelTTF *targetSol=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", expSolution] fontName:@"Chango" fontSize:30.0f];
+        [targetSol setColor:ccc3(51,51,51)]; 
+        [targetSol setPosition:ccp(cx,20)];
         [targetSol setOpacity:0];
         [targetSol setTag:3];
         [renderLayer addChild:targetSol];
@@ -204,6 +205,7 @@
         [newPipe setOpacity:0];
         [newPipe setTag:1];
         [renderLayer addChild:newPipe];
+        
         if(showMultipleControls)
         {
             newPipeLabel=[CCLabelTTF labelWithString:@"" fontName:@"Chango" fontSize:50.0f];

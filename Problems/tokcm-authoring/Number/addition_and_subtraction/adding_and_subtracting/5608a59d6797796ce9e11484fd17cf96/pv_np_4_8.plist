@@ -25,7 +25,7 @@
 	<key>ALLOW_PANNING</key>
 	<string>NO</string>
 	<key>SHOW_CAGE</key>
-	<true/>
+	<false/>
 	<key>SHOW_NEG_CAGE</key>
 	<false/>
 	<key>SHOW_COUNT</key>
@@ -37,7 +37,7 @@
 	<key>SHOW_VALUE</key>
 	<false/>
 	<key>SHOW_BASE_SELECTION</key>
-	<true/>
+	<false/>
 	<key>PICKUP_SPRITE_FILENAME</key>
 	<string>/images/placevalue/cage-neg.png</string>
 	<key>PROXIMITY_SPRITE_FILENAME</key>
@@ -111,7 +111,7 @@
 	<key>COLUMN_CAGES</key>
 	<dict>
 		<key>10</key>
-		<true/>
+		<false/>
 		<key>1</key>
 		<false/>
 	</dict>

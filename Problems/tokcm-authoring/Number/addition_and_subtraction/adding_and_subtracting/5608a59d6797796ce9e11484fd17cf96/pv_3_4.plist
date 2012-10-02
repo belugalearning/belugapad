@@ -37,7 +37,7 @@
 	<key>SHOW_VALUE</key>
 	<false/>
 	<key>SHOW_BASE_SELECTION</key>
-	<true/>
+	<false/>
 	<key>PICKUP_SPRITE_FILENAME</key>
 	<string>/images/placevalue/cage-neg.png</string>
 	<key>PROXIMITY_SPRITE_FILENAME</key>

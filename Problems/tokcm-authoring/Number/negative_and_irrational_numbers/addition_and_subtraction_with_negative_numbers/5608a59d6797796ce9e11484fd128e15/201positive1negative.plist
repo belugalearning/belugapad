@@ -51,9 +51,9 @@
 	<key>CAGE_DEFAULT_VALUE</key>
 	<integer>1</integer>
 	<key>SHOW_CAGE</key>
-	<true/>
+	<false/>
 	<key>SHOW_NEG_CAGE</key>
-	<true/>
+	<false/>
 	<key>SHOW_COUNT</key>
 	<true/>
 	<key>SHOW_COUNT_BLOCK</key>

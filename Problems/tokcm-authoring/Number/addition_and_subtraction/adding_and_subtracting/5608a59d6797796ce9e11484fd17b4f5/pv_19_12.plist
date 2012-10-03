@@ -37,7 +37,7 @@
 	<key>SHOW_VALUE</key>
 	<false/>
 	<key>SHOW_BASE_SELECTION</key>
-	<true/>
+	<false/>
 	<key>PICKUP_SPRITE_FILENAME</key>
 	<string>/images/placevalue/cage-neg.png</string>
 	<key>PROXIMITY_SPRITE_FILENAME</key>
@@ -51,33 +51,6 @@
 	</dict>
 	<key>SOLUTION</key>
 	<dict>
-		<key>SOLUTION_MATRIX</key>
-		<array>
-			<dict>
-				<key>PUT_IN_COL</key>
-				<integer>1</integer>
-				<key>PUT_IN_ROW</key>
-				<integer>0</integer>
-				<key>NUMBER</key>
-				<integer>1</integer>
-			</dict>
-			<dict>
-				<key>PUT_IN_COL</key>
-				<integer>1</integer>
-				<key>PUT_IN_ROW</key>
-				<integer>1</integer>
-				<key>NUMBER</key>
-				<integer>3</integer>
-			</dict>
-			<dict>
-				<key>PUT_IN_COL</key>
-				<integer>1</integer>
-				<key>PUT_IN_ROW</key>
-				<integer>2</integer>
-				<key>NUMBER</key>
-				<integer>3</integer>
-			</dict>
-		</array>
 		<key>SOLUTION_TYPE</key>
 		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
@@ -96,18 +69,8 @@
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>0</integer>
 			<key>NUMBER</key>
-			<string>10</string>
-		</dict>
-		<dict>
-			<key>PUT_IN_COL</key>
-			<integer>0</integer>
-			<key>PUT_IN_ROW</key>
-			<integer>1</integer>
-			<key>NUMBER</key>
-			<string>9</string>
+			<string>19</string>
 		</dict>
 	</array>
 	<key>COLUMN_CAGES</key>
@@ -144,5 +107,22 @@
 	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
 	<key>X_OFFSET</key>
 	<integer>0</integer>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>Ed has 19 goos. He gives away 12 of them. How many does he have now?</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>1</integer>
+		<key>PICKER_ORIGIN_X</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_Y</key>
+		<integer>0</integer>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<integer>7</integer>
+	</dict>
 </dict>
 </plist>

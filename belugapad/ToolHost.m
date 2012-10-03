@@ -221,9 +221,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void)recurseSetIntroFor:(CCNode*)node withTime:(float)time forTag:(int)tag
 {
     for (CCNode *cn in [node children]) {
-        if([cn tag]==tag)
+        if([cn tag]==tag && [cn isKindOfClass:[CCSprite class]])
         {
-            CCDelayTime *d=[CCDelayTime actionWithDuration:time];
+            CCDelayTime *d=[CCDelayTime actionWithDuration:time]; 
             CCFadeIn *f=[CCFadeIn actionWithDuration:0.1f];
             CCSequence *s=[CCSequence actions:d, f, nil];
             [cn runAction:s];
@@ -1276,6 +1276,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         if(countRequired==countFound && countFound==countSelected)
         {
             [self doWinning];
+            autoMoveToNextProblem=YES;
         }
         else
         {
@@ -1649,9 +1650,14 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     float onDropbox=[strEval floatValue];
     if(onDropbox==npEval)
+    {
+        autoMoveToNextProblem=YES;
         [self doWinning];
+    }
     else
+    {
         [self doIncomplete];
+    }
 }
 
 -(void)reorderNumberPickerSelections

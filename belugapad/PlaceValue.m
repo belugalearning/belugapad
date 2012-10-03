@@ -555,6 +555,7 @@ static float kTimeToCageShake=7.0f;
                 block.Mount=[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:insRow] objectAtIndex:i];
             else
                 block.Mount=[[[gw.Blackboard.AllStores objectAtIndex:insCol] objectAtIndex:(int)i/(ropesHere+1)] objectAtIndex:blocksAddedToThisRow];
+                
             if(i<count)
                 block.ObjectValue=[[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue];
             else
@@ -578,7 +579,7 @@ static float kTimeToCageShake=7.0f;
             
             [block handleMessage:kDWsetMount andPayload:nil withLogLevel:-1];
             if(blocksAddedToThisRow==ropesHere)
-                blocksAddedToThisRow=0;            
+                blocksAddedToThisRow=0;
             else
                 blocksAddedToThisRow++;
             
@@ -2410,6 +2411,10 @@ static float kTimeToCageShake=7.0f;
                 DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
                 DWPlaceValueNetGameObject *n=nil;
 
+                if([gw.Blackboard.PriorityDropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                    n=(DWPlaceValueNetGameObject*)gw.Blackboard.PriorityDropObject;
+                else if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                    n=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
                 
                 // set the pickup object's mount to the dropobject
                 if(gw.Blackboard.PriorityDropObject && explodeMode)
@@ -2454,8 +2459,6 @@ static float kTimeToCageShake=7.0f;
                             
                             if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && !hasModifiedTestLocation)
                             {
-                                DWPlaceValueNetGameObject *n=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
-                                
                                 gw.Blackboard.TestTouchLocation=ccp(n.PosX,n.PosY);
                                 hasModifiedTestLocation=YES;
                             }
@@ -2505,13 +2508,24 @@ static float kTimeToCageShake=7.0f;
                             if(!blocksToDestroy)
                                 blocksToDestroy=[[[NSMutableArray alloc]init]autorelease];
                             
-                            n.CancellingObject=b;
+                            if(!n.MountedObject)
+                                n.MountedObject=b;
+                            else if(n.MountedObject && !n.CancellingObject)
+                                n.CancellingObject=b;
+                            
                             
                             b.Mount=n;
-                            [blocksToDestroy addObject:b];
-                            [blocksToDestroy addObject:n.MountedObject];
+                            
+                            if(n.MountedObject){
+                                [blocksToDestroy addObject:b];
+                                [blocksToDestroy addObject:n.MountedObject];
+                            }
                             
                             NSLog(@"addobjects to blockstodestroy (#%d) and (#%d) with mount %d", [gw.AllGameObjects indexOfObject:b], [gw.AllGameObjects indexOfObject:n.MountedObject], [gw.AllGameObjects indexOfObject:b.Mount]);
+                        }
+                        else
+                        {
+                            [b handleMessage:kDWresetToMountPositionAndDestroy];
                         }
 //                        [b handleMessage:kDWresetToMountPosition];
 //                        [n.MountedObject handleMessage:kDWfadeAndDestroy];
@@ -2643,13 +2657,11 @@ static float kTimeToCageShake=7.0f;
                     for(DWPlaceValueBlockGameObject *thisBlock in blocksToDestroy)
                     {
                         DWPlaceValueNetGameObject *thisNet=(DWPlaceValueNetGameObject*)thisBlock.Mount;
+                        thisNet.MountedObject=nil;
+                        thisNet.CancellingObject=nil;
                         [thisBlock handleMessage:kDWresetToMountPosition];
 //                        [thisNet.MountedObject handleMessage:kDWfadeAndDestroy];
                         [thisBlock handleMessage:kDWfadeAndDestroy];
-                        thisNet.MountedObject=nil;
-                        
-                        if([thisNet.MountedObject isKindOfClass:[DWPlaceValueNetGameObject class]])
-                            thisNet.CancellingObject=nil;
                     }
                     
                     blocksToDestroy=nil;

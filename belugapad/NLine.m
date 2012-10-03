@@ -100,8 +100,8 @@ static float kTimeToBubbleShake=7.0f;
 
 -(void)setupBubble
 {
-    bubbleTexRegular=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/bubble.png")].CGImage resolutionType:kCCResolutioniPad];
-    bubbleTexSelected=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/bubble_selected115.png")].CGImage resolutionType:kCCResolutioniPad];
+    bubbleTexRegular=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")].CGImage resolutionType:kCCResolutioniPad];
+    bubbleTexSelected=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")].CGImage resolutionType:kCCResolutioniPad];
     
     bubbleSprite=[CCSprite spriteWithTexture:bubbleTexRegular];
     [bubbleSprite setPosition:ccp(cx, cy)];

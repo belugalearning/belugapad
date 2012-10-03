@@ -27,11 +27,11 @@
     
     self.contentSize = size;
     
-    CCSprite* background;
-    background = [CCSprite node];
-    background.color = ccWHITE;
-    background.textureRect = CGRectMake(0, 0, size.width-spacing, size.height-spacing);
-    [self addChild:background];
+//    CCSprite* background;
+//    background = [CCSprite node];
+//    background.color = ccWHITE;
+//    background.textureRect = CGRectMake(0, 0, size.width-spacing, size.height-spacing);
+//    [self addChild:background];
     
     CCNode *overlayImage = [delegate overlayImage:self];
     [self addChild:overlayImage z:10];

@@ -17,6 +17,7 @@
     NSMutableArray *assBlankSegments;
     NSMutableArray *assLineSegments;
     NSMutableArray *assIndicators;
+    NSMutableArray *assNumberBackgrounds;
     
     CCSprite *assStartTerminator;
     CCSprite *assEndTerminator;

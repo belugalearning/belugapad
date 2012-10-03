@@ -80,6 +80,8 @@
         [self readPlist:pdef];
         [self populateGW];
         
+        debugLogging=NO;
+        
         
         gw.Blackboard.inProblemSetup = NO;
         
@@ -100,6 +102,9 @@
     // update our tool variables
     if((int)timeElapsed!=trackNumber && started)
     {
+        if(buttonFlash)
+            [buttonOfWin runAction:[InteractionFeedback dropAndBounceAction]];
+        
         trackNumber=(int)timeElapsed;
         
         lastNumber+=numIncrement;
@@ -163,9 +168,19 @@
     buttonFlash=[[pdef objectForKey:FLASHING_BUTTON]boolValue];
     
     if(numIncrement>=0)
+    {
         lastNumber=countMin;
+        
+        if(countMax<=countMin)
+            countMax=countMin+4;
+    }
     else
+    {
         lastNumber=countMax;
+        
+        if(countMin>=countMax)
+            countMin=countMax-4;
+    }
 }
 
 -(void)populateGW
@@ -264,7 +279,6 @@
 #pragma mark - evaluation
 -(BOOL)evalExpression
 {
-    float curNumber=lastNumber;
     float earliestHit=0.0f;
     float latestHit=0.0f;
     
@@ -273,10 +287,13 @@
     if(numIncrement>=0)
     {
         // count up
-        earliestHit=curNumber-kEarlyHitAllowance;
-        latestHit=curNumber+kHitFromExactSecond;
+        earliestHit=solutionNumber-kEarlyHitAllowance;
+        latestHit=solutionNumber+kHitFromExactSecond;
         
-        if(timeElapsed>earliestHit && curNumber<timeElapsed)
+        if(debugLogging)
+            NSLog(@"(EVAL-UP) earliestHit: %f / latestHit: %f / timeElapsed %f", earliestHit, latestHit, timeElapsed);
+        
+        if((timeElapsed>=earliestHit) && (timeElapsed<=latestHit))
             return YES;
         else
             return NO;
@@ -285,10 +302,14 @@
     else
     {
         // count down
-        earliestHit=curNumber+kEarlyHitAllowance;
-        latestHit=curNumber-kHitFromExactSecond;
+        float adjTimeElapsed=fabsf(timeElapsed-countMax);
+        earliestHit=solutionNumber+kEarlyHitAllowance;
+        latestHit=solutionNumber-kHitFromExactSecond;
         
-        if(timeElapsed>latestHit && timeElapsed<earliestHit)
+        if(debugLogging)
+            NSLog(@"(EVAL-DOWN) earliestHit: %f / latestHit: %f / timeElapsed %f", earliestHit, latestHit, adjTimeElapsed);
+        
+        if(adjTimeElapsed>=latestHit && adjTimeElapsed<=earliestHit)
             return YES;
         else
             return NO;

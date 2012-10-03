@@ -18,5 +18,7 @@
 	<integer>0</integer>
 	<key>COUNT_MAX</key>
 	<integer>20</integer>
+	<key>BUTTON_FLASH</key>
+	<true/>
 </dict>
 </plist>

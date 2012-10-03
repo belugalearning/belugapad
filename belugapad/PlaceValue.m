@@ -768,7 +768,7 @@ static float kTimeToCageShake=7.0f;
     if([pdef objectForKey:AUTO_SELECT_BASE_VALUE])
         autoBaseSelection=[[pdef objectForKey:AUTO_SELECT_BASE_VALUE]boolValue];
     else
-        autoBaseSelection=YES;
+        autoBaseSelection=NO;
     
     
     //objects

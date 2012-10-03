@@ -38,7 +38,7 @@
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>0</integer>
+			<integer>4</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -54,7 +54,7 @@
 	<integer>1</integer>
 	<key>SHOW_BASE_SELECTION</key>
 	<true/>
-	<key>SHOW_MULTIPLE_CONTROLS</key>
+	<key>IS_NEGATIVE_PROBLEM</key>
 	<true/>
 	<key>CAGE_DEFAULT_VALUE</key>
 	<integer>1</integer>

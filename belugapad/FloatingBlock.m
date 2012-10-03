@@ -651,7 +651,7 @@
     
     switch (component) {
         case 0:
-            numRows = 11;
+            numRows = maxBlocksFromPipe+1;
             break;
         case 1:
             numRows = 2;

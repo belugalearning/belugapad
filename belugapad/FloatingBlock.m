@@ -206,7 +206,7 @@
     
     if(showNewPipe) {
         newPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/FB_Pipe_Out.png")];
-        [newPipe setPosition:ccp(45,560)];
+        [newPipe setPosition:ccp(57,560)];
         [newPipe setOpacity:0];
         [newPipe setTag:1];
         [renderLayer addChild:newPipe];
@@ -629,7 +629,7 @@
     if(self.pickerView) return;
     
     self.pickerView = [CCPickerView node];
-    pickerView.position = ccp(21, 565);
+    pickerView.position = ccp(21, 560);
     pickerView.dataSource = self;
     pickerView.delegate = self;
 

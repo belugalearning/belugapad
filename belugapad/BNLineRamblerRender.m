@@ -362,6 +362,10 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     {
         [[jumpSprites objectAtIndex:i] setVisible:NO];
     }
+    for(int i=assNumberBackIndex; i<[assNumberBackgrounds count]; i++)
+    {
+        [[assNumberBackgrounds objectAtIndex:i] setVisible:NO];
+    }
 }
 
 -(void)dealloc

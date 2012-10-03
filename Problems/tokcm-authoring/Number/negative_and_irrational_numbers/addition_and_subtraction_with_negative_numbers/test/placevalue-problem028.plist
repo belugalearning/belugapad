@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>this is 2. make 3.</string>
+	<string>this is a test problem</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -15,9 +15,9 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>3</integer>
+	<integer>4</integer>
 	<key>ROWS_PER_COL</key>
-	<integer>2</integer>
+	<integer>3</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
@@ -32,20 +32,13 @@
 	<false/>
 	<key>SHOW_COUNT_BLOCK</key>
 	<true/>
-	<key>COLUMN_NEG_CAGES</key>
-	<dict>
-		<key>1</key>
-		<true/>
-	</dict>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
 			<key>PUT_IN_COL</key>
 			<integer>0</integer>
 			<key>NUMBER</key>
-			<integer>4</integer>
-			<key>NUMBER_NEGATIVE</key>
-			<integer>2</integer>
+			<integer>0</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
@@ -61,24 +54,9 @@
 	<integer>1</integer>
 	<key>SHOW_BASE_SELECTION</key>
 	<true/>
-	<key>IS_NEGATIVE_PROBLEM</key>
+	<key>SHOW_MULTIPLE_CONTROLS</key>
 	<true/>
 	<key>CAGE_DEFAULT_VALUE</key>
-	<integer>-1</integer>
-	<key>CAGE_POS_DISABLE_ADD</key>
-	<dict>
-		<key>1</key>
-		<true/>
-	</dict>
-	<key>CAGE_NEG_DISABLE_ADD</key>
-	<dict>
-		<key>1</key>
-		<true/>
-	</dict>
-	<key>CAGE_POS_DISABLE_DELETE</key>
-	<dict>
-		<key>1</key>
-		<true/>
-	</dict>
+	<integer>1</integer>
 </dict>
 </plist>

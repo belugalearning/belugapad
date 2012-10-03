@@ -214,7 +214,7 @@
         if(showMultipleControls)
         {
             [self setupNumberWheel];
-            [pickerView spinComponent:0 speed:15 easeRate:3 repeat:3 stopRow:defaultBlocksFromPipe];
+            [pickerView spinComponent:0 speed:25 easeRate:5 repeat:3 stopRow:defaultBlocksFromPipe];
 //            newPipeLabel=[CCLabelTTF labelWithString:@"" fontName:@"Chango" fontSize:50.0f];
 //            [newPipeLabel setPosition:ccp(100, 550)];
 //            [newPipeLabel setOpacity:0];
@@ -629,7 +629,7 @@
     if(self.pickerView) return;
     
     self.pickerView = [CCPickerView node];
-    pickerView.position = ccp(35, 425);
+    pickerView.position = ccp(21, 565);
     pickerView.dataSource = self;
     pickerView.delegate = self;
 
@@ -708,13 +708,13 @@
 }
 
 - (CGSize)sizeOfPickerView:(CCPickerView *)pickerView {
-    CGSize size = CGSizeMake(68, 100);
+    CGSize size = CGSizeMake(42, 100);
     
     return size;
 }
 
 - (CCNode *)overlayImage:(CCPickerView *)pickerView {
-    CCSprite *sprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/1slot.png")];
+    CCSprite *sprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/FB_OutPut_Pipe__Picker_Overlay.png")];
     return sprite;
 }
 

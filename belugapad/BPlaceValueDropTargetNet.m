@@ -52,7 +52,7 @@
             {
                 //NSLog(@"(#%d) obj Value %f, col Value %f, MountedObject? %@, CancellingObject? %@", [gameWorld.AllGameObjects indexOfObject:n], addO.ObjectValue, n.ColumnValue, n.MountedObject? @"YES":@"NO", n.CancellingObject? @"YES":@"NO");
                 
-                if(!gameWorld.Blackboard.PriorityDropObject && n.AllowMultipleMount && n.MountedObject && !n.CancellingObject)
+                if(!gameWorld.Blackboard.PriorityDropObject && n.AllowMultipleMount && n.MountedObject && !n.CancellingObject && ((DWPlaceValueBlockGameObject*)n.MountedObject).ObjectValue==-addO.ObjectValue)
                 {
                     gameWorld.Blackboard.PriorityDropObject=gameObject;
                     gameWorld.Blackboard.DropObject=gameObject;

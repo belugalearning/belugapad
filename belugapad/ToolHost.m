@@ -279,12 +279,12 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     {
         if(showingProblemComplete)
         {
-            [problemComplete runAction:[CCFadeOut actionWithDuration:kTimeToFadeProblemStatus]];
+            [problemComplete runAction:[CCFadeTo actionWithDuration:kTimeToFadeProblemStatus opacity:0]];
             showingProblemComplete=NO;
         }
         if(showingProblemIncomplete)
         {
-            [problemIncomplete runAction:[CCFadeOut actionWithDuration:kTimeToFadeProblemStatus]];
+            [problemIncomplete runAction:[CCFadeTo actionWithDuration:kTimeToFadeProblemStatus opacity:0]];
             showingProblemIncomplete=NO;
             if(metaQuestionForThisProblem)[self deselectAnswersExcept:-1];
         }

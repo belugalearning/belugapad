@@ -43,7 +43,7 @@ static float kBubblePushSpeed=400.0f;
 static float kTimeToBubbleShake=7.0f;
 
 static float kFrogYOffset=30.0f;
-static float kFrogTargetYOffset=70.0f;
+static float kFrogTargetYOffset=80.0f;
 static float kFrogTargetXOffset=0.0f;
 
 float timerIgnoreFrog;

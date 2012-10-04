@@ -102,14 +102,14 @@ static NSString *kLabelFont=@"visgrad1.fnt";
         [gameWorld.Blackboard.ComponentRenderLayer addChild:numback];
     }
     
-    for (int i=0; i<baseSegs; i++) {
-        //currently unused
-        CCSprite *jump=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/jump_section.png")];
-        [jump setVisible:NO];
-        [jump setPosition:ccp(512, 384)];
-        [jumpSprites addObject:jump];
-        [gameWorld.Blackboard.ComponentRenderLayer addChild:jump z:2];
-    }
+//    for (int i=0; i<baseSegs; i++) {
+//        //currently unused
+//        CCSprite *jump=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/jump_section.png")];
+//        [jump setVisible:NO];
+//        [jump setPosition:ccp(512, 384)];
+//        [jumpSprites addObject:jump];
+//        [gameWorld.Blackboard.ComponentRenderLayer addChild:jump z:2];
+//    }
 
     assLabels=[[NSMutableDictionary alloc] init];
     labelLayer=[[CCLayer alloc] init];

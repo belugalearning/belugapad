@@ -1933,11 +1933,15 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     // if we're paused - check if any menu options were valid.
     // touches ended event becase otherwise these touches go through to the tool
-    if(isPaused||autoMoveToNextProblem||isAnimatingIn)
+    
+    if(isAnimatingIn||autoMoveToNextProblem) return;
+    
+    if(isPaused)
     {
         [self checkPauseTouches:location];
         return;
     }
+    
     if(metaQuestionForThisProblem)
     {
         [self checkMetaQuestionTouchesAt:location andTouchEnd:YES];

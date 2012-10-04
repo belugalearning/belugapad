@@ -44,7 +44,7 @@ static float kTimeToBubbleShake=7.0f;
 
 static float kFrogYOffset=30.0f;
 static float kFrogTargetYOffset=70.0f;
-static float kFrogTargetXOffset=-35.0f;
+static float kFrogTargetXOffset=0.0f;
 
 float timerIgnoreFrog;
 
@@ -121,16 +121,14 @@ float timerIgnoreFrog;
     frogSprite.color=ccc3(0, 255, 0);
     frogSprite.position=ccp(cx, cy+kFrogYOffset);
     [self.ForeLayer addChild:frogSprite];
+    
+    frogTargetSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_MoveButton.png")];
+    [self.ForeLayer addChild:frogTargetSprite];
+    frogTargetSprite.opacity=0;
 }
 
 -(void)showFrogTarget
-{
-    if(!frogTargetSprite)
-    {
-        frogTargetSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_JumpEnd.png")];
-        [self.ForeLayer addChild:frogTargetSprite];
-    }
-    
+{    
     frogTargetSprite.opacity=0;
     float x=rambler.TouchXOffset + cx + lastBubbleLoc * rambler.DefaultSegmentSize;
     frogTargetSprite.position=ccp(x+kFrogTargetXOffset, cy+kFrogTargetYOffset);
@@ -139,11 +137,16 @@ float timerIgnoreFrog;
 
 -(void)hideFrogTarget
 {
-    [frogTargetSprite runAction:[CCFadeOut actionWithDuration:0.25f]];
+    if(frogTargetSprite.opacity>0)
+    {
+        [frogTargetSprite runAction:[CCFadeOut actionWithDuration:0.25f]];
+    }
 }
 
 -(void)hopFrog
 {
+    if(lastBubbleLoc==lastFrogLoc) return;
+    
     ccBezierConfig bc;
     bc.controlPoint_1=ccpAdd(frogSprite.position, ccp(20, 100));
     bc.controlPoint_2=ccpAdd(bubbleSprite.position, ccp(0, 100));
@@ -539,12 +542,16 @@ float timerIgnoreFrog;
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
     
-    if([BLMath DistanceBetween:location and:frogTargetSprite.position] < kBubbleProx)
+    if(frogMode)
     {
-        [self hopFrog];
+        if(frogTargetSprite.opacity>0 && CGRectContainsPoint(frogTargetSprite.boundingBox, location) && timerIgnoreFrog<=0.0f)
+        {
+            [self hopFrog];
+        }
     }
-    
-    else if([BLMath DistanceBetween:location and:bubbleSprite.position]<kBubbleProx)
+
+
+    if([BLMath DistanceBetween:location and:bubbleSprite.position]<kBubbleProx)
     {
         if(!usedBubble)usedBubble=YES;
         holdingBubbleOffset=location.x - bubbleSprite.position.x;

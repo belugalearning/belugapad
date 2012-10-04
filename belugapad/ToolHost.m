@@ -788,7 +788,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     [self resetScoreMultiplier];
     
-    skipNextDescDraw=YES;
+    //problem's been reset -- we should redraw the btxe
+    skipNextDescDraw=NO;
     skipNextStagedIntroAnim=YES;
     
     [self loadProblem];
@@ -1737,6 +1738,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     //always re-create the game world
     if(descGw)
     {
+        [btxeDescLayer removeAllChildrenWithCleanup:YES];
         [descGw release];
         descGw=nil;
     }
@@ -1931,11 +1933,15 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     // if we're paused - check if any menu options were valid.
     // touches ended event becase otherwise these touches go through to the tool
-    if(isPaused||autoMoveToNextProblem||isAnimatingIn)
+    
+    if(isAnimatingIn||autoMoveToNextProblem) return;
+    
+    if(isPaused)
     {
         [self checkPauseTouches:location];
         return;
     }
+    
     if(metaQuestionForThisProblem)
     {
         [self checkMetaQuestionTouchesAt:location andTouchEnd:YES];

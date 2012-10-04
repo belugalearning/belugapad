@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ColumnAddition</string>
+	<key>NUMBER_A</key>
+	<integer>12</integer>
+	<key>NUMBER_B</key>
+	<integer>8</integer>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>&lt;b:oi tag=&quot;thing_3&quot;/&gt; &lt;b:t&gt;has 12 goos.&lt;/b:t&gt; &lt;b:oi tag=&quot;thing_2&quot;/&gt; &lt;b:t&gt;has 20 goos, and gives 8 to&lt;/b:t&gt; &lt;b:oi tag=&quot;thing_3&quot;/&gt;&lt;b:t&gt;. How many goos does &lt;/b:t&gt;&lt;b:oi tag=&quot;thing_3&quot;/&gt; &lt;b:t&gt;now have?&lt;/b:t&gt;</string>
+</dict>
+</plist>

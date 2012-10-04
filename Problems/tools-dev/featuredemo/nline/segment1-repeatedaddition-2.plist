@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>jump! (to 3, then 5)</string>
+	<string>count to to 6 in 2s</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>jump!</string>
 	<key>TOOL_KEY</key>
@@ -19,18 +19,15 @@
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>EVAL_TYPE</key>
-	<string>JUMP_SEQUENCE</string>
+	<string>REPEATED_ADDITION</string>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<integer>5</integer>
-	<key>EVAL_JUMP_SEQUENCE</key>
-	<array>
-		<string>3</string>
-		<string>2</string>
-	</array>
+	<integer>6</integer>
+	<key>EVAL_INTERVAL</key>
+	<string>2</string>
 	<key>HIDE_ALL_NUMBERS</key>
-	<false/>
+	<true/>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
@@ -56,9 +53,6 @@
 		<string>5</string>
 	</array>
 	<key>MARKER_POSITIONS</key>
-	<array>
-		<string>10</string>
-		<string>50</string>
-	</array>
+	<array/>
 </dict>
 </plist>

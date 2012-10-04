@@ -12,6 +12,7 @@
 
 @synthesize MaximumValue;
 @synthesize MountedObjects;
+@synthesize HintObjects;
 @synthesize Locked;
 @synthesize Position;
 @synthesize Length;
@@ -22,6 +23,7 @@
     if( (self=[super initWithGameWorld:aGameWorld] )) 
     {
         MountedObjects = [[NSMutableArray alloc]init];
+        HintObjects = [[NSMutableArray alloc] init];
     }
 	return self;
 }

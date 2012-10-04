@@ -128,6 +128,8 @@ static float kTimeToMountedShake=7.0f;
     [initObjects retain];
     initCages = [pdef objectForKey:INIT_CAGES];
     [initCages retain];
+    initHints=[pdef objectForKey:INIT_HINTS];
+    [initHints retain];
     
     solutionMode = [[pdef objectForKey:SOLUTION_MODE]intValue];
     
@@ -258,7 +260,7 @@ static float kTimeToMountedShake=7.0f;
             
             if([[initCages objectAtIndex:i] objectForKey:LABEL])
             {
-                pogo.Label=[CCLabelTTF labelWithString:[[initCages objectAtIndex:i] objectForKey:LABEL] fontName:@"Source Sans Pro" fontSize:PROBLEM_DESC_FONT_SIZE];
+                pogo.Label=[CCLabelTTF labelWithString:[[initCages objectAtIndex:i] objectForKey:LABEL] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
             }
             
             if(!useBlockScaling){
@@ -305,6 +307,37 @@ static float kTimeToMountedShake=7.0f;
         [currentVal release];
     }
     
+    for (int i=0;i<[initHints count]; i++)
+    {
+        //pogo.Position=ccp(512,284);
+        int insRow=[[[initHints objectAtIndex:i] objectForKey:PUT_IN_ROW] intValue];
+        int insLength=[[[initHints objectAtIndex:i] objectForKey:LENGTH] intValue];
+        //NSString *fillText=[[NSString alloc]init];
+        DWNBondObjectGameObject *hint = [DWNBondObjectGameObject alloc];
+        [gw populateAndAddGameObject:hint withTemplateName:@"TnBondObject"];
+        
+        //[pogo.Mounts addObject:[createdRows objectAtIndex:insRow]];
+        hint.Length = insLength;
+        
+        hint.InitedObject=YES;
+        hint.HintObject=YES;
+        
+        //if([[initHints objectAtIndex:i]objectForKey:LABEL]) fillText = [[initHints objectAtIndex:i]objectForKey:LABEL];
+        //else fillText=[NSString stringWithFormat:@"%d", insLength];
+        
+        //hint.Label = [CCLabelTTF labelWithString:fillText fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
+        
+        DWNBondRowGameObject *prgo = (DWNBondRowGameObject*)[createdRows objectAtIndex:insRow];
+        NSDictionary *pl=[NSDictionary dictionaryWithObject:prgo forKey:MOUNT];
+        [hint handleMessage:kDWsetMount andPayload:pl withLogLevel:-1];
+        hint.Position = prgo.Position;
+        hint.MountPosition = prgo.Position;
+        [prgo handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:0];
+        
+//        [fillText release];
+        [hint release];
+    }
+    
     // do stuff with our INIT_OBJECTS (DWNBondObjectGameObject)    
     for (int i=0;i<[initObjects count]; i++)
     {
@@ -313,13 +346,13 @@ static float kTimeToMountedShake=7.0f;
         int insLength=[[[initObjects objectAtIndex:i] objectForKey:LENGTH] intValue];
         NSString *fillText=[[NSString alloc]init];
         DWNBondObjectGameObject *pogo = [DWNBondObjectGameObject alloc];
-        [gw populateAndAddGameObject:pogo withTemplateName:@"TnBondObject"];   
+        [gw populateAndAddGameObject:pogo withTemplateName:@"TnBondObject"];
         
         //[pogo.Mounts addObject:[createdRows objectAtIndex:insRow]];
         pogo.Length = insLength;
         
         pogo.InitedObject=YES;
-
+        
         if([[initObjects objectAtIndex:i]objectForKey:LABEL]) fillText = [[initObjects objectAtIndex:i]objectForKey:LABEL];
         else fillText=[NSString stringWithFormat:@"%d", insLength];
         
@@ -379,6 +412,61 @@ static float kTimeToMountedShake=7.0f;
 
         }
     }
+}
+
+-(void)compareHintsAndMountedObjects
+{
+    // for each row
+    for(int i=0;i<[createdRows count];i++)
+    {
+        DWNBondRowGameObject *r=[createdRows objectAtIndex:i];
+        
+        if(r.Locked)continue;
+        
+        NSMutableArray *hints=[NSMutableArray arrayWithArray:r.HintObjects];
+        NSMutableArray *mounted=r.MountedObjects;
+        
+        // we need to look at it's hint objects and mounted objects
+        
+        for(int h=0;h<[hints count];h++)
+        {
+            BOOL hasMatch=NO;
+            int matchedNo=0;
+            DWNBondObjectGameObject *thisHint=[hints objectAtIndex:h];
+            
+            for(int m=0;m<[mounted count];m++)
+            {
+                DWNBondObjectGameObject *thisMounted=[mounted objectAtIndex:m];
+                
+                if(thisHint.Length==thisMounted.Length)
+                {
+                    NSLog(@"(%d) got match at %d against %d - thisHint length %d, thisMounted length %d", i, m, h, thisHint.Length, thisMounted.Length);
+                    matchedNo=m;
+                    hasMatch=YES;
+                    break;
+                }
+            }
+            
+            if(hasMatch)
+            {
+                NSLog(@"got match %d. count of hints %d", matchedNo, [hints count]);
+                
+                if(matchedNo<[hints count])
+                {
+                    NSLog(@"exchange going on");
+                    if(matchedNo>0)
+                        [r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedNo-1];
+                    else
+                        [r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedNo+1];
+                }
+            }
+            
+            
+        }
+        
+        [r handleMessage:kDWresetPositionEval];
+    }
+    
 }
 
 #pragma mark - touches events
@@ -500,6 +588,7 @@ static float kTimeToMountedShake=7.0f;
             DWNBondRowGameObject *prgo = (DWNBondRowGameObject*)[gw Blackboard].DropObject;
             
             [pogo handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:prgo forKey:MOUNT] withLogLevel:-1];
+            [self compareHintsAndMountedObjects];
             hasUsedBlock=YES;
             
             // touch ended on a row so we've set it. log it's value
@@ -752,6 +841,12 @@ static float kTimeToMountedShake=7.0f;
 //    if(initObjects) [initObjects release];
 //    if(initCages) [initCages release];
 //    if(solutionsDef) [solutionsDef release];
+    initObjects=nil;
+    initBars=nil;
+    initCages=nil;
+    initHints=nil;
+    solutionsDef=nil;
+    
     if(createdRows) [createdRows release];
     if(mountedObjects) [mountedObjects release];
     if(mountedObjectLabels) [mountedObjectLabels release];

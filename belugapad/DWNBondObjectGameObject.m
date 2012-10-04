@@ -24,6 +24,7 @@
 @synthesize IndexPos;
 @synthesize NoScaleBlock;
 @synthesize lastZIndex;
+@synthesize HintObject;
 
 -(DWGameObject *) initWithGameWorld:(DWGameWorld*)aGameWorld
 {

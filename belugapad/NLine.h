@@ -60,6 +60,7 @@
     NSNumber *initMinVal;
     NSNumber *initMaxVal;
     int initSegmentVal;
+    int initStartLoc;
     
     float timeSinceInteractionOrShake;
     

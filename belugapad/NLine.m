@@ -130,7 +130,7 @@ float timerIgnoreFrog;
 -(void)showFrogTarget
 {    
     frogTargetSprite.opacity=0;
-    float x=rambler.TouchXOffset + cx + lastBubbleLoc * rambler.DefaultSegmentSize;
+    float x=rambler.TouchXOffset + cx + (lastBubbleLoc-initStartLoc) * rambler.DefaultSegmentSize;
     frogTargetSprite.position=ccp(x+kFrogTargetXOffset, cy+kFrogTargetYOffset);
     [frogTargetSprite runAction:[CCFadeIn actionWithDuration:0.25f]];
 }
@@ -158,13 +158,13 @@ float timerIgnoreFrog;
     
     [self hideFrogTarget];
     
-    [rambler.UserJumps addObject:[NSValue valueWithCGPoint:ccp(lastFrogLoc*rambler.CurrentSegmentValue, lastBubbleValue - (lastFrogLoc * rambler.CurrentSegmentValue))]];
+    [rambler.UserJumps addObject:[NSValue valueWithCGPoint:ccp((lastFrogLoc-initStartLoc)*rambler.CurrentSegmentValue, lastBubbleValue - (lastFrogLoc * rambler.CurrentSegmentValue))]];
     lastFrogLoc=lastBubbleLoc;
 }
 
 -(void)slideFrog
 {
-    CGPoint fp=ccp(rambler.TouchXOffset + cx + rambler.DefaultSegmentSize * lastFrogLoc, cy+kFrogYOffset);
+    CGPoint fp=ccp(rambler.TouchXOffset + cx + rambler.DefaultSegmentSize * (lastFrogLoc-initStartLoc), cy+kFrogYOffset);
     [frogSprite runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.25f position:fp] rate:2.0f]];
     timerIgnoreFrog=0.25;
 }
@@ -188,7 +188,9 @@ float timerIgnoreFrog;
     
     //update frog position
     if(timerIgnoreFrog>0.0f)timerIgnoreFrog-=delta;
-    else frogSprite.position=ccp(rambler.TouchXOffset + cx + lastFrogLoc * rambler.DefaultSegmentSize, cy+kFrogYOffset);
+    //else frogSprite.position=ccp(rambler.TouchXOffset + cx + (lastFrogLoc +initStartVal) * rambler.DefaultSegmentSize, cy+kFrogYOffset);
+    else frogSprite.position=ccp(rambler.TouchXOffset + cx + rambler.DefaultSegmentSize * (lastFrogLoc-initStartLoc), cy+kFrogYOffset);
+    
     
     timeSinceInteractionOrShake+=delta;
     if(timeSinceInteractionOrShake>kTimeToBubbleShake)
@@ -235,12 +237,17 @@ float timerIgnoreFrog;
     rambler=[DWRamblerGameObject alloc];
     [gw populateAndAddGameObject:rambler withTemplateName:@"TnLineRambler"];
     
+    lastBubbleLoc=initStartLoc;
+    
     rambler.Value=initStartVal;
     rambler.StartValue=rambler.Value;
     rambler.CurrentSegmentValue=initSegmentVal;
     rambler.MinValue=initMinVal;
     rambler.MaxValue=initMaxVal;
     rambler.BubblePos=lastBubbleLoc;
+    
+    initStartLoc=initStartVal / initSegmentVal;
+
     
     enableAudioCounting = [rambler.MinValue intValue]>=0 && [rambler.MaxValue intValue]<=20;
     
@@ -284,7 +291,7 @@ float timerIgnoreFrog;
     
     //frog
     [self setupFrog];
-    lastFrogLoc=0;
+    lastFrogLoc=initStartLoc;
     
     if(markerValuePositions)
     {
@@ -318,7 +325,6 @@ float timerIgnoreFrog;
     evalJumpSequence=[pdef objectForKey:@"EVAL_JUMP_SEQUENCE"];
     
     initStartVal=[[pdef objectForKey:START_VALUE] intValue];
-    lastBubbleLoc=initStartVal;
     
     initMinVal=(NSNumber*)[pdef objectForKey:MIN_VALUE];
     initMaxVal=(NSNumber*)[pdef objectForKey:MAX_VALUE];
@@ -712,15 +718,21 @@ float timerIgnoreFrog;
         for(NSValue *jumpval in rambler.UserJumps)
         {
             jump=[jumpval CGPointValue];
-            if(lastBubbleValue>=jump.x && lastBubbleValue<(jump.x + jump.y))
+            if(lastBubbleValue>=(jump.x + initStartVal) && lastBubbleValue<(jump.x + initStartVal + jump.y))
             {
+                //positive jump match
+                remJump=jumpval;
+            }
+            if(lastBubbleValue<=(jump.x + initStartVal) && lastBubbleValue >(jump.x+initStartVal + jump.y))
+            {
+                //negative jump match
                 remJump=jumpval;
             }
         }
         //put frog back to start of that section if required
         if(frogMode && remJump)
         {
-            lastFrogLoc=(int)(jump.x / rambler.CurrentSegmentValue);
+            lastFrogLoc=(int)(jump.x / rambler.CurrentSegmentValue)+initStartLoc;
             [self slideFrog];
         }
         
@@ -843,6 +855,8 @@ float timerIgnoreFrog;
         logBubbleDidMoveLine=NO;
         
     }
+    
+    NSLog(@"lastBubbleLoc: %d lastFrogLoc: %d", lastBubbleLoc, lastFrogLoc);
     
     holdingBubbleOffset=0;
     holdingBubble=NO;

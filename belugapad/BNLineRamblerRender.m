@@ -381,24 +381,46 @@ static NSString *kLabelFont=@"visgrad1.fnt";
             CGPoint origin=ccp(jumpStart, mid.y + yOffset);
             
             ccBezierConfig bc;
-            bc.controlPoint_1=ccpAdd(ccp(jumpStart, mid.y), ccp(20, 100));
+            bc.controlPoint_1=ccpAdd(ccp(jumpStart, mid.y), ccp(0, 100));
             bc.controlPoint_2=ccpAdd(ccp(jumpStart + jumpLength, mid.y), ccp(0, 100));
             bc.endPosition=ccp(jumpStart + jumpLength, mid.y + yOffset);
-            
+
             ccDrawColor4B(255, 255, 255, 200);
-            ccDrawCubicBezier(origin, bc.controlPoint_1, bc.controlPoint_2, bc.endPosition, 40);
+
+            bc.controlPoint_1=ccp(bc.controlPoint_1.x, bc.controlPoint_1.y - 5.0f);
+            bc.controlPoint_2=ccp(bc.controlPoint_2.x, bc.controlPoint_2.y - 5.0f);
+            bc.endPosition=ccp(bc.endPosition.x-5, bc.endPosition.y);
             
-            bc.controlPoint_1=ccp(bc.controlPoint_1.x, bc.controlPoint_1.y + 1);
-            bc.controlPoint_2=ccp(bc.controlPoint_2.x, bc.controlPoint_2.y + 1);
-
-            ccDrawColor4B(255, 255, 255, 150);
-            ccDrawCubicBezier(origin, bc.controlPoint_1, bc.controlPoint_2, bc.endPosition, 40);
-
-            bc.controlPoint_1=ccp(bc.controlPoint_1.x, bc.controlPoint_1.y - 2);
-            bc.controlPoint_2=ccp(bc.controlPoint_2.x, bc.controlPoint_2.y - 2);
-
-            ccDrawColor4B(255, 255, 255, 150);
-            ccDrawCubicBezier(origin, bc.controlPoint_1, bc.controlPoint_2, bc.endPosition, 40);
+            
+            
+            for(int i=-20; i<21; i++)
+            {
+                ccBezierConfig bc2;
+                bc2.controlPoint_1=ccp(bc.controlPoint_1.x + i*0.25f, bc.controlPoint_1.y + i* 0.25f);
+                bc2.controlPoint_2=ccp(bc.controlPoint_2.x + i*0.25f, bc.controlPoint_2.y + i* 0.25f);
+                
+                int yi=i;
+                if(yi>0)yi=-i;
+                
+                bc2.endPosition=ccp(bc.endPosition.x+ i*0.5f, bc.endPosition.y - yi*0.50f);
+                
+                ccDrawCubicBezier(origin, bc2.controlPoint_1, bc2.controlPoint_2, bc2.endPosition, 40);
+            }
+            
+//            ccDrawColor4B(255, 255, 255, 200);
+//            ccDrawCubicBezier(origin, bc.controlPoint_1, bc.controlPoint_2, bc.endPosition, 40);
+//            
+//            bc.controlPoint_1=ccp(bc.controlPoint_1.x, bc.controlPoint_1.y + 1);
+//            bc.controlPoint_2=ccp(bc.controlPoint_2.x, bc.controlPoint_2.y + 1);
+//
+//            ccDrawColor4B(255, 255, 255, 150);
+//            ccDrawCubicBezier(origin, bc.controlPoint_1, bc.controlPoint_2, bc.endPosition, 40);
+//
+//            bc.controlPoint_1=ccp(bc.controlPoint_1.x, bc.controlPoint_1.y - 2);
+//            bc.controlPoint_2=ccp(bc.controlPoint_2.x, bc.controlPoint_2.y - 2);
+//
+//            ccDrawColor4B(255, 255, 255, 150);
+//            ccDrawCubicBezier(origin, bc.controlPoint_1, bc.controlPoint_2, bc.endPosition, 40);
 
             
         }

@@ -36,11 +36,17 @@
 
 @end
 
-static float kBubbleProx=100.0f;
+static float kBubbleProx=35.0f;
 static float kBubbleScrollBoundary=350;
 static float kBubblePushSpeed=400.0f;
 
 static float kTimeToBubbleShake=7.0f;
+
+static float kFrogYOffset=30.0f;
+static float kFrogTargetYOffset=70.0f;
+static float kFrogTargetXOffset=-35.0f;
+
+float timerIgnoreFrog;
 
 @implementation NLine
 
@@ -109,6 +115,57 @@ static float kTimeToBubbleShake=7.0f;
     
 }
 
+-(void)setupFrog
+{
+    frogSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")];
+    frogSprite.color=ccc3(0, 255, 0);
+    frogSprite.position=ccp(cx, cy+kFrogYOffset);
+    [self.ForeLayer addChild:frogSprite];
+}
+
+-(void)showFrogTarget
+{
+    if(!frogTargetSprite)
+    {
+        frogTargetSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_JumpEnd.png")];
+        [self.ForeLayer addChild:frogTargetSprite];
+    }
+    
+    frogTargetSprite.opacity=0;
+    float x=rambler.TouchXOffset + cx + lastBubbleLoc * rambler.DefaultSegmentSize;
+    frogTargetSprite.position=ccp(x+kFrogTargetXOffset, cy+kFrogTargetYOffset);
+    [frogTargetSprite runAction:[CCFadeIn actionWithDuration:0.25f]];
+}
+
+-(void)hideFrogTarget
+{
+    [frogTargetSprite runAction:[CCFadeOut actionWithDuration:0.25f]];
+}
+
+-(void)hopFrog
+{
+    ccBezierConfig bc;
+    bc.controlPoint_1=ccpAdd(frogSprite.position, ccp(20, 100));
+    bc.controlPoint_2=ccpAdd(bubbleSprite.position, ccp(0, 100));
+    bc.endPosition=ccpAdd(bubbleSprite.position, ccp(0, kFrogYOffset));
+    
+    [frogSprite runAction:[CCEaseInOut actionWithAction:[CCBezierTo actionWithDuration:0.5f bezier:bc] rate:2]];
+    
+    timerIgnoreFrog=0.5f;
+    
+    [self hideFrogTarget];
+    
+    [rambler.UserJumps addObject:[NSValue valueWithCGPoint:ccp(lastFrogLoc*rambler.CurrentSegmentValue, lastBubbleValue - (lastFrogLoc * rambler.CurrentSegmentValue))]];
+    lastFrogLoc=lastBubbleLoc;
+}
+
+-(void)slideFrog
+{
+    CGPoint fp=ccp(rambler.TouchXOffset + cx + rambler.DefaultSegmentSize * lastFrogLoc, cy+kFrogYOffset);
+    [frogSprite runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.25f position:fp] rate:2.0f]];
+    timerIgnoreFrog=0.25;
+}
+
 -(void)setupLabels
 {
     problemCompleteLabel=[CCLabelTTF labelWithString:@"problem complete" fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
@@ -126,6 +183,9 @@ static float kTimeToBubbleShake=7.0f;
     rambler.TouchXOffset+=bubblePushDir * kBubblePushSpeed * delta;
     stitchOffsetX+=bubblePushDir * kBubblePushSpeed * delta;
     
+    //update frog position
+    if(timerIgnoreFrog>0.0f)timerIgnoreFrog-=delta;
+    else frogSprite.position=ccp(rambler.TouchXOffset + cx + lastFrogLoc * rambler.DefaultSegmentSize, cy+kFrogYOffset);
     
     timeSinceInteractionOrShake+=delta;
     if(timeSinceInteractionOrShake>kTimeToBubbleShake)
@@ -163,6 +223,8 @@ static float kTimeToBubbleShake=7.0f;
     {
         ccDrawQuadBezier(actualStitchStart, stitchApexPos, stitchEndPos, 40);
     }
+    
+    [rambler drawFromMid:ccp(cx, cy) andYOffset:kFrogYOffset];
 }
 
 -(void)populateGW
@@ -217,10 +279,17 @@ static float kTimeToBubbleShake=7.0f;
     selector.WatchRambler=rambler;
     selector.pos=ccp(cx,cy + 75.0f);
     
+    //frog
+    [self setupFrog];
+    lastFrogLoc=0;
+    
     if(markerValuePositions)
     {
         rambler.MarkerValuePositions=markerValuePositions;
     }
+    
+    //setup rambler drawing -- needs explicit seek and draw prep
+    [rambler readyRender];
 }
 
 -(void)readPlist:(NSDictionary*)pdef
@@ -275,7 +344,10 @@ static float kTimeToBubbleShake=7.0f;
     
     if([pdef objectForKey:@"JUMP_MODE"])
     {
-        jumpMode=[[pdef objectForKey:@"JUMP_MODE"] boolValue];
+        //jump mode is now interpretted as frog mode
+        //jumpMode=[[pdef objectForKey:@"JUMP_MODE"] boolValue];
+        
+        frogMode=[[pdef objectForKey:@"JUMP_MODE"] boolValue];
     }
     
     if([pdef objectForKey:@"MARKER_POSITIONS"])
@@ -467,7 +539,12 @@ static float kTimeToBubbleShake=7.0f;
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
     
-    if([BLMath DistanceBetween:location and:bubbleSprite.position]<kBubbleProx)
+    if([BLMath DistanceBetween:location and:frogTargetSprite.position] < kBubbleProx)
+    {
+        [self hopFrog];
+    }
+    
+    else if([BLMath DistanceBetween:location and:bubbleSprite.position]<kBubbleProx)
     {
         if(!usedBubble)usedBubble=YES;
         holdingBubbleOffset=location.x - bubbleSprite.position.x;
@@ -487,6 +564,9 @@ static float kTimeToBubbleShake=7.0f;
             //retain start pos for stitch draw
             stitchStartPos=bubbleSprite.position;
         }
+        
+        //hide target
+        [self hideFrogTarget];
     }
 }
 
@@ -621,14 +701,22 @@ static float kTimeToBubbleShake=7.0f;
         
         //check if they moved through a current stitch -- if so delete that stich
         NSValue *remJump=nil;
+        CGPoint jump;
         for(NSValue *jumpval in rambler.UserJumps)
         {
-            CGPoint jump=[jumpval CGPointValue];
+            jump=[jumpval CGPointValue];
             if(lastBubbleValue>=jump.x && lastBubbleValue<(jump.x + jump.y))
             {
                 remJump=jumpval;
             }
         }
+        //put frog back to start of that section if required
+        if(frogMode && remJump)
+        {
+            lastFrogLoc=(int)(jump.x / rambler.CurrentSegmentValue);
+            [self slideFrog];
+        }
+        
         if(remJump)[rambler.UserJumps removeObject:remJump];
         remJump=nil;
 
@@ -710,6 +798,17 @@ static float kTimeToBubbleShake=7.0f;
         
         //release the bubble
         [self animReleaseBubble];
+        
+        
+        //determine whether or not to show the frog target
+        if(lastBubbleLoc!=lastFrogLoc)
+        {
+            [self showFrogTarget];
+        }
+        else
+        {
+            [self hideFrogTarget];
+        }
         
         //do some logging
         [loggingService logEvent:BL_PA_NL_TOUCH_END_RELEASE_BUBBLE withAdditionalData:nil];

@@ -350,11 +350,9 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     for (int i=assBlankIndex; i<[assBlankSegments count]; i++) {
         [[assBlankSegments objectAtIndex:i] setVisible:NO];
     }
-    
     for (int i=assLineIndex; i<[assLineSegments count]; i++) {
         [[assLineSegments objectAtIndex:i] setVisible:NO];
     }
-    
     for (int i=assIndicatorIndex; i<[assIndicators count]; i++) {
         [[assIndicators objectAtIndex:i] setVisible:NO];
     }
@@ -365,6 +363,45 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     for(int i=assNumberBackIndex; i<[assNumberBackgrounds count]; i++)
     {
         [[assNumberBackgrounds objectAtIndex:i] setVisible:NO];
+    }
+}
+
+-(void) drawFromMid:(CGPoint)mid andYOffset:(float)yOffset
+{
+    //intended for in-loop draw
+    if(ramblerGameObject.UserJumps)
+    {
+        for(NSValue *jumpVal in ramblerGameObject.UserJumps)
+        {
+            CGPoint jump=[jumpVal CGPointValue];
+            float jumpStart=(jump.x / ramblerGameObject.CurrentSegmentValue) * ramblerGameObject.DefaultSegmentSize + mid.x + ramblerGameObject.TouchXOffset;
+            float jumpLength=(jump.y / ramblerGameObject.CurrentSegmentValue) * ramblerGameObject.DefaultSegmentSize;
+            
+            
+            CGPoint origin=ccp(jumpStart, mid.y + yOffset);
+            
+            ccBezierConfig bc;
+            bc.controlPoint_1=ccpAdd(ccp(jumpStart, mid.y), ccp(20, 100));
+            bc.controlPoint_2=ccpAdd(ccp(jumpStart + jumpLength, mid.y), ccp(0, 100));
+            bc.endPosition=ccp(jumpStart + jumpLength, mid.y + yOffset);
+            
+            ccDrawColor4B(255, 255, 255, 200);
+            ccDrawCubicBezier(origin, bc.controlPoint_1, bc.controlPoint_2, bc.endPosition, 40);
+            
+            bc.controlPoint_1=ccp(bc.controlPoint_1.x, bc.controlPoint_1.y + 1);
+            bc.controlPoint_2=ccp(bc.controlPoint_2.x, bc.controlPoint_2.y + 1);
+
+            ccDrawColor4B(255, 255, 255, 150);
+            ccDrawCubicBezier(origin, bc.controlPoint_1, bc.controlPoint_2, bc.endPosition, 40);
+
+            bc.controlPoint_1=ccp(bc.controlPoint_1.x, bc.controlPoint_1.y - 2);
+            bc.controlPoint_2=ccp(bc.controlPoint_2.x, bc.controlPoint_2.y - 2);
+
+            ccDrawColor4B(255, 255, 255, 150);
+            ccDrawCubicBezier(origin, bc.controlPoint_1, bc.controlPoint_2, bc.endPosition, 40);
+
+            
+        }
     }
 }
 

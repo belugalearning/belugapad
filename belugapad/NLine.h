@@ -90,6 +90,13 @@
     
     // == markers
     NSMutableArray *markerValuePositions;
+    
+    //== frog mode
+    BOOL frogMode;
+    CCSprite *frogSprite;
+    int lastFrogLoc;
+    CCSprite *frogTargetSprite;
+    
 }
 
 -(void)populateGW;

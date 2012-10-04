@@ -7,6 +7,7 @@
 //
 
 #import "DWRamblerGameObject.h"
+#import "BNLineRamblerRender.h"
 
 @implementation DWRamblerGameObject
 
@@ -37,6 +38,23 @@
 
 @synthesize MarkerValuePositions;
 @synthesize UserJumps;
+
+
+-(void)readyRender
+{
+    for (DWBehaviour *b in behaviours) {
+        if ([b isKindOfClass:[BNLineRamblerRender class]])
+        {
+            bnRender=(BNLineRamblerRender*)b;
+        }
+    }
+}
+
+-(void) drawFromMid:(CGPoint)mid andYOffset:(float)yOffset
+{
+    [bnRender drawFromMid:mid andYOffset:yOffset];
+}
+
 
 -(void)dealloc
 {

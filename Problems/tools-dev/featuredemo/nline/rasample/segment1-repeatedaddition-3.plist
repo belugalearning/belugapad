@@ -3,19 +3,19 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>count to to 13 in 2s</string>
+	<string>count to 22 in 4s</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>jump!</string>
 	<key>TOOL_KEY</key>
 	<string>NLine</string>
 	<key>START_VALUE</key>
-	<string>7</string>
+	<string>10</string>
 	<key>MIN_VALUE</key>
 	<string>0</string>
 	<key>MAX_VALUE</key>
 	<string>30</string>
 	<key>SEGMENT_VALUE</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>EVAL_TYPE</key>
@@ -23,9 +23,9 @@
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>
-	<integer>13</integer>
+	<integer>22</integer>
 	<key>EVAL_INTERVAL</key>
-	<string>2</string>
+	<string>4</string>
 	<key>HIDE_ALL_NUMBERS</key>
 	<false/>
 	<key>HIDE_ALL_NOTCHES</key>

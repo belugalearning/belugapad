@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>jump! (to 6 in 2s)</string>
+	<string>count to to 6 in 2s</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>jump!</string>
 	<key>TOOL_KEY</key>
@@ -27,7 +27,7 @@
 	<key>EVAL_INTERVAL</key>
 	<string>2</string>
 	<key>HIDE_ALL_NUMBERS</key>
-	<true/>
+	<false/>
 	<key>HIDE_ALL_NOTCHES</key>
 	<false/>
 	<key>SHOW_NOTCHES_AT_INTERVALS</key>
@@ -53,9 +53,6 @@
 		<string>5</string>
 	</array>
 	<key>MARKER_POSITIONS</key>
-	<array>
-		<string>10</string>
-		<string>50</string>
-	</array>
+	<array/>
 </dict>
 </plist>

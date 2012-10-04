@@ -742,6 +742,8 @@ static float kTimeToCageShake=7.0f;
     else 
         allowDeselect=YES;
     
+    if(autoBaseSelection)allowDeselect=NO;
+    
     // will the numbers fade off?
     if([pdef objectForKey:FADE_COUNT]) 
         fadeCount = [[pdef objectForKey:FADE_COUNT] boolValue];

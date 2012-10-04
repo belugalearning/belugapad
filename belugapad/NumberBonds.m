@@ -416,6 +416,8 @@ static float kTimeToMountedShake=7.0f;
 
 -(void)compareHintsAndMountedObjects
 {
+    
+    BOOL foundAMatch=NO;
     // for each row
     for(int i=0;i<[createdRows count];i++)
     {
@@ -432,6 +434,7 @@ static float kTimeToMountedShake=7.0f;
         {
             BOOL hasMatch=NO;
             int matchedNo=0;
+            int matchedWithNo=0;
             DWNBondObjectGameObject *thisHint=[hints objectAtIndex:h];
             
             for(int m=0;m<[mounted count];m++)
@@ -442,6 +445,7 @@ static float kTimeToMountedShake=7.0f;
                 {
                     NSLog(@"(%d) got match at %d against %d - thisHint length %d, thisMounted length %d", i, m, h, thisHint.Length, thisMounted.Length);
                     matchedNo=m;
+                    matchedWithNo=h;
                     hasMatch=YES;
                     break;
                 }
@@ -454,19 +458,77 @@ static float kTimeToMountedShake=7.0f;
                 if(matchedNo<[hints count])
                 {
                     NSLog(@"exchange going on");
-                    if(matchedNo>0)
-                        [r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedNo-1];
-                    else
-                        [r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedNo+1];
+                    //if(matchedNo>0)
+                        //[r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedNo-1];
+                    //else
+                        //[r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedNo+1];
+                
+                    [r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedWithNo];
+                    
+                    foundAMatch=YES;
                 }
             }
             
             
         }
         
+        if(!foundAMatch)
+        {
+            for(int f=0;f<[createdRows count];f++)
+            {
+                if([self checkIfTheseHints:hints GoToThisRow:f])
+                    [self exchangeHintsOnThisRow:f withHintsOnThisRow:i];
+            }
+        }
+        
         [r handleMessage:kDWresetPositionEval];
     }
     
+}
+
+-(BOOL)checkIfTheseHints:(NSMutableArray*)theseHints GoToThisRow:(int)thisRow
+{
+    DWNBondRowGameObject *r=[createdRows objectAtIndex:thisRow];
+    
+    if (r.Locked)return NO;
+    
+    NSMutableArray *mounted=r.MountedObjects;
+    
+    for(int h=0;h<[theseHints count];h++)
+    {
+        BOOL hasMatch=NO;
+        DWNBondObjectGameObject *thisHint=[theseHints objectAtIndex:h];
+        
+        for(int m=0;m<[mounted count];m++)
+        {
+            DWNBondObjectGameObject *thisMounted=[mounted objectAtIndex:m];
+            
+            if(thisHint.Length==thisMounted.Length)
+            {
+                hasMatch=YES;
+                break;
+            }
+        }
+        
+        if(hasMatch)return YES;
+    }
+
+    return NO;
+}
+
+-(void)exchangeHintsOnThisRow:(int)thisRow withHintsOnThisRow:(int)thatRow
+{
+    DWNBondRowGameObject *thisOne=[createdRows objectAtIndex:thisRow];
+    DWNBondRowGameObject *thatOne=[createdRows objectAtIndex:thatRow];
+    
+    NSMutableArray *thisOneHints=[NSMutableArray arrayWithArray:thisOne.HintObjects];
+
+    thisOne.HintObjects=thatOne.HintObjects;
+    thatOne.HintObjects=thisOneHints;
+    
+    [thisOne handleMessage:kDWresetPositionEval];
+    [thatOne handleMessage:kDWresetPositionEval];
+
 }
 
 #pragma mark - touches events

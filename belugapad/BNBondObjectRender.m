@@ -103,11 +103,15 @@
     for(int i=0;i<pogo.Length+1;i++) {
         if(i==0)
         {
-            spriteFileName=@"/images/partition/block-l.png";
+            if(pogo.HintObject)
+                spriteFileName=@"/images/partition/block-l-hint.png";
+            else
+                spriteFileName=@"/images/partition/block-l.png";
             CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
             [mySprite setColor:kNumberBondColour[pogo.Length-1]];
             float thisXPos = 0;
             [mySprite setPosition:ccp(thisXPos, 0)];
+            
             [pogo.BaseNode addChild:mySprite z:2];
             if(gameWorld.Blackboard.inProblemSetup)
             {
@@ -119,12 +123,14 @@
         
         if(i !=0 && i !=pogo.Length)
         {
-            spriteFileName=@"/images/partition/block-m.png";
+            if(pogo.HintObject)
+                spriteFileName=@"/images/partition/block-m-hint.png";
+            else
+                spriteFileName=@"/images/partition/block-m.png";
             CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
             [mySprite setColor:kNumberBondColour[pogo.Length-1]];
             float thisXPos = i*50;
             [mySprite setPosition:ccp(thisXPos, 0)];
-
             
             if(gameWorld.Blackboard.inProblemSetup)
             {
@@ -136,12 +142,16 @@
         
         if(i==pogo.Length)
         {
-            spriteFileName=@"/images/partition/block-r.png";
+            if(pogo.HintObject)
+                spriteFileName=@"/images/partition/block-r-hint.png";
+            else
+                spriteFileName=@"/images/partition/block-r.png";
             CCSprite *mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
             [mySprite setColor:kNumberBondColour[pogo.Length-1]];
             float thisXPos = i*50;
             [mySprite setPosition:ccp(thisXPos, 0)];
             [pogo.BaseNode addChild:mySprite z:2];
+            
             if(gameWorld.Blackboard.inProblemSetup)
             {
                 [mySprite setTag:2];
@@ -164,7 +174,7 @@
     
     if(pogo.Label) { 
         [pogo.Label setColor:ccc3(0,0,0)];
-        [pogo.Label setPosition:ccp((pogo.Length * 50) * 0.5f, -3)];
+        [pogo.Label setPosition:ccp((pogo.Length * 50) * 0.5f, 0)];
         [pogo.Label setTag:2];
         [pogo.Label setOpacity:0];
         [pogo.BaseNode addChild:pogo.Label z:10];

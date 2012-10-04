@@ -35,6 +35,7 @@ typedef enum {
     
     NSArray *initBars;
     NSArray *initObjects;
+    NSArray *initHints;
     NSArray *initCages;
     NSArray *solutionsDef;
     int solutionValue;

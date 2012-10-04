@@ -96,7 +96,7 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     }
     
     for (int i=0; i<baseSegs; i++) {
-        CCSprite *numback=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Segment-NumberShown.png")];
+        CCSprite *numback=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Segment-NumberBackground.png")];
         [numback setVisible:YES];
         [assNumberBackgrounds addObject:numback];
         [gameWorld.Blackboard.ComponentRenderLayer addChild:numback];

@@ -73,7 +73,7 @@
     CCEaseInOut *ml6=[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f] rate:2.0f];
     
     //fade
-    CCFadeOut *f2=[CCFadeOut actionWithDuration:0.25f];
+    CCFadeOut *f2=[CCFadeTo actionWithDuration:0.25f opacity:0];
     
     CCSequence *s=[CCSequence actions:f1, s1, ml2, ml3, ml4, ml5, ml6, f2, nil];
     

@@ -168,7 +168,7 @@ static float kTimeToCageShake=7.0f;
         }
     }
     
-    if([gw.Blackboard SelectedObjects].count==columnBaseValue && showBaseSelection && allowCondensing)
+    if([gw.Blackboard SelectedObjects].count==columnBaseValue && showBaseSelection && (allowCondensing || autoBaseSelection))
         isBasePickup=YES;
     else
         isBasePickup=NO;
@@ -1250,13 +1250,12 @@ static float kTimeToCageShake=7.0f;
         float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] floatValue];
         if(thisB.ObjectValue==colVal)return;
         
-        [self flipToBaseSelection];
-        
         for(int i=0;i<[SelectedObjects count];i++)
         {
             DWPlaceValueBlockGameObject *b=[SelectedObjects objectAtIndex:i];
             b.Selected=YES;
-            [b handleMessage:kDWswitchSelection];
+            //[b handleMessage:kDWswitchSelection];
+            //if([SelectedObjects count]==10)[b handleMessage:kDWswitchBaseSelectionBack];
         }
     }
     
@@ -1269,15 +1268,18 @@ static float kTimeToCageShake=7.0f;
             {
                 ((DWPlaceValueBlockGameObject*)co.MountedObject).Selected=NO;
                 [co.MountedObject handleMessage:kDWswitchSelection];
-                if(![gw.Blackboard.SelectedObjects containsObject:co.MountedObject])
-                    [gw.Blackboard.SelectedObjects addObject:co.MountedObject];
+                //if(![gw.Blackboard.SelectedObjects containsObject:co.MountedObject])
+//                    [gw.Blackboard.SelectedObjects addObject:co.MountedObject];
                 
                 NSLog(@"count of selectedobjects %d", [gw.Blackboard.SelectedObjects count]);
             }
         }
     }
     
-    isBasePickup=YES;
+    if([SelectedObjects count]==10)
+        isBasePickup=YES;
+
+    
     
 
 }
@@ -1902,6 +1904,14 @@ static float kTimeToCageShake=7.0f;
     if(currentColumnIndex>numberOfColumns-1)currentColumnIndex=numberOfColumns-1;
     if(currentColumnIndex<0)currentColumnIndex=0;
     
+    int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
+    
+    if(objectsOnGrid==columnBaseValue)
+    {
+        isBasePickup=YES;
+        [self selectBaseObjectsOnGrid:currentColumnIndex];
+    }
+    
     if(debugLogging)
         NSLog(@"currentColIndex: %d, colW %f, locationInNS X %f, shiftedLocationInNS X %f", currentColumnIndex, colW, locationInNS.x, shiftedLocationInNS.x);
     
@@ -2068,13 +2078,7 @@ static float kTimeToCageShake=7.0f;
             NSLog(@"(touchbegan-end) free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
     }
     
-    int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
-    
-    if(objectsOnGrid==columnBaseValue)
-    {
-        isBasePickup=YES;
-        [self selectBaseObjectsOnGrid:currentColumnIndex];
-    }
+
     
 }
 

@@ -31,7 +31,7 @@
 }
 
 -(BNLineRamblerRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
-
+-(void) drawFromMid:(CGPoint)mid andYOffset:(float)yOffset;
 
 @end
 

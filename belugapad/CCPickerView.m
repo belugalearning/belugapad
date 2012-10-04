@@ -22,7 +22,13 @@
 }
 
 -(void)initialLoad {
-    CGSize size = [delegate sizeOfPickerView:self];
+
+    CCNode *overlayImage = [delegate overlayImage:self];
+    [self addChild:overlayImage z:10];
+    
+//    CGSize size = [delegate sizeOfPickerView:self];
+    CGSize size=overlayImage.contentSize;
+    
     CGFloat spacing = [delegate spaceBetweenComponents:self];
     
     self.contentSize = size;
@@ -33,8 +39,7 @@
 //    background.textureRect = CGRectMake(0, 0, size.width-spacing, size.height-spacing);
 //    [self addChild:background];
     
-    CCNode *overlayImage = [delegate overlayImage:self];
-    [self addChild:overlayImage z:10];
+
     
     rect = CGRectMake(self.position.x - size.width/2, self.position.y - size.height/2, size.width, size.height);
     

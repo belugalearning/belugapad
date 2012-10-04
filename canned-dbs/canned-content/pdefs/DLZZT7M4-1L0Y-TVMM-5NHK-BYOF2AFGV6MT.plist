@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>DistributionTool</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Pull out 3 blocks from the cage, and join them together. Press the green button. </string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>INIT_OBJECTS</key>
+	<array/>
+	<key>SOLUTION</key>
+	<array>
+		<integer>3</integer>
+	</array>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@bname</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>&lt;b:oi tag=&quot;thing_1&quot;/&gt;</string>
+				<string>&lt;b:oi tag=&quot;thing_2&quot;/&gt;</string>
+				<string>&lt;b:oi tag=&quot;thing_3&quot;/&gt;</string>
+			</array>
+		</dict>
+		<key>@gname</key>
+		<dict>
+			<key>DATA</key>
+			<array>
+				<string>&lt;b:oi tag=&quot;thing_4&quot;/&gt;</string>
+				<string>&lt;b:oi tag=&quot;thing_5&quot;/&gt;</string>
+			</array>
+			<key>MODE</key>
+			<string>RANDOM</string>
+		</dict>
+		<key>@item</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>goos</string>
+				<string>goos</string>
+				<string>goos</string>
+				<string>goos</string>
+				<string>goos</string>
+				<string>goos</string>
+			</array>
+		</dict>
+	</dict>
+	<key>HAS_CAGE</key>
+	<true/>
+	<key>HOST_BACKGROUND_IMAGE</key>
+	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+</dict>
+</plist>

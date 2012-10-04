@@ -38,7 +38,9 @@
 -(void)handleMessage:(DWMessageType)messageType andPayload:(NSDictionary *)payload
 {
     if(messageType==kDWareYouAPickupTarget)
-    {   
+    {
+        if(pogo.HintObject)return;
+        
         CGRect boundingBox = CGRectZero;
         for(int i=0;i<pogo.BaseNode.children.count;i++)
         {

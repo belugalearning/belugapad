@@ -31,9 +31,12 @@
 {
     if(messageType==kDWsetMountedObject)
     {
-        DWGameObject *addO=[payload objectForKey:MOUNTED_OBJECT];
+        DWNBondObjectGameObject *addO=[payload objectForKey:MOUNTED_OBJECT];
         
-        [prgo.MountedObjects addObject:addO];
+        if(addO.HintObject)
+            [prgo.HintObjects addObject:addO];
+        else
+            [prgo.MountedObjects addObject:addO];
         
         for(CCSprite *s in prgo.BaseNode.children)
         {
@@ -47,13 +50,18 @@
         DWNBondObjectGameObject *removeO=[payload objectForKey:MOUNTED_OBJECT];
         removeO.Mount=nil;
         
-        [prgo.MountedObjects removeObject:removeO];
+        if(removeO.HintObject)
+            [prgo.HintObjects removeObject:removeO];
+        else
+            [prgo.MountedObjects removeObject:removeO];
     }
 
     
     if(messageType==kDWresetPositionEval)
     {
         float myHeldValue=0.0f;
+        float myHintValue=0.0f;
+        
         for(int i=0;i<prgo.MountedObjects.count;i++)
         {
             DWNBondObjectGameObject *mo = [prgo.MountedObjects objectAtIndex:i];
@@ -63,6 +71,17 @@
             [mo handleMessage:kDWmoveSpriteToPosition andPayload:pl withLogLevel:-1];
             
             myHeldValue=myHeldValue+mo.Length;
+        }
+        
+        for(int i=0;i<prgo.HintObjects.count;i++)
+        {
+            DWNBondObjectGameObject *mo = [prgo.HintObjects objectAtIndex:i];
+            mo.MovePosition=ccp(prgo.Position.x+(50*myHintValue), prgo.Position.y);
+            mo.Position=mo.MovePosition;
+            NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:ANIMATE_ME];
+            [mo handleMessage:kDWmoveSpriteToPosition andPayload:pl withLogLevel:-1];
+            
+            myHintValue=myHintValue+mo.Length;
         }
 
     }

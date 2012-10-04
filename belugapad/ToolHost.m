@@ -788,7 +788,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     [self resetScoreMultiplier];
     
-    skipNextDescDraw=YES;
+    //problem's been reset -- we should redraw the btxe
+    skipNextDescDraw=NO;
     skipNextStagedIntroAnim=YES;
     
     [self loadProblem];
@@ -1737,6 +1738,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     //always re-create the game world
     if(descGw)
     {
+        [btxeDescLayer removeAllChildrenWithCleanup:YES];
         [descGw release];
         descGw=nil;
     }

@@ -22,6 +22,8 @@ typedef enum {
     
     kSGretainOffsetPosition,
     kSGforceLayout,
-    kSGresetPositionUsingOffset
+    kSGresetPositionUsingOffset,
+    
+    kSGtearDownRender
         
 } SGMessageType;

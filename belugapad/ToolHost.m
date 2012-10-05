@@ -113,15 +113,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         //[pause setPosition:ccp(lx-(kPropXPauseButtonPadding*lx), ly-(kPropXPauseButtonPadding*lx))];
         //[perstLayer addChild:pause z:3];
         
-        //add header
-        CCSprite *hd=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_HeaderBar.png")];
-        hd.position=ccp(cx, 2*cy - HD_HEADER_HEIGHT / 2.0f);
-        [perstLayer addChild:hd z:3];
-        
-        //add disabled commit
-        CCSprite *commdis=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Disabled.png")];
-        commdis.position=ccp(2*cx-HD_BUTTON_INSET, 2*cy - 30);
-        [perstLayer addChild:commdis z:3];
+
 
         metaQuestionLayer=[[CCLayer alloc] init];
         [self addChild:metaQuestionLayer z:2];
@@ -137,7 +129,25 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         contextProgressLayer=[[CCLayer alloc] init];
         [self addChild:contextProgressLayer z:6];
         
+        
+        //add header
+        CCSprite *hd=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_HeaderBar_NoPause.png")];
+        hd.position=ccp(cx, 2*cy - HD_HEADER_HEIGHT / 2.0f);
+        [perstLayer addChild:hd z:3];
+        
         [self populatePerstLayer];
+        
+        CCSprite *pbtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_PauseButton.png")];
+        pbtn.position=ccp(HD_BUTTON_INSET, 2*cy - 30);
+        pbtn.tag=3;
+        pbtn.opacity=0;
+        [perstLayer addChild:pbtn z:3];
+        
+        //add disabled commit
+        CCSprite *commdis=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Disabled.png")];
+        commdis.position=ccp(2*cx-HD_BUTTON_INSET, 2*cy - 30);
+        [perstLayer addChild:commdis z:3];
+        
         
         //dynamic problem parser (persists to end of pipeline)
         DynProblemParser=[[DProblemParser alloc] init];
@@ -212,6 +222,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         if(metaQuestionLayer)[self recurseSetIntroFor:metaQuestionLayer withTime:time forTag:i];
         if(problemDefLayer)[self recurseSetIntroFor:problemDefLayer withTime:time forTag:i];
         if(numberPickerLayer)[self recurseSetIntroFor:numberPickerLayer withTime:time forTag:i];
+        if(perstLayer)[self recurseSetIntroFor:perstLayer withTime:time forTag:i];
     }
     
     

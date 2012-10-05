@@ -596,6 +596,13 @@ static float kTimeToCageShake=7.0f;
     // send a problemstatechanged so that any total count eval, etc is done
     [self problemStateChanged];
     
+    int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
+    
+    if(objectsOnGrid==columnBaseValue)
+    {
+        [self selectBaseObjectsOnGrid:defaultColumn];
+    }
+    
     // define our rects for no-drag areas
     noDragAreaBottom=CGRectMake(0,0,lx,120);
     noDragAreaTop=CGRectMake(0, ly-120, lx, 120);
@@ -2246,7 +2253,7 @@ static float kTimeToCageShake=7.0f;
                             
                             go.PosX=posX+thisPos.x+diff.x;
                             go.PosY=posY+thisPos.y+diff.y;
-                            [go handleMessage:kDWupdateSprite andPayload:nil withLogLevel:-1];
+                            [go handleMessage:kDWmoveSpriteToPositionWithoutAnimation andPayload:nil withLogLevel:-1];
                         }
                     }
                 }
@@ -2266,7 +2273,7 @@ static float kTimeToCageShake=7.0f;
                 // otherwise set just the block to the posx/y positions and update the position
                 block.PosX=posX;
                 block.PosY=posY;
-                [[gw Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:nil withLogLevel:-1];
+                [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToPositionWithoutAnimation andPayload:nil withLogLevel:-1];
                 hasMovedBlock=YES;
             }
         }
@@ -2637,13 +2644,6 @@ static float kTimeToCageShake=7.0f;
                     }
                     
 
-                }
-                
-                int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
-                
-                if(objectsOnGrid==columnBaseValue)
-                {
-                    [self selectBaseObjectsOnGrid:currentColumnIndex];
                 }
                 
                 // then log stuff

@@ -9,6 +9,7 @@
 #import "BNLineRamblerRender.h"
 #import "DWRamblerGameObject.h"
 #import "global.h"
+#import "BLMath.h"
 
 //static float kIndicatorYOffset=15.0f;
 static float kIndicatorYOffset=0.0f;
@@ -53,6 +54,10 @@ static NSString *kLabelFont=@"visgrad1.fnt";
 
 -(void)setupStuff
 {
+    //build circle lookups for swoosh drawing
+    [self setupSwooshCircleOffsets];
+    
+    //build sprites, etc
     assStartTerminator=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_LineStubLeft.png")];
     [assStartTerminator setVisible:NO];
     [gameWorld.Blackboard.ComponentRenderLayer addChild:assStartTerminator];
@@ -381,50 +386,57 @@ static NSString *kLabelFont=@"visgrad1.fnt";
             CGPoint origin=ccp(jumpStart, mid.y + yOffset);
             
             ccBezierConfig bc;
-            bc.controlPoint_1=ccpAdd(ccp(jumpStart, mid.y), ccp(0, 100));
-            bc.controlPoint_2=ccpAdd(ccp(jumpStart + jumpLength, mid.y), ccp(0, 100));
-            bc.endPosition=ccp(jumpStart + jumpLength, mid.y + yOffset);
+            
+            if(jumpLength>0)
+            {
+                bc.controlPoint_1=ccpAdd(ccp(jumpStart, mid.y), ccp(20, 40));
+                bc.controlPoint_2=ccpAdd(ccp(jumpStart + jumpLength, mid.y), ccp(-40, 100));
+                bc.endPosition=ccp(jumpStart + jumpLength, mid.y + yOffset + 10.0f);
+            }
+            else
+            {
+                bc.controlPoint_1=ccpAdd(ccp(jumpStart, mid.y), ccp(-20, 40));
+                bc.controlPoint_2=ccpAdd(ccp(jumpStart + jumpLength, mid.y), ccp(40, 100));
+                bc.endPosition=ccp(jumpStart + jumpLength, mid.y + yOffset + 10.0f);
+            }
 
-            ccDrawColor4B(255, 255, 255, 200);
-
-            bc.controlPoint_1=ccp(bc.controlPoint_1.x, bc.controlPoint_1.y - 5.0f);
-            bc.controlPoint_2=ccp(bc.controlPoint_2.x, bc.controlPoint_2.y - 5.0f);
-            bc.endPosition=ccp(bc.endPosition.x-5, bc.endPosition.y);
+            if
             
-            
-            
-            for(int i=-20; i<21; i++)
+            for(int i=0; i<STEPS; i++)
             {
                 ccBezierConfig bc2;
-                bc2.controlPoint_1=ccp(bc.controlPoint_1.x + i*0.25f, bc.controlPoint_1.y + i* 0.25f);
-                bc2.controlPoint_2=ccp(bc.controlPoint_2.x + i*0.25f, bc.controlPoint_2.y + i* 0.25f);
+
+                if(i<5 || i>STEPS-6) ccDrawColor4B(255, 255, 255, 100);
+                else ccDrawColor4B(255, 255, 255, 200);
+
+                bc2.controlPoint_1=bc.controlPoint_1;
+                bc2.controlPoint_2=bc.controlPoint_2;
                 
-                int yi=i;
-                if(yi>0)yi=-i;
-                
-                bc2.endPosition=ccp(bc.endPosition.x+ i*0.5f, bc.endPosition.y - yi*0.50f);
-                
+                if(jumpLength>0) bc2.endPosition=ccpAdd(bc.endPosition, circleOffsetsFwd[i]);
+                else bc2.endPosition=ccpAdd(bc.endPosition, circleOffsetsBwd[i]);
+
                 ccDrawCubicBezier(origin, bc2.controlPoint_1, bc2.controlPoint_2, bc2.endPosition, 40);
             }
             
-//            ccDrawColor4B(255, 255, 255, 200);
-//            ccDrawCubicBezier(origin, bc.controlPoint_1, bc.controlPoint_2, bc.endPosition, 40);
-//            
-//            bc.controlPoint_1=ccp(bc.controlPoint_1.x, bc.controlPoint_1.y + 1);
-//            bc.controlPoint_2=ccp(bc.controlPoint_2.x, bc.controlPoint_2.y + 1);
-//
-//            ccDrawColor4B(255, 255, 255, 150);
-//            ccDrawCubicBezier(origin, bc.controlPoint_1, bc.controlPoint_2, bc.endPosition, 40);
-//
-//            bc.controlPoint_1=ccp(bc.controlPoint_1.x, bc.controlPoint_1.y - 2);
-//            bc.controlPoint_2=ccp(bc.controlPoint_2.x, bc.controlPoint_2.y - 2);
-//
-//            ccDrawColor4B(255, 255, 255, 150);
-//            ccDrawCubicBezier(origin, bc.controlPoint_1, bc.controlPoint_2, bc.endPosition, 40);
-
-            
         }
     }
+}
+
+-(void) setupSwooshCircleOffsets
+{
+    for(int i=0; i<STEPS; i++)
+    {
+        float a=225.0f-((180/STEPS) * i);
+        CGPoint o=[BLMath ProjectMovementWithX:0 andY:8.0f forRotation:a];
+        circleOffsetsFwd[i]=o;
+    }
+    for(int i=0; i<STEPS; i++)
+    {
+        float a=315.0f-((180/STEPS) * i);
+        CGPoint o=[BLMath ProjectMovementWithX:0 andY:8.0f forRotation:a];
+        circleOffsetsBwd[i]=o;
+    }
+    
 }
 
 -(void)dealloc

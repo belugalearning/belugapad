@@ -290,8 +290,11 @@ float timerIgnoreFrog;
     selector.pos=ccp(cx,cy + 75.0f);
     
     //frog
-    [self setupFrog];
-    lastFrogLoc=initStartLoc;
+    if(frogMode)
+    {
+        [self setupFrog];
+        lastFrogLoc=initStartLoc;
+    }
     
     if(markerValuePositions)
     {
@@ -356,7 +359,11 @@ float timerIgnoreFrog;
         //jump mode is now interpretted as frog mode
         //jumpMode=[[pdef objectForKey:@"JUMP_MODE"] boolValue];
         
-        frogMode=[[pdef objectForKey:@"JUMP_MODE"] boolValue];
+        //check also for a jumping evaluation
+        if([evalType isEqualToString:@"REPEATED_ADDITION"] || [evalType isEqualToString:@"JUMP_SEQUENCE"])
+        {
+            frogMode=[[pdef objectForKey:@"JUMP_MODE"] boolValue];
+        }
     }
     
     if([pdef objectForKey:@"MARKER_POSITIONS"])

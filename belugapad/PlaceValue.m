@@ -1916,7 +1916,7 @@ static float kTimeToCageShake=7.0f;
         [self selectBaseObjectsOnGrid:currentColumnIndex];
     }
     
-    if(isBasePickup)
+    if(isBasePickup && [gw.Blackboard.SelectedObjects count]>0)
     {
         firstSelectedObject=[gw.Blackboard.SelectedObjects objectAtIndex:0];
         baseSelectionColumnValue=firstSelectedObject.ObjectValue;
@@ -2294,7 +2294,8 @@ static float kTimeToCageShake=7.0f;
     
     // set the touch end position for evaluation
     touchEndPos = location;
-    gw.Blackboard.TestTouchLocation=location;
+    gw.Blackboard.TestTouchLocation=[renderLayer convertToNodeSpace:location];
+
     
     [toolHost.Zubi setTarget:location];
     
@@ -2431,6 +2432,7 @@ static float kTimeToCageShake=7.0f;
                 DWPlaceValueBlockGameObject *b=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
                 DWPlaceValueNetGameObject *n=nil;
 
+                
                 if([gw.Blackboard.PriorityDropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
                     n=(DWPlaceValueNetGameObject*)gw.Blackboard.PriorityDropObject;
                 else if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
@@ -2461,11 +2463,9 @@ static float kTimeToCageShake=7.0f;
                 for(DWPlaceValueBlockGameObject *b in pickupObjects)
                 {
 //                    if([pickupObjects count]>1){
-                    gw.Blackboard.DropObject=nil;
-                    gw.Blackboard.PriorityDropObject=nil;
-                    [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
-                    if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
-                        n=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
+
+//                    if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+//                        n=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
 //                    }
                     // if this is a multiple block pickup problem check below
                     if(multipleBlockPickup||showMultipleControls)
@@ -2643,7 +2643,9 @@ static float kTimeToCageShake=7.0f;
                         
                     }
                     
-
+                    gw.Blackboard.DropObject=nil;
+                    gw.Blackboard.PriorityDropObject=nil;
+                    [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
                 }
                 
                 // then log stuff
@@ -2661,7 +2663,12 @@ static float kTimeToCageShake=7.0f;
                             [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
                     }
                 }
+                int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
                 
+                if(objectsOnGrid==columnBaseValue)
+                {
+                    [self selectBaseObjectsOnGrid:currentColumnIndex];
+                }
                 if(blocksToDestroy)
                 {
                     

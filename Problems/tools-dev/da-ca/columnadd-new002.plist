@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ColumnTools</string>
+	<key>INTERNAL_DECSCRIPTION</key>
+	<string>3 row, 3 columns 70 + 80 + 6</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>REJECT_MODE</key>
+	<string>0</string>
+	<key>OPERATOR</key>
+	<string>ADD</string>
+	<key>NUMBER_WHEEL</key>
+	<dict>
+		<key>COLUMNS</key>
+		<integer>3</integer>
+		<key>NUMBER_MIN</key>
+		<integer>0</integer>
+		<key>NUMBER_MAX</key>
+		<integer>9</integer>
+		<key>MINUS</key>
+		<false/>
+		<key>DECIMAL</key>
+		<false/>
+	</dict>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>NUMBER</key>
+			<integer>70</integer>
+		</dict>
+		<dict>
+			<key>NUMBER</key>
+			<integer>80</integer>
+		</dict>
+		<dict>
+			<key>NUMBER</key>
+			<integer>6</integer>
+		</dict>
+	</array>
+	<key>SOLUTION</key>
+	<integer>156</integer>
+</dict>
+</plist>

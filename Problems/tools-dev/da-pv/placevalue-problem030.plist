@@ -19,9 +19,9 @@
 	<key>ROWS_PER_COL</key>
 	<integer>3</integer>
 	<key>ALLOW_CONDENSING</key>
-	<false/>
+	<true/>
 	<key>ALLOW_MULCHING</key>
-	<false/>
+	<true/>
 	<key>EVAL_MODE</key>
 	<integer>0</integer>
 	<key>REJECT_MODE</key>

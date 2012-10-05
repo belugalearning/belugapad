@@ -137,7 +137,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         
         [self populatePerstLayer];
         
-        CCSprite *pbtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_PauseButton.png")];
+        pbtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_PauseButton.png")];
         pbtn.position=ccp(HD_BUTTON_INSET, 2*cy - 30);
         pbtn.tag=3;
         pbtn.opacity=0;
@@ -741,6 +741,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         if(glossary2)[self removeChild:glossary2 cleanup:YES];
         if(glossaryPopup)[self removeChild:glossaryPopup cleanup:YES];
     }
+    
+    //hide pause again
+    pbtn.opacity=0;
     
     [self stageIntroActions];        
 

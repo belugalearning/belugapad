@@ -407,15 +407,36 @@ static NSString *kLabelFont=@"visgrad1.fnt";
             {
                 ccBezierConfig bc2;
 
-                if(i<5 || i>STEPS-6) ccDrawColor4B(255, 255, 255, 100);
-                else ccDrawColor4B(255, 255, 255, 200);
-
                 bc2.controlPoint_1=bc.controlPoint_1;
                 bc2.controlPoint_2=bc.controlPoint_2;
                 
                 if(jumpLength>0) bc2.endPosition=ccpAdd(bc.endPosition, circleOffsetsFwd[i]);
                 else bc2.endPosition=ccpAdd(bc.endPosition, circleOffsetsBwd[i]);
 
+                
+                //aliasing stuff ==========
+                if(i==0)
+                {
+                    //origin=ccpAdd(origin, ccp(10, 0));
+                    bc2.endPosition=ccpAdd(bc2.endPosition, ccp(-1, 0));
+                    bc2.controlPoint_1=ccpAdd(bc2.controlPoint_1, ccp(5, 0));
+                    bc2.controlPoint_2=ccpAdd(bc2.controlPoint_2, ccp(-2, 0));
+                    ccDrawColor4B(255, 255, 255, 50);
+                }
+                else if(i==STEPS-1)
+                {
+                    origin=ccpAdd(origin, ccp(-1, 1));
+                    ccDrawColor4B(255, 255, 255, 50);
+                }
+                else
+                {
+                    int step=i;
+                    if (i>STEPS/2.0f) step =(STEPS/2.0f) - (i-(STEPS/2.0f));
+                    int o=100 + (155 * step / (STEPS/2.0f));
+                    ccDrawColor4B(255, 255, 255, o);
+                }
+                // ========================
+                
                 ccDrawCubicBezier(origin, bc2.controlPoint_1, bc2.controlPoint_2, bc2.endPosition, 40);
             }
             

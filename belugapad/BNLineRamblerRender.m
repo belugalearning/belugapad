@@ -400,7 +400,8 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                 bc.endPosition=ccp(jumpStart + jumpLength, mid.y + yOffset + 10.0f);
             }
 
-            if
+            if(jumpLength>0 && bc.endPosition.x<0) continue;
+            if(jumpLength<0 && origin.x<0) continue;
             
             for(int i=0; i<STEPS; i++)
             {

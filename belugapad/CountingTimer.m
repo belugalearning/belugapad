@@ -21,8 +21,8 @@
 #import "BATQuery.h"
 #import "InteractionFeedback.h"
 
-#define kEarlyHitAllowance 0.25
-#define kHitFromExactSecond 0.75
+#define kEarliestHit 0.75
+#define kLatestHit 0.50
 
 @interface CountingTimer()
 {
@@ -287,8 +287,8 @@
     if(numIncrement>=0)
     {
         // count up
-        earliestHit=solutionNumber-kEarlyHitAllowance;
-        latestHit=solutionNumber+kHitFromExactSecond;
+        earliestHit=solutionNumber-kEarliestHit;
+        latestHit=solutionNumber+kLatestHit;
         
         if(debugLogging)
             NSLog(@"(EVAL-UP) earliestHit: %f / latestHit: %f / timeElapsed %f", earliestHit, latestHit, timeElapsed);
@@ -303,8 +303,8 @@
     {
         // count down
         float adjTimeElapsed=fabsf(timeElapsed-countMax);
-        earliestHit=solutionNumber+kEarlyHitAllowance;
-        latestHit=solutionNumber-kHitFromExactSecond;
+        earliestHit=solutionNumber+kEarliestHit;
+        latestHit=solutionNumber-kLatestHit;
         
         if(debugLogging)
             NSLog(@"(EVAL-DOWN) earliestHit: %f / latestHit: %f / timeElapsed %f", earliestHit, latestHit, adjTimeElapsed);

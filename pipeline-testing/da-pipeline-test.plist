@@ -2,18 +2,39 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
-	<string>/Problems/Addition/ac-dev/01pv/placevalue-problem074.plist</string>
+	<string>/Problems/tools-dev/da-pv/placevalue-problem030.plist</string>
+	<string>/Problems/tools-dev/da-pt/partition-test8.plist</string>
+	<string>/Problems/tools-dev/da-pt/partition-test2.plist</string>
+	<string>/Problems/tools-dev/da-pt/partition-test3.plist</string>
+	<string>/Problems/tools-dev/da-pt/partition-test4.plist</string>
+	<string>/Problems/tools-dev/da-pt/partition-test5.plist</string>
+	<string>/Problems/tools-dev/da-pt/partition-test6.plist</string>
+	<string>/Problems/tools-dev/da-pt/partition-test7.plist</string>
+	<string>/Problems/tools-dev/nline-dev/nline_count_to_3.plist</string>
+	<string>/Problems/tools-dev/da-float/fb002.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e15/202positivenegative.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e15/400addpositiveblocks.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e15/400addpositiveblocks.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e15/401addnegativeblocks.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e15/402addpositiveblocks.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e15/502takepositiveblocks.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e15/503addpositiveblocks.plist</string>
+	<string>/Problems/tools-dev/da-pv/placevalue-problem028.plist</string>
+	<string>/Problems/tools-dev/da-pv/placevalue-problem029.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem024.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem025.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem026.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem027.plist</string>
-	<string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/comparing_numbers/5608a59d6797796ce9e11484fd1748a8/mq_dyn_larger_left.plist</string>
-	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e11/105mq-additiveinverse.plist</string>
+	<string>/Problems/tools-dev/da-ct/ct001.plist</string>
+	<string>/Problems/tools-dev/da-ct/ct002.plist</string>
+	<string>/Problems/tools-dev/da-np/np2.plist</string>
 	<string>/Problems/tools-dev/da-float/fb001.plist</string>
-	<string>/Problems/tools-dev/da-float/fb002.plist</string>
 	<string>/Problems/tools-dev/da-float/fb003.plist</string>
 	<string>/Problems/tools-dev/da-float/fb004.plist</string>
 	<string>/Problems/tools-dev/da-float/fb005.plist</string>
+	<string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd165fa9/dt_cage_intro_1.plist</string>
+	<string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/comparing_numbers/5608a59d6797796ce9e11484fd1748a8/mq_dyn_larger_left.plist</string>
+	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e11/105mq-additiveinverse.plist</string>
 	<string>/Problems/tools-dev/da-float/fb006.plist</string>
 	<string>/Problems/tools-dev/da-float/fb007.plist</string>
 	<string>/Problems/tools-dev/da-ps/ps1.plist</string>
@@ -27,11 +48,8 @@
 	<string>/Problems/tools-dev/da-pv/placevalue-problem024.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem021.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem001.plist</string>
-	<string>/Problems/tools-dev/da-np/np2.plist</string>
 	<string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd167ab6/dt_6.plist</string>
 	<string>/Problems/tokcm-authoring/Number/counting_matching_and_sorting/counting_forward/5608a59d6797796ce9e11484fd11e438/103mqcountin2s.plist</string>
-	<string>/Problems/tools-dev/da-ct/ct001.plist</string>
-	<string>/Problems/tools-dev/da-ct/ct002.plist</string>
 	<string>/Problems/tools-dev/da-dt/dt2.plist</string>
 	<string>/Problems/tools-dev/featuredemo/fractionbuilder/fb-addition.plist</string>
 	<string>/Problems/tools-dev/da-frb/fb001.plist</string>
@@ -47,7 +65,6 @@
 	<string>/Problems/tools-dev/da-np/np4.plist</string>
 	<string>/Problems/tools-dev/da-tt/tt2.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test2.plist</string>
-	<string>/Problems/tools-dev/nline-dev/nline_count_to_3.plist</string>
 	<string>/Problems/tools-dev/nline-dev/nline_count_to_4.plist</string>
 	<string>/Problems/tools-dev/nline-dev/nline_count_to_5.plist</string>
 	<string>/Problems/tools-dev/nline-dev/nline_count_to_6.plist</string>
@@ -57,7 +74,6 @@
 	<string>/Problems/tools-dev/da-pv/placevalue-problem022.plist</string>
 	<string>/Problems/tools-dev/da-ps/ps1.plist</string>
 	<string>/Problems/tools-dev/da-ld/ld2.plist</string>
-	<string>/Problems/tools-dev/da-pt/partition-test2.plist</string>
 	<string>/Problems/Addition/ac-dev/97amalgamation/am_017.plist</string>
 	<string>/Problems/tools-dev/da-ld/ld1.plist</string>
 	<string>/Problems/tools-dev/da-ld/ld2.plist</string>

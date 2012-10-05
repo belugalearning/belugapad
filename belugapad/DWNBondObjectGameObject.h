@@ -25,5 +25,7 @@
 @property BOOL NoScaleBlock;
 @property int IndexPos;
 @property int lastZIndex;
+@property BOOL HintObject;
+
 
 @end

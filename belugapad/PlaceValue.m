@@ -596,6 +596,13 @@ static float kTimeToCageShake=7.0f;
     // send a problemstatechanged so that any total count eval, etc is done
     [self problemStateChanged];
     
+    int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
+    
+    if(objectsOnGrid==columnBaseValue)
+    {
+        [self selectBaseObjectsOnGrid:defaultColumn];
+    }
+    
     // define our rects for no-drag areas
     noDragAreaBottom=CGRectMake(0,0,lx,120);
     noDragAreaTop=CGRectMake(0, ly-120, lx, 120);
@@ -742,8 +749,6 @@ static float kTimeToCageShake=7.0f;
     else 
         allowDeselect=YES;
     
-    if(autoBaseSelection)allowDeselect=NO;
-    
     // will the numbers fade off?
     if([pdef objectForKey:FADE_COUNT]) 
         fadeCount = [[pdef objectForKey:FADE_COUNT] boolValue];
@@ -773,6 +778,7 @@ static float kTimeToCageShake=7.0f;
     else
         autoBaseSelection=NO;
     
+    if(autoBaseSelection)allowDeselect=NO;
     
     //objects
     NSArray *objects=[pdef objectForKey:INIT_OBJECTS];
@@ -1256,9 +1262,10 @@ static float kTimeToCageShake=7.0f;
         {
             DWPlaceValueBlockGameObject *b=[SelectedObjects objectAtIndex:i];
             b.Selected=YES;
-            //[b handleMessage:kDWswitchSelection];
+            [b handleMessage:kDWswitchSelection];
             //if([SelectedObjects count]==10)[b handleMessage:kDWswitchBaseSelectionBack];
         }
+        [gw.Blackboard.SelectedObjects removeAllObjects];
     }
     
     for (int r=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] count]-1; r>=0; r--) {
@@ -1871,12 +1878,6 @@ static float kTimeToCageShake=7.0f;
     float baseSelectionColumnValue=0;
     DWPlaceValueBlockGameObject *firstSelectedObject=nil;
     
-    if(isBasePickup)
-    {
-        firstSelectedObject=[gw.Blackboard.SelectedObjects objectAtIndex:0];
-        baseSelectionColumnValue=firstSelectedObject.ObjectValue;
-    }
-    
     // if we have controls showing - check for touches upon them using an alternate method
     if(multipleBlockPickup||showMultipleControls)
         [self checkForMultipleControlTouchesAt:location];
@@ -1911,7 +1912,14 @@ static float kTimeToCageShake=7.0f;
     if(objectsOnGrid==columnBaseValue)
     {
         isBasePickup=YES;
+        [gw.Blackboard.SelectedObjects removeAllObjects];
         [self selectBaseObjectsOnGrid:currentColumnIndex];
+    }
+    
+    if(isBasePickup)
+    {
+        firstSelectedObject=[gw.Blackboard.SelectedObjects objectAtIndex:0];
+        baseSelectionColumnValue=firstSelectedObject.ObjectValue;
     }
     
     if(debugLogging)
@@ -1969,6 +1977,7 @@ static float kTimeToCageShake=7.0f;
         }
 
         // but if we have a base pickup - we need to loop over every object that we have selected
+        
         if(isBasePickup && !hasMovedBasePickup && baseSelectionColumnValue==gw.Blackboard.CurrentColumnValue && [gw.Blackboard.SelectedObjects containsObject:pickupObject])
         {
             for(DWPlaceValueBlockGameObject *b in gw.Blackboard.SelectedObjects)
@@ -1979,6 +1988,7 @@ static float kTimeToCageShake=7.0f;
                 {
                     n=(DWPlaceValueNetGameObject*)b.Mount;
                     b.LastMount=b.Mount;
+                    
                     n.MountedObject=nil;
                     n.CancellingObject=nil;
                 }
@@ -2243,7 +2253,7 @@ static float kTimeToCageShake=7.0f;
                             
                             go.PosX=posX+thisPos.x+diff.x;
                             go.PosY=posY+thisPos.y+diff.y;
-                            [go handleMessage:kDWupdateSprite andPayload:nil withLogLevel:-1];
+                            [go handleMessage:kDWmoveSpriteToPositionWithoutAnimation andPayload:nil withLogLevel:-1];
                         }
                     }
                 }
@@ -2263,7 +2273,7 @@ static float kTimeToCageShake=7.0f;
                 // otherwise set just the block to the posx/y positions and update the position
                 block.PosX=posX;
                 block.PosY=posY;
-                [[gw Blackboard].PickupObject handleMessage:kDWupdateSprite andPayload:nil withLogLevel:-1];
+                [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToPositionWithoutAnimation andPayload:nil withLogLevel:-1];
                 hasMovedBlock=YES;
             }
         }
@@ -2341,7 +2351,7 @@ static float kTimeToCageShake=7.0f;
             if(debugLogging)
                 NSLog(@"block selected? %@, isCage? %@", block.Selected? @"YES":@"NO", isCage? @"YES":@"NO");
             
-            if((!block.Selected && !isCage) || (block.Selected && allowDeselect && !isCage))
+            if((!block.Selected && !isCage && allowDeselect) || (block.Selected && allowDeselect && !isCage))
             {
                 [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
                 hasMovedBasePickup=NO;
@@ -2358,19 +2368,23 @@ static float kTimeToCageShake=7.0f;
                 for(int igo=0; igo<gw.Blackboard.SelectedObjects.count; igo++)
                 {
                     DWPlaceValueBlockGameObject *go = [[[gw Blackboard] SelectedObjects] objectAtIndex:igo];
+                    
                     go.Mount=go.LastMount;
                     
                     ((DWPlaceValueNetGameObject*)go.Mount).MountedObject=go;
                     
-                    go.AnimateMe=YES;
+//                    go.AnimateMe=YES;
+//
+//                    go.PosX=((DWPlaceValueNetGameObject*)go.Mount).PosX;
+//                    go.PosY=((DWPlaceValueNetGameObject*)go.Mount).PosY;
                     
-                    go.PosX=((DWPlaceValueNetGameObject*)go.Mount).PosX;
-                    go.PosY=((DWPlaceValueNetGameObject*)go.Mount).PosY;
-                    
-                    [go handleMessage:kDWmoveSpriteToPosition];
+                    [go handleMessage:kDWresetToMountPosition];
                     [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
                     
                 }
+                
+                [self setTouchVarsToOff];
+                return;
             }
 
             if([block.LastMount isKindOfClass:[DWPlaceValueNetGameObject class]])
@@ -2630,13 +2644,6 @@ static float kTimeToCageShake=7.0f;
                     }
                     
 
-                }
-                
-                int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
-                
-                if(objectsOnGrid==columnBaseValue)
-                {
-                    [self selectBaseObjectsOnGrid:currentColumnIndex];
                 }
                 
                 // then log stuff

@@ -31,6 +31,7 @@
 #import "SGGameWorld.h"
 #import "SGBtxeRow.h"
 #import "SGBtxeProtocols.h"
+#import "DebugViewController.h"
 
 #define HD_HEADER_HEIGHT 65.0f
 #define HD_BUTTON_INSET 40.0f
@@ -549,6 +550,29 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [self gotoNewProblem];
 }
 
+-(void) debugSkipToProblem:(int)skipby
+{
+    //effectively a skipping version of gotoNewProblem, ignores triggers, little exception / flow handling
+    if(pdef)[pdef release];
+    [self tearDownProblemDef];
+    self.PpExpr=nil;
+    
+    hasResetMultiplier=NO;
+    
+    [contentService gotoNextProblemInPipelineWithSkip:skipby];
+    
+    if(contentService.currentPDef)
+    {
+        [self loadProblem];
+    }
+    else
+    {
+        [contentService quitPipelineTracking];
+        
+        [[CCDirector sharedDirector] replaceScene:[JMap scene]];
+    }
+}
+
 -(void) gotoNewProblem
 {
     if (pdef) [pdef release];
@@ -901,6 +925,12 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [loggingService logEvent:BL_PA_PAUSE withAdditionalData:nil];
 }
 
+-(void)hidePauseMenu
+{
+    [pauseLayer setVisible:NO];
+    isPaused=NO;
+}
+
 -(void) checkPauseTouches:(CGPoint)location
 {
     if(CGRectContainsPoint(kPauseMenuContinue, location))
@@ -908,8 +938,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         //resume
         [loggingService logEvent:BL_PA_RESUME withAdditionalData:nil];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-        [pauseLayer setVisible:NO];
-        isPaused=NO;
+        [self hidePauseMenu];
     }
     if(CGRectContainsPoint(kPauseMenuReset, location))
     {
@@ -2160,6 +2189,12 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     [debugWebView loadHTMLString:[NSString stringWithFormat:@"<html><body style='font-family:Courier; color:black'>%@</body></html>", pstate] baseURL:[NSURL URLWithString:@""]];
     
+    debugViewController=[[DebugViewController alloc] initWithNibName:nil bundle:nil];
+    debugWebView.delegate=debugViewController;
+    
+    debugViewController.handlerInstance=self;
+    debugViewController.skipProblemMethod=@selector(debugWebViewHandleSkipProblemsWithStep:);
+    
     [[[CCDirector sharedDirector] view] addSubview:debugWebView];
     
     debugShowingPipelineState=YES;
@@ -2172,6 +2207,17 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     debugWebView=nil;
     
     debugShowingPipelineState=NO;
+}
+
+-(void)debugWebViewHandleSkipProblemsWithStep:(NSNumber*)skips
+{
+    NSLog(@"skipping %d problems", [skips intValue]);
+    
+    [self debugSkipToProblem:[skips intValue]];
+    
+    [self debugHidePipelineState];
+    
+    [self hidePauseMenu];
 }
 
 #pragma mark - tear down
@@ -2215,6 +2261,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [btxeDescLayer release];
     
     if(triggerData)[triggerData release];
+    
+    if(debugWebView)[debugWebView release];
+    if(debugViewController)[debugViewController release];
     
     self.Zubi=nil;
     

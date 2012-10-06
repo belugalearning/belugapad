@@ -559,6 +559,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     hasResetMultiplier=NO;
     
+    [self resetTriggerData];
+    
     [contentService gotoNextProblemInPipelineWithSkip:skipby];
     
     if(contentService.currentPDef)
@@ -571,6 +573,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         
         [[CCDirector sharedDirector] replaceScene:[JMap scene]];
     }
+}
+
+-(void)resetTriggerData
+{
+    commitCount=0;
 }
 
 -(void) gotoNewProblem
@@ -598,6 +605,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         
         adpSkipProblemAndInsert=NO;
     }
+    
+    //reset trigger data -- a fresh view on user progress in this problem
+    [self resetTriggerData];
     
     //this is the goto next problem bit -- actually next problem in episode, as there's no effetive success/fail thing
     [contentService gotoNextProblemInPipeline];

@@ -2005,38 +2005,38 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [currentTool ccTouchesCancelled:touches withEvent:event];
 }
 
--(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
-{
-    if(isPaused||autoMoveToNextProblem)
-    {
-        return NO;
-    }  
-    return [currentTool ccTouchBegan:touch withEvent:event];
-}
-
--(void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
-{
-    if(isPaused||autoMoveToNextProblem)
-    {
-        return;
-    }  
-    [currentTool ccTouchMoved:touch withEvent:event];
-}
-
--(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
-{
-    if(isPaused||autoMoveToNextProblem)
-    {
-        return;
-    }  
-    [currentTool ccTouchEnded:touch withEvent:event];
-}
-
--(void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
-{
-    if(npMove)npMove=nil;
-    [currentTool ccTouchCancelled:touch withEvent:event];
-}
+//-(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
+//{
+//    if(isPaused||autoMoveToNextProblem)
+//    {
+//        return NO;
+//    }  
+//    return [currentTool ccTouchBegan:touch withEvent:event];
+//}
+//
+//-(void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
+//{
+//    if(isPaused||autoMoveToNextProblem)
+//    {
+//        return;
+//    }  
+//    [currentTool ccTouchMoved:touch withEvent:event];
+//}
+//
+//-(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
+//{
+//    if(isPaused||autoMoveToNextProblem)
+//    {
+//        return;
+//    }  
+//    [currentTool ccTouchEnded:touch withEvent:event];
+//}
+//
+//-(void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
+//{
+//    if(npMove)npMove=nil;
+//    [currentTool ccTouchCancelled:touch withEvent:event];
+//}
 
 #pragma mark - CCPickerView for number wheel
 

@@ -13,7 +13,7 @@
 
 //@synthesize Mount;
 @synthesize Mount=Mount1;
-@synthesize LastMount;
+@synthesize LastMount=LastMount1;
 @synthesize ObjectValue;
 @synthesize PickupSprite;
 @synthesize mySprite;
@@ -35,6 +35,25 @@
     {
         [Mount1 release];
         Mount1=[newMount retain];
+    }
+}
+
+-(DWGameObject*)LastMount
+{
+    return LastMount1;
+}
+
+-(void)setLastMount:(DWGameObject *)newLastMount
+{
+    if(LastMount1!=newLastMount)
+    {
+        [LastMount1 release];
+        LastMount1=[newLastMount retain];
+        
+        if(newLastMount==nil)
+        {
+            NSLog(@"nil mount");
+        }
     }
 }
 

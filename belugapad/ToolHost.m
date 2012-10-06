@@ -36,6 +36,8 @@
 #define HD_BUTTON_INSET 40.0f
 #define HD_SCORE_INSET 40.0f
 
+#define QUESTION_SEPARATOR_PADDING -15.0f
+
 //CCPickerView
 #define kComponentWidth 54
 #define kComponentHeight 32
@@ -1764,7 +1766,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     //create row
     id<Container, RenderContainer, Bounding, Parser, FadeIn> row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
-    row.position=ccp(cx, (cy*2) - 100);
+    row.position=ccp(cx, (cy*2) - 95);
 
     //top down valign
     row.forceVAlignTop=YES;
@@ -1786,11 +1788,21 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         descString=[NSString stringWithFormat:@"<b:t>%@</b:t>", descString];
     }
 
-    
     [row parseXML:descString];
     [row setupDraw];
     
     [row fadeInElementsFrom:1.0f andIncrement:0.1f];
+
+    
+    //question separator bar -- flow with bottom of btxe
+    if(!questionSeparatorSprite)
+    {
+        questionSeparatorSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/Question_Separator.png")];
+        [backgroundLayer addChild:questionSeparatorSprite];
+    }
+    
+    questionSeparatorSprite.position=ccpAdd(row.position, ccp(0, -(row.size.height) - QUESTION_SEPARATOR_PADDING));
+    
     
     descGw.Blackboard.inProblemSetup=NO;
 }

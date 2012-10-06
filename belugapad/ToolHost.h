@@ -162,6 +162,7 @@ typedef enum {
     
     //btxe for description
     SGGameWorld *descGw;
+    CCSprite *questionSeparatorSprite;
     
     //ui
     CCSprite *multiplierBadge;

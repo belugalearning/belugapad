@@ -31,10 +31,13 @@
 #import "SGGameWorld.h"
 #import "SGBtxeRow.h"
 #import "SGBtxeProtocols.h"
+#import "DebugViewController.h"
 
 #define HD_HEADER_HEIGHT 65.0f
 #define HD_BUTTON_INSET 40.0f
 #define HD_SCORE_INSET 40.0f
+
+#define QUESTION_SEPARATOR_PADDING -15.0f
 
 //CCPickerView
 #define kComponentWidth 54
@@ -113,15 +116,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         //[pause setPosition:ccp(lx-(kPropXPauseButtonPadding*lx), ly-(kPropXPauseButtonPadding*lx))];
         //[perstLayer addChild:pause z:3];
         
-        //add header
-        CCSprite *hd=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_HeaderBar.png")];
-        hd.position=ccp(cx, 2*cy - HD_HEADER_HEIGHT / 2.0f);
-        [perstLayer addChild:hd z:3];
-        
-        //add disabled commit
-        CCSprite *commdis=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Disabled.png")];
-        commdis.position=ccp(2*cx-HD_BUTTON_INSET, 2*cy - 30);
-        [perstLayer addChild:commdis z:3];
+
 
         metaQuestionLayer=[[CCLayer alloc] init];
         [self addChild:metaQuestionLayer z:2];
@@ -137,7 +132,25 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         contextProgressLayer=[[CCLayer alloc] init];
         [self addChild:contextProgressLayer z:6];
         
+        
+        //add header
+        CCSprite *hd=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_HeaderBar_NoPause.png")];
+        hd.position=ccp(cx, 2*cy - HD_HEADER_HEIGHT / 2.0f);
+        [perstLayer addChild:hd z:3];
+        
         [self populatePerstLayer];
+        
+        pbtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_PauseButton.png")];
+        pbtn.position=ccp(HD_BUTTON_INSET, 2*cy - 30);
+        pbtn.tag=3;
+        pbtn.opacity=0;
+        [perstLayer addChild:pbtn z:3];
+        
+        //add disabled commit
+        CCSprite *commdis=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Disabled.png")];
+        commdis.position=ccp(2*cx-HD_BUTTON_INSET, 2*cy - 30);
+        [perstLayer addChild:commdis z:3];
+        
         
         //dynamic problem parser (persists to end of pipeline)
         DynProblemParser=[[DProblemParser alloc] init];
@@ -212,6 +225,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         if(metaQuestionLayer)[self recurseSetIntroFor:metaQuestionLayer withTime:time forTag:i];
         if(problemDefLayer)[self recurseSetIntroFor:problemDefLayer withTime:time forTag:i];
         if(numberPickerLayer)[self recurseSetIntroFor:numberPickerLayer withTime:time forTag:i];
+        if(perstLayer)[self recurseSetIntroFor:perstLayer withTime:time forTag:i];
     }
     
     
@@ -536,6 +550,36 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [self gotoNewProblem];
 }
 
+-(void) debugSkipToProblem:(int)skipby
+{
+    //effectively a skipping version of gotoNewProblem, ignores triggers, little exception / flow handling
+    if(pdef)[pdef release];
+    [self tearDownProblemDef];
+    self.PpExpr=nil;
+    
+    hasResetMultiplier=NO;
+    
+    [self resetTriggerData];
+    
+    [contentService gotoNextProblemInPipelineWithSkip:skipby];
+    
+    if(contentService.currentPDef)
+    {
+        [self loadProblem];
+    }
+    else
+    {
+        [contentService quitPipelineTracking];
+        
+        [[CCDirector sharedDirector] replaceScene:[JMap scene]];
+    }
+}
+
+-(void)resetTriggerData
+{
+    commitCount=0;
+}
+
 -(void) gotoNewProblem
 {
     if (pdef) [pdef release];
@@ -561,6 +605,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         
         adpSkipProblemAndInsert=NO;
     }
+    
+    //reset trigger data -- a fresh view on user progress in this problem
+    [self resetTriggerData];
     
     //this is the goto next problem bit -- actually next problem in episode, as there's no effetive success/fail thing
     [contentService gotoNextProblemInPipeline];
@@ -731,6 +778,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         if(glossaryPopup)[self removeChild:glossaryPopup cleanup:YES];
     }
     
+    //hide pause again
+    pbtn.opacity=0;
+    
     [self stageIntroActions];        
 
     [self.Zubi dumpXP];
@@ -885,6 +935,12 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [loggingService logEvent:BL_PA_PAUSE withAdditionalData:nil];
 }
 
+-(void)hidePauseMenu
+{
+    [pauseLayer setVisible:NO];
+    isPaused=NO;
+}
+
 -(void) checkPauseTouches:(CGPoint)location
 {
     if(CGRectContainsPoint(kPauseMenuContinue, location))
@@ -892,8 +948,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         //resume
         [loggingService logEvent:BL_PA_RESUME withAdditionalData:nil];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-        [pauseLayer setVisible:NO];
-        isPaused=NO;
+        [self hidePauseMenu];
     }
     if(CGRectContainsPoint(kPauseMenuReset, location))
     {
@@ -1750,7 +1805,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     //create row
     id<Container, RenderContainer, Bounding, Parser, FadeIn> row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
-    row.position=ccp(cx, (cy*2) - 100);
+    row.position=ccp(cx, (cy*2) - 95);
 
     //top down valign
     row.forceVAlignTop=YES;
@@ -1772,11 +1827,21 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         descString=[NSString stringWithFormat:@"<b:t>%@</b:t>", descString];
     }
 
-    
     [row parseXML:descString];
     [row setupDraw];
     
     [row fadeInElementsFrom:1.0f andIncrement:0.1f];
+
+    
+    //question separator bar -- flow with bottom of btxe
+    if(!questionSeparatorSprite)
+    {
+        questionSeparatorSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/Question_Separator.png")];
+        [backgroundLayer addChild:questionSeparatorSprite];
+    }
+    
+    questionSeparatorSprite.position=ccpAdd(row.position, ccp(0, -(row.size.height) - QUESTION_SEPARATOR_PADDING));
+    
     
     descGw.Blackboard.inProblemSetup=NO;
 }
@@ -1991,38 +2056,38 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [currentTool ccTouchesCancelled:touches withEvent:event];
 }
 
--(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
-{
-    if(isPaused||autoMoveToNextProblem)
-    {
-        return NO;
-    }  
-    return [currentTool ccTouchBegan:touch withEvent:event];
-}
-
--(void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
-{
-    if(isPaused||autoMoveToNextProblem)
-    {
-        return;
-    }  
-    [currentTool ccTouchMoved:touch withEvent:event];
-}
-
--(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
-{
-    if(isPaused||autoMoveToNextProblem)
-    {
-        return;
-    }  
-    [currentTool ccTouchEnded:touch withEvent:event];
-}
-
--(void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
-{
-    if(npMove)npMove=nil;
-    [currentTool ccTouchCancelled:touch withEvent:event];
-}
+//-(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
+//{
+//    if(isPaused||autoMoveToNextProblem)
+//    {
+//        return NO;
+//    }  
+//    return [currentTool ccTouchBegan:touch withEvent:event];
+//}
+//
+//-(void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
+//{
+//    if(isPaused||autoMoveToNextProblem)
+//    {
+//        return;
+//    }  
+//    [currentTool ccTouchMoved:touch withEvent:event];
+//}
+//
+//-(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
+//{
+//    if(isPaused||autoMoveToNextProblem)
+//    {
+//        return;
+//    }  
+//    [currentTool ccTouchEnded:touch withEvent:event];
+//}
+//
+//-(void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
+//{
+//    if(npMove)npMove=nil;
+//    [currentTool ccTouchCancelled:touch withEvent:event];
+//}
 
 #pragma mark - CCPickerView for number wheel
 
@@ -2134,6 +2199,12 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     [debugWebView loadHTMLString:[NSString stringWithFormat:@"<html><body style='font-family:Courier; color:black'>%@</body></html>", pstate] baseURL:[NSURL URLWithString:@""]];
     
+    debugViewController=[[DebugViewController alloc] initWithNibName:nil bundle:nil];
+    debugWebView.delegate=debugViewController;
+    
+    debugViewController.handlerInstance=self;
+    debugViewController.skipProblemMethod=@selector(debugWebViewHandleSkipProblemsWithStep:);
+    
     [[[CCDirector sharedDirector] view] addSubview:debugWebView];
     
     debugShowingPipelineState=YES;
@@ -2146,6 +2217,17 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     debugWebView=nil;
     
     debugShowingPipelineState=NO;
+}
+
+-(void)debugWebViewHandleSkipProblemsWithStep:(NSNumber*)skips
+{
+    NSLog(@"skipping %d problems", [skips intValue]);
+    
+    [self debugSkipToProblem:[skips intValue]];
+    
+    [self debugHidePipelineState];
+    
+    [self hidePauseMenu];
 }
 
 #pragma mark - tear down
@@ -2189,6 +2271,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [btxeDescLayer release];
     
     if(triggerData)[triggerData release];
+    
+    if(debugWebView)[debugWebView release];
+    if(debugViewController)[debugViewController release];
     
     self.Zubi=nil;
     

@@ -334,6 +334,7 @@
 		7F85187C1558E85F002E9F07 /* Pipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F85187B1558E85F002E9F07 /* Pipeline.m */; };
 		7F884D8815E197AD004B0DF3 /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7F884D8715E197AD004B0DF3 /* SourceSansPro-Bold.ttf */; };
 		7F884D8B15E28F24004B0DF3 /* Chango-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7F884D8A15E28F24004B0DF3 /* Chango-Regular.ttf */; };
+		7F96BD881620A8F800351CA0 /* DebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BD871620A8F800351CA0 /* DebugViewController.m */; };
 		7F97879515FFA2CA00225967 /* NumberLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F97879415FFA2CA00225967 /* NumberLayout.m */; };
 		7F9D414F15751E1600AFA1A0 /* NGNineGridSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9D414E15751E1600AFA1A0 /* NGNineGridSprite.m */; };
 		7FA0FCD615F74DB000C241A8 /* AdpInserter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0FCC515F74DB000C241A8 /* AdpInserter.m */; };
@@ -1106,6 +1107,8 @@
 		7F85187B1558E85F002E9F07 /* Pipeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Pipeline.m; sourceTree = "<group>"; };
 		7F884D8715E197AD004B0DF3 /* SourceSansPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Bold.ttf"; sourceTree = "<group>"; };
 		7F884D8A15E28F24004B0DF3 /* Chango-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Chango-Regular.ttf"; sourceTree = "<group>"; };
+		7F96BD861620A8F800351CA0 /* DebugViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugViewController.h; sourceTree = "<group>"; };
+		7F96BD871620A8F800351CA0 /* DebugViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugViewController.m; sourceTree = "<group>"; };
 		7F97879315FFA2CA00225967 /* NumberLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberLayout.h; sourceTree = "<group>"; };
 		7F97879415FFA2CA00225967 /* NumberLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberLayout.m; sourceTree = "<group>"; };
 		7F9D414D15751E1600AFA1A0 /* NGNineGridSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGNineGridSprite.h; sourceTree = "<group>"; };
@@ -1726,6 +1729,8 @@
 				7F268AE414F2A2A200F1F65F /* ToolScene.m */,
 				7F71B408150FBCB20097A956 /* ExprScene.h */,
 				7F71B409150FBCB20097A956 /* ExprScene.m */,
+				7F96BD861620A8F800351CA0 /* DebugViewController.h */,
+				7F96BD871620A8F800351CA0 /* DebugViewController.m */,
 			);
 			name = Foundation;
 			sourceTree = "<group>";
@@ -3384,6 +3389,7 @@
 				7F5F4D62161906EB005F6311 /* ScrollLayer.m in Sources */,
 				7F5F4D6E1619E6B9005F6311 /* SGBtxeObjectIcon.m in Sources */,
 				7F5F4D721619E714005F6311 /* SGBtxeIconRender.m in Sources */,
+				7F96BD881620A8F800351CA0 /* DebugViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

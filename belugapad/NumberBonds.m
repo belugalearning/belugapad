@@ -108,16 +108,6 @@ static float kTimeToMountedShake=7.0f;
         if(isWinning)[toolHost shakeCommitButton];
     }
     
-    if(sendPositionEval)
-    {
-        if(timeLeftToPositionThisOne<0.0f && timeLeftToPositionThatOne<0.0f)
-        {
-            [repositionThis handleMessage:kDWresetPositionEval];
-            [repositionThat handleMessage:kDWresetPositionEval];
-            sendPositionEval=NO;
-        }
-    }
-    
     [self updateLabels];
 
 }
@@ -495,7 +485,7 @@ static float kTimeToMountedShake=7.0f;
             }
         }
         
-        [r handleMessage:kDWresetPositionEval];
+        //[r handleMessage:kDWresetPositionEval];
     }
     
 }
@@ -539,52 +529,54 @@ static float kTimeToMountedShake=7.0f;
 
     thisOne.HintObjects=thatOne.HintObjects;
     thatOne.HintObjects=thisOneHints;
-    
-
-    sendPositionEval=YES;
+    doNotSendPositionEval=YES;
     
     for(DWNBondObjectGameObject *o in thisOne.HintObjects)
     {
+//        for(CCNode *s in o.BaseNode.children)
+//        {
+//            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
+//            [s runAction:fadeOutAct];
+//        }
+        
+
+        
+        
+        for(CCSprite *s in o.BaseNode.children)
+        {
+            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
+            CCDelayTime *delayTime=[CCDelayTime actionWithDuration:0.5f];
+            CCCallBlock *resetEval=[CCCallBlock actionWithBlock:^{[thisOne handleMessage:kDWresetPositionEval];}];
+            CCFadeIn *fadeInAct=[CCFadeIn actionWithDuration:0.3f];
+            
+            CCSequence *sequence=[CCSequence actions:fadeOutAct, delayTime, resetEval, fadeInAct, nil];
+            
+            [s runAction:sequence];
+    
+        }
+    }
+    
+    for(DWNBondObjectGameObject *o in thatOne.HintObjects)
+    {
+//        for(CCNode *s in o.BaseNode.children)
+//        {
+//            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
+//            [s runAction:fadeOutAct];
+//        }
+        
         for(CCNode *s in o.BaseNode.children)
         {
             CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
-            [s runAction:fadeOutAct];
-        }
-        
-        repositionThis=thisOne;
-        timeLeftToPositionThisOne=0.3f;
-        
-        for(CCNode *s in o.BaseNode.children)
-        {
-            CCDelayTime *delayTime=[CCDelayTime actionWithDuration:0.3f];
+            CCDelayTime *delayTime=[CCDelayTime actionWithDuration:0.5f];
+            CCCallBlock *resetEval=[CCCallBlock actionWithBlock:^{[thatOne handleMessage:kDWresetPositionEval];}];
+            CCCallBlock *disallowEval=[CCCallBlock actionWithBlock:^{doNotSendPositionEval=NO;}];
             CCFadeIn *fadeInAct=[CCFadeIn actionWithDuration:0.3f];
             
-            CCSequence *sequence=[CCSequence actions:fadeInAct, delayTime, nil];
+            CCSequence *sequence=[CCSequence actions:fadeOutAct, delayTime, resetEval, fadeInAct, disallowEval, nil];
             
             [s runAction:sequence];
         }
     }
-    
-    for(DWNBondObjectGameObject *o in thisOne.HintObjects)
-    {
-        for(CCNode *s in o.BaseNode.children)
-        {
-            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
-            [s runAction:fadeOutAct];
-        }
-        
-        repositionThat=thatOne;
-        timeLeftToPositionThatOne=0.3f;
-        
-        for(CCNode *s in o.BaseNode.children)
-        {
-            CCDelayTime *delayTime=[CCDelayTime actionWithDuration:0.3f];
-            CCFadeIn *fadeInAct=[CCFadeIn actionWithDuration:0.3f];
-            
-            CCSequence *sequence=[CCSequence actions:fadeInAct, delayTime, nil];
-            
-            [s runAction:sequence];
-        }    }
 
 
 }
@@ -737,17 +729,20 @@ static float kTimeToMountedShake=7.0f;
     
     //[self reorderMountedObjects];
     
-    [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:-1];
+    if(!doNotSendPositionEval)
+        [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:-1];
     
     [gw Blackboard].PickupObject=nil;
     hasMovedBlock=NO;
 
+    doNotSendPositionEval=NO;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouching=NO;
     hasMovedBlock=NO;
+    doNotSendPositionEval=NO;
 }
 
 #pragma mark - evaluation and reject

@@ -64,7 +64,7 @@ typedef enum {
     DWNBondRowGameObject *repositionThis;
     DWNBondRowGameObject *repositionThat;
     
-    BOOL sendPositionEval;
+    BOOL doNotSendPositionEval;
     float timeLeftToPositionThisOne;
     float timeLeftToPositionThatOne;
 }
@@ -73,7 +73,6 @@ typedef enum {
 -(void)populateGW;
 -(void)updateLabels;
 -(void)reorderMountedObjects;
--(void)sendPositionEval:(ccTime)delta;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

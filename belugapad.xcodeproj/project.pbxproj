@@ -307,6 +307,7 @@
 		7F96BD881620A8F800351CA0 /* DebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BD871620A8F800351CA0 /* DebugViewController.m */; };
 		7F96BDE4162178D100351CA0 /* libChipmunkPro-iPhone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F96BDE2162178D100351CA0 /* libChipmunkPro-iPhone.a */; };
 		7F96BDEF1621886E00351CA0 /* GooTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BDEE1621886E00351CA0 /* GooTool.m */; };
+		7F96BE0C16222BD100351CA0 /* GooDrawBatchNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BE0B16222BD100351CA0 /* GooDrawBatchNode.m */; };
 		7F97879515FFA2CA00225967 /* NumberLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F97879415FFA2CA00225967 /* NumberLayout.m */; };
 		7F9D414F15751E1600AFA1A0 /* NGNineGridSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9D414E15751E1600AFA1A0 /* NGNineGridSprite.m */; };
 		7FA0FCD615F74DB000C241A8 /* AdpInserter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0FCC515F74DB000C241A8 /* AdpInserter.m */; };
@@ -1066,6 +1067,8 @@
 		7F96BDE3162178D100351CA0 /* ObjectiveChipmunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectiveChipmunk.h; sourceTree = "<group>"; };
 		7F96BDED1621886E00351CA0 /* GooTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooTool.h; sourceTree = "<group>"; };
 		7F96BDEE1621886E00351CA0 /* GooTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooTool.m; sourceTree = "<group>"; };
+		7F96BE0A16222BD100351CA0 /* GooDrawBatchNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooDrawBatchNode.h; sourceTree = "<group>"; };
+		7F96BE0B16222BD100351CA0 /* GooDrawBatchNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooDrawBatchNode.m; sourceTree = "<group>"; };
 		7F97879315FFA2CA00225967 /* NumberLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberLayout.h; sourceTree = "<group>"; };
 		7F97879415FFA2CA00225967 /* NumberLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberLayout.m; sourceTree = "<group>"; };
 		7F9D414D15751E1600AFA1A0 /* NGNineGridSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGNineGridSprite.h; sourceTree = "<group>"; };
@@ -2506,6 +2509,8 @@
 		7F96BE0916222B4300351CA0 /* Goo */ = {
 			isa = PBXGroup;
 			children = (
+				7F96BE0A16222BD100351CA0 /* GooDrawBatchNode.h */,
+				7F96BE0B16222BD100351CA0 /* GooDrawBatchNode.m */,
 			);
 			name = Goo;
 			sourceTree = "<group>";
@@ -3289,6 +3294,7 @@
 				7F5F4D721619E714005F6311 /* SGBtxeIconRender.m in Sources */,
 				7F96BD881620A8F800351CA0 /* DebugViewController.m in Sources */,
 				7F96BDEF1621886E00351CA0 /* GooTool.m in Sources */,
+				7F96BE0C16222BD100351CA0 /* GooDrawBatchNode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

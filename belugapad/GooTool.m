@@ -13,7 +13,7 @@
 #import "UsersService.h"
 #import "AppDelegate.h"
 
-#import "ChipmunkDebugNode.h"
+#import "GooDrawBatchNode.h"
 
 @interface GooTool()
 {
@@ -71,8 +71,9 @@
 
     cGrab=[[ChipmunkMultiGrab alloc] initForSpace:cSpace withSmoothing:cpfpow(0.8, 60.0) withGrabForce:20000];
     
-    ChipmunkDebugNode *dn=[ChipmunkDebugNode debugNodeForChipmunkSpace:cSpace];
-    [self.ForeLayer addChild:dn z:10];
+    drawNode=[[GooDrawBatchNode alloc] initWithSpace:cSpace];
+    [self.ForeLayer addChild:drawNode];
+    
 }
 
 -(void)addTestShapes
@@ -82,6 +83,31 @@
     
     ChipmunkShape *s=[cSpace add:[ChipmunkCircleShape circleWithBody:b radius:50 offset:cpvzero]];
     s.friction=0.7;
+
+    
+    
+    cpFloat size = 7.0;
+    
+    cpVect pentagon[5];
+    for(int i=0; i < 5; i++){
+        cpFloat angle = -2*M_PI*i/5.0;
+        pentagon[i] = cpv(size*cos(angle), size*sin(angle));
+    }
+    
+    ChipmunkBody *body = [cSpace add:[ChipmunkBody bodyWithMass:1.0 andMoment:cpMomentForPoly(1.0, 5, pentagon, cpvzero)]];
+    body.pos = cpv(100, 400);
+    
+    ChipmunkShape *shape = [cSpace add:[ChipmunkPolyShape polyWithBody:body count:5 verts:pentagon offset:cpvzero]];
+    shape.elasticity = 0.0; shape.friction = 0.4;
+    
+//    cpVect verts[3];
+//    verts[0]=CGPointMake(100,100);
+//    verts[1]=CGPointMake(120, 100);
+//    verts[2]=CGPointMake(120, 80);
+//    
+//    ChipmunkBody *bpoly=[cSpace add:[ChipmunkBody bodyWithMass:1 andMoment:cpMomentForPoly(1, 3, &verts[0], cpvzero)]];
+//    ChipmunkShape *spoly=[cSpace add:[ChipmunkPolyShape polyWithBody:bpoly count:3 verts:&verts[0] offset:cpvzero]];
+//    spoly.friction=0.7;
     
 }
 
@@ -147,6 +173,8 @@
 {
     [cGrab release];
     [cSpace release];
+    
+    [drawNode release];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

@@ -6,6 +6,8 @@
 
 #import "ObjectiveChipmunk.h"
 
+@class GooDrawBatchNode;
+
 @interface GooTool : ToolScene
 {
     // required toolhost stuff
@@ -17,6 +19,8 @@
     
     ChipmunkSpace *cSpace;
     ChipmunkMultiGrab *cGrab;
+    
+    GooDrawBatchNode *drawNode;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

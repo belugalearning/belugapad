@@ -61,12 +61,19 @@ typedef enum {
     int numberToStack;
     
     DWNBondRowGameObject *previousMount;
+    DWNBondRowGameObject *repositionThis;
+    DWNBondRowGameObject *repositionThat;
+    
+    BOOL sendPositionEval;
+    float timeLeftToPositionThisOne;
+    float timeLeftToPositionThatOne;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)populateGW;
 -(void)updateLabels;
 -(void)reorderMountedObjects;
+-(void)sendPositionEval:(ccTime)delta;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

@@ -108,6 +108,16 @@ static float kTimeToMountedShake=7.0f;
         if(isWinning)[toolHost shakeCommitButton];
     }
     
+    if(sendPositionEval)
+    {
+        if(timeLeftToPositionThisOne<0.0f && timeLeftToPositionThatOne<0.0f)
+        {
+            [repositionThis handleMessage:kDWresetPositionEval];
+            [repositionThat handleMessage:kDWresetPositionEval];
+            sendPositionEval=NO;
+        }
+    }
+    
     [self updateLabels];
 
 }
@@ -416,6 +426,11 @@ static float kTimeToMountedShake=7.0f;
 
 -(void)compareHintsAndMountedObjects
 {
+    [self compareHintsAndMountedObjects:YES];
+}
+
+-(void)compareHintsAndMountedObjects:(BOOL)shouldMoveRows
+{
     
     BOOL foundAMatch=NO;
     // for each row
@@ -447,22 +462,18 @@ static float kTimeToMountedShake=7.0f;
                     matchedNo=m;
                     matchedWithNo=h;
                     hasMatch=YES;
+                    foundAMatch=YES;
                     break;
                 }
             }
             
+
             if(hasMatch)
             {
                 NSLog(@"got match %d. count of hints %d", matchedNo, [hints count]);
                 
                 if(matchedNo<[hints count])
                 {
-                    NSLog(@"exchange going on");
-                    //if(matchedNo>0)
-                        //[r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedNo-1];
-                    //else
-                        //[r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedNo+1];
-                
                     [r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedWithNo];
                     
                     foundAMatch=YES;
@@ -472,12 +483,15 @@ static float kTimeToMountedShake=7.0f;
             
         }
         
-        if(!foundAMatch)
+        if(!foundAMatch&&shouldMoveRows)
         {
             for(int f=0;f<[createdRows count];f++)
             {
                 if([self checkIfTheseHints:hints GoToThisRow:f])
+                {
                     [self exchangeHintsOnThisRow:f withHintsOnThisRow:i];
+                }
+                [self compareHintsAndMountedObjects:NO];
             }
         }
         
@@ -526,10 +540,55 @@ static float kTimeToMountedShake=7.0f;
     thisOne.HintObjects=thatOne.HintObjects;
     thatOne.HintObjects=thisOneHints;
     
-    [thisOne handleMessage:kDWresetPositionEval];
-    [thatOne handleMessage:kDWresetPositionEval];
+
+    sendPositionEval=YES;
+    
+    for(DWNBondObjectGameObject *o in thisOne.HintObjects)
+    {
+        for(CCNode *s in o.BaseNode.children)
+        {
+            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
+            [s runAction:fadeOutAct];
+        }
+        
+        repositionThis=thisOne;
+        timeLeftToPositionThisOne=0.3f;
+        
+        for(CCNode *s in o.BaseNode.children)
+        {
+            CCDelayTime *delayTime=[CCDelayTime actionWithDuration:0.3f];
+            CCFadeIn *fadeInAct=[CCFadeIn actionWithDuration:0.3f];
+            
+            CCSequence *sequence=[CCSequence actions:fadeInAct, delayTime, nil];
+            
+            [s runAction:sequence];
+        }
+    }
+    
+    for(DWNBondObjectGameObject *o in thisOne.HintObjects)
+    {
+        for(CCNode *s in o.BaseNode.children)
+        {
+            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
+            [s runAction:fadeOutAct];
+        }
+        
+        repositionThat=thatOne;
+        timeLeftToPositionThatOne=0.3f;
+        
+        for(CCNode *s in o.BaseNode.children)
+        {
+            CCDelayTime *delayTime=[CCDelayTime actionWithDuration:0.3f];
+            CCFadeIn *fadeInAct=[CCFadeIn actionWithDuration:0.3f];
+            
+            CCSequence *sequence=[CCSequence actions:fadeInAct, delayTime, nil];
+            
+            [s runAction:sequence];
+        }    }
+
 
 }
+
 
 #pragma mark - touches events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

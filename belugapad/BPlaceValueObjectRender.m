@@ -205,8 +205,10 @@
     DWPlaceValueCageGameObject *c;
     DWPlaceValueNetGameObject *n;
     
-    float x;
-    float y;
+    float x=0.0f;
+    float y=0.0f;
+    
+
     
     if([b.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
     {
@@ -222,6 +224,7 @@
         n=(DWPlaceValueNetGameObject*)b.Mount;
         x=n.PosX;
         y=n.PosY;
+        
 //        gameObject=n.MountedObject;
         //[n handleMessage:kDWresetPositionEval];
     }
@@ -232,6 +235,8 @@
     b.PosY=y;
     
     CGPoint moveLoc=ccp(b.PosX, b.PosY);
+    
+    NSLog(@"MoveLoc is %@", NSStringFromCGPoint(moveLoc));
     
     CCSprite *curSprite = b.mySprite;
     
@@ -294,7 +299,7 @@
 
 -(void)fadeAndDestroy
 {
-    CCMoveTo *fadeAct=[CCFadeOut actionWithDuration:0.5f];
+    CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.5f];
     CCAction *cleanUpSprite=[CCCallBlock actionWithBlock:^{[b.mySprite removeFromParentAndCleanup:YES];}];
     CCAction *cleanUpGO=[CCCallBlock actionWithBlock:^{[gameWorld delayRemoveGameObject:b];}];
     CCSequence *sequence=[CCSequence actions:fadeAct, cleanUpSprite, cleanUpGO, nil];

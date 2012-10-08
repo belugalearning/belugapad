@@ -24,7 +24,7 @@
 
 -(void)draw {
 
-    for(GooSingle *gs in self.gooShapes)
+    for(id<GooDraw> gs in self.gooShapes)
     {
         [gs draw];
     }

@@ -9,11 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "ObjectiveChipmunk.h"
 #import "cocos2d.h"
+#import "GooProtocols.h"
 
 #define NORMAL_LAYER 1
 #define GRABABLE_LAYER 2
 
-@interface GooSingle : NSObject <ChipmunkObject>
+@interface GooSingle : NSObject <ChipmunkObject, GooDraw>
 {
     int _count;
 	cpFloat _edgeRadius;
@@ -31,7 +32,7 @@
 @property(nonatomic, assign) cpFloat control;
 @property(nonatomic, readonly) NSSet *chipmunkObjects;
 
--(id)initWithPos:(cpVect)pos radius:(cpFloat)radius count:(int)count;
+-(id)initWithPos:(cpVect)pos radius:(cpFloat)radius count:(int)count mass:(cpFloat)massIn;
 -(void)draw;
 
 @end

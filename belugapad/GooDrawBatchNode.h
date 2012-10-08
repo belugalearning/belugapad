@@ -9,6 +9,7 @@
 #import "CCNode.h"
 #import "cocos2d.h"
 #import "ObjectiveChipmunk.h"
+#import "GooProtocols.h"
 
 @interface GooDrawBatchNode : CCNode
 {

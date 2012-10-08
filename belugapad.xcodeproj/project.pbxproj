@@ -309,6 +309,7 @@
 		7F96BDEF1621886E00351CA0 /* GooTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BDEE1621886E00351CA0 /* GooTool.m */; };
 		7F96BE0C16222BD100351CA0 /* GooDrawBatchNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BE0B16222BD100351CA0 /* GooDrawBatchNode.m */; };
 		7F96BE2016237A5D00351CA0 /* GooSingle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BE1F16237A5D00351CA0 /* GooSingle.m */; };
+		7F96BE2416238C2D00351CA0 /* WaterSingle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BE2316238C2C00351CA0 /* WaterSingle.m */; };
 		7F97879515FFA2CA00225967 /* NumberLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F97879415FFA2CA00225967 /* NumberLayout.m */; };
 		7F9D414F15751E1600AFA1A0 /* NGNineGridSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9D414E15751E1600AFA1A0 /* NGNineGridSprite.m */; };
 		7FA0FCD615F74DB000C241A8 /* AdpInserter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0FCC515F74DB000C241A8 /* AdpInserter.m */; };
@@ -1072,6 +1073,9 @@
 		7F96BE0B16222BD100351CA0 /* GooDrawBatchNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooDrawBatchNode.m; sourceTree = "<group>"; };
 		7F96BE1E16237A5D00351CA0 /* GooSingle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooSingle.h; sourceTree = "<group>"; };
 		7F96BE1F16237A5D00351CA0 /* GooSingle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooSingle.m; sourceTree = "<group>"; };
+		7F96BE2216238C2C00351CA0 /* WaterSingle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterSingle.h; sourceTree = "<group>"; };
+		7F96BE2316238C2C00351CA0 /* WaterSingle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaterSingle.m; sourceTree = "<group>"; };
+		7F96BE2516238CDE00351CA0 /* GooProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooProtocols.h; sourceTree = "<group>"; };
 		7F97879315FFA2CA00225967 /* NumberLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberLayout.h; sourceTree = "<group>"; };
 		7F97879415FFA2CA00225967 /* NumberLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberLayout.m; sourceTree = "<group>"; };
 		7F9D414D15751E1600AFA1A0 /* NGNineGridSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGNineGridSprite.h; sourceTree = "<group>"; };
@@ -2514,8 +2518,11 @@
 			children = (
 				7F96BE0A16222BD100351CA0 /* GooDrawBatchNode.h */,
 				7F96BE0B16222BD100351CA0 /* GooDrawBatchNode.m */,
+				7F96BE2216238C2C00351CA0 /* WaterSingle.h */,
+				7F96BE2316238C2C00351CA0 /* WaterSingle.m */,
 				7F96BE1E16237A5D00351CA0 /* GooSingle.h */,
 				7F96BE1F16237A5D00351CA0 /* GooSingle.m */,
+				7F96BE2516238CDE00351CA0 /* GooProtocols.h */,
 			);
 			name = Goo;
 			sourceTree = "<group>";
@@ -3301,6 +3308,7 @@
 				7F96BDEF1621886E00351CA0 /* GooTool.m in Sources */,
 				7F96BE0C16222BD100351CA0 /* GooDrawBatchNode.m in Sources */,
 				7F96BE2016237A5D00351CA0 /* GooSingle.m in Sources */,
+				7F96BE2416238C2D00351CA0 /* WaterSingle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

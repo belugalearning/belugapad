@@ -15,7 +15,7 @@
 @implementation GooSingle
 @synthesize control = _control, chipmunkObjects = _chipmunkObjects;
 
--(id)initWithPos:(cpVect)pos radius:(cpFloat)radius count:(int)count;
+-(id)initWithPos:(cpVect)pos radius:(cpFloat)radius count:(int)count mass:(cpFloat)massIn;
 {
 	if((self = [super init])){
 		NSMutableSet *set = [NSMutableSet set];
@@ -37,21 +37,55 @@
 		centralShape.group = self;
 		centralShape.layers = GRABABLE_LAYER;
 		
-		cpFloat edgeMass = 1.0/count;
+		cpFloat edgeMass = massIn/count;
 		cpFloat edgeDistance = 2.0*radius*cpfsin(M_PI/(cpFloat)count);
 		_edgeRadius = edgeDistance/2.0;
-		
-		cpFloat squishCoef = 0.7;
-		//cpFloat squishCoef = 0.7;
-		cpFloat springStiffness = 3;
-   		//cpFloat springStiffness = 3;
-		cpFloat springDamping = 0.1f;
-   		//cpFloat springDamping = 1;
 		
 		NSMutableArray *bodies = [[NSMutableArray alloc] initWithCapacity:count];
 		_edgeBodies = bodies;
         
+        ChipmunkBody *crossBody1, *crossBody2;
+        cpVect crossSpringAnchor1, crossSpringAnchor2;
+        
+        int sideSize=(int)count/4.0f;
+        int sideStep=0;
+        BOOL sideOn=NO;
+        cpFloat sideSquish1=0.05;
+        cpFloat sideSquish2=0.05;
+        cpFloat sideSpringStiffness1=3;
+        cpFloat sideSpringStiffness2=3;
+        cpFloat sideSpringDamping1=1;
+        cpFloat sideSpringDamping2=1;
+        
+        cpFloat squishCoef = sideSquish1;
+        cpFloat springStiffness = sideSpringStiffness1;
+		cpFloat springDamping = sideSpringDamping1;
+        
+		//cpFloat squishCoef = 0.7;
+   		//cpFloat springStiffness = 3;
+   		//cpFloat springDamping = 1;
+        
 		for(int i=0; i<count; i++){
+            
+            sideStep++;
+            if(sideStep>sideSize)
+            {
+                sideStep=0;
+                if(sideOn)
+                {
+                    squishCoef=sideSquish1;
+                    springStiffness=sideSpringStiffness1;
+                    springDamping=sideSpringDamping1;
+                }
+                if(!sideOn)
+                {
+                    squishCoef=sideSquish2;
+                    springStiffness=sideSpringStiffness2;
+                    springDamping=sideSpringDamping2;
+                }
+                sideOn=!sideOn;
+            }
+            
 			cpVect dir = cpvforangle((cpFloat)i/(cpFloat)count*2.0*M_PI);
 			cpVect offset = cpvmult(dir, radius);
 			
@@ -70,8 +104,24 @@
 			
 			cpVect springOffset = cpvmult(dir, radius + _edgeRadius);
 			[set addObject:[ChipmunkDampedSpring dampedSpringWithBodyA:_centralBody bodyB:body anchr1:springOffset anchr2:cpvzero restLength:0 stiffness:springStiffness damping:springDamping]];
+            
+            //track cross bodies
+            if(i==0)
+            {
+                crossBody1=body;
+                crossSpringAnchor1=cpvmult(dir, radius+_edgeRadius);
+            }
+            if(i==(int)(count / 2.0f))
+            {
+                crossBody2=body;
+                crossSpringAnchor2=cpvmult(dir, radius+_edgeRadius);
+            }
 		}
+        
+//        //add cross-body spring
+//        [set addObject:[ChipmunkDampedSpring dampedSpringWithBodyA:crossBody1 bodyB:crossBody2 anchr1:crossSpringAnchor1 anchr2:crossSpringAnchor2 restLength:0 stiffness:springStiffness damping:springDamping]];
 		
+        
 		[set addObjectsFromArray:bodies];
 		
 		for(int i=0; i<count; i++){

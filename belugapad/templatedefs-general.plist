@@ -330,5 +330,21 @@
 		<key>OBJECT_DATA</key>
 		<dict/>
 	</dict>
+	<key>TnumberWheel</key>
+	<dict>
+		<key>BEHAVIOURS</key>
+		<dict>
+			<key>BNWheelObjectRender</key>
+			<dict/>
+			<key>BPieSplitterContainerMountable</key>
+			<dict/>
+			<key>BPieSplitterContainerTouch</key>
+			<dict/>
+		</dict>
+		<key>IMPLEMENT_TEMPLATES</key>
+		<array/>
+		<key>OBJECT_DATA</key>
+		<dict/>
+	</dict>
 </dict>
 </plist>

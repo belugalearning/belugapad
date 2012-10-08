@@ -18,7 +18,7 @@ typedef enum {
     kSolutionTopRow=0,   // solution comes from the value of the top row
     kSolutionRowMatch=1, // solution comes from the SOLUTIONS dictionary
     kSolutionFreeform=2,  // solution comes any way - so long as the rows match SOLUTION_VALUE
-    kSolutionUniqueCompositionsOfTopRow=3, // all rows match top row and are unique (including top row
+    kSolutionUniqueCompositionsOfTopRow=3, // all rows match top row and are unique (including top row)
     kSolutionUniqueCompositionsOfValue=4 // all rows match value and are unique
 } NumberBondSolutionMode;
 

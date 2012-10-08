@@ -22,6 +22,7 @@
 @synthesize myHeight;
 @synthesize shapeGroup;
 @synthesize RenderLayer;
+@synthesize MyNumberWheel;
 
 -(void)dealloc
 {

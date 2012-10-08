@@ -14,6 +14,7 @@
 #import "AppDelegate.h"
 
 #import "GooDrawBatchNode.h"
+#import "GooSingle.h"
 
 @interface GooTool()
 {
@@ -67,7 +68,7 @@
 {
     cSpace=[[ChipmunkSpace alloc] init];
     cSpace.gravity=cpv(0, -200);
-    [cSpace addBounds:CGRectMake(0, 0, 2*cx, 2*cy) thickness:5 elasticity:1 friction:1 layers:CP_ALL_LAYERS group:CP_NO_GROUP collisionType:nil];
+    [cSpace addBounds:CGRectMake(0, 0, 2*cx, (2*cy)-65) thickness:2000 elasticity:1 friction:1 layers:CP_ALL_LAYERS group:CP_NO_GROUP collisionType:nil];
 
     cGrab=[[ChipmunkMultiGrab alloc] initForSpace:cSpace withSmoothing:cpfpow(0.8, 60.0) withGrabForce:20000];
     
@@ -78,27 +79,35 @@
 
 -(void)addTestShapes
 {
-    ChipmunkBody *b=[cSpace add:[ChipmunkBody bodyWithMass:1 andMoment:cpMomentForCircle(1, 0, 50, cpvzero)]];
-    b.pos=cpv(cx, cy);
-    
-    ChipmunkShape *s=[cSpace add:[ChipmunkCircleShape circleWithBody:b radius:50 offset:cpvzero]];
-    s.friction=0.7;
+//    ChipmunkBody *b=[cSpace add:[ChipmunkBody bodyWithMass:1 andMoment:cpMomentForCircle(1, 0, 50, cpvzero)]];
+//    b.pos=cpv(cx+200, cy-100);
+//    
+//    ChipmunkShape *s=[cSpace add:[ChipmunkCircleShape circleWithBody:b radius:50 offset:cpvzero]];
+//    s.friction=0.7;
+//    
+//    cpFloat size = 30.0;
+//    
+//    cpVect pentagon[5];
+//    for(int i=0; i < 5; i++){
+//        cpFloat angle = -2*M_PI*i/5.0;
+//        pentagon[i] = cpv(size*cos(angle), size*sin(angle));
+//    }
+//    
+//    ChipmunkBody *body = [cSpace add:[ChipmunkBody bodyWithMass:1.0 andMoment:cpMomentForPoly(1.0, 5, pentagon, cpvzero)]];
+//    body.pos = cpv(100, 400);
+//    
+//    ChipmunkShape *shape = [cSpace add:[ChipmunkPolyShape polyWithBody:body count:5 verts:pentagon offset:cpvzero]];
+//    shape.elasticity = 0.0; shape.friction = 0.4;
 
+    NSMutableArray *goos=[[[NSMutableArray alloc] init] autorelease];
     
+    goo1=[[GooSingle alloc] initWithPos:ccp(cx,cy) radius:50.0f count:25];
+    [cSpace add:goo1];
     
-    cpFloat size = 7.0;
+    [goos addObject:goo1];
     
-    cpVect pentagon[5];
-    for(int i=0; i < 5; i++){
-        cpFloat angle = -2*M_PI*i/5.0;
-        pentagon[i] = cpv(size*cos(angle), size*sin(angle));
-    }
+    drawNode.gooShapes=[NSArray arrayWithArray:goos];
     
-    ChipmunkBody *body = [cSpace add:[ChipmunkBody bodyWithMass:1.0 andMoment:cpMomentForPoly(1.0, 5, pentagon, cpvzero)]];
-    body.pos = cpv(100, 400);
-    
-    ChipmunkShape *shape = [cSpace add:[ChipmunkPolyShape polyWithBody:body count:5 verts:pentagon offset:cpvzero]];
-    shape.elasticity = 0.0; shape.friction = 0.4;
     
 //    cpVect verts[3];
 //    verts[0]=CGPointMake(100,100);

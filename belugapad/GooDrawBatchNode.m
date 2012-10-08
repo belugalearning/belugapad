@@ -7,6 +7,7 @@
 //
 
 #import "GooDrawBatchNode.h"
+#import "GooSingle.h"
 
 @implementation GooDrawBatchNode
 
@@ -22,22 +23,31 @@
 }
 
 -(void)draw {
-    
-    for (ChipmunkShape *cs in cSpace.shapes) {
-        
-        if([cs isKindOfClass:[ChipmunkCircleShape class]])
-        {
-            ChipmunkCircleShape *csc=(ChipmunkCircleShape*)cs;
-            ccDrawCircle(csc.body.pos, csc.radius, csc.body.angle, 20, YES);
-            
-        }
-        
-        if([cs isKindOfClass:[ChipmunkPolyShape class]])
-        {
-            ccDrawCircle(cs.body.pos, 5, cs.body.angle, 20, YES);
-            
-        }
+
+    for(GooSingle *gs in self.gooShapes)
+    {
+        [gs draw];
     }
+    
+//    for (ChipmunkShape *cs in cSpace.shapes) {
+//        
+//        if([cs isKindOfClass:[ChipmunkCircleShape class]])
+//        {
+//            ChipmunkCircleShape *csc=(ChipmunkCircleShape*)cs;
+//            ccDrawCircle(csc.body.pos, csc.radius, csc.body.angle, 20, YES);
+//            
+//        }
+//        
+//        if([cs isKindOfClass:[ChipmunkPolyShape class]])
+//        {
+//            ChipmunkPolyShape *csp=(ChipmunkPolyShape*)cs;
+//            cpPolyShape *cpps=(cpPolyShape*)csp.shape;
+//            
+//            ccColor4F col=ccc4f(1.0f, 1.0f, 1.0f, 1.0f);
+//            
+//            ccDrawFilledPoly(cpps->tVerts, cpps->numVerts, col);
+//        }
+//    }
 
 }
 

@@ -16,6 +16,8 @@
     
 }
 
+@property (retain) NSArray *gooShapes;
+
 -(GooDrawBatchNode*)initWithSpace:(ChipmunkSpace*)thespace;
 
 @end

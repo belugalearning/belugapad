@@ -8,6 +8,9 @@
 
 #import "SGJmapNodeRender.h"
 #import "SGJmapNode.h"
+#import "SGJmapMasteryNode.h"
+
+#import "BLMath.h"
 
 @interface SGJmapNodeRender()
 {
@@ -18,7 +21,7 @@
 
 @implementation SGJmapNodeRender
 
--(SGJmapNodeRender*)initWithGameObject:(id<Transform, ProximityResponder>)aGameObject
+-(SGJmapNodeRender*)initWithGameObject:(SGJmapNode*)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
@@ -43,6 +46,15 @@
     if(messageType==kSGzoomIn)
     {
         [nodeSprite setOpacity:255];
+    }
+    if(messageType==kSGretainOffsetPosition)
+    {
+        positionAsOffset=[BLMath SubtractVector:ParentGO.Position from:ParentGO.MasteryNode.Position];
+    }
+    if(messageType==kSGresetPositionUsingOffset)
+    {
+        ParentGO.Position=[BLMath AddVector:ParentGO.MasteryNode.Position toVector:positionAsOffset];
+        [self updatePosition:ParentGO.Position];
     }
 }
 
@@ -81,6 +93,7 @@
     [nodeSprite setVisible:ParentGO.Visible];
     [ParentGO.RenderBatch addChild:nodeSprite z:2];
 }
+
 
 
 

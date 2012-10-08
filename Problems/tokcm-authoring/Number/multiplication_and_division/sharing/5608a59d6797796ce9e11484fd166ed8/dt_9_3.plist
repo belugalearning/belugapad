@@ -5,7 +5,7 @@
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>9/3</string>
+	<string>Claire, Sarah and Jo share 9 {@item} equally. Show that they get 3 each. </string>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>INIT_OBJECTS</key>
@@ -14,90 +14,36 @@
 			<key>QUANTITY</key>
 			<integer>9</integer>
 			<key>POS_X</key>
-			<integer>475</integer>
+			<integer>550</integer>
 			<key>POS_Y</key>
-			<integer>300</integer>
+			<integer>500</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
 	<array>
-		<integer>10</integer>
+		<integer>3</integer>
+		<string>3</string>
+		<string>3</string>
 	</array>
-	<key>META_QUESTION</key>
-	<dict>
-		<key>META_QUESTION_COMPLETE_TEXT</key>
-		<string>well done!!</string>
-		<key>META_QUESTION_EVAL_MODE</key>
-		<integer>0</integer>
-		<key>META_QUESTION_ANSWER_MODE</key>
-		<integer>0</integer>
-		<key>META_QUESTION_ANSWERS</key>
-		<array>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>Yes</string>
-				<key>META_ANSWER_VALUE</key>
-				<true/>
-			</dict>
-			<dict>
-				<key>META_ANSWER_TEXT</key>
-				<string>No</string>
-				<key>META_ANSWER_VALUE</key>
-				<false/>
-			</dict>
-		</array>
-		<key>META_QUESTION_TITLE</key>
-		<string>There are 9 {@item}. They are shared evenly between {@gname}, {@bname} and Jack. Do all 3 people get the same amount?</string>
-		<key>META_QUESTION_INCOMPLETE_TEXT</key>
-		<string>Try again</string>
-	</dict>
-	<key>HOST_BACKGROUND_IMAGE</key>
-	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
 	<key>DSTRINGS</key>
 	<dict>
-		<key>@bname</key>
-		<dict>
-			<key>MODE</key>
-			<string>RANDOM</string>
-			<key>DATA</key>
-			<array>
-				<string>Gareth</string>
-				<string>Nick</string>
-				<string>Ed</string>
-				<string>Dave</string>
-				<string>Richard</string>
-				<string>Mark</string>
-				<string>Scott</string>
-			</array>
-		</dict>
-		<key>@gname</key>
-		<dict>
-			<key>DATA</key>
-			<array>
-				<string>Claire</string>
-				<string>Winnie</string>
-				<string>Sarah</string>
-				<string>Simone</string>
-				<string>Elaine</string>
-			</array>
-			<key>MODE</key>
-			<string>RANDOM</string>
-		</dict>
 		<key>@item</key>
 		<dict>
 			<key>MODE</key>
 			<string>RANDOM</string>
 			<key>DATA</key>
 			<array>
+				<string>blue goo</string>
+				<string>red goo</string>
 				<string>cookies</string>
 				<string>pens</string>
 				<string>crayons</string>
-				<string>coins</string>
-				<string>batteries</string>
-				<string>packs of crisps</string>
-				<string>drinks</string>
+				<string>yellow goo</string>
+				<string>green goo</string>
 			</array>
 		</dict>
 	</dict>
+	<key>HOST_BACKGROUND_IMAGE</key>
+	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
 </dict>
 </plist>

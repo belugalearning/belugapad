@@ -37,6 +37,12 @@
     [MySprite setPosition:Position];
     [gameWorld.Blackboard.RenderLayer addChild:MySprite];
     
+    if(gameWorld.Blackboard.inProblemSetup)
+    {
+        [MySprite setOpacity:0];
+        [MySprite setTag:2];
+    }
+    
     if(Replacement)
     {
         [MySprite runAction:[CCMoveTo actionWithDuration:0.75f position:ccp(Position.x,300)]];

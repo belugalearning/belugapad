@@ -14,7 +14,7 @@
 @implementation SGBtxeRow
 
 @synthesize children, containerMgrComponent;   //Container properties
-@synthesize renderLayer;
+@synthesize renderLayer, forceVAlignTop;
 @synthesize size, position, worldPosition;       //Bounding properties
 
 @synthesize rowLayoutComponent;
@@ -27,6 +27,7 @@
         children=[[NSMutableArray alloc] init];
         size=CGSizeZero;
         position=CGPointZero;
+        forceVAlignTop=NO;
         containerMgrComponent=[[SGBtxeContainerMgr alloc] initWithGameObject:(SGGameObject*)self];
         rowLayoutComponent=[[SGBtxeRowLayout alloc] initWithGameObject:(SGGameObject*)self];
         parserComponent=[[SGBtxeParser alloc] initWithGameObject:(SGGameObject*)self];
@@ -66,6 +67,20 @@
     //layout position of stuff
     [self.rowLayoutComponent layoutChildren];
 
+}
+
+-(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime
+{
+    float incr=startTime;
+    
+    for(id c in children)
+    {
+        if([c conformsToProtocol:@protocol(FadeIn)])
+        {
+            [c fadeInElementsFrom:incr andIncrement:incrTime];
+            incr+=incrTime;
+        }
+    }
 }
 
 -(void)parseXML:(NSString *)xmlString

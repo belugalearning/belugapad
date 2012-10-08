@@ -79,6 +79,9 @@ extern const CGRect kPauseMenuReset;
 extern const CGRect kPauseMenuContinue;
 extern const CGRect kPauseMenuLogOut;
 
+extern const ccColor3B kNumberBondColour[10];
+extern const ccColor3B kNumiconColour[10];
+
 // fraction builder
 
 extern const float kNumbersAlongFractionSlider;

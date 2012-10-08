@@ -60,6 +60,7 @@
     NSNumber *initMinVal;
     NSNumber *initMaxVal;
     int initSegmentVal;
+    int initStartLoc;
     
     float timeSinceInteractionOrShake;
     
@@ -90,6 +91,13 @@
     
     // == markers
     NSMutableArray *markerValuePositions;
+    
+    //== frog mode
+    BOOL frogMode;
+    CCSprite *frogSprite;
+    int lastFrogLoc;
+    CCSprite *frogTargetSprite;
+    
 }
 
 -(void)populateGW;

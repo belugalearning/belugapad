@@ -90,7 +90,7 @@
             
             if(!s.myHeight)
             {
-                s.myHeight=[CCLabelTTF labelWithString:strHeight fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+                s.myHeight=[CCLabelTTF labelWithString:strHeight fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
                 [s.myHeight setPosition:ccp(xPosForHeightLabel,yPosForHeightLabel)];
                 [s.RenderLayer addChild:s.myHeight];
             }
@@ -101,7 +101,7 @@
             }
             if(!s.myWidth)
             {
-                s.myWidth=[CCLabelTTF labelWithString:strWidth fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+                s.myWidth=[CCLabelTTF labelWithString:strWidth fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
                 [s.myWidth setPosition:ccp(xPosForWidthLabel,yPosForWidthLabel)];
                 [s.RenderLayer addChild:s.myWidth];
             }

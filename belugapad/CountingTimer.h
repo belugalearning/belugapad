@@ -60,6 +60,7 @@ typedef enum {
     int lastNumber;
     BOOL expired;
     BOOL started;
+    BOOL debugLogging;
     
 }
 

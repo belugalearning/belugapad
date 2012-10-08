@@ -9,12 +9,14 @@
 #import "SGComponent.h"
 #import "SGBtxeProtocols.h"
 
-@interface SGBtxeTextRender : SGComponent
+@interface SGBtxeTextRender : SGComponent <FadeIn>
 {
     id<Bounding, Text> ParentGO;
 }
 
 @property (retain) CCLabelTTF *label;
+@property (retain) CCLabelTTF *label0;
+@property bool useAlternateFont;
 
 -(void)setupDraw;
 -(void)updatePosition:(CGPoint)position;

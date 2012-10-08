@@ -17,6 +17,7 @@
 }
 
 @property (retain) DWGameObject *DropObject;
+@property (retain) DWGameObject *PriorityDropObject;
 @property float DropObjectDistance;
 @property (retain) DWGameObject *PickupObject;
 @property (retain) DWGameObject *ProximateObject;

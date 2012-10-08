@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>MASTERY</key>
+	<true/>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>What is 15 minus 6?</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>np_15-6</string>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>What is 15 minus 6?</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>1</integer>
+		<key>PICKER_ORIGIN_X</key>
+		<integer>50</integer>
+		<key>PICKER_ORIGIN_Y</key>
+		<integer>160</integer>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<string>9</string>
+	</dict>
+</dict>
+</plist>

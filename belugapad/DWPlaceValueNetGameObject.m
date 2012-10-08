@@ -17,9 +17,11 @@
 @synthesize myRope;
 @synthesize ColumnValue;
 @synthesize MountedObject;
+@synthesize CancellingObject;
 @synthesize mySprite;
 @synthesize Hidden;
 @synthesize renderType;
+@synthesize AllowMultipleMount;
 
 -(void)dealloc
 {

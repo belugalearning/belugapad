@@ -11,6 +11,7 @@
 @interface DWPlaceValueBlockGameObject : DWGameObject
 {
     DWGameObject *Mount1;
+    DWGameObject *LastMount1;
 }
 
 @property (retain) DWGameObject *Mount;

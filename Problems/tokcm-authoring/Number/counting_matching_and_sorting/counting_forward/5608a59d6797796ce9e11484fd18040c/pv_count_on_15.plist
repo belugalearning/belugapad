@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>This is 5. Add 15 blocks and count the total number of blocks. </string>
+	<string>This is 5. Add 15 more blocks. </string>
 	<key>INTERNAL_DESCRIPTION</key>
-	<string>count on 15 from 5</string>
+	<string>This is 5. Add 15 more blocks. </string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>
@@ -17,15 +17,15 @@
 	<key>DEFAULT_COL</key>
 	<integer>1</integer>
 	<key>ROPES_PER_COL</key>
-	<integer>9</integer>
+	<integer>10</integer>
 	<key>ROWS_PER_COL</key>
-	<integer>3</integer>
+	<integer>2</integer>
 	<key>ALLOW_CONDENSING</key>
 	<false/>
 	<key>ALLOW_MULCHING</key>
 	<false/>
 	<key>EVAL_MODE</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>REJECT_MODE</key>
 	<integer>1</integer>
 	<key>SHOW_CAGE</key>
@@ -50,12 +50,14 @@
 			<integer>0</integer>
 			<key>NUMBER</key>
 			<integer>5</integer>
+			<key>NUMBER_PRE_COUNTED</key>
+			<integer>5</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
 	<dict>
 		<key>SOLUTION_TYPE</key>
-		<string>TOTAL_COUNT_AND_COUNT_SEQUENCE</string>
+		<string>TOTAL_COUNT</string>
 		<key>SOLUTION_VALUE</key>
 		<integer>20</integer>
 	</dict>

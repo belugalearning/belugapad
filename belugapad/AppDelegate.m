@@ -117,7 +117,7 @@
 	director_.wantsFullScreenLayout = YES;
     
 	// Display FSP and SPF
-	[director_ setDisplayStats:!self.ReleaseMode];
+    [director_ setDisplayStats:!self.ReleaseMode];
     
 	// set FPS at 60
 	[director_ setAnimationInterval:1.0/60];
@@ -155,7 +155,6 @@
 
 -(void)proceedFromLoginViaIntro:(BOOL)viaIntro
 {
-    
 	// Create a Navigation Controller with the Director
 	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
 	navController_.navigationBarHidden = YES;
@@ -167,30 +166,52 @@
 	// make main window visible
 	[window_ makeKeyAndVisible]; 
     
+    CCScene *currentScene;
+    
     if(contentService.isUsingTestPipeline)
     {
-        [director_ pushScene:[ToolHost scene]];
+        currentScene=[ToolHost scene];
     }
     else
     {
-        [director_ pushScene:[JMap scene]];
-    }    
+        currentScene=[JMap scene];
+    }
+    [director_ pushScene:currentScene];
 }
 
 -(void)returnToLogin
 {
-    [navController_.view removeFromSuperview];
+    [self.window.rootViewController removeFromParentViewController];
+    
+    [[director_ runningScene] removeFromParentAndCleanup:YES];
+
     if (selectUserViewController)
     {
         [selectUserViewController release];
         selectUserViewController = nil;
     }
-    
+
     [self.contentService updateContentDatabaseWithSettings:self.LocalSettings];
     
-    selectUserViewController = [[SelectUserViewController alloc] init];    
-    [window_ addSubview:selectUserViewController.view];
-    [window_ makeKeyAndVisible];
+    selectUserViewController = [[SelectUserViewController alloc] init];
+    
+    //[self.window addSubview:selectUserViewController.view];
+    [self.window setRootViewController:selectUserViewController];
+    [self.window makeKeyAndVisible];
+
+    
+//    [navController_.view removeFromSuperview];
+//    if (selectUserViewController)
+//    {
+//        [selectUserViewController release];
+//        selectUserViewController = nil;
+//    }
+//    
+//    [self.contentService updateContentDatabaseWithSettings:self.LocalSettings];
+//    
+//    selectUserViewController = [[SelectUserViewController alloc] init];    
+//    [window_ addSubview:selectUserViewController.view];
+//    [window_ makeKeyAndVisible];
 }
 
 

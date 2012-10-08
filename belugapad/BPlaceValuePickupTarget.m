@@ -27,13 +27,17 @@
 {
     if(messageType==kDWareYouAPickupTarget)
     {
+        float dropProx=kPropXDropProximity;
         
         // if add from cage disabled - return at this point
     
         if([b.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
         {
             DWPlaceValueCageGameObject *mountCge=(DWPlaceValueCageGameObject*)b.Mount;
-            if(mountCge.DisableAdd) return;
+            if(mountCge.DisableAdd && mountCge.ObjectValue>0) return;
+            if(mountCge.DisableAddNeg && mountCge.ObjectValue<0) return;
+            
+            dropProx*=2;
         }
         else if([b.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
         {
@@ -49,7 +53,7 @@
         CGPoint hitLoc=gameWorld.Blackboard.TestTouchLocation;
         
 
-        if([BLMath DistanceBetween:myLoc and:hitLoc] <= (kPropXDropProximity*[gameWorld Blackboard].hostLX))
+        if([BLMath DistanceBetween:myLoc and:hitLoc] <= (dropProx*[gameWorld Blackboard].hostLX))
         {
             //tell gameScene we are a target for that pickup
             [gameWorld Blackboard].PickupObject=gameObject;

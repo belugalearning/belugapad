@@ -16,6 +16,8 @@
 #import "LoggingService.h"
 #import "AppDelegate.h"
 
+#import "NumberLayout.h"
+
 #import "SGGameWorld.h"
 #import "SGFBlockObjectProtocols.h"
 #import "SGFBlockBlock.h"
@@ -26,6 +28,11 @@
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
+
+//CCPickerView
+#define kComponentWidth 54
+#define kComponentHeight 32
+#define kComponentSpacing 0
 
 @interface FloatingBlock()
 {
@@ -40,12 +47,14 @@
     
     id pickupObject;
     id opBubble;
-    
+
 }
 
 @end
 
 @implementation FloatingBlock
+
+@synthesize pickerView;
 
 #pragma mark - scene setup
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef
@@ -100,18 +109,6 @@
 {
     [gw doUpdate:delta];
     
-    [newPipeLabel setString:[NSString stringWithFormat:@"%d", blocksFromPipe]];
-    
-    if(autoMoveToNextProblem)
-    {
-        timeToAutoMoveToNextProblem+=delta;
-        if(timeToAutoMoveToNextProblem>=kTimeToAutoMove)
-        {
-            self.ProblemComplete=YES;
-            autoMoveToNextProblem=NO;
-            timeToAutoMoveToNextProblem=0.0f;
-        }
-    }
 }
 
 -(void)draw
@@ -133,6 +130,11 @@
     
     showSolutionOnPipe=[[pdef objectForKey:SHOW_SOLUTION_ON_PIPE]boolValue];
     showMultipleControls=[[pdef objectForKey:SHOW_MULTIPLE_CONTROLS]boolValue];
+    
+    if([pdef objectForKey:SHOW_INPUT_PIPE])
+        showNewPipe=[[pdef objectForKey:SHOW_INPUT_PIPE]boolValue];
+    else
+        showNewPipe=YES;
     
     if([pdef objectForKey:SUPPORTED_OPERATORS])
         supportedOperators=[pdef objectForKey:SUPPORTED_OPERATORS];
@@ -173,6 +175,7 @@
         
         id<Rendered> newbubble;
         newbubble=[[SGFBlockBubble alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos,300) andReplacement:NO];
+        
         [newbubble setup];
     }
     
@@ -185,33 +188,42 @@
     
     
     // and our commit pipe
-    commitPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/pipe.png")];
-    [commitPipe setPosition:ccp(lx-150,70)];
+    commitPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/FB_Pipe_In.png")];
+    [commitPipe setPosition:ccp(cx,55)];
+    [commitPipe setOpacity:0];
+    [commitPipe setTag:1];
     [renderLayer addChild:commitPipe];
 
     if(showSolutionOnPipe)
     {
-        CCLabelTTF *targetSol=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", expSolution] fontName:@"Chango" fontSize:50.0f];
-        [targetSol setPosition:ccp(lx-150,100)];
+        CCLabelTTF *targetSol=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", expSolution] fontName:@"Chango" fontSize:30.0f];
+        [targetSol setColor:ccc3(51,51,51)]; 
+        [targetSol setPosition:ccp(cx,20)];
+        [targetSol setOpacity:0];
+        [targetSol setTag:3];
         [renderLayer addChild:targetSol];
     }
-    newPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/pipe.png")];
-    [newPipe setRotation:45.0f];
-    [newPipe setPosition:ccp(25,550)];
-    [renderLayer addChild:newPipe];
     
-    if(showMultipleControls)
-    {
-        newPipeLabel=[CCLabelTTF labelWithString:@"" fontName:@"Chango" fontSize:50.0f];
-        [newPipeLabel setPosition:ccp(100, 550)];
-        [renderLayer addChild:newPipeLabel];
+    if(showNewPipe) {
+        newPipe=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/FB_Pipe_Out.png")];
+        [newPipe setPosition:ccp(57,560)];
+        [newPipe setOpacity:0];
+        [newPipe setTag:1];
+        [renderLayer addChild:newPipe];
         
+        if(showMultipleControls)
+        {
+            [self setupNumberWheel];
+            [pickerView spinComponent:0 speed:25 easeRate:5 repeat:3 stopRow:defaultBlocksFromPipe];
+//            newPipeLabel=[CCLabelTTF labelWithString:@"" fontName:@"Chango" fontSize:50.0f];
+//            [newPipeLabel setPosition:ccp(100, 550)];
+//            [newPipeLabel setOpacity:0];
+//            [newPipeLabel setTag:3];
+//            [renderLayer addChild:newPipeLabel];
+            
+        }
     }
-    
-    if(supportedOperators)
-    {
-        
-    }
+
     
 }
 
@@ -223,13 +235,18 @@
     id<Group> thisGroup=[[SGFBlockGroup alloc]initWithGameWorld:gw];
     thisGroup.MaxObjects=maxBlocksInGroup;
     
-    float xPos=(arc4random()%800)+100;
-    float yPos=(arc4random()%600)+100;
+    float xStartPos=(arc4random()%800)+100;
+    float yStartPos=(arc4random()%600)+100;
+    
+    NSArray *blockPos=[NumberLayout physicalLayoutUpToNumber:numberInShape withSpacing:52.0f];
     
     for(int i=0;i<numberInShape;i++)
     {
+        CGPoint thisPos=[[blockPos objectAtIndex:i]CGPointValue];
+        thisPos=ccp(thisPos.x+xStartPos, thisPos.y+yStartPos);
+        
         id<Rendered,Moveable> newblock;
-        newblock=[[SGFBlockBlock alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:ccp(xPos+(i*52),yPos)];
+        newblock=[[SGFBlockBlock alloc]initWithGameWorld:gw andRenderLayer:gw.Blackboard.RenderLayer andPosition:thisPos];
         newblock.MyGroup=(id)thisGroup;
         
         [newblock setup];
@@ -282,14 +299,7 @@
 
                     
                 }
-                
-                // then animate
-                for(id<Rendered> block in targetGroup.MyBlocks)
-                {
-                    [block.MySprite runAction:[CCMoveBy actionWithDuration:0.5f position:ccp(0,250)]];
-                    block.Position=ccp(block.MySprite.position.x, block.MySprite.position.y+250);
-                    
-                }
+                [self rearrangeBlocksInGroup:targetGroup];
                 [targetGroup tintBlocksTo:ccc3(255,255,255)];
             }
             
@@ -311,7 +321,6 @@
             
             if([go containedGroups]!=1)
             {
-                NSLog(@"not valid");
                 isValid=NO;
             }
         }
@@ -342,7 +351,18 @@
         // then if we only have 1 operator - merge the bubbles 
         if([supportedOperators count]==1)
         {
-            [self mergeGroupsFromBubbles];
+            NSString *s=[supportedOperators objectAtIndex:0];
+            
+            if([s isEqualToString:@"+"])
+                [self mergeGroupsFromBubbles];
+            else if([s isEqualToString:@"x"])
+                [self multiplyGroupsInBubbles];
+            else if([s isEqualToString:@"-"])
+                [self subtractGroupsInBubbles];
+            else if([s isEqualToString:@"%"])
+                [self divideGroupsInBubbles];
+            else if([s isEqualToString:@"/"])
+                [self divideGroupsInBubbles];
         }
         // if we have no current childoperators and there's more than 1 supported operator, then show them
         else if([supportedOperators count]>1 && [[opBubble ChildOperators]count]==0)
@@ -366,6 +386,8 @@
                             [self multiplyGroupsInBubbles];
                     else if([s isEqualToString:@"-"])
                         [self subtractGroupsInBubbles];
+                    else if([s isEqualToString:@"%"])
+                        [self divideGroupsInBubbles];
                     else if([s isEqualToString:@"/"])
                         [self divideGroupsInBubbles];
                 }
@@ -463,15 +485,9 @@
             
         }
         
-                    
-        for(id<Rendered> block in targetGroup.MyBlocks)
-        {
-            CGPoint newPos=ccp(block.Position.x,block.Position.y+200);
-            
-            [block.MySprite runAction:[CCMoveTo actionWithDuration:0.5f position:newPos]];
-            block.Position=newPos;
-            
-        }
+
+        [self rearrangeBlocksInGroup:targetGroup];
+        
         [targetGroup tintBlocksTo:ccc3(255,255,255)];
 
         
@@ -516,6 +532,7 @@
         [targetGroup addObject:newblock];
     }
     
+    [self rearrangeBlocksInGroup:targetGroup];
 
 }
 
@@ -547,6 +564,8 @@
             [targetGroup removeObject:obj];
             [obj fadeAndDestroy];
         }
+        
+        [self rearrangeBlocksInGroup:targetGroup];
 
     }
     
@@ -576,6 +595,149 @@
         }
         
     }
+    
+    [self rearrangeBlocksInGroup:targetGroup];
+}
+
+-(void)rearrangeBlocksInGroup:(id<Group>)targetGroup
+{
+    NSArray *blockPos=[NumberLayout physicalLayoutUpToNumber:[targetGroup.MyBlocks count] withSpacing:52.0f];
+    int xOffsetPos=([targetGroup.MyBlocks count]/10)*52.0f;
+    int yOffsetPos=([targetGroup.MyBlocks count]/2)*52.0f;
+    float xStartPos=cx+xOffsetPos;
+    float yStartPos=cy+yOffsetPos;
+    
+    // then animate
+    for(id<Rendered> block in targetGroup.MyBlocks)
+    {
+        CGPoint thisPos=[[blockPos objectAtIndex:[targetGroup.MyBlocks indexOfObject:block]]CGPointValue];
+        thisPos=ccp(thisPos.x+xStartPos, thisPos.y+yStartPos);
+        
+        [block.MySprite runAction:[CCMoveTo actionWithDuration:0.5f position:thisPos]];
+        block.Position=thisPos;
+        
+    }
+}
+
+
+#pragma mark - CCPickerView for number wheel
+
+-(void)setupNumberWheel
+{
+    if(!pickerViewSelection)pickerViewSelection=[[[NSMutableArray alloc]init]retain];
+    
+    if(self.pickerView) return;
+    
+    self.pickerView = [CCPickerView node];
+    pickerView.position = ccp(21, 560);
+    pickerView.dataSource = self;
+    pickerView.delegate = self;
+
+    [pickerViewSelection addObject:[NSNumber numberWithInt:0]];
+    
+    
+    [renderLayer addChild:self.pickerView z:20];
+}
+
+#pragma mark CCPickerView delegate methods
+
+- (NSInteger)numberOfComponentsInPickerView:(CCPickerView *)pickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(CCPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    
+    NSInteger numRows = 0;
+    
+    switch (component) {
+        case 0:
+            numRows = maxBlocksFromPipe+1;
+            break;
+        case 1:
+            numRows = 2;
+            break;
+        case 2:
+            numRows=10;
+            break;
+        default:
+            break;
+    }
+    
+    return numRows;
+}
+
+- (CGFloat)pickerView:(CCPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
+    return kComponentHeight;
+}
+
+- (CGFloat)pickerView:(CCPickerView *)pickerView widthForComponent:(NSInteger)component {
+    return kComponentWidth;
+}
+
+- (NSString *)pickerView:(CCPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    return @"Not used";
+}
+
+- (CCNode *)pickerView:(CCPickerView *)pickerView nodeForRow:(NSInteger)row forComponent:(NSInteger)component reusingNode:(CCNode *)node {
+    
+    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", row]fontName:@"Chango" fontSize:24];
+    return l;
+    
+    //    temp.color = ccYELLOW;
+    //    temp.textureRect = CGRectMake(0, 0, kComponentWidth, kComponentHeight);
+    //
+    //    NSString *rowString = [NSString stringWithFormat:@"%d", row];
+    //    CCLabelBMFont *label = [CCLabelBMFont labelWithString:rowString fntFile:@"bitmapFont.fnt"];
+    //    label.position = ccp(kComponentWidth/2, kComponentHeight/2-5);
+    //    [temp addChild:label];
+    //    return temp;
+    
+}
+
+- (void)pickerView:(CCPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    
+    [pickerViewSelection replaceObjectAtIndex:component withObject:[NSNumber numberWithInteger:row]];
+    
+    NSLog(@"didSelect row = %d, component = %d, totSum = %d", row, component, [self returnPickerNumber]);
+
+    blocksFromPipe=[self returnPickerNumber];
+}
+
+- (CGFloat)spaceBetweenComponents:(CCPickerView *)pickerView {
+    return kComponentSpacing;
+}
+
+- (CGSize)sizeOfPickerView:(CCPickerView *)pickerView {
+    CGSize size = CGSizeMake(42, 100);
+    
+    return size;
+}
+
+- (CCNode *)overlayImage:(CCPickerView *)pickerView {
+    CCSprite *sprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/FB_OutPut_Pipe__Picker_Overlay.png")];
+    return sprite;
+}
+
+- (void)onDoneSpinning:(CCPickerView *)pickerView component:(NSInteger)component {
+
+    NSLog(@"Component %d stopped spinning.", component);
+}
+
+-(int)returnPickerNumber
+{
+    int retNum=0;
+    int power=0;
+    
+    for(int i=[pickerViewSelection count]-1;i>=0;i--)
+    {
+        NSNumber *n=[pickerViewSelection objectAtIndex:i];
+        int thisNum=[n intValue];
+        thisNum=thisNum*(pow((double)10,power));
+        retNum+=thisNum;
+        power++;
+    }
+    
+    return retNum;
 }
 
 #pragma mark - touches events
@@ -590,12 +752,6 @@
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
     touchStartPos=location;
-    
-    if(CGRectContainsPoint(newPipeLabel.boundingBox, location))
-    {
-        touchingNewPipeLabel=YES;
-        return;
-    }
     
     if(CGRectContainsPoint(newPipe.boundingBox, location))
     {
@@ -649,27 +805,6 @@
             [grp checkIfInBubbleAt:location];
         }
     }
-    
-    if(touchingNewPipeLabel)
-    {
-        CGPoint touchStart=ccp(0, touchStartPos.y);
-        CGPoint thisTouch=ccp(0, location.y);
-        
-        int differenceMoved=[BLMath DistanceBetween:touchStart and:thisTouch];
-        
-        NSLog(@"differenced Moved %d / with div %d", differenceMoved, (int)differenceMoved/20);
-        
-//        if(touchStartPos.y>location.y)
-//            differenceMoved=-differenceMoved;
-            
-        blocksFromPipe=(differenceMoved/20);
-        
-        if(blocksFromPipe>maxBlocksFromPipe)
-            blocksFromPipe=maxBlocksFromPipe;
-        else if (blocksFromPipe<minBlocksFromPipe)
-            blocksFromPipe=minBlocksFromPipe;
-        
-    }
    
     lastTouch=location;
  
@@ -695,7 +830,7 @@
             
             [pickupGroup resetZIndexOfMyObjects];
             
-            if(CGRectContainsPoint(commitPipe.boundingBox, location))
+            if(CGRectContainsPoint(commitPipe.boundingBox, location) && evalMode==kProblemEvalAuto)
                 [self evalProblem];
         }
     }
@@ -704,7 +839,6 @@
 
     pickupObject=nil;
     isTouching=NO;
-    touchingNewPipeLabel=NO;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -712,7 +846,6 @@
 
     pickupObject=nil;
     isTouching=NO;
-    touchingNewPipeLabel=NO;
     // empty selected objects
 }
 
@@ -739,8 +872,7 @@
     
     if(isWinning)
     {
-        autoMoveToNextProblem=YES;
-        [toolHost showProblemCompleteMessage];
+        [toolHost doWinning];
     }
     else {
         if(evalMode==kProblemEvalOnCommit)[self resetProblem];
@@ -769,10 +901,12 @@
 #pragma mark - dealloc
 -(void) dealloc
 {
-    //write log on problem switch
     
     [renderLayer release];
-
+    
+    pickerViewSelection=nil;
+    supportedOperators=nil;
+    initObjects=nil;
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

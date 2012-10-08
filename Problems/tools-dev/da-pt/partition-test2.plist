@@ -60,15 +60,23 @@
 			<key>LENGTH</key>
 			<integer>1</integer>
 			<key>LABEL</key>
-			<string>2</string>
+			<string>1</string>
 			<key>QUANTITY</key>
-			<integer>30</integer>
+			<integer>10</integer>
 		</dict>
 		<dict>
 			<key>LENGTH</key>
 			<integer>2</integer>
 			<key>LABEL</key>
-			<string>1</string>
+			<string>2</string>
+			<key>QUANTITY</key>
+			<string>10</string>
+		</dict>
+		<dict>
+			<key>LENGTH</key>
+			<integer>3</integer>
+			<key>LABEL</key>
+			<string>3</string>
 			<key>QUANTITY</key>
 			<string>10</string>
 		</dict>
@@ -78,15 +86,55 @@
 			<key>LABEL</key>
 			<string>4</string>
 			<key>QUANTITY</key>
-			<string>1</string>
+			<string>10</string>
+		</dict>
+		<dict>
+			<key>LENGTH</key>
+			<integer>5</integer>
+			<key>LABEL</key>
+			<string>5</string>
+			<key>QUANTITY</key>
+			<string>10</string>
+		</dict>
+		<dict>
+			<key>LENGTH</key>
+			<integer>6</integer>
+			<key>LABEL</key>
+			<string>6</string>
+			<key>QUANTITY</key>
+			<string>10</string>
+		</dict>
+		<dict>
+			<key>LENGTH</key>
+			<integer>7</integer>
+			<key>LABEL</key>
+			<string>7</string>
+			<key>QUANTITY</key>
+			<string>10</string>
+		</dict>
+		<dict>
+			<key>LENGTH</key>
+			<integer>8</integer>
+			<key>LABEL</key>
+			<string>8</string>
+			<key>QUANTITY</key>
+			<string>10</string>
+		</dict>
+		<dict>
+			<key>LENGTH</key>
+			<integer>9</integer>
+			<key>LABEL</key>
+			<string>9</string>
+			<key>QUANTITY</key>
+			<string>10</string>
 		</dict>
 		<dict>
 			<key>LENGTH</key>
 			<integer>10</integer>
 			<key>LABEL</key>
-			<string>4</string>
+			<string>10</string>
 			<key>QUANTITY</key>
-			<string>1</string>
+			<string>10</string>
 		</dict>
 	</array>
 	<key>SOLUTIONS</key>

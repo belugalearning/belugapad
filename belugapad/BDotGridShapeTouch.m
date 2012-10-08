@@ -87,7 +87,7 @@
             if(!tile.Selected){
                 for(DWDotGridTileGameObject *t in shape.tiles)
                 {
-                    [t.selectedSprite setVisible:YES];
+                    [t.mySprite setColor:ccc3(89,133,136)];
                     t.Selected=YES;
                     [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
                 }
@@ -97,7 +97,7 @@
             else{
                 for(DWDotGridTileGameObject *t in shape.tiles)
                 {
-                    [t.selectedSprite setVisible:NO];
+                    [t.mySprite setColor:ccc3(255,255,255)];
                     t.Selected=NO;
                     [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
                 }
@@ -111,7 +111,6 @@
 
 -(void)checkTouchSwitchSelection:(CGPoint)location
 {
-    location=[shape.RenderLayer convertToNodeSpace:location];
     // THE TINTING BEHAVIOUR HERE CAN ALSO BE APPLIED BY THE TILE OBJECT RENDER
     // check through this shape's tiles
     for(DWDotGridTileGameObject *tile in shape.tiles)
@@ -122,14 +121,14 @@
             
             // then if that tile is not selected, make it red
             if(!tile.Selected){
-                [tile.selectedSprite setVisible:YES];
+                [tile.mySprite setColor:ccc3(89,133,136)];
                 tile.Selected=YES;
                 [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
             }
             
             // otherwise, make it white again
             else{
-                [tile.selectedSprite setVisible:NO];
+                [tile.mySprite setColor:ccc3(255, 255, 255)];
                 tile.Selected=NO;
                 [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_DESELECT_TILE withAdditionalData:nil];
             }

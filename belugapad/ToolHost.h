@@ -8,6 +8,7 @@
 
 #import "cocos2d.h"
 #import "ToolConsts.h"
+#import "CCPickerView.h"
 
 typedef enum {
     kMetaQuestionAnswerSingle=0,
@@ -35,8 +36,10 @@ typedef enum {
 @class DProblemParser;
 @class NordicAnimator;
 @class LRAnimator;
+@class SGGameWorld;
+@class DebugViewController;
 
-@interface ToolHost : CCLayer
+@interface ToolHost : CCLayer <CCPickerViewDataSource, CCPickerViewDelegate>
 {
     float cx, cy, lx, ly;
     
@@ -45,6 +48,7 @@ typedef enum {
     CCLayer *metaQuestionLayer;
     CCLayer *numberPickerLayer;
     CCLayer *problemDefLayer;
+    CCLayer *btxeDescLayer;
     CCLayer *pauseLayer;
 
     CCLayer *toolBackLayer;
@@ -71,6 +75,7 @@ typedef enum {
     BOOL showMetaQuestionIncomplete;
     float shownMetaQuestionIncompleteFor;
     BOOL metaQuestionForceComplete;
+    BOOL metaQuestionRandomizeAnswers;
     
     BOOL numberPickerForThisProblem;
     BOOL animatePickedButtons;
@@ -102,11 +107,13 @@ typedef enum {
     NSMutableDictionary *pdef;
     
     BOOL skipNextStagedIntroAnim;
+    BOOL skipNextDescDraw;
     
     CCSprite *hostBackground;
     CCSprite *pauseMenu;
     CCSprite *problemComplete;
     CCSprite *problemIncomplete;
+    CCSprite *pbtn;
     
     BOOL autoMoveToNextProblem;
     float moveToNextProblemTime;
@@ -153,13 +160,23 @@ typedef enum {
     //web debug view
     UIWebView *debugWebView;
     BOOL debugShowingPipelineState;
+    DebugViewController *debugViewController;
     
+    //btxe for description
+    SGGameWorld *descGw;
+    CCSprite *questionSeparatorSprite;
+    
+    //ui
+    CCSprite *multiplierBadge;
+    CCLayerColor *blackOverlay;
+    CCLayer *contextProgressLayer;
 }
 
 @property (retain) Daemon *Zubi;
 @property (retain) BAExpressionTree *PpExpr;
 @property BOOL flagResetProblem;
 @property (retain) DProblemParser *DynProblemParser;
+@property (nonatomic, retain) CCPickerView *pickerView;
 
 +(CCScene *) scene;
 
@@ -183,6 +200,7 @@ typedef enum {
 -(void)recurseSetIntroFor:(CCNode*)node withTime:(float)time forTag:(int)tag;
 -(void)stageIntroActions;
 -(void)setupProblemOnToolHost:(NSDictionary *)pdef;
+-(NSMutableArray*)randomizeAnswers:(NSMutableArray*)thisArray;
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ;
 -(void)checkMetaQuestionTouchesAt:(CGPoint)location andTouchEnd:(BOOL)touchEnd;
 -(void)setupNumberPicker:(NSDictionary *)pdefNP;

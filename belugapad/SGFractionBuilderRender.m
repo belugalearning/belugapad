@@ -51,7 +51,7 @@
     
     //blockSprite=[CCSprite spriteWithSpriteFrameName:@"node-complete.png"];
     fractionSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/fractions/fraction.png")];
-    currentFraction=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    currentFraction=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
     
     ParentGO.FractionSprite=fractionSprite;
     [fractionSprite setPosition:ccp(0,0)];

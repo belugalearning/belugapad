@@ -107,17 +107,7 @@ static float kDistanceBetweenBlocks=70.0f;
     [gw doUpdate:delta];
     
     [self tidyUpEmptyGroups];
-    
-    if(autoMoveToNextProblem)
-    {
-        timeToAutoMoveToNextProblem+=delta;
-        if(timeToAutoMoveToNextProblem>=kTimeToAutoMove)
-        {
-            self.ProblemComplete=YES;
-            autoMoveToNextProblem=NO;
-            timeToAutoMoveToNextProblem=0.0f;
-        }
-    }  
+     
     timeSinceInteraction+=delta;
     
     if(timeSinceInteraction>kTimeSinceAction)
@@ -548,12 +538,7 @@ static float kDistanceBetweenBlocks=70.0f;
             [loggingService logEvent:BL_PA_DT_TOUCH_MOVE_MOVE_BLOCK withAdditionalData:nil];
             hasLoggedMovedBlock=YES;
         }
-        // check the pickup start position against a cage position. if they matched, then spawn a new block
-        if(problemHasCage && CGPointEqualToPoint(pickupPos,cage.Position))
-        {
-            [cage spawnNewBlock];
-            pickupPos=CGPointZero;
-        }
+
         // check that the shape is being moved within bounds of the screen
         if((location.x>=60.0f&&location.x<=lx-60.0f) && (location.y>=60.0f&&location.y<=ly-60.0f))
         {
@@ -586,6 +571,13 @@ static float kDistanceBetweenBlocks=70.0f;
     
     // check there's a pickupobject
     NSArray *allGWCopy=[NSArray arrayWithArray:gw.AllGameObjects];
+    
+    // check the pickup start position against a cage position. if they matched, then spawn a new block
+    if(problemHasCage && CGPointEqualToPoint(pickupPos,cage.Position))
+    {
+        [cage spawnNewBlock];
+        pickupPos=CGPointZero;
+    }
     
     if(currentPickupObject)
     {
@@ -883,8 +875,7 @@ return NO;
     
     if(isWinning)
     {
-        autoMoveToNextProblem=YES;
-        [toolHost showProblemCompleteMessage];
+        [toolHost doWinning];
     }
     else {
         if(evalMode==kProblemEvalOnCommit)[self resetProblem];

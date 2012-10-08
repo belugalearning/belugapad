@@ -89,17 +89,6 @@ const float kScaleOfLesserBlocks=0.6f;
 -(void)doUpdateOnTick:(ccTime)delta
 {
 	[gw doUpdate:delta];
-    
-    if(autoMoveToNextProblem)
-    {
-        timeToAutoMoveToNextProblem+=delta;
-        if(timeToAutoMoveToNextProblem>=kTimeToAutoMove)
-        {
-            self.ProblemComplete=YES;
-            autoMoveToNextProblem=NO;
-            timeToAutoMoveToNextProblem=0.0f;
-        }
-    }  
 
     // work out the current total
     currentTotal=0;
@@ -177,7 +166,8 @@ const float kScaleOfLesserBlocks=0.6f;
         }
         [self updateBlock];
     }       
-    if(evalMode==kProblemEvalAuto)[self evalProblem];
+    if(evalMode==kProblemEvalAuto && !hasEvaluated)
+        [self evalProblem];
 
 }
 
@@ -197,8 +187,6 @@ const float kScaleOfLesserBlocks=0.6f;
     renderBlockLabels=[[pdef objectForKey:RENDERBLOCK_LABELS] boolValue];
     hideRenderLayer=[[pdef objectForKey:HIDE_RENDERLAYER] boolValue];
     startRow=[[pdef objectForKey:START_ROW]floatValue];
-    
-
     
     
 }
@@ -220,12 +208,12 @@ const float kScaleOfLesserBlocks=0.6f;
     [renderLayer addChild:selector];
     
     // add the big multiplier behind the numbers
-    CCLabelTTF *multiplier=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"x%g",divisor] fontName:PROBLEM_DESC_FONT fontSize:200.0f];
+    CCLabelTTF *multiplier=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"x%g",divisor] fontName:SOURCE fontSize:200.0f];
     [multiplier setPosition:ccp(820,202)];
     [multiplier setOpacity:25];
     [renderLayer addChild:multiplier];
     
-    lblCurrentTotal=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+    lblCurrentTotal=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
     [lblCurrentTotal setPosition:ccp(cx,50)];
     [renderLayer addChild:lblCurrentTotal];
     
@@ -240,8 +228,8 @@ const float kScaleOfLesserBlocks=0.6f;
         endMarker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
         [startMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x-(line.contentSize.width/2)+5, line.position.y)]];
         [endMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x+(line.contentSize.width/2)-5, line.position.y)]];
-        CCLabelTTF *start=[CCLabelTTF labelWithString:@"0" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-        CCLabelTTF *end=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", dividend] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        CCLabelTTF *start=[CCLabelTTF labelWithString:@"0" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
+        CCLabelTTF *end=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", dividend] fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
         [start setPosition:ccp(10,60)];
         [end setPosition:ccp(10,60)];
         [startMarker addChild:start];
@@ -282,7 +270,7 @@ const float kScaleOfLesserBlocks=0.6f;
         {
               
             NSString *currentNumber=[NSString stringWithFormat:@"%g", i*rowMultiplierT];
-            CCLabelTTF *number=[CCLabelTTF labelWithString:currentNumber fontName:PROBLEM_DESC_FONT fontSize:60.0f];
+            CCLabelTTF *number=[CCLabelTTF labelWithString:currentNumber fontName:CHANGO fontSize:60.0f];
             [number setPosition:ccp((lx/2)+(i*kSpaceBetweenNumbers), 220-(r*kSpaceBetweenRows))];
             [thisLayer addChild:number];
             [thisRow addObject:number];
@@ -328,7 +316,7 @@ const float kScaleOfLesserBlocks=0.6f;
     {
         marker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/marker.png")];
         [marker setPosition:[topSection convertToWorldSpace:ccp(line.position.x-(line.contentSize.width/2), line.position.y+30)]];
-        markerText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        markerText=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
         [markerText setPosition:ccp(10,65)];    
         [marker addChild:markerText];
         [self.NoScaleLayer addChild:marker];
@@ -695,8 +683,8 @@ const float kScaleOfLesserBlocks=0.6f;
     
     if(isWinning)
     {
-        autoMoveToNextProblem=YES;
-        [toolHost showProblemCompleteMessage];
+        hasEvaluated=YES;
+        [toolHost doWinning];
     }
     else {
         if(evalMode==kProblemEvalOnCommit)

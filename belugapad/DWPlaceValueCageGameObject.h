@@ -16,6 +16,8 @@
 @property float ObjectValue;
 @property BOOL DisableAdd;
 @property BOOL DisableDel;
+@property BOOL DisableAddNeg;
+@property BOOL DisableDelNeg;
 @property (retain) NSString *SpriteFilename;
 @property (retain) NSString *PickupSpriteFilename;
 @property (retain) DWGameObject *MountedObject;

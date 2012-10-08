@@ -10,6 +10,8 @@
 
 @class DWRamblerGameObject;
 
+#define STEPS 60
+
 @interface BNLineRamblerRender : DWBehaviour
 {
     DWRamblerGameObject *ramblerGameObject;
@@ -17,6 +19,7 @@
     NSMutableArray *assBlankSegments;
     NSMutableArray *assLineSegments;
     NSMutableArray *assIndicators;
+    NSMutableArray *assNumberBackgrounds;
     
     CCSprite *assStartTerminator;
     CCSprite *assEndTerminator;
@@ -27,10 +30,13 @@
     NSMutableArray *markerSprites;
     
     NSMutableArray *jumpSprites;
+    
+    CGPoint circleOffsetsFwd[STEPS];
+    CGPoint circleOffsetsBwd[STEPS];
 }
 
 -(BNLineRamblerRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
-
+-(void) drawFromMid:(CGPoint)mid andYOffset:(float)yOffset;
 
 @end
 

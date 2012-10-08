@@ -71,6 +71,8 @@
     BOOL hasMovedBlock;
     BOOL hasMovedLayer;
     BOOL disableAudioCounting;
+    BOOL autoBaseSelection;
+    
     
 
     NSString *posCageSprite;
@@ -84,6 +86,8 @@
     
     NSMutableArray *columnInfo;
     NSMutableArray *blocksToCreate;
+    NSMutableArray *currentBlockValues;
+    NSMutableArray *blockLabels;
     
     NSArray *problemFiles;
     int currentProblemIndex;
@@ -91,7 +95,6 @@
     NSDictionary *solutionsDef;
     NSDictionary *columnSprites;
     NSDictionary *columnCages;
-    NSDictionary *columnNegCages;
     NSDictionary *columnRows;
     NSDictionary *columnRopes;
     NSDictionary *columnCagePosDisableAdd;
@@ -101,12 +104,15 @@
     NSDictionary *multipleBlockPickup;
     NSDictionary *multipleBlockPickupDefaults;
     
+    
     DWGameWorld *gw;
 
     CGPoint touchStartPos;
     CGPoint touchEndPos;
     
     NSArray *initObjects;
+    
+    BOOL isNegativeProblem;
     
     ProblemRejectMode rejectMode;
     ProbjemRejectType rejectType;
@@ -126,6 +132,9 @@
     float totalCount;
     float lastTotalCount;
     
+    int cageDefaultValue;
+    BOOL explodeMode;
+    
     CCSprite *condensePanel;
     CCSprite *mulchPanel;
     
@@ -137,6 +146,8 @@
     BOOL inBlockTransition;
     BOOL inCondenseArea;
     BOOL inMulchArea;
+    
+    BOOL changedBlockCountOrValue;
     
     NSString *solutionType;
     
@@ -174,6 +185,9 @@
 -(BOOL)evalProblemTotalCount;
 -(BOOL)evalProblemMatrixMatch;
 -(void)checkForMultipleControlTouchesAt:(CGPoint)thisLocation;
+-(void)checkForBlockValueTouchesAt:(CGPoint)thisLocation;
+-(void)checkAndChangeCageSpritesForMultiple;
+-(void)checkAndChangeCageSpritesForNegative;
 -(void)switchSpritesBack;
 -(void)createCondenseAndMulchBoxes;
 -(void)snapLayerToPosition;

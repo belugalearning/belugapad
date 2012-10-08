@@ -10,8 +10,6 @@
 	<integer>0</integer>
 	<key>SOLUTION</key>
 	<integer>6</integer>
-	<key>INIT_BUBBLES</key>
-	<integer>1</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
@@ -27,6 +25,8 @@
 	<false/>
 	<key>SHOW_MULTIPLE_CONTROLS</key>
 	<true/>
+	<key>DEFAULT_BLOCKS_FROM_PIPE</key>
+	<integer>4</integer>
 	<key>SUPPORTED_OPERATORS</key>
 	<array>
 		<string>+</string>

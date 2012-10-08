@@ -21,6 +21,9 @@
 #import "BATQuery.h"
 #import "InteractionFeedback.h"
 
+#define kEarliestHit 0.75
+#define kLatestHit 0.50
+
 @interface CountingTimer()
 {
 @private
@@ -77,6 +80,8 @@
         [self readPlist:pdef];
         [self populateGW];
         
+        debugLogging=NO;
+        
         
         gw.Blackboard.inProblemSetup = NO;
         
@@ -97,6 +102,9 @@
     // update our tool variables
     if((int)timeElapsed!=trackNumber && started)
     {
+        if(buttonFlash)
+            [buttonOfWin runAction:[InteractionFeedback dropAndBounceAction]];
+        
         trackNumber=(int)timeElapsed;
         
         lastNumber+=numIncrement;
@@ -116,33 +124,23 @@
     if(showCount)[currentNumber setString:[NSString stringWithFormat:@"%d",lastNumber]];
     
     // problem expiring clauses
-    if(numIncrement<0 && lastNumber<=countMin && !expired)
+    if(numIncrement<0 && lastNumber<countMin && !expired)
     {
         NSLog(@"reach the end of the problem (hit count min on count-back number");
         [self expireProblemForRestart];
     }
     
-    else if(numIncrement>=0 && lastNumber>=countMax && !expired)
+    else if(numIncrement>=0 && lastNumber>countMax && !expired)
     {
         NSLog(@"reach the end of the problem (hit count max on count-on number");
         [self expireProblemForRestart];
     }
         
-    if([buttonOfWin numberOfRunningActions]==0 && !CGPointEqualToPoint([buttonOfWin position], ccp(cx,cy)))
-    {
-        [buttonOfWin setPosition:ccp(cx,cy)];
-    }
+//    if([buttonOfWin numberOfRunningActions]==0 && !CGPointEqualToPoint([buttonOfWin position], ccp(cx,cy)))
+//    {
+//        [buttonOfWin setPosition:ccp(cx,cy)];
+//    }
     
-    if(autoMoveToNextProblem)
-    {
-        timeToAutoMoveToNextProblem+=delta;
-        if(timeToAutoMoveToNextProblem>=kTimeToAutoMove)
-        {
-            self.ProblemComplete=YES;
-            autoMoveToNextProblem=NO;
-            timeToAutoMoveToNextProblem=0.0f;
-        }
-    }
 }
 
 -(void)draw
@@ -170,22 +168,36 @@
     buttonFlash=[[pdef objectForKey:FLASHING_BUTTON]boolValue];
     
     if(numIncrement>=0)
+    {
         lastNumber=countMin;
+        
+        if(countMax<=countMin)
+            countMax=countMin+4;
+    }
     else
+    {
         lastNumber=countMax;
+        
+        if(countMin>=countMax)
+            countMin=countMax-4;
+    }
 }
 
 -(void)populateGW
 {
     gw.Blackboard.RenderLayer = renderLayer;
     buttonOfWin=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/countingtimer/counter_start.png")];
-    [buttonOfWin setPosition:ccp(cx,cy)];
+    [buttonOfWin setPosition:ccp(cx,cy-80)];
+    [buttonOfWin setOpacity:0];
+    [buttonOfWin setTag:2];
     [renderLayer addChild:buttonOfWin];
     
     if(showCount)
     {
-        currentNumber=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-        [currentNumber setPosition:ccp(50,50)];
+        currentNumber=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:50.0f];
+        [currentNumber setPosition:ccp(cx,cy+100)];
+        [currentNumber setOpacity:0];
+        [currentNumber setTag:3];
         [renderLayer addChild:currentNumber];
     }
 }
@@ -267,10 +279,44 @@
 #pragma mark - evaluation
 -(BOOL)evalExpression
 {
-    if(lastNumber==solutionNumber)
-        return YES;
+    float earliestHit=0.0f;
+    float latestHit=0.0f;
+    
+    NSLog(@"time elapsed %f", timeElapsed);
+    
+    if(numIncrement>=0)
+    {
+        // count up
+        earliestHit=solutionNumber-kEarliestHit;
+        latestHit=solutionNumber+kLatestHit;
+        
+        if(debugLogging)
+            NSLog(@"(EVAL-UP) earliestHit: %f / latestHit: %f / timeElapsed %f", earliestHit, latestHit, timeElapsed);
+        
+        if((timeElapsed>=earliestHit) && (timeElapsed<=latestHit))
+            return YES;
+        else
+            return NO;
+            
+    }
     else
-        return NO;
+    {
+        // count down
+        float adjTimeElapsed=fabsf(timeElapsed-countMax);
+        earliestHit=solutionNumber+kEarliestHit;
+        latestHit=solutionNumber-kLatestHit;
+        
+        if(debugLogging)
+            NSLog(@"(EVAL-DOWN) earliestHit: %f / latestHit: %f / timeElapsed %f", earliestHit, latestHit, adjTimeElapsed);
+        
+        if(adjTimeElapsed>=latestHit && adjTimeElapsed<=earliestHit)
+            return YES;
+        else
+            return NO;
+    }
+    
+    return NO;
+    
 }
 
 -(void)evalProblem
@@ -280,14 +326,16 @@
     if(isWinning)
     {
         expired=YES;
-        autoMoveToNextProblem=YES;
-        [toolHost showProblemCompleteMessage];
+        [toolHost doWinning];
     }
     else {
 //        if(evalMode==kProblemEvalOnCommit)[self resetProblem];
         
-        if([buttonOfWin numberOfRunningActions]==0)
-            [buttonOfWin runAction:[InteractionFeedback shakeAction]];
+        [toolHost doIncomplete];
+        [toolHost resetProblem];
+        
+        //if([buttonOfWin numberOfRunningActions]==0)
+ //           [buttonOfWin runAction:[InteractionFeedback shakeAction]];
         
     }
     

@@ -132,6 +132,14 @@
     {
         [self switchBaseSelection:NO];        
     }
+    if(messageType==kDWdestroy)
+    {
+        [self destroy];
+    }
+    if(messageType==kDWfadeAndDestroy)
+    {
+        [self fadeAndDestroy];
+    }
     if(messageType==kDWdismantle)
     {
         CCSprite *s=b.mySprite;
@@ -197,8 +205,10 @@
     DWPlaceValueCageGameObject *c;
     DWPlaceValueNetGameObject *n;
     
-    float x;
-    float y;
+    float x=0.0f;
+    float y=0.0f;
+    
+
     
     if([b.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
     {
@@ -214,6 +224,7 @@
         n=(DWPlaceValueNetGameObject*)b.Mount;
         x=n.PosX;
         y=n.PosY;
+        
 //        gameObject=n.MountedObject;
         //[n handleMessage:kDWresetPositionEval];
     }
@@ -224,6 +235,8 @@
     b.PosY=y;
     
     CGPoint moveLoc=ccp(b.PosX, b.PosY);
+    
+    NSLog(@"MoveLoc is %@", NSStringFromCGPoint(moveLoc));
     
     CCSprite *curSprite = b.mySprite;
     
@@ -272,6 +285,26 @@
         [curSprite runAction:sequence];
 
     }
+}
+
+-(void)destroy
+{
+    CCSprite *curSprite = b.mySprite;
+    CCMoveTo *fadeOut=[CCFadeOut actionWithDuration:0.01f];
+    CCAction *cleanUpSprite=[CCCallBlock actionWithBlock:^{[curSprite removeFromParentAndCleanup:YES];}];
+    CCAction *cleanUpGO=[CCCallBlock actionWithBlock:^{[gameWorld delayRemoveGameObject:b];}];
+    CCSequence *sequence=[CCSequence actions:fadeOut, cleanUpSprite, cleanUpGO, nil];
+    [curSprite runAction:sequence];
+}
+
+-(void)fadeAndDestroy
+{
+    CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.5f];
+    CCAction *cleanUpSprite=[CCCallBlock actionWithBlock:^{[b.mySprite removeFromParentAndCleanup:YES];}];
+    CCAction *cleanUpGO=[CCCallBlock actionWithBlock:^{[gameWorld delayRemoveGameObject:b];}];
+    CCSequence *sequence=[CCSequence actions:fadeAct, cleanUpSprite, cleanUpGO, nil];
+    [b.mySprite runAction:sequence];
+
 }
 
 -(void) switchSelection:(BOOL)isSelected

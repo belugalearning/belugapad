@@ -22,7 +22,7 @@
     {
         if(aLabel){
             self.BaseNode=[[CCNode alloc]init];
-            self.Label=[CCLabelTTF labelWithString:aLabel fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+            self.Label=[CCLabelTTF labelWithString:aLabel fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
             [self.Label setColor:ccc3(255,0,0)];
             [self.BaseNode addChild:self.Label];
             [aRenderLayer addChild:self.BaseNode z:500];

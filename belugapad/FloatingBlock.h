@@ -9,6 +9,7 @@
 #import "cocos2d.h"
 #import "ToolConsts.h"
 #import "ToolScene.h"
+#import "CCPickerView.h"
 
 typedef enum {
     kSolutionMatch=0,
@@ -16,7 +17,7 @@ typedef enum {
     kSolutionAddition=2
 } SolutionType;
 
-@interface FloatingBlock : ToolScene
+@interface FloatingBlock : ToolScene <CCPickerViewDataSource, CCPickerViewDelegate>
 {
     // required toolhost stuff
     ToolHost *toolHost;
@@ -42,15 +43,16 @@ typedef enum {
     
     // showing stuff?
     BOOL showingOperatorBubble;
-        
+    
     // and a default layer
     CCLayer *renderLayer;
     
     CCSprite *commitPipe;
     CCSprite *newPipe;
     CCLabelTTF *commitLabel;
-    CCLabelTTF *newPipeLabel;
-    BOOL touchingNewPipeLabel;
+    BOOL showNewPipe;
+    
+    NSMutableArray *pickerViewSelection;
     
     // init stuff
     int initBubbles;
@@ -69,6 +71,8 @@ typedef enum {
     
     int expSolution;
 }
+
+@property (nonatomic, retain) CCPickerView *pickerView;
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;
 -(void)doUpdateOnTick:(ccTime)delta;

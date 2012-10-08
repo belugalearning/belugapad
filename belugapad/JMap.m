@@ -248,16 +248,28 @@ typedef enum {
     
     [self parseNodesForEndPoints];
     
+    //get nodes to calculate their offset from parent / mastery
+    [gw handleMessage:kSGretainOffsetPosition];
+    
+    //force layout mastery
+    for(int i=0; i<50; i++)
+    {
+        [gw handleMessage:kSGforceLayout];
+    }
+    
+    //re-set node positions
+    [gw handleMessage:kSGresetPositionUsingOffset];
+    
     [self createRegions];
     
     //setup rendering -- needs all node connections built
     [gw handleMessage:kSGreadyRender];
     
     
-    backarrow=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/backarrow.png")];
-    [backarrow setPosition:ccp(64, ly-64)];
-    [backarrow setOpacity:70];
-    [self addChild:backarrow];
+//    backarrow=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/backarrow.png")];
+//    [backarrow setPosition:ccp(64, ly-64)];
+//    [backarrow setOpacity:70];
+//    [self addChild:backarrow];
     
 
     // position map so that bottom-most included node in view, bottom-left
@@ -342,8 +354,8 @@ typedef enum {
 //    [topbar setPosition:ccp(0, (2*cy)-70)];
 //    [foreLayer addChild:topbar];
     
-    CCSprite *topsprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/top-bar.png")];
-    [topsprite setPosition:ccp(cx, 2*cy-38)];
+    CCSprite *topsprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/HR_HeaderBar_JMAP.png")];
+    [topsprite setPosition:ccp(cx, 2*cy-(65.0f/2))];
     [foreLayer addChild:topsprite];
 }
 
@@ -861,14 +873,6 @@ typedef enum {
     CGPoint l=[touch locationInView:[touch view]];
     l=[[CCDirector sharedDirector] convertToGL:l];
     
-//    if(CGRectContainsPoint(logOutBtnBounds, l))
-//    {
-//        [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
-//        [usersService setCurrentUserToUserWithId:nil];
-//        [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
-//        return;
-//    }
-    
     touchCount+=touches.count;
     
     if(debugEnabled && CGRectContainsPoint(debugButtonBounds, l))
@@ -878,14 +882,14 @@ typedef enum {
         debugMenu.visible=doat;
     }
     
-    if(!zoomedOut && l.x<128 && l.y > (ly-128))
+    if(l.x<110 && l.y > (ly-55)) // log out button
     {
-        [self zoomToRegionView];
+        [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
+        [usersService setCurrentUserToUserWithId:nil];
+        [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
+        return;
     }
-    else if(l.x<128 && l.y > (ly-128))
-    {
-        [self zoomToCityView];
-    }
+
     else {
 
         lastTouch=l;

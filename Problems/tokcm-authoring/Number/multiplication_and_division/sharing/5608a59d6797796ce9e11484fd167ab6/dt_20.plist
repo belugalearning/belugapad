@@ -2,53 +2,51 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>MASTERY</key>
-	<true/>
-	<key>DISTRIBUTION_EVAL_TYPE</key>
-	<integer>1</integer>
 	<key>TOOL_KEY</key>
 	<string>DistributionTool</string>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>There are 20 {@item}. Split the number of items fairly between Kimberley and Elaine.</string>
+	<string>Share 20 blocks equally between Mark and Laura.</string>
+	<key>DISTRIBUTION_EVAL_TYPE</key>
+	<integer>1</integer>
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>3</integer>
+			<integer>1</integer>
 			<key>POS_X</key>
-			<integer>250</integer>
+			<integer>300</integer>
 			<key>POS_Y</key>
 			<integer>350</integer>
 			<key>LABEL</key>
-			<string>Elaine</string>
+			<string>Harriet</string>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>3</integer>
+			<integer>1</integer>
 			<key>POS_X</key>
-			<integer>700</integer>
+			<integer>800</integer>
 			<key>POS_Y</key>
 			<integer>350</integer>
 			<key>LABEL</key>
-			<string>Kimberley</string>
+			<string>Dan</string>
 		</dict>
 		<dict>
 			<key>QUANTITY</key>
-			<integer>14</integer>
+			<integer>18</integer>
 			<key>POS_X</key>
-			<integer>475</integer>
+			<integer>550</integer>
 			<key>POS_Y</key>
-			<integer>220</integer>
+			<integer>600</integer>
 		</dict>
 	</array>
 	<key>SOLUTION</key>
 	<array>
 		<dict>
-			<key>Kimberley</key>
+			<key>Mark</key>
 			<integer>10</integer>
-			<key>Elaine</key>
+			<key>Laura</key>
 			<integer>10</integer>
 		</dict>
 	</array>
@@ -61,7 +59,6 @@
 			<key>DATA</key>
 			<array>
 				<string>cookies</string>
-				<string>scoops of ice cream</string>
 				<string>pens</string>
 				<string>crayons</string>
 				<string>coins</string>

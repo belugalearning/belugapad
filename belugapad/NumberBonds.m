@@ -144,6 +144,12 @@ static float kTimeToMountedShake=7.0f;
     }
 
     
+    //min/max eval modes
+    evalMinPerRow=0; evalMaxPerRow=0;
+    if([pdef objectForKey:@"EVAL_MIN_PER_ROW"]) evalMinPerRow=[[pdef objectForKey:@"EVAL_MIN_PER_ROW"] intValue];
+    if([pdef objectForKey:@"EVAL_MAX_PER_ROW"]) evalMaxPerRow=[[pdef objectForKey:@"EVAL_MAX_PER_ROW"] intValue];
+    
+    
     evalMode = [[pdef objectForKey:EVAL_MODE] intValue];
     
     rejectMode = [[pdef objectForKey:REJECT_MODE] intValue];
@@ -692,8 +698,35 @@ static float kTimeToMountedShake=7.0f;
 }
 
 #pragma mark - evaluation and reject
+
+-(BOOL)evalMinMaxPerRow
+{
+    if(evalMinPerRow>0)
+    {
+        for (DWNBondRowGameObject *prgo in createdRows) {
+            if (!prgo.Locked && prgo.MountedObjects.count <evalMinPerRow) return NO;
+        }
+    }
+    
+    if(evalMaxPerRow>0)
+    {
+        for(DWNBondRowGameObject *prgo in createdRows) {
+            if (!prgo.Locked && prgo.MountedObjects.count>evalMaxPerRow) return NO;
+        }
+    }
+
+    //otherwise min/max tests pass okay
+    return YES;
+}
+
 -(BOOL)evalExpression
 {
+    if([self evalMinMaxPerRow]==NO)
+    {
+        //no need to proceed with rest of eval as min/max requirements were not passed
+        return NO;
+    }
+    
     if(solutionMode==kSolutionTopRow)
     {
         //returns YES if the tool expression evaluates succesfully

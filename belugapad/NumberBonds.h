@@ -52,6 +52,9 @@ typedef enum {
     ProblemEvalMode evalMode;
     NumberBondSolutionMode solutionMode;
     
+    int evalMinPerRow;
+    int evalMaxPerRow;
+    
     float timeSinceInteractionOrShake;
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;

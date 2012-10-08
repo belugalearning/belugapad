@@ -19,7 +19,7 @@
 	<array>
 		<dict>
 			<key>LOCKED</key>
-			<false/>
+			<true/>
 			<key>LENGTH</key>
 			<integer>4</integer>
 		</dict>

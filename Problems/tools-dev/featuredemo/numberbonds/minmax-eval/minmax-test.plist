@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>make 4 3 ways</string>
+	<string>make 4 3 ways (min 2, max 3 per row)</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
 	<key>INIT_OBJECTS</key>
@@ -72,7 +72,7 @@
 		</dict>
 	</array>
 	<key>EVAL_MODE</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>EVAL_MAX_PER_ROW</key>
 	<integer>3</integer>
 	<key>EVAL_MIN_PER_ROW</key>
@@ -80,6 +80,6 @@
 	<key>REJECT_TYPE</key>
 	<integer>1</integer>
 	<key>SOLUTION_MODE</key>
-	<integer>1</integer>
+	<integer>0</integer>
 </dict>
 </plist>

@@ -15,6 +15,7 @@
 
 #import "GooDrawBatchNode.h"
 #import "GooSingle.h"
+#import "WaterSingle.h"
 
 @interface GooTool()
 {
@@ -101,13 +102,39 @@
 
     NSMutableArray *goos=[[[NSMutableArray alloc] init] autorelease];
     
-    goo1=[[GooSingle alloc] initWithPos:ccp(cx,cy) radius:50.0f count:25];
-    [cSpace add:goo1];
+    [goos addObject:[[GooSingle alloc] initWithPos:ccp(cx+150, 650) radius:50.0f count:26 mass:1]];
+    [goos addObject:[[GooSingle alloc] initWithPos:ccp(cx-160, 650) radius:50.0f count:26 mass:1]];
+    [goos addObject:[[GooSingle alloc] initWithPos:ccp(cx, 650) radius:50.0f count:26 mass:1]];
+
+    for(GooSingle *gs in goos)
+    {
+        [cSpace add:gs];
+    }
     
-    [goos addObject:goo1];
+
     
+    //water goo
+    float xc=0, yc=0;
+    
+    for(int i=0; i<170; i++)
+    {
+        xc+=50;
+        if(xc>1000)
+        {
+            xc=0;
+            yc+=50;
+        }
+        
+        WaterSingle *wg=[[WaterSingle alloc] initWithPos:ccp(xc, yc) radius:25.0f count:5 mass:1];
+        [cSpace add:wg];
+        
+        [goos addObject:wg];
+        
+    }
+    
+
     drawNode.gooShapes=[NSArray arrayWithArray:goos];
-    
+
     
 //    cpVect verts[3];
 //    verts[0]=CGPointMake(100,100);
@@ -122,7 +149,18 @@
 
 -(void)doUpdateOnTick:(ccTime)delta
 {
-    [cSpace step:delta];
+    
+    if(updateP)
+    {
+        [cSpace step:deltaP+delta];
+        updateP=NO;
+        deltaP=0;
+    }
+    else
+    {
+        updateP=YES;
+        deltaP+=delta;
+    }
 }
 
 #pragma mark - gameworld setup and population

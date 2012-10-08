@@ -23,7 +23,8 @@
     
     GooDrawBatchNode *drawNode;
     
-    GooSingle *goo1;
+    float deltaP;
+    BOOL updateP;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

@@ -1477,7 +1477,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             h++;
         }
         h=0;
-        for(int i=9;i<11;i++)
+        for(int i=9;i<12;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
             [curSprite setPosition:ccp(45+(h*75), 40)];
@@ -1489,7 +1489,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     else if(numberPickerType==kNumberPickerSingleLine)
     {
-        for(int i=0;i<11;i++)
+        for(int i=0;i<12;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
             [curSprite setPosition:ccp(45+(i*75), 40)];
@@ -1509,7 +1509,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         }
         
         int h=0;
-        for (int i=6;i<11;i++)
+        for (int i=6;i<12;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
             [curSprite setPosition:ccp(45+(h*75), 40)];
@@ -1528,7 +1528,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             [numberPickerButtons addObject:curSprite];
         }
         int h=0;
-        for (int i=6;i<11;i++)
+        for (int i=6;i<12;i++)
         {
             CCSprite *curSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/numberpicker/%d.png"), i]];
             [curSprite setPosition:ccp(120, 415-(h*75))];
@@ -1584,19 +1584,21 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     // if we haven't met our max number on the number picker then carry on adding more
     if([numberPickedSelection count] <npMaxNoInDropbox) {
+        BOOL isValid=YES;
+        
         for(int i=0;i<[numberPickerButtons count];i++)
         {
-            if(i==10)
+            if(i==10||i==11)
             {
                 for(NSNumber *n in numberPickedValue)
                 {
-                    if([n intValue]==10)continue;
+                    if([n intValue]==10 && i==10)isValid=NO;
+                    if([n intValue]==11 && i==11)isValid=NO;
                 }
             }
             // check each of the buttons to see if it was them that were hit
             CCSprite *s=[numberPickerButtons objectAtIndex:i];
-
-            if(CGRectContainsPoint(s.boundingBox, location))
+            if(CGRectContainsPoint(s.boundingBox, location) && isValid)
             {
                 hasUsedNumber=YES;
                 //a valid click?
@@ -1612,19 +1614,44 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
                 // check if we're animating our buttons or fading them in
                 if(animatePickedButtons) {
                     // and set the position/actions
-                    [curSprite setPosition:[nPicker convertToWorldSpace:s.position]];                
+                    [curSprite setPosition:[nPicker convertToWorldSpace:s.position]];
+                    
+                    if(i==11)
+                    {
+                    [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge),cy+50)]];                        
+                    }
+                    else {
                     [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+([numberPickedSelection count]*75),cy+50)]];
+                    }
                 }
                 else {
-                    [curSprite setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+([numberPickedSelection count]*75),cy+50)];                
+                    if(i==11)
+                    {
+                        [curSprite setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+([numberPickedSelection count]*75),cy+50)];
+                    }
+                    else
+                    {
+                        [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge),cy+50)]];   
+                    }
+
                     [curSprite runAction:[CCFadeIn actionWithDuration:kNumberPickerNumberFadeInTime]];
 
                 }
                 
                 // then add them to our selection and value arrays
-                [numberPickedSelection addObject:curSprite];
-                [numberPickedValue addObject:[NSNumber numberWithInt:i]];
-                        
+                if(i==11)
+                {
+                    [numberPickedSelection insertObject:curSprite atIndex:0];
+                    [numberPickedValue insertObject:[NSNumber numberWithInt:i] atIndex:0];
+                }
+                else
+                {
+                    [numberPickedSelection addObject:curSprite];
+                    [numberPickedValue addObject:[NSNumber numberWithInt:i]];
+                }
+                
+                
+                [self reorderNumberPickerSelections];
                 
                 return;
             }
@@ -1696,6 +1723,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         NSString *strThisNo;
         
         if(iThisNo==10)strThisNo=@".";
+        if(iThisNo==11)strThisNo=@"-";
         else strThisNo=[NSString stringWithFormat:@"%d", iThisNo];
         //strEval=[NSString stringWithFormat:@"%d", iThisNo];
         
@@ -1720,6 +1748,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 {
     for(int i=0;i<[numberPickedSelection count];i++)
     {
+        NSLog(@"value at %d is %d", i, [[numberPickedValue objectAtIndex:i]intValue]);
         CCSprite *s=[numberPickedSelection objectAtIndex:i];
         NSLog(@"sprite %d position %@", i, NSStringFromCGPoint(s.position));
         [s setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(s.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+(i*75),cy+50)];

@@ -64,6 +64,12 @@ typedef enum {
     int numberToStack;
     
     DWNBondRowGameObject *previousMount;
+    DWNBondRowGameObject *repositionThis;
+    DWNBondRowGameObject *repositionThat;
+    
+    BOOL doNotSendPositionEval;
+    float timeLeftToPositionThisOne;
+    float timeLeftToPositionThatOne;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

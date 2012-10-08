@@ -422,6 +422,11 @@ static float kTimeToMountedShake=7.0f;
 
 -(void)compareHintsAndMountedObjects
 {
+    [self compareHintsAndMountedObjects:YES];
+}
+
+-(void)compareHintsAndMountedObjects:(BOOL)shouldMoveRows
+{
     
     BOOL foundAMatch=NO;
     // for each row
@@ -453,22 +458,18 @@ static float kTimeToMountedShake=7.0f;
                     matchedNo=m;
                     matchedWithNo=h;
                     hasMatch=YES;
+                    foundAMatch=YES;
                     break;
                 }
             }
             
+
             if(hasMatch)
             {
                 NSLog(@"got match %d. count of hints %d", matchedNo, [hints count]);
                 
                 if(matchedNo<[hints count])
                 {
-                    NSLog(@"exchange going on");
-                    //if(matchedNo>0)
-                        //[r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedNo-1];
-                    //else
-                        //[r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedNo+1];
-                
                     [r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedWithNo];
                     
                     foundAMatch=YES;
@@ -478,16 +479,19 @@ static float kTimeToMountedShake=7.0f;
             
         }
         
-        if(!foundAMatch)
+        if(!foundAMatch&&shouldMoveRows)
         {
             for(int f=0;f<[createdRows count];f++)
             {
                 if([self checkIfTheseHints:hints GoToThisRow:f])
+                {
                     [self exchangeHintsOnThisRow:f withHintsOnThisRow:i];
+                }
+                [self compareHintsAndMountedObjects:NO];
             }
         }
         
-        [r handleMessage:kDWresetPositionEval];
+        //[r handleMessage:kDWresetPositionEval];
     }
     
 }
@@ -531,11 +535,58 @@ static float kTimeToMountedShake=7.0f;
 
     thisOne.HintObjects=thatOne.HintObjects;
     thatOne.HintObjects=thisOneHints;
+    doNotSendPositionEval=YES;
     
-    [thisOne handleMessage:kDWresetPositionEval];
-    [thatOne handleMessage:kDWresetPositionEval];
+    for(DWNBondObjectGameObject *o in thisOne.HintObjects)
+    {
+//        for(CCNode *s in o.BaseNode.children)
+//        {
+//            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
+//            [s runAction:fadeOutAct];
+//        }
+        
+
+        
+        
+        for(CCSprite *s in o.BaseNode.children)
+        {
+            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
+            CCDelayTime *delayTime=[CCDelayTime actionWithDuration:0.5f];
+            CCCallBlock *resetEval=[CCCallBlock actionWithBlock:^{[thisOne handleMessage:kDWresetPositionEval];}];
+            CCFadeIn *fadeInAct=[CCFadeIn actionWithDuration:0.3f];
+            
+            CCSequence *sequence=[CCSequence actions:fadeOutAct, delayTime, resetEval, fadeInAct, nil];
+            
+            [s runAction:sequence];
+    
+        }
+    }
+    
+    for(DWNBondObjectGameObject *o in thatOne.HintObjects)
+    {
+//        for(CCNode *s in o.BaseNode.children)
+//        {
+//            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
+//            [s runAction:fadeOutAct];
+//        }
+        
+        for(CCNode *s in o.BaseNode.children)
+        {
+            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
+            CCDelayTime *delayTime=[CCDelayTime actionWithDuration:0.5f];
+            CCCallBlock *resetEval=[CCCallBlock actionWithBlock:^{[thatOne handleMessage:kDWresetPositionEval];}];
+            CCCallBlock *disallowEval=[CCCallBlock actionWithBlock:^{doNotSendPositionEval=NO;}];
+            CCFadeIn *fadeInAct=[CCFadeIn actionWithDuration:0.3f];
+            
+            CCSequence *sequence=[CCSequence actions:fadeOutAct, delayTime, resetEval, fadeInAct, disallowEval, nil];
+            
+            [s runAction:sequence];
+        }
+    }
+
 
 }
+
 
 #pragma mark - touches events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -684,17 +735,20 @@ static float kTimeToMountedShake=7.0f;
     
     //[self reorderMountedObjects];
     
-    [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:-1];
+    if(!doNotSendPositionEval)
+        [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:-1];
     
     [gw Blackboard].PickupObject=nil;
     hasMovedBlock=NO;
 
+    doNotSendPositionEval=NO;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouching=NO;
     hasMovedBlock=NO;
+    doNotSendPositionEval=NO;
 }
 
 #pragma mark - evaluation and reject

@@ -20,12 +20,6 @@
 			<key>LENGTH</key>
 			<integer>1</integer>
 		</dict>
-		<dict>
-			<key>PUT_IN_ROW</key>
-			<integer>1</integer>
-			<key>LENGTH</key>
-			<integer>2</integer>
-		</dict>
 	</array>
 	<key>INIT_HINTS</key>
 	<array>
@@ -40,6 +34,30 @@
 			<integer>2</integer>
 			<key>LENGTH</key>
 			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_ROW</key>
+			<integer>3</integer>
+			<key>LENGTH</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_ROW</key>
+			<integer>3</integer>
+			<key>LENGTH</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_ROW</key>
+			<integer>3</integer>
+			<key>LENGTH</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_ROW</key>
+			<integer>1</integer>
+			<key>LENGTH</key>
+			<integer>4</integer>
 		</dict>
 	</array>
 	<key>INIT_BARS</key>

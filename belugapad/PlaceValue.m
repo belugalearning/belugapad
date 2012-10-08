@@ -1870,6 +1870,7 @@ static float kTimeToCageShake=7.0f;
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
+    previousLocation=[renderLayer convertToNodeSpace:location];
     timeSinceInteractionOrShake=0.0f;
     
     // set the touch start pos for evaluation
@@ -1988,7 +1989,7 @@ static float kTimeToCageShake=7.0f;
                 {
                     n=(DWPlaceValueNetGameObject*)b.Mount;
                     b.LastMount=b.Mount;
-                    
+                    b.Mount=nil;
                     n.MountedObject=nil;
                     n.CancellingObject=nil;
                 }
@@ -2100,10 +2101,7 @@ static float kTimeToCageShake=7.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[renderLayer convertToNodeSpace:location];
-    CGPoint prevLoc = [touch previousLocationInView:[touch view]];
-    prevLoc = [[CCDirector sharedDirector] convertToGL: prevLoc];
-    prevLoc=[renderLayer convertToNodeSpace:prevLoc];
-    
+
     [toolHost.Zubi setTarget:location];
     
     if(debugLogging)
@@ -2121,7 +2119,7 @@ static float kTimeToCageShake=7.0f;
     else if(touching && ([gw Blackboard].PickupObject==nil) && numberOfColumns>1 && allowPanning && !CGRectContainsPoint(noDragAreaTop, location) && !CGRectContainsPoint(noDragAreaBottom, location))
     {
         hasMovedLayer=YES;
-        CGPoint diff = ccpSub(location, prevLoc);
+        CGPoint diff = ccpSub(location, previousLocation);
         diff = ccp(diff.x, 0);
         [renderLayer setPosition:ccpAdd(renderLayer.position, diff)];
     }
@@ -2139,7 +2137,6 @@ static float kTimeToCageShake=7.0f;
             [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(block.PickupSprite)]];
         }
         
-        // first check for a valid place to drop
         GLbyte currentOpacity=127;
         
         // update the testtouchloc
@@ -2175,7 +2172,7 @@ static float kTimeToCageShake=7.0f;
         [self setGridOpacity:currentOpacity];
         
 
-        CGPoint diff=[BLMath SubtractVector:prevLoc from:location];
+        CGPoint diff=[BLMath SubtractVector:previousLocation from:location];
         
         //mod location by pickup offset
         float posX = block.PosX;
@@ -2184,6 +2181,7 @@ static float kTimeToCageShake=7.0f;
         posX = posX + diff.x;
         posY = posY + diff.y;
         
+        NSLog(@"selectedobjects count %d isBasePickup? %@ allowCondensing? %@", [gw.Blackboard.SelectedObjects count], isBasePickup? @"":@"", allowCondensing? @"":@"");
         
         if(isBasePickup && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject] && allowCondensing)
         {
@@ -2216,6 +2214,8 @@ static float kTimeToCageShake=7.0f;
                 [thisObject handleMessage:kDWmoveSpriteToPositionWithoutAnimation andPayload:nil withLogLevel:-1];
                 hasMovedBlock=YES;
             }
+            
+            return;
         }
         
         
@@ -2279,6 +2279,7 @@ static float kTimeToCageShake=7.0f;
         }
         
     }
+    previousLocation=location;
     
 }
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -2749,6 +2750,7 @@ static float kTimeToCageShake=7.0f;
     hasMovedBlock=NO;
     hasMovedLayer=NO;
     isBasePickup=NO;
+    hasMovedBasePickup=NO;
     changedBlockCountOrValue=NO;
     [pickupObjects removeAllObjects];
     

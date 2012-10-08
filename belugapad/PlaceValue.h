@@ -143,6 +143,8 @@
     CGRect noDragAreaTop;
     CGRect noDragAreaBottom;
     
+    CGPoint previousLocation;
+    
     BOOL inBlockTransition;
     BOOL inCondenseArea;
     BOOL inMulchArea;

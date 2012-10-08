@@ -19,5 +19,7 @@
 @property (retain) NSMutableArray *pickerViewSelection;
 @property (retain,nonatomic) CCPickerView *pickerView;
 @property (retain) DWGameObject *AssociatedGO;
+@property int Components;
+@property int InputValue;
 
 @end

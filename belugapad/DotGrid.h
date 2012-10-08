@@ -67,6 +67,7 @@ typedef enum {
     BOOL showDraggableBlock;
     BOOL renderWidthHeightOnShape;
     BOOL selectWholeShape;
+    BOOL showNumberWheel;
     BOOL isMovingLeft;
     BOOL isMovingRight;
     BOOL isMovingUp;

@@ -158,6 +158,8 @@
     if(hiddenRows)[hiddenRows retain];
     if([pdef objectForKey:DO_NOT_SIMPLIFY_FRACTIONS])doNotSimplifyFractions=[[pdef objectForKey:DO_NOT_SIMPLIFY_FRACTIONS]boolValue];
     else doNotSimplifyFractions=NO;
+    
+    showNumberWheel=YES;
 
 
     
@@ -277,10 +279,7 @@
         [renderLayer addChild:dragBlock];
     }
 
-    DWNWheelGameObject *w=[DWNWheelGameObject alloc];
-    [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
-    w.RenderLayer=renderLayer;
-    [w handleMessage:kDWsetupStuff];
+
 }
 
 #pragma mark - drawing methods
@@ -746,6 +745,19 @@
             withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:[anchors count]] forKey:@"numTiles"]];
     }
     
+    if(showNumberWheel)
+    {
+        DWNWheelGameObject *w=[DWNWheelGameObject alloc];
+        [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
+        w.RenderLayer=anchorLayer;
+        w.Components=3;
+        w.Position=ccp(cx,cy);
+        w.AssociatedGO=shape;
+        w.SpriteFileName=@"/images/numberwheel/3slots.png";
+        [w handleMessage:kDWsetupStuff];
+        
+        shape.MyNumberWheel=w;
+    }
     return shape;
 }
 

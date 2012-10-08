@@ -53,8 +53,28 @@
     {
         if(!w.pickerView)
         {
-            [self setSprite];
+            [self setupNumberWheel];
         }
+    }
+    
+    if(messageType==kDWupdateObjectData)
+    {
+        NSString *strInput=[NSString stringWithFormat:@"%d", w.InputValue];
+        
+        [w.pickerViewSelection removeAllObjects];
+        
+        int thisComponent=w.Components-1;
+        
+        for(int i=[strInput length]-1;i>=0;i--)
+        {
+            NSString *thisStr=[NSString stringWithFormat:@"%c",[strInput characterAtIndex:i]];
+            int thisInt=[thisStr intValue];
+            
+            [w.pickerViewSelection addObject:[NSNumber numberWithInt:thisInt]];
+            [w.pickerView spinComponent:thisComponent speed:15 easeRate:5 repeat:1 stopRow:thisInt];
+            thisComponent--;
+        }
+        
     }
     
     if(messageType==kDWdismantle)
@@ -105,22 +125,24 @@
     if(pickerView) return;
     
     pickerView = [CCPickerView node];
-    pickerView.position = ccp(21, 560);
+    pickerView.position = w.Position;
     pickerView.dataSource = self;
     pickerView.delegate = self;
+    [pickerView autoRepeatNodes:YES];
     
     w.pickerView=pickerView;
     
-    [w.pickerViewSelection addObject:[NSNumber numberWithInt:0]];
+    for(int i=0;i<w.Components;i++)
+        [w.pickerViewSelection addObject:[NSNumber numberWithInt:0]];
     
     
-    [w.RenderLayer addChild:w.pickerView z:20];
+    [w.RenderLayer addChild:pickerView z:20];
 }
 
 #pragma mark CCPickerView delegate methods
 
 - (NSInteger)numberOfComponentsInPickerView:(CCPickerView *)pickerView {
-    return 1;
+    return w.Components;
 }
 
 - (NSInteger)pickerView:(CCPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
@@ -129,10 +151,10 @@
     
     switch (component) {
         case 0:
-            numRows = 2;
+            numRows = 10;
             break;
         case 1:
-            numRows = 2;
+            numRows = 10;
             break;
         case 2:
             numRows=10;
@@ -191,7 +213,7 @@
 }
 
 - (CCNode *)overlayImage:(CCPickerView *)pickerView {
-    CCSprite *sprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/FB_OutPut_Pipe__Picker_Overlay.png")];
+    CCSprite *sprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(w.SpriteFileName)];
     return sprite;
 }
 

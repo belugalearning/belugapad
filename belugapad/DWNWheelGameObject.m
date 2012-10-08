@@ -12,6 +12,7 @@
 
 @implementation DWNWheelGameObject
 
+
 @synthesize mySprite;
 @synthesize SpriteFileName;
 @synthesize Position;
@@ -19,13 +20,17 @@
 @synthesize pickerViewSelection;
 @synthesize pickerView;
 @synthesize AssociatedGO;
-
+@synthesize Components;
+@synthesize InputValue;
 
 -(void)dealloc
 {
     self.mySprite=nil;
     self.SpriteFileName=nil;
     self.pickerViewSelection=nil;
+    self.AssociatedGO=nil;
+    self.pickerView=nil;
+    self.RenderLayer=nil;
     
     [super dealloc];
 }

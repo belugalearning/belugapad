@@ -10,6 +10,7 @@
 #import "DWDotGridShapeGameObject.h"
 #import "DWDotGridTileGameObject.h"
 #import "DWDotGridHandleGameObject.h"
+#import "DWNWheelGameObject.h"
 #import "global.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
@@ -90,6 +91,7 @@
                     [t.selectedSprite setVisible:YES];
                     t.Selected=YES;
                     [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
+                    
                 }
                 return;
             }
@@ -103,10 +105,16 @@
                 }
                 return;
             }
+            
+            if(shape.MyNumberWheel)
+            {
+                ((DWNWheelGameObject*)shape.MyNumberWheel).InputValue=[shape.tiles count];
+                [shape.MyNumberWheel handleMessage:kDWupdateObjectData];
+            }
         }
     }
 }
- 
+
 
 
 -(void)checkTouchSwitchSelection:(CGPoint)location
@@ -126,12 +134,24 @@
                 tile.Selected=YES;
                 [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
             }
-            
+
             // otherwise, make it white again
             else{
                 [tile.selectedSprite setVisible:NO];
                 tile.Selected=NO;
                 [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_DESELECT_TILE withAdditionalData:nil];
+            }
+            if(shape.MyNumberWheel)
+            {
+                int theValue=0;
+                for(DWDotGridTileGameObject *t in shape.tiles)
+                {
+                    if(t.Selected)
+                        theValue++;
+                }
+                
+                ((DWNWheelGameObject*)shape.MyNumberWheel).InputValue=theValue;
+                [shape.MyNumberWheel handleMessage:kDWupdateObjectData];
             }
         }
     }

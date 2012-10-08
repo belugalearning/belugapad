@@ -16,6 +16,7 @@
 #import "DWDotGridTileGameObject.h"
 #import "DWDotGridShapeGameObject.h"
 #import "DWDotGridShapeGroupGameObject.h"
+#import "DWNWheelGameObject.h"
 #import "BLMath.h"
 
 #import "BAExpressionHeaders.h"
@@ -147,7 +148,7 @@
         spaceBetweenAnchors=85;
     
     if(spaceBetweenAnchors==85)
-        spaceBetweenAnchors=82;
+        spaceBetweenAnchors=80;
     
     startX=[[pdef objectForKey:START_X] intValue];
     startY=[[pdef objectForKey:START_Y] intValue];
@@ -276,6 +277,10 @@
         [renderLayer addChild:dragBlock];
     }
 
+    DWNWheelGameObject *w=[DWNWheelGameObject alloc];
+    [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
+    w.RenderLayer=renderLayer;
+    [w handleMessage:kDWsetupStuff];
 }
 
 #pragma mark - drawing methods

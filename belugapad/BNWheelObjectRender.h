@@ -7,14 +7,16 @@
 //
 
 #import "DWBehaviour.h"
+#import "CCPickerView.h"
 @class DWNWheelGameObject;
 
-@interface BNWheelObjectRender : DWBehaviour
+@interface BNWheelObjectRender : DWBehaviour <CCPickerViewDataSource, CCPickerViewDelegate>
 {
     DWNWheelGameObject *w;
 }
+@property (nonatomic, retain) CCPickerView *pickerView;
 
--(BPieSplitterSliceObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
+-(BNWheelObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data;
 -(void)setSprite;
 -(void)moveSprite;
 -(void)moveSpriteHome;

@@ -129,11 +129,7 @@
 //        if(s.myWidth)
 //            [s.myWidth setPosition:[s.RenderLayer convertToWorldSpace:s.myWidth.position]];
     }
-    
-    if(messageType==kDWupdatePosition)
-    {
-        
-    }
+
     
     if(messageType==kDWdismantle)
     {

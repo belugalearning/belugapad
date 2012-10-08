@@ -336,10 +336,6 @@
 		<dict>
 			<key>BNWheelObjectRender</key>
 			<dict/>
-			<key>BPieSplitterContainerMountable</key>
-			<dict/>
-			<key>BPieSplitterContainerTouch</key>
-			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>
 		<array/>

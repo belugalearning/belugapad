@@ -16,6 +16,11 @@
 #import "AppDelegate.h"
 #import "UsersService.h"
 
+//CCPickerView
+#define kComponentWidth 54
+#define kComponentHeight 32
+#define kComponentSpacing 0
+
 @interface BNWheelObjectRender()
 {
 @private
@@ -26,6 +31,7 @@
 @end
 
 @implementation BNWheelObjectRender
+@synthesize pickerView;
 
 -(BNWheelObjectRender *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
@@ -45,27 +51,12 @@
 {
     if(messageType==kDWsetupStuff)
     {
-        if(!w.mySprite)
+        if(!w.pickerView)
         {
             [self setSprite];
         }
     }
     
-    if(messageType==kDWupdateSprite)
-    {
-        if(!w.mySprite) {
-            [self setSprite];
-        }
-        
-    }
-    if(messageType==kDWmoveSpriteToPosition)
-    {
-        [self moveSprite];
-    }
-    if(messageType==kDWmoveSpriteToHome)
-    {
-        [self moveSpriteHome];
-    }
     if(messageType==kDWdismantle)
     {
         [[w.mySprite parent] removeChild:w.mySprite cleanup:YES];
@@ -85,41 +76,145 @@
     else
         spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/slice.png"];
     
-    w.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-
-    [w.mySprite setPosition:w.Position];
+    [self setupNumberWheel];
     
-    
-    if(gameWorld.Blackboard.inProblemSetup)
-    {
-        [w.mySprite setTag:1];
-        [w.mySprite setOpacity:0];
-    }
     
     
     
 }
 -(void)moveSprite
 {
-    DWPieSplitterPieGameObject *pie=(DWPieSplitterPieGameObject*)slice.myPie;
-    
-    if(slice.myCont)
-        [slice.mySprite setPosition:[slice.mySprite.parent convertToNodeSpace:slice.Position]];
-    else
-        [slice.mySprite setPosition:[pie.mySprite convertToNodeSpace:slice.Position]];
-    
+
     
 }
 -(void)moveSpriteHome
 {
-    DWPieSplitterPieGameObject *myPie=(DWPieSplitterPieGameObject*)slice.myPie;
-    if(slice.myPie) {
-        //[slice.mySprite runAction:[CCRotateTo actionWithDuration:0.1f angle:(360/myPie.numberOfSlices)*[myPie.mySprite.children count]]];
-        [slice.mySprite runAction:[CCMoveTo actionWithDuration:0.5f position:[slice.mySprite.parent convertToNodeSpace:myPie.Position]]];
-    }
+
 }
 -(void)handleTap
 {
+}
+
+
+#pragma mark - CCPickerView for number wheel
+
+-(void)setupNumberWheel
+{
+    if(!w.pickerViewSelection)w.pickerViewSelection=[[[NSMutableArray alloc]init]retain];
+    
+    if(pickerView) return;
+    
+    pickerView = [CCPickerView node];
+    pickerView.position = ccp(21, 560);
+    pickerView.dataSource = self;
+    pickerView.delegate = self;
+    
+    w.pickerView=pickerView;
+    
+    [w.pickerViewSelection addObject:[NSNumber numberWithInt:0]];
+    
+    
+    [w.RenderLayer addChild:w.pickerView z:20];
+}
+
+#pragma mark CCPickerView delegate methods
+
+- (NSInteger)numberOfComponentsInPickerView:(CCPickerView *)pickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(CCPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    
+    NSInteger numRows = 0;
+    
+    switch (component) {
+        case 0:
+            numRows = 2;
+            break;
+        case 1:
+            numRows = 2;
+            break;
+        case 2:
+            numRows=10;
+            break;
+        default:
+            break;
+    }
+    
+    return numRows;
+}
+
+- (CGFloat)pickerView:(CCPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
+    return kComponentHeight;
+}
+
+- (CGFloat)pickerView:(CCPickerView *)pickerView widthForComponent:(NSInteger)component {
+    return kComponentWidth;
+}
+
+- (NSString *)pickerView:(CCPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    return @"Not used";
+}
+
+- (CCNode *)pickerView:(CCPickerView *)pickerView nodeForRow:(NSInteger)row forComponent:(NSInteger)component reusingNode:(CCNode *)node {
+    
+    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", row]fontName:@"Chango" fontSize:24];
+    return l;
+    
+    //    temp.color = ccYELLOW;
+    //    temp.textureRect = CGRectMake(0, 0, kComponentWidth, kComponentHeight);
+    //
+    //    NSString *rowString = [NSString stringWithFormat:@"%d", row];
+    //    CCLabelBMFont *label = [CCLabelBMFont labelWithString:rowString fntFile:@"bitmapFont.fnt"];
+    //    label.position = ccp(kComponentWidth/2, kComponentHeight/2-5);
+    //    [temp addChild:label];
+    //    return temp;
+    
+}
+
+- (void)pickerView:(CCPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    
+    [w.pickerViewSelection replaceObjectAtIndex:component withObject:[NSNumber numberWithInteger:row]];
+    
+    NSLog(@"didSelect row = %d, component = %d, totSum = %d", row, component, [self returnPickerNumber]);
+    
+}
+
+- (CGFloat)spaceBetweenComponents:(CCPickerView *)pickerView {
+    return kComponentSpacing;
+}
+
+- (CGSize)sizeOfPickerView:(CCPickerView *)pickerView {
+    CGSize size = CGSizeMake(42, 100);
+    
+    return size;
+}
+
+- (CCNode *)overlayImage:(CCPickerView *)pickerView {
+    CCSprite *sprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/FB_OutPut_Pipe__Picker_Overlay.png")];
+    return sprite;
+}
+
+- (void)onDoneSpinning:(CCPickerView *)pickerView component:(NSInteger)component {
+    
+    NSLog(@"Component %d stopped spinning.", component);
+}
+
+-(int)returnPickerNumber
+{
+    int retNum=0;
+    int power=0;
+    
+    for(int i=[w.pickerViewSelection count]-1;i>=0;i--)
+    {
+        NSNumber *n=[w.pickerViewSelection objectAtIndex:i];
+        int thisNum=[n intValue];
+        thisNum=thisNum*(pow((double)10,power));
+        retNum+=thisNum;
+        power++;
+    }
+    
+    return retNum;
 }
 
 -(void) dealloc

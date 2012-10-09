@@ -6,5 +6,11 @@
 	<string>&lt;b:t&gt;goo problem&lt;/b:t&gt;</string>
 	<key>TOOL_KEY</key>
 	<string>GooTool</string>
+	<key>SHAPE_CONFIG</key>
+	<integer>6</integer>
+	<key>GRAVITY</key>
+	<false/>
+	<key>RENDER_SPRINGS</key>
+	<true/>
 </dict>
 </plist>

@@ -78,6 +78,7 @@
 
 -(void)checkTouchAndSwitchAll:(CGPoint)location
 {
+    location=[shape.RenderLayer convertToNodeSpace:location];
     for(DWDotGridTileGameObject *tile in shape.tiles)
     {
         // and for each one see if the hit was in a tile box
@@ -91,7 +92,13 @@
                     [t.selectedSprite setVisible:YES];
                     t.Selected=YES;
                     [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
+                    gameWorld.Blackboard.ProximateObject=shape;
                     
+                }
+                if(shape.MyNumberWheel)
+                {
+                    ((DWNWheelGameObject*)shape.MyNumberWheel).InputValue=[shape.tiles count];
+                    [shape.MyNumberWheel handleMessage:kDWupdateObjectData];
                 }
                 return;
             }
@@ -103,13 +110,12 @@
                     t.Selected=NO;
                     [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
                 }
+                if(shape.MyNumberWheel)
+                {
+                    ((DWNWheelGameObject*)shape.MyNumberWheel).InputValue=0;
+                    [shape.MyNumberWheel handleMessage:kDWupdateObjectData];
+                }
                 return;
-            }
-            
-            if(shape.MyNumberWheel)
-            {
-                ((DWNWheelGameObject*)shape.MyNumberWheel).InputValue=[shape.tiles count];
-                [shape.MyNumberWheel handleMessage:kDWupdateObjectData];
             }
         }
     }
@@ -133,6 +139,7 @@
                 [tile.selectedSprite setVisible:YES];
                 tile.Selected=YES;
                 [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
+                gameWorld.Blackboard.ProximateObject=tile;
             }
 
             // otherwise, make it white again

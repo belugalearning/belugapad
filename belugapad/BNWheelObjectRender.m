@@ -76,7 +76,22 @@
             [w.pickerView spinComponent:thisComponent speed:15 easeRate:5 repeat:1 stopRow:thisInt];
             thisComponent--;
         }
-        
+                NSLog(@"component %d is end of input", thisComponent);        
+        if([strInput length]<w.Components)
+        {
+            int untouchedComponents=0;
+            untouchedComponents=(w.Components)-[strInput length];
+            
+            NSLog(@"components to update %d", untouchedComponents);
+            
+            for(int i=untouchedComponents;i>0;i--)
+            {
+                NSLog(@"switch component %d to 0", thisComponent);
+                [w.pickerViewSelection replaceObjectAtIndex:thisComponent withObject:[NSNumber numberWithInt:0]];
+                [w.pickerView spinComponent:thisComponent speed:15 easeRate:5 repeat:1 stopRow:0];
+                thisComponent--;
+            }
+        }
     }
     
     if(messageType==kDWupdateLabels)

@@ -277,7 +277,7 @@
     if(showDraggableBlock)
     {
         dragBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/dragsquare.png")];
-        [dragBlock setPosition:ccp(70,650)];
+        [dragBlock setPosition:ccp(55,650)];
         [renderLayer addChild:dragBlock];
     }
 
@@ -353,6 +353,8 @@
         BOOL failedChecksHidden=NO;
         BOOL failedChecksExistingTile=NO;
         
+        anchEnd.resizeHandle=YES;
+        
         // if the start X point is to the left of the end X point
         if(anchStart.myXpos < anchEnd.myXpos)
         {
@@ -402,7 +404,8 @@
                             curAnch.moveHandle=YES;
                         else
                             curAnch.moveHandle=NO;
-
+                        
+                        
                         [anchorsForShape addObject:curAnch];
                     } 
                 }
@@ -412,7 +415,6 @@
             // start the loop
             for(int x=anchStart.myXpos-1;x>anchEnd.myXpos-1;x--)
             {
-                NSLog(@"current x %d", x);
                 // then check whether we're going up or down
                 if(anchStart.myYpos < anchEnd.myYpos)
                 {
@@ -423,7 +425,7 @@
                         if(((curAnch.Disabled || curAnch.Hidden) && !gw.Blackboard.inProblemSetup && !gameState==kSpecifiedStartAnchor))failedChecksHidden=YES;
                         if(curAnch.tile)failedChecksExistingTile=YES;
                         [anchorsForShape addObject:curAnch];
-                        
+
                         if(x==anchStart.myXpos-1 && y==anchStart.myYpos && showResize)
                             curAnch.resizeHandle=YES;
                         else
@@ -513,7 +515,8 @@
                     
                     if(x==anchEnd.myXpos-1 && y==anchEnd.myYpos && thisShape.resizeHandle)
                         curAnch.resizeHandle=YES;
-                    else curAnch.resizeHandle=NO;
+                    else
+                        curAnch.resizeHandle=NO;
 
                     [anchorsForShape addObject:curAnch];
                 }
@@ -715,6 +718,7 @@
                 rshandle.RenderLayer=anchorLayer;
                 rshandle.handleType=kResizeHandle;
                 rshandle.Position=ccp(curAnch.Position.x+spaceBetweenAnchors,curAnch.Position.y);
+                //rshandle.Position=((DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor).Position;
                 shape.resizeHandle=rshandle;
                 rshandle.myShape=shape;
                 
@@ -773,7 +777,7 @@
     int dupeAnchors=0;
     
     
-    if([anchors count]<=1)return;
+    if([anchors count]<1)return;
     
     for(int i=0;i<[anchors count];i++)
     {
@@ -844,6 +848,7 @@
     thisShape.firstAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
     thisShape.lastAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
     [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
+    if(thisShape.MyNumberWheel)[thisShape handleMessage:kDWupdateObjectData];
 
 //    for(int i=0;i<[thisShape.tiles count];i++)
 //    {
@@ -926,19 +931,21 @@
     // if we get past having a handle, then send a switchselection
     [gw handleMessage:kDWswitchSelection andPayload:pl withLogLevel:-1];
     
-    if(gw.Blackboard.FirstAnchor && !((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).tile && !disableDrawing) {
-        ((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Disabled=YES;
-        gameState=kStartAnchor;
-        [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_CREATE_SHAPE withAdditionalData:nil];
-    }
+    if(!gw.Blackboard.ProximateObject){
     
-    else if(disableDrawing)
-    {
-        movingLayer=YES;
+        if(gw.Blackboard.FirstAnchor && !((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).tile && !disableDrawing) {
+            ((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Disabled=YES;
+            gameState=kStartAnchor;
+            [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_CREATE_SHAPE withAdditionalData:nil];
+        }
+        
+        else if(disableDrawing)
+        {
+            movingLayer=YES;
+            gw.Blackboard.FirstAnchor=nil;
+        }
+
     }
-    
-    if(disableDrawing)
-        gw.Blackboard.FirstAnchor=nil;
     
  }
 
@@ -953,22 +960,22 @@
     
     lastTouch=location;
     
-    if(location.x>lx-80)
+    if(location.x>lx-60)
         isMovingRight=YES;
     else
         isMovingRight=NO;
     
-    if(location.x<80)
+    if(location.x<60)
         isMovingLeft=YES;
     else
         isMovingLeft=NO;
     
-    if(location.y>ly-80)
+    if(location.y>ly-60)
         isMovingUp=YES;
     else
         isMovingUp=NO;
     
-    if(location.y<80)
+    if(location.y<60)
         isMovingDown=YES;
     else
         isMovingDown=NO;
@@ -987,7 +994,8 @@
     {
         [newBlock setPosition:location];
 
-        CGPoint searchLoc=ccp(newBlock.position.x-(newBlock.contentSize.width/2), newBlock.position.y-(newBlock.contentSize.height/2));
+//        CGPoint searchLoc=ccp(newBlock.position.x-(newBlock.contentSize.width/2), newBlock.position.y-(newBlock.contentSize.height/2));
+        CGPoint searchLoc=ccp(newBlock.position.x-(newBlock.contentSize.width/2), newBlock.position.y+(newBlock.contentSize.height/2));
         // set the search location to the bottom left of the square
         NSMutableDictionary *nb=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:[anchorLayer convertToNodeSpace:searchLoc]] forKey:POS];
         [gw handleMessage:kDWareYouADropTarget andPayload:nb withLogLevel:-1];
@@ -1000,8 +1008,9 @@
             
             if(fa.myXpos+1<=[dotMatrix count]-1)
             {
-                if(fa.myYpos+1<=[[dotMatrix objectAtIndex:fa.myXpos] count]-1)
-                    gw.Blackboard.LastAnchor=[[dotMatrix objectAtIndex:fa.myXpos+1] objectAtIndex:fa.myYpos+1];
+//                if(fa.myYpos+1<=[[dotMatrix objectAtIndex:fa.myXpos] count]-1)
+                if(fa.myYpos-1>=0)
+                    gw.Blackboard.LastAnchor=[[dotMatrix objectAtIndex:fa.myXpos+1] objectAtIndex:fa.myYpos-1];
             }
         }
         
@@ -1043,6 +1052,9 @@
     
     if(hitDragBlock && CGRectContainsPoint(newBlock.boundingBox, location))
     {
+        DWDotGridAnchorGameObject *fa=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
+        DWDotGridAnchorGameObject *la=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+        NSLog(@"first X %d Y %d, last X %d Y %d", fa.myXpos, fa.myYpos, la.myXpos, la.myYpos);
         [self checkAnchors];
     }
     
@@ -1065,6 +1077,7 @@
     gw.Blackboard.FirstAnchor=nil;
     gw.Blackboard.LastAnchor=nil;
     gw.Blackboard.CurrentHandle=nil;
+    gw.Blackboard.ProximateObject=nil;
     if(hitDragBlock)[newBlock removeFromParentAndCleanup:YES];
     hitDragBlock=NO;
     movingLayer=NO;
@@ -1087,6 +1100,7 @@
     gw.Blackboard.FirstAnchor=nil;
     gw.Blackboard.LastAnchor=nil;    
     gw.Blackboard.CurrentHandle=nil;
+    gw.Blackboard.ProximateObject=nil;
     if(hitDragBlock)[newBlock removeFromParentAndCleanup:YES];
     hitDragBlock=NO;
     movingLayer=NO;

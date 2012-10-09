@@ -13,7 +13,7 @@
 @end
 
 @implementation GooSingle
-@synthesize control = _control, chipmunkObjects = _chipmunkObjects;
+@synthesize chipmunkObjects = _chipmunkObjects;
 
 -(id)initWithPos:(cpVect)pos radius:(cpFloat)radius count:(int)count mass:(cpFloat)massIn;
 {
@@ -129,10 +129,6 @@
 			ChipmunkBody *b = [bodies objectAtIndex:(i+1)%count];
 			[set addObject:[ChipmunkSlideJoint slideJointWithBodyA:a bodyB:b anchr1:cpvzero anchr2:cpvzero min:0 max:edgeDistance]];
 		}
-		
-		_motor = [ChipmunkSimpleMotor simpleMotorWithBodyA:_centralBody bodyB:[ChipmunkBody staticBody] rate:0];
-		[set addObject:_motor];
-		_motor.maxForce = 0;
 	}
 	
 	return self;
@@ -148,25 +144,16 @@
 		verts[i] = cpvadd(v, cpvmult(cpvnormalize(cpvsub(v, center)), _edgeRadius));
 	}
 	
-    ccColor4F col=ccc4f(1.0f, 1.0f, 1.0f, 0.7f);
+    ccColor4F col=ccc4f(1.0f, 1.0f, 1.0f, 1.0f);
     ccDrawFilledPoly(verts, _count, col);
 
     ccDrawColor4F(1.0f, 1.0f, 1.0f, 1.0f);
     ccDrawPoly(verts, _count, YES);
 }
 
--(void)setControl:(cpFloat)value
-{
-	_motor.maxForce = (value == 0.0 ? 0.0 : _torque);
-	_motor.rate = _rate*value;
-	
-	_control = value;
-}
-
 - (void)dealloc
 {
 	[_centralBody release];
-	[_motor release];
 	[_edgeBodies release];
 	
 	self.chipmunkObjects = nil;

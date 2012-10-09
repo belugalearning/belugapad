@@ -13,7 +13,7 @@
 @end
 
 @implementation WaterSingle
-@synthesize control = _control, chipmunkObjects = _chipmunkObjects;
+@synthesize chipmunkObjects = _chipmunkObjects;
 
 -(id)initWithPos:(cpVect)pos radius:(cpFloat)radius count:(int)count mass:(cpFloat)massIn;
 {
@@ -87,9 +87,6 @@
 //			[set addObject:[ChipmunkSlideJoint slideJointWithBodyA:a bodyB:b anchr1:cpvzero anchr2:cpvzero min:0 max:edgeDistance]];
 //		}
 		
-//		_motor = [ChipmunkSimpleMotor simpleMotorWithBodyA:_centralBody bodyB:[ChipmunkBody staticBody] rate:0];
-//		[set addObject:_motor];
-//		_motor.maxForce = 0;
 	}
 	
 	return self;
@@ -112,18 +109,10 @@
     ccDrawPoly(verts, _count, YES);
 }
 
--(void)setControl:(cpFloat)value
-{
-	_motor.maxForce = (value == 0.0 ? 0.0 : _torque);
-	_motor.rate = _rate*value;
-	
-	_control = value;
-}
 
 - (void)dealloc
 {
 	[_centralBody release];
-	[_motor release];
 	[_edgeBodies release];
 	
 	self.chipmunkObjects = nil;

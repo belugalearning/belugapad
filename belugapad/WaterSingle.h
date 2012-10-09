@@ -22,14 +22,12 @@
 	ChipmunkBody *_centralBody;
 	NSArray *_edgeBodies;
 	
-	ChipmunkSimpleMotor *_motor;
 	cpFloat _rate, _torque;
 	cpFloat _control;
 	
 	NSSet *_chipmunkObjects;
 }
 
-@property(nonatomic, assign) cpFloat control;
 @property(nonatomic, readonly) NSSet *chipmunkObjects;
 
 @property(readonly) ChipmunkBody *centralBody;

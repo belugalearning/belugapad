@@ -14,7 +14,7 @@
 #define NORMAL_LAYER 1
 #define GRABABLE_LAYER 2
 
-@interface GooSingle : NSObject <ChipmunkObject, GooDraw>
+@interface GooSingle : NSObject <ChipmunkObject, GooDraw, GooBody>
 {
     int _count;
 	cpFloat _edgeRadius;
@@ -29,8 +29,8 @@
 	NSSet *_chipmunkObjects;
 }
 
-@property(nonatomic, assign) cpFloat control;
 @property(nonatomic, readonly) NSSet *chipmunkObjects;
+@property(readonly) ChipmunkBody *centralBody;
 
 -(id)initWithPos:(cpVect)pos radius:(cpFloat)radius count:(int)count mass:(cpFloat)massIn;
 -(void)draw;

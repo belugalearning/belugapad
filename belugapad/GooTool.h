@@ -25,6 +25,16 @@
     
     float deltaP;
     BOOL updateP;
+    
+    int shapeConfig;
+    BOOL useGravity;
+    BOOL useWater;
+    BOOL renderWater;
+    BOOL renderSprings;
+    
+    BOOL hasStartedGrabbing;
+    
+    NSMutableArray *springCollect;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

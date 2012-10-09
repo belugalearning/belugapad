@@ -61,7 +61,7 @@
     {
         NSString *strInput=[NSString stringWithFormat:@"%d", w.InputValue];
         
-        [w.pickerViewSelection removeAllObjects];
+//        [w.pickerViewSelection removeAllObjects];
         
         int thisComponent=w.Components-1;
         
@@ -70,17 +70,25 @@
             NSString *thisStr=[NSString stringWithFormat:@"%c",[strInput characterAtIndex:i]];
             int thisInt=[thisStr intValue];
             
-            [w.pickerViewSelection addObject:[NSNumber numberWithInt:thisInt]];
+            [w.pickerViewSelection replaceObjectAtIndex:thisComponent withObject:[NSNumber numberWithInt:thisInt]];
+            
+//            [w.pickerViewSelection addObject:[NSNumber numberWithInt:thisInt]];
             [w.pickerView spinComponent:thisComponent speed:15 easeRate:5 repeat:1 stopRow:thisInt];
             thisComponent--;
         }
         
     }
     
+    if(messageType==kDWupdateLabels)
+    {
+        [w.Label setPosition:ccp(w.Position.x-150,w.Position.y)];
+    }
+    
     if(messageType==kDWdismantle)
     {
         [[w.mySprite parent] removeChild:w.mySprite cleanup:YES];
     }
+    
     
 }
 

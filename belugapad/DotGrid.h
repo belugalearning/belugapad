@@ -84,6 +84,7 @@ typedef enum {
     
     NSMutableArray *dotMatrix;
     NSDictionary *hiddenRows;
+    NSMutableArray *numberWheels;
     
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;

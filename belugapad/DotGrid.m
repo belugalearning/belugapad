@@ -158,10 +158,12 @@
     if(hiddenRows)[hiddenRows retain];
     if([pdef objectForKey:DO_NOT_SIMPLIFY_FRACTIONS])doNotSimplifyFractions=[[pdef objectForKey:DO_NOT_SIMPLIFY_FRACTIONS]boolValue];
     else doNotSimplifyFractions=NO;
+   
     
-    showNumberWheel=YES;
+    showNumberWheel=[[pdef objectForKey:SHOW_NUMBERWHEEL_FOR_SHAPES]boolValue];
 
-
+    if(showNumberWheel)
+        numberWheels=[[NSMutableArray alloc]init];
     
 }
 
@@ -737,26 +739,29 @@
             [tile release];
         }
     
+    if(showNumberWheel)
+    {
+        DWNWheelGameObject *w=[DWNWheelGameObject alloc];
+        [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
+        
+        w.RenderLayer=renderLayer;
+        w.Components=3;
+        w.Position=ccp(lx-140,(ly-120)-100*[numberWheels count]);
+        w.AssociatedGO=shape;
+        w.SpriteFileName=@"/images/numberwheel/3slots.png";
+        [w handleMessage:kDWsetupStuff];
+        
+        shape.MyNumberWheel=w;
+        
+        [numberWheels addObject:w];
+    }
+    
     [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
     
     if (!gw.Blackboard.inProblemSetup)
     {
         [loggingService logEvent:BL_PA_DG_TOUCH_END_CREATE_SHAPE
             withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:[anchors count]] forKey:@"numTiles"]];
-    }
-    
-    if(showNumberWheel)
-    {
-        DWNWheelGameObject *w=[DWNWheelGameObject alloc];
-        [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
-        w.RenderLayer=anchorLayer;
-        w.Components=3;
-        w.Position=ccp(cx,cy);
-        w.AssociatedGO=shape;
-        w.SpriteFileName=@"/images/numberwheel/3slots.png";
-        [w handleMessage:kDWsetupStuff];
-        
-        shape.MyNumberWheel=w;
     }
     return shape;
 }
@@ -1257,6 +1262,7 @@
     if(dotMatrix)[dotMatrix release];
     if(initObjects)[initObjects release];
     if(hiddenRows)[hiddenRows release];
+    if(numberWheels)[numberWheels release];
     
     [renderLayer release];
     

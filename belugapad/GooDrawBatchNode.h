@@ -19,6 +19,8 @@
 
 @property (retain) NSArray *gooShapes;
 
+@property (retain) NSArray *springShapes;
+
 -(GooDrawBatchNode*)initWithSpace:(ChipmunkSpace*)thespace;
 
 @end

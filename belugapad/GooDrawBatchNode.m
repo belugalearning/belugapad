@@ -8,6 +8,7 @@
 
 #import "GooDrawBatchNode.h"
 #import "GooSingle.h"
+#import "BLMath.h"
 
 @implementation GooDrawBatchNode
 
@@ -24,10 +25,48 @@
 
 -(void)draw {
 
+    for(ChipmunkDampedSpring *spring in self.springShapes)
+    {
+        ccDrawColor4F(1, 1, 1, 1);
+//        ccDrawLine(spring.bodyA.pos, spring.bodyB.pos);
+        
+        CGPoint line=[BLMath SubtractVector:spring.bodyA.pos from:spring.bodyB.pos];
+        CGPoint lineN=[BLMath NormalizeVector:line];
+        CGPoint upV=[BLMath PerpendicularLeftVectorTo:lineN];
+        
+        for(int i=-2; i<2; i++)
+        {
+            CGPoint a=[BLMath AddVector:spring.bodyA.pos toVector:[BLMath MultiplyVector:upV byScalar:i*0.75f]];
+            CGPoint b=[BLMath AddVector:spring.bodyB.pos toVector:[BLMath MultiplyVector:upV byScalar:i*0.75f]];
+            
+            ccDrawLine(a, b);
+        }
+        
+        int barHalfW=10;
+        
+        for(int j=-barHalfW; j<0; j++)
+        {
+            CGPoint a=[BLMath AddVector:spring.bodyA.pos toVector:[BLMath MultiplyVector:upV byScalar:j*0.75f]];
+            CGPoint b=[BLMath AddVector:spring.bodyB.pos toVector:[BLMath MultiplyVector:upV byScalar:(j+barHalfW)*0.75f]];
+            
+            ccDrawLine(a, b);
+        }
+        
+        for(int k=barHalfW; k>0; k--)
+        {
+            CGPoint a=[BLMath AddVector:spring.bodyA.pos toVector:[BLMath MultiplyVector:upV byScalar:k*0.75f]];
+            CGPoint b=[BLMath AddVector:spring.bodyB.pos toVector:[BLMath MultiplyVector:upV byScalar:(k-barHalfW)*0.75f]];
+            
+            ccDrawLine(a, b);
+        }
+    }
+    
     for(id<GooDraw> gs in self.gooShapes)
     {
         [gs draw];
     }
+    
+
     
 //    for (ChipmunkShape *cs in cSpace.shapes) {
 //        

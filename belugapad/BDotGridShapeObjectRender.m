@@ -16,6 +16,7 @@
 #import "DWDotGridAnchorGameObject.h"
 #import "DWDotGridHandleGameObject.h"
 #import "DWDotGridTileGameObject.h"
+#import "DWNWheelGameObject.h"
 
 @implementation BDotGridShapeObjectRender
 
@@ -147,8 +148,60 @@
         [s.myWidth removeFromParentAndCleanup:YES];
         [gameWorld delayRemoveGameObject:s];
     }
+
+    if(messageType==kDWupdateObjectData)
+    {
+        [self updateObjectDataFromNumberWheel];
+    }
 }
 
+-(void)updateObjectDataFromNumberWheel
+{
+    if(s.MyNumberWheel)
+    {
+        DWNWheelGameObject *w=(DWNWheelGameObject*)s.MyNumberWheel;
+        int selectedTiles=0;
+        int tilesRequired=0;
+        
+        
+        for(DWDotGridTileGameObject *t in s.tiles)
+        {
+            if(t.Selected)
+                selectedTiles++;
+        }
+        
+        if(selectedTiles<w.OutputValue)
+        {
+            tilesRequired=w.OutputValue-selectedTiles;
+            
+            for(DWDotGridTileGameObject *t in s.tiles)
+            {
+                if(!t.Selected && tilesRequired>0){
+                    t.Selected=YES;
+                    [t.selectedSprite setVisible:YES];
+                    tilesRequired--;
+                }
+            }
+        }
+        else
+        {
+            tilesRequired=selectedTiles-w.OutputValue;
+            NSLog(@"tiles requiring action %d", tilesRequired);
+            
+            for(DWDotGridTileGameObject *t in [s.tiles reverseObjectEnumerator])
+            {
+                if(t.Selected && tilesRequired>0){
+                    t.Selected=NO;
+                    [t.selectedSprite setVisible:NO];
+                    tilesRequired--;
+                    
+                    
+                    NSLog(@"deselected a tile (tilesreq: %d, w outputval %d", tilesRequired, w.OutputValue);
+                }
+            }
+        }
+    }
+}
 
 
 -(void)setSprite

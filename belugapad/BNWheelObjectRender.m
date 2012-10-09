@@ -159,6 +159,30 @@
         case 2:
             numRows=10;
             break;
+        case 3:
+            numRows=10;
+            break;
+        case 4:
+            numRows=10;
+            break;
+        case 5:
+            numRows=10;
+            break;
+        case 6:
+            numRows=10;
+            break;
+        case 7:
+            numRows=10;
+            break;
+        case 8:
+            numRows=10;
+            break;
+        case 9:
+            numRows=10;
+            break;
+        case 10:
+            numRows=10;
+            break;
         default:
             break;
     }
@@ -198,6 +222,12 @@
     
     [w.pickerViewSelection replaceObjectAtIndex:component withObject:[NSNumber numberWithInteger:row]];
     
+    if(w.AssociatedGO)
+    {
+        w.OutputValue=[self returnPickerNumber];
+        [w.AssociatedGO handleMessage:kDWupdateObjectData];
+    }
+    
     NSLog(@"didSelect row = %d, component = %d, totSum = %d", row, component, [self returnPickerNumber]);
     
 }
@@ -219,7 +249,8 @@
 
 - (void)onDoneSpinning:(CCPickerView *)pickerView component:(NSInteger)component {
     
-    NSLog(@"Component %d stopped spinning.", component);
+    // this is the method called when a component stops spinning
+    //NSLog(@"Component %d stopped spinning.", component);
 }
 
 -(int)returnPickerNumber

@@ -22,6 +22,7 @@
 @synthesize AssociatedGO;
 @synthesize Components;
 @synthesize InputValue;
+@synthesize OutputValue;
 
 -(void)dealloc
 {

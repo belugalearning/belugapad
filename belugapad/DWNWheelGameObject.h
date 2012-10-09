@@ -21,5 +21,6 @@
 @property (retain) DWGameObject *AssociatedGO;
 @property int Components;
 @property int InputValue;
+@property int OutputValue;
 
 @end

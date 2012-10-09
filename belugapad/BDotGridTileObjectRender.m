@@ -70,6 +70,7 @@
     if(messageType==kDWdismantle)
     {
         CCSprite *s=tile.mySprite;
+        CCSprite *ss=tile.selectedSprite;
         
         if(tile.myAnchor)
         {
@@ -79,6 +80,7 @@
         }
         
         [[s parent] removeChild:s cleanup:YES];
+        [[ss parent] removeChild:ss cleanup:YES];
         [gameWorld delayRemoveGameObject:tile];
     }
 }

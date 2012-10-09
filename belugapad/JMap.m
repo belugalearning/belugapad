@@ -1002,7 +1002,9 @@ typedef enum {
         }
         else if(scaleChange>2 && zoomedOut)
         {
-            [self zoomToCityView];
+            CGPoint aPos=[BLMath AddVector:t1b toVector:[BLMath MultiplyVector:[BLMath SubtractVector:t1b from:t1a] byScalar:0.5f]];
+            
+            [self zoomToCityViewAtPoint:aPos];
             didJustChangeZoom=YES;
         }
     }
@@ -1023,15 +1025,19 @@ typedef enum {
 
 #pragma mark - map views and zooming
 
--(void)zoomToCityView
+-(void)zoomToCityViewAtPoint:(CGPoint)gesturePoint
 {
     zoomedOut=NO;
     //[backarrow setVisible:YES];
     [backarrow setFlipX:NO];
     
-    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.25f scale:1.0f] rate:2.0f]];    
-
-    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.25f position:ccp(-611,3713)] rate:2.0f]];
+    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.5f scale:1.0f] rate:2.0f]];
+    
+    CGPoint gestureLocalOffset=[BLMath SubtractVector:gesturePoint from:ccp(cx,cy)];
+    CGPoint gestureDestOffset=[BLMath MultiplyVector:gestureLocalOffset byScalar:REGION_ZOOM_LEVEL];
+    CGPoint gestureOffset=[BLMath AddVector:gestureLocalOffset toVector:gestureDestOffset];
+    
+    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:[BLMath MultiplyVector:[BLMath AddVector:mapLayer.position toVector:gestureOffset] byScalar:1.0f/REGION_ZOOM_LEVEL]] rate:2.0f]];
     
     [gw handleMessage:kSGzoomIn];
     
@@ -1047,10 +1053,16 @@ typedef enum {
     
     [mapLayer setAnchorPoint:ccp(0.5,0.5)];
     
-    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.25f scale:REGION_ZOOM_LEVEL] rate:2.0f]]; 
+    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCScaleTo actionWithDuration:0.5f scale:REGION_ZOOM_LEVEL] rate:2.0f]];
+    
+    NSLog(@"pos at region view %@", NSStringFromCGPoint(mapLayer.position));
+    
+    //mapLayer.position=[BLMath MultiplyVector:mapLayer.position byScalar:REGION_ZOOM_LEVEL];
+    
+    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:[BLMath MultiplyVector:mapLayer.position byScalar:REGION_ZOOM_LEVEL]] rate:2.0f]];
     
     //[mapLayer setPosition:ccp(-(nMaxX-nMinX) / 2.0f, -(nMaxY-nMinY) / 2.0f)];
-    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.25f position:ccp(-257, 212.5)] rate:2.0f]];
+//    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(-257, 212.5)] rate:2.0f]];
     
     [gw handleMessage:kSGzoomOut];
 }
@@ -1087,7 +1099,7 @@ typedef enum {
 
 -(void)debugSwitchZoom:(id)sender
 {
-    if(zoomedOut)[self zoomToCityView];
+    if(zoomedOut)[self zoomToCityViewAtPoint:ccp(cx,cy)];
     else [self zoomToRegionView];
 }
 

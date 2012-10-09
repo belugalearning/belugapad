@@ -34,7 +34,20 @@
         CGPoint lineN=[BLMath NormalizeVector:line];
         CGPoint upV=[BLMath PerpendicularLeftVectorTo:lineN];
         
-        for(int i=-2; i<2; i++)
+        float distScalar=1.0f;
+        float distScaleBase=0.25f;
+        float distScaleFrom=200.0f;
+        float lOfLine=[BLMath LengthOfVector:line];
+        if(lOfLine<distScaleFrom)
+        {
+            distScalar=distScaleBase + (1-(lOfLine / distScaleFrom));
+        }
+        else
+        {
+            distScalar=distScaleBase;
+        }
+        
+        for(int i=0; i<1; i++)
         {
             CGPoint a=[BLMath AddVector:spring.bodyA.pos toVector:[BLMath MultiplyVector:upV byScalar:i*0.75f]];
             CGPoint b=[BLMath AddVector:spring.bodyB.pos toVector:[BLMath MultiplyVector:upV byScalar:i*0.75f]];
@@ -42,20 +55,20 @@
             ccDrawLine(a, b);
         }
         
-        int barHalfW=10;
+        int barHalfW=15;
         
         for(int j=-barHalfW; j<0; j++)
         {
-            CGPoint a=[BLMath AddVector:spring.bodyA.pos toVector:[BLMath MultiplyVector:upV byScalar:j*0.75f]];
-            CGPoint b=[BLMath AddVector:spring.bodyB.pos toVector:[BLMath MultiplyVector:upV byScalar:(j+barHalfW)*0.75f]];
+            CGPoint a=[BLMath AddVector:spring.bodyA.pos toVector:[BLMath MultiplyVector:upV byScalar:j*0.75f*distScalar]];
+            CGPoint b=[BLMath AddVector:spring.bodyB.pos toVector:[BLMath MultiplyVector:upV byScalar:(j+barHalfW)*0.75f*distScalar]];
             
             ccDrawLine(a, b);
         }
         
         for(int k=barHalfW; k>0; k--)
         {
-            CGPoint a=[BLMath AddVector:spring.bodyA.pos toVector:[BLMath MultiplyVector:upV byScalar:k*0.75f]];
-            CGPoint b=[BLMath AddVector:spring.bodyB.pos toVector:[BLMath MultiplyVector:upV byScalar:(k-barHalfW)*0.75f]];
+            CGPoint a=[BLMath AddVector:spring.bodyA.pos toVector:[BLMath MultiplyVector:upV byScalar:k*0.75f*distScalar]];
+            CGPoint b=[BLMath AddVector:spring.bodyB.pos toVector:[BLMath MultiplyVector:upV byScalar:(k-barHalfW)*0.75f*distScalar]];
             
             ccDrawLine(a, b);
         }

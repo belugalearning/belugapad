@@ -135,6 +135,53 @@
     [self attach:f3 to:f5 withR:r];
     
     [self attach:f4 to:f5 withR:r];
+    
+    
+    
+    GooSingleSquare *t1 =[[GooSingleSquare alloc] initWithPos:ccp(100,650) radius:r count:8 mass:1];
+    GooSingleSquare *t2 =[[GooSingleSquare alloc] initWithPos:ccp(170,600) radius:r count:8 mass:1];
+    GooSingleSquare *t3 =[[GooSingleSquare alloc] initWithPos:ccp(250,650) radius:r count:8 mass:1];
+    GooSingleSquare *t4 =[[GooSingleSquare alloc] initWithPos:ccp(320,600) radius:r count:8 mass:1];
+    GooSingleSquare *t5 =[[GooSingleSquare alloc] initWithPos:ccp(400,650) radius:r count:8 mass:1];
+    GooSingleSquare *t6 =[[GooSingleSquare alloc] initWithPos:ccp(480,650) radius:r count:8 mass:1];
+    GooSingleSquare *t7 =[[GooSingleSquare alloc] initWithPos:ccp(540,650) radius:r count:8 mass:1];
+    GooSingleSquare *t8 =[[GooSingleSquare alloc] initWithPos:ccp(610,650) radius:r count:8 mass:1];
+    GooSingleSquare *t9 =[[GooSingleSquare alloc] initWithPos:ccp(690,650) radius:r count:8 mass:1];
+    
+    
+    [goos addObject:t1];
+    [goos addObject:t2];
+    [goos addObject:t3];
+    [goos addObject:t4];
+    [goos addObject:t5];
+    [goos addObject:t6];
+    [goos addObject:t7];
+    [goos addObject:t8];
+    [goos addObject:t9];
+    
+    [self attach:t1 to:t2 withR:r];
+    [self attach:t1 to:t3 withR:r];
+    
+    [self attach:t2 to:t3 withR:r];
+    [self attach:t2 to:t4 withR:r];
+    
+    [self attach:t3 to:t4 withR:r];
+    [self attach:t3 to:t5 withR:r];
+    
+    [self attach:t4 to:t5 withR:r];
+    [self attach:t4 to:t6 withR:r];
+    
+    [self attach:t5 to:t6 withR:r];
+    [self attach:t5 to:t7 withR:r];
+    
+    [self attach:t6 to:t7 withR:r];
+    [self attach:t6 to:t8 withR:r];
+    
+    [self attach:t7 to:t8 withR:r];
+    [self attach:t7 to:t9 withR:r];
+    
+    [self attach:t8 to:t9 withR:r];
+    
 }
 
 -(void)addTestShapes
@@ -283,9 +330,9 @@
 {
     cpVect apos=cpvzero;
     
-    [cSpace add:[ChipmunkSlideJoint slideJointWithBodyA:g1.centralBody bodyB:g2.centralBody anchr1:apos anchr2:apos min:r*2 max:r*4]];
+    [cSpace add:[ChipmunkSlideJoint slideJointWithBodyA:g1.centralBody bodyB:g2.centralBody anchr1:apos anchr2:apos min:r*2 max:r*8]];
     
-    ChipmunkDampedSpring *s=[ChipmunkDampedSpring dampedSpringWithBodyA:g1.centralBody bodyB:g2.centralBody anchr1:apos anchr2:apos restLength:0 stiffness:3 damping:1];
+    ChipmunkDampedSpring *s=[ChipmunkDampedSpring dampedSpringWithBodyA:g1.centralBody bodyB:g2.centralBody anchr1:apos anchr2:apos restLength:0 stiffness:10 damping:1];
     [cSpace add:s];
     if(renderSprings)[springCollect addObject:s];
 }

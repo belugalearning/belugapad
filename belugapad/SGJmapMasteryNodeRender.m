@@ -63,7 +63,7 @@ static int shadowSteps=5;
     
     if(messageType==kSGzoomOut)
     {
-        [self setPointScalesAt:REGION_ZOOM_LEVEL];
+        //[self setPointScalesAt:REGION_ZOOM_LEVEL];
         [nodeSprite setVisible:NO];
         [labelSprite setVisible:NO];
         ParentGO.Visible=YES;

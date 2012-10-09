@@ -23,6 +23,8 @@
 @synthesize Components;
 @synthesize InputValue;
 @synthesize OutputValue;
+@synthesize Label;
+
 
 -(void)dealloc
 {
@@ -32,6 +34,7 @@
     self.AssociatedGO=nil;
     self.pickerView=nil;
     self.RenderLayer=nil;
+    self.Label=nil;
     
     [super dealloc];
 }

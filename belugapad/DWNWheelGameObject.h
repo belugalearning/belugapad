@@ -22,5 +22,6 @@
 @property int Components;
 @property int InputValue;
 @property int OutputValue;
+@property (retain) CCLabelTTF *Label;
 
 @end

@@ -111,6 +111,25 @@
                 [s.myWidth setPosition:ccp(xPosForWidthLabel,yPosForWidthLabel)];
                 [s.myWidth setString:strWidth];
             }
+            
+            if(s.MyNumberWheel)
+            {
+                CCLabelTTF *l=nil;
+                
+                if(!((DWNWheelGameObject*)s.MyNumberWheel).Label)
+                {
+                    l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%@x%@", s.myWidth.string, s.myHeight.string] fontName:SOURCE fontSize:26.0f];
+                    ((DWNWheelGameObject*)s.MyNumberWheel).Label=l;
+                    [((DWNWheelGameObject*)s.MyNumberWheel).RenderLayer addChild:l];
+                }
+                else
+                {
+                    l=((DWNWheelGameObject*)s.MyNumberWheel).Label;
+                    [l setString:[NSString stringWithFormat:@"%@x%@", s.myWidth.string, s.myHeight.string]];
+                }
+                
+                [s.MyNumberWheel handleMessage:kDWupdateLabels];
+            }
         }
     }
     
@@ -160,45 +179,61 @@
     if(s.MyNumberWheel)
     {
         DWNWheelGameObject *w=(DWNWheelGameObject*)s.MyNumberWheel;
-        int selectedTiles=0;
-        int tilesRequired=0;
-        
-        
-        for(DWDotGridTileGameObject *t in s.tiles)
-        {
-            if(t.Selected)
-                selectedTiles++;
-        }
-        
-        if(selectedTiles<w.OutputValue)
-        {
-            tilesRequired=w.OutputValue-selectedTiles;
+        if(w.OutputValue<=[s.tiles count]){
+            int selectedTiles=0;
+            int tilesRequired=0;
+            
             
             for(DWDotGridTileGameObject *t in s.tiles)
             {
-                if(!t.Selected && tilesRequired>0){
-                    t.Selected=YES;
-                    [t.selectedSprite setVisible:YES];
-                    tilesRequired--;
+                if(t.Selected)
+                    selectedTiles++;
+            }
+            
+            if(selectedTiles<w.OutputValue)
+            {
+                tilesRequired=w.OutputValue-selectedTiles;
+                
+                for(DWDotGridTileGameObject *t in s.tiles)
+                {
+                    if(!t.Selected && tilesRequired>0){
+                        t.Selected=YES;
+                        [t.selectedSprite setVisible:YES];
+                        tilesRequired--;
+                    }
+                }
+            }
+            else
+            {
+                tilesRequired=selectedTiles-w.OutputValue;
+                NSLog(@"tiles requiring action %d", tilesRequired);
+                
+                for(DWDotGridTileGameObject *t in [s.tiles reverseObjectEnumerator])
+                {
+                    if(t.Selected && tilesRequired>0){
+                        t.Selected=NO;
+                        [t.selectedSprite setVisible:NO];
+                        tilesRequired--;
+                        
+                        NSLog(@"deselected a tile (tilesreq: %d, w outputval %d", tilesRequired, w.OutputValue);
+                    }
                 }
             }
         }
         else
         {
-            tilesRequired=selectedTiles-w.OutputValue;
-            NSLog(@"tiles requiring action %d", tilesRequired);
+            DWNWheelGameObject *w=(DWNWheelGameObject*)s.MyNumberWheel;
+            w.InputValue=[s.tiles count];
+            [s.MyNumberWheel handleMessage:kDWupdateObjectData];
             
-            for(DWDotGridTileGameObject *t in [s.tiles reverseObjectEnumerator])
+            for(DWDotGridTileGameObject *t in s.tiles)
             {
-                if(t.Selected && tilesRequired>0){
-                    t.Selected=NO;
-                    [t.selectedSprite setVisible:NO];
-                    tilesRequired--;
-                    
-                    
-                    NSLog(@"deselected a tile (tilesreq: %d, w outputval %d", tilesRequired, w.OutputValue);
-                }
+                t.Selected=YES;
+                [t.selectedSprite setVisible:YES];
+                [t.selectedSprite setColor:ccc3(255,0,0)];
+                [t.selectedSprite runAction:[CCTintTo actionWithDuration:0.5f red:255 green:255 blue:255]];
             }
+            
         }
     }
 }

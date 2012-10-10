@@ -36,6 +36,8 @@
 #import "SGJmapCloud.h"
 
 #import "JSONKit.h"
+#import "TestFlight.h"
+
 
 #define DRAW_DEPTH 3
 
@@ -131,6 +133,8 @@ typedef enum {
         
         scale=1.0f;
         
+        [TestFlight passCheckpoint:@"STARTING_JMAP"];
+        
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         loggingService = ac.loggingService;
         usersService = ac.usersService;
@@ -164,6 +168,8 @@ typedef enum {
         
         //[[SimpleAudioEngine sharedEngine] playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/mood.mp3") loop:YES];
         
+        [TestFlight passCheckpoint:@"STARTED_JMAP"];
+        
     }
     
     return self;
@@ -187,6 +193,8 @@ typedef enum {
 {
     //[[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
     
+    [TestFlight passCheckpoint:@"PROCEEDING_TO_TOOLHOST_FROM_JMAP"];
+    
     contentService.resetPositionAfterTH=YES;
     contentService.lastMapLayerPosition=mapLayer.position;
     
@@ -199,10 +207,6 @@ typedef enum {
     else {
         [[CCDirector sharedDirector] replaceScene:[CCTransitionCrossFade transitionWithDuration:0.5f scene:[ToolHost scene]]];
     }
-
-    
-
-    
 }
 
 #pragma mark - setup and parse

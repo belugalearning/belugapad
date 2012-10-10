@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Move the bubble to 2, and tap the jump button.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>Move the bubble to 2, and tap the jump button.</string>
+	<key>TOOL_KEY</key>
+	<string>NLine</string>
+	<key>JUMP_MODE</key>
+	<true/>
+	<key>START_VALUE</key>
+	<string>0</string>
+	<key>MIN_VALUE</key>
+	<string>0</string>
+	<key>MAX_VALUE</key>
+	<string>2</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>EVAL_INTERVAL</key>
+	<string>2</string>
+	<key>EVAL_TYPE</key>
+	<string>REPEATED_ADDITION</string>
+	<key>REJECT_MODE</key>
+	<integer>1</integer>
+	<key>EVAL_TARGET</key>
+	<integer>2</integer>
+	<key>HIDE_ALL_NUMBERS</key>
+	<true/>
+	<key>SHOW_NUMBERS_AT_INTERVALS</key>
+	<array>
+		<string>2</string>
+	</array>
+	<key>HIDE_ALL_NOTCHES</key>
+	<false/>
+	<key>HIDE_START_NUMBER</key>
+	<false/>
+	<key>HIDE_END_NUMBER</key>
+	<false/>
+	<key>HIDE_START_NOTCH</key>
+	<false/>
+	<key>HIDE_END_NOTCH</key>
+	<false/>
+	<key>DISABLE_SNAPPING_TO_NOTCH</key>
+	<false/>
+	<key>EVAL_PLUS_MINUS_THRESHOLD</key>
+	<integer>0</integer>
+	<key>COUNT_OUT_LOUD_AT_INTERVALS</key>
+	<array>
+		<integer>5</integer>
+	</array>
+	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
+	<array>
+		<string>5</string>
+	</array>
+	<key>RENDER_STITCHES_AT_INTERVAL</key>
+	<integer>0</integer>
+	<key>SEGMENT_VALUE</key>
+	<integer>1</integer>
+	<key>MARKER_POSITIONS</key>
+	<array/>
+</dict>
+</plist>

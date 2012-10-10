@@ -18,6 +18,7 @@
 #import "JMap.h"
 #import "ToolHost.h"
 #import "mach/mach.h"
+#import "TestFlight.h"
 
 @interface AppController()
 {
@@ -65,8 +66,23 @@
     //if( ! [CCDirector setDirectorType:kCCDirectorTypeDisplayLink] )
     //    [CCDirector setDirectorType:kCCDirectorTypeDefault];
     
+    //init test flight
+#define DO_THING_THAT_APPLE_DOES_NOT_LIKE 1
+#if DO_THING_THAT_APPLE_DOES_NOT_LIKE
+    [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
+#endif
+    [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"logToSTDERR"]];
+    [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"logToConsole"]];
+    [TestFlight takeOff:@"1131d68d003b6409566d9ada07cd6caa_NTg2MjMyMDEyLTAyLTA0IDEwOjU4OjI2LjI0NTYyNg"];
+    
+    
     //load local settings
     self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/settings/local-settings.plist")];
+    if ((BOOL)[self.LocalSettings valueForKey:@"RELEASE_MODE"])
+    {
+        [self.LocalSettings setValue:@"DATABASE" forKey:@"PROBLEM_PIPELINE"];
+        [self.LocalSettings setValue:NO forKey:@"IMPORT_CONTENT_ON_LAUNCH"];
+    }
     
     //load adaptive pipeline settings
     self.AdplineSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/settings/adpline-settings.plist")];
@@ -84,6 +100,8 @@
     NSNumber *relmode=[self.LocalSettings objectForKey:@"RELEASE_MODE"];
     if(relmode) if ([relmode boolValue]) self.ReleaseMode=YES;
     
+    [TestFlight passCheckpoint:@"SETTINGS_LOADED"];
+    
     //do cocos stuff
     //director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
     //[director_ enableRetinaDisplay:NO];
@@ -94,6 +112,7 @@
     [self.window setRootViewController:selectUserViewController];
     [self.window makeKeyAndVisible];
     
+    [TestFlight passCheckpoint:@"USER_LOGIN_INIT"];
     
     //no purpose in getting this -- it's not used
     //NSDictionary *launchOptions=launchOptionsCache;
@@ -170,10 +189,14 @@
     
     if(contentService.isUsingTestPipeline)
     {
+        [TestFlight passCheckpoint:@"PROCEEDING_TO_TOOLHOST_FROM_LOGIN"];
+        
         currentScene=[ToolHost scene];
     }
     else
     {
+        [TestFlight passCheckpoint:@"PROCEEDING_TO_JMAP_FROM_LOGIN"];
+        
         currentScene=[JMap scene];
     }
     [director_ pushScene:currentScene];
@@ -181,6 +204,8 @@
 
 -(void)returnToLogin
 {
+    [TestFlight passCheckpoint:@"RETURNING_TO_LOGIN"];
+    
     [self.window.rootViewController removeFromParentViewController];
     
     [[director_ runningScene] removeFromParentAndCleanup:YES];

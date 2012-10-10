@@ -15,6 +15,7 @@
 #import "FMDatabase.h"
 #import "FMDatabaseAdditions.h"
 #import "AFNetworking.h"
+#import "TestFlight.h"
 
 NSString * const kUsersWSBaseURL = @"http://u.zubi.me:3000";
 NSString * const kUsersWSSyncUsersPath = @"app-users/sync-users";
@@ -71,6 +72,8 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     }
     if (urId)
     {
+        TFLog(@"logged in with beluga user id: %@", urId);
+        
         [usersDatabase open];
         FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick, nodes_completed FROM users WHERE id = ?", urId];
         if ([rs next]) currentUser = [[self userFromCurrentRowOfResultSet:rs] retain];

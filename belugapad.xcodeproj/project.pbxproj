@@ -134,6 +134,7 @@
 		7F2F2D74158F754600862302 /* SGJmapNodeSelect.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2F2D73158F754600862302 /* SGJmapNodeSelect.m */; };
 		7F2F2D7815908FE000862302 /* LRAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2F2D7715908FE000862302 /* LRAnimator.m */; };
 		7F3367DD155FC38A00A2E656 /* DProblemParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F3367DC155FC38A00A2E656 /* DProblemParser.m */; };
+		7F35846A162588FB004067A1 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F358468162588FB004067A1 /* libTestFlight.a */; };
 		7F40D89A14FFD8BE006A3A55 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113CC14A9EE63001AF372 /* UIKit.framework */; };
 		7F40D89B14FFD8BE006A3A55 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5113CE14A9EE63001AF372 /* Foundation.framework */; };
 		7F40D8A114FFD8BE006A3A55 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7F40D89F14FFD8BE006A3A55 /* InfoPlist.strings */; };
@@ -671,6 +672,8 @@
 		7F2F2D7715908FE000862302 /* LRAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LRAnimator.m; sourceTree = "<group>"; };
 		7F3367DB155FC38A00A2E656 /* DProblemParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DProblemParser.h; sourceTree = "<group>"; };
 		7F3367DC155FC38A00A2E656 /* DProblemParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DProblemParser.m; sourceTree = "<group>"; };
+		7F358468162588FB004067A1 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
+		7F358469162588FB004067A1 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		7F40D89714FFD8BE006A3A55 /* GeneralTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GeneralTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F40D89E14FFD8BE006A3A55 /* GeneralTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GeneralTests-Info.plist"; sourceTree = "<group>"; };
 		7F40D8A014FFD8BE006A3A55 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1268,6 +1271,7 @@
 				7F5113CF14A9EE63001AF372 /* Foundation.framework in Frameworks */,
 				7F5113D114A9EE63001AF372 /* CoreGraphics.framework in Frameworks */,
 				7F96BDE4162178D100351CA0 /* libChipmunkPro-iPhone.a in Frameworks */,
+				7F35846A162588FB004067A1 /* libTestFlight.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1731,6 +1735,16 @@
 			name = ProblemTools;
 			sourceTree = "<group>";
 		};
+		7F358467162588FB004067A1 /* TestFlight */ = {
+			isa = PBXGroup;
+			children = (
+				7F358468162588FB004067A1 /* libTestFlight.a */,
+				7F358469162588FB004067A1 /* TestFlight.h */,
+			);
+			name = TestFlight;
+			path = libs/TestFlight;
+			sourceTree = "<group>";
+		};
 		7F40D89C14FFD8BE006A3A55 /* GeneralTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -2154,6 +2168,7 @@
 		7F5113E714A9EE63001AF372 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				7F358467162588FB004067A1 /* TestFlight */,
 				7F96BDB7162178D100351CA0 /* ChipmunkPro-iPhone */,
 				7F5F4D5B161906CE005F6311 /* CCPickerView */,
 				7FEB663515DEE68100F6E782 /* PRKit */,
@@ -3459,6 +3474,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/belugapad/libs/ChipmunkPro-iPhone\"",
+					"\"$(SRCROOT)/belugapad/libs/TestFlight\"",
 				);
 				OTHER_LDFLAGS = (
 					"-lxml2",
@@ -3498,6 +3514,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/belugapad/libs/ChipmunkPro-iPhone\"",
+					"\"$(SRCROOT)/belugapad/libs/TestFlight\"",
 				);
 				OTHER_LDFLAGS = (
 					"-lxml2",

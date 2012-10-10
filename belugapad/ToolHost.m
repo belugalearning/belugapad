@@ -1739,7 +1739,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         NSString *strThisNo;
         
         if(iThisNo==10)strThisNo=@".";
-        if(iThisNo==11)strThisNo=@"-";
+        else if(iThisNo==11)strThisNo=@"-";
         else strThisNo=[NSString stringWithFormat:@"%d", iThisNo];
         //strEval=[NSString stringWithFormat:@"%d", iThisNo];
         

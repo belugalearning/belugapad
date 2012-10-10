@@ -32,6 +32,7 @@
 #import "SGBtxeRow.h"
 #import "SGBtxeProtocols.h"
 #import "DebugViewController.h"
+#import "TestFlight.h"
 
 #define HD_HEADER_HEIGHT 65.0f
 #define HD_BUTTON_INSET 40.0f
@@ -96,6 +97,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         
         multiplierStage=1;
         scoreMultiplier=1;
+        
+        [TestFlight passCheckpoint:@"STARTING_TOOLHOST"];
         
         //setup layer sequence
         backgroundLayer=[[CCLayer alloc] init];
@@ -167,6 +170,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [self schedule:@selector(doUpdateOnSecond:) interval:1.0f];
         [self schedule:@selector(doUpdateOnQuarterSecond:) interval:1.0f/40.0f];
         
+        [TestFlight passCheckpoint:@"STARTED_TOOLHOST"];
     }
     
     return self;
@@ -620,6 +624,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     else
     {
+        [TestFlight passCheckpoint:@"PIPELINE_COMPLETE_LEAVING_TO_JMAP"];
+        
         //no more problems in this sequence, bail to menu
         
         //todo: completion shouldn't be assumed here -- we can get here by progressing into an inserter that produces no viable insertions
@@ -673,6 +679,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [loggingService logEvent:BL_PA_START withAdditionalData:[NSDictionary dictionaryWithObject:pdefString forKey:@"pdef"]];
     
     NSString *toolKey=[pdef objectForKey:TOOL_KEY];
+    
+    TFLog(@"starting a %@ problem", toolKey);
     
     if(currentTool)
     {
@@ -829,6 +837,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void) resetProblem
 {
     //if(problemDescLabel)[problemDescLabel removeFromParentAndCleanup:YES];
+    
+    TFLog(@"resetting problem");
     
     if(evalMode==kProblemEvalOnCommit)
     {
@@ -1003,6 +1013,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)returnToMenu
 {
+    [TestFlight passCheckpoint:@"QUITTING_TOOLHOST_FOR_JMAP"];
+    
     [[CCDirector sharedDirector] replaceScene:[JMap scene]];
 }
 
@@ -1424,11 +1436,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         npMaxNoInDropbox=[[pdefNP objectForKey:MAX_NUMBERS]intValue];
     else
         npMaxNoInDropbox=4;
-
+    
     numberPickerButtons=[[NSMutableArray alloc]init];
     numberPickedSelection=[[NSMutableArray alloc]init];
     numberPickedValue=[[NSMutableArray alloc]init];
-        
+    
     nPicker=[[CCNode alloc]init];
     [nPicker setPosition:ccp(npOriginX,npOriginY)];
     
@@ -1439,7 +1451,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [self setProblemDescription: [pdefNP objectForKey:NUMBER_PICKER_DESCRIPTION]];
     
     //[numberPickerLayer addChild:problemDescLabel];
-
+    
     // if we have the dropbox defined, then we need to set it up here
     npDropbox=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberpicker/np_dropbox.png")];
     [npDropbox setPosition:ccp(cx,cy+50)];
@@ -1466,7 +1478,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
             h++;
-        }        
+        }
         h=0;
         for(int i=6;i<9;i++)
         {
@@ -1535,7 +1547,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             [nPicker addChild:curSprite];
             [numberPickerButtons addObject:curSprite];
             h++;
-        }    
+        }
     }
     
     // create a picker bounding box so we can drag items back off to it later
@@ -1609,7 +1621,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
                 
                 // log pickup from register/dropbox
                 [loggingService logEvent:BL_PA_NP_NUMBER_FROM_PICKER
-                    withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:i] forKey:@"number"]];
+                      withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:i] forKey:@"number"]];
                 
                 // check if we're animating our buttons or fading them in
                 if(animatePickedButtons) {
@@ -1618,10 +1630,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
                     
                     if(i==11)
                     {
-                    [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge),cy+50)]];                        
+                        [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge),cy+50)]];
                     }
                     else {
-                    [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+([numberPickedSelection count]*75),cy+50)]];
+                        [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+([numberPickedSelection count]*75),cy+50)]];
                     }
                 }
                 else {
@@ -1631,11 +1643,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
                     }
                     else
                     {
-                        [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge),cy+50)]];   
+                        [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge),cy+50)]];
                     }
-
+                    
                     [curSprite runAction:[CCFadeIn actionWithDuration:kNumberPickerNumberFadeInTime]];
-
+                    
                 }
                 
                 // then add them to our selection and value arrays
@@ -1660,14 +1672,17 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     for(int i=0;i<[numberPickedSelection count];i++)
     {
         CCSprite *s=[numberPickedSelection objectAtIndex:i];
+        int n=[[numberPickedValue objectAtIndex:i]intValue];
         if(CGRectContainsPoint(s.boundingBox, origloc))
         {
             [self playAudioPress];
             [loggingService logEvent:BL_PA_NP_NUMBER_FROM_REGISTER
-                withAdditionalData:[NSDictionary dictionaryWithObject:[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:s]]
-                                                               forKey:@"number"]];
+                  withAdditionalData:[NSDictionary dictionaryWithObject:[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:s]] forKey:@"number"]];
             npMove=s;
             npMoveStartPos=npMove.position;
+            if(n==11)canMoveNumber=NO;
+            else canMoveNumber=YES;
+            
             return;
         }
     }
@@ -1677,6 +1692,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)checkNumberPickerTouchOnRegister:(CGPoint)location
 {
+    if(!canMoveNumber)return;
     for(int i=0;i<[numberPickedSelection count];i++)
     {
         CCSprite *s=[numberPickedSelection objectAtIndex:i];
@@ -1686,7 +1702,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             NSLog(@"hit block index %d, index of moving block %d", i, [numberPickedSelection indexOfObject:npMove]);
             // log pickup from register/dropbox
             [loggingService logEvent:BL_PA_NP_NUMBER_FROM_REGISTER
-                withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:i] forKey:@"number"]];
+                  withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:i] forKey:@"number"]];
             
             CCSprite *repSprite=[numberPickedSelection objectAtIndex:i];
             [repSprite runAction:[CCMoveTo actionWithDuration:0.2 position:npMoveStartPos]];
@@ -1707,9 +1723,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     
     if(!hasMovedNumber) hasMovedNumber=YES;
-
+    
     npMove.position=location;
-
+    
 }
 
 -(void)evalNumberPicker
@@ -1752,7 +1768,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         CCSprite *s=[numberPickedSelection objectAtIndex:i];
         NSLog(@"sprite %d position %@", i, NSStringFromCGPoint(s.position));
         [s setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(s.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+(i*75),cy+50)];
-
+        
     }
 }
 -(void)tearDownNumberPicker

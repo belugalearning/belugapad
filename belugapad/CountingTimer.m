@@ -326,6 +326,7 @@
     if(isWinning)
     {
         expired=YES;
+        [currentNumber setString:[NSString stringWithFormat:@"%d",solutionNumber]];
         [toolHost doWinning];
     }
     else {

@@ -149,10 +149,15 @@
     if([pdef objectForKey:ANCHOR_SPACE])
         spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
     else 
-        spaceBetweenAnchors=85;
+        spaceBetweenAnchors=74;
     
+    if(spaceBetweenAnchors==85)
+        spaceBetweenAnchors=74;
+
     if(spaceBetweenAnchors==80)
         spaceBetweenAnchors=74;
+
+
     
     startX=[[pdef objectForKey:START_X] intValue];
     startY=[[pdef objectForKey:START_Y] intValue];

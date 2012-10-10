@@ -56,8 +56,7 @@ uint const kMaxConsecutiveSendFails = 3;
 -(void)sendBatchData:(NSData*)batchData withCompletionBlock:(void (^)(BL_SEND_LOG_STATUS status))onComplete;
 -(BL_SEND_LOG_STATUS)validateResponse:(id)result
                         forClientData:(NSData*)cData;
--(void)writePAPollDoc;
--(void)writePATouchDoc;
+
 -(NSString*)generateUUID;
 
 @end

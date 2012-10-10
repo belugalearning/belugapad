@@ -78,6 +78,11 @@
     
     //load local settings
     self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/settings/local-settings.plist")];
+    if ((BOOL)[self.LocalSettings valueForKey:@"RELEASE_MODE"])
+    {
+        [self.LocalSettings setValue:@"DATABASE" forKey:@"PROBLEM_PIPELINE"];
+        [self.LocalSettings setValue:NO forKey:@"IMPORT_CONTENT_ON_LAUNCH"];
+    }
     
     //load adaptive pipeline settings
     self.AdplineSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/settings/adpline-settings.plist")];

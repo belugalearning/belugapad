@@ -115,7 +115,7 @@
             [anchorLayer setPosition:ccp(anchorLayer.position.x-10,anchorLayer.position.y)];
     }
     
-    if(!sumWheel && [numberWheels count]==2)
+    if(!sumWheel && [numberWheels count]>=2)
         [self createSumWheel];
 }
 
@@ -143,6 +143,7 @@
     selectWholeShape=[[pdef objectForKey:SELECT_WHOLE_SHAPE]boolValue];
     useShapeGroups=[[pdef objectForKey:USE_SHAPE_GROUPS]boolValue];
     shapeGroupSize=[[pdef objectForKey:SHAPE_GROUP_SIZE]floatValue];
+    shapeBaseSize=[[pdef objectForKey:SHAPE_BASE_SIZE]floatValue];
     disableDrawing=[[pdef objectForKey:DISABLE_DRAWING]boolValue];
     
     if([pdef objectForKey:ANCHOR_SPACE])
@@ -616,48 +617,118 @@
 
 -(void)createShapeGroupAndShapesWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled
 {
-
-    float shapesRequired=[anchors count]/shapeGroupSize;
-    float full=(int)shapesRequired;
-    float remainder=shapesRequired-full;
-    
-    if(remainder>0.0f)
-        shapesRequired+=1;
-    
-    NSLog(@"shapes required %d - anchor count %d - remainder %g", (int)shapesRequired, [anchors count], remainder);
-    
-    NSMutableArray *shapeAnchors=[[[NSMutableArray alloc]init]autorelease];
-    
-    for(int i=0;i<(int)shapesRequired;i++)
-    {
-        NSMutableArray *shape=[[NSMutableArray alloc]init];
-        [shapeAnchors addObject:shape];
-    }
-    
-    
-    for(int i=0;i<[anchors count];i++)
-    {
-        int thisArray=i/shapeGroupSize;
-        DWDotGridAnchorGameObject *a=[anchors objectAtIndex:i];
-        [[shapeAnchors objectAtIndex:thisArray] addObject:a];
-    }
-    
-    DWDotGridShapeGroupGameObject *shapegrp=[DWDotGridShapeGroupGameObject alloc];
-    [gw populateAndAddGameObject:shapegrp withTemplateName:@"TdotgridShapeGroup"];
-    
-    for(NSMutableArray *a in shapeAnchors)
-    {
-        DWDotGridShapeGameObject *newShape=[self createShapeWithAnchorPoints:a andPrecount:nil andDisabled:NO andGroup:shapegrp];
+    if(shapeBaseSize>0){
+        int startXPos=0;
+        int endXPos=0;
+        int startYPos=0;
+        int endYPos=0;
+        int lengthOfX=0;
+        int lengthOfY=0;
+        BOOL first=NO;
+        NSMutableArray *theseShapes=[[NSMutableArray alloc]init];
         
-        [shapegrp.shapesInMe addObject:newShape];
+        for(DWDotGridAnchorGameObject *a in anchors)
+        {
+            if(!first)
+            {
+                startXPos=a.myXpos;
+                startYPos=a.myYpos;
+                endXPos=startXPos;
+                endYPos=startYPos;
+                first=YES;
+            }
+            else
+            {
+                if(a.myXpos<startXPos)
+                    startXPos=a.myXpos;
+                if(a.myYpos<startYPos)
+                    startXPos=a.myYpos;
+                if(a.myXpos>endXPos)
+                    endXPos=a.myXpos;
+                if(a.myYpos>endYPos)
+                    endYPos=a.myYpos;
+            }
+        }
         
-        if(newShape.resizeHandle && !shapegrp.resizeHandle)
-            shapegrp.resizeHandle=newShape.resizeHandle;
+        lengthOfX=endXPos-startXPos;
+        lengthOfY=endYPos-startYPos;
+        
+        if(lengthOfX>=shapeBaseSize)
+        {
+            float shapesRequired=lengthOfX/shapeBaseSize;
+            float full=(int)shapesRequired;
+            float remainder=shapesRequired-full;
             
+            if(remainder>0.0f)
+                shapesRequired+=1;
+            
+            for(int i=0;i<shapesRequired;i++)
+            {
+                NSMutableArray *thisShape=[[NSMutableArray alloc]init];
+                [theseShapes addObject:thisShape];
+            }
+            
+            
+
+//            for(DWDotGridAnchorGameObject *a in anchors)
+//            {
+//                if(a.myXpos>=startXPos && a.myXpos<=startXPos+shapeBaseSize)
+//                    [thisShap addObject:a];
+//            }
+            
+        }
+        
+        if(lengthOfY>=shapeBaseSize)
+        {
+            
+        }
+        
+        NSLog(@"lengthOfX=%d, lengthOfY=%d, startXPos=%d, endXPos=%d, startYPos=%d, endYPos=%d", lengthOfX, lengthOfY, startXPos, endXPos, startYPos, endYPos);
     }
     
-    shapegrp.firstAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
-    shapegrp.lastAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+    if(shapeGroupSize>0){
+        float shapesRequired=[anchors count]/shapeGroupSize;
+        float full=(int)shapesRequired;
+        float remainder=shapesRequired-full;
+        
+        if(remainder>0.0f)
+            shapesRequired+=1;
+        
+        NSLog(@"shapes required %d - anchor count %d - remainder %g", (int)shapesRequired, [anchors count], remainder);
+        
+        NSMutableArray *shapeAnchors=[[[NSMutableArray alloc]init]autorelease];
+        
+        for(int i=0;i<(int)shapesRequired;i++)
+        {
+            NSMutableArray *shape=[[NSMutableArray alloc]init];
+            [shapeAnchors addObject:shape];
+        }
+        
+        
+        for(int i=0;i<[anchors count];i++)
+        {
+            int thisArray=i/shapeGroupSize;
+            DWDotGridAnchorGameObject *a=[anchors objectAtIndex:i];
+            [[shapeAnchors objectAtIndex:thisArray] addObject:a];
+        }
+        
+        DWDotGridShapeGroupGameObject *shapegrp=[DWDotGridShapeGroupGameObject alloc];
+        [gw populateAndAddGameObject:shapegrp withTemplateName:@"TdotgridShapeGroup"];
+        
+        for(NSMutableArray *a in shapeAnchors)
+        {
+            DWDotGridShapeGameObject *newShape=[self createShapeWithAnchorPoints:a andPrecount:nil andDisabled:NO andGroup:shapegrp];
+            
+            [shapegrp.shapesInMe addObject:newShape];
+            
+            if(newShape.resizeHandle && !shapegrp.resizeHandle)
+                shapegrp.resizeHandle=newShape.resizeHandle;
+                
+        }
+        
+        shapegrp.firstAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
+        shapegrp.lastAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+    }
 }
 
 -(DWDotGridShapeGameObject*)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled
@@ -876,6 +947,28 @@
 //    [rsAnchor release];
 }
 
+-(void)removeDeadWheel:(DWNWheelGameObject*)thisWheel
+{
+    if(sumWheel==thisWheel)
+        sumWheel=nil;
+    
+    [numberWheels removeObject:thisWheel];
+    
+    for(int i=0;i<[numberWheels count];i++)
+    {
+        DWNWheelGameObject *w=[numberWheels objectAtIndex:i];
+        w.Position=ccp(lx-140,(ly-120)-100*i);
+    }
+    
+    if([numberWheels count]<2 && sumWheel)
+    {
+        DWNWheelGameObject *tempSum=sumWheel;
+        [tempSum handleMessage:kDWdismantle];
+        sumWheel=nil;
+        [self removeDeadWheel:tempSum];
+    }
+}
+
 -(void)updateSumWheel
 {
     if([numberWheels count]<2)return;
@@ -905,7 +998,7 @@
 
 -(void)createSumWheel
 {
-    if(![numberWheels count]==2)
+    if(![numberWheels count]>=2)
         return;
     
     if(sumWheel)return;

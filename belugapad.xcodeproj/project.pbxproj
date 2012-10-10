@@ -74,6 +74,7 @@
 		554FB01A15F4AD59006F6D3A /* SGFBlockBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 554FB01915F4AD59006F6D3A /* SGFBlockBlock.m */; };
 		554FB01D15F4AD6C006F6D3A /* SGFBlockBubble.m in Sources */ = {isa = PBXBuildFile; fileRef = 554FB01C15F4AD6C006F6D3A /* SGFBlockBubble.m */; };
 		554FB02015F4AD77006F6D3A /* SGFBlockGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 554FB01F15F4AD77006F6D3A /* SGFBlockGroup.m */; };
+		55649F6D16258D720043092B /* BDotGridShapeGroupObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55649F6C16258D720043092B /* BDotGridShapeGroupObjectRender.m */; };
 		556A2D6015A7064500F4B825 /* SGDtoolBlockPairing.m in Sources */ = {isa = PBXBuildFile; fileRef = 556A2D5F15A7064500F4B825 /* SGDtoolBlockPairing.m */; };
 		5571BADD14E406220053A62B /* PlaceValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BADC14E406220053A62B /* PlaceValue.m */; };
 		5571BAE114E406630053A62B /* ToolConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE014E406630053A62B /* ToolConsts.m */; };
@@ -577,6 +578,8 @@
 		554FB01E15F4AD77006F6D3A /* SGFBlockGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBlockGroup.h; sourceTree = "<group>"; };
 		554FB01F15F4AD77006F6D3A /* SGFBlockGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBlockGroup.m; sourceTree = "<group>"; };
 		554FB02115F4ADC5006F6D3A /* SGFBlockObjectProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SGFBlockObjectProtocols.h; sourceTree = "<group>"; };
+		55649F6B16258D720043092B /* BDotGridShapeGroupObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDotGridShapeGroupObjectRender.h; sourceTree = "<group>"; };
+		55649F6C16258D720043092B /* BDotGridShapeGroupObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDotGridShapeGroupObjectRender.m; sourceTree = "<group>"; };
 		556A2D5E15A7064500F4B825 /* SGDtoolBlockPairing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGDtoolBlockPairing.h; sourceTree = "<group>"; };
 		556A2D5F15A7064500F4B825 /* SGDtoolBlockPairing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGDtoolBlockPairing.m; sourceTree = "<group>"; };
 		5571BADB14E406220053A62B /* PlaceValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceValue.h; sourceTree = "<group>"; };
@@ -1605,6 +1608,8 @@
 		55C5F72B15388A84009D8906 /* DotGrid */ = {
 			isa = PBXGroup;
 			children = (
+				55649F6B16258D720043092B /* BDotGridShapeGroupObjectRender.h */,
+				55649F6C16258D720043092B /* BDotGridShapeGroupObjectRender.m */,
 				55C5F72C1538A8F2009D8906 /* BDotGridAnchorObjectRender.h */,
 				55C5F72D1538A8F2009D8906 /* BDotGridAnchorObjectRender.m */,
 				55C5F72E1538A8F2009D8906 /* BDotGridAnchorTouch.h */,
@@ -3418,6 +3423,7 @@
 				7F96BD881620A8F800351CA0 /* DebugViewController.m in Sources */,
 				559AD91F16231A0600CE475E /* DWNWheelGameObject.m in Sources */,
 				559AD92216231A4000CE475E /* BNWheelObjectRender.m in Sources */,
+				55649F6D16258D720043092B /* BDotGridShapeGroupObjectRender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

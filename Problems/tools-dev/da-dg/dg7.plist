@@ -22,10 +22,10 @@
 	<true/>
 	<key>SHOW_DRAGGABLE_BLOCK</key>
 	<true/>
-	<key>SHAPE_GROUP_SIZE</key>
+	<key>SHAPE_BASE_SIZE</key>
 	<integer>10</integer>
 	<key>USE_SHAPE_GROUPS</key>
-	<false/>
+	<true/>
 	<key>SELECT_WHOLE_SHAPE</key>
 	<false/>
 	<key>SHOW_NUMBERWHEEL_FOR_SHAPES</key>

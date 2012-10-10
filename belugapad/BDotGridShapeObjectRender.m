@@ -163,6 +163,18 @@
             [s.resizeHandle handleMessage:kDWdismantle];
             ((DWDotGridHandleGameObject*)s.resizeHandle).myShape=nil;
         }
+        if(s.MyNumberWheel)
+        {
+            [s.MyNumberWheel handleMessage:kDWdismantle];
+            
+            DWNWheelGameObject *w=(DWNWheelGameObject*)s.MyNumberWheel;
+            
+            if(w.CountBubble)
+            {
+                
+            }
+        }
+        
         [s.myHeight removeFromParentAndCleanup:YES];
         [s.myWidth removeFromParentAndCleanup:YES];
         [gameWorld delayRemoveGameObject:s];

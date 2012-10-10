@@ -80,7 +80,8 @@ typedef enum {
     BOOL hitDragBlock;
     
     BOOL useShapeGroups;
-    float shapeGroupSize;
+    int shapeGroupSize;
+    int shapeBaseSize;
     
     BOOL movingLayer;
     
@@ -107,6 +108,7 @@ typedef enum {
 -(DWDotGridShapeGameObject*)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled;
 -(DWDotGridShapeGameObject*)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled andGroup:(DWGameObject*)shapeGroup;
 -(void)modifyThisShape:(DWDotGridShapeGameObject*)thisShape withTheseAnchors:(NSArray*)anchors;
+-(void)removeDeadWheel:(DWNWheelGameObject*)thisWheel;
 -(void)updateSumWheel;
 -(void)createSumWheel;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;

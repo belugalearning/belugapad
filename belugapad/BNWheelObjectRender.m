@@ -98,6 +98,11 @@
             }
         }
         
+        if(w.HasCountBubble)
+        {
+            [w.CountBubbleLabel setString:[NSString stringWithFormat:@"%d",[self returnPickerNumber]]];
+        }
+        
     }
     
     if(messageType==kDWupdateLabels)
@@ -109,6 +114,13 @@
     if(messageType==kDWdismantle)
     {
         [[w.mySprite parent] removeChild:w.mySprite cleanup:YES];
+        [[w.Label parent] removeChild:w.Label cleanup:YES];
+        [[w.CountBubble parent] removeChild:w.CountBubble cleanup:YES];
+        
+        if([gameWorld.GameScene isKindOfClass:[DotGrid class]])
+            [(DotGrid*)gameWorld.GameScene removeDeadWheel:w];
+        
+        [w.pickerView removeFromParentAndCleanup:YES];
     }
     
     

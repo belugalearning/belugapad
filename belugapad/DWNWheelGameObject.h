@@ -23,5 +23,10 @@
 @property int InputValue;
 @property int OutputValue;
 @property (retain) CCLabelTTF *Label;
+@property BOOL HasCountBubble;
+@property CGPoint CountBubblePosition;
+@property (retain) CCSprite *CountBubble;
+@property (retain) CCLabelTTF *CountBubbleLabel;
+@property (retain) CCLayer *CountBubbleRenderLayer;
 
 @end

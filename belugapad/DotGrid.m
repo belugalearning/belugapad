@@ -114,6 +114,9 @@
         if(isMovingRight)
             [anchorLayer setPosition:ccp(anchorLayer.position.x-10,anchorLayer.position.y)];
     }
+    
+    if(!sumWheel && [numberWheels count]==2)
+        [self createSumWheel];
 }
 
 
@@ -147,8 +150,8 @@
     else 
         spaceBetweenAnchors=85;
     
-    if(spaceBetweenAnchors==85)
-        spaceBetweenAnchors=80;
+    if(spaceBetweenAnchors==80)
+        spaceBetweenAnchors=74;
     
     startX=[[pdef objectForKey:START_X] intValue];
     startY=[[pdef objectForKey:START_Y] intValue];
@@ -161,7 +164,8 @@
    
     
     showNumberWheel=[[pdef objectForKey:SHOW_NUMBERWHEEL_FOR_SHAPES]boolValue];
-
+    showCountBubble=[[pdef objectForKey:SHOW_COUNT_BUBBLE]boolValue];
+    
     if(showNumberWheel)
         numberWheels=[[NSMutableArray alloc]init];
     
@@ -745,6 +749,7 @@
     
     if(showNumberWheel)
     {
+        
         DWNWheelGameObject *w=[DWNWheelGameObject alloc];
         [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
         
@@ -753,11 +758,16 @@
         w.Position=ccp(lx-140,(ly-120)-100*[numberWheels count]);
         w.AssociatedGO=shape;
         w.SpriteFileName=@"/images/numberwheel/3slots.png";
+        w.HasCountBubble=showCountBubble;
+        w.CountBubbleRenderLayer=anchorLayer;
         [w handleMessage:kDWsetupStuff];
         
         shape.MyNumberWheel=w;
         
-        [numberWheels addObject:w];
+        if([numberWheels count]<2)
+            [numberWheels addObject:w];
+        else
+            [numberWheels insertObject:w atIndex:[numberWheels count]-1];
     }
     
     [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
@@ -864,6 +874,57 @@
     
 //    [removeObjects release];
 //    [rsAnchor release];
+}
+
+-(void)updateSumWheel
+{
+    if([numberWheels count]<2)return;
+    
+    NSString *str=@"";
+    int totalVal=0;
+    
+    for(int i=0;i<[numberWheels count]-1;i++)
+    {
+        DWNWheelGameObject *w=[numberWheels objectAtIndex:i];
+        if(w==sumWheel)continue;
+        str=@"";
+        
+        for(NSNumber *n in w.pickerViewSelection)
+        {
+            str=[NSString stringWithFormat:@"%@%d", str, [n intValue]];
+            NSLog(@"str val %@", str);
+        }
+        
+        totalVal+=[str intValue];
+        NSLog(@"(%d) totalVal %d", i, totalVal);
+    }
+    
+    sumWheel.InputValue=totalVal;
+    [sumWheel handleMessage:kDWupdateObjectData];
+}
+
+-(void)createSumWheel
+{
+    if(![numberWheels count]==2)
+        return;
+    
+    if(sumWheel)return;
+    
+    DWNWheelGameObject *w=[DWNWheelGameObject alloc];
+    [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
+    
+    w.RenderLayer=renderLayer;
+    w.Components=3;
+    w.Position=ccp(lx-140,(ly-120)-100*[numberWheels count]);
+    w.SpriteFileName=@"/images/numberwheel/3slots.png";
+    w.HasCountBubble=NO;
+    w.Label=[CCLabelTTF labelWithString:@"Total" fontName:SOURCE fontSize:20.0f];
+    [w.RenderLayer addChild:w.Label];
+    [w handleMessage:kDWsetupStuff];
+    [w handleMessage:kDWupdateLabels];
+    [numberWheels addObject:w];
+    
+    sumWheel=w;
 }
 
 #pragma mark - touch events
@@ -1073,6 +1134,7 @@
             [self checkAnchorsOfExistingShapeGroup:(DWDotGridShapeGroupGameObject*)cHandle.myShape.shapeGroup];
     }
     
+    [self updateSumWheel];
     
     gw.Blackboard.FirstAnchor=nil;
     gw.Blackboard.LastAnchor=nil;

@@ -15,6 +15,10 @@
 #import "DWGameWorld.h"
 #import "AppDelegate.h"
 #import "UsersService.h"
+#import "DotGrid.h"
+#import "DWDotGridAnchorGameObject.h"
+#import "DWDotGridShapeGameObject.h"
+#import "DWDotGridTileGameObject.h"
 
 //CCPickerView
 #define kComponentWidth 54
@@ -53,12 +57,15 @@
     {
         if(!w.pickerView)
         {
-            [self setupNumberWheel];
+            [self setSprite];
         }
     }
     
     if(messageType==kDWupdateObjectData)
     {
+        
+        if(w.InputValue==[self returnPickerNumber])return;
+        
         NSString *strInput=[NSString stringWithFormat:@"%d", w.InputValue];
         
 //        [w.pickerViewSelection removeAllObjects];
@@ -76,27 +83,27 @@
             [w.pickerView spinComponent:thisComponent speed:15 easeRate:5 repeat:1 stopRow:thisInt];
             thisComponent--;
         }
-                NSLog(@"component %d is end of input", thisComponent);        
+      
         if([strInput length]<w.Components)
         {
             int untouchedComponents=0;
             untouchedComponents=(w.Components)-[strInput length];
             
-            NSLog(@"components to update %d", untouchedComponents);
             
             for(int i=untouchedComponents;i>0;i--)
             {
-                NSLog(@"switch component %d to 0", thisComponent);
                 [w.pickerViewSelection replaceObjectAtIndex:thisComponent withObject:[NSNumber numberWithInt:0]];
                 [w.pickerView spinComponent:thisComponent speed:15 easeRate:5 repeat:1 stopRow:0];
                 thisComponent--;
             }
         }
+        
     }
     
     if(messageType==kDWupdateLabels)
     {
-        [w.Label setPosition:ccp(w.Position.x-150,w.Position.y)];
+        if(w.Label)[w.Label setPosition:ccp(w.Position.x-150,w.Position.y)];
+        if(w.CountBubble)[w.CountBubble setPosition:[self createCountBubblePos]];
     }
     
     if(messageType==kDWdismantle)
@@ -111,13 +118,16 @@
 
 -(void)setSprite
 {
-    NSString *spriteFileName=[[[NSString alloc]init] autorelease];
-    
-    if(w.SpriteFileName)
-        spriteFileName=w.SpriteFileName;
-    
-    else
-        spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/slice.png"];
+
+    if(w.HasCountBubble)
+    {
+        w.CountBubble=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/countbubble.png")];
+        [w.CountBubble setPosition:[self createCountBubblePos]];
+        w.CountBubbleLabel=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:25.0f];
+        [w.CountBubbleLabel setPosition:ccp(49,18)];
+        [w.CountBubbleRenderLayer addChild:w.CountBubble];
+        [w.CountBubble addChild:w.CountBubbleLabel];
+    }
     
     [self setupNumberWheel];
     
@@ -160,6 +170,42 @@
     
     
     [w.RenderLayer addChild:pickerView z:20];
+}
+
+-(CGPoint)createCountBubblePos
+{
+    if(w.AssociatedGO)
+    {
+        DWDotGridShapeGameObject *s=nil;
+        
+        if([w.AssociatedGO isKindOfClass:[DWDotGridShapeGameObject class]])
+            s=(DWDotGridShapeGameObject*)w.AssociatedGO;
+        CGPoint total=CGPointZero;
+        float lowest=0.0f;
+        int tileSize=0;
+        BOOL setLowest=NO;
+        
+        for (DWDotGridTileGameObject *t in s.tiles) {
+            total=[BLMath AddVector:t.Position toVector:total];
+            if(!setLowest){
+                lowest=t.Position.y;
+                tileSize=t.tileSize;
+                setLowest=YES;
+            }
+            else if(setLowest && t.Position.y<lowest)
+            {
+                lowest=t.Position.y;
+            }
+        }
+        
+        CGPoint avgPos=ccp(total.x/[s.tiles count], lowest-tileSize);
+        
+        return avgPos;
+    }
+    else
+    {
+        return CGPointZero;
+    }
 }
 
 #pragma mark CCPickerView delegate methods
@@ -249,6 +295,12 @@
     {
         w.OutputValue=[self returnPickerNumber];
         [w.AssociatedGO handleMessage:kDWupdateObjectData];
+    }
+    
+    if([gameWorld.GameScene isKindOfClass:[DotGrid class]])
+    {
+        DotGrid *dgScene=(DotGrid*)gameWorld.GameScene;
+        [dgScene updateSumWheel];
     }
     
     NSLog(@"didSelect row = %d, component = %d, totSum = %d", row, component, [self returnPickerNumber]);

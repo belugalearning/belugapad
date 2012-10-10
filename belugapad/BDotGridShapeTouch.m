@@ -97,8 +97,13 @@
                 }
                 if(shape.MyNumberWheel)
                 {
-                    ((DWNWheelGameObject*)shape.MyNumberWheel).InputValue=[shape.tiles count];
-                    [shape.MyNumberWheel handleMessage:kDWupdateObjectData];
+                    DWNWheelGameObject *w=(DWNWheelGameObject*)shape.MyNumberWheel;
+                    
+                    w.InputValue=[shape.tiles count];
+                    [w handleMessage:kDWupdateObjectData];
+                    
+                    if(w.CountBubbleLabel)
+                        [w.CountBubbleLabel setString:[NSString stringWithFormat:@"%d", [shape.tiles count]]];
                 }
                 return;
             }
@@ -112,8 +117,12 @@
                 }
                 if(shape.MyNumberWheel)
                 {
-                    ((DWNWheelGameObject*)shape.MyNumberWheel).InputValue=0;
-                    [shape.MyNumberWheel handleMessage:kDWupdateObjectData];
+                    DWNWheelGameObject *w=(DWNWheelGameObject*)shape.MyNumberWheel;
+                    w.InputValue=0;
+                    [w handleMessage:kDWupdateObjectData];
+                    
+                    if(w.CountBubbleLabel)
+                        [w.CountBubbleLabel setString:@"0"];
                 }
                 return;
             }
@@ -156,9 +165,12 @@
                     if(t.Selected)
                         theValue++;
                 }
+                DWNWheelGameObject *w=(DWNWheelGameObject*)shape.MyNumberWheel;
+                w.InputValue=theValue;
+                [w handleMessage:kDWupdateObjectData];
                 
-                ((DWNWheelGameObject*)shape.MyNumberWheel).InputValue=theValue;
-                [shape.MyNumberWheel handleMessage:kDWupdateObjectData];
+                if(w.CountBubbleLabel)
+                    [w.CountBubbleLabel setString:[NSString stringWithFormat:@"%d", theValue]];
             }
         }
     }

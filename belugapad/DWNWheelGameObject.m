@@ -24,7 +24,11 @@
 @synthesize InputValue;
 @synthesize OutputValue;
 @synthesize Label;
-
+@synthesize HasCountBubble;
+@synthesize CountBubblePosition;
+@synthesize CountBubble;
+@synthesize CountBubbleLabel;
+@synthesize CountBubbleRenderLayer;
 
 -(void)dealloc
 {

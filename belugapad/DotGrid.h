@@ -12,6 +12,7 @@
 
 @class DWDotGridShapeGameObject;
 @class DWDotGridShapeGroupGameObject;
+@class DWNWheelGameObject;
 
 typedef enum {
     kAnyStartAnchorValid=0,
@@ -68,6 +69,7 @@ typedef enum {
     BOOL renderWidthHeightOnShape;
     BOOL selectWholeShape;
     BOOL showNumberWheel;
+    BOOL showCountBubble;
     BOOL isMovingLeft;
     BOOL isMovingRight;
     BOOL isMovingUp;
@@ -86,6 +88,8 @@ typedef enum {
     NSDictionary *hiddenRows;
     NSMutableArray *numberWheels;
     
+    DWNWheelGameObject *sumWheel;
+    
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
     
@@ -103,6 +107,8 @@ typedef enum {
 -(DWDotGridShapeGameObject*)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled;
 -(DWDotGridShapeGameObject*)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled andGroup:(DWGameObject*)shapeGroup;
 -(void)modifyThisShape:(DWDotGridShapeGameObject*)thisShape withTheseAnchors:(NSArray*)anchors;
+-(void)updateSumWheel;
+-(void)createSumWheel;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

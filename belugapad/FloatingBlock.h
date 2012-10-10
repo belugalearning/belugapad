@@ -43,6 +43,8 @@ typedef enum {
     
     // showing stuff?
     BOOL showingOperatorBubble;
+    BOOL setupNumberWheel;
+    float timeToSetupNumberWheel;
     
     // and a default layer
     CCLayer *renderLayer;

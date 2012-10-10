@@ -109,6 +109,17 @@
 {
     [gw doUpdate:delta];
     
+    if(setupNumberWheel)
+    {
+        timeToSetupNumberWheel-=delta;
+        if(timeToSetupNumberWheel<0)
+        {
+            setupNumberWheel=NO;
+            [self setupNumberWheel];
+            [pickerView spinComponent:0 speed:25 easeRate:5 repeat:3 stopRow:defaultBlocksFromPipe];
+        }
+    }
+    
 }
 
 -(void)draw
@@ -213,8 +224,9 @@
         
         if(showMultipleControls)
         {
-            [self setupNumberWheel];
-            [pickerView spinComponent:0 speed:25 easeRate:5 repeat:3 stopRow:defaultBlocksFromPipe];
+            timeToSetupNumberWheel=3.2f;
+            setupNumberWheel=YES;
+
 //            newPipeLabel=[CCLabelTTF labelWithString:@"" fontName:@"Chango" fontSize:50.0f];
 //            [newPipeLabel setPosition:ccp(100, 550)];
 //            [newPipeLabel setOpacity:0];

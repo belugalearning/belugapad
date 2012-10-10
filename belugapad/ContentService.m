@@ -84,7 +84,6 @@
     {
         fm = [NSFileManager defaultManager];
         
-        NSString *docsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         NSString *libraryDir=[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         
         contentDir = [[libraryDir stringByAppendingPathComponent:@"content"] retain];

@@ -1251,22 +1251,39 @@ static float kTimeToCageShake=7.0f;
 {
     if(!autoBaseSelection)return;
     
-    NSMutableArray *SelectedObjects=gw.Blackboard.SelectedObjects;
-    if([SelectedObjects count]>0){
+    //deselect anything currently selected
+    for (DWPlaceValueBlockGameObject *block in [NSArray arrayWithArray:gw.Blackboard.SelectedObjects]) {
         
-        DWPlaceValueBlockGameObject *thisB=[SelectedObjects objectAtIndex:0];
         float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] floatValue];
-        if(thisB.ObjectValue==colVal)return;
+        if(colVal==block.ObjectValue) return;
         
-        for(int i=0;i<[SelectedObjects count];i++)
-        {
-            DWPlaceValueBlockGameObject *b=[SelectedObjects objectAtIndex:i];
-            b.Selected=YES;
-            [b handleMessage:kDWswitchSelection];
-            //if([SelectedObjects count]==10)[b handleMessage:kDWswitchBaseSelectionBack];
-        }
-        [gw.Blackboard.SelectedObjects removeAllObjects];
+        block.Selected=YES;
+        [block handleMessage:kDWswitchSelection];
     }
+    
+    //remove all of current selection
+    [gw.Blackboard.SelectedObjects removeAllObjects];
+    
+    
+    
+//    NSMutableArray *SelectedObjects=gw.Blackboard.SelectedObjects;
+//    if([SelectedObjects count]>0){
+//        
+//        DWPlaceValueBlockGameObject *thisB=[SelectedObjects objectAtIndex:0];
+//        float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] floatValue];
+//        if(thisB.ObjectValue==colVal)return;
+//        
+//        for(int i=0;i<[SelectedObjects count];i++)
+//        {
+//            DWPlaceValueBlockGameObject *b=[SelectedObjects objectAtIndex:i];
+//            b.Selected=YES;
+//            [b handleMessage:kDWswitchSelection];
+//            //if([SelectedObjects count]==10)[b handleMessage:kDWswitchBaseSelectionBack];
+//        }
+//        [gw.Blackboard.SelectedObjects removeAllObjects];
+//    }
+    
+    
     
     for (int r=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] count]-1; r>=0; r--) {
         NSMutableArray *row=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] objectAtIndex:r];
@@ -1285,11 +1302,8 @@ static float kTimeToCageShake=7.0f;
         }
     }
     
-    if([SelectedObjects count]==10)
+    if([gw.Blackboard.SelectedObjects count]==10)
         isBasePickup=YES;
-
-    
-    
 
 }
 

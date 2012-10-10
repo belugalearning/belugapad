@@ -1262,7 +1262,7 @@ static float kTimeToCageShake=7.0f;
         {
             DWPlaceValueBlockGameObject *b=[SelectedObjects objectAtIndex:i];
             b.Selected=YES;
-            [b handleMessage:kDWswitchSelection];
+            [b handleMessage:kDWdeselectMe];
             //if([SelectedObjects count]==10)[b handleMessage:kDWswitchBaseSelectionBack];
         }
         [gw.Blackboard.SelectedObjects removeAllObjects];
@@ -1276,7 +1276,7 @@ static float kTimeToCageShake=7.0f;
             if(co.MountedObject)
             {
                 ((DWPlaceValueBlockGameObject*)co.MountedObject).Selected=NO;
-                [co.MountedObject handleMessage:kDWswitchSelection];
+                [co.MountedObject handleMessage:kDWselectMe];
                 //if(![gw.Blackboard.SelectedObjects containsObject:co.MountedObject])
 //                    [gw.Blackboard.SelectedObjects addObject:co.MountedObject];
                 
@@ -2181,7 +2181,7 @@ static float kTimeToCageShake=7.0f;
         posX = posX + diff.x;
         posY = posY + diff.y;
         
-        NSLog(@"selectedobjects count %d isBasePickup? %@ allowCondensing? %@", [gw.Blackboard.SelectedObjects count], isBasePickup? @"":@"", allowCondensing? @"":@"");
+        NSLog(@"selectedobjects count %d isBasePickup? %@ allowCondensing? %@", [gw.Blackboard.SelectedObjects count], isBasePickup? @"YES":@"NO", allowCondensing? @"YES":@"NO");
         
         if(isBasePickup && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject] && allowCondensing)
         {
@@ -2461,6 +2461,59 @@ static float kTimeToCageShake=7.0f;
                 BOOL enoughSpaceInGrid=NO;
                 NSMutableArray *blocksToDestroy=nil;
                 
+                if(isBasePickup && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject] && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                {
+                    for(int igo=0; igo<gw.Blackboard.SelectedObjects.count; igo++)
+                    {
+                        DWPlaceValueBlockGameObject *go = [[[gw Blackboard] SelectedObjects] objectAtIndex:igo];
+                        go.Mount=go.LastMount;
+                        
+                        ((DWPlaceValueNetGameObject*)go.Mount).MountedObject=b;
+                        
+                        go.AnimateMe=YES;
+                        
+                        go.PosX=((DWPlaceValueNetGameObject*)go.Mount).PosX;
+                        go.PosY=((DWPlaceValueNetGameObject*)go.Mount).PosY;
+                        
+                        [go handleMessage:kDWmoveSpriteToPosition];
+                        [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+                        
+                        [go handleMessage:kDWputdown];
+                    }
+                    doNotSwitchSelection=YES;
+                    [self setTouchVarsToOff];
+                    return;
+                    
+                }
+                else if(isBasePickup && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject] && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+                {
+                    NSMutableArray *SelectedObjects=[NSMutableArray arrayWithArray:gw.Blackboard.SelectedObjects];
+                    for(int igo=0; igo<SelectedObjects.count; igo++)
+                    {
+                        DWPlaceValueBlockGameObject *go = [SelectedObjects objectAtIndex:igo];
+                        ((DWPlaceValueNetGameObject*)go.Mount).MountedObject=nil;
+                        go.Mount=gw.Blackboard.DropObject;
+                        
+                        
+                        go.AnimateMe=YES;
+                        
+                        go.PosX=((DWPlaceValueNetGameObject*)go.Mount).PosX;
+                        go.PosY=((DWPlaceValueNetGameObject*)go.Mount).PosY;
+                        go.Selected=NO;
+                        if([gw.Blackboard.SelectedObjects containsObject:go])
+                            [gw.Blackboard.SelectedObjects removeObject:go];
+                        
+                        [go handleMessage:kDWresetToMountPositionAndDestroy];
+                        [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+                        
+                        //[go handleMessage:kDWputdown];
+                    }
+                    doNotSwitchSelection=YES;
+                    [self setTouchVarsToOff];
+                    return;
+                    
+                }
+                
                 for(DWPlaceValueBlockGameObject *b in pickupObjects)
                 {
 //                    if([pickupObjects count]>1){
@@ -2554,54 +2607,7 @@ static float kTimeToCageShake=7.0f;
 //                        n.MountedObject=nil;
                     }
                     // ===== return a selection (a base selection) back to where they came from by resetting mounts etc ===
-                    else if(isBasePickup && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject] && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
-                    {
-                        for(int igo=0; igo<gw.Blackboard.SelectedObjects.count; igo++)
-                        {
-                            DWPlaceValueBlockGameObject *go = [[[gw Blackboard] SelectedObjects] objectAtIndex:igo];
-                            go.Mount=go.LastMount;
-                            
-                            ((DWPlaceValueNetGameObject*)go.Mount).MountedObject=b;
-                            
-                            go.AnimateMe=YES;
-                            
-                            go.PosX=((DWPlaceValueNetGameObject*)go.Mount).PosX;
-                            go.PosY=((DWPlaceValueNetGameObject*)go.Mount).PosY;
-                            
-                            [go handleMessage:kDWmoveSpriteToPosition];
-                            [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
-                            
-                            [go handleMessage:kDWputdown];
-                        }
-                        doNotSwitchSelection=YES;
-                        
-                    }
-                    else if(isBasePickup && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject] && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
-                    {
-                        NSMutableArray *SelectedObjects=[NSMutableArray arrayWithArray:gw.Blackboard.SelectedObjects];
-                        for(int igo=0; igo<SelectedObjects.count; igo++)
-                        {
-                            DWPlaceValueBlockGameObject *go = [SelectedObjects objectAtIndex:igo];
-                            ((DWPlaceValueNetGameObject*)go.Mount).MountedObject=nil;
-                            go.Mount=gw.Blackboard.DropObject;
-                        
-                        
-                            go.AnimateMe=YES;
-                        
-                            go.PosX=((DWPlaceValueNetGameObject*)go.Mount).PosX;
-                            go.PosY=((DWPlaceValueNetGameObject*)go.Mount).PosY;
-                            go.Selected=NO;
-                            if([gw.Blackboard.SelectedObjects containsObject:go])
-                               [gw.Blackboard.SelectedObjects removeObject:go];
-                            
-                            [go handleMessage:kDWresetToMountPositionAndDestroy];
-                            [go handleMessage:kDWputdown andPayload:nil withLogLevel:0];
-                        
-                        //[go handleMessage:kDWputdown];
-                        }
-                        doNotSwitchSelection=YES;
-                        
-                    }
+
                     else if(isBasePickup && ![gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject] && [self freeSpacesOnGrid:currentColumnIndex]==0)
                     {
                         b.Mount=b.LastMount;

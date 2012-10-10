@@ -97,6 +97,9 @@ typedef enum {
     
     kDWdestroy=45,
     kDWfadeAndDestroy=46,
+  
+    kDWselectMe=47,
+    kDWdeselectMe=48,
     
     kDWareYouProximateTo=101,
     kDWupdateObjectData=102,

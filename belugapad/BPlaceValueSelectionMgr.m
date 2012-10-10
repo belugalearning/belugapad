@@ -46,6 +46,14 @@
     {
         [self switchSelection];
     }
+    if(messageType==kDWselectMe)
+    {
+        [self selectMe];
+    }
+    if(messageType==kDWdeselectMe)
+    {
+        [self deselect];
+    }
     if(messageType==kDWdeselectAll)
     {
         [self deselect];
@@ -92,8 +100,24 @@
     [gameObject handleMessage:kDWupdateSprite];
 }
 
+-(void)selectMe
+{
+    [loggingService logEvent:BL_PA_PV_TOUCH_BEGIN_SELECT_OBJECT withAdditionalData:nil];
+    b.Selected=YES;
+    gameWorld.Blackboard.LastSelectedObject = gameObject;
+    if(![gameWorld.Blackboard.SelectedObjects containsObject:gameObject])
+        [gameWorld.Blackboard.SelectedObjects addObject:gameObject];
+    [[gameWorld GameScene] problemStateChanged];
+    
+    //force deselect of other objects that don't have this value
+    float myV=b.ObjectValue;
+    NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:myV] forKey:OBJECT_VALUE];
+    [gameWorld handleMessage:kDWdeselectIfNotThisValue andPayload:pl withLogLevel:0];
+    [b handleMessage:kDWupdateSprite];
+}
+
 -(void)deselect
-{    
+{
     
     if(b.Selected)
     {

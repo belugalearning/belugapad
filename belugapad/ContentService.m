@@ -417,6 +417,11 @@
 
 -(void)gotoNextProblemInPipeline
 {
+    [self gotoNextProblemInPipelineWithSkip:1];
+}
+
+-(void)gotoNextProblemInPipelineWithSkip:(int)skipby
+{
     //callers (toolhost) to this method will presume the end of the pipeline if the current Pdef is set to nil
     // this method assumes that it's at the end of the pipeline and sets nil upfront
     self.currentPDef=nil;
@@ -430,8 +435,17 @@
     //a normal adaptive pipeline -- progress using combination of epsiodeIndex and pipelineIndex
     else
     {
-        //increment the episode index (this is initialized as -1 so will work for moving into first problem)
-        episodeIndex++;
+        //to allow for debug skipping, loop the episode index increment and insertion (where required)
+        for(int i=0; i<skipby; i++)
+        {
+            
+            //increment the episode index (this is initialized as -1 so will work for moving into first problem)
+            episodeIndex++;
+
+            //if the user is at the episide head (also the case at start of pipeline), try and insert a problem into the episode
+            if(self.isUserPastEpisodeHead) [self insertNextProblemIntoEpisode];
+        }
+        
         
         NSLog(@"count of episode %d, index incremented to %d", currentEpisode.count, episodeIndex);
 
@@ -793,13 +807,28 @@
     
     NSString *lastEpInsId=nil;
     
+    
+    //for inserting "skip by" content service handler links
+    BOOL countSkips=NO;
+    int skipBy=1;
+    
     //current problems in episode
     FMResultSet *rs=[usersService.usersDatabase executeQuery:@"select * from EpisodeProblems where episode_id=? order by episode_index", episodeId];
     while([rs next])
     {
+        if(countSkips) skipBy++;
+        
         NSString *style=@"";
         NSString *insertsection=@"";
-        if([rs intForColumn:@"episode_index"]==episodeIndex) style=@";font-weight:bold";
+        if([rs intForColumn:@"episode_index"]==episodeIndex)
+        {
+            //highlight the current problem
+            style=@";font-weight:bold";
+            
+            //start counting from the current problem
+            countSkips=YES;
+        }
+        
         if([rs stringForColumn:@"episodeinserts_id"] != nil)
         {
             //pad in
@@ -822,7 +851,9 @@
     {
         for(int i=pipelineIndex+1; i<currentPipeline.problems.count; i++)
         {
-            [html appendFormat:@"<p style='color:#bcbcbc'>*%02d: %@ -- <span style=''>%@</span></p>", i, [currentPipeline.problems objectAtIndex:i], [self debugProblemDescStringFor:[currentPipeline.problems objectAtIndex:i]]];
+            [html appendFormat:@"<p style='color:#bcbcbc'><a href='belugadebug://skip?%d'>*%02d: %@ -- <span style=''>%@</span></a></p>", skipBy, i, [currentPipeline.problems objectAtIndex:i], [self debugProblemDescStringFor:[currentPipeline.problems objectAtIndex:i]]];
+            
+            skipBy++;
         }
     }
     

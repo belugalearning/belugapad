@@ -45,6 +45,7 @@
 
 -(void)startPipelineWithId:(NSString*)pipelineid forNode:(ConceptNode*)node;
 -(void)gotoNextProblemInPipeline;
+-(void)gotoNextProblemInPipelineWithSkip:(int)skipby;
 
 -(NSArray*)allConceptNodes;
 -(ConceptNode*)conceptNodeForId:(NSString*)nodeId;

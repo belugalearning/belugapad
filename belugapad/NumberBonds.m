@@ -142,7 +142,16 @@ static float kTimeToMountedShake=7.0f;
     {
         solutionValue = [[pdef objectForKey:SOLUTION_VALUE]intValue];
     }
-
+    else if(solutionMode==kSolutionUniqueCompositionsOfValue)
+    {
+        evalUniqueCopmositionTarget=[[pdef objectForKey:@"EVAL_UNIQUE_COMPOSITION_TARGET"] intValue];
+    }
+    
+    //min/max eval modes
+    evalMinPerRow=0; evalMaxPerRow=0;
+    if([pdef objectForKey:@"EVAL_MIN_PER_ROW"]) evalMinPerRow=[[pdef objectForKey:@"EVAL_MIN_PER_ROW"] intValue];
+    if([pdef objectForKey:@"EVAL_MAX_PER_ROW"]) evalMaxPerRow=[[pdef objectForKey:@"EVAL_MAX_PER_ROW"] intValue];
+    
     
     evalMode = [[pdef objectForKey:EVAL_MODE] intValue];
     
@@ -416,6 +425,11 @@ static float kTimeToMountedShake=7.0f;
 
 -(void)compareHintsAndMountedObjects
 {
+    [self compareHintsAndMountedObjects:YES];
+}
+
+-(void)compareHintsAndMountedObjects:(BOOL)shouldMoveRows
+{
     
     BOOL foundAMatch=NO;
     // for each row
@@ -447,22 +461,18 @@ static float kTimeToMountedShake=7.0f;
                     matchedNo=m;
                     matchedWithNo=h;
                     hasMatch=YES;
+                    foundAMatch=YES;
                     break;
                 }
             }
             
+
             if(hasMatch)
             {
                 NSLog(@"got match %d. count of hints %d", matchedNo, [hints count]);
                 
                 if(matchedNo<[hints count])
                 {
-                    NSLog(@"exchange going on");
-                    //if(matchedNo>0)
-                        //[r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedNo-1];
-                    //else
-                        //[r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedNo+1];
-                
                     [r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedWithNo];
                     
                     foundAMatch=YES;
@@ -472,16 +482,19 @@ static float kTimeToMountedShake=7.0f;
             
         }
         
-        if(!foundAMatch)
+        if(!foundAMatch&&shouldMoveRows)
         {
             for(int f=0;f<[createdRows count];f++)
             {
                 if([self checkIfTheseHints:hints GoToThisRow:f])
+                {
                     [self exchangeHintsOnThisRow:f withHintsOnThisRow:i];
+                }
+                [self compareHintsAndMountedObjects:NO];
             }
         }
         
-        [r handleMessage:kDWresetPositionEval];
+        //[r handleMessage:kDWresetPositionEval];
     }
     
 }
@@ -525,11 +538,58 @@ static float kTimeToMountedShake=7.0f;
 
     thisOne.HintObjects=thatOne.HintObjects;
     thatOne.HintObjects=thisOneHints;
+    doNotSendPositionEval=YES;
     
-    [thisOne handleMessage:kDWresetPositionEval];
-    [thatOne handleMessage:kDWresetPositionEval];
+    for(DWNBondObjectGameObject *o in thisOne.HintObjects)
+    {
+//        for(CCNode *s in o.BaseNode.children)
+//        {
+//            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
+//            [s runAction:fadeOutAct];
+//        }
+        
+
+        
+        
+        for(CCSprite *s in o.BaseNode.children)
+        {
+            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
+            CCDelayTime *delayTime=[CCDelayTime actionWithDuration:0.5f];
+            CCCallBlock *resetEval=[CCCallBlock actionWithBlock:^{[thisOne handleMessage:kDWresetPositionEval];}];
+            CCFadeIn *fadeInAct=[CCFadeIn actionWithDuration:0.3f];
+            
+            CCSequence *sequence=[CCSequence actions:fadeOutAct, delayTime, resetEval, fadeInAct, nil];
+            
+            [s runAction:sequence];
+    
+        }
+    }
+    
+    for(DWNBondObjectGameObject *o in thatOne.HintObjects)
+    {
+//        for(CCNode *s in o.BaseNode.children)
+//        {
+//            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
+//            [s runAction:fadeOutAct];
+//        }
+        
+        for(CCNode *s in o.BaseNode.children)
+        {
+            CCFadeOut *fadeOutAct=[CCFadeOut actionWithDuration:0.3f];
+            CCDelayTime *delayTime=[CCDelayTime actionWithDuration:0.5f];
+            CCCallBlock *resetEval=[CCCallBlock actionWithBlock:^{[thatOne handleMessage:kDWresetPositionEval];}];
+            CCCallBlock *disallowEval=[CCCallBlock actionWithBlock:^{doNotSendPositionEval=NO;}];
+            CCFadeIn *fadeInAct=[CCFadeIn actionWithDuration:0.3f];
+            
+            CCSequence *sequence=[CCSequence actions:fadeOutAct, delayTime, resetEval, fadeInAct, disallowEval, nil];
+            
+            [s runAction:sequence];
+        }
+    }
+
 
 }
+
 
 #pragma mark - touches events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -678,22 +738,134 @@ static float kTimeToMountedShake=7.0f;
     
     //[self reorderMountedObjects];
     
-    [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:-1];
+    if(!doNotSendPositionEval)
+        [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:-1];
     
     [gw Blackboard].PickupObject=nil;
     hasMovedBlock=NO;
 
+    doNotSendPositionEval=NO;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouching=NO;
     hasMovedBlock=NO;
+    doNotSendPositionEval=NO;
 }
 
 #pragma mark - evaluation and reject
+
+-(BOOL)evalMinMaxPerRow
+{
+    if(evalMinPerRow>0)
+    {
+        for (DWNBondRowGameObject *prgo in createdRows) {
+            if (!prgo.Locked && prgo.MountedObjects.count <evalMinPerRow) return NO;
+        }
+    }
+    
+    if(evalMaxPerRow>0)
+    {
+        for(DWNBondRowGameObject *prgo in createdRows) {
+            if (!prgo.Locked && prgo.MountedObjects.count>evalMaxPerRow) return NO;
+        }
+    }
+
+    //otherwise min/max tests pass okay
+    return YES;
+}
+
+-(int)getRowLengthFor:(DWNBondRowGameObject*)prgo
+{
+    int l=0;
+    for(DWNBondObjectGameObject *pogo in prgo.MountedObjects)
+    {
+        l+=pogo.Length;
+    }
+    return l;
+}
+
+-(NSArray*)getSortedCompositionFor:(DWNBondRowGameObject*)prgo
+{
+    NSMutableArray *sizes=[[[NSMutableArray alloc] init] autorelease];
+    for(DWNBondObjectGameObject *pogo in prgo.MountedObjects)
+    {
+        if(sizes.count==0)
+        {
+            [sizes addObject:[NSNumber numberWithInt:pogo.Length]];
+        }
+        else
+        {
+            for(int i=0;i<sizes.count;i++)
+            {
+                if([[sizes objectAtIndex:i] intValue]>pogo.Length)
+                {
+                    [sizes insertObject:[NSNumber numberWithInt:pogo.Length] atIndex:i];
+                    break;
+                }
+                else if(i==sizes.count-1)
+                {
+                    [sizes addObject:[NSNumber numberWithInt:pogo.Length]];
+                    break;
+                }
+            }
+        }
+    }
+    return [NSArray arrayWithArray:sizes];
+}
+
+-(BOOL)isArrayNumberData:(NSArray*) array1 sameAs:(NSArray*)array2
+{
+    if(array1.count!=array2.count)return NO;
+    
+    for(int i=0;i<array1.count; i++)
+    {
+        NSNumber *n1=[array1 objectAtIndex:i];
+        NSNumber *n2=[array2 objectAtIndex:i];
+        if([n1 intValue] != [n2 intValue]) return NO;
+    }
+        
+    return YES;
+}
+
 -(BOOL)evalExpression
 {
+    if([self evalMinMaxPerRow]==NO)
+    {
+        //no need to proceed with rest of eval as min/max requirements were not passed
+        return NO;
+    }
+    
+    if(solutionMode==kSolutionUniqueCompositionsOfTopRow || solutionMode==kSolutionUniqueCompositionsOfValue)
+    {
+        int targetL=0;
+        if(solutionMode==kSolutionUniqueCompositionsOfTopRow) targetL=[self getRowLengthFor:[createdRows objectAtIndex:0]];
+        if(solutionMode==kSolutionUniqueCompositionsOfValue) targetL=evalUniqueCopmositionTarget;
+        
+        //every row's length must match target and have unique composition
+        for (DWNBondRowGameObject *prgo in createdRows) {
+            if([self getRowLengthFor:prgo]!=targetL) return NO;
+        }
+        
+        //every row must be different from every other row
+        for (DWNBondRowGameObject *prgo1 in createdRows) {
+            for (DWNBondRowGameObject *prgo2 in createdRows) {
+                if(prgo1!=prgo2)
+                {
+                    NSArray *s1=[self getSortedCompositionFor:prgo1];
+                    NSArray *s2=[self getSortedCompositionFor:prgo2];
+                    
+                    if([self isArrayNumberData:s1 sameAs:s2])
+                        return NO;
+                }
+            }
+        }
+        
+        //assume eval was okay in the mode if no previous check has failed
+        return YES;
+    }
+    
     if(solutionMode==kSolutionTopRow)
     {
         //returns YES if the tool expression evaluates succesfully
@@ -706,16 +878,7 @@ static float kTimeToMountedShake=7.0f;
             //BAAdditionOperator *rowAdd=[BAAdditionOperator operator];
             //[toolHost.PpExpr.root addChild:rowAdd];
             
-            int cumRowLength=0;
-            
-            for(DWNBondObjectGameObject *pogo in prgo.MountedObjects)
-            {
-                //create child to the addition
-                //disabled -- we can't add more or less than two values, sum internally
-                //[rowAdd addChild:[BAInteger integerWithIntValue:pogo.Length]];
-                
-                cumRowLength+=pogo.Length;
-            }
+            int cumRowLength = [self getRowLengthFor:prgo];
             
             //add the accumulated row length as an integer child to the equality
             [toolHost.PpExpr.root addChild:[BAInteger integerWithIntValue:cumRowLength]];

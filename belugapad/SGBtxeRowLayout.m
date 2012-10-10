@@ -63,6 +63,8 @@
         headYPos=0;
     }
     
+    int actualLines=1;
+    
     //step items
     for(id<Bounding, NSObject> c in ParentGo.children)
     {
@@ -72,6 +74,8 @@
             //flow onto next line
             headXPos=-lineW / 2.0f;
             headYPos-=lineH;
+            
+            actualLines++;
         }
         
         //place object here (offset for centre position)
@@ -86,6 +90,10 @@
         //  increment cum width (w/ width + spacer)
         headXPos+=c.size.width + BTXE_HPAD;
     }
+    
+    
+    //set size of parent
+    ParentGo.size=CGSizeMake(totalW, actualLines*lineH);
 }
 
 @end

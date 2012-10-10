@@ -37,6 +37,7 @@ typedef enum {
 @class NordicAnimator;
 @class LRAnimator;
 @class SGGameWorld;
+@class DebugViewController;
 
 @interface ToolHost : CCLayer <CCPickerViewDataSource, CCPickerViewDelegate>
 {
@@ -159,9 +160,11 @@ typedef enum {
     //web debug view
     UIWebView *debugWebView;
     BOOL debugShowingPipelineState;
+    DebugViewController *debugViewController;
     
     //btxe for description
     SGGameWorld *descGw;
+    CCSprite *questionSeparatorSprite;
     
     //ui
     CCSprite *multiplierBadge;

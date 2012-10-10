@@ -1665,12 +1665,12 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         {
             [self playAudioPress];
             [loggingService logEvent:BL_PA_NP_NUMBER_FROM_REGISTER
-                  withAdditionalData:[NSDictionary dictionaryWithObject:[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:s]]
-                                                                 forKey:@"number"]];
-            if(n<11){
-                npMove=s;
-                npMoveStartPos=npMove.position;
-            }
+                  withAdditionalData:[NSDictionary dictionaryWithObject:[numberPickedValue objectAtIndex:[numberPickedSelection indexOfObject:s]] forKey:@"number"]];
+            npMove=s;
+            npMoveStartPos=npMove.position;
+            if(n==11)canMoveNumber=NO;
+            else canMoveNumber=YES;
+            
             return;
         }
     }
@@ -1680,6 +1680,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)checkNumberPickerTouchOnRegister:(CGPoint)location
 {
+    if(!canMoveNumber)return;
     for(int i=0;i<[numberPickedSelection count];i++)
     {
         CCSprite *s=[numberPickedSelection objectAtIndex:i];

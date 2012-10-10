@@ -93,6 +93,7 @@ typedef enum {
     CGRect pickerBox;
     BOOL hasMovedNumber;
     BOOL hasUsedNumber;
+    BOOL canMoveNumber;
     
     float timeSinceInteractionOrShakeNP;
     float timeBeforeUserInteraction;

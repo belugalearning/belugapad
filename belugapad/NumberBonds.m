@@ -142,7 +142,16 @@ static float kTimeToMountedShake=7.0f;
     {
         solutionValue = [[pdef objectForKey:SOLUTION_VALUE]intValue];
     }
-
+    else if(solutionMode==kSolutionUniqueCompositionsOfValue)
+    {
+        evalUniqueCopmositionTarget=[[pdef objectForKey:@"EVAL_UNIQUE_COMPOSITION_TARGET"] intValue];
+    }
+    
+    //min/max eval modes
+    evalMinPerRow=0; evalMaxPerRow=0;
+    if([pdef objectForKey:@"EVAL_MIN_PER_ROW"]) evalMinPerRow=[[pdef objectForKey:@"EVAL_MIN_PER_ROW"] intValue];
+    if([pdef objectForKey:@"EVAL_MAX_PER_ROW"]) evalMaxPerRow=[[pdef objectForKey:@"EVAL_MAX_PER_ROW"] intValue];
+    
     
     evalMode = [[pdef objectForKey:EVAL_MODE] intValue];
     
@@ -746,8 +755,117 @@ static float kTimeToMountedShake=7.0f;
 }
 
 #pragma mark - evaluation and reject
+
+-(BOOL)evalMinMaxPerRow
+{
+    if(evalMinPerRow>0)
+    {
+        for (DWNBondRowGameObject *prgo in createdRows) {
+            if (!prgo.Locked && prgo.MountedObjects.count <evalMinPerRow) return NO;
+        }
+    }
+    
+    if(evalMaxPerRow>0)
+    {
+        for(DWNBondRowGameObject *prgo in createdRows) {
+            if (!prgo.Locked && prgo.MountedObjects.count>evalMaxPerRow) return NO;
+        }
+    }
+
+    //otherwise min/max tests pass okay
+    return YES;
+}
+
+-(int)getRowLengthFor:(DWNBondRowGameObject*)prgo
+{
+    int l=0;
+    for(DWNBondObjectGameObject *pogo in prgo.MountedObjects)
+    {
+        l+=pogo.Length;
+    }
+    return l;
+}
+
+-(NSArray*)getSortedCompositionFor:(DWNBondRowGameObject*)prgo
+{
+    NSMutableArray *sizes=[[[NSMutableArray alloc] init] autorelease];
+    for(DWNBondObjectGameObject *pogo in prgo.MountedObjects)
+    {
+        if(sizes.count==0)
+        {
+            [sizes addObject:[NSNumber numberWithInt:pogo.Length]];
+        }
+        else
+        {
+            for(int i=0;i<sizes.count;i++)
+            {
+                if([[sizes objectAtIndex:i] intValue]>pogo.Length)
+                {
+                    [sizes insertObject:[NSNumber numberWithInt:pogo.Length] atIndex:i];
+                    break;
+                }
+                else if(i==sizes.count-1)
+                {
+                    [sizes addObject:[NSNumber numberWithInt:pogo.Length]];
+                    break;
+                }
+            }
+        }
+    }
+    return [NSArray arrayWithArray:sizes];
+}
+
+-(BOOL)isArrayNumberData:(NSArray*) array1 sameAs:(NSArray*)array2
+{
+    if(array1.count!=array2.count)return NO;
+    
+    for(int i=0;i<array1.count; i++)
+    {
+        NSNumber *n1=[array1 objectAtIndex:i];
+        NSNumber *n2=[array2 objectAtIndex:i];
+        if([n1 intValue] != [n2 intValue]) return NO;
+    }
+        
+    return YES;
+}
+
 -(BOOL)evalExpression
 {
+    if([self evalMinMaxPerRow]==NO)
+    {
+        //no need to proceed with rest of eval as min/max requirements were not passed
+        return NO;
+    }
+    
+    if(solutionMode==kSolutionUniqueCompositionsOfTopRow || solutionMode==kSolutionUniqueCompositionsOfValue)
+    {
+        int targetL=0;
+        if(solutionMode==kSolutionUniqueCompositionsOfTopRow) targetL=[self getRowLengthFor:[createdRows objectAtIndex:0]];
+        if(solutionMode==kSolutionUniqueCompositionsOfValue) targetL=evalUniqueCopmositionTarget;
+        
+        //every row's length must match target and have unique composition
+        for (DWNBondRowGameObject *prgo in createdRows) {
+            if([self getRowLengthFor:prgo]!=targetL) return NO;
+        }
+        
+        //every row must be different from every other row
+        for (DWNBondRowGameObject *prgo1 in createdRows) {
+            for (DWNBondRowGameObject *prgo2 in createdRows) {
+                if(prgo1!=prgo2)
+                {
+                    NSArray *s1=[self getSortedCompositionFor:prgo1];
+                    NSArray *s2=[self getSortedCompositionFor:prgo2];
+                    
+                    if([self isArrayNumberData:s1 sameAs:s2])
+                        return NO;
+                }
+            }
+        }
+        
+        //assume eval was okay in the mode if no previous check has failed
+        return YES;
+    }
+    
     if(solutionMode==kSolutionTopRow)
     {
         //returns YES if the tool expression evaluates succesfully
@@ -760,16 +878,7 @@ static float kTimeToMountedShake=7.0f;
             //BAAdditionOperator *rowAdd=[BAAdditionOperator operator];
             //[toolHost.PpExpr.root addChild:rowAdd];
             
-            int cumRowLength=0;
-            
-            for(DWNBondObjectGameObject *pogo in prgo.MountedObjects)
-            {
-                //create child to the addition
-                //disabled -- we can't add more or less than two values, sum internally
-                //[rowAdd addChild:[BAInteger integerWithIntValue:pogo.Length]];
-                
-                cumRowLength+=pogo.Length;
-            }
+            int cumRowLength = [self getRowLengthFor:prgo];
             
             //add the accumulated row length as an integer child to the equality
             [toolHost.PpExpr.root addChild:[BAInteger integerWithIntValue:cumRowLength]];

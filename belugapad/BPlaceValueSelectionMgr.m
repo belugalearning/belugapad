@@ -88,7 +88,11 @@
         [loggingService logEvent:BL_PA_PV_TOUCH_BEGIN_SELECT_OBJECT withAdditionalData:nil];
         b.Selected=YES;
         gameWorld.Blackboard.LastSelectedObject = gameObject;
-        [gameWorld.Blackboard.SelectedObjects addObject:gameObject];
+        
+        if(![gameWorld.Blackboard.SelectedObjects containsObject:gameObject])
+            [gameWorld.Blackboard.SelectedObjects addObject:gameObject];
+        
+        
         [[gameWorld GameScene] problemStateChanged];
         
         //force deselect of other objects that don't have this value

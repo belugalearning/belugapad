@@ -32,6 +32,7 @@
 #import "SGBtxeRow.h"
 #import "SGBtxeProtocols.h"
 #import "DebugViewController.h"
+#import "TestFlight.h"
 
 #define HD_HEADER_HEIGHT 65.0f
 #define HD_BUTTON_INSET 40.0f
@@ -96,6 +97,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         
         multiplierStage=1;
         scoreMultiplier=1;
+        
+        [TestFlight passCheckpoint:@"STARTING_TOOLHOST"];
         
         //setup layer sequence
         backgroundLayer=[[CCLayer alloc] init];
@@ -167,6 +170,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [self schedule:@selector(doUpdateOnSecond:) interval:1.0f];
         [self schedule:@selector(doUpdateOnQuarterSecond:) interval:1.0f/40.0f];
         
+        [TestFlight passCheckpoint:@"STARTED_TOOLHOST"];
     }
     
     return self;
@@ -620,6 +624,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     else
     {
+        [TestFlight passCheckpoint:@"PIPELINE_COMPLETE_LEAVING_TO_JMAP"];
+        
         //no more problems in this sequence, bail to menu
         
         //todo: completion shouldn't be assumed here -- we can get here by progressing into an inserter that produces no viable insertions
@@ -673,6 +679,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [loggingService logEvent:BL_PA_START withAdditionalData:[NSDictionary dictionaryWithObject:pdefString forKey:@"pdef"]];
     
     NSString *toolKey=[pdef objectForKey:TOOL_KEY];
+    
+    TFLog(@"starting a %@ problem", toolKey);
     
     if(currentTool)
     {
@@ -829,6 +837,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void) resetProblem
 {
     //if(problemDescLabel)[problemDescLabel removeFromParentAndCleanup:YES];
+    
+    TFLog(@"resetting problem");
     
     if(evalMode==kProblemEvalOnCommit)
     {
@@ -1003,6 +1013,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)returnToMenu
 {
+    [TestFlight passCheckpoint:@"QUITTING_TOOLHOST_FOR_JMAP"];
+    
     [[CCDirector sharedDirector] replaceScene:[JMap scene]];
 }
 

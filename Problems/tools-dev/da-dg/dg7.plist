@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Smalls.</string>
+	<string>Bigs</string>
 	<key>TOOL_KEY</key>
 	<string>DotGrid</string>
 	<key>EVAL_MODE</key>
@@ -15,7 +15,7 @@
 	<key>DOTGRID_EVAL_DIVISOR</key>
 	<integer>3</integer>
 	<key>ANCHOR_SPACE</key>
-	<integer>41</integer>
+	<integer>80</integer>
 	<key>DRAW_MODE</key>
 	<integer>0</integer>
 	<key>DISABLE_DRAWING</key>
@@ -25,8 +25,14 @@
 	<key>SHAPE_GROUP_SIZE</key>
 	<integer>10</integer>
 	<key>USE_SHAPE_GROUPS</key>
-	<true/>
+	<false/>
 	<key>SELECT_WHOLE_SHAPE</key>
+	<false/>
+	<key>SHOW_NUMBERWHEEL_FOR_SHAPES</key>
+	<true/>
+	<key>SHOW_COUNT_BUBBLE</key>
+	<true/>
+	<key>RENDER_SHAPE_DIMENSIONS</key>
 	<true/>
 </dict>
 </plist>

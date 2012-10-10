@@ -28,5 +28,7 @@
 	<true/>
 	<key>SHOW_DRAGGABLE_BLOCK</key>
 	<true/>
+	<key>SHOW_NUMBERWHEEL_FOR_SHAPES</key>
+	<true/>
 </dict>
 </plist>

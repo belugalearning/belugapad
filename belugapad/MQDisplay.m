@@ -143,6 +143,27 @@
     }
 }
 
+#pragma mark - touches events
+-(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
+}
+
+-(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
+}
+
+-(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
+}
+
+-(void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    
+}
+
 #pragma mark - meta question
 -(float)metaQuestionTitleYLocation
 {

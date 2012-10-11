@@ -84,6 +84,8 @@
 		55AFD6AA15651B5800FF1886 /* DWTTTileGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6A815651B5800FF1886 /* DWTTTileGameObject.m */; };
 		55AFD6AE15651C4700FF1886 /* BTTTileObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6AD15651C4700FF1886 /* BTTTileObjectRender.m */; };
 		55AFD6B115651C5500FF1886 /* BTTTileTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AFD6B015651C5500FF1886 /* BTTTileTouch.m */; };
+		55B2C4221627518000E0E2C7 /* BNWheelObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B2C4211627518000E0E2C7 /* BNWheelObjectRender.m */; };
+		55B2C4251627519700E0E2C7 /* DWNWheelGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B2C4241627519700E0E2C7 /* DWNWheelGameObject.m */; };
 		55B4018D15D571570068BCAA /* SGDtoolContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B4018C15D571570068BCAA /* SGDtoolContainer.m */; };
 		55BBB5D31580C3FC0031B1F5 /* BPieSplitterPieTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BBB5D21580C3FC0031B1F5 /* BPieSplitterPieTouch.m */; };
 		55BBB5D71580C4350031B1F5 /* BPieSplitterContainerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BBB5D61580C4350031B1F5 /* BPieSplitterContainerTouch.m */; };
@@ -574,6 +576,10 @@
 		55AFD6AD15651C4700FF1886 /* BTTTileObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTTTileObjectRender.m; sourceTree = "<group>"; };
 		55AFD6AF15651C5500FF1886 /* BTTTileTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTTTileTouch.h; sourceTree = "<group>"; };
 		55AFD6B015651C5500FF1886 /* BTTTileTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTTTileTouch.m; sourceTree = "<group>"; };
+		55B2C4201627518000E0E2C7 /* BNWheelObjectRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNWheelObjectRender.h; sourceTree = "<group>"; };
+		55B2C4211627518000E0E2C7 /* BNWheelObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNWheelObjectRender.m; sourceTree = "<group>"; };
+		55B2C4231627519700E0E2C7 /* DWNWheelGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWNWheelGameObject.h; sourceTree = "<group>"; };
+		55B2C4241627519700E0E2C7 /* DWNWheelGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWNWheelGameObject.m; sourceTree = "<group>"; };
 		55B4018B15D571570068BCAA /* SGDtoolContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGDtoolContainer.h; sourceTree = "<group>"; };
 		55B4018C15D571570068BCAA /* SGDtoolContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGDtoolContainer.m; sourceTree = "<group>"; };
 		55BBB5D11580C3FC0031B1F5 /* BPieSplitterPieTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPieSplitterPieTouch.h; sourceTree = "<group>"; };
@@ -1516,6 +1522,24 @@
 				55AFD6AC15651C3C00FF1886 /* BTTTileObjectRender.h */,
 			);
 			name = TimesTables;
+			sourceTree = "<group>";
+		};
+		55B2C41D1627512200E0E2C7 /* NumberWheel */ = {
+			isa = PBXGroup;
+			children = (
+				55B2C4201627518000E0E2C7 /* BNWheelObjectRender.h */,
+				55B2C4211627518000E0E2C7 /* BNWheelObjectRender.m */,
+			);
+			name = NumberWheel;
+			sourceTree = "<group>";
+		};
+		55B2C41F1627513100E0E2C7 /* NumberWheel */ = {
+			isa = PBXGroup;
+			children = (
+				55B2C4231627519700E0E2C7 /* DWNWheelGameObject.h */,
+				55B2C4241627519700E0E2C7 /* DWNWheelGameObject.m */,
+			);
+			name = NumberWheel;
 			sourceTree = "<group>";
 		};
 		55C5F71C1538863C009D8906 /* NumberBonds */ = {
@@ -2604,6 +2628,7 @@
 		7FABE6A314B4C5B500ED2D0C /* Behaviours */ = {
 			isa = PBXGroup;
 			children = (
+				55B2C41D1627512200E0E2C7 /* NumberWheel */,
 				55E7CBE0157FC86C00A399CF /* PieSplitter */,
 				55AFD6AB15651BD500FF1886 /* TimesTables */,
 				55C5F72B15388A84009D8906 /* DotGrid */,
@@ -2678,6 +2703,7 @@
 		7FC27F6B150FA9FC00E16A44 /* GameObjectExtensions */ = {
 			isa = PBXGroup;
 			children = (
+				55B2C41F1627513100E0E2C7 /* NumberWheel */,
 				7FB11DBC1595274800095669 /* PlaceValue */,
 				55E7CBDC157FC82B00A399CF /* PieSplitter */,
 				55AFD6A715651A6800FF1886 /* TimesTables */,
@@ -3342,6 +3368,8 @@
 				7F96BE2A1623E91600351CA0 /* GooSingleSquare.m in Sources */,
 				559846661627095B00554E8A /* MQDisplay.m in Sources */,
 				5598466A162732CA00554E8A /* RatioTool.m in Sources */,
+				55B2C4221627518000E0E2C7 /* BNWheelObjectRender.m in Sources */,
+				55B2C4251627519700E0E2C7 /* DWNWheelGameObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

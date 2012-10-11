@@ -26,6 +26,7 @@
 #import "NumberLayout.h"
 
 #import "DWGameWorld.h"
+#import "DWNWheelGameObject.h"
 
 
 @interface RatioTool()
@@ -98,8 +99,16 @@
 -(void)doUpdateOnTick:(ccTime)delta
 {
     [gw doUpdate:delta];
+
+    int c[[numberWheels count]-1];
     
+    for(int i=0;i<[numberWheels count];i++)
+    {
+        DWNWheelGameObject *w=[numberWheels objectAtIndex:i];
+        c[i]=w.OutputValue;
+    }
     
+    [mbox setColor:ccc3(c[0],c[1],c[2])];
 }
 
 -(void)draw
@@ -141,9 +150,19 @@
 
     wheelMax=[[pdef objectForKey:WHEEL_MAX]intValue];
     
+    if(!numberWheels)
+        numberWheels=[[[NSMutableArray alloc]init]retain];
+    
     for(int i=0;i<3;i++)
     {
-        
+        DWNWheelGameObject *w=[DWNWheelGameObject alloc];
+        [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
+        w.Components=3;
+        w.Position=ccp(140+(i*200),600);
+        w.RenderLayer=renderLayer;
+        w.SpriteFileName=@"/images/numberwheel/3slots.png";
+        [w handleMessage:kDWsetupStuff];
+        [numberWheels addObject:w];
     }
     
 }

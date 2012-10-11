@@ -51,6 +51,8 @@
     CCLabelTTF *amountGreen;
     CCLabelTTF *amountBlue;
     
+    NSMutableArray *numberWheels;
+    
     int wheelMax;
 }
 

@@ -176,17 +176,19 @@ static float kTimeToCageShake=7.0f;
     {
         BOOL finished=NO;
         
-        for(CCLabelTTF *l in blockLabels)
+        for(int i=0;i<[blockLabels count];i++)
         {
-            DWPlaceValueCageGameObject *c=[allCages objectAtIndex:[blockLabels indexOfObject:l]];
+            CCLabelTTF *l=[blockLabels objectAtIndex:i];
+            DWPlaceValueCageGameObject *c=[allCages objectAtIndex:i];
             
             CGPoint cagePos=ccp(c.PosX, c.PosY+20);
             if(!CGPointEqualToPoint(cagePos, l.position) && [l numberOfRunningActions]==0)
                 [l setPosition:cagePos];
         }
-        for(CCLabelTTF *l in multipleLabels)
+        for(int i=0;i<[multipleLabels count];i++)
         {
-            DWPlaceValueCageGameObject *c=[allCages objectAtIndex:[blockLabels indexOfObject:l]];
+            CCLabelTTF *l=[blockLabels objectAtIndex:i];
+            DWPlaceValueCageGameObject *c=[allCages objectAtIndex:i];
             
             CGPoint cagePos=ccp(c.PosX, c.PosY+20);
             if(!CGPointEqualToPoint(cagePos, l.position) && [l numberOfRunningActions]==0)

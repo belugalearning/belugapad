@@ -62,7 +62,7 @@
     {
         
 
-        [self switchSelection:b.Selected];
+        //[self switchSelection:b.Selected];
 
         CCSprite *mySprite=b.mySprite;
         if(!mySprite) { 
@@ -353,32 +353,42 @@
     }
     else
     {
-        // Check whether selected
-        if(b.Selected)
+        if(b.ObjectValue<0)
         {
-            // then whether it's a +/- number
-            if(b.ObjectValue<0)
-            {
-                //selection colour for a negative number
-                [mySprite setColor:ccc3(255,0,255)];
-            }
-            else
-            {
-                [mySprite setColor:ccc3(128, 195, 194)];
-            }
+            [mySprite setColor:ccc3(255,0,105)];
         }
         else
         {
-            if(b.ObjectValue<0)
-            {
-                [mySprite setColor:ccc3(255,0,105)];
-            }
-            else
-            {
-                [mySprite setColor:ccc3(255,255,255)];
-        
-            }
+            [mySprite setColor:ccc3(255,255,255)];
+            
         }
+        
+//        // Check whether selected
+//        if(b.Selected)
+//        {
+//            // then whether it's a +/- number
+//            if(b.ObjectValue<0)
+//            {
+//                //selection colour for a negative number
+//                [mySprite setColor:ccc3(255,0,255)];
+//            }
+//            else
+//            {
+//                [mySprite setColor:ccc3(128, 195, 194)];
+//            }
+//        }
+//        else
+//        {
+//            if(b.ObjectValue<0)
+//            {
+//                [mySprite setColor:ccc3(255,0,105)];
+//            }
+//            else
+//            {
+//                [mySprite setColor:ccc3(255,255,255)];
+//        
+//            }
+//        }
     }
 }
 

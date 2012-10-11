@@ -170,6 +170,8 @@ static float kTimeToCageShake=7.0f;
         }
     }
     
+    
+    // if we've run interaction feedback, loop through a bunch of objects - check they're running nothing and reset their position if need be
     if(hasRunInteractionFeedback)
     {
         BOOL finished=NO;
@@ -203,7 +205,6 @@ static float kTimeToCageShake=7.0f;
                 {
                    [b.mySprite setPosition:reqPos];
                     finished=YES;
-                    NSLog(@"reset a sprite position");
                 }
             }
         }

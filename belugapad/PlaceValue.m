@@ -2558,9 +2558,9 @@ static float kTimeToCageShake=7.0f;
                         gw.Blackboard.DropObject=nil;
                         [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:0];
                         
-                        if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && !hasModifiedTestLocation)
+                        if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && !hasModifiedTestLocation && [pickupObjects count]>1)
                         {
-                            gw.Blackboard.TestTouchLocation=ccp(n.PosX,n.PosY);
+                            gw.Blackboard.TestTouchLocation=ccp(n.PosX+100,n.PosY);
                             hasModifiedTestLocation=YES;
                         }
                         

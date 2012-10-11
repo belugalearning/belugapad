@@ -2493,9 +2493,7 @@ static float kTimeToCageShake=7.0f;
                 
                 if([[gw Blackboard].DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])isCage=YES;
                 else isCage=NO;
-                
-
-                BOOL enoughSpaceInGrid=NO;
+            
                 NSMutableArray *blocksToDestroy=nil;
                 
                 if(isBasePickup && [gw.Blackboard.SelectedObjects containsObject:gw.Blackboard.PickupObject] && [gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
@@ -2556,7 +2554,6 @@ static float kTimeToCageShake=7.0f;
                 {
                     if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
                     {
-                        enoughSpaceInGrid=YES;
                         
                         gw.Blackboard.DropObject=nil;
                         [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:0];
@@ -2568,7 +2565,7 @@ static float kTimeToCageShake=7.0f;
                         }
                         
                     }
-                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && !enoughSpaceInGrid)
+                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count])
                     {
 //                        for(DWPlaceValueBlockGameObject *go in pickupObjects){
 //                            
@@ -2717,12 +2714,6 @@ static float kTimeToCageShake=7.0f;
 //                            [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
                     }
                 }
-                int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
-                
-                if(objectsOnGrid==columnBaseValue)
-                {
-                    [self selectBaseObjectsOnGrid:currentColumnIndex];
-                }
                 if(blocksToDestroy)
                 {
                     
@@ -2768,6 +2759,24 @@ static float kTimeToCageShake=7.0f;
     {
 
         [self setGridOpacity:i toOpacity:127];
+    }
+    
+    int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
+    
+    if(objectsOnGrid==columnBaseValue)
+    {
+        [self selectBaseObjectsOnGrid:currentColumnIndex];
+    }
+    else
+    {
+        for(DWPlaceValueBlockGameObject *b in [NSArray arrayWithArray:gw.Blackboard.SelectedObjects])
+        {
+            [b handleMessage:kDWswitchBaseSelectionBack];
+            if([gw.Blackboard.SelectedObjects containsObject:b])
+                [gw.Blackboard.SelectedObjects removeObject:b];
+        }
+        isBasePickup=NO;
+            
     }
     
     //get any auto reset / repositions to re-evaluate

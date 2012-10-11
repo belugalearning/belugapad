@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>/Problems/tools-dev/mq-display/mq001.plist</string>
+	<string>/Problems/tools-dev/da-pv/placevalue-problem028.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem030a.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem030b.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test8.plist</string>
@@ -22,7 +24,6 @@
 	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e15/402addpositiveblocks.plist</string>
 	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e15/502takepositiveblocks.plist</string>
 	<string>/Problems/tokcm-authoring/Number/negative_and_irrational_numbers/addition_and_subtraction_with_negative_numbers/5608a59d6797796ce9e11484fd128e15/503addpositiveblocks.plist</string>
-	<string>/Problems/tools-dev/da-pv/placevalue-problem028.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem029.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem024.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem025.plist</string>

@@ -373,6 +373,10 @@
 #define SUPPORTED_OPERATORS @"SUPPORTED_OPERATORS"
 #define SHOW_INPUT_PIPE @"SHOW_INPUT_PIPE"
 
+// MQ Display Tool
+#define DISPLAY @"DISPLAY"
+#define STRING @"STRING"
+
 //journey scene
 #define REGION_ZOOM_LEVEL 0.15f
 

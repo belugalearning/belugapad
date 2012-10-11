@@ -634,7 +634,7 @@ static float kTimeToCageShake=7.0f;
     
     int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
     
-    if(objectsOnGrid==columnBaseValue)
+    if(objectsOnGrid==columnBaseValue && currentColumnIndex!=0)
     {
         [self selectBaseObjectsOnGrid:defaultColumn];
     }
@@ -1969,7 +1969,7 @@ static float kTimeToCageShake=7.0f;
         
         int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
         
-        if(objectsOnGrid==columnBaseValue)
+        if(objectsOnGrid==columnBaseValue && currentColumnIndex!=0)
         {
             isBasePickup=YES;
             //        [gw.Blackboard.SelectedObjects removeAllObjects];
@@ -2800,7 +2800,7 @@ static float kTimeToCageShake=7.0f;
     
     int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
     
-    if(objectsOnGrid==columnBaseValue)
+    if(objectsOnGrid==columnBaseValue && currentColumnIndex!=0)
     {
         [self selectBaseObjectsOnGrid:currentColumnIndex];
     }

@@ -1267,7 +1267,11 @@ static float kTimeToCageShake=7.0f;
         for (int c=[row count]-1; c>=0; c--)
         {
             DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
-            if(!co.MountedObject)
+            if(!co.MountedObject && !explodeMode)
+            {
+                freeSpace++;
+            }
+            else if(co.MountedObject && !co.CancellingObject && explodeMode)
             {
                 freeSpace++;
             }
@@ -2600,7 +2604,7 @@ static float kTimeToCageShake=7.0f;
                 }
                 
                 
-                if((multipleBlockPickup||showMultipleControls) && !isBasePickup)
+                if((multipleBlockPickup||showMultipleControls||isNegativeProblem) && !isBasePickup)
                 {
                     if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
                     {
@@ -2639,34 +2643,7 @@ static float kTimeToCageShake=7.0f;
                     }
                     
                 }
-                else if(isNegativeProblem && !isBasePickup)
-                {
-                    //TODO: check here the free spaces - taking into account mounted objects with no cancelling object
-                    if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
-                    {
-                        
-                        gw.Blackboard.DropObject=nil;
-                        [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:0];
-                        
-                        if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && !hasModifiedTestLocation && [pickupObjects count]>1)
-                        {
-                            gw.Blackboard.TestTouchLocation=ccp(n.PosX,n.PosY+200);
-                            hasModifiedTestLocation=YES;
-                        }
-                        
-                    }
-//                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count])
-//                    {
-//                        for(DWPlaceValueBlockGameObject *go in pickupObjects){
-//                            [go handleMessage:kDWresetToMountPositionAndDestroy];
-//                        }
-//                        
-//                        [self setTouchVarsToOff];
-//                        return;
-//                    }
-                    
 
-                }
                 
                 
                 for(DWPlaceValueBlockGameObject *b in pickupObjects)

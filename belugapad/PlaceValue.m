@@ -1252,12 +1252,16 @@ static float kTimeToCageShake=7.0f;
     if(!autoBaseSelection)return;
     
     //deselect anything currently selected
+    
+    
     for (DWPlaceValueBlockGameObject *block in [NSArray arrayWithArray:gw.Blackboard.SelectedObjects]) {
         
         float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] floatValue];
         if(colVal==block.ObjectValue) return;
         
-        [block handleMessage:kDWdeselectMe];
+//        [block handleMessage:kDWdeselectMe];
+        
+        [gw.Blackboard.SelectedObjects removeObject:block];
     }
     
     
@@ -1289,10 +1293,12 @@ static float kTimeToCageShake=7.0f;
             DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
             if(co.MountedObject)
             {
-                [co.MountedObject handleMessage:kDWselectMe];
-                [pickupObjects addObject:co.MountedObject];
-                //if(![gw.Blackboard.SelectedObjects containsObject:co.MountedObject])
-//                    [gw.Blackboard.SelectedObjects addObject:co.MountedObject];
+                //[co.MountedObject handleMessage:kDWselectMe];
+                
+                //[pickupObjects addObject:co.MountedObject];
+                
+                if(![gw.Blackboard.SelectedObjects containsObject:co.MountedObject])
+                    [gw.Blackboard.SelectedObjects addObject:co.MountedObject];
                 
             }
         }
@@ -1872,6 +1878,7 @@ static float kTimeToCageShake=7.0f;
 {
     if(touching)return;
     touching=YES;
+    potentialTap=YES;
     
     UITouch *touch=[touches anyObject];
     CGPoint location=[touch locationInView: [touch view]];
@@ -1909,18 +1916,29 @@ static float kTimeToCageShake=7.0f;
     CGPoint shiftedLocationInNS=ccp(locationInNS.x + (0.5f * colW), locationInNS.y);
     
     //rounded down value of touch location over col width gives us column index (e.g. anything from 0 to colw is first col (0), next is second (1) etc)
+    int lastColumnIndex=currentColumnIndex;
     currentColumnIndex = (int)(shiftedLocationInNS.x / colW);
     if(currentColumnIndex>numberOfColumns-1)currentColumnIndex=numberOfColumns-1;
     if(currentColumnIndex<0)currentColumnIndex=0;
     
-    int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
-    
-    if(objectsOnGrid==columnBaseValue)
+    if(lastColumnIndex!=currentColumnIndex)
     {
-        isBasePickup=YES;
-        [gw.Blackboard.SelectedObjects removeAllObjects];
-        [self selectBaseObjectsOnGrid:currentColumnIndex];
+        for (DWPlaceValueBlockGameObject *block in [NSArray arrayWithArray:gw.Blackboard.SelectedObjects]) {
+            [block handleMessage:kDWswitchBaseSelectionBack];
+            [gw.Blackboard.SelectedObjects removeObject:block];
+        }
+        
+        int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
+        
+        if(objectsOnGrid==columnBaseValue)
+        {
+            isBasePickup=YES;
+            //        [gw.Blackboard.SelectedObjects removeAllObjects];
+            [self selectBaseObjectsOnGrid:currentColumnIndex];
+        }
+
     }
+    
     
     if(isBasePickup && [gw.Blackboard.SelectedObjects count]>0)
     {
@@ -1973,7 +1991,11 @@ static float kTimeToCageShake=7.0f;
         {
             for(DWPlaceValueBlockGameObject *b in gw.Blackboard.SelectedObjects)
             {
-                if(b==pickupObject)continue;
+                if(b==pickupObject)
+                {
+                    b.LastMount=b.Mount;
+                    continue;
+                }
                 DWPlaceValueNetGameObject *n=nil;
                 if([b.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
                 {
@@ -2020,7 +2042,10 @@ static float kTimeToCageShake=7.0f;
                 
                 for(int i=0;i<blocks;i++)
                 {
-                    if(i==0){[pickupObjects addObject:pickupObject];}
+                    if(i==0){
+                        [pickupObjects addObject:pickupObject];
+                        pickupObject.LastMount=pickupObject.Mount;
+                    }
                     else{
                         [cge handleMessage:kDWsetupStuff];
                         [pickupObjects addObject:cge.MountedObject];
@@ -2344,7 +2369,7 @@ static float kTimeToCageShake=7.0f;
         
         // evaluate the distance between start/end pos.
         // if we've not moved over our tap slip threshold
-        if([BLMath DistanceBetween:touchStartPos and:touchEndPos] < fabs(kTapSlipThreshold) && potentialTap)
+        if([gw Blackboard].PickupObject!=nil && [BLMath DistanceBetween:touchStartPos and:touchEndPos] < fabs(kTapSlipThreshold) && potentialTap)
         {
             // check whether it's selected and we can deselect - or that it's deselected
             DWPlaceValueBlockGameObject *block=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
@@ -2361,17 +2386,19 @@ static float kTimeToCageShake=7.0f;
             if(debugLogging)
                 NSLog(@"block selected? %@, isCage? %@", block.Selected? @"YES":@"NO", isCage? @"YES":@"NO");
             
-            if((!block.Selected && !isCage && allowDeselect) || (block.Selected && allowDeselect && !isCage))
-            {
-                [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
-                hasMovedBasePickup=NO;
-                
-                if(!disableAudioCounting&&!gw.Blackboard.inProblemSetup&&gw.Blackboard.SelectedObjects.count<=20)
-                {
-                    NSString *path=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", gw.Blackboard.SelectedObjects.count];
-                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(path)];
-                }
-            }
+//            if((!block.Selected && !isCage && allowDeselect) || (block.Selected && allowDeselect && !isCage))
+//            {
+//                [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
+//                hasMovedBasePickup=NO;
+//                
+//                if(!disableAudioCounting&&!gw.Blackboard.inProblemSetup&&gw.Blackboard.SelectedObjects.count<=20)
+//                {
+//                    NSString *path=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", gw.Blackboard.SelectedObjects.count];
+//                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(path)];
+//                }
+//            }
+            
+            
             // if we have a base pickup -- then set all their mounts back to what they should be - update their positions and tell them to animate to their rightful place - otherwise just do it for the current block
             if(isBasePickup)
             {
@@ -2522,6 +2549,53 @@ static float kTimeToCageShake=7.0f;
                     
                 }
                 
+                
+                if((multipleBlockPickup||showMultipleControls) && !isBasePickup)
+                {
+                    if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
+                    {
+                        enoughSpaceInGrid=YES;
+                        
+                        gw.Blackboard.DropObject=nil;
+                        [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:0];
+                        
+                        if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && !hasModifiedTestLocation)
+                        {
+                            gw.Blackboard.TestTouchLocation=ccp(n.PosX,n.PosY);
+                            hasModifiedTestLocation=YES;
+                        }
+                        
+                    }
+                    else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && !enoughSpaceInGrid)
+                    {
+//                        for(DWPlaceValueBlockGameObject *go in pickupObjects){
+//                            
+//                            if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+//                            {
+//                                [b handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
+//                                [b handleMessage:kDWputdown andPayload:nil withLogLevel:0];
+//                            }
+//                            else if(![gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+//                            {
+//                                [b handleMessage:kDWresetToMountPositionAndDestroy];
+//                            }
+//                        }
+                        
+                        for(DWPlaceValueBlockGameObject *go in pickupObjects){
+                            [go handleMessage:kDWresetToMountPositionAndDestroy];
+                        }
+                        
+                        [self setTouchVarsToOff];
+                        return;
+                    }
+                    
+                }
+                else if(isNegativeProblem)
+                {
+                    //TODO: check here the free spaces - taking into account mounted objects with no cancelling object
+                }
+                
+                
                 for(DWPlaceValueBlockGameObject *b in pickupObjects)
                 {
 //                    if([pickupObjects count]>1){
@@ -2530,43 +2604,7 @@ static float kTimeToCageShake=7.0f;
 //                        n=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
 //                    }
                     // if this is a multiple block pickup problem check below
-                    if((multipleBlockPickup||showMultipleControls) && !isBasePickup)
-                    {
-                        if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
-                        {
-                            enoughSpaceInGrid=YES;
-                            
-                            gw.Blackboard.DropObject=nil;
-                            [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:0];
-                            
-                            if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && !hasModifiedTestLocation)
-                            {
-                                gw.Blackboard.TestTouchLocation=ccp(n.PosX,n.PosY);
-                                hasModifiedTestLocation=YES;
-                            }
-                            
-                        }
-                        if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count] && !enoughSpaceInGrid)
-                        {
-//                            for(DWPlaceValueBlockGameObject *go in pickupObjects){
-                            
-                                if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
-                                {
-                                    [b handleMessage:kDWsetMount andPayload:nil withLogLevel:0];
-                                      [b handleMessage:kDWputdown andPayload:nil withLogLevel:0];
-                                }
-                                else if(![gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
-                                {
-                                    [b handleMessage:kDWresetToMountPositionAndDestroy];
-                                }
-//                            }
-                        }
 
-                    }
-                    else if(isNegativeProblem)
-                    {
-                        //TODO: check here the free spaces - taking into account mounted objects with no cancelling object
-                    }
                     
                     // other negatives code was here
                     if(b.ObjectValue==0)
@@ -2673,8 +2711,8 @@ static float kTimeToCageShake=7.0f;
                     {
                         //deselect the object if selected
                         // check whether it's selected and we can deselect - or that it's deselected
-                        if(b.Selected)
-                            [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
+//                        if(b.Selected)
+//                            [[gw Blackboard].PickupObject handleMessage:kDWswitchSelection andPayload:nil withLogLevel:0];
                     }
                 }
                 int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
@@ -2760,7 +2798,7 @@ static float kTimeToCageShake=7.0f;
     boundingBoxMulch=CGRectNull;
     hasMovedBlock=NO;
     hasMovedLayer=NO;
-    isBasePickup=NO;
+//    isBasePickup=NO;
     hasMovedBasePickup=NO;
     changedBlockCountOrValue=NO;
     [pickupObjects removeAllObjects];

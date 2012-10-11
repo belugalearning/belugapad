@@ -138,6 +138,8 @@ static float kTimeToCageShake=7.0f;
                     [l runAction:[InteractionFeedback shakeAction]];
                 }
             }
+            
+            hasRunInteractionFeedback=YES;
         }
         if(isProblemComplete && evalMode==kProblemEvalOnCommit)
         {
@@ -166,6 +168,41 @@ static float kTimeToCageShake=7.0f;
             CCLabelTTF *l=[blockLabels objectAtIndex:i];
             [l setString:[NSString stringWithFormat:@"%d", [[currentBlockValues objectAtIndex:i]intValue]]];
         }
+    }
+    
+    if(hasRunInteractionFeedback)
+    {
+        BOOL finished=NO;
+        
+        for(CCLabelTTF *l in blockLabels)
+        {
+            DWPlaceValueCageGameObject *c=[allCages objectAtIndex:[blockLabels indexOfObject:l]];
+            
+            CGPoint cagePos=ccp(c.PosX, c.PosY);
+            if(!CGPointEqualToPoint(cagePos, l.position))
+                [l setPosition:cagePos];
+        }
+        
+        for(int i=0;i<[gw.AllGameObjects count];i++)
+        {
+            if([[gw.AllGameObjects objectAtIndex:i] isKindOfClass:[DWPlaceValueBlockGameObject class]])
+            {
+                DWPlaceValueBlockGameObject *b=[gw.AllGameObjects objectAtIndex:i];
+                
+                CGPoint reqPos=ccp(b.PosX,b.PosY);
+                
+                if(!CGPointEqualToPoint(reqPos, b.mySprite.position) && [b.mySprite numberOfRunningActions]==0)
+                {
+                   [b.mySprite setPosition:reqPos];
+                    finished=YES;
+                    NSLog(@"reset a sprite position");
+                }
+            }
+        }
+        
+        
+        if(finished)
+            hasRunInteractionFeedback=NO;
     }
     
     if([gw.Blackboard SelectedObjects].count==columnBaseValue && showBaseSelection && (allowCondensing || autoBaseSelection))

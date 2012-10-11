@@ -124,6 +124,7 @@
     BOOL showMultipleControls;
     float timeToHideStatusLabel;
     float timeSinceInteractionOrShake;
+    BOOL hasRunInteractionFeedback;
     
     int lastCount;
     int totalCountedInProblem;

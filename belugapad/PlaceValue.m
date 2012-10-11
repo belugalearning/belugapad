@@ -1298,8 +1298,10 @@ static float kTimeToCageShake=7.0f;
                 //[pickupObjects addObject:co.MountedObject];
                 
                 if(![gw.Blackboard.SelectedObjects containsObject:co.MountedObject])
+                {
+                    NSLog(@"add object to array %d", (int)co.MountedObject);
                     [gw.Blackboard.SelectedObjects addObject:co.MountedObject];
-                
+                }
             }
         }
     }
@@ -2504,7 +2506,7 @@ static float kTimeToCageShake=7.0f;
                         go.Mount=go.LastMount;
                         NSLog(@"(TOUCHEND-ISBASEHANDLER) return to lastmount %d", (int)go.LastMount);
                         
-                        ((DWPlaceValueNetGameObject*)go.Mount).MountedObject=b;
+                        ((DWPlaceValueNetGameObject*)go.Mount).MountedObject=go;
                         
                         go.AnimateMe=YES;
                         

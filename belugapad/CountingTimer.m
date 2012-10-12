@@ -121,7 +121,7 @@
     }
     
     // if we're showing the count - update the label
-    if(showCount)[currentNumber setString:[NSString stringWithFormat:@"%d",lastNumber]];
+    if(showCount && !expired)[currentNumber setString:[NSString stringWithFormat:@"%d",lastNumber]];
     
     // problem expiring clauses
     if(numIncrement<0 && lastNumber<countMin && !expired)
@@ -337,8 +337,8 @@
     
     if(isWinning)
     {
-        [currentNumber setString:[NSString stringWithFormat:@"%d",solutionNumber]];
         expired=YES;
+        [currentNumber setString:[NSString stringWithFormat:@"%d",solutionNumber]];
         [toolHost doWinning];
     }
     else {

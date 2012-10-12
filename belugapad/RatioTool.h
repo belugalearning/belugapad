@@ -35,6 +35,8 @@
     CCLayer *renderLayer;
     CCSprite *mbox;
     
+    int c[3];
+    
     int initValue[3];
     
     int evalValue[3];

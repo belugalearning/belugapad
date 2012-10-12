@@ -99,15 +99,13 @@
 -(void)doUpdateOnTick:(ccTime)delta
 {
     [gw doUpdate:delta];
-
-    int c[[numberWheels count]-1];
     
     for(int i=0;i<[numberWheels count];i++)
     {
         DWNWheelGameObject *w=[numberWheels objectAtIndex:i];
-        if(w.OutputValue>wheelMax)
+        if(w.OutputValue>(int)wheelMax)
         {
-            c[i]=(c[i]/wheelMax)*255;
+            c[i]=wheelMax;
             w.InputValue=(int)wheelMax;
             [w handleMessage:kDWupdateObjectData];
             [amount[i] setString:[NSString stringWithFormat:@"%d", c[i]]];

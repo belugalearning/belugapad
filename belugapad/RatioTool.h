@@ -35,21 +35,13 @@
     CCLayer *renderLayer;
     CCSprite *mbox;
     
-    int initValueBlue;
-    int initValueRed;
-    int initValueGreen;
+    int initValue[3];
     
-    int evalValueBlue;
-    int evalValueRed;
-    int evalValueGreen;
+    int evalValue[3];
     
-    int recipeBlue;
-    int recipeRed;
-    int recipeGreen;
+    int recipe[3];
     
-    CCLabelTTF *amountRed;
-    CCLabelTTF *amountGreen;
-    CCLabelTTF *amountBlue;
+    CCLabelTTF *amount[3];
     
     NSMutableArray *numberWheels;
     

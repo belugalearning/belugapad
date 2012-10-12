@@ -13,6 +13,8 @@
 #import "ToolScene.h"
 
 @class DWGameWorld;
+@class DWGameObject;
+@class DWPlaceValueNetGameObject;
 @class Daemon;
 @class ToolHost;
 
@@ -29,14 +31,18 @@
     float cx, cy, lx, ly;
     
     CCLayer *renderLayer;
-    CCLayer *countLayer;
     
     CCLabelTTF *problemSubLabel;
     CCLabelTTF *problemCompleteLabel;
     CCLabelTTF *countLabel;
     CCLabelTTF *countLabelBlock;
+    NSMutableArray *totalCountSprites;
+    NSMutableArray *userAddedBlocks;
+    NSMutableArray *userAddedBlocksLastCount;
 
     // GameWorld setup
+    
+    BOOL isProblemComplete;
 
     int ropesforColumn;
     int rows;    
@@ -56,6 +62,8 @@
     BOOL showBaseSelection;
     BOOL showCountOnBlock;
     BOOL showColumnHeader;
+    BOOL showColumnTotalCount;
+    BOOL showColumnUserCount;
     //BOOL disableCageAdd;
     //BOOL disableCageDelete;
     BOOL showReset;
@@ -66,7 +74,11 @@
     BOOL allowMulching;
     BOOL hasMovedBlock;
     BOOL hasMovedLayer;
+    BOOL disableAudioCounting;
+    BOOL autoBaseSelection;
     
+    
+
     NSString *posCageSprite;
     NSString *negCageSprite;
     NSString *pickupSprite;
@@ -77,6 +89,9 @@
     NSDictionary *showCustomColumnHeader;
     
     NSMutableArray *columnInfo;
+    NSMutableArray *blocksToCreate;
+    NSMutableArray *currentBlockValues;
+    NSMutableArray *blockLabels;
     
     NSArray *problemFiles;
     int currentProblemIndex;
@@ -84,13 +99,15 @@
     NSDictionary *solutionsDef;
     NSDictionary *columnSprites;
     NSDictionary *columnCages;
-    NSDictionary *columnNegCages;
     NSDictionary *columnRows;
     NSDictionary *columnRopes;
     NSDictionary *columnCagePosDisableAdd;
     NSDictionary *columnCagePosDisableDel;
     NSDictionary *columnCageNegDisableAdd;
     NSDictionary *columnCageNegDisableDel;
+    NSDictionary *multipleBlockPickup;
+    NSDictionary *multipleBlockPickupDefaults;
+    
     
     DWGameWorld *gw;
 
@@ -99,6 +116,8 @@
     
     NSArray *initObjects;
     
+    BOOL isNegativeProblem;
+    
     ProblemRejectMode rejectMode;
     ProbjemRejectType rejectType;
     ProblemEvalMode evalMode;
@@ -106,28 +125,58 @@
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
     BOOL autoHideStatusLabel;
+    BOOL showMultipleControls;
     float timeToHideStatusLabel;
+    float timeSinceInteractionOrShake;
+    BOOL hasRunInteractionFeedback;
     
     int lastCount;
     int totalCountedInProblem;
     float maxSumReachedByUser;
     float expectedCount;
     float totalCount;
+    float lastTotalCount;
+    
+    int cageDefaultValue;
+    BOOL explodeMode;
     
     CCSprite *condensePanel;
     CCSprite *mulchPanel;
     
     CGRect boundingBoxCondense;
     CGRect boundingBoxMulch;
+    CGRect noDragAreaTop;
+    CGRect noDragAreaBottom;
+    
+    CGPoint previousLocation;
     
     BOOL inBlockTransition;
     BOOL inCondenseArea;
     BOOL inMulchArea;
     
+    BOOL changedBlockCountOrValue;
+    
+    NSString *solutionType;
+    
     //reference to cages
     NSMutableArray *allCages;
+    // reference to plus and minus sprites and labels for block creation
+    NSMutableArray *multiplePlusSprites;
+    NSMutableArray *multipleMinusSprites;
+    NSMutableArray *multipleLabels;
     
     NSMutableDictionary *boundCounts;
+    
+    // use this array in a case we need to drag more than 1  object
+    NSMutableArray *pickupObjects;
+//    DWPlaceValueNetGameObject *lastNet;
+    
+    BOOL isBasePickup;
+    BOOL hasMovedBasePickup;
+    
+    BOOL debugLogging;
+    int thisLog;
+    
 }
 
 -(void)populateGW;
@@ -137,15 +186,26 @@
 -(void)problemStateChanged;
 -(void)evalProblem;
 -(void)doWinning;
--(BOOL)evalProblemCountSeq:(NSString*)problemType;
+-(BOOL)evalProblemCountSeq;
 -(void)calcProblemCountSequence;
 -(void)calcProblemTotalCount;
--(BOOL)evalProblemTotalCount:(NSString*)problemType;
--(void)evalProblemMatrixMatch;
+-(BOOL)evalProblemTotalCount;
+-(BOOL)evalProblemMatrixMatch;
+-(void)checkForMultipleControlTouchesAt:(CGPoint)thisLocation;
+-(void)checkForBlockValueTouchesAt:(CGPoint)thisLocation;
+-(void)checkAndChangeCageSpritesForMultiple;
+-(void)checkAndChangeCageSpritesForNegative;
+-(void)switchSpritesBack;
+-(void)createCondenseAndMulchBoxes;
 -(void)snapLayerToPosition;
+-(void)checkMountPositionsForBlocks;
+-(void)flipToBaseSelection;
+-(int)freeSpacesOnGrid:(int)thisGrid;
 -(void)tintGridColour:(ccColor3B)toThisColour;
+-(void)tintGridColour:(int)thisGrid toColour:(ccColor3B)toThisColour;
 -(BOOL)doCondenseFromLocation:(CGPoint)location;
 -(BOOL)doMulchFromLocation:(CGPoint)location;
 -(BOOL)doTransitionWithIncrement:(int)incr;
+-(void)setTouchVarsToOff;
 
 @end

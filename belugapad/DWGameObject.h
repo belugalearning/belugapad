@@ -16,7 +16,7 @@
 	NSMutableDictionary *localStore;
 }
 
-@property (nonatomic, retain) DWGameWorld *gameWorld;
+@property (nonatomic, assign) DWGameWorld *gameWorld;
 
 +(DWGameObject*) createFromTemplate:(NSString*) templateName withWorld:(DWGameWorld *)gw;
 +(void) populateObject:(DWGameObject*) theObject fromTemplate:(NSString*) templateName withWorld:(DWGameWorld *)gw;

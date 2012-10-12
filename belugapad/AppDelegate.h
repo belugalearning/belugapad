@@ -9,9 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "cocos2d.h"
 
-#import <Couchbase/CouchbaseMobile.h>
-
-@class RootViewController, ContentService, UsersService;
+@class RootViewController, LoggingService, ContentService, UsersService;
 
 @interface AppController : NSObject <UIApplicationDelegate, CCDirectorDelegate>
 {
@@ -29,12 +27,19 @@
 @property (readonly) UINavigationController *navController;
 @property (readonly) CCDirectorIOS *director;
 
-@property (nonatomic, retain) NSDictionary *LocalSettings;
+@property (nonatomic, readonly) LoggingService *loggingService;
 @property (nonatomic, readonly) ContentService *contentService;
 @property (nonatomic, readonly) UsersService *usersService;
+
+@property (nonatomic, retain) NSDictionary *LocalSettings;
+@property (retain) NSDictionary *AdplineSettings;
+
 @property BOOL ReleaseMode;
+
+@property BOOL IsIpad1;
 
 -(void)proceedFromLoginViaIntro:(BOOL)viaIntro;
 -(void)returnToLogin;
+-(void)writeLogMemoryUsage;
 
 @end

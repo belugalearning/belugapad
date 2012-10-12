@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>work out missing number</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:ot tag=&quot;a&quot; enabled=&quot;yes&quot;&gt;3/4&lt;/b:ot&gt;
+&lt;b:op op=&quot;+&quot; /&gt;
+&lt;b:ot tag=&quot;b&quot; enabled=&quot;yes&quot;&gt;?&lt;/b:ot&gt;
+&lt;b:op op=&quot;=&quot; /&gt;
+&lt;b:ot tag=&quot;c&quot; enabled=&quot;yes&quot;&gt;7/8&lt;/b:ot&gt;</string>
+		<string>&lt;b:ot tag=&quot;c&quot; enabled=&quot;no&quot;&gt;7/8&lt;/b:ot&gt;
+&lt;b:op op=&quot;-&quot; /&gt;
+&lt;b:ot tag=&quot;a&quot; enabled=&quot;no&quot;&gt;3/4&lt;/b:ot&gt;
+&lt;b:op op=&quot;=&quot; /&gt;
+&lt;b:ot tag=&quot;b&quot; picker=&quot;yes&quot; pickerTarget=&quot;1/8&quot; enabled=&quot;yes&quot;&gt;?&lt;/b:ot&gt;</string>
+	</array>
+</dict>
+</plist>

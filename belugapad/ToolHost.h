@@ -8,6 +8,7 @@
 
 #import "cocos2d.h"
 #import "ToolConsts.h"
+#import "CCPickerView.h"
 
 typedef enum {
     kMetaQuestionAnswerSingle=0,
@@ -35,8 +36,10 @@ typedef enum {
 @class DProblemParser;
 @class NordicAnimator;
 @class LRAnimator;
+@class SGGameWorld;
+@class DebugViewController;
 
-@interface ToolHost : CCLayer
+@interface ToolHost : CCLayer <CCPickerViewDataSource, CCPickerViewDelegate>
 {
     float cx, cy, lx, ly;
     
@@ -45,6 +48,7 @@ typedef enum {
     CCLayer *metaQuestionLayer;
     CCLayer *numberPickerLayer;
     CCLayer *problemDefLayer;
+    CCLayer *btxeDescLayer;
     CCLayer *pauseLayer;
 
     CCLayer *toolBackLayer;
@@ -71,6 +75,7 @@ typedef enum {
     BOOL showMetaQuestionIncomplete;
     float shownMetaQuestionIncompleteFor;
     BOOL metaQuestionForceComplete;
+    BOOL metaQuestionRandomizeAnswers;
     
     BOOL numberPickerForThisProblem;
     BOOL animatePickedButtons;
@@ -87,7 +92,11 @@ typedef enum {
     int npMaxNoInDropbox;
     CGRect pickerBox;
     BOOL hasMovedNumber;
+    BOOL hasUsedNumber;
+    BOOL canMoveNumber;
     
+    float timeSinceInteractionOrShakeNP;
+    float timeBeforeUserInteraction;
     
     BOOL isPaused;
     CCLabelTTF *pauseTestPathLabel;
@@ -99,11 +108,13 @@ typedef enum {
     NSMutableDictionary *pdef;
     
     BOOL skipNextStagedIntroAnim;
+    BOOL skipNextDescDraw;
     
     CCSprite *hostBackground;
     CCSprite *pauseMenu;
     CCSprite *problemComplete;
     CCSprite *problemIncomplete;
+    CCSprite *pbtn;
     
     BOOL autoMoveToNextProblem;
     float moveToNextProblemTime;
@@ -121,12 +132,52 @@ typedef enum {
     int currentToolDepth;
     
     NSString *touchLogPath;
+    
+    BOOL isGlossaryMock;
+    BOOL isGloassryDone1;
+    BOOL glossaryShowing;
+    BOOL isAnimatingIn;
+    CCSprite *glossary1;
+    CCSprite *glossary2;
+    CCSprite *glossaryPopup;
+    
+    
+    //scoring
+    int pipelineScore;          //the total score accumulated in this pipeline
+    int displayScore;           //the score currently being displayed (not actual -- based on sharding)
+    int displayPerShard;        //the displayed score accumulation per shard
+    float scoreMultiplier;      //the current multiplier
+    int multiplierStage;        //the stage of the multiplier (0 for first problem)
+    BOOL hasResetMultiplier;    //has the multiplier been reset this problem (e.g. problem failed & restarted)
+    
+    CCLabelTTF *scoreLabel;
+    CCLabelTTF *multiplierLabel;
+    
+    //adpline trgigers
+    BOOL adpSkipProblemAndInsert;
+    int commitCount;
+    NSDictionary *triggerData;
+    
+    //web debug view
+    UIWebView *debugWebView;
+    BOOL debugShowingPipelineState;
+    DebugViewController *debugViewController;
+    
+    //btxe for description
+    SGGameWorld *descGw;
+    CCSprite *questionSeparatorSprite;
+    
+    //ui
+    CCSprite *multiplierBadge;
+    CCLayerColor *blackOverlay;
+    CCLayer *contextProgressLayer;
 }
 
 @property (retain) Daemon *Zubi;
 @property (retain) BAExpressionTree *PpExpr;
 @property BOOL flagResetProblem;
 @property (retain) DProblemParser *DynProblemParser;
+@property (nonatomic, retain) CCPickerView *pickerView;
 
 +(CCScene *) scene;
 
@@ -135,6 +186,7 @@ typedef enum {
 -(void) addToolForeLayer:(CCLayer *) foreLayer;
 -(void) addToolBackLayer:(CCLayer *) backLayer;
 -(void) populatePerstLayer;
+-(void) shakeCommitButton;
 -(void) gotoNewProblem;
 -(void) loadProblem;
 -(void) resetProblem;
@@ -149,8 +201,9 @@ typedef enum {
 -(void)recurseSetIntroFor:(CCNode*)node withTime:(float)time forTag:(int)tag;
 -(void)stageIntroActions;
 -(void)setupProblemOnToolHost:(NSDictionary *)pdef;
+-(NSMutableArray*)randomizeAnswers:(NSMutableArray*)thisArray;
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ;
--(void)checkMetaQuestionTouches:(CGPoint)location;
+-(void)checkMetaQuestionTouchesAt:(CGPoint)location andTouchEnd:(BOOL)touchEnd;
 -(void)setupNumberPicker:(NSDictionary *)pdefNP;
 -(void)checkNumberPickerTouches:(CGPoint)location;
 -(void)checkNumberPickerTouchOnRegister:(CGPoint)location;
@@ -165,6 +218,7 @@ typedef enum {
 -(void)tearDownMetaQuestion;
 -(void)tearDownProblemDef;
 -(void)readToolOptions:(NSString*)currentTool;
+-(void)incrementDisplayScore: (id)sender;
 
 
 -(void) moveToTool1: (ccTime) delta;
@@ -172,5 +226,7 @@ typedef enum {
 
 -(void)playAudioClick;
 -(void)playAudioPress;
+
+-(void)resetScoreMultiplier;
 
 @end

@@ -13,7 +13,7 @@ static float visibleProximity=1024.0f;
 
 @implementation SGJmapProximityEval
 
--(SGJmapProximityEval*)initWithGameObject:(id<ProximityResponder, Transform>)aGameObject
+-(SGJmapProximityEval*)initWithGameObject:(id<ProximityResponder, Transform, GameObject>)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
@@ -27,15 +27,28 @@ static float visibleProximity=1024.0f;
 {
     if([BLMath DistanceBetween:pos and:ParentGO.Position]<visibleProximity)
     {
-        ParentGO.Visible=YES;
+        if(!ParentGO.Visible)
+        {
+            ParentGO.Visible=YES;
+            [ParentGO handleMessage:kSGvisibilityChanged];
+        }
     }
     else {
-        ParentGO.Visible=NO;
+        if(ParentGO.Visible)
+        {
+            ParentGO.Visible=NO;
+            [ParentGO handleMessage:kSGvisibilityChanged];
+        }
     }
 }
 
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload
+-(void)handleMessage:(SGMessageType)messageType
 {
+//    if(messageType==kSGzoomOut)
+//    {
+//        ParentGO.Visible=YES;
+//        [ParentGO handleMessage:kSGvisibilityChanged andPayload:nil withLogLevel:0];        
+//    }
     
 }
 

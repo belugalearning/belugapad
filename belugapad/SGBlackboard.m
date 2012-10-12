@@ -11,6 +11,9 @@
 
 @implementation SGBlackboard
 
+@synthesize RenderLayer;
+@synthesize inProblemSetup;
+
 -(id) init
 {
     if((self=[super init]))
@@ -26,6 +29,14 @@
 -(void)loadData
 {
 
+}
+
+-(void)dealloc
+{
+    self.RenderLayer=nil;
+    self.btxeIconBatch=nil;
+    
+    [super dealloc];
 }
 
 

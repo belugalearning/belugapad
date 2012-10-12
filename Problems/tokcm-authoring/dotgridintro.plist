@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Draw a rectangle on the grid. Then shade all of the squares.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>intro to dotgrid</string>
+	<key>MASTERY</key>
+	<true/>
+	<key>TOOL_KEY</key>
+	<string>DotGrid</string>
+	<key>ANCHOR_SPACE</key>
+	<integer>85</integer>
+	<key>START_X</key>
+	<integer>0</integer>
+	<key>START_Y</key>
+	<integer>0</integer>
+	<key>DRAW_MODE</key>
+	<integer>0</integer>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>DOTGRID_EVAL_TYPE</key>
+	<integer>1</integer>
+	<key>DOTGRID_EVAL_DIVIDEND</key>
+	<integer>1</integer>
+	<key>DOTGRID_EVAL_DIVISOR</key>
+	<string>1</string>
+	<key>DOTGRID_EVAL_TOTALSIZE</key>
+	<string>15</string>
+	<key>SHOW_RESIZE</key>
+	<false/>
+</dict>
+</plist>

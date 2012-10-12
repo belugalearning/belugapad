@@ -17,4 +17,12 @@
 @synthesize tileSize;
 @synthesize myAnchor;
 
+-(void)dealloc
+{
+    self.mySprite=nil;
+    self.myAnchor=nil;
+    
+    [super dealloc];
+}
+
 @end

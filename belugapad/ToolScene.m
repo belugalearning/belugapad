@@ -119,4 +119,13 @@
     
 }
 
+-(void)dealloc
+{
+    self.BkgLayer=nil;
+    self.NoScaleLayer=nil;
+    self.ForeLayer=nil;
+    
+    [super dealloc];
+}
+
 @end

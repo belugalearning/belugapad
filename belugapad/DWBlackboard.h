@@ -17,6 +17,7 @@
 }
 
 @property (retain) DWGameObject *DropObject;
+@property (retain) DWGameObject *PriorityDropObject;
 @property float DropObjectDistance;
 @property (retain) DWGameObject *PickupObject;
 @property (retain) DWGameObject *ProximateObject;
@@ -25,6 +26,7 @@
 @property (retain) NSMutableArray *AllStores;
 @property (retain) NSMutableArray *CurrentStore;
 @property (retain) CCLayer *ComponentRenderLayer;
+@property (retain) CCLayer *MovementLayer;
 @property CGPoint PickupOffset;
 @property float hostLX;
 @property float hostLY;
@@ -36,6 +38,9 @@
 @property (retain) DWGameObject *FirstAnchor;
 @property (retain) DWGameObject *LastAnchor;
 @property (retain) DWGameObject *CurrentHandle;
+@property CGPoint TestTouchLocation;
+@property CGPoint MoveTouchLocation;
+@property float CurrentColumnValue;
 
 -(void)loadData;
 

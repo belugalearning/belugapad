@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>same hundreds, diff tens, same units</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:ot tag=&quot;a&quot;&gt;is less than&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;b&quot;&gt;is equal to&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;c&quot;&gt;is greater than&lt;/b:ot&gt;</string>
+		<string>&lt;b:t&gt;{$a}{$y}{$b}&lt;/b:t&gt;
+&lt;b:ot tag=&quot;c&quot; enabled=&quot;no&quot;&gt; &amp;gt; &lt;/b:ot&gt;
+&lt;b:t&gt;{$a}{$x}{$b}&lt;/b:t&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$a</string>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>9</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$b</string>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>9</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>4</string>
+			<key>MAX</key>
+			<string>7</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>5</string>
+			<key>MAX</key>
+			<string>9</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -151,9 +151,9 @@
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    UITouch *touch=[touches anyObject];
-    CGPoint location=[touch locationInView: [touch view]];
-    location=[[CCDirector sharedDirector] convertToGL:location];
+//    UITouch *touch=[touches anyObject];
+//    CGPoint location=[touch locationInView: [touch view]];
+//    location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     isTouching=NO;
     gw.Blackboard.LastSelectedObject=nil;
@@ -210,15 +210,13 @@
 #pragma mark - dealloc
 -(void) dealloc
 {
-    //write log on problem switch
-    [gw writeLogBufferToDiskWithKey:@"ToolTemplate"];
-    
-    //tear down
-    [gw release];
+    [renderLayer release];
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
     
+    //tear down
+    [gw release];
     
     [super dealloc];
 }

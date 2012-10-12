@@ -13,7 +13,7 @@
 
 @implementation SGJmapNode
 
-@synthesize NodeRenderComponent, EnabledAndComplete, MasteryNode;
+@synthesize NodeRenderComponent, EnabledAndComplete, MasteryNode, PrereqNodes;
 
 //Transform protocol properties
 @synthesize Position, RenderBatch;
@@ -25,30 +25,33 @@
 @synthesize _id, UserVisibleString;
 
 //selectable
-@synthesize Selected, NodeSelectComponent;
+@synthesize Selected, NodeSelectComponent, HitProximity, HitProximitySign;
 
 -(SGJmapNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition
 {   
     if(self=[super initWithGameWorld:aGameWorld])
     {
         self.RenderBatch=aRenderBatch;
-        self.Position=aPosition;
+        Position=aPosition;
         self.Selected=NO;
+        self.Visible=NO;
         
-        self.NodeRenderComponent=[[SGJmapNodeRender alloc] initWithGameObject:self];
-        self.ProximityEvalComponent=[[SGJmapProximityEval alloc] initWithGameObject:self];
-        self.NodeSelectComponent=[[SGJmapNodeSelect alloc] initWithGameObject:self];
+        PrereqNodes=[[NSMutableArray alloc] init];
+        
+        NodeRenderComponent=[[SGJmapNodeRender alloc] initWithGameObject:self];
+        ProximityEvalComponent=[[SGJmapProximityEval alloc] initWithGameObject:self];
+        NodeSelectComponent=[[SGJmapNodeSelect alloc] initWithGameObject:self];
     }
     return self;
 }
 
 
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel 
+-(void)handleMessage:(SGMessageType)messageType
 {
     //re-broadcast messages to components
-    [self.NodeRenderComponent handleMessage:messageType andPayload:payload];
-    [self.ProximityEvalComponent handleMessage:messageType andPayload:payload];
-    [self.NodeSelectComponent handleMessage:messageType andPayload:payload];
+    [self.NodeRenderComponent handleMessage:messageType];
+    [self.ProximityEvalComponent handleMessage:messageType];
+    [self.NodeSelectComponent handleMessage:messageType];
 }
 
 -(void)doUpdate:(ccTime)delta
@@ -59,11 +62,17 @@
     [self.NodeSelectComponent doUpdate:delta];
 }
 
--(void)draw
+-(void)setPosition:(CGPoint)aPosition
+{
+    Position=aPosition;
+    [NodeRenderComponent updatePosition:Position];
+}
+
+-(void)draw:(int)z
 {
     if(self.Visible)
     {
-        [self.NodeRenderComponent draw];
+        [self.NodeRenderComponent draw:z];
     }
 }
 
@@ -75,7 +84,14 @@
 
 -(void)dealloc
 {
-    [self.NodeRenderComponent release];
+    self.NodeRenderComponent=nil;
+    self.MasteryNode=nil;
+    self.PrereqNodes=nil;
+    self.RenderBatch=nil;
+    self.ProximityEvalComponent=nil;
+    self._id=nil;
+    self.UserVisibleString=nil;
+    self.NodeSelectComponent=nil;
     
     [super dealloc];
 }

@@ -10,15 +10,19 @@
 
 @class SGComponent;
 
+@protocol GameObject
+-(void)handleMessage:(SGMessageType)messageType;
+-(void)doUpdate:(ccTime)delta;
+@end
+
 @interface SGGameObject : NSObject {
 	SGGameWorld *gameWorld;
 }
 
-@property (nonatomic, retain) SGGameWorld *gameWorld;
+@property (nonatomic, assign) SGGameWorld *gameWorld;
 
 -(SGGameObject *)initWithGameWorld:(SGGameWorld *)aGameWorld;
 -(void)doUpdate:(ccTime)delta;
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel;
 -(void)handleMessage:(SGMessageType)messageType;
 
 -(void)cleanup;

@@ -25,4 +25,14 @@
 @synthesize isEndYPiece;
 @synthesize isCornerPiece;
 
+-(void)dealloc
+{
+    self.mySprite=nil;
+    self.selSprite=nil;
+    self.ansSprite=nil;
+    self.myText=nil;
+    
+    [super dealloc];
+}
+
 @end

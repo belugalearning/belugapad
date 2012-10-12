@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_RANDOMISE_ANSWERS</key>
+		<false/>
+		<key>META_QUESTION_COMPLETE_TEXT</key>
+		<string>well done!!</string>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>Yes</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>No</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>{@bname} &lt;b:t&gt;has {$number_smaller} {@item}, and &lt;/b:t&gt;{@gname}&lt;b:t&gt; has {$number_larger}. Does &lt;/b:t&gt;{@bname} &lt;b:t&gt;have more {@item}?&lt;/b:t&gt;</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again</string>
+	</dict>
+	<key>HOST_BACKGROUND_IMAGE</key>
+	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@bname</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>&lt;b:oi tag=&quot;thing_2&quot;/&gt;</string>
+				<string>&lt;b:oi tag=&quot;thing_4&quot;/&gt;</string>
+				<string>&lt;b:oi tag=&quot;thing_5&quot;/&gt;</string>
+			</array>
+		</dict>
+		<key>@gname</key>
+		<dict>
+			<key>DATA</key>
+			<array>
+				<string>&lt;b:oi tag=&quot;thing_1&quot;/&gt;</string>
+				<string>&lt;b:oi tag=&quot;thing_3&quot;/&gt;</string>
+			</array>
+			<key>MODE</key>
+			<string>RANDOM</string>
+		</dict>
+		<key>@item</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>goos</string>
+				<string>goos</string>
+				<string>goos</string>
+				<string>goos</string>
+			</array>
+		</dict>
+	</dict>
+	<key>DVARS</key>
+	<dict>
+		<key>$number_larger</key>
+		<dict>
+			<key>MAX</key>
+			<string>21</string>
+			<key>MIN</key>
+			<string>17</string>
+		</dict>
+		<key>$number_smaller</key>
+		<dict>
+			<key>MAX</key>
+			<string>16</string>
+			<key>MIN</key>
+			<string>12</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

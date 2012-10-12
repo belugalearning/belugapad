@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NODE_ID</key>
+	<string>5608a59d6797796ce9e11484fd16f9db</string>
+	<key>PIPELINE_NAME</key>
+	<string>crsk-test</string>
+	<key>PROBLEMS</key>
+	<array>
+		<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd16f9db/101understandingplacevalue-problem.plist</string>
+		<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd16f9db/102understandingplacevalue-problem.plist</string>
+		<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd16f9db/103understandingplacevalue-problem.plist</string>
+		<string>/Problems/tokcm-authoring/Number/place_value/understanding_tens/5608a59d6797796ce9e11484fd16f9db/104understandingplacevalue-problem.plist</string>
+	</array>
+</dict>
+</plist>

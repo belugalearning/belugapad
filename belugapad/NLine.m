@@ -21,6 +21,7 @@
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
 #import "DProblemParser.h"
+#import "LoggingService.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
 #import "InteractionFeedback.h"
@@ -28,17 +29,24 @@
 @interface NLine()
 {
 @private
+    LoggingService *loggingService;
     ContentService *contentService;
     UsersService *usersService;
 }
 
 @end
 
-static float kBubbleProx=100.0f;
+static float kBubbleProx=35.0f;
 static float kBubbleScrollBoundary=350;
 static float kBubblePushSpeed=400.0f;
 
 static float kTimeToBubbleShake=7.0f;
+
+static float kFrogYOffset=30.0f;
+static float kFrogTargetYOffset=80.0f;
+static float kFrogTargetXOffset=0.0f;
+
+float timerIgnoreFrog;
 
 @implementation NLine
 
@@ -71,6 +79,7 @@ static float kTimeToBubbleShake=7.0f;
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         contentService = ac.contentService;
         usersService = ac.usersService;
+        loggingService = ac.loggingService;
         
         gw.Blackboard.ComponentRenderLayer=self.ForeLayer;
         
@@ -97,13 +106,67 @@ static float kTimeToBubbleShake=7.0f;
 
 -(void)setupBubble
 {
-    bubbleTexRegular=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/bubble.png")].CGImage resolutionType:kCCResolutioniPad];
-    bubbleTexSelected=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/bubble_selected115.png")].CGImage resolutionType:kCCResolutioniPad];
+    bubbleTexRegular=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")].CGImage resolutionType:kCCResolutioniPad];
+    bubbleTexSelected=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")].CGImage resolutionType:kCCResolutioniPad];
     
     bubbleSprite=[CCSprite spriteWithTexture:bubbleTexRegular];
     [bubbleSprite setPosition:ccp(cx, cy)];
     [self.ForeLayer addChild:bubbleSprite];
     
+}
+
+-(void)setupFrog
+{
+    frogSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")];
+    frogSprite.color=ccc3(0, 255, 0);
+    frogSprite.position=ccp(cx, cy+kFrogYOffset);
+    [self.ForeLayer addChild:frogSprite];
+    
+    frogTargetSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_MoveButton.png")];
+    [self.ForeLayer addChild:frogTargetSprite];
+    frogTargetSprite.opacity=0;
+}
+
+-(void)showFrogTarget
+{    
+    frogTargetSprite.opacity=0;
+    float x=rambler.TouchXOffset + cx + (lastBubbleLoc-initStartLoc) * rambler.DefaultSegmentSize;
+    frogTargetSprite.position=ccp(x+kFrogTargetXOffset, cy+kFrogTargetYOffset);
+    [frogTargetSprite runAction:[CCFadeIn actionWithDuration:0.25f]];
+}
+
+-(void)hideFrogTarget
+{
+    if(frogTargetSprite.opacity>0)
+    {
+        [frogTargetSprite runAction:[CCFadeOut actionWithDuration:0.25f]];
+    }
+}
+
+-(void)hopFrog
+{
+    if(lastBubbleLoc==lastFrogLoc) return;
+    
+    ccBezierConfig bc;
+    bc.controlPoint_1=ccpAdd(frogSprite.position, ccp(20, 100));
+    bc.controlPoint_2=ccpAdd(bubbleSprite.position, ccp(0, 100));
+    bc.endPosition=ccpAdd(bubbleSprite.position, ccp(0, kFrogYOffset));
+    
+    [frogSprite runAction:[CCEaseInOut actionWithAction:[CCBezierTo actionWithDuration:0.5f bezier:bc] rate:2]];
+    
+    timerIgnoreFrog=0.5f;
+    
+    [self hideFrogTarget];
+    
+    [rambler.UserJumps addObject:[NSValue valueWithCGPoint:ccp((lastFrogLoc-initStartLoc)*rambler.CurrentSegmentValue, lastBubbleValue - (lastFrogLoc * rambler.CurrentSegmentValue))]];
+    lastFrogLoc=lastBubbleLoc;
+}
+
+-(void)slideFrog
+{
+    CGPoint fp=ccp(rambler.TouchXOffset + cx + rambler.DefaultSegmentSize * (lastFrogLoc-initStartLoc), cy+kFrogYOffset);
+    [frogSprite runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.25f position:fp] rate:2.0f]];
+    timerIgnoreFrog=0.25;
 }
 
 -(void)setupLabels
@@ -119,19 +182,28 @@ static float kTimeToBubbleShake=7.0f;
 -(void)doUpdateOnTick:(ccTime)delta
 {
 	[gw doUpdate:delta];
+
+    rambler.TouchXOffset+=bubblePushDir * kBubblePushSpeed * delta;
+    stitchOffsetX+=bubblePushDir * kBubblePushSpeed * delta;
     
-//    float distFromCentre=-rambler.TouchXOffset + ((bubbleSprite.position.x + holdingBubbleOffset) - cx);
-//    if (distFromCentre <= ([rambler.MaxValue floatValue] * rambler.DefaultSegmentSize)
-//        && distFromCentre >= ([rambler.MinValue floatValue] * rambler.DefaultSegmentSize)) {
-        
-        rambler.TouchXOffset+=bubblePushDir * kBubblePushSpeed * delta;
-//    }    
+    //update frog position
+    if(timerIgnoreFrog>0.0f)timerIgnoreFrog-=delta;
+    //else frogSprite.position=ccp(rambler.TouchXOffset + cx + (lastFrogLoc +initStartVal) * rambler.DefaultSegmentSize, cy+kFrogYOffset);
+    else frogSprite.position=ccp(rambler.TouchXOffset + cx + rambler.DefaultSegmentSize * (lastFrogLoc-initStartLoc), cy+kFrogYOffset);
     
     
     timeSinceInteractionOrShake+=delta;
     if(timeSinceInteractionOrShake>kTimeToBubbleShake)
-    {
-        [self animShakeBubble];
+    { 
+        if(!usedBubble)
+        {
+            [self animShakeBubble];            
+        }
+        // are we in the right place, but haven't pressed eval?
+        if(evalTarget==lastBubbleLoc && evalMode==kProblemEvalOnCommit)
+        {
+            [toolHost shakeCommitButton];
+        }
         timeSinceInteractionOrShake=0;
     }
     
@@ -143,10 +215,29 @@ static float kTimeToBubbleShake=7.0f;
     }
 }
 
+-(void)draw
+{
+    CGPoint actualStitchStart=ccp(stitchStartPos.x + stitchOffsetX, stitchStartPos.y);
+    
+    if(drawStitchLine)
+    {
+        ccDrawLine(actualStitchStart, stitchEndPos);
+    }
+    
+    if(drawStitchCurve)
+    {
+        ccDrawQuadBezier(actualStitchStart, stitchApexPos, stitchEndPos, 40);
+    }
+    
+    [rambler drawFromMid:ccp(cx, cy) andYOffset:kFrogYOffset];
+}
+
 -(void)populateGW
 {
     rambler=[DWRamblerGameObject alloc];
     [gw populateAndAddGameObject:rambler withTemplateName:@"TnLineRambler"];
+    
+    lastBubbleLoc=initStartLoc;
     
     rambler.Value=initStartVal;
     rambler.StartValue=rambler.Value;
@@ -154,6 +245,9 @@ static float kTimeToBubbleShake=7.0f;
     rambler.MinValue=initMinVal;
     rambler.MaxValue=initMaxVal;
     rambler.BubblePos=lastBubbleLoc;
+    
+    initStartLoc=initStartVal / initSegmentVal;
+
     
     enableAudioCounting = [rambler.MinValue intValue]>=0 && [rambler.MaxValue intValue]<=20;
     
@@ -181,6 +275,8 @@ static float kTimeToBubbleShake=7.0f;
     NSArray *showNotchesAtIntervals=[problemDef objectForKey:@"SHOW_NOTCHES_AT_INTERVALS"];
     if(showNotchesAtIntervals) if(showNotchesAtIntervals.count>0) rambler.ShowNotchesAtIntervals=showNotchesAtIntervals;
     
+    //jump sections
+    rambler.UserJumps=[[NSMutableArray alloc]init];
     
     //positioning
     rambler.DefaultSegmentSize=115;
@@ -193,16 +289,20 @@ static float kTimeToBubbleShake=7.0f;
     selector.WatchRambler=rambler;
     selector.pos=ccp(cx,cy + 75.0f);
     
-    //stiching -- should we render stitches?
-    if ([problemDef objectForKey:@"RENDER_STITCHES"]) {
-        rambler.RenderStitches=[[problemDef objectForKey:@"RENDER_STITCHES"] boolValue];
+    //frog
+    if(frogMode)
+    {
+        [self setupFrog];
+        lastFrogLoc=initStartLoc;
     }
     
-    //sould the line auto stitch -- non zero values will cause the values
-    if([problemDef objectForKey:@"AUTO_STITCH_INCREMENT"])
+    if(markerValuePositions)
     {
-        rambler.AutoStitchIncrement=[[problemDef objectForKey:@"AUTO_STITCH_INCREMENT"] intValue];
+        rambler.MarkerValuePositions=markerValuePositions;
     }
+    
+    //setup rambler drawing -- needs explicit seek and draw prep
+    [rambler readyRender];
 }
 
 -(void)readPlist:(NSDictionary*)pdef
@@ -218,31 +318,65 @@ static float kTimeToBubbleShake=7.0f;
     
     evalTarget=[[pdef objectForKey:@"EVAL_TARGET"] intValue];
     
+    evalType=[pdef objectForKey:EVAL_TYPE];
+    if(!evalType)evalType=@"TARGET";
+    
+    if([pdef objectForKey:@"EVAL_INTERVAL"])
+    {
+        evalInterval=[[pdef objectForKey:@"EVAL_INTERVAL"] integerValue];
+    }
+    evalJumpSequence=[pdef objectForKey:@"EVAL_JUMP_SEQUENCE"];
+    
     initStartVal=[[pdef objectForKey:START_VALUE] intValue];
-    lastBubbleLoc=initStartVal;
     
     initMinVal=(NSNumber*)[pdef objectForKey:MIN_VALUE];
     initMaxVal=(NSNumber*)[pdef objectForKey:MAX_VALUE];
     
-    initSegmentVal=[[pdef objectForKey:SEGMENT_VALUE] intValue];
+    if([pdef objectForKey:SEGMENT_VALUE])
+    {
+        initSegmentVal=[[pdef objectForKey:SEGMENT_VALUE] intValue];
+    }
+    else {
+        initSegmentVal=1;
+    }
     
-    //this stuff still works -- direct parse is okay, but it's redundant as the toolhost will create dynamic content anyway
-//    evalTarget=[toolHost.DynProblemParser parseIntFromValueWithKey:@"EVAL_TARGET" inDef:pdef];
-//    
-//    initStartVal=[toolHost.DynProblemParser parseIntFromValueWithKey:START_VALUE inDef:pdef];
-//    initMinVal=[NSNumber numberWithInt:[toolHost.DynProblemParser parseIntFromValueWithKey:MIN_VALUE inDef:pdef]];
-//    initMaxVal=[NSNumber numberWithInt:[toolHost.DynProblemParser parseIntFromValueWithKey:MAX_VALUE inDef:pdef]];
-//    initSegmentVal=[toolHost.DynProblemParser parseIntFromValueWithKey:SEGMENT_VALUE inDef:pdef];
+    
+    if([initMaxVal intValue] % initSegmentVal)
+    {
+        @throw [NSException exceptionWithName:@"nline load pdef error" reason:@"cannot specify a MAX_VALUE that's not an integer multiple of SEGMENT_VALUE " userInfo:nil];
+    }
+    
+    if([initMinVal intValue] % initSegmentVal)
+    {
+        @throw [NSException exceptionWithName:@"nline load pdef error" reason:@"cannot specify a MIN_VALUE that's not an integer multiple of SEGMENT_VALUE" userInfo:nil];
+    }
     
     //force default on segment value if not specified
     if(initSegmentVal==0)initSegmentVal=1;
+    
+    if([pdef objectForKey:@"JUMP_MODE"])
+    {
+        //jump mode is now interpretted as frog mode
+        //jumpMode=[[pdef objectForKey:@"JUMP_MODE"] boolValue];
+        
+        //check also for a jumping evaluation
+        if([evalType isEqualToString:@"REPEATED_ADDITION"] || [evalType isEqualToString:@"JUMP_SEQUENCE"])
+        {
+            frogMode=[[pdef objectForKey:@"JUMP_MODE"] boolValue];
+        }
+    }
+    
+    if([pdef objectForKey:@"MARKER_POSITIONS"])
+    {
+        markerValuePositions=[pdef objectForKey:@"MARKER_POSITIONS"];
+    }
 }
 
 -(void)problemStateChanged
 {
     if(evalMode==kProblemEvalAuto)
     {
-        self.ProblemComplete=[self evalProblem];
+        [self evalProblem];
         
         if(!self.ProblemComplete) 
         {
@@ -260,9 +394,81 @@ static float kTimeToBubbleShake=7.0f;
     [toolHost showProblemCompleteMessage];
 }
 
--(BOOL)evalProblem
+-(void)evalProblem
 {
-    return (evalTarget==lastBubbleLoc);
+    BOOL Complete=NO;
+    
+    if([evalType isEqualToString:@"TARGET"])
+    {
+        Complete = (evalTarget==lastBubbleValue);
+    }
+    else if([evalType isEqualToString:@"REPEATED_ADDITION"])
+    {
+        //evaltarget met, and all jumps of same interval
+        if(evalTarget==lastBubbleValue)
+        {
+            
+            //look at right count of invervals from initstartval
+            int range=lastBubbleValue - initStartVal;
+            int correctSteps=range / evalInterval;
+            if (correctSteps != [rambler.UserJumps count]) {
+                Complete=NO;
+            }
+            else
+            {
+                Complete=YES;
+            
+                for(NSValue *jumpval in rambler.UserJumps)
+                {
+                    CGPoint jump=[jumpval CGPointValue];
+                    if(jump.y!=evalInterval)
+                    {
+                        //this jump isn't the right interval, bail complete
+                        Complete=NO;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    else if([evalType isEqualToString:@"JUMP_SEQUENCE"])
+    {
+        //check sequence of jump sizes and eval target
+        if(evalTarget==lastBubbleValue)
+        {
+            if(rambler.UserJumps.count < evalJumpSequence.count)
+            {
+                Complete=NO;
+            }
+            else {
+                    
+                Complete=YES;
+                for(int i=0; i<[evalJumpSequence count]; i++)
+                {
+                    CGPoint jump=[[rambler.UserJumps objectAtIndex:i] CGPointValue];
+                    int sequenceJumpSize=[[evalJumpSequence objectAtIndex:i] integerValue];
+                    if(jump.y!=sequenceJumpSize)
+                    {
+                        //this jump isn't the right interval, bail complete
+                        Complete=NO;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    
+    if(Complete)
+    {
+        self.ProblemComplete=YES;
+        [self showComplete];
+    }
+    else
+    {
+        [toolHost showProblemIncompleteMessage];
+        [toolHost resetProblem];
+    }
     
 }
 
@@ -349,46 +555,38 @@ static float kTimeToBubbleShake=7.0f;
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
     
-    if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit)
+    if(frogMode)
     {
-        self.ProblemComplete=[self evalProblem];
-        
-        if(!self.ProblemComplete) 
+        if(frogTargetSprite.opacity>0 && CGRectContainsPoint(frogTargetSprite.boundingBox, location) && timerIgnoreFrog<=0.0f)
         {
-            //automate reset here
-            
-            [self resetBubble];
-            
-            //toolHost.flagResetProblem=YES;
-        }
-        else {
-            [self showComplete];
+            [self hopFrog];
         }
     }
-//    else if (location.y < kRamblerYMax)
-//    {
-//        inRamblerArea=YES;
-//    }
-//    else 
-//    {
-//        NSDictionary *pl=[NSDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
-//        [gw handleMessage:kDWhandleTap andPayload:pl withLogLevel:-1];
-//    }
-    
-    else if([BLMath DistanceBetween:location and:bubbleSprite.position]<kBubbleProx)
+
+
+    if([BLMath DistanceBetween:location and:bubbleSprite.position]<kBubbleProx)
     {
+        if(!usedBubble)usedBubble=YES;
         holdingBubbleOffset=location.x - bubbleSprite.position.x;
         holdingBubble=YES;
         
         [self animPickupBubble];
         
-        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
-        [ac.usersService logProblemAttemptEvent:kProblemAttemptNumberLineTouchBeginPickupBubble withOptionalNote:nil];
+        [loggingService logEvent:BL_PA_NL_TOUCH_BEGIN_PICKUP_BUBBLE withAdditionalData:nil];
         
         //retain current pos to incr/decr log
         logLastBubblePos=lastBubbleLoc;
         
         timeSinceInteractionOrShake=0;
+        
+        if(jumpMode)
+        {
+            //retain start pos for stitch draw
+            stitchStartPos=bubbleSprite.position;
+        }
+        
+        //hide target
+        [self hideFrogTarget];
     }
 }
 
@@ -413,8 +611,57 @@ static float kTimeToBubbleShake=7.0f;
             logBubbleDidMove=YES;
         }
         else {
-            CGPoint newloc=ccp(location.x - holdingBubbleOffset, bubbleSprite.position.y);
-            //CGPoint newloc=ccp(location.x, bubbleSprite.position.y);
+            
+            float moveY=0;
+            
+            if(jumpMode)
+            {
+                // ===== stitching stuff ===============================================
+                //get ypos --
+                float threshold=100.0f;
+                float diffY=location.y - cy;
+                if(diffY>0)
+                {
+                    float dampY = diffY<threshold ? diffY / threshold : 1.0f;
+                    dampY*=dampY * dampY;
+                    moveY = diffY * dampY;
+                }
+                
+                if(diffY>=threshold)
+                {
+                    //user is dragging up or past threshold, draw a stitch line
+                    drawStitchLine=YES;
+                    drawStitchCurve=NO;
+                    stitchEndPos=location;
+                    
+                    if(!hasSetJumpStartValue)
+                    {
+                        hasSetJumpStartValue=YES;
+                        jumpStartValue=logLastBubblePos;
+                    }
+                }
+                else
+                {
+                    // user is below threshold, if they were previously above it, draw a curve
+                    if(drawStitchLine)
+                    {
+                        drawStitchLine=NO;
+                        drawStitchCurve=YES;
+                        stitchApexPos=location;
+                    }
+                    // otherwise update the end pos -- used to track the end point of the curve, if being drawn
+                    else
+                    {
+                        stitchEndPos=location;
+                    }
+                }
+                
+                // =====================================================================
+            }
+            
+            //CGPoint newloc=ccp(location.x - holdingBubbleOffset, bubbleSprite.position.y);
+            CGPoint newloc=ccp(location.x - holdingBubbleOffset, cy + moveY);
+            
             float xdiff=newloc.x-bubbleSprite.position.x;
             
             if((bubbleAtBounds>0 && xdiff<0) || (bubbleAtBounds<0 && xdiff>0) || bubbleAtBounds==0)
@@ -436,23 +683,30 @@ static float kTimeToBubbleShake=7.0f;
         
         //NSLog(@"bubble pos %d", roundedStepsFromCentre);
                 
-        int startOffset=initStartVal;
-        lastBubbleLoc = roundedStepsFromCentre+startOffset;
-        int adjustedStepsFromCentre=roundedStepsFromCentre;
+        int startOffset=initStartVal / initSegmentVal;
+        
+        
+        //lastBubbleLoc = roundedStepsFromCentre+startOffset;
+        lastBubbleLoc=(roundedStepsFromCentre+startOffset);
+        lastBubbleValue=lastBubbleLoc*initSegmentVal;
+        
+        int adjustedStepsFromCentre=roundedStepsFromCentre * rambler.CurrentSegmentValue;
         
         BOOL stopLine=NO;
         
-        if (lastBubbleLoc>[rambler.MaxValue intValue]) 
+        if (lastBubbleValue>[rambler.MaxValue intValue])
         {
-            adjustedStepsFromCentre = [rambler.MaxValue intValue] - startOffset;
+            adjustedStepsFromCentre = ([rambler.MaxValue intValue] / initSegmentVal) - startOffset;
+            //adjustedStepsFromCentre = [rambler.MaxValue intValue] - (startOffset * initSegmentVal);
             stopLine=YES;
             bubbleAtBounds=1;
             bubblePushDir=0;
         }
         
-        if(lastBubbleLoc<[rambler.MinValue intValue]) 
+        if(lastBubbleValue<[rambler.MinValue intValue])
         {
-            adjustedStepsFromCentre = [rambler.MinValue intValue] - startOffset;
+            adjustedStepsFromCentre = ([rambler.MinValue intValue] / initSegmentVal) - startOffset;
+            //adjustedStepsFromCentre = [rambler.MinValue intValue] - (startOffset * initSegmentVal);
             stopLine=YES;
             bubbleAtBounds=-1;
             bubblePushDir=0;
@@ -461,24 +715,43 @@ static float kTimeToBubbleShake=7.0f;
         if(stopLine)
         {
             //diff (moveby)
-            float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
+            float diffx=((adjustedStepsFromCentre) * rambler.DefaultSegmentSize)-distFromCentre;
             [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
         }
         
+        //check if they moved through a current stitch -- if so delete that stich
+        NSValue *remJump=nil;
+        CGPoint jump;
+        for(NSValue *jumpval in rambler.UserJumps)
+        {
+            jump=[jumpval CGPointValue];
+            if(lastBubbleValue>=(jump.x + initStartVal) && lastBubbleValue<(jump.x + initStartVal + jump.y))
+            {
+                //positive jump match
+                remJump=jumpval;
+            }
+            if(lastBubbleValue<=(jump.x + initStartVal) && lastBubbleValue >(jump.x+initStartVal + jump.y))
+            {
+                //negative jump match
+                remJump=jumpval;
+            }
+        }
+        //put frog back to start of that section if required
+        if(frogMode && remJump)
+        {
+            lastFrogLoc=(int)(jump.x / rambler.CurrentSegmentValue)+initStartLoc;
+            [self slideFrog];
+        }
         
-        
-        //update the rambler value
-        rambler.BubblePos=lastBubbleLoc;
+        if(remJump)[rambler.UserJumps removeObject:remJump];
+        remJump=nil;
 
+        //do not update rambler -- causes render to carry on scrolling, and eval is at end anyway
+        //rambler.BubblePos=lastBubbleLoc;
+
+        lastBubbleLoc = adjustedStepsFromCentre;
+        lastBubbleValue = lastBubbleLoc * initSegmentVal;
     }
-    
-//    if(inRamblerArea)
-//    {
-//        CGPoint a = [[CCDirector sharedDirector] convertToGL:[touch previousLocationInView:touch.view]];
-//        CGPoint b = [[CCDirector sharedDirector] convertToGL:[touch locationInView:touch.view]];
-//    
-//        rambler.TouchXOffset+=b.x-a.x;
-//    }
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -499,98 +772,137 @@ static float kTimeToBubbleShake=7.0f;
         int roundedStepsFromCentre=(int)(stepsFromCentre + 0.5f);
         if(stepsFromCentre<0) roundedStepsFromCentre=(int)(stepsFromCentre - 0.5f);
         
-        //NSLog(@"bubble pos %d", roundedStepsFromCentre);
+        int startOffset=initStartVal / initSegmentVal;
+        lastBubbleLoc = (roundedStepsFromCentre+startOffset);
+        lastBubbleValue=lastBubbleLoc*initSegmentVal;
         
-        
-        int startOffset=initStartVal;
-        lastBubbleLoc = roundedStepsFromCentre+startOffset;
+        //int adjustedStepsFromCentre=roundedStepsFromCentre * rambler.CurrentSegmentValue;
         int adjustedStepsFromCentre=roundedStepsFromCentre;
         
-        if (lastBubbleLoc>[rambler.MaxValue intValue]) adjustedStepsFromCentre = [rambler.MaxValue intValue] - startOffset;
+        if (lastBubbleValue>[rambler.MaxValue intValue]) adjustedStepsFromCentre = ([rambler.MaxValue intValue] / initSegmentVal)  - startOffset;
         
-        if(lastBubbleLoc<[rambler.MinValue intValue]) adjustedStepsFromCentre = [rambler.MinValue intValue] - startOffset;
+        if(lastBubbleValue<[rambler.MinValue intValue]) adjustedStepsFromCentre = ([rambler.MinValue intValue] / initSegmentVal) - startOffset;
+        
+        //mod this to closest valid segment value
+        //adjustedStepsFromCentre=rambler.CurrentSegmentValue * ((int)(adjustedStepsFromCentre / rambler.CurrentSegmentValue));
 
         //diff (moveby)
         float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
-        [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
+        
+        float diffy=0.0f;
+        
+        if(jumpMode)  // === stitching stuff ======================================
+        {
+            diffy=cy - bubbleSprite.position.y;
+            drawStitchLine=NO;
+            drawStitchCurve=NO;
+            
+            if(hasSetJumpStartValue && lastBubbleValue!=jumpStartValue)
+            {
+                //add a segment
+                [rambler.UserJumps addObject:[NSValue valueWithCGPoint:ccp(jumpStartValue, lastBubbleValue - jumpStartValue)]];
+            }
+            
+        }  // =====================================================================
+        
+        [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, diffy)]];
         
         
+        //update the rambler value & last bubble location, using any offset
+        lastBubbleLoc=adjustedStepsFromCentre + startOffset;
+        lastBubbleValue=lastBubbleLoc*initSegmentVal;
         
-        //update the rambler value
-        rambler.BubblePos=lastBubbleLoc;
+        rambler.BubblePos=lastBubbleValue;
         
         
         //play some audio
         if(enableAudioCounting && lastBubbleLoc!=logLastBubblePos)
         {
-            NSString *path=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", lastBubbleLoc];
+            NSString *path=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", lastBubbleValue];
             [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(path)];
         }
         
         //release the bubble
         [self animReleaseBubble];
         
+        
+        //determine whether or not to show the frog target
+        if(lastBubbleLoc!=lastFrogLoc)
+        {
+            [self showFrogTarget];
+        }
+        else
+        {
+            [self hideFrogTarget];
+        }
+        
         //do some logging
-        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
-        [ac.usersService logProblemAttemptEvent:kProblemAttemptNumberLineTouchEndedReleaseBubble withOptionalNote:nil];
+        [loggingService logEvent:BL_PA_NL_TOUCH_END_RELEASE_BUBBLE withAdditionalData:nil];
         
         if(lastBubbleLoc>logLastBubblePos)
         {
-            [ac.usersService logProblemAttemptEvent:kProblemAttemptNumberLineTouchEndedIncreaseSelection withOptionalNote:nil];
+            [loggingService logEvent:BL_PA_NL_TOUCH_END_INCREASE_SELECTION withAdditionalData:nil];
         }
         else if(lastBubbleLoc<logLastBubblePos)
         {
-            [ac.usersService logProblemAttemptEvent:kProblemAttemptNumberLineTouchEndedDecreaseSelection withOptionalNote:nil];            
+            [loggingService logEvent:BL_PA_NL_TOUCH_END_DECREASE_SELECTION withAdditionalData:nil];
         }
         
         //did we move the bubble, the line
         if(logBubbleDidMove)
         {
-            [ac.usersService logProblemAttemptEvent:kProblemAttemptNumberLineTouchMovedMoveBubble withOptionalNote:nil];
+            [loggingService logEvent:BL_PA_NL_TOUCH_MOVE_MOVE_BUBBLE withAdditionalData:nil];
         }
         if(logBubbleDidMoveLine)
         {
-            [ac.usersService logProblemAttemptEvent:kProblemAttemptNumberLineTouchMovedMoveBubble withOptionalNote:nil];            
+            [loggingService logEvent:BL_PA_NL_TOUCH_MOVE_MOVE_LINE withAdditionalData:nil];
         }
         
         logBubbleDidMove=NO;
         logBubbleDidMoveLine=NO;
         
-//        int roundedStepsFromActualCentre=roundedStepsFromCentre;
-//        
-//        roundedStepsFromCentre += [[problemDef objectForKey:START_VALUE] intValue];
-//        
-//        if(roundedStepsFromCentre>[rambler.MaxValue intValue])roundedStepsFromCentre=[rambler.MaxValue intValue] - [[problemDef objectForKey:START_VALUE] intValue];
-//        if(roundedStepsFromCentre<[rambler.MinValue intValue])roundedStepsFromCentre=[rambler.MinValue intValue] - [[problemDef objectForKey:START_VALUE] intValue];
-//        
-//        //lastBubbleLoc=roundedStepsFromCentre + [[problemDef objectForKey:START_VALUE] intValue];
-//        lastBubbleLoc=roundedStepsFromCentre;
-        
-//        //diff (moveby)
-//        float diffx=(roundedStepsFromActualCentre * rambler.DefaultSegmentSize)-distFromCentre;
-//        [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
     }
     
-//    if(inRamblerArea)
-//    {
-//        [rambler handleMessage:kDWnlineReleaseRamblerAtOffset];
-//        
-//        inRamblerArea=NO;
-//        rambler.TouchXOffset=0;
-//    }
-
-    
-    UITouch *touch=[touches anyObject];
-    CGPoint location=[touch locationInView: [touch view]];
-    location=[[CCDirector sharedDirector] convertToGL:location];
+    NSLog(@"lastBubbleLoc: %d lastFrogLoc: %d", lastBubbleLoc, lastFrogLoc);
     
     holdingBubbleOffset=0;
     holdingBubble=NO;
+    hasSetJumpStartValue=NO;
+    jumpStartValue=0;
+    stitchOffsetX=0;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     touching=NO;
     inRamblerArea=NO;
+    hasSetJumpStartValue=NO;
+    jumpStartValue=0;
+    stitchOffsetX=0;
 }
+
+#pragma mark - meta question
+-(float)metaQuestionTitleYLocation
+{
+    return kLabelTitleYOffsetHalfProp*cy;
+}
+
+-(float)metaQuestionAnswersYLocation
+{
+    return 150;
+}
+
+-(void)dealloc
+{
+    [bubbleTexRegular release];
+    [bubbleTexSelected release];
+    [rambler release];
+    [selector release];
+    
+    [gw release];
+
+    
+    [super dealloc];
+}
+
 @end

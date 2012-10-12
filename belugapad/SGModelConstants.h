@@ -13,6 +13,17 @@
 
 typedef enum {
 
-    kSGmessageNone
+    kSGmessageNone,
+    kSGreadyRender,
+    kSGvisibilityChanged,
+    
+    kSGzoomOut,
+    kSGzoomIn,
+    
+    kSGretainOffsetPosition,
+    kSGforceLayout,
+    kSGresetPositionUsingOffset,
+    
+    kSGtearDownRender
         
 } SGMessageType;

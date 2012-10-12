@@ -11,7 +11,7 @@
 
 @interface SGJmapProximityEval : SGComponent
 {
-    id<ProximityResponder, Transform>ParentGO;
+    id<ProximityResponder, Transform, GameObject>ParentGO;
 }
 
 -(void)actOnProximityTo:(CGPoint)pos;

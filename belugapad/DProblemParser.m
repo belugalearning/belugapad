@@ -41,11 +41,12 @@
 {
     for (int i=0; i<[[dstringsdef allKeys] count]; i++) {
         NSString *key=[[dstringsdef allKeys] objectAtIndex:i];
+        
         NSDictionary *def=[dstringsdef objectForKey:key];
         NSString *mode=[def objectForKey:@"MODE"];
         NSArray *data=[def objectForKey:@"DATA"];
         NSString *val=nil;
-        BOOL setString;
+        BOOL setString=NO;
         
         if([def objectForKey:@"RECALL"] && [retainedStrings objectForKey:key])
         {
@@ -140,7 +141,7 @@
     }
     
     //output value
-    NSNumber *outputvalue=[NSNumber numberWithInt:0];
+    NSNumber *outputvalue;
     
     //raw string expressions
     NSString *valexpr=[dv objectForKey:@"VALUE"];
@@ -192,16 +193,30 @@
 
 -(NSNumber *)randomNumberWithParams:(NSDictionary*)params
 {
-    int min=[[params objectForKey:@"MIN"] floatValue];
-    int max=[[params objectForKey:@"MAX"] floatValue];
-    
-    int interval=max-min;
-    
-    int fbase=arc4random() % (int)interval;
-    
-    int ret=fbase+min;
-    
-    return [NSNumber numberWithInt:ret];
+    if([params objectForKey:@"SELECT_FROM"])
+    {
+        //pick a random number from those listed
+        NSArray *list=[params objectForKey:@"SELECT_FROM"];
+        int p=arc4random() % list.count;
+        return [NSNumber numberWithFloat:[[list objectAtIndex:p] floatValue]];
+    }
+    else {
+        //create a random number between min and max
+//        int min=[[params objectForKey:@"MIN"] floatValue];
+//        int max=[[params objectForKey:@"MAX"] floatValue];
+        
+        //parse min and max using internal parser
+        int min=[self parseIntFromString:[params objectForKey:@"MIN"]];
+        int max=[self parseIntFromString:[params objectForKey:@"MAX"]];
+        
+        int interval=max-min;
+        
+        int fbase=arc4random() % (int)interval;
+        
+        int ret=fbase+min;
+        
+        return [NSNumber numberWithInt:ret];        
+    }
 }
 
 -(NSNumber *)numberFromString:(NSString*)input withCastType:(NSString*)casttype
@@ -216,7 +231,7 @@
     }
     if([casttype isEqualToString:@"%%"]) {
         //return a rounded int
-        float interf=[input floatValue] + (interf>0 ? 0.5 : -0.5);
+        float interf=[input floatValue] + ([input floatValue]>0 ? 0.5 : -0.5);
         outputvalue=[NSNumber numberWithInt:(int)interf];
     }
     if([casttype isEqualToString:@"&"]) {
@@ -309,7 +324,7 @@
     
     //NSMutableDictionary *lkpVars=[dVars copy];
     NSMutableDictionary *lkpVars=[NSMutableDictionary dictionaryWithDictionary:dVars];
-    NSString *parse=[input copy];
+    NSString *parse=[[input copy] autorelease];
     
     //if we're recalling, write into this recalled values
     if(recall)
@@ -320,7 +335,14 @@
             
             NSNumber *val=[[retainedVars allValues] objectAtIndex:i];
             NSString *key=[[retainedVars allKeys] objectAtIndex:i];
-            [lkpVars setObject:[val copy] forKey:[key copy]];
+            
+            NSNumber *valcopy=[val copy];
+            NSString *keycopy=[key copy];
+            
+            [lkpVars setObject:valcopy forKey:keycopy];
+            
+            [valcopy release];
+            [keycopy release];
             
             NSLog(@"recalling a retained value: %@ for key %@", [val stringValue], key);
         }
@@ -364,11 +386,27 @@
                   parse,
                   [self numberFromVarLiteralString:mid withLkpSource:lkpVars]);
             
-            //presume one variable, get as literal replacement
-            parse=[parse stringByReplacingCharactersInRange:replacerange withString:[[self numberFromVarLiteralString:mid withLkpSource:lkpVars] stringValue]];
+            if([mid rangeOfString:@"@"].location != NSNotFound)
+            {
+                //dstring replacement
+                [self replaceDStringWithKey:mid inString:&parse atRange:replacerange];
+            }
             
+            else
+            {
+                //presume one variable, get as literal replacement
+                parse=[parse stringByReplacingCharactersInRange:replacerange withString:[[self numberFromVarLiteralString:mid withLkpSource:lkpVars] stringValue]];                
+            }
         }
+        
         else {
+            //check there isn't also a string replace char in here -- we can't handle those
+            if([mid rangeOfString:@"@"].location!=NSNotFound)
+            {
+                NSLog(@"cannot parse a string with dstring and dvar operators: %@", mid);
+                return @"";
+            }
+            
             //we have operators, get vars and operate
             NSString *lstring=[mid substringToIndex:rop.location];
             NSString *rstring=[mid substringFromIndex:rop.location+1];
@@ -400,37 +438,19 @@
         r=[parse rangeOfString:@"{"];
     }
     
-    
-    //DSTRING replacements
-    NSRange dsrange=[parse rangeOfString:@"[["];
-    while (dsrange.location!=NSNotFound) {
-        //string from [[ +2 to end
-        NSString *rstring=[parse substringFromIndex:dsrange.location+2];
-        
-        //position of close
-        NSRange rend=[rstring rangeOfString:@"]]"];
-        
-        //middle of string
-        NSString *mid=rstring;
-        if(rend.location!=NSNotFound) mid=[rstring substringToIndex:rend.location];
-        
-        //the range in the parse string that we're going to replace
-        NSRange replacerange={dsrange.location, rend.location+4};
-        
-        NSLog(@"dstring replacing range |%@| in string |%@| with string |%@| for key |%@|",
-              NSStringFromRange(replacerange),
-              parse,
-              [dStrings objectForKey:mid],
-              mid);
-        
-        //do straight swap of [[$____]]  in parse
-        parse=[parse stringByReplacingCharactersInRange:replacerange withString:[dStrings objectForKey:mid]];
-        
-        //look for next replacement
-        dsrange=[parse rangeOfString:@"[["];
-    }
-    
     return parse;
+}
+
+- (void)replaceDStringWithKey:(NSString *)key inString:(NSString **)parse atRange:(NSRange)replacerange
+{
+    NSLog(@"dstring replacing range |%@| in string |%@| with string |%@| for key |%@|",
+          NSStringFromRange(replacerange),
+          *parse,
+          [dStrings objectForKey:key],
+          key);
+    
+    //do straight swap of @____  in parse
+    *parse=[*parse stringByReplacingCharactersInRange:replacerange withString:[dStrings objectForKey:key]];
 }
 
 -(NSString*)parseStringFromString:(NSString*)input
@@ -481,9 +501,9 @@
 
 -(NSMutableDictionary*) createStaticPdefFromPdef:(NSDictionary*)dpdef
 {
-    //NSMutableDictionary *spdef=[dpdef mutableCopy];
-    
+    //make deep mutable copy -- mutableCopy doesn't do it
     NSMutableDictionary *spdef = (NSMutableDictionary *)CFPropertyListCreateDeepCopy(kCFAllocatorDefault, (CFDictionaryRef)dpdef, kCFPropertyListMutableContainers);
+    [spdef autorelease];
  
     [self cstatParseKeysInDict:spdef];
     
@@ -577,6 +597,16 @@
         //return it as is
         return val;
     }
+}
+
+-(void)dealloc
+{
+    [dVars release];
+    [dStrings release];
+    [retainedVars release];
+    [retainedStrings release];
+    
+    [super dealloc];
 }
 
 #pragma mark

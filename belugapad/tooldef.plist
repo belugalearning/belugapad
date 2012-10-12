@@ -22,7 +22,7 @@
 		<key>SCALING_PASS_THRU</key>
 		<false/>
 	</dict>
-	<key>PartitionTool</key>
+	<key>NumberBonds</key>
 	<dict>
 		<key>SCALE_MIN</key>
 		<real>0.7</real>
@@ -34,11 +34,11 @@
 	<key>PlaceValue</key>
 	<dict>
 		<key>SCALE_MIN</key>
-		<real>0.3</real>
+		<real>1</real>
 		<key>SCALE_MAX</key>
-		<real>1.2</real>
+		<integer>1</integer>
 		<key>SCALING_PASS_THRU</key>
-		<false/>
+		<true/>
 	</dict>
 	<key>DotGrid</key>
 	<dict>
@@ -55,17 +55,6 @@
 		<string>3</string>
 		<key>SCALING_PASS_THRU</key>
 		<true/>
-	</dict>
-	<key>BlockFloating</key>
-	<dict>
-		<key>TOOL_DEPTH</key>
-		<string>1</string>
-		<key>SCALING_PASS_THRU</key>
-		<false/>
-		<key>SCALE_MIN</key>
-		<integer>1</integer>
-		<key>SCALE_MAX</key>
-		<integer>1</integer>
 	</dict>
 	<key>TimesTables</key>
 	<dict>

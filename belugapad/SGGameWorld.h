@@ -32,7 +32,7 @@
 }
 @property (nonatomic, readonly) SGBlackboard *Blackboard;
 
-@property (retain, readonly) NSMutableArray *LogBuffer;
+//@property (retain, readonly) NSMutableArray *LogBuffer;
 
 
 -(SGGameWorld *)initWithGameScene:(CCLayer *)scene;
@@ -40,10 +40,11 @@
 -(CCLayer *)GameScene;
 
 -(NSMutableArray*)AllGameObjects;
+-(NSMutableArray*)AllGameObjectsCopy;
 
 -(void)addGameObject:(SGGameObject*)gameObject;
 -(void)doUpdate:(ccTime)delta;
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel;
+-(void)handleMessage:(SGMessageType)messageType;
 
 -(void)delayRemoveGameObject:(SGGameObject *)gameObject;
 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>equivalents - show 1/2</string>
+	<key>TOOL_KEY</key>
+	<string>FractionBuilder</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>INIT_FRACTIONS</key>
+	<array>
+		<dict>
+			<key>FRACTION_MODE</key>
+			<integer>0</integer>
+			<key>VALUE</key>
+			<integer>1</integer>
+			<key>SHOW_CURRENT_FRACTIONS</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>FRACTION_MODE</key>
+			<integer>0</integer>
+			<key>VALUE</key>
+			<integer>1</integer>
+			<key>SHOW_CURRENT_FRACTIONS</key>
+			<true/>
+		</dict>
+	</array>
+	<key>SOLUTION_TYPE</key>
+	<integer>1</integer>
+	<key>SOLUTION_DIVIDEND</key>
+	<integer>1</integer>
+	<key>SOLUTION_DIVISOR</key>
+	<integer>2</integer>
+</dict>
+</plist>

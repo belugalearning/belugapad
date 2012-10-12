@@ -14,4 +14,13 @@
 @synthesize Position;
 @synthesize mySprite;
 @synthesize myShape;
+
+-(void)dealloc
+{
+    self.mySprite=nil;
+    self.myShape=nil;
+    
+    [super dealloc];
+}
+
 @end

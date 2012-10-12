@@ -7,10 +7,16 @@
 
 #import <Foundation/Foundation.h>
 
+@class CCLayer;
+@class CCSpriteBatchNode;
 
 @interface SGBlackboard : NSObject {
  
 }
 
+@property (retain) CCLayer *RenderLayer;
+@property BOOL inProblemSetup;
+
+@property (retain) CCSpriteBatchNode *btxeIconBatch;
 
 @end

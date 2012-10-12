@@ -53,6 +53,7 @@ typedef enum {
     
     // and a default layer
     CCLayer *renderLayer;
+    CCLayer *movementLayer;
     
     // pdef options
     BOOL showReset;
@@ -62,10 +63,13 @@ typedef enum {
     int numberOfCagedContainers;
     int numberOfActivePies;
     int numberOfActiveContainers;
+    int numberOfCagedSlices;
     int dividend;
     int divisor;
     
     int slicesInEachPie;
+    
+    float lastLayerOffset;
     
     // then our specifics
     DWPieSplitterContainerGameObject *newCon;
@@ -73,15 +77,21 @@ typedef enum {
     BOOL createdNewCon;
     BOOL createdNewPie;
     BOOL hasSplit;
+    BOOL showResetSlicesToPies;
     
     CCSprite *pieBox;
     CCSprite *conBox;
+    CCSprite *resetSlices;
     
     DWGameObject *ghost;
     
     NSMutableArray *activePie;
     NSMutableArray *activeCon;
     NSMutableArray *activeLabels;
+    
+    BOOL hasMovedSlice;
+    BOOL hasMovedPie;
+    BOOL hasMovedSquare;
     
     int createdPies;
     int createdCont;
@@ -102,6 +112,9 @@ typedef enum {
 -(void)reorderActiveContainers;
 -(void)splitPie:(DWPieSplitterPieGameObject*)p;
 -(void)splitPies;
+-(void)removeSlices;
+-(void)balanceLayer;
+-(void)balanceContainers;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

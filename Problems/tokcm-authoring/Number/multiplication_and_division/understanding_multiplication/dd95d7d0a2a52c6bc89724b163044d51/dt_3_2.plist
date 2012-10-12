@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>DistributionTool</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Show that 3 groups of 2 objects makes 6 objects in total.</string>
+	<key>EVAL_MODE</key>
+	<integer>0</integer>
+	<key>SOLUTION</key>
+	<array>
+		<integer>6</integer>
+	</array>
+	<key>HOST_BACKGROUND_IMAGE</key>
+	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>2</integer>
+			<key>POS_X</key>
+			<integer>500</integer>
+			<key>POS_Y</key>
+			<integer>450</integer>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>2</integer>
+			<key>POS_X</key>
+			<integer>750</integer>
+			<key>POS_Y</key>
+			<integer>450</integer>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<integer>2</integer>
+			<key>POS_X</key>
+			<integer>250</integer>
+			<key>POS_Y</key>
+			<integer>450</integer>
+		</dict>
+	</array>
+</dict>
+</plist>

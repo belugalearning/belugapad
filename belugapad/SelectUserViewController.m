@@ -7,13 +7,12 @@
 //
 
 #import "SelectUserViewController.h"
+#import "global.h"
 #import "cocos2d.h"
 #import "AppDelegate.h"
+#import "LoggingService.h"
 #import "UsersService.h"
 #import "EditZubi.h"
-#import "User.h"
-
-#import <CouchCocoa/CouchCocoa.h>
 
 @interface SelectUserViewController ()
 {
@@ -59,6 +58,11 @@
     
     app = (AppController*)[[UIApplication sharedApplication] delegate];
     usersService = app.usersService;
+    
+    [app.loggingService logEvent:BL_SUVC_LOAD withAdditionalData:nil];
+    
+    [app.usersService syncDeviceUsers];
+    [app.loggingService sendData];
     
     [self buildSelectUserView];
     [self buildEditUserView];
@@ -152,9 +156,9 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    User *user = [deviceUsers objectAtIndex:indexPath.row];     
-    cell.textLabel.text = user.nickName;
-    cell.imageView.image = user.zubiScreenshot;
+    NSDictionary *user = [deviceUsers objectAtIndex:indexPath.row];     
+    cell.textLabel.text = [user objectForKey:@"nickName"];
+    cell.imageView.image = nil;
     return cell;
  }
 
@@ -162,8 +166,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    User *user = [deviceUsers objectAtIndex:indexPath.row];
-    usersService.currentUser = user;
+    NSDictionary *ur = [deviceUsers objectAtIndex:indexPath.row];
+    [usersService setCurrentUserToUserWithId:[ur objectForKey:@"id"]];
     [self.view removeFromSuperview];
     [app proceedFromLoginViaIntro:NO];
 }
@@ -277,32 +281,27 @@
         return;
     }
     
-    if (![usersService nickNameIsAvailable:newUserNameTF.text])
-    {
-        UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
-                                                             message:@"This nickname is already in use. Please try another one." delegate:self 
-                                                   cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
-        [alertView show];
-        return;
-    }
+    __block typeof(self) bself = self;
+    void (^createSetUrCallback)() = ^(BL_USER_CREATION_STATUS status) {
+        if (BL_USER_CREATION_FAILURE_NICK_UNAVAILABLE == status)
+        {
+            UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
+                                                                 message:@"This nickname is already in use. Please try another one."
+                                                                delegate:bself
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles:nil] autorelease];
+            [alertView show];
+        }
+        else if (BL_USER_CREATION_SUCCESS_NICK_AVAILABLE == status || BL_USER_CREATION_SUCCESS_NICK_AVAILABILITY_UNCONFIRMED == status)
+        {
+            [bself.view removeFromSuperview];
+            [bself->app proceedFromLoginViaIntro:YES];
+        }
+    };
     
-    /*CCScene *scene = [[CCDirector sharedDirector] runningScene];
-    EditZubi *layer = [scene.children objectAtIndex:0];
-    NSString *screenshotPath = [layer takeScreenshot];
-    
-    UIImage *image = [UIImage imageWithContentsOfFile:screenshotPath];
-    User *newUser = [usersService getNewUserWithNickName:newUserNameTF.text
-                                             andPassword:newUserPasswordTF.text    
-                                            andZubiColor:colorWheel.lastColorRGBAData
-                                       andZubiScreenshot:image];
-    */
-    User *newUser = [usersService getNewUserWithNickName:newUserNameTF.text
-                                             andPassword:newUserPasswordTF.text    
-                                            andZubiColor:nil
-                                       andZubiScreenshot:nil];
-    usersService.currentUser = newUser;
-    [self.view removeFromSuperview];
-    [app proceedFromLoginViaIntro:YES];
+    [usersService setCurrentUserToNewUserWithNick:newUserNameTF.text
+                                      andPassword:newUserPasswordTF.text
+                                         callback:createSetUrCallback];
 }
 
 #pragma mark -
@@ -361,20 +360,27 @@
 
 - (void) handleLoadExistingUserClicked:(id*)button
 {
-    User *usr = [usersService userMatchingNickName:existingUserNameTF.text  andPassword:existingUserPasswordTF.text];    
-    if (usr == nil)
-    {
-        UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
-                                                            message:@"We could not find a match for those login details. Please double-check and try again." delegate:self 
-                                                  cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
-        [alertView show];
-        return;
-    }
+    __block typeof(self) bself = self;
+    void (^callback)() = ^(NSDictionary *ur) {
+        if (ur == nil)
+        {
+            UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
+                                                                 message:@"We could not find a match for those login details. Please double-check and try again."
+                                                                delegate:bself 
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles:nil] autorelease];
+            [alertView show];
+            return;
+        }        
+        
+        [bself->usersService setCurrentUserToUserWithId:[ur objectForKey:@"id"]];        
+        [self.view removeFromSuperview];
+        [bself->app proceedFromLoginViaIntro:NO];
+    };
     
-    usersService.currentUser = usr;
-    
-    [self.view removeFromSuperview];
-    [app proceedFromLoginViaIntro:NO];
+    [usersService downloadUserMatchingNickName:existingUserNameTF.text
+                                   andPassword:existingUserPasswordTF.text
+                                      callback:callback];
 }
 
 
@@ -383,7 +389,6 @@
 
 - (void)dealloc
 {
-    [[CCDirector sharedDirector] end];
     [deviceUsers release];
     if (colorWheel) [colorWheel removeObserver:self forKeyPath:@"lastColorRGBAData"];
     [backgroundImageView release];
@@ -397,7 +402,6 @@
 
 - (void)viewDidUnload
 {
-    [[CCDirector sharedDirector] end];
     [deviceUsers release];
     deviceUsers = nil;
     if (colorWheel) [colorWheel removeObserver:self forKeyPath:@"lastColorRGBAData"];

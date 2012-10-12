@@ -42,7 +42,11 @@
         CGPoint loc=[[payload objectForKey:POS] CGPointValue];
         [self checkTouch:loc];
     }
-    
+    if(messageType==kDWareYouADropTarget)
+    {
+        CGPoint loc=[[payload objectForKey:POS] CGPointValue];
+        [self checkDrop:loc];
+    }
     if(messageType==kDWaddMeToSelection)
     {
         
@@ -68,7 +72,7 @@
         //tell gameScene we are a target for that pickup
         
         if(anch.Disabled) {
-            //NSLog(@"got touched but i'm disabled pos x %d / y %d", anch.myXpos, anch.myYpos);  
+            //NSLog(@"got touched but i'm disabled pos x %d / y %d", anch.myXpos, anch.myYpos);
         }
         else if(!anch.Disabled) {
             //NSLog(@"got touched and i'm enabled! pos x %d / y %d", anch.myXpos, anch.myYpos);
@@ -84,7 +88,25 @@
         gameWorld.Blackboard.LastAnchor=anch;
         
         //[anch handleMessage:kDWswitchSelection];
-    }    
+    }
+}
+-(void)checkDrop:(CGPoint)hitLoc
+{
+    // this method is for dragging a 1x1 square on. we want to constanty evaluate for a new firstanchor - then we manually manipulate the last anchor in the gamescene
+    
+    if([BLMath DistanceBetween:anch.Position and:hitLoc] <= (0.045f*[gameWorld Blackboard].hostLX))
+    {
+        //tell gameScene we are a target for that pickup
+        
+        if(anch.Disabled) {
+            gameWorld.Blackboard.FirstAnchor=nil;
+        }
+        else if(!anch.Disabled) {
+            gameWorld.Blackboard.FirstAnchor=anch;
+            
+        }
+        
+    }
 }
 
 -(void) dealloc

@@ -8,12 +8,16 @@
 
 #import "BPlaceValueMountable.h"
 #import "global.h"
+#import "DWPlaceValueBlockGameObject.h"
+#import "DWPlaceValueNetGameObject.h"
+#import "DWPlaceValueCageGameObject.h"
 
 @implementation BPlaceValueMountable
 
 -(BPlaceValueMountable *) initWithGameObject:(DWGameObject *) aGameObject withData:(NSDictionary *)data
 {
     self=(BPlaceValueMountable*)[super initWithGameObject:aGameObject withData:data];
+    b=(DWPlaceValueBlockGameObject*)gameObject;
     
     return self;
 }
@@ -22,44 +26,59 @@
 {
     if(messageType==kDWsetMount)
     {
-            //set the old mount
-            DWGameObject *oldMount=[[gameObject store] objectForKey:MOUNT];
-            [oldMount handleMessage:kDWunsetMountedObject];
+
+        if(b.Mount && !gameWorld.Blackboard.inProblemSetup && gameWorld.Blackboard.DropObject)
+        {
+            [b.Mount handleMessage:kDWunsetMountedObject];
+            b.Mount=gameWorld.Blackboard.DropObject;
+        }
             
-            //set the new mount for the GO
-            DWGameObject *newMount=[payload objectForKey:MOUNT];
-            [[gameObject store] setObject:newMount forKey:MOUNT];
+        DWPlaceValueCageGameObject *newMountC=nil;
+        DWPlaceValueNetGameObject *newMountN=nil;
+        
+        if([b.Mount isKindOfClass:[DWPlaceValueNetGameObject class]])
+        {
+            newMountN=(DWPlaceValueNetGameObject*)b.Mount;
+            newMountN.MountedObject=b;
+        
+
             
-            //tell the mount that i'm there
-            NSMutableDictionary *pl=[[[NSMutableDictionary alloc] init] autorelease];
-            [pl setObject:gameObject forKey:MOUNTED_OBJECT];
-            [newMount handleMessage:kDWsetMountedObject andPayload:pl withLogLevel:0];
+            b.PosX=newMountN.PosX;
+            b.PosY=newMountN.PosY;
+        }
+        else if([b.Mount isKindOfClass:[DWPlaceValueCageGameObject class]])
+        {
+            if(b.Selected)[b handleMessage:kDWswitchSelection];
             
-            NSMutableDictionary *pl2 = [[[NSMutableDictionary alloc] init] autorelease];
-            [pl2 setObject:[[newMount store] objectForKey:POS_X] forKey:POS_X];
-            [pl2 setObject:[[newMount store] objectForKey:POS_Y] forKey:POS_Y];
+            newMountC=(DWPlaceValueCageGameObject*)b.Mount;
+        
+            newMountC.MountedObject=b;
             
-            if([payload objectForKey:ANIMATE_ME])
-            {
-                [pl2 setObject:ANIMATE_ME forKey:ANIMATE_ME];
-            }
+            
+            b.PosX=newMountC.PosX;
+            b.PosY=newMountC.PosY+20;
+        }
+        //tell the mount that i'm there
 
         
-            //update the sprite
-            //[gameObject handleMessage:kDWupdateSprite andPayload:[newMount store] withLogLevel:0];
-            [gameObject handleMessage:kDWupdateSprite andPayload:pl2 withLogLevel:0];
+        b.AnimateMe=YES;
+
+    
+        //update the sprite
+        //[gameObject handleMessage:kDWupdateSprite andPayload:[newMount store] withLogLevel:0];
+        [gameObject handleMessage:kDWupdateSprite andPayload:nil withLogLevel:0];
         
         
     }
     
     if(messageType==kDWdismantle)
     {
-        DWGameObject *m=[[gameObject store] objectForKey:MOUNT];
+        DWGameObject *m=b.Mount;
         if(m)
         {
             [m handleMessage:kDWunsetMountedObject];
         }
-        [[gameObject store] removeObjectForKey:MOUNT];
+        b.Mount=nil;
     }
 }
 

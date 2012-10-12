@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>MASTERY</key>
+	<true/>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>{@name} has 5 boxes of {@item}. Each box has 5 {@item}. How many {@item} are there in total?</string>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@name</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>Ed</string>
+				<string>Mark</string>
+				<string>Richard</string>
+				<string>Sarah</string>
+				<string>Claire</string>
+				<string>Scott</string>
+				<string>Gareth</string>
+				<string>Dave</string>
+				<string>Nick</string>
+			</array>
+		</dict>
+		<key>@item</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>cookies</string>
+				<string>plates</string>
+				<string>teacups</string>
+				<string>batteries</string>
+				<string>books</string>
+				<string>pens</string>
+			</array>
+		</dict>
+	</dict>
+	<key>EVAL_MODE</key>
+	<integer>0</integer>
+	<key>HOST_BACKGROUND_IMAGE</key>
+	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_COMPLETE_TEXT</key>
+		<string>well done!!</string>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>5+5=10</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>5</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>55</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>5x5=25</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>{@name} had 5 boxes of {@item}. Each box has 5 {@item}. How many {@item} are there in total?</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again</string>
+	</dict>
+</dict>
+</plist>

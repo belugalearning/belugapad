@@ -11,9 +11,10 @@
 
 @interface SGJmapNodeSelect : SGComponent
 {
-    id<Transform, CouchDerived, Selectable> ParentGO;
+    id<Transform, CouchDerived, Selectable, Completable> ParentGO;
     
     CCSprite *signSprite;
+    CGRect hitbox;
     BOOL forcedOn;
 }
 

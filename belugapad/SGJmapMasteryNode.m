@@ -13,7 +13,7 @@
 
 @implementation SGJmapMasteryNode
 
-@synthesize MNodeRenderComponent, ChildNodes;
+@synthesize MNodeRenderComponent, ChildNodes, ConnectToMasteryNodes, ConnectFromMasteryNodes, EnabledAndComplete, Region, PrereqCount, PrereqComplete, PrereqPercentage, Disabled;
 
 //transform protocol properties
 @synthesize Position, RenderBatch;
@@ -25,7 +25,7 @@
 @synthesize _id, UserVisibleString;
 
 //selectable
-@synthesize Selected, NodeSelectComponent;
+@synthesize Selected, NodeSelectComponent, HitProximity, HitProximitySign;
 
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition
 {
@@ -33,22 +33,25 @@
     {
         self.RenderBatch=aRenderBatch;
         self.Position=aPosition;
+        self.Visible=NO;
         
-        self.MNodeRenderComponent=[[SGJmapMasteryNodeRender alloc] initWithGameObject:self];
-        self.ProximityEvalComponent=[[SGJmapProximityEval alloc] initWithGameObject:self];
-        self.NodeSelectComponent=[[SGJmapNodeSelect alloc] initWithGameObject:self];
+        MNodeRenderComponent=[[SGJmapMasteryNodeRender alloc] initWithGameObject:self];
+        ProximityEvalComponent=[[SGJmapProximityEval alloc] initWithGameObject:self];
+        NodeSelectComponent=[[SGJmapNodeSelect alloc] initWithGameObject:self];
         
-        self.ChildNodes=[[NSMutableArray alloc] init];
+        ChildNodes=[[NSMutableArray alloc] init];
+        ConnectFromMasteryNodes=[[NSMutableArray alloc] init];
+        ConnectToMasteryNodes=[[NSMutableArray alloc] init];
     }
     return self;
 }
 
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel
+-(void)handleMessage:(SGMessageType)messageType
 {
     //broadcast to components
-    [self.MNodeRenderComponent handleMessage:messageType andPayload:payload];
-    [self.ProximityEvalComponent handleMessage:messageType andPayload:payload];
-    [self.NodeSelectComponent handleMessage:messageType andPayload:payload];
+    [self.MNodeRenderComponent handleMessage:messageType];
+    [self.ProximityEvalComponent handleMessage:messageType];
+    [self.NodeSelectComponent handleMessage:messageType];
 }
 
 -(void)doUpdate:(ccTime)delta
@@ -59,11 +62,11 @@
     [self.NodeSelectComponent doUpdate:delta];
 }
 
--(void)draw
+-(void)draw:(int)z
 {
     if(self.Visible)
     {
-        [self.MNodeRenderComponent draw];
+        [self.MNodeRenderComponent draw:z];
     }
 }
 
@@ -75,8 +78,16 @@
 
 -(void)dealloc
 {
-    [self.MNodeRenderComponent release];
-    [self.ChildNodes release];
+    self.MNodeRenderComponent=nil;
+    self.ChildNodes=nil;
+    self.ConnectToMasteryNodes=nil;
+    self.ConnectFromMasteryNodes=nil;
+    self.Region=nil;
+    self.RenderBatch=nil;
+    self.ProximityEvalComponent=nil;
+    self._id=nil;
+    self.UserVisibleString=nil;
+    self.NodeSelectComponent=nil;
     
     [super dealloc];
 }

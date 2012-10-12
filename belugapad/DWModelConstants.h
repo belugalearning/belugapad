@@ -82,7 +82,24 @@ typedef enum {
     
     kDWsplitActivePies=35,
     kDWupdateLabels=36,
-
+    
+    kDWcheckMyMountIsCage=37,
+    kDWcheckMyMountIsNet=38,
+    kDWstopAllActions=39,
+    
+    kDWunsetAllMountedObjects=40,
+    
+    kDWswitchParentToMovementLayer=41,
+    kDWswitchParentToRenderLayer=42,
+    
+    kDWreorderPieSlices=43,
+    kDWresetToMountPositionAndDestroy=44,
+    
+    kDWdestroy=45,
+    kDWfadeAndDestroy=46,
+  
+    kDWselectMe=47,
+    kDWdeselectMe=48,
     
     kDWareYouProximateTo=101,
     kDWupdateObjectData=102,
@@ -109,6 +126,10 @@ typedef enum {
     kDWhighlight=118,
     kDWunhighlight=119,
     
-    kDWdoSelection=120
+    kDWdoSelection=120,
+    
+    kDWstartRespositionSeek=121,
+    
+    kDWmoveSpriteToPositionWithoutAnimation=122
     
 } DWMessageType;

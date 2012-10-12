@@ -14,6 +14,7 @@
 
 @synthesize pipelines;
 @synthesize x, y, mastery, jtd;
+@synthesize regions;
 
 @synthesize isLit;
 
@@ -22,22 +23,30 @@
     self=[super initWithFMResultSetRow:resultSet];
     if (self)
     {
-        pipelines = [[resultSet stringForColumn:@"pipelines"] objectFromJSONString];
-        [pipelines retain];
-        if([pipelines count]>0) NSLog(@"found pipelines for %@", self._id);
+        NSString *pstring=[resultSet stringForColumn:@"pipelines"];
+        NSData  *pdata=[pstring dataUsingEncoding:NSUTF8StringEncoding];
+        pipelines=[pdata objectFromJSONData];
         
         x = [resultSet intForColumn:@"x"];
         y = [resultSet intForColumn:@"y"];
         mastery = [resultSet boolForColumn:@"mastery"];
-        jtd = [resultSet stringForColumn:@"jtd"];
-                
+        
+        NSArray *jtds=[[resultSet stringForColumn:@"jtd"] objectFromJSONString];
+        if(jtds.count>0) jtd=[jtds objectAtIndex:0];
+        else jtd=@"";
+        
+        NSString *rstring=[resultSet stringForColumn:@"region"];
+        NSData *rdata=[rstring dataUsingEncoding:NSUTF8StringEncoding];
+        regions=[rdata objectFromJSONData];
+        
+        
     }
+    
     return self;
 }
 
 -(void) dealloc
 {
-    [pipelines release];
     [super dealloc];
 }
 

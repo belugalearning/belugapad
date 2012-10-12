@@ -21,20 +21,41 @@
 @property BOOL lightUpProgressFromLastNode;
 @property (nonatomic, retain) ConceptNode *currentNode;
 
--(id)initWithProblemPipeline:(NSString*)source;
+@property BOOL resetPositionAfterTH;
+@property CGPoint lastMapLayerPosition;
+
+@property (readonly) int pipelineIndex;
+@property (readonly) int episodeIndex;
+
+@property (readonly) NSString *contentDir;
+
+//episode
+@property (retain) NSMutableArray *currentEpisode;
+@property (readonly) BOOL isUserAtEpisodeHead;
+@property (readonly) BOOL isUserPastEpisodeHead;
+
+-(id)initWithLocalSettings:(NSDictionary*)settings;
 -(void)setPipelineNodeComplete;
+-(void)setPipelineScore:(int)score;
 -(BOOL)isUsingTestPipeline;
+
+-(void)updateContentDatabaseWithSettings:(NSDictionary*)settings;
 
 -(BOOL) createAndStartFunnelForNode:(NSString*)nodeId;
 
 -(void)startPipelineWithId:(NSString*)pipelineid forNode:(ConceptNode*)node;
 -(void)gotoNextProblemInPipeline;
+-(void)gotoNextProblemInPipelineWithSkip:(int)skipby;
 
 -(NSArray*)allConceptNodes;
 -(ConceptNode*)conceptNodeForId:(NSString*)nodeId;
 -(NSArray*)relationMembersForName:(NSString*)name;
 -(Pipeline*)pipelineWithId:(NSString*)plId;
+-(NSArray*)allRegions;
 
 -(void)quitPipelineTracking;
+
+-(void)adaptPipelineByInsertingWithTriggerData:(NSDictionary*)triggerData;
+-(NSString*)debugPipelineString;
 
 @end

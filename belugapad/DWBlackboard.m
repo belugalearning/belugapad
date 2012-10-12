@@ -11,6 +11,7 @@
 @implementation DWBlackboard
 
 @synthesize DropObject;
+@synthesize PriorityDropObject;
 @synthesize DropObjectDistance;
 @synthesize PickupObject;
 @synthesize ProximateObject;
@@ -19,6 +20,7 @@
 @synthesize AllStores;
 @synthesize CurrentStore;
 @synthesize ComponentRenderLayer;
+@synthesize MovementLayer;
 @synthesize PickupOffset;
 @synthesize hostLX;
 @synthesize hostLY;
@@ -30,6 +32,9 @@
 @synthesize FirstAnchor;
 @synthesize LastAnchor;
 @synthesize CurrentHandle;
+@synthesize TestTouchLocation;
+@synthesize MoveTouchLocation;
+@synthesize CurrentColumnValue;
 
 
 -(id) init
@@ -50,6 +55,25 @@
     SelectedObjects=[[NSMutableArray alloc] init];
 }
 
-
+-(void)dealloc
+{
+    self.DropObject=nil;
+    self.PickupObject=nil;
+    self.ProximateObject=nil;
+    self.LastSelectedObject=nil;
+    self.CurrentStore=nil;
+    self.ComponentRenderLayer=nil;
+    self.MovementLayer=nil;
+    self.ProblemExpression=nil;
+    self.ProblemVariableSubstitutions=nil;
+    self.FirstAnchor=nil;
+    self.LastAnchor=nil;
+    self.CurrentHandle=nil;
+    
+    self.AllStores=nil;
+    self.SelectedObjects=nil;
+    
+    [super dealloc];
+}
 
 @end

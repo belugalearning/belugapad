@@ -15,4 +15,12 @@
 @synthesize PopulateVariableNames;
 @synthesize WatchRambler;
 
+-(void)dealloc
+{
+    self.PopulateVariableNames=nil;
+    self.WatchRambler=nil;
+
+    [super dealloc];
+}
+
 @end

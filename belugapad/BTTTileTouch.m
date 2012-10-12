@@ -7,6 +7,7 @@
 //
 
 #import "BTTTileTouch.h"
+#import "LoggingService.h"
 #import "DWTTTileGameObject.h"
 #import "global.h"
 #import "ToolConsts.h"
@@ -18,6 +19,7 @@
 @interface BTTTileTouch()
 {
 @private
+    LoggingService *loggingService;
     ContentService *contentService;
     UsersService *usersService;
 }
@@ -33,6 +35,7 @@
     //init pos x & y in case they're not set elsewhere
     
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    loggingService = ac.loggingService;
     contentService = ac.contentService;
     usersService = ac.usersService;
     
@@ -83,10 +86,10 @@
         CCLabelTTF *myText=[CCLabelTTF alloc];
         
         
-        if(tile.operatorType==kOperatorAdd)myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d+%d", tile.myXpos, tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
-        else if(tile.operatorType==kOperatorSub)myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d-%d", tile.myXpos, tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
-        else if(tile.operatorType==kOperatorMul)myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%dx%d", tile.myXpos, tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
-        else if(tile.operatorType==kOperatorDiv)myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d/%d", tile.myXpos, tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+        if(tile.operatorType==kOperatorAdd)myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d+%d", tile.myXpos, tile.myYpos] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
+        else if(tile.operatorType==kOperatorSub)myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d-%d", tile.myXpos, tile.myYpos] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
+        else if(tile.operatorType==kOperatorMul)myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%dx%d", tile.myXpos, tile.myYpos] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
+        else if(tile.operatorType==kOperatorDiv)myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d/%d", tile.myXpos, tile.myYpos] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
         //[myText setPosition:[tile.mySprite convertToNodeSpace:ccp(tile.Position.x, tile.Position.y+55)]];
         [myText setPosition:ccp(tile.ansSprite.contentSize.width/2, (tile.ansSprite.contentSize.height/2)-2)];
         [myText setColor:ccc3(83,93,100)];
@@ -110,15 +113,19 @@
             NSLog(@"tile hit - my value is %d, myXpos %d, myYpos %d", tile.myXpos*tile.myYpos, tile.myXpos, tile.myYpos);
             if(!tile.myText)
             {
-                [usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginRevealAnswer withOptionalNote:[NSString stringWithFormat:@"{\"revealanswerx\":%d, \"revealanswery\":%d}", tile.myXpos, tile.myYpos]];
+                [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_REVEAL_ANSWER
+                    withAdditionalData:[NSDictionary dictionaryWithObject:[NSArray arrayWithObjects:
+                                                                           [NSNumber numberWithInt:tile.myXpos],
+                                                                           [NSNumber numberWithInt:tile.myYpos], nil]
+                                                                   forKey:@"tileCoords"]];
                 
-                if(tile.operatorType==kOperatorAdd)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos+tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
+                if(tile.operatorType==kOperatorAdd)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos+tile.myYpos] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
                 
-                else if(tile.operatorType==kOperatorSub)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos-tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
+                else if(tile.operatorType==kOperatorSub)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos-tile.myYpos] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
                
-                else if(tile.operatorType==kOperatorMul)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos*tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];   
+                else if(tile.operatorType==kOperatorMul)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos*tile.myYpos] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
                 
-                else if(tile.operatorType==kOperatorDiv)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", tile.myXpos/tile.myYpos] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE]; 
+                else if(tile.operatorType==kOperatorDiv)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos/tile.myYpos] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
                 
                 [tile.myText setPosition:[tile.mySprite convertToNodeSpace:tile.Position]];
                 [tile.myText setColor:ccc3(200,200,200)];

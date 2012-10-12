@@ -40,9 +40,9 @@
 		<dict>
 			<key>BPlaceValueContainerRender</key>
 			<dict/>
-			<key>BPlaceValueDropTarget</key>
+			<key>BPlaceValueDropTargetNet</key>
 			<dict/>
-			<key>BPlaceValueMount</key>
+			<key>BPlaceValueMountNet</key>
 			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>
@@ -56,9 +56,9 @@
 		<dict>
 			<key>BPlaceValueObjectSpawn</key>
 			<dict/>
-			<key>BPlaceValueDropTarget</key>
+			<key>BPlaceValueDropTargetCage</key>
 			<dict/>
-			<key>BPlaceValueMount</key>
+			<key>BPlaceValueMountCage</key>
 			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>
@@ -158,15 +158,15 @@
 		<key>OBJECT_DATA</key>
 		<dict/>
 	</dict>
-	<key>TpartitionObject</key>
+	<key>TnBondObject</key>
 	<dict>
 		<key>BEHAVIOURS</key>
 		<dict>
-			<key>BPartitionPickupTarget</key>
+			<key>BNBondPickupTarget</key>
 			<dict/>
-			<key>BPartitionMountable</key>
+			<key>BNBondMountable</key>
 			<dict/>
-			<key>BPartitionObjectRender</key>
+			<key>BNBondObjectRender</key>
 			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>
@@ -174,13 +174,13 @@
 		<key>OBJECT_DATA</key>
 		<dict/>
 	</dict>
-	<key>TpartitionStore</key>
+	<key>TnBondStore</key>
 	<dict>
 		<key>BEHAVIOURS</key>
 		<dict>
-			<key>BPartitionStoreRender</key>
+			<key>BNBondStoreRender</key>
 			<dict/>
-			<key>BPartitionStoreDropTarget</key>
+			<key>BNBondStoreDropTarget</key>
 			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>
@@ -188,15 +188,15 @@
 		<key>OBJECT_DATA</key>
 		<dict/>
 	</dict>
-	<key>TpartitionRow</key>
+	<key>TnBondRow</key>
 	<dict>
 		<key>BEHAVIOURS</key>
 		<dict>
-			<key>BPartitionRowRender</key>
+			<key>BNBondRowRender</key>
 			<dict/>
-			<key>BPartitionMount</key>
+			<key>BNBondMount</key>
 			<dict/>
-			<key>BPartitionRowDropTarget</key>
+			<key>BNBondRowDropTarget</key>
 			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>
@@ -249,6 +249,20 @@
 		<key>BEHAVIOURS</key>
 		<dict>
 			<key>BDotGridShapeTouch</key>
+			<dict/>
+			<key>BDotGridShapeObjectRender</key>
+			<dict/>
+		</dict>
+		<key>IMPLEMENT_TEMPLATES</key>
+		<array/>
+		<key>OBJECT_DATA</key>
+		<dict/>
+	</dict>
+	<key>TdotgridShapeGroup</key>
+	<dict>
+		<key>BEHAVIOURS</key>
+		<dict>
+			<key>BDotGridShapeGroupObjectRender</key>
 			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>
@@ -309,6 +323,18 @@
 			<key>BPieSplitterContainerMountable</key>
 			<dict/>
 			<key>BPieSplitterContainerTouch</key>
+			<dict/>
+		</dict>
+		<key>IMPLEMENT_TEMPLATES</key>
+		<array/>
+		<key>OBJECT_DATA</key>
+		<dict/>
+	</dict>
+	<key>TnumberWheel</key>
+	<dict>
+		<key>BEHAVIOURS</key>
+		<dict>
+			<key>BNWheelObjectRender</key>
 			<dict/>
 		</dict>
 		<key>IMPLEMENT_TEMPLATES</key>

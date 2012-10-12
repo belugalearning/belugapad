@@ -36,6 +36,10 @@
     ProblemRejectMode rejectMode;
     ProbjemRejectType rejectType;
     ProblemEvalMode evalMode;
+    NSString *evalType;
+    int evalInterval;
+    NSArray *evalJumpSequence;
+    
     CCLabelTTF *problemDescLabel;
 
     CCLabelTTF *problemCompleteLabel;
@@ -44,16 +48,19 @@
     CCTexture2D *bubbleTexSelected;
     
     CCSprite *bubbleSprite;
+    BOOL usedBubble;
     BOOL holdingBubble;
     float holdingBubbleOffset;
     int bubblePushDir;
     int lastBubbleLoc;
+    int lastBubbleValue;
     int evalTarget;
     
     int initStartVal;
     NSNumber *initMinVal;
     NSNumber *initMaxVal;
     int initSegmentVal;
+    int initStartLoc;
     
     float timeSinceInteractionOrShake;
     
@@ -68,11 +75,35 @@
     int touchResetDir;
     
     BOOL enableAudioCounting;
+    
+    
+    // == jump mode
+    BOOL jumpMode;
+    CGPoint stitchStartPos;
+    float stitchOffsetX;
+    CGPoint stitchEndPos;
+    CGPoint stitchApexPos;
+    BOOL drawStitchLine;
+    BOOL drawStitchCurve;
+    
+    int jumpStartValue;
+    BOOL hasSetJumpStartValue;
+    
+    // == markers
+    NSMutableArray *markerValuePositions;
+    
+    //== frog mode
+    BOOL frogMode;
+    CCSprite *frogSprite;
+    int lastFrogLoc;
+    CCSprite *frogTargetSprite;
+    
 }
 
 -(void)populateGW;
 -(void)readPlist:(NSDictionary*)pdef;
-
--(BOOL)evalProblem;
+-(float)metaQuestionTitleYLocation;
+-(float)metaQuestionAnswersYLocation;
+-(void)evalProblem;
 
 @end

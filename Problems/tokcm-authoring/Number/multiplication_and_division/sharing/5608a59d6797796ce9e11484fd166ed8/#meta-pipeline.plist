@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NODE_ID</key>
+	<string>5608a59d6797796ce9e11484fd166ed8</string>
+	<key>PIPELINE_NAME</key>
+	<string>build_1.06</string>
+	<key>PROBLEMS</key>
+    <array>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/dt_intro_1.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/dt_intro_2.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/dt_intro_3.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/dt_intro_4.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/dt_cage_intro_1.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/dt_cage_intro_2.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/dt_cage_intro_3.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/dt_6_2.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/dt_6_3.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/dt_10_5.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/dt_8_4.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/dt_9_3.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/mq_dt_8_2.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/mq_dt_6_3.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/mq_dt_10_5.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/mq_10_2.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/mq_12_4.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/mq_15_3.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/mq_20_4.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/mq_dt_9_3.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/mq_dt_6_2.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/mq_dt_12_3.plist</string>
+        <string>/Problems/tokcm-authoring/Number/multiplication_and_division/sharing/5608a59d6797796ce9e11484fd166ed8/mq_dt_15_3.plist</string>
+    </array>
+</dict>
+</plist>

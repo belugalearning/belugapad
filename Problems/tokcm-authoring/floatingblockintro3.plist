@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Put the blocks in the bubbles and add them together.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>intro to floating block 3</string>
+	<key>TOOL_KEY</key>
+	<string>FloatingBlock</string>
+	<key>EVAL_MODE</key>
+	<integer>0</integer>
+	<key>SOLUTION</key>
+	<integer>2</integer>
+	<key>INIT_BUBBLES</key>
+	<integer>2</integer>
+	<key>BUBBLE_AUTO_OPERATE</key>
+	<false/>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>NUMBER</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>NUMBER</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>SUPPORTED_OPERATORS</key>
+	<array>
+		<string>+</string>
+		<string>x</string>
+		<string>/</string>
+		<string>-</string>
+	</array>
+	<key>SHOW_MULTIPLE_CONTROLS</key>
+	<true/>
+</dict>
+</plist>

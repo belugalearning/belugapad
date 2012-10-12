@@ -12,11 +12,30 @@
 
 @synthesize Position;
 @synthesize MountPosition;
-@synthesize mySprite;
+@synthesize RealYPosOffset;
+//@synthesize mySprite;
 @synthesize mySlices;
 @synthesize ScaledUp;
-@synthesize myHeldValue;
 @synthesize myText;
 @synthesize textString;
+@synthesize BaseNode;
+@synthesize Nodes;
+@synthesize mySpriteTop;
+@synthesize mySpriteMid;
+@synthesize mySpriteBot;
+
+-(void)dealloc
+{
+    self.mySlices=nil;
+    self.myText=nil;
+    self.textString=nil;
+    self.BaseNode=nil;
+    self.Nodes=nil;
+    self.mySpriteTop=nil;
+    self.mySpriteMid=nil;
+    self.mySpriteBot=nil;
+    
+    [super dealloc];
+}
 
 @end

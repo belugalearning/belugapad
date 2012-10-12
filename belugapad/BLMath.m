@@ -71,6 +71,16 @@
     return tp;
 }
 
++(float) angleFromNorthToLineFrom:(CGPoint)v1 to:(CGPoint)v2
+{
+    return [self angleForVector:[self SubtractVector:v1 from:v2]];
+}
+
++(float) angleForVector:(CGPoint)v
+{
+    return [self angleForNormVector:[self TruncateVector:v toMaxLength:1.0f]];
+}
+
 +(float) angleForNormVector:(CGPoint)v
 {
     CGPoint absv=CGPointMake(fabsf(v.x), fabsf(v.y));

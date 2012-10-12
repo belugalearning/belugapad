@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>make 6</string>
+	<key>TOOL_KEY</key>
+	<string>FloatingBlock</string>
+	<key>EVAL_MODE</key>
+	<real>0</real>
+	<key>SOLUTION</key>
+	<integer>6</integer>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>NUMBER</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>NUMBER</key>
+			<integer>3</integer>
+		</dict>
+	</array>
+	<key>BUBBLE_AUTO_OPERATE</key>
+	<false/>
+	<key>SHOW_MULTIPLE_CONTROLS</key>
+	<true/>
+	<key>SUPPORTED_OPERATORS</key>
+	<array>
+		<string>+</string>
+		<string>x</string>
+		<string>/</string>
+		<string>-</string>
+	</array>
+</dict>
+</plist>

@@ -8,7 +8,15 @@
 
 #import "DWGameObject.h"
 
+@class BNLineRamblerRender;
+
 @interface DWRamblerGameObject : DWGameObject
+{
+    BNLineRamblerRender *bnRender;
+}
+
+-(void)readyRender;
+-(void) drawFromMid:(CGPoint)mid andYOffset:(float)yOffset;
 
 @property float Value;
 @property float StartValue;
@@ -36,6 +44,9 @@
 @property BOOL HideAllNotches;
 @property (retain) NSArray *ShowNotchesAtIntervals;
 
+@property NSMutableArray *MarkerValuePositions;
+
+@property NSMutableArray *UserJumps;
 
 
 @end

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>This is 10. Count on 80 in sets of 10.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>count on from 10 to 90</string>
+	<key>TOOL_KEY</key>
+	<string>NLine</string>
+	<key>START_VALUE</key>
+	<string>10</string>
+	<key>MIN_VALUE</key>
+	<string>0</string>
+	<key>MAX_VALUE</key>
+	<string>100</string>
+	<key>JUMP_MODE</key>
+	<true/>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>EVAL_TYPE</key>
+	<string>REPEATED_ADDITION</string>
+	<key>EVAL_INTERVAL</key>
+	<string>10</string>
+	<key>REJECT_MODE</key>
+	<integer>0</integer>
+	<key>EVAL_TARGET</key>
+	<integer>90</integer>
+	<key>HIDE_ALL_NUMBERS</key>
+	<false/>
+	<key>SHOW_NUMBERS_AT_INTERVALS</key>
+	<array>
+		<string>50</string>
+	</array>
+	<key>HIDE_ALL_NOTCHES</key>
+	<false/>
+	<key>HIDE_START_NUMBER</key>
+	<false/>
+	<key>HIDE_END_NUMBER</key>
+	<false/>
+	<key>HIDE_START_NOTCH</key>
+	<false/>
+	<key>HIDE_END_NOTCH</key>
+	<false/>
+	<key>DISABLE_SNAPPING_TO_NOTCH</key>
+	<false/>
+	<key>EVAL_PLUS_MINUS_THRESHOLD</key>
+	<integer>0</integer>
+	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
+	<array>
+		<string>10</string>
+	</array>
+	<key>RENDER_STITCHES_AT_INTERVAL</key>
+	<integer>0</integer>
+	<key>SEGMENT_VALUE</key>
+	<integer>10</integer>
+</dict>
+</plist>

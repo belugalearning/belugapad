@@ -13,21 +13,25 @@
 #import "DWGameWorld.h"
 #import "BLMath.h"
 #import "DWTTTileGameObject.h"
-
+#import "InteractionFeedback.h"
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
+#import "LoggingService.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
 
 @interface TimesTables()
 {
 @private
+    LoggingService *loggingService;
     ContentService *contentService;
     UsersService *usersService;
 }
 
 @end
+
+static float kTimeToHeaderBounce=7.0f;
 
 @implementation TimesTables
 
@@ -61,6 +65,7 @@
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         contentService = ac.contentService;
         usersService = ac.usersService;
+        loggingService = ac.loggingService;
         
         [gw Blackboard].hostCX = cx;
         [gw Blackboard].hostCY = cy;
@@ -85,16 +90,37 @@
 {
 	[gw doUpdate:delta];
     
-    if(autoMoveToNextProblem)
+    timeSinceInteractionOrDropHeader+=delta;
+    
+    if(timeSinceInteractionOrDropHeader>kTimeToHeaderBounce)
     {
-        timeToAutoMoveToNextProblem+=delta;
-        if(timeToAutoMoveToNextProblem>=kTimeToAutoMove)
+        BOOL isWinning=[self evalExpression];
+        if(!hasUsedHeaderX)
         {
-            self.ProblemComplete=YES;
-            autoMoveToNextProblem=NO;
-            timeToAutoMoveToNextProblem=0.0f;
+
+            NSMutableArray *a=[headerLabels objectAtIndex:0];
+            
+            for(CCLabelTTF *l in a)
+            {
+                [l runAction:[InteractionFeedback dropAndBounceAction]];
+            }
+            
+            timeSinceInteractionOrDropHeader=0.0f;
         }
-    }   
+        else if(!hasUsedHeaderY)
+        {
+            NSMutableArray *a=[headerLabels objectAtIndex:1];
+            
+            for(CCLabelTTF *l in a)
+            {
+                [l runAction:[InteractionFeedback dropAndBounceAction]];
+            }
+            
+            timeSinceInteractionOrDropHeader=0.0f;
+        }
+        
+        if(isWinning)[toolHost shakeCommitButton];
+    }
 }
 
 #pragma mark - gameworld setup and population
@@ -177,9 +203,6 @@
 {
     NSString *operatorFileName=[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/operator-%@.png"), operatorName];
     ttMatrix=[[NSMutableArray alloc]init];
-    [ttMatrix retain];
-    renderLayer = [[CCLayer alloc] init];
-    [self.ForeLayer addChild:renderLayer];
     
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     
@@ -199,7 +222,6 @@
     NSMutableArray *yHeaders=[[NSMutableArray alloc]init];
     [headerLabels addObject:xHeaders];
     [headerLabels addObject:yHeaders];
-    [headerLabels retain];
     
     // render the times table grid
     
@@ -242,7 +264,7 @@
             
             if(iRow==0 && showYAxis)
             {
-                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", yStartNumber+1] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", yStartNumber+1] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
                 [curLabel setPosition:ccp(xStartPos-spaceBetweenAnchors,yStartPos)];
                 [curLabel setTag:2];
                 [curLabel setOpacity:0];
@@ -256,7 +278,7 @@
             }
             
             if(iCol==amtForY-1 && showXAxis) {
-                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", xStartNumber]fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", xStartNumber]fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
                 [curLabel setPosition:ccp(xStartPos,yStartPos+spaceBetweenAnchors)];
                 if(!tile.isEndXPiece)
                 {
@@ -281,6 +303,7 @@
 
             [currentCol addObject:tile];
             
+            [tile release];
 
         }
         
@@ -288,7 +311,7 @@
         xStartPos=xStartPos+spaceBetweenAnchors;
         [ttMatrix addObject:currentCol];
 
-        
+        [currentCol release];
     }    
     
     if(activeCols || activeRows)
@@ -328,8 +351,9 @@
             }
         }
     }
-
-
+    
+    [xHeaders release];
+    [yHeaders release];
 }
 
 #pragma mark - grid interaction
@@ -419,6 +443,7 @@
 
 -(void)tintRow:(int)thisRow
 {
+    hasUsedHeaderY=YES;
     BOOL haveLogged=NO;
     BOOL tinted=[[rowTints objectAtIndex:thisRow] boolValue];
     
@@ -430,19 +455,28 @@
         if(tinted)
         {
             //untint -- so long as it's not in a row
-            if (![[colTints objectAtIndex:i] boolValue]) {
+            if (![[colTints objectAtIndex:i] boolValue])
+            {
                 [tile.mySprite setColor:ccc3(255,255,255)];
             
-            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginUnhighlightRow withOptionalNote:[NSString stringWithFormat:@"{\"unhighlightrow\":%d}",thisRow]];
-            haveLogged=YES;
+                if(!haveLogged)
+                {
+                    [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_UNHIGHLIGHT_ROW
+                        withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:thisRow] forKey:@"unhighlightRow"]];
+                    haveLogged=YES;
+                }
             }
         }
         else {
             //tint it
             [tile.mySprite setColor:ccc3(0,255,0)];
             
-            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginHighlightRow withOptionalNote:[NSString stringWithFormat:@"{\"highlightrow\":%d}",thisRow]];
-            haveLogged=YES;
+            if(!haveLogged)
+            {
+                [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_HIGHLIGHT_ROW
+                    withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:thisRow] forKey:@"highlightRow"]];
+                haveLogged=YES;
+            }
         }
     }
     
@@ -452,6 +486,7 @@
 
 -(void)tintCol:(int)thisCol
 {
+    hasUsedHeaderX=YES;
     BOOL haveLogged=NO;
     BOOL tinted=[[colTints objectAtIndex:thisCol] boolValue];
 
@@ -463,11 +498,16 @@
         if(tinted)
         {
             //untint -- so long as it's not in a row
-            if (![[rowTints objectAtIndex:i] boolValue]) {
+            if (![[rowTints objectAtIndex:i] boolValue])
+            {
                 [tile.mySprite setColor:ccc3(255,255,255)];
             
-            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginUnhighlightColumn withOptionalNote:[NSString stringWithFormat:@"{\"unhighlightcol\":%d}",thisCol]];
-            haveLogged=YES;
+                if (!haveLogged)
+                {
+                    [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_UNHIGHLIGHT_COLUMN
+                        withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:thisCol] forKey:@"unhighlightCol"]];
+                    haveLogged=YES;
+                }
                 
             }
         }
@@ -475,8 +515,12 @@
             //tint it
             [tile.mySprite setColor:ccc3(0,255,0)];
             
-            if(!haveLogged)[usersService logProblemAttemptEvent:kProblemAttemptTimesTablesTouchBeginHighlightColumn withOptionalNote:[NSString stringWithFormat:@"{\"highlightcol\":%d}",thisCol]];
-            haveLogged=YES;
+            if(!haveLogged)
+            {
+                [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_HIGHLIGHT_COLUMN
+                    withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:thisCol] forKey:@"highlightCol"]];
+                haveLogged=YES;
+            }
         }
     }
     
@@ -494,6 +538,7 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
+    timeSinceInteractionOrDropHeader=0.0f;
     
     
     [gw Blackboard].PickupObject=nil;
@@ -560,9 +605,9 @@
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    UITouch *touch=[touches anyObject];
-    CGPoint location=[touch locationInView: [touch view]];
-    location=[[CCDirector sharedDirector] convertToGL:location];
+//    UITouch *touch=[touches anyObject];
+//    CGPoint location=[touch locationInView: [touch view]];
+//    location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     isTouching=NO;
     gw.Blackboard.LastSelectedObject=nil;
@@ -646,8 +691,7 @@
     
     if(isWinning)
     {
-        autoMoveToNextProblem=YES;
-        [toolHost showProblemCompleteMessage];
+        [toolHost doWinning];
     }
     else {
         if(evalMode==kProblemEvalOnCommit)[self resetProblem];
@@ -676,11 +720,8 @@
 #pragma mark - dealloc
 -(void) dealloc
 {
-    //write log on problem switch
-    [gw writeLogBufferToDiskWithKey:@"TimesTables"];
+    [renderLayer release];
     
-    //tear down
-    [gw release];
     if(ttMatrix)[ttMatrix release];
     if(activeCols)[activeCols release];
     if(activeRows)[activeRows release];
@@ -690,9 +731,13 @@
     if(revealCols)[revealCols release];
     if(revealTiles)[revealTiles release];
     
+    [rowTints release];
+    [colTints release];
+    
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
-    
+
+    [gw release];
 
     [super dealloc];
 }

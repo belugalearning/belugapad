@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Continue the pattern by doubling.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>doubling sequence</string>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt; {$x} &lt;/b:t&gt;
+&lt;b:ot picker=&quot;yes&quot; pickerTarget=&quot;{2*$x}&quot;&gt;{2*$x}&lt;/b:ot&gt;
+&lt;b:ot picker=&quot;yes&quot; pickerTarget=&quot;{4*$x}&quot;&gt;{4*$x}&lt;/b:ot&gt;
+&lt;b:ot picker=&quot;yes&quot; pickerTarget=&quot;{8*$x}&quot;&gt;{8*$x}&lt;/b:ot&gt;
+&lt;b:ot picker=&quot;yes&quot; pickerTarget=&quot;{16*$x}&quot;&gt;{16*$x}&lt;/b:ot&gt;
+&lt;b:t&gt;…&lt;/b:t&gt;</string>
+	</array>
+</dict>
+</plist>

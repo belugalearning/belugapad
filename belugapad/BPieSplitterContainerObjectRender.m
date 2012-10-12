@@ -36,8 +36,6 @@
     contentService = ac.contentService;
     usersService = ac.usersService;
     
-    //init pos x & y in case they're not set elsewhere
-    
     
     return self;
 }
@@ -46,7 +44,7 @@
 {
     if(messageType==kDWsetupStuff)
     {
-        if(!cont.mySprite) 
+        if(!cont.mySpriteBot) 
         {
             [self setSprite];     
         }
@@ -54,20 +52,16 @@
     
     if(messageType==kDWupdateSprite)
     {
-        if(!cont.mySprite) { 
+        if(!cont.mySpriteBot) { 
             [self setSprite];
         }
         
     }
     if(messageType==kDWupdateLabels)
     {
-        if(!cont.myText)
-        {
-            cont.myText=[CCLabelTTF labelWithString:@"" fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-            [cont.myText setPosition:ccp(50,-20)];
-            [cont.mySprite addChild:cont.myText];
-        }
-        [cont.myText setString:cont.textString];
+        if(cont.ScaledUp && cont.myText.visible==NO)[cont.myText setVisible:YES];
+        if(cont.ScaledUp)[cont.myText setString:cont.textString];
+        else [cont.myText setVisible:NO];
     }
     if(messageType==kDWmoveSpriteToPosition)
     {
@@ -77,9 +71,25 @@
     {
         [self moveSpriteHome];
     }
+    if(messageType==kDWswitchParentToRenderLayer)
+    {
+        [cont.BaseNode.parent removeChild:cont.BaseNode cleanup:NO];
+        [cont.BaseNode setPosition:[gameWorld.Blackboard.ComponentRenderLayer convertToNodeSpace:cont.Position]];
+        [gameWorld.Blackboard.ComponentRenderLayer addChild:cont.BaseNode];
+        NSLog(@"this container changed parent (render layer)");
+    }
+    if(messageType==kDWswitchParentToMovementLayer)
+    {
+        [cont.BaseNode.parent removeChild:cont.BaseNode cleanup:NO];
+        [cont.BaseNode setPosition:[gameWorld.Blackboard.MovementLayer convertToNodeSpace:cont.Position]];
+        [gameWorld.Blackboard.MovementLayer addChild:cont.BaseNode];
+        NSLog(@"this container changed parent (movement layer)");
+    }
     if(messageType==kDWdismantle)
     {
-        [[cont.mySprite parent] removeChild:cont.mySprite cleanup:YES];
+        [[cont.mySpriteTop parent] removeChild:cont.mySpriteTop cleanup:YES];
+        [[cont.mySpriteMid parent] removeChild:cont.mySpriteMid cleanup:YES];
+        [[cont.mySpriteBot parent] removeChild:cont.mySpriteBot cleanup:YES];    
     } 
     
 }
@@ -89,42 +99,85 @@
 -(void)setSprite
 {    
     
-    NSString *spriteFileName=[[NSString alloc]init];
+    if(!cont.BaseNode){
+        cont.BaseNode=[[[CCNode alloc]init] autorelease];
+        [cont.BaseNode setPosition:cont.Position];
+        if(!cont.ScaledUp)[[gameWorld Blackboard].ComponentRenderLayer addChild:cont.BaseNode z:2];
+        else [[gameWorld Blackboard].MovementLayer addChild:cont.BaseNode z:2];
+        
+    }
+
     
     
-    spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/container.png"];
+//    spriteFileName=[NSString stringWithFormat:@"/images/piesplitter/container.png"];
     
-    cont.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
-    [cont.mySprite setPosition:cont.Position];
-    if(!cont.ScaledUp)[cont.mySprite setScale:0.5f];
-    else [cont.mySprite setScale:1.0f];
+    NSString *spriteFileNameTop=@"/images/piesplitter/container-t.png";
+    NSString *spriteFileNameMid=@"/images/piesplitter/container-m.png";
+    NSString *spriteFileNameBot=@"/images/piesplitter/container-b.png";
+    
+//    cont.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+    cont.mySpriteTop=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileNameTop]))];
+    cont.mySpriteMid=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileNameMid]))];
+    cont.mySpriteBot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileNameBot]))];
+    [cont.mySpriteTop setAnchorPoint:ccp(0.5,-1)];    
+    [cont.mySpriteMid setAnchorPoint:ccp(0.5,-1)];
+    [cont.mySpriteBot setAnchorPoint:ccp(0.5,-1)];
+    if(!cont.ScaledUp)[cont.BaseNode setScale:0.5f];
+    else [cont.BaseNode setScale:1.0f];
+
+    //[cont.mySpriteTop setPosition:ccp(0,(cont.mySpriteMid.contentSize.height)-(cont.mySpriteTop.contentSize.height/2))];
+    //[cont.mySpriteBot setPosition:ccp(0,0-(cont.mySpriteMid.contentSize.height/2)-(cont.mySpriteTop.contentSize.height/2))];
+    
+    [cont.mySpriteMid setPosition:ccp(0,-50-(cont.mySpriteTop.contentSize.height))];
+    [cont.mySpriteBot setPosition:ccp(0,-(cont.mySpriteTop.contentSize.height+(cont.mySpriteMid.contentSize.height*cont.mySpriteMid.scaleY)))];
     
         if(gameWorld.Blackboard.inProblemSetup)
         {
-            [cont.mySprite setTag:1];
-            [cont.mySprite setOpacity:0];
+            [cont.mySpriteTop setTag:1];
+            [cont.mySpriteMid setTag:1];
+            [cont.mySpriteBot setTag:1];
+            [cont.mySpriteTop setOpacity:0];
+            [cont.mySpriteMid setOpacity:0];
+            [cont.mySpriteBot setOpacity:0];
         }
     
     
+    [cont.BaseNode addChild:cont.mySpriteMid];
+    [cont.BaseNode addChild:cont.mySpriteTop];
+    [cont.BaseNode addChild:cont.mySpriteBot];
     
-        [[gameWorld Blackboard].ComponentRenderLayer addChild:cont.mySprite z:2];
+    if(!cont.myText && cont.ScaledUp)
+    {
+        cont.myText=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
+        [cont.myText setPosition:ccp(50,40)];
+        [cont.mySpriteTop addChild:cont.myText];
+        if(gameWorld.Blackboard.inProblemSetup)
+        {
+            [cont.myText setTag:1];
+            [cont.myText setOpacity:0];
+        }
+    }
+//        [cont.BaseNode addChild:cont.mySprite];
     
 }
 -(void)moveSprite
 {
     if(!cont.ScaledUp){
-        [cont.mySprite runAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f]];
+        
+        [cont.BaseNode runAction:[CCScaleTo actionWithDuration:0.2f scale:1.0f]];
+
         cont.ScaledUp=YES;
     }
-    [cont.mySprite setPosition:cont.Position];
+    [cont.BaseNode setPosition:cont.Position];
 }
 -(void)moveSpriteHome
 {
     if(cont.ScaledUp){
-        [cont.mySprite runAction:[CCScaleTo actionWithDuration:0.2f scale:0.5f]];
+        [cont.BaseNode runAction:[CCScaleTo actionWithDuration:0.2f scale:0.5f]];
+      
         cont.ScaledUp=NO;
     }
-    [cont.mySprite runAction:[CCMoveTo actionWithDuration:0.5f position:cont.MountPosition]];
+    [cont.BaseNode runAction:[CCMoveTo actionWithDuration:0.5f position:cont.MountPosition]];
 }
 -(void)handleTap
 {

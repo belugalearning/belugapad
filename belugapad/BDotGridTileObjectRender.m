@@ -137,6 +137,8 @@
     
     
     [[gameWorld Blackboard].ComponentRenderLayer addChild:tile.mySprite z:2];
+    
+    [spriteFileName release];
 }
 
 -(void)setSpritePos:(BOOL) withAnimation

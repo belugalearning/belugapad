@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ColumnAddition</string>
+	<key>NUMBER_A</key>
+	<integer>125</integer>
+	<key>NUMBER_B</key>
+	<integer>228</integer>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Calculate the answer.</string>
+	<key>DVARS</key>
+	<dict>
+		<key>$price1</key>
+		<dict>
+			<key>MAX</key>
+			<string>15</string>
+			<key>MIN</key>
+			<string>1</string>
+		</dict>
+		<key>$price2</key>
+		<dict>
+			<key>MAX</key>
+			<string>10</string>
+			<key>MIN</key>
+			<string>1</string>
+		</dict>
+	</dict>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>$object1</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>packs of haribos</string>
+				<string>wine gums</string>
+				<string>chocolates</string>
+				<string>packs of crisps</string>
+				<string>drinks</string>
+			</array>
+		</dict>
+		<key>$object2</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>cookies</string>
+				<string>chewing gum</string>
+				<string>strawberry laces</string>
+			</array>
+		</dict>
+		<key>$name</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>Sarah</string>
+				<string>Claire</string>
+				<string>Scott</string>
+				<string>Gareth</string>
+				<string>Dave</string>
+				<string>Nick</string>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

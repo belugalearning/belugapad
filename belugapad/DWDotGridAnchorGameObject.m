@@ -21,4 +21,12 @@
 @synthesize moveHandle;
 @synthesize tile;
 
+-(void)dealloc
+{
+    self.mySprite=nil;
+    self.tile=nil;
+    
+    [super dealloc];
+}
+
 @end

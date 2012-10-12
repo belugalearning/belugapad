@@ -11,6 +11,7 @@
 @class SGJmapProximityEval;
 @class SGJmapNodeSelect;
 
+
 @protocol Transform
 
     @property CGPoint Position;
@@ -34,6 +35,8 @@
 
     @property BOOL Selected;
     @property (retain) SGJmapNodeSelect *NodeSelectComponent;
+    @property float HitProximity;
+    @property float HitProximitySign;
 
 @end
 
@@ -43,7 +46,7 @@
     @property CGPoint Position;
     @property BOOL Visible;
 
-    -(void)draw;
+-(void)draw:(int)z;
 
 @end
 
@@ -55,6 +58,11 @@
 
 @end
 
+@protocol Completable
+
+    @property BOOL EnabledAndComplete;
+
+@end
 
 @protocol Configurable
 
@@ -62,5 +70,9 @@
 
 @end
 
+@protocol ParticleRender
 
+    @property (retain) CCLayer *particleRenderLayer;
+
+@end
 

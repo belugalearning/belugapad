@@ -12,7 +12,7 @@
 
 @implementation SGGameWorld
 
-@synthesize LogBuffer;
+//@synthesize LogBuffer;
 
 -(SGGameWorld *)initWithGameScene:(CCLayer*)scene
 {
@@ -49,14 +49,14 @@
 }
 
 
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload withLogLevel:(int)logLevel
+-(void)handleMessage:(SGMessageType)messageType
 {
 	if(!mPause)
 	{
         int ic=[gameObjects count];
         for(int i=0; i<ic; i++)
         {
-            [[gameObjects objectAtIndex:i] handleMessage:messageType andPayload:payload withLogLevel:logLevel];
+            [[gameObjects objectAtIndex:i] handleMessage:messageType];
         }
 	}
 }
@@ -86,6 +86,11 @@
     return gameObjects;
 }
 
+-(NSMutableArray*)AllGameObjectsCopy
+{
+    return [[gameObjects copy] autorelease];
+}
+
 -(void)delayRemoveGameObject:(SGGameObject*)gameObject
 {
 	[removeObjects addObject:gameObject];
@@ -109,9 +114,12 @@
 
 -(void)dealloc
 {
+    
 	[gameObjects release];
 
+    [blackboard release];
     [removeObjects release];
+    
 	[super dealloc];
 }
 

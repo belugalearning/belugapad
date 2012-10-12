@@ -59,7 +59,8 @@ extern const float kTimeObjectSnapBack;
 extern const ccColor3B kLabelCountColor;
 
 extern const ccColor3B kMetaQuestionLabelColor;
-extern const ccColor3B kMetaAnswerLabelColor;
+extern const ccColor3B kMetaAnswerLabelColorSelected;
+extern const ccColor3B kMetaAnswerLabelColorDeselected;
 extern const ccColor3B kMetaQuestionButtonSelected;
 extern const ccColor3B kMetaQuestionButtonDeselected;
 
@@ -77,3 +78,10 @@ extern const CGRect kPauseMenuMenu;
 extern const CGRect kPauseMenuReset;
 extern const CGRect kPauseMenuContinue;
 extern const CGRect kPauseMenuLogOut;
+
+extern const ccColor3B kNumberBondColour[10];
+extern const ccColor3B kNumiconColour[10];
+
+// fraction builder
+
+extern const float kNumbersAlongFractionSlider;

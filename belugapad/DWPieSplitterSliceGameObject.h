@@ -14,7 +14,8 @@
 @property CGPoint Position;
 @property (retain) CCSprite *mySprite;
 @property (retain) DWGameObject *myPie;
-@property float sliceValue;
+@property float Rotation;
 @property (retain) DWGameObject *myCont;
+@property (retain) NSString *SpriteFileName;
 
 @end

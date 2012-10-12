@@ -23,7 +23,7 @@
 //    CCLayerGradient *gbkg=[CCLayerGradient layerWithColor:ccc4(181, 45, 153, 255) fadingTo:ccc4(156, 15, 153, 255)];
 //    [backgroundLayer addChild:gbkg];
     
-    CCSprite *b=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/backold.png")];
+    CCSprite *b=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ttbg/background.png")];
     [b setPosition:ccp(cx, cy)];
     [backgroundLayer addChild:b];
 }

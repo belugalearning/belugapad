@@ -8,6 +8,9 @@
 
 #import "SGJmapNodeRender.h"
 #import "SGJmapNode.h"
+#import "SGJmapMasteryNode.h"
+
+#import "BLMath.h"
 
 @interface SGJmapNodeRender()
 {
@@ -18,7 +21,7 @@
 
 @implementation SGJmapNodeRender
 
--(SGJmapNodeRender*)initWithGameObject:(id<Transform>)aGameObject
+-(SGJmapNodeRender*)initWithGameObject:(SGJmapNode*)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
@@ -28,17 +31,39 @@
     return self;
 }
 
--(void)handleMessage:(SGMessageType)messageType andPayload:(NSDictionary *)payload
+-(void)handleMessage:(SGMessageType)messageType
 {
+    if(messageType==kSGvisibilityChanged)
+    {
+        nodeSprite.visible=ParentGO.Visible;
+    }
     
+    if(messageType==kSGzoomOut)
+    {
+        [nodeSprite setVisible:YES];
+        [nodeSprite setOpacity:50];
+    }
+    if(messageType==kSGzoomIn)
+    {
+        [nodeSprite setOpacity:255];
+    }
+    if(messageType==kSGretainOffsetPosition)
+    {
+        positionAsOffset=[BLMath SubtractVector:ParentGO.Position from:ParentGO.MasteryNode.Position];
+    }
+    if(messageType==kSGresetPositionUsingOffset)
+    {
+        ParentGO.Position=[BLMath AddVector:ParentGO.MasteryNode.Position toVector:positionAsOffset];
+        [self updatePosition:ParentGO.Position];
+    }
 }
 
 -(void)doUpdate:(ccTime)delta
 {
-    
+
 }
 
--(void)draw
+-(void)draw:(int)z
 {
 //    CGPoint lp=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];
 //    
@@ -46,6 +71,11 @@
 //    ccDrawColor4B(255, 255, 255, 50);
 //    ccDrawLine(lp, ccpAdd(lp, ccp(100,100)));
 
+}
+
+-(void)updatePosition:(CGPoint)pos
+{
+    [nodeSprite setPosition:pos];
 }
 
 -(void)setup
@@ -60,8 +90,10 @@
     }
     
     [nodeSprite setPosition:ParentGO.Position];
-    [ParentGO.RenderBatch addChild:nodeSprite];
+    [nodeSprite setVisible:ParentGO.Visible];
+    [ParentGO.RenderBatch addChild:nodeSprite z:2];
 }
+
 
 
 

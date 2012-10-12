@@ -18,6 +18,7 @@
 
 -(void)dealloc
 {
+    self.resizeHandle=nil;
     self.shapesInMe=nil;
     self.firstAnchor=nil;
     self.lastAnchor=nil;

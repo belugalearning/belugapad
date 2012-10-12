@@ -107,7 +107,7 @@
         {
             [w.CountBubbleLabel setString:[NSString stringWithFormat:@"%d",[self returnPickerNumber]]];
         }
-        
+        w.OutputValue=w.InputValue;
     }
     
     if(messageType==kDWupdateLabels)

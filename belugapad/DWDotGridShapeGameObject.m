@@ -33,6 +33,9 @@
     self.lastAnchor=nil;
     self.myHeight=nil;
     self.myWidth=nil;
+    self.shapeGroup=nil;
+    self.RenderLayer=nil;
+    self.MyNumberWheel=nil;
     
     [super dealloc];
 }

@@ -26,6 +26,7 @@
 {
     self.mySprite=nil;
     self.tile=nil;
+    self.RenderLayer=nil;
     
     [super dealloc];
 }

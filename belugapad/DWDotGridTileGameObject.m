@@ -23,6 +23,9 @@
 {
     self.mySprite=nil;
     self.myAnchor=nil;
+    self.selectedSprite=nil;
+    self.myShape=nil;
+    self.RenderLayer=nil;
     
     [super dealloc];
 }

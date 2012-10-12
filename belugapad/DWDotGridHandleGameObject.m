@@ -20,6 +20,7 @@
 {
     self.mySprite=nil;
     self.myShape=nil;
+    self.RenderLayer=nil;
     
     [super dealloc];
 }

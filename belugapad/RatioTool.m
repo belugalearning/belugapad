@@ -108,7 +108,7 @@
         if(w.OutputValue>wheelMax)
         {
             c[i]=(c[i]/wheelMax)*255;
-            w.InputValue=wheelMax;
+            w.InputValue=(int)wheelMax;
             [w handleMessage:kDWupdateObjectData];
             [amount[i] setString:[NSString stringWithFormat:@"%d", c[i]]];
         }

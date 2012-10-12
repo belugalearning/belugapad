@@ -29,7 +29,8 @@ typedef enum {
 
 typedef enum {
     kProblemTotalShapeSize=0,
-    kProblemSumOfFractions=1
+    kProblemSumOfFractions=1,
+    kProblemGridMultiplication=2
 } DotGridEvalType;
 
 @interface DotGrid : ToolScene
@@ -47,6 +48,7 @@ typedef enum {
     int evalDividend;
     int evalDivisor;
     int evalTotalSize;
+    int solutionNumber;
     
     BOOL doNotSimplifyFractions;
     
@@ -61,6 +63,8 @@ typedef enum {
     NSArray *initObjects;
     NSArray *solutionsDef;
     
+    NSArray *reqShapes;
+    
     CGPoint lastTouch;
     
     
@@ -74,6 +78,7 @@ typedef enum {
     BOOL isMovingRight;
     BOOL isMovingUp;
     BOOL isMovingDown;
+    BOOL gridMultiCanEval;
     
     CCSprite *dragBlock;
     CCSprite *newBlock;

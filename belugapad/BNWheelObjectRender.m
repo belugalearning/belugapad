@@ -61,6 +61,11 @@
         }
     }
     
+    if(messageType==kDWmoveSpriteToPosition)
+    {
+        [self moveSprite];
+    }
+    
     if(messageType==kDWupdateObjectData)
     {
         
@@ -121,6 +126,8 @@
             [(DotGrid*)gameWorld.GameScene removeDeadWheel:w];
         
         [w.pickerView removeFromParentAndCleanup:YES];
+        
+        [gameWorld delayRemoveGameObject:w];
     }
     
     
@@ -149,7 +156,7 @@
 }
 -(void)moveSprite
 {
-
+    [w.pickerView setPosition:w.Position];
     
 }
 -(void)moveSpriteHome

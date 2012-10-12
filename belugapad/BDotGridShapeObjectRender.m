@@ -167,12 +167,6 @@
         {
             [s.MyNumberWheel handleMessage:kDWdismantle];
             
-            DWNWheelGameObject *w=(DWNWheelGameObject*)s.MyNumberWheel;
-            
-            if(w.CountBubble)
-            {
-                
-            }
         }
         
         [s.myHeight removeFromParentAndCleanup:YES];

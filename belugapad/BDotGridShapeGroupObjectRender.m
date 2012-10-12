@@ -114,9 +114,10 @@
     if(messageType==kDWdismantle)
     {
         NSLog(@"count of shapes in shape group %d", [sg.shapesInMe count]);
-        for(DWDotGridShapeGameObject *s in sg.shapesInMe)
+        for(DWDotGridShapeGameObject *s in [NSArray arrayWithArray:sg.shapesInMe])
         {
             [s handleMessage:kDWdismantle];
+            [sg.shapesInMe removeObject:s];
         }
         
         [sg.resizeHandle handleMessage:kDWdismantle];

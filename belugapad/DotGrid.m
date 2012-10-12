@@ -117,6 +117,7 @@
     
     if(!sumWheel && [numberWheels count]>=2)
         [self createSumWheel];
+    
 }
 
 
@@ -145,6 +146,13 @@
     shapeGroupSize=[[pdef objectForKey:SHAPE_GROUP_SIZE]floatValue];
     shapeBaseSize=[[pdef objectForKey:SHAPE_BASE_SIZE]floatValue];
     disableDrawing=[[pdef objectForKey:DISABLE_DRAWING]boolValue];
+    solutionNumber=[[pdef objectForKey:SOLUTION_VALUE]intValue];
+    
+    if([pdef objectForKey:REQUIRED_SHAPES])
+    {
+        reqShapes=[pdef objectForKey:REQUIRED_SHAPES];
+        [reqShapes retain];
+    }
     
     if([pdef objectForKey:ANCHOR_SPACE])
         spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
@@ -692,14 +700,16 @@
     }
     
     if(shapeGroupSize>0){
-        float shapesRequired=[anchors count]/shapeGroupSize;
+        float shapesRequired=[anchors count]/(float)shapeGroupSize;
         float full=(int)shapesRequired;
         float remainder=shapesRequired-full;
         
         if(remainder>0.0f)
             shapesRequired+=1;
         
-        NSLog(@"shapes required %d - anchor count %d - remainder %g", (int)shapesRequired, [anchors count], remainder);
+        //if(shapesRequired<1)shapesRequired++;
+        
+        NSLog(@"shapes required %d - anchor count %d - remainder %g - full %g", (int)shapesRequired, [anchors count], remainder, full);
         
         NSMutableArray *shapeAnchors=[[[NSMutableArray alloc]init]autorelease];
         
@@ -823,29 +833,6 @@
             [tile release];
         }
     
-    if(showNumberWheel)
-    {
-        
-        DWNWheelGameObject *w=[DWNWheelGameObject alloc];
-        [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
-        
-        w.RenderLayer=renderLayer;
-        w.Components=3;
-        w.Position=ccp(lx-140,(ly-120)-100*[numberWheels count]);
-        w.AssociatedGO=shape;
-        w.SpriteFileName=@"/images/numberwheel/3slots.png";
-        w.HasCountBubble=showCountBubble;
-        w.CountBubbleRenderLayer=anchorLayer;
-        [w handleMessage:kDWsetupStuff];
-        
-        shape.MyNumberWheel=w;
-        
-        if([numberWheels count]<2)
-            [numberWheels addObject:w];
-        else
-            [numberWheels insertObject:w atIndex:[numberWheels count]-1];
-    }
-    
     [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
     
     if (!gw.Blackboard.inProblemSetup)
@@ -952,6 +939,7 @@
 //    [rsAnchor release];
 }
 
+
 -(void)removeDeadWheel:(DWNWheelGameObject*)thisWheel
 {
     if(sumWheel==thisWheel)
@@ -1001,12 +989,51 @@
     [sumWheel handleMessage:kDWupdateObjectData];
 }
 
+-(void)createAllWheels
+{
+    if(!showNumberWheel)return;
+    if([numberWheels count]>0)return;
+
+    for(int i=0;i<[gw.AllGameObjects count];i++)
+    {
+        if([[gw.AllGameObjects objectAtIndex:i] isKindOfClass:[DWDotGridShapeGameObject class]])
+        {
+            DWDotGridShapeGameObject *s=[gw.AllGameObjects objectAtIndex:i];
+            if(!s.MyNumberWheel)
+            {
+                DWNWheelGameObject *w=[DWNWheelGameObject alloc];
+                [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
+                
+                w.RenderLayer=renderLayer;
+                w.Components=3;
+                w.Position=ccp(lx-140,(ly-120)-100*[numberWheels count]);
+                w.AssociatedGO=s;
+                w.SpriteFileName=@"/images/numberwheel/3slots.png";
+                w.HasCountBubble=showCountBubble;
+                w.CountBubbleRenderLayer=anchorLayer;
+                [w handleMessage:kDWsetupStuff];
+                
+                s.MyNumberWheel=w;
+                
+                if([numberWheels count]<2)
+                    [numberWheels addObject:w];
+                else
+                    [numberWheels insertObject:w atIndex:[numberWheels count]-1];
+            }
+        }
+    }
+    
+    [self createSumWheel];
+}
+
 -(void)createSumWheel
 {
     if(![numberWheels count]>=2)
         return;
     
     if(sumWheel)return;
+    
+    //if(![self checkForCorrectShapeSizes])return;
     
     DWNWheelGameObject *w=[DWNWheelGameObject alloc];
     [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
@@ -1232,7 +1259,10 @@
             [self checkAnchorsOfExistingShapeGroup:(DWDotGridShapeGroupGameObject*)cHandle.myShape.shapeGroup];
     }
     
-    [self updateSumWheel];
+    if(sumWheel)[self updateSumWheel];
+    
+    if([self checkForCorrectShapeSizes])
+        [self createAllWheels];
     
     gw.Blackboard.FirstAnchor=nil;
     gw.Blackboard.LastAnchor=nil;
@@ -1382,6 +1412,13 @@
             }
         }
     }
+    else if(evalType==kProblemGridMultiplication)
+    {
+        if(![self checkForCorrectShapeSizes])return NO;
+        else if([self checkForCorrectShapeSizes] && solutionNumber==sumWheel.OutputValue)return YES;
+        else return NO;
+        
+    }
     else {
         //no eval mode specified, return no
         return NO;
@@ -1398,6 +1435,56 @@
         [q release];
         return res;
     }
+}
+
+-(BOOL)checkForCorrectShapeSizes
+{
+    int correctShapes=0;
+    NSMutableArray *matchShapes=[[NSMutableArray alloc]init];
+    //for each object that conforms to being a shapegroup
+    for(int i=0;i<[gw.AllGameObjects count];i++)
+    {
+        if([[gw.AllGameObjects objectAtIndex:i]isKindOfClass:[DWDotGridShapeGroupGameObject class]])
+        {
+            NSLog(@"foundshape)");      
+            DWDotGridShapeGroupGameObject *sg=[gw.AllGameObjects objectAtIndex:i];
+            DWDotGridAnchorGameObject *fa=sg.firstAnchor;
+            DWDotGridAnchorGameObject *la=sg.lastAnchor;
+            
+            int dimensionX=fabsf(fa.myXpos-la.myXpos);
+            int dimensionY=fabsf(fa.myYpos-la.myYpos);
+            
+            // check each shape in REQUIRED_SHAPES
+            for(NSArray *a in reqShapes)
+            {
+                if([matchShapes containsObject:a])continue;
+                
+                BOOL xMatch=NO;
+                BOOL yMatch=NO;
+                for(int i=0;i<[a count];i++)
+                {
+                    if(dimensionX==[[a objectAtIndex:i]intValue]&&!xMatch)xMatch=YES;
+                    else if(dimensionY==[[a objectAtIndex:i]intValue]&&!yMatch)yMatch=YES;
+                    
+                }
+                
+                if(xMatch&&yMatch)
+                {
+                    [matchShapes addObject:a];
+                    correctShapes++;
+                }
+            }
+            
+        }
+    }
+    
+    if(correctShapes==[reqShapes count])
+    {
+        gridMultiCanEval=YES;
+    }
+
+
+    return gridMultiCanEval;
 }
 
 -(void)evalProblem

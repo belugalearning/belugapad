@@ -821,10 +821,19 @@ static float kTimeToCageShake=7.0f;
         allowMulching=YES;
     
     if([pdef objectForKey:AUTO_SELECT_BASE_VALUE])
+    {
         autoBaseSelection=[[pdef objectForKey:AUTO_SELECT_BASE_VALUE]boolValue];
+        if(autoBaseSelection)
+            showBaseSelection=YES;
+    }
     else
-        autoBaseSelection=NO;
-    
+    {
+        if(numberOfColumns>1)
+        {
+            showBaseSelection=YES;
+            autoBaseSelection=YES;
+        }
+    }
     if(autoBaseSelection)allowDeselect=NO;
     
     //objects

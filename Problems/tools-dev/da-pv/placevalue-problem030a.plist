@@ -62,5 +62,9 @@
 	<true/>
 	<key>AUTO_SELECT_BASE_VALUE</key>
 	<true/>
+	<key>SHOW_COLUMN_TOTAL_COUNT</key>
+	<true/>
+	<key>SHOW_COLUMN_USER_COUNT</key>
+	<true/>
 </dict>
 </plist>

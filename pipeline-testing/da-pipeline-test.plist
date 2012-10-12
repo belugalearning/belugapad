@@ -3,6 +3,9 @@
 <plist version="1.0">
 <array>
 	<string>/Problems/tools-dev/da-ratio/ratio001.plist</string>
+	<string>/Problems/tools-dev/da-frb/fb002.plist</string>
+	<string>/Problems/tools-dev/da-pv/placevalue-problem030a.plist</string>
+	<string>/Problems/tools-dev/da-ratio/ratio001.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem029.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem025.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem024.plist</string>
@@ -10,7 +13,6 @@
 	<string>/Problems/tools-dev/da-pv/placevalue-problem027.plist</string>
 	<string>/Problems/tools-dev/mq-display/mq001.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem028.plist</string>
-	<string>/Problems/tools-dev/da-pv/placevalue-problem030a.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem030b.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test8.plist</string>
 	<string>/Problems/tools-dev/da-float/fb002.plist</string>
@@ -34,8 +36,6 @@
 	<string>/Problems/tools-dev/da-ps/ps1.plist</string>
 	<string>/Problems/tools-dev/da-dt/dt2.plist</string>
 	<string>/Problems/tools-dev/featuredemo/fractionbuilder/fb-addition.plist</string>
-	<string>/Problems/tools-dev/da-frb/fb001.plist</string>
-	<string>/Problems/tools-dev/da-frb/fb002.plist</string>
 	<string>/Problems/tools-dev/da-np/np1.plist</string>
 	<string>/Problems/tools-dev/da-np/np2.plist</string>
 	<string>/Problems/tools-dev/da-np/np3.plist</string>

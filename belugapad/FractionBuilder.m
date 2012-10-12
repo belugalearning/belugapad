@@ -189,7 +189,7 @@
         fraction.Tag=[[d objectForKey:TAG]intValue];
         
         // shoow a label with the current expressed fraction?
-        fraction.ShowCurrentFraction=[[d objectForKey:SHOW_CURRENT_FRACTION]boolValue];
+        fraction.ShowCurrentFraction=[[d objectForKey:SHOW_CURRENT_FRACTIONS]boolValue];
         
         // and should this label be able to show equivs?
         if([d objectForKey:SHOW_EQUIVALENT_FRACTIONS])

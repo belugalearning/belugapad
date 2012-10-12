@@ -119,7 +119,7 @@
         }
     }
     
-    [mbox setColor:ccc3(c[0],c[1],c[2])];
+    [mbox setColor:ccc3((c[0]/wheelMax)*255,(c[1]/wheelMax)*255,(c[2]/wheelMax)*255)];
 }
 
 -(void)draw
@@ -140,8 +140,8 @@
     initValue[2]=[[pdef objectForKey:INIT_VALUE_BLUE]intValue];
     
     recipe[0]=[[pdef objectForKey:RECIPE_RED]intValue];
-    recipe[1]=[[pdef objectForKey:RECIPE_BLUE]intValue];
-    recipe[2]=[[pdef objectForKey:RECIPE_GREEN]intValue];
+    recipe[1]=[[pdef objectForKey:RECIPE_GREEN]intValue];
+    recipe[2]=[[pdef objectForKey:RECIPE_BLUE]intValue];
     
     if([pdef objectForKey:EVAL_VALUE_RED])
         evalValue[0]=[[pdef objectForKey:EVAL_VALUE_RED]intValue];

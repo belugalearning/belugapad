@@ -80,7 +80,7 @@
         [self readPlist:pdef];
         [self populateGW];
         
-        debugLogging=YES;
+        debugLogging=NO;
         
         
         gw.Blackboard.inProblemSetup = NO;

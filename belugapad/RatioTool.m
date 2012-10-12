@@ -116,6 +116,7 @@
             [amount[i] setString:[NSString stringWithFormat:@"%d", c[i]]];
         }
     }
+    if(evalMode==kProblemEvalAuto)[self evalProblem];
     
     [mbox setColor:ccc3((c[0]/wheelMax)*255,(c[1]/wheelMax)*255,(c[2]/wheelMax)*255)];
 }
@@ -160,21 +161,6 @@
     
     if(!numberWheels)
         numberWheels=[[[NSMutableArray alloc]init]retain];
-    
-    for(int i=0;i<3;i++)
-    {
-        DWNWheelGameObject *w=[DWNWheelGameObject alloc];
-        [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
-        w.Components=3;
-        w.Position=ccp(140+(i*200),600);
-        w.RenderLayer=renderLayer;
-        w.SpriteFileName=@"/images/numberwheel/3slots.png";
-        [w handleMessage:kDWsetupStuff];
-        w.InputValue=initValue[i];
-        w.OutputValue=w.InputValue;
-        [w handleMessage:kDWupdateObjectData];
-        [numberWheels addObject:w];
-    }
     
 }
 
@@ -228,6 +214,21 @@
     [renderLayer addChild:amount[0]];
     [renderLayer addChild:amount[1]];
     [renderLayer addChild:amount[2]];
+    
+    for(int i=0;i<3;i++)
+    {
+        DWNWheelGameObject *w=[DWNWheelGameObject alloc];
+        [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
+        w.Components=3;
+        w.Position=ccp(140+(i*200),600);
+        w.RenderLayer=renderLayer;
+        w.SpriteFileName=@"/images/numberwheel/3slots.png";
+        [w handleMessage:kDWsetupStuff];
+        w.InputValue=initValue[i];
+        w.OutputValue=w.InputValue;
+        [w handleMessage:kDWupdateObjectData];
+        [numberWheels addObject:w];
+    }
     
 }
 

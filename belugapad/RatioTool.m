@@ -107,8 +107,8 @@
         DWNWheelGameObject *w=[numberWheels objectAtIndex:i];
         if(w.OutputValue>wheelMax)
         {
-            c[i]=wheelMax;
-            w.InputValue=c[i];
+            c[i]=(c[i]/wheelMax)*255;
+            w.InputValue=wheelMax;
             [w handleMessage:kDWupdateObjectData];
             [amount[i] setString:[NSString stringWithFormat:@"%d", c[i]]];
         }
@@ -158,7 +158,7 @@
     else
         evalValue[2]=initValue[2];
     
-    wheelMax=[[pdef objectForKey:WHEEL_MAX]intValue];
+    wheelMax=[[pdef objectForKey:WHEEL_MAX]floatValue];
     
     if(!numberWheels)
         numberWheels=[[[NSMutableArray alloc]init]retain];
@@ -194,7 +194,7 @@
 
     CCSprite *mcolour=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ratio/matchcolourbox-01.png")];
     [mcolour setPosition:ccp(908,628)];
-    [mcolour setColor:ccc3(evalValue[0], evalValue[1], evalValue[2])];
+    [mcolour setColor:ccc3((evalValue[0]/wheelMax)*255, (evalValue[1]/wheelMax)*255, (evalValue[2]/wheelMax)*255)];
     [renderLayer addChild:mcolour];
     
     CCLabelTTF *recipeRedLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", recipe[0]] fontName:CHANGO fontSize:20];

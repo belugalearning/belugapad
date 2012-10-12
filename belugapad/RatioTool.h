@@ -45,7 +45,7 @@
     
     NSMutableArray *numberWheels;
     
-    int wheelMax;
+    float wheelMax;
 }
 
 

@@ -105,7 +105,18 @@
     for(int i=0;i<[numberWheels count];i++)
     {
         DWNWheelGameObject *w=[numberWheels objectAtIndex:i];
-        c[i]=w.OutputValue;
+        if(w.OutputValue>wheelMax)
+        {
+            c[i]=wheelMax;
+            w.InputValue=c[i];
+            [w handleMessage:kDWupdateObjectData];
+            [amount[i] setString:[NSString stringWithFormat:@"%d", c[i]]];
+        }
+        else
+        {
+            c[i]=w.OutputValue;
+            [amount[i] setString:[NSString stringWithFormat:@"%d", c[i]]];
+        }
     }
     
     [mbox setColor:ccc3(c[0],c[1],c[2])];
@@ -124,30 +135,29 @@
     rejectType=[[pdef objectForKey:REJECT_TYPE] intValue];
 
 
-    initValueBlue=0;
-    initValueRed=0;
-    initValueGreen=0;
+    initValue[0]=[[pdef objectForKey:INIT_VALUE_RED]intValue];
+    initValue[1]=[[pdef objectForKey:INIT_VALUE_GREEN]intValue];
+    initValue[2]=[[pdef objectForKey:INIT_VALUE_BLUE]intValue];
     
-    recipeRed=[[pdef objectForKey:RECIPE_RED]intValue];
-    recipeBlue=[[pdef objectForKey:RECIPE_BLUE]intValue];
-    recipeGreen=[[pdef objectForKey:RECIPE_GREEN]intValue];
-    
-
-    if([pdef objectForKey:EVAL_VALUE_BLUE])
-        evalValueBlue=[[pdef objectForKey:EVAL_VALUE_BLUE]intValue];
-    else
-        evalValueBlue=initValueBlue;
+    recipe[0]=[[pdef objectForKey:RECIPE_RED]intValue];
+    recipe[1]=[[pdef objectForKey:RECIPE_BLUE]intValue];
+    recipe[2]=[[pdef objectForKey:RECIPE_GREEN]intValue];
     
     if([pdef objectForKey:EVAL_VALUE_RED])
-        evalValueRed=[[pdef objectForKey:EVAL_VALUE_RED]intValue];
+        evalValue[0]=[[pdef objectForKey:EVAL_VALUE_RED]intValue];
     else
-        evalValueRed=initValueRed;
+        evalValue[0]=initValue[0];
     
     if([pdef objectForKey:EVAL_VALUE_GREEN])
-        evalValueGreen=[[pdef objectForKey:EVAL_VALUE_GREEN]intValue];
+        evalValue[1]=[[pdef objectForKey:EVAL_VALUE_GREEN]intValue];
     else
-        evalValueGreen=initValueGreen;
+        evalValue[1]=initValue[1];
 
+    if([pdef objectForKey:EVAL_VALUE_BLUE])
+        evalValue[2]=[[pdef objectForKey:EVAL_VALUE_BLUE]intValue];
+    else
+        evalValue[2]=initValue[2];
+    
     wheelMax=[[pdef objectForKey:WHEEL_MAX]intValue];
     
     if(!numberWheels)
@@ -162,6 +172,9 @@
         w.RenderLayer=renderLayer;
         w.SpriteFileName=@"/images/numberwheel/3slots.png";
         [w handleMessage:kDWsetupStuff];
+        w.InputValue=initValue[i];
+        w.OutputValue=w.InputValue;
+        [w handleMessage:kDWupdateObjectData];
         [numberWheels addObject:w];
     }
     
@@ -181,12 +194,12 @@
 
     CCSprite *mcolour=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ratio/matchcolourbox-01.png")];
     [mcolour setPosition:ccp(908,628)];
-    [mcolour setColor:ccc3(evalValueRed, evalValueGreen, evalValueBlue)];
+    [mcolour setColor:ccc3(evalValue[0], evalValue[1], evalValue[2])];
     [renderLayer addChild:mcolour];
     
-    CCLabelTTF *recipeRedLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", recipeRed] fontName:CHANGO fontSize:20];
-    CCLabelTTF *recipeGreenLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", recipeGreen] fontName:CHANGO fontSize:20];
-    CCLabelTTF *recipeBlueLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", recipeBlue] fontName:CHANGO fontSize:20];
+    CCLabelTTF *recipeRedLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", recipe[0]] fontName:CHANGO fontSize:20];
+    CCLabelTTF *recipeGreenLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", recipe[1]] fontName:CHANGO fontSize:20];
+    CCLabelTTF *recipeBlueLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", recipe[2]] fontName:CHANGO fontSize:20];
     
     
     [recipeRedLabel setPosition:ccp(810,550)];
@@ -202,21 +215,21 @@
     [renderLayer addChild:recipeBlueLabel];
     
 
-    amountRed=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", recipeRed] fontName:CHANGO fontSize:20];
-    amountGreen=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", recipeGreen] fontName:CHANGO fontSize:20];
-    amountBlue=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", recipeBlue] fontName:CHANGO fontSize:20];
+    amount[0]=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", recipe[0]] fontName:CHANGO fontSize:20];
+    amount[1]=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", recipe[1]] fontName:CHANGO fontSize:20];
+    amount[2]=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", recipe[2]] fontName:CHANGO fontSize:20];
     
-    [amountRed setPosition:ccp(910,550)];
-    [amountGreen setPosition:ccp(910,518)];
-    [amountBlue setPosition:ccp(910,482)];
+    [amount[0] setPosition:ccp(910,550)];
+    [amount[1] setPosition:ccp(910,518)];
+    [amount[2] setPosition:ccp(910,482)];
     
-    [amountRed setColor:ccc3(237,28,36)];
-    [amountGreen setColor:ccc3(0,165,80)];
-    [amountBlue setColor:ccc3(46,48,146)];
+    [amount[0] setColor:ccc3(237,28,36)];
+    [amount[1] setColor:ccc3(0,165,80)];
+    [amount[2] setColor:ccc3(46,48,146)];
     
-    [renderLayer addChild:amountRed];
-    [renderLayer addChild:amountGreen];
-    [renderLayer addChild:amountBlue];
+    [renderLayer addChild:amount[0]];
+    [renderLayer addChild:amount[1]];
+    [renderLayer addChild:amount[2]];
     
 }
 
@@ -284,7 +297,20 @@
 #pragma mark - evaluation
 -(BOOL)evalExpression
 {
-    return NO;
+    int countCorrect=0;
+    
+    for(int i=0;i<[numberWheels count];i++)
+    {
+        DWNWheelGameObject *w=[numberWheels objectAtIndex:i];
+        
+        if(w.OutputValue==evalValue[i])
+            countCorrect++;
+    }
+    
+    if(countCorrect==3)
+        return YES;
+    else
+        return NO;
 }
 
 

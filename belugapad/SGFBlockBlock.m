@@ -38,7 +38,7 @@
     if(gameWorld.Blackboard.inProblemSetup)
     {
         [MySprite setOpacity:0];
-        [MySprite setTag:3];
+        [MySprite setTag:2];
     }
     
     [RenderLayer addChild:MySprite];

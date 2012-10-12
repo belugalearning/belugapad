@@ -38,6 +38,7 @@ static float kPropXNetSpace=0.087890625f;
 static float kPropYColumnOrigin=0.75f;
 static float kCageYOrigin=0.08f;
 static float kPropYColumnHeader=0.85f;
+static float kPropYColumnTotalCount=0.15f;
 static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 static float kTimeToCageShake=7.0f;
 
@@ -288,6 +289,7 @@ static float kTimeToCageShake=7.0f;
             }
         }
         
+        
         NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[currentColumnInfo objectForKey:COL_VALUE] floatValue]];
         
         DLog(@"Reset current column value to %f", currentColumnValue);
@@ -329,7 +331,6 @@ static float kTimeToCageShake=7.0f;
         }
 
         CGPoint thisColumnOrigin = ccp(-((ropeWidth*ropesforColumn)/2.0f)+(ropeWidth/2.0f)+(i*(kPropXColumnSpacing*lx)), ly*kPropYColumnOrigin);
-
         // create this column
         for (int iRow=0; iRow<currentColumnRows; iRow++)
         {
@@ -376,9 +377,39 @@ static float kTimeToCageShake=7.0f;
             
             [RowArray release];
         }
+        
+        
+        if(showColumnTotalCount)
+        {
+            if(!totalCountSprites)
+                totalCountSprites=[[[NSMutableArray alloc]init]retain];
+            
+            CCSprite *totalCountSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/total_count_bg.png")];
+            [totalCountSprite setPosition:ccp(i*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(currentColumnRows*(lx*kPropXNetSpace)))];
+            [totalCountSprite setOpacity:0];
+            [totalCountSprite setTag:2];
+            [renderLayer addChild:totalCountSprite];
+            [totalCountSprites addObject:totalCountSprite];
+            
+            CCLabelTTF *totalCountLabel=[CCLabelTTF labelWithString:@"0" fontName:SOURCE fontSize:30.0f];
+            [totalCountLabel setPosition:ccp(totalCountSprite.contentSize.width/2,(totalCountSprite.contentSize.height/2)-3)];
+            [totalCountLabel setOpacity:0];
+            [totalCountLabel setTag:2];
+            [totalCountSprite addChild:totalCountLabel];
+        }
+        
+        if(showColumnUserCount)
+        {
+            NSMutableArray *a=[[NSMutableArray alloc]init];
+            [userAddedBlocks addObject:a];
+            
+            if(!userAddedBlocksLastCount)
+                userAddedBlocksLastCount=[[[NSMutableArray alloc]init]retain];
+            
+            [userAddedBlocksLastCount addObject:[NSNumber numberWithInt:0]];
+        }
 
-
-        if(!([columnCages objectForKey:currentColumnValueKey]) || ([[columnCages objectForKey:currentColumnValueKey] boolValue]==YES)) 
+        if(!([columnCages objectForKey:currentColumnValueKey]) || ([[columnCages objectForKey:currentColumnValueKey] boolValue]==YES))
         {
             CCSprite *cageContainer = [CCSprite spriteWithFile:posCageSprite];
             [cageContainer setPosition:ccp(i*(kPropXColumnSpacing*lx), ly*kCageYOrigin)];
@@ -635,6 +666,15 @@ static float kTimeToCageShake=7.0f;
         }
         numberPrecountedForRow=0;
         DLog(@"col %d, rows %d, count %d", insCol, insRow, count);
+        
+        if(showColumnTotalCount)
+        {
+            float v=[[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue];
+            CCSprite *s=[totalCountSprites objectAtIndex:insCol];
+            CCLabelTTF *l=[s.children objectAtIndex:0];
+            
+            [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:insCol]*v]];
+        }
 
     }
 
@@ -702,11 +742,15 @@ static float kTimeToCageShake=7.0f;
     showCount = [[pdef objectForKey:SHOW_COUNT] boolValue];
     showValue = [[pdef objectForKey:SHOW_VALUE] boolValue];    
     showReset=[[pdef objectForKey:SHOW_RESET] boolValue];
-    showCountOnBlock = [[pdef objectForKey:SHOW_COUNT_BLOCK] boolValue];
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
     cageDefaultValue = [[pdef objectForKey:CAGE_DEFAULT_VALUE] intValue];
     explodeMode = [[pdef objectForKey:EXPLODE_MODE]boolValue];
+    showColumnTotalCount = [[pdef objectForKey:SHOW_COLUMN_TOTAL_COUNT]boolValue];
+    showColumnUserCount = [[pdef objectForKey:SHOW_COLUMN_USER_COUNT]boolValue];
+    
+    if(showColumnUserCount)
+        userAddedBlocks=[[[NSMutableArray alloc]init]retain];
     
     if([pdef objectForKey:DISABLE_AUDIO_COUNTING])
         disableAudioCounting = [[pdef objectForKey:DISABLE_AUDIO_COUNTING] boolValue];
@@ -718,7 +762,6 @@ static float kTimeToCageShake=7.0f;
     else
         showMultipleControls = NO;
     
-    if(showCountOnBlock)countLabels=[[NSMutableArray alloc]init];
 
     
     // look at what positive columns are allowed to add/del
@@ -796,12 +839,6 @@ static float kTimeToCageShake=7.0f;
     else 
         allowDeselect=YES;
     
-    // will the numbers fade off?
-    if([pdef objectForKey:FADE_COUNT]) 
-        fadeCount = [[pdef objectForKey:FADE_COUNT] boolValue];
-    else 
-        fadeCount=YES;
-    
     // are we allowing the layer to be moved?
     if([pdef objectForKey:ALLOW_PANNING]) 
         allowPanning=[[pdef objectForKey:ALLOW_PANNING]boolValue];
@@ -821,10 +858,19 @@ static float kTimeToCageShake=7.0f;
         allowMulching=YES;
     
     if([pdef objectForKey:AUTO_SELECT_BASE_VALUE])
+    {
         autoBaseSelection=[[pdef objectForKey:AUTO_SELECT_BASE_VALUE]boolValue];
+        if(autoBaseSelection)
+            showBaseSelection=YES;
+    }
     else
-        autoBaseSelection=NO;
-    
+    {
+        if(numberOfColumns>1)
+        {
+            showBaseSelection=YES;
+            autoBaseSelection=YES;
+        }
+    }
     if(autoBaseSelection)allowDeselect=NO;
     
     //objects
@@ -1097,41 +1143,25 @@ static float kTimeToCageShake=7.0f;
             [toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
     }
     
-    if(showCountOnBlock && gw.Blackboard.SelectedObjects.count > lastCount && !gw.Blackboard.inProblemSetup)
-    {
-        
-        CCSprite *s=((DWPlaceValueBlockGameObject*)gw.Blackboard.LastSelectedObject).mySprite;
-        CGPoint pos=[renderLayer convertToWorldSpace:[s position]];
-        countLabelBlock=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", gw.Blackboard.SelectedObjects.count] fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
-        [countLabelBlock setPosition:[s convertToNodeSpace:pos]];
-        [s addChild:countLabelBlock];
-        
-        [countLabels addObject:countLabelBlock];
-        
-        [loggingService logEvent:BL_PA_PV_TOUCH_BEGIN_COUNT_OBJECT withAdditionalData:nil];
-        
-        if(fadeCount)
-        {
-            CCFadeOut *labelFade = [CCFadeOut actionWithDuration:kTimeToFadeButtonLabel];
-            [countLabelBlock runAction:labelFade];
-        }
-        
-        
-    }
-    else if(showCountOnBlock && !fadeCount && gw.Blackboard.SelectedObjects.count < lastCount)
-    {
-        [loggingService logEvent:BL_PA_PV_TOUCH_BEGIN_UNCOUNT_OBJECT withAdditionalData:nil];
-        for(CCLabelTTF *l in countLabels)
-        {
-            [l removeFromParentAndCleanup:YES];
-        }
-    }
     lastCount = gw.Blackboard.SelectedObjects.count;
 
 }
 -(void)calcProblemTotalCount
 {
     totalCount=0;
+    
+    if(showColumnTotalCount)
+    {
+        for(int i=0;i<numberOfColumns;i++)
+        {
+            float v=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
+            CCSprite *s=[totalCountSprites objectAtIndex:i];
+            CCLabelTTF *l=[s.children objectAtIndex:0];
+            
+            [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];
+        }
+        
+    }
     
     for(int c=0; c<gw.Blackboard.AllStores.count; c++)
     {
@@ -1160,6 +1190,24 @@ static float kTimeToCageShake=7.0f;
     
     if(debugLogging)
         NSLog(@"total count %g, expected count %g", totalCount, expectedCount);
+    
+    if(showColumnUserCount){
+        int lastNumber=[[userAddedBlocksLastCount objectAtIndex:currentColumnIndex]intValue];
+        int thisNumber=[[userAddedBlocks objectAtIndex:currentColumnIndex]count];
+        float fval=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] floatValue];
+        
+        if(thisNumber>lastNumber)
+        {
+            CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"+%g", thisNumber*fval] fontName:SOURCE fontSize:150.0f];
+            [l setPosition:ccp(currentColumnIndex*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(([[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]/2)*(lx*kPropXNetSpace)))];
+            [l setColor:ccc3(234,137,31)];
+            [renderLayer addChild:l z:10000];
+            [l runAction:[CCFadeOut actionWithDuration:1.0]];
+        }
+        
+        [userAddedBlocksLastCount replaceObjectAtIndex:currentColumnIndex withObject:[NSNumber numberWithInt:thisNumber]];
+
+    }
     
     NSString *totCount=[NSString stringWithFormat:@"%g", totalCount];
     NSString *expCount=[NSString stringWithFormat:@"%g", expectedCount];
@@ -2652,6 +2700,17 @@ static float kTimeToCageShake=7.0f;
                     gw.Blackboard.PriorityDropObject=nil;
                     [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:0];
 
+                    if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                    {
+                        if(![[userAddedBlocks objectAtIndex:currentColumnIndex] containsObject:b])
+                           [[userAddedBlocks objectAtIndex:currentColumnIndex] addObject:b];
+                    }
+                    else if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+                    {
+                        if([[userAddedBlocks objectAtIndex:currentColumnIndex] containsObject:b])
+                            [[userAddedBlocks objectAtIndex:currentColumnIndex] removeObject:b];
+                    }
+                    
                     if(b.ObjectValue==0)
                     {
                         [b handleMessage:kDWfadeAndDestroy];
@@ -2911,7 +2970,8 @@ static float kTimeToCageShake=7.0f;
 
     if(allCages)[allCages release];
     if(boundCounts)[boundCounts release];
-    if(countLabels)[countLabels release];
+    if(totalCountSprites)[totalCountSprites release];
+    if(userAddedBlocks)[userAddedBlocks release];
     
     [gw release];
     

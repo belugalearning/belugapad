@@ -121,7 +121,7 @@
     }
     
     // if we're showing the count - update the label
-    if(showCount)[currentNumber setString:[NSString stringWithFormat:@"%d",lastNumber]];
+    if(showCount && !expired)[currentNumber setString:[NSString stringWithFormat:@"%d",lastNumber]];
     
     // problem expiring clauses
     if(numIncrement<0 && lastNumber<countMin && !expired)
@@ -170,6 +170,8 @@
     if(numIncrement>=0)
     {
         lastNumber=countMin;
+        trackNumber=lastNumber;
+        timeElapsed=lastNumber;
         
         if(countMax<=countMin)
             countMax=countMin+4;
@@ -177,10 +179,14 @@
     else
     {
         lastNumber=countMax;
+        trackNumber=lastNumber;
+        timeElapsed=lastNumber;
         
         if(countMin>=countMax)
             countMin=countMax-4;
     }
+    
+
 }
 
 -(void)populateGW
@@ -218,10 +224,16 @@
     trackNumber=0;
     [buttonOfWin setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/countingtimer/counter_start.png")]];
     
-    if(numIncrement>=0)
+    if(numIncrement>=0){
         lastNumber=countMin;
-    else
+        trackNumber=lastNumber;
+        timeElapsed=lastNumber;
+    }
+    else{
         lastNumber=countMax;
+        trackNumber=lastNumber;
+        timeElapsed=lastNumber;
+    }
 }
 
 #pragma mark - touches events
@@ -297,7 +309,6 @@
             return YES;
         else
             return NO;
-            
     }
     else
     {
@@ -313,6 +324,7 @@
             return YES;
         else
             return NO;
+        
     }
     
     return NO;

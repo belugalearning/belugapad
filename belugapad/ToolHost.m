@@ -216,20 +216,21 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     //TODO tags are currently fixed to 2 phases -- either parse tool tree or pre-populate with design-fixed max
     
     isAnimatingIn=YES;
+    timeBeforeUserInteraction=2.0f;
     
     for (int i=1; i<=3; i++) {
         
         int time=i;
         if(skipNextStagedIntroAnim) time=0;
-        timeBeforeUserInteraction=time;
         
-        if(toolBackLayer) [self recurseSetIntroFor:toolBackLayer withTime:time forTag:i];
+        if(toolBackLayer)[self recurseSetIntroFor:toolBackLayer withTime:time forTag:i];
         if(toolForeLayer)[self recurseSetIntroFor:toolForeLayer withTime:time forTag:i];
         if(toolNoScaleLayer)[self recurseSetIntroFor:toolNoScaleLayer withTime:time forTag:i];
         if(metaQuestionLayer)[self recurseSetIntroFor:metaQuestionLayer withTime:time forTag:i];
         if(problemDefLayer)[self recurseSetIntroFor:problemDefLayer withTime:time forTag:i];
         if(numberPickerLayer)[self recurseSetIntroFor:numberPickerLayer withTime:time forTag:i];
         if(perstLayer)[self recurseSetIntroFor:perstLayer withTime:time forTag:i];
+        
     }
     
     
@@ -238,6 +239,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)recurseSetIntroFor:(CCNode*)node withTime:(float)time forTag:(int)tag
 {
+    
     for (CCNode *cn in [node children]) {
         if([cn tag]==tag && [cn isKindOfClass:[CCSprite class]])
         {
@@ -248,6 +250,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         }
         [self recurseSetIntroFor:cn withTime:time forTag:tag];
     }
+    
 }
 
 

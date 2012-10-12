@@ -36,7 +36,9 @@
     CCLabelTTF *problemCompleteLabel;
     CCLabelTTF *countLabel;
     CCLabelTTF *countLabelBlock;
-    NSMutableArray *countLabels;
+    NSMutableArray *totalCountSprites;
+    NSMutableArray *userAddedBlocks;
+    NSMutableArray *userAddedBlocksLastCount;
 
     // GameWorld setup
     
@@ -60,6 +62,8 @@
     BOOL showBaseSelection;
     BOOL showCountOnBlock;
     BOOL showColumnHeader;
+    BOOL showColumnTotalCount;
+    BOOL showColumnUserCount;
     //BOOL disableCageAdd;
     //BOOL disableCageDelete;
     BOOL showReset;

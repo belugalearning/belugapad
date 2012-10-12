@@ -746,8 +746,16 @@ static float kTimeToCageShake=7.0f;
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
     cageDefaultValue = [[pdef objectForKey:CAGE_DEFAULT_VALUE] intValue];
     explodeMode = [[pdef objectForKey:EXPLODE_MODE]boolValue];
-    showColumnTotalCount = [[pdef objectForKey:SHOW_COLUMN_TOTAL_COUNT]boolValue];
-    showColumnUserCount = [[pdef objectForKey:SHOW_COLUMN_USER_COUNT]boolValue];
+    
+    if([pdef objectForKey:SHOW_COLUMN_TOTAL_COUNT])
+        showColumnTotalCount = [[pdef objectForKey:SHOW_COLUMN_TOTAL_COUNT]boolValue];
+    else
+        showColumnTotalCount = YES;
+    
+    if([pdef objectForKey:SHOW_COLUMN_USER_COUNT])
+        showColumnUserCount = [[pdef objectForKey:SHOW_COLUMN_USER_COUNT]boolValue];
+    else
+        showColumnUserCount = YES;
     
     if(showColumnUserCount)
         userAddedBlocks=[[[NSMutableArray alloc]init]retain];

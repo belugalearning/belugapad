@@ -391,7 +391,7 @@ static float kTimeToCageShake=7.0f;
             [renderLayer addChild:totalCountSprite];
             [totalCountSprites addObject:totalCountSprite];
             
-            CCLabelTTF *totalCountLabel=[CCLabelTTF labelWithString:@"0" fontName:SOURCE fontSize:30.0f];
+            CCLabelTTF *totalCountLabel=[CCLabelTTF labelWithString:@"0" fontName:CHANGO fontSize:30.0f];
             [totalCountLabel setPosition:ccp(totalCountSprite.contentSize.width/2,(totalCountSprite.contentSize.height/2)-3)];
             [totalCountLabel setOpacity:0];
             [totalCountLabel setTag:2];
@@ -1163,6 +1163,25 @@ static float kTimeToCageShake=7.0f;
         
     }
     
+    if(showColumnUserCount){
+        int lastNumber=[[userAddedBlocksLastCount objectAtIndex:currentColumnIndex]intValue];
+        int thisNumber=[[userAddedBlocks objectAtIndex:currentColumnIndex]count];
+        float fval=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] floatValue];
+        
+        if(thisNumber>lastNumber)
+        {
+            CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"+%g", thisNumber*fval] fontName:CHANGO fontSize:150.0f];
+            [l setPosition:ccp(currentColumnIndex*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(([[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]/2)*(lx*kPropXNetSpace)))];
+            [l setColor:ccc3(234,137,31)];
+            [renderLayer addChild:l z:10000];
+            [l runAction:[CCFadeOut actionWithDuration:1.0]];
+        }
+        
+        [userAddedBlocksLastCount replaceObjectAtIndex:currentColumnIndex withObject:[NSNumber numberWithInt:thisNumber]];
+        
+    }
+    
+    
     for(int c=0; c<gw.Blackboard.AllStores.count; c++)
     {
         for (int i=0; i<[[gw.Blackboard.AllStores objectAtIndex:c]count]; i++)
@@ -1190,24 +1209,6 @@ static float kTimeToCageShake=7.0f;
     
     if(debugLogging)
         NSLog(@"total count %g, expected count %g", totalCount, expectedCount);
-    
-    if(showColumnUserCount){
-        int lastNumber=[[userAddedBlocksLastCount objectAtIndex:currentColumnIndex]intValue];
-        int thisNumber=[[userAddedBlocks objectAtIndex:currentColumnIndex]count];
-        float fval=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] floatValue];
-        
-        if(thisNumber>lastNumber)
-        {
-            CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"+%g", thisNumber*fval] fontName:SOURCE fontSize:150.0f];
-            [l setPosition:ccp(currentColumnIndex*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(([[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]/2)*(lx*kPropXNetSpace)))];
-            [l setColor:ccc3(234,137,31)];
-            [renderLayer addChild:l z:10000];
-            [l runAction:[CCFadeOut actionWithDuration:1.0]];
-        }
-        
-        [userAddedBlocksLastCount replaceObjectAtIndex:currentColumnIndex withObject:[NSNumber numberWithInt:thisNumber]];
-
-    }
     
     NSString *totCount=[NSString stringWithFormat:@"%g", totalCount];
     NSString *expCount=[NSString stringWithFormat:@"%g", expectedCount];
@@ -1340,7 +1341,6 @@ static float kTimeToCageShake=7.0f;
             if(co.MountedObject)
             {
                 usedSpace++;
-                NSLog(@"(USEDSPACESONGRID) this object=%d", (int)co.MountedObject);
             }
         }
     }
@@ -1399,7 +1399,6 @@ static float kTimeToCageShake=7.0f;
                 
                 if(![gw.Blackboard.SelectedObjects containsObject:co.MountedObject])
                 {
-                    NSLog(@"add object to array %d", (int)co.MountedObject);
                     [gw.Blackboard.SelectedObjects addObject:co.MountedObject];
                 }
             }
@@ -2103,8 +2102,6 @@ static float kTimeToCageShake=7.0f;
                 {
                     n=(DWPlaceValueNetGameObject*)b.Mount;
                     b.LastMount=b.Mount;
-                    
-                    NSLog(@"BEGAN this go is %d mount is %d", (int)b, (int)b.LastMount);
                     
                     n.MountedObject=nil;
                     n.CancellingObject=nil;

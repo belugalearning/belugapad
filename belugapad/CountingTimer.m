@@ -80,7 +80,7 @@
         [self readPlist:pdef];
         [self populateGW];
         
-        debugLogging=NO;
+        debugLogging=YES;
         
         
         gw.Blackboard.inProblemSetup = NO;
@@ -170,6 +170,8 @@
     if(numIncrement>=0)
     {
         lastNumber=countMin;
+        trackNumber=lastNumber;
+        timeElapsed=lastNumber;
         
         if(countMax<=countMin)
             countMax=countMin+4;
@@ -177,10 +179,14 @@
     else
     {
         lastNumber=countMax;
+        trackNumber=lastNumber;
+        timeElapsed=lastNumber;
         
         if(countMin>=countMax)
             countMin=countMax-4;
     }
+    
+
 }
 
 -(void)populateGW
@@ -218,10 +224,16 @@
     trackNumber=0;
     [buttonOfWin setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/countingtimer/counter_start.png")]];
     
-    if(numIncrement>=0)
+    if(numIncrement>=0){
         lastNumber=countMin;
-    else
+        trackNumber=lastNumber;
+        timeElapsed=lastNumber;
+    }
+    else{
         lastNumber=countMax;
+        trackNumber=lastNumber;
+        timeElapsed=lastNumber;
+    }
 }
 
 #pragma mark - touches events
@@ -297,7 +309,6 @@
             return YES;
         else
             return NO;
-            
     }
     else
     {
@@ -313,6 +324,7 @@
             return YES;
         else
             return NO;
+        
     }
     
     return NO;
@@ -325,8 +337,8 @@
     
     if(isWinning)
     {
-        expired=YES;
         [currentNumber setString:[NSString stringWithFormat:@"%d",solutionNumber]];
+        expired=YES;
         [toolHost doWinning];
     }
     else {

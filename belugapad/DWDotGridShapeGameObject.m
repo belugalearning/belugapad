@@ -17,6 +17,10 @@
 @synthesize SelectAllTiles;
 @synthesize firstAnchor;
 @synthesize lastAnchor;
+
+@synthesize firstBoundaryAnchor;
+@synthesize lastBoundaryAnchor;
+
 @synthesize RenderDimensions;
 @synthesize myWidth;
 @synthesize myHeight;
@@ -36,6 +40,9 @@
     self.shapeGroup=nil;
     self.RenderLayer=nil;
     self.MyNumberWheel=nil;
+
+    self.firstBoundaryAnchor=nil;
+    self.lastBoundaryAnchor=nil;
     
     [super dealloc];
 }

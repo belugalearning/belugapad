@@ -120,7 +120,9 @@
     {
         [[w.mySprite parent] removeChild:w.mySprite cleanup:YES];
         [[w.Label parent] removeChild:w.Label cleanup:YES];
-        [[w.CountBubble parent] removeChild:w.CountBubble cleanup:YES];
+        [w.CountBubble removeFromParentAndCleanup:YES];
+        [w.CountBubbleLabel removeFromParentAndCleanup:YES];
+        w.AssociatedGO=nil;
         
         if([gameWorld.GameScene isKindOfClass:[DotGrid class]])
             [(DotGrid*)gameWorld.GameScene removeDeadWheel:w];

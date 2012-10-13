@@ -116,10 +116,13 @@
         NSLog(@"count of shapes in shape group %d", [sg.shapesInMe count]);
         for(DWDotGridShapeGameObject *s in [NSArray arrayWithArray:sg.shapesInMe])
         {
+            [s.myHeight removeFromParentAndCleanup:YES];
+            [s.myWidth removeFromParentAndCleanup:YES];
             [s handleMessage:kDWdismantle];
             [sg.shapesInMe removeObject:s];
         }
-        
+        sg.firstAnchor=nil;
+        sg.lastAnchor=nil;
         [sg.resizeHandle handleMessage:kDWdismantle];
         
         [gameWorld delayRemoveGameObject:sg];

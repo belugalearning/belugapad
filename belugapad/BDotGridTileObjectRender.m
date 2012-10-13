@@ -76,7 +76,9 @@
         {
             DWDotGridAnchorGameObject *anch=tile.myAnchor;
             anch.tile=nil;
+            anch.Disabled=NO;
             tile.myAnchor=nil;
+            tile.myShape=nil;
         }
         
         [[s parent] removeChild:s cleanup:YES];
@@ -91,8 +93,16 @@
     
     NSString *spriteFileName=[[NSString alloc]init];
     float reqRotation=0.0f;
+    
+    
     DWDotGridAnchorGameObject *fa=((DWDotGridShapeGameObject*)tile.myShape).firstAnchor;
     DWDotGridAnchorGameObject *la=((DWDotGridShapeGameObject*)tile.myShape).lastAnchor;
+    
+    if(((DWDotGridShapeGameObject*)tile.myShape).firstBoundaryAnchor)
+    {
+        fa=((DWDotGridShapeGameObject*)tile.myShape).firstBoundaryAnchor;
+        la=((DWDotGridShapeGameObject*)tile.myShape).lastBoundaryAnchor;
+    }
     
     CGPoint first=CGPointZero;
     CGPoint last=CGPointZero;

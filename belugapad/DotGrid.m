@@ -644,6 +644,23 @@
         int sgW=abs(lAnch.myXpos - sAnch.myXpos);
         int sgH=abs(lAnch.myYpos - sAnch.myYpos);
         
+        if(sgW==1 && sgH==1)
+        {
+            DWDotGridShapeGameObject *shape=[self createShapeWithAnchorPoints:anchors andPrecount:nil andDisabled:NO andGroup:sGroup];
+            
+            shape.firstBoundaryAnchor=sAnch;
+            shape.lastBoundaryAnchor=lAnch;
+            sGroup.firstAnchor=sAnch;
+            sGroup.lastAnchor=lAnch;
+            
+            [sGroup.shapesInMe addObject:shape];
+            
+            if(shape.resizeHandle && !sGroup.resizeHandle)
+                sGroup.resizeHandle=shape.resizeHandle;
+            return;
+
+        }
+        
         for(int widthChunk=0; widthChunk<sgW; widthChunk+=shapeBaseSize)
         {
             // 0
@@ -682,8 +699,13 @@
                 
                 DWDotGridShapeGameObject *shape=[self createShapeWithAnchorPoints:shapeAnchs andPrecount:nil andDisabled:NO andGroup:sGroup];
                 
+                lastDrawn=[[dotMatrix objectAtIndex:lastDrawn.myXpos+1]objectAtIndex:lastDrawn.myYpos];
+                firstdrawn=[[dotMatrix objectAtIndex:firstdrawn.myXpos]objectAtIndex:firstdrawn.myYpos+1];
+                
                 shape.firstBoundaryAnchor=firstdrawn;
                 shape.lastBoundaryAnchor=lastDrawn;
+                
+                
                 
                 [sGroup.shapesInMe addObject:shape];
                 
@@ -875,7 +897,6 @@
                 //rshandle.Position=((DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor).Position;
                 shape.resizeHandle=rshandle;
                 rshandle.myShape=shape;
-                
                 [rshandle release];
                 
             }

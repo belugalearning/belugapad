@@ -98,7 +98,7 @@
     DWDotGridAnchorGameObject *fa=((DWDotGridShapeGameObject*)tile.myShape).firstAnchor;
     DWDotGridAnchorGameObject *la=((DWDotGridShapeGameObject*)tile.myShape).lastAnchor;
     
-    if(((DWDotGridShapeGameObject*)tile.myShape).firstBoundaryAnchor)
+    if(((DWDotGridShapeGameObject*)tile.myShape).lastBoundaryAnchor)
     {
         fa=((DWDotGridShapeGameObject*)tile.myShape).firstBoundaryAnchor;
         la=((DWDotGridShapeGameObject*)tile.myShape).lastBoundaryAnchor;

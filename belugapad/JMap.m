@@ -150,6 +150,8 @@ typedef enum {
         
         [self setupMap];
         
+        [self setupUI];
+        
         [self schedule:@selector(doUpdate:) interval:1.0f / 60.0f];
         
         [self schedule:@selector(doUpdateProximity:) interval:15.0f / 60.0f];
@@ -873,6 +875,9 @@ typedef enum {
 {
     isDragging=YES;
     
+    //drop any UI state
+    [self resetUI];
+    
     UITouch *touch=[touches anyObject];
     CGPoint l=[touch locationInView:[touch view]];
     l=[[CCDirector sharedDirector] convertToGL:l];
@@ -1107,10 +1112,53 @@ typedef enum {
     else [self zoomToRegionView];
 }
 
+#pragma mark - ui setup 
+
+-(void)setupUI
+{
+    searchBar=[[UISearchBar alloc] initWithFrame:CGRectMake(750, 0, 266, 60)];
+    searchBar.barStyle=UIBarStyleBlackTranslucent;
+    [[[searchBar subviews] objectAtIndex:0] removeFromSuperview];
+    searchBar.backgroundColor=[UIColor clearColor];
+    
+    searchBar.delegate=self;
+    
+    [[CCDirector sharedDirector].view addSubview:searchBar];
+    
+    
+    searchList=[[UITableView alloc] initWithFrame:CGRectMake(683, 62, 341, 706)];
+    
+}
+
+-(void)tearDownUI
+{
+    [searchBar removeFromSuperview];
+    [searchBar release];
+}
+
+-(void)resetUI
+{
+    [searchBar resignFirstResponder];
+}
+
+#pragma mark - UISearchBarDelegate
+
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    [[CCDirector sharedDirector].view addSubview:searchList];
+}
+
+-(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    [searchList removeFromSuperview];
+}
+
 #pragma mark - tear down
 
 -(void)dealloc
 {
+    [self tearDownUI];
+    
     [mapLayer release];
     [foreLayer release];
     [kcmNodes release];

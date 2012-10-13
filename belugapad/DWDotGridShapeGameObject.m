@@ -27,6 +27,7 @@
 @synthesize shapeGroup;
 @synthesize RenderLayer;
 @synthesize MyNumberWheel;
+@synthesize autoUpdateWheel;
 
 -(void)dealloc
 {

@@ -123,7 +123,6 @@
         }
         sg.firstAnchor=nil;
         sg.lastAnchor=nil;
-        [sg.resizeHandle handleMessage:kDWdismantle];
         
         [gameWorld delayRemoveGameObject:sg];
         

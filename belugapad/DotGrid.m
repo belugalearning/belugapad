@@ -150,6 +150,7 @@
     shapeBaseSize=[[pdef objectForKey:SHAPE_BASE_SIZE]floatValue];
     disableDrawing=[[pdef objectForKey:DISABLE_DRAWING]boolValue];
     solutionNumber=[[pdef objectForKey:SOLUTION_VALUE]intValue];
+    autoAddition=[[pdef objectForKey:AUTO_UPDATE_WHEEL]boolValue];
     
     if([pdef objectForKey:REQUIRED_SHAPES])
     {
@@ -704,7 +705,7 @@
                 
                 shape.firstBoundaryAnchor=firstdrawn;
                 shape.lastBoundaryAnchor=lastDrawn;
-                
+                shape.autoUpdateWheel=autoAddition;
                 
                 
                 [sGroup.shapesInMe addObject:shape];

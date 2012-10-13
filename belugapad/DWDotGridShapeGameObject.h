@@ -31,6 +31,7 @@
 @property (retain) DWGameObject *shapeGroup;
 @property (retain) CCLayer *RenderLayer;
 @property (retain) DWGameObject *MyNumberWheel;
+@property (BOOL) autoUpdateWheel;
 
 
 @end

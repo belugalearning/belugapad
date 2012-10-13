@@ -50,6 +50,7 @@ typedef enum {
     int evalTotalSize;
     int solutionNumber;
     
+    BOOL autoAddition;
     BOOL doNotSimplifyFractions;
     
     CGPoint winL;

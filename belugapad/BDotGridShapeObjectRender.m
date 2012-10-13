@@ -128,7 +128,7 @@
                     [l setString:[NSString stringWithFormat:@"%@x%@", s.myWidth.string, s.myHeight.string]];
                 }
                 
-                [s.MyNumberWheel handleMessage:kDWupdateLabels];
+                if(s.autoUpdateWheel)[s.MyNumberWheel handleMessage:kDWupdateLabels];
             }
         }
     }

@@ -202,34 +202,37 @@ static float kTimeToMountedShake=7.0f;
     else
         dockMidSpacing=60.0f;
     
-    NSString *middleAsset=[NSString stringWithFormat:@"/images/partition/NB_Dock_Middle%d.png",(int)dockMidSpacing];
-    
-    for(int i=0;i<dockSize;i++)
+    if([initCages count]>0)
     {
-        CCSprite *dockPiece=nil;
+        NSString *middleAsset=[NSString stringWithFormat:@"/images/partition/NB_Dock_Middle%d.png",(int)dockMidSpacing];
         
-        if(i==0)
-            dockPiece=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/partition/NB_Dock_Top.png")];
-        else if(i==dockSize-1)
-            dockPiece=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/partition/NB_Dock_Bottom.png")];
-        else
-            dockPiece=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(middleAsset)];
-        
-        
-        [dockPiece setPosition:ccp(25,dockPieceYPos)];
-        [dockPiece setTag:1];
-        [dockPiece setOpacity:0];
-        [renderLayer addChild:dockPiece];
-        
-        if(i==0 && useBlockScaling)
-            dockPieceYPos-=42.0f;
-        else if(i==0 && !useBlockScaling)
-            dockPieceYPos-=55.0f;
-        else if(i==dockSize-2)
-            dockPieceYPos-=42.0f;
-        else
-            dockPieceYPos-=dockMidSpacing;
-        
+        for(int i=0;i<dockSize;i++)
+        {
+            CCSprite *dockPiece=nil;
+            
+            if(i==0)
+                dockPiece=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/partition/NB_Dock_Top.png")];
+            else if(i==dockSize-1)
+                dockPiece=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/partition/NB_Dock_Bottom.png")];
+            else
+                dockPiece=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(middleAsset)];
+            
+            
+            [dockPiece setPosition:ccp(25,dockPieceYPos)];
+            [dockPiece setTag:1];
+            [dockPiece setOpacity:0];
+            [renderLayer addChild:dockPiece];
+            
+            if(i==0 && useBlockScaling)
+                dockPieceYPos-=42.0f;
+            else if(i==0 && !useBlockScaling)
+                dockPieceYPos-=55.0f;
+            else if(i==dockSize-2)
+                dockPieceYPos-=42.0f;
+            else
+                dockPieceYPos-=dockMidSpacing;
+            
+        }
     }
 
     // do stuff with our INIT_BARS (DWNBondRowGameObject)

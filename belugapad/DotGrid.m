@@ -1531,7 +1531,7 @@
     //for each object that conforms to being a shapegroup
     for(int i=0;i<[gw.AllGameObjects count];i++)
     {
-        if([[gw.AllGameObjects objectAtIndex:i]isKindOfClass:[DWDotGridShapeGroupGameObject class]])
+        if([[gw.AllGameObjects objectAtIndex:i]isKindOfClass:[DWDotGridShapeGameObject class]])
         {
             DWDotGridShapeGroupGameObject *sg=[gw.AllGameObjects objectAtIndex:i];
             DWDotGridAnchorGameObject *fa=sg.firstAnchor;

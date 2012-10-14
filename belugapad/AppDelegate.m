@@ -67,14 +67,15 @@
     //    [CCDirector setDirectorType:kCCDirectorTypeDefault];
     
     //init test flight
-#define DO_THING_THAT_APPLE_DOES_NOT_LIKE 1
-#if DO_THING_THAT_APPLE_DOES_NOT_LIKE
+
+#if USE_TESTGLIHT_SDK
     [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
-#endif
+
     [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"logToSTDERR"]];
     [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"logToConsole"]];
     [TestFlight takeOff:@"1131d68d003b6409566d9ada07cd6caa_NTg2MjMyMDEyLTAyLTA0IDEwOjU4OjI2LjI0NTYyNg"];
     
+#endif
     
     //load local settings
     self.LocalSettings=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/settings/local-settings.plist")];

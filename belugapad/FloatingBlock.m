@@ -864,16 +864,25 @@
 #pragma mark - evaluation
 -(BOOL)evalExpression
 {
+//    for(id go in gw.AllGameObjects)
+//    {
+//        if([go conformsToProtocol:@protocol(Group)])
+//        {
+//            id<Group>thisGroup=(id<Group>)go;
+//            if([thisGroup.MyBlocks count]==expSolution)
+//                return YES;
+//        }
+//    }
+
     for(id go in gw.AllGameObjects)
     {
-        if([go conformsToProtocol:@protocol(Group)])
+        if(go==pickupObject)
         {
-            id<Group>thisGroup=(id<Group>)go;
+            id<Group>thisGroup=(id<Group>)pickupObject;
             if([thisGroup.MyBlocks count]==expSolution)
                 return YES;
         }
     }
-    
     return NO;
 }
 

@@ -9,6 +9,7 @@
 #import "DWGameObject.h"
 
 @class DWDotGridAnchorGameObject;
+@class DWDotGridShapeGameObject;
 
 typedef enum {
     kTopLeft=0,
@@ -19,16 +20,31 @@ typedef enum {
     kBorderRight=5,
     kBorderTop=6,
     kBorderBottom=7,
-    kNoBorder=8
+    kEndCapLeft=8,
+    kEndCapRight=9,
+    kEndCapTop=10,
+    kEndCapBottom=11,
+    kMidPieceVertical=12,
+    kMidPieceHorizontal=13,
+    kNoBorder=14,
+    kFullBorder=15
 } TileType;
+
+typedef struct {
+    float Rotation;
+    NSString *spriteFileName;
+} tileProperties;
 
 @interface DWDotGridTileGameObject : DWGameObject
 
 @property TileType tileType;
 @property (retain) CCSprite *mySprite;
+@property (retain) CCSprite *selectedSprite;
 @property CGPoint Position;
 @property BOOL Selected;
 @property int tileSize;
 @property (retain) DWDotGridAnchorGameObject *myAnchor;
+@property (retain) CCLayer *RenderLayer;
+@property (retain) DWDotGridShapeGameObject *myShape;
 
 @end

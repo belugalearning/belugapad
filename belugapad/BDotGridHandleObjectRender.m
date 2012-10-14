@@ -54,11 +54,14 @@
             [self setSprite];
         }
         
+        
         [self setSpritePos];
     }
     if(messageType==kDWdismantle)
     {
         [[handle.mySprite parent] removeChild:handle.mySprite cleanup:YES];
+        
+        [gameWorld delayRemoveGameObject:handle];
     }
 }
 
@@ -68,12 +71,9 @@
 {    
     NSString *spriteFileName=[[NSString alloc]init];
 
-    NSLog(@"type of sprite: %d", handle.handleType);
     
     if(handle.handleType==kMoveHandle) spriteFileName=@"/images/dotgrid/move.png";
     if(handle.handleType==kResizeHandle) spriteFileName=@"/images/dotgrid/resize.png";
-    
-    NSLog(@"file: %@", spriteFileName);
     
     handle.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
     [handle.mySprite setPosition:handle.Position];
@@ -88,14 +88,14 @@
     
     
     
-    [[gameWorld Blackboard].ComponentRenderLayer addChild:handle.mySprite z:10];
+    [handle.RenderLayer addChild:handle.mySprite z:10];
     
     [spriteFileName release];
 }
 
 -(void)setSpritePos
 {
-    [handle.mySprite setPosition:handle.Position];
+    [handle.mySprite setPosition:[gameWorld.Blackboard.ComponentRenderLayer convertToNodeSpace:handle.Position]];
 }
 
 -(void) dealloc

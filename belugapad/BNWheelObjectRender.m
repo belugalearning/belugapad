@@ -61,6 +61,11 @@
         }
     }
     
+    if(messageType==kDWmoveSpriteToPosition)
+    {
+        [self moveSprite];
+    }
+    
     if(messageType==kDWupdateObjectData)
     {
         
@@ -103,6 +108,8 @@
             [w.CountBubbleLabel setString:[NSString stringWithFormat:@"%d",[self returnPickerNumber]]];
         }
         
+        w.OutputValue=w.InputValue;
+
     }
     
     if(messageType==kDWupdateLabels)
@@ -116,11 +123,20 @@
         [[w.mySprite parent] removeChild:w.mySprite cleanup:YES];
         [[w.Label parent] removeChild:w.Label cleanup:YES];
         [[w.CountBubble parent] removeChild:w.CountBubble cleanup:YES];
+        [w.CountBubble removeFromParentAndCleanup:YES];
+        [w.CountBubbleLabel removeFromParentAndCleanup:YES];
+        w.AssociatedGO=nil;
+
         
         if([gameWorld.GameScene isKindOfClass:[DotGrid class]])
             [(DotGrid*)gameWorld.GameScene removeDeadWheel:w];
         
         [w.pickerView removeFromParentAndCleanup:YES];
+
+
+        
+        [gameWorld delayRemoveGameObject:w];
+
     }
     
     
@@ -149,6 +165,7 @@
 }
 -(void)moveSprite
 {
+    [w.pickerView setPosition:w.Position];
 
     
 }
@@ -302,10 +319,13 @@
 - (void)pickerView:(CCPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     
     [w.pickerViewSelection replaceObjectAtIndex:component withObject:[NSNumber numberWithInteger:row]];
+
     w.OutputValue=[self returnPickerNumber];
+    
     
     if(w.AssociatedGO)
     {
+        w.OutputValue=[self returnPickerNumber];
         [w.AssociatedGO handleMessage:kDWupdateObjectData];
     }
     

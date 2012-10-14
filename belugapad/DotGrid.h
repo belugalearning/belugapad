@@ -11,6 +11,8 @@
 #import "ToolScene.h"
 
 @class DWDotGridShapeGameObject;
+@class DWDotGridShapeGroupGameObject;
+@class DWNWheelGameObject;
 
 typedef enum {
     kAnyStartAnchorValid=0,
@@ -27,7 +29,8 @@ typedef enum {
 
 typedef enum {
     kProblemTotalShapeSize=0,
-    kProblemSumOfFractions=1
+    kProblemSumOfFractions=1,
+    kProblemGridMultiplication=2
 } DotGridEvalType;
 
 @interface DotGrid : ToolScene
@@ -45,7 +48,9 @@ typedef enum {
     int evalDividend;
     int evalDivisor;
     int evalTotalSize;
+    int solutionNumber;
     
+    BOOL autoAddition;
     BOOL doNotSimplifyFractions;
     
     CGPoint winL;
@@ -54,22 +59,43 @@ typedef enum {
     BOOL isTouching;
     
     CCLayer *renderLayer;
+    CCLayer *anchorLayer;
     
     NSArray *initObjects;
     NSArray *solutionsDef;
     
+    NSArray *reqShapes;
+    
     CGPoint lastTouch;
     
+    
+    BOOL disableDrawing;
     BOOL showDraggableBlock;
     BOOL renderWidthHeightOnShape;
     BOOL selectWholeShape;
+    BOOL showNumberWheel;
+    BOOL showCountBubble;
+    BOOL isMovingLeft;
+    BOOL isMovingRight;
+    BOOL isMovingUp;
+    BOOL isMovingDown;
+    BOOL gridMultiCanEval;
     
     CCSprite *dragBlock;
     CCSprite *newBlock;
     BOOL hitDragBlock;
     
+    BOOL useShapeGroups;
+    int shapeGroupSize;
+    int shapeBaseSize;
+    
+    BOOL movingLayer;
+    
     NSMutableArray *dotMatrix;
     NSDictionary *hiddenRows;
+    NSMutableArray *numberWheels;
+    
+    DWNWheelGameObject *sumWheel;
     
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
@@ -84,8 +110,13 @@ typedef enum {
 -(void)checkAnchors;
 -(void)checkAnchorsAndUseResizeHandle:(BOOL)showResize andShowMove:(BOOL)showMove andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled;
 -(void)checkAnchorsOfExistingShape:(DWDotGridShapeGameObject*)thisShape;
--(void)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled;
+-(void)checkAnchorsOfExistingShapeGroup:(DWDotGridShapeGroupGameObject*)thisShapeGroup;
+-(DWDotGridShapeGameObject*)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled;
+-(DWDotGridShapeGameObject*)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled andGroup:(DWGameObject*)shapeGroup;
 -(void)modifyThisShape:(DWDotGridShapeGameObject*)thisShape withTheseAnchors:(NSArray*)anchors;
+-(void)removeDeadWheel:(DWNWheelGameObject*)thisWheel;
+-(void)updateSumWheel;
+-(void)createSumWheel;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

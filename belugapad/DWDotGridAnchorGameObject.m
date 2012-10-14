@@ -20,11 +20,13 @@
 @synthesize resizeHandle;
 @synthesize moveHandle;
 @synthesize tile;
+@synthesize RenderLayer;
 
 -(void)dealloc
 {
     self.mySprite=nil;
     self.tile=nil;
+    self.RenderLayer=nil;
     
     [super dealloc];
 }

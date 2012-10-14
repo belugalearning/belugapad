@@ -14,11 +14,13 @@
 @synthesize Position;
 @synthesize mySprite;
 @synthesize myShape;
+@synthesize RenderLayer;
 
 -(void)dealloc
 {
     self.mySprite=nil;
     self.myShape=nil;
+    self.RenderLayer=nil;
     
     [super dealloc];
 }

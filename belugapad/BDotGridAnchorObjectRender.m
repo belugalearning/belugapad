@@ -46,7 +46,7 @@
         if(!anch.mySprite) { 
             [self setSprite];
         }
-
+        
         BOOL useAnimation = NO;
         if([payload objectForKey:ANIMATE_ME]) useAnimation = YES;
         
@@ -87,7 +87,7 @@
 
         
 
-        [[gameWorld Blackboard].ComponentRenderLayer addChild:anch.mySprite z:2];
+        [anch.RenderLayer addChild:anch.mySprite z:2];
         
         [spriteFileName release];
     }

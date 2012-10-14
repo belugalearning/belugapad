@@ -20,5 +20,6 @@ typedef enum {
 @property CGPoint Position;
 @property (retain) CCSprite *mySprite;
 @property (retain) DWDotGridShapeGameObject *myShape;
+@property (retain) CCLayer *RenderLayer;
 
 @end

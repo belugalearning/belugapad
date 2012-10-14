@@ -16,11 +16,16 @@
 @synthesize Selected;
 @synthesize tileSize;
 @synthesize myAnchor;
+@synthesize RenderLayer;
+@synthesize myShape;
 
 -(void)dealloc
 {
     self.mySprite=nil;
     self.myAnchor=nil;
+    self.selectedSprite=nil;
+    self.myShape=nil;
+    self.RenderLayer=nil;
     
     [super dealloc];
 }

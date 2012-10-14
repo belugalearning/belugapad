@@ -17,9 +17,17 @@
 @synthesize SelectAllTiles;
 @synthesize firstAnchor;
 @synthesize lastAnchor;
+
+@synthesize firstBoundaryAnchor;
+@synthesize lastBoundaryAnchor;
+
 @synthesize RenderDimensions;
 @synthesize myWidth;
 @synthesize myHeight;
+@synthesize shapeGroup;
+@synthesize RenderLayer;
+@synthesize MyNumberWheel;
+@synthesize autoUpdateWheel;
 
 -(void)dealloc
 {
@@ -30,6 +38,12 @@
     self.lastAnchor=nil;
     self.myHeight=nil;
     self.myWidth=nil;
+    self.shapeGroup=nil;
+    self.RenderLayer=nil;
+    self.MyNumberWheel=nil;
+
+    self.firstBoundaryAnchor=nil;
+    self.lastBoundaryAnchor=nil;
     
     [super dealloc];
 }

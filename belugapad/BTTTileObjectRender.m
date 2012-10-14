@@ -72,6 +72,8 @@
     if(messageType==kDWdismantle)
     {
         [[tile.mySprite parent] removeChild:tile.mySprite cleanup:YES];
+        
+        
     } 
     
     if(messageType==kDWswitchSelection)

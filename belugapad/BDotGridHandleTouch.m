@@ -50,7 +50,8 @@
 
 -(void)setCurrentHandle:(CGPoint)hitLoc
 {
-    if([BLMath DistanceBetween:handle.Position and:hitLoc] <= (0.045f*[gameWorld Blackboard].hostLX))
+    hitLoc=[handle.RenderLayer convertToNodeSpace:hitLoc];
+    if([BLMath DistanceBetween:handle.Position and:hitLoc] <= (0.03f*[gameWorld Blackboard].hostLX))
     {
         NSLog(@"touch handle of type %d", handle.handleType);
         if(handle.handleType=kResizeHandle) gameWorld.Blackboard.CurrentHandle=handle;

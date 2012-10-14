@@ -12,6 +12,9 @@
 @interface DWDotGridShapeGroupGameObject : DWGameObject
 
 @property (retain) NSMutableArray *shapesInMe;
-@property (retain) DWDotGridShapeGameObject *resizeShape;
+@property (retain) DWDotGridHandleGameObject *resizeHandle;
+@property (retain) DWDotGridAnchorGameObject *firstAnchor;
+@property (retain) DWDotGridAnchorGameObject *lastAnchor;
+@property BOOL hasLabels;
 
 @end

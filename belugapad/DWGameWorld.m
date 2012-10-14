@@ -93,6 +93,7 @@
 	{
 		[gameObjects removeObjectsInArray:removeObjects];
 		dirtyRemoveObjects=NO;
+        [removeObjects removeAllObjects];
 	}
 	
 	if(!mPause)

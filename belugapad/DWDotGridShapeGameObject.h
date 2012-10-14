@@ -21,9 +21,17 @@
 @property BOOL RenderDimensions;
 @property (retain) DWDotGridAnchorGameObject *firstAnchor;
 @property (retain) DWDotGridAnchorGameObject *lastAnchor;
+
+@property (retain) DWDotGridAnchorGameObject *firstBoundaryAnchor;
+@property (retain) DWDotGridAnchorGameObject *lastBoundaryAnchor;
+
+
 @property (retain) CCLabelTTF *myWidth;
 @property (retain) CCLabelTTF *myHeight;
-@property (retain) DWDotGridShapeGroupGameObject *shapeGroup;
+@property (retain) DWGameObject *shapeGroup;
+@property (retain) CCLayer *RenderLayer;
+@property (retain) DWGameObject *MyNumberWheel;
+@property BOOL autoUpdateWheel;
 
 
 @end

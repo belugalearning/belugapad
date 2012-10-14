@@ -10,6 +10,7 @@
 #import "DWDotGridShapeGameObject.h"
 #import "DWDotGridTileGameObject.h"
 #import "DWDotGridHandleGameObject.h"
+#import "DWNWheelGameObject.h"
 #import "global.h"
 #import "ToolConsts.h"
 #import "BLMath.h"
@@ -77,6 +78,7 @@
 
 -(void)checkTouchAndSwitchAll:(CGPoint)location
 {
+    location=[shape.RenderLayer convertToNodeSpace:location];
     for(DWDotGridTileGameObject *tile in shape.tiles)
     {
         // and for each one see if the hit was in a tile box
@@ -87,9 +89,21 @@
             if(!tile.Selected){
                 for(DWDotGridTileGameObject *t in shape.tiles)
                 {
-                    [t.mySprite setColor:ccc3(89,133,136)];
+                    [t.selectedSprite setVisible:YES];
                     t.Selected=YES;
                     [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
+                    gameWorld.Blackboard.ProximateObject=shape;
+                    
+                }
+                if(shape.MyNumberWheel)
+                {
+                    DWNWheelGameObject *w=(DWNWheelGameObject*)shape.MyNumberWheel;
+                    
+                    w.InputValue=[shape.tiles count];
+                    [w handleMessage:kDWupdateObjectData];
+                    
+                    if(w.CountBubbleLabel)
+                        [w.CountBubbleLabel setString:[NSString stringWithFormat:@"%d", [shape.tiles count]]];
                 }
                 return;
             }
@@ -97,20 +111,30 @@
             else{
                 for(DWDotGridTileGameObject *t in shape.tiles)
                 {
-                    [t.mySprite setColor:ccc3(255,255,255)];
+                    [t.selectedSprite setVisible:NO];
                     t.Selected=NO;
                     [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
+                }
+                if(shape.MyNumberWheel)
+                {
+                    DWNWheelGameObject *w=(DWNWheelGameObject*)shape.MyNumberWheel;
+                    w.InputValue=0;
+                    [w handleMessage:kDWupdateObjectData];
+                    
+                    if(w.CountBubbleLabel)
+                        [w.CountBubbleLabel setString:@"0"];
                 }
                 return;
             }
         }
     }
 }
- 
+
 
 
 -(void)checkTouchSwitchSelection:(CGPoint)location
 {
+    location=[shape.RenderLayer convertToNodeSpace:location];
     // THE TINTING BEHAVIOUR HERE CAN ALSO BE APPLIED BY THE TILE OBJECT RENDER
     // check through this shape's tiles
     for(DWDotGridTileGameObject *tile in shape.tiles)
@@ -121,16 +145,32 @@
             
             // then if that tile is not selected, make it red
             if(!tile.Selected){
-                [tile.mySprite setColor:ccc3(89,133,136)];
+                [tile.selectedSprite setVisible:YES];
                 tile.Selected=YES;
                 [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
+                gameWorld.Blackboard.ProximateObject=tile;
             }
-            
+
             // otherwise, make it white again
             else{
-                [tile.mySprite setColor:ccc3(255, 255, 255)];
+                [tile.selectedSprite setVisible:NO];
                 tile.Selected=NO;
                 [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_DESELECT_TILE withAdditionalData:nil];
+            }
+            if(shape.MyNumberWheel)
+            {
+                int theValue=0;
+                for(DWDotGridTileGameObject *t in shape.tiles)
+                {
+                    if(t.Selected)
+                        theValue++;
+                }
+                DWNWheelGameObject *w=(DWNWheelGameObject*)shape.MyNumberWheel;
+                w.InputValue=theValue;
+                [w handleMessage:kDWupdateObjectData];
+                
+                if(w.CountBubbleLabel)
+                    [w.CountBubbleLabel setString:[NSString stringWithFormat:@"%d", theValue]];
             }
         }
     }

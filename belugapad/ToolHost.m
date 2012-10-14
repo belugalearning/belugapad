@@ -1642,11 +1642,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
                 else {
                     if(i==11)
                     {
-                        [curSprite setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+([numberPickedSelection count]*75),cy+50)];
+                        [curSprite setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge),cy+50)];
                     }
                     else
                     {
-                        [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge),cy+50)]];
+                        [curSprite runAction:[CCMoveTo actionWithDuration:kNumberPickerNumberAnimateInTime position:ccp(cx-(npDropbox.contentSize.width/2)+(curSprite.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+([numberPickedSelection count]*75),cy+50)]];
                     }
                     
                     [curSprite runAction:[CCFadeIn actionWithDuration:kNumberPickerNumberFadeInTime]];
@@ -1769,9 +1769,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     {
         NSLog(@"value at %d is %d", i, [[numberPickedValue objectAtIndex:i]intValue]);
         CCSprite *s=[numberPickedSelection objectAtIndex:i];
-        NSLog(@"sprite %d position %@", i, NSStringFromCGPoint(s.position));
         [s setPosition:ccp(cx-(npDropbox.contentSize.width/2)+(s.contentSize.width/kNumberPickerSpacingFromDropboxEdge)+(i*75),cy+50)];
-        
+        NSLog(@"sprite %d position %@", i, NSStringFromCGPoint(s.position));
     }
 }
 -(void)tearDownNumberPicker

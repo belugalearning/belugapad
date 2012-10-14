@@ -12,6 +12,8 @@
 #import "BLMath.h"
 #import "global.h"
 
+#import "TouchXML.h"
+
 static ccColor4B userCol={80, 110, 146, 255};
 static ccColor4B userCol2={120, 168, 221, 255};
 //static ccColor4B userCol={101, 140, 153, 255};
@@ -22,10 +24,13 @@ static ccColor4B userHighCol={255, 255, 255, 50};
 //static ccColor4B userHighCol={239,119,82,255};
 static int shadowSteps=5;
 
+
+
 @interface SGJmapMasteryNodeRender()
 {
     CCSprite *nodeSprite;
     CCSprite *labelSprite;
+    CCSprite *labelShadowSprite;
 }
 
 @end
@@ -42,6 +47,9 @@ static int shadowSteps=5;
         
         //[self setup];
         
+        islandData=[[NSMutableDictionary alloc] init];
+        featureSprites=[[NSMutableArray alloc] init];
+        
         zoomedOut=NO;
     }
     
@@ -52,26 +60,50 @@ static int shadowSteps=5;
 {
     if(messageType==kSGreadyRender)
     {
-        [self readyRender];
+        [self setup];
+        
+//        [self readyRender];
+        
+        [self readyNodeSpriteRender];
+        
+        [self readyIslandRender];
     }
     
     else if(messageType==kSGvisibilityChanged)
     {
         nodeSprite.visible=ParentGO.Visible;
         labelSprite.visible=ParentGO.Visible;
+        islandSprite.visible=ParentGO.Visible;
+        islandShadowSprite.visible=ParentGO.Visible;
+        labelShadowSprite.visible=ParentGO.Visible;
+        
+        for (CCSprite *s in featureSprites) {
+            s.visible=ParentGO.Visible;
+        }
+        
     }
     
     if(messageType==kSGzoomOut)
     {
         //[self setPointScalesAt:REGION_ZOOM_LEVEL];
         [nodeSprite setVisible:NO];
-        [labelSprite setVisible:NO];
+        [labelSprite setVisible:YES];
+        islandSprite.visible=YES;
+        islandShadowSprite.visible=NO;
+        labelShadowSprite.visible=NO;
         ParentGO.Visible=YES;
         zoomedOut=YES;
+        
+        for (CCSprite *s in featureSprites) {
+            //rly!?
+            s.visible=YES;
+        }
     }
     if(messageType==kSGzoomIn)
     {
         [self setPointScalesAt:1.0f];
+        //islandSprite.visible=ParentGO.Visible;
+        
         zoomedOut=NO;
     }
     
@@ -144,7 +176,7 @@ static int shadowSteps=5;
     //NSLog(@"avgp adj  %@", NSStringFromCGPoint(avgp));
     
     //reset position
-    ParentGO.Position=[BLMath AddVector:ParentGO.Position toVector:avgp];
+    //ParentGO.Position=[BLMath AddVector:ParentGO.Position toVector:avgp];
 }
 
 
@@ -200,6 +232,311 @@ static int shadowSteps=5;
 
 -(void)setup
 {
+    islandName=[NSString stringWithFormat:@"island%d-1", ParentGO.ChildNodes.count];
+    
+    //setup island data if not in cache -- if no cache, create it
+    if(!gameWorld.Blackboard.islandData) gameWorld.Blackboard.islandData=[[[NSMutableDictionary alloc] init] autorelease];
+    
+    islandData=[gameWorld.Blackboard.islandData objectForKey:islandName];
+    if(!islandData)
+    {
+        islandData=[self loadIslandData:islandName];
+        [gameWorld.Blackboard.islandData setValue:islandData forKey:islandName];
+    }
+    
+    //position children
+    NSArray *nodePoints=[islandData objectForKey:ISLAND_NODES];
+    for (int i=0; i<ParentGO.ChildNodes.count; i++)
+    {
+        id<Transform> child=[ParentGO.ChildNodes objectAtIndex:i];
+        //child.Position=[[nodePoints objectAtIndex:i] CGPointValue];
+        child.Position=[BLMath AddVector:ParentGO.Position toVector:[[nodePoints objectAtIndex:i] CGPointValue]];
+    }
+}
+
+-(NSMutableDictionary*)loadIslandData:(NSString*)name
+{
+    NSMutableDictionary *buildData=[[[NSMutableDictionary alloc] init] autorelease];
+    
+    //load animation data
+	NSString *XMLPath=BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/jmap/islands/%@.svg", name]));
+	
+	//use that file to populate an NSData object
+	NSData *XMLData=[NSData dataWithContentsOfFile:XMLPath];
+	
+	//get TouchXML doc
+	CXMLDocument *doc=[[CXMLDocument alloc] initWithData:XMLData options:0 error:nil];
+    
+	//setup a namespace mapping for the svg namespace
+	NSDictionary *nsMappings=[NSDictionary
+							  dictionaryWithObject:@"http://www.w3.org/2000/svg"
+							  forKey:@"svg"];
+    
+    
+    //mastery position
+    CXMLElement *masteryCircle=[[doc nodesForXPath:@"//svg:g[@id='data-mastery']/svg:circle" namespaceMappings:nsMappings error:nil] objectAtIndex:0];
+    float rawMasteryX=[[[masteryCircle attributeForName:@"cx"] stringValue] floatValue];
+    float rawMasteryY=[[[masteryCircle attributeForName:@"cy"] stringValue] floatValue];
+    
+//    [buildData setValue:[BLMath BoxAndYFlipCGPoint:ccp(rawMasteryX, rawMasteryY) withMaxY:FIXED_SIZE_Y] forKey:ISLAND_MASTERY];
+    
+    [buildData setValue:[NSValue valueWithCGPoint:[self subCentre:ccp(rawMasteryX, FIXED_SIZE_Y-rawMasteryY)]] forKey:ISLAND_MASTERY];
+    
+    //node positions (array of boxed cgpoints)
+    NSArray *nodes=[doc nodesForXPath:@"//svg:g[@id='data-nodes']/svg:circle" namespaceMappings:nsMappings error:nil];
+    NSMutableArray *nodePoints=[[[NSMutableArray alloc] init] autorelease];
+    for (CXMLElement *node in nodes) {
+        float rawNodeX=[[[node attributeForName:@"cx"] stringValue] floatValue];
+        float rawNodeY=[[[node attributeForName:@"cy"] stringValue] floatValue];
+        [nodePoints addObject:[NSValue valueWithCGPoint:[self subCentre:ccp(rawNodeX, FIXED_SIZE_Y-rawNodeY)]]];
+    }
+    [buildData setValue:nodePoints forKey:ISLAND_NODES];
+    
+    NSArray *featureSpacesElements=[doc nodesForXPath:@"//svg:g[@id='data-features']/svg:circle" namespaceMappings:nsMappings error:nil];
+    if(featureSpacesElements.count>0)
+    {
+        NSMutableArray *featureSpaces=[[[NSMutableArray alloc] init] autorelease];
+        for(CXMLElement *fs in featureSpacesElements)
+        {
+            float rawFsX=[[[fs attributeForName:@"cx"] stringValue] floatValue];
+            float rawFsY=[[[fs attributeForName:@"cy"] stringValue] floatValue];
+            float radFs=[[[fs attributeForName:@"r"] stringValue] floatValue];
+            NSMutableDictionary *fsData=[[[NSMutableDictionary alloc] init] autorelease];
+            
+            [fsData setValue:[NSValue valueWithCGPoint:[self subCentre:ccp(rawFsX, FIXED_SIZE_Y-rawFsY)]] forKey:ISLAND_POS];
+            
+            [fsData setValue:[NSNumber numberWithFloat:radFs] forKey:ISLAND_RADIUS];
+            
+            [featureSpaces addObject:fsData];
+        }
+        [buildData setValue:featureSpaces forKey:ISLAND_FEATURE_SPACES];
+    }
+    
+    //label position and rotation
+    CXMLElement *labelElement=[[doc nodesForXPath:@"//svg:g[@id='data-label']/svg:line" namespaceMappings:nsMappings error:nil] objectAtIndex:0];
+    float x1=[[[labelElement attributeForName:@"x1"] stringValue] floatValue];
+    float x2=[[[labelElement attributeForName:@"x2"] stringValue] floatValue];
+    float y1=[[[labelElement attributeForName:@"y1"] stringValue] floatValue];
+    float y2=[[[labelElement attributeForName:@"y2"] stringValue] floatValue];
+    
+    CGPoint l1=ccp(x1, FIXED_SIZE_Y-y1);
+    CGPoint l2=ccp(x2, FIXED_SIZE_Y-y2);
+    CGPoint lmid=[self subCentre:[BLMath MultiplyVector:ccpAdd(l1, l2) byScalar:0.5f]];
+    float lrot=[BLMath angleForNormVector:[BLMath SubtractVector:l2 from:l1]];
+    [buildData setValue:[NSValue valueWithCGPoint:lmid] forKey:ISLAND_LABEL_POS];
+    [buildData setValue:[NSNumber numberWithFloat:lrot + 90] forKey:ISLAND_LABEL_ROT];
+    
+    //[doc release];
+    
+    return buildData;
+}
+
+-(void)readyIslandRender
+{
+    NSString *islandSpriteName=[NSString stringWithFormat:@"/images/jmap/islands/%@.png", islandName];
+    islandShadowSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(islandSpriteName)];
+    islandShadowSprite.color=ccc3(0,0,0);
+    islandShadowSprite.opacity=255*0.2f;
+    islandShadowSprite.position=ccpAdd(ParentGO.Position, ccp(1, -3));
+    islandShadowSprite.visible=ParentGO.Visible;
+    [ParentGO.RenderBatch.parent addChild:islandShadowSprite z:-1];
+    
+    islandSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(islandSpriteName)];
+    islandSprite.color=ccc3(155, 186, 138);
+    islandSprite.position=ParentGO.Position;
+    islandSprite.visible=ParentGO.Visible;
+    [ParentGO.RenderBatch.parent addChild:islandSprite z:-1];
+ 
+    
+    if(ParentGO.PrereqPercentage==0)
+    {
+        //scatter black mountains
+        [self scatterThing1:@"hill_black" andThing2:@"hill_black" withRatio1:50 andRatio2:50];
+        
+        //if bigger island (2/3+) draw volcano, pick from two
+        if(ParentGO.ChildNodes.count>1)
+        {
+            int vver=3; // the non lava volcano
+            if(ParentGO.ChildNodes.count>3) vver=1+arc4random()%2; //the lava volcanoes
+            
+            NSString *vName=[NSString stringWithFormat:@"volcano_%d.png", vver];
+            CCSprite *vol=[CCSprite spriteWithSpriteFrameName:vName];
+            [vol setPosition:ccpAdd(ParentGO.Position, [[islandData objectForKey:ISLAND_MASTERY] CGPointValue])];
+            if(vver==3)vol.scale=0.7f;
+            [ParentGO.RenderBatch addChild:vol z:4];
+            [featureSprites addObject:vol];
+        }
+        
+        //set island colour black-ish
+        islandSprite.color=ccc3(183,183,167);
+        
+        //TODO: draw water features
+        
+        //TODO: draw cloud
+        
+    }
+    else if(ParentGO.PrereqPercentage<100)
+    {
+        //scatter black and green in proportion
+        [self scatterThing1:@"hill_black" andThing2:@"hill_green" withRatio1:100-ParentGO.PrereqPercentage andRatio2:ParentGO.PrereqPercentage];
+        
+        //set island colour sandy
+        islandSprite.color=ccc3(186,182,104);
+        
+        //TODO: draw cloud
+    }
+    else //it's 100
+    {
+        //scatter green + trees
+        [self scatterThing1:@"hill_green" andThing2:@"tree" withRatio1:100-ParentGO.CompletePercentage andRatio2:ParentGO.CompletePercentage];
+        
+    }
+}
+
+-(void)scatterThing1:(NSString*)thing1 andThing2:(NSString*)thing2 withRatio1:(int)ratio1 andRatio2:(int)ratio2
+{
+    //assumed picking from random selection of three of each
+    
+    NSMutableArray *masks=[islandData objectForKey:ISLAND_FEATURE_SPACES];
+    if(!masks) return;
+    int maskCount=masks.count;
+    
+    CGPoint centres[maskCount];
+    float radii[maskCount];
+    
+    int i=0;
+    for (NSMutableDictionary *fs in masks) {
+        radii[i]=[[fs objectForKey:ISLAND_RADIUS] floatValue];
+        centres[i]=[[fs objectForKey:ISLAND_POS] CGPointValue];
+
+        NSLog(@"mask at %@ with radius %f", NSStringFromCGPoint(centres[i]), radii[i]);
+        
+        i++;
+    }
+    
+    float y=islandSprite.boundingBox.size.height;
+    while (y>0) {
+        float x=arc4random() % (int)islandSprite.boundingBox.size.width;
+
+        BOOL pass=NO;
+        //test if x, y valid
+        for(int i=0; i<maskCount; i++)
+        {
+            CGPoint pCentre=[BLMath SubtractVector:ccp(FIXED_SIZE_X/2.0f, FIXED_SIZE_Y/2.0f)  from:ccp(x,y)];
+            
+            if ([BLMath DistanceBetween:pCentre and:centres[i]]<radii[i])
+            {
+                pass=YES;
+                break;
+            }
+        }
+        
+        //draw at x, y
+        if(pass)
+        {
+            int rver=1+arc4random()%3;
+            int type=1+arc4random()%100;
+            NSString *typeName=thing1;
+            if(type>ratio1) typeName=thing2;
+            NSString *sName=[NSString stringWithFormat:@"%@_%d.png", typeName, rver];
+            CCSprite *fsprite=[CCSprite spriteWithSpriteFrameName:sName];
+            [featureSprites addObject:fsprite];
+            fsprite.position=ccpAdd(ccp(x,y), islandSprite.boundingBox.origin);
+            fsprite.visible=ParentGO.Visible;
+            [ParentGO.RenderBatch addChild:fsprite z:3];
+        }
+        
+        y-=arc4random()%3;
+    }
+    
+}
+
+
+-(CGPoint) subCentre:(CGPoint)pos
+{
+    return([BLMath SubtractVector:ccp(FIXED_SIZE_X/2.0f, FIXED_SIZE_Y/2.0f) from:pos]);
+}
+
+-(void)readyNodeSpriteRender
+{
+    //====== create nodes and such ==========================================================
+    
+    //add a draw node the for the above
+//    
+//    [ParentGO.RenderBatch.parent addChild:[[MasteryDrawNode alloc] initWithParent:self]];
+//    
+//    int texID=(abs((int)ParentGO.Position.x) % 9) + 1;
+//    
+//    NSLog(@"%@ texture %d", ParentGO.UserVisibleString, texID);
+//    
+//    NSString *file=[NSString stringWithFormat:@"/images/jmap/island-tex%d.png", texID];
+//    PRFilledPolygon *poly=[PRFilledPolygon filledPolygonWithPoints:texturePoints andTexture:[[CCTextureCache sharedTextureCache] textureForKey:BUNDLE_FULL_PATH(file)]];
+//    
+//    [ParentGO.RenderBatch.parent addChild:poly];
+    
+    if(ParentGO.EnabledAndComplete)
+    {
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-complete.png"];
+    }
+    else
+    {
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-incomplete.png"];
+    }
+    [nodeSprite setPosition:[BLMath AddVector:ParentGO.Position toVector:[[islandData objectForKey:ISLAND_MASTERY] CGPointValue]]];
+    [nodeSprite setVisible:ParentGO.Visible];
+    if(ParentGO.Disabled) [nodeSprite setOpacity:100];
+    [ParentGO.RenderBatch addChild:nodeSprite z:5];
+    
+//    NSString *labelText=[NSString stringWithFormat:@"%@ (%d%%)", [ParentGO.UserVisibleString uppercaseString], (int)ParentGO.PrereqPercentage];
+    
+    NSString *labelText=ParentGO.UserVisibleString;
+    
+    CGPoint labelCentre=ccpAdd([[islandData objectForKey:ISLAND_LABEL_POS] CGPointValue], ParentGO.Position);
+    labelShadowSprite=[CCLabelTTF labelWithString:labelText fontName:@"Chango" fontSize:16.0f];
+    [labelShadowSprite setPosition:ccpAdd(labelCentre, ccp(0, -3))];
+    [labelShadowSprite setRotation:[[islandData objectForKey:ISLAND_LABEL_ROT] floatValue]];
+    [labelShadowSprite setColor:ccc3(0, 0, 0)];
+    [labelShadowSprite setOpacity:0.2f*255];
+    [labelShadowSprite setVisible:ParentGO.Visible];
+    
+    if(ParentGO.Disabled) [labelShadowSprite setOpacity:100];
+    [ParentGO.RenderBatch.parent addChild:labelShadowSprite z:3];
+    labelSprite=[CCLabelTTF labelWithString:labelText fontName:@"Chango" fontSize:16.0f];
+    [labelSprite setPosition:labelCentre];
+    [labelSprite setRotation:[[islandData objectForKey:ISLAND_LABEL_ROT] floatValue]];
+    [labelSprite setVisible:ParentGO.Visible];
+    [labelSprite setOpacity:0.7f*255];
+    if(ParentGO.Disabled) [labelSprite setOpacity:100];
+    [ParentGO.RenderBatch.parent addChild:labelSprite z:3];
+    
+//    //left end
+//    CCSprite *lend=[CCSprite spriteWithSpriteFrameName:@"sign-left.png"];
+//    CGPoint loffset=ccp(-labelSprite.contentSize.width / 2.0f - 6.0f, 0);
+//    [lend setPosition:ccpAdd(labelCentre, loffset)];
+//    [ParentGO.RenderBatch addChild:lend];
+//    
+//    //    CCSprite *mid=[CCSprite spriteWithSpriteFrameName:@"sign-middle.png"];
+//    //    [mid setScaleX: labelSprite.contentSize.width / mid.contentSize.width];
+//    //    [mid setPosition: labelCentre];
+//    //    [ParentGO.RenderBatch addChild:mid];
+//    
+//    //mid
+//    for (int i=0; i<labelSprite.contentSize.width+3; i++)
+//    {
+//        CCSprite *mid=[CCSprite spriteWithSpriteFrameName:@"sign-middle.png"];
+//        //[mid setScaleX: labelSprite.contentSize.width / mid.contentSize.width];
+//        [mid setPosition:ccp((labelCentre.x - (labelSprite.contentSize.width / 2.0f)) + i, labelCentre.y)];
+//        [ParentGO.RenderBatch addChild:mid];
+//    }
+//    
+//    
+//    //right end
+//    CCSprite *rend=[CCSprite spriteWithSpriteFrameName:@"sign-right.png"];
+//    CGPoint roffset=ccp(labelSprite.contentSize.width / 2.0f + 6.0f, 0);
+//    [rend setPosition:ccpAdd(labelCentre, roffset)];
+//    [ParentGO.RenderBatch addChild:rend];
+    
+    //=======================================================================================
     
 }
 
@@ -492,74 +829,6 @@ static int shadowSteps=5;
     //=======================================================================================
     
     [self setPointScalesAt:1.0f];
-
-    //====== create nodes and such ==========================================================
-    
-    //add a draw node the for the above
-    
-    [ParentGO.RenderBatch.parent addChild:[[MasteryDrawNode alloc] initWithParent:self]];
-    
-    int texID=(abs((int)ParentGO.Position.x) % 9) + 1;
-    
-    NSLog(@"%@ texture %d", ParentGO.UserVisibleString, texID);
-    
-    NSString *file=[NSString stringWithFormat:@"/images/jmap/island-tex%d.png", texID];
-    PRFilledPolygon *poly=[PRFilledPolygon filledPolygonWithPoints:texturePoints andTexture:[[CCTextureCache sharedTextureCache] textureForKey:BUNDLE_FULL_PATH(file)]];
-    
-    [ParentGO.RenderBatch.parent addChild:poly];
-    
-    if(ParentGO.EnabledAndComplete)
-    {
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-complete.png"];
-    }
-    else
-    {
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-incomplete.png"];
-    }
-    [nodeSprite setPosition:[BLMath AddVector:ParentGO.Position toVector:ccp(0, 0)]];
-    [nodeSprite setVisible:ParentGO.Visible];
-    if(ParentGO.Disabled) [nodeSprite setOpacity:100];
-    [ParentGO.RenderBatch addChild:nodeSprite];
-    
-    CGPoint labelCentre=ccpAdd(ccp(0,60), ParentGO.Position);
-    labelCentre=ccp((int)labelCentre.x, (int)labelCentre.y);
-    
-    labelSprite=[CCLabelTTF labelWithString:[ParentGO.UserVisibleString uppercaseString] fontName:@"Source Sans Pro" fontSize:14.0f];
-    [labelSprite setPosition:ccpAdd(labelCentre, ccp(-2, 4))];
-    [labelSprite setVisible:ParentGO.Visible];
-    if(ParentGO.Disabled) [labelSprite setOpacity:100];
-    
-    [ParentGO.RenderBatch.parent addChild:labelSprite z:2];
-    
-    //left end
-    CCSprite *lend=[CCSprite spriteWithSpriteFrameName:@"sign-left.png"];
-    CGPoint loffset=ccp(-labelSprite.contentSize.width / 2.0f - 6.0f, 0);
-    [lend setPosition:ccpAdd(labelCentre, loffset)];
-    [ParentGO.RenderBatch addChild:lend];
-
-//    CCSprite *mid=[CCSprite spriteWithSpriteFrameName:@"sign-middle.png"];
-//    [mid setScaleX: labelSprite.contentSize.width / mid.contentSize.width];
-//    [mid setPosition: labelCentre];
-//    [ParentGO.RenderBatch addChild:mid];
-    
-    //mid
-    for (int i=0; i<labelSprite.contentSize.width+3; i++)
-    {
-        CCSprite *mid=[CCSprite spriteWithSpriteFrameName:@"sign-middle.png"];
-        //[mid setScaleX: labelSprite.contentSize.width / mid.contentSize.width];
-        [mid setPosition:ccp((labelCentre.x - (labelSprite.contentSize.width / 2.0f)) + i, labelCentre.y)];
-        [ParentGO.RenderBatch addChild:mid];
-    }
-
-    
-    //right end
-    CCSprite *rend=[CCSprite spriteWithSpriteFrameName:@"sign-right.png"];
-    CGPoint roffset=ccp(labelSprite.contentSize.width / 2.0f + 6.0f, 0);
-    [rend setPosition:ccpAdd(labelCentre, roffset)];
-    [ParentGO.RenderBatch addChild:rend];
-    
-    //=======================================================================================
-    
 }
 
 - (void)insertSpacerPointsWithRotGap:(float)rotGap andScale:(float)scale
@@ -637,6 +906,9 @@ static int shadowSteps=5;
     [sortedChildren release];
     [texturePoints release];
     
+    [islandData release];
+    [featureSprites release];
+    
     [super dealloc];
 }
 
@@ -658,6 +930,9 @@ static int shadowSteps=5;
 
 -(void) draw
 {
+    //disabled in leui of island sprite
+    return;
+    
 //    CGPoint myWorldPos=[renderParent.ParentGO.RenderBatch.parent convertToWorldSpace:renderParent.ParentGO.Position];
 
     CGPoint myWorldPos=renderParent.ParentGO.Position;

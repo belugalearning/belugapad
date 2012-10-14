@@ -91,7 +91,7 @@
     
     [nodeSprite setPosition:ParentGO.Position];
     [nodeSprite setVisible:ParentGO.Visible];
-    [ParentGO.RenderBatch addChild:nodeSprite z:2];
+    [ParentGO.RenderBatch addChild:nodeSprite z:5];
 }
 
 

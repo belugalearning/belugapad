@@ -59,6 +59,11 @@
     
 }
 
++(NSValue*) BoxAndYFlipCGPoint:(CGPoint)point withMaxY:(float)maxY
+{
+    return [NSValue valueWithCGPoint:ccp(point.x, maxY-point.y)];
+}
+
 +(CGPoint) TruncateVector:(CGPoint)v toMaxLength:(float)l
 {
     float cl=sqrtf((v.x * v.x) + (v.y * v.y));

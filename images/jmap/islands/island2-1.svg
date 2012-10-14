@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1024px"
+	 height="768px" viewBox="0 0 1024 768" enable-background="new 0 0 1024 768" xml:space="preserve">
+<g id="island">
+	<g>
+		<image overflow="visible" width="383" height="304" xlink:href="68F8091F33E242B1.png"  transform="matrix(1 0 0 1 359 204)">
+		</image>
+	</g>
+</g>
+<g id="centre">
+	<g>
+		<image overflow="visible" width="323" height="240" xlink:href="68F8091F33E242B3.png"  transform="matrix(1 0 0 1 391 233)">
+		</image>
+	</g>
+</g>
+<g id="data-nodes">
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="498.743" cy="415.049" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="646.297" cy="352.98" r="13.257"/>
+</g>
+<g id="data-mastery">
+	<circle fill="#FF31FF" stroke="#FFFFFF" stroke-miterlimit="10" cx="534.396" cy="293" r="13.257"/>
+</g>
+<g id="data-label">
+	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M806.969,638.317"/>
+	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M593.791,625.14"/>
+	<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="534.066" y1="509.426" x2="729.075" y2="421.04"/>
+</g>
+<g id="data-features">
+	<circle fill="#E9FF45" cx="624.04" cy="330" r="46"/>
+	<circle fill="#E9FF45" cx="534.396" cy="330" r="51.531"/>
+	<circle fill="#E9FF45" cx="485.485" cy="395" r="41.336"/>
+</g>
+</svg>

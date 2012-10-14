@@ -148,7 +148,11 @@ typedef enum {
         debugEnabled=!((AppController*)[[UIApplication sharedApplication] delegate]).ReleaseMode;
         if(debugEnabled) [self buildDebugMenu];
         
+        searchNodes=[[NSMutableArray alloc] init];
+        
         [self setupMap];
+        
+        [self setupUI];
         
         [self schedule:@selector(doUpdate:) interval:1.0f / 60.0f];
         
@@ -309,7 +313,7 @@ typedef enum {
 //    
     underwaterLayer=[[CCLayer alloc] init];
     
-    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/base-tile.png") rect:CGRectMake(0, 0, 10*cx, 10*cy)];
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/water_whitebkg.png") rect:CGRectMake(0, 0, 10*cx, 10*cy)];
     [s setPosition:ccp(-5*cx,-5*cy)];
     [s setAnchorPoint:ccp(0,0)];
     ccTexParams params={GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT};
@@ -516,19 +520,25 @@ typedef enum {
         if([go isKindOfClass:[SGJmapMasteryNode class]])
         {
             SGJmapMasteryNode *mgo=(SGJmapMasteryNode*)go;
-            //look at children and see if all are complete
-            BOOL allcomplete=YES;
+
+            int count=0;
+            int complete=1;
             for (SGJmapNode *n in mgo.ChildNodes) {
-                if(!n.EnabledAndComplete) allcomplete=NO;
+                count++;
+                if(n.EnabledAndComplete)complete++;
             }
             
             if(mgo.ChildNodes.count==0)
             {
-                allcomplete=NO;
+                mgo.EnabledAndComplete=NO;
                 mgo.Disabled=YES;
             }
-            
-            if(allcomplete)mgo.EnabledAndComplete=YES;
+            else
+            {
+                mgo.CompleteCount=complete;
+                mgo.CompletePercentage=(complete / (float)count) * 100.0f;
+                mgo.EnabledAndComplete=(complete==count);
+            }
         }
     }
     
@@ -541,6 +551,7 @@ typedef enum {
             
             int prqcount=0;
             int prqcomplete=0;
+            
             for(SGJmapNode *n in mgo.ChildNodes)
             {
                 for (SGJmapNode *prqn in n.PrereqNodes) {
@@ -554,7 +565,7 @@ typedef enum {
             
             if(mgo.PrereqCount>0)
             {
-                mgo.PrereqPercentage=(prqcomplete / prqcount) * 100.0f;                
+                mgo.PrereqPercentage=(prqcomplete / (float)prqcount) * 100.0f;
             }
             else if(mgo.ChildNodes.count>0)
             {
@@ -564,10 +575,21 @@ typedef enum {
                 mgo.PrereqPercentage=0;
             }
 
+            if(mgo.PrereqPercentage>0 && mgo.PrereqPercentage < 100)
+            {
+                NSLog(@"prereq %d%% for %@", (int)mgo.PrereqPercentage, mgo.UserVisibleString);
+            }
+            
+            //add to source for list
+            [searchNodes addObject:[NSString stringWithFormat:@"%@", mgo.UserVisibleString]];
             
             //NSLog(@"mastery prq percentage %f for complete %d of %d", mgo.PrereqPercentage, mgo.PrereqComplete, mgo.PrereqCount);
         }
     }
+    
+    //sort table
+    [searchNodes sortUsingSelector:@selector(compare:)];
+    
     
     //mastery>mastery relations
     NSArray *ims=[contentService relationMembersForName:@"InterMastery"];
@@ -873,6 +895,9 @@ typedef enum {
 {
     isDragging=YES;
     
+    //drop any UI state
+    [self resetUI];
+    
     UITouch *touch=[touches anyObject];
     CGPoint l=[touch locationInView:[touch view]];
     l=[[CCDirector sharedDirector] convertToGL:l];
@@ -1107,14 +1132,98 @@ typedef enum {
     else [self zoomToRegionView];
 }
 
+#pragma mark - ui setup 
+
+-(void)setupUI
+{
+    searchBar=[[UISearchBar alloc] initWithFrame:CGRectMake(750, 0, 266, 60)];
+    searchBar.barStyle=UIBarStyleBlackTranslucent;
+    [[[searchBar subviews] objectAtIndex:0] removeFromSuperview];
+    searchBar.backgroundColor=[UIColor clearColor];
+    
+    searchBar.delegate=self;
+    
+    [[CCDirector sharedDirector].view addSubview:searchBar];
+    
+    
+    searchList=[[UITableView alloc] initWithFrame:CGRectMake(683, 62, 341, 354)];
+    searchList.delegate=self;
+    searchList.dataSource=self;
+    
+}
+
+-(void)tearDownUI
+{
+    [searchBar removeFromSuperview];
+    [searchBar release];
+}
+
+-(void)resetUI
+{
+    [searchBar resignFirstResponder];
+}
+
+#pragma mark - UISearchBarDelegate
+
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    [[CCDirector sharedDirector].view addSubview:searchList];
+}
+
+-(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    [searchList removeFromSuperview];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:
+(NSIndexPath *)indexPath
+{
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"a"];
+    if (cell == nil)
+    {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"a"] autorelease];
+        cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+        cell.textLabel.numberOfLines = 0;
+        cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0];
+        cell.textLabel.text=[searchNodes objectAtIndex:indexPath.row];
+    }
+    
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *cellText = [searchNodes objectAtIndex:indexPath.row];
+    UIFont *cellFont = [UIFont fontWithName:@"Helvetica" size:17.0];
+    CGSize constraintSize = CGSizeMake(280.0f, MAXFLOAT);
+    CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
+    
+    return labelSize.height + 20;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return searchNodes.count;
+}
+
 #pragma mark - tear down
 
 -(void)dealloc
 {
+    [self tearDownUI];
+    
     [mapLayer release];
     [foreLayer release];
     [kcmNodes release];
     [gw release];
+    
+    [searchNodes release];
     
     [super dealloc];
 }

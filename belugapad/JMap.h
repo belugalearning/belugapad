@@ -10,7 +10,7 @@
 
 @class Daemon;
 
-@interface JMap : CCLayer
+@interface JMap : CCLayer <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 {
     float cx, cy, lx, ly;
     
@@ -34,6 +34,11 @@
     
     int touchCount;
     BOOL didJustChangeZoom;
+    
+    UISearchBar *searchBar;
+    UITableView *searchList;
+    
+    NSMutableArray *searchNodes;
 }
 
 +(CCScene *)scene;

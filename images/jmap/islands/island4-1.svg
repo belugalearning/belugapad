@@ -4,39 +4,40 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1024px"
 	 height="768px" viewBox="0 0 1024 768" enable-background="new 0 0 1024 768" xml:space="preserve">
 <g id="island">
-	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="208.8765" y1="384.8125" x2="808.4932" y2="384.8125">
-		<stop  offset="0" style="stop-color:#FFFFFF"/>
-		<stop  offset="1" style="stop-color:#828282"/>
-	</linearGradient>
-	<path fill="url(#SVGID_1_)" d="M210.015,336c-1.362-26.992,94.021-64.549,105.601-69.241
-		c45.621-18.482,96.097-26.447,145.041-27.789c62.438-1.711,127.664-3.68,189.497,6.292c36.948,5.958,62.226,15.039,90.918,39.179
-		c21.471,18.064,55.299,41.903,64.103,70.32c22.925,73.988-78.807,72.218-124.11,69.37c-46.463-2.92-90.597-14.665-135.43,3.557
-		c-21.639,8.794-50.321,22.881-32.682,46.697c23.254,31.399,62.858,11.069,90.176,30.666c5.574,3.999,8.104,8.302,5.297,14.459
-		c-6.104,13.385-34.031,12.403-45.672,12.513c-32.356,0.303-67.813-1.786-98.146-14.097c-25.079-10.178-50.531-21.648-75.432-32.41
-		c-25.022-10.815-51.98-18.031-75.029-32.252c-23.399-14.437-43.457-30.141-64.396-47.875
-		c-13.801-11.688-35.783-21.578-40.025-40.69C207.657,355.388,210.019,345.51,210.015,336"/>
+	<g>
+		<image overflow="visible" width="673" height="364" xlink:href="F2E13DDF40F6C37D.png"  transform="matrix(1 0 0 1 172 208)">
+		</image>
+	</g>
 </g>
 <g id="centre">
-	<path fill="#5E5E5E" d="M270.786,302.031c-3.58,2.036-13.752,9.834-15.952,13.335c-3.11,4.948-1.102,15.916-1.102,21.545
-		c0,25.902,5.149,44.533,27.129,60.27c22.25,15.928,48.702,18.65,72.707,31.355c17.435,9.229,35.532,17.041,53.459,25.434
-		c7.612,3.564,15.143,6.525,21.859,10.848c4.826,3.105,10.762,7.561,17.112,5.271c7.499-2.703,8.076-15.746,11.607-21.971
-		c3.915-6.898,10.014-11.496,17.211-15.592c10.286-5.855,19.951-14.055,29.371-19.621c9.305-5.5,22.159-4.463,32.867-6.207
-		c48.041-7.82,98.564-0.283,147.158-3.084c14.057-0.811,26.677-4.936,40.09-8.445c19.285-5.045,25.872-9.631,37.67-24.561
-		c6.323-8,8.024-7.371,8.812-16.474c1.32-15.267-8.226-33.466-20.224-42.787c-8.719-6.774-18.908-11.093-27.772-18.038
-		c-10.009-7.841-21.891-17.283-34.271-20.789c-15.316-4.336-32.202-5.443-47.85-8.726c-19.311-4.051-38.279-5.262-57.973-5.189
-		c-68.577,0.256-138.759,0.045-206.479,11.982c-22.374,3.944-22.374,3.944-51.166,14.387c-7.488,2.716-26.301,1.392-32.559,6.202
-		C289.013,293.852,272.681,298.227,270.786,302.031"/>
+	<g>
+		<image overflow="visible" width="590" height="332" xlink:href="F2E13DDF40F6C37F.png"  transform="matrix(1 0 0 1 216 222)">
+		</image>
+	</g>
 </g>
-<g id="data-nodes" display="none">
-	<circle display="inline" fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="679.642" cy="351.405" r="13.257"/>
-	<circle display="inline" fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="434.11" cy="433.818" r="13.257"/>
-	<circle display="inline" fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="567.341" cy="364.661" r="13.257"/>
-	<circle display="inline" fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="295.067" cy="360.174" r="13.257"/>
+<g id="data-nodes">
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="706.157" cy="351.405" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="439.11" cy="455.818" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="580.599" cy="364.661" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="328.067" cy="384" r="13.257"/>
 </g>
-<g id="data-mastery" display="none">
-	<circle display="inline" fill="#FF31FF" stroke="#FFFFFF" stroke-miterlimit="10" cx="467.23" cy="297.225" r="13.257"/>
+<g id="data-mastery">
+	<circle fill="#FF31FF" stroke="#FFFFFF" stroke-miterlimit="10" cx="388.378" cy="318.225" r="13.257"/>
 </g>
-<g id="data-label" display="none">
-	<line display="inline" fill="none" stroke="#000000" stroke-miterlimit="10" x1="189.72" y1="447.075" x2="382.744" y2="567.229"/>
+<g id="data-label">
+	<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="278.241" y1="495.588" x2="525.029" y2="587"/>
+</g>
+<g id="data-features">
+	<circle fill="#ECFF2E" stroke="#FFFFFF" stroke-miterlimit="10" cx="304" cy="331.482" r="42"/>
+	<circle fill="#ECFF2E" stroke="#FFFFFF" stroke-miterlimit="10" cx="365" cy="318.225" r="36.635"/>
+	<circle fill="#ECFF2E" stroke="#FFFFFF" stroke-miterlimit="10" cx="419" cy="384" r="85"/>
+	<circle fill="#ECFF2E" stroke="#FFFFFF" stroke-miterlimit="10" cx="525.029" cy="370.743" r="45.676"/>
+	<circle fill="#ECFF2E" stroke="#FFFFFF" stroke-miterlimit="10" cx="654" cy="338.148" r="65.414"/>
+	<circle fill="#ECFF2E" stroke="#FFFFFF" stroke-miterlimit="10" cx="738" cy="354.86" r="38"/>
+	<circle fill="#ECFF2E" stroke="#FFFFFF" stroke-miterlimit="10" cx="576" cy="364.663" r="33"/>
+	<circle fill="#ECFF2E" stroke="#FFFFFF" stroke-miterlimit="10" cx="470" cy="479" r="23.182"/>
+	<circle fill="#ECFF2E" stroke="#FFFFFF" stroke-miterlimit="10" cx="501" cy="502.182" r="21.646"/>
+	<circle fill="#ECFF2E" stroke="#FFFFFF" stroke-miterlimit="10" cx="446.818" cy="469" r="23.182"/>
+	<circle fill="#ECFF2E" stroke="#FFFFFF" stroke-miterlimit="10" cx="316.113" cy="389.738" r="23.734"/>
 </g>
 </svg>

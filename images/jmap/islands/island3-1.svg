@@ -3,231 +3,38 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1024px"
 	 height="768px" viewBox="0 0 1024 768" enable-background="new 0 0 1024 768" xml:space="preserve">
-<g id="test-water" display="none">
-	<rect x="-1.076" display="inline" fill="#3AA0C0" stroke="#000000" stroke-miterlimit="10" width="1024" height="768"/>
-</g>
-<g id="test-drawnshadow" display="none">
-	<path display="inline" opacity="0.2" d="M308.601,299.53c7.535-15.199,19.956-26.155,34.016-35.256
-		c27.511-17.81,63.138-16.194,94.963-15.344c37.049,0.989,71.921,17.554,108.573,21.021c12.1,1.145,26.405,2.468,38.025-1.968
-		c10.791-4.12,22.424-12.906,30.781-20.798c7.535-7.116,60.659-46.183,64.104-22.126c1.607,11.229-5.966,20.962-5.057,32.353
-		c7.032,1.714,16.503,7.315,22.769,11.368c6.926,4.48,12.661,9.59,16.106,17.09c3.055,6.647,4.958,15.591,2.301,22.746
-		c-2.571,6.925-11.746,12.783-12.368,19.782c-0.842,9.508,14.08,16.832,20.34,22.255c16.419,14.23,26.458,27.27,25.802,49.221
-		c-0.933,31.266-26.927,55.738-48.899,74.9c-29.364,25.608-64.246,40.773-103.428,38.254c-21.334-1.372-42.071-9.862-58.684-23.292
-		c-13.337-10.78-21.954-25.741-34.601-37.195c-13.143-11.903-27.17-12.41-44.055-12.454c-25.805-0.068-51.948-1-77.66,1.538
-		c-31.173,3.076-61.492,18.886-93.154,15.766c-26.352-2.597-14.203-39.565-0.973-50.17c16.203-12.987,38.66-18.664,57.296-27.147
-		c11.944-5.436,25.307-10.106,33.982-20.544c5.187-6.242,13.672-23.157,6.175-31.082c-2.784-2.943-8.672-1.959-12.019-2.006
-		c-14.996-0.209-31.863-5.851-44.667,2.002c-17.731,10.875-25.616,20.074-39.414,6.276c-0.657-12.484-1.119-10.126,6.898-18.457
-		C304.942,306.711,302.688,308.843,308.601,299.53"/>
-	<path display="inline" opacity="0.2" d="M308.601,301.265c7.535-15.199,19.956-26.154,34.016-35.256
-		c27.511-17.81,63.138-16.194,94.963-15.344c37.049,0.989,71.921,17.555,108.573,21.021c12.1,1.145,26.405,2.468,38.025-1.968
-		c10.791-4.12,22.424-12.905,30.781-20.798c7.535-7.116,60.659-46.183,64.104-22.125c1.607,11.229-5.966,20.962-5.057,32.353
-		c7.032,1.714,16.503,7.315,22.769,11.368c6.926,4.48,12.661,9.589,16.106,17.089c3.055,6.648,4.958,15.591,2.301,22.746
-		c-2.571,6.925-11.746,12.783-12.368,19.783c-0.842,9.508,14.08,16.832,20.34,22.255c16.419,14.23,26.458,27.271,25.802,49.221
-		c-0.933,31.266-26.927,55.738-48.899,74.9c-29.364,25.609-64.246,40.773-103.428,38.255c-21.334-1.372-42.071-9.862-58.684-23.292
-		c-13.337-10.78-21.954-25.742-34.601-37.196c-13.143-11.903-27.17-12.41-44.055-12.454c-25.805-0.067-51.948-0.999-77.66,1.538
-		c-31.173,3.076-61.492,18.886-93.154,15.766c-26.352-2.597-14.203-39.565-0.973-50.17c16.203-12.987,38.66-18.664,57.296-27.147
-		c11.944-5.436,25.307-10.106,33.982-20.544c5.187-6.242,13.672-23.157,6.175-31.082c-2.784-2.943-8.672-1.959-12.019-2.005
-		c-14.996-0.209-31.863-5.852-44.667,2.002c-17.731,10.876-25.616,20.075-39.414,6.276c-0.657-12.484-1.119-10.127,6.898-18.458
-		C304.942,308.446,302.688,310.578,308.601,301.265"/>
-</g>
-<g id="island" display="none">
-	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="509.939" y1="214.3677" x2="509.939" y2="510.3472">
-		<stop  offset="0" style="stop-color:#FFFFFF"/>
-		<stop  offset="1" style="stop-color:#828282"/>
-	</linearGradient>
-	<path display="inline" fill="url(#SVGID_1_)" d="M307.616,296.578c7.535-15.199,19.957-26.155,34.016-35.256
-		c27.511-17.81,63.138-16.194,94.963-15.344c37.049,0.989,71.92,17.554,108.572,21.021c12.101,1.145,26.405,2.468,38.026-1.968
-		c10.79-4.12,22.423-12.905,30.781-20.798c7.534-7.116,60.658-46.183,64.104-22.126c1.608,11.229-5.966,20.962-5.056,32.353
-		c7.031,1.714,16.502,7.315,22.769,11.368c6.925,4.48,12.66,9.59,16.105,17.09c3.055,6.648,4.959,15.591,2.301,22.746
-		c-2.571,6.925-11.746,12.783-12.367,19.782c-0.842,9.508,14.08,16.832,20.339,22.255c16.42,14.23,26.458,27.27,25.803,49.22
-		c-0.934,31.266-26.928,55.738-48.899,74.9c-29.365,25.609-64.247,40.773-103.429,38.255c-21.333-1.372-42.071-9.862-58.684-23.292
-		c-13.337-10.78-21.954-25.741-34.601-37.196c-13.143-11.903-27.169-12.41-44.055-12.454c-25.805-0.067-51.948-0.999-77.66,1.538
-		c-31.173,3.076-61.492,18.887-93.154,15.766c-26.352-2.597-14.203-39.565-0.974-50.17c16.203-12.987,38.66-18.664,57.296-27.146
-		c11.944-5.437,25.306-10.106,33.981-20.545c5.187-6.242,13.672-23.157,6.175-31.082c-2.784-2.943-8.672-1.959-12.02-2.006
-		c-14.996-0.209-31.863-5.851-44.667,2.002c-17.731,10.875-25.616,20.074-39.414,6.276c-0.657-12.484-1.119-10.127,6.898-18.458
-		C303.957,303.759,301.703,305.89,307.616,296.578"/>
-</g>
-<g id="centre" display="none">
-	<g display="inline">
-		<g>
-			
-				<image overflow="visible" opacity="0.75" width="341" height="196" xlink:href="3157C251825246EF.png"  transform="matrix(1 0 0 1 354 269)">
-			</image>
-			<g>
-				<path fill="#5E5E5E" d="M372.637,269.049c-7.118,2.864-18.492-0.654-14.962,12.702c3.737,14.136,25,8.007,34.392,14.674
-					c12.074,8.571,16.842,40.275,12.389,54.985c-2.389,7.888-8.294,14.41-12.747,21.166c-4.682,7.104-8.979,15.532-15.306,21.364
-					c-4.2,3.873-10.782,5.701-14.495,10.16c4.707,2.765,11.219,1.678,16.561,1.619c19.23-0.208,38.368-3.162,57.417-5.448
-					c22.892-2.748,41.424,1.37,61.895,11.028c15.949,7.525,31.71,17.199,47.371,25.489c21.555,11.413,42.435,16.362,66.767,19.594
-					c15.436,2.05,31.732,1.085,47.268,1.137c7.185,0.023,22.11,2.656,27.893-3.465c6.299-6.67,4.37-22.58,4.211-31.129
-					c-0.301-16.08-9.163-27.154-17.69-40.173c-7.527-11.491-19.067-20.688-20.328-34.881c-0.811-9.116,1.15-12.571,6.489-19.396
-					c3.772-4.825,10.469-9.189,12.906-14.774c3.301-7.562-4.507-12.4-12.186-14.326c-5.049-1.266-16.151,2.82-20.208-0.228
-					c-8.34-6.264,3.382-12.921-8.655-16.846c-13.082-4.267-25.361-0.368-35.05,8.26c-5.515,4.911-11.136,10.979-17.901,14.215
-					c-12.95,6.196-31.921,4.469-45.807,4.589c-19.004,0.165-38.381,0.708-57.189-2.359c-11.925-1.945-22.4-6.992-34.448-8.843
-					c-16.66-2.56-30.07-11.195-45.996-16.04c-10.498-3.194-15.08-4.984-22.59-12.355"/>
-			</g>
-		</g>
-	</g>
-</g>
-<g id="test-mask" display="none">
-	<path display="inline" opacity="0.8" fill="#85BC68" d="M307.616,296.578c7.535-15.199,19.957-26.155,34.016-35.256
-		c27.511-17.81,63.138-16.194,94.963-15.344c37.049,0.989,71.921,17.554,108.572,21.021c12.101,1.145,26.405,2.468,38.026-1.968
-		c10.79-4.12,22.423-12.905,30.781-20.798c7.534-7.116,60.658-46.183,64.104-22.126c1.608,11.229-5.966,20.962-5.056,32.353
-		c7.031,1.714,16.502,7.315,22.769,11.368c6.925,4.48,12.66,9.59,16.105,17.09c3.055,6.648,4.959,15.591,2.301,22.746
-		c-2.571,6.925-11.746,12.783-12.367,19.782c-0.842,9.508,14.08,16.832,20.339,22.255c16.42,14.23,26.458,27.27,25.803,49.22
-		c-0.934,31.266-26.928,55.738-48.899,74.9c-29.365,25.609-64.247,40.773-103.429,38.255c-21.333-1.372-42.071-9.862-58.684-23.292
-		c-13.337-10.78-21.954-25.741-34.601-37.196c-13.143-11.903-27.169-12.41-44.055-12.454c-25.805-0.067-51.948-0.999-77.66,1.538
-		c-31.173,3.076-61.492,18.887-93.154,15.766c-26.352-2.597-14.203-39.565-0.974-50.17c16.203-12.987,38.66-18.664,57.296-27.147
-		c11.944-5.436,25.306-10.106,33.981-20.544c5.187-6.242,13.672-23.157,6.175-31.082c-2.784-2.943-8.672-1.959-12.02-2.006
-		c-14.996-0.209-31.863-5.851-44.667,2.002c-17.731,10.875-25.616,20.074-39.414,6.276c-0.657-12.484-1.119-10.127,6.898-18.458
-		C303.957,303.759,301.703,305.89,307.616,296.578"/>
-</g>
-<g id="test-label" display="none">
-	
-		<text transform="matrix(0.8103 -0.586 0.586 0.8103 624.1641 585.1328)" display="inline" opacity="0.2" font-family="'Chango-Regular'" font-size="24">counting back</text>
-	
-		<text transform="matrix(0.8103 -0.586 0.586 0.8103 624.1641 582.1328)" display="inline" fill="#E2E2E2" font-family="'Chango-Regular'" font-size="24">counting back</text>
-</g>
-<g id="test-features" display="none">
-	<g display="inline">
-		
-			<image overflow="visible" width="164" height="110" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Grass_Rock_Base_1.png"  transform="matrix(1 0 0 1 430.6675 262.9028)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="164" height="110" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Grass_Rock_Base_1.png"  transform="matrix(1 0 0 1 324.6665 262.9028)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="164" height="110" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Grass_Rock_Base_1.png"  transform="matrix(1 0 0 1 313.667 217.7583)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="164" height="110" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Grass_Rock_Base_1.png"  transform="matrix(1 0 0 1 569.668 251.999)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="164" height="110" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Grass_Rock_Base_1.png"  transform="matrix(1 0 0 1 463.667 251.999)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="31" height="33" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Tree.png"  transform="matrix(1 0 0 1 455.667 275.417)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="85" height="80" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Grass_Rock_Single_3.png"  transform="matrix(1 0 0 1 450.5 287.7583)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="67" height="58" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Grass_Rock_Single.png"  transform="matrix(1 0 0 1 368 317.9028)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="164" height="110" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Grass_Rock_Base_1.png"  transform="matrix(1 0 0 1 497.667 232.8486)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="31" height="33" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Tree.png"  transform="matrix(1 0 0 1 579.167 293.1763)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="164" height="110" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Grass_Rock_Base_1.png"  transform="matrix(1 0 0 1 603.668 306.999)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="85" height="80" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Grass_Rock_Single_3.png"  transform="matrix(1 0 0 1 378.667 327.0449)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="164" height="110" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Grass_Rock_Base_1.png"  transform="matrix(1 0 0 1 497.667 306.999)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="164" height="110" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Grass_Rock_Base_1.png"  transform="matrix(1 0 0 1 368.5 329)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="85" height="80" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Grass_Rock_Single_3.png"  transform="matrix(1 0 0 1 482.3486 372.9033)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="31" height="33" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Tree.png"  transform="matrix(1 0 0 1 579.167 392.3574)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="85" height="80" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Grass_Rock_Single_3.png"  transform="matrix(1 0 0 1 537.167 376.999)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="31" height="33" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Tree.png"  transform="matrix(1 0 0 1 630.667 375.8579)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="85" height="80" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Grass_Rock_Single_3.png"  transform="matrix(1 0 0 1 287.1025 355.1338)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="85" height="80" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Grass_Rock_Single_3.png"  transform="matrix(1 0 0 1 341.9209 359.2295)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="85" height="80" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Grass_Rock_Single_3.png"  transform="matrix(1 0 0 1 619.167 386.9395)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="31" height="33" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Tree.png"  transform="matrix(1 0 0 1 329.6025 356.4033)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="31" height="33" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Tree.png"  transform="matrix(1 0 0 1 378.667 393.9395)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="31" height="33" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Tree.png"  transform="matrix(1 0 0 1 517 332.918)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="31" height="33" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Tree.png"  transform="matrix(1 0 0 1 679.334 425.2012)">
-		</image>
-	</g>
-	<g display="inline">
-		
-			<image overflow="visible" width="164" height="110" xlink:href="../../../DropBox/BL_App_Assets/bl_Beluga/Exported Assets/Journey Map Assets/Revised_Islands/Grass_Rock_Base_1.png"  transform="matrix(1 0 0 1 524.667 408.8574)">
+<g id="island">
+	<g>
+		<image overflow="visible" width="487" height="410" xlink:href="91952431E8CD25F.png"  transform="matrix(1 0 0 1 274 160)">
 		</image>
 	</g>
 </g>
-<g id="data-label">
-	<line fill="none" stroke="#3BFF17" stroke-miterlimit="10" x1="649.82" y1="560.923" x2="777.851" y2="466.226"/>
+<g id="centre">
+	<g>
+		<image overflow="visible" width="357" height="338" xlink:href="91952431E8CD25D.png"  transform="matrix(1 0 0 1 318 196)">
+		</image>
+	</g>
 </g>
 <g id="data-nodes">
-	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="710.333" cy="397.182" r="13.257"/>
-	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="326.924" cy="418.872" r="13.257"/>
-	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="606.667" cy="458.2" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="485.485" cy="451.975" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="593.792" cy="413.98" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="409" cy="378.375" r="13.257"/>
 </g>
 <g id="data-mastery">
-	<circle fill="#FF31FF" stroke="#FFFFFF" stroke-miterlimit="10" cx="538.106" cy="341.015" r="13.257"/>
+	<circle fill="#FF31FF" stroke="#FFFFFF" stroke-miterlimit="10" cx="485.485" cy="266.485" r="13.257"/>
+</g>
+<g id="data-label">
+	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M806.969,638.317"/>
+	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M593.791,625.14"/>
+	<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="480.238" y1="586.246" x2="705" y2="508.418"/>
+</g>
+<g id="data-features">
+	<circle fill="#E9FF45" cx="554" cy="413.981" r="67.303"/>
+	<circle fill="#E9FF45" cx="480.239" cy="464.151" r="37.556"/>
+	<circle fill="#E9FF45" cx="450" cy="396" r="48.743"/>
+	<circle fill="#E9FF45" cx="480.238" cy="357.785" r="30.238"/>
+	<circle fill="#E9FF45" cx="409" cy="313" r="52"/>
+	<circle fill="#E9FF45" cx="472.229" cy="266.485" r="31.515"/>
+	<circle fill="#E9FF45" cx="512" cy="253.228" r="18.742"/>
 </g>
 </svg>

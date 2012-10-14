@@ -684,7 +684,7 @@
                 DWDotGridAnchorGameObject *firstdrawn=nil;
                 DWDotGridAnchorGameObject *lastDrawn=nil;
                 
-                NSMutableArray *shapeAnchs=[[[NSMutableArray alloc] init] autorelease];
+                NSMutableArray *shapeAnchs=[[NSMutableArray alloc] init];
                 for (DWDotGridAnchorGameObject *a in anchors) {
                     if(a.myXpos>=shapeOriginX && a.myXpos<shapeOriginX+thisShapeW
                        && a.myYpos<=shapeOriginY && a.myYpos>shapeOriginY-thisShapeH)
@@ -1533,9 +1533,9 @@
     {
         if([[gw.AllGameObjects objectAtIndex:i]isKindOfClass:[DWDotGridShapeGameObject class]])
         {
-            DWDotGridShapeGroupGameObject *sg=[gw.AllGameObjects objectAtIndex:i];
-            DWDotGridAnchorGameObject *fa=sg.firstAnchor;
-            DWDotGridAnchorGameObject *la=sg.lastAnchor;
+            DWDotGridShapeGameObject *sg=[gw.AllGameObjects objectAtIndex:i];
+            DWDotGridAnchorGameObject *fa=sg.firstBoundaryAnchor;
+            DWDotGridAnchorGameObject *la=sg.lastBoundaryAnchor;
             
             int dimensionX=fabsf(fa.myXpos-la.myXpos);
             int dimensionY=fabsf(fa.myYpos-la.myYpos);

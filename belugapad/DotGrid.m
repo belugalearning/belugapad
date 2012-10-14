@@ -700,6 +700,8 @@
                 
                 DWDotGridShapeGameObject *shape=[self createShapeWithAnchorPoints:shapeAnchs andPrecount:nil andDisabled:NO andGroup:sGroup];
                 
+                [shapeAnchs release];
+                
                 lastDrawn=[[dotMatrix objectAtIndex:lastDrawn.myXpos+1]objectAtIndex:lastDrawn.myYpos];
                 firstdrawn=[[dotMatrix objectAtIndex:firstdrawn.myXpos]objectAtIndex:firstdrawn.myYpos+1];
                 

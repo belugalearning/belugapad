@@ -48,6 +48,7 @@ static int shadowSteps=5;
         //[self setup];
         
         islandData=[[NSMutableDictionary alloc] init];
+        featureSprites=[[NSMutableArray alloc] init];
         
         zoomedOut=NO;
     }
@@ -76,6 +77,10 @@ static int shadowSteps=5;
         islandShadowSprite.visible=ParentGO.Visible;
         labelShadowSprite.visible=ParentGO.Visible;
         
+        for (CCSprite *s in featureSprites) {
+            s.visible=ParentGO.Visible;
+        }
+        
     }
     
     if(messageType==kSGzoomOut)
@@ -88,6 +93,11 @@ static int shadowSteps=5;
         labelShadowSprite.visible=NO;
         ParentGO.Visible=YES;
         zoomedOut=YES;
+        
+        for (CCSprite *s in featureSprites) {
+            //rly!?
+            s.visible=YES;
+        }
     }
     if(messageType==kSGzoomIn)
     {
@@ -282,6 +292,26 @@ static int shadowSteps=5;
     }
     [buildData setValue:nodePoints forKey:ISLAND_NODES];
     
+    NSArray *featureSpacesElements=[doc nodesForXPath:@"//svg:g[@id='data-features']/svg:circle" namespaceMappings:nsMappings error:nil];
+    if(featureSpacesElements.count>0)
+    {
+        NSMutableArray *featureSpaces=[[[NSMutableArray alloc] init] autorelease];
+        for(CXMLElement *fs in featureSpacesElements)
+        {
+            float rawFsX=[[[fs attributeForName:@"cx"] stringValue] floatValue];
+            float rawFsY=[[[fs attributeForName:@"cy"] stringValue] floatValue];
+            float radFs=[[[fs attributeForName:@"r"] stringValue] floatValue];
+            NSMutableDictionary *fsData=[[[NSMutableDictionary alloc] init] autorelease];
+            
+            [fsData setValue:[NSValue valueWithCGPoint:[self subCentre:ccp(rawFsX, FIXED_SIZE_Y-rawFsY)]] forKey:ISLAND_POS];
+            
+            [fsData setValue:[NSNumber numberWithFloat:radFs] forKey:ISLAND_RADIUS];
+            
+            [featureSpaces addObject:fsData];
+        }
+        [buildData setValue:featureSpaces forKey:ISLAND_FEATURE_SPACES];
+    }
+    
     //label position and rotation
     CXMLElement *labelElement=[[doc nodesForXPath:@"//svg:g[@id='data-label']/svg:line" namespaceMappings:nsMappings error:nil] objectAtIndex:0];
     float x1=[[[labelElement attributeForName:@"x1"] stringValue] floatValue];
@@ -318,14 +348,109 @@ static int shadowSteps=5;
     [ParentGO.RenderBatch.parent addChild:islandSprite z:-1];
  
     
-    //also load this image data in to the hit-testing mutable texture
-    CCTexture2D *t;
-    CCTextureAtlas *t2;
+    if(ParentGO.PrereqPercentage==0)
+    {
+        //scatter black mountains
+        [self scatterThing1:@"hill_black" andThing2:@"hill_black" withRatio1:50 andRatio2:50];
+        
+        //if bigger island (2/3+) draw volcano, pick from two
+        if(ParentGO.ChildNodes.count>1)
+        {
+            int vver=3; // the non lava volcano
+            if(ParentGO.ChildNodes.count>3) vver=1+arc4random()%2; //the lava volcanoes
+            
+            NSString *vName=[NSString stringWithFormat:@"volcano_%d.png", vver];
+            CCSprite *vol=[CCSprite spriteWithSpriteFrameName:vName];
+            [vol setPosition:ccpAdd(ParentGO.Position, [[islandData objectForKey:ISLAND_MASTERY] CGPointValue])];
+            if(vver==3)vol.scale=0.7f;
+            [ParentGO.RenderBatch addChild:vol z:4];
+            [featureSprites addObject:vol];
+        }
+        
+        //set island colour black-ish
+        islandSprite.color=ccc3(183,183,167);
+        
+        //TODO: draw water features
+        
+        //TODO: draw cloud
+        
+    }
+    else if(ParentGO.PrereqPercentage<100)
+    {
+        //scatter black and green in proportion
+        [self scatterThing1:@"hill_black" andThing2:@"hill_green" withRatio1:100-ParentGO.PrereqPercentage andRatio2:ParentGO.PrereqPercentage];
+        
+        //set island colour sandy
+        islandSprite.color=ccc3(186,182,104);
+        
+        //TODO: draw cloud
+    }
+    else //it's 100
+    {
+        //scatter green + trees
+        [self scatterThing1:@"hill_green" andThing2:@"tree" withRatio1:100-ParentGO.CompletePercentage andRatio2:ParentGO.CompletePercentage];
+        
+    }
+}
+
+-(void)scatterThing1:(NSString*)thing1 andThing2:(NSString*)thing2 withRatio1:(int)ratio1 andRatio2:(int)ratio2
+{
+    //assumed picking from random selection of three of each
     
+    NSMutableArray *masks=[islandData objectForKey:ISLAND_FEATURE_SPACES];
+    if(!masks) return;
+    int maskCount=masks.count;
     
+    CGPoint centres[maskCount];
+    float radii[maskCount];
     
+    int i=0;
+    for (NSMutableDictionary *fs in masks) {
+        radii[i]=[[fs objectForKey:ISLAND_RADIUS] floatValue];
+        centres[i]=[[fs objectForKey:ISLAND_POS] CGPointValue];
+
+        NSLog(@"mask at %@ with radius %f", NSStringFromCGPoint(centres[i]), radii[i]);
+        
+        i++;
+    }
+    
+    float y=islandSprite.boundingBox.size.height;
+    while (y>0) {
+        float x=arc4random() % (int)islandSprite.boundingBox.size.width;
+
+        BOOL pass=NO;
+        //test if x, y valid
+        for(int i=0; i<maskCount; i++)
+        {
+            CGPoint pCentre=[BLMath SubtractVector:ccp(FIXED_SIZE_X/2.0f, FIXED_SIZE_Y/2.0f)  from:ccp(x,y)];
+            
+            if ([BLMath DistanceBetween:pCentre and:centres[i]]<radii[i])
+            {
+                pass=YES;
+                break;
+            }
+        }
+        
+        //draw at x, y
+        if(pass)
+        {
+            int rver=1+arc4random()%3;
+            int type=1+arc4random()%100;
+            NSString *typeName=thing1;
+            if(type>ratio1) typeName=thing2;
+            NSString *sName=[NSString stringWithFormat:@"%@_%d.png", typeName, rver];
+            CCSprite *fsprite=[CCSprite spriteWithSpriteFrameName:sName];
+            [featureSprites addObject:fsprite];
+            fsprite.position=ccpAdd(ccp(x,y), islandSprite.boundingBox.origin);
+            fsprite.visible=ParentGO.Visible;
+            [ParentGO.RenderBatch addChild:fsprite z:3];
+        }
+        
+        y-=arc4random()%3;
+    }
     
 }
+
 
 -(CGPoint) subCentre:(CGPoint)pos
 {
@@ -360,10 +485,14 @@ static int shadowSteps=5;
     [nodeSprite setPosition:[BLMath AddVector:ParentGO.Position toVector:[[islandData objectForKey:ISLAND_MASTERY] CGPointValue]]];
     [nodeSprite setVisible:ParentGO.Visible];
     if(ParentGO.Disabled) [nodeSprite setOpacity:100];
-    [ParentGO.RenderBatch addChild:nodeSprite z:3];
+    [ParentGO.RenderBatch addChild:nodeSprite z:5];
+    
+//    NSString *labelText=[NSString stringWithFormat:@"%@ (%d%%)", [ParentGO.UserVisibleString uppercaseString], (int)ParentGO.PrereqPercentage];
+    
+    NSString *labelText=ParentGO.UserVisibleString;
     
     CGPoint labelCentre=ccpAdd([[islandData objectForKey:ISLAND_LABEL_POS] CGPointValue], ParentGO.Position);
-    labelShadowSprite=[CCLabelTTF labelWithString:[ParentGO.UserVisibleString uppercaseString] fontName:@"Chango" fontSize:16.0f];
+    labelShadowSprite=[CCLabelTTF labelWithString:labelText fontName:@"Chango" fontSize:16.0f];
     [labelShadowSprite setPosition:ccpAdd(labelCentre, ccp(0, -3))];
     [labelShadowSprite setRotation:[[islandData objectForKey:ISLAND_LABEL_ROT] floatValue]];
     [labelShadowSprite setColor:ccc3(0, 0, 0)];
@@ -372,7 +501,7 @@ static int shadowSteps=5;
     
     if(ParentGO.Disabled) [labelShadowSprite setOpacity:100];
     [ParentGO.RenderBatch.parent addChild:labelShadowSprite z:3];
-    labelSprite=[CCLabelTTF labelWithString:[ParentGO.UserVisibleString uppercaseString] fontName:@"Chango" fontSize:16.0f];
+    labelSprite=[CCLabelTTF labelWithString:labelText fontName:@"Chango" fontSize:16.0f];
     [labelSprite setPosition:labelCentre];
     [labelSprite setRotation:[[islandData objectForKey:ISLAND_LABEL_ROT] floatValue]];
     [labelSprite setVisible:ParentGO.Visible];
@@ -778,6 +907,7 @@ static int shadowSteps=5;
     [texturePoints release];
     
     [islandData release];
+    [featureSprites release];
     
     [super dealloc];
 }

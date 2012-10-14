@@ -32,6 +32,8 @@
     CCSprite *islandSprite;
     CCSprite *islandShadowSprite;
     
+    NSMutableArray *featureSprites;
+    
     NSString *islandName;
     NSMutableDictionary *islandData;
 }

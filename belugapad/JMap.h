@@ -10,7 +10,7 @@
 
 @class Daemon;
 
-@interface JMap : CCLayer <UISearchBarDelegate>
+@interface JMap : CCLayer <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 {
     float cx, cy, lx, ly;
     
@@ -37,6 +37,8 @@
     
     UISearchBar *searchBar;
     UITableView *searchList;
+    
+    NSMutableArray *searchNodes;
 }
 
 +(CCScene *)scene;

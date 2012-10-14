@@ -148,6 +148,8 @@ typedef enum {
         debugEnabled=!((AppController*)[[UIApplication sharedApplication] delegate]).ReleaseMode;
         if(debugEnabled) [self buildDebugMenu];
         
+        searchNodes=[[NSMutableArray alloc] init];
+        
         [self setupMap];
         
         [self setupUI];
@@ -518,19 +520,25 @@ typedef enum {
         if([go isKindOfClass:[SGJmapMasteryNode class]])
         {
             SGJmapMasteryNode *mgo=(SGJmapMasteryNode*)go;
-            //look at children and see if all are complete
-            BOOL allcomplete=YES;
+
+            int count=0;
+            int complete=1;
             for (SGJmapNode *n in mgo.ChildNodes) {
-                if(!n.EnabledAndComplete) allcomplete=NO;
+                count++;
+                if(n.EnabledAndComplete)complete++;
             }
             
             if(mgo.ChildNodes.count==0)
             {
-                allcomplete=NO;
+                mgo.EnabledAndComplete=NO;
                 mgo.Disabled=YES;
             }
-            
-            if(allcomplete)mgo.EnabledAndComplete=YES;
+            else
+            {
+                mgo.CompleteCount=complete;
+                mgo.CompletePercentage=(complete / (float)count) * 100.0f;
+                mgo.EnabledAndComplete=(complete==count);
+            }
         }
     }
     
@@ -543,6 +551,7 @@ typedef enum {
             
             int prqcount=0;
             int prqcomplete=0;
+            
             for(SGJmapNode *n in mgo.ChildNodes)
             {
                 for (SGJmapNode *prqn in n.PrereqNodes) {
@@ -556,7 +565,7 @@ typedef enum {
             
             if(mgo.PrereqCount>0)
             {
-                mgo.PrereqPercentage=(prqcomplete / prqcount) * 100.0f;                
+                mgo.PrereqPercentage=(prqcomplete / (float)prqcount) * 100.0f;
             }
             else if(mgo.ChildNodes.count>0)
             {
@@ -566,10 +575,21 @@ typedef enum {
                 mgo.PrereqPercentage=0;
             }
 
+            if(mgo.PrereqPercentage>0 && mgo.PrereqPercentage < 100)
+            {
+                NSLog(@"prereq %d%% for %@", (int)mgo.PrereqPercentage, mgo.UserVisibleString);
+            }
+            
+            //add to source for list
+            [searchNodes addObject:[NSString stringWithFormat:@"%@", mgo.UserVisibleString]];
             
             //NSLog(@"mastery prq percentage %f for complete %d of %d", mgo.PrereqPercentage, mgo.PrereqComplete, mgo.PrereqCount);
         }
     }
+    
+    //sort table
+    [searchNodes sortUsingSelector:@selector(compare:)];
+    
     
     //mastery>mastery relations
     NSArray *ims=[contentService relationMembersForName:@"InterMastery"];
@@ -1126,7 +1146,9 @@ typedef enum {
     [[CCDirector sharedDirector].view addSubview:searchBar];
     
     
-    searchList=[[UITableView alloc] initWithFrame:CGRectMake(683, 62, 341, 706)];
+    searchList=[[UITableView alloc] initWithFrame:CGRectMake(683, 62, 341, 354)];
+    searchList.delegate=self;
+    searchList.dataSource=self;
     
 }
 
@@ -1153,6 +1175,43 @@ typedef enum {
     [searchList removeFromSuperview];
 }
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:
+(NSIndexPath *)indexPath
+{
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"a"];
+    if (cell == nil)
+    {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"a"] autorelease];
+        cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+        cell.textLabel.numberOfLines = 0;
+        cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0];
+        cell.textLabel.text=[searchNodes objectAtIndex:indexPath.row];
+    }
+    
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *cellText = [searchNodes objectAtIndex:indexPath.row];
+    UIFont *cellFont = [UIFont fontWithName:@"Helvetica" size:17.0];
+    CGSize constraintSize = CGSizeMake(280.0f, MAXFLOAT);
+    CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
+    
+    return labelSize.height + 20;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return searchNodes.count;
+}
+
 #pragma mark - tear down
 
 -(void)dealloc
@@ -1163,6 +1222,8 @@ typedef enum {
     [foreLayer release];
     [kcmNodes release];
     [gw release];
+    
+    [searchNodes release];
     
     [super dealloc];
 }

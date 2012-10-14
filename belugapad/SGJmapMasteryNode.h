@@ -26,6 +26,9 @@
 @property int PrereqComplete;
 @property float PrereqPercentage;
 
+@property int CompleteCount;
+@property float CompletePercentage;
+
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
 
 @end

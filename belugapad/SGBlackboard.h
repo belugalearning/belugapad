@@ -17,6 +17,7 @@
 @property (retain) CCLayer *RenderLayer;
 @property BOOL inProblemSetup;
 
+@property (retain) NSMutableDictionary *islandData;
 @property (retain) CCSpriteBatchNode *btxeIconBatch;
 
 @end

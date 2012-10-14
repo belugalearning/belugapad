@@ -394,6 +394,14 @@
 //journey scene
 #define REGION_ZOOM_LEVEL 0.15f
 
+#define ISLAND_MASTERY @"ISLAND_MASTERY"
+#define ISLAND_NODES @"ISLAND_NODES"
+#define ISLAND_LABEL_POS @"ISLAND_LABEL"
+#define ISLAND_LABEL_ROT @"ISLAND_ROT"
+
+#define FIXED_SIZE_Y 768
+#define FIXED_SIZE_X 1024
+
 
 //btxe
 #define BTXE_HPAD 9.0f

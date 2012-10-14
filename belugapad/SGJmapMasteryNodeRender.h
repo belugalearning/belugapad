@@ -28,6 +28,12 @@
     BOOL zoomedOut;
     
     ccColor4B currentCol;
+    
+    CCSprite *islandSprite;
+    CCSprite *islandShadowSprite;
+    
+    NSString *islandName;
+    NSMutableDictionary *islandData;
 }
 
 @property (readonly) SGJmapMasteryNode *ParentGO;

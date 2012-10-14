@@ -13,6 +13,7 @@
 
 @synthesize RenderLayer;
 @synthesize inProblemSetup;
+@synthesize islandData;
 
 -(id) init
 {
@@ -20,7 +21,6 @@
     {
     
         [self loadData];
-        
     }
     
     return self;
@@ -35,6 +35,8 @@
 {
     self.RenderLayer=nil;
     self.btxeIconBatch=nil;
+    
+    self.islandData=nil;
     
     [super dealloc];
 }

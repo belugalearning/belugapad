@@ -44,6 +44,8 @@
 @synthesize ReleaseMode;
 @synthesize IsIpad1;
 
+@synthesize searchBar, searchList;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [self writeLogMemoryUsage];
@@ -174,6 +176,17 @@
     return YES;
 }
 
+-(void)tearDownUI
+{
+    if(searchBar.superview)
+        [searchBar removeFromSuperview];
+    self.searchBar=nil;
+    
+    if(searchList.superview)
+        [searchList removeFromSuperview];
+    self.searchList=nil;
+}
+
 -(void)proceedFromLoginViaIntro:(BOOL)viaIntro
 {
 	// Create a Navigation Controller with the Director
@@ -207,6 +220,8 @@
 -(void)returnToLogin
 {
     [TestFlight passCheckpoint:@"RETURNING_TO_LOGIN"];
+    
+    [self tearDownUI];
     
     [self.window.rootViewController removeFromParentViewController];
     
@@ -344,6 +359,9 @@ void logMemUsage(void) {
     [loggingService release];
     [contentService release];
     [usersService release];
+    
+    searchBar=nil;
+    searchList=nil;
     
 	[window_ release];
 	[navController_ release];

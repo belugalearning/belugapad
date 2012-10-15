@@ -232,7 +232,9 @@ static int shadowSteps=5;
 
 -(void)setup
 {
-    islandName=[NSString stringWithFormat:@"island%d-1", ParentGO.ChildNodes.count];
+    int iCount=ParentGO.ChildNodes.count;
+    if(iCount==0)iCount=1; // handle islands with no nodes
+    islandName=[NSString stringWithFormat:@"island%d-1", iCount];
     
     //setup island data if not in cache -- if no cache, create it
     if(!gameWorld.Blackboard.islandData) gameWorld.Blackboard.islandData=[[[NSMutableDictionary alloc] init] autorelease];

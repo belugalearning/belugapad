@@ -38,8 +38,13 @@
 
 @property BOOL IsIpad1;
 
+//uikit gubbins
+@property (retain) UISearchBar *searchBar;
+@property (retain) UITableView *searchList;
+
 -(void)proceedFromLoginViaIntro:(BOOL)viaIntro;
 -(void)returnToLogin;
 -(void)writeLogMemoryUsage;
+-(void)tearDownUI;
 
 @end

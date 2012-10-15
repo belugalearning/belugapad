@@ -120,7 +120,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         //[perstLayer addChild:pause z:3];
         
 
-
         metaQuestionLayer=[[CCLayer alloc] init];
         [self addChild:metaQuestionLayer z:2];
         problemDefLayer=[[CCLayer alloc] init];
@@ -162,6 +161,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         loggingService = ac.loggingService;
         contentService = ac.contentService;
         usersService = ac.usersService;
+        
+        [ac tearDownUI];
         
         [self scheduleOnce:@selector(gotoFirstProblem:) delay:0.0f];
         //[self gotoNewProblem];

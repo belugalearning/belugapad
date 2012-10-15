@@ -7,6 +7,7 @@
 //
 
 #import "cocos2d.h"
+#import "AppDelegate.h"
 
 @class Daemon;
 
@@ -35,10 +36,9 @@
     int touchCount;
     BOOL didJustChangeZoom;
     
-    UISearchBar *searchBar;
-    UITableView *searchList;
-    
     NSMutableArray *searchNodes;
+    
+    AppController *ac;
 }
 
 +(CCScene *)scene;

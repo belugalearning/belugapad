@@ -135,7 +135,7 @@ typedef enum {
         
         [TestFlight passCheckpoint:@"STARTING_JMAP"];
         
-        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        ac = (AppController*)[[UIApplication sharedApplication] delegate];
         loggingService = ac.loggingService;
         usersService = ac.usersService;
         contentService = ac.contentService;
@@ -915,6 +915,7 @@ typedef enum {
     {
         [loggingService logEvent:BL_USER_LOGOUT withAdditionalData:nil];
         [usersService setCurrentUserToUserWithId:nil];
+        
         [(AppController*)[[UIApplication sharedApplication] delegate] returnToLogin];
         return;
     }
@@ -1136,43 +1137,36 @@ typedef enum {
 
 -(void)setupUI
 {
-    searchBar=[[UISearchBar alloc] initWithFrame:CGRectMake(750, 0, 266, 60)];
-    searchBar.barStyle=UIBarStyleBlackTranslucent;
-    [[[searchBar subviews] objectAtIndex:0] removeFromSuperview];
-    searchBar.backgroundColor=[UIColor clearColor];
+    ac.searchBar=[[UISearchBar alloc] initWithFrame:CGRectMake(750, 0, 266, 60)];
+    ac.searchBar.barStyle=UIBarStyleBlackTranslucent;
+    [[[ac.searchBar subviews] objectAtIndex:0] removeFromSuperview];
+    ac.searchBar.backgroundColor=[UIColor clearColor];
     
-    searchBar.delegate=self;
+    ac.searchBar.delegate=self;
     
-    [[CCDirector sharedDirector].view addSubview:searchBar];
+    [[CCDirector sharedDirector].view addSubview:ac.searchBar];
     
     
-    searchList=[[UITableView alloc] initWithFrame:CGRectMake(683, 62, 341, 354)];
-    searchList.delegate=self;
-    searchList.dataSource=self;
-    
-}
-
--(void)tearDownUI
-{
-    [searchBar removeFromSuperview];
-    [searchBar release];
+    ac.searchList=[[UITableView alloc] initWithFrame:CGRectMake(683, 62, 341, 354)];
+    ac.searchList.delegate=self;
+    ac.searchList.dataSource=self;
 }
 
 -(void)resetUI
 {
-    [searchBar resignFirstResponder];
+    [ac.searchBar resignFirstResponder];
 }
 
 #pragma mark - UISearchBarDelegate
 
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
-    [[CCDirector sharedDirector].view addSubview:searchList];
+    [[CCDirector sharedDirector].view addSubview:ac.searchList];
 }
 
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
-    [searchList removeFromSuperview];
+    [ac.searchList removeFromSuperview];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:
@@ -1216,8 +1210,6 @@ typedef enum {
 
 -(void)dealloc
 {
-    [self tearDownUI];
-    
     [mapLayer release];
     [foreLayer release];
     [kcmNodes release];

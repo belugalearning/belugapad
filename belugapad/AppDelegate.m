@@ -42,6 +42,7 @@
 
 @synthesize LocalSettings;
 @synthesize ReleaseMode;
+@synthesize AuthoringMode;
 @synthesize IsIpad1;
 
 @synthesize searchBar, searchList;
@@ -103,6 +104,10 @@
     //are we in release mode
     NSNumber *relmode=[self.LocalSettings objectForKey:@"RELEASE_MODE"];
     if(relmode) if ([relmode boolValue]) self.ReleaseMode=YES;
+    
+    //are we in author mode
+    NSNumber *amode=[self.LocalSettings objectForKey:@"AUTHORING_MODE"];
+    if(amode) self.AuthoringMode=[amode boolValue];
     
     [TestFlight passCheckpoint:@"SETTINGS_LOADED"];
     

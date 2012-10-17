@@ -35,6 +35,7 @@
 @property (retain) NSDictionary *AdplineSettings;
 
 @property BOOL ReleaseMode;
+@property BOOL AuthoringMode;
 
 @property BOOL IsIpad1;
 

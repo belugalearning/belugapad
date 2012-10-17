@@ -11,10 +11,12 @@
 #import "SGJmapMasteryNode.h"
 
 #import "BLMath.h"
+#import "AppDelegate.h"
 
 @interface SGJmapNodeRender()
 {
     CCSprite *nodeSprite;
+    CCSprite *labelSprite;
 }
 
 @end
@@ -56,6 +58,16 @@
         ParentGO.Position=[BLMath AddVector:ParentGO.MasteryNode.Position toVector:positionAsOffset];
         [self updatePosition:ParentGO.Position];
     }
+    
+    //authoring mode stuff
+    if(messageType==kSGenableAuthorRender)
+    {
+        if(labelSprite)labelSprite.visible=YES;
+    }
+    if(messageType==kSGdisableAuthorRender)
+    {
+        if(labelSprite)labelSprite.visible=NO;
+    }
 }
 
 -(void)doUpdate:(ccTime)delta
@@ -76,6 +88,7 @@
 -(void)updatePosition:(CGPoint)pos
 {
     [nodeSprite setPosition:pos];
+    if(labelSprite)labelSprite.position=pos;
 }
 
 -(void)setup
@@ -92,6 +105,15 @@
     [nodeSprite setPosition:ParentGO.Position];
     [nodeSprite setVisible:ParentGO.Visible];
     [ParentGO.RenderBatch addChild:nodeSprite z:5];
+    
+    if(((AppController*)[[UIApplication sharedApplication] delegate]).AuthoringMode)
+    {
+        labelSprite=[CCLabelTTF labelWithString:ParentGO.UserVisibleString fontName:@"Source Sans Pro" fontSize:14.0f];
+        [labelSprite setPosition:ParentGO.Position];
+        [labelSprite setVisible:NO];
+        [ParentGO.RenderBatch.parent addChild:labelSprite z:99];
+    }
+    
 }
 
 

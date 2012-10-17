@@ -24,6 +24,9 @@ typedef enum {
     kSGforceLayout,
     kSGresetPositionUsingOffset,
     
-    kSGtearDownRender
+    kSGtearDownRender,
+    
+    kSGdisableAuthorRender,
+    kSGenableAuthorRender
         
 } SGMessageType;

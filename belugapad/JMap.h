@@ -39,6 +39,8 @@
     NSMutableArray *searchNodes;
     
     AppController *ac;
+    
+    BOOL authorRenderEnabled;
 }
 
 +(CCScene *)scene;

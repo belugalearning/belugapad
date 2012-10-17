@@ -18,6 +18,7 @@
 @property (readonly) int y;
 @property (readonly) BOOL mastery;
 @property (readonly) NSString *jtd;
+@property (readonly) NSString *utd;
 @property (readonly) NSArray *regions;
 
 //not persisted

@@ -13,7 +13,7 @@
 @implementation ConceptNode
 
 @synthesize pipelines;
-@synthesize x, y, mastery, jtd;
+@synthesize x, y, mastery, jtd, utd;
 @synthesize regions;
 
 @synthesize isLit;
@@ -34,6 +34,10 @@
         NSArray *jtds=[[resultSet stringForColumn:@"jtd"] objectFromJSONString];
         if(jtds.count>0) jtd=[jtds objectAtIndex:0];
         else jtd=@"";
+        
+        NSArray *utds=[[resultSet stringForColumn:@"utd"] objectFromJSONString];
+        if(utds.count>0) utd=[utds objectAtIndex:0];
+        else utd=@"";
         
         NSString *rstring=[resultSet stringForColumn:@"region"];
         NSData *rdata=[rstring dataUsingEncoding:NSUTF8StringEncoding];

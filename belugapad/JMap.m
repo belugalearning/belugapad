@@ -429,6 +429,7 @@ typedef enum {
             
             newnode.HitProximity=100.0f;
             newnode.HitProximitySign=150.0f;
+            newnode.UserVisibleString=n.jtd;
             
             if(n.regions.count>0)
                 ((SGJmapMasteryNode*)newnode).Region=[n.regions objectAtIndex:0];
@@ -440,6 +441,7 @@ typedef enum {
         }
         else {
             newnode=[[[SGJmapNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
+            newnode.UserVisibleString=n.utd;
             
             //todo: for now, if there are pipelines on the node, set it complete
             if([usersService hasCompletedNodeId:n._id])
@@ -453,7 +455,6 @@ typedef enum {
         }   
         
         newnode._id=n._id;
-        newnode.UserVisibleString=n.jtd;
         
         [newnode setup];
     }
@@ -904,11 +905,11 @@ typedef enum {
     
     touchCount+=touches.count;
     
-    if(debugEnabled && CGRectContainsPoint(debugButtonBounds, l))
+    if(ac.AuthoringMode && CGRectContainsPoint(debugButtonBounds, l))
     {
-        BOOL doat=!debugMenu.enabled;
-        debugMenu.enabled=doat;
-        debugMenu.visible=doat;
+        if(authorRenderEnabled)[gw handleMessage:kSGdisableAuthorRender];
+        else [gw handleMessage:kSGenableAuthorRender];
+        authorRenderEnabled=!authorRenderEnabled;
     }
     
     if(l.x<110 && l.y > (ly-55)) // log out button

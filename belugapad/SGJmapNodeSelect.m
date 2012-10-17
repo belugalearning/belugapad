@@ -71,7 +71,9 @@
         if([gameObject isKindOfClass:[SGJmapNode class]])
         {
             SGJmapNode *gom=(SGJmapNode*)gameObject;
-            if(gom.EnabledAndComplete)
+            
+            //check that this node has previous been completed -- or that we're in authoring mode, in which case allow direct access
+            if(gom.EnabledAndComplete || ((AppController*)[UIApplication sharedApplication].delegate).AuthoringMode)
             {
                 //show the sign on our own node
                 [self showSignWithForce:NO];

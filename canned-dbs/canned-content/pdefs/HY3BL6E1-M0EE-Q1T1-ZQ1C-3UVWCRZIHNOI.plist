@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>FOUNDATION</key>
+	<true/>
+	<key>TOOL_KEY</key>
+	<string>DistributionTool</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Take {$x} away from {$y} to make {$z}.</string>
+	<key>EVAL_MODE</key>
+	<integer>0</integer>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>QUANTITY</key>
+			<string>{$y}</string>
+			<key>POS_X</key>
+			<integer>525</integer>
+			<key>POS_Y</key>
+			<integer>550</integer>
+		</dict>
+	</array>
+	<key>SOLUTION</key>
+	<array>
+		<string>{$z}</string>
+	</array>
+	<key>HOST_BACKGROUND_IMAGE</key>
+	<string>/images/bg/bg-ipad-addition_2_7_9.png</string>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>3</string>
+			<key>MAX</key>
+			<string>6</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>7</string>
+			<key>MAX</key>
+			<string>16</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$z</string>
+			<key>VALUE</key>
+			<string>{$y-$x}</string>
+		</dict>
+	</array>
+	<key>HAS_CAGE</key>
+	<true/>
+	<key>REPEAT_AS_IS_MIN</key>
+	<integer>2</integer>
+</dict>
+</plist>

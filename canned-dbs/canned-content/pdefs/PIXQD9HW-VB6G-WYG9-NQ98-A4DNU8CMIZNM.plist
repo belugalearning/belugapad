@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CORE</key>
+	<true/>
+	<key>REPEAT_AS_IS_MIN</key>
+	<string>3</string>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Write an equation to express this.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>which is larger</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Using one of the following&lt;/b:t&gt;
+&lt;b:ot tag=&quot;a&quot;&gt;{$var1}&lt;/b:ot&gt;
+&lt;b:t&gt;,&lt;/b:t&gt;
+&lt;b:ot tag=&quot;b&quot;&gt;{$var2}&lt;/b:ot&gt;
+&lt;b:t&gt;,&lt;/b:t&gt;
+&lt;b:ot tag=&quot;c&quot;&gt;3873&lt;/b:ot&gt;
+&lt;b:t&gt;or&lt;/b:t&gt;
+&lt;b:ot tag=&quot;d&quot;&gt;{$var3}&lt;/b:ot&gt;
+&lt;b:t&gt;. Complete the expression below.&lt;/b:t&gt; </string>
+		<string>&lt;b:ot tag=&quot;d&quot; enabled=&quot;yes&quot;&gt;{3873}&lt;/b:ot&gt;
+&lt;b:op op=&quot;&amp;lt;&quot; picker=&quot;yes&quot; /&gt;
+&lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt;{$var2}&lt;/b:ot&gt;</string>
+	</array>
+	<key>EVAL_TYPE</key>
+	<string>ALL_ENABLED</string>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$var1</string>
+			<key>MIN</key>
+			<string>2135</string>
+			<key>MAX</key>
+			<string>3872</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$var2</string>
+			<key>MIN</key>
+			<string>3874</string>
+			<key>MAX</key>
+			<string>4215</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$var3</string>
+			<key>MIN</key>
+			<string>1234</string>
+			<key>MAX</key>
+			<string>2134</string>
+		</dict>
+	</array>
+</dict>
+</plist>

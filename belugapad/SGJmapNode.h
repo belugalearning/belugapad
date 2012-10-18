@@ -12,7 +12,7 @@
 @class SGJmapNodeRender;
 @class SGJmapMasteryNode;
 
-@interface SGJmapNode : SGGameObject <Transform, ProximityResponder, Drawing, CouchDerived, Configurable, Selectable, Completable>
+@interface SGJmapNode : SGGameObject <Transform, ProximityResponder, Drawing, CouchDerived, Configurable, Selectable, Completable, Searchable>
 
 @property (retain) SGJmapNodeRender* NodeRenderComponent;
 @property (retain) SGJmapMasteryNode *MasteryNode;

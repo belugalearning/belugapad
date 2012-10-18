@@ -148,8 +148,6 @@ typedef enum {
         debugEnabled=!((AppController*)[[UIApplication sharedApplication] delegate]).ReleaseMode;
         if(debugEnabled) [self buildDebugMenu];
         
-        searchNodes=[[NSMutableArray alloc] init];
-        
         [self setupMap];
         
         [self setupUI];
@@ -302,6 +300,8 @@ typedef enum {
 //        p=ccpAdd(ccp(cx, cy), p);
 //        [mapLayer setPosition:p];
 //    }
+    
+    [self buildSearchIndex];
         
     NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
 }
@@ -429,7 +429,7 @@ typedef enum {
             
             newnode.HitProximity=100.0f;
             newnode.HitProximitySign=150.0f;
-            newnode.UserVisibleString=n.jtd;
+            newnode.UserVisibleString=[n.jtd stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             
             if(n.regions.count>0)
                 ((SGJmapMasteryNode*)newnode).Region=[n.regions objectAtIndex:0];
@@ -441,7 +441,7 @@ typedef enum {
         }
         else {
             newnode=[[[SGJmapNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
-            newnode.UserVisibleString=n.utd;
+            newnode.UserVisibleString=[n.utd stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             
             //todo: for now, if there are pipelines on the node, set it complete
             if([usersService hasCompletedNodeId:n._id])
@@ -581,15 +581,9 @@ typedef enum {
                 NSLog(@"prereq %d%% for %@", (int)mgo.PrereqPercentage, mgo.UserVisibleString);
             }
             
-            //add to source for list
-            [searchNodes addObject:[NSString stringWithFormat:@"%@", mgo.UserVisibleString]];
-            
             //NSLog(@"mastery prq percentage %f for complete %d of %d", mgo.PrereqPercentage, mgo.PrereqComplete, mgo.PrereqCount);
         }
     }
-    
-    //sort table
-    [searchNodes sortUsingSelector:@selector(compare:)];
     
     
     //mastery>mastery relations
@@ -608,6 +602,52 @@ typedef enum {
         }
     }
 
+}
+
+-(void)buildSearchIndex
+{
+    if(searchNodes)[searchNodes release];
+    searchNodes=[[NSMutableArray alloc] init];
+    
+    for(id go in [gw AllGameObjects])
+    {
+        if([go isKindOfClass:[SGJmapMasteryNode class]])
+        {
+            SGJmapMasteryNode *mgo=(SGJmapMasteryNode*)go;
+    
+            //build search test
+            NSString *searchBuild=mgo.UserVisibleString;
+            
+            for(SGJmapNode *node in mgo.ChildNodes)
+            {
+                searchBuild=[NSString stringWithFormat:@"%@ %@", searchBuild, node.UserVisibleString];
+            }
+            
+            mgo.searchMatchString=searchBuild;
+            
+            //add to source for list
+            [searchNodes addObject:mgo];
+        }
+    }
+    
+    //authoring mode -- add nodes to direct index
+    if(authorRenderEnabled)
+    {
+        for(id go in [gw AllGameObjects])
+        {
+            if([go isKindOfClass:[SGJmapNode class]])
+            {
+                SGJmapNode *ngo=(SGJmapNode*)go;
+                ngo.searchMatchString=ngo.UserVisibleString;
+                [searchNodes addObject:ngo];
+            }
+        }
+    }
+    
+    //sort index
+    [searchNodes sortUsingComparator:^NSComparisonResult(id<CouchDerived> a, id<CouchDerived> b){
+        return [a.UserVisibleString compare:b.UserVisibleString];
+    }];
 }
 
 -(void)createRegions
@@ -910,6 +950,11 @@ typedef enum {
         if(authorRenderEnabled)[gw handleMessage:kSGdisableAuthorRender];
         else [gw handleMessage:kSGenableAuthorRender];
         authorRenderEnabled=!authorRenderEnabled;
+        
+        //re-build search index
+        [self buildSearchIndex];
+        [ac.searchList reloadData];
+        [self searchBar:ac.searchBar textDidChange:ac.searchBar.text];
     }
     
     if(l.x<110 && l.y > (ly-55)) // log out button
@@ -1170,18 +1215,77 @@ typedef enum {
     [ac.searchList removeFromSuperview];
 }
 
+-(void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)text
+{
+    if(text.length == 0)
+    {
+        isFiltered = NO;
+    }
+    else
+    {
+        isFiltered = YES;
+        filteredNodes = [[NSMutableArray alloc] init];
+        
+        for (id<CouchDerived, Searchable> node in searchNodes)
+        {
+            NSRange searchRange = [node.searchMatchString rangeOfString:text options:NSCaseInsensitiveSearch];
+            NSRange idRange = [node._id rangeOfString:text options:NSCaseInsensitiveSearch];
+            if(searchRange.location != NSNotFound || idRange.location != NSNotFound)
+            {
+                [filteredNodes addObject:node];
+            }
+        }
+    }
+    
+    [ac.searchList reloadData];
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"selected %@", [searchNodes objectAtIndex:indexPath.row]);
+    
+    id<CouchDerived, Transform>node;
+    if(isFiltered)node=[filteredNodes objectAtIndex:indexPath.row];
+    else node=[searchNodes objectAtIndex:indexPath.row];
+
+    CGPoint moveto=ccp(300-node.Position.x, 600-node.Position.y);
+    //if(zoomedOut)moveto=ccp(300-node.Position.x*REGION_ZOOM_LEVEL, 600-node.Position.y*REGION_ZOOM_LEVEL);
+    
+    if(zoomedOut)moveto=[BLMath MultiplyVector:moveto byScalar:REGION_ZOOM_LEVEL];
+    
+    [mapLayer runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.75f position:moveto] rate:2.0f]];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:
 (NSIndexPath *)indexPath
 {
+    static NSString *reuseId=@"cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"a"];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseId];
     if (cell == nil)
     {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"a"] autorelease];
-        cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
-        cell.textLabel.numberOfLines = 0;
-        cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0];
-        cell.textLabel.text=[searchNodes objectAtIndex:indexPath.row];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId] autorelease];
+    }
+    
+    cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+    cell.textLabel.numberOfLines = 0;
+    cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0];
+    cell.textLabel.textColor=[UIColor blackColor];
+
+    id<CouchDerived> go;
+    if(isFiltered)go=[filteredNodes objectAtIndex:indexPath.row];
+    else go=[searchNodes objectAtIndex:indexPath.row];
+    
+    cell.textLabel.text=go.UserVisibleString;
+    
+    if(authorRenderEnabled)
+    {
+        if([(NSObject*)go isKindOfClass:[SGJmapNode class]])
+        {
+            cell.textLabel.textColor=[UIColor grayColor];
+        }
     }
     
     return cell;
@@ -1189,7 +1293,11 @@ typedef enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *cellText = [searchNodes objectAtIndex:indexPath.row];
+    id<CouchDerived> go;
+    if(isFiltered)go=[filteredNodes objectAtIndex:indexPath.row];
+    else go=[searchNodes objectAtIndex:indexPath.row];
+    
+    NSString *cellText = go.UserVisibleString;
     UIFont *cellFont = [UIFont fontWithName:@"Helvetica" size:17.0];
     CGSize constraintSize = CGSizeMake(280.0f, MAXFLOAT);
     CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
@@ -1204,7 +1312,8 @@ typedef enum {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return searchNodes.count;
+    if(isFiltered) return filteredNodes.count;
+    else return searchNodes.count;
 }
 
 #pragma mark - tear down

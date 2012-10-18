@@ -37,6 +37,8 @@
     BOOL didJustChangeZoom;
     
     NSMutableArray *searchNodes;
+    NSMutableArray *filteredNodes;
+    BOOL isFiltered;
     
     AppController *ac;
     

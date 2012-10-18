@@ -58,6 +58,10 @@
 
 @end
 
+@protocol Searchable
+    @property (retain) NSString *searchMatchString;
+@end
+
 @protocol Completable
 
     @property BOOL EnabledAndComplete;

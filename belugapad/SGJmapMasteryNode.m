@@ -27,6 +27,9 @@
 //selectable
 @synthesize Selected, NodeSelectComponent, HitProximity, HitProximitySign;
 
+//searchable
+@synthesize searchMatchString;
+
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition
 {
     if(self=[super initWithGameWorld:aGameWorld])
@@ -88,6 +91,7 @@
     self._id=nil;
     self.UserVisibleString=nil;
     self.NodeSelectComponent=nil;
+    self.searchMatchString=nil;
     
     [super dealloc];
 }

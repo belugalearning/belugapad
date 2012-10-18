@@ -16,7 +16,7 @@
 @property (nonatomic, readonly, retain) NSDictionary *currentPDef;
 @property (nonatomic, retain) NSMutableDictionary *currentStaticPdef;
 @property (nonatomic, readonly, retain) NSString *pathToTestDef;
-@property (nonatomic, readonly, retain) Pipeline *currentPipeline;
+@property (nonatomic, readonly, retain) NSArray *currentPipeline;
 @property BOOL fullRedraw;
 @property BOOL lightUpProgressFromLastNode;
 @property (nonatomic, retain) ConceptNode *currentNode;

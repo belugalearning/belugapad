@@ -943,7 +943,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     else {
         //just log document id for the problem & pipeline
-        NSLog(@"pausing in problem document %@ in pipeline %@", contentService.currentProblem._id, contentService.currentPipeline._id);
+        NSLog(@"pausing in problem document %@", contentService.currentProblem._id);
     }
     
     [loggingService logEvent:BL_PA_PAUSE withAdditionalData:nil];

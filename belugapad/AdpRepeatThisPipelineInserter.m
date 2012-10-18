@@ -22,7 +22,7 @@
         //repeat those in order, going backwards from current index (and inserting at front)
         for(int i=contentService.pipelineIndex-1; i>=0 && (contentService.pipelineIndex-i)<=insMax; i--)
         {
-            [self.viableInserts insertObject:@{@"PROBLEM_ID" : [contentService.currentPipeline.problems objectAtIndex:i]} atIndex:0];
+            [self.viableInserts insertObject:@{@"PROBLEM_ID" : [contentService.currentPipeline objectAtIndex:i]} atIndex:0];
         }
         
         if(contentService.pipelineIndex < insMax)

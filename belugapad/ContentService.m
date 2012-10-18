@@ -54,7 +54,7 @@
 @property (nonatomic, readwrite, retain) Problem *currentProblem;
 @property (nonatomic, readwrite, retain) NSDictionary *currentPDef;
 @property (nonatomic, readwrite, retain) NSString *pathToTestDef;
-@property (nonatomic, readwrite, retain) Pipeline *currentPipeline;
+@property (nonatomic, readwrite, retain) NSArray *currentPipeline;
 
 @end
 
@@ -389,10 +389,13 @@
         [d setValue:pipelineid forKey:@"key"];        
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         [ac.loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
-    }    
-    self.currentPipeline = [[[Pipeline alloc] initWithFMResultSetRow:rs] autorelease];
+    }
+    Pipeline *rawPipeline=[[[Pipeline alloc] initWithFMResultSetRow:rs] autorelease];
     [rs close];
     [contentDatabase close];
+    
+    //set local pipeline to flattened version of same
+    self.currentPipeline=[self flattenPipeline:rawPipeline.problems];
     
     //rembmer the current pipeline's id
     currentPipelineId=pipelineid;
@@ -405,8 +408,32 @@
     [self createEpisode];
         
     self.currentNode=node;
+}
+
+-(NSArray*)flattenPipeline:(NSArray*)srcPipeline
+{
+    NSMutableArray *flatPipeline=[[NSMutableArray alloc] init];
     
-    NSLog(@"starting pipeline id=\"%@\" and name=\"%@\" with %d problems", self.currentPipeline._id, self.currentPipeline.name, self.currentPipeline.problems.count);
+    for (NSString *prbId in srcPipeline) {
+        NSDictionary *pdef=[self loadPdefWithId:prbId];
+        
+        NSNumber *rawRptAsIsMin=[pdef objectForKey:@"REPEAT_AS_IS_MIN"];
+        NSNumber *rawRptScaffoldMin=[pdef objectForKey:@"REPEAT_AND_SCAFFOLD_MIN"];
+        
+        int rptMin=1;
+        if(rawRptAsIsMin) rptMin=[rawRptAsIsMin integerValue];
+        if(rawRptScaffoldMin) rptMin=[rawRptScaffoldMin integerValue];
+        
+        //insert to repeat count
+        for(int i=0; i<rptMin; i++)
+        {
+            [flatPipeline addObject:[[prbId copy] autorelease]];
+        }
+    }
+    
+    NSArray *ret=[NSArray arrayWithArray:flatPipeline];
+    [flatPipeline release];
+    return ret;
 }
 
 -(void)quitPipelineTracking
@@ -491,18 +518,23 @@
     [rs close];
     [contentDatabase close];
     
-    NSString *pdefPath = [NSString stringWithFormat:@"%@/pdefs/%@.plist", contentDir, pId];
-    self.currentPDef = [NSDictionary dictionaryWithContentsOfFile:pdefPath];
-    
+    self.currentPDef=[self loadPdefWithId:pId];
+
     if (!self.currentPDef)
     {
         NSMutableDictionary *d = [NSMutableDictionary dictionary];
         [d setValue:BL_APP_ERROR_TYPE_MISSING_PDEF forKey:@"type"];
         [d setValue:pId forKey:@"problemId"];
-        [d setValue:pdefPath forKey:@"path"];
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         [ac.loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
     }
+}
+
+-(NSDictionary*)loadPdefWithId:(NSString *)pid
+{
+    NSString *pdefPath = [NSString stringWithFormat:@"%@/pdefs/%@.plist", contentDir, pid];
+    return [NSDictionary dictionaryWithContentsOfFile:pdefPath];
+    
 }
 
 -(void)gotoNextProblemInTestPipeline
@@ -718,7 +750,7 @@
     pipelineIndex++;
     
     //if we're at the end of the pipeline, return NO
-    if(pipelineIndex>=self.currentPipeline.problems.count)
+    if(pipelineIndex>=self.currentPipeline.count)
     {
         //write into database that we overflowed
         [usersService.usersDatabase open];
@@ -730,7 +762,7 @@
     // there are more problems in the pipeline, put the next problem in the episode
     else
     {
-        [currentEpisode addObject:[self.currentPipeline.problems objectAtIndex:pipelineIndex]];
+        [currentEpisode addObject:[self.currentPipeline objectAtIndex:pipelineIndex]];
         
         //insert this into the EpisodeProblems table
         [usersService.usersDatabase open];
@@ -741,7 +773,7 @@
         //index/sequence -- we're only inserting one, so we can use the episode_index
         NSNumber *insertIndex=[NSNumber numberWithInt:episodeIndex];
         
-        [usersService.usersDatabase executeUpdate:@"INSERT INTO EpisodeProblems (id, episode_index, episode_id, episodeinserts_id, problem_id, dvar_data) VALUES (?, ?, ?, NULL, ?, NULL)", epid, insertIndex, episodeId, [self.currentPipeline.problems objectAtIndex:pipelineIndex]];
+        [usersService.usersDatabase executeUpdate:@"INSERT INTO EpisodeProblems (id, episode_index, episode_id, episodeinserts_id, problem_id, dvar_data) VALUES (?, ?, ?, NULL, ?, NULL)", epid, insertIndex, episodeId, [self.currentPipeline objectAtIndex:pipelineIndex]];
         
         [usersService.usersDatabase close];
     }
@@ -847,11 +879,11 @@
     }
     
     //remaining problems
-    if(pipelineIndex<currentPipeline.problems.count-1)
+    if(pipelineIndex<currentPipeline.count-1)
     {
-        for(int i=pipelineIndex+1; i<currentPipeline.problems.count; i++)
+        for(int i=pipelineIndex+1; i<currentPipeline.count; i++)
         {
-            [html appendFormat:@"<p style='color:#bcbcbc'><a href='belugadebug://skip?%d'>*%02d: %@ -- <span style=''>%@</span></a></p>", skipBy, i, [currentPipeline.problems objectAtIndex:i], [self debugProblemDescStringFor:[currentPipeline.problems objectAtIndex:i]]];
+            [html appendFormat:@"<p style='color:#bcbcbc'><a href='belugadebug://skip?%d'>*%02d: %@ -- <span style=''>%@</span></a></p>", skipBy, i, [currentPipeline objectAtIndex:i], [self debugProblemDescStringFor:[currentPipeline objectAtIndex:i]]];
             
             skipBy++;
         }

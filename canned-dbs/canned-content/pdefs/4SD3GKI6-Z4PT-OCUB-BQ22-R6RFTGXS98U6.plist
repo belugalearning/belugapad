@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Press the button at {$x}.</string>
+	<key>TOOL_KEY</key>
+	<string>CountingTimer</string>
+	<key>SOLUTION</key>
+	<string>{$x}</string>
+	<key>SHOW_COUNT</key>
+	<false/>
+	<key>COUNT_TYPE</key>
+	<integer>2</integer>
+	<key>INCREMENT</key>
+	<integer>1</integer>
+	<key>COUNT_MIN</key>
+	<string>0</string>
+	<key>COUNT_MAX</key>
+	<string>{$x+3}</string>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>7</string>
+			<key>MAX</key>
+			<string>20</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>11</string>
+			<key>MAX</key>
+			<string>20</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$z</string>
+			<key>VALUE</key>
+			<string>{$x+$y}</string>
+		</dict>
+	</array>
+	<key>REPEAT_AND_SCAFFOLD_MIN</key>
+	<integer>3</integer>
+</dict>
+</plist>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>FLASHING_BUTTON</key>
+	<true/>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Press the button when it has counted forward {$b} hundreds.</string>
+	<key>TOOL_KEY</key>
+	<string>CountingTimer</string>
+	<key>SOLUTION</key>
+	<string>{$b*$t}</string>
+	<key>SHOW_COUNT</key>
+	<true/>
+	<key>COUNT_TYPE</key>
+	<integer>2</integer>
+	<key>INCREMENT</key>
+	<integer>100</integer>
+	<key>COUNT_MIN</key>
+	<string>0</string>
+	<key>COUNT_MAX</key>
+	<string>1000</string>
+	<key>DVARS</key>
+	<dict>
+		<key>$b</key>
+		<dict>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>4</string>
+				<string>5</string>
+				<string>6</string>
+				<string>7</string>
+				<string>8</string>
+				<string>9</string>
+			</array>
+		</dict>
+		<key>$t</key>
+		<dict>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>100</string>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

@@ -49,6 +49,10 @@
     
     NSFileManager *fm;
     NSString *contentDir;
+    
+    //set repetition
+    NSString *lastRepeatSet;
+    NSMutableArray *repeatBuffer;
 }
 
 @property (nonatomic, readwrite, retain) Problem *currentProblem;
@@ -428,6 +432,41 @@
         for(int i=0; i<rptMin; i++)
         {
             [flatPipeline addObject:[[prbId copy] autorelease]];
+        }
+        
+        NSString *rptTag=[pdef objectForKey:@"REPEAT_SET"];
+        if(rptTag)
+        {
+            if(!repeatBuffer)repeatBuffer=[[NSMutableArray alloc] init];
+            
+            if(lastRepeatSet!=nil)
+            {
+                if(![rptTag isEqualToString:lastRepeatSet])
+                {
+                    //clear out the buffer -- this is a new tag
+                    [repeatBuffer removeAllObjects];
+                }
+            }
+            
+            //insert ourselves into the buffer
+            [repeatBuffer addObject:[[prbId copy] autorelease]];
+            
+            //track this set tag for the next problem
+            lastRepeatSet=rptTag;
+            
+            //see if we're ready for a repition of the set
+            NSNumber *rawSetRptMin=[pdef objectForKey:@"REPEAT_MY_SET_MIN"];
+            if(rawSetRptMin)
+            {
+                //insert the buffer min times, then empty it
+                for(int i=0; i<[rawSetRptMin integerValue]; i++)
+                {
+                    [flatPipeline addObjectsFromArray:repeatBuffer];
+                }
+                
+                [repeatBuffer removeAllObjects];
+                lastRepeatSet=nil;
+            }
         }
     }
     
@@ -958,6 +997,8 @@
     if (currentProblem) [currentProblem release];
     if (currentPDef) [currentPDef release];
     if (testProblemList) [testProblemList release];
+    
+    if(repeatBuffer)[repeatBuffer release];
     
     if (currentEpisode) [currentEpisode release];
     

@@ -58,4 +58,5 @@
 -(void)adaptPipelineByInsertingWithTriggerData:(NSDictionary*)triggerData;
 -(NSString*)debugPipelineString;
 
+
 @end

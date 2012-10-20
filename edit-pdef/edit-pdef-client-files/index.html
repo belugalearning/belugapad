@@ -6,7 +6,7 @@
       body { font: 12px "Lucida Grande", Helvetica, Arial, sans-serif; } 
 
       div#pdef-wrapper { border-bottom:1px solid #ececec; background-color:#FFF; margin:2px; padding:1px; }
-      div[data-type] { border-top:1px solid #ececec; background-color:#FFF; clear:both; min-height:25px; padding-top:3px; }
+      div[data-type] { border-top:1px solid #ececec; background-color:#FFF; clear:both; padding-top:3px; cursor:pointer; }
       div[data-type].selected { border:1px solid #6699ff; background-color:#99ccff; }
       div[data-type].selected + div[data-type] { border:none; }
 
@@ -19,15 +19,17 @@
 
       div[data-type~="primitive"] > span[data-control="ins"] { display:none; }
 
-      span[data-field] { padding:4px 1px; }
+      span[data-field] { padding:2px 0 5px; }
       span[data-field] > select { margin:-2px 0; }
       span[data-field] > input[type="text"] { margin:-2px 0; }
 
-      span[data-field="key"] { display:inline-block; min-width:50px; }
+      span[data-field="key"] { display:inline-block; min-width:50px; cursor:pointer; }
       span[data-field="key"] > input { width:200px; }
 
-      span[data-control="del"] { display:inline-block; position:absolute; left:400px; }
-      span[data-control="ins"] { display:inline-block; position:absolute; left:440px; }
+      span[data-control] { display:inline-block; position:absolute; margin-top:-2px; }
+      span[data-control="del"] { left:400px; }
+      span[data-control="ins"] { left:440px; }
+
       span[data-field="type"] { display:inline-block; position:absolute; left:500px; }
 
       span[data-field="value"] { display:inline-block; float:right; width:400px; }
@@ -36,7 +38,7 @@
 
     <script src='jquery-1.8.2.min.js', type='text/javascript'></script>
     <script src='pdef-template.js', type='text/javascript'></script>
-    <script src='index.js', type='text/javascript'></script>
+    <script src='test-json.js', type='text/javascript'></script>
     <script src='pdef-edit.js', type='text/javascript'></script>
   </head>
   <body>

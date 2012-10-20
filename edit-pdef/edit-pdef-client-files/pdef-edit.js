@@ -1,4 +1,4 @@
-var laptopTesting = window.location.hash == '#laptop-testing'
+var ios = navigator.userAgent.match(/iphone|ipad|ipod/i) !== null
   , pdef
   , changeStack = []
   , currStackIndex
@@ -9,56 +9,38 @@ $(function() {
   setEnableEditKey(true)
   setEnableEditValue(true)
 
-  // if input focues and touching outside input, blur input
+  // TODO: restore insert
+  // TODO: What should cancel button really do?
+  
   $(document)
-    .on('click touchstart', function(e) {
+    // if input focues and touching outside input, blur input
+    .on('click', function(e) {
       var focusedInput = $('input:focus')[0]
       focusedInput && e.target !== focusedInput && $(focusedInput).blur()
     })
-    .on('click touchstart', 'div[data-type]', function(e) {
+    .on('click', 'div[data-type]', function(e) {
       if (e.currentTarget !== $(e.target).closest('div[data-type]')[0]) return false
       if ($(e.currentTarget).hasClass('selected')) return false
 
-      var getKey = function(el) {
-        return $(el).children('[data-field="key"]').text()
-      }
-      var log = [
-            e.type
-            , 'currentTarget key: ' + getKey($(e.currentTarget))
-      ]
-
-      var fn = function() {
-        $('div[data-type].selected').removeClass('selected')
-        $(e.currentTarget).addClass('selected')
-        log.push('currentTarget key: ' + getKey(e.currentTarget))
-        alert(log.join('\n'))
-      }
-
-      if (e.type == 'click') {
-        fn()
-      } else {
-        $(window).on('touchmove touchcancel touchend', function(e) {
-          if (e.type != 'touchmove') fn()
-          $(window).off('touchmove touchcancel touchend', arguments.callee)
-        })
-      }
+      $('div[data-type].selected').removeClass('selected')
+      $(e.currentTarget).addClass('selected')
     })
-    .on('click touchstart', 'div[data-type].selected > span > input[type="button"][value="del"]', function() {
+    .on('click', 'div[data-type].selected > span > input[type="button"][value="del"]', function() {
       $(this).closest('div[data-type]').remove()
     })
 
   // test-edits button listener
-  $('input[type="button"][value="test"]').on('touchstart click', function() {
+  $('input[type="button"][value="test"]').on('click', function() {
     var $form = $('<form action="test-edits" method="POST"><input type="text" name="pdef" /></form>')
     $form.children('[name="pdef"]').val(JSON.stringify(getJSON()))
-    if (!laptopTesting) $form.submit()
+    if (ios) $form.submit()
   })
-  $('input[type="button"][value="cancel"]').on('touchstart click', function() {
-    self.location = "cancel"
+  // cancel edits button listener
+  $('input[type="button"][value="cancel"]').on('click', function() {
+    if (ios) self.location = "cancel"
   })
 
-  if (!laptopTesting) window.location = "ready"
-  else appInterface.loadPDef(json)
+  ios ? self.location = "ready": appInterface.loadPDef(testJSON)
 })
 
 var appInterface = {
@@ -100,7 +82,7 @@ function setEnableExpandCollapse(on) {
     $p.hasClass('collapsed') ? $p.removeClass('collapsed') : $p.addClass('collapsed')
   }
 
-  $(document)[on ? 'on' : 'off']('touchstart', 'div[data-type~="collection"] > span.expand-collapse', fn)
+  $(document)[on ? 'on' : 'off']('click', 'div[data-type~="collection"] > span.expand-collapse', fn)
 }
 
 function setEnableEditKey(on) {
@@ -117,7 +99,7 @@ function setEnableEditKey(on) {
     return false
   }
 
-  $(window)[on ? 'on' : 'off']('click touchstart', 'div[data-type]:not([data-type~="Array"]) > div[data-type].selected > span[data-field="key"]:not(:has(>input))', fn)
+  $(document)[on ? 'on' : 'off']('click', 'div[data-type]:not([data-type~="Array"]) > div[data-type].selected > span[data-field="key"]:not(:has(>input))', fn)
 }
 
 function setEnableEditValue(on) {
@@ -140,7 +122,7 @@ function setEnableEditValue(on) {
     return false
   }
 
-  $(window)[on ? 'on' : 'off']('click touchstart', 'div[data-type] > div[data-type~="primitive"].selected:not([data-type~="Boolean"]) > span[data-field="value"]:not(:has(>input))', fn)
+  $(document)[on ? 'on' : 'off']('click', 'div[data-type] > div[data-type~="primitive"].selected:not([data-type~="Boolean"]) > span[data-field="value"]:not(:has(>input))', fn)
 }
 
 function updateColWidths() {
@@ -178,10 +160,4 @@ function getJSON() {
       return $el.children('[data-field~="value"]').text()
     }
   })($('[data-type]:first'))
-}
-
-function onChangeValue() {
-  var $form = $('<form action="change" method="POST"><input type="text" name="pdef" /></form>')
-  $form.children('[name="pdef"]').val(JSON.stringify(getJSON()))
-  if (!laptopTesting) $form.submit()
 }

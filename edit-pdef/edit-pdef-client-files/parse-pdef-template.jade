@@ -24,12 +24,12 @@ mixin parse(key, val, level)
     span(data-control="ins")
       input(type="button", value="ins", disabled="disabled")
     span(data-field="type")
-        select(disabled="disabled")
-          option(value="Array", selected=type=="Array") Array
-          option(value="Dictionary", selected=type=="Dictionary") Dictionary
-          option(value="Boolean", selected=type=="Boolean") Boolean
-          option(value="Number", selected=type=="Number") Number
-          option(value="String", selected=type=="String") String
+      select(disabled="disabled")
+        option(value="Array", selected=type=="Array") Array
+        option(value="Dictionary", selected=type=="Dictionary") Dictionary
+        option(value="Boolean", selected=type=="Boolean") Boolean
+        option(value="Number", selected=type=="Number") Number
+        option(value="String", selected=type=="String") String
     span(data-field="value")
       if type == 'Boolean'
         select

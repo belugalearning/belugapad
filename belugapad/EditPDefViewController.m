@@ -115,7 +115,7 @@
     NSFileManager *fm = [NSFileManager defaultManager];
     
     NSURL *url = [NSURL URLWithString:@"http://169.254.2.229:1234"]; // TODO: Update url to zubi.me ********************************************************************
-    NSURLRequest *req = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:5.0];
+    NSURLRequest *req = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:0.1];
     NSHTTPURLResponse *response = nil;
     NSError *error = nil;
     NSData *result = [NSURLConnection sendSynchronousRequest:req returningResponse:&response error:&error];

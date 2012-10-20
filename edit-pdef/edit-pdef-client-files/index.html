@@ -27,10 +27,13 @@
       span[data-field="key"] > input { width:200px; }
 
       span[data-control] { display:none; position:absolute; margin-top:-2px; }
+
       div[data-type].selected > span[data-control] { display:inline-block; }
+      div[data-type~="primitive"].selected > span[data-control="ins"] { display:none; }
+      #pdef-wrapper > div[data-type].selected span[data-control="del"] { display:none; }
+
       span[data-control="del"] { left:400px; }
       span[data-control="ins"] { left:440px; }
-      div[data-type~="primitive"].selected > span[data-control="ins"] { display:none; }
 
       span[data-field="type"] { display:inline-block; position:absolute; left:500px; }
 

@@ -32,6 +32,7 @@
 #import "SGBtxeRow.h"
 #import "SGBtxeProtocols.h"
 #import "DebugViewController.h"
+#import "EditPDefViewController.h"
 #import "TestFlight.h"
 
 #define HD_HEADER_HEIGHT 65.0f
@@ -53,6 +54,9 @@
     LoggingService *loggingService;
     ContentService *contentService;
     UsersService *usersService;
+    
+    EditPDefViewController *editPDefViewController;
+    BOOL nowEditingPDef;
 }
 
 @end
@@ -970,8 +974,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [loggingService logEvent:BL_PA_USER_RESET withAdditionalData:nil];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self resetProblem];
-        [pauseLayer setVisible:NO];
-        isPaused=NO;
+        [self hidePauseMenu];
     }
     if(CGRectContainsPoint(kPauseMenuMenu, location))
     {
@@ -1010,6 +1013,12 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         {
             [self debugShowPipelineState];
         }
+    }
+    
+    //top left tap for edit pdef
+    if (!ac.ReleaseMode && !nowEditingPDef && CGRectContainsPoint(kRectButtonCommit, location))
+    {
+        [self editPDef];
     }
 }
 
@@ -2278,6 +2287,29 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [self hidePauseMenu];
 }
 
+#pragma mark - edit pdef
+-(void)editPDef
+{
+    if (nowEditingPDef) return;
+    nowEditingPDef = YES;
+    
+    editPDefViewController = [[EditPDefViewController alloc] initWithFrame:CGRectMake(0, 0, lx, ly)
+                                                          handlderInstance:self
+                                                 endEditAndTest:@selector(endEditPDefAndTestProblem:)];
+    
+    [[[CCDirector sharedDirector] view] addSubview:editPDefViewController.view];
+}
+
+-(void)endEditPDefAndTestProblem:(BOOL)reset
+{
+    nowEditingPDef = NO;
+    if (!editPDefViewController) return;
+    [editPDefViewController.view removeFromSuperview];
+    [editPDefViewController release];
+    [self hidePauseMenu];
+    if (reset) [self resetProblem];
+}
+
 #pragma mark - tear down
 
 -(void) dealloc
@@ -2322,6 +2354,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     if(debugWebView)[debugWebView release];
     if(debugViewController)[debugViewController release];
+    
+    if(editPDefViewController)[editPDefViewController release];
     
     self.Zubi=nil;
     

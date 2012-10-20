@@ -1,0 +1,47 @@
+mixin parse(key, val, level)
+  case Object.prototype.toString.call(val)
+    when '[object Array]'
+      type = 'Array'
+    when '[object Object]'
+      type = 'Dictionary'
+    when '[object Boolean]'
+      type = 'Boolean'
+    when '[object Number]'
+      type = 'Number'
+    when '[object String]'
+      type = 'String'
+
+  indent = 40 * (level || 0)
+    
+  primitive = type != 'Dictionary' && type != 'Array'
+  items = !primitive && Object.keys(val).length
+
+  div(data-type="#{type} #{primitive ? 'primitive' : 'collection'}")
+    span.expand-collapse(style="margin-left:#{indent}px;")
+    span(data-field="key")=key
+    span(data-control="del")
+      input(type="button", value="del")
+    span(data-control="ins")
+      input(type="button", value="ins", disabled="disabled")
+    span(data-field="type")
+        select(disabled="disabled")
+          option(value="Array", selected=type=="Array") Array
+          option(value="Dictionary", selected=type=="Dictionary") Dictionary
+          option(value="Boolean", selected=type=="Boolean") Boolean
+          option(value="Number", selected=type=="Number") Number
+          option(value="String", selected=type=="String") String
+    span(data-field="value")
+      if type == 'Boolean'
+        select
+          option(value="true", selected=val) YES
+          option(value="false", selected=!val) NO
+      else if primitive
+        | #{val}
+      else
+        | (#{items} #{items == 1 ? "item" : "items"})
+    br
+    if !primitive
+      each v, k in val
+        mixin parse(k, v, level+1)
+
+mixin parse(key, value, level)

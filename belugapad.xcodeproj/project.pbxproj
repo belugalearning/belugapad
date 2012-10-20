@@ -19,6 +19,8 @@
 		0C427C3714F529CC0033AFE2 /* sfx in Resources */ = {isa = PBXBuildFile; fileRef = 0C427C3614F529CC0033AFE2 /* sfx */; };
 		0C4CD67B15E3A5430037BBD0 /* LogPoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C4CD67A15E3A5430037BBD0 /* LogPoller.m */; };
 		0C51649715D9068F008E7C72 /* settings in Resources */ = {isa = PBXBuildFile; fileRef = 0C51649615D9068D008E7C72 /* settings */; };
+		0C58DE8716308B7000DD9A01 /* EditPDefViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C58DE8616308B6F00DD9A01 /* EditPDefViewController.m */; };
+		0C58DE9A1631774700DD9A01 /* edit-pdef-client-files in Resources */ = {isa = PBXBuildFile; fileRef = 0C58DE991631774700DD9A01 /* edit-pdef-client-files */; };
 		0C692E4A157F973D009307DB /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C692E49157F973D009307DB /* libsqlite3.dylib */; };
 		0C692E50157F9794009307DB /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C692E4B157F9794009307DB /* FMDatabase.m */; };
 		0C692E51157F9794009307DB /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C692E4C157F9794009307DB /* FMDatabaseAdditions.m */; };
@@ -450,6 +452,9 @@
 		0C4CD67915E3A5430037BBD0 /* LogPoller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogPoller.h; sourceTree = "<group>"; };
 		0C4CD67A15E3A5430037BBD0 /* LogPoller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogPoller.m; sourceTree = "<group>"; };
 		0C51649615D9068D008E7C72 /* settings */ = {isa = PBXFileReference; lastKnownFileType = folder; path = settings; sourceTree = SOURCE_ROOT; };
+		0C58DE8516308B6F00DD9A01 /* EditPDefViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPDefViewController.h; sourceTree = "<group>"; };
+		0C58DE8616308B6F00DD9A01 /* EditPDefViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPDefViewController.m; sourceTree = "<group>"; };
+		0C58DE991631774700DD9A01 /* edit-pdef-client-files */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "edit-pdef-client-files"; path = "edit-pdef/edit-pdef-client-files"; sourceTree = SOURCE_ROOT; };
 		0C692E38157F9413009307DB /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		0C692E3A157F9413009307DB /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
 		0C692E3C157F9413009307DB /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabasePool.h; sourceTree = "<group>"; };
@@ -1748,6 +1753,8 @@
 				7F71B409150FBCB20097A956 /* ExprScene.m */,
 				7F96BD861620A8F800351CA0 /* DebugViewController.h */,
 				7F96BD871620A8F800351CA0 /* DebugViewController.m */,
+				0C58DE8516308B6F00DD9A01 /* EditPDefViewController.h */,
+				0C58DE8616308B6F00DD9A01 /* EditPDefViewController.m */,
 			);
 			name = Foundation;
 			sourceTree = "<group>";
@@ -2184,20 +2191,21 @@
 		7F5113D314A9EE63001AF372 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				0C51649615D9068D008E7C72 /* settings */,
-				0C35A9F71576272500D47517 /* canned-dbs */,
 				7F813D5D14CCC3AF00C1E997 /* fonts */,
-				7F5005C81522478C0038D251 /* fps_images-hd.png */,
-				7F5005C91522478C0038D251 /* fps_images-ipadhd.png */,
-				7F5005CA1522478C0038D251 /* fps_images.png */,
-				0CF9187B14F54C1D00FAC58D /* images */,
-				7F5113E414A9EE63001AF372 /* Info.plist */,
-				7F5113E514A9EE63001AF372 /* iTunesArtwork */,
 				7F813D5914CCC38100C1E997 /* particles */,
+				0C35A9F71576272500D47517 /* canned-dbs */,
+				0C58DE991631774700DD9A01 /* edit-pdef-client-files */,
+				0CF9187B14F54C1D00FAC58D /* images */,
 				0C9FEFF514F572FB00E64138 /* pipeline-testing */,
 				0C0AB7AC14F5116600437F07 /* Problems */,
 				7FBE969215497DDF00D993AC /* select-edit-user-images */,
+				0C51649615D9068D008E7C72 /* settings */,
 				0C427C3614F529CC0033AFE2 /* sfx */,
+				7F5005C81522478C0038D251 /* fps_images-hd.png */,
+				7F5005C91522478C0038D251 /* fps_images-ipadhd.png */,
+				7F5005CA1522478C0038D251 /* fps_images.png */,
+				7F5113E414A9EE63001AF372 /* Info.plist */,
+				7F5113E514A9EE63001AF372 /* iTunesArtwork */,
 				7FABE6A114B4BF0F00ED2D0C /* templatedefs-general.plist */,
 				552478651536BF5C00BA5C4E /* tooldef.plist */,
 			);
@@ -2970,6 +2978,7 @@
 				0C51649715D9068F008E7C72 /* settings in Resources */,
 				7F884D8815E197AD004B0DF3 /* SourceSansPro-Bold.ttf in Resources */,
 				7F884D8B15E28F24004B0DF3 /* Chango-Regular.ttf in Resources */,
+				0C58DE9A1631774700DD9A01 /* edit-pdef-client-files in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3376,6 +3385,7 @@
 				55B2C4221627518000E0E2C7 /* BNWheelObjectRender.m in Sources */,
 				55B2C4251627519700E0E2C7 /* DWNWheelGameObject.m in Sources */,
 				5542D678162AFD3E00DB6E40 /* BDotGridShapeGroupObjectRender.m in Sources */,
+				0C58DE8716308B7000DD9A01 /* EditPDefViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

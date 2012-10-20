@@ -10,7 +10,7 @@
       div[data-type].selected { border:1px solid #6699ff; background-color:#99ccff; }
       div[data-type].selected + div[data-type] { border:none; }
 
-      span.expand-collapse { display:inline-block; background-repeat:no-repeat; }
+      span.expand-collapse { display:inline-block; background-repeat:no-repeat; padding-right:2px; }
       div[data-type~="collection"] > span.expand-collapse { width:16px; height:13px; background-image:url("images/collapse_button.jpg"); background-repeat:no-repeat; }
       div[data-type~="collection"].collapsed > span.expand-collapse { background-image:url("images/expand_button.jpg"); }
       div[data-type~="primitive"] > span.expand-collapse { width:0; background:none; }
@@ -26,9 +26,11 @@
       span[data-field="key"] { display:inline-block; min-width:50px; cursor:pointer; }
       span[data-field="key"] > input { width:200px; }
 
-      span[data-control] { display:inline-block; position:absolute; margin-top:-2px; }
+      span[data-control] { display:none; position:absolute; margin-top:-2px; }
+      div[data-type].selected > span[data-control] { display:inline-block; }
       span[data-control="del"] { left:400px; }
       span[data-control="ins"] { left:440px; }
+      div[data-type~="primitive"].selected > span[data-control="ins"] { display:none; }
 
       span[data-field="type"] { display:inline-block; position:absolute; left:500px; }
 

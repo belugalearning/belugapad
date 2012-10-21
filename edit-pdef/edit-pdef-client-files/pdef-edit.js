@@ -147,10 +147,12 @@ function setEnableEditValue(on) {
     $span.html($input)
     $input.focus()
 
-    $input.on('change', function() {
+    $input.on('change focusout', function(e) {
+      $input.off('change focusout', arguments.callee)
+
       var newVal = $input.val()
 
-      if (newVal === '') {
+      if (newVal === '' || e.type == 'focusout') {
         $span.html(oldVal)
         return
       }

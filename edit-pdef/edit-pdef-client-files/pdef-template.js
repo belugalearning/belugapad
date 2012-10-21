@@ -232,9 +232,9 @@ buf.push('>String</option></select></span><span data-field="value">');
 if ( type == 'Boolean')
 {
 buf.push('<select><option');
-buf.push(attrs({ 'value':("true"), 'selected':(val) }, {"value":true,"selected":true}));
+buf.push(attrs({ 'value':("1"), 'selected':(val) }, {"value":true,"selected":true}));
 buf.push('>YES</option><option');
-buf.push(attrs({ 'value':("false"), 'selected':(!val) }, {"value":true,"selected":true}));
+buf.push(attrs({ 'value':("0"), 'selected':(!val) }, {"value":true,"selected":true}));
 buf.push('>NO</option></select>');
 }
 else if ( primitive)

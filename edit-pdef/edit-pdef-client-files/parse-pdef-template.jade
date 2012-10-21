@@ -33,8 +33,8 @@ mixin parse(key, val, level)
     span(data-field="value")
       if type == 'Boolean'
         select
-          option(value="true", selected=val) YES
-          option(value="false", selected=!val) NO
+          option(value="1", selected=val) YES
+          option(value="0", selected=!val) NO
       else if primitive
         | #{val}
       else

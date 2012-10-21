@@ -173,13 +173,14 @@ function setEnableEditValue(on) {
 }
 
 function valueOptionChanged() {
+  var $dt = $(this).closest('[data-type]')
   var path = pathToElement(this)
   recordChange({
     type: 'edit-value'
     , parentPath: path.splice(1)
     , key: path[0]
     , oldVal: objAtPath(path)
-    , newVal: $(this).val()
+    , newVal: $dt.is('[data-type~="Boolean"]') ? Boolean(Number($(this).val())) : $dt.is('[data-type~="Number"]') ? Number($(this).val()) : $(this).val()
   })
 }
 
@@ -285,8 +286,6 @@ function recordChange(change) {
         alert('key not found at path:' + change.key + ' < ' + change.parentPath.join(' < '))
         return false
       }
-      if (typeof parent[change.key] == 'boolean') change.newVal = Boolean(change.newVal)
-      else if (typeof parent[change.key] == 'number') change.newVal = Number(change.newVal)
       parent[change.key] = change.newVal
       break
     default:
@@ -327,7 +326,8 @@ function undo() {
     case 'edit-value':
       var $span = $(elementSelectorFromPath([change.key].concat(change.parentPath))).children('[data-field="value"]')
         , $sel = $span.children('select')
-      $sel.length ? $sel.val(change.oldVal.toString()) : $span.html(change.oldVal)
+        , oldVal = $span.closest('[data-type]').is('[data-type~="Boolean"]') ? Number(change.oldVal) : change.oldVal
+      $sel.length ? $sel.val(oldVal) : $span.html(oldVal)
       objAtPath(change.parentPath)[change.key] = change.oldVal
       break
   }
@@ -354,7 +354,8 @@ function redo() {
     case 'edit-value':
       var $span = $(elementSelectorFromPath([change.key].concat(change.parentPath))).children('[data-field="value"]')
         , $sel = $span.children('select')
-      $sel.length ? $sel.val(change.newVal.toString()) : $span.html(change.newVal)
+        , newVal = $span.closest('[data-type]').is('[data-type~="Boolean"]') ? Number(change.newVal) : change.newVal
+      $sel.length ? $sel.val(newVal) : $span.html(newVal)
       objAtPath(change.parentPath)[change.key] = change.newVal
       break
   }

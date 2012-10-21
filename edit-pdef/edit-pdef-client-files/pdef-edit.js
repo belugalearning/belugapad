@@ -30,6 +30,7 @@ $(function() {
     .on('click', 'div[data-type].selected > span[data-controls] > [data-action="del"]', deleteKey)
     .on('click', 'div[data-type].selected > span[data-controls] > [data-action="ins"]', insertKey)
     .on('click', 'div[data-type].selected > span[data-controls] > [data-action="copy"]', copyKey)
+    .on('click', 'div[data-type].selected > span[data-controls] > [data-action="paste"]', pasteKey)
     .on('change', 'div[data-type~="primitive"] > span[data-field="value"] > select', valueOptionChanged)
 
   // test-edits button listener
@@ -102,7 +103,7 @@ function deleteKey(e) {
   }) && $el.remove()
 }
 
-function insertKey(e) {
+function insertKey(e, paste) {
   var $temp = $('<span/>')
     , $selected = $(e.target).closest('[data-key]')
     , $parent = $(e.target).closest('[data-type~="collection"]:not(.collapsed)')
@@ -110,16 +111,29 @@ function insertKey(e) {
     , index = insertAsFirstChildOfSelected ? 0 : $parent.children('[data-key]').index($selected) + 1
     , parentPath = pathToElement($parent)
     , key
-    , value = ''
+    , value = paste ? clipboard.value : ''
 
   if ($parent.is('[data-type~="Array"]')) {
     key = index
   } else {
-    var i = 0, key
-    while ($parent.children('[data-key="' + (key='item'+i) + '"]').length) i++
+    var i = 0
+      , defaultKeyStem = 'New Item'
+      , keyStem
+      , key
+
+    var nextKey = function(i) {
+      if (i == 0) {
+        key = keyStem = paste && clipboard.key && typeof clipboard.key != 'number' ? clipboard.key.replace(/^(.*?)(-\d)?$/, '$1') : defaultKeyStem
+      } else {
+        key = keyStem + '-' + i
+      }
+      return true
+    }
+    while (nextKey(i) && $parent.children('[data-key="' + key + '"]').length) i++
   }
 
   jade.render($temp[0], 'parse-pdef-template', { key:key, value:value, level:parentPath.length + 1 })
+  console.log(key, value, parentPath.length+1, $temp)
 
   var $el = $temp.children()
     , $next = $parent.children('[data-key]:eq(' + index + ')')
@@ -164,6 +178,11 @@ function copyKey(e) {
   clipboard = { key:key, value:value }
 
   $('#pdef-wrapper').attr('data-clipboard', '')
+  console.log(clipboard)
+}
+
+function pasteKey(e) {
+  insertKey(e, true)
 }
 
 function setEnableEditKey(on) {

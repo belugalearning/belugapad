@@ -16,7 +16,7 @@ mixin parse(key, val, level)
   primitive = type != 'Dictionary' && type != 'Array'
   items = !primitive && Object.keys(val).length
 
-  div(data-type="#{type} #{primitive ? 'primitive' : 'collection'}")
+  div(data-type="#{type} #{primitive ? 'primitive' : 'collection'}", data-key=key)
     span.expand-collapse(style="margin-left:#{indent}px;")
     span(data-field="key")=key
     span(data-control="del")

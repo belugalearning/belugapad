@@ -19,17 +19,13 @@ mixin parse(key, val, level)
   div(data-type="#{type} #{primitive ? 'primitive' : 'collection'}", data-key=key)
     span.expand-collapse(style="margin-left:#{indent}px;")
     span(data-field="key")=key
-    span(data-control="del")
-      input(type="button", value="del")
-    span(data-control="ins")
-      input(type="button", value="ins")
+    span(data-controls)
+      each action in ["copy", "paste", "del", "ins"]
+        input(type="button", value=action, data-action=action)
     span(data-field="type")
       select(disabled="disabled")
-        option(value="Array", selected=type=="Array") Array
-        option(value="Dictionary", selected=type=="Dictionary") Dictionary
-        option(value="Boolean", selected=type=="Boolean") Boolean
-        option(value="Number", selected=type=="Number") Number
-        option(value="String", selected=type=="String") String
+        each t in ["Array", "Dictionary", "Boolean", "Number", "String"]
+          option(value=t, selected=t==type)=t
     span(data-field="value")
       if type == 'Boolean'
         select

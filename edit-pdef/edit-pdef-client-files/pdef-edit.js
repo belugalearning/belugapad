@@ -26,8 +26,8 @@ $(function() {
       $('div[data-type].selected').removeClass('selected')
       $(e.currentTarget).addClass('selected')
     })
-    .on('click', 'div[data-type].selected > span > input[type="button"][value="del"]', deleteKey)
-    .on('click', 'div[data-type].selected > span > input[type="button"][value="ins"]', insertKey)
+    .on('click', 'div[data-type].selected > span[data-controls] > [data-action="del"]', deleteKey)
+    .on('click', 'div[data-type].selected > span[data-controls] > [data-action="ins"]', insertKey)
     .on('change', 'div[data-type~="primitive"] > span[data-field="value"] > select', valueOptionChanged)
 
   // test-edits button listener

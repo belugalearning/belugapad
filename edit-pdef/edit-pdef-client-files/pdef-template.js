@@ -218,17 +218,57 @@ buf.push(attrs({ 'style':("margin-left:" + (indent) + "px;"), "class": ('expand-
 buf.push('></span><span data-field="key">');
 var __val__ = key
 buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</span><span data-control="del"><input type="button" value="del"/></span><span data-control="ins"><input type="button" value="ins"/></span><span data-field="type"><select disabled="disabled"><option');
-buf.push(attrs({ 'value':("Array"), 'selected':(type=="Array") }, {"value":true,"selected":true}));
-buf.push('>Array</option><option');
-buf.push(attrs({ 'value':("Dictionary"), 'selected':(type=="Dictionary") }, {"value":true,"selected":true}));
-buf.push('>Dictionary</option><option');
-buf.push(attrs({ 'value':("Boolean"), 'selected':(type=="Boolean") }, {"value":true,"selected":true}));
-buf.push('>Boolean</option><option');
-buf.push(attrs({ 'value':("Number"), 'selected':(type=="Number") }, {"value":true,"selected":true}));
-buf.push('>Number</option><option');
-buf.push(attrs({ 'value':("String"), 'selected':(type=="String") }, {"value":true,"selected":true}));
-buf.push('>String</option></select></span><span data-field="value">');
+buf.push('</span><span data-controls="data-controls">');
+// iterate ["copy", "paste", "del", "ins"]
+;(function(){
+  if ('number' == typeof ["copy", "paste", "del", "ins"].length) {
+    for (var $index = 0, $$l = ["copy", "paste", "del", "ins"].length; $index < $$l; $index++) {
+      var action = ["copy", "paste", "del", "ins"][$index];
+
+buf.push('<input');
+buf.push(attrs({ 'type':("button"), 'value':(action), 'data-action':(action) }, {"type":true,"value":true,"data-action":true}));
+buf.push('/>');
+    }
+  } else {
+    for (var $index in ["copy", "paste", "del", "ins"]) {
+      var action = ["copy", "paste", "del", "ins"][$index];
+
+buf.push('<input');
+buf.push(attrs({ 'type':("button"), 'value':(action), 'data-action':(action) }, {"type":true,"value":true,"data-action":true}));
+buf.push('/>');
+   }
+  }
+}).call(this);
+
+buf.push('</span><span data-field="type"><select disabled="disabled">');
+// iterate ["Array", "Dictionary", "Boolean", "Number", "String"]
+;(function(){
+  if ('number' == typeof ["Array", "Dictionary", "Boolean", "Number", "String"].length) {
+    for (var $index = 0, $$l = ["Array", "Dictionary", "Boolean", "Number", "String"].length; $index < $$l; $index++) {
+      var t = ["Array", "Dictionary", "Boolean", "Number", "String"][$index];
+
+buf.push('<option');
+buf.push(attrs({ 'value':(t), 'selected':(t==type) }, {"value":true,"selected":true}));
+buf.push('>');
+var __val__ = t
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</option>');
+    }
+  } else {
+    for (var $index in ["Array", "Dictionary", "Boolean", "Number", "String"]) {
+      var t = ["Array", "Dictionary", "Boolean", "Number", "String"][$index];
+
+buf.push('<option');
+buf.push(attrs({ 'value':(t), 'selected':(t==type) }, {"value":true,"selected":true}));
+buf.push('>');
+var __val__ = t
+buf.push(escape(null == __val__ ? "" : __val__));
+buf.push('</option>');
+   }
+  }
+}).call(this);
+
+buf.push('</select></span><span data-field="value">');
 if ( type == 'Boolean')
 {
 buf.push('<select><option');

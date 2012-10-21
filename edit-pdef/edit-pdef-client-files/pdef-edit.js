@@ -26,6 +26,7 @@ $(function() {
       $(e.currentTarget).addClass('selected')
     })
     .on('click', 'div[data-type].selected > span > input[type="button"][value="del"]', deleteKey)
+    .on('change', 'div[data-type~="primitive"] > span[data-field="value"] > select', valueOptionChanged)
 
   // test-edits button listener
   $('input[type="button"][value="test"]').on('click', function() {
@@ -37,6 +38,10 @@ $(function() {
   $('input[type="button"][value="cancel"]').on('click', function() {
     if (ios) self.location = "cancel"
   })
+  // undo / redo
+  $('input[type="button"][value="undo"]').on('click', undo)
+  $('input[type="button"][value="redo"]').on('click', redo)
+  
 
   ios ? self.location = "ready": appInterface.loadPDef(testJSON)
 })
@@ -165,6 +170,17 @@ function setEnableEditValue(on) {
   $(document)[on ? 'on' : 'off']('click', 'div[data-type] > div[data-type~="primitive"].selected:not([data-type~="Boolean"]) > span[data-field="value"]:not(:has(>input))', fn)
 }
 
+function valueOptionChanged() {
+  var path = pathToElement(this)
+  recordChange({
+    type: 'edit-value'
+    , parentPath: path.splice(1)
+    , key: path[0]
+    , oldVal: objAtPath(path)
+    , newVal: $(this).val()
+  })
+}
+
 function updateColWidths() {
     var maxCol1Right = Math.max.apply(null, $('[data-field="key"]').map(function() {
       return $(this).offset().left + $(this).outerWidth(true)
@@ -216,7 +232,8 @@ function pathToElement(el) {
 
 function elementSelectorFromPath(path) {
   var sel = '#pdef-wrapper > [data-type][data-key="root"]'
-  for (var i=path.length, part; part=path[--i];) {
+  for (var i=path.length; i--;) {
+    var part = path[i]
     if (typeof part == 'number') {
       sel += ' > [data-type]:eq(' + part + ')'
     } else {
@@ -272,8 +289,74 @@ function recordChange(change) {
       alert('unhandled change type: ' + change.type)
       return false
   }
-  if (lastSaveStackIndex > currStackIndex++) lastSaveStackIndex = null
+  changeStack[currStackIndex++] = change
+  if (lastSaveStackIndex > currStackIndex) lastSaveStackIndex = null
   changeStack.splice(currStackIndex)
-  changeStack.push(change)
+  updateUndoRedoEnabled()
   return true
+}
+
+function undo() {
+  var change = changeStack[--currStackIndex]
+  switch(change.type) {
+    case 'edit-key':
+      var $el = $(elementSelectorFromPath([change.newKey].concat(change.parentPath)))
+      $el
+        .attr('data-key', change.oldKey)
+        .children('span[data-field="key"]').html(change.oldKey)
+      var parent = objAtPath(change.parentPath)
+      parent[change.oldKey] = parent[change.newKey]
+      delete parent[change.newKey]
+      break
+    case 'delete-key':
+      var parent = objAtPath(change.parentPath)
+      parent[change.key] = change.value
+
+      var $temp = $('<span/>')
+      jade.render($temp[0], 'parse-pdef-template', { key:change.key, value:change.value, level:change.parentPath.length+1 })
+
+      var $parent = $(elementSelectorFromPath(change.parentPath))
+      if ($parent.is('[data-type~="Array"]') && change.key > 0) $parent.children('[data-key]:eq('+change.key-1+')').after($temp.children())
+      else $parent.append($temp.children())
+      break
+    case 'edit-value':
+      var $span = $(elementSelectorFromPath([change.key].concat(change.parentPath))).children('[data-field="value"]')
+        , $sel = $span.children('select')
+      $sel.length ? $sel.val(change.oldVal.toString()) : $span.html(change.oldVal)
+      objAtPath(change.parentPath)[change.key] = change.oldVal
+      break
+  }
+  updateUndoRedoEnabled()
+}
+
+function redo() {
+  var change = changeStack[currStackIndex++]
+  switch(change.type) {
+    case 'edit-key':
+      var $el = $(elementSelectorFromPath([change.oldKey].concat(change.parentPath)))
+      $el
+        .attr('data-key', change.newKey)
+        .children('span[data-field="key"]').html(change.newKey)
+      var parent = objAtPath(change.parentPath)
+      parent[change.newKey] = parent[change.oldKey]
+      delete parent[change.oldKey]
+      break
+    case 'delete-key':
+      var parent = objAtPath(change.parentPath)
+      delete parent[change.key]
+      $(elementSelectorFromPath([change.key].concat(change.parentPath))).remove()
+      break
+    case 'edit-value':
+      var $span = $(elementSelectorFromPath([change.key].concat(change.parentPath))).children('[data-field="value"]')
+        , $sel = $span.children('select')
+      $sel.length ? $sel.val(change.newVal.toString()) : $span.html(change.newVal)
+      objAtPath(change.parentPath)[change.key] = change.newVal
+      break
+  }
+  updateUndoRedoEnabled()
+}
+
+function updateUndoRedoEnabled() {
+  $('input[type="button"][value="undo"]').prop('disabled', currStackIndex == 0)
+  $('input[type="button"][value="redo"]').prop('disabled', currStackIndex == changeStack.length)
 }

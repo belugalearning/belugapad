@@ -20,7 +20,7 @@ mixin parse(key, val, level)
     span.expand-collapse(style="margin-left:#{indent}px;")
     span(data-field="key")=key
     span(data-controls)
-      each action in ["copy", "paste", "del", "ins"]
+      each action in ["copy", "paste", "ins", "del"]
         input(type="button", value=action, data-action=action)
     span(data-field="type")
       select(disabled="disabled")

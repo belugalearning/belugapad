@@ -219,19 +219,19 @@ buf.push('></span><span data-field="key">');
 var __val__ = key
 buf.push(escape(null == __val__ ? "" : __val__));
 buf.push('</span><span data-controls="data-controls">');
-// iterate ["copy", "paste", "del", "ins"]
+// iterate ["copy", "paste", "ins", "del"]
 ;(function(){
-  if ('number' == typeof ["copy", "paste", "del", "ins"].length) {
-    for (var $index = 0, $$l = ["copy", "paste", "del", "ins"].length; $index < $$l; $index++) {
-      var action = ["copy", "paste", "del", "ins"][$index];
+  if ('number' == typeof ["copy", "paste", "ins", "del"].length) {
+    for (var $index = 0, $$l = ["copy", "paste", "ins", "del"].length; $index < $$l; $index++) {
+      var action = ["copy", "paste", "ins", "del"][$index];
 
 buf.push('<input');
 buf.push(attrs({ 'type':("button"), 'value':(action), 'data-action':(action) }, {"type":true,"value":true,"data-action":true}));
 buf.push('/>');
     }
   } else {
-    for (var $index in ["copy", "paste", "del", "ins"]) {
-      var action = ["copy", "paste", "del", "ins"][$index];
+    for (var $index in ["copy", "paste", "ins", "del"]) {
+      var action = ["copy", "paste", "ins", "del"][$index];
 
 buf.push('<input');
 buf.push(attrs({ 'type':("button"), 'value':(action), 'data-action':(action) }, {"type":true,"value":true,"data-action":true}));

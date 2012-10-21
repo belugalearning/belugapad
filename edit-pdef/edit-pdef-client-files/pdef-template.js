@@ -218,7 +218,7 @@ buf.push(attrs({ 'style':("margin-left:" + (indent) + "px;"), "class": ('expand-
 buf.push('></span><span data-field="key">');
 var __val__ = key
 buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</span><span data-control="del"><input type="button" value="del"/></span><span data-control="ins"><input type="button" value="ins" disabled="disabled"/></span><span data-field="type"><select disabled="disabled"><option');
+buf.push('</span><span data-control="del"><input type="button" value="del"/></span><span data-control="ins"><input type="button" value="ins"/></span><span data-field="type"><select disabled="disabled"><option');
 buf.push(attrs({ 'value':("Array"), 'selected':(type=="Array") }, {"value":true,"selected":true}));
 buf.push('>Array</option><option');
 buf.push(attrs({ 'value':("Dictionary"), 'selected':(type=="Dictionary") }, {"value":true,"selected":true}));

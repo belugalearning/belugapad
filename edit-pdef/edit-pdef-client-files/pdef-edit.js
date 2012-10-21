@@ -27,6 +27,7 @@ $(function() {
       $(e.currentTarget).addClass('selected')
     })
     .on('click', 'div[data-type].selected > span > input[type="button"][value="del"]', deleteKey)
+    .on('click', 'div[data-type].selected > span > input[type="button"][value="ins"]', insertKey)
     .on('change', 'div[data-type~="primitive"] > span[data-field="value"] > select', valueOptionChanged)
 
   // test-edits button listener
@@ -99,6 +100,51 @@ function deleteKey(e) {
   }) && $el.remove()
 }
 
+function insertKey(e) {
+  var $temp = $('<span/>')
+    , $parent = $(e.target).closest('[data-type~="collection"]')
+    , parentPath = pathToElement($parent)
+    , key
+    , value = ''
+
+  if ($parent.is('[data-type~="Array"]')) {
+    key = $parent.children('[data-type]').length
+  } else {
+    var i = 0, key
+    while ($parent.children('[data-key="' + (key='item'+i) + '"]').length) i++
+  }
+
+  jade.render($temp[0], 'parse-pdef-template', { key:key, value:value, level:parentPath.length + 1 })
+
+  var $el = $temp.children().appendTo($parent)
+    , elTop = $el.offset().top
+    , elBottom = elTop + $el.height()
+    , $wrapper = $('#pdef-wrapper')
+    , wrapTop = $wrapper.offset().top
+    , wrapBottom = wrapTop + $wrapper.height()
+    , wrapScrollTop = $wrapper.scrollTop()
+
+  // ensure new key in view
+  if (elTop < wrapTop) {
+    $wrapper.scrollTop(wrapScrollTop - wrapTop + elTop)
+  } else if (elBottom > wrapBottom) {
+    $wrapper.scrollTop(10 + wrapScrollTop + elBottom - wrapBottom)
+  }
+
+  setTimeout(function() {
+    $el.children('[data-field="value"]').click().click() // select new item 
+  }, 0)
+
+  // TODO: record change - include index to protect against future non-append inserts 
+  recordChange({
+    type: 'insert-key'
+    , parentPath: parentPath
+    , key: key
+    , value: value
+    , index: $parent.children('[data-type]').index($el)
+  })
+}
+
 function setEnableEditKey(on) {
   var fn = arguments.callee.fn = arguments.callee.fn || function() {
     var $span = $(this)
@@ -141,8 +187,8 @@ function setEnableEditValue(on) {
       , oldVal = $span.text()
       , w = $('#pdef-wrapper').width() - $span.offset().left
       , $dt = $span.closest('[data-type]')
-      , isNumber = $dt.is('[data-type~="Number"]')
-      , inputType = isNumber ? 'number' : 'text'
+      , isNumberField = $dt.is('[data-type~="Number"]')
+      , inputType = isNumberField ? 'number' : 'text'
       , $input = $('<input type="'+inputType+'"/>').val(oldVal).width(w)
 
     $span.html($input)
@@ -158,7 +204,7 @@ function setEnableEditValue(on) {
         return
       }
 
-      if (isNumber) newVal = Number(newVal)
+      if (isNumberField) newVal = Number(newVal)
       var path = pathToElement($span)
       $span.html(newVal)
       recordChange({
@@ -225,6 +271,8 @@ function getJSON() {
 }
 
 function pathToElement(el) {
+  if (!$(el).parent('[data-type]').length) return []
+
   var stack = $(el).parents('[data-type][data-key!="root"]').toArray()
   if ($(el).is('[data-type]')) stack.unshift(el)
 
@@ -258,15 +306,9 @@ function objAtPath(path) {
 
 function recordChange(change) {
   switch(change.type) {
-    case 'edit-key':
+    case 'insert-key':
       var parent = objAtPath(change.parentPath)
-      if (!parent) {
-        var path = Object.prototype.toString.call(change.parentPath) == '[object Array]' ? change.parentPath.join(' < ') : '[BAD PATH]'
-        alert('parent not found at path:' + path)
-        return false
-      }
-      parent[change.newKey] = parent[change.oldKey]
-      delete parent[change.oldKey]
+      parent[change.key] = change.value
       break
     case 'delete-key':
       var parent = objAtPath(change.parentPath)
@@ -277,6 +319,16 @@ function recordChange(change) {
       }
       change.value = parent[change.key]
       delete parent[change.key]
+      break
+    case 'edit-key':
+      var parent = objAtPath(change.parentPath)
+      if (!parent) {
+        var path = Object.prototype.toString.call(change.parentPath) == '[object Array]' ? change.parentPath.join(' < ') : '[BAD PATH]'
+        alert('parent not found at path:' + path)
+        return false
+      }
+      parent[change.newKey] = parent[change.oldKey]
+      delete parent[change.oldKey]
       break
     case 'edit-value':
       var parent = objAtPath(change.parentPath)
@@ -305,14 +357,11 @@ function recordChange(change) {
 function undo() {
   var change = changeStack[--currStackIndex]
   switch(change.type) {
-    case 'edit-key':
-      var $el = $(elementSelectorFromPath([change.newKey].concat(change.parentPath)))
-      $el
-        .attr('data-key', change.oldKey)
-        .children('span[data-field="key"]').html(change.oldKey)
+    case 'insert-key':
       var parent = objAtPath(change.parentPath)
-      parent[change.oldKey] = parent[change.newKey]
-      delete parent[change.newKey]
+      delete parent[change.key]
+      var $parent = $(elementSelectorFromPath(change.parentPath))
+      $parent.children('[data-key="' + change.key + '"]').remove()
       break
     case 'delete-key':
       var parent = objAtPath(change.parentPath)
@@ -325,6 +374,15 @@ function undo() {
       var $next = $parent.children('[data-type]:eq('+change.index+')')
       if ($next.length) $next.before($temp.children())
       else $parent.append($temp.children())
+      break
+    case 'edit-key':
+      var $el = $(elementSelectorFromPath([change.newKey].concat(change.parentPath)))
+      $el
+        .attr('data-key', change.oldKey)
+        .children('span[data-field="key"]').html(change.oldKey)
+      var parent = objAtPath(change.parentPath)
+      parent[change.oldKey] = parent[change.newKey]
+      delete parent[change.newKey]
       break
     case 'edit-value':
       var $span = $(elementSelectorFromPath([change.key].concat(change.parentPath))).children('[data-field="value"]')
@@ -340,6 +398,24 @@ function undo() {
 function redo() {
   var change = changeStack[currStackIndex++]
   switch(change.type) {
+    case 'insert-key':
+      var parent = objAtPath(change.parentPath)
+      parent[change.key] = [change.value]
+
+      var $temp = $('<span/>')
+      jade.render($temp[0], 'parse-pdef-template', { key:change.key, value:change.value, level:change.parentPath.length+1 })
+
+      var $parent = $(elementSelectorFromPath(change.parentPath))
+      var $next = $parent.children('[data-type]:eq('+change.index+')')
+      if ($next.length) $next.before($temp.children())
+      else $parent.append($temp.children())
+
+      break
+    case 'delete-key':
+      var parent = objAtPath(change.parentPath)
+      delete parent[change.key]
+      $(elementSelectorFromPath([change.key].concat(change.parentPath))).remove()
+      break
     case 'edit-key':
       var $el = $(elementSelectorFromPath([change.oldKey].concat(change.parentPath)))
       $el
@@ -348,11 +424,6 @@ function redo() {
       var parent = objAtPath(change.parentPath)
       parent[change.newKey] = parent[change.oldKey]
       delete parent[change.oldKey]
-      break
-    case 'delete-key':
-      var parent = objAtPath(change.parentPath)
-      delete parent[change.key]
-      $(elementSelectorFromPath([change.key].concat(change.parentPath))).remove()
       break
     case 'edit-value':
       var $span = $(elementSelectorFromPath([change.key].concat(change.parentPath))).children('[data-field="value"]')

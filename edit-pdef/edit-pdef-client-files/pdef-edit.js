@@ -282,7 +282,7 @@ function getJSON() {
 }
 
 function pathToElement(el) {
-  if (!$(el).parent('[data-type]').length) return []
+  if (!$(el).parents('[data-type]').length) return []
 
   var stack = $(el).parents('[data-type][data-key!="root"]').toArray()
   if ($(el).is('[data-type]')) stack.unshift(el)

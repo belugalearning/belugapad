@@ -29,6 +29,7 @@ $(function() {
     })
     .on('click', 'div[data-type].selected > span[data-controls] > [data-action="del"]', deleteKey)
     .on('click', 'div[data-type].selected > span[data-controls] > [data-action="ins"]', insertKey)
+    .on('click', 'div[data-type].selected > span[data-controls] > [data-action="copy"]', copyKey)
     .on('change', 'div[data-type~="primitive"] > span[data-field="value"] > select', valueOptionChanged)
 
   // test-edits button listener
@@ -154,6 +155,15 @@ function insertKey(e) {
     , value: value
     , index: index
   })
+}
+
+function copyKey(e) {
+  var path = pathToElement(e.target)
+    , key = path[0]
+    , value = JSON.parse(JSON.stringify(objAtPath(path)))
+  clipboard = { key:key, value:value }
+
+  $('#pdef-wrapper').attr('data-clipboard', '')
 }
 
 function setEnableEditKey(on) {

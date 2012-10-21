@@ -336,13 +336,22 @@ function recordChange(change) {
       parent[change.key] = change.value
       break
     case 'delete-key':
-      if (!parent) {
-        var path = Object.prototype.toString.call(change.parentPath) == '[object Array]' ? change.parentPath.join(' < ') : '[BAD PATH]'
-        alert('parent not found at path:' + path)
-        return false
-      }
       change.value = parent[change.key]
-      delete parent[change.key]
+
+      if (parentIsArray) {
+        $(elementSelectorFromPath(change.parentPath))
+          .children('[data-key]:gt('+change.key+')').each(function(i, el) {
+            var ix = change.key + i
+            $(el).attr('data-key', ix).children('[data-field="key"]').html(ix)
+          })
+
+        for (var i=change.key; parent[++i];) {
+          parent[i-1] = parent[i]
+        }
+        parent.splice(i-1)
+      } else {
+        delete parent[change.key]
+      }
       break
     case 'edit-key':
       if (!parent) {
@@ -390,20 +399,19 @@ function undo() {
           var ix = change.key + i
           $(el).attr('data-key', ix).children('[data-field="key"]').html(ix)
         })
+        $parent.children('[data-key]:eq('+change.key+')').remove()
 
         for (var i=change.key; parent[++i];) {
           parent[i-1] = parent[i]
         }
         parent.splice(i-1)
       } else {
+        $parent.children('[data-key="'+change.key+'"]').remove()
         delete parent[change.key]
       }
 
-      $parent.children('[data-key]:eq('+change.key+')').remove()
       break
     case 'delete-key':
-      parent[change.key] = change.value
-
       var $temp = $('<span/>')
       jade.render($temp[0], 'parse-pdef-template', { key:change.key, value:change.value, level:change.parentPath.length+1 })
 
@@ -411,6 +419,20 @@ function undo() {
       var $next = $parent.children('[data-type]:eq('+change.index+')')
       if ($next.length) $next.before($temp.children())
       else $parent.append($temp.children())
+
+      if (parentIsArray) {
+        $parent
+          .children('[data-key]:gt('+change.key+')')
+          .each(function(i, el) {
+            var ix = change.key + i + 1
+            $(el).attr('data-key', ix).children('[data-field="key"]').html(ix)
+          })
+
+        for (var i=parent.length; i > change.key; i--) {
+          parent[i] = parent[--i]
+        }
+      }
+      parent[change.key] = change.value
       break
     case 'edit-key':
       var $el = $(elementSelectorFromPath([change.newKey].concat(change.parentPath)))
@@ -461,8 +483,23 @@ function redo() {
       parent[change.key] = change.value
       break
     case 'delete-key':
-      delete parent[change.key]
-      $(elementSelectorFromPath([change.key].concat(change.parentPath))).remove()
+      var $parent = $(elementSelectorFromPath(change.parentPath))
+
+      if (parentIsArray) {
+        $parent.children('[data-key]:gt('+change.key+')').each(function(i, el) {
+          var ix = change.key + i
+          $(el).attr('data-key', ix).children('[data-field="key"]').html(ix)
+        })
+        $parent.children('[data-key]:eq('+change.key+')').remove()
+
+        for (var i=change.key; parent[++i];) {
+          parent[i-1] = parent[i]
+        }
+        parent.splice(i-1)
+      } else {
+        $parent.children('[data-key="'+change.key+'"]').remove()
+        delete parent[change.key]
+      }
       break
     case 'edit-key':
       var $el = $(elementSelectorFromPath([change.oldKey].concat(change.parentPath)))

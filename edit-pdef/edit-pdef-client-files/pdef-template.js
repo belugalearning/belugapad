@@ -212,7 +212,7 @@ var indent = (40 * (level || 0));
 var primitive = (type != 'Dictionary' && type != 'Array');
 var items = (!primitive && Object.keys(val).length);
 buf.push('<div');
-buf.push(attrs({ 'data-type':("" + (type) + " " + (primitive ? 'primitive' : 'collection') + "") }, {"data-type":true}));
+buf.push(attrs({ 'data-type':("" + (type) + " " + (primitive ? 'primitive' : 'collection') + ""), 'data-key':(key) }, {"data-type":true,"data-key":true}));
 buf.push('><span');
 buf.push(attrs({ 'style':("margin-left:" + (indent) + "px;"), "class": ('expand-collapse') }, {"style":true}));
 buf.push('></span><span data-field="key">');

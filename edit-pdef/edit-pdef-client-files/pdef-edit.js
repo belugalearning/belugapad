@@ -3,6 +3,7 @@ var ios = navigator.userAgent.match(/iphone|ipad|ipod/i) !== null
   , changeStack = []
   , currStackIndex = 0
   , lastSaveStackIndex = 0
+  , clipboard
 
 $(function() {
   $('#pdef-wrapper').height($(window).height() - $('#pdef-wrapper').offset().top - 10)
@@ -102,15 +103,16 @@ function deleteKey(e) {
 
 function insertKey(e) {
   var $temp = $('<span/>')
-    , $parent = $(e.target).closest('[data-type~="collection"]')
+    , $selected = $(e.target).closest('[data-key]')
+    , $parent = $(e.target).closest('[data-type~="collection"]:not(.collapsed)')
+    , insertAsFirstChildOfSelected = $selected[0] === $parent[0]
+    , index = insertAsFirstChildOfSelected ? 0 : $parent.children('[data-key]').index($selected) + 1
     , parentPath = pathToElement($parent)
     , key
     , value = ''
 
-  $parent.removeClass('collapsed')
-
   if ($parent.is('[data-type~="Array"]')) {
-    key = $parent.children('[data-type]').length
+    key = index
   } else {
     var i = 0, key
     while ($parent.children('[data-key="' + (key='item'+i) + '"]').length) i++
@@ -118,24 +120,31 @@ function insertKey(e) {
 
   jade.render($temp[0], 'parse-pdef-template', { key:key, value:value, level:parentPath.length + 1 })
 
-  var $el = $temp.children().appendTo($parent)
-    , elTop = $el.offset().top
+  var $el = $temp.children()
+    , $next = $parent.children('[data-key]:eq(' + index + ')')
+
+  $next.length ? $next.before($el) : $parent.append($el)
+
+  var elTop = $el.offset().top
     , elBottom = elTop + $el.height()
     , $wrapper = $('#pdef-wrapper')
     , wrapTop = $wrapper.offset().top
     , wrapBottom = wrapTop + $wrapper.height()
     , wrapScrollTop = $wrapper.scrollTop()
+    , scrolled = false
 
   // ensure new key in view
   if (elTop < wrapTop) {
+    scrolled = true
     $wrapper.scrollTop(wrapScrollTop - wrapTop + elTop)
   } else if (elBottom > wrapBottom) {
+    scrolled = true
     $wrapper.scrollTop(10 + wrapScrollTop + elBottom - wrapBottom)
   }
 
-  setTimeout(function() {
-    $el.children('[data-field="value"]').click().click() // select new item 
-  }, 0)
+  var selectNewKey = function() { $el.click() }
+  selectNewKey()
+  setTimeout(function() { selectNewKey() }, 0)
 
   // TODO: record change - include index to protect against future non-append inserts 
   recordChange({
@@ -143,7 +152,7 @@ function insertKey(e) {
     , parentPath: parentPath
     , key: key
     , value: value
-    , index: $parent.children('[data-type]').index($el)
+    , index: index
   })
 }
 

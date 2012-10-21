@@ -107,6 +107,8 @@ function insertKey(e) {
     , key
     , value = ''
 
+  $parent.removeClass('collapsed')
+
   if ($parent.is('[data-type~="Array"]')) {
     key = $parent.children('[data-type]').length
   } else {

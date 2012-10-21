@@ -89,11 +89,13 @@ function setEnableExpandCollapse(on) {
 
 function deleteKey(e) {
   var path = pathToElement(e.target)
-  recordChange({
+  var $el = $(this).closest('[data-type]')
+  var r = recordChange({
     type:'delete-key'
     , key: path[0]
     , parentPath:path.splice(1)
-  }) && $(this).closest('div[data-type]').remove()
+    , index: $el.siblings('[data-type]').andSelf().index($el)
+  }) && $el.remove()
 }
 
 function setEnableEditKey(on) {
@@ -283,6 +285,8 @@ function recordChange(change) {
         alert('key not found at path:' + change.key + ' < ' + change.parentPath.join(' < '))
         return false
       }
+      if (typeof parent[change.key] == 'boolean') change.newVal = Boolean(change.newVal)
+      else if (typeof parent[change.key] == 'number') change.newVal = Number(change.newVal)
       parent[change.key] = change.newVal
       break
     default:
@@ -316,7 +320,8 @@ function undo() {
       jade.render($temp[0], 'parse-pdef-template', { key:change.key, value:change.value, level:change.parentPath.length+1 })
 
       var $parent = $(elementSelectorFromPath(change.parentPath))
-      if ($parent.is('[data-type~="Array"]') && change.key > 0) $parent.children('[data-key]:eq('+change.key-1+')').after($temp.children())
+      var $next = $parent.children('[data-type]:eq('+change.index+')')
+      if ($next.length) $next.before($temp.children())
       else $parent.append($temp.children())
       break
     case 'edit-value':

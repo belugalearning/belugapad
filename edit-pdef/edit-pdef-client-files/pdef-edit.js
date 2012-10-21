@@ -5,6 +5,7 @@ var ios = navigator.userAgent.match(/iphone|ipad|ipod/i) !== null
   , lastSaveStackIndex = 0
 
 $(function() {
+  $('#pdef-wrapper').height($(window).height() - $('#pdef-wrapper').offset().top - 10)
   setEnableExpandCollapse(true)
   setEnableEditKey(true)
   setEnableEditValue(true)

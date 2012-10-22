@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CORE</key>
+	<true/>
+	<key>REPEAT_AS_IS_MIN</key>
+	<string>3</string>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Write an equation to express this.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>which is larger by ???</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Pick the number that is exactly {$inc} more than&lt;/b:t&gt;
+&lt;b:ot tag=&quot;d&quot;&gt;{$beginning}&lt;/b:ot&gt;
+&lt;b:t&gt;to complete the expression below.&lt;/b:t&gt;
+&lt;b:ot tag=&quot;a&quot;&gt;{$xless}&lt;/b:ot&gt;
+&lt;b:t&gt;,&lt;/b:t&gt;
+&lt;b:ot tag=&quot;b&quot;&gt;{$right}&lt;/b:ot&gt;
+&lt;b:t&gt;,&lt;/b:t&gt;
+&lt;b:ot tag=&quot;c&quot;&gt;{$beginning-$inc}&lt;/b:ot&gt;
+&lt;b:t&gt;or&lt;/b:t&gt;
+&lt;b:ot tag=&quot;d&quot;&gt;{$xmore}&lt;/b:ot&gt;</string>
+		<string>&lt;b:ot tag=&quot;d&quot; enabled=&quot;yes&quot;&gt;{$beginning}&lt;/b:ot&gt;
+&lt;b:op op=&quot;&amp;lt;&quot; picker=&quot;yes&quot; /&gt;
+&lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt;{$right}&lt;/b:ot&gt;</string>
+	</array>
+	<key>EVAL_TYPE</key>
+	<string>ALL_ENABLED</string>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$var4</string>
+			<key>MIN</key>
+			<string>11</string>
+			<key>MAX</key>
+			<string>89</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$var1</string>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>8</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$var2</string>
+			<key>MIN</key>
+			<string>0</string>
+			<key>MAX</key>
+			<string>9</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$var3</string>
+			<key>MIN</key>
+			<string>0</string>
+			<key>MAX</key>
+			<string>9</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$inc</string>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>100</string>
+				<string>10</string>
+				<string>1</string>
+			</array>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$hundred</string>
+			<key>VALUE</key>
+			<string>{$var1*100}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$ten</string>
+			<key>VALUE</key>
+			<string>{$var2*10}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$hundredandten</string>
+			<key>VALUE</key>
+			<string>{$hundred+$ten}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$beginning</string>
+			<key>VALUE</key>
+			<string>{$var3+$hundredandten}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$right</string>
+			<key>VALUE</key>
+			<string>{$beginning+$inc}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$xmore</string>
+			<key>VALUE</key>
+			<string>{$beginning+$var4}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$xless</string>
+			<key>VALUE</key>
+			<string>{$beginning-$var4}</string>
+		</dict>
+	</array>
+</dict>
+</plist>

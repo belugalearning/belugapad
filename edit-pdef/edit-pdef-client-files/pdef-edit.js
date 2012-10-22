@@ -140,6 +140,8 @@ function insertKey(e, paste) {
   var $el = $temp.children()
     , $next = $parent.children('[data-key]:eq(' + index + ')')
 
+  if ($el.is('[data-type~="collection"]')) $el.addClass('collapsed')
+
   $next.length ? $next.before($el) : $parent.append($el)
 
   var elTop = $el.offset().top
@@ -513,9 +515,12 @@ function undo() {
       jade.render($temp[0], 'parse-pdef-template', { key:change.key, value:change.value, level:change.parentPath.length+1 })
 
       var $parent = $(elementSelectorFromPath(change.parentPath))
-      var $next = $parent.children('[data-type]:eq('+change.index+')')
-      if ($next.length) $next.before($temp.children())
-      else $parent.append($temp.children())
+        , $next = $parent.children('[data-type]:eq('+change.index+')')
+        , $el = $temp.children()
+
+      if ($el.is('[data-type~="collection"]')) $el.addClass('collapsed')
+
+      $next.length ? $next.before($el) : $parent.append($el)
 
       if (parentIsArray) {
         $parent
@@ -564,9 +569,12 @@ function redo() {
       jade.render($temp[0], 'parse-pdef-template', { key:change.key, value:change.value, level:change.parentPath.length+1 })
 
       var $parent = $(elementSelectorFromPath(change.parentPath))
-      var $next = $parent.children('[data-type]:eq('+change.index+')')
-      if ($next.length) $next.before($temp.children())
-      else $parent.append($temp.children())
+        , $next = $parent.children('[data-type]:eq('+change.index+')')
+        , $el = $temp.children()
+
+      if ($el.is('[data-type~="collection"]')) $el.addClass('collapsed')
+
+      $next.length ? $next.before($el) : $parent.append($el)
 
       if (parentIsArray) {
         $parent

@@ -189,30 +189,15 @@ attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow |
 var buf = [];
 with (locals || {}) {
 var interp;
+var types = ({ '[object Array]':'Array collection', '[object Object]':'Dictionary collection', '[object Boolean]':'Boolean primitive', '[object Number]':'Number primitive', '[object String]':'String primitive' });
 var parse_mixin = function(key, val, level){
 var block = this.block, attributes = this.attributes || {}, escaped = this.escaped || {};
-switch (Object.prototype.toString.call(val)){
-case '[object Array]':
-var type = ('Array');
-  break;
-case '[object Object]':
-var type = ('Dictionary');
-  break;
-case '[object Boolean]':
-var type = ('Boolean');
-  break;
-case '[object Number]':
-var type = ('Number');
-  break;
-case '[object String]':
-var type = ('String');
-  break;
-}
 var indent = (40 * (level || 0));
-var primitive = (type != 'Dictionary' && type != 'Array');
+var type = (types[Object.prototype.toString.call(val)]);
+var primitive = (!type.match(/collection$/));
 var items = (!primitive && Object.keys(val).length);
 buf.push('<div');
-buf.push(attrs({ 'data-type':("" + (type) + " " + (primitive ? 'primitive' : 'collection') + ""), 'data-key':(key) }, {"data-type":true,"data-key":true}));
+buf.push(attrs({ 'data-type':(type), 'data-key':(key) }, {"data-type":true,"data-key":true}));
 buf.push('><span');
 buf.push(attrs({ 'style':("margin-left:" + (indent) + "px;"), "class": ('expand-collapse') }, {"style":true}));
 buf.push('></span><span data-field="key">');
@@ -240,28 +225,30 @@ buf.push('/>');
   }
 }).call(this);
 
-buf.push('</span><span data-field="type"><select disabled="disabled">');
-// iterate ["Array", "Dictionary", "Boolean", "Number", "String"]
+buf.push('</span><span data-field="type"><select');
+buf.push(attrs({ 'disabled':(level==0) }, {"disabled":true}));
+buf.push('>');
+// iterate types
 ;(function(){
-  if ('number' == typeof ["Array", "Dictionary", "Boolean", "Number", "String"].length) {
-    for (var $index = 0, $$l = ["Array", "Dictionary", "Boolean", "Number", "String"].length; $index < $$l; $index++) {
-      var t = ["Array", "Dictionary", "Boolean", "Number", "String"][$index];
+  if ('number' == typeof types.length) {
+    for (var $index = 0, $$l = types.length; $index < $$l; $index++) {
+      var t = types[$index];
 
 buf.push('<option');
 buf.push(attrs({ 'value':(t), 'selected':(t==type) }, {"value":true,"selected":true}));
 buf.push('>');
-var __val__ = t
+var __val__ = t.match(/^(\S+)/)[1]
 buf.push(escape(null == __val__ ? "" : __val__));
 buf.push('</option>');
     }
   } else {
-    for (var $index in ["Array", "Dictionary", "Boolean", "Number", "String"]) {
-      var t = ["Array", "Dictionary", "Boolean", "Number", "String"][$index];
+    for (var $index in types) {
+      var t = types[$index];
 
 buf.push('<option');
 buf.push(attrs({ 'value':(t), 'selected':(t==type) }, {"value":true,"selected":true}));
 buf.push('>');
-var __val__ = t
+var __val__ = t.match(/^(\S+)/)[1]
 buf.push(escape(null == __val__ ? "" : __val__));
 buf.push('</option>');
    }
@@ -269,7 +256,7 @@ buf.push('</option>');
 }).call(this);
 
 buf.push('</select></span><span data-field="value">');
-if ( type == 'Boolean')
+if ( type == 'Boolean primitive')
 {
 buf.push('<select><option');
 buf.push(attrs({ 'value':("1"), 'selected':(val) }, {"value":true,"selected":true}));

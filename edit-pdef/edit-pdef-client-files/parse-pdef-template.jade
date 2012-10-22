@@ -1,33 +1,25 @@
-mixin parse(key, val, level)
-  case Object.prototype.toString.call(val)
-    when '[object Array]'
-      type = 'Array'
-    when '[object Object]'
-      type = 'Dictionary'
-    when '[object Boolean]'
-      type = 'Boolean'
-    when '[object Number]'
-      type = 'Number'
-    when '[object String]'
-      type = 'String'
+types = { '[object Array]':'Array collection', '[object Object]':'Dictionary collection', '[object Boolean]':'Boolean primitive', '[object Number]':'Number primitive', '[object String]':'String primitive' }
 
+mixin parse(key, val, level)
   indent = 40 * (level || 0)
-    
-  primitive = type != 'Dictionary' && type != 'Array'
+
+  type = types[Object.prototype.toString.call(val)]
+  primitive = !type.match(/collection$/)
+
   items = !primitive && Object.keys(val).length
 
-  div(data-type="#{type} #{primitive ? 'primitive' : 'collection'}", data-key=key)
+  div(data-type=type, data-key=key)
     span.expand-collapse(style="margin-left:#{indent}px;")
     span(data-field="key")=key
     span(data-controls)
       each action in ["copy", "paste", "ins", "del"]
         input(type="button", value=action, data-action=action)
     span(data-field="type")
-      select(disabled="disabled")
-        each t in ["Array", "Dictionary", "Boolean", "Number", "String"]
-          option(value=t, selected=t==type)=t
+      select(disabled=level==0)
+        each t in types
+          option(value=t, selected=t==type)=t.match(/^(\S+)/)[1]
     span(data-field="value")
-      if type == 'Boolean'
+      if type == 'Boolean primitive'
         select
           option(value="1", selected=val) YES
           option(value="0", selected=!val) NO

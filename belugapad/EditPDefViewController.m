@@ -114,7 +114,7 @@
     NSString *bundledEditPDefDir = BUNDLE_FULL_PATH(@"/edit-pdef-client-files");    
     NSFileManager *fm = [NSFileManager defaultManager];
     
-    NSURL *url = [NSURL URLWithString:@"http://169.254.2.142:1234"]; // TODO: Update url to zubi.me ********************************************************************
+    NSURL *url = [NSURL URLWithString:@"http://169.254.83.155:1234"]; // TODO: Update url to zubi.me ********************************************************************
     NSURLRequest *req = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:5];
     NSHTTPURLResponse *response = nil;
     NSError *error = nil;

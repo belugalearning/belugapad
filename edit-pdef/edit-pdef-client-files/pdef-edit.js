@@ -27,6 +27,7 @@ $(function() {
       $('div[data-type].selected').removeClass('selected')
       $(e.currentTarget).addClass('selected')
     })
+    .on('change', 'div[data-type] > span[data-field="type"] > select', onTypeSelectChange)
     .on('click', 'div[data-type].selected > span[data-controls] > [data-action="del"]', deleteKey)
     .on('click', 'div[data-type].selected > span[data-controls] > [data-action="ins"]', insertKey)
     .on('click', 'div[data-type].selected > span[data-controls] > [data-action="copy"]', copyKey)
@@ -94,8 +95,9 @@ function setEnableExpandCollapse(on) {
 
 function deleteKey(e) {
   var path = pathToElement(e.target)
-  var $el = $(this).closest('[data-type]')
-  var r = recordChange({
+    , $el = $(this).closest('[data-type]')
+
+  recordChange({
     type:'delete-key'
     , key: path[0]
     , parentPath:path.splice(1)
@@ -219,6 +221,66 @@ function setEnableEditKey(on) {
   }
 
   $(document)[on ? 'on' : 'off']('click', 'div[data-type]:not([data-type~="Array"]) > div[data-type].selected > span[data-field="key"]:not(:has(>input))', fn)
+}
+
+function onTypeSelectChange(e) {
+  var path = pathToElement(e.target)
+    , $el = $(this).closest('[data-type]')
+
+  // Boolean store nothing
+  // Number store number
+  // String store string
+  // 
+  var oldType = $el.attr('data-type')
+    , newType = $el.children('[data-field="type"]').children('select').val()
+    , val = objAtPath(path)
+    , newVal
+
+  switch (newType) {
+    case 'Array collection':
+      if (oldType == 'Dictionary collection') {
+        newVal = Object.keys(val).map(function(k) { return val[k] })
+      } else {
+        newVal = []
+      }
+      break
+    case 'Dictionary collection':
+      newVal = {}
+      if (oldType == 'Array collection') val.forEach(function(item, i) { newVal['item'+i] = item })
+      break
+    case 'Boolean primitive':
+      newVal = (typeof val == 'string' &&  val.toLowerCase() == 'true') || (!isNaN(val) && Number(val) === 1)
+      break
+    case 'Number primitive':
+      newVal = !isNaN(val) && Number(val) || 0
+      break
+    case 'String primitive':
+      newVal = !isNaN(val) && Number(val).toString() || ''
+      break
+  }
+
+  recordChange({
+    type:'change-type'
+    , key: path[0]
+    , parentPath:path.slice(1)
+    , oldType: oldType
+    , newType: newType
+    , oldVal: JSON.parse(JSON.stringify(val))
+    , newVal: newVal
+  })
+}
+
+function changeType(change, reverse) {
+  var parent = objAtPath(change.parentPath)
+    , path = [change.key].concat(change.parentPath)
+    , $temp = $('<span/>')
+
+  parent[change.key] = reverse ? change.oldVal : change.newVal
+
+  jade.render($temp[0], 'parse-pdef-template', { key:change.key, value:parent[change.key], level:path.length })
+
+  $(elementSelectorFromPath(path)).replaceWith($temp.children())
+  $(elementSelectorFromPath(path)).click()
 }
 
 function setEnableEditValue(on) {
@@ -349,6 +411,9 @@ function recordChange(change) {
     , parentIsArray = parent && Object.prototype.toString.call(parent) == '[object Array]'
 
   switch(change.type) {
+    case 'change-type':
+      changeType(change, false)
+      break
     case 'insert-key':
       if (parentIsArray) {
         $(elementSelectorFromPath(change.parentPath))
@@ -420,6 +485,9 @@ function undo() {
     , parentIsArray = parent && Object.prototype.toString.call(parent) == '[object Array]'
 
   switch(change.type) {
+    case 'change-type':
+      changeType(change, true)
+      break
     case 'insert-key':
       var $parent = $(elementSelectorFromPath(change.parentPath))
 
@@ -488,6 +556,9 @@ function redo() {
     , parentIsArray = parent && Object.prototype.toString.call(parent) == '[object Array]'
 
   switch(change.type) {
+    case 'change-type':
+      changeType(change, false)
+      break
     case 'insert-key':
       var $temp = $('<span/>')
       jade.render($temp[0], 'parse-pdef-template', { key:change.key, value:change.value, level:change.parentPath.length+1 })

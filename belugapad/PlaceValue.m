@@ -177,41 +177,7 @@ static float kTimeToCageShake=7.0f;
     {
         BOOL finished=NO;
         
-        for(int i=0;i<[blockLabels count];i++)
-        {
-            CCLabelTTF *l=[blockLabels objectAtIndex:i];
-            DWPlaceValueCageGameObject *c=[allCages objectAtIndex:i];
-            
-            CGPoint cagePos=ccp(c.PosX, c.PosY+20);
-            if(!CGPointEqualToPoint(cagePos, l.position) && [l numberOfRunningActions]==0)
-                [l setPosition:cagePos];
-        }
-        for(int i=0;i<[multipleLabels count];i++)
-        {
-            CCLabelTTF *l=[blockLabels objectAtIndex:i];
-            DWPlaceValueCageGameObject *c=[allCages objectAtIndex:i];
-            
-            CGPoint cagePos=ccp(c.PosX, c.PosY+20);
-            if(!CGPointEqualToPoint(cagePos, l.position) && [l numberOfRunningActions]==0)
-                [l setPosition:cagePos];
-        }
-        
-        for(int i=0;i<[gw.AllGameObjects count];i++)
-        {
-            if([[gw.AllGameObjects objectAtIndex:i] isKindOfClass:[DWPlaceValueBlockGameObject class]])
-            {
-                DWPlaceValueBlockGameObject *b=[gw.AllGameObjects objectAtIndex:i];
-                
-                CGPoint reqPos=ccp(b.PosX,b.PosY);
-                
-                if(!CGPointEqualToPoint(reqPos, b.mySprite.position) && [b.mySprite numberOfRunningActions]==0)
-                {
-                   [b.mySprite setPosition:reqPos];
-                    finished=YES;
-                }
-            }
-        }
-        
+        finished=[self resetObjectPositions];
         
         if(finished)
             hasRunInteractionFeedback=NO;
@@ -1962,6 +1928,7 @@ static float kTimeToCageShake=7.0f;
 {
     if(thisCageWontTakeMe)
     {
+        
         DWPlaceValueCageGameObject *c=nil;
         DWPlaceValueBlockGameObject *cM=nil;
         if([[allCages objectAtIndex:currentColumnIndex]isKindOfClass:[DWPlaceValueCageGameObject class]])
@@ -1969,12 +1936,19 @@ static float kTimeToCageShake=7.0f;
         
         if(c.MountedObject)
             cM=(DWPlaceValueBlockGameObject*)c.MountedObject;
-    
-        [c.mySprite setOpacity:255];
-        [cM.mySprite setOpacity:255];
+        
+        [c.mySprite stopAllActions];
+        [cM.mySprite stopAllActions];
         
         [c.mySprite setPosition:ccp(c.PosX, c.PosY)];
         [cM.mySprite setPosition:ccp(c.PosX, c.PosY+20)];
+        
+        [c.mySprite setOpacity:255];
+        [cM.mySprite setOpacity:255];
+
+//        [c.mySprite runAction:[CCFadeOut actionWithDuration:0.5f]];
+//        [cM.mySprite runAction:[CCFadeOut actionWithDuration:0.5f]];
+        
     }
     // switch all opacities back to default
     for(int i=0;i<numberOfColumns;i++)
@@ -1983,6 +1957,74 @@ static float kTimeToCageShake=7.0f;
         [self setGridOpacity:i toOpacity:127];
     }
     
+}
+
+-(BOOL)resetObjectPositions
+{
+    BOOL finished=NO;
+    
+//    for(int i=0;i<[allCages count];i++)
+//    {
+//        DWPlaceValueCageGameObject *c=[allCages objectAtIndex:i];
+//        
+//        CGPoint cagePos=ccp(c.PosX, c.PosY);
+//        if(!CGPointEqualToPoint(cagePos, c.mySprite.position))
+//        {
+//            [c.mySprite setPosition:cagePos];
+//            [c.mySprite setOpacity:255];
+//            
+//            if(c.MountedObject)
+//            {
+//                DWPlaceValueBlockGameObject *cM=(DWPlaceValueBlockGameObject*)c.MountedObject;
+//                [cM.mySprite setPosition:ccp(c.PosX,c.PosY+20)];
+//                [cM.mySprite setOpacity:255];
+//            }
+//            
+//            finished=YES;
+//        }
+//    }
+    
+    for(int i=0;i<[blockLabels count];i++)
+    {
+        CCLabelTTF *l=[blockLabels objectAtIndex:i];
+        DWPlaceValueCageGameObject *c=[allCages objectAtIndex:i];
+        
+        CGPoint cagePos=ccp(c.PosX, c.PosY+20);
+        if(!CGPointEqualToPoint(cagePos, l.position) && [l numberOfRunningActions]==0)
+        {
+            [l setPosition:cagePos];
+            finished=YES;
+        }
+    }
+    for(int i=0;i<[multipleLabels count];i++)
+    {
+        CCLabelTTF *l=[blockLabels objectAtIndex:i];
+        DWPlaceValueCageGameObject *c=[allCages objectAtIndex:i];
+        
+        CGPoint cagePos=ccp(c.PosX, c.PosY+20);
+        if(!CGPointEqualToPoint(cagePos, l.position) && [l numberOfRunningActions]==0)
+        {
+            [l setPosition:cagePos];
+            finished=YES;
+        }
+    }
+    
+    for(int i=0;i<[gw.AllGameObjects count];i++)
+    {
+        if([[gw.AllGameObjects objectAtIndex:i] isKindOfClass:[DWPlaceValueBlockGameObject class]])
+        {
+            DWPlaceValueBlockGameObject *b=[gw.AllGameObjects objectAtIndex:i];
+            
+            CGPoint reqPos=ccp(b.PosX,b.PosY);
+            
+            if(!CGPointEqualToPoint(reqPos, b.mySprite.position) && [b.mySprite numberOfRunningActions]==0)
+            {
+                [b.mySprite setPosition:reqPos];
+                finished=YES;
+            }
+        }
+    }
+    return finished;
 }
 
 -(void)createCondenseAndMulchBoxes
@@ -2137,9 +2179,9 @@ static float kTimeToCageShake=7.0f;
         if([[allCages objectAtIndex:currentColumnIndex] isKindOfClass:[DWPlaceValueCageGameObject class]])
         {
             DWPlaceValueCageGameObject *c=[allCages objectAtIndex:currentColumnIndex];
-            if(c.DisableDel && pickupObject.ObjectValue>0)
+            if(c.DisableDel && pickupObject.ObjectValue>0 && pickupObject.Mount!=c)
                 thisCageWontTakeMe=YES;
-            if(c.DisableDelNeg && pickupObject.ObjectValue<0)
+            if(c.DisableDelNeg && pickupObject.ObjectValue<0 && pickupObject.Mount!=c)
                 thisCageWontTakeMe=YES;
         }
         
@@ -2355,17 +2397,22 @@ static float kTimeToCageShake=7.0f;
             float distFromNetBottomToCage=[BLMath DistanceBetween:ccp(0, n.PosY) and:ccp(0, c.PosY)];
             float distFromBlockToCage=[BLMath DistanceBetween:location and:ccp(c.PosX, c.PosY)];
             
-            if(distFromBlockToCage<distFromNetBottomToCage)
-            {
-                float cageOpacity=(distFromBlockToCage/distFromNetBottomToCage)*255;
-                [c.mySprite setOpacity:cageOpacity];
-                [cM.mySprite setOpacity:cageOpacity];
-            }
+//            if(distFromBlockToCage<distFromNetBottomToCage)
+//            {
+//                float cageOpacity=(distFromBlockToCage/distFromNetBottomToCage)*255;
+//                [c.mySprite setOpacity:cageOpacity];
+//                [cM.mySprite setOpacity:cageOpacity];
+//            }
             
             if(distFromBlockToCage<(distFromNetBottomToCage/2) && !cageHasDropped)
             {
-                [c.mySprite runAction:[CCEaseInOut actionWithAction:[CCMoveBy actionWithDuration:0.5f position:ccp(0, -200)] rate:2.0f]];
-                [cM.mySprite runAction:[CCEaseInOut actionWithAction:[CCMoveBy actionWithDuration:0.5f position:ccp(0, -200)] rate:2.0f]];
+                [c.mySprite runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(c.PosX, c.PosY-200)] rate:2.0f]];
+                [c.mySprite runAction:[CCFadeOut actionWithDuration:0.5f]];
+                [cM.mySprite runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(c.PosX, c.PosY-220)] rate:2.0f]];
+                [cM.mySprite runAction:[CCFadeOut actionWithDuration:0.5f]];
+                
+//                [c.mySprite setPosition:ccp(c.PosX, c.PosY)];
+//                [cM.mySprite setPosition:ccp(c.PosX, c.PosY+20)];
                 cageHasDropped=YES;
             }
         }

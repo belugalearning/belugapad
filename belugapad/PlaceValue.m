@@ -171,6 +171,27 @@ static float kTimeToCageShake=7.0f;
         }
     }
     
+
+    if(showCount)
+    {
+        for(int i=0;i<numberOfColumns;i++)
+        {
+            CCLabelTTF *l=[[[totalCountSprites objectAtIndex:i] children] objectAtIndex:0];
+            
+            int initedOnGrid=[[initBlocksForColumn objectAtIndex:i]intValue];
+            float colValue=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
+            
+            if([self usedSpacesOnGrid:i]>initedOnGrid)
+                [l setString:[NSString stringWithFormat:@"%g+%g", ([[initBlocksForColumn objectAtIndex:i]intValue]*colValue), ([self usedSpacesOnGrid:i]-initedOnGrid)*colValue]];
+            else if([self usedSpacesOnGrid:currentColumnIndex]<=initedOnGrid)
+                [l setString:[NSString stringWithFormat:@"%g", ([[initBlocksForColumn objectAtIndex:i]intValue]*colValue)-(([[initBlocksForColumn objectAtIndex:i]intValue]-[self usedSpacesOnGrid:i])*colValue)]];
+        }
+    }
+    
+    if(showValue)
+        [countLabel setString:[NSString stringWithFormat:@"%g", totalObjectValue]];
+    
+    
     if(showMoreOrLess && [solutionType isEqualToString:TOTAL_COUNT])
     {
 
@@ -417,7 +438,7 @@ static float kTimeToCageShake=7.0f;
         }
         
         
-        if(showColumnTotalCount)
+        if(showColumnTotalCount||showCount)
         {
             if(!totalCountSprites)
                 totalCountSprites=[[[NSMutableArray alloc]init]retain];
@@ -428,13 +449,27 @@ static float kTimeToCageShake=7.0f;
             [totalCountSprite setTag:2];
             [renderLayer addChild:totalCountSprite];
             [totalCountSprites addObject:totalCountSprite];
+        
+            if(showColumnTotalCount)
+            {
+                CCLabelTTF *totalCountLabel=[CCLabelTTF labelWithString:@"0" fontName:CHANGO fontSize:30.0f];
+                [totalCountLabel setPosition:ccp(totalCountSprite.contentSize.width/2,(totalCountSprite.contentSize.height/2)-3)];
+                [totalCountLabel setOpacity:0];
+                [totalCountLabel setTag:2];
+                [totalCountSprite addChild:totalCountLabel];
+            }
             
-            CCLabelTTF *totalCountLabel=[CCLabelTTF labelWithString:@"0" fontName:CHANGO fontSize:30.0f];
-            [totalCountLabel setPosition:ccp(totalCountSprite.contentSize.width/2,(totalCountSprite.contentSize.height/2)-3)];
-            [totalCountLabel setOpacity:0];
-            [totalCountLabel setTag:2];
-            [totalCountSprite addChild:totalCountLabel];
+            if(showCount)
+            {
+                CCLabelTTF *thisCountLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",[[initBlocksForColumn objectAtIndex:i]intValue]] fontName:CHANGO fontSize:25.0f];
+                [thisCountLabel setPosition:ccp(totalCountSprite.contentSize.width/2,(totalCountSprite.contentSize.height/2)-3)];
+                [thisCountLabel setOpacity:0];
+                [thisCountLabel setTag:2];
+                [totalCountSprite addChild:thisCountLabel];
+            }
         }
+        
+        
         
         if(showColumnUserCount)
         {
@@ -718,6 +753,7 @@ static float kTimeToCageShake=7.0f;
         numberPrecountedForRow=0;
         DLog(@"col %d, rows %d, count %d", insCol, insRow, count);
         
+        
         if(showColumnTotalCount)
         {
             float v=[[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue];
@@ -727,6 +763,20 @@ static float kTimeToCageShake=7.0f;
             [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:insCol]*v]];
         }
 
+    }
+    
+    if(showCount)
+    {
+        if(!initBlocksForColumn){
+            initBlocksForColumn=[[NSMutableArray alloc]init];
+            [initBlocksForColumn retain];
+        }
+        
+        for(int i=0;i<numberOfColumns;i++)
+        {
+            int blocksHere=[self usedSpacesOnGrid:i];
+            [initBlocksForColumn addObject:[NSNumber numberWithInt:blocksHere]];
+        }
     }
 
     [renderLayer setPosition:ccp(cx-(currentColumnIndex*(kPropXColumnSpacing*lx)+(xStartOffset*lx)), 0)];
@@ -940,6 +990,8 @@ static float kTimeToCageShake=7.0f;
     }
     if(autoBaseSelection)allowDeselect=NO;
     
+    if(showColumnTotalCount)showValue=NO;
+    
     //objects
     NSArray *objects=[pdef objectForKey:INIT_OBJECTS];
     initObjects = objects;
@@ -1022,11 +1074,14 @@ static float kTimeToCageShake=7.0f;
     {
         if(showCount)
         {
-            countLabel=[CCLabelTTF labelWithString:@"s" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
-            [countLabel setTag:3];
-            [countLabel setOpacity:0];
-            [countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];
-            [self.NoScaleLayer addChild:countLabel z:10];
+
+            
+//            countLabel=[CCLabelTTF labelWithString:@"s" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
+//            [countLabel setTag:3];
+//            [countLabel setOpacity:0];
+//            [countLabel setPosition:ccp(lx-60,ly-88)];
+//            //[countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];
+//            [self.NoScaleLayer addChild:countLabel z:10];
         }
             
         if(showValue)
@@ -1036,12 +1091,11 @@ static float kTimeToCageShake=7.0f;
             [countBg setTag:3];
             [countBg setOpacity:0];
             [self.NoScaleLayer addChild:countBg z:9];
-            
             sumLabel=[CCLabelTTF labelWithString:@"c" fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
             [sumLabel setTag:3];
             [sumLabel setOpacity:0];
             //[countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];
-            [sumLabel setPosition:ccp(lx-60,ly-88)];
+
             [self.NoScaleLayer addChild:sumLabel z:10];
         }
         
@@ -1135,14 +1189,7 @@ static float kTimeToCageShake=7.0f;
         [self calcProblemTotalCount];
     }
     
-    if(showCount||showValue)
-    {
-        if(showCount)
-            [countLabel setString:[NSString stringWithFormat:@"%g", totalObjectValue]];
-        
-        if(showValue)
-            [countLabel setString:[NSString stringWithFormat:@"%g", totalObjectValue]];
-    }
+
     
     if(evalMode == kProblemEvalAuto)
     {

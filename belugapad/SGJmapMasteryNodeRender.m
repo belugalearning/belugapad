@@ -484,7 +484,8 @@ static int shadowSteps=5;
     {
         nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-incomplete.png"];
     }
-    [nodeSprite setPosition:[BLMath AddVector:ParentGO.Position toVector:[[islandData objectForKey:ISLAND_MASTERY] CGPointValue]]];
+    ParentGO.MasteryPinPosition=[BLMath AddVector:ParentGO.Position toVector:[[islandData objectForKey:ISLAND_MASTERY] CGPointValue]];
+    [nodeSprite setPosition:ParentGO.MasteryPinPosition];
     [nodeSprite setVisible:ParentGO.Visible];
     if(ParentGO.Disabled) [nodeSprite setOpacity:100];
     [ParentGO.RenderBatch addChild:nodeSprite z:5];

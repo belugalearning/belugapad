@@ -30,6 +30,8 @@
 //searchable
 @synthesize searchMatchString;
 
+@synthesize MasteryPinPosition;
+
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition
 {
     if(self=[super initWithGameWorld:aGameWorld])
@@ -47,6 +49,15 @@
         ConnectToMasteryNodes=[[NSMutableArray alloc] init];
     }
     return self;
+}
+
+-(void)setPosition:(CGPoint)thePosition
+{
+    Position=thePosition;
+    if(NodeSelectComponent)
+    {
+        
+    }
 }
 
 -(void)handleMessage:(SGMessageType)messageType

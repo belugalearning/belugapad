@@ -29,6 +29,8 @@
 @property int CompleteCount;
 @property float CompletePercentage;
 
+@property CGPoint MasteryPinPosition;
+
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
 
 @end

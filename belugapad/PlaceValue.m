@@ -178,6 +178,12 @@ static float kTimeToCageShake=7.0f;
         
         for(int i=0;i<numberOfColumns;i++)
         {
+            DWPlaceValueCageGameObject *c=nil;
+            
+            if([[allCages objectAtIndex:i]isKindOfClass:[DWPlaceValueCageGameObject class]])
+                c=[allCages objectAtIndex:i];
+            
+            
             float colValue=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
             int spacesHere=[self freeSpacesOnGrid:i];
             float countReqInColumnDeci=remainVal/colValue;
@@ -185,9 +191,9 @@ static float kTimeToCageShake=7.0f;
             float remainder=fabsf(countReqInColumnDeci-(int)countReqInColumnDeci);
             
             if(remainder>0 && countReqInColumn<0)countReqInColumn--;
-            else if(remainder>0 && countReqInColumn>0)countReqInColumn++;
+//            if(remainder>0 && countReqInColumn>=0)countReqInColumn++;
             
-//            NSLog(@"column %d - spaces required %d, spaces here %d, expectedVal %g", i, countReqInColumn, spacesHere, remainVal);
+            NSLog(@"column %d - spaces required %d, spaces here %d, expectedVal %g", i, countReqInColumn, spacesHere, remainVal);
             
             CCSprite *s=[arrowsForColumn objectAtIndex:i];
             
@@ -197,14 +203,10 @@ static float kTimeToCageShake=7.0f;
                 [s setVisible:NO];
                 continue;
             }
-            else if(countReqInColumn<=spacesHere && countReqInColumn>0)
+            else if(countReqInColumn+1<=spacesHere && countReqInColumn>0)
             {
-                if(countReqInColumn==0)
-                {
-//                    NSLog(@"column %d nothing required", i);
-                    [s setVisible:NO];
-                    continue;
-                }
+                if(c.DisableAdd)continue;
+                
 //                NSLog(@"column %d show more sign", i);
                 [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_more.png")]];
                 [s setVisible:YES];
@@ -216,6 +218,8 @@ static float kTimeToCageShake=7.0f;
             }
             else if(countReqInColumn<=spacesHere && countReqInColumn<0)
             {
+                if(c.DisableDel)continue;
+                
 //                NSLog(@"column %d show less sign", i);
                 [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_less.png")]];
                 [s setVisible:YES];
@@ -232,6 +236,7 @@ static float kTimeToCageShake=7.0f;
                 [s setVisible:YES];
                 CCLabelTTF *l=[s.children objectAtIndex:0];
                 [l setString:@"less"];
+                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
                 
                 remainVal-=colValue*(spacesHere-countReqInColumn);
             }
@@ -352,6 +357,7 @@ static float kTimeToCageShake=7.0f;
             showMultipleDragging=YES;
             posCageSprite=BUNDLE_FULL_PATH(@"/images/placevalue/cage-variable.png");
         }
+        
         else if(isNegativeProblem)
         {
             posCageSprite=BUNDLE_FULL_PATH(@"/images/placevalue/cage-variable.png");            
@@ -518,7 +524,7 @@ static float kTimeToCageShake=7.0f;
             [allCages addObject:[NSNull null]];
         }
         
-        if(showMultipleDragging)
+        if(showMultipleDragging && (!([columnCages objectForKey:currentColumnValueKey]) || ([[columnCages objectForKey:currentColumnValueKey] boolValue]==YES)))
         {
             int defaultBlocksToMake=1;
             
@@ -555,7 +561,7 @@ static float kTimeToCageShake=7.0f;
             [renderLayer addChild:label z:99999];
             
         }
-        else if(isNegativeProblem)
+        else if(isNegativeProblem && (!([columnCages objectForKey:currentColumnValueKey]) || ([[columnCages objectForKey:currentColumnValueKey] boolValue]==YES)))
         {
             [currentBlockValues addObject:[NSNumber numberWithInt:cageDefaultValue]];
             
@@ -1016,26 +1022,26 @@ static float kTimeToCageShake=7.0f;
     {
         if(showCount)
         {
+            countLabel=[CCLabelTTF labelWithString:@"s" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
+            [countLabel setTag:3];
+            [countLabel setOpacity:0];
+            [countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];
+            [self.NoScaleLayer addChild:countLabel z:10];
+        }
+            
+        if(showValue)
+        {
             CCSprite *countBg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/pv_counter_total.png")];
             [countBg setPosition:ccp(lx-60,ly-85)];
             [countBg setTag:3];
             [countBg setOpacity:0];
             [self.NoScaleLayer addChild:countBg z:9];
             
-            countLabel=[CCLabelTTF labelWithString:@"c" fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
-            [countLabel setTag:3];
-            [countLabel setOpacity:0];
-            //[countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];
-            [countLabel setPosition:ccp(lx-60,ly-88)];
-            [self.NoScaleLayer addChild:countLabel z:10];
-        }
-            
-        if(showValue)
-        {
-            sumLabel=[CCLabelTTF labelWithString:@"s" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
+            sumLabel=[CCLabelTTF labelWithString:@"c" fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
             [sumLabel setTag:3];
             [sumLabel setOpacity:0];
-            [sumLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];
+            //[countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];
+            [sumLabel setPosition:ccp(lx-60,ly-88)];
             [self.NoScaleLayer addChild:sumLabel z:10];
         }
         
@@ -1135,8 +1141,7 @@ static float kTimeToCageShake=7.0f;
             [countLabel setString:[NSString stringWithFormat:@"%g", totalObjectValue]];
         
         if(showValue)
-            [sumLabel setString:[NSString stringWithFormat:@"%g", totalObjectValue]];
-        
+            [countLabel setString:[NSString stringWithFormat:@"%g", totalObjectValue]];
     }
     
     if(evalMode == kProblemEvalAuto)
@@ -2086,7 +2091,11 @@ static float kTimeToCageShake=7.0f;
     for(int i=0;i<[multipleLabels count];i++)
     {
         CCLabelTTF *l=[blockLabels objectAtIndex:i];
-        DWPlaceValueCageGameObject *c=[allCages objectAtIndex:i];
+        DWPlaceValueCageGameObject *c=nil;
+        
+        if([[allCages objectAtIndex:i]isKindOfClass:[DWPlaceValueCageGameObject class]])
+            c=[allCages objectAtIndex:i];
+        
         
         CGPoint cagePos=ccp(c.PosX, c.PosY+20);
         if(!CGPointEqualToPoint(cagePos, l.position) && [l numberOfRunningActions]==0)

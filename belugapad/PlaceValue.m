@@ -171,6 +171,72 @@ static float kTimeToCageShake=7.0f;
         }
     }
     
+    if(showMoreOrLess && [solutionType isEqualToString:TOTAL_COUNT])
+    {
+
+        float remainVal=expectedCount-totalObjectValue;
+        
+        for(int i=0;i<numberOfColumns;i++)
+        {
+            float colValue=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
+            int spacesHere=[self freeSpacesOnGrid:i];
+            float countReqInColumnDeci=remainVal/colValue;
+            int countReqInColumn=remainVal/colValue;
+            float remainder=fabsf(countReqInColumnDeci-(int)countReqInColumnDeci);
+            
+            if(remainder>0 && countReqInColumn<0)countReqInColumn--;
+            else if(remainder>0 && countReqInColumn>0)countReqInColumn++;
+            
+//            NSLog(@"column %d - spaces required %d, spaces here %d, expectedVal %g", i, countReqInColumn, spacesHere, remainVal);
+            
+            CCSprite *s=[arrowsForColumn objectAtIndex:i];
+            
+            if(countReqInColumn==0)
+            {
+//                NSLog(@"column %d nothing required", i);
+                [s setVisible:NO];
+                continue;
+            }
+            else if(countReqInColumn<=spacesHere && countReqInColumn>0)
+            {
+                if(countReqInColumn==0)
+                {
+//                    NSLog(@"column %d nothing required", i);
+                    [s setVisible:NO];
+                    continue;
+                }
+//                NSLog(@"column %d show more sign", i);
+                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_more.png")]];
+                [s setVisible:YES];
+                CCLabelTTF *l=[s.children objectAtIndex:0];
+                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)-2)];
+                [l setString:[NSString stringWithFormat:@"%d more", countReqInColumn]];
+                
+                remainVal-=colValue*countReqInColumn;
+            }
+            else if(countReqInColumn<=spacesHere && countReqInColumn<0)
+            {
+//                NSLog(@"column %d show less sign", i);
+                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_less.png")]];
+                [s setVisible:YES];
+                CCLabelTTF *l=[s.children objectAtIndex:0];
+                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
+                [l setString:[NSString stringWithFormat:@"%d less", -countReqInColumn]];
+                
+                remainVal-=colValue*countReqInColumn;
+            }
+            else if(countReqInColumn>spacesHere)
+            {
+//                NSLog(@"column %d show less sign", i);
+                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_less.png")]];
+                [s setVisible:YES];
+                CCLabelTTF *l=[s.children objectAtIndex:0];
+                [l setString:@"less"];
+                
+                remainVal-=colValue*(spacesHere-countReqInColumn);
+            }
+        }
+    }
     
     // if we've run interaction feedback, loop through a bunch of objects - check they're running nothing and reset their position if need be
     if(hasRunInteractionFeedback)
@@ -374,7 +440,20 @@ static float kTimeToCageShake=7.0f;
             
             [userAddedBlocksLastCount addObject:[NSNumber numberWithInt:0]];
         }
-
+        
+        if(showMoreOrLess)
+        {
+            CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_more.png")];
+            [s setPosition:ccp(i*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(currentColumnRows*(lx*kPropXNetSpace)))];
+            [s setVisible:NO];
+            [renderLayer addChild:s];
+            [arrowsForColumn addObject:s];
+            
+            CCLabelTTF *l=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:20.0f];
+            [l setPosition:ccp(s.contentSize.width/2, s.contentSize.height/2)];
+            [s addChild:l];
+        }
+        
         if(!([columnCages objectForKey:currentColumnValueKey]) || ([[columnCages objectForKey:currentColumnValueKey] boolValue]==YES))
         {
             CCSprite *cageContainer = [CCSprite spriteWithFile:posCageSprite];
@@ -826,10 +905,18 @@ static float kTimeToCageShake=7.0f;
         allowCondensing=YES;
     
     // can we mulch?
-    if([pdef objectForKey:ALLOW_MULCHING]) 
+    if([pdef objectForKey:ALLOW_MULCHING])
         allowMulching=[[pdef objectForKey:ALLOW_MULCHING]boolValue];
-    else 
+    else
         allowMulching=YES;
+    
+    if([pdef objectForKey:SHOW_MORE_LESS_ARROWS])
+        showMoreOrLess=[[pdef objectForKey:SHOW_MORE_LESS_ARROWS]boolValue];
+    
+    else
+        showMoreOrLess=NO;
+    
+    if(showMoreOrLess) arrowsForColumn=[[[NSMutableArray alloc]init]retain];
     
     if([pdef objectForKey:AUTO_SELECT_BASE_VALUE])
     {
@@ -1045,7 +1132,7 @@ static float kTimeToCageShake=7.0f;
     if(showCount||showValue)
     {
         if(showCount)
-            [countLabel setString:[NSString stringWithFormat:@"%d", gw.Blackboard.SelectedObjects.count]];
+            [countLabel setString:[NSString stringWithFormat:@"%g", totalObjectValue]];
         
         if(showValue)
             [sumLabel setString:[NSString stringWithFormat:@"%g", totalObjectValue]];

@@ -40,6 +40,7 @@
     NSMutableArray *totalCountSprites;
     NSMutableArray *userAddedBlocks;
     NSMutableArray *userAddedBlocksLastCount;
+    NSMutableArray *arrowsForColumn;
 
     // GameWorld setup
     
@@ -54,7 +55,8 @@
     float totalObjectValue;
     float xStartOffset;
     float kPropXColumnSpacing;
-    int numberOfColumns;    
+    int numberOfColumns;
+    BOOL showMoreOrLess;
     
     // GameWorld options
     

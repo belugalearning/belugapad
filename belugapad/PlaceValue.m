@@ -969,7 +969,7 @@ static float kTimeToCageShake=7.0f;
             [countBg setOpacity:0];
             [self.NoScaleLayer addChild:countBg z:9];
             
-            countLabel=[CCLabelTTF labelWithString:@"c" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
+            countLabel=[CCLabelTTF labelWithString:@"c" fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
             [countLabel setTag:3];
             [countLabel setOpacity:0];
             //[countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];
@@ -1958,6 +1958,33 @@ static float kTimeToCageShake=7.0f;
     [[gw Blackboard].PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];    
 }
 
+-(void)resetObjectStates
+{
+    if(thisCageWontTakeMe)
+    {
+        DWPlaceValueCageGameObject *c=nil;
+        DWPlaceValueBlockGameObject *cM=nil;
+        if([[allCages objectAtIndex:currentColumnIndex]isKindOfClass:[DWPlaceValueCageGameObject class]])
+            c=[allCages objectAtIndex:currentColumnIndex];
+        
+        if(c.MountedObject)
+            cM=(DWPlaceValueBlockGameObject*)c.MountedObject;
+    
+        [c.mySprite setOpacity:255];
+        [cM.mySprite setOpacity:255];
+        
+        [c.mySprite setPosition:ccp(c.PosX, c.PosY)];
+        [cM.mySprite setPosition:ccp(c.PosX, c.PosY+20)];
+    }
+    // switch all opacities back to default
+    for(int i=0;i<numberOfColumns;i++)
+    {
+        
+        [self setGridOpacity:i toOpacity:127];
+    }
+    
+}
+
 -(void)createCondenseAndMulchBoxes
 {
     // create the 2 bounding boxes for condensing and mulching on a touchbegan - these are the amalgamation of all of the net sprites for column +/-1
@@ -2070,7 +2097,6 @@ static float kTimeToCageShake=7.0f;
 
     }
     
-    
     if(isBasePickup && [gw.Blackboard.SelectedObjects count]>0)
     {
         firstSelectedObject=[gw.Blackboard.SelectedObjects objectAtIndex:0];
@@ -2106,6 +2132,16 @@ static float kTimeToCageShake=7.0f;
         BOOL isCage;
         DWPlaceValueBlockGameObject *pickupObject=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
         DWPlaceValueNetGameObject *netMount=nil;
+        
+        // will the cage here accept the pickup block to be dropped on it?
+        if([[allCages objectAtIndex:currentColumnIndex] isKindOfClass:[DWPlaceValueCageGameObject class]])
+        {
+            DWPlaceValueCageGameObject *c=[allCages objectAtIndex:currentColumnIndex];
+            if(c.DisableDel && pickupObject.ObjectValue>0)
+                thisCageWontTakeMe=YES;
+            if(c.DisableDelNeg && pickupObject.ObjectValue<0)
+                thisCageWontTakeMe=YES;
+        }
         
         // bring our pickupobject to the front so it doesn't disappear when we drag it around
         pickupObject.lastZIndex=pickupObject.mySprite.zOrder;
@@ -2301,6 +2337,37 @@ static float kTimeToCageShake=7.0f;
         {
             CCSprite *mySprite=block.mySprite;
             [mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(block.PickupSprite)]];
+        }
+        
+        // if the cage for this column won't accept this block, check the distance and fade as nesc
+        if(thisCageWontTakeMe)
+        {
+            DWPlaceValueNetGameObject *n=[[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex] objectAtIndex:[[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]-1] objectAtIndex:0];
+            
+            DWPlaceValueCageGameObject *c=nil;
+            DWPlaceValueBlockGameObject *cM=nil;
+            if([[allCages objectAtIndex:currentColumnIndex]isKindOfClass:[DWPlaceValueCageGameObject class]])
+                c=[allCages objectAtIndex:currentColumnIndex];
+            
+            if(c.MountedObject)
+                cM=(DWPlaceValueBlockGameObject*)c.MountedObject;
+            
+            float distFromNetBottomToCage=[BLMath DistanceBetween:ccp(0, n.PosY) and:ccp(0, c.PosY)];
+            float distFromBlockToCage=[BLMath DistanceBetween:location and:ccp(c.PosX, c.PosY)];
+            
+            if(distFromBlockToCage<distFromNetBottomToCage)
+            {
+                float cageOpacity=(distFromBlockToCage/distFromNetBottomToCage)*255;
+                [c.mySprite setOpacity:cageOpacity];
+                [cM.mySprite setOpacity:cageOpacity];
+            }
+            
+            if(distFromBlockToCage<(distFromNetBottomToCage/2) && !cageHasDropped)
+            {
+                [c.mySprite runAction:[CCEaseInOut actionWithAction:[CCMoveBy actionWithDuration:0.5f position:ccp(0, -200)] rate:2.0f]];
+                [cM.mySprite runAction:[CCEaseInOut actionWithAction:[CCMoveBy actionWithDuration:0.5f position:ccp(0, -200)] rate:2.0f]];
+                cageHasDropped=YES;
+            }
         }
         
         // first check for a valid place to drop
@@ -2631,7 +2698,6 @@ static float kTimeToCageShake=7.0f;
                     {
                         DWPlaceValueBlockGameObject *go = [[[gw Blackboard] SelectedObjects] objectAtIndex:igo];
                         go.Mount=go.LastMount;
-                        NSLog(@"(TOUCHEND-ISBASEHANDLER) return to lastmount %d", (int)go.LastMount);
                         
                         ((DWPlaceValueNetGameObject*)go.Mount).MountedObject=go;
                         
@@ -2896,13 +2962,6 @@ static float kTimeToCageShake=7.0f;
         
     }
     
-    // switch all opacities back to default
-    for(int i=0;i<numberOfColumns;i++)
-    {
-
-        [self setGridOpacity:i toOpacity:127];
-    }
-    
     int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
     
     if(objectsOnGrid==columnBaseValue && currentColumnIndex!=0 && !justMulched)
@@ -2938,6 +2997,7 @@ static float kTimeToCageShake=7.0f;
 
 -(void)setTouchVarsToOff
 {
+    [self resetObjectStates];
     //remove all condense/mulch/transition state
     [gw Blackboard].PickupObject = nil;
     [gw Blackboard].PriorityDropObject = nil;
@@ -2956,6 +3016,8 @@ static float kTimeToCageShake=7.0f;
     changedBlockCountOrValue=NO;
     [pickupObjects removeAllObjects];
     justMulched=NO;
+    thisCageWontTakeMe=NO;
+    cageHasDropped=NO;
     
     touching=NO;
 }

@@ -56,7 +56,6 @@
 }
 
 @property (nonatomic, readwrite, retain) Problem *currentProblem;
-@property (nonatomic, readwrite, retain) NSDictionary *currentPDef;
 @property (nonatomic, readwrite, retain) NSString *pathToTestDef;
 @property (nonatomic, readwrite, retain) NSArray *currentPipeline;
 
@@ -159,7 +158,7 @@
         } else {
             NSString *docsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
             NSString *zipPath = [docsDir stringByAppendingPathComponent:@"/canned-content.zip"];
-            [result writeToFile:zipPath atomically:NO];
+            [result writeToFile:zipPath atomically:YES];
             [SSZipArchive unzipFileAtPath:zipPath toDestination:contentDir];
         }
     }

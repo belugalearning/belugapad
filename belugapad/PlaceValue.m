@@ -961,19 +961,32 @@ static float kTimeToCageShake=7.0f;
     // define how we show our count/sum labels if applicable
     if(showCount||showValue)
     {
-        if(showCount && !showValue)
-            countLabel=[CCLabelTTF labelWithString:@"count" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
+        if(showCount)
+        {
+            CCSprite *countBg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/pv_counter_total.png")];
+            [countBg setPosition:ccp(lx-60,ly-85)];
+            [countBg setTag:3];
+            [countBg setOpacity:0];
+            [self.NoScaleLayer addChild:countBg z:9];
+            
+            countLabel=[CCLabelTTF labelWithString:@"c" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
+            [countLabel setTag:3];
+            [countLabel setOpacity:0];
+            //[countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];
+            [countLabel setPosition:ccp(lx-60,ly-88)];
+            [self.NoScaleLayer addChild:countLabel z:10];
+        }
+            
+        if(showValue)
+        {
+            sumLabel=[CCLabelTTF labelWithString:@"s" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
+            [sumLabel setTag:3];
+            [sumLabel setOpacity:0];
+            [sumLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];
+            [self.NoScaleLayer addChild:sumLabel z:10];
+        }
         
-        else if(!showCount && showValue)
-            countLabel=[CCLabelTTF labelWithString:@"sum" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
-        
-        else if(showCount && showValue)
-            countLabel=[CCLabelTTF labelWithString:@"count x sum y" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
-        
-        [countLabel setTag:3];
-        [countLabel setOpacity:0];
-        [countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)]; 
-        [self.NoScaleLayer addChild:countLabel z:10];
+
     }
 
     if(showMultipleControls||multipleBlockPickup)blocksToCreate=[[NSMutableArray alloc]init];
@@ -1065,14 +1078,12 @@ static float kTimeToCageShake=7.0f;
     
     if(showCount||showValue)
     {
-        if(showCount && !showValue)
-            [countLabel setString:[NSString stringWithFormat:@"count: %d", gw.Blackboard.SelectedObjects.count]];
+        if(showCount)
+            [countLabel setString:[NSString stringWithFormat:@"%d", gw.Blackboard.SelectedObjects.count]];
         
-        else if(!showCount && showValue)
-            [countLabel setString:[NSString stringWithFormat:@"sum: %g", totalObjectValue]];
+        if(showValue)
+            [sumLabel setString:[NSString stringWithFormat:@"%g", totalObjectValue]];
         
-        else if(showCount && showValue)
-            [countLabel setString:[NSString stringWithFormat:@"count: %d / sum: %g", gw.Blackboard.SelectedObjects.count, totalObjectValue]];
     }
     
     if(evalMode == kProblemEvalAuto)
@@ -1178,7 +1189,16 @@ static float kTimeToCageShake=7.0f;
         
         if(thisNumber>lastNumber)
         {
-            CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"+%g", thisNumber*fval] fontName:CHANGO fontSize:150.0f];
+            //CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"+%g", thisNumber*fval] fontName:CHANGO fontSize:150.0f];
+            CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"+%g", fval] fontName:CHANGO fontSize:150.0f];
+            [l setPosition:ccp(currentColumnIndex*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(([[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]/2)*(lx*kPropXNetSpace)))];
+            [l setColor:ccc3(234,137,31)];
+            [renderLayer addChild:l z:10000];
+            [l runAction:[CCFadeOut actionWithDuration:1.0]];
+        }
+        else if(thisNumber<lastNumber)
+        {
+            CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"-%g", fval] fontName:CHANGO fontSize:150.0f];
             [l setPosition:ccp(currentColumnIndex*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(([[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]/2)*(lx*kPropXNetSpace)))];
             [l setColor:ccc3(234,137,31)];
             [renderLayer addChild:l z:10000];
@@ -1851,13 +1871,15 @@ static float kTimeToCageShake=7.0f;
 -(BOOL)doCondenseFromLocation:(CGPoint)location
 {
     [loggingService logEvent:BL_PA_PV_TOUCH_END_CONDENSE_OBJECT withAdditionalData:nil];
+    
     return [self doTransitionWithIncrement:-1];
 }
 
 -(BOOL)doMulchFromLocation:(CGPoint)location
 {
     [loggingService logEvent:BL_PA_PV_TOUCH_END_MULCH_OBJECTS withAdditionalData:nil];
-    return [self doTransitionWithIncrement:1];
+    justMulched=[self doTransitionWithIncrement:1];
+    return justMulched;
 }
 
 -(void)setGridOpacity:(GLbyte)toThisOpacity
@@ -2883,7 +2905,7 @@ static float kTimeToCageShake=7.0f;
     
     int objectsOnGrid=[self usedSpacesOnGrid:currentColumnIndex];
     
-    if(objectsOnGrid==columnBaseValue && currentColumnIndex!=0)
+    if(objectsOnGrid==columnBaseValue && currentColumnIndex!=0 && !justMulched)
     {
         [self selectBaseObjectsOnGrid:currentColumnIndex];
     }
@@ -2933,6 +2955,7 @@ static float kTimeToCageShake=7.0f;
     hasMovedBasePickup=NO;
     changedBlockCountOrValue=NO;
     [pickupObjects removeAllObjects];
+    justMulched=NO;
     
     touching=NO;
 }

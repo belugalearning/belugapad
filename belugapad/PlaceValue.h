@@ -35,6 +35,7 @@
     CCLabelTTF *problemSubLabel;
     CCLabelTTF *problemCompleteLabel;
     CCLabelTTF *countLabel;
+    CCLabelTTF *sumLabel;
     CCLabelTTF *countLabelBlock;
     NSMutableArray *totalCountSprites;
     NSMutableArray *userAddedBlocks;
@@ -64,6 +65,7 @@
     BOOL showColumnHeader;
     BOOL showColumnTotalCount;
     BOOL showColumnUserCount;
+    BOOL justMulched;
     //BOOL disableCageAdd;
     //BOOL disableCageDelete;
     BOOL showReset;

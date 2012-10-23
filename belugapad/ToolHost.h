@@ -38,6 +38,7 @@ typedef enum {
 @class LRAnimator;
 @class SGGameWorld;
 @class DebugViewController;
+@class EditPDefViewController;
 
 @interface ToolHost : CCLayer <CCPickerViewDataSource, CCPickerViewDelegate>
 {

@@ -570,9 +570,22 @@
 
 -(NSDictionary*)loadPdefWithId:(NSString *)pid
 {
-    NSString *pdefPath = [NSString stringWithFormat:@"%@/pdefs/%@.plist", contentDir, pid];
-    return [NSDictionary dictionaryWithContentsOfFile:pdefPath];
+    NSString *pdefString = nil;
     
+    [contentDatabase open];
+    
+    FMResultSet *rs = [contentDatabase executeQuery:@"select pdef from Problems where id=?", pid];
+    if ([rs next])
+    {
+        pdefString = [rs stringForColumn:@"pdef"];
+    } else {
+        // TODO: quoi ????
+        NSLog(@"pdef NOT FOUND FOR PROBLEM id = %@", pid);
+    }
+    [rs close];
+    [contentDatabase close];
+    
+    return pdefString ? [pdefString objectFromJSONString] : [NSDictionary dictionary];
 }
 
 -(void)gotoNextProblemInTestPipeline

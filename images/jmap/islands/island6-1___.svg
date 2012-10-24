@@ -4,29 +4,26 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1024px"
 	 height="768px" viewBox="0 0 1024 768" enable-background="new 0 0 1024 768" xml:space="preserve">
 <g id="Layer_7">
-	
-		<image overflow="visible" width="516" height="220" xlink:href="../../../../../xclocal/belugapad/images/jmap/islands/island6-2-s1.png"  transform="matrix(1 0 0 1 254 274)">
-	</image>
 </g>
 <g id="island">
 </g>
 <g id="centre">
 </g>
 <g id="data-nodes">
-	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="689.743" cy="410.513" r="13.257"/>
-	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="663.228" cy="297.795" r="13.257"/>
-	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="501.217" cy="410.513" r="13.257"/>
-	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="588.374" cy="364.485" r="13.257"/>
-	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="423.704" cy="356.485" r="13.257"/>
-	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="321.742" cy="357.485" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="689.743" cy="344.229" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="586.714" cy="339.724" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="484.257" cy="301.999" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="545.746" cy="237.999" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="374.228" cy="278.485" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="406.742" cy="357.485" r="13.257"/>
 </g>
 <g id="data-mastery">
-	<circle fill="#FF31FF" stroke="#FFFFFF" stroke-miterlimit="10" cx="514.475" cy="271.281" r="13.257"/>
+	<circle fill="#FF31FF" stroke="#FFFFFF" stroke-miterlimit="10" cx="446.96" cy="211.485" r="13.257"/>
 </g>
 <g id="data-label">
 	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M806.969,638.317"/>
 	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M593.791,625.14"/>
-	<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="487.96" y1="529.903" x2="641.281" y2="534.093"/>
+	<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="561.003" y1="487.5" x2="714.243" y2="480.986"/>
 </g>
 <g id="data-features" display="none">
 	<circle display="inline" fill="#EFFF00" cx="532.009" cy="333" r="41.009"/>

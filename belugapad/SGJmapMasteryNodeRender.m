@@ -235,6 +235,7 @@ static int shadowSteps=5;
     int iCount=ParentGO.ChildNodes.count;
     if(iCount==0)iCount=1; // handle islands with no nodes
     islandName=[NSString stringWithFormat:@"island%d-1", iCount];
+    //islandName=[NSString stringWithFormat:@"island6-2"];
     
     //setup island data if not in cache -- if no cache, create it
     if(!gameWorld.Blackboard.islandData) gameWorld.Blackboard.islandData=[[[NSMutableDictionary alloc] init] autorelease];
@@ -250,9 +251,14 @@ static int shadowSteps=5;
     NSArray *nodePoints=[islandData objectForKey:ISLAND_NODES];
     for (int i=0; i<ParentGO.ChildNodes.count; i++)
     {
-        id<Transform> child=[ParentGO.ChildNodes objectAtIndex:i];
+        id<Transform, PinRender> child=[ParentGO.ChildNodes objectAtIndex:i];
         //child.Position=[[nodePoints objectAtIndex:i] CGPointValue];
         child.Position=[BLMath AddVector:ParentGO.Position toVector:[[nodePoints objectAtIndex:i] CGPointValue]];
+        
+        if([[nodePoints objectAtIndex:i] CGPointValue].x<0)
+        {
+            child.flip=YES;
+        }
     }
 }
 
@@ -261,7 +267,9 @@ static int shadowSteps=5;
     NSMutableDictionary *buildData=[[[NSMutableDictionary alloc] init] autorelease];
     
     //load animation data
-	NSString *XMLPath=BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/jmap/islands/%@.svg", name]));
+	//NSString *XMLPath=BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/jmap/islands/%@.svg", name]));
+    
+    NSString *XMLPath=BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/jmap/islands/island6-1.svg"]));
 	
 	//use that file to populate an NSData object
 	NSData *XMLData=[NSData dataWithContentsOfFile:XMLPath];
@@ -335,15 +343,20 @@ static int shadowSteps=5;
 
 -(void)readyIslandRender
 {
-    NSString *islandSpriteName=[NSString stringWithFormat:@"/images/jmap/islands/%@.png", islandName];
-    islandShadowSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(islandSpriteName)];
-    islandShadowSprite.color=ccc3(0,0,0);
-    islandShadowSprite.opacity=255*0.2f;
-    islandShadowSprite.position=ccpAdd(ParentGO.Position, ccp(1, -3));
-    islandShadowSprite.visible=ParentGO.Visible;
-    [ParentGO.RenderBatch.parent addChild:islandShadowSprite z:-1];
+//    NSString *islandSpriteName=[NSString stringWithFormat:@"/images/jmap/islands/%@.png", islandName];
+//    islandShadowSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(islandSpriteName)];
+//    islandShadowSprite.color=ccc3(0,0,0);
+//    islandShadowSprite.opacity=255*0.2f;
+//    islandShadowSprite.position=ccpAdd(ParentGO.Position, ccp(1, -3));
+//    islandShadowSprite.visible=ParentGO.Visible;
+//    [ParentGO.RenderBatch.parent addChild:islandShadowSprite z:-1];
+
+    //NSString *baseSpriteName=[NSString stringWithFormat:@"/images/jmap/islands/%@-s1.png", islandName];
+    NSString *baseSpriteName=@"/images/jmap/islands/island6-2-s1.png";
     
-    islandSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(islandSpriteName)];
+    NSString *islandSpriteName=[NSString stringWithFormat:@"/images/jmap/islands/%@.png", islandName];
+    
+    islandSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(baseSpriteName)];
     islandSprite.color=ccc3(155, 186, 138);
     islandSprite.position=ParentGO.Position;
     islandSprite.visible=ParentGO.Visible;
@@ -356,14 +369,15 @@ static int shadowSteps=5;
         [self scatterThing1:@"hill_black" andThing2:@"hill_black" withRatio1:50 andRatio2:50];
         
         //if bigger island (2/3+) draw volcano, pick from two
-        if(ParentGO.ChildNodes.count>1)
+        if(ParentGO.ChildNodes.count>0)
         {
             int vver=3; // the non lava volcano
             if(ParentGO.ChildNodes.count>3) vver=1+arc4random()%2; //the lava volcanoes
             
             NSString *vName=[NSString stringWithFormat:@"volcano_%d.png", vver];
             CCSprite *vol=[CCSprite spriteWithSpriteFrameName:vName];
-            [vol setPosition:ccpAdd(ParentGO.Position, [[islandData objectForKey:ISLAND_MASTERY] CGPointValue])];
+            //[vol setPosition:ccpAdd(ParentGO.Position, [[islandData objectForKey:ISLAND_MASTERY] CGPointValue])];
+            [vol setPosition:ccpAdd(ParentGO.Position, ccp(0,80))];
             if(vver==3)vol.scale=0.7f;
             [ParentGO.RenderBatch addChild:vol z:4];
             [featureSprites addObject:vol];
@@ -397,6 +411,8 @@ static int shadowSteps=5;
 
 -(void)scatterThing1:(NSString*)thing1 andThing2:(NSString*)thing2 withRatio1:(int)ratio1 andRatio2:(int)ratio2
 {
+    NSLog(@"scattering %@ and %@ at ratio %d and %d", thing1, thing2, ratio1, ratio2);
+    
     //assumed picking from random selection of three of each
     
     NSMutableArray *masks=[islandData objectForKey:ISLAND_FEATURE_SPACES];
@@ -416,9 +432,13 @@ static int shadowSteps=5;
         i++;
     }
     
-    float y=islandSprite.boundingBox.size.height;
+    CGRect box=CGRectMake(islandSprite.position.x-islandSprite.contentSize.width / 2.0f, islandSprite.position.y - islandSprite.contentSize.height / 2.0f, islandSprite.contentSize.width, islandSprite.contentSize.height);
+    
+    //float y=islandSprite.boundingBox.size.height;
+    float y=box.size.height;
     while (y>0) {
-        float x=arc4random() % (int)islandSprite.boundingBox.size.width;
+        //float x=arc4random() % (int)islandSprite.boundingBox.size.width;
+        float x=arc4random() % (int)box.size.width;
 
         BOOL pass=NO;
         //test if x, y valid
@@ -443,7 +463,8 @@ static int shadowSteps=5;
             NSString *sName=[NSString stringWithFormat:@"%@_%d.png", typeName, rver];
             CCSprite *fsprite=[CCSprite spriteWithSpriteFrameName:sName];
             [featureSprites addObject:fsprite];
-            fsprite.position=ccpAdd(ccp(x,y), islandSprite.boundingBox.origin);
+            //fsprite.position=ccpAdd(ccp(x,y), islandSprite.boundingBox.origin);
+            fsprite.position=ccpAdd(ccp(x,y), box.origin);
             fsprite.visible=ParentGO.Visible;
             [ParentGO.RenderBatch addChild:fsprite z:3];
         }
@@ -486,6 +507,14 @@ static int shadowSteps=5;
     }
     ParentGO.MasteryPinPosition=[BLMath AddVector:ParentGO.Position toVector:[[islandData objectForKey:ISLAND_MASTERY] CGPointValue]];
     [nodeSprite setPosition:ParentGO.MasteryPinPosition];
+    
+    if(ParentGO.flip)nodeSprite.flipX=YES;
+    
+    if(ParentGO.MasteryPinPosition.x < ParentGO.Position.x)
+    {
+        ((SGJmapMasteryNode*)ParentGO).flip=YES;
+    }
+    
     [nodeSprite setVisible:ParentGO.Visible];
     if(ParentGO.Disabled) [nodeSprite setOpacity:100];
     [ParentGO.RenderBatch addChild:nodeSprite z:5];

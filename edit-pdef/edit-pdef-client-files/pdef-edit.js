@@ -53,9 +53,9 @@ $(function() {
 })
 
 var appInterface = {
-  loadPDef: function(pdef_, lastSavedPDef_, currStackIndex_, lastSaveStackIndex_) {
+  loadPDef: function(pdef_, changeStack_, currStackIndex_, lastSaveStackIndex_) {
     pdef = pdef_
-    lastSavedPDef = lastSavedPDef_
+    changeStack = changeStack_
     currStackIndex = currStackIndex_
     lastSaveStackIndex = lastSaveStackIndex_
 

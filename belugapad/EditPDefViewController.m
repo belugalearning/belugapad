@@ -13,6 +13,7 @@
 #import "SSZipArchive.h"
 #import "AppDelegate.h"
 #import "ContentService.h"
+#import "Problem.h"
 
 @interface EditPDefViewController ()
 {
@@ -23,11 +24,16 @@
     
     NSString *libraryDir;
     NSString *editPDefDir;
+    
+    ContentService *contentService;
 }
+
+@property (readwrite, retain) Problem *problem;
 
 -(void)updateClientScripts;
 
 @end
+
 
 @implementation EditPDefViewController
 
@@ -36,6 +42,10 @@
     self = [super initWithNibName:nil bundle:nil];
     if (self)
     {
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        contentService = [ac.contentService retain];
+        self.problem = contentService.currentProblem;
+        
         libraryDir = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         editPDefDir = [libraryDir stringByAppendingPathComponent:@"edit-pdef-client-files"];
         
@@ -67,9 +77,12 @@
     
     if ([@"ready" isEqualToString:message])
     {
-        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
-        ContentService *cs = ac.contentService;
-        [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"appInterface.loadPDef(%@)", [cs.currentPDef JSONString]]];
+        NSString *loadPDefCommand = [NSString stringWithFormat:@"appInterface.loadPDef(%@,%@,%d,%d)",
+                                     [self.problem.pdef JSONString],
+                                     self.problem.changeStack,
+                                     self.problem.stackCurrentIndex,
+                                     self.problem.stackLastSaveIndex];
+        [webView stringByEvaluatingJavaScriptFromString:loadPDefCommand];
     }
     else if ([@"change" isEqualToString:message])
     {
@@ -80,12 +93,11 @@
     }
     else if ([@"test-edits" isEqualToString:message])
     {
-        NSDictionary *body = [self bodyDict:[request HTTPBody]];
-        
-        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
-        ContentService *cs = ac.contentService;
-        
-        cs.currentPDef = [[body valueForKey:@"pdef"] objectFromJSONString];
+        NSDictionary *editState = [[webView stringByEvaluatingJavaScriptFromString:@"appInterface.getState()"] objectFromJSONString];
+        [self.problem updatePDef:[editState valueForKey:@"pdef"]
+                  andChangeStack:[[editState valueForKey:@"changeStack"] JSONString]
+               stackCurrentIndex:[[editState valueForKey:@"stackCurrIndex"] intValue]
+              stackLastSaveIndex:[[editState valueForKey:@"stackLastSaveIndex"] intValue]];
         
         [handlerInstance performSelector:endEditAndTest withObject:YES];
     }
@@ -153,6 +165,8 @@
 {
     if (webView) [webView release];
     if (handlerInstance) [handlerInstance release];
+    if (contentService) [contentService release];
+    self.problem = nil;
     [super dealloc];
 }
 

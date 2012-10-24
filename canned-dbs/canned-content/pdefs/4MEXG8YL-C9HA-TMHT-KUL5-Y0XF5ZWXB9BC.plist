@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>A has less goo than B</string>
+	<key>MASTERY</key>
+	<true/>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@bname</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>&lt;b:oi tag=&quot;a&quot; icontag=&quot;thing_1&quot;/&gt;</string>
+				<string>&lt;b:oi tag=&quot;a&quot; icontag=&quot;thing_2&quot;/&gt;</string>
+				<string>&lt;b:oi tag=&quot;a&quot; icontag=&quot;thing_3&quot;/&gt;</string>
+			</array>
+		</dict>
+		<key>@gname</key>
+		<dict>
+			<key>DATA</key>
+			<array>
+				<string>&lt;b:oi tag=&quot;a&quot; icontag=&quot;thing_4&quot;/&gt;</string>
+				<string>&lt;b:oi tag=&quot;a&quot; icontag=&quot;thing_5&quot;/&gt;</string>
+			</array>
+			<key>MODE</key>
+			<string>RANDOM</string>
+		</dict>
+	</dict>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_COMPLETE_TEXT</key>
+		<string>well done!!</string>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$addend-$augend}</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$addend+$augend}</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>6</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>{@gname} &lt;b:t&gt;has {$addend} goo.&lt;/b:t&gt; {@bname}&lt;b:t&gt;has {$augend} less goo than&lt;/b:t&gt;{@gname}&lt;b:t&gt;. How many does &lt;/b:t&gt;{@bname}&lt;b:t&gt; have altogether?&lt;/b:t&gt;</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again</string>
+	</dict>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$addend</string>
+			<key>MIN</key>
+			<string>4</string>
+			<key>MAX</key>
+			<string>7</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$augend</string>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>{$addend}</string>
+		</dict>
+	</array>
+	<key>TOOL_KEY</key>
+	<string>DistributionTool</string>
+	<key>DISTRIBUTION_EVAL_TYPE</key>
+	<integer>1</integer>
+	<key>HAS_CAGE</key>
+	<true/>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>QUANTITY</key>
+			<real>0</real>
+			<key>POS_X</key>
+			<integer>80</integer>
+			<key>POS_Y</key>
+			<integer>300</integer>
+		</dict>
+		<dict>
+			<key>QUANTITY</key>
+			<real>0</real>
+			<key>POS_X</key>
+			<integer>400</integer>
+			<key>POS_Y</key>
+			<integer>500</integer>
+		</dict>
+	</array>
+</dict>
+</plist>

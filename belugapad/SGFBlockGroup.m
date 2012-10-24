@@ -100,7 +100,7 @@
     }
 }
 
--(void)checkIfInBubbleAt:(CGPoint)location
+-(BOOL)checkIfInBubbleAt:(CGPoint)location
 {
     for(id go in gameWorld.AllGameObjectsCopy)
     {
@@ -113,7 +113,7 @@
             {
                 [thisBubble addGroup:self];
                 [self tintBlocksTo:ccc3(0,255,0)];
-                return;
+                return YES;
             }
             else
             {
@@ -122,6 +122,7 @@
             }
         }
     }
+    return NO;
 }
 
 -(void)tintBlocksTo:(ccColor3B)thisColour

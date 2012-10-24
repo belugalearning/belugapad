@@ -21,8 +21,8 @@
 #import "BATQuery.h"
 #import "InteractionFeedback.h"
 
-#define kEarliestHit 0.75
-#define kLatestHit 0.50
+#define kEarliestHit 0.8
+#define kLatestHit 0.8
 
 @interface CountingTimer()
 {
@@ -80,7 +80,7 @@
         [self readPlist:pdef];
         [self populateGW];
         
-        debugLogging=NO;
+        debugLogging=YES;
         
         
         gw.Blackboard.inProblemSetup = NO;
@@ -127,12 +127,14 @@
     if(numIncrement<0 && lastNumber<countMin && !expired)
     {
         NSLog(@"reach the end of the problem (hit count min on count-back number");
+        [loggingService logEvent:BL_PA_CT_TIMER_EXPIRED withAdditionalData:nil];
         [self expireProblemForRestart];
     }
     
     else if(numIncrement>=0 && lastNumber>countMax && !expired)
     {
         NSLog(@"reach the end of the problem (hit count max on count-on number");
+        [loggingService logEvent:BL_PA_CT_TIMER_EXPIRED withAdditionalData:nil];
         [self expireProblemForRestart];
     }
         
@@ -180,7 +182,7 @@
     {
         lastNumber=countMax;
         trackNumber=lastNumber;
-        timeElapsed=lastNumber;
+        timeElapsed=0;
         
         if(countMin>=countMax)
             countMin=countMax-4;
@@ -251,8 +253,14 @@
     
     if(CGRectContainsPoint(buttonOfWin.boundingBox, location))
     {
-        if(!started)[self startProblem];
-        else[self evalProblem];
+        if(!started){
+            [self startProblem];
+            [loggingService logEvent:BL_PA_CT_TOUCH_START_START_TIMER withAdditionalData:nil];
+        }
+        else{
+            [self evalProblem];
+            [loggingService logEvent:BL_PA_CT_TOUCH_START_STOP_TIMER withAdditionalData:nil];
+        }
     }
     
     
@@ -298,14 +306,15 @@
     
     if(numIncrement>=0)
     {
+        float adjTimeElapsed=timeElapsed*numIncrement;
         // count up
-        earliestHit=solutionNumber-kEarliestHit;
-        latestHit=solutionNumber+kLatestHit;
+        earliestHit=solutionNumber-(kEarliestHit*numIncrement);
+        latestHit=solutionNumber+(kLatestHit*numIncrement);
         
         if(debugLogging)
-            NSLog(@"(EVAL-UP) earliestHit: %f / latestHit: %f / timeElapsed %f", earliestHit, latestHit, timeElapsed);
+            NSLog(@"(EVAL-UP) earliestHit: %f / latestHit: %f / timeElapsed %f", earliestHit, latestHit, adjTimeElapsed);
         
-        if((timeElapsed>=earliestHit) && (timeElapsed<=latestHit))
+        if((adjTimeElapsed>=earliestHit) && (adjTimeElapsed<=latestHit))
             return YES;
         else
             return NO;
@@ -314,17 +323,18 @@
     {
         // count down
         float adjTimeElapsed=fabsf(timeElapsed-countMax);
-        earliestHit=solutionNumber+kEarliestHit;
-        latestHit=solutionNumber-kLatestHit;
+        earliestHit=solutionNumber+(kEarliestHit*numIncrement);
+        latestHit=solutionNumber-(kLatestHit*numIncrement);
         
         if(debugLogging)
             NSLog(@"(EVAL-DOWN) earliestHit: %f / latestHit: %f / timeElapsed %f", earliestHit, latestHit, adjTimeElapsed);
         
-        if(adjTimeElapsed>=latestHit && adjTimeElapsed<=earliestHit)
+        if(adjTimeElapsed<=latestHit && adjTimeElapsed>=earliestHit)
             return YES;
+
         else
             return NO;
-        
+
     }
     
     return NO;

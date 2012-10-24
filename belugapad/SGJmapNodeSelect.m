@@ -40,6 +40,12 @@
 {
     BOOL ret=NO;
     
+    CGPoint testParentPos=ParentGO.Position;
+    if([((NSObject*)ParentGO) isKindOfClass:[SGJmapMasteryNode class]])
+    {
+        testParentPos=((SGJmapMasteryNode*)ParentGO).MasteryPinPosition;
+    }
+    
     if([gameObject isKindOfClass:[SGJmapMasteryNode class]])
         if(((SGJmapMasteryNode*)gameObject).Disabled)
             return NO;
@@ -54,13 +60,13 @@
         {
             //[((AppController*)[UIApplication sharedApplication].delegate) startToolHostFromJmapPos:ParentGO.Position];
             
-            [((JMap*)[gameWorld GameScene]) startTransitionToToolHostWithPos:ParentGO.Position];
+            [((JMap*)[gameWorld GameScene]) startTransitionToToolHostWithPos:testParentPos];
         }
         
         NSLog(@"i'm starting! %@", ParentGO._id);
         ParentGO.Selected=YES;
     }
-    else if ([BLMath DistanceBetween:ParentGO.Position and:pos]<ParentGO.HitProximity)
+    else if ([BLMath DistanceBetween:testParentPos and:pos]<ParentGO.HitProximity)
     {
         ret=YES;
       
@@ -202,7 +208,12 @@
     
     [signSprite setOpacity:255];
     [signSprite setScale:0];
-    [signSprite setPosition:[BLMath AddVector:ccp(0, 30 + (signSprite.contentSize.height / 2.0f)) toVector:ParentGO.Position]];
+    
+    CGPoint placePos=ParentGO.Position;
+    if([((NSObject*)ParentGO) isKindOfClass:[SGJmapMasteryNode class]])
+        placePos=((SGJmapMasteryNode*)ParentGO).MasteryPinPosition;
+
+    [signSprite setPosition:[BLMath AddVector:ccp(0, 30 + (signSprite.contentSize.height / 2.0f)) toVector:placePos]];
     
     [signSprite runAction:[InteractionFeedback enlargeTo1xAction]];
     

@@ -12,15 +12,15 @@
 @interface Problem : CouchDBDerivedDocument
 
 @property (readonly, retain) NSDictionary *pdef;
-@property (readonly, retain) NSDictionary *lastSavedPDef;
-@property (readonly, retain) NSArray *editStack;
+@property (readonly, retain) NSString *lastSavedPDef; // json dictionary
+@property (readonly, retain) NSString *changeStack; // json array
 @property (readonly) NSInteger stackCurrentIndex;
 @property (readonly) NSInteger stackLastSaveIndex;
 
 -(id)initWithDatabase:(FMDatabase*)db andProblemId:(NSString*)pId;
 
 -(void) updatePDef:(NSString*)pdef
-      andEditStack:(NSString*)editStack
+    andChangeStack:(NSString*)changeStack
  stackCurrentIndex:(NSInteger)stackCurrentIndex
 stackLastSaveIndex:(NSInteger)stackLastSaveIndex;
 

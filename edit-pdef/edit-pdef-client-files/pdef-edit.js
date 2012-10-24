@@ -53,8 +53,11 @@ $(function() {
 })
 
 var appInterface = {
-  loadPDef: function(pDef) {
-    pdef = pDef
+  loadPDef: function(pdef_, lastSavedPDef_, currStackIndex_, lastSaveStackIndex_) {
+    pdef = pdef_
+    lastSavedPDef = lastSavedPDef_
+    currStackIndex = currStackIndex_
+    lastSaveStackIndex = lastSaveStackIndex_
 
     // TODO: investigate - wihout delay some images don't load, arbitrary time delay hardly reliable
     setTimeout(function() {

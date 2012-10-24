@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0C0AB7AD14F5116600437F07 /* Problems in Resources */ = {isa = PBXBuildFile; fileRef = 0C0AB7AC14F5116600437F07 /* Problems */; };
 		0C33EEBC15D4EE5900EA6A11 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 0C33EEB215D4EE5900EA6A11 /* ioapi.c */; };
 		0C33EEBD15D4EE5900EA6A11 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 0C33EEB415D4EE5900EA6A11 /* mztools.c */; };
 		0C33EEBE15D4EE5900EA6A11 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 0C33EEB615D4EE5900EA6A11 /* unzip.c */; };
@@ -33,6 +32,7 @@
 		0C712C0F1580C392004B716F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0C712C0C1580C392004B716F /* README.md */; };
 		0C712C131580EDEE004B716F /* Problem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C712C121580EDED004B716F /* Problem.m */; };
 		0C92B2541515702700342094 /* ContentService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C92B2531515702700342094 /* ContentService.m */; };
+		0C993CFB163842CE0079A647 /* Problems in Resources */ = {isa = PBXBuildFile; fileRef = 0C993CFA163842CE0079A647 /* Problems */; };
 		0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */ = {isa = PBXBuildFile; fileRef = 0C9FEFF514F572FB00E64138 /* pipeline-testing */; };
 		0CDECB5E15920C27004DE20D /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB4A15920C27004DE20D /* AFHTTPClient.m */; };
 		0CDECB5F15920C27004DE20D /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB4C15920C27004DE20D /* AFHTTPRequestOperation.m */; };
@@ -430,7 +430,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0C0AB7AC14F5116600437F07 /* Problems */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Problems; sourceTree = SOURCE_ROOT; };
 		0C33EEB115D4EE5900EA6A11 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		0C33EEB215D4EE5900EA6A11 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
 		0C33EEB315D4EE5900EA6A11 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
@@ -476,6 +475,7 @@
 		0C712C121580EDED004B716F /* Problem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Problem.m; sourceTree = "<group>"; };
 		0C92B2521515702700342094 /* ContentService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentService.h; sourceTree = "<group>"; };
 		0C92B2531515702700342094 /* ContentService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentService.m; sourceTree = "<group>"; };
+		0C993CFA163842CE0079A647 /* Problems */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Problems; sourceTree = SOURCE_ROOT; };
 		0C9FEFF514F572FB00E64138 /* pipeline-testing */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pipeline-testing"; sourceTree = SOURCE_ROOT; };
 		0CDECB4915920C27004DE20D /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		0CDECB4A15920C27004DE20D /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
@@ -2197,7 +2197,7 @@
 				0C58DE991631774700DD9A01 /* edit-pdef-client-files */,
 				0CF9187B14F54C1D00FAC58D /* images */,
 				0C9FEFF514F572FB00E64138 /* pipeline-testing */,
-				0C0AB7AC14F5116600437F07 /* Problems */,
+				0C993CFA163842CE0079A647 /* Problems */,
 				7FBE969215497DDF00D993AC /* select-edit-user-images */,
 				0C51649615D9068D008E7C72 /* settings */,
 				0C427C3614F529CC0033AFE2 /* sfx */,
@@ -2958,7 +2958,6 @@
 				7F813D5C14CCC3A100C1E997 /* fire2.plist in Resources */,
 				7F813D6B14CCD8CF00C1E997 /* fire3.plist in Resources */,
 				7FDBA56314EC4271004D1CC9 /* bm11.plist in Resources */,
-				0C0AB7AD14F5116600437F07 /* Problems in Resources */,
 				0C427C3714F529CC0033AFE2 /* sfx in Resources */,
 				0CF9187C14F54C1D00FAC58D /* images in Resources */,
 				0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */,
@@ -2979,6 +2978,7 @@
 				7F884D8815E197AD004B0DF3 /* SourceSansPro-Bold.ttf in Resources */,
 				7F884D8B15E28F24004B0DF3 /* Chango-Regular.ttf in Resources */,
 				0C58DE9A1631774700DD9A01 /* edit-pdef-client-files in Resources */,
+				0C993CFB163842CE0079A647 /* Problems in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

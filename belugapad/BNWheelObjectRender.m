@@ -360,6 +360,13 @@
     //NSLog(@"Component %d stopped spinning.", component);
 }
 
+-(float)returnBaseOfNumber:(int)pickerSelectionIndex
+{
+    int adjustedIndex=(pickerSelectionIndex-[w.pickerViewSelection count]);
+    
+    return pow((double)10,adjustedIndex);
+}
+
 -(int)returnPickerNumber
 {
     int retNum=0;

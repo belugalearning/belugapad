@@ -21,6 +21,6 @@
 -(void)moveSprite;
 -(void)moveSpriteHome;
 -(void)handleTap;
-
+-(float)returnBaseOfNumber:(int)pickerSelectionIndex;
 
 @end

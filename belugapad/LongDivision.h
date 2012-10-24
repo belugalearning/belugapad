@@ -9,6 +9,7 @@
 #import "DWGameObject.h"
 #import "ToolConsts.h"
 #import "ToolScene.h"
+#import "DWNWheelGameObject.h"
 
 @interface LongDivision : ToolScene
 {
@@ -35,6 +36,8 @@
     NSMutableArray *numberRows;
     NSMutableArray *numberLayers;
     NSArray *solutionsDef;
+    
+    DWNWheelGameObject *nWheel;
     
     CGPoint lastTouch;
     CGPoint touchStart;

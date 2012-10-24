@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Count from 12 to 0 in threes.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>count on from 0 to 12</string>
+	<key>TOOL_KEY</key>
+	<string>NLine</string>
+	<key>START_VALUE</key>
+	<string>0</string>
+	<key>MIN_VALUE</key>
+	<string>0</string>
+	<key>MAX_VALUE</key>
+	<string>12</string>
+	<key>SEGMENT_VALUE</key>
+	<integer>3</integer>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>REJECT_MODE</key>
+	<integer>0</integer>
+	<key>EVAL_TARGET</key>
+	<integer>0</integer>
+	<key>HIDE_ALL_NUMBERS</key>
+	<true/>
+	<key>SHOW_NUMBERS_AT_INTERVALS</key>
+	<array/>
+	<key>HIDE_ALL_NOTCHES</key>
+	<false/>
+	<key>SHOW_NOTCHES_AT_INTERVALS</key>
+	<array>
+		<string>3</string>
+	</array>
+	<key>HIDE_START_NUMBER</key>
+	<false/>
+	<key>HIDE_END_NUMBER</key>
+	<false/>
+	<key>HIDE_START_NOTCH</key>
+	<false/>
+	<key>HIDE_END_NOTCH</key>
+	<false/>
+	<key>DISABLE_SNAPPING_TO_NOTCH</key>
+	<false/>
+	<key>EVAL_PLUS_MINUS_THRESHOLD</key>
+	<integer>0</integer>
+	<key>SHOW_COUNT_HISTORY_AT_INTERVALS</key>
+	<array>
+		<string>3</string>
+	</array>
+	<key>RENDER_STITCHES_AT_INTERVAL</key>
+	<integer>0</integer>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>0</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>8</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>10</string>
+				<key>META_ANSWER_VALUE</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>12</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>&lt;b:oi tag=&quot;thing_2&quot;/&gt; &lt;b:t&gt;is counting in threes.&lt;/b:t&gt; &lt;b:oi tag=&quot;thing_2&quot;/&gt; &lt;b:t&gt;starts at a number and counts backwards 4 times. If&lt;/b:t&gt; &lt;b:oi tag=&quot;thing_2&quot;/&gt; &lt;b:t&gt;ended up at 0, where did&lt;/b:t&gt; &lt;b:oi tag=&quot;thing_2&quot;/&gt;&lt;b:t&gt;start?&lt;/b:t&gt;</string>
+		<key>META_QUESTION_INCOMPLETE_TEXT</key>
+		<string>Try again.</string>
+	</dict>
+</dict>
+</plist>

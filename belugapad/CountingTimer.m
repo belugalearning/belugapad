@@ -127,12 +127,14 @@
     if(numIncrement<0 && lastNumber<countMin && !expired)
     {
         NSLog(@"reach the end of the problem (hit count min on count-back number");
+        [loggingService logEvent:BL_PA_CT_TIMER_EXPIRED withAdditionalData:nil];
         [self expireProblemForRestart];
     }
     
     else if(numIncrement>=0 && lastNumber>countMax && !expired)
     {
         NSLog(@"reach the end of the problem (hit count max on count-on number");
+        [loggingService logEvent:BL_PA_CT_TIMER_EXPIRED withAdditionalData:nil];
         [self expireProblemForRestart];
     }
         
@@ -251,8 +253,14 @@
     
     if(CGRectContainsPoint(buttonOfWin.boundingBox, location))
     {
-        if(!started)[self startProblem];
-        else[self evalProblem];
+        if(!started){
+            [self startProblem];
+            [loggingService logEvent:BL_PA_CT_TOUCH_START_START_TIMER withAdditionalData:nil];
+        }
+        else{
+            [self evalProblem];
+            [loggingService logEvent:BL_PA_CT_TOUCH_START_STOP_TIMER withAdditionalData:nil];
+        }
     }
     
     
@@ -323,9 +331,10 @@
         
         if(adjTimeElapsed<=latestHit && adjTimeElapsed>=earliestHit)
             return YES;
+
         else
             return NO;
-        
+
     }
     
     return NO;

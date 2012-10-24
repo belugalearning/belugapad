@@ -20,7 +20,7 @@
 -(void)removeObject:(id)thisObject;
 -(BOOL)checkTouchInGroupAt:(CGPoint)location;
 -(void)moveGroupPositionFrom:(CGPoint)fromHere To:(CGPoint)here;
--(void)checkIfInBubbleAt:(CGPoint)location;
+-(BOOL)checkIfInBubbleAt:(CGPoint)location;
 -(void)tintBlocksTo:(ccColor3B)thisColour;
 -(void)inflateZIndexOfMyObjects;
 -(void)resetZIndexOfMyObjects;

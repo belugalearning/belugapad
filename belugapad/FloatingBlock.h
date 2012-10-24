@@ -44,6 +44,8 @@ typedef enum {
     // showing stuff?
     BOOL showingOperatorBubble;
     BOOL setupNumberWheel;
+    BOOL hasLoggedMove;
+    BOOL isInBubble;
     float timeToSetupNumberWheel;
     
     // and a default layer

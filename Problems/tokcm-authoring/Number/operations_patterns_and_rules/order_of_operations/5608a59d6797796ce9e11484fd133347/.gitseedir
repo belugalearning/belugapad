@@ -1,7 +1,0 @@
-function (e) {
-                                                                if (e) {
-                                                                    onError(e, filePath, false);
-                                                                    return;
-                                                                }
-                                                                if (--numNodesOutstanding == 0 && --numMasteryNodesOutstanding == 0 && --numTopDirsOutstanding == 0) onAllCreated();
-                                                            }

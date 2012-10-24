@@ -2,12 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>/Problems/tools-dev/da-pv/placevalue-problem030a.plist</string>
+	<string>/Problems/tools-dev/da-pv/showmorelessarrows.plist</string>
+	<string>/Problems/tools-dev/da-ct/ct001.plist</string>
+	<string>/Problems/tools-dev/da-ct/ct002.plist</string>
+	<string>/Problems/tools-dev/da-ld/ld1.plist</string>
+	<string>/Problems/tools-dev/da-ld/ld2.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg-14x3gridmultiplication.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg7.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg2.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg3.plist</string>
 	<string>/Problems/tools-dev/da-dg/dg4.plist</string>
-	<string>/Problems/tools-dev/da-pv/placevalue-problem030.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test8.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test2.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test3.plist</string>
@@ -30,7 +35,6 @@
 	<string>/Problems/tools-dev/da-pv/placevalue-problem025.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem026.plist</string>
 	<string>/Problems/tools-dev/da-pv/placevalue-problem027.plist</string>
-	<string>/Problems/tools-dev/da-ct/ct001.plist</string>
 	<string>/Problems/tools-dev/da-ct/ct002.plist</string>
 	<string>/Problems/tools-dev/da-np/np2.plist</string>
 	<string>/Problems/tools-dev/da-float/fb001.plist</string>
@@ -80,7 +84,6 @@
 	<string>/Problems/tools-dev/da-ps/ps1.plist</string>
 	<string>/Problems/tools-dev/da-ld/ld2.plist</string>
 	<string>/Problems/Addition/ac-dev/97amalgamation/am_017.plist</string>
-	<string>/Problems/tools-dev/da-ld/ld1.plist</string>
 	<string>/Problems/tools-dev/da-ld/ld2.plist</string>
 	<string>/Problems/tools-dev/da-fb/float-problem0002.plist</string>
 	<string>/Problems/tools-dev/da-pt/partition-test2.plist</string>

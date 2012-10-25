@@ -32,6 +32,8 @@
 
 @synthesize MasteryPinPosition;
 
+@synthesize flip;
+
 -(SGJmapMasteryNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition
 {
     if(self=[super initWithGameWorld:aGameWorld])

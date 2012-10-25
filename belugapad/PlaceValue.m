@@ -906,8 +906,9 @@ static float kTimeToCageShake=7.0f;
     
     ropesforColumn = [[pdef objectForKey:ROPES_PER_COL] intValue];
     rows = [[pdef objectForKey:ROWS_PER_COL] intValue];
-    showCount = [[pdef objectForKey:SHOW_COUNT] boolValue];
-    showValue = [[pdef objectForKey:SHOW_VALUE] boolValue];    
+    // TODO: REMOVE FORCE showCount = NO;   ---- showCount=YES not playing nice with showColumnTotalCount
+    showCount = NO; // [[pdef objectForKey:SHOW_COUNT] boolValue];
+    showValue = [[pdef objectForKey:SHOW_VALUE] boolValue];
     showReset=[[pdef objectForKey:SHOW_RESET] boolValue];
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];

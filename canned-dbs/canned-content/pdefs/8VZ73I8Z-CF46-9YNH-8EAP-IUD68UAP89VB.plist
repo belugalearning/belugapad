@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>MASTERY</key>
+	<true/>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Write an equation to express this.</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>1</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Make a sequence which starts at &lt;/b:t&gt;&lt;b:ot tag=&quot;a&quot; enabled=&quot;yes&quot;&gt;{$x}&lt;/b:ot&gt;
+&lt;b:t&gt;and goes up in 4s.&lt;/b:t&gt;
+&lt;b:ot tag=&quot;w&quot;&gt;{$x2}&lt;/b:ot&gt;
+&lt;b:t&gt;,&lt;/b:t&gt;
+&lt;b:ot tag=&quot;b&quot;&gt;{$x4}&lt;/b:ot&gt;
+&lt;b:t&gt;,&lt;/b:t&gt;
+&lt;b:ot tag=&quot;c&quot;&gt;{$x6}&lt;/b:ot&gt;
+&lt;b:t&gt;,&lt;/b:t&gt;
+&lt;b:ot tag=&quot;d&quot;&gt;{$x8}&lt;/b:ot&gt;
+&lt;b:t&gt;,&lt;/b:t&gt;
+&lt;b:ot tag=&quot;e&quot;&gt;{$x10}&lt;/b:ot&gt;
+&lt;b:t&gt;,&lt;/b:t&gt;
+&lt;b:ot tag=&quot;f&quot;&gt;{$x12}&lt;/b:ot&gt;
+&lt;b:t&gt;,&lt;/b:t&gt;
+&lt;b:ot tag=&quot;g&quot;&gt;{$x14}&lt;/b:ot&gt;
+&lt;b:t&gt;,&lt;/b:t&gt;
+&lt;b:ot tag=&quot;h&quot;&gt;{$x16}&lt;/b:ot&gt;
+&lt;b:t&gt;,&lt;/b:t&gt;
+&lt;b:ot tag=&quot;i&quot;&gt;{$x18}&lt;/b:ot&gt;
+&lt;b:t&gt;,&lt;/b:t&gt;
+&lt;b:ot tag=&quot;j&quot;&gt;{$x20}&lt;/b:ot&gt;
+&lt;b:t&gt;,&lt;/b:t&gt;
+&lt;b:ot tag=&quot;k&quot;&gt;{$x22}&lt;/b:ot&gt;</string>
+		<string>&lt;b:ot tag=&quot;a&quot; enabled=&quot;yes&quot;&gt;{$x}&lt;/b:ot&gt;
+&lt;b:op op=&quot;,&quot; picker=&quot;yes&quot; /&gt;
+&lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt;{$x4}&lt;/b:ot&gt;
+&lt;b:op op=&quot;,&quot; picker=&quot;yes&quot; /&gt;
+&lt;b:ot tag=&quot;d&quot; enabled=&quot;no&quot;&gt; {$x8}&lt;/b:ot&gt;
+&lt;b:op op=&quot;,&quot; picker=&quot;yes&quot; /&gt;
+&lt;b:ot tag=&quot;f&quot; enabled=&quot;no&quot;&gt;{$x12}&lt;/b:ot&gt;
+&lt;b:op op=&quot;,&quot; picker=&quot;yes&quot; /&gt;
+&lt;b:ot tag=&quot;h&quot; enabled=&quot;no&quot;&gt;{$x16}&lt;/b:ot&gt;
+&lt;b:op op=&quot;and&quot; picker=&quot;yes&quot; /&gt;
+&lt;b:ot tag=&quot;j&quot; enabled=&quot;no&quot;&gt;{$x20}&lt;/b:ot&gt;</string>
+	</array>
+	<key>EVAL_TYPE</key>
+	<string>ALL_ENABLED</string>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>RETAIN</key>
+			<true/>
+			<key>MIN</key>
+			<string>2</string>
+			<key>MAX</key>
+			<string>6</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x4</string>
+			<key>VALUE</key>
+			<string>{$x+4}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x8</string>
+			<key>VALUE</key>
+			<string>{$x+8}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x12</string>
+			<key>VALUE</key>
+			<string>{$x+12}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x16</string>
+			<key>VALUE</key>
+			<string>{$x+16}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x20</string>
+			<key>VALUE</key>
+			<string>{$x+20}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x2</string>
+			<key>VALUE</key>
+			<string>{$x+2}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x6</string>
+			<key>VALUE</key>
+			<string>{$x+6}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x10</string>
+			<key>VALUE</key>
+			<string>{$x+10}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x14</string>
+			<key>VALUE</key>
+			<string>{$x+14}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x18</string>
+			<key>VALUE</key>
+			<string>{$x+18}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$22</string>
+			<key>VALUE</key>
+			<string>{$x+22}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x2</string>
+			<key>VALUE</key>
+			<string>{$x+2}</string>
+		</dict>
+	</array>
+</dict>
+</plist>

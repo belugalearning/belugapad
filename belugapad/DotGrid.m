@@ -645,7 +645,7 @@
         int sgW=abs(lAnch.myXpos - sAnch.myXpos);
         int sgH=abs(lAnch.myYpos - sAnch.myYpos);
         
-        if(sgW==1 && sgH==1)
+        if(sgW<shapeBaseSize && sgH<shapeBaseSize)
         {
             DWDotGridShapeGameObject *shape=[self createShapeWithAnchorPoints:anchors andPrecount:nil andDisabled:NO andGroup:sGroup];
             

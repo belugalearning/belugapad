@@ -14,9 +14,10 @@
       div[data-type].selected + div[data-type] { border:none; }
 
       /* expand & collpase */
-      span.expand-collapse { display:inline-block; background-repeat:no-repeat; padding-right:2px; }
-      div[data-type~="collection"] > span.expand-collapse { width:16px; height:13px; background-image:url("images/collapse_button.jpg"); background-repeat:no-repeat; }
-      div[data-type~="collection"].collapsed > span.expand-collapse { background-image:url("images/expand_button.jpg"); }
+      span.expand-collapse { display:inline-block; background-repeat:no-repeat; padding-right:2px; margin-top:2px; }
+      div[data-type~="collection"] > span.expand-collapse { width:16px; height:13px; background-image:url("images/triangle.png"); background-repeat:no-repeat; }
+      div[data-type~="collection"].selected > span.expand-collapse { background-image:url("images/triangle_white.png"); }
+      div[data-type~="collection"].collapsed > span.expand-collapse { -webkit-transform:rotate(-90deg); }
       div[data-type~="primitive"] > span.expand-collapse { width:0; background:none; }
       div[data-type~="collection"].collapsed > div[data-type] { display:none; }
 

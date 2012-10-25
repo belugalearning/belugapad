@@ -298,7 +298,7 @@
     
     if(showDraggableBlock)
     {
-        dragBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/dragsquare.png")];
+        dragBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/DG_sq40.png")];
         [dragBlock setPosition:ccp(55,650)];
         [renderLayer addChild:dragBlock];
     }
@@ -1162,7 +1162,8 @@
     if(showDraggableBlock && CGRectContainsPoint(dragBlock.boundingBox, location))
     {
         hitDragBlock=YES;
-        newBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/1x1square85px.png")];
+        NSString *fileStr=[NSString stringWithFormat:@"/images/dotgrid/DG_sq%d.png",spaceBetweenAnchors];
+        newBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(fileStr)];
         [newBlock setPosition:location];
         [renderLayer addChild:newBlock];
     }

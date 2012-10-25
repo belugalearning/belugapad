@@ -16,6 +16,7 @@
 @property (readonly, retain) NSString *changeStack; // json array
 @property (readonly) NSInteger stackCurrentIndex;
 @property (readonly) NSInteger stackLastSaveIndex;
+@property (readonly) BOOL hasUnsavedEdits;
 
 -(id)initWithDatabase:(FMDatabase*)db andProblemId:(NSString*)pId;
 

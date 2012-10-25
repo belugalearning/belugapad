@@ -53,6 +53,11 @@
     return self;
 }
 
+-(BOOL)hasUnsavedEdits
+{
+    return self.stackCurrentIndex != self.stackLastSaveIndex;
+}
+
 -(void) updatePDef:(NSDictionary*)pdef
     andChangeStack:(NSString*)changeStack
  stackCurrentIndex:(NSInteger)stackCurrentIndex

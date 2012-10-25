@@ -96,8 +96,8 @@
         NSDictionary *editState = [[webView stringByEvaluatingJavaScriptFromString:@"appInterface.getState()"] objectFromJSONString];
         [self.problem updatePDef:[editState valueForKey:@"pdef"]
                   andChangeStack:[[editState valueForKey:@"changeStack"] JSONString]
-               stackCurrentIndex:[[editState valueForKey:@"stackCurrIndex"] intValue]
-              stackLastSaveIndex:[[editState valueForKey:@"stackLastSaveIndex"] intValue]];
+               stackCurrentIndex:[[editState valueForKey:@"currStackIndex"] intValue]
+              stackLastSaveIndex:[[editState valueForKey:@"lastSaveStackIndex"] intValue]];
         
         [handlerInstance performSelector:endEditAndTest withObject:YES];
     }

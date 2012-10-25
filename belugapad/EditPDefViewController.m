@@ -63,9 +63,12 @@
         NSURL *baseURL = [NSURL fileURLWithPath:editPDefDir];
         NSString *html = [NSString stringWithContentsOfFile:[editPDefDir stringByAppendingPathComponent:@"index.html"]
                                                    encoding:NSUTF8StringEncoding
-                                                      error:nil];
+                                                       error:nil];
         
-        [webView loadHTMLString:html baseURL:baseURL];
+        NSString *timeQuery = [NSString stringWithFormat:@".js?%f", [NSDate timeIntervalSinceReferenceDate]];
+        NSString *htmlForceNoCacheJS = [html stringByReplacingOccurrencesOfString:@".js'" withString:timeQuery];
+        
+        [webView loadHTMLString:htmlForceNoCacheJS baseURL:baseURL];
     }
     return self;
 }
@@ -83,9 +86,6 @@
                                      self.problem.stackCurrentIndex,
                                      self.problem.stackLastSaveIndex];
         [webView stringByEvaluatingJavaScriptFromString:loadPDefCommand];
-    }
-    else if ([@"change" isEqualToString:message])
-    {
     }
     else if ([@"cancel" isEqualToString:message])
     {
@@ -126,7 +126,7 @@
     NSString *bundledEditPDefDir = BUNDLE_FULL_PATH(@"/edit-pdef-client-files");    
     NSFileManager *fm = [NSFileManager defaultManager];
     
-    NSURL *url = [NSURL URLWithString:@"http://169.254.83.155:1234"]; // TODO: Update url to zubi.me ********************************************************************
+    NSURL *url = [NSURL URLWithString:@"http://169.254.47.31:1234"]; // TODO: Update url to zubi.me ********************************************************************
     NSURLRequest *req = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:5];
     NSHTTPURLResponse *response = nil;
     NSError *error = nil;

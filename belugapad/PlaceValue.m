@@ -2609,6 +2609,8 @@ static float kTimeToCageShake=7.0f;
             float distFromNetBottomToCage=[BLMath DistanceBetween:ccp(0, n.PosY) and:ccp(0, c.PosY)];
             float distFromBlockToCage=[BLMath DistanceBetween:location and:ccp(c.PosX, c.PosY)];
             
+                
+
 //            if(distFromBlockToCage<distFromNetBottomToCage)
 //            {
 //                float cageOpacity=(distFromBlockToCage/distFromNetBottomToCage)*255;
@@ -2626,6 +2628,7 @@ static float kTimeToCageShake=7.0f;
 //                [c.mySprite setPosition:ccp(c.PosX, c.PosY)];
 //                [cM.mySprite setPosition:ccp(c.PosX, c.PosY+20)];
                 cageHasDropped=YES;
+                [loggingService logEvent:BL_PA_PV_TOUCH_MOVE_MOVED_TO_DISABLED_CAGE withAdditionalData:nil];
             }
         }
         
@@ -2971,6 +2974,7 @@ static float kTimeToCageShake=7.0f;
                         [go handleMessage:kDWputdown];
                     }
                     doNotSwitchSelection=YES;
+                    [loggingService logEvent:BL_PA_PV_TOUCH_END_DROPPED_BASE_PICKUP_ON_NET withAdditionalData:nil];
                     [self setTouchVarsToOff];
                     return;
                 }
@@ -2999,6 +3003,7 @@ static float kTimeToCageShake=7.0f;
                     }
                     doNotSwitchSelection=YES;
                     [self setTouchVarsToOff];
+                    [loggingService logEvent:BL_PA_PV_TOUCH_END_DROPPED_BASE_PICKUP_ON_CAGE withAdditionalData:nil];
                     return;
                     
                 }
@@ -3011,7 +3016,7 @@ static float kTimeToCageShake=7.0f;
                         
                         gw.Blackboard.DropObject=nil;
                         [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:0];
-                        
+                        [loggingService logEvent:BL_PA_PV_TOUCH_END_MULTIPLE_BLOCKS_DROPPED withAdditionalData:nil];
                         if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && !hasModifiedTestLocation && [pickupObjects count]>1)
                         {
                             gw.Blackboard.TestTouchLocation=ccp(n.PosX,n.PosY+200);
@@ -3037,7 +3042,7 @@ static float kTimeToCageShake=7.0f;
                         for(DWPlaceValueBlockGameObject *go in pickupObjects){
                             [go handleMessage:kDWresetToMountPositionAndDestroy];
                         }
-                        
+                        [loggingService logEvent:BL_PA_PV_TOUCH_END_MULTIPLE_BLOCKS_NOT_ENOUGH_SPACE withAdditionalData:nil];
                         [self setTouchVarsToOff];
                         return;
                     }
@@ -3066,6 +3071,7 @@ static float kTimeToCageShake=7.0f;
                     if(b.ObjectValue==0)
                     {
                         [b handleMessage:kDWfadeAndDestroy];
+                        [loggingService logEvent:BL_PA_PV_TOUCH_END_DROP_ZERO withAdditionalData:nil];
                         [self setTouchVarsToOff];
                         return;
                     }
@@ -3197,7 +3203,7 @@ static float kTimeToCageShake=7.0f;
                     blocksToDestroy=nil;
                 }
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
-                
+                [loggingService logEvent:BL_PA_PV_TOUCH_END_EXPLODE_BLOCKS withAdditionalData:nil];
                 // tell the tool that the problem state changed - so an auto eval will run now
                 [self problemStateChanged];
                 

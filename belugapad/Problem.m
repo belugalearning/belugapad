@@ -69,7 +69,7 @@ stackLastSaveIndex:(NSInteger)stackLastSaveIndex
     self.stackLastSaveIndex = stackLastSaveIndex;
     
     [database open];
-    [database executeUpdate:@"UPDATE Problems SET pdef=?, change_stack=?, stack_current_index=?, stack_last_save_index=? WHERE id=?", [pdef JSONString], changeStack, stackCurrentIndex, stackLastSaveIndex, self._id];
+    [database executeUpdate:@"UPDATE Problems SET pdef=?, change_stack=?, stack_current_index=?, stack_last_save_index=? WHERE id=?", [pdef JSONString], changeStack, [NSNumber numberWithInt:stackCurrentIndex], [NSNumber numberWithInt:stackLastSaveIndex], self._id];
     [database close];
     
 }
@@ -80,7 +80,7 @@ stackLastSaveIndex:(NSInteger)stackLastSaveIndex
     self.lastSavedPDef = [self.pdef JSONString];
     self.stackLastSaveIndex = self.stackCurrentIndex;
     [database open];
-    [database executeUpdate:@"UPDATE Problems SET _rev=?, last_saved_pdef=?, stack_last_save_index=? WHERE id=?", rev, self.lastSavedPDef, self.stackLastSaveIndex, self._id];
+    [database executeUpdate:@"UPDATE Problems SET _rev=?, last_saved_pdef=?, stack_last_save_index=? WHERE id=?", rev, self.lastSavedPDef, [NSNumber numberWithInt:self.stackLastSaveIndex], self._id];
     [database close];
 }
 

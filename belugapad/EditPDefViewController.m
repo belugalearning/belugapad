@@ -104,21 +104,6 @@
     return YES;
 }
 
--(NSDictionary*)bodyDict:(NSData*)httpBody
-{
-    NSString *bodyString = [[[NSString alloc] initWithData:httpBody encoding:NSUTF8StringEncoding] autorelease];
-    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    
-    for (NSString *field in [bodyString componentsSeparatedByString:@"&"])
-    {
-        NSArray *kvPair = [field componentsSeparatedByString:@"="];
-        NSString *key = [[[kvPair objectAtIndex:0] stringByReplacingOccurrencesOfString:@"+" withString:@" "]stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSString *val = [[[kvPair objectAtIndex:1] stringByReplacingOccurrencesOfString:@"+" withString:@" "]stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        [dict setValue:val forKey:key];
-    }
-    return dict;
-}
-
 
 -(void)updateClientScripts
 {

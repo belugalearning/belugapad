@@ -34,6 +34,8 @@
 @end
 
 static float kTimeToMountedShake=7.0f;
+static float kNBFontSizeSmall=22.0f;
+static float kNBFontSizeLarge=35.0f;
 
 @implementation NumberBonds
 #pragma mark - scene setup
@@ -272,7 +274,13 @@ static float kTimeToMountedShake=7.0f;
             
             if([[initCages objectAtIndex:i] objectForKey:LABEL])
             {
-                pogo.Label=[CCLabelTTF labelWithString:[[initCages objectAtIndex:i] objectForKey:LABEL] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
+                float fontSize=0.0f;
+                if(pogo.Length<3)
+                    fontSize=kNBFontSizeSmall;
+                else
+                    fontSize=kNBFontSizeLarge;
+                
+                pogo.Label=[CCLabelTTF labelWithString:[[initCages objectAtIndex:i] objectForKey:LABEL] fontName:CHANGO fontSize:fontSize];
             }
             
             if(!useBlockScaling){
@@ -368,7 +376,13 @@ static float kTimeToMountedShake=7.0f;
         if([[initObjects objectAtIndex:i]objectForKey:LABEL]) fillText = [[initObjects objectAtIndex:i]objectForKey:LABEL];
         else fillText=[NSString stringWithFormat:@"%d", insLength];
         
-        pogo.Label = [CCLabelTTF labelWithString:fillText fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
+        float fontSize=0.0f;
+        if(pogo.Length<3)
+            fontSize=kNBFontSizeSmall;
+        else
+            fontSize=kNBFontSizeLarge;
+        
+        pogo.Label = [CCLabelTTF labelWithString:fillText fontName:CHANGO fontSize:fontSize];
         
         DWNBondRowGameObject *prgo = (DWNBondRowGameObject*)[createdRows objectAtIndex:insRow];
         NSDictionary *pl=[NSDictionary dictionaryWithObject:prgo forKey:MOUNT];

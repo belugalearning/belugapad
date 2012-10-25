@@ -32,6 +32,7 @@
 @property (nonatomic, retain) NSMutableArray* arrayPages;
 @property (nonatomic, assign) CGSize touchSize;
 @property (nonatomic, assign) id <ScrollLayerDelegate> delegate;
+@property (nonatomic, assign) BOOL isLocked;
 -(void)makePages;
 -(void)spin:(float)speed rate:(float)rate repeat:(NSInteger )repeat stopPage:(NSInteger)page;
 @end

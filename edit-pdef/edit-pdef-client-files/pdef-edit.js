@@ -58,6 +58,7 @@ var appInterface = {
     changeStack = changeStack_
     currStackIndex = currStackIndex_
     lastSaveStackIndex = lastSaveStackIndex_
+    updateUndoRedoEnabled()
 
     // TODO: investigate - wihout delay some images don't load, arbitrary time delay hardly reliable
     setTimeout(function() {

@@ -46,16 +46,15 @@
         contentService = [ac.contentService retain];
         self.problem = contentService.currentProblem;
         
-        libraryDir = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        editPDefDir = [libraryDir stringByAppendingPathComponent:@"edit-pdef-client-files"];
+        libraryDir = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0] retain];
+        editPDefDir = [[libraryDir stringByAppendingPathComponent:@"edit-pdef-client-files"] retain];
         
         handlerInstance = [handler retain];
         endEditAndTest = endEditAndTestSel;
 
         [self updateClientScripts];
         
-        webView = [[UIWebView alloc] initWithFrame:frame];
-        self.view = webView;
+        self.view = webView = [[UIWebView alloc] initWithFrame:frame];
         webView.backgroundColor = [UIColor whiteColor];
         webView.opaque = YES;
         webView.delegate = self;
@@ -164,6 +163,8 @@
 -(void)dealloc
 {
     if (webView) [webView release];
+    if (libraryDir) [libraryDir release];
+    if (editPDefDir) [editPDefDir release];
     if (handlerInstance) [handlerInstance release];
     if (contentService) [contentService release];
     self.problem = nil;

@@ -53,12 +53,12 @@
     return self;
 }
 
--(void) updatePDef:(NSString*)pdef
+-(void) updatePDef:(NSDictionary*)pdef
     andChangeStack:(NSString*)changeStack
  stackCurrentIndex:(NSInteger)stackCurrentIndex
 stackLastSaveIndex:(NSInteger)stackLastSaveIndex
 {
-    self.pdef = [pdef objectFromJSONString];
+    self.pdef = pdef;
     self.changeStack = changeStack;
     self.stackCurrentIndex = stackCurrentIndex;
     self.stackLastSaveIndex = stackLastSaveIndex;

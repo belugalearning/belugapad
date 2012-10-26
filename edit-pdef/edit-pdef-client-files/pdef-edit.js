@@ -34,16 +34,9 @@ $(function() {
     .on('click', 'div[data-type].selected > span[data-controls] > [data-action="paste"]', pasteKey)
     .on('change', 'div[data-type~="primitive"] > span[data-field="value"] > select', valueOptionChanged)
 
-  // test-edits button listener
-  $('input[type="button"][value="test"]').on('click', function() {
-    var $form = $('<form action="test-edits" method="POST"><input type="text" name="pdef" /></form>')
-    $form.children('[name="pdef"]').val(JSON.stringify(getJSON()))
-    if (ios) $form.submit()
-  })
-  // cancel edits button listener
-  $('input[type="button"][value="cancel"]').on('click', function() {
-    if (ios) self.location = "cancel"
-  })
+  $('input[type="button"][value="test"]').on('click', function() { if (ios) self.location = 'test-edits' })
+  $('input[type="button"][value="cancel"]').on('click', function() { if (ios) self.location = "cancel" })
+
   // undo / redo
   $('input[type="button"][value="undo"]').on('click', undo)
   $('input[type="button"][value="redo"]').on('click', redo)

@@ -365,6 +365,8 @@
         {
             NSString *s=[supportedOperators objectAtIndex:0];
             
+            [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_USE_OPERATOR withAdditionalData:[NSDictionary dictionaryWithObject:s forKey:OPERATOR_MODE]];
+            
             if([s isEqualToString:@"+"])
                 [self mergeGroupsFromBubbles];
             else if([s isEqualToString:@"x"])
@@ -379,6 +381,7 @@
         // if we have no current childoperators and there's more than 1 supported operator, then show them
         else if([supportedOperators count]>1 && [[opBubble ChildOperators]count]==0)
         {
+            [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_SHOW_MORE_OPERATORS withAdditionalData:nil];
             [opBubble showOtherOperators];
         }
         // but if there's more and it's already showing the childoperators, then check for a touch on one of them
@@ -391,6 +394,8 @@
                 if(CGRectContainsPoint(oper.MySprite.boundingBox, touchStartPos))
                 {
                     NSString *s=[oper.SupportedOperators objectAtIndex:0];
+                    
+                    [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_USE_OPERATOR withAdditionalData:[NSDictionary dictionaryWithObject:s forKey:OPERATOR_MODE]];
                     
                     if([s isEqualToString:@"+"])
                         [self mergeGroupsFromBubbles];
@@ -712,6 +717,8 @@
     
     NSLog(@"didSelect row = %d, component = %d, totSum = %d", row, component, [self returnPickerNumber]);
 
+    [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_CHANGE_NUMBER_WHEEL withAdditionalData:nil];
+    
     blocksFromPipe=[self returnPickerNumber];
 }
 
@@ -768,6 +775,7 @@
     if(CGRectContainsPoint(newPipe.boundingBox, location))
     {
         NSDictionary *d=[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:blocksFromPipe] forKey:NUMBER];
+        [loggingService logEvent:BL_PA_FBLOCK_TOUCH_START_CREATE_NEW_GROUP withAdditionalData:nil];
         [self createShapeWith:d];
     }
     
@@ -782,6 +790,7 @@
             if([thisGroup checkTouchInGroupAt:location])
             {
                 pickupObject=thisGroup;
+                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_START_PICKUP_GROUP withAdditionalData:nil];
                 [thisGroup inflateZIndexOfMyObjects];
             }
         }
@@ -805,7 +814,6 @@
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
-
     
     // if we have these things, handle them differently
     if(pickupObject)
@@ -814,7 +822,11 @@
         {
             id<Group>grp=(id<Group>)pickupObject;
             [grp moveGroupPositionFrom:lastTouch To:location];
-            [grp checkIfInBubbleAt:location];
+            isInBubble=[grp checkIfInBubbleAt:location];
+            if(!hasLoggedMove){
+                hasLoggedMove=YES;
+                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_MOVE_GROUP withAdditionalData:nil];
+            }
         }
     }
    
@@ -828,6 +840,11 @@
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
+    
+    if(isInBubble && CGPointEqualToPoint(location, lastTouch))
+       [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_PLACE_GROUP_IN_BUBBLE withAdditionalData:nil];
+    else
+       [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_PLACE_GROUP_IN_FREE_SPACE withAdditionalData:nil];
     
     if(bubbleAutoOperate)
         [self handleMergeShapes];
@@ -843,7 +860,10 @@
             [pickupGroup resetZIndexOfMyObjects];
             
             if(CGRectContainsPoint(commitPipe.boundingBox, location) && evalMode==kProblemEvalAuto)
+            {
+                [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_DROP_OBJECT_PIPE withAdditionalData:nil];
                 [self evalProblem];
+            }
         }
     }
     
@@ -851,6 +871,8 @@
 
     pickupObject=nil;
     isTouching=NO;
+    hasLoggedMove=NO;
+    isInBubble=NO;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -858,6 +880,8 @@
 
     pickupObject=nil;
     isTouching=NO;
+    hasLoggedMove=NO;
+    isInBubble=NO;
     // empty selected objects
 }
 

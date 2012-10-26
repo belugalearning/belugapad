@@ -44,6 +44,7 @@ typedef enum {
     
     // pdef options
     float timeElapsed;
+    float timeKeeper;
     int countMax;
     int countMin;
     int numIncrement;
@@ -56,6 +57,7 @@ typedef enum {
     // tool stuff
     CCSprite *buttonOfWin;
     CCLabelTTF *currentNumber;
+    CCLabelTTF *tLabel;
     int trackNumber;
     int lastNumber;
     BOOL expired;

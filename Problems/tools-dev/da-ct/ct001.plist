@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>press the button at 5</string>
+	<string>press the button at 57</string>
 	<key>TOOL_KEY</key>
 	<string>CountingTimer</string>
 	<key>SOLUTION</key>
-	<integer>5</integer>
+	<integer>57</integer>
 	<key>SHOW_COUNT</key>
 	<true/>
 	<key>COUNT_TYPE</key>
 	<integer>1</integer>
 	<key>INCREMENT</key>
-	<integer>1</integer>
+	<integer>10</integer>
 	<key>COUNT_MIN</key>
-	<integer>0</integer>
+	<integer>7</integer>
 	<key>COUNT_MAX</key>
-	<integer>20</integer>
+	<integer>100</integer>
 	<key>BUTTON_FLASH</key>
 	<true/>
 </dict>

@@ -191,6 +191,7 @@
     pickerView.dataSource = self;
     pickerView.delegate = self;
     [pickerView autoRepeatNodes:YES];
+    [pickerView setLocked:w.Locked];
     
     w.pickerView=pickerView;
     
@@ -358,6 +359,13 @@
     
     // this is the method called when a component stops spinning
     //NSLog(@"Component %d stopped spinning.", component);
+}
+
+-(float)returnBaseOfNumber:(int)pickerSelectionIndex
+{
+    int adjustedIndex=(pickerSelectionIndex-[w.pickerViewSelection count]);
+    
+    return pow((double)10,adjustedIndex);
 }
 
 -(int)returnPickerNumber

@@ -58,6 +58,12 @@
 
 @end
 
+@protocol PinRender
+
+@property BOOL flip;
+
+@end
+
 @protocol Searchable
     @property (retain) NSString *searchMatchString;
 @end

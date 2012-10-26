@@ -3,40 +3,50 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1024px"
 	 height="768px" viewBox="0 0 1024 768" enable-background="new 0 0 1024 768" xml:space="preserve">
+<g id="Layer_7">
+	
+		<image overflow="visible" width="516" height="220" xlink:href="../../../../../xclocal/belugapad/images/jmap/islands/island6-2-s1.png"  transform="matrix(1 0 0 1 254 274)">
+	</image>
+</g>
 <g id="island">
-	<g>
-		<image overflow="visible" width="638" height="586" xlink:href="B7506DA2A44761C5.png"  transform="matrix(1 0 0 1 282 38)">
-		</image>
-	</g>
 </g>
 <g id="centre">
-	<g>
-		<image overflow="visible" width="531" height="456" xlink:href="B7506DA2A44761CB.png"  transform="matrix(1 0 0 1 318 137)">
-		</image>
-	</g>
 </g>
-<g id="data-nodes" display="none">
-	<circle display="inline" fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="770.26" cy="514.049" r="13.257"/>
-	<circle display="inline" fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="434.603" cy="507.152" r="13.257"/>
-	<circle display="inline" fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="648.04" cy="520.408" r="13.257"/>
-	<circle display="inline" fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="400.493" cy="302.81" r="13.257"/>
-	<circle display="inline" fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="541.795" cy="413.202" r="13.257"/>
-	<circle display="inline" fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="498.743" cy="251.578" r="13.257"/>
+<g id="data-nodes">
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="689.743" cy="410.513" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="663.228" cy="297.795" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="501.217" cy="410.513" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="588.374" cy="364.485" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="423.704" cy="356.485" r="13.257"/>
+	<circle fill="#FF3131" stroke="#FFFFFF" stroke-miterlimit="10" cx="321.742" cy="357.485" r="13.257"/>
 </g>
-<g id="data-mastery" display="none">
-	<circle display="inline" fill="#FF31FF" stroke="#FFFFFF" stroke-miterlimit="10" cx="621.525" cy="218.154" r="13.257"/>
+<g id="data-mastery">
+	<circle fill="#FF31FF" stroke="#FFFFFF" stroke-miterlimit="10" cx="514.475" cy="271.281" r="13.257"/>
 </g>
-<g id="data-label" display="none">
-	<line display="inline" fill="none" stroke="#000000" stroke-miterlimit="10" x1="593.791" y1="625.14" x2="806.969" y2="638.317"/>
+<g id="data-label">
+	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M806.969,638.317"/>
+	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M593.791,625.14"/>
+	<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="487.96" y1="529.903" x2="641.281" y2="534.093"/>
 </g>
-<g id="data-features">
-	<circle fill="#F7FF17" cx="624" cy="219" r="33.657"/>
-	<circle fill="#F7FF17" cx="524" cy="327" r="114"/>
-	<circle fill="#F7FF17" cx="464" cy="484" r="48"/>
-	<circle fill="#F7FF17" cx="610" cy="441" r="41"/>
-	<circle fill="#F7FF17" cx="672" cy="491" r="55"/>
-	<circle fill="#F7FF17" cx="754" cy="515" r="40"/>
-	<circle fill="#F7FF17" cx="401" cy="307" r="53"/>
-	<circle fill="#F7FF17" cx="481" cy="436" r="64"/>
+<g id="data-features" display="none">
+	<circle display="inline" fill="#EFFF00" cx="532.009" cy="333" r="41.009"/>
+	<circle display="inline" fill="#EFFF00" cx="584.588" cy="345.009" r="41.009"/>
+	<circle display="inline" fill="#EFFF00" cx="436.588" cy="333" r="41.009"/>
+	<circle display="inline" fill="#EFFF00" cx="599.646" cy="304" r="32.951"/>
+	<circle display="inline" fill="#EFFF00" cx="466.609" cy="360.174" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="382.917" cy="325.564" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="348.309" cy="326.6" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="452.135" cy="298.391" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="486.744" cy="314.391" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="411.744" cy="291.99" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="486.744" cy="271.049" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="535.826" cy="279.781" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="570.436" cy="263.781" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="619.197" cy="290.955" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="632.598" cy="325.564" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="667.206" cy="327.555" r="16.827"/>
+	<circle display="inline" fill="#EFFF00" cx="563.379" cy="298.391" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="452.135" cy="278.609" r="34.609"/>
+	<circle display="inline" fill="#EFFF00" cx="466.609" cy="251.256" r="34.609"/>
 </g>
 </svg>

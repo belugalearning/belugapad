@@ -26,6 +26,7 @@
 @synthesize world;
 @synthesize touchSize;
 @synthesize delegate;
+@synthesize isLocked;
 
 -(id) init {
 	if ((self=[super init])) {
@@ -73,6 +74,7 @@
 
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
 	if (isTouching) return NO;
+    if(isLocked)return NO;
 	if ( ![self containsTouchLocation:touch] ) return NO;
 	isTouching = YES;
 	touchStartedPoint = [self convertTouchToNodeSpaceAR:touch];
@@ -82,6 +84,7 @@
 	
 }
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event {
+    if(isLocked)return;
     didMove = YES;
 	CGPoint n = [self convertTouchToNodeSpaceAR:touch];
 	world.position = ccp(touchStartedWorldPosition.x, touchStartedWorldPosition.y + n.y - touchStartedPoint.y);
@@ -89,6 +92,7 @@
 }
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
+    if(isLocked)return;
 	CGPoint n = [self convertTouchToNodeSpaceAR:touch];    
     int pagesToMove = round((n.y - touchStartedPoint.y) / self.contentSize.height);
     

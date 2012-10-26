@@ -21,6 +21,10 @@
 			<integer>1</integer>
 			<key>SHOW_CURRENT_FRACTIONS</key>
 			<true/>
+			<key>CREATE_CHUNKS_ON_INIT</key>
+			<true/>
+			<key>MARKER_START_POSITION</key>
+			<integer>4</integer>
 		</dict>
 		<dict>
 			<key>POS_Y</key>

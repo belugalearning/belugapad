@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>MASTERY</key>
+	<true/>
+	<key>META_QUESTION</key>
+	<dict>
+		<key>META_QUESTION_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>META_QUESTION_ANSWER_MODE</key>
+		<integer>1</integer>
+		<key>META_QUESTION_ANSWERS</key>
+		<array>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$augend} + {$addend}</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$addend} + {$augend}</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$augend2} + {$addend2}</string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>META_ANSWER_TEXT</key>
+				<string>{$addend2} + {$augend2} </string>
+				<key>META_ANSWER_VALUE</key>
+				<true/>
+			</dict>
+		</array>
+		<key>META_QUESTION_TITLE</key>
+		<string>Which of these can make 15?</string>
+		<key>INTERNAL_DESCRIPTION</key>
+		<string>commutativity</string>
+		<key>PROBLEM_DESCRIPTION</key>
+		<string>Which of these can make 15?</string>
+	</dict>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$augend2</string>
+			<key>MIN</key>
+			<string>6</string>
+			<key>MAX</key>
+			<string>10</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$addend2</string>
+			<key>VALUE</key>
+			<string>{15-$augend2}</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$augend</string>
+			<key>MIN</key>
+			<string>3</string>
+			<key>MAX</key>
+			<string>5</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$addend</string>
+			<key>VALUE</key>
+			<string>{15-$augend}</string>
+		</dict>
+	</array>
+</dict>
+</plist>

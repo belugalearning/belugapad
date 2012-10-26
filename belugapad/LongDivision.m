@@ -15,8 +15,9 @@
 #import "AppDelegate.h"
 #import "LoggingService.h"
 #import "UsersService.h"
+#import "DWNWheelGameObject.h"
 
-const float kSpaceBetweenNumbers=180.0f;
+const float kSpaceBetweenNumbers=280.0f;
 const float kSpaceBetweenRows=80.0f;
 const float kRenderBlockWidth=1000.0f;
 const float kScaleOfLesserBlocks=0.6f;
@@ -91,16 +92,16 @@ const float kScaleOfLesserBlocks=0.6f;
 	[gw doUpdate:delta];
 
     // work out the current total
-    currentTotal=0;
+    currentTotal=nWheel.OutputValue;
 
-    for(int i=0;i<[selectedNumbers count];i++)
-    {
-        float curMultiplier=[[rowMultipliers objectAtIndex:i]floatValue];
-        int curNumber=[[selectedNumbers objectAtIndex:i] intValue];
-        
-        currentTotal=currentTotal+(curNumber*curMultiplier);
-        
-    }
+//    for(int i=0;i<[selectedNumbers count];i++)
+//    {
+//        float curMultiplier=[[rowMultipliers objectAtIndex:i]floatValue];
+//        int curNumber=[[selectedNumbers objectAtIndex:i] intValue];
+//        
+//        currentTotal=currentTotal+(curNumber*curMultiplier);
+//        
+//    }
     
     //effective 4-digit precision evaluation test
     int prec=10000;
@@ -144,23 +145,23 @@ const float kScaleOfLesserBlocks=0.6f;
     
     
     // this re-iterates back through the active row and sorts our side-side fading out
-    NSArray *currentRow=[numberRows objectAtIndex:activeRow];
-    CCLayer *thisLayer=[numberLayers objectAtIndex:activeRow];
+//    NSArray *currentRow=[numberRows objectAtIndex:activeRow];
+//    CCLayer *thisLayer=[numberLayers objectAtIndex:activeRow];
     
-    for (CCLabelTTF *lbl in currentRow)
-    {
-        CGPoint realLabelPos=[thisLayer convertToWorldSpace:lbl.position];
-        
-        float distToActive=[BLMath DistanceBetween:realLabelPos and:ccp(cx, realLabelPos.y)];
-        float prop=distToActive/150;
-        float opac=(1-prop)*400;
-        if(opac<150)opac=150;
-        if(opac>255)opac=255;
-        
-        [lbl setOpacity:opac];
-    }
+//    for (CCLabelTTF *lbl in currentRow)
+//    {
+//        CGPoint realLabelPos=[thisLayer convertToWorldSpace:lbl.position];
+//        
+//        float distToActive=[BLMath DistanceBetween:realLabelPos and:ccp(cx, realLabelPos.y)];
+//        float prop=distToActive/150;
+//        float opac=(1-prop)*400;
+//        if(opac<150)opac=150;
+//        if(opac>255)opac=255;
+//        
+//        [lbl setOpacity:opac];
+//    }
     if(!hideRenderLayer){
-        for(int n=0;n<[selectedNumbers count];n++)
+        for(int n=0;n<[nWheel.pickerViewSelection count];n++)
         {
                 [self checkBlock:n];
         }
@@ -239,10 +240,25 @@ const float kScaleOfLesserBlocks=0.6f;
         [self.NoScaleLayer addChild:endMarker];
     }
     
+    [self setupNumberWheel];
     
-    [self createVisibleNumbers];
+    //[self createVisibleNumbers];
 }
 
+-(void)setupNumberWheel
+{
+    DWNWheelGameObject *w=[DWNWheelGameObject alloc];
+    [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
+    w.Components=3;
+    w.Position=ccp(250,200);
+    w.RenderLayer=renderLayer;
+    w.SpriteFileName=@"/images/numberwheel/3slots.png";
+    [w handleMessage:kDWsetupStuff];
+//    w.InputValue=000;
+//    w.OutputValue=w.InputValue;
+//    [w handleMessage:kDWupdateObjectData];
+    nWheel=w;
+}
 
 -(void)createVisibleNumbers
 {
@@ -365,12 +381,20 @@ const float kScaleOfLesserBlocks=0.6f;
 -(void)checkBlock:(int)thisRow
 {
     // we need to find out where this block should go
-    float myBase=[[rowMultipliers objectAtIndex:thisRow]floatValue];
+    //float myBase=[[rowMultipliers objectAtIndex:thisRow]floatValue];
     
-    int selectedForRow=[[selectedNumbers objectAtIndex:thisRow]intValue];
+//    int selectedForRow=[[selectedNumbers objectAtIndex:thisRow]intValue];
+
+    int selectedNumber=thisRow-([nWheel.pickerViewSelection count]-1);
+    selectedNumber=fabsf(selectedNumber);
+    int selectedForRow=[[nWheel.pickerViewSelection objectAtIndex:selectedNumber]intValue];
     
     int countOfRenderedForRow=0;
     int indexOfLastRenderedAtMyBase=0;
+    
+    //int adjustedIndex=(thisRow-[nWheel.pickerViewSelection count]);
+    
+    float myBase=pow((double)10,thisRow);
     
     NSDictionary *lastRBDictAtMyBase=nil;
     
@@ -407,7 +431,8 @@ const float kScaleOfLesserBlocks=0.6f;
 -(void)createBlockAtIndex:(int)index withBase:(float)base
 {
     NSMutableDictionary *curDict=[[NSMutableDictionary alloc]init];
-    float myBase=[[rowMultipliers objectAtIndex:activeRow]floatValue];
+//    float myBase=[[rowMultipliers objectAtIndex:activeRow]floatValue];
+    float myBase=base;
     CCSprite *curBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/renderblock.png")];
     float calc=0.0f;
     
@@ -455,8 +480,8 @@ const float kScaleOfLesserBlocks=0.6f;
     currentTouchCount+=[touches count];
     NSLog(@"touch count %d", currentTouchCount);
     
-    previousNumberPos=[[selectedNumbers objectAtIndex:activeRow]intValue];
-    previousRow=activeRow;
+    //previousNumberPos=[[selectedNumbers objectAtIndex:activeRow]intValue];
+    //previousRow=activeRow;
     
     
     for(UITouch *t in touches)
@@ -474,12 +499,12 @@ const float kScaleOfLesserBlocks=0.6f;
     {
         
         // this is the currently selected row
-        if(location.y > 190 && location.y < 250)
-        {
-            startedInActiveRow=YES;
-            CCLayer *curLayer=[numberLayers objectAtIndex:activeRow];
-            currentNumberPos=fabsf((int)curLayer.position.x/kSpaceBetweenNumbers);
-        }        
+//        if(location.y > 190 && location.y < 250)
+//        {
+//            startedInActiveRow=YES;
+//            CCLayer *curLayer=[numberLayers objectAtIndex:activeRow];
+//            currentNumberPos=fabsf((int)curLayer.position.x/kSpaceBetweenNumbers);
+//        }        
     }
     
 }
@@ -503,54 +528,54 @@ const float kScaleOfLesserBlocks=0.6f;
     
     if(bottomTouch)
     {
-        BOOL verticalTouch=NO;
-        BOOL horizontTouch=NO;
-        float touchMovementHoriz=fabsf(touchStart.x-location.x);
-        float touchMovementVerti=fabsf(touchStart.y-location.y);
-
-        
-        if(touchMovementHoriz>15.0f)horizontTouch=YES;
-        if(touchMovementVerti>10.0f)verticalTouch=YES;
-        
-        
-        if(horizontTouch && startedInActiveRow && !doingVerticalDrag) {
-            
-            doingHorizontalDrag=YES;
-            CGPoint diff=[BLMath SubtractVector:lastTouch from:location];
-            diff = ccp(diff.x, 0);
-            CCLayer *moveLayer = [numberLayers objectAtIndex:activeRow];
-            [moveLayer setPosition:ccpAdd(moveLayer.position, diff)];
-            int scrollByNumber=fabsf((int)moveLayer.position.x/kSpaceBetweenNumbers);
-
-            for(int i=0;i<[renderedBlocks count];i++)
-            {
-                NSMutableDictionary *curObj=[renderedBlocks objectAtIndex:i];
-                CCSprite *curSprite=[curObj objectForKey:MY_SPRITE];
-                float updateOffset=[BLMath DistanceBetween:location and:touchStart]/curSprite.contentSize.width*curSprite.scaleX;
-                [curObj setObject:[NSNumber numberWithFloat:updateOffset] forKey:OFFSET];
-            }
-                           
-            if(scrollByNumber!=currentNumberPos)
-            {
-                currentNumberPos=scrollByNumber;
-                [selectedNumbers replaceObjectAtIndex:activeRow withObject:[NSNumber numberWithInt:currentNumberPos]];
-            }
-
-        
-        }
-        
-        if(verticalTouch && !doingHorizontalDrag)
-        {
-            doingVerticalDrag=YES;
-            for(int i=0;i<[numberLayers count];i++)
-            {
-                CCLayer *moveLayer=[numberLayers objectAtIndex:i];
-                CGPoint diff=[BLMath SubtractVector:lastTouch from:location];
-                diff = ccp(0, diff.y);
-                [moveLayer setPosition:ccpAdd(moveLayer.position, diff)];
-                
-            }
-        }
+//        BOOL verticalTouch=NO;
+//        BOOL horizontTouch=NO;
+//        float touchMovementHoriz=fabsf(touchStart.x-location.x);
+//        float touchMovementVerti=fabsf(touchStart.y-location.y);
+//
+//        
+//        if(touchMovementHoriz>15.0f)horizontTouch=YES;
+//        if(touchMovementVerti>10.0f)verticalTouch=YES;
+//        
+//        
+//        if(horizontTouch && startedInActiveRow && !doingVerticalDrag) {
+//            
+//            doingHorizontalDrag=YES;
+//            CGPoint diff=[BLMath SubtractVector:lastTouch from:location];
+//            diff = ccp(diff.x, 0);
+//            CCLayer *moveLayer = [numberLayers objectAtIndex:activeRow];
+//            [moveLayer setPosition:ccpAdd(moveLayer.position, diff)];
+//            int scrollByNumber=fabsf((int)moveLayer.position.x/kSpaceBetweenNumbers);
+//
+//            for(int i=0;i<[renderedBlocks count];i++)
+//            {
+//                NSMutableDictionary *curObj=[renderedBlocks objectAtIndex:i];
+//                CCSprite *curSprite=[curObj objectForKey:MY_SPRITE];
+//                float updateOffset=[BLMath DistanceBetween:location and:touchStart]/curSprite.contentSize.width*curSprite.scaleX;
+//                [curObj setObject:[NSNumber numberWithFloat:updateOffset] forKey:OFFSET];
+//            }
+//                           
+//            if(scrollByNumber!=currentNumberPos)
+//            {
+//                currentNumberPos=scrollByNumber;
+//                [selectedNumbers replaceObjectAtIndex:activeRow withObject:[NSNumber numberWithInt:currentNumberPos]];
+//            }
+//
+//        
+//        }
+//        
+//        if(verticalTouch && !doingHorizontalDrag)
+//        {
+//            doingVerticalDrag=YES;
+//            for(int i=0;i<[numberLayers count];i++)
+//            {
+//                CCLayer *moveLayer=[numberLayers objectAtIndex:i];
+//                CGPoint diff=[BLMath SubtractVector:lastTouch from:location];
+//                diff = ccp(0, diff.y);
+//                [moveLayer setPosition:ccpAdd(moveLayer.position, diff)];
+//                
+//            }
+//        }
         
     }
  
@@ -568,82 +593,82 @@ const float kScaleOfLesserBlocks=0.6f;
     
     if(doingHorizontalDrag)
     {
-        [loggingService logEvent:BL_PA_LD_TOUCH_MOVE_MOVE_ROW withAdditionalData:nil];
-        CGPoint diff=[BLMath SubtractVector:location from:touchStart];
-        diff = ccp(diff.x, 0);
-        
-        CCLayer *moveLayer = [numberLayers objectAtIndex:activeRow];
-
-        float distMoved=diff.x / kSpaceBetweenNumbers;
-        float absDistMoved=fabsf(distMoved);
-        
-        int absRoundedIncrMoved=(int)(absDistMoved + 0.5f);
-        
-        int roundedMove=absRoundedIncrMoved;
-        if(distMoved<0)roundedMove=-roundedMove;
-        
-        currentNumberPos=previousNumberPos+roundedMove;
-                
-        //truncate to fixed bounds
-        if(currentNumberPos<0)currentNumberPos=0;
-        if(currentNumberPos>9)currentNumberPos=9;
-        
-        if(distMoved<0)
-            [loggingService logEvent:BL_PA_LD_TOUCH_END_DECREMENT_ACTIVE_NUMBER
-                withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:currentNumberPos] forKey:@"selectedNumber"]];
-        else
-            [loggingService logEvent:BL_PA_LD_TOUCH_END_INCREMENT_ACTIVE_NUMBER
-                withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:currentNumberPos] forKey:@"selectedNumber"]];
-        
-        
-        //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
-        [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(currentNumberPos*-kSpaceBetweenNumbers,moveLayer.position.y)]];
-        [selectedNumbers replaceObjectAtIndex:activeRow withObject:[NSNumber numberWithInt:currentNumberPos]];
+//        [loggingService logEvent:BL_PA_LD_TOUCH_MOVE_MOVE_ROW withAdditionalData:nil];
+//        CGPoint diff=[BLMath SubtractVector:location from:touchStart];
+//        diff = ccp(diff.x, 0);
+//        
+//        CCLayer *moveLayer = [numberLayers objectAtIndex:activeRow];
+//
+//        float distMoved=diff.x / kSpaceBetweenNumbers;
+//        float absDistMoved=fabsf(distMoved);
+//        
+//        int absRoundedIncrMoved=(int)(absDistMoved + 0.5f);
+//        
+//        int roundedMove=absRoundedIncrMoved;
+//        if(distMoved<0)roundedMove=-roundedMove;
+//        
+//        currentNumberPos=previousNumberPos+roundedMove;
+//                
+//        //truncate to fixed bounds
+//        if(currentNumberPos<0)currentNumberPos=0;
+//        if(currentNumberPos>9)currentNumberPos=9;
+//        
+//        if(distMoved<0)
+//            [loggingService logEvent:BL_PA_LD_TOUCH_END_DECREMENT_ACTIVE_NUMBER
+//                withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:currentNumberPos] forKey:@"selectedNumber"]];
+//        else
+//            [loggingService logEvent:BL_PA_LD_TOUCH_END_INCREMENT_ACTIVE_NUMBER
+//                withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:currentNumberPos] forKey:@"selectedNumber"]];
+//        
+//        
+//        //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
+//        [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(currentNumberPos*-kSpaceBetweenNumbers,moveLayer.position.y)]];
+//        [selectedNumbers replaceObjectAtIndex:activeRow withObject:[NSNumber numberWithInt:currentNumberPos]];
 
         
     }
     
     if(doingVerticalDrag)
     {
-        CGPoint diff=[BLMath SubtractVector:location from:touchStart];
-        diff = ccp(0, diff.y);
-        
-        //the quantity of increments moved
-        float floatRowPos=fabsf(diff.y)/kSpaceBetweenRows;
-        
-        //the remainder of the movement past the last whole increment
-        float remainder=floatRowPos - (int)floatRowPos;
-        
-        //by how much should the line be incremented
-        int incrementor=0;
-        
-        //round up
-        if(remainder>0.5f)
-            incrementor=(int)floatRowPos+1;
-        //round down
-        else
-            incrementor=(int)floatRowPos;
-        if(diff.y > 0) // incrementing line
-            currentRowPos-=incrementor;
-        
-        else 
-            currentRowPos+=incrementor;
-                 
-        //truncate to fixed bounds
-        if(currentRowPos<0)currentRowPos=0;
-        if(currentRowPos>7)currentRowPos=7;
-  
-        activeRow=currentRowPos;
-        [loggingService logEvent:BL_PA_LD_TOUCH_END_CHANGE_ACTIVE_ROW
-            withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:activeRow] forKey:@"activeRow"]];
-                
-        //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
-        
-        for(int i=0;i<[numberLayers count];i++)
-        {
-            CCLayer *moveLayer=[numberLayers objectAtIndex:i];
-            [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(moveLayer.position.x,currentRowPos*kSpaceBetweenRows)]];
-        }
+//        CGPoint diff=[BLMath SubtractVector:location from:touchStart];
+//        diff = ccp(0, diff.y);
+//        
+//        //the quantity of increments moved
+//        float floatRowPos=fabsf(diff.y)/kSpaceBetweenRows;
+//        
+//        //the remainder of the movement past the last whole increment
+//        float remainder=floatRowPos - (int)floatRowPos;
+//        
+//        //by how much should the line be incremented
+//        int incrementor=0;
+//        
+//        //round up
+//        if(remainder>0.5f)
+//            incrementor=(int)floatRowPos+1;
+//        //round down
+//        else
+//            incrementor=(int)floatRowPos;
+//        if(diff.y > 0) // incrementing line
+//            currentRowPos-=incrementor;
+//        
+//        else 
+//            currentRowPos+=incrementor;
+//                 
+//        //truncate to fixed bounds
+//        if(currentRowPos<0)currentRowPos=0;
+//        if(currentRowPos>7)currentRowPos=7;
+//  
+//        activeRow=currentRowPos;
+//        [loggingService logEvent:BL_PA_LD_TOUCH_END_CHANGE_ACTIVE_ROW
+//            withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:activeRow] forKey:@"activeRow"]];
+//                
+//        //reposition layer, relative to the number indicated (incrementing line means moving it left, hence x moved negative as n moves positive)
+//        
+//        for(int i=0;i<[numberLayers count];i++)
+//        {
+//            CCLayer *moveLayer=[numberLayers objectAtIndex:i];
+//            [moveLayer runAction:[CCMoveTo actionWithDuration:0.25f position:ccp(moveLayer.position.x,currentRowPos*kSpaceBetweenRows)]];
+//        }
         
     }
     if(movedTopSection) [loggingService logEvent:BL_PA_LD_TOUCH_END_PAN_TOP_SECTION withAdditionalData:nil];

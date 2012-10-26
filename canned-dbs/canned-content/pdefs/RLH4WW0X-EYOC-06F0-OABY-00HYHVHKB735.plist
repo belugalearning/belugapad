@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>MASTERY</key>
+	<true/>
+	<key>REPEAT_AS_IS_MIN</key>
+	<string>2</string>
+	<key>NUMBER_PICKER</key>
+	<dict>
+		<key>NUMBER_PICKER_DESCRIPTION</key>
+		<string>What is 1 {@more} than {$total}?</string>
+		<key>PICKER_LAYOUT</key>
+		<integer>1</integer>
+		<key>PICKER_ORIGIN_X</key>
+		<integer>0</integer>
+		<key>PICKER_ORIGIN_Y</key>
+		<integer>0</integer>
+		<key>SHOW_DROPBOX</key>
+		<true/>
+		<key>PICKER_EVAL_MODE</key>
+		<integer>1</integer>
+		<key>EVAL_VALUE</key>
+		<string>{$total +1}</string>
+	</dict>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>6</string>
+			<key>MAX</key>
+			<string>10</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$b</string>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>SELECT_FROM</key>
+			<array>
+				<string>10</string>
+				<string>20</string>
+				<string>30</string>
+				<string>40</string>
+				<string>50</string>
+				<string>60</string>
+				<string>70</string>
+				<string>80</string>
+				<string>90</string>
+			</array>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$total</string>
+			<key>VALUE</key>
+			<string>{$b+$x}</string>
+		</dict>
+	</array>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@more</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>larger</string>
+				<string>more</string>
+				<string>greater</string>
+			</array>
+		</dict>
+		<key>@less</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>less</string>
+				<string>smaller</string>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

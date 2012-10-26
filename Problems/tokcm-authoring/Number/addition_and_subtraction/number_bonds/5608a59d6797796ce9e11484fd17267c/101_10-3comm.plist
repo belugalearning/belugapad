@@ -23,6 +23,33 @@
 			<integer>13</integer>
 		</dict>
 	</array>
+	<key>INIT_HINTS</key>
+	<array>
+		<dict>
+			<key>PUT_IN_ROW</key>
+			<integer>1</integer>
+			<key>LENGTH</key>
+			<integer>10</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_ROW</key>
+			<integer>1</integer>
+			<key>LENGTH</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_ROW</key>
+			<integer>2</integer>
+			<key>LENGTH</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>PUT_IN_ROW</key>
+			<integer>2</integer>
+			<key>LENGTH</key>
+			<integer>10</integer>
+		</dict>
+	</array>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict>

@@ -239,19 +239,19 @@ static float kTimeToCageShake=7.0f;
                 
                 remainVal-=colValue*countReqInColumn;
             }
-            else if(-countReqInColumn <= blocksHere && countReqInColumn<0)
-            {
-                
-                
-                //                NSLog(@"column %d show less sign", i);
-                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_less.png")]];
-                [s setVisible:YES];
-                CCLabelTTF *l=[s.children objectAtIndex:0];
-                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
-                [l setString:[NSString stringWithFormat:@"%d less", -countReqInColumn]];
-                
-                remainVal+=colValue*countReqInColumn;
-            }
+//            else if(-countReqInColumn <= blocksHere && countReqInColumn<0)
+//            {
+//                
+//                
+//                //                NSLog(@"column %d show less sign", i);
+//                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_less.png")]];
+//                [s setVisible:YES];
+//                CCLabelTTF *l=[s.children objectAtIndex:0];
+//                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
+//                [l setString:[NSString stringWithFormat:@"%d less", -countReqInColumn]];
+//                
+//                remainVal+=colValue*countReqInColumn;
+//            }
             else if(countReqInColumn>spacesHere)
             {
                 //                NSLog(@"column %d show less sign", i);
@@ -263,16 +263,16 @@ static float kTimeToCageShake=7.0f;
                 
                 remainVal-=colValue*spacesHere;
             }
-            else if (-countReqInColumn>blocksHere)
-            {
-                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_less.png")]];
-                [s setVisible:YES];
-                CCLabelTTF *l=[s.children objectAtIndex:0];
-                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
-                [l setString:[NSString stringWithFormat:@"%d less", -blocksHere]];
-                
-                remainVal-=colValue*blocksHere;
-            }
+//            else if (-countReqInColumn>blocksHere)
+//            {
+//                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_less.png")]];
+//                [s setVisible:YES];
+//                CCLabelTTF *l=[s.children objectAtIndex:0];
+//                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
+//                [l setString:[NSString stringWithFormat:@"%d less", -blocksHere]];
+//                
+//                remainVal-=colValue*blocksHere;
+//            }
         }
         
         

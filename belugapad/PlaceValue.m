@@ -216,7 +216,7 @@ static float kTimeToCageShake=7.0f;
             //if(remainder>0 && countReqInColumn<0)countReqInColumn--;
             //            if(remainder>0 && countReqInColumn>=0)countReqInColumn++;
             
-            NSLog(@"column %d - spaces required %d, spaces here %d, expectedVal %g", i, countReqInColumn, spacesHere, remainVal);
+//            NSLog(@"column %d - spaces required %d, spaces here %d, expectedVal %g", i, countReqInColumn, spacesHere, remainVal);
             
             CCSprite *s=[arrowsForColumn objectAtIndex:i];
             
@@ -317,16 +317,16 @@ static float kTimeToCageShake=7.0f;
                 remainVal+=colValue*countReqInColumn;
             }
 
-            else if (-countReqInColumn>blocksHere)
-            {
-                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_less.png")]];
-                [s setVisible:YES];
-                CCLabelTTF *l=[s.children objectAtIndex:0];
-                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
-                [l setString:[NSString stringWithFormat:@"%d less", -blocksHere]];
-                
-                remainVal-=colValue*blocksHere;
-            }
+//            else if (-countReqInColumn>blocksHere)
+//            {
+//                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_less.png")]];
+//                [s setVisible:YES];
+//                CCLabelTTF *l=[s.children objectAtIndex:0];
+//                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
+//                [l setString:[NSString stringWithFormat:@"%d less", -blocksHere]];
+//                
+//                remainVal-=colValue*blocksHere;
+//            }
         }
     }
     

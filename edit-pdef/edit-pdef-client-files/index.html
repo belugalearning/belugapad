@@ -5,8 +5,8 @@
     <style>
       body { font: 12px "Lucida Grande", Helvetica, Arial, sans-serif; } 
 
-      div#control-strip { background-color:#fff; position:fixed; left:0; top:0; padding:2px; width:100%; }
-      div#pdef-wrapper { margin-top:30px; border-bottom:1px solid #ececec; background-color:#FFF; }
+      div#control-strip { background-color:#fff; position:fixed; left:0; top:0; padding:2px; width:100%; z-index:1; }
+      div#pdef-wrapper { margin-top:30px; border-bottom:1px solid #ececec; background-color:#FFF; position:relative; z-index:0; }
 
       /* keys */
       div[data-type] { border-top:1px solid #ececec; background-color:#FFF; clear:both; padding-top:5px; cursor:pointer; min-height:24px; }

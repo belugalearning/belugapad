@@ -12,6 +12,7 @@
 
 @interface ContentService : NSObject
 
+@property (nonatomic, readonly, retain)NSURL *kcmServerBaseURL;
 @property (nonatomic, readonly, retain) Problem *currentProblem;
 @property (nonatomic, readonly, retain) NSDictionary *currentPDef;
 @property (nonatomic, retain) NSMutableDictionary *currentStaticPdef;
@@ -58,5 +59,6 @@
 -(void)adaptPipelineByInsertingWithTriggerData:(NSDictionary*)triggerData;
 -(NSString*)debugPipelineString;
 
+-(NSDictionary*)saveChangesToCurrentProblemPDef:(NSDictionary*)pdef;
 
 @end

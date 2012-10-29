@@ -2306,14 +2306,14 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [[[CCDirector sharedDirector] view] addSubview:editPDefViewController.view];
 }
 
--(void)endEditPDefAndTestProblem:(BOOL)reset
+-(void)endEditPDefAndTestProblem:(NSNumber*)reset
 {
     nowEditingPDef = NO;
     if (!editPDefViewController) return;
     [editPDefViewController.view removeFromSuperview];
     [editPDefViewController release];
     [self hidePauseMenu];
-    if (reset)
+    if ([reset boolValue])
     {
         unsavedEditsImage.visible = contentService.currentProblem && contentService.currentProblem.hasUnsavedEdits;
         [self resetProblem];

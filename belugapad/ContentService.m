@@ -54,6 +54,7 @@
     NSString *lastRepeatSet;
     NSMutableArray *repeatBuffer;
 }
+@property (nonatomic, readwrite, retain)NSURL *kcmServerBaseURL;
 @property (nonatomic, readwrite, retain) Problem *currentProblem;
 @property (nonatomic, readwrite, retain) NSDictionary *currentPDef;
 @property (nonatomic, readwrite, retain) NSString *pathToTestDef;
@@ -84,6 +85,8 @@
     self = [super init];
     if (self)
     {
+        self.kcmServerBaseURL = [NSURL URLWithString:@"http://23.23.23.23:3001/kcm/"];
+        
         fm = [NSFileManager defaultManager];
         
         NSString *libraryDir=[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -145,7 +148,7 @@
     
     if (importContent && [importContent boolValue] && kcmLoginName)
     {
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://authoring.zubi.me:3001/kcm/app-import-content/%@", kcmLoginName]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"app-import-content/%@", kcmLoginName] relativeToURL:self.kcmServerBaseURL];
         NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
         NSHTTPURLResponse *response = nil;
         NSData *result = [NSURLConnection sendSynchronousRequest:req returningResponse:&response error:&error];
@@ -982,6 +985,7 @@
 
 - (void)dealloc
 {
+    self.kcmServerBaseURL = nil;
     if (contentDatabase)
     {
         [contentDatabase close];

@@ -88,20 +88,86 @@
     }
     else if ([@"cancel" isEqualToString:message])
     {
-        [handlerInstance performSelector:endEditAndTest withObject:NO];
+        [handlerInstance performSelector:endEditAndTest withObject:[NSNumber numberWithBool:NO]];
     }
     else if ([@"test-edits" isEqualToString:message])
     {
-        NSDictionary *editState = [[webView stringByEvaluatingJavaScriptFromString:@"appInterface.getState()"] objectFromJSONString];
-        [self.problem updatePDef:[editState valueForKey:@"pdef"]
-                  andChangeStack:[[editState valueForKey:@"changeStack"] JSONString]
-               stackCurrentIndex:[[editState valueForKey:@"currStackIndex"] intValue]
-              stackLastSaveIndex:[[editState valueForKey:@"lastSaveStackIndex"] intValue]];
-        
-        [handlerInstance performSelector:endEditAndTest withObject:YES];
+        [self localSaveEditState];
+        [handlerInstance performSelector:endEditAndTest withObject:[NSNumber numberWithBool:YES]];
+    }
+    else if ([@"save" isEqualToString:message])
+    {
+        [self localSaveEditState];
+        if ([self serverSaveCurrentProblemOverwritingRev:self.problem._rev])
+        {
+            [handlerInstance performSelector:endEditAndTest withObject:[NSNumber numberWithBool:YES]];
+        }
+        else
+        {
+            // TODO: display error to user
+        }
+    }
+    else if ([@"save-override-conflict" isEqualToString:message])
+    {
+        NSString *query = [[request URL] query];
+        if ([query hasPrefix:@"rev="])
+        {
+            if ([self serverSaveCurrentProblemOverwritingRev:[query substringFromIndex:4]])
+            {
+                [handlerInstance performSelector:endEditAndTest withObject:[NSNumber numberWithBool:YES]];
+            }
+        }
     }
     
     return YES;
+}
+
+-(void)localSaveEditState
+{
+    NSDictionary *editState = [[webView stringByEvaluatingJavaScriptFromString:@"appInterface.getState()"] objectFromJSONString];
+    [self.problem updatePDef:[editState valueForKey:@"pdef"]
+              andChangeStack:[[editState valueForKey:@"changeStack"] JSONString]
+           stackCurrentIndex:[[editState valueForKey:@"currStackIndex"] intValue]
+          stackLastSaveIndex:[[editState valueForKey:@"lastSaveStackIndex"] intValue]];
+}
+
+-(BOOL)serverSaveCurrentProblemOverwritingRev:(NSString*)rev
+{
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    NSString *kcmLoginName = [ac.LocalSettings objectForKey:@"KCM_LOGIN_NAME"];
+    
+    NSURL *url = [NSURL URLWithString:@"app-edit-pdef" relativeToURL:contentService.kcmServerBaseURL];
+    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
+    [req setTimeoutInterval:7.0];
+    [req setHTTPMethod: @"POST"];
+    [req setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    [req setHTTPBody:[@{
+                      @"_id":self.problem._id
+                      , @"_rev":rev
+                      , @"pdef":self.problem.pdef
+                      , @"userLoginName": kcmLoginName } JSONData]];
+    
+    NSError *error = nil;
+    NSHTTPURLResponse *res = nil;
+    NSData *data = [NSURLConnection sendSynchronousRequest:req returningResponse:&res error:&error];
+    
+    NSInteger statusCode = res ? [res statusCode] : 500;
+    
+    NSString *body = nil;
+    if (data) body = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+    
+    if (statusCode == 201)
+    {
+        // successs
+        [self.problem updateOnSaveWithRevision:body];
+        return YES;
+    }
+    
+    NSString *errorString = error ? [error description] : nil;
+    body = (body && [body JSONData]) ? [body JSONString] : nil;
+    
+    [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"appInterface.serverSaveCallback(%@, %d, %@)", errorString, statusCode, body]];
+    return NO;
 }
 
 
@@ -110,7 +176,7 @@
     NSString *bundledEditPDefDir = BUNDLE_FULL_PATH(@"/edit-pdef-client-files");    
     NSFileManager *fm = [NSFileManager defaultManager];
     
-    NSURL *url = [NSURL URLWithString:@"http://169.254.47.31:1234"]; // TODO: Update url to zubi.me ********************************************************************
+    NSURL *url = [NSURL URLWithString:@"http://23.23.23.23:1234"]; // TODO: Update url to zubi.me ********************************************************************
     NSURLRequest *req = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:5];
     NSHTTPURLResponse *response = nil;
     NSError *error = nil;

@@ -76,7 +76,7 @@ stackLastSaveIndex:(NSInteger)stackLastSaveIndex
 
 -(void) updateOnSaveWithRevision:(NSString*)rev
 {
-    self._rev = nil;
+    self._rev = rev;
     self.lastSavedPDef = [self.pdef JSONString];
     self.stackLastSaveIndex = self.stackCurrentIndex;
     [database open];

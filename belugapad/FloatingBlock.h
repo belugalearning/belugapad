@@ -46,6 +46,7 @@ typedef enum {
     BOOL setupNumberWheel;
     BOOL hasLoggedMove;
     BOOL isInBubble;
+    BOOL isIntroPlist;
     float timeToSetupNumberWheel;
     
     // and a default layer

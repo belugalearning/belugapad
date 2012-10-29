@@ -138,6 +138,7 @@
     bubbleAutoOperate=[[pdef objectForKey:BUBBLE_AUTO_OPERATE]boolValue];
     maxBlocksInGroup=[[pdef objectForKey:MAX_GROUP_SIZE]intValue];
     expSolution=[[pdef objectForKey:SOLUTION]intValue];
+    isIntroPlist=[[pdef objectForKey:IS_INTRO_PLIST]boolValue];
     
     showSolutionOnPipe=[[pdef objectForKey:SHOW_SOLUTION_ON_PIPE]boolValue];
     showMultipleControls=[[pdef objectForKey:SHOW_MULTIPLE_CONTROLS]boolValue];
@@ -171,6 +172,9 @@
         initBubbles=1;
     else
         initBubbles=2;
+    
+    if(isIntroPlist)
+        initBubbles=0;
     
     
 }
@@ -337,6 +341,7 @@
             }
         }
     }
+    
     
     // if we're showing a bubble already and it's no longer valid - remove the operator bubble
     if(showingOperatorBubble && !isValid)
@@ -593,6 +598,21 @@
     NSMutableArray *groups=[self returnCurrentValidGroups];
     id<Group> targetGroup=[groups objectAtIndex:0];
     id<Group> operatedGroup=[groups objectAtIndex:1];
+    
+    float tGc=[targetGroup.MyBlocks count];
+    float oGc=[operatedGroup.MyBlocks count];
+    
+    float outcome=tGc/oGc;
+    outcome=outcome-(int)outcome;
+    
+    
+    if(outcome>0){
+        id<Operator,Rendered>curBubble=(id<Operator,Rendered>)opBubble;
+        [curBubble fadeAndDestroy];
+        opBubble=nil;
+        showingOperatorBubble=NO;
+        return;
+    }
     
     if([targetGroup.MyBlocks count]>[operatedGroup.MyBlocks count])
     {

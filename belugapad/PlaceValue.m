@@ -193,15 +193,20 @@ static float kTimeToCageShake=7.0f;
     
     if(showMoreOrLess && [solutionType isEqualToString:TOTAL_COUNT])
     {
-        float trackValue=expectedCount;
         
+        NSString *expNo=[[NSNumber numberWithFloat:expectedCount]stringValue];
         for(int i=0;i<numberOfColumns;i++)
         {
+            
             CCSprite *s=[arrowsForColumn objectAtIndex:i];
-            float colValue=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
-            float blocksNeeded=trackValue/colValue;
+            
+            NSString *thisNo=[NSString stringWithFormat:@"%c",[expNo characterAtIndex:i]];
+            
+            int blocksNeeded=[thisNo intValue];
+            
+            //float blocksNeeded=trackValue/colValue;
             int usedSpaces=[self usedSpacesOnGrid:i];
-
+            
             if((int)blocksNeeded==usedSpaces)
             {
                 [s setVisible:NO];
@@ -216,7 +221,6 @@ static float kTimeToCageShake=7.0f;
                     [l setPosition:ccp(l.position.x, (s.contentSize.height/2)-2)];
                     [l setString:[NSString stringWithFormat:@"%d more", (int)blocksNeeded-usedSpaces]];
                     
-                    trackValue-=blocksNeeded*colValue;
                 }
                 else if(blocksNeeded<usedSpaces)
                 {
@@ -225,7 +229,6 @@ static float kTimeToCageShake=7.0f;
                     CCLabelTTF *l=[s.children objectAtIndex:0];
                     [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
                     [l setString:[NSString stringWithFormat:@"%d less", usedSpaces-(int)blocksNeeded]];
-                    trackValue-=blocksNeeded*colValue;
                 }
             }
             

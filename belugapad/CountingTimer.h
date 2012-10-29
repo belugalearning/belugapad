@@ -50,14 +50,17 @@ typedef enum {
     int numIncrement;
     int solutionNumber;
     BOOL displayNumicon;
+    BOOL flashNumicon;
     BOOL showCount;
     BOOL buttonFlash;
     CountType countType;
     
     // tool stuff
     CCSprite *buttonOfWin;
+    CCSprite *numiconOne;
     CCLabelTTF *currentNumber;
     CCLabelTTF *tLabel;
+    CCSpriteFrameCache *frameCache;
     int trackNumber;
     int lastNumber;
     BOOL expired;

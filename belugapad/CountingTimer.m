@@ -111,10 +111,22 @@
         if(buttonFlash)
             [buttonOfWin runAction:[InteractionFeedback dropAndBounceAction]];
         
-//        if(numIncrement>1)
-//            timeElapsed+=(numIncrement-1);
-//        else if(numIncrement<1)
-//            timeElapsed-=(numIncrement-1);
+        if(displayNumicon)
+        {
+            if((int)timeKeeper<=10.0f)
+            {
+                CCSpriteFrame *frame=[frameCache spriteFrameByName:[NSString stringWithFormat:@"%d.png", (int)timeKeeper+1]];
+                [numiconOne setOpacity:255];
+                [numiconOne setDisplayFrame:frame];
+            }
+        }
+        
+        if(flashNumicon)
+        {
+            [numiconOne setOpacity:255];
+            [numiconOne runAction:[CCFadeOut actionWithDuration:0.5f]];
+            
+        }
         
         trackNumber=(int)timeKeeper;
         
@@ -176,6 +188,7 @@
     
     solutionNumber=[[pdef objectForKey:SOLUTION]intValue];
     displayNumicon=[[pdef objectForKey:USE_NUMICON_NUMBERS]boolValue];
+    flashNumicon=[[pdef objectForKey:NUMICON_FLASH]boolValue];
     showCount=[[pdef objectForKey:SHOW_COUNT]boolValue];
     countType=[[pdef objectForKey:COUNT_TYPE]intValue];
     buttonFlash=[[pdef objectForKey:FLASHING_BUTTON]boolValue];
@@ -185,7 +198,8 @@
         lastNumber=countMin;
         trackNumber=lastNumber;
         timeElapsed=lastNumber;
-        timeKeeper=timeElapsed;
+        //timeKeeper=timeElapsed;
+        timeKeeper=0.0f;
         
         if(countMax<=countMin)
             countMax=countMin+4;
@@ -195,7 +209,8 @@
         lastNumber=countMax;
         trackNumber=lastNumber;
         timeElapsed=lastNumber;
-        timeKeeper=timeElapsed;
+//        timeKeeper=timeElapsed;
+        timeKeeper=0.0f;
         
         if(countMin>=countMax)
             countMin=countMax-4;
@@ -226,6 +241,18 @@
         [currentNumber setTag:3];
         [renderLayer addChild:currentNumber];
     }
+    if(displayNumicon||flashNumicon)
+    {
+        frameCache = [CCSpriteFrameCache sharedSpriteFrameCache];
+        [frameCache addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.plist") textureFilename:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.png")];
+        CCSpriteFrame *frame=[frameCache spriteFrameByName:@"1.png"];
+        numiconOne=[CCSprite spriteWithSpriteFrame:frame];
+        //[numiconOne setDisplayFrame:frame];
+        [numiconOne setPosition:ccp(currentNumber.position.x+(buttonOfWin.contentSize.width/2),currentNumber.position.y)];
+        [numiconOne setOpacity:0];
+        [renderLayer addChild:numiconOne];
+
+    }
 }
 
 #pragma mark - problem state
@@ -242,19 +269,25 @@
     started=NO;
     timeElapsed=0.0f;
     trackNumber=0;
+    
+    if(numiconOne)
+        [numiconOne setOpacity:0];
+    
     [buttonOfWin setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/countingtimer/counter_start.png")]];
     
     if(numIncrement>=0){
         lastNumber=countMin;
         trackNumber=lastNumber;
         timeElapsed=lastNumber;
-        timeKeeper=timeElapsed;
+//        timeKeeper=timeElapsed;
+        timeKeeper=0.0f;
     }
     else{
         lastNumber=countMax;
         trackNumber=lastNumber;
         timeElapsed=lastNumber;
-        timeKeeper=timeElapsed;
+//        timeKeeper=timeElapsed;
+        timeKeeper=0.0f;
     }
 }
 

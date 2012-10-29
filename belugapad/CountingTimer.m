@@ -97,6 +97,7 @@
     // if the problem hasn't expired - increase
     if(!expired){
         if(started){
+            if(!showCount)[currentNumber setVisible:NO];
             timeElapsed+=numIncrement*delta;
             timeKeeper+=delta;
         }
@@ -233,14 +234,21 @@
     [buttonOfWin setTag:2];
     [renderLayer addChild:buttonOfWin];
     
-    if(showCount)
-    {
+//    if(showCount)
+//    {
+    int startNo=0;
+    if(numIncrement>=0)
+        startNo=countMin;
+    else
+        startNo=countMax;
+    
         currentNumber=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:50.0f];
+    [currentNumber setString:[NSString stringWithFormat:@"%d", startNo]];
         [currentNumber setPosition:ccp(cx,cy+100)];
         [currentNumber setOpacity:0];
         [currentNumber setTag:3];
         [renderLayer addChild:currentNumber];
-    }
+//    }
     if(displayNumicon||flashNumicon)
     {
         frameCache = [CCSpriteFrameCache sharedSpriteFrameCache];
@@ -274,6 +282,8 @@
         [numiconOne setOpacity:0];
     
     [buttonOfWin setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/countingtimer/counter_start.png")]];
+    
+    [currentNumber setVisible:YES];
     
     if(numIncrement>=0){
         lastNumber=countMin;

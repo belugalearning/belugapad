@@ -93,6 +93,13 @@
             {
                 s.myHeight=[CCLabelTTF labelWithString:strHeight fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
                 [s.myHeight setPosition:ccp(xPosForHeightLabel,yPosForHeightLabel)];
+                
+                if(gameWorld.Blackboard.inProblemSetup)
+                {
+                    [s.myHeight setOpacity:0];
+                    [s.myHeight setTag:2];
+                }
+                
                 [s.RenderLayer addChild:s.myHeight];
             }
             else
@@ -104,6 +111,13 @@
             {
                 s.myWidth=[CCLabelTTF labelWithString:strWidth fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
                 [s.myWidth setPosition:ccp(xPosForWidthLabel,yPosForWidthLabel)];
+                
+                if(gameWorld.Blackboard.inProblemSetup)
+                {
+                    [s.myHeight setOpacity:0];
+                    [s.myHeight setTag:2];
+                }
+                
                 [s.RenderLayer addChild:s.myWidth];
             }
             else

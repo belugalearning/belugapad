@@ -1509,6 +1509,10 @@
         else return NO;
         
     }
+    else if(evalType==kProblemCheckDimensions)
+    {
+        return [self checkForCorrectShapeSizes];
+    }
     else {
         //no eval mode specified, return no
         return NO;

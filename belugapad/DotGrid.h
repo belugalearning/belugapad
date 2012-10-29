@@ -30,7 +30,8 @@ typedef enum {
 typedef enum {
     kProblemTotalShapeSize=0,
     kProblemSumOfFractions=1,
-    kProblemGridMultiplication=2
+    kProblemGridMultiplication=2,
+    kProblemCheckDimensions=3
 } DotGridEvalType;
 
 @interface DotGrid : ToolScene

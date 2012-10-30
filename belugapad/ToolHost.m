@@ -752,11 +752,13 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 //        hostBackground=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(hostBackgroundFile)];
 //        [hostBackground setPosition:ccp(cx, cy)];
 //        [self addChild:hostBackground];
-//    }
+    //    }
     
     //playback sound assocaited with problem
     NSString *playsound=[pdef objectForKey:PLAY_SOUND];
     if(playsound) [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/sfx/%@", playsound]))];
+    
+    unsavedEditsImage.visible = contentService.currentProblem && contentService.currentProblem.hasUnsavedEdits;
     
     //setup meta question (if there is one)
     NSDictionary *mq=[pdef objectForKey:META_QUESTION];
@@ -824,8 +826,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     else evalMode=kProblemEvalAuto;
     
     NSString *labelDesc=[self.DynProblemParser parseStringFromValueWithKey:PROBLEM_DESCRIPTION inDef:curpdef];
-    
-    unsavedEditsImage.visible = contentService.currentProblem && contentService.currentProblem.hasUnsavedEdits;
         
     [self setProblemDescription:labelDesc];
     

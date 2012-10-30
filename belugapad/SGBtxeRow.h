@@ -21,6 +21,7 @@
 
 
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget;
-
+-(void)relayoutChildrenToWidth:(float)width;
+-(void)animateAndMoveToPosition:(CGPoint)thePosition;
 
 @end

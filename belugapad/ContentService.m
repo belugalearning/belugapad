@@ -85,7 +85,7 @@
     self = [super init];
     if (self)
     {
-        self.kcmServerBaseURL = [NSURL URLWithString:@"http://23.23.23.23:3001/kcm/"];
+        self.kcmServerBaseURL = [NSURL URLWithString:@"http://authoring.zubi.me:3001/kcm/"];
         
         fm = [NSFileManager defaultManager];
         

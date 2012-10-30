@@ -53,8 +53,8 @@
     }
     if(messageType==kDWdismantle)
     {
-        [[anch.mySprite parent] removeChild:anch.mySprite cleanup:YES];
-    } 
+//        [[anch.mySprite parent] removeChild:anch.mySprite cleanup:YES];
+    }
     
     if(messageType==kDWswitchSelection)
     {

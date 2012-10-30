@@ -110,7 +110,6 @@
             
             if(s.shapeGroup)
             {
-                NSLog(@"check shapegroup for %d", (int)s);
                 
                 DWDotGridShapeGroupGameObject *sg=(DWDotGridShapeGroupGameObject*)s.shapeGroup;
                 if(!sg.hasLabels)
@@ -139,8 +138,6 @@
             if(!s.myHeight)
             {
                 
-                NSLog(@"create height label for %d", (int)s);
-                
                 s.myHeight=[CCLabelTTF labelWithString:strHeight fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
                 [s.myHeight setPosition:ccp(xPosForHeightLabel,yPosForHeightLabel)];
                 
@@ -159,7 +156,7 @@
             }
             if(!s.myWidth)
             {
-                NSLog(@"create width label for %d", (int)s);
+
                 s.myWidth=[CCLabelTTF labelWithString:strWidth fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
                 [s.myWidth setPosition:ccp(xPosForWidthLabel,yPosForWidthLabel)];
                 

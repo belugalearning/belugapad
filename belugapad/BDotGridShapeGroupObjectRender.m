@@ -121,13 +121,34 @@
             if(s.myWidth)
                 [s.myWidth removeFromParentAndCleanup:YES];
             
+            if(s.countBubble)
+                [s.countBubble removeFromParentAndCleanup:YES];
+            
             [sg.shapesInMe removeObject:s];
             [s handleMessage:kDWdismantle];
         }
         sg.firstAnchor=nil;
         sg.lastAnchor=nil;
+        sg.countBubble=nil;
         
         [gameWorld delayRemoveGameObject:sg];
+
+//        for(DWDotGridShapeGameObject *s in sg.shapesInMe)
+//        {
+//            if(s.myHeight)
+//                [s.myHeight removeFromParentAndCleanup:YES];
+//            if(s.myWidth)
+//                [s.myWidth removeFromParentAndCleanup:YES];
+//            
+//            [s handleMessage:kDWdismantle];
+//        }
+//        
+//        [sg.shapesInMe removeAllObjects];
+//        
+//        sg.firstAnchor=nil;
+//        sg.lastAnchor=nil;
+//        
+//        [gameWorld delayRemoveGameObject:sg];
         
         //destroy own game object
     }

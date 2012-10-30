@@ -167,30 +167,31 @@
     
     if(messageType==kDWdismantle)
     {
-//        if(s.myHeight)
-//            [[s.myHeight parent] removeChild:s.myHeight cleanup:YES];
-//        if(s.myWidth)
-//            [[s.myWidth parent] removeChild:s.myHeight cleanup:YES];
-//        
-//        for(DWDotGridTileGameObject *t in s.tiles)
-//        {
-//            [t handleMessage:kDWdismantle];
-//        }
-//        
-//        if(s.resizeHandle)
-//        {
-//            [s.resizeHandle handleMessage:kDWdismantle];
-//            ((DWDotGridHandleGameObject*)s.resizeHandle).myShape=nil;
-//        }
-//        if(s.MyNumberWheel)
-//        {
-//            [s.MyNumberWheel handleMessage:kDWdismantle];
-//            
-//        }
-//        s.shapeGroup=nil;
-//        //[s.myHeight removeFromParentAndCleanup:YES];
-//        //[s.myWidth removeFromParentAndCleanup:YES];
-//        [gameWorld delayRemoveGameObject:s];
+        if(s.myHeight)
+            [[s.myHeight parent] removeChild:s.myHeight cleanup:YES];
+        if(s.myWidth)
+            [[s.myWidth parent] removeChild:s.myHeight cleanup:YES];
+        
+        for(DWDotGridTileGameObject *t in s.tiles)
+        {
+            [t handleMessage:kDWdismantle];
+        }
+        
+        if(s.resizeHandle)
+        {
+            [s.resizeHandle handleMessage:kDWdismantle];
+            ((DWDotGridHandleGameObject*)s.resizeHandle).myShape=nil;
+        }
+        if(s.MyNumberWheel)
+        {
+            [s.MyNumberWheel handleMessage:kDWdismantle];
+            
+        }
+        s.shapeGroup=nil;
+        //[s.myHeight removeFromParentAndCleanup:YES];
+        //[s.myWidth removeFromParentAndCleanup:YES];
+        
+        [gameWorld delayRemoveGameObject:s];
     }
 
     if(messageType==kDWupdateObjectData)

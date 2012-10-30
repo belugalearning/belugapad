@@ -113,23 +113,23 @@
     
     if(messageType==kDWdismantle)
     {
-//        NSLog(@"count of shapes in shape group %d", [sg.shapesInMe count]);
-//        for(DWDotGridShapeGameObject *s in [NSArray arrayWithArray:sg.shapesInMe])
-//        {
-//            if(s.myHeight)
-//                [s.myHeight removeFromParentAndCleanup:YES];
-//            if(s.myWidth)
-//                [s.myWidth removeFromParentAndCleanup:YES];
-//            
-//            [sg.shapesInMe removeObject:s];
-//            [s handleMessage:kDWdismantle];
-//        }
-//        sg.firstAnchor=nil;
-//        sg.lastAnchor=nil;
-//        
-//        [gameWorld delayRemoveGameObject:sg];
-//        
-//        //destroy own game object
+        NSLog(@"count of shapes in shape group %d", [sg.shapesInMe count]);
+        for(DWDotGridShapeGameObject *s in [NSArray arrayWithArray:sg.shapesInMe])
+        {
+            if(s.myHeight)
+                [s.myHeight removeFromParentAndCleanup:YES];
+            if(s.myWidth)
+                [s.myWidth removeFromParentAndCleanup:YES];
+            
+            [sg.shapesInMe removeObject:s];
+            [s handleMessage:kDWdismantle];
+        }
+        sg.firstAnchor=nil;
+        sg.lastAnchor=nil;
+        
+        [gameWorld delayRemoveGameObject:sg];
+        
+        //destroy own game object
     }
 }
 

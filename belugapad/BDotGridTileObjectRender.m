@@ -69,21 +69,21 @@
     }
     if(messageType==kDWdismantle)
     {
-//        CCSprite *s=tile.mySprite;
-//        CCSprite *ss=tile.selectedSprite;
-//        
-//        if(tile.myAnchor)
-//        {
-//            DWDotGridAnchorGameObject *anch=tile.myAnchor;
-//            anch.tile=nil;
-//            anch.Disabled=NO;
-//            tile.myAnchor=nil;
-//            tile.myShape=nil;
-//        }
-//        
-//        [[s parent] removeChild:s cleanup:YES];
-//        [[ss parent] removeChild:ss cleanup:YES];
-//        [gameWorld delayRemoveGameObject:tile];
+        CCSprite *s=tile.mySprite;
+        CCSprite *ss=tile.selectedSprite;
+        
+        if(tile.myAnchor)
+        {
+            DWDotGridAnchorGameObject *anch=tile.myAnchor;
+            anch.tile=nil;
+            anch.Disabled=NO;
+            tile.myAnchor=nil;
+            tile.myShape=nil;
+        }
+        
+        [[s parent] removeChild:s cleanup:YES];
+        [[ss parent] removeChild:ss cleanup:YES];
+        [gameWorld delayRemoveGameObject:tile];
     }
 }
 

@@ -179,7 +179,7 @@ typedef enum {
     CCSprite *traybtnWheel;
     CCSprite *traybtnMq;
     CCSprite *traybtnCalc;
-    CCSprite *traytogglePad;
+    CCSprite *traybtnPad;
     
     BOOL trayWheelShowing;
     BOOL trayMqShowing;

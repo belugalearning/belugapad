@@ -873,15 +873,15 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     traybtnWheel.opacity=0;
     traybtnWheel.tag=3;
 
-    traytogglePad=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
-    [problemDefLayer addChild:traytogglePad];
-    traytogglePad.opacity=0;
-    traytogglePad.tag=3;
+    traybtnPad=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+    [problemDefLayer addChild:traybtnPad];
+    traybtnPad.opacity=0;
+    traybtnPad.tag=3;
     
     traybtnCalc.position=ccp(2*cx-(2*TRAY_BUTTON_SPACE+TRAY_BUTTON_INSET), 2*cy-30);
     traybtnWheel.position=ccp(2*cx-(3*TRAY_BUTTON_SPACE+TRAY_BUTTON_INSET), 2*cy-30);
     traybtnMq.position=ccp(2*cx-(4*TRAY_BUTTON_SPACE+TRAY_BUTTON_INSET), 2*cy-30);
-    traytogglePad.position=ccp(2*cx-(5*TRAY_BUTTON_SPACE+TRAY_BUTTON_INSET), 2*cy-30);
+    traybtnPad.position=ccp(2*cx-(5*TRAY_BUTTON_SPACE+TRAY_BUTTON_INSET), 2*cy-30);
 
     
 }
@@ -2141,6 +2141,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             //manually hide what this overrides
             [self hideMq];
             [self hideWheel];
+            [self hidePad];
             
             //show this + show stuff in corner
             [self showCalc];
@@ -2163,11 +2164,31 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             //manually hide what this overrides
             [self hideMq];
             [self hideCalc];
+            [self hidePad];
             
             //show this + show stuff in corner
             [self showWheel];
             
             //this might already be done -- but we've not explicitly hidden anything, so re-running will skip
+            [self showCornerTray];
+        }
+    }
+    
+    if(traybtnPad && CGRectContainsPoint(traybtnPad.boundingBox, location))
+    {
+        if(trayPadShowing)
+        {
+            [self hidePad];
+            [self hideCornerTray];
+        }
+        else
+        {
+            [self hideMq];
+            [self hideCalc];
+            [self hideWheel];
+            
+            [self showPad];
+            
             [self showCornerTray];
         }
     }
@@ -2320,12 +2341,24 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)showPad
 {
-    
+    if(!trayLayerPad)
+    {
+        trayLayerPad=[CCLayerColor layerWithColor:ccc4(255, 255, 255, 100) width:300 height:225];
+        [problemDefLayer addChild:trayLayerPad z:2];
+        trayLayerPad.position=ccp(CORNER_TRAY_POS_X, CORNER_TRAY_POS_Y);
+        
+        CCLabelTTF *lbl=[CCLabelTTF labelWithString:@"Notepad" fontName:@"Source Sans Pro" fontSize:24.0f];
+        lbl.position=ccp(150,112.5f);
+        [trayLayerPad addChild:lbl];
+    }
+    trayLayerPad.visible=YES;
+    trayPadShowing=YES;
 }
 
 -(void)hidePad
 {
-    
+    trayLayerPad.visible=NO;
+    trayPadShowing=NO;
 }
 
 //-(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event

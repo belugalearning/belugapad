@@ -55,6 +55,17 @@
     self.label0.position=ccpAdd(position, ccp(0, -1));
 }
 
+-(void)inflateZindex
+{
+    self.label0.zOrder=99;
+    self.label.zOrder=99;
+}
+-(void)deflateZindex
+{
+    self.label0.zOrder=0;
+    self.label.zOrder=0;
+}
+
 -(void)dealloc
 {
     self.label=nil;

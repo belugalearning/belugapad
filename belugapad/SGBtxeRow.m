@@ -47,6 +47,21 @@
     
 }
 
+-(BOOL)containsObject:(id)o
+{
+    //just checks if o is in this row's children
+    return [children containsObject:o];
+}
+
+-(void)inflateZindex
+{
+    baseNode.zOrder=99;
+}
+-(void)deflateZindex
+{
+    baseNode.zOrder=0;
+}
+
 -(void)setupDraw
 {
     //create base node

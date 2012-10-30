@@ -136,11 +136,11 @@
     gw.Blackboard.RenderLayer = renderLayer;
     
     //create row
-    id<Container, Bounding, Parser> row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
+    row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
     row.position=ccp(cx, cy+100);
     
     //create row
-    id<Container, Bounding, Parser> row2=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
+    row2=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
     row2.position=ccp(cx, cy-100);
         
     //get the row to try and parse something
@@ -179,6 +179,10 @@
             {
                 heldObject=o;
                 isHoldingObject=YES;
+                
+                [(id<MovingInteractive>)o inflateZIndex];
+                if([row containsObject:o]) [row inflateZindex];
+                if([row2 containsObject:o]) [row2 inflateZindex];
             }
         }
     }
@@ -228,6 +232,10 @@
         
         [heldObject returnToBase];
         
+        [heldObject deflateZindex];
+        [row deflateZindex];
+        [row2 deflateZindex];
+        
         heldObject=nil;
         isHoldingObject=NO;
     }
@@ -237,6 +245,12 @@
 {
     isTouching=NO;
     // empty selected objects
+    
+    if(heldObject)
+        [heldObject deflateZindex];
+    
+    [row deflateZindex];
+    [row2 deflateZindex];
 }
 
 #pragma mark - evaluation

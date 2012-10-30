@@ -65,6 +65,18 @@
     [renderBase addChild:textRenderComponent.label];
 }
 
+-(void)inflateZIndex
+{
+    textBackgroundRenderComponent.sprite.zOrder=99;
+    [textRenderComponent inflateZindex];
+}
+
+-(void)deflateZindex
+{
+    textBackgroundRenderComponent.sprite.zOrder=0;
+    [textRenderComponent deflateZindex];
+}
+
 -(void)setPosition:(CGPoint)thePosition
 {
     position=thePosition;

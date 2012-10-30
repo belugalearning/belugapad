@@ -860,15 +860,23 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
     [problemDefLayer addChild:traybtnCalc z:2];
+    traybtnCalc.opacity=0;
+    traybtnCalc.tag=3;
 
     traybtnMq=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
     [problemDefLayer addChild:traybtnMq z:2];
+    traybtnMq.opacity=0;
+    traybtnMq.tag=3;
 
     traybtnWheel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
     [problemDefLayer addChild:traybtnWheel];
+    traybtnWheel.opacity=0;
+    traybtnWheel.tag=3;
 
     traytogglePad=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
     [problemDefLayer addChild:traytogglePad];
+    traytogglePad.opacity=0;
+    traytogglePad.tag=3;
     
     traybtnCalc.position=ccp(2*cx-(2*TRAY_BUTTON_SPACE+TRAY_BUTTON_INSET), 2*cy-30);
     traybtnWheel.position=ccp(2*cx-(3*TRAY_BUTTON_SPACE+TRAY_BUTTON_INSET), 2*cy-30);

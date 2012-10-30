@@ -34,9 +34,12 @@
 #import "DebugViewController.h"
 #import "EditPDefViewController.h"
 #import "TestFlight.h"
+#import "SGBtxeRow.h"
 
 #define HD_HEADER_HEIGHT 65.0f
 #define HD_BUTTON_INSET 40.0f
+#define TRAY_BUTTON_SPACE 60.0f
+#define TRAY_BUTTON_INSET 0.0f
 #define HD_SCORE_INSET 40.0f
 
 #define QUESTION_SEPARATOR_PADDING -15.0f
@@ -47,6 +50,9 @@
 #define kComponentSpacing 10
 
 #define SHOW_NUMBER_WHEEL NO
+
+#define CORNER_TRAY_POS_X 700.0f
+#define CORNER_TRAY_POS_Y 460.0f
 
 @interface ToolHost()
 {
@@ -774,6 +780,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [self setupNumberWheel];
     }
     
+    //this will overrider above np/mq and possible th setup
+    [self setupToolTrays:pdef];
+    
     // set scale using the value we got earlier
     [toolBackLayer setScale:scale];
     [toolForeLayer setScale:scale];
@@ -839,6 +848,54 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             commitBtn=nil;
         }
     }
+}
+
+-(void)setupToolTrays:(NSDictionary*)withPdef
+{
+//    if(!traybtnCalc)
+//    {
+//        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+//        [problemDefLayer addChild:traybtnCalc z:2];
+//    }
+//    if(!traybtnMq)
+//    {
+//        traybtnMq=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+//        [problemDefLayer addChild:traybtnMq z:2];
+//    }
+//    if(!traybtnWheel)
+//    {
+//        traybtnWheel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+//        [problemDefLayer addChild:traybtnWheel];
+//    }
+//    if(!traytogglePad)
+//    {
+//        traytogglePad=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+//        [problemDefLayer addChild:traytogglePad];
+//    }
+    
+    trayLayerCalc=nil;
+    trayLayerMq=nil;
+    trayLayerPad=nil;
+    trayLayerWheel=nil;
+    
+    traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+    [problemDefLayer addChild:traybtnCalc z:2];
+
+    traybtnMq=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+    [problemDefLayer addChild:traybtnMq z:2];
+
+    traybtnWheel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+    [problemDefLayer addChild:traybtnWheel];
+
+    traytogglePad=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+    [problemDefLayer addChild:traytogglePad];
+    
+    traybtnCalc.position=ccp(2*cx-(2*TRAY_BUTTON_SPACE+TRAY_BUTTON_INSET), 2*cy-30);
+    traybtnWheel.position=ccp(2*cx-(3*TRAY_BUTTON_SPACE+TRAY_BUTTON_INSET), 2*cy-30);
+    traybtnMq.position=ccp(2*cx-(4*TRAY_BUTTON_SPACE+TRAY_BUTTON_INSET), 2*cy-30);
+    traytogglePad.position=ccp(2*cx-(5*TRAY_BUTTON_SPACE+TRAY_BUTTON_INSET), 2*cy-30);
+
+    
 }
 
 
@@ -1866,7 +1923,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     descGw.Blackboard.RenderLayer = btxeDescLayer;
     
     //create row
-    id<Container, RenderContainer, Bounding, Parser, FadeIn> row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
+    SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
+    descRow=row;
     row.position=ccp(cx, (cy*2) - 95);
 
     //top down valign
@@ -1974,6 +2032,16 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         return;
     }
     
+    //delegate touch handling for trays here
+    if(location.x>CORNER_TRAY_POS_X && location.y>CORNER_TRAY_POS_Y)
+    {
+        
+    }
+    else
+    {
+        [self removeAllTrays];
+    }
+    
     if(metaQuestionForThisProblem)
         [self checkMetaQuestionTouchesAt:location andTouchEnd:NO];
 
@@ -1984,6 +2052,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn)
     {
+        //remove any trays
+        [self removeAllTrays];
+        
         //user pressed commit button
         [self checkUserCommit];
     }
@@ -2069,6 +2140,50 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         return;
     }
     
+    if(traybtnCalc && CGRectContainsPoint(traybtnCalc.boundingBox, location))
+    {
+        if(trayCalcShowing)
+        {
+            //hide this tray & general corner tray
+            [self hideCalc];
+            [self hideCornerTray];
+        }
+        else
+        {
+            //manually hide what this overrides
+            [self hideMq];
+            [self hideWheel];
+            
+            //show this + show stuff in corner
+            [self showCalc];
+            
+            //this might already be done -- but we've not explicitly hidden anything, so re-running will skip
+            [self showCornerTray];
+        }
+    }
+    
+    if(traybtnWheel && CGRectContainsPoint(traybtnWheel.boundingBox, location))
+    {
+        if(trayWheelShowing)
+        {
+            //hide this tray & general corner tray
+            [self hideWheel];
+            [self hideCornerTray];
+        }
+        else
+        {
+            //manually hide what this overrides
+            [self hideMq];
+            [self hideCalc];
+            
+            //show this + show stuff in corner
+            [self showWheel];
+            
+            //this might already be done -- but we've not explicitly hidden anything, so re-running will skip
+            [self showCornerTray];
+        }
+    }
+    
     if(metaQuestionForThisProblem)
     {
         [self checkMetaQuestionTouchesAt:location andTouchEnd:YES];
@@ -2116,6 +2231,113 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(npMove)npMove=nil;
     npLastMoved=nil;
     [currentTool ccTouchesCancelled:touches withEvent:event];
+}
+
+#pragma mark - trays
+
+-(void)removeAllTrays
+{
+    [self hideCalc];
+    [self hideWheel];
+    [self hideMq];
+    [self hidePad];
+    [self hideCornerTray];
+}
+
+-(void)showCornerTray
+{
+    if(!trayCornerShowing)
+    {
+        //do stuff
+        //descRow.position=ccp(350.0f, (cy*2)-95);
+        [descRow animateAndMoveToPosition:ccp(350.0f, (cy*2)-95)];
+        
+        [descRow relayoutChildrenToWidth:625];
+        [questionSeparatorSprite runAction:[CCFadeOut actionWithDuration:0.25f]];
+        
+        trayCornerShowing=YES;
+    }
+}
+
+-(void)hideCornerTray
+{
+    if(trayCornerShowing)
+    {
+        //do stuff
+        //descRow.position=ccp(cx, (cy*2) - 95);
+        
+        [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 95)];
+        
+        [descRow relayoutChildrenToWidth:BTXE_ROW_DEFAULT_MAX_WIDTH];
+        
+        [questionSeparatorSprite runAction:[CCFadeIn actionWithDuration:0.25f]];
+        
+        trayCornerShowing=NO;
+    }
+}
+
+-(void)showCalc
+{
+    if(!trayLayerCalc)
+    {
+        trayLayerCalc=[CCLayerColor layerWithColor:ccc4(255, 255, 255, 100) width:300 height:225];
+        [problemDefLayer addChild:trayLayerCalc z:2];
+        trayLayerCalc.position=ccp(CORNER_TRAY_POS_X, CORNER_TRAY_POS_Y);
+        
+        CCLabelTTF *lbl=[CCLabelTTF labelWithString:@"Calculator" fontName:@"Source Sans Pro" fontSize:24.0f];
+        lbl.position=ccp(150,112.5f);
+        [trayLayerCalc addChild:lbl];
+    }
+    trayLayerCalc.visible=YES;
+    trayCalcShowing=YES;
+}
+
+-(void)hideCalc
+{
+    trayLayerCalc.visible=NO;
+    trayCalcShowing=NO;
+}
+
+-(void)showMq
+{
+    
+}
+
+-(void)hideMq
+{
+    
+}
+
+-(void)showWheel
+{
+    if(!trayLayerWheel)
+    {
+        trayLayerWheel=[CCLayerColor layerWithColor:ccc4(255, 255, 255, 100) width:300 height:225];
+        [problemDefLayer addChild:trayLayerWheel z:2];
+        trayLayerWheel.position=ccp(CORNER_TRAY_POS_X, CORNER_TRAY_POS_Y);
+        
+        CCLabelTTF *lbl=[CCLabelTTF labelWithString:@"Wheel" fontName:@"Source Sans Pro" fontSize:24.0f];
+        lbl.position=ccp(150,112.5f);
+        [trayLayerWheel addChild:lbl];
+    }
+    trayLayerWheel.visible=YES;
+    trayWheelShowing=YES;
+}
+
+-(void)hideWheel
+{
+    trayLayerWheel.visible=NO;
+    trayWheelShowing=NO;
+}
+
+-(void)showPad
+{
+    
+}
+
+-(void)hidePad
+{
+    
 }
 
 //-(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event

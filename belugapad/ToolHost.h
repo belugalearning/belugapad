@@ -39,6 +39,7 @@ typedef enum {
 @class SGGameWorld;
 @class DebugViewController;
 @class EditPDefViewController;
+@class SGBtxeRow;
 
 @interface ToolHost : CCLayer <CCPickerViewDataSource, CCPickerViewDelegate>
 {
@@ -167,11 +168,31 @@ typedef enum {
     //btxe for description
     SGGameWorld *descGw;
     CCSprite *questionSeparatorSprite;
+    SGBtxeRow *descRow;
     
     //ui
     CCSprite *multiplierBadge;
     CCLayerColor *blackOverlay;
     CCLayer *contextProgressLayer;
+    
+    //tooltrays
+    CCSprite *traybtnWheel;
+    CCSprite *traybtnMq;
+    CCSprite *traybtnCalc;
+    CCSprite *traytogglePad;
+    
+    BOOL trayWheelShowing;
+    BOOL trayMqShowing;
+    BOOL trayCalcShowing;
+    BOOL trayPadShowing;
+    
+    BOOL trayCornerShowing;
+    
+    CCLayer *trayLayerCalc;
+    CCLayer *trayLayerWheel;
+    CCLayer *trayLayerMq;
+    CCLayer *trayLayerPad;
+    
 }
 
 @property (retain) Daemon *Zubi;

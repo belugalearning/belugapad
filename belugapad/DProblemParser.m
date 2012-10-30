@@ -134,9 +134,9 @@
     NSString *name=[namebase substringFromIndex:1];
     NSString *casttype=[namebase substringToIndex:1];
     
-    if(!([casttype isEqualToString:@"$"] || [casttype isEqualToString:@"%%"] || [casttype isEqualToString:@"&"]))
+    if(!([casttype isEqualToString:@"$"] || [casttype isEqualToString:@"£"] || [casttype isEqualToString:@"&"]))
     {
-        NSLog(@"cast type char not in $, %%, &");
+        NSLog(@"cast type char not in $, £, &");
         return;
     }
     
@@ -229,7 +229,7 @@
         float interf=[input floatValue];
         outputvalue=[NSNumber numberWithInt:(int)interf];
     }
-    if([casttype isEqualToString:@"%%"]) {
+    if([casttype isEqualToString:@"£"]) {
         //return a rounded int
         float interf=[input floatValue] + ([input floatValue]>0 ? 0.5 : -0.5);
         outputvalue=[NSNumber numberWithInt:(int)interf];
@@ -255,7 +255,7 @@
     
     //is this a var (does it have a cast type at the start)
     NSString *casttype=[parse substringToIndex:1];
-    if (!([casttype isEqualToString:@"$"] || [casttype isEqualToString:@"%%"] || [casttype isEqualToString:@"&"])) {
+    if (!([casttype isEqualToString:@"$"] || [casttype isEqualToString:@"£"] || [casttype isEqualToString:@"&"])) {
         //not a var -- no cast type
         if ([parse rangeOfString:@"."].location!=NSNotFound) {
             //presume decimal, return as float
@@ -297,7 +297,7 @@
     {
         return [NSString stringWithFormat:@"%f", fin];
     }
-    else if([ct1 isEqualToString:@"%%"] && [ct2 isEqualToString:@"%%"])
+    else if([ct1 isEqualToString:@"£"] && [ct2 isEqualToString:@"£"])
     {
         return [NSString stringWithFormat:@"%d", (int)(fin+0.5f)];
     }

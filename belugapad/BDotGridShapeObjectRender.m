@@ -74,14 +74,7 @@
         
         if(!s.tiles||[s.tiles count]==0)return;
         
-        if(s.shapeGroup)
-        {
-            DWDotGridShapeGroupGameObject *sg=(DWDotGridShapeGroupGameObject*)s.shapeGroup;
-            if(!sg.hasLabels)
-                sg.hasLabels=YES;
-            else
-                return;
-        }
+
         if(s.countLabelType && !s.countBubble)
         {
             
@@ -114,6 +107,18 @@
         }
         if(s.RenderDimensions)
         {
+            
+            if(s.shapeGroup)
+            {
+                NSLog(@"check shapegroup for %d", (int)s);
+                
+                DWDotGridShapeGroupGameObject *sg=(DWDotGridShapeGroupGameObject*)s.shapeGroup;
+                if(!sg.hasLabels)
+                    sg.hasLabels=YES;
+                else
+                    return;
+            }
+            
             // height label
             int height=fabsf(fa.myYpos-la.myYpos);
             NSString *strHeight=[NSString stringWithFormat:@"%d", height];
@@ -133,6 +138,9 @@
             
             if(!s.myHeight)
             {
+                
+                NSLog(@"create height label for %d", (int)s);
+                
                 s.myHeight=[CCLabelTTF labelWithString:strHeight fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
                 [s.myHeight setPosition:ccp(xPosForHeightLabel,yPosForHeightLabel)];
                 
@@ -151,6 +159,7 @@
             }
             if(!s.myWidth)
             {
+                NSLog(@"create width label for %d", (int)s);
                 s.myWidth=[CCLabelTTF labelWithString:strWidth fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
                 [s.myWidth setPosition:ccp(xPosForWidthLabel,yPosForWidthLabel)];
                 
@@ -161,12 +170,15 @@
                 }
                 
                 [s.RenderLayer addChild:s.myWidth];
+
             }
             else
             {
                 [s.myWidth setPosition:ccp(xPosForWidthLabel,yPosForWidthLabel)];
                 [s.myWidth setString:strWidth];
             }
+            
+
             
             if(s.MyNumberWheel)
             {

@@ -508,11 +508,11 @@
             [self createShapeGroupAndShapesWithAnchorPoints:anchorsForShape andPrecount:preCountedTiles andDisabled:Disabled];
         
         
-        for(int i=0;i<[anchorsForShape count];i++)
-        {
-            DWDotGridAnchorGameObject *wanch = [anchorsForShape objectAtIndex:i];
-            NSLog(@"shape in matrix (%d/%d): x %d / y %d", i, [anchorsForShape count], wanch.myXpos, wanch.myYpos);
-        }
+//        for(int i=0;i<[anchorsForShape count];i++)
+//        {
+//            DWDotGridAnchorGameObject *wanch = [anchorsForShape objectAtIndex:i];
+//            NSLog(@"shape in matrix (%d/%d): x %d / y %d", i, [anchorsForShape count], wanch.myXpos, wanch.myYpos);
+//        }
 
         [anchorsForShape release];
     }
@@ -636,6 +636,7 @@
 -(void)checkAnchorsOfExistingShapeGroup:(DWDotGridShapeGroupGameObject*)thisShapeGroup
 {
     gw.Blackboard.FirstAnchor=thisShapeGroup.firstAnchor;
+    
     
     [thisShapeGroup handleMessage:kDWdismantle];
     
@@ -904,6 +905,8 @@
 
             }
             
+            [tile handleMessage:kDWsetupStuff];
+            
             if(curAnch.resizeHandle)
             {
                 DWDotGridHandleGameObject *rshandle = [DWDotGridHandleGameObject alloc];
@@ -914,6 +917,7 @@
                 //rshandle.Position=((DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor).Position;
                 shape.resizeHandle=rshandle;
                 rshandle.myShape=shape;
+                [rshandle handleMessage:kDWsetupStuff];
                 [rshandle release];
                 
             }
@@ -935,7 +939,8 @@
             [tile release];
         }
     
-    [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
+    [shape handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
+    
     
     if (!gw.Blackboard.inProblemSetup)
     {
@@ -1172,6 +1177,14 @@
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
     
+    
+    if([gw.Blackboard.SelectedObjects count]>0)
+    {
+        for(CCLabelTTF *l in gw.Blackboard.SelectedObjects)
+        {
+            [l removeFromParentAndCleanup:YES];
+        }
+    }
     
     [gw Blackboard].PickupObject=nil;
     

@@ -159,7 +159,7 @@
     
 }
 
--(void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
+-(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
 {
     
 }

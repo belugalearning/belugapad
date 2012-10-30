@@ -334,27 +334,31 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         
         if (reqSuccess)
         {
-            NSArray *updates = [(NSData*)res objectFromJSONData];
+            NSArray *serverUsers = [(NSData*)res objectFromJSONData];
             
             [bself->usersDatabase open];
-            for (NSDictionary *updatedUr in updates)
+            for (NSDictionary *serverUr in serverUsers)
             {
-                NSString *urId = [updatedUr objectForKey:@"id"];
+                NSString *urId = [serverUr objectForKey:@"id"];
                 
-                FMResultSet *rs = [bself->usersDatabase executeQuery:@"SELECT id, nick, nodes_completed FROM users WHERE id = ?", urId];
+                FMResultSet *localUserRS = [bself->usersDatabase executeQuery:@"SELECT id, nick, nodes_completed FROM users WHERE id = ?", urId];
                 // chance user has been deleted since sync request sent
-                if ([rs next])
+                if ([localUserRS next])
                 {
                     // possibility that user has completed node on client since request to server was made
-                    NSMutableSet *ncSet = [NSSet setWithArray:[updatedUr objectForKey:@"nodesCompleted"]];
-                    [ncSet addObjectsFromArray:[[rs stringForColumn:@"nodes_completed"] objectFromJSONString]];
+                    // - so construct union of local and server records of nodes completed for user
                     
-                    NSArray *nc = [ncSet allObjects];
+                    // init with server record
+                    NSMutableSet *nodesCompletedUnion = [NSSet setWithArray:[serverUr objectForKey:@"nodesCompleted"]];
+                    // and add local
+                    [nodesCompletedUnion addObjectsFromArray:[[localUserRS stringForColumn:@"nodes_completed"] objectFromJSONString]];
                     
-                    BOOL updateSuccess = [bself->usersDatabase executeUpdate:@"UPDATE users SET nodes_completed = ? WHERE id = ?", [nc JSONString], urId];
+                    NSArray *nodesCompleted = [nodesCompletedUnion allObjects];
+                    
+                    BOOL updateSuccess = [bself->usersDatabase executeUpdate:@"UPDATE users SET nodes_completed = ? WHERE id = ?", [nodesCompleted JSONString], urId];
                     if (!updateSuccess)
                     {
-                        NSString *statement = [NSString stringWithFormat:@"UPDATE users SET nodes_completed = \"%s\" WHERE id = \"%s\"", [nc JSONString], urId];                        
+                        NSString *statement = [NSString stringWithFormat:@"UPDATE users SET nodes_completed = \"%@\" WHERE id = \"%@\"", [nodesCompleted JSONString], urId];
                         NSMutableDictionary *d = [NSMutableDictionary dictionary];
                         [d setValue:BL_APP_ERROR_TYPE_DB_OPERATION_FAILURE forKey:@"type"];
                         [d setValue:@"UsersService#addCompletedNodeId" forKey:@"codeLocation"];
@@ -362,15 +366,16 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
                         [bself->loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
                     }
                     
+                    // if this user is the current user, need to set nodes completed on the current user
                     NSDictionary *currUr = bself->currentUser;
                     if (currUr && [[currUr objectForKey:@"id"] isEqualToString:urId])
                     {
-                        NSMutableArray *ncMutable = [nc mutableCopy];
+                        NSMutableArray *ncMutable = [nodesCompleted mutableCopy];
                         [currUr setValue:ncMutable forKey:@"nodesCompleted"];
                         [ncMutable release];
                     }
                 }
-                [rs close];
+                [localUserRS close];
                 
                 // remove users flagged for removal (getting list of these users so that we can log them)
                 NSArray *usersToRemove = [[users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"flagRemove == 1"]] valueForKey:@"id"];

@@ -15,6 +15,10 @@
 @property (retain) DWDotGridHandleGameObject *resizeHandle;
 @property (retain) DWDotGridAnchorGameObject *firstAnchor;
 @property (retain) DWDotGridAnchorGameObject *lastAnchor;
+@property (retain) CCLabelTTF *countLabel;
+@property (retain) NSString *countLabelType;
+@property (retain) CCSprite *countBubble;
+
 @property BOOL hasLabels;
 
 @end

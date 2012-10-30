@@ -39,6 +39,39 @@
 {
     if(messageType==kDWsetupStuff)
     {
+        
+        DWDotGridAnchorGameObject *fa=(DWDotGridAnchorGameObject*)s.firstAnchor;
+        DWDotGridAnchorGameObject *la=(DWDotGridAnchorGameObject*)s.lastAnchor;
+        
+        CGPoint bottomLeft=fa.Position;
+        CGPoint topRight=la.Position;
+        
+        float topMostY=0;
+        float leftMostX=0;
+        float botMostY=0;
+        
+        if(bottomLeft.y<topRight.y)
+        {
+            topMostY=topRight.y;
+            botMostY=bottomLeft.y;
+        }
+        else
+        {
+            topMostY=bottomLeft.y;
+            botMostY=topRight.y;
+        }
+        
+        if(bottomLeft.x<topRight.x)
+        {
+            leftMostX=bottomLeft.x;
+        }
+        else
+        {
+            leftMostX=topRight.x;
+        }
+        
+        
+        
         if(!s.tiles||[s.tiles count]==0)return;
         
         if(s.shapeGroup)
@@ -49,29 +82,39 @@
             else
                 return;
         }
-        
+        if(s.countLabelType)
+        {
+            if(s.countBubble)return;
+            
+            
+            float halfWayWidth=(bottomLeft.x+topRight.x)/2;
+            CCSprite *countBubble=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/countbubble.png")];
+            float botMostYAdj=botMostY-(countBubble.contentSize.height/1.5);
+            CCLabelTTF *countBubbleLabel=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:20.0f];
+            [countBubbleLabel setPosition:ccp(countBubble.contentSize.width/2, countBubble.contentSize.height/2)];
+            [countBubble setPosition:ccp(halfWayWidth,botMostYAdj)];
+            [countBubble setVisible:NO];
+            
+            if(!s.shapeGroup)
+            {
+                s.countBubble=countBubble;
+                s.countLabel=countBubbleLabel;
+            }
+            else
+            {
+                DWDotGridShapeGroupGameObject *sg=(DWDotGridShapeGroupGameObject*)s.shapeGroup;
+                if(!sg.countBubble){
+                    sg.countBubble=countBubble;
+                    sg.countLabel=countBubbleLabel;
+                    s.countBubble=countBubble;
+                }
+            }
+            
+            [s.RenderLayer addChild: countBubble];
+            [countBubble addChild:countBubbleLabel];
+        }
         if(s.RenderDimensions)
         {
-            DWDotGridAnchorGameObject *fa=(DWDotGridAnchorGameObject*)s.firstAnchor;
-            DWDotGridAnchorGameObject *la=(DWDotGridAnchorGameObject*)s.lastAnchor;
-            
-            CGPoint bottomLeft=fa.Position;
-            CGPoint topRight=la.Position;
-            
-            float topMostY=0;
-            float leftMostX=0;
-            
-            if(bottomLeft.y<topRight.y)
-                topMostY=topRight.y;
-            else
-                topMostY=bottomLeft.y;
-            
-            if(bottomLeft.x<topRight.x)
-                leftMostX=bottomLeft.x;
-            else
-                leftMostX=topRight.x;
-                
-            
             // height label
             int height=fabsf(fa.myYpos-la.myYpos);
             NSString *strHeight=[NSString stringWithFormat:@"%d", height];
@@ -172,6 +215,9 @@
         if(s.myWidth)
             [[s.myWidth parent] removeChild:s.myHeight cleanup:YES];
         
+        if(s.countBubble)
+           [[s.countBubble parent] removeChild:s.countBubble cleanup:YES];
+        
         for(DWDotGridTileGameObject *t in s.tiles)
         {
             [t handleMessage:kDWdismantle];
@@ -190,6 +236,7 @@
         s.shapeGroup=nil;
         //[s.myHeight removeFromParentAndCleanup:YES];
         //[s.myWidth removeFromParentAndCleanup:YES];
+        
         [gameWorld delayRemoveGameObject:s];
     }
 
@@ -284,6 +331,7 @@
     s.shapeGroup=nil;
     s.myHeight=nil;
     s.myWidth=nil;
+    s.countBubble=nil;
     [super dealloc];
 }
 

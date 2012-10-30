@@ -8,6 +8,7 @@
 
 #import "BDotGridShapeTouch.h"
 #import "DWDotGridShapeGameObject.h"
+#import "DWDotGridShapeGroupGameObject.h"
 #import "DWDotGridTileGameObject.h"
 #import "DWDotGridHandleGameObject.h"
 #import "DWNWheelGameObject.h"
@@ -172,8 +173,87 @@
                 if(w.CountBubbleLabel)
                     [w.CountBubbleLabel setString:[NSString stringWithFormat:@"%d", theValue]];
             }
+            if(shape.countLabelType)
+            {
+                if([shape.countLabelType isEqualToString:@"SHOW_SELECTED"])
+                {
+                    if(shape.countLabel && !shape.shapeGroup)
+                    {
+                        [shape.countBubble setVisible:YES];
+                        NSString *newStr=[NSString stringWithFormat:@"%d",[self returnSelectedTiles]];
+                        [shape.countLabel setString:newStr];
+                    }
+                    else if(shape.shapeGroup)
+                    {
+                        NSString *newStr=[NSString stringWithFormat:@"%d",[self returnSelectedTilesInShapeGroup]];
+                        DWDotGridShapeGroupGameObject *sg=(DWDotGridShapeGroupGameObject*)shape.shapeGroup;
+                        [sg.countBubble setVisible:YES];
+                        [sg.countLabel setString:newStr];
+                    }
+                    
+                }
+                else if([shape.countLabelType isEqualToString:@"SHOW_FRACTION"])
+                {
+
+                    if(shape.countLabel && !shape.shapeGroup)
+                    {
+                        [shape.countBubble setVisible:YES];
+                        NSString *newStr=[NSString stringWithFormat:@"%d/%d",[self returnSelectedTiles], [shape.tiles count]];
+                        [shape.countLabel setString:newStr];
+                    }
+                    else if(shape.shapeGroup)
+                    {
+                        DWDotGridShapeGroupGameObject *sg=(DWDotGridShapeGroupGameObject*)shape.shapeGroup;
+                        [sg.countBubble setVisible:YES];
+                        NSString *newStr=[NSString stringWithFormat:@"%d/%d",[self returnSelectedTilesInShapeGroup], [self returnTotalTilesInShapeGroup]];
+                        [sg.countLabel setString:newStr];
+                    }
+                }
+            }
         }
     }
+}
+
+-(int)returnSelectedTiles
+{
+    int selectedTiles=0;
+    
+    for(DWDotGridTileGameObject *t in shape.tiles)
+    {
+        if(t.Selected)
+            selectedTiles++;
+    }
+    
+    return selectedTiles;
+}
+
+-(int)returnSelectedTilesInShapeGroup
+{
+    int selectedTiles=0;
+    DWDotGridShapeGroupGameObject *sg=(DWDotGridShapeGroupGameObject*)shape.shapeGroup;
+    
+    for(DWDotGridShapeGameObject *s in sg.shapesInMe)
+    {
+        for(int i=0;i<[s.tiles count];i++)
+        {
+            DWDotGridTileGameObject *t=[s.tiles objectAtIndex:i];
+            if(t.Selected)
+                selectedTiles++;
+        }
+    }
+    return selectedTiles;
+}
+
+-(int)returnTotalTilesInShapeGroup
+{
+    int totalTiles=0;
+    DWDotGridShapeGroupGameObject *sg=(DWDotGridShapeGroupGameObject*)shape.shapeGroup;
+    
+    for(DWDotGridShapeGameObject *s in sg.shapesInMe)
+    {
+        totalTiles+=[s.tiles count];
+    }
+    return totalTiles;
 }
 
 -(void)resizeShape:(CGPoint)location

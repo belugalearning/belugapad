@@ -1355,7 +1355,12 @@ static float kTimeToCageShake=7.0f;
     }
     else if([solutionType isEqualToString:MATRIX_MATCH]){
         isProblemComplete=[self evalProblemMatrixMatch];
-    }  
+    }
+    else if([solutionType isEqualToString:GRID_MATCH])
+    {
+        isProblemComplete=[self areAllGridsIdentical];
+    }
+    
 }
 
 -(BOOL)evalProblemCountSeq
@@ -1934,6 +1939,40 @@ static float kTimeToCageShake=7.0f;
 
         }
     }
+}
+
+-(BOOL)areAllGridsIdentical
+{
+    
+    if(columnRopes||columnRows)
+        return NO;
+    
+    for (int r=[[gw.Blackboard.AllStores objectAtIndex:0] count]-1; r>=0; r--) {
+        NSMutableArray *row=[[gw.Blackboard.AllStores objectAtIndex:0] objectAtIndex:r];
+        for (int c=[row count]-1; c>=0; c--)
+        {
+            DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
+            
+            
+            for(int i=1;i<numberOfColumns;i++)
+            {
+
+                NSMutableArray *innerRow=[[gw.Blackboard.AllStores objectAtIndex:i] objectAtIndex:r];
+                DWPlaceValueNetGameObject *innerCo=[innerRow objectAtIndex:c];
+                
+                if(debugLogging)
+                    NSLog(@"Grid space at col 0 (%d:%d:%@) - grid space at col %d (%d:%d:%@)", r, c, co.MountedObject?@"YES":@"NO",i,r,c,innerCo.MountedObject?@"YES":@"NO");
+                
+                if((co.MountedObject && innerCo.MountedObject)||(!co.MountedObject&&!innerCo.MountedObject))
+                    continue;
+                else
+                    return NO;
+                    
+            }
+        }
+    }
+
+    return YES;
 }
 
 -(BOOL)doTransitionWithIncrement:(int)incr
@@ -3288,6 +3327,7 @@ static float kTimeToCageShake=7.0f;
         isBasePickup=NO;
             
     }
+    
     
     //get any auto reset / repositions to re-evaluate
     [gw handleMessage:kDWstartRespositionSeek andPayload:nil withLogLevel:0];

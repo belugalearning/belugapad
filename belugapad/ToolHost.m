@@ -852,26 +852,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)setupToolTrays:(NSDictionary*)withPdef
 {
-//    if(!traybtnCalc)
-//    {
-//        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
-//        [problemDefLayer addChild:traybtnCalc z:2];
-//    }
-//    if(!traybtnMq)
-//    {
-//        traybtnMq=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
-//        [problemDefLayer addChild:traybtnMq z:2];
-//    }
-//    if(!traybtnWheel)
-//    {
-//        traybtnWheel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
-//        [problemDefLayer addChild:traybtnWheel];
-//    }
-//    if(!traytogglePad)
-//    {
-//        traytogglePad=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
-//        [problemDefLayer addChild:traytogglePad];
-//    }
     
     trayLayerCalc=nil;
     trayLayerMq=nil;

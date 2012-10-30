@@ -1212,7 +1212,7 @@ static float kTimeToCageShake=7.0f;
 
     }
 
-    if(showColumnTotalCount && showCount)
+    if(showColumnTotalCount && showValue)
         showColumnTotalCount=NO;
     
     if(showMultipleControls||multipleBlockPickup)blocksToCreate=[[NSMutableArray alloc]init];
@@ -1413,7 +1413,7 @@ static float kTimeToCageShake=7.0f;
         if(thisNumber>lastNumber)
         {
             //CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"+%g", thisNumber*fval] fontName:CHANGO fontSize:150.0f];
-            CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"+%g", fval] fontName:CHANGO fontSize:150.0f];
+            CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"+%g", fval*[pickupObjects count]] fontName:CHANGO fontSize:150.0f];
             [l setPosition:ccp(currentColumnIndex*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(([[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]/2)*(lx*kPropXNetSpace)))];
             [l setColor:ccc3(234,137,31)];
             [renderLayer addChild:l z:10000];
@@ -1421,7 +1421,7 @@ static float kTimeToCageShake=7.0f;
         }
         else if(thisNumber<lastNumber)
         {
-            CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"-%g", fval] fontName:CHANGO fontSize:150.0f];
+            CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"-%g", fval*[pickupObjects count]] fontName:CHANGO fontSize:150.0f];
             [l setPosition:ccp(currentColumnIndex*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(([[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]/2)*(lx*kPropXNetSpace)))];
             [l setColor:ccc3(234,137,31)];
             [renderLayer addChild:l z:10000];

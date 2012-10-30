@@ -27,14 +27,15 @@
     [dVars removeAllObjects];
     [dStrings removeAllObjects];
     
+    //parse the dstrings from the new pdef
+    NSDictionary *dsdef=[pdef objectForKey:@"DSTRINGS"];
+    if(dsdef) [self  parseDStrings:dsdef];
+    
     //parse the dvars from the new pdef
     NSObject *dvdobject=[pdef objectForKey:@"DVARS"];
     if([dvdobject isKindOfClass:[NSDictionary class]]) [self parseDVarsInDictionary:(NSDictionary*)dvdobject];
     else if([dvdobject isKindOfClass:[NSArray class]]) [self parseDVarsInArray:(NSArray *)dvdobject];
     
-    //parse the dstrings from the new pdef
-    NSDictionary *dsdef=[pdef objectForKey:@"DSTRINGS"];
-    if(dsdef) [self  parseDStrings:dsdef];
 }
 
 -(void)parseDStrings:(NSDictionary*)dstringsdef

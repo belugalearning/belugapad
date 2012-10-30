@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Move 1 ten to the ones grid to make 10 ones. Press the green button.</string>
+	<string>&lt;b:t&gt;Move 1 ten&lt;/b:t&gt;&lt;b:oi tag=&quot;{@30_pv_block.png}&quot;/&gt;&lt;b:t&gt;To the ones&lt;/b:t&gt;&lt;b:oi tag=&quot;{@30_pv_grid.png}&quot;/&gt;&lt;b:t&gt;and drag the yellow block to the&lt;b:oi tag=&quot;{@30_pv_grid.png}&quot;/&gt;&lt;b:t&gt;to make 10 ones. Press the&lt;/b:t&gt;&lt;b:oi tag=&quot;{@30_commit.png}&quot;/&gt;</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Move 1 ten to the ones grid to make 10 ones. Press the green button.</string>
 	<key>TOOL_KEY</key>

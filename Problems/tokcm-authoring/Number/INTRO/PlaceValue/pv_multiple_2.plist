@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Press the right arrow 6 times. Add 7 blocks and press the green button. </string>
+	<string>&lt;b:t&gt;Press the right arrow 6 times. Add 7&lt;/b:t&gt;&lt;b:oi tag=&quot;{@30_pv_block.png}&quot;/&gt;&lt;b:t&gt;&apos;s and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;{@30_commit.png}&quot;/&gt;</string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>
 	<key>NUMBER_COLS</key>

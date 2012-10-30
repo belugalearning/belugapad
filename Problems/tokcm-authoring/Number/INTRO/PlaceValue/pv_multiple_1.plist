@@ -5,6 +5,8 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
+	<string>&lt;b:t&gt;Press the right arrow 2 times. Add 3&lt;/b:t&gt;&lt;b:oi tag=&quot;{@30_pv_block.png}&quot;/&gt;&lt;b:t&gt;&apos;s and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;{@30_commit.png}&quot;/&gt;</string>
+	<key>INTERNAL_DESCRIPTION</key>
 	<string>Press the right arrow 2 times. Add 3 blocks. </string>
 	<key>TOOL_KEY</key>
 	<string>PlaceValue</string>

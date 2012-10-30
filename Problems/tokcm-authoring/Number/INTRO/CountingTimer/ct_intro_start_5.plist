@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Press the button to start, and press stop.</string>
+	<string>&lt;b:t&gt;You will start at 5. Press&lt;/b:t&gt;&lt;b:oi tag=&quot;{@30_Counting_Start.png}&quot;/&gt;&lt;b:t&gt;Then press&lt;/b:t&gt;&lt;b:oi tag=&quot;{@30_Counting_Stop.png}&quot;/&gt;</string>
 	<key>TOOL_KEY</key>
 	<string>CountingTimer</string>
 	<key>SOLUTION</key>

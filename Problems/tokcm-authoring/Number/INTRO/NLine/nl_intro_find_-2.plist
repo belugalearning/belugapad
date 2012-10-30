@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>&lt;b:t&gt;Move to bubble to -2, and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;{@30_commit.png}&quot;/&gt; </string>
+	<string>&lt;b:t&gt;Move the&lt;/b:t&gt;&lt;b:oi tag=&quot;{@30_bubble.png}&quot;/&gt;&lt;b:t&gt;to -2 and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;{@30_commit.png}&quot;/&gt;</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Move bubble to -2.</string>
 	<key>TOOL_KEY</key>

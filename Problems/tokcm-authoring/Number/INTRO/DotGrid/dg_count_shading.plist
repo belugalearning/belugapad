@@ -5,7 +5,7 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>Tap the squares in the shape to count.</string>
+	<string>Tap the squares in the shape to count. </string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>Count.</string>
 	<key>TOOL_KEY</key>

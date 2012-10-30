@@ -5,6 +5,8 @@
 	<key>INTRO</key>
 	<true/>
 	<key>PROBLEM_DESCRIPTION</key>
+	<string>&lt;b:t&gt;Hold the number by the pipe and your finger up to 5. Tap the pipe Put 5 blocks in the&lt;/b:t&gt;&lt;b:oi tag=&quot;{@30_pipe_in.png}&quot;/&gt;&lt;b:t&gt;and press the&lt;/b:t&gt;&lt;b:oi tag=&quot;{@30_commit.png}&quot;/&gt;</string>
+	<key>INTERNAL_DESCRIPTION</key>
 	<string>Hold the number by the pipe and your finger up to 5. Tap the pipe Put 5 blocks in the bottom pipe. </string>
 	<key>TOOL_KEY</key>
 	<string>FloatingBlock</string>

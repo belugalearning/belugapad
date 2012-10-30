@@ -1407,6 +1407,12 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [self removeMetaQuestionButtons];
         metaQuestionForceComplete=YES;
     }
+    if(numberPickerForThisProblem)
+    {
+        [self tearDownNumberPicker];
+        metaQuestionForceComplete=YES;
+    }
+    
     [self showProblemCompleteMessage];
     currentTool.ProblemComplete=YES;
 }
@@ -1770,7 +1776,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     float onDropbox=[strEval floatValue];
     if(onDropbox==npEval)
     {
-        autoMoveToNextProblem=YES;
         [self doWinning];
     }
     else

@@ -298,7 +298,7 @@
     
     if(showDraggableBlock)
     {
-        dragBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/dragsquare.png")];
+        dragBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/DG_sq40.png")];
         [dragBlock setPosition:ccp(55,650)];
         [renderLayer addChild:dragBlock];
     }
@@ -645,7 +645,7 @@
         int sgW=abs(lAnch.myXpos - sAnch.myXpos);
         int sgH=abs(lAnch.myYpos - sAnch.myYpos);
         
-        if(sgW==1 && sgH==1)
+        if(sgW<shapeBaseSize && sgH<shapeBaseSize)
         {
             DWDotGridShapeGameObject *shape=[self createShapeWithAnchorPoints:anchors andPrecount:nil andDisabled:NO andGroup:sGroup];
             
@@ -1162,7 +1162,8 @@
     if(showDraggableBlock && CGRectContainsPoint(dragBlock.boundingBox, location))
     {
         hitDragBlock=YES;
-        newBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/1x1square85px.png")];
+        NSString *fileStr=[NSString stringWithFormat:@"/images/dotgrid/DG_sq%d.png",spaceBetweenAnchors];
+        newBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(fileStr)];
         [newBlock setPosition:location];
         [renderLayer addChild:newBlock];
     }
@@ -1507,6 +1508,10 @@
         else if([self checkForCorrectShapeSizes] && solutionNumber==sumWheel.OutputValue)return YES;
         else return NO;
         
+    }
+    else if(evalType==kProblemCheckDimensions)
+    {
+        return [self checkForCorrectShapeSizes];
     }
     else {
         //no eval mode specified, return no

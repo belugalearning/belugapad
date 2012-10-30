@@ -29,6 +29,7 @@
 @synthesize CountBubble;
 @synthesize CountBubbleLabel;
 @synthesize CountBubbleRenderLayer;
+@synthesize Locked;
 
 -(void)dealloc
 {
@@ -39,6 +40,9 @@
     self.pickerView=nil;
     self.RenderLayer=nil;
     self.Label=nil;
+    self.CountBubble=nil;
+    self.CountBubbleLabel=nil;
+    self.CountBubbleRenderLayer=nil;
     
     [super dealloc];
 }

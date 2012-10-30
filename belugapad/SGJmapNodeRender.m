@@ -106,6 +106,8 @@
     [nodeSprite setVisible:ParentGO.Visible];
     [ParentGO.RenderBatch addChild:nodeSprite z:5];
     
+    if(ParentGO.flip) nodeSprite.flipX=YES;
+    
     if(((AppController*)[[UIApplication sharedApplication] delegate]).AuthoringMode)
     {
         labelSprite=[CCLabelTTF labelWithString:ParentGO.UserVisibleString fontName:@"Source Sans Pro" fontSize:14.0f];

@@ -12,6 +12,7 @@
 @synthesize dataSource;
 @synthesize delegate;
 @synthesize numberOfComponents;
+@synthesize isLocked;
 
 -(id) init {
 	if ((self=[super init])) {
@@ -63,6 +64,12 @@
     if (delegate != nil) {
         [self initialLoad];
     }
+}
+
+-(void)setLocked:(BOOL)newValue {
+    isLocked = newValue;
+    
+    [self reloadAllComponents];
 }
 
 - (void)autoRepeatNodes:(BOOL)repeat {
@@ -131,6 +138,7 @@
         }
     }
     
+    scrollLayer.isLocked=isLocked;
     scrollLayer.arrayPages = array;
     scrollLayer.pageSize = pageSize;
     [scrollLayer setCurrentPage:0];

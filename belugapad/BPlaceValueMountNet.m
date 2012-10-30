@@ -142,7 +142,7 @@
         
         
         //        n.MountedObject=gameObject;
-        [[gameWorld GameScene] problemStateChanged];
+//        [[gameWorld GameScene] problemStateChanged];
         
     }
     

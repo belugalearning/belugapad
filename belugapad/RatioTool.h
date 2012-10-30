@@ -43,6 +43,8 @@
     
     int recipe[3];
     
+    BOOL wheelLocked[3];
+    
     CCLabelTTF *amount[3];
     
     NSMutableArray *numberWheels;

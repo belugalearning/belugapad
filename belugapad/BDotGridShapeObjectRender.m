@@ -93,6 +93,13 @@
             {
                 s.myHeight=[CCLabelTTF labelWithString:strHeight fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
                 [s.myHeight setPosition:ccp(xPosForHeightLabel,yPosForHeightLabel)];
+                
+                if(gameWorld.Blackboard.inProblemSetup)
+                {
+                    [s.myHeight setOpacity:0];
+                    [s.myHeight setTag:2];
+                }
+                
                 [s.RenderLayer addChild:s.myHeight];
             }
             else
@@ -104,6 +111,13 @@
             {
                 s.myWidth=[CCLabelTTF labelWithString:strWidth fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
                 [s.myWidth setPosition:ccp(xPosForWidthLabel,yPosForWidthLabel)];
+                
+                if(gameWorld.Blackboard.inProblemSetup)
+                {
+                    [s.myHeight setOpacity:0];
+                    [s.myHeight setTag:2];
+                }
+                
                 [s.RenderLayer addChild:s.myWidth];
             }
             else
@@ -153,6 +167,11 @@
     
     if(messageType==kDWdismantle)
     {
+        if(s.myHeight)
+            [[s.myHeight parent] removeChild:s.myHeight cleanup:YES];
+        if(s.myWidth)
+            [[s.myWidth parent] removeChild:s.myHeight cleanup:YES];
+        
         for(DWDotGridTileGameObject *t in s.tiles)
         {
             [t handleMessage:kDWdismantle];
@@ -169,8 +188,8 @@
             
         }
         s.shapeGroup=nil;
-        [s.myHeight removeFromParentAndCleanup:YES];
-        [s.myWidth removeFromParentAndCleanup:YES];
+        //[s.myHeight removeFromParentAndCleanup:YES];
+        //[s.myWidth removeFromParentAndCleanup:YES];
         [gameWorld delayRemoveGameObject:s];
     }
 
@@ -259,11 +278,13 @@
 
 -(void) dealloc
 {
-    [super dealloc];
     s.tiles=nil;
     s.firstAnchor=nil;
     s.lastAnchor=nil;
     s.shapeGroup=nil;
+    s.myHeight=nil;
+    s.myWidth=nil;
+    [super dealloc];
 }
 
 @end

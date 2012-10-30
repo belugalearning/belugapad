@@ -28,5 +28,6 @@
 @property (retain) CCSprite *CountBubble;
 @property (retain) CCLabelTTF *CountBubbleLabel;
 @property (retain) CCLayer *CountBubbleRenderLayer;
+@property BOOL Locked;
 
 @end

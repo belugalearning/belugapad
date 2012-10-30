@@ -1274,6 +1274,19 @@ static float kTimeToCageShake=7.0f;
         }
     }
     
+    if(showColumnTotalCount)
+    {
+        for(int i=0;i<numberOfColumns;i++)
+        {
+            float v=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
+            CCSprite *s=[totalCountSprites objectAtIndex:i];
+            CCLabelTTF *l=[s.children objectAtIndex:0];
+            
+            [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];
+        }
+        
+    }
+    
     // define our solution type to check against
     
     if([solutionType isEqualToString:COUNT_SEQUENCE])
@@ -1386,19 +1399,6 @@ static float kTimeToCageShake=7.0f;
 -(void)calcProblemTotalCount
 {
     totalCount=0;
-    
-    if(showColumnTotalCount)
-    {
-        for(int i=0;i<numberOfColumns;i++)
-        {
-            float v=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
-            CCSprite *s=[totalCountSprites objectAtIndex:i];
-            CCLabelTTF *l=[s.children objectAtIndex:0];
-            
-            [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];
-        }
-        
-    }
     
     if(showColumnUserCount){
         int lastNumber=[[userAddedBlocksLastCount objectAtIndex:currentColumnIndex]intValue];

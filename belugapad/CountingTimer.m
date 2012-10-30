@@ -22,7 +22,7 @@
 #import "InteractionFeedback.h"
 
 #define kEarliestHit 0.8
-#define kLatestHit 0.8
+#define kLatestHit 1.0
 
 @interface CountingTimer()
 {

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>INTRO</key>
+	<true/>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Tap the top pipe. Put 1 block in the bottom pipe. </string>
+	<key>TOOL_KEY</key>
+	<string>FloatingBlock</string>
+	<key>EVAL_MODE</key>
+	<integer>0</integer>
+	<key>SOLUTION</key>
+	<integer>1</integer>
+	<key>INIT_BUBBLES</key>
+	<integer>0</integer>
+	<key>INIT_OBJECTS</key>
+	<array/>
+	<key>BUBBLE_AUTO_OPERATE</key>
+	<false/>
+	<key>SUPPORTED_OPERATORS</key>
+	<array>
+		<string>+</string>
+	</array>
+	<key>SHOW_MULTIPLE_CONTROLS</key>
+	<false/>
+	<key>SHOW_SOLUTION_ON_PIPE</key>
+	<true/>
+	<key>DEFAULT_BLOCKS_FROM_PIPE</key>
+	<string>1</string>
+</dict>
+</plist>

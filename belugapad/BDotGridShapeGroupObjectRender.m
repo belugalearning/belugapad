@@ -121,11 +121,15 @@
             if(s.myWidth)
                 [s.myWidth removeFromParentAndCleanup:YES];
             
+            if(s.countBubble)
+                [s.countBubble removeFromParentAndCleanup:YES];
+            
             [sg.shapesInMe removeObject:s];
             [s handleMessage:kDWdismantle];
         }
         sg.firstAnchor=nil;
         sg.lastAnchor=nil;
+        sg.countBubble=nil;
         
         [gameWorld delayRemoveGameObject:sg];
 

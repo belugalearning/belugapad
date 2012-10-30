@@ -82,6 +82,8 @@ typedef enum {
     BOOL isMovingDown;
     BOOL gridMultiCanEval;
     
+    NSString *showCount;
+    
     CCSprite *dragBlock;
     CCSprite *newBlock;
     BOOL hitDragBlock;

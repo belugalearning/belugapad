@@ -328,6 +328,8 @@
     
     
     
+    
+    
     [tile.RenderLayer addChild:tile.mySprite z:2];
     
     [spriteFileName release];

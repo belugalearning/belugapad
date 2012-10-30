@@ -32,6 +32,8 @@
 @property (retain) CCLayer *RenderLayer;
 @property (retain) DWGameObject *MyNumberWheel;
 @property BOOL autoUpdateWheel;
-
+@property (retain) NSString *countLabelType;
+@property (retain) CCLabelTTF *countLabel;
+@property (retain) CCSprite *countBubble;
 
 @end

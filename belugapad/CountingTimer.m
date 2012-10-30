@@ -76,11 +76,10 @@
         usersService = ac.usersService;
         loggingService = ac.loggingService;
         
+        debugLogging=NO;
         
         [self readPlist:pdef];
         [self populateGW];
-        
-        debugLogging=YES;
         
         
         gw.Blackboard.inProblemSetup = NO;
@@ -96,16 +95,41 @@
 {
     // increase our overall timer
     // if the problem hasn't expired - increase
-    if(!expired)
-        if(started)timeElapsed+=delta;
+    if(!expired){
+        if(started){
+            if(!showCount)[currentNumber setVisible:NO];
+            timeElapsed+=numIncrement*delta;
+            timeKeeper+=delta;
+        }
+    }
+    
+    if(debugLogging)
+        [tLabel setString:[NSString stringWithFormat:@"%f",timeElapsed]];
     
     // update our tool variables
-    if((int)timeElapsed!=trackNumber && started)
+    if((int)timeKeeper!=trackNumber && started)
     {
         if(buttonFlash)
             [buttonOfWin runAction:[InteractionFeedback dropAndBounceAction]];
         
-        trackNumber=(int)timeElapsed;
+        if(displayNumicon)
+        {
+            if((int)timeKeeper<=10.0f)
+            {
+                CCSpriteFrame *frame=[frameCache spriteFrameByName:[NSString stringWithFormat:@"%d.png", (int)timeKeeper+1]];
+                [numiconOne setOpacity:255];
+                [numiconOne setDisplayFrame:frame];
+            }
+        }
+        
+        if(flashNumicon)
+        {
+            [numiconOne setOpacity:255];
+            [numiconOne runAction:[CCFadeOut actionWithDuration:0.5f]];
+            
+        }
+        
+        trackNumber=(int)timeKeeper;
         
         lastNumber+=numIncrement;
         
@@ -165,6 +189,7 @@
     
     solutionNumber=[[pdef objectForKey:SOLUTION]intValue];
     displayNumicon=[[pdef objectForKey:USE_NUMICON_NUMBERS]boolValue];
+    flashNumicon=[[pdef objectForKey:NUMICON_FLASH]boolValue];
     showCount=[[pdef objectForKey:SHOW_COUNT]boolValue];
     countType=[[pdef objectForKey:COUNT_TYPE]intValue];
     buttonFlash=[[pdef objectForKey:FLASHING_BUTTON]boolValue];
@@ -174,6 +199,8 @@
         lastNumber=countMin;
         trackNumber=lastNumber;
         timeElapsed=lastNumber;
+        //timeKeeper=timeElapsed;
+        timeKeeper=0.0f;
         
         if(countMax<=countMin)
             countMax=countMin+4;
@@ -182,7 +209,9 @@
     {
         lastNumber=countMax;
         trackNumber=lastNumber;
-        timeElapsed=0;
+        timeElapsed=lastNumber;
+//        timeKeeper=timeElapsed;
+        timeKeeper=0.0f;
         
         if(countMin>=countMax)
             countMin=countMax-4;
@@ -193,6 +222,11 @@
 
 -(void)populateGW
 {
+    if(debugLogging){
+        tLabel=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:20.0f];
+        [tLabel setPosition:ccp(cx,40)];
+        [renderLayer addChild:tLabel];
+    }
     gw.Blackboard.RenderLayer = renderLayer;
     buttonOfWin=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/countingtimer/counter_start.png")];
     [buttonOfWin setPosition:ccp(cx,cy-80)];
@@ -200,13 +234,32 @@
     [buttonOfWin setTag:2];
     [renderLayer addChild:buttonOfWin];
     
-    if(showCount)
-    {
+//    if(showCount)
+//    {
+    int startNo=0;
+    if(numIncrement>=0)
+        startNo=countMin;
+    else
+        startNo=countMax;
+    
         currentNumber=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:50.0f];
+    [currentNumber setString:[NSString stringWithFormat:@"%d", startNo]];
         [currentNumber setPosition:ccp(cx,cy+100)];
         [currentNumber setOpacity:0];
         [currentNumber setTag:3];
         [renderLayer addChild:currentNumber];
+//    }
+    if(displayNumicon||flashNumicon)
+    {
+        frameCache = [CCSpriteFrameCache sharedSpriteFrameCache];
+        [frameCache addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.plist") textureFilename:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.png")];
+        CCSpriteFrame *frame=[frameCache spriteFrameByName:@"1.png"];
+        numiconOne=[CCSprite spriteWithSpriteFrame:frame];
+        //[numiconOne setDisplayFrame:frame];
+        [numiconOne setPosition:ccp(currentNumber.position.x+(buttonOfWin.contentSize.width/2),currentNumber.position.y)];
+        [numiconOne setOpacity:0];
+        [renderLayer addChild:numiconOne];
+
     }
 }
 
@@ -224,17 +277,27 @@
     started=NO;
     timeElapsed=0.0f;
     trackNumber=0;
+    
+    if(numiconOne)
+        [numiconOne setOpacity:0];
+    
     [buttonOfWin setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/countingtimer/counter_start.png")]];
+    
+    [currentNumber setVisible:YES];
     
     if(numIncrement>=0){
         lastNumber=countMin;
         trackNumber=lastNumber;
         timeElapsed=lastNumber;
+//        timeKeeper=timeElapsed;
+        timeKeeper=0.0f;
     }
     else{
         lastNumber=countMax;
         trackNumber=lastNumber;
         timeElapsed=lastNumber;
+//        timeKeeper=timeElapsed;
+        timeKeeper=0.0f;
     }
 }
 
@@ -312,9 +375,9 @@
         latestHit=solutionNumber+(kLatestHit*numIncrement);
         
         if(debugLogging)
-            NSLog(@"(EVAL-UP) earliestHit: %f / latestHit: %f / timeElapsed %f", earliestHit, latestHit, adjTimeElapsed);
+            NSLog(@"(EVAL-UP) earliestHit: %f / latestHit: %f / timeElapsed %f", earliestHit, latestHit, timeElapsed);
         
-        if((adjTimeElapsed>=earliestHit) && (adjTimeElapsed<=latestHit))
+        if((timeElapsed>=earliestHit) && (timeElapsed<=latestHit))
             return YES;
         else
             return NO;
@@ -326,10 +389,11 @@
         earliestHit=solutionNumber+(kEarliestHit*numIncrement);
         latestHit=solutionNumber-(kLatestHit*numIncrement);
         
-        if(debugLogging)
-            NSLog(@"(EVAL-DOWN) earliestHit: %f / latestHit: %f / timeElapsed %f", earliestHit, latestHit, adjTimeElapsed);
         
-        if(adjTimeElapsed<=latestHit && adjTimeElapsed>=earliestHit)
+        if(debugLogging)
+            NSLog(@"(EVAL-DOWN) earliestHit: %f / latestHit: %f / timeElapsed %f", earliestHit, latestHit, timeElapsed);
+        
+        if(timeElapsed<=latestHit && timeElapsed>=earliestHit)
             return YES;
 
         else

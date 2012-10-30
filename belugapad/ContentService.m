@@ -54,11 +54,11 @@
     NSString *lastRepeatSet;
     NSMutableArray *repeatBuffer;
 }
-
+@property (nonatomic, readwrite, retain)NSURL *kcmServerBaseURL;
 @property (nonatomic, readwrite, retain) Problem *currentProblem;
+@property (nonatomic, readwrite, retain) NSDictionary *currentPDef;
 @property (nonatomic, readwrite, retain) NSString *pathToTestDef;
 @property (nonatomic, readwrite, retain) NSArray *currentPipeline;
-
 @end
 
 @implementation ContentService
@@ -85,6 +85,8 @@
     self = [super init];
     if (self)
     {
+        self.kcmServerBaseURL = [NSURL URLWithString:@"http://23.23.23.23:3001/kcm/"];
+        
         fm = [NSFileManager defaultManager];
         
         NSString *libraryDir=[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -146,7 +148,7 @@
     
     if (importContent && [importContent boolValue] && kcmLoginName)
     {
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://authoring.zubi.me:3001/kcm/app-import-content/%@", kcmLoginName]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"app-import-content/%@", kcmLoginName] relativeToURL:self.kcmServerBaseURL];
         NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
         NSHTTPURLResponse *response = nil;
         NSData *result = [NSURLConnection sendSynchronousRequest:req returningResponse:&response error:&error];
@@ -347,6 +349,12 @@
     return ret;
 }
 
+-(NSDictionary*)currentPDef
+{
+    if (useTestPipeline) return currentPDef;
+    else return self.currentProblem ? self.currentProblem.pdef : nil;
+}
+
 
 #pragma mark - the rest
 
@@ -418,7 +426,10 @@
     NSMutableArray *flatPipeline=[[NSMutableArray alloc] init];
     
     for (NSString *prbId in srcPipeline) {
-        NSDictionary *pdef=[self loadPdefWithId:prbId];
+        Problem *p = [self loadProblemWithId:prbId];
+        if (!p) continue;
+        
+        NSDictionary *pdef = p.pdef;
         
         NSNumber *rawRptAsIsMin=[pdef objectForKey:@"REPEAT_AS_IS_MIN"];
         NSNumber *rawRptScaffoldMin=[pdef objectForKey:@"REPEAT_AND_SCAFFOLD_MIN"];
@@ -476,7 +487,8 @@
 
 -(void)quitPipelineTracking
 {
-    self.currentPDef=nil;
+    self.currentProblem = nil;
+    if (useTestPipeline) self.currentPDef = nil;
     self.currentStaticPdef = nil;
 }
 
@@ -488,8 +500,9 @@
 -(void)gotoNextProblemInPipelineWithSkip:(int)skipby
 {
     //callers (toolhost) to this method will presume the end of the pipeline if the current Pdef is set to nil
-    // this method assumes that it's at the end of the pipeline and sets nil upfront
-    self.currentPDef=nil;
+    // this method assumes that it's at the end of the pipeline and sets nil upfront (indirectly via self.currentProblem for db)
+    self.currentProblem = nil; // nil anyway for test pipelines
+    self.currentPDef = nil; // setter has no effect on database pipelines
     
     //test pipelines are handled separately from pipeline>episode (adaptive) pipelines
     if (useTestPipeline)
@@ -499,7 +512,7 @@
     
     //a normal adaptive pipeline -- progress using combination of epsiodeIndex and pipelineIndex
     else
-    {
+    {        
         //to allow for debug skipping, loop the episode index increment and insertion (where required)
         for(int i=0; i<skipby; i++)
         {
@@ -538,41 +551,24 @@
     }
 }
 
--(void)startProblemWithId:(NSString*)pId
+-(Problem*)loadProblemWithId:(NSString *)pid
 {
-    [contentDatabase open];
-    FMResultSet *rs = [contentDatabase executeQuery:@"select id, rev from Problems where id=?", pId];
-    if (![rs next])
+    Problem *p = [[[Problem alloc] initWithDatabase:contentDatabase andProblemId:pid] autorelease];
+    if (!p)
     {
         NSMutableDictionary *d = [NSMutableDictionary dictionary];
         [d setValue:BL_APP_ERROR_TYPE_DB_TABLE_MISSING_ROW forKey:@"type"];
         [d setValue:@"Problems" forKey:@"table"];
-        [d setValue:pId forKey:@"key"];
+        [d setValue:pid forKey:@"key"];
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         [ac.loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
     }
-    
-    self.currentProblem = [[[Problem alloc] initWithFMResultSetRow:rs] autorelease];
-    [rs close];
-    [contentDatabase close];
-    
-    self.currentPDef=[self loadPdefWithId:pId];
-
-    if (!self.currentPDef)
-    {
-        NSMutableDictionary *d = [NSMutableDictionary dictionary];
-        [d setValue:BL_APP_ERROR_TYPE_MISSING_PDEF forKey:@"type"];
-        [d setValue:pId forKey:@"problemId"];
-        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
-        [ac.loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
-    }
+    return p;
 }
 
--(NSDictionary*)loadPdefWithId:(NSString *)pid
+-(void)startProblemWithId:(NSString*)pId
 {
-    NSString *pdefPath = [NSString stringWithFormat:@"%@/pdefs/%@.plist", contentDir, pid];
-    return [NSDictionary dictionaryWithContentsOfFile:pdefPath];
-    
+    self.currentProblem = [self loadProblemWithId:pId];
 }
 
 -(void)gotoNextProblemInTestPipeline
@@ -958,8 +954,10 @@
 
 -(NSString*)debugProblemDescStringFor:(NSString*)pId
 {
-    NSString *pdefPath = [NSString stringWithFormat:@"%@/pdefs/%@.plist", contentDir, pId];
-    NSDictionary *pdef=[NSDictionary dictionaryWithContentsOfFile:pdefPath];
+    Problem *p = [self loadProblemWithId:pId];
+    if (!p) return [NSString stringWithFormat:@"Problem id =\"%@\" missing", pId];
+    
+    NSDictionary *pdef=p.pdef;
     
     NSString *tool=@"";
     NSString *title=@"";
@@ -987,14 +985,15 @@
 
 - (void)dealloc
 {
+    self.kcmServerBaseURL = nil;
     if (contentDatabase)
     {
         [contentDatabase close];
         [contentDatabase release];
     }
     if (contentDir) [contentDir release];
-    if (currentProblem) [currentProblem release];
-    if (currentPDef) [currentPDef release];
+    self.currentProblem = nil;
+    self.currentPDef = nil;
     if (testProblemList) [testProblemList release];
     
     if(repeatBuffer)[repeatBuffer release];

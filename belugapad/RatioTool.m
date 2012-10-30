@@ -142,21 +142,27 @@
     recipe[1]=[[pdef objectForKey:RECIPE_GREEN]intValue];
     recipe[2]=[[pdef objectForKey:RECIPE_BLUE]intValue];
     
-    if([pdef objectForKey:EVAL_VALUE_RED])
+    if([pdef objectForKey:EVAL_VALUE_RED]){
         evalValue[0]=[[pdef objectForKey:EVAL_VALUE_RED]intValue];
-    else
+        wheelLocked[0]=NO;
+    }else{
         evalValue[0]=initValue[0];
-    
-    if([pdef objectForKey:EVAL_VALUE_GREEN])
+        wheelLocked[0]=YES;
+    }
+    if([pdef objectForKey:EVAL_VALUE_GREEN]){
         evalValue[1]=[[pdef objectForKey:EVAL_VALUE_GREEN]intValue];
-    else
+        wheelLocked[1]=NO;
+    }else{
         evalValue[1]=initValue[1];
-
-    if([pdef objectForKey:EVAL_VALUE_BLUE])
+        wheelLocked[1]=YES;
+    }
+    if([pdef objectForKey:EVAL_VALUE_BLUE]){
         evalValue[2]=[[pdef objectForKey:EVAL_VALUE_BLUE]intValue];
-    else
+        wheelLocked[2]=NO;
+    }else{
         evalValue[2]=initValue[2];
-    
+        wheelLocked[2]=YES;
+    }
     wheelMax=[[pdef objectForKey:WHEEL_MAX]floatValue];
     
     if(!numberWheels)
@@ -222,6 +228,7 @@
         w.Components=3;
         w.Position=ccp(140+(i*200),600);
         w.RenderLayer=renderLayer;
+        w.Locked=wheelLocked[i];
         w.SpriteFileName=@"/images/numberwheel/3slots.png";
         [w handleMessage:kDWsetupStuff];
         w.InputValue=initValue[i];

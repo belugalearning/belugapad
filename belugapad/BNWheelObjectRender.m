@@ -191,6 +191,7 @@
     pickerView.dataSource = self;
     pickerView.delegate = self;
     [pickerView autoRepeatNodes:YES];
+    [pickerView setLocked:w.Locked];
     
     w.pickerView=pickerView;
     

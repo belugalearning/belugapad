@@ -347,7 +347,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
     if(currentPickupObject)
     {
-        for(id<Pairable> pairedObj in currentPickupObject.PairedObjects)
+        for(id<Pairable> pairedObj in [NSArray arrayWithArray:currentPickupObject.PairedObjects])
         {
             [pairedObj unpairMeFrom:currentPickupObject];
         }

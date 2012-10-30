@@ -28,6 +28,9 @@
 @synthesize RenderLayer;
 @synthesize MyNumberWheel;
 @synthesize autoUpdateWheel;
+@synthesize countLabelType;
+@synthesize countLabel;
+@synthesize countBubble;
 
 -(void)dealloc
 {
@@ -41,6 +44,9 @@
     self.shapeGroup=nil;
     self.RenderLayer=nil;
     self.MyNumberWheel=nil;
+    self.countLabel=nil;
+    self.countLabelType=nil;
+    self.countBubble=nil;
 
     self.firstBoundaryAnchor=nil;
     self.lastBoundaryAnchor=nil;

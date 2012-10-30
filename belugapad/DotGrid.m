@@ -1019,9 +1019,14 @@
             }
 
         }
+    
 
     thisShape.firstAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
     thisShape.lastAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+    [thisShape.myHeight removeFromParentAndCleanup:YES];
+    [thisShape.myWidth removeFromParentAndCleanup:YES];
+    thisShape.myWidth=nil;
+    thisShape.myHeight=nil;
     [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
     if(thisShape.MyNumberWheel)[thisShape handleMessage:kDWupdateObjectData];
 

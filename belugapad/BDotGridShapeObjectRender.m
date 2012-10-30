@@ -82,9 +82,8 @@
             else
                 return;
         }
-        if(s.countLabelType)
+        if(s.countLabelType && !s.countBubble)
         {
-            if(s.countBubble)return;
             
             
             float halfWayWidth=(bottomLeft.x+topRight.x)/2;

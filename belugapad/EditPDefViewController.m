@@ -102,10 +102,6 @@
         {
             [handlerInstance performSelector:endEditAndTest withObject:[NSNumber numberWithBool:YES]];
         }
-        else
-        {
-            // TODO: display error to user
-        }
     }
     else if ([@"save-override-conflict" isEqualToString:message])
     {

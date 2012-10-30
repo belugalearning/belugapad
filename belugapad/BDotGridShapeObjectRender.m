@@ -190,6 +190,7 @@
         s.shapeGroup=nil;
         //[s.myHeight removeFromParentAndCleanup:YES];
         //[s.myWidth removeFromParentAndCleanup:YES];
+        
         [gameWorld delayRemoveGameObject:s];
     }
 

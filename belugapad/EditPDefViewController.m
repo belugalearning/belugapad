@@ -52,7 +52,8 @@
         handlerInstance = [handler retain];
         endEditAndTest = endEditAndTestSel;
 
-        [self updateClientScripts];
+// will fail on all networks except mine (nc)
+//        [self updateClientScripts];
         
         self.view = webView = [[UIWebView alloc] initWithFrame:frame];
         webView.backgroundColor = [UIColor whiteColor];

@@ -1212,7 +1212,7 @@ static float kTimeToCageShake=7.0f;
 
     }
 
-    if(showColumnTotalCount && showValue)
+    if(showColumnTotalCount && showCount)
         showColumnTotalCount=NO;
     
     if(showMultipleControls||multipleBlockPickup)blocksToCreate=[[NSMutableArray alloc]init];

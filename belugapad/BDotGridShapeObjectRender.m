@@ -117,6 +117,14 @@
             [s.RenderLayer addChild: countBubble];
             [countBubble addChild:countBubbleLabel];
         }
+        
+        if(s.countBubble)
+        {
+            float botMostYAdj=botMostY-(s.countBubble.contentSize.height/1.5);
+            [s.countBubble setPosition:ccp(halfWayWidth,botMostYAdj)];
+            [s handleMessage:kDWupdateLabels];
+        }
+        
         if(s.RenderDimensions)
         {
             

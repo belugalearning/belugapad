@@ -114,9 +114,9 @@
         
         if(displayNumicon)
         {
-            if((int)timeKeeper<=10.0f)
+            if(trackNumber<=10.0f)
             {
-                CCSpriteFrame *frame=[frameCache spriteFrameByName:[NSString stringWithFormat:@"%d.png", (int)timeKeeper+1]];
+                CCSpriteFrame *frame=[frameCache spriteFrameByName:[NSString stringWithFormat:@"%d.png", trackNumber+1]];
                 [numiconOne setOpacity:255];
                 [numiconOne setDisplayFrame:frame];
             }
@@ -193,6 +193,18 @@
     showCount=[[pdef objectForKey:SHOW_COUNT]boolValue];
     countType=[[pdef objectForKey:COUNT_TYPE]intValue];
     buttonFlash=[[pdef objectForKey:FLASHING_BUTTON]boolValue];
+    isIntroPlist=[[pdef objectForKey:IS_INTRO_PLIST]boolValue];
+    
+    if(isIntroPlist)
+    {
+        countMin=0;
+        countMax=999;
+        numIncrement=1;
+        displayNumicon=YES;
+        showCount=YES;
+        countType=1;
+        solutionNumber=1000;
+    }
     
     if(numIncrement>=0)
     {
@@ -217,6 +229,7 @@
             countMin=countMax-4;
     }
     
+
 
 }
 
@@ -261,6 +274,24 @@
         [renderLayer addChild:numiconOne];
 
     }
+}
+
+-(void)setupIntroOverlay
+{
+    started=NO;
+    introOverlay=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/countingtimer/ct_intro_overlay.png")];
+    introCommit=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"You stopped the timer at %d. Press the commit button to continue.", lastNumber] fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
+    
+    [introCommit setPosition:ccp(2*cx-40, 2*cy - 30)];
+    
+    [l setPosition:ccp(cx,cy)];
+    [introOverlay setPosition:ccp(cx,cy)];
+    
+    [renderLayer addChild:introOverlay];
+    [renderLayer addChild:introCommit];
+    [renderLayer addChild:l];
+    showingIntroOverlay=YES;
 }
 
 #pragma mark - problem state
@@ -326,6 +357,11 @@
         }
     }
     
+    if(CGRectContainsPoint(introCommit.boundingBox, location) && showingIntroOverlay)
+    {
+        [self evalProblem];
+    }
+    
     
 }
 
@@ -369,7 +405,6 @@
     
     if(numIncrement>=0)
     {
-        float adjTimeElapsed=timeElapsed*numIncrement;
         // count up
         earliestHit=solutionNumber-(kEarliestHit*numIncrement);
         latestHit=solutionNumber+(kLatestHit*numIncrement);
@@ -385,7 +420,7 @@
     else
     {
         // count down
-        float adjTimeElapsed=fabsf(timeElapsed-countMax);
+
         earliestHit=solutionNumber+(kEarliestHit*numIncrement);
         latestHit=solutionNumber-(kLatestHit*numIncrement);
         
@@ -407,7 +442,17 @@
 
 -(void)evalProblem
 {
-    BOOL isWinning=[self evalExpression];
+    
+    BOOL isWinning=NO;
+    
+    if(!isIntroPlist)isWinning=[self evalExpression];
+    
+    if(isIntroPlist && !showingIntroOverlay && started)
+    {
+        [self setupIntroOverlay];
+        return;
+    }
+    if(isIntroPlist && showingIntroOverlay)isWinning=YES;
     
     if(isWinning)
     {
@@ -451,11 +496,9 @@
 {
     //write log on problem switch
     
-    [renderLayer release];
-    
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
-    
+    [renderLayer release];
     //tear down
     [gw release];
     

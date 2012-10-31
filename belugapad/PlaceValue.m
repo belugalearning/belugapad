@@ -189,7 +189,7 @@ static float kTimeToCageShake=7.0f;
     }
     
     if(showValue && [solutionType isEqualToString:TOTAL_COUNT])
-        [countLabel setString:[NSString stringWithFormat:@"%g", totalObjectValue]];
+        [sumLabel setString:[NSString stringWithFormat:@"%g", totalObjectValue]];
     
     if(showMoreOrLess && [solutionType isEqualToString:TOTAL_COUNT])
     {
@@ -1204,15 +1204,16 @@ static float kTimeToCageShake=7.0f;
             sumLabel=[CCLabelTTF labelWithString:@"c" fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
             [sumLabel setTag:3];
             [sumLabel setOpacity:0];
+            [sumLabel setPosition:ccp(countBg.contentSize.width/2,countBg.contentSize.height/2)];
             //[countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];
 
-            [self.NoScaleLayer addChild:sumLabel z:10];
+            [countBg addChild:sumLabel z:10];
         }
         
 
     }
 
-    if(showColumnTotalCount && showValue)
+    if(showColumnTotalCount && showCount)
         showColumnTotalCount=NO;
     
     if(showMultipleControls||multipleBlockPickup)blocksToCreate=[[NSMutableArray alloc]init];

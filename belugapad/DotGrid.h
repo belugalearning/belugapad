@@ -34,6 +34,12 @@ typedef enum {
     kProblemCheckDimensions=3
 } DotGridEvalType;
 
+typedef struct {
+    NSArray *matchedShapes;
+    NSArray *matchedGOs;
+    BOOL canEval;
+} CorrectSizeInfo;
+
 @interface DotGrid : ToolScene
 {
     ToolHost *toolHost;
@@ -89,6 +95,7 @@ typedef enum {
     BOOL hitDragBlock;
     
     BOOL useShapeGroups;
+    BOOL showMoreOrLess;
     int shapeGroupSize;
     int shapeBaseSize;
     
@@ -97,6 +104,8 @@ typedef enum {
     NSMutableArray *dotMatrix;
     NSDictionary *hiddenRows;
     NSMutableArray *numberWheels;
+    
+    NSMutableArray *reqShapesCopy;
     
     DWNWheelGameObject *sumWheel;
     

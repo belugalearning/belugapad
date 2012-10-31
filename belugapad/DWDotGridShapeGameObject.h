@@ -36,4 +36,14 @@
 @property (retain) CCLabelTTF *countLabel;
 @property (retain) CCSprite *countBubble;
 
+@property (retain) CCSprite *hintArrowX;
+@property (retain) CCSprite *hintArrowY;
+@property float centreX;
+@property float centreY;
+@property float top;
+@property float bottom;
+@property float right;
+@property float left;
+
+
 @end

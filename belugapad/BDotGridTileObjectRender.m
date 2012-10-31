@@ -291,7 +291,7 @@
 {
     tileProperties thisTile=[self decideTileType];
     
-    NSLog(@"(resetsprite) filename %@", thisTile.spriteFileName);
+    //NSLog(@"(resetsprite) filename %@", thisTile.spriteFileName);
     
     NSString *spriteFileName=[NSString stringWithFormat:@"%@%d.png", thisTile.spriteFileName, tile.tileSize];
     
@@ -303,7 +303,7 @@
 {    
     tileProperties thisTile=[self decideTileType];
     //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
-    NSLog(@"(setsprite) filename %@", thisTile.spriteFileName);
+    //NSLog(@"(setsprite) filename %@", thisTile.spriteFileName);
     NSString *spriteFileName=thisTile.spriteFileName;
     float reqRotation=thisTile.Rotation;
     

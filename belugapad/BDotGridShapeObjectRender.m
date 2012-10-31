@@ -49,6 +49,7 @@
         float topMostY=0;
         float leftMostX=0;
         float botMostY=0;
+        float rightMostX=0;
         
         if(bottomLeft.y<topRight.y)
         {
@@ -64,27 +65,30 @@
         if(bottomLeft.x<topRight.x)
         {
             leftMostX=bottomLeft.x;
+            rightMostX=topRight.x;
         }
         else
         {
             leftMostX=topRight.x;
+            rightMostX=bottomLeft.x;
         }
         
+        float halfWayHeight=(bottomLeft.y+topRight.y)/2;
+        float halfWayWidth=(bottomLeft.x+topRight.x)/2;
+        
+        s.centreX=halfWayWidth;
+        s.centreY=halfWayHeight;
+        s.top=topMostY;
+        s.bottom=botMostY;
+        s.right=rightMostX;
+        s.left=leftMostX;
         
         
         if(!s.tiles||[s.tiles count]==0)return;
         
-        if(s.shapeGroup)
+
+        if(s.countLabelType && !s.countBubble)
         {
-            DWDotGridShapeGroupGameObject *sg=(DWDotGridShapeGroupGameObject*)s.shapeGroup;
-            if(!sg.hasLabels)
-                sg.hasLabels=YES;
-            else
-                return;
-        }
-        if(s.countLabelType)
-        {
-            if(s.countBubble)return;
             
             
             float halfWayWidth=(bottomLeft.x+topRight.x)/2;
@@ -115,11 +119,21 @@
         }
         if(s.RenderDimensions)
         {
+            
+            if(s.shapeGroup)
+            {
+                
+                DWDotGridShapeGroupGameObject *sg=(DWDotGridShapeGroupGameObject*)s.shapeGroup;
+                if(!sg.hasLabels)
+                    sg.hasLabels=YES;
+                else
+                    return;
+            }
+            
             // height label
             int height=fabsf(fa.myYpos-la.myYpos);
             NSString *strHeight=[NSString stringWithFormat:@"%d", height];
             
-            float halfWayHeight=(bottomLeft.y+topRight.y)/2;
             float yPosForHeightLabel=halfWayHeight;
             float xPosForHeightLabel=leftMostX-50;
             
@@ -128,12 +142,12 @@
             int width=fabsf(fa.myXpos-la.myXpos);
             NSString *strWidth=[NSString stringWithFormat:@"%d", width];
             
-            float halfWayWidth=(bottomLeft.x+topRight.x)/2;
             float yPosForWidthLabel=topMostY+50;
             float xPosForWidthLabel=halfWayWidth;
             
             if(!s.myHeight)
             {
+                
                 s.myHeight=[CCLabelTTF labelWithString:strHeight fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
                 [s.myHeight setPosition:ccp(xPosForHeightLabel,yPosForHeightLabel)];
                 
@@ -152,6 +166,7 @@
             }
             if(!s.myWidth)
             {
+
                 s.myWidth=[CCLabelTTF labelWithString:strWidth fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
                 [s.myWidth setPosition:ccp(xPosForWidthLabel,yPosForWidthLabel)];
                 
@@ -162,12 +177,15 @@
                 }
                 
                 [s.RenderLayer addChild:s.myWidth];
+
             }
             else
             {
                 [s.myWidth setPosition:ccp(xPosForWidthLabel,yPosForWidthLabel)];
                 [s.myWidth setString:strWidth];
             }
+            
+
             
             if(s.MyNumberWheel)
             {
@@ -229,10 +247,16 @@
             ((DWDotGridHandleGameObject*)s.resizeHandle).myShape=nil;
         }
         if(s.MyNumberWheel)
-        {
             [s.MyNumberWheel handleMessage:kDWdismantle];
             
-        }
+
+        
+        if(s.hintArrowX)
+            [s.hintArrowX removeFromParentAndCleanup:YES];
+        
+        if(s.hintArrowY)
+            [s.hintArrowY removeFromParentAndCleanup:YES];
+
         s.shapeGroup=nil;
         //[s.myHeight removeFromParentAndCleanup:YES];
         //[s.myWidth removeFromParentAndCleanup:YES];

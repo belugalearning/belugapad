@@ -51,9 +51,8 @@
         
         handlerInstance = [handler retain];
         endEditAndTest = endEditAndTestSel;
-
-// will fail on all networks except mine (nc)
-//        [self updateClientScripts];
+        
+        [self updateClientScripts];
         
         self.view = webView = [[UIWebView alloc] initWithFrame:frame];
         webView.backgroundColor = [UIColor whiteColor];
@@ -174,7 +173,7 @@
     NSFileManager *fm = [NSFileManager defaultManager];
     
     NSURL *url = [NSURL URLWithString:@"http://23.23.23.23:1234"]; // TODO: Update url to zubi.me ********************************************************************
-    NSURLRequest *req = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:5];
+    NSURLRequest *req = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:2.0];
     NSHTTPURLResponse *response = nil;
     NSError *error = nil;
     NSData *result = [NSURLConnection sendSynchronousRequest:req returningResponse:&response error:&error];

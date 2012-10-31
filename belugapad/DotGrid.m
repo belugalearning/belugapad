@@ -1442,7 +1442,7 @@
                         int curX=fabsf(fa.myXpos-la.myXpos);
                         int curY=fabsf(fa.myYpos-la.myYpos);
                         
-                        [sg.hintArrowX setPosition:ccp(sg.centreX,sg.bottom-(sg.hintArrowX.contentSize.height/1.5))];
+                        [sg.hintArrowX setPosition:ccp(sg.centreX,sg.bottom-(sg.hintArrowX.contentSize.height))];
                         [sg.hintArrowY setPosition:ccp(sg.right+(sg.hintArrowX.contentSize.width/1.5),sg.centreY)];
                         [sg.hintArrowX setVisible:YES];
                         [sg.hintArrowY setVisible:YES];

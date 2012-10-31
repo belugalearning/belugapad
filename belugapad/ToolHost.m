@@ -1133,6 +1133,15 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ
 {
+    
+    if(!trayLayerMq)
+    {
+        trayLayerMq=[[CCLayer alloc]init];
+        [problemDefLayer addChild:trayLayerMq z:2];
+        trayLayerMq.visible=NO;
+        trayMqShowing=NO;
+    }
+    
     metaQuestionForThisProblem=YES;
     shownMetaQuestionIncompleteFor=0;
     
@@ -1141,7 +1150,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     metaQuestionAnswerLabels = [[NSMutableArray alloc] init];
     
     //float titleY=cy*1.75f;
-    float answersY=cy*0.40;
+    float answersY=cy*1.30;
     if(currentTool)
     {
         //titleY=[currentTool metaQuestionTitleYLocation];
@@ -1186,7 +1195,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     [metaQuestionIncompleteLabel setColor:kMetaQuestionLabelColor];
     [metaQuestionIncompleteLabel setVisible:NO];
-    [metaQuestionLayer addChild:metaQuestionIncompleteLabel];
+    [trayLayerMq addChild:metaQuestionIncompleteLabel];
     
     // render answer labels and buttons for each answer
     for(int i=0; i<metaQuestionAnswerCount; i++)
@@ -1231,7 +1240,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         [answerBtn setTag:3];
         //[answerBtn setScale:0.5f];
         [answerBtn setOpacity:0];
-        [metaQuestionLayer addChild:answerBtn];
+        [trayLayerMq addChild:answerBtn];
         [metaQuestionAnswerButtons addObject:answerBtn];
         
         
@@ -1242,7 +1251,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             [answerLabel setColor:kMetaAnswerLabelColorSelected];
             [answerLabel setOpacity:0];
             [answerLabel setTag: 3];
-            [metaQuestionLayer addChild:answerLabel];
+            [trayLayerMq addChild:answerLabel];
             [metaQuestionAnswerLabels addObject:answerLabel];
         }
         
@@ -1257,7 +1266,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         commitBtn.position=ccp(2*cx-HD_BUTTON_INSET, 2*cy - 30);
         [commitBtn setTag:3];
         [commitBtn setOpacity:0];
-        [metaQuestionLayer addChild:commitBtn z:2];
+        [trayLayerMq addChild:commitBtn z:2];
     }
     else
     {
@@ -1269,7 +1278,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)tearDownMetaQuestion
 {
-    [metaQuestionLayer removeAllChildrenWithCleanup:YES];
+    [trayLayerMq removeAllChildrenWithCleanup:YES];
     
     metaQuestionForThisProblem=NO;
     metaQuestionForceComplete=NO;
@@ -1467,11 +1476,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 {
     for(int i=0;i<metaQuestionAnswerLabels.count;i++)
     {
-        [metaQuestionLayer removeChild:[metaQuestionAnswerLabels objectAtIndex:i] cleanup:YES];
+        [trayLayerMq removeChild:[metaQuestionAnswerLabels objectAtIndex:i] cleanup:YES];
     } 
     for(int i=0;i<metaQuestionAnswerButtons.count;i++)
     {
-        [metaQuestionLayer removeChild:[metaQuestionAnswerButtons objectAtIndex:i] cleanup:YES];
+        [trayLayerMq removeChild:[metaQuestionAnswerButtons objectAtIndex:i] cleanup:YES];
     } 
     
 }
@@ -2193,6 +2202,23 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         }
     }
     
+    if(traybtnMq && CGRectContainsPoint(traybtnMq.boundingBox, location))
+    {
+        if(trayMqShowing)
+        {
+            [self hideMq];
+            [self hideCornerTray];
+        }
+        else
+        {
+            [self hideCalc];
+            [self hideWheel];
+            [self hidePad];
+            
+            [self showMq];
+        }
+    }
+    
     if(metaQuestionForThisProblem)
     {
         [self checkMetaQuestionTouchesAt:location andTouchEnd:YES];
@@ -2309,12 +2335,14 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)showMq
 {
-    
+    trayLayerMq.visible=YES;
+    trayMqShowing=YES;
 }
 
 -(void)hideMq
 {
-    
+    trayLayerMq.visible=NO;
+    trayMqShowing=NO;
 }
 
 -(void)showWheel

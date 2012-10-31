@@ -65,7 +65,9 @@
     
     float dividend;
     float divisor;
+    float highestBase;
     
+    int columnsInPicker;
     int currentRowPos;
     int activeRow;
     int previousRow;
@@ -73,7 +75,7 @@
     int previousNumberPos;
     float currentTotal;
     float rowMultiplier;
-    int startRow;
+    int startColValue;
     
     int currentTouchCount;
     

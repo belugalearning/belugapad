@@ -92,8 +92,9 @@ const float kScaleOfLesserBlocks=0.6f;
 	[gw doUpdate:delta];
 
     // work out the current total
+//    currentTotal=nWheel.OutputValue/(pow((double)startColValue,-1));
     currentTotal=nWheel.OutputValue;
-
+    
 //    for(int i=0;i<[selectedNumbers count];i++)
 //    {
 //        float curMultiplier=[[rowMultipliers objectAtIndex:i]floatValue];
@@ -187,8 +188,13 @@ const float kScaleOfLesserBlocks=0.6f;
     goodBadHighlight=[[pdef objectForKey:GOOD_BAD_HIGHLIGHT] boolValue];
     renderBlockLabels=[[pdef objectForKey:RENDERBLOCK_LABELS] boolValue];
     hideRenderLayer=[[pdef objectForKey:HIDE_RENDERLAYER] boolValue];
-    startRow=[[pdef objectForKey:START_ROW]floatValue];
+    if([pdef objectForKey:START_COLUMN_VALUE])
+        startColValue=[[pdef objectForKey:START_COLUMN_VALUE]floatValue];
+    else
+        startColValue=100;
     
+    columnsInPicker=[[pdef objectForKey:COLUMNS_IN_PICKER]intValue];
+
     
 }
 
@@ -249,7 +255,7 @@ const float kScaleOfLesserBlocks=0.6f;
 {
     DWNWheelGameObject *w=[DWNWheelGameObject alloc];
     [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
-    w.Components=3;
+    w.Components=columnsInPicker;
     w.Position=ccp(250,200);
     w.RenderLayer=renderLayer;
     w.SpriteFileName=@"/images/numberwheel/3slots.png";
@@ -301,7 +307,7 @@ const float kScaleOfLesserBlocks=0.6f;
         [thisRow release];
     }
     
-    currentRowPos=startRow;
+    //currentRowPos=startRow;
     activeRow=currentRowPos;
     
     
@@ -394,7 +400,7 @@ const float kScaleOfLesserBlocks=0.6f;
     
     //int adjustedIndex=(thisRow-[nWheel.pickerViewSelection count]);
     
-    float myBase=pow((double)10,thisRow);
+    float myBase=startColValue/pow((double)10,selectedNumber);
     
     NSDictionary *lastRBDictAtMyBase=nil;
     

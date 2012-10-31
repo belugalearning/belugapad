@@ -68,6 +68,8 @@
 @property (retain) NSString *tag;
 
 -(void)activate;
+-(void)inflateZIndex;
+-(void)deflateZindex;
 
 @end
 

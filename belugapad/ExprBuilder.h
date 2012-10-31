@@ -11,6 +11,8 @@
 #import "ToolScene.h"
 #import "SGBtxeProtocols.h"
 
+@class SGBtxeRow;
+
 @interface ExprBuilder : ToolScene
 {
     // required toolhost stuff
@@ -44,6 +46,9 @@
     NSArray *exprStages;
     
     NSString *evalType;
+    
+    SGBtxeRow *row;
+    SGBtxeRow *row2;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;

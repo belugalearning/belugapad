@@ -14,6 +14,8 @@
 	<integer>10</integer>
 	<key>START_ROW</key>
 	<integer>5</integer>
+	<key>COLUMNS_IN_PICKER</key>
+	<integer>3</integer>
 	<key>GOOD_BAD_HIGHLIGHT</key>
 	<false/>
 	<key>EVAL_MODE</key>

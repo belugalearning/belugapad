@@ -57,6 +57,7 @@
     
     EditPDefViewController *editPDefViewController;
     BOOL nowEditingPDef;
+    CCSprite *unsavedEditsImage;
 }
 
 @end
@@ -157,6 +158,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         commdis.position=ccp(2*cx-HD_BUTTON_INSET, 2*cy - 30);
         [perstLayer addChild:commdis z:3];
         
+        unsavedEditsImage = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/unsaved-edits.png")];
+        unsavedEditsImage.position=ccp(250.0f, 2*cy - HD_HEADER_HEIGHT / 2.0f);
+        [perstLayer addChild:unsavedEditsImage z:3];
+        unsavedEditsImage.visible = NO;
         
         //dynamic problem parser (persists to end of pipeline)
         DynProblemParser=[[DProblemParser alloc] init];
@@ -747,11 +752,13 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 //        hostBackground=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(hostBackgroundFile)];
 //        [hostBackground setPosition:ccp(cx, cy)];
 //        [self addChild:hostBackground];
-//    }
+    //    }
     
     //playback sound assocaited with problem
     NSString *playsound=[pdef objectForKey:PLAY_SOUND];
     if(playsound) [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/sfx/%@", playsound]))];
+    
+    unsavedEditsImage.visible = contentService.currentProblem && contentService.currentProblem.hasUnsavedEdits;
     
     //setup meta question (if there is one)
     NSDictionary *mq=[pdef objectForKey:META_QUESTION];
@@ -840,7 +847,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         }
     }
 }
-
 
 -(void) resetProblem
 {
@@ -2305,15 +2311,20 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [[[CCDirector sharedDirector] view] addSubview:editPDefViewController.view];
 }
 
--(void)endEditPDefAndTestProblem:(BOOL)reset
+-(void)endEditPDefAndTestProblem:(NSNumber*)reset
 {
     nowEditingPDef = NO;
     if (!editPDefViewController) return;
     [editPDefViewController.view removeFromSuperview];
     [editPDefViewController release];
     [self hidePauseMenu];
-    if (reset) [self resetProblem];
+    if ([reset boolValue])
+    {
+        unsavedEditsImage.visible = contentService.currentProblem && contentService.currentProblem.hasUnsavedEdits;
+        [self resetProblem];
+    }
 }
+
 
 #pragma mark - tear down
 

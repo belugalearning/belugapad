@@ -151,6 +151,7 @@
     disableDrawing=[[pdef objectForKey:DISABLE_DRAWING]boolValue];
     solutionNumber=[[pdef objectForKey:SOLUTION_VALUE]intValue];
     autoAddition=[[pdef objectForKey:AUTO_UPDATE_WHEEL]boolValue];
+    showCount=[pdef objectForKey:SHOW_COUNT];
     
     if([pdef objectForKey:REQUIRED_SHAPES])
     {
@@ -394,12 +395,17 @@
 
                         if(((curAnch.Disabled || curAnch.Hidden) && !gw.Blackboard.inProblemSetup && !gameState==kStartAnchor))failedChecksHidden=YES;
                         if(curAnch.tile)failedChecksExistingTile=YES;
+
+//                        if(x==anchEnd.myXpos-1 && y==anchEnd.myYpos-1 && showResize)
+//                            curAnch.resizeHandle=YES;
+//                        else
+//                            curAnch.resizeHandle=NO;
                         
                         if(x==anchEnd.myXpos-1 && y==anchStart.myYpos && showResize)
                             curAnch.resizeHandle=YES;
                         else
                             curAnch.resizeHandle=NO;
-                         
+                        
                         if(x==anchStart.myXpos && y==anchEnd.myYpos-1 && showMove)
                             curAnch.moveHandle=YES;
                         else
@@ -416,6 +422,11 @@
                         
                         if(((curAnch.Disabled || curAnch.Hidden) && !gw.Blackboard.inProblemSetup && !gameState==kStartAnchor))failedChecksHidden=YES;
                         if(curAnch.tile)failedChecksExistingTile=YES;
+
+//                        if(x==anchEnd.myXpos-1 && y==anchEnd.myYpos+1 && showResize)
+//                            curAnch.resizeHandle=YES;
+//                        else
+//                            curAnch.resizeHandle=NO;
                         
                         if(x==anchEnd.myXpos-1 && y==anchEnd.myYpos && showResize)
                             curAnch.resizeHandle=YES;
@@ -719,6 +730,7 @@
         
         sGroup.firstAnchor=sAnch;
         sGroup.lastAnchor=lAnch;
+        sGroup.countLabelType=showCount;
 //        
 //        int startXPos=0;
 //        int endXPos=0;
@@ -832,6 +844,7 @@
         
         shapegrp.firstAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
         shapegrp.lastAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+        shapegrp.countLabelType=showCount;
     }
 }
 
@@ -852,6 +865,7 @@
     shape.tiles=[[NSMutableArray alloc]init];
     shape.SelectAllTiles=selectWholeShape;
     shape.RenderDimensions=renderWidthHeightOnShape;
+    shape.countLabelType=showCount;
     
     shape.shapeGroup=shapeGroup;
     
@@ -1508,6 +1522,10 @@
         else if([self checkForCorrectShapeSizes] && solutionNumber==sumWheel.OutputValue)return YES;
         else return NO;
         
+    }
+    else if(evalType==kProblemCheckDimensions)
+    {
+        return [self checkForCorrectShapeSizes];
     }
     else {
         //no eval mode specified, return no

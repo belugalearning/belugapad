@@ -33,28 +33,27 @@ $(function() {
     .on('click', 'div[data-type].selected > span[data-controls] > [data-action="copy"]', copyKey)
     .on('click', 'div[data-type].selected > span[data-controls] > [data-action="paste"]', pasteKey)
     .on('change', 'div[data-type~="primitive"] > span[data-field="value"] > select', valueOptionChanged)
+    .on('touchstart', 'div#modal-bg', function() { return false }) // disable scrolling when modal popup showing
 
-  // test-edits button listener
-  $('input[type="button"][value="test"]').on('click', function() {
-    var $form = $('<form action="test-edits" method="POST"><input type="text" name="pdef" /></form>')
-    $form.children('[name="pdef"]').val(JSON.stringify(getJSON()))
-    if (ios) $form.submit()
-  })
-  // cancel edits button listener
-  $('input[type="button"][value="cancel"]').on('click', function() {
-    if (ios) self.location = "cancel"
-  })
-  // undo / redo
+  $('input[type="button"][value="test"]').on('click', function() { if (ios) self.location = 'test-edits' })
+  $('input[type="button"][value="cancel"]').on('click', function() { if (ios) self.location = "cancel" })
+
+  // undo / redo / save
   $('input[type="button"][value="undo"]').on('click', undo)
   $('input[type="button"][value="redo"]').on('click', redo)
+  $('input[type="button"][value="save"]').on('click', save)
   
 
   ios ? self.location = "ready": appInterface.loadPDef(testJSON)
 })
 
 var appInterface = {
-  loadPDef: function(pDef) {
-    pdef = pDef
+  loadPDef: function(pdef_, changeStack_, currStackIndex_, lastSaveStackIndex_) {
+    pdef = pdef_
+    changeStack = changeStack_
+    currStackIndex = currStackIndex_
+    lastSaveStackIndex = lastSaveStackIndex_
+    updateControlStripButtonsEnabled()
 
     // TODO: investigate - wihout delay some images don't load, arbitrary time delay hardly reliable
     setTimeout(function() {
@@ -82,6 +81,18 @@ var appInterface = {
       , currStackIndex: currStackIndex
       , lastSaveStackIndex: lastSaveStackIndex
     })
+  }
+  , serverSaveCallback: function(e, statusCode, b) {
+    if (statusCode == 409) {
+      buttonModalDialog('Version conflict. Do you want to overwrite the version saved on the server?', 'yes', 'no', function(val) {
+        if (val == 'yes') self.location = 'save-override-conflict?rev=' + JSON.parse(b).rev
+      })
+    } else {
+      var errorString = 'Error saving pdef.\nStatus Code: ' + statusCode
+      if (e) errorString += '\nDescription: ' + e
+      if (b) errorString += '\nResponse Body: ' + b
+      alert(errorString)
+    }
   }
 }
 
@@ -477,7 +488,7 @@ function recordChange(change) {
   changeStack[currStackIndex++] = change
   if (lastSaveStackIndex > currStackIndex) lastSaveStackIndex = null
   changeStack.splice(currStackIndex)
-  updateUndoRedoEnabled()
+  updateControlStripButtonsEnabled()
   return true
 }
 
@@ -552,7 +563,7 @@ function undo() {
       parent[change.key] = change.oldVal
       break
   }
-  updateUndoRedoEnabled()
+  updateControlStripButtonsEnabled()
 }
 
 function redo() {
@@ -625,10 +636,34 @@ function redo() {
       objAtPath(change.parentPath)[change.key] = change.newVal
       break
   }
-  updateUndoRedoEnabled()
+  updateControlStripButtonsEnabled()
 }
 
-function updateUndoRedoEnabled() {
+function save() {
+  if (ios) self.location = 'save'
+}
+
+function updateControlStripButtonsEnabled() {
   $('input[type="button"][value="undo"]').prop('disabled', currStackIndex == 0)
   $('input[type="button"][value="redo"]').prop('disabled', currStackIndex == changeStack.length)
+  $('input[type="button"][value="save"]').prop('disabled', currStackIndex === lastSaveStackIndex)
+}
+
+function buttonModalDialog(text) {
+  var buttons = [].slice.call(arguments, 1, arguments.length - 1)
+  var callback = arguments[arguments.length - 1]
+
+  var $modalBG = $('<div id="modal-bg"/>').appendTo('body')
+  var $modalDialog = $('<div id="modal-dialog"/>')
+    .appendTo('body')
+    .html(text + '<br/>')
+
+  buttons.forEach(function(b) {
+    $('<input type="button" value="'+b+'" />')
+      .appendTo($modalDialog)
+      .on('click', function() {
+        callback($(this).val())
+        $modalBG.add($modalDialog).remove()
+      })
+  })
 }

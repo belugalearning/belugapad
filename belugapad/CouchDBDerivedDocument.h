@@ -11,8 +11,8 @@
 
 @interface CouchDBDerivedDocument : NSObject
 
-@property (readonly) NSString *_id;
-@property (readonly) NSString *_rev;
+@property (readonly, retain) NSString *_id;
+@property (readonly, retain) NSString *_rev;
 
 -(id)initWithFMResultSetRow:(FMResultSet*)resultSet;
 

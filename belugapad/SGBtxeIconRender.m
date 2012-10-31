@@ -56,6 +56,15 @@
     self.sprite.position=position;
 }
 
+-(void)inflateZindex
+{
+    sprite.zOrder=99;
+}
+-(void)deflateZindex
+{
+    sprite.zOrder=0;
+}
+
 -(void)dealloc
 {
     self.sprite=nil;

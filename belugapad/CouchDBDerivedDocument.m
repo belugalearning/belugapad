@@ -9,27 +9,29 @@
 #import "CouchDBDerivedDocument.h"
 #import "FMDatabase.h"
 
-@implementation CouchDBDerivedDocument
+@interface CouchDBDerivedDocument()
+@property (readwrite, retain) NSString *_id;
+@property (readwrite, retain) NSString *_rev;
+@end
 
-@synthesize _id, _rev;
+
+@implementation CouchDBDerivedDocument
 
 -(id)initWithFMResultSetRow:(FMResultSet*)resultSet
 {
     self=[super init];
     if (self)
     {
-        _id = [resultSet stringForColumn:@"id"];
-        _rev = [resultSet stringForColumn:@"rev"];
-        [_id retain];
-        [_rev retain];
+        self._id = [resultSet stringForColumn:@"id"];
+        self._rev = [resultSet stringForColumn:@"rev"];
     }
     return self;
 }
 
 -(void) dealloc
 {
-    [_id release];
-    [_rev release];
+    self._id = nil;
+    self._rev = nil;
     [super dealloc];
 }
 

@@ -70,6 +70,15 @@
     }
 }
 
+-(void)inflateZIndex
+{
+    [self.iconRenderComponent inflateZindex];
+}
+-(void)deflateZindex
+{
+    [self.iconRenderComponent deflateZindex];
+}
+
 -(void)setPosition:(CGPoint)thePos
 {
     position=thePos;

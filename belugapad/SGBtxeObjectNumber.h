@@ -10,7 +10,7 @@
 #import "SGBtxeProtocols.h"
 
 
-@interface SGBtxeObjectNumber : SGGameObject <Text, Bounding, FadeIn>
+@interface SGBtxeObjectNumber : SGGameObject <Text, Bounding, FadeIn, Interactive>
 {
     CCNode *renderBase;
 }

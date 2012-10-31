@@ -67,6 +67,11 @@ typedef enum {
     BOOL started;
     BOOL debugLogging;
     
+    BOOL isIntroPlist;
+    BOOL showingIntroOverlay;
+    CCSprite *introOverlay;
+    CCSprite *introCommit;
+    
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;

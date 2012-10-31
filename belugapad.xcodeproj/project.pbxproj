@@ -3465,7 +3465,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Gareth Jenkins (MMPCPS6T22)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -3481,6 +3481,7 @@
 					"\"belugapad/Chipmunk/include/chipmunk\"/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A2B19595-65E2-4E3A-9290-3D13D596AAE3";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;

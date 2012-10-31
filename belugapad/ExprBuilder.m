@@ -136,11 +136,11 @@
     gw.Blackboard.RenderLayer = renderLayer;
     
     //create row
-    id<Container, Bounding, Parser> row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
+    row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
     row.position=ccp(cx, cy+100);
     
     //create row
-    id<Container, Bounding, Parser> row2=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
+    row2=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
     row2.position=ccp(cx, cy-100);
         
     //get the row to try and parse something
@@ -175,10 +175,17 @@
     {
         if([o conformsToProtocol:@protocol(MovingInteractive)])
         {
-            if(o.enabled && [BLMath DistanceBetween:o.worldPosition and:location] <= BTXE_PICKUP_PROXIMITY)
+            id<Bounding> obounding=(id<Bounding>)o;
+            CGRect hitbox=CGRectMake(obounding.worldPosition.x - (BTXE_OTBKG_WIDTH_OVERDRAW_PAD + obounding.size.width) / 2.0f, obounding.worldPosition.y-BTXE_VPAD-(obounding.size.height / 2.0f), obounding.size.width + BTXE_OTBKG_WIDTH_OVERDRAW_PAD, obounding.size.height + 2*BTXE_VPAD);
+            
+            if(o.enabled && CGRectContainsPoint(hitbox, location))
             {
                 heldObject=o;
                 isHoldingObject=YES;
+                
+                [(id<MovingInteractive>)o inflateZIndex];
+                if([row containsObject:o]) [row inflateZindex];
+                if([row2 containsObject:o]) [row2 inflateZindex];
             }
         }
     }
@@ -228,6 +235,10 @@
         
         [heldObject returnToBase];
         
+        [heldObject deflateZindex];
+        [row deflateZindex];
+        [row2 deflateZindex];
+        
         heldObject=nil;
         isHoldingObject=NO;
     }
@@ -237,6 +248,12 @@
 {
     isTouching=NO;
     // empty selected objects
+    
+    if(heldObject)
+        [heldObject deflateZindex];
+    
+    [row deflateZindex];
+    [row2 deflateZindex];
 }
 
 #pragma mark - evaluation

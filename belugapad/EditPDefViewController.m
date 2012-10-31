@@ -51,8 +51,14 @@
         
         handlerInstance = [handler retain];
         endEditAndTest = endEditAndTestSel;
-
-        [self updateClientScripts];
+        
+        // only web service serving client script updates is currently local to my machine, so comment out call below until updates available from zubi.me
+        // [self updateClientScripts];
+        
+        // if haven't been able to get latest client scripts from server at least once, will need to copy bundled scripts into library
+        NSString *bundledEditPDefDir = BUNDLE_FULL_PATH(@"/edit-pdef-client-files");
+        NSFileManager *fm = [NSFileManager defaultManager];
+        if (![fm fileExistsAtPath:editPDefDir]) [fm copyItemAtPath:bundledEditPDefDir toPath:editPDefDir error:nil];
         
         self.view = webView = [[UIWebView alloc] initWithFrame:frame];
         webView.backgroundColor = [UIColor whiteColor];
@@ -101,10 +107,6 @@
         if ([self serverSaveCurrentProblemOverwritingRev:self.problem._rev])
         {
             [handlerInstance performSelector:endEditAndTest withObject:[NSNumber numberWithBool:YES]];
-        }
-        else
-        {
-            // TODO: display error to user
         }
     }
     else if ([@"save-override-conflict" isEqualToString:message])
@@ -173,11 +175,8 @@
 
 -(void)updateClientScripts
 {
-    NSString *bundledEditPDefDir = BUNDLE_FULL_PATH(@"/edit-pdef-client-files");    
-    NSFileManager *fm = [NSFileManager defaultManager];
-    
-    NSURL *url = [NSURL URLWithString:@"http://23.23.23.23:1234"]; // TODO: Update url to zubi.me ********************************************************************
-    NSURLRequest *req = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:5];
+    NSURL *url = [NSURL URLWithString:@"http://23.23.23.23:1234"]; // TODO: Update url (relative to ContentService.kcmServerBaseURL) ********************************************************************
+    NSURLRequest *req = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:2.0];
     NSHTTPURLResponse *response = nil;
     NSError *error = nil;
     NSData *result = [NSURLConnection sendSynchronousRequest:req returningResponse:&response error:&error];
@@ -190,12 +189,6 @@
         NSString *zipPath = [libraryDir stringByAppendingPathComponent:@"/edit-pdef.zip"];
         [result writeToFile:zipPath atomically:YES];
         [SSZipArchive unzipFileAtPath:zipPath toDestination:editPDefDir];
-    }
-    
-    if (![fm fileExistsAtPath:editPDefDir])
-    {
-        error = nil;
-        [fm copyItemAtPath:bundledEditPDefDir toPath:editPDefDir error:&error];
     }
 }
 

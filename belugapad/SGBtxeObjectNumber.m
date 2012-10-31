@@ -148,6 +148,15 @@
     [self.textRenderComponent updatePosition:position];
 }
 
+-(void)inflateZIndex
+{
+    [self.textRenderComponent inflateZindex];
+}
+-(void)deflateZindex
+{
+    [self.textRenderComponent deflateZindex];
+}
+
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime
 {
     [textRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];

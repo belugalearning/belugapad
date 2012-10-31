@@ -151,6 +151,8 @@
     disableDrawing=[[pdef objectForKey:DISABLE_DRAWING]boolValue];
     solutionNumber=[[pdef objectForKey:SOLUTION_VALUE]intValue];
     autoAddition=[[pdef objectForKey:AUTO_UPDATE_WHEEL]boolValue];
+    showMoreOrLess=[[pdef objectForKey:SHOW_MORE_LESS_ARROWS]boolValue];
+    
     showCount=[pdef objectForKey:SHOW_COUNT];
     
     if([pdef objectForKey:REQUIRED_SHAPES])
@@ -867,8 +869,18 @@
     shape.SelectAllTiles=selectWholeShape;
     shape.RenderDimensions=renderWidthHeightOnShape;
     shape.countLabelType=showCount;
-    
     shape.shapeGroup=shapeGroup;
+    
+    if(showMoreOrLess)
+    {
+        shape.hintArrowX=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/DG_More_X.png")];
+        shape.hintArrowY=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/DG_More_X.png")];
+        [shape.hintArrowX setVisible:NO];
+        [shape.hintArrowY setVisible:NO];
+        
+        [shape.RenderLayer addChild:shape.hintArrowX];
+        [shape.RenderLayer addChild:shape.hintArrowY];
+    }
     
     int numberCounted=0;
 
@@ -1341,6 +1353,7 @@
         ((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).Position=[anchorLayer convertToNodeSpace:location];
 
         [gw.Blackboard.CurrentHandle handleMessage:kDWmoveSpriteToPosition];
+        
     }
     
     if(gameState==kMoveShape)
@@ -1380,6 +1393,88 @@
             [self checkAnchorsOfExistingShape:cHandle.myShape];
         else
             [self checkAnchorsOfExistingShapeGroup:(DWDotGridShapeGroupGameObject*)cHandle.myShape.shapeGroup];
+    }
+    
+    if(showMoreOrLess)
+    {
+        CorrectSizeInfo retInfo=[self getShapeSizeInfo];
+//        NSMutableArray *reqShapesCopy=[NSMutableArray arrayWithArray:reqShapes];
+//        NSMutableArray *hintedShapes=[NSMutableArray arrayWithArray:retInfo.matchedGOs];
+        [reqShapesCopy removeObjectsInArray:retInfo.matchedShapes];
+        
+        if([reqShapesCopy count]>0){
+        
+            if([reqShapes count]!=[retInfo.matchedShapes count])
+            {
+                for(int i=0;i<[gw.AllGameObjects count];i++)
+                {
+                    if([reqShapesCopy count]==0)break;
+                    
+                    if([[gw.AllGameObjects objectAtIndex:i]isKindOfClass:[DWDotGridShapeGameObject class]])
+                    {
+
+                        DWDotGridShapeGameObject *sg=[gw.AllGameObjects objectAtIndex:i];
+                        NSLog(@"Check sg %d", (int)sg);
+//                        if([retInfo.matchedGOs containsObject:sg])
+//                            continue;
+                        
+                        if([retInfo.matchedGOs containsObject:sg])
+                        {
+                            [sg.hintArrowX setVisible:NO];
+                            [sg.hintArrowY setVisible:NO];
+                            continue;
+                        }
+                        
+                        DWDotGridAnchorGameObject *fa=sg.firstAnchor;
+                        DWDotGridAnchorGameObject *la=sg.lastAnchor;
+                        
+                        
+                        int expX=[[[reqShapesCopy objectAtIndex:0] objectAtIndex:0]intValue];
+                        int expY=[[[reqShapesCopy objectAtIndex:0] objectAtIndex:1]intValue];
+                        
+//                        [checkShape addObject:[NSNumber numberWithFloat:expX]];
+//                        [checkShape addObject:[NSNumber numberWithFloat:expY]];
+//                        
+//                        if([retInfo.matchedShapes containsObject:checkShape])
+//                            continue;
+                        
+                        
+                        int curX=fabsf(fa.myXpos-la.myXpos);
+                        int curY=fabsf(fa.myYpos-la.myYpos);
+                        
+                        [sg.hintArrowX setPosition:ccp(sg.centreX,sg.bottom-(sg.hintArrowX.contentSize.height/1.5))];
+                        [sg.hintArrowY setPosition:ccp(sg.right+(sg.hintArrowX.contentSize.width/1.5),sg.centreY)];
+                        [sg.hintArrowX setVisible:YES];
+                        [sg.hintArrowY setVisible:YES];
+                        
+                        if(curX<expX){
+                            [sg.hintArrowX setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/dotgrid/DG_More_X.png")]];
+                        }else if(curX>expX){
+                            [sg.hintArrowX setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/dotgrid/DG_Less_X.png")]];
+                        }else if(curX==expX){
+                            [sg.hintArrowX setVisible:NO];
+                        }
+                        
+                        if(curY<expY){
+                            [sg.hintArrowY setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/dotgrid/DG_More_Y.png")]];
+                        }else if(curY>expY){
+                            [sg.hintArrowY setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/dotgrid/DG_Less_Y.png")]];
+                        }else if(curY==expY){
+                            [sg.hintArrowY setVisible:NO];
+                        }
+                        
+                        if(curX==expX && curY==expY){
+                            [sg.hintArrowX setVisible:NO];
+                            [sg.hintArrowY setVisible:NO];
+                            [reqShapesCopy removeObjectAtIndex:0];
+//                            [hintedShapes addObject:sg];
+                            
+                            NSLog(@"count hinted %d, reqShapes %d", [retInfo.matchedGOs count], [reqShapesCopy count]);
+                        }
+                    }
+                }
+            }
+        }
     }
     
     if(sumWheel)[self updateSumWheel];
@@ -1563,6 +1658,71 @@
     }
 }
 
+-(CorrectSizeInfo)getShapeSizeInfo
+{
+    CorrectSizeInfo retInfo;
+    int correctShapes=0;
+    NSMutableArray *matchShapes=[[NSMutableArray alloc]init];
+    NSMutableArray *matchGOs=[[NSMutableArray alloc]init];
+    
+    if(!reqShapesCopy)reqShapesCopy=[[NSMutableArray arrayWithArray:reqShapes]retain];
+    
+    //for each object that conforms to being a shapegroup
+    for(int i=0;i<[gw.AllGameObjects count];i++)
+    {
+        if([[gw.AllGameObjects objectAtIndex:i]isKindOfClass:[DWDotGridShapeGameObject class]])
+        {
+            DWDotGridShapeGameObject *sg=[gw.AllGameObjects objectAtIndex:i];
+            DWDotGridAnchorGameObject *fa=sg.firstAnchor;
+            DWDotGridAnchorGameObject *la=sg.lastAnchor;
+            
+            int dimensionX=fabsf(fa.myXpos-la.myXpos);
+            int dimensionY=fabsf(fa.myYpos-la.myYpos);
+            
+            // check each shape in REQUIRED_SHAPES
+            for(NSArray *a in [NSMutableArray arrayWithArray:reqShapes])
+            {
+                if([matchShapes containsObject:a])continue;
+                
+                BOOL xMatch=NO;
+                BOOL yMatch=NO;
+                for(int i=0;i<[a count];i++)
+                {
+                    if(dimensionX==[[a objectAtIndex:i]intValue]&&!xMatch)xMatch=YES;
+                    else if(dimensionY==[[a objectAtIndex:i]intValue]&&!yMatch)yMatch=YES;
+                    
+                }
+                
+                if(xMatch&&yMatch)
+                {
+                    [sg.resizeHandle handleMessage:kDWdismantle];
+                    sg.resizeHandle=nil;
+                    [matchShapes addObject:a];
+                    [matchGOs addObject:sg];
+                    
+                    NSLog(@"Adding gameObject sg: %d to matchedGOs", (int)sg);
+                    
+                    //[reqShapesCopy removeObject:a];
+                    correctShapes++;
+
+                }
+            }
+            
+        }
+    }
+    
+    retInfo.matchedShapes=matchShapes;
+    retInfo.matchedGOs=matchGOs;
+    
+    if(correctShapes==[reqShapes count])
+    {
+        retInfo.canEval=YES;
+    }
+    
+    
+    return retInfo;
+}
+
 -(BOOL)checkForCorrectShapeSizes
 {
     int correctShapes=0;
@@ -1605,11 +1765,11 @@
     
     if(correctShapes==[reqShapes count])
     {
-        gridMultiCanEval=YES;
+        return YES;
     }
-
-
-    return gridMultiCanEval;
+    
+    
+    return NO;
 }
 
 -(void)evalProblem

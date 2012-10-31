@@ -49,6 +49,7 @@
         float topMostY=0;
         float leftMostX=0;
         float botMostY=0;
+        float rightMostX=0;
         
         if(bottomLeft.y<topRight.y)
         {
@@ -64,12 +65,23 @@
         if(bottomLeft.x<topRight.x)
         {
             leftMostX=bottomLeft.x;
+            rightMostX=topRight.x;
         }
         else
         {
             leftMostX=topRight.x;
+            rightMostX=bottomLeft.x;
         }
         
+        float halfWayHeight=(bottomLeft.y+topRight.y)/2;
+        float halfWayWidth=(bottomLeft.x+topRight.x)/2;
+        
+        s.centreX=halfWayWidth;
+        s.centreY=halfWayHeight;
+        s.top=topMostY;
+        s.bottom=botMostY;
+        s.right=rightMostX;
+        s.left=leftMostX;
         
         
         if(!s.tiles||[s.tiles count]==0)return;
@@ -122,7 +134,6 @@
             int height=fabsf(fa.myYpos-la.myYpos);
             NSString *strHeight=[NSString stringWithFormat:@"%d", height];
             
-            float halfWayHeight=(bottomLeft.y+topRight.y)/2;
             float yPosForHeightLabel=halfWayHeight;
             float xPosForHeightLabel=leftMostX-50;
             
@@ -131,7 +142,6 @@
             int width=fabsf(fa.myXpos-la.myXpos);
             NSString *strWidth=[NSString stringWithFormat:@"%d", width];
             
-            float halfWayWidth=(bottomLeft.x+topRight.x)/2;
             float yPosForWidthLabel=topMostY+50;
             float xPosForWidthLabel=halfWayWidth;
             
@@ -237,10 +247,16 @@
             ((DWDotGridHandleGameObject*)s.resizeHandle).myShape=nil;
         }
         if(s.MyNumberWheel)
-        {
             [s.MyNumberWheel handleMessage:kDWdismantle];
             
-        }
+
+        
+        if(s.hintArrowX)
+            [s.hintArrowX removeFromParentAndCleanup:YES];
+        
+        if(s.hintArrowY)
+            [s.hintArrowY removeFromParentAndCleanup:YES];
+
         s.shapeGroup=nil;
         //[s.myHeight removeFromParentAndCleanup:YES];
         //[s.myWidth removeFromParentAndCleanup:YES];

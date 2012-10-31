@@ -31,6 +31,14 @@
 @synthesize countLabelType;
 @synthesize countLabel;
 @synthesize countBubble;
+@synthesize hintArrowX;
+@synthesize hintArrowY;
+@synthesize centreX;
+@synthesize centreY;
+@synthesize top;
+@synthesize bottom;
+@synthesize right;
+@synthesize left;
 
 -(void)dealloc
 {
@@ -47,6 +55,8 @@
     self.countLabel=nil;
     self.countLabelType=nil;
     self.countBubble=nil;
+    self.hintArrowX=nil;
+    self.hintArrowY=nil;
 
     self.firstBoundaryAnchor=nil;
     self.lastBoundaryAnchor=nil;

@@ -1294,7 +1294,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         // render buttons
         float sectionW=adjLX / metaQuestionAnswerCount;
         
-        [answerBtn setPosition:ccp(12+((i+0.5) * sectionW), answersY)];
+        [answerBtn setPosition:ccp(((24*s)/2)+((i+0.5) * sectionW), answersY)];
         [answerBtn setTag:3];
         //[answerBtn setScale:0.5f];
         [answerBtn setOpacity:0];
@@ -1946,6 +1946,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     trayLayerWheel=nil;
 //    [numberPickerLayer removeAllChildrenWithCleanup:YES];
     numberPickerForThisProblem=NO;
+    pickerViewSelection=nil;
     pickerView=nil;
 //    [numberPickerLayer release];
 //    numberPickerLayer=nil;

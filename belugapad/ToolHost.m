@@ -35,14 +35,14 @@
 #import "EditPDefViewController.h"
 #import "TestFlight.h"
 #import "SGBtxeRow.h"
+#import "ExprBuilder.h"
+
 
 #define HD_HEADER_HEIGHT 65.0f
 #define HD_BUTTON_INSET 40.0f
 #define TRAY_BUTTON_SPACE 68.0f
 #define TRAY_BUTTON_INSET 0.0f
 #define HD_SCORE_INSET 40.0f
-
-#define QUESTION_SEPARATOR_PADDING -15.0f
 
 //CCPickerView
 //#define kComponentWidth 54
@@ -2067,6 +2067,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     questionSeparatorSprite.position=ccpAdd(row.position, ccp(0, -(row.size.height) - QUESTION_SEPARATOR_PADDING));
     
+    
+    //show and hide separator for exprbuilder
+    questionSeparatorSprite.visible= ![currentTool isKindOfClass:[ExprBuilder class]];
     
     descGw.Blackboard.inProblemSetup=NO;
 }

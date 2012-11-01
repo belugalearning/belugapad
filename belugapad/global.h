@@ -446,6 +446,9 @@
 #define BTXE_COMMOT @"b:commot"
 
 
+#define QUESTION_SEPARATOR_PADDING -15.0f
+
+
 //scoring
 #define SCORE_STAGE_CAP 5
 #define SCORE_STAGE_MULTIPLIER 2

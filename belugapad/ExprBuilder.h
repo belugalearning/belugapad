@@ -47,8 +47,11 @@
     
     NSString *evalType;
     
-    SGBtxeRow *row;
-    SGBtxeRow *row2;
+    NSMutableArray *rows;
+
+    int repeatRow2Count;
+    int userRepeatRow2Max;
+    
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;

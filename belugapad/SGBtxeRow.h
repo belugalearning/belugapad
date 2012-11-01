@@ -22,9 +22,12 @@
 
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget;
 
--(BOOL)containsObject:(id)o;
 
+-(BOOL)containsObject:(id)o;
 -(void)inflateZindex;
 -(void)deflateZindex;
+-(void)relayoutChildrenToWidth:(float)width;
+-(void)animateAndMoveToPosition:(CGPoint)thePosition;
+
 
 @end

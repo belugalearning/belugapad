@@ -15,5 +15,6 @@
 }
 
 -(void)layoutChildren;
+-(void)layoutChildrenToWidth:(float)rowMaxWidth;
 
 @end

@@ -39,6 +39,7 @@ typedef enum {
 @class SGGameWorld;
 @class DebugViewController;
 @class EditPDefViewController;
+@class SGBtxeRow;
 
 @interface ToolHost : CCLayer <CCPickerViewDataSource, CCPickerViewDelegate>
 {
@@ -73,6 +74,7 @@ typedef enum {
     NSString *metaQuestionCompleteText;
     NSString *metaQuestionIncompleteText;
     CCLabelTTF *metaQuestionIncompleteLabel;
+    CCSprite *metaQuestionBanner;
     BOOL showMetaQuestionIncomplete;
     float shownMetaQuestionIncompleteFor;
     BOOL metaQuestionForceComplete;
@@ -85,6 +87,7 @@ typedef enum {
     NSMutableArray *numberPickerButtons;
     NSMutableArray *numberPickedSelection;
     NSMutableArray *numberPickedValue;
+    NSMutableArray *pickerViewSelection;
     CCSprite *npMove;
     CCSprite *npLastMoved;
     CGPoint npMoveStartPos;
@@ -167,11 +170,36 @@ typedef enum {
     //btxe for description
     SGGameWorld *descGw;
     CCSprite *questionSeparatorSprite;
+    SGBtxeRow *descRow;
     
     //ui
     CCSprite *multiplierBadge;
     CCLayerColor *blackOverlay;
     CCLayer *contextProgressLayer;
+    
+    //tooltrays
+    CCSprite *traybtnWheel;
+    CCSprite *traybtnMq;
+    CCSprite *traybtnCalc;
+    CCSprite *traybtnPad;
+    
+    BOOL trayWheelShowing;
+    BOOL trayMqShowing;
+    BOOL trayCalcShowing;
+    BOOL trayPadShowing;
+    
+    BOOL trayCornerShowing;
+    
+    CCLayer *trayLayerCalc;
+    CCLayer *trayLayerWheel;
+    CCLayer *trayLayerMq;
+    CCLayer *trayLayerPad;
+    
+    BOOL hasTrayWheel;
+    BOOL hasTrayCalc;
+    BOOL hasTrayMq;
+    BOOL showMqOnStart;
+    
 }
 
 @property (retain) Daemon *Zubi;
@@ -196,6 +224,7 @@ typedef enum {
 -(void) returnToMenu;
 -(void) showProblemCompleteMessage;
 -(void) showProblemIncompleteMessage;
+-(void)showHideCommit;
 -(void)doUpdateOnTick:(ccTime)delta;
 -(void)doUpdateOnSecond:(ccTime)delta;
 -(void)doUpdateOnQuarterSecond:(ccTime)delta;
@@ -210,6 +239,7 @@ typedef enum {
 -(void)checkNumberPickerTouchOnRegister:(CGPoint)location;
 -(void)evalNumberPicker;
 -(void)reorderNumberPickerSelections;
+-(BOOL)calcMetaQuestion;
 -(void)evalMetaQuestion;
 -(void)deselectAnswersExcept:(int)answerNumber;
 -(void)doWinning;

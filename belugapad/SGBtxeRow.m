@@ -62,6 +62,12 @@
     baseNode.zOrder=0;
 }
 
+-(void)setPosition:(CGPoint)thePosition
+{
+    position=thePosition;
+    baseNode.position=position;
+}
+
 -(void)setupDraw
 {
     //create base node

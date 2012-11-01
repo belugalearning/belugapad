@@ -12,6 +12,7 @@
 
 @class DWDotGridShapeGameObject;
 @class DWDotGridShapeGroupGameObject;
+@class DWDotGridAnchorGameObject;
 @class DWNWheelGameObject;
 
 typedef enum {
@@ -40,6 +41,11 @@ typedef struct {
     NSArray *matchedGOs;
     BOOL canEval;
 } CorrectSizeInfo;
+
+typedef struct {
+    DWDotGridAnchorGameObject *firstAnchor;
+    DWDotGridAnchorGameObject *lastAnchor;
+} OrderedAnchors;
 
 @interface DotGrid : ToolScene
 {

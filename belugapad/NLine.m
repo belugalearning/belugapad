@@ -282,6 +282,10 @@ float timerIgnoreFrog;
     rambler.DefaultSegmentSize=115;
     rambler.Pos=ccp(cx,cy);
     
+    NSNumber *dno=[problemDef objectForKey:@"DISPLAY_NUMBER_OFFSET"];
+    if(dno) rambler.DisplayNumberOffset=[dno intValue];
+    
+    
     selector=[DWSelectorGameObject alloc];
     [gw populateAndAddGameObject:selector withTemplateName:@"TnLineSelector"];
     
@@ -818,7 +822,9 @@ float timerIgnoreFrog;
         //play some audio
         if(enableAudioCounting && lastBubbleLoc!=logLastBubblePos)
         {
-            NSString *path=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", lastBubbleValue];
+            int readNumber=lastBubbleValue+rambler.DisplayNumberOffset;
+            
+            NSString *path=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", readNumber];
             [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(path)];
         }
         

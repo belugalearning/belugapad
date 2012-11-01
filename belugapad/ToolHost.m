@@ -1449,7 +1449,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     if(trayWheelShowing)
     {
-        if([self returnPickerNumber]>0)
+        if(hasUsedPicker)
             showCommit=YES;
         else
             showCommit=NO;
@@ -1926,7 +1926,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 //    }
 
     if(trayWheelShowing){
-        NSString *pickerValue=[NSString stringWithFormat:@"%d", [self returnPickerNumber]];
+        NSString *pickerValue=[self returnPickerNumber];
         NSString *strNpEval=[NSString stringWithFormat:@"%g", npEval];
         
         if([pickerValue isEqualToString:strNpEval])
@@ -2574,16 +2574,19 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 {
     if(self.pickerView) return;
     
-    self.pickerView = [CCPickerView node];
-    pickerView.position = ccp(lx-(84/2)*([self numberOfComponentsInPickerView:pickerView]), ly-140);
-//    pickerView.position = ccp(0,0);
-    pickerView.dataSource = self;
-    pickerView.delegate = self;
     NSString *strNpEval=[NSString stringWithFormat:@"%g", npEval];
     NSString *strSprite=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_bg.png",[strNpEval length]];
     NSString *strULSprite=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png",[strNpEval length]];
     CCSprite *ovSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strSprite)];
     CCSprite *ulSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strULSprite)];
+    
+    self.pickerView = [CCPickerView node];
+    pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-130);
+    pickerView.dataSource = self;
+    pickerView.delegate = self;
+    
+
+    
     [ulSprite setPosition:pickerView.position];
 
     
@@ -2617,25 +2620,25 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     switch (component) {
         case 0:
-            numRows = 10;
+            numRows = 12;
             break;
         case 1:
-            numRows = 10;
+            numRows = 11;
             break;
         case 2:
-            numRows = 10;
+            numRows = 11;
             break;
         case 3:
-            numRows = 10;
+            numRows = 11;
             break;
         case 4:
-            numRows = 10;
+            numRows = 11;
             break;
         case 5:
-            numRows = 10;
+            numRows = 11;
             break;
         case 6:
-            numRows = 10;
+            numRows = 11;
             break;
         default:
             break;
@@ -2658,10 +2661,27 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 - (CCNode *)pickerView:(CCPickerView *)pickerView nodeForRow:(NSInteger)row forComponent:(NSInteger)component reusingNode:(CCNode *)node {
     
-    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", row]fontName:@"Chango" fontSize:24];
-    [l setColor:ccc3(68,68,68)];
-    return l;
+    if(row<10)
+    {
+        CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", row]fontName:@"Chango" fontSize:24];
+        [l setColor:ccc3(68,68,68)];
+
+        return l;
+    }
+    else if(row==10)
+    {
+        CCLabelTTF *l=[CCLabelTTF labelWithString:@"." fontName:@"Chango" fontSize:24];
+        [l setColor:ccc3(68,68,68)];
+        return l;
+    }
+    else if(row==11)
+    {
+        CCLabelTTF *l=[CCLabelTTF labelWithString:@"-" fontName:@"Chango" fontSize:24];
+        [l setColor:ccc3(68,68,68)];
+        return l;        
+    }
     
+    return nil;
 //    temp.color = ccYELLOW;
 //    temp.textureRect = CGRectMake(0, 0, kComponentWidth, kComponentHeight);
 //    
@@ -2676,7 +2696,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 - (void)pickerView:(CCPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     CCLOG(@"didSelect row = %d, component = %d", row, component);
     [pickerViewSelection replaceObjectAtIndex:component withObject:[NSNumber numberWithInteger:row]];
-    
+    hasUsedPicker=YES;
     [self showHideCommit];
     
 }
@@ -2703,21 +2723,30 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     NSLog(@"Component %d stopped spinning.", component);
 }
 
--(int)returnPickerNumber
+-(NSString*)returnPickerNumber
 {
-    int retNum=0;
-    int power=0;
+    NSString *fullNum=@"";
     
-    for(int i=[pickerViewSelection count]-1;i>=0;i--)
+    for(int i=0;i<[pickerViewSelection count];i++)
     {
-        NSNumber *n=[pickerViewSelection objectAtIndex:i];
-        int thisNum=[n intValue];
-        thisNum=thisNum*(pow((double)10,power));
-        retNum+=thisNum;
-        power++;
+        int n=[[pickerViewSelection objectAtIndex:i]intValue];
+
+        if(n<10)
+        {
+            fullNum=[NSString stringWithFormat:@"%@%d", fullNum, n];
+        }
+        else if(n==10)
+        {
+            fullNum=[NSString stringWithFormat:@"%@.", fullNum];
+        }
+        else if(n==11)
+        {
+            fullNum=[NSString stringWithFormat:@"%@-", fullNum];
+        }
+ 
     }
     
-    return retNum;
+    return fullNum;
 }
 
 #pragma mark - debug pipeline views

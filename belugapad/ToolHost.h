@@ -200,6 +200,8 @@ typedef enum {
     BOOL hasTrayMq;
     BOOL showMqOnStart;
     
+    BOOL hasUsedPicker;
+    
 }
 
 @property (retain) Daemon *Zubi;

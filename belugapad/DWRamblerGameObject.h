@@ -48,5 +48,6 @@
 
 @property NSMutableArray *UserJumps;
 
+@property int DisplayNumberOffset;
 
 @end

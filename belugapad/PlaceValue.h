@@ -114,6 +114,8 @@
     NSDictionary *columnCageNegDisableDel;
     NSDictionary *multipleBlockPickup;
     NSDictionary *multipleBlockPickupDefaults;
+    NSMutableDictionary *multipleBlockMax;
+    NSMutableDictionary *multipleBlockMin;
     
     
     DWGameWorld *gw;

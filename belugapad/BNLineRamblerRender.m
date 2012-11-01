@@ -299,8 +299,9 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                     [ind setVisible:YES];
                     assNumberBackIndex++;
                     
+                    int displayNum=[numRender intValue] + ramblerGameObject.DisplayNumberOffset;
                     
-                    CCLabelTTF *l=[CCLabelTTF labelWithString:[numRender stringValue] fontName:@"Chango" fontSize:24.0f];
+                    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", displayNum] fontName:@"Chango" fontSize:24.0f];
                     [l setColor:ccBLACK];
                     [l setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
                     [labelLayer addChild:l];

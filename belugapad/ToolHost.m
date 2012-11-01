@@ -38,7 +38,7 @@
 
 #define HD_HEADER_HEIGHT 65.0f
 #define HD_BUTTON_INSET 40.0f
-#define TRAY_BUTTON_SPACE 60.0f
+#define TRAY_BUTTON_SPACE 68.0f
 #define TRAY_BUTTON_INSET 0.0f
 #define HD_SCORE_INSET 40.0f
 
@@ -694,6 +694,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     NSString *toolKey=[pdef objectForKey:TOOL_KEY];
     
+    
     TFLog(@"starting a %@ problem", toolKey);
     
     if(currentTool)
@@ -819,7 +820,29 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     
 }
-
+-(void)addCommitButton
+{
+    if(evalMode==kProblemEvalOnCommit||mqEvalMode==kMetaQuestionEvalOnCommit)
+    {
+        commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+        commitBtn.position=ccp(2*cx-HD_BUTTON_INSET, 2*cy - 30);
+        //[commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
+        [commitBtn setTag:3];
+        [commitBtn setOpacity:0];
+        [problemDefLayer addChild:commitBtn z:2];
+        
+        if(metaQuestionForThisProblem)
+            [commitBtn setVisible:NO];
+    }
+    else
+    {
+        if(commitBtn)
+        {
+            //[commitBtn removeFromParentAndCleanup:YES];
+            commitBtn=nil;
+        }
+    }
+}
 -(void)setupProblemOnToolHost:(NSDictionary *)curpdef
 {
     NSNumber *eMode=[curpdef objectForKey:EVAL_MODE];
@@ -831,49 +854,67 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         
     [self setProblemDescription:labelDesc];
     
-    if(evalMode==kProblemEvalOnCommit)
-    {
-        commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
-        commitBtn.position=ccp(2*cx-HD_BUTTON_INSET, 2*cy - 30);
-        //[commitBtn setPosition:ccp(lx-(kPropXCommitButtonPadding*lx), kPropXCommitButtonPadding*lx)];
-        [commitBtn setTag:3];
-        [commitBtn setOpacity:0];
-        [problemDefLayer addChild:commitBtn z:2];
-    }
-    else
-    {
-        if(commitBtn)
-        {
-            //[commitBtn removeFromParentAndCleanup:YES];
-            commitBtn=nil;
-        }
-    }
+    [self addCommitButton];
 }
 
 -(void)setupToolTrays:(NSDictionary*)withPdef
 {
+    if([withPdef objectForKey:META_QUESTION])
+        hasTrayMq=YES;
+    else
+        hasTrayMq=NO;
+    
+    if([withPdef objectForKey:ENABLE_CALCULATOR])
+        hasTrayCalc=[[withPdef objectForKey:ENABLE_CALCULATOR]boolValue];
+    else
+        hasTrayCalc=YES;
+    
+    if([withPdef objectForKey:NUMBER_PICKER])
+    {
+        NSDictionary *np=[withPdef objectForKey:NUMBER_PICKER];
+        
+        if([np objectForKey:ENABLE_CALCULATOR])
+            hasTrayCalc=[[np objectForKey:ENABLE_CALCULATOR]boolValue];
+        else
+            hasTrayCalc=YES;
+        
+        if([np objectForKey:ENABLE_WHEEL])
+            hasTrayWheel=[[np objectForKey:ENABLE_WHEEL]boolValue];
+        else
+            hasTrayWheel=YES;
+    }
+    
+    
     
     trayLayerCalc=nil;
-    trayLayerMq=nil;
     trayLayerPad=nil;
     trayLayerWheel=nil;
     
-    traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+    if(hasTrayCalc)
+        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_Available.png")];
+    else
+        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_NotAvailable.png")];
     [problemDefLayer addChild:traybtnCalc z:2];
     traybtnCalc.opacity=0;
     traybtnCalc.tag=3;
 
-    traybtnMq=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+    if(hasTrayMq)
+        traybtnMq=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_MetaQuestion_Available.png")];
+    else
+        traybtnMq=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_MetaQuestion_NotAvailable.png")];
     [problemDefLayer addChild:traybtnMq z:2];
     traybtnMq.opacity=0;
     traybtnMq.tag=3;
 
-    traybtnWheel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+    if(hasTrayWheel)
+        traybtnWheel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_Available.png")];
+    else
+        traybtnWheel=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")];
     [problemDefLayer addChild:traybtnWheel];
     traybtnWheel.opacity=0;
     traybtnWheel.tag=3;
 
-    traybtnPad=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+    traybtnPad=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Notepad_Available.png")];
     [problemDefLayer addChild:traybtnPad];
     traybtnPad.opacity=0;
     traybtnPad.tag=3;
@@ -1133,6 +1174,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ
 {
+    metaQuestionForThisProblem=YES;
     
     if(!trayLayerMq)
     {
@@ -1142,20 +1184,27 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         trayMqShowing=NO;
     }
     
-    metaQuestionForThisProblem=YES;
+    if(!currentTool)
+        [self showMq];
+    
+    [self addCommitButton];
+    
     shownMetaQuestionIncompleteFor=0;
     
     metaQuestionAnswers = [[NSMutableArray alloc] init];
     metaQuestionAnswerButtons = [[NSMutableArray alloc] init];
     metaQuestionAnswerLabels = [[NSMutableArray alloc] init];
     
+    float answersY=0.0f;
+    
     //float titleY=cy*1.75f;
-    float answersY=cy*1.30;
     if(currentTool)
     {
         //titleY=[currentTool metaQuestionTitleYLocation];
         answersY=[currentTool metaQuestionAnswersYLocation];
     }
+    
+    answersY=cy*1.30;
     
     [self setProblemDescription:[pdefMQ objectForKey:META_QUESTION_TITLE]];
     
@@ -1197,6 +1246,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [metaQuestionIncompleteLabel setVisible:NO];
     [trayLayerMq addChild:metaQuestionIncompleteLabel];
     
+    NSString *mqBar=[NSString stringWithFormat:@"/images/metaquestions/MQ_bar_%d.png",metaQuestionAnswerCount];
+    metaQuestionBanner=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(mqBar)];
+    [metaQuestionBanner setPosition:ccp(cx,answersY)];
+    [trayLayerMq addChild:metaQuestionBanner];
+    
     // render answer labels and buttons for each answer
     for(int i=0; i<metaQuestionAnswerCount; i++)
     {
@@ -1233,10 +1287,12 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             answerBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH([[metaQuestionAnswers objectAtIndex:i] objectForKey:SPRITE_FILENAME])];
         }
         
-        // render buttons
-        float sectionW=lx / metaQuestionAnswerCount;
+        float adjLX=lx-(lx*(24/lx));
         
-        [answerBtn setPosition:ccp((i+0.5) * sectionW, answersY)];
+        // render buttons
+        float sectionW=adjLX / metaQuestionAnswerCount;
+        
+        [answerBtn setPosition:ccp(12+((i+0.5) * sectionW), answersY)];
         [answerBtn setTag:3];
         //[answerBtn setScale:0.5f];
         [answerBtn setOpacity:0];
@@ -1247,31 +1303,18 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         // check for text, render if nesc
         if(![answerLabel.string isEqualToString:@""])
         {
-            [answerLabel setPosition:ccp((i+0.5) * sectionW, answersY)];
+            [answerLabel setPosition:ccp(answerBtn.contentSize.width/2,answerBtn.contentSize.height/2)];
             [answerLabel setColor:kMetaAnswerLabelColorSelected];
             [answerLabel setOpacity:0];
             [answerLabel setTag: 3];
-            [trayLayerMq addChild:answerLabel];
+            [answerBtn addChild:answerLabel];
             [metaQuestionAnswerLabels addObject:answerLabel];
         }
         
         // set a new value in the array so we can see that it's not currently selected
         [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
     }
-    
-    // if eval mode is commit, render a commit button
-    if(mqEvalMode==kMetaQuestionEvalOnCommit)
-    {
-        commitBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
-        commitBtn.position=ccp(2*cx-HD_BUTTON_INSET, 2*cy - 30);
-        [commitBtn setTag:3];
-        [commitBtn setOpacity:0];
-        [trayLayerMq addChild:commitBtn z:2];
-    }
-    else
-    {
-        commitBtn=nil;
-    }
+
     
 }
 
@@ -1290,7 +1333,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(isAnimatingIn)
         return;
     
-    if (CGRectContainsPoint(kRectButtonCommit, location) && mqEvalMode==kMetaQuestionEvalOnCommit)
+    if (CGRectContainsPoint(kRectButtonCommit, location) && mqEvalMode==kMetaQuestionEvalOnCommit && commitBtn.visible)
     {
         //effective user commit
         [loggingService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
@@ -1366,13 +1409,51 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             }
             
         }
+        
+        if([self shouldShowCommit])
+            [commitBtn setVisible:YES];
+        else
+            [commitBtn setVisible:NO];
+        
     }
     
     return;
     
 }
 
+-(BOOL)shouldShowCommit
+{
+    if(hasTrayMq)
+    {
+        int countSelected=0;
+        for(int i=0; i<metaQuestionAnswerCount; i++)
+        {
+            BOOL isSelected=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_SELECTED] boolValue];
+            if(isSelected)countSelected++;
+        }
+        
+        if(countSelected>0)
+            return YES;
+        else
+            return NO;
+    }
+    return NO;
+}
+
 -(void)evalMetaQuestion
+{
+    if([self calcMetaQuestion])
+    {
+        [self doWinning];
+        autoMoveToNextProblem=YES;
+    }
+    else
+    {
+        [self doIncomplete];
+    }
+}
+
+-(BOOL)calcMetaQuestion
 {
     if(metaQuestionForThisProblem)
     {
@@ -1410,15 +1491,16 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         
         if(countRequired==countFound && countFound==countSelected)
         {
-            [self doWinning];
-            autoMoveToNextProblem=YES;
+            return YES;
         }
         else
         {
-            [self doIncomplete];
+            return NO;
         }
         
     }
+    
+    return NO;
 }
 -(void)deselectAnswersExcept:(int)answerNumber
 {
@@ -1428,7 +1510,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         CCLabelTTF *answerLabel=[metaQuestionAnswerLabels objectAtIndex:i];
         if(i == answerNumber)
         {
-            NSLog(@"answer %d selected", answerNumber);
+            //NSLog(@"answer %d selected", answerNumber);
             [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-button-selected.png")]];
             [answerLabel setColor:kMetaAnswerLabelColorSelected];
 //            [answerBtn setColor:kMetaQuestionButtonSelected];
@@ -1436,7 +1518,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         }
         else
         {
-            NSLog(@"answer %d deselected", answerNumber);
+            //NSLog(@"answer %d deselected", answerNumber);
             [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")]];
             [answerLabel setColor:kMetaAnswerLabelColorDeselected];
 //            [answerBtn setColor:kMetaQuestionButtonDeselected];
@@ -2030,20 +2112,33 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     
     //delegate touch handling for trays here
-    if(location.x>CORNER_TRAY_POS_X && location.y>CORNER_TRAY_POS_Y)
+    if((location.x>CORNER_TRAY_POS_X && location.y>CORNER_TRAY_POS_Y) || (trayMqShowing && CGRectContainsPoint(metaQuestionBanner.boundingBox, location))||location.y>ly-HD_HEADER_HEIGHT)
     {
-        
+        if (location.x < 100 && location.y > 688 && !isPaused)
+        {
+            [self showPauseMenu];
+            return;
+        }
+        if(metaQuestionForThisProblem)
+        {
+            [self checkMetaQuestionTouchesAt:location andTouchEnd:NO];
+            return;
+        }
     }
+
     else
     {
-        [self removeAllTrays];
+        if(trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing){
+            [self removeAllTrays];
+            return;
+        }
     }
     
-    if(metaQuestionForThisProblem)
-        [self checkMetaQuestionTouchesAt:location andTouchEnd:NO];
 
-    else if(numberPickerForThisProblem)
-        [self checkNumberPickerTouches:location];
+
+
+    //if(numberPickerForThisProblem)
+    //    [self checkNumberPickerTouches:location];
     
     // TODO: This should be made proportional
     
@@ -2054,11 +2149,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         
         //user pressed commit button
         [self checkUserCommit];
-    }
-    if (location.x < 100 && location.y > 688 && !isPaused)
-    {
-        [self showPauseMenu];
-        return;
     }
     
     [currentTool ccTouchesBegan:touches withEvent:event];
@@ -2126,6 +2216,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     CGPoint location=[touch locationInView: [touch view]];
     location=[[CCDirector sharedDirector] convertToGL:location];
     
+    CGRect bbCalc=CGRectMake(traybtnCalc.position.x-traybtnCalc.contentSize.width/2,traybtnCalc.position.y-(HD_HEADER_HEIGHT/2), traybtnCalc.contentSize.width, HD_HEADER_HEIGHT);
+    CGRect bbMq=CGRectMake(traybtnMq.position.x-traybtnMq.contentSize.width/2,traybtnMq.position.y-(HD_HEADER_HEIGHT/2), traybtnMq.contentSize.width, HD_HEADER_HEIGHT);
+    CGRect bbWheel=CGRectMake(traybtnWheel.position.x-traybtnWheel.contentSize.width/2,traybtnWheel.position.y-(HD_HEADER_HEIGHT/2), traybtnWheel.contentSize.width, HD_HEADER_HEIGHT);
+    CGRect bbPad=CGRectMake(traybtnPad.position.x-traybtnPad.contentSize.width/2,traybtnPad.position.y-(HD_HEADER_HEIGHT/2), traybtnPad.contentSize.width, HD_HEADER_HEIGHT);
+    
     // if we're paused - check if any menu options were valid.
     // touches ended event becase otherwise these touches go through to the tool
     
@@ -2137,7 +2232,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         return;
     }
     
-    if(traybtnCalc && CGRectContainsPoint(traybtnCalc.boundingBox, location))
+    if(traybtnCalc && CGRectContainsPoint(bbCalc, location) && hasTrayCalc)
     {
         if(trayCalcShowing)
         {
@@ -2160,7 +2255,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         }
     }
     
-    if(traybtnWheel && CGRectContainsPoint(traybtnWheel.boundingBox, location))
+    if(traybtnWheel && CGRectContainsPoint(bbWheel, location) && hasTrayWheel)
     {
         if(trayWheelShowing)
         {
@@ -2183,7 +2278,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         }
     }
     
-    if(traybtnPad && CGRectContainsPoint(traybtnPad.boundingBox, location))
+    if(traybtnPad && CGRectContainsPoint(bbPad, location))
     {
         if(trayPadShowing)
         {
@@ -2202,20 +2297,24 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         }
     }
     
-    if(traybtnMq && CGRectContainsPoint(traybtnMq.boundingBox, location))
+    if(traybtnMq && CGRectContainsPoint(bbMq, location) && hasTrayMq)
     {
         if(trayMqShowing)
         {
             [self hideMq];
-            [self hideCornerTray];
+            [commitBtn setVisible:NO];
         }
         else
         {
+            [self hideCornerTray];
             [self hideCalc];
             [self hideWheel];
             [self hidePad];
             
             [self showMq];
+            
+            if([self shouldShowCommit])
+                [commitBtn setVisible:YES];
         }
     }
     
@@ -2272,6 +2371,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)removeAllTrays
 {
+    [commitBtn setVisible:NO];
     [self hideCalc];
     [self hideWheel];
     [self hideMq];
@@ -2325,24 +2425,29 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     trayLayerCalc.visible=YES;
     trayCalcShowing=YES;
+    [traybtnCalc setColor:ccc3(247,143,6)];
 }
 
 -(void)hideCalc
 {
     trayLayerCalc.visible=NO;
     trayCalcShowing=NO;
+    [traybtnCalc setColor:ccc3(255,255,255)];
 }
 
 -(void)showMq
 {
-    trayLayerMq.visible=YES;
+    [trayLayerMq setVisible:YES];
     trayMqShowing=YES;
+    [traybtnMq setColor:ccc3(247,143,6)];
 }
 
 -(void)hideMq
 {
+    [commitBtn setVisible:NO];
     trayLayerMq.visible=NO;
     trayMqShowing=NO;
+    [traybtnMq setColor:ccc3(255,255,255)];
 }
 
 -(void)showWheel
@@ -2359,12 +2464,14 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     trayLayerWheel.visible=YES;
     trayWheelShowing=YES;
+    [traybtnWheel setColor:ccc3(247,143,6)];
 }
 
 -(void)hideWheel
 {
     trayLayerWheel.visible=NO;
     trayWheelShowing=NO;
+    [traybtnWheel setColor:ccc3(255,255,255)];
 }
 
 -(void)showPad
@@ -2381,12 +2488,14 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     trayLayerPad.visible=YES;
     trayPadShowing=YES;
+    [traybtnPad setColor:ccc3(247,143,6)];
 }
 
 -(void)hidePad
 {
     trayLayerPad.visible=NO;
     trayPadShowing=NO;
+    [traybtnPad setColor:ccc3(255,255,255)];
 }
 
 //-(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
@@ -2617,6 +2726,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     self.DynProblemParser=nil;
     self.PpExpr=nil;
+    
+    if(trayLayerMq)[trayLayerMq release];
     
     [backgroundLayer release];
     [perstLayer release];

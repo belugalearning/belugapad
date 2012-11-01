@@ -74,6 +74,7 @@ typedef enum {
     NSString *metaQuestionCompleteText;
     NSString *metaQuestionIncompleteText;
     CCLabelTTF *metaQuestionIncompleteLabel;
+    CCSprite *metaQuestionBanner;
     BOOL showMetaQuestionIncomplete;
     float shownMetaQuestionIncompleteFor;
     BOOL metaQuestionForceComplete;
@@ -193,6 +194,11 @@ typedef enum {
     CCLayer *trayLayerMq;
     CCLayer *trayLayerPad;
     
+    BOOL hasTrayWheel;
+    BOOL hasTrayCalc;
+    BOOL hasTrayMq;
+    BOOL showMqOnStart;
+    
 }
 
 @property (retain) Daemon *Zubi;
@@ -231,6 +237,7 @@ typedef enum {
 -(void)checkNumberPickerTouchOnRegister:(CGPoint)location;
 -(void)evalNumberPicker;
 -(void)reorderNumberPickerSelections;
+-(BOOL)calcMetaQuestion;
 -(void)evalMetaQuestion;
 -(void)deselectAnswersExcept:(int)answerNumber;
 -(void)doWinning;

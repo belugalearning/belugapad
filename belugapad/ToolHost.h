@@ -87,6 +87,7 @@ typedef enum {
     NSMutableArray *numberPickerButtons;
     NSMutableArray *numberPickedSelection;
     NSMutableArray *numberPickedValue;
+    NSMutableArray *pickerViewSelection;
     CCSprite *npMove;
     CCSprite *npLastMoved;
     CGPoint npMoveStartPos;
@@ -223,6 +224,7 @@ typedef enum {
 -(void) returnToMenu;
 -(void) showProblemCompleteMessage;
 -(void) showProblemIncompleteMessage;
+-(void)showHideCommit;
 -(void)doUpdateOnTick:(ccTime)delta;
 -(void)doUpdateOnSecond:(ccTime)delta;
 -(void)doUpdateOnQuarterSecond:(ccTime)delta;

@@ -854,7 +854,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 {
     
     trayLayerCalc=nil;
-    trayLayerMq=nil;
     trayLayerPad=nil;
     trayLayerWheel=nil;
     

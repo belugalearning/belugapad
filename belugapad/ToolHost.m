@@ -759,6 +759,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     NSString *playsound=[pdef objectForKey:PLAY_SOUND];
     if(playsound) [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/sfx/%@", playsound]))];
     
+    
+    //this will overrider above np/mq and possible th setup
+    [self setupToolTrays:pdef];
+    
     //setup meta question (if there is one)
     NSDictionary *mq=[pdef objectForKey:META_QUESTION];
     NSDictionary *np=[pdef objectForKey:NUMBER_PICKER];
@@ -774,9 +778,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     else {
         [self setupProblemOnToolHost:pdef];
     }
-    
-    //this will overrider above np/mq and possible th setup
-    [self setupToolTrays:pdef];
     
     // set scale using the value we got earlier
     [toolBackLayer setScale:scale];
@@ -827,6 +828,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         
         if(metaQuestionForThisProblem||numberPickerForThisProblem)
             [commitBtn setVisible:NO];
+        else
+            [commitBtn setVisible:YES];
     }
     else
     {
@@ -853,6 +856,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)setupToolTrays:(NSDictionary*)withPdef
 {
+    hasTrayMq=NO;
+    hasTrayCalc=NO;
+    hasTrayWheel=NO;
+    
     if([withPdef objectForKey:META_QUESTION])
         hasTrayMq=YES;
     else
@@ -1281,7 +1288,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             answerBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH([[metaQuestionAnswers objectAtIndex:i] objectForKey:SPRITE_FILENAME])];
         }
         
-        float adjLX=lx-(lx*(24/lx));
+        int s=fabsf(metaQuestionAnswerCount-5);
+        float adjLX=lx-(lx*((24*s)/lx));
         
         // render buttons
         float sectionW=adjLX / metaQuestionAnswerCount;
@@ -1316,7 +1324,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void)tearDownMetaQuestion
 {
     [trayLayerMq removeAllChildrenWithCleanup:YES];
-    
+    metaQuestionAnswers=nil;
+    metaQuestionAnswerButtons=nil;
+    metaQuestionAnswerLabels=nil;
+    metaQuestionBanner=nil;
+    trayLayerMq=nil;
     metaQuestionForThisProblem=NO;
     metaQuestionForceComplete=NO;
 }
@@ -1930,10 +1942,13 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 }
 -(void)tearDownNumberPicker
 {
-    [numberPickerLayer removeAllChildrenWithCleanup:YES];
+    [trayLayerWheel removeAllChildrenWithCleanup:YES];
+    trayLayerWheel=nil;
+//    [numberPickerLayer removeAllChildrenWithCleanup:YES];
     numberPickerForThisProblem=NO;
-    [numberPickerLayer release];
-    numberPickerLayer=nil;
+    pickerView=nil;
+//    [numberPickerLayer release];
+//    numberPickerLayer=nil;
 }
 
 - (void)checkUserCommit
@@ -2550,7 +2565,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(self.pickerView) return;
     
     self.pickerView = [CCPickerView node];
-    pickerView.position = ccp(CORNER_TRAY_POS_X+100, CORNER_TRAY_POS_Y+75);
+    pickerView.position = ccp(lx-(64/2)*([self numberOfComponentsInPickerView:pickerView]), ly-140);
 //    pickerView.position = ccp(0,0);
     pickerView.dataSource = self;
     pickerView.delegate = self;
@@ -2782,9 +2797,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     //[pdef release];
     if(self.pickerView)[self.pickerView release];
-    if(metaQuestionAnswers)[metaQuestionAnswers release];
-    if(metaQuestionAnswerButtons)[metaQuestionAnswerButtons release];
-    if(metaQuestionAnswerLabels)[metaQuestionAnswerLabels release];
     if(numberPickerButtons)[numberPickerButtons release];
     if(numberPickedSelection)[numberPickedSelection release];
     if(numberPickedValue)[numberPickedValue release];
@@ -2798,8 +2810,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     self.DynProblemParser=nil;
     self.PpExpr=nil;
     
-    if(trayLayerMq)[trayLayerMq release];
-    if(trayLayerWheel)[trayLayerWheel release];
     
     [backgroundLayer release];
     [perstLayer release];

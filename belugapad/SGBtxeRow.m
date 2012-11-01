@@ -62,12 +62,6 @@
     baseNode.zOrder=0;
 }
 
--(void)setPosition:(CGPoint)thePosition
-{
-    position=thePosition;
-    baseNode.position=position;
-}
-
 -(void)setupDraw
 {
     //create base node
@@ -88,6 +82,23 @@
     //layout position of stuff
     [self.rowLayoutComponent layoutChildren];
 
+}
+
+-(void)setPosition:(CGPoint)thePosition
+{
+    position=thePosition;
+    baseNode.position=self.position;
+}
+
+-(void)animateAndMoveToPosition:(CGPoint)thePosition
+{
+    position=thePosition;
+    [baseNode runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.25f position:position] rate:2.0f]];
+}
+
+-(void)relayoutChildrenToWidth:(float)width
+{
+    [self.rowLayoutComponent layoutChildrenToWidth:width];
 }
 
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime

@@ -412,9 +412,10 @@
     // only run if we have a first and last anchor point
     if(gw.Blackboard.FirstAnchor && gw.Blackboard.LastAnchor)
     {
+        OrderedAnchors orderedAnchs=[self checkAndChangeAnchorPoints:(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor and:(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor];
         NSMutableArray *anchorsForShape=[[NSMutableArray alloc]init];
-        DWDotGridAnchorGameObject *anchStart=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
-        DWDotGridAnchorGameObject *anchEnd=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+        DWDotGridAnchorGameObject *anchStart=orderedAnchs.firstAnchor;
+        DWDotGridAnchorGameObject *anchEnd=orderedAnchs.lastAnchor;
         BOOL failedChecksHidden=NO;
         BOOL failedChecksExistingTile=NO;
         
@@ -560,11 +561,59 @@
     }
 }
 
+-(OrderedAnchors)checkAndChangeAnchorPoints:(DWDotGridAnchorGameObject*)fa and:(DWDotGridAnchorGameObject*)la
+{
+    //DWDotGridAnchorGameObject *fa=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
+    //DWDotGridAnchorGameObject *la=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+    
+    OrderedAnchors orderedAnchs;
+    
+    CGPoint bottomLeft=ccp(fa.myXpos, fa.myYpos);
+    CGPoint topRight=ccp(la.myXpos, la.myYpos);
+    
+    int topMostY=0;
+    int leftMostX=0;
+    int botMostY=0;
+    int rightMostX=0;
+    
+    if(bottomLeft.y<topRight.y)
+    {
+        topMostY=topRight.y;
+        botMostY=bottomLeft.y;
+    }
+    else
+    {
+        topMostY=bottomLeft.y;
+        botMostY=topRight.y;
+    }
+    
+    if(bottomLeft.x<topRight.x)
+    {
+        leftMostX=bottomLeft.x;
+        rightMostX=topRight.x;
+    }
+    else
+    {
+        leftMostX=topRight.x;
+        rightMostX=bottomLeft.x;
+    }
+    
+    orderedAnchs.firstAnchor=[[dotMatrix objectAtIndex:leftMostX]objectAtIndex:topMostY];
+    orderedAnchs.lastAnchor=[[dotMatrix objectAtIndex:rightMostX]objectAtIndex:botMostY];
+
+    return orderedAnchs;
+}
+
 -(void)checkAnchorsOfExistingShape:(DWDotGridShapeGameObject*)thisShape
 {
     NSMutableArray *anchorsForShape=[[NSMutableArray alloc]init];
     DWDotGridAnchorGameObject *anchStart=thisShape.firstAnchor;
     DWDotGridAnchorGameObject *anchEnd=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+    OrderedAnchors orderedAnchs=[self checkAndChangeAnchorPoints:anchStart and:anchEnd];
+    
+    anchStart=orderedAnchs.firstAnchor;
+    anchEnd=orderedAnchs.lastAnchor;
+    
     BOOL failedChecksHidden=NO;
     BOOL failedChecksExistingTile=NO;
     
@@ -898,13 +947,16 @@
 
 -(DWDotGridShapeGameObject*)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled andGroup:(DWGameObject*)shapeGroup
 {
+ 
     
-    DWDotGridShapeGameObject *shape=[DWDotGridShapeGameObject alloc];           
+    OrderedAnchors orderedAnchs=[self checkAndChangeAnchorPoints:(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor and:(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor];
+    
+    DWDotGridShapeGameObject *shape=[DWDotGridShapeGameObject alloc];
     [gw populateAndAddGameObject:shape withTemplateName:@"TdotgridShape"];
     shape.Disabled=Disabled;
     shape.RenderLayer=anchorLayer;
-    shape.firstAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
-    shape.lastAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+    shape.firstAnchor=orderedAnchs.firstAnchor;
+    shape.lastAnchor=orderedAnchs.lastAnchor;
     shape.tiles=[[NSMutableArray alloc]init];
     shape.SelectAllTiles=selectWholeShape;
     shape.RenderDimensions=renderWidthHeightOnShape;
@@ -1078,8 +1130,10 @@
         }
     
 
-    thisShape.firstAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
-    thisShape.lastAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+    OrderedAnchors orderedAnchs=[self checkAndChangeAnchorPoints:(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor and:(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor];
+    
+    thisShape.firstAnchor=orderedAnchs.firstAnchor;
+    thisShape.lastAnchor=orderedAnchs.lastAnchor;
     [thisShape.myHeight removeFromParentAndCleanup:YES];
     [thisShape.myWidth removeFromParentAndCleanup:YES];
     thisShape.myWidth=nil;

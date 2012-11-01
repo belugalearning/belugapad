@@ -135,6 +135,18 @@
     NSNumber *urowmax=[pdef objectForKey:@"USER_REPEAT_ROW2_TOMAX_X"];
     if(urowmax)userRepeatRow2Max=[rrow2 intValue];
     
+    NSNumber *ncardmin=[pdef objectForKey:@"NUMBER_CARD_ROW_MIN"];
+    NSNumber *ncardmax=[pdef objectForKey:@"NUMBER_CARD_ROW_MAX"];
+    NSNumber *ncardint=[pdef objectForKey:@"NUMBER_CARD_INTERVAL"];
+    
+    if(ncardmax && ncardmin && ncardint)
+    {
+        presentNumberCardRow=YES;
+        numberCardRowInterval=[ncardint intValue];
+        numberCardRowMax=[ncardmax intValue];
+        numberCardRowMin=[ncardmin intValue];
+    }
+    
 }
 
 -(void)populateGW
@@ -179,7 +191,27 @@
             CCSprite *questionSeparatorSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/Question_Separator.png")];
             [self.ForeLayer addChild:questionSeparatorSprite];
             
-            questionSeparatorSprite.position=ccpAdd(row.position, ccp(0, -(row.size.height) - QUESTION_SEPARATOR_PADDING));
+            
+            //build the ncard row if we have one
+            if(presentNumberCardRow)
+            {
+                ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
+                
+                //add the cards
+                
+                [ncardRow setupDraw];
+                ncardRow.position=ccpAdd(row.position, ccp(0, -ncardRow.size.height-QUESTION_SEPARATOR_PADDING));
+            }
+            
+            float sepYpos=-(row.size.height) - QUESTION_SEPARATOR_PADDING;
+            
+            //add extra padding if we're going to do a number card wheel
+            if(presentNumberCardRow)
+            {
+                sepYpos-=ncardRow.size.height - (QUESTION_SEPARATOR_PADDING*2);
+            }
+            
+            questionSeparatorSprite.position=ccpAdd(row.position, ccp(0, sepYpos));
             
             row0base=questionSeparatorSprite.position.y-QUESTION_SEPARATOR_PADDING;
             rowSpace=row0base / (rowcount + 1);
@@ -193,6 +225,10 @@
         
         [row release];
     }
+    
+    
+    //if we have ncardrow, then add it to rows (at end for now?)
+    [rows addObject:ncardRow];
     
 }
 
@@ -369,6 +405,7 @@
 -(void) dealloc
 {
     [exprStages release];
+    if(ncardRow)[ncardRow release];
     [rows release];
     
     //write log on problem switch

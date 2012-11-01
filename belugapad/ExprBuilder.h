@@ -52,6 +52,11 @@
     int repeatRow2Count;
     int userRepeatRow2Max;
     
+    BOOL presentNumberCardRow;
+    int numberCardRowMin;
+    int numberCardRowMax;
+    int numberCardRowInterval;
+    SGBtxeRow *ncardRow;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;

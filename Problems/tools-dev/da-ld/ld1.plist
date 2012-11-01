@@ -12,7 +12,7 @@
 	<integer>3</integer>
 	<key>ROW_MULTIPLIER</key>
 	<integer>10</integer>
-	<key>START_ROW</key>
+	<key>COLUMNS_IN_PICKER</key>
 	<integer>4</integer>
 	<key>GOOD_BAD_HIGHLIGHT</key>
 	<true/>

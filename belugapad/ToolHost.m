@@ -2565,7 +2565,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(self.pickerView) return;
     
     self.pickerView = [CCPickerView node];
-    pickerView.position = ccp(lx-(64/2)*([self numberOfComponentsInPickerView:pickerView]), ly-140);
+    pickerView.position = ccp(lx-(84/2)*([self numberOfComponentsInPickerView:pickerView]), ly-140);
 //    pickerView.position = ccp(0,0);
     pickerView.dataSource = self;
     pickerView.delegate = self;

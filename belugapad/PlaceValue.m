@@ -182,7 +182,7 @@ static float kTimeToCageShake=7.0f;
             float colValue=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
             
             if([self usedSpacesOnGrid:i]>initedOnGrid)
-                [l setString:[NSString stringWithFormat:@"%g+%g", ([[initBlocksForColumn objectAtIndex:i]intValue]*colValue), ([self usedSpacesOnGrid:i]-initedOnGrid)*colValue]];
+                [l setString:[NSString stringWithFormat:@"%g + %g", ([[initBlocksForColumn objectAtIndex:i]intValue]*colValue), ([self usedSpacesOnGrid:i]-initedOnGrid)*colValue]];
             else if([self usedSpacesOnGrid:currentColumnIndex]<=initedOnGrid)
                 [l setString:[NSString stringWithFormat:@"%g", ([[initBlocksForColumn objectAtIndex:i]intValue]*colValue)-(([[initBlocksForColumn objectAtIndex:i]intValue]-[self usedSpacesOnGrid:i])*colValue)]];
         }
@@ -562,7 +562,7 @@ static float kTimeToCageShake=7.0f;
         
             if(showColumnTotalCount)
             {
-                CCLabelTTF *totalCountLabel=[CCLabelTTF labelWithString:@"0" fontName:CHANGO fontSize:30.0f];
+                CCLabelTTF *totalCountLabel=[CCLabelTTF labelWithString:@"0" fontName:CHANGO fontSize:25.0f];
                 [totalCountLabel setPosition:ccp(totalCountSprite.contentSize.width/2,(totalCountSprite.contentSize.height/2)-3)];
                 [totalCountLabel setOpacity:0];
                 [totalCountLabel setTag:2];
@@ -1222,7 +1222,7 @@ static float kTimeToCageShake=7.0f;
             [countBg setTag:3];
             [countBg setOpacity:0];
             [self.NoScaleLayer addChild:countBg z:9];
-            sumLabel=[CCLabelTTF labelWithString:@"c" fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
+            sumLabel=[CCLabelTTF labelWithString:@"c" fontName:CHANGO fontSize:25.0f];
             [sumLabel setTag:3];
             [sumLabel setOpacity:0];
             [sumLabel setPosition:ccp(countBg.contentSize.width/2,countBg.contentSize.height/2)];

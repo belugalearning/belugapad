@@ -18,6 +18,6 @@
 @property (retain) SGDtoolBlockRender *BlockRenderComponent;
 @property (retain) SGDtoolBlockPairing *BlockPairComponent;
 
--(SGDtoolBlock*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition;
+-(SGDtoolBlock*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition andType:(NSString*)thisType;
 
 @end

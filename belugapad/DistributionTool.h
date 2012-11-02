@@ -15,7 +15,8 @@
 typedef enum 
 {
     kCheckShapeSizes=0,
-    kCheckNamedGroups=1
+    kCheckNamedGroups=1,
+    kCheckEvalAreas=2
 }DistributionEvalType;
 
 @interface DistributionTool : ToolScene
@@ -45,15 +46,22 @@ typedef enum
     BOOL hasLoggedMovedBlock;
     BOOL hasBeenProximate;
     BOOL problemHasCage;
+    int cageObjectCount;
+    
+    NSString *dockType;
     
     // and a default layer
     CCLayer *renderLayer;
     
     // and stuff we want to add!
     NSArray *initObjects;
+    NSArray *initAreas;
     NSArray *solutionsDef;
     NSMutableArray *existingGroups;
     NSMutableArray *destroyedLabelledGroups;
+    NSMutableArray *usedShapeTypes;
+    NSMutableArray *addedCages;
+    NSMutableArray *evalAreas;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;
@@ -74,6 +82,7 @@ typedef enum
 -(void)tidyUpEmptyGroups;
 -(void)updateContainerLabels;
 -(void)removeBlockByCage;
+-(BOOL)evalNumberOfShapesInEvalAreas;
 -(CGPoint)checkWhereIShouldMount:(id<Pairable>)gameObject;
 -(CGPoint)findMountPositionForThisShape:(id<Pairable>)pickupObject toThisShape:(id<Pairable>)mountedShape;
 -(CGPoint)returnNextMountPointForThisShape:(id<Container>)thisShape;

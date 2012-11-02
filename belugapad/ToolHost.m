@@ -483,7 +483,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)setMultiplierButtonTo:(int)m
 {
-    if(!(m==2 || m==4 || m==8 || m==16)) return;
+    if(!(m==2 || m==4 || m==8 || m==16)) return; // because there isn't a corresponding image in the project to display
     
     if(multiplierBadge)
     {
@@ -524,15 +524,19 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)scoreProblemSuccess
 {
-    int newScore=scoreMultiplier * SCORE_BASE_AWARD;
-    pipelineScore+=newScore;
-
-    int shards=(int)((float)newScore*SCORE_SHARDS_PER_SCORE);
-    displayPerShard=(int)((float)newScore / (float)shards);
-    int rem=newScore - displayPerShard*shards;
+    int newScore = ceil(scoreMultiplier * contentService.pipelineProblemAttemptBaseScore);
+    newScore = min(newScore, SCORE_EPISODE_MAX - pipelineScore);
+    
+    pipelineScore += newScore;
+    
+    int shards = SCORE_MAX_SHARDS * newScore / contentService.pipelineProblemAttemptMaxScore;
+    
+    displayPerShard = (int) (newScore / (float)shards);
+    
+    int rem = newScore - displayPerShard * shards;
     
     //get the remainder on the display score right away
-    displayScore+=rem;
+    displayScore += rem;
     
     [Zubi createXPshards:shards fromLocation:ccp(cx, cy) withCallback:@selector(incrementDisplayScore:) fromCaller:(NSObject*)self];
 }
@@ -544,8 +548,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     //show correct multiplier
     if(multiplierBadge)[perstLayer removeChild:multiplierBadge cleanup:YES];
-    
-    
     
     //this isn't going to do this ultiamtely -- it'll be based on shards
     [scoreLabel setString:[NSString stringWithFormat:@"%d", displayScore]];

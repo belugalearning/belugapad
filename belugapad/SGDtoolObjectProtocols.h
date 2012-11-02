@@ -53,6 +53,7 @@
 @end
 
 @protocol Configurable
+@property (retain) NSString *blockType;
 
 -(void)setup;
 
@@ -78,7 +79,12 @@
 
 @property CGPoint Position;
 @property (retain) CCLayer *RenderLayer;
+@property (retain) NSString *CageType;
+@property (retain) NSString *BlockType;
+@property int InitialObjects;
+@property (retain) CCSprite *MySprite;
 
+-(void)setup;
 -(void)spawnNewBlock;
 -(void)removeBlockFromMe:(id)thisBlock;
 

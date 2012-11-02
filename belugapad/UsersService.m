@@ -106,6 +106,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
             NSString *bundledAllUsers = BUNDLE_FULL_PATH(@"/canned-dbs/all-users.db");
             [fm copyItemAtPath:bundledAllUsers toPath:allUsersDBPath error:nil];
         }
+        usersDatabase = [[FMDatabase databaseWithPath:allUsersDBPath] retain];
         
         httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kUsersWSBaseURL]];
         opQueue = [[[NSOperationQueue alloc] init] retain];

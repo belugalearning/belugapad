@@ -97,13 +97,15 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         
         isSyncing = NO;
         
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *usersDatabasePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"users.db"];
-        
-        usersDatabase = [[FMDatabase databaseWithPath:usersDatabasePath] retain];
-        [usersDatabase open];        
-        if (![usersDatabase tableExists:@"users"]) [usersDatabase executeUpdate:@"CREATE TABLE users (id TEXT, nick TEXT, password TEXT, nodes_completed TEXT, flag_remove INTEGER)"];
-        [usersDatabase close];
+        // check that we've got an all-users database
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSString *libraryDir = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSString *allUsersDBPath = [libraryDir stringByAppendingPathComponent:@"all-users.db"];
+        if (![fm fileExistsAtPath:allUsersDBPath])
+        {
+            NSString *bundledAllUsers = BUNDLE_FULL_PATH(@"/canned-dbs/all-users.db");
+            [fm copyItemAtPath:bundledAllUsers toPath:allUsersDBPath error:nil];
+        }
         
         httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kUsersWSBaseURL]];
         opQueue = [[[NSOperationQueue alloc] init] retain];

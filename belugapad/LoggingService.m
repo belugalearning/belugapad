@@ -131,6 +131,10 @@ uint const kMaxConsecutiveSendFails = 3;
     [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"currentBatchIdData"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     CFRelease(ref);
+    
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    UsersService *us = ac.usersService;
+    if (us) [us onNewLogBatchWithId:self.currentBatchId];
 }
 
 -(NSString*)currentProblemAttemptID

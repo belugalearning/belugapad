@@ -167,6 +167,7 @@ static float kDistanceBetweenBlocks=70.0f;
     }
     
     if([pdef objectForKey:INIT_OBJECTS])initObjects=[pdef objectForKey:INIT_OBJECTS];
+    if([pdef objectForKey:EVAL_AREAS])initAreas=[pdef objectForKey:EVAL_AREAS];
     if([pdef objectForKey:SOLUTION])solutionsDef=[pdef objectForKey:SOLUTION];
     
 }
@@ -213,6 +214,8 @@ static float kDistanceBetweenBlocks=70.0f;
         
         
     }
+    
+    [self createEvalAreas];
     
 }
 
@@ -278,6 +281,50 @@ static float kDistanceBetweenBlocks=70.0f;
 //        [renderLayer addChild:labelForShape];
 //    }
 
+}
+
+-(void)createEvalAreas
+{
+    if(!initAreas)return;
+    
+    if(!evalAreas)
+        evalAreas=[[[NSMutableArray alloc]init]retain];
+
+    for(int i=0;i<[initAreas count];i++)
+    {
+        NSDictionary *d=[initAreas objectAtIndex:i];
+        int areaSize=[[d objectForKey:AREA_SIZE]intValue];
+        int areaWidth=[[d objectForKey:AREA_WIDTH]intValue];
+        int areaOpacity=0;
+        int distFromLX=(lx-30-(areaWidth*62));
+        int distFromLY=(ly-80-(areaSize/areaWidth)*62);
+        int startXPos=(arc4random() % distFromLX)+30;
+        int startYPos=(arc4random() % distFromLY)+60;
+        
+        if([d objectForKey:AREA_OPACITY])
+            areaOpacity=[[d objectForKey:AREA_OPACITY]intValue];
+        else
+            areaOpacity=255;
+        
+        NSMutableArray *thisArea=[[NSMutableArray alloc]init];
+        int thisPos=0;
+        
+        for(int i=0;i<areaSize;i++)
+        {
+            if(thisPos==areaWidth)thisPos=0;
+            int thisRow=i/areaWidth;
+            
+            CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/distribution/DT_area_2.png")];
+            [s setPosition:ccp(startXPos+(thisPos*s.contentSize.width),startYPos+(thisRow*s.contentSize.height))];
+            [s setOpacity:areaOpacity];
+            [self.ForeLayer addChild:s];
+            
+            [thisArea addObject:s];
+            thisPos++;
+        }
+        
+        [evalAreas addObject:thisArea];
+    }
 }
 
 -(void)createContainerWithOne:(id)Object
@@ -526,6 +573,59 @@ static float kDistanceBetweenBlocks=70.0f;
     return retval;
 }
 
+-(BOOL)evalNumberOfShapesInEvalAreas
+{
+    NSMutableArray *solutions=[NSMutableArray arrayWithArray:solutionsDef];
+    
+    int shapesInArea[[evalAreas count]];
+    int solutionsFound=0;
+    
+    for(int i=0;i<[evalAreas count];i++)
+    {
+        shapesInArea[i]=0;
+    }
+    
+    for(int i=0;i<[evalAreas count];i++)
+    {
+        CGRect thisRect=CGRectNull;
+        NSArray *a=[evalAreas objectAtIndex:i];
+        
+        for(CCSprite *s in a)
+        {
+            thisRect=CGRectUnion(thisRect, s.boundingBox);
+        }
+        
+        for(id go in gw.AllGameObjects)
+        {
+            if([go conformsToProtocol:@protocol(Pairable)])
+            {
+                id<Pairable>c=(id<Pairable>)go;
+                
+                if(CGRectContainsPoint(thisRect, c.Position))
+                    shapesInArea[i]++;
+                
+            }
+        }
+        
+        NSNumber *thisNo=nil;
+        for(NSNumber *n in solutions)
+        {
+            if([n isEqualToNumber:[NSNumber numberWithInt:shapesInArea[i]]])
+            {
+                thisNo=n;
+                solutionsFound++;
+            }
+        }
+        [solutions removeObject:thisNo];
+
+    }
+
+    if(solutionsFound==[solutionsDef count])
+        return YES;
+    else
+        return NO;
+}
+
 -(CGPoint)returnNextMountPointForThisShape:(id<Container>)thisShape
 {
     id<Moveable>firstShape=[thisShape.BlocksInShape objectAtIndex:0];
@@ -693,6 +793,7 @@ static float kDistanceBetweenBlocks=70.0f;
         if(evalMode==kProblemEvalAuto)[self evalProblem];
     }
     
+    [self numberOfShapesInEvalAreas];
     
     if(hasBeenProximate)
     {
@@ -913,6 +1014,11 @@ static float kDistanceBetweenBlocks=70.0f;
             return YES;
         else
             return NO;
+    }
+    
+    else if(evalType==kCheckEvalAreas)
+    {
+        return [self evalNumberOfShapesInEvalAreas];
     }
     
 

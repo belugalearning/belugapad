@@ -161,8 +161,8 @@
             NSString *resultString = [[[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding] autorelease];
             NSLog(@"Failed to retrieve content from database. (Use Alert Box?) -- %@", resultString);
         } else {
-            NSString *docsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-            NSString *zipPath = [docsDir stringByAppendingPathComponent:@"/canned-content.zip"];
+            NSString *libDir = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+            NSString *zipPath = [libDir stringByAppendingPathComponent:@"/canned-content.zip"];
             [result writeToFile:zipPath atomically:YES];
             [SSZipArchive unzipFileAtPath:zipPath toDestination:contentDir];
         }

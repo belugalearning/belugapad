@@ -32,6 +32,7 @@ typedef enum
 @property (readonly, retain) LogPoller *logPoller;
 @property (readonly, retain) TouchLogger *touchLogger;
 @property (readonly, retain) NSString *currentProblemAttemptID;
+@property (readonly) NSString *currentBatchId;
 
 -(id)initWithProblemAttemptLoggingSetting:(BL_LOGGING_SETTING)paLogSetting;
 

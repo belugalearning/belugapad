@@ -50,7 +50,9 @@ uint const kMaxConsecutiveSendFails = 3;
 @property (readwrite, retain) TouchLogger *touchLogger;
 @property (readwrite, retain) NSString *currPAPollDocId;
 @property (readwrite, retain) NSString *currPATouchDocId;
+@property (readonly) NSData *currentBatchIdData;
 
+-(void)newBatch;
 -(void)sendCurrBatch;
 -(void)sendPrevBatches;
 -(void)sendBatchData:(NSData*)batchData withCompletionBlock:(void (^)(BL_SEND_LOG_STATUS status))onComplete;
@@ -90,6 +92,45 @@ uint const kMaxConsecutiveSendFails = 3;
             [fm createDirectoryAtPath:prevDir withIntermediateDirectories:YES attributes:nil error:nil];
     }
     return self;
+}
+
+-(NSData*)currentBatchIdData
+{
+    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentBatchIdData"];
+    if (!data)
+    {
+        // first launch
+        [self newBatch];
+        data = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentBatchIdData"];
+    }
+    return data;
+}
+
+-(NSString*)currentBatchId
+{
+    NSData *data = self.currentBatchIdData;
+    CFUUIDBytes bytes;
+    [data getBytes:&bytes length:16];
+    
+    CFUUIDRef ref = CFUUIDCreateFromUUIDBytes(kCFAllocatorDefault, bytes);
+    CFStringRef sref = CFUUIDCreateString(kCFAllocatorDefault, ref);
+    
+    NSString *uuid = [[[NSString stringWithFormat:@"%@", sref] stringByReplacingOccurrencesOfString:@"-" withString:@""] lowercaseString];
+    
+    CFRelease(sref);
+    CFRelease(ref);
+    
+    return  uuid;
+}
+
+-(void)newBatch
+{
+    CFUUIDRef ref = CFUUIDCreate(kCFAllocatorDefault);
+    CFUUIDBytes bytes = CFUUIDGetUUIDBytes(ref);
+    NSData *data = [NSData dataWithBytes:&bytes length:sizeof(bytes)];
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"currentBatchIdData"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    CFRelease(ref);
 }
 
 -(NSString*)currentProblemAttemptID
@@ -349,8 +390,8 @@ uint const kMaxConsecutiveSendFails = 3;
     
     // ----- create batchData by prefixing compressedData with date and batch uuid
     uint batchDate = (uint)[[NSDate date] timeIntervalSince1970];
-    CFUUIDRef uuidRef = CFUUIDCreate(kCFAllocatorDefault);
-    CFUUIDBytes uuid = CFUUIDGetUUIDBytes(uuidRef);
+    CFUUIDBytes uuid;
+    [self.currentBatchIdData getBytes:&uuid length:16];
     Byte prefixBytes[36] =  {
         batchDate>>24 & 0xFF,   batchDate>>16 & 0xFF,     batchDate>>8 & 0xFF,      batchDate & 0xFF,
         uuid.byte0, uuid.byte1, uuid.byte2,  uuid.byte3,  uuid.byte4,  uuid.byte5,  uuid.byte6,  uuid.byte7,
@@ -358,7 +399,6 @@ uint const kMaxConsecutiveSendFails = 3;
     };
     NSMutableData *batchData = [NSMutableData dataWithBytes:prefixBytes length:20];
     [batchData appendData:compressedData];
-    CFRelease(uuidRef);
     
     
     // ----- HTTPRequest Completion Handler
@@ -386,8 +426,9 @@ uint const kMaxConsecutiveSendFails = 3;
             [bself->fm removeItemAtPath:bself->currDir error:nil];
             [bself->fm createDirectoryAtPath:bself->currDir withIntermediateDirectories:NO attributes:nil error:nil];
             [bself sendPrevBatches];
+            [bself newBatch];
         }
-    };    
+    };
     
     // ----- Send batchData in body of HTTPRequest
     [self sendBatchData:batchData withCompletionBlock:onComplete];

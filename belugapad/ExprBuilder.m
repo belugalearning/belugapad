@@ -76,6 +76,7 @@
         usersService = ac.usersService;
         loggingService = ac.loggingService;
         
+        rows=[[NSMutableArray alloc]init];
         
         [self readPlist:pdef];
         [self populateGW];
@@ -128,6 +129,23 @@
         @throw [NSException exceptionWithName:@"expr plist read exception" reason:@"EXPR_STAGES not found" userInfo:nil];
     }
     
+    NSNumber *rrow2=[pdef objectForKey:@"REPEAT_ROW2_X"];
+    if(rrow2)repeatRow2Count=[rrow2 intValue];
+    
+    NSNumber *urowmax=[pdef objectForKey:@"USER_REPEAT_ROW2_TOMAX_X"];
+    if(urowmax)userRepeatRow2Max=[rrow2 intValue];
+    
+    NSNumber *ncardmin=[pdef objectForKey:@"NUMBER_CARD_ROW_MIN"];
+    NSNumber *ncardmax=[pdef objectForKey:@"NUMBER_CARD_ROW_MAX"];
+    NSNumber *ncardint=[pdef objectForKey:@"NUMBER_CARD_INTERVAL"];
+    
+    if(ncardmax && ncardmin && ncardint)
+    {
+        presentNumberCardRow=YES;
+        numberCardRowInterval=[ncardint intValue];
+        numberCardRowMax=[ncardmax intValue];
+        numberCardRowMin=[ncardmin intValue];
+    }
     
 }
 
@@ -135,25 +153,83 @@
 {
     gw.Blackboard.RenderLayer = renderLayer;
     
-    //create row
-    row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
-    row.position=ccp(cx, cy+100);
+    //number of expression stages
+    int rowcount=[exprStages count];
     
-    //create row
-    row2=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
-    row2.position=ccp(cx, cy-100);
+    //repeat number of expressions stages
+    if(repeatRow2Count>0 && rowcount==2) rowcount=repeatRow2Count+1;
+    
+    float row0base=2*cy;
+    float rowSpace=row0base / (rowcount+1);
+    
+    // iterate and create rows
+    for(int i=0; i<rowcount; i++)
+    {
+        SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
+        [rows addObject:row];
         
-    //get the row to try and parse something
-    if(exprStages.count>0)
-    {
-        [row parseXML:[exprStages objectAtIndex:0]];
+        if(i==0 || repeatRow2Count==0)
+        {
+            [row parseXML:[exprStages objectAtIndex:i]];
+        }
+        else if (repeatRow2Count>0)
+        {
+            [row parseXML:[exprStages objectAtIndex:1]];
+        }
+        
+        
         [row setupDraw];
+        
+        
+        if(i==0)
+        {
+            //position at top, top aligned, with spacer underneath
+            row.position=ccp(cx, (cy*2) - 95);
+            row.forceVAlignTop=YES;
+            
+            //question separator bar -- flow with bottom of row 0
+            CCSprite *questionSeparatorSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/Question_Separator.png")];
+            [self.ForeLayer addChild:questionSeparatorSprite];
+            
+            
+            //build the ncard row if we have one
+            if(presentNumberCardRow)
+            {
+                ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
+                
+                //add the cards
+                
+                [ncardRow setupDraw];
+                ncardRow.position=ccpAdd(row.position, ccp(0, -ncardRow.size.height-QUESTION_SEPARATOR_PADDING));
+            }
+            
+            float sepYpos=-(row.size.height) - QUESTION_SEPARATOR_PADDING;
+            
+            //add extra padding if we're going to do a number card wheel
+            if(presentNumberCardRow)
+            {
+                sepYpos-=ncardRow.size.height - (QUESTION_SEPARATOR_PADDING*2);
+            }
+            
+            questionSeparatorSprite.position=ccpAdd(row.position, ccp(0, sepYpos));
+            
+            row0base=questionSeparatorSprite.position.y-QUESTION_SEPARATOR_PADDING;
+            rowSpace=row0base / (rowcount + 1);
+        }
+        else
+        {
+            //distribute in available space
+            row.position = ccp(cx, row0base - (i*rowSpace));
+        }
+
+        
+        [row release];
     }
-    if(exprStages.count>1)
-    {
-        [row2 parseXML:[exprStages objectAtIndex:1]];
-        [row2 setupDraw];
-    }
+    
+    
+    //if we have ncardrow, then add it to rows (at end for now?)
+    [rows addObject:ncardRow];
+    
 }
 
 
@@ -184,8 +260,11 @@
                 isHoldingObject=YES;
                 
                 [(id<MovingInteractive>)o inflateZIndex];
-                if([row containsObject:o]) [row inflateZindex];
-                if([row2 containsObject:o]) [row2 inflateZindex];
+                
+                for(SGBtxeRow *r in rows)
+                {
+                    if([r containsObject:o]) [r inflateZindex];
+                }
             }
         }
     }
@@ -236,8 +315,10 @@
         [heldObject returnToBase];
         
         [heldObject deflateZindex];
-        [row deflateZindex];
-        [row2 deflateZindex];
+        for(SGBtxeRow *r in rows)
+        {
+            [r deflateZindex];
+        }
         
         heldObject=nil;
         isHoldingObject=NO;
@@ -252,8 +333,10 @@
     if(heldObject)
         [heldObject deflateZindex];
     
-    [row deflateZindex];
-    [row2 deflateZindex];
+    for(SGBtxeRow *r in rows)
+    {
+        [r deflateZindex];
+    }
 }
 
 #pragma mark - evaluation
@@ -322,6 +405,8 @@
 -(void) dealloc
 {
     [exprStages release];
+    if(ncardRow)[ncardRow release];
+    [rows release];
     
     //write log on problem switch
     

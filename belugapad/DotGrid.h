@@ -12,6 +12,7 @@
 
 @class DWDotGridShapeGameObject;
 @class DWDotGridShapeGroupGameObject;
+@class DWDotGridAnchorGameObject;
 @class DWNWheelGameObject;
 
 typedef enum {
@@ -31,7 +32,8 @@ typedef enum {
     kProblemTotalShapeSize=0,
     kProblemSumOfFractions=1,
     kProblemGridMultiplication=2,
-    kProblemCheckDimensions=3
+    kProblemCheckDimensions=3,
+    kProblemIntroPlist=99
 } DotGridEvalType;
 
 typedef struct {
@@ -39,6 +41,11 @@ typedef struct {
     NSArray *matchedGOs;
     BOOL canEval;
 } CorrectSizeInfo;
+
+typedef struct {
+    DWDotGridAnchorGameObject *firstAnchor;
+    DWDotGridAnchorGameObject *lastAnchor;
+} OrderedAnchors;
 
 @interface DotGrid : ToolScene
 {
@@ -92,12 +99,20 @@ typedef struct {
     
     CCSprite *dragBlock;
     CCSprite *newBlock;
+    CCLayer *introLayer;
     BOOL hitDragBlock;
     
     BOOL useShapeGroups;
     BOOL showMoreOrLess;
     int shapeGroupSize;
     int shapeBaseSize;
+
+    BOOL isIntroPlist;
+    BOOL hitIntroCommit;
+    BOOL showingIntroOverlay;
+    CCSprite *introOverlay;
+    CCSprite *introCommit;
+
     
     BOOL movingLayer;
     

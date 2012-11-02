@@ -74,6 +74,11 @@
         CGPoint loc=[[payload objectForKey:POS] CGPointValue];
         [self resizeShape:loc];
     }
+    
+    if(messageType==kDWupdateLabels)
+    {
+        [self updateCountLabels];
+    }
 
 }
 

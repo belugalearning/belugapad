@@ -182,14 +182,14 @@ static float kTimeToCageShake=7.0f;
             float colValue=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
             
             if([self usedSpacesOnGrid:i]>initedOnGrid)
-                [l setString:[NSString stringWithFormat:@"%g+%g", ([[initBlocksForColumn objectAtIndex:i]intValue]*colValue), ([self usedSpacesOnGrid:i]-initedOnGrid)*colValue]];
+                [l setString:[NSString stringWithFormat:@"%g + %g", ([[initBlocksForColumn objectAtIndex:i]intValue]*colValue), ([self usedSpacesOnGrid:i]-initedOnGrid)*colValue]];
             else if([self usedSpacesOnGrid:currentColumnIndex]<=initedOnGrid)
                 [l setString:[NSString stringWithFormat:@"%g", ([[initBlocksForColumn objectAtIndex:i]intValue]*colValue)-(([[initBlocksForColumn objectAtIndex:i]intValue]-[self usedSpacesOnGrid:i])*colValue)]];
         }
     }
     
     if(showValue && [solutionType isEqualToString:TOTAL_COUNT])
-        [countLabel setString:[NSString stringWithFormat:@"%g", totalObjectValue]];
+        [sumLabel setString:[NSString stringWithFormat:@"%g", totalObjectValue]];
     
     if(showMoreOrLess && [solutionType isEqualToString:TOTAL_COUNT])
     {
@@ -562,7 +562,7 @@ static float kTimeToCageShake=7.0f;
         
             if(showColumnTotalCount)
             {
-                CCLabelTTF *totalCountLabel=[CCLabelTTF labelWithString:@"0" fontName:CHANGO fontSize:30.0f];
+                CCLabelTTF *totalCountLabel=[CCLabelTTF labelWithString:@"0" fontName:CHANGO fontSize:25.0f];
                 [totalCountLabel setPosition:ccp(totalCountSprite.contentSize.width/2,(totalCountSprite.contentSize.height/2)-3)];
                 [totalCountLabel setOpacity:0];
                 [totalCountLabel setTag:2];
@@ -675,8 +675,17 @@ static float kTimeToCageShake=7.0f;
             
             if([multipleBlockPickupDefaults objectForKey:currentColumnValueKey])
                 defaultBlocksToMake=[[multipleBlockPickupDefaults objectForKey:currentColumnValueKey]intValue];
-            else
+            else    
                 defaultBlocksToMake=1;
+            
+            
+            if(![multipleBlockMax objectForKey:currentColumnValueKey])
+                [multipleBlockMax setValue:[NSNumber numberWithInt:10] forKey:currentColumnValueKey];
+            
+            if(![multipleBlockMin objectForKey:currentColumnValueKey])
+                [multipleBlockMin setValue:[NSNumber numberWithInt:1] forKey:currentColumnValueKey];
+            
+            
             
             [blocksToCreate addObject:[NSNumber numberWithInt:defaultBlocksToMake]];
             
@@ -1050,7 +1059,19 @@ static float kTimeToCageShake=7.0f;
         multipleBlockPickupDefaults = [pdef objectForKey:MULTIPLE_BLOCK_PICKUP_DEFAULTS];
     
     [multipleBlockPickupDefaults retain];
-
+    
+    if([pdef objectForKey:MULTIPLE_BLOCK_PICKUP_MIN])
+        multipleBlockMin=[pdef objectForKey:MULTIPLE_BLOCK_PICKUP_MIN];
+    else
+        multipleBlockMin=[[NSMutableDictionary alloc]init];
+    [multipleBlockMin retain];
+    
+    
+    if([pdef objectForKey:MULTIPLE_BLOCK_PICKUP_MAX])
+        multipleBlockMax=[pdef objectForKey:MULTIPLE_BLOCK_PICKUP_MAX];
+    else
+        multipleBlockMax=[[NSMutableDictionary alloc]init];
+    [multipleBlockMax retain];
 
     // can we deselect objects?
     if([pdef objectForKey:ALLOW_DESELECTION]) 
@@ -1201,18 +1222,19 @@ static float kTimeToCageShake=7.0f;
             [countBg setTag:3];
             [countBg setOpacity:0];
             [self.NoScaleLayer addChild:countBg z:9];
-            sumLabel=[CCLabelTTF labelWithString:@"c" fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
+            sumLabel=[CCLabelTTF labelWithString:@"c" fontName:CHANGO fontSize:25.0f];
             [sumLabel setTag:3];
             [sumLabel setOpacity:0];
+            [sumLabel setPosition:ccp(countBg.contentSize.width/2,countBg.contentSize.height/2)];
             //[countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];
 
-            [self.NoScaleLayer addChild:sumLabel z:10];
+            [countBg addChild:sumLabel z:10];
         }
         
 
     }
 
-    if(showColumnTotalCount && showValue)
+    if(showColumnTotalCount && showCount)
         showColumnTotalCount=NO;
     
     if(showMultipleControls||multipleBlockPickup)blocksToCreate=[[NSMutableArray alloc]init];
@@ -1699,15 +1721,19 @@ static float kTimeToCageShake=7.0f;
         //CCSprite *s=[multiplePlusSprites objectAtIndex:i];
         if(CGRectContainsPoint(boundingBox, [renderLayer convertToNodeSpace:thisLocation]))
         {
+            NSString *ccvKey=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]stringValue];
+            
+            int maxNo=[[multipleBlockMax objectForKey:ccvKey]intValue];
+
             
             DWPlaceValueCageGameObject *c=[allCages objectAtIndex:i];
             
             int curNum=[[blocksToCreate objectAtIndex:i]intValue];
             curNum++;
             
-            if(curNum>=10)
+            if(curNum>=maxNo)
             {
-                curNum=10;
+                curNum=maxNo;
                 [c.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage_variable_down_only.png")]];
             }
             else
@@ -1732,11 +1758,15 @@ static float kTimeToCageShake=7.0f;
         if(CGRectContainsPoint(boundingBox, [renderLayer convertToNodeSpace:thisLocation]))
         {
             DWPlaceValueCageGameObject *c=[allCages objectAtIndex:i];
+            
+            NSString *ccvKey=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]stringValue];
+            int minNo=[[multipleBlockMin objectForKey:ccvKey]intValue];
+            
             int curNum=[[blocksToCreate objectAtIndex:i]intValue];
             curNum--;
-            if(curNum<=1)
+            if(curNum<=minNo)
             {
-                curNum=1;
+                curNum=minNo;
                 [c.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage_variable_up_only.png")]];
             }
             else

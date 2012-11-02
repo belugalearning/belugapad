@@ -30,7 +30,7 @@
 //    CGSize size = [delegate sizeOfPickerView:self];
     CGSize size=overlayImage.contentSize;
     
-    CGFloat spacing = [delegate spaceBetweenComponents:self];
+    //CGFloat spacing = [delegate spaceBetweenComponents:self];
     
     self.contentSize = size;
     

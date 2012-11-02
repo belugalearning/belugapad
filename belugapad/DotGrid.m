@@ -152,6 +152,7 @@
     solutionNumber=[[pdef objectForKey:SOLUTION_VALUE]intValue];
     autoAddition=[[pdef objectForKey:AUTO_UPDATE_WHEEL]boolValue];
     showMoreOrLess=[[pdef objectForKey:SHOW_MORE_LESS_ARROWS]boolValue];
+    isIntroPlist=[[pdef objectForKey:IS_INTRO_PLIST]boolValue];
     
     showCount=[pdef objectForKey:SHOW_COUNT];
     
@@ -189,6 +190,24 @@
     
     if(showNumberWheel)
         numberWheels=[[NSMutableArray alloc]init];
+    
+    
+    if(isIntroPlist)
+    {
+        spaceBetweenAnchors=74;
+        showCount=@"SHOW_FRACTION";
+        useShapeGroups=NO;
+        drawMode=kAnyStartAnchorValid;
+        evalMode=kProblemEvalAuto;
+        evalType=kProblemIntroPlist;
+        renderWidthHeightOnShape=YES;
+        disableDrawing=YES;
+        showNumberWheel=NO;
+        showCountBubble=NO;
+        autoAddition=NO;
+        doNotSimplifyFractions=NO;
+        showDraggableBlock=YES;
+    }
     
 }
 
@@ -309,6 +328,27 @@
 
 }
 
+-(void)setupIntroOverlay
+{
+    introLayer=[[CCLayer alloc]init];
+    [self.ForeLayer addChild:introLayer z:100];
+    
+    introOverlay=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/countingtimer/ct_intro_overlay.png")];
+    introCommit=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"You drew shapes 'n' ting. Press commit to continue."] fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
+    
+    [introCommit setPosition:ccp(2*cx-40, 2*cy - 30)];
+    
+    [l setPosition:ccp(cx,cy)];
+    [l setColor:ccc3(255,0,0)];
+    [introOverlay setPosition:ccp(cx,cy)];
+    
+    [introLayer addChild:introOverlay];
+    [introLayer addChild:introCommit];
+    [introLayer addChild:l];
+    showingIntroOverlay=YES;
+}
+
 #pragma mark - drawing methods
 -(void)draw
 {
@@ -372,9 +412,10 @@
     // only run if we have a first and last anchor point
     if(gw.Blackboard.FirstAnchor && gw.Blackboard.LastAnchor)
     {
+        OrderedAnchors orderedAnchs=[self checkAndChangeAnchorPoints:(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor and:(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor];
         NSMutableArray *anchorsForShape=[[NSMutableArray alloc]init];
-        DWDotGridAnchorGameObject *anchStart=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
-        DWDotGridAnchorGameObject *anchEnd=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+        DWDotGridAnchorGameObject *anchStart=orderedAnchs.firstAnchor;
+        DWDotGridAnchorGameObject *anchEnd=orderedAnchs.lastAnchor;
         BOOL failedChecksHidden=NO;
         BOOL failedChecksExistingTile=NO;
         
@@ -520,11 +561,59 @@
     }
 }
 
+-(OrderedAnchors)checkAndChangeAnchorPoints:(DWDotGridAnchorGameObject*)fa and:(DWDotGridAnchorGameObject*)la
+{
+    //DWDotGridAnchorGameObject *fa=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
+    //DWDotGridAnchorGameObject *la=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+    
+    OrderedAnchors orderedAnchs;
+    
+    CGPoint bottomLeft=ccp(fa.myXpos, fa.myYpos);
+    CGPoint topRight=ccp(la.myXpos, la.myYpos);
+    
+    int topMostY=0;
+    int leftMostX=0;
+    int botMostY=0;
+    int rightMostX=0;
+    
+    if(bottomLeft.y<topRight.y)
+    {
+        topMostY=topRight.y;
+        botMostY=bottomLeft.y;
+    }
+    else
+    {
+        topMostY=bottomLeft.y;
+        botMostY=topRight.y;
+    }
+    
+    if(bottomLeft.x<topRight.x)
+    {
+        leftMostX=bottomLeft.x;
+        rightMostX=topRight.x;
+    }
+    else
+    {
+        leftMostX=topRight.x;
+        rightMostX=bottomLeft.x;
+    }
+    
+    orderedAnchs.firstAnchor=[[dotMatrix objectAtIndex:leftMostX]objectAtIndex:topMostY];
+    orderedAnchs.lastAnchor=[[dotMatrix objectAtIndex:rightMostX]objectAtIndex:botMostY];
+
+    return orderedAnchs;
+}
+
 -(void)checkAnchorsOfExistingShape:(DWDotGridShapeGameObject*)thisShape
 {
     NSMutableArray *anchorsForShape=[[NSMutableArray alloc]init];
     DWDotGridAnchorGameObject *anchStart=thisShape.firstAnchor;
     DWDotGridAnchorGameObject *anchEnd=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+    OrderedAnchors orderedAnchs=[self checkAndChangeAnchorPoints:anchStart and:anchEnd];
+    
+    anchStart=orderedAnchs.firstAnchor;
+    anchEnd=orderedAnchs.lastAnchor;
+    
     BOOL failedChecksHidden=NO;
     BOOL failedChecksExistingTile=NO;
     
@@ -858,13 +947,16 @@
 
 -(DWDotGridShapeGameObject*)createShapeWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled andGroup:(DWGameObject*)shapeGroup
 {
+ 
     
-    DWDotGridShapeGameObject *shape=[DWDotGridShapeGameObject alloc];           
+    OrderedAnchors orderedAnchs=[self checkAndChangeAnchorPoints:(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor and:(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor];
+    
+    DWDotGridShapeGameObject *shape=[DWDotGridShapeGameObject alloc];
     [gw populateAndAddGameObject:shape withTemplateName:@"TdotgridShape"];
     shape.Disabled=Disabled;
     shape.RenderLayer=anchorLayer;
-    shape.firstAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
-    shape.lastAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+    shape.firstAnchor=orderedAnchs.firstAnchor;
+    shape.lastAnchor=orderedAnchs.lastAnchor;
     shape.tiles=[[NSMutableArray alloc]init];
     shape.SelectAllTiles=selectWholeShape;
     shape.RenderDimensions=renderWidthHeightOnShape;
@@ -1038,8 +1130,10 @@
         }
     
 
-    thisShape.firstAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
-    thisShape.lastAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
+    OrderedAnchors orderedAnchs=[self checkAndChangeAnchorPoints:(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor and:(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor];
+    
+    thisShape.firstAnchor=orderedAnchs.firstAnchor;
+    thisShape.lastAnchor=orderedAnchs.lastAnchor;
     [thisShape.myHeight removeFromParentAndCleanup:YES];
     [thisShape.myWidth removeFromParentAndCleanup:YES];
     thisShape.myWidth=nil;
@@ -1477,7 +1571,14 @@
         }
     }
     
+    if(CGRectContainsPoint(introCommit.boundingBox,location))
+    {
+        hitIntroCommit=YES;
+    }
+    
     if(sumWheel)[self updateSumWheel];
+    
+    if(evalMode==kProblemEvalAuto)[self evalProblem];
     
 
     
@@ -1640,6 +1741,21 @@
     {
         return [self checkForCorrectShapeSizes];
     }
+    else if(evalType==kProblemIntroPlist)
+    {
+        if(!showingIntroOverlay && [[tileCounts objectAtIndex:0]intValue]>1)
+        {
+            [self setupIntroOverlay];
+            return NO;
+        }
+        else if(showingIntroOverlay && hitIntroCommit)
+        {
+            return YES;
+        }
+        else{
+            return NO;
+        }
+    }
     else {
         //no eval mode specified, return no
         return NO;
@@ -1775,6 +1891,8 @@
 -(void)evalProblem
 {
     BOOL isWinning=[self evalExpression];
+    
+    if(isIntroPlist && !isWinning)return;
     
     if(isWinning)
     {

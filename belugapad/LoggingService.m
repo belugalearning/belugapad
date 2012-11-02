@@ -111,6 +111,7 @@ uint const kMaxConsecutiveSendFails = 3;
         {
             installationId = [self generateUUID];
             [standardUserDefaults setObject:installationId forKey:@"installationUUID"];
+            [standardUserDefaults synchronize];
         }
         
         deviceSessionDoc = [[NSMutableDictionary alloc] initWithObjectsAndKeys:

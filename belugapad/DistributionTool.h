@@ -45,6 +45,9 @@ typedef enum
     BOOL hasLoggedMovedBlock;
     BOOL hasBeenProximate;
     BOOL problemHasCage;
+    int cageObjectCount;
+    
+    NSString *dockType;
     
     // and a default layer
     CCLayer *renderLayer;
@@ -54,6 +57,8 @@ typedef enum
     NSArray *solutionsDef;
     NSMutableArray *existingGroups;
     NSMutableArray *destroyedLabelledGroups;
+    NSMutableArray *usedShapeTypes;
+    NSMutableArray *addedCages;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;

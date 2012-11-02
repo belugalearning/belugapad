@@ -361,6 +361,11 @@
 //distribution tool
 #define DISTRIBUTION_EVAL_TYPE @"DISTRIBUTION_EVAL_TYPE"
 #define HAS_CAGE @"HAS_CAGE"
+#define DOCK_TYPE @"DOCK_TYPE"
+#define BLOCK_TYPE @"BLOCK_TYPE"
+#define CAGE_OBJECT_COUNT @"CAGE_OBJECT_COUNT"
+#define EVAL_AREAS @"EVAL_AREAS"
+#define AREA_SIZE @"AREA_SIZE"
 
 //fraction builder
 #define INIT_FRACTIONS @"INIT_FRACTIONS"

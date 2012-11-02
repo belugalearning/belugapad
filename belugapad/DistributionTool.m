@@ -150,6 +150,22 @@ static float kDistanceBetweenBlocks=70.0f;
     evalType=[[pdef objectForKey:DISTRIBUTION_EVAL_TYPE] intValue];
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
     problemHasCage=[[pdef objectForKey:HAS_CAGE]boolValue];
+    cageObjectCount=[[pdef objectForKey:CAGE_OBJECT_COUNT]intValue];
+
+    if([pdef objectForKey:DOCK_TYPE])
+        dockType=[pdef objectForKey:DOCK_TYPE];
+    else
+        dockType=@"Infinite";
+    
+    if(cageObjectCount>0 && [dockType isEqualToString:@"Infinite"])
+    {
+        if(cageObjectCount>0 && cageObjectCount<=15)
+            dockType=@"15";
+        else if(cageObjectCount>15 && cageObjectCount<=30)
+            dockType=@"30";
+        
+    }
+    
     if([pdef objectForKey:INIT_OBJECTS])initObjects=[pdef objectForKey:INIT_OBJECTS];
     if([pdef objectForKey:SOLUTION])solutionsDef=[pdef objectForKey:SOLUTION];
     
@@ -170,8 +186,31 @@ static float kDistanceBetweenBlocks=70.0f;
     
     if(problemHasCage)
     {
-        cage=[[SGDtoolCage alloc]initWithGameWorld:gw atPosition:ccp(cx, 80) andRenderLayer:renderLayer];
-        [cage spawnNewBlock];
+        if(!dockType)
+            dockType=@"Infinite";
+        
+        if(!addedCages && [dockType isEqualToString:@"Infinite"])
+            addedCages=[[[NSMutableArray alloc]init]retain];
+        
+        for(int i=0;i<[usedShapeTypes count];i++)
+        {
+            int s=fabsf([usedShapeTypes count]-5);
+            float adjLX=lx-(lx*((24*s)/lx));
+            
+            // render buttons
+            float sectionW=adjLX / [usedShapeTypes count];
+            
+
+            
+            cage=[[SGDtoolCage alloc]initWithGameWorld:gw atPosition:ccp(((24*s)/2)+((i+0.5) * sectionW), 80) andRenderLayer:renderLayer andCageType:dockType];
+            cage.BlockType=[usedShapeTypes objectAtIndex:i];
+            cage.InitialObjects=cageObjectCount;
+            [cage setup];
+            [cage spawnNewBlock];
+            
+            [addedCages addObject:cage];
+        }
+        
         
     }
     
@@ -186,6 +225,17 @@ static float kDistanceBetweenBlocks=70.0f;
     NSArray *thesePositions=[NSArray arrayWithArray:[NumberLayout physicalLayoutUpToNumber:numBlocks withSpacing:kDistanceBetweenBlocks]];
     
     NSString *label = [theseSettings objectForKey:LABEL];
+    NSString *blockType = [theseSettings objectForKey:BLOCK_TYPE];
+    
+    if(!blockType)
+        blockType=@"Circle";
+    
+    if(!usedShapeTypes)
+        usedShapeTypes=[[[NSMutableArray alloc]init]retain];
+    
+    if(![usedShapeTypes containsObject:blockType])
+        [usedShapeTypes addObject:blockType];
+    
     SGDtoolContainer *container = [[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:label andRenderLayer:renderLayer];
     if (label && !existingGroups) existingGroups = [[NSMutableArray arrayWithObject:label] retain];
     
@@ -197,7 +247,7 @@ static float kDistanceBetweenBlocks=70.0f;
         CGPoint thisPoint=[[thesePositions objectAtIndex:i]CGPointValue];
         
         CGPoint p = ccp(startPosX+thisPoint.x,  startPosY+thisPoint.y);
-        SGDtoolBlock *block =  [[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:p] autorelease];
+        SGDtoolBlock *block =  [[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:p andType:blockType] autorelease];
         [block setup];
         block.MyContainer = container;        
         [container addBlockToMe:block];

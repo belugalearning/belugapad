@@ -8,14 +8,19 @@
 
 #import "SGBtxeObjectNumber.h"
 #import "SGBtxeTextRender.h"
+#import "SGBtxeTextBackgroundRender.h"
 
 
 @implementation SGBtxeObjectNumber
 
-@synthesize size, position;
+@synthesize size, position, worldPosition;
 @synthesize textRenderComponent;
 
 @synthesize prefixText, suffixText, numberText, numberValue;
+
+@synthesize enabled, tag, originalPosition;
+
+@synthesize textBackgroundRenderComponent;
 
 -(SGBtxeObjectNumber*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -25,9 +30,16 @@
         numberText=@"";
         suffixText=@"";
         numberValue=@0;
+        
+        enabled=YES;
+        tag=@"";
+        
         size=CGSizeZero;
         position=CGPointZero;
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
+        
+        textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
+        
     }
     
     return self;
@@ -136,9 +148,9 @@
     return [renderBase convertToWorldSpace:self.position];
 }
 
--(void)setWorldPosition:(CGPoint)worldPosition
+-(void)setWorldPosition:(CGPoint)theWorldPosition
 {
-    self.position=[renderBase convertToNodeSpace:worldPosition];
+    self.position=[renderBase convertToNodeSpace:theWorldPosition];
 }
 
 -(void)setPosition:(CGPoint)thePosition
@@ -146,6 +158,8 @@
     position=thePosition;
     
     [self.textRenderComponent updatePosition:position];
+    
+    [self.textBackgroundRenderComponent updatePosition:position];
 }
 
 -(void)inflateZIndex
@@ -166,6 +180,8 @@
 {
     renderBase=theRenderBase;
     
+    [renderBase addChild:textBackgroundRenderComponent.sprite];
+    
     [renderBase addChild:textRenderComponent.label0];
     [renderBase addChild:textRenderComponent.label];
 }
@@ -175,8 +191,31 @@
     // text mode
     self.textRenderComponent.useAlternateFont=YES;
     [self.textRenderComponent setupDraw];
-    self.size=self.textRenderComponent.label.contentSize;
     
+    
+    //don't show the label if it's not enabled
+    if(!self.enabled)
+    {
+        textRenderComponent.label.visible=NO;
+        textRenderComponent.label0.visible=NO;
+    }
+    
+    self.size=self.textRenderComponent.label.contentSize;
+
+    //background sprite to text (using same size)
+    [textBackgroundRenderComponent setupDrawWithSize:self.size];
+}
+
+-(void)activate
+{
+    self.enabled=YES;
+    self.textRenderComponent.label.visible=self.enabled;
+    self.textRenderComponent.label0.visible=self.enabled;
+}
+
+-(void)returnToBase
+{
+    self.position=self.originalPosition;
 }
 
 -(void)dealloc

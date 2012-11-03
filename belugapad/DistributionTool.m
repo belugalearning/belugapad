@@ -153,7 +153,9 @@ static float kDistanceBetweenBlocks=70.0f;
     cageObjectCount=[[pdef objectForKey:CAGE_OBJECT_COUNT]intValue];
     hasInactiveArea=[[pdef objectForKey:HAS_INACTIVE_AREA]boolValue];
     cannotBreakBonds=[[pdef objectForKey:UNBREAKABLE_BONDS]boolValue];
-    //BOOL sausages=[[pdef objectForKey:UNBREAKABLE_BONDS]boolValue];
+    randomiseDockPositions=[[pdef objectForKey:RANDOMISE_DOCK_POSITIONS]boolValue];
+    
+    
 
     if([pdef objectForKey:DOCK_TYPE])
         dockType=[pdef objectForKey:DOCK_TYPE];
@@ -239,6 +241,7 @@ static float kDistanceBetweenBlocks=70.0f;
             cage=[[SGDtoolCage alloc]initWithGameWorld:gw atPosition:ccp(((24*s)/2)+((i+0.5) * sectionW), 80) andRenderLayer:renderLayer andCageType:dockType];
             cage.BlockType=[usedShapeTypes objectAtIndex:i];
             cage.InitialObjects=cageObjectCount;
+            cage.RandomPositions=randomiseDockPositions;
             [cage setup];
             [cage spawnNewBlock];
             
@@ -704,6 +707,11 @@ static float kDistanceBetweenBlocks=70.0f;
         return NO;
 }
 
+-(void)evalGroupTypesAndShapes
+{
+    
+}
+
 -(CGPoint)returnNextMountPointForThisShape:(id<Container>)thisShape
 {
     id<Moveable>firstShape=[thisShape.BlocksInShape objectAtIndex:0];
@@ -1130,6 +1138,11 @@ static float kDistanceBetweenBlocks=70.0f;
     else if(evalType==kCheckEvalAreas)
     {
         return [self evalNumberOfShapesInEvalAreas];
+    }
+    
+    else if(evalType==kCheckGroupTypeAndNumber)
+    {
+        [self evalGroupTypesAndShapes];
     }
     
 

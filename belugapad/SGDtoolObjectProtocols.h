@@ -84,6 +84,7 @@
 @property (retain) NSString *BlockType;
 @property int InitialObjects;
 @property (retain) CCSprite *MySprite;
+@property BOOL RandomPositions;
 
 -(void)setup;
 -(void)spawnNewBlock;

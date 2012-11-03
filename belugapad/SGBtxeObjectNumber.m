@@ -9,6 +9,7 @@
 #import "SGBtxeObjectNumber.h"
 #import "SGBtxeTextRender.h"
 #import "SGBtxeTextBackgroundRender.h"
+#import "global.h"
 
 
 @implementation SGBtxeObjectNumber
@@ -200,7 +201,8 @@
         textRenderComponent.label0.visible=NO;
     }
     
-    self.size=self.textRenderComponent.label.contentSize;
+    //set size to size of cclabelttf plus the background overdraw size (the background itself is currently stretchy)
+    self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
 
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];

@@ -84,7 +84,7 @@ uint const kMaxConsecutiveSendFails = 3;
         opQueue = [[[NSOperationQueue alloc] init] retain];
         fm = [NSFileManager defaultManager];
         
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
         NSString *baseDir = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"logging"];
         currDir = [[NSString stringWithFormat:@"%@/%@", baseDir, @"current-batch"] retain];
         prevDir = [[NSString stringWithFormat:@"%@/%@", baseDir, @"prev-batches"] retain];

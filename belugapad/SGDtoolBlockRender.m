@@ -20,7 +20,7 @@
 
 @implementation SGDtoolBlockRender
 
--(SGDtoolBlockRender*)initWithGameObject:(id<Transform, Moveable, Pairable>)aGameObject
+-(SGDtoolBlockRender*)initWithGameObject:(id<Transform, Moveable, Pairable, Configurable>)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
@@ -61,9 +61,14 @@
 
 -(void)setup
 {
-
-    //blockSprite=[CCSprite spriteWithSpriteFrameName:@"node-complete.png"];
-    blockSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/distribution/block.png")];
+    NSString *sprFileName=nil;
+    
+    if(!ParentGO.blockType)
+        sprFileName=@"/images/distribution/DT_Shape_Circle.png";
+    else
+        sprFileName=[NSString stringWithFormat:@"/images/distribution/DT_Shape_%@.png", ParentGO.blockType];
+    
+    blockSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(sprFileName)];
     ParentGO.mySprite=blockSprite;
     [blockSprite setPosition:ParentGO.Position];
     [blockSprite setVisible:ParentGO.Visible];

@@ -42,4 +42,6 @@ typedef enum {
 
 -(void)addCompletedNodeId:(NSString*)nodeId;
 -(BOOL)hasCompletedNodeId:(NSString*)nodeId;
+
+-(void)onNewLogBatchWithId:(NSString*)batchId;
 @end

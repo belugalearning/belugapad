@@ -11,7 +11,7 @@
 
 @interface SGDtoolCage : SGGameObject <Cage>
 
--(SGDtoolCage*) initWithGameWorld:(SGGameWorld*)aGameWorld atPosition:(CGPoint)thisPosition andRenderLayer:(CCLayer*)aRenderLayer;
+-(SGDtoolCage*) initWithGameWorld:(SGGameWorld*)aGameWorld atPosition:(CGPoint)thisPosition andRenderLayer:(CCLayer*)aRenderLayer andCageType:(NSString*)cageType;
 
 -(void)removeBlockFromMe:(id)thisBlock;
 @end

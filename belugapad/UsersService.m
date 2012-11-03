@@ -38,6 +38,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     NSMutableDictionary *currentUser;
     NSString *currentUserId;
 }
+
 -(NSMutableDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs;
 @end
 
@@ -418,6 +419,14 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     
     [nodesCompleted release];
     return user;
+}
+
+-(void)onNewLogBatchWithId:(NSString*)batchId
+{
+    if (currentUserId)
+    {
+        [usersDatabase executeUpdate:@"INSERT INTO BatchesPendingProcessingOrApplication(batch_id, user_id, server_processed) values(?,?,0)", batchId, currentUserId];
+    }
 }
 
 -(void)dealloc

@@ -54,15 +54,17 @@
     NSString *lastRepeatSet;
     NSMutableArray *repeatBuffer;
 }
-@property (nonatomic, readwrite, retain)NSURL *kcmServerBaseURL;
+@property (nonatomic, readwrite, retain) NSURL *kcmServerBaseURL;
 @property (nonatomic, readwrite, retain) Problem *currentProblem;
 @property (nonatomic, readwrite, retain) NSDictionary *currentPDef;
 @property (nonatomic, readwrite, retain) NSString *pathToTestDef;
 @property (nonatomic, readwrite, retain) NSArray *currentPipeline;
+@property (readwrite) float pipelineProblemAttemptBaseScore;
 @end
 
 @implementation ContentService
 
+@synthesize kcmServerBaseURL;
 @synthesize currentProblem;
 @synthesize currentPDef;
 @synthesize currentStaticPdef;
@@ -70,6 +72,7 @@
 @synthesize fullRedraw;
 @synthesize currentPipeline;
 @synthesize currentEpisode;
+@synthesize pipelineProblemAttemptBaseScore;
 
 @synthesize resetPositionAfterTH;
 @synthesize lastMapLayerPosition;
@@ -358,6 +361,11 @@
 
 #pragma mark - the rest
 
+-(float) pipelineProblemAttemptMaxScore
+{
+    return self.pipelineProblemAttemptBaseScore * pow(SCORE_STAGE_MULTIPLIER, SCORE_STAGE_CAP-1);
+}
+
 -(NSString*)contentDir
 {
     return contentDir;
@@ -417,6 +425,20 @@
     
     //initialize the episode -- only here (in start node) if not working from a test pipeline
     [self createEpisode];
+    
+    // set problem attempt base score for pipeline    
+    int minEpisodeLength = [self.currentPipeline count];
+    int availableBaseScoreUnits = 0;
+    for (int i=0; i<minEpisodeLength && i<SCORE_STAGE_CAP; i++)
+    {
+        availableBaseScoreUnits += pow(SCORE_STAGE_MULTIPLIER, i);
+    }
+    if (minEpisodeLength > SCORE_STAGE_CAP)
+    {
+        availableBaseScoreUnits += (minEpisodeLength-SCORE_STAGE_CAP) * pow(SCORE_STAGE_MULTIPLIER, SCORE_STAGE_CAP-1);
+    }
+    self.pipelineProblemAttemptBaseScore = SCORE_EPISODE_MAX / availableBaseScoreUnits;    
+    
         
     self.currentNode=node;
 }

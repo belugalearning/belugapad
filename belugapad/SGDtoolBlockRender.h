@@ -11,7 +11,7 @@
 
 @interface SGDtoolBlockRender : SGComponent
 {
-    id<Transform,Moveable, Pairable> ParentGO;
+    id<Transform,Moveable,Pairable,Configurable> ParentGO;
 }
 
 -(void)setup;

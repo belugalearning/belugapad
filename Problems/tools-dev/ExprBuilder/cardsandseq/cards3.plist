@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>tom&apos;s apples</string>
+	<key>EVAL_TYPE</key>
+	<string>ALL_ENABLED</string>
+	<key>NUMBER_CARD_ROW_MIN</key>
+	<integer>15</integer>
+	<key>NUMBER_CARD_ROW_MAX</key>
+	<integer>150</integer>
+	<key>NUMBER_CARD_INTERVAL</key>
+	<integer>10</integer>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Place the number 35&lt;/b:t&gt;</string>
+		<string>&lt;b:on number=&quot;35&quot; enabled=&quot;no&quot; /&gt;</string>
+	</array>
+</dict>
+</plist>

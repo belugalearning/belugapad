@@ -369,7 +369,7 @@
 {
     NSLog(@"setting currentStaticPdef");
     if (pdef) [pdef retain];
-    //if (currentStaticPdef) [currentStaticPdef release];
+    if (currentStaticPdef) [currentStaticPdef release];
     currentStaticPdef = pdef;
 }
 

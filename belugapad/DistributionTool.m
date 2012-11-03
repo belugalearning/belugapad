@@ -758,6 +758,21 @@ static float kDistanceBetweenBlocks=70.0f;
     
     lastTouch=location;
     
+    // check the pickup start position against a cage position. if they matched, then spawn a new block
+    if(problemHasCage && !spawnedNewObj)
+    {
+        for(id<Cage>thisCage in addedCages)
+        {
+            if([BLMath DistanceBetween:thisCage.Position and:pickupPos]<=60.0f)
+            {
+                [thisCage spawnNewBlock];
+                spawnedNewObj=YES;
+            }
+        }
+        
+        pickupPos=CGPointZero;
+    }
+    
     if(currentPickupObject)
     {
         if(!hasMovedBlock)hasMovedBlock=YES;
@@ -799,13 +814,6 @@ static float kDistanceBetweenBlocks=70.0f;
     
     // check there's a pickupobject
     NSArray *allGWCopy=[NSArray arrayWithArray:gw.AllGameObjects];
-    
-    // check the pickup start position against a cage position. if they matched, then spawn a new block
-    if(problemHasCage && CGPointEqualToPoint(pickupPos,cage.Position))
-    {
-        [cage spawnNewBlock];
-        pickupPos=CGPointZero;
-    }
     
     if(currentPickupObject)
     {
@@ -860,6 +868,7 @@ static float kDistanceBetweenBlocks=70.0f;
                                     {
                                         currentPickupObject=nil;
                                         isTouching=NO;
+                                        spawnedNewObj=NO;
                                         return;
                                     }
                                 }
@@ -902,6 +911,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
     currentPickupObject=nil;
     isTouching=NO;
+    spawnedNewObj=NO;
     
     
     
@@ -911,6 +921,7 @@ static float kDistanceBetweenBlocks=70.0f;
 {
     isTouching=NO;
     currentPickupObject=nil;
+    spawnedNewObj=NO;
     // empty selected objects
 }
 

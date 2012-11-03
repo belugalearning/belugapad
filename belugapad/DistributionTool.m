@@ -173,6 +173,9 @@ static float kDistanceBetweenBlocks=70.0f;
     if([pdef objectForKey:EVAL_AREAS])initAreas=[pdef objectForKey:EVAL_AREAS];
     if([pdef objectForKey:SOLUTION])solutionsDef=[pdef objectForKey:SOLUTION];
     
+    if(hasInactiveArea && cannotBreakBonds)
+        cannotBreakBonds=NO;
+    
 }
 
 -(void)populateGW
@@ -306,9 +309,11 @@ static float kDistanceBetweenBlocks=70.0f;
         
         if(!hasInactiveArea||cannotBreakBonds)
         {
-            SGDtoolBlock *prevBlock = [container.BlocksInShape objectAtIndex:i-1];
-            [block pairMeWith:prevBlock];
-            [self returnNextMountPointForThisShape:container];
+            if(i>0){
+                SGDtoolBlock *prevBlock = [container.BlocksInShape objectAtIndex:i-1];
+                [block pairMeWith:prevBlock];
+                [self returnNextMountPointForThisShape:container];
+            }
         }
         [container layoutMyBlocks];
         [loggingService.logPoller registerPollee:block];

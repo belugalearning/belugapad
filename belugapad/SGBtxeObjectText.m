@@ -61,7 +61,8 @@
     renderBase=theRenderBase;
     
     [renderBase addChild:textBackgroundRenderComponent.sprite];
-    
+
+    [renderBase addChild:textRenderComponent.label0];
     [renderBase addChild:textRenderComponent.label];
 }
 
@@ -100,6 +101,7 @@
     if(!self.enabled || self.usePicker)
     {
         textRenderComponent.label.visible=NO;
+        textRenderComponent.label0.visible=NO;
     }
     
     //set size to size of cclabelttf
@@ -115,6 +117,7 @@
     self.enabled=YES;
     
     self.textRenderComponent.label.visible=self.enabled;
+    self.textRenderComponent.label0.visible=self.enabled;
 }
 
 -(void)returnToBase

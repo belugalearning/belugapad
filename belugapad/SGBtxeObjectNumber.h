@@ -9,8 +9,9 @@
 #import "SGGameObject.h"
 #import "SGBtxeProtocols.h"
 
+@class SGBtxeTextBackgroundRender;
 
-@interface SGBtxeObjectNumber : SGGameObject <Text, Bounding, FadeIn, Interactive>
+@interface SGBtxeObjectNumber : SGGameObject <Text, Bounding, FadeIn, MovingInteractive>
 {
     CCNode *renderBase;
 }
@@ -19,5 +20,7 @@
 @property (retain) NSString *numberText;
 @property (retain) NSString *suffixText;
 @property (retain, readonly) NSNumber *numberValue;
+
+@property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;
 
 @end

@@ -47,6 +47,7 @@ typedef enum
     BOOL hasBeenProximate;
     BOOL problemHasCage;
     BOOL hasInactiveArea;
+    BOOL spawnedNewObj;
     int cageObjectCount;
     
     NSString *dockType;

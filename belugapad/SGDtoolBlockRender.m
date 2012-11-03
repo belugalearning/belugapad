@@ -44,7 +44,10 @@
 {
     if([ParentGO.PairedObjects count]>0)
     {
-        ccDrawColor4F(0, 255, 0, 255);
+        if(ParentGO.LineType==0)
+            ccDrawColor4F(0, 255, 0, 255);
+        else
+            ccDrawColor4F(0, 255, 0, 50);
         ccDrawLine(ParentGO.Position, location);
     }
 }
@@ -53,7 +56,10 @@
 {
     if([ParentGO.PairedObjects count]>0)
     {
-        ccDrawColor4F(255, 0, 0, 255);
+        if(ParentGO.LineType==0)
+            ccDrawColor4F(255, 0, 0, 255);
+        else
+            ccDrawColor4F(255, 0, 0, 50);
         ccDrawLine(ParentGO.Position, location);
     }
 }

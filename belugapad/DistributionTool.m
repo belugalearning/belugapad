@@ -274,13 +274,24 @@ static float kDistanceBetweenBlocks=70.0f;
     
     SGDtoolContainer *container = [[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:label andRenderLayer:renderLayer];
     if (label && !existingGroups) existingGroups = [[NSMutableArray arrayWithObject:label] retain];
-    int startPosX=0;
+    float startPosX=0;
     float startPosY=0;
     
     if(!hasInactiveArea)
     {
-        startPosX=[theseSettings objectForKey:POS_X] ? [[theseSettings objectForKey:POS_X]intValue] : (arc4random() % 960) + 30;
-        startPosY=[theseSettings objectForKey:POS_Y] ? [[theseSettings objectForKey:POS_Y]intValue] : (arc4random() % 730) + 30;
+        CGPoint top=[[thesePositions objectAtIndex:0]CGPointValue];
+        CGPoint bottom=[[thesePositions objectAtIndex:[thesePositions count]-1]CGPointValue];
+        
+        int farLeft=top.x+60;
+        int farRight=lx-bottom.x-60;
+        int topMost=ly-top.y-60;
+        int botMost=0+-bottom.y+60;
+        
+        //startPosX=[theseSettings objectForKey:POS_X] ? [[theseSettings objectForKey:POS_X]intValue] : (arc4random() % 960) + 30;
+        //startPosY=[theseSettings objectForKey:POS_Y] ? [[theseSettings objectForKey:POS_Y]intValue] : (arc4random() % 730) + 30;
+        
+        startPosX = farLeft + arc4random() % (farRight - farLeft);
+        startPosY = botMost + arc4random() % (topMost - botMost);
     }
     else
     {
@@ -304,7 +315,12 @@ static float kDistanceBetweenBlocks=70.0f;
         CGPoint p = ccp(startPosX+thisPoint.x,  startPosY+thisPoint.y);
         SGDtoolBlock *block =  [[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:p andType:blockType] autorelease];
         [block setup];
-        block.MyContainer = container;        
+        block.MyContainer = container;
+        
+        if(cannotBreakBonds)
+            block.LineType=1;
+            
+        
         [container addBlockToMe:block];
         
         if(!hasInactiveArea||cannotBreakBonds)
@@ -742,6 +758,21 @@ static float kDistanceBetweenBlocks=70.0f;
     
     lastTouch=location;
     
+    // check the pickup start position against a cage position. if they matched, then spawn a new block
+    if(problemHasCage && !spawnedNewObj)
+    {
+        for(id<Cage>thisCage in addedCages)
+        {
+            if([BLMath DistanceBetween:thisCage.Position and:pickupPos]<=60.0f)
+            {
+                [thisCage spawnNewBlock];
+                spawnedNewObj=YES;
+            }
+        }
+        
+        pickupPos=CGPointZero;
+    }
+    
     if(currentPickupObject)
     {
         if(!hasMovedBlock)hasMovedBlock=YES;
@@ -784,13 +815,6 @@ static float kDistanceBetweenBlocks=70.0f;
     // check there's a pickupobject
     NSArray *allGWCopy=[NSArray arrayWithArray:gw.AllGameObjects];
     
-    // check the pickup start position against a cage position. if they matched, then spawn a new block
-    if(problemHasCage && CGPointEqualToPoint(pickupPos,cage.Position))
-    {
-        [cage spawnNewBlock];
-        pickupPos=CGPointZero;
-    }
-    
     if(currentPickupObject)
     {
         CGPoint curPOPos=currentPickupObject.Position;
@@ -831,6 +855,24 @@ static float kDistanceBetweenBlocks=70.0f;
                             
                             if([cObj.PairedObjects count]>0 && cannotBreakBonds)return;
                             
+                            if(evalAreas){
+                                for(NSArray *a in evalAreas)
+                                {
+                                    CGRect evalAreaBox=CGRectNull;
+                                    for(CCSprite *s in a)
+                                    {
+                                        evalAreaBox=CGRectUnion(evalAreaBox, s.boundingBox);
+                                    }
+                                    
+                                    if(CGRectContainsPoint(evalAreaBox, cObj.Position))
+                                    {
+                                        currentPickupObject=nil;
+                                        isTouching=NO;
+                                        spawnedNewObj=NO;
+                                        return;
+                                    }
+                                }
+                            }
                             [go pairMeWith:currentPickupObject];
                         
                             previousObjectContainer=cObj.MyContainer;
@@ -868,6 +910,8 @@ static float kDistanceBetweenBlocks=70.0f;
     }
     
     currentPickupObject=nil;
+    isTouching=NO;
+    spawnedNewObj=NO;
     
     
     
@@ -877,6 +921,7 @@ static float kDistanceBetweenBlocks=70.0f;
 {
     isTouching=NO;
     currentPickupObject=nil;
+    spawnedNewObj=NO;
     // empty selected objects
 }
 

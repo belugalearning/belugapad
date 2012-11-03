@@ -424,6 +424,7 @@ static float kDistanceBetweenBlocks=70.0f;
         [existingGroups addObject:[container.Label string]];
     }
     
+    container.BlockType=((id<Configurable>)Object).blockType;
     [container addBlockToMe:Object];
     [container layoutMyBlocks];
 }
@@ -707,9 +708,45 @@ static float kDistanceBetweenBlocks=70.0f;
         return NO;
 }
 
--(void)evalGroupTypesAndShapes
+-(BOOL)evalGroupTypesAndShapes
 {
+    NSMutableArray *shapesFound=[[NSMutableArray alloc]init];
+    NSMutableArray *solFound=[[NSMutableArray alloc]init];
+    int solutionsExpected=[solutionsDef count];
+    int solutionsFound=0;
     
+    
+    for(NSDictionary *d in solutionsDef)
+    {
+        if([solFound containsObject:d])continue;
+        
+        for (id cont in gw.AllGameObjects)
+        {
+            if([shapesFound containsObject:cont])continue;
+            
+            if([cont conformsToProtocol:@protocol(Container)])
+            {
+                id<Container>thisCont=cont;
+                
+                if([thisCont.BlocksInShape count]==[[d objectForKey:NUMBER]intValue] && [thisCont.BlockType isEqualToString:[d objectForKey:BLOCK_TYPE]])
+                {
+                    solutionsFound++;
+                    [shapesFound addObject:cont];
+                    [solFound addObject:d];
+                    continue;
+                }
+            }
+        }
+    }
+    
+    
+    
+    NSLog(@"solutions found %d required %d", solutionsFound, solutionsExpected);
+    if (solutionsFound==solutionsExpected)
+        return YES;
+    else
+        return NO;
+
 }
 
 -(CGPoint)returnNextMountPointForThisShape:(id<Container>)thisShape

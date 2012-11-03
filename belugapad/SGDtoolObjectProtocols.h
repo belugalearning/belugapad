@@ -65,6 +65,7 @@
 @property (retain) NSMutableArray *BlocksInShape;
 @property (retain) CCLabelTTF *Label;
 @property (retain) CCNode *BaseNode;
+@property (retain) NSString *BlockType;
 
 -(void)addBlockToMe:(id)thisBlock;
 -(void)removeBlockFromMe:(id)thisBlock;

@@ -54,7 +54,7 @@
 -(void)addBlockToMe:(id)thisBlock
 {
 
-    if(((id<Configurable>)thisBlock).blockType!=self.BlockType)return;
+    if([((id<Configurable>)thisBlock).blockType isEqualToString:self.BlockType]){
     
     if(![BlocksInShape containsObject:thisBlock])
         [BlocksInShape addObject:thisBlock];
@@ -64,6 +64,7 @@
     //self.BlockType=((id<Configurable>)thisBlock).blockType;
     
     if(Label)[self repositionLabel];
+    }
 }
 
 -(void)removeBlockFromMe:(id)thisBlock

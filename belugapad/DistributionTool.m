@@ -276,6 +276,7 @@ static float kDistanceBetweenBlocks=70.0f;
         [usedShapeTypes addObject:blockType];
     
     SGDtoolContainer *container = [[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:label andRenderLayer:renderLayer];
+    container.BlockType=blockType;
     if (label && !existingGroups) existingGroups = [[NSMutableArray arrayWithObject:label] retain];
     float startPosX=0;
     float startPosY=0;
@@ -328,7 +329,7 @@ static float kDistanceBetweenBlocks=70.0f;
         
         if(!hasInactiveArea||cannotBreakBonds)
         {
-            if(i>0){
+            if(i){
                 SGDtoolBlock *prevBlock = [container.BlocksInShape objectAtIndex:i-1];
                 [block pairMeWith:prevBlock];
                 [self returnNextMountPointForThisShape:container];
@@ -727,6 +728,8 @@ static float kDistanceBetweenBlocks=70.0f;
             if([cont conformsToProtocol:@protocol(Container)])
             {
                 id<Container>thisCont=cont;
+                
+                NSLog(@"thisCont type=%@, thisCont BlocksInShape=%d", thisCont.BlockType, [thisCont.BlocksInShape count]);
                 
                 if([thisCont.BlocksInShape count]==[[d objectForKey:NUMBER]intValue] && [thisCont.BlockType isEqualToString:[d objectForKey:BLOCK_TYPE]])
                 {
@@ -1179,7 +1182,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
     else if(evalType==kCheckGroupTypeAndNumber)
     {
-        [self evalGroupTypesAndShapes];
+        return [self evalGroupTypesAndShapes];
     }
     
 

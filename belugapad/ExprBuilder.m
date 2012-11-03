@@ -146,6 +146,9 @@
         numberCardRowInterval=[ncardint intValue];
         numberCardRowMax=[ncardmax intValue];
         numberCardRowMin=[ncardmin intValue];
+        
+        NSNumber *ncardrandomise=[pdef objectForKey:@"NUMBER_CARD_RANDOMISE"];
+        if(ncardrandomise)numberCardRandomOrder=[ncardrandomise boolValue];
     }
     
 }
@@ -198,16 +201,36 @@
             {
                 ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
                 
+                NSMutableArray *cardAddBuffer=[[NSMutableArray alloc] init];
+                
                 //add the cards
                 for(int icard=numberCardRowMin; icard<=numberCardRowMax; icard+=numberCardRowInterval)
                 {
                     SGBtxeObjectNumber *n=[[SGBtxeObjectNumber alloc] initWithGameWorld:gw];
                     n.numberText=[NSString stringWithFormat:@"%d", icard];
                     n.enabled=YES;
-                    [ncardRow.containerMgrComponent addObjectToContainer:n];
                     
+                    [cardAddBuffer addObject:n];
                     [n release];
                 }
+                
+                if(numberCardRandomOrder)
+                {
+                    while(cardAddBuffer.count>0)
+                    {
+                        int i=(arc4random()%cardAddBuffer.count);
+                        [ncardRow.containerMgrComponent addObjectToContainer:[cardAddBuffer objectAtIndex:i]];
+                        [cardAddBuffer removeObjectAtIndex:i];
+                    }
+                }
+                else
+                {
+                    for(SGBtxeObjectNumber *n in cardAddBuffer)
+                        [ncardRow.containerMgrComponent addObjectToContainer:n];
+                }
+                
+                //let go of the buffer
+                [cardAddBuffer release];
                 
                 [ncardRow setupDraw];
                 ncardRow.position=ccpAdd(row.position, ccp(0, -ncardRow.size.height-QUESTION_SEPARATOR_PADDING));

@@ -56,6 +56,7 @@
     int numberCardRowMin;
     int numberCardRowMax;
     int numberCardRowInterval;
+    BOOL numberCardRandomOrder;
     SGBtxeRow *ncardRow;
 }
 

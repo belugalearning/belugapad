@@ -69,6 +69,13 @@
     [nf setNumberStyle:NSNumberFormatterDecimalStyle];
     numberValue=[nf numberFromString:numberText];
     [nf release];
+    
+    self.tag=[numberValue stringValue];
+}
+
+-(void)setNumberValue:(NSNumber *)theNumberValue
+{
+    self.tag=[numberValue stringValue];
 }
 
 -(void)setText:(NSString *)text
@@ -132,6 +139,8 @@
     [nf setNumberStyle:NSNumberFormatterDecimalStyle];
     numberValue=[nf numberFromString:numberText];
     [nf release];
+    
+    self.tag=[numberValue stringValue];
 }
 
 -(NSString*)text

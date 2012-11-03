@@ -575,17 +575,7 @@
 
 -(Problem*)loadProblemWithId:(NSString *)pid
 {
-    Problem *p = [[[Problem alloc] initWithDatabase:contentDatabase andProblemId:pid] autorelease];
-    if (!p)
-    {
-        NSMutableDictionary *d = [NSMutableDictionary dictionary];
-        [d setValue:BL_APP_ERROR_TYPE_DB_TABLE_MISSING_ROW forKey:@"type"];
-        [d setValue:@"Problems" forKey:@"table"];
-        [d setValue:pid forKey:@"key"];
-        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
-        [ac.loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
-    }
-    return p;
+    return [[[Problem alloc] initWithDatabase:contentDatabase andProblemId:pid] autorelease];
 }
 
 -(void)startProblemWithId:(NSString*)pId

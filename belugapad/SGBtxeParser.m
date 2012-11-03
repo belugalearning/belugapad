@@ -147,6 +147,8 @@ const NSString *matchNumbers=@"0123456789";
         on.prefixText=[[element attributeForName:@"prefix"] stringValue];
         on.suffixText=[[element attributeForName:@"suffix"] stringValue];
         
+        on.enabled=[self enabledBoolFor:element];
+        
         [ParentGO.containerMgrComponent addObjectToContainer:on];
     }
 }

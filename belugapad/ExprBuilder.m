@@ -23,6 +23,7 @@
 #import "SGBtxeObjectText.h"
 #import "SGBtxeMissingVar.h"
 #import "SGBtxeContainerMgr.h"
+#import "SGBtxeObjectNumber.h"
 
 @interface ExprBuilder()
 {
@@ -198,6 +199,15 @@
                 ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
                 
                 //add the cards
+                for(int icard=numberCardRowMin; icard<=numberCardRowMax; icard+=numberCardRowInterval)
+                {
+                    SGBtxeObjectNumber *n=[[SGBtxeObjectNumber alloc] initWithGameWorld:gw];
+                    n.numberText=[NSString stringWithFormat:@"%d", icard];
+                    n.enabled=YES;
+                    [ncardRow.containerMgrComponent addObjectToContainer:n];
+                    
+                    [n release];
+                }
                 
                 [ncardRow setupDraw];
                 ncardRow.position=ccpAdd(row.position, ccp(0, -ncardRow.size.height-QUESTION_SEPARATOR_PADDING));

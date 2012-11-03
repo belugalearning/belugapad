@@ -606,6 +606,9 @@
         }
     }
     
+    [ac.loggingService logEvent:BL_EP_ATTEMPT_ADAPT_PIPELINE_INSERTION
+             withAdditionalData:@{ @"triggerData": triggerData, @"allDecisionsData:": allDecisionsData, @"inserter": (useThisInserter ? useThisInserter.inserterName : [NSNull null]) }];
+    
     //if we found an inserter -- insert some stuff
     if(useThisInserter)
     {
@@ -637,6 +640,8 @@
             NSNumber *insertIndex=[NSNumber numberWithInt:currentEpisode.count-1];
             
             [usersService.usersDatabase executeUpdate:@"INSERT INTO EpisodeProblems (id, episode_index, episode_id, episodeinserts_id, problem_id, dvar_data) VALUES (?, ?, ?, ?, ?, NULL)", epid, insertIndex, self.currentEpisodeId, episodeInsertId, pid];
+
+            [ac.loggingService logEvent:BL_EP_PROBLEM_INSERT withAdditionalData:@{ @"insertType":BL_EP_PROBLEM_INSERT_TYPE_ADAPT_VIABLE_INSERT, @"insertIndex": insertIndex, @"problem": pid }];
         }
         
         //now insert the a copy of the current problem
@@ -652,6 +657,8 @@
         NSNumber *insertIndex=[NSNumber numberWithInt:currentEpisode.count-1];
         
         [usersService.usersDatabase executeUpdate:@"INSERT INTO EpisodeProblems (id, episode_index, episode_id, episodeinserts_id, problem_id, dvar_data) VALUES (?, ?, ?, ?, ?, NULL)", epid, insertIndex, self.currentEpisodeId, episodeInsertId, p._id];
+        
+        [ac.loggingService logEvent:BL_EP_PROBLEM_INSERT withAdditionalData:@{ @"insertType":BL_EP_PROBLEM_INSERT_TYPE_REPEAT_CURRENT_PROBLEM, @"insertIndex": insertIndex, @"problem": p._id }];
         
         [self insertIntoEpsiodeTheProblem:p];
 
@@ -731,6 +738,9 @@
             p._id];
         
         [usersService.usersDatabase close];
+        
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        [ac.loggingService logEvent:BL_EP_PROBLEM_INSERT withAdditionalData:@{ @"insertType":BL_EP_PROBLEM_INSERT_TYPE_NEXT, @"insertIndex": insertIndex, @"problem": p._id }];
     }
     
     //we get here if we inserted a problem
@@ -764,6 +774,9 @@
         [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]]];
     
     [usersService.usersDatabase close];
+    
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    [ac.loggingService logEvent:BL_EP_START withAdditionalData:nil];
 }
 
 -(void) queryCreateEpisodesTables

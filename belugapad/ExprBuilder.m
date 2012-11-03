@@ -228,7 +228,7 @@
     
     
     //if we have ncardrow, then add it to rows (at end for now?)
-    [rows addObject:ncardRow];
+    if(ncardRow) [rows addObject:ncardRow];
     
 }
 

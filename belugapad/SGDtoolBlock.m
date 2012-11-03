@@ -15,7 +15,7 @@
 @synthesize BlockRenderComponent;
 @synthesize BlockPairComponent;
 @synthesize mySprite;
-@synthesize blockType;
+@synthesize blockType, LineType;
 
 //Transform protocol properties
 @synthesize Position, Visible, RenderLayer;

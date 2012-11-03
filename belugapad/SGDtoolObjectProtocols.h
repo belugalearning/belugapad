@@ -45,6 +45,7 @@
 @property CGPoint Position;
 @property (retain) NSMutableArray *PairedObjects;
 @property BOOL SeekingPair;
+@property int LineType;
 
 -(void)pairMeWith:(id)thisObject;
 -(void)unpairMeFrom:(id)thisObject;

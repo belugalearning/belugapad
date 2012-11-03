@@ -966,7 +966,7 @@
 
 -(NSString*)debugProblemDescStringFor:(NSString*)pId
 {
-    Problem *p = [self loadProblemWithId:pId];
+    Problem *p = [[[Problem alloc] initWithDatabase:contentDatabase andProblemId:pId] autorelease];
     if (!p) return [NSString stringWithFormat:@"Problem id =\"%@\" missing", pId];
     
     NSDictionary *pdef=p.pdef;

@@ -13,6 +13,7 @@
 
 @interface SGBtxePlaceholder : SGGameObject <RenderObject, Bounding, Interactive>
 {
+    CCNode *renderBase;
 }
 
 @property (retain) SGBtxeTextBackgroundRender *textBackgroundComponent;

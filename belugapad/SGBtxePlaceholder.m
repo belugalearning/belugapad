@@ -36,13 +36,30 @@
     
 }
 
+-(CGPoint)worldPosition
+{
+    return [renderBase convertToWorldSpace:self.position];
+}
+
+-(void)setWorldPosition:(CGPoint)theWorldPosition
+{
+    self.position=[renderBase convertToNodeSpace:theWorldPosition];
+}
+
 -(void)setupDraw
 {
+    //artifically set size
+    size=CGSizeMake(50, 25);
+    
+    //background sprite to text (using same size)
+    [textBackgroundComponent setupDrawWithSize:self.size];
     
 }
 
--(void)attachToRenderBase:(CCNode *)renderBase
+-(void)attachToRenderBase:(CCNode *)theRenderBase
 {
+    renderBase=theRenderBase;
+    
     [renderBase addChild:textBackgroundComponent.sprite];
 }
 
@@ -53,6 +70,17 @@
 
 -(void)inflateZIndex
 {
+    
+}
+
+-(void)setPosition:(CGPoint)thePosition
+{
+    position=thePosition;
+    
+    //TODO: auto-animate any large moves?
+    
+    //update positioning in background
+    [self.textBackgroundComponent updatePosition:position];
     
 }
 

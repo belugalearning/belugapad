@@ -13,6 +13,7 @@
 
 @synthesize size, position;
 @synthesize text, textRenderComponent;
+@synthesize container;
 
 -(SGBtxeText*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -75,6 +76,9 @@
 {
     self.text=nil;
     self.textRenderComponent=nil;
+    self.container=nil;
+    
+    
     [super dealloc];
 }
 

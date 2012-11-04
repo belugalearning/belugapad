@@ -8,11 +8,16 @@
 
 #import "SGBtxePlaceholder.h"
 #import "SGBtxeTextBackgroundRender.h"
+#import "SGBtxeContainerMgr.h"
+#import "SGBtxeRow.h"
 
 @implementation SGBtxePlaceholder
 
 @synthesize size, position, enabled, tag, worldPosition;
 @synthesize textBackgroundComponent;
+@synthesize container;
+
+@synthesize mountedObject;
 
 -(SGBtxePlaceholder*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -56,11 +61,31 @@
     
 }
 
+-(void)duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)mountObject
+{
+    //destroy any existing mounted object
+    
+    
+    //create a duplicate of the passed object
+    id<MovingInteractive, RenderObject, NSObject> dupe=(id<MovingInteractive, RenderObject, NSObject>)[mountObject createADuplicate];
+    
+    //set it up
+    [dupe setupDraw];
+    
+    //attach to same row as me
+    [dupe attachToRenderBase:((SGBtxeRow*)self.container).baseNode];
+    
+    [self.container.containerMgrComponent addObjectToContainer:(id<Bounding>)dupe];
+    
+    mountedObject=dupe;
+}
+
 -(void)attachToRenderBase:(CCNode *)theRenderBase
 {
     renderBase=theRenderBase;
     
-    [renderBase addChild:textBackgroundComponent.sprite];
+    //attach background to render, but stick behind other objects by default
+    [renderBase addChild:textBackgroundComponent.sprite z:-1];
 }
 
 -(void)deflateZindex
@@ -87,6 +112,16 @@
 -(void)activate
 {
     
+}
+
+-(void)dealloc
+{
+    self.mountedObject=nil;
+    self.container=nil;
+    self.tag=nil;
+    self.textBackgroundComponent=nil;
+    
+    [super dealloc];
 }
 
 @end

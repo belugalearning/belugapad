@@ -19,9 +19,11 @@
     return self;
 }
 
--(void)addObjectToContainer:(id<Bounding>)object
+-(void)addObjectToContainer:(id<Bounding, Containable>)object
 {
     [ParentGO.children addObject:object];
+    
+    object.container=ParentGO;
 }
 
 @end

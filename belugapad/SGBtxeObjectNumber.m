@@ -23,6 +23,8 @@
 
 @synthesize textBackgroundRenderComponent;
 
+@synthesize container;
+
 -(SGBtxeObjectNumber*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
     if(self=[super initWithGameWorld:aGameWorld])
@@ -44,6 +46,24 @@
     }
     
     return self;
+}
+
+-(id<MovingInteractive>)createADuplicate
+{
+    //creates a duplicate object text -- something else will need to call setupDraw and attachToRenderBase
+    
+    SGBtxeObjectNumber *dupe=[[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld] autorelease];
+    
+    dupe.position=self.position;
+    dupe.tag=[[self.tag copy] autorelease];
+    dupe.enabled=self.enabled;
+    
+    dupe.prefixText=[[self.prefixText copy] autorelease];
+    dupe.numberText=[[self.numberText copy] autorelease];
+//    dupe.numberText=@"ntext";
+    dupe.suffixText=[[self.suffixText copy] autorelease];
+    
+    return (id<MovingInteractive>)dupe;
 }
 
 -(void)handleMessage:(SGMessageType)messageType
@@ -237,6 +257,7 @@
     self.prefixText=nil;
     self.numberText=nil;
     self.suffixText=nil;
+    self.container=nil;
 
     [numberValue release];
     

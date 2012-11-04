@@ -331,7 +331,7 @@
     if(heldObject)
     {
         //test new location for target / drop
-        for(id<Interactive, NSObject> o in gw.AllGameObjects)
+        for(id<Interactive, NSObject> o in [gw AllGameObjectsCopy])
         {
             if([o conformsToProtocol:@protocol(Interactive)])
             {
@@ -341,6 +341,17 @@
                 {
                     //this object is proximate, disabled and the same tag
                     [o activate];
+                }
+                
+                if([o conformsToProtocol:@protocol(BtxeMount)] && [BLMath DistanceBetween:o.worldPosition and:location]<=BTXE_PICKUP_PROXIMITY)
+                {
+                    id<BtxeMount, Interactive> pho=(id<BtxeMount, Interactive>)o;
+                    
+                    //mount the object on the place holder
+                    [pho duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)heldObject];
+
+                    //move this to the mount's position
+                    heldObject.position=pho.position;
                 }
             }
         }

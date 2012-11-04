@@ -20,6 +20,8 @@
 @synthesize originalPosition;
 @synthesize usePicker;
 
+@synthesize container;
+
 -(SGBtxeObjectText*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
     if(self=[super initWithGameWorld:aGameWorld])
@@ -35,6 +37,21 @@
     }
     
     return self;
+}
+
+-(id<MovingInteractive>)createADuplicate
+{
+    //creates a duplicate object text -- something else will need to call setupDraw and attachToRenderBase
+    
+    SGBtxeObjectText *dupe=[[[SGBtxeObjectText alloc] initWithGameWorld:gameWorld] autorelease];
+    
+    dupe.text=[[self.text copy] autorelease];
+    dupe.position=self.position;
+    dupe.tag=[[self.tag copy] autorelease];
+    dupe.enabled=self.enabled;
+    dupe.usePicker=self.usePicker;
+    
+    return (id<MovingInteractive>)dupe;
 }
 
 -(void)handleMessage:(SGMessageType)messageType
@@ -133,6 +150,7 @@
     self.tag=nil;
     self.textRenderComponent=nil;
     self.textBackgroundRenderComponent=nil;
+    self.container=nil;
     
     [super dealloc];
 }

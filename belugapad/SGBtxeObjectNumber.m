@@ -59,8 +59,8 @@
     dupe.enabled=self.enabled;
     
     dupe.prefixText=[[self.prefixText copy] autorelease];
-    dupe.numberText=[[self.numberText copy] autorelease];
-//    dupe.numberText=@"ntext";
+//    dupe.numberText=[[self.numberText copy] autorelease];
+    dupe.numberText=@"ntext";
     dupe.suffixText=[[self.suffixText copy] autorelease];
     
     return (id<MovingInteractive>)dupe;

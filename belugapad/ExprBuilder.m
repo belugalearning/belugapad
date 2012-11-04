@@ -349,9 +349,6 @@
                     
                     //mount the object on the place holder
                     [pho duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)heldObject];
-
-                    //move this to the mount's position
-                    heldObject.position=pho.position;
                 }
             }
         }

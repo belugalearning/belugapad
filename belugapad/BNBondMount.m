@@ -72,6 +72,7 @@
             
             myHeldValue=myHeldValue+mo.Length;
         }
+        prgo.MyHeldValue=myHeldValue;
         
         for(int i=0;i<prgo.HintObjects.count;i++)
         {

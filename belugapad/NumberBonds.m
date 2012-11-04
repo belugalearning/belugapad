@@ -287,6 +287,7 @@ static float kNBFontSizeLarge=35.0f;
                 pogo.Label=[CCLabelTTF labelWithString:[[initCages objectAtIndex:i] objectForKey:LABEL] fontName:CHANGO fontSize:fontSize];
             }
             
+            
             if(!useBlockScaling){
                 pogo.IsScaled=YES;
                 pogo.NoScaleBlock=YES;
@@ -761,7 +762,7 @@ static float kNBFontSizeLarge=35.0f;
 
 
                         CCAction *sth=[CCCallBlock actionWithBlock:^{[po handleMessage:kDWmoveSpriteToHome];}];
-                        CCAction *remt=[CCCallBlock actionWithBlock:^{[[mountedObjects objectAtIndex:po.IndexPos] addObject:gw.Blackboard.PickupObject];}];
+                        CCAction *remt=[CCCallBlock actionWithBlock:^{[[mountedObjects objectAtIndex:po.IndexPos] addObject:po];}];
                         CCSequence *sq=nil;
                         
                         if([po.BaseNode.children indexOfObject:s]==[po.BaseNode.children count]-1)

@@ -96,6 +96,9 @@
 
 -(void)pairMeWith:(id)thisObject
 {
+    if(![((id<Configurable>)ParentGO).blockType isEqualToString:((id<Configurable>)thisObject).blockType])
+        return;
+    
     if(!ParentGO.PairedObjects)ParentGO.PairedObjects=[[[NSMutableArray alloc]init]autorelease];
     
     // if the array already contains the object - don't readd it

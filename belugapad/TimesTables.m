@@ -280,7 +280,7 @@ static float kTimeToHeaderBounce=7.0f;
                 [s setOpacity:0];
             
                 
-                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", yStartNumber+1] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
+                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", yStartNumber+1] fontName:CHANGO fontSize:20.0f];
                 [curLabel setPosition:ccp(s.contentSize.width/2, s.contentSize.height/2)];
                 [curLabel setTag:2];
                 [curLabel setOpacity:0];
@@ -303,7 +303,7 @@ static float kTimeToHeaderBounce=7.0f;
                 [s setTag:1];
                 [s setOpacity:0];
                 
-                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", xStartNumber]fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
+                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", xStartNumber]fontName:CHANGO fontSize:20.0f];
                 [curLabel setPosition:ccp(s.contentSize.width/2, s.contentSize.height/2)];
                 
                 if(!tile.isEndXPiece)
@@ -686,7 +686,6 @@ static float kTimeToHeaderBounce=7.0f;
         for(int o=0;o<[gw.Blackboard.SelectedObjects count];o++)
         {
             DWTTTileGameObject *selTile=[gw.Blackboard.SelectedObjects objectAtIndex:o];
-            NSLog(@"selTile X=%d, selTile Y=%d", selTile.myXpos, selTile.myYpos);
             
             for(int i=0;i<[solutionsDef count];i++)
             {

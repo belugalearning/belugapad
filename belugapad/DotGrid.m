@@ -153,7 +153,7 @@
             
             for(int i=1; i<ftmax; i++)
             {
-                if(!ftmax % i)
+                if(!(ftmax % i))
                 {
                     //this is a factor, create an x/y array with these numbers
                     NSArray *fs=[NSArray arrayWithObjects:[NSNumber numberWithInt:i], [NSNumber numberWithInt:ftmax/i], nil];
@@ -1871,14 +1871,26 @@
 {
     int correctShapes=0;
     NSMutableArray *matchShapes=[[NSMutableArray alloc]init];
+    NSMutableArray *matchObjects=[[NSMutableArray alloc]init];
     //for each object that conforms to being a shapegroup
     for(int i=0;i<[gw.AllGameObjects count];i++)
     {
         if([[gw.AllGameObjects objectAtIndex:i]isKindOfClass:[DWDotGridShapeGameObject class]])
         {
             DWDotGridShapeGameObject *sg=[gw.AllGameObjects objectAtIndex:i];
-            DWDotGridAnchorGameObject *fa=sg.firstBoundaryAnchor;
-            DWDotGridAnchorGameObject *la=sg.lastBoundaryAnchor;
+            DWDotGridAnchorGameObject *fa=nil;
+            DWDotGridAnchorGameObject *la=nil;
+            
+            if(useShapeGroups)
+            {
+                fa=sg.firstBoundaryAnchor;
+                la=sg.lastBoundaryAnchor;
+            }
+            else
+            {
+                fa=sg.firstAnchor;
+                la=sg.lastAnchor;
+            }
             
             int dimensionX=fabsf(fa.myXpos-la.myXpos);
             int dimensionY=fabsf(fa.myYpos-la.myYpos);
@@ -1887,6 +1899,7 @@
             for(NSArray *a in reqShapes)
             {
                 if([matchShapes containsObject:a])continue;
+                if([matchObjects containsObject:sg])continue;
                 
                 BOOL xMatch=NO;
                 BOOL yMatch=NO;
@@ -1900,6 +1913,7 @@
                 if(xMatch&&yMatch)
                 {
                     [matchShapes addObject:a];
+                    [matchObjects addObject:sg];
                     correctShapes++;
                 }
             }

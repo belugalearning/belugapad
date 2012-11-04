@@ -154,6 +154,10 @@ static float kNBFontSizeLarge=35.0f;
     if([pdef objectForKey:@"EVAL_MIN_PER_ROW"]) evalMinPerRow=[[pdef objectForKey:@"EVAL_MIN_PER_ROW"] intValue];
     if([pdef objectForKey:@"EVAL_MAX_PER_ROW"]) evalMaxPerRow=[[pdef objectForKey:@"EVAL_MAX_PER_ROW"] intValue];
     
+    if([pdef objectForKey:BAR_ASSISTANCE])
+        barAssistance=[[pdef objectForKey:BAR_ASSISTANCE]boolValue];
+    else
+        barAssistance=NO;
     
     evalMode = [[pdef objectForKey:EVAL_MODE] intValue];
     
@@ -736,6 +740,98 @@ static float kNBFontSizeLarge=35.0f;
         }
         else
         {
+            if(barAssistance && gw.Blackboard.ProximateObject)
+            {
+                [gw.Blackboard.ProximateObject handleMessage:kDWresetPositionEval];
+                DWNBondRowGameObject *nbr=(DWNBondRowGameObject*)gw.Blackboard.ProximateObject;
+                DWNBondObjectGameObject *po=(DWNBondObjectGameObject*)gw.Blackboard.PickupObject;
+                
+                float totalPlusPickup=nbr.MyHeldValue+po.Length;
+                float difference=totalPlusPickup-nbr.Length;
+                float pickupValueThatCanGoIn=po.Length-difference;
+                
+                if(totalPlusPickup>nbr.Length)
+                {
+                    
+                    // TODO: this needs to actually remove the GO
+                    for(CCSprite *s in po.BaseNode.children)
+                    {
+                        CCFadeOut *fo=[CCFadeOut actionWithDuration:1.5f];
+                        CCFadeIn *fi=[CCFadeIn actionWithDuration:1.5f];
+
+
+                        CCAction *sth=[CCCallBlock actionWithBlock:^{[po handleMessage:kDWmoveSpriteToHome];}];
+                        CCAction *remt=[CCCallBlock actionWithBlock:^{[[mountedObjects objectAtIndex:po.IndexPos] addObject:gw.Blackboard.PickupObject];}];
+                        CCSequence *sq=nil;
+                        
+                        if([po.BaseNode.children indexOfObject:s]==[po.BaseNode.children count]-1)
+                            sq=[CCSequence actions:fo, sth, remt, fi, nil];
+                        else
+                            sq=[CCSequence actions:fo, sth, fi, nil];
+                        [s runAction:sq];
+                    }
+                    
+                    for(int i=0;i<2;i++)
+                    {
+                        //int insRow=[[[initHints objectAtIndex:i] objectForKey:PUT_IN_ROW] intValue];
+                        //int insLength=[[[initHints objectAtIndex:i] objectForKey:LENGTH] intValue];
+                        //NSString *fillText=[[NSString alloc]init];
+                        DWNBondObjectGameObject *no = [DWNBondObjectGameObject alloc];
+                        [gw populateAndAddGameObject:no withTemplateName:@"TnBondObject"];
+                        
+            
+                        
+                        //[pogo.Mounts addObject:[createdRows objectAtIndex:insRow]];
+                        if(i==0)
+                            no.Length=pickupValueThatCanGoIn;
+                        else
+                            no.Length=difference;
+                        
+                        
+                        CGPoint retPos=CGPointZero;
+                        for(int i=0;i<[mountedObjects count];i++)
+                        {
+                            for(NSArray *a in mountedObjects)
+                            {
+                                if ([a count]>0)
+                                {
+                                    DWNBondObjectGameObject *pos=[a objectAtIndex:0];
+                                    if(pos.Length==no.Length)
+                                        retPos=pos.Position;
+                                }
+                            }
+                        }
+                        
+                        
+                        no.InitedObject=YES;
+                        no.HintObject=YES;
+                        
+                        no.Position=ccp(nbr.Position.x+(nbr.MyHeldValue*50+(i*50)),nbr.Position.y);
+                        
+                        [no handleMessage:kDWsetupStuff];
+                        
+                        for(CCSprite *n in no.BaseNode.children)
+                        {
+                            [n setOpacity:0];
+                            CCFadeIn *fi=[CCFadeIn actionWithDuration:1.5f];
+                            CCAction *mbn=[CCCallBlock actionWithBlock:^{[no.BaseNode runAction:[CCMoveTo actionWithDuration:0.5f position:retPos]];}];
+                            CCFadeOut *fo=[CCFadeOut actionWithDuration:0.5f];
+                            CCAction *dgo=[CCCallBlock actionWithBlock:^{[gw delayRemoveGameObject:no];}];
+                            CCSequence *sq=[CCSequence actions:fi, mbn, fo, dgo, nil];
+                            [n runAction:sq];
+                        }
+                        
+                        [no release];
+                    }
+                    
+                    
+                    
+                    
+                }
+                [self setTouchVarsToOff];
+                return;
+    
+            }
             if(((DWNBondObjectGameObject*)gw.Blackboard.PickupObject).InitedObject)
             {
                 [gw.Blackboard.PickupObject handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:previousMount forKey:MOUNT] withLogLevel:0];
@@ -758,16 +854,20 @@ static float kNBFontSizeLarge=35.0f;
     if(!doNotSendPositionEval)
         [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:-1];
     
-    [gw Blackboard].PickupObject=nil;
-    hasMovedBlock=NO;
-
-    doNotSendPositionEval=NO;
+    [self setTouchVarsToOff];
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    isTouching=NO;
+    [self setTouchVarsToOff];
+}
+
+-(void)setTouchVarsToOff
+{
+    [gw Blackboard].PickupObject=nil;
+    [gw Blackboard].ProximateObject=nil;
     hasMovedBlock=NO;
+    isTouching=NO;
     doNotSendPositionEval=NO;
 }
 

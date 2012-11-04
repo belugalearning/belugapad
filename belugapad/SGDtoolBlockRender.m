@@ -95,6 +95,7 @@
 {
     if([ParentGO.MyContainer conformsToProtocol:@protocol(Cage)])
         return NO;
+
     
     ParentGO.SeekingPair=YES;
     if([BLMath DistanceBetween:ParentGO.Position and:location]<100.0f)

@@ -16,6 +16,7 @@
 @synthesize CageType, BlockType;
 @synthesize InitialObjects;
 @synthesize MySprite;
+@synthesize RandomPositions;
 
 -(SGDtoolCage*) initWithGameWorld:(SGGameWorld*)aGameWorld atPosition:(CGPoint)thisPosition andRenderLayer:(CCLayer*)aRenderLayer andCageType:(NSString*)thisCageType
 {
@@ -48,6 +49,8 @@
 -(void)setup
 {
     if(InitialObjects==0)InitialObjects=1;
+    else if(InitialObjects>30)InitialObjects=30;
+    
     NSString *sprFileName=nil;
     
     if(!self.CageType)
@@ -69,6 +72,19 @@
 -(void)spawnNewBlock
 {
     float totalLength=MySprite.contentSize.width-(73*2);
+
+    int skipCount=0;
+    int numberOfFreeSpaces=0;
+    
+    
+    if([CageType isEqualToString:@"15"])
+        numberOfFreeSpaces=15-InitialObjects;
+    if([CageType isEqualToString:@"30"])
+        numberOfFreeSpaces=30-InitialObjects;
+    
+    int chance=((float)numberOfFreeSpaces/(float)(InitialObjects+numberOfFreeSpaces))*100;
+    
+    if(!self.RandomPositions)chance=0;
     
     // render buttons
     float sectionW=0;
@@ -78,12 +94,26 @@
         sectionW=totalLength / 15;
     
     float startPosX=MySprite.position.x+74-(MySprite.contentSize.width/2);
-    
+    int totalCount=0;
+    int createCount=0;
     int posCount=0;
-    for(int i=0;i<self.InitialObjects;i++)
+    while(createCount<InitialObjects)
     {
-        if(posCount==15)posCount=0;
-        float xPos=startPosX+(posCount+0.5) * sectionW;
+
+        int randomNo=arc4random() % 100;
+        if(randomNo<chance && skipCount<numberOfFreeSpaces)
+        {
+            skipCount++;
+            posCount++;
+            totalCount++;
+            continue;
+        }
+        
+        
+        
+        
+        //if(posCount==15)posCount=0;
+        float xPos=startPosX+((posCount%15)+0.5) * sectionW;
         float yPos=0;
         
         if(InitialObjects==1)
@@ -91,13 +121,15 @@
         else if(InitialObjects>1&&InitialObjects<=15)
             yPos=55.0f;
         else
-            yPos=107-((i/(int)15)*50);
+            yPos=107-((totalCount/(int)15)*50);
         
         id<Configurable,Selectable,Pairable,Moveable> newblock;
         newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gameWorld andRenderLayer:self.RenderLayer andPosition:ccp(xPos, yPos) andType:BlockType] autorelease];
         newblock.MyContainer=self;
         [newblock setup];
         posCount++;
+        totalCount++;
+        createCount++;
     }
 }
 

@@ -153,7 +153,9 @@ static float kDistanceBetweenBlocks=70.0f;
     cageObjectCount=[[pdef objectForKey:CAGE_OBJECT_COUNT]intValue];
     hasInactiveArea=[[pdef objectForKey:HAS_INACTIVE_AREA]boolValue];
     cannotBreakBonds=[[pdef objectForKey:UNBREAKABLE_BONDS]boolValue];
-    //BOOL sausages=[[pdef objectForKey:UNBREAKABLE_BONDS]boolValue];
+    randomiseDockPositions=[[pdef objectForKey:RANDOMISE_DOCK_POSITIONS]boolValue];
+    
+    
 
     if([pdef objectForKey:DOCK_TYPE])
         dockType=[pdef objectForKey:DOCK_TYPE];
@@ -239,6 +241,7 @@ static float kDistanceBetweenBlocks=70.0f;
             cage=[[SGDtoolCage alloc]initWithGameWorld:gw atPosition:ccp(((24*s)/2)+((i+0.5) * sectionW), 80) andRenderLayer:renderLayer andCageType:dockType];
             cage.BlockType=[usedShapeTypes objectAtIndex:i];
             cage.InitialObjects=cageObjectCount;
+            cage.RandomPositions=randomiseDockPositions;
             [cage setup];
             [cage spawnNewBlock];
             
@@ -273,6 +276,7 @@ static float kDistanceBetweenBlocks=70.0f;
         [usedShapeTypes addObject:blockType];
     
     SGDtoolContainer *container = [[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:label andRenderLayer:renderLayer];
+    container.BlockType=blockType;
     if (label && !existingGroups) existingGroups = [[NSMutableArray arrayWithObject:label] retain];
     float startPosX=0;
     float startPosY=0;
@@ -325,7 +329,7 @@ static float kDistanceBetweenBlocks=70.0f;
         
         if(!hasInactiveArea||cannotBreakBonds)
         {
-            if(i>0){
+            if(i){
                 SGDtoolBlock *prevBlock = [container.BlocksInShape objectAtIndex:i-1];
                 [block pairMeWith:prevBlock];
                 [self returnNextMountPointForThisShape:container];
@@ -421,6 +425,7 @@ static float kDistanceBetweenBlocks=70.0f;
         [existingGroups addObject:[container.Label string]];
     }
     
+    container.BlockType=((id<Configurable>)Object).blockType;
     [container addBlockToMe:Object];
     [container layoutMyBlocks];
 }
@@ -702,6 +707,49 @@ static float kDistanceBetweenBlocks=70.0f;
         return YES;
     else
         return NO;
+}
+
+-(BOOL)evalGroupTypesAndShapes
+{
+    NSMutableArray *shapesFound=[[NSMutableArray alloc]init];
+    NSMutableArray *solFound=[[NSMutableArray alloc]init];
+    int solutionsExpected=[solutionsDef count];
+    int solutionsFound=0;
+    
+    
+    for(NSDictionary *d in solutionsDef)
+    {
+        if([solFound containsObject:d])continue;
+        
+        for (id cont in gw.AllGameObjects)
+        {
+            if([shapesFound containsObject:cont])continue;
+            
+            if([cont conformsToProtocol:@protocol(Container)])
+            {
+                id<Container>thisCont=cont;
+                
+                NSLog(@"thisCont type=%@, thisCont BlocksInShape=%d", thisCont.BlockType, [thisCont.BlocksInShape count]);
+                
+                if([thisCont.BlocksInShape count]==[[d objectForKey:NUMBER]intValue] && [thisCont.BlockType isEqualToString:[d objectForKey:BLOCK_TYPE]])
+                {
+                    solutionsFound++;
+                    [shapesFound addObject:cont];
+                    [solFound addObject:d];
+                    continue;
+                }
+            }
+        }
+    }
+    
+    
+    
+    NSLog(@"solutions found %d required %d", solutionsFound, solutionsExpected);
+    if (solutionsFound==solutionsExpected)
+        return YES;
+    else
+        return NO;
+
 }
 
 -(CGPoint)returnNextMountPointForThisShape:(id<Container>)thisShape
@@ -1130,6 +1178,11 @@ static float kDistanceBetweenBlocks=70.0f;
     else if(evalType==kCheckEvalAreas)
     {
         return [self evalNumberOfShapesInEvalAreas];
+    }
+    
+    else if(evalType==kCheckGroupTypeAndNumber)
+    {
+        return [self evalGroupTypesAndShapes];
     }
     
 

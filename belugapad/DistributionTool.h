@@ -16,7 +16,8 @@ typedef enum
 {
     kCheckShapeSizes=0,
     kCheckNamedGroups=1,
-    kCheckEvalAreas=2
+    kCheckEvalAreas=2,
+    kCheckGroupTypeAndNumber=3
 }DistributionEvalType;
 
 @interface DistributionTool : ToolScene
@@ -48,6 +49,7 @@ typedef enum
     BOOL problemHasCage;
     BOOL hasInactiveArea;
     BOOL spawnedNewObj;
+    BOOL randomiseDockPositions;
     int cageObjectCount;
     
     NSString *dockType;

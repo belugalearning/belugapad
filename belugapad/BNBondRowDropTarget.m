@@ -66,6 +66,10 @@
                     gameWorld.Blackboard.DropObject=gameObject;
                     
                 }
+                else
+                {
+                    gameWorld.Blackboard.ProximateObject=gameObject;
+                }
 
             }
         else {

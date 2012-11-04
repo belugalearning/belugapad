@@ -188,6 +188,7 @@ static float kTimeToCageShake=7.0f;
         }
     }
     
+    
     if(showValue && [solutionType isEqualToString:TOTAL_COUNT])
         [sumLabel setString:[NSString stringWithFormat:@"%g", totalObjectValue]];
     
@@ -984,6 +985,11 @@ static float kTimeToCageShake=7.0f;
         disableAudioCounting = [[pdef objectForKey:DISABLE_AUDIO_COUNTING] boolValue];
     else
         disableAudioCounting=NO;
+    
+    if([pdef objectForKey:COUNT_USER_BLOCKS])
+        countUserBlocks = [[pdef objectForKey:COUNT_USER_BLOCKS] boolValue];
+    else
+        countUserBlocks=NO;
     
     if([pdef objectForKey:SHOW_MULTIPLE_BLOCKS_FROM_CAGE])
         showMultipleControls = [[pdef objectForKey:SHOW_MULTIPLE_BLOCKS_FROM_CAGE]boolValue];
@@ -3281,6 +3287,18 @@ static float kTimeToCageShake=7.0f;
 //                    gw.Blackboard.PriorityDropObject=nil;
 //                    [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
                 }
+                
+                if(countUserBlocks)
+                {
+                    int initedOnGrid=[[initBlocksForColumn objectAtIndex:currentColumnIndex]intValue];
+                    float colValue=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] floatValue];
+                    int amountAdded=(([self usedSpacesOnGrid:currentColumnIndex]-initedOnGrid)*colValue);
+                    if(amountAdded>20)return;
+                    
+                    NSString *fileName=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", amountAdded];
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(fileName)];
+                }
+
                 
                 // then log stuff
                 [loggingService logEvent:(isCage ? BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_CAGE : BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_GRID)

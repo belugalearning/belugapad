@@ -743,6 +743,7 @@ static float kNBFontSizeLarge=35.0f;
         {
             if(barAssistance && gw.Blackboard.ProximateObject)
             {
+                float addedLength=0.0f;
                 [gw.Blackboard.ProximateObject handleMessage:kDWresetPositionEval];
                 DWNBondRowGameObject *nbr=(DWNBondRowGameObject*)gw.Blackboard.ProximateObject;
                 DWNBondObjectGameObject *po=(DWNBondObjectGameObject*)gw.Blackboard.PickupObject;
@@ -758,7 +759,7 @@ static float kNBFontSizeLarge=35.0f;
                     for(CCSprite *s in po.BaseNode.children)
                     {
                         CCFadeOut *fo=[CCFadeOut actionWithDuration:1.5f];
-                        CCFadeIn *fi=[CCFadeIn actionWithDuration:1.5f];
+                        CCFadeIn *fi=[CCFadeIn actionWithDuration:0.5f];
 
 
                         CCAction *sth=[CCCallBlock actionWithBlock:^{[po handleMessage:kDWmoveSpriteToHome];}];
@@ -768,7 +769,7 @@ static float kNBFontSizeLarge=35.0f;
                         if([po.BaseNode.children indexOfObject:s]==[po.BaseNode.children count]-1)
                             sq=[CCSequence actions:fo, sth, remt, fi, nil];
                         else
-                            sq=[CCSequence actions:fo, sth, fi, nil];
+                            sq=[CCSequence actions:fo, fi, nil];
                         [s runAction:sq];
                     }
                     
@@ -805,9 +806,9 @@ static float kNBFontSizeLarge=35.0f;
                         
                         
                         no.InitedObject=YES;
-                        no.HintObject=YES;
                         
-                        no.Position=ccp(nbr.Position.x+(nbr.MyHeldValue*50+(i*50)),nbr.Position.y);
+                        no.Position=ccp(nbr.Position.x+(nbr.MyHeldValue*50+(addedLength*50)),nbr.Position.y);
+                        addedLength+=no.Length;
                         
                         [no handleMessage:kDWsetupStuff];
                         
@@ -815,10 +816,11 @@ static float kNBFontSizeLarge=35.0f;
                         {
                             [n setOpacity:0];
                             CCFadeIn *fi=[CCFadeIn actionWithDuration:1.5f];
+                            CCDelayTime *dt=[CCDelayTime actionWithDuration:2.0f];
                             CCAction *mbn=[CCCallBlock actionWithBlock:^{[no.BaseNode runAction:[CCMoveTo actionWithDuration:0.5f position:retPos]];}];
                             CCFadeOut *fo=[CCFadeOut actionWithDuration:0.5f];
                             CCAction *dgo=[CCCallBlock actionWithBlock:^{[gw delayRemoveGameObject:no];}];
-                            CCSequence *sq=[CCSequence actions:fi, mbn, fo, dgo, nil];
+                            CCSequence *sq=[CCSequence actions:fi, dt, mbn, fo, dgo, nil];
                             [n runAction:sq];
                         }
                         

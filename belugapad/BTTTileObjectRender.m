@@ -80,17 +80,17 @@
     {
         if(!tile.myText && !tile.Disabled)
         {
-            if(tile.operatorType==kOperatorAdd)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos+tile.myYpos] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
-            else if(tile.operatorType==kOperatorSub)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos-tile.myYpos] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
-            else if(tile.operatorType==kOperatorMul)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos*tile.myYpos] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
-            else if(tile.operatorType==kOperatorDiv)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos/tile.myYpos] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
+            if(tile.operatorType==kOperatorAdd)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos+tile.myYpos] fontName:CHANGO fontSize:25.0f];
+            else if(tile.operatorType==kOperatorSub)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos-tile.myYpos] fontName:CHANGO fontSize:25.0f];
+            else if(tile.operatorType==kOperatorMul)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos*tile.myYpos] fontName:CHANGO fontSize:25.0f];
+            else if(tile.operatorType==kOperatorDiv)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos/tile.myYpos] fontName:CHANGO fontSize:25.0f];
             [tile.myText setPosition:[tile.mySprite convertToNodeSpace:tile.Position]];
-            [tile.myText setColor:ccc3(200,200,200)];
+            [tile.myText setColor:ccc3(0,0,0)];
             if(gameWorld.Blackboard.inProblemSetup){
                 [tile.myText setTag:3];
                 [tile.myText setOpacity:0];
             }
-            [tile.mySprite addChild:tile.myText];
+            [tile.mySprite addChild:tile.myText z:10];
         }
     }
     
@@ -114,6 +114,8 @@
     else if(tile.isCornerPiece)spriteFileName=[NSString stringWithFormat:@"/images/timestables/tile%d_end_corner.png", tile.Size];
 
     else spriteFileName=[NSString stringWithFormat:@"/images/timestables/tile%d.png", tile.Size];
+    
+    spriteFileName=@"/images/timestables/TT_Grid_Block.png";
     
     tile.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
     [tile.mySprite setPosition:tile.Position];
@@ -145,7 +147,9 @@
         [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_SELECT_ANSWER withAdditionalData:tileCoords];
         [gameWorld.Blackboard.SelectedObjects addObject:tile];
         tile.Selected=YES;
-        tile.selSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/selectionbox%d.png"), tile.Size]];
+        
+        //[tile.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Grid_Block_Selected.png")]];
+        tile.selSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/TT_Grid_Block_Selected.png"), tile.Size]];
         [tile.selSprite setPosition:tile.Position];
         [tile.mySprite.parent addChild:tile.selSprite z:1000];
         
@@ -155,6 +159,8 @@
         [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_DESELECT_ANSWER withAdditionalData:tileCoords];
         [gameWorld.Blackboard.SelectedObjects removeObject:tile];
         tile.Selected=NO;
+//        [tile.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Grid_Block.png")]];
+
         [tile.selSprite removeFromParentAndCleanup:YES];
     }
 }

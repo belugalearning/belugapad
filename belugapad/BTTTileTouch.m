@@ -77,7 +77,7 @@
     if(messageType==kDWshowCalcBubble)
     {
 
-        tile.ansSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/answerbubble.png")];
+        tile.ansSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/TT_Label.png")];
         [tile.ansSprite setPosition:[tile.mySprite convertToNodeSpace:ccp(tile.mySprite.position.x, tile.mySprite.position.y+55)]];
         //[tile.ansSprite setPosition:ccp(tile.mySprite.position.x, tile.mySprite.position.y+55)];
         //[tile.mySprite.parent addChild:tile.ansSprite z:9999];
@@ -91,8 +91,8 @@
         else if(tile.operatorType==kOperatorMul)myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%dx%d", tile.myXpos, tile.myYpos] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
         else if(tile.operatorType==kOperatorDiv)myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d/%d", tile.myXpos, tile.myYpos] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
         //[myText setPosition:[tile.mySprite convertToNodeSpace:ccp(tile.Position.x, tile.Position.y+55)]];
-        [myText setPosition:ccp(tile.ansSprite.contentSize.width/2, (tile.ansSprite.contentSize.height/2)-2)];
-        [myText setColor:ccc3(83,93,100)];
+        [myText setPosition:ccp(tile.ansSprite.contentSize.width/2, (tile.ansSprite.contentSize.height/2))];
+        [myText setColor:ccc3(255,255,255)];
         [tile.ansSprite addChild:myText];
         
         [tile.ansSprite runAction:[CCFadeOut actionWithDuration:2.0f]];

@@ -59,8 +59,8 @@
     dupe.enabled=self.enabled;
     
     dupe.prefixText=[[self.prefixText copy] autorelease];
-//    dupe.numberText=[[self.numberText copy] autorelease];
-    dupe.numberText=@"ntext";
+    dupe.numberText=[[self.numberText copy] autorelease];
+//    dupe.numberText=@"ntext";
     dupe.suffixText=[[self.suffixText copy] autorelease];
     
     return (id<MovingInteractive>)dupe;
@@ -83,7 +83,10 @@
 
 -(void)setNumberText:(NSString *)theNumberText
 {
+    if(numberText) [numberText release];
+    
     numberText=theNumberText;
+    [numberText retain];
     
     NSNumberFormatter *nf=[[NSNumberFormatter alloc] init];
     [nf setNumberStyle:NSNumberFormatterDecimalStyle];

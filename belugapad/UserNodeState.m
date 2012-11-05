@@ -8,6 +8,7 @@
 
 #import "UserNodeState.h"
 #import "FMDatabase.h"
+#import "global.h"
 
 @interface UserNodeState()
 {
@@ -73,6 +74,55 @@
         
     }
     return self;
+}
+
+-(void)updateAndSaveStateOnEndNodePlayWithScore:(int)score
+{
+    NSDate *now = [NSDate date];
+    
+    self.lastPlayed = now;
+    self.lastScore = score;
+    self.totalAccumulatedScore += score;
+    self.highScore = MAX(score, self.highScore);
+    
+    if (score > SCORE_ARTIFACT_1)
+    {
+        self.artifact1LastAchieved = now;
+        if (score > SCORE_ARTIFACT_2)
+        {
+            self.artifact2LastAchieved = now;
+            if (score > SCORE_ARTIFACT_3)
+            {
+                self.artifact3LastAchieved = now;
+                if (score > SCORE_ARTIFACT_4)
+                {
+                    self.artifact4LastAchieved = now;
+                    if (score > SCORE_ARTIFACT_5)
+                    {
+                        self.artifact5LastAchieved = now;
+                    }
+                }
+            }
+        }
+    }
+    
+    [self saveState];
+}
+
+-(void)saveState
+{
+    [db executeUpdate:@"UPDATE Nodes SET time_played=?, lastPlayed=?, last_score=?, total_accumulated_score=?, high_score=?, artifact_1_lastachieved=?, artifact_2_lastachieved=?, artifact_3_lastachieved=?, artifact_4_lastachieved=?, artifact_5_lastachieved=? WHERE id=?",
+        self.timePlayed,
+        self.lastPlayed ? [self.lastPlayed timeIntervalSince1970] : 0,
+        self.lastScore,
+        self.totalAccumulatedScore,
+        self.highScore,
+        self.artifact1LastAchieved ? [self.artifact1LastAchieved timeIntervalSince1970] : 0,
+        self.artifact2LastAchieved ? [self.artifact2LastAchieved timeIntervalSince1970] : 0,
+        self.artifact3LastAchieved ? [self.artifact3LastAchieved timeIntervalSince1970] : 0,
+        self.artifact4LastAchieved ? [self.artifact4LastAchieved timeIntervalSince1970] : 0,
+        self.artifact5LastAchieved ? [self.artifact5LastAchieved timeIntervalSince1970] : 0];
+    
 }
 
 -(void)dealloc

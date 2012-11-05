@@ -26,5 +26,7 @@
 
 -(id) initWithUserId:(NSString*)userId nodeId:(NSString*)nodeId database:(FMDatabase*)database;
 -(id) initWithUserId:(NSString*)userId resultSet:(FMResultSet*)rs database:(FMDatabase*)database;
+-(void)updateAndSaveStateOnEndNodePlayWithScore:(int)score;
+-(void) saveState;
 
 @end

@@ -187,6 +187,8 @@
     autoAddition=[[pdef objectForKey:AUTO_UPDATE_WHEEL]boolValue];
     showMoreOrLess=[[pdef objectForKey:SHOW_MORE_LESS_ARROWS]boolValue];
     isIntroPlist=[[pdef objectForKey:IS_INTRO_PLIST]boolValue];
+    nonPropEvalX=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_X]intValue];
+    nonPropEvalY=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_Y]intValue];
     
     showCount=[pdef objectForKey:SHOW_COUNT];
     
@@ -218,15 +220,6 @@
     
     if(showNumberWheel)
         numberWheels=[[NSMutableArray alloc]init];
-    
-    if(evalType==kProblemNonProportionalGrid)
-    {
-        nonPropEvalX=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_X]intValue];
-        nonPropEvalY=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_Y]intValue];
-        showDraggableBlock=NO;
-        shapeBaseSize=1;
-        drawMode=0;
-    }
     
     if(isIntroPlist)
     {
@@ -329,7 +322,7 @@
     if(drawMode==kStartAnchor)
     {
         gw.Blackboard.FirstAnchor=[[dotMatrix objectAtIndex:startX] objectAtIndex:startY];
-        gw.Blackboard.LastAnchor=[[dotMatrix objectAtIndex:startX+1] objectAtIndex:startY+1];;
+        gw.Blackboard.LastAnchor=[[dotMatrix objectAtIndex:startX+1] objectAtIndex:startY+1];
         
         [self checkAnchorsAndUseResizeHandle:YES andShowMove:NO andPrecount:nil andDisabled:NO];
     }
@@ -361,6 +354,19 @@
         [renderLayer addChild:dragBlock];
     }
 
+    
+    if(evalType==kProblemNonProportionalGrid)
+    {
+        showDraggableBlock=NO;
+        useShapeGroups=YES;
+        shapeBaseSize=1;
+        drawMode=0;
+        
+        gw.Blackboard.FirstAnchor=[[dotMatrix objectAtIndex:1] objectAtIndex:6];
+        gw.Blackboard.LastAnchor=[[dotMatrix objectAtIndex:[[NSString stringWithFormat:@"%d",nonPropEvalX]length]] objectAtIndex:[[NSString stringWithFormat:@"%d",nonPropEvalY]length]];
+        
+        [self checkAnchors];
+    }
 
 }
 
@@ -775,6 +781,10 @@
 {
     if(evalType==kProblemNonProportionalGrid)
     {
+        
+        DWDotGridShapeGroupGameObject *sGroup=[DWDotGridShapeGroupGameObject alloc];
+        [gw populateAndAddGameObject:sGroup withTemplateName:@"TdotgridShapeGroup"];
+
         int xlen=[[NSString stringWithFormat:@"%d", nonPropEvalX] length];
         int ylen=[[NSString stringWithFormat:@"%d", nonPropEvalY] length];
         
@@ -788,22 +798,58 @@
         if(ylen>1) baseStartY=pow(10, xlen-1);
         
         int xpos=0;
-        int ypos=ylen-1;
         
         for(int xi=baseStartX; xi>0; xi=xi/10)
         {
             int thisXVal=(remX/xi) * xi;
+            int ypos=ylen-1;
             
             for(int yi=baseStartY; yi>0; yi=yi/10)
             {
                 int thisYVal=(remY/yi) * yi;
                 
                 //in here create a shape at xpos, ypos with value thisXVal*thisYVal
+                NSMutableArray *shapeAnchs=[[NSMutableArray alloc] init];
+                DWDotGridAnchorGameObject *a=[[dotMatrix objectAtIndex:1+xpos] objectAtIndex:3+ypos];
+                DWDotGridAnchorGameObject *b=[[dotMatrix objectAtIndex:1+xpos+1] objectAtIndex:3+ypos-1];
                 
+                gw.Blackboard.FirstAnchor=a;
+                gw.Blackboard.LastAnchor=b;
+                
+                [shapeAnchs addObject:a];
+                NSLog(@"addedobject %d %d", 3+xpos, 3+ypos);
+                DWDotGridShapeGameObject *shape=[self createShapeWithAnchorPoints:shapeAnchs andPrecount:nil andDisabled:NO andGroup:sGroup];
+                shape.shapeGroup=sGroup;
+                shape.firstAnchor=a;
+                
+                shape.firstAnchor=[[dotMatrix objectAtIndex:1] objectAtIndex:3+ylen];
+                shape.lastAnchor=[[dotMatrix objectAtIndex:1+xlen] objectAtIndex:ylen];
+                shape.firstBoundaryAnchor=[[dotMatrix objectAtIndex:1] objectAtIndex:3+ylen];
+                shape.lastBoundaryAnchor=[[dotMatrix objectAtIndex:1+xlen] objectAtIndex:ylen];
+                shape.autoUpdateWheel=autoAddition;
+                
+                [shapeAnchs release];
+
                 
                 if(xpos==0)
                 {
+                    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", thisYVal] fontName:CHANGO fontSize:20.0f];
+                    [l setPosition:ccp(a.Position.x-50,a.Position.y+50)];
+                    [renderLayer addChild:l];
                     //create y label with thisYVal
+                    NSLog(@"this y val %d", thisYVal);
+                    
+                    NSLog(@"this shape val %d", thisXVal*thisYVal);
+                    
+
+
+                }
+                
+                if(ypos==ylen-1)
+                {
+                    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", thisXVal] fontName:CHANGO fontSize:20.0f];
+                    [l setPosition:ccp(245+(xpos*75),550)];
+                    [renderLayer addChild:l];
                 }
                 
                 ypos--;
@@ -811,6 +857,7 @@
             }
             
             //create x label with thisXVal
+            NSLog(@"this x val %d", thisXVal);
             
             xpos++;
             remX-=thisXVal;
@@ -1842,7 +1889,9 @@
     }
     else if(evalType==kProblemNonProportionalGrid)
     {
-        
+        if(![self checkForCorrectShapeSizes])return NO;
+        else if([self checkForCorrectShapeSizes] && solutionNumber==sumWheel.OutputValue)return YES;
+        else return NO;
     }
     else if(evalType==kProblemIntroPlist)
     {

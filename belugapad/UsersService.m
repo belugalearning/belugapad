@@ -37,6 +37,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     
     NSMutableDictionary *currentUser;
     NSString *currentUserId;
+    FMDatabase *currentUserStateDatabase;
 }
 
 -(NSMutableDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs;
@@ -71,6 +72,12 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         [currentUser release];
         currentUser = nil;
     }
+    if (currentUserId) [currentUserId release];
+    if (currentUserStateDatabase)
+    {
+        [currentUserStateDatabase close];
+        [currentUserStateDatabase release];
+    }
     if (urId)
     {
         TFLog(@"logged in with beluga user id: %@", urId);
@@ -81,6 +88,16 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         [rs close];
         [allUsersDatabase close];
         [loggingService logEvent:BL_USER_LOGIN withAdditionalData:nil];
+        
+        // set currentUserStateDatabase - if it doesn't exist yet for 
+        NSString *libraryDir = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSString *urStateDbPath = [libraryDir stringByAppendingPathComponent:[NSString stringWithFormat:@"user-state/%@.db", urId]];
+        NSFileManager *fm = [NSFileManager defaultManager];
+        if (![fm fileExistsAtPath:urStateDbPath isDirectory:nil])
+        {
+            [fm copyItemAtPath:BUNDLE_FULL_PATH(@"/canned-dbs/user-state-template.db") toPath:urStateDbPath error:nil];
+        }
+        currentUserStateDatabase = [[FMDatabase databaseWithPath:urStateDbPath] retain];
         
         currentUserId=[urId copy];
     }
@@ -109,7 +126,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         allUsersDatabase = [[FMDatabase databaseWithPath:allUsersDBPath] retain];
         
         NSString *userStateDir = [libraryDir stringByAppendingPathComponent:@"user-state"];
-        if (![fm fileExistsAtPath:userStateDir isDirectory:YES])
+        if (![fm fileExistsAtPath:userStateDir isDirectory:nil])
         {
             [fm createDirectoryAtPath:userStateDir withIntermediateDirectories:YES attributes:nil error:nil];
         }
@@ -412,9 +429,15 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 -(void)dealloc
 {
     if (currentUser) [currentUser release];
-    if (allUsersDatabase) {
+    if (allUsersDatabase)
+    {
         [self.allUsersDatabase close];
         [self.allUsersDatabase release];
+    }
+    if (currentUserStateDatabase)
+    {
+        [currentUserStateDatabase close];
+        [currentUserStateDatabase release];
     }
     if (httpClient) [httpClient release];
     if (opQueue) [opQueue release];

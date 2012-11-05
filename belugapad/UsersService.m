@@ -301,7 +301,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 -(void)flagRemoveUserFromDevice:(NSString*)userId
 {
     [allUsersDatabase open];
-    NSString *sqlStatement = [NSString stringWithFormat:@"UPDATE users SET flag_remove = 1 WHERE id = ?", userId];
+    NSString *sqlStatement = [NSString stringWithFormat:@"UPDATE users SET flag_remove = 1 WHERE id = %@", userId];
     BOOL updateSuccess = [allUsersDatabase executeUpdate:sqlStatement];
     [allUsersDatabase close];
     

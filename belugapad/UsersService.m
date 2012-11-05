@@ -264,13 +264,23 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     [opQueue addOperation:reqOp];
 }
 
--(void)addCompletedNodeId:(NSString*)nodeId
-{
-}
-
 -(BOOL)hasCompletedNodeId:(NSString *)nodeId
 {
-    return YES;
+    if (!currentUserId || !currentUserStateDatabase) return NO; // TODO: Error
+    
+    BOOL completed = NO;
+    
+    [currentUserStateDatabase open];
+    FMResultSet *rs = [currentUserStateDatabase executeQuery:@"SELECT first_completed FROM Nodes WHERE id=?", nodeId];
+    if ([rs next])
+    {
+        completed = [rs doubleForColumnIndex:0] > 0;
+    } // TODO: else error
+    
+    [rs close];
+    [currentUserStateDatabase close];
+    
+    return completed;
 }
 
 -(UserNodeState*)currentUserStateForNodeWithId:(NSString *)nodeId
@@ -309,7 +319,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     
     if (!updateSuccess)
     {
-        // log failure        
+        // log failure
         NSMutableDictionary *d = [NSMutableDictionary dictionary];
         [d setValue:BL_APP_ERROR_TYPE_DB_OPERATION_FAILURE forKey:@"type"];
         [d setValue:CODE_LOCATION() forKey:@"codeLocation"];

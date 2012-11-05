@@ -40,7 +40,6 @@ typedef enum {
                         andPassword:(NSString*)password
                            callback:(void (^)(NSDictionary*))callback;
 
--(void)addCompletedNodeId:(NSString*)nodeId;
 -(BOOL)hasCompletedNodeId:(NSString*)nodeId;
 -(UserNodeState*)currentUserStateForNodeWithId:(NSString *)nodeId;
 -(NSDictionary*)currentUserAllNodesState;

@@ -55,7 +55,7 @@
         self.nodeId = [rs stringForColumn:@"id"];
         self.timePlayed = [rs doubleForColumn:@"time_played"];
         
-        double lp = [rs intForColumn:@"last_played"];
+        NSTimeInterval lp = [rs doubleForColumn:@"last_played"];
         if (lp > 0) self.lastPlayed = [NSDate dateWithTimeIntervalSince1970:lp];
         
         self.lastScore = [rs intForColumn:@"last_score"];

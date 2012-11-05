@@ -3135,8 +3135,6 @@ static float kTimeToCageShake=7.0f;
                 if((multipleBlockPickup||showMultipleControls||isNegativeProblem) && !isBasePickup)
                 {
                     
-                    NSLog(@"free spaces on grid %d", [self freeSpacesOnGrid:currentColumnIndex]);
-                    
                     if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
                     {
                         
@@ -3324,9 +3322,6 @@ static float kTimeToCageShake=7.0f;
                 }
                 if(blocksToDestroy)
                 {
-                    
-                    NSLog(@"blocksToDestroy! free net spaces: %d", [self freeSpacesOnGrid:currentColumnIndex]);
-                    
                     for(DWPlaceValueBlockGameObject *thisBlock in blocksToDestroy)
                     {
                         [thisBlock handleMessage:kDWresetToMountPosition];
@@ -3341,7 +3336,6 @@ static float kTimeToCageShake=7.0f;
                     }
                     
                     blocksToDestroy=nil;
-                    NSLog(@"blocksToDestroy! free net spaces: %d", [self freeSpacesOnGrid:currentColumnIndex]);
                 }
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
                 [loggingService logEvent:BL_PA_PV_TOUCH_END_EXPLODE_BLOCKS withAdditionalData:nil];

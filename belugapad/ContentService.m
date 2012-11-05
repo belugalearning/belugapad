@@ -22,6 +22,7 @@
 #import "SSZipArchive.h"
 #import "BLFiles.h"
 #import "AdpInserter.h"
+#import "UserNodeState.h"
 
 @interface ContentService()
 {
@@ -386,8 +387,6 @@
         [ac.loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
     }
     
-    self.currentNode=node;
-    
     self.currentPipeline = [[[Pipeline alloc] initWithDatabase:contentDatabase andPipelineId:pipelineid] autorelease];
     
     //start indexes before their contents -- ready to increment into their respective sequences
@@ -490,21 +489,11 @@
     NSLog(@"loaded test def: %@", self.pathToTestDef);
 }
 
--(void)setPipelineNodeComplete
+-(void)endPlayPipelineWithScore:(int)score
 {
-    if (useTestPipeline) return;
-    
-    NSLog(@"ContentService#setPipelineNodeComplete currentNode id=\"%@\"", currentNode._id);
-    //effective placeholder for assessed complete -- e.g. lit on node
-    UsersService *us = ((AppController*)[[UIApplication sharedApplication] delegate]).usersService;    
-    [us addCompletedNodeId:self.currentNode._id];
-}
-
--(void)setPipelineScore:(int)score
-{
-    //if this is greater than previous score for this pipeline, persist it as score for that pipeline / node
-    
-    
+    if (!self.currentNode) return;
+    UserNodeState *state = [usersService currentUserStateForNodeWithId:self.currentNode._id];
+    [state updateAndSaveStateOnEndNodePlayWithScore:score];
 }
 
 #pragma mark - epsiode management, progression

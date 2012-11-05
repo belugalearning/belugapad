@@ -40,8 +40,7 @@
 @property (readonly) BOOL isUserPastEpisodeHead;
 
 -(id)initWithLocalSettings:(NSDictionary*)settings;
--(void)setPipelineNodeComplete;
--(void)setPipelineScore:(int)score;
+-(void)endPlayPipelineWithScore:(int)score;
 -(BOOL)isUsingTestPipeline;
 
 -(void)updateContentDatabaseWithSettings:(NSDictionary*)settings;

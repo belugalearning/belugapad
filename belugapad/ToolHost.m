@@ -806,7 +806,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     //hide pause again
     pbtn.opacity=0;
     
-    [self stageIntroActions];        
+    [self stageIntroActions];
+    
+    [self showHideCommit];
 
     [self.Zubi dumpXP];
     
@@ -1449,6 +1451,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         else
             showCommit=NO;
     }
+    
+    if(!metaQuestionForThisProblem && !numberPickerForThisProblem && evalMode==kProblemEvalOnCommit)
+        showCommit=YES;
+    
     
     if(showCommit)
         [commitBtn setVisible:YES];

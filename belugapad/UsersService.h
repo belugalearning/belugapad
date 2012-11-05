@@ -19,7 +19,7 @@ typedef enum {
 
 @property (readonly, retain, nonatomic) NSString *installationUUID;
 @property (readonly) NSDictionary *currentUserClone;
-@property (readonly) FMDatabase *usersDatabase;
+@property (readonly) FMDatabase *allUsersDatabase;
 @property (readonly) NSString *currentUserId;
 
 -(id)initWithProblemPipeline:(NSString*)source

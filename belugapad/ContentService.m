@@ -605,7 +605,7 @@
     if(useThisInserter)
     {
         //open db for problem insert, inserter insert
-        [usersService.usersDatabase open];
+        [usersService.allUsersDatabase open];
         
         //get an id for the episode insert we'll create in a bit
         NSString *episodeInsertId=[BLFiles generateUuidString];
@@ -631,7 +631,7 @@
             // (e.g. if an inserted problem inserted more problems
             NSNumber *insertIndex=[NSNumber numberWithInt:currentEpisode.count-1];
             
-            [usersService.usersDatabase executeUpdate:@"INSERT INTO EpisodeProblems (id, episode_index, episode_id, episodeinserts_id, problem_id, dvar_data) VALUES (?, ?, ?, ?, ?, NULL)", epid, insertIndex, self.currentEpisodeId, episodeInsertId, pid];
+            [usersService.allUsersDatabase executeUpdate:@"INSERT INTO EpisodeProblems (id, episode_index, episode_id, episodeinserts_id, problem_id, dvar_data) VALUES (?, ?, ?, ?, ?, NULL)", epid, insertIndex, self.currentEpisodeId, episodeInsertId, pid];
 
             [ac.loggingService logEvent:BL_EP_PROBLEM_INSERT withAdditionalData:@{ @"insertType":BL_EP_PROBLEM_INSERT_TYPE_ADAPT_VIABLE_INSERT, @"insertIndex": insertIndex, @"problem": pid }];
         }
@@ -648,18 +648,18 @@
         //index/sequence -- offset back from the count of the epsidoe as above
         NSNumber *insertIndex=[NSNumber numberWithInt:currentEpisode.count-1];
         
-        [usersService.usersDatabase executeUpdate:@"INSERT INTO EpisodeProblems (id, episode_index, episode_id, episodeinserts_id, problem_id, dvar_data) VALUES (?, ?, ?, ?, ?, NULL)", epid, insertIndex, self.currentEpisodeId, episodeInsertId, p._id];
+        [usersService.allUsersDatabase executeUpdate:@"INSERT INTO EpisodeProblems (id, episode_index, episode_id, episodeinserts_id, problem_id, dvar_data) VALUES (?, ?, ?, ?, ?, NULL)", epid, insertIndex, self.currentEpisodeId, episodeInsertId, p._id];
         
         [ac.loggingService logEvent:BL_EP_PROBLEM_INSERT withAdditionalData:@{ @"insertType":BL_EP_PROBLEM_INSERT_TYPE_REPEAT_CURRENT_PROBLEM, @"insertIndex": insertIndex, @"problem": p._id }];
         
         [self insertIntoEpsiodeTheProblem:p];
 
         //insert inserter record -- inc current epproblem_id, problem_id and episode_id, decision_data, trigger_data
-//        [usersService.usersDatabase executeUpdate:@"INSERT INTO EpisodeInserts (id, episode_id, inserter_type, trigger_data, decision_data) VALUES (?, ?, ?, ?, ?)", episodeInsertId, self.currentEpisodeId, useThisInserter.inserterName, [triggerData JSONString],[allDecisionsData JSONString]];
+//        [usersService.allUsersDatabase executeUpdate:@"INSERT INTO EpisodeInserts (id, episode_id, inserter_type, trigger_data, decision_data) VALUES (?, ?, ?, ?, ?)", episodeInsertId, self.currentEpisodeId, useThisInserter.inserterName, [triggerData JSONString],[allDecisionsData JSONString]];
         
-        [usersService.usersDatabase executeUpdate:@"INSERT INTO EpisodeInserts (id, episode_id, source_problem_id, inserter_type, trigger_data, decision_data) VALUES (?, ?, ?, ?, ?, ?)", episodeInsertId, self.currentEpisodeId, p._id, useThisInserter.inserterName, [triggerData JSONString],[allDecisionsData JSONString]];
+        [usersService.allUsersDatabase executeUpdate:@"INSERT INTO EpisodeInserts (id, episode_id, source_problem_id, inserter_type, trigger_data, decision_data) VALUES (?, ?, ?, ?, ?, ?)", episodeInsertId, self.currentEpisodeId, p._id, useThisInserter.inserterName, [triggerData JSONString],[allDecisionsData JSONString]];
         
-        [usersService.usersDatabase close];
+        [usersService.allUsersDatabase close];
     }
     
     [allDecisionsData release];
@@ -670,9 +670,9 @@
 {
     NSMutableArray *insertersUsed=[[NSMutableArray alloc] init];
     
-    [usersService.usersDatabase open];
+    [usersService.allUsersDatabase open];
     
-    FMResultSet *rs=[usersService.usersDatabase executeQuery:@"SELECT * FROM EpisodeInserts WHERE episode_id=? AND source_problem_id=?", seekEpisodeId, seekProblemId];
+    FMResultSet *rs=[usersService.allUsersDatabase executeQuery:@"SELECT * FROM EpisodeInserts WHERE episode_id=? AND source_problem_id=?", seekEpisodeId, seekProblemId];
     
     while ([rs next]) {
         NSString *iname=[rs stringForColumn:@"inserter_type"];
@@ -680,7 +680,7 @@
     }
     
     [rs close];
-    [usersService.usersDatabase close];
+    [usersService.allUsersDatabase close];
     
     NSArray *reta=[NSArray arrayWithArray:insertersUsed];
     [insertersUsed release];
@@ -701,9 +701,9 @@
     if(pipelineIndex >= [self.currentPipeline.flattenedProblems count])
     {
         //write into database that we overflowed
-        [usersService.usersDatabase open];
-        [usersService.usersDatabase executeUpdate:@"UPDATE Episodes SET completed_by_overflow=1 WHERE id=?", self.currentEpisodeId];
-        [usersService.usersDatabase close];
+        [usersService.allUsersDatabase open];
+        [usersService.allUsersDatabase executeUpdate:@"UPDATE Episodes SET completed_by_overflow=1 WHERE id=?", self.currentEpisodeId];
+        [usersService.allUsersDatabase close];
         
         return NO;
     }
@@ -715,7 +715,7 @@
         [currentEpisode addObject:p];
         
         //insert this into the EpisodeProblems table
-        [usersService.usersDatabase open];
+        [usersService.allUsersDatabase open];
         
         //create an id for the episode problem -- though this isn't used referentially or internally
         NSString *epid=[BLFiles generateUuidString];
@@ -723,13 +723,13 @@
         //index/sequence -- we're only inserting one, so we can use the episode_index
         NSNumber *insertIndex=[NSNumber numberWithInt:episodeIndex];
         
-        [usersService.usersDatabase executeUpdate:@"INSERT INTO EpisodeProblems (id, episode_index, episode_id, episodeinserts_id, problem_id, dvar_data) VALUES (?, ?, ?, NULL, ?, NULL)",
+        [usersService.allUsersDatabase executeUpdate:@"INSERT INTO EpisodeProblems (id, episode_index, episode_id, episodeinserts_id, problem_id, dvar_data) VALUES (?, ?, ?, NULL, ?, NULL)",
             epid,
             insertIndex,
             self.currentEpisodeId,
             p._id];
         
-        [usersService.usersDatabase close];
+        [usersService.allUsersDatabase close];
         
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         [ac.loggingService logEvent:BL_EP_PROBLEM_INSERT withAdditionalData:@{ @"insertType":BL_EP_PROBLEM_INSERT_TYPE_NEXT, @"insertIndex": insertIndex, @"problem": p._id }];
@@ -753,19 +753,19 @@
     //get an id for this episode (for db primarily - also included in logs)
     self.currentEpisodeId = [BLFiles generateUuidString];
     
-    [usersService.usersDatabase open];
+    [usersService.allUsersDatabase open];
     
     //check we have an episodes table to insert into
     [self queryCreateEpisodesTables];
     
     //insert details of this episode into the database
-    [usersService.usersDatabase executeUpdate:@"INSERT INTO Episodes (id, pipeline_id, user_id, date_created, completed_by_overflow) VALUES (?, ?, ?, ?, 0)",
+    [usersService.allUsersDatabase executeUpdate:@"INSERT INTO Episodes (id, pipeline_id, user_id, date_created, completed_by_overflow) VALUES (?, ?, ?, ?, 0)",
         self.currentEpisodeId,
         self.currentPipeline._id,
         usersService.currentUserId,
         [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]]];
     
-    [usersService.usersDatabase close];
+    [usersService.allUsersDatabase close];
     
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     [ac.loggingService logEvent:BL_EP_START withAdditionalData:nil];
@@ -776,17 +776,17 @@
     //this expects the database to be open already
     
     //this will need expanding to support versioning (e.g. per column checks / db build diff)
-    if(![usersService.usersDatabase tableExists:@"Episodes"])
+    if(![usersService.allUsersDatabase tableExists:@"Episodes"])
     {
-        [usersService.usersDatabase executeUpdate:@"CREATE TABLE Episodes (id TEXT PRIMARY KEY, pipeline_id TEXT, user_id TEXT, date_created INTEGER, completed_by_overflow INTEGER)"];
+        [usersService.allUsersDatabase executeUpdate:@"CREATE TABLE Episodes (id TEXT PRIMARY KEY, pipeline_id TEXT, user_id TEXT, date_created INTEGER, completed_by_overflow INTEGER)"];
     }
-    if(![usersService.usersDatabase tableExists:@"EpisodeInserts"])
+    if(![usersService.allUsersDatabase tableExists:@"EpisodeInserts"])
     {
-        [usersService.usersDatabase executeUpdate:@"CREATE TABLE EpisodeInserts (id TEXT PRIMARY_KEY, episode_id TEXT, source_problem_id TEXT, inserter_type TEXT, trigger_data TEXT, decision_data TEXT)"];
+        [usersService.allUsersDatabase executeUpdate:@"CREATE TABLE EpisodeInserts (id TEXT PRIMARY_KEY, episode_id TEXT, source_problem_id TEXT, inserter_type TEXT, trigger_data TEXT, decision_data TEXT)"];
     }
-    if(![usersService.usersDatabase tableExists:@"EpisodeProblems"])
+    if(![usersService.allUsersDatabase tableExists:@"EpisodeProblems"])
     {
-        [usersService.usersDatabase executeUpdate:@"CREATE TABLE EpisodeProblems (id TEXT PRIMARY_KEY, episode_index INTEGER, episode_id TEXT, episodeinserts_id TEXT, problem_id TEXT, dvar_data TEXT)"];
+        [usersService.allUsersDatabase executeUpdate:@"CREATE TABLE EpisodeProblems (id TEXT PRIMARY_KEY, episode_index INTEGER, episode_id TEXT, episodeinserts_id TEXT, problem_id TEXT, dvar_data TEXT)"];
     }
 }
 
@@ -794,7 +794,7 @@
 
 -(NSString*)debugPipelineString
 {
-    [usersService.usersDatabase open];
+    [usersService.allUsersDatabase open];
     
     NSMutableString *html=[[NSMutableString alloc] initWithString:@"<h2>current episode problems</h2>"];
     NSString *lastEpInsId = nil;
@@ -805,7 +805,7 @@
     int skipBy=1;
     
     //current problems in episode
-    FMResultSet *rs=[usersService.usersDatabase executeQuery:@"select * from EpisodeProblems where episode_id=? order by episode_index", self.currentEpisodeId];
+    FMResultSet *rs=[usersService.allUsersDatabase executeQuery:@"select * from EpisodeProblems where episode_id=? order by episode_index", self.currentEpisodeId];
     while([rs next])
     {
         if(countSkips) skipBy++;
@@ -869,7 +869,7 @@
     [html appendFormat:@"<h2>episode inserts</h2>"];
     
     //insert data
-    FMResultSet *rsei=[usersService.usersDatabase executeQuery:@"select * from EpisodeInserts where episode_id=?", self.currentEpisodeId];
+    FMResultSet *rsei=[usersService.allUsersDatabase executeQuery:@"select * from EpisodeInserts where episode_id=?", self.currentEpisodeId];
     while([rsei next])
     {
         [html appendFormat:@"<p style='font-size:9pt'>"];
@@ -886,7 +886,7 @@
     AppController *ac=(AppController*)[[UIApplication sharedApplication] delegate];
     [html appendFormat:@"<pre>%@</pre>", [ac.AdplineSettings description]];
     
-    [usersService.usersDatabase close];
+    [usersService.allUsersDatabase close];
     
     NSString *ret=[NSString stringWithString:html];
     [html release];

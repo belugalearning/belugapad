@@ -68,17 +68,23 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 
 -(void)setCurrentUserToUserWithId:(NSString*)urId
 {
+    if (urId) urId = [urId copy];
+    if (currentUserId) [currentUserId release];
+    currentUserId = urId;
+    
     if (currentUser)
     {
         [currentUser release];
         currentUser = nil;
     }
-    if (currentUserId) [currentUserId release];
+    
     if (currentUserStateDatabase)
     {
         [currentUserStateDatabase close];
         [currentUserStateDatabase release];
+        currentUserStateDatabase = nil;
     }
+    
     if (urId)
     {
         TFLog(@"logged in with beluga user id: %@", urId);
@@ -99,8 +105,6 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
             [fm copyItemAtPath:BUNDLE_FULL_PATH(@"/canned-dbs/user-state-template.db") toPath:urStateDbPath error:nil];
         }
         currentUserStateDatabase = [[FMDatabase databaseWithPath:urStateDbPath] retain];
-        
-        currentUserId=[urId copy];
     }
 }
 

@@ -1191,8 +1191,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(!currentTool)
         [self showMq];
     
-    [self addCommitButton];
-    
     shownMetaQuestionIncompleteFor=0;
     
     metaQuestionAnswers = [[NSMutableArray alloc] init];
@@ -1220,7 +1218,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 //    NSNumber *eMode=[pdefMQ objectForKey:META_QUESTION_EVAL_MODE];
 //    if(eMode) mqEvalMode=[eMode intValue];
     mqEvalMode=kMetaQuestionEvalOnCommit;
-    
+    [self addCommitButton];
     // put our array of answers in an ivar
 //    metaQuestionAnswers = [pdefMQ objectForKey:META_QUESTION_ANSWERS];
     metaQuestionAnswerCount = [[pdefMQ objectForKey:META_QUESTION_ANSWERS] count];

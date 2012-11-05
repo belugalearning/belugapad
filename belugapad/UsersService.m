@@ -76,7 +76,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         TFLog(@"logged in with beluga user id: %@", urId);
         
         [usersDatabase open];
-        FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick, nodes_completed FROM users WHERE id = ?", urId];
+        FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick FROM users WHERE id = ?", urId];
         if ([rs next]) currentUser = [[self userFromCurrentRowOfResultSet:rs] retain];
         [rs close];
         [usersDatabase close];
@@ -97,13 +97,16 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         
         isSyncing = NO;
         
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *usersDatabasePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"users.db"];
-        
-        usersDatabase = [[FMDatabase databaseWithPath:usersDatabasePath] retain];
-        [usersDatabase open];        
-        if (![usersDatabase tableExists:@"users"]) [usersDatabase executeUpdate:@"CREATE TABLE users (id TEXT, nick TEXT, password TEXT, nodes_completed TEXT, flag_remove INTEGER)"];
-        [usersDatabase close];
+        // check that we've got an all-users database
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSString *libraryDir = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSString *allUsersDBPath = [libraryDir stringByAppendingPathComponent:@"all-users.db"];
+        if (![fm fileExistsAtPath:allUsersDBPath])
+        {
+            NSString *bundledAllUsers = BUNDLE_FULL_PATH(@"/canned-dbs/all-users.db");
+            [fm copyItemAtPath:bundledAllUsers toPath:allUsersDBPath error:nil];
+        }
+        usersDatabase = [[FMDatabase databaseWithPath:allUsersDBPath] retain];
         
         httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kUsersWSBaseURL]];
         opQueue = [[[NSOperationQueue alloc] init] retain];
@@ -117,7 +120,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     NSMutableArray *users = [NSMutableArray array];
     
     [usersDatabase open];
-    FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick, nodes_completed FROM users ORDER BY nick"];
+    FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick FROM users ORDER BY nick"];
     while([rs next])
         [users addObject:[self userFromCurrentRowOfResultSet:rs]];
     [rs close];
@@ -168,7 +171,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
             CFRelease(UUIDSRef);
             
             FMDatabase *db = bself->usersDatabase;
-            [db executeUpdate:@"INSERT INTO users(id,nick,password,nodes_completed) values(?,?,?,?)", urId, nick, password, @"[]"];
+            [db executeUpdate:@"INSERT INTO users(id,nick,password) values(?,?,?)", urId, nick, password];
             
             [bself setCurrentUserToUserWithId:urId];
         }
@@ -212,16 +215,15 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         }
         
         NSString *urId = [user objectForKey:@"id"];
-        NSString *nodesCompleted = [(NSArray*)[user objectForKey:@"nodesCompleted"] JSONString];
         
-        if (!urId || !nodesCompleted)
+        if (!urId)
         {
             callback(nil);
             return;
         }
         
         [bself->usersDatabase open];
-        BOOL successInsert = [bself->usersDatabase executeUpdate:@"INSERT INTO users(id,nick,password,nodes_completed) values(?,?,?,?)", urId, nickName, password, nodesCompleted];
+        BOOL successInsert = [bself->usersDatabase executeUpdate:@"INSERT INTO users(id,nick,password) values(?,?,?)", urId, nickName, password];
         [bself->usersDatabase close];
         
         if (!successInsert)
@@ -240,39 +242,11 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 
 -(void)addCompletedNodeId:(NSString*)nodeId
 {
-    if (!currentUser)
-    {
-        NSMutableDictionary *d = [NSMutableDictionary dictionary];
-        [d setValue:BL_APP_ERROR_TYPE_UNEXPECTED_NULL_VALUE forKey:@"type"];
-        [d setValue:@"UsersService#addCompletedNodeId" forKey:@"codeLocation"];
-        [d setValue:@"currentUser" forKey:@"value"];
-        [loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
-        return;
-    }
-    
-    NSMutableArray *nc = [currentUser objectForKey:@"nodesCompleted"];
-    [nc addObject:nodeId];
-    
-    [usersDatabase open];    
-    BOOL updateSuccess = [usersDatabase executeUpdate:@"UPDATE users SET nodes_completed = ? WHERE id = ?", [nc JSONString], [currentUser objectForKey:@"id"]];
-    [usersDatabase close];
-    
-    if (!updateSuccess)
-    {
-        // log failure
-        NSString *statement = [NSString stringWithFormat:@"UPDATE users SET nodes_completed = \"%s\" WHERE id = \"%s\"", [nc JSONString], [currentUser objectForKey:@"id"]];
-        
-        NSMutableDictionary *d = [NSMutableDictionary dictionary];
-        [d setValue:BL_APP_ERROR_TYPE_DB_OPERATION_FAILURE forKey:@"type"];
-        [d setValue:@"UsersService#addCompletedNodeId" forKey:@"codeLocation"];
-        [d setValue:statement forKey:@"statement"];
-        [loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
-    }
 }
 
 -(BOOL)hasCompletedNodeId:(NSString *)nodeId
 {
-    return [[currentUser objectForKey:@"nodesCompleted"] containsObject:nodeId];
+    return YES;
 }
 
 -(void)flagRemoveUserFromDevice:(NSString*)userId
@@ -299,13 +273,17 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 
 -(void)syncDeviceUsers
 {
+    return;
+    // THE FOLLOWING IS ABOUT TO BE MADE OBSOLETE WITH IMMINENT CHANGES TO USER STATE
+    // TODO: Before deleting, go through the method and see what should be extracted to somewhere else ----- definitely need to move the user delete from device stuff.
+    /*
     if (isSyncing) return;
     
     NSMutableArray *users = [NSMutableArray array];
     
     // get users date from on-device db
     [usersDatabase open];
-    FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick, password, nodes_completed, flag_remove FROM users"];
+    FMResultSet *rs = [usersDatabase executeQuery:@"SELECT id, nick, password, flag_remove FROM users"];
     while([rs next])
     {
         NSDictionary *user = [NSMutableDictionary dictionary];        
@@ -406,18 +384,14 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     [reqOp setCompletionBlockWithSuccess:onCompletion failure:onCompletion];
     [opQueue addOperation:reqOp];
     isSyncing = YES;
+    //*/
 }
 
 -(NSMutableDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs
 {
     NSMutableDictionary *user = [NSMutableDictionary dictionary];
-    NSMutableArray *nodesCompleted = [[[rs stringForColumn:@"nodes_completed"] objectFromJSONString] mutableCopy];
-    
     [user setValue:[rs stringForColumn:@"id"] forKey:@"id"];
     [user setValue:[rs stringForColumn:@"nick"] forKey:@"nickName"];
-    [user setValue:nodesCompleted forKey:@"nodesCompleted"];
-    
-    [nodesCompleted release];
     return user;
 }
 

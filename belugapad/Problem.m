@@ -10,6 +10,9 @@
 #import "CouchDBDerivedDocument.h"
 #import "FMDatabase.h"
 #import "JSONKit.h"
+#import "global.h"
+#import "AppDelegate.h"
+#import "LoggingService.h"
 
 @interface Problem()
 {
@@ -47,6 +50,13 @@
     }
     else
     {
+        NSMutableDictionary *d = [NSMutableDictionary dictionary];
+        [d setValue:BL_APP_ERROR_TYPE_DB_TABLE_MISSING_ROW forKey:@"type"];
+        [d setValue:@"Problems" forKey:@"table"];
+        [d setValue:pId forKey:@"key"];
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        [ac.loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
+        
         self = nil;
     }
     [db close];

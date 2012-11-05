@@ -12,13 +12,19 @@
 @class SGBtxeTextRender;
 @class SGBtxeParser;
 
+
 @protocol Container
 
 @property (retain) NSMutableArray *children;
-
 @property (retain) SGBtxeContainerMgr *containerMgrComponent;
 
+@end
 
+
+
+@protocol Containable
+
+@property (retain) id<Container> container;
 
 @end
 
@@ -26,13 +32,14 @@
 @protocol RenderContainer
 
 @property (retain) CCLayer *renderLayer;
+@property (retain) CCNode *baseNode;
 @property BOOL forceVAlignTop;
 
 
 @end
 
 
-@protocol RenderObject
+@protocol RenderObject <Containable>
 
 -(void)attachToRenderBase:(CCNode*)renderBase;
 
@@ -74,12 +81,21 @@
 @end
 
 
-
 @protocol MovingInteractive <Interactive>
 
 @property CGPoint originalPosition;
 
 -(void)returnToBase;
+-(id<MovingInteractive>)createADuplicate;
+
+@end
+
+
+@protocol BtxeMount
+
+@property (retain) id<Interactive, NSObject> mountedObject;
+
+-(void)duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)mountObject;
 
 @end
 

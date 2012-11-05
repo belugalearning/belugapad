@@ -151,6 +151,11 @@ static float kDistanceBetweenBlocks=70.0f;
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
     problemHasCage=[[pdef objectForKey:HAS_CAGE]boolValue];
     cageObjectCount=[[pdef objectForKey:CAGE_OBJECT_COUNT]intValue];
+    hasInactiveArea=[[pdef objectForKey:HAS_INACTIVE_AREA]boolValue];
+    cannotBreakBonds=[[pdef objectForKey:UNBREAKABLE_BONDS]boolValue];
+    randomiseDockPositions=[[pdef objectForKey:RANDOMISE_DOCK_POSITIONS]boolValue];
+    
+    
 
     if([pdef objectForKey:DOCK_TYPE])
         dockType=[pdef objectForKey:DOCK_TYPE];
@@ -170,12 +175,42 @@ static float kDistanceBetweenBlocks=70.0f;
     if([pdef objectForKey:EVAL_AREAS])initAreas=[pdef objectForKey:EVAL_AREAS];
     if([pdef objectForKey:SOLUTION])solutionsDef=[pdef objectForKey:SOLUTION];
     
+    if(hasInactiveArea && cannotBreakBonds)
+        cannotBreakBonds=NO;
+    
 }
 
 -(void)populateGW
 {
     // set our renderlayer
     gw.Blackboard.RenderLayer = renderLayer;
+    
+    if(hasInactiveArea)
+    {
+        inactiveArea=[[[NSMutableArray alloc]init]retain];
+        
+        int thisPos=0;
+        int areaWidth=4;
+        int areaSize=16;
+        float startXPos=lx-(62*areaWidth);
+        float startYPos=50;
+        int areaOpacity=100;
+        
+        for(int i=0;i<areaSize;i++)
+        {
+            if(thisPos==areaWidth)thisPos=0;
+            int thisRow=i/areaWidth;
+            
+            CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/distribution/DT_area_2.png")];
+            [s setPosition:ccp(startXPos+(thisPos*s.contentSize.width),startYPos+(thisRow*s.contentSize.height))];
+            [s setOpacity:areaOpacity];
+            [self.ForeLayer addChild:s];
+            [inactiveArea addObject:s];
+            
+            thisPos++;
+        }
+
+    }
     
     // init our array for use with the created gameobjects
     for(int i=0;i<[initObjects count];i++)
@@ -206,6 +241,7 @@ static float kDistanceBetweenBlocks=70.0f;
             cage=[[SGDtoolCage alloc]initWithGameWorld:gw atPosition:ccp(((24*s)/2)+((i+0.5) * sectionW), 80) andRenderLayer:renderLayer andCageType:dockType];
             cage.BlockType=[usedShapeTypes objectAtIndex:i];
             cage.InitialObjects=cageObjectCount;
+            cage.RandomPositions=randomiseDockPositions;
             [cage setup];
             [cage spawnNewBlock];
             
@@ -240,11 +276,42 @@ static float kDistanceBetweenBlocks=70.0f;
         [usedShapeTypes addObject:blockType];
     
     SGDtoolContainer *container = [[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:label andRenderLayer:renderLayer];
+    container.BlockType=blockType;
     if (label && !existingGroups) existingGroups = [[NSMutableArray arrayWithObject:label] retain];
+    float startPosX=0;
+    float startPosY=0;
     
-    int startPosX = [theseSettings objectForKey:POS_X] ? [[theseSettings objectForKey:POS_X]intValue] : (arc4random() % 960) + 30;
-    int startPosY = [theseSettings objectForKey:POS_Y] ? [[theseSettings objectForKey:POS_Y]intValue] : (arc4random() % 730) + 30;
-    
+    if(!hasInactiveArea)
+    {
+        CGPoint top=[[thesePositions objectAtIndex:0]CGPointValue];
+        CGPoint bottom=[[thesePositions objectAtIndex:[thesePositions count]-1]CGPointValue];
+        
+        int farLeft=top.x+60;
+        int farRight=lx-bottom.x-60;
+        int topMost=ly-top.y-60;
+        int botMost=0+-bottom.y+60;
+        
+        //startPosX=[theseSettings objectForKey:POS_X] ? [[theseSettings objectForKey:POS_X]intValue] : (arc4random() % 960) + 30;
+        //startPosY=[theseSettings objectForKey:POS_Y] ? [[theseSettings objectForKey:POS_Y]intValue] : (arc4random() % 730) + 30;
+        
+        startPosX = farLeft + arc4random() % (farRight - farLeft);
+        startPosY = botMost + arc4random() % (topMost - botMost);
+    }
+    else
+    {
+        inactiveRect=CGRectNull;
+        
+        for(CCSprite *s in inactiveArea)
+            inactiveRect=CGRectUnion(inactiveRect, s.boundingBox);
+        int farLeft=inactiveRect.origin.x+inactiveRect.size.width/2;
+        int farRight=inactiveRect.origin.x+inactiveRect.size.width;
+        int topMost=inactiveRect.origin.y+inactiveRect.size.height;
+        int botMost=inactiveRect.origin.y+inactiveRect.size.height/2;
+        
+        startPosX = farLeft + arc4random() % (farRight - farLeft);
+        startPosY = botMost + arc4random() % (topMost - botMost);
+
+    }
     for (int i=0; i<numBlocks; i++)
     {
         CGPoint thisPoint=[[thesePositions objectAtIndex:i]CGPointValue];
@@ -252,14 +319,21 @@ static float kDistanceBetweenBlocks=70.0f;
         CGPoint p = ccp(startPosX+thisPoint.x,  startPosY+thisPoint.y);
         SGDtoolBlock *block =  [[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:p andType:blockType] autorelease];
         [block setup];
-        block.MyContainer = container;        
+        block.MyContainer = container;
+        
+        if(cannotBreakBonds)
+            block.LineType=1;
+            
+        
         [container addBlockToMe:block];
         
-        if (i)
+        if(!hasInactiveArea||cannotBreakBonds)
         {
-            SGDtoolBlock *prevBlock = [container.BlocksInShape objectAtIndex:i-1];
-            [block pairMeWith:prevBlock];
-            [self returnNextMountPointForThisShape:container];
+            if(i){
+                SGDtoolBlock *prevBlock = [container.BlocksInShape objectAtIndex:i-1];
+                [block pairMeWith:prevBlock];
+                [self returnNextMountPointForThisShape:container];
+            }
         }
         [container layoutMyBlocks];
         [loggingService.logPoller registerPollee:block];
@@ -293,6 +367,7 @@ static float kDistanceBetweenBlocks=70.0f;
     for(int i=0;i<[initAreas count];i++)
     {
         NSDictionary *d=[initAreas objectAtIndex:i];
+        NSString *lblText=[d objectForKey:LABEL];
         int areaSize=[[d objectForKey:AREA_SIZE]intValue];
         int areaWidth=[[d objectForKey:AREA_WIDTH]intValue];
         int areaOpacity=0;
@@ -319,6 +394,13 @@ static float kDistanceBetweenBlocks=70.0f;
             [s setOpacity:areaOpacity];
             [self.ForeLayer addChild:s];
             
+            if(i==1 && lblText)
+            {
+                CCLabelTTF *l=[CCLabelTTF labelWithString:lblText fontName:SOURCE fontSize:35.0f];
+                [l setPosition:ccp(s.contentSize.width/2, -s.contentSize.height/2)];
+                [s addChild:l];
+            }
+            
             [thisArea addObject:s];
             thisPos++;
         }
@@ -343,6 +425,7 @@ static float kDistanceBetweenBlocks=70.0f;
         [existingGroups addObject:[container.Label string]];
     }
     
+    container.BlockType=((id<Configurable>)Object).blockType;
     [container addBlockToMe:Object];
     [container layoutMyBlocks];
 }
@@ -626,6 +709,49 @@ static float kDistanceBetweenBlocks=70.0f;
         return NO;
 }
 
+-(BOOL)evalGroupTypesAndShapes
+{
+    NSMutableArray *shapesFound=[[NSMutableArray alloc]init];
+    NSMutableArray *solFound=[[NSMutableArray alloc]init];
+    int solutionsExpected=[solutionsDef count];
+    int solutionsFound=0;
+    
+    
+    for(NSDictionary *d in solutionsDef)
+    {
+        if([solFound containsObject:d])continue;
+        
+        for (id cont in gw.AllGameObjects)
+        {
+            if([shapesFound containsObject:cont])continue;
+            
+            if([cont conformsToProtocol:@protocol(Container)])
+            {
+                id<Container>thisCont=cont;
+                
+                NSLog(@"thisCont type=%@, thisCont BlocksInShape=%d", thisCont.BlockType, [thisCont.BlocksInShape count]);
+                
+                if([thisCont.BlocksInShape count]==[[d objectForKey:NUMBER]intValue] && [thisCont.BlockType isEqualToString:[d objectForKey:BLOCK_TYPE]])
+                {
+                    solutionsFound++;
+                    [shapesFound addObject:cont];
+                    [solFound addObject:d];
+                    continue;
+                }
+            }
+        }
+    }
+    
+    
+    
+    NSLog(@"solutions found %d required %d", solutionsFound, solutionsExpected);
+    if (solutionsFound==solutionsExpected)
+        return YES;
+    else
+        return NO;
+
+}
+
 -(CGPoint)returnNextMountPointForThisShape:(id<Container>)thisShape
 {
     id<Moveable>firstShape=[thisShape.BlocksInShape objectAtIndex:0];
@@ -680,6 +806,21 @@ static float kDistanceBetweenBlocks=70.0f;
     
     lastTouch=location;
     
+    // check the pickup start position against a cage position. if they matched, then spawn a new block
+    if(problemHasCage && !spawnedNewObj)
+    {
+        for(id<Cage>thisCage in addedCages)
+        {
+            if([BLMath DistanceBetween:thisCage.Position and:pickupPos]<=60.0f)
+            {
+                [thisCage spawnNewBlock];
+                spawnedNewObj=YES;
+            }
+        }
+        
+        pickupPos=CGPointZero;
+    }
+    
     if(currentPickupObject)
     {
         if(!hasMovedBlock)hasMovedBlock=YES;
@@ -722,13 +863,6 @@ static float kDistanceBetweenBlocks=70.0f;
     // check there's a pickupobject
     NSArray *allGWCopy=[NSArray arrayWithArray:gw.AllGameObjects];
     
-    // check the pickup start position against a cage position. if they matched, then spawn a new block
-    if(problemHasCage && CGPointEqualToPoint(pickupPos,cage.Position))
-    {
-        [cage spawnNewBlock];
-        pickupPos=CGPointZero;
-    }
-    
     if(currentPickupObject)
     {
         CGPoint curPOPos=currentPickupObject.Position;
@@ -754,7 +888,7 @@ static float kDistanceBetweenBlocks=70.0f;
                 // return whether the object is proximate to our current pickuobject
                 BOOL proximateToPickupObject=[go amIProximateTo:curPOPos];
                 [go resetTint];
-                if(!proximateToPickupObject){
+                if(!proximateToPickupObject&&!cannotBreakBonds){
                     [go unpairMeFrom:currentPickupObject];
                 }
                 else {
@@ -765,16 +899,39 @@ static float kDistanceBetweenBlocks=70.0f;
                     
                     if(!previousObjectContainer || previousObjectContainer==cObj.MyContainer)
                     {
-                        [go pairMeWith:currentPickupObject];
-                    
-                        previousObjectContainer=cObj.MyContainer;
+                        if(!CGRectContainsPoint(inactiveRect, location)){
+                            
+                            if([cObj.PairedObjects count]>0 && cannotBreakBonds)return;
+                            
+                            if(evalAreas){
+                                for(NSArray *a in evalAreas)
+                                {
+                                    CGRect evalAreaBox=CGRectNull;
+                                    for(CCSprite *s in a)
+                                    {
+                                        evalAreaBox=CGRectUnion(evalAreaBox, s.boundingBox);
+                                    }
+                                    
+                                    if(CGRectContainsPoint(evalAreaBox, cObj.Position))
+                                    {
+                                        currentPickupObject=nil;
+                                        isTouching=NO;
+                                        spawnedNewObj=NO;
+                                        return;
+                                    }
+                                }
+                            }
+                            [go pairMeWith:currentPickupObject];
                         
-                        
-                        [loggingService logEvent:BL_PA_DT_TOUCH_END_PAIR_BLOCK withAdditionalData:nil];
-                        
-                        //currentPickupObject.Position=[self returnNextMountPointForThisShape:cObj.MyContainer];
-                        [cObj.MyContainer layoutMyBlocks];
-                        //[currentPickupObject animateToPosition];
+                            previousObjectContainer=cObj.MyContainer;
+                            
+                            
+                            [loggingService logEvent:BL_PA_DT_TOUCH_END_PAIR_BLOCK withAdditionalData:nil];
+                            
+                            //currentPickupObject.Position=[self returnNextMountPointForThisShape:cObj.MyContainer];
+                            [cObj.MyContainer layoutMyBlocks];
+                            //[currentPickupObject animateToPosition];
+                        }
                     }
                 }
                 
@@ -793,7 +950,6 @@ static float kDistanceBetweenBlocks=70.0f;
         if(evalMode==kProblemEvalAuto)[self evalProblem];
     }
     
-    [self numberOfShapesInEvalAreas];
     
     if(hasBeenProximate)
     {
@@ -802,6 +958,8 @@ static float kDistanceBetweenBlocks=70.0f;
     }
     
     currentPickupObject=nil;
+    isTouching=NO;
+    spawnedNewObj=NO;
     
     
     
@@ -811,6 +969,7 @@ static float kDistanceBetweenBlocks=70.0f;
 {
     isTouching=NO;
     currentPickupObject=nil;
+    spawnedNewObj=NO;
     // empty selected objects
 }
 
@@ -1019,6 +1178,11 @@ static float kDistanceBetweenBlocks=70.0f;
     else if(evalType==kCheckEvalAreas)
     {
         return [self evalNumberOfShapesInEvalAreas];
+    }
+    
+    else if(evalType==kCheckGroupTypeAndNumber)
+    {
+        return [self evalGroupTypesAndShapes];
     }
     
 

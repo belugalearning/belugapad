@@ -182,6 +182,7 @@
 #define SHOW_COLUMN_TOTAL_COUNT @"SHOW_COLUMN_TOTAL_COUNT"
 #define SHOW_COLUMN_USER_COUNT @"SHOW_COLUMN_USER_COUNT"
 #define SHOW_MORE_LESS_ARROWS @"SHOW_MORE_LESS_ARROWS"
+#define COUNT_USER_BLOCKS @"COUNT_USER_BLOCKS"
 
 
 // generic tools keys -- formerly from BlockFloating
@@ -267,6 +268,7 @@
 #define USE_BLOCK_SCALING @"USE_BLOCK_SCALING"
 #define SHOW_BADGES @"SHOW_BADGES"
 #define INIT_HINTS @"INIT_HINTS"
+#define BAR_ASSISTANCE @"BAR_ASSISTANCE"
 
 // dotgrid tool
 
@@ -368,6 +370,9 @@
 #define AREA_SIZE @"AREA_SIZE"
 #define AREA_WIDTH @"AREA_WIDTH"
 #define AREA_OPACITY @"AREA_OPACITY"
+#define HAS_INACTIVE_AREA @"HAS_INACTIVE_AREA"
+#define UNBREAKABLE_BONDS @"UNBREAKABLE_BONDS"
+#define RANDOMISE_DOCK_POSITIONS @"RANDOMISE_DOCK_POSITIONS"
 
 
 //fraction builder
@@ -451,6 +456,7 @@
 #define BTXE_OI @"b:oi"
 #define BTXE_OP @"b:op"
 #define BTXE_ON @"b:on"
+#define BTXE_PH @"b:ph"
 #define BTXE_COMMOT @"b:commot"
 
 

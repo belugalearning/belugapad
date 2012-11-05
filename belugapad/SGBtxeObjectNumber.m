@@ -8,14 +8,22 @@
 
 #import "SGBtxeObjectNumber.h"
 #import "SGBtxeTextRender.h"
+#import "SGBtxeTextBackgroundRender.h"
+#import "global.h"
 
 
 @implementation SGBtxeObjectNumber
 
-@synthesize size, position;
+@synthesize size, position, worldPosition;
 @synthesize textRenderComponent;
 
 @synthesize prefixText, suffixText, numberText, numberValue;
+
+@synthesize enabled, tag, originalPosition;
+
+@synthesize textBackgroundRenderComponent;
+
+@synthesize container;
 
 -(SGBtxeObjectNumber*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -25,12 +33,36 @@
         numberText=@"";
         suffixText=@"";
         numberValue=@0;
+        
+        enabled=YES;
+        tag=@"";
+        
         size=CGSizeZero;
         position=CGPointZero;
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
+        
+        textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
+        
     }
     
     return self;
+}
+
+-(id<MovingInteractive>)createADuplicate
+{
+    //creates a duplicate object text -- something else will need to call setupDraw and attachToRenderBase
+    
+    SGBtxeObjectNumber *dupe=[[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld] autorelease];
+    
+    dupe.position=self.position;
+    dupe.tag=[[self.tag copy] autorelease];
+    dupe.enabled=self.enabled;
+    
+    dupe.prefixText=[[self.prefixText copy] autorelease];
+    dupe.numberText=[[self.numberText copy] autorelease];
+    dupe.suffixText=[[self.suffixText copy] autorelease];
+    
+    return (id<MovingInteractive>)dupe;
 }
 
 -(void)handleMessage:(SGMessageType)messageType
@@ -50,12 +82,22 @@
 
 -(void)setNumberText:(NSString *)theNumberText
 {
+    if(numberText) [numberText release];
+    
     numberText=theNumberText;
+    [numberText retain];
     
     NSNumberFormatter *nf=[[NSNumberFormatter alloc] init];
     [nf setNumberStyle:NSNumberFormatterDecimalStyle];
     numberValue=[nf numberFromString:numberText];
     [nf release];
+    
+    self.tag=[numberValue stringValue];
+}
+
+-(void)setNumberValue:(NSNumber *)theNumberValue
+{
+    self.tag=[numberValue stringValue];
 }
 
 -(void)setText:(NSString *)text
@@ -119,6 +161,8 @@
     [nf setNumberStyle:NSNumberFormatterDecimalStyle];
     numberValue=[nf numberFromString:numberText];
     [nf release];
+    
+    self.tag=[numberValue stringValue];
 }
 
 -(NSString*)text
@@ -136,9 +180,9 @@
     return [renderBase convertToWorldSpace:self.position];
 }
 
--(void)setWorldPosition:(CGPoint)worldPosition
+-(void)setWorldPosition:(CGPoint)theWorldPosition
 {
-    self.position=[renderBase convertToNodeSpace:worldPosition];
+    self.position=[renderBase convertToNodeSpace:theWorldPosition];
 }
 
 -(void)setPosition:(CGPoint)thePosition
@@ -146,6 +190,8 @@
     position=thePosition;
     
     [self.textRenderComponent updatePosition:position];
+    
+    [self.textBackgroundRenderComponent updatePosition:position];
 }
 
 -(void)inflateZIndex
@@ -166,6 +212,8 @@
 {
     renderBase=theRenderBase;
     
+    [renderBase addChild:textBackgroundRenderComponent.sprite];
+    
     [renderBase addChild:textRenderComponent.label0];
     [renderBase addChild:textRenderComponent.label];
 }
@@ -175,8 +223,32 @@
     // text mode
     self.textRenderComponent.useAlternateFont=YES;
     [self.textRenderComponent setupDraw];
-    self.size=self.textRenderComponent.label.contentSize;
     
+    
+    //don't show the label if it's not enabled
+    if(!self.enabled)
+    {
+        textRenderComponent.label.visible=NO;
+        textRenderComponent.label0.visible=NO;
+    }
+    
+    //set size to size of cclabelttf plus the background overdraw size (the background itself is currently stretchy)
+    self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
+
+    //background sprite to text (using same size)
+    [textBackgroundRenderComponent setupDrawWithSize:self.size];
+}
+
+-(void)activate
+{
+    self.enabled=YES;
+    self.textRenderComponent.label.visible=self.enabled;
+    self.textRenderComponent.label0.visible=self.enabled;
+}
+
+-(void)returnToBase
+{
+    self.position=self.originalPosition;
 }
 
 -(void)dealloc
@@ -187,6 +259,7 @@
     self.prefixText=nil;
     self.numberText=nil;
     self.suffixText=nil;
+    self.container=nil;
 
     [numberValue release];
     

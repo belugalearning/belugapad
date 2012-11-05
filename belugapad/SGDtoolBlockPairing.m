@@ -66,6 +66,10 @@
                 else if(dist>75.0f){
                     linesToDraw=2;
                 }
+                else if(ParentGO.LineType==1)
+                {
+                    linesToDraw=60;
+                }
                 else{
                     linesToDraw=2;
                 }
@@ -75,7 +79,9 @@
                 else if(dist>70 && ParentGO.SeekingPair)
                     ccDrawColor4F(255, 0, 0, 255);
                 else
-                    ccDrawColor4F(255, 255, 255, 255);    
+                    ccDrawColor4F(255, 255, 255, 255);
+                
+
                 
                 for(int i=0;i<linesToDraw/2;i++)
                 {
@@ -90,6 +96,9 @@
 
 -(void)pairMeWith:(id)thisObject
 {
+    if(![((id<Configurable>)ParentGO).blockType isEqualToString:((id<Configurable>)thisObject).blockType])
+        return;
+    
     if(!ParentGO.PairedObjects)ParentGO.PairedObjects=[[[NSMutableArray alloc]init]autorelease];
     
     // if the array already contains the object - don't readd it

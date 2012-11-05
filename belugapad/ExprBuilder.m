@@ -23,6 +23,7 @@
 #import "SGBtxeObjectText.h"
 #import "SGBtxeMissingVar.h"
 #import "SGBtxeContainerMgr.h"
+#import "SGBtxeObjectNumber.h"
 
 @interface ExprBuilder()
 {
@@ -145,6 +146,9 @@
         numberCardRowInterval=[ncardint intValue];
         numberCardRowMax=[ncardmax intValue];
         numberCardRowMin=[ncardmin intValue];
+        
+        NSNumber *ncardrandomise=[pdef objectForKey:@"NUMBER_CARD_RANDOMISE"];
+        if(ncardrandomise)numberCardRandomOrder=[ncardrandomise boolValue];
     }
     
 }
@@ -197,7 +201,36 @@
             {
                 ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
                 
+                NSMutableArray *cardAddBuffer=[[NSMutableArray alloc] init];
+                
                 //add the cards
+                for(int icard=numberCardRowMin; icard<=numberCardRowMax; icard+=numberCardRowInterval)
+                {
+                    SGBtxeObjectNumber *n=[[SGBtxeObjectNumber alloc] initWithGameWorld:gw];
+                    n.numberText=[NSString stringWithFormat:@"%d", icard];
+                    n.enabled=YES;
+                    
+                    [cardAddBuffer addObject:n];
+                    [n release];
+                }
+                
+                if(numberCardRandomOrder)
+                {
+                    while(cardAddBuffer.count>0)
+                    {
+                        int i=(arc4random()%cardAddBuffer.count);
+                        [ncardRow.containerMgrComponent addObjectToContainer:[cardAddBuffer objectAtIndex:i]];
+                        [cardAddBuffer removeObjectAtIndex:i];
+                    }
+                }
+                else
+                {
+                    for(SGBtxeObjectNumber *n in cardAddBuffer)
+                        [ncardRow.containerMgrComponent addObjectToContainer:n];
+                }
+                
+                //let go of the buffer
+                [cardAddBuffer release];
                 
                 [ncardRow setupDraw];
                 ncardRow.position=ccpAdd(row.position, ccp(0, -ncardRow.size.height-QUESTION_SEPARATOR_PADDING));
@@ -228,7 +261,7 @@
     
     
     //if we have ncardrow, then add it to rows (at end for now?)
-    [rows addObject:ncardRow];
+    if(ncardRow) [rows addObject:ncardRow];
     
 }
 
@@ -298,7 +331,7 @@
     if(heldObject)
     {
         //test new location for target / drop
-        for(id<Interactive, NSObject> o in gw.AllGameObjects)
+        for(id<Interactive, NSObject> o in [gw AllGameObjectsCopy])
         {
             if([o conformsToProtocol:@protocol(Interactive)])
             {
@@ -308,6 +341,14 @@
                 {
                     //this object is proximate, disabled and the same tag
                     [o activate];
+                }
+                
+                if([o conformsToProtocol:@protocol(BtxeMount)] && [BLMath DistanceBetween:o.worldPosition and:location]<=BTXE_PICKUP_PROXIMITY)
+                {
+                    id<BtxeMount, Interactive> pho=(id<BtxeMount, Interactive>)o;
+                    
+                    //mount the object on the place holder
+                    [pho duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)heldObject];
                 }
             }
         }

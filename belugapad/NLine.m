@@ -325,6 +325,9 @@ float timerIgnoreFrog;
     evalType=[pdef objectForKey:EVAL_TYPE];
     if(!evalType)evalType=@"TARGET";
     
+    NSNumber *abseval=[pdef objectForKey:@"EVAL_TARGET_AS_ABSOLUTE_VALUE"];
+    if(abseval) evalAbsTarget=[abseval boolValue];
+    
     if([pdef objectForKey:@"EVAL_INTERVAL"])
     {
         evalInterval=[[pdef objectForKey:@"EVAL_INTERVAL"] integerValue];
@@ -374,6 +377,9 @@ float timerIgnoreFrog;
     {
         markerValuePositions=[pdef objectForKey:@"MARKER_POSITIONS"];
     }
+    
+    NSNumber *countFromInitVal=[pdef objectForKey:@"COUNT_OUT_LOUD_FROM_START_VALUE"];
+    if(countFromInitVal) countOutLoudFromInitStartVal=[countFromInitVal boolValue];
 }
 
 -(void)problemStateChanged
@@ -402,7 +408,11 @@ float timerIgnoreFrog;
 {
     BOOL Complete=NO;
     
-    if([evalType isEqualToString:@"TARGET"])
+    if([evalType isEqualToString:@"TARGET"] && evalAbsTarget)
+    {
+        Complete=(abs(evalTarget)==abs(lastBubbleValue));
+    }
+    else if([evalType isEqualToString:@"TARGET"])
     {
         Complete = (evalTarget==lastBubbleValue);
     }
@@ -823,6 +833,8 @@ float timerIgnoreFrog;
         if(enableAudioCounting && lastBubbleLoc!=logLastBubblePos)
         {
             int readNumber=lastBubbleValue+rambler.DisplayNumberOffset;
+            
+            if(countOutLoudFromInitStartVal) readNumber-=initStartVal;
             
             NSString *path=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", readNumber];
             [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(path)];

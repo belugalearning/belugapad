@@ -17,6 +17,7 @@
 @synthesize Position;
 @synthesize Length;
 @synthesize BaseNode;
+@synthesize MyHeldValue;
 
 -(DWGameObject *) initWithGameWorld:(DWGameWorld*)aGameWorld
 {

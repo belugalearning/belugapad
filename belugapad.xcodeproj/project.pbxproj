@@ -132,6 +132,7 @@
 		55FDAEE3157F802900943176 /* PieSplitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FDAEE2157F802900943176 /* PieSplitter.m */; };
 		7F0AE04D158782D100194644 /* InteractionFeedback.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0AE04C158782D100194644 /* InteractionFeedback.m */; };
 		7F0E32B9158E9D7800E42C7B /* SGJmapProximityEval.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0E32B8158E9D7700E42C7B /* SGJmapProximityEval.m */; };
+		7F0F70AC1645B2A9009DBCAB /* SGBtxePlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F70AB1645B2A7009DBCAB /* SGBtxePlaceholder.m */; };
 		7F1A3B5115BDEC8C0060CB15 /* SGFractionBuilderMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F1A3B5015BDEC8C0060CB15 /* SGFractionBuilderMarker.m */; };
 		7F2317C5156FA13400E2C941 /* NordicAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2317C4156FA13400E2C941 /* NordicAnimator.m */; };
 		7F2586AF15697EBD00C439F6 /* ExprSimplifyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2586AE15697EBD00C439F6 /* ExprSimplifyTests.m */; };
@@ -675,6 +676,8 @@
 		7F0AE04C158782D100194644 /* InteractionFeedback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionFeedback.m; sourceTree = "<group>"; };
 		7F0E32B7158E9D7700E42C7B /* SGJmapProximityEval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapProximityEval.h; sourceTree = "<group>"; };
 		7F0E32B8158E9D7700E42C7B /* SGJmapProximityEval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapProximityEval.m; sourceTree = "<group>"; };
+		7F0F70AA1645B2A6009DBCAB /* SGBtxePlaceholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxePlaceholder.h; sourceTree = "<group>"; };
+		7F0F70AB1645B2A7009DBCAB /* SGBtxePlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxePlaceholder.m; sourceTree = "<group>"; };
 		7F1A3B4F15BDEC8C0060CB15 /* SGFractionBuilderMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionBuilderMarker.h; sourceTree = "<group>"; };
 		7F1A3B5015BDEC8C0060CB15 /* SGFractionBuilderMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionBuilderMarker.m; sourceTree = "<group>"; };
 		7F2317C3156FA13400E2C941 /* NordicAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NordicAnimator.h; sourceTree = "<group>"; };
@@ -2782,6 +2785,8 @@
 				7FA84BC416107569001FEA82 /* SGBtxeObjectNumber.m */,
 				7F5F4D6C1619E6B9005F6311 /* SGBtxeObjectIcon.h */,
 				7F5F4D6D1619E6B9005F6311 /* SGBtxeObjectIcon.m */,
+				7F0F70AA1645B2A6009DBCAB /* SGBtxePlaceholder.h */,
+				7F0F70AB1645B2A7009DBCAB /* SGBtxePlaceholder.m */,
 			);
 			name = BTXE;
 			sourceTree = "<group>";
@@ -3386,6 +3391,7 @@
 				55B2C4251627519700E0E2C7 /* DWNWheelGameObject.m in Sources */,
 				5542D678162AFD3E00DB6E40 /* BDotGridShapeGroupObjectRender.m in Sources */,
 				0C58DE8716308B7000DD9A01 /* EditPDefViewController.m in Sources */,
+				7F0F70AC1645B2A9009DBCAB /* SGBtxePlaceholder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

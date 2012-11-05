@@ -137,7 +137,41 @@
     
     drawMode=[[pdef objectForKey:DRAW_MODE] intValue];
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
+    
     evalType=[[pdef objectForKey:DOTGRID_EVAL_TYPE] intValue];
+    
+    if(evalType==kProblemFactorDimensions) // factor dimensions eval
+    {
+        //force into check dimensions eval, and create the factors
+        evalType=kProblemCheckDimensions;
+        
+        NSNumber *ft=[pdef objectForKey:@"DOTGRID_EVAL_FACTORS_OF"];
+        if(ft)
+        {
+            int ftmax=[ft intValue];
+            NSMutableArray *reqdFactorShapes=[[NSMutableArray alloc] init];
+            
+            for(int i=1; i<ftmax; i++)
+            {
+                if(!(ftmax % i))
+                {
+                    //this is a factor, create an x/y array with these numbers
+                    NSArray *fs=[NSArray arrayWithObjects:[NSNumber numberWithInt:i], [NSNumber numberWithInt:ftmax/i], nil];
+                    [reqdFactorShapes addObject:fs];
+                }
+            }
+            
+            reqShapes=reqdFactorShapes;
+        }
+    }
+    else if([pdef objectForKey:REQUIRED_SHAPES])
+    {
+        //if not factors eval, check for required shapes
+        reqShapes=[pdef objectForKey:REQUIRED_SHAPES];
+        [reqShapes retain];
+    }
+    
+    
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
     evalDividend=[[pdef objectForKey:DOTGRID_EVAL_DIVIDEND] intValue];
     evalDivisor=[[pdef objectForKey:DOTGRID_EVAL_DIVISOR] intValue];
@@ -155,12 +189,6 @@
     isIntroPlist=[[pdef objectForKey:IS_INTRO_PLIST]boolValue];
     
     showCount=[pdef objectForKey:SHOW_COUNT];
-    
-    if([pdef objectForKey:REQUIRED_SHAPES])
-    {
-        reqShapes=[pdef objectForKey:REQUIRED_SHAPES];
-        [reqShapes retain];
-    }
     
     if([pdef objectForKey:ANCHOR_SPACE])
         spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
@@ -1843,14 +1871,26 @@
 {
     int correctShapes=0;
     NSMutableArray *matchShapes=[[NSMutableArray alloc]init];
+    NSMutableArray *matchObjects=[[NSMutableArray alloc]init];
     //for each object that conforms to being a shapegroup
     for(int i=0;i<[gw.AllGameObjects count];i++)
     {
         if([[gw.AllGameObjects objectAtIndex:i]isKindOfClass:[DWDotGridShapeGameObject class]])
         {
             DWDotGridShapeGameObject *sg=[gw.AllGameObjects objectAtIndex:i];
-            DWDotGridAnchorGameObject *fa=sg.firstBoundaryAnchor;
-            DWDotGridAnchorGameObject *la=sg.lastBoundaryAnchor;
+            DWDotGridAnchorGameObject *fa=nil;
+            DWDotGridAnchorGameObject *la=nil;
+            
+            if(useShapeGroups)
+            {
+                fa=sg.firstBoundaryAnchor;
+                la=sg.lastBoundaryAnchor;
+            }
+            else
+            {
+                fa=sg.firstAnchor;
+                la=sg.lastAnchor;
+            }
             
             int dimensionX=fabsf(fa.myXpos-la.myXpos);
             int dimensionY=fabsf(fa.myYpos-la.myYpos);
@@ -1859,6 +1899,7 @@
             for(NSArray *a in reqShapes)
             {
                 if([matchShapes containsObject:a])continue;
+                if([matchObjects containsObject:sg])continue;
                 
                 BOOL xMatch=NO;
                 BOOL yMatch=NO;
@@ -1872,6 +1913,7 @@
                 if(xMatch&&yMatch)
                 {
                     [matchShapes addObject:a];
+                    [matchObjects addObject:sg];
                     correctShapes++;
                 }
             }

@@ -9,6 +9,7 @@
 #import "SGBtxeObjectText.h"
 #import "SGBtxeTextRender.h"
 #import "SGBtxeTextBackgroundRender.h"
+#import "global.h"
 
 @implementation SGBtxeObjectText
 
@@ -18,6 +19,8 @@
 @synthesize textBackgroundRenderComponent;
 @synthesize originalPosition;
 @synthesize usePicker;
+
+@synthesize container;
 
 -(SGBtxeObjectText*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -34,6 +37,21 @@
     }
     
     return self;
+}
+
+-(id<MovingInteractive>)createADuplicate
+{
+    //creates a duplicate object text -- something else will need to call setupDraw and attachToRenderBase
+    
+    SGBtxeObjectText *dupe=[[[SGBtxeObjectText alloc] initWithGameWorld:gameWorld] autorelease];
+    
+    dupe.text=[[self.text copy] autorelease];
+    dupe.position=self.position;
+    dupe.tag=[[self.tag copy] autorelease];
+    dupe.enabled=self.enabled;
+    dupe.usePicker=self.usePicker;
+    
+    return (id<MovingInteractive>)dupe;
 }
 
 -(void)handleMessage:(SGMessageType)messageType
@@ -61,7 +79,8 @@
     renderBase=theRenderBase;
     
     [renderBase addChild:textBackgroundRenderComponent.sprite];
-    
+
+    [renderBase addChild:textRenderComponent.label0];
     [renderBase addChild:textRenderComponent.label];
 }
 
@@ -100,10 +119,12 @@
     if(!self.enabled || self.usePicker)
     {
         textRenderComponent.label.visible=NO;
+        textRenderComponent.label0.visible=NO;
     }
     
-    //set size to size of cclabelttf
-    self.size=self.textRenderComponent.label.contentSize;
+    //set size to size of cclabelttf plus the background overdraw size (the background itself is currently stretchy)
+    self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
+    
     
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];
@@ -115,6 +136,7 @@
     self.enabled=YES;
     
     self.textRenderComponent.label.visible=self.enabled;
+    self.textRenderComponent.label0.visible=self.enabled;
 }
 
 -(void)returnToBase
@@ -128,6 +150,7 @@
     self.tag=nil;
     self.textRenderComponent=nil;
     self.textBackgroundRenderComponent=nil;
+    self.container=nil;
     
     [super dealloc];
 }

@@ -141,7 +141,10 @@ static float kTimeToHeaderBounce=7.0f;
     
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
-    spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
+    if([pdef objectForKey:ANCHOR_SPACE])
+        spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
+    else
+        spaceBetweenAnchors=46;
     startX=[[pdef objectForKey:START_X] intValue];
     startY=[[pdef objectForKey:START_Y] intValue];
     operatorMode=[[pdef objectForKey:OPERATOR_MODE]intValue];
@@ -201,23 +204,27 @@ static float kTimeToHeaderBounce=7.0f;
 
 -(void)populateGW
 {
-    NSString *operatorFileName=[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/operator-%@.png"), operatorName];
+    //NSString *operatorFileName=[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/operator-%@.png"), operatorName];
+    NSString *operatorFileName=[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/TT_Operator.png"), operatorName];
     ttMatrix=[[NSMutableArray alloc]init];
     
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     
+    int amtForX=10;
+    int amtForY=10;
 
-    float xStartPos=spaceBetweenAnchors*2;
+    float xStartPos=300;
 
     int xStartNumber=startX;
     int yStartNumber=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-1;
     
     CCSprite *operator = [CCSprite spriteWithFile:operatorFileName];
-    [operator setPosition:ccp(xStartPos-spaceBetweenAnchors,ly-spaceBetweenAnchors*1.5)];
+    float yPos=(amtForY+1.5)*spaceBetweenAnchors;
     [operator setTag:1];
     [operator setOpacity:0];
+    [operator setPosition:ccp(xStartPos-spaceBetweenAnchors,yPos+40)];
     [self.ForeLayer addChild:operator];
-
+    
     NSMutableArray *xHeaders=[[NSMutableArray alloc]init];
     NSMutableArray *yHeaders=[[NSMutableArray alloc]init];
     [headerLabels addObject:xHeaders];
@@ -225,8 +232,9 @@ static float kTimeToHeaderBounce=7.0f;
     
     // render the times table grid
     
-    int amtForX=(int)((lx-spaceBetweenAnchors*3)/spaceBetweenAnchors)+1;
-    int amtForY=(int)((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)+1;
+    //int amtForX=(int)((lx-spaceBetweenAnchors*3)/spaceBetweenAnchors)+1;
+    //int amtForY=(int)((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors);
+    
     
     rowTints=[[NSMutableArray alloc] init];
     colTints=[[NSMutableArray alloc] init];
@@ -242,48 +250,68 @@ static float kTimeToHeaderBounce=7.0f;
         {
             // create our start position and gameobject
             float yStartPos=(iCol+1.5)*spaceBetweenAnchors;
+            yStartPos+=40;
+            
             DWTTTileGameObject *tile = [DWTTTileGameObject alloc];
             [gw populateAndAddGameObject:tile withTemplateName:@"TtimestablesTile"];
             
-            if(iRow==amtForX-1 && iCol==0)
-            {
-                tile.isCornerPiece=YES;
-                tile.Disabled=YES;
-            }
-            else if(iRow==amtForX-1)
-            {
-                tile.isEndXPiece=YES;
-                tile.Disabled=YES;
-            }
-            else if(iCol==0)
-            {
-                tile.isEndYPiece=YES;
-                tile.Disabled=YES;
-            }
+//            if(iRow==amtForX-1 && iCol==0)
+//            {
+//                tile.isCornerPiece=YES;
+//                tile.Disabled=YES;
+//            }
+//            else if(iRow==amtForX-1)
+//            {
+//                tile.isEndXPiece=YES;
+//                tile.Disabled=YES;
+//            }
+//            else if(iCol==0)
+//            {
+//                tile.isEndYPiece=YES;
+//                tile.Disabled=YES;
+//            }
         
             
             if(iRow==0 && showYAxis)
             {
-                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", yStartNumber+1] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
-                [curLabel setPosition:ccp(xStartPos-spaceBetweenAnchors,yStartPos)];
+                CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/TT_Number_BG.png")];
+                [s setPosition:ccp(xStartPos-spaceBetweenAnchors,yStartPos)];
+                [s setTag:1];
+                [s setOpacity:0];
+            
+                
+                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", yStartNumber+1] fontName:CHANGO fontSize:20.0f];
+                [curLabel setPosition:ccp(s.contentSize.width/2, s.contentSize.height/2)];
                 [curLabel setTag:2];
                 [curLabel setOpacity:0];
 
                 if(!tile.isEndYPiece)
                 {
-                    [self.ForeLayer addChild:curLabel];
+                    [self.ForeLayer addChild:s];
+                    [s addChild:curLabel];
                 }
-                [yHeaders addObject:curLabel];
+//                [yHeaders addObject:curLabel];
+                [yHeaders addObject:s];
                 yStartNumber--;
             }
             
             if(iCol==amtForY-1 && showXAxis) {
-                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", xStartNumber]fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
-                [curLabel setPosition:ccp(xStartPos,yStartPos+spaceBetweenAnchors)];
+                
+                    
+                CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/TT_Number_BG.png")];
+                [s setPosition:ccp(xStartPos,yStartPos+spaceBetweenAnchors)];
+                [s setTag:1];
+                [s setOpacity:0];
+                
+                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", xStartNumber]fontName:CHANGO fontSize:20.0f];
+                [curLabel setPosition:ccp(s.contentSize.width/2, s.contentSize.height/2)];
+                
                 if(!tile.isEndXPiece)
                 {
-                    [self.ForeLayer addChild:curLabel];
-                    [xHeaders addObject:curLabel];
+                    [self.ForeLayer addChild:s];
+                    [s addChild:curLabel];
+//                    [xHeaders addObject:curLabel];
+                    [xHeaders addObject:s];
                 }
 
                 [curLabel setTag:2];
@@ -457,7 +485,13 @@ static float kTimeToHeaderBounce=7.0f;
             //untint -- so long as it's not in a row
             if (![[colTints objectAtIndex:i] boolValue])
             {
-                [tile.mySprite setColor:ccc3(255,255,255)];
+                CCSprite *rowSprite=[[headerLabels objectAtIndex:1] objectAtIndex:thisRow];
+                CCLabelTTF *l=[rowSprite.children objectAtIndex:0];
+                [l setColor:ccc3(255,255,255)];
+                
+                [rowSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Number_BG.png")]];
+//                [tile.mySprite setColor:ccc3(255,255,255)];
+                [tile.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Grid_Block.png")]];
             
                 if(!haveLogged)
                 {
@@ -469,7 +503,12 @@ static float kTimeToHeaderBounce=7.0f;
         }
         else {
             //tint it
-            [tile.mySprite setColor:ccc3(0,255,0)];
+//            [tile.mySprite setColor:ccc3(0,255,0)];
+            CCSprite *rowSprite=[[headerLabels objectAtIndex:1] objectAtIndex:thisRow];
+            CCLabelTTF *l=[rowSprite.children objectAtIndex:0];
+            [l setColor:ccc3(0,0,0)];
+            [rowSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Number_BG_Highlighted.png")]];
+            [tile.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Grid_Block_Highlighted.png")]];
             
             if(!haveLogged)
             {
@@ -500,7 +539,12 @@ static float kTimeToHeaderBounce=7.0f;
             //untint -- so long as it's not in a row
             if (![[rowTints objectAtIndex:i] boolValue])
             {
-                [tile.mySprite setColor:ccc3(255,255,255)];
+                CCSprite *rowSprite=[[headerLabels objectAtIndex:0] objectAtIndex:thisCol];
+                CCLabelTTF *l=[rowSprite.children objectAtIndex:0];
+                [l setColor:ccc3(255,255,255)];
+                [rowSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Number_BG.png")]];
+//                [tile.mySprite setColor:ccc3(255,255,255)];
+                [tile.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Grid_Block.png")]];
             
                 if (!haveLogged)
                 {
@@ -513,8 +557,13 @@ static float kTimeToHeaderBounce=7.0f;
         }
         else {
             //tint it
-            [tile.mySprite setColor:ccc3(0,255,0)];
-            
+//            [tile.mySprite setColor:ccc3(0,255,0)];
+            CCSprite *rowSprite=[[headerLabels objectAtIndex:0] objectAtIndex:thisCol];
+            CCLabelTTF *l=[rowSprite.children objectAtIndex:0];
+            [l setColor:ccc3(0,0,0)];
+
+            [rowSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Number_BG_Highlighted.png")]];
+            [tile.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Grid_Block_Highlighted.png")]];
             if(!haveLogged)
             {
                 [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_HIGHLIGHT_COLUMN
@@ -549,7 +598,8 @@ static float kTimeToHeaderBounce=7.0f;
         
         for(int i=0;i<[theseNumbers count];i++)
         {
-            CCLabelTTF *curLabel=[theseNumbers objectAtIndex:i];
+            CCSprite *curLabel=[theseNumbers objectAtIndex:i];
+            //CCLabelTTF *curLabel=[theseNumbers objectAtIndex:i];
             CGRect boundingBox=CGRectMake(curLabel.position.x-(spaceBetweenAnchors/2), curLabel.position.y-(spaceBetweenAnchors/2), spaceBetweenAnchors, spaceBetweenAnchors);
             if(CGRectContainsPoint(boundingBox, location))
             {
@@ -636,7 +686,6 @@ static float kTimeToHeaderBounce=7.0f;
         for(int o=0;o<[gw.Blackboard.SelectedObjects count];o++)
         {
             DWTTTileGameObject *selTile=[gw.Blackboard.SelectedObjects objectAtIndex:o];
-            NSLog(@"selTile X=%d, selTile Y=%d", selTile.myXpos, selTile.myYpos);
             
             for(int i=0;i<[solutionsDef count];i++)
             {

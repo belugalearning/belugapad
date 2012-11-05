@@ -64,6 +64,8 @@
     int initSegmentVal;
     int initStartLoc;
     
+    BOOL countOutLoudFromInitStartVal;
+    
     float timeSinceInteractionOrShake;
     
     //for logging

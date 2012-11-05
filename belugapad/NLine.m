@@ -377,6 +377,9 @@ float timerIgnoreFrog;
     {
         markerValuePositions=[pdef objectForKey:@"MARKER_POSITIONS"];
     }
+    
+    NSNumber *countFromInitVal=[pdef objectForKey:@"COUNT_OUT_LOUD_FROM_START_VALUE"];
+    if(countFromInitVal) countOutLoudFromInitStartVal=[countFromInitVal boolValue];
 }
 
 -(void)problemStateChanged
@@ -830,6 +833,8 @@ float timerIgnoreFrog;
         if(enableAudioCounting && lastBubbleLoc!=logLastBubblePos)
         {
             int readNumber=lastBubbleValue+rambler.DisplayNumberOffset;
+            
+            if(countOutLoudFromInitStartVal) readNumber-=initStartVal;
             
             NSString *path=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", readNumber];
             [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(path)];

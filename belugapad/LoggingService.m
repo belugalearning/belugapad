@@ -13,6 +13,8 @@
 #import "AppDelegate.h"
 #import "UsersService.h"
 #import "ContentService.h"
+#import "ConceptNode.h"
+#import "Pipeline.h"
 #import "Problem.h"
 #import "AFNetworking.h"
 #import <zlib.h>
@@ -40,6 +42,7 @@ uint const kMaxConsecutiveSendFails = 3;
     
     NSMutableDictionary *deviceSessionDoc;
     NSMutableDictionary *userSessionDoc;
+    NSMutableDictionary *episodeDoc;
     NSMutableDictionary *problemAttemptDoc;
     
     uint consecutiveSendFails;
@@ -81,7 +84,7 @@ uint const kMaxConsecutiveSendFails = 3;
         opQueue = [[[NSOperationQueue alloc] init] retain];
         fm = [NSFileManager defaultManager];
         
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
         NSString *baseDir = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"logging"];
         currDir = [[NSString stringWithFormat:@"%@/%@", baseDir, @"current-batch"] retain];
         prevDir = [[NSString stringWithFormat:@"%@/%@", baseDir, @"prev-batches"] retain];
@@ -192,6 +195,31 @@ uint const kMaxConsecutiveSendFails = 3;
     {
         currentContext = BL_USER_CONTEXT;
     }
+    else if (BL_EP_START == eventType)
+    {
+        currentContext = BL_EPISODE_CONTEXT;
+        if (episodeDoc) [episodeDoc release];
+        if (!userSessionDoc) return; // error!
+        
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        episodeDoc = [@{
+                      @"_id":ac.contentService.currentEpisodeId
+                      , @"type": @"Episode"
+                      , @"events": [NSMutableArray array]
+                      , @"device": [deviceSessionDoc objectForKey:@"device"]
+                      , @"deviceSession": [deviceSessionDoc objectForKey:@"_id"]
+                      , @"user": [userSessionDoc objectForKey:@"user"]
+                      , @"userSession": [userSessionDoc objectForKey:@"_id"]
+                      , @"nodeId": ac.contentService.currentNode._id
+                      , @"nodeRev": ac.contentService.currentNode._rev
+                      , @"pipelineId": ac.contentService.currentPipeline._id
+                      , @"pipelineRev": ac.contentService.currentPipeline._rev
+                      } mutableCopy];
+    }
+    else if (BL_EP_ATTEMPT_ADAPT_PIPELINE_INSERTION == eventType)
+    {
+        currentContext = BL_EPISODE_CONTEXT;
+    }
     else if (BL_PA_START == eventType)
     {
         currentContext = BL_PROBLEM_ATTEMPT_CONTEXT;
@@ -203,6 +231,7 @@ uint const kMaxConsecutiveSendFails = 3;
         if (!p) return; // error!
         if (!deviceSessionDoc) return; // error!
         if (!userSessionDoc) return; // error!
+        if (!episodeDoc) return;
         
         problemAttemptDoc = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                              [self generateUUID], @"_id"
@@ -212,6 +241,7 @@ uint const kMaxConsecutiveSendFails = 3;
                              , [deviceSessionDoc objectForKey:@"_id"], @"deviceSession"
                              , [userSessionDoc objectForKey:@"user"], @"user"
                              , [userSessionDoc objectForKey:@"_id"], @"userSession"
+                             , [episodeDoc objectForKey:@"_id"], @"episode"
                              , p._id, @"problemId"
                              , p._rev, @"problemRev"
                              , nil];
@@ -247,6 +277,7 @@ uint const kMaxConsecutiveSendFails = 3;
               , @"deviceSession": [deviceSessionDoc objectForKey:@"_id"]
               , @"user": [userSessionDoc objectForKey:@"user"]
               , @"userSession": [userSessionDoc objectForKey:@"_id"]
+              , @"episode": [episodeDoc objectForKey:@"_id"]
               } JSONData] writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, self.currPAPollDocId] options:NSAtomicWrite error:nil];
         }
         
@@ -264,6 +295,7 @@ uint const kMaxConsecutiveSendFails = 3;
               , @"deviceSession": [deviceSessionDoc objectForKey:@"_id"]
               , @"user": [userSessionDoc objectForKey:@"user"]
               , @"userSession": [userSessionDoc objectForKey:@"_id"]
+              , @"episode": [episodeDoc objectForKey:@"_id"]
               } JSONData] writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, self.currPATouchDocId] options:NSAtomicWrite error:nil];
         }
         
@@ -289,6 +321,9 @@ uint const kMaxConsecutiveSendFails = 3;
             break;
         case BL_USER_CONTEXT:
             doc = userSessionDoc;
+            break;
+        case BL_EPISODE_CONTEXT:
+            doc = episodeDoc;
             break;
         case BL_PROBLEM_ATTEMPT_CONTEXT:
             doc = problemAttemptDoc;

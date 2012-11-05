@@ -577,7 +577,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void) debugSkipToProblem:(int)skipby
 {
     //effectively a skipping version of gotoNewProblem, ignores triggers, little exception / flow handling
-    if(pdef)[pdef release];
     [self tearDownProblemDef];
     self.PpExpr=nil;
     
@@ -606,8 +605,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void) gotoNewProblem
 {
-    if (pdef) [pdef release];
-
     [self tearDownProblemDef];
     self.PpExpr = nil;
     
@@ -658,8 +655,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         contentService.lightUpProgressFromLastNode=YES;
         
         [contentService quitPipelineTracking];
-        
-        //[contentService.currentStaticPdef release];
         
         [[CCDirector sharedDirector] replaceScene:[JMap scene]];
     }
@@ -2841,7 +2836,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         currentTool=nil;
     }
     
-    //[pdef release];
     if(self.pickerView)[self.pickerView release];
     if(numberPickerButtons)[numberPickerButtons release];
     if(numberPickedSelection)[numberPickedSelection release];

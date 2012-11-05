@@ -276,7 +276,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 -(UserNodeState*)currentUserStateForNodeWithId:(NSString *)nodeId
 {
     if (!currentUserStateDatabase || !self.currentUserId) return nil;
-    return [[UserNodeState alloc] initWithUserId:self.currentUserId nodeId:nodeId database:currentUserStateDatabase];
+    return [[[UserNodeState alloc] initWithUserId:self.currentUserId nodeId:nodeId database:currentUserStateDatabase] autorelease];
 }
 
 -(NSDictionary*)currentUserAllNodesState

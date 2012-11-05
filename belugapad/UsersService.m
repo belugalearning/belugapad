@@ -108,6 +108,12 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         }
         allUsersDatabase = [[FMDatabase databaseWithPath:allUsersDBPath] retain];
         
+        NSString *userStateDir = [libraryDir stringByAppendingPathComponent:@"user-state"];
+        if (![fm fileExistsAtPath:userStateDir isDirectory:YES])
+        {
+            [fm createDirectoryAtPath:userStateDir withIntermediateDirectories:YES attributes:nil error:nil];
+        }
+        
         httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kUsersWSBaseURL]];
         opQueue = [[[NSOperationQueue alloc] init] retain];
     }

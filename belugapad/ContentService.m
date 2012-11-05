@@ -365,14 +365,6 @@
     return contentDir;
 }
 
--(void)setCurrentStaticPdef:(NSMutableDictionary*)pdef
-{
-    NSLog(@"setting currentStaticPdef");
-    if (pdef) [pdef retain];
-    if (currentStaticPdef) [currentStaticPdef release];
-    currentStaticPdef = pdef;
-}
-
 -(BOOL)isUsingTestPipeline
 {
     return useTestPipeline;

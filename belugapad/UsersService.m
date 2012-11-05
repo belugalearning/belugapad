@@ -290,7 +290,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         
         while ([rs next])
         {
-            UserNodeState *ns = [[[UserNodeState alloc] initWithUserId:self.currentUserId resultSet:rs] autorelease];
+            UserNodeState *ns = [[[UserNodeState alloc] initWithUserId:self.currentUserId resultSet:rs database:currentUserStateDatabase] autorelease];
             [nodesState setValue:ns forKey:[rs stringForColumn:@"id"]];
         }
     }

@@ -10,6 +10,10 @@
 #import "FMDatabase.h"
 
 @interface UserNodeState()
+{
+    @private
+    FMDatabase *db;
+}
 @property (nonatomic, readwrite, retain) NSString *userId;
 @property (nonatomic, readwrite, retain) NSString *nodeId;
 @property (nonatomic, readwrite) NSTimeInterval timePlayed;
@@ -31,17 +35,19 @@
 {
     [database open];
     FMResultSet *rs = [database executeQuery:@"SELECT * FROM Nodes WHERE id=?", nodeId];
-    self = [rs next] ? [self initWithUserId:userId resultSet:rs] : nil;
+    self = [rs next] ? [self initWithUserId:userId resultSet:rs database:database] : nil;
     [rs close];
     [database close];
     return self;
 }
 
--(id) initWithUserId:(NSString*)userId resultSet:(FMResultSet*)rs
+-(id) initWithUserId:(NSString*)userId resultSet:(FMResultSet*)rs database:(FMDatabase *)database
 {
     self = [super init];
     if (self)
     {
+        db = [database retain];
+        
         self.userId = userId;
         self.nodeId = [rs stringForColumn:@"id"];
         self.timePlayed = [rs doubleForColumn:@"time_played"];

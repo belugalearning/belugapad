@@ -1411,7 +1411,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             {
                 if(mqAnswerMode==kMetaQuestionAnswerSingle && !touchEnd)
                 {
-                    [self deselectAnswersExcept:-1];
+                    //[self deselectAnswersExcept:-1];
                 }
             }
             
@@ -1428,7 +1428,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void)showHideCommit
 {
     BOOL showCommit=NO;
-    if(hasTrayMq)
+    if(hasTrayMq && trayMqShowing)
     {
         int countSelected=0;
         for(int i=0; i<metaQuestionAnswerCount; i++)

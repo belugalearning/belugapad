@@ -387,6 +387,7 @@
         [ac.loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
     }
     
+    self.currentNode = node;
     self.currentPipeline = [[[Pipeline alloc] initWithDatabase:contentDatabase andPipelineId:pipelineid] autorelease];
     
     //start indexes before their contents -- ready to increment into their respective sequences

@@ -171,12 +171,6 @@
         [reqShapes retain];
     }
     
-    if(evalType==kProblemNonProportionalGrid)
-    {
-        nonPropEvalX=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_X]intValue];
-        nonPropEvalY=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_Y]intValue];
-    }
-    
     
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
     evalDividend=[[pdef objectForKey:DOTGRID_EVAL_DIVIDEND] intValue];
@@ -225,6 +219,14 @@
     if(showNumberWheel)
         numberWheels=[[NSMutableArray alloc]init];
     
+    if(evalType==kProblemNonProportionalGrid)
+    {
+        nonPropEvalX=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_X]intValue];
+        nonPropEvalY=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_Y]intValue];
+        showDraggableBlock=NO;
+        shapeBaseSize=1;
+        drawMode=0;
+    }
     
     if(isIntroPlist)
     {
@@ -771,6 +773,56 @@
 
 -(void)createShapeGroupAndShapesWithAnchorPoints:(NSArray*)anchors andPrecount:(NSArray*)preCountedTiles andDisabled:(BOOL)Disabled
 {
+    if(evalType==kProblemNonProportionalGrid)
+    {
+        int xlen=[[NSString stringWithFormat:@"%d", nonPropEvalX] length];
+        int ylen=[[NSString stringWithFormat:@"%d", nonPropEvalY] length];
+        
+        int remX=nonPropEvalX;
+        int remY=nonPropEvalY;
+        
+        int baseStartX=1;
+        if(xlen>1) baseStartX=pow(10, xlen-1);
+        
+        int baseStartY=1;
+        if(ylen>1) baseStartY=pow(10, xlen-1);
+        
+        int xpos=0;
+        int ypos=ylen-1;
+        
+        for(int xi=baseStartX; xi>0; xi=xi/10)
+        {
+            int thisXVal=(remX/xi) * xi;
+            
+            for(int yi=baseStartY; yi>0; yi=yi/10)
+            {
+                int thisYVal=(remY/yi) * yi;
+                
+                //in here create a shape at xpos, ypos with value thisXVal*thisYVal
+                
+                
+                if(xpos==0)
+                {
+                    //create y label with thisYVal
+                }
+                
+                ypos--;
+                remY-=thisYVal;
+            }
+            
+            //create x label with thisXVal
+            
+            xpos++;
+            remX-=thisXVal;
+        }
+        
+        
+        
+        
+    
+        return;
+    }
+    
     if(shapeBaseSize>0){
         
         DWDotGridShapeGroupGameObject *sGroup=[DWDotGridShapeGroupGameObject alloc];

@@ -279,6 +279,25 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     return [[UserNodeState alloc] initWithUserId:self.currentUserId nodeId:nodeId database:currentUserStateDatabase];
 }
 
+-(NSDictionary*)currentUserAllNodesState
+{
+    NSMutableDictionary *nodesState = [NSMutableDictionary dictionary];
+    
+    if (currentUserStateDatabase && self.currentUserId)
+    {
+        [currentUserStateDatabase open];
+        FMResultSet *rs = [currentUserStateDatabase executeQuery:@"SELECT * FROM Nodes"];
+        
+        while ([rs next])
+        {
+            UserNodeState *ns = [[[UserNodeState alloc] initWithUserId:self.currentUserId resultSet:rs] autorelease];
+            [nodesState setValue:ns forKey:[rs stringForColumn:@"id"]];
+        }
+    }
+    
+    return [NSDictionary dictionaryWithDictionary:nodesState];
+}
+
 -(void)flagRemoveUserFromDevice:(NSString*)userId
 {
     [allUsersDatabase open];

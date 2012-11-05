@@ -109,6 +109,7 @@
         }
         
         w.OutputValue=w.InputValue;
+        w.StrOutputValue=[NSString stringWithFormat:@"%d",w.InputValue];
 
     }
     
@@ -251,6 +252,8 @@
     switch (component) {
         case 0:
             numRows = 10;
+            if(w.HasDecimals)numRows = 11;
+            if(w.HasNegative)numRows = 12;
             break;
         case 1:
             numRows = 10;
@@ -286,6 +289,11 @@
             break;
     }
     
+    if(component>0 && w.HasDecimals)
+        numRows++;
+    
+    
+    
     return numRows;
 }
 
@@ -303,8 +311,27 @@
 
 - (CCNode *)pickerView:(CCPickerView *)pickerView nodeForRow:(NSInteger)row forComponent:(NSInteger)component reusingNode:(CCNode *)node {
     
-    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", row]fontName:@"Chango" fontSize:24];
-    return l;
+    if(row<10)
+    {
+        CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", row]fontName:@"Chango" fontSize:24];
+        [l setColor:ccc3(68,68,68)];
+        
+        return l;
+    }
+    else if(row==10)
+    {
+        CCLabelTTF *l=[CCLabelTTF labelWithString:@"." fontName:@"Chango" fontSize:24];
+        [l setColor:ccc3(68,68,68)];
+        return l;
+    }
+    else if(row==11)
+    {
+        CCLabelTTF *l=[CCLabelTTF labelWithString:@"-" fontName:@"Chango" fontSize:24];
+        [l setColor:ccc3(68,68,68)];
+        return l;
+    }
+    
+    return nil;
     
     //    temp.color = ccYELLOW;
     //    temp.textureRect = CGRectMake(0, 0, kComponentWidth, kComponentHeight);
@@ -321,7 +348,10 @@
     
     [w.pickerViewSelection replaceObjectAtIndex:component withObject:[NSNumber numberWithInteger:row]];
 
-    w.OutputValue=[self returnPickerNumber];
+    if(!w.HasDecimals)
+        w.OutputValue=[self returnPickerNumber];
+    else
+        w.StrOutputValue=[self returnPickerNumberString];
     
     
     if(w.AssociatedGO)
@@ -383,6 +413,32 @@
     }
     
     return retNum;
+}
+
+-(NSString*)returnPickerNumberString
+{
+    NSString *fullNum=@"";
+    
+    for(int i=0;i<[w.pickerViewSelection count];i++)
+    {
+        int n=[[w.pickerViewSelection objectAtIndex:i]intValue];
+        
+        if(n<10)
+        {
+            fullNum=[NSString stringWithFormat:@"%@%d", fullNum, n];
+        }
+        else if(n==10)
+        {
+            fullNum=[NSString stringWithFormat:@"%@.", fullNum];
+        }
+        else if(n==11)
+        {
+            fullNum=[NSString stringWithFormat:@"%@-", fullNum];
+        }
+        
+    }
+    
+    return fullNum;
 }
 
 -(void) dealloc

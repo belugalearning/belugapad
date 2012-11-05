@@ -22,6 +22,8 @@
 @property (nonatomic, readwrite) int lastScore;
 @property (nonatomic, readwrite) int totalAccumulatedScore;
 @property (nonatomic, readwrite) int highScore;
+@property (nonatomic, readwrite, retain) NSDate *firstCompleted;
+@property (nonatomic, readwrite, retain) NSDate *lastCompleted;
 @property (nonatomic, readwrite, retain) NSDate *artifact1LastAchieved;
 @property (nonatomic, readwrite, retain) NSDate *artifact2LastAchieved;
 @property (nonatomic, readwrite, retain) NSDate *artifact3LastAchieved;
@@ -60,6 +62,12 @@
         self.totalAccumulatedScore = [rs intForColumn:@"total_accumulated_score"];
         self.highScore = [rs intForColumn:@"high_score"];
         
+        NSTimeInterval completedFirst = [rs doubleForColumn:@"first_completed"];
+        NSTimeInterval completedLast = [rs doubleForColumn:@"last_completed"];
+        
+        if (completedFirst) self.firstCompleted = [NSDate dateWithTimeIntervalSince1970:completedFirst];
+        if (completedLast) self.lastCompleted = [NSDate dateWithTimeIntervalSince1970:completedLast];
+        
         NSTimeInterval artifact1Date = [rs doubleForColumn:@"artifact_1_last_achieved"];
         NSTimeInterval artifact2Date = [rs doubleForColumn:@"artifact_2_last_achieved"];
         NSTimeInterval artifact3Date = [rs doubleForColumn:@"artifact_3_last_achieved"];
@@ -82,24 +90,33 @@
     
     self.lastPlayed = now;
     self.lastScore = score;
-    self.totalAccumulatedScore += score;
-    self.highScore = MAX(score, self.highScore);
     
-    if (score > SCORE_ARTIFACT_1)
+    if (score)
     {
-        self.artifact1LastAchieved = now;
-        if (score > SCORE_ARTIFACT_2)
+        // completed
+        
+        self.totalAccumulatedScore += score;
+        self.highScore = MAX(score, self.highScore);
+        
+        if (!self.firstCompleted) self.firstCompleted = now;
+        self.lastCompleted = now;
+    
+        if (score > SCORE_ARTIFACT_1)
         {
-            self.artifact2LastAchieved = now;
-            if (score > SCORE_ARTIFACT_3)
+            self.artifact1LastAchieved = now;
+            if (score > SCORE_ARTIFACT_2)
             {
-                self.artifact3LastAchieved = now;
-                if (score > SCORE_ARTIFACT_4)
+                self.artifact2LastAchieved = now;
+                if (score > SCORE_ARTIFACT_3)
                 {
-                    self.artifact4LastAchieved = now;
-                    if (score > SCORE_ARTIFACT_5)
+                    self.artifact3LastAchieved = now;
+                    if (score > SCORE_ARTIFACT_4)
                     {
-                        self.artifact5LastAchieved = now;
+                        self.artifact4LastAchieved = now;
+                        if (score > SCORE_ARTIFACT_5)
+                        {
+                            self.artifact5LastAchieved = now;
+                        }
                     }
                 }
             }
@@ -111,12 +128,14 @@
 
 -(void)saveState
 {
-    [db executeUpdate:@"UPDATE Nodes SET time_played=?, lastPlayed=?, last_score=?, total_accumulated_score=?, high_score=?, artifact_1_lastachieved=?, artifact_2_lastachieved=?, artifact_3_lastachieved=?, artifact_4_lastachieved=?, artifact_5_lastachieved=? WHERE id=?",
+    [db executeUpdate:@"UPDATE Nodes SET time_played=?, lastPlayed=?, last_score=?, total_accumulated_score=?, high_score=?, first_completed=?, last_completed=?, artifact_1_lastachieved=?, artifact_2_lastachieved=?, artifact_3_lastachieved=?, artifact_4_lastachieved=?, artifact_5_lastachieved=? WHERE id=?",
         self.timePlayed,
         self.lastPlayed ? [self.lastPlayed timeIntervalSince1970] : 0,
         self.lastScore,
         self.totalAccumulatedScore,
         self.highScore,
+        self.firstCompleted ? [self.firstCompleted timeIntervalSince1970] : 0,
+        self.lastCompleted ? [self.lastCompleted timeIntervalSince1970] : 0,
         self.artifact1LastAchieved ? [self.artifact1LastAchieved timeIntervalSince1970] : 0,
         self.artifact2LastAchieved ? [self.artifact2LastAchieved timeIntervalSince1970] : 0,
         self.artifact3LastAchieved ? [self.artifact3LastAchieved timeIntervalSince1970] : 0,

@@ -18,6 +18,8 @@
 @property (nonatomic, readonly) int lastScore;
 @property (nonatomic, readonly) int totalAccumulatedScore;
 @property (nonatomic, readonly) int highScore;
+@property (nonatomic, readonly, retain) NSDate *firstCompleted;
+@property (nonatomic, readonly, retain) NSDate *lastCompleted;
 @property (nonatomic, readonly, retain) NSDate *artifact1LastAchieved;
 @property (nonatomic, readonly, retain) NSDate *artifact2LastAchieved;
 @property (nonatomic, readonly, retain) NSDate *artifact3LastAchieved;

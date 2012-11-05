@@ -75,4 +75,22 @@
     return self;
 }
 
+-(void)dealloc
+{
+    self.userId = nil;
+    self.nodeId = nil;
+    self.lastPlayed = nil;
+    self.artifact1LastAchieved = nil;
+    self.artifact2LastAchieved = nil;
+    self.artifact3LastAchieved = nil;
+    self.artifact4LastAchieved = nil;
+    self.artifact5LastAchieved = nil;
+    if (db)
+    {
+        [db close];
+        [db release];
+    }
+    [super dealloc];
+}
+
 @end

@@ -60,10 +60,10 @@
         NSTimeInterval artifact5Date = [rs doubleForColumn:@"artifact_5_last_achieved"];
         
         if (artifact1Date) self.artifact1LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact1Date];
-        if (artifact2Date) self.artifact2LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact1Date];
-        if (artifact3Date) self.artifact3LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact1Date];
-        if (artifact4Date) self.artifact4LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact1Date];
-        if (artifact5Date) self.artifact5LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact1Date];
+        if (artifact2Date) self.artifact2LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact2Date];
+        if (artifact3Date) self.artifact3LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact3Date];
+        if (artifact4Date) self.artifact4LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact4Date];
+        if (artifact5Date) self.artifact5LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact5Date];
         
     }
     return self;

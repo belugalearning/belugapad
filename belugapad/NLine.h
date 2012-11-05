@@ -40,6 +40,8 @@
     int evalInterval;
     NSArray *evalJumpSequence;
     
+    BOOL evalAbsTarget;
+    
     CCLabelTTF *problemDescLabel;
 
     CCLabelTTF *problemCompleteLabel;

@@ -325,6 +325,9 @@ float timerIgnoreFrog;
     evalType=[pdef objectForKey:EVAL_TYPE];
     if(!evalType)evalType=@"TARGET";
     
+    NSNumber *abseval=[pdef objectForKey:@"EVAL_TARGET_AS_ABSOLUTE_VALUE"];
+    if(abseval) evalAbsTarget=[abseval boolValue];
+    
     if([pdef objectForKey:@"EVAL_INTERVAL"])
     {
         evalInterval=[[pdef objectForKey:@"EVAL_INTERVAL"] integerValue];
@@ -402,7 +405,11 @@ float timerIgnoreFrog;
 {
     BOOL Complete=NO;
     
-    if([evalType isEqualToString:@"TARGET"])
+    if([evalType isEqualToString:@"TARGET"] && evalAbsTarget)
+    {
+        Complete=(abs(evalTarget)==abs(lastBubbleValue));
+    }
+    else if([evalType isEqualToString:@"TARGET"])
     {
         Complete = (evalTarget==lastBubbleValue);
     }

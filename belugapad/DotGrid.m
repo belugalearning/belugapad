@@ -171,6 +171,12 @@
         [reqShapes retain];
     }
     
+    if(evalType==kProblemNonProportionalGrid)
+    {
+        nonPropEvalX=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_X]intValue];
+        nonPropEvalY=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_Y]intValue];
+    }
+    
     
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
     evalDividend=[[pdef objectForKey:DOTGRID_EVAL_DIVIDEND] intValue];
@@ -782,6 +788,9 @@
             
             shape.firstBoundaryAnchor=sAnch;
             shape.lastBoundaryAnchor=lAnch;
+            
+            NSLog(@"shape group first anch x %d y %d, last anch x %d y %d",sAnch.myXpos, sAnch.myYpos, lAnch.myXpos, lAnch.myYpos);
+            
             sGroup.firstAnchor=sAnch;
             sGroup.lastAnchor=lAnch;
             
@@ -836,9 +845,17 @@
                 lastDrawn=[[dotMatrix objectAtIndex:lastDrawn.myXpos+1]objectAtIndex:lastDrawn.myYpos];
                 firstdrawn=[[dotMatrix objectAtIndex:firstdrawn.myXpos]objectAtIndex:firstdrawn.myYpos+1];
                 
+                NSLog(@"firstdrawn x %d y %d, lastdrawn x %d y %d", firstdrawn.myXpos, firstdrawn.myYpos, lastDrawn.myXpos, lastDrawn.myYpos);
+                
+                
                 shape.firstBoundaryAnchor=firstdrawn;
                 shape.lastBoundaryAnchor=lastDrawn;
                 shape.autoUpdateWheel=autoAddition;
+                
+                for(DWDotGridTileGameObject *t in shape.tiles)
+                {
+                    [t handleMessage:kDWsetupStuff];
+                }
                 
                 
                 [sGroup.shapesInMe addObject:shape];
@@ -985,6 +1002,8 @@
     shape.RenderLayer=anchorLayer;
     shape.firstAnchor=orderedAnchs.firstAnchor;
     shape.lastAnchor=orderedAnchs.lastAnchor;
+    //shape.firstAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
+    //shape.lastAnchor=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
     shape.tiles=[[NSMutableArray alloc]init];
     shape.SelectAllTiles=selectWholeShape;
     shape.RenderDimensions=renderWidthHeightOnShape;
@@ -1768,6 +1787,10 @@
     else if(evalType==kProblemCheckDimensions)
     {
         return [self checkForCorrectShapeSizes];
+    }
+    else if(evalType==kProblemNonProportionalGrid)
+    {
+        
     }
     else if(evalType==kProblemIntroPlist)
     {

@@ -74,11 +74,11 @@
         NSTimeInterval artifact4Date = [rs doubleForColumn:@"artifact_4_last_achieved"];
         NSTimeInterval artifact5Date = [rs doubleForColumn:@"artifact_5_last_achieved"];
         
-        if (artifact1Date) self.artifact1LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact1Date];
-        if (artifact2Date) self.artifact2LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact2Date];
-        if (artifact3Date) self.artifact3LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact3Date];
-        if (artifact4Date) self.artifact4LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact4Date];
-        if (artifact5Date) self.artifact5LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact5Date];
+        if (artifact1Date > 0) self.artifact1LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact1Date];
+        if (artifact2Date > 0) self.artifact2LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact2Date];
+        if (artifact3Date > 0) self.artifact3LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact3Date];
+        if (artifact4Date > 0) self.artifact4LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact4Date];
+        if (artifact5Date > 0) self.artifact5LastAchieved = [NSDate dateWithTimeIntervalSince1970:artifact5Date];
         
     }
     return self;
@@ -128,20 +128,22 @@
 
 -(void)saveState
 {
-    [db executeUpdate:@"UPDATE Nodes SET time_played=?, lastPlayed=?, last_score=?, total_accumulated_score=?, high_score=?, first_completed=?, last_completed=?, artifact_1_lastachieved=?, artifact_2_lastachieved=?, artifact_3_lastachieved=?, artifact_4_lastachieved=?, artifact_5_lastachieved=? WHERE id=?",
-        self.timePlayed,
-        self.lastPlayed ? [self.lastPlayed timeIntervalSince1970] : 0,
-        self.lastScore,
-        self.totalAccumulatedScore,
-        self.highScore,
-        self.firstCompleted ? [self.firstCompleted timeIntervalSince1970] : 0,
-        self.lastCompleted ? [self.lastCompleted timeIntervalSince1970] : 0,
-        self.artifact1LastAchieved ? [self.artifact1LastAchieved timeIntervalSince1970] : 0,
-        self.artifact2LastAchieved ? [self.artifact2LastAchieved timeIntervalSince1970] : 0,
-        self.artifact3LastAchieved ? [self.artifact3LastAchieved timeIntervalSince1970] : 0,
-        self.artifact4LastAchieved ? [self.artifact4LastAchieved timeIntervalSince1970] : 0,
-        self.artifact5LastAchieved ? [self.artifact5LastAchieved timeIntervalSince1970] : 0];
-    
+    [db open];
+    [db executeUpdate:@"UPDATE Nodes SET time_played=?, last_played=?, last_score=?, total_accumulated_score=?, high_score=?, first_completed=?, last_completed=?, artifact_1_last_achieved=?, artifact_2_last_achieved=?, artifact_3_last_achieved=?, artifact_4_last_achieved=?, artifact_5_last_achieved=? WHERE id=?",
+                    [NSNumber numberWithDouble:self.timePlayed],
+                    [NSNumber numberWithDouble:(self.lastPlayed ? [self.lastPlayed timeIntervalSince1970] : 0)],
+                    [NSNumber numberWithInt:self.lastScore],
+                    [NSNumber numberWithInt:self.totalAccumulatedScore],
+                    [NSNumber numberWithInt:self.highScore],
+                    [NSNumber numberWithDouble:(self.firstCompleted ? [self.firstCompleted timeIntervalSince1970] : 0)],
+                    [NSNumber numberWithDouble:(self.lastCompleted ? [self.lastCompleted timeIntervalSince1970] : 0)],
+                    [NSNumber numberWithDouble:(self.artifact1LastAchieved ? [self.artifact1LastAchieved timeIntervalSince1970] : 0)],
+                    [NSNumber numberWithDouble:(self.artifact2LastAchieved ? [self.artifact2LastAchieved timeIntervalSince1970] : 0)],
+                    [NSNumber numberWithDouble:(self.artifact3LastAchieved ? [self.artifact3LastAchieved timeIntervalSince1970] : 0)],
+                    [NSNumber numberWithDouble:(self.artifact4LastAchieved ? [self.artifact4LastAchieved timeIntervalSince1970] : 0)],
+                    [NSNumber numberWithDouble:(self.artifact5LastAchieved ? [self.artifact5LastAchieved timeIntervalSince1970] : 0)],
+                    self.nodeId];
+    [db close];
 }
 
 -(void)dealloc

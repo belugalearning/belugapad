@@ -7,6 +7,7 @@
 //
 
 #import "UsersService.h"
+#import "UserNodeState.h"
 #import "global.h"
 #import "AppDelegate.h"
 #import "LoggingService.h"
@@ -270,6 +271,12 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 -(BOOL)hasCompletedNodeId:(NSString *)nodeId
 {
     return YES;
+}
+
+-(UserNodeState*)currentUserStateForNodeWithId:(NSString *)nodeId
+{
+    if (!currentUserStateDatabase || !self.currentUserId) return nil;
+    return [[UserNodeState alloc] initWithUserId:self.currentUserId nodeId:nodeId database:currentUserStateDatabase];
 }
 
 -(void)flagRemoveUserFromDevice:(NSString*)userId

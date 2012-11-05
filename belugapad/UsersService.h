@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class User, LoggingService, FMDatabase;
+@class User, LoggingService, FMDatabase, UserNodeState;
 
 @interface UsersService : NSObject
 
@@ -42,6 +42,7 @@ typedef enum {
 
 -(void)addCompletedNodeId:(NSString*)nodeId;
 -(BOOL)hasCompletedNodeId:(NSString*)nodeId;
+-(UserNodeState*)currentUserStateForNodeWithId:(NSString *)nodeId;
 
 -(void)onNewLogBatchWithId:(NSString*)batchId;
 @end

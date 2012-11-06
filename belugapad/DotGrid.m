@@ -2173,7 +2173,7 @@
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
 
-    [gw release];
+    gw=nil;
 
     [super dealloc];
 }

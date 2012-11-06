@@ -805,7 +805,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     //hide pause again
     pbtn.opacity=0;
     
-    [self stageIntroActions];        
+    [self stageIntroActions];
+    
+    [self showHideCommit];
 
     [self.Zubi dumpXP];
     
@@ -871,7 +873,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if([withPdef objectForKey:ENABLE_CALCULATOR])
         hasTrayCalc=[[withPdef objectForKey:ENABLE_CALCULATOR]boolValue];
     else
-        hasTrayCalc=YES;
+        hasTrayCalc=NO;
     
     if([withPdef objectForKey:NUMBER_PICKER])
     {
@@ -880,7 +882,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         if([np objectForKey:ENABLE_CALCULATOR])
             hasTrayCalc=[[np objectForKey:ENABLE_CALCULATOR]boolValue];
         else
-            hasTrayCalc=YES;
+            hasTrayCalc=NO;
         
         if([np objectForKey:ENABLE_WHEEL])
             hasTrayWheel=[[np objectForKey:ENABLE_WHEEL]boolValue];
@@ -894,13 +896,13 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     trayLayerPad=nil;
     trayLayerWheel=nil;
     
-    if(hasTrayCalc)
-        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_Available.png")];
-    else
-        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_NotAvailable.png")];
-    [problemDefLayer addChild:traybtnCalc z:2];
-    traybtnCalc.opacity=0;
-    traybtnCalc.tag=3;
+//    if(hasTrayCalc)
+//        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_Available.png")];
+//    else
+//        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_NotAvailable.png")];
+//    [problemDefLayer addChild:traybtnCalc z:2];
+//    traybtnCalc.opacity=0;
+//    traybtnCalc.tag=3;
 
     if(hasTrayMq)
         traybtnMq=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_MetaQuestion_Available.png")];
@@ -1191,8 +1193,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(!currentTool)
         [self showMq];
     
-    [self addCommitButton];
-    
     shownMetaQuestionIncompleteFor=0;
     
     metaQuestionAnswers = [[NSMutableArray alloc] init];
@@ -1220,7 +1220,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 //    NSNumber *eMode=[pdefMQ objectForKey:META_QUESTION_EVAL_MODE];
 //    if(eMode) mqEvalMode=[eMode intValue];
     mqEvalMode=kMetaQuestionEvalOnCommit;
-    
+    [self addCommitButton];
     // put our array of answers in an ivar
 //    metaQuestionAnswers = [pdefMQ objectForKey:META_QUESTION_ANSWERS];
     metaQuestionAnswerCount = [[pdefMQ objectForKey:META_QUESTION_ANSWERS] count];
@@ -1413,7 +1413,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             {
                 if(mqAnswerMode==kMetaQuestionAnswerSingle && !touchEnd)
                 {
-                    [self deselectAnswersExcept:-1];
+                    //[self deselectAnswersExcept:-1];
                 }
             }
             
@@ -1430,7 +1430,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void)showHideCommit
 {
     BOOL showCommit=NO;
-    if(hasTrayMq)
+    
+    if(!metaQuestionForThisProblem && !numberPickerForThisProblem && evalMode==kProblemEvalOnCommit)
+        showCommit=YES;
+    
+    if(hasTrayMq && trayMqShowing)
     {
         int countSelected=0;
         for(int i=0; i<metaQuestionAnswerCount; i++)
@@ -1451,6 +1455,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         else
             showCommit=NO;
     }
+    
     
     if(showCommit)
         [commitBtn setVisible:YES];
@@ -1598,6 +1603,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     
     [self addCommitButton];
+    
+    if(!currentTool)
+        [self showWheel];
     
     //float npOriginX=[[pdefNP objectForKey:PICKER_ORIGIN_X]floatValue];
     //float npOriginY=[[pdefNP objectForKey:PICKER_ORIGIN_Y]floatValue];
@@ -2138,7 +2146,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     
     //delegate touch handling for trays here
-    if((location.x>CORNER_TRAY_POS_X && location.y>CORNER_TRAY_POS_Y) || (trayMqShowing && CGRectContainsPoint(metaQuestionBanner.boundingBox, location))||location.y>ly-HD_HEADER_HEIGHT)
+    if(((location.x>CORNER_TRAY_POS_X && location.y>CORNER_TRAY_POS_Y)&&(trayCalcShowing||trayPadShowing)) || (trayMqShowing && CGRectContainsPoint(metaQuestionBanner.boundingBox, location))||location.y>ly-HD_HEADER_HEIGHT)
     {
         if (location.x < 100 && location.y > 688 && !isPaused)
         {
@@ -2164,14 +2172,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             return;
         }
     }
-    
-
-
-
-    //if(numberPickerForThisProblem)
-    //    [self checkNumberPickerTouches:location];
-    
-    // TODO: This should be made proportional
     
     if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn)
     {
@@ -2306,7 +2306,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             [self showWheel];
             
             //this might already be done -- but we've not explicitly hidden anything, so re-running will skip
-            [self showCornerTray];
+            if(currentTool)[self showCornerTray];
             [self showHideCommit];
         }
     }
@@ -2578,7 +2578,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     CCSprite *ulSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strULSprite)];
     
     self.pickerView = [CCPickerView node];
-    pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-130);
+    if(currentTool)
+        pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-130);
+    else
+        pickerView.position=ccp(cx,cy);
     pickerView.dataSource = self;
     pickerView.delegate = self;
     

@@ -673,19 +673,29 @@ static float kTimeToCageShake=7.0f;
         if(showMultipleDragging && (!([columnCages objectForKey:currentColumnValueKey]) || ([[columnCages objectForKey:currentColumnValueKey] boolValue]==YES)))
         {
             int defaultBlocksToMake=1;
-            
-            if([multipleBlockPickupDefaults objectForKey:currentColumnValueKey])
-                defaultBlocksToMake=[[multipleBlockPickupDefaults objectForKey:currentColumnValueKey]intValue];
-            else    
-                defaultBlocksToMake=1;
+            int minBlocks=1;
+            int maxBlocks=10;
             
             
             if(![multipleBlockMax objectForKey:currentColumnValueKey])
                 [multipleBlockMax setValue:[NSNumber numberWithInt:10] forKey:currentColumnValueKey];
+            else
+                maxBlocks=[[multipleBlockMax objectForKey:currentColumnValueKey]intValue];
             
             if(![multipleBlockMin objectForKey:currentColumnValueKey])
                 [multipleBlockMin setValue:[NSNumber numberWithInt:1] forKey:currentColumnValueKey];
+            else
+                minBlocks=[[multipleBlockMin objectForKey:currentColumnValueKey]intValue];
+           
+            if(defaultBlocksToMake<minBlocks)
+                defaultBlocksToMake=minBlocks;
+            if(defaultBlocksToMake>maxBlocks)
+                defaultBlocksToMake=maxBlocks;
             
+            if([multipleBlockPickupDefaults objectForKey:currentColumnValueKey])
+                defaultBlocksToMake=[[multipleBlockPickupDefaults objectForKey:currentColumnValueKey]intValue];
+            else
+                defaultBlocksToMake=1;
             
             
             [blocksToCreate addObject:[NSNumber numberWithInt:defaultBlocksToMake]];
@@ -1596,6 +1606,10 @@ static float kTimeToCageShake=7.0f;
         {
             DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
             if(!co.MountedObject && !explodeMode)
+            {
+                freeSpace++;
+            }
+            else if(!co.MountedObject && !co.CancellingObject && explodeMode)
             {
                 freeSpace++;
             }
@@ -3130,6 +3144,7 @@ static float kTimeToCageShake=7.0f;
                 
                 if((multipleBlockPickup||showMultipleControls||isNegativeProblem) && !isBasePickup)
                 {
+                    
                     if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
                     {
                         
@@ -3317,7 +3332,6 @@ static float kTimeToCageShake=7.0f;
                 }
                 if(blocksToDestroy)
                 {
-                    
                     for(DWPlaceValueBlockGameObject *thisBlock in blocksToDestroy)
                     {
                         [thisBlock handleMessage:kDWresetToMountPosition];

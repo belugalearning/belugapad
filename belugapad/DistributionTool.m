@@ -177,7 +177,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
     if(hasInactiveArea && cannotBreakBonds)
         cannotBreakBonds=NO;
-    
+    usedShapeTypes=[[[NSMutableArray alloc]init]retain];
 }
 
 -(void)populateGW
@@ -219,6 +219,9 @@ static float kDistanceBetweenBlocks=70.0f;
         int blocksInShape=[[d objectForKey:QUANTITY]intValue];
         [self createShapeWith:blocksInShape andWith:d];
     }
+    
+    if([usedShapeTypes count]==0)
+        [usedShapeTypes addObject:@"Circle"];
     
     if(problemHasCage)
     {
@@ -268,9 +271,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
     if(!blockType)
         blockType=@"Circle";
-    
-    if(!usedShapeTypes)
-        usedShapeTypes=[[[NSMutableArray alloc]init]retain];
+
     
     if(![usedShapeTypes containsObject:blockType])
         [usedShapeTypes addObject:blockType];
@@ -426,6 +427,16 @@ static float kDistanceBetweenBlocks=70.0f;
     }
     
     container.BlockType=((id<Configurable>)Object).blockType;
+    
+    for(id obj in [NSArray arrayWithArray:gw.AllGameObjectsCopy])
+    {
+        if([obj conformsToProtocol:@protocol(Moveable)]){
+            id<Moveable>go=(id<Moveable>)obj;
+            if([go amIProximateTo:((id<Moveable>)Object).Position] && go.MyContainer==nil)
+                [container addBlockToMe:go];
+        }
+    }
+    
     [container addBlockToMe:Object];
     [container layoutMyBlocks];
 }
@@ -517,6 +528,13 @@ static float kDistanceBetweenBlocks=70.0f;
         {
             id<Container>c=(id<Container>)go;
             [c repositionLabel];
+            
+            
+            for(id<Pairable>tgo in c.BlocksInShape)
+            {
+                NSLog(@"block position in group %@", NSStringFromCGPoint(tgo.Position));
+            }
+            
             NSLog(@"count of group %d", [c.BlocksInShape count]);
         }
     }
@@ -541,6 +559,7 @@ static float kDistanceBetweenBlocks=70.0f;
         [s runAction:sequence];
         currentPickupObject=nil;
 
+        
     }
 }
 
@@ -691,8 +710,20 @@ static float kDistanceBetweenBlocks=70.0f;
         }
         
         NSNumber *thisNo=nil;
-        for(NSNumber *n in solutions)
+        for(int i=0;i<[solutions count];i++)
         {
+            NSNumber *n=nil;
+            NSString *s=nil;
+
+            if([[solutions objectAtIndex:i] isKindOfClass:[NSNumber class]])
+                n=[solutions objectAtIndex:i];
+            
+            if([[solutions objectAtIndex:i] isKindOfClass:[NSString class]]){
+                s=[solutions objectAtIndex:i];
+                [s integerValue];
+            }
+
+            
             if([n isEqualToNumber:[NSNumber numberWithInt:shapesInArea[i]]])
             {
                 thisNo=n;
@@ -813,8 +844,7 @@ static float kDistanceBetweenBlocks=70.0f;
         {
             if([BLMath DistanceBetween:thisCage.Position and:pickupPos]<=60.0f)
             {
-                [thisCage spawnNewBlock];
-                spawnedNewObj=YES;
+                cage=thisCage;
             }
         }
         
@@ -841,10 +871,31 @@ static float kDistanceBetweenBlocks=70.0f;
         // then for each other moveable thing, check if we're proximate
         for(id go in gw.AllGameObjects)
         {
-            if([go conformsToProtocol:@protocol(Moveable)])
+            if([go conformsToProtocol:@protocol(Moveable)] && [go conformsToProtocol:@protocol(Pairable)])
             {
                 BOOL prx=[go amIProximateTo:location];
                 if(prx)hasBeenProximate=YES;
+                
+
+                [go unpairMeFrom:go];
+                if(((id<Moveable>)go).MyContainer==currentPickupObject.MyContainer)
+                   [((id<Container>)((id<Moveable>)go).MyContainer) removeBlockFromMe:go];
+                
+                for(id<Moveable,Pairable>gop in ((id<Moveable,Pairable>)go).PairedObjects)
+                {
+                    
+                    NSLog(@"count of pairedobjects for go %d is %d", (int)go, [((id<Moveable,Pairable>)go).PairedObjects count]);
+                    if([gop amIProximateTo:((id<Moveable>)go).Position])
+                    {
+                        if(gop.MyContainer)
+                            [((id<Container>)((id<Moveable>)gop).MyContainer) removeBlockFromMe:gop];
+                        
+                        gop.MyContainer=((id<Moveable>)go).MyContainer;
+                        [gop pairMeWith:go];
+                        [((id<Container>)((id<Moveable>)go).MyContainer) addBlockToMe:gop];
+                    }
+                    
+                }
             }
         }
     }
@@ -862,6 +913,8 @@ static float kDistanceBetweenBlocks=70.0f;
     
     // check there's a pickupobject
     NSArray *allGWCopy=[NSArray arrayWithArray:gw.AllGameObjects];
+    
+    [cage spawnNewBlock];
     
     if(currentPickupObject)
     {

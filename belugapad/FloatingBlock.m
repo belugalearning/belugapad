@@ -920,11 +920,24 @@
 
     for(id go in gw.AllGameObjects)
     {
-        if(go==pickupObject)
+        if(evalMode==kProblemEvalAuto && go==pickupObject)
         {
             id<Group>thisGroup=(id<Group>)pickupObject;
             if([thisGroup.MyBlocks count]==expSolution)
                 return YES;
+        }
+        if(evalMode==kProblemEvalOnCommit)
+        {
+            if([go conformsToProtocol:@protocol(Moveable)])
+            {
+                id<Moveable>thisObj=(id<Moveable>)go;
+                if(CGRectContainsPoint(commitPipe.boundingBox, thisObj.Position))
+                {
+                    id<Group>thisObjGroup=(id<Group>)thisObj.MyGroup;
+                    if([thisObjGroup.MyBlocks count]==expSolution)
+                        return YES;
+                }
+            }
         }
     }
     return NO;

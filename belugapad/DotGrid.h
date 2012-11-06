@@ -34,6 +34,7 @@ typedef enum {
     kProblemGridMultiplication=2,
     kProblemCheckDimensions=3,
     kProblemFactorDimensions=4,
+    kProblemNonProportionalGrid=5,
     kProblemIntroPlist=99
 } DotGridEvalType;
 
@@ -95,6 +96,7 @@ typedef struct {
     BOOL isMovingUp;
     BOOL isMovingDown;
     BOOL gridMultiCanEval;
+    BOOL debugLogging;
     
     NSString *showCount;
     
@@ -107,7 +109,11 @@ typedef struct {
     BOOL showMoreOrLess;
     int shapeGroupSize;
     int shapeBaseSize;
-
+    int nonPropEvalX;
+    int nonPropEvalY;
+    int numberWheelComponents;
+    
+    
     BOOL isIntroPlist;
     BOOL hitIntroCommit;
     BOOL showingIntroOverlay;

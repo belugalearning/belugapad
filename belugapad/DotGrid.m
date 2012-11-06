@@ -368,6 +368,12 @@
         int xlen=[[NSString stringWithFormat:@"%d", nonPropEvalX] length];
         int ylen=[[NSString stringWithFormat:@"%d", nonPropEvalY] length];
         
+        NSMutableArray *reqNonPropShapes=[[NSMutableArray alloc]init];
+        NSArray *fs=[NSArray arrayWithObjects:[NSNumber numberWithInt:xlen], [NSNumber numberWithInt:ylen], nil];
+        [reqNonPropShapes addObject:fs];
+        
+        reqShapes=reqNonPropShapes;
+        [reqShapes retain];
         
         int tStartX=1;
         int tStartY=3;

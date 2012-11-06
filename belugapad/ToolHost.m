@@ -873,7 +873,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if([withPdef objectForKey:ENABLE_CALCULATOR])
         hasTrayCalc=[[withPdef objectForKey:ENABLE_CALCULATOR]boolValue];
     else
-        hasTrayCalc=YES;
+        hasTrayCalc=NO;
     
     if([withPdef objectForKey:NUMBER_PICKER])
     {
@@ -882,7 +882,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         if([np objectForKey:ENABLE_CALCULATOR])
             hasTrayCalc=[[np objectForKey:ENABLE_CALCULATOR]boolValue];
         else
-            hasTrayCalc=YES;
+            hasTrayCalc=NO;
         
         if([np objectForKey:ENABLE_WHEEL])
             hasTrayWheel=[[np objectForKey:ENABLE_WHEEL]boolValue];
@@ -896,13 +896,13 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     trayLayerPad=nil;
     trayLayerWheel=nil;
     
-    if(hasTrayCalc)
-        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_Available.png")];
-    else
-        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_NotAvailable.png")];
-    [problemDefLayer addChild:traybtnCalc z:2];
-    traybtnCalc.opacity=0;
-    traybtnCalc.tag=3;
+//    if(hasTrayCalc)
+//        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_Available.png")];
+//    else
+//        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_NotAvailable.png")];
+//    [problemDefLayer addChild:traybtnCalc z:2];
+//    traybtnCalc.opacity=0;
+//    traybtnCalc.tag=3;
 
     if(hasTrayMq)
         traybtnMq=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_MetaQuestion_Available.png")];

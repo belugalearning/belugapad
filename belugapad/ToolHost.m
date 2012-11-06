@@ -648,8 +648,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         //todo: completion shouldn't be assumed here -- we can get here by progressing into an inserter that produces no viable insertions
         
         //assume completion
-        [contentService setPipelineNodeComplete];
-        [contentService setPipelineScore:pipelineScore];
+        [contentService endPlayPipelineWithScore:pipelineScore];
         
         contentService.fullRedraw=YES;
         contentService.lightUpProgressFromLastNode=YES;
@@ -1071,6 +1070,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(CGRectContainsPoint(kPauseMenuMenu, location))
     {
         [loggingService logEvent:BL_PA_EXIT_TO_MAP withAdditionalData:nil];
+        [contentService endPlayPipelineWithScore:0];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self returnToMenu];
     }

@@ -241,6 +241,10 @@
         doNotSimplifyFractions=NO;
         showDraggableBlock=YES;
     }
+    if(evalType==kProblemGridMultiplication)
+    {
+        showMoreOrLess=YES;
+    }
     
 }
 

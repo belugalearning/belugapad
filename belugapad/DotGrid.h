@@ -111,6 +111,7 @@ typedef struct {
     int shapeBaseSize;
     int nonPropEvalX;
     int nonPropEvalY;
+    int numberWheelComponents;
     
     
     BOOL isIntroPlist;

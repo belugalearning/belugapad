@@ -40,6 +40,8 @@
 @synthesize right;
 @synthesize left;
 @synthesize value;
+@synthesize ShapeX;
+@synthesize ShapeY;
 
 
 -(void)dealloc

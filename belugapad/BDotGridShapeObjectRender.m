@@ -280,7 +280,7 @@
 
 -(void)updateObjectDataFromNumberWheel
 {
-    if(s.MyNumberWheel)
+    if(s.MyNumberWheel && s.value==0)
     {
         DWNWheelGameObject *w=(DWNWheelGameObject*)s.MyNumberWheel;
         if(w.OutputValue<=[s.tiles count]){
@@ -338,6 +338,39 @@
                 [t.selectedSprite runAction:[CCTintTo actionWithDuration:0.5f red:255 green:255 blue:255]];
             }
             
+        }
+    }
+    else if(s.MyNumberWheel && s.value>0)
+    {
+        DWNWheelGameObject *w=(DWNWheelGameObject*)s.MyNumberWheel;
+        if(w.OutputValue<s.value)
+        {
+            for(DWDotGridTileGameObject *t in s.tiles)
+            {
+                t.Selected=NO;
+                [t.selectedSprite setVisible:NO];
+            }
+        }
+        else if(w.OutputValue>s.value)
+        {
+            w.InputValue=s.value;
+            [w handleMessage:kDWupdateObjectData];
+            for(DWDotGridTileGameObject *t in s.tiles)
+            {
+                t.Selected=YES;
+                [t.selectedSprite setVisible:YES];
+                [t.selectedSprite setColor:ccc3(255,0,0)];
+                [t.selectedSprite runAction:[CCTintTo actionWithDuration:0.5f red:255 green:255 blue:255]];
+            }
+            
+        }
+        else
+        {
+            for(DWDotGridTileGameObject *t in s.tiles)
+            {
+                t.Selected=YES;
+                [t.selectedSprite setVisible:YES];
+            }
         }
     }
 }

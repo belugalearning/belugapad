@@ -45,6 +45,8 @@
 @property float right;
 @property float left;
 @property float value;
+@property float ShapeX;
+@property float ShapeY;
 
 
 @end

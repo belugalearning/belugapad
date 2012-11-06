@@ -105,8 +105,10 @@
                 if(shape.MyNumberWheel)
                 {
                     DWNWheelGameObject *w=(DWNWheelGameObject*)shape.MyNumberWheel;
+                    if(shape.value>0)
+                        w.InputValue=shape.value;
+                    else w.InputValue=[shape.tiles count];
                     
-                    w.InputValue=[shape.tiles count];
                     [w handleMessage:kDWupdateObjectData];
                     
                     if(w.CountBubbleLabel)
@@ -167,13 +169,28 @@
             }
             if(shape.MyNumberWheel)
             {
-                NSLog(@"shape value %g", shape.value);
+                BOOL useShapeValue=NO;
+                if(shape.value>0)useShapeValue=YES;
+                
                 int theValue=0;
+                int tileValue=0;
+                
                 for(DWDotGridTileGameObject *t in shape.tiles)
                 {
                     if(t.Selected)
-                        theValue++;
+                        tileValue++;
                 }
+                
+                if(!useShapeValue){
+                    theValue=tileValue;
+                }
+                else{
+                    if(tileValue>0)
+                        theValue=shape.value;
+                    else
+                        theValue=0;
+                }
+                
                 DWNWheelGameObject *w=(DWNWheelGameObject*)shape.MyNumberWheel;
                 w.InputValue=theValue;
                 [w handleMessage:kDWupdateObjectData];
@@ -189,6 +206,13 @@
 
 -(void)updateCountLabels
 {
+    if(shape.MyNumberWheel)
+    {
+        DWNWheelGameObject *w=(DWNWheelGameObject*)shape.MyNumberWheel;
+        NSString *newStr=[NSString stringWithFormat:@"%d",[self returnSelectedTiles]];
+        [shape.countLabel setString:newStr];
+        [w.CountBubbleLabel setString:newStr];
+    }
     if(shape.countLabelType)
     {
         if([shape.countLabelType isEqualToString:@"SHOW_SELECTED"])

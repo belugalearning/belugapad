@@ -192,6 +192,8 @@
     nonPropEvalX=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_X]intValue];
     nonPropEvalY=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_Y]intValue];
     
+    numberWheelComponents=[[NSString stringWithFormat:@"%d", solutionNumber] length];
+    
     showCount=[pdef objectForKey:SHOW_COUNT];
     
     if([pdef objectForKey:ANCHOR_SPACE])
@@ -364,7 +366,9 @@
         useShapeGroups=YES;
         shapeBaseSize=1;
         drawMode=0;
+        solutionNumber=nonPropEvalX*nonPropEvalY;
         
+        numberWheelComponents=[[NSString stringWithFormat:@"%d", solutionNumber] length];
         int xlen=[[NSString stringWithFormat:@"%d", nonPropEvalX] length];
         int ylen=[[NSString stringWithFormat:@"%d", nonPropEvalY] length];
         
@@ -843,8 +847,6 @@
                 DWDotGridAnchorGameObject *a=[[dotMatrix objectAtIndex:tStartX+xpos] objectAtIndex:tStartY+ypos];
                 DWDotGridAnchorGameObject *b=[[dotMatrix objectAtIndex:tStartX+xpos+1] objectAtIndex:tStartY+ypos-1];
                 
-                NSLog(@"tStartX %d xpos %d, tStartY %d, ypos %d", tStartX, xpos, tStartX, ypos);
-                NSLog(@"fa x %d, y %d | la x %d, y %d", a.myXpos, a.myYpos, b.myXpos, b.myYpos);
 //                DWDotGridAnchorGameObject *a=[[dotMatrix objectAtIndex:tStartX] objectAtIndex:tStartY];
 //                DWDotGridAnchorGameObject *b=[[dotMatrix objectAtIndex:tEndX] objectAtIndex:tEndY];
                 
@@ -852,7 +854,7 @@
                 gw.Blackboard.LastAnchor=b;
                 
                 [shapeAnchs addObject:a];
-                NSLog(@"addedobject %d %d", 3+xpos, 3+ypos);
+
                 DWDotGridShapeGameObject *shape=[self createShapeWithAnchorPoints:shapeAnchs andPrecount:nil andDisabled:NO andGroup:sGroup];
                 shape.shapeGroup=sGroup;
                 shape.firstAnchor=a;
@@ -866,6 +868,9 @@
 
                 shape.autoUpdateWheel=autoAddition;
                 shape.value=thisXVal*thisYVal;
+                shape.ShapeX=thisXVal;
+                shape.ShapeY=thisYVal;
+                
                 NSLog(@"this shape val %d - this y val %d, this x val %d", thisXVal*thisYVal, thisYVal, thisXVal);
                 
                 [shapeAnchs release];
@@ -874,7 +879,9 @@
                 if(xpos==0)
                 {
                     CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", thisYVal] fontName:CHANGO fontSize:20.0f];
-                    [l setPosition:ccp(a.Position.x-50,a.Position.y+50)];
+                    [l setPosition:ccp(a.Position.x-50,a.Position.y+40)];
+                    [l setTag:2];
+                    [l setOpacity:0];
                     [renderLayer addChild:l];
                     //create y label with thisYVal
                     
@@ -886,7 +893,9 @@
                 if(ypos==ylen-1)
                 {
                     CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", thisXVal] fontName:CHANGO fontSize:20.0f];
-                    [l setPosition:ccp(245+(xpos*75),550)];
+                    [l setPosition:ccp(245+(xpos*75),475)];
+                    [l setTag:2];
+                    [l setOpacity:0];
                     [renderLayer addChild:l];
                 }
                 
@@ -990,6 +999,8 @@
                 shape.firstBoundaryAnchor=firstdrawn;
                 shape.lastBoundaryAnchor=lastDrawn;
                 shape.autoUpdateWheel=autoAddition;
+                shape.ShapeX=fabsf(firstdrawn.myXpos-lastDrawn.myXpos);
+                shape.ShapeY=fabsf(firstdrawn.myYpos-lastDrawn.myYpos);
                 
                 for(DWDotGridTileGameObject *t in shape.tiles)
                 {
@@ -1410,13 +1421,23 @@
                 [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
                 
                 w.RenderLayer=renderLayer;
-                w.Components=3;
                 w.Position=ccp(lx-140,(ly-120)-100*[numberWheels count]);
                 w.AssociatedGO=s;
-                w.SpriteFileName=@"/images/numberwheel/3slots.png";
+                w.Components=numberWheelComponents;
+                w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",w.Components];
                 w.HasCountBubble=showCountBubble;
                 w.CountBubbleRenderLayer=anchorLayer;
+                
+                if(s.ShapeX>0 && s.ShapeY>0){
+                    w.Label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g x %g", s.ShapeX, s.ShapeY] fontName:SOURCE fontSize:20.0f];
+                    if(gw.Blackboard.inProblemSetup){
+                        [w.Label setTag:2];
+                        [w.Label setOpacity:0];
+                    }
+                    [w.RenderLayer addChild:w.Label];
+                }
                 [w handleMessage:kDWsetupStuff];
+                [w handleMessage:kDWupdateLabels];
                 
                 s.MyNumberWheel=w;
                 [s.resizeHandle handleMessage:kDWdismantle];
@@ -1445,9 +1466,9 @@
     [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
     
     w.RenderLayer=renderLayer;
-    w.Components=3;
+    w.Components=numberWheelComponents;
     w.Position=ccp(lx-140,(ly-120)-100*[numberWheels count]);
-    w.SpriteFileName=@"/images/numberwheel/3slots.png";
+    w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",w.Components];
     w.HasCountBubble=NO;
     w.Label=[CCLabelTTF labelWithString:@"Total" fontName:SOURCE fontSize:20.0f];
     [w.RenderLayer addChild:w.Label];

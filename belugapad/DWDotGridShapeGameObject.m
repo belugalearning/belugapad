@@ -39,6 +39,8 @@
 @synthesize bottom;
 @synthesize right;
 @synthesize left;
+@synthesize value;
+
 
 -(void)dealloc
 {

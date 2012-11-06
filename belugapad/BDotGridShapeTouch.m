@@ -167,6 +167,7 @@
             }
             if(shape.MyNumberWheel)
             {
+                NSLog(@"shape value %g", shape.value);
                 int theValue=0;
                 for(DWDotGridTileGameObject *t in shape.tiles)
                 {

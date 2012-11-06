@@ -44,6 +44,7 @@
 @property float bottom;
 @property float right;
 @property float left;
+@property float value;
 
 
 @end

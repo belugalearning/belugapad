@@ -79,6 +79,8 @@
         
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
+        debugLogging=NO;
+        
         gw.Blackboard.inProblemSetup = NO;        
     }
     
@@ -358,14 +360,25 @@
     if(evalType==kProblemNonProportionalGrid)
     {
         showDraggableBlock=NO;
+        disableDrawing=YES;
         useShapeGroups=YES;
         shapeBaseSize=1;
         drawMode=0;
         
-        gw.Blackboard.FirstAnchor=[[dotMatrix objectAtIndex:1] objectAtIndex:6];
-        gw.Blackboard.LastAnchor=[[dotMatrix objectAtIndex:[[NSString stringWithFormat:@"%d",nonPropEvalX]length]] objectAtIndex:[[NSString stringWithFormat:@"%d",nonPropEvalY]length]];
+        int xlen=[[NSString stringWithFormat:@"%d", nonPropEvalX] length];
+        int ylen=[[NSString stringWithFormat:@"%d", nonPropEvalY] length];
         
-        [self checkAnchors];
+        
+        int tStartX=1;
+        int tStartY=3;
+        int tEndX=startX+xlen;
+        int tEndY=startY+ylen;
+        
+        gw.Blackboard.FirstAnchor=[[dotMatrix objectAtIndex:tStartX] objectAtIndex:tStartY];
+        gw.Blackboard.LastAnchor=[[dotMatrix objectAtIndex:tEndX] objectAtIndex:tEndY];
+        
+        
+        [self checkAnchorsAndUseResizeHandle:NO andShowMove:NO andPrecount:nil andDisabled:NO];
     }
 
 }
@@ -665,7 +678,8 @@
         // start the loop
         for(int x=anchStart.myXpos;x<anchEnd.myXpos;x++)
         {
-            NSLog(@"current x %d", x);
+            if(debugLogging)
+                NSLog(@"current x %d", x);
             // then check whether we're going up or down
             if(anchStart.myYpos < anchEnd.myYpos)
             {
@@ -709,7 +723,8 @@
         // start the loop
         for(int x=anchStart.myXpos-1;x>anchEnd.myXpos-1;x--)
         {
-            NSLog(@"current x %d", x);
+            if(debugLogging)
+                NSLog(@"current x %d", x);
             // then check whether we're going up or down
             if(anchStart.myYpos < anchEnd.myYpos)
             {
@@ -756,7 +771,9 @@
     for(int i=0;i<[anchorsForShape count];i++)
     {
         DWDotGridAnchorGameObject *wanch = [anchorsForShape objectAtIndex:i];
-        NSLog(@"shape in matrix (%d/%d): x %d / y %d", i, [anchorsForShape count], wanch.myXpos, wanch.myYpos);
+        
+        if(debugLogging)
+            NSLog(@"shape in matrix (%d/%d): x %d / y %d", i, [anchorsForShape count], wanch.myXpos, wanch.myYpos);
     }
     
     thisShape.lastAnchor=anchEnd;
@@ -789,7 +806,6 @@
         int ylen=[[NSString stringWithFormat:@"%d", nonPropEvalY] length];
         
         int remX=nonPropEvalX;
-        int remY=nonPropEvalY;
         
         int baseStartX=1;
         if(xlen>1) baseStartX=pow(10, xlen-1);
@@ -799,19 +815,32 @@
         
         int xpos=0;
         
+        int tStartX=1;
+        int tStartY=3;
+        int tEndX=tStartX+xlen;
+        int tEndY=tStartY+ylen;
+        
         for(int xi=baseStartX; xi>0; xi=xi/10)
         {
             int thisXVal=(remX/xi) * xi;
             int ypos=ylen-1;
+            int remY=nonPropEvalY;
             
             for(int yi=baseStartY; yi>0; yi=yi/10)
             {
                 int thisYVal=(remY/yi) * yi;
                 
+                if(thisXVal*thisYVal==0)continue;
+                
                 //in here create a shape at xpos, ypos with value thisXVal*thisYVal
                 NSMutableArray *shapeAnchs=[[NSMutableArray alloc] init];
-                DWDotGridAnchorGameObject *a=[[dotMatrix objectAtIndex:1+xpos] objectAtIndex:3+ypos];
-                DWDotGridAnchorGameObject *b=[[dotMatrix objectAtIndex:1+xpos+1] objectAtIndex:3+ypos-1];
+                DWDotGridAnchorGameObject *a=[[dotMatrix objectAtIndex:tStartX+xpos] objectAtIndex:tStartY+ypos];
+                DWDotGridAnchorGameObject *b=[[dotMatrix objectAtIndex:tStartX+xpos+1] objectAtIndex:tStartY+ypos-1];
+                
+                NSLog(@"tStartX %d xpos %d, tStartY %d, ypos %d", tStartX, xpos, tStartX, ypos);
+                NSLog(@"fa x %d, y %d | la x %d, y %d", a.myXpos, a.myYpos, b.myXpos, b.myYpos);
+//                DWDotGridAnchorGameObject *a=[[dotMatrix objectAtIndex:tStartX] objectAtIndex:tStartY];
+//                DWDotGridAnchorGameObject *b=[[dotMatrix objectAtIndex:tEndX] objectAtIndex:tEndY];
                 
                 gw.Blackboard.FirstAnchor=a;
                 gw.Blackboard.LastAnchor=b;
@@ -822,11 +851,16 @@
                 shape.shapeGroup=sGroup;
                 shape.firstAnchor=a;
                 
-                shape.firstAnchor=[[dotMatrix objectAtIndex:1] objectAtIndex:3+ylen];
-                shape.lastAnchor=[[dotMatrix objectAtIndex:1+xlen] objectAtIndex:ylen];
-                shape.firstBoundaryAnchor=[[dotMatrix objectAtIndex:1] objectAtIndex:3+ylen];
-                shape.lastBoundaryAnchor=[[dotMatrix objectAtIndex:1+xlen] objectAtIndex:ylen];
+                shape.firstAnchor=[[dotMatrix objectAtIndex:tStartX] objectAtIndex:tStartY];
+                shape.lastAnchor=[[dotMatrix objectAtIndex:tEndX] objectAtIndex:tEndY];
+//                shape.firstBoundaryAnchor=a;
+//                shape.lastBoundaryAnchor=b;
+                shape.firstBoundaryAnchor=shape.firstAnchor;
+                shape.lastBoundaryAnchor=shape.lastAnchor;
+
                 shape.autoUpdateWheel=autoAddition;
+                shape.value=thisXVal*thisYVal;
+                NSLog(@"this shape val %d - this y val %d, this x val %d", thisXVal*thisYVal, thisYVal, thisXVal);
                 
                 [shapeAnchs release];
 
@@ -837,9 +871,7 @@
                     [l setPosition:ccp(a.Position.x-50,a.Position.y+50)];
                     [renderLayer addChild:l];
                     //create y label with thisYVal
-                    NSLog(@"this y val %d", thisYVal);
                     
-                    NSLog(@"this shape val %d", thisXVal*thisYVal);
                     
 
 
@@ -857,7 +889,6 @@
             }
             
             //create x label with thisXVal
-            NSLog(@"this x val %d", thisXVal);
             
             xpos++;
             remX-=thisXVal;
@@ -888,7 +919,8 @@
             shape.firstBoundaryAnchor=sAnch;
             shape.lastBoundaryAnchor=lAnch;
             
-            NSLog(@"shape group first anch x %d y %d, last anch x %d y %d",sAnch.myXpos, sAnch.myYpos, lAnch.myXpos, lAnch.myYpos);
+            if(debugLogging)
+                NSLog(@"shape group first anch x %d y %d, last anch x %d y %d",sAnch.myXpos, sAnch.myYpos, lAnch.myXpos, lAnch.myYpos);
             
             sGroup.firstAnchor=sAnch;
             sGroup.lastAnchor=lAnch;
@@ -933,7 +965,8 @@
                         
                         [shapeAnchs addObject:a];
                         
-                        NSLog(@"creating shape at %d, %d", a.myXpos, a.myYpos);
+                        if(debugLogging)
+                            NSLog(@"creating shape at %d, %d", a.myXpos, a.myYpos);
                     }
                 }
                 
@@ -944,7 +977,8 @@
                 lastDrawn=[[dotMatrix objectAtIndex:lastDrawn.myXpos+1]objectAtIndex:lastDrawn.myYpos];
                 firstdrawn=[[dotMatrix objectAtIndex:firstdrawn.myXpos]objectAtIndex:firstdrawn.myYpos+1];
                 
-                NSLog(@"firstdrawn x %d y %d, lastdrawn x %d y %d", firstdrawn.myXpos, firstdrawn.myYpos, lastDrawn.myXpos, lastDrawn.myYpos);
+                if(debugLogging)
+                    NSLog(@"firstdrawn x %d y %d, lastdrawn x %d y %d", firstdrawn.myXpos, firstdrawn.myYpos, lastDrawn.myXpos, lastDrawn.myYpos);
                 
                 
                 shape.firstBoundaryAnchor=firstdrawn;
@@ -1045,8 +1079,8 @@
             shapesRequired+=1;
         
         //if(shapesRequired<1)shapesRequired++;
-        
-        NSLog(@"shapes required %d - anchor count %d - remainder %g - full %g", (int)shapesRequired, [anchors count], remainder, full);
+        if(debugLogging)
+            NSLog(@"shapes required %d - anchor count %d - remainder %g - full %g", (int)shapesRequired, [anchors count], remainder, full);
         
         NSMutableArray *shapeAnchors=[[[NSMutableArray alloc]init]autorelease];
         
@@ -1342,11 +1376,12 @@
         for(NSNumber *n in w.pickerViewSelection)
         {
             str=[NSString stringWithFormat:@"%@%d", str, [n intValue]];
-            NSLog(@"str val %@", str);
         }
         
         totalVal+=[str intValue];
-        NSLog(@"(%d) totalVal %d", i, totalVal);
+        
+        if(debugLogging)
+            NSLog(@"(%d) totalVal %d", i, totalVal);
     }
     
     sumWheel.InputValue=totalVal;
@@ -1616,7 +1651,8 @@
     {
         DWDotGridAnchorGameObject *fa=(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor;
         DWDotGridAnchorGameObject *la=(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor;
-        NSLog(@"first X %d Y %d, last X %d Y %d", fa.myXpos, fa.myYpos, la.myXpos, la.myYpos);
+        if(debugLogging)
+            NSLog(@"first X %d Y %d, last X %d Y %d", fa.myXpos, fa.myYpos, la.myXpos, la.myYpos);
         [self checkAnchors];
     }
     
@@ -1654,7 +1690,8 @@
                     {
 
                         DWDotGridShapeGameObject *sg=[gw.AllGameObjects objectAtIndex:i];
-                        NSLog(@"Check sg %d", (int)sg);
+                        if(debugLogging)
+                            NSLog(@"Check sg %d", (int)sg);
 //                        if([retInfo.matchedGOs containsObject:sg])
 //                            continue;
                         
@@ -1709,7 +1746,8 @@
                             [reqShapesCopy removeObjectAtIndex:0];
 //                            [hintedShapes addObject:sg];
                             
-                            NSLog(@"count hinted %d, reqShapes %d", [retInfo.matchedGOs count], [reqShapesCopy count]);
+                            if(debugLogging)
+                                NSLog(@"count hinted %d, reqShapes %d", [retInfo.matchedGOs count], [reqShapesCopy count]);
                         }
                     }
                 }
@@ -1801,7 +1839,8 @@
                 [tileCounts addObject:[NSNumber numberWithInt:tileCount]];
                 [selectedCounts addObject:[NSNumber numberWithInt:selectedCount]];
                 
-                NSLog(@"shape of %d / %d", selectedCount, tileCount);
+                if(debugLogging)
+                    NSLog(@"shape of %d / %d", selectedCount, tileCount);
             }
         }
     }
@@ -1968,7 +2007,8 @@
                     [matchShapes addObject:a];
                     [matchGOs addObject:sg];
                     
-                    NSLog(@"Adding gameObject sg: %d to matchedGOs", (int)sg);
+                    if(debugLogging)
+                        NSLog(@"Adding gameObject sg: %d to matchedGOs", (int)sg);
                     
                     //[reqShapesCopy removeObject:a];
                     correctShapes++;

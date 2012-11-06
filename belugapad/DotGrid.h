@@ -96,6 +96,7 @@ typedef struct {
     BOOL isMovingUp;
     BOOL isMovingDown;
     BOOL gridMultiCanEval;
+    BOOL debugLogging;
     
     NSString *showCount;
     

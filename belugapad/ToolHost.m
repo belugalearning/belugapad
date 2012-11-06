@@ -1430,6 +1430,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void)showHideCommit
 {
     BOOL showCommit=NO;
+    
+    if(!metaQuestionForThisProblem && !numberPickerForThisProblem && evalMode==kProblemEvalOnCommit)
+        showCommit=YES;
+    
     if(hasTrayMq && trayMqShowing)
     {
         int countSelected=0;
@@ -1451,9 +1455,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         else
             showCommit=NO;
     }
-    
-    if(!metaQuestionForThisProblem && !numberPickerForThisProblem && evalMode==kProblemEvalOnCommit)
-        showCommit=YES;
     
     
     if(showCommit)
@@ -1602,6 +1603,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     
     [self addCommitButton];
+    
+    if(!currentTool)
+        [self showWheel];
     
     //float npOriginX=[[pdefNP objectForKey:PICKER_ORIGIN_X]floatValue];
     //float npOriginY=[[pdefNP objectForKey:PICKER_ORIGIN_Y]floatValue];
@@ -2302,7 +2306,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             [self showWheel];
             
             //this might already be done -- but we've not explicitly hidden anything, so re-running will skip
-            [self showCornerTray];
+            if(currentTool)[self showCornerTray];
             [self showHideCommit];
         }
     }
@@ -2574,7 +2578,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     CCSprite *ulSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strULSprite)];
     
     self.pickerView = [CCPickerView node];
-    pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-130);
+    if(currentTool)
+        pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-130);
+    else
+        pickerView.position=ccp(cx,cy);
     pickerView.dataSource = self;
     pickerView.delegate = self;
     

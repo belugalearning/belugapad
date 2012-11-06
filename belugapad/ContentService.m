@@ -250,6 +250,17 @@
 
 #pragma mark - data access
 
+-(NSArray*)allConceptNodeIds
+{
+    NSMutableArray *ids=[[[NSMutableArray alloc] init] autorelease];
+    [contentDatabase open];
+    FMResultSet *rs = [contentDatabase executeQuery:@"select id from ConceptNodes"];
+    while([rs next]) [ids addObject:[rs stringForColumnIndex:0]];
+    [rs close];
+    [contentDatabase close];
+    return [NSArray arrayWithArray:ids];
+}
+
 -(NSArray*)allConceptNodes
 {
     NSMutableArray *nodes=[[[NSMutableArray alloc] init] autorelease];

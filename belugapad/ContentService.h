@@ -51,6 +51,7 @@
 -(void)gotoNextProblemInPipeline;
 -(void)gotoNextProblemInPipelineWithSkip:(int)skipby;
 
+-(NSArray*)allConceptNodeIds;
 -(NSArray*)allConceptNodes;
 -(ConceptNode*)conceptNodeForId:(NSString*)nodeId;
 -(NSArray*)relationMembersForName:(NSString*)name;

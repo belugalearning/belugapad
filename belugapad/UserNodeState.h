@@ -28,7 +28,7 @@
 
 -(id)initWithUserId:(NSString*)userId nodeId:(NSString*)nodeId database:(FMDatabase*)database;
 -(id)initWithUserId:(NSString*)userId resultSet:(FMResultSet*)rs database:(FMDatabase*)database;
--(BOOL)updateAndSaveStateOnAfterNodePlay:(NodePlay*)nodePlay;
+-(BOOL)updateAndSaveStateAfterNodePlay:(NodePlay*)nodePlay;
 -(BOOL)saveState;
 
 @end

@@ -25,6 +25,7 @@
 #import "SGDtoolContainer.h"
 #import "SGDtoolBlockRender.h"
 #import "InteractionFeedback.h"
+#import "SimpleAudioEngine.h"
 
 #define DRAW_DEPTH 1
 static float kTimeSinceAction=7.0f;
@@ -874,8 +875,12 @@ static float kDistanceBetweenBlocks=70.0f;
             if([go conformsToProtocol:@protocol(Moveable)] && [go conformsToProtocol:@protocol(Pairable)])
             {
                 BOOL prx=[go amIProximateTo:location];
-                if(prx)hasBeenProximate=YES;
-                
+                if(prx)
+                {
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/sfx_distribution_interation_feedback_block_trying_to_bond.wav")];
+                    hasBeenProximate=YES;
+                }
+                [go resetTint];
 
                 [go unpairMeFrom:go];
                 if(((id<Moveable>)go).MyContainer==currentPickupObject.MyContainer)
@@ -998,6 +1003,7 @@ static float kDistanceBetweenBlocks=70.0f;
         [self lookForOrphanedObjects];
         [self tidyUpEmptyGroups];
         [self updateContainerLabels];
+        [currentPickupObject resetTint];
         
         //[self evalUniqueShapes];
         if(evalMode==kProblemEvalAuto)[self evalProblem];
@@ -1013,7 +1019,7 @@ static float kDistanceBetweenBlocks=70.0f;
     currentPickupObject=nil;
     isTouching=NO;
     spawnedNewObj=NO;
-    
+    audioHasPlayedBonding=NO;
     
     
 }

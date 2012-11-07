@@ -349,9 +349,8 @@
     
     [w.pickerViewSelection replaceObjectAtIndex:component withObject:[NSNumber numberWithInteger:row]];
 
-    if(!w.HasDecimals)
+
         w.OutputValue=[self returnPickerNumber];
-    else
         w.StrOutputValue=[self returnPickerNumberString];
     
     

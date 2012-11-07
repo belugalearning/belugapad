@@ -119,7 +119,7 @@
             setupNumberWheel=NO;
             [self setupNumberWheel];
             [pickerView spinComponent:0 speed:25 easeRate:5 repeat:3 stopRow:defaultBlocksFromPipe];
-            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/sfx_number_wheel_slots_rotate_to_start_position.wav")];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_wheel_slots_rotate_to_start_position.wav")];
         }
     }
     

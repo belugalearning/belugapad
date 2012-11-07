@@ -121,7 +121,7 @@ const float kScaleOfLesserBlocks=0.6f;
         }else{
             [lblCurrentTotal setColor:ccc3(255,0,0)];
             if(!audioHasPlayedOverTarget){
-                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/sfx_long_division_general_block_over_target.wav")];
+                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_block_over_target.wav")];
                 audioHasPlayedOverTarget=YES;
             }
         }

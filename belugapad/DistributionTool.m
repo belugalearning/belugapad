@@ -877,7 +877,7 @@ static float kDistanceBetweenBlocks=70.0f;
                 BOOL prx=[go amIProximateTo:location];
                 if(prx)
                 {
-                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/sfx_distribution_interation_feedback_block_trying_to_bond.wav")];
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_interation_feedback_block_trying_to_bond.wav")];
                     hasBeenProximate=YES;
                 }
                 [go resetTint];

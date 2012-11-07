@@ -642,7 +642,7 @@ static float kNBFontSizeLarge=35.0f;
     thisOne.HintObjects=thatOne.HintObjects;
     thatOne.HintObjects=thisOneHints;
     doNotSendPositionEval=YES;
-    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/sfx_number_bonds_general_bar_rearrangement.wav")];
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_rearrangement.wav")];
     
     for(DWNBondObjectGameObject *o in thisOne.HintObjects)
     {
@@ -923,7 +923,7 @@ static float kNBFontSizeLarge=35.0f;
             }
             else {
                 [pogo handleMessage:kDWmoveSpriteToHome];
-                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/sfx_number_bonds_general_bar_fly_back.wav")];
+                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_fly_back.wav")];
                 [[mountedObjects objectAtIndex:pogo.IndexPos] addObject:gw.Blackboard.PickupObject];
                 
                 [gw handleMessage:kDWhighlight andPayload:nil withLogLevel:-1];  

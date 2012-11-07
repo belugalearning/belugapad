@@ -42,12 +42,48 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 }
 
 -(NSMutableDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs;
+-(void)ensureStateDbConsistency;
 @end
 
 
 @implementation UsersService
 
 @synthesize installationUUID;
+
+-(id)initWithProblemPipeline:(NSString*)source
+           andLoggingService:(LoggingService *)ls
+{
+    self = [super init];
+    if (self)
+    {
+        contentSource = source;
+        loggingService = ls;
+        
+        isSyncing = NO;
+        
+        // check that we've got an all-users database
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSString *libraryDir = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSString *allUsersDBPath = [libraryDir stringByAppendingPathComponent:@"all-users.db"];
+        if (![fm fileExistsAtPath:allUsersDBPath])
+        {
+            NSString *bundledAllUsers = BUNDLE_FULL_PATH(@"/canned-dbs/all-users.db");
+            [fm copyItemAtPath:bundledAllUsers toPath:allUsersDBPath error:nil];
+        }
+        allUsersDatabase = [[FMDatabase databaseWithPath:allUsersDBPath] retain];
+        
+        NSString *userStateDir = [libraryDir stringByAppendingPathComponent:@"user-state"];
+        if (![fm fileExistsAtPath:userStateDir isDirectory:nil])
+        {
+            [fm createDirectoryAtPath:userStateDir withIntermediateDirectories:YES attributes:nil error:nil];
+        }
+        
+        httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kUsersWSBaseURL]];
+        opQueue = [[[NSOperationQueue alloc] init] retain];
+    }
+    
+    return self;
+}
 
 -(NSString*)currentUserId
 {
@@ -105,42 +141,30 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
             [fm copyItemAtPath:BUNDLE_FULL_PATH(@"/canned-dbs/user-state-template.db") toPath:urStateDbPath error:nil];
         }
         currentUserStateDatabase = [[FMDatabase databaseWithPath:urStateDbPath] retain];
+        
+        [self ensureStateDbConsistency];
     }
 }
 
--(id)initWithProblemPipeline:(NSString*)source
-           andLoggingService:(LoggingService *)ls
+-(void)ensureStateDbConsistency
 {
-    self = [super init];
-    if (self)
+    // make every content node has a corresponding row on the Nodes table
+    [currentUserStateDatabase open];
+    
+    NSMutableArray *stateNodeIds = [NSMutableArray array];
+    FMResultSet *rs = [currentUserStateDatabase executeQuery:@"SELECT id FROM Nodes"];
+    while([rs next]) [stateNodeIds addObject:[rs stringForColumnIndex:0]];
+    
+    NSArray *missingNodeIds = nil;
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    missingNodeIds = [ac.contentService conceptNodeIdsNotIn:stateNodeIds];
+    
+    if ([missingNodeIds count])
     {
-        contentSource = source;
-        loggingService = ls;
-        
-        isSyncing = NO;
-        
-        // check that we've got an all-users database
-        NSFileManager *fm = [NSFileManager defaultManager];
-        NSString *libraryDir = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        NSString *allUsersDBPath = [libraryDir stringByAppendingPathComponent:@"all-users.db"];
-        if (![fm fileExistsAtPath:allUsersDBPath])
-        {
-            NSString *bundledAllUsers = BUNDLE_FULL_PATH(@"/canned-dbs/all-users.db");
-            [fm copyItemAtPath:bundledAllUsers toPath:allUsersDBPath error:nil];
-        }
-        allUsersDatabase = [[FMDatabase databaseWithPath:allUsersDBPath] retain];
-        
-        NSString *userStateDir = [libraryDir stringByAppendingPathComponent:@"user-state"];
-        if (![fm fileExistsAtPath:userStateDir isDirectory:nil])
-        {
-            [fm createDirectoryAtPath:userStateDir withIntermediateDirectories:YES attributes:nil error:nil];
-        }
-        
-        httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kUsersWSBaseURL]];
-        opQueue = [[[NSOperationQueue alloc] init] retain];
+        [currentUserStateDatabase executeUpdate:[NSString stringWithFormat:@"INSERT INTO Nodes ('id') VALUES('%@')", [missingNodeIds componentsJoinedByString:@"'),('"]]];
     }
     
-    return self;
+    [currentUserStateDatabase close];
 }
 
 -(NSArray*)deviceUsersByNickName

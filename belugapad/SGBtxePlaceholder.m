@@ -64,17 +64,21 @@
 -(void)duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)mountObject
 {
     //destroy any existing mounted object
-    
+    if(mountedObject)
+    {
+        [mountedObject destroy];
+        self.mountedObject=nil;
+    }
     
     //create a duplicate of the passed object
     id<MovingInteractive, RenderObject, NSObject> dupe=(id<MovingInteractive, RenderObject, NSObject>)[mountObject createADuplicate];
     
+    //set it up
+    [dupe setupDraw];
+    
     //put on position of self
     dupe.position=self.position;
     dupe.originalPosition=self.position;
-    
-    //set it up
-    [dupe setupDraw];
     
     //attach to same row as me
     [dupe attachToRenderBase:((SGBtxeRow*)self.container).baseNode];

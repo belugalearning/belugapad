@@ -648,7 +648,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         //todo: completion shouldn't be assumed here -- we can get here by progressing into an inserter that produces no viable insertions
         
         //assume completion
-        [contentService endPlayPipelineWithScore:pipelineScore];
+        [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @(pipelineScore) }];
         
         contentService.fullRedraw=YES;
         contentService.lightUpProgressFromLastNode=YES;
@@ -1070,7 +1070,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(CGRectContainsPoint(kPauseMenuMenu, location))
     {
         [loggingService logEvent:BL_PA_EXIT_TO_MAP withAdditionalData:nil];
-        [contentService endPlayPipelineWithScore:0];
+        [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @0 }];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self returnToMenu];
     }
@@ -1434,6 +1434,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(!metaQuestionForThisProblem && !numberPickerForThisProblem && evalMode==kProblemEvalOnCommit)
         showCommit=YES;
     
+    if(currentTool && evalMode==kProblemEvalOnCommit)
+        showCommit=YES;
+    
     if(hasTrayMq && trayMqShowing)
     {
         int countSelected=0;
@@ -1575,6 +1578,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     isAnimatingIn=YES;
     [loggingService logEvent:BL_PA_FAIL withAdditionalData:nil];
     [self showProblemIncompleteMessage];
+    [self showHideCommit];
     //[self deselectAnswersExcept:-1];
 }
 -(void)removeMetaQuestionButtons

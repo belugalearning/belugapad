@@ -16,6 +16,7 @@
 #import "LoggingService.h"
 #import "UsersService.h"
 #import "DWNWheelGameObject.h"
+#import "SimpleAudioEngine.h"
 
 const float kSpaceBetweenNumbers=280.0f;
 const float kSpaceBetweenRows=80.0f;
@@ -114,9 +115,16 @@ const float kScaleOfLesserBlocks=0.6f;
     if(goodBadHighlight) 
     {
         if(expressionIsEqual)
+        {
             [lblCurrentTotal setColor:ccc3(0, 255,0)];
-        else 
+            audioHasPlayedOverTarget=NO;
+        }else{
             [lblCurrentTotal setColor:ccc3(255,0,0)];
+            if(!audioHasPlayedOverTarget){
+                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_block_over_target.wav")];
+                audioHasPlayedOverTarget=YES;
+            }
+        }
     }
     
     // then update the actual text of it

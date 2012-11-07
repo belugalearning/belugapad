@@ -50,6 +50,9 @@ typedef enum
     BOOL hasInactiveArea;
     BOOL spawnedNewObj;
     BOOL randomiseDockPositions;
+    
+    BOOL audioHasPlayedBonding;
+    
     int cageObjectCount;
     
     NSString *dockType;

@@ -196,7 +196,7 @@ typedef enum {
     //[[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
     
     [TestFlight passCheckpoint:@"PROCEEDING_TO_TOOLHOST_FROM_JMAP"];
-    
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_enter_question.wav")];
     contentService.resetPositionAfterTH=YES;
     contentService.lastMapLayerPosition=mapLayer.position;
     
@@ -1007,7 +1007,10 @@ typedef enum {
         {
             id<Selectable>sgo=go;
             if([((id<Selectable>)sgo).NodeSelectComponent trySelectionForPosition:lOnMap])
+            {
+                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_node_pin_tap.wav")];;
                 break;
+            }
         }
     }
 }
@@ -1044,7 +1047,7 @@ typedef enum {
                 if (newpos.x < -1400) newpos.x=-1400;
                 if (newpos.y < 2300) newpos.y=2300;
             }
-            
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_navigating_(panning_map).wav")];
             [mapLayer setPosition:newpos];
 
             lastTouch=l;
@@ -1073,11 +1076,13 @@ typedef enum {
         
         if(scaleChange<-2 && !zoomedOut)
         {
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_zooming_map.wav")];
             [self zoomToRegionView];
             didJustChangeZoom=YES;
         }
         else if(scaleChange>2 && zoomedOut)
         {
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_zooming_map.wav")];
             CGPoint aPos=[BLMath AddVector:t1b toVector:[BLMath MultiplyVector:[BLMath SubtractVector:t1b from:t1a] byScalar:0.5f]];
             
             [self zoomToCityViewAtPoint:aPos];

@@ -224,6 +224,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void) shakeCommitButton
 {
     [commitBtn runAction:[InteractionFeedback dropAndBounceAction]];
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_interaction_feedback_commit_button_shaking.wav")];
 }
 
 -(void)stageIntroActions
@@ -495,6 +496,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     multiplierBadge.position=ccp(700, 2*cy-32);
     //multiplierBadge.position=ccp(cx,cy);
     [self addChild:multiplierBadge z:4];
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_multiplier_incremented.wav")];
     
     [multiplierBadge runAction:[InteractionFeedback dropAndBounceAction]];
 }
@@ -503,6 +505,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 {
     if(multiplierBadge)
     {
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_multiplier_lost.wav")];
         [multiplierBadge runAction:[InteractionFeedback delaySpinFast]];
         [multiplierBadge runAction:[InteractionFeedback delayMoveOutAndDown]];
     }
@@ -1010,6 +1013,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void) showPauseMenu
 {
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_pause_tap.wav")];
     isPaused = YES;
     
     if(!pauseMenu)
@@ -1344,6 +1348,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     if (CGRectContainsPoint(kRectButtonCommit, location) && mqEvalMode==kMetaQuestionEvalOnCommit && commitBtn.visible)
     {
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_commit_tap.wav")];
         //effective user commit
         [loggingService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
         
@@ -1762,8 +1767,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     {
         if(CGRectContainsPoint(kRectButtonCommit, origloc) && commitBtn.visible)
         {
-            [self playAudioPress];
-            
+            //[self playAudioPress];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_commit_tap.wav")];
             //effective user commit of number picker
             [loggingService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
             
@@ -1978,7 +1983,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     if(currentTool.ProblemComplete)
     {
-        [self playAudioFlourish];
+        //[self playAudioFlourish];
         
         timeBeforeUserInteraction=kDisableInteractionTime;
     }

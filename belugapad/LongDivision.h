@@ -61,6 +61,8 @@
     BOOL movedTopSection;
     BOOL hideRenderLayer;
     
+    BOOL audioHasPlayedOverTarget;
+    
     BOOL hasEvaluated;
     
     float dividend;

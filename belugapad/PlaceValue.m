@@ -139,6 +139,15 @@ static float kTimeToCageShake=7.0f;
                     [l runAction:[InteractionFeedback shakeAction]];
                 }
             }
+            if(blockLabels && !touching && lastTotalCount<expectedCount)
+            {
+                for(CCLabelTTF *l in multipleLabels)
+                {
+                    [l runAction:[InteractionFeedback shakeAction]];
+                }
+            }
+            
+            
             
             hasRunInteractionFeedback=YES;
         }
@@ -555,7 +564,7 @@ static float kTimeToCageShake=7.0f;
                 totalCountSprites=[[[NSMutableArray alloc]init]retain];
             
             CCSprite *totalCountSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/total_count_bg.png")];
-            [totalCountSprite setPosition:ccp(i*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(currentColumnRows*(lx*kPropXNetSpace)))];
+            [totalCountSprite setPosition:ccp(i*(kPropXColumnSpacing*lx), 23+(ly*kPropYColumnOrigin)-(currentColumnRows*(lx*kPropXNetSpace)))];
             [totalCountSprite setOpacity:0];
             [totalCountSprite setTag:2];
             [renderLayer addChild:totalCountSprite];
@@ -686,17 +695,16 @@ static float kTimeToCageShake=7.0f;
                 [multipleBlockMin setValue:[NSNumber numberWithInt:1] forKey:currentColumnValueKey];
             else
                 minBlocks=[[multipleBlockMin objectForKey:currentColumnValueKey]intValue];
-           
-            if(defaultBlocksToMake<minBlocks)
-                defaultBlocksToMake=minBlocks;
-            if(defaultBlocksToMake>maxBlocks)
-                defaultBlocksToMake=maxBlocks;
             
             if([multipleBlockPickupDefaults objectForKey:currentColumnValueKey])
                 defaultBlocksToMake=[[multipleBlockPickupDefaults objectForKey:currentColumnValueKey]intValue];
             else
                 defaultBlocksToMake=1;
             
+            if(defaultBlocksToMake<minBlocks)
+                defaultBlocksToMake=minBlocks;
+            if(defaultBlocksToMake>maxBlocks)
+                defaultBlocksToMake=maxBlocks;
             
             [blocksToCreate addObject:[NSNumber numberWithInt:defaultBlocksToMake]];
             
@@ -1631,9 +1639,16 @@ static float kTimeToCageShake=7.0f;
         for (int c=[row count]-1; c>=0; c--)
         {
             DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
-            if(co.MountedObject)
+            
+            float objValue=((DWPlaceValueBlockGameObject*)co.MountedObject).ObjectValue;
+            
+            if(co.MountedObject && objValue>0)
             {
                 usedSpace++;
+            }
+            else if(co.MountedObject && objValue<0)
+            {
+                usedSpace--;
             }
         }
     }

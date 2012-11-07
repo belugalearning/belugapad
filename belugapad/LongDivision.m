@@ -93,7 +93,7 @@ const float kScaleOfLesserBlocks=0.6f;
 
     // work out the current total
 //    currentTotal=nWheel.OutputValue/(pow((double)startColValue,-1));
-    currentTotal=nWheel.OutputValue;
+    currentTotal=[nWheel.StrOutputValue floatValue];
     
 //    for(int i=0;i<[selectedNumbers count];i++)
 //    {
@@ -124,26 +124,26 @@ const float kScaleOfLesserBlocks=0.6f;
     
     
     // this sets the fade amount of each row proportional to it's current position
-    for(int l=0;l<[numberRows count];l++)
-    {
-        
-        NSArray *currentRow=[numberRows objectAtIndex:l];
-        CCLayer *thisLayer=[numberLayers objectAtIndex:l];
-        for(CCLabelTTF *lbl in currentRow)
-        {
-            CGPoint realLabelPos=[thisLayer convertToWorldSpace:lbl.position];
-
-            float distToActive=[BLMath DistanceBetween:realLabelPos and:ccp(realLabelPos.x, 220)];
-            float prop=distToActive/150;
-            float opac=(1-prop)*150;
-            if(opac<0)opac=0;
-            if(opac==150)opac=255;
-            
-            [lbl setOpacity:opac];
-        }
-        
-    }
-    
+//    for(int l=0;l<[numberRows count];l++)
+//    {
+//        
+//        NSArray *currentRow=[numberRows objectAtIndex:l];
+//        CCLayer *thisLayer=[numberLayers objectAtIndex:l];
+//        for(CCLabelTTF *lbl in currentRow)
+//        {
+//            CGPoint realLabelPos=[thisLayer convertToWorldSpace:lbl.position];
+//
+//            float distToActive=[BLMath DistanceBetween:realLabelPos and:ccp(realLabelPos.x, 220)];
+//            float prop=distToActive/150;
+//            float opac=(1-prop)*150;
+//            if(opac<0)opac=0;
+//            if(opac==150)opac=255;
+//            
+//            [lbl setOpacity:opac];
+//        }
+//        
+//    }
+//    
     
     // this re-iterates back through the active row and sorts our side-side fading out
 //    NSArray *currentRow=[numberRows objectAtIndex:activeRow];
@@ -162,12 +162,32 @@ const float kScaleOfLesserBlocks=0.6f;
 //        [lbl setOpacity:opac];
 //    }
     if(!hideRenderLayer){
-        for(int n=0;n<[nWheel.pickerViewSelection count];n++)
+        
+//        NSString *curNum=nWheel.StrOutputValue;
+        float thisNum=[nWheel.StrOutputValue floatValue];
+        
+//        NSLog(@"thisNum: %g", thisNum);
+        
+        int mag=[self magnitudeOf:(int)thisNum];
+        float remVal=thisNum;
+        int exp=mag-1;
+        
+        while(remVal>0)
         {
-                [self checkBlock:n];
+            float baseVal=powf(10,exp);
+            int selected=remVal/baseVal;
+            remVal-=selected*baseVal;
+            exp--;
+            
+            [self checkBlockWithBase:baseVal andSelection:selected];
         }
+        
+//        for(int n=0;n<[nWheel.pickerViewSelection count];n++)
+//        {
+//                [self checkBlock:n];
+//        }
         [self updateBlock];
-    }       
+    }
     if(evalMode==kProblemEvalAuto && !hasEvaluated)
         [self evalProblem];
 
@@ -188,13 +208,13 @@ const float kScaleOfLesserBlocks=0.6f;
     goodBadHighlight=[[pdef objectForKey:GOOD_BAD_HIGHLIGHT] boolValue];
     renderBlockLabels=[[pdef objectForKey:RENDERBLOCK_LABELS] boolValue];
     hideRenderLayer=[[pdef objectForKey:HIDE_RENDERLAYER] boolValue];
-    if([pdef objectForKey:START_COLUMN_VALUE])
-        startColValue=[[pdef objectForKey:START_COLUMN_VALUE]floatValue];
-    else
-        startColValue=100;
     
     columnsInPicker=[[pdef objectForKey:COLUMNS_IN_PICKER]intValue];
 
+    if([pdef objectForKey:START_COLUMN_VALUE])
+        startColValue=[[pdef objectForKey:START_COLUMN_VALUE]floatValue];
+    else
+        startColValue=pow(10,columnsInPicker-1);
     
 }
 
@@ -206,13 +226,7 @@ const float kScaleOfLesserBlocks=0.6f;
     selectedNumbers=[[NSMutableArray alloc]init];
     rowMultipliers=[[NSMutableArray alloc]init];
     renderedBlocks=[[NSMutableArray alloc]init];
-    
-    // add the selector to the middle of the screen
-    
-    CCSprite *selector=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/selection_pointer.png")];
-    [selector setPosition:ccp(cx,cy)];
-    [selector setOpacity:50];
-    [renderLayer addChild:selector];
+
     
     // add the big multiplier behind the numbers
     CCLabelTTF *multiplier=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"x%g",divisor] fontName:SOURCE fontSize:200.0f];
@@ -258,12 +272,28 @@ const float kScaleOfLesserBlocks=0.6f;
     w.Components=columnsInPicker;
     w.Position=ccp(250,200);
     w.RenderLayer=renderLayer;
-    w.SpriteFileName=@"/images/numberwheel/3slots.png";
+    w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png", w.Components];
+    w.HasDecimals=YES;
+    w.HasNegative=YES;
     [w handleMessage:kDWsetupStuff];
 //    w.InputValue=000;
 //    w.OutputValue=w.InputValue;
 //    [w handleMessage:kDWupdateObjectData];
     nWheel=w;
+}
+
+-(int)magnitudeOf:(int)thisNo
+{
+    int no=thisNo;
+    int mag=0;
+    
+    while(no>0)
+    {
+        mag++;
+        no=no/10;
+    }
+
+    return mag;
 }
 
 -(void)createVisibleNumbers
@@ -384,23 +414,28 @@ const float kScaleOfLesserBlocks=0.6f;
     [self updateLabels:markerPos];
 }
 
--(void)checkBlock:(int)thisRow
+-(void)checkBlockWithBase:(float)thisBase andSelection:(int)thisSelection
 {
     // we need to find out where this block should go
     //float myBase=[[rowMultipliers objectAtIndex:thisRow]floatValue];
     
 //    int selectedForRow=[[selectedNumbers objectAtIndex:thisRow]intValue];
 
-    int selectedNumber=thisRow-([nWheel.pickerViewSelection count]-1);
-    selectedNumber=fabsf(selectedNumber);
-    int selectedForRow=[[nWheel.pickerViewSelection objectAtIndex:selectedNumber]intValue];
-    
+//    int selectedNumber=thisRow-([nWheel.pickerViewSelection count]-1);
+//    selectedNumber=fabsf(selectedNumber);
+//    int selectedForRow=[[nWheel.pickerViewSelection objectAtIndex:selectedNumber]intValue];
+//    if(selectedForRow>9)return;
     int countOfRenderedForRow=0;
     int indexOfLastRenderedAtMyBase=0;
+    int selectedForRow=thisSelection;
+    
+    NSLog(@"baseVal: %g, selected: %d", thisBase, thisSelection);
     
     //int adjustedIndex=(thisRow-[nWheel.pickerViewSelection count]);
     
-    float myBase=startColValue/pow((double)10,selectedNumber);
+//    float myBase=startColValue/pow((double)10,selectedNumber);
+    
+    float myBase=thisBase;
     
     NSDictionary *lastRBDictAtMyBase=nil;
     
@@ -443,10 +478,15 @@ const float kScaleOfLesserBlocks=0.6f;
     float calc=0.0f;
     
     [curBlock setPosition:ccp(line.position.x+((curBlock.contentSize.width*curBlock.scaleX)/2-(line.contentSize.width/2))+cumulativeTotal, line.position.y+15)];
+    
+    
     [curBlock setScaleX:(divisor*myBase/dividend*line.contentSize.width)/curBlock.contentSize.width];
     [curDict setObject:curBlock forKey:MY_SPRITE];
     [curDict setObject:[NSNumber numberWithFloat:base] forKey:ROW_MULTIPLIER];
     [renderedBlocks insertObject:curDict atIndex:index];
+    
+    
+    NSLog(@"renderedBlocks: %d, I created a new one! Position: %@", [renderedBlocks count], NSStringFromCGPoint(curBlock.position));
 
 //    if(renderBlockLabels) {
 //        CCLabelTTF *blockValue=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", base] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];

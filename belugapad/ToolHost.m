@@ -1434,6 +1434,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(!metaQuestionForThisProblem && !numberPickerForThisProblem && evalMode==kProblemEvalOnCommit)
         showCommit=YES;
     
+    if(currentTool && evalMode==kProblemEvalOnCommit)
+        showCommit=YES;
+    
     if(hasTrayMq && trayMqShowing)
     {
         int countSelected=0;
@@ -1575,6 +1578,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     isAnimatingIn=YES;
     [loggingService logEvent:BL_PA_FAIL withAdditionalData:nil];
     [self showProblemIncompleteMessage];
+    [self showHideCommit];
     //[self deselectAnswersExcept:-1];
 }
 -(void)removeMetaQuestionButtons

@@ -16,6 +16,7 @@
 #import "ConceptNode.h"
 #import "Pipeline.h"
 #import "Problem.h"
+#import "NodePlay.h"
 #import "AFNetworking.h"
 #import <zlib.h>
 #import <CommonCrypto/CommonDigest.h>
@@ -44,6 +45,8 @@ uint const kMaxConsecutiveSendFails = 3;
     NSMutableDictionary *userSessionDoc;
     NSMutableDictionary *episodeDoc;
     NSMutableDictionary *problemAttemptDoc;
+    
+    NodePlay *nodePlay;
     
     uint consecutiveSendFails;
     __block BOOL isSending;
@@ -312,7 +315,7 @@ uint const kMaxConsecutiveSendFails = 3;
         self.currPATouchDocId = [self generateUUID];
         [self.logPoller resetAndStartPolling];
         [self.touchLogger reset];
-    }    
+    }
     
     NSMutableDictionary *doc = nil;
     switch (currentContext) {
@@ -347,6 +350,16 @@ uint const kMaxConsecutiveSendFails = 3;
     
     NSMutableArray *events = [doc objectForKey:@"events"];
     [events addObject:event];
+    
+    if (BL_EP_START == eventType) nodePlay = [[NodePlay alloc] initWithEpisode:episodeDoc batchId:self.currentBatchId];
+    if (nodePlay)
+    {
+        if ([nodePlay processEvent:event])
+        {
+            [nodePlay release];
+            nodePlay = nil;
+        }
+    }
      
     NSData *docData = [doc JSONData];
     if (!docData) return; //TODO: Log App error !
@@ -577,6 +590,7 @@ uint const kMaxConsecutiveSendFails = 3;
     if (deviceSessionDoc) [deviceSessionDoc release];
     if (userSessionDoc) [userSessionDoc release];
     if (problemAttemptDoc) [problemAttemptDoc release];
+    if (nodePlay) [nodePlay release];
     [super dealloc];
 }
 

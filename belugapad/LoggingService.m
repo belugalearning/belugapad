@@ -481,7 +481,7 @@ uint const kMaxConsecutiveSendFails = 3;
     __block typeof(self) bself = self;
     void (^onComplete)() = ^(BL_SEND_LOG_STATUS status)
     {
-        if (BL_SLS_SUCCESS == status) [fm removeItemAtPath:batchPath nil];
+        if (BL_SLS_SUCCESS == status) [fm removeItemAtPath:batchPath error:nil];
         [bself sendPrevBatches];
     };
     

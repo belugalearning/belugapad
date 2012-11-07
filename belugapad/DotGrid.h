@@ -96,6 +96,7 @@ typedef struct {
     BOOL isMovingUp;
     BOOL isMovingDown;
     BOOL gridMultiCanEval;
+    BOOL debugLogging;
     
     NSString *showCount;
     
@@ -110,6 +111,7 @@ typedef struct {
     int shapeBaseSize;
     int nonPropEvalX;
     int nonPropEvalY;
+    int numberWheelComponents;
     
     
     BOOL isIntroPlist;

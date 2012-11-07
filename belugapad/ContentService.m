@@ -250,6 +250,17 @@
 
 #pragma mark - data access
 
+-(NSArray*)conceptNodeIdsNotIn:(NSArray*)ids
+{
+    NSMutableArray *ret = [NSMutableArray array];
+    
+    [contentDatabase open];
+    FMResultSet *rs = [contentDatabase executeQuery:[NSString stringWithFormat:@"SELECT id FROM ConceptNodes WHERE id NOT IN ('%@')", [ids componentsJoinedByString:@"','"]]];
+    while([rs next]) [ret addObject:[rs stringForColumnIndex:0]];
+    [contentDatabase close];
+    return ret;
+}
+
 -(NSArray*)allConceptNodes
 {
     NSMutableArray *nodes=[[[NSMutableArray alloc] init] autorelease];
@@ -488,13 +499,6 @@
     
     self.pathToTestDef=[testProblemList objectAtIndex:currentPIndex];
     NSLog(@"loaded test def: %@", self.pathToTestDef);
-}
-
--(void)endPlayPipelineWithScore:(int)score
-{
-    if (!self.currentNode) return;
-    UserNodeState *state = [usersService currentUserStateForNodeWithId:self.currentNode._id];
-    [state updateAndSaveStateOnEndNodePlayWithScore:score];
 }
 
 #pragma mark - epsiode management, progression

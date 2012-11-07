@@ -195,12 +195,13 @@
     [pickerView setLocked:w.Locked];
     
     w.pickerView=pickerView;
-    
+        
     for(int i=0;i<w.Components;i++)
         [w.pickerViewSelection addObject:[NSNumber numberWithInt:0]];
     
     
     [w.RenderLayer addChild:pickerView z:20];
+
 }
 
 -(CGPoint)createCountBubblePos
@@ -348,9 +349,8 @@
     
     [w.pickerViewSelection replaceObjectAtIndex:component withObject:[NSNumber numberWithInteger:row]];
 
-    if(!w.HasDecimals)
+
         w.OutputValue=[self returnPickerNumber];
-    else
         w.StrOutputValue=[self returnPickerNumberString];
     
     
@@ -358,6 +358,7 @@
     {
         w.OutputValue=[self returnPickerNumber];
         [w.AssociatedGO handleMessage:kDWupdateObjectData];
+        [w.AssociatedGO handleMessage:kDWupdateLabels];
     }
     
     if([gameWorld.GameScene isKindOfClass:[DotGrid class]])

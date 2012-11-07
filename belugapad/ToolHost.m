@@ -648,7 +648,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         //todo: completion shouldn't be assumed here -- we can get here by progressing into an inserter that produces no viable insertions
         
         //assume completion
-        [contentService endPlayPipelineWithScore:pipelineScore];
+        [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @(pipelineScore) }];
         
         contentService.fullRedraw=YES;
         contentService.lightUpProgressFromLastNode=YES;
@@ -873,7 +873,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if([withPdef objectForKey:ENABLE_CALCULATOR])
         hasTrayCalc=[[withPdef objectForKey:ENABLE_CALCULATOR]boolValue];
     else
-        hasTrayCalc=YES;
+        hasTrayCalc=NO;
     
     if([withPdef objectForKey:NUMBER_PICKER])
     {
@@ -882,7 +882,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         if([np objectForKey:ENABLE_CALCULATOR])
             hasTrayCalc=[[np objectForKey:ENABLE_CALCULATOR]boolValue];
         else
-            hasTrayCalc=YES;
+            hasTrayCalc=NO;
         
         if([np objectForKey:ENABLE_WHEEL])
             hasTrayWheel=[[np objectForKey:ENABLE_WHEEL]boolValue];
@@ -896,13 +896,13 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     trayLayerPad=nil;
     trayLayerWheel=nil;
     
-    if(hasTrayCalc)
-        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_Available.png")];
-    else
-        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_NotAvailable.png")];
-    [problemDefLayer addChild:traybtnCalc z:2];
-    traybtnCalc.opacity=0;
-    traybtnCalc.tag=3;
+//    if(hasTrayCalc)
+//        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_Available.png")];
+//    else
+//        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_NotAvailable.png")];
+//    [problemDefLayer addChild:traybtnCalc z:2];
+//    traybtnCalc.opacity=0;
+//    traybtnCalc.tag=3;
 
     if(hasTrayMq)
         traybtnMq=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_MetaQuestion_Available.png")];
@@ -1070,7 +1070,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(CGRectContainsPoint(kPauseMenuMenu, location))
     {
         [loggingService logEvent:BL_PA_EXIT_TO_MAP withAdditionalData:nil];
-        [contentService endPlayPipelineWithScore:0];
+        [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @0 }];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self returnToMenu];
     }
@@ -1430,6 +1430,13 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void)showHideCommit
 {
     BOOL showCommit=NO;
+    
+    if(!metaQuestionForThisProblem && !numberPickerForThisProblem && evalMode==kProblemEvalOnCommit)
+        showCommit=YES;
+    
+    if(currentTool && evalMode==kProblemEvalOnCommit)
+        showCommit=YES;
+    
     if(hasTrayMq && trayMqShowing)
     {
         int countSelected=0;
@@ -1451,9 +1458,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         else
             showCommit=NO;
     }
-    
-    if(!metaQuestionForThisProblem && !numberPickerForThisProblem && evalMode==kProblemEvalOnCommit)
-        showCommit=YES;
     
     
     if(showCommit)
@@ -1574,6 +1578,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     isAnimatingIn=YES;
     [loggingService logEvent:BL_PA_FAIL withAdditionalData:nil];
     [self showProblemIncompleteMessage];
+    [self showHideCommit];
     //[self deselectAnswersExcept:-1];
 }
 -(void)removeMetaQuestionButtons
@@ -1602,6 +1607,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     
     [self addCommitButton];
+    
+    if(!currentTool)
+        [self showWheel];
     
     //float npOriginX=[[pdefNP objectForKey:PICKER_ORIGIN_X]floatValue];
     //float npOriginY=[[pdefNP objectForKey:PICKER_ORIGIN_Y]floatValue];
@@ -1953,6 +1961,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     trayLayerWheel=nil;
 //    [numberPickerLayer removeAllChildrenWithCleanup:YES];
     numberPickerForThisProblem=NO;
+    trayWheelShowing=NO;
+    hasUsedPicker=NO;
     pickerViewSelection=nil;
     pickerView=nil;
 //    [numberPickerLayer release];
@@ -2163,7 +2173,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
     else
     {
-        if(trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing){
+        if((trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing) && currentTool){
             [self removeAllTrays];
             return;
         }
@@ -2298,11 +2308,13 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             [self hideCalc];
             [self hidePad];
             
+            if(!currentTool)
+                [self hideCornerTray];
             //show this + show stuff in corner
             [self showWheel];
             
             //this might already be done -- but we've not explicitly hidden anything, so re-running will skip
-            [self showCornerTray];
+            if(currentTool)[self showCornerTray];
             [self showHideCommit];
         }
     }
@@ -2574,7 +2586,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     CCSprite *ulSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strULSprite)];
     
     self.pickerView = [CCPickerView node];
-    pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-130);
+    if(currentTool)
+        pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-130);
+    else
+        pickerView.position=ccp(cx,cy);
     pickerView.dataSource = self;
     pickerView.delegate = self;
     

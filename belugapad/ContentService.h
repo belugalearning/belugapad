@@ -40,7 +40,6 @@
 @property (readonly) BOOL isUserPastEpisodeHead;
 
 -(id)initWithLocalSettings:(NSDictionary*)settings;
--(void)endPlayPipelineWithScore:(int)score;
 -(BOOL)isUsingTestPipeline;
 
 -(void)updateContentDatabaseWithSettings:(NSDictionary*)settings;
@@ -51,6 +50,7 @@
 -(void)gotoNextProblemInPipeline;
 -(void)gotoNextProblemInPipelineWithSkip:(int)skipby;
 
+-(NSArray*)conceptNodeIdsNotIn:(NSArray*)ids;
 -(NSArray*)allConceptNodes;
 -(ConceptNode*)conceptNodeForId:(NSString*)nodeId;
 -(NSArray*)relationMembersForName:(NSString*)name;

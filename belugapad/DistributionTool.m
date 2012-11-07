@@ -710,8 +710,20 @@ static float kDistanceBetweenBlocks=70.0f;
         }
         
         NSNumber *thisNo=nil;
-        for(NSNumber *n in solutions)
+        for(int i=0;i<[solutions count];i++)
         {
+            NSNumber *n=nil;
+            NSString *s=nil;
+
+            if([[solutions objectAtIndex:i] isKindOfClass:[NSNumber class]])
+                n=[solutions objectAtIndex:i];
+            
+            if([[solutions objectAtIndex:i] isKindOfClass:[NSString class]]){
+                s=[solutions objectAtIndex:i];
+                [s integerValue];
+            }
+
+            
             if([n isEqualToNumber:[NSNumber numberWithInt:shapesInArea[i]]])
             {
                 thisNo=n;

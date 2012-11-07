@@ -152,7 +152,7 @@ uint const kMaxConsecutiveSendFails = 3;
 }
 
 -(void)logEvent:(NSString*)eventType withAdditionalData:(NSObject*)additionalData
-{
+{   
     if (BL_LOGGING_DISABLED == problemAttemptLoggingSetting) return;
     
     if (BL_APP_START == eventType)
@@ -376,8 +376,15 @@ uint const kMaxConsecutiveSendFails = 3;
             [nodePlay release];
             nodePlay = nil;
         }
+        
+        if (doc != episodeDoc)
+        {
+            [[episodeDoc JSONData] writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, [episodeDoc valueForKey:@"_id"]]
+                                       options:NSAtomicWrite
+                                         error:nil];
+        }
     }
-     
+    
     NSData *docData = [doc JSONData];
     if (!docData) return; //TODO: Log App error !
     

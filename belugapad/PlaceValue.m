@@ -1630,9 +1630,16 @@ static float kTimeToCageShake=7.0f;
         for (int c=[row count]-1; c>=0; c--)
         {
             DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
-            if(co.MountedObject)
+            
+            float objValue=((DWPlaceValueBlockGameObject*)co.MountedObject).ObjectValue;
+            
+            if(co.MountedObject && objValue>0)
             {
                 usedSpace++;
+            }
+            else if(co.MountedObject && objValue<0)
+            {
+                usedSpace--;
             }
         }
     }

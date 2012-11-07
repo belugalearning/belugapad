@@ -146,7 +146,7 @@ static float kTimeToHeaderBounce=7.0f;
     startX=[[pdef objectForKey:START_X] intValue];
     startY=[[pdef objectForKey:START_Y] intValue];
     operatorMode=[[pdef objectForKey:OPERATOR_MODE]intValue];
-    operatorMode=3;
+    operatorMode=2;
     selectionMode=[[pdef objectForKey:SELECTION_MODE]intValue];
     if([pdef objectForKey:REVEAL_ALL_TILES])revealAllTiles=[[pdef objectForKey:REVEAL_ALL_TILES]boolValue];
     else revealAllTiles=NO;
@@ -323,7 +323,8 @@ static float kTimeToHeaderBounce=7.0f;
             
             tile.Position=ccp(xStartPos,yStartPos);
             tile.myXpos=xStartNumber;
-            tile.myYpos=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-iCol;
+            //tile.myYpos=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-iCol;
+            tile.myYpos=amtForY-iCol;
             tile.operatorType=operatorMode;
             tile.Size=spaceBetweenAnchors;
             NSLog(@"iRow %d amtForX %d // iCol %d amtForY %d", iRow, amtForX, iCol, amtForY);

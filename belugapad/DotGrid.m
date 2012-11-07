@@ -2033,7 +2033,7 @@
 
                 
                 if(dimensionX==[[a objectAtIndex:0]intValue]&&!xMatch)xMatch=YES;
-                else if(dimensionY==[[a objectAtIndex:1]intValue]&&!yMatch)yMatch=YES;
+                if(dimensionY==[[a objectAtIndex:1]intValue]&&!yMatch)yMatch=YES;
                 
                 if(xMatch&&yMatch)
                 {
@@ -2103,7 +2103,7 @@
                 BOOL xMatch=NO;
                 BOOL yMatch=NO;
                 if(dimensionX==[[a objectAtIndex:0]intValue]&&!xMatch)xMatch=YES;
-                else if(dimensionY==[[a objectAtIndex:1]intValue]&&!yMatch)yMatch=YES;
+                if(dimensionY==[[a objectAtIndex:1]intValue]&&!yMatch)yMatch=YES;
                 
                 
 //                for(int i=0;i<[a count];i++)

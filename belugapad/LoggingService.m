@@ -220,6 +220,7 @@ uint const kMaxConsecutiveSendFails = 3;
                       , @"pipelineRev": ac.contentService.currentPipeline._rev
                       , @"timeInPlay": @0
                       , @"timePaused": @0
+                      , @"score": @0
                       } mutableCopy];
     }
     else if (BL_EP_ATTEMPT_ADAPT_PIPELINE_INSERTION == eventType)
@@ -364,6 +365,8 @@ uint const kMaxConsecutiveSendFails = 3;
         
         if (endEpisode)
         {
+            [episodeDoc setValue:nodePlay.score forKey:@"score"];
+            
             AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
             UserNodeState *nodeState = [ac.usersService currentUserStateForNodeWithId:nodePlay.nodeId];
             [nodeState updateAndSaveStateAfterNodePlay:nodePlay];

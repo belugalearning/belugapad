@@ -686,17 +686,16 @@ static float kTimeToCageShake=7.0f;
                 [multipleBlockMin setValue:[NSNumber numberWithInt:1] forKey:currentColumnValueKey];
             else
                 minBlocks=[[multipleBlockMin objectForKey:currentColumnValueKey]intValue];
-           
-            if(defaultBlocksToMake<minBlocks)
-                defaultBlocksToMake=minBlocks;
-            if(defaultBlocksToMake>maxBlocks)
-                defaultBlocksToMake=maxBlocks;
             
             if([multipleBlockPickupDefaults objectForKey:currentColumnValueKey])
                 defaultBlocksToMake=[[multipleBlockPickupDefaults objectForKey:currentColumnValueKey]intValue];
             else
                 defaultBlocksToMake=1;
             
+            if(defaultBlocksToMake<minBlocks)
+                defaultBlocksToMake=minBlocks;
+            if(defaultBlocksToMake>maxBlocks)
+                defaultBlocksToMake=maxBlocks;
             
             [blocksToCreate addObject:[NSNumber numberWithInt:defaultBlocksToMake]];
             

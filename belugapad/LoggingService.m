@@ -17,6 +17,7 @@
 #import "Pipeline.h"
 #import "Problem.h"
 #import "NodePlay.h"
+#import "UserNodeState.h"
 #import "AFNetworking.h"
 #import <zlib.h>
 #import <CommonCrypto/CommonDigest.h>
@@ -354,8 +355,12 @@ uint const kMaxConsecutiveSendFails = 3;
     if (BL_EP_START == eventType) nodePlay = [[NodePlay alloc] initWithEpisode:episodeDoc batchId:self.currentBatchId];
     if (nodePlay)
     {
-        if ([nodePlay processEvent:event])
+        BOOL endEpisode = [nodePlay processEvent:event];
+        if (endEpisode)
         {
+            AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+            UserNodeState *nodeState = [ac.usersService currentUserStateForNodeWithId:nodePlay.nodeId];
+            [nodeState updateAndSaveStateAfterNodePlay:nodePlay];
             [nodePlay release];
             nodePlay = nil;
         }

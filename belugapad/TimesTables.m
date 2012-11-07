@@ -146,6 +146,7 @@ static float kTimeToHeaderBounce=7.0f;
     startX=[[pdef objectForKey:START_X] intValue];
     startY=[[pdef objectForKey:START_Y] intValue];
     operatorMode=[[pdef objectForKey:OPERATOR_MODE]intValue];
+    operatorMode=3;
     selectionMode=[[pdef objectForKey:SELECTION_MODE]intValue];
     if([pdef objectForKey:REVEAL_ALL_TILES])revealAllTiles=[[pdef objectForKey:REVEAL_ALL_TILES]boolValue];
     else revealAllTiles=NO;

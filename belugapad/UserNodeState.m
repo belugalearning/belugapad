@@ -7,6 +7,7 @@
 //
 
 #import "UserNodeState.h"
+#import "NodePlay.h"
 #import "FMDatabase.h"
 #import "global.h"
 
@@ -84,38 +85,37 @@
     return self;
 }
 
--(void)updateAndSaveStateOnEndNodePlayWithScore:(int)score
+-(BOOL)updateAndSaveStateAfterNodePlay:(NodePlay*)nodePlay
 {
-    NSDate *now = [NSDate date];
+    self.timePlayed += nodePlay.playTime;
+    self.lastPlayed = [NSDate dateWithTimeIntervalSince1970:nodePlay.lastEventDate];
+    self.lastScore = [nodePlay.score intValue];
     
-    self.lastPlayed = now;
-    self.lastScore = score;
-    
-    if (score)
+    if (self.lastScore)
     {
         // completed
         
-        self.totalAccumulatedScore += score;
-        self.highScore = MAX(score, self.highScore);
+        self.totalAccumulatedScore += self.lastScore;
+        self.highScore = MAX(self.lastScore, self.highScore);
         
-        if (!self.firstCompleted) self.firstCompleted = now;
-        self.lastCompleted = now;
+        if (!self.firstCompleted) self.firstCompleted = self.lastPlayed;
+        self.lastCompleted = self.lastPlayed;
     
-        if (score > SCORE_ARTIFACT_1)
+        if (self.lastScore > SCORE_ARTIFACT_1)
         {
-            self.artifact1LastAchieved = now;
-            if (score > SCORE_ARTIFACT_2)
+            self.artifact1LastAchieved = self.lastPlayed;
+            if (self.lastScore > SCORE_ARTIFACT_2)
             {
-                self.artifact2LastAchieved = now;
-                if (score > SCORE_ARTIFACT_3)
+                self.artifact2LastAchieved = self.lastPlayed;
+                if (self.lastScore > SCORE_ARTIFACT_3)
                 {
-                    self.artifact3LastAchieved = now;
-                    if (score > SCORE_ARTIFACT_4)
+                    self.artifact3LastAchieved = self.lastPlayed;
+                    if (self.lastScore > SCORE_ARTIFACT_4)
                     {
-                        self.artifact4LastAchieved = now;
-                        if (score > SCORE_ARTIFACT_5)
+                        self.artifact4LastAchieved = self.lastPlayed;
+                        if (self.lastScore > SCORE_ARTIFACT_5)
                         {
-                            self.artifact5LastAchieved = now;
+                            self.artifact5LastAchieved = self.lastPlayed;
                         }
                     }
                 }
@@ -123,13 +123,13 @@
         }
     }
     
-    [self saveState];
+    return [self saveState];
 }
 
--(void)saveState
+-(BOOL)saveState
 {
     [db open];
-    [db executeUpdate:@"UPDATE Nodes SET time_played=?, last_played=?, last_score=?, total_accumulated_score=?, high_score=?, first_completed=?, last_completed=?, artifact_1_last_achieved=?, artifact_2_last_achieved=?, artifact_3_last_achieved=?, artifact_4_last_achieved=?, artifact_5_last_achieved=? WHERE id=?",
+    BOOL success = [db executeUpdate:@"UPDATE Nodes SET time_played=?, last_played=?, last_score=?, total_accumulated_score=?, high_score=?, first_completed=?, last_completed=?, artifact_1_last_achieved=?, artifact_2_last_achieved=?, artifact_3_last_achieved=?, artifact_4_last_achieved=?, artifact_5_last_achieved=? WHERE id=?",
                     [NSNumber numberWithDouble:self.timePlayed],
                     [NSNumber numberWithDouble:(self.lastPlayed ? [self.lastPlayed timeIntervalSince1970] : 0)],
                     [NSNumber numberWithInt:self.lastScore],
@@ -144,6 +144,7 @@
                     [NSNumber numberWithDouble:(self.artifact5LastAchieved ? [self.artifact5LastAchieved timeIntervalSince1970] : 0)],
                     self.nodeId];
     [db close];
+    return success;
 }
 
 -(void)dealloc

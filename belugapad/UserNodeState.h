@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class FMDatabase, FMResultSet;
+@class FMDatabase, FMResultSet, NodePlay;
 
 @interface UserNodeState : NSObject
 
@@ -26,9 +26,9 @@
 @property (nonatomic, readonly, retain) NSDate *artifact4LastAchieved;
 @property (nonatomic, readonly, retain) NSDate *artifact5LastAchieved;
 
--(id) initWithUserId:(NSString*)userId nodeId:(NSString*)nodeId database:(FMDatabase*)database;
--(id) initWithUserId:(NSString*)userId resultSet:(FMResultSet*)rs database:(FMDatabase*)database;
--(void)updateAndSaveStateOnEndNodePlayWithScore:(int)score;
--(void) saveState;
+-(id)initWithUserId:(NSString*)userId nodeId:(NSString*)nodeId database:(FMDatabase*)database;
+-(id)initWithUserId:(NSString*)userId resultSet:(FMResultSet*)rs database:(FMDatabase*)database;
+-(BOOL)updateAndSaveStateAfterNodePlay:(NodePlay*)nodePlay;
+-(BOOL)saveState;
 
 @end

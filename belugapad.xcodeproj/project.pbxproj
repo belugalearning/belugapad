@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C03B6371649EDD600F74659 /* NodePlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C03B6361649EDD600F74659 /* NodePlay.m */; };
 		0C33EEBC15D4EE5900EA6A11 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 0C33EEB215D4EE5900EA6A11 /* ioapi.c */; };
 		0C33EEBD15D4EE5900EA6A11 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 0C33EEB415D4EE5900EA6A11 /* mztools.c */; };
 		0C33EEBE15D4EE5900EA6A11 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 0C33EEB615D4EE5900EA6A11 /* unzip.c */; };
@@ -432,6 +433,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C03B6351649EDD600F74659 /* NodePlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePlay.h; sourceTree = "<group>"; };
+		0C03B6361649EDD600F74659 /* NodePlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePlay.m; sourceTree = "<group>"; };
 		0C33EEB115D4EE5900EA6A11 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		0C33EEB215D4EE5900EA6A11 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
 		0C33EEB315D4EE5900EA6A11 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
@@ -1341,6 +1344,8 @@
 				0C4CD67A15E3A5430037BBD0 /* LogPoller.m */,
 				0C3955B915E7A3440043DD4F /* TouchLogger.h */,
 				0C3955BA15E7A3440043DD4F /* TouchLogger.m */,
+				0C03B6351649EDD600F74659 /* NodePlay.h */,
+				0C03B6361649EDD600F74659 /* NodePlay.m */,
 			);
 			name = Logging;
 			sourceTree = "<group>";
@@ -3398,6 +3403,7 @@
 				0C58DE8716308B7000DD9A01 /* EditPDefViewController.m in Sources */,
 				7F0F70AC1645B2A9009DBCAB /* SGBtxePlaceholder.m in Sources */,
 				0CD565921647F23E00D9EA30 /* UserNodeState.m in Sources */,
+				0C03B6371649EDD600F74659 /* NodePlay.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

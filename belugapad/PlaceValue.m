@@ -141,7 +141,7 @@ static float kTimeToCageShake=7.0f;
             }
             if(blockLabels && !touching && lastTotalCount<expectedCount)
             {
-                for(CCLabelTTF *l in multipleLabels)
+                for(CCLabelTTF *l in blockLabels)
                 {
                     [l runAction:[InteractionFeedback shakeAction]];
                 }
@@ -983,7 +983,12 @@ static float kTimeToCageShake=7.0f;
     showReset=[[pdef objectForKey:SHOW_RESET] boolValue];
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
-    cageDefaultValue = [[pdef objectForKey:CAGE_DEFAULT_VALUE] intValue];
+    
+    if([pdef objectForKey:CAGE_DEFAULT_VALUE])
+        cageDefaultValue = [[pdef objectForKey:CAGE_DEFAULT_VALUE] intValue];
+    else
+        cageDefaultValue=1;
+    
     explodeMode = [[pdef objectForKey:EXPLODE_MODE]boolValue];
     
     if([pdef objectForKey:SHOW_COLUMN_TOTAL_COUNT])
@@ -1917,6 +1922,7 @@ static float kTimeToCageShake=7.0f;
 
 -(void)checkAndChangeCageSpritesForNegative
 {
+    if(!gw.Blackboard.inProblemSetup)return;
     
     for(int i=0;i<[allCages count];i++)
     {

@@ -67,7 +67,7 @@
     return self.lastEventDate - self.startDate - self.pauseTime;
 }
 
--(BOOL)processEvent:(NSDictionary*)event
+-(BOOL)processEvent:(NSDictionary*)event error:(NSError**)error
 {
     NSString *eventType = [event valueForKey:@"eventType"];
     double eventDate = [[event valueForKey:@"date"] doubleValue];
@@ -112,11 +112,13 @@
         self.currentPauseStartDate = 0;
     }
     
+    NSString *errorMessage = nil;
+    
     BOOL insertDb = [BL_EP_START isEqualToString:eventType];
     if (insertDb)
     {        
         [activityDatabase open];
-        [activityDatabase executeUpdate:@"INSERT INTO NodePlays(episode_id, batch_id, user_id, node_id, start_date, last_event_date) VALUES(?,?,?,?,?,?)",
+        BOOL success = [activityDatabase executeUpdate:@"INSERT INTO NodePlays(episode_id, batch_id, user_id, node_id, start_date, last_event_date) VALUES(?,?,?,?,?,?)",
                                                                 self.episodeId,
                                                                 self.batchId,
                                                                 self.userId,
@@ -124,6 +126,8 @@
                                                                 @(self.lastEventDate),
                                                                 @(self.lastEventDate)];
         [activityDatabase close];
+        
+        if (!success) errorMessage = [NSString stringWithFormat:@"SQL error. Failed INSERT INTO NodePlays. EpisodeId=%@", self.episodeId];
     }
     
     BOOL updateDb = episodeEnded || startPause || endPause || [BL_APP_ERROR isEqualToString:eventType];
@@ -132,14 +136,22 @@
         if ([BL_EP_END isEqualToString:eventType]) self.score = [eventData valueForKey:@"score"];
         
         [activityDatabase open];
-        [activityDatabase executeUpdate:@"UPDATE NodePlays SET last_event_date=?, ended_pauses_time=?, curr_pause_start_date=?, score=? WHERE episode_id=?",
+        BOOL success = [activityDatabase executeUpdate:@"UPDATE NodePlays SET last_event_date=?, ended_pauses_time=?, curr_pause_start_date=?, score=? WHERE episode_id=?",
                                                                 @(self.lastEventDate),
                                                                 @(self.endedPausesTime),
                                                                 @(self.currentPauseStartDate),
                                                                 self.score,
                                                                 self.episodeId];
         [activityDatabase close];
-        double test = self.playTime;
+        
+        if (!success) errorMessage = [NSString stringWithFormat:@"SQL error. Failed UPDATE NodePlays. EpisodeId=%@", self.episodeId];
+    }
+    
+    if (errorMessage && error)
+    {
+        *error = [NSError errorWithDomain:@"NodePlay"
+                                     code:0
+                                 userInfo:@{@"type":BL_APP_ERROR_TYPE_SQL, NSLocalizedDescriptionKey:errorMessage}];
     }
     
     return episodeEnded;

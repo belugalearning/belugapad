@@ -361,7 +361,18 @@ uint const kMaxConsecutiveSendFails = 3;
     if (BL_EP_START == eventType) nodePlay = [[NodePlay alloc] initWithEpisode:episodeDoc batchId:self.currentBatchId];
     if (nodePlay)
     {
-        BOOL endEpisode = [nodePlay processEvent:event];
+        NSError *error = nil;
+        BOOL endEpisode = [nodePlay processEvent:event error:&error];
+        
+        if (error)
+        {
+            NSMutableArray *events = [episodeDoc valueForKey:@"events"];
+            NSDictionary *ad = @{
+                @"type":[[error userInfo] valueForKey:@"type"],
+                NSLocalizedDescriptionKey:[error localizedDescription]
+            };
+            [events addObject:@{@"eventType":BL_APP_ERROR, @"additionalData":ad}];
+        }
         
         [episodeDoc setValue:@(nodePlay.pauseTime) forKey:@"timePaused"];
         [episodeDoc setValue:@(nodePlay.playTime) forKey:@"timeInPlay"];

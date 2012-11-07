@@ -24,6 +24,6 @@
 
 
 -(id)initWithEpisode:(NSDictionary*)episode batchId:(NSString*)batchId;
--(BOOL)processEvent:(NSDictionary*)event;
+-(BOOL)processEvent:(NSDictionary*)event error:(NSError**)error;
 
 @end

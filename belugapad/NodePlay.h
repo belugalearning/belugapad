@@ -19,6 +19,7 @@
 @property (nonatomic, readonly) double endedPausesTime;
 @property (nonatomic, readonly) double currentPauseStartDate;
 @property (nonatomic, readonly, retain) NSNumber *score;
+@property (nonatomic, readonly) double pauseTime;
 @property (nonatomic, readonly) double playTime;
 
 

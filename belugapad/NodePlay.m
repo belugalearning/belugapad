@@ -55,12 +55,16 @@
     return self;
 }
 
+-(double)pauseTime
+{
+    double t = self.endedPausesTime;
+    if (self.currentPauseStartDate) t += (self.lastEventDate - self.currentPauseStartDate);
+    return t;
+}
+
 -(double)playTime
 {
-    double totalTime = self.lastEventDate - self.startDate;
-    double pauseTime = self.endedPausesTime;
-    if (self.currentPauseStartDate) pauseTime += (self.lastEventDate - self.currentPauseStartDate);
-    return totalTime - pauseTime;
+    return self.lastEventDate - self.startDate - self.pauseTime;
 }
 
 -(BOOL)processEvent:(NSDictionary*)event

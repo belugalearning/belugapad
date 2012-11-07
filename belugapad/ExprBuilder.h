@@ -52,6 +52,9 @@
     int repeatRow2Count;
     int userRepeatRow2Max;
     
+    //is increased to 1 if the pdef decsription gets inserted
+    int rowIndexOffset;
+    
     BOOL presentNumberCardRow;
     int numberCardRowMin;
     int numberCardRowMax;

@@ -555,7 +555,7 @@ static float kTimeToCageShake=7.0f;
                 totalCountSprites=[[[NSMutableArray alloc]init]retain];
             
             CCSprite *totalCountSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/total_count_bg.png")];
-            [totalCountSprite setPosition:ccp(i*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(currentColumnRows*(lx*kPropXNetSpace)))];
+            [totalCountSprite setPosition:ccp(i*(kPropXColumnSpacing*lx), 23+(ly*kPropYColumnOrigin)-(currentColumnRows*(lx*kPropXNetSpace)))];
             [totalCountSprite setOpacity:0];
             [totalCountSprite setTag:2];
             [renderLayer addChild:totalCountSprite];

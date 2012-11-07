@@ -391,7 +391,7 @@ static float kTimeToHeaderBounce=7.0f;
             int thisX=[[d objectForKey:@"X"]intValue];
             int thisY=[[d objectForKey:@"Y"]intValue];
             
-            DWTTTileGameObject *t=[[ttMatrix objectAtIndex:thisX] objectAtIndex:thisY];
+            DWTTTileGameObject *t=[[ttMatrix objectAtIndex:thisX-1] objectAtIndex:fabs(thisY-amtForY)];
             
             t.Disabled=YES;
         }

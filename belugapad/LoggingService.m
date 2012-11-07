@@ -218,6 +218,8 @@ uint const kMaxConsecutiveSendFails = 3;
                       , @"nodeRev": ac.contentService.currentNode._rev
                       , @"pipelineId": ac.contentService.currentPipeline._id
                       , @"pipelineRev": ac.contentService.currentPipeline._rev
+                      , @"timeInPlay": @0
+                      , @"timePaused": @0
                       } mutableCopy];
     }
     else if (BL_EP_ATTEMPT_ADAPT_PIPELINE_INSERTION == eventType)
@@ -356,6 +358,10 @@ uint const kMaxConsecutiveSendFails = 3;
     if (nodePlay)
     {
         BOOL endEpisode = [nodePlay processEvent:event];
+        
+        [episodeDoc setValue:@(nodePlay.pauseTime) forKey:@"timePaused"];
+        [episodeDoc setValue:@(nodePlay.playTime) forKey:@"timeInPlay"];
+        
         if (endEpisode)
         {
             AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];

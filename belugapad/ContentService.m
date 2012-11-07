@@ -250,15 +250,15 @@
 
 #pragma mark - data access
 
--(NSArray*)allConceptNodeIds
+-(NSArray*)conceptNodeIdsNotIn:(NSArray*)ids
 {
-    NSMutableArray *ids=[[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *ret = [NSMutableArray array];
+    
     [contentDatabase open];
-    FMResultSet *rs = [contentDatabase executeQuery:@"select id from ConceptNodes"];
-    while([rs next]) [ids addObject:[rs stringForColumnIndex:0]];
-    [rs close];
+    FMResultSet *rs = [contentDatabase executeQuery:[NSString stringWithFormat:@"SELECT id FROM ConceptNodes WHERE id NOT IN ('%@')", [ids componentsJoinedByString:@"','"]]];
+    while([rs next]) [ret addObject:[rs stringForColumnIndex:0]];
     [contentDatabase close];
-    return [NSArray arrayWithArray:ids];
+    return ret;
 }
 
 -(NSArray*)allConceptNodes

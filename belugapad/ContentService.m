@@ -501,13 +501,6 @@
     NSLog(@"loaded test def: %@", self.pathToTestDef);
 }
 
--(void)endPlayPipelineWithScore:(int)score
-{
-    if (!self.currentNode) return;
-    UserNodeState *state = [usersService currentUserStateForNodeWithId:self.currentNode._id];
-    [state updateAndSaveStateOnEndNodePlayWithScore:score];
-}
-
 #pragma mark - epsiode management, progression
 
 -(int)pipelineIndex

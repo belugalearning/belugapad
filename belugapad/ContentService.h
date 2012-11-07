@@ -17,7 +17,7 @@
 @property (nonatomic, readonly, retain) NSDictionary *currentPDef;
 @property (nonatomic, retain) NSMutableDictionary *currentStaticPdef;
 @property (nonatomic, readonly, retain) NSString *pathToTestDef;
-@property (nonatomic, readonly, retain) NSArray *currentPipeline;
+@property (nonatomic, readonly, retain) Pipeline *currentPipeline;
 @property BOOL fullRedraw;
 @property BOOL lightUpProgressFromLastNode;
 @property (nonatomic, retain) ConceptNode *currentNode;
@@ -28,16 +28,19 @@
 @property (readonly) int pipelineIndex;
 @property (readonly) int episodeIndex;
 
+@property (readonly) float pipelineProblemAttemptBaseScore;
+@property (readonly) float pipelineProblemAttemptMaxScore;
+
 @property (readonly) NSString *contentDir;
 
 //episode
+@property (nonatomic, readonly, retain) NSString *currentEpisodeId;
 @property (retain) NSMutableArray *currentEpisode;
 @property (readonly) BOOL isUserAtEpisodeHead;
 @property (readonly) BOOL isUserPastEpisodeHead;
 
 -(id)initWithLocalSettings:(NSDictionary*)settings;
--(void)setPipelineNodeComplete;
--(void)setPipelineScore:(int)score;
+-(void)endPlayPipelineWithScore:(int)score;
 -(BOOL)isUsingTestPipeline;
 
 -(void)updateContentDatabaseWithSettings:(NSDictionary*)settings;

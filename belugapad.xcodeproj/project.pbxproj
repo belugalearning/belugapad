@@ -34,6 +34,7 @@
 		0C92B2541515702700342094 /* ContentService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C92B2531515702700342094 /* ContentService.m */; };
 		0C993CFB163842CE0079A647 /* Problems in Resources */ = {isa = PBXBuildFile; fileRef = 0C993CFA163842CE0079A647 /* Problems */; };
 		0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */ = {isa = PBXBuildFile; fileRef = 0C9FEFF514F572FB00E64138 /* pipeline-testing */; };
+		0CD565921647F23E00D9EA30 /* UserNodeState.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD565911647F23E00D9EA30 /* UserNodeState.m */; };
 		0CDECB5E15920C27004DE20D /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB4A15920C27004DE20D /* AFHTTPClient.m */; };
 		0CDECB5F15920C27004DE20D /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB4C15920C27004DE20D /* AFHTTPRequestOperation.m */; };
 		0CDECB6015920C27004DE20D /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB4E15920C27004DE20D /* AFImageRequestOperation.m */; };
@@ -132,6 +133,7 @@
 		55FDAEE3157F802900943176 /* PieSplitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FDAEE2157F802900943176 /* PieSplitter.m */; };
 		7F0AE04D158782D100194644 /* InteractionFeedback.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0AE04C158782D100194644 /* InteractionFeedback.m */; };
 		7F0E32B9158E9D7800E42C7B /* SGJmapProximityEval.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0E32B8158E9D7700E42C7B /* SGJmapProximityEval.m */; };
+		7F0F70AC1645B2A9009DBCAB /* SGBtxePlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F70AB1645B2A7009DBCAB /* SGBtxePlaceholder.m */; };
 		7F1A3B5115BDEC8C0060CB15 /* SGFractionBuilderMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F1A3B5015BDEC8C0060CB15 /* SGFractionBuilderMarker.m */; };
 		7F2317C5156FA13400E2C941 /* NordicAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2317C4156FA13400E2C941 /* NordicAnimator.m */; };
 		7F2586AF15697EBD00C439F6 /* ExprSimplifyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F2586AE15697EBD00C439F6 /* ExprSimplifyTests.m */; };
@@ -477,6 +479,8 @@
 		0C92B2531515702700342094 /* ContentService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentService.m; sourceTree = "<group>"; };
 		0C993CFA163842CE0079A647 /* Problems */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Problems; sourceTree = SOURCE_ROOT; };
 		0C9FEFF514F572FB00E64138 /* pipeline-testing */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pipeline-testing"; sourceTree = SOURCE_ROOT; };
+		0CD565901647F23E00D9EA30 /* UserNodeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserNodeState.h; sourceTree = "<group>"; };
+		0CD565911647F23E00D9EA30 /* UserNodeState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserNodeState.m; sourceTree = "<group>"; };
 		0CDECB4915920C27004DE20D /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		0CDECB4A15920C27004DE20D /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
 		0CDECB4B15920C27004DE20D /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -675,6 +679,8 @@
 		7F0AE04C158782D100194644 /* InteractionFeedback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractionFeedback.m; sourceTree = "<group>"; };
 		7F0E32B7158E9D7700E42C7B /* SGJmapProximityEval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGJmapProximityEval.h; sourceTree = "<group>"; };
 		7F0E32B8158E9D7700E42C7B /* SGJmapProximityEval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGJmapProximityEval.m; sourceTree = "<group>"; };
+		7F0F70AA1645B2A6009DBCAB /* SGBtxePlaceholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxePlaceholder.h; sourceTree = "<group>"; };
+		7F0F70AB1645B2A7009DBCAB /* SGBtxePlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxePlaceholder.m; sourceTree = "<group>"; };
 		7F1A3B4F15BDEC8C0060CB15 /* SGFractionBuilderMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFractionBuilderMarker.h; sourceTree = "<group>"; };
 		7F1A3B5015BDEC8C0060CB15 /* SGFractionBuilderMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFractionBuilderMarker.m; sourceTree = "<group>"; };
 		7F2317C3156FA13400E2C941 /* NordicAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NordicAnimator.h; sourceTree = "<group>"; };
@@ -2634,6 +2640,8 @@
 				7FBE96961549819300D993AC /* LoadingViewController.h */,
 				7FBE96971549819300D993AC /* LoadingViewController.m */,
 				7FBE96981549819300D993AC /* LoadingViewController.xib */,
+				0CD565901647F23E00D9EA30 /* UserNodeState.h */,
+				0CD565911647F23E00D9EA30 /* UserNodeState.m */,
 			);
 			name = Users;
 			sourceTree = "<group>";
@@ -2782,6 +2790,8 @@
 				7FA84BC416107569001FEA82 /* SGBtxeObjectNumber.m */,
 				7F5F4D6C1619E6B9005F6311 /* SGBtxeObjectIcon.h */,
 				7F5F4D6D1619E6B9005F6311 /* SGBtxeObjectIcon.m */,
+				7F0F70AA1645B2A6009DBCAB /* SGBtxePlaceholder.h */,
+				7F0F70AB1645B2A7009DBCAB /* SGBtxePlaceholder.m */,
 			);
 			name = BTXE;
 			sourceTree = "<group>";
@@ -3386,6 +3396,8 @@
 				55B2C4251627519700E0E2C7 /* DWNWheelGameObject.m in Sources */,
 				5542D678162AFD3E00DB6E40 /* BDotGridShapeGroupObjectRender.m in Sources */,
 				0C58DE8716308B7000DD9A01 /* EditPDefViewController.m in Sources */,
+				7F0F70AC1645B2A9009DBCAB /* SGBtxePlaceholder.m in Sources */,
+				0CD565921647F23E00D9EA30 /* UserNodeState.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3480,7 +3492,7 @@
 					"\"belugapad/kazmath/include\"/**",
 					"\"belugapad/Chipmunk/include/chipmunk\"/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A2B19595-65E2-4E3A-9290-3D13D596AAE3";
 				SDKROOT = iphoneos;
 			};
@@ -3500,7 +3512,7 @@
 					"\"belugapad/kazmath/include\"/**",
 					"\"belugapad/Chipmunk/include/chipmunk\"/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 			};
@@ -3527,7 +3539,7 @@
 					"$(SDKROOT)/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = belugapad/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/belugapad/libs/ChipmunkPro-iPhone\"",
@@ -3539,7 +3551,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 				USER_HEADER_SEARCH_PATHS = "\"belugapad/libs/Chipmunk/include/chipmunk\"";
 				WRAPPER_EXTENSION = app;
 			};
@@ -3567,7 +3579,7 @@
 					"$(SDKROOT)/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = belugapad/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/belugapad/libs/ChipmunkPro-iPhone\"",
@@ -3580,7 +3592,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 				USER_HEADER_SEARCH_PATHS = "\"belugapad/libs/Chipmunk/include/chipmunk\"";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;

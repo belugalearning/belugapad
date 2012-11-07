@@ -40,6 +40,8 @@
     int evalInterval;
     NSArray *evalJumpSequence;
     
+    BOOL evalAbsTarget;
+    
     CCLabelTTF *problemDescLabel;
 
     CCLabelTTF *problemCompleteLabel;
@@ -61,6 +63,8 @@
     NSNumber *initMaxVal;
     int initSegmentVal;
     int initStartLoc;
+    
+    BOOL countOutLoudFromInitStartVal;
     
     float timeSinceInteractionOrShake;
     

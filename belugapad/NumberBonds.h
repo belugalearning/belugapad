@@ -43,6 +43,7 @@ typedef enum {
     int solutionValue;
     BOOL useBlockScaling;
     BOOL showBadgesOnCages;
+    BOOL barAssistance;
     
     NSMutableArray *createdRows;
     NSMutableArray *mountedObjects;

@@ -13,6 +13,7 @@
 
 @synthesize size, position;
 @synthesize text, textRenderComponent;
+@synthesize container;
 
 -(SGBtxeText*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -35,6 +36,11 @@
 -(void)doUpdate:(ccTime)delta
 {
     
+}
+
+-(void)setText:(NSString *)theText
+{
+    text=[theText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
 
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime
@@ -70,6 +76,9 @@
 {
     self.text=nil;
     self.textRenderComponent=nil;
+    self.container=nil;
+    
+    
     [super dealloc];
 }
 

@@ -45,6 +45,7 @@
 @property CGPoint Position;
 @property (retain) NSMutableArray *PairedObjects;
 @property BOOL SeekingPair;
+@property int LineType;
 
 -(void)pairMeWith:(id)thisObject;
 -(void)unpairMeFrom:(id)thisObject;
@@ -53,6 +54,7 @@
 @end
 
 @protocol Configurable
+@property (retain) NSString *blockType;
 
 -(void)setup;
 
@@ -63,13 +65,14 @@
 @property (retain) NSMutableArray *BlocksInShape;
 @property (retain) CCLabelTTF *Label;
 @property (retain) CCNode *BaseNode;
+@property (retain) NSString *BlockType;
 
 -(void)addBlockToMe:(id)thisBlock;
 -(void)removeBlockFromMe:(id)thisBlock;
 -(void)repositionLabel;
 -(int)blocksInShape;
 -(void)layoutMyBlocks;
--(void)destroyThisObject;
+-(void)deselectThisObject;
 
 @end
 
@@ -78,7 +81,13 @@
 
 @property CGPoint Position;
 @property (retain) CCLayer *RenderLayer;
+@property (retain) NSString *CageType;
+@property (retain) NSString *BlockType;
+@property int InitialObjects;
+@property (retain) CCSprite *MySprite;
+@property BOOL RandomPositions;
 
+-(void)setup;
 -(void)spawnNewBlock;
 -(void)removeBlockFromMe:(id)thisBlock;
 

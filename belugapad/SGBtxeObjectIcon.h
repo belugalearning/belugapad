@@ -11,7 +11,7 @@
 
 @class SGBtxeIconRender;
 
-@interface SGBtxeObjectIcon : SGGameObject <MovingInteractive, Icon, FadeIn>
+@interface SGBtxeObjectIcon : SGGameObject <MovingInteractive, Icon, FadeIn, Containable>
 {
     CCNode *renderBase;
 }

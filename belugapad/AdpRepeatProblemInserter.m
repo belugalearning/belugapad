@@ -8,6 +8,7 @@
 
 #import "AdpRepeatProblemInserter.h"
 #import "ContentService.h"
+#import "Problem.h"
 
 @implementation AdpRepeatProblemInserter
 
@@ -21,7 +22,8 @@
         if(dvars.count>0)
         {
             //there are some dvars defined, assume this problem is dynamic & re-insert
-            [self.viableInserts addObject:@{@"PROBLEM_ID" :[contentService.currentEpisode objectAtIndex:contentService.episodeIndex]}];
+            Problem *p = [contentService.currentEpisode objectAtIndex:contentService.episodeIndex];
+            [self.viableInserts addObject:@{ @"PROBLEM_ID":p._id }];
             
             //todo: add the avoid dvars stuff to this -- e.g. to prevent repeating with same values if possible
         }

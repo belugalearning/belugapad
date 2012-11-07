@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class User, LoggingService, FMDatabase;
+@class User, LoggingService, FMDatabase, UserNodeState;
 
 @interface UsersService : NSObject
 
@@ -19,7 +19,7 @@ typedef enum {
 
 @property (readonly, retain, nonatomic) NSString *installationUUID;
 @property (readonly) NSDictionary *currentUserClone;
-@property (readonly) FMDatabase *usersDatabase;
+@property (readonly) FMDatabase *allUsersDatabase;
 @property (readonly) NSString *currentUserId;
 
 -(id)initWithProblemPipeline:(NSString*)source
@@ -40,6 +40,9 @@ typedef enum {
                         andPassword:(NSString*)password
                            callback:(void (^)(NSDictionary*))callback;
 
--(void)addCompletedNodeId:(NSString*)nodeId;
 -(BOOL)hasCompletedNodeId:(NSString*)nodeId;
+-(UserNodeState*)currentUserStateForNodeWithId:(NSString *)nodeId;
+-(NSDictionary*)currentUserAllNodesState;
+
+-(void)onNewLogBatchWithId:(NSString*)batchId;
 @end

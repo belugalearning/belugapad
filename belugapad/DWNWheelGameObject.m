@@ -23,6 +23,7 @@
 @synthesize Components;
 @synthesize InputValue;
 @synthesize OutputValue;
+@synthesize StrOutputValue;
 @synthesize Label;
 @synthesize HasCountBubble;
 @synthesize CountBubblePosition;
@@ -30,6 +31,8 @@
 @synthesize CountBubbleLabel;
 @synthesize CountBubbleRenderLayer;
 @synthesize Locked;
+@synthesize HasDecimals;
+@synthesize HasNegative;
 
 -(void)dealloc
 {

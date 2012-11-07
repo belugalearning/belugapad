@@ -188,6 +188,7 @@ static float kTimeToCageShake=7.0f;
         }
     }
     
+    
     if(showValue && [solutionType isEqualToString:TOTAL_COUNT])
         [sumLabel setString:[NSString stringWithFormat:@"%g", totalObjectValue]];
     
@@ -672,19 +673,29 @@ static float kTimeToCageShake=7.0f;
         if(showMultipleDragging && (!([columnCages objectForKey:currentColumnValueKey]) || ([[columnCages objectForKey:currentColumnValueKey] boolValue]==YES)))
         {
             int defaultBlocksToMake=1;
-            
-            if([multipleBlockPickupDefaults objectForKey:currentColumnValueKey])
-                defaultBlocksToMake=[[multipleBlockPickupDefaults objectForKey:currentColumnValueKey]intValue];
-            else    
-                defaultBlocksToMake=1;
+            int minBlocks=1;
+            int maxBlocks=10;
             
             
             if(![multipleBlockMax objectForKey:currentColumnValueKey])
                 [multipleBlockMax setValue:[NSNumber numberWithInt:10] forKey:currentColumnValueKey];
+            else
+                maxBlocks=[[multipleBlockMax objectForKey:currentColumnValueKey]intValue];
             
             if(![multipleBlockMin objectForKey:currentColumnValueKey])
                 [multipleBlockMin setValue:[NSNumber numberWithInt:1] forKey:currentColumnValueKey];
+            else
+                minBlocks=[[multipleBlockMin objectForKey:currentColumnValueKey]intValue];
+           
+            if(defaultBlocksToMake<minBlocks)
+                defaultBlocksToMake=minBlocks;
+            if(defaultBlocksToMake>maxBlocks)
+                defaultBlocksToMake=maxBlocks;
             
+            if([multipleBlockPickupDefaults objectForKey:currentColumnValueKey])
+                defaultBlocksToMake=[[multipleBlockPickupDefaults objectForKey:currentColumnValueKey]intValue];
+            else
+                defaultBlocksToMake=1;
             
             
             [blocksToCreate addObject:[NSNumber numberWithInt:defaultBlocksToMake]];
@@ -984,6 +995,11 @@ static float kTimeToCageShake=7.0f;
         disableAudioCounting = [[pdef objectForKey:DISABLE_AUDIO_COUNTING] boolValue];
     else
         disableAudioCounting=NO;
+    
+    if([pdef objectForKey:COUNT_USER_BLOCKS])
+        countUserBlocks = [[pdef objectForKey:COUNT_USER_BLOCKS] boolValue];
+    else
+        countUserBlocks=NO;
     
     if([pdef objectForKey:SHOW_MULTIPLE_BLOCKS_FROM_CAGE])
         showMultipleControls = [[pdef objectForKey:SHOW_MULTIPLE_BLOCKS_FROM_CAGE]boolValue];
@@ -1590,6 +1606,10 @@ static float kTimeToCageShake=7.0f;
         {
             DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
             if(!co.MountedObject && !explodeMode)
+            {
+                freeSpace++;
+            }
+            else if(!co.MountedObject && !co.CancellingObject && explodeMode)
             {
                 freeSpace++;
             }
@@ -3124,6 +3144,7 @@ static float kTimeToCageShake=7.0f;
                 
                 if((multipleBlockPickup||showMultipleControls||isNegativeProblem) && !isBasePickup)
                 {
+                    
                     if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
                     {
                         
@@ -3282,6 +3303,18 @@ static float kTimeToCageShake=7.0f;
 //                    [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
                 }
                 
+                if(countUserBlocks)
+                {
+                    int initedOnGrid=[[initBlocksForColumn objectAtIndex:currentColumnIndex]intValue];
+                    float colValue=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] floatValue];
+                    int amountAdded=(([self usedSpacesOnGrid:currentColumnIndex]-initedOnGrid)*colValue);
+                    if(amountAdded>20)return;
+                    
+                    NSString *fileName=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", amountAdded];
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(fileName)];
+                }
+
+                
                 // then log stuff
                 [loggingService logEvent:(isCage ? BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_CAGE : BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_GRID)
                     withAdditionalData:nil];
@@ -3299,7 +3332,6 @@ static float kTimeToCageShake=7.0f;
                 }
                 if(blocksToDestroy)
                 {
-                    
                     for(DWPlaceValueBlockGameObject *thisBlock in blocksToDestroy)
                     {
                         [thisBlock handleMessage:kDWresetToMountPosition];

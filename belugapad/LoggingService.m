@@ -13,6 +13,8 @@
 #import "AppDelegate.h"
 #import "UsersService.h"
 #import "ContentService.h"
+#import "ConceptNode.h"
+#import "Pipeline.h"
 #import "Problem.h"
 #import "AFNetworking.h"
 #import <zlib.h>
@@ -40,6 +42,7 @@ uint const kMaxConsecutiveSendFails = 3;
     
     NSMutableDictionary *deviceSessionDoc;
     NSMutableDictionary *userSessionDoc;
+    NSMutableDictionary *episodeDoc;
     NSMutableDictionary *problemAttemptDoc;
     
     uint consecutiveSendFails;
@@ -50,7 +53,9 @@ uint const kMaxConsecutiveSendFails = 3;
 @property (readwrite, retain) TouchLogger *touchLogger;
 @property (readwrite, retain) NSString *currPAPollDocId;
 @property (readwrite, retain) NSString *currPATouchDocId;
+@property (readonly) NSData *currentBatchIdData;
 
+-(void)newBatch;
 -(void)sendCurrBatch;
 -(void)sendPrevBatches;
 -(void)sendBatchData:(NSData*)batchData withCompletionBlock:(void (^)(BL_SEND_LOG_STATUS status))onComplete;
@@ -79,7 +84,7 @@ uint const kMaxConsecutiveSendFails = 3;
         opQueue = [[[NSOperationQueue alloc] init] retain];
         fm = [NSFileManager defaultManager];
         
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
         NSString *baseDir = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"logging"];
         currDir = [[NSString stringWithFormat:@"%@/%@", baseDir, @"current-batch"] retain];
         prevDir = [[NSString stringWithFormat:@"%@/%@", baseDir, @"prev-batches"] retain];
@@ -90,6 +95,49 @@ uint const kMaxConsecutiveSendFails = 3;
             [fm createDirectoryAtPath:prevDir withIntermediateDirectories:YES attributes:nil error:nil];
     }
     return self;
+}
+
+-(NSData*)currentBatchIdData
+{
+    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentBatchIdData"];
+    if (!data)
+    {
+        // first launch
+        [self newBatch];
+        data = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentBatchIdData"];
+    }
+    return data;
+}
+
+-(NSString*)currentBatchId
+{
+    NSData *data = self.currentBatchIdData;
+    CFUUIDBytes bytes;
+    [data getBytes:&bytes length:16];
+    
+    CFUUIDRef ref = CFUUIDCreateFromUUIDBytes(kCFAllocatorDefault, bytes);
+    CFStringRef sref = CFUUIDCreateString(kCFAllocatorDefault, ref);
+    
+    NSString *uuid = [[[NSString stringWithFormat:@"%@", sref] stringByReplacingOccurrencesOfString:@"-" withString:@""] lowercaseString];
+    
+    CFRelease(sref);
+    CFRelease(ref);
+    
+    return  uuid;
+}
+
+-(void)newBatch
+{
+    CFUUIDRef ref = CFUUIDCreate(kCFAllocatorDefault);
+    CFUUIDBytes bytes = CFUUIDGetUUIDBytes(ref);
+    NSData *data = [NSData dataWithBytes:&bytes length:sizeof(bytes)];
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"currentBatchIdData"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    CFRelease(ref);
+    
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    UsersService *us = ac.usersService;
+    if (us) [us onNewLogBatchWithId:self.currentBatchId];
 }
 
 -(NSString*)currentProblemAttemptID
@@ -111,6 +159,7 @@ uint const kMaxConsecutiveSendFails = 3;
         {
             installationId = [self generateUUID];
             [standardUserDefaults setObject:installationId forKey:@"installationUUID"];
+            [standardUserDefaults synchronize];
         }
         
         deviceSessionDoc = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
@@ -146,6 +195,31 @@ uint const kMaxConsecutiveSendFails = 3;
     {
         currentContext = BL_USER_CONTEXT;
     }
+    else if (BL_EP_START == eventType)
+    {
+        currentContext = BL_EPISODE_CONTEXT;
+        if (episodeDoc) [episodeDoc release];
+        if (!userSessionDoc) return; // error!
+        
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        episodeDoc = [@{
+                      @"_id":ac.contentService.currentEpisodeId
+                      , @"type": @"Episode"
+                      , @"events": [NSMutableArray array]
+                      , @"device": [deviceSessionDoc objectForKey:@"device"]
+                      , @"deviceSession": [deviceSessionDoc objectForKey:@"_id"]
+                      , @"user": [userSessionDoc objectForKey:@"user"]
+                      , @"userSession": [userSessionDoc objectForKey:@"_id"]
+                      , @"nodeId": ac.contentService.currentNode._id
+                      , @"nodeRev": ac.contentService.currentNode._rev
+                      , @"pipelineId": ac.contentService.currentPipeline._id
+                      , @"pipelineRev": ac.contentService.currentPipeline._rev
+                      } mutableCopy];
+    }
+    else if (BL_EP_ATTEMPT_ADAPT_PIPELINE_INSERTION == eventType)
+    {
+        currentContext = BL_EPISODE_CONTEXT;
+    }
     else if (BL_PA_START == eventType)
     {
         currentContext = BL_PROBLEM_ATTEMPT_CONTEXT;
@@ -157,6 +231,7 @@ uint const kMaxConsecutiveSendFails = 3;
         if (!p) return; // error!
         if (!deviceSessionDoc) return; // error!
         if (!userSessionDoc) return; // error!
+        if (!episodeDoc) return;
         
         problemAttemptDoc = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                              [self generateUUID], @"_id"
@@ -166,6 +241,7 @@ uint const kMaxConsecutiveSendFails = 3;
                              , [deviceSessionDoc objectForKey:@"_id"], @"deviceSession"
                              , [userSessionDoc objectForKey:@"user"], @"user"
                              , [userSessionDoc objectForKey:@"_id"], @"userSession"
+                             , [episodeDoc objectForKey:@"_id"], @"episode"
                              , p._id, @"problemId"
                              , p._rev, @"problemRev"
                              , nil];
@@ -201,6 +277,7 @@ uint const kMaxConsecutiveSendFails = 3;
               , @"deviceSession": [deviceSessionDoc objectForKey:@"_id"]
               , @"user": [userSessionDoc objectForKey:@"user"]
               , @"userSession": [userSessionDoc objectForKey:@"_id"]
+              , @"episode": [episodeDoc objectForKey:@"_id"]
               } JSONData] writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, self.currPAPollDocId] options:NSAtomicWrite error:nil];
         }
         
@@ -218,6 +295,7 @@ uint const kMaxConsecutiveSendFails = 3;
               , @"deviceSession": [deviceSessionDoc objectForKey:@"_id"]
               , @"user": [userSessionDoc objectForKey:@"user"]
               , @"userSession": [userSessionDoc objectForKey:@"_id"]
+              , @"episode": [episodeDoc objectForKey:@"_id"]
               } JSONData] writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, self.currPATouchDocId] options:NSAtomicWrite error:nil];
         }
         
@@ -243,6 +321,9 @@ uint const kMaxConsecutiveSendFails = 3;
             break;
         case BL_USER_CONTEXT:
             doc = userSessionDoc;
+            break;
+        case BL_EPISODE_CONTEXT:
+            doc = episodeDoc;
             break;
         case BL_PROBLEM_ATTEMPT_CONTEXT:
             doc = problemAttemptDoc;
@@ -348,8 +429,8 @@ uint const kMaxConsecutiveSendFails = 3;
     
     // ----- create batchData by prefixing compressedData with date and batch uuid
     uint batchDate = (uint)[[NSDate date] timeIntervalSince1970];
-    CFUUIDRef uuidRef = CFUUIDCreate(kCFAllocatorDefault);
-    CFUUIDBytes uuid = CFUUIDGetUUIDBytes(uuidRef);
+    CFUUIDBytes uuid;
+    [self.currentBatchIdData getBytes:&uuid length:16];
     Byte prefixBytes[36] =  {
         batchDate>>24 & 0xFF,   batchDate>>16 & 0xFF,     batchDate>>8 & 0xFF,      batchDate & 0xFF,
         uuid.byte0, uuid.byte1, uuid.byte2,  uuid.byte3,  uuid.byte4,  uuid.byte5,  uuid.byte6,  uuid.byte7,
@@ -357,7 +438,6 @@ uint const kMaxConsecutiveSendFails = 3;
     };
     NSMutableData *batchData = [NSMutableData dataWithBytes:prefixBytes length:20];
     [batchData appendData:compressedData];
-    CFRelease(uuidRef);
     
     
     // ----- HTTPRequest Completion Handler
@@ -385,8 +465,9 @@ uint const kMaxConsecutiveSendFails = 3;
             [bself->fm removeItemAtPath:bself->currDir error:nil];
             [bself->fm createDirectoryAtPath:bself->currDir withIntermediateDirectories:NO attributes:nil error:nil];
             [bself sendPrevBatches];
+            [bself newBatch];
         }
-    };    
+    };
     
     // ----- Send batchData in body of HTTPRequest
     [self sendBatchData:batchData withCompletionBlock:onComplete];

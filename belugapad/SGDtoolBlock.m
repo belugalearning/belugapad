@@ -15,6 +15,7 @@
 @synthesize BlockRenderComponent;
 @synthesize BlockPairComponent;
 @synthesize mySprite;
+@synthesize blockType, LineType;
 
 //Transform protocol properties
 @synthesize Position, Visible, RenderLayer;
@@ -32,7 +33,7 @@
 @synthesize logPollPosition;
 -(CGPoint)logPollPosition { return self.Position; }
 
--(SGDtoolBlock*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
+-(SGDtoolBlock*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition andType:(NSString*)thisType
 {   
     if(self=[super initWithGameWorld:aGameWorld])
     {
@@ -40,6 +41,7 @@
         self.Position=aPosition;
         self.Selected=NO;
         self.Visible=YES;
+        self.blockType=thisType;
         self.PairedObjects=[[NSMutableArray alloc]init];
         BlockRenderComponent=[[SGDtoolBlockRender alloc] initWithGameObject:self];
         BlockPairComponent=[[SGDtoolBlockPairing alloc] initWithGameObject:self];
@@ -109,6 +111,7 @@
     self.RenderLayer=nil;
     self.PairedObjects=nil;
     self.logPollId = nil;
+    self.blockType=nil;
     if (logPollId) [logPollId release];
     logPollId = nil;
     

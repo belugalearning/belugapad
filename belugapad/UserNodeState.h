@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class FMDatabase, FMResultSet;
+@class FMDatabase, FMResultSet, NodePlay;
 
 @interface UserNodeState : NSObject
 
@@ -28,7 +28,7 @@
 
 -(id) initWithUserId:(NSString*)userId nodeId:(NSString*)nodeId database:(FMDatabase*)database;
 -(id) initWithUserId:(NSString*)userId resultSet:(FMResultSet*)rs database:(FMDatabase*)database;
--(void)updateAndSaveStateOnEndNodePlayWithScore:(int)score;
+-(void)updateAndSaveStateOnAfterNodePlay:(NodePlay*)nodePlay;
 -(void) saveState;
 
 @end

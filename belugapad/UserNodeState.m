@@ -7,6 +7,7 @@
 //
 
 #import "UserNodeState.h"
+#import "NodePlay.h"
 #import "FMDatabase.h"
 #import "global.h"
 
@@ -84,38 +85,37 @@
     return self;
 }
 
--(void)updateAndSaveStateOnEndNodePlayWithScore:(int)score
+-(void)updateAndSaveStateAfterNodePlay:(NodePlay*)nodePlay
 {
-    NSDate *now = [NSDate date];
+    self.timePlayed += nodePlay.playTime;
+    self.lastPlayed = [NSDate dateWithTimeIntervalSince1970:nodePlay.lastEventDate];
+    self.lastScore = [nodePlay.score intValue];
     
-    self.lastPlayed = now;
-    self.lastScore = score;
-    
-    if (score)
+    if (self.lastScore)
     {
         // completed
         
-        self.totalAccumulatedScore += score;
-        self.highScore = MAX(score, self.highScore);
+        self.totalAccumulatedScore += self.lastScore;
+        self.highScore = MAX(self.lastScore, self.highScore);
         
-        if (!self.firstCompleted) self.firstCompleted = now;
-        self.lastCompleted = now;
+        if (!self.firstCompleted) self.firstCompleted = self.lastPlayed;
+        self.lastCompleted = self.lastPlayed;
     
-        if (score > SCORE_ARTIFACT_1)
+        if (self.lastScore > SCORE_ARTIFACT_1)
         {
-            self.artifact1LastAchieved = now;
-            if (score > SCORE_ARTIFACT_2)
+            self.artifact1LastAchieved = self.lastPlayed;
+            if (self.lastScore > SCORE_ARTIFACT_2)
             {
-                self.artifact2LastAchieved = now;
-                if (score > SCORE_ARTIFACT_3)
+                self.artifact2LastAchieved = self.lastPlayed;
+                if (self.lastScore > SCORE_ARTIFACT_3)
                 {
-                    self.artifact3LastAchieved = now;
-                    if (score > SCORE_ARTIFACT_4)
+                    self.artifact3LastAchieved = self.lastPlayed;
+                    if (self.lastScore > SCORE_ARTIFACT_4)
                     {
-                        self.artifact4LastAchieved = now;
-                        if (score > SCORE_ARTIFACT_5)
+                        self.artifact4LastAchieved = self.lastPlayed;
+                        if (self.lastScore > SCORE_ARTIFACT_5)
                         {
-                            self.artifact5LastAchieved = now;
+                            self.artifact5LastAchieved = self.lastPlayed;
                         }
                     }
                 }

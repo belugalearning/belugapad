@@ -2169,7 +2169,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
     else
     {
-        if(trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing){
+        if((trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing) && currentTool){
             [self removeAllTrays];
             return;
         }
@@ -2304,6 +2304,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             [self hideCalc];
             [self hidePad];
             
+            if(!currentTool)
+                [self hideCornerTray];
             //show this + show stuff in corner
             [self showWheel];
             

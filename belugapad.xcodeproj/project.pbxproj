@@ -420,6 +420,7 @@
 		7FEB663E15DEE68100F6E782 /* PRRatcliffTriangulator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7FEB663915DEE68100F6E782 /* PRRatcliffTriangulator.mm */; };
 		7FEB663F15DEE68100F6E782 /* triangulate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FEB663B15DEE68100F6E782 /* triangulate.cpp */; };
 		7FEDCE1C1535DCA400C8C9F3 /* ExprEvalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */; };
+		7FFBF09B164AE933005CCD6E /* SGBtxeObjectOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FFBF09A164AE933005CCD6E /* SGBtxeObjectOperator.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1270,6 +1271,8 @@
 		7FEB663B15DEE68100F6E782 /* triangulate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = triangulate.cpp; sourceTree = "<group>"; };
 		7FEB663C15DEE68100F6E782 /* triangulate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = triangulate.h; sourceTree = "<group>"; };
 		7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprEvalTests.m; sourceTree = "<group>"; };
+		7FFBF099164AE933005CCD6E /* SGBtxeObjectOperator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeObjectOperator.h; sourceTree = "<group>"; };
+		7FFBF09A164AE933005CCD6E /* SGBtxeObjectOperator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeObjectOperator.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2797,6 +2800,8 @@
 				7F5F4D6D1619E6B9005F6311 /* SGBtxeObjectIcon.m */,
 				7F0F70AA1645B2A6009DBCAB /* SGBtxePlaceholder.h */,
 				7F0F70AB1645B2A7009DBCAB /* SGBtxePlaceholder.m */,
+				7FFBF099164AE933005CCD6E /* SGBtxeObjectOperator.h */,
+				7FFBF09A164AE933005CCD6E /* SGBtxeObjectOperator.m */,
 			);
 			name = BTXE;
 			sourceTree = "<group>";
@@ -3404,6 +3409,7 @@
 				7F0F70AC1645B2A9009DBCAB /* SGBtxePlaceholder.m in Sources */,
 				0CD565921647F23E00D9EA30 /* UserNodeState.m in Sources */,
 				0C03B6371649EDD600F74659 /* NodePlay.m in Sources */,
+				7FFBF09B164AE933005CCD6E /* SGBtxeObjectOperator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

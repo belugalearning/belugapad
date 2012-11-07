@@ -173,21 +173,24 @@ const float kScaleOfLesserBlocks=0.6f;
         
 //        NSString *curNum=nWheel.StrOutputValue;
         float thisNum=[nWheel.StrOutputValue floatValue];
+        int thisNumUp=thisNum*100000 + 0.5f;
         
-//        NSLog(@"thisNum: %g", thisNum);
+        NSLog(@"thisNum: %g", thisNum);
         
-        int mag=[self magnitudeOf:(int)thisNum];
-        float remVal=thisNum;
+        int mag=[self magnitudeOf:(int)thisNumUp];
+        int remValUp=thisNumUp;
         int exp=mag-1;
         
-        while(remVal>0)
+        while(remValUp>0)
         {
-            float baseVal=powf(10,exp);
-            int selected=remVal/baseVal;
-            remVal-=selected*baseVal;
+            int baseVal=pow(10,exp);
+            int selected=remValUp/baseVal;
+            remValUp-=selected*baseVal;
             exp--;
             
-            [self checkBlockWithBase:baseVal andSelection:selected];
+            float baseValDown=baseVal / 100000.0f;
+            
+            [self checkBlockWithBase:baseValDown andSelection:selected];
         }
         
 //        for(int n=0;n<[nWheel.pickerViewSelection count];n++)

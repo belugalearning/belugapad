@@ -77,6 +77,13 @@
 
 
 
+@protocol ValueOperator <NSObject>
+
+@property (retain) NSString *valueOperator;
+
+@end
+
+
 
 @protocol Interactive <Bounding>
 

@@ -139,6 +139,15 @@ static float kTimeToCageShake=7.0f;
                     [l runAction:[InteractionFeedback shakeAction]];
                 }
             }
+            if(blockLabels && !touching && lastTotalCount<expectedCount)
+            {
+                for(CCLabelTTF *l in multipleLabels)
+                {
+                    [l runAction:[InteractionFeedback shakeAction]];
+                }
+            }
+            
+            
             
             hasRunInteractionFeedback=YES;
         }

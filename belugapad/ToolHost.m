@@ -1957,6 +1957,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     trayLayerWheel=nil;
 //    [numberPickerLayer removeAllChildrenWithCleanup:YES];
     numberPickerForThisProblem=NO;
+    trayWheelShowing=NO;
+    hasUsedPicker=NO;
     pickerViewSelection=nil;
     pickerView=nil;
 //    [numberPickerLayer release];

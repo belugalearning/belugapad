@@ -1983,7 +1983,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     if(currentTool.ProblemComplete)
     {
-        [self playAudioFlourish];
+        //[self playAudioFlourish];
         
         timeBeforeUserInteraction=kDisableInteractionTime;
     }

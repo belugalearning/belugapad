@@ -85,7 +85,7 @@
     return self;
 }
 
--(void)updateAndSaveStateAfterNodePlay:(NodePlay*)nodePlay
+-(BOOL)updateAndSaveStateAfterNodePlay:(NodePlay*)nodePlay
 {
     self.timePlayed += nodePlay.playTime;
     self.lastPlayed = [NSDate dateWithTimeIntervalSince1970:nodePlay.lastEventDate];
@@ -123,13 +123,13 @@
         }
     }
     
-    [self saveState];
+    return [self saveState];
 }
 
--(void)saveState
+-(BOOL)saveState
 {
     [db open];
-    [db executeUpdate:@"UPDATE Nodes SET time_played=?, last_played=?, last_score=?, total_accumulated_score=?, high_score=?, first_completed=?, last_completed=?, artifact_1_last_achieved=?, artifact_2_last_achieved=?, artifact_3_last_achieved=?, artifact_4_last_achieved=?, artifact_5_last_achieved=? WHERE id=?",
+    BOOL success = [db executeUpdate:@"UPDATE Nodes SET time_played=?, last_played=?, last_score=?, total_accumulated_score=?, high_score=?, first_completed=?, last_completed=?, artifact_1_last_achieved=?, artifact_2_last_achieved=?, artifact_3_last_achieved=?, artifact_4_last_achieved=?, artifact_5_last_achieved=? WHERE id=?",
                     [NSNumber numberWithDouble:self.timePlayed],
                     [NSNumber numberWithDouble:(self.lastPlayed ? [self.lastPlayed timeIntervalSince1970] : 0)],
                     [NSNumber numberWithInt:self.lastScore],
@@ -144,6 +144,7 @@
                     [NSNumber numberWithDouble:(self.artifact5LastAchieved ? [self.artifact5LastAchieved timeIntervalSince1970] : 0)],
                     self.nodeId];
     [db close];
+    return success;
 }
 
 -(void)dealloc

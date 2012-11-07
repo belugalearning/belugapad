@@ -26,9 +26,9 @@
 @property (nonatomic, readonly, retain) NSDate *artifact4LastAchieved;
 @property (nonatomic, readonly, retain) NSDate *artifact5LastAchieved;
 
--(id) initWithUserId:(NSString*)userId nodeId:(NSString*)nodeId database:(FMDatabase*)database;
--(id) initWithUserId:(NSString*)userId resultSet:(FMResultSet*)rs database:(FMDatabase*)database;
--(void)updateAndSaveStateOnAfterNodePlay:(NodePlay*)nodePlay;
--(void) saveState;
+-(id)initWithUserId:(NSString*)userId nodeId:(NSString*)nodeId database:(FMDatabase*)database;
+-(id)initWithUserId:(NSString*)userId resultSet:(FMResultSet*)rs database:(FMDatabase*)database;
+-(BOOL)updateAndSaveStateOnAfterNodePlay:(NodePlay*)nodePlay;
+-(BOOL)saveState;
 
 @end

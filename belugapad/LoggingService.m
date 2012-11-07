@@ -466,34 +466,23 @@ uint const kMaxConsecutiveSendFails = 3;
     NSMutableData *batchData = [NSMutableData dataWithBytes:prefixBytes length:20];
     [batchData appendData:compressedData];
     
+    // ---- store the compressed data in prevDir for poential future repeat attempt at saving
+    NSString *batchPath = [NSString stringWithFormat:@"%@/%d", prevDir, (int)[[NSDate date] timeIntervalSince1970]];
+    [fm createFileAtPath:batchPath contents:batchData attributes:nil];
+    
+    // ---- blank current logging dir
+    [fm removeItemAtPath:currDir error:nil];
+    [fm createDirectoryAtPath:currDir withIntermediateDirectories:NO attributes:nil error:nil];
+    
+    // ---- new batch
+    [self newBatch];
     
     // ----- HTTPRequest Completion Handler
     __block typeof(self) bself = self;
     void (^onComplete)() = ^(BL_SEND_LOG_STATUS status)
     {
-        BOOL queuedBatch = NO;
-        
-        if (status != BL_SLS_SUCCESS)
-        {
-            // ---- store the compressed data in prevDir for future repeat attempt at saving
-            NSString *filePath = [NSString stringWithFormat:@"%@/%d", bself->prevDir, (int)[[NSDate date] timeIntervalSince1970]];
-            queuedBatch = [bself->fm createFileAtPath:filePath contents:batchData attributes:nil];            
-            if (!queuedBatch)
-            {
-                NSMutableDictionary *d = [NSMutableDictionary dictionary];
-                [d setValue:BL_APP_ERROR_TYPE_FAIL_QUEUE_BATCH forKey:@"type"];
-                [bself logEvent:BL_APP_ERROR withAdditionalData:d];
-            }
-        }
-        
-        // delete files from currDir if they've either been successfully sent to server or have been saved in compressed form in prevDir
-        if (BL_SLS_SUCCESS == status || queuedBatch)
-        {
-            [bself->fm removeItemAtPath:bself->currDir error:nil];
-            [bself->fm createDirectoryAtPath:bself->currDir withIntermediateDirectories:NO attributes:nil error:nil];
-            [bself sendPrevBatches];
-            [bself newBatch];
-        }
+        if (BL_SLS_SUCCESS == status) [fm removeItemAtPath:batchPath nil];
+        [bself sendPrevBatches];
     };
     
     // ----- Send batchData in body of HTTPRequest

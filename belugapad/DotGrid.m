@@ -2024,12 +2024,16 @@
                 
                 BOOL xMatch=NO;
                 BOOL yMatch=NO;
-                for(int i=0;i<[a count];i++)
-                {
-                    if(dimensionX==[[a objectAtIndex:i]intValue]&&!xMatch)xMatch=YES;
-                    else if(dimensionY==[[a objectAtIndex:i]intValue]&&!yMatch)yMatch=YES;
-                    
-                }
+//                for(int i=0;i<[a count];i++)
+//                {
+//                    if(dimensionX==[[a objectAtIndex:i]intValue]&&!xMatch)xMatch=YES;
+//                    else if(dimensionY==[[a objectAtIndex:i]intValue]&&!yMatch)yMatch=YES;
+//                    
+//                }
+
+                
+                if(dimensionX==[[a objectAtIndex:0]intValue]&&!xMatch)xMatch=YES;
+                if(dimensionY==[[a objectAtIndex:1]intValue]&&!yMatch)yMatch=YES;
                 
                 if(xMatch&&yMatch)
                 {
@@ -2098,12 +2102,17 @@
                 
                 BOOL xMatch=NO;
                 BOOL yMatch=NO;
-                for(int i=0;i<[a count];i++)
-                {
-                    if(dimensionX==[[a objectAtIndex:i]intValue]&&!xMatch)xMatch=YES;
-                    else if(dimensionY==[[a objectAtIndex:i]intValue]&&!yMatch)yMatch=YES;
+                if(dimensionX==[[a objectAtIndex:0]intValue]&&!xMatch)xMatch=YES;
+                if(dimensionY==[[a objectAtIndex:1]intValue]&&!yMatch)yMatch=YES;
+                
+                
+//                for(int i=0;i<[a count];i++)
+//                {
+//                    if(dimensionX==[[a objectAtIndex:i]intValue]&&!xMatch)xMatch=YES;
+//                    else if(dimensionY==[[a objectAtIndex:i]intValue]&&!yMatch)yMatch=YES;
+
                     
-                }
+//                }
                 
                 if(xMatch&&yMatch)
                 {

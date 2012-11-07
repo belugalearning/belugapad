@@ -1434,6 +1434,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(!metaQuestionForThisProblem && !numberPickerForThisProblem && evalMode==kProblemEvalOnCommit)
         showCommit=YES;
     
+    if(currentTool && evalMode==kProblemEvalOnCommit)
+        showCommit=YES;
+    
     if(hasTrayMq && trayMqShowing)
     {
         int countSelected=0;
@@ -1575,6 +1578,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     isAnimatingIn=YES;
     [loggingService logEvent:BL_PA_FAIL withAdditionalData:nil];
     [self showProblemIncompleteMessage];
+    [self showHideCommit];
     //[self deselectAnswersExcept:-1];
 }
 -(void)removeMetaQuestionButtons
@@ -1957,6 +1961,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     trayLayerWheel=nil;
 //    [numberPickerLayer removeAllChildrenWithCleanup:YES];
     numberPickerForThisProblem=NO;
+    trayWheelShowing=NO;
+    hasUsedPicker=NO;
     pickerViewSelection=nil;
     pickerView=nil;
 //    [numberPickerLayer release];
@@ -2167,7 +2173,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
     else
     {
-        if(trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing){
+        if((trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing) && currentTool){
             [self removeAllTrays];
             return;
         }
@@ -2302,6 +2308,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             [self hideCalc];
             [self hidePad];
             
+            if(!currentTool)
+                [self hideCornerTray];
             //show this + show stuff in corner
             [self showWheel];
             

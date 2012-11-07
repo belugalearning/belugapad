@@ -521,6 +521,86 @@ static float kNBFontSizeLarge=35.0f;
     
 }
 
+-(void)compareHintsAndMountedObjectsOpposite:(BOOL)shouldMoveRows
+{
+    
+    
+    BOOL foundAMatch=NO;
+    // for each row
+    for(int i=0;i<[createdRows count];i++)
+    {
+        DWNBondRowGameObject *r=[createdRows objectAtIndex:i];
+        
+        if(r.Locked)continue;
+        
+        NSMutableArray *hints=[NSMutableArray arrayWithArray:r.HintObjects];
+        NSMutableArray *mounted=r.MountedObjects;
+        
+        
+        if(shouldMoveRows)
+        {
+            for(int f=0;f<[createdRows count];f++)
+            {
+                if([self checkIfTheseHints:hints GoToThisRow:f])
+                {
+                    [self exchangeHintsOnThisRow:f withHintsOnThisRow:i];
+                    foundAMatch=YES;
+                }
+            }
+            if(foundAMatch)return;
+        }
+        
+        
+        
+        // we need to look at it's hint objects and mounted objects
+        
+        for(int h=0;h<[hints count];h++)
+        {
+            BOOL hasMatch=NO;
+            int matchedNo=0;
+            int matchedWithNo=0;
+            float foundSoFar=0;
+            DWNBondObjectGameObject *thisHint=[hints objectAtIndex:h];
+            
+            for(int m=0;m<[mounted count];m++)
+            {
+                DWNBondObjectGameObject *thisMounted=[mounted objectAtIndex:m];
+                foundSoFar+=thisMounted.Length;
+                if(r.MyHeldValue==foundSoFar)break;
+                
+                if(thisHint.Length==thisMounted.Length)
+                {
+                    NSLog(@"(%d) got match at %d against %d - thisHint length %d, thisMounted length %d", i, m, h, thisHint.Length, thisMounted.Length);
+                    matchedNo=m;
+                    matchedWithNo=h;
+                    hasMatch=YES;
+                    foundAMatch=YES;
+                    break;
+                }
+            }
+            
+            
+            if(hasMatch)
+            {
+                NSLog(@"got match %d. count of hints %d", matchedNo, [hints count]);
+                
+                if(matchedNo<[hints count])
+                {
+                    [r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedWithNo];
+                    
+                    foundAMatch=YES;
+                }
+            }
+            
+            
+        }
+        
+        //[r handleMessage:kDWresetPositionEval];
+    }
+    
+}
+
+
 -(BOOL)checkIfTheseHints:(NSMutableArray*)theseHints GoToThisRow:(int)thisRow
 {
     DWNBondRowGameObject *r=[createdRows objectAtIndex:thisRow];
@@ -1020,12 +1100,14 @@ static float kNBFontSizeLarge=35.0f;
         int foundSolutions=0;
         NSMutableArray *correctRows=[[NSMutableArray alloc]init];
         NSMutableArray *usedSolutions=[[NSMutableArray alloc]init];
+        NSMutableArray *usedGOs=[[NSMutableArray alloc] init];
         
 //        NSMutableArray *solCopy=[NSMutableArray arrayWithArray:solutionsDef
         
         // for each row, we need to find whether their make-up is a solution
         for(DWNBondRowGameObject *r in createdRows)
         {
+            if(r.Locked)continue;
             if([correctRows containsObject:r])continue;
             // for each row, check each solution
             for(NSArray *a in solutionsDef)
@@ -1033,26 +1115,30 @@ static float kNBFontSizeLarge=35.0f;
                 // we assume at the start that everything is right
                 BOOL matchedAllObjects=YES; 
                 // if there's no objects in this row, continue - if the row's already correct, continue
-                if([r.MountedObjects count]==0)continue;
+                if([r.MountedObjects count]==0)return NO;
                 if([usedSolutions containsObject:a])continue;
                 
                 // loop through each mounted object
                 for(int v=0;v<[r.MountedObjects count];v++)
                 {
+                    if([usedGOs containsObject:[r.MountedObjects objectAtIndex:v]])continue;
+                    
                     if(matchedAllObjects)
                     {
                         // if the count in the array and amount of objects differ, we know we're in the wrong place
-                        if(![a count]==[r.MountedObjects count])
+                        if([a count]!=[r.MountedObjects count])
                         {
                             matchedAllObjects=NO;
                             break;
                         }
-                        
+
                         // get our 2 values to compare
                         int reqVal=[[a objectAtIndex:v]intValue];
                         int thisVal=((DWNBondObjectGameObject*)[r.MountedObjects objectAtIndex:v]).Length;
-                        
+                        [usedGOs addObject:[r.MountedObjects objectAtIndex:v]];
 
+                        NSLog(@"checking value of object %d (%d) against %d (%d)", ((int)[r.MountedObjects objectAtIndex:v]), ((DWNBondObjectGameObject*)[r.MountedObjects objectAtIndex:v]).Length, (int)[a objectAtIndex:v], reqVal);
+                        
                         // then check them - and either set them as matched, or not
                         if(reqVal!=thisVal)
                         {
@@ -1082,7 +1168,7 @@ static float kNBFontSizeLarge=35.0f;
         [usedSolutions release];
         [correctRows release];
         
-        if(foundSolutions==[createdRows count])
+        if(foundSolutions==[solutionsDef count])
             return YES;
         else 
             return NO;

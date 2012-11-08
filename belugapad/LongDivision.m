@@ -175,15 +175,17 @@ const float kScaleOfLesserBlocks=0.6f;
         float thisNum=[nWheel.StrOutputValue floatValue];
         int thisNumUp=thisNum*100000 + 0.5f;
         
-        NSLog(@"thisNum: %g", thisNum);
+        NSLog(@"thisNum: %g, thisNumUp %d", thisNum, thisNumUp);
         
-        int mag=[self magnitudeOf:(int)thisNumUp];
+//        int mag=[self magnitudeOf:(int)thisNumUp];
         int remValUp=thisNumUp;
-        int exp=mag-1;
+        int exp=6;
         
-        while(remValUp>0)
+
+        for(int i=0;i<12;i++)
         {
             int baseVal=pow(10,exp);
+            if(baseVal==0)break;
             int selected=remValUp/baseVal;
             remValUp-=selected*baseVal;
             exp--;
@@ -192,11 +194,8 @@ const float kScaleOfLesserBlocks=0.6f;
             
             [self checkBlockWithBase:baseValDown andSelection:selected];
         }
+
         
-//        for(int n=0;n<[nWheel.pickerViewSelection count];n++)
-//        {
-//                [self checkBlock:n];
-//        }
         [self updateBlock];
     }
     if(evalMode==kProblemEvalAuto && !hasEvaluated)
@@ -281,7 +280,7 @@ const float kScaleOfLesserBlocks=0.6f;
     DWNWheelGameObject *w=[DWNWheelGameObject alloc];
     [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
     w.Components=columnsInPicker;
-    w.Position=ccp(250,200);
+    w.Position=ccp(lx-150,550);
     w.RenderLayer=renderLayer;
     w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png", w.Components];
     w.HasDecimals=YES;

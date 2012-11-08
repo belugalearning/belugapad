@@ -15,6 +15,8 @@
 @synthesize enabled, tag;
 @synthesize iconRenderComponent, iconTag;
 
+@synthesize container;
+
 -(SGBtxeObjectIcon*)initWithGameWorld:(SGGameWorld*) aGameWorld
 {
     if(self=[super initWithGameWorld:aGameWorld])
@@ -30,6 +32,21 @@
     }
     
     return self;
+}
+
+-(id<MovingInteractive>)createADuplicate
+{
+    //creates a duplicate object text -- something else will need to call setupDraw and attachToRenderBase
+    
+    SGBtxeObjectIcon *dupe=[[[SGBtxeObjectIcon alloc] initWithGameWorld:gameWorld] autorelease];
+    
+    dupe.position=self.position;
+    dupe.tag=[[self.tag copy] autorelease];
+    dupe.enabled=self.enabled;
+
+    dupe.iconTag=[[self.iconTag copy] autorelease];
+    
+    return (id<MovingInteractive>)dupe;
 }
 
 -(void)handleMessage:(SGMessageType)messageType
@@ -112,6 +129,7 @@
     self.tag=nil;
     self.iconTag=nil;
     self.iconRenderComponent=nil;
+    self.container=nil;
     
     [super dealloc];
 }

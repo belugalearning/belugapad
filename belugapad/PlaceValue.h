@@ -82,6 +82,7 @@
     BOOL hasMovedBlock;
     BOOL hasMovedLayer;
     BOOL disableAudioCounting;
+    BOOL countUserBlocks;
     BOOL autoBaseSelection;
     
     

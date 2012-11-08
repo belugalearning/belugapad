@@ -141,13 +141,12 @@ static float kTimeToHeaderBounce=7.0f;
     
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
-    if([pdef objectForKey:ANCHOR_SPACE])
-        spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
-    else
-        spaceBetweenAnchors=46;
+
+    spaceBetweenAnchors=46;
     startX=[[pdef objectForKey:START_X] intValue];
     startY=[[pdef objectForKey:START_Y] intValue];
     operatorMode=[[pdef objectForKey:OPERATOR_MODE]intValue];
+    operatorMode=2;
     selectionMode=[[pdef objectForKey:SELECTION_MODE]intValue];
     if([pdef objectForKey:REVEAL_ALL_TILES])revealAllTiles=[[pdef objectForKey:REVEAL_ALL_TILES]boolValue];
     else revealAllTiles=NO;
@@ -187,6 +186,7 @@ static float kTimeToHeaderBounce=7.0f;
     if([pdef objectForKey:REVEAL_ROWS])revealRows=[pdef objectForKey:REVEAL_ROWS];
     if([pdef objectForKey:REVEAL_COLS])revealCols=[pdef objectForKey:REVEAL_COLS];
     if([pdef objectForKey:REVEAL_TILES])revealTiles=[pdef objectForKey:REVEAL_TILES];
+    if([pdef objectForKey:DISABLED_TILES])disabledTiles=[pdef objectForKey:DISABLED_TILES];
     
     
     if(operatorMode==0)operatorName=@"add";
@@ -216,7 +216,9 @@ static float kTimeToHeaderBounce=7.0f;
     float xStartPos=300;
 
     int xStartNumber=startX;
-    int yStartNumber=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-1;
+//    int yStartNumber=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-1;
+    int yStartNumber=amtForY-1;
+    
     
     CCSprite *operator = [CCSprite spriteWithFile:operatorFileName];
     float yPos=(amtForY+1.5)*spaceBetweenAnchors;
@@ -280,7 +282,7 @@ static float kTimeToHeaderBounce=7.0f;
                 [s setOpacity:0];
             
                 
-                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", yStartNumber+1] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
+                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", yStartNumber+1] fontName:CHANGO fontSize:20.0f];
                 [curLabel setPosition:ccp(s.contentSize.width/2, s.contentSize.height/2)];
                 [curLabel setTag:2];
                 [curLabel setOpacity:0];
@@ -303,7 +305,7 @@ static float kTimeToHeaderBounce=7.0f;
                 [s setTag:1];
                 [s setOpacity:0];
                 
-                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", xStartNumber]fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
+                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", xStartNumber]fontName:CHANGO fontSize:20.0f];
                 [curLabel setPosition:ccp(s.contentSize.width/2, s.contentSize.height/2)];
                 
                 if(!tile.isEndXPiece)
@@ -321,7 +323,8 @@ static float kTimeToHeaderBounce=7.0f;
             
             tile.Position=ccp(xStartPos,yStartPos);
             tile.myXpos=xStartNumber;
-            tile.myYpos=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-iCol;
+            //tile.myYpos=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-iCol;
+            tile.myYpos=amtForY-iCol;
             tile.operatorType=operatorMode;
             tile.Size=spaceBetweenAnchors;
             NSLog(@"iRow %d amtForX %d // iCol %d amtForY %d", iRow, amtForX, iCol, amtForY);
@@ -377,6 +380,20 @@ static float kTimeToHeaderBounce=7.0f;
                 }
                 
             }
+        }
+    }
+    
+    
+    if(disabledTiles)
+    {
+        for(NSDictionary *d in disabledTiles)
+        {
+            int thisX=[[d objectForKey:@"X"]intValue];
+            int thisY=[[d objectForKey:@"Y"]intValue];
+            
+            DWTTTileGameObject *t=[[ttMatrix objectAtIndex:thisX-1] objectAtIndex:fabs(thisY-amtForY)];
+            
+            t.Disabled=YES;
         }
     }
     
@@ -686,7 +703,6 @@ static float kTimeToHeaderBounce=7.0f;
         for(int o=0;o<[gw.Blackboard.SelectedObjects count];o++)
         {
             DWTTTileGameObject *selTile=[gw.Blackboard.SelectedObjects objectAtIndex:o];
-            NSLog(@"selTile X=%d, selTile Y=%d", selTile.myXpos, selTile.myYpos);
             
             for(int i=0;i<[solutionsDef count];i++)
             {

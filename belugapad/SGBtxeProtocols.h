@@ -12,13 +12,19 @@
 @class SGBtxeTextRender;
 @class SGBtxeParser;
 
+
 @protocol Container
 
 @property (retain) NSMutableArray *children;
-
 @property (retain) SGBtxeContainerMgr *containerMgrComponent;
 
+@end
 
+
+
+@protocol Containable
+
+@property (retain) id<Container> container;
 
 @end
 
@@ -26,13 +32,14 @@
 @protocol RenderContainer
 
 @property (retain) CCLayer *renderLayer;
+@property (retain) CCNode *baseNode;
 @property BOOL forceVAlignTop;
 
 
 @end
 
 
-@protocol RenderObject
+@protocol RenderObject <Containable>
 
 -(void)attachToRenderBase:(CCNode*)renderBase;
 
@@ -62,6 +69,22 @@
 
 
 
+@protocol Value <NSObject>
+
+@property (readonly) NSNumber *value;
+
+@end
+
+
+
+@protocol ValueOperator <NSObject>
+
+@property (retain) NSString *valueOperator;
+
+@end
+
+
+
 @protocol Interactive <Bounding>
 
 @property BOOL enabled;
@@ -70,9 +93,9 @@
 -(void)activate;
 -(void)inflateZIndex;
 -(void)deflateZindex;
+-(void)destroy;
 
 @end
-
 
 
 @protocol MovingInteractive <Interactive>
@@ -80,6 +103,17 @@
 @property CGPoint originalPosition;
 
 -(void)returnToBase;
+-(id<MovingInteractive>)createADuplicate;
+-(void)destroy;
+
+@end
+
+
+@protocol BtxeMount
+
+@property (retain) id<Interactive, NSObject> mountedObject;
+
+-(void)duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)mountObject;
 
 @end
 

@@ -189,7 +189,7 @@ static float kNBFontSizeLarge=35.0f;
 -(void)populateGW
 {
 
-    int dockSize=[initCages count]+2;
+    int dockSize=12;
     float dockPieceYPos=582.0f;
     float initBarStartYPos=582.0f;
     float initCageStartYPos=0.0f;
@@ -261,6 +261,7 @@ static float kNBFontSizeLarge=35.0f;
     }
     
     // do stuff with our INIT_CAGES (DWNBondStoreGameObject)
+    
     for (int i=0;i<[initCages count]; i++)
     {
         int qtyForThisStore=[[[initCages objectAtIndex:i] objectForKey:QUANTITY] intValue];
@@ -521,6 +522,86 @@ static float kNBFontSizeLarge=35.0f;
     
 }
 
+-(void)compareHintsAndMountedObjectsOpposite:(BOOL)shouldMoveRows
+{
+    
+    
+    BOOL foundAMatch=NO;
+    // for each row
+    for(int i=0;i<[createdRows count];i++)
+    {
+        DWNBondRowGameObject *r=[createdRows objectAtIndex:i];
+        
+        if(r.Locked)continue;
+        
+        NSMutableArray *hints=[NSMutableArray arrayWithArray:r.HintObjects];
+        NSMutableArray *mounted=r.MountedObjects;
+        
+        
+        if(shouldMoveRows)
+        {
+            for(int f=0;f<[createdRows count];f++)
+            {
+                if([self checkIfTheseHints:hints GoToThisRow:f])
+                {
+                    [self exchangeHintsOnThisRow:f withHintsOnThisRow:i];
+                    foundAMatch=YES;
+                }
+            }
+            if(foundAMatch)return;
+        }
+        
+        
+        
+        // we need to look at it's hint objects and mounted objects
+        
+        for(int h=0;h<[hints count];h++)
+        {
+            BOOL hasMatch=NO;
+            int matchedNo=0;
+            int matchedWithNo=0;
+            float foundSoFar=0;
+            DWNBondObjectGameObject *thisHint=[hints objectAtIndex:h];
+            
+            for(int m=0;m<[mounted count];m++)
+            {
+                DWNBondObjectGameObject *thisMounted=[mounted objectAtIndex:m];
+                foundSoFar+=thisMounted.Length;
+                if(r.MyHeldValue==foundSoFar)break;
+                
+                if(thisHint.Length==thisMounted.Length)
+                {
+                    NSLog(@"(%d) got match at %d against %d - thisHint length %d, thisMounted length %d", i, m, h, thisHint.Length, thisMounted.Length);
+                    matchedNo=m;
+                    matchedWithNo=h;
+                    hasMatch=YES;
+                    foundAMatch=YES;
+                    break;
+                }
+            }
+            
+            
+            if(hasMatch)
+            {
+                NSLog(@"got match %d. count of hints %d", matchedNo, [hints count]);
+                
+                if(matchedNo<[hints count])
+                {
+                    [r.HintObjects exchangeObjectAtIndex:matchedNo withObjectAtIndex:matchedWithNo];
+                    
+                    foundAMatch=YES;
+                }
+            }
+            
+            
+        }
+        
+        //[r handleMessage:kDWresetPositionEval];
+    }
+    
+}
+
+
 -(BOOL)checkIfTheseHints:(NSMutableArray*)theseHints GoToThisRow:(int)thisRow
 {
     DWNBondRowGameObject *r=[createdRows objectAtIndex:thisRow];
@@ -561,6 +642,7 @@ static float kNBFontSizeLarge=35.0f;
     thisOne.HintObjects=thatOne.HintObjects;
     thatOne.HintObjects=thisOneHints;
     doNotSendPositionEval=YES;
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_rearrangement.wav")];
     
     for(DWNBondObjectGameObject *o in thisOne.HintObjects)
     {
@@ -743,6 +825,7 @@ static float kNBFontSizeLarge=35.0f;
         {
             if(barAssistance && gw.Blackboard.ProximateObject)
             {
+                float addedLength=0.0f;
                 [gw.Blackboard.ProximateObject handleMessage:kDWresetPositionEval];
                 DWNBondRowGameObject *nbr=(DWNBondRowGameObject*)gw.Blackboard.ProximateObject;
                 DWNBondObjectGameObject *po=(DWNBondObjectGameObject*)gw.Blackboard.PickupObject;
@@ -758,7 +841,7 @@ static float kNBFontSizeLarge=35.0f;
                     for(CCSprite *s in po.BaseNode.children)
                     {
                         CCFadeOut *fo=[CCFadeOut actionWithDuration:1.5f];
-                        CCFadeIn *fi=[CCFadeIn actionWithDuration:1.5f];
+                        CCFadeIn *fi=[CCFadeIn actionWithDuration:0.5f];
 
 
                         CCAction *sth=[CCCallBlock actionWithBlock:^{[po handleMessage:kDWmoveSpriteToHome];}];
@@ -768,7 +851,7 @@ static float kNBFontSizeLarge=35.0f;
                         if([po.BaseNode.children indexOfObject:s]==[po.BaseNode.children count]-1)
                             sq=[CCSequence actions:fo, sth, remt, fi, nil];
                         else
-                            sq=[CCSequence actions:fo, sth, fi, nil];
+                            sq=[CCSequence actions:fo, fi, nil];
                         [s runAction:sq];
                     }
                     
@@ -805,9 +888,9 @@ static float kNBFontSizeLarge=35.0f;
                         
                         
                         no.InitedObject=YES;
-                        no.HintObject=YES;
                         
-                        no.Position=ccp(nbr.Position.x+(nbr.MyHeldValue*50+(i*50)),nbr.Position.y);
+                        no.Position=ccp(nbr.Position.x+(nbr.MyHeldValue*50+(addedLength*50)),nbr.Position.y);
+                        addedLength+=no.Length;
                         
                         [no handleMessage:kDWsetupStuff];
                         
@@ -815,10 +898,11 @@ static float kNBFontSizeLarge=35.0f;
                         {
                             [n setOpacity:0];
                             CCFadeIn *fi=[CCFadeIn actionWithDuration:1.5f];
+                            CCDelayTime *dt=[CCDelayTime actionWithDuration:2.0f];
                             CCAction *mbn=[CCCallBlock actionWithBlock:^{[no.BaseNode runAction:[CCMoveTo actionWithDuration:0.5f position:retPos]];}];
                             CCFadeOut *fo=[CCFadeOut actionWithDuration:0.5f];
                             CCAction *dgo=[CCCallBlock actionWithBlock:^{[gw delayRemoveGameObject:no];}];
-                            CCSequence *sq=[CCSequence actions:fi, mbn, fo, dgo, nil];
+                            CCSequence *sq=[CCSequence actions:fi, dt, mbn, fo, dgo, nil];
                             [n runAction:sq];
                         }
                         
@@ -839,6 +923,7 @@ static float kNBFontSizeLarge=35.0f;
             }
             else {
                 [pogo handleMessage:kDWmoveSpriteToHome];
+                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_fly_back.wav")];
                 [[mountedObjects objectAtIndex:pogo.IndexPos] addObject:gw.Blackboard.PickupObject];
                 
                 [gw handleMessage:kDWhighlight andPayload:nil withLogLevel:-1];  
@@ -1018,12 +1103,14 @@ static float kNBFontSizeLarge=35.0f;
         int foundSolutions=0;
         NSMutableArray *correctRows=[[NSMutableArray alloc]init];
         NSMutableArray *usedSolutions=[[NSMutableArray alloc]init];
+        NSMutableArray *usedGOs=[[NSMutableArray alloc] init];
         
 //        NSMutableArray *solCopy=[NSMutableArray arrayWithArray:solutionsDef
         
         // for each row, we need to find whether their make-up is a solution
         for(DWNBondRowGameObject *r in createdRows)
         {
+            if(r.Locked)continue;
             if([correctRows containsObject:r])continue;
             // for each row, check each solution
             for(NSArray *a in solutionsDef)
@@ -1031,26 +1118,30 @@ static float kNBFontSizeLarge=35.0f;
                 // we assume at the start that everything is right
                 BOOL matchedAllObjects=YES; 
                 // if there's no objects in this row, continue - if the row's already correct, continue
-                if([r.MountedObjects count]==0)continue;
+                if([r.MountedObjects count]==0)return NO;
                 if([usedSolutions containsObject:a])continue;
                 
                 // loop through each mounted object
                 for(int v=0;v<[r.MountedObjects count];v++)
                 {
+                    if([usedGOs containsObject:[r.MountedObjects objectAtIndex:v]])continue;
+                    
                     if(matchedAllObjects)
                     {
                         // if the count in the array and amount of objects differ, we know we're in the wrong place
-                        if(![a count]==[r.MountedObjects count])
+                        if([a count]!=[r.MountedObjects count])
                         {
                             matchedAllObjects=NO;
                             break;
                         }
-                        
+
                         // get our 2 values to compare
                         int reqVal=[[a objectAtIndex:v]intValue];
                         int thisVal=((DWNBondObjectGameObject*)[r.MountedObjects objectAtIndex:v]).Length;
-                        
+                        [usedGOs addObject:[r.MountedObjects objectAtIndex:v]];
 
+                        NSLog(@"checking value of object %d (%d) against %d (%d)", ((int)[r.MountedObjects objectAtIndex:v]), ((DWNBondObjectGameObject*)[r.MountedObjects objectAtIndex:v]).Length, (int)[a objectAtIndex:v], reqVal);
+                        
                         // then check them - and either set them as matched, or not
                         if(reqVal!=thisVal)
                         {
@@ -1080,7 +1171,7 @@ static float kNBFontSizeLarge=35.0f;
         [usedSolutions release];
         [correctRows release];
         
-        if(foundSolutions==[createdRows count])
+        if(foundSolutions==[solutionsDef count])
             return YES;
         else 
             return NO;

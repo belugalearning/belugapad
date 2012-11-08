@@ -11,7 +11,7 @@
 
 @class SGBtxeTextBackgroundRender;
 
-@interface SGBtxeObjectNumber : SGGameObject <Text, Bounding, FadeIn, MovingInteractive>
+@interface SGBtxeObjectNumber : SGGameObject <Text, Bounding, FadeIn, MovingInteractive, Containable, Value>
 {
     CCNode *renderBase;
 }
@@ -19,7 +19,7 @@
 @property (retain) NSString *prefixText;
 @property (retain) NSString *numberText;
 @property (retain) NSString *suffixText;
-@property (retain, readonly) NSNumber *numberValue;
+@property (retain) NSNumber *numberValue;
 
 @property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;
 

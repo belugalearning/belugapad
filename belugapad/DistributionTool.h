@@ -50,11 +50,10 @@ typedef enum
     BOOL hasInactiveArea;
     BOOL spawnedNewObj;
     BOOL randomiseDockPositions;
-    BOOL bondDifferentTypes;
-    int cageObjectCount;
     
-    id nearestObject;
-    float nearestObjectDistance;
+    BOOL audioHasPlayedBonding;
+    
+    int cageObjectCount;
     
     NSString *dockType;
     
@@ -82,7 +81,6 @@ typedef enum
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)doUpdateOnTick:(ccTime)delta;
 -(void)draw;
--(void)createEvalAreas;
 -(NSArray*)evalUniqueShapes;
 -(BOOL)evalExpression;
 -(void)evalProblem;
@@ -91,9 +89,14 @@ typedef enum
 -(float)metaQuestionAnswersYLocation;
 -(void)createShapeWith:(int)blocks andWith:(NSDictionary*)theseSettings;
 -(void)createContainerWithOne:(id)Object;
+-(void)lookForOrphanedObjects;
+-(void)updateContainerForNewlyAddedBlock:(id<Moveable,Pairable>)thisBlock;
+-(void)tidyUpEmptyGroups;
+-(void)updateContainerLabels;
 -(void)removeBlockByCage;
--(BOOL)evalGroupTypesAndShapes;
 -(BOOL)evalNumberOfShapesInEvalAreas;
+-(CGPoint)checkWhereIShouldMount:(id<Pairable>)gameObject;
+-(CGPoint)findMountPositionForThisShape:(id<Pairable>)pickupObject toThisShape:(id<Pairable>)mountedShape;
 -(CGPoint)returnNextMountPointForThisShape:(id<Container>)thisShape;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;

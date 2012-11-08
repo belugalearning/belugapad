@@ -74,7 +74,7 @@
 -(void)repositionLabel;
 -(int)blocksInShape;
 -(void)layoutMyBlocks;
--(void)destroyThisObject;
+-(void)deselectThisObject;
 
 @end
 

@@ -157,6 +157,8 @@
 {
     gw.Blackboard.RenderLayer = renderLayer;
     
+    //TODO test for description and insert at first row (0), and increate rowOffset
+    
     //number of expression stages
     int rowcount=[exprStages count];
     
@@ -331,7 +333,7 @@
     if(heldObject)
     {
         //test new location for target / drop
-        for(id<Interactive, NSObject> o in gw.AllGameObjects)
+        for(id<Interactive, NSObject> o in [gw AllGameObjectsCopy])
         {
             if([o conformsToProtocol:@protocol(Interactive)])
             {
@@ -341,6 +343,14 @@
                 {
                     //this object is proximate, disabled and the same tag
                     [o activate];
+                }
+                
+                if([o conformsToProtocol:@protocol(BtxeMount)] && [BLMath DistanceBetween:o.worldPosition and:location]<=BTXE_PICKUP_PROXIMITY)
+                {
+                    id<BtxeMount, Interactive> pho=(id<BtxeMount, Interactive>)o;
+                    
+                    //mount the object on the place holder
+                    [pho duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)heldObject];
                 }
             }
         }
@@ -394,10 +404,98 @@
         //none found, assume yes
         return YES;
     }
+    
+    if([evalType isEqualToString:@"SEQUENCE_ASC"])
+    {
+        NSArray *vals=[self numbersFromRow:1];
+        int phCount=[self getPlaceHolderCountOnRow:1];
+        
+        //fail if there are no numbers
+        if(vals.count==0)return NO;
+        
+        //fail if not all of the placeholders have numbers
+        if(phCount!=vals.count) return NO;
+        
+        for(int i=1; i<vals.count; i++)
+        {
+            if ([[vals objectAtIndex:i-1] floatValue] > [[vals objectAtIndex:i] floatValue]) {
+                //last item was great than this item -- fail evaluation
+                return NO;
+            }
+        }
+        
+        return YES;
+    }
+
+    if([evalType isEqualToString:@"SEQUENCE_DESC"])
+    {
+        NSArray *vals=[self numbersFromRow:1];
+        int phCount=[self getPlaceHolderCountOnRow:1];
+        
+        //fail if there are no numbers
+        if(vals.count==0)return NO;
+        
+        //fail if not all of the placeholders have numbers
+        if(phCount!=vals.count) return NO;
+        
+        for(int i=1; i<vals.count; i++)
+        {
+            if ([[vals objectAtIndex:i-1] floatValue] < [[vals objectAtIndex:i] floatValue]) {
+                //last item was great than this item -- fail evaluation
+                return NO;
+            }
+        }
+        
+        return YES;
+    }
+    
     else
     {
         return NO;
     }
+}
+
+-(int)getPlaceHolderCountOnRow:(int)rowIdx
+{
+    SGBtxeRow *row=[rows objectAtIndex:rowIdx];
+    
+    int count=0;
+    
+    for(id<BtxeMount, NSObject> mount in row.children)
+    {
+        if([mount conformsToProtocol:@protocol(BtxeMount)])
+        {
+            count++;
+        }
+    }
+    return count;
+}
+
+-(NSArray*)numbersFromRow:(int)rowIdx
+{
+    SGBtxeRow *row=[rows objectAtIndex:rowIdx];
+    NSMutableArray *values=[[NSMutableArray alloc] init];
+    
+    //todo: look at placeholders and their value
+    
+    for(id<BtxeMount, NSObject> mount in row.children)
+    {
+        if([mount conformsToProtocol:@protocol(BtxeMount)])
+        {
+            if(mount.mountedObject)
+            {
+                if([mount.mountedObject conformsToProtocol:@protocol(Value)])
+                {
+                    id<Value>obj=(id<Value>)mount.mountedObject;
+                    [values addObject:obj.value];
+                }
+            }
+        }
+    }
+    
+    NSArray *ret=[NSArray arrayWithArray:values];
+    [values release];
+    return ret;
 }
 
 -(void)evalProblem

@@ -224,6 +224,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void) shakeCommitButton
 {
     [commitBtn runAction:[InteractionFeedback dropAndBounceAction]];
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_interaction_feedback_commit_button_shaking.wav")];
 }
 
 -(void)stageIntroActions
@@ -495,6 +496,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     multiplierBadge.position=ccp(700, 2*cy-32);
     //multiplierBadge.position=ccp(cx,cy);
     [self addChild:multiplierBadge z:4];
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_multiplier_incremented.wav")];
     
     [multiplierBadge runAction:[InteractionFeedback dropAndBounceAction]];
 }
@@ -503,6 +505,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 {
     if(multiplierBadge)
     {
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_multiplier_lost.wav")];
         [multiplierBadge runAction:[InteractionFeedback delaySpinFast]];
         [multiplierBadge runAction:[InteractionFeedback delayMoveOutAndDown]];
     }
@@ -577,7 +580,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void) debugSkipToProblem:(int)skipby
 {
     //effectively a skipping version of gotoNewProblem, ignores triggers, little exception / flow handling
-    if(pdef)[pdef release];
     [self tearDownProblemDef];
     self.PpExpr=nil;
     
@@ -606,8 +608,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void) gotoNewProblem
 {
-    if (pdef) [pdef release];
-
     [self tearDownProblemDef];
     self.PpExpr = nil;
     
@@ -651,15 +651,12 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         //todo: completion shouldn't be assumed here -- we can get here by progressing into an inserter that produces no viable insertions
         
         //assume completion
-        [contentService setPipelineNodeComplete];
-        [contentService setPipelineScore:pipelineScore];
+        [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @(pipelineScore) }];
         
         contentService.fullRedraw=YES;
         contentService.lightUpProgressFromLastNode=YES;
         
         [contentService quitPipelineTracking];
-        
-        //[contentService.currentStaticPdef release];
         
         [[CCDirector sharedDirector] replaceScene:[JMap scene]];
     }
@@ -811,7 +808,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     //hide pause again
     pbtn.opacity=0;
     
-    [self stageIntroActions];        
+    [self stageIntroActions];
+    
+    [self showHideCommit];
 
     [self.Zubi dumpXP];
     
@@ -877,7 +876,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if([withPdef objectForKey:ENABLE_CALCULATOR])
         hasTrayCalc=[[withPdef objectForKey:ENABLE_CALCULATOR]boolValue];
     else
-        hasTrayCalc=YES;
+        hasTrayCalc=NO;
     
     if([withPdef objectForKey:NUMBER_PICKER])
     {
@@ -886,7 +885,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         if([np objectForKey:ENABLE_CALCULATOR])
             hasTrayCalc=[[np objectForKey:ENABLE_CALCULATOR]boolValue];
         else
-            hasTrayCalc=YES;
+            hasTrayCalc=NO;
         
         if([np objectForKey:ENABLE_WHEEL])
             hasTrayWheel=[[np objectForKey:ENABLE_WHEEL]boolValue];
@@ -900,13 +899,13 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     trayLayerPad=nil;
     trayLayerWheel=nil;
     
-    if(hasTrayCalc)
-        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_Available.png")];
-    else
-        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_NotAvailable.png")];
-    [problemDefLayer addChild:traybtnCalc z:2];
-    traybtnCalc.opacity=0;
-    traybtnCalc.tag=3;
+//    if(hasTrayCalc)
+//        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_Available.png")];
+//    else
+//        traybtnCalc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_Calculator_NotAvailable.png")];
+//    [problemDefLayer addChild:traybtnCalc z:2];
+//    traybtnCalc.opacity=0;
+//    traybtnCalc.tag=3;
 
     if(hasTrayMq)
         traybtnMq=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_MetaQuestion_Available.png")];
@@ -1014,6 +1013,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void) showPauseMenu
 {
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_pause_tap.wav")];
     isPaused = YES;
     
     if(!pauseMenu)
@@ -1074,6 +1074,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(CGRectContainsPoint(kPauseMenuMenu, location))
     {
         [loggingService logEvent:BL_PA_EXIT_TO_MAP withAdditionalData:nil];
+        [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @0 }];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self returnToMenu];
     }
@@ -1196,8 +1197,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(!currentTool)
         [self showMq];
     
-    [self addCommitButton];
-    
     shownMetaQuestionIncompleteFor=0;
     
     metaQuestionAnswers = [[NSMutableArray alloc] init];
@@ -1225,7 +1224,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 //    NSNumber *eMode=[pdefMQ objectForKey:META_QUESTION_EVAL_MODE];
 //    if(eMode) mqEvalMode=[eMode intValue];
     mqEvalMode=kMetaQuestionEvalOnCommit;
-    
+    [self addCommitButton];
     // put our array of answers in an ivar
 //    metaQuestionAnswers = [pdefMQ objectForKey:META_QUESTION_ANSWERS];
     metaQuestionAnswerCount = [[pdefMQ objectForKey:META_QUESTION_ANSWERS] count];
@@ -1349,6 +1348,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     if (CGRectContainsPoint(kRectButtonCommit, location) && mqEvalMode==kMetaQuestionEvalOnCommit && commitBtn.visible)
     {
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_commit_tap.wav")];
         //effective user commit
         [loggingService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
         
@@ -1418,7 +1418,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             {
                 if(mqAnswerMode==kMetaQuestionAnswerSingle && !touchEnd)
                 {
-                    [self deselectAnswersExcept:-1];
+                    //[self deselectAnswersExcept:-1];
                 }
             }
             
@@ -1435,7 +1435,14 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void)showHideCommit
 {
     BOOL showCommit=NO;
-    if(hasTrayMq)
+    
+    if(!metaQuestionForThisProblem && !numberPickerForThisProblem && evalMode==kProblemEvalOnCommit)
+        showCommit=YES;
+    
+    if(currentTool && evalMode==kProblemEvalOnCommit)
+        showCommit=YES;
+    
+    if(hasTrayMq && trayMqShowing)
     {
         int countSelected=0;
         for(int i=0; i<metaQuestionAnswerCount; i++)
@@ -1456,6 +1463,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         else
             showCommit=NO;
     }
+    
     
     if(showCommit)
         [commitBtn setVisible:YES];
@@ -1575,6 +1583,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     isAnimatingIn=YES;
     [loggingService logEvent:BL_PA_FAIL withAdditionalData:nil];
     [self showProblemIncompleteMessage];
+    [self showHideCommit];
     //[self deselectAnswersExcept:-1];
 }
 -(void)removeMetaQuestionButtons
@@ -1603,6 +1612,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     
     [self addCommitButton];
+    
+    if(!currentTool)
+        [self showWheel];
     
     //float npOriginX=[[pdefNP objectForKey:PICKER_ORIGIN_X]floatValue];
     //float npOriginY=[[pdefNP objectForKey:PICKER_ORIGIN_Y]floatValue];
@@ -1755,8 +1767,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     {
         if(CGRectContainsPoint(kRectButtonCommit, origloc) && commitBtn.visible)
         {
-            [self playAudioPress];
-            
+            //[self playAudioPress];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_commit_tap.wav")];
             //effective user commit of number picker
             [loggingService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
             
@@ -1954,6 +1966,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     trayLayerWheel=nil;
 //    [numberPickerLayer removeAllChildrenWithCleanup:YES];
     numberPickerForThisProblem=NO;
+    trayWheelShowing=NO;
+    hasUsedPicker=NO;
     pickerViewSelection=nil;
     pickerView=nil;
 //    [numberPickerLayer release];
@@ -1969,7 +1983,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     if(currentTool.ProblemComplete)
     {
-        [self playAudioFlourish];
+        //[self playAudioFlourish];
         
         timeBeforeUserInteraction=kDisableInteractionTime;
     }
@@ -2143,7 +2157,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     
     //delegate touch handling for trays here
-    if((location.x>CORNER_TRAY_POS_X && location.y>CORNER_TRAY_POS_Y) || (trayMqShowing && CGRectContainsPoint(metaQuestionBanner.boundingBox, location))||location.y>ly-HD_HEADER_HEIGHT)
+    if(((location.x>CORNER_TRAY_POS_X && location.y>CORNER_TRAY_POS_Y)&&(trayCalcShowing||trayPadShowing)) || (trayMqShowing && CGRectContainsPoint(metaQuestionBanner.boundingBox, location))||location.y>ly-HD_HEADER_HEIGHT)
     {
         if (location.x < 100 && location.y > 688 && !isPaused)
         {
@@ -2164,19 +2178,11 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
     else
     {
-        if(trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing){
+        if((trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing) && currentTool){
             [self removeAllTrays];
             return;
         }
     }
-    
-
-
-
-    //if(numberPickerForThisProblem)
-    //    [self checkNumberPickerTouches:location];
-    
-    // TODO: This should be made proportional
     
     if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn)
     {
@@ -2307,11 +2313,13 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             [self hideCalc];
             [self hidePad];
             
+            if(!currentTool)
+                [self hideCornerTray];
             //show this + show stuff in corner
             [self showWheel];
             
             //this might already be done -- but we've not explicitly hidden anything, so re-running will skip
-            [self showCornerTray];
+            if(currentTool)[self showCornerTray];
             [self showHideCommit];
         }
     }
@@ -2583,7 +2591,10 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     CCSprite *ulSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strULSprite)];
     
     self.pickerView = [CCPickerView node];
-    pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-130);
+    if(currentTool)
+        pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-130);
+    else
+        pickerView.position=ccp(cx,cy);
     pickerView.dataSource = self;
     pickerView.delegate = self;
     
@@ -2841,7 +2852,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         currentTool=nil;
     }
     
-    //[pdef release];
     if(self.pickerView)[self.pickerView release];
     if(numberPickerButtons)[numberPickerButtons release];
     if(numberPickedSelection)[numberPickedSelection release];

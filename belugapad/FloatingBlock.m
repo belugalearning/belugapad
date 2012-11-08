@@ -25,6 +25,8 @@
 #import "SGFBlockOpBubble.h"
 #import "SGFBlockGroup.h"
 
+#import "SimpleAudioEngine.h"
+
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
@@ -117,6 +119,7 @@
             setupNumberWheel=NO;
             [self setupNumberWheel];
             [pickerView spinComponent:0 speed:25 easeRate:5 repeat:3 stopRow:defaultBlocksFromPipe];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_wheel_slots_rotate_to_start_position.wav")];
         }
     }
     
@@ -920,11 +923,24 @@
 
     for(id go in gw.AllGameObjects)
     {
-        if(go==pickupObject)
+        if(evalMode==kProblemEvalAuto && go==pickupObject)
         {
             id<Group>thisGroup=(id<Group>)pickupObject;
             if([thisGroup.MyBlocks count]==expSolution)
                 return YES;
+        }
+        if(evalMode==kProblemEvalOnCommit)
+        {
+            if([go conformsToProtocol:@protocol(Moveable)])
+            {
+                id<Moveable>thisObj=(id<Moveable>)go;
+                if(CGRectContainsPoint(commitPipe.boundingBox, thisObj.Position))
+                {
+                    id<Group>thisObjGroup=(id<Group>)thisObj.MyGroup;
+                    if([thisObjGroup.MyBlocks count]==expSolution)
+                        return YES;
+                }
+            }
         }
     }
     return NO;

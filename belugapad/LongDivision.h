@@ -61,6 +61,8 @@
     BOOL movedTopSection;
     BOOL hideRenderLayer;
     
+    BOOL audioHasPlayedOverTarget;
+    
     BOOL hasEvaluated;
     
     float dividend;
@@ -97,7 +99,7 @@
 -(void)createVisibleNumbers;
 -(void)updateLabels:(CGPoint)position;
 -(void)updateBlock;
--(void)checkBlock:(int)thisRow;
+-(void)checkBlockWithBase:(float)thisBase andSelection:(int)thisSelection;
 -(void)createBlockAtIndex:(int)index withBase:(float)base;
 -(void)populateGW;
 -(void)handlePassThruScaling:(float)scale;

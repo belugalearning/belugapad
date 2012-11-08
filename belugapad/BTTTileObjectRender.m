@@ -90,7 +90,7 @@
                 [tile.myText setTag:3];
                 [tile.myText setOpacity:0];
             }
-            [tile.mySprite addChild:tile.myText z:10];
+            [tile.mySprite addChild:tile.myText z:11];
         }
     }
     
@@ -150,8 +150,8 @@
         
         //[tile.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Grid_Block_Selected.png")]];
         tile.selSprite=[CCSprite spriteWithFile:[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/TT_Grid_Block_Selected.png"), tile.Size]];
-        [tile.selSprite setPosition:tile.Position];
-        [tile.mySprite.parent addChild:tile.selSprite z:1000];
+        [tile.selSprite setPosition:ccp(tile.mySprite.contentSize.width/2, tile.mySprite.contentSize.height/2)];
+        [tile.mySprite addChild:tile.selSprite z:10];
         
     }
     else

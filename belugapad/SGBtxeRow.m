@@ -19,6 +19,7 @@
 
 @synthesize rowLayoutComponent;
 @synthesize parserComponent;
+@synthesize baseNode;
 
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget
 {
@@ -55,7 +56,7 @@
 
 -(void)inflateZindex
 {
-    baseNode.zOrder=99;
+    self.baseNode.zOrder=99;
 }
 -(void)deflateZindex
 {
@@ -66,8 +67,8 @@
 {
     //create base node
     baseNode=[[CCNode alloc] init];
-    baseNode.position=self.position;
-    [renderLayer addChild:baseNode];
+    self.baseNode.position=self.position;
+    [renderLayer addChild:self.baseNode];
     
     //render each child
     for (id<Bounding, RenderObject> c in children) {
@@ -76,7 +77,7 @@
         //we could potentially do this separately (create, layout, attach) -- but for the moment
         // this shouldn't have a performance impact as Cocos won't do stuff with this until we
         // release the run loop
-        [c attachToRenderBase:baseNode];
+        [c attachToRenderBase:self.baseNode];
     }
     
     //layout position of stuff
@@ -87,13 +88,13 @@
 -(void)setPosition:(CGPoint)thePosition
 {
     position=thePosition;
-    baseNode.position=self.position;
+    self.baseNode.position=self.position;
 }
 
 -(void)animateAndMoveToPosition:(CGPoint)thePosition
 {
     position=thePosition;
-    [baseNode runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.25f position:position] rate:2.0f]];
+    [self.baseNode runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.25f position:position] rate:2.0f]];
 }
 
 -(void)relayoutChildrenToWidth:(float)width
@@ -127,9 +128,9 @@
     self.rowLayoutComponent=nil;
     self.parserComponent=nil;
     self.renderLayer=nil;
+    self.baseNode=nil;
     
     [children release];
-    [baseNode release];
     
     [super dealloc];
 }

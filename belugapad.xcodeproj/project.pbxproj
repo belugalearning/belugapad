@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C03B6371649EDD600F74659 /* NodePlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C03B6361649EDD600F74659 /* NodePlay.m */; };
 		0C33EEBC15D4EE5900EA6A11 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 0C33EEB215D4EE5900EA6A11 /* ioapi.c */; };
 		0C33EEBD15D4EE5900EA6A11 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 0C33EEB415D4EE5900EA6A11 /* mztools.c */; };
 		0C33EEBE15D4EE5900EA6A11 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 0C33EEB615D4EE5900EA6A11 /* unzip.c */; };
@@ -34,6 +35,7 @@
 		0C92B2541515702700342094 /* ContentService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C92B2531515702700342094 /* ContentService.m */; };
 		0C993CFB163842CE0079A647 /* Problems in Resources */ = {isa = PBXBuildFile; fileRef = 0C993CFA163842CE0079A647 /* Problems */; };
 		0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */ = {isa = PBXBuildFile; fileRef = 0C9FEFF514F572FB00E64138 /* pipeline-testing */; };
+		0CD565921647F23E00D9EA30 /* UserNodeState.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD565911647F23E00D9EA30 /* UserNodeState.m */; };
 		0CDECB5E15920C27004DE20D /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB4A15920C27004DE20D /* AFHTTPClient.m */; };
 		0CDECB5F15920C27004DE20D /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB4C15920C27004DE20D /* AFHTTPRequestOperation.m */; };
 		0CDECB6015920C27004DE20D /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB4E15920C27004DE20D /* AFImageRequestOperation.m */; };
@@ -418,6 +420,7 @@
 		7FEB663E15DEE68100F6E782 /* PRRatcliffTriangulator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7FEB663915DEE68100F6E782 /* PRRatcliffTriangulator.mm */; };
 		7FEB663F15DEE68100F6E782 /* triangulate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7FEB663B15DEE68100F6E782 /* triangulate.cpp */; };
 		7FEDCE1C1535DCA400C8C9F3 /* ExprEvalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */; };
+		7FFBF09B164AE933005CCD6E /* SGBtxeObjectOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FFBF09A164AE933005CCD6E /* SGBtxeObjectOperator.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -431,6 +434,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C03B6351649EDD600F74659 /* NodePlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePlay.h; sourceTree = "<group>"; };
+		0C03B6361649EDD600F74659 /* NodePlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePlay.m; sourceTree = "<group>"; };
 		0C33EEB115D4EE5900EA6A11 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		0C33EEB215D4EE5900EA6A11 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
 		0C33EEB315D4EE5900EA6A11 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
@@ -478,6 +483,8 @@
 		0C92B2531515702700342094 /* ContentService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentService.m; sourceTree = "<group>"; };
 		0C993CFA163842CE0079A647 /* Problems */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Problems; sourceTree = SOURCE_ROOT; };
 		0C9FEFF514F572FB00E64138 /* pipeline-testing */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pipeline-testing"; sourceTree = SOURCE_ROOT; };
+		0CD565901647F23E00D9EA30 /* UserNodeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserNodeState.h; sourceTree = "<group>"; };
+		0CD565911647F23E00D9EA30 /* UserNodeState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserNodeState.m; sourceTree = "<group>"; };
 		0CDECB4915920C27004DE20D /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		0CDECB4A15920C27004DE20D /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
 		0CDECB4B15920C27004DE20D /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -1264,6 +1271,8 @@
 		7FEB663B15DEE68100F6E782 /* triangulate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = triangulate.cpp; sourceTree = "<group>"; };
 		7FEB663C15DEE68100F6E782 /* triangulate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = triangulate.h; sourceTree = "<group>"; };
 		7FEDCE1B1535DCA400C8C9F3 /* ExprEvalTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExprEvalTests.m; sourceTree = "<group>"; };
+		7FFBF099164AE933005CCD6E /* SGBtxeObjectOperator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeObjectOperator.h; sourceTree = "<group>"; };
+		7FFBF09A164AE933005CCD6E /* SGBtxeObjectOperator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeObjectOperator.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1338,6 +1347,8 @@
 				0C4CD67A15E3A5430037BBD0 /* LogPoller.m */,
 				0C3955B915E7A3440043DD4F /* TouchLogger.h */,
 				0C3955BA15E7A3440043DD4F /* TouchLogger.m */,
+				0C03B6351649EDD600F74659 /* NodePlay.h */,
+				0C03B6361649EDD600F74659 /* NodePlay.m */,
 			);
 			name = Logging;
 			sourceTree = "<group>";
@@ -2637,6 +2648,8 @@
 				7FBE96961549819300D993AC /* LoadingViewController.h */,
 				7FBE96971549819300D993AC /* LoadingViewController.m */,
 				7FBE96981549819300D993AC /* LoadingViewController.xib */,
+				0CD565901647F23E00D9EA30 /* UserNodeState.h */,
+				0CD565911647F23E00D9EA30 /* UserNodeState.m */,
 			);
 			name = Users;
 			sourceTree = "<group>";
@@ -2787,6 +2800,8 @@
 				7F5F4D6D1619E6B9005F6311 /* SGBtxeObjectIcon.m */,
 				7F0F70AA1645B2A6009DBCAB /* SGBtxePlaceholder.h */,
 				7F0F70AB1645B2A7009DBCAB /* SGBtxePlaceholder.m */,
+				7FFBF099164AE933005CCD6E /* SGBtxeObjectOperator.h */,
+				7FFBF09A164AE933005CCD6E /* SGBtxeObjectOperator.m */,
 			);
 			name = BTXE;
 			sourceTree = "<group>";
@@ -3392,6 +3407,9 @@
 				5542D678162AFD3E00DB6E40 /* BDotGridShapeGroupObjectRender.m in Sources */,
 				0C58DE8716308B7000DD9A01 /* EditPDefViewController.m in Sources */,
 				7F0F70AC1645B2A9009DBCAB /* SGBtxePlaceholder.m in Sources */,
+				0CD565921647F23E00D9EA30 /* UserNodeState.m in Sources */,
+				0C03B6371649EDD600F74659 /* NodePlay.m in Sources */,
+				7FFBF09B164AE933005CCD6E /* SGBtxeObjectOperator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3486,7 +3504,7 @@
 					"\"belugapad/kazmath/include\"/**",
 					"\"belugapad/Chipmunk/include/chipmunk\"/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A2B19595-65E2-4E3A-9290-3D13D596AAE3";
 				SDKROOT = iphoneos;
 			};
@@ -3506,7 +3524,7 @@
 					"\"belugapad/kazmath/include\"/**",
 					"\"belugapad/Chipmunk/include/chipmunk\"/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 			};
@@ -3533,7 +3551,7 @@
 					"$(SDKROOT)/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = belugapad/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/belugapad/libs/ChipmunkPro-iPhone\"",
@@ -3545,7 +3563,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 				USER_HEADER_SEARCH_PATHS = "\"belugapad/libs/Chipmunk/include/chipmunk\"";
 				WRAPPER_EXTENSION = app;
 			};
@@ -3573,7 +3591,7 @@
 					"$(SDKROOT)/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = belugapad/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/belugapad/libs/ChipmunkPro-iPhone\"",
@@ -3586,7 +3604,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 				USER_HEADER_SEARCH_PATHS = "\"belugapad/libs/Chipmunk/include/chipmunk\"";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;

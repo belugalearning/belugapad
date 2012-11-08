@@ -18,6 +18,8 @@
 #import "SGBtxeContainerMgr.h"
 #import "SGBtxeObjectNumber.h"
 #import "SGBtxeObjectIcon.h"
+#import "SGBtxePlaceholder.h"
+#import "SGBtxeObjectOperator.h"
 
 const NSString *matchNumbers=@"0123456789";
 
@@ -103,6 +105,16 @@ const NSString *matchNumbers=@"0123456789";
         [ParentGO.containerMgrComponent addObjectToContainer:ot];
     }
     
+    else if([element.name isEqualToString:BTXE_OO])
+    {
+        SGBtxeObjectOperator *oo=[[SGBtxeObjectOperator alloc] initWithGameWorld:gameWorld];
+        CXMLNode *opNode=[element attributeForName:@"value"];
+        if(opNode)oo.valueOperator=opNode.stringValue;
+        
+        oo.enabled=[self enabledBoolFor:element];
+        [ParentGO.containerMgrComponent addObjectToContainer:oo];
+    }
+    
     else if([element.name isEqualToString:BTXE_OI])
     {
         SGBtxeObjectIcon *oi=[[SGBtxeObjectIcon alloc] initWithGameWorld:gameWorld];
@@ -150,6 +162,12 @@ const NSString *matchNumbers=@"0123456789";
         on.enabled=[self enabledBoolFor:element];
         
         [ParentGO.containerMgrComponent addObjectToContainer:on];
+    }
+    
+    else if([element.name isEqualToString:BTXE_PH])
+    {
+        SGBtxePlaceholder *ph=[[SGBtxePlaceholder alloc] initWithGameWorld:gameWorld];
+        [ParentGO.containerMgrComponent addObjectToContainer:ph];
     }
 }
 

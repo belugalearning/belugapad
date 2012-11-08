@@ -67,6 +67,7 @@
 @property (retain) CCLabelTTF *Label;
 @property (retain) CCNode *BaseNode;
 @property (retain) NSString *BlockType;
+@property BOOL AllowDifferentTypes;
 
 -(void)addBlockToMe:(id)thisBlock;
 -(void)removeBlockFromMe:(id)thisBlock;

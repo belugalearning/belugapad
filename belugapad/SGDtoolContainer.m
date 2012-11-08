@@ -16,6 +16,7 @@
 
 @synthesize BlocksInShape, Label, BaseNode;
 @synthesize BlockType;
+@synthesize AllowDifferentTypes;
 
 -(SGDtoolContainer*) initWithGameWorld:(SGGameWorld*)aGameWorld andLabel:(NSString*)aLabel andRenderLayer:(CCLayer*)aRenderLayer
 {
@@ -54,17 +55,17 @@
 -(void)addBlockToMe:(id)thisBlock
 {
 
-    //if([((id<Configurable>)thisBlock).blockType isEqualToString:self.BlockType]){
+    if([((id<Configurable>)thisBlock).blockType isEqualToString:self.BlockType] && self.AllowDifferentTypes){
     
-    if(![BlocksInShape containsObject:thisBlock])
-        [BlocksInShape addObject:thisBlock];
+        if(![BlocksInShape containsObject:thisBlock])
+            [BlocksInShape addObject:thisBlock];
 
-    ((id<Moveable>)thisBlock).MyContainer=self;
-    
-    //self.BlockType=((id<Configurable>)thisBlock).blockType;
-    
-    if(Label)[self repositionLabel];
-    //}
+        ((id<Moveable>)thisBlock).MyContainer=self;
+        
+        //self.BlockType=((id<Configurable>)thisBlock).blockType;
+        
+        if(Label)[self repositionLabel];
+    }
 }
 
 -(void)removeBlockFromMe:(id)thisBlock

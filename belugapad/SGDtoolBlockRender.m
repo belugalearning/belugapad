@@ -84,6 +84,7 @@
 -(void)move
 {
     [blockSprite setPosition:ParentGO.Position];
+    [ParentGO.Label setPosition:ParentGO.Position];
 }
 
 -(void)animateToPosition

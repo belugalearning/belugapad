@@ -46,6 +46,7 @@
 @property (retain) NSMutableArray *PairedObjects;
 @property BOOL SeekingPair;
 @property int LineType;
+@property (retain) CCLabelTTF *Label;
 
 -(void)pairMeWith:(id)thisObject;
 -(void)unpairMeFrom:(id)thisObject;

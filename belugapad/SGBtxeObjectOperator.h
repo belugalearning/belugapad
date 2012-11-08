@@ -7,7 +7,15 @@
 //
 
 #import "SGGameObject.h"
+#import "SGBtxeProtocols.h"
 
-@interface SGBtxeObjectOperator : SGGameObject
+@class SGBtxeTextBackgroundRender;
+
+@interface SGBtxeObjectOperator : SGGameObject <Text, MovingInteractive, NumberPicker, Containable, ValueOperator>
+{
+    CCNode *renderBase;
+}
+
+@property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;
 
 @end

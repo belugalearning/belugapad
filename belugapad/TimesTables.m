@@ -20,6 +20,7 @@
 #import "LoggingService.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
+#import "SimpleAudioEngine.h"
 
 @interface TimesTables()
 {
@@ -104,7 +105,7 @@ static float kTimeToHeaderBounce=7.0f;
             {
                 [l runAction:[InteractionFeedback dropAndBounceAction]];
             }
-            
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_timestable_interaction_feedback_rows_and_columns_shaking.wav")];
             timeSinceInteractionOrDropHeader=0.0f;
         }
         else if(!hasUsedHeaderY)
@@ -116,6 +117,7 @@ static float kTimeToHeaderBounce=7.0f;
                 [l runAction:[InteractionFeedback dropAndBounceAction]];
             }
             
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_timestable_interaction_feedback_rows_and_columns_shaking.wav")];
             timeSinceInteractionOrDropHeader=0.0f;
         }
         
@@ -491,6 +493,7 @@ static float kTimeToHeaderBounce=7.0f;
     hasUsedHeaderY=YES;
     BOOL haveLogged=NO;
     BOOL tinted=[[rowTints objectAtIndex:thisRow] boolValue];
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_timestable_general_row_or_column_highlighted.wav")];
     
     for(int i=0;i<[ttMatrix count];i++)
     {
@@ -545,7 +548,8 @@ static float kTimeToHeaderBounce=7.0f;
     hasUsedHeaderX=YES;
     BOOL haveLogged=NO;
     BOOL tinted=[[colTints objectAtIndex:thisCol] boolValue];
-
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_timestable_general_row_or_column_highlighted.wav")];
+    
     for(int i=0;i<[[ttMatrix objectAtIndex:thisCol]count];i++)
     {
         DWTTTileGameObject *tile=[[ttMatrix objectAtIndex:thisCol]objectAtIndex:i];

@@ -2469,6 +2469,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         lbl.position=ccp(150,112.5f);
         [trayLayerCalc addChild:lbl];
     }
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_calculator_tool_appears.wav")];
     trayLayerCalc.visible=YES;
     trayCalcShowing=YES;
     [traybtnCalc setColor:ccc3(247,143,6)];
@@ -2476,6 +2477,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)hideCalc
 {
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_calculator_tool_disappears.wav")];
     trayLayerCalc.visible=NO;
     trayCalcShowing=NO;
     [traybtnCalc setColor:ccc3(255,255,255)];
@@ -2483,6 +2485,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)showMq
 {
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_tool_appears.wav")];
     [trayLayerMq setVisible:YES];
     trayMqShowing=YES;
     [traybtnMq setColor:ccc3(247,143,6)];
@@ -2490,6 +2493,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)hideMq
 {
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_tool_disappears.wav")];
     [commitBtn setVisible:NO];
     trayLayerMq.visible=NO;
     trayMqShowing=NO;
@@ -2509,6 +2513,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         //lbl.position=ccp(150,112.5f);
         //[trayLayerWheel addChild:lbl];
     }
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_number_wheel_tool_appears.wav")];
     trayLayerWheel.visible=YES;
     trayWheelShowing=YES;
     [traybtnWheel setColor:ccc3(247,143,6)];
@@ -2516,6 +2521,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)hideWheel
 {
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_number_wheel_tool_disappears.wav")];
     trayLayerWheel.visible=NO;
     trayWheelShowing=NO;
     [traybtnWheel setColor:ccc3(255,255,255)];
@@ -2533,6 +2539,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         lbl.position=ccp(150,112.5f);
         [trayLayerPad addChild:lbl];
     }
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_appears.wav")];
     trayLayerPad.visible=YES;
     trayPadShowing=YES;
     [traybtnPad setColor:ccc3(247,143,6)];
@@ -2540,6 +2547,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)hidePad
 {
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_disappears.wav")];
     trayLayerPad.visible=NO;
     trayPadShowing=NO;
     [traybtnPad setColor:ccc3(255,255,255)];

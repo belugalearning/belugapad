@@ -25,6 +25,7 @@
 #import "SGDtoolContainer.h"
 #import "SGDtoolBlockRender.h"
 #import "InteractionFeedback.h"
+#import "SimpleAudioEngine.h"
 
 #define DRAW_DEPTH 1
 static float kTimeSinceAction=7.0f;
@@ -659,7 +660,10 @@ static float kDistanceBetweenBlocks=70.0f;
                 
                     
                 BOOL prx=[go amIProximateTo:location];
-                if(prx)hasBeenProximate=YES;
+                if(prx && !hasBeenProximate){
+                    hasBeenProximate=YES;
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_bond_possible.wav")];
+                }
                 
                 
             }
@@ -683,6 +687,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
     if(currentPickupObject)
     {
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_block_dropped.wav")];
         CGPoint curPOPos=currentPickupObject.Position;
         // check all the gamobjects and search for a moveable object
         
@@ -690,6 +695,11 @@ static float kDistanceBetweenBlocks=70.0f;
         {
             [self removeBlockByCage];
             return;
+        }
+        
+        if(CGRectContainsPoint(inactiveRect, location))
+        {
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_blocks_added_to_evaluation_area.wav")];
         }
         
         BOOL gotTarget=NO;
@@ -721,6 +731,8 @@ static float kDistanceBetweenBlocks=70.0f;
                     }
                     
                     gotTarget=YES;
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_bond_made.wav")];
+                    break;
                     
                 }
 
@@ -734,6 +746,8 @@ static float kDistanceBetweenBlocks=70.0f;
                 [((id<Container>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
                 [self createContainerWithOne:currentPickupObject];
             }
+            
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_bond_broken_snapped.wav")];
         }
 
         //[self evalUniqueShapes];

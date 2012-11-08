@@ -178,6 +178,8 @@ static float kDistanceBetweenBlocks=70.0f;
     
     if(evalType==kCheckGroupTypeAndNumber)
         bondDifferentTypes=NO;
+    
+    bondDifferentTypes=YES;
 }
 
 -(void)populateGW
@@ -277,6 +279,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
     SGDtoolContainer *container = [[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:label andRenderLayer:renderLayer];
     container.BlockType=blockType;
+    container.AllowDifferentTypes=bondDifferentTypes;
     if (label && !existingGroups) existingGroups = [[NSMutableArray arrayWithObject:label] retain];
     float startPosX=0;
     float startPosY=0;
@@ -428,7 +431,7 @@ static float kDistanceBetweenBlocks=70.0f;
         [existingGroups addObject:[container.Label string]];
     }
     
-    container.AllowDifferentTypes=bondDifferentTypes;
+    container.AllowDifferentTypes=YES;
     container.BlockType=((id<Configurable>)Object).blockType;
     [container addBlockToMe:Object];
     [container layoutMyBlocks];

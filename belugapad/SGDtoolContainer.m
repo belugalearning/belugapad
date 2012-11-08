@@ -55,7 +55,8 @@
 -(void)addBlockToMe:(id)thisBlock
 {
 
-    if([((id<Configurable>)thisBlock).blockType isEqualToString:self.BlockType] && self.AllowDifferentTypes){
+    NSLog(@"Allow Different types? %@ thisBlock %@, thatBlock %@",self.AllowDifferentTypes?@"YES":@"NO",((id<Configurable>)thisBlock).blockType,self.BlockType);
+    if(![((id<Configurable>)thisBlock).blockType isEqualToString:self.BlockType] && !self.AllowDifferentTypes)return;
     
         if(![BlocksInShape containsObject:thisBlock])
             [BlocksInShape addObject:thisBlock];
@@ -65,7 +66,7 @@
         //self.BlockType=((id<Configurable>)thisBlock).blockType;
         
         if(Label)[self repositionLabel];
-    }
+    //}
 }
 
 -(void)removeBlockFromMe:(id)thisBlock
@@ -86,6 +87,7 @@
 
 -(void)layoutMyBlocks
 {
+    if([BlocksInShape count]==0)return;
     NSArray *blockPos=[NumberLayout physicalLayoutUpToNumber:[BlocksInShape count] withSpacing:52.0f];
     
     id<Moveable> firstBlock=[BlocksInShape objectAtIndex:0];

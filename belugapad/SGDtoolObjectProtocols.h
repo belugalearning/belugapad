@@ -46,6 +46,7 @@
 @property (retain) NSMutableArray *PairedObjects;
 @property BOOL SeekingPair;
 @property int LineType;
+@property (retain) CCLabelTTF *Label;
 
 -(void)pairMeWith:(id)thisObject;
 -(void)unpairMeFrom:(id)thisObject;
@@ -66,6 +67,7 @@
 @property (retain) CCLabelTTF *Label;
 @property (retain) CCNode *BaseNode;
 @property (retain) NSString *BlockType;
+@property BOOL AllowDifferentTypes;
 
 -(void)addBlockToMe:(id)thisBlock;
 -(void)removeBlockFromMe:(id)thisBlock;

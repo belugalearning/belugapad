@@ -98,7 +98,7 @@
         CGPoint thisPos=[[blockPos objectAtIndex:i]CGPointValue];
         
         thisBlock.Position=ccp(posX+thisPos.x, posY+thisPos.y);
-        [thisBlock.mySprite setPosition:thisBlock.Position];
+        [thisBlock move];
     }
 }
 

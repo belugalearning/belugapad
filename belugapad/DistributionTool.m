@@ -176,6 +176,8 @@ static float kDistanceBetweenBlocks=70.0f;
     if(hasInactiveArea && cannotBreakBonds)
         cannotBreakBonds=NO;
     
+    if(evalType==kCheckGroupTypeAndNumber)
+        bondDifferentTypes=NO;
 }
 
 -(void)populateGW
@@ -686,7 +688,7 @@ static float kDistanceBetweenBlocks=70.0f;
             return;
         }
         
-        
+        BOOL gotTarget=NO;
         for(id go in allGWCopy)
         {
             if([go conformsToProtocol:@protocol(Moveable)])
@@ -714,59 +716,20 @@ static float kDistanceBetweenBlocks=70.0f;
                         [((id<Container>)cObj.MyContainer) layoutMyBlocks];
                     }
                     
-                    break;
-                }
-                else
-                {
-                    if(currentPickupObject.MyContainer)
-                        [((id<Container>)cObj.MyContainer) removeBlockFromMe:currentPickupObject];
-                    [self createContainerWithOne:currentPickupObject];
+                    gotTarget=YES;
+                    
                 }
 
-                    
-                    // we only want to be pairable with a container with objects of the same group - so check that here
-                    
-//                if(!previousObjectContainer || previousObjectContainer==cObj.MyContainer)
-//                {
-//                    if(!CGRectContainsPoint(inactiveRect, location)){
-//                        
-//                        
-//                        if(evalAreas){
-//                            for(NSArray *a in evalAreas)
-//                            {
-//                                CGRect evalAreaBox=CGRectNull;
-//                                for(CCSprite *s in a)
-//                                {
-//                                    evalAreaBox=CGRectUnion(evalAreaBox, s.boundingBox);
-//                                }
-//                                
-//                                if(CGRectContainsPoint(evalAreaBox, cObj.Position))
-//                                {
-//                                    currentPickupObject=nil;
-//                                    isTouching=NO;
-//                                    spawnedNewObj=NO;
-//                                    return;
-//                                }
-//                            }
-//                        }
-//                    
-//                        previousObjectContainer=cObj.MyContainer;
-//                        
-//                        
-//                        [loggingService logEvent:BL_PA_DT_TOUCH_END_PAIR_BLOCK withAdditionalData:nil];
-//                        
-//                        //currentPickupObject.Position=[self returnNextMountPointForThisShape:cObj.MyContainer];
-//                        [cObj.MyContainer layoutMyBlocks];
-//                        //[currentPickupObject animateToPosition];
-//                    }
-//                }
-                
-                
-                //TODO: add bit in here to check existing links - ie, at the minute, if a block is dragged out of the middle of the row, it doesn't seem to update all of them
-                
-                
             }
 
+        }
+        if(!gotTarget)
+        {
+            if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape count]>1)
+            {
+                [((id<Container>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
+                [self createContainerWithOne:currentPickupObject];
+            }
         }
 
         //[self evalUniqueShapes];

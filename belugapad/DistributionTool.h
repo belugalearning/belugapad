@@ -50,6 +50,7 @@ typedef enum
     BOOL hasInactiveArea;
     BOOL spawnedNewObj;
     BOOL randomiseDockPositions;
+    BOOL bondDifferentTypes;
     int cageObjectCount;
     
     id nearestObject;

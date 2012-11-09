@@ -98,8 +98,11 @@ static float kNBFontSizeLarge=35.0f;
         BOOL isWinning=[self evalExpression];
         
         if(!hasUsedBlock) {
-            for(NSArray *a in mountedObjects)
+            for(int i=0;i<[mountedObjects count];i++)
             {
+                if([[mountedObjects objectAtIndex:i]isKindOfClass:[NSNull class]])continue;
+                NSArray *a=[mountedObjects objectAtIndex:i];
+                
                 for(DWNBondObjectGameObject *pogo in a)
                 {
                     [pogo.BaseNode runAction:[InteractionFeedback shakeAction]];
@@ -292,11 +295,10 @@ static float kNBFontSizeLarge=35.0f;
     
     for (int i=0;i<[initCages count]; i++)
     {
-        int qtyForThisStore=[[[initCages objectAtIndex:i] objectForKey:QUANTITY] intValue];
         int thisLength=0;
         NSMutableArray *currentVal=[[NSMutableArray alloc]init];
-        for (int ic=0;ic<qtyForThisStore;ic++)
-        {
+//        for (int ic=0;ic<qtyForThisStore;ic++)
+//        {
             DWNBondObjectGameObject *pogo = [DWNBondObjectGameObject alloc];
             [gw populateAndAddGameObject:pogo withTemplateName:@"TnBondObject"];
             
@@ -304,6 +306,13 @@ static float kNBFontSizeLarge=35.0f;
             pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
             pogo.IndexPos=pogo.Length-1;
             thisLength=pogo.Length;
+            blocksForThisStore[pogo.IndexPos]=[[[initCages objectAtIndex:i] objectForKey:QUANTITY] intValue];
+            blocksUsedFromThisStore[pogo.IndexPos]=0;
+        
+        if(blocksForThisStore[pogo.IndexPos]==blocksUsedFromThisStore[pogo.IndexPos])
+            storeCanCreate[pogo.IndexPos]=NO;
+        else
+            storeCanCreate[pogo.IndexPos]=YES;
             
             if([[initCages objectAtIndex:i] objectForKey:LABEL])
             {
@@ -331,7 +340,7 @@ static float kNBFontSizeLarge=35.0f;
             
             
             [currentVal addObject:pogo];
-        }
+//        }
         [mountedObjects replaceObjectAtIndex:thisLength-1 withObject:currentVal];
         
         if(showBadgesOnCages)
@@ -437,16 +446,17 @@ static float kNBFontSizeLarge=35.0f;
 {
     for(int i=0;i<[mountedObjectLabels count];i++)
     {
+//        if(blocksUsedFromThisStore[i]<0)blocksUsedFromThisStore[i]=0;
         if([[mountedObjectLabels objectAtIndex:i] isKindOfClass:[NSNull class]])continue;
-        NSArray *thisArray=[mountedObjects objectAtIndex:i];
         CCLabelTTF *thisLabel=[mountedObjectLabels objectAtIndex:i];
         CCSprite *thisSprite=[mountedObjectBadges objectAtIndex:i];
+        int blocksLeft=blocksForThisStore[i]-blocksUsedFromThisStore[i];
         
-        if([thisArray count]>0)
+        if(blocksLeft>0)
         {
             [thisSprite setVisible:YES];
             [thisLabel setVisible:YES];
-            thisLabel.string=[NSString stringWithFormat:@"%d",[thisArray count]];
+            thisLabel.string=[NSString stringWithFormat:@"%d",blocksLeft];
         }
         else
         {
@@ -799,6 +809,58 @@ static float kNBFontSizeLarge=35.0f;
         
         
         DWNBondObjectGameObject *pogo = (DWNBondObjectGameObject*)[gw Blackboard].PickupObject;
+        
+        pogo.MovePosition = location;
+        [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToPosition];
+        
+        if(blocksUsedFromThisStore[pogo.IndexPos]==blocksForThisStore[pogo.IndexPos]-1 && storeCanCreate[pogo.IndexPos])
+            storeCanCreate[pogo.IndexPos]=NO;
+        
+        
+        if(!createdNewBar && blocksUsedFromThisStore[pogo.IndexPos]<blocksForThisStore[pogo.IndexPos])
+        {
+            createdNewBar=YES;
+            if(blocksUsedFromThisStore[pogo.IndexPos]<blocksForThisStore[pogo.IndexPos] && !previousMount)
+                blocksUsedFromThisStore[pogo.IndexPos]++;
+            
+            if(!storeCanCreate[pogo.IndexPos])return;
+            
+            
+            NSLog(@"blocksUsedFromThisStore = %d, blocksForThisStore = %d", blocksUsedFromThisStore[pogo.IndexPos],blocksForThisStore[pogo.IndexPos]);
+            
+
+            DWNBondObjectGameObject *newbar = [DWNBondObjectGameObject alloc];
+            [gw populateAndAddGameObject:newbar withTemplateName:@"TnBondObject"];
+            
+            //newbar.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3));
+            newbar.Length=pogo.Length;
+            newbar.IndexPos=newbar.Length-1;
+
+            
+            float fontSize=0.0f;
+            if(newbar.Length<3)
+                fontSize=kNBFontSizeSmall;
+            else
+                fontSize=kNBFontSizeLarge;
+            
+            newbar.Label=[CCLabelTTF labelWithString:pogo.Label.string fontName:CHANGO fontSize:fontSize];
+            
+            
+            
+            if(!useBlockScaling){
+                newbar.IsScaled=YES;
+                newbar.NoScaleBlock=YES;
+                newbar.Position=pogo.MountPosition;
+            }
+            else
+            {
+                newbar.Position=pogo.MountPosition;
+            }
+            
+            newbar.MountPosition = newbar.Position;
+            
+            [newbar handleMessage:kDWsetupStuff];
+        }
 
         //previously removex b/c of log perf - restored for testing with sans-Couchbase logging
         [loggingService logEvent:BL_PA_NB_TOUCH_MOVE_MOVE_BLOCK
@@ -806,9 +868,6 @@ static float kNBFontSizeLarge=35.0f;
         
         hasMovedBlock=YES;
 
-        
-        pogo.MovePosition = location;
-        [[gw Blackboard].PickupObject handleMessage:kDWmoveSpriteToPosition];
         
         if(gw.Blackboard.DropObject == nil)
         {
@@ -865,6 +924,7 @@ static float kNBFontSizeLarge=35.0f;
                 float difference=totalPlusPickup-nbr.Length;
                 float pickupValueThatCanGoIn=po.Length-difference;
                 
+
                 if(totalPlusPickup>nbr.Length)
                 {
                     
@@ -875,7 +935,7 @@ static float kNBFontSizeLarge=35.0f;
                         CCFadeIn *fi=[CCFadeIn actionWithDuration:0.5f];
 
 
-                        CCAction *sth=[CCCallBlock actionWithBlock:^{[po handleMessage:kDWmoveSpriteToHome];}];
+                        CCAction *sth=[CCCallBlock actionWithBlock:^{[po handleMessage:kDWmoveSpriteToHome]; blocksUsedFromThisStore[po.IndexPos]--;}];
                         CCAction *remt=[CCCallBlock actionWithBlock:^{[[mountedObjects objectAtIndex:po.IndexPos] addObject:po];}];
                         CCSequence *sq=nil;
                         
@@ -906,15 +966,16 @@ static float kNBFontSizeLarge=35.0f;
                         CGPoint retPos=CGPointZero;
                         for(int i=0;i<[mountedObjects count];i++)
                         {
-                            for(NSArray *a in mountedObjects)
-                            {
-                                if ([a count]>0)
+                            if([[mountedObjects objectAtIndex:i]isKindOfClass:[NSNull class]])continue;
+                            NSArray *a=[mountedObjects objectAtIndex:i];
+                            
+                                if([a count]>0)
                                 {
                                     DWNBondObjectGameObject *pos=[a objectAtIndex:0];
                                     if(pos.Length==no.Length)
                                         retPos=pos.Position;
                                 }
-                            }
+                            
                         }
                         
                         
@@ -944,16 +1005,28 @@ static float kNBFontSizeLarge=35.0f;
                     
                     
                 }
+                
+                else{
+                    [po handleMessage:kDWmoveSpriteToHome];
+                    blocksUsedFromThisStore[po.IndexPos]--;
+                }
                 [self setTouchVarsToOff];
+                
                 return;
     
             }
             if(((DWNBondObjectGameObject*)gw.Blackboard.PickupObject).InitedObject)
             {
                 [gw.Blackboard.PickupObject handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:previousMount forKey:MOUNT] withLogLevel:0];
+                if(!doNotSendPositionEval)
+                    [gw handleMessage:kDWresetPositionEval andPayload:nil withLogLevel:-1];
+                [self setTouchVarsToOff];
+                return;
             }
-            else {
+
+            
                 [pogo handleMessage:kDWmoveSpriteToHome];
+                blocksUsedFromThisStore[pogo.IndexPos]--;
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_fly_back.wav")];
                 [[mountedObjects objectAtIndex:pogo.IndexPos] addObject:gw.Blackboard.PickupObject];
                 
@@ -962,7 +1035,7 @@ static float kNBFontSizeLarge=35.0f;
                 // log that we dropped into space
                 [loggingService logEvent:BL_PA_NB_TOUCH_END_IN_SPACE
                     withAdditionalData:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:pogo.ObjectValue] forKey:@"objectValue"]];
-            }
+
         }
     }
     
@@ -986,6 +1059,8 @@ static float kNBFontSizeLarge=35.0f;
     hasMovedBlock=NO;
     isTouching=NO;
     doNotSendPositionEval=NO;
+    createdNewBar=NO;
+    previousMount=nil;
 }
 
 #pragma mark - evaluation and reject
@@ -1274,6 +1349,7 @@ static float kNBFontSizeLarge=35.0f;
                     // set the current object and send it home - resetting the mount for any inited objects
                     DWNBondObjectGameObject *pogo=[prgo.MountedObjects objectAtIndex:o];
                     [pogo handleMessage:kDWmoveSpriteToHome];
+                    blocksUsedFromThisStore[pogo.IndexPos]--;
                     if(pogo.InitedObject) [pogo handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:prgo forKey:MOUNT] withLogLevel:0];
                 }
             }

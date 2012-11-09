@@ -76,7 +76,9 @@
 
 -(CGPoint)worldPosition
 {
-    return [renderBase convertToNodeSpace:self.position];
+    CGPoint ret=[renderBase convertToWorldSpace:self.position];
+//    NSLog(@"operator world pos %@", NSStringFromCGPoint(ret));
+    return ret;
 }
 
 -(void)setWorldPosition:(CGPoint)worldPosition
@@ -107,6 +109,8 @@
 
 -(void)setPosition:(CGPoint)thePosition
 {
+//    NSLog(@"operator setting position to %@", NSStringFromCGPoint(thePosition));
+    
     position=thePosition;
 
     //update positioning in text render

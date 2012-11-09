@@ -764,7 +764,7 @@ static float kTimeToHeaderBounce=7.0f;
         [toolHost doWinning];
     }
     else {
-        if(evalMode==kProblemEvalOnCommit)[self resetProblem];
+        if(evalMode==kProblemEvalOnCommit)[toolHost doIncomplete];
     }
 
 }

@@ -15,6 +15,7 @@
 #import "BLMath.h"
 #import "AppDelegate.h"
 #import "UsersService.h"
+#import "SimpleAudioEngine.h"
 
 @interface BTTTileTouch()
 {
@@ -113,19 +114,20 @@
             NSLog(@"tile hit - my value is %d, myXpos %d, myYpos %d", tile.myXpos*tile.myYpos, tile.myXpos, tile.myYpos);
             if(!tile.myText)
             {
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_timestable_general_number_revealed.wav")];
                 [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_REVEAL_ANSWER
                     withAdditionalData:[NSDictionary dictionaryWithObject:[NSArray arrayWithObjects:
                                                                            [NSNumber numberWithInt:tile.myXpos],
                                                                            [NSNumber numberWithInt:tile.myYpos], nil]
                                                                    forKey:@"tileCoords"]];
                 
-                if(tile.operatorType==kOperatorAdd)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos+tile.myYpos] fontName:CHANGO fontSize:20.0f];
+                if(tile.operatorType==kOperatorAdd)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos+tile.myYpos] fontName:CHANGO fontSize:15.0f];
                 
-                else if(tile.operatorType==kOperatorSub)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos-tile.myYpos] fontName:CHANGO fontSize:20.0f];
+                else if(tile.operatorType==kOperatorSub)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos-tile.myYpos] fontName:CHANGO fontSize:15.0f];
                
-                else if(tile.operatorType==kOperatorMul)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos*tile.myYpos] fontName:CHANGO fontSize:20.0f];
+                else if(tile.operatorType==kOperatorMul)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos*tile.myYpos] fontName:CHANGO fontSize:15.0f];
                 
-                else if(tile.operatorType==kOperatorDiv)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos/tile.myYpos] fontName:CHANGO fontSize:20.0f];
+                else if(tile.operatorType==kOperatorDiv)tile.myText=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", tile.myXpos/tile.myYpos] fontName:CHANGO fontSize:15.0f];
                 
                 [tile.myText setPosition:[tile.mySprite convertToNodeSpace:tile.Position]];
                 [tile.myText setColor:ccc3(0,0,0)];

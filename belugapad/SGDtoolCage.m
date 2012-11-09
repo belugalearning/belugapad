@@ -17,6 +17,7 @@
 @synthesize InitialObjects;
 @synthesize MySprite;
 @synthesize RandomPositions;
+@synthesize CurrentObject;
 
 -(SGDtoolCage*) initWithGameWorld:(SGGameWorld*)aGameWorld atPosition:(CGPoint)thisPosition andRenderLayer:(CCLayer*)aRenderLayer andCageType:(NSString*)thisCageType
 {
@@ -25,6 +26,7 @@
         self.Position=thisPosition;
         self.RenderLayer=aRenderLayer;
         self.CageType=thisCageType;
+        self.CurrentObject=nil;
     }
     return self;
 }
@@ -71,6 +73,10 @@
 
 -(void)spawnNewBlock
 {
+    
+    NSLog(@"cage currentobject? %@", self.CurrentObject?@"YES":@"NO");
+    if(self.CurrentObject)return;
+    
     float totalLength=MySprite.contentSize.width-(73*2);
 
     int skipCount=0;
@@ -126,6 +132,7 @@
         id<Configurable,Selectable,Pairable,Moveable> newblock;
         newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gameWorld andRenderLayer:self.RenderLayer andPosition:ccp(xPos, yPos) andType:BlockType] autorelease];
         newblock.MyContainer=self;
+        self.CurrentObject=newblock;
         [newblock setup];
         posCount++;
         totalCount++;

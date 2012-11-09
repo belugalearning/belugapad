@@ -1047,7 +1047,7 @@ typedef enum {
                 if (newpos.x < -1400) newpos.x=-1400;
                 if (newpos.y < 2300) newpos.y=2300;
             }
-            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_navigating_(panning_map).wav")];
+            //[[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_navigating_(panning_map).wav")];
             [mapLayer setPosition:newpos];
 
             lastTouch=l;

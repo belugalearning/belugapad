@@ -21,5 +21,6 @@
 -(void)resetTint;
 -(void)drawProximateLines:(CGPoint)location;
 -(void)drawNotProximateLines:(CGPoint)location;
+-(void)destroyThisObject;
 
 @end

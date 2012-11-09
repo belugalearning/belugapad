@@ -9,6 +9,7 @@
 #import "SGFBlockOpBubble.h"
 
 #import "global.h"
+#import "SimpleAudioEngine.h"
 
 @implementation SGFBlockOpBubble
 
@@ -69,6 +70,7 @@
     
     if([self.ChildOperators count]==0)
     {
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_multiple_operators_appearing.wav")];
         for(NSString *s in SupportedOperators)
         {
             NSArray *a=[NSArray arrayWithObject:s];

@@ -46,10 +46,12 @@
 @property (retain) NSMutableArray *PairedObjects;
 @property BOOL SeekingPair;
 @property int LineType;
+@property (retain) CCLabelTTF *Label;
 
 -(void)pairMeWith:(id)thisObject;
 -(void)unpairMeFrom:(id)thisObject;
 -(void)draw:(int)z;
+-(void)destroyThisObject;
 
 @end
 
@@ -66,13 +68,14 @@
 @property (retain) CCLabelTTF *Label;
 @property (retain) CCNode *BaseNode;
 @property (retain) NSString *BlockType;
+@property BOOL AllowDifferentTypes;
 
 -(void)addBlockToMe:(id)thisBlock;
 -(void)removeBlockFromMe:(id)thisBlock;
 -(void)repositionLabel;
 -(int)blocksInShape;
 -(void)layoutMyBlocks;
--(void)deselectThisObject;
+-(void)destroyThisObject;
 
 @end
 
@@ -86,6 +89,7 @@
 @property int InitialObjects;
 @property (retain) CCSprite *MySprite;
 @property BOOL RandomPositions;
+@property (retain) id CurrentObject;
 
 -(void)setup;
 -(void)spawnNewBlock;

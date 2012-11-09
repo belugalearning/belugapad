@@ -25,6 +25,7 @@
 #import "LoggingService.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
+#import "SimpleAudioEngine.h"
 
 @interface DotGrid()
 {
@@ -1516,6 +1517,7 @@
         newBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(fileStr)];
         [newBlock setPosition:location];
         [renderLayer addChild:newBlock];
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_dot_grid_grid_multiplication_general_block_picked_up.wav")];
     }
     
     // if a handle responds saying it's been touched
@@ -1655,6 +1657,12 @@
     if(gameState==kResizeShape)
     {
         [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
+        
+        if(!audioHasPlayedResizing)
+        {
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_dot_grid_grid_multiplication_general_block_resizing.wav")];
+            audioHasPlayedResizing=YES;
+        }
             
         ((DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle).Position=[anchorLayer convertToNodeSpace:location];
 
@@ -1685,6 +1693,7 @@
         if(debugLogging)
             NSLog(@"first X %d Y %d, last X %d Y %d", fa.myXpos, fa.myYpos, la.myXpos, la.myYpos);
         [self checkAnchors];
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_dot_grid_grid_multiplication_general_block_dropped.wav")];
     }
     
     // Draw object, empty selected objects - make sure that no objects say they're selected
@@ -1695,6 +1704,7 @@
     
     if(gameState==kResizeShape)
     {
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_dot_grid_grid_multiplication_general_block_resized.wav")];
         DWDotGridHandleGameObject * cHandle=(DWDotGridHandleGameObject*)gw.Blackboard.CurrentHandle;
         if(!useShapeGroups)
             [self checkAnchorsOfExistingShape:cHandle.myShape];
@@ -1810,6 +1820,8 @@
     isMovingUp=NO;
     isMovingDown=NO;
     
+    audioHasPlayedResizing=NO;
+    
     [gw.Blackboard.SelectedObjects removeAllObjects];
     gameState=kNoState;
 
@@ -1832,6 +1844,8 @@
     isMovingRight=NO;
     isMovingUp=NO;
     isMovingDown=NO;
+    
+    audioHasPlayedResizing=NO;
 
     [gw.Blackboard.SelectedObjects removeAllObjects];
 }

@@ -20,6 +20,8 @@
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
 #import "InteractionFeedback.h"
+#import "SimpleAudioEngine.h"
+
 
 #define kEarliestHit 0.8
 #define kLatestHit 1.0
@@ -135,7 +137,7 @@
         
         // play sound if required
         if(countType==kCountBeep){
-            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/click_b1.wav")];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_incremented.wav")];
         }
         else if(countType==kCountNumbers && lastNumber>0<20){
             NSString *file=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", lastNumber];
@@ -297,6 +299,7 @@
 #pragma mark - problem state
 -(void)startProblem
 {
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_start_button_tapped.wav")];
     [buttonOfWin setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/countingtimer/counter_stop.png")]];
     started=YES;
     expired=NO;
@@ -304,6 +307,8 @@
 
 -(void)expireProblemForRestart
 {
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_ended_(got_to_max_without_press_-_reset).wav")];
+    
     expired=YES;
     started=NO;
     timeElapsed=0.0f;
@@ -442,6 +447,7 @@
 
 -(void)evalProblem
 {
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_stop_button_tapped.wav")];
     
     BOOL isWinning=NO;
     

@@ -84,6 +84,7 @@
 -(void)move
 {
     [blockSprite setPosition:ParentGO.Position];
+    [ParentGO.Label setPosition:ParentGO.Position];
 }
 
 -(void)animateToPosition
@@ -110,6 +111,14 @@
         return NO;
     }
     ParentGO.SeekingPair=NO;
+}
+
+-(void)destroyThisObject
+{
+    if(ParentGO.Label)[ParentGO.Label removeFromParentAndCleanup:YES];
+    if(ParentGO.mySprite)[ParentGO.mySprite removeFromParentAndCleanup:YES];
+    if(ParentGO.PairedObjects)[ParentGO.PairedObjects release];
+    [gameWorld delayRemoveGameObject:(id)ParentGO];
 }
 
 -(void)resetTint

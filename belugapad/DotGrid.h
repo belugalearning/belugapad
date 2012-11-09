@@ -84,6 +84,7 @@ typedef struct {
     
     CGPoint lastTouch;
     
+    BOOL audioHasPlayedResizing;
     
     BOOL disableDrawing;
     BOOL showDraggableBlock;

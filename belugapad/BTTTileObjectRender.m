@@ -16,6 +16,7 @@
 #import "AppDelegate.h"
 #import "LoggingService.h"
 #import "UsersService.h"
+#import "SimpleAudioEngine.h"
 
 @interface BTTTileObjectRender()
 {
@@ -144,6 +145,7 @@
     }    
     else if(!tile.Selected)
     {
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_timestable_general_number_selected.wav")];
         [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_SELECT_ANSWER withAdditionalData:tileCoords];
         [gameWorld.Blackboard.SelectedObjects addObject:tile];
         tile.Selected=YES;
@@ -154,7 +156,7 @@
         [tile.mySprite addChild:tile.selSprite z:10];
         
     }
-    else
+    else if(tile.Selected)
     {
         [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_DESELECT_ANSWER withAdditionalData:tileCoords];
         [gameWorld.Blackboard.SelectedObjects removeObject:tile];

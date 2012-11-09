@@ -306,7 +306,7 @@ static float kDistanceBetweenBlocks=70.0f;
         
         int farLeft=top.x+60;
         int farRight=lx-bottom.x-60;
-        int topMost=ly-top.y-60;
+        int topMost=ly-top.y-110;
         int botMost=0+-bottom.y+60;
         
         //startPosX=[theseSettings objectForKey:POS_X] ? [[theseSettings objectForKey:POS_X]intValue] : (arc4random() % 960) + 30;

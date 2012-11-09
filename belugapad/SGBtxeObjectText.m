@@ -67,7 +67,9 @@
 
 -(CGPoint)worldPosition
 {
-    return [renderBase convertToWorldSpace:self.position];
+    CGPoint ret=[renderBase convertToWorldSpace:self.position];
+//    NSLog(@"obj-text world pos %@", NSStringFromCGPoint(ret));
+    return ret;
 }
 
 -(void)setWorldPosition:(CGPoint)worldPosition
@@ -99,6 +101,8 @@
 
 -(void)setPosition:(CGPoint)thePosition
 {
+//    NSLog(@"objtext setting position to %@", NSStringFromCGPoint(thePosition));
+    
     position=thePosition;
 
     //TODO: auto-animate any large moves?

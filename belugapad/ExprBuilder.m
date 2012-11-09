@@ -25,6 +25,11 @@
 #import "SGBtxeContainerMgr.h"
 #import "SGBtxeObjectNumber.h"
 #import "SGBtxeProtocols.h"
+#import "SGBtxeObjectOperator.h"
+
+#import "BAExpressionHeaders.h"
+#import "BAExpressionTree.h"
+#import "BATQuery.h"
 
 @interface ExprBuilder()
 {
@@ -288,6 +293,7 @@
         if([o conformsToProtocol:@protocol(MovingInteractive)])
         {
             id<Bounding> obounding=(id<Bounding>)o;
+            
             CGRect hitbox=CGRectMake(obounding.worldPosition.x - (BTXE_OTBKG_WIDTH_OVERDRAW_PAD + obounding.size.width) / 2.0f, obounding.worldPosition.y-BTXE_VPAD-(obounding.size.height / 2.0f), obounding.size.width + BTXE_OTBKG_WIDTH_OVERDRAW_PAD, obounding.size.height + 2*BTXE_VPAD);
             
             if(o.enabled && CGRectContainsPoint(hitbox, location))
@@ -386,6 +392,8 @@
 #pragma mark - evaluation
 -(BOOL)evalExpression
 {
+    return NO;
+    
     if([evalType isEqualToString:@"ALL_ENABLED"])
     {
         //check for interactive components that are disabled -- if in that mode
@@ -456,7 +464,10 @@
         for(int i=1; i<rows.count; i++)
         {
             SGBtxeRow *row=[rows objectAtIndex:i];
-            if([self parseContainerToEqualityAndEval:row]==NO) return NO;
+            if(row!=ncardRow)
+            {
+                if([self parseContainerToEqualityAndEval:row]==NO) return NO;
+            }
         }
         
         return YES;
@@ -471,6 +482,7 @@
 -(BOOL)parseContainerToEqualityAndEval:(id<Container>)cont
 {
     tokens=[[NSMutableArray alloc]init];
+    curToken=nil;
     curTokenIdx=-1;
     
     for(id v in cont.children)
@@ -498,12 +510,25 @@
     }
     
     [self getNextToken];
-    NSString *res=[self computeExpr:0];
-    NSLog(@"result: %@", res);
+//    NSString *res=[self computeExpr:0];
+//    NSLog(@">>>>> result: %@", res);
+    
+    BAExpression *root=[self computeBaeExpr:0];
+    BOOL ret=NO;
+    
+    //only try and evaluate if there's an equality at the top of the tree
+    if([root isKindOfClass:[BAEqualsOperator class]])
+    {
+        BAExpressionTree *tree=[BAExpressionTree treeWithRoot:root];
+        BATQuery *q=[[BATQuery alloc] initWithExpr:root andTree:tree];
+        ret=[q assumeAndEvalEqualityAtRoot];
+        
+        [q release];
+    }
     
     [tokens release];
     
-    return NO;
+    return ret;
 }
 
 -(void)tokeniseObject:(id)v
@@ -558,7 +583,7 @@
             break;
         }
         
-        NSString *op=[[[cur objectForKey:@"value"] copy] autorelease];
+        NSString *op=[cur objectForKey:@"value"];
         int prec=[self getPrecendenceForToken:op];
         int nextminprec=prec+1;
         
@@ -567,7 +592,71 @@
         atomLhs=[NSString stringWithFormat:@"|%@%@%@|", atomLhs, op, atomRhs];
     }
     
+    NSLog(@">> %@ >> %d", atomLhs, minPrec);
+    
     return atomLhs;
+}
+
+
+-(BAExpression*)computeBaeExpr:(int)minPrec
+{
+    BAExpression *atomLeft=[BAInteger integerWithIntValue:[[curToken objectForKey:@"value"] intValue]];
+    [self getNextToken];
+    
+    while(1)
+    {
+        NSDictionary *cur=curToken;
+        
+        if(!cur ||
+           ![[cur objectForKey:@"token"] isEqualToString:@"BINOP"] ||
+           [self getPrecendenceForToken:[cur objectForKey:@"value"]] < minPrec)
+        {
+            break;
+        }
+        
+        NSString *op=[cur objectForKey:@"value"];
+        int prec=[self getPrecendenceForToken:op];
+        int nextminprec=prec+1;
+        
+        [self getNextToken];
+        BAExpression *atomRight=[self computeBaeExpr:nextminprec];
+
+        atomLeft=[self buildAtomFromLeft:atomLeft right:atomRight andOperator:op];
+    }
+    
+    return atomLeft;
+}
+
+-(BAExpression*)buildAtomFromLeft:(BAExpression*)left right:(BAExpression*)right andOperator:(NSString *)op
+{
+    BAExpression *root;
+    
+    if([op isEqualToString:@"-"])
+    {
+        BAMultiplicationOperator *mult=[BAMultiplicationOperator operator];
+        [mult addChild:[BAInteger integerWithIntValue:-1]];
+        [mult addChild:right];
+        
+        BAAdditionOperator *root=[BAAdditionOperator operator];
+        [root addChild:left];
+        [root addChild:mult];
+    }
+    else
+    {
+        root=[self baeFromOpString:op];
+        [root addChild:left];
+        [root addChild:right];
+    }
+    return root;
+}
+
+-(BAExpression*)baeFromOpString:(NSString*)opString
+{
+    if([opString isEqualToString:@"="]) return [BAEqualsOperator operator];
+    if([opString isEqualToString:@"*"]) return [BAMultiplicationOperator operator];
+    if([opString isEqualToString:@"/"]) return [BADivisionOperator operator];
+    if([opString isEqualToString:@"+"]) return [BAAdditionOperator operator];
+    return nil;
 }
 
 -(void)getNextToken

@@ -63,7 +63,7 @@ const NSString *matchNumbers=@"0123456789";
 
 -(void)parseElement:(CXMLElement*)element withNSMap:(NSDictionary*)nsmap
 {
-    NSLog(@"parsing element %@", element.name);
+//    NSLog(@"parsing element %@", element.name);
     
     if([element.name isEqualToString:BTXE_T])
     {

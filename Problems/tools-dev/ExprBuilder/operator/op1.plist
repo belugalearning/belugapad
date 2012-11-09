@@ -18,7 +18,7 @@
 	<integer>1</integer>
 	<key>EXPR_STAGES</key>
 	<array>
-		<string>&lt;b:t&gt;operator things&lt;/b:t&gt;&lt;b:oo value=&quot;+&quot; /&gt;&lt;b:oo value=&quot;x&quot; /&gt;&lt;b:oo value=&quot;=&quot; /&gt;</string>
+		<string>&lt;b:t&gt;operator things&lt;/b:t&gt;&lt;b:oo value=&quot;+&quot; /&gt;&lt;b:oo value=&quot;x&quot; /&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:ot tag=&quot;text&quot;&gt;text&lt;/b:ot&gt;</string>
 		<string>&lt;b:ph /&gt;&lt;b:ph /&gt;&lt;b:ph /&gt;&lt;b:ph /&gt;&lt;b:ph /&gt;&lt;b:ph /&gt;&lt;b:ph /&gt;</string>
 	</array>
 </dict>

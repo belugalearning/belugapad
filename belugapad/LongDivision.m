@@ -127,6 +127,7 @@ const float kScaleOfLesserBlocks=0.6f;
         }
     }
     
+    [self createAndUpdateLabels];
     // then update the actual text of it
     [lblCurrentTotal setString:[NSString stringWithFormat:@"%g", currentTotal]];
     
@@ -175,7 +176,7 @@ const float kScaleOfLesserBlocks=0.6f;
         float thisNum=[nWheel.StrOutputValue floatValue];
         int thisNumUp=thisNum*100000 + 0.5f;
         
-        NSLog(@"thisNum: %g, thisNumUp %d", thisNum, thisNumUp);
+//        NSLog(@"thisNum: %g, thisNumUp %d", thisNum, thisNumUp);
         
 //        int mag=[self magnitudeOf:(int)thisNumUp];
         int remValUp=thisNumUp;
@@ -226,6 +227,8 @@ const float kScaleOfLesserBlocks=0.6f;
     else
         startColValue=pow(10,columnsInPicker-1);
     
+    labelInfo=[[NSMutableDictionary alloc]init];
+    
 }
 
 -(void)populateGW
@@ -249,7 +252,7 @@ const float kScaleOfLesserBlocks=0.6f;
     [renderLayer addChild:lblCurrentTotal];
     
     line=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/line.png")];
-    [line setPosition:ccp(cx,550)];
+    [line setPosition:ccp(cx,450)];
     [topSection addChild:line];
     
     if(hideRenderLayer){[topSection setVisible:NO];}
@@ -280,7 +283,7 @@ const float kScaleOfLesserBlocks=0.6f;
     DWNWheelGameObject *w=[DWNWheelGameObject alloc];
     [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
     w.Components=columnsInPicker;
-    w.Position=ccp(lx-150,550);
+    w.Position=ccp(lx-150,580);
     w.RenderLayer=renderLayer;
     w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png", w.Components];
     w.HasDecimals=YES;
@@ -304,6 +307,45 @@ const float kScaleOfLesserBlocks=0.6f;
     }
 
     return mag;
+}
+
+-(void)createAndUpdateLabels
+{
+    for(NSString *key in labelInfo)
+    {
+        NSMutableDictionary *d=[labelInfo objectForKey:key];
+        
+        int selected=[[d objectForKey:SELECTED]intValue];
+
+        if(![d objectForKey:LABEL])
+        {
+            if(selected>0)
+            {
+                CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%@ x %d = %d", key, selected, [key intValue]*selected] fontName:CHANGO fontSize:40.0f];
+                [d setObject:l forKey:LABEL];
+                [l setPosition:ccp(150,cx-(40*[[labelInfo allKeys]indexOfObject:key]))];
+                [renderLayer addChild:l];
+                
+               // create a label
+            }
+        }
+        else
+        {
+            CCLabelTTF *l=[d objectForKey:LABEL];
+            if(selected==0)
+            {
+                [l removeFromParentAndCleanup:YES];
+                [d removeObjectForKey:LABEL];
+                // remove the label
+            }
+            else if(selected>0)
+            {
+                [l setPosition:ccp(150,cx-(40*[[labelInfo allKeys]indexOfObject:key]))];
+                [l setString:[NSString stringWithFormat:@"%@ x %d = %d", key, selected, [key intValue]*selected]];
+            }
+        }
+        
+    }
 }
 
 -(void)createVisibleNumbers
@@ -439,7 +481,7 @@ const float kScaleOfLesserBlocks=0.6f;
     int indexOfLastRenderedAtMyBase=0;
     int selectedForRow=thisSelection;
     
-    NSLog(@"baseVal: %g, selected: %d", thisBase, thisSelection);
+//    NSLog(@"baseVal: %g, selected: %d", thisBase, thisSelection);
     
     //int adjustedIndex=(thisRow-[nWheel.pickerViewSelection count]);
     
@@ -476,6 +518,17 @@ const float kScaleOfLesserBlocks=0.6f;
             [remSprite removeFromParentAndCleanup:YES];
             [renderedBlocks removeObject:lastRBDictAtMyBase];
         }
+    }
+    if(![labelInfo objectForKey:[NSString stringWithFormat:@"%g",thisBase]])
+    {
+        NSMutableDictionary *d=[[NSMutableDictionary alloc]init];
+        [d setObject:[NSNumber numberWithInt:thisSelection] forKey:SELECTED];
+        [labelInfo setObject:d forKey:[NSString stringWithFormat:@"%g",thisBase]];
+    }
+    else if([labelInfo objectForKey:[NSString stringWithFormat:@"%g",thisBase]])
+    {
+        NSMutableDictionary *d=[labelInfo objectForKey:[NSString stringWithFormat:@"%g",thisBase]];
+        [d setObject:[NSNumber numberWithInt:thisSelection] forKey:SELECTED];
     }
 }
 
@@ -805,6 +858,7 @@ const float kScaleOfLesserBlocks=0.6f;
     if(selectedNumbers)[selectedNumbers release];
     if(rowMultipliers)[rowMultipliers release];
     if(renderedBlocks)[renderedBlocks release];
+    if(labelInfo)[labelInfo release];
 
     [gw release];
         

@@ -493,7 +493,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     NSString *bf=[NSString stringWithFormat:@"/images/menu/HR_Multiplier_%d.png", m];
     multiplierBadge=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(bf)];
-    multiplierBadge.position=ccp(700, 2*cy-32);
+    multiplierBadge.position=ccp(cx+95, 2*cy-15);
     //multiplierBadge.position=ccp(cx,cy);
     [self addChild:multiplierBadge z:4];
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_multiplier_incremented.wav")];

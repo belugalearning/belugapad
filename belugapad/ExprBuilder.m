@@ -66,9 +66,6 @@
         cx=lx / 2.0f;
         cy=ly / 2.0f;
 
-        gw = [[SGGameWorld alloc] initWithGameScene:renderLayer];
-        gw.Blackboard.inProblemSetup = YES;
-        
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];
         self.ForeLayer=[[[CCLayer alloc]init] autorelease];
         
@@ -77,6 +74,11 @@
         
         renderLayer = [[CCLayer alloc] init];
         [self.ForeLayer addChild:renderLayer];
+
+        gw = [[SGGameWorld alloc] initWithGameScene:renderLayer];
+        gw.Blackboard.inProblemSetup = YES;
+        
+        expressionStringCache=[[NSMutableArray alloc] init];
         
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         contentService = ac.contentService;
@@ -177,7 +179,7 @@
     // iterate and create rows
     for(int i=0; i<rowcount; i++)
     {
-        SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
+        SGBtxeRow *row=[[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer] autorelease];
         [rows addObject:row];
         
         if(i==0 || repeatRow2Count==0)
@@ -207,9 +209,9 @@
             //build the ncard row if we have one
             if(presentNumberCardRow)
             {
-                ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
+                ncardRow=[[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer] autorelease];
                 
-                NSMutableArray *cardAddBuffer=[[NSMutableArray alloc] init];
+                NSMutableArray *cardAddBuffer=[[[NSMutableArray alloc] init] autorelease];
                 
                 //add the cards
                 for(int icard=numberCardRowMin; icard<=numberCardRowMax; icard+=numberCardRowInterval)
@@ -219,7 +221,7 @@
                     n.enabled=YES;
                     
                     [cardAddBuffer addObject:n];
-                    [n release];
+//                    [n release];
                 }
                 
                 if(numberCardRandomOrder)
@@ -238,7 +240,7 @@
                 }
                 
                 //let go of the buffer
-                [cardAddBuffer release];
+//                [cardAddBuffer release];
                 
                 [ncardRow setupDraw];
                 ncardRow.position=ccpAdd(row.position, ccp(0, -ncardRow.size.height-QUESTION_SEPARATOR_PADDING));
@@ -264,7 +266,7 @@
         }
 
         
-        [row release];
+//        [row release];
     }
     
     
@@ -392,8 +394,6 @@
 #pragma mark - evaluation
 -(BOOL)evalExpression
 {
-    return NO;
-    
     if([evalType isEqualToString:@"ALL_ENABLED"])
     {
         //check for interactive components that are disabled -- if in that mode
@@ -473,6 +473,38 @@
         return YES;
     }
     
+    if([evalType isEqualToString:@"EXPRESSION_EQUALITIES_NOT_IDENTICAL"])
+    {
+        [expressionStringCache removeAllObjects];
+        
+        //check for equality on rows and check that the expressions are different
+        for(int i=1; i<rows.count; i++)
+        {
+            SGBtxeRow *row=[rows objectAtIndex:i];
+            if(row!=ncardRow)
+            {
+                if([self parseContainerToEqualityAndEval:row]==NO) return NO;
+                NSLog(@"parsed row");
+            }
+        }
+        
+        for(NSString *expr1 in expressionStringCache)
+        {
+            for(NSString *expr2 in expressionStringCache)
+            {
+                if(expr2!=expr1)
+                {
+                    if([expr2 isEqualToString:expr1])
+                    {
+                        return NO;
+                    }
+                }
+            }
+        }
+        
+        return YES;
+    }
+    
     else
     {
         return NO;
@@ -482,6 +514,7 @@
 -(BOOL)parseContainerToEqualityAndEval:(id<Container>)cont
 {
     tokens=[[NSMutableArray alloc]init];
+    
     curToken=nil;
     curTokenIdx=-1;
     
@@ -522,6 +555,8 @@
         BAExpressionTree *tree=[BAExpressionTree treeWithRoot:root];
         BATQuery *q=[[BATQuery alloc] initWithExpr:root andTree:tree];
         ret=[q assumeAndEvalEqualityAtRoot];
+        
+        [expressionStringCache addObject:[root xmlStringValueWithPad:@""]];
         
         [q release];
     }
@@ -728,15 +763,9 @@
     BOOL isWinning=[self evalExpression];
     
     if(isWinning)
-    {
-        self.ProblemComplete=YES;
-        autoMoveToNextProblem=YES;
-        [toolHost showProblemCompleteMessage];
-    }
-    else {
-        if(evalMode==kProblemEvalOnCommit)[self resetProblem];
-    }
-    
+        [toolHost doWinning];
+    else
+        [toolHost doIncomplete];
 }
 
 #pragma mark - problem state
@@ -768,8 +797,10 @@
     
     [renderLayer release];
     
-    [self.ForeLayer removeAllChildrenWithCleanup:YES];
-    [self.BkgLayer removeAllChildrenWithCleanup:YES];
+    [expressionStringCache release];
+    
+//    [self.ForeLayer removeAllChildrenWithCleanup:YES];
+//    [self.BkgLayer removeAllChildrenWithCleanup:YES];
     
     //tear down
     [gw release];

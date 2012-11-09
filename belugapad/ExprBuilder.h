@@ -68,6 +68,8 @@
     NSDictionary *curToken;
     int curTokenIdx;
     
+    NSMutableArray *expressionStringCache;
+    
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;

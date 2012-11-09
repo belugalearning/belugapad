@@ -21,6 +21,8 @@
 @synthesize textBackgroundRenderComponent;
 @synthesize valueOperator;
 
+@synthesize mount;
+
 -(SGBtxeObjectOperator*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
     if(self=[super initWithGameWorld:aGameWorld])

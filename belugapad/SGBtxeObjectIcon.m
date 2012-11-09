@@ -16,6 +16,7 @@
 @synthesize iconRenderComponent, iconTag;
 
 @synthesize container;
+@synthesize mount;
 
 -(SGBtxeObjectIcon*)initWithGameWorld:(SGGameWorld*) aGameWorld
 {

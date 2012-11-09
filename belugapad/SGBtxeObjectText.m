@@ -19,6 +19,7 @@
 @synthesize textBackgroundRenderComponent;
 @synthesize originalPosition;
 @synthesize usePicker;
+@synthesize mount;
 
 @synthesize container;
 

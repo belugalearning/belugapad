@@ -262,6 +262,34 @@ static float kNBFontSizeLarge=35.0f;
     
     // do stuff with our INIT_CAGES (DWNBondStoreGameObject)
     
+    
+    for(int i=0;i<10;i++)
+    {
+        DWNBondObjectGameObject *pogo = [DWNBondObjectGameObject alloc];
+        [gw populateAndAddGameObject:pogo withTemplateName:@"TnBondObject"];
+        pogo.IndexPos=i;
+        pogo.HintObject=YES;
+        pogo.Length=i+1;
+        if(!useBlockScaling){
+            pogo.IsScaled=YES;
+            pogo.NoScaleBlock=YES;
+            pogo.Position=ccp(20,initCageStartYPos-(i*dockMidSpacing));
+        }
+        else
+        {
+            pogo.Position=ccp(20,initCageStartYPos-(i*dockMidSpacing));
+        }
+        pogo.MountPosition = pogo.Position;
+        
+        if(showBadgesOnCages)
+        {
+            [mountedObjects addObject:[NSNull null]];
+            [mountedObjectBadges addObject:[NSNull null]];
+            [mountedObjectLabels addObject:[NSNull null]];
+        }
+    }
+    
+    
     for (int i=0;i<[initCages count]; i++)
     {
         int qtyForThisStore=[[[initCages objectAtIndex:i] objectForKey:QUANTITY] intValue];
@@ -271,10 +299,10 @@ static float kNBFontSizeLarge=35.0f;
         {
             DWNBondObjectGameObject *pogo = [DWNBondObjectGameObject alloc];
             [gw populateAndAddGameObject:pogo withTemplateName:@"TnBondObject"];
-            pogo.IndexPos=i;
             
             //pogo.Position=ccp(25-(numberStacked*2),650-(i*65)+(numberStacked*3));
             pogo.Length=[[[initCages objectAtIndex:i] objectForKey:LENGTH] intValue];
+            pogo.IndexPos=pogo.Length-1;
             thisLength=pogo.Length;
             
             if([[initCages objectAtIndex:i] objectForKey:LABEL])
@@ -292,11 +320,11 @@ static float kNBFontSizeLarge=35.0f;
             if(!useBlockScaling){
                 pogo.IsScaled=YES;
                 pogo.NoScaleBlock=YES;
-                pogo.Position=ccp(20,initCageStartYPos-(i*dockMidSpacing));
+                pogo.Position=ccp(20,initCageStartYPos-(pogo.IndexPos*dockMidSpacing));
             }
             else
             {
-                pogo.Position=ccp(20,initCageStartYPos-(i*dockMidSpacing));
+                pogo.Position=ccp(20,initCageStartYPos-(pogo.IndexPos*dockMidSpacing));
             }
             
             pogo.MountPosition = pogo.Position;
@@ -304,18 +332,18 @@ static float kNBFontSizeLarge=35.0f;
             
             [currentVal addObject:pogo];
         }
-        [mountedObjects addObject:currentVal];
+        [mountedObjects replaceObjectAtIndex:thisLength-1 withObject:currentVal];
         
         if(showBadgesOnCages)
         {
             
             CCSprite *thisBadge=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/partition/NB_Notification.png")];
-            CCLabelTTF *thisLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",[[mountedObjects objectAtIndex:i]count]] fontName:@"Source Sans Pro" fontSize:16.0f];
+            CCLabelTTF *thisLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",[[mountedObjects objectAtIndex:thisLength-1]count]] fontName:@"Source Sans Pro" fontSize:16.0f];
             
             if(!useBlockScaling)
-                [thisBadge setPosition:ccp(20+(50*thisLength),initCageBadgePos-(i*dockMidSpacing-10))];
+                [thisBadge setPosition:ccp(20+(50*thisLength),initCageBadgePos-((thisLength-1)*dockMidSpacing-10))];
             else
-                [thisBadge setPosition:ccp(20+(50*(thisLength*0.5)),initCageBadgePos-(i*dockMidSpacing-10))];
+                [thisBadge setPosition:ccp(20+(50*(thisLength*0.5)),initCageBadgePos-((thisLength-1)*dockMidSpacing-10))];
             [thisLabel setPosition:ccp(15,12)];
             
             [renderLayer addChild:thisBadge z:1000];
@@ -326,8 +354,10 @@ static float kNBFontSizeLarge=35.0f;
             [thisBadge setOpacity:0];
             [thisLabel setOpacity:0];
             
-            [mountedObjectLabels addObject:thisLabel];
-            [mountedObjectBadges addObject:thisBadge];
+//            [mountedObjectLabels addObject:thisLabel];
+//            [mountedObjectBadges addObject:thisBadge];
+            [mountedObjectLabels replaceObjectAtIndex:thisLength-1 withObject:thisLabel];
+            [mountedObjectBadges replaceObjectAtIndex:thisLength-1 withObject:thisBadge];
         }
         
         [currentVal release];
@@ -407,6 +437,7 @@ static float kNBFontSizeLarge=35.0f;
 {
     for(int i=0;i<[mountedObjectLabels count];i++)
     {
+        if([[mountedObjectLabels objectAtIndex:i] isKindOfClass:[NSNull class]])continue;
         NSArray *thisArray=[mountedObjects objectAtIndex:i];
         CCLabelTTF *thisLabel=[mountedObjectLabels objectAtIndex:i];
         CCSprite *thisSprite=[mountedObjectBadges objectAtIndex:i];

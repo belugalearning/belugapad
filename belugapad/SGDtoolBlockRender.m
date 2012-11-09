@@ -113,6 +113,14 @@
     ParentGO.SeekingPair=NO;
 }
 
+-(void)destroyThisObject
+{
+    if(ParentGO.Label)[ParentGO.Label removeFromParentAndCleanup:YES];
+    if(ParentGO.mySprite)[ParentGO.mySprite removeFromParentAndCleanup:YES];
+    if(ParentGO.PairedObjects)[ParentGO.PairedObjects release];
+    [gameWorld delayRemoveGameObject:(id)ParentGO];
+}
+
 -(void)resetTint
 {
     [ParentGO.mySprite setColor:ccc3(255,255,255)];

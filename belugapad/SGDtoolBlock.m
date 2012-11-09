@@ -97,6 +97,11 @@
     [self.BlockRenderComponent setup];
 }
 
+-(void)destroyThisObject
+{
+    [self.BlockRenderComponent destroyThisObject];
+}
+
 -(BOOL)amIProximateTo:(CGPoint)location
 {
     return [self.BlockRenderComponent amIProximateTo:location];

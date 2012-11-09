@@ -51,6 +51,7 @@ typedef enum
     BOOL spawnedNewObj;
     BOOL randomiseDockPositions;
     BOOL bondDifferentTypes;
+    BOOL hasMovedCagedBlock;
     int cageObjectCount;
     
     id nearestObject;

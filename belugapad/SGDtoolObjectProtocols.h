@@ -51,6 +51,7 @@
 -(void)pairMeWith:(id)thisObject;
 -(void)unpairMeFrom:(id)thisObject;
 -(void)draw:(int)z;
+-(void)destroyThisObject;
 
 @end
 
@@ -74,7 +75,7 @@
 -(void)repositionLabel;
 -(int)blocksInShape;
 -(void)layoutMyBlocks;
--(void)deselectThisObject;
+-(void)destroyThisObject;
 
 @end
 
@@ -88,6 +89,7 @@
 @property int InitialObjects;
 @property (retain) CCSprite *MySprite;
 @property BOOL RandomPositions;
+@property (retain) id CurrentObject;
 
 -(void)setup;
 -(void)spawnNewBlock;

@@ -125,12 +125,17 @@
         }
     }
     
-    if(self.pickerView)
+    if(self.pickerView && !setupNumberWheel)
     {
-        if([self returnPickerNumber]<minBlocksFromPipe)
+        if([self returnPickerNumber]<minBlocksFromPipe){
             [pickerView spinComponent:0 speed:10 easeRate:4 repeat:2 stopRow:minBlocksFromPipe];
-        if([self returnPickerNumber]>maxBlocksFromPipe)
+            blocksFromPipe=minBlocksFromPipe;
+        }
+        if([self returnPickerNumber]>maxBlocksFromPipe){
             [pickerView spinComponent:0 speed:10 easeRate:4 repeat:2 stopRow:maxBlocksFromPipe];
+            blocksFromPipe=maxBlocksFromPipe;
+        }
+        [pickerViewSelection replaceObjectAtIndex:0 withObject:[NSNumber numberWithInteger:blocksFromPipe]];
     }
     
 }
@@ -685,7 +690,7 @@
     pickerView.dataSource = self;
     pickerView.delegate = self;
 
-    [pickerViewSelection addObject:[NSNumber numberWithInt:0]];
+    [pickerViewSelection addObject:[NSNumber numberWithInt:defaultBlocksFromPipe]];
     
     
     [renderLayer addChild:self.pickerView z:20];

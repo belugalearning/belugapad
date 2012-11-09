@@ -125,11 +125,13 @@ static float kTimeToCageShake=7.0f;
             if(lastTotalCount<expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
             {
                 [gw handleMessage:kDWcheckMyMountIsCage andPayload:nil withLogLevel:-1];
+                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_interaction_feedback_dock_shaking.wav")];
             }
             // too many items - shake netted items
             else if(lastTotalCount>expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
             {
                 [gw handleMessage:kDWcheckMyMountIsNet andPayload:nil withLogLevel:-1];
+                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_interaction_feedback_dock_shaking.wav")];;
             }
             
             if(multipleLabels && !touching && lastTotalCount<expectedCount)
@@ -139,6 +141,15 @@ static float kTimeToCageShake=7.0f;
                     [l runAction:[InteractionFeedback shakeAction]];
                 }
             }
+            if(blockLabels && !touching && lastTotalCount<expectedCount)
+            {
+                for(CCLabelTTF *l in blockLabels)
+                {
+                    [l runAction:[InteractionFeedback shakeAction]];
+                }
+            }
+            
+            
             
             hasRunInteractionFeedback=YES;
         }
@@ -555,7 +566,7 @@ static float kTimeToCageShake=7.0f;
                 totalCountSprites=[[[NSMutableArray alloc]init]retain];
             
             CCSprite *totalCountSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/total_count_bg.png")];
-            [totalCountSprite setPosition:ccp(i*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(currentColumnRows*(lx*kPropXNetSpace)))];
+            [totalCountSprite setPosition:ccp(i*(kPropXColumnSpacing*lx), 23+(ly*kPropYColumnOrigin)-(currentColumnRows*(lx*kPropXNetSpace)))];
             [totalCountSprite setOpacity:0];
             [totalCountSprite setTag:2];
             [renderLayer addChild:totalCountSprite];
@@ -974,7 +985,12 @@ static float kTimeToCageShake=7.0f;
     showReset=[[pdef objectForKey:SHOW_RESET] boolValue];
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
-    cageDefaultValue = [[pdef objectForKey:CAGE_DEFAULT_VALUE] intValue];
+    
+    if([pdef objectForKey:CAGE_DEFAULT_VALUE])
+        cageDefaultValue = [[pdef objectForKey:CAGE_DEFAULT_VALUE] intValue];
+    else
+        cageDefaultValue=1;
+    
     explodeMode = [[pdef objectForKey:EXPLODE_MODE]boolValue];
     
     if([pdef objectForKey:SHOW_COLUMN_TOTAL_COUNT])
@@ -1630,9 +1646,16 @@ static float kTimeToCageShake=7.0f;
         for (int c=[row count]-1; c>=0; c--)
         {
             DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
-            if(co.MountedObject)
+            
+            float objValue=((DWPlaceValueBlockGameObject*)co.MountedObject).ObjectValue;
+            
+            if(co.MountedObject && objValue>0)
             {
                 usedSpace++;
+            }
+            else if(co.MountedObject && objValue<0)
+            {
+                usedSpace--;
             }
         }
     }
@@ -1644,7 +1667,7 @@ static float kTimeToCageShake=7.0f;
     if(!autoBaseSelection)return;
     
     //deselect anything currently selected
-    
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_block_of_10_highlighted.wav")];
     
     for (DWPlaceValueBlockGameObject *block in [NSArray arrayWithArray:gw.Blackboard.SelectedObjects]) {
         
@@ -1766,6 +1789,8 @@ static float kTimeToCageShake=7.0f;
             
             changedBlockCountOrValue=YES;
             
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_dock_arrow_tap.wav")];
+            
             return;
         }
     }
@@ -1797,7 +1822,7 @@ static float kTimeToCageShake=7.0f;
             [blocksToCreate replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
             
             changedBlockCountOrValue=YES;
-            
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_dock_arrow_tap.wav")];
             return;
         }
     }
@@ -1836,7 +1861,7 @@ static float kTimeToCageShake=7.0f;
             [currentBlockValues replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
             
             changedBlockCountOrValue=YES;
-            
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_dock_arrow_tap.wav")];
             return;
         }
     }
@@ -1870,7 +1895,7 @@ static float kTimeToCageShake=7.0f;
             [currentBlockValues replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
             
             changedBlockCountOrValue=YES;
-            
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_dock_arrow_tap.wav")];
             return;
         }
     }
@@ -1901,6 +1926,7 @@ static float kTimeToCageShake=7.0f;
 
 -(void)checkAndChangeCageSpritesForNegative
 {
+    if(!gw.Blackboard.inProblemSetup)return;
     
     for(int i=0;i<[allCages count];i++)
     {
@@ -2177,14 +2203,17 @@ static float kTimeToCageShake=7.0f;
 -(BOOL)doCondenseFromLocation:(CGPoint)location
 {
     [loggingService logEvent:BL_PA_PV_TOUCH_END_CONDENSE_OBJECT withAdditionalData:nil];
+    BOOL justCondensed=[self doTransitionWithIncrement:-1];
+    if(justCondensed)[[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_blocks_spawning_(mulching).wav")];
     
-    return [self doTransitionWithIncrement:-1];
+    return justCondensed;
 }
 
 -(BOOL)doMulchFromLocation:(CGPoint)location
 {
     [loggingService logEvent:BL_PA_PV_TOUCH_END_MULCH_OBJECTS withAdditionalData:nil];
     justMulched=[self doTransitionWithIncrement:1];
+    if(justMulched)[[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_blocks_merging_(condensing).wav")];
     return justMulched;
 }
 
@@ -2752,6 +2781,7 @@ static float kTimeToCageShake=7.0f;
             
             if(distFromBlockToCage<(distFromNetBottomToCage/2) && !cageHasDropped)
             {
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_dock_disappearing.wav")];
                 [c.mySprite runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(c.PosX, c.PosY-200)] rate:2.0f]];
                 [c.mySprite runAction:[CCFadeOut actionWithDuration:0.5f]];
                 [cM.mySprite runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(c.PosX, c.PosY-220)] rate:2.0f]];
@@ -3331,6 +3361,7 @@ static float kTimeToCageShake=7.0f;
                 }
                 if(blocksToDestroy)
                 {
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_blocks_exploding.wav")];
                     for(DWPlaceValueBlockGameObject *thisBlock in blocksToDestroy)
                     {
                         [thisBlock handleMessage:kDWresetToMountPosition];
@@ -3346,7 +3377,12 @@ static float kTimeToCageShake=7.0f;
                     
                     blocksToDestroy=nil;
                 }
-                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
+                
+                if(!isCage)
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_block_dropped.wav")];
+                else
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_block_dropped_back_on_dock.wav")];
+                
                 [loggingService logEvent:BL_PA_PV_TOUCH_END_EXPLODE_BLOCKS withAdditionalData:nil];
                 // tell the tool that the problem state changed - so an auto eval will run now
                 [self problemStateChanged];

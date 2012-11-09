@@ -19,6 +19,7 @@
 #import "SGBtxeObjectNumber.h"
 #import "SGBtxeObjectIcon.h"
 #import "SGBtxePlaceholder.h"
+#import "SGBtxeObjectOperator.h"
 
 const NSString *matchNumbers=@"0123456789";
 
@@ -102,6 +103,16 @@ const NSString *matchNumbers=@"0123456789";
         if([self boolFor:@"picker" on:element]) ot.enabled=NO;
         
         [ParentGO.containerMgrComponent addObjectToContainer:ot];
+    }
+    
+    else if([element.name isEqualToString:BTXE_OO])
+    {
+        SGBtxeObjectOperator *oo=[[SGBtxeObjectOperator alloc] initWithGameWorld:gameWorld];
+        CXMLNode *opNode=[element attributeForName:@"value"];
+        if(opNode)oo.valueOperator=opNode.stringValue;
+        
+        oo.enabled=[self enabledBoolFor:element];
+        [ParentGO.containerMgrComponent addObjectToContainer:oo];
     }
     
     else if([element.name isEqualToString:BTXE_OI])

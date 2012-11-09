@@ -224,6 +224,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void) shakeCommitButton
 {
     [commitBtn runAction:[InteractionFeedback dropAndBounceAction]];
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_interaction_feedback_commit_button_shaking.wav")];
 }
 
 -(void)stageIntroActions
@@ -495,6 +496,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     multiplierBadge.position=ccp(700, 2*cy-32);
     //multiplierBadge.position=ccp(cx,cy);
     [self addChild:multiplierBadge z:4];
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_multiplier_incremented.wav")];
     
     [multiplierBadge runAction:[InteractionFeedback dropAndBounceAction]];
 }
@@ -503,6 +505,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 {
     if(multiplierBadge)
     {
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_multiplier_lost.wav")];
         [multiplierBadge runAction:[InteractionFeedback delaySpinFast]];
         [multiplierBadge runAction:[InteractionFeedback delayMoveOutAndDown]];
     }
@@ -648,7 +651,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         //todo: completion shouldn't be assumed here -- we can get here by progressing into an inserter that produces no viable insertions
         
         //assume completion
-        [contentService endPlayPipelineWithScore:pipelineScore];
+        [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @(pipelineScore) }];
         
         contentService.fullRedraw=YES;
         contentService.lightUpProgressFromLastNode=YES;
@@ -1010,6 +1013,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void) showPauseMenu
 {
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_pause_tap.wav")];
     isPaused = YES;
     
     if(!pauseMenu)
@@ -1070,7 +1074,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(CGRectContainsPoint(kPauseMenuMenu, location))
     {
         [loggingService logEvent:BL_PA_EXIT_TO_MAP withAdditionalData:nil];
-        [contentService endPlayPipelineWithScore:0];
+        [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @0 }];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self returnToMenu];
     }
@@ -1344,6 +1348,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     if (CGRectContainsPoint(kRectButtonCommit, location) && mqEvalMode==kMetaQuestionEvalOnCommit && commitBtn.visible)
     {
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_commit_tap.wav")];
         //effective user commit
         [loggingService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
         
@@ -1432,6 +1437,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     BOOL showCommit=NO;
     
     if(!metaQuestionForThisProblem && !numberPickerForThisProblem && evalMode==kProblemEvalOnCommit)
+        showCommit=YES;
+    
+    if(currentTool && evalMode==kProblemEvalOnCommit)
         showCommit=YES;
     
     if(hasTrayMq && trayMqShowing)
@@ -1575,6 +1583,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     isAnimatingIn=YES;
     [loggingService logEvent:BL_PA_FAIL withAdditionalData:nil];
     [self showProblemIncompleteMessage];
+    [self showHideCommit];
     //[self deselectAnswersExcept:-1];
 }
 -(void)removeMetaQuestionButtons
@@ -1758,8 +1767,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     {
         if(CGRectContainsPoint(kRectButtonCommit, origloc) && commitBtn.visible)
         {
-            [self playAudioPress];
-            
+            //[self playAudioPress];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_commit_tap.wav")];
             //effective user commit of number picker
             [loggingService logEvent:BL_PA_USER_COMMIT withAdditionalData:nil];
             
@@ -1974,7 +1983,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     if(currentTool.ProblemComplete)
     {
-        [self playAudioFlourish];
+        //[self playAudioFlourish];
         
         timeBeforeUserInteraction=kDisableInteractionTime;
     }
@@ -2460,6 +2469,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         lbl.position=ccp(150,112.5f);
         [trayLayerCalc addChild:lbl];
     }
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_calculator_tool_appears.wav")];
     trayLayerCalc.visible=YES;
     trayCalcShowing=YES;
     [traybtnCalc setColor:ccc3(247,143,6)];
@@ -2467,6 +2477,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)hideCalc
 {
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_calculator_tool_disappears.wav")];
     trayLayerCalc.visible=NO;
     trayCalcShowing=NO;
     [traybtnCalc setColor:ccc3(255,255,255)];
@@ -2474,6 +2485,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)showMq
 {
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_tool_appears.wav")];
     [trayLayerMq setVisible:YES];
     trayMqShowing=YES;
     [traybtnMq setColor:ccc3(247,143,6)];
@@ -2481,6 +2493,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)hideMq
 {
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_tool_disappears.wav")];
     [commitBtn setVisible:NO];
     trayLayerMq.visible=NO;
     trayMqShowing=NO;
@@ -2500,6 +2513,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         //lbl.position=ccp(150,112.5f);
         //[trayLayerWheel addChild:lbl];
     }
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_number_wheel_tool_appears.wav")];
     trayLayerWheel.visible=YES;
     trayWheelShowing=YES;
     [traybtnWheel setColor:ccc3(247,143,6)];
@@ -2507,6 +2521,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)hideWheel
 {
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_number_wheel_tool_disappears.wav")];
     trayLayerWheel.visible=NO;
     trayWheelShowing=NO;
     [traybtnWheel setColor:ccc3(255,255,255)];
@@ -2524,6 +2539,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         lbl.position=ccp(150,112.5f);
         [trayLayerPad addChild:lbl];
     }
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_appears.wav")];
     trayLayerPad.visible=YES;
     trayPadShowing=YES;
     [traybtnPad setColor:ccc3(247,143,6)];
@@ -2531,6 +2547,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)hidePad
 {
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_disappears.wav")];
     trayLayerPad.visible=NO;
     trayPadShowing=NO;
     [traybtnPad setColor:ccc3(255,255,255)];

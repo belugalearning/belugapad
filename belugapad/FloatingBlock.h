@@ -75,6 +75,9 @@ typedef enum {
     
     
     int expSolution;
+    
+    
+    BOOL audioHasPlayedBubbleProx;
 }
 
 @property (nonatomic, retain) CCPickerView *pickerView;

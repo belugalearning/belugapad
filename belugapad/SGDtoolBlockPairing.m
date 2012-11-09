@@ -96,41 +96,22 @@
 
 -(void)pairMeWith:(id)thisObject
 {
-    if(![((id<Configurable>)ParentGO).blockType isEqualToString:((id<Configurable>)thisObject).blockType])
-        return;
-    
-    if(!ParentGO.PairedObjects)ParentGO.PairedObjects=[[[NSMutableArray alloc]init]autorelease];
-    
-    // if the array already contains the object - don't readd it
-    if(![ParentGO.PairedObjects containsObject:thisObject])[ParentGO.PairedObjects addObject:thisObject];
-    [self pairPickupObjectToMe:thisObject];
     
 }
 
 -(void)pairPickupObjectToMe:(id)pickupObject
 {
-    // declare the current PickupObject as a pairable item
-    id<Pairable> currentPickupObject=pickupObject;
-    
-    // check whether the array exists - if not, create it 
-    if(!currentPickupObject.PairedObjects)currentPickupObject.PairedObjects=[[[NSMutableArray alloc]init] autorelease];
-    // then, pair our pickupObject with our current GO
-    if(![currentPickupObject.PairedObjects containsObject:ParentGO])[currentPickupObject.PairedObjects addObject:ParentGO];
 }
 
 -(void)unpairMeFrom:(id)thisObject
 {
-    if([ParentGO.PairedObjects containsObject:thisObject])[ParentGO.PairedObjects removeObject:thisObject];
 
-    [self unpairPickupObjectFromMe:thisObject];
 }
 
 -(void)unpairPickupObjectFromMe:(id)pickupObject
 {
-    // declare the current PickupObject as a pairable item
-    id<Pairable> currentPickupObject=pickupObject;
-    // then, pair our pickupObject with our current GO
-    if([currentPickupObject.PairedObjects containsObject:ParentGO])[currentPickupObject.PairedObjects removeObject:ParentGO];
+
+
 }
 
 //-(void)createContainerAndAdd:(NSArray*)theseObjects

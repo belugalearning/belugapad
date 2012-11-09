@@ -20,6 +20,7 @@
 #import "LoggingService.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
+#import "SimpleAudioEngine.h"
 
 @interface TimesTables()
 {
@@ -104,7 +105,7 @@ static float kTimeToHeaderBounce=7.0f;
             {
                 [l runAction:[InteractionFeedback dropAndBounceAction]];
             }
-            
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_timestable_interaction_feedback_rows_and_columns_shaking.wav")];
             timeSinceInteractionOrDropHeader=0.0f;
         }
         else if(!hasUsedHeaderY)
@@ -116,6 +117,7 @@ static float kTimeToHeaderBounce=7.0f;
                 [l runAction:[InteractionFeedback dropAndBounceAction]];
             }
             
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_timestable_interaction_feedback_rows_and_columns_shaking.wav")];
             timeSinceInteractionOrDropHeader=0.0f;
         }
         
@@ -141,13 +143,12 @@ static float kTimeToHeaderBounce=7.0f;
     
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
-    if([pdef objectForKey:ANCHOR_SPACE])
-        spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
-    else
-        spaceBetweenAnchors=46;
+
+    spaceBetweenAnchors=46;
     startX=[[pdef objectForKey:START_X] intValue];
     startY=[[pdef objectForKey:START_Y] intValue];
     operatorMode=[[pdef objectForKey:OPERATOR_MODE]intValue];
+    operatorMode=2;
     selectionMode=[[pdef objectForKey:SELECTION_MODE]intValue];
     if([pdef objectForKey:REVEAL_ALL_TILES])revealAllTiles=[[pdef objectForKey:REVEAL_ALL_TILES]boolValue];
     else revealAllTiles=NO;
@@ -187,6 +188,7 @@ static float kTimeToHeaderBounce=7.0f;
     if([pdef objectForKey:REVEAL_ROWS])revealRows=[pdef objectForKey:REVEAL_ROWS];
     if([pdef objectForKey:REVEAL_COLS])revealCols=[pdef objectForKey:REVEAL_COLS];
     if([pdef objectForKey:REVEAL_TILES])revealTiles=[pdef objectForKey:REVEAL_TILES];
+    if([pdef objectForKey:DISABLED_TILES])disabledTiles=[pdef objectForKey:DISABLED_TILES];
     
     
     if(operatorMode==0)operatorName=@"add";
@@ -216,7 +218,9 @@ static float kTimeToHeaderBounce=7.0f;
     float xStartPos=300;
 
     int xStartNumber=startX;
-    int yStartNumber=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-1;
+//    int yStartNumber=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-1;
+    int yStartNumber=amtForY-1;
+    
     
     CCSprite *operator = [CCSprite spriteWithFile:operatorFileName];
     float yPos=(amtForY+1.5)*spaceBetweenAnchors;
@@ -321,7 +325,8 @@ static float kTimeToHeaderBounce=7.0f;
             
             tile.Position=ccp(xStartPos,yStartPos);
             tile.myXpos=xStartNumber;
-            tile.myYpos=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-iCol;
+            //tile.myYpos=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-iCol;
+            tile.myYpos=amtForY-iCol;
             tile.operatorType=operatorMode;
             tile.Size=spaceBetweenAnchors;
             NSLog(@"iRow %d amtForX %d // iCol %d amtForY %d", iRow, amtForX, iCol, amtForY);
@@ -377,6 +382,20 @@ static float kTimeToHeaderBounce=7.0f;
                 }
                 
             }
+        }
+    }
+    
+    
+    if(disabledTiles)
+    {
+        for(NSDictionary *d in disabledTiles)
+        {
+            int thisX=[[d objectForKey:@"X"]intValue];
+            int thisY=[[d objectForKey:@"Y"]intValue];
+            
+            DWTTTileGameObject *t=[[ttMatrix objectAtIndex:thisX-1] objectAtIndex:fabs(thisY-amtForY)];
+            
+            t.Disabled=YES;
         }
     }
     
@@ -474,6 +493,7 @@ static float kTimeToHeaderBounce=7.0f;
     hasUsedHeaderY=YES;
     BOOL haveLogged=NO;
     BOOL tinted=[[rowTints objectAtIndex:thisRow] boolValue];
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_timestable_general_row_or_column_highlighted.wav")];
     
     for(int i=0;i<[ttMatrix count];i++)
     {
@@ -528,7 +548,8 @@ static float kTimeToHeaderBounce=7.0f;
     hasUsedHeaderX=YES;
     BOOL haveLogged=NO;
     BOOL tinted=[[colTints objectAtIndex:thisCol] boolValue];
-
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_timestable_general_row_or_column_highlighted.wav")];
+    
     for(int i=0;i<[[ttMatrix objectAtIndex:thisCol]count];i++)
     {
         DWTTTileGameObject *tile=[[ttMatrix objectAtIndex:thisCol]objectAtIndex:i];

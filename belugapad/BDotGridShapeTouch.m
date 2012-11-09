@@ -17,6 +17,7 @@
 #import "BLMath.h"
 #import "LoggingService.h"
 #import "AppDelegate.h"
+#import "SimpleAudioEngine.h"
 
 @interface BDotGridShapeTouch()
 {
@@ -100,6 +101,8 @@
                     [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
                     gameWorld.Blackboard.ProximateObject=shape;
                     
+                    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_dot_grid_grid_multiplication_general_section_selected.wav")];
+                    
                 }
                 [self updateCountLabels];
                 if(shape.MyNumberWheel)
@@ -159,6 +162,8 @@
                 tile.Selected=YES;
                 [loggingService logEvent:BL_PA_DG_TOUCH_BEGIN_SELECT_TILE withAdditionalData:nil];
                 gameWorld.Blackboard.ProximateObject=tile;
+                
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_dot_grid_grid_multiplication_general_section_selected.wav")];
             }
 
             // otherwise, make it white again

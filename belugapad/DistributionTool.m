@@ -25,6 +25,7 @@
 #import "SGDtoolContainer.h"
 #import "SGDtoolBlockRender.h"
 #import "InteractionFeedback.h"
+#import "SimpleAudioEngine.h"
 
 #define DRAW_DEPTH 1
 static float kTimeSinceAction=7.0f;
@@ -106,8 +107,6 @@ static float kDistanceBetweenBlocks=70.0f;
 {
     [gw doUpdate:delta];
     
-    [self tidyUpEmptyGroups];
-     
     timeSinceInteraction+=delta;
     
     if(timeSinceInteraction>kTimeSinceAction)
@@ -177,7 +176,11 @@ static float kDistanceBetweenBlocks=70.0f;
     
     if(hasInactiveArea && cannotBreakBonds)
         cannotBreakBonds=NO;
-    usedShapeTypes=[[[NSMutableArray alloc]init]retain];
+    
+    if(evalType==kCheckGroupTypeAndNumber)
+        bondDifferentTypes=NO;
+    
+    bondDifferentTypes=YES;
 }
 
 -(void)populateGW
@@ -219,9 +222,6 @@ static float kDistanceBetweenBlocks=70.0f;
         int blocksInShape=[[d objectForKey:QUANTITY]intValue];
         [self createShapeWith:blocksInShape andWith:d];
     }
-    
-    if([usedShapeTypes count]==0)
-        [usedShapeTypes addObject:@"Circle"];
     
     if(problemHasCage)
     {
@@ -271,13 +271,16 @@ static float kDistanceBetweenBlocks=70.0f;
     
     if(!blockType)
         blockType=@"Circle";
-
+    
+    if(!usedShapeTypes)
+        usedShapeTypes=[[[NSMutableArray alloc]init]retain];
     
     if(![usedShapeTypes containsObject:blockType])
         [usedShapeTypes addObject:blockType];
     
     SGDtoolContainer *container = [[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:label andRenderLayer:renderLayer];
     container.BlockType=blockType;
+    container.AllowDifferentTypes=bondDifferentTypes;
     if (label && !existingGroups) existingGroups = [[NSMutableArray arrayWithObject:label] retain];
     float startPosX=0;
     float startPosY=0;
@@ -413,10 +416,13 @@ static float kDistanceBetweenBlocks=70.0f;
 -(void)createContainerWithOne:(id)Object
 {
     id<Container> container;
-    NSLog(@"create container - there are %d destroyed labelled groups", [destroyedLabelledGroups count]);
+    //NSLog(@"create container - there are %d destroyed labelled groups", [destroyedLabelledGroups count]);
     if([destroyedLabelledGroups count]==0)
     {
         container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:nil andRenderLayer:nil];
+//        container.Label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",(int)container] fontName:SOURCE fontSize:15.0f];
+//        [container.Label setPosition:ccp(cx,cy)];
+//        [renderLayer addChild:container.Label];
     }
     else
     {
@@ -426,119 +432,13 @@ static float kDistanceBetweenBlocks=70.0f;
         [existingGroups addObject:[container.Label string]];
     }
     
+    container.AllowDifferentTypes=YES;
     container.BlockType=((id<Configurable>)Object).blockType;
-    
-    for(id obj in [NSArray arrayWithArray:gw.AllGameObjectsCopy])
-    {
-        if([obj conformsToProtocol:@protocol(Moveable)]){
-            id<Moveable>go=(id<Moveable>)obj;
-            if([go amIProximateTo:((id<Moveable>)Object).Position] && go.MyContainer==nil)
-                [container addBlockToMe:go];
-        }
-    }
-    
     [container addBlockToMe:Object];
     [container layoutMyBlocks];
 }
 
--(void)lookForOrphanedObjects
-{
-    NSArray *allGWGO=[NSArray arrayWithArray:gw.AllGameObjects];
-    
-    for(id go in allGWGO)
-    {
-        if([go conformsToProtocol:@protocol(Moveable)])
-        {
-            id <Moveable> cObj=go;
-            if(!cObj.MyContainer)
-                [self createContainerWithOne:cObj];
-        }
 
-    }
-}
-
--(void)updateContainerForNewlyAddedBlock:(id<Moveable,Pairable>)thisBlock
-{
-    // if there are no paired objects - make sure i am removed from any container i may be part of
-    
-    NSLog(@"this block paired to %d", [thisBlock.PairedObjects count]);
-    
-    if([thisBlock.PairedObjects count]==0)
-    {
-        if(thisBlock.MyContainer)
-            [thisBlock.MyContainer removeBlockFromMe:thisBlock];
-            
-    }
-    else
-    {
-        // set a new container by assuming the same container as any of the paired objects (not resetting if part of this container)
-        id<Moveable,Pairable>pairedObj=[thisBlock.PairedObjects objectAtIndex:0];
-        if(thisBlock.MyContainer != pairedObj.MyContainer)
-        {
-            if(thisBlock.MyContainer)
-                [thisBlock.MyContainer removeBlockFromMe:thisBlock];
-            
-            //TODO: this is causing a crash if dragged from a cage
-            if(![pairedObj.MyContainer conformsToProtocol:@protocol(Cage)])
-                [pairedObj.MyContainer addBlockToMe:thisBlock];
-            
-            [pairedObj.MyContainer layoutMyBlocks];
-        }
-    }
-}
-
--(void)tidyUpEmptyGroups
-{
-    NSArray *allGWGO=gw.AllGameObjectsCopy;
-    
-    for(id go in allGWGO)
-    {
-        if([go conformsToProtocol:@protocol(Container)])
-        {
-            id <Container> cObj=go;
-            
-            if([cObj.BlocksInShape count]==0)
-            {
-                
-                if([existingGroups containsObject:[cObj.Label string]])
-                {
-                    [existingGroups removeObject:[cObj.Label string]];
-                    if(!destroyedLabelledGroups)destroyedLabelledGroups=[[NSMutableArray alloc]init];
-                    [destroyedLabelledGroups addObject:[cObj.Label string]];
-                }
-            
-                
-                [cObj destroyThisObject];
-            }
-            
-        }
-        
-        
-        
-        
-        
-    }
-}
-
--(void)updateContainerLabels
-{
-    for(id go in gw.AllGameObjects)
-    {
-        if([go conformsToProtocol:@protocol(Container)])
-        {
-            id<Container>c=(id<Container>)go;
-            [c repositionLabel];
-            
-            
-            for(id<Pairable>tgo in c.BlocksInShape)
-            {
-                NSLog(@"block position in group %@", NSStringFromCGPoint(tgo.Position));
-            }
-            
-            NSLog(@"count of group %d", [c.BlocksInShape count]);
-        }
-    }
-}
 
 -(void)removeBlockByCage
 {
@@ -559,121 +459,9 @@ static float kDistanceBetweenBlocks=70.0f;
         [s runAction:sequence];
         currentPickupObject=nil;
 
-        
     }
 }
 
--(CGPoint)checkWhereIShouldMount:(id<Pairable>)gameObject;
-{
-    NSArray *existingShapes=[self evalUniqueShapes];
-    float minXPos=0.0f;
-    float maxXPos=0.0f;
-    float minYPos=0.0f;
-    float maxYPos=0.0f;
-    int shapeIndex=0;
-    
-    for(int i=0;i<[existingShapes count];i++)
-    {
-        NSArray *a=[existingShapes objectAtIndex:i];
-        if([a containsObject:gameObject])
-        {
-            shapeIndex=i;
-            break;
-        }
-    }
-    
-    NSArray *thisShape=[existingShapes objectAtIndex:shapeIndex];
-    
-    for(id<Pairable> go in thisShape)
-    {
-        if(go.Position.x>maxXPos)maxXPos=go.Position.x;
-        if(go.Position.y>maxYPos)maxYPos=go.Position.y;
-        
-        if([thisShape indexOfObject:go]==0)
-        {
-            minXPos=go.Position.x;
-            minYPos=go.Position.y;
-        }
-        else {
-            if(go.Position.x<minXPos)minXPos=go.Position.x;
-            if(go.Position.y<minYPos)minYPos=go.Position.y;
-        }
-    }
-    
-    CGPoint retval=ccp(maxXPos+100,maxYPos);
-    return retval;
-}
-
--(CGPoint)findMountPositionForThisShape:(id<Pairable>)pickupObject toThisShape:(id<Pairable>)mountedShape
-{
-    CGPoint mountedShapePos=mountedShape.Position;
-    CGPoint retval=CGPointZero;
-
-    BOOL freeSpaceNegX=YES;
-    BOOL freeSpaceNegY=YES;
-    BOOL freeSpacePosX=YES;
-    BOOL freeSpacePosY=YES;
-    
-    NSMutableArray *possCoords=[[NSMutableArray alloc]init];
-    
-
-    
-    for(id<Moveable,Pairable> go in mountedShape.PairedObjects)
-    {
-//        NSLog(@"go Position %@, current retVal %@", NSStringFromCGPoint(go.Position), NSStringFromCGPoint(mountedShapePos));
-        if(go==pickupObject)continue;
-        
-        if(mountedShapePos.x-kDistanceBetweenBlocks==go.Position.x && freeSpaceNegX && mountedShapePos.x-kDistanceBetweenBlocks>50.0f)
-            freeSpaceNegX=NO;
-        else if(mountedShapePos.x+kDistanceBetweenBlocks==go.Position.x && freeSpacePosX && mountedShapePos.x+kDistanceBetweenBlocks<(lx-50.0f))
-            freeSpacePosX=NO;
-        else if(mountedShapePos.y-kDistanceBetweenBlocks==go.Position.y && freeSpaceNegY && mountedShapePos.y-kDistanceBetweenBlocks>50.0f)
-            freeSpaceNegY=NO;
-        else if(mountedShapePos.y+kDistanceBetweenBlocks==go.Position.y && freeSpacePosY && mountedShapePos.y+kDistanceBetweenBlocks>(lx-50.0f))
-            freeSpacePosY=NO;
-           
-           //NSLog(@"go Position %@, final retVal %@, found other shape? %@", NSStringFromCGPoint(go.Position), NSStringFromCGPoint(retval), foundAnotherShape? @"YES":@"NO");
-    }
-           
-//    NSLog(@"-x %@, +x %@, -y %@, +y %@", freeSpaceNegX? @"YES":@"NO", freeSpacePosX? @"YES":@"NO", freeSpaceNegY? @"YES":@"NO", freeSpacePosY? @"YES":@"NO");
-    
-
-        if(freeSpacePosX)
-        {
-            CGPoint retvalPX=ccp(mountedShapePos.x+kDistanceBetweenBlocks, mountedShapePos.y);
-            [possCoords addObject:[NSValue valueWithCGPoint:retvalPX]];
-        }
-        if(freeSpaceNegX)
-        {
-            CGPoint retvalNX=ccp(mountedShapePos.x-kDistanceBetweenBlocks, mountedShapePos.y); 
-            [possCoords addObject:[NSValue valueWithCGPoint:retvalNX]];
-        }
-        if(freeSpacePosY)
-        {
-            CGPoint retvalPY=ccp(mountedShapePos.x, mountedShapePos.y+kDistanceBetweenBlocks);
-            [possCoords addObject:[NSValue valueWithCGPoint:retvalPY]];
-        }
-        if(freeSpaceNegY)
-        {
-            CGPoint retvalNY=ccp(mountedShapePos.x, mountedShapePos.y-kDistanceBetweenBlocks);
-            [possCoords addObject:[NSValue valueWithCGPoint:retvalNY]];
-        }
-   
-
-
-    if([possCoords count]>0)
-    {
-        int retValNum=(arc4random() % [possCoords count]);
-//        NSLog(@"retval posscords count is %d chosennum is %d", [possCoords count], retValNum);
-        retval=[[possCoords objectAtIndex:retValNum]CGPointValue];
-    }
-    else
-    {
-        // TODO: decide what a no-mount-point scenario does - for now we just move it down
-        retval=ccp(10,10);
-    }
-    return retval;
-}
 
 -(BOOL)evalNumberOfShapesInEvalAreas
 {
@@ -710,20 +498,8 @@ static float kDistanceBetweenBlocks=70.0f;
         }
         
         NSNumber *thisNo=nil;
-        for(int i=0;i<[solutions count];i++)
+        for(NSNumber *n in solutions)
         {
-            NSNumber *n=nil;
-            NSString *s=nil;
-
-            if([[solutions objectAtIndex:i] isKindOfClass:[NSNumber class]])
-                n=[solutions objectAtIndex:i];
-            
-            if([[solutions objectAtIndex:i] isKindOfClass:[NSString class]]){
-                s=[solutions objectAtIndex:i];
-                [s integerValue];
-            }
-
-            
             if([n isEqualToNumber:[NSNumber numberWithInt:shapesInArea[i]]])
             {
                 thisNo=n;
@@ -760,7 +536,7 @@ static float kDistanceBetweenBlocks=70.0f;
             {
                 id<Container>thisCont=cont;
                 
-                NSLog(@"thisCont type=%@, thisCont BlocksInShape=%d", thisCont.BlockType, [thisCont.BlocksInShape count]);
+                //NSLog(@"thisCont type=%@, thisCont BlocksInShape=%d", thisCont.BlockType, [thisCont.BlocksInShape count]);
                 
                 if([thisCont.BlocksInShape count]==[[d objectForKey:NUMBER]intValue] && [thisCont.BlockType isEqualToString:[d objectForKey:BLOCK_TYPE]])
                 {
@@ -775,7 +551,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
     
     
-    NSLog(@"solutions found %d required %d", solutionsFound, solutionsExpected);
+    //NSLog(@"solutions found %d required %d", solutionsFound, solutionsExpected);
     if (solutionsFound==solutionsExpected)
         return YES;
     else
@@ -844,7 +620,8 @@ static float kDistanceBetweenBlocks=70.0f;
         {
             if([BLMath DistanceBetween:thisCage.Position and:pickupPos]<=60.0f)
             {
-                cage=thisCage;
+                [thisCage spawnNewBlock];
+                spawnedNewObj=YES;
             }
         }
         
@@ -859,47 +636,41 @@ static float kDistanceBetweenBlocks=70.0f;
             [loggingService logEvent:BL_PA_DT_TOUCH_MOVE_MOVE_BLOCK withAdditionalData:nil];
             hasLoggedMovedBlock=YES;
         }
-
-        // check that the shape is being moved within bounds of the screen
-        if((location.x>=60.0f&&location.x<=lx-60.0f) && (location.y>=60.0f&&location.y<=ly-60.0f))
+        if((location.x>=80.0f&&location.x<=lx-80.0f) && (location.y>=80.0f&&location.y<=ly-80.0f))
         {
             // set it's position and move it!
             currentPickupObject.Position=location;
             [currentPickupObject move];
         }
         
-        // then for each other moveable thing, check if we're proximate
         for(id go in gw.AllGameObjects)
         {
-            if([go conformsToProtocol:@protocol(Moveable)] && [go conformsToProtocol:@protocol(Pairable)])
+            if([go conformsToProtocol:@protocol(Moveable)])
             {
-                BOOL prx=[go amIProximateTo:location];
-                if(prx)hasBeenProximate=YES;
+                float dist=[BLMath DistanceBetween:currentPickupObject.Position and:((id<Moveable>)go).Position];
                 
-
-                [go unpairMeFrom:go];
-                if(((id<Moveable>)go).MyContainer==currentPickupObject.MyContainer)
-                   [((id<Container>)((id<Moveable>)go).MyContainer) removeBlockFromMe:go];
-                
-                for(id<Moveable,Pairable>gop in ((id<Moveable,Pairable>)go).PairedObjects)
-                {
-                    
-                    NSLog(@"count of pairedobjects for go %d is %d", (int)go, [((id<Moveable,Pairable>)go).PairedObjects count]);
-                    if([gop amIProximateTo:((id<Moveable>)go).Position])
-                    {
-                        if(gop.MyContainer)
-                            [((id<Container>)((id<Moveable>)gop).MyContainer) removeBlockFromMe:gop];
-                        
-                        gop.MyContainer=((id<Moveable>)go).MyContainer;
-                        [gop pairMeWith:go];
-                        [((id<Container>)((id<Moveable>)go).MyContainer) addBlockToMe:gop];
-                    }
-                    
+                if(nearestObjectDistance==0){
+                    nearestObjectDistance=dist;
+                    nearestObject=go;
                 }
+                else if(dist<nearestObjectDistance){
+                    nearestObjectDistance=dist;
+                    nearestObject=go;
+                }
+                
+                    
+                BOOL prx=[go amIProximateTo:location];
+                if(prx && !hasBeenProximate){
+                    hasBeenProximate=YES;
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_bond_possible.wav")];
+                }
+                
+                
             }
         }
+
+
     }
-    
     
 }
 
@@ -914,10 +685,9 @@ static float kDistanceBetweenBlocks=70.0f;
     // check there's a pickupobject
     NSArray *allGWCopy=[NSArray arrayWithArray:gw.AllGameObjects];
     
-    [cage spawnNewBlock];
-    
     if(currentPickupObject)
     {
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_block_dropped.wav")];
         CGPoint curPOPos=currentPickupObject.Position;
         // check all the gamobjects and search for a moveable object
         
@@ -927,78 +697,59 @@ static float kDistanceBetweenBlocks=70.0f;
             return;
         }
         
-        id previousObjectContainer=nil;
+        if(CGRectContainsPoint(inactiveRect, location))
+        {
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_blocks_added_to_evaluation_area.wav")];
+        }
         
+        BOOL gotTarget=NO;
         for(id go in allGWCopy)
         {
             if([go conformsToProtocol:@protocol(Moveable)])
             {
-                if(go==currentPickupObject)
-                {
-                    [go resetTint];
-                    continue;
-                }
-                // return whether the object is proximate to our current pickuobject
-                BOOL proximateToPickupObject=[go amIProximateTo:curPOPos];
                 [go resetTint];
-                if(!proximateToPickupObject&&!cannotBreakBonds){
-                    [go unpairMeFrom:currentPickupObject];
-                }
-                else {
+                if(go==currentPickupObject)
+                    continue;
+                
+                // return whether the object is proximate to our current pickuobject
+
+
                     
-                    id<Moveable,Pairable>cObj=(id<Moveable,Pairable>)go;
+                id<Moveable,Pairable>cObj=(id<Moveable,Pairable>)go;
+                
+                if([cObj amIProximateTo:location]){
                     
-                    // we only want to be pairable with a container with objects of the same group - so check that here
+                    NSLog(@"moved pickup object close to this GO. add pickupObject to cObj container");
+                    hasBeenProximate=YES;
                     
-                    if(!previousObjectContainer || previousObjectContainer==cObj.MyContainer)
-                    {
-                        if(!CGRectContainsPoint(inactiveRect, location)){
-                            
-                            if([cObj.PairedObjects count]>0 && cannotBreakBonds)return;
-                            
-                            if(evalAreas){
-                                for(NSArray *a in evalAreas)
-                                {
-                                    CGRect evalAreaBox=CGRectNull;
-                                    for(CCSprite *s in a)
-                                    {
-                                        evalAreaBox=CGRectUnion(evalAreaBox, s.boundingBox);
-                                    }
-                                    
-                                    if(CGRectContainsPoint(evalAreaBox, cObj.Position))
-                                    {
-                                        currentPickupObject=nil;
-                                        isTouching=NO;
-                                        spawnedNewObj=NO;
-                                        return;
-                                    }
-                                }
-                            }
-                            [go pairMeWith:currentPickupObject];
-                        
-                            previousObjectContainer=cObj.MyContainer;
-                            
-                            
-                            [loggingService logEvent:BL_PA_DT_TOUCH_END_PAIR_BLOCK withAdditionalData:nil];
-                            
-                            //currentPickupObject.Position=[self returnNextMountPointForThisShape:cObj.MyContainer];
-                            [cObj.MyContainer layoutMyBlocks];
-                            //[currentPickupObject animateToPosition];
-                        }
+                    if(cObj.MyContainer){
+                        if(currentPickupObject.MyContainer)
+                            [((id<Container>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
+                    
+                        [((id<Container>)cObj.MyContainer) addBlockToMe:currentPickupObject];
+                        [((id<Container>)cObj.MyContainer) layoutMyBlocks];
                     }
+                    
+                    gotTarget=YES;
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_bond_made.wav")];
+                    break;
+                    
                 }
-                
-                //TODO: add bit in here to check existing links - ie, at the minute, if a block is dragged out of the middle of the row, it doesn't seem to update all of them
-                
-                
+
             }
 
         }
-        [self updateContainerForNewlyAddedBlock:currentPickupObject];
-        [self lookForOrphanedObjects];
-        [self tidyUpEmptyGroups];
-        [self updateContainerLabels];
-        
+        if(!gotTarget)
+        {
+            if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape count]>1)
+            {
+                [((id<Container>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
+                [self createContainerWithOne:currentPickupObject];
+            }
+            
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_bond_broken_snapped.wav")];
+        }
+
         //[self evalUniqueShapes];
         if(evalMode==kProblemEvalAuto)[self evalProblem];
     }
@@ -1010,9 +761,7 @@ static float kDistanceBetweenBlocks=70.0f;
         [loggingService logEvent:BL_PA_DT_TOUCH_MOVE_PROXIMITY_OF_BLOCK withAdditionalData:nil];
     }
     
-    currentPickupObject=nil;
-    isTouching=NO;
-    spawnedNewObj=NO;
+    [self setTouchVarsToOff];
     
     
     
@@ -1020,10 +769,18 @@ static float kDistanceBetweenBlocks=70.0f;
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    // empty selected objects
+    [self setTouchVarsToOff];
+}
+
+-(void)setTouchVarsToOff
+{
     isTouching=NO;
     currentPickupObject=nil;
+    nearestObjectDistance=0.0f;
+    nearestObject=nil;
     spawnedNewObj=NO;
-    // empty selected objects
+
 }
 
 #pragma mark - evaluation
@@ -1131,33 +888,6 @@ static float kDistanceBetweenBlocks=70.0f;
 
 -(BOOL)evalExpression
 {
-//    if(evalType==kCheckShapeSizes)
-//    {
-//        int solutionsFound=0;
-//        int solutionsExpected=[solutionsDef count];
-//        NSMutableArray *shapesMatched=[[NSMutableArray alloc]init];
-//        NSArray *shapesHere=[self evalUniqueShapes];
-//
-//        
-//        for(int i=0;i<[solutionsDef count];i++)
-//        {
-//            int thisSolution=[[solutionsDef objectAtIndex:i]intValue];
-//            for(NSArray *a in shapesHere)
-//            {
-//                if([a count]==thisSolution&&![shapesMatched containsObject:a]){
-//                    [shapesMatched addObject:a];
-//                    solutionsFound++;
-//                }
-//            }
-//        }
-//        
-//        [shapesMatched release];
-//        
-//        if(solutionsFound==solutionsExpected)
-//            return YES;
-//        else
-//            return NO;
-//    }
     if(evalType==kCheckShapeSizes)
     {
         NSMutableArray *shapesFound=[[NSMutableArray alloc]init];

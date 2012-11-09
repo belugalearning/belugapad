@@ -69,6 +69,22 @@
 
 
 
+@protocol Value <NSObject>
+
+@property (readonly) NSNumber *value;
+
+@end
+
+
+
+@protocol ValueOperator <NSObject>
+
+@property (retain) NSString *valueOperator;
+
+@end
+
+
+
 @protocol Interactive <Bounding>
 
 @property BOOL enabled;
@@ -77,6 +93,7 @@
 -(void)activate;
 -(void)inflateZIndex;
 -(void)deflateZindex;
+-(void)destroy;
 
 @end
 
@@ -87,6 +104,7 @@
 
 -(void)returnToBase;
 -(id<MovingInteractive>)createADuplicate;
+-(void)destroy;
 
 @end
 

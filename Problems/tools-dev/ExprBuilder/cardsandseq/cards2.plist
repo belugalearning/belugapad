@@ -7,7 +7,9 @@
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>tom&apos;s apples</string>
 	<key>EVAL_TYPE</key>
-	<string>ALL_ENABLED</string>
+	<string>SEQUENCE_ASC</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
 	<key>NUMBER_CARD_ROW_MIN</key>
 	<integer>2</integer>
 	<key>NUMBER_CARD_ROW_MAX</key>

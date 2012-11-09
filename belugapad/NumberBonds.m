@@ -189,7 +189,7 @@ static float kNBFontSizeLarge=35.0f;
 -(void)populateGW
 {
 
-    int dockSize=[initCages count]+2;
+    int dockSize=12;
     float dockPieceYPos=582.0f;
     float initBarStartYPos=582.0f;
     float initCageStartYPos=0.0f;
@@ -261,6 +261,7 @@ static float kNBFontSizeLarge=35.0f;
     }
     
     // do stuff with our INIT_CAGES (DWNBondStoreGameObject)
+    
     for (int i=0;i<[initCages count]; i++)
     {
         int qtyForThisStore=[[[initCages objectAtIndex:i] objectForKey:QUANTITY] intValue];
@@ -641,6 +642,7 @@ static float kNBFontSizeLarge=35.0f;
     thisOne.HintObjects=thatOne.HintObjects;
     thatOne.HintObjects=thisOneHints;
     doNotSendPositionEval=YES;
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_rearrangement.wav")];
     
     for(DWNBondObjectGameObject *o in thisOne.HintObjects)
     {
@@ -921,6 +923,7 @@ static float kNBFontSizeLarge=35.0f;
             }
             else {
                 [pogo handleMessage:kDWmoveSpriteToHome];
+                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_fly_back.wav")];
                 [[mountedObjects objectAtIndex:pogo.IndexPos] addObject:gw.Blackboard.PickupObject];
                 
                 [gw handleMessage:kDWhighlight andPayload:nil withLogLevel:-1];  

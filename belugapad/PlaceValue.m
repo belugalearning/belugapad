@@ -36,7 +36,7 @@
 
 static float kPropXNetSpace=0.087890625f;
 static float kPropYColumnOrigin=0.75f;
-static float kCageYOrigin=0.08f;
+static float kCageYOrigin=0.06f;
 static float kPropYColumnHeader=0.85f;
 static float kPropYColumnTotalCount=0.15f;
 static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";

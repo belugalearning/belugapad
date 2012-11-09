@@ -216,7 +216,7 @@
                 //add the cards
                 for(int icard=numberCardRowMin; icard<=numberCardRowMax; icard+=numberCardRowInterval)
                 {
-                    SGBtxeObjectNumber *n=[[SGBtxeObjectNumber alloc] initWithGameWorld:gw];
+                    SGBtxeObjectNumber *n=[[[SGBtxeObjectNumber alloc] initWithGameWorld:gw] autorelease];
                     n.numberText=[NSString stringWithFormat:@"%d", icard];
                     n.enabled=YES;
                     

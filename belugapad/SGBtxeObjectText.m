@@ -20,6 +20,7 @@
 @synthesize originalPosition;
 @synthesize usePicker;
 @synthesize mount;
+@synthesize hidden;
 
 @synthesize container;
 
@@ -79,6 +80,8 @@
 
 -(void)attachToRenderBase:(CCNode*)theRenderBase;
 {
+    if(self.hidden)return;
+    
     renderBase=theRenderBase;
     
     [renderBase addChild:textBackgroundRenderComponent.sprite];
@@ -117,6 +120,8 @@
 
 -(void)setupDraw
 {
+    if(self.hidden)return;
+    
     //text render to create it's label
     [textRenderComponent setupDraw];
     

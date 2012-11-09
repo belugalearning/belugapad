@@ -99,6 +99,9 @@ const NSString *matchNumbers=@"0123456789";
         
         ot.enabled=[self enabledBoolFor:element];
         
+        CXMLNode *hidden=[element attributeForName:@"hidden"];
+        if(hidden)ot.hidden=[[[hidden stringValue] lowercaseString] isEqualToString:@"yes"];
+        
         //also disable if a number picker
         if([self boolFor:@"picker" on:element]) ot.enabled=NO;
         
@@ -110,6 +113,9 @@ const NSString *matchNumbers=@"0123456789";
         SGBtxeObjectOperator *oo=[[SGBtxeObjectOperator alloc] initWithGameWorld:gameWorld];
         CXMLNode *opNode=[element attributeForName:@"value"];
         if(opNode)oo.valueOperator=opNode.stringValue;
+        
+        CXMLNode *hidden=[element attributeForName:@"hidden"];
+        if(hidden)oo.hidden=[[[hidden stringValue] lowercaseString] isEqualToString:@"yes"];
         
         oo.enabled=[self enabledBoolFor:element];
         [ParentGO.containerMgrComponent addObjectToContainer:oo];
@@ -123,6 +129,9 @@ const NSString *matchNumbers=@"0123456789";
         CXMLNode *iconTagNode=[element attributeForName:@"icontag"];
         if(iconTagNode)oi.iconTag=iconTagNode.stringValue;
         
+        CXMLNode *hidden=[element attributeForName:@"hidden"];
+        if(hidden)oi.hidden=[[[hidden stringValue] lowercaseString] isEqualToString:@"yes"];
+        
         oi.enabled=[self enabledBoolFor:element];
         
         [ParentGO.containerMgrComponent addObjectToContainer:oi];
@@ -134,6 +143,9 @@ const NSString *matchNumbers=@"0123456789";
         
         SGBtxeObjectText *ot=[[SGBtxeObjectText alloc] initWithGameWorld:gameWorld];
         ot.text=[[element attributeForName:@"sample"] stringValue];
+        
+        CXMLNode *hidden=[element attributeForName:@"hidden"];
+        if(hidden)ot.hidden=[[[hidden stringValue] lowercaseString] isEqualToString:@"yes"];
         
         CXMLNode *tagNode=[element attributeForName:@"preftag"];
         if(tagNode)ot.tag=tagNode.stringValue;
@@ -158,6 +170,9 @@ const NSString *matchNumbers=@"0123456789";
         on.numberText=[[element attributeForName:@"number"] stringValue];
         on.prefixText=[[element attributeForName:@"prefix"] stringValue];
         on.suffixText=[[element attributeForName:@"suffix"] stringValue];
+        
+        CXMLNode *hidden=[element attributeForName:@"hidden"];
+        if(hidden)on.hidden=[[[hidden stringValue] lowercaseString] isEqualToString:@"yes"];
         
         on.enabled=[self enabledBoolFor:element];
         

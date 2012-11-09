@@ -52,6 +52,7 @@
 @property CGSize size;
 @property CGPoint position;
 @property CGPoint worldPosition;
+@property BOOL hidden;
 
 -(void) setupDraw;
 

@@ -672,6 +672,8 @@ static float kDistanceBetweenBlocks=70.0f;
         {
             if([go conformsToProtocol:@protocol(Moveable)])
             {
+                if(go==currentPickupObject)continue;
+                
                 float dist=[BLMath DistanceBetween:currentPickupObject.Position and:((id<Moveable>)go).Position];
                 
                 if(nearestObjectDistance==0){

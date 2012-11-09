@@ -1256,7 +1256,7 @@ static float kTimeToCageShake=7.0f;
             [countBg setTag:3];
             [countBg setOpacity:0];
             [self.NoScaleLayer addChild:countBg z:9];
-            sumLabel=[CCLabelTTF labelWithString:@"c" fontName:CHANGO fontSize:25.0f];
+            sumLabel=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:25.0f];
             [sumLabel setTag:3];
             [sumLabel setOpacity:0];
             [sumLabel setPosition:ccp(countBg.contentSize.width/2,countBg.contentSize.height/2)];

@@ -865,6 +865,9 @@ static float kTimeToCageShake=7.0f;
             else
                 block.ObjectValue=-[[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue];
             
+            if([solutionType isEqualToString:GRID_MATCH])
+                block.Disabled=YES;
+            
             // check whether a custom sprite has been set for this column, and if so, set it.
             NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue]];
             

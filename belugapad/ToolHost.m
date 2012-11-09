@@ -1439,7 +1439,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     if(!metaQuestionForThisProblem && !numberPickerForThisProblem && evalMode==kProblemEvalOnCommit)
         showCommit=YES;
     
-    if(currentTool && evalMode==kProblemEvalOnCommit)
+    if(currentTool && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem)
         showCommit=YES;
     
     if(hasTrayMq && trayMqShowing)

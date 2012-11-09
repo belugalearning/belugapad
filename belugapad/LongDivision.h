@@ -90,6 +90,8 @@
     float lastBaseEval;
     float currentScaleY;
     NSMutableArray *renderedBlocks;
+    NSMutableDictionary *labelInfo;
+    
     
     //problem state
     BOOL expressionIsEqual;

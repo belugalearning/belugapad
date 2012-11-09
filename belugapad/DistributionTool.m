@@ -125,6 +125,15 @@ static float kDistanceBetweenBlocks=70.0f;
         
         timeSinceInteraction=0.0f;
     }
+    
+    for(id go in gw.AllGameObjects)
+    {
+        if([go conformsToProtocol:@protocol(Container)])
+            if([((id<Container>)go) blocksInShape]==0)
+                {
+                    [(id<Container>)go destroyThisObject];
+                }
+    }
 
 }
 
@@ -181,6 +190,8 @@ static float kDistanceBetweenBlocks=70.0f;
         bondDifferentTypes=NO;
     
     bondDifferentTypes=YES;
+
+    usedShapeTypes=[[NSMutableArray alloc]init];
 }
 
 -(void)populateGW
@@ -230,6 +241,9 @@ static float kDistanceBetweenBlocks=70.0f;
         
         if(!addedCages && [dockType isEqualToString:@"Infinite"])
             addedCages=[[[NSMutableArray alloc]init]retain];
+        
+        if([usedShapeTypes count]==0)
+            [usedShapeTypes addObject:@"Circle"];
         
         for(int i=0;i<[usedShapeTypes count];i++)
         {
@@ -292,7 +306,7 @@ static float kDistanceBetweenBlocks=70.0f;
         
         int farLeft=top.x+60;
         int farRight=lx-bottom.x-60;
-        int topMost=ly-top.y-60;
+        int topMost=ly-top.y-110;
         int botMost=0+-bottom.y+60;
         
         //startPosX=[theseSettings objectForKey:POS_X] ? [[theseSettings objectForKey:POS_X]intValue] : (arc4random() % 960) + 30;
@@ -445,20 +459,22 @@ static float kDistanceBetweenBlocks=70.0f;
     
     if(currentPickupObject)
     {
-        for(id<Pairable> pairedObj in [NSArray arrayWithArray:currentPickupObject.PairedObjects])
-        {
-            [pairedObj unpairMeFrom:currentPickupObject];
-        }
         
-        SGGameObject *go=(SGGameObject*)currentPickupObject;
         CCSprite *s=currentPickupObject.mySprite;
+        CCLabelTTF *l=currentPickupObject.Label;
+        
+        if(currentPickupObject.MyContainer)
+            [(id<Container>)currentPickupObject.MyContainer removeBlockFromMe:currentPickupObject];
+        
         CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:cage.Position];
         CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.1f];
-        CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES]; [gw delayRemoveGameObject:go];}];
+        CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES]; [l removeFromParentAndCleanup:YES]; [currentPickupObject destroyThisObject];}];
         CCSequence *sequence=[CCSequence actions:moveAct, fadeAct, cleanUp, nil];
         [s runAction:sequence];
         currentPickupObject=nil;
-
+        
+//        if(!spawnedNewObj)
+//            [cage spawnNewBlock];
     }
 }
 
@@ -596,12 +612,21 @@ static float kDistanceBetweenBlocks=70.0f;
             {
                 [loggingService logEvent:BL_PA_DT_TOUCH_START_PICKUP_BLOCK withAdditionalData:nil];
                 currentPickupObject=thisObj;
+                
+                if([currentPickupObject.MyContainer isKindOfClass:[SGDtoolCage class]]){
+                    spawnedNewObj=NO;
+                    hasMovedCagedBlock=YES;
+                    ((id<Cage>)currentPickupObject.MyContainer).CurrentObject=nil;
+                    currentPickupObject.MyContainer=nil;
+                }
+                
                 pickupPos=((id<Moveable>)currentPickupObject).Position;
                 break;
             }
         }
         
     }
+    
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -614,7 +639,7 @@ static float kDistanceBetweenBlocks=70.0f;
     lastTouch=location;
     
     // check the pickup start position against a cage position. if they matched, then spawn a new block
-    if(problemHasCage && !spawnedNewObj)
+    if(problemHasCage && hasMovedCagedBlock && !spawnedNewObj)
     {
         for(id<Cage>thisCage in addedCages)
         {
@@ -685,6 +710,9 @@ static float kDistanceBetweenBlocks=70.0f;
     // check there's a pickupobject
     NSArray *allGWCopy=[NSArray arrayWithArray:gw.AllGameObjects];
     
+    if(!spawnedNewObj && hasMovedCagedBlock)
+        [cage spawnNewBlock];
+    
     if(currentPickupObject)
     {
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_block_dropped.wav")];
@@ -741,7 +769,9 @@ static float kDistanceBetweenBlocks=70.0f;
         }
         if(!gotTarget)
         {
-            if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape count]>1)
+            if([(id<NSObject>)currentPickupObject.MyContainer isKindOfClass:[SGDtoolCage class]])return;
+            
+            if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape count]>1||currentPickupObject.MyContainer==nil)
             {
                 [((id<Container>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
                 [self createContainerWithOne:currentPickupObject];
@@ -779,7 +809,8 @@ static float kDistanceBetweenBlocks=70.0f;
     currentPickupObject=nil;
     nearestObjectDistance=0.0f;
     nearestObject=nil;
-    spawnedNewObj=NO;
+    spawnedNewObj=YES;
+    hasMovedCagedBlock=NO;
 
 }
 
@@ -892,8 +923,10 @@ static float kDistanceBetweenBlocks=70.0f;
     {
         NSMutableArray *shapesFound=[[NSMutableArray alloc]init];
         NSMutableArray *solFound=[[NSMutableArray alloc]init];
+        NSMutableArray *containers=[[NSMutableArray alloc]init];
         int solutionsExpected=[solutionsDef count];
         int solutionsFound=0;
+
         
         
         for(NSNumber *n in solutionsDef)
@@ -908,8 +941,13 @@ static float kDistanceBetweenBlocks=70.0f;
                 {
                     id<Container>thisCont=cont;
                     
+                    if(![containers containsObject:cont])
+                        [containers addObject:cont];
+                    
+                    NSLog(@"blocksinshape %d is %d", (int)thisCont, [thisCont.BlocksInShape count]);
                     if([thisCont.BlocksInShape count]==[n intValue])
                     {
+                        NSLog(@"found solution nigguh");
                         solutionsFound++;
                         [shapesFound addObject:cont];
                         [solFound addObject:n];
@@ -921,8 +959,8 @@ static float kDistanceBetweenBlocks=70.0f;
         
         
           
-        NSLog(@"solutions found %d required %d", solutionsFound, solutionsExpected);
-        if (solutionsFound==solutionsExpected)
+        NSLog(@"solutions found %d required %d containers %d", solutionsFound, solutionsExpected, [containers count]);
+        if (solutionsFound==solutionsExpected && [containers count]==solutionsExpected)
             return YES;
         else
             return NO;

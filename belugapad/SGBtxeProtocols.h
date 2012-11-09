@@ -98,15 +98,21 @@
 @end
 
 
+
+
+
 @protocol MovingInteractive <Interactive>
 
 @property CGPoint originalPosition;
+@property (retain) id mount;
 
 -(void)returnToBase;
 -(id<MovingInteractive>)createADuplicate;
 -(void)destroy;
 
 @end
+
+
 
 
 @protocol BtxeMount
@@ -116,6 +122,10 @@
 -(void)duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)mountObject;
 
 @end
+
+
+
+
 
 
 @protocol Tappable <Bounding>

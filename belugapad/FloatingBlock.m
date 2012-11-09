@@ -127,10 +127,14 @@
     
     if(self.pickerView)
     {
-        if([self returnPickerNumber]<minBlocksFromPipe)
+        if([self returnPickerNumber]<minBlocksFromPipe){
             [pickerView spinComponent:0 speed:10 easeRate:4 repeat:2 stopRow:minBlocksFromPipe];
-        if([self returnPickerNumber]>maxBlocksFromPipe)
+            blocksFromPipe=minBlocksFromPipe;
+        }
+        if([self returnPickerNumber]>maxBlocksFromPipe){
             [pickerView spinComponent:0 speed:10 easeRate:4 repeat:2 stopRow:maxBlocksFromPipe];
+            blocksFromPipe=maxBlocksFromPipe;
+        }
     }
     
 }

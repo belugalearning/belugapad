@@ -61,6 +61,13 @@
     int numberCardRowInterval;
     BOOL numberCardRandomOrder;
     SGBtxeRow *ncardRow;
+    
+    
+    //expression build
+    NSMutableArray *tokens;
+    NSDictionary *curToken;
+    int curTokenIdx;
+    
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;

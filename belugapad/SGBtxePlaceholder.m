@@ -73,6 +73,8 @@
     //create a duplicate of the passed object
     id<MovingInteractive, RenderObject, NSObject> dupe=(id<MovingInteractive, RenderObject, NSObject>)[mountObject createADuplicate];
     
+    dupe.mount=self;
+    
     //set it up
     [dupe setupDraw];
     

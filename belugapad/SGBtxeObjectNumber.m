@@ -24,6 +24,8 @@
 @synthesize textBackgroundRenderComponent;
 
 @synthesize container;
+@synthesize mount;
+
 
 -(SGBtxeObjectNumber*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {

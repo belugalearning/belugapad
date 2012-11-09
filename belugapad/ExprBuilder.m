@@ -24,6 +24,7 @@
 #import "SGBtxeMissingVar.h"
 #import "SGBtxeContainerMgr.h"
 #import "SGBtxeObjectNumber.h"
+#import "SGBtxeProtocols.h"
 
 @interface ExprBuilder()
 {
@@ -449,10 +450,145 @@
         return YES;
     }
     
+    if([evalType isEqualToString:@"EXPRESSION_EQUALITIES"])
+    {
+        //check for an equality on all but the first expression
+        for(int i=1; i<rows.count; i++)
+        {
+            SGBtxeRow *row=[rows objectAtIndex:i];
+            if([self parseContainerToEqualityAndEval:row]==NO) return NO;
+        }
+        
+        return YES;
+    }
+    
     else
     {
         return NO;
     }
+}
+
+-(BOOL)parseContainerToEqualityAndEval:(id<Container>)cont
+{
+    tokens=[[NSMutableArray alloc]init];
+    curTokenIdx=-1;
+    
+    for(id v in cont.children)
+    {
+        if([v conformsToProtocol:@protocol(MovingInteractive)])
+        {
+            id<MovingInteractive> vmountable=(id<MovingInteractive>)v;
+            if(!vmountable.mount)
+            {
+                [self tokeniseObject:v];
+            }
+        }
+        else if([v conformsToProtocol:@protocol(BtxeMount)])
+        {
+            id<BtxeMount> vc=(id<BtxeMount>)v;
+            if(vc.mountedObject)
+            {
+                [self tokeniseObject:vc.mountedObject];
+            }
+        }
+        else
+        {
+            [self tokeniseObject:v];
+        }
+    }
+    
+    [self getNextToken];
+    NSString *res=[self computeExpr:0];
+    NSLog(@"result: %@", res);
+    
+    [tokens release];
+    
+    return NO;
+}
+
+-(void)tokeniseObject:(id)v
+{
+    if([v conformsToProtocol:@protocol(Value)])
+    {
+        id<Value> vv=(id<Value>)v;
+        [tokens addObject:@{@"token":@"NUMBER", @"value": [vv.value stringValue]}];
+    }
+    
+    else if([v conformsToProtocol:@protocol(ValueOperator)])
+    {
+        id<ValueOperator> vop=(id<ValueOperator>)v;
+        
+        if([vop.valueOperator isEqualToString:@"="])
+        {
+            [tokens addObject:@{@"token":@"BINOP", @"value":@"="}];
+        }
+        else if([vop.valueOperator isEqualToString:@"*"] || [vop.valueOperator isEqualToString:@"x"])
+        {
+            [tokens addObject:@{@"token":@"BINOP", @"value":@"*"}];
+        }
+        else if([vop.valueOperator isEqualToString:@"/"])
+        {
+            [tokens addObject:@{@"token":@"BINOP", @"value":@"/"}];
+        }
+        else if([vop.valueOperator isEqualToString:@"+"])
+        {
+            [tokens addObject:@{@"token":@"BINOP", @"value":@"+"}];
+        }
+        else if([vop.valueOperator isEqualToString:@"-"])
+        {
+            [tokens addObject:@{@"token":@"BINOP", @"value":@"-"}];
+        }
+    }
+
+}
+
+-(NSString*)computeExpr:(int)minPrec
+{
+    NSString *atomLhs=[curToken objectForKey:@"value"];
+    [self getNextToken];
+    
+    while(1)
+    {
+        NSDictionary *cur=curToken;
+        
+        if(!cur ||
+           ![[cur objectForKey:@"token"] isEqualToString:@"BINOP"] ||
+           [self getPrecendenceForToken:[cur objectForKey:@"value"]] < minPrec)
+        {
+            break;
+        }
+        
+        NSString *op=[[[cur objectForKey:@"value"] copy] autorelease];
+        int prec=[self getPrecendenceForToken:op];
+        int nextminprec=prec+1;
+        
+        [self getNextToken];
+        NSString *atomRhs=[self computeExpr:nextminprec];
+        atomLhs=[NSString stringWithFormat:@"|%@%@%@|", atomLhs, op, atomRhs];
+    }
+    
+    return atomLhs;
+}
+
+-(void)getNextToken
+{
+    if(curTokenIdx<=((int)[tokens count]))
+    {
+        curTokenIdx++;
+       
+        if(curTokenIdx<[tokens count]) curToken=[tokens objectAtIndex:curTokenIdx];
+        else curToken=nil;
+    }
+}
+
+-(int)getPrecendenceForToken:(NSString *)token
+{
+    if([token isEqualToString:@"="]) return 1;
+    if([token isEqualToString:@"*"]) return 3;
+    if([token isEqualToString:@"/"]) return 4;
+    if([token isEqualToString:@"+"]) return 2;
+    if([token isEqualToString:@"-"]) return 2;
+    return 0;
 }
 
 -(int)getPlaceHolderCountOnRow:(int)rowIdx

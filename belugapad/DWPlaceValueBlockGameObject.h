@@ -24,6 +24,7 @@
 @property float PosY;
 @property BOOL AnimateMe;
 @property BOOL Selected;
+@property BOOL Disabled;
 @property int lastZIndex;
 
 

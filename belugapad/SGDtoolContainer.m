@@ -44,6 +44,8 @@
 -(void)doUpdate:(ccTime)delta
 {
     //update of components
+    if([self blocksInShape]==0)
+        [self destroyThisObject];
 
 }
 

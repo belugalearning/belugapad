@@ -21,6 +21,7 @@
 @synthesize moveHandle;
 @synthesize tile;
 @synthesize RenderLayer;
+@synthesize anchorSize;
 
 -(void)dealloc
 {

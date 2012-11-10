@@ -21,5 +21,6 @@
 @property BOOL moveHandle;
 @property (retain) DWGameObject *tile;
 @property (retain) CCLayer *RenderLayer;
+@property int anchorSize;
 
 @end

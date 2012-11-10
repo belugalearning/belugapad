@@ -200,13 +200,12 @@
     if([pdef objectForKey:ANCHOR_SPACE])
         spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
     else 
-        spaceBetweenAnchors=74;
+        spaceBetweenAnchors=80;
     
-    if(spaceBetweenAnchors==85)
-        spaceBetweenAnchors=74;
-
-    if(spaceBetweenAnchors==80)
-        spaceBetweenAnchors=74;
+    if(spaceBetweenAnchors>50)
+        spaceBetweenAnchors=80;
+    else
+        spaceBetweenAnchors=40;
 
 
     
@@ -286,6 +285,8 @@
             anch.myXpos=iRow;
             anch.myYpos=iCol;
             anch.RenderLayer=anchorLayer;
+            anch.anchorSize=spaceBetweenAnchors;
+            
             
             // set the hidden property for every anchor on this row if 
             if(hiddenRows && [hiddenRows objectForKey:[NSString stringWithFormat:@"%d", iCol]]) {

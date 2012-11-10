@@ -27,6 +27,8 @@
 @synthesize mount;
 @synthesize hidden;
 
+@synthesize targetNumber, usePicker;
+
 
 -(SGBtxeObjectNumber*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -187,6 +189,11 @@
 
 -(NSString*)text
 {
+    if(usePicker && !numberValue)
+    {
+        return @"?";
+    }
+    
     NSString *ps=prefixText;
     if(!ps)ps=@"";
     NSString *ss=suffixText;

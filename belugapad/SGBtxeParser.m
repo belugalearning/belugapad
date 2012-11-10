@@ -174,6 +174,9 @@ const NSString *matchNumbers=@"0123456789";
         CXMLNode *hidden=[element attributeForName:@"hidden"];
         if(hidden)on.hidden=[[[hidden stringValue] lowercaseString] isEqualToString:@"yes"];
         
+        CXMLNode *usepicker=[element attributeForName:@"usePicker"];
+        if(usepicker)on.usePicker=[[[usepicker stringValue] lowercaseString] isEqualToString:@"yes"];
+        
         on.enabled=[self enabledBoolFor:element];
         
         [ParentGO.containerMgrComponent addObjectToContainer:on];

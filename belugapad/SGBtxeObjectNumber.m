@@ -25,6 +25,7 @@
 
 @synthesize container;
 @synthesize mount;
+@synthesize hidden;
 
 
 -(SGBtxeObjectNumber*)initWithGameWorld:(SGGameWorld*)aGameWorld
@@ -229,6 +230,8 @@
 
 -(void)attachToRenderBase:(CCNode*)theRenderBase;
 {
+    if(self.hidden)return;
+    
     renderBase=theRenderBase;
     
     [renderBase addChild:textBackgroundRenderComponent.sprite];
@@ -239,6 +242,8 @@
 
 -(void)setupDraw
 {
+    if(self.hidden)return;
+    
     // text mode
     self.textRenderComponent.useAlternateFont=YES;
     [self.textRenderComponent setupDraw];

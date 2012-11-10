@@ -22,6 +22,7 @@
 @synthesize valueOperator;
 
 @synthesize mount;
+@synthesize hidden;
 
 -(SGBtxeObjectOperator*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -86,8 +87,24 @@
     self.position=[renderBase convertToNodeSpace:worldPosition];
 }
 
+-(void)destroy
+{
+    [self detachFromRenderBase];
+    
+    [gameWorld delayRemoveGameObject:self];
+}
+
+-(void)detachFromRenderBase
+{
+    [textBackgroundRenderComponent.sprite removeFromParentAndCleanup:YES];
+    [textRenderComponent.label0 removeFromParentAndCleanup:YES];
+    [textRenderComponent.label removeFromParentAndCleanup:YES];
+}
+
 -(void)attachToRenderBase:(CCNode*)theRenderBase
 {
+    if(self.hidden)return;
+    
     renderBase=theRenderBase;
     
     [renderBase addChild:textBackgroundRenderComponent.sprite];
@@ -123,6 +140,8 @@
 
 -(void)setupDraw
 {
+    if(self.hidden)return;
+    
     //text render to create it's label
     [textRenderComponent setupDraw];
     

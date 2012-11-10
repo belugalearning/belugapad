@@ -49,6 +49,12 @@
 
 }
 
+-(void)updateLabel
+{
+    self.label.string=ParentGO.text;
+    self.label0.string=ParentGO.text;
+}
+
 -(void)updatePosition:(CGPoint)position
 {
     self.label.position=position;

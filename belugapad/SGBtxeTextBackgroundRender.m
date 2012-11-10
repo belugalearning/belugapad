@@ -25,14 +25,16 @@
 
 -(void)setupDrawWithSize:(CGSize)size
 {
-    self.sprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/btxe/ot-bkg.png")];
-    self.sprite.scaleX = size.width / BTXE_OTBKG_SPRITE_W;
-    self.sprite.scaleY = size.height / BTXE_OTBKG_SPRITE_H;
+    self.sprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/btxe/SB_Block_Question_Middle.png")];
+    self.sprite.scaleX=size.width / self.sprite.contentSize.width;
+    self.sprite.scaleY=size.height / self.sprite.contentSize.height;
+    
+    [self.sprite setPosition:ccp(0, -3)];
 }
 
 -(void)updatePosition:(CGPoint)position
 {
-    self.sprite.position=position;
+    self.sprite.position=ccpAdd(position, ccp(0, -3));
 }
 
 -(void)dealloc

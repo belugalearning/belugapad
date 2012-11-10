@@ -473,7 +473,7 @@
         }
         
         return YES;
-    }
+    };
     
     if([evalType isEqualToString:@"EXPRESSION_EQUALITIES_NOT_IDENTICAL"])
     {

@@ -60,6 +60,8 @@
     int numberCardRowMax;
     int numberCardRowInterval;
     BOOL numberCardRandomOrder;
+    int numberCardRandomSelectionOf;
+    
     SGBtxeRow *ncardRow;
     
     

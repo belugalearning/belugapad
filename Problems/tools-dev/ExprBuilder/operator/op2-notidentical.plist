@@ -16,6 +16,8 @@
 	<integer>10</integer>
 	<key>NUMBER_CARD_INTERVAL</key>
 	<integer>1</integer>
+	<key>NUMBER_CARD_PICK_RANDOM_SELECTION_OF</key>
+	<string>5</string>
 	<key>EXPR_STAGES</key>
 	<array>
 		<string>&lt;b:t&gt;operator things -- make 6 two ways&lt;/b:t&gt;&lt;b:oo value=&quot;+&quot; /&gt;&lt;b:oo value=&quot;x&quot; /&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:oo value=&quot;/&quot; /&gt;&lt;b:ot tag=&quot;text&quot;&gt;text&lt;/b:ot&gt;</string>

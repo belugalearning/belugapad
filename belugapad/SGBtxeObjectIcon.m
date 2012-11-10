@@ -17,6 +17,7 @@
 
 @synthesize container;
 @synthesize mount;
+@synthesize hidden;
 
 -(SGBtxeObjectIcon*)initWithGameWorld:(SGGameWorld*) aGameWorld
 {
@@ -78,6 +79,8 @@
 
 -(void)attachToRenderBase:(CCNode*)theRenderBase
 {
+    if(self.hidden)return;
+    
     renderBase=theRenderBase;
     
     //all icons will render from the same batch, and this object's icon will attach to batch automatically.
@@ -106,6 +109,8 @@
 
 -(void)setupDraw
 {
+    if(self.hidden)return;
+    
     [self.iconRenderComponent setupDraw];
     
     self.iconRenderComponent.sprite.visible=self.enabled;

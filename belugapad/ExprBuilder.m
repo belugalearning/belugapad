@@ -157,6 +157,9 @@
         
         NSNumber *ncardrandomise=[pdef objectForKey:@"NUMBER_CARD_RANDOMISE"];
         if(ncardrandomise)numberCardRandomOrder=[ncardrandomise boolValue];
+        
+        NSNumber *ncardselectionof=[pdef objectForKey:@"NUMBER_CARD_PICK_RANDOM_SELECTION_OF"];
+        if(ncardselectionof)numberCardRandomSelectionOf=[ncardselectionof intValue];
     }
     
 }
@@ -179,7 +182,7 @@
     // iterate and create rows
     for(int i=0; i<rowcount; i++)
     {
-        SGBtxeRow *row=[[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer] autorelease];
+        SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
         [rows addObject:row];
         
         if(i==0 || repeatRow2Count==0)
@@ -209,9 +212,9 @@
             //build the ncard row if we have one
             if(presentNumberCardRow)
             {
-                ncardRow=[[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer] autorelease];
+                ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
                 
-                NSMutableArray *cardAddBuffer=[[[NSMutableArray alloc] init] autorelease];
+                NSMutableArray *cardAddBuffer=[[NSMutableArray alloc] init];
                 
                 //add the cards
                 for(int icard=numberCardRowMin; icard<=numberCardRowMax; icard+=numberCardRowInterval)
@@ -221,16 +224,21 @@
                     n.enabled=YES;
                     
                     [cardAddBuffer addObject:n];
-//                    [n release];
+                    [n release];
                 }
                 
-                if(numberCardRandomOrder)
+                if(numberCardRandomOrder || numberCardRandomSelectionOf>0)
                 {
-                    while(cardAddBuffer.count>0)
+                    int selmax=numberCardRandomSelectionOf>0? numberCardRandomSelectionOf : cardAddBuffer.count;
+                    int added=0;
+                    
+                    while(cardAddBuffer.count>0 && added<selmax)
                     {
                         int i=(arc4random()%cardAddBuffer.count);
                         [ncardRow.containerMgrComponent addObjectToContainer:[cardAddBuffer objectAtIndex:i]];
                         [cardAddBuffer removeObjectAtIndex:i];
+                        
+                        added++;
                     }
                 }
                 else
@@ -240,10 +248,12 @@
                 }
                 
                 //let go of the buffer
-//                [cardAddBuffer release];
+                [cardAddBuffer release];
                 
                 [ncardRow setupDraw];
                 ncardRow.position=ccpAdd(row.position, ccp(0, -ncardRow.size.height-QUESTION_SEPARATOR_PADDING));
+                
+                [ncardRow release];
             }
             
             float sepYpos=-(row.size.height) - QUESTION_SEPARATOR_PADDING;
@@ -266,7 +276,7 @@
         }
 
         
-//        [row release];
+        [row release];
     }
     
     
@@ -471,7 +481,7 @@
         }
         
         return YES;
-    }
+    };
     
     if([evalType isEqualToString:@"EXPRESSION_EQUALITIES_NOT_IDENTICAL"])
     {

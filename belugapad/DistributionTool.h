@@ -56,6 +56,7 @@ typedef enum
     
     id nearestObject;
     float nearestObjectDistance;
+    id lastNewBondObject;
     
     NSString *dockType;
     

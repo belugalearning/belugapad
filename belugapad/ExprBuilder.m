@@ -157,6 +157,9 @@
         
         NSNumber *ncardrandomise=[pdef objectForKey:@"NUMBER_CARD_RANDOMISE"];
         if(ncardrandomise)numberCardRandomOrder=[ncardrandomise boolValue];
+        
+        NSNumber *ncardselectionof=[pdef objectForKey:@"NUMBER_CARD_PICK_RANDOM_SELECTION_OF"];
+        if(ncardselectionof)numberCardRandomSelectionOf=[ncardselectionof intValue];
     }
     
 }
@@ -224,13 +227,18 @@
                     [n release];
                 }
                 
-                if(numberCardRandomOrder)
+                if(numberCardRandomOrder || numberCardRandomSelectionOf>0)
                 {
-                    while(cardAddBuffer.count>0)
+                    int selmax=numberCardRandomSelectionOf>0? numberCardRandomSelectionOf : cardAddBuffer.count;
+                    int added=0;
+                    
+                    while(cardAddBuffer.count>0 && added<selmax)
                     {
                         int i=(arc4random()%cardAddBuffer.count);
                         [ncardRow.containerMgrComponent addObjectToContainer:[cardAddBuffer objectAtIndex:i]];
                         [cardAddBuffer removeObjectAtIndex:i];
+                        
+                        added++;
                     }
                 }
                 else

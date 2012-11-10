@@ -154,7 +154,7 @@ static float kDistanceBetweenBlocks=70.0f;
                     {
                         //there is a next+1 number
                         SGDtoolBlock *block3=[goc.BlocksInShape objectAtIndex:i+2];
-                        [self drawBondLineFrom:block1.Position to:block3.Position];
+                        [self drawBondLineFrom:block1.mySprite.position to:block3.mySprite.position];
                     }
                 }
                 else
@@ -164,13 +164,13 @@ static float kDistanceBetweenBlocks=70.0f;
                     {
                         //there is a next number
                         SGDtoolBlock *block2=[goc.BlocksInShape objectAtIndex:i+1];
-                        [self drawBondLineFrom:block1.Position to:block2.Position];
+                        [self drawBondLineFrom:block1.mySprite.position to:block2.mySprite.position];
                     }
                     if(i<goc.blocksInShape-2)
                     {
                         //there is a next+1 number
                         SGDtoolBlock *block3=[goc.BlocksInShape objectAtIndex:i+2];
-                        [self drawBondLineFrom:block1.Position to:block3.Position];
+                        [self drawBondLineFrom:block1.mySprite.position to:block3.mySprite.position];
                     }
                 }
             }
@@ -187,9 +187,9 @@ static float kDistanceBetweenBlocks=70.0f;
         
         if(![b.MyContainer conformsToProtocol:@protocol(Cage)])
         {
-            if([BLMath DistanceBetween:b.Position and:currentPickupObject.Position] < 150.0f || nearestObject==lastNewBondObject)
+            if([BLMath DistanceBetween:b.mySprite.position and:currentPickupObject.mySprite.position] < 150.0f || nearestObject==lastNewBondObject)
             {
-                [self drawBondLineFrom:currentPickupObject.Position to:((id<Moveable>)nearestObject).Position];
+                [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)nearestObject).mySprite.position];
                 lastNewBondObject=nearestObject;
             }
         }
@@ -580,20 +580,18 @@ static float kDistanceBetweenBlocks=70.0f;
     
     if(currentPickupObject)
     {
-        
+        id<Pairable>thisGO=currentPickupObject;
         CCSprite *s=currentPickupObject.mySprite;
-        CCLabelTTF *l=currentPickupObject.Label;
         
         if(currentPickupObject.MyContainer)
             [(id<Container>)currentPickupObject.MyContainer removeBlockFromMe:currentPickupObject];
         
         CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:cage.Position];
         CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.1f];
-        CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES]; [l removeFromParentAndCleanup:YES]; [currentPickupObject destroyThisObject];}];
+        CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[thisGO destroyThisObject];}];
         CCSequence *sequence=[CCSequence actions:moveAct, fadeAct, cleanUp, nil];
         [s runAction:sequence];
         currentPickupObject=nil;
-        
 //        if(!spawnedNewObj)
 //            [cage spawnNewBlock];
     }
@@ -858,7 +856,6 @@ static float kDistanceBetweenBlocks=70.0f;
         {
             if([go conformsToProtocol:@protocol(Moveable)])
             {
-                [go resetTint];
                 if(go==currentPickupObject)
                     continue;
                 
@@ -873,12 +870,18 @@ static float kDistanceBetweenBlocks=70.0f;
                     NSLog(@"moved pickup object close to this GO. add pickupObject to cObj container");
                     hasBeenProximate=YES;
                     
-                    if(cObj.MyContainer){
-                        if(currentPickupObject.MyContainer)
+                    if(cObj.MyContainer!=currentPickupObject.MyContainer){
+                        if(currentPickupObject.MyContainer){
+                            [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
                             [((id<Container>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
-                    
+                        }
                         [((id<Container>)cObj.MyContainer) addBlockToMe:currentPickupObject];
                         [((id<Container>)cObj.MyContainer) layoutMyBlocks];
+                    }
+                    
+                    if(cObj.MyContainer==currentPickupObject.MyContainer)
+                    {
+                            [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
                     }
                     
                     gotTarget=YES;
@@ -896,7 +899,9 @@ static float kDistanceBetweenBlocks=70.0f;
             
             if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape count]>1||currentPickupObject.MyContainer==nil)
             {
+                id<Container>LayoutCont=currentPickupObject.MyContainer;
                 [((id<Container>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
+                [LayoutCont layoutMyBlocks];
                 [self createContainerWithOne:currentPickupObject];
             }
             

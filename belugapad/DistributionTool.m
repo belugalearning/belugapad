@@ -873,7 +873,7 @@ static float kDistanceBetweenBlocks=70.0f;
                     NSLog(@"moved pickup object close to this GO. add pickupObject to cObj container");
                     hasBeenProximate=YES;
                     
-                    if(cObj.MyContainer){
+                    if(cObj.MyContainer!=currentPickupObject.MyContainer){
                         if(currentPickupObject.MyContainer)
                             [((id<Container>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
                     

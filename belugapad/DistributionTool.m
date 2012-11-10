@@ -139,13 +139,134 @@ static float kDistanceBetweenBlocks=70.0f;
 
 -(void)draw
 {
-    for (int i=0; i<DRAW_DEPTH; i++)
+    for(id go in [gw AllGameObjects])
     {
-        for(id go in [gw AllGameObjects]) {
-            if([go conformsToProtocol:@protocol(Pairable)])
-                [((id<Pairable>)go) draw:i];
+        if([go conformsToProtocol:@protocol(Container)])
+        {
+            id<Container>goc=(id<Container>)go;
+            
+            for(int i=0; i<goc.BlocksInShape.count; i++)
+            {
+                SGDtoolBlock *block1=[goc.BlocksInShape objectAtIndex:i];
+                if (i%2) {
+                    //odd numbers
+                    if(i<goc.blocksInShape-2)
+                    {
+                        //there is a next+1 number
+                        SGDtoolBlock *block3=[goc.BlocksInShape objectAtIndex:i+2];
+                        [self drawBondLineFrom:block1.Position to:block3.Position];
+                    }
+                }
+                else
+                {
+                    //even numbers
+                    if(i<goc.blocksInShape-1)
+                    {
+                        //there is a next number
+                        SGDtoolBlock *block2=[goc.BlocksInShape objectAtIndex:i+1];
+                        [self drawBondLineFrom:block1.Position to:block2.Position];
+                    }
+                    if(i<goc.blocksInShape-2)
+                    {
+                        //there is a next+1 number
+                        SGDtoolBlock *block3=[goc.BlocksInShape objectAtIndex:i+2];
+                        [self drawBondLineFrom:block1.Position to:block3.Position];
+                    }
+                }
+            }
+            for(SGDtoolBlock *block in goc.BlocksInShape)
+            {
+            
+            }
         }
-    } 
+    }
+    
+    if(isTouching && nearestObject && currentPickupObject)
+    {
+        SGDtoolBlock *b=(SGDtoolBlock*)nearestObject;
+        
+        if(![b.MyContainer conformsToProtocol:@protocol(Cage)])
+        {
+            if([BLMath DistanceBetween:b.Position and:currentPickupObject.Position] < 150.0f || nearestObject==lastNewBondObject)
+            {
+                [self drawBondLineFrom:currentPickupObject.Position to:((id<Moveable>)nearestObject).Position];
+                lastNewBondObject=nearestObject;
+            }
+        }
+    }
+    
+    
+//    for (int i=0; i<DRAW_DEPTH; i++)
+//    {
+//        for(id go in [gw AllGameObjects]) {
+//            if([go conformsToProtocol:@protocol(Pairable)])
+//                [((id<Pairable>)go) draw:i];
+//        }
+//    } 
+}
+
+-(void)drawBondLineFrom:(CGPoint)p1 to:(CGPoint)p2
+{
+    int barHalfW=30;
+    
+    float llen=[BLMath LengthOfVector:[BLMath SubtractVector:p2 from:p1]];
+    
+    if(llen>100.0f)return;
+    
+    float op=1.0f;
+    if(llen>300)
+    {
+        barHalfW=1;
+    }
+    if(llen>70.0f)
+    {
+        float diff=100-llen;
+        barHalfW=1 + (30 * (diff / 30.0f));
+    }
+    
+    ccDrawColor4F(1, 1, 1, op);
+    
+    CGPoint line=[BLMath SubtractVector:p1 from:p2];
+    CGPoint lineN=[BLMath NormalizeVector:line];
+    CGPoint upV=[BLMath PerpendicularLeftVectorTo:lineN];
+    
+    float distScalar=1.0f;
+    float distScaleBase=0.25f;
+    float distScaleFrom=50.0f;
+    float lOfLine=[BLMath LengthOfVector:line];
+    if(lOfLine<distScaleFrom)
+    {
+        distScalar=distScaleBase + (1-(lOfLine / distScaleFrom));
+    }
+    else
+    {
+        distScalar=distScaleBase;
+    }
+    
+    for(int i=0; i<1; i++)
+    {
+        CGPoint a=[BLMath AddVector:p1 toVector:[BLMath MultiplyVector:upV byScalar:i*0.75f]];
+        CGPoint b=[BLMath AddVector:p2 toVector:[BLMath MultiplyVector:upV byScalar:i*0.75f]];
+        
+        ccDrawLine(a, b);
+    }
+    
+    for(int j=-barHalfW; j<0; j++)
+    {
+        CGPoint a=[BLMath AddVector:p1 toVector:[BLMath MultiplyVector:upV byScalar:j*0.75f*distScalar]];
+        CGPoint b=[BLMath AddVector:p2 toVector:[BLMath MultiplyVector:upV byScalar:(j+barHalfW)*0.75f*distScalar]];
+        
+        ccDrawLine(a, b);
+    }
+    
+    for(int k=barHalfW; k>0; k--)
+    {
+        CGPoint a=[BLMath AddVector:p1 toVector:[BLMath MultiplyVector:upV byScalar:k*0.75f*distScalar]];
+        CGPoint b=[BLMath AddVector:p2 toVector:[BLMath MultiplyVector:upV byScalar:(k-barHalfW)*0.75f*distScalar]];
+        
+        ccDrawLine(a, b);
+    }
+
 }
 
 #pragma mark - gameworld setup and population

@@ -179,7 +179,7 @@
     // iterate and create rows
     for(int i=0; i<rowcount; i++)
     {
-        SGBtxeRow *row=[[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer] autorelease];
+        SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
         [rows addObject:row];
         
         if(i==0 || repeatRow2Count==0)
@@ -209,19 +209,19 @@
             //build the ncard row if we have one
             if(presentNumberCardRow)
             {
-                ncardRow=[[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer] autorelease];
+                ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
                 
-                NSMutableArray *cardAddBuffer=[[[NSMutableArray alloc] init] autorelease];
+                NSMutableArray *cardAddBuffer=[[NSMutableArray alloc] init];
                 
                 //add the cards
                 for(int icard=numberCardRowMin; icard<=numberCardRowMax; icard+=numberCardRowInterval)
                 {
-                    SGBtxeObjectNumber *n=[[[SGBtxeObjectNumber alloc] initWithGameWorld:gw] autorelease];
+                    SGBtxeObjectNumber *n=[[SGBtxeObjectNumber alloc] initWithGameWorld:gw];
                     n.numberText=[NSString stringWithFormat:@"%d", icard];
                     n.enabled=YES;
                     
                     [cardAddBuffer addObject:n];
-//                    [n release];
+                    [n release];
                 }
                 
                 if(numberCardRandomOrder)
@@ -240,10 +240,12 @@
                 }
                 
                 //let go of the buffer
-//                [cardAddBuffer release];
+                [cardAddBuffer release];
                 
                 [ncardRow setupDraw];
                 ncardRow.position=ccpAdd(row.position, ccp(0, -ncardRow.size.height-QUESTION_SEPARATOR_PADDING));
+                
+                [ncardRow release];
             }
             
             float sepYpos=-(row.size.height) - QUESTION_SEPARATOR_PADDING;
@@ -266,7 +268,7 @@
         }
 
         
-//        [row release];
+        [row release];
     }
     
     

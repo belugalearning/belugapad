@@ -9,6 +9,7 @@
 #import "global.h"
 #import "SGDtoolBlockRender.h"
 #import "SGDtoolBlock.h"
+#import "SGDtoolContainer.h"
 #import "BLMath.h"
 
 @interface SGDtoolBlockRender()
@@ -115,9 +116,17 @@
 
 -(void)destroyThisObject
 {
+    ParentGO.RenderLayer=nil;
+    if(ParentGO.MyContainer)[(id<Container>)ParentGO.MyContainer removeBlockFromMe:ParentGO];
     if(ParentGO.Label)[ParentGO.Label removeFromParentAndCleanup:YES];
     if(ParentGO.mySprite)[ParentGO.mySprite removeFromParentAndCleanup:YES];
     if(ParentGO.PairedObjects)[ParentGO.PairedObjects release];
+    ParentGO.mySprite=nil;
+    ParentGO.PairedObjects=nil;
+    ParentGO.Label=nil;
+    ParentGO.blockType=nil;
+    
+    
     [gameWorld delayRemoveGameObject:(id)ParentGO];
 }
 

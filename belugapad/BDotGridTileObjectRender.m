@@ -244,7 +244,7 @@
     }
     if(tile.tileType==kFullBorder)
     {
-        spriteFileName=@"/images/dotgrid/DG_sq";
+        spriteFileName=@"/images/dotgrid/DG_Sq";
     }
     if(tile.tileType==kEndCapLeft)
     {
@@ -277,9 +277,6 @@
     }
 
 
-
-
-
     
     thisTile.spriteFileName=spriteFileName;
     thisTile.Rotation=reqRotation;
@@ -291,13 +288,19 @@
 -(void)resetSprite
 {
     tileProperties thisTile=[self decideTileType];
-    
     //NSLog(@"(resetsprite) filename %@", thisTile.spriteFileName);
     
     NSString *spriteFileName=[NSString stringWithFormat:@"%@%d.png", thisTile.spriteFileName, tile.tileSize];
     
-    [tile.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(spriteFileName)]];
+    [tile.mySprite removeFromParentAndCleanup:YES];
+    tile.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(spriteFileName)];
+    [tile.mySprite setPosition:tile.Position];
+    [tile.RenderLayer addChild:tile.mySprite];
+    
+//    [tile.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(spriteFileName)]];
     [tile.mySprite setRotation:thisTile.Rotation];
+    
+    NSLog(@"tile type: %@, rotation %f, scaleX %g, scaleY %g", spriteFileName, thisTile.Rotation, tile.mySprite.scaleX, tile.mySprite.scaleY);
 }
 
 -(void)setSprite
@@ -312,7 +315,7 @@
     [tile.mySprite setPosition:tile.Position];
     [tile.mySprite setRotation:reqRotation];
     
-    tile.selectedSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/dotgrid/DG_SelectedSq%d.png", tile.tileSize]))];
+    tile.selectedSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/dotgrid/DG_Selected_Sq%d.png", tile.tileSize]))];
     [tile.selectedSprite setPosition:tile.Position];
     [tile.RenderLayer addChild:tile.selectedSprite];
     

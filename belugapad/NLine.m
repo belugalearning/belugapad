@@ -836,8 +836,8 @@ float timerIgnoreFrog;
         rambler.BubblePos=lastBubbleValue;
         
         
-        //play some audio
-        if(enableAudioCounting && lastBubbleLoc!=logLastBubblePos)
+        //play some audio -- only for non decimal numbers at the moment
+        if(enableAudioCounting && lastBubbleLoc!=logLastBubblePos && rambler.DisplayNumberMultiplier==1)
         {
             int readNumber=lastBubbleValue+rambler.DisplayNumberOffset;
             

@@ -20,6 +20,11 @@
 #import "mach/mach.h"
 #import "TestFlight.h"
 
+#import "AcapelaSetup.h"
+#import "AcapelaLicense.h"
+#include "evaluation.lic.h"
+#include "libs/Acapela/api/evaluation.lic.password"
+
 @interface AppController()
 {
 @private
@@ -177,6 +182,47 @@
     
 	// Assume that PVR images have premultiplied alpha
 	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
+    
+    
+    //Acapela TTS ---------------------------------------------------------------------
+    
+    // Create the default UserDico for the voice delivered in the bundle
+	NSError * error;
+	
+	// Get the application Documents folder
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+	
+	// Creates heather folder if it doesn't exist already
+	NSString * dirDicoPath = [documentsDirectory stringByAppendingString:[NSString stringWithFormat:@"/rachel"]];
+	[[NSFileManager defaultManager] createDirectoryAtPath:dirDicoPath withIntermediateDirectories: YES attributes:nil error: &error];
+	
+	NSString * fullDicoPath = [documentsDirectory stringByAppendingString:[NSString stringWithFormat:@"/rachel/default.userdico"]];
+	// Check the file doesn't already exists to avoid to erase its content
+	if (![[NSFileManager defaultManager] fileExistsAtPath: fullDicoPath]) {
+		
+		// Create the file
+		if (![@"UserDico\n" writeToFile:fullDicoPath atomically:YES encoding:NSISOLatin1StringEncoding error:&error]) {
+			NSLog(@"%@",error);
+		}
+    }
+    
+    //Init the License
+    MyAcaLicense = [[AcapelaLicense alloc] initLicense:[[NSString alloc] initWithCString:babLicense encoding:NSASCIIStringEncoding] user:uid.userId passwd:uid.passwd];
+	
+    //Init the AcapelaSetup for voices enumeration and selection
+    SetupData = [[AcapelaSetup alloc] initialize];
+	
+    //Create an AcapelaSpeech instance with the first voice found and the license
+    MyAcaTTS = [[AcapelaSpeech alloc] initWithVoice:SetupData.CurrentVoice license:MyAcaLicense];
+	
+    //Set the AcapelaSpeech delegates in order to receive events (not needed if you don't want events)
+    //[MyAcaTTS setDelegate:self];
+    
+    //Speak
+    [MyAcaTTS startSpeakingString:@"Test talking"];
+    //Acapela TTS ---------------------------------------------------------------------
+
     
     return YES;
 }
@@ -364,6 +410,9 @@ void logMemUsage(void) {
     [loggingService release];
     [contentService release];
     [usersService release];
+    
+    if(SetupData)[SetupData release];
+    if(MyAcaTTS)[MyAcaTTS release];
     
     searchBar=nil;
     searchList=nil;

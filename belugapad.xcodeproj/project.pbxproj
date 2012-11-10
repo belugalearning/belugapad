@@ -323,6 +323,29 @@
 		7F96BE2416238C2D00351CA0 /* WaterSingle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BE2316238C2C00351CA0 /* WaterSingle.m */; };
 		7F96BE2A1623E91600351CA0 /* GooSingleSquare.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BE291623E91600351CA0 /* GooSingleSquare.m */; };
 		7F97879515FFA2CA00225967 /* NumberLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F97879415FFA2CA00225967 /* NumberLayout.m */; };
+		7F98458D164E5F300081BE39 /* AcapelaSetup.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F984570164E5F300081BE39 /* AcapelaSetup.m */; };
+		7F98458E164E5F300081BE39 /* force_cpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F984572164E5F300081BE39 /* force_cpp.cpp */; };
+		7F984591164E5F310081BE39 /* eng_rachel_22k_ns.bvcu.inf in Resources */ = {isa = PBXBuildFile; fileRef = 7F98457A164E5F300081BE39 /* eng_rachel_22k_ns.bvcu.inf */; };
+		7F984592164E5F310081BE39 /* eng_rachel_22k_ns.bvcu.ini in Resources */ = {isa = PBXBuildFile; fileRef = 7F98457B164E5F300081BE39 /* eng_rachel_22k_ns.bvcu.ini */; };
+		7F984593164E5F310081BE39 /* eng_rachel_22k_ns.bvcu.ins in Resources */ = {isa = PBXBuildFile; fileRef = 7F98457C164E5F300081BE39 /* eng_rachel_22k_ns.bvcu.ins */; };
+		7F984594164E5F310081BE39 /* eng.bnx in Resources */ = {isa = PBXBuildFile; fileRef = 7F98457E164E5F300081BE39 /* eng.bnx */; };
+		7F984595164E5F310081BE39 /* eng.dca in Resources */ = {isa = PBXBuildFile; fileRef = 7F98457F164E5F300081BE39 /* eng.dca */; };
+		7F984596164E5F310081BE39 /* eng.ldi in Resources */ = {isa = PBXBuildFile; fileRef = 7F984580164E5F300081BE39 /* eng.ldi */; };
+		7F984597164E5F310081BE39 /* eng.oso in Resources */ = {isa = PBXBuildFile; fileRef = 7F984581164E5F300081BE39 /* eng.oso */; };
+		7F984598164E5F310081BE39 /* eng.pst in Resources */ = {isa = PBXBuildFile; fileRef = 7F984582164E5F300081BE39 /* eng.pst */; };
+		7F984599164E5F310081BE39 /* eng.trz in Resources */ = {isa = PBXBuildFile; fileRef = 7F984583164E5F300081BE39 /* eng.trz */; };
+		7F98459A164E5F310081BE39 /* eng_extra_rachel.ldi in Resources */ = {isa = PBXBuildFile; fileRef = 7F984584164E5F300081BE39 /* eng_extra_rachel.ldi */; };
+		7F98459B164E5F310081BE39 /* eng_hd.bnx in Resources */ = {isa = PBXBuildFile; fileRef = 7F984585164E5F300081BE39 /* eng_hd.bnx */; };
+		7F98459C164E5F310081BE39 /* eng_iv.trz.gra in Resources */ = {isa = PBXBuildFile; fileRef = 7F984586164E5F300081BE39 /* eng_iv.trz.gra */; };
+		7F98459D164E5F310081BE39 /* eng_oov.trz.gra in Resources */ = {isa = PBXBuildFile; fileRef = 7F984587164E5F300081BE39 /* eng_oov.trz.gra */; };
+		7F98459E164E5F310081BE39 /* user.userdico in Resources */ = {isa = PBXBuildFile; fileRef = 7F984588164E5F300081BE39 /* user.userdico */; };
+		7F98459F164E5F310081BE39 /* rachel_22k_ns.bvcu in Resources */ = {isa = PBXBuildFile; fileRef = 7F98458A164E5F300081BE39 /* rachel_22k_ns.bvcu */; };
+		7F9845A0164E5F310081BE39 /* rachel_22k_ns.bvcu.nuul216vqfp in Resources */ = {isa = PBXBuildFile; fileRef = 7F98458B164E5F300081BE39 /* rachel_22k_ns.bvcu.nuul216vqfp */; };
+		7F9845A1164E5F310081BE39 /* rachel_ns.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7F98458C164E5F300081BE39 /* rachel_ns.txt */; };
+		7F9845A7164E60B20081BE39 /* acaLicenseFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9845A4164E60B20081BE39 /* acaLicenseFiles.m */; };
+		7F9845A8164E60B20081BE39 /* evaluation.lic.password in Resources */ = {isa = PBXBuildFile; fileRef = 7F9845A6164E60B20081BE39 /* evaluation.lic.password */; };
+		7F9845B9164E6DF90081BE39 /* libMobilityStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F9845B7164E6DF90081BE39 /* libMobilityStatic.a */; };
+		7F9845BA164E6DF90081BE39 /* libBabTTS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F9845B8164E6DF90081BE39 /* libBabTTS.a */; };
 		7F9D414F15751E1600AFA1A0 /* NGNineGridSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9D414E15751E1600AFA1A0 /* NGNineGridSprite.m */; };
 		7FA0FCD615F74DB000C241A8 /* AdpInserter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0FCC515F74DB000C241A8 /* AdpInserter.m */; };
 		7FA0FCD715F74DB000C241A8 /* AdpLinkedProblemInserter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0FCC715F74DB000C241A8 /* AdpLinkedProblemInserter.m */; };
@@ -1114,6 +1137,35 @@
 		7F96BE291623E91600351CA0 /* GooSingleSquare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooSingleSquare.m; sourceTree = "<group>"; };
 		7F97879315FFA2CA00225967 /* NumberLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberLayout.h; sourceTree = "<group>"; };
 		7F97879415FFA2CA00225967 /* NumberLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberLayout.m; sourceTree = "<group>"; };
+		7F98456E164E5F300081BE39 /* AcapelaLicense.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AcapelaLicense.h; sourceTree = "<group>"; };
+		7F98456F164E5F300081BE39 /* AcapelaSetup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AcapelaSetup.h; sourceTree = "<group>"; };
+		7F984570164E5F300081BE39 /* AcapelaSetup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AcapelaSetup.m; sourceTree = "<group>"; };
+		7F984571164E5F300081BE39 /* AcapelaSpeech.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AcapelaSpeech.h; sourceTree = "<group>"; };
+		7F984572164E5F300081BE39 /* force_cpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = force_cpp.cpp; sourceTree = "<group>"; };
+		7F984573164E5F300081BE39 /* force_cpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = force_cpp.h; sourceTree = "<group>"; };
+		7F98457A164E5F300081BE39 /* eng_rachel_22k_ns.bvcu.inf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = eng_rachel_22k_ns.bvcu.inf; sourceTree = "<group>"; };
+		7F98457B164E5F300081BE39 /* eng_rachel_22k_ns.bvcu.ini */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = eng_rachel_22k_ns.bvcu.ini; sourceTree = "<group>"; };
+		7F98457C164E5F300081BE39 /* eng_rachel_22k_ns.bvcu.ins */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = eng_rachel_22k_ns.bvcu.ins; sourceTree = "<group>"; };
+		7F98457E164E5F300081BE39 /* eng.bnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = eng.bnx; sourceTree = "<group>"; };
+		7F98457F164E5F300081BE39 /* eng.dca */ = {isa = PBXFileReference; lastKnownFileType = file; path = eng.dca; sourceTree = "<group>"; };
+		7F984580164E5F300081BE39 /* eng.ldi */ = {isa = PBXFileReference; lastKnownFileType = file; path = eng.ldi; sourceTree = "<group>"; };
+		7F984581164E5F300081BE39 /* eng.oso */ = {isa = PBXFileReference; lastKnownFileType = file; path = eng.oso; sourceTree = "<group>"; };
+		7F984582164E5F300081BE39 /* eng.pst */ = {isa = PBXFileReference; lastKnownFileType = file; path = eng.pst; sourceTree = "<group>"; };
+		7F984583164E5F300081BE39 /* eng.trz */ = {isa = PBXFileReference; lastKnownFileType = file; path = eng.trz; sourceTree = "<group>"; };
+		7F984584164E5F300081BE39 /* eng_extra_rachel.ldi */ = {isa = PBXFileReference; lastKnownFileType = file; path = eng_extra_rachel.ldi; sourceTree = "<group>"; };
+		7F984585164E5F300081BE39 /* eng_hd.bnx */ = {isa = PBXFileReference; lastKnownFileType = file; path = eng_hd.bnx; sourceTree = "<group>"; };
+		7F984586164E5F300081BE39 /* eng_iv.trz.gra */ = {isa = PBXFileReference; lastKnownFileType = file; path = eng_iv.trz.gra; sourceTree = "<group>"; };
+		7F984587164E5F300081BE39 /* eng_oov.trz.gra */ = {isa = PBXFileReference; lastKnownFileType = file; path = eng_oov.trz.gra; sourceTree = "<group>"; };
+		7F984588164E5F300081BE39 /* user.userdico */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = user.userdico; sourceTree = "<group>"; };
+		7F98458A164E5F300081BE39 /* rachel_22k_ns.bvcu */ = {isa = PBXFileReference; lastKnownFileType = file; path = rachel_22k_ns.bvcu; sourceTree = "<group>"; };
+		7F98458B164E5F300081BE39 /* rachel_22k_ns.bvcu.nuul216vqfp */ = {isa = PBXFileReference; lastKnownFileType = file; path = rachel_22k_ns.bvcu.nuul216vqfp; sourceTree = "<group>"; };
+		7F98458C164E5F300081BE39 /* rachel_ns.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rachel_ns.txt; sourceTree = "<group>"; };
+		7F9845A3164E60B20081BE39 /* acaLicenseFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = acaLicenseFiles.h; sourceTree = "<group>"; };
+		7F9845A4164E60B20081BE39 /* acaLicenseFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = acaLicenseFiles.m; sourceTree = "<group>"; };
+		7F9845A5164E60B20081BE39 /* evaluation.lic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = evaluation.lic.h; sourceTree = "<group>"; };
+		7F9845A6164E60B20081BE39 /* evaluation.lic.password */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = evaluation.lic.password; sourceTree = "<group>"; };
+		7F9845B7164E6DF90081BE39 /* libMobilityStatic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobilityStatic.a; sourceTree = "<group>"; };
+		7F9845B8164E6DF90081BE39 /* libBabTTS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBabTTS.a; sourceTree = "<group>"; };
 		7F9D414D15751E1600AFA1A0 /* NGNineGridSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGNineGridSprite.h; sourceTree = "<group>"; };
 		7F9D414E15751E1600AFA1A0 /* NGNineGridSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NGNineGridSprite.m; sourceTree = "<group>"; };
 		7FA0FCC415F74DB000C241A8 /* AdpInserter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdpInserter.h; sourceTree = "<group>"; };
@@ -1304,6 +1356,8 @@
 				7F5113D114A9EE63001AF372 /* CoreGraphics.framework in Frameworks */,
 				7F96BDE4162178D100351CA0 /* libChipmunkPro-iPhone.a in Frameworks */,
 				7F35846A162588FB004067A1 /* libTestFlight.a in Frameworks */,
+				7F9845B9164E6DF90081BE39 /* libMobilityStatic.a in Frameworks */,
+				7F9845BA164E6DF90081BE39 /* libBabTTS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2176,6 +2230,8 @@
 		7F5113C114A9EE62001AF372 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7F9845B7164E6DF90081BE39 /* libMobilityStatic.a */,
+				7F9845B8164E6DF90081BE39 /* libBabTTS.a */,
 				7FA38AA51545322E0031E59D /* SystemConfiguration.framework */,
 				7FA38AA3154532260031E59D /* Security.framework */,
 				7F5113C214A9EE62001AF372 /* QuartzCore.framework */,
@@ -2229,6 +2285,7 @@
 		7F5113E714A9EE63001AF372 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				7F98456C164E5F300081BE39 /* Acapela */,
 				7F358467162588FB004067A1 /* TestFlight */,
 				7F96BDB7162178D100351CA0 /* ChipmunkPro-iPhone */,
 				7F5F4D5B161906CE005F6311 /* CCPickerView */,
@@ -2606,6 +2663,97 @@
 				7F96BE291623E91600351CA0 /* GooSingleSquare.m */,
 			);
 			name = Goo;
+			sourceTree = "<group>";
+		};
+		7F98456C164E5F300081BE39 /* Acapela */ = {
+			isa = PBXGroup;
+			children = (
+				7F98456D164E5F300081BE39 /* api */,
+				7F984574164E5F300081BE39 /* libs */,
+				7F984577164E5F300081BE39 /* voices */,
+			);
+			name = Acapela;
+			path = libs/Acapela;
+			sourceTree = "<group>";
+		};
+		7F98456D164E5F300081BE39 /* api */ = {
+			isa = PBXGroup;
+			children = (
+				7F9845A3164E60B20081BE39 /* acaLicenseFiles.h */,
+				7F9845A4164E60B20081BE39 /* acaLicenseFiles.m */,
+				7F9845A5164E60B20081BE39 /* evaluation.lic.h */,
+				7F9845A6164E60B20081BE39 /* evaluation.lic.password */,
+				7F98456E164E5F300081BE39 /* AcapelaLicense.h */,
+				7F98456F164E5F300081BE39 /* AcapelaSetup.h */,
+				7F984570164E5F300081BE39 /* AcapelaSetup.m */,
+				7F984571164E5F300081BE39 /* AcapelaSpeech.h */,
+				7F984572164E5F300081BE39 /* force_cpp.cpp */,
+				7F984573164E5F300081BE39 /* force_cpp.h */,
+			);
+			path = api;
+			sourceTree = "<group>";
+		};
+		7F984574164E5F300081BE39 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		7F984577164E5F300081BE39 /* voices */ = {
+			isa = PBXGroup;
+			children = (
+				7F984578164E5F300081BE39 /* hqm-ref-British-Rachel-22khz */,
+			);
+			path = voices;
+			sourceTree = "<group>";
+		};
+		7F984578164E5F300081BE39 /* hqm-ref-British-Rachel-22khz */ = {
+			isa = PBXGroup;
+			children = (
+				7F984579164E5F300081BE39 /* eng */,
+			);
+			path = "hqm-ref-British-Rachel-22khz";
+			sourceTree = "<group>";
+		};
+		7F984579164E5F300081BE39 /* eng */ = {
+			isa = PBXGroup;
+			children = (
+				7F98457A164E5F300081BE39 /* eng_rachel_22k_ns.bvcu.inf */,
+				7F98457B164E5F300081BE39 /* eng_rachel_22k_ns.bvcu.ini */,
+				7F98457C164E5F300081BE39 /* eng_rachel_22k_ns.bvcu.ins */,
+				7F98457D164E5F300081BE39 /* NLP */,
+				7F984589164E5F300081BE39 /* rachel_ns */,
+				7F98458C164E5F300081BE39 /* rachel_ns.txt */,
+			);
+			path = eng;
+			sourceTree = "<group>";
+		};
+		7F98457D164E5F300081BE39 /* NLP */ = {
+			isa = PBXGroup;
+			children = (
+				7F98457E164E5F300081BE39 /* eng.bnx */,
+				7F98457F164E5F300081BE39 /* eng.dca */,
+				7F984580164E5F300081BE39 /* eng.ldi */,
+				7F984581164E5F300081BE39 /* eng.oso */,
+				7F984582164E5F300081BE39 /* eng.pst */,
+				7F984583164E5F300081BE39 /* eng.trz */,
+				7F984584164E5F300081BE39 /* eng_extra_rachel.ldi */,
+				7F984585164E5F300081BE39 /* eng_hd.bnx */,
+				7F984586164E5F300081BE39 /* eng_iv.trz.gra */,
+				7F984587164E5F300081BE39 /* eng_oov.trz.gra */,
+				7F984588164E5F300081BE39 /* user.userdico */,
+			);
+			path = NLP;
+			sourceTree = "<group>";
+		};
+		7F984589164E5F300081BE39 /* rachel_ns */ = {
+			isa = PBXGroup;
+			children = (
+				7F98458A164E5F300081BE39 /* rachel_22k_ns.bvcu */,
+				7F98458B164E5F300081BE39 /* rachel_22k_ns.bvcu.nuul216vqfp */,
+			);
+			path = rachel_ns;
 			sourceTree = "<group>";
 		};
 		7FA0FCC215F74D9200C241A8 /* AdpInserters */ = {
@@ -2999,6 +3147,24 @@
 				7F884D8B15E28F24004B0DF3 /* Chango-Regular.ttf in Resources */,
 				0C58DE9A1631774700DD9A01 /* edit-pdef-client-files in Resources */,
 				0C993CFB163842CE0079A647 /* Problems in Resources */,
+				7F984591164E5F310081BE39 /* eng_rachel_22k_ns.bvcu.inf in Resources */,
+				7F984592164E5F310081BE39 /* eng_rachel_22k_ns.bvcu.ini in Resources */,
+				7F984593164E5F310081BE39 /* eng_rachel_22k_ns.bvcu.ins in Resources */,
+				7F984594164E5F310081BE39 /* eng.bnx in Resources */,
+				7F984595164E5F310081BE39 /* eng.dca in Resources */,
+				7F984596164E5F310081BE39 /* eng.ldi in Resources */,
+				7F984597164E5F310081BE39 /* eng.oso in Resources */,
+				7F984598164E5F310081BE39 /* eng.pst in Resources */,
+				7F984599164E5F310081BE39 /* eng.trz in Resources */,
+				7F98459A164E5F310081BE39 /* eng_extra_rachel.ldi in Resources */,
+				7F98459B164E5F310081BE39 /* eng_hd.bnx in Resources */,
+				7F98459C164E5F310081BE39 /* eng_iv.trz.gra in Resources */,
+				7F98459D164E5F310081BE39 /* eng_oov.trz.gra in Resources */,
+				7F98459E164E5F310081BE39 /* user.userdico in Resources */,
+				7F98459F164E5F310081BE39 /* rachel_22k_ns.bvcu in Resources */,
+				7F9845A0164E5F310081BE39 /* rachel_22k_ns.bvcu.nuul216vqfp in Resources */,
+				7F9845A1164E5F310081BE39 /* rachel_ns.txt in Resources */,
+				7F9845A8164E60B20081BE39 /* evaluation.lic.password in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3410,6 +3576,9 @@
 				0CD565921647F23E00D9EA30 /* UserNodeState.m in Sources */,
 				0C03B6371649EDD600F74659 /* NodePlay.m in Sources */,
 				7FFBF09B164AE933005CCD6E /* SGBtxeObjectOperator.m in Sources */,
+				7F98458D164E5F300081BE39 /* AcapelaSetup.m in Sources */,
+				7F98458E164E5F300081BE39 /* force_cpp.cpp in Sources */,
+				7F9845A7164E60B20081BE39 /* acaLicenseFiles.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3556,6 +3725,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/belugapad/libs/ChipmunkPro-iPhone\"",
 					"\"$(SRCROOT)/belugapad/libs/TestFlight\"",
+					"\"$(SRCROOT)/belugapad/libs/Acapela/libs\"",
+					"\"$(SRCROOT)/belugapad/libs/Acapela/libs/arm7-7s\"",
+					"\"$(SRCROOT)/belugapad/libs/Acapela/libs/sim\"",
+					"\"$(SRCROOT)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-lxml2",
@@ -3596,6 +3769,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/belugapad/libs/ChipmunkPro-iPhone\"",
 					"\"$(SRCROOT)/belugapad/libs/TestFlight\"",
+					"\"$(SRCROOT)/belugapad/libs/Acapela/libs\"",
+					"\"$(SRCROOT)/belugapad/libs/Acapela/libs/arm7-7s\"",
+					"\"$(SRCROOT)/belugapad/libs/Acapela/libs/sim\"",
+					"\"$(SRCROOT)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-lxml2",

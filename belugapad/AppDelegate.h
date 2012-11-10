@@ -11,6 +11,8 @@
 
 @class RootViewController, LoggingService, ContentService, UsersService;
 
+@class AcapelaLicense, AcapelaSpeech, AcapelaSetup;
+
 @interface AppController : NSObject <UIApplicationDelegate, CCDirectorDelegate>
 {
 	UIWindow *window_;
@@ -21,6 +23,10 @@
    	RootViewController	*viewController;
     
     NSDictionary *launchOptionsCache;
+    
+    AcapelaSpeech *MyAcaTTS;
+    AcapelaLicense *MyAcaLicense;
+    AcapelaSetup *SetupData;
 }
 
 @property (nonatomic, retain) UIWindow *window;

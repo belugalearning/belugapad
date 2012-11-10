@@ -285,6 +285,13 @@ float timerIgnoreFrog;
     NSNumber *dno=[problemDef objectForKey:@"DISPLAY_NUMBER_OFFSET"];
     if(dno) rambler.DisplayNumberOffset=[dno intValue];
     
+    NSNumber *dmult=[problemDef objectForKey:@"DISPLAY_NUMBER_MULTIPLIER"];
+    if(dmult) rambler.DisplayNumberMultiplier=[dmult floatValue];
+    else rambler.DisplayNumberMultiplier=1;
+    
+    NSNumber *ddp=[problemDef objectForKey:@"DISPLAY_NUMBER_DP"];
+    if(ddp)rambler.DisplayNumberDP=[ddp integerValue];
+    else rambler.DisplayNumberDP=1;
     
     selector=[DWSelectorGameObject alloc];
     [gw populateAndAddGameObject:selector withTemplateName:@"TnLineSelector"];
@@ -829,8 +836,8 @@ float timerIgnoreFrog;
         rambler.BubblePos=lastBubbleValue;
         
         
-        //play some audio
-        if(enableAudioCounting && lastBubbleLoc!=logLastBubblePos)
+        //play some audio -- only for non decimal numbers at the moment
+        if(enableAudioCounting && lastBubbleLoc!=logLastBubblePos && rambler.DisplayNumberMultiplier==1)
         {
             int readNumber=lastBubbleValue+rambler.DisplayNumberOffset;
             

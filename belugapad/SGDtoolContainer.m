@@ -103,7 +103,7 @@
         CGPoint thisPos=[[blockPos objectAtIndex:i]CGPointValue];
         
         thisBlock.Position=ccp(posX+thisPos.x, posY+thisPos.y);
-        [thisBlock move];
+        [thisBlock.mySprite runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:thisBlock.Position] rate:2.0f]];
     }
 }
 

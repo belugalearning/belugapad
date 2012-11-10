@@ -301,7 +301,23 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                     
                     int displayNum=[numRender intValue] + ramblerGameObject.DisplayNumberOffset;
                     
-                    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", displayNum] fontName:@"Chango" fontSize:24.0f];
+                    NSString *writeText=[NSString stringWithFormat:@"%d", displayNum];
+                    
+                    if(ramblerGameObject.DisplayNumberDP>0 && ramblerGameObject.DisplayNumberMultiplier!=1)
+                    {
+                        float multDisplayNum=displayNum * ramblerGameObject.DisplayNumberMultiplier;
+                        
+                        NSString *fmt=[NSString stringWithFormat:@"%%.%df", ramblerGameObject.DisplayNumberDP];
+                        writeText=[NSString stringWithFormat:fmt, multDisplayNum];
+                    }
+                    
+                    int fontSize=24;
+                    
+                    if(writeText.length==3) fontSize=15;
+                    if(writeText.length==4) fontSize=12;
+                    if(writeText.length>4) fontSize=9;
+                    
+                    CCLabelTTF *l=[CCLabelTTF labelWithString:writeText fontName:@"Chango" fontSize:fontSize];
                     [l setColor:ccBLACK];
                     [l setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
                     [labelLayer addChild:l];

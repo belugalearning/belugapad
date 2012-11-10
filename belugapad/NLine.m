@@ -393,7 +393,7 @@ float timerIgnoreFrog;
             toolHost.flagResetProblem=YES;
         }
         else {
-            [self showComplete];
+            [toolHost doWinning];
         }
     }
 }

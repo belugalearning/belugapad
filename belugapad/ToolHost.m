@@ -1985,6 +1985,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void)tearDownNumberPicker
 {
     if(CurrentBTXE)CurrentBTXE=nil;
+    [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];
+    [traybtnWheel setColor:ccc3(255,255,255)];
     [trayLayerWheel removeAllChildrenWithCleanup:YES];
     trayLayerWheel=nil;
 //    [numberPickerLayer removeAllChildrenWithCleanup:YES];
@@ -2800,6 +2802,42 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     fullNum=[NSString stringWithFormat:@"%g",thisNum];
     
     return fullNum;
+}
+
+-(void)updatePickerNumber:(NSString*)thisNumber
+{
+    
+    //        [w.pickerViewSelection removeAllObjects];
+    
+    int thisComponent=[self numberOfComponentsInPickerView:self.pickerView]-1;
+    int numberOfComponents=thisComponent;
+    
+    for(int i=[thisNumber length]-1;i>=0;i--)
+    {
+        NSString *thisStr=[NSString stringWithFormat:@"%c",[thisNumber characterAtIndex:i]];
+        int thisInt=[thisStr intValue];
+        
+        [pickerViewSelection replaceObjectAtIndex:thisComponent withObject:[NSNumber numberWithInt:thisInt]];
+        
+        //            [w.pickerViewSelection addObject:[NSNumber numberWithInt:thisInt]];
+        [self.pickerView spinComponent:thisComponent speed:15 easeRate:5 repeat:1 stopRow:thisInt];
+        thisComponent--;
+    }
+    
+    if([thisNumber length]<numberOfComponents)
+    {
+        int untouchedComponents=0;
+        untouchedComponents=numberOfComponents-[thisNumber length];
+        
+        
+        for(int i=untouchedComponents;i>=0;i--)
+        {
+            [pickerViewSelection replaceObjectAtIndex:thisComponent withObject:[NSNumber numberWithInt:0]];
+            [pickerView spinComponent:thisComponent speed:15 easeRate:5 repeat:1 stopRow:0];
+            thisComponent--;
+        }
+    }
+
 }
 
 #pragma mark - debug pipeline views

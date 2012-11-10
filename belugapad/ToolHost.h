@@ -255,6 +255,8 @@ typedef enum {
 -(void)tearDownProblemDef;
 -(void)readToolOptions:(NSString*)currentTool;
 -(void)incrementDisplayScore: (id)sender;
+-(NSString*)returnPickerNumber;
+-(void)updatePickerNumber:(NSString*)thisNumber;
 
 
 -(void) moveToTool1: (ccTime) delta;

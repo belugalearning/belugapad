@@ -307,7 +307,7 @@
         if([o conformsToProtocol:@protocol(MovingInteractive)])
         {
             id<Bounding> obounding=(id<Bounding>)o;
-            id<NumberPicker> opicker=(id<NumberPicker>)o;
+            id<NumberPicker,Text> opicker=(id<NumberPicker,Text>)o;
             
             CGRect hitbox=CGRectMake(obounding.worldPosition.x - (BTXE_OTBKG_WIDTH_OVERDRAW_PAD + obounding.size.width) / 2.0f, obounding.worldPosition.y-BTXE_VPAD-(obounding.size.height / 2.0f), obounding.size.width + BTXE_OTBKG_WIDTH_OVERDRAW_PAD, obounding.size.height + 2*BTXE_VPAD);
             
@@ -320,11 +320,22 @@
                     gotPickerObject=YES;
                     
                     if(toolHost.CurrentBTXE && toolHost.CurrentBTXE!=o){
-                        for(int i=0;i<[toolHost numberOfComponentsInPickerView:toolHost.pickerView];i++)
-                        {
-                            [toolHost.pickerView spinComponent:i speed:20 easeRate:5 repeat:2 stopRow:0];
-                            [toolHost pickerView:toolHost.pickerView didSelectRow:0 inComponent:i];
-                        }
+                        
+                        NSLog(@"returnedPickerNo %@, opicker.text %@", [toolHost returnPickerNumber], opicker.text);
+                        
+                        if(opicker.text&&[opicker.text isEqualToString:@"?"])
+                            opicker.text=@"0";
+                        
+                        //if(![[toolHost returnPickerNumber] isEqualToString:opicker.text])
+                        //{
+                            [toolHost updatePickerNumber:opicker.text];
+                        //}
+                        
+//                        for(int i=0;i<[toolHost numberOfComponentsInPickerView:toolHost.pickerView];i++)
+//                        {
+//                            [toolHost.pickerView spinComponent:i speed:20 easeRate:5 repeat:2 stopRow:0];
+//                            [toolHost pickerView:toolHost.pickerView didSelectRow:0 inComponent:i];
+//                        }
                     }
                     toolHost.CurrentBTXE=o;
                     if(toolHost.pickerView && toolHost.CurrentBTXE)
@@ -344,7 +355,7 @@
     
     if(!gotPickerObject){
         toolHost.CurrentBTXE=nil;
-        [toolHost hideWheel];
+        [toolHost tearDownNumberPicker];
     }
 }
 

@@ -108,6 +108,22 @@ const NSString *matchNumbers=@"0123456789";
         [ParentGO.containerMgrComponent addObjectToContainer:ot];
     }
     
+    else if([element.name isEqualToString:BTXE_OBJ])
+    {
+        //create text
+        SGBtxeText *t=[[SGBtxeText alloc] initWithGameWorld:gameWorld];
+        t.text=@"object";
+        
+        CXMLNode *count=[element attributeForName:@"count"];
+        if(count)
+        {
+            int c=[[count stringValue] intValue];
+            if(c>1) t.text=@"objects";
+        }
+        
+        [ParentGO.containerMgrComponent addObjectToContainer:t];
+    }
+    
     else if([element.name isEqualToString:BTXE_OO])
     {
         SGBtxeObjectOperator *oo=[[SGBtxeObjectOperator alloc] initWithGameWorld:gameWorld];

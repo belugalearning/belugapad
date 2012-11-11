@@ -566,10 +566,10 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 
 -(void)syncDeviceUsers
 {
-    return;
-    // THE FOLLOWING IS ABOUT TO BE MADE OBSOLETE WITH IMMINENT CHANGES TO USER STATE
-    // TODO: Before deleting, go through the method and see what should be extracted to somewhere else ----- definitely need to move the user delete from device stuff.
-    /*
+    // at the mo this method serves purpose of pushing users to server when they were created on offline device.
+    // It also tells server which users have been flagged for removal from device. The users are then actually removed when response is received
+    // (Users that are flagged for removal are not inclded on login users list)
+    
     if (isSyncing) return;
     
     NSMutableArray *users = [NSMutableArray array];
@@ -577,23 +577,14 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     // get users date from on-device db
     [allUsersDatabase open];
     FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick, password, flag_remove FROM users"];
-    while([rs next])
-    {
-        NSDictionary *user = [NSMutableDictionary dictionary];        
-        [user setValue:[rs stringForColumnIndex:0] forKey:@"id"];
-        [user setValue:[rs stringForColumnIndex:1] forKey:@"nick"];
-        [user setValue:[rs stringForColumnIndex:2] forKey:@"password"];
-        [user setValue:[[rs stringForColumnIndex:3] objectFromJSONString] forKey:@"nodesCompleted"];
-        [user setValue:[rs stringForColumnIndex:4] forKey:@"flagRemove"];
-        user = [user copy];
-        [users addObject:user];
-        [user release];
-    }
-    [rs close];
+    while([rs next]) [users addObject:@{
+                          @"id":[rs stringForColumn:@"id"],
+                          @"nick":[rs stringForColumn:@"nick"],
+                          @"password":[rs stringForColumn:@"password"],
+                          @"flagRemove":@([rs intForColumn:@"flag_remove"]) }];
     [allUsersDatabase close];
     
-    // if no users, no data to sync
-    if (0 == [users count]) return;
+    if (![users count]) return;
     
     NSMutableURLRequest *req = [httpClient requestWithMethod:@"POST"
                                                         path:kUsersWSSyncUsersPath
@@ -611,52 +602,14 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
             [bself->allUsersDatabase open];
             for (NSDictionary *serverUr in serverUsers)
             {
-                NSString *urId = [serverUr objectForKey:@"id"];
-                
-                FMResultSet *localUserRS = [bself->allUsersDatabase executeQuery:@"SELECT id, nick, nodes_completed FROM users WHERE id = ?", urId];
-                // chance user has been deleted since sync request sent
-                if ([localUserRS next])
-                {
-                    // possibility that user has completed node on client since request to server was made
-                    // - so construct union of local and server records of nodes completed for user
-                    
-                    // init with server record
-                    NSMutableSet *nodesCompletedUnion = [NSSet setWithArray:[serverUr objectForKey:@"nodesCompleted"]];
-                    // and add local
-                    [nodesCompletedUnion addObjectsFromArray:[[localUserRS stringForColumn:@"nodes_completed"] objectFromJSONString]];
-                    
-                    NSArray *nodesCompleted = [nodesCompletedUnion allObjects];
-                    
-                    BOOL updateSuccess = [bself->allUsersDatabase executeUpdate:@"UPDATE users SET nodes_completed = ? WHERE id = ?", [nodesCompleted JSONString], urId];
-                    if (!updateSuccess)
-                    {
-                        NSString *statement = [NSString stringWithFormat:@"UPDATE users SET nodes_completed = \"%@\" WHERE id = \"%@\"", [nodesCompleted JSONString], urId];
-                        NSMutableDictionary *d = [NSMutableDictionary dictionary];
-                        [d setValue:BL_APP_ERROR_TYPE_DB_OPERATION_FAILURE forKey:@"type"];
-                        [d setValue:@"UsersService#addCompletedNodeId" forKey:@"codeLocation"];
-                        [d setValue:statement forKey:@"statement"];
-                        [bself->loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
-                    }
-                    
-                    // if this user is the current user, need to set nodes completed on the current user
-                    NSDictionary *currUr = bself->currentUser;
-                    if (currUr && [[currUr objectForKey:@"id"] isEqualToString:urId])
-                    {
-                        NSMutableArray *ncMutable = [nodesCompleted mutableCopy];
-                        [currUr setValue:ncMutable forKey:@"nodesCompleted"];
-                        [ncMutable release];
-                    }
-                }
-                [localUserRS close];
-                
                 // remove users flagged for removal (getting list of these users so that we can log them)
                 NSArray *usersToRemove = [[users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"flagRemove == 1"]] valueForKey:@"id"];
                 if ([usersToRemove count])
                 {
                     [bself->loggingService logEvent:BL_APP_REMOVE_USERS withAdditionalData:[NSDictionary dictionaryWithObject:usersToRemove forKey:@"userIds"]];
                     
-                    NSString *sqlStatement = [NSString stringWithFormat:@"DELETE FROM users WEHERE id IN %@", [usersToRemove componentsJoinedByString:@","]];
-                    BOOL updateSuccess = [bself->allUsersDatabase executeUpdate:sqlStatement];
+                    NSString *sql = [NSString stringWithFormat:@"DELETE FROM users WEHERE id IN ('%@')", [usersToRemove componentsJoinedByString:@"','"]];
+                    BOOL updateSuccess = [bself->allUsersDatabase executeUpdate:sql];
                     
                     if (!updateSuccess)
                     {
@@ -664,9 +617,11 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
                         NSMutableDictionary *d = [NSMutableDictionary dictionary];
                         [d setValue:BL_APP_ERROR_TYPE_DB_OPERATION_FAILURE forKey:@"type"];
                         [d setValue:CODE_LOCATION() forKey:@"codeLocation"];
-                        [d setValue:sqlStatement forKey:@"statement"];
+                        [d setValue:sql forKey:@"statement"];
                         [bself->loggingService logEvent:BL_APP_ERROR withAdditionalData:d];
                     }
+                    
+                    // TODO: delete from tables other than users - NodePlays, ActivityFeed, FeatureKeys
                 }
             }
             [bself->allUsersDatabase close];
@@ -677,7 +632,6 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     [reqOp setCompletionBlockWithSuccess:onCompletion failure:onCompletion];
     [opQueue addOperation:reqOp];
     isSyncing = YES;
-    //*/
 }
 
 -(NSMutableDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs

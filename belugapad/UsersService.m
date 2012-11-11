@@ -8,6 +8,7 @@
 
 #import "UsersService.h"
 #import "UserNodeState.h"
+#import "NodePlay.h"
 #import "global.h"
 #import "AppDelegate.h"
 #import "LoggingService.h"
@@ -17,6 +18,8 @@
 #import "FMDatabaseAdditions.h"
 #import "AFNetworking.h"
 #import "TestFlight.h"
+#import "cocos2d/Support/base64.h"
+#import "NSData+GzipExtension.h"
 
 NSString * const kUsersWSBaseURL = @"http://u.zubi.me:3000";
 NSString * const kUsersWSSyncUsersPath = @"app-users/sync-users";
@@ -39,10 +42,16 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     NSMutableDictionary *currentUser;
     NSString *currentUserId;
     FMDatabase *currentUserStateDatabase;
+    
+    BOOL processingDownloadedState;
+    BOOL applyingDownloadedState;
 }
 
 -(NSMutableDictionary*)userFromCurrentRowOfResultSet:(FMResultSet*)rs;
 -(void)ensureStateDbConsistency;
+-(void)downloadStateForUser:(NSString*)userId;
+-(void)processDownloadedState:(NSTimer*)timer;
+-(void)applyDownloadedStateUpdatesForCurrentUser;
 @end
 
 
@@ -128,14 +137,21 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         [allUsersDatabase open];
         FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick FROM users WHERE id = ?", urId];
         if ([rs next]) currentUser = [[self userFromCurrentRowOfResultSet:rs] retain];
-        [rs close];
         [allUsersDatabase close];
         [loggingService logEvent:BL_USER_LOGIN withAdditionalData:nil];
         
-        // set currentUserStateDatabase - if it doesn't exist yet for 
         NSString *libraryDir = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        NSString *urStateDbPath = [libraryDir stringByAppendingPathComponent:[NSString stringWithFormat:@"user-state/%@.db", urId]];
         NSFileManager *fm = [NSFileManager defaultManager];
+        
+        // create user's pending user state directory if it doesn't yet exist
+        NSString *pendingUrStateUpdatesDir = [libraryDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@/pending-state-updates", urId]];
+        if (![fm fileExistsAtPath:pendingUrStateUpdatesDir])
+        {
+            [fm createDirectoryAtPath:pendingUrStateUpdatesDir withIntermediateDirectories:YES attributes:nil error:nil];
+        }
+        
+        // set currentUserStateDatabase - copy template if one doesn't exist yet
+        NSString *urStateDbPath = [libraryDir stringByAppendingPathComponent:[NSString stringWithFormat:@"user-state/%@.db", urId]];
         if (![fm fileExistsAtPath:urStateDbPath isDirectory:nil])
         {
             [fm copyItemAtPath:BUNDLE_FULL_PATH(@"/canned-dbs/user-state-template.db") toPath:urStateDbPath error:nil];
@@ -143,6 +159,9 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         currentUserStateDatabase = [[FMDatabase databaseWithPath:urStateDbPath] retain];
         
         [self ensureStateDbConsistency];
+        
+        [self applyDownloadedStateUpdatesForCurrentUser];
+        [self downloadStateForUser:urId];
     }
 }
 
@@ -252,7 +271,8 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     {
         BOOL reqSuccess = res != nil && ![res isKindOfClass:[NSError class]];
         
-        if (!reqSuccess) {
+        if (!reqSuccess)
+        {
             callback(nil);
             return;
         }
@@ -285,12 +305,196 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         }
         
         callback(user);
-    };
+    }; 
     
     AFHTTPRequestOperation *reqOp = [[[AFHTTPRequestOperation alloc] initWithRequest:req] autorelease];
     [reqOp setCompletionBlockWithSuccess:onCompletion failure:onCompletion];
     [opQueue addOperation:reqOp];
 }
+
+-(void)downloadStateForUser:(NSString*)userId
+{
+    // device id (goes in the query string)
+    NSString *installationId = [[NSUserDefaults standardUserDefaults] objectForKey:@"installationUUID"];
+    
+    
+    // in the response below, the server includes the date of the last batch that it has processed for this user on this device.
+    // UsersService#applyDownloadedStateUpdatesForCurrentUser stores the date on user's row in users table / col last_server_process_batch_date
+    
+    // the next time this method is called (say now) we send this date back to the server
+    // the server includes in the response below a list of batch ids that it has processed for this user on this device since that date
+    
+    // this tells UsersService#applyDownloadedStateUpdatesForCurrentUser which rows in the activity tables have been accounted for in the state database and should thus be deleted before recalculating state locally
+    
+    // anyway...
+    [allUsersDatabase open];
+    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT last_server_process_batch_date FROM users WHERE id = ?", userId];
+    if (![rs next]) return; // ERROR!
+    double date = [rs intForColumnIndex:0];
+    [allUsersDatabase close];
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"app-users/%@/state?device=%@&last_batch_process_date=%f", userId, installationId, date] relativeToURL:[NSURL URLWithString:kUsersWSBaseURL]];
+    
+    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
+    [req setTimeoutInterval:20.0];
+    [req setHTTPMethod: @"GET"];
+    [req setValue:@"application/json" forHTTPHeaderField:@"accepts"];
+    
+    __block typeof(self) bself = self;
+    __block SEL processData = @selector(processDownloadedState:);
+    
+    [NSURLConnection sendAsynchronousRequest:req
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *res, NSData *data, NSError *e) {
+                               if (!e && res && [(NSHTTPURLResponse*)res statusCode] == 200 && data)
+                               {
+                                   NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:bself selector:processData userInfo:@{ @"userId":userId, @"responseData":data } repeats:YES];
+                                   [bself performSelector:processData withObject:timer];
+                               }
+                           }];
+}
+
+-(void)processDownloadedState:(NSTimer*)timer
+{
+    if (processingDownloadedState || applyingDownloadedState) return;
+    processingDownloadedState = YES;
+    
+    NSDictionary *updateInfo = [timer userInfo];
+    
+    NSData *data = [updateInfo valueForKey:@"responseData"];
+    NSString *userId = [updateInfo valueForKey:@"userId"];
+    
+    NSString *jsonString = [[[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding] autorelease];
+    NSDictionary *update = [jsonString objectFromJSONString];
+    NSString *dateString = [update valueForKey:@"lastProcessedBatchDate"];
+    double date = [dateString doubleValue];
+    
+    NSString *libraryDir = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    
+    NSString *pendingUrStateUpdatesDir = [libraryDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@/pending-state-updates", userId]];
+    
+    BOOL updateOutdated = NO;
+    
+    // there's max 1 pending update
+    NSArray *pendingUpdates = [fm contentsOfDirectoryAtPath:pendingUrStateUpdatesDir error:nil];
+    if ([pendingUpdates count])
+    {
+        NSString *prevUpdateDateString = [pendingUpdates objectAtIndex:0];
+        double prevUpdateDate = [prevUpdateDateString doubleValue];
+        
+        if (prevUpdateDate >= date) updateOutdated = YES; // there's an at least as up-to-date update pending application
+        else [fm removeItemAtPath:[NSString stringWithFormat:@"%@/%@", pendingUrStateUpdatesDir, prevUpdateDateString] error:nil];
+    }
+    
+    if (!updateOutdated)
+    {
+        [[update JSONData] writeToFile:[NSString stringWithFormat:@"%@/%@", pendingUrStateUpdatesDir, dateString] atomically:NO];
+        //[[update JSONData] writeToFile:[pendingUrStateUpdatesDir stringByAppendingPathComponent:dateString] atomically:NO];
+    }
+    
+    [timer invalidate];
+    processingDownloadedState = NO;
+}
+
+-(void)applyDownloadedStateUpdatesForCurrentUser
+{
+    // in event of a wait it should be very quick. We're just waiting for the method processDownloadedState to complete
+    double maxWait = 3; // secs
+    NSDate *startWait = [NSDate date];
+    while (processingDownloadedState && [[NSDate date] timeIntervalSinceDate:startWait] < maxWait) [NSThread sleepForTimeInterval:0.1];
+    if (processingDownloadedState) return; // something's gone awry
+    
+    // we're go
+    applyingDownloadedState = YES;
+    [allUsersDatabase open];
+    
+    NSString *libraryDir = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *pendingUrStateUpdatesDir = [libraryDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@/pending-state-updates", self.currentUserId]];
+    
+    // is there an update to process? (There will be max one, named with the date on which it was processed on the server)
+    NSArray *pendingUpdates = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:pendingUrStateUpdatesDir error:nil];
+    if (![pendingUpdates count])
+    {
+        // no pending updates. We're outta here.
+        applyingDownloadedState = NO;
+        [allUsersDatabase close];
+        return;
+    }
+    
+    // date of the pending update. Used a few times....
+    NSString *dateString = [pendingUpdates objectAtIndex:0];
+    double date = [dateString doubleValue];
+    
+    // ... first for accessing the file obv
+    NSString *updateFilePath = [NSString stringWithFormat:@"%@/%@", pendingUrStateUpdatesDir, dateString];
+    
+    // Is the update more recent than the local database (responses could arrive out of order)
+    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT last_server_process_batch_date FROM users WHERE id = ?", self.currentUserId];
+    double latestUpdateApplied = [rs next] ? [rs doubleForColumnIndex:0] : 0;
+    if (latestUpdateApplied >= date)
+    {
+        // an at least as recent update has already been applied. Erase file & exeunt.
+        [[NSFileManager defaultManager] removeItemAtPath:updateFilePath error:nil];
+        applyingDownloadedState = NO;
+        [allUsersDatabase close];
+        return;
+    }
+    
+    // UsersService#processDownloadedData stored update as jsonData
+    NSDictionary *update = [[NSData dataWithContentsOfFile:updateFilePath] objectFromJSONData];
+    
+    // the gzipped base64-encoded user state db is on the json doc as a string
+    NSString *b64GzippedDb = [update valueForKey:@"gzippedStateDatabase"];
+    
+    // decode from base64 to bytes
+    unsigned char *in = (unsigned char *) [b64GzippedDb cStringUsingEncoding:NSASCIIStringEncoding];
+    unsigned char *out;
+    int outLength = base64Decode(in, [b64GzippedDb length], &out);
+    
+    // inflate the bytes
+    NSData *dbData = [[NSData dataWithBytes:out length:outLength] gzipInflate];
+    
+    // write the database
+    NSString *urStateDbPath = [libraryDir stringByAppendingPathComponent:[NSString stringWithFormat:@"user-state/%@.db", self.currentUserId]];
+    [dbData writeToFile:urStateDbPath atomically:NO];
+    
+    // ensure there's a row for every node in the content database
+    [self ensureStateDbConsistency];
+    
+    // update last_server_process_batch_date
+    [allUsersDatabase executeUpdate:@"UPDATE Users set last_server_process_batch_date=? WHERE id=?", @(date), self.currentUserId];
+    
+    // delete activity table rows associated with user / batch ids
+    NSArray *processedDeviceBatchIds = [update valueForKey:@"processedDeviceBatchIds"];
+    if ([processedDeviceBatchIds count])
+    {
+        NSString *sql = [NSString stringWithFormat:@"DELETE FROM NodePlays WHERE user_id='%@' AND batch_id IN ('%@')", self.currentUserId, [processedDeviceBatchIds componentsJoinedByString:@"','"]];
+        [allUsersDatabase executeUpdate:sql];
+    }
+    
+    // update state from surviving rows in for the user in the activity tables
+    NSMutableDictionary *nodesStates = [NSMutableDictionary dictionary];
+    rs = [allUsersDatabase executeQuery:@"SELECT * FROM NodePlays WHERE user_id=?", self.currentUserId];
+    while ([rs next])
+    {
+        NSString *nodeId = [rs stringForColumn:@"node_id"];
+        UserNodeState *ns = [nodesStates objectForKey:nodeId];
+        if (!ns)
+        {
+            ns = [[[UserNodeState alloc] initWithUserId:self.currentUserId nodeId:nodeId database:currentUserStateDatabase] autorelease];
+            if (ns) [nodesStates setObject:ns forKey:nodeId];
+        }
+        if (ns) [ns updateStateFromNodePlay:[[[NodePlay alloc] initFromFMResultSet:rs] autorelease]];
+    }
+    for (UserNodeState* ns in [nodesStates allValues]) [ns saveState];
+    
+    // delete update file
+    [[NSFileManager defaultManager] removeItemAtPath:updateFilePath error:nil];
+    
+    // job done
+    applyingDownloadedState = NO;
+ }
 
 -(BOOL)hasCompletedNodeId:(NSString *)nodeId
 {

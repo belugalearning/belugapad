@@ -66,6 +66,20 @@
     
 }
 
+-(void)destroy
+{
+    [self detachFromRenderBase];
+    
+    [gameWorld delayRemoveGameObject:self];
+}
+
+-(void)detachFromRenderBase
+{
+    [textBackgroundRenderComponent.sprite removeFromParentAndCleanup:YES];
+    [textRenderComponent.label0 removeFromParentAndCleanup:YES];
+    [textRenderComponent.label removeFromParentAndCleanup:YES];
+}
+
 -(CGPoint)worldPosition
 {
     CGPoint ret=[renderBase convertToWorldSpace:self.position];

@@ -176,6 +176,9 @@ const NSString *matchNumbers=@"0123456789";
     else if([element.name isEqualToString:BTXE_PH])
     {
         SGBtxePlaceholder *ph=[[SGBtxePlaceholder alloc] initWithGameWorld:gameWorld];
+        
+        ph.targetTag=[[element attributeForName:@"targetTag"] stringValue];
+        
         [ParentGO.containerMgrComponent addObjectToContainer:ph];
     }
 }

@@ -13,22 +13,22 @@
 	<key>EXPR_STAGES</key>
 	<array>
 		<string>&lt;b:t&gt;Complete the expression.&lt;/b:t&gt;</string>
-		<string>&lt;b:ot tag=&quot;a&quot;&gt;is less than&lt;/b:ot&gt;
+		<string>&lt;b:ot tag=&quot;lt&quot;&gt;is less than&lt;/b:ot&gt;
 &lt;b:t&gt;,&lt;/b:t&gt;
-&lt;b:ot tag=&quot;c&quot;&gt;is equal to&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;eq&quot;&gt;is equal to&lt;/b:ot&gt;
 &lt;b:t&gt;,&lt;/b:t&gt;
-&lt;b:ot tag=&quot;b&quot;&gt;is greater than&lt;/b:ot&gt;</string>
+&lt;b:ot tag=&quot;gt&quot;&gt;is greater than&lt;/b:ot&gt;</string>
 		<string>&lt;b:on number=&quot;{$x}&quot;/&gt;
-&lt;b:ot tag=&quot;a&quot; enabled=&quot;no&quot;&gt;&amp;lt;&lt;/b:ot&gt;
+&lt;b:ph targetTag=&quot;lt&quot; /&gt;
 &lt;b:on number=&quot;{$y}&quot;/&gt;</string>
 		<string>&lt;b:on number=&quot;{$y}&quot;/&gt;
-&lt;b:ot tag=&quot;b&quot; enabled=&quot;no&quot;&gt;&amp;gt;&lt;/b:ot&gt;
+&lt;b:ph targetTag=&quot;gt&quot; /&gt;
 &lt;b:on number=&quot;{$x}&quot;/&gt;</string>
 		<string>&lt;b:on number=&quot;{$x}&quot;/&gt;
-&lt;b:ot tag=&quot;c&quot; enabled=&quot;no&quot;&gt;=&lt;/b:ot&gt;
+&lt;b:ph targetTag=&quot;eq&quot; /&gt;
 &lt;b:on number=&quot;{$x}&quot;/&gt;</string>
 		<string>&lt;b:on number=&quot;{$y}&quot;/&gt;
-&lt;b:ot tag=&quot;c&quot; enabled=&quot;no&quot;&gt;=&lt;/b:ot&gt;
+&lt;b:ph targetTag=&quot;eq&quot; /&gt;
 &lt;b:on number=&quot;{$y}&quot;/&gt;</string>
 	</array>
 	<key>EVAL_TYPE</key>

@@ -86,7 +86,7 @@
 
     
     ParentGO.SeekingPair=YES;
-    if([BLMath DistanceBetween:ParentGO.Position and:location]<100.0f)
+    if([BLMath DistanceBetween:ParentGO.Position and:location]<gameWorld.Blackboard.MaxObjectDistance)
     {
         //[ParentGO.mySprite setColor:ccc3(0,255,0)];
         //[self drawProximateLines:location];

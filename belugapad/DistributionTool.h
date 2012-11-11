@@ -52,6 +52,7 @@ typedef enum
     BOOL randomiseDockPositions;
     BOOL bondDifferentTypes;
     BOOL hasMovedCagedBlock;
+    BOOL bondAllObjects;
     int cageObjectCount;
     
     id nearestObject;

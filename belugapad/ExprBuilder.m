@@ -316,33 +316,27 @@
                 heldObject=o;
                 isHoldingObject=YES;
                 
-                if(opicker.usePicker){
-                    gotPickerObject=YES;
-                    
-                    if(toolHost.CurrentBTXE && toolHost.CurrentBTXE!=o){
-                        
-                        NSLog(@"returnedPickerNo %@, opicker.text %@", [toolHost returnPickerNumber], opicker.text);
-                        
-                        if(opicker.text&&[opicker.text isEqualToString:@"?"])
-                            opicker.text=@"0";
-                        
-                        //if(![[toolHost returnPickerNumber] isEqualToString:opicker.text])
-                        //{
-                            [toolHost updatePickerNumber:opicker.text];
-                        //}
-                        
-//                        for(int i=0;i<[toolHost numberOfComponentsInPickerView:toolHost.pickerView];i++)
-//                        {
-//                            [toolHost.pickerView spinComponent:i speed:20 easeRate:5 repeat:2 stopRow:0];
-//                            [toolHost pickerView:toolHost.pickerView didSelectRow:0 inComponent:i];
-//                        }
-                    }
-                    toolHost.CurrentBTXE=o;
-                    if(toolHost.pickerView && toolHost.CurrentBTXE)
-                        [toolHost showWheel];
-
-                }
+                if([o conformsToProtocol:@protocol(NumberPicker)]) {
                 
+                    if(opicker.usePicker){
+                        gotPickerObject=YES;
+                        
+                        if(toolHost.CurrentBTXE && toolHost.CurrentBTXE!=o){
+                            
+                            NSLog(@"returnedPickerNo %@, opicker.text %@", [toolHost returnPickerNumber], opicker.text);
+                            
+                            if(opicker.text&&[opicker.text isEqualToString:@"?"])
+                                opicker.text=@"0";
+                            
+                                [toolHost updatePickerNumber:opicker.text];
+ 
+                        }
+                        toolHost.CurrentBTXE=o;
+                        if(toolHost.pickerView && toolHost.CurrentBTXE)
+                            [toolHost showWheel];
+
+                    }
+                }
                 [(id<MovingInteractive>)o inflateZIndex];
                 
                 for(SGBtxeRow *r in rows)

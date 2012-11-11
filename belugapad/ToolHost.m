@@ -1300,7 +1300,9 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
             [answerLabel setString:answerLabelString];
             NSLog(@"before answerLabelString: %@", answerLabelString);
             
-            if(answerLabelString.length>9)
+            if(answerLabelString.length>18)
+                [answerLabel setFontSize:12.0f];
+            else if(answerLabelString.length>9)
                 [answerLabel setFontSize:16.0f];
             else
                 [answerLabel setFontSize:22.0f];

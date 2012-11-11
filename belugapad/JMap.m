@@ -322,20 +322,21 @@ typedef enum {
     
     [self addChild:underwaterLayer];
     
-    CCLayer *cLayer=[[CCLayer alloc] init];
+//    CCLayer *cLayer=[[CCLayer alloc] init];
     
+// currently 
     //put on overlay texture -- ipad1 only??
-    AppController *ac=(AppController*)[[UIApplication sharedApplication] delegate];
-    if(!ac.IsIpad1)
-    {
-        CCSprite *overlay=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/base-overlay.png")];
-        [overlay setPosition:ccp(cx,cy)];
-        [cLayer addChild:overlay];
-    }
+//    AppController *ac=(AppController*)[[UIApplication sharedApplication] delegate];
+//    if(!ac.IsIpad1)
+//    {
+//        CCSprite *overlay=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/base-overlay.png")];
+//        [overlay setPosition:ccp(cx,cy)];
+//        [cLayer addChild:overlay];
+//    }
     
     //CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(35, 35, 35, 255) width:lx height:ly];
-    [self addChild:cLayer];
-    [cLayer release];
+//    [self addChild:cLayer];
+//    [cLayer release];
     
     //base map layer
     mapLayer=[[CCLayer alloc] init];
@@ -347,8 +348,8 @@ typedef enum {
     [self addChild:mapLayer z:1];
     
     //setup render batch for nodes
-    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.plist")];
-    nodeRenderBatch=[CCSpriteBatchNode batchNodeWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.png")];
+    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/jmap/jmapsm.plist")];
+    nodeRenderBatch=[CCSpriteBatchNode batchNodeWithFile:BUNDLE_FULL_PATH(@"/images/jmap/jmapsm.png")];
     
     [mapLayer addChild:nodeRenderBatch z:2];
 
@@ -365,10 +366,6 @@ typedef enum {
     CCSprite *topsprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/HR_HeaderBar_JMAP.png")];
     [topsprite setPosition:ccp(cx, 2*cy-(65.0f/2))];
     [foreLayer addChild:topsprite];
-    
-    CCSprite *testisland=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/test/Sand_5_Green.png")];
-    [testisland setPosition:ccp(cx, cy)];
-    [self addChild:testisland z:10];
 }
 
 - (void)createAllBackgroundTileSprites

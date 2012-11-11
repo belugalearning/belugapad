@@ -233,7 +233,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     //TODO tags are currently fixed to 2 phases -- either parse tool tree or pre-populate with design-fixed max
     
     isAnimatingIn=YES;
-    timeBeforeUserInteraction=2.0f;
     
     for (int i=1; i<=3; i++) {
         
@@ -251,7 +250,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         
     }
     
-    
+    if(timeBeforeUserInteraction>2.0f)timeBeforeUserInteraction=2.0f;
     skipNextStagedIntroAnim=NO;
 }
 

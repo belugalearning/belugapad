@@ -1371,7 +1371,8 @@ static float kTimeToHintToolTray=7.0f;
 -(void)tearDownMetaQuestion
 {
     [trayLayerMq removeAllChildrenWithCleanup:YES];
-    if(metaArrow)[metaArrow removeFromParentAndCleanup:YES];
+//    if(metaArrow)[metaArrow removeFromParentAndCleanup:YES];
+    metaArrow=nil;
     metaQuestionAnswers=nil;
     metaQuestionAnswerButtons=nil;
     metaQuestionAnswerLabels=nil;

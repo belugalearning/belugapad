@@ -284,12 +284,12 @@ static float kNBFontSizeLarge=35.0f;
         }
         pogo.MountPosition = pogo.Position;
         
-        if(showBadgesOnCages)
-        {
-            [mountedObjects addObject:[NSNull null]];
-            [mountedObjectBadges addObject:[NSNull null]];
-            [mountedObjectLabels addObject:[NSNull null]];
-        }
+//        if(showBadgesOnCages)
+//        {
+        [mountedObjects addObject:[NSNull null]];
+        [mountedObjectBadges addObject:[NSNull null]];
+        [mountedObjectLabels addObject:[NSNull null]];
+//        }
     }
     
     

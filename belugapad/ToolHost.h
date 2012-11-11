@@ -209,6 +209,7 @@ typedef enum {
 @property BOOL flagResetProblem;
 @property (retain) DProblemParser *DynProblemParser;
 @property (nonatomic, retain) CCPickerView *pickerView;
+@property (retain) id CurrentBTXE;
 
 +(CCScene *) scene;
 
@@ -227,6 +228,8 @@ typedef enum {
 -(void) showProblemCompleteMessage;
 -(void) showProblemIncompleteMessage;
 -(void)showHideCommit;
+-(void)showWheel;
+-(void)hideWheel;
 -(void)doUpdateOnTick:(ccTime)delta;
 -(void)doUpdateOnSecond:(ccTime)delta;
 -(void)doUpdateOnQuarterSecond:(ccTime)delta;

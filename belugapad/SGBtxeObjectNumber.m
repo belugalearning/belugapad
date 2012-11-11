@@ -178,13 +178,18 @@
     if(nStart>0) prefixText=[parse substringToIndex:nStart];
     numberText=[parse substringWithRange:NSMakeRange(nStart, nEnd+1)];
     if(nEnd<[parse length]-1) suffixText=[parse substringFromIndex:nEnd];
-    
+    [self updateDraw];
     NSNumberFormatter *nf=[[NSNumberFormatter alloc] init];
     [nf setNumberStyle:NSNumberFormatterDecimalStyle];
     self.numberValue=[nf numberFromString:numberText];
     [nf release];
     
     self.tag=[numberValue stringValue];
+}
+
+-(void)updateDraw
+{
+    [self.textRenderComponent updateLabel];
 }
 
 -(NSString*)text

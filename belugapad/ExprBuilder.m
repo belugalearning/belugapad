@@ -298,6 +298,8 @@
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
     
+    BOOL gotPickerObject=NO;
+    
     if(isHoldingObject) return;  // no multi-touch but let's be sure
 
     for(id<MovingInteractive, NSObject> o in gw.AllGameObjects)
@@ -305,6 +307,7 @@
         if([o conformsToProtocol:@protocol(MovingInteractive)])
         {
             id<Bounding> obounding=(id<Bounding>)o;
+            id<NumberPicker> opicker=(id<NumberPicker>)o;
             
             CGRect hitbox=CGRectMake(obounding.worldPosition.x - (BTXE_OTBKG_WIDTH_OVERDRAW_PAD + obounding.size.width) / 2.0f, obounding.worldPosition.y-BTXE_VPAD-(obounding.size.height / 2.0f), obounding.size.width + BTXE_OTBKG_WIDTH_OVERDRAW_PAD, obounding.size.height + 2*BTXE_VPAD);
             
@@ -312,6 +315,22 @@
             {
                 heldObject=o;
                 isHoldingObject=YES;
+                
+                if(opicker.usePicker){
+                    gotPickerObject=YES;
+                    
+                    if(toolHost.CurrentBTXE && toolHost.CurrentBTXE!=o){
+                        for(int i=0;i<[toolHost numberOfComponentsInPickerView:toolHost.pickerView];i++)
+                        {
+                            [toolHost.pickerView spinComponent:i speed:20 easeRate:5 repeat:2 stopRow:0];
+                            [toolHost pickerView:toolHost.pickerView didSelectRow:0 inComponent:i];
+                        }
+                    }
+                    toolHost.CurrentBTXE=o;
+                    if(toolHost.pickerView && toolHost.CurrentBTXE)
+                        [toolHost showWheel];
+
+                }
                 
                 [(id<MovingInteractive>)o inflateZIndex];
                 
@@ -323,6 +342,10 @@
         }
     }
     
+    if(!gotPickerObject){
+        toolHost.CurrentBTXE=nil;
+        [toolHost hideWheel];
+    }
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -390,6 +413,7 @@
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouching=NO;
+    toolHost.CurrentBTXE=nil;
     // empty selected objects
     
     if(heldObject)

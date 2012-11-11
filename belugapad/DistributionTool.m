@@ -174,16 +174,17 @@ static float kDistanceBetweenBlocks=70.0f;
                     }
                 }
             }
-            for(SGDtoolBlock *block in goc.BlocksInShape)
-            {
-            
-            }
         }
     }
     
     if(isTouching && nearestObject && currentPickupObject)
     {
         SGDtoolBlock *b=(SGDtoolBlock*)nearestObject;
+        SGDtoolBlock *c=(SGDtoolBlock*)currentPickupObject;
+        
+        if(!bondDifferentTypes && b.blockType!=c.blockType)
+            return;
+
         
         if(![b.MyContainer conformsToProtocol:@protocol(Cage)])
         {
@@ -283,6 +284,7 @@ static float kDistanceBetweenBlocks=70.0f;
     hasInactiveArea=[[pdef objectForKey:HAS_INACTIVE_AREA]boolValue];
     cannotBreakBonds=[[pdef objectForKey:UNBREAKABLE_BONDS]boolValue];
     randomiseDockPositions=[[pdef objectForKey:RANDOMISE_DOCK_POSITIONS]boolValue];
+    bondDifferentTypes=[[pdef objectForKey:BOND_DIFFERENT_TYPES]boolValue];
     
     
 
@@ -310,7 +312,6 @@ static float kDistanceBetweenBlocks=70.0f;
     if(evalType==kCheckGroupTypeAndNumber)
         bondDifferentTypes=NO;
     
-    bondDifferentTypes=YES;
 
     usedShapeTypes=[[NSMutableArray alloc]init];
 }

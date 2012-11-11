@@ -20,7 +20,7 @@
 
 -(void)setupDraw;
 -(void)updatePosition:(CGPoint)position;
-
+-(void)updateLabel;
 -(void)inflateZindex;
 -(void)deflateZindex;
 

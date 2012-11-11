@@ -396,7 +396,7 @@ static float kDistanceBetweenBlocks=70.0f;
 //    CCLabelTTF *labelForShape;
 //    float avgPosX=0;
 //    float avgPosY=0;
-    NSArray *thesePositions=[NSArray arrayWithArray:[NumberLayout physicalLayoutUpToNumber:numBlocks withSpacing:kDistanceBetweenBlocks]];
+    NSArray *thesePositions=[NSArray arrayWithArray:[NumberLayout physicalLayoutAcrossToNumber:numBlocks withSpacing:kDistanceBetweenBlocks]];
     
     NSString *label = [theseSettings objectForKey:LABEL];
     NSString *blockType = [theseSettings objectForKey:BLOCK_TYPE];
@@ -700,7 +700,7 @@ static float kDistanceBetweenBlocks=70.0f;
 {
     id<Moveable>firstShape=[thisShape.BlocksInShape objectAtIndex:0];
     
-    NSArray *newObjects=[NumberLayout physicalLayoutUpToNumber:[thisShape.BlocksInShape count] withSpacing:kDistanceBetweenBlocks];
+    NSArray *newObjects=[NumberLayout physicalLayoutAcrossToNumber:[thisShape.BlocksInShape count] withSpacing:kDistanceBetweenBlocks];
     
     CGPoint newVal=[[newObjects objectAtIndex:[newObjects count]-1] CGPointValue];
     

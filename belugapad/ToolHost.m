@@ -371,7 +371,7 @@ static float kTimeToHintToolTray=7.0f;
             [traybtnWheel runAction:[InteractionFeedback dropAndBounceAction]];
         }
         if(metaQuestionForThisProblem && !hasUsedMetaTray){
-            [traybtnMq runAction:[InteractionFeedback dropAndBounceAction]];
+            [metaArrow runAction:[InteractionFeedback dropAndBounceAction]];
         }
         timeSinceInteractionOrShake=0.0f;
     }
@@ -876,6 +876,14 @@ static float kTimeToHintToolTray=7.0f;
         }
     }
 }
+-(void)addMetaHintArrow
+{
+    metaArrow=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_MQ_Tip.png")];
+    [metaArrow setPosition:ccp(lx-124,2*cy-30)];
+    [metaArrow setTag:3];
+    [metaArrow setOpacity:0];
+    [problemDefLayer addChild:metaArrow z:10];
+}
 -(void)setupProblemOnToolHost:(NSDictionary *)curpdef
 {
     NSNumber *eMode=[curpdef objectForKey:EVAL_MODE];
@@ -1227,7 +1235,10 @@ static float kTimeToHintToolTray=7.0f;
     
     if(!currentTool)
         delayShowMeta=YES;
+    else
+        [self addMetaHintArrow];
     
+
     shownMetaQuestionIncompleteFor=0;
     
     metaQuestionAnswers = [[NSMutableArray alloc] init];
@@ -1237,11 +1248,7 @@ static float kTimeToHintToolTray=7.0f;
     float answersY=0.0f;
     
     //float titleY=cy*1.75f;
-    if(currentTool)
-    {
-        //titleY=[currentTool metaQuestionTitleYLocation];
-        answersY=[currentTool metaQuestionAnswersYLocation];
-    }
+
     
     answersY=cy*1.30;
     
@@ -1285,7 +1292,7 @@ static float kTimeToHintToolTray=7.0f;
     [metaQuestionIncompleteLabel setVisible:NO];
     [trayLayerMq addChild:metaQuestionIncompleteLabel];
     
-    NSString *mqBar=[NSString stringWithFormat:@"/images/metaquestions/MQ_bar_%d.png",metaQuestionAnswerCount];
+    NSString *mqBar=[NSString stringWithFormat:@"/images/metaquestions/MQ_Bar_%d.png",metaQuestionAnswerCount];
     metaQuestionBanner=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(mqBar)];
     [metaQuestionBanner setPosition:ccp(cx,answersY)];
     [trayLayerMq addChild:metaQuestionBanner];
@@ -1364,6 +1371,7 @@ static float kTimeToHintToolTray=7.0f;
 -(void)tearDownMetaQuestion
 {
     [trayLayerMq removeAllChildrenWithCleanup:YES];
+    if(metaArrow)[metaArrow removeFromParentAndCleanup:YES];
     metaQuestionAnswers=nil;
     metaQuestionAnswerButtons=nil;
     metaQuestionAnswerLabels=nil;
@@ -2526,6 +2534,7 @@ static float kTimeToHintToolTray=7.0f;
     [trayLayerMq setVisible:YES];
     trayMqShowing=YES;
     [traybtnMq setColor:ccc3(247,143,6)];
+    if(metaArrow)[metaArrow setVisible:NO];
 }
 
 -(void)hideMq

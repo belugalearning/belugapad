@@ -157,6 +157,11 @@
     return episodeEnded;
 }
 
+-(NSString*)description
+{
+    return [NSString stringWithFormat:@"NodePlay: {\n\tepisodeId: %@\n\tbatchId: %@\n\tuserId: %@\n\tnodeId: %@\n\tstartDate: %f\n\tlastEventDate: %f\n\tendedPausesTime: %f\n\tcurrentPauseStartDate: %f\n\tscore: %d\n\tisPaused: %@\n\tisInBackground: %@\n}", self.episodeId, self.batchId, self.userId, self.nodeId, self.startDate, self.lastEventDate, self.endedPausesTime, self.currentPauseStartDate, [self.score intValue], (self.isPaused ? @"YES" : @"NO"), (self.isInBackground ? @"YES" : @"NO")];
+}
+
 -(void)dealloc
 {
     self.episodeId = nil;

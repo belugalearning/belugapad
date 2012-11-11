@@ -2662,7 +2662,7 @@ static float kTimeToHintToolTray=7.0f;
     
     if(CurrentBTXE)
     {
-        length=4;
+        length=3;
     }
     
     if(numberPickerForThisProblem) {

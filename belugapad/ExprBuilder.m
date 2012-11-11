@@ -599,6 +599,8 @@
     {
         BAExpressionTree *tree=[BAExpressionTree treeWithRoot:root];
         BATQuery *q=[[BATQuery alloc] initWithExpr:root andTree:tree];
+        
+        NSLog(@"evaluating equality for \n%@", [root xmlStringValueWithPad:@" "]);
         ret=[q assumeAndEvalEqualityAtRoot];
         
         [expressionStringCache addObject:[root xmlStringValueWithPad:@""]];
@@ -713,13 +715,24 @@
     
     if([op isEqualToString:@"-"])
     {
-        BAMultiplicationOperator *mult=[BAMultiplicationOperator operator];
-        [mult addChild:[BAInteger integerWithIntValue:-1]];
-        [mult addChild:right];
-        
-        BAAdditionOperator *root=[BAAdditionOperator operator];
-        [root addChild:left];
-        [root addChild:mult];
+        if([right isKindOfClass:[BAInteger class]])
+        {
+            int intright=-[((BAInteger*)right) intValue];
+            BAInteger *newright=[BAInteger integerWithIntValue:intright];
+            root=[BAAdditionOperator operator];
+            [root addChild:left];
+            [root addChild:newright];
+        }
+        else
+        {
+            BAMultiplicationOperator *mult=[BAMultiplicationOperator operator];
+            [mult addChild:[BAInteger integerWithIntValue:-1]];
+            [mult addChild:right];
+            
+            root=[BAAdditionOperator operator];
+            [root addChild:left];
+            [root addChild:mult];
+        }
     }
     else
     {

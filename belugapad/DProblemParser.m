@@ -161,6 +161,12 @@
         //create by evaluating a value, recalling retained vars where applicable
         NSString *parsedval=[self parseStringFromString:recallexpr withRecall:YES];
         outputvalue=[self numberFromString:parsedval withCastType:casttype];
+        
+        if([outputvalue intValue]==0)
+        {
+            //create a new value from random settings
+            outputvalue=[self numberFromString:[[self randomNumberWithParams:dv andKey:namebase] stringValue] withCastType:casttype];
+        }
     }
     else {
         //create this vairable by creating a random number

@@ -30,6 +30,7 @@
 
 @property (nonatomic, readwrite) BOOL isPaused;
 @property (nonatomic, readwrite) BOOL isInBackground;
+
 @end
 
 
@@ -48,6 +49,27 @@
         self.userId = [episode valueForKey:@"user"];
         self.nodeId = [episode valueForKey:@"nodeId"];
         self.score = @0;
+        
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        activityDatabase = [ac.usersService.allUsersDatabase retain];
+    }
+    return self;
+}
+
+-(id)initFromFMResultSet:(FMResultSet*)rs
+{
+    self = [super init];
+    if (self)
+    {
+        self.episodeId = [rs stringForColumn:@"episode_id"];
+        self.batchId = [rs stringForColumn:@"batch_id"];
+        self.userId = [rs stringForColumn:@"user_id"];
+        self.nodeId = [rs stringForColumn:@"node_id"];
+        self.startDate = [rs doubleForColumn:@"start_date"];
+        self.lastEventDate = [rs doubleForColumn:@"last_event_date"];
+        self.endedPausesTime = [rs doubleForColumn:@"ended_pauses_time"];
+        self.currentPauseStartDate = [rs doubleForColumn:@"curr_pause_start_date"];
+        self.score = @([rs intForColumn:@"score"]);
         
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         activityDatabase = [ac.usersService.allUsersDatabase retain];

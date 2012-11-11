@@ -365,6 +365,10 @@ typedef enum {
     CCSprite *topsprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/HR_HeaderBar_JMAP.png")];
     [topsprite setPosition:ccp(cx, 2*cy-(65.0f/2))];
     [foreLayer addChild:topsprite];
+    
+    CCSprite *testisland=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/test/Sand_5_Green.png")];
+    [testisland setPosition:ccp(cx, cy)];
+    [self addChild:testisland z:10];
 }
 
 - (void)createAllBackgroundTileSprites

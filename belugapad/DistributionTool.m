@@ -282,7 +282,6 @@ static float kDistanceBetweenBlocks=70.0f;
     problemHasCage=[[pdef objectForKey:HAS_CAGE]boolValue];
     cageObjectCount=[[pdef objectForKey:CAGE_OBJECT_COUNT]intValue];
     hasInactiveArea=[[pdef objectForKey:HAS_INACTIVE_AREA]boolValue];
-    cannotBreakBonds=[[pdef objectForKey:UNBREAKABLE_BONDS]boolValue];
     randomiseDockPositions=[[pdef objectForKey:RANDOMISE_DOCK_POSITIONS]boolValue];
     bondDifferentTypes=[[pdef objectForKey:BOND_DIFFERENT_TYPES]boolValue];
     
@@ -305,9 +304,6 @@ static float kDistanceBetweenBlocks=70.0f;
     if([pdef objectForKey:INIT_OBJECTS])initObjects=[pdef objectForKey:INIT_OBJECTS];
     if([pdef objectForKey:EVAL_AREAS])initAreas=[pdef objectForKey:EVAL_AREAS];
     if([pdef objectForKey:SOLUTION])solutionsDef=[pdef objectForKey:SOLUTION];
-    
-    if(hasInactiveArea && cannotBreakBonds)
-        cannotBreakBonds=NO;
     
     if(evalType==kCheckGroupTypeAndNumber)
         bondDifferentTypes=NO;
@@ -404,6 +400,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
     NSString *label = [theseSettings objectForKey:LABEL];
     NSString *blockType = [theseSettings objectForKey:BLOCK_TYPE];
+    BOOL unbreakableBonds = [[theseSettings objectForKey:UNBREAKABLE_BONDS]boolValue];
     
     if(!blockType)
         blockType=@"Circle";
@@ -416,6 +413,12 @@ static float kDistanceBetweenBlocks=70.0f;
     
     SGDtoolContainer *container = [[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:label andRenderLayer:renderLayer];
     container.BlockType=blockType;
+    
+    if(unbreakableBonds)
+        container.LineType=@"Unbreakable";
+    else
+        container.LineType=@"Breakable";
+    
     container.AllowDifferentTypes=bondDifferentTypes;
     if (label && !existingGroups) existingGroups = [[NSMutableArray arrayWithObject:label] retain];
     float startPosX=0;
@@ -461,13 +464,11 @@ static float kDistanceBetweenBlocks=70.0f;
         [block setup];
         block.MyContainer = container;
         
-        if(cannotBreakBonds)
-            block.LineType=1;
             
         
         [container addBlockToMe:block];
         
-        if(!hasInactiveArea||cannotBreakBonds)
+        if(!hasInactiveArea)
         {
             if(i){
                 SGDtoolBlock *prevBlock = [container.BlocksInShape objectAtIndex:i-1];
@@ -787,6 +788,9 @@ static float kDistanceBetweenBlocks=70.0f;
             currentPickupObject.Position=location;
             [currentPickupObject move];
         }
+        if([((id<Container>)currentPickupObject.MyContainer).LineType isEqualToString:@"Unbreakable"])
+            return;
+
         
         for(id go in gw.AllGameObjects)
         {
@@ -872,6 +876,10 @@ static float kDistanceBetweenBlocks=70.0f;
                     hasBeenProximate=YES;
                     
                     if(cObj.MyContainer!=currentPickupObject.MyContainer){
+                        if([((id<Container>)cObj.MyContainer).LineType isEqualToString:@"Unbreakable"]){
+                            [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
+                            return;
+                        }
                         if(currentPickupObject.MyContainer){
                             [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
                             [((id<Container>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
@@ -889,6 +897,12 @@ static float kDistanceBetweenBlocks=70.0f;
                     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_bond_made.wav")];
                     break;
                     
+                }
+                if([((id<Container>)currentPickupObject.MyContainer).LineType isEqualToString:@"Unbreakable"]){
+                    gotTarget=YES;
+                    [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
+                    [self setTouchVarsToOff];
+                    return;
                 }
 
             }

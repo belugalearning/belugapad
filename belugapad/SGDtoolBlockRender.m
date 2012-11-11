@@ -43,26 +43,12 @@
 
 -(void)drawProximateLines:(CGPoint)location
 {
-    if([ParentGO.PairedObjects count]>0)
-    {
-        if(ParentGO.LineType==0)
-            ccDrawColor4F(0, 255, 0, 255);
-        else
-            ccDrawColor4F(0, 255, 0, 50);
-        ccDrawLine(ParentGO.Position, location);
-    }
+
 }
 
 -(void)drawNotProximateLines:(CGPoint)location
 {
-    if([ParentGO.PairedObjects count]>0)
-    {
-        if(ParentGO.LineType==0)
-            ccDrawColor4F(255, 0, 0, 255);
-        else
-            ccDrawColor4F(255, 0, 0, 50);
-        ccDrawLine(ParentGO.Position, location);
-    }
+
 }
 
 

@@ -74,9 +74,6 @@ typedef enum
     NSMutableArray *evalAreas;
     NSMutableArray *inactiveArea;
     CGRect inactiveRect;
-    
-    BOOL unbreakableBonds;
-    BOOL cannotBreakBonds;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;

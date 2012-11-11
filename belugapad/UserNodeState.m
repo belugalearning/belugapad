@@ -84,7 +84,7 @@
     return self;
 }
 
--(BOOL)updateAndSaveStateAfterNodePlay:(NodePlay*)nodePlay
+-(void)updateStateFromNodePlay:(NodePlay*)nodePlay
 {
     self.timePlayed += nodePlay.playTime;
     self.lastPlayed = [NSDate dateWithTimeIntervalSince1970:nodePlay.lastEventDate];
@@ -121,8 +121,6 @@
             }
         }
     }
-    
-    return [self saveState];
 }
 
 -(BOOL)saveState

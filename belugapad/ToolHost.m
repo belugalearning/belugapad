@@ -239,6 +239,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         
         int time=i;
         if(skipNextStagedIntroAnim) time=0;
+        timeBeforeUserInteraction=time;
         
         if(toolBackLayer)[self recurseSetIntroFor:toolBackLayer withTime:time forTag:i];
         if(toolForeLayer)[self recurseSetIntroFor:toolForeLayer withTime:time forTag:i];

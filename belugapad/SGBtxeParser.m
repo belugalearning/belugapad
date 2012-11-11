@@ -78,6 +78,7 @@ const NSString *matchNumbers=@"0123456789";
                 //create object number, have it parsed
                 SGBtxeObjectNumber *on=[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld];
                 on.text=s;
+                on.enabled=YES;
                 
                 [ParentGO.containerMgrComponent addObjectToContainer:on];
             }
@@ -186,7 +187,7 @@ const NSString *matchNumbers=@"0123456789";
         {
             on.usePicker=[[[usepicker stringValue] lowercaseString] isEqualToString:@"yes"];
         }
-        
+    
         on.enabled=[self enabledBoolFor:element];
         
         [ParentGO.containerMgrComponent addObjectToContainer:on];

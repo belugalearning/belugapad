@@ -15,6 +15,8 @@
     
     NSMutableDictionary *dStrings;
     NSMutableDictionary *retainedStrings;
+    
+    NSMutableDictionary *randomKeyCaches;
 }
 
 

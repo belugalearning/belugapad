@@ -28,12 +28,12 @@
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
-        text=@"";
-        size=CGSizeZero;
-        position=CGPointZero;
-        tag=@"";
-        enabled=YES;
-        valueOperator=@"";
+        self.text=@"";
+        self.size=CGSizeZero;
+        self.position=CGPointZero;
+        self.tag=@"";
+        self.enabled=YES;
+        self.valueOperator=@"";
         
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
         textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];

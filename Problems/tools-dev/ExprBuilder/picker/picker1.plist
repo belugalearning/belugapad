@@ -18,8 +18,31 @@
 	<integer>1</integer>
 	<key>EXPR_STAGES</key>
 	<array>
-		<string>&lt;b:t&gt;operator things -- make an expression&lt;/b:t&gt;</string>
+		<string>&lt;b:t&gt;operator things -- make an expression number {$var1}&lt;/b:t&gt;</string>
 		<string>&lt;b:ph /&gt;&lt;b:oo value=&quot;+&quot; /&gt;&lt;b:ph /&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; /&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$var1</string>
+			<key>MIN</key>
+			<string>5</string>
+			<key>MAX</key>
+			<string>10</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$var2</string>
+			<key>VALUE</key>
+			<string>3</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>&amp;varout</string>
+			<key>VALUE</key>
+			<string>{&amp;var1/&amp;var2}</string>
+		</dict>
 	</array>
 </dict>
 </plist>

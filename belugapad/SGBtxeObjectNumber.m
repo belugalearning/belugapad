@@ -34,18 +34,18 @@
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
-        prefixText=@"";
-        numberText=@"";
-        suffixText=@"";
-        numberValue=@0;
+        self.prefixText=@"";
+        self.numberText=@"";
+        self.suffixText=@"";
+        self.numberValue=@0;
         
-        enabled=YES;
-        tag=@"";
+        self.enabled=YES;
+        self.tag=@"";
         
-        size=CGSizeZero;
-        position=CGPointZero;
+        self.size=CGSizeZero;
+        self.position=CGPointZero;
+        
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
-        
         textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
         
     }
@@ -108,11 +108,11 @@
 
 -(void)setNumberValue:(NSNumber *)theNumberValue
 {
-    if(numberValue)[numberValue release];
+    if(numberValue==theNumberValue) return;
     
-    numberValue=theNumberValue;
-    [numberValue retain];
-    
+    NSNumber *oldVal=numberValue;
+    numberValue=[theNumberValue retain];
+    [oldVal release];
     
     self.tag=[numberValue stringValue];
 }
@@ -306,8 +306,6 @@
     self.suffixText=nil;
     self.numberValue=nil;
     self.container=nil;
-
-    [numberValue release];
     
     [super dealloc];
 }

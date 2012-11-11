@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>Complete the equation.</string>
+	<key>REPEAT_SET</key>
+	<string>gapfill</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>EVAL_TYPE</key>
+	<string>EXPRESSION_EQUALITIES</string>
+	<key>NUMBER_CARD_ROW_MIN</key>
+	<integer>1</integer>
+	<key>NUMBER_CARD_ROW_MAX</key>
+	<integer>10</integer>
+	<key>NUMBER_CARD_INTERVAL</key>
+	<integer>1</integer>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:t&gt;Complete the equation.&lt;/b:t&gt;</string>
+		<string>&lt;b:on number=&quot;{$x}&quot; enabled=&quot;yes&quot;/&gt;
+&lt;b:oo value=&quot;+&quot; /&gt;
+&lt;b:on number=&quot;{$y}&quot; enabled=&quot;yes&quot;/&gt;
+&lt;b:oo value=&quot;=&quot; /&gt;
+&lt;b:ph/&gt;
+&lt;b:op op=&quot;+&quot; /&gt;
+&lt;b:on number=&quot;{$z}&quot; enabled=&quot;yes&quot;/&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>1</string>
+			<key>MAX</key>
+			<string>5</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>6</string>
+			<key>MAX</key>
+			<string>9</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$z</string>
+			<key>MIN</key>
+			<string>2</string>
+			<key>MAX</key>
+			<string>5</string>
+		</dict>
+	</array>
+</dict>
+</plist>

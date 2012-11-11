@@ -270,13 +270,6 @@ typedef enum {
     
     //setup rendering -- needs all node connections built
     [gw handleMessage:kSGreadyRender];
-    
-    
-//    backarrow=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/backarrow.png")];
-//    [backarrow setPosition:ccp(64, ly-64)];
-//    [backarrow setOpacity:70];
-//    [self addChild:backarrow];
-    
 
     // position map so that bottom-most included node in view, bottom-left
     if (!contentService.resetPositionAfterTH)
@@ -292,15 +285,6 @@ typedef enum {
         if (p.y != NSIntegerMax) [mapLayer setPosition:ccp(300-p.x, 300-p.y)]; // offset to make most of node visible
     }
     
-//    //reposition if previous node
-//    if(contentService.currentNode)
-//    {
-//        //put map at this position
-//        CGPoint p=ccp(contentService.currentNode.x * kNodeScale, -(nMaxY - contentService.currentNode.y) * kNodeScale);
-//        p=ccpAdd(ccp(cx, cy), p);
-//        [mapLayer setPosition:p];
-//    }
-    
     [self buildSearchIndex];
         
     NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
@@ -308,9 +292,6 @@ typedef enum {
 
 - (void)createLayers
 {
-    //base colour layer
-//    CCLayerGradient *cLayer=[[CCLayerGradient alloc] initWithColor:ccc4(49, 65, 83, 255) fadingTo:ccc4(55, 77, 101, 255)];
-//    
     underwaterLayer=[[CCLayer alloc] init];
     
     CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/water_whitebkg.png") rect:CGRectMake(0, 0, 10*cx, 10*cy)];
@@ -321,22 +302,6 @@ typedef enum {
     [underwaterLayer addChild:s];
     
     [self addChild:underwaterLayer];
-    
-//    CCLayer *cLayer=[[CCLayer alloc] init];
-    
-// currently 
-    //put on overlay texture -- ipad1 only??
-//    AppController *ac=(AppController*)[[UIApplication sharedApplication] delegate];
-//    if(!ac.IsIpad1)
-//    {
-//        CCSprite *overlay=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/base-overlay.png")];
-//        [overlay setPosition:ccp(cx,cy)];
-//        [cLayer addChild:overlay];
-//    }
-    
-    //CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(35, 35, 35, 255) width:lx height:ly];
-//    [self addChild:cLayer];
-//    [cLayer release];
     
     //base map layer
     mapLayer=[[CCLayer alloc] init];
@@ -356,12 +321,6 @@ typedef enum {
     //fore layer
     foreLayer=[[CCLayer alloc] init];
     [self addChild:foreLayer z:1];
-    
-    //ui layer elements -- top bar etc
-//    CCLayer *topbar=[CCLayerGradient layerWithColor:ccc4(0, 0, 0, 200) fadingTo:ccc4(0, 0, 0, 160) alongVector:ccp(0, 70)];
-//    [topbar setContentSize:CGSizeMake(2*cx, 70)];
-//    [topbar setPosition:ccp(0, (2*cy)-70)];
-//    [foreLayer addChild:topbar];
     
     CCSprite *topsprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/HR_HeaderBar_JMAP.png")];
     [topsprite setPosition:ccp(cx, 2*cy-(65.0f/2))];

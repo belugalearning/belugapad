@@ -814,9 +814,6 @@ float timerIgnoreFrog;
         //mod this to closest valid segment value
         //adjustedStepsFromCentre=rambler.CurrentSegmentValue * ((int)(adjustedStepsFromCentre / rambler.CurrentSegmentValue));
 
-        //diff (moveby)
-        float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
-        
         float diffy=0.0f;
         
         if(jumpMode)  // === stitching stuff ======================================
@@ -833,14 +830,20 @@ float timerIgnoreFrog;
             
         }  // =====================================================================
         
-        [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, diffy)]];
-        
         
         //update the rambler value & last bubble location, using any offset
         lastBubbleLoc=adjustedStepsFromCentre + startOffset;
         lastBubbleValue=lastBubbleLoc*initSegmentVal;
         
         rambler.BubblePos=lastBubbleValue;
+        
+        
+        [self resetTouchParams];
+        
+        //diff (moveby)
+        float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
+        
+        [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, diffy)]];
         
         
         //play some audio -- only for non decimal numbers at the moment
@@ -897,7 +900,7 @@ float timerIgnoreFrog;
     
     NSLog(@"lastBubbleLoc: %d lastFrogLoc: %d", lastBubbleLoc, lastFrogLoc);
     
-    [self resetTouchParams];
+
 }
 
 -(void)resetTouchParams

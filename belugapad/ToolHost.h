@@ -99,7 +99,7 @@ typedef enum {
     BOOL hasUsedNumber;
     BOOL canMoveNumber;
     
-    float timeSinceInteractionOrShakeNP;
+    float timeSinceInteractionOrShake;
     float timeBeforeUserInteraction;
     
     BOOL isPaused;
@@ -201,6 +201,8 @@ typedef enum {
     BOOL showMqOnStart;
     
     BOOL hasUsedPicker;
+    BOOL hasUsedWheelTray;
+    BOOL hasUsedMetaTray;
     
 }
 

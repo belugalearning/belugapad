@@ -24,8 +24,8 @@
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
-        self.size=CGSizeZero;
-        self.position=CGPointZero;
+        size=CGSizeZero;
+        position=CGPointZero;
         
         textBackgroundComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
     }

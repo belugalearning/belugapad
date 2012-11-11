@@ -166,7 +166,10 @@ const NSString *matchNumbers=@"0123456789";
         if(hidden)on.hidden=[[[hidden stringValue] lowercaseString] isEqualToString:@"yes"];
         
         CXMLNode *usepicker=[element attributeForName:@"usePicker"];
-        if(usepicker)on.usePicker=[[[usepicker stringValue] lowercaseString] isEqualToString:@"yes"];
+        if(usepicker)
+        {
+            on.usePicker=[[[usepicker stringValue] lowercaseString] isEqualToString:@"yes"];
+        }
         
         on.enabled=[self enabledBoolFor:element];
         

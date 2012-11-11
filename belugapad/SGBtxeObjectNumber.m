@@ -175,9 +175,9 @@
         }
     }
     
-    if(nStart>0) prefixText=[parse substringToIndex:nStart];
-    numberText=[parse substringWithRange:NSMakeRange(nStart, nEnd+1)];
-    if(nEnd<[parse length]-1) suffixText=[parse substringFromIndex:nEnd];
+    if(nStart>0) self.prefixText=[parse substringToIndex:nStart];
+    self.numberText=[parse substringWithRange:NSMakeRange(nStart, nEnd+1)];
+    if(nEnd<[parse length]-1) self.suffixText=[parse substringFromIndex:nEnd];
     [self updateDraw];
     NSNumberFormatter *nf=[[NSNumberFormatter alloc] init];
     [nf setNumberStyle:NSNumberFormatterDecimalStyle];
@@ -206,8 +206,8 @@
     NSString *ss=suffixText;
     if(!ss)ss=@"";
     
-    //return [NSString stringWithFormat:@"%@%@%@", ps, numberText, ss];
-    return @"";
+    return [NSString stringWithFormat:@"%@%@%@", ps, numberText, ss];
+    //return numberText;
 }
 
 -(BOOL)enabled

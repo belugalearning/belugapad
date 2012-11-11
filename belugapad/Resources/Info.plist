@@ -12,12 +12,13 @@
 	<string></string>
 	<key>CFBundleIconFiles</key>
 	<array>
-		<string>icon.png</string>
+		<string>Icon_black_72.png</string>
 		<string>Icon@2x.png</string>
 		<string>Icon-72.png</string>
 		<string>Icon-Small-50.png</string>
 		<string>Icon-Small.png</string>
 		<string>Icon-Small@2x.png</string>
+		<string>Icon_black_144.png</string>
 	</array>
 	<key>CFBundleIcons</key>
 	<dict>
@@ -25,15 +26,16 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>icon.png</string>
+				<string>Icon_black_72.png</string>
 				<string>Icon@2x.png</string>
 				<string>Icon-72.png</string>
 				<string>Icon-Small-50.png</string>
 				<string>Icon-Small.png</string>
 				<string>Icon-Small@2x.png</string>
+				<string>Icon_black_144.png</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
-			<false/>
+			<true/>
 		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>

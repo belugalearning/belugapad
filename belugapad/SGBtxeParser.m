@@ -155,15 +155,6 @@ const NSString *matchNumbers=@"0123456789";
         [ParentGO.containerMgrComponent addObjectToContainer:ot];
     }
     
-    else if ([element.name isEqualToString:BTXE_OP])
-    {
-        //this isn't long term -- create as text for now
-        
-        SGBtxeText *t=[[SGBtxeText alloc] initWithGameWorld:gameWorld];
-        t.text=[[element attributeForName:@"op"] stringValue];
-        [ParentGO.containerMgrComponent addObjectToContainer:t];
-    }
-    
     else if ([element.name isEqualToString:BTXE_ON])
     {
         SGBtxeObjectNumber *on=[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld];

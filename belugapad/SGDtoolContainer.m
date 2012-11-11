@@ -17,6 +17,7 @@
 @synthesize BlocksInShape, Label, BaseNode;
 @synthesize BlockType;
 @synthesize AllowDifferentTypes;
+@synthesize LineType;
 
 -(SGDtoolContainer*) initWithGameWorld:(SGGameWorld*)aGameWorld andLabel:(NSString*)aLabel andRenderLayer:(CCLayer*)aRenderLayer
 {
@@ -73,6 +74,8 @@
 
 -(void)removeBlockFromMe:(id)thisBlock
 {
+    if(LineType==@"Unbreakable")return;
+    
     if(((id<Configurable>)thisBlock).blockType!=self.BlockType)return;
     
     if([BlocksInShape containsObject:thisBlock])

@@ -141,6 +141,8 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     float minValuePos=ramblerGameObject.BubblePos - ((segsInCX * 4) * ramblerGameObject.CurrentSegmentValue);
     float maxValuePos=ramblerGameObject.BubblePos + ((segsInCX * 4) * ramblerGameObject.CurrentSegmentValue);
     
+    minValuePos+=-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize;
+    maxValuePos+=-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize;
     
     int assBlankIndex=0;
     int assLineIndex=0;

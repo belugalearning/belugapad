@@ -23,14 +23,14 @@
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
-        size=CGSizeZero;
-        position=CGPointZero;
-        tag=@"";
-        iconTag=@"";
-        enabled=YES;
+        self.size=CGSizeZero;
+        self.position=CGPointZero;
+        self.tag=@"";
+        self.iconTag=@"";
+        self.enabled=YES;
         
         //todo: init render
-        self.iconRenderComponent=[[SGBtxeIconRender alloc] initWithGameObject:self];
+        iconRenderComponent=[[SGBtxeIconRender alloc] initWithGameObject:self];
     }
     
     return self;

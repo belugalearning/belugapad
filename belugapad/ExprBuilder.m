@@ -298,6 +298,8 @@
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
     
+    BOOL gotPickerObject=NO;
+    
     if(isHoldingObject) return;  // no multi-touch but let's be sure
 
     for(id<MovingInteractive, NSObject> o in gw.AllGameObjects)
@@ -305,6 +307,7 @@
         if([o conformsToProtocol:@protocol(MovingInteractive)])
         {
             id<Bounding> obounding=(id<Bounding>)o;
+            id<NumberPicker,Text> opicker=(id<NumberPicker,Text>)o;
             
             CGRect hitbox=CGRectMake(obounding.worldPosition.x - (BTXE_OTBKG_WIDTH_OVERDRAW_PAD + obounding.size.width) / 2.0f, obounding.worldPosition.y-BTXE_VPAD-(obounding.size.height / 2.0f), obounding.size.width + BTXE_OTBKG_WIDTH_OVERDRAW_PAD, obounding.size.height + 2*BTXE_VPAD);
             
@@ -312,6 +315,33 @@
             {
                 heldObject=o;
                 isHoldingObject=YES;
+                
+                if(opicker.usePicker){
+                    gotPickerObject=YES;
+                    
+                    if(toolHost.CurrentBTXE && toolHost.CurrentBTXE!=o){
+                        
+                        NSLog(@"returnedPickerNo %@, opicker.text %@", [toolHost returnPickerNumber], opicker.text);
+                        
+                        if(opicker.text&&[opicker.text isEqualToString:@"?"])
+                            opicker.text=@"0";
+                        
+                        //if(![[toolHost returnPickerNumber] isEqualToString:opicker.text])
+                        //{
+                            [toolHost updatePickerNumber:opicker.text];
+                        //}
+                        
+//                        for(int i=0;i<[toolHost numberOfComponentsInPickerView:toolHost.pickerView];i++)
+//                        {
+//                            [toolHost.pickerView spinComponent:i speed:20 easeRate:5 repeat:2 stopRow:0];
+//                            [toolHost pickerView:toolHost.pickerView didSelectRow:0 inComponent:i];
+//                        }
+                    }
+                    toolHost.CurrentBTXE=o;
+                    if(toolHost.pickerView && toolHost.CurrentBTXE)
+                        [toolHost showWheel];
+
+                }
                 
                 [(id<MovingInteractive>)o inflateZIndex];
                 
@@ -323,6 +353,10 @@
         }
     }
     
+    if(!gotPickerObject){
+        toolHost.CurrentBTXE=nil;
+        [toolHost tearDownNumberPicker];
+    }
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -390,6 +424,7 @@
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouching=NO;
+    toolHost.CurrentBTXE=nil;
     // empty selected objects
     
     if(heldObject)
@@ -564,6 +599,8 @@
     {
         BAExpressionTree *tree=[BAExpressionTree treeWithRoot:root];
         BATQuery *q=[[BATQuery alloc] initWithExpr:root andTree:tree];
+        
+        NSLog(@"evaluating equality for \n%@", [root xmlStringValueWithPad:@" "]);
         ret=[q assumeAndEvalEqualityAtRoot];
         
         [expressionStringCache addObject:[root xmlStringValueWithPad:@""]];
@@ -678,13 +715,24 @@
     
     if([op isEqualToString:@"-"])
     {
-        BAMultiplicationOperator *mult=[BAMultiplicationOperator operator];
-        [mult addChild:[BAInteger integerWithIntValue:-1]];
-        [mult addChild:right];
-        
-        BAAdditionOperator *root=[BAAdditionOperator operator];
-        [root addChild:left];
-        [root addChild:mult];
+        if([right isKindOfClass:[BAInteger class]])
+        {
+            int intright=-[((BAInteger*)right) intValue];
+            BAInteger *newright=[BAInteger integerWithIntValue:intright];
+            root=[BAAdditionOperator operator];
+            [root addChild:left];
+            [root addChild:newright];
+        }
+        else
+        {
+            BAMultiplicationOperator *mult=[BAMultiplicationOperator operator];
+            [mult addChild:[BAInteger integerWithIntValue:-1]];
+            [mult addChild:right];
+            
+            root=[BAAdditionOperator operator];
+            [root addChild:left];
+            [root addChild:mult];
+        }
     }
     else
     {

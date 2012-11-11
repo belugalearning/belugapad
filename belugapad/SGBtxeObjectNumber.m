@@ -34,18 +34,18 @@
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
-        prefixText=@"";
-        numberText=@"";
-        suffixText=@"";
-        numberValue=@0;
+        self.prefixText=@"";
+        self.numberText=@"";
+        self.suffixText=@"";
+        self.numberValue=@0;
         
-        enabled=YES;
-        tag=@"";
+        self.enabled=YES;
+        self.tag=@"";
         
-        size=CGSizeZero;
-        position=CGPointZero;
+        self.size=CGSizeZero;
+        self.position=CGPointZero;
+        
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
-        
         textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
         
     }
@@ -108,11 +108,11 @@
 
 -(void)setNumberValue:(NSNumber *)theNumberValue
 {
-    if(numberValue)[numberValue release];
+    if(numberValue==theNumberValue) return;
     
-    numberValue=theNumberValue;
-    [numberValue retain];
-    
+    NSNumber *oldVal=numberValue;
+    numberValue=[theNumberValue retain];
+    [oldVal release];
     
     self.tag=[numberValue stringValue];
 }
@@ -178,13 +178,18 @@
     if(nStart>0) prefixText=[parse substringToIndex:nStart];
     numberText=[parse substringWithRange:NSMakeRange(nStart, nEnd+1)];
     if(nEnd<[parse length]-1) suffixText=[parse substringFromIndex:nEnd];
-    
+    [self updateDraw];
     NSNumberFormatter *nf=[[NSNumberFormatter alloc] init];
     [nf setNumberStyle:NSNumberFormatterDecimalStyle];
     self.numberValue=[nf numberFromString:numberText];
     [nf release];
     
     self.tag=[numberValue stringValue];
+}
+
+-(void)updateDraw
+{
+    [self.textRenderComponent updateLabel];
 }
 
 -(NSString*)text
@@ -200,6 +205,19 @@
     if(!ss)ss=@"";
     
     return [NSString stringWithFormat:@"%@%@%@", ps, numberText, ss];
+}
+
+-(BOOL)enabled
+{
+    if(usePicker)
+        return (numberValue!=nil);
+    else
+        return enabled;
+}
+
+-(void)setEnabled:(BOOL)theEnabled
+{
+    enabled=theEnabled;
 }
 
 -(CGPoint)worldPosition
@@ -306,8 +324,6 @@
     self.suffixText=nil;
     self.numberValue=nil;
     self.container=nil;
-
-    [numberValue release];
     
     [super dealloc];
 }

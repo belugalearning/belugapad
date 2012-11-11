@@ -19,7 +19,7 @@
 	<key>EXPR_STAGES</key>
 	<array>
 		<string>&lt;b:t&gt;operator things -- make an expression&lt;/b:t&gt;</string>
-		<string>&lt;b:ph /&gt;&lt;b:oo value=&quot;+&quot; /&gt;&lt;b:ph /&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; /&gt;</string>
+		<string>&lt;b:ph /&gt;&lt;b:oo value=&quot;+&quot; /&gt;&lt;b:ph /&gt;&lt;b:oo value=&quot;=&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; /&gt;&lt;b:on usePicker=&quot;yes&quot; /&gt;</string>
 	</array>
 </dict>
 </plist>

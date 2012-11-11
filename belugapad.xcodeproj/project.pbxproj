@@ -35,6 +35,7 @@
 		0C92B2541515702700342094 /* ContentService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C92B2531515702700342094 /* ContentService.m */; };
 		0C993CFB163842CE0079A647 /* Problems in Resources */ = {isa = PBXBuildFile; fileRef = 0C993CFA163842CE0079A647 /* Problems */; };
 		0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */ = {isa = PBXBuildFile; fileRef = 0C9FEFF514F572FB00E64138 /* pipeline-testing */; };
+		0CB7A51B164DFF96005FC7B1 /* NSData+GzipExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB7A51A164DFF96005FC7B1 /* NSData+GzipExtension.m */; };
 		0CD565921647F23E00D9EA30 /* UserNodeState.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD565911647F23E00D9EA30 /* UserNodeState.m */; };
 		0CDECB5E15920C27004DE20D /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB4A15920C27004DE20D /* AFHTTPClient.m */; };
 		0CDECB5F15920C27004DE20D /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB4C15920C27004DE20D /* AFHTTPRequestOperation.m */; };
@@ -482,6 +483,8 @@
 		0C92B2531515702700342094 /* ContentService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentService.m; sourceTree = "<group>"; };
 		0C993CFA163842CE0079A647 /* Problems */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Problems; sourceTree = SOURCE_ROOT; };
 		0C9FEFF514F572FB00E64138 /* pipeline-testing */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pipeline-testing"; sourceTree = SOURCE_ROOT; };
+		0CB7A519164DFF96005FC7B1 /* NSData+GzipExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+GzipExtension.h"; sourceTree = "<group>"; };
+		0CB7A51A164DFF96005FC7B1 /* NSData+GzipExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GzipExtension.m"; sourceTree = "<group>"; };
 		0CD565901647F23E00D9EA30 /* UserNodeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserNodeState.h; sourceTree = "<group>"; };
 		0CD565911647F23E00D9EA30 /* UserNodeState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserNodeState.m; sourceTree = "<group>"; };
 		0CDECB4915920C27004DE20D /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
@@ -2647,6 +2650,8 @@
 				7FBE96981549819300D993AC /* LoadingViewController.xib */,
 				0CD565901647F23E00D9EA30 /* UserNodeState.h */,
 				0CD565911647F23E00D9EA30 /* UserNodeState.m */,
+				0CB7A519164DFF96005FC7B1 /* NSData+GzipExtension.h */,
+				0CB7A51A164DFF96005FC7B1 /* NSData+GzipExtension.m */,
 			);
 			name = Users;
 			sourceTree = "<group>";
@@ -3404,6 +3409,7 @@
 				7F0F70AC1645B2A9009DBCAB /* SGBtxePlaceholder.m in Sources */,
 				0CD565921647F23E00D9EA30 /* UserNodeState.m in Sources */,
 				0C03B6371649EDD600F74659 /* NodePlay.m in Sources */,
+				0CB7A51B164DFF96005FC7B1 /* NSData+GzipExtension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

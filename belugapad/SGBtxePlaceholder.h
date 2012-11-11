@@ -17,5 +17,6 @@
 }
 
 @property (retain) SGBtxeTextBackgroundRender *textBackgroundComponent;
+@property (retain) NSString *targetTag;
 
 @end

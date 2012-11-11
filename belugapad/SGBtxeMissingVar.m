@@ -19,11 +19,11 @@
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
-        self.text=@"";
-        self.size=CGSizeZero;
-        self.position=CGPointZero;
-        self.tag=@"";
-        self.enabled=YES;
+        text=@"";
+        size=CGSizeZero;
+        position=CGPointZero;
+        tag=@"";
+        enabled=YES;
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
     }
     

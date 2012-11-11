@@ -244,7 +244,7 @@ float timerIgnoreFrog;
     rambler.CurrentSegmentValue=initSegmentVal;
     rambler.MinValue=initMinVal;
     rambler.MaxValue=initMaxVal;
-    rambler.BubblePos=lastBubbleLoc;
+    rambler.BubblePos=initStartVal;
     
     initStartLoc=initStartVal / initSegmentVal;
 

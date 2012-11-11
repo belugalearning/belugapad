@@ -93,7 +93,7 @@
 -(void)layoutMyBlocks
 {
     if([BlocksInShape count]==0)return;
-    NSArray *blockPos=[NumberLayout physicalLayoutUpToNumber:[BlocksInShape count] withSpacing:52.0f];
+    NSArray *blockPos=[NumberLayout physicalLayoutAcrossToNumber:[BlocksInShape count] withSpacing:52.0f];
     
     id<Moveable> firstBlock=[BlocksInShape objectAtIndex:0];
     float posX=firstBlock.Position.x;

@@ -349,6 +349,19 @@ static float kTimeToHintToolTray=7.0f;
         }
     }
     
+    if(delayShowWheel)timeToWheelStart+=delta;
+    if(delayShowMeta)timeToMetaStart+=delta;
+    
+    if(delayShowWheel&&timeToWheelStart>2.0f){
+        [self showWheel];
+        delayShowWheel=NO;
+    }
+    
+    if(delayShowMeta&&timeToMetaStart>2.0f){
+        [self showMq];
+        delayShowMeta=NO;
+    }
+    
     if(numberPickerForThisProblem||metaQuestionForThisProblem)timeSinceInteractionOrShake+=delta;
     
     if(timeSinceInteractionOrShake>kTimeToHintToolTray)
@@ -1213,7 +1226,7 @@ static float kTimeToHintToolTray=7.0f;
     }
     
     if(!currentTool)
-        [self showMq];
+        delayShowMeta=YES;
     
     shownMetaQuestionIncompleteFor=0;
     
@@ -1632,7 +1645,7 @@ static float kTimeToHintToolTray=7.0f;
     [self addCommitButton];
     
     if(!currentTool)
-        [self showWheel];
+        delayShowWheel=YES;
     
     //float npOriginX=[[pdefNP objectForKey:PICKER_ORIGIN_X]floatValue];
     //float npOriginY=[[pdefNP objectForKey:PICKER_ORIGIN_Y]floatValue];
@@ -2649,7 +2662,7 @@ static float kTimeToHintToolTray=7.0f;
     
     if(CurrentBTXE)
     {
-        length=4;
+        length=3;
     }
     
     if(numberPickerForThisProblem) {

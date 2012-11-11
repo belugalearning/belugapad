@@ -188,7 +188,7 @@ static float kDistanceBetweenBlocks=70.0f;
         
         if(![b.MyContainer conformsToProtocol:@protocol(Cage)])
         {
-            if([BLMath DistanceBetween:b.mySprite.position and:currentPickupObject.mySprite.position] < 150.0f || nearestObject==lastNewBondObject)
+            if([BLMath DistanceBetween:b.mySprite.position and:currentPickupObject.mySprite.position] < gw.Blackboard.MaxObjectDistance+50 || nearestObject==lastNewBondObject)
             {
                 [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)nearestObject).mySprite.position];
                 lastNewBondObject=nearestObject;
@@ -212,7 +212,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
     float llen=[BLMath LengthOfVector:[BLMath SubtractVector:p2 from:p1]];
     
-    if(llen>100.0f)return;
+    if(llen>gw.Blackboard.MaxObjectDistance)return;
     
     float op=1.0f;
     if(llen>300)
@@ -221,8 +221,8 @@ static float kDistanceBetweenBlocks=70.0f;
     }
     if(llen>70.0f)
     {
-        float diff=100-llen;
-        barHalfW=1 + (30 * (diff / 30.0f));
+        float diff=gw.Blackboard.MaxObjectDistance-llen;
+        barHalfW=1 + (30 * (diff / (gw.Blackboard.MaxObjectDistance-70.0f)));
     }
     
     ccDrawColor4F(1, 1, 1, op);
@@ -284,7 +284,12 @@ static float kDistanceBetweenBlocks=70.0f;
     hasInactiveArea=[[pdef objectForKey:HAS_INACTIVE_AREA]boolValue];
     randomiseDockPositions=[[pdef objectForKey:RANDOMISE_DOCK_POSITIONS]boolValue];
     bondDifferentTypes=[[pdef objectForKey:BOND_DIFFERENT_TYPES]boolValue];
+    bondAllObjects=[[pdef objectForKey:BOND_ALL_OBJECTS]boolValue];
     
+    if(bondAllObjects)
+        gw.Blackboard.MaxObjectDistance=1024.0f;
+    else
+        gw.Blackboard.MaxObjectDistance=100.0f;
     
 
     if([pdef objectForKey:DOCK_TYPE])
@@ -396,7 +401,7 @@ static float kDistanceBetweenBlocks=70.0f;
 //    CCLabelTTF *labelForShape;
 //    float avgPosX=0;
 //    float avgPosY=0;
-    NSArray *thesePositions=[NSArray arrayWithArray:[NumberLayout physicalLayoutUpToNumber:numBlocks withSpacing:kDistanceBetweenBlocks]];
+    NSArray *thesePositions=[NSArray arrayWithArray:[NumberLayout physicalLayoutAcrossToNumber:numBlocks withSpacing:kDistanceBetweenBlocks]];
     
     NSString *label = [theseSettings objectForKey:LABEL];
     NSString *blockType = [theseSettings objectForKey:BLOCK_TYPE];
@@ -700,7 +705,7 @@ static float kDistanceBetweenBlocks=70.0f;
 {
     id<Moveable>firstShape=[thisShape.BlocksInShape objectAtIndex:0];
     
-    NSArray *newObjects=[NumberLayout physicalLayoutUpToNumber:[thisShape.BlocksInShape count] withSpacing:kDistanceBetweenBlocks];
+    NSArray *newObjects=[NumberLayout physicalLayoutAcrossToNumber:[thisShape.BlocksInShape count] withSpacing:kDistanceBetweenBlocks];
     
     CGPoint newVal=[[newObjects objectAtIndex:[newObjects count]-1] CGPointValue];
     

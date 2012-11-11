@@ -24,6 +24,7 @@ static ccColor4B userHighCol={255, 255, 255, 50};
 //static ccColor4B userHighCol={239,119,82,255};
 static int shadowSteps=5;
 
+#define FEATURE_UNIQUE_VARIANTS 2
 
 
 @interface SGJmapMasteryNodeRender()
@@ -352,64 +353,97 @@ static int shadowSteps=5;
 //    [ParentGO.RenderBatch.parent addChild:islandShadowSprite z:-1];
 
     //NSString *baseSpriteName=[NSString stringWithFormat:@"/images/jmap/islands/%@-s1.png", islandName];
-    NSString *baseSpriteName=@"/images/jmap/islands/island6-2-s1.png";
     
-    NSString *islandSpriteName=[NSString stringWithFormat:@"/images/jmap/islands/%@.png", islandName];
+    //get an island selection base
+    int islandShapeIdx=(arc4random()%10) + 1;
     
-    islandSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(baseSpriteName)];
-    islandSprite.color=ccc3(155, 186, 138);
+    NSString *baseSpriteName=[NSString stringWithFormat:@"Sand_%d_Yellow.png", islandShapeIdx];
+
+    
+//    NSString *baseSpriteName=@"/images/jmap/islands/island6-2-s1.png";
+//    NSString *islandSpriteName=[NSString stringWithFormat:@"/images/jmap/islands/%@.png", islandName];
+    
+    islandSprite=[CCSprite spriteWithSpriteFrameName:baseSpriteName];
     islandSprite.position=ParentGO.Position;
     islandSprite.visible=ParentGO.Visible;
-    [ParentGO.RenderBatch.parent addChild:islandSprite z:-1];
+    [ParentGO.RenderBatch addChild:islandSprite z:-1];
  
+    int islandStage=1;
+    if(ParentGO.PrereqPercentage>=30)islandStage=3;
+    if(ParentGO.PrereqPercentage>=70)islandStage=5;
+
     
-    if(ParentGO.PrereqPercentage==0)
-    {
-        //scatter black mountains
-        [self scatterThing1:@"hill_black" andThing2:@"hill_black" withRatio1:50 andRatio2:50];
-        
-        //if bigger island (2/3+) draw volcano, pick from two
-        if(ParentGO.ChildNodes.count>0)
-        {
-            int vver=3; // the non lava volcano
-            if(ParentGO.ChildNodes.count>3) vver=1+arc4random()%2; //the lava volcanoes
-            
-            NSString *vName=[NSString stringWithFormat:@"volcano_%d.png", vver];
-            CCSprite *vol=[CCSprite spriteWithSpriteFrameName:vName];
-            //[vol setPosition:ccpAdd(ParentGO.Position, [[islandData objectForKey:ISLAND_MASTERY] CGPointValue])];
-            [vol setPosition:ccpAdd(ParentGO.Position, ccp(0,80))];
-            if(vver==3)vol.scale=0.7f;
-            [ParentGO.RenderBatch addChild:vol z:4];
-            [featureSprites addObject:vol];
-        }
-        
-        //set island colour black-ish
-        islandSprite.color=ccc3(183,183,167);
-        
-        //TODO: draw water features
-        
-        //TODO: draw cloud
-        
-    }
-    else if(ParentGO.PrereqPercentage<100)
-    {
-        //scatter black and green in proportion
-        [self scatterThing1:@"hill_black" andThing2:@"hill_green" withRatio1:100-ParentGO.PrereqPercentage andRatio2:ParentGO.PrereqPercentage];
-        
-        //set island colour sandy
-        islandSprite.color=ccc3(186,182,104);
-        
-        //TODO: draw cloud
-    }
-    else //it's 100
-    {
-        //scatter green + trees
-        [self scatterThing1:@"hill_green" andThing2:@"tree" withRatio1:100-ParentGO.CompletePercentage andRatio2:ParentGO.CompletePercentage];
-        
-    }
+    //draw the volcano / big hill
+    int vver=1+arc4random()%FEATURE_UNIQUE_VARIANTS;
+    NSString *vName=[NSString stringWithFormat:@"Feature_Stage%d_Size5_%d.png", islandStage, vver];
+    CCSprite *vol=[CCSprite spriteWithSpriteFrameName:vName];
+    //[vol setPosition:ccpAdd(ParentGO.Position, [[islandData objectForKey:ISLAND_MASTERY] CGPointValue])];
+    [vol setPosition:ccpAdd(ParentGO.Position, ccp(0,120))];
+    if(vver==3)vol.scale=0.7f;
+    [ParentGO.RenderBatch addChild:vol z:3];
+    [featureSprites addObject:vol];
+
+    //1st stage of hills -- stage 4
+    NSString *scatterName=[NSString stringWithFormat:@"Feature_Stage%d_Size4", islandStage];
+    [self scatterThing:scatterName withOffset:ccp(0, -0.25f) andScale:ccp(1.0f, 0.15f)];
+
+    
+    scatterName=[NSString stringWithFormat:@"Feature_Stage%d_Size3", islandStage];
+    [self scatterThing:scatterName withOffset:ccp(0, 0.75f) andScale:ccp(1.0f, 0.5f)];
+    
+//    if(ParentGO.PrereqPercentage==0)
+//    {
+//        //if bigger island (2/3+) draw volcano, pick from two
+//        if(ParentGO.ChildNodes.count>0)
+//        {
+////            int vver=3; // the non lava volcano
+////            if(ParentGO.ChildNodes.count>3) vver=1+arc4random()%2; //the lava volcanoes
+//            
+////            NSString *vName=[NSString stringWithFormat:@"volcano_%d.png", vver];
+////            CCSprite *vol=[CCSprite spriteWithSpriteFrameName:vName];
+////            //[vol setPosition:ccpAdd(ParentGO.Position, [[islandData objectForKey:ISLAND_MASTERY] CGPointValue])];
+////            [vol setPosition:ccpAdd(ParentGO.Position, ccp(0,120))];
+////            if(vver==3)vol.scale=0.7f;
+////            [ParentGO.RenderBatch addChild:vol z:3];
+////            [featureSprites addObject:vol];
+//        }
+//
+//        //scatter black mountains
+//        [self scatterThing1:@"hill_black" andThing2:@"hill_black" withRatio1:50 andRatio2:50];
+//        
+//        
+//        //set island colour black-ish
+//        islandSprite.color=ccc3(183,183,167);
+//        
+//        //TODO: draw water features
+//        
+//        //TODO: draw cloud
+//        
+//    }
+//    else if(ParentGO.PrereqPercentage<100)
+//    {
+//        //scatter black and green in proportion
+//        [self scatterThing1:@"hill_black" andThing2:@"hill_green" withRatio1:100-ParentGO.PrereqPercentage andRatio2:ParentGO.PrereqPercentage];
+//        
+//        //set island colour sandy
+//        islandSprite.color=ccc3(186,182,104);
+//        
+//        //TODO: draw cloud
+//    }
+//    else //it's 100
+//    {
+//        //scatter green + trees
+//        [self scatterThing1:@"hill_green" andThing2:@"tree" withRatio1:100-ParentGO.CompletePercentage andRatio2:ParentGO.CompletePercentage];
+//        
+//    }
 }
 
--(void)scatterThing1:(NSString*)thing1 andThing2:(NSString*)thing2 withRatio1:(int)ratio1 andRatio2:(int)ratio2
+-(void)scatterThing:(NSString*)thing withOffset:(CGPoint)offsetPos andScale:(CGPoint)scale
+{
+    [self scatterThing1:thing andThing2:thing withRatio1:50 andRatio2:50 andOffset:offsetPos andScale:scale];
+}
+
+-(void)scatterThing1:(NSString*)thing1 andThing2:(NSString*)thing2 withRatio1:(int)ratio1 andRatio2:(int)ratio2 andOffset:(CGPoint)offsetPos andScale:(CGPoint)scale
 {
     NSLog(@"scattering %@ and %@ at ratio %d and %d", thing1, thing2, ratio1, ratio2);
     
@@ -425,26 +459,47 @@ static int shadowSteps=5;
     int i=0;
     for (NSMutableDictionary *fs in masks) {
         radii[i]=[[fs objectForKey:ISLAND_RADIUS] floatValue];
-        centres[i]=[[fs objectForKey:ISLAND_POS] CGPointValue];
+        
+        CGPoint dataCentre=[[fs objectForKey:ISLAND_POS] CGPointValue];
+        //CGPoint centreCentre=[BLMath SubtractVector:ccp(FIXED_SIZE_X/2.0f, FIXED_SIZE_Y/2.0f) from:dataCentre];
+        
+        centres[i]=dataCentre;
+        
+        //centres[i]=[[fs objectForKey:ISLAND_POS] CGPointValue];
 
-        NSLog(@"mask at %@ with radius %f", NSStringFromCGPoint(centres[i]), radii[i]);
+        //NSLog(@"mask at %@ with radius %f", NSStringFromCGPoint(centres[i]), radii[i]);
         
         i++;
     }
     
-    CGRect box=CGRectMake(islandSprite.position.x-islandSprite.contentSize.width / 2.0f, islandSprite.position.y - islandSprite.contentSize.height / 2.0f, islandSprite.contentSize.width, islandSprite.contentSize.height);
+    //CGRect box=CGRectMake(islandSprite.position.x-islandSprite.contentSize.width / 2.0f, islandSprite.position.y - islandSprite.contentSize.height / 2.0f, islandSprite.contentSize.width, islandSprite.contentSize.height);
+    
+    CGRect box=CGRectMake(-islandSprite.contentSize.width / 2.0f, -islandSprite.contentSize.height / 2.0f, islandSprite.contentSize.width, islandSprite.contentSize.height);
+    
+    NSLog(@"before mod %@", NSStringFromCGRect(box));
+    
+    //position * scale
+    //box=CGRectMake((box.origin.x + box.origin.x * offsetPos.x)*scale.x, (box.origin.y + box.origin.y * offsetPos.y)*scale.y, box.size.width * scale.x, box.size.height * scale.y);
+    
+    box=CGRectMake((box.origin.x + box.origin.x * offsetPos.x)+(scale.x*box.size.width*0.5f), (box.origin.y + box.origin.y * offsetPos.y)+(scale.y*box.size.height*0.5f), box.size.width * scale.x, box.size.height * scale.y);
+    
+    //box=CGRectMake(box.origin.x+offsetPos.x, box.origin.y+offsetPos.y, box.size.width, box.size.height);
+    
+    NSLog(@"after mod %@", NSStringFromCGRect(box));
+    
     
     //float y=islandSprite.boundingBox.size.height;
-    float y=box.size.height;
-    while (y>0) {
+    float y=box.size.height + box.origin.y;
+    while (y>box.origin.y) {
         //float x=arc4random() % (int)islandSprite.boundingBox.size.width;
-        float x=arc4random() % (int)box.size.width;
+        float x=(arc4random() % (int)box.size.width) + box.origin.x;
 
         BOOL pass=NO;
         //test if x, y valid
         for(int i=0; i<maskCount; i++)
         {
-            CGPoint pCentre=[BLMath SubtractVector:ccp(FIXED_SIZE_X/2.0f, FIXED_SIZE_Y/2.0f)  from:ccp(x,y)];
+            //CGPoint pCentre=[BLMath SubtractVector:ccp(FIXED_SIZE_X/2.0f, FIXED_SIZE_Y/2.0f)  from:ccp(x,y)];
+            CGPoint pCentre=ccp(x,y);
             
             if ([BLMath DistanceBetween:pCentre and:centres[i]]<radii[i])
             {
@@ -456,20 +511,20 @@ static int shadowSteps=5;
         //draw at x, y
         if(pass)
         {
-            int rver=1+arc4random()%3;
+            int rver=1+arc4random()%FEATURE_UNIQUE_VARIANTS;
             int type=1+arc4random()%100;
             NSString *typeName=thing1;
             if(type>ratio1) typeName=thing2;
             NSString *sName=[NSString stringWithFormat:@"%@_%d.png", typeName, rver];
             CCSprite *fsprite=[CCSprite spriteWithSpriteFrameName:sName];
             [featureSprites addObject:fsprite];
-            //fsprite.position=ccpAdd(ccp(x,y), islandSprite.boundingBox.origin);
-            fsprite.position=ccpAdd(ccp(x,y), box.origin);
+            fsprite.position=ccpAdd(ccp(x,y-40), islandSprite.position);
             fsprite.visible=ParentGO.Visible;
             [ParentGO.RenderBatch addChild:fsprite z:3];
         }
         
-        y-=arc4random()%3;
+        //y-=arc4random()%3;
+        y-=arc4random()%5;
     }
     
 }
@@ -499,12 +554,12 @@ static int shadowSteps=5;
     
     if(ParentGO.EnabledAndComplete)
     {
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-complete.png"];
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Mastery_Complete_Right.png"];
     }
     else
     {
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"mastery-incomplete.png"];
-    }
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Mastery_Incomplete_Right.png"];
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
     ParentGO.MasteryPinPosition=[BLMath AddVector:ParentGO.Position toVector:[[islandData objectForKey:ISLAND_MASTERY] CGPointValue]];
     [nodeSprite setPosition:ParentGO.MasteryPinPosition];
     

@@ -204,6 +204,11 @@ typedef enum {
     BOOL hasUsedWheelTray;
     BOOL hasUsedMetaTray;
     
+    BOOL delayShowWheel;
+    BOOL delayShowMeta;
+    float timeToWheelStart;
+    float timeToMetaStart;
+    
 }
 
 @property (retain) Daemon *Zubi;

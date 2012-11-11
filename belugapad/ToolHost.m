@@ -881,14 +881,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     hasTrayMq=NO;
     hasTrayCalc=NO;
     hasTrayWheel=NO;
-    
-    if(traybtnWheel)[traybtnWheel removeFromParentAndCleanup:YES];
-    if(traybtnMq)[traybtnMq removeFromParentAndCleanup:YES];
-    if(traybtnCalc)[traybtnCalc removeFromParentAndCleanup:YES];
-    if(traybtnPad)[traybtnPad removeFromParentAndCleanup:YES];
-    
 
-    
     if([withPdef objectForKey:META_QUESTION])
         hasTrayMq=YES;
     else
@@ -1985,10 +1978,13 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 -(void)tearDownNumberPicker
 {
     if(CurrentBTXE)CurrentBTXE=nil;
-    [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];
-    [traybtnWheel setColor:ccc3(255,255,255)];
-    [trayLayerWheel removeAllChildrenWithCleanup:YES];
+//    if(traybtnWheel){
+//        [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];
+//        [traybtnWheel setColor:ccc3(255,255,255)];
+//        [trayLayerWheel removeAllChildrenWithCleanup:YES];
+//    }
     trayLayerWheel=nil;
+        
 //    [numberPickerLayer removeAllChildrenWithCleanup:YES];
     numberPickerForThisProblem=NO;
     trayWheelShowing=NO;

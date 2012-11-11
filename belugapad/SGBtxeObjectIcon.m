@@ -17,19 +17,20 @@
 
 @synthesize container;
 @synthesize mount;
+@synthesize hidden;
 
 -(SGBtxeObjectIcon*)initWithGameWorld:(SGGameWorld*) aGameWorld
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
-        size=CGSizeZero;
-        position=CGPointZero;
-        tag=@"";
-        iconTag=@"";
-        enabled=YES;
+        self.size=CGSizeZero;
+        self.position=CGPointZero;
+        self.tag=@"";
+        self.iconTag=@"";
+        self.enabled=YES;
         
         //todo: init render
-        self.iconRenderComponent=[[SGBtxeIconRender alloc] initWithGameObject:self];
+        iconRenderComponent=[[SGBtxeIconRender alloc] initWithGameObject:self];
     }
     
     return self;
@@ -78,6 +79,8 @@
 
 -(void)attachToRenderBase:(CCNode*)theRenderBase
 {
+    if(self.hidden)return;
+    
     renderBase=theRenderBase;
     
     //all icons will render from the same batch, and this object's icon will attach to batch automatically.
@@ -106,6 +109,8 @@
 
 -(void)setupDraw
 {
+    if(self.hidden)return;
+    
     [self.iconRenderComponent setupDraw];
     
     self.iconRenderComponent.sprite.visible=self.enabled;

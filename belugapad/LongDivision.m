@@ -519,17 +519,25 @@ const float kScaleOfLesserBlocks=0.6f;
             [renderedBlocks removeObject:lastRBDictAtMyBase];
         }
     }
-    if(![labelInfo objectForKey:[NSString stringWithFormat:@"%g",thisBase]])
+    if(![labelInfo objectForKey:[NSString stringWithFormat:@"%g",thisBase]] && thisSelection>0)
     {
         NSMutableDictionary *d=[[NSMutableDictionary alloc]init];
         [d setObject:[NSNumber numberWithInt:thisSelection] forKey:SELECTED];
         [labelInfo setObject:d forKey:[NSString stringWithFormat:@"%g",thisBase]];
     }
-    else if([labelInfo objectForKey:[NSString stringWithFormat:@"%g",thisBase]])
+    else if([labelInfo objectForKey:[NSString stringWithFormat:@"%g",thisBase]] && thisSelection>0)
     {
         NSMutableDictionary *d=[labelInfo objectForKey:[NSString stringWithFormat:@"%g",thisBase]];
         [d setObject:[NSNumber numberWithInt:thisSelection] forKey:SELECTED];
     }
+    else if([labelInfo objectForKey:[NSString stringWithFormat:@"%g",thisBase]] && thisSelection==0)
+    {
+        NSMutableDictionary *d=[labelInfo objectForKey:[NSString stringWithFormat:@"%g",thisBase]];
+        CCLabelTTF *l=[d objectForKey:LABEL];
+        [l removeFromParentAndCleanup:YES];
+        [labelInfo removeObjectForKey:[NSString stringWithFormat:@"%g",thisBase]];
+    }
+    
 }
 
 -(void)createBlockAtIndex:(int)index withBase:(float)base

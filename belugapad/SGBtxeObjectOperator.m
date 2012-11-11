@@ -22,17 +22,18 @@
 @synthesize valueOperator;
 
 @synthesize mount;
+@synthesize hidden;
 
 -(SGBtxeObjectOperator*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
-        text=@"";
-        size=CGSizeZero;
-        position=CGPointZero;
-        tag=@"";
-        enabled=YES;
-        valueOperator=@"";
+        self.text=@"";
+        self.size=CGSizeZero;
+        self.position=CGPointZero;
+        self.tag=@"";
+        self.enabled=YES;
+        self.valueOperator=@"";
         
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
         textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
@@ -76,7 +77,9 @@
 
 -(CGPoint)worldPosition
 {
-    return [renderBase convertToNodeSpace:self.position];
+    CGPoint ret=[renderBase convertToWorldSpace:self.position];
+//    NSLog(@"operator world pos %@", NSStringFromCGPoint(ret));
+    return ret;
 }
 
 -(void)setWorldPosition:(CGPoint)worldPosition
@@ -84,8 +87,24 @@
     self.position=[renderBase convertToNodeSpace:worldPosition];
 }
 
+-(void)destroy
+{
+    [self detachFromRenderBase];
+    
+    [gameWorld delayRemoveGameObject:self];
+}
+
+-(void)detachFromRenderBase
+{
+    [textBackgroundRenderComponent.sprite removeFromParentAndCleanup:YES];
+    [textRenderComponent.label0 removeFromParentAndCleanup:YES];
+    [textRenderComponent.label removeFromParentAndCleanup:YES];
+}
+
 -(void)attachToRenderBase:(CCNode*)theRenderBase
 {
+    if(self.hidden)return;
+    
     renderBase=theRenderBase;
     
     [renderBase addChild:textBackgroundRenderComponent.sprite];
@@ -107,6 +126,8 @@
 
 -(void)setPosition:(CGPoint)thePosition
 {
+//    NSLog(@"operator setting position to %@", NSStringFromCGPoint(thePosition));
+    
     position=thePosition;
 
     //update positioning in text render
@@ -119,6 +140,8 @@
 
 -(void)setupDraw
 {
+    if(self.hidden)return;
+    
     //text render to create it's label
     [textRenderComponent setupDraw];
     

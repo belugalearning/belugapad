@@ -92,6 +92,7 @@
     //return [leval isEqualToExpression:reval];
     
     BAExpression *firstchild=[[[self.Root children] objectAtIndex:0] evaluate];
+    NSLog(@"firstchild eval:\n%@", [firstchild xmlStringValueWithPad:@"  "]);
 
     //the result of each comparioson is anded with the cumulative result
     //a single child query will return YES
@@ -100,6 +101,7 @@
     //compare each child to the first
     for (int i=1; i<[[self.Root children] count]; i++) {
         BAExpression *thischild=[[[self.Root children] objectAtIndex:i] evaluate];
+        NSLog(@"thischild eval:\n%@", [thischild xmlStringValueWithPad:@"  "]);
         evalResult=[firstchild isEqualToExpression:thischild] && evalResult;
     }
     

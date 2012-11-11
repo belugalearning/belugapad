@@ -60,6 +60,8 @@
     int numberCardRowMax;
     int numberCardRowInterval;
     BOOL numberCardRandomOrder;
+    int numberCardRandomSelectionOf;
+    
     SGBtxeRow *ncardRow;
     
     
@@ -67,6 +69,8 @@
     NSMutableArray *tokens;
     NSDictionary *curToken;
     int curTokenIdx;
+    
+    NSMutableArray *expressionStringCache;
     
 }
 

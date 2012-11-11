@@ -58,6 +58,8 @@
     int lastBubbleValue;
     int evalTarget;
     
+    CGPoint lasttouch;
+    
     int initStartVal;
     NSNumber *initMinVal;
     NSNumber *initMaxVal;

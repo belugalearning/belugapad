@@ -45,7 +45,6 @@
 @property CGPoint Position;
 @property (retain) NSMutableArray *PairedObjects;
 @property BOOL SeekingPair;
-@property int LineType;
 @property (retain) CCLabelTTF *Label;
 
 -(void)pairMeWith:(id)thisObject;
@@ -68,6 +67,7 @@
 @property (retain) CCLabelTTF *Label;
 @property (retain) CCNode *BaseNode;
 @property (retain) NSString *BlockType;
+@property (retain) NSString *LineType;
 @property BOOL AllowDifferentTypes;
 
 -(void)addBlockToMe:(id)thisBlock;

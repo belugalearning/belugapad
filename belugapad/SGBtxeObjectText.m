@@ -20,6 +20,7 @@
 @synthesize originalPosition;
 @synthesize usePicker;
 @synthesize mount;
+@synthesize hidden;
 
 @synthesize container;
 
@@ -27,12 +28,12 @@
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
-        text=@"";
-        size=CGSizeZero;
-        position=CGPointZero;
-        tag=@"";
-        enabled=YES;
-        usePicker=NO;
+        self.text=@"";
+        self.size=CGSizeZero;
+        self.position=CGPointZero;
+        self.tag=@"";
+        self.enabled=YES;
+        self.usePicker=NO;
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
         textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
     }
@@ -67,7 +68,9 @@
 
 -(CGPoint)worldPosition
 {
-    return [renderBase convertToWorldSpace:self.position];
+    CGPoint ret=[renderBase convertToWorldSpace:self.position];
+//    NSLog(@"obj-text world pos %@", NSStringFromCGPoint(ret));
+    return ret;
 }
 
 -(void)setWorldPosition:(CGPoint)worldPosition
@@ -77,6 +80,8 @@
 
 -(void)attachToRenderBase:(CCNode*)theRenderBase;
 {
+    if(self.hidden)return;
+    
     renderBase=theRenderBase;
     
     [renderBase addChild:textBackgroundRenderComponent.sprite];
@@ -99,6 +104,8 @@
 
 -(void)setPosition:(CGPoint)thePosition
 {
+//    NSLog(@"objtext setting position to %@", NSStringFromCGPoint(thePosition));
+    
     position=thePosition;
 
     //TODO: auto-animate any large moves?
@@ -113,6 +120,8 @@
 
 -(void)setupDraw
 {
+    if(self.hidden)return;
+    
     //text render to create it's label
     [textRenderComponent setupDraw];
     

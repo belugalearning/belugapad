@@ -139,13 +139,135 @@ static float kDistanceBetweenBlocks=70.0f;
 
 -(void)draw
 {
-    for (int i=0; i<DRAW_DEPTH; i++)
+    for(id go in [gw AllGameObjects])
     {
-        for(id go in [gw AllGameObjects]) {
-            if([go conformsToProtocol:@protocol(Pairable)])
-                [((id<Pairable>)go) draw:i];
+        if([go conformsToProtocol:@protocol(Container)])
+        {
+            id<Container>goc=(id<Container>)go;
+            
+            for(int i=0; i<goc.BlocksInShape.count; i++)
+            {
+                SGDtoolBlock *block1=[goc.BlocksInShape objectAtIndex:i];
+                if (i%2) {
+                    //odd numbers
+                    if(i<goc.blocksInShape-2)
+                    {
+                        //there is a next+1 number
+                        SGDtoolBlock *block3=[goc.BlocksInShape objectAtIndex:i+2];
+                        [self drawBondLineFrom:block1.mySprite.position to:block3.mySprite.position];
+                    }
+                }
+                else
+                {
+                    //even numbers
+                    if(i<goc.blocksInShape-1)
+                    {
+                        //there is a next number
+                        SGDtoolBlock *block2=[goc.BlocksInShape objectAtIndex:i+1];
+                        [self drawBondLineFrom:block1.mySprite.position to:block2.mySprite.position];
+                    }
+                    if(i<goc.blocksInShape-2)
+                    {
+                        //there is a next+1 number
+                        SGDtoolBlock *block3=[goc.BlocksInShape objectAtIndex:i+2];
+                        [self drawBondLineFrom:block1.mySprite.position to:block3.mySprite.position];
+                    }
+                }
+            }
         }
-    } 
+    }
+    
+    if(isTouching && nearestObject && currentPickupObject)
+    {
+        SGDtoolBlock *b=(SGDtoolBlock*)nearestObject;
+        SGDtoolBlock *c=(SGDtoolBlock*)currentPickupObject;
+        
+        if(!bondDifferentTypes && b.blockType!=c.blockType)
+            return;
+
+        
+        if(![b.MyContainer conformsToProtocol:@protocol(Cage)])
+        {
+            if([BLMath DistanceBetween:b.mySprite.position and:currentPickupObject.mySprite.position] < 150.0f || nearestObject==lastNewBondObject)
+            {
+                [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)nearestObject).mySprite.position];
+                lastNewBondObject=nearestObject;
+            }
+        }
+    }
+    
+    
+//    for (int i=0; i<DRAW_DEPTH; i++)
+//    {
+//        for(id go in [gw AllGameObjects]) {
+//            if([go conformsToProtocol:@protocol(Pairable)])
+//                [((id<Pairable>)go) draw:i];
+//        }
+//    } 
+}
+
+-(void)drawBondLineFrom:(CGPoint)p1 to:(CGPoint)p2
+{
+    int barHalfW=30;
+    
+    float llen=[BLMath LengthOfVector:[BLMath SubtractVector:p2 from:p1]];
+    
+    if(llen>100.0f)return;
+    
+    float op=1.0f;
+    if(llen>300)
+    {
+        barHalfW=1;
+    }
+    if(llen>70.0f)
+    {
+        float diff=100-llen;
+        barHalfW=1 + (30 * (diff / 30.0f));
+    }
+    
+    ccDrawColor4F(1, 1, 1, op);
+    
+    CGPoint line=[BLMath SubtractVector:p1 from:p2];
+    CGPoint lineN=[BLMath NormalizeVector:line];
+    CGPoint upV=[BLMath PerpendicularLeftVectorTo:lineN];
+    
+    float distScalar=1.0f;
+    float distScaleBase=0.25f;
+    float distScaleFrom=50.0f;
+    float lOfLine=[BLMath LengthOfVector:line];
+    if(lOfLine<distScaleFrom)
+    {
+        distScalar=distScaleBase + (1-(lOfLine / distScaleFrom));
+    }
+    else
+    {
+        distScalar=distScaleBase;
+    }
+    
+    for(int i=0; i<1; i++)
+    {
+        CGPoint a=[BLMath AddVector:p1 toVector:[BLMath MultiplyVector:upV byScalar:i*0.75f]];
+        CGPoint b=[BLMath AddVector:p2 toVector:[BLMath MultiplyVector:upV byScalar:i*0.75f]];
+        
+        ccDrawLine(a, b);
+    }
+    
+    for(int j=-barHalfW; j<0; j++)
+    {
+        CGPoint a=[BLMath AddVector:p1 toVector:[BLMath MultiplyVector:upV byScalar:j*0.75f*distScalar]];
+        CGPoint b=[BLMath AddVector:p2 toVector:[BLMath MultiplyVector:upV byScalar:(j+barHalfW)*0.75f*distScalar]];
+        
+        ccDrawLine(a, b);
+    }
+    
+    for(int k=barHalfW; k>0; k--)
+    {
+        CGPoint a=[BLMath AddVector:p1 toVector:[BLMath MultiplyVector:upV byScalar:k*0.75f*distScalar]];
+        CGPoint b=[BLMath AddVector:p2 toVector:[BLMath MultiplyVector:upV byScalar:(k-barHalfW)*0.75f*distScalar]];
+        
+        ccDrawLine(a, b);
+    }
+
 }
 
 #pragma mark - gameworld setup and population
@@ -160,8 +282,8 @@ static float kDistanceBetweenBlocks=70.0f;
     problemHasCage=[[pdef objectForKey:HAS_CAGE]boolValue];
     cageObjectCount=[[pdef objectForKey:CAGE_OBJECT_COUNT]intValue];
     hasInactiveArea=[[pdef objectForKey:HAS_INACTIVE_AREA]boolValue];
-    cannotBreakBonds=[[pdef objectForKey:UNBREAKABLE_BONDS]boolValue];
     randomiseDockPositions=[[pdef objectForKey:RANDOMISE_DOCK_POSITIONS]boolValue];
+    bondDifferentTypes=[[pdef objectForKey:BOND_DIFFERENT_TYPES]boolValue];
     
     
 
@@ -183,13 +305,9 @@ static float kDistanceBetweenBlocks=70.0f;
     if([pdef objectForKey:EVAL_AREAS])initAreas=[pdef objectForKey:EVAL_AREAS];
     if([pdef objectForKey:SOLUTION])solutionsDef=[pdef objectForKey:SOLUTION];
     
-    if(hasInactiveArea && cannotBreakBonds)
-        cannotBreakBonds=NO;
-    
     if(evalType==kCheckGroupTypeAndNumber)
         bondDifferentTypes=NO;
     
-    bondDifferentTypes=YES;
 
     usedShapeTypes=[[NSMutableArray alloc]init];
 }
@@ -282,6 +400,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
     NSString *label = [theseSettings objectForKey:LABEL];
     NSString *blockType = [theseSettings objectForKey:BLOCK_TYPE];
+    BOOL unbreakableBonds = [[theseSettings objectForKey:UNBREAKABLE_BONDS]boolValue];
     
     if(!blockType)
         blockType=@"Circle";
@@ -294,6 +413,12 @@ static float kDistanceBetweenBlocks=70.0f;
     
     SGDtoolContainer *container = [[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:label andRenderLayer:renderLayer];
     container.BlockType=blockType;
+    
+    if(unbreakableBonds)
+        container.LineType=@"Unbreakable";
+    else
+        container.LineType=@"Breakable";
+    
     container.AllowDifferentTypes=bondDifferentTypes;
     if (label && !existingGroups) existingGroups = [[NSMutableArray arrayWithObject:label] retain];
     float startPosX=0;
@@ -339,13 +464,11 @@ static float kDistanceBetweenBlocks=70.0f;
         [block setup];
         block.MyContainer = container;
         
-        if(cannotBreakBonds)
-            block.LineType=1;
             
         
         [container addBlockToMe:block];
         
-        if(!hasInactiveArea||cannotBreakBonds)
+        if(!hasInactiveArea)
         {
             if(i){
                 SGDtoolBlock *prevBlock = [container.BlocksInShape objectAtIndex:i-1];
@@ -459,20 +582,18 @@ static float kDistanceBetweenBlocks=70.0f;
     
     if(currentPickupObject)
     {
-        
+        id<Pairable>thisGO=currentPickupObject;
         CCSprite *s=currentPickupObject.mySprite;
-        CCLabelTTF *l=currentPickupObject.Label;
         
         if(currentPickupObject.MyContainer)
             [(id<Container>)currentPickupObject.MyContainer removeBlockFromMe:currentPickupObject];
         
         CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:cage.Position];
         CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.1f];
-        CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES]; [l removeFromParentAndCleanup:YES]; [currentPickupObject destroyThisObject];}];
+        CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[thisGO destroyThisObject];}];
         CCSequence *sequence=[CCSequence actions:moveAct, fadeAct, cleanUp, nil];
         [s runAction:sequence];
         currentPickupObject=nil;
-        
 //        if(!spawnedNewObj)
 //            [cage spawnNewBlock];
     }
@@ -667,6 +788,9 @@ static float kDistanceBetweenBlocks=70.0f;
             currentPickupObject.Position=location;
             [currentPickupObject move];
         }
+        if([((id<Container>)currentPickupObject.MyContainer).LineType isEqualToString:@"Unbreakable"])
+            return;
+
         
         for(id go in gw.AllGameObjects)
         {
@@ -737,7 +861,6 @@ static float kDistanceBetweenBlocks=70.0f;
         {
             if([go conformsToProtocol:@protocol(Moveable)])
             {
-                [go resetTint];
                 if(go==currentPickupObject)
                     continue;
                 
@@ -752,18 +875,34 @@ static float kDistanceBetweenBlocks=70.0f;
                     NSLog(@"moved pickup object close to this GO. add pickupObject to cObj container");
                     hasBeenProximate=YES;
                     
-                    if(cObj.MyContainer){
-                        if(currentPickupObject.MyContainer)
+                    if(cObj.MyContainer!=currentPickupObject.MyContainer){
+                        if([((id<Container>)cObj.MyContainer).LineType isEqualToString:@"Unbreakable"]){
+                            [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
+                            return;
+                        }
+                        if(currentPickupObject.MyContainer){
+                            [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
                             [((id<Container>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
-                    
+                        }
                         [((id<Container>)cObj.MyContainer) addBlockToMe:currentPickupObject];
                         [((id<Container>)cObj.MyContainer) layoutMyBlocks];
+                    }
+                    
+                    if(cObj.MyContainer==currentPickupObject.MyContainer)
+                    {
+                            [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
                     }
                     
                     gotTarget=YES;
                     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_bond_made.wav")];
                     break;
                     
+                }
+                if([((id<Container>)currentPickupObject.MyContainer).LineType isEqualToString:@"Unbreakable"]){
+                    gotTarget=YES;
+                    [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
+                    [self setTouchVarsToOff];
+                    return;
                 }
 
             }
@@ -775,7 +914,9 @@ static float kDistanceBetweenBlocks=70.0f;
             
             if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape count]>1||currentPickupObject.MyContainer==nil)
             {
+                id<Container>LayoutCont=currentPickupObject.MyContainer;
                 [((id<Container>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
+                [LayoutCont layoutMyBlocks];
                 [self createContainerWithOne:currentPickupObject];
             }
             

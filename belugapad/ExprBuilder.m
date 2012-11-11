@@ -25,6 +25,11 @@
 #import "SGBtxeContainerMgr.h"
 #import "SGBtxeObjectNumber.h"
 #import "SGBtxeProtocols.h"
+#import "SGBtxeObjectOperator.h"
+
+#import "BAExpressionHeaders.h"
+#import "BAExpressionTree.h"
+#import "BATQuery.h"
 
 @interface ExprBuilder()
 {
@@ -61,9 +66,6 @@
         cx=lx / 2.0f;
         cy=ly / 2.0f;
 
-        gw = [[SGGameWorld alloc] initWithGameScene:renderLayer];
-        gw.Blackboard.inProblemSetup = YES;
-        
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];
         self.ForeLayer=[[[CCLayer alloc]init] autorelease];
         
@@ -72,6 +74,11 @@
         
         renderLayer = [[CCLayer alloc] init];
         [self.ForeLayer addChild:renderLayer];
+
+        gw = [[SGGameWorld alloc] initWithGameScene:renderLayer];
+        gw.Blackboard.inProblemSetup = YES;
+        
+        expressionStringCache=[[NSMutableArray alloc] init];
         
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         contentService = ac.contentService;
@@ -150,6 +157,9 @@
         
         NSNumber *ncardrandomise=[pdef objectForKey:@"NUMBER_CARD_RANDOMISE"];
         if(ncardrandomise)numberCardRandomOrder=[ncardrandomise boolValue];
+        
+        NSNumber *ncardselectionof=[pdef objectForKey:@"NUMBER_CARD_PICK_RANDOM_SELECTION_OF"];
+        if(ncardselectionof)numberCardRandomSelectionOf=[ncardselectionof intValue];
     }
     
 }
@@ -217,13 +227,18 @@
                     [n release];
                 }
                 
-                if(numberCardRandomOrder)
+                if(numberCardRandomOrder || numberCardRandomSelectionOf>0)
                 {
-                    while(cardAddBuffer.count>0)
+                    int selmax=numberCardRandomSelectionOf>0? numberCardRandomSelectionOf : cardAddBuffer.count;
+                    int added=0;
+                    
+                    while(cardAddBuffer.count>0 && added<selmax)
                     {
                         int i=(arc4random()%cardAddBuffer.count);
                         [ncardRow.containerMgrComponent addObjectToContainer:[cardAddBuffer objectAtIndex:i]];
                         [cardAddBuffer removeObjectAtIndex:i];
+                        
+                        added++;
                     }
                 }
                 else
@@ -237,6 +252,8 @@
                 
                 [ncardRow setupDraw];
                 ncardRow.position=ccpAdd(row.position, ccp(0, -ncardRow.size.height-QUESTION_SEPARATOR_PADDING));
+                
+                [ncardRow release];
             }
             
             float sepYpos=-(row.size.height) - QUESTION_SEPARATOR_PADDING;
@@ -281,6 +298,8 @@
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
     
+    BOOL gotPickerObject=NO;
+    
     if(isHoldingObject) return;  // no multi-touch but let's be sure
 
     for(id<MovingInteractive, NSObject> o in gw.AllGameObjects)
@@ -288,12 +307,41 @@
         if([o conformsToProtocol:@protocol(MovingInteractive)])
         {
             id<Bounding> obounding=(id<Bounding>)o;
+            id<NumberPicker,Text> opicker=(id<NumberPicker,Text>)o;
+            
             CGRect hitbox=CGRectMake(obounding.worldPosition.x - (BTXE_OTBKG_WIDTH_OVERDRAW_PAD + obounding.size.width) / 2.0f, obounding.worldPosition.y-BTXE_VPAD-(obounding.size.height / 2.0f), obounding.size.width + BTXE_OTBKG_WIDTH_OVERDRAW_PAD, obounding.size.height + 2*BTXE_VPAD);
             
             if(o.enabled && CGRectContainsPoint(hitbox, location))
             {
                 heldObject=o;
                 isHoldingObject=YES;
+                
+                if(opicker.usePicker){
+                    gotPickerObject=YES;
+                    
+                    if(toolHost.CurrentBTXE && toolHost.CurrentBTXE!=o){
+                        
+                        NSLog(@"returnedPickerNo %@, opicker.text %@", [toolHost returnPickerNumber], opicker.text);
+                        
+                        if(opicker.text&&[opicker.text isEqualToString:@"?"])
+                            opicker.text=@"0";
+                        
+                        //if(![[toolHost returnPickerNumber] isEqualToString:opicker.text])
+                        //{
+                            [toolHost updatePickerNumber:opicker.text];
+                        //}
+                        
+//                        for(int i=0;i<[toolHost numberOfComponentsInPickerView:toolHost.pickerView];i++)
+//                        {
+//                            [toolHost.pickerView spinComponent:i speed:20 easeRate:5 repeat:2 stopRow:0];
+//                            [toolHost pickerView:toolHost.pickerView didSelectRow:0 inComponent:i];
+//                        }
+                    }
+                    toolHost.CurrentBTXE=o;
+                    if(toolHost.pickerView && toolHost.CurrentBTXE)
+                        [toolHost showWheel];
+
+                }
                 
                 [(id<MovingInteractive>)o inflateZIndex];
                 
@@ -305,6 +353,10 @@
         }
     }
     
+    if(!gotPickerObject){
+        toolHost.CurrentBTXE=nil;
+        [toolHost tearDownNumberPicker];
+    }
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -372,6 +424,7 @@
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     isTouching=NO;
+    toolHost.CurrentBTXE=nil;
     // empty selected objects
     
     if(heldObject)
@@ -456,7 +509,42 @@
         for(int i=1; i<rows.count; i++)
         {
             SGBtxeRow *row=[rows objectAtIndex:i];
-            if([self parseContainerToEqualityAndEval:row]==NO) return NO;
+            if(row!=ncardRow)
+            {
+                if([self parseContainerToEqualityAndEval:row]==NO) return NO;
+            }
+        }
+        
+        return YES;
+    };
+    
+    if([evalType isEqualToString:@"EXPRESSION_EQUALITIES_NOT_IDENTICAL"])
+    {
+        [expressionStringCache removeAllObjects];
+        
+        //check for equality on rows and check that the expressions are different
+        for(int i=1; i<rows.count; i++)
+        {
+            SGBtxeRow *row=[rows objectAtIndex:i];
+            if(row!=ncardRow)
+            {
+                if([self parseContainerToEqualityAndEval:row]==NO) return NO;
+                NSLog(@"parsed row");
+            }
+        }
+        
+        for(NSString *expr1 in expressionStringCache)
+        {
+            for(NSString *expr2 in expressionStringCache)
+            {
+                if(expr2!=expr1)
+                {
+                    if([expr2 isEqualToString:expr1])
+                    {
+                        return NO;
+                    }
+                }
+            }
         }
         
         return YES;
@@ -471,6 +559,8 @@
 -(BOOL)parseContainerToEqualityAndEval:(id<Container>)cont
 {
     tokens=[[NSMutableArray alloc]init];
+    
+    curToken=nil;
     curTokenIdx=-1;
     
     for(id v in cont.children)
@@ -498,12 +588,29 @@
     }
     
     [self getNextToken];
-    NSString *res=[self computeExpr:0];
-    NSLog(@"result: %@", res);
+//    NSString *res=[self computeExpr:0];
+//    NSLog(@">>>>> result: %@", res);
+    
+    BAExpression *root=[self computeBaeExpr:0];
+    BOOL ret=NO;
+    
+    //only try and evaluate if there's an equality at the top of the tree
+    if([root isKindOfClass:[BAEqualsOperator class]])
+    {
+        BAExpressionTree *tree=[BAExpressionTree treeWithRoot:root];
+        BATQuery *q=[[BATQuery alloc] initWithExpr:root andTree:tree];
+        
+        NSLog(@"evaluating equality for \n%@", [root xmlStringValueWithPad:@" "]);
+        ret=[q assumeAndEvalEqualityAtRoot];
+        
+        [expressionStringCache addObject:[root xmlStringValueWithPad:@""]];
+        
+        [q release];
+    }
     
     [tokens release];
     
-    return NO;
+    return ret;
 }
 
 -(void)tokeniseObject:(id)v
@@ -558,7 +665,7 @@
             break;
         }
         
-        NSString *op=[[[cur objectForKey:@"value"] copy] autorelease];
+        NSString *op=[cur objectForKey:@"value"];
         int prec=[self getPrecendenceForToken:op];
         int nextminprec=prec+1;
         
@@ -567,7 +674,82 @@
         atomLhs=[NSString stringWithFormat:@"|%@%@%@|", atomLhs, op, atomRhs];
     }
     
+    NSLog(@">> %@ >> %d", atomLhs, minPrec);
+    
     return atomLhs;
+}
+
+
+-(BAExpression*)computeBaeExpr:(int)minPrec
+{
+    BAExpression *atomLeft=[BAInteger integerWithIntValue:[[curToken objectForKey:@"value"] intValue]];
+    [self getNextToken];
+    
+    while(1)
+    {
+        NSDictionary *cur=curToken;
+        
+        if(!cur ||
+           ![[cur objectForKey:@"token"] isEqualToString:@"BINOP"] ||
+           [self getPrecendenceForToken:[cur objectForKey:@"value"]] < minPrec)
+        {
+            break;
+        }
+        
+        NSString *op=[cur objectForKey:@"value"];
+        int prec=[self getPrecendenceForToken:op];
+        int nextminprec=prec+1;
+        
+        [self getNextToken];
+        BAExpression *atomRight=[self computeBaeExpr:nextminprec];
+
+        atomLeft=[self buildAtomFromLeft:atomLeft right:atomRight andOperator:op];
+    }
+    
+    return atomLeft;
+}
+
+-(BAExpression*)buildAtomFromLeft:(BAExpression*)left right:(BAExpression*)right andOperator:(NSString *)op
+{
+    BAExpression *root;
+    
+    if([op isEqualToString:@"-"])
+    {
+        if([right isKindOfClass:[BAInteger class]])
+        {
+            int intright=-[((BAInteger*)right) intValue];
+            BAInteger *newright=[BAInteger integerWithIntValue:intright];
+            root=[BAAdditionOperator operator];
+            [root addChild:left];
+            [root addChild:newright];
+        }
+        else
+        {
+            BAMultiplicationOperator *mult=[BAMultiplicationOperator operator];
+            [mult addChild:[BAInteger integerWithIntValue:-1]];
+            [mult addChild:right];
+            
+            root=[BAAdditionOperator operator];
+            [root addChild:left];
+            [root addChild:mult];
+        }
+    }
+    else
+    {
+        root=[self baeFromOpString:op];
+        [root addChild:left];
+        [root addChild:right];
+    }
+    return root;
+}
+
+-(BAExpression*)baeFromOpString:(NSString*)opString
+{
+    if([opString isEqualToString:@"="]) return [BAEqualsOperator operator];
+    if([opString isEqualToString:@"*"]) return [BAMultiplicationOperator operator];
+    if([opString isEqualToString:@"/"]) return [BADivisionOperator operator];
+    if([opString isEqualToString:@"+"]) return [BAAdditionOperator operator];
+    return nil;
 }
 
 -(void)getNextToken
@@ -639,15 +821,9 @@
     BOOL isWinning=[self evalExpression];
     
     if(isWinning)
-    {
-        self.ProblemComplete=YES;
-        autoMoveToNextProblem=YES;
-        [toolHost showProblemCompleteMessage];
-    }
-    else {
-        if(evalMode==kProblemEvalOnCommit)[self resetProblem];
-    }
-    
+        [toolHost doWinning];
+    else
+        [toolHost doIncomplete];
 }
 
 #pragma mark - problem state
@@ -679,8 +855,10 @@
     
     [renderLayer release];
     
-    [self.ForeLayer removeAllChildrenWithCleanup:YES];
-    [self.BkgLayer removeAllChildrenWithCleanup:YES];
+    [expressionStringCache release];
+    
+//    [self.ForeLayer removeAllChildrenWithCleanup:YES];
+//    [self.BkgLayer removeAllChildrenWithCleanup:YES];
     
     //tear down
     [gw release];

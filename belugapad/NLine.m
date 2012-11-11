@@ -206,6 +206,164 @@ float timerIgnoreFrog;
         }
         timeSinceInteractionOrShake=0;
     }
+    if(holdingBubble)
+    {
+        timeSinceInteractionOrShake=0;
+        
+        float offsetFromCX=lasttouch.x-cx-holdingBubbleOffset;
+        if(fabsf(offsetFromCX)>kBubbleScrollBoundary)
+        {
+            if(offsetFromCX>0 && bubbleAtBounds<=0)bubblePushDir=-1;
+            if(offsetFromCX<0 && bubbleAtBounds>=0)bubblePushDir=1;
+            
+            logBubbleDidMoveLine=YES;
+            logBubbleDidMove=YES;
+        }
+        else {
+            
+            float moveY=0;
+            
+            if(jumpMode)
+            {
+                // ===== stitching stuff ===============================================
+                //get ypos --
+                float threshold=100.0f;
+                float diffY=lasttouch.y - cy;
+                if(diffY>0)
+                {
+                    float dampY = diffY<threshold ? diffY / threshold : 1.0f;
+                    dampY*=dampY * dampY;
+                    moveY = diffY * dampY;
+                }
+                
+                if(diffY>=threshold)
+                {
+                    //user is dragging up or past threshold, draw a stitch line
+                    drawStitchLine=YES;
+                    drawStitchCurve=NO;
+                    stitchEndPos=lasttouch;
+                    
+                    if(!hasSetJumpStartValue)
+                    {
+                        hasSetJumpStartValue=YES;
+                        jumpStartValue=logLastBubblePos;
+                    }
+                }
+                else
+                {
+                    // user is below threshold, if they were previously above it, draw a curve
+                    if(drawStitchLine)
+                    {
+                        drawStitchLine=NO;
+                        drawStitchCurve=YES;
+                        stitchApexPos=lasttouch;
+                    }
+                    // otherwise update the end pos -- used to track the end point of the curve, if being drawn
+                    else
+                    {
+                        stitchEndPos=lasttouch;
+                    }
+                }
+                
+                // =====================================================================
+            }
+            
+            //CGPoint newloc=ccp(location.x - holdingBubbleOffset, bubbleSprite.position.y);
+            CGPoint newloc=ccp(lasttouch.x - holdingBubbleOffset, cy + moveY);
+            
+            float xdiff=newloc.x-bubbleSprite.position.x;
+            
+            if((bubbleAtBounds>0 && xdiff<0) || (bubbleAtBounds<0 && xdiff>0) || bubbleAtBounds==0)
+            {
+                [bubbleSprite setPosition:newloc];
+                logBubbleDidMove=YES;
+                bubbleAtBounds=0;
+            }
+            
+            bubblePushDir=0;
+        }
+        
+        
+        float distFromCentre=-rambler.TouchXOffset + (bubbleSprite.position.x - cx);
+        float stepsFromCentre=distFromCentre / rambler.DefaultSegmentSize;
+        
+        int roundedStepsFromCentre=(int)(stepsFromCentre + 0.5f);
+        if(stepsFromCentre<0) roundedStepsFromCentre=(int)(stepsFromCentre - 0.5f);
+        
+        //NSLog(@"bubble pos %d", roundedStepsFromCentre);
+        
+        int startOffset=initStartVal / initSegmentVal;
+        
+        
+        //lastBubbleLoc = roundedStepsFromCentre+startOffset;
+        lastBubbleLoc=(roundedStepsFromCentre+startOffset);
+        lastBubbleValue=lastBubbleLoc*initSegmentVal;
+        
+        int adjustedStepsFromCentre=roundedStepsFromCentre * rambler.CurrentSegmentValue;
+        
+        BOOL stopLine=NO;
+        
+        if (lastBubbleValue>[rambler.MaxValue intValue])
+        {
+            adjustedStepsFromCentre = ([rambler.MaxValue intValue] / initSegmentVal) - startOffset;
+            //adjustedStepsFromCentre = [rambler.MaxValue intValue] - (startOffset * initSegmentVal);
+            stopLine=YES;
+            bubbleAtBounds=1;
+            bubblePushDir=0;
+        }
+        
+        if(lastBubbleValue<[rambler.MinValue intValue])
+        {
+            adjustedStepsFromCentre = ([rambler.MinValue intValue] / initSegmentVal) - startOffset;
+            //adjustedStepsFromCentre = [rambler.MinValue intValue] - (startOffset * initSegmentVal);
+            stopLine=YES;
+            bubbleAtBounds=-1;
+            bubblePushDir=0;
+        }
+        
+        if(stopLine)
+        {
+            //diff (moveby)
+            float diffx=((adjustedStepsFromCentre) * rambler.DefaultSegmentSize)-distFromCentre;
+            [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
+        }
+        
+        //check if they moved through a current stitch -- if so delete that stich
+        NSValue *remJump=nil;
+        CGPoint jump;
+        for(NSValue *jumpval in rambler.UserJumps)
+        {
+            jump=[jumpval CGPointValue];
+            if(lastBubbleValue>=(jump.x + initStartVal) && lastBubbleValue<(jump.x + initStartVal + jump.y))
+            {
+                //positive jump match
+                remJump=jumpval;
+            }
+            if(lastBubbleValue<=(jump.x + initStartVal) && lastBubbleValue >(jump.x+initStartVal + jump.y))
+            {
+                //negative jump match
+                remJump=jumpval;
+            }
+        }
+        //put frog back to start of that section if required
+        if(frogMode && remJump)
+        {
+            lastFrogLoc=(int)(jump.x / rambler.CurrentSegmentValue)+initStartLoc;
+            [self slideFrog];
+        }
+        
+        if(remJump)[rambler.UserJumps removeObject:remJump];
+        remJump=nil;
+        
+        //do not update rambler -- causes render to carry on scrolling, and eval is at end anyway
+        //rambler.BubblePos=lastBubbleLoc;
+        
+        lastBubbleLoc = adjustedStepsFromCentre;
+        lastBubbleValue = lastBubbleLoc * initSegmentVal;
+    }
+
+    
+    // original touch/push do update
     
     if(touchResetX>0)
     {
@@ -244,7 +402,7 @@ float timerIgnoreFrog;
     rambler.CurrentSegmentValue=initSegmentVal;
     rambler.MinValue=initMinVal;
     rambler.MaxValue=initMaxVal;
-    rambler.BubblePos=lastBubbleLoc;
+    rambler.BubblePos=initStartVal;
     
     initStartLoc=initStartVal / initSegmentVal;
 
@@ -285,6 +443,13 @@ float timerIgnoreFrog;
     NSNumber *dno=[problemDef objectForKey:@"DISPLAY_NUMBER_OFFSET"];
     if(dno) rambler.DisplayNumberOffset=[dno intValue];
     
+    NSNumber *dmult=[problemDef objectForKey:@"DISPLAY_NUMBER_MULTIPLIER"];
+    if(dmult) rambler.DisplayNumberMultiplier=[dmult floatValue];
+    else rambler.DisplayNumberMultiplier=1;
+    
+    NSNumber *ddp=[problemDef objectForKey:@"DISPLAY_NUMBER_DP"];
+    if(ddp)rambler.DisplayNumberDP=[ddp integerValue];
+    else rambler.DisplayNumberDP=1;
     
     selector=[DWSelectorGameObject alloc];
     [gw populateAndAddGameObject:selector withTemplateName:@"TnLineSelector"];
@@ -393,7 +558,7 @@ float timerIgnoreFrog;
             toolHost.flagResetProblem=YES;
         }
         else {
-            [self showComplete];
+            [toolHost doWinning];
         }
     }
 }
@@ -569,6 +734,8 @@ float timerIgnoreFrog;
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
     
+    lasttouch=location;
+    
     if(frogMode)
     {
         if(frogTargetSprite.opacity>0 && CGRectContainsPoint(frogTargetSprite.boundingBox, location) && timerIgnoreFrog<=0.0f)
@@ -611,161 +778,8 @@ float timerIgnoreFrog;
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
     
-    if(holdingBubble)
-    {            
-        timeSinceInteractionOrShake=0;
-        
-        float offsetFromCX=location.x-cx-holdingBubbleOffset;
-        if(fabsf(offsetFromCX)>kBubbleScrollBoundary)
-        {
-            if(offsetFromCX>0 && bubbleAtBounds<=0)bubblePushDir=-1;
-            if(offsetFromCX<0 && bubbleAtBounds>=0)bubblePushDir=1;
-            
-            logBubbleDidMoveLine=YES;
-            logBubbleDidMove=YES;
-        }
-        else {
-            
-            float moveY=0;
-            
-            if(jumpMode)
-            {
-                // ===== stitching stuff ===============================================
-                //get ypos --
-                float threshold=100.0f;
-                float diffY=location.y - cy;
-                if(diffY>0)
-                {
-                    float dampY = diffY<threshold ? diffY / threshold : 1.0f;
-                    dampY*=dampY * dampY;
-                    moveY = diffY * dampY;
-                }
-                
-                if(diffY>=threshold)
-                {
-                    //user is dragging up or past threshold, draw a stitch line
-                    drawStitchLine=YES;
-                    drawStitchCurve=NO;
-                    stitchEndPos=location;
-                    
-                    if(!hasSetJumpStartValue)
-                    {
-                        hasSetJumpStartValue=YES;
-                        jumpStartValue=logLastBubblePos;
-                    }
-                }
-                else
-                {
-                    // user is below threshold, if they were previously above it, draw a curve
-                    if(drawStitchLine)
-                    {
-                        drawStitchLine=NO;
-                        drawStitchCurve=YES;
-                        stitchApexPos=location;
-                    }
-                    // otherwise update the end pos -- used to track the end point of the curve, if being drawn
-                    else
-                    {
-                        stitchEndPos=location;
-                    }
-                }
-                
-                // =====================================================================
-            }
-            
-            //CGPoint newloc=ccp(location.x - holdingBubbleOffset, bubbleSprite.position.y);
-            CGPoint newloc=ccp(location.x - holdingBubbleOffset, cy + moveY);
-            
-            float xdiff=newloc.x-bubbleSprite.position.x;
-            
-            if((bubbleAtBounds>0 && xdiff<0) || (bubbleAtBounds<0 && xdiff>0) || bubbleAtBounds==0)
-            {
-                [bubbleSprite setPosition:newloc];
-                logBubbleDidMove=YES;
-                bubbleAtBounds=0;
-            }
-
-            bubblePushDir=0;
-        }
-        
-        
-        float distFromCentre=-rambler.TouchXOffset + (bubbleSprite.position.x - cx);
-        float stepsFromCentre=distFromCentre / rambler.DefaultSegmentSize;
-        
-        int roundedStepsFromCentre=(int)(stepsFromCentre + 0.5f);
-        if(stepsFromCentre<0) roundedStepsFromCentre=(int)(stepsFromCentre - 0.5f);
-        
-        //NSLog(@"bubble pos %d", roundedStepsFromCentre);
-                
-        int startOffset=initStartVal / initSegmentVal;
-        
-        
-        //lastBubbleLoc = roundedStepsFromCentre+startOffset;
-        lastBubbleLoc=(roundedStepsFromCentre+startOffset);
-        lastBubbleValue=lastBubbleLoc*initSegmentVal;
-        
-        int adjustedStepsFromCentre=roundedStepsFromCentre * rambler.CurrentSegmentValue;
-        
-        BOOL stopLine=NO;
-        
-        if (lastBubbleValue>[rambler.MaxValue intValue])
-        {
-            adjustedStepsFromCentre = ([rambler.MaxValue intValue] / initSegmentVal) - startOffset;
-            //adjustedStepsFromCentre = [rambler.MaxValue intValue] - (startOffset * initSegmentVal);
-            stopLine=YES;
-            bubbleAtBounds=1;
-            bubblePushDir=0;
-        }
-        
-        if(lastBubbleValue<[rambler.MinValue intValue])
-        {
-            adjustedStepsFromCentre = ([rambler.MinValue intValue] / initSegmentVal) - startOffset;
-            //adjustedStepsFromCentre = [rambler.MinValue intValue] - (startOffset * initSegmentVal);
-            stopLine=YES;
-            bubbleAtBounds=-1;
-            bubblePushDir=0;
-        }
-        
-        if(stopLine)
-        {
-            //diff (moveby)
-            float diffx=((adjustedStepsFromCentre) * rambler.DefaultSegmentSize)-distFromCentre;
-            [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, 0)]];
-        }
-        
-        //check if they moved through a current stitch -- if so delete that stich
-        NSValue *remJump=nil;
-        CGPoint jump;
-        for(NSValue *jumpval in rambler.UserJumps)
-        {
-            jump=[jumpval CGPointValue];
-            if(lastBubbleValue>=(jump.x + initStartVal) && lastBubbleValue<(jump.x + initStartVal + jump.y))
-            {
-                //positive jump match
-                remJump=jumpval;
-            }
-            if(lastBubbleValue<=(jump.x + initStartVal) && lastBubbleValue >(jump.x+initStartVal + jump.y))
-            {
-                //negative jump match
-                remJump=jumpval;
-            }
-        }
-        //put frog back to start of that section if required
-        if(frogMode && remJump)
-        {
-            lastFrogLoc=(int)(jump.x / rambler.CurrentSegmentValue)+initStartLoc;
-            [self slideFrog];
-        }
-        
-        if(remJump)[rambler.UserJumps removeObject:remJump];
-        remJump=nil;
-
-        //do not update rambler -- causes render to carry on scrolling, and eval is at end anyway
-        //rambler.BubblePos=lastBubbleLoc;
-
-        lastBubbleLoc = adjustedStepsFromCentre;
-        lastBubbleValue = lastBubbleLoc * initSegmentVal;
-    }
+    lasttouch=location;
+    
 }
 
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -800,9 +814,6 @@ float timerIgnoreFrog;
         //mod this to closest valid segment value
         //adjustedStepsFromCentre=rambler.CurrentSegmentValue * ((int)(adjustedStepsFromCentre / rambler.CurrentSegmentValue));
 
-        //diff (moveby)
-        float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
-        
         float diffy=0.0f;
         
         if(jumpMode)  // === stitching stuff ======================================
@@ -819,8 +830,6 @@ float timerIgnoreFrog;
             
         }  // =====================================================================
         
-        [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, diffy)]];
-        
         
         //update the rambler value & last bubble location, using any offset
         lastBubbleLoc=adjustedStepsFromCentre + startOffset;
@@ -829,8 +838,16 @@ float timerIgnoreFrog;
         rambler.BubblePos=lastBubbleValue;
         
         
-        //play some audio
-        if(enableAudioCounting && lastBubbleLoc!=logLastBubblePos)
+        [self resetTouchParams];
+        
+        //diff (moveby)
+        float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
+        
+        [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, diffy)]];
+        
+        
+        //play some audio -- only for non decimal numbers at the moment
+        if(enableAudioCounting && lastBubbleLoc!=logLastBubblePos && rambler.DisplayNumberMultiplier==1)
         {
             int readNumber=lastBubbleValue+rambler.DisplayNumberOffset;
             
@@ -883,20 +900,24 @@ float timerIgnoreFrog;
     
     NSLog(@"lastBubbleLoc: %d lastFrogLoc: %d", lastBubbleLoc, lastFrogLoc);
     
-    holdingBubbleOffset=0;
-    holdingBubble=NO;
-    hasSetJumpStartValue=NO;
-    jumpStartValue=0;
-    stitchOffsetX=0;
+
 }
 
--(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+-(void)resetTouchParams
 {
+    holdingBubbleOffset=0;
+    holdingBubble=NO;
     touching=NO;
     inRamblerArea=NO;
     hasSetJumpStartValue=NO;
     jumpStartValue=0;
     stitchOffsetX=0;
+    rambler.TouchXOffset=0;
+}
+
+-(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self ccTouchesEnded:touches withEvent:event];
 }
 
 #pragma mark - meta question

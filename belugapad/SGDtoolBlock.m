@@ -16,7 +16,7 @@
 @synthesize BlockRenderComponent;
 @synthesize BlockPairComponent;
 @synthesize mySprite;
-@synthesize blockType, LineType;
+@synthesize blockType;
 
 //Transform protocol properties
 @synthesize Position, Visible, RenderLayer;
@@ -62,16 +62,16 @@
 
 -(void)doUpdate:(ccTime)delta
 {
-    if(!self.Label){
-        self.Label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"c %d", (int)self.MyContainer] fontName:SOURCE fontSize:15.0f];
-        [self.Label setPosition:self.Position];
-        [self.RenderLayer addChild:self.Label];
-        [self.Label setColor:ccc3(0,0,0)];
-    }
-    else
-    {
-        [self.Label setString:[NSString stringWithFormat:@"c %d", (int)self.MyContainer]];
-    }
+//    if(!self.Label){
+//        self.Label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"c %d", (int)self.MyContainer] fontName:SOURCE fontSize:15.0f];
+//        [self.Label setPosition:self.Position];
+//        [self.RenderLayer addChild:self.Label];
+//        [self.Label setColor:ccc3(0,0,0)];
+//    }
+//    else
+//    {
+//        [self.Label setString:[NSString stringWithFormat:@"c %d", (int)self.MyContainer]];
+//    }
     
     //update of components
     [self.BlockRenderComponent doUpdate:delta];

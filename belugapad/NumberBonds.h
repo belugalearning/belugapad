@@ -44,6 +44,12 @@ typedef enum {
     BOOL useBlockScaling;
     BOOL showBadgesOnCages;
     BOOL barAssistance;
+    BOOL createdNewBar;
+    
+    int blocksForThisStore[10];
+    int blocksUsedFromThisStore[10];
+    int storeCanCreate[10];
+    
     
     NSMutableArray *createdRows;
     NSMutableArray *mountedObjects;

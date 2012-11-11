@@ -78,6 +78,7 @@ const NSString *matchNumbers=@"0123456789";
                 //create object number, have it parsed
                 SGBtxeObjectNumber *on=[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld];
                 on.text=s;
+                on.enabled=YES;
                 
                 [ParentGO.containerMgrComponent addObjectToContainer:on];
             }
@@ -106,6 +107,22 @@ const NSString *matchNumbers=@"0123456789";
         if([self boolFor:@"picker" on:element]) ot.enabled=NO;
         
         [ParentGO.containerMgrComponent addObjectToContainer:ot];
+    }
+    
+    else if([element.name isEqualToString:BTXE_OBJ])
+    {
+        //create text
+        SGBtxeText *t=[[SGBtxeText alloc] initWithGameWorld:gameWorld];
+        t.text=@"object";
+        
+        CXMLNode *count=[element attributeForName:@"count"];
+        if(count)
+        {
+            int c=[[count stringValue] intValue];
+            if(c>1) t.text=@"objects";
+        }
+        
+        [ParentGO.containerMgrComponent addObjectToContainer:t];
     }
     
     else if([element.name isEqualToString:BTXE_OO])
@@ -166,8 +183,11 @@ const NSString *matchNumbers=@"0123456789";
         if(hidden)on.hidden=[[[hidden stringValue] lowercaseString] isEqualToString:@"yes"];
         
         CXMLNode *usepicker=[element attributeForName:@"usePicker"];
-        if(usepicker)on.usePicker=[[[usepicker stringValue] lowercaseString] isEqualToString:@"yes"];
-        
+        if(usepicker)
+        {
+            on.usePicker=[[[usepicker stringValue] lowercaseString] isEqualToString:@"yes"];
+        }
+    
         on.enabled=[self enabledBoolFor:element];
         
         [ParentGO.containerMgrComponent addObjectToContainer:on];
@@ -176,6 +196,9 @@ const NSString *matchNumbers=@"0123456789";
     else if([element.name isEqualToString:BTXE_PH])
     {
         SGBtxePlaceholder *ph=[[SGBtxePlaceholder alloc] initWithGameWorld:gameWorld];
+        
+        ph.targetTag=[[element attributeForName:@"targetTag"] stringValue];
+        
         [ParentGO.containerMgrComponent addObjectToContainer:ph];
     }
 }

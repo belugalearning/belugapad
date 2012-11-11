@@ -34,16 +34,16 @@
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
-        self.prefixText=@"";
-        self.numberText=@"";
-        self.suffixText=@"";
-        self.numberValue=@0;
         
-        self.enabled=YES;
-        self.tag=@"";
+        numberValue=@0;
+        [numberValue retain];
         
-        self.size=CGSizeZero;
-        self.position=CGPointZero;
+        
+        enabled=YES;
+        tag=@"";
+        
+        size=CGSizeZero;
+        position=CGPointZero;
         
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
         textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
@@ -175,13 +175,15 @@
         }
     }
     
-    if(nStart>0) prefixText=[parse substringToIndex:nStart];
-    numberText=[parse substringWithRange:NSMakeRange(nStart, nEnd+1)];
-    if(nEnd<[parse length]-1) suffixText=[parse substringFromIndex:nEnd];
+    if(nStart>0) self.prefixText=[parse substringToIndex:nStart];
+    self.numberText=[parse substringWithRange:NSMakeRange(nStart, nEnd+1)];
+    if(nEnd<[parse length]-1) self.suffixText=[parse substringFromIndex:nEnd];
     [self updateDraw];
     NSNumberFormatter *nf=[[NSNumberFormatter alloc] init];
     [nf setNumberStyle:NSNumberFormatterDecimalStyle];
     self.numberValue=[nf numberFromString:numberText];
+    
+    
     [nf release];
     
     self.tag=[numberValue stringValue];
@@ -205,14 +207,12 @@
     if(!ss)ss=@"";
     
     return [NSString stringWithFormat:@"%@%@%@", ps, numberText, ss];
+    //return numberText;
 }
 
 -(BOOL)enabled
 {
-    if(usePicker)
-        return (numberValue!=nil);
-    else
-        return enabled;
+    return enabled;
 }
 
 -(void)setEnabled:(BOOL)theEnabled

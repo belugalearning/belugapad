@@ -458,10 +458,10 @@
 #define BTXE_T @"b:t"
 #define BTXE_OT @"b:ot"
 #define BTXE_OI @"b:oi"
-#define BTXE_OP @"b:op"
 #define BTXE_ON @"b:on"
 #define BTXE_OO @"b:oo"
 #define BTXE_PH @"b:ph"
+#define BTXE_OBJ @"b:obj"
 #define BTXE_COMMOT @"b:commot"
 
 

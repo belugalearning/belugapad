@@ -16,6 +16,7 @@
 @synthesize size, position, enabled, tag, worldPosition;
 @synthesize textBackgroundComponent;
 @synthesize container;
+@synthesize targetTag;
 
 @synthesize mountedObject;
 
@@ -23,8 +24,8 @@
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
-        self.size=CGSizeZero;
-        self.position=CGPointZero;
+        size=CGSizeZero;
+        position=CGPointZero;
         
         textBackgroundComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
     }
@@ -59,6 +60,17 @@
     //background sprite to text (using same size)
     [textBackgroundComponent setupDrawWithSize:self.size];
     
+}
+
+-(BOOL)enabled
+{
+    //compare tag of mount to target mount
+    return ([self.mountedObject.tag isEqualToString:self.targetTag]);
+}
+
+-(void)setEnabled:(BOOL)theEnabled
+{
+    enabled=theEnabled;
 }
 
 -(void)duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)mountObject

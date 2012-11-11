@@ -78,7 +78,7 @@
 
 static float kMoveToNextProblemTime=0.5f;
 static float kDisableInteractionTime=0.5f;
-static float kTimeToShakeNumberPickerButtons=7.0f;
+static float kTimeToHintToolTray=7.0f;
 
 #pragma mark - init and setup
 
@@ -349,17 +349,31 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         }
     }
     
-    if(numberPickerForThisProblem)timeSinceInteractionOrShakeNP+=delta;
+    if(delayShowWheel)timeToWheelStart+=delta;
+    if(delayShowMeta)timeToMetaStart+=delta;
     
-    if(timeSinceInteractionOrShakeNP>kTimeToShakeNumberPickerButtons && numberPickerForThisProblem && !hasUsedNumber)
+    if(delayShowWheel&&timeToWheelStart>2.0f){
+        [self showWheel];
+        delayShowWheel=NO;
+    }
+    
+    if(delayShowMeta&&timeToMetaStart>2.0f){
+        [self showMq];
+        delayShowMeta=NO;
+    }
+    
+    if(numberPickerForThisProblem||metaQuestionForThisProblem)timeSinceInteractionOrShake+=delta;
+    
+    if(timeSinceInteractionOrShake>kTimeToHintToolTray)
     {
         
-        for(CCSprite *s in numberPickerButtons)
-        {
-            [s runAction:[InteractionFeedback dropAndBounceAction]];
+        if(numberPickerForThisProblem && !hasUsedWheelTray){
+            [traybtnWheel runAction:[InteractionFeedback dropAndBounceAction]];
         }
-        
-        timeSinceInteractionOrShakeNP=0.0f;
+        if(metaQuestionForThisProblem && !hasUsedMetaTray){
+            [traybtnMq runAction:[InteractionFeedback dropAndBounceAction]];
+        }
+        timeSinceInteractionOrShake=0.0f;
     }
     
 
@@ -1212,7 +1226,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     }
     
     if(!currentTool)
-        [self showMq];
+        delayShowMeta=YES;
     
     shownMetaQuestionIncompleteFor=0;
     
@@ -1631,7 +1645,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     [self addCommitButton];
     
     if(!currentTool)
-        [self showWheel];
+        delayShowWheel=YES;
     
     //float npOriginX=[[pdefNP objectForKey:PICKER_ORIGIN_X]floatValue];
     //float npOriginY=[[pdefNP objectForKey:PICKER_ORIGIN_Y]floatValue];
@@ -1778,7 +1792,6 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     
     CGPoint origloc=location;
     location=[nPicker convertToNodeSpace:location];
-    timeSinceInteractionOrShakeNP=0.0f;
     
     if(numberPickerEvalMode==kNumberPickerEvalOnCommit)
     {
@@ -2154,6 +2167,8 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
     location=[[CCDirector sharedDirector] convertToGL:location];
     lastTouch=location;
 
+    timeSinceInteractionOrShake=0.0f;
+    
     //testing block for stepping between tool positions
 //    if(animPos==0)
 //    {
@@ -2506,6 +2521,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
 
 -(void)showMq
 {
+    hasUsedMetaTray=YES;
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_tool_appears.wav")];
     [trayLayerMq setVisible:YES];
     trayMqShowing=YES;
@@ -2534,6 +2550,7 @@ static float kTimeToShakeNumberPickerButtons=7.0f;
         //lbl.position=ccp(150,112.5f);
         //[trayLayerWheel addChild:lbl];
     }
+    hasUsedWheelTray=YES;
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_number_wheel_tool_appears.wav")];
     trayLayerWheel.visible=YES;
     trayWheelShowing=YES;

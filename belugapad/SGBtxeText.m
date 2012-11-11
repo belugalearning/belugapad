@@ -19,9 +19,9 @@
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
-        self.text=@"";
-        self.size=CGSizeZero;
-        self.position=CGPointZero;
+        text=@"";
+        size=CGSizeZero;
+        position=CGPointZero;
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
     }
     

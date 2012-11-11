@@ -207,6 +207,19 @@
     return [NSString stringWithFormat:@"%@%@%@", ps, numberText, ss];
 }
 
+-(BOOL)enabled
+{
+    if(usePicker)
+        return (numberValue!=nil);
+    else
+        return enabled;
+}
+
+-(void)setEnabled:(BOOL)theEnabled
+{
+    enabled=theEnabled;
+}
+
 -(CGPoint)worldPosition
 {
     return [renderBase convertToWorldSpace:self.position];

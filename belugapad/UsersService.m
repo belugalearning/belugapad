@@ -484,14 +484,6 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     return user;
 }
 
--(void)onNewLogBatchWithId:(NSString*)batchId
-{
-    if (currentUserId)
-    {
-        [allUsersDatabase executeUpdate:@"INSERT INTO BatchesPendingProcessingOrApplication(batch_id, user_id, server_processed) values(?,?,0)", batchId, currentUserId];
-    }
-}
-
 -(void)dealloc
 {
     if (currentUser) [currentUser release];

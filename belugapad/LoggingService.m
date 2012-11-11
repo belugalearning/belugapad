@@ -141,7 +141,6 @@ uint const kMaxConsecutiveSendFails = 3;
     
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     UsersService *us = ac.usersService;
-    if (us) [us onNewLogBatchWithId:self.currentBatchId];
 }
 
 -(NSString*)currentProblemAttemptID

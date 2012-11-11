@@ -5,7 +5,7 @@
 	<key>NUMBER_PICKER</key>
 	<dict>
 		<key>NUMBER_PICKER_DESCRIPTION</key>
-		<string>what is {$multiplicand} {@operator} {$multiplier}</string>
+		<string>{$var1} div {$var2} is {$varout} {£varout} {&amp;varout}</string>
 		<key>INTERNAL_DESCRIPTION</key>
 		<string>1-5 x 1-5</string>
 		<key>PICKER_LAYOUT</key>
@@ -20,22 +20,28 @@
 		<string>{$multiplicand*$multiplier}</string>
 	</dict>
 	<key>DVARS</key>
-	<dict>
-		<key>$multiplicand</key>
+	<array>
 		<dict>
+			<key>VAR_NAME</key>
+			<string>$var1</string>
 			<key>MIN</key>
-			<string>1</string>
-			<key>MAX</key>
-			<string>9</string>
-		</dict>
-		<key>$multiplier</key>
-		<dict>
-			<key>MIN</key>
-			<string>1</string>
-			<key>MAX</key>
 			<string>5</string>
+			<key>MAX</key>
+			<string>10</string>
 		</dict>
-	</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$var2</string>
+			<key>VALUE</key>
+			<string>3</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>&amp;varout</string>
+			<key>VALUE</key>
+			<string>{&amp;var1/&amp;var2}</string>
+		</dict>
+	</array>
 	<key>DSTRINGS</key>
 	<dict>
 		<key>@operator</key>

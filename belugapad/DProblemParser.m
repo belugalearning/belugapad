@@ -17,6 +17,7 @@
     dStrings=[[NSMutableDictionary alloc] init];
     retainedVars=[[NSMutableDictionary alloc] init];
     retainedStrings=[[NSMutableDictionary alloc] init];
+    randomKeyCaches=[[NSMutableDictionary alloc] init];
     
     return self;
 }
@@ -164,7 +165,7 @@
     else {
         //create this vairable by creating a random number
         //note: this is actually using a string output of the random NSNumber and then casting back using casttype
-        outputvalue=[self numberFromString:[[self randomNumberWithParams:dv] stringValue] withCastType:casttype];
+        outputvalue=[self numberFromString:[[self randomNumberWithParams:dv andKey:namebase] stringValue] withCastType:casttype];
     }
     
     //add this variable to the problem dvars
@@ -192,7 +193,7 @@
     }
 }
 
--(NSNumber *)randomNumberWithParams:(NSDictionary*)params
+-(NSNumber *)randomNumberWithParams:(NSDictionary*)params andKey:(NSString*)key
 {
     if([params objectForKey:@"SELECT_FROM"])
     {
@@ -206,17 +207,42 @@
 //        int min=[[params objectForKey:@"MIN"] floatValue];
 //        int max=[[params objectForKey:@"MAX"] floatValue];
         
-        //parse min and max using internal parser
-        int min=[self parseIntFromString:[params objectForKey:@"MIN"]];
-        int max=[self parseIntFromString:[params objectForKey:@"MAX"]];
+        //see if we have a cache of numbers for this key
+        NSMutableArray *keyCache=[randomKeyCaches objectForKey:key];
         
-        int interval=max-min;
+        NSNumber *nret;
+        int tryCount=0;
+        BOOL noClash=NO;
         
-        int fbase=arc4random() % (int)interval;
+        while(!noClash && tryCount<100)
+        {
+            //parse min and max using internal parser
+            int min=[self parseIntFromString:[params objectForKey:@"MIN"]];
+            int max=[self parseIntFromString:[params objectForKey:@"MAX"]];
+            
+            int interval=max-min;
+            int fbase=arc4random() % (int)interval;
+            int ret=fbase+min;
+            
+            nret=[NSNumber numberWithInt:ret];
+            
+            if(keyCache)
+            {
+                noClash=YES;
+                for (NSNumber *n in keyCache)
+                {
+                    if([n isEqualToNumber:nret]) noClash=NO;
+                    break;
+                }
+            }
+            
+            tryCount++;
+        }
         
-        int ret=fbase+min;
+        if(!keyCache)
+            [randomKeyCaches setValue:[NSMutableArray arrayWithObject:nret] forKey:key];
         
-        return [NSNumber numberWithInt:ret];        
+        return nret;
     }
 }
 
@@ -606,6 +632,7 @@
     [dStrings release];
     [retainedVars release];
     [retainedStrings release];
+    [randomKeyCaches release];
     
     [super dealloc];
 }

@@ -26,9 +26,9 @@
     if(self=[super initWithGameWorld:aGameWorld])
     {
         children=[[NSMutableArray alloc] init];
-        size=CGSizeZero;
-        position=CGPointZero;
-        forceVAlignTop=NO;
+        self.size=CGSizeZero;
+        self.position=CGPointZero;
+        self.forceVAlignTop=NO;
         containerMgrComponent=[[SGBtxeContainerMgr alloc] initWithGameObject:(SGGameObject*)self];
         rowLayoutComponent=[[SGBtxeRowLayout alloc] initWithGameObject:(SGGameObject*)self];
         parserComponent=[[SGBtxeParser alloc] initWithGameObject:(SGGameObject*)self];

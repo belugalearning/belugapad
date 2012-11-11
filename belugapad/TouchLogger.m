@@ -43,7 +43,7 @@ typedef struct
 }
 
 -(void)logTouches:(NSSet*)touches
-{   
+{
     NSNumber *date = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]];
     NSMutableSet *unmatchedActiveTouches = [[activeTouches mutableCopy] autorelease];
     

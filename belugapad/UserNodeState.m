@@ -40,7 +40,6 @@
     [database open];
     FMResultSet *rs = [database executeQuery:@"SELECT * FROM Nodes WHERE id=?", nodeId];
     self = [rs next] ? [self initWithUserId:userId resultSet:rs database:database] : nil;
-    [rs close];
     [database close];
     return self;
 }
@@ -85,7 +84,7 @@
     return self;
 }
 
--(BOOL)updateAndSaveStateAfterNodePlay:(NodePlay*)nodePlay
+-(void)updateStateFromNodePlay:(NodePlay*)nodePlay
 {
     self.timePlayed += nodePlay.playTime;
     self.lastPlayed = [NSDate dateWithTimeIntervalSince1970:nodePlay.lastEventDate];
@@ -122,8 +121,6 @@
             }
         }
     }
-    
-    return [self saveState];
 }
 
 -(BOOL)saveState
@@ -145,6 +142,11 @@
                     self.nodeId];
     [db close];
     return success;
+}
+
+-(NSString*)description
+{
+    return [NSString stringWithFormat:@"UserNodeState: {\n\tuserId: %@\n\tnodeId: %@\n\ttimePlayed: %f\n\tlastPlayed: %f\n\tlastScore: %d\n\ttotalAccumulatedScore: %d\n\thighScore: %d\n\tfirstCompleted: %f\n\tlastCompleted: %f\n\t...\n}", self.userId, self.nodeId, self.timePlayed, [self.lastPlayed timeIntervalSince1970], self.lastScore, self.totalAccumulatedScore, self.highScore, [self.firstCompleted timeIntervalSince1970], [self.lastCompleted timeIntervalSince1970]];
 }
 
 -(void)dealloc

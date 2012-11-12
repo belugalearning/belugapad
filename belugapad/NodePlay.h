@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@class FMResultSet;
 
 @interface NodePlay : NSObject
 
@@ -23,6 +24,7 @@
 @property (nonatomic, readonly) double playTime;
 
 
+-(id)initFromFMResultSet:(FMResultSet*)rs;
 -(id)initWithEpisode:(NSDictionary*)episode batchId:(NSString*)batchId;
 -(BOOL)processEvent:(NSDictionary*)event error:(NSError**)error;
 

@@ -935,8 +935,10 @@ static float kDistanceBetweenBlocks=70.0f;
         float diffX=0.0f;
         float diffY=0.0f;
 
-        if([currentPickupObject.MyContainer count]>=1){
-                for(SGDtoolBlock *b in ((SGDtoolContainer*)currentPickupObject.MyContainer).BlocksInShape)
+        SGDtoolContainer *c=(SGDtoolContainer*)currentPickupObject.MyContainer;
+        
+        if([c.BlocksInShape count]>=1){
+                for(SGDtoolBlock *b in c.BlocksInShape)
                 {
                         if(b.Position.x<0)
                             diffX+=60;
@@ -945,7 +947,7 @@ static float kDistanceBetweenBlocks=70.0f;
                             diffY+=60;
                 }
                 
-                SGDtoolBlock *b=[currentPickupObject.MyContainer objectAtIndex:0];
+                SGDtoolBlock *b=[c.BlocksInShape objectAtIndex:0];
             
                 CGPoint newPoint=ccp(b.Position.x+diffX, b.Position.y+diffY);
                 [b setPosition:newPoint];

@@ -354,11 +354,13 @@ static float kTimeToHintToolTray=7.0f;
     
     if(delayShowWheel&&timeToWheelStart>2.0f){
         [self showWheel];
+        timeToWheelStart=0.0f;
         delayShowWheel=NO;
     }
     
     if(delayShowMeta&&timeToMetaStart>2.0f){
         [self showMq];
+        timeToMetaStart=0.0f;
         delayShowMeta=NO;
     }
     

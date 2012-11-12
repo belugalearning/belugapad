@@ -1475,6 +1475,9 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)showHideCommit
 {
+    if(problemComplete)return;
+    if(autoMoveToNextProblem)return;
+    
     BOOL showCommit=NO;
     
     if(!metaQuestionForThisProblem && !numberPickerForThisProblem && evalMode==kProblemEvalOnCommit)

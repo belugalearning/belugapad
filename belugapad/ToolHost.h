@@ -210,6 +210,8 @@ typedef enum {
     float timeToWheelStart;
     float timeToMetaStart;
     
+    BOOL evalShowCommit;
+    
 }
 
 @property (retain) Daemon *Zubi;

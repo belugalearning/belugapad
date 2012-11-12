@@ -391,7 +391,7 @@ static float kTimeToHintToolTray=7.0f;
         
     }
     
-    [self showHideCommit];
+    if(evalShowCommit)[self showHideCommit];
     
     //let tool do updates
     if(!isPaused)[currentTool doUpdateOnTick:delta];
@@ -849,6 +849,8 @@ static float kTimeToHintToolTray=7.0f;
     else {
         [self.Zubi hideZubi];
     }
+    
+    evalShowCommit=YES;
     
 }
 -(void)addCommitButton
@@ -1509,7 +1511,7 @@ static float kTimeToHintToolTray=7.0f;
     }
     
     
-    if(showCommit)
+    if(showCommit && commitBtn)
         [commitBtn setVisible:YES];
     else
         [commitBtn setVisible:NO];
@@ -1603,6 +1605,7 @@ static float kTimeToHintToolTray=7.0f;
 }
 -(void)doWinning
 {
+    evalShowCommit=NO;
     timeBeforeUserInteraction=kDisableInteractionTime;
     isAnimatingIn=YES;
     [loggingService logEvent:BL_PA_SUCCESS withAdditionalData:nil];

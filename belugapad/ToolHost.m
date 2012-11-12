@@ -1492,12 +1492,7 @@ static float kTimeToHintToolTray=7.0f;
     
     if(hasTrayMq && trayMqShowing)
     {
-        int countSelected=0;
-        for(int i=0; i<metaQuestionAnswerCount; i++)
-        {
-            BOOL isSelected=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_SELECTED] boolValue];
-            if(isSelected)countSelected++;
-        }
+        int countSelected=[self metaQuestionSelectedCount];
         
         if(countSelected>0)
             showCommit=YES;
@@ -1530,6 +1525,18 @@ static float kTimeToHintToolTray=7.0f;
     {
         [self doIncomplete];
     }
+}
+
+-(int)metaQuestionSelectedCount
+{
+    int countSelected=0;
+    for(int i=0; i<metaQuestionAnswerCount; i++)
+    {
+        BOOL isSelected=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_SELECTED] boolValue];
+        if(isSelected)countSelected++;
+    }
+    
+    return countSelected;
 }
 
 -(BOOL)calcMetaQuestion
@@ -2554,6 +2561,8 @@ static float kTimeToHintToolTray=7.0f;
     trayLayerMq.visible=NO;
     trayMqShowing=NO;
     [traybtnMq setColor:ccc3(255,255,255)];
+    if(metaArrow && [self metaQuestionSelectedCount]==0)
+        [metaArrow setVisible:YES];
 }
 
 -(void)showWheel

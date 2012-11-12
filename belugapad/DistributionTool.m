@@ -431,13 +431,11 @@ static float kDistanceBetweenBlocks=70.0f;
     
     if(!hasInactiveArea)
     {
-        CGPoint top=[[thesePositions objectAtIndex:0]CGPointValue];
-        CGPoint bottom=[[thesePositions objectAtIndex:[thesePositions count]-1]CGPointValue];
         
-        int farLeft=top.x+60;
-        int farRight=lx-bottom.x-60;
-        int topMost=ly-top.y-110;
-        int botMost=0+-bottom.y+60;
+        int farLeft=(numBlocks/2)*60;
+        int farRight=lx-30;
+        int topMost=ly-120;
+        int botMost=100;
         
         //startPosX=[theseSettings objectForKey:POS_X] ? [[theseSettings objectForKey:POS_X]intValue] : (arc4random() % 960) + 30;
         //startPosY=[theseSettings objectForKey:POS_Y] ? [[theseSettings objectForKey:POS_Y]intValue] : (arc4random() % 730) + 30;
@@ -932,6 +930,30 @@ static float kDistanceBetweenBlocks=70.0f;
         if(evalMode==kProblemEvalAuto)[self evalProblem];
     }
     
+    if(currentPickupObject.MyContainer)
+    {
+        float diffX=0.0f;
+        float diffY=0.0f;
+
+        if([currentPickupObject.MyContainer count]>=1){
+                for(SGDtoolBlock *b in ((SGDtoolContainer*)currentPickupObject.MyContainer).BlocksInShape)
+                {
+                        if(b.Position.x<0)
+                            diffX+=60;
+                    
+                        if(b.Position.y<0)
+                            diffY+=60;
+                }
+                
+                SGDtoolBlock *b=[currentPickupObject.MyContainer objectAtIndex:0];
+            
+                CGPoint newPoint=ccp(b.Position.x+diffX, b.Position.y+diffY);
+                [b setPosition:newPoint];
+            
+                [b.MyContainer layoutMyBlocks];
+            
+            }
+        }
     
     if(hasBeenProximate)
     {

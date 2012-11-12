@@ -92,7 +92,7 @@
             
             
             float halfWayWidth=(bottomLeft.x+topRight.x)/2;
-            CCSprite *countBubble=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/countbubble.png")];
+            CCSprite *countBubble=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/DG_counter_multiplication.png")];
             float botMostYAdj=botMostY-(countBubble.contentSize.height/1.5);
             CCLabelTTF *countBubbleLabel=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:20.0f];
             [countBubbleLabel setPosition:ccp(countBubble.contentSize.width/2, countBubble.contentSize.height/2)];

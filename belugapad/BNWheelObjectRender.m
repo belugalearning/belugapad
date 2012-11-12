@@ -150,7 +150,7 @@
 
     if(w.HasCountBubble)
     {
-        w.CountBubble=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/countbubble.png")];
+        w.CountBubble=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/DG_counter_multiplication.png")];
         [w.CountBubble setPosition:[self createCountBubblePos]];
         w.CountBubbleLabel=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:25.0f];
         [w.CountBubbleLabel setPosition:ccp(49,18)];

@@ -37,6 +37,7 @@
 {
     if(messageType==kDWsetupStuff)
     {
+        if(!tile.myAnchor)return;
         if(!tile.mySprite) 
         {
             [self setSprite];
@@ -81,9 +82,13 @@
 //            tile.myAnchor=nil;
 //            tile.myShape=nil;
         }
+        
+        tile.myAnchor=nil;
 
-        [[s parent] removeChild:s cleanup:YES];
-        [[ss parent] removeChild:ss cleanup:YES];
+        [tile.mySprite removeFromParentAndCleanup:YES];
+        [tile.selectedSprite removeFromParentAndCleanup:YES];
+//        [[s parent] removeChild:s cleanup:YES];
+//        [[ss parent] removeChild:ss cleanup:YES];
         [gameWorld delayRemoveGameObject:tile];
     }
 }

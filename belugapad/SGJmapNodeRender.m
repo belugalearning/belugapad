@@ -95,7 +95,7 @@
 {
     if(((SGJmapNode*)ParentGO).EnabledAndComplete)
     {
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Copmlete_Right.png"];
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Complete_Right.png"];
     }
     else 
     {

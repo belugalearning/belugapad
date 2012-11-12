@@ -405,8 +405,25 @@ static float kDistanceBetweenBlocks=70.0f;
     
     NSString *label = [theseSettings objectForKey:LABEL];
     NSString *blockType = [theseSettings objectForKey:BLOCK_TYPE];
+    NSString *thisColour = [theseSettings objectForKey:TINT_COLOUR];
     BOOL unbreakableBonds = [[theseSettings objectForKey:UNBREAKABLE_BONDS]boolValue];
     
+    if(!thisColour)
+        thisColour=@"WHITE";
+    
+    ccColor3B blockCol = ccc3(0,0,0);
+    
+    if([thisColour isEqualToString:@"BLUE"])
+        blockCol=ccc3(0,0,255);
+    else if([thisColour isEqualToString:@"RED"])
+        blockCol=ccc3(255,0,0);
+    else if([thisColour isEqualToString:@"GREEN"])
+        blockCol=ccc3(0,255,0);
+    else if([thisColour isEqualToString:@"WHITE"])
+        blockCol=ccc3(255,255,255);
+    else if([thisColour isEqualToString:@"BLACK"])
+        blockCol=ccc3(0,0,0);
+        
     if(!blockType)
         blockType=@"Circle";
     
@@ -466,6 +483,7 @@ static float kDistanceBetweenBlocks=70.0f;
         SGDtoolBlock *block =  [[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:p andType:blockType] autorelease];
         [block setup];
         block.MyContainer = container;
+        [block.mySprite setColor:blockCol];
         
             
         
@@ -508,6 +526,8 @@ static float kDistanceBetweenBlocks=70.0f;
     if(!evalAreas)
         evalAreas=[[[NSMutableArray alloc]init]retain];
 
+    float sectionWidth=lx/[initAreas count];
+    
     for(int i=0;i<[initAreas count];i++)
     {
         NSDictionary *d=[initAreas objectAtIndex:i];
@@ -515,10 +535,10 @@ static float kDistanceBetweenBlocks=70.0f;
         int areaSize=[[d objectForKey:AREA_SIZE]intValue];
         int areaWidth=[[d objectForKey:AREA_WIDTH]intValue];
         int areaOpacity=0;
-        int distFromLX=(lx-30-(areaWidth*62));
-        int distFromLY=(ly-80-(areaSize/areaWidth)*62);
-        int startXPos=(arc4random() % distFromLX)+30;
-        int startYPos=(arc4random() % distFromLY)+60;
+        int distFromLY=(ly-110-(areaSize/areaWidth)*62);
+        float startXPos=((i+0.5)*sectionWidth)-((areaWidth/2)*60);
+        int startYPos = 100 + arc4random() % (distFromLY - 100);
+        
         
         if([d objectForKey:AREA_OPACITY])
             areaOpacity=[[d objectForKey:AREA_OPACITY]intValue];
@@ -878,21 +898,29 @@ static float kDistanceBetweenBlocks=70.0f;
                     NSLog(@"moved pickup object close to this GO. add pickupObject to cObj container");
                     hasBeenProximate=YES;
                     
+                    // if the 2 containers are different, check for unbreakable blocks, if so, just layout the containers blocks
                     if(cObj.MyContainer!=currentPickupObject.MyContainer){
                         if([((id<Container>)cObj.MyContainer).LineType isEqualToString:@"Unbreakable"]){
                             [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
+                            [self setTouchVarsToOff];
                             return;
                         }
+                        // if the current pickup has a container - layout the old container's blocks it's blocks after removing from it
                         if(currentPickupObject.MyContainer){
-                            [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
                             [((id<Container>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
+                            [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
                         }
+                        
+                        
+                        // then add it to a new container and layout those blocks
                         [((id<Container>)cObj.MyContainer) addBlockToMe:currentPickupObject];
                         [((id<Container>)cObj.MyContainer) layoutMyBlocks];
                     }
-                    
+                    // but if the 2 containers are equal
                     if(cObj.MyContainer==currentPickupObject.MyContainer)
                     {
+                        // check if the block at index 0 is this one - if it is, don't layout the blocks
+                        if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape objectAtIndex:0]!=currentPickupObject)
                             [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
                     }
                     
@@ -901,6 +929,7 @@ static float kDistanceBetweenBlocks=70.0f;
                     break;
                     
                 }
+                // if it's unbreakabe, basically relayout the blocks and do nothing more 
                 if([((id<Container>)currentPickupObject.MyContainer).LineType isEqualToString:@"Unbreakable"]){
                     gotTarget=YES;
                     [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
@@ -913,6 +942,7 @@ static float kDistanceBetweenBlocks=70.0f;
         }
         if(!gotTarget)
         {
+            // if it doesn't have a new targetl and the blocks in it's current shape are over 1 or the container's nil (ie if it's dragged from a cage) create a new group
             if([(id<NSObject>)currentPickupObject.MyContainer isKindOfClass:[SGDtoolCage class]])return;
             
             if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape count]>1||currentPickupObject.MyContainer==nil)
@@ -930,32 +960,42 @@ static float kDistanceBetweenBlocks=70.0f;
         if(evalMode==kProblemEvalAuto)[self evalProblem];
     }
     
+    // if it has a container
     if(currentPickupObject.MyContainer)
     {
+        // check whether any of the blocks are outside of the screen bounds - then set the position and move it back into the screen bounds
         float diffX=0.0f;
         float diffY=0.0f;
 
         SGDtoolContainer *c=(SGDtoolContainer*)currentPickupObject.MyContainer;
         
         if([c.BlocksInShape count]>=1){
-                for(SGDtoolBlock *b in c.BlocksInShape)
-                {
-                        if(b.Position.x<0)
-                            diffX+=60;
-                    
-                        if(b.Position.y<0)
-                            diffY+=60;
-                }
+            for(SGDtoolBlock *b in c.BlocksInShape)
+            {
+                    if(b.Position.x<0)
+                        diffX+=60;
                 
-                SGDtoolBlock *b=[c.BlocksInShape objectAtIndex:0];
+                    if(b.Position.y<0)
+                        diffY+=60;
+            }
             
-                CGPoint newPoint=ccp(b.Position.x+diffX, b.Position.y+diffY);
-                [b setPosition:newPoint];
-            
-                [b.MyContainer layoutMyBlocks];
-            
+            SGDtoolBlock *b=[c.BlocksInShape objectAtIndex:0];
+        
+            CGPoint newPoint=ccp(b.Position.x+diffX, b.Position.y+diffY);
+            [b setPosition:newPoint];
+            if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape objectAtIndex:0]!=currentPickupObject){
+                    [b.MyContainer layoutMyBlocks];
+            }
+            else
+            {
+                if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape count]>1){
+                    SGDtoolBlock *b2=[((id<Container>)currentPickupObject.MyContainer).BlocksInShape objectAtIndex:1];
+                    b.Position=ccp(b2.Position.x,b2.Position.y+52);
+                    [b.MyContainer layoutMyBlocks];
+                }
             }
         }
+    }
     
     if(hasBeenProximate)
     {
@@ -1119,7 +1159,6 @@ static float kDistanceBetweenBlocks=70.0f;
                     NSLog(@"blocksinshape %d is %d", (int)thisCont, [thisCont.BlocksInShape count]);
                     if([thisCont.BlocksInShape count]==[n intValue])
                     {
-                        NSLog(@"found solution nigguh");
                         solutionsFound++;
                         [shapesFound addObject:cont];
                         [solFound addObject:n];

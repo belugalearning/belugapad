@@ -1380,6 +1380,7 @@ static float kTimeToHintToolTray=7.0f;
     trayLayerMq=nil;
     metaQuestionForThisProblem=NO;
     metaQuestionForceComplete=NO;
+    hasUsedMetaTray=NO;
     hasTrayMq=NO;
 }
 
@@ -2018,6 +2019,7 @@ static float kTimeToHintToolTray=7.0f;
     pickerViewSelection=nil;
     pickerView=nil;
     hasTrayWheel=NO;
+    hasUsedWheelTray=NO;
 //    [numberPickerLayer release];
 //    numberPickerLayer=nil;
 }

@@ -930,6 +930,30 @@ static float kDistanceBetweenBlocks=70.0f;
         if(evalMode==kProblemEvalAuto)[self evalProblem];
     }
     
+    if(currentPickupObject.MyContainer)
+    {
+        float diffX=0.0f;
+        float diffY=0.0f;
+
+        if([currentPickupObject.MyContainer count]>=1){
+                for(SGDtoolBlock *b in ((SGDtoolContainer*)currentPickupObject.MyContainer).BlocksInShape)
+                {
+                        if(b.Position.x<0)
+                            diffX+=60;
+                    
+                        if(b.Position.y<0)
+                            diffY+=60;
+                }
+                
+                SGDtoolBlock *b=[currentPickupObject.MyContainer objectAtIndex:0];
+            
+                CGPoint newPoint=ccp(b.Position.x+diffX, b.Position.y+diffY);
+                [b setPosition:newPoint];
+            
+                [b.MyContainer layoutMyBlocks];
+            
+            }
+        }
     
     if(hasBeenProximate)
     {

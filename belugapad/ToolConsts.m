@@ -62,9 +62,9 @@ const float kNumberPickerNumberSpaceBetweenSpritesProp=0.005f;
 
 
 const CGRect kPauseMenuLogOut={{8.0f,717.0f},{120.0f,43.0f}};
-const CGRect kPauseMenuMenu={{374.0f,478.0f},{275.0f,80.0f}};
-const CGRect kPauseMenuReset={{374.0f,378.0f},{275.0f,80.0f}};
-const CGRect kPauseMenuContinue={{299.0f,213.0f},{424.0f,80.0f}};
+const CGRect kPauseMenuMenu={{452.0f,440.0f},{565.0f,497.0f}};
+const CGRect kPauseMenuReset={{481.0f,382.0f},{544.0f,441.0f}};
+const CGRect kPauseMenuContinue={{451.0f,326.0f},{572.0f,381.0f}};
 
 const ccColor3B kNumberBondColour[10]={{128,124,125},{216,12,52},{87,176,37},{230,51,131},{229,196,34},{49,142,76},{73,71,71},{166,54,198},{13,86,143},{241,72,0}};
 const ccColor3B kNumiconColour[10]={{191,255,193},{191,255,244},{223,191,255},{255,178,178},{204,240,255},{255,211,178},{254,255,204},{255,217,244},{220,244,222},{217,174,174}};

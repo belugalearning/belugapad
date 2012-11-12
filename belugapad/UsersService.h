@@ -43,6 +43,4 @@ typedef enum {
 -(BOOL)hasCompletedNodeId:(NSString*)nodeId;
 -(UserNodeState*)currentUserStateForNodeWithId:(NSString *)nodeId;
 -(NSDictionary*)currentUserAllNodesState;
-
--(void)onNewLogBatchWithId:(NSString*)batchId;
 @end

@@ -353,15 +353,20 @@ static int shadowSteps=5;
 //    [ParentGO.RenderBatch.parent addChild:islandShadowSprite z:-1];
 
     //NSString *baseSpriteName=[NSString stringWithFormat:@"/images/jmap/islands/%@-s1.png", islandName];
-    NSString *baseSpriteName=@"/images/jmap/islands/island6-2-s1.png";
     
-    NSString *islandSpriteName=[NSString stringWithFormat:@"/images/jmap/islands/%@.png", islandName];
+    //get an island selection base
+    int islandShapeIdx=(arc4random()%10) + 1;
     
-    islandSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(baseSpriteName)];
-    islandSprite.color=ccc3(155, 186, 138);
+    NSString *baseSpriteName=[NSString stringWithFormat:@"Sand_%d_Yellow.png", islandShapeIdx];
+
+    
+//    NSString *baseSpriteName=@"/images/jmap/islands/island6-2-s1.png";
+//    NSString *islandSpriteName=[NSString stringWithFormat:@"/images/jmap/islands/%@.png", islandName];
+    
+    islandSprite=[CCSprite spriteWithSpriteFrameName:baseSpriteName];
     islandSprite.position=ParentGO.Position;
     islandSprite.visible=ParentGO.Visible;
-    [ParentGO.RenderBatch.parent addChild:islandSprite z:-1];
+    [ParentGO.RenderBatch addChild:islandSprite z:-1];
  
     int islandStage=1;
     if(ParentGO.PrereqPercentage>=30)islandStage=3;

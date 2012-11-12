@@ -1055,6 +1055,7 @@ typedef enum {
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     touchCount-=touches.count;
+    if(touchCount<0)touchCount=0;
     
     if(touchCount==0)
     {

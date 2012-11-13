@@ -577,7 +577,7 @@ static float kShapeValueSquare=1000.0f;
             if(thisPos==areaWidth)thisPos=0;
             int thisRow=i/areaWidth;
             
-            CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/distribution/DT_area_2.png")];
+            CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/distribution/DT_area.png")];
             [s setPosition:ccp(startXPos+(thisPos*s.contentSize.width),startYPos+(thisRow*s.contentSize.height))];
             [s setOpacity:areaOpacity];
             [self.ForeLayer addChild:s];
@@ -740,9 +740,138 @@ static float kShapeValueSquare=1000.0f;
             }
         }
         [solutions removeObject:thisNo];
-
+        
     }
+    
+    if(solutionsFound==[solutionsDef count])
+        return YES;
+    else
+        return NO;
+}
 
+-(BOOL)evalNumberOfShapesAndTypesInContainers
+{
+    return NO;
+}
+
+-(BOOL)evalNumberOfShapesAndTypesInEvalAreas
+{
+    int solutionsFound=0;
+    NSMutableArray *matchedEvalAreas=[[NSMutableArray alloc]init];
+    NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
+    
+
+    for(int i=0;i<[evalAreas count];i++)
+    {
+        for(NSDictionary *solutions in solutionsDef)
+        {
+            if([matchedSolutions containsObject:solutions])continue;
+            
+            int circlesReq=[[solutions objectForKey:EVAL_CIRCLES_REQUIRED]intValue];
+            int diamondsReq=[[solutions objectForKey:EVAL_DIAMONDS_REQUIRED]intValue];
+            int ellipsesReq=[[solutions objectForKey:EVAL_ELLIPSES_REQUIRED]intValue];
+            int housesReq=[[solutions objectForKey:EVAL_HOUSES_REQUIRED]intValue];
+            int roundedSquaresReq=[[solutions objectForKey:EVAL_ROUNDEDSQUARES_REQUIRED]intValue];
+            int squaresReq=[[solutions objectForKey:EVAL_SQUARES_REQUIRED]intValue];
+            
+            int circlesFound=0;
+            int diamondsFound=0;
+            int ellipsesFound=0;
+            int housesFound=0;
+            int roundedSquaresFound=0;
+            int squaresFound=0;
+            
+            BOOL circlesMatch=NO;
+            BOOL diamondsMatch=NO;
+            BOOL ellipsesMatch=NO;
+            BOOL housesMatch=NO;
+            BOOL roundedSquaresMatch=NO;
+            BOOL squaresMatch=NO;
+            
+            BOOL shouldContinueEval=YES;
+            
+            
+            
+            CGRect thisRect=CGRectNull;
+            NSArray *a=[evalAreas objectAtIndex:i];
+            
+            if([matchedEvalAreas containsObject:a])continue;
+            
+            for(CCSprite *s in a)
+            {
+                thisRect=CGRectUnion(thisRect, s.boundingBox);
+            }
+            
+            for(id go in gw.AllGameObjects)
+            {
+                if([go conformsToProtocol:@protocol(Configurable)])
+                {
+                    id<Configurable,Moveable>c=(id<Configurable,Moveable>)go;
+                    
+                    if(!CGRectContainsPoint(thisRect, c.Position))continue;
+                    
+                    if([c.blockType isEqualToString:@"Circle"])
+                        circlesFound++;
+                    if([c.blockType isEqualToString:@"Diamond"])
+                        diamondsFound++;
+                    if([c.blockType isEqualToString:@"Ellipse"])
+                        ellipsesFound++;
+                    if([c.blockType isEqualToString:@"House"])
+                        housesFound++;
+                    if([c.blockType isEqualToString:@"RoundedSquare"])
+                        roundedSquaresFound++;
+                    if([c.blockType isEqualToString:@"Square"])
+                        squaresFound++;
+                    
+                }
+            }
+        
+            
+            NSLog(@"(%d) Circles f:%d r:%d, Houses f:%d r:%d", [evalAreas indexOfObject:a], circlesFound, circlesReq, housesFound, housesReq);
+            
+            if(circlesFound==circlesReq && shouldContinueEval)
+                circlesMatch=YES;
+            else
+                shouldContinueEval=NO;
+
+            if(diamondsFound==diamondsReq && shouldContinueEval)
+                diamondsMatch=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(ellipsesFound==ellipsesReq && shouldContinueEval)
+                ellipsesMatch=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(housesFound==housesReq && shouldContinueEval)
+                housesMatch=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(roundedSquaresFound==roundedSquaresReq && shouldContinueEval)
+                roundedSquaresMatch=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(squaresFound==squaresReq && shouldContinueEval)
+                squaresMatch=YES;
+            else
+                shouldContinueEval=NO;
+            
+        
+            if(circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch){
+                solutionsFound++;
+                [matchedEvalAreas addObject:a];
+                [matchedSolutions addObject:solutions];
+                break;
+            }
+
+            
+        }
+    }
+ 
+    NSLog(@"solutions found %d req %d", solutionsFound, [solutionsDef count]);
     if(solutionsFound==[solutionsDef count])
         return YES;
     else
@@ -1327,6 +1456,11 @@ static float kShapeValueSquare=1000.0f;
     else if(evalType==kCheckEvalAreas)
     {
         return [self evalNumberOfShapesInEvalAreas];
+    }
+    
+    else if(evalType==kCheckEvalAreasForTypes)
+    {
+        return [self evalNumberOfShapesAndTypesInEvalAreas];
     }
     
     else if(evalType==kCheckGroupTypeAndNumber)

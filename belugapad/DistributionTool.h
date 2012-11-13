@@ -18,7 +18,9 @@ typedef enum
     kCheckNamedGroups=1,
     kCheckEvalAreas=2,
     kCheckGroupTypeAndNumber=3,
-    kIncludeShapeSizes=4
+    kIncludeShapeSizes=4,
+    kCheckEvalAreasForTypes=5,
+    kCheckGroupsForTypes=6
 }DistributionEvalType;
 
 @interface DistributionTool : ToolScene

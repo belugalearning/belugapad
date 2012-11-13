@@ -19,7 +19,9 @@
 	<key>EVAL_MODE</key>
 	<integer>1</integer>
 	<key>EVAL_TYPE</key>
-	<string>TARGET</string>
+	<string>REPEATED_ADDITION</string>
+	<key>EVAL_INTERVAL</key>
+	<string>2</string>
 	<key>REJECT_MODE</key>
 	<integer>0</integer>
 	<key>EVAL_TARGET</key>

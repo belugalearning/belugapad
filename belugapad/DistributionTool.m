@@ -31,6 +31,15 @@
 static float kTimeSinceAction=7.0f;
 static float kDistanceBetweenBlocks=70.0f;
 
+
+static float kShapeValueCircle=0.01f;
+static float kShapeValueDiamond=0.1f;
+static float kShapeValueEllipse=1.0f;
+static float kShapeValueHouse=10.0;
+static float kShapeValueRoundedSquare=100.0f;
+static float kShapeValueSquare=1000.0f;
+
+
 @interface DistributionTool()
 {
 @private
@@ -133,6 +142,20 @@ static float kDistanceBetweenBlocks=70.0f;
                 {
                     [(id<Container>)go destroyThisObject];
                 }
+    }
+    
+    if(showTotalValue)
+    {
+        if(!totalValueLabel)
+        {
+            totalValueLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g",[self showValueOfAllObjects]] fontName:SOURCE fontSize:20.0f];
+            [totalValueLabel setPosition:ccp(lx-150,50)];
+            [renderLayer addChild:totalValueLabel];
+        }
+        else
+        {
+            [totalValueLabel setString:[NSString stringWithFormat:@"%g",[self showValueOfAllObjects]]];
+        }
     }
 
 }
@@ -285,6 +308,7 @@ static float kDistanceBetweenBlocks=70.0f;
     randomiseDockPositions=[[pdef objectForKey:RANDOMISE_DOCK_POSITIONS]boolValue];
     bondDifferentTypes=[[pdef objectForKey:BOND_DIFFERENT_TYPES]boolValue];
     bondAllObjects=[[pdef objectForKey:BOND_ALL_OBJECTS]boolValue];
+    showTotalValue=[[pdef objectForKey:SHOW_TOTAL_VALUE]boolValue];
     
     if(bondAllObjects)
         gw.Blackboard.MaxObjectDistance=1024.0f;
@@ -598,7 +622,56 @@ static float kDistanceBetweenBlocks=70.0f;
     [container layoutMyBlocks];
 }
 
+-(float)showValueOfAllObjects
+{
+    float totalValue=0.0f;
+    for(id go in gw.AllGameObjects)
+    {
+        if([go conformsToProtocol:@protocol(Configurable) ])
+        {
+            SGDtoolBlock *b=(SGDtoolBlock*)go;
+            
+            if([b.MyContainer isKindOfClass:[SGDtoolCage class]])continue;
+            
+            if([b.blockType isEqualToString:@"Circle"])
+                totalValue+=kShapeValueCircle;
+            else if([b.blockType isEqualToString:@"Diamond"])
+                totalValue+=kShapeValueDiamond;
+            else if([b.blockType isEqualToString:@"Ellipse"])
+                totalValue+=kShapeValueEllipse;
+            else if([b.blockType isEqualToString:@"House"])
+                totalValue+=kShapeValueHouse;
+            else if([b.blockType isEqualToString:@"RoundedSquare"])
+                totalValue+=kShapeValueRoundedSquare;
+            else if([b.blockType isEqualToString:@"Square"])
+                totalValue+=kShapeValueSquare;
+            
+        }
+    }
+    return totalValue;
+}
 
+-(float)valueOf:(SGDtoolContainer*)thisContainer
+{
+    float totalValue=0.0f;
+    
+    for(SGDtoolBlock *b in thisContainer.BlocksInShape)
+    {
+        if([b.blockType isEqualToString:@"Circle"])
+            totalValue+=kShapeValueCircle;
+        else if([b.blockType isEqualToString:@"Diamond"])
+            totalValue+=kShapeValueDiamond;
+        else if([b.blockType isEqualToString:@"Ellipse"])
+            totalValue+=kShapeValueEllipse;
+        else if([b.blockType isEqualToString:@"House"])
+            totalValue+=kShapeValueHouse;
+        else if([b.blockType isEqualToString:@"RoundedSquare"])
+            totalValue+=kShapeValueRoundedSquare;
+        else if([b.blockType isEqualToString:@"Square"])
+            totalValue+=kShapeValueSquare;
+    }
+    return totalValue;
+}
 
 -(void)removeBlockByCage
 {
@@ -1138,7 +1211,7 @@ static float kDistanceBetweenBlocks=70.0f;
         NSMutableArray *containers=[[NSMutableArray alloc]init];
         int solutionsExpected=[solutionsDef count];
         int solutionsFound=0;
-
+        
         
         
         for(NSNumber *n in solutionsDef)
@@ -1169,13 +1242,57 @@ static float kDistanceBetweenBlocks=70.0f;
         }
         
         
-          
+        
         NSLog(@"solutions found %d required %d containers %d", solutionsFound, solutionsExpected, [containers count]);
         if (solutionsFound==solutionsExpected && [containers count]==solutionsExpected)
             return YES;
         else
             return NO;
-
+        
+    }
+    if(evalType==kIncludeShapeSizes)
+    {
+        NSMutableArray *shapesFound=[[NSMutableArray alloc]init];
+        NSMutableArray *solFound=[[NSMutableArray alloc]init];
+        NSMutableArray *containers=[[NSMutableArray alloc]init];
+        int solutionsExpected=[solutionsDef count];
+        int solutionsFound=0;
+        
+        
+        
+        for(NSNumber *n in solutionsDef)
+        {
+            if([solFound containsObject:n])continue;
+            
+            for (id cont in gw.AllGameObjects)
+            {
+                if([shapesFound containsObject:cont])continue;
+                
+                if([cont conformsToProtocol:@protocol(Container)])
+                {
+                    id<Container>thisCont=cont;
+                    
+                    if(![containers containsObject:cont])
+                        [containers addObject:cont];
+                    
+                    NSLog(@"blocksinshape %d is %d", (int)thisCont, [thisCont.BlocksInShape count]);
+                    if([thisCont.BlocksInShape count]==[n intValue])
+                    {
+                        solutionsFound++;
+                        [shapesFound addObject:cont];
+                        [solFound addObject:n];
+                        continue;
+                    }
+                }
+            }
+        }
+        
+        
+        if (solutionsFound==solutionsExpected)
+            return YES;
+        else
+            return NO;
+        
     }
     
     else if(evalType==kCheckNamedGroups)

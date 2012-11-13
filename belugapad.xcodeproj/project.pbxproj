@@ -47,6 +47,8 @@
 		0CDECB6515920C27004DE20D /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB5915920C27004DE20D /* AFURLConnectionOperation.m */; };
 		0CDECB6615920C27004DE20D /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB5B15920C27004DE20D /* AFXMLRequestOperation.m */; };
 		0CDECB6715920C27004DE20D /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB5D15920C27004DE20D /* UIImageView+AFNetworking.m */; };
+		0CF05A9D1651A928008C2DD5 /* login-images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF05A9C1651A928008C2DD5 /* login-images */; };
+		0CF05AA416521E6A008C2DD5 /* PassCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CF05AA316521E6A008C2DD5 /* PassCodeView.m */; };
 		0CF9187C14F54C1D00FAC58D /* images in Resources */ = {isa = PBXBuildFile; fileRef = 0CF9187B14F54C1D00FAC58D /* images */; };
 		3395A5F9164F050000492FC2 /* Icon_black_72.png in Resources */ = {isa = PBXBuildFile; fileRef = 3395A5F8164F050000492FC2 /* Icon_black_72.png */; };
 		3395A5FC164F050300492FC2 /* Icon_black_144.png in Resources */ = {isa = PBXBuildFile; fileRef = 3395A5FB164F050300492FC2 /* Icon_black_144.png */; };
@@ -512,6 +514,9 @@
 		0CDECB5B15920C27004DE20D /* AFXMLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFXMLRequestOperation.m; sourceTree = "<group>"; };
 		0CDECB5C15920C27004DE20D /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
 		0CDECB5D15920C27004DE20D /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
+		0CF05A9C1651A928008C2DD5 /* login-images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "login-images"; sourceTree = SOURCE_ROOT; };
+		0CF05AA216521E6A008C2DD5 /* PassCodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PassCodeView.h; sourceTree = "<group>"; };
+		0CF05AA316521E6A008C2DD5 /* PassCodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PassCodeView.m; sourceTree = "<group>"; };
 		0CF9187B14F54C1D00FAC58D /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = SOURCE_ROOT; };
 		3395A5F8164F050000492FC2 /* Icon_black_72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_black_72.png; sourceTree = "<group>"; };
 		3395A5FB164F050300492FC2 /* Icon_black_144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_black_144.png; sourceTree = "<group>"; };
@@ -2222,6 +2227,7 @@
 				0C35A9F71576272500D47517 /* canned-dbs */,
 				0C58DE991631774700DD9A01 /* edit-pdef-client-files */,
 				0CF9187B14F54C1D00FAC58D /* images */,
+				0CF05A9C1651A928008C2DD5 /* login-images */,
 				0C9FEFF514F572FB00E64138 /* pipeline-testing */,
 				0C993CFA163842CE0079A647 /* Problems */,
 				7FBE969215497DDF00D993AC /* select-edit-user-images */,
@@ -2664,6 +2670,8 @@
 				0CD565911647F23E00D9EA30 /* UserNodeState.m */,
 				0CB7A519164DFF96005FC7B1 /* NSData+GzipExtension.h */,
 				0CB7A51A164DFF96005FC7B1 /* NSData+GzipExtension.m */,
+				0CF05AA216521E6A008C2DD5 /* PassCodeView.h */,
+				0CF05AA316521E6A008C2DD5 /* PassCodeView.m */,
 			);
 			name = Users;
 			sourceTree = "<group>";
@@ -3016,6 +3024,7 @@
 				3395A5F9164F050000492FC2 /* Icon_black_72.png in Resources */,
 				3395A5FC164F050300492FC2 /* Icon_black_144.png in Resources */,
 				3395A5FE164F092500492FC2 /* Default-Landscape@2x~ipad.png in Resources */,
+				0CF05A9D1651A928008C2DD5 /* login-images in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3428,6 +3437,7 @@
 				0C03B6371649EDD600F74659 /* NodePlay.m in Sources */,
 				7FFBF09B164AE933005CCD6E /* SGBtxeObjectOperator.m in Sources */,
 				0CB7A51B164DFF96005FC7B1 /* NSData+GzipExtension.m in Sources */,
+				0CF05AA416521E6A008C2DD5 /* PassCodeView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

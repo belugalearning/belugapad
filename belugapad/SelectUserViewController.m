@@ -396,7 +396,7 @@
     [loadExistingUserView addSubview:cancelExistingUserButton];
     
     loadExistingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    loadExistingUserButton.frame = CGRectMake(563.0f, 389.0f, 131.0f, 51.0f);
+    loadExistingUserButton.frame = CGRectMake(563.0f, 391.0f, 131.0f, 51.0f);
     [loadExistingUserButton setImage:[UIImage imageNamed:@"/login-images/download_button.png"] forState:UIControlStateNormal];
     [loadExistingUserButton setImage:[UIImage imageNamed:@"/login-images/download_button.png"] forState:UIControlStateHighlighted];
     [loadExistingUserButton addTarget:self action:@selector(handleLoadExistingUserClicked:) forControlEvents:UIControlEventTouchUpInside];

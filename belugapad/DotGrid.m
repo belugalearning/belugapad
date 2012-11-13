@@ -75,12 +75,14 @@
         [gw Blackboard].hostLX = lx;
         [gw Blackboard].hostLY = ly;
         
+        drawnArea=CGRectMake(50,50,924,600);
+        
         [self readPlist:pdef];
         [self populateGW];
         
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
-        debugLogging=NO;
+        debugLogging=YES;
         
         gw.Blackboard.inProblemSetup = NO;        
     }
@@ -102,7 +104,6 @@
             timeToAutoMoveToNextProblem=0.0f;
         }
     }
-    
     if(disableDrawing && drawMode==kAnyStartAnchorValid)
     {
         if(isMovingDown)
@@ -126,7 +127,33 @@
     
 }
 
-
+-(void)checkVisibleAnchors
+{
+    for(NSArray *a in dotMatrix)
+    {
+        for(DWDotGridAnchorGameObject *anch in a)
+        {
+            if(CGRectContainsPoint(drawnArea, [renderLayer convertToWorldSpace:anch.Position]))
+            {
+                if([invisibleAnchors containsObject:anch])
+                    [invisibleAnchors removeObject:anch];
+                if(![visibleAnchors containsObject:anch])
+                    [visibleAnchors addObject:anch];
+                
+                [anch.mySprite setVisible:YES];
+            }
+            else
+            {
+                if(![invisibleAnchors containsObject:anch])
+                    [invisibleAnchors addObject:anch];
+                if([visibleAnchors containsObject:anch])
+                    [visibleAnchors removeObject:anch];
+                
+                [anch.mySprite setVisible:NO];
+            }
+        }
+    }
+}
 
 #pragma mark - gameworld population
 -(void)readPlist:(NSDictionary*)pdef
@@ -252,6 +279,8 @@
     anchorLayer = [[CCLayer alloc]init];
     [self.ForeLayer addChild:renderLayer];
     [self.ForeLayer addChild:anchorLayer];
+    visibleAnchors=[[NSMutableArray alloc]init];
+    invisibleAnchors=[[NSMutableArray alloc]init];
     
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     
@@ -283,6 +312,15 @@
             anch.RenderLayer=anchorLayer;
             anch.anchorSize=spaceBetweenAnchors;
             
+//            if(!CGRectContainsPoint(drawnArea, anch.Position)){
+//                [anch.mySprite setVisible:NO];
+//                [invisibleAnchors addObject:anch];
+//            }
+//            else
+//            {
+//                [anch.mySprite setVisible:YES];
+//                [visibleAnchors addObject:anch];
+//            }
             
             // set the hidden property for every anchor on this row if 
             if(hiddenRows && [hiddenRows objectForKey:[NSString stringWithFormat:@"%d", iCol]]) {
@@ -1658,11 +1696,23 @@
     
     if(gameState==kStartAnchor)
     {
-        if(gw.Blackboard.FirstAnchor) [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];   
+        if(gw.Blackboard.FirstAnchor){
+
+            [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
+//            for(DWDotGridAnchorGameObject *a in visibleAnchors)
+//            {
+//                [a handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
+//            }
+        }
     }
     
     if(gameState==kResizeShape)
     {
+//        for(DWDotGridAnchorGameObject *a in visibleAnchors)
+//        {
+//            [a handleMessage:kDWcanITouchYou];
+//        }
+
         [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
         
         if(!audioHasPlayedResizing)

@@ -306,8 +306,12 @@ static float kShapeValueSquare=1000.0f;
     cageObjectCount=[[pdef objectForKey:CAGE_OBJECT_COUNT]intValue];
     hasInactiveArea=[[pdef objectForKey:HAS_INACTIVE_AREA]boolValue];
     randomiseDockPositions=[[pdef objectForKey:RANDOMISE_DOCK_POSITIONS]boolValue];
-    bondDifferentTypes=[[pdef objectForKey:BOND_DIFFERENT_TYPES]boolValue];
     bondAllObjects=[[pdef objectForKey:BOND_ALL_OBJECTS]boolValue];
+    if([pdef objectForKey:BOND_DIFFERENT_TYPES])
+        bondDifferentTypes=[[pdef objectForKey:BOND_DIFFERENT_TYPES]boolValue];
+    else
+        bondDifferentTypes=YES;
+    
     showTotalValue=[[pdef objectForKey:SHOW_TOTAL_VALUE]boolValue];
     
     if(bondAllObjects)
@@ -749,11 +753,6 @@ static float kShapeValueSquare=1000.0f;
         return NO;
 }
 
--(BOOL)evalNumberOfShapesAndTypesInContainers
-{
-    return NO;
-}
-
 -(BOOL)evalNumberOfShapesAndTypesInEvalAreas
 {
     int solutionsFound=0;
@@ -920,6 +919,121 @@ static float kShapeValueSquare=1000.0f;
         return NO;
 
 }
+
+-(BOOL)evalNumberOfShapesAndTypesInContainers
+{
+    int solutionsFound=0;
+    NSMutableArray *matchedContainers=[[NSMutableArray alloc]init];
+    NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
+    
+    
+    for(id thisC in gw.AllGameObjectsCopy)
+    {
+        if([thisC isKindOfClass:[SGDtoolContainer class]])
+        {
+            SGDtoolContainer *c=(SGDtoolContainer*)thisC;
+            for(NSDictionary *solutions in solutionsDef)
+            {
+                if([matchedSolutions containsObject:solutions])continue;
+                
+                int circlesReq=[[solutions objectForKey:EVAL_CIRCLES_REQUIRED]intValue];
+                int diamondsReq=[[solutions objectForKey:EVAL_DIAMONDS_REQUIRED]intValue];
+                int ellipsesReq=[[solutions objectForKey:EVAL_ELLIPSES_REQUIRED]intValue];
+                int housesReq=[[solutions objectForKey:EVAL_HOUSES_REQUIRED]intValue];
+                int roundedSquaresReq=[[solutions objectForKey:EVAL_ROUNDEDSQUARES_REQUIRED]intValue];
+                int squaresReq=[[solutions objectForKey:EVAL_SQUARES_REQUIRED]intValue];
+                
+                int circlesFound=0;
+                int diamondsFound=0;
+                int ellipsesFound=0;
+                int housesFound=0;
+                int roundedSquaresFound=0;
+                int squaresFound=0;
+                
+                BOOL circlesMatch=NO;
+                BOOL diamondsMatch=NO;
+                BOOL ellipsesMatch=NO;
+                BOOL housesMatch=NO;
+                BOOL roundedSquaresMatch=NO;
+                BOOL squaresMatch=NO;
+                
+                BOOL shouldContinueEval=YES;
+                
+                
+                if([matchedContainers containsObject:c])continue;
+                
+                for(SGDtoolBlock *b in c.BlocksInShape)
+                {
+                    
+                    if([b.blockType isEqualToString:@"Circle"])
+                        circlesFound++;
+                    if([b.blockType isEqualToString:@"Diamond"])
+                        diamondsFound++;
+                    if([b.blockType isEqualToString:@"Ellipse"])
+                        ellipsesFound++;
+                    if([b.blockType isEqualToString:@"House"])
+                        housesFound++;
+                    if([b.blockType isEqualToString:@"RoundedSquare"])
+                        roundedSquaresFound++;
+                    if([b.blockType isEqualToString:@"Square"])
+                        squaresFound++;
+                        
+
+                }
+                
+                
+                NSLog(@"(%d) Circles f:%d r:%d, Houses f:%d r:%d", [evalAreas indexOfObject:c], circlesFound, circlesReq, housesFound, housesReq);
+                
+                if(circlesFound==circlesReq && shouldContinueEval)
+                    circlesMatch=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(diamondsFound==diamondsReq && shouldContinueEval)
+                    diamondsMatch=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(ellipsesFound==ellipsesReq && shouldContinueEval)
+                    ellipsesMatch=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(housesFound==housesReq && shouldContinueEval)
+                    housesMatch=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(roundedSquaresFound==roundedSquaresReq && shouldContinueEval)
+                    roundedSquaresMatch=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(squaresFound==squaresReq && shouldContinueEval)
+                    squaresMatch=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                
+                if(circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch){
+                    solutionsFound++;
+                    [matchedContainers addObject:c];
+                    [matchedSolutions addObject:solutions];
+                    break;
+                }
+                
+                
+            }
+        }
+    }
+    
+    NSLog(@"solutions found %d req %d", solutionsFound, [solutionsDef count]);
+    if(solutionsFound==[solutionsDef count])
+        return YES;
+    else
+        return NO;
+}
+
 
 -(CGPoint)returnNextMountPointForThisShape:(id<Container>)thisShape
 {
@@ -1461,6 +1575,11 @@ static float kShapeValueSquare=1000.0f;
     else if(evalType==kCheckEvalAreasForTypes)
     {
         return [self evalNumberOfShapesAndTypesInEvalAreas];
+    }
+
+    else if(evalType==kCheckGroupsForTypes)
+    {
+        return [self evalNumberOfShapesAndTypesInContainers];
     }
     
     else if(evalType==kCheckGroupTypeAndNumber)

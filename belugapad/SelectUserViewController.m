@@ -235,7 +235,7 @@
 -(void)handleCancelNewUserClicked:(id*)button
 {
     newUserNameTF.text = @"";
-    newUserPassCodeView.text = [NSMutableString stringWithString:@""];
+    newUserPassCodeView.text = @"";
     [newUserNameTF resignFirstResponder];
     [newUserPassCodeView resignFirstResponder];
     [self setActiveView:selectUserView];
@@ -318,7 +318,7 @@
 -(void)handleCancelExistingUserClicked:(id*)button
 {
     existingUserNameTF.text = @"";
-    downloadUserPassCodeView.text = [NSMutableString stringWithString:@""];
+    downloadUserPassCodeView.text = @"";
     [existingUserNameTF resignFirstResponder];
     [downloadUserPassCodeView resignFirstResponder];
     [self setActiveView:selectUserView];
@@ -343,6 +343,12 @@
         [self.view removeFromSuperview];
         [bself->app proceedFromLoginViaIntro:NO];
     };
+    
+    if (!existingUserNameTF.text || !existingUserNameTF.text.length)
+    {
+        [existingUserNameTF becomeFirstResponder];
+        return;
+    }
     
     [usersService downloadUserMatchingNickName:existingUserNameTF.text
                                    andPassword:downloadUserPassCodeView.text

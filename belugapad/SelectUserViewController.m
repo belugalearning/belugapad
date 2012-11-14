@@ -13,7 +13,6 @@
 #import "LoggingService.h"
 #import "UsersService.h"
 #import "PassCodeView.h"
-#import "EditZubi.h"
 
 @interface SelectUserViewController ()
 {
@@ -31,13 +30,11 @@
     UIButton *joinClassButton;
     
     UITextField *newUserNameTF;
-    UITextField *newUserPasswordTF;
     PassCodeView *newUserPassCodeView;
     UIButton *cancelNewUserButton;
     UIButton *saveNewUserButton;
     
     UITextField *existingUserNameTF;
-    UITextField *existingUserPasswordTF;
     PassCodeView *downloadUserPassCodeView;
     UIButton *cancelExistingUserButton;
     UIButton *loadExistingUserButton;
@@ -48,10 +45,6 @@
 @end
 
 @implementation SelectUserViewController
-
-@synthesize colorWheel;
-
-// TODO: ensure this line doesn't want restoring: [newUserNameTF addTarget:self action:@selector(handleNameChanged:) forControlEvents:UIControlEventValueChanged];
 
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -207,27 +200,7 @@
 #pragma mark EditUserView
 
 -(void)buildEditUserView
-{
- //   [colorWheel addObserver: self forKeyPath: @"lastColorRGBAData" options: 0 context: NULL];
-    
-//    CCGLView *glView = [CCGLView viewWithFrame:CGRectMake(632, 290, 160, 160)
-//								   pixelFormat:kEAGLColorFormatRGBA8	//kEAGLColorFormatRGBA8
-//								   depthFormat:0	//GL_DEPTH_COMPONENT24_OES
-//							preserveBackbuffer:NO
-//									sharegroup:nil
-//								 multiSampling:NO
-//							   numberOfSamples:0];
-//    
-////    EAGLView *glview = [EAGLView viewWithFrame:CGRectMake(632, 290, 160, 160) pixelFormat:kEAGLColorFormatRGBA8 depthFormat:0];
-//    glView.opaque = NO;
-//    [[CCDirector sharedDirector] setView:glView];    
-//    [CCDirector sharedDirector].view.backgroundColor = [UIColor clearColor];
-////    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-////    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-////    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//    [[CCDirector sharedDirector] runWithScene:[EditZubi scene]];
-//    [editUserView addSubview:glView];
-    
+{    
     newUserNameTF = [[[UITextField alloc] initWithFrame:CGRectMake(334.0f, 276.0f, 360.0f, 42.0f)] autorelease];
     newUserNameTF.delegate = self;
     newUserNameTF.font = [UIFont fontWithName:@"Chango" size:24];
@@ -240,25 +213,9 @@
     [newUserNameTF setTextColor:[UIColor whiteColor]];
     [newUserNameTF setBorderStyle:UITextBorderStyleNone];
     [editUserView addSubview:newUserNameTF];
-    /*
-    newUserPasswordTF = [[UITextField alloc] initWithFrame:CGRectMake(390.0f, 380.0f, 255.0f, 46.0f)];
-    newUserPasswordTF.delegate = self;
-    newUserPasswordTF.font = [UIFont fontWithName:@"Chango" size:24];
-    //newUserPasswordTF.placeholder = @"password";
-    newUserPasswordTF.secureTextEntry = YES;
-    newUserPasswordTF.clearButtonMode = UITextFieldViewModeNever;
-    newUserPasswordTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    newUserPasswordTF.autocorrectionType = UITextAutocorrectionTypeNo;
-    newUserPasswordTF.keyboardType = UIKeyboardTypeNamePhonePad;
-    newUserPasswordTF.returnKeyType = UIReturnKeyDone;
-    [newUserPasswordTF setTextColor:[UIColor clearColor]];
-    [newUserPasswordTF setBorderStyle:UITextBorderStyleNone];
-    [editUserView addSubview:newUserPasswordTF];
-    */
+    
     newUserPassCodeView = [[[PassCodeView alloc] initWithFrame:CGRectMake(390.0f, 334.0f, 255.0f, 46.0f)] autorelease];
     [editUserView addSubview:newUserPassCodeView];
-    
-    // TODO: release in dealloc
     
     cancelNewUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
     cancelNewUserButton.frame = CGRectMake(330.0f, 397.0f, 103.0f, 49.0f);
@@ -275,34 +232,11 @@
     [editUserView addSubview:saveNewUserButton];
 }
 
--(void)observeValueForKeyPath:(NSString*)keyPath
-                     ofObject:(id)object
-                       change:(NSDictionary*)change
-                      context:(void*)context
-{
-    if (object == colorWheel && keyPath == @"lastColorRGBAData")
-    {
-        memcpy(zubiColorRGBAByteData, [colorWheel.lastColorRGBAData bytes], 4);
-        
-        CCScene *scene = [[CCDirector sharedDirector] runningScene];
-        EditZubi *layer = [scene.children objectAtIndex:0];
-        
-        [layer setZubiColor:(ccColor4F){
-            .r = zubiColorRGBAByteData[0] / 255.0f,
-            .g = zubiColorRGBAByteData[1] / 255.0f,
-            .b = zubiColorRGBAByteData[2] / 255.0f,
-            .a = zubiColorRGBAByteData[3] / 255.0f
-        }];
-    }
-}
-
 -(void)handleCancelNewUserClicked:(id*)button
 {
     newUserNameTF.text = @"";
-    //newUserPasswordTF.text = @"";
     newUserPassCodeView.text = [NSMutableString stringWithString:@""];
     [newUserNameTF resignFirstResponder];
-    //[newUserPasswordTF resignFirstResponder];
     [newUserPassCodeView resignFirstResponder];
     [self setActiveView:selectUserView];
 }
@@ -314,12 +248,6 @@
         [newUserNameTF becomeFirstResponder];
         return;
     }
-    /*
-    if (!newUserPasswordTF.text || !newUserPasswordTF.text.length)
-    {
-        [newUserPasswordTF becomeFirstResponder];
-        return;
-    }*/
     
     
     if (!newUserPassCodeView.text || !newUserPassCodeView.text.length)
@@ -371,22 +299,6 @@
     
     downloadUserPassCodeView = [[[PassCodeView alloc] initWithFrame:CGRectMake(390.0f, 334.0f, 255.0f, 46.0f)] autorelease];
     [loadExistingUserView addSubview:downloadUserPassCodeView];
-    /*
-    existingUserPasswordTF = [[UITextField alloc] initWithFrasme:CGRectMake(358.0f, 186.0f, 400.0f, 45.0f)];
-    existingUserPasswordTF.delegate = self;
-    existingUserPasswordTF.font = [UIFont fontWithName:@"Lucida Grande" size:28];
-    existingUserPasswordTF.placeholder = @"password";
-    existingUserPasswordTF.secureTextEntry = YES;
-    existingUserPasswordTF.clearButtonMode = UITextFieldViewModeWhileEditing;
-    existingUserPasswordTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    existingUserPasswordTF.autocorrectionType = UITextAutocorrectionTypeNo;
-    existingUserPasswordTF.keyboardType = UIKeyboardTypeDefault;
-    existingUserPasswordTF.returnKeyType = UIReturnKeyDone;
-    [existingUserPasswordTF setTextColor:[UIColor darkGrayColor]];
-    [existingUserPasswordTF setBorderStyle:UITextBorderStyleNone];
-    [loadExistingUserView addSubview:existingUserPasswordTF];
-    */
-    
     
     cancelExistingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
     cancelExistingUserButton.frame = CGRectMake(330.0f, 392.0f, 131.0f, 51.0f);
@@ -407,10 +319,8 @@
 {
     existingUserNameTF.text = @"";
     downloadUserPassCodeView.text = [NSMutableString stringWithString:@""];
-    //existingUserPasswordTF.text = @"";
     [existingUserNameTF resignFirstResponder];
     [downloadUserPassCodeView resignFirstResponder];
-    //[existingUserPasswordTF resignFirstResponder];
     [self setActiveView:selectUserView];
 }
 

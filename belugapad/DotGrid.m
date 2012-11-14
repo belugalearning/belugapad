@@ -75,12 +75,14 @@
         [gw Blackboard].hostLX = lx;
         [gw Blackboard].hostLY = ly;
         
+        drawnArea=CGRectMake(50,50,924,600);
+        
         [self readPlist:pdef];
         [self populateGW];
         
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
-        debugLogging=NO;
+        debugLogging=YES;
         
         gw.Blackboard.inProblemSetup = NO;        
     }
@@ -102,7 +104,6 @@
             timeToAutoMoveToNextProblem=0.0f;
         }
     }
-    
     if(disableDrawing && drawMode==kAnyStartAnchorValid)
     {
         if(isMovingDown)
@@ -126,7 +127,33 @@
     
 }
 
-
+-(void)checkVisibleAnchors
+{
+    for(NSArray *a in dotMatrix)
+    {
+        for(DWDotGridAnchorGameObject *anch in a)
+        {
+            if(CGRectContainsPoint(drawnArea, [renderLayer convertToWorldSpace:anch.Position]))
+            {
+                if([invisibleAnchors containsObject:anch])
+                    [invisibleAnchors removeObject:anch];
+                if(![visibleAnchors containsObject:anch])
+                    [visibleAnchors addObject:anch];
+                
+                [anch.mySprite setVisible:YES];
+            }
+            else
+            {
+                if(![invisibleAnchors containsObject:anch])
+                    [invisibleAnchors addObject:anch];
+                if([visibleAnchors containsObject:anch])
+                    [visibleAnchors removeObject:anch];
+                
+                [anch.mySprite setVisible:NO];
+            }
+        }
+    }
+}
 
 #pragma mark - gameworld population
 -(void)readPlist:(NSDictionary*)pdef
@@ -241,11 +268,7 @@
         doNotSimplifyFractions=NO;
         showDraggableBlock=YES;
     }
-    if(evalType==kProblemGridMultiplication)
-    {
-        showMoreOrLess=YES;
-    }
-    
+
 }
 
 -(void)populateGW
@@ -256,6 +279,8 @@
     anchorLayer = [[CCLayer alloc]init];
     [self.ForeLayer addChild:renderLayer];
     [self.ForeLayer addChild:anchorLayer];
+    visibleAnchors=[[NSMutableArray alloc]init];
+    invisibleAnchors=[[NSMutableArray alloc]init];
     
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     
@@ -287,6 +312,15 @@
             anch.RenderLayer=anchorLayer;
             anch.anchorSize=spaceBetweenAnchors;
             
+//            if(!CGRectContainsPoint(drawnArea, anch.Position)){
+//                [anch.mySprite setVisible:NO];
+//                [invisibleAnchors addObject:anch];
+//            }
+//            else
+//            {
+//                [anch.mySprite setVisible:YES];
+//                [visibleAnchors addObject:anch];
+//            }
             
             // set the hidden property for every anchor on this row if 
             if(hiddenRows && [hiddenRows objectForKey:[NSString stringWithFormat:@"%d", iCol]]) {
@@ -359,7 +393,7 @@
     
     if(showDraggableBlock)
     {
-        dragBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/DG_sq40.png")];
+        dragBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/DG_Sq40.png")];
         [dragBlock setPosition:ccp(55,650)];
         [renderLayer addChild:dragBlock];
     }
@@ -1264,7 +1298,15 @@
     int dupeAnchors=0;
     
     
-    if([anchors count]<1)return;
+    OrderedAnchors orderedAnchs=[self checkAndChangeAnchorPoints:(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor and:(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor];
+    
+
+    
+    if([anchors count]<1){
+        thisShape.resizeHandle.Position=thisShape.lastAnchor.Position;
+        [thisShape.resizeHandle handleMessage:kDWmoveSpriteToPosition];
+        return;
+    }
     
     for(int i=0;i<[anchors count];i++)
     {
@@ -1304,8 +1346,8 @@
         {
             DWDotGridTileGameObject *tile=[removeObjects objectAtIndex:i];
             tile.myAnchor=nil;
-            [tile handleMessage:kDWdismantle];
             [thisShape.tiles removeObject:tile];
+            [tile handleMessage:kDWdismantle];
             [gw delayRemoveGameObject:tile];
         }
     
@@ -1333,8 +1375,6 @@
         }
     
 
-    OrderedAnchors orderedAnchs=[self checkAndChangeAnchorPoints:(DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor and:(DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor];
-    
     thisShape.firstAnchor=orderedAnchs.firstAnchor;
     thisShape.lastAnchor=orderedAnchs.lastAnchor;
     [thisShape.myHeight removeFromParentAndCleanup:YES];
@@ -1342,6 +1382,10 @@
     thisShape.myWidth=nil;
     thisShape.myHeight=nil;
     [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:-1];
+    
+    //thisShape.firstAnchor=orderedAnchs.firstAnchor;
+    //thisShape.lastAnchor=orderedAnchs.lastAnchor;
+    
     if(thisShape.MyNumberWheel)[thisShape handleMessage:kDWupdateObjectData];
 
 //    for(int i=0;i<[thisShape.tiles count];i++)
@@ -1514,7 +1558,7 @@
     if(showDraggableBlock && CGRectContainsPoint(dragBlock.boundingBox, location))
     {
         hitDragBlock=YES;
-        NSString *fileStr=[NSString stringWithFormat:@"/images/dotgrid/DG_sq%d.png",spaceBetweenAnchors];
+        NSString *fileStr=[NSString stringWithFormat:@"/images/dotgrid/DG_Sq%d.png",spaceBetweenAnchors];
         newBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(fileStr)];
         [newBlock setPosition:location];
         [renderLayer addChild:newBlock];
@@ -1652,11 +1696,23 @@
     
     if(gameState==kStartAnchor)
     {
-        if(gw.Blackboard.FirstAnchor) [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];   
+        if(gw.Blackboard.FirstAnchor){
+
+            [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
+//            for(DWDotGridAnchorGameObject *a in visibleAnchors)
+//            {
+//                [a handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
+//            }
+        }
     }
     
     if(gameState==kResizeShape)
     {
+//        for(DWDotGridAnchorGameObject *a in visibleAnchors)
+//        {
+//            [a handleMessage:kDWcanITouchYou];
+//        }
+
         [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
         
         if(!audioHasPlayedResizing)
@@ -1722,6 +1778,9 @@
         
         if([reqShapesCopy count]>0){
         
+            if([reqShapes count]==[retInfo.matchedShapes count]){
+
+            }
             if([reqShapes count]!=[retInfo.matchedShapes count])
             {
                 for(int i=0;i<[gw.AllGameObjects count];i++)
@@ -1805,9 +1864,20 @@
     if(sumWheel)[self updateSumWheel];
     
     if(evalMode==kProblemEvalAuto)[self evalProblem];
-    
 
-    
+    [self setTouchVarsToOff];
+}
+
+-(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self setTouchVarsToOff];
+}
+
+-(void)setTouchVarsToOff
+{
+    isTouching=NO;
+    gameState=kNoState;
+    // empty selected objects
     gw.Blackboard.FirstAnchor=nil;
     gw.Blackboard.LastAnchor=nil;
     gw.Blackboard.CurrentHandle=nil;
@@ -1823,31 +1893,6 @@
     
     audioHasPlayedResizing=NO;
     
-    [gw.Blackboard.SelectedObjects removeAllObjects];
-    gameState=kNoState;
-
-     
-}
-
--(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    isTouching=NO;
-    // empty selected objects
-    gw.Blackboard.FirstAnchor=nil;
-    gw.Blackboard.LastAnchor=nil;    
-    gw.Blackboard.CurrentHandle=nil;
-    gw.Blackboard.ProximateObject=nil;
-    if(hitDragBlock)[newBlock removeFromParentAndCleanup:YES];
-    hitDragBlock=NO;
-    movingLayer=NO;
-    
-    isMovingLeft=NO;
-    isMovingRight=NO;
-    isMovingUp=NO;
-    isMovingDown=NO;
-    
-    audioHasPlayedResizing=NO;
-
     [gw.Blackboard.SelectedObjects removeAllObjects];
 }
 
@@ -2052,8 +2097,6 @@
                 
                 if(xMatch&&yMatch)
                 {
-                    [sg.resizeHandle handleMessage:kDWdismantle];
-                    sg.resizeHandle=nil;
                     [matchShapes addObject:a];
                     [matchGOs addObject:sg];
                     
@@ -2142,6 +2185,12 @@
     
     if(correctShapes==[reqShapes count])
     {
+        for(DWDotGridShapeGameObject *s in matchObjects)
+        {
+            [s.resizeHandle handleMessage:kDWdismantle];
+            s.resizeHandle=nil;
+        }
+        
         return YES;
     }
     

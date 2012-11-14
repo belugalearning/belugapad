@@ -354,11 +354,13 @@ static float kTimeToHintToolTray=7.0f;
     
     if(delayShowWheel&&timeToWheelStart>2.0f){
         [self showWheel];
+        timeToWheelStart=0.0f;
         delayShowWheel=NO;
     }
     
     if(delayShowMeta&&timeToMetaStart>2.0f){
         [self showMq];
+        timeToMetaStart=0.0f;
         delayShowMeta=NO;
     }
     
@@ -371,7 +373,7 @@ static float kTimeToHintToolTray=7.0f;
             [traybtnWheel runAction:[InteractionFeedback dropAndBounceAction]];
         }
         if(metaQuestionForThisProblem && !hasUsedMetaTray){
-            [traybtnMq runAction:[InteractionFeedback dropAndBounceAction]];
+            [metaArrow runAction:[InteractionFeedback dropAndBounceAction]];
         }
         timeSinceInteractionOrShake=0.0f;
     }
@@ -391,7 +393,7 @@ static float kTimeToHintToolTray=7.0f;
         
     }
     
-    [self showHideCommit];
+    if(evalShowCommit)[self showHideCommit];
     
     //let tool do updates
     if(!isPaused)[currentTool doUpdateOnTick:delta];
@@ -850,6 +852,8 @@ static float kTimeToHintToolTray=7.0f;
         [self.Zubi hideZubi];
     }
     
+    evalShowCommit=YES;
+    
 }
 -(void)addCommitButton
 {
@@ -875,6 +879,14 @@ static float kTimeToHintToolTray=7.0f;
             commitBtn=nil;
         }
     }
+}
+-(void)addMetaHintArrow
+{
+    metaArrow=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_MQ_Tip.png")];
+    [metaArrow setPosition:ccp(lx-124,2*cy-30)];
+    [metaArrow setTag:3];
+    [metaArrow setOpacity:0];
+    [problemDefLayer addChild:metaArrow z:10];
 }
 -(void)setupProblemOnToolHost:(NSDictionary *)curpdef
 {
@@ -1227,7 +1239,10 @@ static float kTimeToHintToolTray=7.0f;
     
     if(!currentTool)
         delayShowMeta=YES;
+    else
+        [self addMetaHintArrow];
     
+
     shownMetaQuestionIncompleteFor=0;
     
     metaQuestionAnswers = [[NSMutableArray alloc] init];
@@ -1237,11 +1252,7 @@ static float kTimeToHintToolTray=7.0f;
     float answersY=0.0f;
     
     //float titleY=cy*1.75f;
-    if(currentTool)
-    {
-        //titleY=[currentTool metaQuestionTitleYLocation];
-        answersY=[currentTool metaQuestionAnswersYLocation];
-    }
+
     
     answersY=cy*1.30;
     
@@ -1285,7 +1296,7 @@ static float kTimeToHintToolTray=7.0f;
     [metaQuestionIncompleteLabel setVisible:NO];
     [trayLayerMq addChild:metaQuestionIncompleteLabel];
     
-    NSString *mqBar=[NSString stringWithFormat:@"/images/metaquestions/MQ_bar_%d.png",metaQuestionAnswerCount];
+    NSString *mqBar=[NSString stringWithFormat:@"/images/metaquestions/MQ_Bar_%d.png",metaQuestionAnswerCount];
     metaQuestionBanner=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(mqBar)];
     [metaQuestionBanner setPosition:ccp(cx,answersY)];
     [trayLayerMq addChild:metaQuestionBanner];
@@ -1364,6 +1375,8 @@ static float kTimeToHintToolTray=7.0f;
 -(void)tearDownMetaQuestion
 {
     [trayLayerMq removeAllChildrenWithCleanup:YES];
+//    if(metaArrow)[metaArrow removeFromParentAndCleanup:YES];
+    metaArrow=nil;
     metaQuestionAnswers=nil;
     metaQuestionAnswerButtons=nil;
     metaQuestionAnswerLabels=nil;
@@ -1371,6 +1384,7 @@ static float kTimeToHintToolTray=7.0f;
     trayLayerMq=nil;
     metaQuestionForThisProblem=NO;
     metaQuestionForceComplete=NO;
+    hasUsedMetaTray=NO;
     hasTrayMq=NO;
 }
 
@@ -1466,6 +1480,8 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)showHideCommit
 {
+    if(autoMoveToNextProblem)return;
+    
     BOOL showCommit=NO;
     
     if(!metaQuestionForThisProblem && !numberPickerForThisProblem && evalMode==kProblemEvalOnCommit)
@@ -1476,12 +1492,7 @@ static float kTimeToHintToolTray=7.0f;
     
     if(hasTrayMq && trayMqShowing)
     {
-        int countSelected=0;
-        for(int i=0; i<metaQuestionAnswerCount; i++)
-        {
-            BOOL isSelected=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_SELECTED] boolValue];
-            if(isSelected)countSelected++;
-        }
+        int countSelected=[self metaQuestionSelectedCount];
         
         if(countSelected>0)
             showCommit=YES;
@@ -1497,7 +1508,7 @@ static float kTimeToHintToolTray=7.0f;
     }
     
     
-    if(showCommit)
+    if(showCommit && commitBtn)
         [commitBtn setVisible:YES];
     else
         [commitBtn setVisible:NO];
@@ -1514,6 +1525,18 @@ static float kTimeToHintToolTray=7.0f;
     {
         [self doIncomplete];
     }
+}
+
+-(int)metaQuestionSelectedCount
+{
+    int countSelected=0;
+    for(int i=0; i<metaQuestionAnswerCount; i++)
+    {
+        BOOL isSelected=[[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_SELECTED] boolValue];
+        if(isSelected)countSelected++;
+    }
+    
+    return countSelected;
 }
 
 -(BOOL)calcMetaQuestion
@@ -1591,6 +1614,7 @@ static float kTimeToHintToolTray=7.0f;
 }
 -(void)doWinning
 {
+    evalShowCommit=NO;
     timeBeforeUserInteraction=kDisableInteractionTime;
     isAnimatingIn=YES;
     [loggingService logEvent:BL_PA_SUCCESS withAdditionalData:nil];
@@ -2007,6 +2031,7 @@ static float kTimeToHintToolTray=7.0f;
     pickerViewSelection=nil;
     pickerView=nil;
     hasTrayWheel=NO;
+    hasUsedWheelTray=NO;
 //    [numberPickerLayer release];
 //    numberPickerLayer=nil;
 }
@@ -2526,6 +2551,7 @@ static float kTimeToHintToolTray=7.0f;
     [trayLayerMq setVisible:YES];
     trayMqShowing=YES;
     [traybtnMq setColor:ccc3(247,143,6)];
+    if(metaArrow)[metaArrow setVisible:NO];
 }
 
 -(void)hideMq
@@ -2535,6 +2561,8 @@ static float kTimeToHintToolTray=7.0f;
     trayLayerMq.visible=NO;
     trayMqShowing=NO;
     [traybtnMq setColor:ccc3(255,255,255)];
+    if(metaArrow && [self metaQuestionSelectedCount]==0)
+        [metaArrow setVisible:YES];
 }
 
 -(void)showWheel
@@ -2662,7 +2690,7 @@ static float kTimeToHintToolTray=7.0f;
     
     if(CurrentBTXE)
     {
-        length=4;
+        length=3;
     }
     
     if(numberPickerForThisProblem) {

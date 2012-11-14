@@ -141,7 +141,6 @@ uint const kMaxConsecutiveSendFails = 3;
     
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     UsersService *us = ac.usersService;
-    if (us) [us onNewLogBatchWithId:self.currentBatchId];
 }
 
 -(NSString*)currentProblemAttemptID
@@ -383,7 +382,8 @@ uint const kMaxConsecutiveSendFails = 3;
             
             AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
             UserNodeState *nodeState = [ac.usersService currentUserStateForNodeWithId:nodePlay.nodeId];
-            [nodeState updateAndSaveStateAfterNodePlay:nodePlay];
+            [nodeState updateStateFromNodePlay:nodePlay];
+            [nodeState saveState];
             [nodePlay release];
             nodePlay = nil;
         }

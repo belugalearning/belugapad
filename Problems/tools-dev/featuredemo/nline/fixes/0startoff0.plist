@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PROBLEM_DESCRIPTION</key>
-	<string>jump! (target 8)</string>
+	<string>move! (target 8)</string>
 	<key>INTERNAL_DESCRIPTION</key>
 	<string>jump!</string>
 	<key>TOOL_KEY</key>

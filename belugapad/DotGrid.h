@@ -132,6 +132,10 @@ typedef struct {
     
     DWNWheelGameObject *sumWheel;
     
+    NSMutableArray *visibleAnchors;
+    NSMutableArray *invisibleAnchors;
+    CGRect drawnArea;
+    
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
     

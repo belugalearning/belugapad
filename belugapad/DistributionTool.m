@@ -31,6 +31,15 @@
 static float kTimeSinceAction=7.0f;
 static float kDistanceBetweenBlocks=70.0f;
 
+
+static float kShapeValueCircle=0.01f;
+static float kShapeValueDiamond=0.1f;
+static float kShapeValueEllipse=1.0f;
+static float kShapeValueHouse=10.0;
+static float kShapeValueRoundedSquare=100.0f;
+static float kShapeValueSquare=1000.0f;
+
+
 @interface DistributionTool()
 {
 @private
@@ -134,6 +143,20 @@ static float kDistanceBetweenBlocks=70.0f;
                     [(id<Container>)go destroyThisObject];
                 }
     }
+    
+    if(showTotalValue)
+    {
+        if(!totalValueLabel)
+        {
+            totalValueLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g",[self showValueOfAllObjects]] fontName:SOURCE fontSize:20.0f];
+            [totalValueLabel setPosition:ccp(lx-150,50)];
+            [renderLayer addChild:totalValueLabel];
+        }
+        else
+        {
+            [totalValueLabel setString:[NSString stringWithFormat:@"%g",[self showValueOfAllObjects]]];
+        }
+    }
 
 }
 
@@ -188,7 +211,7 @@ static float kDistanceBetweenBlocks=70.0f;
         
         if(![b.MyContainer conformsToProtocol:@protocol(Cage)])
         {
-            if([BLMath DistanceBetween:b.mySprite.position and:currentPickupObject.mySprite.position] < 150.0f || nearestObject==lastNewBondObject)
+            if([BLMath DistanceBetween:b.mySprite.position and:currentPickupObject.mySprite.position] < gw.Blackboard.MaxObjectDistance+50 || nearestObject==lastNewBondObject)
             {
                 [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)nearestObject).mySprite.position];
                 lastNewBondObject=nearestObject;
@@ -212,7 +235,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
     float llen=[BLMath LengthOfVector:[BLMath SubtractVector:p2 from:p1]];
     
-    if(llen>100.0f)return;
+    if(llen>gw.Blackboard.MaxObjectDistance)return;
     
     float op=1.0f;
     if(llen>300)
@@ -221,8 +244,8 @@ static float kDistanceBetweenBlocks=70.0f;
     }
     if(llen>70.0f)
     {
-        float diff=100-llen;
-        barHalfW=1 + (30 * (diff / 30.0f));
+        float diff=gw.Blackboard.MaxObjectDistance-llen;
+        barHalfW=1 + (30 * (diff / (gw.Blackboard.MaxObjectDistance-70.0f)));
     }
     
     ccDrawColor4F(1, 1, 1, op);
@@ -283,8 +306,18 @@ static float kDistanceBetweenBlocks=70.0f;
     cageObjectCount=[[pdef objectForKey:CAGE_OBJECT_COUNT]intValue];
     hasInactiveArea=[[pdef objectForKey:HAS_INACTIVE_AREA]boolValue];
     randomiseDockPositions=[[pdef objectForKey:RANDOMISE_DOCK_POSITIONS]boolValue];
-    bondDifferentTypes=[[pdef objectForKey:BOND_DIFFERENT_TYPES]boolValue];
+    bondAllObjects=[[pdef objectForKey:BOND_ALL_OBJECTS]boolValue];
+    if([pdef objectForKey:BOND_DIFFERENT_TYPES])
+        bondDifferentTypes=[[pdef objectForKey:BOND_DIFFERENT_TYPES]boolValue];
+    else
+        bondDifferentTypes=YES;
     
+    showTotalValue=[[pdef objectForKey:SHOW_TOTAL_VALUE]boolValue];
+    
+    if(bondAllObjects)
+        gw.Blackboard.MaxObjectDistance=1024.0f;
+    else
+        gw.Blackboard.MaxObjectDistance=100.0f;
     
 
     if([pdef objectForKey:DOCK_TYPE])
@@ -396,12 +429,29 @@ static float kDistanceBetweenBlocks=70.0f;
 //    CCLabelTTF *labelForShape;
 //    float avgPosX=0;
 //    float avgPosY=0;
-    NSArray *thesePositions=[NSArray arrayWithArray:[NumberLayout physicalLayoutUpToNumber:numBlocks withSpacing:kDistanceBetweenBlocks]];
+    NSArray *thesePositions=[NSArray arrayWithArray:[NumberLayout physicalLayoutAcrossToNumber:numBlocks withSpacing:kDistanceBetweenBlocks]];
     
     NSString *label = [theseSettings objectForKey:LABEL];
     NSString *blockType = [theseSettings objectForKey:BLOCK_TYPE];
+    NSString *thisColour = [theseSettings objectForKey:TINT_COLOUR];
     BOOL unbreakableBonds = [[theseSettings objectForKey:UNBREAKABLE_BONDS]boolValue];
     
+    if(!thisColour)
+        thisColour=@"WHITE";
+    
+    ccColor3B blockCol = ccc3(0,0,0);
+    
+    if([thisColour isEqualToString:@"BLUE"])
+        blockCol=ccc3(0,0,255);
+    else if([thisColour isEqualToString:@"RED"])
+        blockCol=ccc3(255,0,0);
+    else if([thisColour isEqualToString:@"GREEN"])
+        blockCol=ccc3(0,255,0);
+    else if([thisColour isEqualToString:@"WHITE"])
+        blockCol=ccc3(255,255,255);
+    else if([thisColour isEqualToString:@"BLACK"])
+        blockCol=ccc3(0,0,0);
+        
     if(!blockType)
         blockType=@"Circle";
     
@@ -426,13 +476,11 @@ static float kDistanceBetweenBlocks=70.0f;
     
     if(!hasInactiveArea)
     {
-        CGPoint top=[[thesePositions objectAtIndex:0]CGPointValue];
-        CGPoint bottom=[[thesePositions objectAtIndex:[thesePositions count]-1]CGPointValue];
         
-        int farLeft=top.x+60;
-        int farRight=lx-bottom.x-60;
-        int topMost=ly-top.y-110;
-        int botMost=0+-bottom.y+60;
+        int farLeft=(numBlocks/2)*60;
+        int farRight=lx-30;
+        int topMost=ly-120;
+        int botMost=100;
         
         //startPosX=[theseSettings objectForKey:POS_X] ? [[theseSettings objectForKey:POS_X]intValue] : (arc4random() % 960) + 30;
         //startPosY=[theseSettings objectForKey:POS_Y] ? [[theseSettings objectForKey:POS_Y]intValue] : (arc4random() % 730) + 30;
@@ -463,6 +511,7 @@ static float kDistanceBetweenBlocks=70.0f;
         SGDtoolBlock *block =  [[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:p andType:blockType] autorelease];
         [block setup];
         block.MyContainer = container;
+        [block.mySprite setColor:blockCol];
         
             
         
@@ -505,6 +554,8 @@ static float kDistanceBetweenBlocks=70.0f;
     if(!evalAreas)
         evalAreas=[[[NSMutableArray alloc]init]retain];
 
+    float sectionWidth=lx/[initAreas count];
+    
     for(int i=0;i<[initAreas count];i++)
     {
         NSDictionary *d=[initAreas objectAtIndex:i];
@@ -512,10 +563,10 @@ static float kDistanceBetweenBlocks=70.0f;
         int areaSize=[[d objectForKey:AREA_SIZE]intValue];
         int areaWidth=[[d objectForKey:AREA_WIDTH]intValue];
         int areaOpacity=0;
-        int distFromLX=(lx-30-(areaWidth*62));
-        int distFromLY=(ly-80-(areaSize/areaWidth)*62);
-        int startXPos=(arc4random() % distFromLX)+30;
-        int startYPos=(arc4random() % distFromLY)+60;
+        int distFromLY=(ly-110-(areaSize/areaWidth)*62);
+        float startXPos=((i+0.5)*sectionWidth)-((areaWidth/2)*60);
+        int startYPos = 100 + arc4random() % (distFromLY - 100);
+        
         
         if([d objectForKey:AREA_OPACITY])
             areaOpacity=[[d objectForKey:AREA_OPACITY]intValue];
@@ -530,7 +581,7 @@ static float kDistanceBetweenBlocks=70.0f;
             if(thisPos==areaWidth)thisPos=0;
             int thisRow=i/areaWidth;
             
-            CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/distribution/DT_area_2.png")];
+            CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/distribution/DT_area.png")];
             [s setPosition:ccp(startXPos+(thisPos*s.contentSize.width),startYPos+(thisRow*s.contentSize.height))];
             [s setOpacity:areaOpacity];
             [self.ForeLayer addChild:s];
@@ -575,7 +626,56 @@ static float kDistanceBetweenBlocks=70.0f;
     [container layoutMyBlocks];
 }
 
+-(float)showValueOfAllObjects
+{
+    float totalValue=0.0f;
+    for(id go in gw.AllGameObjects)
+    {
+        if([go conformsToProtocol:@protocol(Configurable) ])
+        {
+            SGDtoolBlock *b=(SGDtoolBlock*)go;
+            
+            if([b.MyContainer isKindOfClass:[SGDtoolCage class]])continue;
+            
+            if([b.blockType isEqualToString:@"Circle"])
+                totalValue+=kShapeValueCircle;
+            else if([b.blockType isEqualToString:@"Diamond"])
+                totalValue+=kShapeValueDiamond;
+            else if([b.blockType isEqualToString:@"Ellipse"])
+                totalValue+=kShapeValueEllipse;
+            else if([b.blockType isEqualToString:@"House"])
+                totalValue+=kShapeValueHouse;
+            else if([b.blockType isEqualToString:@"RoundedSquare"])
+                totalValue+=kShapeValueRoundedSquare;
+            else if([b.blockType isEqualToString:@"Square"])
+                totalValue+=kShapeValueSquare;
+            
+        }
+    }
+    return totalValue;
+}
 
+-(float)valueOf:(SGDtoolContainer*)thisContainer
+{
+    float totalValue=0.0f;
+    
+    for(SGDtoolBlock *b in thisContainer.BlocksInShape)
+    {
+        if([b.blockType isEqualToString:@"Circle"])
+            totalValue+=kShapeValueCircle;
+        else if([b.blockType isEqualToString:@"Diamond"])
+            totalValue+=kShapeValueDiamond;
+        else if([b.blockType isEqualToString:@"Ellipse"])
+            totalValue+=kShapeValueEllipse;
+        else if([b.blockType isEqualToString:@"House"])
+            totalValue+=kShapeValueHouse;
+        else if([b.blockType isEqualToString:@"RoundedSquare"])
+            totalValue+=kShapeValueRoundedSquare;
+        else if([b.blockType isEqualToString:@"Square"])
+            totalValue+=kShapeValueSquare;
+    }
+    return totalValue;
+}
 
 -(void)removeBlockByCage
 {
@@ -644,9 +744,133 @@ static float kDistanceBetweenBlocks=70.0f;
             }
         }
         [solutions removeObject:thisNo];
-
+        
     }
+    
+    if(solutionsFound==[solutionsDef count])
+        return YES;
+    else
+        return NO;
+}
 
+-(BOOL)evalNumberOfShapesAndTypesInEvalAreas
+{
+    int solutionsFound=0;
+    NSMutableArray *matchedEvalAreas=[[NSMutableArray alloc]init];
+    NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
+    
+
+    for(int i=0;i<[evalAreas count];i++)
+    {
+        for(NSDictionary *solutions in solutionsDef)
+        {
+            if([matchedSolutions containsObject:solutions])continue;
+            
+            int circlesReq=[[solutions objectForKey:EVAL_CIRCLES_REQUIRED]intValue];
+            int diamondsReq=[[solutions objectForKey:EVAL_DIAMONDS_REQUIRED]intValue];
+            int ellipsesReq=[[solutions objectForKey:EVAL_ELLIPSES_REQUIRED]intValue];
+            int housesReq=[[solutions objectForKey:EVAL_HOUSES_REQUIRED]intValue];
+            int roundedSquaresReq=[[solutions objectForKey:EVAL_ROUNDEDSQUARES_REQUIRED]intValue];
+            int squaresReq=[[solutions objectForKey:EVAL_SQUARES_REQUIRED]intValue];
+            
+            int circlesFound=0;
+            int diamondsFound=0;
+            int ellipsesFound=0;
+            int housesFound=0;
+            int roundedSquaresFound=0;
+            int squaresFound=0;
+            
+            BOOL circlesMatch=NO;
+            BOOL diamondsMatch=NO;
+            BOOL ellipsesMatch=NO;
+            BOOL housesMatch=NO;
+            BOOL roundedSquaresMatch=NO;
+            BOOL squaresMatch=NO;
+            
+            BOOL shouldContinueEval=YES;
+            
+            
+            
+            CGRect thisRect=CGRectNull;
+            NSArray *a=[evalAreas objectAtIndex:i];
+            
+            if([matchedEvalAreas containsObject:a])continue;
+            
+            for(CCSprite *s in a)
+            {
+                thisRect=CGRectUnion(thisRect, s.boundingBox);
+            }
+            
+            for(id go in gw.AllGameObjects)
+            {
+                if([go conformsToProtocol:@protocol(Configurable)])
+                {
+                    id<Configurable,Moveable>c=(id<Configurable,Moveable>)go;
+                    
+                    if(!CGRectContainsPoint(thisRect, c.Position))continue;
+                    
+                    if([c.blockType isEqualToString:@"Circle"])
+                        circlesFound++;
+                    if([c.blockType isEqualToString:@"Diamond"])
+                        diamondsFound++;
+                    if([c.blockType isEqualToString:@"Ellipse"])
+                        ellipsesFound++;
+                    if([c.blockType isEqualToString:@"House"])
+                        housesFound++;
+                    if([c.blockType isEqualToString:@"RoundedSquare"])
+                        roundedSquaresFound++;
+                    if([c.blockType isEqualToString:@"Square"])
+                        squaresFound++;
+                    
+                }
+            }
+        
+            
+            NSLog(@"(%d) Circles f:%d r:%d, Houses f:%d r:%d", [evalAreas indexOfObject:a], circlesFound, circlesReq, housesFound, housesReq);
+            
+            if(circlesFound==circlesReq && shouldContinueEval)
+                circlesMatch=YES;
+            else
+                shouldContinueEval=NO;
+
+            if(diamondsFound==diamondsReq && shouldContinueEval)
+                diamondsMatch=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(ellipsesFound==ellipsesReq && shouldContinueEval)
+                ellipsesMatch=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(housesFound==housesReq && shouldContinueEval)
+                housesMatch=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(roundedSquaresFound==roundedSquaresReq && shouldContinueEval)
+                roundedSquaresMatch=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(squaresFound==squaresReq && shouldContinueEval)
+                squaresMatch=YES;
+            else
+                shouldContinueEval=NO;
+            
+        
+            if(circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch){
+                solutionsFound++;
+                [matchedEvalAreas addObject:a];
+                [matchedSolutions addObject:solutions];
+                break;
+            }
+
+            
+        }
+    }
+ 
+    NSLog(@"solutions found %d req %d", solutionsFound, [solutionsDef count]);
     if(solutionsFound==[solutionsDef count])
         return YES;
     else
@@ -696,11 +920,126 @@ static float kDistanceBetweenBlocks=70.0f;
 
 }
 
+-(BOOL)evalNumberOfShapesAndTypesInContainers
+{
+    int solutionsFound=0;
+    NSMutableArray *matchedContainers=[[NSMutableArray alloc]init];
+    NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
+    
+    
+    for(id thisC in gw.AllGameObjectsCopy)
+    {
+        if([thisC isKindOfClass:[SGDtoolContainer class]])
+        {
+            SGDtoolContainer *c=(SGDtoolContainer*)thisC;
+            for(NSDictionary *solutions in solutionsDef)
+            {
+                if([matchedSolutions containsObject:solutions])continue;
+                
+                int circlesReq=[[solutions objectForKey:EVAL_CIRCLES_REQUIRED]intValue];
+                int diamondsReq=[[solutions objectForKey:EVAL_DIAMONDS_REQUIRED]intValue];
+                int ellipsesReq=[[solutions objectForKey:EVAL_ELLIPSES_REQUIRED]intValue];
+                int housesReq=[[solutions objectForKey:EVAL_HOUSES_REQUIRED]intValue];
+                int roundedSquaresReq=[[solutions objectForKey:EVAL_ROUNDEDSQUARES_REQUIRED]intValue];
+                int squaresReq=[[solutions objectForKey:EVAL_SQUARES_REQUIRED]intValue];
+                
+                int circlesFound=0;
+                int diamondsFound=0;
+                int ellipsesFound=0;
+                int housesFound=0;
+                int roundedSquaresFound=0;
+                int squaresFound=0;
+                
+                BOOL circlesMatch=NO;
+                BOOL diamondsMatch=NO;
+                BOOL ellipsesMatch=NO;
+                BOOL housesMatch=NO;
+                BOOL roundedSquaresMatch=NO;
+                BOOL squaresMatch=NO;
+                
+                BOOL shouldContinueEval=YES;
+                
+                
+                if([matchedContainers containsObject:c])continue;
+                
+                for(SGDtoolBlock *b in c.BlocksInShape)
+                {
+                    
+                    if([b.blockType isEqualToString:@"Circle"])
+                        circlesFound++;
+                    if([b.blockType isEqualToString:@"Diamond"])
+                        diamondsFound++;
+                    if([b.blockType isEqualToString:@"Ellipse"])
+                        ellipsesFound++;
+                    if([b.blockType isEqualToString:@"House"])
+                        housesFound++;
+                    if([b.blockType isEqualToString:@"RoundedSquare"])
+                        roundedSquaresFound++;
+                    if([b.blockType isEqualToString:@"Square"])
+                        squaresFound++;
+                        
+
+                }
+                
+                
+                NSLog(@"(%d) Circles f:%d r:%d, Houses f:%d r:%d", [evalAreas indexOfObject:c], circlesFound, circlesReq, housesFound, housesReq);
+                
+                if(circlesFound==circlesReq && shouldContinueEval)
+                    circlesMatch=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(diamondsFound==diamondsReq && shouldContinueEval)
+                    diamondsMatch=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(ellipsesFound==ellipsesReq && shouldContinueEval)
+                    ellipsesMatch=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(housesFound==housesReq && shouldContinueEval)
+                    housesMatch=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(roundedSquaresFound==roundedSquaresReq && shouldContinueEval)
+                    roundedSquaresMatch=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(squaresFound==squaresReq && shouldContinueEval)
+                    squaresMatch=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                
+                if(circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch){
+                    solutionsFound++;
+                    [matchedContainers addObject:c];
+                    [matchedSolutions addObject:solutions];
+                    break;
+                }
+                
+                
+            }
+        }
+    }
+    
+    NSLog(@"solutions found %d req %d", solutionsFound, [solutionsDef count]);
+    if(solutionsFound==[solutionsDef count])
+        return YES;
+    else
+        return NO;
+}
+
+
 -(CGPoint)returnNextMountPointForThisShape:(id<Container>)thisShape
 {
     id<Moveable>firstShape=[thisShape.BlocksInShape objectAtIndex:0];
     
-    NSArray *newObjects=[NumberLayout physicalLayoutUpToNumber:[thisShape.BlocksInShape count] withSpacing:kDistanceBetweenBlocks];
+    NSArray *newObjects=[NumberLayout physicalLayoutAcrossToNumber:[thisShape.BlocksInShape count] withSpacing:kDistanceBetweenBlocks];
     
     CGPoint newVal=[[newObjects objectAtIndex:[newObjects count]-1] CGPointValue];
     
@@ -875,21 +1214,29 @@ static float kDistanceBetweenBlocks=70.0f;
                     NSLog(@"moved pickup object close to this GO. add pickupObject to cObj container");
                     hasBeenProximate=YES;
                     
+                    // if the 2 containers are different, check for unbreakable blocks, if so, just layout the containers blocks
                     if(cObj.MyContainer!=currentPickupObject.MyContainer){
                         if([((id<Container>)cObj.MyContainer).LineType isEqualToString:@"Unbreakable"]){
                             [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
+                            [self setTouchVarsToOff];
                             return;
                         }
+                        // if the current pickup has a container - layout the old container's blocks it's blocks after removing from it
                         if(currentPickupObject.MyContainer){
-                            [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
                             [((id<Container>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
+                            [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
                         }
+                        
+                        
+                        // then add it to a new container and layout those blocks
                         [((id<Container>)cObj.MyContainer) addBlockToMe:currentPickupObject];
                         [((id<Container>)cObj.MyContainer) layoutMyBlocks];
                     }
-                    
+                    // but if the 2 containers are equal
                     if(cObj.MyContainer==currentPickupObject.MyContainer)
                     {
+                        // check if the block at index 0 is this one - if it is, don't layout the blocks
+                        if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape objectAtIndex:0]!=currentPickupObject)
                             [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
                     }
                     
@@ -898,6 +1245,7 @@ static float kDistanceBetweenBlocks=70.0f;
                     break;
                     
                 }
+                // if it's unbreakabe, basically relayout the blocks and do nothing more 
                 if([((id<Container>)currentPickupObject.MyContainer).LineType isEqualToString:@"Unbreakable"]){
                     gotTarget=YES;
                     [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
@@ -910,6 +1258,7 @@ static float kDistanceBetweenBlocks=70.0f;
         }
         if(!gotTarget)
         {
+            // if it doesn't have a new targetl and the blocks in it's current shape are over 1 or the container's nil (ie if it's dragged from a cage) create a new group
             if([(id<NSObject>)currentPickupObject.MyContainer isKindOfClass:[SGDtoolCage class]])return;
             
             if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape count]>1||currentPickupObject.MyContainer==nil)
@@ -927,6 +1276,42 @@ static float kDistanceBetweenBlocks=70.0f;
         if(evalMode==kProblemEvalAuto)[self evalProblem];
     }
     
+    // if it has a container
+    if(currentPickupObject.MyContainer)
+    {
+        // check whether any of the blocks are outside of the screen bounds - then set the position and move it back into the screen bounds
+        float diffX=0.0f;
+        float diffY=0.0f;
+
+        SGDtoolContainer *c=(SGDtoolContainer*)currentPickupObject.MyContainer;
+        
+        if([c.BlocksInShape count]>=1){
+            for(SGDtoolBlock *b in c.BlocksInShape)
+            {
+                    if(b.Position.x<0)
+                        diffX+=60;
+                
+                    if(b.Position.y<0)
+                        diffY+=60;
+            }
+            
+            SGDtoolBlock *b=[c.BlocksInShape objectAtIndex:0];
+        
+            CGPoint newPoint=ccp(b.Position.x+diffX, b.Position.y+diffY);
+            [b setPosition:newPoint];
+            if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape objectAtIndex:0]!=currentPickupObject){
+                    [b.MyContainer layoutMyBlocks];
+            }
+            else
+            {
+                if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape count]>1){
+                    SGDtoolBlock *b2=[((id<Container>)currentPickupObject.MyContainer).BlocksInShape objectAtIndex:1];
+                    b.Position=ccp(b2.Position.x,b2.Position.y+52);
+                    [b.MyContainer layoutMyBlocks];
+                }
+            }
+        }
+    }
     
     if(hasBeenProximate)
     {
@@ -1069,7 +1454,7 @@ static float kDistanceBetweenBlocks=70.0f;
         NSMutableArray *containers=[[NSMutableArray alloc]init];
         int solutionsExpected=[solutionsDef count];
         int solutionsFound=0;
-
+        
         
         
         for(NSNumber *n in solutionsDef)
@@ -1090,7 +1475,6 @@ static float kDistanceBetweenBlocks=70.0f;
                     NSLog(@"blocksinshape %d is %d", (int)thisCont, [thisCont.BlocksInShape count]);
                     if([thisCont.BlocksInShape count]==[n intValue])
                     {
-                        NSLog(@"found solution nigguh");
                         solutionsFound++;
                         [shapesFound addObject:cont];
                         [solFound addObject:n];
@@ -1101,13 +1485,57 @@ static float kDistanceBetweenBlocks=70.0f;
         }
         
         
-          
+        
         NSLog(@"solutions found %d required %d containers %d", solutionsFound, solutionsExpected, [containers count]);
         if (solutionsFound==solutionsExpected && [containers count]==solutionsExpected)
             return YES;
         else
             return NO;
-
+        
+    }
+    if(evalType==kIncludeShapeSizes)
+    {
+        NSMutableArray *shapesFound=[[NSMutableArray alloc]init];
+        NSMutableArray *solFound=[[NSMutableArray alloc]init];
+        NSMutableArray *containers=[[NSMutableArray alloc]init];
+        int solutionsExpected=[solutionsDef count];
+        int solutionsFound=0;
+        
+        
+        
+        for(NSNumber *n in solutionsDef)
+        {
+            if([solFound containsObject:n])continue;
+            
+            for (id cont in gw.AllGameObjects)
+            {
+                if([shapesFound containsObject:cont])continue;
+                
+                if([cont conformsToProtocol:@protocol(Container)])
+                {
+                    id<Container>thisCont=cont;
+                    
+                    if(![containers containsObject:cont])
+                        [containers addObject:cont];
+                    
+                    NSLog(@"blocksinshape %d is %d", (int)thisCont, [thisCont.BlocksInShape count]);
+                    if([thisCont.BlocksInShape count]==[n intValue])
+                    {
+                        solutionsFound++;
+                        [shapesFound addObject:cont];
+                        [solFound addObject:n];
+                        continue;
+                    }
+                }
+            }
+        }
+        
+        
+        if (solutionsFound==solutionsExpected)
+            return YES;
+        else
+            return NO;
+        
     }
     
     else if(evalType==kCheckNamedGroups)
@@ -1142,6 +1570,16 @@ static float kDistanceBetweenBlocks=70.0f;
     else if(evalType==kCheckEvalAreas)
     {
         return [self evalNumberOfShapesInEvalAreas];
+    }
+    
+    else if(evalType==kCheckEvalAreasForTypes)
+    {
+        return [self evalNumberOfShapesAndTypesInEvalAreas];
+    }
+
+    else if(evalType==kCheckGroupsForTypes)
+    {
+        return [self evalNumberOfShapesAndTypesInContainers];
     }
     
     else if(evalType==kCheckGroupTypeAndNumber)

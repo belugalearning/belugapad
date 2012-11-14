@@ -220,54 +220,54 @@ float timerIgnoreFrog;
             logBubbleDidMove=YES;
         }
         else {
-            
+        
             float moveY=0;
             
-            if(jumpMode)
-            {
-                // ===== stitching stuff ===============================================
-                //get ypos --
-                float threshold=100.0f;
-                float diffY=lasttouch.y - cy;
-                if(diffY>0)
-                {
-                    float dampY = diffY<threshold ? diffY / threshold : 1.0f;
-                    dampY*=dampY * dampY;
-                    moveY = diffY * dampY;
-                }
-                
-                if(diffY>=threshold)
-                {
-                    //user is dragging up or past threshold, draw a stitch line
-                    drawStitchLine=YES;
-                    drawStitchCurve=NO;
-                    stitchEndPos=lasttouch;
-                    
-                    if(!hasSetJumpStartValue)
-                    {
-                        hasSetJumpStartValue=YES;
-                        jumpStartValue=logLastBubblePos;
-                    }
-                }
-                else
-                {
-                    // user is below threshold, if they were previously above it, draw a curve
-                    if(drawStitchLine)
-                    {
-                        drawStitchLine=NO;
-                        drawStitchCurve=YES;
-                        stitchApexPos=lasttouch;
-                    }
-                    // otherwise update the end pos -- used to track the end point of the curve, if being drawn
-                    else
-                    {
-                        stitchEndPos=lasttouch;
-                    }
-                }
-                
-                // =====================================================================
-            }
-            
+//            if(jumpMode)
+//            {
+//                // ===== stitching stuff ===============================================
+//                //get ypos --
+//                float threshold=100.0f;
+//                float diffY=lasttouch.y - cy;
+//                if(diffY>0)
+//                {
+//                    float dampY = diffY<threshold ? diffY / threshold : 1.0f;
+//                    dampY*=dampY * dampY;
+//                    moveY = diffY * dampY;
+//                }
+//                
+//                if(diffY>=threshold)
+//                {
+//                    //user is dragging up or past threshold, draw a stitch line
+//                    drawStitchLine=YES;
+//                    drawStitchCurve=NO;
+//                    stitchEndPos=lasttouch;
+//                    
+//                    if(!hasSetJumpStartValue)
+//                    {
+//                        hasSetJumpStartValue=YES;
+//                        jumpStartValue=logLastBubblePos;
+//                    }
+//                }
+//                else
+//                {
+//                    // user is below threshold, if they were previously above it, draw a curve
+//                    if(drawStitchLine)
+//                    {
+//                        drawStitchLine=NO;
+//                        drawStitchCurve=YES;
+//                        stitchApexPos=lasttouch;
+//                    }
+//                    // otherwise update the end pos -- used to track the end point of the curve, if being drawn
+//                    else
+//                    {
+//                        stitchEndPos=lasttouch;
+//                    }
+//                }
+//                
+//                // =====================================================================
+//            }
+        
             //CGPoint newloc=ccp(location.x - holdingBubbleOffset, bubbleSprite.position.y);
             CGPoint newloc=ccp(lasttouch.x - holdingBubbleOffset, cy + moveY);
             
@@ -371,6 +371,8 @@ float timerIgnoreFrog;
         rambler.TouchXOffset += movex * touchResetDir;
         touchResetX -=movex;
     }
+    
+    NSLog(@"rambler.TouchXOffset %f", rambler.TouchXOffset);
 }
 
 -(void)draw

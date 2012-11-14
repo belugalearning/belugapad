@@ -14,6 +14,7 @@
 @synthesize RenderLayer;
 @synthesize inProblemSetup;
 @synthesize islandData;
+@synthesize MaxObjectDistance;
 
 -(id) init
 {

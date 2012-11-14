@@ -192,9 +192,9 @@ static float kTimeToCageShake=7.0f;
             int initedOnGrid=[[initBlocksForColumn objectAtIndex:i]intValue];
             float colValue=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
             
-            if([self usedSpacesOnGrid:i]>initedOnGrid)
+            if([self usedSpacesOnGrid:i]>initedOnGrid && initedOnGrid>0)
                 [l setString:[NSString stringWithFormat:@"%g + %g", ([[initBlocksForColumn objectAtIndex:i]intValue]*colValue), ([self usedSpacesOnGrid:i]-initedOnGrid)*colValue]];
-            else if([self usedSpacesOnGrid:currentColumnIndex]<=initedOnGrid)
+            else if([self usedSpacesOnGrid:currentColumnIndex]<=initedOnGrid||initedOnGrid==0)
                 [l setString:[NSString stringWithFormat:@"%g", ([[initBlocksForColumn objectAtIndex:i]intValue]*colValue)-(([[initBlocksForColumn objectAtIndex:i]intValue]-[self usedSpacesOnGrid:i])*colValue)]];
         }
     }
@@ -620,7 +620,7 @@ static float kTimeToCageShake=7.0f;
         if(!([columnCages objectForKey:currentColumnValueKey]) || ([[columnCages objectForKey:currentColumnValueKey] boolValue]==YES))
         {
             CCSprite *cageContainer = [CCSprite spriteWithFile:posCageSprite];
-            [cageContainer setPosition:ccp(i*(kPropXColumnSpacing*lx), ly*kCageYOrigin)];
+            [cageContainer setPosition:ccp(i*(kPropXColumnSpacing*lx), (ly*kCageYOrigin))];
             [cageContainer setOpacity:0];
             [cageContainer setTag:2];
             [renderLayer addChild:cageContainer z:10];
@@ -631,7 +631,7 @@ static float kTimeToCageShake=7.0f;
             [gw populateAndAddGameObject:cge withTemplateName:@"TplaceValueCage"];
             cge.AllowMultipleMount=YES;
             cge.PosX=i*(kPropXColumnSpacing*lx);
-            cge.PosY=ly*kCageYOrigin;
+            cge.PosY=(ly*kCageYOrigin);
             
             cge.mySprite=cageContainer;
             

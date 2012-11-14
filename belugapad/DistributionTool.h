@@ -17,7 +17,10 @@ typedef enum
     kCheckShapeSizes=0,
     kCheckNamedGroups=1,
     kCheckEvalAreas=2,
-    kCheckGroupTypeAndNumber=3
+    kCheckGroupTypeAndNumber=3,
+    kIncludeShapeSizes=4,
+    kCheckEvalAreasForTypes=5,
+    kCheckGroupsForTypes=6
 }DistributionEvalType;
 
 @interface DistributionTool : ToolScene
@@ -52,6 +55,8 @@ typedef enum
     BOOL randomiseDockPositions;
     BOOL bondDifferentTypes;
     BOOL hasMovedCagedBlock;
+    BOOL bondAllObjects;
+    BOOL showTotalValue;
     int cageObjectCount;
     
     id nearestObject;
@@ -59,6 +64,8 @@ typedef enum
     id lastNewBondObject;
     
     NSString *dockType;
+    
+    CCLabelTTF *totalValueLabel;
     
     // and a default layer
     CCLayer *renderLayer;

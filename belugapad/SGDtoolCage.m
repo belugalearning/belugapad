@@ -57,6 +57,8 @@
     
     if(!self.CageType)
         sprFileName=@"/images/distribution/DT_Dock_Infinite.png";
+    else if([self.CageType isEqualToString:@"Infinite-Random"])
+        sprFileName=@"/images/distribution/DT_Dock_Infinite.png";
     else
         sprFileName=[NSString stringWithFormat:@"/images/distribution/DT_Dock_%@.png", self.CageType];
         
@@ -115,7 +117,26 @@
             continue;
         }
         
+        int thisBlockType=0;
+        NSString *newBlockType=BlockType;
         
+        if([CageType isEqualToString:@"Infinite-Random"])
+        {
+            thisBlockType=arc4random() % 5;
+            
+            if(thisBlockType==0)
+                newBlockType=@"Circle";
+            else if(thisBlockType==1)
+                newBlockType=@"Diamond";
+            else if(thisBlockType==2)
+                newBlockType=@"Ellipse";
+            else if(thisBlockType==3)
+                newBlockType=@"House";
+            else if(thisBlockType==4)
+                newBlockType=@"RoundedSquare";
+            else if(thisBlockType==5)
+                newBlockType=@"Square";
+        }
         
         
         //if(posCount==15)posCount=0;
@@ -130,7 +151,7 @@
             yPos=107-((totalCount/(int)15)*50);
         
         id<Configurable,Selectable,Pairable,Moveable> newblock;
-        newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gameWorld andRenderLayer:self.RenderLayer andPosition:ccp(xPos, yPos) andType:BlockType] autorelease];
+        newblock=[[[SGDtoolBlock alloc] initWithGameWorld:gameWorld andRenderLayer:self.RenderLayer andPosition:ccp(xPos, yPos) andType:newBlockType] autorelease];
         newblock.MyContainer=self;
         self.CurrentObject=newblock;
         [newblock setup];

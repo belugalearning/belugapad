@@ -129,6 +129,7 @@ typedef enum {
     ProblemEvalMode evalMode;
     
     CCSprite *commitBtn;
+    CCSprite *metaArrow;
     
     LRAnimator *animator;
     int animPos;
@@ -208,6 +209,8 @@ typedef enum {
     BOOL delayShowMeta;
     float timeToWheelStart;
     float timeToMetaStart;
+    
+    BOOL evalShowCommit;
     
 }
 

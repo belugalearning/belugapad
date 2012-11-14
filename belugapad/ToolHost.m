@@ -72,6 +72,7 @@
 @synthesize Zubi;
 @synthesize PpExpr;
 @synthesize flagResetProblem;
+@synthesize toolCanEval;
 @synthesize DynProblemParser;
 @synthesize pickerView;
 @synthesize CurrentBTXE;
@@ -1228,6 +1229,7 @@ static float kTimeToHintToolTray=7.0f;
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ
 {
     metaQuestionForThisProblem=YES;
+    toolCanEval=NO;
     
     if(!trayLayerMq)
     {
@@ -1375,6 +1377,7 @@ static float kTimeToHintToolTray=7.0f;
 -(void)tearDownMetaQuestion
 {
     [trayLayerMq removeAllChildrenWithCleanup:YES];
+    toolCanEval=YES;
 //    if(metaArrow)[metaArrow removeFromParentAndCleanup:YES];
     metaArrow=nil;
     metaQuestionAnswers=nil;
@@ -1659,6 +1662,7 @@ static float kTimeToHintToolTray=7.0f;
 -(void)setupNumberPicker:(NSDictionary *)pdefNP
 {
     numberPickerForThisProblem=YES;
+    toolCanEval=NO;
     shownProblemStatusFor=0;
     
     [self setProblemDescription: [pdefNP objectForKey:NUMBER_PICKER_DESCRIPTION]];
@@ -2017,6 +2021,7 @@ static float kTimeToHintToolTray=7.0f;
 -(void)tearDownNumberPicker
 {
     if(CurrentBTXE)CurrentBTXE=nil;
+    toolCanEval=YES;
 //    if(traybtnWheel){
 //        [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];
 //        [traybtnWheel setColor:ccc3(255,255,255)];

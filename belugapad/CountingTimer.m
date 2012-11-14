@@ -449,6 +449,8 @@
 {
     [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_stop_button_tapped.wav")];
     
+    if(!toolHost.toolCanEval)return;
+    
     BOOL isWinning=NO;
     
     if(!isIntroPlist)isWinning=[self evalExpression];

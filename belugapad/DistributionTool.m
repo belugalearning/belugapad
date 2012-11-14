@@ -1264,7 +1264,7 @@ static float kDistanceBetweenBlocks=70.0f;
             if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape count]>1||currentPickupObject.MyContainer==nil)
             {
                 id<Container>LayoutCont=currentPickupObject.MyContainer;
-                [((id<Container>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
+                [LayoutCont removeBlockFromMe:currentPickupObject];
                 [LayoutCont layoutMyBlocks];
                 [self createContainerWithOne:currentPickupObject];
             }

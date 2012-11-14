@@ -92,7 +92,7 @@
 {
     if(LineType==@"Unbreakable")return;
     
-    if(((id<Configurable>)thisBlock).blockType!=self.BlockType)return;
+    if(![((id<Configurable>)thisBlock).blockType isEqualToString:self.BlockType] && !self.AllowDifferentTypes)return;
     
     if([BlocksInShape containsObject:thisBlock])
         [BlocksInShape removeObject:thisBlock];

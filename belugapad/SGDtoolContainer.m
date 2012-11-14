@@ -11,6 +11,8 @@
 #import "SGDtoolObjectProtocols.h"
 #import "global.h"
 #import "NumberLayout.h"
+#import "ToolConsts.h"
+#import "DistributionTool.h"
 
 @implementation SGDtoolContainer
 
@@ -18,17 +20,26 @@
 @synthesize BlockType;
 @synthesize AllowDifferentTypes;
 @synthesize LineType;
+@synthesize ShowCount, CountLabel;
 
--(SGDtoolContainer*) initWithGameWorld:(SGGameWorld*)aGameWorld andLabel:(NSString*)aLabel andRenderLayer:(CCLayer*)aRenderLayer
+-(SGDtoolContainer*) initWithGameWorld:(SGGameWorld*)aGameWorld andLabel:(NSString*)aLabel andShowCount:(BOOL)showValue andRenderLayer:(CCLayer*)aRenderLayer
 {
     if(self=[super initWithGameWorld:aGameWorld])
     {
+        self.BaseNode=[[CCNode alloc]init];
+        [aRenderLayer addChild:self.BaseNode z:500];
+        self.ShowCount=showValue;
+        
         if(aLabel){
-            self.BaseNode=[[CCNode alloc]init];
             self.Label=[CCLabelTTF labelWithString:aLabel fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
             [self.Label setColor:ccc3(255,0,0)];
             [self.BaseNode addChild:self.Label];
-            [aRenderLayer addChild:self.BaseNode z:500];
+            [self repositionLabel];
+        }
+        if(showValue)
+        {
+            CountLabel=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:25.0f];
+            [self.BaseNode addChild:CountLabel];
             [self repositionLabel];
         }
             self.BlocksInShape=[[NSMutableArray alloc]init];
@@ -46,8 +57,13 @@
 {
     //update of components
     if([self blocksInShape]==0)
+    {
+        if(self.Label){
+            DistributionTool *dtScene=(DistributionTool*)gameWorld.GameScene;
+            [dtScene addDestroyedLabel:Label.string];
+        }
         [self destroyThisObject];
-
+    }
 }
 
 -(void)draw:(int)z
@@ -68,7 +84,7 @@
         
         //self.BlockType=((id<Configurable>)thisBlock).blockType;
         
-        if(Label)[self repositionLabel];
+        if(Label||ShowCount)[self repositionLabel];
     //}
 }
 
@@ -87,7 +103,7 @@
     if([BlocksInShape count]==0)
         [self destroyThisObject];
     else
-        if(Label)[self repositionLabel];
+        if(Label||ShowCount)[self repositionLabel];
 }
 
 -(void)layoutMyBlocks
@@ -108,8 +124,31 @@
         thisBlock.Position=ccp(posX+thisPos.x, posY+thisPos.y);
         [thisBlock.mySprite runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.3f position:thisBlock.Position] rate:2.0f]];
     }
+    
+    [self repositionLabel];
 }
 
+-(float)updateValue
+{
+    float totalValue;
+    for(SGDtoolBlock *b in BlocksInShape)
+    {
+        if([b.blockType isEqualToString:@"Circle"])
+            totalValue+=kShapeValueCircle;
+        else if([b.blockType isEqualToString:@"Diamond"])
+            totalValue+=kShapeValueDiamond;
+        else if([b.blockType isEqualToString:@"Ellipse"])
+            totalValue+=kShapeValueEllipse;
+        else if([b.blockType isEqualToString:@"House"])
+            totalValue+=kShapeValueHouse;
+        else if([b.blockType isEqualToString:@"RoundedSquare"])
+            totalValue+=kShapeValueRoundedSquare;
+        else if([b.blockType isEqualToString:@"Square"])
+            totalValue+=kShapeValueSquare;
+    }
+
+    return totalValue;
+}
 -(void)repositionLabel
 {
     float x=0;
@@ -121,10 +160,18 @@
         y+=go.Position.y;
     }
     
+    
     x=x/[BlocksInShape count];
     y=y/[BlocksInShape count];
     
-    [Label setPosition:ccp(x,y)];
+    if(Label){
+        [Label setPosition:ccp(x,y)];
+    }
+    if(ShowCount)
+    {
+        [CountLabel setString:[NSString stringWithFormat:@"%g", [self updateValue]]];
+        [CountLabel setPosition:ccp(x,y-30)];
+    }
 
 }
 

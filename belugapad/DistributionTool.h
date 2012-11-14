@@ -96,6 +96,7 @@ typedef enum
 -(float)metaQuestionTitleYLocation;
 -(float)metaQuestionAnswersYLocation;
 -(void)createShapeWith:(int)blocks andWith:(NSDictionary*)theseSettings;
+-(void)addDestroyedLabel:(NSString*)thisGroup;
 -(void)createContainerWithOne:(id)Object;
 -(void)removeBlockByCage;
 -(BOOL)evalGroupTypesAndShapes;

@@ -69,6 +69,8 @@
 @property (retain) NSString *BlockType;
 @property (retain) NSString *LineType;
 @property BOOL AllowDifferentTypes;
+@property BOOL ShowCount;
+@property (retain) CCLabelTTF *CountLabel;
 
 -(void)addBlockToMe:(id)thisBlock;
 -(void)removeBlockFromMe:(id)thisBlock;

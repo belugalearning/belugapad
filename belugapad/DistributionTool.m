@@ -12,6 +12,7 @@
 
 #import "UsersService.h"
 #import "ToolHost.h"
+#import "ToolConsts.h"
 
 #import "global.h"
 #import "BLMath.h"
@@ -30,14 +31,6 @@
 #define DRAW_DEPTH 1
 static float kTimeSinceAction=7.0f;
 static float kDistanceBetweenBlocks=70.0f;
-
-
-static float kShapeValueCircle=0.01f;
-static float kShapeValueDiamond=0.1f;
-static float kShapeValueEllipse=1.0f;
-static float kShapeValueHouse=10.0;
-static float kShapeValueRoundedSquare=100.0f;
-static float kShapeValueSquare=1000.0f;
 
 
 @interface DistributionTool()
@@ -435,6 +428,7 @@ static float kShapeValueSquare=1000.0f;
     NSString *blockType = [theseSettings objectForKey:BLOCK_TYPE];
     NSString *thisColour = [theseSettings objectForKey:TINT_COLOUR];
     BOOL unbreakableBonds = [[theseSettings objectForKey:UNBREAKABLE_BONDS]boolValue];
+    BOOL showContainerCount = [[theseSettings objectForKey:SHOW_CONTAINER_VALUE]boolValue];
     
     if(!thisColour)
         thisColour=@"WHITE";
@@ -461,7 +455,7 @@ static float kShapeValueSquare=1000.0f;
     if(![usedShapeTypes containsObject:blockType])
         [usedShapeTypes addObject:blockType];
     
-    SGDtoolContainer *container = [[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:label andRenderLayer:renderLayer];
+    SGDtoolContainer *container = [[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:label andShowCount:showContainerCount andRenderLayer:renderLayer];
     container.BlockType=blockType;
     
     if(unbreakableBonds)
@@ -601,13 +595,18 @@ static float kShapeValueSquare=1000.0f;
     }
 }
 
+-(void)addDestroyedLabel:(NSString*)thisGroup
+{
+    [destroyedLabelledGroups addObject:thisGroup];
+}
+
 -(void)createContainerWithOne:(id)Object
 {
     id<Container> container;
     //NSLog(@"create container - there are %d destroyed labelled groups", [destroyedLabelledGroups count]);
     if([destroyedLabelledGroups count]==0)
     {
-        container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:nil andRenderLayer:nil];
+        container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:nil andShowCount:NO andRenderLayer:nil];
 //        container.Label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",(int)container] fontName:SOURCE fontSize:15.0f];
 //        [container.Label setPosition:ccp(cx,cy)];
 //        [renderLayer addChild:container.Label];
@@ -615,7 +614,7 @@ static float kShapeValueSquare=1000.0f;
     else
     {
         NSLog(@"creating labelled group: %@",[destroyedLabelledGroups objectAtIndex:0]);
-        container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:[destroyedLabelledGroups objectAtIndex:0] andRenderLayer:renderLayer];
+        container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:[destroyedLabelledGroups objectAtIndex:0] andShowCount:NO andRenderLayer:renderLayer];
         [destroyedLabelledGroups removeObjectAtIndex:0];
         [existingGroups addObject:[container.Label string]];
     }
@@ -624,6 +623,7 @@ static float kShapeValueSquare=1000.0f;
     container.BlockType=((id<Configurable>)Object).blockType;
     [container addBlockToMe:Object];
     [container layoutMyBlocks];
+    [container repositionLabel];
 }
 
 -(float)showValueOfAllObjects
@@ -1279,6 +1279,7 @@ static float kShapeValueSquare=1000.0f;
     // if it has a container
     if(currentPickupObject.MyContainer)
     {
+        [currentPickupObject.MyContainer repositionLabel];
         // check whether any of the blocks are outside of the screen bounds - then set the position and move it back into the screen bounds
         float diffX=0.0f;
         float diffY=0.0f;

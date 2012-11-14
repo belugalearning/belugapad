@@ -228,7 +228,7 @@
 //    [[CCDirector sharedDirector] runWithScene:[EditZubi scene]];
 //    [editUserView addSubview:glView];
     
-    newUserNameTF = [[UITextField alloc] initWithFrame:CGRectMake(334.0f, 276.0f, 360.0f, 42.0f)];
+    newUserNameTF = [[[UITextField alloc] initWithFrame:CGRectMake(334.0f, 276.0f, 360.0f, 42.0f)] autorelease];
     newUserNameTF.delegate = self;
     newUserNameTF.font = [UIFont fontWithName:@"Chango" size:24];
     //newUserNameTF.placeholder = @"name";
@@ -255,7 +255,7 @@
     [newUserPasswordTF setBorderStyle:UITextBorderStyleNone];
     [editUserView addSubview:newUserPasswordTF];
     */
-    newUserPassCodeView = [[PassCodeView alloc] initWithFrame:CGRectMake(390.0f, 334.0f, 255.0f, 46.0f)];
+    newUserPassCodeView = [[[PassCodeView alloc] initWithFrame:CGRectMake(390.0f, 334.0f, 255.0f, 46.0f)] autorelease];
     [editUserView addSubview:newUserPassCodeView];
     
     // TODO: release in dealloc
@@ -356,7 +356,7 @@
 
 -(void)buildLoadExistingUserView
 {
-    existingUserNameTF = [[UITextField alloc] initWithFrame:CGRectMake(334.0f, 276.0f, 360.0f, 42.0f)];
+    existingUserNameTF = [[[UITextField alloc] initWithFrame:CGRectMake(334.0f, 276.0f, 360.0f, 42.0f)] autorelease];
     existingUserNameTF.delegate = self;
     existingUserNameTF.font = [UIFont fontWithName:@"Chango" size:24];
     //existingUserNameTF.placeholder = @"name";
@@ -369,7 +369,7 @@
     [existingUserNameTF setBorderStyle:UITextBorderStyleNone];
     [loadExistingUserView addSubview:existingUserNameTF];
     
-    downloadUserPassCodeView = [[PassCodeView alloc] initWithFrame:CGRectMake(390.0f, 334.0f, 255.0f, 46.0f)];
+    downloadUserPassCodeView = [[[PassCodeView alloc] initWithFrame:CGRectMake(390.0f, 334.0f, 255.0f, 46.0f)] autorelease];
     [loadExistingUserView addSubview:downloadUserPassCodeView];
     /*
     existingUserPasswordTF = [[UITextField alloc] initWithFrasme:CGRectMake(358.0f, 186.0f, 400.0f, 45.0f)];
@@ -445,34 +445,12 @@
 
 -(void)dealloc
 {
-    [deviceUsers release];
-    //if (colorWheel) [colorWheel removeObserver:self forKeyPath:@"lastColorRGBAData"];
-    if (backgroundImageView) [backgroundImageView release];
-    if (newUserNameTF) [newUserNameTF release];
-    if (editUserView) [editUserView release];
-    if (selectUserView) [selectUserView release];
-    if (selectUserTableView) [selectUserTableView release];
-    if (loadExistingUserView) [loadExistingUserView release];
+    if (deviceUsers)[deviceUsers release];
+    if (backgroundImageView)[backgroundImageView release];
+    if (editUserView)[editUserView release];
+    if (selectUserView)[selectUserView release];
+    if (selectUserTableView)[selectUserTableView release];
+    if (loadExistingUserView)[loadExistingUserView release];
     [super dealloc];
-}
-
--(void)viewDidUnload
-{
-    [deviceUsers release];
-    deviceUsers = nil;
-    if (colorWheel) [colorWheel removeObserver:self forKeyPath:@"lastColorRGBAData"];
-    [backgroundImageView release];
-    backgroundImageView = nil;
-    [newUserNameTF release];
-    newUserNameTF = nil;
-    [editUserView release];
-    editUserView = nil;
-    [selectUserView release];
-    selectUserView = nil;
-    [selectUserTableView release];
-    selectUserTableView = nil;
-    [loadExistingUserView release];
-    loadExistingUserView = nil;
-    [super viewDidUnload];
 }
 @end

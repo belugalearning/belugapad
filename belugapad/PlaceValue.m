@@ -1147,10 +1147,15 @@ static float kTimeToCageShake=7.0f;
     }
     else
     {
-        if(numberOfColumns>1)
+        if(numberOfColumns>1 && allowCondensing && allowMulching)
         {
             showBaseSelection=YES;
             autoBaseSelection=YES;
+        }
+        else if(numberOfColumns>1 && !allowCondensing && !allowMulching)
+        {
+            showBaseSelection=NO;
+            autoBaseSelection=NO;
         }
     }
     if(autoBaseSelection)allowDeselect=NO;

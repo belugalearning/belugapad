@@ -72,6 +72,7 @@
 @synthesize Zubi;
 @synthesize PpExpr;
 @synthesize flagResetProblem;
+@synthesize toolCanEval;
 @synthesize DynProblemParser;
 @synthesize pickerView;
 @synthesize CurrentBTXE;
@@ -1228,6 +1229,7 @@ static float kTimeToHintToolTray=7.0f;
 -(void)setupMetaQuestion:(NSDictionary *)pdefMQ
 {
     metaQuestionForThisProblem=YES;
+    toolCanEval=NO;
     
     if(!trayLayerMq)
     {
@@ -1308,13 +1310,16 @@ static float kTimeToHintToolTray=7.0f;
         [metaQuestionAnswers addObject:a];
         
         CCSprite *answerBtn;
-        CCLabelTTF *answerLabel = [CCLabelTTF labelWithString:@"" fontName:@"Chango" fontSize:16.0f];
+        CCLabelTTF *answerLabel;
         
         // sort out the labels and buttons if there's an answer text
         if([[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT])
         {
             // sort out the buttons
             answerBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")];
+            answerLabel=[CCLabelTTF labelWithString:@"" dimensions:CGSizeMake(answerBtn.contentSize.width-10,answerBtn.contentSize.height-6) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:CHANGO fontSize:16.0f];
+
+            [answerLabel setAnchorPoint:ccp(0.5,0.5)];
             
             // then the answer label
             NSString *raw=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
@@ -1325,9 +1330,7 @@ static float kTimeToHintToolTray=7.0f;
             [answerLabel setString:answerLabelString];
             NSLog(@"before answerLabelString: %@", answerLabelString);
             
-            if(answerLabelString.length>18)
-                [answerLabel setFontSize:12.0f];
-            else if(answerLabelString.length>9)
+            if(answerLabelString.length>9)
                 [answerLabel setFontSize:16.0f];
             else
                 [answerLabel setFontSize:22.0f];
@@ -1356,7 +1359,7 @@ static float kTimeToHintToolTray=7.0f;
         // check for text, render if nesc
         if(![answerLabel.string isEqualToString:@""])
         {
-            [answerLabel setPosition:ccp(answerBtn.contentSize.width/2,answerBtn.contentSize.height/2)];
+            [answerLabel setPosition:ccp(answerBtn.contentSize.width/2,(answerLabel.contentSize.height/2)-(answerBtn.contentSize.height/2))];
             [answerLabel setColor:kMetaAnswerLabelColorSelected];
             [answerLabel setOpacity:0];
             [answerLabel setTag: 3];
@@ -1375,6 +1378,7 @@ static float kTimeToHintToolTray=7.0f;
 -(void)tearDownMetaQuestion
 {
     [trayLayerMq removeAllChildrenWithCleanup:YES];
+    toolCanEval=YES;
 //    if(metaArrow)[metaArrow removeFromParentAndCleanup:YES];
     metaArrow=nil;
     metaQuestionAnswers=nil;
@@ -1659,6 +1663,7 @@ static float kTimeToHintToolTray=7.0f;
 -(void)setupNumberPicker:(NSDictionary *)pdefNP
 {
     numberPickerForThisProblem=YES;
+    toolCanEval=NO;
     shownProblemStatusFor=0;
     
     [self setProblemDescription: [pdefNP objectForKey:NUMBER_PICKER_DESCRIPTION]];
@@ -2017,6 +2022,7 @@ static float kTimeToHintToolTray=7.0f;
 -(void)tearDownNumberPicker
 {
     if(CurrentBTXE)CurrentBTXE=nil;
+    toolCanEval=YES;
 //    if(traybtnWheel){
 //        [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];
 //        [traybtnWheel setColor:ccc3(255,255,255)];

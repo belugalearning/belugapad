@@ -2293,6 +2293,15 @@ static float kTimeToCageShake=7.0f;
             [go handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];
         }
     }
+    
+    DWPlaceValueBlockGameObject *pO=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
+    if(pO.LastMount){
+        pO.Mount=pO.LastMount;
+        DWPlaceValueNetGameObject *n=(DWPlaceValueNetGameObject*)pO.LastMount;
+        n.MountedObject=pO;
+    }
+    
+    
     [[gw Blackboard].PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];    
 }
 
@@ -3441,6 +3450,7 @@ static float kTimeToCageShake=7.0f;
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [self resetPickupObjectPos];
     [self setTouchVarsToOff];
 }
 

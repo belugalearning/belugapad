@@ -10,6 +10,6 @@
 
 @interface PassCodeView : UIView <UIKeyInput>
 
-@property (nonatomic, retain) NSMutableString *text;
+@property (nonatomic, retain) NSString *text;
 
 @end

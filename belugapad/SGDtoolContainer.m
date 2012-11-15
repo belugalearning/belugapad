@@ -133,18 +133,16 @@
     float totalValue;
     for(SGDtoolBlock *b in BlocksInShape)
     {
-        if([b.blockType isEqualToString:@"Circle"])
-            totalValue+=kShapeValueCircle;
-        else if([b.blockType isEqualToString:@"Diamond"])
-            totalValue+=kShapeValueDiamond;
-        else if([b.blockType isEqualToString:@"Ellipse"])
-            totalValue+=kShapeValueEllipse;
-        else if([b.blockType isEqualToString:@"House"])
-            totalValue+=kShapeValueHouse;
-        else if([b.blockType isEqualToString:@"RoundedSquare"])
-            totalValue+=kShapeValueRoundedSquare;
-        else if([b.blockType isEqualToString:@"Square"])
-            totalValue+=kShapeValueSquare;
+        if([b.blockType isEqualToString:@"Value_001"])
+            totalValue+=kShapeValue001;
+        else if([b.blockType isEqualToString:@"Value_01"])
+            totalValue+=kShapeValue01;
+        else if([b.blockType isEqualToString:@"Value_1"])
+            totalValue+=kShapeValue1;
+        else if([b.blockType isEqualToString:@"Value_10"])
+            totalValue+=kShapeValue10;
+        else if([b.blockType isEqualToString:@"Value_100"])
+            totalValue+=kShapeValue100;
     }
 
     return totalValue;

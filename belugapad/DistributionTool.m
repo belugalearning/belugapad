@@ -482,7 +482,7 @@ static float kDistanceBetweenBlocks=70.0f;
         int farLeft=(numBlocks/2)*60;
         int farRight=lx-30;
         int topMost=ly-120;
-        int botMost=150;
+        int botMost=180;
         
         //startPosX=[theseSettings objectForKey:POS_X] ? [[theseSettings objectForKey:POS_X]intValue] : (arc4random() % 960) + 30;
         //startPosY=[theseSettings objectForKey:POS_Y] ? [[theseSettings objectForKey:POS_Y]intValue] : (arc4random() % 730) + 30;
@@ -692,11 +692,12 @@ static float kDistanceBetweenBlocks=70.0f;
     {
         id<Pairable>thisGO=currentPickupObject;
         CCSprite *s=currentPickupObject.mySprite;
+        [s setZOrder:100];
         
         if(currentPickupObject.MyContainer)
             [(id<Container>)currentPickupObject.MyContainer removeBlockFromMe:currentPickupObject];
         
-        CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:cage.Position];
+        CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:cage.MySprite.position];
         CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.1f];
         CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[thisGO destroyThisObject];}];
         CCSequence *sequence=[CCSequence actions:moveAct, fadeAct, cleanUp, nil];
@@ -1129,7 +1130,7 @@ static float kDistanceBetweenBlocks=70.0f;
             [loggingService logEvent:BL_PA_DT_TOUCH_MOVE_MOVE_BLOCK withAdditionalData:nil];
             hasLoggedMovedBlock=YES;
         }
-        if((location.x>=80.0f&&location.x<=lx-80.0f) && (location.y>=80.0f&&location.y<=ly-80.0f))
+        if((location.x>=80.0f&&location.x<=lx-80.0f) && (location.y>=60.0f&&location.y<=ly-80.0f))
         {
             // set it's position and move it!
             currentPickupObject.Position=location;
@@ -1189,10 +1190,10 @@ static float kDistanceBetweenBlocks=70.0f;
     if(currentPickupObject)
     {
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_block_dropped.wav")];
-        CGPoint curPOPos=currentPickupObject.Position;
+        
         // check all the gamobjects and search for a moveable object
         
-        if([BLMath DistanceBetween:curPOPos and:cage.Position]<90.0f && problemHasCage)
+        if(location.y<cage.Position.y+(cage.MySprite.contentSize.height/2) && problemHasCage)
         {
             [self removeBlockByCage];
             return;

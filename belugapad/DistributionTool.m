@@ -206,8 +206,16 @@ static float kDistanceBetweenBlocks=70.0f;
         {
             if([BLMath DistanceBetween:b.mySprite.position and:currentPickupObject.mySprite.position] < gw.Blackboard.MaxObjectDistance+50 || nearestObject==lastNewBondObject)
             {
-                [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)nearestObject).mySprite.position];
-                lastNewBondObject=nearestObject;
+                if(bondAllObjects)
+                {
+                    id<Container>theRightContainer=((id<Moveable>)nearestObject).MyContainer;
+                    id<Moveable>theRightBlock=[theRightContainer.BlocksInShape objectAtIndex:[theRightContainer.BlocksInShape count]-1];
+                    [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)theRightBlock).mySprite.position];
+                }
+                else{
+                    [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)nearestObject).mySprite.position];
+                    lastNewBondObject=nearestObject;
+                }
             }
         }
     }

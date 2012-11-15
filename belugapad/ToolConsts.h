@@ -88,9 +88,8 @@ extern const float kNumbersAlongFractionSlider;
 
 
 //distribution tool
-extern const float kShapeValueCircle;
-extern const float kShapeValueDiamond;
-extern const float kShapeValueEllipse;
-extern const float kShapeValueHouse;
-extern const float kShapeValueRoundedSquare;
-extern const float kShapeValueSquare;
+extern const float kShapeValue001;
+extern const float kShapeValue01;
+extern const float kShapeValue1;
+extern const float kShapeValue10;
+extern const float kShapeValue100;

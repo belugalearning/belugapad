@@ -645,18 +645,16 @@ static float kDistanceBetweenBlocks=70.0f;
             
             if([b.MyContainer isKindOfClass:[SGDtoolCage class]])continue;
             
-            if([b.blockType isEqualToString:@"Circle"])
-                totalValue+=kShapeValueCircle;
-            else if([b.blockType isEqualToString:@"Diamond"])
-                totalValue+=kShapeValueDiamond;
-            else if([b.blockType isEqualToString:@"Ellipse"])
-                totalValue+=kShapeValueEllipse;
-            else if([b.blockType isEqualToString:@"House"])
-                totalValue+=kShapeValueHouse;
-            else if([b.blockType isEqualToString:@"RoundedSquare"])
-                totalValue+=kShapeValueRoundedSquare;
-            else if([b.blockType isEqualToString:@"Square"])
-                totalValue+=kShapeValueSquare;
+            if([b.blockType isEqualToString:@"Value_001"])
+                totalValue+=kShapeValue001;
+            else if([b.blockType isEqualToString:@"Value_01"])
+                totalValue+=kShapeValue01;
+            else if([b.blockType isEqualToString:@"Value_1"])
+                totalValue+=kShapeValue1;
+            else if([b.blockType isEqualToString:@"Value_10"])
+                totalValue+=kShapeValue10;
+            else if([b.blockType isEqualToString:@"Value_100"])
+                totalValue+=kShapeValue100;
             
         }
     }
@@ -669,18 +667,16 @@ static float kDistanceBetweenBlocks=70.0f;
     
     for(SGDtoolBlock *b in thisContainer.BlocksInShape)
     {
-        if([b.blockType isEqualToString:@"Circle"])
-            totalValue+=kShapeValueCircle;
-        else if([b.blockType isEqualToString:@"Diamond"])
-            totalValue+=kShapeValueDiamond;
-        else if([b.blockType isEqualToString:@"Ellipse"])
-            totalValue+=kShapeValueEllipse;
-        else if([b.blockType isEqualToString:@"House"])
-            totalValue+=kShapeValueHouse;
-        else if([b.blockType isEqualToString:@"RoundedSquare"])
-            totalValue+=kShapeValueRoundedSquare;
-        else if([b.blockType isEqualToString:@"Square"])
-            totalValue+=kShapeValueSquare;
+        if([b.blockType isEqualToString:@"Value_001"])
+            totalValue+=kShapeValue001;
+        else if([b.blockType isEqualToString:@"Value_01"])
+            totalValue+=kShapeValue01;
+        else if([b.blockType isEqualToString:@"Value_1"])
+            totalValue+=kShapeValue1;
+        else if([b.blockType isEqualToString:@"Value_10"])
+            totalValue+=kShapeValue10;
+        else if([b.blockType isEqualToString:@"Value_100"])
+            totalValue+=kShapeValue100;
     }
     return totalValue;
 }
@@ -781,6 +777,11 @@ static float kDistanceBetweenBlocks=70.0f;
             int housesReq=[[solutions objectForKey:EVAL_HOUSES_REQUIRED]intValue];
             int roundedSquaresReq=[[solutions objectForKey:EVAL_ROUNDEDSQUARES_REQUIRED]intValue];
             int squaresReq=[[solutions objectForKey:EVAL_SQUARES_REQUIRED]intValue];
+            int val001Req=[[solutions objectForKey:EVAL_VALUE_001_REQUIRED]intValue];
+            int val01Req=[[solutions objectForKey:EVAL_VALUE_01_REQUIRED]intValue];
+            int val1Req=[[solutions objectForKey:EVAL_VALUE_1_REQUIRED]intValue];
+            int val10Req=[[solutions objectForKey:EVAL_VALUE_10_REQUIRED]intValue];
+            int val100Req=[[solutions objectForKey:EVAL_VALUE_100_REQUIRED]intValue];
             
             int circlesFound=0;
             int diamondsFound=0;
@@ -788,6 +789,11 @@ static float kDistanceBetweenBlocks=70.0f;
             int housesFound=0;
             int roundedSquaresFound=0;
             int squaresFound=0;
+            int val001Found=0;
+            int val01Found=0;
+            int val1Found=0;
+            int val10Found=0;
+            int val100Found=0;
             
             BOOL circlesMatch=NO;
             BOOL diamondsMatch=NO;
@@ -795,6 +801,11 @@ static float kDistanceBetweenBlocks=70.0f;
             BOOL housesMatch=NO;
             BOOL roundedSquaresMatch=NO;
             BOOL squaresMatch=NO;
+            BOOL val001Match=NO;
+            BOOL val01Match=NO;
+            BOOL val1Match=NO;
+            BOOL val10Match=NO;
+            BOOL val100Match=NO;
             
             BOOL shouldContinueEval=YES;
             
@@ -830,6 +841,16 @@ static float kDistanceBetweenBlocks=70.0f;
                         roundedSquaresFound++;
                     if([c.blockType isEqualToString:@"Square"])
                         squaresFound++;
+                    if([c.blockType isEqualToString:@"Value_001"])
+                        val001Found++;
+                    if([c.blockType isEqualToString:@"Value_01"])
+                        val01Found++;
+                    if([c.blockType isEqualToString:@"Value_1"])
+                        val1Found++;
+                    if([c.blockType isEqualToString:@"Value_10"])
+                        val10Found++;
+                    if([c.blockType isEqualToString:@"Value_100"])
+                        val100Found++;
                     
                 }
             }
@@ -867,8 +888,32 @@ static float kDistanceBetweenBlocks=70.0f;
             else
                 shouldContinueEval=NO;
             
+            if(val001Found==val001Req && shouldContinueEval)
+                val001Match=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(val01Found==val01Req && shouldContinueEval)
+                val01Match=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(val1Found==val1Req && shouldContinueEval)
+                val1Match=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(val10Found==val10Req && shouldContinueEval)
+                val10Match=YES;
+            else
+                shouldContinueEval=NO;
         
-            if(circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch){
+            if(val100Found==val100Req && shouldContinueEval)
+                val100Match=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch && val001Match && val01Match && val1Match && val10Match && val100Match){
                 solutionsFound++;
                 [matchedEvalAreas addObject:a];
                 [matchedSolutions addObject:solutions];
@@ -951,6 +996,11 @@ static float kDistanceBetweenBlocks=70.0f;
                 int housesReq=[[solutions objectForKey:EVAL_HOUSES_REQUIRED]intValue];
                 int roundedSquaresReq=[[solutions objectForKey:EVAL_ROUNDEDSQUARES_REQUIRED]intValue];
                 int squaresReq=[[solutions objectForKey:EVAL_SQUARES_REQUIRED]intValue];
+                int val001Req=[[solutions objectForKey:EVAL_VALUE_001_REQUIRED]intValue];
+                int val01Req=[[solutions objectForKey:EVAL_VALUE_01_REQUIRED]intValue];
+                int val1Req=[[solutions objectForKey:EVAL_VALUE_1_REQUIRED]intValue];
+                int val10Req=[[solutions objectForKey:EVAL_VALUE_10_REQUIRED]intValue];
+                int val100Req=[[solutions objectForKey:EVAL_VALUE_100_REQUIRED]intValue];
                 
                 int circlesFound=0;
                 int diamondsFound=0;
@@ -958,6 +1008,11 @@ static float kDistanceBetweenBlocks=70.0f;
                 int housesFound=0;
                 int roundedSquaresFound=0;
                 int squaresFound=0;
+                int val001Found=0;
+                int val01Found=0;
+                int val1Found=0;
+                int val10Found=0;
+                int val100Found=0;
                 
                 BOOL circlesMatch=NO;
                 BOOL diamondsMatch=NO;
@@ -965,6 +1020,11 @@ static float kDistanceBetweenBlocks=70.0f;
                 BOOL housesMatch=NO;
                 BOOL roundedSquaresMatch=NO;
                 BOOL squaresMatch=NO;
+                BOOL val001Match=NO;
+                BOOL val01Match=NO;
+                BOOL val1Match=NO;
+                BOOL val10Match=NO;
+                BOOL val100Match=NO;
                 
                 BOOL shouldContinueEval=YES;
                 
@@ -986,7 +1046,17 @@ static float kDistanceBetweenBlocks=70.0f;
                         roundedSquaresFound++;
                     if([b.blockType isEqualToString:@"Square"])
                         squaresFound++;
-                        
+                    if([b.blockType isEqualToString:@"Value_001"])
+                        val001Found++;
+                    if([b.blockType isEqualToString:@"Value_01"])
+                        val01Found++;
+                    if([b.blockType isEqualToString:@"Value_1"])
+                        val1Found++;
+                    if([b.blockType isEqualToString:@"Value_10"])
+                        val10Found++;
+                    if([b.blockType isEqualToString:@"Value_100"])
+                        val100Found++;
+                    
 
                 }
                 
@@ -1023,8 +1093,32 @@ static float kDistanceBetweenBlocks=70.0f;
                 else
                     shouldContinueEval=NO;
                 
+                if(val001Found==val001Req && shouldContinueEval)
+                    val001Match=YES;
+                else
+                    shouldContinueEval=NO;
                 
-                if(circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch){
+                if(val01Found==val01Req && shouldContinueEval)
+                    val01Match=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(val1Found==val1Req && shouldContinueEval)
+                    val1Match=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(val10Found==val10Req && shouldContinueEval)
+                    val10Match=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(val100Found==val100Req && shouldContinueEval)
+                    val100Match=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch && val001Match && val01Match && val1Match && val10Match && val100Match){
                     solutionsFound++;
                     [matchedContainers addObject:c];
                     [matchedSolutions addObject:solutions];
@@ -1304,10 +1398,10 @@ static float kDistanceBetweenBlocks=70.0f;
         if([c.BlocksInShape count]>=1){
             for(SGDtoolBlock *b in c.BlocksInShape)
             {
-                    if(b.Position.x<0)
+                    if(b.Position.x<60)
                         diffX+=60;
                 
-                    if(b.Position.y<0)
+                    if(b.Position.y<100)
                         diffY+=60;
             }
             

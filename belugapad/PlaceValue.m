@@ -2306,7 +2306,7 @@ static float kTimeToCageShake=7.0f;
         n.MountedObject=pO;
     }
     
-    
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_line_general_jump_(whoosh).wav")];
     [[gw Blackboard].PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];    
 }
 

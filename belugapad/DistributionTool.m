@@ -121,6 +121,7 @@ static float kDistanceBetweenBlocks=70.0f;
                 if([go conformsToProtocol:@protocol(Moveable)])
                     [((id<Moveable>)go).mySprite runAction:[InteractionFeedback shakeAction]];
             }
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_interaction_feedback_block_shaking.wav")];
         }
         
         if(isWinning)[toolHost shakeCommitButton];
@@ -1175,6 +1176,7 @@ static float kDistanceBetweenBlocks=70.0f;
             {
                 [loggingService logEvent:BL_PA_DT_TOUCH_START_PICKUP_BLOCK withAdditionalData:nil];
                 currentPickupObject=thisObj;
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_block_picked_up.wav")];
                 
                 if([currentPickupObject.MyContainer isKindOfClass:[SGDtoolCage class]]){
                     spawnedNewObj=NO;
@@ -1233,6 +1235,7 @@ static float kDistanceBetweenBlocks=70.0f;
         if([((id<Container>)currentPickupObject.MyContainer).LineType isEqualToString:@"Unbreakable"])
             return;
 
+        BOOL prx=NO;
         
         for(id go in gw.AllGameObjects)
         {
@@ -1252,15 +1255,22 @@ static float kDistanceBetweenBlocks=70.0f;
                 }
                 
                     
-                BOOL prx=[go amIProximateTo:location];
+                prx=[go amIProximateTo:location];
                 if(prx && !hasBeenProximate){
                     hasBeenProximate=YES;
-                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_bond_possible.wav")];
                 }
-                
+                if(prx){
+                    if(lastContainer!=((id<Moveable>)go).MyContainer||lastContainer==nil)
+                        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_bond_possible.wav")];
+                    lastContainer=((id<Moveable>)go).MyContainer;
+                    lastProxPos=location;
+                }
                 
             }
         }
+        
+        if([BLMath DistanceBetween:location and:lastProxPos]>100&&!bondAllObjects)
+            lastContainer=nil;
 
 
     }

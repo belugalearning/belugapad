@@ -575,6 +575,8 @@ static float kTimeToHintToolTray=7.0f;
     displayScore += rem;
     
     [Zubi createXPshards:shards fromLocation:ccp(cx, cy) withCallback:@selector(incrementDisplayScore:) fromCaller:(NSObject*)self];
+    
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_points_accumulating.wav")];
 }
 
 
@@ -855,6 +857,7 @@ static float kTimeToHintToolTray=7.0f;
     
     evalShowCommit=YES;
     
+    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_launch_general_background_score.mp3") loop:YES];
 }
 -(void)addCommitButton
 {
@@ -1634,11 +1637,13 @@ static float kTimeToHintToolTray=7.0f;
         metaQuestionForceComplete=YES;
     }
     
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_correct_answer.wav")];
     [self showProblemCompleteMessage];
     currentTool.ProblemComplete=YES;
 }
 -(void)doIncomplete
 {
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_incorrect_answer.wav")];
     timeBeforeUserInteraction=kDisableInteractionTime;
     isAnimatingIn=YES;
     [loggingService logEvent:BL_PA_FAIL withAdditionalData:nil];

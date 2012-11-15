@@ -857,6 +857,7 @@ static float kTimeToHintToolTray=7.0f;
     
     evalShowCommit=YES;
     
+    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:@"/sfx/go/sfx_launch_general_background_score.wav" loop:YES];
 }
 -(void)addCommitButton
 {

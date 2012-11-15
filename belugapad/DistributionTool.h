@@ -59,6 +59,8 @@ typedef enum
     BOOL showTotalValue;
     int cageObjectCount;
     
+    id lastContainer;
+    CGPoint lastProxPos;
     id nearestObject;
     float nearestObjectDistance;
     id lastNewBondObject;

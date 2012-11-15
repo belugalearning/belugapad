@@ -62,6 +62,7 @@
     BOOL hideRenderLayer;
     
     BOOL audioHasPlayedOverTarget;
+    BOOL audioHasPlayedOnTarget;
     
     BOOL hasEvaluated;
     

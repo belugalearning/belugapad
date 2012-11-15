@@ -219,6 +219,7 @@
     isIntroPlist=[[pdef objectForKey:IS_INTRO_PLIST]boolValue];
     nonPropEvalX=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_X]intValue];
     nonPropEvalY=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_Y]intValue];
+    solutionsDef=[pdef objectForKey:SOLUTIONS];
     
     numberWheelComponents=[[NSString stringWithFormat:@"%d", solutionNumber] length];
     
@@ -2022,6 +2023,32 @@
         if(![self checkForCorrectShapeSizes])return NO;
         else if([self checkForCorrectShapeSizes] && solutionNumber==sumWheel.OutputValue)return YES;
         else return NO;
+    }
+    else if(evalType==kProblemSingleShapeSize)
+    {
+        NSMutableArray *solutions=[NSMutableArray arrayWithArray:solutionsDef];
+        NSMutableArray *matchedGOs=[[NSMutableArray alloc]init];
+        
+        
+        for(DWGameObject *go in gw.AllGameObjects)
+        {
+            if([go isKindOfClass:[DWDotGridShapeGameObject class]])
+            {
+                NSNumber *tilesInShape=[NSNumber numberWithInt:[((DWDotGridShapeGameObject*)go).tiles count]];
+                if([solutions containsObject:tilesInShape])
+                {
+                    [solutions removeObject:tilesInShape];
+                    [matchedGOs addObject:go];
+                    
+                    NSLog(@"found solution. tilesInShape %d, matched shapes %d, total solution count %d", [tilesInShape intValue], [matchedGOs count], [solutionsDef count]);
+                }
+            }
+        }
+        
+        if([solutionsDef count]==[matchedGOs count])
+            return YES;
+        else
+            return NO;
     }
     else if(evalType==kProblemIntroPlist)
     {

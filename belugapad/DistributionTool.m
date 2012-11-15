@@ -1273,6 +1273,12 @@ static float kDistanceBetweenBlocks=70.0f;
             if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape count]>1||currentPickupObject.MyContainer==nil)
             {
                 id<Container>LayoutCont=currentPickupObject.MyContainer;
+                
+                if(currentPickupObject==[LayoutCont.BlocksInShape objectAtIndex:0])
+                {
+                    id<Moveable>object1=[LayoutCont.BlocksInShape objectAtIndex:1];
+                    object1.Position=ccp(object1.Position.x, object1.Position.y+52);
+                }
                 [LayoutCont removeBlockFromMe:currentPickupObject];
                 [LayoutCont layoutMyBlocks];
                 [self createContainerWithOne:currentPickupObject];

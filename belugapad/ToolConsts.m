@@ -76,9 +76,8 @@ const float kNumbersAlongFractionSlider=19;
 
 
 // distribution tool
-const float kShapeValueCircle=0.01f;
-const float kShapeValueDiamond=0.1f;
-const float kShapeValueEllipse=1.0f;
-const float kShapeValueHouse=10.0f;
-const float kShapeValueRoundedSquare=100.0f;
-const float kShapeValueSquare=1000.0f;
+const float kShapeValue001=0.01f;
+const float kShapeValue01=0.1f;
+const float kShapeValue1=1.0f;
+const float kShapeValue10=10.0f;
+const float kShapeValue100=100.0f;

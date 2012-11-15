@@ -199,9 +199,9 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     return users;
 }
 
--(void)setCurrentUserToNewUserWithNick:(NSString*)nick
-                           andPassword:(NSString*)password
-                              callback:(void (^)(BL_USER_CREATION_STATUS))callback
+-(void)createNewUserWithNick:(NSString*)nick
+                 andPassword:(NSString*)password
+                    callback:(void (^)(BL_USER_CREATION_STATUS))callback
 {
     // ensure no other users on device with same nick
     [allUsersDatabase open];
@@ -243,8 +243,6 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
             
             FMDatabase *db = bself->allUsersDatabase;
             [db executeUpdate:@"INSERT INTO users(id,nick,password) values(?,?,?)", urId, nick, password];
-            
-            [bself setCurrentUserToUserWithId:urId];
         }
         callback(status);
     };

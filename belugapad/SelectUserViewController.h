@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import "RootViewController.h"
-#import "ColorPickerImageView.h"
+
 @class AppDelegate;
 
 @interface SelectUserViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
@@ -18,8 +17,4 @@
     IBOutlet UIView *editUserView;
     IBOutlet UIView *loadExistingUserView;
 }
-
-//@property (retain, nonatomic) IBOutlet CouchUITableSource *dataSource;
-@property (retain, nonatomic) IBOutlet ColorPickerImageView *colorWheel;
-
 @end

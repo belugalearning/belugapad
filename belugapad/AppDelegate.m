@@ -13,8 +13,6 @@
 #import "ContentService.h"
 #import "UsersService.h"
 #import "SelectUserViewController.h"
-#import "LoadingViewController.h"
-#import "ZubiIntro.h"
 #import "JMap.h"
 #import "ToolHost.h"
 #import "mach/mach.h"
@@ -56,11 +54,7 @@
     // Init the window
     window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    LoadingViewController *lvc=[[LoadingViewController alloc] init];
-    [window_ setRootViewController:lvc];
-    //[self.window addSubview:lvc.view];
     [self.window makeKeyAndVisible];
-    [lvc release];
     
     // Try to use CADisplayLink director
     // if it fails (SDK < 3.1) use the default director

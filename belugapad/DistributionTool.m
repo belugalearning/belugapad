@@ -12,6 +12,7 @@
 
 #import "UsersService.h"
 #import "ToolHost.h"
+#import "ToolConsts.h"
 
 #import "global.h"
 #import "BLMath.h"
@@ -30,14 +31,6 @@
 #define DRAW_DEPTH 1
 static float kTimeSinceAction=7.0f;
 static float kDistanceBetweenBlocks=70.0f;
-
-
-static float kShapeValueCircle=0.01f;
-static float kShapeValueDiamond=0.1f;
-static float kShapeValueEllipse=1.0f;
-static float kShapeValueHouse=10.0;
-static float kShapeValueRoundedSquare=100.0f;
-static float kShapeValueSquare=1000.0f;
 
 
 @interface DistributionTool()
@@ -128,6 +121,7 @@ static float kShapeValueSquare=1000.0f;
                 if([go conformsToProtocol:@protocol(Moveable)])
                     [((id<Moveable>)go).mySprite runAction:[InteractionFeedback shakeAction]];
             }
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_interaction_feedback_block_shaking.wav")];
         }
         
         if(isWinning)[toolHost shakeCommitButton];
@@ -213,8 +207,16 @@ static float kShapeValueSquare=1000.0f;
         {
             if([BLMath DistanceBetween:b.mySprite.position and:currentPickupObject.mySprite.position] < gw.Blackboard.MaxObjectDistance+50 || nearestObject==lastNewBondObject)
             {
-                [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)nearestObject).mySprite.position];
-                lastNewBondObject=nearestObject;
+                if(bondAllObjects)
+                {
+                    id<Container>theRightContainer=((id<Moveable>)nearestObject).MyContainer;
+                    id<Moveable>theRightBlock=[theRightContainer.BlocksInShape objectAtIndex:[theRightContainer.BlocksInShape count]-1];
+                    [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)theRightBlock).mySprite.position];
+                }
+                else{
+                    [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)nearestObject).mySprite.position];
+                    lastNewBondObject=nearestObject;
+                }
             }
         }
     }
@@ -435,6 +437,8 @@ static float kShapeValueSquare=1000.0f;
     NSString *blockType = [theseSettings objectForKey:BLOCK_TYPE];
     NSString *thisColour = [theseSettings objectForKey:TINT_COLOUR];
     BOOL unbreakableBonds = [[theseSettings objectForKey:UNBREAKABLE_BONDS]boolValue];
+    BOOL showContainerCount = [[theseSettings objectForKey:SHOW_CONTAINER_VALUE]boolValue];
+
     
     if(!thisColour)
         thisColour=@"WHITE";
@@ -461,7 +465,7 @@ static float kShapeValueSquare=1000.0f;
     if(![usedShapeTypes containsObject:blockType])
         [usedShapeTypes addObject:blockType];
     
-    SGDtoolContainer *container = [[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:label andRenderLayer:renderLayer];
+    SGDtoolContainer *container = [[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:label andShowCount:showContainerCount andRenderLayer:renderLayer];
     container.BlockType=blockType;
     
     if(unbreakableBonds)
@@ -480,7 +484,7 @@ static float kShapeValueSquare=1000.0f;
         int farLeft=(numBlocks/2)*60;
         int farRight=lx-30;
         int topMost=ly-120;
-        int botMost=100;
+        int botMost=180;
         
         //startPosX=[theseSettings objectForKey:POS_X] ? [[theseSettings objectForKey:POS_X]intValue] : (arc4random() % 960) + 30;
         //startPosY=[theseSettings objectForKey:POS_Y] ? [[theseSettings objectForKey:POS_Y]intValue] : (arc4random() % 730) + 30;
@@ -601,13 +605,18 @@ static float kShapeValueSquare=1000.0f;
     }
 }
 
+-(void)addDestroyedLabel:(NSString*)thisGroup
+{
+    [destroyedLabelledGroups addObject:thisGroup];
+}
+
 -(void)createContainerWithOne:(id)Object
 {
     id<Container> container;
     //NSLog(@"create container - there are %d destroyed labelled groups", [destroyedLabelledGroups count]);
     if([destroyedLabelledGroups count]==0)
     {
-        container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:nil andRenderLayer:nil];
+        container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:nil andShowCount:NO andRenderLayer:nil];
 //        container.Label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",(int)container] fontName:SOURCE fontSize:15.0f];
 //        [container.Label setPosition:ccp(cx,cy)];
 //        [renderLayer addChild:container.Label];
@@ -615,7 +624,7 @@ static float kShapeValueSquare=1000.0f;
     else
     {
         NSLog(@"creating labelled group: %@",[destroyedLabelledGroups objectAtIndex:0]);
-        container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:[destroyedLabelledGroups objectAtIndex:0] andRenderLayer:renderLayer];
+        container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:[destroyedLabelledGroups objectAtIndex:0] andShowCount:NO andRenderLayer:renderLayer];
         [destroyedLabelledGroups removeObjectAtIndex:0];
         [existingGroups addObject:[container.Label string]];
     }
@@ -624,6 +633,7 @@ static float kShapeValueSquare=1000.0f;
     container.BlockType=((id<Configurable>)Object).blockType;
     [container addBlockToMe:Object];
     [container layoutMyBlocks];
+    [container repositionLabel];
 }
 
 -(float)showValueOfAllObjects
@@ -637,18 +647,16 @@ static float kShapeValueSquare=1000.0f;
             
             if([b.MyContainer isKindOfClass:[SGDtoolCage class]])continue;
             
-            if([b.blockType isEqualToString:@"Circle"])
-                totalValue+=kShapeValueCircle;
-            else if([b.blockType isEqualToString:@"Diamond"])
-                totalValue+=kShapeValueDiamond;
-            else if([b.blockType isEqualToString:@"Ellipse"])
-                totalValue+=kShapeValueEllipse;
-            else if([b.blockType isEqualToString:@"House"])
-                totalValue+=kShapeValueHouse;
-            else if([b.blockType isEqualToString:@"RoundedSquare"])
-                totalValue+=kShapeValueRoundedSquare;
-            else if([b.blockType isEqualToString:@"Square"])
-                totalValue+=kShapeValueSquare;
+            if([b.blockType isEqualToString:@"Value_001"])
+                totalValue+=kShapeValue001;
+            else if([b.blockType isEqualToString:@"Value_01"])
+                totalValue+=kShapeValue01;
+            else if([b.blockType isEqualToString:@"Value_1"])
+                totalValue+=kShapeValue1;
+            else if([b.blockType isEqualToString:@"Value_10"])
+                totalValue+=kShapeValue10;
+            else if([b.blockType isEqualToString:@"Value_100"])
+                totalValue+=kShapeValue100;
             
         }
     }
@@ -661,18 +669,16 @@ static float kShapeValueSquare=1000.0f;
     
     for(SGDtoolBlock *b in thisContainer.BlocksInShape)
     {
-        if([b.blockType isEqualToString:@"Circle"])
-            totalValue+=kShapeValueCircle;
-        else if([b.blockType isEqualToString:@"Diamond"])
-            totalValue+=kShapeValueDiamond;
-        else if([b.blockType isEqualToString:@"Ellipse"])
-            totalValue+=kShapeValueEllipse;
-        else if([b.blockType isEqualToString:@"House"])
-            totalValue+=kShapeValueHouse;
-        else if([b.blockType isEqualToString:@"RoundedSquare"])
-            totalValue+=kShapeValueRoundedSquare;
-        else if([b.blockType isEqualToString:@"Square"])
-            totalValue+=kShapeValueSquare;
+        if([b.blockType isEqualToString:@"Value_001"])
+            totalValue+=kShapeValue001;
+        else if([b.blockType isEqualToString:@"Value_01"])
+            totalValue+=kShapeValue01;
+        else if([b.blockType isEqualToString:@"Value_1"])
+            totalValue+=kShapeValue1;
+        else if([b.blockType isEqualToString:@"Value_10"])
+            totalValue+=kShapeValue10;
+        else if([b.blockType isEqualToString:@"Value_100"])
+            totalValue+=kShapeValue100;
     }
     return totalValue;
 }
@@ -684,11 +690,12 @@ static float kShapeValueSquare=1000.0f;
     {
         id<Pairable>thisGO=currentPickupObject;
         CCSprite *s=currentPickupObject.mySprite;
+        [s setZOrder:100];
         
         if(currentPickupObject.MyContainer)
             [(id<Container>)currentPickupObject.MyContainer removeBlockFromMe:currentPickupObject];
         
-        CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:cage.Position];
+        CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:cage.MySprite.position];
         CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.1f];
         CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[thisGO destroyThisObject];}];
         CCSequence *sequence=[CCSequence actions:moveAct, fadeAct, cleanUp, nil];
@@ -772,6 +779,11 @@ static float kShapeValueSquare=1000.0f;
             int housesReq=[[solutions objectForKey:EVAL_HOUSES_REQUIRED]intValue];
             int roundedSquaresReq=[[solutions objectForKey:EVAL_ROUNDEDSQUARES_REQUIRED]intValue];
             int squaresReq=[[solutions objectForKey:EVAL_SQUARES_REQUIRED]intValue];
+            int val001Req=[[solutions objectForKey:EVAL_VALUE_001_REQUIRED]intValue];
+            int val01Req=[[solutions objectForKey:EVAL_VALUE_01_REQUIRED]intValue];
+            int val1Req=[[solutions objectForKey:EVAL_VALUE_1_REQUIRED]intValue];
+            int val10Req=[[solutions objectForKey:EVAL_VALUE_10_REQUIRED]intValue];
+            int val100Req=[[solutions objectForKey:EVAL_VALUE_100_REQUIRED]intValue];
             
             int circlesFound=0;
             int diamondsFound=0;
@@ -779,6 +791,11 @@ static float kShapeValueSquare=1000.0f;
             int housesFound=0;
             int roundedSquaresFound=0;
             int squaresFound=0;
+            int val001Found=0;
+            int val01Found=0;
+            int val1Found=0;
+            int val10Found=0;
+            int val100Found=0;
             
             BOOL circlesMatch=NO;
             BOOL diamondsMatch=NO;
@@ -786,6 +803,11 @@ static float kShapeValueSquare=1000.0f;
             BOOL housesMatch=NO;
             BOOL roundedSquaresMatch=NO;
             BOOL squaresMatch=NO;
+            BOOL val001Match=NO;
+            BOOL val01Match=NO;
+            BOOL val1Match=NO;
+            BOOL val10Match=NO;
+            BOOL val100Match=NO;
             
             BOOL shouldContinueEval=YES;
             
@@ -821,6 +843,16 @@ static float kShapeValueSquare=1000.0f;
                         roundedSquaresFound++;
                     if([c.blockType isEqualToString:@"Square"])
                         squaresFound++;
+                    if([c.blockType isEqualToString:@"Value_001"])
+                        val001Found++;
+                    if([c.blockType isEqualToString:@"Value_01"])
+                        val01Found++;
+                    if([c.blockType isEqualToString:@"Value_1"])
+                        val1Found++;
+                    if([c.blockType isEqualToString:@"Value_10"])
+                        val10Found++;
+                    if([c.blockType isEqualToString:@"Value_100"])
+                        val100Found++;
                     
                 }
             }
@@ -858,8 +890,32 @@ static float kShapeValueSquare=1000.0f;
             else
                 shouldContinueEval=NO;
             
+            if(val001Found==val001Req && shouldContinueEval)
+                val001Match=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(val01Found==val01Req && shouldContinueEval)
+                val01Match=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(val1Found==val1Req && shouldContinueEval)
+                val1Match=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(val10Found==val10Req && shouldContinueEval)
+                val10Match=YES;
+            else
+                shouldContinueEval=NO;
         
-            if(circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch){
+            if(val100Found==val100Req && shouldContinueEval)
+                val100Match=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch && val001Match && val01Match && val1Match && val10Match && val100Match){
                 solutionsFound++;
                 [matchedEvalAreas addObject:a];
                 [matchedSolutions addObject:solutions];
@@ -920,6 +976,147 @@ static float kShapeValueSquare=1000.0f;
 
 }
 
+-(BOOL)evalValueOfEvalAreas
+{
+    int solutionsFound=0;
+    NSMutableArray *matchedEvalAreas=[[NSMutableArray alloc]init];
+    NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
+    NSMutableArray *solutionsLeft=[NSMutableArray arrayWithArray:solutionsDef];
+    
+    for(int i=0;i<[evalAreas count];i++)
+    {
+        for(NSDictionary *solutions in solutionsDef)
+        {
+            if(![solutionsLeft containsObject:solutions])continue;
+            
+            float valRequired=[[solutions objectForKey:VALUE]floatValue];
+            
+            float evalAreaVal=0.0f;
+            
+            
+            
+            CGRect thisRect=CGRectNull;
+            NSArray *a=[evalAreas objectAtIndex:i];
+            
+            if([matchedEvalAreas containsObject:a])continue;
+            
+            for(CCSprite *s in a)
+            {
+                thisRect=CGRectUnion(thisRect, s.boundingBox);
+            }
+            
+            for(id go in gw.AllGameObjects)
+            {
+                if([go conformsToProtocol:@protocol(Configurable)])
+                {
+                    id<Configurable,Moveable>c=(id<Configurable,Moveable>)go;
+                    
+                    if(!CGRectContainsPoint(thisRect, c.Position))continue;
+                    
+                    if([c.blockType isEqualToString:@"Value_001"])
+                        evalAreaVal+=kShapeValue001;
+                    if([c.blockType isEqualToString:@"Value_01"])
+                        evalAreaVal+=kShapeValue01;
+                    if([c.blockType isEqualToString:@"Value_1"])
+                        evalAreaVal+=kShapeValue1;
+                    if([c.blockType isEqualToString:@"Value_10"])
+                        evalAreaVal+=kShapeValue10;
+                    if([c.blockType isEqualToString:@"Value_100"])
+                        evalAreaVal+=kShapeValue100;
+                    
+                }
+            }
+            
+            NSNumber *evalarea=[NSNumber numberWithFloat:evalAreaVal];
+            NSNumber *solution=[NSNumber numberWithFloat:valRequired];
+            
+            NSLog(@"evalarea val %g, expected val %g, is equal? %@", evalAreaVal, [[solutions objectForKey:VALUE]floatValue],[evalarea isEqualToNumber:solution]?@"YES":@"NO");
+            
+            
+            if([evalarea isEqualToNumber:solution]){
+                solutionsFound++;
+                [matchedEvalAreas addObject:a];
+                [solutionsLeft removeObjectIdenticalTo:solutions];
+                break;
+            }
+            
+            
+        }
+    }
+    
+    NSLog(@"solutions found %d req %d", solutionsFound, [solutionsDef count]);
+    if(solutionsFound==[solutionsDef count])
+        return YES;
+    else
+        return NO;
+}
+
+
+-(BOOL)evalValueOfShapesInContainers
+{
+    int solutionsFound=0;
+    NSMutableArray *matchedContainers=[[NSMutableArray alloc]init];
+    NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
+    
+    
+    for(id thisC in gw.AllGameObjectsCopy)
+    {
+        if([thisC isKindOfClass:[SGDtoolContainer class]])
+        {
+            SGDtoolContainer *c=(SGDtoolContainer*)thisC;
+            for(NSDictionary *solutions in solutionsDef)
+            {
+                if([matchedSolutions containsObject:solutions])continue;
+                
+                float valRequired=[[solutions objectForKey:VALUE]floatValue];
+                
+                float containerVal=0.0f;
+                
+                
+                
+                if([matchedContainers containsObject:c])continue;
+                
+                for(SGDtoolBlock *b in c.BlocksInShape)
+                {
+                
+                    if([b.blockType isEqualToString:@"Value_001"])
+                        containerVal+=kShapeValue001;
+                    if([b.blockType isEqualToString:@"Value_01"])
+                        containerVal+=kShapeValue01;
+                    if([b.blockType isEqualToString:@"Value_1"])
+                        containerVal+=kShapeValue1;
+                    if([b.blockType isEqualToString:@"Value_10"])
+                        containerVal+=kShapeValue10;
+                    if([b.blockType isEqualToString:@"Value_100"])
+                        containerVal+=kShapeValue100;
+                    
+                    
+                }
+                
+                NSNumber *container=[NSNumber numberWithFloat:containerVal];
+                NSNumber *solution=[NSNumber numberWithFloat:valRequired];
+                
+                NSLog(@"container val %g, expected val %g, is equal? %@", containerVal, [[solutions objectForKey:VALUE]floatValue],[container isEqualToNumber:solution]?@"YES":@"NO");
+                
+                if([container isEqualToNumber:solution]){
+                    solutionsFound++;
+                    [matchedContainers addObject:c];
+                    [matchedSolutions addObject:solutions];
+                    break;
+                }
+                
+                
+            }
+        }
+    }
+    
+    NSLog(@"solutions found %d req %d", solutionsFound, [solutionsDef count]);
+    if(solutionsFound==[solutionsDef count])
+        return YES;
+    else
+        return NO;
+}
+
 -(BOOL)evalNumberOfShapesAndTypesInContainers
 {
     int solutionsFound=0;
@@ -942,6 +1139,11 @@ static float kShapeValueSquare=1000.0f;
                 int housesReq=[[solutions objectForKey:EVAL_HOUSES_REQUIRED]intValue];
                 int roundedSquaresReq=[[solutions objectForKey:EVAL_ROUNDEDSQUARES_REQUIRED]intValue];
                 int squaresReq=[[solutions objectForKey:EVAL_SQUARES_REQUIRED]intValue];
+                int val001Req=[[solutions objectForKey:EVAL_VALUE_001_REQUIRED]intValue];
+                int val01Req=[[solutions objectForKey:EVAL_VALUE_01_REQUIRED]intValue];
+                int val1Req=[[solutions objectForKey:EVAL_VALUE_1_REQUIRED]intValue];
+                int val10Req=[[solutions objectForKey:EVAL_VALUE_10_REQUIRED]intValue];
+                int val100Req=[[solutions objectForKey:EVAL_VALUE_100_REQUIRED]intValue];
                 
                 int circlesFound=0;
                 int diamondsFound=0;
@@ -949,6 +1151,11 @@ static float kShapeValueSquare=1000.0f;
                 int housesFound=0;
                 int roundedSquaresFound=0;
                 int squaresFound=0;
+                int val001Found=0;
+                int val01Found=0;
+                int val1Found=0;
+                int val10Found=0;
+                int val100Found=0;
                 
                 BOOL circlesMatch=NO;
                 BOOL diamondsMatch=NO;
@@ -956,6 +1163,11 @@ static float kShapeValueSquare=1000.0f;
                 BOOL housesMatch=NO;
                 BOOL roundedSquaresMatch=NO;
                 BOOL squaresMatch=NO;
+                BOOL val001Match=NO;
+                BOOL val01Match=NO;
+                BOOL val1Match=NO;
+                BOOL val10Match=NO;
+                BOOL val100Match=NO;
                 
                 BOOL shouldContinueEval=YES;
                 
@@ -977,10 +1189,19 @@ static float kShapeValueSquare=1000.0f;
                         roundedSquaresFound++;
                     if([b.blockType isEqualToString:@"Square"])
                         squaresFound++;
-                        
+                    if([b.blockType isEqualToString:@"Value_001"])
+                        val001Found++;
+                    if([b.blockType isEqualToString:@"Value_01"])
+                        val01Found++;
+                    if([b.blockType isEqualToString:@"Value_1"])
+                        val1Found++;
+                    if([b.blockType isEqualToString:@"Value_10"])
+                        val10Found++;
+                    if([b.blockType isEqualToString:@"Value_100"])
+                        val100Found++;
+                    
 
                 }
-                
                 
                 NSLog(@"(%d) Circles f:%d r:%d, Houses f:%d r:%d", [evalAreas indexOfObject:c], circlesFound, circlesReq, housesFound, housesReq);
                 
@@ -1014,8 +1235,32 @@ static float kShapeValueSquare=1000.0f;
                 else
                     shouldContinueEval=NO;
                 
+                if(val001Found==val001Req && shouldContinueEval)
+                    val001Match=YES;
+                else
+                    shouldContinueEval=NO;
                 
-                if(circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch){
+                if(val01Found==val01Req && shouldContinueEval)
+                    val01Match=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(val1Found==val1Req && shouldContinueEval)
+                    val1Match=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(val10Found==val10Req && shouldContinueEval)
+                    val10Match=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(val100Found==val100Req && shouldContinueEval)
+                    val100Match=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch && val001Match && val01Match && val1Match && val10Match && val100Match){
                     solutionsFound++;
                     [matchedContainers addObject:c];
                     [matchedSolutions addObject:solutions];
@@ -1072,6 +1317,7 @@ static float kShapeValueSquare=1000.0f;
             {
                 [loggingService logEvent:BL_PA_DT_TOUCH_START_PICKUP_BLOCK withAdditionalData:nil];
                 currentPickupObject=thisObj;
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_block_picked_up.wav")];
                 
                 if([currentPickupObject.MyContainer isKindOfClass:[SGDtoolCage class]]){
                     spawnedNewObj=NO;
@@ -1121,7 +1367,7 @@ static float kShapeValueSquare=1000.0f;
             [loggingService logEvent:BL_PA_DT_TOUCH_MOVE_MOVE_BLOCK withAdditionalData:nil];
             hasLoggedMovedBlock=YES;
         }
-        if((location.x>=80.0f&&location.x<=lx-80.0f) && (location.y>=80.0f&&location.y<=ly-80.0f))
+        if((location.x>=80.0f&&location.x<=lx-80.0f) && (location.y>=60.0f&&location.y<=ly-80.0f))
         {
             // set it's position and move it!
             currentPickupObject.Position=location;
@@ -1130,6 +1376,7 @@ static float kShapeValueSquare=1000.0f;
         if([((id<Container>)currentPickupObject.MyContainer).LineType isEqualToString:@"Unbreakable"])
             return;
 
+        BOOL prx=NO;
         
         for(id go in gw.AllGameObjects)
         {
@@ -1149,15 +1396,22 @@ static float kShapeValueSquare=1000.0f;
                 }
                 
                     
-                BOOL prx=[go amIProximateTo:location];
+                prx=[go amIProximateTo:location];
                 if(prx && !hasBeenProximate){
                     hasBeenProximate=YES;
-                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_bond_possible.wav")];
                 }
-                
+                if(prx){
+                    if(lastContainer!=((id<Moveable>)go).MyContainer||lastContainer==nil)
+                        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_bond_possible.wav")];
+                    lastContainer=((id<Moveable>)go).MyContainer;
+                    lastProxPos=location;
+                }
                 
             }
         }
+        
+        if([BLMath DistanceBetween:location and:lastProxPos]>100&&!bondAllObjects)
+            lastContainer=nil;
 
 
     }
@@ -1181,10 +1435,10 @@ static float kShapeValueSquare=1000.0f;
     if(currentPickupObject)
     {
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_block_dropped.wav")];
-        CGPoint curPOPos=currentPickupObject.Position;
+        
         // check all the gamobjects and search for a moveable object
         
-        if([BLMath DistanceBetween:curPOPos and:cage.Position]<90.0f && problemHasCage)
+        if(location.y<cage.Position.y+(cage.MySprite.contentSize.height/2) && problemHasCage)
         {
             [self removeBlockByCage];
             return;
@@ -1264,7 +1518,13 @@ static float kShapeValueSquare=1000.0f;
             if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape count]>1||currentPickupObject.MyContainer==nil)
             {
                 id<Container>LayoutCont=currentPickupObject.MyContainer;
-                [((id<Container>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
+                
+                if(currentPickupObject==[LayoutCont.BlocksInShape objectAtIndex:0])
+                {
+                    id<Moveable>object1=[LayoutCont.BlocksInShape objectAtIndex:1];
+                    object1.Position=ccp(object1.Position.x, object1.Position.y+52);
+                }
+                [LayoutCont removeBlockFromMe:currentPickupObject];
                 [LayoutCont layoutMyBlocks];
                 [self createContainerWithOne:currentPickupObject];
             }
@@ -1279,6 +1539,7 @@ static float kShapeValueSquare=1000.0f;
     // if it has a container
     if(currentPickupObject.MyContainer)
     {
+        [currentPickupObject.MyContainer repositionLabel];
         // check whether any of the blocks are outside of the screen bounds - then set the position and move it back into the screen bounds
         float diffX=0.0f;
         float diffY=0.0f;
@@ -1288,10 +1549,10 @@ static float kShapeValueSquare=1000.0f;
         if([c.BlocksInShape count]>=1){
             for(SGDtoolBlock *b in c.BlocksInShape)
             {
-                    if(b.Position.x<0)
+                    if(b.Position.x<60)
                         diffX+=60;
                 
-                    if(b.Position.y<0)
+                    if(b.Position.y<100)
                         diffY+=60;
             }
             
@@ -1585,6 +1846,16 @@ static float kShapeValueSquare=1000.0f;
     else if(evalType==kCheckGroupTypeAndNumber)
     {
         return [self evalGroupTypesAndShapes];
+    }
+    
+    else if(evalType==kCheckContainerValues)
+    {
+        return [self evalValueOfShapesInContainers];
+    }
+    
+    else if(evalType==kCheckEvalAreaValues)
+    {
+        return [self evalValueOfEvalAreas];
     }
     
 

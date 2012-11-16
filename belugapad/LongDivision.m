@@ -118,11 +118,14 @@ const float kScaleOfLesserBlocks=0.6f;
         {
             [lblCurrentTotal setColor:ccc3(0, 255,0)];
             audioHasPlayedOverTarget=NO;
+            audioHasPlayedOnTarget=YES;
+                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_block_target_reached.wav")];
         }else{
             [lblCurrentTotal setColor:ccc3(255,0,0)];
             if(!audioHasPlayedOverTarget){
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_block_over_target.wav")];
                 audioHasPlayedOverTarget=YES;
+                audioHasPlayedOnTarget=NO;
             }
         }
     }
@@ -251,7 +254,7 @@ const float kScaleOfLesserBlocks=0.6f;
     [lblCurrentTotal setPosition:ccp(cx,50)];
     [renderLayer addChild:lblCurrentTotal];
     
-    line=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/line.png")];
+    line=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Bar.png")];
     [line setPosition:ccp(cx,450)];
     [topSection addChild:line];
     
@@ -542,6 +545,7 @@ const float kScaleOfLesserBlocks=0.6f;
 
 -(void)createBlockAtIndex:(int)index withBase:(float)base
 {
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_long_division_general_growing_block.wav")];
     NSMutableDictionary *curDict=[[NSMutableDictionary alloc]init];
 //    float myBase=[[rowMultipliers objectAtIndex:activeRow]floatValue];
     float myBase=base;

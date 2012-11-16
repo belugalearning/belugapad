@@ -20,7 +20,9 @@ typedef enum
     kCheckGroupTypeAndNumber=3,
     kIncludeShapeSizes=4,
     kCheckEvalAreasForTypes=5,
-    kCheckGroupsForTypes=6
+    kCheckGroupsForTypes=6,
+    kCheckContainerValues=7,
+    kCheckEvalAreaValues=8
 }DistributionEvalType;
 
 @interface DistributionTool : ToolScene
@@ -59,6 +61,8 @@ typedef enum
     BOOL showTotalValue;
     int cageObjectCount;
     
+    id lastContainer;
+    CGPoint lastProxPos;
     id nearestObject;
     float nearestObjectDistance;
     id lastNewBondObject;
@@ -96,6 +100,7 @@ typedef enum
 -(float)metaQuestionTitleYLocation;
 -(float)metaQuestionAnswersYLocation;
 -(void)createShapeWith:(int)blocks andWith:(NSDictionary*)theseSettings;
+-(void)addDestroyedLabel:(NSString*)thisGroup;
 -(void)createContainerWithOne:(id)Object;
 -(void)removeBlockByCage;
 -(BOOL)evalGroupTypesAndShapes;

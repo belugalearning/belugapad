@@ -10,6 +10,7 @@
 #import "BLMath.h"
 #import "TouchXML.h"
 #import "global.h"
+#import "SimpleAudioEngine.h"
 
 const float kBaseMaxForce=6000.0f;
 const float kBaseMaxSpeed=800.0f;
@@ -138,6 +139,7 @@ static float kSubParticleOffset=10.0f;
         
         retainedXP++;
     }
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_shards_dispersed.wav")];
 }
 
 -(void)dumpXP
@@ -169,7 +171,8 @@ static float kSubParticleOffset=10.0f;
         [hostLayer addChild:shardSprite];
         
         retainedXP--;
-    }    
+    }
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_shards_flying_back.wav")];
 }
 
 -(void)setColor:(ccColor4F)aColor
@@ -366,7 +369,7 @@ static float kSubParticleOffset=10.0f;
         for (CCSprite *s in shardsExpiring) {
             [hostLayer removeChild:s cleanup:YES];
         }
-        
+
         [shardsExpiring removeAllObjects];
         
         //reset expiry

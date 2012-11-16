@@ -160,6 +160,8 @@ float timerIgnoreFrog;
     
     [rambler.UserJumps addObject:[NSValue valueWithCGPoint:ccp((lastFrogLoc-initStartLoc)*rambler.CurrentSegmentValue, lastBubbleValue - (lastFrogLoc * rambler.CurrentSegmentValue))]];
     lastFrogLoc=lastBubbleLoc;
+    
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_line_general_jump_(whoosh).wav")];
 }
 
 -(void)slideFrog
@@ -707,7 +709,7 @@ float timerIgnoreFrog;
     [bubbleSprite setScale:0.87f];
     [bubbleSprite runAction:[InteractionFeedback enlargeTo1xAction]];
     
-    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/nline/pickup.wav")];
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_line_general_pick_bubble_up.wav")];
 }
 
 -(void)animReleaseBubble
@@ -718,12 +720,13 @@ float timerIgnoreFrog;
     [bubbleSprite setScale:1.15f];
     [bubbleSprite runAction:[InteractionFeedback reduceTo1xAction]];    
     
-    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/nline/release.wav")];
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_line_general_drop_button.wav")];
 }
 
 -(void)animShakeBubble
 {
     [bubbleSprite runAction:[InteractionFeedback shakeAction]];
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_line_interaction_feedback_bubble_shaking.wav")];
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

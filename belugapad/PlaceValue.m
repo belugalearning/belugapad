@@ -1147,10 +1147,15 @@ static float kTimeToCageShake=7.0f;
     }
     else
     {
-        if(numberOfColumns>1)
+        if(numberOfColumns>1 && allowCondensing && allowMulching)
         {
             showBaseSelection=YES;
             autoBaseSelection=YES;
+        }
+        else if(numberOfColumns>1 && !allowCondensing && !allowMulching)
+        {
+            showBaseSelection=NO;
+            autoBaseSelection=NO;
         }
     }
     if(autoBaseSelection)allowDeselect=NO;
@@ -2293,6 +2298,15 @@ static float kTimeToCageShake=7.0f;
             [go handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];
         }
     }
+    
+    DWPlaceValueBlockGameObject *pO=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
+    if(pO.LastMount){
+        pO.Mount=pO.LastMount;
+        DWPlaceValueNetGameObject *n=(DWPlaceValueNetGameObject*)pO.LastMount;
+        n.MountedObject=pO;
+    }
+    
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_line_general_jump_(whoosh).wav")];
     [[gw Blackboard].PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];    
 }
 
@@ -3441,6 +3455,7 @@ static float kTimeToCageShake=7.0f;
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [self resetPickupObjectPos];
     [self setTouchVarsToOff];
 }
 

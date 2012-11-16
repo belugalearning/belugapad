@@ -342,12 +342,9 @@
 		7FA38AA4154532260031E59D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38AA3154532260031E59D /* Security.framework */; };
 		7FA38AA61545322E0031E59D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38AA51545322E0031E59D /* SystemConfiguration.framework */; };
 		7FA38AA8154532370031E59D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38AA7154532360031E59D /* libz.dylib */; };
-		7FA38AAF154533230031E59D /* CCScreenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38AAE154533230031E59D /* CCScreenshot.m */; };
-		7FA38AB2154533300031E59D /* ColorPickerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38AB1154533300031E59D /* ColorPickerImageView.m */; };
 		7FA38AB91545334B0031E59D /* SelectUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38AB71545334B0031E59D /* SelectUserViewController.m */; };
 		7FA38ABA1545334B0031E59D /* SelectUserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FA38AB81545334B0031E59D /* SelectUserViewController.xib */; };
 		7FA38AC01545335A0031E59D /* UsersService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38ABE1545335A0031E59D /* UsersService.m */; };
-		7FA38AD2154534340031E59D /* EditZubi.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38AD1154534340031E59D /* EditZubi.m */; };
 		7FA84BC516107569001FEA82 /* SGBtxeObjectNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA84BC416107569001FEA82 /* SGBtxeObjectNumber.m */; };
 		7FABE68F14B33D5100ED2D0C /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */; };
 		7FABE69114B33D5600ED2D0C /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */; };
@@ -358,7 +355,6 @@
 		7FB11DC31595277200095669 /* DWPlaceValueBlockGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB11DBE1595277200095669 /* DWPlaceValueBlockGameObject.m */; };
 		7FB11DC41595277200095669 /* DWPlaceValueCageGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB11DC01595277200095669 /* DWPlaceValueCageGameObject.m */; };
 		7FB11DC51595277200095669 /* DWPlaceValueNetGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB11DC21595277200095669 /* DWPlaceValueNetGameObject.m */; };
-		7FB8265114F262080053F221 /* ZubiIntro.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB8264814F262080053F221 /* ZubiIntro.m */; };
 		7FB982AD15116633006D31AE /* BAAdditionOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB9829015116633006D31AE /* BAAdditionOperator.m */; };
 		7FB982AE15116633006D31AE /* BAAdditionOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB9829015116633006D31AE /* BAAdditionOperator.m */; };
 		7FB982AF15116633006D31AE /* BABracketOperator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB9829215116633006D31AE /* BABracketOperator.m */; };
@@ -387,9 +383,6 @@
 		7FB982C615116633006D31AE /* BAVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982AA15116633006D31AE /* BAVariable.m */; };
 		7FB982C715116633006D31AE /* NSArray_BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */; };
 		7FB982C815116633006D31AE /* NSArray_BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */; };
-		7FBE969315497DDF00D993AC /* select-edit-user-images in Resources */ = {isa = PBXBuildFile; fileRef = 7FBE969215497DDF00D993AC /* select-edit-user-images */; };
-		7FBE96991549819300D993AC /* LoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FBE96971549819300D993AC /* LoadingViewController.m */; };
-		7FBE969A1549819300D993AC /* LoadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FBE96981549819300D993AC /* LoadingViewController.xib */; };
 		7FBE969C15498F3700D993AC /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FBE969B15498F3700D993AC /* Icon.png */; };
 		7FC27F6F150FAAAA00E16A44 /* DWRamblerGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */; };
 		7FC27F72150FAB4400E16A44 /* NLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC27F71150FAB4300E16A44 /* NLine.m */; };
@@ -1151,17 +1144,11 @@
 		7FA38AA3154532260031E59D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		7FA38AA51545322E0031E59D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		7FA38AA7154532360031E59D /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		7FA38AAD154533230031E59D /* CCScreenshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCScreenshot.h; sourceTree = "<group>"; };
-		7FA38AAE154533230031E59D /* CCScreenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCScreenshot.m; sourceTree = "<group>"; };
-		7FA38AB0154533300031E59D /* ColorPickerImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPickerImageView.h; sourceTree = "<group>"; };
-		7FA38AB1154533300031E59D /* ColorPickerImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerImageView.m; sourceTree = "<group>"; };
 		7FA38AB61545334B0031E59D /* SelectUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectUserViewController.h; sourceTree = "<group>"; };
 		7FA38AB71545334B0031E59D /* SelectUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectUserViewController.m; sourceTree = "<group>"; };
 		7FA38AB81545334B0031E59D /* SelectUserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectUserViewController.xib; sourceTree = "<group>"; };
 		7FA38ABD1545335A0031E59D /* UsersService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersService.h; sourceTree = "<group>"; };
 		7FA38ABE1545335A0031E59D /* UsersService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersService.m; sourceTree = "<group>"; };
-		7FA38AD0154534340031E59D /* EditZubi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditZubi.h; sourceTree = "<group>"; };
-		7FA38AD1154534340031E59D /* EditZubi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditZubi.m; sourceTree = "<group>"; };
 		7FA84BC316107569001FEA82 /* SGBtxeObjectNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeObjectNumber.h; sourceTree = "<group>"; };
 		7FA84BC416107569001FEA82 /* SGBtxeObjectNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeObjectNumber.m; sourceTree = "<group>"; };
 		7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
@@ -1178,8 +1165,6 @@
 		7FB11DC01595277200095669 /* DWPlaceValueCageGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWPlaceValueCageGameObject.m; sourceTree = "<group>"; };
 		7FB11DC11595277200095669 /* DWPlaceValueNetGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPlaceValueNetGameObject.h; sourceTree = "<group>"; };
 		7FB11DC21595277200095669 /* DWPlaceValueNetGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWPlaceValueNetGameObject.m; sourceTree = "<group>"; };
-		7FB8264714F262080053F221 /* ZubiIntro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZubiIntro.h; sourceTree = "<group>"; };
-		7FB8264814F262080053F221 /* ZubiIntro.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZubiIntro.m; sourceTree = "<group>"; };
 		7FB9828F15116633006D31AE /* BAAdditionOperator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAAdditionOperator.h; sourceTree = "<group>"; };
 		7FB9829015116633006D31AE /* BAAdditionOperator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAAdditionOperator.m; sourceTree = "<group>"; };
 		7FB9829115116633006D31AE /* BABracketOperator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABracketOperator.h; sourceTree = "<group>"; };
@@ -1210,10 +1195,6 @@
 		7FB982AA15116633006D31AE /* BAVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAVariable.m; sourceTree = "<group>"; };
 		7FB982AB15116633006D31AE /* NSArray_BAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSArray_BAAdditions.h; sourceTree = "<group>"; };
 		7FB982AC15116633006D31AE /* NSArray_BAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSArray_BAAdditions.m; sourceTree = "<group>"; };
-		7FBE969215497DDF00D993AC /* select-edit-user-images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "select-edit-user-images"; sourceTree = SOURCE_ROOT; };
-		7FBE96961549819300D993AC /* LoadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingViewController.h; sourceTree = "<group>"; };
-		7FBE96971549819300D993AC /* LoadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingViewController.m; sourceTree = "<group>"; };
-		7FBE96981549819300D993AC /* LoadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingViewController.xib; sourceTree = "<group>"; };
 		7FBE969B15498F3700D993AC /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		7FC27F6D150FAAAA00E16A44 /* DWRamblerGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWRamblerGameObject.h; sourceTree = "<group>"; };
 		7FC27F6E150FAAAA00E16A44 /* DWRamblerGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWRamblerGameObject.m; sourceTree = "<group>"; };
@@ -1790,10 +1771,6 @@
 		7F2317CE1572B29400E2C941 /* Menus */ = {
 			isa = PBXGroup;
 			children = (
-				7FB8264714F262080053F221 /* ZubiIntro.h */,
-				7FB8264814F262080053F221 /* ZubiIntro.m */,
-				7FA38AD0154534340031E59D /* EditZubi.h */,
-				7FA38AD1154534340031E59D /* EditZubi.m */,
 				7F5BD840154AB6A70092740B /* JMap.h */,
 				7F5BD841154AB6A70092740B /* JMap.m */,
 			);
@@ -2230,7 +2207,6 @@
 				0CF05A9C1651A928008C2DD5 /* login-images */,
 				0C9FEFF514F572FB00E64138 /* pipeline-testing */,
 				0C993CFA163842CE0079A647 /* Problems */,
-				7FBE969215497DDF00D993AC /* select-edit-user-images */,
 				0C51649615D9068D008E7C72 /* settings */,
 				0C427C3614F529CC0033AFE2 /* sfx */,
 				7F5005C81522478C0038D251 /* fps_images-hd.png */,
@@ -2654,18 +2630,11 @@
 		7FA38AA9154532EF0031E59D /* Users */ = {
 			isa = PBXGroup;
 			children = (
-				7FA38AAD154533230031E59D /* CCScreenshot.h */,
-				7FA38AAE154533230031E59D /* CCScreenshot.m */,
-				7FA38AB0154533300031E59D /* ColorPickerImageView.h */,
-				7FA38AB1154533300031E59D /* ColorPickerImageView.m */,
 				7FA38AB61545334B0031E59D /* SelectUserViewController.h */,
 				7FA38AB71545334B0031E59D /* SelectUserViewController.m */,
 				7FA38AB81545334B0031E59D /* SelectUserViewController.xib */,
 				7FA38ABD1545335A0031E59D /* UsersService.h */,
 				7FA38ABE1545335A0031E59D /* UsersService.m */,
-				7FBE96961549819300D993AC /* LoadingViewController.h */,
-				7FBE96971549819300D993AC /* LoadingViewController.m */,
-				7FBE96981549819300D993AC /* LoadingViewController.xib */,
 				0CD565901647F23E00D9EA30 /* UserNodeState.h */,
 				0CD565911647F23E00D9EA30 /* UserNodeState.m */,
 				0CB7A519164DFF96005FC7B1 /* NSData+GzipExtension.h */,
@@ -3010,8 +2979,6 @@
 				7F5005CD1522478C0038D251 /* fps_images.png in Resources */,
 				552478661536BF5C00BA5C4E /* tooldef.plist in Resources */,
 				7FA38ABA1545334B0031E59D /* SelectUserViewController.xib in Resources */,
-				7FBE969315497DDF00D993AC /* select-edit-user-images in Resources */,
-				7FBE969A1549819300D993AC /* LoadingViewController.xib in Resources */,
 				7FBE969C15498F3700D993AC /* Icon.png in Resources */,
 				0C35A9F81576272500D47517 /* canned-dbs in Resources */,
 				0C712C0D1580C392004B716F /* CHANGELOG.md in Resources */,
@@ -3134,7 +3101,6 @@
 				7FDBA53714EBD560004D1CC9 /* CXMLNode_XPathExtensions.m in Sources */,
 				7FDBA53814EBD560004D1CC9 /* CXMLNode.m in Sources */,
 				7FDBA53914EBD560004D1CC9 /* CTidy.m in Sources */,
-				7FB8265114F262080053F221 /* ZubiIntro.m in Sources */,
 				7F268ADE14F28DE500F1F65F /* ToolHost.m in Sources */,
 				7F268AE514F2A2A300F1F65F /* ToolScene.m in Sources */,
 				7FC27F6F150FAAAA00E16A44 /* DWRamblerGameObject.m in Sources */,
@@ -3283,12 +3249,8 @@
 				55C5F73E1538A8F2009D8906 /* BDotGridShapeObjectRender.m in Sources */,
 				55C5F73F1538A8F2009D8906 /* BDotGridShapeTouch.m in Sources */,
 				55C5F7401538A8F2009D8906 /* BDotGridTileObjectRender.m in Sources */,
-				7FA38AAF154533230031E59D /* CCScreenshot.m in Sources */,
-				7FA38AB2154533300031E59D /* ColorPickerImageView.m in Sources */,
 				7FA38AB91545334B0031E59D /* SelectUserViewController.m in Sources */,
 				7FA38AC01545335A0031E59D /* UsersService.m in Sources */,
-				7FA38AD2154534340031E59D /* EditZubi.m in Sources */,
-				7FBE96991549819300D993AC /* LoadingViewController.m in Sources */,
 				7FDABAC3154AABF300F3F1A5 /* ConceptNode.m in Sources */,
 				7F2CAEDB154AB58B00BFBB6F /* LongDivision.m in Sources */,
 				7F5BD842154AB6A70092740B /* JMap.m in Sources */,

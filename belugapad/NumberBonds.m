@@ -108,6 +108,8 @@ static float kNBFontSizeLarge=35.0f;
                     [pogo.BaseNode runAction:[InteractionFeedback shakeAction]];
                 }
             }
+            
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_interaction_feedback_bars_shaking.wav")];
         }
         timeSinceInteractionOrShake=0.0f;
         if(isWinning)[toolHost shakeCommitButton];
@@ -683,7 +685,7 @@ static float kNBFontSizeLarge=35.0f;
     thisOne.HintObjects=thatOne.HintObjects;
     thatOne.HintObjects=thisOneHints;
     doNotSendPositionEval=YES;
-    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_rearrangement.wav")];
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_assistance.wav")];
     
     for(DWNBondObjectGameObject *o in thisOne.HintObjects)
     {
@@ -786,7 +788,7 @@ static float kNBFontSizeLarge=35.0f;
         
         //[self reorderMountedObjects];
         
-        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/pickup.wav")];
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_picked_up_and_expanding.wav")];
         
         [pogo logInfo:@"this object was picked up" withData:0];
     }
@@ -904,6 +906,7 @@ static float kNBFontSizeLarge=35.0f;
             DWNBondRowGameObject *prgo = (DWNBondRowGameObject*)[gw Blackboard].DropObject;
             
             [pogo handleMessage:kDWsetMount andPayload:[NSDictionary dictionaryWithObject:prgo forKey:MOUNT] withLogLevel:-1];
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_dropped.wav")];
             [self compareHintsAndMountedObjects];
             hasUsedBlock=YES;
             

@@ -35,6 +35,7 @@ typedef enum {
     kProblemCheckDimensions=3,
     kProblemFactorDimensions=4,
     kProblemNonProportionalGrid=5,
+    kProblemSingleShapeSize=6,
     kProblemIntroPlist=99
 } DotGridEvalType;
 

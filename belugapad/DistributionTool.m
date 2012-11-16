@@ -438,6 +438,7 @@ static float kDistanceBetweenBlocks=70.0f;
     NSString *thisColour = [theseSettings objectForKey:TINT_COLOUR];
     BOOL unbreakableBonds = [[theseSettings objectForKey:UNBREAKABLE_BONDS]boolValue];
     BOOL showContainerCount = [[theseSettings objectForKey:SHOW_CONTAINER_VALUE]boolValue];
+
     
     if(!thisColour)
         thisColour=@"WHITE";
@@ -975,6 +976,147 @@ static float kDistanceBetweenBlocks=70.0f;
 
 }
 
+-(BOOL)evalValueOfEvalAreas
+{
+    int solutionsFound=0;
+    NSMutableArray *matchedEvalAreas=[[NSMutableArray alloc]init];
+    NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
+    NSMutableArray *solutionsLeft=[NSMutableArray arrayWithArray:solutionsDef];
+    
+    for(int i=0;i<[evalAreas count];i++)
+    {
+        for(NSDictionary *solutions in solutionsDef)
+        {
+            if(![solutionsLeft containsObject:solutions])continue;
+            
+            float valRequired=[[solutions objectForKey:VALUE]floatValue];
+            
+            float evalAreaVal=0.0f;
+            
+            
+            
+            CGRect thisRect=CGRectNull;
+            NSArray *a=[evalAreas objectAtIndex:i];
+            
+            if([matchedEvalAreas containsObject:a])continue;
+            
+            for(CCSprite *s in a)
+            {
+                thisRect=CGRectUnion(thisRect, s.boundingBox);
+            }
+            
+            for(id go in gw.AllGameObjects)
+            {
+                if([go conformsToProtocol:@protocol(Configurable)])
+                {
+                    id<Configurable,Moveable>c=(id<Configurable,Moveable>)go;
+                    
+                    if(!CGRectContainsPoint(thisRect, c.Position))continue;
+                    
+                    if([c.blockType isEqualToString:@"Value_001"])
+                        evalAreaVal+=kShapeValue001;
+                    if([c.blockType isEqualToString:@"Value_01"])
+                        evalAreaVal+=kShapeValue01;
+                    if([c.blockType isEqualToString:@"Value_1"])
+                        evalAreaVal+=kShapeValue1;
+                    if([c.blockType isEqualToString:@"Value_10"])
+                        evalAreaVal+=kShapeValue10;
+                    if([c.blockType isEqualToString:@"Value_100"])
+                        evalAreaVal+=kShapeValue100;
+                    
+                }
+            }
+            
+            NSNumber *evalarea=[NSNumber numberWithFloat:evalAreaVal];
+            NSNumber *solution=[NSNumber numberWithFloat:valRequired];
+            
+            NSLog(@"evalarea val %g, expected val %g, is equal? %@", evalAreaVal, [[solutions objectForKey:VALUE]floatValue],[evalarea isEqualToNumber:solution]?@"YES":@"NO");
+            
+            
+            if([evalarea isEqualToNumber:solution]){
+                solutionsFound++;
+                [matchedEvalAreas addObject:a];
+                [solutionsLeft removeObjectIdenticalTo:solutions];
+                break;
+            }
+            
+            
+        }
+    }
+    
+    NSLog(@"solutions found %d req %d", solutionsFound, [solutionsDef count]);
+    if(solutionsFound==[solutionsDef count])
+        return YES;
+    else
+        return NO;
+}
+
+
+-(BOOL)evalValueOfShapesInContainers
+{
+    int solutionsFound=0;
+    NSMutableArray *matchedContainers=[[NSMutableArray alloc]init];
+    NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
+    
+    
+    for(id thisC in gw.AllGameObjectsCopy)
+    {
+        if([thisC isKindOfClass:[SGDtoolContainer class]])
+        {
+            SGDtoolContainer *c=(SGDtoolContainer*)thisC;
+            for(NSDictionary *solutions in solutionsDef)
+            {
+                if([matchedSolutions containsObject:solutions])continue;
+                
+                float valRequired=[[solutions objectForKey:VALUE]floatValue];
+                
+                float containerVal=0.0f;
+                
+                
+                
+                if([matchedContainers containsObject:c])continue;
+                
+                for(SGDtoolBlock *b in c.BlocksInShape)
+                {
+                
+                    if([b.blockType isEqualToString:@"Value_001"])
+                        containerVal+=kShapeValue001;
+                    if([b.blockType isEqualToString:@"Value_01"])
+                        containerVal+=kShapeValue01;
+                    if([b.blockType isEqualToString:@"Value_1"])
+                        containerVal+=kShapeValue1;
+                    if([b.blockType isEqualToString:@"Value_10"])
+                        containerVal+=kShapeValue10;
+                    if([b.blockType isEqualToString:@"Value_100"])
+                        containerVal+=kShapeValue100;
+                    
+                    
+                }
+                
+                NSNumber *container=[NSNumber numberWithFloat:containerVal];
+                NSNumber *solution=[NSNumber numberWithFloat:valRequired];
+                
+                NSLog(@"container val %g, expected val %g, is equal? %@", containerVal, [[solutions objectForKey:VALUE]floatValue],[container isEqualToNumber:solution]?@"YES":@"NO");
+                
+                if([container isEqualToNumber:solution]){
+                    solutionsFound++;
+                    [matchedContainers addObject:c];
+                    [matchedSolutions addObject:solutions];
+                    break;
+                }
+                
+                
+            }
+        }
+    }
+    
+    NSLog(@"solutions found %d req %d", solutionsFound, [solutionsDef count]);
+    if(solutionsFound==[solutionsDef count])
+        return YES;
+    else
+        return NO;
+}
+
 -(BOOL)evalNumberOfShapesAndTypesInContainers
 {
     int solutionsFound=0;
@@ -1060,7 +1202,6 @@ static float kDistanceBetweenBlocks=70.0f;
                     
 
                 }
-                
                 
                 NSLog(@"(%d) Circles f:%d r:%d, Houses f:%d r:%d", [evalAreas indexOfObject:c], circlesFound, circlesReq, housesFound, housesReq);
                 
@@ -1705,6 +1846,16 @@ static float kDistanceBetweenBlocks=70.0f;
     else if(evalType==kCheckGroupTypeAndNumber)
     {
         return [self evalGroupTypesAndShapes];
+    }
+    
+    else if(evalType==kCheckContainerValues)
+    {
+        return [self evalValueOfShapesInContainers];
+    }
+    
+    else if(evalType==kCheckEvalAreaValues)
+    {
+        return [self evalValueOfEvalAreas];
     }
     
 

@@ -168,7 +168,7 @@
     if(ShowCount)
     {
         [CountLabel setString:[NSString stringWithFormat:@"%g", [self updateValue]]];
-        [CountLabel setPosition:ccp(x,y-30)];
+        [CountLabel setPosition:ccp(x,y-50)];
     }
 
 }

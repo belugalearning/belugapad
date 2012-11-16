@@ -59,6 +59,8 @@
         sprFileName=@"/images/distribution/DT_Dock_Infinite.png";
     else if([self.CageType isEqualToString:@"Infinite-Random"])
         sprFileName=@"/images/distribution/DT_Dock_Infinite.png";
+    else if([self.CageType isEqualToString:@"Infinite-RandomValue"])
+        sprFileName=@"/images/distribution/DT_Dock_Infinite.png";
     else
         sprFileName=[NSString stringWithFormat:@"/images/distribution/DT_Dock_%@.png", self.CageType];
         
@@ -136,6 +138,22 @@
                 newBlockType=@"RoundedSquare";
             else if(thisBlockType==5)
                 newBlockType=@"Square";
+        }
+        
+        if([CageType isEqualToString:@"Infinite-RandomValue"])
+        {
+            thisBlockType=arc4random() % 4;
+            
+            if(thisBlockType==0)
+                newBlockType=@"Value_001";
+            else if(thisBlockType==1)
+                newBlockType=@"Value_01";
+            else if(thisBlockType==2)
+                newBlockType=@"Value_1";
+            else if(thisBlockType==3)
+                newBlockType=@"Value_10";
+            else if(thisBlockType==4)
+                newBlockType=@"Value_100";
         }
         
         

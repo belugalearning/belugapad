@@ -75,12 +75,14 @@
         [gw Blackboard].hostLX = lx;
         [gw Blackboard].hostLY = ly;
         
+        drawnArea=CGRectMake(50,50,924,600);
+        
         [self readPlist:pdef];
         [self populateGW];
         
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
         
-        debugLogging=NO;
+        debugLogging=YES;
         
         gw.Blackboard.inProblemSetup = NO;        
     }
@@ -102,7 +104,6 @@
             timeToAutoMoveToNextProblem=0.0f;
         }
     }
-    
     if(disableDrawing && drawMode==kAnyStartAnchorValid)
     {
         if(isMovingDown)
@@ -126,7 +127,33 @@
     
 }
 
-
+-(void)checkVisibleAnchors
+{
+    for(NSArray *a in dotMatrix)
+    {
+        for(DWDotGridAnchorGameObject *anch in a)
+        {
+            if(CGRectContainsPoint(drawnArea, [renderLayer convertToWorldSpace:anch.Position]))
+            {
+                if([invisibleAnchors containsObject:anch])
+                    [invisibleAnchors removeObject:anch];
+                if(![visibleAnchors containsObject:anch])
+                    [visibleAnchors addObject:anch];
+                
+                [anch.mySprite setVisible:YES];
+            }
+            else
+            {
+                if(![invisibleAnchors containsObject:anch])
+                    [invisibleAnchors addObject:anch];
+                if([visibleAnchors containsObject:anch])
+                    [visibleAnchors removeObject:anch];
+                
+                [anch.mySprite setVisible:NO];
+            }
+        }
+    }
+}
 
 #pragma mark - gameworld population
 -(void)readPlist:(NSDictionary*)pdef
@@ -192,6 +219,7 @@
     isIntroPlist=[[pdef objectForKey:IS_INTRO_PLIST]boolValue];
     nonPropEvalX=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_X]intValue];
     nonPropEvalY=[[pdef objectForKey:DOTGRID_EVAL_NONPROP_Y]intValue];
+    solutionsDef=[pdef objectForKey:SOLUTIONS];
     
     numberWheelComponents=[[NSString stringWithFormat:@"%d", solutionNumber] length];
     
@@ -252,6 +280,8 @@
     anchorLayer = [[CCLayer alloc]init];
     [self.ForeLayer addChild:renderLayer];
     [self.ForeLayer addChild:anchorLayer];
+    visibleAnchors=[[NSMutableArray alloc]init];
+    invisibleAnchors=[[NSMutableArray alloc]init];
     
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     
@@ -283,6 +313,15 @@
             anch.RenderLayer=anchorLayer;
             anch.anchorSize=spaceBetweenAnchors;
             
+//            if(!CGRectContainsPoint(drawnArea, anch.Position)){
+//                [anch.mySprite setVisible:NO];
+//                [invisibleAnchors addObject:anch];
+//            }
+//            else
+//            {
+//                [anch.mySprite setVisible:YES];
+//                [visibleAnchors addObject:anch];
+//            }
             
             // set the hidden property for every anchor on this row if 
             if(hiddenRows && [hiddenRows objectForKey:[NSString stringWithFormat:@"%d", iCol]]) {
@@ -1658,11 +1697,23 @@
     
     if(gameState==kStartAnchor)
     {
-        if(gw.Blackboard.FirstAnchor) [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];   
+        if(gw.Blackboard.FirstAnchor){
+
+            [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
+//            for(DWDotGridAnchorGameObject *a in visibleAnchors)
+//            {
+//                [a handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
+//            }
+        }
     }
     
     if(gameState==kResizeShape)
     {
+//        for(DWDotGridAnchorGameObject *a in visibleAnchors)
+//        {
+//            [a handleMessage:kDWcanITouchYou];
+//        }
+
         [gw handleMessage:kDWcanITouchYou andPayload:pl withLogLevel:-1];
         
         if(!audioHasPlayedResizing)
@@ -1972,6 +2023,32 @@
         if(![self checkForCorrectShapeSizes])return NO;
         else if([self checkForCorrectShapeSizes] && solutionNumber==sumWheel.OutputValue)return YES;
         else return NO;
+    }
+    else if(evalType==kProblemSingleShapeSize)
+    {
+        NSMutableArray *solutions=[NSMutableArray arrayWithArray:solutionsDef];
+        NSMutableArray *matchedGOs=[[NSMutableArray alloc]init];
+        
+        
+        for(DWGameObject *go in gw.AllGameObjects)
+        {
+            if([go isKindOfClass:[DWDotGridShapeGameObject class]])
+            {
+                NSNumber *tilesInShape=[NSNumber numberWithInt:[((DWDotGridShapeGameObject*)go).tiles count]];
+                if([solutions containsObject:tilesInShape])
+                {
+                    [solutions removeObject:tilesInShape];
+                    [matchedGOs addObject:go];
+                    
+                    NSLog(@"found solution. tilesInShape %d, matched shapes %d, total solution count %d", [tilesInShape intValue], [matchedGOs count], [solutionsDef count]);
+                }
+            }
+        }
+        
+        if([solutionsDef count]==[matchedGOs count])
+            return YES;
+        else
+            return NO;
     }
     else if(evalType==kProblemIntroPlist)
     {

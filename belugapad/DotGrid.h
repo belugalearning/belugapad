@@ -35,6 +35,7 @@ typedef enum {
     kProblemCheckDimensions=3,
     kProblemFactorDimensions=4,
     kProblemNonProportionalGrid=5,
+    kProblemSingleShapeSize=6,
     kProblemIntroPlist=99
 } DotGridEvalType;
 
@@ -131,6 +132,10 @@ typedef struct {
     NSMutableArray *reqShapesCopy;
     
     DWNWheelGameObject *sumWheel;
+    
+    NSMutableArray *visibleAnchors;
+    NSMutableArray *invisibleAnchors;
+    CGRect drawnArea;
     
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;

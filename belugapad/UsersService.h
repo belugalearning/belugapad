@@ -27,9 +27,9 @@ typedef enum {
 
 -(void)setCurrentUserToUserWithId:(NSString*)urId;
 
--(void)setCurrentUserToNewUserWithNick:(NSString*)nick
-                           andPassword:(NSString*)password
-                              callback:(void (^)(BL_USER_CREATION_STATUS))callback;
+-(void)createNewUserWithNick:(NSString*)nick
+                 andPassword:(NSString*)password
+                    callback:(void (^)(BL_USER_CREATION_STATUS))callback;
 
 -(NSArray*)deviceUsersByNickName;
 

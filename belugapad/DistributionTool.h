@@ -17,7 +17,12 @@ typedef enum
     kCheckShapeSizes=0,
     kCheckNamedGroups=1,
     kCheckEvalAreas=2,
-    kCheckGroupTypeAndNumber=3
+    kCheckGroupTypeAndNumber=3,
+    kIncludeShapeSizes=4,
+    kCheckEvalAreasForTypes=5,
+    kCheckGroupsForTypes=6,
+    kCheckContainerValues=7,
+    kCheckEvalAreaValues=8
 }DistributionEvalType;
 
 @interface DistributionTool : ToolScene
@@ -53,13 +58,18 @@ typedef enum
     BOOL bondDifferentTypes;
     BOOL hasMovedCagedBlock;
     BOOL bondAllObjects;
+    BOOL showTotalValue;
     int cageObjectCount;
     
+    id lastContainer;
+    CGPoint lastProxPos;
     id nearestObject;
     float nearestObjectDistance;
     id lastNewBondObject;
     
     NSString *dockType;
+    
+    CCLabelTTF *totalValueLabel;
     
     // and a default layer
     CCLayer *renderLayer;
@@ -90,6 +100,7 @@ typedef enum
 -(float)metaQuestionTitleYLocation;
 -(float)metaQuestionAnswersYLocation;
 -(void)createShapeWith:(int)blocks andWith:(NSDictionary*)theseSettings;
+-(void)addDestroyedLabel:(NSString*)thisGroup;
 -(void)createContainerWithOne:(id)Object;
 -(void)removeBlockByCage;
 -(BOOL)evalGroupTypesAndShapes;

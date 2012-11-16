@@ -40,6 +40,7 @@
     if(messageType==kDWareYouAPickupTarget)
     {
         if(pogo.HintObject)return;
+        if(pogo.InitedObject)return;
         
         CGRect boundingBox = CGRectZero;
         for(int i=0;i<pogo.BaseNode.children.count;i++)

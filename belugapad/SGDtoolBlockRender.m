@@ -56,10 +56,30 @@
 {
     NSString *sprFileName=nil;
     
-    if(!ParentGO.blockType)
-        sprFileName=@"/images/distribution/DT_Shape_Circle.png";
-    else
-        sprFileName=[NSString stringWithFormat:@"/images/distribution/DT_Shape_%@.png", ParentGO.blockType];
+    if(!ParentGO.blockType){
+        ParentGO.blockType=@"Circle";
+    }
+    else if([ParentGO.blockType isEqualToString:@"Random"])
+    {
+        int thisBlockType=0;
+        
+        thisBlockType=arc4random() % 5;
+        
+        if(thisBlockType==0)
+            ParentGO.blockType=@"Circle";
+        else if(thisBlockType==1)
+            ParentGO.blockType=@"Diamond";
+        else if(thisBlockType==2)
+            ParentGO.blockType=@"Ellipse";
+        else if(thisBlockType==3)
+            ParentGO.blockType=@"House";
+        else if(thisBlockType==4)
+            ParentGO.blockType=@"RoundedSquare";
+        else if(thisBlockType==5)
+            ParentGO.blockType=@"Square";
+    }
+
+    sprFileName=[NSString stringWithFormat:@"/images/distribution/DT_Shape_%@.png", ParentGO.blockType];
     
     blockSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(sprFileName)];
     ParentGO.mySprite=blockSprite;

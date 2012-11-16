@@ -10,15 +10,17 @@
 
 @interface PassCodeView()
 {
-    UILabel *label0;
-    UILabel *label1;
-    UILabel *label2;
-    UILabel *label3;
+    NSArray *labels;
+    NSMutableString *text;
 }
 
 @end
 
 @implementation PassCodeView
+
+const uint numLabels = 4;
+const uint firstLabelX = 12;
+const uint labelSpacing = 68;
 
 @synthesize text;
 
@@ -26,35 +28,36 @@
 {
     if ((self = [super initWithFrame:frame]))
     {
-        // Initialization code
-        self.text = [NSMutableString string];        
+        text = [[NSMutableString alloc] init];        
         self.backgroundColor = [UIColor clearColor];
         
-        label0 = [[UILabel alloc] initWithFrame:CGRectMake(12.0f, 8.0f, 24.0f, 24.0f)];
-        [label0 setTextColor:[UIColor whiteColor]];
-        [label0 setBackgroundColor:[UIColor clearColor]];
-        [label0 setFont:[UIFont fontWithName:@"Chango" size:24]];
-        [self addSubview:label0];
-        
-        label1 = [[UILabel alloc] initWithFrame:CGRectMake(78.0f, 8.0f, 24.0f, 24.0f)];
-        [label1 setTextColor:[UIColor whiteColor]];
-        [label1 setBackgroundColor:[UIColor clearColor]];
-        [label1 setFont:[UIFont fontWithName:@"Chango" size:24]];
-        [self addSubview:label1];
-        
-        label2 = [[UILabel alloc] initWithFrame:CGRectMake(145.0f, 8.0f, 24.0f, 24.0f)];
-        [label2 setTextColor:[UIColor whiteColor]];
-        [label2 setBackgroundColor:[UIColor clearColor]];
-        [label2 setFont:[UIFont fontWithName:@"Chango" size:24]];
-        [self addSubview:label2];
-        
-        label3 = [[UILabel alloc] initWithFrame:CGRectMake(212.0f, 8.0f, 24.0f, 24.0f)];
-        [label3 setTextColor:[UIColor whiteColor]];
-        [label3 setBackgroundColor:[UIColor clearColor]];
-        [label3 setFont:[UIFont fontWithName:@"Chango" size:24]];
-        [self addSubview:label3];
+        labels = [NSMutableArray array];
+        for (uint i=0; i<numLabels; i++)
+        {
+            UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(firstLabelX + i * labelSpacing, 8.0f, 24.0f, 24.0f)] autorelease];
+            [label setTextColor:[UIColor whiteColor]];
+            [label setBackgroundColor:[UIColor clearColor]];
+            [label setFont:[UIFont fontWithName:@"Chango" size:24]];
+            [self addSubview:label];
+            [(NSMutableArray*)labels addObject:label];
+        }
+        labels = [labels copy];
     }
     return self;
+}
+
+#pragma mark -
+#pragma mark Custom Property Accessors
+-(NSString*)text
+{
+    return [NSString stringWithString:text];
+}
+-(void)setText:(NSString*)val
+{
+    if (val && [val isEqualToString:text]) return;
+    if (val && [val length]) [text setString:val];
+    else [text setString:@""];
+    [self setNeedsDisplay];
 }
 
 #pragma mark -
@@ -75,10 +78,10 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    label0.text = self.text.length ? [self.text substringWithRange:NSMakeRange(0,1)] : @"";
-    label1.text = self.text.length > 1 ? [self.text substringWithRange:NSMakeRange(1,1)] : @"";
-    label2.text = self.text.length > 2 ? [self.text substringWithRange:NSMakeRange(2,1)] : @"";
-    label3.text = self.text.length > 3 ? [self.text substringWithRange:NSMakeRange(3,1)] : @"";
+    for (uint i=0; i<numLabels; i++)
+    {
+        ((UILabel*)[labels objectAtIndex:i]).text = [text length] > i ? [text substringWithRange:NSMakeRange(i,1)] : @"";
+    }
 }
 
 #pragma mark -
@@ -89,44 +92,24 @@
     return self.text.length > 0;
 }
 
-- (void)insertText:(NSString *)theText
+- (void)insertText:(NSString*)theText
 {
-    [self.text appendString:theText];
-    if (self.text.length > 4) self.text = [NSMutableString stringWithString:[self.text substringToIndex:4]];
+    if ([text length] >= numLabels || !theText || ![theText length]) return;
+    [text appendString:[theText substringWithRange:NSMakeRange(0, MIN([theText length], numLabels - [theText length]))]];
     [self setNeedsDisplay];
 }
 
 - (void)deleteBackward
 {
-    if (!self.text.length) return;
-    NSRange theRange = NSMakeRange(self.text.length-1, 1);
-    [self.text deleteCharactersInRange:theRange];
+    if (![text length]) return;
+    [text deleteCharactersInRange:NSMakeRange([text length]-1, 1)];
     [self setNeedsDisplay];
 }
 
 -(void)dealloc
 {
-    self.text = nil;
-    if (label0)
-    {
-        [label0 removeFromSuperview];
-        [label0 release];
-    }
-    if (label1)
-    {
-        [label1 removeFromSuperview];
-        [label1 release];
-    }
-    if (label2)
-    {
-        [label2 removeFromSuperview];
-        [label2 release];
-    }
-    if (label3)
-    {
-        [label3 removeFromSuperview];
-        [label3 release];
-    }
+    if (labels) [labels release];
+    if (text) [text release];
     [super dealloc];
 }
 

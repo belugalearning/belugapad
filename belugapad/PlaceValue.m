@@ -748,6 +748,10 @@ static float kTimeToCageShake=7.0f;
             CGRect minus=CGRectMake(PosX, PosY, 70, 82);
             CGRect plus=CGRectMake(PosX+170, PosY, 70, 82);
             
+            int defaultBlocksToMake=1;
+            int minBlocks=-10;
+            int maxBlocks=10;
+            
             //[minusSprite setPosition:ccp(PosX,PosY-25)];
             //[posiSprite setPosition:ccp(PosX,PosY+25)];
             [label setPosition:ccp(PosX+120,PosY+61)];
@@ -755,6 +759,23 @@ static float kTimeToCageShake=7.0f;
             [multipleMinusSprites addObject:[NSValue valueWithCGRect:minus]];
             [multiplePlusSprites addObject:[NSValue valueWithCGRect:plus]];
             [blockLabels addObject:label];
+            
+            
+            if(![multipleBlockMax objectForKey:currentColumnValueKey])
+                [multipleBlockMax setValue:[NSNumber numberWithInt:10] forKey:currentColumnValueKey];
+            else
+                maxBlocks=[[multipleBlockMax objectForKey:currentColumnValueKey]intValue];
+            
+            if(![multipleBlockMin objectForKey:currentColumnValueKey])
+                [multipleBlockMin setValue:[NSNumber numberWithInt:1] forKey:currentColumnValueKey];
+            else
+                minBlocks=[[multipleBlockMin objectForKey:currentColumnValueKey]intValue];
+            
+            if([multipleBlockPickupDefaults objectForKey:currentColumnValueKey])
+                defaultBlocksToMake=[[multipleBlockPickupDefaults objectForKey:currentColumnValueKey]intValue];
+            else
+                defaultBlocksToMake=1;
+            
             
             if(debugLogging)
                 NSLog(@"currentBlockValues count %d, minusSprites count %d, plusSprites count %d, blockLabels count %d", [currentBlockValues count], [multipleMinusSprites count], [multiplePlusSprites count], [blockLabels count]);
@@ -1147,10 +1168,15 @@ static float kTimeToCageShake=7.0f;
     }
     else
     {
-        if(numberOfColumns>1)
+        if(numberOfColumns>1 && allowCondensing && allowMulching)
         {
             showBaseSelection=YES;
             autoBaseSelection=YES;
+        }
+        else if(numberOfColumns>1 && !allowCondensing && !allowMulching)
+        {
+            showBaseSelection=NO;
+            autoBaseSelection=NO;
         }
     }
     if(autoBaseSelection)allowDeselect=NO;
@@ -1843,11 +1869,15 @@ static float kTimeToCageShake=7.0f;
             DWPlaceValueCageGameObject *cge=[allCages objectAtIndex:i];
             [cge.MountedObject handleMessage:kDWdestroy];
             
-            int curNum=[[currentBlockValues objectAtIndex:i]intValue];
+            NSString *ccvKey=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]stringValue];
             float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]floatValue];
+            
+            int maxNo=[[multipleBlockMax objectForKey:ccvKey]intValue];
+            int curNum=[[currentBlockValues objectAtIndex:i]intValue];
+
             curNum+=1*colVal;
-            if(curNum>10*colVal)
-                curNum=10*colVal;
+            if(curNum>maxNo*colVal)
+                curNum=maxNo*colVal;
             
             if(curNum>0)
                 cge.ObjectValue=colVal;
@@ -1880,9 +1910,15 @@ static float kTimeToCageShake=7.0f;
             
             int curNum=[[currentBlockValues objectAtIndex:i]intValue];
             float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]floatValue];
+            
+            NSString *ccvKey=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]stringValue];
+            int minNo=[[multipleBlockMin objectForKey:ccvKey]intValue];
+            
+
+            
             curNum-=1*colVal;
-            if(curNum<-10*colVal)
-                curNum=-10*colVal;
+            if(curNum<minNo*colVal)
+                curNum=minNo*colVal;
             
             
             if(curNum>0)
@@ -2293,6 +2329,15 @@ static float kTimeToCageShake=7.0f;
             [go handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];
         }
     }
+    
+    DWPlaceValueBlockGameObject *pO=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
+    if(pO.LastMount){
+        pO.Mount=pO.LastMount;
+        DWPlaceValueNetGameObject *n=(DWPlaceValueNetGameObject*)pO.LastMount;
+        n.MountedObject=pO;
+    }
+    
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_line_general_jump_(whoosh).wav")];
     [[gw Blackboard].PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];    
 }
 
@@ -3441,6 +3486,7 @@ static float kTimeToCageShake=7.0f;
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [self resetPickupObjectPos];
     [self setTouchVarsToOff];
 }
 

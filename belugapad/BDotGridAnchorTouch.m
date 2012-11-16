@@ -66,8 +66,10 @@
 -(void)checkTouch:(CGPoint)hitLoc
 {
     hitLoc=[anch.RenderLayer convertToNodeSpace:hitLoc];
+    float proxCheck=(anch.anchorSize/2)/[gameWorld Blackboard].hostLX;
     
-    if([BLMath DistanceBetween:anch.Position and:hitLoc] <= (0.045f*[gameWorld Blackboard].hostLX))
+    
+    if([BLMath DistanceBetween:anch.Position and:hitLoc] <= (proxCheck*[gameWorld Blackboard].hostLX))
     {
         //tell gameScene we are a target for that pickup
         
@@ -88,13 +90,15 @@
         gameWorld.Blackboard.LastAnchor=anch;
         
         //[anch handleMessage:kDWswitchSelection];
+        
+
     }
 }
 -(void)checkDrop:(CGPoint)hitLoc
 {
     // this method is for dragging a 1x1 square on. we want to constanty evaluate for a new firstanchor - then we manually manipulate the last anchor in the gamescene
-    
-    if([BLMath DistanceBetween:anch.Position and:hitLoc] <= (0.045f*[gameWorld Blackboard].hostLX))
+    float proxCheck=(anch.anchorSize/2)/[gameWorld Blackboard].hostLX;
+    if([BLMath DistanceBetween:anch.Position and:hitLoc] <= (proxCheck*[gameWorld Blackboard].hostLX))
     {
         //tell gameScene we are a target for that pickup
         

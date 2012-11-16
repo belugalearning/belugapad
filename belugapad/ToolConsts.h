@@ -85,3 +85,11 @@ extern const ccColor3B kNumiconColour[10];
 // fraction builder
 
 extern const float kNumbersAlongFractionSlider;
+
+
+//distribution tool
+extern const float kShapeValue001;
+extern const float kShapeValue01;
+extern const float kShapeValue1;
+extern const float kShapeValue10;
+extern const float kShapeValue100;

@@ -473,7 +473,7 @@
 	<path display="inline" fill="none" stroke="#000000" stroke-miterlimit="10" d="M593.791,625.14"/>
 	<line display="inline" fill="none" stroke="#000000" stroke-miterlimit="10" x1="487.96" y1="529.903" x2="641.281" y2="534.093"/>
 </g>
-<g id="data-features" display="none">
+<g id="old-data-features" display="none">
 	<circle display="inline" fill="#EFFF00" cx="532.009" cy="333" r="41.009"/>
 	<circle display="inline" fill="#EFFF00" cx="584.588" cy="345.009" r="41.009"/>
 	<circle display="inline" fill="#EFFF00" cx="436.588" cy="333" r="41.009"/>

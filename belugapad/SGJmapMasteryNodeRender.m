@@ -273,21 +273,49 @@ static int shadowSteps=5;
     if(ParentGO.PrereqPercentage>=70)self.islandStage=5;
 
     
+//    //position children
+//    NSArray *nodePoints=[islandData objectForKey:ISLAND_NODES];
+//    for (int i=0; i<ParentGO.ChildNodes.count; i++)
+//    {
+//        id<Transform, PinRender> child=[ParentGO.ChildNodes objectAtIndex:i];
+//        //child.Position=[[nodePoints objectAtIndex:i] CGPointValue];
+//        child.Position=[BLMath AddVector:ParentGO.Position toVector:[[nodePoints objectAtIndex:i] CGPointValue]];
+//        
+//        if([[nodePoints objectAtIndex:i] CGPointValue].x<0)
+//        {
+//            child.flip=YES;
+//        }
+//    }
+    
+    
+    [self createBaseNodes];
+    
+    
     //position children
-    NSArray *nodePoints=[islandData objectForKey:ISLAND_NODES];
+    
+    //all nodes with data
+    NSArray *fnodes= [[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"NODES"];
+    //step all children
     for (int i=0; i<ParentGO.ChildNodes.count; i++)
     {
         id<Transform, PinRender> child=[ParentGO.ChildNodes objectAtIndex:i];
-        //child.Position=[[nodePoints objectAtIndex:i] CGPointValue];
-        child.Position=[BLMath AddVector:ParentGO.Position toVector:[[nodePoints objectAtIndex:i] CGPointValue]];
+     
+        //get corresponding data
+        NSDictionary *fnode=[fnodes objectAtIndex:i];
         
-        if([[nodePoints objectAtIndex:i] CGPointValue].x<0)
-        {
-            child.flip=YES;
-        }
+        //skip if no corresponding data
+        if(!fnode) continue;
+        
+        //find this node in the indexed list of all features
+        int targetIdx=[[[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"FEATURE_INDEX"] indexOfObject:fnode];
+        
+        //get position by copying from indexed placeholder
+        CGPoint pos=((CCSprite*)[self.indexedBaseNodes objectAtIndex:targetIdx]).position;
+        
+        child.Position=pos;
+        
+        //todo set flipped here -- from FLIPPED NSNumber on the fnode dict
     }
-    
-    [self createBaseNodes];
 }
 
 -(void)readyIslandRender

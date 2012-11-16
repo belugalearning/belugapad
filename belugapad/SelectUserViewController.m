@@ -19,7 +19,6 @@
     @private
     AppController *app;
     UsersService *usersService;
-    unsigned char zubiColorRGBAByteData[4];
     
     NSArray *deviceUsers;
     IBOutlet UITableView *selectUserTableView;
@@ -39,6 +38,7 @@
     UIButton *cancelExistingUserButton;
     UIButton *loadExistingUserButton;
 }
+-(void) loadDeviceUsers;
 -(void) buildSelectUserView;
 -(void) buildEditUserView;
 -(void) setActiveView:(UIView *)view;
@@ -63,13 +63,13 @@
     [app.usersService syncDeviceUsers];
     [app.loggingService sendData];
     
+    [self loadDeviceUsers];
+    
     [self buildSelectUserView];
     [self buildEditUserView];
     [self buildLoadExistingUserView];
     
-    AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];    
-    deviceUsers = [[ad.usersService deviceUsersByNickName] retain];
-    [self setActiveView:selectUserView];    
+    [self setActiveView:selectUserView];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -106,6 +106,13 @@
 
 #pragma mark -
 #pragma mark SelectUserView
+
+-(void)loadDeviceUsers
+{
+    if (deviceUsers) [deviceUsers release];
+    AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
+    deviceUsers = [[ad.usersService deviceUsersByNickName] retain];
+}
 
 -(void)buildSelectUserView
 {
@@ -235,7 +242,7 @@
 -(void)handleCancelNewUserClicked:(id*)button
 {
     newUserNameTF.text = @"";
-    newUserPassCodeView.text = [NSMutableString stringWithString:@""];
+    newUserPassCodeView.text = @"";
     [newUserNameTF resignFirstResponder];
     [newUserPassCodeView resignFirstResponder];
     [self setActiveView:selectUserView];
@@ -257,6 +264,7 @@
     }
     
     __block typeof(self) bself = self;
+    __block NSString *bnick = newUserNameTF.text;
     void (^createSetUrCallback)() = ^(BL_USER_CREATION_STATUS status) {
         if (BL_USER_CREATION_FAILURE_NICK_UNAVAILABLE == status)
         {
@@ -269,14 +277,28 @@
         }
         else if (BL_USER_CREATION_SUCCESS_NICK_AVAILABLE == status || BL_USER_CREATION_SUCCESS_NICK_AVAILABILITY_UNCONFIRMED == status)
         {
-            [bself.view removeFromSuperview];
-            [bself->app proceedFromLoginViaIntro:YES];
+            newUserNameTF.text = @"";
+            newUserPassCodeView.text = @"";
+            
+            [bself loadDeviceUsers];
+            [bself->selectUserTableView reloadData];
+            for (uint i=0; i<[bself->deviceUsers count]; i++)
+            {
+                if ([bnick isEqualToString:[[bself->deviceUsers objectAtIndex:i] valueForKey:@"nickName"]])
+                {
+                    NSUInteger indexPath[] = {0,i};
+                    NSIndexPath *ip = [NSIndexPath indexPathWithIndexes:indexPath length:2];
+                    [bself->selectUserTableView selectRowAtIndexPath:ip animated:NO scrollPosition:UITableViewScrollPositionNone];
+                    break;
+                }
+            }
+            [bself setActiveView:selectUserView];
         }
     };
     
-    [usersService setCurrentUserToNewUserWithNick:newUserNameTF.text
-                                      andPassword:newUserPassCodeView.text
-                                         callback:createSetUrCallback];
+    [usersService createNewUserWithNick:newUserNameTF.text
+                            andPassword:newUserPassCodeView.text
+                               callback:createSetUrCallback];
 }
 
 #pragma mark -
@@ -318,7 +340,7 @@
 -(void)handleCancelExistingUserClicked:(id*)button
 {
     existingUserNameTF.text = @"";
-    downloadUserPassCodeView.text = [NSMutableString stringWithString:@""];
+    downloadUserPassCodeView.text = @"";
     [existingUserNameTF resignFirstResponder];
     [downloadUserPassCodeView resignFirstResponder];
     [self setActiveView:selectUserView];
@@ -343,6 +365,12 @@
         [self.view removeFromSuperview];
         [bself->app proceedFromLoginViaIntro:NO];
     };
+    
+    if (!existingUserNameTF.text || !existingUserNameTF.text.length)
+    {
+        [existingUserNameTF becomeFirstResponder];
+        return;
+    }
     
     [usersService downloadUserMatchingNickName:existingUserNameTF.text
                                    andPassword:downloadUserPassCodeView.text

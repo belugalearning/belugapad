@@ -17,6 +17,7 @@
 #import "ToolHost.h"
 #import "mach/mach.h"
 #import "TestFlight.h"
+#import "SimpleAudioEngine.h"
 
 @interface AppController()
 {
@@ -81,6 +82,12 @@
     {
         [self.LocalSettings setValue:@"DATABASE" forKey:@"PROBLEM_PIPELINE"];
         [self.LocalSettings setValue:NO forKey:@"IMPORT_CONTENT_ON_LAUNCH"];
+    }
+    
+    // TODO: REMOVE ONCE WE'VE GOT A MUTE BUTTON. HERE FOR BENEFIT OF AUTHORS TESTING ON SIM
+    if ([self.LocalSettings valueForKey:@"MUTE"] && [[self.LocalSettings valueForKey:@"MUTE"] boolValue])
+    {
+        [[SimpleAudioEngine sharedEngine] setMute:YES];
     }
     
     //load adaptive pipeline settings

@@ -491,6 +491,41 @@ static float kDistanceBetweenBlocks=70.0f;
         
         startPosX = farLeft + arc4random() % (farRight - farLeft);
         startPosY = botMost + arc4random() % (topMost - botMost);
+        
+        for(id go in gw.AllGameObjects)
+        {
+            if([go conformsToProtocol:@protocol(Moveable)])
+            {
+                while([(id<Moveable>)go amIProximateTo:ccp(startPosX,startPosY)])
+                {
+                    NSLog(@"overlapping objects, cuntfucker, change it!");
+                    startPosX = farLeft + arc4random() % (farRight - farLeft);
+                    startPosY = botMost + arc4random() % (topMost - botMost);
+                    
+                    NSArray *numLayout=[NumberLayout physicalLayoutAcrossToNumber:numBlocks withSpacing:52.0f];
+                    
+                    for(int i=0;i<[numLayout count];i++)
+                    {
+                        CGPoint thisVal=[[numLayout objectAtIndex:i] CGPointValue];
+                        thisVal=ccp(thisVal.x+startPosX, thisVal.y+startPosY);
+                        for(id go in gw.AllGameObjects)
+                        {
+                            if([go conformsToProtocol:@protocol(Moveable)])
+                            {
+                                while([(id<Moveable>)go amIProximateTo:ccp(startPosX,startPosY)])
+                                {
+                                    NSLog(@"MOAR! overlapping objects, cuntfucker, change it!");
+                                    startPosX = farLeft + arc4random() % (farRight - farLeft);
+                                    startPosY = botMost + arc4random() % (topMost - botMost);
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+                
+            }
+        }
     }
     else
     {
@@ -505,6 +540,7 @@ static float kDistanceBetweenBlocks=70.0f;
         
         startPosX = farLeft + arc4random() % (farRight - farLeft);
         startPosY = botMost + arc4random() % (topMost - botMost);
+
 
     }
     for (int i=0; i<numBlocks; i++)

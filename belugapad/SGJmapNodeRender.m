@@ -104,7 +104,7 @@
     
     [nodeSprite setPosition:ParentGO.Position];
     [nodeSprite setVisible:ParentGO.Visible];
-    [ParentGO.RenderBatch addChild:nodeSprite z:5];
+    [ParentGO.RenderBatch addChild:nodeSprite z:6];
     
     if(ParentGO.flip) nodeSprite.flipX=YES;
     

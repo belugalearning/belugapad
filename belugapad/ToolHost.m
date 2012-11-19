@@ -1084,6 +1084,8 @@ static float kTimeToHintToolTray=7.0f;
         [pauseLayer setVisible:YES];
     }
     
+    if(pickerView)pickerView.isLocked=YES;
+    
     if(contentService.pathToTestDef)
     {
         [pauseTestPathLabel setString:contentService.pathToTestDef];
@@ -1101,6 +1103,8 @@ static float kTimeToHintToolTray=7.0f;
 {
     [pauseLayer setVisible:NO];
     isPaused=NO;
+    
+    if(pickerView)pickerView.isLocked=NO;
 }
 
 -(void) checkPauseTouches:(CGPoint)location

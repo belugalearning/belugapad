@@ -239,7 +239,8 @@
         
         ccColor4F c=ccc4FFromccc3B(ccc3(80, 110, 146));
         
-        ccDrawFilledPoly(f, perimCount, ccc4f(c.r+incr, c.g+incr, c.b+(incr*2.0f), 1.0f));
+        //todo: not doing with cocos2.1 -- needs replacing with CCDrawNode
+        //ccDrawFilledPoly(f, perimCount, ccc4f(c.r+incr, c.g+incr, c.b+(incr*2.0f), 1.0f));
     }
 }
 

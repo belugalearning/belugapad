@@ -169,12 +169,14 @@ int compareInts (const void * a, const void * b);
 	}
 	else
 	{
-		// XXX: should not be re-init. Potential memeory leak. Not following best practices
-		// XXX: it shall call directory  [setRect:rect]
-		[reusedTile_ initWithTexture:textureAtlas_.texture rect:rect rotated:NO];
-		
-		// Since initWithTexture resets the batchNode, we need to re add it.
-		// but should be removed once initWithTexture is not called again
+		// XXX HACK: Needed because if "batch node" is nil,
+		// then the Sprite'squad will be reset
+		[reusedTile_ setBatchNode:nil];
+
+		// Re-init the sprite
+		[reusedTile_ setTextureRect:rect rotated:NO untrimmedSize:rect.size];
+
+		// restore the batch node
 		[reusedTile_ setBatchNode:self];
 	}
 
@@ -325,18 +327,50 @@ int compareInts (const void * a, const void * b);
 	[sprite setOpacity:opacity_];
 	
 	//issue 1264, flip can be undone as well
-	if (gid & kCCTMXTileHorizontalFlag)
-		sprite.flipX = YES;
-	else 
-		sprite.flipX = NO;
+	sprite.flipX = NO;
+	sprite.flipY = NO;
+	sprite.rotation = 0;
+	sprite.anchorPoint = ccp(0,0);
 	
-	if (gid & kCCTMXTileVerticalFlag)
-		sprite.flipY = YES;
+	// Rotation in tiled is achieved using 3 flipped states, flipping across the horizontal, vertical, and diagonal axes of the tiles.
+	if (gid & kCCTMXTileDiagonalFlag)
+	{
+		// put the anchor in the middle for ease of rotation.
+		sprite.anchorPoint = ccp(0.5f,0.5f);
+		[sprite setPosition: ccp([self positionAt:pos].x + sprite.contentSize.height/2,
+								 [self positionAt:pos].y + sprite.contentSize.width/2 )
+		 ];
+
+		uint32_t flag = gid & (kCCTMXTileHorizontalFlag | kCCTMXTileVerticalFlag );
+
+		// handle the 4 diagonally flipped states.
+		if (flag == kCCTMXTileHorizontalFlag)
+		{
+			sprite.rotation = 90;
+		}
+		else if (flag == kCCTMXTileVerticalFlag)
+		{
+			sprite.rotation = 270;
+		}
+		else if (flag == (kCCTMXTileVerticalFlag | kCCTMXTileHorizontalFlag) )
+		{
+			sprite.rotation = 90;
+			sprite.flipX = YES;
+		}
+		else
+		{
+			sprite.rotation = 270;
+			sprite.flipX = YES;
+		}
+	}
 	else
-		sprite.flipY = NO;
-	
-	if( gid & kCCTMXTileDiagonalFlag)
-		NSAssert(NO, @"Tiled Anti-Diagonally Flip not supported yet");
+	{
+		if (gid & kCCTMXTileHorizontalFlag)
+			sprite.flipX = YES;
+		
+		if (gid & kCCTMXTileVerticalFlag)
+			sprite.flipY = YES;
+	}
 }
 
 -(CCSprite*) insertTileForGID:(uint32_t)gid at:(CGPoint)pos
@@ -354,7 +388,7 @@ int compareInts (const void * a, const void * b);
 	NSUInteger indexForZ = [self atlasIndexForNewZ:z];
 
 	// Optimization: add the quad without adding a child
-	[self addQuadFromSprite:tile quadIndex:indexForZ];
+	[self insertQuadFromSprite:tile quadIndex:indexForZ];
 
 	// insert it into the local atlasindex array
 	ccCArrayInsertValueAtIndex(atlasIndexArray_, (void*)z, indexForZ);
@@ -415,7 +449,7 @@ int compareInts (const void * a, const void * b);
 
 
 	// don't add it using the "standard" way.
-	[self addQuadFromSprite:tile quadIndex:indexForZ];
+	[self insertQuadFromSprite:tile quadIndex:indexForZ];
 
 
 	// append should be after addQuadFromSprite since it modifies the quantity values

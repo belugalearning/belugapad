@@ -16,7 +16,8 @@
 
 @protocol ScrollLayerDelegate;
 
-@interface ScrollLayer : CCLayer <CCTargetedTouchDelegate>{
+//@interface ScrollLayer : CCLayer <CCTargetedTouchDelegate>{
+@interface ScrollLayer : CCLayer {
 	int pageSize;
 	int currentPage;
 	NSMutableArray* arrayPages;

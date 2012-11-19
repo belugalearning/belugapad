@@ -483,7 +483,8 @@
         points[1]=CGPointMake(points[2].x, points[0].y);
         points[3]=CGPointMake(points[0].x, points[2].y);
         
-        ccDrawFilledPoly(first, 4, ccc4FFromccc4B(ccc4(255,255,255,5)));
+        //todo: not doing with cocos2.1 -- needs replacing with CCDrawNode
+        //ccDrawFilledPoly(first, 4, ccc4FFromccc4B(ccc4(255,255,255,5)));
         
         
     }
@@ -506,7 +507,8 @@
         points[1]=CGPointMake(points[2].x, points[0].y);
         points[3]=CGPointMake(points[0].x, points[2].y);
         
-        ccDrawFilledPoly(first, 4, ccc4FFromccc3B(ccc3(230,0,0)));
+        //todo: not doing with cocos2.1 -- needs replacing with CCDrawNode
+        //ccDrawFilledPoly(first, 4, ccc4FFromccc3B(ccc3(230,0,0)));
     }
 }
 -(void)checkAnchors

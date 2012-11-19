@@ -45,7 +45,7 @@ typedef enum
 /**
  CCRenderTexture is a generic rendering target. To render things into it,
  simply construct a render target, call begin on it, call visit on any cocos2d
- scenes or objects to render them, and call end. For convienience, render texture
+ scenes or objects to render them, and call end. For convenience, render texture
  adds a sprite as its display child with the results, so you can simply add
  the render texture to your scene and treat it like any other CCNode.
  There are also functions for saving the render texture to disk in PNG or JPG format.
@@ -55,11 +55,18 @@ typedef enum
 @interface CCRenderTexture : CCNode
 {
 	GLuint				fbo_;
+	GLuint depthRenderBufffer_;
 	GLint				oldFBO_;
 	CCTexture2D*		texture_;
 	CCSprite*			sprite_;
-
 	GLenum				pixelFormat_;
+
+	// code for "auto" update
+	GLbitfield			clearFlags_;
+	ccColor4F			clearColor_;
+	GLclampf			clearDepth_;
+	GLint				clearStencil_;
+	BOOL				autoDraw_;
 }
 
 /** The CCSprite being used.
@@ -67,7 +74,24 @@ typedef enum
  The blending function can be changed in runtime by calling:
 	- [[renderTexture sprite] setBlendFunc:(ccBlendFunc){GL_ONE, GL_ONE_MINUS_SRC_ALPHA}];
 */
-@property (nonatomic,readwrite, assign) CCSprite* sprite;
+@property (nonatomic,readwrite, retain) CCSprite* sprite;
+
+/** Valid flags: GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT, GL_STENCIL_BUFFER_BIT. They can be OR'ed. Valid when "autoDraw is YES. */
+@property (nonatomic, readwrite) GLbitfield clearFlags;
+/** Clear color value. Valid only when "autoDraw" is YES. */
+@property (nonatomic, readwrite) ccColor4F clearColor;
+/** Value for clearDepth. Valid only when autoDraw is YES. */
+@property (nonatomic, readwrite) GLclampf clearDepth;
+/** Value for clear Stencil. Valid only when autoDraw is YES */
+@property (nonatomic, readwrite) GLint clearStencil;
+/** When enabled, it will render its children into the texture automatically. Disabled by default for compatiblity reasons.
+ Will be enabled in the future.
+ */
+@property (nonatomic, readwrite) BOOL autoDraw;
+
+
+/** initializes a RenderTexture object with width and height in Points and a pixel format( only RGB and RGBA formats are valid ) and depthStencil format*/
++(id)renderTextureWithWidth:(int)w height:(int)h pixelFormat:(CCTexture2DPixelFormat) format depthStencilFormat:(GLuint)depthStencilFormat;
 
 /** creates a RenderTexture object with width and height in Points and a pixel format, only RGB and RGBA formats are valid */
 +(id)renderTextureWithWidth:(int)w height:(int)h pixelFormat:(CCTexture2DPixelFormat) format;
@@ -78,6 +102,9 @@ typedef enum
 /** initializes a RenderTexture object with width and height in Points and a pixel format, only RGB and RGBA formats are valid */
 -(id)initWithWidth:(int)w height:(int)h pixelFormat:(CCTexture2DPixelFormat) format;
 
+/** initializes a RenderTexture object with width and height in Points and a pixel format( only RGB and RGBA formats are valid ) and depthStencil format*/
+- (id)initWithWidth:(int)w height:(int)h pixelFormat:(CCTexture2DPixelFormat)format depthStencilFormat:(GLuint)depthStencilFormat;
+
 /** starts grabbing */
 -(void)begin;
 
@@ -85,11 +112,26 @@ typedef enum
  This is more efficient then calling -clear first and then -begin */
 -(void)beginWithClear:(float)r g:(float)g b:(float)b a:(float)a;
 
+/** starts rendering to the texture while clearing the texture first.
+ This is more efficient then calling -clear first and then -begin */
+- (void)beginWithClear:(float)r g:(float)g b:(float)b a:(float)a depth:(float)depthValue;
+
+/** starts rendering to the texture while clearing the texture first.
+ This is more efficient then calling -clear first and then -begin */
+- (void)beginWithClear:(float)r g:(float)g b:(float)b a:(float)a depth:(float)depthValue stencil:(int)stencilValue;
+
+
 /** ends grabbing */
 -(void)end;
 
 /** clears the texture with a color */
 -(void)clear:(float)r g:(float)g b:(float)b a:(float)a;
+
+/** clears the texture with a specified depth value */
+- (void)clearDepth:(float)depthValue;
+
+/** clears the texture with a specified stencil value */
+- (void)clearStencil:(int)stencilValue;
 
 /* creates a new CGImage from with the texture's data.
  Caller is responsible for releasing it by calling CGImageRelease().

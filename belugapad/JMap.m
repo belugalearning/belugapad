@@ -157,6 +157,8 @@ typedef enum {
         [self schedule:@selector(doUpdate:) interval:1.0f / 60.0f];
         
         [self schedule:@selector(doUpdateProximity:) interval:15.0f / 60.0f];
+        
+        [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_launch_general_background_score.mp3") loop:YES];
                 
 //        daemon=[[Daemon alloc] initWithLayer:foreLayer andRestingPostion:ccp(cx, cy) andLy:ly];
 //        [daemon setMode:kDaemonModeFollowing];

@@ -34,7 +34,6 @@
 #import "DebugViewController.h"
 #import "EditPDefViewController.h"
 #import "TestFlight.h"
-#import "SGBtxeRow.h"
 #import "ExprBuilder.h"
 
 
@@ -1316,16 +1315,17 @@ static float kTimeToHintToolTray=7.0f;
         [metaQuestionAnswers addObject:a];
         
         CCSprite *answerBtn;
-        CCLabelTTF *answerLabel;
+        SGBtxeRow *row;
+//        CCLabelTTF *answerLabel;
         
         // sort out the labels and buttons if there's an answer text
         if([[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT])
         {
             // sort out the buttons
             answerBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")];
-            answerLabel=[CCLabelTTF labelWithString:@"" dimensions:CGSizeMake(answerBtn.contentSize.width-10,answerBtn.contentSize.height-6) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:CHANGO fontSize:16.0f];
+//            answerLabel=[CCLabelTTF labelWithString:@"" dimensions:CGSizeMake(answerBtn.contentSize.width-10,answerBtn.contentSize.height-6) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:CHANGO fontSize:16.0f];
 
-            [answerLabel setAnchorPoint:ccp(0.5,0.5)];
+//            [answerLabel setAnchorPoint:ccp(0.5,0.5)];
             
             // then the answer label
             NSString *raw=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
@@ -1333,13 +1333,39 @@ static float kTimeToHintToolTray=7.0f;
             //reading this value directly causes issue #161 - in which the string is no longer a string post copy, so forcing it through a string formatter back to a string
             NSString *answerLabelString=[NSString stringWithFormat:@"%@", raw];
             
-            [answerLabel setString:answerLabelString];
+            if(answerLabelString.length<3)
+            {
+                //this can't have a <b:t> at the begining
+                
+                //assume the string needs wrapping in b:t
+                answerLabelString=[NSString stringWithFormat:@"<b:t>%@</b:t>", answerLabelString];
+            }
+            else if([[answerLabelString substringToIndex:3] isEqualToString:@"<b:"])
+            {
+                //doesn't need wrapping
+            }
+            else
+            {
+                //assume the string needs wrapping in b:t
+                answerLabelString=[NSString stringWithFormat:@"<b:t>%@</b:t>", answerLabelString];
+            }
+            
+            row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
+            
+            row.forceVAlignTop=NO;
+
+            [row parseXML:answerLabelString];
+            [row setupDraw];
+            
+
+            
+//            [answerLabel setString:answerLabelString];
             NSLog(@"before answerLabelString: %@", answerLabelString);
             
-            if(answerLabelString.length>9)
-                [answerLabel setFontSize:16.0f];
-            else
-                [answerLabel setFontSize:22.0f];
+//            if(answerLabelString.length>9)
+//                [answerLabel setFontSize:16.0f];
+//            else
+//                [answerLabel setFontSize:22.0f];
         }
         // there should never be both an answer text and custom sprite defined - so if no answer text, only render the SPRITE_FILENAME
         else
@@ -1363,16 +1389,17 @@ static float kTimeToHintToolTray=7.0f;
         
         
         // check for text, render if nesc
-        if(![answerLabel.string isEqualToString:@""])
+        if(row)
         {
-            [answerLabel setPosition:ccp(answerBtn.contentSize.width/2,(answerLabel.contentSize.height/2)-(answerBtn.contentSize.height/2))];
-            [answerLabel setColor:kMetaAnswerLabelColorSelected];
-            [answerLabel setOpacity:0];
-            [answerLabel setTag: 3];
-            [answerBtn addChild:answerLabel];
-            [metaQuestionAnswerLabels addObject:answerLabel];
+            row.position=answerBtn.position;
+//            [answerLabel setPosition:ccp(answerBtn.contentSize.width/2,(answerLabel.contentSize.height/2)-(answerBtn.contentSize.height/2))];
+//            [answerLabel setColor:kMetaAnswerLabelColorSelected];
+//            [answerLabel setOpacity:0];
+//            [answerLabel setTag: 3];
+//            [answerBtn addChild:answerLabel];
+//            [metaQuestionAnswerLabels addObject:answerLabel];
         }
-        
+    
         // set a new value in the array so we can see that it's not currently selected
         [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
     }
@@ -1418,7 +1445,7 @@ static float kTimeToHintToolTray=7.0f;
         for(int i=0; i<metaQuestionAnswerCount; i++)
         {
             CCSprite *answerBtn=[metaQuestionAnswerButtons objectAtIndex:i];
-            CCLabelTTF *answerLabel=[metaQuestionAnswerLabels objectAtIndex:i];
+            //CCLabelTTF *answerLabel=[metaQuestionAnswerLabels objectAtIndex:i];
             
             float aLabelPosXLeft = answerBtn.position.x-((answerBtn.contentSize.width*answerBtn.scale)/2);
             float aLabelPosYleft = answerBtn.position.y-((answerBtn.contentSize.height*answerBtn.scale)/2);
@@ -1457,7 +1484,7 @@ static float kTimeToHintToolTray=7.0f;
                     else if(mqAnswerMode==kMetaQuestionAnswerMulti)
                     {
                         [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-button-selected.png")]];
-                        [answerLabel setColor:kMetaAnswerLabelColorSelected];
+                        //[answerLabel setColor:kMetaAnswerLabelColorSelected];
                         //                        [answerBtn setColor:kMetaQuestionButtonSelected];
                         [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
                     }
@@ -1467,7 +1494,7 @@ static float kTimeToHintToolTray=7.0f;
                 {
                     // return to full button colour and set the dictionary selected value to no
                     [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")]];
-                    [answerLabel setColor:kMetaAnswerLabelColorDeselected];
+                    //[answerLabel setColor:kMetaAnswerLabelColorDeselected];
                     //                    [answerBtn setColor:kMetaQuestionButtonDeselected];
                     [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
                 }
@@ -1603,12 +1630,12 @@ static float kTimeToHintToolTray=7.0f;
     for(int i=0; i<metaQuestionAnswerCount; i++)
     {
         CCSprite *answerBtn=[metaQuestionAnswerButtons objectAtIndex:i];
-        CCLabelTTF *answerLabel=[metaQuestionAnswerLabels objectAtIndex:i];
+        //CCLabelTTF *answerLabel=[metaQuestionAnswerLabels objectAtIndex:i];
         if(i == answerNumber)
         {
             //NSLog(@"answer %d selected", answerNumber);
             [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-button-selected.png")]];
-            [answerLabel setColor:kMetaAnswerLabelColorSelected];
+            //[answerLabel setColor:kMetaAnswerLabelColorSelected];
 //            [answerBtn setColor:kMetaQuestionButtonSelected];
             [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
         }
@@ -1616,7 +1643,7 @@ static float kTimeToHintToolTray=7.0f;
         {
             //NSLog(@"answer %d deselected", answerNumber);
             [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")]];
-            [answerLabel setColor:kMetaAnswerLabelColorDeselected];
+            //[answerLabel setColor:kMetaAnswerLabelColorDeselected];
 //            [answerBtn setColor:kMetaQuestionButtonDeselected];
             [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
         }
@@ -1655,10 +1682,10 @@ static float kTimeToHintToolTray=7.0f;
 }
 -(void)removeMetaQuestionButtons
 {
-    for(int i=0;i<metaQuestionAnswerLabels.count;i++)
-    {
-        [trayLayerMq removeChild:[metaQuestionAnswerLabels objectAtIndex:i] cleanup:YES];
-    } 
+//    for(int i=0;i<metaQuestionAnswerLabels.count;i++)
+//    {
+//        [trayLayerMq removeChild:[metaQuestionAnswerLabels objectAtIndex:i] cleanup:YES];
+//    } 
     for(int i=0;i<metaQuestionAnswerButtons.count;i++)
     {
         [trayLayerMq removeChild:[metaQuestionAnswerButtons objectAtIndex:i] cleanup:YES];
@@ -2265,7 +2292,7 @@ static float kTimeToHintToolTray=7.0f;
     
     if(isHoldingObject) return;  // no multi-touch but let's be sure
     
-    for(id<MovingInteractive, NSObject> o in descGw.AllGameObjects)
+    for(id<MovingInteractive, NSObject> o in descRow.children)
     {
         if([o conformsToProtocol:@protocol(MovingInteractive)])
         {
@@ -2385,7 +2412,7 @@ static float kTimeToHintToolTray=7.0f;
     if(heldObject)
     {
         //test new location for target / drop
-        for(id<Interactive, NSObject> o in [descGw AllGameObjectsCopy])
+        for(id<Interactive, NSObject> o in descRow.children)
         {
             if([o conformsToProtocol:@protocol(Interactive)])
             {

@@ -15,7 +15,7 @@
 typedef enum 
 {
     kCheckShapeSizes=0,
-    kCheckNamedGroups=1,
+    kCheckTaggedGroups=1,
     kCheckEvalAreas=2,
     kCheckGroupTypeAndNumber=3,
     kIncludeShapeSizes=4,

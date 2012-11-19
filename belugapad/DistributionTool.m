@@ -27,6 +27,7 @@
 #import "SGDtoolBlockRender.h"
 #import "InteractionFeedback.h"
 #import "SimpleAudioEngine.h"
+#import "SGBtxeProtocols.h"
 
 #define DRAW_DEPTH 1
 static float kTimeSinceAction=7.0f;
@@ -742,6 +743,29 @@ static float kDistanceBetweenBlocks=70.0f;
     }
 }
 
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    id<MovingInteractive,Text>iBTXE=(id<MovingInteractive,Text>)thisObject;
+    NSLog(@"incoming BTXE to DT mothernigga!!!! :) text is motherfucking: %@", iBTXE.text);
+    
+    for(id go in gw.AllGameObjects)
+    {
+        if([go isKindOfClass:[SGDtoolBlock class]])
+        {
+            id<Moveable>thisBlock=(id<Moveable>)go;
+
+            if([thisBlock amIProximateTo:thisLocation]&&thisBlock.MyContainer)
+            {
+                id<Container>thisCont=(SGDtoolContainer*)thisBlock.MyContainer;
+                if(!thisCont.Label)
+                {
+                    [thisCont setGroupLabelString:iBTXE.text];
+                }
+            }
+        }
+    }
+
+}
 
 -(BOOL)evalNumberOfShapesInEvalAreas
 {
@@ -1016,7 +1040,6 @@ static float kDistanceBetweenBlocks=70.0f;
 {
     int solutionsFound=0;
     NSMutableArray *matchedEvalAreas=[[NSMutableArray alloc]init];
-    NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
     NSMutableArray *solutionsLeft=[NSMutableArray arrayWithArray:solutionsDef];
     
     for(int i=0;i<[evalAreas count];i++)

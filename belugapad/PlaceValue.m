@@ -3230,7 +3230,7 @@ static float kTimeToCageShake=7.0f;
                         [loggingService logEvent:BL_PA_PV_TOUCH_END_MULTIPLE_BLOCKS_DROPPED withAdditionalData:nil];
                         if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && !hasModifiedTestLocation && [pickupObjects count]>1)
                         {
-                            gw.Blackboard.TestTouchLocation=ccp(n.PosX,n.PosY+200);
+                            gw.Blackboard.TestTouchLocation=ccp(n.PosX,n.PosY+ly);
                             hasModifiedTestLocation=YES;
                         }
                         

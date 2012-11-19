@@ -2540,6 +2540,11 @@ static float kTimeToCageShake=7.0f;
     return kMetaQuestionYOffsetPlaceValue*cy;
 }
 
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    
+}
+
 #pragma mark - touches events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {

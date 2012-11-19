@@ -374,7 +374,7 @@ float timerIgnoreFrog;
         touchResetX -=movex;
     }
     
-    NSLog(@"rambler.TouchXOffset %f", rambler.TouchXOffset);
+    //NSLog(@"rambler.TouchXOffset %f", rambler.TouchXOffset);
 }
 
 -(void)draw

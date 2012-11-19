@@ -11,6 +11,7 @@
 @class SGBtxeContainerMgr;
 @class SGBtxeTextRender;
 @class SGBtxeParser;
+@class SGGameWorld;
 
 
 @protocol Container
@@ -109,6 +110,7 @@
 
 -(void)returnToBase;
 -(id<MovingInteractive>)createADuplicate;
+-(id<MovingInteractive>)createADuplicateIntoGameWorld:(SGGameWorld*)destGW;
 -(void)destroy;
 
 @end

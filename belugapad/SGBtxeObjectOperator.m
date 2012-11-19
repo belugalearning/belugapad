@@ -42,10 +42,10 @@
     return self;
 }
 
--(id<MovingInteractive>)createADuplicate
+-(id<MovingInteractive>)createADuplicateIntoGameWorld:(SGGameWorld *)destGW
 {
-    SGBtxeObjectOperator *dupe=[[[SGBtxeObjectOperator alloc] initWithGameWorld:gameWorld]autorelease];
-
+    SGBtxeObjectOperator *dupe=[[[SGBtxeObjectOperator alloc] initWithGameWorld:destGW]autorelease];
+    
     dupe.text=[[self.text copy] autorelease];
     dupe.position=self.position;
     dupe.tag=[[self.tag copy] autorelease];
@@ -53,6 +53,11 @@
     dupe.valueOperator=[[self.valueOperator copy] autorelease];
     
     return (id<MovingInteractive>)dupe;
+}
+
+-(id<MovingInteractive>)createADuplicate
+{
+    return [self createADuplicateIntoGameWorld:gameWorld];
 }
 
 

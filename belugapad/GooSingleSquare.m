@@ -155,7 +155,9 @@
 	}
 	
     ccColor4F col=ccc4f(0, 220/225.0f, 0, 1);
-    ccDrawFilledPoly(verts, _count, col);
+    
+    //todo: not doing with cocos2.1 -- needs replacing with CCDrawNode
+    //ccDrawFilledPoly(verts, _count, col);
     
 //    ccDrawColor4F(0, 206/255.0f, 0, 1.0f);
     ccDrawColor4F(1, 1, 1, 1.0f);

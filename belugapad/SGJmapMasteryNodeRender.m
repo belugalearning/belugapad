@@ -1091,7 +1091,8 @@ static int shadowSteps=5;
         
         //if(renderParent.zoomedOut) col=ccc4f(col.r, col.g, col.b, 0.3f);
         
-        ccDrawFilledPoly(first, renderParent.sortedChildren.count, col);
+        //todo: not doing with cocos2.1 -- needs replacing with CCDrawNode
+        //ccDrawFilledPoly(first, renderParent.sortedChildren.count, col);
     }
 
     

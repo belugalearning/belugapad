@@ -39,7 +39,7 @@
 
 - (void)onEnter {
 //	CCLOG(@"onEnter");
-	[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+	[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:NO];
 	[super onEnter];
 }
 
@@ -47,7 +47,17 @@
 //	CCLOG(@"onEnter");
 	[[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
 	[super onExit];
-}	
+}
+
+-(void)stopTouching
+{
+    [[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
+}
+
+-(void)startTouching
+{
+    [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+}
 
 -(void)makePages {
 	CGSize s = self.contentSize;

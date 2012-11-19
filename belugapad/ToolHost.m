@@ -859,7 +859,7 @@ static float kTimeToHintToolTray=7.0f;
     
     evalShowCommit=YES;
     
-    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_launch_general_background_score.mp3") loop:YES];
+    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_background_score.mp3") loop:YES];
 }
 -(void)addCommitButton
 {
@@ -1063,6 +1063,8 @@ static float kTimeToHintToolTray=7.0f;
 -(void) showPauseMenu
 {
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_pause_tap.wav")];
+    [[SimpleAudioEngine sharedEngine]stopBackgroundMusic];
+    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_muffled_background_score_for_pause_menu.mp3") loop:YES];
     isPaused = YES;
     
     if(!pauseMenu)
@@ -1084,6 +1086,8 @@ static float kTimeToHintToolTray=7.0f;
         [pauseLayer setVisible:YES];
     }
     
+    if(pickerView)pickerView.isLocked=YES;
+    
     if(contentService.pathToTestDef)
     {
         [pauseTestPathLabel setString:contentService.pathToTestDef];
@@ -1099,8 +1103,12 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)hidePauseMenu
 {
+    [[SimpleAudioEngine sharedEngine]stopBackgroundMusic];
+    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_background_score.mp3") loop:YES];
     [pauseLayer setVisible:NO];
     isPaused=NO;
+    
+    if(pickerView)pickerView.isLocked=NO;
 }
 
 -(void) checkPauseTouches:(CGPoint)location

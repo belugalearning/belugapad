@@ -75,6 +75,7 @@
 -(void)addBlockToMe:(id)thisBlock;
 -(void)removeBlockFromMe:(id)thisBlock;
 -(void)repositionLabel;
+-(void)setGroupLabelString:(NSString*)toThisString;
 -(int)blocksInShape;
 -(void)layoutMyBlocks;
 -(void)destroyThisObject;

@@ -178,6 +178,22 @@
     return [self.BlocksInShape count];
 }
 
+-(void)setGroupLabelString:(NSString*)toThisString
+{
+    if(!Label)
+    {
+        self.Label=[CCLabelTTF labelWithString:toThisString fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
+        [self.Label setColor:ccc3(255,0,0)];
+        [self.BaseNode addChild:self.Label];
+    }
+    else
+    {
+        [self.Label setString:toThisString];
+    }
+    
+    [self repositionLabel];
+}
+
 -(void)destroyThisObject
 {
     if(self.Label)[self.Label removeFromParentAndCleanup:YES];

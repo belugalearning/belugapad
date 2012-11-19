@@ -936,6 +936,11 @@ float timerIgnoreFrog;
     return 150;
 }
 
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    
+}
+
 -(void)dealloc
 {
     [bubbleTexRegular release];

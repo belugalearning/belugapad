@@ -63,6 +63,9 @@
     EditPDefViewController *editPDefViewController;
     BOOL nowEditingPDef;
     CCSprite *unsavedEditsImage;
+    
+    BOOL isHoldingObject;
+    id<MovingInteractive> heldObject;
 }
 
 @end
@@ -2259,6 +2262,29 @@ static float kTimeToHintToolTray=7.0f;
         }
     }
     
+    
+    if(isHoldingObject) return;  // no multi-touch but let's be sure
+    
+    for(id<MovingInteractive, NSObject> o in descGw.AllGameObjects)
+    {
+        if([o conformsToProtocol:@protocol(MovingInteractive)])
+        {
+            id<Bounding> obounding=(id<Bounding>)o;
+            
+            CGRect hitbox=CGRectMake(obounding.worldPosition.x - (BTXE_OTBKG_WIDTH_OVERDRAW_PAD + obounding.size.width) / 2.0f, obounding.worldPosition.y-BTXE_VPAD-(obounding.size.height / 2.0f), obounding.size.width + BTXE_OTBKG_WIDTH_OVERDRAW_PAD, obounding.size.height + 2*BTXE_VPAD);
+            
+
+            if(o.enabled && CGRectContainsPoint(hitbox, location))
+            {
+                heldObject=o;
+                isHoldingObject=YES;
+                
+                [(id<MovingInteractive>)o inflateZIndex];
+                
+            }
+        }
+    }
+    
     if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn)
     {
         //remove any trays
@@ -2282,7 +2308,13 @@ static float kTimeToHintToolTray=7.0f;
     if(isPaused||autoMoveToNextProblem||isAnimatingIn)
     {
         return;
-    } 
+    }
+    
+    if(isHoldingObject)
+    {
+        //track that object's position
+        heldObject.worldPosition=location;
+    }
     
     if(npMove && numberPickerForThisProblem)[self checkNumberPickerTouchOnRegister:location];
     
@@ -2348,6 +2380,43 @@ static float kTimeToHintToolTray=7.0f;
         [self checkPauseTouches:location];
         return;
     }
+    
+    
+    if(heldObject)
+    {
+        //test new location for target / drop
+        for(id<Interactive, NSObject> o in [descGw AllGameObjectsCopy])
+        {
+            if([o conformsToProtocol:@protocol(Interactive)])
+            {
+                if(!o.enabled
+                   && [heldObject.tag isEqualToString:o.tag]
+                   && [BLMath DistanceBetween:o.worldPosition and:location]<=BTXE_PICKUP_PROXIMITY)
+                {
+                    //this object is proximate, disabled and the same tag
+                    [o activate];
+                }
+                
+                if([o conformsToProtocol:@protocol(BtxeMount)] && [BLMath DistanceBetween:o.worldPosition and:location]<=BTXE_PICKUP_PROXIMITY)
+                {
+                    id<BtxeMount, Interactive> pho=(id<BtxeMount, Interactive>)o;
+                    
+                    //mount the object on the place holder
+                    [pho duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)heldObject];
+                }
+            }
+        }
+        
+        [heldObject returnToBase];
+        
+        [heldObject deflateZindex];
+        
+        [currentTool userDroppedBTXEObject:heldObject atLocation:location];
+        
+        heldObject=nil;
+        isHoldingObject=NO;
+    }
+    
     
     if(traybtnCalc && CGRectContainsPoint(bbCalc, location) && hasTrayCalc)
     {

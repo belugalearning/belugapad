@@ -225,10 +225,10 @@ const float kScaleOfLesserBlocks=0.6f;
     
     columnsInPicker=[[pdef objectForKey:COLUMNS_IN_PICKER]intValue];
 
-    if([pdef objectForKey:START_COLUMN_VALUE])
-        startColValue=[[pdef objectForKey:START_COLUMN_VALUE]floatValue];
-    else
-        startColValue=pow(10,columnsInPicker-1);
+//    if([pdef objectForKey:START_COLUMN_VALUE])
+//        startColValue=[[pdef objectForKey:START_COLUMN_VALUE]floatValue];
+//    else
+//        startColValue=pow(10,columnsInPicker-1);
     
     labelInfo=[[NSMutableDictionary alloc]init];
     
@@ -851,6 +851,11 @@ const float kScaleOfLesserBlocks=0.6f;
 -(float)metaQuestionAnswersYLocation
 {
     return kMetaQuestionYOffsetPlaceValue*cy;
+}
+
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    
 }
 
 -(void) dealloc

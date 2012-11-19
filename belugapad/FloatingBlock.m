@@ -1012,6 +1012,11 @@
     return kMetaQuestionYOffsetPlaceValue*cy;
 }
 
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    
+}
+
 #pragma mark - dealloc
 -(void) dealloc
 {

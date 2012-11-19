@@ -109,6 +109,7 @@
 
 -(void)returnToBase;
 -(id<MovingInteractive>)createADuplicate;
+-(id<MovingInteractive>)createADuplicateIntoGameWorld:(SGGameWorld*)destGW;
 -(void)destroy;
 
 @end

@@ -41,11 +41,11 @@
     return self;
 }
 
--(id<MovingInteractive>)createADuplicate
+-(id<MovingInteractive>)createADuplicateIntoGameWorld:(SGGameWorld*)destGW
 {
     //creates a duplicate object text -- something else will need to call setupDraw and attachToRenderBase
     
-    SGBtxeObjectText *dupe=[[[SGBtxeObjectText alloc] initWithGameWorld:gameWorld] autorelease];
+    SGBtxeObjectText *dupe=[[[SGBtxeObjectText alloc] initWithGameWorld:destGW] autorelease];
     
     dupe.text=[[self.text copy] autorelease];
     dupe.position=self.position;
@@ -54,6 +54,12 @@
     dupe.usePicker=self.usePicker;
     
     return (id<MovingInteractive>)dupe;
+    
+}
+
+-(id<MovingInteractive>)createADuplicate
+{
+    return [self createADuplicateIntoGameWorld:gameWorld];
 }
 
 -(void)handleMessage:(SGMessageType)messageType

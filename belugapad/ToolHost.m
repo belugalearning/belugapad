@@ -1086,6 +1086,8 @@ static float kTimeToHintToolTray=7.0f;
         [pauseLayer setVisible:YES];
     }
     
+    if(pickerView)pickerView.isLocked=YES;
+    
     if(contentService.pathToTestDef)
     {
         [pauseTestPathLabel setString:contentService.pathToTestDef];
@@ -1105,6 +1107,8 @@ static float kTimeToHintToolTray=7.0f;
     [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_background_score.mp3") loop:YES];
     [pauseLayer setVisible:NO];
     isPaused=NO;
+    
+    if(pickerView)pickerView.isLocked=NO;
 }
 
 -(void) checkPauseTouches:(CGPoint)location

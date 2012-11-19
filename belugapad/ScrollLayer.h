@@ -28,6 +28,11 @@
 	BOOL isTouching;
     BOOL didMove;
 }
+
+
+-(void)stopTouching;
+-(void)startTouching;
+
 @property (nonatomic, assign) int pageSize;
 @property (nonatomic, assign) int currentPage;
 @property (nonatomic, retain) NSMutableArray* arrayPages;
@@ -41,4 +46,5 @@
 @protocol ScrollLayerDelegate <NSObject>
 -(void)onDoneSelecting:(ScrollLayer *)scrollLayer;
 -(void)onDoneSpinning:(ScrollLayer *)scrollLayer;
+
 @end

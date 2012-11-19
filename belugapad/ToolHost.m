@@ -2410,7 +2410,8 @@ static float kTimeToHintToolTray=7.0f;
         [heldObject returnToBase];
         
         [heldObject deflateZindex];
-
+        
+        [currentTool userDroppedBTXEObject:heldObject atLocation:location];
         
         heldObject=nil;
         isHoldingObject=NO;

@@ -1358,12 +1358,13 @@ static float kTimeToHintToolTray=7.0f;
                 answerLabelString=[NSString stringWithFormat:@"<b:t>%@</b:t>", answerLabelString];
             }
             
-            row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
+            row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:trayLayerMq];
             
             row.forceVAlignTop=NO;
 
             [row parseXML:answerLabelString];
             [row setupDraw];
+            [row inflateZindex];
             
 
             
@@ -2291,7 +2292,7 @@ static float kTimeToHintToolTray=7.0f;
 
     else
     {
-        if((trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE){
+        if((trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(pickerView.boundingBox, location)){
             [self removeAllTrays];
             return;
         }

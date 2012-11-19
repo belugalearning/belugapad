@@ -10,6 +10,7 @@
 
 @class SGDtoolBlockRender;
 @class SGDtoolBlockPairing;
+@class SGBtxeRow;
 
 @protocol Transform
 
@@ -61,8 +62,9 @@
 
 @end
 
-@protocol Container
+@protocol ShapeContainer
 
+@property (retain) CCLayer *RenderLayer;
 @property (retain) NSMutableArray *BlocksInShape;
 @property (retain) CCLabelTTF *Label;
 @property (retain) CCNode *BaseNode;
@@ -71,11 +73,14 @@
 @property BOOL AllowDifferentTypes;
 @property BOOL ShowCount;
 @property (retain) CCLabelTTF *CountLabel;
+@property (retain) id BTXELabel;
+@property (retain) SGBtxeRow *BTXERow;
 
 -(void)addBlockToMe:(id)thisBlock;
 -(void)removeBlockFromMe:(id)thisBlock;
 -(void)repositionLabel;
 -(void)setGroupLabelString:(NSString*)toThisString;
+-(void)setGroupBTXELabel:(id)thisLabel;
 -(int)blocksInShape;
 -(void)layoutMyBlocks;
 -(void)destroyThisObject;

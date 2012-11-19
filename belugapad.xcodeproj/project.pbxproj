@@ -113,6 +113,7 @@
 		55C5F73F1538A8F2009D8906 /* BDotGridShapeTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7371538A8F2009D8906 /* BDotGridShapeTouch.m */; };
 		55C5F7401538A8F2009D8906 /* BDotGridTileObjectRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C5F7391538A8F2009D8906 /* BDotGridTileObjectRender.m */; };
 		55C908D015F62BD900BD64F2 /* SGFBlockOpBubble.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C908CF15F62BD900BD64F2 /* SGFBlockOpBubble.m */; };
+		55CD0507165AC1200040630A /* LDivision.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CD0506165AC1200040630A /* LDivision.m */; };
 		55E7CBDA157FC82400A399CF /* DWPieSplitterPieGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBD9157FC82400A399CF /* DWPieSplitterPieGameObject.m */; };
 		55E7CBDF157FC85200A399CF /* DWPieSplitterSliceGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBDE157FC85200A399CF /* DWPieSplitterSliceGameObject.m */; };
 		55E7CBE3157FC8B800A399CF /* DWPieSplitterContainerGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 55E7CBE2157FC8B800A399CF /* DWPieSplitterContainerGameObject.m */; };
@@ -642,6 +643,8 @@
 		55C5F7391538A8F2009D8906 /* BDotGridTileObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDotGridTileObjectRender.m; sourceTree = "<group>"; };
 		55C908CE15F62BD800BD64F2 /* SGFBlockOpBubble.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBlockOpBubble.h; sourceTree = "<group>"; };
 		55C908CF15F62BD900BD64F2 /* SGFBlockOpBubble.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBlockOpBubble.m; sourceTree = "<group>"; };
+		55CD0505165AC11F0040630A /* LDivision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LDivision.h; path = belugapad/LDivision.h; sourceTree = "<group>"; };
+		55CD0506165AC1200040630A /* LDivision.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LDivision.m; path = belugapad/LDivision.m; sourceTree = "<group>"; };
 		55E7CBD8157FC82400A399CF /* DWPieSplitterPieGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPieSplitterPieGameObject.h; sourceTree = "<group>"; };
 		55E7CBD9157FC82400A399CF /* DWPieSplitterPieGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWPieSplitterPieGameObject.m; sourceTree = "<group>"; };
 		55E7CBDD157FC85200A399CF /* DWPieSplitterSliceGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPieSplitterSliceGameObject.h; sourceTree = "<group>"; };
@@ -1941,6 +1944,8 @@
 		7F5113B314A9EE62001AF372 = {
 			isa = PBXGroup;
 			children = (
+				55CD0505165AC11F0040630A /* LDivision.h */,
+				55CD0506165AC1200040630A /* LDivision.m */,
 				3395A5FD164F092500492FC2 /* Default-Landscape@2x~ipad.png */,
 				3395A5FB164F050300492FC2 /* Icon_black_144.png */,
 				3395A5F8164F050000492FC2 /* Icon_black_72.png */,
@@ -3444,6 +3449,7 @@
 				7F817C3B165A750F00B291DA /* TGAlib.m in Sources */,
 				7F817C3C165A750F00B291DA /* TransformUtils.m in Sources */,
 				7F817C3D165A750F00B291DA /* ZipUtils.m in Sources */,
+				55CD0507165AC1200040630A /* LDivision.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

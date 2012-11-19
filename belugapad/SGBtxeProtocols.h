@@ -11,6 +11,7 @@
 @class SGBtxeContainerMgr;
 @class SGBtxeTextRender;
 @class SGBtxeParser;
+@class SGGameWorld;
 
 
 @protocol Container

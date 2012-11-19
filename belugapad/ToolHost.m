@@ -2292,7 +2292,7 @@ static float kTimeToHintToolTray=7.0f;
 
     else
     {
-        if((trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(pickerView.boundingBox, location)){
+        if((trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(CGRectMake(CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308), location)){
             [self removeAllTrays];
             return;
         }

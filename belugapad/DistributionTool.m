@@ -1857,7 +1857,7 @@ static float kDistanceBetweenBlocks=70.0f;
         
     }
     
-    else if(evalType==kCheckNamedGroups)
+    else if(evalType==kCheckTaggedGroups)
     {
         NSDictionary *d=[solutionsDef objectAtIndex:0];
         int solutionsExpected=[d count];
@@ -1865,20 +1865,42 @@ static float kDistanceBetweenBlocks=70.0f;
         
         for(id cont in gw.AllGameObjects)
         {
-                if([cont conformsToProtocol:@protocol(ShapeContainer)])
+            NSString *thisKey=nil;
+            
+            if([cont conformsToProtocol:@protocol(Interactive)])
+                thisKey=((id<Interactive>)cont).tag;
+            
+            if([cont conformsToProtocol:@protocol(ShapeContainer)])
+            { 
+                
+                id <ShapeContainer> thisCont=cont;
+                if([d objectForKey:thisKey])
                 {
-                    id <ShapeContainer> thisCont=cont;
-                    NSString *thisKey=[thisCont.Label string];
-                    if([d objectForKey:thisKey])
-                    {
-
-                        int thisVal=[[d objectForKey:thisKey] intValue];
-                         NSLog(@"this group %d, required for key %d", [thisCont.BlocksInShape count], thisVal);
-                        if([thisCont.BlocksInShape count]==thisVal)
-                            solutionsFound++;
-                    }
+                    
+                    int thisVal=[[d objectForKey:thisKey] intValue];
+                    NSLog(@"this group %d, required for key %d", [thisCont.BlocksInShape count], thisVal);
+                    if([thisCont.BlocksInShape count]==thisVal)
+                        solutionsFound++;
                 }
+            }
         }
+        
+//        for(id cont in gw.AllGameObjects)
+//        {
+//            if([cont conformsToProtocol:@protocol(ShapeContainer)])
+//            {
+//                id <ShapeContainer> thisCont=cont;
+//                NSString *thisKey=[thisCont.Label string];
+//                if([d objectForKey:thisKey])
+//                {
+//                    
+//                    int thisVal=[[d objectForKey:thisKey] intValue];
+//                    NSLog(@"this group %d, required for key %d", [thisCont.BlocksInShape count], thisVal);
+//                    if([thisCont.BlocksInShape count]==thisVal)
+//                        solutionsFound++;
+//                }
+//            }
+//        }
         
         if (solutionsFound==solutionsExpected)
             return YES;

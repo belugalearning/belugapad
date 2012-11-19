@@ -40,6 +40,8 @@ static int shadowSteps=5;
 
 @synthesize ParentGO, sortedChildren, allPerimPoints, scaledPerimPoints, zoomedOut;
 
+@synthesize islandShapeIdx, islandLayoutIdx, islandStage;
+
 -(SGJmapMasteryNodeRender*)initWithGameObject:(id<Transform, CouchDerived>)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
@@ -114,10 +116,23 @@ static int shadowSteps=5;
     }
 }
 
--(void)doUpdate:(ccTime)delta
+-(void)dealloc
 {
+    free(allPerimPoints);
+    free(scaledPerimPoints);
+    
+    [sortedChildren release];
+    [texturePoints release];
+    
+    [islandData release];
+    [featureSprites release];
 
+    self.indexedBaseNodes=nil;
+    
+    [super dealloc];
 }
+
+#pragma mark - physical force-directed layout step
 
 -(void)forceLayoutStep
 {
@@ -180,10 +195,16 @@ static int shadowSteps=5;
     //ParentGO.Position=[BLMath AddVector:ParentGO.Position toVector:avgp];
 }
 
+#pragma mark - update and draw (draw only used in debug)
+
+-(void)doUpdate:(ccTime)delta
+{
+    
+}
 
 -(void)draw:(int)z
 {
-
+    //no current drawing outside of debug and draw testing
     
 //    CGPoint myWorldPos=[ParentGO.RenderBatch.parent convertToWorldSpace:ParentGO.Position];
     
@@ -231,165 +252,104 @@ static int shadowSteps=5;
     }
 }
 
+#pragma mark - sprite / fixed position layout, main setup sequence
+
 -(void)setup
 {
+    NSLog(@"new island setup");
+    
     int iCount=ParentGO.ChildNodes.count;
     if(iCount==0)iCount=1; // handle islands with no nodes
-    islandName=[NSString stringWithFormat:@"island%d-1", iCount];
-    //islandName=[NSString stringWithFormat:@"island6-2"];
+
+    //get an island selection base
+    self.islandShapeIdx=(arc4random()%10) + 1;
     
-    //setup island data if not in cache -- if no cache, create it
-    if(!gameWorld.Blackboard.islandData) gameWorld.Blackboard.islandData=[[[NSMutableDictionary alloc] init] autorelease];
+    //get island data base
+    self.islandLayoutIdx=(arc4random()%gameWorld.Blackboard.islandData.count);
+
+    //island stage
+    self.islandStage=1;
+    if(ParentGO.PrereqPercentage>=30)self.islandStage=3;
+    if(ParentGO.PrereqPercentage>=70)self.islandStage=5;
+
     
-    islandData=[gameWorld.Blackboard.islandData objectForKey:islandName];
-    if(!islandData)
-    {
-        islandData=[self loadIslandData:islandName];
-        [gameWorld.Blackboard.islandData setValue:islandData forKey:islandName];
-    }
+//    //position children
+//    NSArray *nodePoints=[islandData objectForKey:ISLAND_NODES];
+//    for (int i=0; i<ParentGO.ChildNodes.count; i++)
+//    {
+//        id<Transform, PinRender> child=[ParentGO.ChildNodes objectAtIndex:i];
+//        //child.Position=[[nodePoints objectAtIndex:i] CGPointValue];
+//        child.Position=[BLMath AddVector:ParentGO.Position toVector:[[nodePoints objectAtIndex:i] CGPointValue]];
+//        
+//        if([[nodePoints objectAtIndex:i] CGPointValue].x<0)
+//        {
+//            child.flip=YES;
+//        }
+//    }
+    
+    
+    [self createBaseNodes];
+    
     
     //position children
-    NSArray *nodePoints=[islandData objectForKey:ISLAND_NODES];
+    
+    //all nodes with data
+    NSArray *fnodes= [[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"NODES"];
+    //step all children
     for (int i=0; i<ParentGO.ChildNodes.count; i++)
     {
         id<Transform, PinRender> child=[ParentGO.ChildNodes objectAtIndex:i];
-        //child.Position=[[nodePoints objectAtIndex:i] CGPointValue];
-        child.Position=[BLMath AddVector:ParentGO.Position toVector:[[nodePoints objectAtIndex:i] CGPointValue]];
+     
+        //get corresponding data
+        NSDictionary *fnode=[fnodes objectAtIndex:i];
         
-        if([[nodePoints objectAtIndex:i] CGPointValue].x<0)
-        {
-            child.flip=YES;
-        }
+        //skip if no corresponding data
+        if(!fnode) continue;
+        
+        //find this node in the indexed list of all features
+        int targetIdx=[[[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"FEATURE_INDEX"] indexOfObject:fnode];
+        
+        //get position by copying from indexed placeholder
+        CGPoint pos=((CCSprite*)[self.indexedBaseNodes objectAtIndex:targetIdx]).position;
+        
+        child.Position=pos;
+        
+        //todo set flipped here -- from FLIPPED NSNumber on the fnode dict
     }
-}
-
--(NSMutableDictionary*)loadIslandData:(NSString*)name
-{
-    NSMutableDictionary *buildData=[[[NSMutableDictionary alloc] init] autorelease];
-    
-    //load animation data
-	//NSString *XMLPath=BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/jmap/islands/%@.svg", name]));
-    
-    NSString *XMLPath=BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/jmap/islands/island6-1.svg"]));
-	
-	//use that file to populate an NSData object
-	NSData *XMLData=[NSData dataWithContentsOfFile:XMLPath];
-	
-	//get TouchXML doc
-	CXMLDocument *doc=[[CXMLDocument alloc] initWithData:XMLData options:0 error:nil];
-    
-	//setup a namespace mapping for the svg namespace
-	NSDictionary *nsMappings=[NSDictionary
-							  dictionaryWithObject:@"http://www.w3.org/2000/svg"
-							  forKey:@"svg"];
-    
-    
-    //mastery position
-    CXMLElement *masteryCircle=[[doc nodesForXPath:@"//svg:g[@id='data-mastery']/svg:circle" namespaceMappings:nsMappings error:nil] objectAtIndex:0];
-    float rawMasteryX=[[[masteryCircle attributeForName:@"cx"] stringValue] floatValue];
-    float rawMasteryY=[[[masteryCircle attributeForName:@"cy"] stringValue] floatValue];
-    
-//    [buildData setValue:[BLMath BoxAndYFlipCGPoint:ccp(rawMasteryX, rawMasteryY) withMaxY:FIXED_SIZE_Y] forKey:ISLAND_MASTERY];
-    
-    [buildData setValue:[NSValue valueWithCGPoint:[self subCentre:ccp(rawMasteryX, FIXED_SIZE_Y-rawMasteryY)]] forKey:ISLAND_MASTERY];
-    
-    //node positions (array of boxed cgpoints)
-    NSArray *nodes=[doc nodesForXPath:@"//svg:g[@id='data-nodes']/svg:circle" namespaceMappings:nsMappings error:nil];
-    NSMutableArray *nodePoints=[[[NSMutableArray alloc] init] autorelease];
-    for (CXMLElement *node in nodes) {
-        float rawNodeX=[[[node attributeForName:@"cx"] stringValue] floatValue];
-        float rawNodeY=[[[node attributeForName:@"cy"] stringValue] floatValue];
-        [nodePoints addObject:[NSValue valueWithCGPoint:[self subCentre:ccp(rawNodeX, FIXED_SIZE_Y-rawNodeY)]]];
-    }
-    [buildData setValue:nodePoints forKey:ISLAND_NODES];
-    
-    NSArray *featureSpacesElements=[doc nodesForXPath:@"//svg:g[@id='data-features']/svg:circle" namespaceMappings:nsMappings error:nil];
-    if(featureSpacesElements.count>0)
-    {
-        NSMutableArray *featureSpaces=[[[NSMutableArray alloc] init] autorelease];
-        for(CXMLElement *fs in featureSpacesElements)
-        {
-            float rawFsX=[[[fs attributeForName:@"cx"] stringValue] floatValue];
-            float rawFsY=[[[fs attributeForName:@"cy"] stringValue] floatValue];
-            float radFs=[[[fs attributeForName:@"r"] stringValue] floatValue];
-            NSMutableDictionary *fsData=[[[NSMutableDictionary alloc] init] autorelease];
-            
-            [fsData setValue:[NSValue valueWithCGPoint:[self subCentre:ccp(rawFsX, FIXED_SIZE_Y-rawFsY)]] forKey:ISLAND_POS];
-            
-            [fsData setValue:[NSNumber numberWithFloat:radFs] forKey:ISLAND_RADIUS];
-            
-            [featureSpaces addObject:fsData];
-        }
-        [buildData setValue:featureSpaces forKey:ISLAND_FEATURE_SPACES];
-    }
-    
-    //label position and rotation
-    CXMLElement *labelElement=[[doc nodesForXPath:@"//svg:g[@id='data-label']/svg:line" namespaceMappings:nsMappings error:nil] objectAtIndex:0];
-    float x1=[[[labelElement attributeForName:@"x1"] stringValue] floatValue];
-    float x2=[[[labelElement attributeForName:@"x2"] stringValue] floatValue];
-    float y1=[[[labelElement attributeForName:@"y1"] stringValue] floatValue];
-    float y2=[[[labelElement attributeForName:@"y2"] stringValue] floatValue];
-    
-    CGPoint l1=ccp(x1, FIXED_SIZE_Y-y1);
-    CGPoint l2=ccp(x2, FIXED_SIZE_Y-y2);
-    CGPoint lmid=[self subCentre:[BLMath MultiplyVector:ccpAdd(l1, l2) byScalar:0.5f]];
-    float lrot=[BLMath angleForNormVector:[BLMath SubtractVector:l2 from:l1]];
-    [buildData setValue:[NSValue valueWithCGPoint:lmid] forKey:ISLAND_LABEL_POS];
-    [buildData setValue:[NSNumber numberWithFloat:lrot + 90] forKey:ISLAND_LABEL_ROT];
-    
-    //[doc release];
-    
-    return buildData;
 }
 
 -(void)readyIslandRender
 {
-//    NSString *islandSpriteName=[NSString stringWithFormat:@"/images/jmap/islands/%@.png", islandName];
-//    islandShadowSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(islandSpriteName)];
-//    islandShadowSprite.color=ccc3(0,0,0);
-//    islandShadowSprite.opacity=255*0.2f;
-//    islandShadowSprite.position=ccpAdd(ParentGO.Position, ccp(1, -3));
-//    islandShadowSprite.visible=ParentGO.Visible;
-//    [ParentGO.RenderBatch.parent addChild:islandShadowSprite z:-1];
 
-    //NSString *baseSpriteName=[NSString stringWithFormat:@"/images/jmap/islands/%@-s1.png", islandName];
-    
-    //get an island selection base
-    int islandShapeIdx=(arc4random()%10) + 1;
-    
-    NSString *baseSpriteName=[NSString stringWithFormat:@"Sand_%d_Yellow.png", islandShapeIdx];
+    NSString *baseSpriteName=[NSString stringWithFormat:@"Sand_%d_Yellow.png", self.islandShapeIdx];
 
-    
-//    NSString *baseSpriteName=@"/images/jmap/islands/island6-2-s1.png";
-//    NSString *islandSpriteName=[NSString stringWithFormat:@"/images/jmap/islands/%@.png", islandName];
+    if(self.islandStage>2)
+    {
+        baseSpriteName=[NSString stringWithFormat:@"Sand_%d_Green.png", self.islandShapeIdx];
+    }
     
     islandSprite=[CCSprite spriteWithSpriteFrameName:baseSpriteName];
     islandSprite.position=ParentGO.Position;
     islandSprite.visible=ParentGO.Visible;
     [ParentGO.RenderBatch addChild:islandSprite z:-1];
- 
-    int islandStage=1;
-    if(ParentGO.PrereqPercentage>=30)islandStage=3;
-    if(ParentGO.PrereqPercentage>=70)islandStage=5;
-
     
-    //draw the volcano / big hill
-    int vver=1+arc4random()%FEATURE_UNIQUE_VARIANTS;
-    NSString *vName=[NSString stringWithFormat:@"Feature_Stage%d_Size5_%d.png", islandStage, vver];
-    CCSprite *vol=[CCSprite spriteWithSpriteFrameName:vName];
-    //[vol setPosition:ccpAdd(ParentGO.Position, [[islandData objectForKey:ISLAND_MASTERY] CGPointValue])];
-    [vol setPosition:ccpAdd(ParentGO.Position, ccp(0,120))];
-    if(vver==3)vol.scale=0.7f;
-    [ParentGO.RenderBatch addChild:vol z:3];
-    [featureSprites addObject:vol];
-
-    //1st stage of hills -- stage 4
-    NSString *scatterName=[NSString stringWithFormat:@"Feature_Stage%d_Size4", islandStage];
-    [self scatterThing:scatterName withOffset:ccp(0, -0.25f) andScale:ccp(1.0f, 0.15f)];
-
-    
-    scatterName=[NSString stringWithFormat:@"Feature_Stage%d_Size3", islandStage];
-    [self scatterThing:scatterName withOffset:ccp(0, 0.75f) andScale:ccp(1.0f, 0.5f)];
+//    //draw the volcano / big hill
+//    int vver=1+arc4random()%FEATURE_UNIQUE_VARIANTS;
+//    NSString *vName=[NSString stringWithFormat:@"Feature_Stage%d_Size5_%d.png", self.islandStage, vver];
+//    CCSprite *vol=[CCSprite spriteWithSpriteFrameName:vName];
+//    //[vol setPosition:ccpAdd(ParentGO.Position, [[islandData objectForKey:ISLAND_MASTERY] CGPointValue])];
+//    [vol setPosition:ccpAdd(ParentGO.Position, ccp(0,120))];
+//    if(vver==3)vol.scale=0.7f;
+//    [ParentGO.RenderBatch addChild:vol z:3];
+//    [featureSprites addObject:vol];
+//
+//    //1st stage of hills -- stage 4
+//    NSString *scatterName=[NSString stringWithFormat:@"Feature_Stage%d_Size4", self.islandStage];
+//    [self scatterThing:scatterName withOffset:ccp(0, -0.25f) andScale:ccp(1.0f, 0.15f)];
+//
+//    
+//    scatterName=[NSString stringWithFormat:@"Feature_Stage%d_Size3", self.islandStage];
+//    [self scatterThing:scatterName withOffset:ccp(0, 0.75f) andScale:ccp(1.0f, 0.5f)];
     
 //    if(ParentGO.PrereqPercentage==0)
 //    {
@@ -414,10 +374,7 @@ static int shadowSteps=5;
 //        
 //        //set island colour black-ish
 //        islandSprite.color=ccc3(183,183,167);
-//        
-//        //TODO: draw water features
-//        
-//        //TODO: draw cloud
+//
 //        
 //    }
 //    else if(ParentGO.PrereqPercentage<100)
@@ -428,7 +385,6 @@ static int shadowSteps=5;
 //        //set island colour sandy
 //        islandSprite.color=ccc3(186,182,104);
 //        
-//        //TODO: draw cloud
 //    }
 //    else //it's 100
 //    {
@@ -437,6 +393,109 @@ static int shadowSteps=5;
 //        
 //    }
 }
+
+-(void)createBaseNodes
+{
+    //step through the nodes for the selected island and position them, linking feature/artefact/node arrays to nodes
+    self.indexedBaseNodes=nil;
+    self.indexedBaseNodes=[[NSMutableArray alloc] init];
+    
+    for (NSDictionary *f in [[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"FEATURE_INDEX"])
+    {
+        CGPoint rawpos=[[f objectForKey:@"POS"] CGPointValue];
+        
+        CCSprite *basesprite=[CCSprite spriteWithSpriteFrameName:@"spacer.png"];
+        basesprite.position=ccpAdd([self halvedSubCentre:rawpos], ParentGO.Position);
+        [ParentGO.RenderBatch addChild:basesprite z:5];
+        [self.indexedBaseNodes addObject:basesprite];
+        
+//        CCNode *node=[[CCNode alloc] init];
+//        node.position=[self subCentre:rawpos];
+//        [ParentGO.RenderBatch addChild:node z:5];
+    }
+    
+}
+
+-(void)readyNodeSpriteRender
+{
+    //step over features, find and add to correct bases
+    for(NSDictionary *f in [[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"FEATURES"])
+    {
+        //CGPoint pos=[self subCentre:[[f objectForKey:@"POS"] CGPointValue]];
+        int size=[[f objectForKey:@"SIZE"] integerValue];
+        //int variant=[[f objectForKey:@"VARIANT"] integerValue];
+        int variant=(arc4random() %2) +1;
+        
+        int targetIdx=[[[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"FEATURE_INDEX"] indexOfObject:f];
+        CCSprite *base=[self.indexedBaseNodes objectAtIndex:targetIdx];
+        
+        if(size>1 || self.islandStage<3)
+        {
+            NSString *fname=[NSString stringWithFormat:@"Feature_Stage%d_Size%d_%d.png", self.islandStage, size, variant];
+            
+            [base setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:fname]];
+            
+            if(size==5 && self.islandStage>4)
+            {
+                base.position=ccpAdd(base.position, ccp(0, -75));
+            }
+            
+            //sort irregular x offset
+            base.position=ccpAdd(base.position, ccp(50,-25));
+            
+        }
+        
+    }
+    
+    
+    //render the actual mastery sprite itself, as well as the label
+    
+    if(ParentGO.EnabledAndComplete)
+    {
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Mastery_Complete_Right.png"];
+    }
+    else
+    {
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Mastery_Incomplete_Right.png"];
+    }
+    //ParentGO.MasteryPinPosition=[BLMath AddVector:ParentGO.Position toVector:[[islandData objectForKey:ISLAND_MASTERY] CGPointValue]];
+    ParentGO.MasteryPinPosition=[[[[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"MASTERY"] objectForKey:@"POS"] CGPointValue];
+    [nodeSprite setPosition:ParentGO.MasteryPinPosition];
+    
+    if(ParentGO.flip)nodeSprite.flipX=YES;
+    
+    if(ParentGO.MasteryPinPosition.x < ParentGO.Position.x)
+    {
+        ((SGJmapMasteryNode*)ParentGO).flip=YES;
+    }
+    
+    [nodeSprite setVisible:ParentGO.Visible];
+    if(ParentGO.Disabled) [nodeSprite setOpacity:100];
+    [ParentGO.RenderBatch addChild:nodeSprite z:6];
+    
+    NSString *labelText=ParentGO.UserVisibleString;
+    
+    CGPoint labelCentre=ccpAdd(ccp(75, -125), ParentGO.Position);
+    labelShadowSprite=[CCLabelTTF labelWithString:labelText fontName:@"Chango" fontSize:16.0f];
+    [labelShadowSprite setPosition:ccpAdd(labelCentre, ccp(0, -3))];
+    [labelShadowSprite setRotation:[[islandData objectForKey:ISLAND_LABEL_ROT] floatValue]];
+    [labelShadowSprite setColor:ccc3(0, 0, 0)];
+    [labelShadowSprite setOpacity:0.2f*255];
+    [labelShadowSprite setVisible:ParentGO.Visible];
+    
+    if(ParentGO.Disabled) [labelShadowSprite setOpacity:100];
+    [ParentGO.RenderBatch.parent addChild:labelShadowSprite z:3];
+    labelSprite=[CCLabelTTF labelWithString:labelText fontName:@"Chango" fontSize:16.0f];
+    [labelSprite setPosition:labelCentre];
+    [labelSprite setRotation:[[islandData objectForKey:ISLAND_LABEL_ROT] floatValue]];
+    [labelSprite setVisible:ParentGO.Visible];
+    [labelSprite setOpacity:0.7f*255];
+    if(ParentGO.Disabled) [labelSprite setOpacity:100];
+    [ParentGO.RenderBatch.parent addChild:labelSprite z:3];
+    
+}
+
+#pragma mark - random feature placement / scatter & calculations
 
 -(void)scatterThing:(NSString*)thing withOffset:(CGPoint)offsetPos andScale:(CGPoint)scale
 {
@@ -535,97 +594,94 @@ static int shadowSteps=5;
     return([BLMath SubtractVector:ccp(FIXED_SIZE_X/2.0f, FIXED_SIZE_Y/2.0f) from:pos]);
 }
 
--(void)readyNodeSpriteRender
+-(CGPoint) halvedSubCentre:(CGPoint)pos
 {
-    //====== create nodes and such ==========================================================
-    
-    //add a draw node the for the above
-//    
-//    [ParentGO.RenderBatch.parent addChild:[[MasteryDrawNode alloc] initWithParent:self]];
-//    
-//    int texID=(abs((int)ParentGO.Position.x) % 9) + 1;
-//    
-//    NSLog(@"%@ texture %d", ParentGO.UserVisibleString, texID);
-//    
-//    NSString *file=[NSString stringWithFormat:@"/images/jmap/island-tex%d.png", texID];
-//    PRFilledPolygon *poly=[PRFilledPolygon filledPolygonWithPoints:texturePoints andTexture:[[CCTextureCache sharedTextureCache] textureForKey:BUNDLE_FULL_PATH(file)]];
-//    
-//    [ParentGO.RenderBatch.parent addChild:poly];
-    
-    if(ParentGO.EnabledAndComplete)
-    {
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Mastery_Complete_Right.png"];
-    }
-    else
-    {
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Mastery_Incomplete_Right.png"];
-    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-    ParentGO.MasteryPinPosition=[BLMath AddVector:ParentGO.Position toVector:[[islandData objectForKey:ISLAND_MASTERY] CGPointValue]];
-    [nodeSprite setPosition:ParentGO.MasteryPinPosition];
-    
-    if(ParentGO.flip)nodeSprite.flipX=YES;
-    
-    if(ParentGO.MasteryPinPosition.x < ParentGO.Position.x)
-    {
-        ((SGJmapMasteryNode*)ParentGO).flip=YES;
-    }
-    
-    [nodeSprite setVisible:ParentGO.Visible];
-    if(ParentGO.Disabled) [nodeSprite setOpacity:100];
-    [ParentGO.RenderBatch addChild:nodeSprite z:5];
-    
-//    NSString *labelText=[NSString stringWithFormat:@"%@ (%d%%)", [ParentGO.UserVisibleString uppercaseString], (int)ParentGO.PrereqPercentage];
-    
-    NSString *labelText=ParentGO.UserVisibleString;
-    
-    CGPoint labelCentre=ccpAdd([[islandData objectForKey:ISLAND_LABEL_POS] CGPointValue], ParentGO.Position);
-    labelShadowSprite=[CCLabelTTF labelWithString:labelText fontName:@"Chango" fontSize:16.0f];
-    [labelShadowSprite setPosition:ccpAdd(labelCentre, ccp(0, -3))];
-    [labelShadowSprite setRotation:[[islandData objectForKey:ISLAND_LABEL_ROT] floatValue]];
-    [labelShadowSprite setColor:ccc3(0, 0, 0)];
-    [labelShadowSprite setOpacity:0.2f*255];
-    [labelShadowSprite setVisible:ParentGO.Visible];
-    
-    if(ParentGO.Disabled) [labelShadowSprite setOpacity:100];
-    [ParentGO.RenderBatch.parent addChild:labelShadowSprite z:3];
-    labelSprite=[CCLabelTTF labelWithString:labelText fontName:@"Chango" fontSize:16.0f];
-    [labelSprite setPosition:labelCentre];
-    [labelSprite setRotation:[[islandData objectForKey:ISLAND_LABEL_ROT] floatValue]];
-    [labelSprite setVisible:ParentGO.Visible];
-    [labelSprite setOpacity:0.7f*255];
-    if(ParentGO.Disabled) [labelSprite setOpacity:100];
-    [ParentGO.RenderBatch.parent addChild:labelSprite z:3];
-    
-//    //left end
-//    CCSprite *lend=[CCSprite spriteWithSpriteFrameName:@"sign-left.png"];
-//    CGPoint loffset=ccp(-labelSprite.contentSize.width / 2.0f - 6.0f, 0);
-//    [lend setPosition:ccpAdd(labelCentre, loffset)];
-//    [ParentGO.RenderBatch addChild:lend];
-//    
-//    //    CCSprite *mid=[CCSprite spriteWithSpriteFrameName:@"sign-middle.png"];
-//    //    [mid setScaleX: labelSprite.contentSize.width / mid.contentSize.width];
-//    //    [mid setPosition: labelCentre];
-//    //    [ParentGO.RenderBatch addChild:mid];
-//    
-//    //mid
-//    for (int i=0; i<labelSprite.contentSize.width+3; i++)
-//    {
-//        CCSprite *mid=[CCSprite spriteWithSpriteFrameName:@"sign-middle.png"];
-//        //[mid setScaleX: labelSprite.contentSize.width / mid.contentSize.width];
-//        [mid setPosition:ccp((labelCentre.x - (labelSprite.contentSize.width / 2.0f)) + i, labelCentre.y)];
-//        [ParentGO.RenderBatch addChild:mid];
-//    }
-//    
-//    
-//    //right end
-//    CCSprite *rend=[CCSprite spriteWithSpriteFrameName:@"sign-right.png"];
-//    CGPoint roffset=ccp(labelSprite.contentSize.width / 2.0f + 6.0f, 0);
-//    [rend setPosition:ccpAdd(labelCentre, roffset)];
-//    [ParentGO.RenderBatch addChild:rend];
-    
-    //=======================================================================================
-    
+    return ccpMult([self subCentre:pos], 0.5f);
 }
+
+#pragma mark - parse island data out of a single-island data template and cache
+
+-(NSMutableDictionary*)loadIslandData:(NSString*)name
+{
+    NSMutableDictionary *buildData=[[[NSMutableDictionary alloc] init] autorelease];
+    
+    //load animation data
+	//NSString *XMLPath=BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/jmap/islands/%@.svg", name]));
+    
+    NSString *XMLPath=BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/jmap/islands/island6-1.svg"]));
+	
+	//use that file to populate an NSData object
+	NSData *XMLData=[NSData dataWithContentsOfFile:XMLPath];
+	
+	//get TouchXML doc
+	CXMLDocument *doc=[[CXMLDocument alloc] initWithData:XMLData options:0 error:nil];
+    
+	//setup a namespace mapping for the svg namespace
+	NSDictionary *nsMappings=[NSDictionary
+							  dictionaryWithObject:@"http://www.w3.org/2000/svg"
+							  forKey:@"svg"];
+    
+    
+    //mastery position
+    CXMLElement *masteryCircle=[[doc nodesForXPath:@"//svg:g[@id='data-mastery']/svg:circle" namespaceMappings:nsMappings error:nil] objectAtIndex:0];
+    float rawMasteryX=[[[masteryCircle attributeForName:@"cx"] stringValue] floatValue];
+    float rawMasteryY=[[[masteryCircle attributeForName:@"cy"] stringValue] floatValue];
+    
+    //    [buildData setValue:[BLMath BoxAndYFlipCGPoint:ccp(rawMasteryX, rawMasteryY) withMaxY:FIXED_SIZE_Y] forKey:ISLAND_MASTERY];
+    
+    [buildData setValue:[NSValue valueWithCGPoint:[self subCentre:ccp(rawMasteryX, FIXED_SIZE_Y-rawMasteryY)]] forKey:ISLAND_MASTERY];
+    
+    //node positions (array of boxed cgpoints)
+    NSArray *nodes=[doc nodesForXPath:@"//svg:g[@id='data-nodes']/svg:circle" namespaceMappings:nsMappings error:nil];
+    NSMutableArray *nodePoints=[[[NSMutableArray alloc] init] autorelease];
+    for (CXMLElement *node in nodes) {
+        float rawNodeX=[[[node attributeForName:@"cx"] stringValue] floatValue];
+        float rawNodeY=[[[node attributeForName:@"cy"] stringValue] floatValue];
+        [nodePoints addObject:[NSValue valueWithCGPoint:[self subCentre:ccp(rawNodeX, FIXED_SIZE_Y-rawNodeY)]]];
+    }
+    [buildData setValue:nodePoints forKey:ISLAND_NODES];
+    
+    NSArray *featureSpacesElements=[doc nodesForXPath:@"//svg:g[@id='data-features']/svg:circle" namespaceMappings:nsMappings error:nil];
+    if(featureSpacesElements.count>0)
+    {
+        NSMutableArray *featureSpaces=[[[NSMutableArray alloc] init] autorelease];
+        for(CXMLElement *fs in featureSpacesElements)
+        {
+            float rawFsX=[[[fs attributeForName:@"cx"] stringValue] floatValue];
+            float rawFsY=[[[fs attributeForName:@"cy"] stringValue] floatValue];
+            float radFs=[[[fs attributeForName:@"r"] stringValue] floatValue];
+            NSMutableDictionary *fsData=[[[NSMutableDictionary alloc] init] autorelease];
+            
+            [fsData setValue:[NSValue valueWithCGPoint:[self subCentre:ccp(rawFsX, FIXED_SIZE_Y-rawFsY)]] forKey:ISLAND_POS];
+            
+            [fsData setValue:[NSNumber numberWithFloat:radFs] forKey:ISLAND_RADIUS];
+            
+            [featureSpaces addObject:fsData];
+        }
+        [buildData setValue:featureSpaces forKey:ISLAND_FEATURE_SPACES];
+    }
+    
+    //label position and rotation
+    CXMLElement *labelElement=[[doc nodesForXPath:@"//svg:g[@id='data-label']/svg:line" namespaceMappings:nsMappings error:nil] objectAtIndex:0];
+    float x1=[[[labelElement attributeForName:@"x1"] stringValue] floatValue];
+    float x2=[[[labelElement attributeForName:@"x2"] stringValue] floatValue];
+    float y1=[[[labelElement attributeForName:@"y1"] stringValue] floatValue];
+    float y2=[[[labelElement attributeForName:@"y2"] stringValue] floatValue];
+    
+    CGPoint l1=ccp(x1, FIXED_SIZE_Y-y1);
+    CGPoint l2=ccp(x2, FIXED_SIZE_Y-y2);
+    CGPoint lmid=[self subCentre:[BLMath MultiplyVector:ccpAdd(l1, l2) byScalar:0.5f]];
+    float lrot=[BLMath angleForNormVector:[BLMath SubtractVector:l2 from:l1]];
+    [buildData setValue:[NSValue valueWithCGPoint:lmid] forKey:ISLAND_LABEL_POS];
+    [buildData setValue:[NSNumber numberWithFloat:lrot + 90] forKey:ISLAND_LABEL_ROT];
+    
+    //[doc release];
+    
+    return buildData;
+}
+
+
+#pragma mark - geometric/forced layout
 
 -(void)readyRender
 {
@@ -985,24 +1041,10 @@ static int shadowSteps=5;
 }
 
 
--(void)dealloc
-{
-    free(allPerimPoints);
-    free(scaledPerimPoints);
-    
-    [sortedChildren release];
-    [texturePoints release];
-    
-    [islandData release];
-    [featureSprites release];
-    
-    [super dealloc];
-}
-
 @end
 
 
-
+#pragma mark - MasteryDrawNode implementation
 
 @implementation MasteryDrawNode
 

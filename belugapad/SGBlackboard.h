@@ -17,7 +17,7 @@
 @property (retain) CCLayer *RenderLayer;
 @property BOOL inProblemSetup;
 @property float MaxObjectDistance;
-@property (retain) NSMutableDictionary *islandData;
+@property (retain) NSMutableArray *islandData;
 @property (retain) CCSpriteBatchNode *btxeIconBatch;
 
 @end

@@ -40,7 +40,7 @@
     NSMutableArray *totalCountSprites;
     NSMutableArray *userAddedBlocks;
     NSMutableArray *userAddedBlocksLastCount;
-    NSMutableArray *initBlocksForColumn;
+    NSMutableArray *initBlockValueForColumn;
     NSMutableArray *arrowsForColumn;
 
     // GameWorld setup

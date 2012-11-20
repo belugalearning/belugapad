@@ -347,6 +347,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
 
     usedShapeTypes=[[NSMutableArray alloc]init];
+    activeRects=[[NSMutableArray alloc]init];
 }
 
 -(void)populateGW
@@ -381,9 +382,12 @@ static float kDistanceBetweenBlocks=70.0f;
 
     }
     
+    [self createEvalAreas];
+    
     // init our array for use with the created gameobjects
     for(int i=0;i<[initObjects count];i++)
     {
+        NSLog(@"CREATE SHAPE: %d", i+1);
         NSDictionary *d=[initObjects objectAtIndex:i];
         int blocksInShape=[[d objectForKey:QUANTITY]intValue];
         [self createShapeWith:blocksInShape andWith:d];
@@ -423,8 +427,6 @@ static float kDistanceBetweenBlocks=70.0f;
         
     }
     
-    [self createEvalAreas];
-    
 }
 
 #pragma mark - objects
@@ -433,6 +435,8 @@ static float kDistanceBetweenBlocks=70.0f;
 //    CCLabelTTF *labelForShape;
 //    float avgPosX=0;
 //    float avgPosY=0;
+    
+    NSLog(@"start of create shape");
     NSArray *thesePositions=[NSArray arrayWithArray:[NumberLayout physicalLayoutAcrossToNumber:numBlocks withSpacing:kDistanceBetweenBlocks]];
     
     NSString *label = [theseSettings objectForKey:LABEL];
@@ -493,6 +497,7 @@ static float kDistanceBetweenBlocks=70.0f;
         
         startPosX = farLeft + arc4random() % (farRight - farLeft);
         startPosY = botMost + arc4random() % (topMost - botMost);
+    
         
         if(!bondAllObjects)
         {
@@ -500,8 +505,9 @@ static float kDistanceBetweenBlocks=70.0f;
             {
                 if([go conformsToProtocol:@protocol(Moveable)])
                 {
-                    while([(id<Moveable>)go amIProximateTo:ccp(startPosX,startPosY)])
+                    while([self isPointInActiveRects:ccp(startPosX,startPosY)])
                     {
+                        NSLog(@"check that shit, move that shit");
                         startPosX = farLeft + arc4random() % (farRight - farLeft);
                         startPosY = botMost + arc4random() % (topMost - botMost);
                         
@@ -515,8 +521,9 @@ static float kDistanceBetweenBlocks=70.0f;
                             {
                                 if([go conformsToProtocol:@protocol(Moveable)])
                                 {
-                                    while([(id<Moveable>)go amIProximateTo:ccp(startPosX,startPosY)])
+                                    while([self isPointInActiveRects:ccp(startPosX,startPosY)])
                                     {
+                                        NSLog(@"check that shit again, move that shit again");
                                         startPosX = farLeft + arc4random() % (farRight - farLeft);
                                         startPosY = botMost + arc4random() % (topMost - botMost);
                                     }
@@ -546,17 +553,27 @@ static float kDistanceBetweenBlocks=70.0f;
 
 
     }
+    
+    NSLog(@"bla bla blac");
+    
+    CGRect thisShapeRect=CGRectNull;
+    
+    NSLog(@"bla bla blaaaaaaa");
+    
     for (int i=0; i<numBlocks; i++)
     {
         CGPoint thisPoint=[[thesePositions objectAtIndex:i]CGPointValue];
         
         CGPoint p = ccp(startPosX+thisPoint.x,  startPosY+thisPoint.y);
+        
+        NSLog(@"create block %d/%d at position %@", i+1, numBlocks, NSStringFromCGPoint(p));
+        
         SGDtoolBlock *block =  [[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:p andType:blockType] autorelease];
         [block setup];
         block.MyContainer = container;
         [block.mySprite setColor:blockCol];
         
-            
+        thisShapeRect=CGRectUnion(thisShapeRect,block.mySprite.boundingBox);
         
         [container addBlockToMe:block];
         
@@ -571,9 +588,30 @@ static float kDistanceBetweenBlocks=70.0f;
         [container layoutMyBlocks];
         [loggingService.logPoller registerPollee:block];
     }
+    
+    [activeRects addObject:[NSValue valueWithCGRect:thisShapeRect]];
        
     thesePositions=nil;
 
+}
+
+-(BOOL)isPointInActiveRects:(CGPoint)thisPosition
+{
+    
+    NSLog(@"checking %d active rects", [activeRects count]);
+    
+    for(int i=0;i<[activeRects count];i++)
+    {
+        CGRect r=[[activeRects objectAtIndex:i]CGRectValue];
+        
+        if(CGRectContainsPoint(r, thisPosition))
+        {
+            NSLog(@"active rects: got one");
+            return YES;
+        }
+    }
+    NSLog(@"active rects: not got one");
+    return NO;
 }
 
 -(void)createEvalAreas
@@ -595,6 +633,7 @@ static float kDistanceBetweenBlocks=70.0f;
         int distFromLY=(ly-110-(areaSize/areaWidth)*62);
         float startXPos=((i+0.5)*sectionWidth)-((areaWidth/2)*60);
         int startYPos = 100 + arc4random() % (distFromLY - 100);
+        CGRect thisEvalArea=CGRectNull;
         
         
         if([d objectForKey:AREA_OPACITY])
@@ -615,6 +654,8 @@ static float kDistanceBetweenBlocks=70.0f;
             [s setOpacity:areaOpacity];
             [self.ForeLayer addChild:s];
             
+            thisEvalArea=CGRectUnion(thisEvalArea, s.boundingBox);
+            
             if(i==1 && lblText)
             {
                 CCLabelTTF *l=[CCLabelTTF labelWithString:lblText fontName:SOURCE fontSize:35.0f];
@@ -626,6 +667,7 @@ static float kDistanceBetweenBlocks=70.0f;
             thisPos++;
         }
         
+        [activeRects addObject:[NSValue valueWithCGRect:thisEvalArea]];
         [evalAreas addObject:thisArea];
     }
 }
@@ -1979,6 +2021,8 @@ return NO;
     solutionsDef=nil;
     existingGroups=nil;
     destroyedLabelledGroups=nil;
+    activeRects=nil;
+    
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

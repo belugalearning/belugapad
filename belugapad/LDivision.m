@@ -18,11 +18,6 @@
 #import "DWNWheelGameObject.h"
 #import "SimpleAudioEngine.h"
 
-const float kSpaceBetweenNumbers=280.0f;
-const float kSpaceBetweenRows=80.0f;
-const float kRenderBlockWidth=1000.0f;
-const float kScaleOfLesserBlocks=0.6f;
-
 @interface LDivision()
 {
 @private
@@ -58,12 +53,8 @@ const float kScaleOfLesserBlocks=0.6f;
         
         self.BkgLayer=[[[CCLayer alloc]init] autorelease];
         self.ForeLayer=[[[CCLayer alloc]init] autorelease];
-        self.NoScaleLayer=[[CCLayer alloc]init];
-        topSection=[[CCLayer alloc]init];
-        bottomSection=[[CCLayer alloc]init];
         
         [toolHost addToolBackLayer:self.BkgLayer];
-        [toolHost addToolNoScaleLayer:self.NoScaleLayer];
         [toolHost addToolForeLayer:self.ForeLayer];
         
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
@@ -80,8 +71,11 @@ const float kScaleOfLesserBlocks=0.6f;
         [self populateGW];
         
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
-        
+    
         gw.Blackboard.inProblemSetup = NO;
+        
+        drawNode=[[CCDrawNode alloc] init];
+        [self.ForeLayer addChild:drawNode];
         
     }
     
@@ -121,18 +115,68 @@ const float kScaleOfLesserBlocks=0.6f;
         }
     }
     
-    [self createAndUpdateLabels];
     // then update the actual text of it
     [lblCurrentTotal setString:[NSString stringWithFormat:@"%g", currentTotal]];
     
-
-    float thisNum=[nWheel.StrOutputValue floatValue];
-
-    
+    [self drawState];
 
     if(evalMode==kProblemEvalAuto && !hasEvaluated)
         [self evalProblem];
     
+}
+
+-(void)drawState
+{
+    float xInset=100.0f;
+    float yInset=350.0f;
+    float barW=824.0f;
+    float barH=100.0f;
+
+    ccColor4F lineCol=ccc4f(1, 1, 1, 1);
+    ccColor4F boxCol=ccc4f(1, 1, 1, 0.5f);
+    float lineRad=3.0f;
+    
+    [drawNode clear];
+    
+    [drawNode drawSegmentFrom:ccp(xInset, yInset-25.0f) to:ccp(xInset+barW, yInset-25.0f) radius:lineRad color:lineCol];
+    
+    CGPoint verts[4];
+    verts[0]=ccp(100,350);
+    verts[1]=ccp(100,450);
+    verts[2]=ccp(924,450);
+    verts[3]=ccp(924,350);
+    
+    CGPoint *firstVert=&verts[0];
+    
+    [drawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4f(1, 1, 1, 0.5f) borderWidth:3 borderColor:ccc4f(1, 1, 1, 1)];
+    
+    
+    int magOrder=[self magnitudeOf:(int)currentTotal];
+    int sigFigs=0;
+    float magMult=pow(10, magOrder-1);
+    NSString *digits=[NSString stringWithFormat:@"%f", currentTotal];
+    for(int i=0; i<digits.length && sigFigs<columnsInPicker; i++)
+    {
+        NSString *c=[[digits substringFromIndex:i] substringToIndex:1];
+        if([c isEqualToString:@"0"])
+        {
+            if(sigFigs)
+            {
+                magMult=magMult / 10.0f;
+            }
+        }
+        else if([c isEqualToString:@"."])
+        {
+            sigFigs++;
+            //do nothing, just skip past on to the next column
+        }
+        else
+        {
+            NSLog(@"%@ x %f x pval", c, magMult);
+            sigFigs++;
+            magMult=magMult / 10.0f;
+        }
+    }
 }
 
 #pragma mark - gameworld setup and population
@@ -159,10 +203,7 @@ const float kScaleOfLesserBlocks=0.6f;
 
 -(void)populateGW
 {
-    [renderLayer addChild:topSection];
-    [renderLayer addChild:bottomSection];
-    
-
+//
     renderedBlocks=[[NSMutableArray alloc]init];
     
     
@@ -175,32 +216,10 @@ const float kScaleOfLesserBlocks=0.6f;
     lblCurrentTotal=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
     [lblCurrentTotal setPosition:ccp(cx,50)];
     [renderLayer addChild:lblCurrentTotal];
-    
-    line=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/LDivision/LD_Bar.png")];
-    [line setPosition:ccp(cx,450)];
-    [topSection addChild:line];
-    
 
-
-    // set up start and end marker
-    startMarker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/LDivision/marker.png")];
-    endMarker=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/LDivision/marker.png")];
-    [startMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x-(line.contentSize.width/2)+5, line.position.y)]];
-    [endMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x+(line.contentSize.width/2)-5, line.position.y)]];
-    CCLabelTTF *start=[CCLabelTTF labelWithString:@"0" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
-    CCLabelTTF *end=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", dividend] fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
-    [start setPosition:ccp(10,60)];
-    [end setPosition:ccp(10,60)];
-    [startMarker addChild:start];
-    [endMarker addChild:end];
-    
-    [self.NoScaleLayer addChild:startMarker];
-    [self.NoScaleLayer addChild:endMarker];
 
     
     [self setupNumberWheel];
-    
-    //[self createVisibleNumbers];
 }
 
 -(void)setupNumberWheel
@@ -214,9 +233,6 @@ const float kScaleOfLesserBlocks=0.6f;
     w.HasDecimals=YES;
     w.HasNegative=YES;
     [w handleMessage:kDWsetupStuff];
-    //    w.InputValue=000;
-    //    w.OutputValue=w.InputValue;
-    //    [w handleMessage:kDWupdateObjectData];
     nWheel=w;
 }
 
@@ -234,113 +250,17 @@ const float kScaleOfLesserBlocks=0.6f;
     return mag;
 }
 
--(void)createAndUpdateLabels
-{
-    for(NSString *key in labelInfo)
-    {
-        NSMutableDictionary *d=[labelInfo objectForKey:key];
-        
-        int selected=[[d objectForKey:SELECTED]intValue];
-        
-        if(![d objectForKey:LABEL])
-        {
-            if(selected>0)
-            {
-                CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%@ x %d = %d", key, selected, [key intValue]*selected] fontName:CHANGO fontSize:40.0f];
-                [d setObject:l forKey:LABEL];
-                [l setPosition:ccp(150,cx-(40*[[labelInfo allKeys]indexOfObject:key]))];
-                [renderLayer addChild:l];
-                
-                // create a label
-            }
-        }
-        else
-        {
-            CCLabelTTF *l=[d objectForKey:LABEL];
-            if(selected==0)
-            {
-                [l removeFromParentAndCleanup:YES];
-                [d removeObjectForKey:LABEL];
-                // remove the label
-            }
-            else if(selected>0)
-            {
-                [l setPosition:ccp(150,cx-(40*[[labelInfo allKeys]indexOfObject:key]))];
-                [l setString:[NSString stringWithFormat:@"%@ x %d = %d", key, selected, [key intValue]*selected]];
-            }
-        }
-        
-    }
-}
-
-#pragma mark - render interaction
--(void)updateLabels:(CGPoint)position
-{
-    [markerText setString:[NSString stringWithFormat:@"%g", currentTotal*divisor]];
-    //    [marker setPosition:[topSection convertToWorldSpace:position]];
-    [marker setPosition:position];
-    [startMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x-(line.contentSize.width/2)+2, line.position.y)]];
-    [endMarker setPosition:[topSection convertToWorldSpace:ccp(line.position.x+(line.contentSize.width/2)-2, line.position.y)]];
-}
-
 
 
 #pragma mark - touches events
 
 
--(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    //if(isTouching)return;
-    isTouching=YES;
-    
-    UITouch *touch=[touches anyObject];
-    CGPoint location=[touch locationInView: [touch view]];
-    location=[[CCDirector sharedDirector] convertToGL:location];
-    location=[self.ForeLayer convertToWorldSpace:location];
-    lastTouch=location;
-    touchStart=location;
-    
-}
-
--(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch=[touches anyObject];
-    CGPoint location=[touch locationInView: [touch view]];
-    location=[[CCDirector sharedDirector] convertToGL:location];
-    location=[self.ForeLayer convertToNodeSpace:location];
-    //NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
-    
-    lastTouch=location;
-}
-
--(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch=[touches anyObject];
-    CGPoint location=[touch locationInView: [touch view]];
-    location=[[CCDirector sharedDirector] convertToGL:location];
-    location=[self.ForeLayer convertToNodeSpace:location];
-    isTouching=NO;
-    
-}
-
--(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    isTouching=NO;
-}
 
 #pragma mark - evaluation
--(BOOL)evalExpression
-{
-    //returns YES if the tool expression evaluates succesfully
-    return YES;
-    
-}
 
 -(void)evalProblem
 {
-    BOOL isWinning=expressionIsEqual;
-    
-    if(isWinning)
+    if(expressionIsEqual)
     {
         hasEvaluated=YES;
         [toolHost doWinning];
@@ -377,11 +297,7 @@ const float kScaleOfLesserBlocks=0.6f;
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
     
     [renderLayer release];
-    [self.NoScaleLayer release];
-    
-    [topSection release];
-    [bottomSection release];
-    
+        
     //tear down
     if(numberRows)[numberRows release];
     if(numberLayers)[numberLayers release];

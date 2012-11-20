@@ -85,6 +85,8 @@
     
     //problem state
     BOOL expressionIsEqual;
+    
+    CCDrawNode *drawNode;
 }
 
 -(void)readPlist:(NSDictionary*)pdef;

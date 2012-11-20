@@ -189,13 +189,28 @@ static float kTimeToCageShake=7.0f;
         {
             CCLabelTTF *l=[[[totalCountSprites objectAtIndex:i] children] objectAtIndex:0];
             
-            int initedOnGrid=[[initBlocksForColumn objectAtIndex:i]intValue];
-            float colValue=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
+//            int initedOnGrid=[[initBlockValueForColumn objectAtIndex:i]intValue];
             
-            if([self usedSpacesOnGrid:i]>initedOnGrid && initedOnGrid>0)
-                [l setString:[NSString stringWithFormat:@"%g + %g", ([[initBlocksForColumn objectAtIndex:i]intValue]*colValue), ([self usedSpacesOnGrid:i]-initedOnGrid)*colValue]];
-            else if([self usedSpacesOnGrid:currentColumnIndex]<=initedOnGrid||initedOnGrid==0)
-                [l setString:[NSString stringWithFormat:@"%g", ([[initBlocksForColumn objectAtIndex:i]intValue]*colValue)-(([[initBlocksForColumn objectAtIndex:i]intValue]-[self usedSpacesOnGrid:i])*colValue)]];
+            //-------------
+            
+            float initedValueOnGrid=[[initBlockValueForColumn objectAtIndex:i]floatValue];
+            float valueOnGridNow=[self valueOfGrid:i];
+            float amountAdded=valueOnGridNow-initedValueOnGrid;
+            
+            
+            if(valueOnGridNow>initedValueOnGrid)
+            {
+                [l setString:[NSString stringWithFormat:@"%g + %g", ([[initBlockValueForColumn objectAtIndex:i]floatValue]), amountAdded]];
+            }
+            if(valueOnGridNow==initedValueOnGrid)
+            {
+                [l setString:[NSString stringWithFormat:@"%g", ([[initBlockValueForColumn objectAtIndex:i]floatValue])]];                
+            }
+            if(valueOnGridNow<initedValueOnGrid)
+            {
+                [l setString:[NSString stringWithFormat:@"%g - %g", ([[initBlockValueForColumn objectAtIndex:i]floatValue]), fabsf(amountAdded)]];
+            }
+            
         }
     }
     
@@ -583,7 +598,7 @@ static float kTimeToCageShake=7.0f;
             
             if(showCount)
             {
-                CCLabelTTF *thisCountLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",[[initBlocksForColumn objectAtIndex:i]intValue]] fontName:CHANGO fontSize:25.0f];
+                CCLabelTTF *thisCountLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",[[initBlockValueForColumn objectAtIndex:i]intValue]] fontName:CHANGO fontSize:25.0f];
                 [thisCountLabel setPosition:ccp(totalCountSprite.contentSize.width/2,(totalCountSprite.contentSize.height/2)-3)];
                 [thisCountLabel setOpacity:0];
                 [thisCountLabel setTag:2];
@@ -748,6 +763,10 @@ static float kTimeToCageShake=7.0f;
             CGRect minus=CGRectMake(PosX, PosY, 70, 82);
             CGRect plus=CGRectMake(PosX+170, PosY, 70, 82);
             
+            int defaultBlocksToMake=1;
+            int minBlocks=-10;
+            int maxBlocks=10;
+            
             //[minusSprite setPosition:ccp(PosX,PosY-25)];
             //[posiSprite setPosition:ccp(PosX,PosY+25)];
             [label setPosition:ccp(PosX+120,PosY+61)];
@@ -755,6 +774,23 @@ static float kTimeToCageShake=7.0f;
             [multipleMinusSprites addObject:[NSValue valueWithCGRect:minus]];
             [multiplePlusSprites addObject:[NSValue valueWithCGRect:plus]];
             [blockLabels addObject:label];
+            
+            
+            if(![multipleBlockMax objectForKey:currentColumnValueKey])
+                [multipleBlockMax setValue:[NSNumber numberWithInt:maxBlocks] forKey:currentColumnValueKey];
+            else
+                maxBlocks=[[multipleBlockMax objectForKey:currentColumnValueKey]intValue];
+            
+            if(![multipleBlockMin objectForKey:currentColumnValueKey])
+                [multipleBlockMin setValue:[NSNumber numberWithInt:minBlocks] forKey:currentColumnValueKey];
+            else
+                minBlocks=[[multipleBlockMin objectForKey:currentColumnValueKey]intValue];
+            
+            if([multipleBlockPickupDefaults objectForKey:currentColumnValueKey])
+                defaultBlocksToMake=[[multipleBlockPickupDefaults objectForKey:currentColumnValueKey]intValue];
+            else
+                defaultBlocksToMake=1;
+            
             
             if(debugLogging)
                 NSLog(@"currentBlockValues count %d, minusSprites count %d, plusSprites count %d, blockLabels count %d", [currentBlockValues count], [multipleMinusSprites count], [multiplePlusSprites count], [blockLabels count]);
@@ -910,15 +946,16 @@ static float kTimeToCageShake=7.0f;
     
     if(showCount)
     {
-        if(!initBlocksForColumn){
-            initBlocksForColumn=[[NSMutableArray alloc]init];
-            [initBlocksForColumn retain];
+        if(!initBlockValueForColumn){
+            initBlockValueForColumn=[[NSMutableArray alloc]init];
+            [initBlockValueForColumn retain];
         }
         
         for(int i=0;i<numberOfColumns;i++)
         {
-            int blocksHere=[self usedSpacesOnGrid:i];
-            [initBlocksForColumn addObject:[NSNumber numberWithInt:blocksHere]];
+//            int blocksHere=[self usedSpacesOnGrid:i];
+            float valueHere=[self valueOfGrid:i];
+            [initBlockValueForColumn addObject:[NSNumber numberWithFloat:valueHere]];
         }
     }
 
@@ -1467,29 +1504,36 @@ static float kTimeToCageShake=7.0f;
     totalCount=0;
     
     if(showColumnUserCount){
-        int lastNumber=[[userAddedBlocksLastCount objectAtIndex:currentColumnIndex]intValue];
-        int thisNumber=[[userAddedBlocks objectAtIndex:currentColumnIndex]count];
-        float fval=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] floatValue];
+
+        float amountAdded=((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).ObjectValue;
+        CCLabelTTF *l=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:150.0f];
+        [l setPosition:ccp(currentColumnIndex*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(([[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]/2)*(lx*kPropXNetSpace)))];
+        [l setColor:ccc3(234,137,31)];
+        [renderLayer addChild:l z:10000];
+        [l runAction:[CCFadeOut actionWithDuration:1.0]];
         
-        if(thisNumber>lastNumber)
+        if(amountAdded>0)
         {
-            //CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"+%g", thisNumber*fval] fontName:CHANGO fontSize:150.0f];
-            CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"+%g", fval*[pickupObjects count]] fontName:CHANGO fontSize:150.0f];
-            [l setPosition:ccp(currentColumnIndex*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(([[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]/2)*(lx*kPropXNetSpace)))];
-            [l setColor:ccc3(234,137,31)];
-            [renderLayer addChild:l z:10000];
-            [l runAction:[CCFadeOut actionWithDuration:1.0]];
+            if([(DWPlaceValueBlockGameObject*)gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                [l setString:[NSString stringWithFormat:@"+ %g", amountAdded]];
+            if([(DWPlaceValueBlockGameObject*)gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+                [l setString:[NSString stringWithFormat:@"- %g", amountAdded]];
         }
-        else if(thisNumber<lastNumber)
+//        if(valueOnGridNow==initedValueOnGrid)
+//        {
+//            [l setString:[NSString stringWithFormat:@"%g", ([[initBlockValueForColumn objectAtIndex:i]floatValue])]];
+//        }
+        if(amountAdded<0)
         {
-            CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"-%g", fval*[pickupObjects count]] fontName:CHANGO fontSize:150.0f];
-            [l setPosition:ccp(currentColumnIndex*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(([[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]/2)*(lx*kPropXNetSpace)))];
-            [l setColor:ccc3(234,137,31)];
-            [renderLayer addChild:l z:10000];
-            [l runAction:[CCFadeOut actionWithDuration:1.0]];
+            [l setString:[NSString stringWithFormat:@"%g", amountAdded]];
+            if([(DWPlaceValueBlockGameObject*)gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                [l setString:[NSString stringWithFormat:@"%g", amountAdded]];
+            if([(DWPlaceValueBlockGameObject*)gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+                [l setString:[NSString stringWithFormat:@"+ %g", fabsf(amountAdded)]];
+            
         }
         
-        [userAddedBlocksLastCount replaceObjectAtIndex:currentColumnIndex withObject:[NSNumber numberWithInt:thisNumber]];
+//        [userAddedBlocksLastCount replaceObjectAtIndex:currentColumnIndex withObject:[NSNumber numberWithInt:thisNumber]];
         
     }
     
@@ -1617,6 +1661,29 @@ static float kTimeToCageShake=7.0f;
         return NO;
 
     
+}
+
+-(float)valueOfGrid:(int)thisGrid
+{
+    float thisGridValue=0.0f;
+    
+    for (int r=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] count]-1; r>=0; r--) {
+        NSMutableArray *row=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] objectAtIndex:r];
+        for (int c=[row count]-1; c>=0; c--)
+        {
+            DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
+            DWPlaceValueBlockGameObject *mo=(DWPlaceValueBlockGameObject*)co.MountedObject;
+            DWPlaceValueBlockGameObject *clo=(DWPlaceValueBlockGameObject*)co.CancellingObject;
+        
+            if(clo)
+                thisGridValue+=clo.ObjectValue;
+            
+            if(mo)
+                thisGridValue+=mo.ObjectValue;
+
+        }
+    }
+    return thisGridValue;
 }
 
 -(int)freeSpacesOnGrid:(int)thisGrid
@@ -1848,11 +1915,15 @@ static float kTimeToCageShake=7.0f;
             DWPlaceValueCageGameObject *cge=[allCages objectAtIndex:i];
             [cge.MountedObject handleMessage:kDWdestroy];
             
-            int curNum=[[currentBlockValues objectAtIndex:i]intValue];
+            NSString *ccvKey=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]stringValue];
             float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]floatValue];
+            
+            int maxNo=[[multipleBlockMax objectForKey:ccvKey]intValue];
+            int curNum=[[currentBlockValues objectAtIndex:i]intValue];
+
             curNum+=1*colVal;
-            if(curNum>10*colVal)
-                curNum=10*colVal;
+            if(curNum>maxNo*colVal)
+                curNum=maxNo*colVal;
             
             if(curNum>0)
                 cge.ObjectValue=colVal;
@@ -1885,9 +1956,15 @@ static float kTimeToCageShake=7.0f;
             
             int curNum=[[currentBlockValues objectAtIndex:i]intValue];
             float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]floatValue];
+            
+            NSString *ccvKey=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]stringValue];
+            int minNo=[[multipleBlockMin objectForKey:ccvKey]intValue];
+            
+
+            
             curNum-=1*colVal;
-            if(curNum<-10*colVal)
-                curNum=-10*colVal;
+            if(curNum<minNo*colVal)
+                curNum=minNo*colVal;
             
             
             if(curNum>0)
@@ -2461,6 +2538,11 @@ static float kTimeToCageShake=7.0f;
 -(float)metaQuestionAnswersYLocation
 {
     return kMetaQuestionYOffsetPlaceValue*cy;
+}
+
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    
 }
 
 #pragma mark - touches events
@@ -3199,7 +3281,7 @@ static float kTimeToCageShake=7.0f;
                         [loggingService logEvent:BL_PA_PV_TOUCH_END_MULTIPLE_BLOCKS_DROPPED withAdditionalData:nil];
                         if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && !hasModifiedTestLocation && [pickupObjects count]>1)
                         {
-                            gw.Blackboard.TestTouchLocation=ccp(n.PosX,n.PosY+200);
+                            gw.Blackboard.TestTouchLocation=ccp(n.PosX,n.PosY+ly);
                             hasModifiedTestLocation=YES;
                         }
                         
@@ -3351,7 +3433,7 @@ static float kTimeToCageShake=7.0f;
                 
                 if(countUserBlocks)
                 {
-                    int initedOnGrid=[[initBlocksForColumn objectAtIndex:currentColumnIndex]intValue];
+                    int initedOnGrid=[[initBlockValueForColumn objectAtIndex:currentColumnIndex]intValue];
                     float colValue=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] floatValue];
                     int amountAdded=(([self usedSpacesOnGrid:currentColumnIndex]-initedOnGrid)*colValue);
                     if(amountAdded>20)return;

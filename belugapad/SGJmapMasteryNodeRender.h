@@ -34,7 +34,6 @@
     
     NSMutableArray *featureSprites;
     
-    NSString *islandName;
     NSMutableDictionary *islandData;
 }
 
@@ -43,6 +42,10 @@
 @property CGPoint *allPerimPoints;
 @property CGPoint *scaledPerimPoints;
 @property BOOL zoomedOut;
+@property int islandShapeIdx;
+@property int islandLayoutIdx;
+@property int islandStage;
+@property (retain) NSMutableArray *indexedBaseNodes;
 
 -(void)draw:(int)z;
 -(void)setup;

@@ -27,6 +27,7 @@
 #import "SGDtoolBlockRender.h"
 #import "InteractionFeedback.h"
 #import "SimpleAudioEngine.h"
+#import "SGBtxeProtocols.h"
 
 #define DRAW_DEPTH 1
 static float kTimeSinceAction=7.0f;
@@ -131,10 +132,10 @@ static float kDistanceBetweenBlocks=70.0f;
     
     for(id go in gw.AllGameObjects)
     {
-        if([go conformsToProtocol:@protocol(Container)])
-            if([((id<Container>)go) blocksInShape]==0)
+        if([go conformsToProtocol:@protocol(ShapeContainer)])
+            if([((id<ShapeContainer>)go) blocksInShape]==0)
                 {
-                    [(id<Container>)go destroyThisObject];
+                    [(id<ShapeContainer>)go destroyThisObject];
                 }
     }
     
@@ -158,9 +159,9 @@ static float kDistanceBetweenBlocks=70.0f;
 {
     for(id go in [gw AllGameObjects])
     {
-        if([go conformsToProtocol:@protocol(Container)])
+        if([go conformsToProtocol:@protocol(ShapeContainer)])
         {
-            id<Container>goc=(id<Container>)go;
+            id<ShapeContainer>goc=(id<ShapeContainer>)go;
             
             for(int i=0; i<goc.BlocksInShape.count; i++)
             {
@@ -209,7 +210,7 @@ static float kDistanceBetweenBlocks=70.0f;
             {
                 if(bondAllObjects)
                 {
-                    id<Container>theRightContainer=((id<Moveable>)nearestObject).MyContainer;
+                    id<ShapeContainer>theRightContainer=((id<Moveable>)nearestObject).MyContainer;
                     id<Moveable>theRightBlock=[theRightContainer.BlocksInShape objectAtIndex:[theRightContainer.BlocksInShape count]-1];
                     [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)theRightBlock).mySprite.position];
                 }
@@ -491,6 +492,41 @@ static float kDistanceBetweenBlocks=70.0f;
         
         startPosX = farLeft + arc4random() % (farRight - farLeft);
         startPosY = botMost + arc4random() % (topMost - botMost);
+        
+        for(id go in gw.AllGameObjects)
+        {
+            if([go conformsToProtocol:@protocol(Moveable)])
+            {
+                while([(id<Moveable>)go amIProximateTo:ccp(startPosX,startPosY)])
+                {
+                    NSLog(@"overlapping objects, cuntfucker, change it!");
+                    startPosX = farLeft + arc4random() % (farRight - farLeft);
+                    startPosY = botMost + arc4random() % (topMost - botMost);
+                    
+                    NSArray *numLayout=[NumberLayout physicalLayoutAcrossToNumber:numBlocks withSpacing:52.0f];
+                    
+                    for(int i=0;i<[numLayout count];i++)
+                    {
+                        CGPoint thisVal=[[numLayout objectAtIndex:i] CGPointValue];
+                        thisVal=ccp(thisVal.x+startPosX, thisVal.y+startPosY);
+                        for(id go in gw.AllGameObjects)
+                        {
+                            if([go conformsToProtocol:@protocol(Moveable)])
+                            {
+                                while([(id<Moveable>)go amIProximateTo:ccp(startPosX,startPosY)])
+                                {
+                                    NSLog(@"MOAR! overlapping objects, cuntfucker, change it!");
+                                    startPosX = farLeft + arc4random() % (farRight - farLeft);
+                                    startPosY = botMost + arc4random() % (topMost - botMost);
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+                
+            }
+        }
     }
     else
     {
@@ -505,6 +541,7 @@ static float kDistanceBetweenBlocks=70.0f;
         
         startPosX = farLeft + arc4random() % (farRight - farLeft);
         startPosY = botMost + arc4random() % (topMost - botMost);
+
 
     }
     for (int i=0; i<numBlocks; i++)
@@ -612,7 +649,7 @@ static float kDistanceBetweenBlocks=70.0f;
 
 -(void)createContainerWithOne:(id)Object
 {
-    id<Container> container;
+    id<ShapeContainer> container;
     //NSLog(@"create container - there are %d destroyed labelled groups", [destroyedLabelledGroups count]);
     if([destroyedLabelledGroups count]==0)
     {
@@ -693,7 +730,7 @@ static float kDistanceBetweenBlocks=70.0f;
         [s setZOrder:100];
         
         if(currentPickupObject.MyContainer)
-            [(id<Container>)currentPickupObject.MyContainer removeBlockFromMe:currentPickupObject];
+            [(id<ShapeContainer>)currentPickupObject.MyContainer removeBlockFromMe:currentPickupObject];
         
         CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:cage.MySprite.position];
         CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.1f];
@@ -706,6 +743,28 @@ static float kDistanceBetweenBlocks=70.0f;
     }
 }
 
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    id<MovingInteractive,Text>iBTXE=(id<MovingInteractive,Text>)thisObject;
+    
+    for(id go in gw.AllGameObjectsCopy)
+    {
+        if([go isKindOfClass:[SGDtoolBlock class]])
+        {
+            id<Moveable>thisBlock=(id<Moveable>)go;
+
+            if([thisBlock amIProximateTo:thisLocation]&&thisBlock.MyContainer)
+            {
+                id<ShapeContainer>thisCont=(SGDtoolContainer*)thisBlock.MyContainer;
+                if(!thisCont.BTXELabel)
+                {
+                    [thisCont setGroupBTXELabel:[iBTXE createADuplicateIntoGameWorld:gw]];
+                }
+            }
+        }
+    }
+
+}
 
 -(BOOL)evalNumberOfShapesInEvalAreas
 {
@@ -949,9 +1008,9 @@ static float kDistanceBetweenBlocks=70.0f;
         {
             if([shapesFound containsObject:cont])continue;
             
-            if([cont conformsToProtocol:@protocol(Container)])
+            if([cont conformsToProtocol:@protocol(ShapeContainer)])
             {
-                id<Container>thisCont=cont;
+                id<ShapeContainer>thisCont=cont;
                 
                 //NSLog(@"thisCont type=%@, thisCont BlocksInShape=%d", thisCont.BlockType, [thisCont.BlocksInShape count]);
                 
@@ -980,7 +1039,6 @@ static float kDistanceBetweenBlocks=70.0f;
 {
     int solutionsFound=0;
     NSMutableArray *matchedEvalAreas=[[NSMutableArray alloc]init];
-    NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
     NSMutableArray *solutionsLeft=[NSMutableArray arrayWithArray:solutionsDef];
     
     for(int i=0;i<[evalAreas count];i++)
@@ -1280,7 +1338,7 @@ static float kDistanceBetweenBlocks=70.0f;
 }
 
 
--(CGPoint)returnNextMountPointForThisShape:(id<Container>)thisShape
+-(CGPoint)returnNextMountPointForThisShape:(id<ShapeContainer>)thisShape
 {
     id<Moveable>firstShape=[thisShape.BlocksInShape objectAtIndex:0];
     
@@ -1373,7 +1431,7 @@ static float kDistanceBetweenBlocks=70.0f;
             currentPickupObject.Position=location;
             [currentPickupObject move];
         }
-        if([((id<Container>)currentPickupObject.MyContainer).LineType isEqualToString:@"Unbreakable"])
+        if([((id<ShapeContainer>)currentPickupObject.MyContainer).LineType isEqualToString:@"Unbreakable"])
             return;
 
         BOOL prx=NO;
@@ -1470,28 +1528,28 @@ static float kDistanceBetweenBlocks=70.0f;
                     
                     // if the 2 containers are different, check for unbreakable blocks, if so, just layout the containers blocks
                     if(cObj.MyContainer!=currentPickupObject.MyContainer){
-                        if([((id<Container>)cObj.MyContainer).LineType isEqualToString:@"Unbreakable"]){
-                            [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
+                        if([((id<ShapeContainer>)cObj.MyContainer).LineType isEqualToString:@"Unbreakable"]){
+                            [((id<ShapeContainer>)currentPickupObject.MyContainer) layoutMyBlocks];
                             [self setTouchVarsToOff];
                             return;
                         }
                         // if the current pickup has a container - layout the old container's blocks it's blocks after removing from it
                         if(currentPickupObject.MyContainer){
-                            [((id<Container>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
-                            [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
+                            [((id<ShapeContainer>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
+                            [((id<ShapeContainer>)currentPickupObject.MyContainer) layoutMyBlocks];
                         }
                         
                         
                         // then add it to a new container and layout those blocks
-                        [((id<Container>)cObj.MyContainer) addBlockToMe:currentPickupObject];
-                        [((id<Container>)cObj.MyContainer) layoutMyBlocks];
+                        [((id<ShapeContainer>)cObj.MyContainer) addBlockToMe:currentPickupObject];
+                        [((id<ShapeContainer>)cObj.MyContainer) layoutMyBlocks];
                     }
                     // but if the 2 containers are equal
                     if(cObj.MyContainer==currentPickupObject.MyContainer)
                     {
                         // check if the block at index 0 is this one - if it is, don't layout the blocks
-                        if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape objectAtIndex:0]!=currentPickupObject)
-                            [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
+                        if([((id<ShapeContainer>)currentPickupObject.MyContainer).BlocksInShape objectAtIndex:0]!=currentPickupObject)
+                            [((id<ShapeContainer>)currentPickupObject.MyContainer) layoutMyBlocks];
                     }
                     
                     gotTarget=YES;
@@ -1500,9 +1558,9 @@ static float kDistanceBetweenBlocks=70.0f;
                     
                 }
                 // if it's unbreakabe, basically relayout the blocks and do nothing more 
-                if([((id<Container>)currentPickupObject.MyContainer).LineType isEqualToString:@"Unbreakable"]){
+                if([((id<ShapeContainer>)currentPickupObject.MyContainer).LineType isEqualToString:@"Unbreakable"]){
                     gotTarget=YES;
-                    [((id<Container>)currentPickupObject.MyContainer) layoutMyBlocks];
+                    [((id<ShapeContainer>)currentPickupObject.MyContainer) layoutMyBlocks];
                     [self setTouchVarsToOff];
                     return;
                 }
@@ -1515,9 +1573,9 @@ static float kDistanceBetweenBlocks=70.0f;
             // if it doesn't have a new targetl and the blocks in it's current shape are over 1 or the container's nil (ie if it's dragged from a cage) create a new group
             if([(id<NSObject>)currentPickupObject.MyContainer isKindOfClass:[SGDtoolCage class]])return;
             
-            if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape count]>1||currentPickupObject.MyContainer==nil)
+            if([((id<ShapeContainer>)currentPickupObject.MyContainer).BlocksInShape count]>1||currentPickupObject.MyContainer==nil)
             {
-                id<Container>LayoutCont=currentPickupObject.MyContainer;
+                id<ShapeContainer>LayoutCont=currentPickupObject.MyContainer;
                 
                 if(currentPickupObject==[LayoutCont.BlocksInShape objectAtIndex:0])
                 {
@@ -1560,13 +1618,13 @@ static float kDistanceBetweenBlocks=70.0f;
         
             CGPoint newPoint=ccp(b.Position.x+diffX, b.Position.y+diffY);
             [b setPosition:newPoint];
-            if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape objectAtIndex:0]!=currentPickupObject){
+            if([((id<ShapeContainer>)currentPickupObject.MyContainer).BlocksInShape objectAtIndex:0]!=currentPickupObject){
                     [b.MyContainer layoutMyBlocks];
             }
             else
             {
-                if([((id<Container>)currentPickupObject.MyContainer).BlocksInShape count]>1){
-                    SGDtoolBlock *b2=[((id<Container>)currentPickupObject.MyContainer).BlocksInShape objectAtIndex:1];
+                if([((id<ShapeContainer>)currentPickupObject.MyContainer).BlocksInShape count]>1){
+                    SGDtoolBlock *b2=[((id<ShapeContainer>)currentPickupObject.MyContainer).BlocksInShape objectAtIndex:1];
                     b.Position=ccp(b2.Position.x,b2.Position.y+52);
                     [b.MyContainer layoutMyBlocks];
                 }
@@ -1617,7 +1675,7 @@ static float kDistanceBetweenBlocks=70.0f;
         {
             // cast the go as a pairable to use properties
             id<Pairable,Moveable> pairableGO=(id<Pairable,Moveable>)go;
-            if(![pairableGO.MyContainer conformsToProtocol:@protocol(Container)])
+            if(![pairableGO.MyContainer conformsToProtocol:@protocol(ShapeContainer)])
                 continue;
                 
             //check if we're a lonesome object
@@ -1726,9 +1784,9 @@ static float kDistanceBetweenBlocks=70.0f;
             {
                 if([shapesFound containsObject:cont])continue;
                 
-                if([cont conformsToProtocol:@protocol(Container)])
+                if([cont conformsToProtocol:@protocol(ShapeContainer)])
                 {
-                    id<Container>thisCont=cont;
+                    id<ShapeContainer>thisCont=cont;
                     
                     if(![containers containsObject:cont])
                         [containers addObject:cont];
@@ -1772,9 +1830,9 @@ static float kDistanceBetweenBlocks=70.0f;
             {
                 if([shapesFound containsObject:cont])continue;
                 
-                if([cont conformsToProtocol:@protocol(Container)])
+                if([cont conformsToProtocol:@protocol(ShapeContainer)])
                 {
-                    id<Container>thisCont=cont;
+                    id<ShapeContainer>thisCont=cont;
                     
                     if(![containers containsObject:cont])
                         [containers addObject:cont];
@@ -1799,7 +1857,7 @@ static float kDistanceBetweenBlocks=70.0f;
         
     }
     
-    else if(evalType==kCheckNamedGroups)
+    else if(evalType==kCheckTaggedGroups)
     {
         NSDictionary *d=[solutionsDef objectAtIndex:0];
         int solutionsExpected=[d count];
@@ -1807,20 +1865,42 @@ static float kDistanceBetweenBlocks=70.0f;
         
         for(id cont in gw.AllGameObjects)
         {
-                if([cont conformsToProtocol:@protocol(Container)])
+            NSString *thisKey=nil;
+            
+            if([cont conformsToProtocol:@protocol(Interactive)])
+                thisKey=((id<Interactive>)cont).tag;
+            
+            if([cont conformsToProtocol:@protocol(ShapeContainer)])
+            { 
+                
+                id <ShapeContainer> thisCont=cont;
+                if([d objectForKey:thisKey])
                 {
-                    id <Container> thisCont=cont;
-                    NSString *thisKey=[thisCont.Label string];
-                    if([d objectForKey:thisKey])
-                    {
-
-                        int thisVal=[[d objectForKey:thisKey] intValue];
-                         NSLog(@"this group %d, required for key %d", [thisCont.BlocksInShape count], thisVal);
-                        if([thisCont.BlocksInShape count]==thisVal)
-                            solutionsFound++;
-                    }
+                    
+                    int thisVal=[[d objectForKey:thisKey] intValue];
+                    NSLog(@"this group %d, required for key %d", [thisCont.BlocksInShape count], thisVal);
+                    if([thisCont.BlocksInShape count]==thisVal)
+                        solutionsFound++;
                 }
+            }
         }
+        
+//        for(id cont in gw.AllGameObjects)
+//        {
+//            if([cont conformsToProtocol:@protocol(ShapeContainer)])
+//            {
+//                id <ShapeContainer> thisCont=cont;
+//                NSString *thisKey=[thisCont.Label string];
+//                if([d objectForKey:thisKey])
+//                {
+//                    
+//                    int thisVal=[[d objectForKey:thisKey] intValue];
+//                    NSLog(@"this group %d, required for key %d", [thisCont.BlocksInShape count], thisVal);
+//                    if([thisCont.BlocksInShape count]==thisVal)
+//                        solutionsFound++;
+//                }
+//            }
+//        }
         
         if (solutionsFound==solutionsExpected)
             return YES;

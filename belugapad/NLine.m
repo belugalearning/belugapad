@@ -374,7 +374,7 @@ float timerIgnoreFrog;
         touchResetX -=movex;
     }
     
-    NSLog(@"rambler.TouchXOffset %f", rambler.TouchXOffset);
+    //NSLog(@"rambler.TouchXOffset %f", rambler.TouchXOffset);
 }
 
 -(void)draw
@@ -934,6 +934,11 @@ float timerIgnoreFrog;
 -(float)metaQuestionAnswersYLocation
 {
     return 150;
+}
+
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    
 }
 
 -(void)dealloc

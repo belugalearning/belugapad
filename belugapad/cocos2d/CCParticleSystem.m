@@ -61,6 +61,10 @@
 #import "Support/ZipUtils.h"
 #import "Support/CCFileUtils.h"
 
+@interface CCParticleSystem ()
+-(void) updateBlendFunc;
+@end
+
 @implementation CCParticleSystem
 @synthesize active, duration;
 @synthesize sourcePosition, posVar;
@@ -72,6 +76,7 @@
 @synthesize emissionRate;
 @synthesize startSize, startSizeVar;
 @synthesize endSize, endSizeVar;
+@synthesize opacityModifyRGB = opacityModifyRGB_;
 @synthesize blendFunc = blendFunc_;
 @synthesize positionType = positionType_;
 @synthesize autoRemoveOnFinish = autoRemoveOnFinish_;
@@ -83,20 +88,32 @@
 	return [[[self alloc] initWithFile:plistFile] autorelease];
 }
 
++(id) particleWithTotalParticles:(NSUInteger) numberOfParticles
+{
+	return [[[self alloc] initWithTotalParticles:numberOfParticles] autorelease];
+}
+
 -(id) init {
 	return [self initWithTotalParticles:150];
 }
 
 -(id) initWithFile:(NSString *)plistFile
 {
-	NSString *path = [CCFileUtils fullPathFromRelativePath:plistFile];
+	NSString *path = [[CCFileUtils sharedFileUtils] fullPathFromRelativePath:plistFile];
 	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:path];
 
 	NSAssert( dict != nil, @"Particles: file not found");
-	return [self initWithDictionary:dict];
+	
+	return [self initWithDictionary:dict path:[plistFile stringByDeletingLastPathComponent]];
 }
 
+
 -(id) initWithDictionary:(NSDictionary *)dictionary
+{
+	return [self initWithDictionary:dictionary path:@""];
+}
+
+-(id) initWithDictionary:(NSDictionary *)dictionary path:(NSString*)dirname
 {
 	NSUInteger maxParticles = [[dictionary valueForKey:@"maxParticles"] integerValue];
 	// self, not super
@@ -215,47 +232,52 @@
 		//don't get the internal texture if a batchNode is used
 		if (!batchNode_)
 		{
-		// texture
-		// Try to get the texture from the cache
-            
-        //beluga patch -- don't look for non-embedded textures, always load embedded data
-            
-            
+			// Set a compatible default for the alpha transfer
+			opacityModifyRGB_ = NO;
+
+			// texture
+			// Try to get the texture from the cache
+
 			NSString *textureName = [dictionary valueForKey:@"textureFileName"];
-//
-//			CCTexture2D *tex = [[CCTextureCache sharedTextureCache] addImage:textureName];
-//
-//			if( tex )
-//				[self setTexture:tex];
-//			else {
+			NSString *textureDir = [textureName stringByDeletingLastPathComponent];
+			
+			// For backward compatibility, only append the dirname if both dirnames are the same
+			if( ! [textureDir isEqualToString:dirname] )
+				textureName = [dirname stringByAppendingPathComponent:textureName];
 
-            NSString *textureData = [dictionary valueForKey:@"textureImageData"];
-            NSAssert( textureData, @"CCParticleSystem: Couldn't load texture");
+			CCTexture2D *tex = [[CCTextureCache sharedTextureCache] addImage:textureName];
 
-            // if it fails, try to get it from the base64-gzipped data
-            unsigned char *buffer = NULL;
-            int len = base64Decode((unsigned char*)[textureData UTF8String], (unsigned int)[textureData length], &buffer);
-            NSAssert( buffer != NULL, @"CCParticleSystem: error decoding textureImageData");
+			if( tex )
+				[self setTexture:tex];
+			else {
 
-            unsigned char *deflated = NULL;
-            NSUInteger deflatedLen = ccInflateMemory(buffer, len, &deflated);
-            free( buffer );
+				NSString *textureData = [dictionary valueForKey:@"textureImageData"];
+				NSAssert( textureData, @"CCParticleSystem: Couldn't load texture");
 
-            NSAssert( deflated != NULL, @"CCParticleSystem: error ungzipping textureImageData");
-            NSData *data = [[NSData alloc] initWithBytes:deflated length:deflatedLen];
+				// if it fails, try to get it from the base64-gzipped data
+				unsigned char *buffer = NULL;
+				int len = base64Decode((unsigned char*)[textureData UTF8String], (unsigned int)[textureData length], &buffer);
+				NSAssert( buffer != NULL, @"CCParticleSystem: error decoding textureImageData");
+
+				unsigned char *deflated = NULL;
+				NSUInteger deflatedLen = ccInflateMemory(buffer, len, &deflated);
+				free( buffer );
+
+				NSAssert( deflated != NULL, @"CCParticleSystem: error ungzipping textureImageData");
+				NSData *data = [[NSData alloc] initWithBytes:deflated length:deflatedLen];
 
 #ifdef __CC_PLATFORM_IOS
-            UIImage *image = [[UIImage alloc] initWithData:data];
+				UIImage *image = [[UIImage alloc] initWithData:data];
 #elif defined(__CC_PLATFORM_MAC)
-            NSBitmapImageRep *image = [[NSBitmapImageRep alloc] initWithData:data];
+				NSBitmapImageRep *image = [[NSBitmapImageRep alloc] initWithData:data];
 #endif
 
-            free(deflated); deflated = NULL;
+				free(deflated); deflated = NULL;
 
-            [self setTexture:  [ [CCTextureCache sharedTextureCache] addCGImage:[image CGImage] forKey:textureName]];
-            [data release];
-            [image release];
-//			}
+				[self setTexture:  [ [CCTextureCache sharedTextureCache] addCGImage:[image CGImage] forKey:textureName]];
+				[data release];
+				[image release];
+			}
 
 			NSAssert( [self texture] != NULL, @"CCParticleSystem: error loading the texture");
 		}
@@ -301,14 +323,14 @@
 
 		autoRemoveOnFinish_ = NO;
 
-		// Optimization: compile udpateParticle method
+		// Optimization: compile updateParticle method
 		updateParticleSel = @selector(updateQuadWithParticle:newPosition:);
 		updateParticleImp = (CC_UPDATE_PARTICLE_IMP) [self methodForSelector:updateParticleSel];
 
 		//for batchNode
 		transformSystemDirty_ = NO;
 
-		// udpate after action in run!
+		// update after action in run!
 		[self scheduleUpdateWithPriority:1];
 	}
 	return self;
@@ -316,6 +338,8 @@
 
 -(void) dealloc
 {
+	[self unscheduleUpdate];
+
 	free( particles );
 
 	[texture_ release];
@@ -625,14 +649,11 @@
 
 -(void) setTexture:(CCTexture2D*) texture
 {
-	texture_ = [texture retain];
+	if( texture_ != texture ) {
+		[texture_ release];
+		texture_ = [texture retain];
 
-	// If the new texture has No premultiplied alpha, AND the blendFunc hasn't been changed, then update it
-	if( texture_ && ! [texture hasPremultipliedAlpha] &&
-	   ( blendFunc_.src == CC_BLEND_SRC && blendFunc_.dst == CC_BLEND_DST ) ) {
-
-		blendFunc_.src = GL_SRC_ALPHA;
-		blendFunc_.dst = GL_ONE_MINUS_SRC_ALPHA;
+		[self updateBlendFunc];
 	}
 }
 
@@ -665,6 +686,13 @@
 	return( blendFunc_.src == GL_SRC_ALPHA && blendFunc_.dst == GL_ONE);
 }
 
+-(void) setBlendFunc:(ccBlendFunc)blendFunc
+{
+	if( blendFunc_.src != blendFunc.src || blendFunc_.dst != blendFunc.dst ) {
+		blendFunc_ = blendFunc;
+		[self updateBlendFunc];
+	}
+}
 #pragma mark ParticleSystem - Total Particles Property
 
 - (void) setTotalParticles:(NSUInteger)tp
@@ -870,6 +898,26 @@
 {
 	transformSystemDirty_ = YES;
 	[super setScaleY:newScaleY];
+}
+
+#pragma mark Particle - Helpers
+
+-(void) updateBlendFunc
+{
+	NSAssert(! batchNode_, @"Can't change blending functions when the particle is being batched");
+
+	BOOL premultiplied = [texture_ hasPremultipliedAlpha];
+
+	opacityModifyRGB_ = NO;
+
+	if( texture_ && ( blendFunc_.src == CC_BLEND_SRC && blendFunc_.dst == CC_BLEND_DST ) ) {
+		if( premultiplied )
+			opacityModifyRGB_ = YES;
+		else {
+			blendFunc_.src = GL_SRC_ALPHA;
+			blendFunc_.dst = GL_ONE_MINUS_SRC_ALPHA;
+		}
+	}
 }
 
 

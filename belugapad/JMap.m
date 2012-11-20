@@ -38,6 +38,8 @@
 #import "JSONKit.h"
 #import "TestFlight.h"
 
+#import "TouchXML.h"
+
 
 #define DRAW_DEPTH 3
 
@@ -155,6 +157,8 @@ typedef enum {
         [self schedule:@selector(doUpdate:) interval:1.0f / 60.0f];
         
         [self schedule:@selector(doUpdateProximity:) interval:15.0f / 60.0f];
+        
+        [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_launch_general_background_score.mp3") loop:YES];
                 
 //        daemon=[[Daemon alloc] initWithLayer:foreLayer andRestingPostion:ccp(cx, cy) andLy:ly];
 //        [daemon setMode:kDaemonModeFollowing];
@@ -244,6 +248,8 @@ typedef enum {
     [self createLayers];
     
     [self setupGw];
+    
+    [self parseIslandData];
     
     kcmNodes=[NSMutableArray arrayWithArray:[contentService allConceptNodes]];
     [kcmNodes retain];
@@ -658,7 +664,121 @@ typedef enum {
     return nil;
 }
 
-#pragma mark drawing and sprite creation
+#pragma mark - parse island data svg
+
+-(void)parseIslandData
+{
+    gw.Blackboard.islandData=[[[NSMutableArray alloc] init] autorelease];
+    
+    NSString *XMLPath=BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/jmap/data/ifeatures.svg"]));
+	
+	//use that file to populate an NSData object
+	NSData *XMLData=[NSData dataWithContentsOfFile:XMLPath];
+	
+	//get TouchXML doc
+	CXMLDocument *doc=[[CXMLDocument alloc] initWithData:XMLData options:0 error:nil];
+    
+	//setup a namespace mapping for the svg and xlink namespaces
+    NSDictionary *nsMappings=@{@"svg":@"http://www.w3.org/2000/svg", @"xlink":@"http://www.w3.org/1999/xlink"};
+    
+    
+    //step over each group that includes a data-features and create a dictionary for it
+    NSArray *nodes=[doc nodesForXPath:@"//svg:g[starts-with(@id, 'data-features')]" namespaceMappings:nsMappings error:nil];
+    for (CXMLElement *node in nodes) {
+        //this is a node
+        //NSLog(@"parsing island group %@", [[node attributeForName:@"id"] stringValue]);
+        
+        //create dict for this island
+        NSMutableDictionary *idata=[[NSMutableDictionary alloc] init];
+        [gw.Blackboard.islandData addObject:idata];
+        
+        //create the arrays of node and artefact dicts, as well as the master index dict
+        NSMutableArray *featureindex=[[NSMutableArray alloc] init];
+        [idata setValue:featureindex forKey:@"FEATURE_INDEX"];
+        NSMutableArray *artefacts=[[NSMutableArray alloc] init];
+        [idata setValue:artefacts forKey:@"ARTEFACTS"];
+        NSMutableArray *nodes=[[NSMutableArray alloc] init];
+        [idata setValue:nodes forKey:@"NODES"];
+        NSMutableArray *features=[[NSMutableArray alloc] init];
+        [idata setValue:features forKey:@"FEATURES"];
+        
+        //step over all of the images in the group to infer types
+        NSArray *dimages=[node nodesForXPath:@"svg:image" namespaceMappings:nsMappings error:nil];
+        for(CXMLElement *dimg in dimages)
+        {
+            NSString *href=[[dimg attributeForName:@"xlink:href"] stringValue];
+            if([href rangeOfString:@"Crystal_Placeholder"].location!=NSNotFound)
+            {
+                NSDictionary *cryd=@{@"POS": [self getBoxedPosFromTransformString:[[dimg attributeForName:@"transform"] stringValue]]};
+                [artefacts addObject:cryd];
+                [featureindex addObject:cryd];
+                
+//                NSLog(@"parsed an artefact");
+            }
+            else if([href rangeOfString:@"Feature_Stage"].location!=NSNotFound)
+            {
+                int size=[[[href substringFromIndex:19] substringToIndex:1] intValue];
+                int variant=[[[href substringFromIndex:21] substringToIndex:1] intValue];
+                
+                NSDictionary *fd=@{@"POS": [self getBoxedPosFromTransformString:[[dimg attributeForName:@"transform"] stringValue]],
+                                    @"SIZE": @(size),
+                                    @"VARIANT": @(variant)};
+                
+                [features addObject:fd];
+                [featureindex addObject:fd];
+                
+//                NSLog(@"parsed a feature");
+            }
+            else if([href rangeOfString:@"Node_Placeholder"].location!=NSNotFound)
+            {
+                NSDictionary *noded=@{@"POS": [self getBoxedPosFromTransformString:[[dimg attributeForName:@"transform"] stringValue]],
+                                        @"FLIPPED": [self getBoxedIsFlippedFromTransformString:[[dimg attributeForName:@"transform"] stringValue]]};
+                
+                [nodes addObject:noded];
+                [featureindex addObject:noded];
+                
+//                NSLog(@"parsed a node");
+            }
+            else if([href rangeOfString:@"Mastery_Placeholder"].location!=NSNotFound)
+            {
+                NSDictionary *masd=@{@"POS": [self getBoxedPosFromTransformString:[[dimg attributeForName:@"transform"] stringValue]],
+                @"FLIPPED": [self getBoxedIsFlippedFromTransformString:[[dimg attributeForName:@"transform"] stringValue]]};
+                
+                [featureindex addObject:masd];
+                [idata setValue:masd forKey:@"MASTERY"];
+                
+//                NSLog(@"parsed a mastery node/pin");
+            }
+        }
+    }
+}
+
+-(NSValue*)getBoxedPosFromTransformString:(NSString*)t
+{
+    NSArray *ps=[t componentsSeparatedByString:@" "];
+    NSString *sx=[ps objectAtIndex:4];
+    NSString *sy=[ps objectAtIndex:5];
+    sy=[sy stringByReplacingOccurrencesOfString:@")" withString:@""];
+
+    float fx=[sx floatValue];
+    float fy=[sy floatValue];
+    fy=768.0f-fy;
+
+    return [NSValue valueWithCGPoint:CGPointMake(fx, fy)];
+}
+
+-(NSNumber*)getBoxedIsFlippedFromTransformString:(NSString*)t
+{
+    NSArray *ps=[t componentsSeparatedByString:@" "];
+    NSString *sx=[ps objectAtIndex:0];
+    sx=[sx stringByReplacingOccurrencesOfString:@"matrix(" withString:@""];
+    int set=[sx intValue];
+    return [NSNumber numberWithBool:(set<0)];
+}
+
+
+
+#pragma mark - drawing and sprite creation
 
 -(CGPoint)currentCentre
 {

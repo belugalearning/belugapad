@@ -235,6 +235,11 @@
     self.position=[renderBase convertToNodeSpace:theWorldPosition];
 }
 
+-(void)setColourOfBackgroundTo:(ccColor3B)thisColour
+{
+    [self.textBackgroundRenderComponent setColourOfBackgroundTo:thisColour];
+}
+
 -(void)setPosition:(CGPoint)thePosition
 {
     position=thePosition;

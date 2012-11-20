@@ -23,6 +23,11 @@
     return self;
 }
 
+-(void)setColourOfBackgroundTo:(ccColor3B)thisColour
+{
+    [self.sprite setColor:thisColour];
+}
+
 -(void)setupDrawWithSize:(CGSize)size
 {
     self.sprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/btxe/SB_Block_Question_Middle.png")];

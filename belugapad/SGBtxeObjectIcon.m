@@ -14,7 +14,7 @@
 @synthesize size, position, originalPosition;
 @synthesize enabled, tag;
 @synthesize iconRenderComponent, iconTag;
-
+@synthesize textBackgroundRenderComponent;
 @synthesize container;
 @synthesize mount;
 @synthesize hidden;
@@ -80,6 +80,11 @@
 -(void)setWorldPosition:(CGPoint)worldPosition
 {
     self.position=[renderBase convertToNodeSpace:worldPosition];
+}
+
+-(void)setColourOfBackgroundTo:(ccColor3B)thisColour
+{
+    [self.textBackgroundRenderComponent setColourOfBackgroundTo:thisColour];
 }
 
 -(void)attachToRenderBase:(CCNode*)theRenderBase

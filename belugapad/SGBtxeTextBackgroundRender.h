@@ -16,6 +16,7 @@
 
 @property (retain) CCSprite *sprite;
 
+-(void)setColourOfBackgroundTo:(ccColor3B)thisColour;
 -(void)setupDrawWithSize:(CGSize)size;
 -(void)updatePosition:(CGPoint)position;
 

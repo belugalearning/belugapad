@@ -138,6 +138,11 @@
     
 }
 
+-(void)setColourOfBackgroundTo:(ccColor3B)thisColour
+{
+    [textBackgroundRenderComponent setColourOfBackgroundTo:thisColour];
+}
+
 -(void)setupDraw
 {
     if(self.hidden)return;

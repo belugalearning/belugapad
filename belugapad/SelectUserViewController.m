@@ -235,7 +235,7 @@
     cancelNewUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
     cancelNewUserButton.frame = CGRectMake(330.0f, 397.0f, 103.0f, 49.0f);
     [cancelNewUserButton setImage:[UIImage imageNamed:@"/login-images/cancel_button.png"] forState:UIControlStateNormal];
-    [cancelNewUserButton addTarget:self action:@selector(handleCancelNewUserClicked:) forControlEvents:UIControlEventTouchDown];
+    [cancelNewUserButton addTarget:self action:@selector(handleCancelNewUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [editUserView addSubview:cancelNewUserButton];
     
     saveNewUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -331,7 +331,7 @@
     cancelExistingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
     cancelExistingUserButton.frame = CGRectMake(330.0f, 392.0f, 131.0f, 51.0f);
     [cancelExistingUserButton setImage:[UIImage imageNamed:@"/login-images/cancel_button_2.png"] forState:UIControlStateNormal];
-    [cancelExistingUserButton addTarget:self action:@selector(handleCancelExistingUserClicked:) forControlEvents:UIControlEventTouchDown];
+    [cancelExistingUserButton addTarget:self action:@selector(handleCancelExistingUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [loadExistingUserView addSubview:cancelExistingUserButton];
     
     loadExistingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];

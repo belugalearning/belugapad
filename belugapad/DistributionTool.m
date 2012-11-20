@@ -310,6 +310,7 @@ static float kDistanceBetweenBlocks=70.0f;
     hasInactiveArea=[[pdef objectForKey:HAS_INACTIVE_AREA]boolValue];
     randomiseDockPositions=[[pdef objectForKey:RANDOMISE_DOCK_POSITIONS]boolValue];
     bondAllObjects=[[pdef objectForKey:BOND_ALL_OBJECTS]boolValue];
+    
     if([pdef objectForKey:BOND_DIFFERENT_TYPES])
         bondDifferentTypes=[[pdef objectForKey:BOND_DIFFERENT_TYPES]boolValue];
     else
@@ -493,38 +494,39 @@ static float kDistanceBetweenBlocks=70.0f;
         startPosX = farLeft + arc4random() % (farRight - farLeft);
         startPosY = botMost + arc4random() % (topMost - botMost);
         
-        for(id go in gw.AllGameObjects)
+        if(!bondAllObjects)
         {
-            if([go conformsToProtocol:@protocol(Moveable)])
+            for(id go in gw.AllGameObjects)
             {
-                while([(id<Moveable>)go amIProximateTo:ccp(startPosX,startPosY)])
+                if([go conformsToProtocol:@protocol(Moveable)])
                 {
-                    NSLog(@"overlapping objects, cuntfucker, change it!");
-                    startPosX = farLeft + arc4random() % (farRight - farLeft);
-                    startPosY = botMost + arc4random() % (topMost - botMost);
-                    
-                    NSArray *numLayout=[NumberLayout physicalLayoutAcrossToNumber:numBlocks withSpacing:52.0f];
-                    
-                    for(int i=0;i<[numLayout count];i++)
+                    while([(id<Moveable>)go amIProximateTo:ccp(startPosX,startPosY)])
                     {
-                        CGPoint thisVal=[[numLayout objectAtIndex:i] CGPointValue];
-                        thisVal=ccp(thisVal.x+startPosX, thisVal.y+startPosY);
-                        for(id go in gw.AllGameObjects)
+                        startPosX = farLeft + arc4random() % (farRight - farLeft);
+                        startPosY = botMost + arc4random() % (topMost - botMost);
+                        
+                        NSArray *numLayout=[NumberLayout physicalLayoutAcrossToNumber:numBlocks withSpacing:52.0f];
+                        
+                        for(int i=0;i<[numLayout count];i++)
                         {
-                            if([go conformsToProtocol:@protocol(Moveable)])
+                            CGPoint thisVal=[[numLayout objectAtIndex:i] CGPointValue];
+                            thisVal=ccp(thisVal.x+startPosX, thisVal.y+startPosY);
+                            for(id go in gw.AllGameObjects)
                             {
-                                while([(id<Moveable>)go amIProximateTo:ccp(startPosX,startPosY)])
+                                if([go conformsToProtocol:@protocol(Moveable)])
                                 {
-                                    NSLog(@"MOAR! overlapping objects, cuntfucker, change it!");
-                                    startPosX = farLeft + arc4random() % (farRight - farLeft);
-                                    startPosY = botMost + arc4random() % (topMost - botMost);
+                                    while([(id<Moveable>)go amIProximateTo:ccp(startPosX,startPosY)])
+                                    {
+                                        startPosX = farLeft + arc4random() % (farRight - farLeft);
+                                        startPosY = botMost + arc4random() % (topMost - botMost);
+                                    }
                                 }
                             }
+                            
                         }
-                        
                     }
+                    
                 }
-                
             }
         }
     }
@@ -571,20 +573,6 @@ static float kDistanceBetweenBlocks=70.0f;
     }
        
     thesePositions=nil;
-    
-//    if(hasLabel)
-//    {
-//
-//        
-//        
-//        NSLog(@"(before) avgPosX %f, avgPosY %f", avgPosX, avgPosY);
-//        avgPosX=avgPosX/2;
-//        avgPosY=avgPosY/[createdBlocksForShape count];
-//        NSLog(@"(after) avgPosX %f, avgPosY %f", avgPosX, avgPosY);
-//        labelForShape=[CCLabelTTF labelWithString:[theseSettings objectForKey:LABEL] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-//        [labelForShape setPosition:ccp(avgPosX,avgPosY+40)];
-//        [renderLayer addChild:labelForShape];
-//    }
 
 }
 
@@ -756,9 +744,10 @@ static float kDistanceBetweenBlocks=70.0f;
             if([thisBlock amIProximateTo:thisLocation]&&thisBlock.MyContainer)
             {
                 id<ShapeContainer>thisCont=(SGDtoolContainer*)thisBlock.MyContainer;
-                if(!thisCont.BTXELabel)
+                if(!thisCont.BTXERow)
                 {
                     [thisCont setGroupBTXELabel:[iBTXE createADuplicateIntoGameWorld:gw]];
+                    break;
                 }
             }
         }

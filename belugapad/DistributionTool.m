@@ -538,6 +538,7 @@ static float kDistanceBetweenBlocks=70.0f;
         [block setup];
         block.MyContainer = container;
         [block.mySprite setColor:blockCol];
+        [block.mySprite setZOrder:10];
         
         thisShapeRect=CGRectUnion(thisShapeRect,block.mySprite.boundingBox);
         
@@ -601,7 +602,7 @@ static float kDistanceBetweenBlocks=70.0f;
         int areaSize=[[d objectForKey:AREA_SIZE]intValue];
         int areaWidth=[[d objectForKey:AREA_WIDTH]intValue];
         int areaOpacity=0;
-        int distFromLY=(ly-110-(areaSize/areaWidth)*62);
+        int distFromLY=(ly-150-(areaSize/areaWidth)*62);
         float startXPos=((i+0.5)*sectionWidth)-((areaWidth/2)*60);
         int startYPos = 100 + arc4random() % (distFromLY - 100);
         CGRect thisEvalArea=CGRectNull;
@@ -623,7 +624,7 @@ static float kDistanceBetweenBlocks=70.0f;
             CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/distribution/DT_area.png")];
             [s setPosition:ccp(startXPos+(thisPos*s.contentSize.width),startYPos+(thisRow*s.contentSize.height))];
             [s setOpacity:areaOpacity];
-            [self.ForeLayer addChild:s];
+            [self.ForeLayer addChild:s z:0];
             
             thisEvalArea=CGRectUnion(thisEvalArea, s.boundingBox);
             

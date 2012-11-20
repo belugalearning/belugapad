@@ -52,7 +52,7 @@
                 CGPoint hitLoc=[gameWorld.Blackboard.ComponentRenderLayer convertToWorldSpace:gameWorld.Blackboard.TestTouchLocation];
                 
                 
-                    if(c.ObjectValue==addO.ObjectValue||c.ObjectValue==-addO.ObjectValue)
+                    if(c.ObjectValue==addO.ObjectValue||c.ObjectValue==-addO.ObjectValue||c.ObjectValue==0)
                     {
                         float dist=[BLMath DistanceBetween:myLoc and:hitLoc];
 

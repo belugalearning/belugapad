@@ -46,7 +46,7 @@ static float kDistanceBetweenBlocks=70.0f;
     SGGameWorld *gw;
     
     // and then any specifics we need for this tool
-    id<Moveable,Transform,Pairable> currentPickupObject;
+    id<Moveable,Transform,Pairable,Configurable> currentPickupObject;
     id<Cage> cage;
     CGPoint pickupPos;
     
@@ -713,6 +713,12 @@ static float kDistanceBetweenBlocks=70.0f;
     
     if(currentPickupObject)
     {
+        for(id<Cage>cge in addedCages)
+        {
+            if([cge.BlockType isEqualToString:currentPickupObject.blockType])
+                cage=cge;
+        }
+        
         id<Pairable>thisGO=currentPickupObject;
         CCSprite *s=currentPickupObject.mySprite;
         [s setZOrder:100];
@@ -1476,20 +1482,22 @@ static float kDistanceBetweenBlocks=70.0f;
     // check there's a pickupobject
     NSArray *allGWCopy=[NSArray arrayWithArray:gw.AllGameObjects];
     
-    if(!spawnedNewObj && hasMovedCagedBlock)
-        [cage spawnNewBlock];
+    if(location.y<cage.Position.y+(cage.MySprite.contentSize.height/2) && problemHasCage)
+    {
+        [self removeBlockByCage];
+        
+        if(!spawnedNewObj && hasMovedCagedBlock)
+            [cage spawnNewBlock];
+        
+        [self setTouchVarsToOff];
+        return;
+    }
     
     if(currentPickupObject)
     {
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_block_dropped.wav")];
         
         // check all the gamobjects and search for a moveable object
-        
-        if(location.y<cage.Position.y+(cage.MySprite.contentSize.height/2) && problemHasCage)
-        {
-            [self removeBlockByCage];
-            return;
-        }
         
         if(CGRectContainsPoint(inactiveRect, location))
         {

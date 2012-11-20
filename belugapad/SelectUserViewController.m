@@ -142,6 +142,15 @@
     [joinClassButton setImage:[UIImage imageNamed:@"/login-images/join_class_button_disabled.png"] forState:UIControlStateHighlighted];
     //[joinClassButton addTarget:self action:@selector(handleExistingUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [selectUserView addSubview:joinClassButton];
+    
+    selectUserTableView = [[[UITableView alloc] initWithFrame:CGRectMake(327,236,369,136) style:UITableViewStylePlain] autorelease];
+    selectUserTableView.backgroundColor = [UIColor clearColor];
+    selectUserTableView.opaque = NO;
+    selectUserTableView.backgroundView = nil;
+    selectUserTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    selectUserTableView.dataSource = self;
+    selectUserTableView.delegate = self;
+    [selectUserView addSubview:selectUserTableView];
 }
 
 -(void)handlePlayButtonClicked:(id)button

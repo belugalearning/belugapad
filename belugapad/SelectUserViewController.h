@@ -12,8 +12,8 @@
 
 @interface SelectUserViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 {
-    IBOutlet UIImageView *backgroundImageView;    
-    IBOutlet UIView *selectUserView;    
+    IBOutlet UIImageView *backgroundImageView;
+    IBOutlet UIView *selectUserView;
     IBOutlet UIView *editUserView;
     IBOutlet UIView *loadExistingUserView;
 }

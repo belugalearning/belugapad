@@ -1424,8 +1424,6 @@ typedef enum {
     [kcmNodes release];
     [gw release];
     
-    [udata release];
-    
     [searchNodes release];
     
     [super dealloc];

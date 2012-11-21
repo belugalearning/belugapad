@@ -15,7 +15,7 @@
 @class SGGameWorld;
 
 
-@protocol Container
+@protocol Container <NSObject>
 
 @property (retain) NSMutableArray *children;
 @property (retain) SGBtxeContainerMgr *containerMgrComponent;

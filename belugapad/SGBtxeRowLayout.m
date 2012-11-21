@@ -100,8 +100,12 @@
         //if applicable, set this as the original position
         if([c conformsToProtocol:@protocol(MovingInteractive)])
         {
-            ((id<MovingInteractive>)c).originalPosition=c.position;
-            [((id<MovingInteractive>)c).textBackgroundRenderComponent setColourOfBackgroundTo:kBTXEColour[colourIndex]];
+            id<MovingInteractive>thisMIo=(id<MovingInteractive>)c;
+            if(!thisMIo.interactive)
+                thisMIo.position=ccp(thisMIo.position.x,thisMIo.position.y+1);
+            
+            thisMIo.originalPosition=c.position;
+            [thisMIo.textBackgroundRenderComponent setColourOfBackgroundTo:kBTXEColour[colourIndex]];
             colourIndex++;
         }
         

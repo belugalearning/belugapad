@@ -1385,7 +1385,12 @@ static float kDistanceBetweenBlocks=70.0f;
                 [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_block_picked_up.wav")];
                 
                 if([currentPickupObject.MyContainer isKindOfClass:[SGDtoolCage class]]){
-                    spawnedNewObj=NO;
+                    
+                    if([dockType isEqualToString:@"Infinite"] || [dockType isEqualToString:@"Infinite-Random"] || [dockType isEqualToString:@"Infinite-Value"])
+                        spawnedNewObj=NO;
+                    else
+                        spawnedNewObj=YES;
+                    
                     hasMovedCagedBlock=YES;
                     ((id<Cage>)currentPickupObject.MyContainer).CurrentObject=nil;
                     currentPickupObject.MyContainer=nil;

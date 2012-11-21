@@ -350,7 +350,7 @@
         }
     }
     
-    if(!gotPickerObject){
+    if(!gotPickerObject && !CGRectContainsPoint(CGRectMake(700,600,324,308), location)){
         toolHost.CurrentBTXE=nil;
         [toolHost tearDownNumberPicker];
     }
@@ -505,15 +505,23 @@
         //check for an equality on all but the first expression
         for(int i=1; i<rows.count; i++)
         {
+            BOOL doEval=YES;
             if(excludedEvalRows)
             {
-                if([excludedEvalRows containsObject:@(i+1)]) continue;
+                for(id row in excludedEvalRows)
+                {
+                    if([row isEqualToString:[NSString stringWithFormat:@"%d", i+1]])
+                        doEval=NO;
+                }
             }
             
-            SGBtxeRow *row=[rows objectAtIndex:i];
-            if(row!=ncardRow)
+            if(doEval)
             {
-                if([self parseContainerToEqualityAndEval:row]==NO) return NO;
+                SGBtxeRow *row=[rows objectAtIndex:i];
+                if(row!=ncardRow)
+                {
+                    if([self parseContainerToEqualityAndEval:row]==NO) return NO;
+                }
             }
         }
         
@@ -527,16 +535,25 @@
         //check for equality on rows and check that the expressions are different
         for(int i=1; i<rows.count; i++)
         {
+            BOOL doEval=YES;
             if(excludedEvalRows)
             {
-                if([excludedEvalRows containsObject:@(i+1)]) continue;
+                for(id row in excludedEvalRows)
+                {
+                    if([row isEqualToString:[NSString stringWithFormat:@"%d", i+1]])
+                        doEval=NO;
+                }
             }
             
-            SGBtxeRow *row=[rows objectAtIndex:i];
-            if(row!=ncardRow)
+            if(doEval)
             {
-                if([self parseContainerToEqualityAndEval:row]==NO) return NO;
-                NSLog(@"parsed row");
+            
+                SGBtxeRow *row=[rows objectAtIndex:i];
+                if(row!=ncardRow)
+                {
+                    if([self parseContainerToEqualityAndEval:row]==NO) return NO;
+                    NSLog(@"parsed row");
+                }
             }
         }
         

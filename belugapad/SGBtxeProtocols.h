@@ -54,6 +54,7 @@
 @property CGSize size;
 @property CGPoint position;
 @property CGPoint worldPosition;
+@property float rowWidth;
 @property BOOL hidden;
 
 -(void) setupDraw;
@@ -91,6 +92,7 @@
 @protocol Interactive <Bounding>
 
 @property BOOL enabled;
+@property BOOL interactive;
 @property (retain) NSString *tag;
 
 -(void)activate;

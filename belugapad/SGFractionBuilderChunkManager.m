@@ -129,7 +129,7 @@
     for(int i=0;i<adjMarkerPos;i++)
     {
         CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/fractions/separator.png")];
-        float xPos=fractionSprite.position.x+(fractionSprite.contentSize.width/2);
+        //float xPos=fractionSprite.position.x+(fractionSprite.contentSize.width/2);
         float sectionSize=fractionSprite.contentSize.width/adjMarkerPos;
         
         //[s setPosition:ccp(xPos, fractionSprite.position.y)];

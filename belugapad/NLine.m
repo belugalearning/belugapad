@@ -106,10 +106,10 @@ float timerIgnoreFrog;
 
 -(void)setupBubble
 {
-    bubbleTexRegular=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")].CGImage resolutionType:kCCResolutioniPad];
-    bubbleTexSelected=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")].CGImage resolutionType:kCCResolutioniPad];
+//    bubbleTexRegular=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")].CGImage resolutionType:kCCResolutioniPad];
+//    bubbleTexSelected=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")].CGImage resolutionType:kCCResolutioniPad];
     
-    bubbleSprite=[CCSprite spriteWithTexture:bubbleTexRegular];
+    bubbleSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")];
     [bubbleSprite setPosition:ccp(cx, cy)];
     [self.ForeLayer addChild:bubbleSprite];
     
@@ -703,8 +703,8 @@ float timerIgnoreFrog;
 {
     [bubbleSprite stopAllActions];
     
-    [bubbleSprite setTexture:bubbleTexSelected];
-    [bubbleSprite setTextureRect:CGRectMake(0, 0, bubbleTexSelected.contentSize.width, bubbleTexSelected.contentSize.height)];
+//    [bubbleSprite setTexture:bubbleTexSelected];
+//    [bubbleSprite setTextureRect:CGRectMake(0, 0, bubbleTexSelected.contentSize.width, bubbleTexSelected.contentSize.height)];
     
     [bubbleSprite setScale:0.87f];
     [bubbleSprite runAction:[InteractionFeedback enlargeTo1xAction]];
@@ -714,8 +714,8 @@ float timerIgnoreFrog;
 
 -(void)animReleaseBubble
 {
-    [bubbleSprite setTexture:bubbleTexRegular];
-    [bubbleSprite setTextureRect:CGRectMake(0, 0, bubbleTexRegular.contentSize.width, bubbleTexRegular.contentSize.height)];
+//    [bubbleSprite setTexture:bubbleTexRegular];
+//    [bubbleSprite setTextureRect:CGRectMake(0, 0, bubbleTexRegular.contentSize.width, bubbleTexRegular.contentSize.height)];
     
     [bubbleSprite setScale:1.15f];
     [bubbleSprite runAction:[InteractionFeedback reduceTo1xAction]];    

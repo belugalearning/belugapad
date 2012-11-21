@@ -19,7 +19,7 @@
 
 @synthesize prefixText, suffixText, numberText, numberValue;
 
-@synthesize enabled, tag, originalPosition;
+@synthesize enabled, interactive, tag, originalPosition;
 
 @synthesize textBackgroundRenderComponent;
 
@@ -40,6 +40,7 @@
         
         
         enabled=YES;
+        interactive=YES;
         tag=@"";
         
         size=CGSizeZero;
@@ -269,7 +270,8 @@
     
     renderBase=theRenderBase;
     
-    [renderBase addChild:textBackgroundRenderComponent.backgroundNode];
+    if(textBackgroundRenderComponent.backgroundNode)
+        [renderBase addChild:textBackgroundRenderComponent.backgroundNode];
     
     [renderBase addChild:textRenderComponent.label0];
     [renderBase addChild:textRenderComponent.label];

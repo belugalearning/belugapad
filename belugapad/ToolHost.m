@@ -2298,7 +2298,7 @@ static float kTimeToHintToolTray=7.0f;
     {
         if([o conformsToProtocol:@protocol(MovingInteractive)])
         {
-            if(!o.interactive)return;
+            if(!o.interactive)continue;
             id<Bounding> obounding=(id<Bounding>)o;
             
             CGRect hitbox=CGRectMake(obounding.worldPosition.x - (BTXE_OTBKG_WIDTH_OVERDRAW_PAD + obounding.size.width) / 2.0f, obounding.worldPosition.y-BTXE_VPAD-(obounding.size.height / 2.0f), obounding.size.width + BTXE_OTBKG_WIDTH_OVERDRAW_PAD, obounding.size.height + 2*BTXE_VPAD);

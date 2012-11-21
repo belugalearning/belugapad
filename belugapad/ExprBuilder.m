@@ -308,7 +308,7 @@
     {
         if([o conformsToProtocol:@protocol(MovingInteractive)])
         {
-            if(!o.interactive)return;
+            if(!o.interactive)continue;
             id<Bounding> obounding=(id<Bounding>)o;
             id<NumberPicker,Text> opicker=(id<NumberPicker,Text>)o;
             

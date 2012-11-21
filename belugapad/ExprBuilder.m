@@ -350,7 +350,7 @@
         }
     }
     
-    if(!gotPickerObject){
+    if(!gotPickerObject && !CGRectContainsPoint(CGRectMake(700,600,324,308), location)){
         toolHost.CurrentBTXE=nil;
         [toolHost tearDownNumberPicker];
     }

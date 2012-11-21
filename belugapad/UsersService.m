@@ -186,7 +186,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     [currentUserStateDatabase close];
 }
 
--(NSArray*)deviceUsersByNickName
+-(NSMutableArray*)deviceUsersByNickName
 {    
     NSMutableArray *users = [NSMutableArray array];
     

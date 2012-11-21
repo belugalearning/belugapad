@@ -17,6 +17,7 @@
 @property (retain) CCNode *backgroundNode;
 
 -(void)setColourOfBackgroundTo:(ccColor3B)thisColour;
+-(ccColor3B)returnColourOfBackground;
 -(void)setupDrawWithSize:(CGSize)size;
 -(void)updatePosition:(CGPoint)position;
 

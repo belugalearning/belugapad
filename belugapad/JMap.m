@@ -38,6 +38,7 @@
 #import "JSONKit.h"
 #import "TestFlight.h"
 
+#import "UserNodeState.h"
 #import "TouchXML.h"
 
 
@@ -246,6 +247,8 @@ typedef enum {
     [self populateImageCache];
  
     [self createLayers];
+ 
+    [self getUserData];
     
     [self setupGw];
     
@@ -292,8 +295,16 @@ typedef enum {
     }
     
     [self buildSearchIndex];
-        
+ 
+    //after we've finished building everything, set the last jmap viewed user state on the app delegate
+    ac.lastJmapViewUState=udata;
+    
     NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
+}
+
+-(void)getUserData
+{
+    udata=[usersService currentUserAllNodesState];
 }
 
 - (void)createLayers
@@ -409,11 +420,13 @@ typedef enum {
             newnode=[[[SGJmapNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
             newnode.UserVisibleString=[n.utd stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             
-            //todo: for now, if there are pipelines on the node, set it complete
-            if([usersService hasCompletedNodeId:n._id])
-            {
-                ((SGJmapNode*)newnode).EnabledAndComplete=YES;
-            }
+            //get the node state data from the userservice
+            SGJmapNode *newnodeC=(SGJmapNode*)newnode;
+            
+            newnodeC.ustate=[udata objectForKey:n._id];
+            
+            //mock old enabledAndComplete by directly accessing the lastPlayed of the node
+            newnodeC.EnabledAndComplete=(newnodeC.ustate.lastPlayed > 0);
             
             
             newnode.HitProximity=40.0f;
@@ -1410,6 +1423,8 @@ typedef enum {
     [foreLayer release];
     [kcmNodes release];
     [gw release];
+    
+    [udata release];
     
     [searchNodes release];
     

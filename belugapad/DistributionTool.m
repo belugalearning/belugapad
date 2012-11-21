@@ -28,6 +28,7 @@
 #import "InteractionFeedback.h"
 #import "SimpleAudioEngine.h"
 #import "SGBtxeProtocols.h"
+#import "SGBtxeObjectIcon.h"
 
 #define DRAW_DEPTH 1
 static float kTimeSinceAction=7.0f;
@@ -1882,24 +1883,22 @@ static float kDistanceBetweenBlocks=70.0f;
         int solutionsExpected=[d count];
         int solutionsFound=0;
         
+        
         for(id cont in gw.AllGameObjects)
         {
-            NSString *thisKey=nil;
-            
-            if([cont conformsToProtocol:@protocol(Interactive)])
-                thisKey=((id<Interactive>)cont).tag;
             
             if([cont conformsToProtocol:@protocol(ShapeContainer)])
-            { 
-                
+            {
                 id <ShapeContainer> thisCont=cont;
-                if([d objectForKey:thisKey])
+                
+                NSLog(@"BTXE Label tag %@", ((id<Interactive>)thisCont.BTXELabel).tag);
+                
+                if([d objectForKey:((SGBtxeObjectIcon*)thisCont.BTXELabel).tag])
                 {
-                    
-                    int thisVal=[[d objectForKey:thisKey] intValue];
-                    NSLog(@"this group %d, required for key %d", [thisCont.BlocksInShape count], thisVal);
+                    int thisVal=[[d objectForKey:((SGBtxeObjectIcon*)thisCont.BTXELabel).tag] intValue];
                     if([thisCont.BlocksInShape count]==thisVal)
                         solutionsFound++;
+                    
                 }
             }
         }

@@ -1353,6 +1353,7 @@ static float kTimeToHintToolTray=7.0f;
             row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:trayLayerMq];
             
             row.forceVAlignTop=NO;
+            row.rowWidth=answerBtn.contentSize.width-10;
 
             [row parseXML:answerLabelString];
             [row setupDraw];

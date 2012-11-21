@@ -54,6 +54,7 @@
 @property CGSize size;
 @property CGPoint position;
 @property CGPoint worldPosition;
+@property float rowWidth;
 @property BOOL hidden;
 
 -(void) setupDraw;

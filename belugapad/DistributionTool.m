@@ -724,7 +724,8 @@ static float kDistanceBetweenBlocks=70.0f;
 
 -(void)removeBlockByCage
 {
-    
+    if([dockType isEqualToString:@"15"])return;
+    if([dockType isEqualToString:@"30"])return;
     if(currentPickupObject)
     {
         for(id<Cage>cge in addedCages)
@@ -732,6 +733,9 @@ static float kDistanceBetweenBlocks=70.0f;
             if([cge.BlockType isEqualToString:currentPickupObject.blockType])
                 cage=cge;
         }
+        
+        if([dockType isEqualToString:@"Infinite-Random"])
+            cage=[addedCages objectAtIndex:0];
         
         id<Pairable>thisGO=currentPickupObject;
         CCSprite *s=currentPickupObject.mySprite;
@@ -1499,12 +1503,12 @@ static float kDistanceBetweenBlocks=70.0f;
     // check there's a pickupobject
     NSArray *allGWCopy=[NSArray arrayWithArray:gw.AllGameObjects];
     
+    if(!spawnedNewObj && hasMovedCagedBlock)
+        [cage spawnNewBlock];
+    
     if(location.y<cage.Position.y+(cage.MySprite.contentSize.height/2) && problemHasCage)
     {
         [self removeBlockByCage];
-        
-        if(!spawnedNewObj && hasMovedCagedBlock)
-            [cage spawnNewBlock];
         
         [self setTouchVarsToOff];
         return;

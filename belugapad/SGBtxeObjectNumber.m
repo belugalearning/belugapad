@@ -269,7 +269,7 @@
     
     renderBase=theRenderBase;
     
-    [renderBase addChild:textBackgroundRenderComponent.sprite];
+    [renderBase addChild:textBackgroundRenderComponent.backgroundNode];
     
     [renderBase addChild:textRenderComponent.label0];
     [renderBase addChild:textRenderComponent.label];
@@ -307,7 +307,7 @@
 
 -(void)detachFromRenderBase
 {
-    [textBackgroundRenderComponent.sprite removeFromParentAndCleanup:YES];
+    [textBackgroundRenderComponent.backgroundNode removeFromParentAndCleanup:YES];
     [textRenderComponent.label0 removeFromParentAndCleanup:YES];
     [textRenderComponent.label removeFromParentAndCleanup:YES];
 }

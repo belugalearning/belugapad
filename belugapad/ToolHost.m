@@ -2154,7 +2154,7 @@ static float kTimeToHintToolTray=7.0f;
     //create row
     SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:btxeDescLayer];
     descRow=row;
-    row.position=ccp(cx, (cy*2) - 110);
+    row.position=ccp(cx, (cy*2) - 95);
 
     //top down valign
     row.forceVAlignTop=YES;

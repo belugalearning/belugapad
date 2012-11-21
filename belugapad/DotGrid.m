@@ -76,7 +76,7 @@
         [gw Blackboard].hostLY = ly;
         
         drawnArea=CGRectMake(50,50,924,600);
-        
+        drawNode=[[CCDrawNode alloc] init];
         [self readPlist:pdef];
         [self populateGW];
         
@@ -84,7 +84,7 @@
         
         debugLogging=YES;
         
-        gw.Blackboard.inProblemSetup = NO;        
+        gw.Blackboard.inProblemSetup = NO;
     }
     
     return self;
@@ -121,6 +121,8 @@
     
 //    if(!sumWheel && [numberWheels count]>=2)
 //        [self createSumWheel];
+    
+    [self drawState];
     
     if([self checkForCorrectShapeSizes])
         [self createAllWheels];
@@ -431,6 +433,8 @@
         
         [self checkAnchorsAndUseResizeHandle:NO andShowMove:NO andPrecount:nil andDisabled:NO];
     }
+    
+    [renderLayer addChild:drawNode];
 
 }
 
@@ -456,17 +460,20 @@
 }
 
 #pragma mark - drawing methods
--(void)draw
+
+-(void)drawState
 {
+    [drawNode clear];
+    
     CGPoint firstAnchor=((DWDotGridAnchorGameObject*)gw.Blackboard.FirstAnchor).Position;
-    
+
     CGPoint lastAnchor=((DWDotGridAnchorGameObject*)gw.Blackboard.LastAnchor).Position;
-    
+
     firstAnchor=[anchorLayer convertToWorldSpace:firstAnchor];
     lastAnchor=[anchorLayer convertToWorldSpace:lastAnchor];
-    
+
     CGPoint nodeLastTouch=lastTouch;
-    
+
     if(gameState==kStartAnchor)
     {
         CGPoint points[4];
@@ -477,18 +484,20 @@
         
         CGPoint *first=&points[0];
         
-        ccDrawPoly(first, 4, YES);
+        [drawNode drawPolyWithVerts:first count:4 fillColor:ccc4f(1, 1, 1, 0.5f) borderWidth:3 borderColor:ccc4f(1, 1, 1, 1)];
         
         points[2]=lastAnchor;
         points[1]=CGPointMake(points[2].x, points[0].y);
         points[3]=CGPointMake(points[0].x, points[2].y);
+        
+        [drawNode drawPolyWithVerts:first count:4 fillColor:ccc4f(1,1,1,0.5f) borderWidth:3 borderColor:ccc4f(0,1,0,1)];
         
         //todo: not doing with cocos2.1 -- needs replacing with CCDrawNode
         //ccDrawFilledPoly(first, 4, ccc4FFromccc4B(ccc4(255,255,255,5)));
         
         
     }
-    
+
     if(gameState==kResizeShape)
     {
         
@@ -501,16 +510,16 @@
         
         CGPoint *first=&points[0];
         
-        ccDrawPoly(first, 4, YES);
+        [drawNode drawPolyWithVerts:first count:4 fillColor:ccc4f(1,1,1,0.5f) borderWidth:3 borderColor:ccc4f(1,1,1,1)];
         
         points[2]=lastAnchor;
         points[1]=CGPointMake(points[2].x, points[0].y);
         points[3]=CGPointMake(points[0].x, points[2].y);
         
-        //todo: not doing with cocos2.1 -- needs replacing with CCDrawNode
-        //ccDrawFilledPoly(first, 4, ccc4FFromccc3B(ccc3(230,0,0)));
+        [drawNode drawPolyWithVerts:first count:4 fillColor:ccc4f(1,0,0,1.0f) borderWidth:3 borderColor:ccc4f(1,1,1,1)];
     }
 }
+
 -(void)checkAnchors
 {
     [self checkAnchorsAndUseResizeHandle:YES andShowMove:NO andPrecount:nil andDisabled:NO];

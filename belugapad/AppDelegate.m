@@ -46,6 +46,8 @@
 
 @synthesize searchBar, searchList;
 
+@synthesize lastJmapViewUState;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [self writeLogMemoryUsage];
@@ -368,8 +370,10 @@ void logMemUsage(void) {
     [contentService release];
     [usersService release];
     
-    searchBar=nil;
-    searchList=nil;
+    self.searchBar=nil;
+    self.searchList=nil;
+    
+    self.lastJmapViewUState=nil;
     
 	[window_ release];
 	[navController_ release];

@@ -84,6 +84,7 @@ typedef enum
     NSMutableArray *addedCages;
     NSMutableArray *evalAreas;
     NSMutableArray *inactiveArea;
+    NSMutableArray *activeRects;
     CGRect inactiveRect;
 }
 

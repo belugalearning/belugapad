@@ -131,7 +131,7 @@
             [pickerView spinComponent:0 speed:10 easeRate:4 repeat:2 stopRow:minBlocksFromPipe];
             blocksFromPipe=minBlocksFromPipe;
         }
-        if([self returnPickerNumber]>maxBlocksFromPipe){
+        else if([self returnPickerNumber]>maxBlocksFromPipe){
             [pickerView spinComponent:0 speed:10 easeRate:4 repeat:2 stopRow:maxBlocksFromPipe];
             blocksFromPipe=maxBlocksFromPipe;
         }
@@ -759,7 +759,7 @@
 
     [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_CHANGE_NUMBER_WHEEL withAdditionalData:nil];
     
-    blocksFromPipe=[self returnPickerNumber];
+    blocksFromPipe=(int)row;
 }
 
 - (CGFloat)spaceBetweenComponents:(CCPickerView *)pickerView {
@@ -812,13 +812,15 @@
     lastTouch=location;
     touchStartPos=location;
     
-    if(CGRectContainsPoint(newPipe.boundingBox, location))
+
+    if(CGRectContainsPoint(CGRectMake(54,510,20,175), location))
     {
         NSDictionary *d=[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:blocksFromPipe] forKey:NUMBER];
         [loggingService logEvent:BL_PA_FBLOCK_TOUCH_START_CREATE_NEW_GROUP withAdditionalData:nil];
         [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_pipe_adding_blocks_to_scene.wav")];
         [self createShapeWith:d];
     }
+
     
     // check whether we have a pickupobject or not
     for(id go in gw.AllGameObjects)

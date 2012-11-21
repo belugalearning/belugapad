@@ -12,7 +12,7 @@
 @implementation SGBtxeObjectIcon
 
 @synthesize size, position, originalPosition;
-@synthesize enabled, tag;
+@synthesize enabled, interactive, tag;
 @synthesize iconRenderComponent, iconTag;
 @synthesize textBackgroundRenderComponent;
 @synthesize container;
@@ -28,6 +28,7 @@
         tag=@"";
         iconTag=@"";
         enabled=YES;
+        interactive=YES;
         
         //todo: init render
         iconRenderComponent=[[SGBtxeIconRender alloc] initWithGameObject:self];

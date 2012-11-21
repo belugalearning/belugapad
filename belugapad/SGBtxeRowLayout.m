@@ -23,7 +23,7 @@
 
 -(void)layoutChildren
 {
-    [self layoutChildrenToWidth:BTXE_ROW_DEFAULT_MAX_WIDTH];
+    [self layoutChildrenToWidth:ParentGo.rowWidth];
 }
 
 -(void)layoutChildrenToWidth:(float)rowMaxWidth

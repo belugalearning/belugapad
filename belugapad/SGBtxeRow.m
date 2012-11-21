@@ -10,13 +10,13 @@
 #import "SGBtxeContainerMgr.h"
 #import "SGBtxeRowLayout.h"
 #import "SGBtxeParser.h"
+#import "global.h"
 
 @implementation SGBtxeRow
 
 @synthesize children, containerMgrComponent;   //Container properties
 @synthesize renderLayer, forceVAlignTop;
-@synthesize size, position, worldPosition;       //Bounding properties
-
+@synthesize size, position, worldPosition, rowWidth;       //Bounding properties
 @synthesize rowLayoutComponent;
 @synthesize parserComponent;
 @synthesize baseNode;
@@ -32,6 +32,7 @@
         containerMgrComponent=[[SGBtxeContainerMgr alloc] initWithGameObject:(SGGameObject*)self];
         rowLayoutComponent=[[SGBtxeRowLayout alloc] initWithGameObject:(SGGameObject*)self];
         parserComponent=[[SGBtxeParser alloc] initWithGameObject:(SGGameObject*)self];
+        rowWidth=BTXE_ROW_DEFAULT_MAX_WIDTH;
         
         self.renderLayer=renderLayerTarget;
     }

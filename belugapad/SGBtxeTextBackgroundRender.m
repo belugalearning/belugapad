@@ -34,6 +34,11 @@
 
 -(void)setupDrawWithSize:(CGSize)size
 {
+    if([((id<NSObject>)ParentGO) conformsToProtocol:@protocol(MovingInteractive)])
+    {
+        if(!((id<MovingInteractive>)ParentGO).interactive)return;
+    }
+    
     BOOL isPlaceholder=NO;
     backgroundNode=[[CCNode alloc]init];
     CCSprite *lh=nil;

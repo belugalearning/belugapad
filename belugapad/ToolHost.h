@@ -72,8 +72,6 @@ typedef enum {
     NSMutableArray *metaQuestionAnswerLabels;
     int metaQuestionAnswerCount;
     NSString *metaQuestionCompleteText;
-    NSString *metaQuestionIncompleteText;
-    CCLabelTTF *metaQuestionIncompleteLabel;
     CCSprite *metaQuestionBanner;
     BOOL showMetaQuestionIncomplete;
     float shownMetaQuestionIncompleteFor;

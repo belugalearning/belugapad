@@ -18,6 +18,7 @@
 #import "SGJmapMasteryNode.h"
 
 #import "JMap.h"
+#import "UserNodeState.h"
 
 @implementation SGJmapNodeSelect
 
@@ -124,7 +125,17 @@
     {
         if([gameObject isKindOfClass:[SGJmapNode class]])
         {
-            if(ParentGO.EnabledAndComplete)
+            SGJmapNode *n=(SGJmapNode*)gameObject;
+            
+            NSString *sScore=@"";
+            if(n.ustate.highScore>0)sScore=[NSString stringWithFormat:@"%d", n.ustate.highScore];
+            NSString *sPlayButton=@"PLAY NOW";
+            if(n.ustate.lastPlayed>0)sPlayButton=@"PLAY AGAIN";
+            
+            NSString *splayed=@"NOT PLAYED";
+            if(n.ustate.lastPlayed>0)splayed=@"tbc: played";
+            
+            if(n.ustate.lastPlayed>0)
                 signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/tooltip-base-tall.png")];
             else
                 signSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/tooltip-base-small.png")];
@@ -134,11 +145,12 @@
             [playSprite setPosition:ccp(signSprite.contentSize.width / 2.0f, 40)];
             [signSprite addChild:playSprite];
             
-            CCLabelTTF *playlabel=[CCLabelTTF labelWithString:@"PLAY AGAIN" fontName:@"Chango" fontSize:18.0f];
+            CCLabelTTF *playlabel=[CCLabelTTF labelWithString:sPlayButton fontName:@"Chango" fontSize:18.0f];
             playlabel.position=ccp(playSprite.contentSize.width / 2.0f, playSprite.contentSize.height / 2.0f);
             [playSprite addChild:playlabel];
             
-            CCLabelTTF *score=[CCLabelTTF labelWithString:@"BEST SCORE: 16,024" dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:15.0f];
+            
+            CCLabelTTF *score=[CCLabelTTF labelWithString:sScore dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:15.0f];
             [score setPosition:ccp(100, 85)];
             [score setColor:ccc3(255, 255, 255)];
             [signSprite addChild:score];
@@ -146,9 +158,9 @@
             CCSprite *newSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/ribbon-perfect.png")];
             [newSprite setPosition:ccp(signSprite.contentSize.width - (newSprite.contentSize.width / 2.0f), (signSprite.contentSize.height - (newSprite.contentSize.height / 2.0f)))];
             [signSprite addChild:newSprite];
+
             
-            //days ago
-            CCLabelTTF *days=[CCLabelTTF labelWithString:@"LAST PLAYED: TODAY" dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:14.0f];
+            CCLabelTTF *days=[CCLabelTTF labelWithString:splayed dimensions:CGSizeMake(180, 100) alignment:UITextAlignmentLeft fontName:@"Source Sans Pro" fontSize:14.0f];
             [days setPosition:ccp(100, 45)];
             [days setColor:ccc3(200, 200, 200)];
             [signSprite addChild:days];

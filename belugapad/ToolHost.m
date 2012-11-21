@@ -433,7 +433,6 @@ static float kTimeToHintToolTray=7.0f;
     
     if(shownMetaQuestionIncompleteFor>kTimeToAutoMove)
     {
-        [metaQuestionIncompleteLabel setVisible:NO];
         showMetaQuestionIncomplete=NO;
         shownMetaQuestionIncompleteFor=0;
         [self deselectAnswersExcept:-1];
@@ -1298,18 +1297,11 @@ static float kTimeToHintToolTray=7.0f;
     
     // assign our complete and incomplete text to show later
     metaQuestionCompleteText = [pdefMQ objectForKey:META_QUESTION_COMPLETE_TEXT];
-    metaQuestionIncompleteText = [pdefMQ objectForKey:META_QUESTION_INCOMPLETE_TEXT];
     
-    metaQuestionIncompleteLabel = [CCLabelTTF labelWithString:metaQuestionIncompleteText fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    
-    if(currentTool)
-        [metaQuestionIncompleteLabel setPosition:ccp(cx, answersY*kMetaIncompleteLabelYOffset)];
-    else
-        [metaQuestionIncompleteLabel setPosition:ccp(cx, cy*0.25)];
-    
-    [metaQuestionIncompleteLabel setColor:kMetaQuestionLabelColor];
-    [metaQuestionIncompleteLabel setVisible:NO];
-    [trayLayerMq addChild:metaQuestionIncompleteLabel];
+//    if(currentTool)
+//        [metaQuestionIncompleteLabel setPosition:ccp(cx, answersY*kMetaIncompleteLabelYOffset)];
+//    else
+//        [metaQuestionIncompleteLabel setPosition:ccp(cx, cy*0.25)];
     
     NSString *mqBar=[NSString stringWithFormat:@"/images/metaquestions/MQ_Bar_%d.png",metaQuestionAnswerCount];
     metaQuestionBanner=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(mqBar)];

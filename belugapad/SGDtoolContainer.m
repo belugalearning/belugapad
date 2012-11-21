@@ -69,6 +69,7 @@
             [self repositionLabel];
             
             BTXERow=row;
+            BTXELabel=[[row children]objectAtIndex:0];
             [row inflateZindex];
             
         }

@@ -70,8 +70,6 @@
     }
     if(messageType==kDWdismantle)
     {
-        CCSprite *s=tile.mySprite;
-        CCSprite *ss=tile.selectedSprite;
         tile.Selected=NO;
         
         if(tile.myAnchor)

@@ -89,6 +89,7 @@
     
     //set it up
     [dupe setupDraw];
+    [dupe.textBackgroundRenderComponent setColourOfBackgroundTo:[mountObject.textBackgroundRenderComponent returnColourOfBackground]];
     
     //put on position of self
     dupe.position=self.position;

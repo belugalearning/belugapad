@@ -148,6 +148,8 @@
     NSNumber *ncardmax=[pdef objectForKey:@"NUMBER_CARD_ROW_MAX"];
     NSNumber *ncardint=[pdef objectForKey:@"NUMBER_CARD_INTERVAL"];
     
+    excludedEvalRows=[pdef objectForKey:@"EVAL_EXCLUDE_ROWS"];
+    
     if(ncardmax && ncardmin && ncardint)
     {
         presentNumberCardRow=YES;
@@ -503,6 +505,11 @@
         //check for an equality on all but the first expression
         for(int i=1; i<rows.count; i++)
         {
+            if(excludedEvalRows)
+            {
+                if([excludedEvalRows containsObject:@(i+1)]) continue;
+            }
+            
             SGBtxeRow *row=[rows objectAtIndex:i];
             if(row!=ncardRow)
             {
@@ -520,6 +527,11 @@
         //check for equality on rows and check that the expressions are different
         for(int i=1; i<rows.count; i++)
         {
+            if(excludedEvalRows)
+            {
+                if([excludedEvalRows containsObject:@(i+1)]) continue;
+            }
+            
             SGBtxeRow *row=[rows objectAtIndex:i];
             if(row!=ncardRow)
             {

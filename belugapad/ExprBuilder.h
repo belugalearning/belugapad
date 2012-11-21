@@ -64,6 +64,8 @@
     
     SGBtxeRow *ncardRow;
     
+    //excluded row evaluations
+    NSArray *excludedEvalRows;
     
     //expression build
     NSMutableArray *tokens;

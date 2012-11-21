@@ -63,7 +63,6 @@
     dupe.position=self.position;
     dupe.tag=[[self.tag copy] autorelease];
     dupe.enabled=self.enabled;
-    
     dupe.prefixText=[[self.prefixText copy] autorelease];
     dupe.numberText=[[self.numberText copy] autorelease];
     dupe.suffixText=[[self.suffixText copy] autorelease];

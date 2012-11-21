@@ -8,6 +8,7 @@
 
 #import "SGBtxeObjectIcon.h"
 #import "SGBtxeIconRender.h"
+#import "SGBtxeTextBackgroundRender.h"
 
 @implementation SGBtxeObjectIcon
 

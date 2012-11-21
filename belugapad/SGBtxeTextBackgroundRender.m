@@ -32,6 +32,12 @@
     }
 }
 
+-(ccColor3B)returnColourOfBackground
+{
+    CCSprite *s=[[self.backgroundNode children]objectAtIndex:0];
+    return s.color;
+}
+
 -(void)setupDrawWithSize:(CGSize)size
 {
     if([((id<NSObject>)ParentGO) conformsToProtocol:@protocol(MovingInteractive)])
@@ -71,7 +77,7 @@
     
     [self.backgroundNode setPosition:ccp(0, -3)];
     [lh setPosition:ccp(-((m.contentSize.width/2)*m.scaleX)-(lh.contentSize.width/2),0)];
-    [rh setPosition:ccp(((m.contentSize.width/2)*m.scaleX)+(rh.contentSize.width/2), 0)];
+    [rh setPosition:ccp(((m.contentSize.width/2)*m.scaleX)+(rh.contentSize.width/2),0)];
 
     [backgroundNode addChild:lh];
     [backgroundNode addChild:m];

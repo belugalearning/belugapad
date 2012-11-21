@@ -848,6 +848,7 @@ float timerIgnoreFrog;
         //diff (moveby)
         float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
         
+//        NSLog(@"moving by %f, %f adj steps %d seg size %f", diffx, diffy, adjustedStepsFromCentre, rambler.DefaultSegmentSize);
         [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, diffy)]];
         
         
@@ -903,7 +904,7 @@ float timerIgnoreFrog;
         
     }
     
-    NSLog(@"lastBubbleLoc: %d lastFrogLoc: %d", lastBubbleLoc, lastFrogLoc);
+//    NSLog(@"lastBubbleLoc: %d lastFrogLoc: %d", lastBubbleLoc, lastFrogLoc);
     
 
 }
@@ -917,7 +918,7 @@ float timerIgnoreFrog;
     hasSetJumpStartValue=NO;
     jumpStartValue=0;
     stitchOffsetX=0;
-    rambler.TouchXOffset=0;
+    //rambler.TouchXOffset=0;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event

@@ -567,21 +567,35 @@ static float kDistanceBetweenBlocks=70.0f;
 {
     NSArray *thesePositions=[NumberLayout physicalLayoutAcrossToNumber:thisMany withSpacing:52.0f];
     
+    CGRect thisRect=CGRectNull;
+    
+    for(int i=0;i<thisMany;i++)
+    {
+        CGPoint point=[[thesePositions objectAtIndex:i]CGPointValue];
+        CGRect rect=CGRectMake((thisPosition.x+point.x)-30,(thisPosition.y+point.y)-30,60,60);
+        thisRect=CGRectUnion(thisRect, rect);
+    }
+    
     for(int i=0;i<[activeRects count];i++)
     {
         CGRect r=[[activeRects objectAtIndex:i]CGRectValue];
         
         //NSLog(@"this rect: %@, this position %@", NSStringFromCGRect(r), NSStringFromCGPoint(thisPosition));
-        for(int p=0;p<thisMany;p++)
-        {
-            CGPoint curPos=[[thesePositions objectAtIndex:p]CGPointValue];
-            curPos=ccp(curPos.x+thisPosition.x, curPos.y+thisPosition.y);
-            
-            if(CGRectContainsPoint(r, curPos))
+
+            if(CGRectIntersectsRect(thisRect, r))
             {
                 return YES;
             }
-        }
+//        for(int p=0;p<thisMany;p++)
+//        {
+//            CGPoint curPos=[[thesePositions objectAtIndex:p]CGPointValue];
+//            curPos=ccp(curPos.x+thisPosition.x, curPos.y+thisPosition.y);
+//            
+//            if(CGRectContainsPoint(r, curPos))
+//            {
+//                return YES;
+//            }
+//        }
     }
 
     return NO;

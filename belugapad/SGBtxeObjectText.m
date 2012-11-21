@@ -15,7 +15,7 @@
 
 @synthesize size, position;
 @synthesize text, textRenderComponent;
-@synthesize enabled, tag;
+@synthesize enabled, interactive, tag;
 @synthesize textBackgroundRenderComponent;
 @synthesize originalPosition;
 @synthesize usePicker;
@@ -33,6 +33,7 @@
         position=CGPointZero;
         tag=@"";
         enabled=YES;
+        interactive=YES;
         usePicker=NO;
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
         textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];

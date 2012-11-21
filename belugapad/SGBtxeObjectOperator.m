@@ -16,7 +16,7 @@
 
 @synthesize size, position, originalPosition;
 @synthesize text, textRenderComponent;
-@synthesize enabled, tag, container;
+@synthesize enabled, interactive, tag, container;
 
 @synthesize textBackgroundRenderComponent;
 @synthesize valueOperator;
@@ -33,6 +33,7 @@
         position=CGPointZero;
         tag=@"";
         enabled=YES;
+        interactive=YES;
         valueOperator=@"";
         
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];

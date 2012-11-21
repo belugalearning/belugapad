@@ -113,7 +113,7 @@
     if (deviceUsers) [deviceUsers release];
     AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
     deviceUsers = [[ad.usersService deviceUsersByNickName] retain];
-    while ([deviceUsers count] < 4) [deviceUsers addObject:@{}];
+    while ([deviceUsers count] < 4) [deviceUsers addObject:@{}]; // add fake users -> produce extra table cells -> create alternating table cell background appearance
 }
 
 -(void)buildSelectUserView

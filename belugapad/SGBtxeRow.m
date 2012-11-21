@@ -90,6 +90,12 @@
 {
     position=thePosition;
     self.baseNode.position=self.position;
+    
+    //also need to update position of children as not all move with the base node
+    for(id<Bounding> c in children)
+    {
+        c.position=c.position;
+    }
 }
 
 -(void)animateAndMoveToPosition:(CGPoint)thePosition

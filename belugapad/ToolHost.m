@@ -2065,9 +2065,12 @@ static float kTimeToHintToolTray=7.0f;
 //        [traybtnWheel setColor:ccc3(255,255,255)];
 //        [trayLayerWheel removeAllChildrenWithCleanup:YES];
 //    }
+
+    if(trayLayerWheel)
+        [trayLayerWheel removeAllChildrenWithCleanup:YES];
+
     trayLayerWheel=nil;
         
-//    [numberPickerLayer removeAllChildrenWithCleanup:YES];
     numberPickerForThisProblem=NO;
     trayWheelShowing=NO;
     hasUsedPicker=NO;
@@ -2076,7 +2079,7 @@ static float kTimeToHintToolTray=7.0f;
     hasTrayWheel=NO;
     hasUsedWheelTray=NO;
 //    [numberPickerLayer release];
-//    numberPickerLayer=nil;
+    numberPickerLayer=nil;
 }
 
 - (void)checkUserCommit
@@ -2780,6 +2783,9 @@ static float kTimeToHintToolTray=7.0f;
         pickerView.position=ccp(cx,cy);
     pickerView.dataSource = self;
     pickerView.delegate = self;
+    
+    if(CurrentBTXE && ([((id<Text>)CurrentBTXE).text floatValue]>0 || [((id<Text>)CurrentBTXE).text floatValue]<0))
+        [self updatePickerNumber:((id<Text>)CurrentBTXE).text];
     
 
     

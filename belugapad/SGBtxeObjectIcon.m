@@ -113,9 +113,17 @@
 
 -(void)setPosition:(CGPoint)thePos
 {
-    position=thePos;
+    position=[gameWorld.Blackboard.RenderLayer convertToWorldSpace:thePos];
     
-    [self.iconRenderComponent updatePosition:position];
+    CGPoint actualPos=position;
+    
+    if([container conformsToProtocol:@protocol(Bounding)])
+    {
+        id<Bounding> bc=(id<Bounding>)container;
+        actualPos=ccpAdd(position, bc.position);
+    }
+    
+    [self.iconRenderComponent updatePosition:actualPos];
 }
 
 -(void)setupDraw

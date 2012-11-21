@@ -13,6 +13,7 @@
 #import "LoggingService.h"
 #import "UsersService.h"
 #import "PassCodeView.h"
+#import "UIView+UIView_DragLogPosition.h"
 
 @interface SelectUserViewController ()
 {

@@ -10,6 +10,7 @@
 
 @class SGBtxeContainerMgr;
 @class SGBtxeTextRender;
+@class SGBtxeTextBackgroundRender;
 @class SGBtxeParser;
 @class SGGameWorld;
 
@@ -107,10 +108,12 @@
 
 @property CGPoint originalPosition;
 @property (retain) id mount;
+@property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;
 
 -(void)returnToBase;
 -(id<MovingInteractive>)createADuplicate;
 -(id<MovingInteractive>)createADuplicateIntoGameWorld:(SGGameWorld*)destGW;
+-(void)setColourOfBackgroundTo:(ccColor3B)thisColour;
 -(void)destroy;
 
 @end

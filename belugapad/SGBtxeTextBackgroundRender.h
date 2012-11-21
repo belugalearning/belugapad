@@ -14,8 +14,9 @@
     id<Bounding, Text> ParentGO;
 }
 
-@property (retain) CCSprite *sprite;
+@property (retain) CCNode *backgroundNode;
 
+-(void)setColourOfBackgroundTo:(ccColor3B)thisColour;
 -(void)setupDrawWithSize:(CGSize)size;
 -(void)updatePosition:(CGPoint)position;
 

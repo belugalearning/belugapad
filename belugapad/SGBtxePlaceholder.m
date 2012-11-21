@@ -107,7 +107,7 @@
     renderBase=theRenderBase;
     
     //attach background to render, but stick behind other objects by default
-    [renderBase addChild:textBackgroundComponent.sprite z:-1];
+    [renderBase addChild:textBackgroundComponent.backgroundNode z:-1];
 }
 
 -(void)deflateZindex

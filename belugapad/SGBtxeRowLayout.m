@@ -8,6 +8,7 @@
 
 #import "SGBtxeRowLayout.h"
 #import "global.h"
+#import "ToolConsts.h"
 
 @implementation SGBtxeRowLayout
 
@@ -60,6 +61,7 @@
     
     //set start (-half of line)
     float headXPos=-lineW / 2.0f;
+    int colourIndex=0;
     
     //start Y at half of one line down from half of total container
     // ... a render mode may want this to flow down from top (not centre it) (e.g. for toolhost problem descriptions)
@@ -99,6 +101,8 @@
         if([c conformsToProtocol:@protocol(MovingInteractive)])
         {
             ((id<MovingInteractive>)c).originalPosition=c.position;
+            [((id<MovingInteractive>)c).textBackgroundRenderComponent setColourOfBackgroundTo:kBTXEColour[colourIndex]];
+            colourIndex++;
         }
         
         //  increment cum width (w/ width + spacer)

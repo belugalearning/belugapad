@@ -62,13 +62,14 @@ const float kNumberPickerNumberSpaceBetweenSpritesProp=0.005f;
 
 
 const CGRect kPauseMenuLogOut={{8.0f,717.0f},{120.0f,43.0f}};
-const CGRect kPauseMenuMenu={{452.0f,440.0f},{113.0f,57.0f}};
-const CGRect kPauseMenuReset={{481.0f,382.0f},{63.0f,59.0f}};
-const CGRect kPauseMenuContinue={{451.0f,326.0f},{121.0f,55.0f}};
+const CGRect kPauseMenuMenu={{410.0f,458.0f},{200.0f,85.0f}};
+const CGRect kPauseMenuReset={{405.0f,358.0f},{120.0f,100.0f}};
+const CGRect kPauseMenuContinue={{410.0f,268.0f},{210.0f,90.0f}};
+const CGRect kPauseMenuMute={{750.0f,228.0f},{85.0f,80.0f}};
 
 const ccColor3B kNumberBondColour[10]={{128,124,125},{216,12,52},{87,176,37},{230,51,131},{229,196,34},{49,142,76},{73,71,71},{166,54,198},{13,86,143},{241,72,0}};
 const ccColor3B kNumiconColour[10]={{191,255,193},{191,255,244},{223,191,255},{255,178,178},{204,240,255},{255,211,178},{254,255,204},{255,217,244},{220,244,222},{217,174,174}};
-
+const ccColor3B kBTXEColour[10]={{191,255,193},{191,255,244},{223,191,255},{255,178,178},{204,240,255},{255,211,178},{254,255,204},{255,217,244},{220,244,222},{217,174,174}};
 
 // fraction builder
 

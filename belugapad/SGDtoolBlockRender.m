@@ -92,6 +92,15 @@
 {
     [blockSprite setPosition:ParentGO.Position];
     [ParentGO.Label setPosition:ParentGO.Position];
+    if(ParentGO.MyContainer && [ParentGO.MyContainer isKindOfClass:[SGDtoolContainer class]])
+    {
+        SGDtoolContainer *c=(SGDtoolContainer*)ParentGO.MyContainer;
+        if(c.blocksInShape==1)
+        {
+            [c.CountLabel setPosition:ccp(ParentGO.Position.x,ParentGO.Position.y-50)];
+            [c.BTXERow setPosition:ccp(ParentGO.Position.x,ParentGO.Position.y+50)];
+        }
+    }
 }
 
 -(void)animateToPosition
@@ -123,7 +132,7 @@
 -(void)destroyThisObject
 {
     ParentGO.RenderLayer=nil;
-    if(ParentGO.MyContainer)[(id<Container>)ParentGO.MyContainer removeBlockFromMe:ParentGO];
+    if(ParentGO.MyContainer)[(id<ShapeContainer>)ParentGO.MyContainer removeBlockFromMe:ParentGO];
     if(ParentGO.Label)[ParentGO.Label removeFromParentAndCleanup:YES];
     if(ParentGO.mySprite)[ParentGO.mySprite removeFromParentAndCleanup:YES];
     if(ParentGO.PairedObjects)[ParentGO.PairedObjects release];

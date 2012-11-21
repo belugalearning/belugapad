@@ -43,6 +43,9 @@
 @property (retain) UISearchBar *searchBar;
 @property (retain) UITableView *searchList;
 
+//user state across map changes
+@property (retain) NSDictionary *lastJmapViewUState;
+
 -(void)proceedFromLoginViaIntro:(BOOL)viaIntro;
 -(void)returnToLogin;
 -(void)writeLogMemoryUsage;

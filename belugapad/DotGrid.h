@@ -137,6 +137,8 @@ typedef struct {
     NSMutableArray *invisibleAnchors;
     CGRect drawnArea;
     
+    CCDrawNode *drawNode;
+    
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;
     

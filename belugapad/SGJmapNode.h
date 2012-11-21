@@ -11,13 +11,14 @@
 
 @class SGJmapNodeRender;
 @class SGJmapMasteryNode;
+@class UserNodeState;
 
 @interface SGJmapNode : SGGameObject <Transform, ProximityResponder, Drawing, CouchDerived, Configurable, Selectable, Completable, Searchable, PinRender>
 
 @property (retain) SGJmapNodeRender* NodeRenderComponent;
 @property (retain) SGJmapMasteryNode *MasteryNode;
 @property (retain) NSMutableArray *PrereqNodes;
-
+@property (retain) UserNodeState *ustate;
 
 -(SGJmapNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
 @end

@@ -196,7 +196,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         [users addObject:[self userFromCurrentRowOfResultSet:rs]];
     [rs close];
     [allUsersDatabase close];
-    return users;
+    return [users sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
 }
 
 -(void)createNewUserWithNick:(NSString*)nick

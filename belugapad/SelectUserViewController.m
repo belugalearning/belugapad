@@ -125,7 +125,6 @@
     existingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
     existingUserButton.frame = CGRectMake(559.0f, 394.0f, 131.0f, 51.0f);
     [existingUserButton setImage:[UIImage imageNamed:@"/login-images/download_button.png"] forState:UIControlStateNormal];
-    [existingUserButton setImage:[UIImage imageNamed:@"/login-images/download_button.png"] forState:UIControlStateHighlighted];
     [existingUserButton addTarget:self action:@selector(handleExistingUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [selectUserView addSubview:existingUserButton];
     
@@ -142,6 +141,15 @@
     [joinClassButton setImage:[UIImage imageNamed:@"/login-images/join_class_button_disabled.png"] forState:UIControlStateHighlighted];
     //[joinClassButton addTarget:self action:@selector(handleExistingUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [selectUserView addSubview:joinClassButton];
+    
+    selectUserTableView = [[[UITableView alloc] initWithFrame:CGRectMake(327,236,369,136) style:UITableViewStylePlain] autorelease];
+    selectUserTableView.backgroundColor = [UIColor clearColor];
+    selectUserTableView.opaque = NO;
+    selectUserTableView.backgroundView = nil;
+    selectUserTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    selectUserTableView.dataSource = self;
+    selectUserTableView.delegate = self;
+    [selectUserView addSubview:selectUserTableView];
 }
 
 -(void)handlePlayButtonClicked:(id)button
@@ -227,14 +235,12 @@
     cancelNewUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
     cancelNewUserButton.frame = CGRectMake(330.0f, 397.0f, 103.0f, 49.0f);
     [cancelNewUserButton setImage:[UIImage imageNamed:@"/login-images/cancel_button.png"] forState:UIControlStateNormal];
-    [cancelNewUserButton setImage:[UIImage imageNamed:@"/login-images/cancel_button.png"] forState:UIControlStateHighlighted];
-    [cancelNewUserButton addTarget:self action:@selector(handleCancelNewUserClicked:) forControlEvents:UIControlEventTouchDown];
+    [cancelNewUserButton addTarget:self action:@selector(handleCancelNewUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [editUserView addSubview:cancelNewUserButton];
     
     saveNewUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
     saveNewUserButton.frame = CGRectMake(591.0f, 397.0f, 103.0f, 49.0f);
-    [saveNewUserButton setImage:[UIImage imageNamed:@"/login-images/save_button.png"] forState:UIControlStateNormal];
-    [saveNewUserButton setImage:[UIImage imageNamed:@"/login-images/save_button.png"] forState:UIControlStateHighlighted];
+    [saveNewUserButton setImage:[UIImage imageNamed:@"/login-images/save_button.png"] forState:UIControlStateNormal];;
     [saveNewUserButton addTarget:self action:@selector(handleSaveNewUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [editUserView addSubview:saveNewUserButton];
 }
@@ -325,14 +331,12 @@
     cancelExistingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
     cancelExistingUserButton.frame = CGRectMake(330.0f, 392.0f, 131.0f, 51.0f);
     [cancelExistingUserButton setImage:[UIImage imageNamed:@"/login-images/cancel_button_2.png"] forState:UIControlStateNormal];
-    [cancelExistingUserButton setImage:[UIImage imageNamed:@"/login-images/cancel_button_2.png"] forState:UIControlStateHighlighted];
-    [cancelExistingUserButton addTarget:self action:@selector(handleCancelExistingUserClicked:) forControlEvents:UIControlEventTouchDown];
+    [cancelExistingUserButton addTarget:self action:@selector(handleCancelExistingUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [loadExistingUserView addSubview:cancelExistingUserButton];
     
     loadExistingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
     loadExistingUserButton.frame = CGRectMake(563.0f, 391.0f, 131.0f, 51.0f);
     [loadExistingUserButton setImage:[UIImage imageNamed:@"/login-images/download_button.png"] forState:UIControlStateNormal];
-    [loadExistingUserButton setImage:[UIImage imageNamed:@"/login-images/download_button.png"] forState:UIControlStateHighlighted];
     [loadExistingUserButton addTarget:self action:@selector(handleLoadExistingUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [loadExistingUserView addSubview:loadExistingUserButton];
 }

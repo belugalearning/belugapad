@@ -42,10 +42,10 @@
     return self;
 }
 
--(id<MovingInteractive>)createADuplicate
+-(id<MovingInteractive>)createADuplicateIntoGameWorld:(SGGameWorld *)destGW
 {
-    SGBtxeObjectOperator *dupe=[[[SGBtxeObjectOperator alloc] initWithGameWorld:gameWorld]autorelease];
-
+    SGBtxeObjectOperator *dupe=[[[SGBtxeObjectOperator alloc] initWithGameWorld:destGW]autorelease];
+    
     dupe.text=[[self.text copy] autorelease];
     dupe.position=self.position;
     dupe.tag=[[self.tag copy] autorelease];
@@ -53,6 +53,11 @@
     dupe.valueOperator=[[self.valueOperator copy] autorelease];
     
     return (id<MovingInteractive>)dupe;
+}
+
+-(id<MovingInteractive>)createADuplicate
+{
+    return [self createADuplicateIntoGameWorld:gameWorld];
 }
 
 
@@ -96,7 +101,7 @@
 
 -(void)detachFromRenderBase
 {
-    [textBackgroundRenderComponent.sprite removeFromParentAndCleanup:YES];
+    [textBackgroundRenderComponent.backgroundNode removeFromParentAndCleanup:YES];
     [textRenderComponent.label0 removeFromParentAndCleanup:YES];
     [textRenderComponent.label removeFromParentAndCleanup:YES];
 }
@@ -107,20 +112,20 @@
     
     renderBase=theRenderBase;
     
-    [renderBase addChild:textBackgroundRenderComponent.sprite];
+    [renderBase addChild:textBackgroundRenderComponent.backgroundNode];
     [renderBase addChild:textRenderComponent.label0];
     [renderBase addChild:textRenderComponent.label];
 }
 
 -(void)inflateZIndex
 {
-    textBackgroundRenderComponent.sprite.zOrder=99;
+    textBackgroundRenderComponent.backgroundNode.zOrder=99;
     [textRenderComponent inflateZindex];
 }
 
 -(void)deflateZindex
 {
-    textBackgroundRenderComponent.sprite.zOrder=0;
+    textBackgroundRenderComponent.backgroundNode.zOrder=0;
     [textRenderComponent deflateZindex];
 }
 

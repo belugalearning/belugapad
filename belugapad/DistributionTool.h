@@ -15,7 +15,7 @@
 typedef enum 
 {
     kCheckShapeSizes=0,
-    kCheckNamedGroups=1,
+    kCheckTaggedGroups=1,
     kCheckEvalAreas=2,
     kCheckGroupTypeAndNumber=3,
     kIncludeShapeSizes=4,
@@ -84,6 +84,7 @@ typedef enum
     NSMutableArray *addedCages;
     NSMutableArray *evalAreas;
     NSMutableArray *inactiveArea;
+    NSMutableArray *activeRects;
     CGRect inactiveRect;
 }
 
@@ -105,7 +106,7 @@ typedef enum
 -(void)removeBlockByCage;
 -(BOOL)evalGroupTypesAndShapes;
 -(BOOL)evalNumberOfShapesInEvalAreas;
--(CGPoint)returnNextMountPointForThisShape:(id<Container>)thisShape;
+-(CGPoint)returnNextMountPointForThisShape:(id<ShapeContainer>)thisShape;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

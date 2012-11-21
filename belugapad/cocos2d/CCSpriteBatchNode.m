@@ -88,9 +88,18 @@ const NSUInteger defaultCapacity = 29;
 	return [[[self alloc] initWithFile:imageFile capacity:defaultCapacity] autorelease];
 }
 
-/*
- * init with CCTexture2D
- */
+-(id)init
+{
+    return [self initWithTexture:[[[CCTexture2D alloc] init] autorelease] capacity:0];
+}
+
+-(id)initWithFile:(NSString *)fileImage capacity:(NSUInteger)capacity
+{
+	CCTexture2D *tex = [[CCTextureCache sharedTextureCache] addImage:fileImage];
+	return [self initWithTexture:tex capacity:capacity];
+}
+
+// Designated initializer
 -(id)initWithTexture:(CCTexture2D *)tex capacity:(NSUInteger)capacity
 {
 	if( (self=[super init])) {
@@ -111,18 +120,10 @@ const NSUInteger defaultCapacity = 29;
 	return self;
 }
 
-/*
- * init with FileImage
- */
--(id)initWithFile:(NSString *)fileImage capacity:(NSUInteger)capacity
-{
-	CCTexture2D *tex = [[CCTextureCache sharedTextureCache] addImage:fileImage];
-	return [self initWithTexture:tex capacity:capacity];
-}
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat:@"<%@ = %08X | Tag = %i>", [self class], self, tag_ ];
+	return [NSString stringWithFormat:@"<%@ = %p | Tag = %ld>", [self class], self, (long)tag_ ];
 }
 
 -(void)dealloc
@@ -394,7 +395,7 @@ const NSUInteger defaultCapacity = 29;
 
 	if( ! [textureAtlas_ resizeCapacity:quantity] ) {
 		// serious problems
-		CCLOG(@"cocos2d: WARNING: Not enough memory to resize the atlas");
+		CCLOGWARN(@"cocos2d: WARNING: Not enough memory to resize the atlas");
 		NSAssert(NO,@"XXX: CCSpriteBatchNode#increaseAtlasCapacity SHALL handle this assert");
 	}
 }
@@ -609,12 +610,12 @@ const NSUInteger defaultCapacity = 29;
 
 @implementation CCSpriteBatchNode (QuadExtension)
 
--(void) addQuadFromSprite:(CCSprite*)sprite quadIndex:(NSUInteger)index
+-(void) insertQuadFromSprite:(CCSprite*)sprite quadIndex:(NSUInteger)index
 {
 	NSAssert( sprite != nil, @"Argument must be non-nil");
 	NSAssert( [sprite isKindOfClass:[CCSprite class]], @"CCSpriteBatchNode only supports CCSprites as children");
 	
-	
+	// make needed room
 	while(index >= textureAtlas_.capacity || textureAtlas_.capacity == textureAtlas_.totalQuads )
 		[self increaseAtlasCapacity];
 	
@@ -628,11 +629,33 @@ const NSUInteger defaultCapacity = 29;
 	ccV3F_C4B_T2F_Quad quad = [sprite quad];
 	[textureAtlas_ insertQuad:&quad atIndex:index];
 	
-	// XXX: updateTransform will update the textureAtlas too using updateQuad.
+	// XXX: updateTransform will update the textureAtlas too, using updateQuad.
 	// XXX: so, it should be AFTER the insertQuad
 	[sprite setDirty:YES];
 	[sprite updateTransform];
 }
+
+-(void) updateQuadFromSprite:(CCSprite*)sprite quadIndex:(NSUInteger)index
+{
+	NSAssert( sprite != nil, @"Argument must be non-nil");
+	NSAssert( [sprite isKindOfClass:[CCSprite class]], @"CCSpriteBatchNode only supports CCSprites as children");
+
+	// make needed room
+	while(index >= textureAtlas_.capacity || textureAtlas_.capacity == textureAtlas_.totalQuads )
+		[self increaseAtlasCapacity];
+
+	//
+	// update the quad directly. Don't add the sprite to the scene graph
+	//	
+	[sprite setBatchNode:self];
+	[sprite setAtlasIndex:index];
+
+	[sprite setDirty:YES];
+	
+	// UpdateTransform updates the textureAtlas quad
+	[sprite updateTransform];
+}
+
 
 -(id) addSpriteWithoutQuad:(CCSprite*)child z:(NSUInteger)z tag:(NSInteger)aTag
 {

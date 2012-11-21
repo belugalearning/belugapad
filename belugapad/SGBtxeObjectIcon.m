@@ -14,7 +14,7 @@
 @synthesize size, position, originalPosition;
 @synthesize enabled, tag;
 @synthesize iconRenderComponent, iconTag;
-
+@synthesize textBackgroundRenderComponent;
 @synthesize container;
 @synthesize mount;
 @synthesize hidden;
@@ -36,19 +36,24 @@
     return self;
 }
 
--(id<MovingInteractive>)createADuplicate
+-(id<MovingInteractive>)createADuplicateIntoGameWorld:(SGGameWorld*)destGW
 {
     //creates a duplicate object text -- something else will need to call setupDraw and attachToRenderBase
     
-    SGBtxeObjectIcon *dupe=[[[SGBtxeObjectIcon alloc] initWithGameWorld:gameWorld] autorelease];
+    SGBtxeObjectIcon *dupe=[[[SGBtxeObjectIcon alloc] initWithGameWorld:destGW] autorelease];
     
     dupe.position=self.position;
     dupe.tag=[[self.tag copy] autorelease];
     dupe.enabled=self.enabled;
-
+    
     dupe.iconTag=[[self.iconTag copy] autorelease];
     
     return (id<MovingInteractive>)dupe;
+}
+
+-(id<MovingInteractive>)createADuplicate
+{
+    return [self createADuplicateIntoGameWorld:gameWorld];
 }
 
 -(void)handleMessage:(SGMessageType)messageType
@@ -75,6 +80,11 @@
 -(void)setWorldPosition:(CGPoint)worldPosition
 {
     self.position=[renderBase convertToNodeSpace:worldPosition];
+}
+
+-(void)setColourOfBackgroundTo:(ccColor3B)thisColour
+{
+    [self.textBackgroundRenderComponent setColourOfBackgroundTo:thisColour];
 }
 
 -(void)attachToRenderBase:(CCNode*)theRenderBase
@@ -128,6 +138,18 @@
 -(void)returnToBase
 {
     self.position=self.originalPosition;
+}
+
+-(void)detachFromRenderBase
+{
+    [iconRenderComponent.sprite removeFromParentAndCleanup:YES];
+}
+
+-(void)destroy
+{
+    [self detachFromRenderBase];
+    
+    [gameWorld delayRemoveGameObject:self];
 }
 
 -(void)dealloc

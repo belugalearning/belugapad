@@ -232,6 +232,7 @@
             
             nret=[NSNumber numberWithInt:ret];
             
+            
             if(keyCache)
             {
                 noClash=YES;
@@ -241,6 +242,7 @@
                     break;
                 }
             }
+            else noClash=YES;
             
             tryCount++;
         }

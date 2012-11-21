@@ -19,6 +19,7 @@
 #import "SGGameWorld.h"
 #import "SGFbuilderFraction.h"
 #import "SGFractionBuilderRender.h"
+#import "SGFractionObjectProtocols.h"
 
 
 #import "BAExpressionHeaders.h"
@@ -181,6 +182,8 @@
             fraction.MarkerStartPosition=[[d objectForKey:MARKER_START_POSITION]intValue];
         else
             fraction.MarkerStartPosition=1;
+        
+        
         
         // give it a value (ie, 1)
         fraction.Value=[[d objectForKey:VALUE]floatValue];
@@ -642,6 +645,11 @@
 -(float)metaQuestionAnswersYLocation
 {
     return kMetaQuestionYOffsetPlaceValue*cy;
+}
+
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    
 }
 
 #pragma mark - dealloc

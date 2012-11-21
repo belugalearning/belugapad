@@ -43,6 +43,8 @@
     AppController *ac;
     
     BOOL authorRenderEnabled;
+    
+    NSDictionary *udata;
 }
 
 +(CCScene *)scene;

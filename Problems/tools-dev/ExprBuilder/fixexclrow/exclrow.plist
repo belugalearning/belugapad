@@ -12,7 +12,7 @@
 	<string>EXPRESSION_EQUALITIES</string>
 	<key>EXPR_STAGES</key>
 	<array>
-		<string>&lt;b:t&gt;Make an expression to show how many&lt;/b:t&gt;&lt;b:obj count=&quot;2&quot;/&gt;{@b}&lt;b:t&gt; has.&lt;/b:t&gt;</string>
+		<string>&lt;b:t&gt;Make an expression to show how many&lt;/b:t&gt;&lt;b:obj count=&quot;2&quot;/&gt;{@b}&lt;b:t&gt; has.&lt;/b:t&gt;&lt;b:t&gt;Make an expression to show how many&lt;/b:t&gt;&lt;b:obj count=&quot;2&quot;/&gt;{@b}&lt;b:t&gt; has.&lt;/b:t&gt;&lt;b:t&gt;Make an expression to show how many&lt;/b:t&gt;&lt;b:obj count=&quot;2&quot;/&gt;{@b}&lt;b:t&gt; has.&lt;/b:t&gt;&lt;b:t&gt;Make an expression to show how many&lt;/b:t&gt;&lt;b:obj count=&quot;2&quot;/&gt;{@b}&lt;b:t&gt; has.&lt;/b:t&gt;</string>
 		<string>{@a}&lt;b:t&gt;has&lt;/b:t&gt;
 &lt;b:on number=&quot;{6}&quot; enabled=&quot;yes&quot;/&gt;
 &lt;b:obj count=&quot;6&quot;/&gt;

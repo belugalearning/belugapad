@@ -203,7 +203,7 @@
         if(i==0)
         {
             //position at top, top aligned, with spacer underneath
-            row.position=ccp(cx, (cy*2) - 95);
+            row.position=ccp(cx, (cy*2) - 110);
             row.forceVAlignTop=YES;
             
             //question separator bar -- flow with bottom of row 0

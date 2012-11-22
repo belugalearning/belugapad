@@ -70,7 +70,8 @@
     if(ParentGo.forceVAlignTop)
     {
         //force alignment top down
-        headYPos=0;
+        headYPos=0.0f;
+//        headYPos=-lineH/2.0f;
     }
     
     int actualLines=1;
@@ -80,6 +81,8 @@
     //step items
     for(id<Bounding, NSObject> c in ParentGo.children)
     {
+        NSLog(@"heady %f", headYPos);
+        
         //if this element takes the line past lineW, flow to next line (only if item W is < lineW -- else just stick it on)
         if(((headXPos + c.size.width) > (lineW / 2.0f)) && c.size.width<lineW)
         {
@@ -103,6 +106,8 @@
             id<MovingInteractive>thisMIo=(id<MovingInteractive>)c;
             if(!thisMIo.interactive)
                 thisMIo.position=ccp(thisMIo.position.x,thisMIo.position.y+1);
+            
+            NSLog(@"pos set to %@", NSStringFromCGPoint(thisMIo.position));
             
             thisMIo.originalPosition=c.position;
             [thisMIo.textBackgroundRenderComponent setColourOfBackgroundTo:kBTXEColour[colourIndex]];

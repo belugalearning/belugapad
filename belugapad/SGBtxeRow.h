@@ -21,7 +21,7 @@
 
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget;
 
-
+-(void)tagMyChildrenForIntro;
 -(BOOL)containsObject:(id)o;
 -(void)inflateZindex;
 -(void)deflateZindex;

@@ -145,6 +145,14 @@
     [textBackgroundRenderComponent setColourOfBackgroundTo:thisColour];
 }
 
+-(void)tagMyChildrenForIntro
+{
+    [textRenderComponent.label setTag:2];
+    [textRenderComponent.label0 setTag:2];
+    [textRenderComponent.label setOpacity:0];
+    [textRenderComponent.label0 setOpacity:0];
+}
+
 -(void)setupDraw
 {
     if(self.hidden)return;

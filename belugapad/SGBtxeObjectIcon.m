@@ -159,6 +159,12 @@
     [iconRenderComponent.sprite removeFromParentAndCleanup:YES];
 }
 
+-(void)tagMyChildrenForIntro
+{
+    [iconRenderComponent.sprite setTag:2];
+    [iconRenderComponent.sprite setOpacity:0];
+}
+
 -(void)destroy
 {
     [self detachFromRenderBase];

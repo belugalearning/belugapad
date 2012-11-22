@@ -11,6 +11,11 @@
 #import "SGBtxeRowLayout.h"
 #import "SGBtxeParser.h"
 #import "SGBtxePlaceholder.h"
+#import "SGBtxeObjectIcon.h"
+#import "SGBtxeObjectText.h"
+#import "SGBtxeObjectNumber.h"
+#import "SGBtxeObjectOperator.h"
+
 #import "global.h"
 
 @implementation SGBtxeRow
@@ -104,6 +109,29 @@
     for(id<Bounding> c in children)
     {
         c.position=c.position;
+    }
+}
+
+-(void)tagMyChildrenForIntro
+{
+    for(id c in children)
+    {
+        if([c isKindOfClass:[SGBtxeObjectText class]])
+        {
+            [(SGBtxeObjectText*)c tagMyChildrenForIntro];
+        }
+        if([c isKindOfClass:[SGBtxeObjectIcon class]])
+        {
+            [(SGBtxeObjectIcon*)c tagMyChildrenForIntro];
+        }
+        if([c isKindOfClass:[SGBtxeObjectNumber class]])
+        {
+            [(SGBtxeObjectNumber*)c tagMyChildrenForIntro];
+        }
+        if([c isKindOfClass:[SGBtxeObjectOperator class]])
+        {
+            [(SGBtxeObjectOperator*)c tagMyChildrenForIntro];
+        }
     }
 }
 

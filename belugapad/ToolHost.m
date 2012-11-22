@@ -1363,7 +1363,7 @@ static float kTimeToHintToolTray=7.0f;
             [row parseXML:answerLabelString];
             [row setupDraw];
             [row inflateZindex];
-            
+            [row tagMyChildrenForIntro];
 
             
 //            [answerLabel setString:answerLabelString];

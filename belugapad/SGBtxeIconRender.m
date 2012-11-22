@@ -12,6 +12,7 @@
 @implementation SGBtxeIconRender
 
 @synthesize sprite;
+@synthesize useLargeAssets;
 
 -(SGBtxeIconRender*)initWithGameObject:(id<Bounding, MovingInteractive, Icon>)aGameObject
 {

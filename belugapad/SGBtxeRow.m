@@ -20,6 +20,7 @@
 @synthesize rowLayoutComponent;
 @synthesize parserComponent;
 @synthesize baseNode;
+@synthesize isLarge;
 
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget
 {
@@ -29,6 +30,7 @@
         size=CGSizeZero;
         position=CGPointZero;
         forceVAlignTop=NO;
+        isLarge=NO;
         containerMgrComponent=[[SGBtxeContainerMgr alloc] initWithGameObject:(SGGameObject*)self];
         rowLayoutComponent=[[SGBtxeRowLayout alloc] initWithGameObject:(SGGameObject*)self];
         parserComponent=[[SGBtxeParser alloc] initWithGameObject:(SGGameObject*)self];
@@ -73,6 +75,10 @@
     
     //render each child
     for (id<Bounding, RenderObject> c in children) {
+        
+        if([((id<NSObject>)c) conformsToProtocol:@protocol(MovingInteractive) ])
+            ((id<MovingInteractive>)c).isLargeObject=self.isLarge;
+        
         [c setupDraw];
         
         //we could potentially do this separately (create, layout, attach) -- but for the moment

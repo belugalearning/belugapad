@@ -187,6 +187,9 @@
         SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
         [rows addObject:row];
         
+        if(i>0)
+            row.isLarge = YES;
+        
         if(i==0 || repeatRow2Count==0)
         {
             [row parseXML:[exprStages objectAtIndex:i]];

@@ -40,9 +40,12 @@
 
 -(void)setupDrawWithSize:(CGSize)size
 {
+    BOOL isLarge=NO;
+    
     if([((id<NSObject>)ParentGO) conformsToProtocol:@protocol(MovingInteractive)])
     {
         if(!((id<MovingInteractive>)ParentGO).interactive)return;
+        isLarge=((id<MovingInteractive>)ParentGO).isLargeObject;
     }
     
     BOOL isPlaceholder=NO;

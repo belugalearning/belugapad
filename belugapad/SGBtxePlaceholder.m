@@ -17,7 +17,7 @@
 @synthesize textBackgroundComponent;
 @synthesize container;
 @synthesize targetTag;
-
+@synthesize isLargeObject;
 @synthesize mountedObject;
 
 -(SGBtxePlaceholder*)initWithGameWorld:(SGGameWorld*)aGameWorld
@@ -86,6 +86,7 @@
     id<MovingInteractive, RenderObject, NSObject> dupe=(id<MovingInteractive, RenderObject, NSObject>)[mountObject createADuplicate];
     
     dupe.mount=self;
+    dupe.isLargeObject=self.isLargeObject;
     
     //set it up
     [dupe setupDraw];

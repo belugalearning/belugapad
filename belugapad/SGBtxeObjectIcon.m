@@ -19,6 +19,7 @@
 @synthesize container;
 @synthesize mount;
 @synthesize hidden;
+@synthesize isLargeObject;
 
 -(SGBtxeObjectIcon*)initWithGameWorld:(SGGameWorld*) aGameWorld
 {
@@ -47,6 +48,7 @@
     dupe.position=self.position;
     dupe.tag=[[self.tag copy] autorelease];
     dupe.enabled=self.enabled;
+    dupe.isLargeObject=self.isLargeObject;
     
     dupe.iconTag=[[self.iconTag copy] autorelease];
     
@@ -130,6 +132,8 @@
 -(void)setupDraw
 {
     if(self.hidden)return;
+    
+    iconRenderComponent.useLargeAssets=self.isLargeObject;
     
     [self.iconRenderComponent setupDraw];
     

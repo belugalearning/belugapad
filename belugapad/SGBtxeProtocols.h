@@ -35,6 +35,7 @@
 
 @property (retain) CCLayer *renderLayer;
 @property (retain) CCNode *baseNode;
+@property BOOL isLarge;
 @property BOOL forceVAlignTop;
 
 
@@ -111,6 +112,7 @@
 @property CGPoint originalPosition;
 @property (retain) id mount;
 @property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;
+@property BOOL isLargeObject;
 
 -(void)returnToBase;
 -(id<MovingInteractive>)createADuplicate;

@@ -27,6 +27,8 @@
 @synthesize mount;
 @synthesize hidden;
 
+@synthesize isLargeObject;
+
 @synthesize targetNumber, usePicker;
 
 
@@ -66,6 +68,7 @@
     dupe.prefixText=[[self.prefixText copy] autorelease];
     dupe.numberText=[[self.numberText copy] autorelease];
     dupe.suffixText=[[self.suffixText copy] autorelease];
+    dupe.isLargeObject=self.isLargeObject;
     
     return (id<MovingInteractive>)dupe;
 }
@@ -279,6 +282,8 @@
 -(void)setupDraw
 {
     if(self.hidden)return;
+    
+    textRenderComponent.useLargeAssets=self.isLargeObject;
     
     // text mode
     self.textRenderComponent.useAlternateFont=YES;

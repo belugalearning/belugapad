@@ -21,7 +21,7 @@
 @synthesize usePicker;
 @synthesize mount;
 @synthesize hidden;
-
+@synthesize isLargeObject;
 @synthesize container;
 
 -(SGBtxeObjectText*)initWithGameWorld:(SGGameWorld*)aGameWorld
@@ -52,6 +52,7 @@
     dupe.position=self.position;
     dupe.tag=[[self.tag copy] autorelease];
     dupe.enabled=self.enabled;
+    dupe.isLargeObject=self.isLargeObject;
     dupe.usePicker=self.usePicker;
     
     return (id<MovingInteractive>)dupe;
@@ -147,7 +148,7 @@
 -(void)setupDraw
 {
     if(self.hidden)return;
-    
+    textRenderComponent.useLargeAssets=self.isLargeObject;
     //text render to create it's label
     [textRenderComponent setupDraw];
     

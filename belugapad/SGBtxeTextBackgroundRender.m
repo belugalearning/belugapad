@@ -40,7 +40,10 @@
 
 -(void)setContainerVisible:(BOOL)visible
 {
-    [self.backgroundNode setVisible:visible];
+    if([(id<NSObject>)ParentGO isKindOfClass:[SGBtxePlaceholder class]])
+    {
+        [self.backgroundNode setVisible:visible];
+    }
 }
 
 -(void)setupDrawWithSize:(CGSize)size

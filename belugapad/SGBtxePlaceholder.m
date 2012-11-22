@@ -102,6 +102,8 @@
     [dupe attachToRenderBase:((SGBtxeRow*)self.container).baseNode];
     
     [self.container.containerMgrComponent addObjectToContainer:(id<Bounding>)dupe];
+    [textBackgroundComponent setContainerVisible:NO];
+    
     
     mountedObject=dupe;
 }

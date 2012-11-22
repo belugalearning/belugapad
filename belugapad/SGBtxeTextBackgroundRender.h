@@ -18,6 +18,7 @@
 
 -(void)setColourOfBackgroundTo:(ccColor3B)thisColour;
 -(ccColor3B)returnColourOfBackground;
+-(void)setContainerVisible:(BOOL)visible;
 -(void)setupDrawWithSize:(CGSize)size;
 -(void)updatePosition:(CGPoint)position;
 

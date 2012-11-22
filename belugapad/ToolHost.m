@@ -34,7 +34,6 @@
 #import "DebugViewController.h"
 #import "EditPDefViewController.h"
 #import "TestFlight.h"
-#import "SGBtxeRow.h"
 #import "ExprBuilder.h"
 
 
@@ -46,9 +45,9 @@
 
 //CCPickerView
 //#define kComponentWidth 54
-#define kComponentWidth 42
-#define kComponentHeight 32
-#define kComponentSpacing 10
+#define kComponentWidth 70
+#define kComponentHeight 72
+#define kComponentSpacing 7
 
 #define CORNER_TRAY_POS_X 700.0f
 #define CORNER_TRAY_POS_Y 460.0f
@@ -63,6 +62,9 @@
     EditPDefViewController *editPDefViewController;
     BOOL nowEditingPDef;
     CCSprite *unsavedEditsImage;
+    
+    BOOL isHoldingObject;
+    id<MovingInteractive> heldObject;
 }
 
 @end
@@ -431,7 +433,6 @@ static float kTimeToHintToolTray=7.0f;
     
     if(shownMetaQuestionIncompleteFor>kTimeToAutoMove)
     {
-        [metaQuestionIncompleteLabel setVisible:NO];
         showMetaQuestionIncomplete=NO;
         shownMetaQuestionIncompleteFor=0;
         [self deselectAnswersExcept:-1];
@@ -862,7 +863,7 @@ static float kTimeToHintToolTray=7.0f;
     
     evalShowCommit=YES;
     
-    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_launch_general_background_score.mp3") loop:YES];
+    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_background_score.mp3") loop:YES];
 }
 -(void)addCommitButton
 {
@@ -1066,6 +1067,8 @@ static float kTimeToHintToolTray=7.0f;
 -(void) showPauseMenu
 {
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_pause_tap.wav")];
+    [[SimpleAudioEngine sharedEngine]stopBackgroundMusic];
+    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_muffled_background_score_for_pause_menu.mp3") loop:YES];
     isPaused = YES;
     
     if(!pauseMenu)
@@ -1087,6 +1090,8 @@ static float kTimeToHintToolTray=7.0f;
         [pauseLayer setVisible:YES];
     }
     
+    if(pickerView)pickerView.isLocked=YES;
+    
     if(contentService.pathToTestDef)
     {
         [pauseTestPathLabel setString:contentService.pathToTestDef];
@@ -1102,8 +1107,12 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)hidePauseMenu
 {
+    [[SimpleAudioEngine sharedEngine]stopBackgroundMusic];
+    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_background_score.mp3") loop:YES];
     [pauseLayer setVisible:NO];
     isPaused=NO;
+    
+    if(pickerView)pickerView.isLocked=NO;
 }
 
 -(void) checkPauseTouches:(CGPoint)location
@@ -1293,18 +1302,11 @@ static float kTimeToHintToolTray=7.0f;
     
     // assign our complete and incomplete text to show later
     metaQuestionCompleteText = [pdefMQ objectForKey:META_QUESTION_COMPLETE_TEXT];
-    metaQuestionIncompleteText = [pdefMQ objectForKey:META_QUESTION_INCOMPLETE_TEXT];
     
-    metaQuestionIncompleteLabel = [CCLabelTTF labelWithString:metaQuestionIncompleteText fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-    
-    if(currentTool)
-        [metaQuestionIncompleteLabel setPosition:ccp(cx, answersY*kMetaIncompleteLabelYOffset)];
-    else
-        [metaQuestionIncompleteLabel setPosition:ccp(cx, cy*0.25)];
-    
-    [metaQuestionIncompleteLabel setColor:kMetaQuestionLabelColor];
-    [metaQuestionIncompleteLabel setVisible:NO];
-    [trayLayerMq addChild:metaQuestionIncompleteLabel];
+//    if(currentTool)
+//        [metaQuestionIncompleteLabel setPosition:ccp(cx, answersY*kMetaIncompleteLabelYOffset)];
+//    else
+//        [metaQuestionIncompleteLabel setPosition:ccp(cx, cy*0.25)];
     
     NSString *mqBar=[NSString stringWithFormat:@"/images/metaquestions/MQ_Bar_%d.png",metaQuestionAnswerCount];
     metaQuestionBanner=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(mqBar)];
@@ -1318,16 +1320,17 @@ static float kTimeToHintToolTray=7.0f;
         [metaQuestionAnswers addObject:a];
         
         CCSprite *answerBtn;
-        CCLabelTTF *answerLabel;
+        SGBtxeRow *row;
+//        CCLabelTTF *answerLabel;
         
         // sort out the labels and buttons if there's an answer text
         if([[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT])
         {
             // sort out the buttons
             answerBtn=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")];
-            answerLabel=[CCLabelTTF labelWithString:@"" dimensions:CGSizeMake(answerBtn.contentSize.width-10,answerBtn.contentSize.height-6) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:CHANGO fontSize:16.0f];
+//            answerLabel=[CCLabelTTF labelWithString:@"" dimensions:CGSizeMake(answerBtn.contentSize.width-10,answerBtn.contentSize.height-6) alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap fontName:CHANGO fontSize:16.0f];
 
-            [answerLabel setAnchorPoint:ccp(0.5,0.5)];
+//            [answerLabel setAnchorPoint:ccp(0.5,0.5)];
             
             // then the answer label
             NSString *raw=[[metaQuestionAnswers objectAtIndex:i] objectForKey:META_ANSWER_TEXT];
@@ -1335,13 +1338,41 @@ static float kTimeToHintToolTray=7.0f;
             //reading this value directly causes issue #161 - in which the string is no longer a string post copy, so forcing it through a string formatter back to a string
             NSString *answerLabelString=[NSString stringWithFormat:@"%@", raw];
             
-            [answerLabel setString:answerLabelString];
+            if(answerLabelString.length<3)
+            {
+                //this can't have a <b:t> at the begining
+                
+                //assume the string needs wrapping in b:t
+                answerLabelString=[NSString stringWithFormat:@"<b:t>%@</b:t>", answerLabelString];
+            }
+            else if([[answerLabelString substringToIndex:3] isEqualToString:@"<b:"])
+            {
+                //doesn't need wrapping
+            }
+            else
+            {
+                //assume the string needs wrapping in b:t
+                answerLabelString=[NSString stringWithFormat:@"<b:t>%@</b:t>", answerLabelString];
+            }
+            
+            row=[[SGBtxeRow alloc] initWithGameWorld:descGw andRenderLayer:trayLayerMq];
+            
+            row.forceVAlignTop=NO;
+            row.rowWidth=answerBtn.contentSize.width-10;
+
+            [row parseXML:answerLabelString];
+            [row setupDraw];
+            [row inflateZindex];
+            
+
+            
+//            [answerLabel setString:answerLabelString];
             NSLog(@"before answerLabelString: %@", answerLabelString);
             
-            if(answerLabelString.length>9)
-                [answerLabel setFontSize:16.0f];
-            else
-                [answerLabel setFontSize:22.0f];
+//            if(answerLabelString.length>9)
+//                [answerLabel setFontSize:16.0f];
+//            else
+//                [answerLabel setFontSize:22.0f];
         }
         // there should never be both an answer text and custom sprite defined - so if no answer text, only render the SPRITE_FILENAME
         else
@@ -1365,16 +1396,17 @@ static float kTimeToHintToolTray=7.0f;
         
         
         // check for text, render if nesc
-        if(![answerLabel.string isEqualToString:@""])
+        if(row)
         {
-            [answerLabel setPosition:ccp(answerBtn.contentSize.width/2,(answerLabel.contentSize.height/2)-(answerBtn.contentSize.height/2))];
-            [answerLabel setColor:kMetaAnswerLabelColorSelected];
-            [answerLabel setOpacity:0];
-            [answerLabel setTag: 3];
-            [answerBtn addChild:answerLabel];
-            [metaQuestionAnswerLabels addObject:answerLabel];
+            row.position=answerBtn.position;
+//            [answerLabel setPosition:ccp(answerBtn.contentSize.width/2,(answerLabel.contentSize.height/2)-(answerBtn.contentSize.height/2))];
+//            [answerLabel setColor:kMetaAnswerLabelColorSelected];
+//            [answerLabel setOpacity:0];
+//            [answerLabel setTag: 3];
+//            [answerBtn addChild:answerLabel];
+//            [metaQuestionAnswerLabels addObject:answerLabel];
         }
-        
+    
         // set a new value in the array so we can see that it's not currently selected
         [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
     }
@@ -1420,7 +1452,7 @@ static float kTimeToHintToolTray=7.0f;
         for(int i=0; i<metaQuestionAnswerCount; i++)
         {
             CCSprite *answerBtn=[metaQuestionAnswerButtons objectAtIndex:i];
-            CCLabelTTF *answerLabel=[metaQuestionAnswerLabels objectAtIndex:i];
+            //CCLabelTTF *answerLabel=[metaQuestionAnswerLabels objectAtIndex:i];
             
             float aLabelPosXLeft = answerBtn.position.x-((answerBtn.contentSize.width*answerBtn.scale)/2);
             float aLabelPosYleft = answerBtn.position.y-((answerBtn.contentSize.height*answerBtn.scale)/2);
@@ -1459,7 +1491,7 @@ static float kTimeToHintToolTray=7.0f;
                     else if(mqAnswerMode==kMetaQuestionAnswerMulti)
                     {
                         [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-button-selected.png")]];
-                        [answerLabel setColor:kMetaAnswerLabelColorSelected];
+                        //[answerLabel setColor:kMetaAnswerLabelColorSelected];
                         //                        [answerBtn setColor:kMetaQuestionButtonSelected];
                         [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
                     }
@@ -1469,7 +1501,7 @@ static float kTimeToHintToolTray=7.0f;
                 {
                     // return to full button colour and set the dictionary selected value to no
                     [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")]];
-                    [answerLabel setColor:kMetaAnswerLabelColorDeselected];
+                    //[answerLabel setColor:kMetaAnswerLabelColorDeselected];
                     //                    [answerBtn setColor:kMetaQuestionButtonDeselected];
                     [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
                 }
@@ -1605,12 +1637,12 @@ static float kTimeToHintToolTray=7.0f;
     for(int i=0; i<metaQuestionAnswerCount; i++)
     {
         CCSprite *answerBtn=[metaQuestionAnswerButtons objectAtIndex:i];
-        CCLabelTTF *answerLabel=[metaQuestionAnswerLabels objectAtIndex:i];
+        //CCLabelTTF *answerLabel=[metaQuestionAnswerLabels objectAtIndex:i];
         if(i == answerNumber)
         {
             //NSLog(@"answer %d selected", answerNumber);
             [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-button-selected.png")]];
-            [answerLabel setColor:kMetaAnswerLabelColorSelected];
+            //[answerLabel setColor:kMetaAnswerLabelColorSelected];
 //            [answerBtn setColor:kMetaQuestionButtonSelected];
             [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:YES] forKey:META_ANSWER_SELECTED];
         }
@@ -1618,7 +1650,7 @@ static float kTimeToHintToolTray=7.0f;
         {
             //NSLog(@"answer %d deselected", answerNumber);
             [answerBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/metaquestions/meta-answerbutton.png")]];
-            [answerLabel setColor:kMetaAnswerLabelColorDeselected];
+            //[answerLabel setColor:kMetaAnswerLabelColorDeselected];
 //            [answerBtn setColor:kMetaQuestionButtonDeselected];
             [[metaQuestionAnswers objectAtIndex:i] setObject:[NSNumber numberWithBool:NO] forKey:META_ANSWER_SELECTED];
         }
@@ -1648,6 +1680,7 @@ static float kTimeToHintToolTray=7.0f;
 }
 -(void)doIncomplete
 {
+    evalShowCommit=NO;
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_incorrect_answer.wav")];
     timeBeforeUserInteraction=kDisableInteractionTime;
     isAnimatingIn=YES;
@@ -1657,10 +1690,10 @@ static float kTimeToHintToolTray=7.0f;
 }
 -(void)removeMetaQuestionButtons
 {
-    for(int i=0;i<metaQuestionAnswerLabels.count;i++)
-    {
-        [trayLayerMq removeChild:[metaQuestionAnswerLabels objectAtIndex:i] cleanup:YES];
-    } 
+//    for(int i=0;i<metaQuestionAnswerLabels.count;i++)
+//    {
+//        [trayLayerMq removeChild:[metaQuestionAnswerLabels objectAtIndex:i] cleanup:YES];
+//    } 
     for(int i=0;i<metaQuestionAnswerButtons.count;i++)
     {
         [trayLayerMq removeChild:[metaQuestionAnswerButtons objectAtIndex:i] cleanup:YES];
@@ -2038,17 +2071,22 @@ static float kTimeToHintToolTray=7.0f;
 //        [traybtnWheel setColor:ccc3(255,255,255)];
 //        [trayLayerWheel removeAllChildrenWithCleanup:YES];
 //    }
+
+    if(trayLayerWheel)
+        [trayLayerWheel removeAllChildrenWithCleanup:YES];
+
     trayLayerWheel=nil;
         
 //    [numberPickerLayer removeAllChildrenWithCleanup:YES];
     //numberPickerForThisProblem=NO;
+
     hasUsedPicker=NO;
     pickerViewSelection=nil;
     pickerView=nil;
     hasUsedWheelTray=NO;
     trayWheelShowing=NO;
 //    [numberPickerLayer release];
-//    numberPickerLayer=nil;
+    numberPickerLayer=nil;
 }
 
 - (void)checkUserCommit
@@ -2257,9 +2295,33 @@ static float kTimeToHintToolTray=7.0f;
 
     else
     {
-        if((trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE){
+        if((trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(CGRectMake(CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308), location)){
             [self removeAllTrays];
             return;
+        }
+    }
+    
+    
+    if(isHoldingObject) return;  // no multi-touch but let's be sure
+    
+    for(id<MovingInteractive, NSObject> o in descRow.children)
+    {
+        if([o conformsToProtocol:@protocol(MovingInteractive)])
+        {
+            if(!o.interactive)continue;
+            id<Bounding> obounding=(id<Bounding>)o;
+            
+            CGRect hitbox=CGRectMake(obounding.worldPosition.x - (BTXE_OTBKG_WIDTH_OVERDRAW_PAD + obounding.size.width) / 2.0f, obounding.worldPosition.y-BTXE_VPAD-(obounding.size.height / 2.0f), obounding.size.width + BTXE_OTBKG_WIDTH_OVERDRAW_PAD, obounding.size.height + 2*BTXE_VPAD);
+            
+
+            if(o.enabled && CGRectContainsPoint(hitbox, location))
+            {
+                heldObject=o;
+                isHoldingObject=YES;
+                
+                [(id<MovingInteractive>)o inflateZIndex];
+                
+            }
         }
     }
     
@@ -2286,7 +2348,13 @@ static float kTimeToHintToolTray=7.0f;
     if(isPaused||autoMoveToNextProblem||isAnimatingIn)
     {
         return;
-    } 
+    }
+    
+    if(isHoldingObject)
+    {
+        //track that object's position
+        heldObject.worldPosition=location;
+    }
     
     if(npMove && numberPickerForThisProblem)[self checkNumberPickerTouchOnRegister:location];
     
@@ -2352,6 +2420,43 @@ static float kTimeToHintToolTray=7.0f;
         [self checkPauseTouches:location];
         return;
     }
+    
+    
+    if(heldObject)
+    {
+        //test new location for target / drop
+        for(id<Interactive, NSObject> o in descRow.children)
+        {
+            if([o conformsToProtocol:@protocol(Interactive)])
+            {
+                if(!o.enabled
+                   && [heldObject.tag isEqualToString:o.tag]
+                   && [BLMath DistanceBetween:o.worldPosition and:location]<=BTXE_PICKUP_PROXIMITY)
+                {
+                    //this object is proximate, disabled and the same tag
+                    [o activate];
+                }
+                
+                if([o conformsToProtocol:@protocol(BtxeMount)] && [BLMath DistanceBetween:o.worldPosition and:location]<=BTXE_PICKUP_PROXIMITY)
+                {
+                    id<BtxeMount, Interactive> pho=(id<BtxeMount, Interactive>)o;
+                    
+                    //mount the object on the place holder
+                    [pho duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)heldObject];
+                }
+            }
+        }
+        
+        [heldObject returnToBase];
+        
+        [heldObject deflateZindex];
+        
+        [currentTool userDroppedBTXEObject:heldObject atLocation:location];
+        
+        heldObject=nil;
+        isHoldingObject=NO;
+    }
+    
     
     if(traybtnCalc && CGRectContainsPoint(bbCalc, location) && hasTrayCalc)
     {
@@ -2680,11 +2785,14 @@ static float kTimeToHintToolTray=7.0f;
     
     self.pickerView = [CCPickerView node];
     if(currentTool)
-        pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-130);
+        pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-180);
     else
         pickerView.position=ccp(cx,cy);
     pickerView.dataSource = self;
     pickerView.delegate = self;
+    
+    if(CurrentBTXE && ([((id<Text>)CurrentBTXE).text floatValue]>0 || [((id<Text>)CurrentBTXE).text floatValue]<0))
+        [self updatePickerNumber:((id<Text>)CurrentBTXE).text];
     
 
     
@@ -2774,20 +2882,20 @@ static float kTimeToHintToolTray=7.0f;
     
     if(row<10)
     {
-        CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", row]fontName:@"Chango" fontSize:24];
+        CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", row]fontName:@"Chango" fontSize:32];
         [l setColor:ccc3(68,68,68)];
 
         return l;
     }
     else if(row==10)
     {
-        CCLabelTTF *l=[CCLabelTTF labelWithString:@"." fontName:@"Chango" fontSize:24];
+        CCLabelTTF *l=[CCLabelTTF labelWithString:@"." fontName:@"Chango" fontSize:32];
         [l setColor:ccc3(68,68,68)];
         return l;
     }
     else if(row==11)
     {
-        CCLabelTTF *l=[CCLabelTTF labelWithString:@"-" fontName:@"Chango" fontSize:24];
+        CCLabelTTF *l=[CCLabelTTF labelWithString:@"-" fontName:@"Chango" fontSize:32];
         [l setColor:ccc3(68,68,68)];
         return l;        
     }

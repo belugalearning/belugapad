@@ -700,6 +700,8 @@ static float kTimeToHeaderBounce=7.0f;
     if([gw.Blackboard.SelectedObjects count]<[solutionsDef count] && solutionType==kMatrixMatch)return NO;
     
     int answersFound=0;
+    int itemsSelected=0;
+    
     if(solutionType==kMatrixMatch)
     {
         
@@ -715,13 +717,15 @@ static float kTimeToHeaderBounce=7.0f;
                 int thisAnsY=[[curDict objectForKey:POS_Y]intValue];
                 NSLog(@"thisAnsX=%d, thisAnsY=%d", thisAnsX, thisAnsY);
                 
+                if(selTile.Selected)itemsSelected++;
+                
                 if(thisAnsX==selTile.myXpos && thisAnsY==selTile.myYpos && !switchXYforAnswer)answersFound++;
                 else if(thisAnsY==selTile.myXpos && thisAnsX==selTile.myYpos && switchXYforAnswer)answersFound++;
             }
         }
         
         
-        if(answersFound==[solutionsDef count])return YES;
+        if(answersFound==[solutionsDef count] && answersFound==itemsSelected)return YES;
         else return NO;
     }
     
@@ -785,6 +789,11 @@ static float kTimeToHeaderBounce=7.0f;
 -(float)metaQuestionAnswersYLocation
 {
     return kMetaQuestionYOffsetPlaceValue*cy;
+}
+
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    
 }
 
 #pragma mark - dealloc

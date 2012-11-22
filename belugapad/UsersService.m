@@ -186,16 +186,19 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     [currentUserStateDatabase close];
 }
 
--(NSArray*)deviceUsersByNickName
+-(NSMutableArray*)deviceUsersByNickName
 {    
     NSMutableArray *users = [NSMutableArray array];
     
     [allUsersDatabase open];
-    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick FROM users ORDER BY nick"];
+    FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick FROM users"];
     while([rs next])
         [users addObject:[self userFromCurrentRowOfResultSet:rs]];
     [rs close];
     [allUsersDatabase close];
+    
+    NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"interest"  ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)] autorelease];
+    [users sortedArrayUsingDescriptors:[NSArray arrayWithObject:descriptor]];
     return users;
 }
 

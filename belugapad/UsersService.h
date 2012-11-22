@@ -31,7 +31,7 @@ typedef enum {
                  andPassword:(NSString*)password
                     callback:(void (^)(BL_USER_CREATION_STATUS))callback;
 
--(NSArray*)deviceUsersByNickName;
+-(NSMutableArray*)deviceUsersByNickName;
 
 -(void)flagRemoveUserFromDevice:(NSString*)userId;
 -(void)syncDeviceUsers;

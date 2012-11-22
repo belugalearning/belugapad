@@ -15,7 +15,7 @@
 
 @synthesize size, position;
 @synthesize text, textRenderComponent;
-@synthesize enabled, tag;
+@synthesize enabled, interactive, tag;
 @synthesize textBackgroundRenderComponent;
 @synthesize originalPosition;
 @synthesize usePicker;
@@ -33,6 +33,7 @@
         position=CGPointZero;
         tag=@"";
         enabled=YES;
+        interactive=YES;
         usePicker=NO;
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
         textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
@@ -41,11 +42,11 @@
     return self;
 }
 
--(id<MovingInteractive>)createADuplicate
+-(id<MovingInteractive>)createADuplicateIntoGameWorld:(SGGameWorld*)destGW
 {
     //creates a duplicate object text -- something else will need to call setupDraw and attachToRenderBase
     
-    SGBtxeObjectText *dupe=[[[SGBtxeObjectText alloc] initWithGameWorld:gameWorld] autorelease];
+    SGBtxeObjectText *dupe=[[[SGBtxeObjectText alloc] initWithGameWorld:destGW] autorelease];
     
     dupe.text=[[self.text copy] autorelease];
     dupe.position=self.position;
@@ -54,6 +55,12 @@
     dupe.usePicker=self.usePicker;
     
     return (id<MovingInteractive>)dupe;
+    
+}
+
+-(id<MovingInteractive>)createADuplicate
+{
+    return [self createADuplicateIntoGameWorld:gameWorld];
 }
 
 -(void)handleMessage:(SGMessageType)messageType
@@ -75,7 +82,7 @@
 
 -(void)detachFromRenderBase
 {
-    [textBackgroundRenderComponent.sprite removeFromParentAndCleanup:YES];
+    [textBackgroundRenderComponent.backgroundNode removeFromParentAndCleanup:YES];
     [textRenderComponent.label0 removeFromParentAndCleanup:YES];
     [textRenderComponent.label removeFromParentAndCleanup:YES];
 }
@@ -98,7 +105,7 @@
     
     renderBase=theRenderBase;
     
-    [renderBase addChild:textBackgroundRenderComponent.sprite];
+    [renderBase addChild:textBackgroundRenderComponent.backgroundNode];
 
     [renderBase addChild:textRenderComponent.label0];
     [renderBase addChild:textRenderComponent.label];
@@ -106,13 +113,13 @@
 
 -(void)inflateZIndex
 {
-    textBackgroundRenderComponent.sprite.zOrder=99;
+    textBackgroundRenderComponent.backgroundNode.zOrder=99;
     [textRenderComponent inflateZindex];
 }
 
 -(void)deflateZindex
 {
-    textBackgroundRenderComponent.sprite.zOrder=0;
+    textBackgroundRenderComponent.backgroundNode.zOrder=0;
     [textRenderComponent deflateZindex];
 }
 
@@ -130,6 +137,11 @@
     //update positioning in background
     [self.textBackgroundRenderComponent updatePosition:position];
     
+}
+
+-(void)setColourOfBackgroundTo:(ccColor3B)thisColour
+{
+    [textBackgroundRenderComponent setColourOfBackgroundTo:thisColour];
 }
 
 -(void)setupDraw

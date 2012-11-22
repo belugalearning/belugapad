@@ -468,7 +468,7 @@
 #define BTXE_OTBKG_SPRITE_H 38.0f
 #define BTXE_OTBKG_WIDTH_OVERDRAW_PAD 10.0f
 #define BTXE_PICKUP_PROXIMITY 25.0f
-#define BTXE_ROW_DEFAULT_MAX_WIDTH 700.0f
+#define BTXE_ROW_DEFAULT_MAX_WIDTH 924.0f
 #define BTXE_NAMESPACE @"http://zubi.me/namespaces/2012/BTXE"
 #define BTXE_T @"b:t"
 #define BTXE_OT @"b:ot"

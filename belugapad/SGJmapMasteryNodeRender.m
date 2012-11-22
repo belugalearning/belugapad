@@ -429,7 +429,7 @@ static int shadowSteps=5;
         int targetIdx=[[[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"FEATURE_INDEX"] indexOfObject:f];
         CCSprite *base=[self.indexedBaseNodes objectAtIndex:targetIdx];
         
-        if(size>1 || self.islandStage<3)
+        if(size>2 || self.islandStage<3)
         {
             NSString *fname=[NSString stringWithFormat:@"Feature_Stage%d_Size%d_%d.png", self.islandStage, size, variant];
             
@@ -1091,7 +1091,8 @@ static int shadowSteps=5;
         
         //if(renderParent.zoomedOut) col=ccc4f(col.r, col.g, col.b, 0.3f);
         
-        ccDrawFilledPoly(first, renderParent.sortedChildren.count, col);
+        //todo: not doing with cocos2.1 -- needs replacing with CCDrawNode
+        //ccDrawFilledPoly(first, renderParent.sortedChildren.count, col);
     }
 
     

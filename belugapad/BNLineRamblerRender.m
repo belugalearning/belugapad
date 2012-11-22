@@ -136,14 +136,22 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     int segsInCX=(gameWorld.Blackboard.hostCX / ramblerGameObject.DefaultSegmentSize);
     
     //scale these up by three -- allows for full screen scroll in either direction without new draw
+    
+//    float minValuePos=ramblerGameObject.Value - ((segsInCX * 4) * ramblerGameObject.DefaultSegmentSize);
+//    float maxValuePos=ramblerGameObject.Value + ((segsInCX * 4) * ramblerGameObject.DefaultSegmentSize);
+    
 //    float minValuePos=ramblerGameObject.Value - (segsInCX * 4);
 //    float maxValuePos=ramblerGameObject.Value + (segsInCX * 4);
+    
     float minValuePos=ramblerGameObject.BubblePos - ((segsInCX * 4) * ramblerGameObject.CurrentSegmentValue);
     float maxValuePos=ramblerGameObject.BubblePos + ((segsInCX * 4) * ramblerGameObject.CurrentSegmentValue);
     
-    minValuePos+=-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize;
-    maxValuePos+=-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize;
-    
+//    minValuePos+=-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize;
+//    maxValuePos+=-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize;
+
+//    minValuePos+= (-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize) * ramblerGameObject.CurrentSegmentValue;
+//    maxValuePos+= (-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize) * ramblerGameObject.CurrentSegmentValue;
+
     int assBlankIndex=0;
     int assLineIndex=0;
     int assIndicatorIndex=0;
@@ -154,6 +162,8 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     
     [assStartTerminator setVisible:NO];
     [assEndTerminator setVisible:NO];
+    
+//    NSLog(@"current segment value %f", ramblerGameObject.CurrentSegmentValue);
     
     for (int iValue=minValuePos; iValue<=maxValuePos; iValue+=ramblerGameObject.CurrentSegmentValue) {
         

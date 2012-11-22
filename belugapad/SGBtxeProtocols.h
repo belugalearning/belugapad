@@ -10,10 +10,12 @@
 
 @class SGBtxeContainerMgr;
 @class SGBtxeTextRender;
+@class SGBtxeTextBackgroundRender;
 @class SGBtxeParser;
+@class SGGameWorld;
 
 
-@protocol Container
+@protocol Container <NSObject>
 
 @property (retain) NSMutableArray *children;
 @property (retain) SGBtxeContainerMgr *containerMgrComponent;
@@ -52,6 +54,7 @@
 @property CGSize size;
 @property CGPoint position;
 @property CGPoint worldPosition;
+@property float rowWidth;
 @property BOOL hidden;
 
 -(void) setupDraw;
@@ -89,6 +92,7 @@
 @protocol Interactive <Bounding>
 
 @property BOOL enabled;
+@property BOOL interactive;
 @property (retain) NSString *tag;
 
 -(void)activate;
@@ -106,9 +110,12 @@
 
 @property CGPoint originalPosition;
 @property (retain) id mount;
+@property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;
 
 -(void)returnToBase;
 -(id<MovingInteractive>)createADuplicate;
+-(id<MovingInteractive>)createADuplicateIntoGameWorld:(SGGameWorld*)destGW;
+-(void)setColourOfBackgroundTo:(ccColor3B)thisColour;
 -(void)destroy;
 
 @end

@@ -106,10 +106,10 @@ float timerIgnoreFrog;
 
 -(void)setupBubble
 {
-    bubbleTexRegular=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")].CGImage resolutionType:kCCResolutioniPad];
-    bubbleTexSelected=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")].CGImage resolutionType:kCCResolutioniPad];
+//    bubbleTexRegular=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")].CGImage resolutionType:kCCResolutioniPad];
+//    bubbleTexSelected=[[CCTexture2D alloc] initWithCGImage:[UIImage imageWithContentsOfFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")].CGImage resolutionType:kCCResolutioniPad];
     
-    bubbleSprite=[CCSprite spriteWithTexture:bubbleTexRegular];
+    bubbleSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberline/NL_Bubble.png")];
     [bubbleSprite setPosition:ccp(cx, cy)];
     [self.ForeLayer addChild:bubbleSprite];
     
@@ -374,7 +374,7 @@ float timerIgnoreFrog;
         touchResetX -=movex;
     }
     
-    NSLog(@"rambler.TouchXOffset %f", rambler.TouchXOffset);
+    //NSLog(@"rambler.TouchXOffset %f", rambler.TouchXOffset);
 }
 
 -(void)draw
@@ -703,8 +703,8 @@ float timerIgnoreFrog;
 {
     [bubbleSprite stopAllActions];
     
-    [bubbleSprite setTexture:bubbleTexSelected];
-    [bubbleSprite setTextureRect:CGRectMake(0, 0, bubbleTexSelected.contentSize.width, bubbleTexSelected.contentSize.height)];
+//    [bubbleSprite setTexture:bubbleTexSelected];
+//    [bubbleSprite setTextureRect:CGRectMake(0, 0, bubbleTexSelected.contentSize.width, bubbleTexSelected.contentSize.height)];
     
     [bubbleSprite setScale:0.87f];
     [bubbleSprite runAction:[InteractionFeedback enlargeTo1xAction]];
@@ -714,8 +714,8 @@ float timerIgnoreFrog;
 
 -(void)animReleaseBubble
 {
-    [bubbleSprite setTexture:bubbleTexRegular];
-    [bubbleSprite setTextureRect:CGRectMake(0, 0, bubbleTexRegular.contentSize.width, bubbleTexRegular.contentSize.height)];
+//    [bubbleSprite setTexture:bubbleTexRegular];
+//    [bubbleSprite setTextureRect:CGRectMake(0, 0, bubbleTexRegular.contentSize.width, bubbleTexRegular.contentSize.height)];
     
     [bubbleSprite setScale:1.15f];
     [bubbleSprite runAction:[InteractionFeedback reduceTo1xAction]];    
@@ -848,6 +848,7 @@ float timerIgnoreFrog;
         //diff (moveby)
         float diffx=(adjustedStepsFromCentre * rambler.DefaultSegmentSize)-distFromCentre;
         
+//        NSLog(@"moving by %f, %f adj steps %d seg size %f", diffx, diffy, adjustedStepsFromCentre, rambler.DefaultSegmentSize);
         [bubbleSprite runAction:[CCMoveBy actionWithDuration:0.2f position:ccp(diffx, diffy)]];
         
         
@@ -903,7 +904,7 @@ float timerIgnoreFrog;
         
     }
     
-    NSLog(@"lastBubbleLoc: %d lastFrogLoc: %d", lastBubbleLoc, lastFrogLoc);
+//    NSLog(@"lastBubbleLoc: %d lastFrogLoc: %d", lastBubbleLoc, lastFrogLoc);
     
 
 }
@@ -917,7 +918,7 @@ float timerIgnoreFrog;
     hasSetJumpStartValue=NO;
     jumpStartValue=0;
     stitchOffsetX=0;
-    rambler.TouchXOffset=0;
+    //rambler.TouchXOffset=0;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -934,6 +935,11 @@ float timerIgnoreFrog;
 -(float)metaQuestionAnswersYLocation
 {
     return 150;
+}
+
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    
 }
 
 -(void)dealloc

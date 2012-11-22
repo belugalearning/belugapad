@@ -917,6 +917,11 @@ static float kTimeToPieShake=7.0f;
     return kMetaQuestionYOffsetPlaceValue*cy;
 }
 
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    
+}
+
 #pragma mark - dealloc
 -(void) dealloc
 {

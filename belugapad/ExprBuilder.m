@@ -148,6 +148,8 @@
     NSNumber *ncardmax=[pdef objectForKey:@"NUMBER_CARD_ROW_MAX"];
     NSNumber *ncardint=[pdef objectForKey:@"NUMBER_CARD_INTERVAL"];
     
+    excludedEvalRows=[pdef objectForKey:@"EVAL_EXCLUDE_ROWS"];
+    
     if(ncardmax && ncardmin && ncardint)
     {
         presentNumberCardRow=YES;
@@ -201,7 +203,7 @@
         if(i==0)
         {
             //position at top, top aligned, with spacer underneath
-            row.position=ccp(cx, (cy*2) - 95);
+            row.position=ccp(cx, (cy*2) - 110);
             row.forceVAlignTop=YES;
             
             //question separator bar -- flow with bottom of row 0
@@ -306,6 +308,7 @@
     {
         if([o conformsToProtocol:@protocol(MovingInteractive)])
         {
+            if(!o.interactive)continue;
             id<Bounding> obounding=(id<Bounding>)o;
             id<NumberPicker,Text> opicker=(id<NumberPicker,Text>)o;
             
@@ -355,7 +358,7 @@
         }
     }
     
-    if(!gotPickerObject){
+    if(!gotPickerObject && !CGRectContainsPoint(CGRectMake(700,600,324,308), location)){
         toolHost.CurrentBTXE=nil;
         if(toolHost.pickerView)
             [toolHost tearDownNumberPicker];
@@ -511,10 +514,23 @@
         //check for an equality on all but the first expression
         for(int i=1; i<rows.count; i++)
         {
-            SGBtxeRow *row=[rows objectAtIndex:i];
-            if(row!=ncardRow)
+            BOOL doEval=YES;
+            if(excludedEvalRows)
             {
-                if([self parseContainerToEqualityAndEval:row]==NO) return NO;
+                for(id row in excludedEvalRows)
+                {
+                    if([row isEqualToString:[NSString stringWithFormat:@"%d", i+1]])
+                        doEval=NO;
+                }
+            }
+            
+            if(doEval)
+            {
+                SGBtxeRow *row=[rows objectAtIndex:i];
+                if(row!=ncardRow)
+                {
+                    if([self parseContainerToEqualityAndEval:row]==NO) return NO;
+                }
             }
         }
         
@@ -528,11 +544,25 @@
         //check for equality on rows and check that the expressions are different
         for(int i=1; i<rows.count; i++)
         {
-            SGBtxeRow *row=[rows objectAtIndex:i];
-            if(row!=ncardRow)
+            BOOL doEval=YES;
+            if(excludedEvalRows)
             {
-                if([self parseContainerToEqualityAndEval:row]==NO) return NO;
-                NSLog(@"parsed row");
+                for(id row in excludedEvalRows)
+                {
+                    if([row isEqualToString:[NSString stringWithFormat:@"%d", i+1]])
+                        doEval=NO;
+                }
+            }
+            
+            if(doEval)
+            {
+            
+                SGBtxeRow *row=[rows objectAtIndex:i];
+                if(row!=ncardRow)
+                {
+                    if([self parseContainerToEqualityAndEval:row]==NO) return NO;
+                    NSLog(@"parsed row");
+                }
             }
         }
         
@@ -845,6 +875,11 @@
 -(float)metaQuestionAnswersYLocation
 {
     return kMetaQuestionYOffsetPlaceValue*cy;
+}
+
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    
 }
 
 #pragma mark - dealloc

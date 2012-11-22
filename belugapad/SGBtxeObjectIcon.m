@@ -8,13 +8,14 @@
 
 #import "SGBtxeObjectIcon.h"
 #import "SGBtxeIconRender.h"
+#import "SGBtxeTextBackgroundRender.h"
 
 @implementation SGBtxeObjectIcon
 
 @synthesize size, position, originalPosition;
-@synthesize enabled, tag;
+@synthesize enabled, interactive, tag;
 @synthesize iconRenderComponent, iconTag;
-
+@synthesize textBackgroundRenderComponent;
 @synthesize container;
 @synthesize mount;
 @synthesize hidden;
@@ -28,6 +29,7 @@
         tag=@"";
         iconTag=@"";
         enabled=YES;
+        interactive=YES;
         
         //todo: init render
         iconRenderComponent=[[SGBtxeIconRender alloc] initWithGameObject:self];
@@ -36,19 +38,24 @@
     return self;
 }
 
--(id<MovingInteractive>)createADuplicate
+-(id<MovingInteractive>)createADuplicateIntoGameWorld:(SGGameWorld*)destGW
 {
     //creates a duplicate object text -- something else will need to call setupDraw and attachToRenderBase
     
-    SGBtxeObjectIcon *dupe=[[[SGBtxeObjectIcon alloc] initWithGameWorld:gameWorld] autorelease];
+    SGBtxeObjectIcon *dupe=[[[SGBtxeObjectIcon alloc] initWithGameWorld:destGW] autorelease];
     
     dupe.position=self.position;
     dupe.tag=[[self.tag copy] autorelease];
     dupe.enabled=self.enabled;
-
+    
     dupe.iconTag=[[self.iconTag copy] autorelease];
     
     return (id<MovingInteractive>)dupe;
+}
+
+-(id<MovingInteractive>)createADuplicate
+{
+    return [self createADuplicateIntoGameWorld:gameWorld];
 }
 
 -(void)handleMessage:(SGMessageType)messageType
@@ -77,6 +84,11 @@
     self.position=[renderBase convertToNodeSpace:worldPosition];
 }
 
+-(void)setColourOfBackgroundTo:(ccColor3B)thisColour
+{
+    [self.textBackgroundRenderComponent setColourOfBackgroundTo:thisColour];
+}
+
 -(void)attachToRenderBase:(CCNode*)theRenderBase
 {
     if(self.hidden)return;
@@ -102,9 +114,17 @@
 
 -(void)setPosition:(CGPoint)thePos
 {
-    position=thePos;
+    position=[gameWorld.Blackboard.RenderLayer convertToWorldSpace:thePos];
     
-    [self.iconRenderComponent updatePosition:position];
+    CGPoint actualPos=position;
+    
+    if([container conformsToProtocol:@protocol(Bounding)])
+    {
+        id<Bounding> bc=(id<Bounding>)container;
+        actualPos=ccpAdd(position, bc.position);
+    }
+    
+    [self.iconRenderComponent updatePosition:actualPos];
 }
 
 -(void)setupDraw
@@ -128,6 +148,18 @@
 -(void)returnToBase
 {
     self.position=self.originalPosition;
+}
+
+-(void)detachFromRenderBase
+{
+    [iconRenderComponent.sprite removeFromParentAndCleanup:YES];
+}
+
+-(void)destroy
+{
+    [self detachFromRenderBase];
+    
+    [gameWorld delayRemoveGameObject:self];
 }
 
 -(void)dealloc

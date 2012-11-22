@@ -8,6 +8,7 @@
 
 #import "SGBtxeRowLayout.h"
 #import "global.h"
+#import "ToolConsts.h"
 
 @implementation SGBtxeRowLayout
 
@@ -22,7 +23,7 @@
 
 -(void)layoutChildren
 {
-    [self layoutChildrenToWidth:BTXE_ROW_DEFAULT_MAX_WIDTH];
+    [self layoutChildrenToWidth:ParentGo.rowWidth];
 }
 
 -(void)layoutChildrenToWidth:(float)rowMaxWidth
@@ -60,6 +61,7 @@
     
     //set start (-half of line)
     float headXPos=-lineW / 2.0f;
+    int colourIndex=0;
     
     //start Y at half of one line down from half of total container
     // ... a render mode may want this to flow down from top (not centre it) (e.g. for toolhost problem descriptions)
@@ -68,7 +70,8 @@
     if(ParentGo.forceVAlignTop)
     {
         //force alignment top down
-        headYPos=0;
+        headYPos=0.0f;
+//        headYPos=-lineH/2.0f;
     }
     
     int actualLines=1;
@@ -78,6 +81,8 @@
     //step items
     for(id<Bounding, NSObject> c in ParentGo.children)
     {
+        NSLog(@"heady %f", headYPos);
+        
         //if this element takes the line past lineW, flow to next line (only if item W is < lineW -- else just stick it on)
         if(((headXPos + c.size.width) > (lineW / 2.0f)) && c.size.width<lineW)
         {
@@ -98,7 +103,15 @@
         //if applicable, set this as the original position
         if([c conformsToProtocol:@protocol(MovingInteractive)])
         {
-            ((id<MovingInteractive>)c).originalPosition=c.position;
+            id<MovingInteractive>thisMIo=(id<MovingInteractive>)c;
+            if(!thisMIo.interactive)
+                thisMIo.position=ccp(thisMIo.position.x,thisMIo.position.y+1);
+            
+            NSLog(@"pos set to %@", NSStringFromCGPoint(thisMIo.position));
+            
+            thisMIo.originalPosition=c.position;
+            [thisMIo.textBackgroundRenderComponent setColourOfBackgroundTo:kBTXEColour[colourIndex]];
+            colourIndex++;
         }
         
         //  increment cum width (w/ width + spacer)

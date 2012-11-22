@@ -19,7 +19,7 @@
 
 @synthesize prefixText, suffixText, numberText, numberValue;
 
-@synthesize enabled, tag, originalPosition;
+@synthesize enabled, interactive, tag, originalPosition;
 
 @synthesize textBackgroundRenderComponent;
 
@@ -40,6 +40,7 @@
         
         
         enabled=YES;
+        interactive=YES;
         tag=@"";
         
         size=CGSizeZero;
@@ -53,21 +54,25 @@
     return self;
 }
 
--(id<MovingInteractive>)createADuplicate
+-(id<MovingInteractive>)createADuplicateIntoGameWorld:(SGGameWorld *)destGW
 {
     //creates a duplicate object text -- something else will need to call setupDraw and attachToRenderBase
     
-    SGBtxeObjectNumber *dupe=[[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld] autorelease];
+    SGBtxeObjectNumber *dupe=[[[SGBtxeObjectNumber alloc] initWithGameWorld:destGW] autorelease];
     
     dupe.position=self.position;
     dupe.tag=[[self.tag copy] autorelease];
     dupe.enabled=self.enabled;
-    
     dupe.prefixText=[[self.prefixText copy] autorelease];
     dupe.numberText=[[self.numberText copy] autorelease];
     dupe.suffixText=[[self.suffixText copy] autorelease];
     
     return (id<MovingInteractive>)dupe;
+}
+
+-(id<MovingInteractive>)createADuplicate
+{
+    return [self createADuplicateIntoGameWorld:gameWorld];
 }
 
 -(void)handleMessage:(SGMessageType)messageType
@@ -230,6 +235,11 @@
     self.position=[renderBase convertToNodeSpace:theWorldPosition];
 }
 
+-(void)setColourOfBackgroundTo:(ccColor3B)thisColour
+{
+    [self.textBackgroundRenderComponent setColourOfBackgroundTo:thisColour];
+}
+
 -(void)setPosition:(CGPoint)thePosition
 {
     position=thePosition;
@@ -259,7 +269,8 @@
     
     renderBase=theRenderBase;
     
-    [renderBase addChild:textBackgroundRenderComponent.sprite];
+    if(textBackgroundRenderComponent.backgroundNode)
+        [renderBase addChild:textBackgroundRenderComponent.backgroundNode];
     
     [renderBase addChild:textRenderComponent.label0];
     [renderBase addChild:textRenderComponent.label];
@@ -297,7 +308,7 @@
 
 -(void)detachFromRenderBase
 {
-    [textBackgroundRenderComponent.sprite removeFromParentAndCleanup:YES];
+    [textBackgroundRenderComponent.backgroundNode removeFromParentAndCleanup:YES];
     [textRenderComponent.label0 removeFromParentAndCleanup:YES];
     [textRenderComponent.label removeFromParentAndCleanup:YES];
 }

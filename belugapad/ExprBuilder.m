@@ -164,6 +164,8 @@
         if(ncardselectionof)numberCardRandomSelectionOf=[ncardselectionof intValue];
     }
     
+    expressionRowsAreLarge=YES;
+    
 }
 
 -(void)populateGW
@@ -187,7 +189,7 @@
         SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
         [rows addObject:row];
         
-        if(i>0)
+        if(i>0 && expressionRowsAreLarge)
             row.isLarge = YES;
         
         if(i==0 || repeatRow2Count==0)

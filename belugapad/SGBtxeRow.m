@@ -10,6 +10,7 @@
 #import "SGBtxeContainerMgr.h"
 #import "SGBtxeRowLayout.h"
 #import "SGBtxeParser.h"
+#import "SGBtxePlaceholder.h"
 #import "global.h"
 
 @implementation SGBtxeRow
@@ -76,8 +77,10 @@
     //render each child
     for (id<Bounding, RenderObject> c in children) {
         
-        if([((id<NSObject>)c) conformsToProtocol:@protocol(MovingInteractive) ])
+        if([((id<NSObject>)c) conformsToProtocol:@protocol(MovingInteractive)])
             ((id<MovingInteractive>)c).isLargeObject=self.isLarge;
+        if([((id<NSObject>)c) isKindOfClass:[SGBtxePlaceholder class]])
+            ((SGBtxePlaceholder*)c).isLargeObject=self.isLarge;
         
         [c setupDraw];
         

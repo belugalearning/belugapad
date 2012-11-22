@@ -55,8 +55,10 @@
 -(void)setupDraw
 {
     //artifically set size
-    size=CGSizeMake(50, 25);
-    
+    if(isLargeObject)
+        size=CGSizeMake(150, 75);
+    else
+        size=CGSizeMake(50, 25);
     //background sprite to text (using same size)
     [textBackgroundComponent setupDrawWithSize:self.size];
     

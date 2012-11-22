@@ -38,6 +38,11 @@
     return s.color;
 }
 
+-(void)setContainerVisible:(BOOL)visible
+{
+    [self.backgroundNode setVisible:visible];
+}
+
 -(void)setupDrawWithSize:(CGSize)size
 {
     BOOL isLarge=NO;

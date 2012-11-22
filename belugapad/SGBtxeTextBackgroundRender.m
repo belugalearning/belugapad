@@ -46,6 +46,16 @@
     }
 }
 
+-(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime
+{
+    for(CCSprite *s in backgroundNode.children)
+    {
+        [s setOpacity:0];
+        [s runAction:[CCSequence actions:[CCDelayTime actionWithDuration:startTime + 0.25f], [CCFadeTo actionWithDuration:0.2f opacity:178], nil]];
+    }
+}
+
+
 -(void)setupDrawWithSize:(CGSize)size
 {
     BOOL isLarge=NO;

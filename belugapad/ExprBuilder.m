@@ -336,6 +336,14 @@
                             [toolHost showWheel];
 
                     }
+                    else
+                    {
+                        if(toolHost.pickerView && toolHost.CurrentBTXE)
+                        {
+                            [toolHost tearDownNumberPicker];
+                            toolHost.CurrentBTXE=nil;
+                        }
+                    }
                 }
                 [(id<MovingInteractive>)o inflateZIndex];
                 
@@ -349,7 +357,8 @@
     
     if(!gotPickerObject){
         toolHost.CurrentBTXE=nil;
-        [toolHost tearDownNumberPicker];
+        if(toolHost.pickerView)
+            [toolHost tearDownNumberPicker];
     }
 }
 

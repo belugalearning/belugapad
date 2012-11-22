@@ -699,6 +699,11 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void) loadProblem
 {
+    trayWheelShowing=NO;
+    hasTrayWheel=NO;
+    numberPickerForThisProblem=NO;
+    metaQuestionForThisProblem=NO;
+
     // ---------------- TEAR DOWN ------------------------------------
     //tear down meta question stuff
     [self tearDownMetaQuestion];
@@ -2036,13 +2041,12 @@ static float kTimeToHintToolTray=7.0f;
     trayLayerWheel=nil;
         
 //    [numberPickerLayer removeAllChildrenWithCleanup:YES];
-    numberPickerForThisProblem=NO;
-    trayWheelShowing=NO;
+    //numberPickerForThisProblem=NO;
     hasUsedPicker=NO;
     pickerViewSelection=nil;
     pickerView=nil;
-    hasTrayWheel=NO;
     hasUsedWheelTray=NO;
+    trayWheelShowing=NO;
 //    [numberPickerLayer release];
 //    numberPickerLayer=nil;
 }

@@ -55,13 +55,24 @@
     CCSprite *rh=nil;
     
     if([(id<NSObject>)ParentGO isKindOfClass:[SGBtxePlaceholder class]])
+    {
         isPlaceholder=YES;
-    
+        isLarge=((SGBtxePlaceholder*)ParentGO).isLargeObject;
+    }
     if(isPlaceholder)
     {
-        lh=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/btxe/SB_Holder_Large_Left.png")];
-        m=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/btxe/SB_Holder_Large_Middle.png")];
-        rh=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/btxe/SB_Holder_Large_Right.png")];
+        if(isLarge)
+        {
+            lh=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/btxe/SB_Holder_Large_Left.png")];
+            m=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/btxe/SB_Holder_Large_Middle.png")];
+            rh=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/btxe/SB_Holder_Large_Right.png")];
+        }
+        else
+        {
+            lh=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/btxe/SB_Holder_Large_Left.png")];
+            m=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/btxe/SB_Holder_Large_Middle.png")];
+            rh=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/btxe/SB_Holder_Large_Right.png")];
+        }
 //        [rh setPosition:ccp(((m.contentSize.width)*m.scaleX)+(rh.contentSize.width)*2, 0)];
     }
     else

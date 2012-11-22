@@ -469,7 +469,7 @@
         
         for(int i=1; i<vals.count; i++)
         {
-            if ([[vals objectAtIndex:i-1] floatValue] > [[vals objectAtIndex:i] floatValue]) {
+            if ([[vals objectAtIndex:i-1] floatValue] >= [[vals objectAtIndex:i] floatValue]) {
                 //last item was great than this item -- fail evaluation
                 return NO;
             }
@@ -491,8 +491,8 @@
         
         for(int i=1; i<vals.count; i++)
         {
-            if ([[vals objectAtIndex:i-1] floatValue] < [[vals objectAtIndex:i] floatValue]) {
-                //last item was great than this item -- fail evaluation
+            if ([[vals objectAtIndex:i-1] floatValue] <= [[vals objectAtIndex:i] floatValue]) {
+                //last item was less than this item -- fail evaluation
                 return NO;
             }
         }

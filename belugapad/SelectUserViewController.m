@@ -233,14 +233,18 @@
     NSIndexPath *ip = [selectUserTableView indexPathForSelectedRow];
     if (ip)
     {
-        /*NSDictionary *ur = [deviceUsers objectAtIndex:ip.row];
+        NSDictionary *ur = [deviceUsers objectAtIndex:ip.row];
         [usersService setCurrentUserToUserWithId:[ur objectForKey:@"id"]];
         [self.view removeFromSuperview];
-        [app proceedFromLoginViaIntro:NO];*/
-        modalPassCodeImageBgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/passcode_modal.png"]];
+        [app proceedFromLoginViaIntro:NO];
+        
+        
+        
+        /*modalPassCodeImageBgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/passcode_modal.png"]];
         modalPassCodeImageBgView.center = CGPointMake(512.0f, 354.0f);
         [self.view addSubview:modalPassCodeImageBgView];
         
+        [modalPassCodeImageBgView registerForDragAndLog];*/
     }
 }
 

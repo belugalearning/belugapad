@@ -161,7 +161,7 @@
 
 -(void)tagMyChildrenForIntro
 {
-    [iconRenderComponent.sprite setTag:2];
+    [iconRenderComponent.sprite setTag:3];
     [iconRenderComponent.sprite setOpacity:0];
 }
 

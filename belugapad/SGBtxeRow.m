@@ -15,6 +15,7 @@
 #import "SGBtxeObjectText.h"
 #import "SGBtxeObjectNumber.h"
 #import "SGBtxeObjectOperator.h"
+#import "SGBtxeText.h"
 
 #import "global.h"
 
@@ -116,6 +117,10 @@
 {
     for(id c in children)
     {
+        if([c isKindOfClass:[SGBtxeText class]])
+        {
+            [(SGBtxeObjectText*)c tagMyChildrenForIntro];
+        }
         if([c isKindOfClass:[SGBtxeObjectText class]])
         {
             [(SGBtxeObjectText*)c tagMyChildrenForIntro];

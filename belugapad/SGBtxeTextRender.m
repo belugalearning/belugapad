@@ -58,6 +58,14 @@
     self.label0.string=ParentGO.text;
 }
 
+-(void)tagMyChildrenForIntro
+{
+    [self.label setTag:3];
+    [self.label0 setTag:3];
+    [self.label setOpacity:0];
+    [self.label0 setOpacity:0];
+}
+
 -(void)updatePosition:(CGPoint)position
 {
     self.label.position=position;

@@ -18,4 +18,6 @@
 
 @property (retain) SGBtxeIconRender *iconRenderComponent;
 
+-(void)tagMyChildrenForIntro;
+
 @end

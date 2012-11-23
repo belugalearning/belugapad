@@ -38,6 +38,7 @@
 #import "JSONKit.h"
 #import "TestFlight.h"
 
+#import "AcapelaSpeech.h"
 
 #define DRAW_DEPTH 3
 
@@ -944,6 +945,8 @@ typedef enum {
     l=[[CCDirector sharedDirector] convertToGL:l];
     
     touchCount+=touches.count;
+    
+    [ac speakString:@"touch from jmap"];
     
     if(ac.AuthoringMode && CGRectContainsPoint(debugButtonBounds, l))
     {

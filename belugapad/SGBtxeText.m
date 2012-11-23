@@ -63,6 +63,11 @@
     
 }
 
+-(void)tagMyChildrenForIntro
+{
+    [self.textRenderComponent tagMyChildrenForIntro];
+}
+
 -(void)setupDraw
 {
     //text render to create it's label

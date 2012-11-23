@@ -16,7 +16,11 @@
     CCNode *renderBase;
 }
 
+-(void)setContainerVisible:(BOOL)visible;
+
 @property (retain) SGBtxeTextBackgroundRender *textBackgroundComponent;
 @property (retain) NSString *targetTag;
+@property BOOL isLargeObject;
+
 
 @end

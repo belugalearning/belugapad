@@ -1611,7 +1611,7 @@ static float kDistanceBetweenBlocks=70.0f;
             {
                 id<ShapeContainer>LayoutCont=currentPickupObject.MyContainer;
                 
-                if(currentPickupObject==[LayoutCont.BlocksInShape objectAtIndex:0])
+                if(currentPickupObject==[LayoutCont.BlocksInShape objectAtIndex:0] && [LayoutCont.BlocksInShape count]>2)
                 {
                     id<Moveable>object1=[LayoutCont.BlocksInShape objectAtIndex:1];
                     object1.Position=ccp(object1.Position.x, object1.Position.y+52);

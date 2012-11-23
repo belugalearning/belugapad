@@ -26,7 +26,7 @@
 #import "SGBtxeObjectNumber.h"
 #import "SGBtxeProtocols.h"
 #import "SGBtxeObjectOperator.h"
-
+#import "SGBtxePlaceholder.h"
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
@@ -164,6 +164,8 @@
         if(ncardselectionof)numberCardRandomSelectionOf=[ncardselectionof intValue];
     }
     
+    expressionRowsAreLarge=YES;
+    
 }
 
 -(void)populateGW
@@ -186,6 +188,9 @@
     {
         SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
         [rows addObject:row];
+        
+        if(i>0 && expressionRowsAreLarge)
+            row.isLarge = YES;
         
         if(i==0 || repeatRow2Count==0)
         {
@@ -339,6 +344,14 @@
                             [toolHost showWheel];
 
                     }
+                    else
+                    {
+                        if(toolHost.pickerView && toolHost.CurrentBTXE)
+                        {
+                            [toolHost tearDownNumberPicker];
+                            toolHost.CurrentBTXE=nil;
+                        }
+                    }
                 }
                 [(id<MovingInteractive>)o inflateZIndex];
                 
@@ -352,7 +365,8 @@
     
     if(!gotPickerObject && !CGRectContainsPoint(CGRectMake(700,600,324,308), location)){
         toolHost.CurrentBTXE=nil;
-        [toolHost tearDownNumberPicker];
+        if(toolHost.pickerView)
+            [toolHost tearDownNumberPicker];
     }
 }
 
@@ -404,9 +418,16 @@
                 }
             }
         }
-        
-        [heldObject returnToBase];
-        
+
+        if([heldObject.mount isKindOfClass:[SGBtxePlaceholder class]])
+        {
+            [(SGBtxePlaceholder*)heldObject.mount setContainerVisible:YES];
+            [heldObject destroy];
+        }
+        else
+        {
+            [heldObject returnToBase];
+        }
         [heldObject deflateZindex];
         for(SGBtxeRow *r in rows)
         {
@@ -469,7 +490,7 @@
         
         for(int i=1; i<vals.count; i++)
         {
-            if ([[vals objectAtIndex:i-1] floatValue] > [[vals objectAtIndex:i] floatValue]) {
+            if ([[vals objectAtIndex:i-1] floatValue] >= [[vals objectAtIndex:i] floatValue]) {
                 //last item was great than this item -- fail evaluation
                 return NO;
             }
@@ -491,8 +512,8 @@
         
         for(int i=1; i<vals.count; i++)
         {
-            if ([[vals objectAtIndex:i-1] floatValue] < [[vals objectAtIndex:i] floatValue]) {
-                //last item was great than this item -- fail evaluation
+            if ([[vals objectAtIndex:i-1] floatValue] <= [[vals objectAtIndex:i] floatValue]) {
+                //last item was less than this item -- fail evaluation
                 return NO;
             }
         }

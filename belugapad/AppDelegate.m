@@ -68,7 +68,7 @@
     
     //init test flight
 
-#if USE_TESTGLIHT_SDK
+#if USE_TESTFLIGHT_SDK
     [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
 
     [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"logToSTDERR"]];

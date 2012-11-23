@@ -57,9 +57,6 @@
         dot.position=[[positions objectAtIndex:i] CGPointValue];
         [self.baseNode addChild:dot];
     }
-    
-//    //update base node position
-//    self.baseNode.position=ccpAdd(self.baseNode.position, ccp(self.size.width / 2.0f, self.size.height / 2.0f));
 }
 
 -(CGSize)size

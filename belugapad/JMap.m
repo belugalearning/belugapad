@@ -1030,6 +1030,8 @@ typedef enum {
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [ac speakString:@"you touched me!"];
+    
     isDragging=YES;
     
     //drop any UI state

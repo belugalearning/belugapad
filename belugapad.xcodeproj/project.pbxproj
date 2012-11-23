@@ -338,6 +338,8 @@
 		7F96BE2416238C2D00351CA0 /* WaterSingle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BE2316238C2C00351CA0 /* WaterSingle.m */; };
 		7F96BE2A1623E91600351CA0 /* GooSingleSquare.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F96BE291623E91600351CA0 /* GooSingleSquare.m */; };
 		7F97879515FFA2CA00225967 /* NumberLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F97879415FFA2CA00225967 /* NumberLayout.m */; };
+		7F98458D164E5F300081BE39 /* AcapelaSetup.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F984570164E5F300081BE39 /* AcapelaSetup.m */; };
+		7F98458E164E5F300081BE39 /* force_cpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7F984572164E5F300081BE39 /* force_cpp.cpp */; };
 		7F9D414F15751E1600AFA1A0 /* NGNineGridSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9D414E15751E1600AFA1A0 /* NGNineGridSprite.m */; };
 		7FA0FCD615F74DB000C241A8 /* AdpInserter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0FCC515F74DB000C241A8 /* AdpInserter.m */; };
 		7FA0FCD715F74DB000C241A8 /* AdpLinkedProblemInserter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA0FCC715F74DB000C241A8 /* AdpLinkedProblemInserter.m */; };
@@ -355,12 +357,15 @@
 		7FA38ABA1545334B0031E59D /* SelectUserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FA38AB81545334B0031E59D /* SelectUserViewController.xib */; };
 		7FA38AC01545335A0031E59D /* UsersService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38ABE1545335A0031E59D /* UsersService.m */; };
 		7FA84BC516107569001FEA82 /* SGBtxeObjectNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA84BC416107569001FEA82 /* SGBtxeObjectNumber.m */; };
+		7FAB4B57165F8DC9003D219A /* babbelu.lic in Resources */ = {isa = PBXBuildFile; fileRef = 7FAB4B54165F8DC9003D219A /* babbelu.lic */; };
+		7FAB4B58165F8DC9003D219A /* babbelu.lic.0166883f.password in Resources */ = {isa = PBXBuildFile; fileRef = 7FAB4B55165F8DC9003D219A /* babbelu.lic.0166883f.password */; };
 		7FABE68F14B33D5100ED2D0C /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */; };
 		7FABE69114B33D5600ED2D0C /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */; };
 		7FABE6A214B4BF0F00ED2D0C /* templatedefs-general.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE6A114B4BF0F00ED2D0C /* templatedefs-general.plist */; };
 		7FABE6BF14B661B400ED2D0C /* BLMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FABE6BE14B661B400ED2D0C /* BLMath.m */; };
 		7FAEC26114BB5BA000E60983 /* visgrad1.fnt in Resources */ = {isa = PBXBuildFile; fileRef = 7FAEC25F14BB5BA000E60983 /* visgrad1.fnt */; };
 		7FAEC26214BB5BA000E60983 /* visgrad1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FAEC26014BB5BA000E60983 /* visgrad1.png */; };
+		7FAF1439165FC8BD008BEE03 /* hqm-ref-British-Rachel-22khz in Resources */ = {isa = PBXBuildFile; fileRef = 7FAF1438165FC8BD008BEE03 /* hqm-ref-British-Rachel-22khz */; };
 		7FB11DC31595277200095669 /* DWPlaceValueBlockGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB11DBE1595277200095669 /* DWPlaceValueBlockGameObject.m */; };
 		7FB11DC41595277200095669 /* DWPlaceValueCageGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB11DC01595277200095669 /* DWPlaceValueCageGameObject.m */; };
 		7FB11DC51595277200095669 /* DWPlaceValueNetGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB11DC21595277200095669 /* DWPlaceValueNetGameObject.m */; };
@@ -1149,6 +1154,12 @@
 		7F96BE291623E91600351CA0 /* GooSingleSquare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooSingleSquare.m; sourceTree = "<group>"; };
 		7F97879315FFA2CA00225967 /* NumberLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberLayout.h; sourceTree = "<group>"; };
 		7F97879415FFA2CA00225967 /* NumberLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberLayout.m; sourceTree = "<group>"; };
+		7F98456E164E5F300081BE39 /* AcapelaLicense.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AcapelaLicense.h; sourceTree = "<group>"; };
+		7F98456F164E5F300081BE39 /* AcapelaSetup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AcapelaSetup.h; sourceTree = "<group>"; };
+		7F984570164E5F300081BE39 /* AcapelaSetup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AcapelaSetup.m; sourceTree = "<group>"; };
+		7F984571164E5F300081BE39 /* AcapelaSpeech.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AcapelaSpeech.h; sourceTree = "<group>"; };
+		7F984572164E5F300081BE39 /* force_cpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = force_cpp.cpp; sourceTree = "<group>"; };
+		7F984573164E5F300081BE39 /* force_cpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = force_cpp.h; sourceTree = "<group>"; };
 		7F9D414D15751E1600AFA1A0 /* NGNineGridSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGNineGridSprite.h; sourceTree = "<group>"; };
 		7F9D414E15751E1600AFA1A0 /* NGNineGridSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NGNineGridSprite.m; sourceTree = "<group>"; };
 		7FA0FCC415F74DB000C241A8 /* AdpInserter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdpInserter.h; sourceTree = "<group>"; };
@@ -1179,6 +1190,9 @@
 		7FA38ABE1545335A0031E59D /* UsersService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersService.m; sourceTree = "<group>"; };
 		7FA84BC316107569001FEA82 /* SGBtxeObjectNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeObjectNumber.h; sourceTree = "<group>"; };
 		7FA84BC416107569001FEA82 /* SGBtxeObjectNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeObjectNumber.m; sourceTree = "<group>"; };
+		7FAB4B54165F8DC9003D219A /* babbelu.lic */ = {isa = PBXFileReference; lastKnownFileType = file; path = babbelu.lic; sourceTree = "<group>"; };
+		7FAB4B55165F8DC9003D219A /* babbelu.lic.0166883f.password */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = babbelu.lic.0166883f.password; sourceTree = "<group>"; };
+		7FAB4B56165F8DC9003D219A /* babbelu.lic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = babbelu.lic.h; sourceTree = "<group>"; };
 		7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		7FABE69214B33E5800ED2D0C /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = global.h; sourceTree = "<group>"; };
@@ -1187,6 +1201,9 @@
 		7FABE6BE14B661B400ED2D0C /* BLMath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLMath.m; sourceTree = "<group>"; };
 		7FAEC25F14BB5BA000E60983 /* visgrad1.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = visgrad1.fnt; sourceTree = "<group>"; };
 		7FAEC26014BB5BA000E60983 /* visgrad1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = visgrad1.png; sourceTree = "<group>"; };
+		7FAF1438165FC8BD008BEE03 /* hqm-ref-British-Rachel-22khz */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "hqm-ref-British-Rachel-22khz"; sourceTree = "<group>"; };
+		7FAF143E165FCB39008BEE03 /* libBabTTS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBabTTS.a; sourceTree = "<group>"; };
+		7FAF143F165FCB39008BEE03 /* libMobilityStatic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobilityStatic.a; sourceTree = "<group>"; };
 		7FB11DBD1595277200095669 /* DWPlaceValueBlockGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPlaceValueBlockGameObject.h; sourceTree = "<group>"; };
 		7FB11DBE1595277200095669 /* DWPlaceValueBlockGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWPlaceValueBlockGameObject.m; sourceTree = "<group>"; };
 		7FB11DBF1595277200095669 /* DWPlaceValueCageGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPlaceValueCageGameObject.h; sourceTree = "<group>"; };
@@ -1976,6 +1993,8 @@
 		7F5113C114A9EE62001AF372 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7FAF143F165FCB39008BEE03 /* libMobilityStatic.a */,
+				7FAF143E165FCB39008BEE03 /* libBabTTS.a */,
 				7FA38AA51545322E0031E59D /* SystemConfiguration.framework */,
 				7FA38AA3154532260031E59D /* Security.framework */,
 				7F5113C214A9EE62001AF372 /* QuartzCore.framework */,
@@ -2005,6 +2024,7 @@
 		7F5113D314A9EE63001AF372 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7FAF1438165FC8BD008BEE03 /* hqm-ref-British-Rachel-22khz */,
 				7F813D5D14CCC3AF00C1E997 /* fonts */,
 				7F813D5914CCC38100C1E997 /* particles */,
 				0C35A9F71576272500D47517 /* canned-dbs */,
@@ -2030,6 +2050,7 @@
 			isa = PBXGroup;
 			children = (
 				7F817B1A165A750E00B291DA /* cocos2d */,
+				7F98456C164E5F300081BE39 /* Acapela */,
 				7F358467162588FB004067A1 /* TestFlight */,
 				7F96BDB7162178D100351CA0 /* ChipmunkPro-iPhone */,
 				7F5F4D5B161906CE005F6311 /* CCPickerView */,
@@ -2647,6 +2668,39 @@
 			name = Goo;
 			sourceTree = "<group>";
 		};
+		7F98456C164E5F300081BE39 /* Acapela */ = {
+			isa = PBXGroup;
+			children = (
+				7F98456D164E5F300081BE39 /* api */,
+				7F984574164E5F300081BE39 /* libs */,
+			);
+			name = Acapela;
+			path = libs/Acapela;
+			sourceTree = "<group>";
+		};
+		7F98456D164E5F300081BE39 /* api */ = {
+			isa = PBXGroup;
+			children = (
+				7FAB4B54165F8DC9003D219A /* babbelu.lic */,
+				7FAB4B55165F8DC9003D219A /* babbelu.lic.0166883f.password */,
+				7FAB4B56165F8DC9003D219A /* babbelu.lic.h */,
+				7F98456E164E5F300081BE39 /* AcapelaLicense.h */,
+				7F98456F164E5F300081BE39 /* AcapelaSetup.h */,
+				7F984570164E5F300081BE39 /* AcapelaSetup.m */,
+				7F984571164E5F300081BE39 /* AcapelaSpeech.h */,
+				7F984572164E5F300081BE39 /* force_cpp.cpp */,
+				7F984573164E5F300081BE39 /* force_cpp.h */,
+			);
+			path = api;
+			sourceTree = "<group>";
+		};
+		7F984574164E5F300081BE39 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
 		7FA0FCC215F74D9200C241A8 /* AdpInserters */ = {
 			isa = PBXGroup;
 			children = (
@@ -3039,6 +3093,9 @@
 				3395A5FC164F050300492FC2 /* Icon_black_144.png in Resources */,
 				3395A5FE164F092500492FC2 /* Default-Landscape@2x~ipad.png in Resources */,
 				0CF05A9D1651A928008C2DD5 /* login-images in Resources */,
+				7FAB4B57165F8DC9003D219A /* babbelu.lic in Resources */,
+				7FAB4B58165F8DC9003D219A /* babbelu.lic.0166883f.password in Resources */,
+				7FAF1439165FC8BD008BEE03 /* hqm-ref-British-Rachel-22khz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3456,6 +3513,8 @@
 				7F817C3D165A750F00B291DA /* ZipUtils.m in Sources */,
 				55CD0507165AC1200040630A /* LDivision.m in Sources */,
 				0C14ABE6165C13BE00D71276 /* UIView+UIView_DragLogPosition.m in Sources */,
+				7F98458D164E5F300081BE39 /* AcapelaSetup.m in Sources */,
+				7F98458E164E5F300081BE39 /* force_cpp.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3602,10 +3661,26 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/belugapad/libs/ChipmunkPro-iPhone\"",
 					"\"$(SRCROOT)/belugapad/libs/TestFlight\"",
+					"\"$(SRCROOT)/belugapad/libs/Acapela/libs\"",
+					"\"$(SRCROOT)/belugapad/libs/Acapela/libs/arm7-7s\"",
+					"\"$(SRCROOT)/belugapad/libs/Acapela/libs/sim\"",
+					"\"$(SRCROOT)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-lxml2",
 					"-lz",
+				);
+				"OTHER_LDFLAGS[arch=armv7]" = (
+					"-lxml2",
+					"-lz",
+					"\"$(SRCROOT)/libBabTTS.a\"",
+					"\"$(SRCROOT)/libMobilityStatic.a\"",
+				);
+				"OTHER_LDFLAGS[arch=armv7s]" = (
+					"-lxml2",
+					"-lz",
+					"\"$(SRCROOT)/libBabTTS.a\"",
+					"\"$(SRCROOT)/libMobilityStatic.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -3642,10 +3717,26 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/belugapad/libs/ChipmunkPro-iPhone\"",
 					"\"$(SRCROOT)/belugapad/libs/TestFlight\"",
+					"\"$(SRCROOT)/belugapad/libs/Acapela/libs\"",
+					"\"$(SRCROOT)/belugapad/libs/Acapela/libs/arm7-7s\"",
+					"\"$(SRCROOT)/belugapad/libs/Acapela/libs/sim\"",
+					"\"$(SRCROOT)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-lxml2",
 					"-lz",
+				);
+				"OTHER_LDFLAGS[arch=armv7]" = (
+					"-lxml2",
+					"-lz",
+					"\"$(SRCROOT)/libBabTTS.a\"",
+					"\"$(SRCROOT)/libMobilityStatic.a\"",
+				);
+				"OTHER_LDFLAGS[arch=armv7s]" = (
+					"-lxml2",
+					"-lz",
+					"\"$(SRCROOT)/libMobilityStatic.a\"",
+					"\"$(SRCROOT)/libBabTTS.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

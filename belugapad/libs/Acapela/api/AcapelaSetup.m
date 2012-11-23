@@ -6,6 +6,8 @@
 //
 //
 
+#ifdef TARGET_OS_IOS
+
 #import "AcapelaSetup.h"
 
 @implementation AcapelaSetup
@@ -50,3 +52,5 @@
 }
 
 @end
+
+#endif

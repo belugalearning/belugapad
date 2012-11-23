@@ -347,8 +347,6 @@
 		7FA84BC516107569001FEA82 /* SGBtxeObjectNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA84BC416107569001FEA82 /* SGBtxeObjectNumber.m */; };
 		7FAB4B57165F8DC9003D219A /* babbelu.lic in Resources */ = {isa = PBXBuildFile; fileRef = 7FAB4B54165F8DC9003D219A /* babbelu.lic */; };
 		7FAB4B58165F8DC9003D219A /* babbelu.lic.0166883f.password in Resources */ = {isa = PBXBuildFile; fileRef = 7FAB4B55165F8DC9003D219A /* babbelu.lic.0166883f.password */; };
-		7FAB4B70165FBC67003D219A /* libBabTTS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FAB4B6E165FBC67003D219A /* libBabTTS.a */; };
-		7FAB4B71165FBC67003D219A /* libMobilityStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FAB4B6F165FBC67003D219A /* libMobilityStatic.a */; };
 		7FABE68F14B33D5100ED2D0C /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */; };
 		7FABE69114B33D5600ED2D0C /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */; };
 		7FABE6A214B4BF0F00ED2D0C /* templatedefs-general.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE6A114B4BF0F00ED2D0C /* templatedefs-general.plist */; };
@@ -1166,8 +1164,6 @@
 		7FAB4B54165F8DC9003D219A /* babbelu.lic */ = {isa = PBXFileReference; lastKnownFileType = file; path = babbelu.lic; sourceTree = "<group>"; };
 		7FAB4B55165F8DC9003D219A /* babbelu.lic.0166883f.password */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = babbelu.lic.0166883f.password; sourceTree = "<group>"; };
 		7FAB4B56165F8DC9003D219A /* babbelu.lic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = babbelu.lic.h; sourceTree = "<group>"; };
-		7FAB4B6E165FBC67003D219A /* libBabTTS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBabTTS.a; sourceTree = "<group>"; };
-		7FAB4B6F165FBC67003D219A /* libMobilityStatic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobilityStatic.a; sourceTree = "<group>"; };
 		7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		7FABE69214B33E5800ED2D0C /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = global.h; sourceTree = "<group>"; };
@@ -1177,6 +1173,8 @@
 		7FAEC25F14BB5BA000E60983 /* visgrad1.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = visgrad1.fnt; sourceTree = "<group>"; };
 		7FAEC26014BB5BA000E60983 /* visgrad1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = visgrad1.png; sourceTree = "<group>"; };
 		7FAF1438165FC8BD008BEE03 /* hqm-ref-British-Rachel-22khz */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "hqm-ref-British-Rachel-22khz"; sourceTree = "<group>"; };
+		7FAF143E165FCB39008BEE03 /* libBabTTS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBabTTS.a; sourceTree = "<group>"; };
+		7FAF143F165FCB39008BEE03 /* libMobilityStatic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobilityStatic.a; sourceTree = "<group>"; };
 		7FB11DBD1595277200095669 /* DWPlaceValueBlockGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPlaceValueBlockGameObject.h; sourceTree = "<group>"; };
 		7FB11DBE1595277200095669 /* DWPlaceValueBlockGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWPlaceValueBlockGameObject.m; sourceTree = "<group>"; };
 		7FB11DBF1595277200095669 /* DWPlaceValueCageGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPlaceValueCageGameObject.h; sourceTree = "<group>"; };
@@ -1323,8 +1321,6 @@
 				7F5113D114A9EE63001AF372 /* CoreGraphics.framework in Frameworks */,
 				7F96BDE4162178D100351CA0 /* libChipmunkPro-iPhone.a in Frameworks */,
 				7F35846A162588FB004067A1 /* libTestFlight.a in Frameworks */,
-				7FAB4B70165FBC67003D219A /* libBabTTS.a in Frameworks */,
-				7FAB4B71165FBC67003D219A /* libMobilityStatic.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2197,8 +2193,8 @@
 		7F5113C114A9EE62001AF372 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7FAB4B6E165FBC67003D219A /* libBabTTS.a */,
-				7FAB4B6F165FBC67003D219A /* libMobilityStatic.a */,
+				7FAF143F165FCB39008BEE03 /* libMobilityStatic.a */,
+				7FAF143E165FCB39008BEE03 /* libBabTTS.a */,
 				7FA38AA51545322E0031E59D /* SystemConfiguration.framework */,
 				7FA38AA3154532260031E59D /* Security.framework */,
 				7F5113C214A9EE62001AF372 /* QuartzCore.framework */,
@@ -3628,6 +3624,18 @@
 					"-lxml2",
 					"-lz",
 				);
+				"OTHER_LDFLAGS[arch=armv7]" = (
+					"-lxml2",
+					"-lz",
+					"\"$(SRCROOT)/libBabTTS.a\"",
+					"\"$(SRCROOT)/libMobilityStatic.a\"",
+				);
+				"OTHER_LDFLAGS[arch=armv7s]" = (
+					"-lxml2",
+					"-lz",
+					"\"$(SRCROOT)/libBabTTS.a\"",
+					"\"$(SRCROOT)/libMobilityStatic.a\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = 2;
@@ -3671,6 +3679,18 @@
 				OTHER_LDFLAGS = (
 					"-lxml2",
 					"-lz",
+				);
+				"OTHER_LDFLAGS[arch=armv7]" = (
+					"-lxml2",
+					"-lz",
+					"\"$(SRCROOT)/libBabTTS.a\"",
+					"\"$(SRCROOT)/libMobilityStatic.a\"",
+				);
+				"OTHER_LDFLAGS[arch=armv7s]" = (
+					"-lxml2",
+					"-lz",
+					"\"$(SRCROOT)/libMobilityStatic.a\"",
+					"\"$(SRCROOT)/libBabTTS.a\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

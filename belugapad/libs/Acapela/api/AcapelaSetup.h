@@ -5,6 +5,8 @@
 //  Acapela Group
 //
 //
+#ifdef TARGET_OS_IOS
+
 #import <UIKit/UIKit.h>
 #import "AcapelaSpeech.h"
 
@@ -24,3 +26,6 @@
 - (NSString*)GetCurrentVoiceName;
 
 @end
+
+
+#endif

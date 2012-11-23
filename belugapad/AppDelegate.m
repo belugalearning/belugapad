@@ -186,6 +186,7 @@
 	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
     
     
+#ifdef TARGET_OS_IOS
     //Acapela TTS ---------------------------------------------------------------------
     
     // Create the default UserDico for the voice delivered in the bundle
@@ -223,14 +224,16 @@
     //[MyAcaTTS setDelegate:self];
     
     //Acapela TTS ---------------------------------------------------------------------
-
+#endif
     
     return YES;
 }
 
 -(void)speakString:(NSString*)speakThis
 {
+#ifdef TARGET_OS_IPHONE
     [self.acaSpeech startSpeakingString:speakThis];
+#endif
 }
 
 -(void)tearDownUI

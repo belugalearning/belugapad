@@ -4,6 +4,8 @@
 //  Copyright 2010 Acapela. All rights reserved.
 //
 
+#ifdef TARGET_OS_IOS
+
 #import <UIKit/UIKit.h>
 #import "AcapelaLicense.h"
 
@@ -181,3 +183,5 @@ NSString *const AcapelaSpeechDictionaryPronunciations ;  // NSArray
 NSString *const AcapelaSpeechDictionaryAbbreviations ;  // NSArray
 NSString *const AcapelaSpeechDictionaryEntrySpelling ;  // NSString
 NSString *const AcapelaSpeechDictionaryEntryPhonemes ;  // NSString
+
+#endif

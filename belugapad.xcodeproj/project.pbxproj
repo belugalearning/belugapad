@@ -163,6 +163,7 @@
 		7F40D8B414FFDA4D006A3A55 /* MultiplyLogicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F40D8AE14FFDA4D006A3A55 /* MultiplyLogicTests.m */; };
 		7F40D8B514FFDA4D006A3A55 /* PowerLogicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F40D8AF14FFDA4D006A3A55 /* PowerLogicTests.m */; };
 		7F40D8D514FFDE40006A3A55 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F40D8D414FFDE40006A3A55 /* SenTestingKit.framework */; };
+		7F43B0EE165FF02000CD9B8D /* SGBtxeNumberDotRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F43B0ED165FF02000CD9B8D /* SGBtxeNumberDotRender.m */; };
 		7F5003511521B23D0038D251 /* CDAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F5003491521B23C0038D251 /* CDAudioManager.m */; };
 		7F5003521521B23D0038D251 /* CDOpenALSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F50034C1521B23D0038D251 /* CDOpenALSupport.m */; };
 		7F5003531521B23D0038D251 /* CocosDenshion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F50034E1521B23D0038D251 /* CocosDenshion.m */; };
@@ -741,6 +742,8 @@
 		7F40D8AE14FFDA4D006A3A55 /* MultiplyLogicTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiplyLogicTests.m; sourceTree = "<group>"; };
 		7F40D8AF14FFDA4D006A3A55 /* PowerLogicTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PowerLogicTests.m; sourceTree = "<group>"; };
 		7F40D8D414FFDE40006A3A55 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		7F43B0EC165FF02000CD9B8D /* SGBtxeNumberDotRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeNumberDotRender.h; sourceTree = "<group>"; };
+		7F43B0ED165FF02000CD9B8D /* SGBtxeNumberDotRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeNumberDotRender.m; sourceTree = "<group>"; };
 		7F5003481521B23C0038D251 /* CDAudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDAudioManager.h; sourceTree = "<group>"; };
 		7F5003491521B23C0038D251 /* CDAudioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDAudioManager.m; sourceTree = "<group>"; };
 		7F50034A1521B23C0038D251 /* CDConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDConfig.h; sourceTree = "<group>"; };
@@ -2913,6 +2916,8 @@
 				7FD9841F15DC21A600DA71D7 /* SGBtxeParser.m */,
 				7F5F4D701619E714005F6311 /* SGBtxeIconRender.h */,
 				7F5F4D711619E714005F6311 /* SGBtxeIconRender.m */,
+				7F43B0EC165FF02000CD9B8D /* SGBtxeNumberDotRender.h */,
+				7F43B0ED165FF02000CD9B8D /* SGBtxeNumberDotRender.m */,
 			);
 			name = BTXE;
 			sourceTree = "<group>";
@@ -3515,6 +3520,7 @@
 				0C14ABE6165C13BE00D71276 /* UIView+UIView_DragLogPosition.m in Sources */,
 				7F98458D164E5F300081BE39 /* AcapelaSetup.m in Sources */,
 				7F98458E164E5F300081BE39 /* force_cpp.cpp in Sources */,
+				7F43B0EE165FF02000CD9B8D /* SGBtxeNumberDotRender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

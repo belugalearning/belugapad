@@ -22,6 +22,9 @@
     for(int i=1; i<=max;i++)
     {
         CGPoint p=CGPointMake(x, y);
+        
+        if(y%10>0)p=CGPointMake(p.x, p.y+(0.5f * (float)(y%10)));
+        
         [layout addObject:[NSValue valueWithCGPoint:p]];
         
         if (x==0) {
@@ -59,6 +62,7 @@
     {
         CGPoint p1=[[layout objectAtIndex:i] CGPointValue];
         CGPoint p2=CGPointMake(p1.x * spacing, p1.y * spacing);
+        
         [layout replaceObjectAtIndex:i withObject:[NSValue valueWithCGPoint:p2]];
     }
     NSArray *ret=[NSArray arrayWithArray:layout];

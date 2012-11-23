@@ -7,7 +7,20 @@
 //
 
 #import "SGComponent.h"
+#import "SGBtxeProtocols.h"
 
 @interface SGBtxeNumberDotRender : SGComponent
+{
+    id<Value> ParentGO;
+}
+@property (retain) CCNode *baseNode;
+
+-(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime;
+-(void)setupDraw;
+-(void)updateDraw;
+-(void)inflateZindex;
+-(void)deflateZindex;
+-(void)updatePosition:(CGPoint)thePosition;
+
 
 @end

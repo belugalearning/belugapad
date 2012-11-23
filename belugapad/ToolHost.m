@@ -66,7 +66,7 @@
     BOOL isHoldingObject;
     id<MovingInteractive> heldObject;
 }
-
+-(void)returnToMap;
 @end
 
 @implementation ToolHost
@@ -631,9 +631,7 @@ static float kTimeToHintToolTray=7.0f;
     }
     else
     {
-        [contentService quitPipelineTracking];
-        
-        [[CCDirector sharedDirector] replaceScene:[JMap scene]];
+        [self returnToMap];
     }
 }
 
@@ -692,9 +690,7 @@ static float kTimeToHintToolTray=7.0f;
         contentService.fullRedraw=YES;
         contentService.lightUpProgressFromLastNode=YES;
         
-        [contentService quitPipelineTracking];
-        
-        [[CCDirector sharedDirector] replaceScene:[JMap scene]];
+        [self returnToMap];
     }
 }
 
@@ -1137,7 +1133,7 @@ static float kTimeToHintToolTray=7.0f;
         [loggingService logEvent:BL_PA_EXIT_TO_MAP withAdditionalData:nil];
         [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @0 }];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-        [self returnToMenu];
+        [self returnToMap];
     }
 //    if(CGRectContainsPoint(kPauseMenuLogOut, location))
 //    {
@@ -1181,10 +1177,11 @@ static float kTimeToHintToolTray=7.0f;
 
 #pragma mark - completion and user flow
 
--(void)returnToMenu
+-(void)returnToMap
 {
     [TestFlight passCheckpoint:@"QUITTING_TOOLHOST_FOR_JMAP"];
-    
+    [contentService quitPipelineTracking];
+    [self unscheduleAllSelectors];
     [[CCDirector sharedDirector] replaceScene:[JMap scene]];
 }
 

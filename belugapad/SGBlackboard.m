@@ -38,6 +38,7 @@
     self.btxeIconBatch=nil;
     
     self.islandData=nil;
+    self.debugDrawNode=nil;
     
     [super dealloc];
 }

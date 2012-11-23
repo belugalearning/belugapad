@@ -93,7 +93,9 @@ static CDBufferManager *bufferManager = nil;
 
 -(void) playBackgroundMusic:(NSString*) filePath loop:(BOOL) loop
 {
+#if !(TARGET_IPHONE_SIMULATOR)
 	[am playBackgroundMusic:filePath loop:loop];
+#endif
 }
 
 -(void) stopBackgroundMusic

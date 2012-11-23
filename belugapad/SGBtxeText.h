@@ -11,4 +11,6 @@
 
 @interface SGBtxeText : SGGameObject <Bounding, Text, RenderObject, FadeIn, Containable>
 
+-(void)tagMyChildrenForIntro;
+
 @end

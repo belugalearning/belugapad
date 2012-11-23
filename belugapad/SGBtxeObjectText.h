@@ -18,6 +18,6 @@
 
 @property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;
 
-
+-(void)tagMyChildrenForIntro;
 
 @end

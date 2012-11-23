@@ -17,7 +17,7 @@
 @synthesize textBackgroundComponent;
 @synthesize container;
 @synthesize targetTag;
-
+@synthesize isLargeObject;
 @synthesize mountedObject;
 
 -(SGBtxePlaceholder*)initWithGameWorld:(SGGameWorld*)aGameWorld
@@ -55,8 +55,10 @@
 -(void)setupDraw
 {
     //artifically set size
-    size=CGSizeMake(50, 25);
-    
+    if(isLargeObject)
+        size=CGSizeMake(150, 75);
+    else
+        size=CGSizeMake(50, 25);
     //background sprite to text (using same size)
     [textBackgroundComponent setupDrawWithSize:self.size];
     
@@ -86,6 +88,7 @@
     id<MovingInteractive, RenderObject, NSObject> dupe=(id<MovingInteractive, RenderObject, NSObject>)[mountObject createADuplicate];
     
     dupe.mount=self;
+    dupe.isLargeObject=self.isLargeObject;
     
     //set it up
     [dupe setupDraw];
@@ -99,8 +102,15 @@
     [dupe attachToRenderBase:((SGBtxeRow*)self.container).baseNode];
     
     [self.container.containerMgrComponent addObjectToContainer:(id<Bounding>)dupe];
+    [self setContainerVisible:NO];
+    
     
     mountedObject=dupe;
+}
+
+-(void)setContainerVisible:(BOOL)visible
+{
+    [textBackgroundComponent setContainerVisible:visible];
 }
 
 -(void)attachToRenderBase:(CCNode *)theRenderBase

@@ -19,6 +19,7 @@
 @synthesize container;
 @synthesize mount;
 @synthesize hidden;
+@synthesize isLargeObject;
 
 -(SGBtxeObjectIcon*)initWithGameWorld:(SGGameWorld*) aGameWorld
 {
@@ -47,6 +48,7 @@
     dupe.position=self.position;
     dupe.tag=[[self.tag copy] autorelease];
     dupe.enabled=self.enabled;
+    dupe.isLargeObject=self.isLargeObject;
     
     dupe.iconTag=[[self.iconTag copy] autorelease];
     
@@ -131,6 +133,8 @@
 {
     if(self.hidden)return;
     
+    iconRenderComponent.useLargeAssets=self.isLargeObject;
+    
     [self.iconRenderComponent setupDraw];
     
     self.iconRenderComponent.sprite.visible=self.enabled;
@@ -153,6 +157,12 @@
 -(void)detachFromRenderBase
 {
     [iconRenderComponent.sprite removeFromParentAndCleanup:YES];
+}
+
+-(void)tagMyChildrenForIntro
+{
+    [iconRenderComponent.sprite setTag:3];
+    [iconRenderComponent.sprite setOpacity:0];
 }
 
 -(void)destroy

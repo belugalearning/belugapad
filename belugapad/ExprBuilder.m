@@ -26,7 +26,7 @@
 #import "SGBtxeObjectNumber.h"
 #import "SGBtxeProtocols.h"
 #import "SGBtxeObjectOperator.h"
-
+#import "SGBtxePlaceholder.h"
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
@@ -164,6 +164,8 @@
         if(ncardselectionof)numberCardRandomSelectionOf=[ncardselectionof intValue];
     }
     
+    expressionRowsAreLarge=YES;
+    
 }
 
 -(void)populateGW
@@ -186,6 +188,9 @@
     {
         SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
         [rows addObject:row];
+        
+        if(i>0 && expressionRowsAreLarge)
+            row.isLarge = YES;
         
         if(i==0 || repeatRow2Count==0)
         {
@@ -413,9 +418,16 @@
                 }
             }
         }
-        
-        [heldObject returnToBase];
-        
+
+        if([heldObject.mount isKindOfClass:[SGBtxePlaceholder class]])
+        {
+            [(SGBtxePlaceholder*)heldObject.mount setContainerVisible:YES];
+            [heldObject destroy];
+        }
+        else
+        {
+            [heldObject returnToBase];
+        }
         [heldObject deflateZindex];
         for(SGBtxeRow *r in rows)
         {

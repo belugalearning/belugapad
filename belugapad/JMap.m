@@ -1037,6 +1037,12 @@ typedef enum {
     
     UITouch *touch=[touches anyObject];
     CGPoint l=[touch locationInView:[touch view]];
+    
+    if (![[touch view] isKindOfClass:[CCGLView class]])
+    {
+        return;
+    }
+    
     l=[[CCDirector sharedDirector] convertToGL:l];
     
     touchCount+=touches.count;

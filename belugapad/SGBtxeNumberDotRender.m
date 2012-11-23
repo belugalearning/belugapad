@@ -51,12 +51,12 @@
     int count=[ParentGO.value intValue];
     NSArray *positions=[NumberLayout physicalLayoutAcrossToNumber:count withSpacing:10.0f];
     
-    for(int i=0; i<count; i++)
-    {
-        CCSprite *dot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/")];
-        dot.position=[[positions objectAtIndex:i] CGPointValue];
-        [self.baseNode addChild:dot];
-    }
+//    for(int i=0; i<count; i++)
+//    {
+//        CCSprite *dot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/")];
+//        dot.position=[[positions objectAtIndex:i] CGPointValue];
+//        [self.baseNode addChild:dot];
+//    }
 }
 
 

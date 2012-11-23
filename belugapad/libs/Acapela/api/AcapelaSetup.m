@@ -6,7 +6,7 @@
 //
 //
 
-#ifdef TARGET_OS_IOS
+#if !(TARGET_IPHONE_SIMULATOR)
 
 #import "AcapelaSetup.h"
 

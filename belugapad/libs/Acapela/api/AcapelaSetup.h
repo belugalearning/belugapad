@@ -5,7 +5,7 @@
 //  Acapela Group
 //
 //
-#ifdef TARGET_OS_IOS
+#if !(TARGET_IPHONE_SIMULATOR)
 
 #import <UIKit/UIKit.h>
 #import "AcapelaSpeech.h"

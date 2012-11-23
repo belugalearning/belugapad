@@ -38,7 +38,7 @@
 
 static float kBubbleProx=35.0f;
 static float kBubbleScrollBoundary=350;
-static float kBubblePushSpeed=400.0f;
+static float kBubblePushSpeed=220.0f;
 
 static float kTimeToBubbleShake=7.0f;
 

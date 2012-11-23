@@ -295,6 +295,9 @@ static int shadowSteps=5;
     
     //all nodes with data
     NSArray *fnodes= [[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"NODES"];
+    
+    NSLog(@"NODE COUNT: %d", ParentGO.ChildNodes.count);
+    
     //step all children
     for (int i=0; i<ParentGO.ChildNodes.count; i++)
     {

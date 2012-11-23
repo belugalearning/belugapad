@@ -366,6 +366,8 @@
 		7FA38AC01545335A0031E59D /* UsersService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38ABE1545335A0031E59D /* UsersService.m */; };
 		7FA38AD2154534340031E59D /* EditZubi.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38AD1154534340031E59D /* EditZubi.m */; };
 		7FA84BC516107569001FEA82 /* SGBtxeObjectNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA84BC416107569001FEA82 /* SGBtxeObjectNumber.m */; };
+		7FAB4B57165F8DC9003D219A /* babbelu.lic in Resources */ = {isa = PBXBuildFile; fileRef = 7FAB4B54165F8DC9003D219A /* babbelu.lic */; };
+		7FAB4B58165F8DC9003D219A /* babbelu.lic.0166883f.password in Resources */ = {isa = PBXBuildFile; fileRef = 7FAB4B55165F8DC9003D219A /* babbelu.lic.0166883f.password */; };
 		7FABE68F14B33D5100ED2D0C /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */; };
 		7FABE69114B33D5600ED2D0C /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */; };
 		7FABE6A214B4BF0F00ED2D0C /* templatedefs-general.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7FABE6A114B4BF0F00ED2D0C /* templatedefs-general.plist */; };
@@ -1202,6 +1204,9 @@
 		7FA38AD1154534340031E59D /* EditZubi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditZubi.m; sourceTree = "<group>"; };
 		7FA84BC316107569001FEA82 /* SGBtxeObjectNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeObjectNumber.h; sourceTree = "<group>"; };
 		7FA84BC416107569001FEA82 /* SGBtxeObjectNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeObjectNumber.m; sourceTree = "<group>"; };
+		7FAB4B54165F8DC9003D219A /* babbelu.lic */ = {isa = PBXFileReference; lastKnownFileType = file; path = babbelu.lic; sourceTree = "<group>"; };
+		7FAB4B55165F8DC9003D219A /* babbelu.lic.0166883f.password */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = babbelu.lic.0166883f.password; sourceTree = "<group>"; };
+		7FAB4B56165F8DC9003D219A /* babbelu.lic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = babbelu.lic.h; sourceTree = "<group>"; };
 		7FABE68E14B33D5100ED2D0C /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		7FABE69014B33D5600ED2D0C /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		7FABE69214B33E5800ED2D0C /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = global.h; sourceTree = "<group>"; };
@@ -2679,6 +2684,9 @@
 		7F98456D164E5F300081BE39 /* api */ = {
 			isa = PBXGroup;
 			children = (
+				7FAB4B54165F8DC9003D219A /* babbelu.lic */,
+				7FAB4B55165F8DC9003D219A /* babbelu.lic.0166883f.password */,
+				7FAB4B56165F8DC9003D219A /* babbelu.lic.h */,
 				7F9845A3164E60B20081BE39 /* acaLicenseFiles.h */,
 				7F9845A4164E60B20081BE39 /* acaLicenseFiles.m */,
 				7F9845A5164E60B20081BE39 /* evaluation.lic.h */,
@@ -3165,6 +3173,8 @@
 				7F9845A0164E5F310081BE39 /* rachel_22k_ns.bvcu.nuul216vqfp in Resources */,
 				7F9845A1164E5F310081BE39 /* rachel_ns.txt in Resources */,
 				7F9845A8164E60B20081BE39 /* evaluation.lic.password in Resources */,
+				7FAB4B57165F8DC9003D219A /* babbelu.lic in Resources */,
+				7FAB4B58165F8DC9003D219A /* babbelu.lic.0166883f.password in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

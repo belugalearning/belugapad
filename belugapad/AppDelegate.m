@@ -22,8 +22,9 @@
 
 #import "AcapelaSetup.h"
 #import "AcapelaLicense.h"
-#include "evaluation.lic.h"
-#include "libs/Acapela/api/evaluation.lic.password"
+#import "babbelu.lic.h"
+#import "libs/Acapela/api/babbelu.lic.0166883f.password"
+
 
 @interface AppController()
 {

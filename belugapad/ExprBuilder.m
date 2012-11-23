@@ -169,6 +169,7 @@
         expressionRowsAreLarge=YES;
     }
     
+    numberMode=[pdef objectForKey:@"NUMBER_MODE"];
 }
 
 -(void)populateGW
@@ -191,6 +192,9 @@
     {
         SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
         [rows addObject:row];
+        
+        if(numberMode)
+            row.defaultNumbermode=numberMode;
         
         if(i>0 && expressionRowsAreLarge)
             row.isLarge = YES;

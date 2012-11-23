@@ -28,6 +28,7 @@
 @synthesize parserComponent;
 @synthesize baseNode;
 @synthesize isLarge;
+@synthesize defaultNumbermode;
 
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget
 {
@@ -38,6 +39,7 @@
         position=CGPointZero;
         forceVAlignTop=NO;
         isLarge=NO;
+        self.defaultNumbermode=@"number";
         containerMgrComponent=[[SGBtxeContainerMgr alloc] initWithGameObject:(SGGameObject*)self];
         rowLayoutComponent=[[SGBtxeRowLayout alloc] initWithGameObject:(SGGameObject*)self];
         parserComponent=[[SGBtxeParser alloc] initWithGameObject:(SGGameObject*)self];

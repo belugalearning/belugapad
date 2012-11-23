@@ -19,6 +19,7 @@
 
 @property (retain) NSMutableArray *children;
 @property (retain) SGBtxeContainerMgr *containerMgrComponent;
+@property (retain) NSString *defaultNumbermode;
 
 @end
 

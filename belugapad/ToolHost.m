@@ -2163,6 +2163,10 @@ static float kTimeToHintToolTray=7.0f;
     descRow=row;
     row.position=ccp(cx, (cy*2) - 95);
 
+    NSString *numberMode=[pdef objectForKey:@"NUMBER_MODE"];
+    if(numberMode)
+        row.defaultNumbermode=numberMode;
+    
     //top down valign
     row.forceVAlignTop=YES;
     

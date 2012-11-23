@@ -188,6 +188,11 @@ const NSString *matchNumbers=@"0123456789";
         {
             on.usePicker=[[[usepicker stringValue] lowercaseString] isEqualToString:@"yes"];
         }
+        
+        if([element attributeForName:@"numbermode"])
+            on.numberMode=[[element attributeForName:@"numbermode"] stringValue];
+        else
+            on.numberMode=ParentGO.defaultNumbermode;
     
         on.enabled=[self enabledBoolFor:element];
         

@@ -72,16 +72,6 @@
     {
         tile.Selected=NO;
         
-        if(tile.myAnchor)
-        {
-            DWDotGridAnchorGameObject *anch=tile.myAnchor;
-            anch.tile=nil;
-//            anch.Disabled=NO;
-//            tile.myAnchor=nil;
-//            tile.myShape=nil;
-        }
-        
-        tile.myAnchor=nil;
 
         [tile.mySprite removeFromParentAndCleanup:YES];
         [tile.selectedSprite removeFromParentAndCleanup:YES];

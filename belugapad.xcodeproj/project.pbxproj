@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C03B6371649EDD600F74659 /* NodePlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C03B6361649EDD600F74659 /* NodePlay.m */; };
+		0C14ABE6165C13BE00D71276 /* UIView+UIView_DragLogPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C14ABE5165C13BE00D71276 /* UIView+UIView_DragLogPosition.m */; };
 		0C33EEBC15D4EE5900EA6A11 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 0C33EEB215D4EE5900EA6A11 /* ioapi.c */; };
 		0C33EEBD15D4EE5900EA6A11 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 0C33EEB415D4EE5900EA6A11 /* mztools.c */; };
 		0C33EEBE15D4EE5900EA6A11 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 0C33EEB615D4EE5900EA6A11 /* unzip.c */; };
@@ -443,6 +444,8 @@
 /* Begin PBXFileReference section */
 		0C03B6351649EDD600F74659 /* NodePlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePlay.h; sourceTree = "<group>"; };
 		0C03B6361649EDD600F74659 /* NodePlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePlay.m; sourceTree = "<group>"; };
+		0C14ABE4165C13BE00D71276 /* UIView+UIView_DragLogPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+UIView_DragLogPosition.h"; sourceTree = "<group>"; };
+		0C14ABE5165C13BE00D71276 /* UIView+UIView_DragLogPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+UIView_DragLogPosition.m"; sourceTree = "<group>"; };
 		0C33EEB115D4EE5900EA6A11 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		0C33EEB215D4EE5900EA6A11 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
 		0C33EEB315D4EE5900EA6A11 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
@@ -2708,6 +2711,8 @@
 				7FABE6BE14B661B400ED2D0C /* BLMath.m */,
 				7FC642921572F64A0043D575 /* BLFiles.h */,
 				7FC642931572F64A0043D575 /* BLFiles.m */,
+				0C14ABE4165C13BE00D71276 /* UIView+UIView_DragLogPosition.h */,
+				0C14ABE5165C13BE00D71276 /* UIView+UIView_DragLogPosition.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -3450,6 +3455,7 @@
 				7F817C3C165A750F00B291DA /* TransformUtils.m in Sources */,
 				7F817C3D165A750F00B291DA /* ZipUtils.m in Sources */,
 				55CD0507165AC1200040630A /* LDivision.m in Sources */,
+				0C14ABE6165C13BE00D71276 /* UIView+UIView_DragLogPosition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

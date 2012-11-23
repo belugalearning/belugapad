@@ -10,6 +10,13 @@
 #import "SGBtxeContainerMgr.h"
 #import "SGBtxeRowLayout.h"
 #import "SGBtxeParser.h"
+#import "SGBtxePlaceholder.h"
+#import "SGBtxeObjectIcon.h"
+#import "SGBtxeObjectText.h"
+#import "SGBtxeObjectNumber.h"
+#import "SGBtxeObjectOperator.h"
+#import "SGBtxeText.h"
+
 #import "global.h"
 
 @implementation SGBtxeRow
@@ -20,6 +27,7 @@
 @synthesize rowLayoutComponent;
 @synthesize parserComponent;
 @synthesize baseNode;
+@synthesize isLarge;
 
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget
 {
@@ -29,6 +37,7 @@
         size=CGSizeZero;
         position=CGPointZero;
         forceVAlignTop=NO;
+        isLarge=NO;
         containerMgrComponent=[[SGBtxeContainerMgr alloc] initWithGameObject:(SGGameObject*)self];
         rowLayoutComponent=[[SGBtxeRowLayout alloc] initWithGameObject:(SGGameObject*)self];
         parserComponent=[[SGBtxeParser alloc] initWithGameObject:(SGGameObject*)self];
@@ -73,6 +82,12 @@
     
     //render each child
     for (id<Bounding, RenderObject> c in children) {
+        
+        if([((id<NSObject>)c) conformsToProtocol:@protocol(MovingInteractive)])
+            ((id<MovingInteractive>)c).isLargeObject=self.isLarge;
+        if([((id<NSObject>)c) isKindOfClass:[SGBtxePlaceholder class]])
+            ((SGBtxePlaceholder*)c).isLargeObject=self.isLarge;
+        
         [c setupDraw];
         
         //we could potentially do this separately (create, layout, attach) -- but for the moment
@@ -95,6 +110,33 @@
     for(id<Bounding> c in children)
     {
         c.position=c.position;
+    }
+}
+
+-(void)tagMyChildrenForIntro
+{
+    for(id c in children)
+    {
+        if([c isKindOfClass:[SGBtxeText class]])
+        {
+            [(SGBtxeObjectText*)c tagMyChildrenForIntro];
+        }
+        if([c isKindOfClass:[SGBtxeObjectText class]])
+        {
+            [(SGBtxeObjectText*)c tagMyChildrenForIntro];
+        }
+        if([c isKindOfClass:[SGBtxeObjectIcon class]])
+        {
+            [(SGBtxeObjectIcon*)c tagMyChildrenForIntro];
+        }
+        if([c isKindOfClass:[SGBtxeObjectNumber class]])
+        {
+            [(SGBtxeObjectNumber*)c tagMyChildrenForIntro];
+        }
+        if([c isKindOfClass:[SGBtxeObjectOperator class]])
+        {
+            [(SGBtxeObjectOperator*)c tagMyChildrenForIntro];
+        }
     }
 }
 

@@ -27,6 +27,8 @@
 @synthesize mount;
 @synthesize hidden;
 
+@synthesize isLargeObject;
+
 @synthesize targetNumber, usePicker;
 
 
@@ -63,10 +65,10 @@
     dupe.position=self.position;
     dupe.tag=[[self.tag copy] autorelease];
     dupe.enabled=self.enabled;
-    
     dupe.prefixText=[[self.prefixText copy] autorelease];
     dupe.numberText=[[self.numberText copy] autorelease];
     dupe.suffixText=[[self.suffixText copy] autorelease];
+    dupe.isLargeObject=self.isLargeObject;
     
     return (id<MovingInteractive>)dupe;
 }
@@ -262,6 +264,7 @@
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime
 {
     [textRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];
+    [textBackgroundRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];
 }
 
 -(void)attachToRenderBase:(CCNode*)theRenderBase;
@@ -277,9 +280,19 @@
     [renderBase addChild:textRenderComponent.label];
 }
 
+-(void)tagMyChildrenForIntro
+{
+    [textRenderComponent.label setTag:3];
+    [textRenderComponent.label0 setTag:3];
+    [textRenderComponent.label setOpacity:0];
+    [textRenderComponent.label0 setOpacity:0];
+}
+
 -(void)setupDraw
 {
     if(self.hidden)return;
+    
+    textRenderComponent.useLargeAssets=self.isLargeObject;
     
     // text mode
     self.textRenderComponent.useAlternateFont=YES;

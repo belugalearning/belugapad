@@ -45,9 +45,9 @@
 
 //CCPickerView
 //#define kComponentWidth 54
-#define kComponentWidth 42
-#define kComponentHeight 32
-#define kComponentSpacing 10
+#define kComponentWidth 70
+#define kComponentHeight 50
+#define kComponentSpacing 7
 
 #define CORNER_TRAY_POS_X 700.0f
 #define CORNER_TRAY_POS_Y 460.0f
@@ -700,6 +700,11 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void) loadProblem
 {
+    trayWheelShowing=NO;
+    hasTrayWheel=NO;
+    numberPickerForThisProblem=NO;
+    metaQuestionForThisProblem=NO;
+
     // ---------------- TEAR DOWN ------------------------------------
     //tear down meta question stuff
     [self tearDownMetaQuestion];
@@ -1358,7 +1363,7 @@ static float kTimeToHintToolTray=7.0f;
             [row parseXML:answerLabelString];
             [row setupDraw];
             [row inflateZindex];
-            
+            [row tagMyChildrenForIntro];
 
             
 //            [answerLabel setString:answerLabelString];
@@ -1675,6 +1680,7 @@ static float kTimeToHintToolTray=7.0f;
 }
 -(void)doIncomplete
 {
+    evalShowCommit=NO;
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_incorrect_answer.wav")];
     timeBeforeUserInteraction=kDisableInteractionTime;
     isAnimatingIn=YES;
@@ -2071,13 +2077,14 @@ static float kTimeToHintToolTray=7.0f;
 
     trayLayerWheel=nil;
         
-    numberPickerForThisProblem=NO;
-    trayWheelShowing=NO;
+//    [numberPickerLayer removeAllChildrenWithCleanup:YES];
+    //numberPickerForThisProblem=NO;
+
     hasUsedPicker=NO;
     pickerViewSelection=nil;
     pickerView=nil;
-    hasTrayWheel=NO;
     hasUsedWheelTray=NO;
+    trayWheelShowing=NO;
 //    [numberPickerLayer release];
     numberPickerLayer=nil;
 }
@@ -2778,7 +2785,7 @@ static float kTimeToHintToolTray=7.0f;
     
     self.pickerView = [CCPickerView node];
     if(currentTool)
-        pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-130);
+        pickerView.position=ccp(lx-kComponentSpacing-(ovSprite.contentSize.width/2),ly-180);
     else
         pickerView.position=ccp(cx,cy);
     pickerView.dataSource = self;
@@ -2875,20 +2882,20 @@ static float kTimeToHintToolTray=7.0f;
     
     if(row<10)
     {
-        CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", row]fontName:@"Chango" fontSize:24];
+        CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", row]fontName:@"Chango" fontSize:32];
         [l setColor:ccc3(68,68,68)];
 
         return l;
     }
     else if(row==10)
     {
-        CCLabelTTF *l=[CCLabelTTF labelWithString:@"." fontName:@"Chango" fontSize:24];
+        CCLabelTTF *l=[CCLabelTTF labelWithString:@"." fontName:@"Chango" fontSize:32];
         [l setColor:ccc3(68,68,68)];
         return l;
     }
     else if(row==11)
     {
-        CCLabelTTF *l=[CCLabelTTF labelWithString:@"-" fontName:@"Chango" fontSize:24];
+        CCLabelTTF *l=[CCLabelTTF labelWithString:@"-" fontName:@"Chango" fontSize:32];
         [l setColor:ccc3(68,68,68)];
         return l;        
     }

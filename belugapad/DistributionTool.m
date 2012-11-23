@@ -28,6 +28,7 @@
 #import "InteractionFeedback.h"
 #import "SimpleAudioEngine.h"
 #import "SGBtxeProtocols.h"
+#import "SGBtxeObjectIcon.h"
 
 #define DRAW_DEPTH 1
 static float kTimeSinceAction=7.0f;
@@ -566,21 +567,35 @@ static float kDistanceBetweenBlocks=70.0f;
 {
     NSArray *thesePositions=[NumberLayout physicalLayoutAcrossToNumber:thisMany withSpacing:52.0f];
     
+    CGRect thisRect=CGRectNull;
+    
+    for(int i=0;i<thisMany;i++)
+    {
+        CGPoint point=[[thesePositions objectAtIndex:i]CGPointValue];
+        CGRect rect=CGRectMake((thisPosition.x+point.x)-30,(thisPosition.y+point.y)-30,60,60);
+        thisRect=CGRectUnion(thisRect, rect);
+    }
+    
     for(int i=0;i<[activeRects count];i++)
     {
         CGRect r=[[activeRects objectAtIndex:i]CGRectValue];
         
         //NSLog(@"this rect: %@, this position %@", NSStringFromCGRect(r), NSStringFromCGPoint(thisPosition));
-        for(int p=0;p<thisMany;p++)
-        {
-            CGPoint curPos=[[thesePositions objectAtIndex:p]CGPointValue];
-            curPos=ccp(curPos.x+thisPosition.x, curPos.y+thisPosition.y);
-            
-            if(CGRectContainsPoint(r, curPos))
+
+            if(CGRectIntersectsRect(thisRect, r))
             {
                 return YES;
             }
-        }
+//        for(int p=0;p<thisMany;p++)
+//        {
+//            CGPoint curPos=[[thesePositions objectAtIndex:p]CGPointValue];
+//            curPos=ccp(curPos.x+thisPosition.x, curPos.y+thisPosition.y);
+//            
+//            if(CGRectContainsPoint(r, curPos))
+//            {
+//                return YES;
+//            }
+//        }
     }
 
     return NO;
@@ -724,7 +739,8 @@ static float kDistanceBetweenBlocks=70.0f;
 
 -(void)removeBlockByCage
 {
-    
+    if([dockType isEqualToString:@"15"])return;
+    if([dockType isEqualToString:@"30"])return;
     if(currentPickupObject)
     {
         for(id<Cage>cge in addedCages)
@@ -732,6 +748,9 @@ static float kDistanceBetweenBlocks=70.0f;
             if([cge.BlockType isEqualToString:currentPickupObject.blockType])
                 cage=cge;
         }
+        
+        if([dockType isEqualToString:@"Infinite-Random"])
+            cage=[addedCages objectAtIndex:0];
         
         id<Pairable>thisGO=currentPickupObject;
         CCSprite *s=currentPickupObject.mySprite;
@@ -1499,12 +1518,12 @@ static float kDistanceBetweenBlocks=70.0f;
     // check there's a pickupobject
     NSArray *allGWCopy=[NSArray arrayWithArray:gw.AllGameObjects];
     
+    if(!spawnedNewObj && hasMovedCagedBlock)
+        [cage spawnNewBlock];
+    
     if(location.y<cage.Position.y+(cage.MySprite.contentSize.height/2) && problemHasCage)
     {
         [self removeBlockByCage];
-        
-        if(!spawnedNewObj && hasMovedCagedBlock)
-            [cage spawnNewBlock];
         
         [self setTouchVarsToOff];
         return;
@@ -1592,7 +1611,7 @@ static float kDistanceBetweenBlocks=70.0f;
             {
                 id<ShapeContainer>LayoutCont=currentPickupObject.MyContainer;
                 
-                if(currentPickupObject==[LayoutCont.BlocksInShape objectAtIndex:0])
+                if(currentPickupObject==[LayoutCont.BlocksInShape objectAtIndex:0] && [LayoutCont.BlocksInShape count]>2)
                 {
                     id<Moveable>object1=[LayoutCont.BlocksInShape objectAtIndex:1];
                     object1.Position=ccp(object1.Position.x, object1.Position.y+52);
@@ -1878,24 +1897,22 @@ static float kDistanceBetweenBlocks=70.0f;
         int solutionsExpected=[d count];
         int solutionsFound=0;
         
+        
         for(id cont in gw.AllGameObjects)
         {
-            NSString *thisKey=nil;
-            
-            if([cont conformsToProtocol:@protocol(Interactive)])
-                thisKey=((id<Interactive>)cont).tag;
             
             if([cont conformsToProtocol:@protocol(ShapeContainer)])
-            { 
-                
+            {
                 id <ShapeContainer> thisCont=cont;
-                if([d objectForKey:thisKey])
+                
+                NSLog(@"BTXE Label tag %@", ((id<Interactive>)thisCont.BTXELabel).tag);
+                
+                if([d objectForKey:((SGBtxeObjectIcon*)thisCont.BTXELabel).tag])
                 {
-                    
-                    int thisVal=[[d objectForKey:thisKey] intValue];
-                    NSLog(@"this group %d, required for key %d", [thisCont.BlocksInShape count], thisVal);
+                    int thisVal=[[d objectForKey:((SGBtxeObjectIcon*)thisCont.BTXELabel).tag] intValue];
                     if([thisCont.BlocksInShape count]==thisVal)
                         solutionsFound++;
+                    
                 }
             }
         }

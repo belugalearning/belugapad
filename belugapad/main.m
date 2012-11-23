@@ -8,6 +8,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#include "TargetConditionals.h"
 
 int main(int argc, char *argv[]) {
     

@@ -19,6 +19,13 @@
 #import "TestFlight.h"
 #import "SimpleAudioEngine.h"
 
+#import "AcapelaSetup.h"
+#import "AcapelaLicense.h"
+
+#import "babbelu.lic.h"
+#import "libs/Acapela/api/babbelu.lic.0166883f.password"
+
+
 @interface AppController()
 {
 @private
@@ -183,7 +190,55 @@
 	// Assume that PVR images have premultiplied alpha
 	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
     
+    
+#if !(TARGET_IPHONE_SIMULATOR)
+    //Acapela TTS ---------------------------------------------------------------------
+    
+    // Create the default UserDico for the voice delivered in the bundle
+	NSError * error;
+	
+	// Get the application Documents folder
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+	
+	// Creates heather folder if it doesn't exist already
+	NSString * dirDicoPath = [documentsDirectory stringByAppendingString:[NSString stringWithFormat:@"/rachel"]];
+	[[NSFileManager defaultManager] createDirectoryAtPath:dirDicoPath withIntermediateDirectories: YES attributes:nil error: &error];
+	
+	NSString * fullDicoPath = [documentsDirectory stringByAppendingString:[NSString stringWithFormat:@"/rachel/default.userdico"]];
+	// Check the file doesn't already exists to avoid to erase its content
+	if (![[NSFileManager defaultManager] fileExistsAtPath: fullDicoPath]) {
+		
+		// Create the file
+		if (![@"UserDico\n" writeToFile:fullDicoPath atomically:YES encoding:NSISOLatin1StringEncoding error:&error]) {
+			NSLog(@"%@",error);
+		}
+    }
+    
+    //Init the License
+    MyAcaLicense = [[AcapelaLicense alloc] initLicense:[[NSString alloc] initWithCString:babLicense encoding:NSASCIIStringEncoding] user:uid.userId passwd:uid.passwd];
+	
+    //Init the AcapelaSetup for voices enumeration and selection
+    SetupData = [[AcapelaSetup alloc] initialize];
+	
+    //Create an AcapelaSpeech instance with the first voice found and the license
+//    self.acaSpeech = [[AcapelaSpeech alloc] initWithVoice:SetupData.CurrentVoice license:MyAcaLicense];
+    self.acaSpeech=[[AcapelaSpeech alloc]initWithVoice:SetupData.CurrentVoice license:MyAcaLicense];
+	
+    //Set the AcapelaSpeech delegates in order to receive events (not needed if you don't want events)
+    //[MyAcaTTS setDelegate:self];
+    
+    //Acapela TTS ---------------------------------------------------------------------
+#endif
+    
     return YES;
+}
+
+-(void)speakString:(NSString*)speakThis
+{
+#if !(TARGET_IPHONE_SIMULATOR)
+    [self.acaSpeech startSpeakingString:speakThis];
+#endif
 }
 
 -(void)tearDownUI
@@ -374,6 +429,10 @@ void logMemUsage(void) {
     self.searchList=nil;
     
     self.lastJmapViewUState=nil;
+    if(SetupData)[SetupData release];
+//    if(MyAcaTTS)[MyAcaTTS release];
+    
+    self.acaSpeech=nil;
     
 	[window_ release];
 	[navController_ release];

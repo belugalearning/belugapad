@@ -22,6 +22,7 @@
 
 #import "AcapelaSetup.h"
 #import "AcapelaLicense.h"
+
 #import "babbelu.lic.h"
 #import "libs/Acapela/api/babbelu.lic.0166883f.password"
 

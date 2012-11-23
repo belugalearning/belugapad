@@ -225,7 +225,7 @@ typedef enum {
     gw.Blackboard.RenderLayer=mapLayer;
     
     gw.Blackboard.debugDrawNode=[[[CCDrawNode alloc] init] autorelease];
-    [mapLayer addChild:gw.Blackboard.debugDrawNode z:-1];
+//    [mapLayer addChild:gw.Blackboard.debugDrawNode z:-1];
     
 }
 

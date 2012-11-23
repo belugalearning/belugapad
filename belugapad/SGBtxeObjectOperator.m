@@ -24,6 +24,8 @@
 @synthesize mount;
 @synthesize hidden;
 
+@synthesize isLargeObject;
+
 -(SGBtxeObjectOperator*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
     if(self=[super initWithGameWorld:aGameWorld])
@@ -50,8 +52,10 @@
     dupe.text=[[self.text copy] autorelease];
     dupe.position=self.position;
     dupe.tag=[[self.tag copy] autorelease];
+    dupe.isLargeObject=self.isLargeObject;
     dupe.enabled=self.enabled;
     dupe.valueOperator=[[self.valueOperator copy] autorelease];
+    
     
     return (id<MovingInteractive>)dupe;
 }
@@ -144,10 +148,18 @@
     
 }
 
+-(void)tagMyChildrenForIntro
+{
+    [textRenderComponent.label setTag:3];
+    [textRenderComponent.label0 setTag:3];
+    [textRenderComponent.label setOpacity:0];
+    [textRenderComponent.label0 setOpacity:0];
+}
+
 -(void)setupDraw
 {
     if(self.hidden)return;
-    
+    textRenderComponent.useLargeAssets=self.isLargeObject;
     //text render to create it's label
     [textRenderComponent setupDraw];
     

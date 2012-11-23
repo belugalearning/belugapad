@@ -931,10 +931,10 @@
                 if(xpos==0)
                 {
                     CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", thisYVal] fontName:CHANGO fontSize:20.0f];
-                    [l setPosition:ccp(a.Position.x-50,a.Position.y+40)];
+                    [l setPosition:ccp(a.Position.x-40,a.Position.y+40)];
                     [l setTag:2];
                     [l setOpacity:0];
-                    [renderLayer addChild:l];
+                    [anchorLayer addChild:l];
                     //create y label with thisYVal
                     
                     
@@ -945,10 +945,10 @@
                 if(ypos==ylen-1)
                 {
                     CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", thisXVal] fontName:CHANGO fontSize:20.0f];
-                    [l setPosition:ccp(245+(xpos*75),475)];
+                    [l setPosition:ccp(260+(xpos*85),505)];
                     [l setTag:2];
                     [l setOpacity:0];
-                    [renderLayer addChild:l];
+                    [anchorLayer addChild:l];
                 }
                 
                 ypos--;
@@ -1553,6 +1553,8 @@
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
     
+    if(!CGRectContainsPoint(CGRectMake(700,460,324,308), location) && toolHost.pickerView)
+        return;
     
     if([gw.Blackboard.SelectedObjects count]>0)
     {

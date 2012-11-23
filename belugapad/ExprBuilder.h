@@ -73,7 +73,7 @@
     int curTokenIdx;
     
     NSMutableArray *expressionStringCache;
-    
+    BOOL expressionRowsAreLarge;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;

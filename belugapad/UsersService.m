@@ -657,6 +657,21 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     return user;
 }
 
+-(BOOL)hasEncounteredFeatureKey:(NSString*)key
+{
+    BOOL ret = NO;
+    
+    if (currentUserStateDatabase)
+    {
+        [currentUserStateDatabase open];
+        FMResultSet *rs = [currentUserStateDatabase executeQuery:@"SELECT 1 FROM FeatureKeys WHERE key = ?", key];
+        if ([rs next]) ret = YES;
+        [currentUserStateDatabase close];
+    }
+    
+    return ret;
+}
+
 -(void)dealloc
 {
     if (currentUser) [currentUser release];

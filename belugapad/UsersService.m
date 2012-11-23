@@ -672,6 +672,37 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     return ret;
 }
 
+-(void)addEncounterWithFeatureKey:(NSString*)key date:(NSDate*)date
+{
+    NSNumber *time = @([date timeIntervalSince1970]);
+    
+    [allUsersDatabase open];
+    [allUsersDatabase executeUpdate:@"INSERT INTO FeatureKeys(batch_id, user_id, key, date) VALUES(?,?,?,?)", loggingService.currentBatchId, currentUserId, key, time];
+    [allUsersDatabase close];
+    
+    [currentUserStateDatabase open];
+    FMResultSet *rs = [currentUserStateDatabase executeQuery:@"SELECT encounters FROM FeatureKeys WHERE key = ?", key];
+    if ([rs next])
+    {
+        NSString *jsonString = [rs objectForColumnIndex:0];
+        NSArray *keyEncounters;
+        if (jsonString)
+        {
+            keyEncounters = [[jsonString objectFromJSONString] arrayByAddingObject:time];
+        }
+        else // shouldn't get here
+        {
+            keyEncounters = @[time];
+        }
+        [currentUserStateDatabase executeUpdate:@"UPDATE FeatureKeys SET encounters = ? WHERE key = ?", [keyEncounters JSONString], key];
+    }
+    else
+    {
+        [currentUserStateDatabase executeUpdate:@"INSERT INTO FeatureKeys(key, encounters) VALUES(?,?)", key, [@[time] JSONString]];
+    }
+    [currentUserStateDatabase close];
+}
+
 -(void)dealloc
 {
     if (currentUser) [currentUser release];

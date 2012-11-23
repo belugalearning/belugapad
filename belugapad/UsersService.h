@@ -45,4 +45,5 @@ typedef enum {
 -(NSDictionary*)currentUserAllNodesState;
 
 -(BOOL)hasEncounteredFeatureKey:(NSString*)key;
+-(void)addEncounterWithFeatureKey:(NSString*)key date:(NSDate*)date;
 @end

@@ -46,7 +46,7 @@
 //CCPickerView
 //#define kComponentWidth 54
 #define kComponentWidth 70
-#define kComponentHeight 72
+#define kComponentHeight 50
 #define kComponentSpacing 7
 
 #define CORNER_TRAY_POS_X 700.0f

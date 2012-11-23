@@ -216,17 +216,21 @@
     SetupData = [[AcapelaSetup alloc] initialize];
 	
     //Create an AcapelaSpeech instance with the first voice found and the license
-    MyAcaTTS = [[AcapelaSpeech alloc] initWithVoice:SetupData.CurrentVoice license:MyAcaLicense];
+//    self.acaSpeech = [[AcapelaSpeech alloc] initWithVoice:SetupData.CurrentVoice license:MyAcaLicense];
+    self.acaSpeech=[[AcapelaSpeech alloc]initWithVoice:SetupData.CurrentVoice license:MyAcaLicense];
 	
     //Set the AcapelaSpeech delegates in order to receive events (not needed if you don't want events)
     //[MyAcaTTS setDelegate:self];
     
-    //Speak
-    [MyAcaTTS startSpeakingString:@"Test talking"];
     //Acapela TTS ---------------------------------------------------------------------
 
     
     return YES;
+}
+
+-(void)speakString:(NSString*)speakThis
+{
+    [self.acaSpeech startSpeakingString:speakThis];
 }
 
 -(void)tearDownUI
@@ -414,7 +418,9 @@ void logMemUsage(void) {
     [usersService release];
     
     if(SetupData)[SetupData release];
-    if(MyAcaTTS)[MyAcaTTS release];
+//    if(MyAcaTTS)[MyAcaTTS release];
+    
+    self.acaSpeech=nil;
     
     searchBar=nil;
     searchList=nil;

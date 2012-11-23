@@ -24,7 +24,7 @@
     
     NSDictionary *launchOptionsCache;
     
-    AcapelaSpeech *MyAcaTTS;
+//    AcapelaSpeech *MyAcaTTS;
     AcapelaLicense *MyAcaLicense;
     AcapelaSetup *SetupData;
 }
@@ -49,9 +49,13 @@
 @property (retain) UISearchBar *searchBar;
 @property (retain) UITableView *searchList;
 
+@property (retain) AcapelaSpeech *acaSpeech;
+
+
 -(void)proceedFromLoginViaIntro:(BOOL)viaIntro;
 -(void)returnToLogin;
 -(void)writeLogMemoryUsage;
 -(void)tearDownUI;
+-(void)speakString:(NSString*)speakThis;
 
 @end

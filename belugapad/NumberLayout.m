@@ -23,8 +23,11 @@
     {
         CGPoint p=CGPointMake(x, y);
         
-        if(y%10>0)p=CGPointMake(p.x, p.y+(0.5f * (float)(y%10)));
-        
+        if(y/-5)
+        {
+            p=CGPointMake(p.x, p.y-(0.33f * (float)(y/-5)));
+        }
+                
         [layout addObject:[NSValue valueWithCGPoint:p]];
         
         if (x==0) {

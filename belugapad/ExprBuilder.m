@@ -164,7 +164,10 @@
         if(ncardselectionof)numberCardRandomSelectionOf=[ncardselectionof intValue];
     }
     
-    expressionRowsAreLarge=YES;
+    if([evalType isEqualToString:@"SEQUENCE_ASC"] || [evalType isEqualToString:@"SEQUENCE_DESC"])
+    {
+        expressionRowsAreLarge=YES;
+    }
     
 }
 

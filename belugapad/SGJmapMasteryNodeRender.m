@@ -295,6 +295,9 @@ static int shadowSteps=5;
     
     //all nodes with data
     NSArray *fnodes= [[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"NODES"];
+    
+    NSLog(@"NODE COUNT: %d", ParentGO.ChildNodes.count);
+    
     //step all children
     for (int i=0; i<ParentGO.ChildNodes.count; i++)
     {
@@ -332,6 +335,8 @@ static int shadowSteps=5;
     islandSprite.position=ParentGO.Position;
     islandSprite.visible=ParentGO.Visible;
     [ParentGO.RenderBatch addChild:islandSprite z:-1];
+    
+    [gameWorld.Blackboard.debugDrawNode drawDot:ParentGO.Position radius:25.0f color:ccc4f(0, 0, 1, 0.25f)];
     
 //    //draw the volcano / big hill
 //    int vver=1+arc4random()%FEATURE_UNIQUE_VARIANTS;
@@ -408,6 +413,9 @@ static int shadowSteps=5;
         basesprite.position=ccpAdd([self halvedSubCentre:rawpos], ParentGO.Position);
         [ParentGO.RenderBatch addChild:basesprite z:5];
         [self.indexedBaseNodes addObject:basesprite];
+        
+        
+        [gameWorld.Blackboard.debugDrawNode drawDot:basesprite.position radius:5.0f color:ccc4f(1, 0, 0, 0.5f)];
         
 //        CCNode *node=[[CCNode alloc] init];
 //        node.position=[self subCentre:rawpos];

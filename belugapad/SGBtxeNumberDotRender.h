@@ -1,0 +1,26 @@
+//
+//  SGBtxeNumberDotRender.h
+//  belugapad
+//
+//  Created by gareth on 23/11/2012.
+//
+//
+
+#import "SGComponent.h"
+#import "SGBtxeProtocols.h"
+
+@interface SGBtxeNumberDotRender : SGComponent
+{
+    id<Value> ParentGO;
+}
+@property (retain) CCNode *baseNode;
+
+-(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime;
+-(void)setupDraw;
+-(void)updateDraw;
+-(void)inflateZindex;
+-(void)deflateZindex;
+-(void)updatePosition:(CGPoint)thePosition;
+
+
+@end

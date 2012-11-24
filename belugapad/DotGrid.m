@@ -880,7 +880,7 @@
         int tStartX=1;
         int tStartY=3;
         int tEndX=tStartX+xlen;
-        int tEndY=tStartY+ylen;
+        int tEndY=tStartY+ylen-1;
         
         for(int xi=baseStartX; xi>0; xi=xi/10)
         {
@@ -913,10 +913,10 @@
                 
                 shape.firstAnchor=[[dotMatrix objectAtIndex:tStartX] objectAtIndex:tStartY];
                 shape.lastAnchor=[[dotMatrix objectAtIndex:tEndX] objectAtIndex:tEndY];
-//                shape.firstBoundaryAnchor=a;
-//                shape.lastBoundaryAnchor=b;
-                shape.firstBoundaryAnchor=shape.firstAnchor;
-                shape.lastBoundaryAnchor=shape.lastAnchor;
+                shape.firstBoundaryAnchor=a;
+                shape.lastBoundaryAnchor=b;
+//                shape.firstBoundaryAnchor=shape.firstAnchor;
+//                shape.lastBoundaryAnchor=shape.lastAnchor;
 
                 shape.autoUpdateWheel=autoAddition;
                 shape.value=thisXVal*thisYVal;
@@ -1483,7 +1483,7 @@
                 [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
                 
                 w.RenderLayer=renderLayer;
-                w.Position=ccp(lx-140,(ly-120)-100*[numberWheels count]);
+                w.Position=ccp(lx-140,(ly-150)-185*[numberWheels count]);
                 w.AssociatedGO=s;
                 w.Components=numberWheelComponents;
                 w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",w.Components];
@@ -1529,7 +1529,7 @@
     
     w.RenderLayer=renderLayer;
     w.Components=numberWheelComponents;
-    w.Position=ccp(lx-140,(ly-120)-100*[numberWheels count]);
+    w.Position=ccp(lx-140,(ly-120)-200*[numberWheels count]);
     w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",w.Components];
     w.HasCountBubble=NO;
     w.Label=[CCLabelTTF labelWithString:@"Total" fontName:SOURCE fontSize:20.0f];

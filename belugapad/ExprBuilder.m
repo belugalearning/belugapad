@@ -293,12 +293,20 @@
         [row release];
     }
     
+    [self readOutProblemDescription];
     
     //if we have ncardrow, then add it to rows (at end for now?)
     if(ncardRow) [rows addObject:ncardRow];
     
 }
 
+-(void)readOutProblemDescription
+{
+    SGBtxeRow *descRow=[rows objectAtIndex:0];
+    toolHost.thisProblemDescription=[descRow returnRowStringForSpeech];
+    
+//    [toolHost readOutProblemDescription];
+}
 
 #pragma mark - touches events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

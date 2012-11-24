@@ -78,6 +78,7 @@
 @synthesize DynProblemParser;
 @synthesize pickerView;
 @synthesize CurrentBTXE;
+@synthesize thisProblemDescription;
 
 static float kMoveToNextProblemTime=0.5f;
 static float kDisableInteractionTime=0.5f;
@@ -700,6 +701,7 @@ static float kTimeToHintToolTray=7.0f;
     hasTrayWheel=NO;
     numberPickerForThisProblem=NO;
     metaQuestionForThisProblem=NO;
+    thisProblemDescription=nil;
 
     // ---------------- TEAR DOWN ------------------------------------
     //tear down meta question stuff
@@ -863,6 +865,9 @@ static float kTimeToHintToolTray=7.0f;
     [readProblemDesc setPosition:ccp(50,600)];
     [problemDefLayer addChild:readProblemDesc];
     
+    if(!thisProblemDescription)
+        thisProblemDescription=[descRow returnRowStringForSpeech];
+    
     [self readOutProblemDescription];
     
     [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_background_score.mp3") loop:YES];
@@ -918,8 +923,8 @@ static float kTimeToHintToolTray=7.0f;
 {
     AppController *ac=(AppController*)[[UIApplication sharedApplication] delegate];
     
-    NSLog(@"reading out: %@", [descRow returnRowStringForSpeech]);
-    [ac speakString:[descRow returnRowStringForSpeech]];
+//    NSLog(@"reading out: %@", [descRow returnRowStringForSpeech]);
+    [ac speakString:thisProblemDescription];
 }
 
 -(void)setupToolTrays:(NSDictionary*)withPdef

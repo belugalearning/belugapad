@@ -221,6 +221,7 @@ typedef enum {
 @property (retain) DProblemParser *DynProblemParser;
 @property (nonatomic, retain) CCPickerView *pickerView;
 @property (retain) id CurrentBTXE;
+@property (retain) NSString *thisProblemDescription;
 
 +(CCScene *) scene;
 
@@ -240,6 +241,7 @@ typedef enum {
 -(void)showHideCommit;
 -(void)showWheel;
 -(void)hideWheel;
+-(void)readOutProblemDescription;
 -(void)doUpdateOnTick:(ccTime)delta;
 -(void)doUpdateOnSecond:(ccTime)delta;
 -(void)doUpdateOnQuarterSecond:(ccTime)delta;

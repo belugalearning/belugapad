@@ -151,8 +151,11 @@ uint const kMaxConsecutiveSendFails = 3;
 }
 
 -(void)logEvent:(NSString*)eventType withAdditionalData:(NSObject*)additionalData
-{   
+{
     if (BL_LOGGING_DISABLED == problemAttemptLoggingSetting) return;
+    
+    BOOL restorePrevContextOnReturn = NO;
+    BL_LOGGING_CONTEXT prevContext = currentContext;
     
     if (BL_APP_START == eventType)
     {
@@ -200,6 +203,11 @@ uint const kMaxConsecutiveSendFails = 3;
     {
         currentContext = BL_USER_CONTEXT;
     }
+    else if (BL_USER_ENCOUNTER_FEATURE_KEY == eventType)
+    {
+        restorePrevContextOnReturn = YES;
+        currentContext = BL_USER_CONTEXT;
+    }
     else if (BL_EP_START == eventType)
     {
         currentContext = BL_EPISODE_CONTEXT;
@@ -231,7 +239,6 @@ uint const kMaxConsecutiveSendFails = 3;
     else if (BL_PA_START == eventType)
     {
         currentContext = BL_PROBLEM_ATTEMPT_CONTEXT;
-        if (BL_LOGGING_DISABLED == problemAttemptLoggingSetting) return;
         
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         Problem *p = ac.contentService.currentProblem;
@@ -339,7 +346,11 @@ uint const kMaxConsecutiveSendFails = 3;
             break;
     }
     
-    if (!doc) return; // error!
+    if (!doc)
+    {
+        if (restorePrevContextOnReturn) currentContext = prevContext;
+        return; // error!
+    }
     
     if (additionalData)
     {
@@ -397,8 +408,10 @@ uint const kMaxConsecutiveSendFails = 3;
     }
     
     NSData *docData = [doc JSONData];
-    if (!docData) return; //TODO: Log App error !
     
+    if (restorePrevContextOnReturn) currentContext = prevContext;
+    
+    if (!docData) return; //TODO: Log App error !
     [docData writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, [doc objectForKey:@"_id"]]
                  options:NSAtomicWrite
                    error:nil];

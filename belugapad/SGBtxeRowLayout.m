@@ -112,6 +112,7 @@
             thisMIo.originalPosition=c.position;
             [thisMIo.textBackgroundRenderComponent setColourOfBackgroundTo:kBTXEColour[colourIndex]];
             colourIndex++;
+            if(colourIndex>7)colourIndex=0;
         }
         
         //  increment cum width (w/ width + spacer)

@@ -175,8 +175,8 @@
     if(pogo.Label) { 
         [pogo.Label setColor:ccc3(0,0,0)];
         
-        if(pogo.Length==7)
-            [pogo.Label setColor:ccc3(255,255,255)];
+
+         [pogo.Label setColor:ccc3(255,255,255)];
         
         [pogo.Label setPosition:ccp((pogo.Length * 50) * 0.5f, 0)];
         if(gameWorld.Blackboard.inProblemSetup){

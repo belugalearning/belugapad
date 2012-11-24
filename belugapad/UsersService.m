@@ -138,6 +138,9 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
         FMResultSet *rs = [allUsersDatabase executeQuery:@"SELECT id, nick FROM users WHERE id = ?", urId];
         if ([rs next]) currentUser = [[self userFromCurrentRowOfResultSet:rs] retain];
         [allUsersDatabase close];
+        
+        if (![contentSource isEqualToString:@"DATABASE"]) return;
+        
         [loggingService logEvent:BL_USER_LOGIN withAdditionalData:nil];
         
         NSString *libraryDir = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -167,12 +170,18 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 
 -(void)ensureStateDbConsistency
 {
+    if (![contentSource isEqualToString:@"DATABASE"]) return;
+    
     // make every content node has a corresponding row on the Nodes table
     [currentUserStateDatabase open];
     
     NSMutableArray *stateNodeIds = [NSMutableArray array];
     FMResultSet *rs = [currentUserStateDatabase executeQuery:@"SELECT id FROM Nodes"];
-    while([rs next]) [stateNodeIds addObject:[rs stringForColumnIndex:0]];
+    while([rs next])
+    {
+        NSString *nodeId = [rs stringForColumnIndex:0];
+        if (nodeId) [stateNodeIds addObject:nodeId];
+    }
     
     NSArray *missingNodeIds = nil;
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
@@ -315,6 +324,9 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 
 -(void)downloadStateForUser:(NSString*)userId
 {
+    if (![contentSource isEqualToString:@"DATABASE"]) return;
+    
+    
     // device id (goes in the query string)
     NSString *installationId = [[NSUserDefaults standardUserDefaults] objectForKey:@"installationUUID"];
     
@@ -400,6 +412,8 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 
 -(void)applyDownloadedStateUpdatesForCurrentUser
 {
+    if (![contentSource isEqualToString:@"DATABASE"]) return;
+    
     // in event of a wait it should be very quick. We're just waiting for the method processDownloadedState to complete
     double maxWait = 3; // secs
     NSDate *startWait = [NSDate date];
@@ -641,6 +655,54 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     [user setValue:[rs stringForColumn:@"id"] forKey:@"id"];
     [user setValue:[rs stringForColumn:@"nick"] forKey:@"nickName"];
     return user;
+}
+
+-(BOOL)hasEncounteredFeatureKey:(NSString*)key
+{
+    BOOL ret = NO;
+    
+    if (currentUserStateDatabase)
+    {
+        [currentUserStateDatabase open];
+        FMResultSet *rs = [currentUserStateDatabase executeQuery:@"SELECT 1 FROM FeatureKeys WHERE key = ?", key];
+        if ([rs next]) ret = YES;
+        [currentUserStateDatabase close];
+    }
+    
+    return ret;
+}
+
+-(void)addEncounterWithFeatureKey:(NSString*)key date:(NSDate*)date
+{
+    NSNumber *time = @([date timeIntervalSince1970]);
+    
+    [loggingService logEvent:BL_USER_ENCOUNTER_FEATURE_KEY withAdditionalData:@{ @"key":key, @"date":time }];
+    
+    [allUsersDatabase open];
+    [allUsersDatabase executeUpdate:@"INSERT INTO FeatureKeys(batch_id, user_id, key, date) VALUES(?,?,?,?)", loggingService.currentBatchId, currentUserId, key, time];
+    [allUsersDatabase close];
+    
+    [currentUserStateDatabase open];
+    FMResultSet *rs = [currentUserStateDatabase executeQuery:@"SELECT encounters FROM FeatureKeys WHERE key = ?", key];
+    if ([rs next])
+    {
+        NSString *jsonString = [rs objectForColumnIndex:0];
+        NSArray *keyEncounters;
+        if (jsonString)
+        {
+            keyEncounters = [[jsonString objectFromJSONString] arrayByAddingObject:time];
+        }
+        else // shouldn't get here
+        {
+            keyEncounters = @[time];
+        }
+        [currentUserStateDatabase executeUpdate:@"UPDATE FeatureKeys SET encounters = ? WHERE key = ?", [keyEncounters JSONString], key];
+    }
+    else
+    {
+        [currentUserStateDatabase executeUpdate:@"INSERT INTO FeatureKeys(key, encounters) VALUES(?,?)", key, [@[time] JSONString]];
+    }
+    [currentUserStateDatabase close];
 }
 
 -(void)dealloc

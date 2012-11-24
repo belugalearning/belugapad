@@ -18,7 +18,7 @@
 	<integer>3</integer>
 	<key>EXPR_STAGES</key>
 	<array>
-		<string>&lt;b:t&gt;Place some numbers&lt;/b:t&gt;</string>
+		<string>&lt;b:t&gt;Place some numbers&lt;/b:t&gt;&lt;b:t&gt;Place some numbers&lt;/b:t&gt;&lt;b:t&gt;Place some numbers&lt;/b:t&gt;&lt;b:t&gt;Place some numbers&lt;/b:t&gt;&lt;b:t&gt;Place some numbers&lt;/b:t&gt;&lt;b:t&gt;Place some numbers&lt;/b:t&gt;&lt;b:t&gt;Place some numbers&lt;/b:t&gt;</string>
 		<string>&lt;b:ph /&gt;&lt;b:ph /&gt;&lt;b:ph /&gt;</string>
 	</array>
 </dict>

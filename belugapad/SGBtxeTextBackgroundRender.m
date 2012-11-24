@@ -102,10 +102,10 @@
     }
     
     m.scaleX=size.width / m.contentSize.width;
-    m.scaleY=size.height / m.contentSize.height;
+    //m.scaleY=size.height / m.contentSize.height;
     
-    lh.scaleY=size.height / m.contentSize.height;
-    rh.scaleY=size.height / m.contentSize.height;
+    //lh.scaleY=size.height / m.contentSize.height;
+    //rh.scaleY=size.height / m.contentSize.height;
     
     [self.backgroundNode setPosition:ccp(0, -3)];
     [lh setPosition:ccp(-((m.contentSize.width/2)*m.scaleX)-(lh.contentSize.width/2),0)];

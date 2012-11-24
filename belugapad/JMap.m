@@ -224,6 +224,9 @@ typedef enum {
     
     gw.Blackboard.RenderLayer=mapLayer;
     
+    gw.Blackboard.debugDrawNode=[[[CCDrawNode alloc] init] autorelease];
+//    [mapLayer addChild:gw.Blackboard.debugDrawNode z:-1];
+    
 }
 
 -(void)populateImageCache
@@ -1027,6 +1030,8 @@ typedef enum {
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [ac speakString:@"you touched me!"];
+    
     isDragging=YES;
     
     //drop any UI state
@@ -1034,6 +1039,12 @@ typedef enum {
     
     UITouch *touch=[touches anyObject];
     CGPoint l=[touch locationInView:[touch view]];
+    
+    if (![[touch view] isKindOfClass:[CCGLView class]])
+    {
+        return;
+    }
+    
     l=[[CCDirector sharedDirector] convertToGL:l];
     
     touchCount+=touches.count;

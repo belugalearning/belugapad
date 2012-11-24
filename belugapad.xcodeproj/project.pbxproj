@@ -56,6 +56,7 @@
 		3395A5FE164F092500492FC2 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 3395A5FD164F092500492FC2 /* Default-Landscape@2x~ipad.png */; };
 		339804841661157300589106 /* 72_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 339804831661157300589106 /* 72_icon.png */; };
 		339804871661157A00589106 /* 144_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 339804861661157A00589106 /* 144_icon.png */; };
+		33FF5F15166133860077EEA3 /* tts-replace.plist in Resources */ = {isa = PBXBuildFile; fileRef = 33FF5F14166133860077EEA3 /* tts-replace.plist */; };
 		5501947215C038300067E22C /* SGFbuilderChunk.m in Sources */ = {isa = PBXBuildFile; fileRef = 5501947115C038300067E22C /* SGFbuilderChunk.m */; };
 		5501FC4C15D929EC007E124A /* SGDtoolCage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5501FC4B15D929EC007E124A /* SGDtoolCage.m */; };
 		5502A72115BEC576002CE180 /* SGFractionBuilderChunkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5502A72015BEC575002CE180 /* SGFractionBuilderChunkManager.m */; };
@@ -536,6 +537,7 @@
 		3395A5FD164F092500492FC2 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
 		339804831661157300589106 /* 72_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 72_icon.png; sourceTree = "<group>"; };
 		339804861661157A00589106 /* 144_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 144_icon.png; sourceTree = "<group>"; };
+		33FF5F14166133860077EEA3 /* tts-replace.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "tts-replace.plist"; sourceTree = "<group>"; };
 		5501947015C038300067E22C /* SGFbuilderChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFbuilderChunk.h; sourceTree = "<group>"; };
 		5501947115C038300067E22C /* SGFbuilderChunk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFbuilderChunk.m; sourceTree = "<group>"; };
 		5501FC4A15D929EC007E124A /* SGDtoolCage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGDtoolCage.h; sourceTree = "<group>"; };
@@ -2062,6 +2064,7 @@
 				7F5113E514A9EE63001AF372 /* iTunesArtwork */,
 				7FABE6A114B4BF0F00ED2D0C /* templatedefs-general.plist */,
 				552478651536BF5C00BA5C4E /* tooldef.plist */,
+				33FF5F14166133860077EEA3 /* tts-replace.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -3121,6 +3124,7 @@
 				339804841661157300589106 /* 72_icon.png in Resources */,
 				339804871661157A00589106 /* 144_icon.png in Resources */,
 				558ADA3616611B250000C448 /* tts-objects.plist in Resources */,
+				33FF5F15166133860077EEA3 /* tts-replace.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

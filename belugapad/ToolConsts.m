@@ -63,7 +63,7 @@ const float kNumberPickerNumberSpaceBetweenSpritesProp=0.005f;
 
 const CGRect kPauseMenuLogOut={{8.0f,717.0f},{120.0f,43.0f}};
 const CGRect kPauseMenuMenu={{410.0f,458.0f},{200.0f,85.0f}};
-const CGRect kPauseMenuReset={{455.0f,358.0f},{120.0f,100.0f}};
+const CGRect kPauseMenuReset={{455.0f,358.0f},{12.0f,100.0f}};
 const CGRect kPauseMenuContinue={{410.0f,268.0f},{210.0f,90.0f}};
 const CGRect kPauseMenuMute={{750.0f,228.0f},{85.0f,80.0f}};
 

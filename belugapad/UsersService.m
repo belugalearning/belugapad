@@ -676,6 +676,8 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
 {
     NSNumber *time = @([date timeIntervalSince1970]);
     
+    [loggingService logEvent:BL_USER_ENCOUNTER_FEATURE_KEY withAdditionalData:@{ @"key":key, @"date":time }];
+    
     [allUsersDatabase open];
     [allUsersDatabase executeUpdate:@"INSERT INTO FeatureKeys(batch_id, user_id, key, date) VALUES(?,?,?,?)", loggingService.currentBatchId, currentUserId, key, time];
     [allUsersDatabase close];

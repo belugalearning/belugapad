@@ -1227,6 +1227,7 @@ static float kTimeToHintToolTray=7.0f;
     [problemIncomplete runAction:[InteractionFeedback stampAction]];
     [contextProgressLayer addChild:problemIncomplete];
     showingProblemIncomplete=YES;
+    evalShowCommit=YES;
     
     [self showBlackOverlay];
     
@@ -2349,7 +2350,7 @@ static float kTimeToHintToolTray=7.0f;
         }
     }
     
-    if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn)
+    if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn && commitBtn.visible)
     {
         //remove any trays
         [self removeAllTrays];

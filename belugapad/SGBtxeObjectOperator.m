@@ -83,6 +83,28 @@
     valueOperator=theValueOperator;
     
     self.text=theValueOperator;
+    if([theValueOperator isEqualToString:@"/"])
+        self.text=@"%";
+}
+
+-(NSString*)returnMyText
+{
+    NSString *myText=nil;
+    
+    myText=self.text;
+    
+    if([self.text isEqualToString:@"+"])
+        myText=@"plus";
+    if([self.text isEqualToString:@"-"])
+        myText=@"minus";
+    if([self.text isEqualToString:@"x"])
+        myText=@"times by";
+    if([self.text isEqualToString:@"%"])
+        myText=@"divided by";
+    if([self.text isEqualToString:@"="])
+        myText=@"equals";
+    
+    return myText;
 }
 
 -(CGPoint)worldPosition

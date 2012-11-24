@@ -153,6 +153,11 @@
             rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeText*)c returnMyText]];
         }
         
+        if([c isKindOfClass:[SGBtxeObjectText class]])
+        {
+            rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectText*)c returnMyText]];
+        }
+        
         if([c isKindOfClass:[SGBtxeObjectNumber class]])
         {
             rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectNumber*)c numberText]];
@@ -161,6 +166,11 @@
         if([c isKindOfClass:[SGBtxeObjectIcon class]])
         {
             rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectIcon*)c returnMyText]];
+        }
+        
+        if([c isKindOfClass:[SGBtxeObjectOperator class]])
+        {
+            rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectOperator*)c returnMyText]];
         }
         
     }

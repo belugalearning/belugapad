@@ -1083,7 +1083,7 @@ typedef enum {
         {
             [self testForNodeTouchAt:lOnMap];
         }
-        else
+        else if(touchCount==1)
         {
             //look for double tap
             if(lastTapTime<1.0f)

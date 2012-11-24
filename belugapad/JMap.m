@@ -824,6 +824,9 @@ typedef enum {
     underwaterLastMapPos=mapLayer.position;
     setUnderwaterLastMapPos=YES;
     
+    //udpdate tap timer
+    lastTapTime+=delta;
+    
 //    //scrolling
 //    float friction=0.85f;
 //    
@@ -1080,9 +1083,20 @@ typedef enum {
         {
             [self testForNodeTouchAt:lOnMap];
         }
-        
-    //    [daemon setTarget:l];
-    //    [daemon setRestingPoint:l];
+        else
+        {
+            //look for double tap
+            if(lastTapTime<1.0f)
+            {
+                //zoom to tapped point
+                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_zooming_map.wav")];
+                [self zoomToCityViewAtPoint:l];
+                didJustChangeZoom=YES;
+            }
+            
+            lastTap=l;
+            lastTapTime=0;
+        }
         
         //assume touch didn't start in the node map
         touchStartedInNodeMap=NO;

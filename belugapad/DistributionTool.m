@@ -639,7 +639,7 @@ static float kDistanceBetweenBlocks=70.0f;
             CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/distribution/DT_area.png")];
             [s setPosition:ccp(startXPos+(thisPos*s.contentSize.width),startYPos+(thisRow*s.contentSize.height))];
             [s setOpacity:areaOpacity];
-            [self.ForeLayer addChild:s z:0];
+            [self.BkgLayer addChild:s z:0];
             
             thisEvalArea=CGRectUnion(thisEvalArea, s.boundingBox);
             

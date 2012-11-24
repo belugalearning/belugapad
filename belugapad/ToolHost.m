@@ -859,6 +859,12 @@ static float kTimeToHintToolTray=7.0f;
     
     evalShowCommit=YES;
     
+    readProblemDesc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/speakdesc.png")];
+    [readProblemDesc setPosition:ccp(50,600)];
+    [problemDefLayer addChild:readProblemDesc];
+    
+    [self readOutProblemDescription];
+    
     [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_background_score.mp3") loop:YES];
 }
 -(void)addCommitButton
@@ -906,12 +912,6 @@ static float kTimeToHintToolTray=7.0f;
     [self setProblemDescription:labelDesc];
     
     [self addCommitButton];
-    
-    [self readOutProblemDescription];
-    
-    readProblemDesc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/speakdesc.png")];
-    [readProblemDesc setPosition:ccp(50,600)];
-    [problemDefLayer addChild:readProblemDesc];
 }
 
 -(void)readOutProblemDescription

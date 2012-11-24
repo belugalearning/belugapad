@@ -60,6 +60,7 @@
     [self writeLogMemoryUsage];
     
     launchOptionsCache=launchOptions;
+    speechReplacement=[[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/tts-replace.plist")]retain];
     
     // Init the window
     window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -237,6 +238,14 @@
 -(void)speakString:(NSString*)speakThis
 {
 #if !(TARGET_IPHONE_SIMULATOR)
+    
+    speakThis=[speakThis uppercaseString];
+    
+    for(NSString *k in [speechReplacement allKeys])
+    {
+        speakThis=[speakThis stringByReplacingOccurrencesOfString:k withString:[speechReplacement objectForKey:k]];
+    }
+    
     [self.acaSpeech startSpeakingString:speakThis];
 #endif
 }

@@ -3,12 +3,84 @@
 <plist version="1.0">
 <dict>
 	<key>thing_1</key>
-	<string>dikfore</string>
+	<string>zubey</string>
 	<key>thing_2</key>
-	<string>buttfore</string>
+	<string>zillabrow</string>
 	<key>thing_3</key>
-	<string>slutfore</string>
+	<string>susabelly</string>
 	<key>thing_4</key>
-	<string>badass motherfucker</string>
+	<string>zubeychin</string>
+	<key>thing_5</key>
+	<string>zibrinose</string>
+	<key>30_bubble</key>
+	<string>slider</string>
+	<key>30_commit</key>
+	<string>OK button</string>
+	<key>30_mq_true</key>
+	<string>button with the correct answer on it</string>
+	<key>30_Q</key>
+	<string>question mark card</string>
+	<key>30_pv_block</key>
+	<string>block</string>
+	<key>30_pv_grid</key>
+	<string>container</string>
+	<key>30_pv_dock_with_block</key>
+	<string>dock</string>
+	<key>30_Counter_Start</key>
+	<string>start button</string>
+	<key>30_Counter_Stop</key>
+	<string>stop button</string>
+	<key>30_DG_sq</key>
+	<string>square</string>
+	<key>30_NW_2col</key>
+	<string>number wheel</string>
+	<key>30_pause</key>
+	<string>pause button</string>
+	<key>30_DT_Shape_Circle</key>
+	<string>circle</string>
+	<key>30_DT_Shape_Ellipse</key>
+	<string>ellipse </string>
+	<key>30_DT_Shape_Square</key>
+	<string>square</string>
+	<key>30_DT_Shape_RoundedSquare</key>
+	<string>rounded square</string>
+	<key>30_DT_Shape_House</key>
+	<string>house</string>
+	<key>30_TT_Grid_Block</key>
+	<string>square</string>
+	<key>30_nl_jump_forward</key>
+	<string>jump button</string>
+	<key>30_pipe_in</key>
+	<string>bottom pipe</string>
+	<key>30_pipe_out</key>
+	<string>output pipe</string>
+	<key>30_NB_grid</key>
+	<string>container</string>
+	<key>30_TT_Tile_Black</key>
+	<string>black square</string>
+	<key>30_NB_Block</key>
+	<string>bar</string>
+	<key>30_NL_Yellow</key>
+	<string>yellow marker</string>
+	<key>1</key>
+	<string>1</string>
+	<key>2</key>
+	<string>2</string>
+	<key>3</key>
+	<string>3</string>
+	<key>4</key>
+	<string>4</string>
+	<key>5</key>
+	<string>5</string>
+	<key>6</key>
+	<string>6</string>
+	<key>7</key>
+	<string>7</string>
+	<key>8</key>
+	<string>8</string>
+	<key>9</key>
+	<string>9</string>
+	<key>10</key>
+	<string>10</string>
 </dict>
 </plist>

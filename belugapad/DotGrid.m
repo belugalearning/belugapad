@@ -106,17 +106,17 @@
     }
     if(disableDrawing && drawMode==kAnyStartAnchorValid)
     {
-        if(isMovingDown)
-            [anchorLayer setPosition:ccp(anchorLayer.position.x,anchorLayer.position.y+10)];
-            
-        if(isMovingUp)
-            [anchorLayer setPosition:ccp(anchorLayer.position.x,anchorLayer.position.y-10)];
-            
-        if(isMovingLeft)
-            [anchorLayer setPosition:ccp(anchorLayer.position.x+10,anchorLayer.position.y)];
-        
-        if(isMovingRight)
-            [anchorLayer setPosition:ccp(anchorLayer.position.x-10,anchorLayer.position.y)];
+//        if(isMovingDown)
+//            [anchorLayer setPosition:ccp(anchorLayer.position.x,anchorLayer.position.y+10)];
+//            
+//        if(isMovingUp)
+//            [anchorLayer setPosition:ccp(anchorLayer.position.x,anchorLayer.position.y-10)];
+//            
+//        if(isMovingLeft)
+//            [anchorLayer setPosition:ccp(anchorLayer.position.x+10,anchorLayer.position.y)];
+//        
+//        if(isMovingRight)
+//            [anchorLayer setPosition:ccp(anchorLayer.position.x-10,anchorLayer.position.y)];
     }
     
 //    if(!sumWheel && [numberWheels count]>=2)
@@ -288,16 +288,16 @@
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     
 
-    float xStartPos=spaceBetweenAnchors*1.8;
+    float xStartPos=spaceBetweenAnchors*1.4;
     
-    int anchorsOnX=(lx-spaceBetweenAnchors*2)/spaceBetweenAnchors;
+    int anchorsOnX=(lx-spaceBetweenAnchors)/spaceBetweenAnchors;
     int anchorsOnY=(ly-spaceBetweenAnchors*2)/spaceBetweenAnchors;
 
     
-    if(disableDrawing && drawMode==kAnyStartAnchorValid){
-        anchorsOnX=anchorsOnX*3;
-        anchorsOnY=anchorsOnY*3;
-    }
+//    if(disableDrawing && drawMode==kAnyStartAnchorValid){
+//        anchorsOnX=anchorsOnX*3;
+//        anchorsOnY=anchorsOnY*3;
+//    }
     for (int iRow=0; iRow<anchorsOnX; iRow++)
     {
         NSMutableArray *currentCol=[[NSMutableArray alloc]init];
@@ -1670,13 +1670,13 @@
     NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
     
     // if they can move the layer and haven't picked up a new block
-    if(movingLayer && !hitDragBlock)
-    {
-        CGPoint diff=ccpSub(location, prevLoc);
-        [anchorLayer setPosition:ccpAdd(anchorLayer.position, diff)];
-        
-        return;
-    }
+//    if(movingLayer && !hitDragBlock)
+//    {
+//        CGPoint diff=ccpSub(location, prevLoc);
+//        [anchorLayer setPosition:ccpAdd(anchorLayer.position, diff)];
+//        
+//        return;
+//    }
     if(hitDragBlock)
     {
         [newBlock setPosition:location];

@@ -9,6 +9,7 @@
 #import "SGBtxeObjectIcon.h"
 #import "SGBtxeIconRender.h"
 #import "SGBtxeTextBackgroundRender.h"
+#import "global.h"
 
 @implementation SGBtxeObjectIcon
 
@@ -68,6 +69,16 @@
 -(void)doUpdate:(ccTime)delta
 {
     
+}
+
+-(NSString*)returnMyText
+{
+    NSDictionary *iconNames=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/tts-objects.plist")];
+    if([iconNames objectForKey:self.tag])
+        return [iconNames objectForKey:self.tag];
+    
+    else
+        return @"generic icon";
 }
 
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime

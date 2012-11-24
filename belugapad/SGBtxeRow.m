@@ -119,7 +119,7 @@
     {
         if([c isKindOfClass:[SGBtxeText class]])
         {
-            [(SGBtxeObjectText*)c tagMyChildrenForIntro];
+            [(SGBtxeText*)c tagMyChildrenForIntro];
         }
         if([c isKindOfClass:[SGBtxeObjectText class]])
         {
@@ -138,6 +138,27 @@
             [(SGBtxeObjectOperator*)c tagMyChildrenForIntro];
         }
     }
+}
+
+-(NSString*)returnRowStringForSpeech
+{
+    NSString *rowString=@"";
+    
+    for(id c in children)
+    {
+        if([c isKindOfClass:[SGBtxeText class]])
+        {
+            rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeText*)c returnMyText]];
+        }
+        
+        if([c isKindOfClass:[SGBtxeObjectIcon class]])
+        {
+            rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectIcon*)c returnMyText]];
+        }
+        
+    }
+    
+    return rowString;
 }
 
 -(void)animateAndMoveToPosition:(CGPoint)thePosition

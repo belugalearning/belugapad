@@ -70,6 +70,8 @@
 
 @property (retain) SGBtxeTextRender *textRenderComponent;
 
+-(NSString*)returnMyText;
+
 @end
 
 

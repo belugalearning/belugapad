@@ -906,6 +906,20 @@ static float kTimeToHintToolTray=7.0f;
     [self setProblemDescription:labelDesc];
     
     [self addCommitButton];
+    
+    [self readOutProblemDescription];
+    
+    readProblemDesc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/speakdesc.png")];
+    [readProblemDesc setPosition:ccp(50,600)];
+    [problemDefLayer addChild:readProblemDesc];
+}
+
+-(void)readOutProblemDescription
+{
+    AppController *ac=(AppController*)[[UIApplication sharedApplication] delegate];
+    
+    NSLog(@"reading out: %@", [descRow returnRowStringForSpeech]);
+    [ac speakString:[descRow returnRowStringForSpeech]];
 }
 
 -(void)setupToolTrays:(NSDictionary*)withPdef
@@ -2289,7 +2303,11 @@ static float kTimeToHintToolTray=7.0f;
             return;
         }
     }
-
+    else if(CGRectContainsPoint(readProblemDesc.boundingBox, location))
+    {
+        [self readOutProblemDescription];
+        return;
+    }
     else
     {
         if((trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(CGRectMake(CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308), location)){

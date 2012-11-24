@@ -19,5 +19,6 @@
 @property (retain) SGBtxeIconRender *iconRenderComponent;
 
 -(void)tagMyChildrenForIntro;
+-(NSString*)returnMyText;
 
 @end

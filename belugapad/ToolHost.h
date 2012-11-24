@@ -126,6 +126,8 @@ typedef enum {
     CCLabelTTF *problemDescLabel;
     ProblemEvalMode evalMode;
     
+    
+    CCSprite *readProblemDesc;
     CCSprite *commitBtn;
     CCSprite *metaArrow;
     

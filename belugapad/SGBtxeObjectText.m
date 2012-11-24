@@ -153,6 +153,11 @@
     [textRenderComponent.label0 setOpacity:0];
 }
 
+-(NSString*)returnMyText
+{
+    return self.text;
+}
+
 -(void)setupDraw
 {
     if(self.hidden)return;

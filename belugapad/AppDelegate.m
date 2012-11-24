@@ -239,7 +239,7 @@
 {
 #if !(TARGET_IPHONE_SIMULATOR)
     
-    speakThis=[speakThis uppercaseString];
+    speakThis=[speakThis lowercaseString];
     
     for(NSString *k in [speechReplacement allKeys])
     {

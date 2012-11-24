@@ -701,7 +701,7 @@ static float kTimeToHintToolTray=7.0f;
     hasTrayWheel=NO;
     numberPickerForThisProblem=NO;
     metaQuestionForThisProblem=NO;
-    thisProblemDescription=nil;
+    self.thisProblemDescription=nil;
 
     // ---------------- TEAR DOWN ------------------------------------
     //tear down meta question stuff
@@ -866,7 +866,7 @@ static float kTimeToHintToolTray=7.0f;
     [problemDefLayer addChild:readProblemDesc];
     
     if(!thisProblemDescription)
-        thisProblemDescription=[descRow returnRowStringForSpeech];
+        self.thisProblemDescription=[descRow returnRowStringForSpeech];
     
     [self readOutProblemDescription];
     
@@ -924,7 +924,9 @@ static float kTimeToHintToolTray=7.0f;
     AppController *ac=(AppController*)[[UIApplication sharedApplication] delegate];
     
 //    NSLog(@"reading out: %@", [descRow returnRowStringForSpeech]);
-    [ac speakString:thisProblemDescription];
+    NSString *readString=[[thisProblemDescription copy] autorelease];
+    
+    [ac speakString:readString];
 }
 
 -(void)setupToolTrays:(NSDictionary*)withPdef

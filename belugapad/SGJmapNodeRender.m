@@ -37,17 +37,17 @@
 {
     if(messageType==kSGvisibilityChanged)
     {
-        nodeSprite.visible=ParentGO.Visible;
+        nodeSprite.visible=YES;
     }
     
     if(messageType==kSGzoomOut)
     {
-        [nodeSprite setVisible:YES];
-        [nodeSprite setOpacity:50];
+//        [nodeSprite setVisible:YES];
+//        [nodeSprite setOpacity:50];
     }
     if(messageType==kSGzoomIn)
     {
-        [nodeSprite setOpacity:255];
+//        [nodeSprite setOpacity:255];
     }
     if(messageType==kSGretainOffsetPosition)
     {
@@ -103,7 +103,7 @@
     }
     
     [nodeSprite setPosition:ParentGO.Position];
-    [nodeSprite setVisible:ParentGO.Visible];
+    [nodeSprite setVisible:YES];
     [ParentGO.RenderBatch addChild:nodeSprite z:6];
     
     if(ParentGO.flip) nodeSprite.flipX=YES;

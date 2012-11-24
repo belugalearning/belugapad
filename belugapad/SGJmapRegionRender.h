@@ -20,6 +20,7 @@
     int perimCount;
     
     CCLabelTTF *rlabel;
+    CCLabelTTF *rlabelshadow;
 }
 -(void)draw:(int)z;
 

@@ -24,5 +24,6 @@
 -(void)updateLabel;
 -(void)inflateZindex;
 -(void)deflateZindex;
+-(void)tagMyChildrenForIntro;
 
 @end

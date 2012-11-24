@@ -19,5 +19,6 @@
 @property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;
 
 -(void)tagMyChildrenForIntro;
+-(NSString*)returnMyText;
 
 @end

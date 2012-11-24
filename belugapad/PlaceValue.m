@@ -3339,15 +3339,15 @@ static float kTimeToCageShake=7.0f;
                     }
                     else if(explodeMode && isNegativeProblem)
                     {
+                        DWPlaceValueNetGameObject *n=nil;
                         
-                        if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                        if(gw.Blackboard.PriorityDropObject)
+                            n=(DWPlaceValueNetGameObject*)gw.Blackboard.PriorityDropObject;
+                        else
+                            n=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
+                        
+                        if([n isKindOfClass:[DWPlaceValueNetGameObject class]])
                         {
-                            DWPlaceValueNetGameObject *n=nil;
-                            
-                            if(gw.Blackboard.PriorityDropObject)
-                                n=(DWPlaceValueNetGameObject*)gw.Blackboard.PriorityDropObject;
-                            else
-                                n=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
                                 
                             if(!blocksToDestroy)
                                 blocksToDestroy=[[[NSMutableArray alloc]init]autorelease];
@@ -3358,7 +3358,7 @@ static float kTimeToCageShake=7.0f;
                                 n.MountedObject=b;
                             else if(n.MountedObject && !n.CancellingObject)
                                 n.CancellingObject=b;
-                            else
+                            else if(!n.MountedObject && !n.CancellingObject)
                                 n.MountedObject=b;
                             
                             

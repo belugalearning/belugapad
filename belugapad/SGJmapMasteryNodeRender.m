@@ -76,7 +76,7 @@ static int shadowSteps=5;
     {
         nodeSprite.visible=ParentGO.Visible;
         labelSprite.visible=ParentGO.Visible;
-        islandSprite.visible=ParentGO.Visible;
+        //islandSprite.visible=ParentGO.Visible;
         islandShadowSprite.visible=ParentGO.Visible;
         labelShadowSprite.visible=ParentGO.Visible;
         
@@ -91,9 +91,10 @@ static int shadowSteps=5;
         //[self setPointScalesAt:REGION_ZOOM_LEVEL];
         [nodeSprite setVisible:NO];
         [labelSprite setVisible:YES];
-        islandSprite.visible=YES;
+//        islandSprite.visible=YES;
         islandShadowSprite.visible=NO;
         labelShadowSprite.visible=NO;
+        labelSprite.visible=NO;
         ParentGO.Visible=YES;
         zoomedOut=YES;
         
@@ -104,6 +105,8 @@ static int shadowSteps=5;
     }
     if(messageType==kSGzoomIn)
     {
+        islandSprite.visible=YES;
+        
         [self setPointScalesAt:1.0f];
         //islandSprite.visible=ParentGO.Visible;
         
@@ -333,7 +336,7 @@ static int shadowSteps=5;
     
     islandSprite=[CCSprite spriteWithSpriteFrameName:baseSpriteName];
     islandSprite.position=ParentGO.Position;
-    islandSprite.visible=ParentGO.Visible;
+    islandSprite.visible=YES;
     [ParentGO.RenderBatch addChild:islandSprite z:-1];
     
     [gameWorld.Blackboard.debugDrawNode drawDot:ParentGO.Position radius:25.0f color:ccc4f(0, 0, 1, 0.25f)];
@@ -484,20 +487,22 @@ static int shadowSteps=5;
     NSString *labelText=ParentGO.UserVisibleString;
     
     CGPoint labelCentre=ccpAdd(ccp(75, -125), ParentGO.Position);
-    labelShadowSprite=[CCLabelTTF labelWithString:labelText fontName:@"Chango" fontSize:16.0f];
+    labelShadowSprite=[CCLabelTTF labelWithString:labelText fontName:@"Chango" fontSize:20.0f];
     [labelShadowSprite setPosition:ccpAdd(labelCentre, ccp(0, -3))];
     [labelShadowSprite setRotation:[[islandData objectForKey:ISLAND_LABEL_ROT] floatValue]];
     [labelShadowSprite setColor:ccc3(0, 0, 0)];
     [labelShadowSprite setOpacity:0.2f*255];
+    [labelShadowSprite setRotation:-8.0f];
     [labelShadowSprite setVisible:ParentGO.Visible];
     
     if(ParentGO.Disabled) [labelShadowSprite setOpacity:100];
     [ParentGO.RenderBatch.parent addChild:labelShadowSprite z:3];
-    labelSprite=[CCLabelTTF labelWithString:labelText fontName:@"Chango" fontSize:16.0f];
+    labelSprite=[CCLabelTTF labelWithString:labelText fontName:@"Chango" fontSize:20.0f];
     [labelSprite setPosition:labelCentre];
     [labelSprite setRotation:[[islandData objectForKey:ISLAND_LABEL_ROT] floatValue]];
     [labelSprite setVisible:ParentGO.Visible];
     [labelSprite setOpacity:0.7f*255];
+    [labelSprite setRotation:-8.0f];
     if(ParentGO.Disabled) [labelSprite setOpacity:100];
     [ParentGO.RenderBatch.parent addChild:labelSprite z:3];
     

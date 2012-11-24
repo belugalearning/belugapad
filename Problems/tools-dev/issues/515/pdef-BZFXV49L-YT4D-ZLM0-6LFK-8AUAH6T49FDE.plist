@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>MASTERY</key>
+	<true/>
+	<key>TOOL_KEY</key>
+	<string>ExprBuilder</string>
+	<key>INTERNAL_DESCRIPTION</key>
+	<string>Arrange these distances from sea level from deepest to tallest.</string>
+	<key>EVAL_MODE</key>
+	<string>1</string>
+	<key>EVAL_TYPE</key>
+	<string>SEQUENCE_ASC</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Arrange these distances from sea level from deepest to highest.</string>
+	<key>NUMBER_CARD_RANDOMISE</key>
+	<true/>
+	<key>EXPR_STAGES</key>
+	<array>
+		<string>&lt;b:ot tag=&quot;c&quot;&gt;{$w}&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;f&quot;&gt;{$z}&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;a&quot;&gt;{$u}&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;d&quot;&gt;{$x}&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;b&quot;&gt;{$v}&lt;/b:ot&gt;
+&lt;b:ot tag=&quot;e&quot;&gt;{$y}&lt;/b:ot&gt;</string>
+		<string>&lt;b:ph targetTag=&quot;a&quot; /&gt;
+&lt;b:ph targetTag=&quot;b&quot; /&gt;
+&lt;b:ph targetTag=&quot;c&quot; /&gt;
+&lt;b:ph targetTag=&quot;d&quot; /&gt;
+&lt;b:ph targetTag=&quot;e&quot; /&gt;
+&lt;b:ph targetTag=&quot;f&quot; /&gt;</string>
+	</array>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$u</string>
+			<key>MIN</key>
+			<string>-1500</string>
+			<key>MAX</key>
+			<string>-1100</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$v</string>
+			<key>MIN</key>
+			<string>-1000</string>
+			<key>MAX</key>
+			<string>-800</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$w</string>
+			<key>MIN</key>
+			<string>-600</string>
+			<key>MAX</key>
+			<string>-400</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>100</string>
+			<key>MAX</key>
+			<string>300</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>600</string>
+			<key>MAX</key>
+			<string>800</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$z</string>
+			<key>MIN</key>
+			<string>900</string>
+			<key>MAX</key>
+			<string>1000</string>
+		</dict>
+	</array>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@object</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>apples</string>
+				<string>sweets</string>
+				<string>pens</string>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

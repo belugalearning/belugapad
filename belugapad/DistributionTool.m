@@ -1983,7 +1983,7 @@ return NO;
         [toolHost doWinning];
     }
     else {
-        if(evalMode==kProblemEvalOnCommit)[self resetProblem];
+        if(evalMode==kProblemEvalOnCommit)[toolHost doIncomplete];
     }
     
 }

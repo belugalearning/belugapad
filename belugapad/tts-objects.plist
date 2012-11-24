@@ -12,6 +12,10 @@
 	<string>zubeychin</string>
 	<key>thing_5</key>
 	<string>zibrinose</string>
+	<key>thing_s</key>
+	<string>person</string>
+	<key>thing_p</key>
+	<string>people</string>
 	<key>30_bubble</key>
 	<string>slider</string>
 	<key>30_commit</key>

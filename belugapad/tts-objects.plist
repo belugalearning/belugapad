@@ -19,7 +19,7 @@
 	<key>30_mq_true</key>
 	<string>button with the correct answer on it</string>
 	<key>30_Q</key>
-	<string>question mark card</string>
+	<string>what?</string>
 	<key>30_pv_block</key>
 	<string>block</string>
 	<key>30_pv_grid</key>
@@ -37,15 +37,15 @@
 	<key>30_pause</key>
 	<string>pause button</string>
 	<key>30_DT_Shape_Circle</key>
-	<string>circle</string>
+	<string>circles</string>
 	<key>30_DT_Shape_Ellipse</key>
-	<string>ellipse </string>
+	<string>ellipses</string>
 	<key>30_DT_Shape_Square</key>
-	<string>square</string>
+	<string>squares</string>
 	<key>30_DT_Shape_RoundedSquare</key>
-	<string>rounded square</string>
+	<string>rounded squares</string>
 	<key>30_DT_Shape_House</key>
-	<string>house</string>
+	<string>houses</string>
 	<key>30_TT_Grid_Block</key>
 	<string>square</string>
 	<key>30_nl_jump_forward</key>

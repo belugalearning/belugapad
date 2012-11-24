@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>thing_1</key>
-	<string>zubey</string>
+	<string>red</string>
 	<key>thing_2</key>
-	<string>zillabrow</string>
+	<string>orange</string>
 	<key>thing_3</key>
-	<string>susabelly</string>
+	<string>yellow</string>
 	<key>thing_4</key>
-	<string>zubeychin</string>
+	<string>green</string>
 	<key>thing_5</key>
-	<string>zibrinose</string>
+	<string>purple</string>
 	<key>thing_s</key>
 	<string>person</string>
 	<key>thing_p</key>
 	<string>people</string>
 	<key>30_bubble</key>
-	<string>slider</string>
+	<string>the slider</string>
 	<key>30_commit</key>
 	<string>OK button</string>
 	<key>30_mq_true</key>

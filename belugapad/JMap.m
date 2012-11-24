@@ -1185,7 +1185,7 @@ typedef enum {
         else if(scaleChange>2 && zoomedOut)
         {
             [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_zooming_map.wav")];
-            CGPoint aPos=[BLMath AddVector:t1b toVector:[BLMath MultiplyVector:[BLMath SubtractVector:t1b from:t1a] byScalar:0.5f]];
+            CGPoint aPos=[BLMath AddVector:t1a toVector:[BLMath MultiplyVector:[BLMath SubtractVector:t1b from:t1a] byScalar:0.5f]];
             
             [self zoomToCityViewAtPoint:aPos];
             didJustChangeZoom=YES;

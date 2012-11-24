@@ -27,6 +27,8 @@
 @property BOOL renderAsDots;
 @property (retain) SGBtxeNumberDotRender *numberDotRenderComponent;
 
+@property (retain) NSString *numberMode;
+
 -(void)tagMyChildrenForIntro;
 
 @end

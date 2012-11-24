@@ -27,6 +27,7 @@
 -(void)deflateZindex;
 -(void)relayoutChildrenToWidth:(float)width;
 -(void)animateAndMoveToPosition:(CGPoint)thePosition;
+-(NSString*)returnRowStringForSpeech;
 
 
 @end

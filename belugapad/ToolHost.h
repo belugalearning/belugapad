@@ -126,6 +126,8 @@ typedef enum {
     CCLabelTTF *problemDescLabel;
     ProblemEvalMode evalMode;
     
+    
+    CCSprite *readProblemDesc;
     CCSprite *commitBtn;
     CCSprite *metaArrow;
     
@@ -233,7 +235,6 @@ typedef enum {
 -(void) resetProblem;
 -(void) showPauseMenu;
 -(void) checkPauseTouches:(CGPoint)location;
--(void) returnToMenu;
 -(void) showProblemCompleteMessage;
 -(void) showProblemIncompleteMessage;
 -(void)showHideCommit;

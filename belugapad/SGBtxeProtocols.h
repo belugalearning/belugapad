@@ -19,6 +19,7 @@
 
 @property (retain) NSMutableArray *children;
 @property (retain) SGBtxeContainerMgr *containerMgrComponent;
+@property (retain) NSString *defaultNumbermode;
 
 @end
 
@@ -69,6 +70,8 @@
 @property (retain) NSString *text;
 
 @property (retain) SGBtxeTextRender *textRenderComponent;
+
+-(NSString*)returnMyText;
 
 @end
 

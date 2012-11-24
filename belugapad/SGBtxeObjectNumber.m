@@ -34,6 +34,7 @@
 
 @synthesize numberDotRenderComponent;
 @synthesize renderAsDots;
+@synthesize numberMode;
 
 -(SGBtxeObjectNumber*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -47,6 +48,8 @@
         enabled=YES;
         interactive=YES;
         tag=@"";
+        
+        numberMode=@"numeral";
         
         size=CGSizeZero;
         position=CGPointZero;
@@ -84,6 +87,26 @@
 -(id<MovingInteractive>)createADuplicate
 {
     return [self createADuplicateIntoGameWorld:gameWorld];
+}
+
+-(void)setNumberMode:(NSString *)theNumberMode
+{
+    if(numberMode==theNumberMode)return;
+    if(numberMode)[numberMode release];
+    numberMode=theNumberMode;
+    [numberMode retain];
+    
+    numberMode=theNumberMode;
+    
+    if([theNumberMode isEqualToString:@"numicon"])
+        renderAsDots=YES;
+    else
+        renderAsDots=NO;
+}
+
+-(NSString*)numberMode
+{
+    return numberMode;
 }
 
 -(void)handleMessage:(SGMessageType)messageType
@@ -341,7 +364,7 @@
     
     if(self.renderAsDots)
     {
-        self.size=self.numberDotRenderComponent.baseNode.contentSize;
+        self.size=self.numberDotRenderComponent.size;
     }
     else
     {

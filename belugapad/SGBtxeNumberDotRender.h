@@ -14,6 +14,7 @@
     id<Value> ParentGO;
 }
 @property (retain) CCNode *baseNode;
+@property (readonly) CGSize size;
 
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime;
 -(void)setupDraw;

@@ -66,7 +66,7 @@
     BOOL isHoldingObject;
     id<MovingInteractive> heldObject;
 }
-
+-(void)returnToMap;
 @end
 
 @implementation ToolHost
@@ -631,9 +631,7 @@ static float kTimeToHintToolTray=7.0f;
     }
     else
     {
-        [contentService quitPipelineTracking];
-        
-        [[CCDirector sharedDirector] replaceScene:[JMap scene]];
+        [self returnToMap];
     }
 }
 
@@ -692,9 +690,7 @@ static float kTimeToHintToolTray=7.0f;
         contentService.fullRedraw=YES;
         contentService.lightUpProgressFromLastNode=YES;
         
-        [contentService quitPipelineTracking];
-        
-        [[CCDirector sharedDirector] replaceScene:[JMap scene]];
+        [self returnToMap];
     }
 }
 
@@ -910,6 +906,20 @@ static float kTimeToHintToolTray=7.0f;
     [self setProblemDescription:labelDesc];
     
     [self addCommitButton];
+    
+    [self readOutProblemDescription];
+    
+    readProblemDesc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/speakdesc.png")];
+    [readProblemDesc setPosition:ccp(50,600)];
+    [problemDefLayer addChild:readProblemDesc];
+}
+
+-(void)readOutProblemDescription
+{
+    AppController *ac=(AppController*)[[UIApplication sharedApplication] delegate];
+    
+    NSLog(@"reading out: %@", [descRow returnRowStringForSpeech]);
+    [ac speakString:[descRow returnRowStringForSpeech]];
 }
 
 -(void)setupToolTrays:(NSDictionary*)withPdef
@@ -1137,7 +1147,7 @@ static float kTimeToHintToolTray=7.0f;
         [loggingService logEvent:BL_PA_EXIT_TO_MAP withAdditionalData:nil];
         [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @0 }];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-        [self returnToMenu];
+        [self returnToMap];
     }
 //    if(CGRectContainsPoint(kPauseMenuLogOut, location))
 //    {
@@ -1181,10 +1191,11 @@ static float kTimeToHintToolTray=7.0f;
 
 #pragma mark - completion and user flow
 
--(void)returnToMenu
+-(void)returnToMap
 {
     [TestFlight passCheckpoint:@"QUITTING_TOOLHOST_FOR_JMAP"];
-    
+    [contentService quitPipelineTracking];
+    [self unscheduleAllSelectors];
     [[CCDirector sharedDirector] replaceScene:[JMap scene]];
 }
 
@@ -2163,6 +2174,10 @@ static float kTimeToHintToolTray=7.0f;
     descRow=row;
     row.position=ccp(cx, (cy*2) - 95);
 
+    NSString *numberMode=[pdef objectForKey:@"NUMBER_MODE"];
+    if(numberMode)
+        row.defaultNumbermode=numberMode;
+    
     //top down valign
     row.forceVAlignTop=YES;
     
@@ -2292,7 +2307,11 @@ static float kTimeToHintToolTray=7.0f;
             return;
         }
     }
-
+    else if(CGRectContainsPoint(readProblemDesc.boundingBox, location))
+    {
+        [self readOutProblemDescription];
+        return;
+    }
     else
     {
         if((trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(CGRectMake(CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308), location)){

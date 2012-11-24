@@ -61,6 +61,8 @@
     int numberCardRowInterval;
     BOOL numberCardRandomOrder;
     int numberCardRandomSelectionOf;
+
+    NSString *numberMode;
     
     SGBtxeRow *ncardRow;
     

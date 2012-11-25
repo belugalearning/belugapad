@@ -211,7 +211,7 @@
             [row parseXML:[exprStages objectAtIndex:1]];
         }
         
-        if(i>0 && rowcount<AUTO_LARGE_ROW_Y_MAX && [row.children count]<=AUTO_LARGE_ROW_X_MAX)
+        if(i>0 && rowcount<=AUTO_LARGE_ROW_Y_MAX && [row.children count]<=AUTO_LARGE_ROW_X_MAX)
             row.isLarge = YES;
         
         [row setupDraw];

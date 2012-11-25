@@ -1515,9 +1515,9 @@ static float kTimeToCageShake=7.0f;
         if(amountAdded>0)
         {
             if([(DWPlaceValueBlockGameObject*)gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
-                [l setString:[NSString stringWithFormat:@"+ %g", amountAdded]];
+                [l setString:[NSString stringWithFormat:@"+ %g", amountAdded*lastPickedUpBlockCount]];
             if([(DWPlaceValueBlockGameObject*)gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
-                [l setString:[NSString stringWithFormat:@"- %g", amountAdded]];
+                [l setString:[NSString stringWithFormat:@"- %g", amountAdded*lastPickedUpBlockCount]];
         }
 //        if(valueOnGridNow==initedValueOnGrid)
 //        {
@@ -1525,11 +1525,11 @@ static float kTimeToCageShake=7.0f;
 //        }
         if(amountAdded<0)
         {
-            [l setString:[NSString stringWithFormat:@"%g", amountAdded]];
+            [l setString:[NSString stringWithFormat:@"%g", amountAdded*lastPickedUpBlockCount]];
             if([(DWPlaceValueBlockGameObject*)gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
-                [l setString:[NSString stringWithFormat:@"%g", amountAdded]];
+                [l setString:[NSString stringWithFormat:@"%g", amountAdded*lastPickedUpBlockCount]];
             if([(DWPlaceValueBlockGameObject*)gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
-                [l setString:[NSString stringWithFormat:@"+ %g", fabsf(amountAdded)]];
+                [l setString:[NSString stringWithFormat:@"+ %g", fabsf(amountAdded*lastPickedUpBlockCount)]];
             
         }
         
@@ -3045,6 +3045,9 @@ static float kTimeToCageShake=7.0f;
     
     if(debugLogging)
         NSLog(@"THIS TOUCH END CONSISTS (%d touches)", [touches count]);
+    
+    
+    lastPickedUpBlockCount=[pickupObjects count];
     
     // set the touch end position for evaluation
     touchEndPos = location;

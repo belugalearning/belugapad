@@ -142,6 +142,7 @@
     
     int lastCount;
     int totalCountedInProblem;
+    int lastPickedUpBlockCount;
     float maxSumReachedByUser;
     float expectedCount;
     float totalCount;

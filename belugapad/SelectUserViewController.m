@@ -181,27 +181,28 @@
     
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil)
+    if (!cell)
     {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.backgroundColor = [UIColor clearColor];
         cell.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:indexPath.row % 2 == 0 ? @"/login-images/table_cell_black.png" : @"/login-images/table_cell_transparent"]] autorelease];
         cell.selectionStyle = UITableViewCellSeparatorStyleNone;
-        if (!nickName)
-        {
-            // just a placeholder cell to maintain the alternating cell background look
-            cell.selectedBackgroundView = nil;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        else
-        {
-            cell.selectedBackgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/table_cell_orange.png"]] autorelease];
-            cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        }
         cell.backgroundView.contentMode = UIViewContentModeLeft;
         cell.textLabel.contentMode = UIViewContentModeLeft;
         cell.textLabel.font = [UIFont fontWithName:@"Chango" size:24];
         cell.textLabel.textColor = [UIColor whiteColor];
+    }
+    
+    if (!nickName)
+    {
+        // just a placeholder cell to maintain the alternating cell background look
+        cell.selectedBackgroundView = nil;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    else
+    {
+        cell.selectedBackgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/table_cell_orange.png"]] autorelease];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
     cell.textLabel.text = nickName ? nickName : @"";

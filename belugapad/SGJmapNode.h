@@ -8,6 +8,7 @@
 
 #import "SGGameObject.h"
 #import "SGJmapObjectProtocols.h"
+#import "UserNodeState.h"
 
 @class SGJmapNodeRender;
 @class SGJmapMasteryNode;

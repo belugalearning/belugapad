@@ -26,6 +26,10 @@
     }
 }
 
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+    return (action == @selector(paste:)) ? NO : [super canPerformAction:action withSender:sender];
+}
 
 - (void)dealloc {
     [numPadViewController release];

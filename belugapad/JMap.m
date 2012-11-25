@@ -1086,7 +1086,7 @@ typedef enum {
         else if(touchCount==1)
         {
             //look for double tap
-            if(lastTapTime<1.0f)
+            if(lastTapTime<0.5f)
             {
                 //zoom to tapped point
                 [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_zooming_map.wav")];

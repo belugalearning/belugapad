@@ -162,6 +162,7 @@
 {
     if(self.hidden)return;
     textRenderComponent.useLargeAssets=self.isLargeObject;
+    textRenderComponent.useAlternateFont=YES;
     //text render to create it's label
     [textRenderComponent setupDraw];
     

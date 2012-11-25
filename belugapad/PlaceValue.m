@@ -261,7 +261,18 @@ static float kTimeToCageShake=7.0f;
             
         }
     }
-    
+    if(showColumnTotalCount)
+    {
+        for(int i=0;i<numberOfColumns;i++)
+        {
+            float v=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
+            CCSprite *s=[totalCountSprites objectAtIndex:i];
+            CCLabelTTF *l=[s.children objectAtIndex:0];
+            
+            [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];
+        }
+        
+    }
     
 //    if(showMoreOrLess && [solutionType isEqualToString:TOTAL_COUNT])
 //    {
@@ -1372,19 +1383,6 @@ static float kTimeToCageShake=7.0f;
         }
     }
     
-    if(showColumnTotalCount)
-    {
-        for(int i=0;i<numberOfColumns;i++)
-        {
-            float v=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
-            CCSprite *s=[totalCountSprites objectAtIndex:i];
-            CCLabelTTF *l=[s.children objectAtIndex:0];
-            
-            [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];
-        }
-        
-    }
-    
     // define our solution type to check against
     
     if([solutionType isEqualToString:COUNT_SEQUENCE])
@@ -1401,7 +1399,8 @@ static float kTimeToCageShake=7.0f;
         [self calcProblemTotalCount];
         if((totalCount>maxSumReachedByUser) && !gw.Blackboard.inProblemSetup)
         {
-            if (maxSumReachedByUser<=expectedCount)[toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
+            // comment out all tool sharding - if there are already shards on the screen when ur commits correct ans, too much score awarded
+            //if (maxSumReachedByUser<=expectedCount)[toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
             maxSumReachedByUser=totalCount;
         }
         
@@ -1492,8 +1491,9 @@ static float kTimeToCageShake=7.0f;
     if(gw.Blackboard.SelectedObjects.count > totalCountedInProblem)
     {
         totalCountedInProblem=gw.Blackboard.SelectedObjects.count;
-        if(!(totalCountedInProblem > [[solutionsDef objectForKey:SOLUTION_VALUE] intValue]) && !gw.Blackboard.inProblemSetup)
-            [toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
+        // comment out all tool sharding - if there are already shards on the screen when ur commits correct ans, too much score awarded
+        /*if(!(totalCountedInProblem > [[solutionsDef objectForKey:SOLUTION_VALUE] intValue]) && !gw.Blackboard.inProblemSetup)
+            [toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];*/
     }
     
     lastCount = gw.Blackboard.SelectedObjects.count;

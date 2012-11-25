@@ -108,6 +108,19 @@
                 <key>sourceSize</key>
                 <string>{30,30}</string>
             </dict>
+            <key>30_DT_Shape_Circle_s.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{147,194},{30,30}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{30,30}}</string>
+                <key>sourceSize</key>
+                <string>{30,30}</string>
+            </dict>
             <key>30_DT_Shape_Diamond.png</key>
             <dict>
                 <key>frame</key>
@@ -368,6 +381,32 @@
                 <key>sourceSize</key>
                 <string>{30,30}</string>
             </dict>
+            <key>30_pv_block_p.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{34,256},{30,30}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{30,30}}</string>
+                <key>sourceSize</key>
+                <string>{30,30}</string>
+            </dict>
+            <key>30_pv_block_s.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{34,256},{30,30}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{30,30}}</string>
+                <key>sourceSize</key>
+                <string>{30,30}</string>
+            </dict>
             <key>30_pv_dock_with_block.png</key>
             <dict>
                 <key>frame</key>
@@ -573,7 +612,7 @@
             <key>size</key>
             <string>{256,512}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:d79b7ecf8cef6f4651e48338100adb86$</string>
+            <string>$TexturePacker:SmartUpdate:e570210a2e8f429541b2c75f9dfe3b84$</string>
             <key>textureFileName</key>
             <string>goo_things.png</string>
         </dict>

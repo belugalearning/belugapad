@@ -698,6 +698,7 @@ static float kTimeToHintToolTray=7.0f;
 -(void) loadProblem
 {
     trayWheelShowing=NO;
+    trayCornerShowing=NO;
     hasTrayWheel=NO;
     numberPickerForThisProblem=NO;
     metaQuestionForThisProblem=NO;

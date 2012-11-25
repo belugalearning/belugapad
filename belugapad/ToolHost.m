@@ -698,6 +698,7 @@ static float kTimeToHintToolTray=7.0f;
 -(void) loadProblem
 {
     trayWheelShowing=NO;
+    trayCornerShowing=NO;
     hasTrayWheel=NO;
     numberPickerForThisProblem=NO;
     metaQuestionForThisProblem=NO;
@@ -2639,7 +2640,7 @@ static float kTimeToHintToolTray=7.0f;
     {
         //do stuff
         //descRow.position=ccp(350.0f, (cy*2)-95);
-        [descRow animateAndMoveToPosition:ccp(350.0f, (cy*2)-95)];
+        [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-95)];
         
         [descRow relayoutChildrenToWidth:625];
         [questionSeparatorSprite runAction:[CCFadeOut actionWithDuration:0.25f]];

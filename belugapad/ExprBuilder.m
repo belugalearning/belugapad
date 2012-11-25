@@ -31,6 +31,9 @@
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
 
+#define AUTO_LARGE_ROW_X_MAX 5
+#define AUTO_LARGE_ROW_Y_MAX 3
+
 @interface ExprBuilder()
 {
 @private
@@ -208,6 +211,8 @@
             [row parseXML:[exprStages objectAtIndex:1]];
         }
         
+        if(i>0 && rowcount<=AUTO_LARGE_ROW_Y_MAX && [row.children count]<=AUTO_LARGE_ROW_X_MAX)
+            row.isLarge = YES;
         
         [row setupDraw];
         

@@ -388,7 +388,7 @@
     if(!gotPickerObject && !CGRectContainsPoint(CGRectMake(700,600,324,308), location)){
         toolHost.CurrentBTXE=nil;
         if(toolHost.pickerView)
-            [toolHost tearDownNumberPicker];
+            [toolHost disableWheel];
     }
 }
 

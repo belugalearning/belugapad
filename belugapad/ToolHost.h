@@ -57,6 +57,10 @@ typedef enum {
     CCLayer *toolForeLayer;
     CCLayer *toolNoScaleLayer;
     
+    CCSprite *qTrayTop;
+    CCSprite *qTrayMid;
+    CCSprite *qTrayBot;
+    
     CCNode *nPicker;
     
     CGPoint lastTouch;

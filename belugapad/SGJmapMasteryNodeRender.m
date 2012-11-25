@@ -316,7 +316,8 @@ static int shadowSteps=5;
     
     NSLog(@"NODE COUNT: %d", ParentGO.ChildNodes.count);
     
-    //step all children
+    //step all children -- layout and attach artefact positions
+    
     for (int i=0; i<ParentGO.ChildNodes.count; i++)
     {
         id<Transform, PinRender> child=[ParentGO.ChildNodes objectAtIndex:i];

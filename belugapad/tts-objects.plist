@@ -17,11 +17,11 @@
 	<key>thing_p</key>
 	<string>people</string>
 	<key>30_bubble</key>
-	<string>the slider</string>
+	<string>slider</string>
 	<key>30_commit</key>
 	<string>OK button</string>
 	<key>30_mq_true</key>
-	<string>button with the correct answer on it</string>
+	<string>button or buttons that display a correct answer</string>
 	<key>30_Q</key>
 	<string>what?</string>
 	<key>30_pv_block</key>

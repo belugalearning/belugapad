@@ -348,6 +348,8 @@ static int shadowSteps=5;
         
         child.artefactSpriteBase=[self.indexedBaseNodes objectAtIndex:artefactTargetIdx];
         
+        [gameWorld.Blackboard.debugDrawNode drawDot:child.artefactSpriteBase.position radius:15.0f color:ccc4f(1, 1, 0, 0.5f)];
+        
         [child setupArtefactRender];
     }
 }

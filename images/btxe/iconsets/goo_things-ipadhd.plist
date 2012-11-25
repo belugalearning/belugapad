@@ -108,6 +108,19 @@
                 <key>sourceSize</key>
                 <string>{60,60}</string>
             </dict>
+            <key>30_DT_Shape_Circle_s.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{250,374},{60,60}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{60,60}}</string>
+                <key>sourceSize</key>
+                <string>{60,60}</string>
+            </dict>
             <key>30_DT_Shape_Diamond.png</key>
             <dict>
                 <key>frame</key>
@@ -368,6 +381,32 @@
                 <key>sourceSize</key>
                 <string>{60,60}</string>
             </dict>
+            <key>30_pv_block_p.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{312,443},{60,60}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{60,60}}</string>
+                <key>sourceSize</key>
+                <string>{60,60}</string>
+            </dict>
+            <key>30_pv_block_s.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{312,443},{60,60}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{60,60}}</string>
+                <key>sourceSize</key>
+                <string>{60,60}</string>
+            </dict>
             <key>30_pv_dock_with_block.png</key>
             <dict>
                 <key>frame</key>
@@ -573,7 +612,7 @@
             <key>size</key>
             <string>{512,512}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:0c9fbd4b3f42b439401a6c0fe706b445$</string>
+            <string>$TexturePacker:SmartUpdate:7f37c8801c1a4995630aeb2069711560$</string>
             <key>textureFileName</key>
             <string>goo_things-ipadhd.png</string>
         </dict>

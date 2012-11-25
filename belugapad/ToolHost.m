@@ -2745,6 +2745,14 @@ static float kTimeToHintToolTray=7.0f;
         [metaArrow setVisible:YES];
 }
 
+-(void)disableWheel
+{
+    hasTrayWheel=NO;
+    numberPickerForThisProblem=NO;
+    [self hideWheel];
+    [traybtnWheel setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_NumberWheel_NotAvailable.png")]];
+}
+
 -(void)showWheel
 {
     if(!trayLayerWheel)

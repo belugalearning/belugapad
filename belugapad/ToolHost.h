@@ -243,6 +243,7 @@ typedef enum {
 -(void) showProblemCompleteMessage;
 -(void) showProblemIncompleteMessage;
 -(void)showHideCommit;
+-(void)disableWheel;
 -(void)showWheel;
 -(void)hideWheel;
 -(void)readOutProblemDescription;

@@ -145,9 +145,21 @@
 -(NSString*)returnRowStringForSpeech
 {
     NSString *rowString=@"";
+    id lastc=nil;
     
     for(id c in children)
     {
+        if(lastc)
+        {
+            if(([lastc isKindOfClass:[SGBtxeObjectIcon class]] || [lastc isKindOfClass:[SGBtxeObjectNumber class]] ||
+               [lastc isKindOfClass:[SGBtxeObjectText class]]) &&
+               ([c isKindOfClass:[SGBtxeObjectIcon class]] || [c isKindOfClass:[SGBtxeObjectNumber class]] ||
+                [c isKindOfClass:[SGBtxeObjectText class]]))
+            {
+                rowString=[NSString stringWithFormat:@"%@, ", rowString];
+            }
+        }
+        
         if([c isKindOfClass:[SGBtxeText class]])
         {
             rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeText*)c returnMyText]];

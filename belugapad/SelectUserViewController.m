@@ -162,6 +162,12 @@
     [selectUserView addSubview:mask];
 }
 
+-(void)enablePlayButton
+{
+    [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_enabled.png"] forState:UIControlStateNormal];
+    [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_enabled.png"] forState:UIControlStateHighlighted];
+}
+
 #pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -221,11 +227,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *user = deviceUsers[indexPath.row];
-    if (user[@"nickName"]) // i.e. a real user, not empty one 
-    {
-        [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_enabled.png"] forState:UIControlStateNormal];
-        [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_enabled.png"] forState:UIControlStateHighlighted];
-    }
+    if (user[@"nickName"]) [self enablePlayButton];// i.e. a real user, not empty one
 }
 
 #pragma mark interactions
@@ -343,6 +345,7 @@
                     NSUInteger indexPath[] = {0,i};
                     NSIndexPath *ip = [NSIndexPath indexPathWithIndexes:indexPath length:2];
                     [bself->selectUserTableView selectRowAtIndexPath:ip animated:NO scrollPosition:UITableViewScrollPositionNone];
+                    [bself enablePlayButton];
                     break;
                 }
             }

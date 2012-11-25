@@ -2721,6 +2721,15 @@ static float kTimeToHintToolTray=7.0f;
         [problemDefLayer addChild:trayLayerWheel z:2];
         //trayLayerWheel.position=ccp(CORNER_TRAY_POS_X, CORNER_TRAY_POS_Y);
         [self setupNumberWheel];
+        
+        
+        int pickerCols=[self numberOfComponentsInPickerView:pickerView];
+        
+        for(int i=0;i<pickerCols;i++)
+        {
+            [pickerView spinComponent:i speed:15 easeRate:15 repeat:2 stopRow:0];
+        }
+        
         //CCLabelTTF *lbl=[CCLabelTTF labelWithString:@"Wheel" fontName:@"Source Sans Pro" fontSize:24.0f];
         //lbl.position=ccp(150,112.5f);
         //[trayLayerWheel addChild:lbl];

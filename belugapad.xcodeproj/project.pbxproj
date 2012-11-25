@@ -36,6 +36,12 @@
 		0C92B2541515702700342094 /* ContentService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C92B2531515702700342094 /* ContentService.m */; };
 		0C993CFB163842CE0079A647 /* Problems in Resources */ = {isa = PBXBuildFile; fileRef = 0C993CFA163842CE0079A647 /* Problems */; };
 		0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */ = {isa = PBXBuildFile; fileRef = 0C9FEFF514F572FB00E64138 /* pipeline-testing */; };
+		0CA32EF616627CA500FC5423 /* highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CA32EF416627CA500FC5423 /* highlight.png */; };
+		0CA32EF716627CA500FC5423 /* normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CA32EF516627CA500FC5423 /* normal.png */; };
+		0CA32F0016627CBB00FC5423 /* NumericKeypad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CA32EF816627CBB00FC5423 /* NumericKeypad.xib */; };
+		0CA32F0116627CBB00FC5423 /* NumericKeypadTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA32EFB16627CBB00FC5423 /* NumericKeypadTextField.m */; };
+		0CA32F0216627CBB00FC5423 /* NumericKeypadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA32EFD16627CBB00FC5423 /* NumericKeypadViewController.m */; };
+		0CA32F0316627CBB00FC5423 /* UITextField+myDeleteBackward.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA32EFF16627CBB00FC5423 /* UITextField+myDeleteBackward.m */; };
 		0CB7A51B164DFF96005FC7B1 /* NSData+GzipExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB7A51A164DFF96005FC7B1 /* NSData+GzipExtension.m */; };
 		0CD565921647F23E00D9EA30 /* UserNodeState.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD565911647F23E00D9EA30 /* UserNodeState.m */; };
 		0CDECB5E15920C27004DE20D /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB4A15920C27004DE20D /* AFHTTPClient.m */; };
@@ -503,6 +509,16 @@
 		0C92B2531515702700342094 /* ContentService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentService.m; sourceTree = "<group>"; };
 		0C993CFA163842CE0079A647 /* Problems */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Problems; sourceTree = SOURCE_ROOT; };
 		0C9FEFF514F572FB00E64138 /* pipeline-testing */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pipeline-testing"; sourceTree = SOURCE_ROOT; };
+		0CA32EF416627CA500FC5423 /* highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = highlight.png; path = NumPadTextField/Resource/highlight.png; sourceTree = SOURCE_ROOT; };
+		0CA32EF516627CA500FC5423 /* normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = normal.png; path = NumPadTextField/Resource/normal.png; sourceTree = SOURCE_ROOT; };
+		0CA32EF816627CBB00FC5423 /* NumericKeypad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NumericKeypad.xib; path = NumPadTextField/NumericKeypad.xib; sourceTree = SOURCE_ROOT; };
+		0CA32EF916627CBB00FC5423 /* NumericKeypadDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NumericKeypadDelegate.h; path = NumPadTextField/NumericKeypadDelegate.h; sourceTree = SOURCE_ROOT; };
+		0CA32EFA16627CBB00FC5423 /* NumericKeypadTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NumericKeypadTextField.h; path = NumPadTextField/NumericKeypadTextField.h; sourceTree = SOURCE_ROOT; };
+		0CA32EFB16627CBB00FC5423 /* NumericKeypadTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NumericKeypadTextField.m; path = NumPadTextField/NumericKeypadTextField.m; sourceTree = SOURCE_ROOT; };
+		0CA32EFC16627CBB00FC5423 /* NumericKeypadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NumericKeypadViewController.h; path = NumPadTextField/NumericKeypadViewController.h; sourceTree = SOURCE_ROOT; };
+		0CA32EFD16627CBB00FC5423 /* NumericKeypadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NumericKeypadViewController.m; path = NumPadTextField/NumericKeypadViewController.m; sourceTree = SOURCE_ROOT; };
+		0CA32EFE16627CBB00FC5423 /* UITextField+myDeleteBackward.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UITextField+myDeleteBackward.h"; path = "NumPadTextField/UITextField+myDeleteBackward.h"; sourceTree = SOURCE_ROOT; };
+		0CA32EFF16627CBB00FC5423 /* UITextField+myDeleteBackward.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UITextField+myDeleteBackward.m"; path = "NumPadTextField/UITextField+myDeleteBackward.m"; sourceTree = SOURCE_ROOT; };
 		0CB7A519164DFF96005FC7B1 /* NSData+GzipExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+GzipExtension.h"; sourceTree = "<group>"; };
 		0CB7A51A164DFF96005FC7B1 /* NSData+GzipExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GzipExtension.m"; sourceTree = "<group>"; };
 		0CD565901647F23E00D9EA30 /* UserNodeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserNodeState.h; sourceTree = "<group>"; };
@@ -1459,6 +1475,31 @@
 			name = Content;
 			sourceTree = "<group>";
 		};
+		0CA32EF116627C6300FC5423 /* NumPadTextField */ = {
+			isa = PBXGroup;
+			children = (
+				0CA32EF816627CBB00FC5423 /* NumericKeypad.xib */,
+				0CA32EF916627CBB00FC5423 /* NumericKeypadDelegate.h */,
+				0CA32EFA16627CBB00FC5423 /* NumericKeypadTextField.h */,
+				0CA32EFB16627CBB00FC5423 /* NumericKeypadTextField.m */,
+				0CA32EFC16627CBB00FC5423 /* NumericKeypadViewController.h */,
+				0CA32EFD16627CBB00FC5423 /* NumericKeypadViewController.m */,
+				0CA32EFE16627CBB00FC5423 /* UITextField+myDeleteBackward.h */,
+				0CA32EFF16627CBB00FC5423 /* UITextField+myDeleteBackward.m */,
+				0CA32EF316627C8D00FC5423 /* Resource */,
+			);
+			name = NumPadTextField;
+			sourceTree = "<group>";
+		};
+		0CA32EF316627C8D00FC5423 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				0CA32EF416627CA500FC5423 /* highlight.png */,
+				0CA32EF516627CA500FC5423 /* normal.png */,
+			);
+			name = Resource;
+			sourceTree = "<group>";
+		};
 		0CDECB4815920C27004DE20D /* AFNetworking */ = {
 			isa = PBXGroup;
 			children = (
@@ -2162,6 +2203,7 @@
 		7F51159714A9EF21001AF372 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				0CA32EF116627C6300FC5423 /* NumPadTextField */,
 				0C4075181596351400E03C1F /* Logging */,
 				7FC642911572B79B0043D575 /* ExpressionEngine */,
 				7F3367D9155FC2EE00A2E656 /* ProblemTools */,
@@ -3125,6 +3167,9 @@
 				558ADA3616611B250000C448 /* tts-objects.plist in Resources */,
 				33FF5F15166133860077EEA3 /* tts-replace.plist in Resources */,
 				7F43B0FA1661616000CD9B8D /* hqm-ref-USEnglish-WillLittleCreature-22khz in Resources */,
+				0CA32EF616627CA500FC5423 /* highlight.png in Resources */,
+				0CA32EF716627CA500FC5423 /* normal.png in Resources */,
+				0CA32F0016627CBB00FC5423 /* NumericKeypad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3545,6 +3590,9 @@
 				7F98458D164E5F300081BE39 /* AcapelaSetup.m in Sources */,
 				7F98458E164E5F300081BE39 /* force_cpp.cpp in Sources */,
 				7F43B0EE165FF02000CD9B8D /* SGBtxeNumberDotRender.m in Sources */,
+				0CA32F0116627CBB00FC5423 /* NumericKeypadTextField.m in Sources */,
+				0CA32F0216627CBB00FC5423 /* NumericKeypadViewController.m in Sources */,
+				0CA32F0316627CBB00FC5423 /* UITextField+myDeleteBackward.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -78,6 +78,7 @@
 @synthesize DynProblemParser;
 @synthesize pickerView;
 @synthesize CurrentBTXE;
+@synthesize thisProblemDescription;
 
 static float kMoveToNextProblemTime=0.5f;
 static float kDisableInteractionTime=0.5f;
@@ -700,6 +701,7 @@ static float kTimeToHintToolTray=7.0f;
     hasTrayWheel=NO;
     numberPickerForThisProblem=NO;
     metaQuestionForThisProblem=NO;
+    self.thisProblemDescription=nil;
 
     // ---------------- TEAR DOWN ------------------------------------
     //tear down meta question stuff
@@ -863,6 +865,9 @@ static float kTimeToHintToolTray=7.0f;
     [readProblemDesc setPosition:ccp(50,600)];
     [problemDefLayer addChild:readProblemDesc];
     
+    if(!thisProblemDescription)
+        self.thisProblemDescription=[descRow returnRowStringForSpeech];
+    
     [self readOutProblemDescription];
     
     [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_background_score.mp3") loop:YES];
@@ -918,8 +923,10 @@ static float kTimeToHintToolTray=7.0f;
 {
     AppController *ac=(AppController*)[[UIApplication sharedApplication] delegate];
     
-    NSLog(@"reading out: %@", [descRow returnRowStringForSpeech]);
-    [ac speakString:[descRow returnRowStringForSpeech]];
+//    NSLog(@"reading out: %@", [descRow returnRowStringForSpeech]);
+    NSString *readString=[[thisProblemDescription copy] autorelease];
+    
+    [ac speakString:readString];
 }
 
 -(void)setupToolTrays:(NSDictionary*)withPdef
@@ -1222,6 +1229,7 @@ static float kTimeToHintToolTray=7.0f;
     [problemIncomplete runAction:[InteractionFeedback stampAction]];
     [contextProgressLayer addChild:problemIncomplete];
     showingProblemIncomplete=YES;
+    evalShowCommit=YES;
     
     [self showBlackOverlay];
     
@@ -2344,7 +2352,7 @@ static float kTimeToHintToolTray=7.0f;
         }
     }
     
-    if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn)
+    if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn && commitBtn.visible)
     {
         //remove any trays
         [self removeAllTrays];
@@ -2713,6 +2721,15 @@ static float kTimeToHintToolTray=7.0f;
         [problemDefLayer addChild:trayLayerWheel z:2];
         //trayLayerWheel.position=ccp(CORNER_TRAY_POS_X, CORNER_TRAY_POS_Y);
         [self setupNumberWheel];
+        
+        
+        int pickerCols=[self numberOfComponentsInPickerView:pickerView];
+        
+        for(int i=0;i<pickerCols;i++)
+        {
+            [pickerView spinComponent:i speed:15 easeRate:15 repeat:2 stopRow:0];
+        }
+        
         //CCLabelTTF *lbl=[CCLabelTTF labelWithString:@"Wheel" fontName:@"Source Sans Pro" fontSize:24.0f];
         //lbl.position=ccp(150,112.5f);
         //[trayLayerWheel addChild:lbl];

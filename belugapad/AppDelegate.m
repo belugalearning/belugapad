@@ -239,13 +239,13 @@
 {
 #if !(TARGET_IPHONE_SIMULATOR)
     
-    speakThis=[speakThis uppercaseString];
+    speakThis=[speakThis lowercaseString];
     
     for(NSString *k in [speechReplacement allKeys])
     {
         speakThis=[speakThis stringByReplacingOccurrencesOfString:k withString:[speechReplacement objectForKey:k]];
     }
-    
+    NSLog(@"I'm about to talk and say: %@", speakThis);
     [self.acaSpeech startSpeakingString:speakThis];
 #endif
 }

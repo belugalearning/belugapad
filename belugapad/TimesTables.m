@@ -700,7 +700,7 @@ static float kTimeToHeaderBounce=7.0f;
     if([gw.Blackboard.SelectedObjects count]<[solutionsDef count] && solutionType==kMatrixMatch)return NO;
     
     int answersFound=0;
-    int itemsSelected=0;
+    NSMutableArray *selectedTiles=[[NSMutableArray alloc]init];
     
     if(solutionType==kMatrixMatch)
     {
@@ -712,20 +712,27 @@ static float kTimeToHeaderBounce=7.0f;
             
             for(int i=0;i<[solutionsDef count];i++)
             {
+//                if([selectedTiles containsObject:selTile])continue;
+                if(selTile.Selected && ![selectedTiles containsObject:selTile])[selectedTiles addObject:selTile];
+                
                 NSMutableDictionary *curDict=[solutionsDef objectAtIndex:i];
                 int thisAnsX=[[curDict objectForKey:POS_X]intValue];
                 int thisAnsY=[[curDict objectForKey:POS_Y]intValue];
-                NSLog(@"thisAnsX=%d, thisAnsY=%d", thisAnsX, thisAnsY);
+                NSLog(@"thisAnsX=%d, thisAnsY=%d, myXpos=%d, myYpos=%d", thisAnsX, thisAnsY, selTile.myXpos, selTile.myYpos);
                 
-                if(selTile.Selected)itemsSelected++;
-                
-                if(thisAnsX==selTile.myXpos && thisAnsY==selTile.myYpos && !switchXYforAnswer)answersFound++;
-                else if(thisAnsY==selTile.myXpos && thisAnsX==selTile.myYpos && switchXYforAnswer)answersFound++;
+                if(thisAnsX==selTile.myXpos && thisAnsY==selTile.myYpos && !switchXYforAnswer)
+                {
+                    answersFound++;
+                }
+                else if(thisAnsY==selTile.myXpos && thisAnsX==selTile.myYpos && switchXYforAnswer)
+                {
+                    answersFound++;
+                }
             }
         }
         
         
-        if(answersFound==[solutionsDef count] && answersFound==itemsSelected)return YES;
+        if(answersFound==[solutionsDef count] && answersFound==[selectedTiles count])return YES;
         else return NO;
     }
     

@@ -399,7 +399,7 @@ static float kDistanceBetweenBlocks=70.0f;
         if(!dockType)
             dockType=@"Infinite";
         
-        if(!addedCages && [dockType isEqualToString:@"Infinite"])
+        if(!addedCages)
             addedCages=[[NSMutableArray alloc]init];
         
         if([usedShapeTypes count]==0)
@@ -1523,7 +1523,7 @@ static float kDistanceBetweenBlocks=70.0f;
     if(!spawnedNewObj && hasMovedCagedBlock)
         [cage spawnNewBlock];
     
-    if(location.y<cage.Position.y+(cage.MySprite.contentSize.height/2) && problemHasCage)
+    if(location.y<cage.MySprite.contentSize.height && problemHasCage)
     {
         [self removeBlockByCage];
         

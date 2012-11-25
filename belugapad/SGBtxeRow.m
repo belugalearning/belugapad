@@ -184,6 +184,7 @@
         {
             rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectOperator*)c returnMyText]];
         }
+        lastc=c;
         
     }
     

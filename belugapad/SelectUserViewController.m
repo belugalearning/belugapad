@@ -266,7 +266,7 @@
 
 -(void)buildEditUserView
 {    
-    newUserNameTF = [[[UITextField alloc] initWithFrame:CGRectMake(334.0f, 276.0f, 360.0f, 42.0f)] autorelease];
+    newUserNameTF = [[[UITextField alloc] initWithFrame:CGRectMake(334.0f, 278.0f, 360.0f, 42.0f)] autorelease];
     newUserNameTF.delegate = self;
     newUserNameTF.font = [UIFont fontWithName:@"Chango" size:24];
     //newUserNameTF.placeholder = @"name";

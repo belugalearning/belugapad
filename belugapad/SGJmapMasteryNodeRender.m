@@ -8,6 +8,7 @@
 
 #import "SGJmapMasteryNodeRender.h"
 #import "SGJmapMasteryNode.h"
+#import "SGJmapNode.h"
 #import "PRFilledPolygon.h"
 #import "BLMath.h"
 #import "global.h"
@@ -317,10 +318,12 @@ static int shadowSteps=5;
     NSLog(@"NODE COUNT: %d", ParentGO.ChildNodes.count);
     
     //step all children -- layout and attach artefact positions
+    NSArray *artefacts=[[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"ARTEFACTS"];
+    int artefactIdx=0;
     
     for (int i=0; i<ParentGO.ChildNodes.count; i++)
     {
-        id<Transform, PinRender> child=[ParentGO.ChildNodes objectAtIndex:i];
+        SGJmapNode *child=[ParentGO.ChildNodes objectAtIndex:i];
      
         //get corresponding data
         NSDictionary *fnode=[fnodes objectAtIndex:i];
@@ -337,6 +340,15 @@ static int shadowSteps=5;
         child.Position=pos;
         
         //todo set flipped here -- from FLIPPED NSNumber on the fnode dict
+        
+        
+        //set artefact
+        int artefactTargetIdx=[[[gameWorld.Blackboard.islandData objectAtIndex:self.islandLayoutIdx] objectForKey:@"FEATURE_INDEX"] indexOfObject:[artefacts objectAtIndex:artefactIdx]];
+        artefactIdx++;
+        
+        child.artefactSpriteBase=[self.indexedBaseNodes objectAtIndex:artefactTargetIdx];
+        
+        [child setupArtefactRender];
     }
 }
 

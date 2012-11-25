@@ -17,6 +17,7 @@
 {
     CCSprite *nodeSprite;
     CCSprite *labelSprite;
+    CCSprite *artefactSprite;
 }
 
 @end
@@ -118,7 +119,10 @@
     
 }
 
-
+-(void)setupArtefact
+{
+    [ParentGO.artefactSpriteBase setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:@"Crystal_1.png"]];
+}
 
 
 @end

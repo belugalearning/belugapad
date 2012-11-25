@@ -22,5 +22,8 @@
 @property (retain) CCSprite *artefactSpriteBase;
 
 -(SGJmapNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
+
+-(void)setupArtefactRender;
+
 @end
 

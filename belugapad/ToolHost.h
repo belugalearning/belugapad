@@ -126,6 +126,8 @@ typedef enum {
     CCLabelTTF *problemDescLabel;
     ProblemEvalMode evalMode;
     
+    
+    CCSprite *readProblemDesc;
     CCSprite *commitBtn;
     CCSprite *metaArrow;
     
@@ -219,6 +221,7 @@ typedef enum {
 @property (retain) DProblemParser *DynProblemParser;
 @property (nonatomic, retain) CCPickerView *pickerView;
 @property (retain) id CurrentBTXE;
+@property (retain) NSString *thisProblemDescription;
 
 +(CCScene *) scene;
 
@@ -233,12 +236,12 @@ typedef enum {
 -(void) resetProblem;
 -(void) showPauseMenu;
 -(void) checkPauseTouches:(CGPoint)location;
--(void) returnToMenu;
 -(void) showProblemCompleteMessage;
 -(void) showProblemIncompleteMessage;
 -(void)showHideCommit;
 -(void)showWheel;
 -(void)hideWheel;
+-(void)readOutProblemDescription;
 -(void)doUpdateOnTick:(ccTime)delta;
 -(void)doUpdateOnSecond:(ccTime)delta;
 -(void)doUpdateOnQuarterSecond:(ccTime)delta;

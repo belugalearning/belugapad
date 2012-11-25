@@ -9,6 +9,7 @@
 #import "SGBtxeObjectNumber.h"
 #import "SGBtxeTextRender.h"
 #import "SGBtxeTextBackgroundRender.h"
+#import "SGBtxeNumberDotRender.h"
 #import "global.h"
 
 
@@ -31,6 +32,9 @@
 
 @synthesize targetNumber, usePicker;
 
+@synthesize numberDotRenderComponent;
+@synthesize renderAsDots;
+@synthesize numberMode;
 
 -(SGBtxeObjectNumber*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -45,11 +49,17 @@
         interactive=YES;
         tag=@"";
         
+        numberMode=@"numeral";
+        
         size=CGSizeZero;
         position=CGPointZero;
         
+        renderAsDots=NO;
+        
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
         textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
+        
+        numberDotRenderComponent=[[SGBtxeNumberDotRender alloc] initWithGameObject:(SGGameObject*)self];
         
     }
     
@@ -69,6 +79,7 @@
     dupe.numberText=[[self.numberText copy] autorelease];
     dupe.suffixText=[[self.suffixText copy] autorelease];
     dupe.isLargeObject=self.isLargeObject;
+    dupe.renderAsDots=self.renderAsDots;
     
     return (id<MovingInteractive>)dupe;
 }
@@ -76,6 +87,26 @@
 -(id<MovingInteractive>)createADuplicate
 {
     return [self createADuplicateIntoGameWorld:gameWorld];
+}
+
+-(void)setNumberMode:(NSString *)theNumberMode
+{
+    if(numberMode==theNumberMode)return;
+    if(numberMode)[numberMode release];
+    numberMode=theNumberMode;
+    [numberMode retain];
+    
+    numberMode=theNumberMode;
+    
+    if([theNumberMode isEqualToString:@"numicon"])
+        renderAsDots=YES;
+    else
+        renderAsDots=NO;
+}
+
+-(NSString*)numberMode
+{
+    return numberMode;
 }
 
 -(void)handleMessage:(SGMessageType)messageType
@@ -200,6 +231,7 @@
 -(void)updateDraw
 {
     [self.textRenderComponent updateLabel];
+    [self.numberDotRenderComponent updateDraw];
 }
 
 -(NSString*)text
@@ -241,6 +273,8 @@
 -(void)setColourOfBackgroundTo:(ccColor3B)thisColour
 {
     [self.textBackgroundRenderComponent setColourOfBackgroundTo:thisColour];
+    
+    // no equivilent for number dots
 }
 
 -(void)setPosition:(CGPoint)thePosition
@@ -248,23 +282,29 @@
     position=thePosition;
     
     [self.textRenderComponent updatePosition:position];
-    
     [self.textBackgroundRenderComponent updatePosition:position];
+    
+    [self.numberDotRenderComponent updatePosition:position];
 }
 
 -(void)inflateZIndex
 {
     [self.textRenderComponent inflateZindex];
+    [self.numberDotRenderComponent inflateZindex];
+    
 }
 -(void)deflateZindex
 {
     [self.textRenderComponent deflateZindex];
+    [self.numberDotRenderComponent deflateZindex];
 }
 
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime
 {
     [textRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];
     [textBackgroundRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];
+    
+    [numberDotRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];
 }
 
 -(void)attachToRenderBase:(CCNode*)theRenderBase;
@@ -273,11 +313,18 @@
     
     renderBase=theRenderBase;
     
-    if(textBackgroundRenderComponent.backgroundNode)
-        [renderBase addChild:textBackgroundRenderComponent.backgroundNode];
-    
-    [renderBase addChild:textRenderComponent.label0];
-    [renderBase addChild:textRenderComponent.label];
+    if(self.renderAsDots)
+    {
+        [renderBase addChild:numberDotRenderComponent.baseNode];
+    }
+    else
+    {
+        if(textBackgroundRenderComponent.backgroundNode)
+            [renderBase addChild:textBackgroundRenderComponent.backgroundNode];
+        
+        [renderBase addChild:textRenderComponent.label0];
+        [renderBase addChild:textRenderComponent.label];
+    }
 }
 
 -(void)tagMyChildrenForIntro
@@ -286,6 +333,13 @@
     [textRenderComponent.label0 setTag:3];
     [textRenderComponent.label setOpacity:0];
     [textRenderComponent.label0 setOpacity:0];
+
+    
+    for(CCSprite *s in self.numberDotRenderComponent.baseNode.children)
+    {
+        s.opacity=0;
+        s.tag=3;
+    }
 }
 
 -(void)setupDraw
@@ -306,8 +360,17 @@
         textRenderComponent.label0.visible=NO;
     }
     
-    //set size to size of cclabelttf plus the background overdraw size (the background itself is currently stretchy)
-    self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
+    [self.numberDotRenderComponent setupDraw];
+    
+    if(self.renderAsDots)
+    {
+        self.size=self.numberDotRenderComponent.size;
+    }
+    else
+    {
+        //set size to size of cclabelttf plus the background overdraw size (the background itself is currently stretchy)
+        self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
+    }
 
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];
@@ -325,6 +388,8 @@
     [textBackgroundRenderComponent.backgroundNode removeFromParentAndCleanup:YES];
     [textRenderComponent.label0 removeFromParentAndCleanup:YES];
     [textRenderComponent.label removeFromParentAndCleanup:YES];
+    
+    [self.numberDotRenderComponent.baseNode removeFromParentAndCleanup:YES];
 }
 
 -(void)activate
@@ -332,6 +397,7 @@
     self.enabled=YES;
     self.textRenderComponent.label.visible=self.enabled;
     self.textRenderComponent.label0.visible=self.enabled;
+    self.numberDotRenderComponent.baseNode.visible=self.enabled;
 }
 
 -(void)returnToBase
@@ -343,6 +409,7 @@
 {
     self.text=nil;
     self.textRenderComponent=nil;
+    self.numberDotRenderComponent=nil;
     
     self.prefixText=nil;
     self.numberText=nil;

@@ -24,6 +24,8 @@
     
     NSDictionary *launchOptionsCache;
     
+    NSDictionary *speechReplacement;
+    
 //    AcapelaSpeech *MyAcaTTS;
     AcapelaLicense *MyAcaLicense;
     AcapelaSetup *SetupData;

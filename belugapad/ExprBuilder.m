@@ -164,8 +164,12 @@
         if(ncardselectionof)numberCardRandomSelectionOf=[ncardselectionof intValue];
     }
     
-    expressionRowsAreLarge=YES;
+    if([evalType isEqualToString:@"SEQUENCE_ASC"] || [evalType isEqualToString:@"SEQUENCE_DESC"])
+    {
+        expressionRowsAreLarge=YES;
+    }
     
+    numberMode=[pdef objectForKey:@"NUMBER_MODE"];
 }
 
 -(void)populateGW
@@ -188,6 +192,9 @@
     {
         SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
         [rows addObject:row];
+        
+        if(numberMode)
+            row.defaultNumbermode=numberMode;
         
         if(i>0 && expressionRowsAreLarge)
             row.isLarge = YES;
@@ -286,12 +293,20 @@
         [row release];
     }
     
+    [self readOutProblemDescription];
     
     //if we have ncardrow, then add it to rows (at end for now?)
     if(ncardRow) [rows addObject:ncardRow];
     
 }
 
+-(void)readOutProblemDescription
+{
+    SGBtxeRow *descRow=[rows objectAtIndex:0];
+    toolHost.thisProblemDescription=[descRow returnRowStringForSpeech];
+    
+//    [toolHost readOutProblemDescription];
+}
 
 #pragma mark - touches events
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -319,8 +334,10 @@
             
             CGRect hitbox=CGRectMake(obounding.worldPosition.x - (BTXE_OTBKG_WIDTH_OVERDRAW_PAD + obounding.size.width) / 2.0f, obounding.worldPosition.y-BTXE_VPAD-(obounding.size.height / 2.0f), obounding.size.width + BTXE_OTBKG_WIDTH_OVERDRAW_PAD, obounding.size.height + 2*BTXE_VPAD);
             
+            
             if(o.enabled && CGRectContainsPoint(hitbox, location))
             {
+                NSLog(@"this hitbox = %@", NSStringFromCGRect(hitbox));
                 heldObject=o;
                 isHoldingObject=YES;
                 
@@ -394,6 +411,11 @@
     location=[self.ForeLayer convertToNodeSpace:location];
     isTouching=NO;
     
+    
+    float pickupProximity=BTXE_PICKUP_PROXIMITY;
+    
+    if(expressionRowsAreLarge)pickupProximity*=3;
+    
     if(heldObject)
     {
         //test new location for target / drop
@@ -403,13 +425,13 @@
             {
                 if(!o.enabled
                    && [heldObject.tag isEqualToString:o.tag]
-                   && [BLMath DistanceBetween:o.worldPosition and:location]<=BTXE_PICKUP_PROXIMITY)
+                   && [BLMath DistanceBetween:o.worldPosition and:location]<=pickupProximity)
                 {
                     //this object is proximate, disabled and the same tag
                     [o activate];
                 }
                 
-                if([o conformsToProtocol:@protocol(BtxeMount)] && [BLMath DistanceBetween:o.worldPosition and:location]<=BTXE_PICKUP_PROXIMITY)
+                if([o conformsToProtocol:@protocol(BtxeMount)] && [BLMath DistanceBetween:o.worldPosition and:location]<=pickupProximity)
                 {
                     id<BtxeMount, Interactive> pho=(id<BtxeMount, Interactive>)o;
                     

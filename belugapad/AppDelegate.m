@@ -60,6 +60,7 @@
     [self writeLogMemoryUsage];
     
     launchOptionsCache=launchOptions;
+    speechReplacement=[[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/tts-replace.plist")]retain];
     
     // Init the window
     window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -75,7 +76,7 @@
     
     //init test flight
 
-#if USE_TESTGLIHT_SDK
+#if USE_TESTFLIGHT_SDK
     [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
 
     [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"logToSTDERR"]];
@@ -237,6 +238,14 @@
 -(void)speakString:(NSString*)speakThis
 {
 #if !(TARGET_IPHONE_SIMULATOR)
+    
+    speakThis=[speakThis lowercaseString];
+    
+    for(NSString *k in [speechReplacement allKeys])
+    {
+        speakThis=[speakThis stringByReplacingOccurrencesOfString:k withString:[speechReplacement objectForKey:k]];
+    }
+    NSLog(@"I'm about to talk and say: %@", speakThis);
     [self.acaSpeech startSpeakingString:speakThis];
 #endif
 }

@@ -28,6 +28,7 @@
 @synthesize parserComponent;
 @synthesize baseNode;
 @synthesize isLarge;
+@synthesize defaultNumbermode;
 
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget
 {
@@ -38,6 +39,7 @@
         position=CGPointZero;
         forceVAlignTop=NO;
         isLarge=NO;
+        self.defaultNumbermode=@"number";
         containerMgrComponent=[[SGBtxeContainerMgr alloc] initWithGameObject:(SGGameObject*)self];
         rowLayoutComponent=[[SGBtxeRowLayout alloc] initWithGameObject:(SGGameObject*)self];
         parserComponent=[[SGBtxeParser alloc] initWithGameObject:(SGGameObject*)self];
@@ -119,7 +121,7 @@
     {
         if([c isKindOfClass:[SGBtxeText class]])
         {
-            [(SGBtxeObjectText*)c tagMyChildrenForIntro];
+            [(SGBtxeText*)c tagMyChildrenForIntro];
         }
         if([c isKindOfClass:[SGBtxeObjectText class]])
         {
@@ -138,6 +140,55 @@
             [(SGBtxeObjectOperator*)c tagMyChildrenForIntro];
         }
     }
+}
+
+-(NSString*)returnRowStringForSpeech
+{
+    NSString *rowString=@"";
+    id lastc=nil;
+    
+    for(id c in children)
+    {
+        if(lastc)
+        {
+            if(([lastc isKindOfClass:[SGBtxeObjectIcon class]] || [lastc isKindOfClass:[SGBtxeObjectNumber class]] ||
+               [lastc isKindOfClass:[SGBtxeObjectText class]]) &&
+               ([c isKindOfClass:[SGBtxeObjectIcon class]] || [c isKindOfClass:[SGBtxeObjectNumber class]] ||
+                [c isKindOfClass:[SGBtxeObjectText class]]))
+            {
+                rowString=[NSString stringWithFormat:@"%@, ", rowString];
+            }
+        }
+        
+        if([c isKindOfClass:[SGBtxeText class]])
+        {
+            rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeText*)c returnMyText]];
+        }
+        
+        if([c isKindOfClass:[SGBtxeObjectText class]])
+        {
+            rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectText*)c returnMyText]];
+        }
+        
+        if([c isKindOfClass:[SGBtxeObjectNumber class]])
+        {
+            rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectNumber*)c numberText]];
+        }
+        
+        if([c isKindOfClass:[SGBtxeObjectIcon class]])
+        {
+            rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectIcon*)c returnMyText]];
+        }
+        
+        if([c isKindOfClass:[SGBtxeObjectOperator class]])
+        {
+            rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectOperator*)c returnMyText]];
+        }
+        lastc=c;
+        
+    }
+    
+    return rowString;
 }
 
 -(void)animateAndMoveToPosition:(CGPoint)thePosition

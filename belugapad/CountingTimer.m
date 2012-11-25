@@ -139,9 +139,11 @@
         if(countType==kCountBeep){
             [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_incremented.wav")];
         }
-        else if(countType==kCountNumbers && lastNumber>0<20){
-            NSString *file=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", lastNumber];
-            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(file)];
+        else if(countType==kCountNumbers){
+            AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+            [ac speakString:[NSString stringWithFormat:@"%d",lastNumber]];
+            //NSString *file=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", lastNumber];
+            //[[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(file)];
         }
 
     }

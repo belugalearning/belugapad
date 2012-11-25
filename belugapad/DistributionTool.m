@@ -639,7 +639,7 @@ static float kDistanceBetweenBlocks=70.0f;
             CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/distribution/DT_area.png")];
             [s setPosition:ccp(startXPos+(thisPos*s.contentSize.width),startYPos+(thisRow*s.contentSize.height))];
             [s setOpacity:areaOpacity];
-            [self.ForeLayer addChild:s z:0];
+            [self.BkgLayer addChild:s z:0];
             
             thisEvalArea=CGRectUnion(thisEvalArea, s.boundingBox);
             
@@ -852,13 +852,14 @@ static float kDistanceBetweenBlocks=70.0f;
     int solutionsFound=0;
     NSMutableArray *matchedEvalAreas=[[NSMutableArray alloc]init];
     NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
+    NSMutableArray *solutionsLeft=[NSMutableArray arrayWithArray:solutionsDef];
     
 
     for(int i=0;i<[evalAreas count];i++)
     {
         for(NSDictionary *solutions in solutionsDef)
         {
-            if([matchedSolutions containsObject:solutions])continue;
+            if(![solutionsLeft containsObject:solutions])continue;
             
             int circlesReq=[[solutions objectForKey:EVAL_CIRCLES_REQUIRED]intValue];
             int diamondsReq=[[solutions objectForKey:EVAL_DIAMONDS_REQUIRED]intValue];
@@ -1004,8 +1005,9 @@ static float kDistanceBetweenBlocks=70.0f;
             
             if(circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch && val001Match && val01Match && val1Match && val10Match && val100Match){
                 solutionsFound++;
+
                 [matchedEvalAreas addObject:a];
-                [matchedSolutions addObject:solutions];
+                [solutionsLeft removeObjectIdenticalTo:solutions];
                 break;
             }
 
@@ -1983,7 +1985,7 @@ return NO;
         [toolHost doWinning];
     }
     else {
-        if(evalMode==kProblemEvalOnCommit)[self resetProblem];
+        if(evalMode==kProblemEvalOnCommit)[toolHost doIncomplete];
     }
     
 }

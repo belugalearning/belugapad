@@ -10,6 +10,7 @@
 #import "SGBtxeProtocols.h"
 
 @class SGBtxeTextBackgroundRender;
+@class SGBtxeNumberDotRender;
 
 @interface SGBtxeObjectNumber : SGGameObject <Text, Bounding, FadeIn, MovingInteractive, Containable, Value, NumberPicker>
 {
@@ -22,6 +23,11 @@
 @property (retain) NSNumber *numberValue;
 
 @property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;
+
+@property BOOL renderAsDots;
+@property (retain) SGBtxeNumberDotRender *numberDotRenderComponent;
+
+@property (retain) NSString *numberMode;
 
 -(void)tagMyChildrenForIntro;
 

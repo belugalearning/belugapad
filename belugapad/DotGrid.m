@@ -106,17 +106,17 @@
     }
     if(disableDrawing && drawMode==kAnyStartAnchorValid)
     {
-        if(isMovingDown)
-            [anchorLayer setPosition:ccp(anchorLayer.position.x,anchorLayer.position.y+10)];
-            
-        if(isMovingUp)
-            [anchorLayer setPosition:ccp(anchorLayer.position.x,anchorLayer.position.y-10)];
-            
-        if(isMovingLeft)
-            [anchorLayer setPosition:ccp(anchorLayer.position.x+10,anchorLayer.position.y)];
-        
-        if(isMovingRight)
-            [anchorLayer setPosition:ccp(anchorLayer.position.x-10,anchorLayer.position.y)];
+//        if(isMovingDown)
+//            [anchorLayer setPosition:ccp(anchorLayer.position.x,anchorLayer.position.y+10)];
+//            
+//        if(isMovingUp)
+//            [anchorLayer setPosition:ccp(anchorLayer.position.x,anchorLayer.position.y-10)];
+//            
+//        if(isMovingLeft)
+//            [anchorLayer setPosition:ccp(anchorLayer.position.x+10,anchorLayer.position.y)];
+//        
+//        if(isMovingRight)
+//            [anchorLayer setPosition:ccp(anchorLayer.position.x-10,anchorLayer.position.y)];
     }
     
 //    if(!sumWheel && [numberWheels count]>=2)
@@ -288,16 +288,16 @@
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     
 
-    float xStartPos=spaceBetweenAnchors*1.8;
+    float xStartPos=spaceBetweenAnchors*1.4;
     
-    int anchorsOnX=(lx-spaceBetweenAnchors*2)/spaceBetweenAnchors;
+    int anchorsOnX=(lx-spaceBetweenAnchors)/spaceBetweenAnchors;
     int anchorsOnY=(ly-spaceBetweenAnchors*2)/spaceBetweenAnchors;
 
     
-    if(disableDrawing && drawMode==kAnyStartAnchorValid){
-        anchorsOnX=anchorsOnX*3;
-        anchorsOnY=anchorsOnY*3;
-    }
+//    if(disableDrawing && drawMode==kAnyStartAnchorValid){
+//        anchorsOnX=anchorsOnX*3;
+//        anchorsOnY=anchorsOnY*3;
+//    }
     for (int iRow=0; iRow<anchorsOnX; iRow++)
     {
         NSMutableArray *currentCol=[[NSMutableArray alloc]init];
@@ -880,7 +880,7 @@
         int tStartX=1;
         int tStartY=3;
         int tEndX=tStartX+xlen;
-        int tEndY=tStartY+ylen;
+        int tEndY=tStartY+ylen-1;
         
         for(int xi=baseStartX; xi>0; xi=xi/10)
         {
@@ -913,10 +913,10 @@
                 
                 shape.firstAnchor=[[dotMatrix objectAtIndex:tStartX] objectAtIndex:tStartY];
                 shape.lastAnchor=[[dotMatrix objectAtIndex:tEndX] objectAtIndex:tEndY];
-//                shape.firstBoundaryAnchor=a;
-//                shape.lastBoundaryAnchor=b;
-                shape.firstBoundaryAnchor=shape.firstAnchor;
-                shape.lastBoundaryAnchor=shape.lastAnchor;
+                shape.firstBoundaryAnchor=a;
+                shape.lastBoundaryAnchor=b;
+//                shape.firstBoundaryAnchor=shape.firstAnchor;
+//                shape.lastBoundaryAnchor=shape.lastAnchor;
 
                 shape.autoUpdateWheel=autoAddition;
                 shape.value=thisXVal*thisYVal;
@@ -1483,7 +1483,7 @@
                 [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
                 
                 w.RenderLayer=renderLayer;
-                w.Position=ccp(lx-140,(ly-120)-100*[numberWheels count]);
+                w.Position=ccp(lx-140,(ly-150)-185*[numberWheels count]);
                 w.AssociatedGO=s;
                 w.Components=numberWheelComponents;
                 w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",w.Components];
@@ -1529,7 +1529,7 @@
     
     w.RenderLayer=renderLayer;
     w.Components=numberWheelComponents;
-    w.Position=ccp(lx-140,(ly-120)-100*[numberWheels count]);
+    w.Position=ccp(lx-140,(ly-120)-200*[numberWheels count]);
     w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",w.Components];
     w.HasCountBubble=NO;
     w.Label=[CCLabelTTF labelWithString:@"Total" fontName:SOURCE fontSize:20.0f];
@@ -1670,13 +1670,13 @@
     NSMutableDictionary *pl=[NSMutableDictionary dictionaryWithObject:[NSValue valueWithCGPoint:location] forKey:POS];
     
     // if they can move the layer and haven't picked up a new block
-    if(movingLayer && !hitDragBlock)
-    {
-        CGPoint diff=ccpSub(location, prevLoc);
-        [anchorLayer setPosition:ccpAdd(anchorLayer.position, diff)];
-        
-        return;
-    }
+//    if(movingLayer && !hitDragBlock)
+//    {
+//        CGPoint diff=ccpSub(location, prevLoc);
+//        [anchorLayer setPosition:ccpAdd(anchorLayer.position, diff)];
+//        
+//        return;
+//    }
     if(hitDragBlock)
     {
         [newBlock setPosition:location];

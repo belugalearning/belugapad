@@ -153,10 +153,16 @@
     [textRenderComponent.label0 setOpacity:0];
 }
 
+-(NSString*)returnMyText
+{
+    return self.text;
+}
+
 -(void)setupDraw
 {
     if(self.hidden)return;
     textRenderComponent.useLargeAssets=self.isLargeObject;
+    textRenderComponent.useAlternateFont=YES;
     //text render to create it's label
     [textRenderComponent setupDraw];
     

@@ -45,6 +45,9 @@
     BOOL authorRenderEnabled;
     
     NSDictionary *udata;
+    
+    CGPoint lastTap;
+    float lastTapTime;
 }
 
 +(CCScene *)scene;

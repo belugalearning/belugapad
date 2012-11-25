@@ -66,7 +66,7 @@
     BOOL isHoldingObject;
     id<MovingInteractive> heldObject;
 }
-
+-(void)returnToMap;
 @end
 
 @implementation ToolHost
@@ -78,6 +78,7 @@
 @synthesize DynProblemParser;
 @synthesize pickerView;
 @synthesize CurrentBTXE;
+@synthesize thisProblemDescription;
 
 static float kMoveToNextProblemTime=0.5f;
 static float kDisableInteractionTime=0.5f;
@@ -631,9 +632,7 @@ static float kTimeToHintToolTray=7.0f;
     }
     else
     {
-        [contentService quitPipelineTracking];
-        
-        [[CCDirector sharedDirector] replaceScene:[JMap scene]];
+        [self returnToMap];
     }
 }
 
@@ -692,9 +691,7 @@ static float kTimeToHintToolTray=7.0f;
         contentService.fullRedraw=YES;
         contentService.lightUpProgressFromLastNode=YES;
         
-        [contentService quitPipelineTracking];
-        
-        [[CCDirector sharedDirector] replaceScene:[JMap scene]];
+        [self returnToMap];
     }
 }
 
@@ -704,6 +701,7 @@ static float kTimeToHintToolTray=7.0f;
     hasTrayWheel=NO;
     numberPickerForThisProblem=NO;
     metaQuestionForThisProblem=NO;
+    self.thisProblemDescription=nil;
 
     // ---------------- TEAR DOWN ------------------------------------
     //tear down meta question stuff
@@ -863,6 +861,15 @@ static float kTimeToHintToolTray=7.0f;
     
     evalShowCommit=YES;
     
+    readProblemDesc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/speakdesc.png")];
+    [readProblemDesc setPosition:ccp(50,600)];
+    [problemDefLayer addChild:readProblemDesc];
+    
+    if(!thisProblemDescription)
+        self.thisProblemDescription=[descRow returnRowStringForSpeech];
+    
+    [self readOutProblemDescription];
+    
     [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_background_score.mp3") loop:YES];
 }
 -(void)addCommitButton
@@ -910,6 +917,16 @@ static float kTimeToHintToolTray=7.0f;
     [self setProblemDescription:labelDesc];
     
     [self addCommitButton];
+}
+
+-(void)readOutProblemDescription
+{
+    AppController *ac=(AppController*)[[UIApplication sharedApplication] delegate];
+    
+//    NSLog(@"reading out: %@", [descRow returnRowStringForSpeech]);
+    NSString *readString=[[thisProblemDescription copy] autorelease];
+    
+    [ac speakString:readString];
 }
 
 -(void)setupToolTrays:(NSDictionary*)withPdef
@@ -1137,7 +1154,7 @@ static float kTimeToHintToolTray=7.0f;
         [loggingService logEvent:BL_PA_EXIT_TO_MAP withAdditionalData:nil];
         [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @0 }];
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
-        [self returnToMenu];
+        [self returnToMap];
     }
 //    if(CGRectContainsPoint(kPauseMenuLogOut, location))
 //    {
@@ -1181,10 +1198,11 @@ static float kTimeToHintToolTray=7.0f;
 
 #pragma mark - completion and user flow
 
--(void)returnToMenu
+-(void)returnToMap
 {
     [TestFlight passCheckpoint:@"QUITTING_TOOLHOST_FOR_JMAP"];
-    
+    [contentService quitPipelineTracking];
+    [self unscheduleAllSelectors];
     [[CCDirector sharedDirector] replaceScene:[JMap scene]];
 }
 
@@ -1211,6 +1229,7 @@ static float kTimeToHintToolTray=7.0f;
     [problemIncomplete runAction:[InteractionFeedback stampAction]];
     [contextProgressLayer addChild:problemIncomplete];
     showingProblemIncomplete=YES;
+    evalShowCommit=YES;
     
     [self showBlackOverlay];
     
@@ -2163,6 +2182,10 @@ static float kTimeToHintToolTray=7.0f;
     descRow=row;
     row.position=ccp(cx, (cy*2) - 95);
 
+    NSString *numberMode=[pdef objectForKey:@"NUMBER_MODE"];
+    if(numberMode)
+        row.defaultNumbermode=numberMode;
+    
     //top down valign
     row.forceVAlignTop=YES;
     
@@ -2292,7 +2315,11 @@ static float kTimeToHintToolTray=7.0f;
             return;
         }
     }
-
+    else if(CGRectContainsPoint(readProblemDesc.boundingBox, location))
+    {
+        [self readOutProblemDescription];
+        return;
+    }
     else
     {
         if((trayMqShowing||trayPadShowing||trayWheelShowing||trayCalcShowing) && currentTool && !CurrentBTXE && !CGRectContainsPoint(CGRectMake(CORNER_TRAY_POS_X,CORNER_TRAY_POS_Y,324,308), location)){
@@ -2325,7 +2352,7 @@ static float kTimeToHintToolTray=7.0f;
         }
     }
     
-    if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn)
+    if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn && commitBtn.visible)
     {
         //remove any trays
         [self removeAllTrays];
@@ -2694,6 +2721,15 @@ static float kTimeToHintToolTray=7.0f;
         [problemDefLayer addChild:trayLayerWheel z:2];
         //trayLayerWheel.position=ccp(CORNER_TRAY_POS_X, CORNER_TRAY_POS_Y);
         [self setupNumberWheel];
+        
+        
+        int pickerCols=[self numberOfComponentsInPickerView:pickerView];
+        
+        for(int i=0;i<pickerCols;i++)
+        {
+            [pickerView spinComponent:i speed:15 easeRate:15 repeat:2 stopRow:0];
+        }
+        
         //CCLabelTTF *lbl=[CCLabelTTF labelWithString:@"Wheel" fontName:@"Source Sans Pro" fontSize:24.0f];
         //lbl.position=ccp(150,112.5f);
         //[trayLayerWheel addChild:lbl];

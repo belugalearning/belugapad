@@ -1401,7 +1401,8 @@ static float kTimeToCageShake=7.0f;
         [self calcProblemTotalCount];
         if((totalCount>maxSumReachedByUser) && !gw.Blackboard.inProblemSetup)
         {
-            if (maxSumReachedByUser<=expectedCount)[toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
+            // comment out all tool sharding - if there are already shards on the screen when ur commits correct ans, too much score awarded
+            //if (maxSumReachedByUser<=expectedCount)[toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
             maxSumReachedByUser=totalCount;
         }
         
@@ -1492,8 +1493,9 @@ static float kTimeToCageShake=7.0f;
     if(gw.Blackboard.SelectedObjects.count > totalCountedInProblem)
     {
         totalCountedInProblem=gw.Blackboard.SelectedObjects.count;
-        if(!(totalCountedInProblem > [[solutionsDef objectForKey:SOLUTION_VALUE] intValue]) && !gw.Blackboard.inProblemSetup)
-            [toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];
+        // comment out all tool sharding - if there are already shards on the screen when ur commits correct ans, too much score awarded
+        /*if(!(totalCountedInProblem > [[solutionsDef objectForKey:SOLUTION_VALUE] intValue]) && !gw.Blackboard.inProblemSetup)
+            [toolHost.Zubi createXPshards:20 fromLocation:ccp(cx,cy)];*/
     }
     
     lastCount = gw.Blackboard.SelectedObjects.count;
@@ -3339,15 +3341,15 @@ static float kTimeToCageShake=7.0f;
                     }
                     else if(explodeMode && isNegativeProblem)
                     {
+                        DWPlaceValueNetGameObject *n=nil;
                         
-                        if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                        if(gw.Blackboard.PriorityDropObject)
+                            n=(DWPlaceValueNetGameObject*)gw.Blackboard.PriorityDropObject;
+                        else
+                            n=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
+                        
+                        if([n isKindOfClass:[DWPlaceValueNetGameObject class]])
                         {
-                            DWPlaceValueNetGameObject *n=nil;
-                            
-                            if(gw.Blackboard.PriorityDropObject)
-                                n=(DWPlaceValueNetGameObject*)gw.Blackboard.PriorityDropObject;
-                            else
-                                n=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
                                 
                             if(!blocksToDestroy)
                                 blocksToDestroy=[[[NSMutableArray alloc]init]autorelease];
@@ -3358,7 +3360,7 @@ static float kTimeToCageShake=7.0f;
                                 n.MountedObject=b;
                             else if(n.MountedObject && !n.CancellingObject)
                                 n.CancellingObject=b;
-                            else
+                            else if(!n.MountedObject && !n.CancellingObject)
                                 n.MountedObject=b;
                             
                             

@@ -180,8 +180,8 @@
                 
                 if(gameWorld.Blackboard.inProblemSetup)
                 {
-                    [s.myHeight setOpacity:0];
-                    [s.myHeight setTag:2];
+                    [s.myWidth setOpacity:0];
+                    [s.myWidth setTag:2];
                 }
                 
                 [s.RenderLayer addChild:s.myWidth];

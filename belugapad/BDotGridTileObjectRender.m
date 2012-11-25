@@ -76,12 +76,8 @@
         {
             DWDotGridAnchorGameObject *anch=tile.myAnchor;
             anch.tile=nil;
-//            anch.Disabled=NO;
-//            tile.myAnchor=nil;
-//            tile.myShape=nil;
         }
         
-        tile.myAnchor=nil;
 
         [tile.mySprite removeFromParentAndCleanup:YES];
         [tile.selectedSprite removeFromParentAndCleanup:YES];
@@ -138,6 +134,7 @@
     
     CGPoint this=ccp(tile.myAnchor.myXpos, tile.myAnchor.myYpos);
     
+    NSLog(@"firstAnch x %d y %d, lastAnch x %d y %d", fa.myXpos, fa.myYpos, la.myXpos, la.myYpos);
     
     float differenceX=fabsf(fa.myXpos-la.myXpos);
     float differenceY=fabsf(fa.myYpos-la.myYpos);

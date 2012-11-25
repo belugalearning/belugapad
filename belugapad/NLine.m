@@ -411,7 +411,7 @@ float timerIgnoreFrog;
     initStartLoc=initStartVal / initSegmentVal;
 
     
-    enableAudioCounting = [rambler.MinValue intValue]>=0 && [rambler.MaxValue intValue]<=20;
+    enableAudioCounting=YES;
     
     NSNumber *hideAllNumbers=[problemDef objectForKey:@"HIDE_ALL_NUMBERS"];
     if(hideAllNumbers) if([hideAllNumbers boolValue]) rambler.HideAllNumbers=YES;
@@ -853,14 +853,23 @@ float timerIgnoreFrog;
         
         
         //play some audio -- only for non decimal numbers at the moment
-        if(enableAudioCounting && lastBubbleLoc!=logLastBubblePos && rambler.DisplayNumberMultiplier==1)
+        if(enableAudioCounting && lastBubbleLoc!=logLastBubblePos)
         {
             int readNumber=lastBubbleValue+rambler.DisplayNumberOffset;
-            
             if(countOutLoudFromInitStartVal) readNumber-=initStartVal;
             
-            NSString *path=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", readNumber];
-            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(path)];
+            NSString *writeText=[NSString stringWithFormat:@"%d", readNumber];
+            
+            if(rambler.DisplayNumberDP>0 && rambler.DisplayNumberMultiplier!=1)
+            {
+                float multDisplayNum=readNumber * rambler.DisplayNumberMultiplier;
+                
+                NSString *fmt=[NSString stringWithFormat:@"%%.%df", rambler.DisplayNumberDP];
+                writeText=[NSString stringWithFormat:fmt, multDisplayNum];
+            }
+            
+            AppController *ac=(AppController*)[UIApplication sharedApplication].delegate;
+            [ac speakString:writeText];
         }
         
         //release the bubble

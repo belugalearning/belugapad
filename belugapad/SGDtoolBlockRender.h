@@ -11,7 +11,7 @@
 
 @interface SGDtoolBlockRender : SGComponent
 {
-    id<Transform,Moveable, Pairable> ParentGO;
+    id<Transform,Moveable,Pairable,Configurable> ParentGO;
 }
 
 -(void)setup;
@@ -21,5 +21,6 @@
 -(void)resetTint;
 -(void)drawProximateLines:(CGPoint)location;
 -(void)drawNotProximateLines:(CGPoint)location;
+-(void)destroyThisObject;
 
 @end

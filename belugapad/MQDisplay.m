@@ -159,7 +159,7 @@
     
 }
 
--(void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
+-(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
 {
     
 }
@@ -173,6 +173,11 @@
 -(float)metaQuestionAnswersYLocation
 {
     return kMetaQuestionYOffsetPlaceValue*cy;
+}
+
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    
 }
 
 #pragma mark - dealloc

@@ -13,6 +13,7 @@
 
 @synthesize size, position;
 @synthesize text, textRenderComponent;
+@synthesize container;
 
 -(SGBtxeText*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -37,6 +38,11 @@
     
 }
 
+-(void)setText:(NSString *)theText
+{
+    text=[theText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+}
+
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime
 {
     [textRenderComponent fadeInElementsFrom:startTime andIncrement:incrTime];
@@ -57,6 +63,31 @@
     
 }
 
+-(void)tagMyChildrenForIntro
+{
+    [self.textRenderComponent tagMyChildrenForIntro];
+}
+
+-(NSString*)returnMyText
+{
+    NSString *myText=nil;
+    
+    myText=self.text;
+    
+    if([self.text isEqualToString:@"+"])
+        myText=@"plus";
+    if([self.text isEqualToString:@"-"])
+        myText=@"minus";
+    if([self.text isEqualToString:@"x"])
+        myText=@"times by";
+    if([self.text isEqualToString:@"%"])
+        myText=@"divided by";
+    if([self.text isEqualToString:@"="])
+        myText=@"equals";
+    
+    return myText;
+}
+
 -(void)setupDraw
 {
     //text render to create it's label
@@ -70,6 +101,9 @@
 {
     self.text=nil;
     self.textRenderComponent=nil;
+    self.container=nil;
+    
+    
     [super dealloc];
 }
 

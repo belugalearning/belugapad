@@ -40,7 +40,7 @@
     NSMutableArray *totalCountSprites;
     NSMutableArray *userAddedBlocks;
     NSMutableArray *userAddedBlocksLastCount;
-    NSMutableArray *initBlocksForColumn;
+    NSMutableArray *initBlockValueForColumn;
     NSMutableArray *arrowsForColumn;
 
     // GameWorld setup
@@ -82,6 +82,7 @@
     BOOL hasMovedBlock;
     BOOL hasMovedLayer;
     BOOL disableAudioCounting;
+    BOOL countUserBlocks;
     BOOL autoBaseSelection;
     
     
@@ -114,6 +115,8 @@
     NSDictionary *columnCageNegDisableDel;
     NSDictionary *multipleBlockPickup;
     NSDictionary *multipleBlockPickupDefaults;
+    NSMutableDictionary *multipleBlockMax;
+    NSMutableDictionary *multipleBlockMin;
     
     
     DWGameWorld *gw;

@@ -15,6 +15,9 @@
 @synthesize firstAnchor;
 @synthesize lastAnchor;
 @synthesize hasLabels;
+@synthesize countLabel;
+@synthesize countLabelType;
+@synthesize countBubble;
 
 -(void)dealloc
 {
@@ -22,6 +25,9 @@
     self.shapesInMe=nil;
     self.firstAnchor=nil;
     self.lastAnchor=nil;
+    self.countLabel=nil;
+    self.countLabelType=nil;
+    
     [super dealloc];
 }
 @end

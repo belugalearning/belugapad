@@ -9,15 +9,20 @@
 #import "SGBtxeObjectText.h"
 #import "SGBtxeTextRender.h"
 #import "SGBtxeTextBackgroundRender.h"
+#import "global.h"
 
 @implementation SGBtxeObjectText
 
 @synthesize size, position;
 @synthesize text, textRenderComponent;
-@synthesize enabled, tag;
+@synthesize enabled, interactive, tag;
 @synthesize textBackgroundRenderComponent;
 @synthesize originalPosition;
 @synthesize usePicker;
+@synthesize mount;
+@synthesize hidden;
+@synthesize isLargeObject;
+@synthesize container;
 
 -(SGBtxeObjectText*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -28,12 +33,35 @@
         position=CGPointZero;
         tag=@"";
         enabled=YES;
+        interactive=YES;
         usePicker=NO;
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
         textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
     }
     
     return self;
+}
+
+-(id<MovingInteractive>)createADuplicateIntoGameWorld:(SGGameWorld*)destGW
+{
+    //creates a duplicate object text -- something else will need to call setupDraw and attachToRenderBase
+    
+    SGBtxeObjectText *dupe=[[[SGBtxeObjectText alloc] initWithGameWorld:destGW] autorelease];
+    
+    dupe.text=[[self.text copy] autorelease];
+    dupe.position=self.position;
+    dupe.tag=[[self.tag copy] autorelease];
+    dupe.enabled=self.enabled;
+    dupe.isLargeObject=self.isLargeObject;
+    dupe.usePicker=self.usePicker;
+    
+    return (id<MovingInteractive>)dupe;
+    
+}
+
+-(id<MovingInteractive>)createADuplicate
+{
+    return [self createADuplicateIntoGameWorld:gameWorld];
 }
 
 -(void)handleMessage:(SGMessageType)messageType
@@ -46,9 +74,25 @@
     
 }
 
+-(void)destroy
+{
+    [self detachFromRenderBase];
+    
+    [gameWorld delayRemoveGameObject:self];
+}
+
+-(void)detachFromRenderBase
+{
+    [textBackgroundRenderComponent.backgroundNode removeFromParentAndCleanup:YES];
+    [textRenderComponent.label0 removeFromParentAndCleanup:YES];
+    [textRenderComponent.label removeFromParentAndCleanup:YES];
+}
+
 -(CGPoint)worldPosition
 {
-    return [renderBase convertToWorldSpace:self.position];
+    CGPoint ret=[renderBase convertToWorldSpace:self.position];
+//    NSLog(@"obj-text world pos %@", NSStringFromCGPoint(ret));
+    return ret;
 }
 
 -(void)setWorldPosition:(CGPoint)worldPosition
@@ -58,15 +102,32 @@
 
 -(void)attachToRenderBase:(CCNode*)theRenderBase;
 {
+    if(self.hidden)return;
+    
     renderBase=theRenderBase;
     
-    [renderBase addChild:textBackgroundRenderComponent.sprite];
-    
+    [renderBase addChild:textBackgroundRenderComponent.backgroundNode];
+
+    [renderBase addChild:textRenderComponent.label0];
     [renderBase addChild:textRenderComponent.label];
+}
+
+-(void)inflateZIndex
+{
+    textBackgroundRenderComponent.backgroundNode.zOrder=99;
+    [textRenderComponent inflateZindex];
+}
+
+-(void)deflateZindex
+{
+    textBackgroundRenderComponent.backgroundNode.zOrder=0;
+    [textRenderComponent deflateZindex];
 }
 
 -(void)setPosition:(CGPoint)thePosition
 {
+//    NSLog(@"objtext setting position to %@", NSStringFromCGPoint(thePosition));
+    
     position=thePosition;
 
     //TODO: auto-animate any large moves?
@@ -79,8 +140,28 @@
     
 }
 
+-(void)setColourOfBackgroundTo:(ccColor3B)thisColour
+{
+    [textBackgroundRenderComponent setColourOfBackgroundTo:thisColour];
+}
+
+-(void)tagMyChildrenForIntro
+{
+    [textRenderComponent.label setTag:3];
+    [textRenderComponent.label0 setTag:3];
+    [textRenderComponent.label setOpacity:0];
+    [textRenderComponent.label0 setOpacity:0];
+}
+
+-(NSString*)returnMyText
+{
+    return self.text;
+}
+
 -(void)setupDraw
 {
+    if(self.hidden)return;
+    textRenderComponent.useLargeAssets=self.isLargeObject;
     //text render to create it's label
     [textRenderComponent setupDraw];
     
@@ -88,10 +169,12 @@
     if(!self.enabled || self.usePicker)
     {
         textRenderComponent.label.visible=NO;
+        textRenderComponent.label0.visible=NO;
     }
     
-    //set size to size of cclabelttf
-    self.size=self.textRenderComponent.label.contentSize;
+    //set size to size of cclabelttf plus the background overdraw size (the background itself is currently stretchy)
+    self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
+    
     
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];
@@ -103,6 +186,7 @@
     self.enabled=YES;
     
     self.textRenderComponent.label.visible=self.enabled;
+    self.textRenderComponent.label0.visible=self.enabled;
 }
 
 -(void)returnToBase
@@ -116,6 +200,7 @@
     self.tag=nil;
     self.textRenderComponent=nil;
     self.textBackgroundRenderComponent=nil;
+    self.container=nil;
     
     [super dealloc];
 }

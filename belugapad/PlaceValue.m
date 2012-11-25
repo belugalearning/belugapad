@@ -36,7 +36,7 @@
 
 static float kPropXNetSpace=0.087890625f;
 static float kPropYColumnOrigin=0.75f;
-static float kCageYOrigin=0.08f;
+static float kCageYOrigin=0.06f;
 static float kPropYColumnHeader=0.85f;
 static float kPropYColumnTotalCount=0.15f;
 static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
@@ -125,11 +125,13 @@ static float kTimeToCageShake=7.0f;
             if(lastTotalCount<expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
             {
                 [gw handleMessage:kDWcheckMyMountIsCage andPayload:nil withLogLevel:-1];
+                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_interaction_feedback_dock_shaking.wav")];
             }
             // too many items - shake netted items
             else if(lastTotalCount>expectedCount && timeSinceInteractionOrShake>kTimeToCageShake && !touching)
             {
                 [gw handleMessage:kDWcheckMyMountIsNet andPayload:nil withLogLevel:-1];
+                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_interaction_feedback_dock_shaking.wav")];;
             }
             
             if(multipleLabels && !touching && lastTotalCount<expectedCount)
@@ -139,6 +141,15 @@ static float kTimeToCageShake=7.0f;
                     [l runAction:[InteractionFeedback shakeAction]];
                 }
             }
+            if(blockLabels && !touching && lastTotalCount<expectedCount)
+            {
+                for(CCLabelTTF *l in blockLabels)
+                {
+                    [l runAction:[InteractionFeedback shakeAction]];
+                }
+            }
+            
+            
             
             hasRunInteractionFeedback=YES;
         }
@@ -178,67 +189,191 @@ static float kTimeToCageShake=7.0f;
         {
             CCLabelTTF *l=[[[totalCountSprites objectAtIndex:i] children] objectAtIndex:0];
             
-            int initedOnGrid=[[initBlocksForColumn objectAtIndex:i]intValue];
-            float colValue=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
+//            int initedOnGrid=[[initBlockValueForColumn objectAtIndex:i]intValue];
             
-            if([self usedSpacesOnGrid:i]>initedOnGrid)
-                [l setString:[NSString stringWithFormat:@"%g+%g", ([[initBlocksForColumn objectAtIndex:i]intValue]*colValue), ([self usedSpacesOnGrid:i]-initedOnGrid)*colValue]];
-            else if([self usedSpacesOnGrid:currentColumnIndex]<=initedOnGrid)
-                [l setString:[NSString stringWithFormat:@"%g", ([[initBlocksForColumn objectAtIndex:i]intValue]*colValue)-(([[initBlocksForColumn objectAtIndex:i]intValue]-[self usedSpacesOnGrid:i])*colValue)]];
+            //-------------
+            
+            float initedValueOnGrid=[[initBlockValueForColumn objectAtIndex:i]floatValue];
+            float valueOnGridNow=[self valueOfGrid:i];
+            float amountAdded=valueOnGridNow-initedValueOnGrid;
+            
+            
+            if(valueOnGridNow>initedValueOnGrid)
+            {
+                [l setString:[NSString stringWithFormat:@"%g + %g", ([[initBlockValueForColumn objectAtIndex:i]floatValue]), amountAdded]];
+            }
+            if(valueOnGridNow==initedValueOnGrid)
+            {
+                [l setString:[NSString stringWithFormat:@"%g", ([[initBlockValueForColumn objectAtIndex:i]floatValue])]];                
+            }
+            if(valueOnGridNow<initedValueOnGrid)
+            {
+                [l setString:[NSString stringWithFormat:@"%g - %g", ([[initBlockValueForColumn objectAtIndex:i]floatValue]), fabsf(amountAdded)]];
+            }
+            
         }
     }
     
-    if(showValue)
-        [countLabel setString:[NSString stringWithFormat:@"%g", totalObjectValue]];
     
+    if(showValue && [solutionType isEqualToString:TOTAL_COUNT])
+        [sumLabel setString:[NSString stringWithFormat:@"%g", totalObjectValue]];
     
     if(showMoreOrLess && [solutionType isEqualToString:TOTAL_COUNT])
     {
-
-        float remainVal=expectedCount-totalObjectValue;
         
+        NSString *expNo=[[NSNumber numberWithFloat:expectedCount]stringValue];
         for(int i=0;i<numberOfColumns;i++)
         {
-            DWPlaceValueCageGameObject *c=nil;
-            
-            if([[allCages objectAtIndex:i]isKindOfClass:[DWPlaceValueCageGameObject class]])
-                c=[allCages objectAtIndex:i];
-            
-            
-            float colValue=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
-            int spacesHere=[self freeSpacesOnGrid:i];
-            int blocksHere=[self usedSpacesOnGrid:i];
-            float countReqInColumnDeci=remainVal/colValue;
-            int countReqInColumn=remainVal/colValue;
-            float remainder=fabsf(countReqInColumnDeci-(int)countReqInColumnDeci);
-            
-            
-            //if(remainder>0 && countReqInColumn<0)countReqInColumn--;
-            //            if(remainder>0 && countReqInColumn>=0)countReqInColumn++;
-            
-//            NSLog(@"column %d - spaces required %d, spaces here %d, expectedVal %g", i, countReqInColumn, spacesHere, remainVal);
             
             CCSprite *s=[arrowsForColumn objectAtIndex:i];
             
-            if(countReqInColumn==0)
+            NSString *thisNo=[NSString stringWithFormat:@"%c",[expNo characterAtIndex:i]];
+            
+            int blocksNeeded=[thisNo intValue];
+            
+            //float blocksNeeded=trackValue/colValue;
+            int usedSpaces=[self usedSpacesOnGrid:i];
+            
+            if((int)blocksNeeded==usedSpaces)
             {
-                //                NSLog(@"column %d nothing required", i);
                 [s setVisible:NO];
-                continue;
             }
-            else if(countReqInColumn<=spacesHere && countReqInColumn>0)
+            else if((int)blocksNeeded!=usedSpaces)
             {
-                
-                
-                //                NSLog(@"column %d show more sign", i);
-                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_more.png")]];
-                [s setVisible:YES];
-                CCLabelTTF *l=[s.children objectAtIndex:0];
-                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)-2)];
-                [l setString:[NSString stringWithFormat:@"%d more", countReqInColumn]];
-                
-                remainVal-=colValue*countReqInColumn;
+                if(blocksNeeded>usedSpaces)
+                {
+                    [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_more.png")]];
+                    [s setVisible:YES];
+                    CCLabelTTF *l=[s.children objectAtIndex:0];
+                    [l setPosition:ccp(l.position.x, (s.contentSize.height/2)-2)];
+                    [l setString:[NSString stringWithFormat:@"%d more", (int)blocksNeeded-usedSpaces]];
+                    
+                }
+                else if(blocksNeeded<usedSpaces)
+                {
+                    [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_less.png")]];
+                    [s setVisible:YES];
+                    CCLabelTTF *l=[s.children objectAtIndex:0];
+                    [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
+                    [l setString:[NSString stringWithFormat:@"%d less", usedSpaces-(int)blocksNeeded]];
+                }
             }
+            
+        }
+    }
+    
+    
+//    if(showMoreOrLess && [solutionType isEqualToString:TOTAL_COUNT])
+//    {
+//
+//        float remainVal=expectedCount-totalObjectValue;
+//        
+//        for(int i=0;i<numberOfColumns;i++)
+//        {
+//            DWPlaceValueCageGameObject *c=nil;
+//            
+//            if([[allCages objectAtIndex:i]isKindOfClass:[DWPlaceValueCageGameObject class]])
+//                c=[allCages objectAtIndex:i];
+//            
+//            
+//            float colValue=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
+//            int spacesHere=[self freeSpacesOnGrid:i];
+//            int blocksHere=[self usedSpacesOnGrid:i];
+//            float countReqInColumnDeci=remainVal/colValue;
+//            int countReqInColumn=remainVal/colValue;
+//            float remainder=fabsf(countReqInColumnDeci-(int)countReqInColumnDeci);
+//            
+//            
+//            //if(remainder>0 && countReqInColumn<0)countReqInColumn--;
+//            //            if(remainder>0 && countReqInColumn>=0)countReqInColumn++;
+//            
+////            NSLog(@"column %d - spaces required %d, spaces here %d, expectedVal %g", i, countReqInColumn, spacesHere, remainVal);
+//            
+//            CCSprite *s=[arrowsForColumn objectAtIndex:i];
+//            
+//            if(countReqInColumn==0)
+//            {
+//                //                NSLog(@"column %d nothing required", i);
+//                [s setVisible:NO];
+//                continue;
+//            }
+//            else if(countReqInColumn<=spacesHere && countReqInColumn>0)
+//            {
+//                
+//                
+//                //                NSLog(@"column %d show more sign", i);
+//                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_more.png")]];
+//                [s setVisible:YES];
+//                CCLabelTTF *l=[s.children objectAtIndex:0];
+//                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)-2)];
+//                [l setString:[NSString stringWithFormat:@"%d more", countReqInColumn]];
+//                
+//                remainVal-=colValue*countReqInColumn;
+//            }
+////            else if(-countReqInColumn <= blocksHere && countReqInColumn<0)
+////            {
+////                
+////                
+////                //                NSLog(@"column %d show less sign", i);
+////                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_less.png")]];
+////                [s setVisible:YES];
+////                CCLabelTTF *l=[s.children objectAtIndex:0];
+////                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
+////                [l setString:[NSString stringWithFormat:@"%d less", -countReqInColumn]];
+////                
+////                remainVal+=colValue*countReqInColumn;
+////            }
+//            else if(countReqInColumn>spacesHere)
+//            {
+//                //                NSLog(@"column %d show less sign", i);
+//                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_more.png")]];
+//                [s setVisible:YES];
+//                CCLabelTTF *l=[s.children objectAtIndex:0];
+//                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
+//                [l setString:[NSString stringWithFormat:@"%d more", spacesHere]];
+//                
+//                remainVal-=colValue*spacesHere;
+//            }
+////            else if (-countReqInColumn>blocksHere)
+////            {
+////                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_less.png")]];
+////                [s setVisible:YES];
+////                CCLabelTTF *l=[s.children objectAtIndex:0];
+////                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
+////                [l setString:[NSString stringWithFormat:@"%d less", -blocksHere]];
+////                
+////                remainVal-=colValue*blocksHere;
+////            }
+//        }
+//        
+//        
+//        
+//        
+//        
+//        remainVal=expectedCount-totalObjectValue;
+//        
+//        for(int i=numberOfColumns-1;i>=0;i--)
+//        {
+//            DWPlaceValueCageGameObject *c=nil;
+//            
+//            if([[allCages objectAtIndex:i]isKindOfClass:[DWPlaceValueCageGameObject class]])
+//                c=[allCages objectAtIndex:i];
+//            
+//            
+//            float colValue=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
+//            int blocksHere=[self usedSpacesOnGrid:i];
+//            int countReqInColumn=remainVal/colValue;
+//            
+//            
+//            CCSprite *s=[arrowsForColumn objectAtIndex:i];
+//            
+//            if(countReqInColumn==0)
+//            {
+//                //                NSLog(@"column %d nothing required", i);
+//                [s setVisible:NO];
+//                continue;
+//            }
+//
 //            else if(-countReqInColumn <= blocksHere && countReqInColumn<0)
 //            {
 //                
@@ -252,83 +387,19 @@ static float kTimeToCageShake=7.0f;
 //                
 //                remainVal+=colValue*countReqInColumn;
 //            }
-            else if(countReqInColumn>spacesHere)
-            {
-                //                NSLog(@"column %d show less sign", i);
-                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_more.png")]];
-                [s setVisible:YES];
-                CCLabelTTF *l=[s.children objectAtIndex:0];
-                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
-                [l setString:[NSString stringWithFormat:@"%d more", spacesHere]];
-                
-                remainVal-=colValue*spacesHere;
-            }
-//            else if (-countReqInColumn>blocksHere)
-//            {
-//                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_less.png")]];
-//                [s setVisible:YES];
-//                CCLabelTTF *l=[s.children objectAtIndex:0];
-//                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
-//                [l setString:[NSString stringWithFormat:@"%d less", -blocksHere]];
-//                
-//                remainVal-=colValue*blocksHere;
-//            }
-        }
-        
-        
-        
-        
-        
-        remainVal=expectedCount-totalObjectValue;
-        
-        for(int i=numberOfColumns-1;i>=0;i--)
-        {
-            DWPlaceValueCageGameObject *c=nil;
-            
-            if([[allCages objectAtIndex:i]isKindOfClass:[DWPlaceValueCageGameObject class]])
-                c=[allCages objectAtIndex:i];
-            
-            
-            float colValue=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
-            int blocksHere=[self usedSpacesOnGrid:i];
-            int countReqInColumn=remainVal/colValue;
-            
-            
-            CCSprite *s=[arrowsForColumn objectAtIndex:i];
-            
-            if(countReqInColumn==0)
-            {
-                //                NSLog(@"column %d nothing required", i);
-                [s setVisible:NO];
-                continue;
-            }
-
-            else if(-countReqInColumn <= blocksHere && countReqInColumn<0)
-            {
-                
-                
-                //                NSLog(@"column %d show less sign", i);
-                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_less.png")]];
-                [s setVisible:YES];
-                CCLabelTTF *l=[s.children objectAtIndex:0];
-                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
-                [l setString:[NSString stringWithFormat:@"%d less", -countReqInColumn]];
-                
-                remainVal+=colValue*countReqInColumn;
-            }
-
-//            else if (-countReqInColumn>blocksHere)
-//            {
-//                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_less.png")]];
-//                [s setVisible:YES];
-//                CCLabelTTF *l=[s.children objectAtIndex:0];
-//                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
-//                [l setString:[NSString stringWithFormat:@"%d less", -blocksHere]];
-//                
-//                remainVal-=colValue*blocksHere;
-//            }
-        }
-    }
+//
+////            else if (-countReqInColumn>blocksHere)
+////            {
+////                [s setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/pv_notification_less.png")]];
+////                [s setVisible:YES];
+////                CCLabelTTF *l=[s.children objectAtIndex:0];
+////                [l setPosition:ccp(l.position.x, (s.contentSize.height/2)+5)];
+////                [l setString:[NSString stringWithFormat:@"%d less", -blocksHere]];
+////                
+////                remainVal-=colValue*blocksHere;
+////            }
+//        }
+//    }
     
     // if we've run interaction feedback, loop through a bunch of objects - check they're running nothing and reset their position if need be
     if(hasRunInteractionFeedback)
@@ -510,7 +581,7 @@ static float kTimeToCageShake=7.0f;
                 totalCountSprites=[[[NSMutableArray alloc]init]retain];
             
             CCSprite *totalCountSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/total_count_bg.png")];
-            [totalCountSprite setPosition:ccp(i*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(currentColumnRows*(lx*kPropXNetSpace)))];
+            [totalCountSprite setPosition:ccp(i*(kPropXColumnSpacing*lx), 23+(ly*kPropYColumnOrigin)-(currentColumnRows*(lx*kPropXNetSpace)))];
             [totalCountSprite setOpacity:0];
             [totalCountSprite setTag:2];
             [renderLayer addChild:totalCountSprite];
@@ -518,7 +589,7 @@ static float kTimeToCageShake=7.0f;
         
             if(showColumnTotalCount)
             {
-                CCLabelTTF *totalCountLabel=[CCLabelTTF labelWithString:@"0" fontName:CHANGO fontSize:30.0f];
+                CCLabelTTF *totalCountLabel=[CCLabelTTF labelWithString:@"0" fontName:CHANGO fontSize:25.0f];
                 [totalCountLabel setPosition:ccp(totalCountSprite.contentSize.width/2,(totalCountSprite.contentSize.height/2)-3)];
                 [totalCountLabel setOpacity:0];
                 [totalCountLabel setTag:2];
@@ -527,7 +598,7 @@ static float kTimeToCageShake=7.0f;
             
             if(showCount)
             {
-                CCLabelTTF *thisCountLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",[[initBlocksForColumn objectAtIndex:i]intValue]] fontName:CHANGO fontSize:25.0f];
+                CCLabelTTF *thisCountLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",[[initBlockValueForColumn objectAtIndex:i]intValue]] fontName:CHANGO fontSize:25.0f];
                 [thisCountLabel setPosition:ccp(totalCountSprite.contentSize.width/2,(totalCountSprite.contentSize.height/2)-3)];
                 [thisCountLabel setOpacity:0];
                 [thisCountLabel setTag:2];
@@ -564,7 +635,7 @@ static float kTimeToCageShake=7.0f;
         if(!([columnCages objectForKey:currentColumnValueKey]) || ([[columnCages objectForKey:currentColumnValueKey] boolValue]==YES))
         {
             CCSprite *cageContainer = [CCSprite spriteWithFile:posCageSprite];
-            [cageContainer setPosition:ccp(i*(kPropXColumnSpacing*lx), ly*kCageYOrigin)];
+            [cageContainer setPosition:ccp(i*(kPropXColumnSpacing*lx), (ly*kCageYOrigin))];
             [cageContainer setOpacity:0];
             [cageContainer setTag:2];
             [renderLayer addChild:cageContainer z:10];
@@ -575,7 +646,7 @@ static float kTimeToCageShake=7.0f;
             [gw populateAndAddGameObject:cge withTemplateName:@"TplaceValueCage"];
             cge.AllowMultipleMount=YES;
             cge.PosX=i*(kPropXColumnSpacing*lx);
-            cge.PosY=ly*kCageYOrigin;
+            cge.PosY=(ly*kCageYOrigin);
             
             cge.mySprite=cageContainer;
             
@@ -628,11 +699,29 @@ static float kTimeToCageShake=7.0f;
         if(showMultipleDragging && (!([columnCages objectForKey:currentColumnValueKey]) || ([[columnCages objectForKey:currentColumnValueKey] boolValue]==YES)))
         {
             int defaultBlocksToMake=1;
+            int minBlocks=1;
+            int maxBlocks=10;
+            
+            
+            if(![multipleBlockMax objectForKey:currentColumnValueKey])
+                [multipleBlockMax setValue:[NSNumber numberWithInt:10] forKey:currentColumnValueKey];
+            else
+                maxBlocks=[[multipleBlockMax objectForKey:currentColumnValueKey]intValue];
+            
+            if(![multipleBlockMin objectForKey:currentColumnValueKey])
+                [multipleBlockMin setValue:[NSNumber numberWithInt:1] forKey:currentColumnValueKey];
+            else
+                minBlocks=[[multipleBlockMin objectForKey:currentColumnValueKey]intValue];
             
             if([multipleBlockPickupDefaults objectForKey:currentColumnValueKey])
                 defaultBlocksToMake=[[multipleBlockPickupDefaults objectForKey:currentColumnValueKey]intValue];
             else
                 defaultBlocksToMake=1;
+            
+            if(defaultBlocksToMake<minBlocks)
+                defaultBlocksToMake=minBlocks;
+            if(defaultBlocksToMake>maxBlocks)
+                defaultBlocksToMake=maxBlocks;
             
             [blocksToCreate addObject:[NSNumber numberWithInt:defaultBlocksToMake]];
             
@@ -674,6 +763,10 @@ static float kTimeToCageShake=7.0f;
             CGRect minus=CGRectMake(PosX, PosY, 70, 82);
             CGRect plus=CGRectMake(PosX+170, PosY, 70, 82);
             
+            int defaultBlocksToMake=1;
+            int minBlocks=-10;
+            int maxBlocks=10;
+            
             //[minusSprite setPosition:ccp(PosX,PosY-25)];
             //[posiSprite setPosition:ccp(PosX,PosY+25)];
             [label setPosition:ccp(PosX+120,PosY+61)];
@@ -681,6 +774,23 @@ static float kTimeToCageShake=7.0f;
             [multipleMinusSprites addObject:[NSValue valueWithCGRect:minus]];
             [multiplePlusSprites addObject:[NSValue valueWithCGRect:plus]];
             [blockLabels addObject:label];
+            
+            
+            if(![multipleBlockMax objectForKey:currentColumnValueKey])
+                [multipleBlockMax setValue:[NSNumber numberWithInt:maxBlocks] forKey:currentColumnValueKey];
+            else
+                maxBlocks=[[multipleBlockMax objectForKey:currentColumnValueKey]intValue];
+            
+            if(![multipleBlockMin objectForKey:currentColumnValueKey])
+                [multipleBlockMin setValue:[NSNumber numberWithInt:minBlocks] forKey:currentColumnValueKey];
+            else
+                minBlocks=[[multipleBlockMin objectForKey:currentColumnValueKey]intValue];
+            
+            if([multipleBlockPickupDefaults objectForKey:currentColumnValueKey])
+                defaultBlocksToMake=[[multipleBlockPickupDefaults objectForKey:currentColumnValueKey]intValue];
+            else
+                defaultBlocksToMake=1;
+            
             
             if(debugLogging)
                 NSLog(@"currentBlockValues count %d, minusSprites count %d, plusSprites count %d, blockLabels count %d", [currentBlockValues count], [multipleMinusSprites count], [multiplePlusSprites count], [blockLabels count]);
@@ -791,6 +901,9 @@ static float kTimeToCageShake=7.0f;
             else
                 block.ObjectValue=-[[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue];
             
+            if([solutionType isEqualToString:GRID_MATCH])
+                block.Disabled=YES;
+            
             // check whether a custom sprite has been set for this column, and if so, set it.
             NSString *currentColumnValueKey = [NSString stringWithFormat:@"%g", [[[columnInfo objectAtIndex:insCol] objectForKey:COL_VALUE] floatValue]];
             
@@ -833,15 +946,16 @@ static float kTimeToCageShake=7.0f;
     
     if(showCount)
     {
-        if(!initBlocksForColumn){
-            initBlocksForColumn=[[NSMutableArray alloc]init];
-            [initBlocksForColumn retain];
+        if(!initBlockValueForColumn){
+            initBlockValueForColumn=[[NSMutableArray alloc]init];
+            [initBlockValueForColumn retain];
         }
         
         for(int i=0;i<numberOfColumns;i++)
         {
-            int blocksHere=[self usedSpacesOnGrid:i];
-            [initBlocksForColumn addObject:[NSNumber numberWithInt:blocksHere]];
+//            int blocksHere=[self usedSpacesOnGrid:i];
+            float valueHere=[self valueOfGrid:i];
+            [initBlockValueForColumn addObject:[NSNumber numberWithFloat:valueHere]];
         }
     }
 
@@ -911,7 +1025,12 @@ static float kTimeToCageShake=7.0f;
     showReset=[[pdef objectForKey:SHOW_RESET] boolValue];
     showColumnHeader = [[pdef objectForKey:SHOW_COL_HEADER] boolValue];
     showBaseSelection = [[pdef objectForKey:SHOW_BASE_SELECTION] boolValue];
-    cageDefaultValue = [[pdef objectForKey:CAGE_DEFAULT_VALUE] intValue];
+    
+    if([pdef objectForKey:CAGE_DEFAULT_VALUE])
+        cageDefaultValue = [[pdef objectForKey:CAGE_DEFAULT_VALUE] intValue];
+    else
+        cageDefaultValue=1;
+    
     explodeMode = [[pdef objectForKey:EXPLODE_MODE]boolValue];
     
     if([pdef objectForKey:SHOW_COLUMN_TOTAL_COUNT])
@@ -931,6 +1050,11 @@ static float kTimeToCageShake=7.0f;
         disableAudioCounting = [[pdef objectForKey:DISABLE_AUDIO_COUNTING] boolValue];
     else
         disableAudioCounting=NO;
+    
+    if([pdef objectForKey:COUNT_USER_BLOCKS])
+        countUserBlocks = [[pdef objectForKey:COUNT_USER_BLOCKS] boolValue];
+    else
+        countUserBlocks=NO;
     
     if([pdef objectForKey:SHOW_MULTIPLE_BLOCKS_FROM_CAGE])
         showMultipleControls = [[pdef objectForKey:SHOW_MULTIPLE_BLOCKS_FROM_CAGE]boolValue];
@@ -1006,7 +1130,19 @@ static float kTimeToCageShake=7.0f;
         multipleBlockPickupDefaults = [pdef objectForKey:MULTIPLE_BLOCK_PICKUP_DEFAULTS];
     
     [multipleBlockPickupDefaults retain];
-
+    
+    if([pdef objectForKey:MULTIPLE_BLOCK_PICKUP_MIN])
+        multipleBlockMin=[pdef objectForKey:MULTIPLE_BLOCK_PICKUP_MIN];
+    else
+        multipleBlockMin=[[NSMutableDictionary alloc]init];
+    [multipleBlockMin retain];
+    
+    
+    if([pdef objectForKey:MULTIPLE_BLOCK_PICKUP_MAX])
+        multipleBlockMax=[pdef objectForKey:MULTIPLE_BLOCK_PICKUP_MAX];
+    else
+        multipleBlockMax=[[NSMutableDictionary alloc]init];
+    [multipleBlockMax retain];
 
     // can we deselect objects?
     if([pdef objectForKey:ALLOW_DESELECTION]) 
@@ -1048,10 +1184,15 @@ static float kTimeToCageShake=7.0f;
     }
     else
     {
-        if(numberOfColumns>1)
+        if(numberOfColumns>1 && allowCondensing && allowMulching)
         {
             showBaseSelection=YES;
             autoBaseSelection=YES;
+        }
+        else if(numberOfColumns>1 && !allowCondensing && !allowMulching)
+        {
+            showBaseSelection=NO;
+            autoBaseSelection=NO;
         }
     }
     if(autoBaseSelection)allowDeselect=NO;
@@ -1157,12 +1298,13 @@ static float kTimeToCageShake=7.0f;
             [countBg setTag:3];
             [countBg setOpacity:0];
             [self.NoScaleLayer addChild:countBg z:9];
-            sumLabel=[CCLabelTTF labelWithString:@"c" fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
+            sumLabel=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:25.0f];
             [sumLabel setTag:3];
             [sumLabel setOpacity:0];
+            [sumLabel setPosition:ccp(countBg.contentSize.width/2,countBg.contentSize.height/2)];
             //[countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];
 
-            [self.NoScaleLayer addChild:sumLabel z:10];
+            [countBg addChild:sumLabel z:10];
         }
         
 
@@ -1228,6 +1370,19 @@ static float kTimeToCageShake=7.0f;
                 }   
             }
         }
+    }
+    
+    if(showColumnTotalCount)
+    {
+        for(int i=0;i<numberOfColumns;i++)
+        {
+            float v=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
+            CCSprite *s=[totalCountSprites objectAtIndex:i];
+            CCLabelTTF *l=[s.children objectAtIndex:0];
+            
+            [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];
+        }
+        
     }
     
     // define our solution type to check against
@@ -1298,7 +1453,12 @@ static float kTimeToCageShake=7.0f;
     }
     else if([solutionType isEqualToString:MATRIX_MATCH]){
         isProblemComplete=[self evalProblemMatrixMatch];
-    }  
+    }
+    else if([solutionType isEqualToString:GRID_MATCH])
+    {
+        isProblemComplete=[self areAllGridsIdentical];
+    }
+    
 }
 
 -(BOOL)evalProblemCountSeq
@@ -1343,43 +1503,37 @@ static float kTimeToCageShake=7.0f;
 {
     totalCount=0;
     
-    if(showColumnTotalCount)
-    {
-        for(int i=0;i<numberOfColumns;i++)
-        {
-            float v=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
-            CCSprite *s=[totalCountSprites objectAtIndex:i];
-            CCLabelTTF *l=[s.children objectAtIndex:0];
-            
-            [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];
-        }
-        
-    }
-    
     if(showColumnUserCount){
-        int lastNumber=[[userAddedBlocksLastCount objectAtIndex:currentColumnIndex]intValue];
-        int thisNumber=[[userAddedBlocks objectAtIndex:currentColumnIndex]count];
-        float fval=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] floatValue];
+
+        float amountAdded=((DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject).ObjectValue;
+        CCLabelTTF *l=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:150.0f];
+        [l setPosition:ccp(currentColumnIndex*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(([[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]/2)*(lx*kPropXNetSpace)))];
+        [l setColor:ccc3(234,137,31)];
+        [renderLayer addChild:l z:10000];
+        [l runAction:[CCFadeOut actionWithDuration:1.0]];
         
-        if(thisNumber>lastNumber)
+        if(amountAdded>0)
         {
-            //CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"+%g", thisNumber*fval] fontName:CHANGO fontSize:150.0f];
-            CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"+%g", fval] fontName:CHANGO fontSize:150.0f];
-            [l setPosition:ccp(currentColumnIndex*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(([[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]/2)*(lx*kPropXNetSpace)))];
-            [l setColor:ccc3(234,137,31)];
-            [renderLayer addChild:l z:10000];
-            [l runAction:[CCFadeOut actionWithDuration:1.0]];
+            if([(DWPlaceValueBlockGameObject*)gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                [l setString:[NSString stringWithFormat:@"+ %g", amountAdded]];
+            if([(DWPlaceValueBlockGameObject*)gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+                [l setString:[NSString stringWithFormat:@"- %g", amountAdded]];
         }
-        else if(thisNumber<lastNumber)
+//        if(valueOnGridNow==initedValueOnGrid)
+//        {
+//            [l setString:[NSString stringWithFormat:@"%g", ([[initBlockValueForColumn objectAtIndex:i]floatValue])]];
+//        }
+        if(amountAdded<0)
         {
-            CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"-%g", fval] fontName:CHANGO fontSize:150.0f];
-            [l setPosition:ccp(currentColumnIndex*(kPropXColumnSpacing*lx), (ly*kPropYColumnOrigin)-(([[gw.Blackboard.AllStores objectAtIndex:currentColumnIndex]count]/2)*(lx*kPropXNetSpace)))];
-            [l setColor:ccc3(234,137,31)];
-            [renderLayer addChild:l z:10000];
-            [l runAction:[CCFadeOut actionWithDuration:1.0]];
+            [l setString:[NSString stringWithFormat:@"%g", amountAdded]];
+            if([(DWPlaceValueBlockGameObject*)gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                [l setString:[NSString stringWithFormat:@"%g", amountAdded]];
+            if([(DWPlaceValueBlockGameObject*)gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
+                [l setString:[NSString stringWithFormat:@"+ %g", fabsf(amountAdded)]];
+            
         }
         
-        [userAddedBlocksLastCount replaceObjectAtIndex:currentColumnIndex withObject:[NSNumber numberWithInt:thisNumber]];
+//        [userAddedBlocksLastCount replaceObjectAtIndex:currentColumnIndex withObject:[NSNumber numberWithInt:thisNumber]];
         
     }
     
@@ -1509,6 +1663,29 @@ static float kTimeToCageShake=7.0f;
     
 }
 
+-(float)valueOfGrid:(int)thisGrid
+{
+    float thisGridValue=0.0f;
+    
+    for (int r=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] count]-1; r>=0; r--) {
+        NSMutableArray *row=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] objectAtIndex:r];
+        for (int c=[row count]-1; c>=0; c--)
+        {
+            DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
+            DWPlaceValueBlockGameObject *mo=(DWPlaceValueBlockGameObject*)co.MountedObject;
+            DWPlaceValueBlockGameObject *clo=(DWPlaceValueBlockGameObject*)co.CancellingObject;
+        
+            if(clo)
+                thisGridValue+=clo.ObjectValue;
+            
+            if(mo)
+                thisGridValue+=mo.ObjectValue;
+
+        }
+    }
+    return thisGridValue;
+}
+
 -(int)freeSpacesOnGrid:(int)thisGrid
 {
     int freeSpace=0;
@@ -1519,6 +1696,10 @@ static float kTimeToCageShake=7.0f;
         {
             DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
             if(!co.MountedObject && !explodeMode)
+            {
+                freeSpace++;
+            }
+            else if(!co.MountedObject && !co.CancellingObject && explodeMode)
             {
                 freeSpace++;
             }
@@ -1540,9 +1721,16 @@ static float kTimeToCageShake=7.0f;
         for (int c=[row count]-1; c>=0; c--)
         {
             DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
-            if(co.MountedObject)
+            
+            float objValue=((DWPlaceValueBlockGameObject*)co.MountedObject).ObjectValue;
+            
+            if(co.MountedObject && objValue>0)
             {
                 usedSpace++;
+            }
+            else if(co.MountedObject && objValue<0)
+            {
+                usedSpace--;
             }
         }
     }
@@ -1554,7 +1742,7 @@ static float kTimeToCageShake=7.0f;
     if(!autoBaseSelection)return;
     
     //deselect anything currently selected
-    
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_block_of_10_highlighted.wav")];
     
     for (DWPlaceValueBlockGameObject *block in [NSArray arrayWithArray:gw.Blackboard.SelectedObjects]) {
         
@@ -1650,15 +1838,19 @@ static float kTimeToCageShake=7.0f;
         //CCSprite *s=[multiplePlusSprites objectAtIndex:i];
         if(CGRectContainsPoint(boundingBox, [renderLayer convertToNodeSpace:thisLocation]))
         {
+            NSString *ccvKey=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]stringValue];
+            
+            int maxNo=[[multipleBlockMax objectForKey:ccvKey]intValue];
+
             
             DWPlaceValueCageGameObject *c=[allCages objectAtIndex:i];
             
             int curNum=[[blocksToCreate objectAtIndex:i]intValue];
             curNum++;
             
-            if(curNum>=10)
+            if(curNum>=maxNo)
             {
-                curNum=10;
+                curNum=maxNo;
                 [c.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage_variable_down_only.png")]];
             }
             else
@@ -1672,6 +1864,8 @@ static float kTimeToCageShake=7.0f;
             
             changedBlockCountOrValue=YES;
             
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_dock_arrow_tap.wav")];
+            
             return;
         }
     }
@@ -1683,11 +1877,15 @@ static float kTimeToCageShake=7.0f;
         if(CGRectContainsPoint(boundingBox, [renderLayer convertToNodeSpace:thisLocation]))
         {
             DWPlaceValueCageGameObject *c=[allCages objectAtIndex:i];
+            
+            NSString *ccvKey=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]stringValue];
+            int minNo=[[multipleBlockMin objectForKey:ccvKey]intValue];
+            
             int curNum=[[blocksToCreate objectAtIndex:i]intValue];
             curNum--;
-            if(curNum<=1)
+            if(curNum<=minNo)
             {
-                curNum=1;
+                curNum=minNo;
                 [c.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage_variable_up_only.png")]];
             }
             else
@@ -1699,7 +1897,7 @@ static float kTimeToCageShake=7.0f;
             [blocksToCreate replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
             
             changedBlockCountOrValue=YES;
-            
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_dock_arrow_tap.wav")];
             return;
         }
     }
@@ -1717,11 +1915,15 @@ static float kTimeToCageShake=7.0f;
             DWPlaceValueCageGameObject *cge=[allCages objectAtIndex:i];
             [cge.MountedObject handleMessage:kDWdestroy];
             
-            int curNum=[[currentBlockValues objectAtIndex:i]intValue];
+            NSString *ccvKey=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]stringValue];
             float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]floatValue];
+            
+            int maxNo=[[multipleBlockMax objectForKey:ccvKey]intValue];
+            int curNum=[[currentBlockValues objectAtIndex:i]intValue];
+
             curNum+=1*colVal;
-            if(curNum>10*colVal)
-                curNum=10*colVal;
+            if(curNum>maxNo*colVal)
+                curNum=maxNo*colVal;
             
             if(curNum>0)
                 cge.ObjectValue=colVal;
@@ -1738,7 +1940,7 @@ static float kTimeToCageShake=7.0f;
             [currentBlockValues replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
             
             changedBlockCountOrValue=YES;
-            
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_dock_arrow_tap.wav")];
             return;
         }
     }
@@ -1754,9 +1956,15 @@ static float kTimeToCageShake=7.0f;
             
             int curNum=[[currentBlockValues objectAtIndex:i]intValue];
             float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]floatValue];
+            
+            NSString *ccvKey=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]stringValue];
+            int minNo=[[multipleBlockMin objectForKey:ccvKey]intValue];
+            
+
+            
             curNum-=1*colVal;
-            if(curNum<-10*colVal)
-                curNum=-10*colVal;
+            if(curNum<minNo*colVal)
+                curNum=minNo*colVal;
             
             
             if(curNum>0)
@@ -1772,7 +1980,7 @@ static float kTimeToCageShake=7.0f;
             [currentBlockValues replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:curNum]];
             
             changedBlockCountOrValue=YES;
-            
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_dock_arrow_tap.wav")];
             return;
         }
     }
@@ -1803,6 +2011,7 @@ static float kTimeToCageShake=7.0f;
 
 -(void)checkAndChangeCageSpritesForNegative
 {
+    if(!gw.Blackboard.inProblemSetup)return;
     
     for(int i=0;i<[allCages count];i++)
     {
@@ -1890,6 +2099,40 @@ static float kTimeToCageShake=7.0f;
 
         }
     }
+}
+
+-(BOOL)areAllGridsIdentical
+{
+    
+    if(columnRopes||columnRows)
+        return NO;
+    
+    for (int r=[[gw.Blackboard.AllStores objectAtIndex:0] count]-1; r>=0; r--) {
+        NSMutableArray *row=[[gw.Blackboard.AllStores objectAtIndex:0] objectAtIndex:r];
+        for (int c=[row count]-1; c>=0; c--)
+        {
+            DWPlaceValueNetGameObject *co=[row objectAtIndex:c];
+            
+            
+            for(int i=1;i<numberOfColumns;i++)
+            {
+
+                NSMutableArray *innerRow=[[gw.Blackboard.AllStores objectAtIndex:i] objectAtIndex:r];
+                DWPlaceValueNetGameObject *innerCo=[innerRow objectAtIndex:c];
+                
+                if(debugLogging)
+                    NSLog(@"Grid space at col 0 (%d:%d:%@) - grid space at col %d (%d:%d:%@)", r, c, co.MountedObject?@"YES":@"NO",i,r,c,innerCo.MountedObject?@"YES":@"NO");
+                
+                if((co.MountedObject && innerCo.MountedObject)||(!co.MountedObject&&!innerCo.MountedObject))
+                    continue;
+                else
+                    return NO;
+                    
+            }
+        }
+    }
+
+    return YES;
 }
 
 -(BOOL)doTransitionWithIncrement:(int)incr
@@ -2045,14 +2288,17 @@ static float kTimeToCageShake=7.0f;
 -(BOOL)doCondenseFromLocation:(CGPoint)location
 {
     [loggingService logEvent:BL_PA_PV_TOUCH_END_CONDENSE_OBJECT withAdditionalData:nil];
+    BOOL justCondensed=[self doTransitionWithIncrement:-1];
+    if(justCondensed)[[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_blocks_spawning_(mulching).wav")];
     
-    return [self doTransitionWithIncrement:-1];
+    return justCondensed;
 }
 
 -(BOOL)doMulchFromLocation:(CGPoint)location
 {
     [loggingService logEvent:BL_PA_PV_TOUCH_END_MULCH_OBJECTS withAdditionalData:nil];
     justMulched=[self doTransitionWithIncrement:1];
+    if(justMulched)[[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_blocks_merging_(condensing).wav")];
     return justMulched;
 }
 
@@ -2129,6 +2375,15 @@ static float kTimeToCageShake=7.0f;
             [go handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];
         }
     }
+    
+    DWPlaceValueBlockGameObject *pO=(DWPlaceValueBlockGameObject*)gw.Blackboard.PickupObject;
+    if(pO.LastMount){
+        pO.Mount=pO.LastMount;
+        DWPlaceValueNetGameObject *n=(DWPlaceValueNetGameObject*)pO.LastMount;
+        n.MountedObject=pO;
+    }
+    
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_line_general_jump_(whoosh).wav")];
     [[gw Blackboard].PickupObject handleMessage:kDWresetToMountPosition andPayload:nil withLogLevel:0];    
 }
 
@@ -2283,6 +2538,11 @@ static float kTimeToCageShake=7.0f;
 -(float)metaQuestionAnswersYLocation
 {
     return kMetaQuestionYOffsetPlaceValue*cy;
+}
+
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    
 }
 
 #pragma mark - touches events
@@ -2620,6 +2880,7 @@ static float kTimeToCageShake=7.0f;
             
             if(distFromBlockToCage<(distFromNetBottomToCage/2) && !cageHasDropped)
             {
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_dock_disappearing.wav")];
                 [c.mySprite runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(c.PosX, c.PosY-200)] rate:2.0f]];
                 [c.mySprite runAction:[CCFadeOut actionWithDuration:0.5f]];
                 [cM.mySprite runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.5f position:ccp(c.PosX, c.PosY-220)] rate:2.0f]];
@@ -3011,6 +3272,7 @@ static float kTimeToCageShake=7.0f;
                 
                 if((multipleBlockPickup||showMultipleControls||isNegativeProblem) && !isBasePickup)
                 {
+                    
                     if([self freeSpacesOnGrid:currentColumnIndex]>=[pickupObjects count])
                     {
                         
@@ -3019,7 +3281,7 @@ static float kTimeToCageShake=7.0f;
                         [loggingService logEvent:BL_PA_PV_TOUCH_END_MULTIPLE_BLOCKS_DROPPED withAdditionalData:nil];
                         if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && !hasModifiedTestLocation && [pickupObjects count]>1)
                         {
-                            gw.Blackboard.TestTouchLocation=ccp(n.PosX,n.PosY+200);
+                            gw.Blackboard.TestTouchLocation=ccp(n.PosX,n.PosY+ly);
                             hasModifiedTestLocation=YES;
                         }
                         
@@ -3077,15 +3339,15 @@ static float kTimeToCageShake=7.0f;
                     }
                     else if(explodeMode && isNegativeProblem)
                     {
+                        DWPlaceValueNetGameObject *n=nil;
                         
-                        if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
+                        if(gw.Blackboard.PriorityDropObject)
+                            n=(DWPlaceValueNetGameObject*)gw.Blackboard.PriorityDropObject;
+                        else
+                            n=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
+                        
+                        if([n isKindOfClass:[DWPlaceValueNetGameObject class]])
                         {
-                            DWPlaceValueNetGameObject *n=nil;
-                            
-                            if(gw.Blackboard.PriorityDropObject)
-                                n=(DWPlaceValueNetGameObject*)gw.Blackboard.PriorityDropObject;
-                            else
-                                n=(DWPlaceValueNetGameObject*)gw.Blackboard.DropObject;
                                 
                             if(!blocksToDestroy)
                                 blocksToDestroy=[[[NSMutableArray alloc]init]autorelease];
@@ -3096,7 +3358,7 @@ static float kTimeToCageShake=7.0f;
                                 n.MountedObject=b;
                             else if(n.MountedObject && !n.CancellingObject)
                                 n.CancellingObject=b;
-                            else
+                            else if(!n.MountedObject && !n.CancellingObject)
                                 n.MountedObject=b;
                             
                             
@@ -3169,6 +3431,18 @@ static float kTimeToCageShake=7.0f;
 //                    [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:-1];
                 }
                 
+                if(countUserBlocks)
+                {
+                    int initedOnGrid=[[initBlockValueForColumn objectAtIndex:currentColumnIndex]intValue];
+                    float colValue=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE] floatValue];
+                    int amountAdded=(([self usedSpacesOnGrid:currentColumnIndex]-initedOnGrid)*colValue);
+                    if(amountAdded>20)return;
+                    
+                    NSString *fileName=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", amountAdded];
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(fileName)];
+                }
+
+                
                 // then log stuff
                 [loggingService logEvent:(isCage ? BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_CAGE : BL_PA_PV_TOUCH_END_DROP_OBJECT_ON_GRID)
                     withAdditionalData:nil];
@@ -3186,7 +3460,7 @@ static float kTimeToCageShake=7.0f;
                 }
                 if(blocksToDestroy)
                 {
-                    
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_blocks_exploding.wav")];
                     for(DWPlaceValueBlockGameObject *thisBlock in blocksToDestroy)
                     {
                         [thisBlock handleMessage:kDWresetToMountPosition];
@@ -3202,7 +3476,12 @@ static float kTimeToCageShake=7.0f;
                     
                     blocksToDestroy=nil;
                 }
-                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/putdown.wav")];
+                
+                if(!isCage)
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_block_dropped.wav")];
+                else
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_place_value_general_block_dropped_back_on_dock.wav")];
+                
                 [loggingService logEvent:BL_PA_PV_TOUCH_END_EXPLODE_BLOCKS withAdditionalData:nil];
                 // tell the tool that the problem state changed - so an auto eval will run now
                 [self problemStateChanged];
@@ -3245,6 +3524,7 @@ static float kTimeToCageShake=7.0f;
             
     }
     
+    
     //get any auto reset / repositions to re-evaluate
     [gw handleMessage:kDWstartRespositionSeek andPayload:nil withLogLevel:0];
     
@@ -3257,6 +3537,7 @@ static float kTimeToCageShake=7.0f;
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [self resetPickupObjectPos];
     [self setTouchVarsToOff];
 }
 

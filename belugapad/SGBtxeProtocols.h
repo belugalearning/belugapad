@@ -10,15 +10,24 @@
 
 @class SGBtxeContainerMgr;
 @class SGBtxeTextRender;
+@class SGBtxeTextBackgroundRender;
 @class SGBtxeParser;
+@class SGGameWorld;
 
-@protocol Container
+
+@protocol Container <NSObject>
 
 @property (retain) NSMutableArray *children;
-
 @property (retain) SGBtxeContainerMgr *containerMgrComponent;
+@property (retain) NSString *defaultNumbermode;
+
+@end
 
 
+
+@protocol Containable
+
+@property (retain) id<Container> container;
 
 @end
 
@@ -26,13 +35,15 @@
 @protocol RenderContainer
 
 @property (retain) CCLayer *renderLayer;
+@property (retain) CCNode *baseNode;
+@property BOOL isLarge;
 @property BOOL forceVAlignTop;
 
 
 @end
 
 
-@protocol RenderObject
+@protocol RenderObject <Containable>
 
 -(void)attachToRenderBase:(CCNode*)renderBase;
 
@@ -45,6 +56,8 @@
 @property CGSize size;
 @property CGPoint position;
 @property CGPoint worldPosition;
+@property float rowWidth;
+@property BOOL hidden;
 
 -(void) setupDraw;
 
@@ -58,6 +71,24 @@
 
 @property (retain) SGBtxeTextRender *textRenderComponent;
 
+-(NSString*)returnMyText;
+
+@end
+
+
+
+@protocol Value <NSObject>
+
+@property (readonly) NSNumber *value;
+
+@end
+
+
+
+@protocol ValueOperator <NSObject>
+
+@property (retain) NSString *valueOperator;
+
 @end
 
 
@@ -65,21 +96,49 @@
 @protocol Interactive <Bounding>
 
 @property BOOL enabled;
+@property BOOL interactive;
 @property (retain) NSString *tag;
 
 -(void)activate;
+-(void)inflateZIndex;
+-(void)deflateZindex;
+-(void)destroy;
 
 @end
+
+
 
 
 
 @protocol MovingInteractive <Interactive>
 
 @property CGPoint originalPosition;
+@property (retain) id mount;
+@property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;
+@property BOOL isLargeObject;
 
 -(void)returnToBase;
+-(id<MovingInteractive>)createADuplicate;
+-(id<MovingInteractive>)createADuplicateIntoGameWorld:(SGGameWorld*)destGW;
+-(void)setColourOfBackgroundTo:(ccColor3B)thisColour;
+-(void)destroy;
 
 @end
+
+
+
+
+@protocol BtxeMount
+
+@property (retain) id<Interactive, NSObject> mountedObject;
+
+-(void)duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)mountObject;
+
+@end
+
+
+
+
 
 
 @protocol Tappable <Bounding>

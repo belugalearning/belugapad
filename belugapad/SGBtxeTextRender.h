@@ -17,8 +17,13 @@
 @property (retain) CCLabelTTF *label;
 @property (retain) CCLabelTTF *label0;
 @property bool useAlternateFont;
+@property BOOL useLargeAssets;
 
 -(void)setupDraw;
 -(void)updatePosition:(CGPoint)position;
+-(void)updateLabel;
+-(void)inflateZindex;
+-(void)deflateZindex;
+-(void)tagMyChildrenForIntro;
 
 @end

@@ -13,12 +13,18 @@
 #import "ContentService.h"
 #import "UsersService.h"
 #import "SelectUserViewController.h"
-#import "LoadingViewController.h"
-#import "ZubiIntro.h"
 #import "JMap.h"
 #import "ToolHost.h"
 #import "mach/mach.h"
 #import "TestFlight.h"
+#import "SimpleAudioEngine.h"
+
+#import "AcapelaSetup.h"
+#import "AcapelaLicense.h"
+
+#import "babbelu.lic.h"
+#import "libs/Acapela/api/babbelu.lic.0166883f.password"
+
 
 @interface AppController()
 {
@@ -47,20 +53,19 @@
 
 @synthesize searchBar, searchList;
 
+@synthesize lastJmapViewUState;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [self writeLogMemoryUsage];
     
     launchOptionsCache=launchOptions;
+    speechReplacement=[[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/tts-replace.plist")]retain];
     
     // Init the window
     window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    LoadingViewController *lvc=[[LoadingViewController alloc] init];
-    [window_ setRootViewController:lvc];
-    //[self.window addSubview:lvc.view];
     [self.window makeKeyAndVisible];
-    [lvc release];
     
     // Try to use CADisplayLink director
     // if it fails (SDK < 3.1) use the default director
@@ -71,7 +76,7 @@
     
     //init test flight
 
-#if USE_TESTGLIHT_SDK
+#if USE_TESTFLIGHT_SDK
     [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
 
     [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"logToSTDERR"]];
@@ -87,6 +92,12 @@
     {
         [self.LocalSettings setValue:@"DATABASE" forKey:@"PROBLEM_PIPELINE"];
         [self.LocalSettings setValue:NO forKey:@"IMPORT_CONTENT_ON_LAUNCH"];
+    }
+    
+    // TODO: REMOVE ONCE WE'VE GOT A MUTE BUTTON. HERE FOR BENEFIT OF AUTHORS TESTING ON SIM
+    if ([self.LocalSettings valueForKey:@"MUTE"] && [[self.LocalSettings valueForKey:@"MUTE"] boolValue])
+    {
+        [[SimpleAudioEngine sharedEngine] setMute:YES];
     }
     
     //load adaptive pipeline settings
@@ -161,7 +172,7 @@
     //	[director setProjection:kCCDirectorProjection3D];
     
 	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
-	if( ! [director_ enableRetinaDisplay:NO] )
+	if( ! [director_ enableRetinaDisplay:YES] )
 		CCLOG(@"Retina Display Not supported");
     
 	// Default texture format for PNG/BMP/TIFF/JPEG/GIF images
@@ -171,14 +182,72 @@
     
 	// When in iPhone RetinaDisplay, iPad, iPad RetinaDisplay mode, CCFileUtils will append the "-hd", "-ipad", "-ipadhd" to all loaded files
 	// If the -hd, -ipad, -ipadhd files are not found, it will load the non-suffixed version
-	[CCFileUtils setiPhoneRetinaDisplaySuffix:@"-hd"];		// Default on iPhone RetinaDisplay is "-hd"
-	[CCFileUtils setiPadSuffix:@"-ipad"];					// Default on iPad is "" (empty string)
-	[CCFileUtils setiPadRetinaDisplaySuffix:@"-ipadhd"];	// Default on iPad RetinaDisplay is "-ipadhd"
-    
+	CCFileUtils *sharedFileUtils = [CCFileUtils sharedFileUtils];
+	[sharedFileUtils setEnableFallbackSuffixes:NO];				// Default: NO. No fallback suffixes are going to be used
+	[sharedFileUtils setiPhoneRetinaDisplaySuffix:@"-hd"];		// Default on iPhone RetinaDisplay is "-hd"
+	[sharedFileUtils setiPadSuffix:@"-ipad"];					// Default on iPad is "ipad"
+	[sharedFileUtils setiPadRetinaDisplaySuffix:@"-ipadhd"];	// Default on iPad RetinaDisplay is "-ipadhd"
+	
 	// Assume that PVR images have premultiplied alpha
 	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
     
+    
+#if !(TARGET_IPHONE_SIMULATOR)
+    //Acapela TTS ---------------------------------------------------------------------
+    
+    // Create the default UserDico for the voice delivered in the bundle
+	NSError * error;
+	
+	// Get the application Documents folder
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+	
+	// Creates heather folder if it doesn't exist already
+	NSString * dirDicoPath = [documentsDirectory stringByAppendingString:[NSString stringWithFormat:@"/rachel"]];
+	[[NSFileManager defaultManager] createDirectoryAtPath:dirDicoPath withIntermediateDirectories: YES attributes:nil error: &error];
+	
+	NSString * fullDicoPath = [documentsDirectory stringByAppendingString:[NSString stringWithFormat:@"/rachel/default.userdico"]];
+	// Check the file doesn't already exists to avoid to erase its content
+	if (![[NSFileManager defaultManager] fileExistsAtPath: fullDicoPath]) {
+		
+		// Create the file
+		if (![@"UserDico\n" writeToFile:fullDicoPath atomically:YES encoding:NSISOLatin1StringEncoding error:&error]) {
+			NSLog(@"%@",error);
+		}
+    }
+    
+    //Init the License
+    MyAcaLicense = [[AcapelaLicense alloc] initLicense:[[NSString alloc] initWithCString:babLicense encoding:NSASCIIStringEncoding] user:uid.userId passwd:uid.passwd];
+	
+    //Init the AcapelaSetup for voices enumeration and selection
+    SetupData = [[AcapelaSetup alloc] initialize];
+	
+    //Create an AcapelaSpeech instance with the first voice found and the license
+//    self.acaSpeech = [[AcapelaSpeech alloc] initWithVoice:SetupData.CurrentVoice license:MyAcaLicense];
+    self.acaSpeech=[[AcapelaSpeech alloc]initWithVoice:SetupData.CurrentVoice license:MyAcaLicense];
+	
+    //Set the AcapelaSpeech delegates in order to receive events (not needed if you don't want events)
+    //[MyAcaTTS setDelegate:self];
+    
+    //Acapela TTS ---------------------------------------------------------------------
+#endif
+    
     return YES;
+}
+
+-(void)speakString:(NSString*)speakThis
+{
+#if !(TARGET_IPHONE_SIMULATOR)
+    
+    speakThis=[speakThis lowercaseString];
+    
+    for(NSString *k in [speechReplacement allKeys])
+    {
+        speakThis=[speakThis stringByReplacingOccurrencesOfString:k withString:[speechReplacement objectForKey:k]];
+    }
+    NSLog(@"I'm about to talk and say: %@", speakThis);
+    [self.acaSpeech startSpeakingString:speakThis];
+#endif
 }
 
 -(void)tearDownUI
@@ -365,8 +434,14 @@ void logMemUsage(void) {
     [contentService release];
     [usersService release];
     
-    searchBar=nil;
-    searchList=nil;
+    self.searchBar=nil;
+    self.searchList=nil;
+    
+    self.lastJmapViewUState=nil;
+    if(SetupData)[SetupData release];
+//    if(MyAcaTTS)[MyAcaTTS release];
+    
+    self.acaSpeech=nil;
     
 	[window_ release];
 	[navController_ release];

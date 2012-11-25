@@ -20,9 +20,11 @@
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
 #import "InteractionFeedback.h"
+#import "SimpleAudioEngine.h"
+
 
 #define kEarliestHit 0.8
-#define kLatestHit 0.8
+#define kLatestHit 1.0
 
 @interface CountingTimer()
 {
@@ -97,6 +99,7 @@
     // if the problem hasn't expired - increase
     if(!expired){
         if(started){
+            if(!showCount)[currentNumber setVisible:NO];
             timeElapsed+=numIncrement*delta;
             timeKeeper+=delta;
         }
@@ -111,10 +114,22 @@
         if(buttonFlash)
             [buttonOfWin runAction:[InteractionFeedback dropAndBounceAction]];
         
-//        if(numIncrement>1)
-//            timeElapsed+=(numIncrement-1);
-//        else if(numIncrement<1)
-//            timeElapsed-=(numIncrement-1);
+        if(displayNumicon)
+        {
+            if(trackNumber<=10.0f)
+            {
+                CCSpriteFrame *frame=[frameCache spriteFrameByName:[NSString stringWithFormat:@"%d.png", trackNumber+1]];
+                [numiconOne setOpacity:255];
+                [numiconOne setDisplayFrame:frame];
+            }
+        }
+        
+        if(flashNumicon)
+        {
+            [numiconOne setOpacity:255];
+            [numiconOne runAction:[CCFadeOut actionWithDuration:0.5f]];
+            
+        }
         
         trackNumber=(int)timeKeeper;
         
@@ -122,11 +137,13 @@
         
         // play sound if required
         if(countType==kCountBeep){
-            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/click_b1.wav")];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_incremented.wav")];
         }
-        else if(countType==kCountNumbers && lastNumber>0<20){
-            NSString *file=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", lastNumber];
-            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(file)];
+        else if(countType==kCountNumbers){
+            AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+            [ac speakString:[NSString stringWithFormat:@"%d",lastNumber]];
+            //NSString *file=[NSString stringWithFormat:@"/sfx/numbers/%d.wav", lastNumber];
+            //[[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(file)];
         }
 
     }
@@ -176,16 +193,30 @@
     
     solutionNumber=[[pdef objectForKey:SOLUTION]intValue];
     displayNumicon=[[pdef objectForKey:USE_NUMICON_NUMBERS]boolValue];
+    flashNumicon=[[pdef objectForKey:NUMICON_FLASH]boolValue];
     showCount=[[pdef objectForKey:SHOW_COUNT]boolValue];
     countType=[[pdef objectForKey:COUNT_TYPE]intValue];
     buttonFlash=[[pdef objectForKey:FLASHING_BUTTON]boolValue];
+    isIntroPlist=[[pdef objectForKey:IS_INTRO_PLIST]boolValue];
+    
+    if(isIntroPlist)
+    {
+        countMin=0;
+        countMax=999;
+        numIncrement=1;
+        displayNumicon=YES;
+        showCount=YES;
+        countType=1;
+        solutionNumber=1000;
+    }
     
     if(numIncrement>=0)
     {
         lastNumber=countMin;
         trackNumber=lastNumber;
         timeElapsed=lastNumber;
-        timeKeeper=timeElapsed;
+        //timeKeeper=timeElapsed;
+        timeKeeper=0.0f;
         
         if(countMax<=countMin)
             countMax=countMin+4;
@@ -195,12 +226,14 @@
         lastNumber=countMax;
         trackNumber=lastNumber;
         timeElapsed=lastNumber;
-        timeKeeper=timeElapsed;
+//        timeKeeper=timeElapsed;
+        timeKeeper=0.0f;
         
         if(countMin>=countMax)
             countMin=countMax-4;
     }
     
+
 
 }
 
@@ -218,19 +251,57 @@
     [buttonOfWin setTag:2];
     [renderLayer addChild:buttonOfWin];
     
-    if(showCount)
-    {
+//    if(showCount)
+//    {
+    int startNo=0;
+    if(numIncrement>=0)
+        startNo=countMin;
+    else
+        startNo=countMax;
+    
         currentNumber=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:50.0f];
+    [currentNumber setString:[NSString stringWithFormat:@"%d", startNo]];
         [currentNumber setPosition:ccp(cx,cy+100)];
         [currentNumber setOpacity:0];
         [currentNumber setTag:3];
         [renderLayer addChild:currentNumber];
+//    }
+    if(displayNumicon||flashNumicon)
+    {
+        frameCache = [CCSpriteFrameCache sharedSpriteFrameCache];
+        [frameCache addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.plist") textureFilename:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.png")];
+        CCSpriteFrame *frame=[frameCache spriteFrameByName:@"1.png"];
+        numiconOne=[CCSprite spriteWithSpriteFrame:frame];
+        //[numiconOne setDisplayFrame:frame];
+        [numiconOne setPosition:ccp(currentNumber.position.x+(buttonOfWin.contentSize.width/2),currentNumber.position.y)];
+        [numiconOne setOpacity:0];
+        [renderLayer addChild:numiconOne];
+
     }
+}
+
+-(void)setupIntroOverlay
+{
+    started=NO;
+    introOverlay=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/countingtimer/ct_intro_overlay.png")];
+    introCommit=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/HR_Commit_Enabled.png")];
+    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"You stopped the timer at %d. Press the commit button to continue.", lastNumber] fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
+    
+    [introCommit setPosition:ccp(2*cx-40, 2*cy - 30)];
+    
+    [l setPosition:ccp(cx,cy)];
+    [introOverlay setPosition:ccp(cx,cy)];
+    
+    [renderLayer addChild:introOverlay];
+    [renderLayer addChild:introCommit];
+    [renderLayer addChild:l];
+    showingIntroOverlay=YES;
 }
 
 #pragma mark - problem state
 -(void)startProblem
 {
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_start_button_tapped.wav")];
     [buttonOfWin setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/countingtimer/counter_stop.png")]];
     started=YES;
     expired=NO;
@@ -238,23 +309,33 @@
 
 -(void)expireProblemForRestart
 {
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_ended_(got_to_max_without_press_-_reset).wav")];
+    
     expired=YES;
     started=NO;
     timeElapsed=0.0f;
     trackNumber=0;
+    
+    if(numiconOne)
+        [numiconOne setOpacity:0];
+    
     [buttonOfWin setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/countingtimer/counter_start.png")]];
+    
+    [currentNumber setVisible:YES];
     
     if(numIncrement>=0){
         lastNumber=countMin;
         trackNumber=lastNumber;
         timeElapsed=lastNumber;
-        timeKeeper=timeElapsed;
+//        timeKeeper=timeElapsed;
+        timeKeeper=0.0f;
     }
     else{
         lastNumber=countMax;
         trackNumber=lastNumber;
         timeElapsed=lastNumber;
-        timeKeeper=timeElapsed;
+//        timeKeeper=timeElapsed;
+        timeKeeper=0.0f;
     }
 }
 
@@ -281,6 +362,11 @@
             [self evalProblem];
             [loggingService logEvent:BL_PA_CT_TOUCH_START_STOP_TIMER withAdditionalData:nil];
         }
+    }
+    
+    if(CGRectContainsPoint(introCommit.boundingBox, location) && showingIntroOverlay)
+    {
+        [self evalProblem];
     }
     
     
@@ -326,7 +412,6 @@
     
     if(numIncrement>=0)
     {
-        float adjTimeElapsed=timeElapsed*numIncrement;
         // count up
         earliestHit=solutionNumber-(kEarliestHit*numIncrement);
         latestHit=solutionNumber+(kLatestHit*numIncrement);
@@ -342,7 +427,7 @@
     else
     {
         // count down
-        float adjTimeElapsed=fabsf(timeElapsed-countMax);
+
         earliestHit=solutionNumber+(kEarliestHit*numIncrement);
         latestHit=solutionNumber-(kLatestHit*numIncrement);
         
@@ -364,7 +449,20 @@
 
 -(void)evalProblem
 {
-    BOOL isWinning=[self evalExpression];
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_counting_timer_general_counter_stop_button_tapped.wav")];
+    
+    if(!toolHost.toolCanEval)return;
+    
+    BOOL isWinning=NO;
+    
+    if(!isIntroPlist)isWinning=[self evalExpression];
+    
+    if(isIntroPlist && !showingIntroOverlay && started)
+    {
+        [self setupIntroOverlay];
+        return;
+    }
+    if(isIntroPlist && showingIntroOverlay)isWinning=YES;
     
     if(isWinning)
     {
@@ -403,16 +501,19 @@
     return kMetaQuestionYOffsetPlaceValue*cy;
 }
 
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    
+}
+
 #pragma mark - dealloc
 -(void) dealloc
 {
     //write log on problem switch
     
-    [renderLayer release];
-    
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];
-    
+    [renderLayer release];
     //tear down
     [gw release];
     

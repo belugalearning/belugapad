@@ -9,6 +9,7 @@
 
 @class CCLayer;
 @class CCSpriteBatchNode;
+@class CCDrawNode;
 
 @interface SGBlackboard : NSObject {
  
@@ -16,8 +17,10 @@
 
 @property (retain) CCLayer *RenderLayer;
 @property BOOL inProblemSetup;
-
-@property (retain) NSMutableDictionary *islandData;
+@property float MaxObjectDistance;
+@property (retain) NSMutableArray *islandData;
 @property (retain) CCSpriteBatchNode *btxeIconBatch;
+
+@property (retain) CCDrawNode *debugDrawNode;
 
 @end

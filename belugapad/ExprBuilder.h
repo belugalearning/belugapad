@@ -11,6 +11,8 @@
 #import "ToolScene.h"
 #import "SGBtxeProtocols.h"
 
+@class SGBtxeRow;
+
 @interface ExprBuilder : ToolScene
 {
     // required toolhost stuff
@@ -44,6 +46,36 @@
     NSArray *exprStages;
     
     NSString *evalType;
+    
+    NSMutableArray *rows;
+
+    int repeatRow2Count;
+    int userRepeatRow2Max;
+    
+    //is increased to 1 if the pdef decsription gets inserted
+    int rowIndexOffset;
+    
+    BOOL presentNumberCardRow;
+    int numberCardRowMin;
+    int numberCardRowMax;
+    int numberCardRowInterval;
+    BOOL numberCardRandomOrder;
+    int numberCardRandomSelectionOf;
+
+    NSString *numberMode;
+    
+    SGBtxeRow *ncardRow;
+    
+    //excluded row evaluations
+    NSArray *excludedEvalRows;
+    
+    //expression build
+    NSMutableArray *tokens;
+    NSDictionary *curToken;
+    int curTokenIdx;
+    
+    NSMutableArray *expressionStringCache;
+    BOOL expressionRowsAreLarge;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;

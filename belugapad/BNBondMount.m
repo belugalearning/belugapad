@@ -59,6 +59,7 @@
     
     if(messageType==kDWresetPositionEval)
     {
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_bonds_general_bar_rearrangement.wav")];
         float myHeldValue=0.0f;
         float myHintValue=0.0f;
         
@@ -72,6 +73,7 @@
             
             myHeldValue=myHeldValue+mo.Length;
         }
+        prgo.MyHeldValue=myHeldValue;
         
         for(int i=0;i<prgo.HintObjects.count;i++)
         {

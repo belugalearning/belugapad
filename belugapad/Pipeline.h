@@ -7,10 +7,14 @@
 //
 
 #import "CouchDBDerivedDocument.h"
+@class FMDatabase;
 
 @interface Pipeline : CouchDBDerivedDocument
 
-@property (readonly) NSString *name;
-@property (readonly) NSArray *problems;
+@property (readonly, nonatomic, retain) NSString *name;
+@property (readonly, nonatomic, retain) NSArray *problemIds;
+@property (readonly, nonatomic, retain) NSArray *flattenedProblems;
+
+-(id)initWithDatabase:(FMDatabase*)db andPipelineId:(NSString*)pId;
 
 @end

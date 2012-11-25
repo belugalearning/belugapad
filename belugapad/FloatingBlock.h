@@ -46,6 +46,7 @@ typedef enum {
     BOOL setupNumberWheel;
     BOOL hasLoggedMove;
     BOOL isInBubble;
+    BOOL isIntroPlist;
     float timeToSetupNumberWheel;
     
     // and a default layer
@@ -74,6 +75,9 @@ typedef enum {
     
     
     int expSolution;
+    
+    
+    BOOL audioHasPlayedBubbleProx;
 }
 
 @property (nonatomic, retain) CCPickerView *pickerView;

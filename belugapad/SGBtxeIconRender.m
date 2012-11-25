@@ -12,6 +12,7 @@
 @implementation SGBtxeIconRender
 
 @synthesize sprite;
+@synthesize useLargeAssets;
 
 -(SGBtxeIconRender*)initWithGameObject:(id<Bounding, MovingInteractive, Icon>)aGameObject
 {
@@ -37,8 +38,18 @@
 {
     if(!gameWorld.Blackboard.btxeIconBatch)
     {
-        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.plist")];
-        gameWorld.Blackboard.btxeIconBatch=[CCSpriteBatchNode batchNodeWithFile:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.png")];
+        if(useLargeAssets)
+        {
+            [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.plist")];
+            gameWorld.Blackboard.btxeIconBatch=[CCSpriteBatchNode batchNodeWithFile:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.png")];
+        }
+        else
+        {
+            [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.plist")];
+            gameWorld.Blackboard.btxeIconBatch=[CCSpriteBatchNode batchNodeWithFile:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.png")];
+        }
+        
+        [gameWorld.Blackboard.RenderLayer addChild:gameWorld.Blackboard.btxeIconBatch];
     }
     
     NSString *sname=ParentGO.tag;
@@ -54,6 +65,16 @@
 -(void)updatePosition:(CGPoint)position
 {
     self.sprite.position=position;
+    NSLog(@"position at %@", NSStringFromCGPoint(position));
+}
+
+-(void)inflateZindex
+{
+    sprite.zOrder=99;
+}
+-(void)deflateZindex
+{
+    sprite.zOrder=0;
 }
 
 -(void)dealloc

@@ -14,13 +14,20 @@
 @interface SGBtxeRow : SGGameObject <Container, Bounding, Parser, RenderContainer, FadeIn>
 {
     NSMutableArray *children;
-    CCNode *baseNode;
 }
 
 @property (retain) SGBtxeRowLayout *rowLayoutComponent;
 
 
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget;
+
+-(void)tagMyChildrenForIntro;
+-(BOOL)containsObject:(id)o;
+-(void)inflateZindex;
+-(void)deflateZindex;
+-(void)relayoutChildrenToWidth:(float)width;
+-(void)animateAndMoveToPosition:(CGPoint)thePosition;
+-(NSString*)returnRowStringForSpeech;
 
 
 @end

@@ -9,6 +9,7 @@
 #import "global.h"
 #import "SGDtoolBlockRender.h"
 #import "SGDtoolBlock.h"
+#import "SGDtoolContainer.h"
 #import "BLMath.h"
 
 @interface SGDtoolBlockRender()
@@ -20,7 +21,7 @@
 
 @implementation SGDtoolBlockRender
 
--(SGDtoolBlockRender*)initWithGameObject:(id<Transform, Moveable, Pairable>)aGameObject
+-(SGDtoolBlockRender*)initWithGameObject:(id<Transform, Moveable, Pairable, Configurable>)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
@@ -42,28 +43,45 @@
 
 -(void)drawProximateLines:(CGPoint)location
 {
-    if([ParentGO.PairedObjects count]>0)
-    {
-        ccDrawColor4F(0, 255, 0, 255);
-        ccDrawLine(ParentGO.Position, location);
-    }
+
 }
 
 -(void)drawNotProximateLines:(CGPoint)location
 {
-    if([ParentGO.PairedObjects count]>0)
-    {
-        ccDrawColor4F(255, 0, 0, 255);
-        ccDrawLine(ParentGO.Position, location);
-    }
+
 }
 
 
 -(void)setup
 {
+    NSString *sprFileName=nil;
+    
+    if(!ParentGO.blockType){
+        ParentGO.blockType=@"Circle";
+    }
+    else if([ParentGO.blockType isEqualToString:@"Random"])
+    {
+        int thisBlockType=0;
+        
+        thisBlockType=arc4random() % 5;
+        
+        if(thisBlockType==0)
+            ParentGO.blockType=@"Circle";
+        else if(thisBlockType==1)
+            ParentGO.blockType=@"Diamond";
+        else if(thisBlockType==2)
+            ParentGO.blockType=@"Ellipse";
+        else if(thisBlockType==3)
+            ParentGO.blockType=@"House";
+        else if(thisBlockType==4)
+            ParentGO.blockType=@"RoundedSquare";
+        else if(thisBlockType==5)
+            ParentGO.blockType=@"Square";
+    }
 
-    //blockSprite=[CCSprite spriteWithSpriteFrameName:@"node-complete.png"];
-    blockSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/distribution/block.png")];
+    sprFileName=[NSString stringWithFormat:@"/images/distribution/DT_Shape_%@.png", ParentGO.blockType];
+    
+    blockSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(sprFileName)];
     ParentGO.mySprite=blockSprite;
     [blockSprite setPosition:ParentGO.Position];
     [blockSprite setVisible:ParentGO.Visible];
@@ -73,6 +91,16 @@
 -(void)move
 {
     [blockSprite setPosition:ParentGO.Position];
+    [ParentGO.Label setPosition:ParentGO.Position];
+    if(ParentGO.MyContainer && [ParentGO.MyContainer isKindOfClass:[SGDtoolContainer class]])
+    {
+        SGDtoolContainer *c=(SGDtoolContainer*)ParentGO.MyContainer;
+        if(c.blocksInShape==1)
+        {
+            [c.CountLabel setPosition:ccp(ParentGO.Position.x,ParentGO.Position.y-50)];
+            [c.BTXERow setPosition:ccp(ParentGO.Position.x,ParentGO.Position.y+50)];
+        }
+    }
 }
 
 -(void)animateToPosition
@@ -84,20 +112,37 @@
 {
     if([ParentGO.MyContainer conformsToProtocol:@protocol(Cage)])
         return NO;
+
     
     ParentGO.SeekingPair=YES;
-    if([BLMath DistanceBetween:ParentGO.Position and:location]<100.0f)
+    if([BLMath DistanceBetween:ParentGO.Position and:location]<gameWorld.Blackboard.MaxObjectDistance)
     {
-        [ParentGO.mySprite setColor:ccc3(0,255,0)];
+        //[ParentGO.mySprite setColor:ccc3(0,255,0)];
         //[self drawProximateLines:location];
         return YES;
     }
     else {
-        [ParentGO.mySprite setColor:ccc3(255,255,255)];
+        //[ParentGO.mySprite setColor:ccc3(255,255,255)];
         //[self drawNotProximateLines:location];
         return NO;
     }
     ParentGO.SeekingPair=NO;
+}
+
+-(void)destroyThisObject
+{
+    ParentGO.RenderLayer=nil;
+    if(ParentGO.MyContainer)[(id<ShapeContainer>)ParentGO.MyContainer removeBlockFromMe:ParentGO];
+    if(ParentGO.Label)[ParentGO.Label removeFromParentAndCleanup:YES];
+    if(ParentGO.mySprite)[ParentGO.mySprite removeFromParentAndCleanup:YES];
+    if(ParentGO.PairedObjects)[ParentGO.PairedObjects release];
+    ParentGO.mySprite=nil;
+    ParentGO.PairedObjects=nil;
+    ParentGO.Label=nil;
+    ParentGO.blockType=nil;
+    
+    
+    [gameWorld delayRemoveGameObject:(id)ParentGO];
 }
 
 -(void)resetTint

@@ -18,6 +18,8 @@
 #import "SGBtxeContainerMgr.h"
 #import "SGBtxeObjectNumber.h"
 #import "SGBtxeObjectIcon.h"
+#import "SGBtxePlaceholder.h"
+#import "SGBtxeObjectOperator.h"
 
 const NSString *matchNumbers=@"0123456789";
 
@@ -61,7 +63,7 @@ const NSString *matchNumbers=@"0123456789";
 
 -(void)parseElement:(CXMLElement*)element withNSMap:(NSDictionary*)nsmap
 {
-    NSLog(@"parsing element %@", element.name);
+//    NSLog(@"parsing element %@", element.name);
     
     if([element.name isEqualToString:BTXE_T])
     {
@@ -76,6 +78,8 @@ const NSString *matchNumbers=@"0123456789";
                 //create object number, have it parsed
                 SGBtxeObjectNumber *on=[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld];
                 on.text=s;
+                on.enabled=YES;
+                on.interactive=NO;
                 
                 [ParentGO.containerMgrComponent addObjectToContainer:on];
             }
@@ -97,10 +101,42 @@ const NSString *matchNumbers=@"0123456789";
         
         ot.enabled=[self enabledBoolFor:element];
         
+        CXMLNode *hidden=[element attributeForName:@"hidden"];
+        if(hidden)ot.hidden=[[[hidden stringValue] lowercaseString] isEqualToString:@"yes"];
+        
         //also disable if a number picker
         if([self boolFor:@"picker" on:element]) ot.enabled=NO;
         
         [ParentGO.containerMgrComponent addObjectToContainer:ot];
+    }
+    
+    else if([element.name isEqualToString:BTXE_OBJ])
+    {
+        //create text
+        SGBtxeText *t=[[SGBtxeText alloc] initWithGameWorld:gameWorld];
+        t.text=@"object";
+        
+        CXMLNode *count=[element attributeForName:@"count"];
+        if(count)
+        {
+            int c=[[count stringValue] intValue];
+            if(c>1) t.text=@"objects";
+        }
+        
+        [ParentGO.containerMgrComponent addObjectToContainer:t];
+    }
+    
+    else if([element.name isEqualToString:BTXE_OO])
+    {
+        SGBtxeObjectOperator *oo=[[SGBtxeObjectOperator alloc] initWithGameWorld:gameWorld];
+        CXMLNode *opNode=[element attributeForName:@"value"];
+        if(opNode)oo.valueOperator=opNode.stringValue;
+        
+        CXMLNode *hidden=[element attributeForName:@"hidden"];
+        if(hidden)oo.hidden=[[[hidden stringValue] lowercaseString] isEqualToString:@"yes"];
+        
+        oo.enabled=[self enabledBoolFor:element];
+        [ParentGO.containerMgrComponent addObjectToContainer:oo];
     }
     
     else if([element.name isEqualToString:BTXE_OI])
@@ -110,6 +146,9 @@ const NSString *matchNumbers=@"0123456789";
         if(tagNode)oi.tag=tagNode.stringValue;
         CXMLNode *iconTagNode=[element attributeForName:@"icontag"];
         if(iconTagNode)oi.iconTag=iconTagNode.stringValue;
+        
+        CXMLNode *hidden=[element attributeForName:@"hidden"];
+        if(hidden)oi.hidden=[[[hidden stringValue] lowercaseString] isEqualToString:@"yes"];
         
         oi.enabled=[self enabledBoolFor:element];
         
@@ -123,21 +162,15 @@ const NSString *matchNumbers=@"0123456789";
         SGBtxeObjectText *ot=[[SGBtxeObjectText alloc] initWithGameWorld:gameWorld];
         ot.text=[[element attributeForName:@"sample"] stringValue];
         
+        CXMLNode *hidden=[element attributeForName:@"hidden"];
+        if(hidden)ot.hidden=[[[hidden stringValue] lowercaseString] isEqualToString:@"yes"];
+        
         CXMLNode *tagNode=[element attributeForName:@"preftag"];
         if(tagNode)ot.tag=tagNode.stringValue;
         
         ot.enabled=NO;
 
         [ParentGO.containerMgrComponent addObjectToContainer:ot];
-    }
-    
-    else if ([element.name isEqualToString:BTXE_OP])
-    {
-        //this isn't long term -- create as text for now
-        
-        SGBtxeText *t=[[SGBtxeText alloc] initWithGameWorld:gameWorld];
-        t.text=[[element attributeForName:@"op"] stringValue];
-        [ParentGO.containerMgrComponent addObjectToContainer:t];
     }
     
     else if ([element.name isEqualToString:BTXE_ON])
@@ -147,7 +180,32 @@ const NSString *matchNumbers=@"0123456789";
         on.prefixText=[[element attributeForName:@"prefix"] stringValue];
         on.suffixText=[[element attributeForName:@"suffix"] stringValue];
         
+        CXMLNode *hidden=[element attributeForName:@"hidden"];
+        if(hidden)on.hidden=[[[hidden stringValue] lowercaseString] isEqualToString:@"yes"];
+        
+        CXMLNode *usepicker=[element attributeForName:@"usePicker"];
+        if(usepicker)
+        {
+            on.usePicker=[[[usepicker stringValue] lowercaseString] isEqualToString:@"yes"];
+        }
+        
+        if([element attributeForName:@"numbermode"])
+            on.numberMode=[[element attributeForName:@"numbermode"] stringValue];
+        else
+            on.numberMode=ParentGO.defaultNumbermode;
+    
+        on.enabled=[self enabledBoolFor:element];
+        
         [ParentGO.containerMgrComponent addObjectToContainer:on];
+    }
+    
+    else if([element.name isEqualToString:BTXE_PH])
+    {
+        SGBtxePlaceholder *ph=[[SGBtxePlaceholder alloc] initWithGameWorld:gameWorld];
+        
+        ph.targetTag=[[element attributeForName:@"targetTag"] stringValue];
+        
+        [ParentGO.containerMgrComponent addObjectToContainer:ph];
     }
 }
 

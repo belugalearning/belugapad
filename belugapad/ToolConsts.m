@@ -29,7 +29,7 @@ const CGPoint kButtonNextToolPos={996, 735};
 
 const float kPropXPauseButtonPadding=0.032f;
 const float kPropXCommitButtonPadding=0.062f;
-const CGRect kRectButtonCommit={{904, 648}, {120, 120}};
+const CGRect kRectButtonCommit={{944, 700}, {80, 120}};
 const CGRect kRectButtonReset={{944, 688}, {80, 80}};
 
 
@@ -62,14 +62,23 @@ const float kNumberPickerNumberSpaceBetweenSpritesProp=0.005f;
 
 
 const CGRect kPauseMenuLogOut={{8.0f,717.0f},{120.0f,43.0f}};
-const CGRect kPauseMenuMenu={{374.0f,478.0f},{275.0f,80.0f}};
-const CGRect kPauseMenuReset={{374.0f,378.0f},{275.0f,80.0f}};
-const CGRect kPauseMenuContinue={{299.0f,213.0f},{424.0f,80.0f}};
+const CGRect kPauseMenuMenu={{410.0f,458.0f},{200.0f,85.0f}};
+const CGRect kPauseMenuReset={{455.0f,358.0f},{120.0f,100.0f}};
+const CGRect kPauseMenuContinue={{410.0f,268.0f},{210.0f,90.0f}};
+const CGRect kPauseMenuMute={{750.0f,228.0f},{85.0f,80.0f}};
 
-const ccColor3B kNumberBondColour[10]={{242,225,210},{208,23,62},{88,172,50},{113,43,74},{251,208,48},{25,84,42},{28,28,29},{125,51,23},{6,36,102},{237,75,20}};
+const ccColor3B kNumberBondColour[10]={{128,124,125},{216,12,52},{87,176,37},{230,51,131},{229,196,34},{49,142,76},{73,71,71},{166,54,198},{13,86,143},{241,72,0}};
 const ccColor3B kNumiconColour[10]={{191,255,193},{191,255,244},{223,191,255},{255,178,178},{204,240,255},{255,211,178},{254,255,204},{255,217,244},{220,244,222},{217,174,174}};
-
+const ccColor3B kBTXEColour[8]={{145,193,48},{245,82,82},{201,99,231},{244,167,47},{241,84,151},{19,189,183},{76,164,205},{239,224,55}};
 
 // fraction builder
 
 const float kNumbersAlongFractionSlider=19;
+
+
+// distribution tool
+const float kShapeValue001=0.01f;
+const float kShapeValue01=0.1f;
+const float kShapeValue1=1.0f;
+const float kShapeValue10=10.0f;
+const float kShapeValue100=100.0f;

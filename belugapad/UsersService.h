@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class User, LoggingService, FMDatabase;
+@class User, LoggingService, FMDatabase, UserNodeState;
 
 @interface UsersService : NSObject
 
@@ -19,7 +19,7 @@ typedef enum {
 
 @property (readonly, retain, nonatomic) NSString *installationUUID;
 @property (readonly) NSDictionary *currentUserClone;
-@property (readonly) FMDatabase *usersDatabase;
+@property (readonly) FMDatabase *allUsersDatabase;
 @property (readonly) NSString *currentUserId;
 
 -(id)initWithProblemPipeline:(NSString*)source
@@ -27,11 +27,11 @@ typedef enum {
 
 -(void)setCurrentUserToUserWithId:(NSString*)urId;
 
--(void)setCurrentUserToNewUserWithNick:(NSString*)nick
-                           andPassword:(NSString*)password
-                              callback:(void (^)(BL_USER_CREATION_STATUS))callback;
+-(void)createNewUserWithNick:(NSString*)nick
+                 andPassword:(NSString*)password
+                    callback:(void (^)(BL_USER_CREATION_STATUS))callback;
 
--(NSArray*)deviceUsersByNickName;
+-(NSMutableArray*)deviceUsersByNickName;
 
 -(void)flagRemoveUserFromDevice:(NSString*)userId;
 -(void)syncDeviceUsers;
@@ -40,6 +40,10 @@ typedef enum {
                         andPassword:(NSString*)password
                            callback:(void (^)(NSDictionary*))callback;
 
--(void)addCompletedNodeId:(NSString*)nodeId;
 -(BOOL)hasCompletedNodeId:(NSString*)nodeId;
+-(UserNodeState*)currentUserStateForNodeWithId:(NSString *)nodeId;
+-(NSDictionary*)currentUserAllNodesState;
+
+-(BOOL)hasEncounteredFeatureKey:(NSString*)key;
+-(void)addEncounterWithFeatureKey:(NSString*)key date:(NSDate*)date;
 @end

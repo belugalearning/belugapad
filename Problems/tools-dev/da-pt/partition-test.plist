@@ -6,6 +6,8 @@
 	<string>PT problem</string>
 	<key>TOOL_KEY</key>
 	<string>NumberBonds</string>
+	<key>BAR_ASSISTANCE</key>
+	<true/>
 	<key>INIT_OBJECTS</key>
 	<array>
 		<dict/>

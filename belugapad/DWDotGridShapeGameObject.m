@@ -28,6 +28,21 @@
 @synthesize RenderLayer;
 @synthesize MyNumberWheel;
 @synthesize autoUpdateWheel;
+@synthesize countLabelType;
+@synthesize countLabel;
+@synthesize countBubble;
+@synthesize hintArrowX;
+@synthesize hintArrowY;
+@synthesize centreX;
+@synthesize centreY;
+@synthesize top;
+@synthesize bottom;
+@synthesize right;
+@synthesize left;
+@synthesize value;
+@synthesize ShapeX;
+@synthesize ShapeY;
+
 
 -(void)dealloc
 {
@@ -41,6 +56,11 @@
     self.shapeGroup=nil;
     self.RenderLayer=nil;
     self.MyNumberWheel=nil;
+    self.countLabel=nil;
+    self.countLabelType=nil;
+    self.countBubble=nil;
+    self.hintArrowX=nil;
+    self.hintArrowY=nil;
 
     self.firstBoundaryAnchor=nil;
     self.lastBoundaryAnchor=nil;

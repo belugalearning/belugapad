@@ -1,0 +1,1 @@
+const char babLicense[]="\"6740 0 BELU #COMMERCIAL#Beluga Learning Chiswick United Kingdom\"\nW6efew8uM8o3fK@C7@hkMaUNI6jbVQJIbhfF!jRX8vqZ2wzBlgjDjUhCHRsUeprBL4QNRlRjvl5HljKRoZ39xQ##\nSuPgFx4oP@3BjLcEgzy@8LmN3ZPvKSzWkLMMnR##\nV2mW!kSz5AbCcoTC2Yuy2T##\n";

@@ -9,12 +9,13 @@
 #import "SGGameObject.h"
 #import "SGDtoolObjectProtocols.h"
 
-@interface SGDtoolContainer : SGGameObject <Container>
+@interface SGDtoolContainer : SGGameObject <ShapeContainer>
 
--(SGDtoolContainer*) initWithGameWorld:(SGGameWorld*)aGameWorld andLabel:(NSString*)aLabel andRenderLayer:(CCLayer*)aRenderLayer;
+-(SGDtoolContainer*) initWithGameWorld:(SGGameWorld*)aGameWorld andLabel:(NSString*)aLabel andShowCount:(BOOL)showValue andRenderLayer:(CCLayer*)aRenderLayer;
 
 -(void)addBlockToMe:(id)thisBlock;
 -(void)removeBlockFromMe:(id)thisBlock;
+-(void)setGroupBTXELabel:(id)thisLabel;
 -(void)repositionLabel;
 -(int)blocksInShape;
 -(void)destroyThisObject;

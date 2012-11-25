@@ -25,9 +25,13 @@
 #import "SGFBlockOpBubble.h"
 #import "SGFBlockGroup.h"
 
+#import "SimpleAudioEngine.h"
+
 #import "BAExpressionHeaders.h"
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
+
+#import "SimpleAudioEngine.h"
 
 //CCPickerView
 #define kComponentWidth 54
@@ -117,7 +121,21 @@
             setupNumberWheel=NO;
             [self setupNumberWheel];
             [pickerView spinComponent:0 speed:25 easeRate:5 repeat:3 stopRow:defaultBlocksFromPipe];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_number_wheel_slots_rotate_to_start_position.wav")];
         }
+    }
+    
+    if(self.pickerView && !setupNumberWheel)
+    {
+        if([self returnPickerNumber]<minBlocksFromPipe){
+            [pickerView spinComponent:0 speed:10 easeRate:4 repeat:2 stopRow:minBlocksFromPipe];
+            blocksFromPipe=minBlocksFromPipe;
+        }
+        else if([self returnPickerNumber]>maxBlocksFromPipe){
+            [pickerView spinComponent:0 speed:10 easeRate:4 repeat:2 stopRow:maxBlocksFromPipe];
+            blocksFromPipe=maxBlocksFromPipe;
+        }
+        [pickerViewSelection replaceObjectAtIndex:0 withObject:[NSNumber numberWithInteger:blocksFromPipe]];
     }
     
 }
@@ -138,6 +156,7 @@
     bubbleAutoOperate=[[pdef objectForKey:BUBBLE_AUTO_OPERATE]boolValue];
     maxBlocksInGroup=[[pdef objectForKey:MAX_GROUP_SIZE]intValue];
     expSolution=[[pdef objectForKey:SOLUTION]intValue];
+    isIntroPlist=[[pdef objectForKey:IS_INTRO_PLIST]boolValue];
     
     showSolutionOnPipe=[[pdef objectForKey:SHOW_SOLUTION_ON_PIPE]boolValue];
     showMultipleControls=[[pdef objectForKey:SHOW_MULTIPLE_CONTROLS]boolValue];
@@ -171,6 +190,9 @@
         initBubbles=1;
     else
         initBubbles=2;
+    
+    if(isIntroPlist)
+        initBubbles=0;
     
     
 }
@@ -355,6 +377,7 @@
         [op setup];
         opBubble=op;
         showingOperatorBubble=YES;
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_operator_bubble_floating_up.wav")];
         return;
     }
     // but if we have an operator bubble, it's still valid and we have a pickupobject as such
@@ -363,6 +386,7 @@
         // then if we only have 1 operator - merge the bubbles 
         if([supportedOperators count]==1)
         {
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_tapping_operator.wav")];
             NSString *s=[supportedOperators objectAtIndex:0];
             
             [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_USE_OPERATOR withAdditionalData:[NSDictionary dictionaryWithObject:s forKey:OPERATOR_MODE]];
@@ -467,6 +491,7 @@
             [newbubble setup];
         }
     }
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_bubble_added_to_scene_and_floating_up.wav")];
 }
 
 -(void)mergeGroupsFromBubbles
@@ -594,6 +619,21 @@
     id<Group> targetGroup=[groups objectAtIndex:0];
     id<Group> operatedGroup=[groups objectAtIndex:1];
     
+    float tGc=[targetGroup.MyBlocks count];
+    float oGc=[operatedGroup.MyBlocks count];
+    
+    float outcome=tGc/oGc;
+    outcome=outcome-(int)outcome;
+    
+    
+    if(outcome>0){
+        id<Operator,Rendered>curBubble=(id<Operator,Rendered>)opBubble;
+        [curBubble fadeAndDestroy];
+        opBubble=nil;
+        showingOperatorBubble=NO;
+        return;
+    }
+    
     if([targetGroup.MyBlocks count]>[operatedGroup.MyBlocks count])
     {
         int result=[targetGroup.MyBlocks count]/[operatedGroup.MyBlocks count];
@@ -650,7 +690,7 @@
     pickerView.dataSource = self;
     pickerView.delegate = self;
 
-    [pickerViewSelection addObject:[NSNumber numberWithInt:0]];
+    [pickerViewSelection addObject:[NSNumber numberWithInt:defaultBlocksFromPipe]];
     
     
     [renderLayer addChild:self.pickerView z:20];
@@ -719,7 +759,7 @@
 
     [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_CHANGE_NUMBER_WHEEL withAdditionalData:nil];
     
-    blocksFromPipe=[self returnPickerNumber];
+    blocksFromPipe=(int)row;
 }
 
 - (CGFloat)spaceBetweenComponents:(CCPickerView *)pickerView {
@@ -772,12 +812,15 @@
     lastTouch=location;
     touchStartPos=location;
     
-    if(CGRectContainsPoint(newPipe.boundingBox, location))
+
+    if(CGRectContainsPoint(CGRectMake(54,510,20,175), location))
     {
         NSDictionary *d=[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:blocksFromPipe] forKey:NUMBER];
         [loggingService logEvent:BL_PA_FBLOCK_TOUCH_START_CREATE_NEW_GROUP withAdditionalData:nil];
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_pipe_adding_blocks_to_scene.wav")];
         [self createShapeWith:d];
     }
+
     
     // check whether we have a pickupobject or not
     for(id go in gw.AllGameObjects)
@@ -790,6 +833,7 @@
             if([thisGroup checkTouchInGroupAt:location])
             {
                 pickupObject=thisGroup;
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_picking_up_blocks.wav")];
                 [loggingService logEvent:BL_PA_FBLOCK_TOUCH_START_PICKUP_GROUP withAdditionalData:nil];
                 [thisGroup inflateZIndexOfMyObjects];
             }
@@ -829,6 +873,13 @@
             }
         }
     }
+    
+    if(isInBubble && !audioHasPlayedBubbleProx)
+    {
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_block_ready_to_mount_to_bubble.wav")];
+        audioHasPlayedBubbleProx=YES;
+    }
+    
    
     lastTouch=location;
  
@@ -841,11 +892,13 @@
     location=[[CCDirector sharedDirector] convertToGL:location];
     location=[self.ForeLayer convertToNodeSpace:location];
     
-    if(isInBubble && CGPointEqualToPoint(location, lastTouch))
+    if(isInBubble && CGPointEqualToPoint(location, lastTouch)){
        [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_PLACE_GROUP_IN_BUBBLE withAdditionalData:nil];
-    else
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_adding_blocks_to_bubble.wav")];
+    }else{
        [loggingService logEvent:BL_PA_FBLOCK_TOUCH_MOVE_PLACE_GROUP_IN_FREE_SPACE withAdditionalData:nil];
-    
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_block_outside_of_mountable_area.wav")];
+    }
     if(bubbleAutoOperate)
         [self handleMergeShapes];
     else
@@ -861,28 +914,33 @@
             
             if(CGRectContainsPoint(commitPipe.boundingBox, location) && evalMode==kProblemEvalAuto)
             {
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_adding_blocks_to_bubble.wav")];
+                
                 [loggingService logEvent:BL_PA_FBLOCK_TOUCH_END_DROP_OBJECT_PIPE withAdditionalData:nil];
                 [self evalProblem];
+                [self setTouchVarsToOff];
+                return;
             }
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_floating_block_general_releasing_blocks.wav")];
         }
     }
     
     // if we were moving the marker
 
-    pickupObject=nil;
-    isTouching=NO;
-    hasLoggedMove=NO;
-    isInBubble=NO;
+    [self setTouchVarsToOff];
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {    
+    [self setTouchVarsToOff];
+}
 
+-(void)setTouchVarsToOff
+{
     pickupObject=nil;
     isTouching=NO;
     hasLoggedMove=NO;
     isInBubble=NO;
-    // empty selected objects
 }
 
 #pragma mark - evaluation
@@ -900,11 +958,24 @@
 
     for(id go in gw.AllGameObjects)
     {
-        if(go==pickupObject)
+        if(evalMode==kProblemEvalAuto && go==pickupObject)
         {
             id<Group>thisGroup=(id<Group>)pickupObject;
             if([thisGroup.MyBlocks count]==expSolution)
                 return YES;
+        }
+        if(evalMode==kProblemEvalOnCommit)
+        {
+            if([go conformsToProtocol:@protocol(Moveable)])
+            {
+                id<Moveable>thisObj=(id<Moveable>)go;
+                if(CGRectContainsPoint(commitPipe.boundingBox, thisObj.Position))
+                {
+                    id<Group>thisObjGroup=(id<Group>)thisObj.MyGroup;
+                    if([thisObjGroup.MyBlocks count]==expSolution)
+                        return YES;
+                }
+            }
         }
     }
     return NO;
@@ -941,6 +1012,11 @@
 -(float)metaQuestionAnswersYLocation
 {
     return kMetaQuestionYOffsetPlaceValue*cy;
+}
+
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    
 }
 
 #pragma mark - dealloc

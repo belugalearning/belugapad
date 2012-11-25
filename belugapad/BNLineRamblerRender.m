@@ -136,12 +136,22 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     int segsInCX=(gameWorld.Blackboard.hostCX / ramblerGameObject.DefaultSegmentSize);
     
     //scale these up by three -- allows for full screen scroll in either direction without new draw
+    
+//    float minValuePos=ramblerGameObject.Value - ((segsInCX * 4) * ramblerGameObject.DefaultSegmentSize);
+//    float maxValuePos=ramblerGameObject.Value + ((segsInCX * 4) * ramblerGameObject.DefaultSegmentSize);
+    
 //    float minValuePos=ramblerGameObject.Value - (segsInCX * 4);
 //    float maxValuePos=ramblerGameObject.Value + (segsInCX * 4);
+    
     float minValuePos=ramblerGameObject.BubblePos - ((segsInCX * 4) * ramblerGameObject.CurrentSegmentValue);
     float maxValuePos=ramblerGameObject.BubblePos + ((segsInCX * 4) * ramblerGameObject.CurrentSegmentValue);
     
-    
+//    minValuePos+=-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize;
+//    maxValuePos+=-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize;
+
+//    minValuePos+= (-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize) * ramblerGameObject.CurrentSegmentValue;
+//    maxValuePos+= (-(ramblerGameObject.TouchXOffset) / ramblerGameObject.DefaultSegmentSize) * ramblerGameObject.CurrentSegmentValue;
+
     int assBlankIndex=0;
     int assLineIndex=0;
     int assIndicatorIndex=0;
@@ -152,6 +162,8 @@ static NSString *kLabelFont=@"visgrad1.fnt";
     
     [assStartTerminator setVisible:NO];
     [assEndTerminator setVisible:NO];
+    
+//    NSLog(@"current segment value %f", ramblerGameObject.CurrentSegmentValue);
     
     for (int iValue=minValuePos; iValue<=maxValuePos; iValue+=ramblerGameObject.CurrentSegmentValue) {
         
@@ -299,8 +311,25 @@ static NSString *kLabelFont=@"visgrad1.fnt";
                     [ind setVisible:YES];
                     assNumberBackIndex++;
                     
+                    int displayNum=[numRender intValue] + ramblerGameObject.DisplayNumberOffset;
                     
-                    CCLabelTTF *l=[CCLabelTTF labelWithString:[numRender stringValue] fontName:@"Chango" fontSize:24.0f];
+                    NSString *writeText=[NSString stringWithFormat:@"%d", displayNum];
+                    
+                    if(ramblerGameObject.DisplayNumberDP>0 && ramblerGameObject.DisplayNumberMultiplier!=1)
+                    {
+                        float multDisplayNum=displayNum * ramblerGameObject.DisplayNumberMultiplier;
+                        
+                        NSString *fmt=[NSString stringWithFormat:@"%%.%df", ramblerGameObject.DisplayNumberDP];
+                        writeText=[NSString stringWithFormat:fmt, multDisplayNum];
+                    }
+                    
+                    int fontSize=24;
+                    
+                    if(writeText.length==3) fontSize=15;
+                    if(writeText.length==4) fontSize=12;
+                    if(writeText.length>4) fontSize=9;
+                    
+                    CCLabelTTF *l=[CCLabelTTF labelWithString:writeText fontName:@"Chango" fontSize:fontSize];
                     [l setColor:ccBLACK];
                     [l setPosition:CGPointMake(segStartPos.x, segStartPos.y+kLabelOffset)];
                     [labelLayer addChild:l];

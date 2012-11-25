@@ -38,6 +38,9 @@
 #import "JSONKit.h"
 #import "TestFlight.h"
 
+#import "UserNodeState.h"
+#import "TouchXML.h"
+
 
 #define DRAW_DEPTH 3
 
@@ -155,6 +158,8 @@ typedef enum {
         [self schedule:@selector(doUpdate:) interval:1.0f / 60.0f];
         
         [self schedule:@selector(doUpdateProximity:) interval:15.0f / 60.0f];
+        
+        [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_launch_general_background_score.mp3") loop:YES];
                 
 //        daemon=[[Daemon alloc] initWithLayer:foreLayer andRestingPostion:ccp(cx, cy) andLy:ly];
 //        [daemon setMode:kDaemonModeFollowing];
@@ -196,7 +201,7 @@ typedef enum {
     //[[CCDirector sharedDirector] replaceScene:[ToolHost scene]];
     
     [TestFlight passCheckpoint:@"PROCEEDING_TO_TOOLHOST_FROM_JMAP"];
-    
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_enter_question.wav")];
     contentService.resetPositionAfterTH=YES;
     contentService.lastMapLayerPosition=mapLayer.position;
     
@@ -218,6 +223,9 @@ typedef enum {
     gw=[[SGGameWorld alloc] initWithGameScene:self];
     
     gw.Blackboard.RenderLayer=mapLayer;
+    
+    gw.Blackboard.debugDrawNode=[[[CCDrawNode alloc] init] autorelease];
+//    [mapLayer addChild:gw.Blackboard.debugDrawNode z:-1];
     
 }
 
@@ -242,8 +250,12 @@ typedef enum {
     [self populateImageCache];
  
     [self createLayers];
+ 
+    [self getUserData];
     
     [self setupGw];
+    
+    [self parseIslandData];
     
     kcmNodes=[NSMutableArray arrayWithArray:[contentService allConceptNodes]];
     [kcmNodes retain];
@@ -270,13 +282,6 @@ typedef enum {
     
     //setup rendering -- needs all node connections built
     [gw handleMessage:kSGreadyRender];
-    
-    
-//    backarrow=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/backarrow.png")];
-//    [backarrow setPosition:ccp(64, ly-64)];
-//    [backarrow setOpacity:70];
-//    [self addChild:backarrow];
-    
 
     // position map so that bottom-most included node in view, bottom-left
     if (!contentService.resetPositionAfterTH)
@@ -292,25 +297,21 @@ typedef enum {
         if (p.y != NSIntegerMax) [mapLayer setPosition:ccp(300-p.x, 300-p.y)]; // offset to make most of node visible
     }
     
-//    //reposition if previous node
-//    if(contentService.currentNode)
-//    {
-//        //put map at this position
-//        CGPoint p=ccp(contentService.currentNode.x * kNodeScale, -(nMaxY - contentService.currentNode.y) * kNodeScale);
-//        p=ccpAdd(ccp(cx, cy), p);
-//        [mapLayer setPosition:p];
-//    }
-    
     [self buildSearchIndex];
-        
+ 
+    //after we've finished building everything, set the last jmap viewed user state on the app delegate
+    ac.lastJmapViewUState=udata;
+    
     NSLog(@"node bounds are %f, %f -- %f, %f", nMinX, nMinY, nMaxX, nMaxY);
+}
+
+-(void)getUserData
+{
+    udata=[usersService currentUserAllNodesState];
 }
 
 - (void)createLayers
 {
-    //base colour layer
-//    CCLayerGradient *cLayer=[[CCLayerGradient alloc] initWithColor:ccc4(49, 65, 83, 255) fadingTo:ccc4(55, 77, 101, 255)];
-//    
     underwaterLayer=[[CCLayer alloc] init];
     
     CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/water_whitebkg.png") rect:CGRectMake(0, 0, 10*cx, 10*cy)];
@@ -322,21 +323,6 @@ typedef enum {
     
     [self addChild:underwaterLayer];
     
-    CCLayer *cLayer=[[CCLayer alloc] init];
-    
-    //put on overlay texture -- ipad1 only??
-    AppController *ac=(AppController*)[[UIApplication sharedApplication] delegate];
-    if(!ac.IsIpad1)
-    {
-        CCSprite *overlay=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/base-overlay.png")];
-        [overlay setPosition:ccp(cx,cy)];
-        [cLayer addChild:overlay];
-    }
-    
-    //CCLayer *cLayer=[[CCLayerColor alloc] initWithColor:ccc4(35, 35, 35, 255) width:lx height:ly];
-    [self addChild:cLayer];
-    [cLayer release];
-    
     //base map layer
     mapLayer=[[CCLayer alloc] init];
     if(contentService.resetPositionAfterTH)
@@ -347,20 +333,14 @@ typedef enum {
     [self addChild:mapLayer z:1];
     
     //setup render batch for nodes
-    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.plist")];
-    nodeRenderBatch=[CCSpriteBatchNode batchNodeWithFile:BUNDLE_FULL_PATH(@"/images/jmap/node-icons.png")];
+    [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/jmap/jmapsm.plist")];
+    nodeRenderBatch=[CCSpriteBatchNode batchNodeWithFile:BUNDLE_FULL_PATH(@"/images/jmap/jmapsm.png")];
     
     [mapLayer addChild:nodeRenderBatch z:2];
 
     //fore layer
     foreLayer=[[CCLayer alloc] init];
     [self addChild:foreLayer z:1];
-    
-    //ui layer elements -- top bar etc
-//    CCLayer *topbar=[CCLayerGradient layerWithColor:ccc4(0, 0, 0, 200) fadingTo:ccc4(0, 0, 0, 160) alongVector:ccp(0, 70)];
-//    [topbar setContentSize:CGSizeMake(2*cx, 70)];
-//    [topbar setPosition:ccp(0, (2*cy)-70)];
-//    [foreLayer addChild:topbar];
     
     CCSprite *topsprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/jmap/HR_HeaderBar_JMAP.png")];
     [topsprite setPosition:ccp(cx, 2*cy-(65.0f/2))];
@@ -443,11 +423,13 @@ typedef enum {
             newnode=[[[SGJmapNode alloc] initWithGameWorld:gw andRenderBatch:nodeRenderBatch andPosition:nodepos] autorelease];
             newnode.UserVisibleString=[n.utd stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             
-            //todo: for now, if there are pipelines on the node, set it complete
-            if([usersService hasCompletedNodeId:n._id])
-            {
-                ((SGJmapNode*)newnode).EnabledAndComplete=YES;
-            }
+            //get the node state data from the userservice
+            SGJmapNode *newnodeC=(SGJmapNode*)newnode;
+            
+            newnodeC.ustate=[udata objectForKey:n._id];
+            
+            //mock old enabledAndComplete by directly accessing the lastPlayed of the node
+            newnodeC.EnabledAndComplete=(newnodeC.ustate.lastPlayed > 0);
             
             
             newnode.HitProximity=40.0f;
@@ -698,7 +680,121 @@ typedef enum {
     return nil;
 }
 
-#pragma mark drawing and sprite creation
+#pragma mark - parse island data svg
+
+-(void)parseIslandData
+{
+    gw.Blackboard.islandData=[[[NSMutableArray alloc] init] autorelease];
+    
+    NSString *XMLPath=BUNDLE_FULL_PATH(([NSString stringWithFormat:@"/images/jmap/data/ifeatures.svg"]));
+	
+	//use that file to populate an NSData object
+	NSData *XMLData=[NSData dataWithContentsOfFile:XMLPath];
+	
+	//get TouchXML doc
+	CXMLDocument *doc=[[CXMLDocument alloc] initWithData:XMLData options:0 error:nil];
+    
+	//setup a namespace mapping for the svg and xlink namespaces
+    NSDictionary *nsMappings=@{@"svg":@"http://www.w3.org/2000/svg", @"xlink":@"http://www.w3.org/1999/xlink"};
+    
+    
+    //step over each group that includes a data-features and create a dictionary for it
+    NSArray *nodes=[doc nodesForXPath:@"//svg:g[starts-with(@id, 'data-features')]" namespaceMappings:nsMappings error:nil];
+    for (CXMLElement *node in nodes) {
+        //this is a node
+        //NSLog(@"parsing island group %@", [[node attributeForName:@"id"] stringValue]);
+        
+        //create dict for this island
+        NSMutableDictionary *idata=[[NSMutableDictionary alloc] init];
+        [gw.Blackboard.islandData addObject:idata];
+        
+        //create the arrays of node and artefact dicts, as well as the master index dict
+        NSMutableArray *featureindex=[[NSMutableArray alloc] init];
+        [idata setValue:featureindex forKey:@"FEATURE_INDEX"];
+        NSMutableArray *artefacts=[[NSMutableArray alloc] init];
+        [idata setValue:artefacts forKey:@"ARTEFACTS"];
+        NSMutableArray *nodes=[[NSMutableArray alloc] init];
+        [idata setValue:nodes forKey:@"NODES"];
+        NSMutableArray *features=[[NSMutableArray alloc] init];
+        [idata setValue:features forKey:@"FEATURES"];
+        
+        //step over all of the images in the group to infer types
+        NSArray *dimages=[node nodesForXPath:@"svg:image" namespaceMappings:nsMappings error:nil];
+        for(CXMLElement *dimg in dimages)
+        {
+            NSString *href=[[dimg attributeForName:@"xlink:href"] stringValue];
+            if([href rangeOfString:@"Crystal_Placeholder"].location!=NSNotFound)
+            {
+                NSDictionary *cryd=@{@"POS": [self getBoxedPosFromTransformString:[[dimg attributeForName:@"transform"] stringValue]]};
+                [artefacts addObject:cryd];
+                [featureindex addObject:cryd];
+                
+//                NSLog(@"parsed an artefact");
+            }
+            else if([href rangeOfString:@"Feature_Stage"].location!=NSNotFound)
+            {
+                int size=[[[href substringFromIndex:19] substringToIndex:1] intValue];
+                int variant=[[[href substringFromIndex:21] substringToIndex:1] intValue];
+                
+                NSDictionary *fd=@{@"POS": [self getBoxedPosFromTransformString:[[dimg attributeForName:@"transform"] stringValue]],
+                                    @"SIZE": @(size),
+                                    @"VARIANT": @(variant)};
+                
+                [features addObject:fd];
+                [featureindex addObject:fd];
+                
+//                NSLog(@"parsed a feature");
+            }
+            else if([href rangeOfString:@"Node_Placeholder"].location!=NSNotFound)
+            {
+                NSDictionary *noded=@{@"POS": [self getBoxedPosFromTransformString:[[dimg attributeForName:@"transform"] stringValue]],
+                                        @"FLIPPED": [self getBoxedIsFlippedFromTransformString:[[dimg attributeForName:@"transform"] stringValue]]};
+                
+                [nodes addObject:noded];
+                [featureindex addObject:noded];
+                
+//                NSLog(@"parsed a node");
+            }
+            else if([href rangeOfString:@"Mastery_Placeholder"].location!=NSNotFound)
+            {
+                NSDictionary *masd=@{@"POS": [self getBoxedPosFromTransformString:[[dimg attributeForName:@"transform"] stringValue]],
+                @"FLIPPED": [self getBoxedIsFlippedFromTransformString:[[dimg attributeForName:@"transform"] stringValue]]};
+                
+                [featureindex addObject:masd];
+                [idata setValue:masd forKey:@"MASTERY"];
+                
+//                NSLog(@"parsed a mastery node/pin");
+            }
+        }
+    }
+}
+
+-(NSValue*)getBoxedPosFromTransformString:(NSString*)t
+{
+    NSArray *ps=[t componentsSeparatedByString:@" "];
+    NSString *sx=[ps objectAtIndex:4];
+    NSString *sy=[ps objectAtIndex:5];
+    sy=[sy stringByReplacingOccurrencesOfString:@")" withString:@""];
+
+    float fx=[sx floatValue];
+    float fy=[sy floatValue];
+    fy=768.0f-fy;
+
+    return [NSValue valueWithCGPoint:CGPointMake(fx, fy)];
+}
+
+-(NSNumber*)getBoxedIsFlippedFromTransformString:(NSString*)t
+{
+    NSArray *ps=[t componentsSeparatedByString:@" "];
+    NSString *sx=[ps objectAtIndex:0];
+    sx=[sx stringByReplacingOccurrencesOfString:@"matrix(" withString:@""];
+    int set=[sx intValue];
+    return [NSNumber numberWithBool:(set<0)];
+}
+
+
+
+#pragma mark - drawing and sprite creation
 
 -(CGPoint)currentCentre
 {
@@ -727,6 +823,9 @@ typedef enum {
     
     underwaterLastMapPos=mapLayer.position;
     setUnderwaterLastMapPos=YES;
+    
+    //udpdate tap timer
+    lastTapTime+=delta;
     
 //    //scrolling
 //    float friction=0.85f;
@@ -941,6 +1040,12 @@ typedef enum {
     
     UITouch *touch=[touches anyObject];
     CGPoint l=[touch locationInView:[touch view]];
+    
+    if (![[touch view] isKindOfClass:[CCGLView class]])
+    {
+        return;
+    }
+    
     l=[[CCDirector sharedDirector] convertToGL:l];
     
     touchCount+=touches.count;
@@ -978,9 +1083,20 @@ typedef enum {
         {
             [self testForNodeTouchAt:lOnMap];
         }
-        
-    //    [daemon setTarget:l];
-    //    [daemon setRestingPoint:l];
+        else if(touchCount==1)
+        {
+            //look for double tap
+            if(lastTapTime<0.5f)
+            {
+                //zoom to tapped point
+                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_zooming_map.wav")];
+                [self zoomToCityViewAtPoint:l];
+                didJustChangeZoom=YES;
+            }
+            
+            lastTap=l;
+            lastTapTime=0;
+        }
         
         //assume touch didn't start in the node map
         touchStartedInNodeMap=NO;
@@ -1007,7 +1123,10 @@ typedef enum {
         {
             id<Selectable>sgo=go;
             if([((id<Selectable>)sgo).NodeSelectComponent trySelectionForPosition:lOnMap])
+            {
+                [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_node_pin_tap.wav")];;
                 break;
+            }
         }
     }
 }
@@ -1044,7 +1163,7 @@ typedef enum {
                 if (newpos.x < -1400) newpos.x=-1400;
                 if (newpos.y < 2300) newpos.y=2300;
             }
-            
+            //[[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_navigating_(panning_map).wav")];
             [mapLayer setPosition:newpos];
 
             lastTouch=l;
@@ -1073,12 +1192,14 @@ typedef enum {
         
         if(scaleChange<-2 && !zoomedOut)
         {
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_zooming_map.wav")];
             [self zoomToRegionView];
             didJustChangeZoom=YES;
         }
         else if(scaleChange>2 && zoomedOut)
         {
-            CGPoint aPos=[BLMath AddVector:t1b toVector:[BLMath MultiplyVector:[BLMath SubtractVector:t1b from:t1a] byScalar:0.5f]];
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_zooming_map.wav")];
+            CGPoint aPos=[BLMath AddVector:t1a toVector:[BLMath MultiplyVector:[BLMath SubtractVector:t1b from:t1a] byScalar:0.5f]];
             
             [self zoomToCityViewAtPoint:aPos];
             didJustChangeZoom=YES;
@@ -1090,6 +1211,7 @@ typedef enum {
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     touchCount-=touches.count;
+    if(touchCount<0)touchCount=0;
     
     if(touchCount==0)
     {
@@ -1212,6 +1334,8 @@ typedef enum {
 
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
+    [ac speakString:searchBar.text];
+    
     [ac.searchList removeFromSuperview];
 }
 

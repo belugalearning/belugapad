@@ -174,9 +174,15 @@
     
     if(pogo.Label) { 
         [pogo.Label setColor:ccc3(0,0,0)];
+        
+
+         [pogo.Label setColor:ccc3(255,255,255)];
+        
         [pogo.Label setPosition:ccp((pogo.Length * 50) * 0.5f, 0)];
-        [pogo.Label setTag:2];
-        [pogo.Label setOpacity:0];
+        if(gameWorld.Blackboard.inProblemSetup){
+            [pogo.Label setTag:2];
+            [pogo.Label setOpacity:0];
+        }
         [pogo.BaseNode addChild:pogo.Label z:10];
     }
     pogo.BaseNode.position=pogo.Position;

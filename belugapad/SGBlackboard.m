@@ -14,6 +14,7 @@
 @synthesize RenderLayer;
 @synthesize inProblemSetup;
 @synthesize islandData;
+@synthesize MaxObjectDistance;
 
 -(id) init
 {
@@ -37,6 +38,7 @@
     self.btxeIconBatch=nil;
     
     self.islandData=nil;
+    self.debugDrawNode=nil;
     
     [super dealloc];
 }

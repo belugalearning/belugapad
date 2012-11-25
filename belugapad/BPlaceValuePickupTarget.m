@@ -27,6 +27,8 @@
 {
     if(messageType==kDWareYouAPickupTarget)
     {
+        if(b.Disabled)return;
+        
         float dropProx=kPropXDropProximity;
         
         // if add from cage disabled - return at this point

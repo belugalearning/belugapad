@@ -8,12 +8,19 @@
 
 #import "SGBtxeObjectIcon.h"
 #import "SGBtxeIconRender.h"
+#import "SGBtxeTextBackgroundRender.h"
+#import "global.h"
 
 @implementation SGBtxeObjectIcon
 
 @synthesize size, position, originalPosition;
-@synthesize enabled, tag;
+@synthesize enabled, interactive, tag;
 @synthesize iconRenderComponent, iconTag;
+@synthesize textBackgroundRenderComponent;
+@synthesize container;
+@synthesize mount;
+@synthesize hidden;
+@synthesize isLargeObject;
 
 -(SGBtxeObjectIcon*)initWithGameWorld:(SGGameWorld*) aGameWorld
 {
@@ -24,12 +31,34 @@
         tag=@"";
         iconTag=@"";
         enabled=YES;
+        interactive=YES;
         
         //todo: init render
-        self.iconRenderComponent=[[SGBtxeIconRender alloc] initWithGameObject:self];
+        iconRenderComponent=[[SGBtxeIconRender alloc] initWithGameObject:self];
     }
     
     return self;
+}
+
+-(id<MovingInteractive>)createADuplicateIntoGameWorld:(SGGameWorld*)destGW
+{
+    //creates a duplicate object text -- something else will need to call setupDraw and attachToRenderBase
+    
+    SGBtxeObjectIcon *dupe=[[[SGBtxeObjectIcon alloc] initWithGameWorld:destGW] autorelease];
+    
+    dupe.position=self.position;
+    dupe.tag=[[self.tag copy] autorelease];
+    dupe.enabled=self.enabled;
+    dupe.isLargeObject=self.isLargeObject;
+    
+    dupe.iconTag=[[self.iconTag copy] autorelease];
+    
+    return (id<MovingInteractive>)dupe;
+}
+
+-(id<MovingInteractive>)createADuplicate
+{
+    return [self createADuplicateIntoGameWorld:gameWorld];
 }
 
 -(void)handleMessage:(SGMessageType)messageType
@@ -40,6 +69,16 @@
 -(void)doUpdate:(ccTime)delta
 {
     
+}
+
+-(NSString*)returnMyText
+{
+    NSDictionary *iconNames=[NSDictionary dictionaryWithContentsOfFile:BUNDLE_FULL_PATH(@"/tts-objects.plist")];
+    if([iconNames objectForKey:self.tag])
+        return [iconNames objectForKey:self.tag];
+    
+    else
+        return @"generic icon";
 }
 
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime
@@ -58,8 +97,15 @@
     self.position=[renderBase convertToNodeSpace:worldPosition];
 }
 
+-(void)setColourOfBackgroundTo:(ccColor3B)thisColour
+{
+    [self.textBackgroundRenderComponent setColourOfBackgroundTo:thisColour];
+}
+
 -(void)attachToRenderBase:(CCNode*)theRenderBase
 {
+    if(self.hidden)return;
+    
     renderBase=theRenderBase;
     
     //all icons will render from the same batch, and this object's icon will attach to batch automatically.
@@ -70,15 +116,36 @@
     }
 }
 
+-(void)inflateZIndex
+{
+    [self.iconRenderComponent inflateZindex];
+}
+-(void)deflateZindex
+{
+    [self.iconRenderComponent deflateZindex];
+}
+
 -(void)setPosition:(CGPoint)thePos
 {
-    position=thePos;
+    position=[gameWorld.Blackboard.RenderLayer convertToWorldSpace:thePos];
     
-    [self.iconRenderComponent updatePosition:position];
+    CGPoint actualPos=position;
+    
+    if([container conformsToProtocol:@protocol(Bounding)])
+    {
+        id<Bounding> bc=(id<Bounding>)container;
+        actualPos=ccpAdd(position, bc.position);
+    }
+    
+    [self.iconRenderComponent updatePosition:actualPos];
 }
 
 -(void)setupDraw
 {
+    if(self.hidden)return;
+    
+    iconRenderComponent.useLargeAssets=self.isLargeObject;
+    
     [self.iconRenderComponent setupDraw];
     
     self.iconRenderComponent.sprite.visible=self.enabled;
@@ -98,11 +165,30 @@
     self.position=self.originalPosition;
 }
 
+-(void)detachFromRenderBase
+{
+    [iconRenderComponent.sprite removeFromParentAndCleanup:YES];
+}
+
+-(void)tagMyChildrenForIntro
+{
+    [iconRenderComponent.sprite setTag:3];
+    [iconRenderComponent.sprite setOpacity:0];
+}
+
+-(void)destroy
+{
+    [self detachFromRenderBase];
+    
+    [gameWorld delayRemoveGameObject:self];
+}
+
 -(void)dealloc
 {
     self.tag=nil;
     self.iconTag=nil;
     self.iconRenderComponent=nil;
+    self.container=nil;
     
     [super dealloc];
 }

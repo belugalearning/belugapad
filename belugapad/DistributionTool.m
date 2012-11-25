@@ -12,6 +12,7 @@
 
 #import "UsersService.h"
 #import "ToolHost.h"
+#import "ToolConsts.h"
 
 #import "global.h"
 #import "BLMath.h"
@@ -25,10 +26,14 @@
 #import "SGDtoolContainer.h"
 #import "SGDtoolBlockRender.h"
 #import "InteractionFeedback.h"
+#import "SimpleAudioEngine.h"
+#import "SGBtxeProtocols.h"
+#import "SGBtxeObjectIcon.h"
 
 #define DRAW_DEPTH 1
 static float kTimeSinceAction=7.0f;
 static float kDistanceBetweenBlocks=70.0f;
+
 
 @interface DistributionTool()
 {
@@ -42,7 +47,7 @@ static float kDistanceBetweenBlocks=70.0f;
     SGGameWorld *gw;
     
     // and then any specifics we need for this tool
-    id<Moveable,Transform,Pairable> currentPickupObject;
+    id<Moveable,Transform,Pairable,Configurable> currentPickupObject;
     id<Cage> cage;
     CGPoint pickupPos;
     
@@ -106,8 +111,6 @@ static float kDistanceBetweenBlocks=70.0f;
 {
     [gw doUpdate:delta];
     
-    [self tidyUpEmptyGroups];
-     
     timeSinceInteraction+=delta;
     
     if(timeSinceInteraction>kTimeSinceAction)
@@ -120,24 +123,178 @@ static float kDistanceBetweenBlocks=70.0f;
                 if([go conformsToProtocol:@protocol(Moveable)])
                     [((id<Moveable>)go).mySprite runAction:[InteractionFeedback shakeAction]];
             }
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_interaction_feedback_block_shaking.wav")];
         }
         
         if(isWinning)[toolHost shakeCommitButton];
         
         timeSinceInteraction=0.0f;
     }
+    
+    for(id go in gw.AllGameObjects)
+    {
+        if([go conformsToProtocol:@protocol(ShapeContainer)])
+            if([((id<ShapeContainer>)go) blocksInShape]==0)
+                {
+                    [(id<ShapeContainer>)go destroyThisObject];
+                }
+    }
+    
+    if(showTotalValue)
+    {
+        if(!totalValueLabel)
+        {
+            totalValueLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g",[self showValueOfAllObjects]] fontName:SOURCE fontSize:20.0f];
+            [totalValueLabel setPosition:ccp(lx-150,50)];
+            [renderLayer addChild:totalValueLabel];
+        }
+        else
+        {
+            [totalValueLabel setString:[NSString stringWithFormat:@"%g",[self showValueOfAllObjects]]];
+        }
+    }
 
 }
 
 -(void)draw
 {
-    for (int i=0; i<DRAW_DEPTH; i++)
+    for(id go in [gw AllGameObjects])
     {
-        for(id go in [gw AllGameObjects]) {
-            if([go conformsToProtocol:@protocol(Pairable)])
-                [((id<Pairable>)go) draw:i];
+        if([go conformsToProtocol:@protocol(ShapeContainer)])
+        {
+            id<ShapeContainer>goc=(id<ShapeContainer>)go;
+            
+            for(int i=0; i<goc.BlocksInShape.count; i++)
+            {
+                SGDtoolBlock *block1=[goc.BlocksInShape objectAtIndex:i];
+                if (i%2) {
+                    //odd numbers
+                    if(i<goc.blocksInShape-2)
+                    {
+                        //there is a next+1 number
+                        SGDtoolBlock *block3=[goc.BlocksInShape objectAtIndex:i+2];
+                        [self drawBondLineFrom:block1.mySprite.position to:block3.mySprite.position];
+                    }
+                }
+                else
+                {
+                    //even numbers
+                    if(i<goc.blocksInShape-1)
+                    {
+                        //there is a next number
+                        SGDtoolBlock *block2=[goc.BlocksInShape objectAtIndex:i+1];
+                        [self drawBondLineFrom:block1.mySprite.position to:block2.mySprite.position];
+                    }
+                    if(i<goc.blocksInShape-2)
+                    {
+                        //there is a next+1 number
+                        SGDtoolBlock *block3=[goc.BlocksInShape objectAtIndex:i+2];
+                        [self drawBondLineFrom:block1.mySprite.position to:block3.mySprite.position];
+                    }
+                }
+            }
         }
-    } 
+    }
+    
+    if(isTouching && nearestObject && currentPickupObject)
+    {
+        SGDtoolBlock *b=(SGDtoolBlock*)nearestObject;
+        SGDtoolBlock *c=(SGDtoolBlock*)currentPickupObject;
+        
+        if(!bondDifferentTypes && b.blockType!=c.blockType)
+            return;
+
+        
+        if(![b.MyContainer conformsToProtocol:@protocol(Cage)])
+        {
+            if([BLMath DistanceBetween:b.mySprite.position and:currentPickupObject.mySprite.position] < gw.Blackboard.MaxObjectDistance+50 || nearestObject==lastNewBondObject)
+            {
+                if(bondAllObjects)
+                {
+                    id<ShapeContainer>theRightContainer=((id<Moveable>)nearestObject).MyContainer;
+                    id<Moveable>theRightBlock=[theRightContainer.BlocksInShape objectAtIndex:[theRightContainer.BlocksInShape count]-1];
+                    [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)theRightBlock).mySprite.position];
+                }
+                else{
+                    [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)nearestObject).mySprite.position];
+                    lastNewBondObject=nearestObject;
+                }
+            }
+        }
+    }
+    
+    
+//    for (int i=0; i<DRAW_DEPTH; i++)
+//    {
+//        for(id go in [gw AllGameObjects]) {
+//            if([go conformsToProtocol:@protocol(Pairable)])
+//                [((id<Pairable>)go) draw:i];
+//        }
+//    } 
+}
+
+-(void)drawBondLineFrom:(CGPoint)p1 to:(CGPoint)p2
+{
+    int barHalfW=30;
+    
+    float llen=[BLMath LengthOfVector:[BLMath SubtractVector:p2 from:p1]];
+    
+    if(llen>gw.Blackboard.MaxObjectDistance)return;
+    
+    float op=1.0f;
+    if(llen>300)
+    {
+        barHalfW=1;
+    }
+    if(llen>70.0f)
+    {
+        float diff=gw.Blackboard.MaxObjectDistance-llen;
+        barHalfW=1 + (30 * (diff / (gw.Blackboard.MaxObjectDistance-70.0f)));
+    }
+    
+    ccDrawColor4F(1, 1, 1, op);
+    
+    CGPoint line=[BLMath SubtractVector:p1 from:p2];
+    CGPoint lineN=[BLMath NormalizeVector:line];
+    CGPoint upV=[BLMath PerpendicularLeftVectorTo:lineN];
+    
+    float distScalar=1.0f;
+    float distScaleBase=0.25f;
+    float distScaleFrom=50.0f;
+    float lOfLine=[BLMath LengthOfVector:line];
+    if(lOfLine<distScaleFrom)
+    {
+        distScalar=distScaleBase + (1-(lOfLine / distScaleFrom));
+    }
+    else
+    {
+        distScalar=distScaleBase;
+    }
+    
+    for(int i=0; i<1; i++)
+    {
+        CGPoint a=[BLMath AddVector:p1 toVector:[BLMath MultiplyVector:upV byScalar:i*0.75f]];
+        CGPoint b=[BLMath AddVector:p2 toVector:[BLMath MultiplyVector:upV byScalar:i*0.75f]];
+        
+        ccDrawLine(a, b);
+    }
+    
+    for(int j=-barHalfW; j<0; j++)
+    {
+        CGPoint a=[BLMath AddVector:p1 toVector:[BLMath MultiplyVector:upV byScalar:j*0.75f*distScalar]];
+        CGPoint b=[BLMath AddVector:p2 toVector:[BLMath MultiplyVector:upV byScalar:(j+barHalfW)*0.75f*distScalar]];
+        
+        ccDrawLine(a, b);
+    }
+    
+    for(int k=barHalfW; k>0; k--)
+    {
+        CGPoint a=[BLMath AddVector:p1 toVector:[BLMath MultiplyVector:upV byScalar:k*0.75f*distScalar]];
+        CGPoint b=[BLMath AddVector:p2 toVector:[BLMath MultiplyVector:upV byScalar:(k-barHalfW)*0.75f*distScalar]];
+        
+        ccDrawLine(a, b);
+    }
+
 }
 
 #pragma mark - gameworld setup and population
@@ -150,15 +307,84 @@ static float kDistanceBetweenBlocks=70.0f;
     evalType=[[pdef objectForKey:DISTRIBUTION_EVAL_TYPE] intValue];
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
     problemHasCage=[[pdef objectForKey:HAS_CAGE]boolValue];
+    cageObjectCount=[[pdef objectForKey:CAGE_OBJECT_COUNT]intValue];
+    hasInactiveArea=[[pdef objectForKey:HAS_INACTIVE_AREA]boolValue];
+    randomiseDockPositions=[[pdef objectForKey:RANDOMISE_DOCK_POSITIONS]boolValue];
+    bondAllObjects=[[pdef objectForKey:BOND_ALL_OBJECTS]boolValue];
+    
+    if([pdef objectForKey:BOND_DIFFERENT_TYPES])
+        bondDifferentTypes=[[pdef objectForKey:BOND_DIFFERENT_TYPES]boolValue];
+    else
+        bondDifferentTypes=YES;
+    
+    showTotalValue=[[pdef objectForKey:SHOW_TOTAL_VALUE]boolValue];
+    
+    if(bondAllObjects)
+        gw.Blackboard.MaxObjectDistance=1024.0f;
+    else
+        gw.Blackboard.MaxObjectDistance=100.0f;
+    
+
+    if([pdef objectForKey:DOCK_TYPE])
+        dockType=[pdef objectForKey:DOCK_TYPE];
+    else
+        dockType=@"Infinite";
+    
+    if(cageObjectCount>0 && [dockType isEqualToString:@"Infinite"])
+    {
+        if(cageObjectCount>0 && cageObjectCount<=15)
+            dockType=@"15";
+        else if(cageObjectCount>15 && cageObjectCount<=30)
+            dockType=@"30";
+        
+    }
+    
     if([pdef objectForKey:INIT_OBJECTS])initObjects=[pdef objectForKey:INIT_OBJECTS];
+    if([pdef objectForKey:EVAL_AREAS])initAreas=[pdef objectForKey:EVAL_AREAS];
     if([pdef objectForKey:SOLUTION])solutionsDef=[pdef objectForKey:SOLUTION];
     
+    if(evalType==kCheckGroupTypeAndNumber)
+        bondDifferentTypes=NO;
+    
+
+    usedShapeTypes=[[NSMutableArray alloc]init];
 }
 
 -(void)populateGW
 {
     // set our renderlayer
     gw.Blackboard.RenderLayer = renderLayer;
+    activeRects=[[NSMutableArray alloc]init];
+    
+    
+    if(hasInactiveArea)
+    {
+        inactiveArea=[[NSMutableArray alloc]init];
+        
+        int thisPos=0;
+        int areaWidth=4;
+        int areaSize=16;
+        float startXPos=lx-(62*areaWidth);
+        float startYPos=50;
+        int areaOpacity=100;
+        
+        for(int i=0;i<areaSize;i++)
+        {
+            if(thisPos==areaWidth)thisPos=0;
+            int thisRow=i/areaWidth;
+            
+            CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/distribution/DT_area_2.png")];
+            [s setPosition:ccp(startXPos+(thisPos*s.contentSize.width),startYPos+(thisRow*s.contentSize.height))];
+            [s setOpacity:areaOpacity];
+            [self.ForeLayer addChild:s];
+            [inactiveArea addObject:s];
+            
+            thisPos++;
+        }
+
+    }
+    
+    [self createEvalAreas];
     
     // init our array for use with the created gameobjects
     for(int i=0;i<[initObjects count];i++)
@@ -170,8 +396,35 @@ static float kDistanceBetweenBlocks=70.0f;
     
     if(problemHasCage)
     {
-        cage=[[SGDtoolCage alloc]initWithGameWorld:gw atPosition:ccp(cx, 80) andRenderLayer:renderLayer];
-        [cage spawnNewBlock];
+        if(!dockType)
+            dockType=@"Infinite";
+        
+        if(!addedCages && [dockType isEqualToString:@"Infinite"])
+            addedCages=[[NSMutableArray alloc]init];
+        
+        if([usedShapeTypes count]==0)
+            [usedShapeTypes addObject:@"Circle"];
+        
+        for(int i=0;i<[usedShapeTypes count];i++)
+        {
+            int s=fabsf([usedShapeTypes count]-5);
+            float adjLX=lx-(lx*((24*s)/lx));
+            
+            // render buttons
+            float sectionW=adjLX / [usedShapeTypes count];
+            
+
+            
+            cage=[[SGDtoolCage alloc]initWithGameWorld:gw atPosition:ccp(((24*s)/2)+((i+0.5) * sectionW), 80) andRenderLayer:renderLayer andCageType:dockType];
+            cage.BlockType=[usedShapeTypes objectAtIndex:i];
+            cage.InitialObjects=cageObjectCount;
+            cage.RandomPositions=randomiseDockPositions;
+            [cage setup];
+            [cage spawnNewBlock];
+            
+            [addedCages addObject:cage];
+        }
+        
         
     }
     
@@ -180,307 +433,944 @@ static float kDistanceBetweenBlocks=70.0f;
 #pragma mark - objects
 -(void)createShapeWith:(int)numBlocks andWith:(NSDictionary*)theseSettings
 {
-//    CCLabelTTF *labelForShape;
-//    float avgPosX=0;
-//    float avgPosY=0;
-    NSArray *thesePositions=[NSArray arrayWithArray:[NumberLayout physicalLayoutUpToNumber:numBlocks withSpacing:kDistanceBetweenBlocks]];
+    NSArray *thesePositions=[NSArray arrayWithArray:[NumberLayout physicalLayoutAcrossToNumber:numBlocks withSpacing:kDistanceBetweenBlocks]];
     
     NSString *label = [theseSettings objectForKey:LABEL];
-    SGDtoolContainer *container = [[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:label andRenderLayer:renderLayer];
-    if (label && !existingGroups) existingGroups = [[NSMutableArray arrayWithObject:label] retain];
+    NSString *blockType = [theseSettings objectForKey:BLOCK_TYPE];
+    NSString *thisColour = [theseSettings objectForKey:TINT_COLOUR];
+    BOOL unbreakableBonds = [[theseSettings objectForKey:UNBREAKABLE_BONDS]boolValue];
+    BOOL showContainerCount = [[theseSettings objectForKey:SHOW_CONTAINER_VALUE]boolValue];
+
     
-    int startPosX = [theseSettings objectForKey:POS_X] ? [[theseSettings objectForKey:POS_X]intValue] : (arc4random() % 960) + 30;
-    int startPosY = [theseSettings objectForKey:POS_Y] ? [[theseSettings objectForKey:POS_Y]intValue] : (arc4random() % 730) + 30;
+    if(!thisColour)
+        thisColour=@"WHITE";
+    
+    ccColor3B blockCol = ccc3(0,0,0);
+    
+    if([thisColour isEqualToString:@"BLUE"])
+        blockCol=ccc3(0,0,255);
+    else if([thisColour isEqualToString:@"RED"])
+        blockCol=ccc3(255,0,0);
+    else if([thisColour isEqualToString:@"GREEN"])
+        blockCol=ccc3(0,255,0);
+    else if([thisColour isEqualToString:@"WHITE"])
+        blockCol=ccc3(255,255,255);
+    else if([thisColour isEqualToString:@"BLACK"])
+        blockCol=ccc3(0,0,0);
+        
+    if(!blockType)
+        blockType=@"Circle";
+    
+    if(!usedShapeTypes)
+        usedShapeTypes=[[NSMutableArray alloc]init];
+    
+    if(![usedShapeTypes containsObject:blockType])
+        [usedShapeTypes addObject:blockType];
+    
+    SGDtoolContainer *container = [[SGDtoolContainer alloc] initWithGameWorld:gw andLabel:label andShowCount:showContainerCount andRenderLayer:renderLayer];
+    container.BlockType=blockType;
+    
+    if(unbreakableBonds)
+        container.LineType=@"Unbreakable";
+    else
+        container.LineType=@"Breakable";
+    
+    container.AllowDifferentTypes=bondDifferentTypes;
+    if (label && !existingGroups) existingGroups = [NSMutableArray arrayWithObject:label];
+    float startPosX=0;
+    float startPosY=0;
+    
+    if(!hasInactiveArea)
+    {
+        
+        int farLeft=(numBlocks/2)*60;
+        int farRight=lx-30;
+        int topMost=ly-170;
+        int botMost=180;
+        
+        //startPosX=[theseSettings objectForKey:POS_X] ? [[theseSettings objectForKey:POS_X]intValue] : (arc4random() % 960) + 30;
+        //startPosY=[theseSettings objectForKey:POS_Y] ? [[theseSettings objectForKey:POS_Y]intValue] : (arc4random() % 730) + 30;
+        
+        startPosX = farLeft + arc4random() % (farRight - farLeft);
+        startPosY = botMost + arc4random() % (topMost - botMost);
+    
+        
+        if(!bondAllObjects)
+        {
+            for(id go in gw.AllGameObjects)
+            {
+                    while([self isPointInActiveRects:ccp(startPosX,startPosY) andThisManyOthers:numBlocks])
+                    {
+                        startPosX = farLeft + arc4random() % (farRight - farLeft);
+                        startPosY = botMost + arc4random() % (topMost - botMost);
+
+                    }
+            }
+        }
+    }
+    else
+    {
+        inactiveRect=CGRectNull;
+        
+        for(CCSprite *s in inactiveArea)
+            inactiveRect=CGRectUnion(inactiveRect, s.boundingBox);
+        int farLeft=inactiveRect.origin.x+inactiveRect.size.width/2;
+        int farRight=inactiveRect.origin.x+inactiveRect.size.width;
+        int topMost=inactiveRect.origin.y+inactiveRect.size.height;
+        int botMost=inactiveRect.origin.y+inactiveRect.size.height/2;
+        
+        startPosX = farLeft + arc4random() % (farRight - farLeft);
+        startPosY = botMost + arc4random() % (topMost - botMost);
+
+
+    }
+    
+    CGRect thisShapeRect=CGRectNull;
     
     for (int i=0; i<numBlocks; i++)
     {
         CGPoint thisPoint=[[thesePositions objectAtIndex:i]CGPointValue];
         
         CGPoint p = ccp(startPosX+thisPoint.x,  startPosY+thisPoint.y);
-        SGDtoolBlock *block =  [[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:p] autorelease];
+        
+        NSLog(@"create block %d/%d at position %@", i+1, numBlocks, NSStringFromCGPoint(p));
+        
+        SGDtoolBlock *block =  [[[SGDtoolBlock alloc] initWithGameWorld:gw andRenderLayer:renderLayer andPosition:p andType:blockType] autorelease];
         [block setup];
-        block.MyContainer = container;        
+        block.MyContainer = container;
+        [block.mySprite setColor:blockCol];
+        [block.mySprite setZOrder:10];
+        
+        thisShapeRect=CGRectUnion(thisShapeRect,block.mySprite.boundingBox);
+        
         [container addBlockToMe:block];
         
-        if (i)
+        if(!hasInactiveArea)
         {
-            SGDtoolBlock *prevBlock = [container.BlocksInShape objectAtIndex:i-1];
-            [block pairMeWith:prevBlock];
-            [self returnNextMountPointForThisShape:container];
+            if(i){
+                SGDtoolBlock *prevBlock = [container.BlocksInShape objectAtIndex:i-1];
+                [block pairMeWith:prevBlock];
+                [self returnNextMountPointForThisShape:container];
+            }
         }
         [container layoutMyBlocks];
         [loggingService.logPoller registerPollee:block];
     }
+    
+    [activeRects addObject:[NSValue valueWithCGRect:thisShapeRect]];
        
     thesePositions=nil;
-    
-//    if(hasLabel)
-//    {
-//
-//        
-//        
-//        NSLog(@"(before) avgPosX %f, avgPosY %f", avgPosX, avgPosY);
-//        avgPosX=avgPosX/2;
-//        avgPosY=avgPosY/[createdBlocksForShape count];
-//        NSLog(@"(after) avgPosX %f, avgPosY %f", avgPosX, avgPosY);
-//        labelForShape=[CCLabelTTF labelWithString:[theseSettings objectForKey:LABEL] fontName:PROBLEM_DESC_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
-//        [labelForShape setPosition:ccp(avgPosX,avgPosY+40)];
-//        [renderLayer addChild:labelForShape];
-//    }
 
+}
+
+-(BOOL)isPointInActiveRects:(CGPoint)thisPosition andThisManyOthers:(int)thisMany
+{
+    NSArray *thesePositions=[NumberLayout physicalLayoutAcrossToNumber:thisMany withSpacing:52.0f];
+    
+    CGRect thisRect=CGRectNull;
+    
+    for(int i=0;i<thisMany;i++)
+    {
+        CGPoint point=[[thesePositions objectAtIndex:i]CGPointValue];
+        CGRect rect=CGRectMake((thisPosition.x+point.x)-30,(thisPosition.y+point.y)-30,60,60);
+        thisRect=CGRectUnion(thisRect, rect);
+    }
+    
+    for(int i=0;i<[activeRects count];i++)
+    {
+        CGRect r=[[activeRects objectAtIndex:i]CGRectValue];
+        
+        //NSLog(@"this rect: %@, this position %@", NSStringFromCGRect(r), NSStringFromCGPoint(thisPosition));
+
+            if(CGRectIntersectsRect(thisRect, r))
+            {
+                return YES;
+            }
+//        for(int p=0;p<thisMany;p++)
+//        {
+//            CGPoint curPos=[[thesePositions objectAtIndex:p]CGPointValue];
+//            curPos=ccp(curPos.x+thisPosition.x, curPos.y+thisPosition.y);
+//            
+//            if(CGRectContainsPoint(r, curPos))
+//            {
+//                return YES;
+//            }
+//        }
+    }
+
+    return NO;
+}
+
+-(void)createEvalAreas
+{
+    if(!initAreas)return;
+    
+    if(!evalAreas)
+        evalAreas=[[NSMutableArray alloc]init];
+
+    float sectionWidth=lx/[initAreas count];
+    
+    for(int i=0;i<[initAreas count];i++)
+    {
+        NSDictionary *d=[initAreas objectAtIndex:i];
+        NSString *lblText=[d objectForKey:LABEL];
+        int areaSize=[[d objectForKey:AREA_SIZE]intValue];
+        int areaWidth=[[d objectForKey:AREA_WIDTH]intValue];
+        int areaOpacity=0;
+        int distFromLY=(ly-150-(areaSize/areaWidth)*62);
+        float startXPos=((i+0.5)*sectionWidth)-((areaWidth/2)*60);
+        int startYPos = 100 + arc4random() % (distFromLY - 100);
+        CGRect thisEvalArea=CGRectNull;
+        
+        
+        if([d objectForKey:AREA_OPACITY])
+            areaOpacity=[[d objectForKey:AREA_OPACITY]intValue];
+        else
+            areaOpacity=255;
+        
+        NSMutableArray *thisArea=[[NSMutableArray alloc]init];
+        int thisPos=0;
+        
+        for(int i=0;i<areaSize;i++)
+        {
+            if(thisPos==areaWidth)thisPos=0;
+            int thisRow=i/areaWidth;
+            
+            CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/distribution/DT_area.png")];
+            [s setPosition:ccp(startXPos+(thisPos*s.contentSize.width),startYPos+(thisRow*s.contentSize.height))];
+            [s setOpacity:areaOpacity];
+            [self.BkgLayer addChild:s z:0];
+            
+            thisEvalArea=CGRectUnion(thisEvalArea, s.boundingBox);
+            
+            if(i==1 && lblText)
+            {
+                CCLabelTTF *l=[CCLabelTTF labelWithString:lblText fontName:SOURCE fontSize:35.0f];
+                [l setPosition:ccp(s.contentSize.width/2, -s.contentSize.height/2)];
+                [s addChild:l];
+            }
+            
+            [thisArea addObject:s];
+            thisPos++;
+        }
+        
+        [activeRects addObject:[NSValue valueWithCGRect:thisEvalArea]];
+        [evalAreas addObject:thisArea];
+    }
+}
+
+-(void)addDestroyedLabel:(NSString*)thisGroup
+{
+    [destroyedLabelledGroups addObject:thisGroup];
 }
 
 -(void)createContainerWithOne:(id)Object
 {
-    id<Container> container;
-    NSLog(@"create container - there are %d destroyed labelled groups", [destroyedLabelledGroups count]);
+    id<ShapeContainer> container;
+    //NSLog(@"create container - there are %d destroyed labelled groups", [destroyedLabelledGroups count]);
     if([destroyedLabelledGroups count]==0)
     {
-        container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:nil andRenderLayer:nil];
+        container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:nil andShowCount:NO andRenderLayer:nil];
+//        container.Label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d",(int)container] fontName:SOURCE fontSize:15.0f];
+//        [container.Label setPosition:ccp(cx,cy)];
+//        [renderLayer addChild:container.Label];
     }
     else
     {
         NSLog(@"creating labelled group: %@",[destroyedLabelledGroups objectAtIndex:0]);
-        container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:[destroyedLabelledGroups objectAtIndex:0] andRenderLayer:renderLayer];
+        container=[[SGDtoolContainer alloc]initWithGameWorld:gw andLabel:[destroyedLabelledGroups objectAtIndex:0] andShowCount:NO andRenderLayer:renderLayer];
         [destroyedLabelledGroups removeObjectAtIndex:0];
         [existingGroups addObject:[container.Label string]];
     }
     
+    container.AllowDifferentTypes=YES;
+    container.BlockType=((id<Configurable>)Object).blockType;
     [container addBlockToMe:Object];
     [container layoutMyBlocks];
+    [container repositionLabel];
 }
 
--(void)lookForOrphanedObjects
+-(float)showValueOfAllObjects
 {
-    NSArray *allGWGO=[NSArray arrayWithArray:gw.AllGameObjects];
-    
-    for(id go in allGWGO)
-    {
-        if([go conformsToProtocol:@protocol(Moveable)])
-        {
-            id <Moveable> cObj=go;
-            if(!cObj.MyContainer)
-                [self createContainerWithOne:cObj];
-        }
-
-    }
-}
-
--(void)updateContainerForNewlyAddedBlock:(id<Moveable,Pairable>)thisBlock
-{
-    // if there are no paired objects - make sure i am removed from any container i may be part of
-    
-    NSLog(@"this block paired to %d", [thisBlock.PairedObjects count]);
-    
-    if([thisBlock.PairedObjects count]==0)
-    {
-        if(thisBlock.MyContainer)
-            [thisBlock.MyContainer removeBlockFromMe:thisBlock];
-            
-    }
-    else
-    {
-        // set a new container by assuming the same container as any of the paired objects (not resetting if part of this container)
-        id<Moveable,Pairable>pairedObj=[thisBlock.PairedObjects objectAtIndex:0];
-        if(thisBlock.MyContainer != pairedObj.MyContainer)
-        {
-            if(thisBlock.MyContainer)
-                [thisBlock.MyContainer removeBlockFromMe:thisBlock];
-            
-            //TODO: this is causing a crash if dragged from a cage
-            if(![pairedObj.MyContainer conformsToProtocol:@protocol(Cage)])
-                [pairedObj.MyContainer addBlockToMe:thisBlock];
-            
-            [pairedObj.MyContainer layoutMyBlocks];
-        }
-    }
-}
-
--(void)tidyUpEmptyGroups
-{
-    NSArray *allGWGO=gw.AllGameObjectsCopy;
-    
-    for(id go in allGWGO)
-    {
-        if([go conformsToProtocol:@protocol(Container)])
-        {
-            id <Container> cObj=go;
-            
-            if([cObj.BlocksInShape count]==0)
-            {
-                
-                if([existingGroups containsObject:[cObj.Label string]])
-                {
-                    [existingGroups removeObject:[cObj.Label string]];
-                    if(!destroyedLabelledGroups)destroyedLabelledGroups=[[NSMutableArray alloc]init];
-                    [destroyedLabelledGroups addObject:[cObj.Label string]];
-                }
-            
-                
-                [cObj destroyThisObject];
-            }
-            
-        }
-        
-        
-        
-        
-        
-    }
-}
-
--(void)updateContainerLabels
-{
+    float totalValue=0.0f;
     for(id go in gw.AllGameObjects)
     {
-        if([go conformsToProtocol:@protocol(Container)])
+        if([go conformsToProtocol:@protocol(Configurable) ])
         {
-            id<Container>c=(id<Container>)go;
-            [c repositionLabel];
-            NSLog(@"count of group %d", [c.BlocksInShape count]);
+            SGDtoolBlock *b=(SGDtoolBlock*)go;
+            
+            if([b.MyContainer isKindOfClass:[SGDtoolCage class]])continue;
+            
+            if([b.blockType isEqualToString:@"Value_001"])
+                totalValue+=kShapeValue001;
+            else if([b.blockType isEqualToString:@"Value_01"])
+                totalValue+=kShapeValue01;
+            else if([b.blockType isEqualToString:@"Value_1"])
+                totalValue+=kShapeValue1;
+            else if([b.blockType isEqualToString:@"Value_10"])
+                totalValue+=kShapeValue10;
+            else if([b.blockType isEqualToString:@"Value_100"])
+                totalValue+=kShapeValue100;
+            
         }
     }
+    return totalValue;
+}
+
+-(float)valueOf:(SGDtoolContainer*)thisContainer
+{
+    float totalValue=0.0f;
+    
+    for(SGDtoolBlock *b in thisContainer.BlocksInShape)
+    {
+        if([b.blockType isEqualToString:@"Value_001"])
+            totalValue+=kShapeValue001;
+        else if([b.blockType isEqualToString:@"Value_01"])
+            totalValue+=kShapeValue01;
+        else if([b.blockType isEqualToString:@"Value_1"])
+            totalValue+=kShapeValue1;
+        else if([b.blockType isEqualToString:@"Value_10"])
+            totalValue+=kShapeValue10;
+        else if([b.blockType isEqualToString:@"Value_100"])
+            totalValue+=kShapeValue100;
+    }
+    return totalValue;
 }
 
 -(void)removeBlockByCage
 {
-    
+    if([dockType isEqualToString:@"15"])return;
+    if([dockType isEqualToString:@"30"])return;
     if(currentPickupObject)
     {
-        for(id<Pairable> pairedObj in [NSArray arrayWithArray:currentPickupObject.PairedObjects])
+        for(id<Cage>cge in addedCages)
         {
-            [pairedObj unpairMeFrom:currentPickupObject];
+            if([cge.BlockType isEqualToString:currentPickupObject.blockType])
+                cage=cge;
         }
         
-        SGGameObject *go=(SGGameObject*)currentPickupObject;
+        if([dockType isEqualToString:@"Infinite-Random"])
+            cage=[addedCages objectAtIndex:0];
+        
+        id<Pairable>thisGO=currentPickupObject;
         CCSprite *s=currentPickupObject.mySprite;
-        CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:cage.Position];
+        [s setZOrder:100];
+        
+        if(currentPickupObject.MyContainer)
+            [(id<ShapeContainer>)currentPickupObject.MyContainer removeBlockFromMe:currentPickupObject];
+        
+        CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:cage.MySprite.position];
         CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.1f];
-        CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[s removeFromParentAndCleanup:YES]; [gw delayRemoveGameObject:go];}];
+        CCAction *cleanUp=[CCCallBlock actionWithBlock:^{[thisGO destroyThisObject];}];
         CCSequence *sequence=[CCSequence actions:moveAct, fadeAct, cleanUp, nil];
         [s runAction:sequence];
         currentPickupObject=nil;
-
+//        if(!spawnedNewObj)
+//            [cage spawnNewBlock];
     }
 }
 
--(CGPoint)checkWhereIShouldMount:(id<Pairable>)gameObject;
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
 {
-    NSArray *existingShapes=[self evalUniqueShapes];
-    float minXPos=0.0f;
-    float maxXPos=0.0f;
-    float minYPos=0.0f;
-    float maxYPos=0.0f;
-    int shapeIndex=0;
+    id<MovingInteractive,Text>iBTXE=(id<MovingInteractive,Text>)thisObject;
     
-    for(int i=0;i<[existingShapes count];i++)
+    for(id go in gw.AllGameObjectsCopy)
     {
-        NSArray *a=[existingShapes objectAtIndex:i];
-        if([a containsObject:gameObject])
+        if([go isKindOfClass:[SGDtoolBlock class]])
         {
-            shapeIndex=i;
-            break;
+            id<Moveable>thisBlock=(id<Moveable>)go;
+
+            if([thisBlock amIProximateTo:thisLocation]&&thisBlock.MyContainer)
+            {
+                id<ShapeContainer>thisCont=(SGDtoolContainer*)thisBlock.MyContainer;
+                if(!thisCont.BTXERow)
+                {
+                    [thisCont setGroupBTXELabel:[iBTXE createADuplicateIntoGameWorld:gw]];
+                    break;
+                }
+            }
         }
     }
-    
-    NSArray *thisShape=[existingShapes objectAtIndex:shapeIndex];
-    
-    for(id<Pairable> go in thisShape)
-    {
-        if(go.Position.x>maxXPos)maxXPos=go.Position.x;
-        if(go.Position.y>maxYPos)maxYPos=go.Position.y;
-        
-        if([thisShape indexOfObject:go]==0)
-        {
-            minXPos=go.Position.x;
-            minYPos=go.Position.y;
-        }
-        else {
-            if(go.Position.x<minXPos)minXPos=go.Position.x;
-            if(go.Position.y<minYPos)minYPos=go.Position.y;
-        }
-    }
-    
-    CGPoint retval=ccp(maxXPos+100,maxYPos);
-    return retval;
+
 }
 
--(CGPoint)findMountPositionForThisShape:(id<Pairable>)pickupObject toThisShape:(id<Pairable>)mountedShape
+-(BOOL)evalNumberOfShapesInEvalAreas
 {
-    CGPoint mountedShapePos=mountedShape.Position;
-    CGPoint retval=CGPointZero;
-
-    BOOL freeSpaceNegX=YES;
-    BOOL freeSpaceNegY=YES;
-    BOOL freeSpacePosX=YES;
-    BOOL freeSpacePosY=YES;
+    NSMutableArray *solutions=[NSMutableArray arrayWithArray:solutionsDef];
     
-    NSMutableArray *possCoords=[[NSMutableArray alloc]init];
+    int shapesInArea[[evalAreas count]];
+    int solutionsFound=0;
     
-
-    
-    for(id<Moveable,Pairable> go in mountedShape.PairedObjects)
+    for(int i=0;i<[evalAreas count];i++)
     {
-//        NSLog(@"go Position %@, current retVal %@", NSStringFromCGPoint(go.Position), NSStringFromCGPoint(mountedShapePos));
-        if(go==pickupObject)continue;
+        shapesInArea[i]=0;
+    }
+    
+    for(int i=0;i<[evalAreas count];i++)
+    {
+        CGRect thisRect=CGRectNull;
+        NSArray *a=[evalAreas objectAtIndex:i];
         
-        if(mountedShapePos.x-kDistanceBetweenBlocks==go.Position.x && freeSpaceNegX && mountedShapePos.x-kDistanceBetweenBlocks>50.0f)
-            freeSpaceNegX=NO;
-        else if(mountedShapePos.x+kDistanceBetweenBlocks==go.Position.x && freeSpacePosX && mountedShapePos.x+kDistanceBetweenBlocks<(lx-50.0f))
-            freeSpacePosX=NO;
-        else if(mountedShapePos.y-kDistanceBetweenBlocks==go.Position.y && freeSpaceNegY && mountedShapePos.y-kDistanceBetweenBlocks>50.0f)
-            freeSpaceNegY=NO;
-        else if(mountedShapePos.y+kDistanceBetweenBlocks==go.Position.y && freeSpacePosY && mountedShapePos.y+kDistanceBetweenBlocks>(lx-50.0f))
-            freeSpacePosY=NO;
-           
-           //NSLog(@"go Position %@, final retVal %@, found other shape? %@", NSStringFromCGPoint(go.Position), NSStringFromCGPoint(retval), foundAnotherShape? @"YES":@"NO");
+        for(CCSprite *s in a)
+        {
+            thisRect=CGRectUnion(thisRect, s.boundingBox);
+        }
+        
+        for(id go in gw.AllGameObjects)
+        {
+            if([go conformsToProtocol:@protocol(Pairable)])
+            {
+                id<Pairable>c=(id<Pairable>)go;
+                
+                if(CGRectContainsPoint(thisRect, c.Position))
+                    shapesInArea[i]++;
+                
+            }
+        }
+        
+        NSNumber *thisNo=nil;
+        for(NSNumber *n in solutions)
+        {
+            if([n isEqualToNumber:[NSNumber numberWithInt:shapesInArea[i]]])
+            {
+                thisNo=n;
+                solutionsFound++;
+            }
+        }
+        [solutions removeObject:thisNo];
+        
     }
-           
-//    NSLog(@"-x %@, +x %@, -y %@, +y %@", freeSpaceNegX? @"YES":@"NO", freeSpacePosX? @"YES":@"NO", freeSpaceNegY? @"YES":@"NO", freeSpacePosY? @"YES":@"NO");
     
-
-        if(freeSpacePosX)
-        {
-            CGPoint retvalPX=ccp(mountedShapePos.x+kDistanceBetweenBlocks, mountedShapePos.y);
-            [possCoords addObject:[NSValue valueWithCGPoint:retvalPX]];
-        }
-        if(freeSpaceNegX)
-        {
-            CGPoint retvalNX=ccp(mountedShapePos.x-kDistanceBetweenBlocks, mountedShapePos.y); 
-            [possCoords addObject:[NSValue valueWithCGPoint:retvalNX]];
-        }
-        if(freeSpacePosY)
-        {
-            CGPoint retvalPY=ccp(mountedShapePos.x, mountedShapePos.y+kDistanceBetweenBlocks);
-            [possCoords addObject:[NSValue valueWithCGPoint:retvalPY]];
-        }
-        if(freeSpaceNegY)
-        {
-            CGPoint retvalNY=ccp(mountedShapePos.x, mountedShapePos.y-kDistanceBetweenBlocks);
-            [possCoords addObject:[NSValue valueWithCGPoint:retvalNY]];
-        }
-   
-
-
-    if([possCoords count]>0)
-    {
-        int retValNum=(arc4random() % [possCoords count]);
-//        NSLog(@"retval posscords count is %d chosennum is %d", [possCoords count], retValNum);
-        retval=[[possCoords objectAtIndex:retValNum]CGPointValue];
-    }
+    if(solutionsFound==[solutionsDef count])
+        return YES;
     else
-    {
-        // TODO: decide what a no-mount-point scenario does - for now we just move it down
-        retval=ccp(10,10);
-    }
-    return retval;
+        return NO;
 }
 
--(CGPoint)returnNextMountPointForThisShape:(id<Container>)thisShape
+-(BOOL)evalNumberOfShapesAndTypesInEvalAreas
+{
+    int solutionsFound=0;
+    NSMutableArray *matchedEvalAreas=[[NSMutableArray alloc]init];
+    NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
+    NSMutableArray *solutionsLeft=[NSMutableArray arrayWithArray:solutionsDef];
+    
+
+    for(int i=0;i<[evalAreas count];i++)
+    {
+        for(NSDictionary *solutions in solutionsDef)
+        {
+            if(![solutionsLeft containsObject:solutions])continue;
+            
+            int circlesReq=[[solutions objectForKey:EVAL_CIRCLES_REQUIRED]intValue];
+            int diamondsReq=[[solutions objectForKey:EVAL_DIAMONDS_REQUIRED]intValue];
+            int ellipsesReq=[[solutions objectForKey:EVAL_ELLIPSES_REQUIRED]intValue];
+            int housesReq=[[solutions objectForKey:EVAL_HOUSES_REQUIRED]intValue];
+            int roundedSquaresReq=[[solutions objectForKey:EVAL_ROUNDEDSQUARES_REQUIRED]intValue];
+            int squaresReq=[[solutions objectForKey:EVAL_SQUARES_REQUIRED]intValue];
+            int val001Req=[[solutions objectForKey:EVAL_VALUE_001_REQUIRED]intValue];
+            int val01Req=[[solutions objectForKey:EVAL_VALUE_01_REQUIRED]intValue];
+            int val1Req=[[solutions objectForKey:EVAL_VALUE_1_REQUIRED]intValue];
+            int val10Req=[[solutions objectForKey:EVAL_VALUE_10_REQUIRED]intValue];
+            int val100Req=[[solutions objectForKey:EVAL_VALUE_100_REQUIRED]intValue];
+            
+            int circlesFound=0;
+            int diamondsFound=0;
+            int ellipsesFound=0;
+            int housesFound=0;
+            int roundedSquaresFound=0;
+            int squaresFound=0;
+            int val001Found=0;
+            int val01Found=0;
+            int val1Found=0;
+            int val10Found=0;
+            int val100Found=0;
+            
+            BOOL circlesMatch=NO;
+            BOOL diamondsMatch=NO;
+            BOOL ellipsesMatch=NO;
+            BOOL housesMatch=NO;
+            BOOL roundedSquaresMatch=NO;
+            BOOL squaresMatch=NO;
+            BOOL val001Match=NO;
+            BOOL val01Match=NO;
+            BOOL val1Match=NO;
+            BOOL val10Match=NO;
+            BOOL val100Match=NO;
+            
+            BOOL shouldContinueEval=YES;
+            
+            
+            
+            CGRect thisRect=CGRectNull;
+            NSArray *a=[evalAreas objectAtIndex:i];
+            
+            if([matchedEvalAreas containsObject:a])continue;
+            
+            for(CCSprite *s in a)
+            {
+                thisRect=CGRectUnion(thisRect, s.boundingBox);
+            }
+            
+            for(id go in gw.AllGameObjects)
+            {
+                if([go conformsToProtocol:@protocol(Configurable)])
+                {
+                    id<Configurable,Moveable>c=(id<Configurable,Moveable>)go;
+                    
+                    if(!CGRectContainsPoint(thisRect, c.Position))continue;
+                    
+                    if([c.blockType isEqualToString:@"Circle"])
+                        circlesFound++;
+                    if([c.blockType isEqualToString:@"Diamond"])
+                        diamondsFound++;
+                    if([c.blockType isEqualToString:@"Ellipse"])
+                        ellipsesFound++;
+                    if([c.blockType isEqualToString:@"House"])
+                        housesFound++;
+                    if([c.blockType isEqualToString:@"RoundedSquare"])
+                        roundedSquaresFound++;
+                    if([c.blockType isEqualToString:@"Square"])
+                        squaresFound++;
+                    if([c.blockType isEqualToString:@"Value_001"])
+                        val001Found++;
+                    if([c.blockType isEqualToString:@"Value_01"])
+                        val01Found++;
+                    if([c.blockType isEqualToString:@"Value_1"])
+                        val1Found++;
+                    if([c.blockType isEqualToString:@"Value_10"])
+                        val10Found++;
+                    if([c.blockType isEqualToString:@"Value_100"])
+                        val100Found++;
+                    
+                }
+            }
+        
+            
+            NSLog(@"(%d) Circles f:%d r:%d, Houses f:%d r:%d", [evalAreas indexOfObject:a], circlesFound, circlesReq, housesFound, housesReq);
+            
+            if(circlesFound==circlesReq && shouldContinueEval)
+                circlesMatch=YES;
+            else
+                shouldContinueEval=NO;
+
+            if(diamondsFound==diamondsReq && shouldContinueEval)
+                diamondsMatch=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(ellipsesFound==ellipsesReq && shouldContinueEval)
+                ellipsesMatch=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(housesFound==housesReq && shouldContinueEval)
+                housesMatch=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(roundedSquaresFound==roundedSquaresReq && shouldContinueEval)
+                roundedSquaresMatch=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(squaresFound==squaresReq && shouldContinueEval)
+                squaresMatch=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(val001Found==val001Req && shouldContinueEval)
+                val001Match=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(val01Found==val01Req && shouldContinueEval)
+                val01Match=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(val1Found==val1Req && shouldContinueEval)
+                val1Match=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(val10Found==val10Req && shouldContinueEval)
+                val10Match=YES;
+            else
+                shouldContinueEval=NO;
+        
+            if(val100Found==val100Req && shouldContinueEval)
+                val100Match=YES;
+            else
+                shouldContinueEval=NO;
+            
+            if(circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch && val001Match && val01Match && val1Match && val10Match && val100Match){
+                solutionsFound++;
+
+                [matchedEvalAreas addObject:a];
+                [solutionsLeft removeObjectIdenticalTo:solutions];
+                break;
+            }
+
+            
+        }
+    }
+ 
+    NSLog(@"solutions found %d req %d", solutionsFound, [solutionsDef count]);
+    if(solutionsFound==[solutionsDef count])
+        return YES;
+    else
+        return NO;
+}
+
+-(BOOL)evalGroupTypesAndShapes
+{
+    NSMutableArray *shapesFound=[[NSMutableArray alloc]init];
+    NSMutableArray *solFound=[[NSMutableArray alloc]init];
+    int solutionsExpected=[solutionsDef count];
+    int solutionsFound=0;
+    
+    
+    for(NSDictionary *d in solutionsDef)
+    {
+        if([solFound containsObject:d])continue;
+        
+        for (id cont in gw.AllGameObjects)
+        {
+            if([shapesFound containsObject:cont])continue;
+            
+            if([cont conformsToProtocol:@protocol(ShapeContainer)])
+            {
+                id<ShapeContainer>thisCont=cont;
+                
+                //NSLog(@"thisCont type=%@, thisCont BlocksInShape=%d", thisCont.BlockType, [thisCont.BlocksInShape count]);
+                
+                if([thisCont.BlocksInShape count]==[[d objectForKey:NUMBER]intValue] && [thisCont.BlockType isEqualToString:[d objectForKey:BLOCK_TYPE]])
+                {
+                    solutionsFound++;
+                    [shapesFound addObject:cont];
+                    [solFound addObject:d];
+                    continue;
+                }
+            }
+        }
+    }
+    
+    
+    
+    //NSLog(@"solutions found %d required %d", solutionsFound, solutionsExpected);
+    if (solutionsFound==solutionsExpected)
+        return YES;
+    else
+        return NO;
+
+}
+
+-(BOOL)evalValueOfEvalAreas
+{
+    int solutionsFound=0;
+    NSMutableArray *matchedEvalAreas=[[NSMutableArray alloc]init];
+    NSMutableArray *solutionsLeft=[NSMutableArray arrayWithArray:solutionsDef];
+    
+    for(int i=0;i<[evalAreas count];i++)
+    {
+        for(NSDictionary *solutions in solutionsDef)
+        {
+            if(![solutionsLeft containsObject:solutions])continue;
+            
+            float valRequired=[[solutions objectForKey:VALUE]floatValue];
+            
+            float evalAreaVal=0.0f;
+            
+            
+            
+            CGRect thisRect=CGRectNull;
+            NSArray *a=[evalAreas objectAtIndex:i];
+            
+            if([matchedEvalAreas containsObject:a])continue;
+            
+            for(CCSprite *s in a)
+            {
+                thisRect=CGRectUnion(thisRect, s.boundingBox);
+            }
+            
+            for(id go in gw.AllGameObjects)
+            {
+                if([go conformsToProtocol:@protocol(Configurable)])
+                {
+                    id<Configurable,Moveable>c=(id<Configurable,Moveable>)go;
+                    
+                    if(!CGRectContainsPoint(thisRect, c.Position))continue;
+                    
+                    if([c.blockType isEqualToString:@"Value_001"])
+                        evalAreaVal+=kShapeValue001;
+                    if([c.blockType isEqualToString:@"Value_01"])
+                        evalAreaVal+=kShapeValue01;
+                    if([c.blockType isEqualToString:@"Value_1"])
+                        evalAreaVal+=kShapeValue1;
+                    if([c.blockType isEqualToString:@"Value_10"])
+                        evalAreaVal+=kShapeValue10;
+                    if([c.blockType isEqualToString:@"Value_100"])
+                        evalAreaVal+=kShapeValue100;
+                    
+                }
+            }
+            
+            NSNumber *evalarea=[NSNumber numberWithFloat:evalAreaVal];
+            NSNumber *solution=[NSNumber numberWithFloat:valRequired];
+            
+            NSLog(@"evalarea val %g, expected val %g, is equal? %@", evalAreaVal, [[solutions objectForKey:VALUE]floatValue],[evalarea isEqualToNumber:solution]?@"YES":@"NO");
+            
+            
+            if([evalarea isEqualToNumber:solution]){
+                solutionsFound++;
+                [matchedEvalAreas addObject:a];
+                [solutionsLeft removeObjectIdenticalTo:solutions];
+                break;
+            }
+            
+            
+        }
+    }
+    
+    NSLog(@"solutions found %d req %d", solutionsFound, [solutionsDef count]);
+    if(solutionsFound==[solutionsDef count])
+        return YES;
+    else
+        return NO;
+}
+
+
+-(BOOL)evalValueOfShapesInContainers
+{
+    int solutionsFound=0;
+    NSMutableArray *matchedContainers=[[NSMutableArray alloc]init];
+    NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
+    
+    
+    for(id thisC in gw.AllGameObjectsCopy)
+    {
+        if([thisC isKindOfClass:[SGDtoolContainer class]])
+        {
+            SGDtoolContainer *c=(SGDtoolContainer*)thisC;
+            for(NSDictionary *solutions in solutionsDef)
+            {
+                if([matchedSolutions containsObject:solutions])continue;
+                
+                float valRequired=[[solutions objectForKey:VALUE]floatValue];
+                
+                float containerVal=0.0f;
+                
+                
+                
+                if([matchedContainers containsObject:c])continue;
+                
+                for(SGDtoolBlock *b in c.BlocksInShape)
+                {
+                
+                    if([b.blockType isEqualToString:@"Value_001"])
+                        containerVal+=kShapeValue001;
+                    if([b.blockType isEqualToString:@"Value_01"])
+                        containerVal+=kShapeValue01;
+                    if([b.blockType isEqualToString:@"Value_1"])
+                        containerVal+=kShapeValue1;
+                    if([b.blockType isEqualToString:@"Value_10"])
+                        containerVal+=kShapeValue10;
+                    if([b.blockType isEqualToString:@"Value_100"])
+                        containerVal+=kShapeValue100;
+                    
+                    
+                }
+                
+                NSNumber *container=[NSNumber numberWithFloat:containerVal];
+                NSNumber *solution=[NSNumber numberWithFloat:valRequired];
+                
+                NSLog(@"container val %g, expected val %g, is equal? %@", containerVal, [[solutions objectForKey:VALUE]floatValue],[container isEqualToNumber:solution]?@"YES":@"NO");
+                
+                if([container isEqualToNumber:solution]){
+                    solutionsFound++;
+                    [matchedContainers addObject:c];
+                    [matchedSolutions addObject:solutions];
+                    break;
+                }
+                
+                
+            }
+        }
+    }
+    
+    NSLog(@"solutions found %d req %d", solutionsFound, [solutionsDef count]);
+    if(solutionsFound==[solutionsDef count])
+        return YES;
+    else
+        return NO;
+}
+
+-(BOOL)evalNumberOfShapesAndTypesInContainers
+{
+    int solutionsFound=0;
+    NSMutableArray *matchedContainers=[[NSMutableArray alloc]init];
+    NSMutableArray *matchedSolutions=[[NSMutableArray alloc]init];
+    
+    
+    for(id thisC in gw.AllGameObjectsCopy)
+    {
+        if([thisC isKindOfClass:[SGDtoolContainer class]])
+        {
+            SGDtoolContainer *c=(SGDtoolContainer*)thisC;
+            for(NSDictionary *solutions in solutionsDef)
+            {
+                if([matchedSolutions containsObject:solutions])continue;
+                
+                int circlesReq=[[solutions objectForKey:EVAL_CIRCLES_REQUIRED]intValue];
+                int diamondsReq=[[solutions objectForKey:EVAL_DIAMONDS_REQUIRED]intValue];
+                int ellipsesReq=[[solutions objectForKey:EVAL_ELLIPSES_REQUIRED]intValue];
+                int housesReq=[[solutions objectForKey:EVAL_HOUSES_REQUIRED]intValue];
+                int roundedSquaresReq=[[solutions objectForKey:EVAL_ROUNDEDSQUARES_REQUIRED]intValue];
+                int squaresReq=[[solutions objectForKey:EVAL_SQUARES_REQUIRED]intValue];
+                int val001Req=[[solutions objectForKey:EVAL_VALUE_001_REQUIRED]intValue];
+                int val01Req=[[solutions objectForKey:EVAL_VALUE_01_REQUIRED]intValue];
+                int val1Req=[[solutions objectForKey:EVAL_VALUE_1_REQUIRED]intValue];
+                int val10Req=[[solutions objectForKey:EVAL_VALUE_10_REQUIRED]intValue];
+                int val100Req=[[solutions objectForKey:EVAL_VALUE_100_REQUIRED]intValue];
+                
+                int circlesFound=0;
+                int diamondsFound=0;
+                int ellipsesFound=0;
+                int housesFound=0;
+                int roundedSquaresFound=0;
+                int squaresFound=0;
+                int val001Found=0;
+                int val01Found=0;
+                int val1Found=0;
+                int val10Found=0;
+                int val100Found=0;
+                
+                BOOL circlesMatch=NO;
+                BOOL diamondsMatch=NO;
+                BOOL ellipsesMatch=NO;
+                BOOL housesMatch=NO;
+                BOOL roundedSquaresMatch=NO;
+                BOOL squaresMatch=NO;
+                BOOL val001Match=NO;
+                BOOL val01Match=NO;
+                BOOL val1Match=NO;
+                BOOL val10Match=NO;
+                BOOL val100Match=NO;
+                
+                BOOL shouldContinueEval=YES;
+                
+                
+                if([matchedContainers containsObject:c])continue;
+                
+                for(SGDtoolBlock *b in c.BlocksInShape)
+                {
+                    
+                    if([b.blockType isEqualToString:@"Circle"])
+                        circlesFound++;
+                    if([b.blockType isEqualToString:@"Diamond"])
+                        diamondsFound++;
+                    if([b.blockType isEqualToString:@"Ellipse"])
+                        ellipsesFound++;
+                    if([b.blockType isEqualToString:@"House"])
+                        housesFound++;
+                    if([b.blockType isEqualToString:@"RoundedSquare"])
+                        roundedSquaresFound++;
+                    if([b.blockType isEqualToString:@"Square"])
+                        squaresFound++;
+                    if([b.blockType isEqualToString:@"Value_001"])
+                        val001Found++;
+                    if([b.blockType isEqualToString:@"Value_01"])
+                        val01Found++;
+                    if([b.blockType isEqualToString:@"Value_1"])
+                        val1Found++;
+                    if([b.blockType isEqualToString:@"Value_10"])
+                        val10Found++;
+                    if([b.blockType isEqualToString:@"Value_100"])
+                        val100Found++;
+                    
+
+                }
+                
+                if(circlesFound==circlesReq && shouldContinueEval)
+                    circlesMatch=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(diamondsFound==diamondsReq && shouldContinueEval)
+                    diamondsMatch=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(ellipsesFound==ellipsesReq && shouldContinueEval)
+                    ellipsesMatch=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(housesFound==housesReq && shouldContinueEval)
+                    housesMatch=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(roundedSquaresFound==roundedSquaresReq && shouldContinueEval)
+                    roundedSquaresMatch=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(squaresFound==squaresReq && shouldContinueEval)
+                    squaresMatch=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(val001Found==val001Req && shouldContinueEval)
+                    val001Match=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(val01Found==val01Req && shouldContinueEval)
+                    val01Match=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(val1Found==val1Req && shouldContinueEval)
+                    val1Match=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(val10Found==val10Req && shouldContinueEval)
+                    val10Match=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(val100Found==val100Req && shouldContinueEval)
+                    val100Match=YES;
+                else
+                    shouldContinueEval=NO;
+                
+                if(circlesMatch && diamondsMatch && ellipsesMatch && housesMatch && roundedSquaresMatch && squaresMatch && val001Match && val01Match && val1Match && val10Match && val100Match){
+                    solutionsFound++;
+                    [matchedContainers addObject:c];
+                    [matchedSolutions addObject:solutions];
+                    break;
+                }
+                
+                
+            }
+        }
+    }
+    
+    NSLog(@"solutions found %d req %d", solutionsFound, [solutionsDef count]);
+    if(solutionsFound==[solutionsDef count])
+        return YES;
+    else
+        return NO;
+}
+
+
+-(CGPoint)returnNextMountPointForThisShape:(id<ShapeContainer>)thisShape
 {
     id<Moveable>firstShape=[thisShape.BlocksInShape objectAtIndex:0];
     
-    NSArray *newObjects=[NumberLayout physicalLayoutUpToNumber:[thisShape.BlocksInShape count] withSpacing:kDistanceBetweenBlocks];
+    NSArray *newObjects=[NumberLayout physicalLayoutAcrossToNumber:[thisShape.BlocksInShape count] withSpacing:kDistanceBetweenBlocks];
     
     CGPoint newVal=[[newObjects objectAtIndex:[newObjects count]-1] CGPointValue];
     
@@ -513,12 +1403,27 @@ static float kDistanceBetweenBlocks=70.0f;
             {
                 [loggingService logEvent:BL_PA_DT_TOUCH_START_PICKUP_BLOCK withAdditionalData:nil];
                 currentPickupObject=thisObj;
+                [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_block_picked_up.wav")];
+                
+                if([currentPickupObject.MyContainer isKindOfClass:[SGDtoolCage class]]){
+                    
+                    if([dockType isEqualToString:@"Infinite"] || [dockType isEqualToString:@"Infinite-Random"] || [dockType isEqualToString:@"Infinite-Value"])
+                        spawnedNewObj=NO;
+                    else
+                        spawnedNewObj=YES;
+                    
+                    hasMovedCagedBlock=YES;
+                    ((id<Cage>)currentPickupObject.MyContainer).CurrentObject=nil;
+                    currentPickupObject.MyContainer=nil;
+                }
+                
                 pickupPos=((id<Moveable>)currentPickupObject).Position;
                 break;
             }
         }
         
     }
+    
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -530,6 +1435,21 @@ static float kDistanceBetweenBlocks=70.0f;
     
     lastTouch=location;
     
+    // check the pickup start position against a cage position. if they matched, then spawn a new block
+    if(problemHasCage && hasMovedCagedBlock && !spawnedNewObj)
+    {
+        for(id<Cage>thisCage in addedCages)
+        {
+            if([BLMath DistanceBetween:thisCage.Position and:pickupPos]<=60.0f)
+            {
+                [thisCage spawnNewBlock];
+                spawnedNewObj=YES;
+            }
+        }
+        
+        pickupPos=CGPointZero;
+    }
+    
     if(currentPickupObject)
     {
         if(!hasMovedBlock)hasMovedBlock=YES;
@@ -538,26 +1458,54 @@ static float kDistanceBetweenBlocks=70.0f;
             [loggingService logEvent:BL_PA_DT_TOUCH_MOVE_MOVE_BLOCK withAdditionalData:nil];
             hasLoggedMovedBlock=YES;
         }
-
-        // check that the shape is being moved within bounds of the screen
-        if((location.x>=60.0f&&location.x<=lx-60.0f) && (location.y>=60.0f&&location.y<=ly-60.0f))
+        if((location.x>=80.0f&&location.x<=lx-80.0f) && (location.y>=60.0f&&location.y<=ly-80.0f))
         {
             // set it's position and move it!
             currentPickupObject.Position=location;
             [currentPickupObject move];
         }
+        if([((id<ShapeContainer>)currentPickupObject.MyContainer).LineType isEqualToString:@"Unbreakable"])
+            return;
+
+        BOOL prx=NO;
         
-        // then for each other moveable thing, check if we're proximate
         for(id go in gw.AllGameObjects)
         {
             if([go conformsToProtocol:@protocol(Moveable)])
             {
-                BOOL prx=[go amIProximateTo:location];
-                if(prx)hasBeenProximate=YES;
+                if(go==currentPickupObject)continue;
+                
+                float dist=[BLMath DistanceBetween:currentPickupObject.Position and:((id<Moveable>)go).Position];
+                
+                if(nearestObjectDistance==0){
+                    nearestObjectDistance=dist;
+                    nearestObject=go;
+                }
+                else if(dist<nearestObjectDistance){
+                    nearestObjectDistance=dist;
+                    nearestObject=go;
+                }
+                
+                    
+                prx=[go amIProximateTo:location];
+                if(prx && !hasBeenProximate){
+                    hasBeenProximate=YES;
+                }
+                if(prx){
+                    if(lastContainer!=((id<Moveable>)go).MyContainer||lastContainer==nil)
+                        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_bond_possible.wav")];
+                    lastContainer=((id<Moveable>)go).MyContainer;
+                    lastProxPos=location;
+                }
+                
             }
         }
+        
+        if([BLMath DistanceBetween:location and:lastProxPos]>100&&!bondAllObjects)
+            lastContainer=nil;
+
+
     }
-    
     
 }
 
@@ -572,77 +1520,153 @@ static float kDistanceBetweenBlocks=70.0f;
     // check there's a pickupobject
     NSArray *allGWCopy=[NSArray arrayWithArray:gw.AllGameObjects];
     
-    // check the pickup start position against a cage position. if they matched, then spawn a new block
-    if(problemHasCage && CGPointEqualToPoint(pickupPos,cage.Position))
-    {
+    if(!spawnedNewObj && hasMovedCagedBlock)
         [cage spawnNewBlock];
-        pickupPos=CGPointZero;
+    
+    if(location.y<cage.Position.y+(cage.MySprite.contentSize.height/2) && problemHasCage)
+    {
+        [self removeBlockByCage];
+        
+        [self setTouchVarsToOff];
+        return;
     }
     
     if(currentPickupObject)
     {
-        CGPoint curPOPos=currentPickupObject.Position;
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_block_dropped.wav")];
+        
         // check all the gamobjects and search for a moveable object
         
-        if([BLMath DistanceBetween:curPOPos and:cage.Position]<90.0f && problemHasCage)
+        if(CGRectContainsPoint(inactiveRect, location))
         {
-            [self removeBlockByCage];
-            return;
+            [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_blocks_added_to_evaluation_area.wav")];
         }
         
-        id previousObjectContainer=nil;
-        
+        BOOL gotTarget=NO;
         for(id go in allGWCopy)
         {
             if([go conformsToProtocol:@protocol(Moveable)])
             {
                 if(go==currentPickupObject)
-                {
-                    [go resetTint];
                     continue;
-                }
+                
                 // return whether the object is proximate to our current pickuobject
-                BOOL proximateToPickupObject=[go amIProximateTo:curPOPos];
-                [go resetTint];
-                if(!proximateToPickupObject){
-                    [go unpairMeFrom:currentPickupObject];
-                }
-                else {
+
+
                     
-                    id<Moveable,Pairable>cObj=(id<Moveable,Pairable>)go;
+                id<Moveable,Pairable>cObj=(id<Moveable,Pairable>)go;
+                
+                if([cObj amIProximateTo:location]){
                     
-                    // we only want to be pairable with a container with objects of the same group - so check that here
+                    NSLog(@"moved pickup object close to this GO. add pickupObject to cObj container");
+                    hasBeenProximate=YES;
                     
-                    if(!previousObjectContainer || previousObjectContainer==cObj.MyContainer)
-                    {
-                        [go pairMeWith:currentPickupObject];
-                    
-                        previousObjectContainer=cObj.MyContainer;
+                    // if the 2 containers are different, check for unbreakable blocks, if so, just layout the containers blocks
+                    if(cObj.MyContainer!=currentPickupObject.MyContainer){
+                        if([((id<ShapeContainer>)cObj.MyContainer).LineType isEqualToString:@"Unbreakable"]){
+                            [((id<ShapeContainer>)currentPickupObject.MyContainer) layoutMyBlocks];
+                            [self setTouchVarsToOff];
+                            return;
+                        }
+                        // if the current pickup has a container - layout the old container's blocks it's blocks after removing from it
+                        if(currentPickupObject.MyContainer){
+                            id<ShapeContainer>oldCont=(id<ShapeContainer>)currentPickupObject.MyContainer;
+                            [((id<ShapeContainer>)currentPickupObject.MyContainer) removeBlockFromMe:currentPickupObject];
+                            [oldCont layoutMyBlocks];
+                        }
                         
                         
-                        [loggingService logEvent:BL_PA_DT_TOUCH_END_PAIR_BLOCK withAdditionalData:nil];
-                        
-                        //currentPickupObject.Position=[self returnNextMountPointForThisShape:cObj.MyContainer];
-                        [cObj.MyContainer layoutMyBlocks];
-                        //[currentPickupObject animateToPosition];
+                        // then add it to a new container and layout those blocks
+                        [((id<ShapeContainer>)cObj.MyContainer) addBlockToMe:currentPickupObject];
+                        [((id<ShapeContainer>)currentPickupObject.MyContainer) layoutMyBlocks];
                     }
+                    // but if the 2 containers are equal
+                    if(cObj.MyContainer==currentPickupObject.MyContainer)
+                    {
+                        // check if the block at index 0 is this one - if it is, don't layout the blocks
+                        if([((id<ShapeContainer>)currentPickupObject.MyContainer).BlocksInShape objectAtIndex:0]!=currentPickupObject)
+                            [((id<ShapeContainer>)currentPickupObject.MyContainer) layoutMyBlocks];
+                    }
+                    
+                    gotTarget=YES;
+                    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_bond_made.wav")];
+                    break;
+                    
                 }
-                
-                //TODO: add bit in here to check existing links - ie, at the minute, if a block is dragged out of the middle of the row, it doesn't seem to update all of them
-                
-                
+                // if it's unbreakabe, basically relayout the blocks and do nothing more 
+                if([((id<ShapeContainer>)currentPickupObject.MyContainer).LineType isEqualToString:@"Unbreakable"]){
+                    gotTarget=YES;
+                    [((id<ShapeContainer>)currentPickupObject.MyContainer) layoutMyBlocks];
+                    [self setTouchVarsToOff];
+                    return;
+                }
+
             }
 
         }
-        [self updateContainerForNewlyAddedBlock:currentPickupObject];
-        [self lookForOrphanedObjects];
-        [self tidyUpEmptyGroups];
-        [self updateContainerLabels];
-        
+        if(!gotTarget)
+        {
+            // if it doesn't have a new targetl and the blocks in it's current shape are over 1 or the container's nil (ie if it's dragged from a cage) create a new group
+            if([(id<NSObject>)currentPickupObject.MyContainer isKindOfClass:[SGDtoolCage class]])return;
+            
+            if([((id<ShapeContainer>)currentPickupObject.MyContainer).BlocksInShape count]>1||currentPickupObject.MyContainer==nil)
+            {
+                id<ShapeContainer>LayoutCont=currentPickupObject.MyContainer;
+                
+                if(currentPickupObject==[LayoutCont.BlocksInShape objectAtIndex:0] && [LayoutCont.BlocksInShape count]>2)
+                {
+                    id<Moveable>object1=[LayoutCont.BlocksInShape objectAtIndex:1];
+                    object1.Position=ccp(object1.Position.x, object1.Position.y+52);
+                }
+                [LayoutCont removeBlockFromMe:currentPickupObject];
+                [LayoutCont layoutMyBlocks];
+                [self createContainerWithOne:currentPickupObject];
+            }
+            
+        [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_bond_broken_snapped.wav")];
+        }
+
         //[self evalUniqueShapes];
         if(evalMode==kProblemEvalAuto)[self evalProblem];
     }
     
+    // if it has a container
+    if(currentPickupObject.MyContainer)
+    {
+        [currentPickupObject.MyContainer repositionLabel];
+        // check whether any of the blocks are outside of the screen bounds - then set the position and move it back into the screen bounds
+        float diffX=0.0f;
+        float diffY=0.0f;
+
+        SGDtoolContainer *c=(SGDtoolContainer*)currentPickupObject.MyContainer;
+        
+        if([c.BlocksInShape count]>=1){
+            for(SGDtoolBlock *b in c.BlocksInShape)
+            {
+                    if(b.Position.x<60)
+                        diffX+=60;
+                
+                    if(b.Position.y<100)
+                        diffY+=60;
+            }
+            
+            SGDtoolBlock *b=[c.BlocksInShape objectAtIndex:0];
+        
+            CGPoint newPoint=ccp(b.Position.x+diffX, b.Position.y+diffY);
+            [b setPosition:newPoint];
+            if([((id<ShapeContainer>)currentPickupObject.MyContainer).BlocksInShape objectAtIndex:0]!=currentPickupObject){
+                    [b.MyContainer layoutMyBlocks];
+            }
+            else
+            {
+                if([((id<ShapeContainer>)currentPickupObject.MyContainer).BlocksInShape count]>1){
+                    SGDtoolBlock *b2=[((id<ShapeContainer>)currentPickupObject.MyContainer).BlocksInShape objectAtIndex:1];
+                    b.Position=ccp(b2.Position.x,b2.Position.y+52);
+                    [b.MyContainer layoutMyBlocks];
+                }
+            }
+        }
+    }
     
     if(hasBeenProximate)
     {
@@ -650,7 +1674,7 @@ static float kDistanceBetweenBlocks=70.0f;
         [loggingService logEvent:BL_PA_DT_TOUCH_MOVE_PROXIMITY_OF_BLOCK withAdditionalData:nil];
     }
     
-    currentPickupObject=nil;
+    [self setTouchVarsToOff];
     
     
     
@@ -658,9 +1682,19 @@ static float kDistanceBetweenBlocks=70.0f;
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    // empty selected objects
+    [self setTouchVarsToOff];
+}
+
+-(void)setTouchVarsToOff
+{
     isTouching=NO;
     currentPickupObject=nil;
-    // empty selected objects
+    nearestObjectDistance=0.0f;
+    nearestObject=nil;
+    spawnedNewObj=YES;
+    hasMovedCagedBlock=NO;
+
 }
 
 #pragma mark - evaluation
@@ -677,7 +1711,7 @@ static float kDistanceBetweenBlocks=70.0f;
         {
             // cast the go as a pairable to use properties
             id<Pairable,Moveable> pairableGO=(id<Pairable,Moveable>)go;
-            if(![pairableGO.MyContainer conformsToProtocol:@protocol(Container)])
+            if(![pairableGO.MyContainer conformsToProtocol:@protocol(ShapeContainer)])
                 continue;
                 
             //check if we're a lonesome object
@@ -768,39 +1802,14 @@ static float kDistanceBetweenBlocks=70.0f;
 
 -(BOOL)evalExpression
 {
-//    if(evalType==kCheckShapeSizes)
-//    {
-//        int solutionsFound=0;
-//        int solutionsExpected=[solutionsDef count];
-//        NSMutableArray *shapesMatched=[[NSMutableArray alloc]init];
-//        NSArray *shapesHere=[self evalUniqueShapes];
-//
-//        
-//        for(int i=0;i<[solutionsDef count];i++)
-//        {
-//            int thisSolution=[[solutionsDef objectAtIndex:i]intValue];
-//            for(NSArray *a in shapesHere)
-//            {
-//                if([a count]==thisSolution&&![shapesMatched containsObject:a]){
-//                    [shapesMatched addObject:a];
-//                    solutionsFound++;
-//                }
-//            }
-//        }
-//        
-//        [shapesMatched release];
-//        
-//        if(solutionsFound==solutionsExpected)
-//            return YES;
-//        else
-//            return NO;
-//    }
     if(evalType==kCheckShapeSizes)
     {
         NSMutableArray *shapesFound=[[NSMutableArray alloc]init];
         NSMutableArray *solFound=[[NSMutableArray alloc]init];
+        NSMutableArray *containers=[[NSMutableArray alloc]init];
         int solutionsExpected=[solutionsDef count];
         int solutionsFound=0;
+        
         
         
         for(NSNumber *n in solutionsDef)
@@ -811,10 +1820,14 @@ static float kDistanceBetweenBlocks=70.0f;
             {
                 if([shapesFound containsObject:cont])continue;
                 
-                if([cont conformsToProtocol:@protocol(Container)])
+                if([cont conformsToProtocol:@protocol(ShapeContainer)])
                 {
-                    id<Container>thisCont=cont;
+                    id<ShapeContainer>thisCont=cont;
                     
+                    if(![containers containsObject:cont])
+                        [containers addObject:cont];
+                    
+                    NSLog(@"blocksinshape %d is %d", (int)thisCont, [thisCont.BlocksInShape count]);
                     if([thisCont.BlocksInShape count]==[n intValue])
                     {
                         solutionsFound++;
@@ -827,42 +1840,136 @@ static float kDistanceBetweenBlocks=70.0f;
         }
         
         
-          
-        NSLog(@"solutions found %d required %d", solutionsFound, solutionsExpected);
+        
+        NSLog(@"solutions found %d required %d containers %d", solutionsFound, solutionsExpected, [containers count]);
+        if (solutionsFound==solutionsExpected && [containers count]==solutionsExpected)
+            return YES;
+        else
+            return NO;
+        
+    }
+    if(evalType==kIncludeShapeSizes)
+    {
+        NSMutableArray *shapesFound=[[NSMutableArray alloc]init];
+        NSMutableArray *solFound=[[NSMutableArray alloc]init];
+        NSMutableArray *containers=[[NSMutableArray alloc]init];
+        int solutionsExpected=[solutionsDef count];
+        int solutionsFound=0;
+        
+        
+        
+        for(NSNumber *n in solutionsDef)
+        {
+            if([solFound containsObject:n])continue;
+            
+            for (id cont in gw.AllGameObjects)
+            {
+                if([shapesFound containsObject:cont])continue;
+                
+                if([cont conformsToProtocol:@protocol(ShapeContainer)])
+                {
+                    id<ShapeContainer>thisCont=cont;
+                    
+                    if(![containers containsObject:cont])
+                        [containers addObject:cont];
+                    
+                    NSLog(@"blocksinshape %d is %d", (int)thisCont, [thisCont.BlocksInShape count]);
+                    if([thisCont.BlocksInShape count]==[n intValue])
+                    {
+                        solutionsFound++;
+                        [shapesFound addObject:cont];
+                        [solFound addObject:n];
+                        continue;
+                    }
+                }
+            }
+        }
+        
+        
         if (solutionsFound==solutionsExpected)
             return YES;
         else
             return NO;
-
+        
     }
     
-    else if(evalType==kCheckNamedGroups)
+    else if(evalType==kCheckTaggedGroups)
     {
         NSDictionary *d=[solutionsDef objectAtIndex:0];
         int solutionsExpected=[d count];
         int solutionsFound=0;
         
+        
         for(id cont in gw.AllGameObjects)
         {
-                if([cont conformsToProtocol:@protocol(Container)])
+            
+            if([cont conformsToProtocol:@protocol(ShapeContainer)])
+            {
+                id <ShapeContainer> thisCont=cont;
+                
+                NSLog(@"BTXE Label tag %@", ((id<Interactive>)thisCont.BTXELabel).tag);
+                
+                if([d objectForKey:((SGBtxeObjectIcon*)thisCont.BTXELabel).tag])
                 {
-                    id <Container> thisCont=cont;
-                    NSString *thisKey=[thisCont.Label string];
-                    if([d objectForKey:thisKey])
-                    {
-
-                        int thisVal=[[d objectForKey:thisKey] intValue];
-                         NSLog(@"this group %d, required for key %d", [thisCont.BlocksInShape count], thisVal);
-                        if([thisCont.BlocksInShape count]==thisVal)
-                            solutionsFound++;
-                    }
+                    int thisVal=[[d objectForKey:((SGBtxeObjectIcon*)thisCont.BTXELabel).tag] intValue];
+                    if([thisCont.BlocksInShape count]==thisVal)
+                        solutionsFound++;
+                    
                 }
+            }
         }
+        
+//        for(id cont in gw.AllGameObjects)
+//        {
+//            if([cont conformsToProtocol:@protocol(ShapeContainer)])
+//            {
+//                id <ShapeContainer> thisCont=cont;
+//                NSString *thisKey=[thisCont.Label string];
+//                if([d objectForKey:thisKey])
+//                {
+//                    
+//                    int thisVal=[[d objectForKey:thisKey] intValue];
+//                    NSLog(@"this group %d, required for key %d", [thisCont.BlocksInShape count], thisVal);
+//                    if([thisCont.BlocksInShape count]==thisVal)
+//                        solutionsFound++;
+//                }
+//            }
+//        }
         
         if (solutionsFound==solutionsExpected)
             return YES;
         else
             return NO;
+    }
+    
+    else if(evalType==kCheckEvalAreas)
+    {
+        return [self evalNumberOfShapesInEvalAreas];
+    }
+    
+    else if(evalType==kCheckEvalAreasForTypes)
+    {
+        return [self evalNumberOfShapesAndTypesInEvalAreas];
+    }
+
+    else if(evalType==kCheckGroupsForTypes)
+    {
+        return [self evalNumberOfShapesAndTypesInContainers];
+    }
+    
+    else if(evalType==kCheckGroupTypeAndNumber)
+    {
+        return [self evalGroupTypesAndShapes];
+    }
+    
+    else if(evalType==kCheckContainerValues)
+    {
+        return [self evalValueOfShapesInContainers];
+    }
+    
+    else if(evalType==kCheckEvalAreaValues)
+    {
+        return [self evalValueOfEvalAreas];
     }
     
 
@@ -878,7 +1985,7 @@ return NO;
         [toolHost doWinning];
     }
     else {
-        if(evalMode==kProblemEvalOnCommit)[self resetProblem];
+        if(evalMode==kProblemEvalOnCommit)[toolHost doIncomplete];
     }
     
 }
@@ -909,6 +2016,14 @@ return NO;
     solutionsDef=nil;
     existingGroups=nil;
     destroyedLabelledGroups=nil;
+    activeRects=nil;
+    initAreas=nil;
+    usedShapeTypes=nil;
+    addedCages=nil;
+    evalAreas=nil;
+    inactiveArea=nil;
+    activeRects=nil;
+    
     
     [self.ForeLayer removeAllChildrenWithCleanup:YES];
     [self.BkgLayer removeAllChildrenWithCleanup:YES];

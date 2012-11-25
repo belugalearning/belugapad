@@ -17,6 +17,7 @@
     dStrings=[[NSMutableDictionary alloc] init];
     retainedVars=[[NSMutableDictionary alloc] init];
     retainedStrings=[[NSMutableDictionary alloc] init];
+    randomKeyCaches=[[NSMutableDictionary alloc] init];
     
     return self;
 }
@@ -27,14 +28,15 @@
     [dVars removeAllObjects];
     [dStrings removeAllObjects];
     
+    //parse the dstrings from the new pdef
+    NSDictionary *dsdef=[pdef objectForKey:@"DSTRINGS"];
+    if(dsdef) [self  parseDStrings:dsdef];
+    
     //parse the dvars from the new pdef
     NSObject *dvdobject=[pdef objectForKey:@"DVARS"];
     if([dvdobject isKindOfClass:[NSDictionary class]]) [self parseDVarsInDictionary:(NSDictionary*)dvdobject];
     else if([dvdobject isKindOfClass:[NSArray class]]) [self parseDVarsInArray:(NSArray *)dvdobject];
     
-    //parse the dstrings from the new pdef
-    NSDictionary *dsdef=[pdef objectForKey:@"DSTRINGS"];
-    if(dsdef) [self  parseDStrings:dsdef];
 }
 
 -(void)parseDStrings:(NSDictionary*)dstringsdef
@@ -134,9 +136,9 @@
     NSString *name=[namebase substringFromIndex:1];
     NSString *casttype=[namebase substringToIndex:1];
     
-    if(!([casttype isEqualToString:@"$"] || [casttype isEqualToString:@"%%"] || [casttype isEqualToString:@"&"]))
+    if(!([casttype isEqualToString:@"$"] || [casttype isEqualToString:@"£"] || [casttype isEqualToString:@"&"]))
     {
-        NSLog(@"cast type char not in $, %%, &");
+        NSLog(@"cast type char not in $, £, &");
         return;
     }
     
@@ -159,11 +161,17 @@
         //create by evaluating a value, recalling retained vars where applicable
         NSString *parsedval=[self parseStringFromString:recallexpr withRecall:YES];
         outputvalue=[self numberFromString:parsedval withCastType:casttype];
+        
+        if([outputvalue intValue]==0)
+        {
+            //create a new value from random settings
+            outputvalue=[self numberFromString:[[self randomNumberWithParams:dv andKey:namebase] stringValue] withCastType:casttype];
+        }
     }
     else {
         //create this vairable by creating a random number
         //note: this is actually using a string output of the random NSNumber and then casting back using casttype
-        outputvalue=[self numberFromString:[[self randomNumberWithParams:dv] stringValue] withCastType:casttype];
+        outputvalue=[self numberFromString:[[self randomNumberWithParams:dv andKey:namebase] stringValue] withCastType:casttype];
     }
     
     //add this variable to the problem dvars
@@ -191,7 +199,7 @@
     }
 }
 
--(NSNumber *)randomNumberWithParams:(NSDictionary*)params
+-(NSNumber *)randomNumberWithParams:(NSDictionary*)params andKey:(NSString*)key
 {
     if([params objectForKey:@"SELECT_FROM"])
     {
@@ -205,17 +213,44 @@
 //        int min=[[params objectForKey:@"MIN"] floatValue];
 //        int max=[[params objectForKey:@"MAX"] floatValue];
         
-        //parse min and max using internal parser
-        int min=[self parseIntFromString:[params objectForKey:@"MIN"]];
-        int max=[self parseIntFromString:[params objectForKey:@"MAX"]];
+        //see if we have a cache of numbers for this key
+        NSMutableArray *keyCache=[randomKeyCaches objectForKey:key];
         
-        int interval=max-min;
+        NSNumber *nret;
+        int tryCount=0;
+        BOOL noClash=NO;
         
-        int fbase=arc4random() % (int)interval;
+        while(!noClash && tryCount<100)
+        {
+            //parse min and max using internal parser
+            int min=[self parseIntFromString:[params objectForKey:@"MIN"]];
+            int max=[self parseIntFromString:[params objectForKey:@"MAX"]];
+            
+            int interval=max-min;
+            int fbase=arc4random() % (int)interval;
+            int ret=fbase+min;
+            
+            nret=[NSNumber numberWithInt:ret];
+            
+            
+            if(keyCache)
+            {
+                noClash=YES;
+                for (NSNumber *n in keyCache)
+                {
+                    if([n isEqualToNumber:nret]) noClash=NO;
+                    break;
+                }
+            }
+            else noClash=YES;
+            
+            tryCount++;
+        }
         
-        int ret=fbase+min;
+        if(!keyCache)
+            [randomKeyCaches setValue:[NSMutableArray arrayWithObject:nret] forKey:key];
         
-        return [NSNumber numberWithInt:ret];        
+        return nret;
     }
 }
 
@@ -229,7 +264,7 @@
         float interf=[input floatValue];
         outputvalue=[NSNumber numberWithInt:(int)interf];
     }
-    if([casttype isEqualToString:@"%%"]) {
+    if([casttype isEqualToString:@"£"]) {
         //return a rounded int
         float interf=[input floatValue] + ([input floatValue]>0 ? 0.5 : -0.5);
         outputvalue=[NSNumber numberWithInt:(int)interf];
@@ -255,7 +290,7 @@
     
     //is this a var (does it have a cast type at the start)
     NSString *casttype=[parse substringToIndex:1];
-    if (!([casttype isEqualToString:@"$"] || [casttype isEqualToString:@"%%"] || [casttype isEqualToString:@"&"])) {
+    if (!([casttype isEqualToString:@"$"] || [casttype isEqualToString:@"£"] || [casttype isEqualToString:@"&"])) {
         //not a var -- no cast type
         if ([parse rangeOfString:@"."].location!=NSNotFound) {
             //presume decimal, return as float
@@ -297,7 +332,7 @@
     {
         return [NSString stringWithFormat:@"%f", fin];
     }
-    else if([ct1 isEqualToString:@"%%"] && [ct2 isEqualToString:@"%%"])
+    else if([ct1 isEqualToString:@"£"] && [ct2 isEqualToString:@"£"])
     {
         return [NSString stringWithFormat:@"%d", (int)(fin+0.5f)];
     }
@@ -605,6 +640,7 @@
     [dStrings release];
     [retainedVars release];
     [retainedStrings release];
+    [randomKeyCaches release];
     
     [super dealloc];
 }

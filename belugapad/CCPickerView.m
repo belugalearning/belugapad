@@ -30,7 +30,7 @@
 //    CGSize size = [delegate sizeOfPickerView:self];
     CGSize size=overlayImage.contentSize;
     
-    CGFloat spacing = [delegate spaceBetweenComponents:self];
+    //CGFloat spacing = [delegate spaceBetweenComponents:self];
     
     self.contentSize = size;
     
@@ -67,7 +67,17 @@
 }
 
 -(void)setLocked:(BOOL)newValue {
-    isLocked = newValue;
+    self.isLocked=newValue;
+}
+
+-(void)setIsLocked:(BOOL)theIsLocked
+{
+    isLocked = theIsLocked;
+    
+//    for (ScrollLayer *sl in ) {
+//        if(theIsLocked) [sl stopTouching];
+//        else [sl startTouching];
+//    }
     
     [self reloadAllComponents];
 }

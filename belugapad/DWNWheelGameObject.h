@@ -22,6 +22,7 @@
 @property int Components;
 @property int InputValue;
 @property int OutputValue;
+@property (retain) NSString *StrOutputValue;
 @property (retain) CCLabelTTF *Label;
 @property BOOL HasCountBubble;
 @property CGPoint CountBubblePosition;
@@ -29,5 +30,6 @@
 @property (retain) CCLabelTTF *CountBubbleLabel;
 @property (retain) CCLayer *CountBubbleRenderLayer;
 @property BOOL Locked;
-
+@property BOOL HasDecimals;
+@property BOOL HasNegative;
 @end

@@ -12,30 +12,34 @@
 #import "AppDelegate.h"
 #import "LoggingService.h"
 #import "UsersService.h"
-#import "EditZubi.h"
+#import "PassCodeView.h"
+#import "UIView+UIView_DragLogPosition.h"
 
 @interface SelectUserViewController ()
 {
     @private
     AppController *app;
     UsersService *usersService;
-    unsigned char zubiColorRGBAByteData[4];
     
-    NSArray *deviceUsers;
+    NSMutableArray *deviceUsers;
     IBOutlet UITableView *selectUserTableView;
-    UIButton *newUserButton;
-    UIButton *existingUserButton;
+    UIButton *playButton;
+    UIButton *joinClassButton;
+    
+    UIImageView *modalPassCodeImageBgView;
+    PassCodeView *modalPassCodeView;
     
     UITextField *newUserNameTF;
-    UITextField *newUserPasswordTF;
+    PassCodeView *newUserPassCodeView;
     UIButton *cancelNewUserButton;
     UIButton *saveNewUserButton;
     
     UITextField *existingUserNameTF;
-    UITextField *existingUserPasswordTF;
+    PassCodeView *downloadUserPassCodeView;
     UIButton *cancelExistingUserButton;
     UIButton *loadExistingUserButton;
 }
+-(void) loadDeviceUsers;
 -(void) buildSelectUserView;
 -(void) buildEditUserView;
 -(void) setActiveView:(UIView *)view;
@@ -43,16 +47,12 @@
 
 @implementation SelectUserViewController
 
-@synthesize colorWheel;
-
-// TODO: ensure this line doesn't want restoring: [newUserNameTF addTarget:self action:@selector(handleNameChanged:) forControlEvents:UIControlEventValueChanged];
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return UIInterfaceOrientationIsLandscape(interfaceOrientation);
 }
 
-- (void) viewDidLoad
+-(void)viewDidLoad
 {
     [super viewDidLoad];
     
@@ -64,28 +64,28 @@
     [app.usersService syncDeviceUsers];
     [app.loggingService sendData];
     
+    [self loadDeviceUsers];
+    
     [self buildSelectUserView];
     [self buildEditUserView];
     [self buildLoadExistingUserView];
     
-    AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];    
-    deviceUsers = [[ad.usersService deviceUsersByNickName] retain];
-    [self setActiveView:selectUserView];    
+    [self setActiveView:selectUserView];
 }
 
-- (void) viewWillAppear:(BOOL)animated
+-(void)viewWillAppear:(BOOL)animated
 {
     //DLog(@"viewWillAppear");
     [super viewWillAppear:animated];
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField*)textField
+-(BOOL)textFieldShouldReturn:(UITextField*)textField
 {
     [textField resignFirstResponder];
     return  YES;
 }
 
-- (void) setActiveView:(UIView *)view
+-(void)setActiveView:(UIView *)view
 {
     NSAssert(view == selectUserView || view == editUserView || view == loadExistingUserView, @"bad args: method requires either selectUserView or editUserView");
     [selectUserView setHidden:(view != selectUserView)];
@@ -93,44 +93,73 @@
     [loadExistingUserView setHidden:(view != loadExistingUserView)];
     if (view == selectUserView)
     {
-        [backgroundImageView setImage:[UIImage imageNamed:(@"/select-edit-user-images/SelectUserBackground.png")]];
+        [backgroundImageView setImage:[UIImage imageNamed:(@"/login-images/Island_BG.png")]];
     }
     else if (view == editUserView)
     {
-        [backgroundImageView setImage:[UIImage imageNamed:(@"/select-edit-user-images/EditUserBackground.png")]];
+        [backgroundImageView setImage:[UIImage imageNamed:(@"/login-images/New.png")]];
     }
     else
     {
-        [backgroundImageView setImage:[UIImage imageNamed:(@"/select-edit-user-images/ExistingUserBackground.png")]];
+        [backgroundImageView setImage:[UIImage imageNamed:(@"/login-images/Sync.png")]];
     }
 }
 
 #pragma mark -
 #pragma mark SelectUserView
 
-- (void) buildSelectUserView
+-(void)loadDeviceUsers
 {
-    newUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    newUserButton.frame = CGRectMake(261.0f, 458.0f, 539.0f, 81.0f);
-    [newUserButton setImage:[UIImage imageNamed:@"/select-edit-user-images/NewUserButton.png"] forState:UIControlStateNormal];
+    if (deviceUsers) [deviceUsers release];
+    AppController *ad = (AppController*)[[UIApplication sharedApplication] delegate];
+    deviceUsers = [[ad.usersService deviceUsersByNickName] retain];
+    while ([deviceUsers count] < 4) [deviceUsers addObject:@{}]; // add fake users -> produce extra table cells -> create alternating table cell background appearance
+}
+
+-(void)buildSelectUserView
+{
+    UIImageView *panel = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/select_user_BG.png"]] autorelease];
+    [panel setCenter:CGPointMake(511.0f, 377.0f)];
+    [selectUserView addSubview:panel];
+    
+    UIButton *newUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    newUserButton.frame = CGRectMake(331.0f, 393.0f, 131.0f, 51.0f);
+    [newUserButton setImage:[UIImage imageNamed:@"/login-images/new_button.png"] forState:UIControlStateNormal];
     [newUserButton addTarget:self action:@selector(handleNewUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [selectUserView addSubview:newUserButton];
     
-    existingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    existingUserButton.frame = CGRectMake(261.0f, 558.0f, 539.0f, 81.0f);
-    [existingUserButton setImage:[UIImage imageNamed:@"/select-edit-user-images/SyncExistingUser_btn.png"] forState:UIControlStateNormal];
+    UIButton *existingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    existingUserButton.frame = CGRectMake(559.0f, 394.0f, 131.0f, 51.0f);
+    [existingUserButton setImage:[UIImage imageNamed:@"/login-images/download_button.png"] forState:UIControlStateNormal];
     [existingUserButton addTarget:self action:@selector(handleExistingUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [selectUserView addSubview:existingUserButton];
-}
-
-- (void) handleNewUserClicked:(id)button
-{
-    [self setActiveView:editUserView];
-}
-
-- (void) handleExistingUserClicked:(id)button
-{
-    [self setActiveView:loadExistingUserView];
+    
+    playButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    playButton.frame = CGRectMake(698.0f, 502.0f, 138.0f, 66.0f);
+    [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_disabled.png"] forState:UIControlStateNormal];
+    [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_disabled.png"] forState:UIControlStateHighlighted];
+    [playButton addTarget:self action:@selector(handlePlayButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [selectUserView addSubview:playButton];
+    
+    joinClassButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    joinClassButton.frame = CGRectMake(220.0f, 447.0f, 100.0f, 95.0f);
+    [joinClassButton setImage:[UIImage imageNamed:@"/login-images/join_class_button_disabled.png"] forState:UIControlStateNormal];
+    [joinClassButton setImage:[UIImage imageNamed:@"/login-images/join_class_button_disabled.png"] forState:UIControlStateHighlighted];
+    //[joinClassButton addTarget:self action:@selector(handleExistingUserClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [selectUserView addSubview:joinClassButton];
+    
+    selectUserTableView = [[[UITableView alloc] initWithFrame:CGRectMake(322.0f,234.0f,378.0f,140.0f) style:UITableViewStylePlain] autorelease];
+    selectUserTableView.backgroundColor = [UIColor clearColor];
+    selectUserTableView.opaque = YES;
+    selectUserTableView.backgroundView = nil;
+    selectUserTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    selectUserTableView.dataSource = self;
+    selectUserTableView.delegate = self;
+    [selectUserView addSubview:selectUserTableView];
+    
+    UIImageView *mask = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/table-mask.png"]] autorelease];
+    mask.frame = CGRectMake(320.0f,233.0f,381.0f,146.0f);
+    [selectUserView addSubview:mask];
 }
 
 #pragma mark UITableViewDataSource
@@ -139,135 +168,140 @@
     return [deviceUsers count];
 }
 
- - (UITableViewCell *)tableView:(UITableView *)tableView
-          cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    return 38;
+}
+
+-(UITableViewCell*)tableView:(UITableView *)tableView
+       cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *user = deviceUsers[indexPath.row];
+    NSString *nickName = user[@"nickName"]; // nil if this is just a placeholder cell
+    
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
     {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.backgroundColor = [UIColor clearColor];
-        cell.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/select-edit-user-images/TableCellBackground.png"]] autorelease];
+        cell.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:indexPath.row % 2 == 0 ? @"/login-images/table_cell_black.png" : @"/login-images/table_cell_transparent"]] autorelease];
+        cell.selectionStyle = UITableViewCellSeparatorStyleNone;
+        if (!nickName)
+        {
+            // just a placeholder cell to maintain the alternating cell background look
+            cell.selectedBackgroundView = nil;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        else
+        {
+            cell.selectedBackgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/table_cell_orange.png"]] autorelease];
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        }
         cell.backgroundView.contentMode = UIViewContentModeLeft;
         cell.textLabel.contentMode = UIViewContentModeLeft;
-        cell.textLabel.font = [UIFont fontWithName:@"Lucida Grande" size:34];
-        cell.textLabel.textColor = [UIColor grayColor];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.font = [UIFont fontWithName:@"Chango" size:24];
+        cell.textLabel.textColor = [UIColor whiteColor];
     }
     
-    NSDictionary *user = [deviceUsers objectAtIndex:indexPath.row];     
-    cell.textLabel.text = [user objectForKey:@"nickName"];
+    cell.textLabel.text = nickName ? nickName : @"";
     cell.imageView.image = nil;
     return cell;
  }
 
 #pragma mark UITableViewDelegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+-(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *ur = [deviceUsers objectAtIndex:indexPath.row];
-    [usersService setCurrentUserToUserWithId:[ur objectForKey:@"id"]];
-    [self.view removeFromSuperview];
-    [app proceedFromLoginViaIntro:NO];
+    // return nil & prevent selection if 'fake user' (placeholder that keeps the alertnating cell background look).
+    return deviceUsers[[indexPath row]][@"nickName"] ? indexPath : nil;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *user = deviceUsers[indexPath.row];
+    if (user[@"nickName"]) // i.e. a real user, not empty one 
+    {
+        [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_enabled.png"] forState:UIControlStateNormal];
+        [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_enabled.png"] forState:UIControlStateHighlighted];
+    }
+}
+
+#pragma mark interactions
+-(void)handlePlayButtonClicked:(id)button
+{
+    NSIndexPath *ip = [selectUserTableView indexPathForSelectedRow];
+    if (ip)
+    {
+        NSDictionary *ur = [deviceUsers objectAtIndex:ip.row];
+        [usersService setCurrentUserToUserWithId:[ur objectForKey:@"id"]];
+        [self.view removeFromSuperview];
+        [app proceedFromLoginViaIntro:NO];
+        
+        
+        
+        /*modalPassCodeImageBgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/passcode_modal.png"]];
+        modalPassCodeImageBgView.center = CGPointMake(512.0f, 354.0f);
+        [self.view addSubview:modalPassCodeImageBgView];
+        
+        [modalPassCodeImageBgView registerForDragAndLog];*/
+    }
+}
+
+-(void)handleNewUserClicked:(id)button
+{
+    [self setActiveView:editUserView];
+}
+
+-(void)handleExistingUserClicked:(id)button
+{
+    [self setActiveView:loadExistingUserView];
 }
 
 #pragma mark -
 #pragma mark EditUserView
 
-- (void) buildEditUserView
-{
-    [colorWheel addObserver: self forKeyPath: @"lastColorRGBAData" options: 0 context: NULL];
-    
-//    CCGLView *glView = [CCGLView viewWithFrame:CGRectMake(632, 290, 160, 160)
-//								   pixelFormat:kEAGLColorFormatRGBA8	//kEAGLColorFormatRGBA8
-//								   depthFormat:0	//GL_DEPTH_COMPONENT24_OES
-//							preserveBackbuffer:NO
-//									sharegroup:nil
-//								 multiSampling:NO
-//							   numberOfSamples:0];
-//    
-////    EAGLView *glview = [EAGLView viewWithFrame:CGRectMake(632, 290, 160, 160) pixelFormat:kEAGLColorFormatRGBA8 depthFormat:0];
-//    glView.opaque = NO;
-//    [[CCDirector sharedDirector] setView:glView];    
-//    [CCDirector sharedDirector].view.backgroundColor = [UIColor clearColor];
-////    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-////    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-////    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//    [[CCDirector sharedDirector] runWithScene:[EditZubi scene]];
-//    [editUserView addSubview:glView];
-    
-    newUserNameTF = [[UITextField alloc] initWithFrame:CGRectMake(358.0f, 114.0f, 400.0f, 45.0f)];
+-(void)buildEditUserView
+{    
+    newUserNameTF = [[[UITextField alloc] initWithFrame:CGRectMake(334.0f, 276.0f, 360.0f, 42.0f)] autorelease];
     newUserNameTF.delegate = self;
-    newUserNameTF.font = [UIFont fontWithName:@"Lucida Grande" size:28];
-    newUserNameTF.placeholder = @"name";
-    newUserNameTF.clearButtonMode = UITextFieldViewModeWhileEditing;
+    newUserNameTF.font = [UIFont fontWithName:@"Chango" size:24];
+    //newUserNameTF.placeholder = @"name";
+    newUserNameTF.clearButtonMode = UITextFieldViewModeNever;
     newUserNameTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     newUserNameTF.autocorrectionType = UITextAutocorrectionTypeNo;
     newUserNameTF.keyboardType = UIKeyboardTypeNamePhonePad;
     newUserNameTF.returnKeyType = UIReturnKeyDone;
-    [newUserNameTF setTextColor:[UIColor darkGrayColor]];
+    [newUserNameTF setTextColor:[UIColor whiteColor]];
     [newUserNameTF setBorderStyle:UITextBorderStyleNone];
     [editUserView addSubview:newUserNameTF];
     
-    newUserPasswordTF = [[UITextField alloc] initWithFrame:CGRectMake(358.0f, 186.0f, 400.0f, 45.0f)];
-    newUserPasswordTF.delegate = self;
-    newUserPasswordTF.font = [UIFont fontWithName:@"Lucida Grande" size:28];
-    newUserPasswordTF.placeholder = @"password";
-    newUserPasswordTF.secureTextEntry = YES;
-    newUserPasswordTF.clearButtonMode = UITextFieldViewModeWhileEditing;
-    newUserPasswordTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    newUserPasswordTF.autocorrectionType = UITextAutocorrectionTypeNo;
-    newUserPasswordTF.keyboardType = UIKeyboardTypeNamePhonePad;
-    newUserPasswordTF.returnKeyType = UIReturnKeyDone;
-    [newUserPasswordTF setTextColor:[UIColor darkGrayColor]];
-    [newUserPasswordTF setBorderStyle:UITextBorderStyleNone];
-    [editUserView addSubview:newUserPasswordTF];    
+    newUserPassCodeView = [[[PassCodeView alloc] initWithFrame:CGRectMake(390.0f, 334.0f, 255.0f, 46.0f)] autorelease];
+    [editUserView addSubview:newUserPassCodeView];
     
     cancelNewUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelNewUserButton.frame = CGRectMake(229.0f, 66.0f, 50.0f, 50.0f);
-    [cancelNewUserButton setImage:[UIImage imageNamed:@"/select-edit-user-images/Cancel.png"] forState:UIControlStateNormal];
-    [cancelNewUserButton addTarget:self action:@selector(handleCancelNewUserClicked:) forControlEvents:UIControlEventTouchDown];
+    cancelNewUserButton.frame = CGRectMake(330.0f, 397.0f, 103.0f, 49.0f);
+    [cancelNewUserButton setImage:[UIImage imageNamed:@"/login-images/cancel_button.png"] forState:UIControlStateNormal];
+    [cancelNewUserButton addTarget:self action:@selector(handleCancelNewUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [editUserView addSubview:cancelNewUserButton];
     
     saveNewUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    saveNewUserButton.frame = CGRectMake(261.0f, 528.0f, 539.0f, 81.0f);
-    [saveNewUserButton setImage:[UIImage imageNamed:@"/select-edit-user-images/Save.png"] forState:UIControlStateNormal];
+    saveNewUserButton.frame = CGRectMake(591.0f, 397.0f, 103.0f, 49.0f);
+    [saveNewUserButton setImage:[UIImage imageNamed:@"/login-images/save_button.png"] forState:UIControlStateNormal];;
     [saveNewUserButton addTarget:self action:@selector(handleSaveNewUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [editUserView addSubview:saveNewUserButton];
 }
 
-- (void) observeValueForKeyPath:(NSString*)keyPath
-                       ofObject:(id)object 
-                         change:(NSDictionary*)change
-                        context:(void*)context
-{
-    if (object == colorWheel && keyPath == @"lastColorRGBAData")
-    {        
-        memcpy(zubiColorRGBAByteData, [colorWheel.lastColorRGBAData bytes], 4);
-        
-        CCScene *scene = [[CCDirector sharedDirector] runningScene];
-        EditZubi *layer = [scene.children objectAtIndex:0];
-        
-        [layer setZubiColor:(ccColor4F){
-            .r = zubiColorRGBAByteData[0] / 255.0f,
-            .g = zubiColorRGBAByteData[1] / 255.0f,
-            .b = zubiColorRGBAByteData[2] / 255.0f,
-            .a = zubiColorRGBAByteData[3] / 255.0f
-        }];
-    }
-}
-
-- (void) handleCancelNewUserClicked:(id*)button
+-(void)handleCancelNewUserClicked:(id*)button
 {
     newUserNameTF.text = @"";
-    newUserPasswordTF.text = @"";
+    newUserPassCodeView.text = @"";
     [newUserNameTF resignFirstResponder];
-    [newUserPasswordTF resignFirstResponder];
+    [newUserPassCodeView resignFirstResponder];
     [self setActiveView:selectUserView];
 }
 
-- (void) handleSaveNewUserClicked:(id*)button
+-(void)handleSaveNewUserClicked:(id*)button
 {
     if (!newUserNameTF.text || !newUserNameTF.text.length)
     {
@@ -275,13 +309,15 @@
         return;
     }
     
-    if (!newUserPasswordTF.text || !newUserPasswordTF.text.length)
+    
+    if (!newUserPassCodeView.text || !newUserPassCodeView.text.length)
     {
-        [newUserPasswordTF becomeFirstResponder];
+        [newUserPassCodeView becomeFirstResponder];
         return;
     }
     
     __block typeof(self) bself = self;
+    __block NSString *bnick = newUserNameTF.text;
     void (^createSetUrCallback)() = ^(BL_USER_CREATION_STATUS status) {
         if (BL_USER_CREATION_FAILURE_NICK_UNAVAILABLE == status)
         {
@@ -294,71 +330,74 @@
         }
         else if (BL_USER_CREATION_SUCCESS_NICK_AVAILABLE == status || BL_USER_CREATION_SUCCESS_NICK_AVAILABILITY_UNCONFIRMED == status)
         {
-            [bself.view removeFromSuperview];
-            [bself->app proceedFromLoginViaIntro:YES];
+            newUserNameTF.text = @"";
+            newUserPassCodeView.text = @"";
+            
+            [bself loadDeviceUsers];
+            [bself->selectUserTableView reloadData];
+            for (uint i=0; i<[bself->deviceUsers count]; i++)
+            {
+                if ([bnick isEqualToString:[[bself->deviceUsers objectAtIndex:i] valueForKey:@"nickName"]])
+                {
+                    NSUInteger indexPath[] = {0,i};
+                    NSIndexPath *ip = [NSIndexPath indexPathWithIndexes:indexPath length:2];
+                    [bself->selectUserTableView selectRowAtIndexPath:ip animated:NO scrollPosition:UITableViewScrollPositionNone];
+                    break;
+                }
+            }
+            [bself setActiveView:selectUserView];
         }
     };
     
-    [usersService setCurrentUserToNewUserWithNick:newUserNameTF.text
-                                      andPassword:newUserPasswordTF.text
-                                         callback:createSetUrCallback];
+    [usersService createNewUserWithNick:newUserNameTF.text
+                            andPassword:newUserPassCodeView.text
+                               callback:createSetUrCallback];
 }
 
 #pragma mark -
 #pragma mark LoadExistingUserView;
 
-- (void) buildLoadExistingUserView
+-(void)buildLoadExistingUserView
 {
-    existingUserNameTF = [[UITextField alloc] initWithFrame:CGRectMake(358.0f, 114.0f, 400.0f, 45.0f)];
+    existingUserNameTF = [[[UITextField alloc] initWithFrame:CGRectMake(334.0f, 276.0f, 360.0f, 42.0f)] autorelease];
     existingUserNameTF.delegate = self;
-    existingUserNameTF.font = [UIFont fontWithName:@"Lucida Grande" size:28];
-    existingUserNameTF.placeholder = @"name";
-    existingUserNameTF.clearButtonMode = UITextFieldViewModeWhileEditing;
+    existingUserNameTF.font = [UIFont fontWithName:@"Chango" size:24];
+    //existingUserNameTF.placeholder = @"name";
+    existingUserNameTF.clearButtonMode = UITextFieldViewModeNever;
     existingUserNameTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     existingUserNameTF.autocorrectionType = UITextAutocorrectionTypeNo;
-    existingUserNameTF.keyboardType = UIKeyboardTypeDefault;
+    existingUserNameTF.keyboardType = UIKeyboardTypeNamePhonePad;
     existingUserNameTF.returnKeyType = UIReturnKeyDone;
-    [existingUserNameTF setTextColor:[UIColor darkGrayColor]];
+    [existingUserNameTF setTextColor:[UIColor whiteColor]];
     [existingUserNameTF setBorderStyle:UITextBorderStyleNone];
     [loadExistingUserView addSubview:existingUserNameTF];
     
-    existingUserPasswordTF = [[UITextField alloc] initWithFrame:CGRectMake(358.0f, 186.0f, 400.0f, 45.0f)];
-    existingUserPasswordTF.delegate = self;
-    existingUserPasswordTF.font = [UIFont fontWithName:@"Lucida Grande" size:28];
-    existingUserPasswordTF.placeholder = @"password";
-    existingUserPasswordTF.secureTextEntry = YES;
-    existingUserPasswordTF.clearButtonMode = UITextFieldViewModeWhileEditing;
-    existingUserPasswordTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    existingUserPasswordTF.autocorrectionType = UITextAutocorrectionTypeNo;
-    existingUserPasswordTF.keyboardType = UIKeyboardTypeDefault;
-    existingUserPasswordTF.returnKeyType = UIReturnKeyDone;
-    [existingUserPasswordTF setTextColor:[UIColor darkGrayColor]];
-    [existingUserPasswordTF setBorderStyle:UITextBorderStyleNone];
-    [loadExistingUserView addSubview:existingUserPasswordTF];
+    downloadUserPassCodeView = [[[PassCodeView alloc] initWithFrame:CGRectMake(390.0f, 334.0f, 255.0f, 46.0f)] autorelease];
+    [loadExistingUserView addSubview:downloadUserPassCodeView];
     
     cancelExistingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelExistingUserButton.frame = CGRectMake(229.0f, 66.0f, 50.0f, 50.0f);
-    [cancelExistingUserButton setImage:[UIImage imageNamed:@"/select-edit-user-images/Cancel.png"] forState:UIControlStateNormal];
-    [cancelExistingUserButton addTarget:self action:@selector(handleCancelExistingUserClicked:) forControlEvents:UIControlEventTouchDown];
+    cancelExistingUserButton.frame = CGRectMake(330.0f, 392.0f, 131.0f, 51.0f);
+    [cancelExistingUserButton setImage:[UIImage imageNamed:@"/login-images/cancel_button_2.png"] forState:UIControlStateNormal];
+    [cancelExistingUserButton addTarget:self action:@selector(handleCancelExistingUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [loadExistingUserView addSubview:cancelExistingUserButton];
     
     loadExistingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    loadExistingUserButton.frame = CGRectMake(261.0f, 270.0f, 539.0f, 81.0f);
-    [loadExistingUserButton setImage:[UIImage imageNamed:@"/select-edit-user-images/SyncExistingUser_btn.png"] forState:UIControlStateNormal];
+    loadExistingUserButton.frame = CGRectMake(563.0f, 391.0f, 131.0f, 51.0f);
+    [loadExistingUserButton setImage:[UIImage imageNamed:@"/login-images/download_button.png"] forState:UIControlStateNormal];
     [loadExistingUserButton addTarget:self action:@selector(handleLoadExistingUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [loadExistingUserView addSubview:loadExistingUserButton];
 }
 
-- (void) handleCancelExistingUserClicked:(id*)button
+-(void)handleCancelExistingUserClicked:(id*)button
 {
     existingUserNameTF.text = @"";
-    existingUserPasswordTF.text = @"";
+    downloadUserPassCodeView.text = @"";
     [existingUserNameTF resignFirstResponder];
-    [existingUserPasswordTF resignFirstResponder];
+    [downloadUserPassCodeView resignFirstResponder];
     [self setActiveView:selectUserView];
 }
 
-- (void) handleLoadExistingUserClicked:(id*)button
+-(void)handleLoadExistingUserClicked:(id*)button
 {
     __block typeof(self) bself = self;
     void (^callback)() = ^(NSDictionary *ur) {
@@ -378,8 +417,14 @@
         [bself->app proceedFromLoginViaIntro:NO];
     };
     
+    if (!existingUserNameTF.text || !existingUserNameTF.text.length)
+    {
+        [existingUserNameTF becomeFirstResponder];
+        return;
+    }
+    
     [usersService downloadUserMatchingNickName:existingUserNameTF.text
-                                   andPassword:existingUserPasswordTF.text
+                                   andPassword:downloadUserPassCodeView.text
                                       callback:callback];
 }
 
@@ -387,36 +432,14 @@
 #pragma mark -
 #pragma mark Destruction
 
-- (void)dealloc
+-(void)dealloc
 {
-    [deviceUsers release];
-    if (colorWheel) [colorWheel removeObserver:self forKeyPath:@"lastColorRGBAData"];
-    [backgroundImageView release];
-    [newUserNameTF release];
-    [editUserView release];
-    [selectUserView release];
-    [selectUserTableView release];
-    [loadExistingUserView release];
+    if (deviceUsers)[deviceUsers release];
+    if (backgroundImageView)[backgroundImageView release];
+    if (editUserView)[editUserView release];
+    if (selectUserView)[selectUserView release];
+    if (selectUserTableView)[selectUserTableView release];
+    if (loadExistingUserView)[loadExistingUserView release];
     [super dealloc];
-}
-
-- (void)viewDidUnload
-{
-    [deviceUsers release];
-    deviceUsers = nil;
-    if (colorWheel) [colorWheel removeObserver:self forKeyPath:@"lastColorRGBAData"];
-    [backgroundImageView release];
-    backgroundImageView = nil;
-    [newUserNameTF release];
-    newUserNameTF = nil;
-    [editUserView release];
-    editUserView = nil;
-    [selectUserView release];
-    selectUserView = nil;
-    [selectUserTableView release];
-    selectUserTableView = nil;
-    [loadExistingUserView release];
-    loadExistingUserView = nil;
-    [super viewDidUnload];
 }
 @end

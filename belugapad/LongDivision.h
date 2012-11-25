@@ -61,11 +61,16 @@
     BOOL movedTopSection;
     BOOL hideRenderLayer;
     
+    BOOL audioHasPlayedOverTarget;
+    BOOL audioHasPlayedOnTarget;
+    
     BOOL hasEvaluated;
     
     float dividend;
     float divisor;
+    float highestBase;
     
+    int columnsInPicker;
     int currentRowPos;
     int activeRow;
     int previousRow;
@@ -73,7 +78,7 @@
     int previousNumberPos;
     float currentTotal;
     float rowMultiplier;
-    int startRow;
+    int startColValue;
     
     int currentTouchCount;
     
@@ -86,6 +91,8 @@
     float lastBaseEval;
     float currentScaleY;
     NSMutableArray *renderedBlocks;
+    NSMutableDictionary *labelInfo;
+    
     
     //problem state
     BOOL expressionIsEqual;
@@ -95,7 +102,7 @@
 -(void)createVisibleNumbers;
 -(void)updateLabels:(CGPoint)position;
 -(void)updateBlock;
--(void)checkBlock:(int)thisRow;
+-(void)checkBlockWithBase:(float)thisBase andSelection:(int)thisSelection;
 -(void)createBlockAtIndex:(int)index withBase:(float)base;
 -(void)populateGW;
 -(void)handlePassThruScaling:(float)scale;

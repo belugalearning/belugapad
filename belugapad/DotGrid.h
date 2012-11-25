@@ -12,6 +12,7 @@
 
 @class DWDotGridShapeGameObject;
 @class DWDotGridShapeGroupGameObject;
+@class DWDotGridAnchorGameObject;
 @class DWNWheelGameObject;
 
 typedef enum {
@@ -30,8 +31,24 @@ typedef enum {
 typedef enum {
     kProblemTotalShapeSize=0,
     kProblemSumOfFractions=1,
-    kProblemGridMultiplication=2
+    kProblemGridMultiplication=2,
+    kProblemCheckDimensions=3,
+    kProblemFactorDimensions=4,
+    kProblemNonProportionalGrid=5,
+    kProblemSingleShapeSize=6,
+    kProblemIntroPlist=99
 } DotGridEvalType;
+
+typedef struct {
+    NSArray *matchedShapes;
+    NSArray *matchedGOs;
+    BOOL canEval;
+} CorrectSizeInfo;
+
+typedef struct {
+    DWDotGridAnchorGameObject *firstAnchor;
+    DWDotGridAnchorGameObject *lastAnchor;
+} OrderedAnchors;
 
 @interface DotGrid : ToolScene
 {
@@ -68,6 +85,7 @@ typedef enum {
     
     CGPoint lastTouch;
     
+    BOOL audioHasPlayedResizing;
     
     BOOL disableDrawing;
     BOOL showDraggableBlock;
@@ -80,14 +98,30 @@ typedef enum {
     BOOL isMovingUp;
     BOOL isMovingDown;
     BOOL gridMultiCanEval;
+    BOOL debugLogging;
+    
+    NSString *showCount;
     
     CCSprite *dragBlock;
     CCSprite *newBlock;
+    CCLayer *introLayer;
     BOOL hitDragBlock;
     
     BOOL useShapeGroups;
+    BOOL showMoreOrLess;
     int shapeGroupSize;
     int shapeBaseSize;
+    int nonPropEvalX;
+    int nonPropEvalY;
+    int numberWheelComponents;
+    
+    
+    BOOL isIntroPlist;
+    BOOL hitIntroCommit;
+    BOOL showingIntroOverlay;
+    CCSprite *introOverlay;
+    CCSprite *introCommit;
+
     
     BOOL movingLayer;
     
@@ -95,7 +129,15 @@ typedef enum {
     NSDictionary *hiddenRows;
     NSMutableArray *numberWheels;
     
+    NSMutableArray *reqShapesCopy;
+    
     DWNWheelGameObject *sumWheel;
+    
+    NSMutableArray *visibleAnchors;
+    NSMutableArray *invisibleAnchors;
+    CGRect drawnArea;
+    
+    CCDrawNode *drawNode;
     
     float timeToAutoMoveToNextProblem;
     BOOL autoMoveToNextProblem;

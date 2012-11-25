@@ -39,6 +39,9 @@
 @synthesize MarkerValuePositions;
 @synthesize UserJumps;
 
+@synthesize DisplayNumberOffset;
+@synthesize DisplayNumberMultiplier;
+@synthesize DisplayNumberDP;
 
 -(void)readyRender
 {

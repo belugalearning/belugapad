@@ -19,6 +19,7 @@ typedef enum {
 typedef enum {
     BL_DEVICE_CONTEXT,
     BL_USER_CONTEXT,
+    BL_EPISODE_CONTEXT,
     BL_PROBLEM_ATTEMPT_CONTEXT
 } BL_LOGGING_CONTEXT;
 
@@ -32,6 +33,7 @@ typedef enum
 @property (readonly, retain) LogPoller *logPoller;
 @property (readonly, retain) TouchLogger *touchLogger;
 @property (readonly, retain) NSString *currentProblemAttemptID;
+@property (readonly) NSString *currentBatchId;
 
 -(id)initWithProblemAttemptLoggingSetting:(BL_LOGGING_SETTING)paLogSetting;
 

@@ -10,15 +10,25 @@
 #import "SGBtxeContainerMgr.h"
 #import "SGBtxeRowLayout.h"
 #import "SGBtxeParser.h"
+#import "SGBtxePlaceholder.h"
+#import "SGBtxeObjectIcon.h"
+#import "SGBtxeObjectText.h"
+#import "SGBtxeObjectNumber.h"
+#import "SGBtxeObjectOperator.h"
+#import "SGBtxeText.h"
+
+#import "global.h"
 
 @implementation SGBtxeRow
 
 @synthesize children, containerMgrComponent;   //Container properties
 @synthesize renderLayer, forceVAlignTop;
-@synthesize size, position, worldPosition;       //Bounding properties
-
+@synthesize size, position, worldPosition, rowWidth;       //Bounding properties
 @synthesize rowLayoutComponent;
 @synthesize parserComponent;
+@synthesize baseNode;
+@synthesize isLarge;
+@synthesize defaultNumbermode;
 
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget
 {
@@ -28,9 +38,12 @@
         size=CGSizeZero;
         position=CGPointZero;
         forceVAlignTop=NO;
+        isLarge=NO;
+        self.defaultNumbermode=@"number";
         containerMgrComponent=[[SGBtxeContainerMgr alloc] initWithGameObject:(SGGameObject*)self];
         rowLayoutComponent=[[SGBtxeRowLayout alloc] initWithGameObject:(SGGameObject*)self];
         parserComponent=[[SGBtxeParser alloc] initWithGameObject:(SGGameObject*)self];
+        rowWidth=BTXE_ROW_DEFAULT_MAX_WIDTH;
         
         self.renderLayer=renderLayerTarget;
     }
@@ -47,26 +60,133 @@
     
 }
 
+-(BOOL)containsObject:(id)o
+{
+    //just checks if o is in this row's children
+    return [children containsObject:o];
+}
+
+-(void)inflateZindex
+{
+    self.baseNode.zOrder=99;
+}
+-(void)deflateZindex
+{
+    baseNode.zOrder=0;
+}
+
 -(void)setupDraw
 {
     //create base node
     baseNode=[[CCNode alloc] init];
-    baseNode.position=self.position;
-    [renderLayer addChild:baseNode];
+    self.baseNode.position=self.position;
+    [renderLayer addChild:self.baseNode];
     
     //render each child
     for (id<Bounding, RenderObject> c in children) {
+        
+        if([((id<NSObject>)c) conformsToProtocol:@protocol(MovingInteractive)])
+            ((id<MovingInteractive>)c).isLargeObject=self.isLarge;
+        if([((id<NSObject>)c) isKindOfClass:[SGBtxePlaceholder class]])
+            ((SGBtxePlaceholder*)c).isLargeObject=self.isLarge;
+        
         [c setupDraw];
         
         //we could potentially do this separately (create, layout, attach) -- but for the moment
         // this shouldn't have a performance impact as Cocos won't do stuff with this until we
         // release the run loop
-        [c attachToRenderBase:baseNode];
+        [c attachToRenderBase:self.baseNode];
     }
     
     //layout position of stuff
     [self.rowLayoutComponent layoutChildren];
 
+}
+
+-(void)setPosition:(CGPoint)thePosition
+{
+    position=thePosition;
+    self.baseNode.position=self.position;
+    
+    //also need to update position of children as not all move with the base node
+    for(id<Bounding> c in children)
+    {
+        c.position=c.position;
+    }
+}
+
+-(void)tagMyChildrenForIntro
+{
+    for(id c in children)
+    {
+        if([c isKindOfClass:[SGBtxeText class]])
+        {
+            [(SGBtxeText*)c tagMyChildrenForIntro];
+        }
+        if([c isKindOfClass:[SGBtxeObjectText class]])
+        {
+            [(SGBtxeObjectText*)c tagMyChildrenForIntro];
+        }
+        if([c isKindOfClass:[SGBtxeObjectIcon class]])
+        {
+            [(SGBtxeObjectIcon*)c tagMyChildrenForIntro];
+        }
+        if([c isKindOfClass:[SGBtxeObjectNumber class]])
+        {
+            [(SGBtxeObjectNumber*)c tagMyChildrenForIntro];
+        }
+        if([c isKindOfClass:[SGBtxeObjectOperator class]])
+        {
+            [(SGBtxeObjectOperator*)c tagMyChildrenForIntro];
+        }
+    }
+}
+
+-(NSString*)returnRowStringForSpeech
+{
+    NSString *rowString=@"";
+    
+    for(id c in children)
+    {
+        if([c isKindOfClass:[SGBtxeText class]])
+        {
+            rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeText*)c returnMyText]];
+        }
+        
+        if([c isKindOfClass:[SGBtxeObjectText class]])
+        {
+            rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectText*)c returnMyText]];
+        }
+        
+        if([c isKindOfClass:[SGBtxeObjectNumber class]])
+        {
+            rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectNumber*)c numberText]];
+        }
+        
+        if([c isKindOfClass:[SGBtxeObjectIcon class]])
+        {
+            rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectIcon*)c returnMyText]];
+        }
+        
+        if([c isKindOfClass:[SGBtxeObjectOperator class]])
+        {
+            rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectOperator*)c returnMyText]];
+        }
+        
+    }
+    
+    return rowString;
+}
+
+-(void)animateAndMoveToPosition:(CGPoint)thePosition
+{
+    position=thePosition;
+    [self.baseNode runAction:[CCEaseInOut actionWithAction:[CCMoveTo actionWithDuration:0.25f position:position] rate:2.0f]];
+}
+
+-(void)relayoutChildrenToWidth:(float)width
+{
+    [self.rowLayoutComponent layoutChildrenToWidth:width];
 }
 
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime
@@ -95,9 +215,9 @@
     self.rowLayoutComponent=nil;
     self.parserComponent=nil;
     self.renderLayer=nil;
+    self.baseNode=nil;
     
     [children release];
-    [baseNode release];
     
     [super dealloc];
 }

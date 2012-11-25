@@ -13,7 +13,11 @@
 #import "AppDelegate.h"
 #import "UsersService.h"
 #import "ContentService.h"
+#import "ConceptNode.h"
+#import "Pipeline.h"
 #import "Problem.h"
+#import "NodePlay.h"
+#import "UserNodeState.h"
 #import "AFNetworking.h"
 #import <zlib.h>
 #import <CommonCrypto/CommonDigest.h>
@@ -40,7 +44,10 @@ uint const kMaxConsecutiveSendFails = 3;
     
     NSMutableDictionary *deviceSessionDoc;
     NSMutableDictionary *userSessionDoc;
+    NSMutableDictionary *episodeDoc;
     NSMutableDictionary *problemAttemptDoc;
+    
+    NodePlay *nodePlay;
     
     uint consecutiveSendFails;
     __block BOOL isSending;
@@ -50,7 +57,9 @@ uint const kMaxConsecutiveSendFails = 3;
 @property (readwrite, retain) TouchLogger *touchLogger;
 @property (readwrite, retain) NSString *currPAPollDocId;
 @property (readwrite, retain) NSString *currPATouchDocId;
+@property (readonly) NSData *currentBatchIdData;
 
+-(void)newBatch;
 -(void)sendCurrBatch;
 -(void)sendPrevBatches;
 -(void)sendBatchData:(NSData*)batchData withCompletionBlock:(void (^)(BL_SEND_LOG_STATUS status))onComplete;
@@ -79,7 +88,7 @@ uint const kMaxConsecutiveSendFails = 3;
         opQueue = [[[NSOperationQueue alloc] init] retain];
         fm = [NSFileManager defaultManager];
         
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
         NSString *baseDir = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"logging"];
         currDir = [[NSString stringWithFormat:@"%@/%@", baseDir, @"current-batch"] retain];
         prevDir = [[NSString stringWithFormat:@"%@/%@", baseDir, @"prev-batches"] retain];
@@ -92,6 +101,48 @@ uint const kMaxConsecutiveSendFails = 3;
     return self;
 }
 
+-(NSData*)currentBatchIdData
+{
+    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentBatchIdData"];
+    if (!data)
+    {
+        // first launch
+        [self newBatch];
+        data = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentBatchIdData"];
+    }
+    return data;
+}
+
+-(NSString*)currentBatchId
+{
+    NSData *data = self.currentBatchIdData;
+    CFUUIDBytes bytes;
+    [data getBytes:&bytes length:16];
+    
+    CFUUIDRef ref = CFUUIDCreateFromUUIDBytes(kCFAllocatorDefault, bytes);
+    CFStringRef sref = CFUUIDCreateString(kCFAllocatorDefault, ref);
+    
+    NSString *uuid = [[[NSString stringWithFormat:@"%@", sref] stringByReplacingOccurrencesOfString:@"-" withString:@""] lowercaseString];
+    
+    CFRelease(sref);
+    CFRelease(ref);
+    
+    return  uuid;
+}
+
+-(void)newBatch
+{
+    CFUUIDRef ref = CFUUIDCreate(kCFAllocatorDefault);
+    CFUUIDBytes bytes = CFUUIDGetUUIDBytes(ref);
+    NSData *data = [NSData dataWithBytes:&bytes length:sizeof(bytes)];
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"currentBatchIdData"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    CFRelease(ref);
+    
+    AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+    UsersService *us = ac.usersService;
+}
+
 -(NSString*)currentProblemAttemptID
 {
     if (BL_PROBLEM_ATTEMPT_CONTEXT != currentContext) return nil;
@@ -100,7 +151,12 @@ uint const kMaxConsecutiveSendFails = 3;
 }
 
 -(void)logEvent:(NSString*)eventType withAdditionalData:(NSObject*)additionalData
-{   
+{
+    if (BL_LOGGING_DISABLED == problemAttemptLoggingSetting) return;
+    
+    BOOL restorePrevContextOnReturn = NO;
+    BL_LOGGING_CONTEXT prevContext = currentContext;
+    
     if (BL_APP_START == eventType)
     {
         currentContext = BL_DEVICE_CONTEXT;
@@ -111,6 +167,7 @@ uint const kMaxConsecutiveSendFails = 3;
         {
             installationId = [self generateUUID];
             [standardUserDefaults setObject:installationId forKey:@"installationUUID"];
+            [standardUserDefaults synchronize];
         }
         
         deviceSessionDoc = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
@@ -146,10 +203,42 @@ uint const kMaxConsecutiveSendFails = 3;
     {
         currentContext = BL_USER_CONTEXT;
     }
+    else if (BL_USER_ENCOUNTER_FEATURE_KEY == eventType)
+    {
+        restorePrevContextOnReturn = YES;
+        currentContext = BL_USER_CONTEXT;
+    }
+    else if (BL_EP_START == eventType)
+    {
+        currentContext = BL_EPISODE_CONTEXT;
+        if (episodeDoc) [episodeDoc release];
+        if (!userSessionDoc) return; // error!
+        
+        AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+        episodeDoc = [@{
+                      @"_id":ac.contentService.currentEpisodeId
+                      , @"type": @"Episode"
+                      , @"events": [NSMutableArray array]
+                      , @"device": [deviceSessionDoc objectForKey:@"device"]
+                      , @"deviceSession": [deviceSessionDoc objectForKey:@"_id"]
+                      , @"user": [userSessionDoc objectForKey:@"user"]
+                      , @"userSession": [userSessionDoc objectForKey:@"_id"]
+                      , @"nodeId": ac.contentService.currentNode._id
+                      , @"nodeRev": ac.contentService.currentNode._rev
+                      , @"pipelineId": ac.contentService.currentPipeline._id
+                      , @"pipelineRev": ac.contentService.currentPipeline._rev
+                      , @"timeInPlay": @0
+                      , @"timePaused": @0
+                      , @"score": @0
+                      } mutableCopy];
+    }
+    else if (BL_EP_ATTEMPT_ADAPT_PIPELINE_INSERTION == eventType)
+    {
+        currentContext = BL_EPISODE_CONTEXT;
+    }
     else if (BL_PA_START == eventType)
     {
         currentContext = BL_PROBLEM_ATTEMPT_CONTEXT;
-        if (BL_LOGGING_DISABLED == problemAttemptLoggingSetting) return;
         
         AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
         Problem *p = ac.contentService.currentProblem;
@@ -157,6 +246,7 @@ uint const kMaxConsecutiveSendFails = 3;
         if (!p) return; // error!
         if (!deviceSessionDoc) return; // error!
         if (!userSessionDoc) return; // error!
+        if (!episodeDoc) return;
         
         problemAttemptDoc = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                              [self generateUUID], @"_id"
@@ -166,6 +256,7 @@ uint const kMaxConsecutiveSendFails = 3;
                              , [deviceSessionDoc objectForKey:@"_id"], @"deviceSession"
                              , [userSessionDoc objectForKey:@"user"], @"user"
                              , [userSessionDoc objectForKey:@"_id"], @"userSession"
+                             , [episodeDoc objectForKey:@"_id"], @"episode"
                              , p._id, @"problemId"
                              , p._rev, @"problemRev"
                              , nil];
@@ -179,62 +270,65 @@ uint const kMaxConsecutiveSendFails = 3;
         [self.logPoller resumePolling];
     }
     
-    if (BL_PROBLEM_ATTEMPT_CONTEXT == currentContext && BL_LOGGING_DISABLED == problemAttemptLoggingSetting) return;
-    
-    if (self.currPAPollDocId) // currPollDocId != nil <=> currTouchDocId != nil
-    {
-        NSArray *paEvents = [problemAttemptDoc objectForKey:@"events"];
-        if (!paEvents.count) return;
-        
-        NSNumber *paStart = [((NSDictionary*)[paEvents objectAtIndex:0]) objectForKey:@"date"];
-        
-        NSArray *deltas = self.logPoller.ticksDeltas;
-        if ([deltas count])
-        {
-            [[@{
-              @"deltas": deltas
-              , @"_id": self.currPAPollDocId
-              , @"type": @"ProblemAttemptGOPoll"
-              , @"problemAttempt": [problemAttemptDoc objectForKey:@"_id"]
-              , @"problemAttemptStartDate": paStart
-              , @"device": [deviceSessionDoc objectForKey:@"device"]
-              , @"deviceSession": [deviceSessionDoc objectForKey:@"_id"]
-              , @"user": [userSessionDoc objectForKey:@"user"]
-              , @"userSession": [userSessionDoc objectForKey:@"_id"]
-              } JSONData] writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, self.currPAPollDocId] options:NSAtomicWrite error:nil];
-        }
-        
-        NSArray *paTouches = [self.touchLogger.allTouches allObjects];
-        if ([paTouches count])
-        {
-            [[@{
-              @"touches": paTouches
-              , @"_id": self.currPATouchDocId
-              , @"type": @"TouchLog"
-              , @"context": @"ProblemAttempt"
-              , @"problemAttempt": [problemAttemptDoc objectForKey:@"_id"]
-              , @"problemAttemptStartDate": paStart
-              , @"device": [deviceSessionDoc objectForKey:@"device"]
-              , @"deviceSession": [deviceSessionDoc objectForKey:@"_id"]
-              , @"user": [userSessionDoc objectForKey:@"user"]
-              , @"userSession": [userSessionDoc objectForKey:@"_id"]
-              } JSONData] writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, self.currPATouchDocId] options:NSAtomicWrite error:nil];
-        }
-        
-        if (currentContext != BL_PROBLEM_ATTEMPT_CONTEXT)
-        {
-            self.currPAPollDocId = nil;
-            self.currPATouchDocId = nil;
-            [self.logPoller stopPolling];
-        }
-    }
     if (BL_PA_START == eventType)
     {
         self.currPAPollDocId = [self generateUUID];
         self.currPATouchDocId = [self generateUUID];
         [self.logPoller resetAndStartPolling];
         [self.touchLogger reset];
-    }    
+    }
+    
+    if (self.currPAPollDocId) // currPollDocId != nil <=> currTouchDocId != nil
+    {
+        NSArray *paEvents = [problemAttemptDoc objectForKey:@"events"];
+        if ([paEvents count])
+        {
+            NSNumber *paStart = [((NSDictionary*)[paEvents objectAtIndex:0]) objectForKey:@"date"];
+            NSArray *deltas = self.logPoller.ticksDeltas;
+            if ([deltas count])
+            {
+                [[@{
+                  @"deltas": deltas
+                  , @"_id": self.currPAPollDocId
+                  , @"type": @"ProblemAttemptGOPoll"
+                  , @"problemAttempt": [problemAttemptDoc objectForKey:@"_id"]
+                  , @"problemAttemptStartDate": paStart
+                  , @"device": [deviceSessionDoc objectForKey:@"device"]
+                  , @"deviceSession": [deviceSessionDoc objectForKey:@"_id"]
+                  , @"user": [userSessionDoc objectForKey:@"user"]
+                  , @"userSession": [userSessionDoc objectForKey:@"_id"]
+                  , @"episode": [episodeDoc objectForKey:@"_id"]
+                  } JSONData] writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, self.currPAPollDocId] options:NSAtomicWrite error:nil];
+            }
+            
+            NSArray *paTouches = [self.touchLogger.allTouches allObjects];
+            if ([paTouches count])
+            {
+                [[@{
+                  @"touches": paTouches
+                  , @"_id": self.currPATouchDocId
+                  , @"type": @"TouchLog"
+                  , @"context": @"ProblemAttempt"
+                  , @"problemAttempt": [problemAttemptDoc objectForKey:@"_id"]
+                  , @"problemAttemptStartDate": paStart
+                  , @"device": [deviceSessionDoc objectForKey:@"device"]
+                  , @"deviceSession": [deviceSessionDoc objectForKey:@"_id"]
+                  , @"user": [userSessionDoc objectForKey:@"user"]
+                  , @"userSession": [userSessionDoc objectForKey:@"_id"]
+                  , @"episode": [episodeDoc objectForKey:@"_id"]
+                  } JSONData] writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, self.currPATouchDocId] options:NSAtomicWrite error:nil];
+            }
+        }
+        
+        BOOL paEnded = BL_PA_SUCCESS == eventType   ||  BL_PA_EXIT_TO_MAP == eventType  || BL_PA_USER_RESET == eventType || BL_PA_SKIP == eventType || BL_PA_SKIP_DEBUG == eventType || BL_PA_SKIP_WITH_SUGGESTION == eventType || BL_PA_FAIL == eventType || BL_PA_FAIL_WITH_CHILD_PROBLEM == eventType;
+        
+        if (paEnded)
+        {
+            self.currPAPollDocId = nil;
+            self.currPATouchDocId = nil;
+            [self.logPoller stopPolling];
+        }
+    }
     
     NSMutableDictionary *doc = nil;
     switch (currentContext) {
@@ -244,12 +338,19 @@ uint const kMaxConsecutiveSendFails = 3;
         case BL_USER_CONTEXT:
             doc = userSessionDoc;
             break;
+        case BL_EPISODE_CONTEXT:
+            doc = episodeDoc;
+            break;
         case BL_PROBLEM_ATTEMPT_CONTEXT:
             doc = problemAttemptDoc;
             break;
     }
     
-    if (!doc) return; // error!
+    if (!doc)
+    {
+        if (restorePrevContextOnReturn) currentContext = prevContext;
+        return; // error!
+    }
     
     if (additionalData)
     {
@@ -262,14 +363,55 @@ uint const kMaxConsecutiveSendFails = 3;
     NSMutableDictionary *event = [NSMutableDictionary dictionary];
     [event setValue:eventType forKey:@"eventType"];
     [event setValue:[NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]] forKey:@"date"];
-    [event setValue:additionalData forKey:@"additionalData"];
+    [event setValue:additionalData forKey:@"additionalData"]; // often nil
     
     NSMutableArray *events = [doc objectForKey:@"events"];
     [events addObject:event];
-     
-    NSData *docData = [doc JSONData];
-    if (!docData) return; //TODO: Log App error !
     
+    if (BL_EP_START == eventType) nodePlay = [[NodePlay alloc] initWithEpisode:episodeDoc batchId:self.currentBatchId];
+    if (nodePlay)
+    {
+        NSError *error = nil;
+        BOOL endEpisode = [nodePlay processEvent:event error:&error];
+        
+        if (error)
+        {
+            NSMutableArray *events = [episodeDoc valueForKey:@"events"];
+            NSDictionary *ad = @{
+                @"type":[[error userInfo] valueForKey:@"type"],
+                NSLocalizedDescriptionKey:[error localizedDescription]
+            };
+            [events addObject:@{@"eventType":BL_APP_ERROR, @"additionalData":ad}];
+        }
+        
+        [episodeDoc setValue:@(nodePlay.pauseTime) forKey:@"timePaused"];
+        [episodeDoc setValue:@(nodePlay.playTime) forKey:@"timeInPlay"];
+        
+        if (endEpisode)
+        {
+            [episodeDoc setValue:nodePlay.score forKey:@"score"];
+            
+            AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
+            UserNodeState *nodeState = [ac.usersService currentUserStateForNodeWithId:nodePlay.nodeId];
+            [nodeState updateStateFromNodePlay:nodePlay];
+            [nodeState saveState];
+            [nodePlay release];
+            nodePlay = nil;
+        }
+        
+        if (doc != episodeDoc)
+        {
+            [[episodeDoc JSONData] writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, [episodeDoc valueForKey:@"_id"]]
+                                       options:NSAtomicWrite
+                                         error:nil];
+        }
+    }
+    
+    NSData *docData = [doc JSONData];
+    
+    if (restorePrevContextOnReturn) currentContext = prevContext;
+    
+    if (!docData) return; //TODO: Log App error !
     [docData writeToFile:[NSString stringWithFormat:@"%@/%@", currDir, [doc objectForKey:@"_id"]]
                  options:NSAtomicWrite
                    error:nil];
@@ -348,8 +490,8 @@ uint const kMaxConsecutiveSendFails = 3;
     
     // ----- create batchData by prefixing compressedData with date and batch uuid
     uint batchDate = (uint)[[NSDate date] timeIntervalSince1970];
-    CFUUIDRef uuidRef = CFUUIDCreate(kCFAllocatorDefault);
-    CFUUIDBytes uuid = CFUUIDGetUUIDBytes(uuidRef);
+    CFUUIDBytes uuid;
+    [self.currentBatchIdData getBytes:&uuid length:16];
     Byte prefixBytes[36] =  {
         batchDate>>24 & 0xFF,   batchDate>>16 & 0xFF,     batchDate>>8 & 0xFF,      batchDate & 0xFF,
         uuid.byte0, uuid.byte1, uuid.byte2,  uuid.byte3,  uuid.byte4,  uuid.byte5,  uuid.byte6,  uuid.byte7,
@@ -357,36 +499,25 @@ uint const kMaxConsecutiveSendFails = 3;
     };
     NSMutableData *batchData = [NSMutableData dataWithBytes:prefixBytes length:20];
     [batchData appendData:compressedData];
-    CFRelease(uuidRef);
     
+    // ---- store the compressed data in prevDir for poential future repeat attempt at saving
+    NSString *batchPath = [NSString stringWithFormat:@"%@/%d", prevDir, (int)[[NSDate date] timeIntervalSince1970]];
+    [fm createFileAtPath:batchPath contents:batchData attributes:nil];
+    
+    // ---- blank current logging dir
+    [fm removeItemAtPath:currDir error:nil];
+    [fm createDirectoryAtPath:currDir withIntermediateDirectories:NO attributes:nil error:nil];
+    
+    // ---- new batch
+    [self newBatch];
     
     // ----- HTTPRequest Completion Handler
     __block typeof(self) bself = self;
     void (^onComplete)() = ^(BL_SEND_LOG_STATUS status)
     {
-        BOOL queuedBatch = NO;
-        
-        if (status != BL_SLS_SUCCESS)
-        {
-            // ---- store the compressed data in prevDir for future repeat attempt at saving
-            NSString *filePath = [NSString stringWithFormat:@"%@/%d", bself->prevDir, (int)[[NSDate date] timeIntervalSince1970]];
-            queuedBatch = [bself->fm createFileAtPath:filePath contents:batchData attributes:nil];            
-            if (!queuedBatch)
-            {
-                NSMutableDictionary *d = [NSMutableDictionary dictionary];
-                [d setValue:BL_APP_ERROR_TYPE_FAIL_QUEUE_BATCH forKey:@"type"];
-                [bself logEvent:BL_APP_ERROR withAdditionalData:d];
-            }
-        }
-        
-        // delete files from currDir if they've either been successfully sent to server or have been saved in compressed form in prevDir
-        if (BL_SLS_SUCCESS == status || queuedBatch)
-        {
-            [bself->fm removeItemAtPath:bself->currDir error:nil];
-            [bself->fm createDirectoryAtPath:bself->currDir withIntermediateDirectories:NO attributes:nil error:nil];
-            [bself sendPrevBatches];
-        }
-    };    
+        if (BL_SLS_SUCCESS == status) [fm removeItemAtPath:batchPath error:nil];
+        [bself sendPrevBatches];
+    };
     
     // ----- Send batchData in body of HTTPRequest
     [self sendBatchData:batchData withCompletionBlock:onComplete];
@@ -496,6 +627,7 @@ uint const kMaxConsecutiveSendFails = 3;
     if (deviceSessionDoc) [deviceSessionDoc release];
     if (userSessionDoc) [userSessionDoc release];
     if (problemAttemptDoc) [problemAttemptDoc release];
+    if (nodePlay) [nodePlay release];
     [super dealloc];
 }
 

@@ -20,6 +20,7 @@
 #import "LoggingService.h"
 #import "UsersService.h"
 #import "AppDelegate.h"
+#import "SimpleAudioEngine.h"
 
 @interface TimesTables()
 {
@@ -104,7 +105,7 @@ static float kTimeToHeaderBounce=7.0f;
             {
                 [l runAction:[InteractionFeedback dropAndBounceAction]];
             }
-            
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_timestable_interaction_feedback_rows_and_columns_shaking.wav")];
             timeSinceInteractionOrDropHeader=0.0f;
         }
         else if(!hasUsedHeaderY)
@@ -116,6 +117,7 @@ static float kTimeToHeaderBounce=7.0f;
                 [l runAction:[InteractionFeedback dropAndBounceAction]];
             }
             
+            [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_timestable_interaction_feedback_rows_and_columns_shaking.wav")];
             timeSinceInteractionOrDropHeader=0.0f;
         }
         
@@ -141,10 +143,12 @@ static float kTimeToHeaderBounce=7.0f;
     
     evalMode=[[pdef objectForKey:EVAL_MODE] intValue];
     rejectType = [[pdef objectForKey:REJECT_TYPE] intValue];
-    spaceBetweenAnchors=[[pdef objectForKey:ANCHOR_SPACE] intValue];
+
+    spaceBetweenAnchors=46;
     startX=[[pdef objectForKey:START_X] intValue];
     startY=[[pdef objectForKey:START_Y] intValue];
     operatorMode=[[pdef objectForKey:OPERATOR_MODE]intValue];
+    operatorMode=2;
     selectionMode=[[pdef objectForKey:SELECTION_MODE]intValue];
     if([pdef objectForKey:REVEAL_ALL_TILES])revealAllTiles=[[pdef objectForKey:REVEAL_ALL_TILES]boolValue];
     else revealAllTiles=NO;
@@ -184,6 +188,7 @@ static float kTimeToHeaderBounce=7.0f;
     if([pdef objectForKey:REVEAL_ROWS])revealRows=[pdef objectForKey:REVEAL_ROWS];
     if([pdef objectForKey:REVEAL_COLS])revealCols=[pdef objectForKey:REVEAL_COLS];
     if([pdef objectForKey:REVEAL_TILES])revealTiles=[pdef objectForKey:REVEAL_TILES];
+    if([pdef objectForKey:DISABLED_TILES])disabledTiles=[pdef objectForKey:DISABLED_TILES];
     
     
     if(operatorMode==0)operatorName=@"add";
@@ -201,23 +206,29 @@ static float kTimeToHeaderBounce=7.0f;
 
 -(void)populateGW
 {
-    NSString *operatorFileName=[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/operator-%@.png"), operatorName];
+    //NSString *operatorFileName=[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/operator-%@.png"), operatorName];
+    NSString *operatorFileName=[NSString stringWithFormat:BUNDLE_FULL_PATH(@"/images/timestables/TT_Operator.png"), operatorName];
     ttMatrix=[[NSMutableArray alloc]init];
     
     gw.Blackboard.ComponentRenderLayer = renderLayer;
     
+    int amtForX=10;
+    int amtForY=10;
 
-    float xStartPos=spaceBetweenAnchors*2;
+    float xStartPos=300;
 
     int xStartNumber=startX;
-    int yStartNumber=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-1;
+//    int yStartNumber=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-1;
+    int yStartNumber=amtForY-1;
+    
     
     CCSprite *operator = [CCSprite spriteWithFile:operatorFileName];
-    [operator setPosition:ccp(xStartPos-spaceBetweenAnchors,ly-spaceBetweenAnchors*1.5)];
+    float yPos=(amtForY+1.5)*spaceBetweenAnchors;
     [operator setTag:1];
     [operator setOpacity:0];
+    [operator setPosition:ccp(xStartPos-spaceBetweenAnchors,yPos+40)];
     [self.ForeLayer addChild:operator];
-
+    
     NSMutableArray *xHeaders=[[NSMutableArray alloc]init];
     NSMutableArray *yHeaders=[[NSMutableArray alloc]init];
     [headerLabels addObject:xHeaders];
@@ -225,8 +236,9 @@ static float kTimeToHeaderBounce=7.0f;
     
     // render the times table grid
     
-    int amtForX=(int)((lx-spaceBetweenAnchors*3)/spaceBetweenAnchors)+1;
-    int amtForY=(int)((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)+1;
+    //int amtForX=(int)((lx-spaceBetweenAnchors*3)/spaceBetweenAnchors)+1;
+    //int amtForY=(int)((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors);
+    
     
     rowTints=[[NSMutableArray alloc] init];
     colTints=[[NSMutableArray alloc] init];
@@ -242,48 +254,68 @@ static float kTimeToHeaderBounce=7.0f;
         {
             // create our start position and gameobject
             float yStartPos=(iCol+1.5)*spaceBetweenAnchors;
+            yStartPos+=40;
+            
             DWTTTileGameObject *tile = [DWTTTileGameObject alloc];
             [gw populateAndAddGameObject:tile withTemplateName:@"TtimestablesTile"];
             
-            if(iRow==amtForX-1 && iCol==0)
-            {
-                tile.isCornerPiece=YES;
-                tile.Disabled=YES;
-            }
-            else if(iRow==amtForX-1)
-            {
-                tile.isEndXPiece=YES;
-                tile.Disabled=YES;
-            }
-            else if(iCol==0)
-            {
-                tile.isEndYPiece=YES;
-                tile.Disabled=YES;
-            }
+//            if(iRow==amtForX-1 && iCol==0)
+//            {
+//                tile.isCornerPiece=YES;
+//                tile.Disabled=YES;
+//            }
+//            else if(iRow==amtForX-1)
+//            {
+//                tile.isEndXPiece=YES;
+//                tile.Disabled=YES;
+//            }
+//            else if(iCol==0)
+//            {
+//                tile.isEndYPiece=YES;
+//                tile.Disabled=YES;
+//            }
         
             
             if(iRow==0 && showYAxis)
             {
-                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", yStartNumber+1] fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
-                [curLabel setPosition:ccp(xStartPos-spaceBetweenAnchors,yStartPos)];
+                CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/TT_Number_BG.png")];
+                [s setPosition:ccp(xStartPos-spaceBetweenAnchors,yStartPos)];
+                [s setTag:1];
+                [s setOpacity:0];
+            
+                
+                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", yStartNumber+1] fontName:CHANGO fontSize:20.0f];
+                [curLabel setPosition:ccp(s.contentSize.width/2, s.contentSize.height/2)];
                 [curLabel setTag:2];
                 [curLabel setOpacity:0];
 
                 if(!tile.isEndYPiece)
                 {
-                    [self.ForeLayer addChild:curLabel];
+                    [self.ForeLayer addChild:s];
+                    [s addChild:curLabel];
                 }
-                [yHeaders addObject:curLabel];
+//                [yHeaders addObject:curLabel];
+                [yHeaders addObject:s];
                 yStartNumber--;
             }
             
             if(iCol==amtForY-1 && showXAxis) {
-                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", xStartNumber]fontName:CHANGO fontSize:PROBLEM_DESC_FONT_SIZE];
-                [curLabel setPosition:ccp(xStartPos,yStartPos+spaceBetweenAnchors)];
+                
+                    
+                CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/timestables/TT_Number_BG.png")];
+                [s setPosition:ccp(xStartPos,yStartPos+spaceBetweenAnchors)];
+                [s setTag:1];
+                [s setOpacity:0];
+                
+                CCLabelTTF *curLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", xStartNumber]fontName:CHANGO fontSize:20.0f];
+                [curLabel setPosition:ccp(s.contentSize.width/2, s.contentSize.height/2)];
+                
                 if(!tile.isEndXPiece)
                 {
-                    [self.ForeLayer addChild:curLabel];
-                    [xHeaders addObject:curLabel];
+                    [self.ForeLayer addChild:s];
+                    [s addChild:curLabel];
+//                    [xHeaders addObject:curLabel];
+                    [xHeaders addObject:s];
                 }
 
                 [curLabel setTag:2];
@@ -293,7 +325,8 @@ static float kTimeToHeaderBounce=7.0f;
             
             tile.Position=ccp(xStartPos,yStartPos);
             tile.myXpos=xStartNumber;
-            tile.myYpos=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-iCol;
+            //tile.myYpos=startY+((ly-spaceBetweenAnchors*3)/spaceBetweenAnchors)-iCol;
+            tile.myYpos=amtForY-iCol;
             tile.operatorType=operatorMode;
             tile.Size=spaceBetweenAnchors;
             NSLog(@"iRow %d amtForX %d // iCol %d amtForY %d", iRow, amtForX, iCol, amtForY);
@@ -349,6 +382,20 @@ static float kTimeToHeaderBounce=7.0f;
                 }
                 
             }
+        }
+    }
+    
+    
+    if(disabledTiles)
+    {
+        for(NSDictionary *d in disabledTiles)
+        {
+            int thisX=[[d objectForKey:@"X"]intValue];
+            int thisY=[[d objectForKey:@"Y"]intValue];
+            
+            DWTTTileGameObject *t=[[ttMatrix objectAtIndex:thisX-1] objectAtIndex:fabs(thisY-amtForY)];
+            
+            t.Disabled=YES;
         }
     }
     
@@ -446,6 +493,7 @@ static float kTimeToHeaderBounce=7.0f;
     hasUsedHeaderY=YES;
     BOOL haveLogged=NO;
     BOOL tinted=[[rowTints objectAtIndex:thisRow] boolValue];
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_timestable_general_row_or_column_highlighted.wav")];
     
     for(int i=0;i<[ttMatrix count];i++)
     {
@@ -457,7 +505,13 @@ static float kTimeToHeaderBounce=7.0f;
             //untint -- so long as it's not in a row
             if (![[colTints objectAtIndex:i] boolValue])
             {
-                [tile.mySprite setColor:ccc3(255,255,255)];
+                CCSprite *rowSprite=[[headerLabels objectAtIndex:1] objectAtIndex:thisRow];
+                CCLabelTTF *l=[rowSprite.children objectAtIndex:0];
+                [l setColor:ccc3(255,255,255)];
+                
+                [rowSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Number_BG.png")]];
+//                [tile.mySprite setColor:ccc3(255,255,255)];
+                [tile.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Grid_Block.png")]];
             
                 if(!haveLogged)
                 {
@@ -469,7 +523,12 @@ static float kTimeToHeaderBounce=7.0f;
         }
         else {
             //tint it
-            [tile.mySprite setColor:ccc3(0,255,0)];
+//            [tile.mySprite setColor:ccc3(0,255,0)];
+            CCSprite *rowSprite=[[headerLabels objectAtIndex:1] objectAtIndex:thisRow];
+            CCLabelTTF *l=[rowSprite.children objectAtIndex:0];
+            [l setColor:ccc3(0,0,0)];
+            [rowSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Number_BG_Highlighted.png")]];
+            [tile.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Grid_Block_Highlighted.png")]];
             
             if(!haveLogged)
             {
@@ -489,7 +548,8 @@ static float kTimeToHeaderBounce=7.0f;
     hasUsedHeaderX=YES;
     BOOL haveLogged=NO;
     BOOL tinted=[[colTints objectAtIndex:thisCol] boolValue];
-
+    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_timestable_general_row_or_column_highlighted.wav")];
+    
     for(int i=0;i<[[ttMatrix objectAtIndex:thisCol]count];i++)
     {
         DWTTTileGameObject *tile=[[ttMatrix objectAtIndex:thisCol]objectAtIndex:i];
@@ -500,7 +560,12 @@ static float kTimeToHeaderBounce=7.0f;
             //untint -- so long as it's not in a row
             if (![[rowTints objectAtIndex:i] boolValue])
             {
-                [tile.mySprite setColor:ccc3(255,255,255)];
+                CCSprite *rowSprite=[[headerLabels objectAtIndex:0] objectAtIndex:thisCol];
+                CCLabelTTF *l=[rowSprite.children objectAtIndex:0];
+                [l setColor:ccc3(255,255,255)];
+                [rowSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Number_BG.png")]];
+//                [tile.mySprite setColor:ccc3(255,255,255)];
+                [tile.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Grid_Block.png")]];
             
                 if (!haveLogged)
                 {
@@ -513,8 +578,13 @@ static float kTimeToHeaderBounce=7.0f;
         }
         else {
             //tint it
-            [tile.mySprite setColor:ccc3(0,255,0)];
-            
+//            [tile.mySprite setColor:ccc3(0,255,0)];
+            CCSprite *rowSprite=[[headerLabels objectAtIndex:0] objectAtIndex:thisCol];
+            CCLabelTTF *l=[rowSprite.children objectAtIndex:0];
+            [l setColor:ccc3(0,0,0)];
+
+            [rowSprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Number_BG_Highlighted.png")]];
+            [tile.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/timestables/TT_Grid_Block_Highlighted.png")]];
             if(!haveLogged)
             {
                 [loggingService logEvent:BL_PA_TT_TOUCH_BEGIN_HIGHLIGHT_COLUMN
@@ -549,7 +619,8 @@ static float kTimeToHeaderBounce=7.0f;
         
         for(int i=0;i<[theseNumbers count];i++)
         {
-            CCLabelTTF *curLabel=[theseNumbers objectAtIndex:i];
+            CCSprite *curLabel=[theseNumbers objectAtIndex:i];
+            //CCLabelTTF *curLabel=[theseNumbers objectAtIndex:i];
             CGRect boundingBox=CGRectMake(curLabel.position.x-(spaceBetweenAnchors/2), curLabel.position.y-(spaceBetweenAnchors/2), spaceBetweenAnchors, spaceBetweenAnchors);
             if(CGRectContainsPoint(boundingBox, location))
             {
@@ -629,6 +700,8 @@ static float kTimeToHeaderBounce=7.0f;
     if([gw.Blackboard.SelectedObjects count]<[solutionsDef count] && solutionType==kMatrixMatch)return NO;
     
     int answersFound=0;
+    NSMutableArray *selectedTiles=[[NSMutableArray alloc]init];
+    
     if(solutionType==kMatrixMatch)
     {
         
@@ -636,22 +709,30 @@ static float kTimeToHeaderBounce=7.0f;
         for(int o=0;o<[gw.Blackboard.SelectedObjects count];o++)
         {
             DWTTTileGameObject *selTile=[gw.Blackboard.SelectedObjects objectAtIndex:o];
-            NSLog(@"selTile X=%d, selTile Y=%d", selTile.myXpos, selTile.myYpos);
             
             for(int i=0;i<[solutionsDef count];i++)
             {
+//                if([selectedTiles containsObject:selTile])continue;
+                if(selTile.Selected && ![selectedTiles containsObject:selTile])[selectedTiles addObject:selTile];
+                
                 NSMutableDictionary *curDict=[solutionsDef objectAtIndex:i];
                 int thisAnsX=[[curDict objectForKey:POS_X]intValue];
                 int thisAnsY=[[curDict objectForKey:POS_Y]intValue];
-                NSLog(@"thisAnsX=%d, thisAnsY=%d", thisAnsX, thisAnsY);
+                NSLog(@"thisAnsX=%d, thisAnsY=%d, myXpos=%d, myYpos=%d", thisAnsX, thisAnsY, selTile.myXpos, selTile.myYpos);
                 
-                if(thisAnsX==selTile.myXpos && thisAnsY==selTile.myYpos && !switchXYforAnswer)answersFound++;
-                else if(thisAnsY==selTile.myXpos && thisAnsX==selTile.myYpos && switchXYforAnswer)answersFound++;
+                if(thisAnsX==selTile.myXpos && thisAnsY==selTile.myYpos && !switchXYforAnswer)
+                {
+                    answersFound++;
+                }
+                else if(thisAnsY==selTile.myXpos && thisAnsX==selTile.myYpos && switchXYforAnswer)
+                {
+                    answersFound++;
+                }
             }
         }
         
         
-        if(answersFound==[solutionsDef count])return YES;
+        if(answersFound==[solutionsDef count] && answersFound==[selectedTiles count])return YES;
         else return NO;
     }
     
@@ -694,7 +775,7 @@ static float kTimeToHeaderBounce=7.0f;
         [toolHost doWinning];
     }
     else {
-        if(evalMode==kProblemEvalOnCommit)[self resetProblem];
+        if(evalMode==kProblemEvalOnCommit)[toolHost doIncomplete];
     }
 
 }
@@ -715,6 +796,11 @@ static float kTimeToHeaderBounce=7.0f;
 -(float)metaQuestionAnswersYLocation
 {
     return kMetaQuestionYOffsetPlaceValue*cy;
+}
+
+-(void)userDroppedBTXEObject:(id)thisObject atLocation:(CGPoint)thisLocation
+{
+    
 }
 
 #pragma mark - dealloc

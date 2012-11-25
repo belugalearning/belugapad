@@ -37,17 +37,17 @@
 {
     if(messageType==kSGvisibilityChanged)
     {
-        nodeSprite.visible=ParentGO.Visible;
+        nodeSprite.visible=YES;
     }
     
     if(messageType==kSGzoomOut)
     {
-        [nodeSprite setVisible:YES];
-        [nodeSprite setOpacity:50];
+//        [nodeSprite setVisible:YES];
+//        [nodeSprite setOpacity:50];
     }
     if(messageType==kSGzoomIn)
     {
-        [nodeSprite setOpacity:255];
+//        [nodeSprite setOpacity:255];
     }
     if(messageType==kSGretainOffsetPosition)
     {
@@ -95,7 +95,7 @@
 {
     if(((SGJmapNode*)ParentGO).EnabledAndComplete)
     {
-        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Copmlete_Right.png"];
+        nodeSprite=[CCSprite spriteWithSpriteFrameName:@"Node_Complete_Right.png"];
     }
     else 
     {
@@ -103,8 +103,8 @@
     }
     
     [nodeSprite setPosition:ParentGO.Position];
-    [nodeSprite setVisible:ParentGO.Visible];
-    [ParentGO.RenderBatch addChild:nodeSprite z:5];
+    [nodeSprite setVisible:YES];
+    [ParentGO.RenderBatch addChild:nodeSprite z:6];
     
     if(ParentGO.flip) nodeSprite.flipX=YES;
     

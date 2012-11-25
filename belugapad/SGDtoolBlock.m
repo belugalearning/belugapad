@@ -9,12 +9,14 @@
 #import "SGDtoolBlock.h"
 #import "SGDtoolBlockRender.h"
 #import "SGDtoolBlockPairing.h"
+#import "global.h"
 
 @implementation SGDtoolBlock
 
 @synthesize BlockRenderComponent;
 @synthesize BlockPairComponent;
 @synthesize mySprite;
+@synthesize blockType;
 
 //Transform protocol properties
 @synthesize Position, Visible, RenderLayer;
@@ -24,6 +26,8 @@
 // Pairable protocol properties
 @synthesize PairedObjects, SeekingPair;
 
+@synthesize Label;
+
 // LogPolling properties
 @synthesize logPollId, logPollType;
 -(NSString*)logPollType { return @"SGDtoolBlock"; }
@@ -32,7 +36,7 @@
 @synthesize logPollPosition;
 -(CGPoint)logPollPosition { return self.Position; }
 
--(SGDtoolBlock*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition
+-(SGDtoolBlock*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)aRenderLayer andPosition:(CGPoint)aPosition andType:(NSString*)thisType
 {   
     if(self=[super initWithGameWorld:aGameWorld])
     {
@@ -40,6 +44,7 @@
         self.Position=aPosition;
         self.Selected=NO;
         self.Visible=YES;
+        self.blockType=thisType;
         self.PairedObjects=[[NSMutableArray alloc]init];
         BlockRenderComponent=[[SGDtoolBlockRender alloc] initWithGameObject:self];
         BlockPairComponent=[[SGDtoolBlockPairing alloc] initWithGameObject:self];
@@ -57,6 +62,17 @@
 
 -(void)doUpdate:(ccTime)delta
 {
+//    if(!self.Label){
+//        self.Label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"c %d", (int)self.MyContainer] fontName:SOURCE fontSize:15.0f];
+//        [self.Label setPosition:self.Position];
+//        [self.RenderLayer addChild:self.Label];
+//        [self.Label setColor:ccc3(0,0,0)];
+//    }
+//    else
+//    {
+//        [self.Label setString:[NSString stringWithFormat:@"c %d", (int)self.MyContainer]];
+//    }
+    
     //update of components
     [self.BlockRenderComponent doUpdate:delta];
 }
@@ -79,6 +95,11 @@
 -(void)setup
 {
     [self.BlockRenderComponent setup];
+}
+
+-(void)destroyThisObject
+{
+    [self.BlockRenderComponent destroyThisObject];
 }
 
 -(BOOL)amIProximateTo:(CGPoint)location
@@ -109,6 +130,7 @@
     self.RenderLayer=nil;
     self.PairedObjects=nil;
     self.logPollId = nil;
+    self.blockType=nil;
     if (logPollId) [logPollId release];
     logPollId = nil;
     

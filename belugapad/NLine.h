@@ -40,6 +40,8 @@
     int evalInterval;
     NSArray *evalJumpSequence;
     
+    BOOL evalAbsTarget;
+    
     CCLabelTTF *problemDescLabel;
 
     CCLabelTTF *problemCompleteLabel;
@@ -56,11 +58,15 @@
     int lastBubbleValue;
     int evalTarget;
     
+    CGPoint lasttouch;
+    
     int initStartVal;
     NSNumber *initMinVal;
     NSNumber *initMaxVal;
     int initSegmentVal;
     int initStartLoc;
+    
+    BOOL countOutLoudFromInitStartVal;
     
     float timeSinceInteractionOrShake;
     

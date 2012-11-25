@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TOOL_KEY</key>
+	<string>DistributionTool</string>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>Place 23 in each area</string>
+	<key>EVAL_MODE</key>
+	<integer>1</integer>
+	<key>DISTRIBUTION_EVAL_TYPE</key>
+	<integer>8</integer>
+	<key>HAS_CAGE</key>
+	<true/>
+	<key>CAGE_OBJECT_COUNT</key>
+	<integer>0</integer>
+	<key>DOCK_TYPE</key>
+	<string>Infinite-RandomValue</string>
+	<key>EVAL_AREAS</key>
+	<array>
+		<dict>
+			<key>AREA_SIZE</key>
+			<string>30</string>
+			<key>AREA_WIDTH</key>
+			<string>4</string>
+		</dict>
+		<dict>
+			<key>AREA_SIZE</key>
+			<string>30</string>
+			<key>AREA_WIDTH</key>
+			<string>4</string>
+		</dict>
+	</array>
+	<key>SOLUTION-bla</key>
+	<array>
+		<dict>
+			<key>Sausages</key>
+			<integer>5</integer>
+			<key>Bacon</key>
+			<integer>6</integer>
+		</dict>
+	</array>
+	<key>SOLUTION</key>
+	<array>
+		<dict>
+			<key>VALUE</key>
+			<integer>23</integer>
+		</dict>
+		<dict>
+			<key>VALUE</key>
+			<integer>23</integer>
+		</dict>
+	</array>
+</dict>
+</plist>

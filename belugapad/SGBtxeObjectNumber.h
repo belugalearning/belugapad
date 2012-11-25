@@ -9,8 +9,10 @@
 #import "SGGameObject.h"
 #import "SGBtxeProtocols.h"
 
+@class SGBtxeTextBackgroundRender;
+@class SGBtxeNumberDotRender;
 
-@interface SGBtxeObjectNumber : SGGameObject <Text, Bounding, FadeIn>
+@interface SGBtxeObjectNumber : SGGameObject <Text, Bounding, FadeIn, MovingInteractive, Containable, Value, NumberPicker>
 {
     CCNode *renderBase;
 }
@@ -18,6 +20,15 @@
 @property (retain) NSString *prefixText;
 @property (retain) NSString *numberText;
 @property (retain) NSString *suffixText;
-@property (retain, readonly) NSNumber *numberValue;
+@property (retain) NSNumber *numberValue;
+
+@property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;
+
+@property BOOL renderAsDots;
+@property (retain) SGBtxeNumberDotRender *numberDotRenderComponent;
+
+@property (retain) NSString *numberMode;
+
+-(void)tagMyChildrenForIntro;
 
 @end

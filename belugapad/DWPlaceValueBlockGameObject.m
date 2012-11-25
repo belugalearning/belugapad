@@ -23,6 +23,7 @@
 @synthesize AnimateMe;
 @synthesize Selected;
 @synthesize lastZIndex;
+@synthesize Disabled;
 
 -(DWGameObject*)Mount
 {

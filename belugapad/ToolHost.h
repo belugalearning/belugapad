@@ -39,6 +39,7 @@ typedef enum {
 @class SGGameWorld;
 @class DebugViewController;
 @class EditPDefViewController;
+@class SGBtxeRow;
 
 @interface ToolHost : CCLayer <CCPickerViewDataSource, CCPickerViewDelegate>
 {
@@ -71,8 +72,7 @@ typedef enum {
     NSMutableArray *metaQuestionAnswerLabels;
     int metaQuestionAnswerCount;
     NSString *metaQuestionCompleteText;
-    NSString *metaQuestionIncompleteText;
-    CCLabelTTF *metaQuestionIncompleteLabel;
+    CCSprite *metaQuestionBanner;
     BOOL showMetaQuestionIncomplete;
     float shownMetaQuestionIncompleteFor;
     BOOL metaQuestionForceComplete;
@@ -85,6 +85,7 @@ typedef enum {
     NSMutableArray *numberPickerButtons;
     NSMutableArray *numberPickedSelection;
     NSMutableArray *numberPickedValue;
+    NSMutableArray *pickerViewSelection;
     CCSprite *npMove;
     CCSprite *npLastMoved;
     CGPoint npMoveStartPos;
@@ -96,7 +97,7 @@ typedef enum {
     BOOL hasUsedNumber;
     BOOL canMoveNumber;
     
-    float timeSinceInteractionOrShakeNP;
+    float timeSinceInteractionOrShake;
     float timeBeforeUserInteraction;
     
     BOOL isPaused;
@@ -125,7 +126,10 @@ typedef enum {
     CCLabelTTF *problemDescLabel;
     ProblemEvalMode evalMode;
     
+    
+    CCSprite *readProblemDesc;
     CCSprite *commitBtn;
+    CCSprite *metaArrow;
     
     LRAnimator *animator;
     int animPos;
@@ -167,18 +171,57 @@ typedef enum {
     //btxe for description
     SGGameWorld *descGw;
     CCSprite *questionSeparatorSprite;
+    SGBtxeRow *descRow;
     
     //ui
     CCSprite *multiplierBadge;
     CCLayerColor *blackOverlay;
     CCLayer *contextProgressLayer;
+    
+    //tooltrays
+    CCSprite *traybtnWheel;
+    CCSprite *traybtnMq;
+    CCSprite *traybtnCalc;
+    CCSprite *traybtnPad;
+    
+    BOOL trayWheelShowing;
+    BOOL trayMqShowing;
+    BOOL trayCalcShowing;
+    BOOL trayPadShowing;
+    
+    BOOL trayCornerShowing;
+    
+    CCLayer *trayLayerCalc;
+    CCLayer *trayLayerWheel;
+    CCLayer *trayLayerMq;
+    CCLayer *trayLayerPad;
+    
+    BOOL hasTrayWheel;
+    BOOL hasTrayCalc;
+    BOOL hasTrayMq;
+    BOOL showMqOnStart;
+    
+    BOOL hasUsedPicker;
+    BOOL hasUsedWheelTray;
+    BOOL hasUsedMetaTray;
+    
+    BOOL delayShowWheel;
+    BOOL delayShowMeta;
+    float timeToWheelStart;
+    float timeToMetaStart;
+    
+    BOOL evalShowCommit;
+    
 }
 
 @property (retain) Daemon *Zubi;
 @property (retain) BAExpressionTree *PpExpr;
 @property BOOL flagResetProblem;
+@property BOOL toolCanEval;
 @property (retain) DProblemParser *DynProblemParser;
 @property (nonatomic, retain) CCPickerView *pickerView;
+@property (retain) id CurrentBTXE;
+@property (retain) NSString *thisProblemDescription;
 
 +(CCScene *) scene;
 
@@ -193,9 +236,12 @@ typedef enum {
 -(void) resetProblem;
 -(void) showPauseMenu;
 -(void) checkPauseTouches:(CGPoint)location;
--(void) returnToMenu;
 -(void) showProblemCompleteMessage;
 -(void) showProblemIncompleteMessage;
+-(void)showHideCommit;
+-(void)showWheel;
+-(void)hideWheel;
+-(void)readOutProblemDescription;
 -(void)doUpdateOnTick:(ccTime)delta;
 -(void)doUpdateOnSecond:(ccTime)delta;
 -(void)doUpdateOnQuarterSecond:(ccTime)delta;
@@ -210,6 +256,7 @@ typedef enum {
 -(void)checkNumberPickerTouchOnRegister:(CGPoint)location;
 -(void)evalNumberPicker;
 -(void)reorderNumberPickerSelections;
+-(BOOL)calcMetaQuestion;
 -(void)evalMetaQuestion;
 -(void)deselectAnswersExcept:(int)answerNumber;
 -(void)doWinning;
@@ -220,6 +267,8 @@ typedef enum {
 -(void)tearDownProblemDef;
 -(void)readToolOptions:(NSString*)currentTool;
 -(void)incrementDisplayScore: (id)sender;
+-(NSString*)returnPickerNumber;
+-(void)updatePickerNumber:(NSString*)thisNumber;
 
 
 -(void) moveToTool1: (ccTime) delta;

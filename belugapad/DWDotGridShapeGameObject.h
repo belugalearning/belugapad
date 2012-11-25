@@ -32,6 +32,21 @@
 @property (retain) CCLayer *RenderLayer;
 @property (retain) DWGameObject *MyNumberWheel;
 @property BOOL autoUpdateWheel;
+@property (retain) NSString *countLabelType;
+@property (retain) CCLabelTTF *countLabel;
+@property (retain) CCSprite *countBubble;
+
+@property (retain) CCSprite *hintArrowX;
+@property (retain) CCSprite *hintArrowY;
+@property float centreX;
+@property float centreY;
+@property float top;
+@property float bottom;
+@property float right;
+@property float left;
+@property float value;
+@property float ShapeX;
+@property float ShapeY;
 
 
 @end

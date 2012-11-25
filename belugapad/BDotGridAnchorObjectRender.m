@@ -54,7 +54,7 @@
     if(messageType==kDWdismantle)
     {
         [[anch.mySprite parent] removeChild:anch.mySprite cleanup:YES];
-    } 
+    }
     
     if(messageType==kDWswitchSelection)
     {
@@ -72,9 +72,9 @@
         //[[gameWorld GameSceneLayer] addChild:mySprite z:1];
 
             
-        if(anch.StartAnchor)spriteFileName=@"/images/dotgrid/move.png";
-        else spriteFileName=@"/images/dotgrid/anchor.png";
-        anch.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@", spriteFileName]))];
+        if(anch.StartAnchor)spriteFileName=@"/images/dotgrid/move";
+        else spriteFileName=@"/images/dotgrid/DG_GridDot";
+        anch.mySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(([NSString stringWithFormat:@"%@%d.png", spriteFileName, anch.anchorSize]))];
         [anch.mySprite setPosition:anch.Position];
         //[anch.mySprite setScale:0.5f];
         

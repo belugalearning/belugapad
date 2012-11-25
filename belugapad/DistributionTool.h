@@ -15,7 +15,14 @@
 typedef enum 
 {
     kCheckShapeSizes=0,
-    kCheckNamedGroups=1
+    kCheckTaggedGroups=1,
+    kCheckEvalAreas=2,
+    kCheckGroupTypeAndNumber=3,
+    kIncludeShapeSizes=4,
+    kCheckEvalAreasForTypes=5,
+    kCheckGroupsForTypes=6,
+    kCheckContainerValues=7,
+    kCheckEvalAreaValues=8
 }DistributionEvalType;
 
 @interface DistributionTool : ToolScene
@@ -45,15 +52,40 @@ typedef enum
     BOOL hasLoggedMovedBlock;
     BOOL hasBeenProximate;
     BOOL problemHasCage;
+    BOOL hasInactiveArea;
+    BOOL spawnedNewObj;
+    BOOL randomiseDockPositions;
+    BOOL bondDifferentTypes;
+    BOOL hasMovedCagedBlock;
+    BOOL bondAllObjects;
+    BOOL showTotalValue;
+    int cageObjectCount;
+    
+    id lastContainer;
+    CGPoint lastProxPos;
+    id nearestObject;
+    float nearestObjectDistance;
+    id lastNewBondObject;
+    
+    NSString *dockType;
+    
+    CCLabelTTF *totalValueLabel;
     
     // and a default layer
     CCLayer *renderLayer;
     
     // and stuff we want to add!
     NSArray *initObjects;
+    NSArray *initAreas;
     NSArray *solutionsDef;
     NSMutableArray *existingGroups;
     NSMutableArray *destroyedLabelledGroups;
+    NSMutableArray *usedShapeTypes;
+    NSMutableArray *addedCages;
+    NSMutableArray *evalAreas;
+    NSMutableArray *inactiveArea;
+    NSMutableArray *activeRects;
+    CGRect inactiveRect;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;
@@ -61,6 +93,7 @@ typedef enum
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)doUpdateOnTick:(ccTime)delta;
 -(void)draw;
+-(void)createEvalAreas;
 -(NSArray*)evalUniqueShapes;
 -(BOOL)evalExpression;
 -(void)evalProblem;
@@ -68,15 +101,12 @@ typedef enum
 -(float)metaQuestionTitleYLocation;
 -(float)metaQuestionAnswersYLocation;
 -(void)createShapeWith:(int)blocks andWith:(NSDictionary*)theseSettings;
+-(void)addDestroyedLabel:(NSString*)thisGroup;
 -(void)createContainerWithOne:(id)Object;
--(void)lookForOrphanedObjects;
--(void)updateContainerForNewlyAddedBlock:(id<Moveable,Pairable>)thisBlock;
--(void)tidyUpEmptyGroups;
--(void)updateContainerLabels;
 -(void)removeBlockByCage;
--(CGPoint)checkWhereIShouldMount:(id<Pairable>)gameObject;
--(CGPoint)findMountPositionForThisShape:(id<Pairable>)pickupObject toThisShape:(id<Pairable>)mountedShape;
--(CGPoint)returnNextMountPointForThisShape:(id<Container>)thisShape;
+-(BOOL)evalGroupTypesAndShapes;
+-(BOOL)evalNumberOfShapesInEvalAreas;
+-(CGPoint)returnNextMountPointForThisShape:(id<ShapeContainer>)thisShape;
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;

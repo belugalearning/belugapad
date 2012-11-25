@@ -11,6 +11,8 @@
 
 @class RootViewController, LoggingService, ContentService, UsersService;
 
+@class AcapelaLicense, AcapelaSpeech, AcapelaSetup;
+
 @interface AppController : NSObject <UIApplicationDelegate, CCDirectorDelegate>
 {
 	UIWindow *window_;
@@ -21,6 +23,12 @@
    	RootViewController	*viewController;
     
     NSDictionary *launchOptionsCache;
+    
+    NSDictionary *speechReplacement;
+    
+//    AcapelaSpeech *MyAcaTTS;
+    AcapelaLicense *MyAcaLicense;
+    AcapelaSetup *SetupData;
 }
 
 @property (nonatomic, retain) UIWindow *window;
@@ -43,9 +51,16 @@
 @property (retain) UISearchBar *searchBar;
 @property (retain) UITableView *searchList;
 
+//user state across map changes
+@property (retain) NSDictionary *lastJmapViewUState;
+
+@property (retain) AcapelaSpeech *acaSpeech;
+
+
 -(void)proceedFromLoginViaIntro:(BOOL)viaIntro;
 -(void)returnToLogin;
 -(void)writeLogMemoryUsage;
 -(void)tearDownUI;
+-(void)speakString:(NSString*)speakThis;
 
 @end

@@ -32,8 +32,7 @@
 #import "../../ccMacros.h"
 #ifdef __CC_PLATFORM_MAC
 
-#import <OpenGL/gl.h>
-
+#import "../../Platforms/CCGL.h"
 #import "CCGLView.h"
 #import "CCDirectorMac.h"
 #import "CCEventDispatcher.h"
@@ -65,8 +64,8 @@
 		NSOpenGLPFADoubleBuffer,
 		NSOpenGLPFADepthSize, 24,
 
+#if 0
 		// Must specify the 3.2 Core Profile to use OpenGL 3.2
-#if 0 
 		NSOpenGLPFAOpenGLProfile,
 		NSOpenGLProfileVersion3_2Core,
 #endif
@@ -115,6 +114,11 @@
 //	[[self openGLContext] setValues:&order forParameter:NSOpenGLCPSurfaceOrder];
 }
 
+- (NSUInteger) depthFormat
+{
+	return 24;
+}
+
 - (void) reshape
 {
 	// We draw on a secondary thread through the display link
@@ -129,7 +133,10 @@
 	[director reshapeProjection: NSSizeToCGSize(rect.size) ];
 
 	// avoid flicker
-	[director drawScene];
+  // Only draw if there is something to draw, otherwise it actually creates a flicker of the current glClearColor
+	if(director.runningScene){
+    [director drawScene];
+  }
 //	[self setNeedsDisplay:YES];
 	
 	[self unlockOpenGLContext];
@@ -278,6 +285,37 @@
 }
 
 - (void)touchesCancelledWithEvent:(NSEvent *)theEvent
+{
+	DISPATCH_EVENT(theEvent, _cmd);
+}
+
+#pragma mark CCGLView - Gesture events
+- (void)beginGestureWithEvent:(NSEvent *)theEvent
+{
+	DISPATCH_EVENT(theEvent, _cmd);
+}
+
+- (void)magnifyWithEvent:(NSEvent *)theEvent
+{
+	DISPATCH_EVENT(theEvent, _cmd);
+}
+
+- (void)smartMagnifyWithEvent:(NSEvent *)theEvent
+{
+	DISPATCH_EVENT(theEvent, _cmd);
+}
+
+- (void)rotateWithEvent:(NSEvent *)theEvent
+{
+	DISPATCH_EVENT(theEvent, _cmd);
+}
+
+- (void)swipeWithEvent:(NSEvent *)theEvent
+{
+	DISPATCH_EVENT(theEvent, _cmd);
+}
+
+- (void)endGestureWithEvent:(NSEvent *)theEvent
 {
 	DISPATCH_EVENT(theEvent, _cmd);
 }

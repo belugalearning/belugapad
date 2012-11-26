@@ -1112,13 +1112,6 @@ static float kTimeToCageShake=7.0f;
     else negCageSprite=BUNDLE_FULL_PATH(@"/images/placevalue/cage-neg.png");
     
     [negCageSprite retain];
-        
-    // and do we have a separate pickup sprite?
-    if([pdef objectForKey:PICKUP_SPRITE_FILENAME]) 
-        pickupSprite = [pdef objectForKey:PICKUP_SPRITE_FILENAME];
-    
-    [pickupSprite retain];
-    
 
     // check for custom column ropes/rows
     if([pdef objectForKey:COLUMN_ROPES]) 
@@ -1512,7 +1505,7 @@ static float kTimeToCageShake=7.0f;
         [renderLayer addChild:l z:10000];
         [l runAction:[CCFadeOut actionWithDuration:1.0]];
         
-        if(amountAdded>0)
+        if(amountAdded>0 && shouldUpdateLabels)
         {
             if([(DWPlaceValueBlockGameObject*)gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
                 [l setString:[NSString stringWithFormat:@"+ %g", amountAdded*lastPickedUpBlockCount]];
@@ -1523,7 +1516,7 @@ static float kTimeToCageShake=7.0f;
 //        {
 //            [l setString:[NSString stringWithFormat:@"%g", ([[initBlockValueForColumn objectAtIndex:i]floatValue])]];
 //        }
-        if(amountAdded<0)
+        if(amountAdded<0 && shouldUpdateLabels)
         {
             [l setString:[NSString stringWithFormat:@"%g", amountAdded*lastPickedUpBlockCount]];
             if([(DWPlaceValueBlockGameObject*)gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
@@ -1532,6 +1525,7 @@ static float kTimeToCageShake=7.0f;
                 [l setString:[NSString stringWithFormat:@"+ %g", fabsf(amountAdded*lastPickedUpBlockCount)]];
             
         }
+        shouldUpdateLabels=YES;
         
 //        [userAddedBlocksLastCount replaceObjectAtIndex:currentColumnIndex withObject:[NSNumber numberWithInt:thisNumber]];
         
@@ -3307,6 +3301,7 @@ static float kTimeToCageShake=7.0f;
                         for(DWPlaceValueBlockGameObject *go in pickupObjects){
                             [go handleMessage:kDWresetToMountPositionAndDestroy];
                         }
+                        shouldUpdateLabels=NO;
                         [loggingService logEvent:BL_PA_PV_TOUCH_END_MULTIPLE_BLOCKS_NOT_ENOUGH_SPACE withAdditionalData:nil];
                         [self setTouchVarsToOff];
                         return;

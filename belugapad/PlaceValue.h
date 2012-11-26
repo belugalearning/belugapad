@@ -150,6 +150,7 @@
     
     int cageDefaultValue;
     BOOL explodeMode;
+    BOOL shouldUpdateLabels;
     
     CCSprite *condensePanel;
     CCSprite *mulchPanel;

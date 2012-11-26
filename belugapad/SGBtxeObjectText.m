@@ -140,6 +140,12 @@
     
 }
 
+-(void)setText:(NSString *)theText
+{
+    text=[theText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    [self redrawBkg];
+}
+
 -(void)setColourOfBackgroundTo:(ccColor3B)thisColour
 {
     [textBackgroundRenderComponent setColourOfBackgroundTo:thisColour];
@@ -180,6 +186,13 @@
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];
     
+}
+
+-(void)redrawBkg
+{
+    CGSize toThisSize=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
+    
+    [textBackgroundRenderComponent redrawBkgWithSize:toThisSize];
 }
 
 -(void)activate

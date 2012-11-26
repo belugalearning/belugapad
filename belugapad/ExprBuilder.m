@@ -196,11 +196,16 @@
         SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
         [rows addObject:row];
         
+        if(i==0)
+            row.myAssetType=@"Medium";
+        else
+            row.myAssetType=@"Small";
+        
         if(numberMode)
             row.defaultNumbermode=numberMode;
         
         if(i>0 && expressionRowsAreLarge)
-            row.isLarge = YES;
+            row.myAssetType = @"Large";
         
         if(i==0 || repeatRow2Count==0)
         {
@@ -212,7 +217,7 @@
         }
         
         if(i>0 && rowcount<=AUTO_LARGE_ROW_Y_MAX && [row.children count]<=AUTO_LARGE_ROW_X_MAX)
-            row.isLarge = YES;
+            row.myAssetType = @"Large";
         
         [row setupDraw];
         

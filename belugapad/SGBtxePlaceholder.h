@@ -20,7 +20,8 @@
 
 @property (retain) SGBtxeTextBackgroundRender *textBackgroundComponent;
 @property (retain) NSString *targetTag;
-@property BOOL isLargeObject;
+//@property BOOL isLargeObject;
+@property (retain) NSString *assetType;
 
 
 @end

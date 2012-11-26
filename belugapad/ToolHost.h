@@ -216,6 +216,10 @@ typedef enum {
     
     BOOL evalShowCommit;
     
+    BOOL countUpToJmap;
+    BOOL hasShownComplete;
+    float timeToReturnToJmap;
+    
 }
 
 @property (retain) Daemon *Zubi;

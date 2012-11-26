@@ -121,7 +121,8 @@
 
 -(NSNumber*)value
 {
-    return numberValue;
+    if(numberValue)return numberValue;
+    else return @0;
 }
 
 

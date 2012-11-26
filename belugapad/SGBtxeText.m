@@ -8,6 +8,7 @@
 
 #import "SGBtxeText.h"
 #import "SGBtxeTextRender.h"
+#import "global.h"
 
 @implementation SGBtxeText
 
@@ -60,7 +61,6 @@
     
     //update positioning in text render
     [self.textRenderComponent updatePosition:position];
-    
 }
 
 -(void)tagMyChildrenForIntro

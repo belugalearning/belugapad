@@ -222,6 +222,7 @@
     [nf setNumberStyle:NSNumberFormatterDecimalStyle];
     self.numberValue=[nf numberFromString:numberText];
     
+    [self redrawBkg];
     
     [nf release];
     
@@ -374,6 +375,13 @@
 
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];
+}
+
+-(void)redrawBkg
+{
+    CGSize toThisSize=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
+    
+    [textBackgroundRenderComponent redrawBkgWithSize:toThisSize];
 }
 
 -(void)destroy

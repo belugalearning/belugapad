@@ -20,6 +20,7 @@
 -(ccColor3B)returnColourOfBackground;
 -(void)setContainerVisible:(BOOL)visible;
 -(void)setupDrawWithSize:(CGSize)size;
+-(void)redrawBkgWithSize:(CGSize)size;
 -(void)updatePosition:(CGPoint)position;
 -(void)fadeInElementsFrom:(float)startTime andIncrement:(float)incrTime;
 

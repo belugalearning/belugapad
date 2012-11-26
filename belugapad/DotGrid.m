@@ -183,7 +183,7 @@
             int ftmax=[ft intValue];
             NSMutableArray *reqdFactorShapes=[[NSMutableArray alloc] init];
             
-            for(int i=1; i<ftmax; i++)
+            for(int i=1; i<=ftmax; i++)
             {
                 if(!(ftmax % i))
                 {

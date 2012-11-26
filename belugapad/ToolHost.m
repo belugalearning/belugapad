@@ -397,6 +397,21 @@ static float kTimeToHintToolTray=7.0f;
         
     }
     
+    if(countUpToJmap)
+    {
+        if(!hasShownComplete){
+            [self doWinning];
+            hasShownComplete=YES;
+        }
+        timeToReturnToJmap+=delta;
+        
+        if(timeToReturnToJmap>3.1f)
+        {
+            [self showCompleteAndReturnToMap];
+            countUpToJmap=NO;
+        }
+    }
+    
     if(evalShowCommit)[self showHideCommit];
     
     //let tool do updates
@@ -679,20 +694,25 @@ static float kTimeToHintToolTray=7.0f;
     }
     else
     {
-        [TestFlight passCheckpoint:@"PIPELINE_COMPLETE_LEAVING_TO_JMAP"];
-        
-        //no more problems in this sequence, bail to menu
-        
-        //todo: completion shouldn't be assumed here -- we can get here by progressing into an inserter that produces no viable insertions
-        
-        //assume completion
-        [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @(pipelineScore) }];
-        
-        contentService.fullRedraw=YES;
-        contentService.lightUpProgressFromLastNode=YES;
-        
-        [self returnToMap];
+        countUpToJmap=YES;
     }
+}
+
+-(void)showCompleteAndReturnToMap
+{
+    [TestFlight passCheckpoint:@"PIPELINE_COMPLETE_LEAVING_TO_JMAP"];
+    
+    //no more problems in this sequence, bail to menu
+    
+    //todo: completion shouldn't be assumed here -- we can get here by progressing into an inserter that produces no viable insertions
+    
+    //assume completion
+    [loggingService logEvent:BL_EP_END withAdditionalData:@{ @"score": @(pipelineScore) }];
+    
+    contentService.fullRedraw=YES;
+    contentService.lightUpProgressFromLastNode=YES;
+    
+    [self returnToMap];
 }
 
 -(void) loadProblem
@@ -1073,10 +1093,6 @@ static float kTimeToHintToolTray=7.0f;
 {
     [problemDefLayer removeAllChildrenWithCleanup:YES];
     [btxeDescLayer removeAllChildrenWithCleanup:YES];
-    
-    [qTrayTop removeFromParentAndCleanup:YES];
-    [qTrayMid removeFromParentAndCleanup:YES];
-    [qTrayBot removeFromParentAndCleanup:YES];
     
     [descGw release];
     descGw=nil;

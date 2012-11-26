@@ -17,6 +17,7 @@
 {
     CCSprite *nodeSprite;
     CCSprite *labelSprite;
+    CCSprite *artefactSprite;
 }
 
 @end
@@ -118,7 +119,17 @@
     
 }
 
-
+-(void)setupArtefact
+{
+    NSString *an=nil;
+    if(ParentGO.ustate.artifact1LastAchieved)an=@"Crystal_1.png";
+    if(ParentGO.ustate.artifact2LastAchieved)an=@"Crystal_2.png";
+    if(ParentGO.ustate.artifact3LastAchieved)an=@"Crystal_3.png";
+    if(ParentGO.ustate.artifact4LastAchieved)an=@"Crystal_4.png";
+    if(ParentGO.ustate.artifact5LastAchieved)an=@"Crystal_5.png";
+    
+    if(an) [ParentGO.artefactSpriteBase setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:an]];
+}
 
 
 @end

@@ -8,6 +8,7 @@
 
 #import "SGGameObject.h"
 #import "SGJmapObjectProtocols.h"
+#import "UserNodeState.h"
 
 @class SGJmapNodeRender;
 @class SGJmapMasteryNode;
@@ -19,7 +20,11 @@
 @property (retain) SGJmapMasteryNode *MasteryNode;
 @property (retain) NSMutableArray *PrereqNodes;
 @property (retain) UserNodeState *ustate;
+@property (retain) CCSprite *artefactSpriteBase;
 
 -(SGJmapNode*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderBatch:(CCSpriteBatchNode*)aRenderBatch andPosition:(CGPoint)aPosition;
+
+-(void)setupArtefactRender;
+
 @end
 

@@ -56,6 +56,8 @@
 	<string>rounded squares</string>
 	<key>30_DT_Shape_House</key>
 	<string>houses</string>
+	<key>30_DT_Shape_Diamond</key>
+	<string>diamonds</string>
 	<key>30_TT_Grid_Block</key>
 	<string>square</string>
 	<key>30_nl_jump_forward</key>

@@ -12,7 +12,7 @@
 
 @synthesize label, label0;
 @synthesize useAlternateFont;
-@synthesize useLargeAssets;
+@synthesize useTheseAssets;
 
 -(SGBtxeTextRender*)initWithGameObject:(id<Bounding, Text>)aGameObject
 {
@@ -22,6 +22,7 @@
         self.label=nil;
         self.label0=nil;
         self.useAlternateFont=NO;
+        self.useTheseAssets=@"Small";
     }
     return self;
 
@@ -41,7 +42,10 @@
     NSString *fontName=@"Source Sans Pro";
     float fontSize=24.0f;
     if(self.useAlternateFont) fontName=@"Chango";
-    if(self.useLargeAssets)fontSize=72.0f;
+    if([self.useTheseAssets isEqualToString:@"Medium"])
+        fontSize=36.0f;
+    else if([self.useTheseAssets isEqualToString:@"Large"])
+        fontSize=48.0f;
     
     self.label0=[CCLabelTTF labelWithString:ParentGO.text fontName:fontName fontSize:fontSize];
     self.label0.position=ccp(0, -1);

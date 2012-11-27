@@ -12,7 +12,7 @@
 @implementation SGBtxeIconRender
 
 @synthesize sprite;
-@synthesize useLargeAssets;
+@synthesize assetType;
 
 -(SGBtxeIconRender*)initWithGameObject:(id<Bounding, MovingInteractive, Icon>)aGameObject
 {
@@ -38,16 +38,10 @@
 {
     if(!gameWorld.Blackboard.btxeIconBatch)
     {
-        if(useLargeAssets)
-        {
-            [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.plist")];
-            gameWorld.Blackboard.btxeIconBatch=[CCSpriteBatchNode batchNodeWithFile:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.png")];
-        }
-        else
-        {
-            [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.plist")];
-            gameWorld.Blackboard.btxeIconBatch=[CCSpriteBatchNode batchNodeWithFile:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.png")];
-        }
+
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.plist")];
+        gameWorld.Blackboard.btxeIconBatch=[CCSpriteBatchNode batchNodeWithFile:BUNDLE_FULL_PATH(@"/images/btxe/iconsets/goo_things.png")];
+        
         
         [gameWorld.Blackboard.RenderLayer addChild:gameWorld.Blackboard.btxeIconBatch];
     }

@@ -102,7 +102,7 @@
 //        [rh setPosition:ccp(m.contentSize.width/2+(rh.contentSize.width/2), 0)];
     }
     
-    m.scaleX=size.width / m.contentSize.width;
+    m.scaleX=(size.width-BTXE_OTBKG_WIDTH_OVERDRAW_PAD) / m.contentSize.width;
     //m.scaleY=size.height / m.contentSize.height;
     
     //lh.scaleY=size.height / m.contentSize.height;

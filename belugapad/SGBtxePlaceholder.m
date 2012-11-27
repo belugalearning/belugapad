@@ -55,10 +55,15 @@
 -(void)setupDraw
 {
     //artifically set size
-//    if(isLargeObject)
-//        size=CGSizeMake(150, 75);
-//    else
-    size=CGSizeMake(50, 25);
+    
+    if([self.assetType isEqualToString:@"Large"])
+        size=CGSizeMake(150, 85);
+    
+    else if([self.assetType isEqualToString:@"Medium"])
+        size=CGSizeMake(100, 57);
+    
+    else
+        size=CGSizeMake(50, 40);
     //background sprite to text (using same size)
     [textBackgroundComponent setupDrawWithSize:self.size];
     
@@ -119,6 +124,13 @@
     
     //attach background to render, but stick behind other objects by default
     [renderBase addChild:textBackgroundComponent.backgroundNode z:-1];
+}
+
+-(CGRect)returnBoundingBox
+{
+    CGRect thisRect=CGRectMake(self.worldPosition.x-(size.width/2), self.worldPosition.y-(size.height/2),size.width,size.height);
+
+    return thisRect;
 }
 
 -(void)deflateZindex

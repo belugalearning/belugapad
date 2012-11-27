@@ -441,12 +441,14 @@
                     [o activate];
                 }
                 
-                if([o conformsToProtocol:@protocol(BtxeMount)] && [BLMath DistanceBetween:o.worldPosition and:location]<=pickupProximity)
+                if([o conformsToProtocol:@protocol(BtxeMount)])
                 {
                     id<BtxeMount, Interactive> pho=(id<BtxeMount, Interactive>)o;
+                    CGRect objRect=[pho returnBoundingBox];
                     
+                    if(CGRectContainsPoint(objRect, location))
+                        [pho duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)heldObject];
                     //mount the object on the place holder
-                    [pho duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)heldObject];
                 }
             }
         }

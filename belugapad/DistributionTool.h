@@ -44,6 +44,7 @@ typedef enum
     // common touch interactions
     BOOL isTouching;
     CGPoint lastTouch;
+    CGPoint touchStart;
     
     // standard to move between problems
     float timeToAutoMoveToNextProblem;

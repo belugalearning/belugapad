@@ -25,6 +25,7 @@
 @synthesize LineType;
 @synthesize ShowCount, CountLabel;
 @synthesize RenderLayer;
+@synthesize IsEvalTarget;
 
 -(SGDtoolContainer*) initWithGameWorld:(SGGameWorld*)aGameWorld andLabel:(NSString*)aLabel andShowCount:(BOOL)showValue andRenderLayer:(CCLayer*)aRenderLayer
 {
@@ -34,6 +35,7 @@
         [aRenderLayer addChild:self.BaseNode z:500];
         self.ShowCount=showValue;
         self.RenderLayer=aRenderLayer;
+        self.IsEvalTarget=NO;
         
         if(aLabel){
 //            self.Label=[CCLabelTTF labelWithString:aLabel fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];

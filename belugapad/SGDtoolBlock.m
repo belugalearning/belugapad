@@ -107,9 +107,9 @@
     return [self.BlockRenderComponent amIProximateTo:location];
 }
 
--(void)resetTint
+-(void)selectMe
 {
-    [self.BlockRenderComponent resetTint];
+    [self.BlockRenderComponent selectMe];
 }
 
 -(void)pairMeWith:(id)thisObject

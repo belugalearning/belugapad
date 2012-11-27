@@ -390,7 +390,7 @@
         }
     }
     
-    if(!gotPickerObject && !CGRectContainsPoint(CGRectMake(680,500,344,308), location)){
+    if((!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(680,500,344,308), location)){
         toolHost.CurrentBTXE=nil;
         if(toolHost.pickerView)
             [toolHost disableWheel];

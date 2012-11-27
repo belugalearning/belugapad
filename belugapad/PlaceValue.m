@@ -1112,13 +1112,6 @@ static float kTimeToCageShake=7.0f;
     else negCageSprite=BUNDLE_FULL_PATH(@"/images/placevalue/cage-neg.png");
     
     [negCageSprite retain];
-        
-    // and do we have a separate pickup sprite?
-    if([pdef objectForKey:PICKUP_SPRITE_FILENAME]) 
-        pickupSprite = [pdef objectForKey:PICKUP_SPRITE_FILENAME];
-    
-    [pickupSprite retain];
-    
 
     // check for custom column ropes/rows
     if([pdef objectForKey:COLUMN_ROPES]) 

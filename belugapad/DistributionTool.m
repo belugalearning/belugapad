@@ -94,6 +94,9 @@ static float kDistanceBetweenBlocks=70.0f;
         usersService = ac.usersService;
         loggingService = ac.loggingService;
         
+        drawNode=[[CCDrawNode alloc]init];
+        [renderLayer addChild:drawNode];
+        
         [self readPlist:pdef];
         [self populateGW];
         
@@ -153,11 +156,14 @@ static float kDistanceBetweenBlocks=70.0f;
             [totalValueLabel setString:[NSString stringWithFormat:@"%g",[self showValueOfAllObjects]]];
         }
     }
-
+    [self drawConnections];
+    [self checkForOverlappingContainers];
 }
 
--(void)draw
+-(void)drawConnections
 {
+    [drawNode clear];
+    
     for(id go in [gw AllGameObjects])
     {
         if([go conformsToProtocol:@protocol(ShapeContainer)])
@@ -223,14 +229,6 @@ static float kDistanceBetweenBlocks=70.0f;
         }
     }
     
-    
-//    for (int i=0; i<DRAW_DEPTH; i++)
-//    {
-//        for(id go in [gw AllGameObjects]) {
-//            if([go conformsToProtocol:@protocol(Pairable)])
-//                [((id<Pairable>)go) draw:i];
-//        }
-//    } 
 }
 
 -(void)drawBondLineFrom:(CGPoint)p1 to:(CGPoint)p2
@@ -252,7 +250,7 @@ static float kDistanceBetweenBlocks=70.0f;
         barHalfW=1 + (30 * (diff / (gw.Blackboard.MaxObjectDistance-70.0f)));
     }
     
-    ccDrawColor4F(1, 1, 1, op);
+//    ccDrawColor4F(1, 1, 1, op);
     
     CGPoint line=[BLMath SubtractVector:p1 from:p2];
     CGPoint lineN=[BLMath NormalizeVector:line];
@@ -276,7 +274,7 @@ static float kDistanceBetweenBlocks=70.0f;
         CGPoint a=[BLMath AddVector:p1 toVector:[BLMath MultiplyVector:upV byScalar:i*0.75f]];
         CGPoint b=[BLMath AddVector:p2 toVector:[BLMath MultiplyVector:upV byScalar:i*0.75f]];
         
-        ccDrawLine(a, b);
+        [drawNode drawSegmentFrom:a to:b radius:1.0f color:ccc4f(1,1,1,op)];
     }
     
     for(int j=-barHalfW; j<0; j++)
@@ -284,7 +282,7 @@ static float kDistanceBetweenBlocks=70.0f;
         CGPoint a=[BLMath AddVector:p1 toVector:[BLMath MultiplyVector:upV byScalar:j*0.75f*distScalar]];
         CGPoint b=[BLMath AddVector:p2 toVector:[BLMath MultiplyVector:upV byScalar:(j+barHalfW)*0.75f*distScalar]];
         
-        ccDrawLine(a, b);
+        [drawNode drawSegmentFrom:a to:b radius:1.0f color:ccc4f(1,1,1,op)];
     }
     
     for(int k=barHalfW; k>0; k--)
@@ -292,7 +290,7 @@ static float kDistanceBetweenBlocks=70.0f;
         CGPoint a=[BLMath AddVector:p1 toVector:[BLMath MultiplyVector:upV byScalar:k*0.75f*distScalar]];
         CGPoint b=[BLMath AddVector:p2 toVector:[BLMath MultiplyVector:upV byScalar:(k-barHalfW)*0.75f*distScalar]];
         
-        ccDrawLine(a, b);
+        [drawNode drawSegmentFrom:a to:b radius:1.0f color:ccc4f(1,1,1,op)];
     }
 
 }
@@ -1684,6 +1682,67 @@ static float kDistanceBetweenBlocks=70.0f;
 {
     // empty selected objects
     [self setTouchVarsToOff];
+}
+
+-(CGRect)rectForThisShape:(id<ShapeContainer>)thisShape
+{
+    CGRect thisShapeRect=CGRectNull;
+    for(id<Moveable> block in thisShape.BlocksInShape)
+    {
+        CCSprite *s=block.mySprite;
+        thisShapeRect=CGRectUnion(thisShapeRect, s.boundingBox);
+    }
+
+    
+    return thisShapeRect;
+}
+
+-(void)checkForOverlappingContainers
+{
+    NSMutableArray *shapeRects=[[NSMutableArray alloc]init];
+    NSMutableArray *shapeObjects=[[NSMutableArray alloc]init];
+    
+    for(id<NSObject,ShapeContainer> go in gw.AllGameObjectsCopy)
+    {
+        if([go conformsToProtocol:@protocol(ShapeContainer)])
+        {
+            CGRect thisShapeRect=CGRectNull;
+            for(id<Moveable> block in go.BlocksInShape)
+            {
+                CCSprite *s=block.mySprite;
+                thisShapeRect=CGRectUnion(thisShapeRect, s.boundingBox);
+            }
+            [shapeRects addObject:[NSValue valueWithCGRect:thisShapeRect]];
+            [shapeObjects addObject:go];
+        }
+    }
+    
+    
+    for(int i=0;i<[shapeObjects count];i++)
+    {
+        id<ShapeContainer>cont=[shapeObjects objectAtIndex:i];
+        CGRect contRect=[[shapeRects objectAtIndex:i]CGRectValue];
+        
+        for(int o=0;o<[shapeObjects count];o++)
+        {
+            if(o==i)continue;
+            
+            id<ShapeContainer>thisCont=[shapeObjects objectAtIndex:o];
+            
+            while(CGRectIntersectsRect(contRect, [self rectForThisShape:thisCont]))
+            {
+                for(id<Moveable>thisBlock in thisCont.BlocksInShape)
+                {
+                    [thisBlock.mySprite setPosition:ccp(thisBlock.mySprite.position.x-1,thisBlock.mySprite.position.y)];
+                }
+                for(id<Moveable>thisBlock in cont.BlocksInShape)
+                {
+                    [thisBlock.mySprite setPosition:ccp(thisBlock.mySprite.position.x+1,thisBlock.mySprite.position.y)];
+                }
+            }
+        }
+    }
+    
 }
 
 -(void)setTouchVarsToOff

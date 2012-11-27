@@ -86,13 +86,14 @@ typedef enum
     NSMutableArray *inactiveArea;
     NSMutableArray *activeRects;
     CGRect inactiveRect;
+    CCDrawNode *drawNode;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;
 -(void)populateGW;
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)doUpdateOnTick:(ccTime)delta;
--(void)draw;
+-(void)drawConnections;
 -(void)createEvalAreas;
 -(NSArray*)evalUniqueShapes;
 -(BOOL)evalExpression;

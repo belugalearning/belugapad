@@ -94,6 +94,7 @@
 		5571BAE114E406630053A62B /* ToolConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE014E406630053A62B /* ToolConsts.m */; };
 		558ADA3616611B250000C448 /* tts-objects.plist in Resources */ = {isa = PBXBuildFile; fileRef = 558ADA3516611B250000C448 /* tts-objects.plist */; };
 		558ADA49166515700000C448 /* SGBtxeLineBreak.m in Sources */ = {isa = PBXBuildFile; fileRef = 558ADA48166515700000C448 /* SGBtxeLineBreak.m */; };
+		558ADA4D166537950000C448 /* intro-problems in Resources */ = {isa = PBXBuildFile; fileRef = 558ADA4C166537950000C448 /* intro-problems */; };
 		559846661627095B00554E8A /* MQDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 559846651627095B00554E8A /* MQDisplay.m */; };
 		5598466A162732CA00554E8A /* RatioTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 55984669162732CA00554E8A /* RatioTool.m */; };
 		559A33D715DA382C00CA97E2 /* CountingTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A33D615DA382C00CA97E2 /* CountingTimer.m */; };
@@ -613,6 +614,7 @@
 		558ADA3516611B250000C448 /* tts-objects.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "tts-objects.plist"; sourceTree = "<group>"; };
 		558ADA47166515700000C448 /* SGBtxeLineBreak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeLineBreak.h; sourceTree = "<group>"; };
 		558ADA48166515700000C448 /* SGBtxeLineBreak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeLineBreak.m; sourceTree = "<group>"; };
+		558ADA4C166537950000C448 /* intro-problems */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "intro-problems"; sourceTree = "<group>"; };
 		559846641627095B00554E8A /* MQDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQDisplay.h; sourceTree = "<group>"; };
 		559846651627095B00554E8A /* MQDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQDisplay.m; sourceTree = "<group>"; };
 		55984668162732CA00554E8A /* RatioTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RatioTool.h; sourceTree = "<group>"; };
@@ -2047,6 +2049,7 @@
 		7F5113D314A9EE63001AF372 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				558ADA4C166537950000C448 /* intro-problems */,
 				7F43B0F91661616000CD9B8D /* hqm-ref-USEnglish-WillLittleCreature-22khz */,
 				558ADA3516611B250000C448 /* tts-objects.plist */,
 				558ADA3216611AD10000C448 /* tts */,
@@ -3130,6 +3133,7 @@
 				558ADA3616611B250000C448 /* tts-objects.plist in Resources */,
 				33FF5F15166133860077EEA3 /* tts-replace.plist in Resources */,
 				7F43B0FA1661616000CD9B8D /* hqm-ref-USEnglish-WillLittleCreature-22khz in Resources */,
+				558ADA4D166537950000C448 /* intro-problems in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

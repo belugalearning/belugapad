@@ -1546,7 +1546,12 @@ static float kDistanceBetweenBlocks=70.0f;
         
         if([BLMath DistanceBetween:touchStart and:location]<=8.0f)
         {
-            [(id<Moveable>)currentPickupObject selectMe];
+            id<ShapeContainer>blockContainer=currentPickupObject.MyContainer;
+            if([blockContainer.LineType isEqualToString:@"Unbreakable"])
+                [blockContainer selectMyBlocks];
+            else
+                [(id<Moveable>)currentPickupObject selectMe];
+            
         }
         
         BOOL gotTarget=NO;

@@ -1548,10 +1548,14 @@ static float kDistanceBetweenBlocks=70.0f;
         {
             id<ShapeContainer>blockContainer=currentPickupObject.MyContainer;
             if([blockContainer.LineType isEqualToString:@"Unbreakable"])
+            {
+                [self deselectAll];
                 [blockContainer selectMyBlocks];
+            }
             else
+            {
                 [(id<Moveable>)currentPickupObject selectMe];
-            
+            }
         }
         
         BOOL gotTarget=NO;
@@ -1696,6 +1700,22 @@ static float kDistanceBetweenBlocks=70.0f;
 {
     // empty selected objects
     [self setTouchVarsToOff];
+}
+
+-(void)deselectAll
+{
+    for (id<Selectable,Moveable,NSObject>go in gw.AllGameObjectsCopy) {
+        
+        if([go conformsToProtocol:@protocol(Moveable)])
+        {
+            id<ShapeContainer,NSObject>goCont=go.MyContainer;
+            
+            if([goCont isKindOfClass:[SGDtoolContainer class]])
+                goCont.Selected=NO;
+            go.Selected=YES;
+            [go selectMe];
+        }
+    }
 }
 
 -(CGRect)rectForThisShape:(id<ShapeContainer>)thisShape

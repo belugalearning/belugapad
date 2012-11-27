@@ -455,7 +455,7 @@
 
         if([heldObject.mount isKindOfClass:[SGBtxePlaceholder class]])
         {
-            [(SGBtxePlaceholder*)heldObject.mount setContainerVisible:YES];
+            //[(SGBtxePlaceholder*)heldObject.mount setContainerVisible:YES];
             [heldObject destroy];
         }
         else

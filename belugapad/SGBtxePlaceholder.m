@@ -10,6 +10,7 @@
 #import "SGBtxeTextBackgroundRender.h"
 #import "SGBtxeContainerMgr.h"
 #import "SGBtxeRow.h"
+#import "global.h"
 
 @implementation SGBtxePlaceholder
 
@@ -69,6 +70,20 @@
     
 }
 
+-(void)redrawBkg
+{
+    if(!mountedObject)return;
+    
+    if([mountedObject conformsToProtocol:@protocol(Bounding)])
+    {
+        
+        CGSize thisSize=CGSizeMake(mountedObject.size.width-15, mountedObject.size.height);
+        
+        [textBackgroundComponent redrawBkgWithSize:thisSize];
+    }
+
+}
+
 -(BOOL)enabled
 {
     //compare tag of mount to target mount
@@ -107,10 +122,10 @@
     [dupe attachToRenderBase:((SGBtxeRow*)self.container).baseNode];
     
     [self.container.containerMgrComponent addObjectToContainer:(id<Bounding>)dupe];
-    [self setContainerVisible:NO];
-    
+    //[self setContainerVisible:NO];
     
     mountedObject=dupe;
+    [self redrawBkg];
 }
 
 -(void)setContainerVisible:(BOOL)visible

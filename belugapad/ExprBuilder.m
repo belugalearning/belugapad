@@ -197,9 +197,9 @@
         [rows addObject:row];
         
         if(i==0)
-            row.myAssetType=@"Medium";
-        else
             row.myAssetType=@"Small";
+        else
+            row.myAssetType=@"Medium";
         
         if(numberMode)
             row.defaultNumbermode=numberMode;

@@ -10,7 +10,6 @@
 #import "NumericKeypadViewController.h"
 
 @implementation NumericKeypadTextField
-@synthesize delegate;
 
 - (UIView *)inputView {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
@@ -26,6 +25,20 @@
     }
 }
 
+-(id)delegate
+{
+    return delegate;
+}
+-(void)setDelegate:(id)nextDelegate
+{
+    if (nextDelegate == delegate) return;
+    
+    if (nextDelegate) [nextDelegate retain];
+    if (delegate) [delegate release];
+    
+    delegate = nextDelegate;
+}
+
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
     return (action == @selector(paste:)) ? NO : [super canPerformAction:action withSender:sender];
@@ -33,8 +46,7 @@
 
 - (void)dealloc {
     [numPadViewController release];
-    [delegate release];
-    delegate = nil;
+    self.delegate = nil;
     [super dealloc];
 }
 

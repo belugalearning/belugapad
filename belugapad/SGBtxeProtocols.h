@@ -135,6 +135,7 @@
 @property (retain) id<Interactive, NSObject> mountedObject;
 
 -(void)duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)mountObject;
+-(CGRect)returnBoundingBox;
 
 @end
 

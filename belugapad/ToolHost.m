@@ -883,7 +883,7 @@ static float kTimeToHintToolTray=7.0f;
     evalShowCommit=YES;
     
     readProblemDesc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/speakdesc.png")];
-    [readProblemDesc setPosition:ccp(cy*2-70,630)];
+    [readProblemDesc setPosition:ccp(cx*2-70,630)];
     [problemDefLayer addChild:readProblemDesc];
     readProblemDesc.opacity=0;
     

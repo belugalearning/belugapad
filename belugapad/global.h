@@ -365,6 +365,7 @@
 
 //distribution tool
 #define DISTRIBUTION_EVAL_TYPE @"DISTRIBUTION_EVAL_TYPE"
+#define IS_EVAL_TARGET @"IS_EVAL_TARGET"
 #define HAS_CAGE @"HAS_CAGE"
 #define DOCK_TYPE @"DOCK_TYPE"
 #define BLOCK_TYPE @"BLOCK_TYPE"
@@ -471,6 +472,7 @@
 #define BTXE_ROW_DEFAULT_MAX_WIDTH 924.0f
 #define BTXE_NAMESPACE @"http://zubi.me/namespaces/2012/BTXE"
 #define BTXE_T @"b:t"
+#define BTXE_BR @"b:br"
 #define BTXE_OT @"b:ot"
 #define BTXE_OI @"b:oi"
 #define BTXE_ON @"b:on"

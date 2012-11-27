@@ -82,9 +82,9 @@
     }
     if(isPlaceholder)
     {
-        lhFile=[NSString stringWithFormat:@"/images/btxe/SB_Holder_Large_Left.png"];
-        mFile=[NSString stringWithFormat:@"/images/btxe/SB_Holder_Large_Middle.png"];
-        rhFile=[NSString stringWithFormat:@"/images/btxe/SB_Holder_Large_Right.png"];
+        lhFile=[NSString stringWithFormat:@"/images/btxe/SB_Holder_%@_Left.png", assetType];
+        mFile=[NSString stringWithFormat:@"/images/btxe/SB_Holder_%@_Middle.png", assetType];
+        rhFile=[NSString stringWithFormat:@"/images/btxe/SB_Holder_%@_Right.png", assetType];
         
         lh=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(lhFile)];
         m=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(mFile)];

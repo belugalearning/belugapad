@@ -21,7 +21,7 @@
 
 @implementation SGDtoolBlockRender
 
--(SGDtoolBlockRender*)initWithGameObject:(id<Transform, Moveable, Pairable, Configurable>)aGameObject
+-(SGDtoolBlockRender*)initWithGameObject:(id<Transform, Moveable, Pairable, Configurable, Selectable>)aGameObject
 {
     if(self=[super initWithGameObject:(SGGameObject*)aGameObject])
     {
@@ -145,9 +145,18 @@
     [gameWorld delayRemoveGameObject:(id)ParentGO];
 }
 
--(void)resetTint
+-(void)selectMe
 {
-    [ParentGO.mySprite setColor:ccc3(255,255,255)];
+    if(ParentGO.Selected)
+    {
+        [ParentGO.mySprite setColor:ccc3(255,255,255)];
+        ParentGO.Selected=NO;
+    }
+    else if(!ParentGO.Selected)
+    {
+        [ParentGO.mySprite setColor:ccc3(255,0,0)];
+        ParentGO.Selected=YES;
+    }
 }
 
 @end

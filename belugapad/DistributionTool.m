@@ -157,7 +157,7 @@ static float kDistanceBetweenBlocks=70.0f;
         }
     }
     [self drawConnections];
-    [self checkForOverlappingContainers];
+    //[self checkForOverlappingContainers];
 }
 
 -(void)drawConnections
@@ -438,6 +438,7 @@ static float kDistanceBetweenBlocks=70.0f;
     NSString *thisColour = [theseSettings objectForKey:TINT_COLOUR];
     BOOL unbreakableBonds = [[theseSettings objectForKey:UNBREAKABLE_BONDS]boolValue];
     BOOL showContainerCount = [[theseSettings objectForKey:SHOW_CONTAINER_VALUE]boolValue];
+    BOOL isEvalTarget = [[theseSettings objectForKey:IS_EVAL_TARGET]boolValue];
 
     
     if(!thisColour)
@@ -474,6 +475,8 @@ static float kDistanceBetweenBlocks=70.0f;
         container.LineType=@"Breakable";
     
     container.AllowDifferentTypes=bondDifferentTypes;
+    container.IsEvalTarget=isEvalTarget;
+    
     if (label && !existingGroups) existingGroups = [NSMutableArray arrayWithObject:label];
     float startPosX=0;
     float startPosY=0;
@@ -1388,6 +1391,7 @@ static float kDistanceBetweenBlocks=70.0f;
     location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
+    touchStart=location;
     
     
     // loop over 
@@ -1456,7 +1460,7 @@ static float kDistanceBetweenBlocks=70.0f;
             [loggingService logEvent:BL_PA_DT_TOUCH_MOVE_MOVE_BLOCK withAdditionalData:nil];
             hasLoggedMovedBlock=YES;
         }
-        if((location.x>=80.0f&&location.x<=lx-80.0f) && (location.y>=60.0f&&location.y<=ly-80.0f))
+        if((location.x>=80.0f&&location.x<=lx-80.0f) && (location.y>=60.0f&&location.y<=ly-80.0f) && [BLMath DistanceBetween:touchStart and:location]>8.0f)
         {
             // set it's position and move it!
             currentPickupObject.Position=location;
@@ -1538,6 +1542,20 @@ static float kDistanceBetweenBlocks=70.0f;
         if(CGRectContainsPoint(inactiveRect, location))
         {
             [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_blocks_added_to_evaluation_area.wav")];
+        }
+        
+        if([BLMath DistanceBetween:touchStart and:location]<=8.0f)
+        {
+            id<ShapeContainer>blockContainer=currentPickupObject.MyContainer;
+            if([blockContainer.LineType isEqualToString:@"Unbreakable"])
+            {
+                [self deselectAll];
+                [blockContainer selectMyBlocks];
+            }
+            else
+            {
+                [(id<Moveable>)currentPickupObject selectMe];
+            }
         }
         
         BOOL gotTarget=NO;
@@ -1682,6 +1700,22 @@ static float kDistanceBetweenBlocks=70.0f;
 {
     // empty selected objects
     [self setTouchVarsToOff];
+}
+
+-(void)deselectAll
+{
+    for (id<Selectable,Moveable,NSObject>go in gw.AllGameObjectsCopy) {
+        
+        if([go conformsToProtocol:@protocol(Moveable)])
+        {
+            id<ShapeContainer,NSObject>goCont=go.MyContainer;
+            
+            if([goCont isKindOfClass:[SGDtoolContainer class]])
+                goCont.Selected=NO;
+            go.Selected=YES;
+            [go selectMe];
+        }
+    }
 }
 
 -(CGRect)rectForThisShape:(id<ShapeContainer>)thisShape

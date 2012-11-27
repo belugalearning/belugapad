@@ -8,5 +8,6 @@
 @class NumericKeypadTextField;
 
 @protocol NumericKeypadDelegate
-- (void)saveActionFormTextField:(UITextField *)textField;
+-(void)saveActionFormTextField:(UITextField *)textField;
+-(void)numericKeypadDeleteButtonWasPressed:(UITextField *)textField;
 @end

@@ -73,8 +73,13 @@
 - (IBAction)buttonPress:(id)sender {
     UIButton *bt = (UIButton *) sender;
     NSString *titleLabel = bt.titleLabel.text;
-    NSLog(@"label : %@ , sender %@ ", titleLabel, sender);
-    if ([titleLabel isEqualToString:@"⌫"]){
+    //NSLog(@"label : %@ , sender %@ ", titleLabel, sender);
+    if ([titleLabel isEqualToString:@"⌫"])
+    {
+        if ([self.delegate respondsToSelector:@selector(numericKeypadDeleteButtonWasPressed:)])
+        {
+            [self.delegate numericKeypadDeleteButtonWasPressed:self.numpadTextFiled];
+        }
         [self.numpadTextFiled myDeleteBackward];
     } else if ([titleLabel isEqualToString:@"Save"]){
         if ([self.delegate respondsToSelector:@selector(saveActionFormTextField:)]){

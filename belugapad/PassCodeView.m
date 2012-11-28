@@ -115,7 +115,7 @@ const uint labelSpacing = 67;
     }
     
     currentIndex = labelIx;
-    [self editAtCurrentIndex];
+    [self positionCursor];
 }
 
 #pragma mark -
@@ -126,11 +126,18 @@ const uint labelSpacing = 67;
     
     if (isDigitButton)
     {
-        [text replaceCharactersInRange:NSMakeRange(currentIndex, 1) withString:buttonText];
+        [text replaceCharactersInRange:NSMakeRange(currentIndex, 1) withString:buttonText];// either move to next char, or if we're on last char, lose focus
+        if (++currentIndex < numLabels) [self positionCursor];
+        else [self resignFirstResponder];
     }
     else if ([buttonText isEqualToString:@"⌫"])
     {
         [text replaceCharactersInRange:NSMakeRange(currentIndex, 1) withString:@" "];
+        if (currentIndex)
+        {
+            currentIndex--;
+            [self positionCursor];
+        }
     }
     
     [self setNeedsDisplay];
@@ -152,81 +159,12 @@ const uint labelSpacing = 67;
     [cursor setAlpha:(self.isFirstResponder && !cursor.alpha ? 1 : 0)];
 }
 
-#pragma mark - 
-#pragma mark nktf
--(void)editAtCurrentIndex
+-(void)positionCursor
 {
     UILabel *currIndexLabel = labels[currentIndex];
     [cursor setFrame:CGRectMake(currIndexLabel.frame.origin.x - 4, 36, 29, 3)];
-    
-    /*
-    CGRect frame = currIndexLabel.frame;
-    frame.origin.y -= 3;
-    
-    nktf.frame = frame;
-    nktf.userInteractionEnabled = YES;
-    
-    NSString *character = [text substringWithRange:NSMakeRange(currentIndex, 1)];
-    if ([character isEqualToString:@" "])
-    {
-        nktf.text = @"";
-        [nktf becomeFirstResponder];
-    }
-    else
-    {
-        nktf.text = character;
-        [nktf becomeFirstResponder];
-        [nktf selectAll:self];
-        //[nktf setValue:[NSValue valueWithRange:NSMakeRange(0,1)] forKey:@"selectionRange"];
-    }
-    
-    for (UILabel *l in labels)
-    {
-        l.textColor = l == labels[currentIndex] ? [UIColor clearColor] : [UIColor whiteColor];
-    }
-     */
-}
-/*
--(void)endEdit
-{
-    nktf.userInteractionEnabled = NO;
-    [nktf resignFirstResponder];
-    nktf.text = @"";
-    for (UILabel *l in labels) l.textColor = [UIColor whiteColor];
-}
--(void)onEdit
-{
-    // char has either been added or removed - which one?
-    if ([nktf.text length])
-    {
-        [text replaceCharactersInRange:NSMakeRange(currentIndex, 1) withString:nktf.text];
-        
-        // either move to next char, or if we're on last char, lose focus
-        if (++currentIndex < numLabels) [self editAtCurrentIndex];
-        else [self endEdit];
-    }
-    else
-    {
-        // removed a char
-        [text replaceCharactersInRange:NSMakeRange(currentIndex, 1) withString:@" "];
-        if (currentIndex)
-        {
-            currentIndex--;
-            [self editAtCurrentIndex];
-        }
-    }
 }
 
--(void)numericKeypadDeleteButtonWasPressed:(UITextField*)tf
-{
-    //if (![nktf.text length]) [self onEdit]; // nktfDidChange won't fire if text field empty when delete button pressed
-}
-
--(void)nktfDidChange:(NSNotification*)notification
-{
-    [self onEdit];
-}
-//*/
 -(void)dealloc
 {
     if (numpadInputView) [numpadInputView release];

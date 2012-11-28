@@ -298,7 +298,7 @@
 -(void)handleCancelNewUserClicked:(id*)button
 {
     newUserNameTF.text = @"";
-    newUserPassCodeView.text = @"";
+    [newUserPassCodeView clearText];
     [newUserNameTF resignFirstResponder];
     [newUserPassCodeView resignFirstResponder];
     [self setActiveView:selectUserView];
@@ -334,7 +334,7 @@
         else if (BL_USER_CREATION_SUCCESS_NICK_AVAILABLE == status || BL_USER_CREATION_SUCCESS_NICK_AVAILABILITY_UNCONFIRMED == status)
         {
             newUserNameTF.text = @"";
-            newUserPassCodeView.text = @"";
+            [newUserPassCodeView clearText];
             
             [bself loadDeviceUsers];
             [bself->selectUserTableView reloadData];
@@ -395,7 +395,7 @@
 -(void)handleCancelExistingUserClicked:(id*)button
 {
     existingUserNameTF.text = @"";
-    downloadUserPassCodeView.text = @"";
+    [downloadUserPassCodeView clearText];
     [existingUserNameTF resignFirstResponder];
     [downloadUserPassCodeView resignFirstResponder];
     [self setActiveView:selectUserView];

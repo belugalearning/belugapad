@@ -7,22 +7,25 @@
 //
 
 #import "PassCodeView.h"
+#import "NumpadInputController.h"
 
 @interface PassCodeView()
 {
     NSArray *labels;
     NSMutableString *text;
+    uint currentIndex;
+    UIView *cursor;
+    
+    NumpadInputController *numpadInputView;
+    NSRegularExpression *singleDigitMatch;
 }
-
 @end
 
 @implementation PassCodeView
 
 const uint numLabels = 4;
-const uint firstLabelX = 12;
-const uint labelSpacing = 68;
-
-@synthesize text;
+const uint firstLabelX = 11;
+const uint labelSpacing = 67;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -34,7 +37,7 @@ const uint labelSpacing = 68;
         labels = [NSMutableArray array];
         for (uint i=0; i<numLabels; i++)
         {
-            UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(firstLabelX + i * labelSpacing, 8.0f, 24.0f, 24.0f)] autorelease];
+            UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(firstLabelX + i * labelSpacing, 9, 24, 24)] autorelease];
             [label setTextColor:[UIColor whiteColor]];
             [label setBackgroundColor:[UIColor clearColor]];
             [label setFont:[UIFont fontWithName:@"Chango" size:24]];
@@ -42,74 +45,195 @@ const uint labelSpacing = 68;
             [(NSMutableArray*)labels addObject:label];
         }
         labels = [labels copy];
+        [self clearText];
+        
+        cursor = [[UIView alloc] init];
+        cursor.userInteractionEnabled = NO;
+        cursor.backgroundColor = [UIColor colorWithRed:0.26f green:0.42f blue:0.95f alpha:1];
+        [cursor setAlpha:0];
+        [self addSubview:cursor];
+        
+        [NSTimer scheduledTimerWithTimeInterval:0.6 target:self selector:@selector(cursorTick:) userInfo:nil repeats:YES];
+        
+        singleDigitMatch = [[NSRegularExpression alloc] initWithPattern:@"^\\d$" options:0 error:nil];
     }
     return self;
 }
 
 #pragma mark -
-#pragma mark Custom Property Accessors
+#pragma mark Property Accessors
 -(NSString*)text
 {
     return [NSString stringWithString:text];
 }
--(void)setText:(NSString*)val
+
+#pragma mark -
+#pragma mark public interface
+-(void)clearText
 {
-    if (val && [val isEqualToString:text]) return;
-    if (val && [val length]) [text setString:val];
-    else [text setString:@""];
-    [self setNeedsDisplay];
+    [text setString:[@"" stringByPaddingToLength:numLabels withString:@" " startingAtIndex:0]];
 }
 
 #pragma mark -
-#pragma mark Respond to touch and become first responder.
+#pragma mark Responder / UIView overrides
 
-- (BOOL)canBecomeFirstResponder
+-(BOOL)canBecomeFirstResponder
 {
     return YES;
 }
 
--(void) touchesBegan: (NSSet *) touches withEvent: (UIEvent *) event
+-(UIView*)inputView
+{
+    if (!numpadInputView)
+    {
+        numpadInputView = [[NumpadInputController alloc] initWithNibName:@"NumpadInputController" bundle:[NSBundle mainBundle]];
+        numpadInputView.delegate = self;
+    }
+    return numpadInputView.view;
+}
+
+-(void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event
 {
     [self becomeFirstResponder];
+    
+    // what's closest slot to touch?
+    CGPoint touchPos = [(UITouch*)[touches anyObject] locationInView:self];
+    float closestDistance = NSUIntegerMax;
+    uint labelIx;
+    
+    for (uint i=0; i<[labels count]; i++)
+    {
+        UILabel *l = labels[i];
+        CGPoint lCentre = CGPointMake(l.frame.origin.x + 0.5 * l.frame.size.width, l.frame.origin.y + 0.5 * l.frame.size.height);
+        float dist = sqrtf( powf(lCentre.x - touchPos.x, 2) + powf(lCentre.y - touchPos.y, 2) );
+        
+        if (dist < closestDistance)
+        {
+            closestDistance = dist;
+            labelIx = i;
+        }
+    }
+    
+    currentIndex = labelIx;
+    [self editAtCurrentIndex];
+}
+
+#pragma mark -
+#pragma mark NumpadInputControllerDelegate
+-(void)buttonTappedWithText:(NSString*)buttonText
+{
+    BOOL isDigitButton = [singleDigitMatch numberOfMatchesInString:buttonText options:NSMatchingWithoutAnchoringBounds range:NSMakeRange(0,[buttonText length])] == 1;
+    
+    if (isDigitButton)
+    {
+        [text replaceCharactersInRange:NSMakeRange(currentIndex, 1) withString:buttonText];
+    }
+    else if ([buttonText isEqualToString:@"⌫"])
+    {
+        [text replaceCharactersInRange:NSMakeRange(currentIndex, 1) withString:@" "];
+    }
+    
+    [self setNeedsDisplay];
 }
 
 #pragma mark -
 #pragma mark Drawing
 
-- (void)drawRect:(CGRect)rect
+-(void)drawRect:(CGRect)rect
 {
     for (uint i=0; i<numLabels; i++)
     {
-        ((UILabel*)[labels objectAtIndex:i]).text = [text length] > i ? [text substringWithRange:NSMakeRange(i,1)] : @"";
+        ((UILabel*)[labels objectAtIndex:i]).text = [text substringWithRange:NSMakeRange(i,1)];
     }
 }
 
-#pragma mark -
-#pragma mark UIKeyInput Protocol Methods
-
-- (BOOL)hasText
+-(void)cursorTick:(NSTimer*)timer
 {
-    return self.text.length > 0;
+    [cursor setAlpha:(self.isFirstResponder && !cursor.alpha ? 1 : 0)];
 }
 
-- (void)insertText:(NSString*)theText
+#pragma mark - 
+#pragma mark nktf
+-(void)editAtCurrentIndex
 {
-    if ([text length] >= numLabels || !theText || ![theText length]) return;
-    [text appendString:[theText substringWithRange:NSMakeRange(0, MIN([theText length], numLabels - [theText length]))]];
-    [self setNeedsDisplay];
+    UILabel *currIndexLabel = labels[currentIndex];
+    [cursor setFrame:CGRectMake(currIndexLabel.frame.origin.x - 4, 36, 29, 3)];
+    
+    /*
+    CGRect frame = currIndexLabel.frame;
+    frame.origin.y -= 3;
+    
+    nktf.frame = frame;
+    nktf.userInteractionEnabled = YES;
+    
+    NSString *character = [text substringWithRange:NSMakeRange(currentIndex, 1)];
+    if ([character isEqualToString:@" "])
+    {
+        nktf.text = @"";
+        [nktf becomeFirstResponder];
+    }
+    else
+    {
+        nktf.text = character;
+        [nktf becomeFirstResponder];
+        [nktf selectAll:self];
+        //[nktf setValue:[NSValue valueWithRange:NSMakeRange(0,1)] forKey:@"selectionRange"];
+    }
+    
+    for (UILabel *l in labels)
+    {
+        l.textColor = l == labels[currentIndex] ? [UIColor clearColor] : [UIColor whiteColor];
+    }
+     */
+}
+/*
+-(void)endEdit
+{
+    nktf.userInteractionEnabled = NO;
+    [nktf resignFirstResponder];
+    nktf.text = @"";
+    for (UILabel *l in labels) l.textColor = [UIColor whiteColor];
+}
+-(void)onEdit
+{
+    // char has either been added or removed - which one?
+    if ([nktf.text length])
+    {
+        [text replaceCharactersInRange:NSMakeRange(currentIndex, 1) withString:nktf.text];
+        
+        // either move to next char, or if we're on last char, lose focus
+        if (++currentIndex < numLabels) [self editAtCurrentIndex];
+        else [self endEdit];
+    }
+    else
+    {
+        // removed a char
+        [text replaceCharactersInRange:NSMakeRange(currentIndex, 1) withString:@" "];
+        if (currentIndex)
+        {
+            currentIndex--;
+            [self editAtCurrentIndex];
+        }
+    }
 }
 
-- (void)deleteBackward
+-(void)numericKeypadDeleteButtonWasPressed:(UITextField*)tf
 {
-    if (![text length]) return;
-    [text deleteCharactersInRange:NSMakeRange([text length]-1, 1)];
-    [self setNeedsDisplay];
+    //if (![nktf.text length]) [self onEdit]; // nktfDidChange won't fire if text field empty when delete button pressed
 }
 
+-(void)nktfDidChange:(NSNotification*)notification
+{
+    [self onEdit];
+}
+//*/
 -(void)dealloc
 {
-    if (labels) [labels release];
+    if (numpadInputView) [numpadInputView release];
+    if (cursor) [cursor release];
     if (text) [text release];
+    if (labels) [labels release];
+    if (singleDigitMatch) [singleDigitMatch release];
     [super dealloc];
 }
 

@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NumpadInputController.h"
 
-@interface PassCodeView : UIView <UIKeyInput>
+@interface PassCodeView : UIView <NumpadInputControllerDelegate>
 
-@property (nonatomic, retain) NSString *text;
+@property (readonly, nonatomic, retain) NSString *text;
+
+-(void)buttonTappedWithText:(NSString*)buttonText;
+-(void)clearText;
 
 @end

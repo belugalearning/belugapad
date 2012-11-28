@@ -1323,6 +1323,26 @@ static float kTimeToCageShake=7.0f;
         currentBlockValues=[[NSMutableArray alloc]init];
         blockLabels=[[NSMutableArray alloc]init];
     }
+    
+    if(expectedCount<lastCount && evalMode==kProblemEvalAuto)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_AUTO_REMOVE_BLOCKS"];
+    if(expectedCount>lastCount && evalMode==kProblemEvalAuto)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_AUTO_ADD_BLOCKS"];
+    
+    if(expectedCount<lastCount && evalMode==kProblemEvalOnCommit)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_COMMIT_REMOVE_BLOCKS"];
+    if(expectedCount>lastCount && evalMode==kProblemEvalOnCommit)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_COMMIT_ADD_BLOCKS"];
+    
+    if(allowCondensing)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_ALLOW_CONDENSING"];
+    
+    if(allowMulching)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_ALLOW_MULCHING"];
+    
+    if(showMultipleControls||multipleBlockPickup)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_MULTIPLE_BLOCK"];
+
 }
 
 #pragma mark - status messages

@@ -193,8 +193,15 @@
     
     if(isIntroPlist)
         initBubbles=0;
+
+    [usersService notifyStartingFeatureKey:@"FLOATINGBLOCK_EVALUATION"];
+    [usersService notifyStartingFeatureKey:@"FLOATINGBLOCK_OPERATION"];
     
+    if(showNewPipe)
+        [usersService notifyStartingFeatureKey:@"FLOATINGBLOCK_SHOW_INPUT_PIPE"];
     
+    if([supportedOperators count]>1)
+        [usersService notifyStartingFeatureKey:@"FLOATINGBLOCK_SHOW_MULTIPLE_OPERATORS"];    
 }
 
 -(void)populateGW

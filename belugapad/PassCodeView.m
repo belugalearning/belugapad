@@ -24,7 +24,7 @@
 @implementation PassCodeView
 
 const uint numLabels = 4;
-const uint firstLabelX = 11;
+const uint firstLabelX = 12;
 const uint labelSpacing = 67;
 
 - (id)initWithFrame:(CGRect)frame

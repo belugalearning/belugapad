@@ -72,6 +72,7 @@ const uint labelSpacing = 67;
 -(void)clearText
 {
     [text setString:[@"" stringByPaddingToLength:numLabels withString:@" " startingAtIndex:0]];
+    [self setNeedsDisplay];
 }
 
 #pragma mark -

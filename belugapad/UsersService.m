@@ -705,6 +705,11 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     [currentUserStateDatabase close];
 }
 
+-(void)notifyStartingFeatureKey:(NSString*)featureKey
+{
+    
+}
+
 -(void)dealloc
 {
     if (currentUser) [currentUser release];

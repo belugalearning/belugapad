@@ -94,6 +94,9 @@ static float kDistanceBetweenBlocks=70.0f;
         usersService = ac.usersService;
         loggingService = ac.loggingService;
         
+        drawNode=[[CCDrawNode alloc]init];
+        [renderLayer addChild:drawNode];
+        
         [self readPlist:pdef];
         [self populateGW];
         
@@ -153,11 +156,14 @@ static float kDistanceBetweenBlocks=70.0f;
             [totalValueLabel setString:[NSString stringWithFormat:@"%g",[self showValueOfAllObjects]]];
         }
     }
-
+    [self drawConnections];
+    //[self checkForOverlappingContainers];
 }
 
--(void)draw
+-(void)drawConnections
 {
+    [drawNode clear];
+    
     for(id go in [gw AllGameObjects])
     {
         if([go conformsToProtocol:@protocol(ShapeContainer)])
@@ -223,14 +229,6 @@ static float kDistanceBetweenBlocks=70.0f;
         }
     }
     
-    
-//    for (int i=0; i<DRAW_DEPTH; i++)
-//    {
-//        for(id go in [gw AllGameObjects]) {
-//            if([go conformsToProtocol:@protocol(Pairable)])
-//                [((id<Pairable>)go) draw:i];
-//        }
-//    } 
 }
 
 -(void)drawBondLineFrom:(CGPoint)p1 to:(CGPoint)p2
@@ -252,7 +250,7 @@ static float kDistanceBetweenBlocks=70.0f;
         barHalfW=1 + (30 * (diff / (gw.Blackboard.MaxObjectDistance-70.0f)));
     }
     
-    ccDrawColor4F(1, 1, 1, op);
+//    ccDrawColor4F(1, 1, 1, op);
     
     CGPoint line=[BLMath SubtractVector:p1 from:p2];
     CGPoint lineN=[BLMath NormalizeVector:line];
@@ -276,7 +274,7 @@ static float kDistanceBetweenBlocks=70.0f;
         CGPoint a=[BLMath AddVector:p1 toVector:[BLMath MultiplyVector:upV byScalar:i*0.75f]];
         CGPoint b=[BLMath AddVector:p2 toVector:[BLMath MultiplyVector:upV byScalar:i*0.75f]];
         
-        ccDrawLine(a, b);
+        [drawNode drawSegmentFrom:a to:b radius:1.0f color:ccc4f(1,1,1,op)];
     }
     
     for(int j=-barHalfW; j<0; j++)
@@ -284,7 +282,7 @@ static float kDistanceBetweenBlocks=70.0f;
         CGPoint a=[BLMath AddVector:p1 toVector:[BLMath MultiplyVector:upV byScalar:j*0.75f*distScalar]];
         CGPoint b=[BLMath AddVector:p2 toVector:[BLMath MultiplyVector:upV byScalar:(j+barHalfW)*0.75f*distScalar]];
         
-        ccDrawLine(a, b);
+        [drawNode drawSegmentFrom:a to:b radius:1.0f color:ccc4f(1,1,1,op)];
     }
     
     for(int k=barHalfW; k>0; k--)
@@ -292,7 +290,7 @@ static float kDistanceBetweenBlocks=70.0f;
         CGPoint a=[BLMath AddVector:p1 toVector:[BLMath MultiplyVector:upV byScalar:k*0.75f*distScalar]];
         CGPoint b=[BLMath AddVector:p2 toVector:[BLMath MultiplyVector:upV byScalar:(k-barHalfW)*0.75f*distScalar]];
         
-        ccDrawLine(a, b);
+        [drawNode drawSegmentFrom:a to:b radius:1.0f color:ccc4f(1,1,1,op)];
     }
 
 }
@@ -399,7 +397,7 @@ static float kDistanceBetweenBlocks=70.0f;
         if(!dockType)
             dockType=@"Infinite";
         
-        if(!addedCages && [dockType isEqualToString:@"Infinite"])
+        if(!addedCages)
             addedCages=[[NSMutableArray alloc]init];
         
         if([usedShapeTypes count]==0)
@@ -440,6 +438,7 @@ static float kDistanceBetweenBlocks=70.0f;
     NSString *thisColour = [theseSettings objectForKey:TINT_COLOUR];
     BOOL unbreakableBonds = [[theseSettings objectForKey:UNBREAKABLE_BONDS]boolValue];
     BOOL showContainerCount = [[theseSettings objectForKey:SHOW_CONTAINER_VALUE]boolValue];
+    BOOL isEvalTarget = [[theseSettings objectForKey:IS_EVAL_TARGET]boolValue];
 
     
     if(!thisColour)
@@ -476,6 +475,8 @@ static float kDistanceBetweenBlocks=70.0f;
         container.LineType=@"Breakable";
     
     container.AllowDifferentTypes=bondDifferentTypes;
+    container.IsEvalTarget=isEvalTarget;
+    
     if (label && !existingGroups) existingGroups = [NSMutableArray arrayWithObject:label];
     float startPosX=0;
     float startPosY=0;
@@ -1390,6 +1391,7 @@ static float kDistanceBetweenBlocks=70.0f;
     location=[[CCDirector sharedDirector] convertToGL:location];
     //location=[self.ForeLayer convertToNodeSpace:location];
     lastTouch=location;
+    touchStart=location;
     
     
     // loop over 
@@ -1458,7 +1460,7 @@ static float kDistanceBetweenBlocks=70.0f;
             [loggingService logEvent:BL_PA_DT_TOUCH_MOVE_MOVE_BLOCK withAdditionalData:nil];
             hasLoggedMovedBlock=YES;
         }
-        if((location.x>=80.0f&&location.x<=lx-80.0f) && (location.y>=60.0f&&location.y<=ly-80.0f))
+        if((location.x>=80.0f&&location.x<=lx-80.0f) && (location.y>=60.0f&&location.y<=ly-80.0f) && [BLMath DistanceBetween:touchStart and:location]>8.0f)
         {
             // set it's position and move it!
             currentPickupObject.Position=location;
@@ -1523,7 +1525,7 @@ static float kDistanceBetweenBlocks=70.0f;
     if(!spawnedNewObj && hasMovedCagedBlock)
         [cage spawnNewBlock];
     
-    if(location.y<cage.Position.y+(cage.MySprite.contentSize.height/2) && problemHasCage)
+    if(location.y<cage.MySprite.contentSize.height && problemHasCage)
     {
         [self removeBlockByCage];
         
@@ -1540,6 +1542,20 @@ static float kDistanceBetweenBlocks=70.0f;
         if(CGRectContainsPoint(inactiveRect, location))
         {
             [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_distribution_general_blocks_added_to_evaluation_area.wav")];
+        }
+        
+        if([BLMath DistanceBetween:touchStart and:location]<=8.0f)
+        {
+            id<ShapeContainer>blockContainer=currentPickupObject.MyContainer;
+            if([blockContainer.LineType isEqualToString:@"Unbreakable"])
+            {
+                [self deselectAll];
+                [blockContainer selectMyBlocks];
+            }
+            else
+            {
+                [(id<Moveable>)currentPickupObject selectMe];
+            }
         }
         
         BOOL gotTarget=NO;
@@ -1684,6 +1700,83 @@ static float kDistanceBetweenBlocks=70.0f;
 {
     // empty selected objects
     [self setTouchVarsToOff];
+}
+
+-(void)deselectAll
+{
+    for (id<Selectable,Moveable,NSObject>go in gw.AllGameObjectsCopy) {
+        
+        if([go conformsToProtocol:@protocol(Moveable)])
+        {
+            id<ShapeContainer,NSObject>goCont=go.MyContainer;
+            
+            if([goCont isKindOfClass:[SGDtoolContainer class]])
+                goCont.Selected=NO;
+            go.Selected=YES;
+            [go selectMe];
+        }
+    }
+}
+
+-(CGRect)rectForThisShape:(id<ShapeContainer>)thisShape
+{
+    CGRect thisShapeRect=CGRectNull;
+    for(id<Moveable> block in thisShape.BlocksInShape)
+    {
+        CCSprite *s=block.mySprite;
+        thisShapeRect=CGRectUnion(thisShapeRect, s.boundingBox);
+    }
+
+    
+    return thisShapeRect;
+}
+
+-(void)checkForOverlappingContainers
+{
+    NSMutableArray *shapeRects=[[NSMutableArray alloc]init];
+    NSMutableArray *shapeObjects=[[NSMutableArray alloc]init];
+    
+    for(id<NSObject,ShapeContainer> go in gw.AllGameObjectsCopy)
+    {
+        if([go conformsToProtocol:@protocol(ShapeContainer)])
+        {
+            CGRect thisShapeRect=CGRectNull;
+            for(id<Moveable> block in go.BlocksInShape)
+            {
+                CCSprite *s=block.mySprite;
+                thisShapeRect=CGRectUnion(thisShapeRect, s.boundingBox);
+            }
+            [shapeRects addObject:[NSValue valueWithCGRect:thisShapeRect]];
+            [shapeObjects addObject:go];
+        }
+    }
+    
+    
+    for(int i=0;i<[shapeObjects count];i++)
+    {
+        id<ShapeContainer>cont=[shapeObjects objectAtIndex:i];
+        CGRect contRect=[[shapeRects objectAtIndex:i]CGRectValue];
+        
+        for(int o=0;o<[shapeObjects count];o++)
+        {
+            if(o==i)continue;
+            
+            id<ShapeContainer>thisCont=[shapeObjects objectAtIndex:o];
+            
+            while(CGRectIntersectsRect(contRect, [self rectForThisShape:thisCont]))
+            {
+                for(id<Moveable>thisBlock in thisCont.BlocksInShape)
+                {
+                    [thisBlock.mySprite setPosition:ccp(thisBlock.mySprite.position.x-1,thisBlock.mySprite.position.y)];
+                }
+                for(id<Moveable>thisBlock in cont.BlocksInShape)
+                {
+                    [thisBlock.mySprite setPosition:ccp(thisBlock.mySprite.position.x+1,thisBlock.mySprite.position.y)];
+                }
+            }
+        }
+    }
+    
 }
 
 -(void)setTouchVarsToOff

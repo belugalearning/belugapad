@@ -10,6 +10,7 @@
 #import "SGBtxeTextBackgroundRender.h"
 #import "SGBtxeContainerMgr.h"
 #import "SGBtxeRow.h"
+#import "global.h"
 
 @implementation SGBtxePlaceholder
 
@@ -17,7 +18,7 @@
 @synthesize textBackgroundComponent;
 @synthesize container;
 @synthesize targetTag;
-@synthesize isLargeObject;
+@synthesize assetType;
 @synthesize mountedObject;
 
 -(SGBtxePlaceholder*)initWithGameWorld:(SGGameWorld*)aGameWorld
@@ -55,13 +56,32 @@
 -(void)setupDraw
 {
     //artifically set size
-    if(isLargeObject)
-        size=CGSizeMake(150, 75);
+    
+    if([self.assetType isEqualToString:@"Large"])
+        size=CGSizeMake(150, 85);
+    
+    else if([self.assetType isEqualToString:@"Medium"])
+        size=CGSizeMake(100, 57);
+    
     else
-        size=CGSizeMake(50, 25);
+        size=CGSizeMake(50, 40);
     //background sprite to text (using same size)
     [textBackgroundComponent setupDrawWithSize:self.size];
     
+}
+
+-(void)redrawBkg
+{
+    if(!mountedObject)return;
+    
+    if([mountedObject conformsToProtocol:@protocol(Bounding)])
+    {
+        
+        CGSize thisSize=CGSizeMake(mountedObject.size.width-15, mountedObject.size.height);
+        
+        [textBackgroundComponent redrawBkgWithSize:thisSize];
+    }
+
 }
 
 -(BOOL)enabled
@@ -88,7 +108,7 @@
     id<MovingInteractive, RenderObject, NSObject> dupe=(id<MovingInteractive, RenderObject, NSObject>)[mountObject createADuplicate];
     
     dupe.mount=self;
-    dupe.isLargeObject=self.isLargeObject;
+    dupe.assetType=self.assetType;
     
     //set it up
     [dupe setupDraw];
@@ -102,10 +122,10 @@
     [dupe attachToRenderBase:((SGBtxeRow*)self.container).baseNode];
     
     [self.container.containerMgrComponent addObjectToContainer:(id<Bounding>)dupe];
-    [self setContainerVisible:NO];
-    
+    //[self setContainerVisible:NO];
     
     mountedObject=dupe;
+    [self redrawBkg];
 }
 
 -(void)setContainerVisible:(BOOL)visible
@@ -119,6 +139,13 @@
     
     //attach background to render, but stick behind other objects by default
     [renderBase addChild:textBackgroundComponent.backgroundNode z:-1];
+}
+
+-(CGRect)returnBoundingBox
+{
+    CGRect thisRect=CGRectMake(self.worldPosition.x-(size.width/2), self.worldPosition.y-(size.height/2),size.width,size.height);
+
+    return thisRect;
 }
 
 -(void)deflateZindex

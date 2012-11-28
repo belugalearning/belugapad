@@ -75,6 +75,11 @@
     [NodeRenderComponent updatePosition:Position];
 }
 
+-(void)setupArtefactRender
+{
+    [NodeRenderComponent setupArtefact];
+}
+
 -(void)draw:(int)z
 {
     if(self.Visible)

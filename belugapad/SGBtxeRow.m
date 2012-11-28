@@ -27,7 +27,7 @@
 @synthesize rowLayoutComponent;
 @synthesize parserComponent;
 @synthesize baseNode;
-@synthesize isLarge;
+@synthesize myAssetType;
 @synthesize defaultNumbermode;
 
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget
@@ -38,7 +38,8 @@
         size=CGSizeZero;
         position=CGPointZero;
         forceVAlignTop=NO;
-        isLarge=NO;
+//        isLarge=NO;
+        myAssetType=@"Small";
         self.defaultNumbermode=@"number";
         containerMgrComponent=[[SGBtxeContainerMgr alloc] initWithGameObject:(SGGameObject*)self];
         rowLayoutComponent=[[SGBtxeRowLayout alloc] initWithGameObject:(SGGameObject*)self];
@@ -86,9 +87,10 @@
     for (id<Bounding, RenderObject> c in children) {
         
         if([((id<NSObject>)c) conformsToProtocol:@protocol(MovingInteractive)])
-            ((id<MovingInteractive>)c).isLargeObject=self.isLarge;
+            ((id<MovingInteractive>)c).assetType=self.myAssetType;
+        
         if([((id<NSObject>)c) isKindOfClass:[SGBtxePlaceholder class]])
-            ((SGBtxePlaceholder*)c).isLargeObject=self.isLarge;
+            ((SGBtxePlaceholder*)c).assetType=self.myAssetType;
         
         [c setupDraw];
         

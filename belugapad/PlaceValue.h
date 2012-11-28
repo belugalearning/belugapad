@@ -142,6 +142,7 @@
     
     int lastCount;
     int totalCountedInProblem;
+    int lastPickedUpBlockCount;
     float maxSumReachedByUser;
     float expectedCount;
     float totalCount;
@@ -149,6 +150,7 @@
     
     int cageDefaultValue;
     BOOL explodeMode;
+    BOOL shouldUpdateLabels;
     
     CCSprite *condensePanel;
     CCSprite *mulchPanel;

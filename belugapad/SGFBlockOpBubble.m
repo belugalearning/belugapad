@@ -34,7 +34,7 @@
 
 -(void)setup
 {
-    MySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/opbubble.png")];
+    MySprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/floating/op_bubble.png")];
     [MySprite setPosition:ccp(Position.x,-50)];
     [gameWorld.Blackboard.RenderLayer addChild:MySprite];
     

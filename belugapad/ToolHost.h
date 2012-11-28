@@ -57,6 +57,10 @@ typedef enum {
     CCLayer *toolForeLayer;
     CCLayer *toolNoScaleLayer;
     
+    CCSprite *qTrayTop;
+    CCSprite *qTrayMid;
+    CCSprite *qTrayBot;
+    
     CCNode *nPicker;
     
     CGPoint lastTouch;
@@ -212,6 +216,10 @@ typedef enum {
     
     BOOL evalShowCommit;
     
+    BOOL countUpToJmap;
+    BOOL hasShownComplete;
+    float timeToReturnToJmap;
+    
 }
 
 @property (retain) Daemon *Zubi;
@@ -239,6 +247,7 @@ typedef enum {
 -(void) showProblemCompleteMessage;
 -(void) showProblemIncompleteMessage;
 -(void)showHideCommit;
+-(void)disableWheel;
 -(void)showWheel;
 -(void)hideWheel;
 -(void)readOutProblemDescription;

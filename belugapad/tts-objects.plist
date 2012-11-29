@@ -24,6 +24,8 @@
 	<string>button or buttons that display a correct answer</string>
 	<key>30_Q</key>
 	<string>what?</string>
+	<key>30_QM</key>
+	<string>question mark</string>
 	<key>30_pv_block</key>
 	<string>blocks</string>
 	<key>30_pv_block_s</key>
@@ -60,6 +62,10 @@
 	<string>diamonds</string>
 	<key>30_TT_Grid_Block</key>
 	<string>square</string>
+	<key>30_TT_25</key>
+	<string>25 square</string>
+	<key>30_TT_5</key>
+	<string>circles with 5 on them along the top and side</string>
 	<key>30_nl_jump_forward</key>
 	<string>jump button</string>
 	<key>30_pipe_in</key>
@@ -74,6 +80,8 @@
 	<string>bar</string>
 	<key>30_NL_Yellow</key>
 	<string>yellow marker</string>
+	<key>30_SB_Drop</key>
+	<string>container</string>
 	<key>1</key>
 	<string>1</string>
 	<key>2</key>

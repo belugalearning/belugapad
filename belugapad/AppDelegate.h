@@ -62,5 +62,6 @@
 -(void)writeLogMemoryUsage;
 -(void)tearDownUI;
 -(void)speakString:(NSString*)speakThis;
+-(void)stopAllSpeaking;
 
 @end

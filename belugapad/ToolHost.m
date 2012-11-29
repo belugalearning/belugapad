@@ -1323,6 +1323,11 @@ static float kTimeToHintToolTray=7.0f;
     NSNumber *aMode=[pdefMQ objectForKey:META_QUESTION_ANSWER_MODE];
     if (aMode) mqAnswerMode=[aMode intValue];
     
+    if(mqAnswerMode==kMetaQuestionAnswerSingle)
+        [usersService notifyStartingFeatureKey:@"METAQUESTION_ANSWER_MODE_SINGLE"];
+    else if(mqAnswerMode==kMetaQuestionAnswerMulti)
+        [usersService notifyStartingFeatureKey:@"METAQUESTION_ANSWER_MODE_MULTI"];
+    
     // check the eval mode and assign
 //    NSNumber *eMode=[pdefMQ objectForKey:META_QUESTION_EVAL_MODE];
 //    if(eMode) mqEvalMode=[eMode intValue];

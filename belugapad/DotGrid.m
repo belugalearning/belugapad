@@ -271,6 +271,15 @@
         doNotSimplifyFractions=NO;
         showDraggableBlock=YES;
     }
+    
+    if(showDraggableBlock)
+        [usersService notifyStartingFeatureKey:@"DOTGRID_DRAG_TO_CREATE_BLOCK"];
+        
+    [usersService notifyStartingFeatureKey:@"DOTGRID_TAP_TO_COUNT"];
+    [usersService notifyStartingFeatureKey:@"DOTGRID_ALLOW_RESIZE_SHAPE"];
+    
+    if(evalType==kProblemSumOfFractions)
+        [usersService notifyStartingFeatureKey:@"DOTGRID_EVAL_SUM_FRACTIONS"];
 
 }
 

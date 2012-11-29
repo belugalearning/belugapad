@@ -9,6 +9,7 @@
 #import "cocos2d.h"
 #import "ToolConsts.h"
 #import "ToolScene.h"
+#import "AppDelegate.h"
 
 typedef enum {
     kCountNone=0,
@@ -18,6 +19,7 @@ typedef enum {
 
 @interface CountingTimer : ToolScene
 {
+
     // required toolhost stuff
     ToolHost *toolHost;
     

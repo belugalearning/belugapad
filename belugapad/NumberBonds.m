@@ -189,6 +189,11 @@ static float kNBFontSizeLarge=35.0f;
     mountedObjects = [[NSMutableArray alloc]init];
     mountedObjectBadges = [[NSMutableArray alloc]init];
     mountedObjectLabels = [[NSMutableArray alloc]init];
+    
+    if([initCages count]==1)
+        [usersService notifyStartingFeatureKey:@"NUMBERBONDS_SINGLE_VALUE_ANSWER"];
+    else if([initCages count]>1)
+        [usersService notifyStartingFeatureKey:@"NUMBERBONDS_MULTI_VALUE_ANSWER"];
 }
 
 -(void)populateGW

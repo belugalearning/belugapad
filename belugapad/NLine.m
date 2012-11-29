@@ -549,6 +549,16 @@ float timerIgnoreFrog;
     
     NSNumber *countFromInitVal=[pdef objectForKey:@"COUNT_OUT_LOUD_FROM_START_VALUE"];
     if(countFromInitVal) countOutLoudFromInitStartVal=[countFromInitVal boolValue];
+    
+    if([evalType isEqualToString:@"EVAL_TARGET"] && evalTarget<0)
+        [usersService notifyStartingFeatureKey:@"NLINE_TARGET_LESS_0"];
+    if([evalType isEqualToString:@"EVAL_TARGET"] && evalTarget>=0)
+        [usersService notifyStartingFeatureKey:@"NLINE_TARGET_GREATER_EQUAL_0"];
+    
+    if(frogMode)
+        [usersService notifyStartingFeatureKey:@"NLINE_JUMP_MODE"];
+    if(frogMode && ([evalType isEqualToString:@"REPEATED_ADDITION"] || [evalType isEqualToString:@"JUMP_SEQUENCE"]))
+        [usersService notifyStartingFeatureKey:@"NLINE_MULTI_TARGET_JUMP"];
 }
 
 -(void)problemStateChanged

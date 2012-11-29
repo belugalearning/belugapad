@@ -183,6 +183,7 @@ const uint labelSpacing = 67;
 
 -(void)positionCursor
 {
+    [cursor setAlpha:0]; // start with cursor off. N.B. also ensures that after char entered for last space, there isn't a momentary flash of the cursor back in the first space.
     UILabel *currIndexLabel = labels[currentIndex];
     [cursor setFrame:CGRectMake(currIndexLabel.frame.origin.x - 4, 36, 29, 3)];
 }

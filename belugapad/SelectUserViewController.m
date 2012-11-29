@@ -280,6 +280,7 @@
     [editUserView addSubview:newUserNameTF];
     
     newUserPassCodeView = [[[PassCodeView alloc] initWithFrame:CGRectMake(390.0f, 334.0f, 255.0f, 46.0f)] autorelease];
+    newUserPassCodeView.delegate = self;
     [editUserView addSubview:newUserPassCodeView];
     
     cancelNewUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -377,6 +378,7 @@
     [loadExistingUserView addSubview:existingUserNameTF];
     
     downloadUserPassCodeView = [[[PassCodeView alloc] initWithFrame:CGRectMake(390.0f, 334.0f, 255.0f, 46.0f)] autorelease];
+    downloadUserPassCodeView.delegate = self;
     [loadExistingUserView addSubview:downloadUserPassCodeView];
     
     cancelExistingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -430,6 +432,17 @@
     [usersService downloadUserMatchingNickName:existingUserNameTF.text
                                    andPassword:downloadUserPassCodeView.text
                                       callback:callback];
+}
+
+
+#pragma mark -
+#pragma mark PassCodeViewDelegate
+-(void)passCodeBecameInvalid:(PassCodeView*)passCodeView
+{
+}
+
+-(void)passCodeBecameValid:(PassCodeView*)passCodeView
+{
 }
 
 

@@ -296,7 +296,7 @@
     [editUserView addSubview:saveNewUserButton];
 }
 
--(void)handleCancelNewUserClicked:(id*)button
+-(void)handleCancelNewUserClicked:(id)button
 {
     newUserNameTF.text = @"";
     [newUserPassCodeView clearText];
@@ -305,7 +305,7 @@
     [self setActiveView:selectUserView];
 }
 
--(void)handleSaveNewUserClicked:(id*)button
+-(void)handleSaveNewUserClicked:(id)button
 {
     if (!newUserNameTF.text || !newUserNameTF.text.length)
     {
@@ -393,7 +393,7 @@
     [loadExistingUserView addSubview:loadExistingUserButton];
 }
 
--(void)handleCancelExistingUserClicked:(id*)button
+-(void)handleCancelExistingUserClicked:(id)button
 {
     existingUserNameTF.text = @"";
     [downloadUserPassCodeView clearText];
@@ -402,7 +402,7 @@
     [self setActiveView:selectUserView];
 }
 
--(void)handleLoadExistingUserClicked:(id*)button
+-(void)handleLoadExistingUserClicked:(id)button
 {
     __block typeof(self) bself = self;
     void (^callback)() = ^(NSDictionary *ur) {

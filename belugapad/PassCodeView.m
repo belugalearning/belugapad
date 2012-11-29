@@ -58,6 +58,9 @@ const uint labelSpacing = 67;
         
         singleDigitMatch = [[NSRegularExpression alloc] initWithPattern:@"^\\d$" options:0 error:nil];
         validMatch = [[NSRegularExpression alloc] initWithPattern:[NSString stringWithFormat:@"^\\d{%d}$", numLabels] options:0 error:nil];
+        
+        currentIndex = 0;
+        [self positionCursor];
     }
     return self;
 }
@@ -140,8 +143,12 @@ const uint labelSpacing = 67;
     if (isDigitButton)
     {
         [text replaceCharactersInRange:NSMakeRange(currentIndex, 1) withString:buttonText];// either move to next char, or if we're on last char, lose focus
-        if (++currentIndex < numLabels) [self positionCursor];
-        else [self resignFirstResponder];
+        if (++currentIndex >= numLabels)
+        {
+            currentIndex = 0;
+            [self resignFirstResponder];
+        }
+        [self positionCursor];
     }
     else if ([buttonText isEqualToString:@"⌫"])
     {

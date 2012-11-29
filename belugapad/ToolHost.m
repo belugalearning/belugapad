@@ -923,8 +923,9 @@ static float kTimeToHintToolTray=7.0f;
 {
     metaArrow=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/tray/Tray_MQ_Tip.png")];
     [metaArrow setPosition:ccp(lx-124,2*cy-30)];
-    [metaArrow setTag:3];
-    [metaArrow setOpacity:0];
+//    [metaArrow setTag:3];
+//    [metaArrow setOpacity:0];
+    [metaArrow setVisible:NO];
     [problemDefLayer addChild:metaArrow z:10];
 }
 -(void)setupProblemOnToolHost:(NSDictionary *)curpdef
@@ -2763,7 +2764,8 @@ static float kTimeToHintToolTray=7.0f;
         [traybtnMq setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/tray/Tray_Button_MetaQuestion_NotAvailable.png")]];
     
     if(metaArrow && [self metaQuestionSelectedCount]==0)
-        [metaArrow setVisible:YES];
+        //[metaArrow setVisible:YES];
+        [metaArrow setVisible:NO];
 }
 
 -(void)disableWheel

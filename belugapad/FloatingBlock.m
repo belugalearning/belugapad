@@ -193,8 +193,15 @@
     
     if(isIntroPlist)
         initBubbles=0;
+
+    [usersService notifyStartingFeatureKey:@"FLOATINGBLOCK_EVALUATION"];
+    [usersService notifyStartingFeatureKey:@"FLOATINGBLOCK_OPERATION"];
     
+    if(showNewPipe)
+        [usersService notifyStartingFeatureKey:@"FLOATINGBLOCK_SHOW_INPUT_PIPE"];
     
+    if([supportedOperators count]>1)
+        [usersService notifyStartingFeatureKey:@"FLOATINGBLOCK_SHOW_MULTIPLE_OPERATORS"];    
 }
 
 -(void)populateGW
@@ -269,8 +276,13 @@
     id<Group> thisGroup=[[SGFBlockGroup alloc]initWithGameWorld:gw];
     thisGroup.MaxObjects=maxBlocksInGroup;
     
-    float xStartPos=(arc4random()%800)+100;
-    float yStartPos=(arc4random()%600)+100;
+    int farLeft=100;
+    int farRight=lx-60;
+    int topMost=ly-170;
+    int botMost=130;
+    
+    float xStartPos=farLeft + arc4random() % (farRight - farLeft);
+    float yStartPos=botMost + arc4random() % (topMost - botMost);
     
     NSArray *blockPos=[NumberLayout physicalLayoutUpToNumber:numberInShape withSpacing:52.0f];
     
@@ -864,6 +876,8 @@
     {
         if([pickupObject conformsToProtocol:@protocol(Group)])
         {
+            if(location.y>ly-200||location.y<50)return;
+            if(location.x>lx-60||location.x<60)return;
             id<Group>grp=(id<Group>)pickupObject;
             [grp moveGroupPositionFrom:lastTouch To:location];
             isInBubble=[grp checkIfInBubbleAt:location];

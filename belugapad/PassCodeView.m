@@ -32,7 +32,6 @@ const uint labelSpacing = 67;
 {
     if ((self = [super initWithFrame:frame]))
     {
-        text = [[NSMutableString alloc] init];        
         self.backgroundColor = [UIColor clearColor];
         
         labels = [NSMutableArray array];
@@ -46,21 +45,19 @@ const uint labelSpacing = 67;
             [(NSMutableArray*)labels addObject:label];
         }
         labels = [labels copy];
-        [self clearText];
         
         cursor = [[UIView alloc] init];
         cursor.userInteractionEnabled = NO;
-        cursor.backgroundColor = [UIColor colorWithRed:0.26f green:0.42f blue:0.95f alpha:1];
-        [cursor setAlpha:0];
+        cursor.backgroundColor = [UIColor colorWithRed:0.26f green:0.42f blue:0.95f alpha:1]; // this is the colour of the iOS cursor (insertion point) for white text on clear bg.
         [self addSubview:cursor];
+        
+        text = [[NSMutableString alloc] init];
+        [self clearText];
         
         [NSTimer scheduledTimerWithTimeInterval:0.6 target:self selector:@selector(cursorTick:) userInfo:nil repeats:YES];
         
         singleDigitMatch = [[NSRegularExpression alloc] initWithPattern:@"^\\d$" options:0 error:nil];
         validMatch = [[NSRegularExpression alloc] initWithPattern:[NSString stringWithFormat:@"^\\d{%d}$", numLabels] options:0 error:nil];
-        
-        currentIndex = 0;
-        [self positionCursor];
     }
     return self;
 }
@@ -85,6 +82,9 @@ const uint labelSpacing = 67;
     
     [text setString:[@"" stringByPaddingToLength:numLabels withString:@" " startingAtIndex:0]];
     [self setNeedsDisplay];
+    
+    currentIndex = 0;
+    [self positionCursor];
     
     if (validBefore && self.delegate) [self.delegate passCodeBecameInvalid:self];
 }

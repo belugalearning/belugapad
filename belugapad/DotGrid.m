@@ -2176,6 +2176,7 @@
 -(BOOL)checkForCorrectShapeSizes
 {
     int correctShapes=0;
+    int shapesOnGrid=0;
     NSMutableArray *matchShapes=[[NSMutableArray alloc]init];
     NSMutableArray *matchObjects=[[NSMutableArray alloc]init];
     //for each object that conforms to being a shapegroup
@@ -2183,6 +2184,7 @@
     {
         if([[gw.AllGameObjects objectAtIndex:i]isKindOfClass:[DWDotGridShapeGameObject class]])
         {
+            shapesOnGrid++;
             DWDotGridShapeGameObject *sg=[gw.AllGameObjects objectAtIndex:i];
             DWDotGridAnchorGameObject *fa=nil;
             DWDotGridAnchorGameObject *la=nil;
@@ -2232,7 +2234,7 @@
         }
     }
     
-    if(correctShapes==[reqShapes count])
+    if(correctShapes==[reqShapes count] && shapesOnGrid==correctShapes)
     {
         for(DWDotGridShapeGameObject *s in matchObjects)
         {

@@ -18,6 +18,7 @@
     
     NumpadInputController *numpadInputView;
     NSRegularExpression *singleDigitMatch;
+    NSRegularExpression *validMatch;
 }
 @end
 
@@ -56,6 +57,7 @@ const uint labelSpacing = 67;
         [NSTimer scheduledTimerWithTimeInterval:0.6 target:self selector:@selector(cursorTick:) userInfo:nil repeats:YES];
         
         singleDigitMatch = [[NSRegularExpression alloc] initWithPattern:@"^\\d$" options:0 error:nil];
+        validMatch = [[NSRegularExpression alloc] initWithPattern:[NSString stringWithFormat:@"^\\d{%d}$", numLabels] options:0 error:nil];
     }
     return self;
 }
@@ -67,12 +69,21 @@ const uint labelSpacing = 67;
     return [NSString stringWithString:text];
 }
 
+-(BOOL)isValid
+{
+    return [text length] == numLabels && [validMatch numberOfMatchesInString:text options:NSMatchingWithoutAnchoringBounds range:NSMakeRange(0,numLabels)] == 1;
+}
+
 #pragma mark -
 #pragma mark public interface
 -(void)clearText
 {
+    BOOL validBefore = self.isValid;
+    
     [text setString:[@"" stringByPaddingToLength:numLabels withString:@" " startingAtIndex:0]];
     [self setNeedsDisplay];
+    
+    if (validBefore && self.delegate) [self.delegate passCodeBecameInvalid:self];
 }
 
 #pragma mark -
@@ -123,6 +134,7 @@ const uint labelSpacing = 67;
 #pragma mark NumpadInputControllerDelegate
 -(void)buttonTappedWithText:(NSString*)buttonText
 {
+    BOOL validBefore = self.isValid;
     BOOL isDigitButton = [singleDigitMatch numberOfMatchesInString:buttonText options:NSMatchingWithoutAnchoringBounds range:NSMakeRange(0,[buttonText length])] == 1;
     
     if (isDigitButton)
@@ -142,6 +154,15 @@ const uint labelSpacing = 67;
     }
     
     [self setNeedsDisplay];
+    
+    if (!validBefore)
+    {
+        if (self.isValid && self.delegate) [self.delegate passCodeBecameValid:self];
+    }
+    else
+    {
+        if (!self.isValid && self.delegate) [self.delegate passCodeBecameInvalid:self];
+    }
 }
 
 #pragma mark -
@@ -168,11 +189,13 @@ const uint labelSpacing = 67;
 
 -(void)dealloc
 {
+    self.delegate = nil;
     if (numpadInputView) [numpadInputView release];
     if (cursor) [cursor release];
     if (text) [text release];
     if (labels) [labels release];
     if (singleDigitMatch) [singleDigitMatch release];
+    if (validMatch) [validMatch release];
     [super dealloc];
 }
 

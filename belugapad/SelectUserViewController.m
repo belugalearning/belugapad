@@ -450,6 +450,28 @@
 {
 }
 
+#pragma mark -
+#pragma mark lose keyboard focus when tapping outside textfield
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UIView *firstResponder = [self findFirstResponderWithin:self.view];
+    if (firstResponder && ([firstResponder isKindOfClass:[UITextField class]] || [firstResponder isKindOfClass:[PassCodeView class]]))
+    {
+        [firstResponder resignFirstResponder];
+    }
+}
+
+-(UIView*)findFirstResponderWithin:(UIView*)view
+{
+    if (view.isFirstResponder) return view;
+    for (UIView *subView in view.subviews)
+    {
+        UIView *firstResponder = [self findFirstResponderWithin:subView];
+        if (firstResponder) return firstResponder;
+    }
+    return nil;
+}
+
 
 #pragma mark -
 #pragma mark Destruction

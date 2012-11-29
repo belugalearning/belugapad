@@ -313,8 +313,7 @@
         return;
     }
     
-    
-    if (!newUserPassCodeView.text || !newUserPassCodeView.text.length)
+    if (!newUserPassCodeView.isValid)
     {
         [newUserPassCodeView becomeFirstResponder];
         return;

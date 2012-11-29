@@ -40,11 +40,13 @@ typedef enum {
 @class DebugViewController;
 @class EditPDefViewController;
 @class SGBtxeRow;
+@class AppController;
 
 @interface ToolHost : CCLayer <CCPickerViewDataSource, CCPickerViewDelegate>
 {
     float cx, cy, lx, ly;
     
+    AppController *ac;
     CCLayer *perstLayer;
     CCLayer *backgroundLayer;
     CCLayer *metaQuestionLayer;

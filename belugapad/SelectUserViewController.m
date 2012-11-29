@@ -428,6 +428,12 @@
         return;
     }
     
+    if (!downloadUserPassCodeView.isValid)
+    {
+        [downloadUserPassCodeView becomeFirstResponder];
+        return;
+    }
+    
     [usersService downloadUserMatchingNickName:existingUserNameTF.text
                                    andPassword:downloadUserPassCodeView.text
                                       callback:callback];

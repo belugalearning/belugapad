@@ -159,6 +159,11 @@ const uint labelSpacing = 67;
             [self positionCursor];
         }
     }
+    else
+    {
+        // done/save/return
+        [self resignFirstResponder];
+    }
     
     [self setNeedsDisplay];
     

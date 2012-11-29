@@ -95,6 +95,7 @@
 		5571BADD14E406220053A62B /* PlaceValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BADC14E406220053A62B /* PlaceValue.m */; };
 		5571BAE114E406630053A62B /* ToolConsts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5571BAE014E406630053A62B /* ToolConsts.m */; };
 		558ADA3616611B250000C448 /* tts-objects.plist in Resources */ = {isa = PBXBuildFile; fileRef = 558ADA3516611B250000C448 /* tts-objects.plist */; };
+		558ADA49166515700000C448 /* SGBtxeLineBreak.m in Sources */ = {isa = PBXBuildFile; fileRef = 558ADA48166515700000C448 /* SGBtxeLineBreak.m */; };
 		559846661627095B00554E8A /* MQDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 559846651627095B00554E8A /* MQDisplay.m */; };
 		5598466A162732CA00554E8A /* RatioTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 55984669162732CA00554E8A /* RatioTool.m */; };
 		559A33D715DA382C00CA97E2 /* CountingTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 559A33D615DA382C00CA97E2 /* CountingTimer.m */; };
@@ -615,6 +616,8 @@
 		5571BADF14E406630053A62B /* ToolConsts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolConsts.h; sourceTree = "<group>"; };
 		5571BAE014E406630053A62B /* ToolConsts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolConsts.m; sourceTree = "<group>"; usesTabs = 0; };
 		558ADA3516611B250000C448 /* tts-objects.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "tts-objects.plist"; sourceTree = "<group>"; };
+		558ADA47166515700000C448 /* SGBtxeLineBreak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeLineBreak.h; sourceTree = "<group>"; };
+		558ADA48166515700000C448 /* SGBtxeLineBreak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGBtxeLineBreak.m; sourceTree = "<group>"; };
 		559846641627095B00554E8A /* MQDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQDisplay.h; sourceTree = "<group>"; };
 		559846651627095B00554E8A /* MQDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQDisplay.m; sourceTree = "<group>"; };
 		55984668162732CA00554E8A /* RatioTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RatioTool.h; sourceTree = "<group>"; };
@@ -2925,6 +2928,8 @@
 				7F0F70AB1645B2A7009DBCAB /* SGBtxePlaceholder.m */,
 				7FFBF099164AE933005CCD6E /* SGBtxeObjectOperator.h */,
 				7FFBF09A164AE933005CCD6E /* SGBtxeObjectOperator.m */,
+				558ADA47166515700000C448 /* SGBtxeLineBreak.h */,
+				558ADA48166515700000C448 /* SGBtxeLineBreak.m */,
 			);
 			name = BTXE;
 			sourceTree = "<group>";
@@ -3555,6 +3560,7 @@
 				7F98458E164E5F300081BE39 /* force_cpp.cpp in Sources */,
 				7F43B0EE165FF02000CD9B8D /* SGBtxeNumberDotRender.m in Sources */,
 				0CA32F10166506DD00FC5423 /* NumpadInputController.m in Sources */,
+				558ADA49166515700000C448 /* SGBtxeLineBreak.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

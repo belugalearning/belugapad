@@ -31,6 +31,9 @@
 #import "BAExpressionTree.h"
 #import "BATQuery.h"
 
+#define AUTO_LARGE_ROW_X_MAX 5
+#define AUTO_LARGE_ROW_Y_MAX 3
+
 @interface ExprBuilder()
 {
 @private
@@ -193,11 +196,16 @@
         SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
         [rows addObject:row];
         
+        if(i==0)
+            row.myAssetType=@"Small";
+        else
+            row.myAssetType=@"Medium";
+        
         if(numberMode)
             row.defaultNumbermode=numberMode;
         
         if(i>0 && expressionRowsAreLarge)
-            row.isLarge = YES;
+            row.myAssetType = @"Large";
         
         if(i==0 || repeatRow2Count==0)
         {
@@ -208,6 +216,8 @@
             [row parseXML:[exprStages objectAtIndex:1]];
         }
         
+        if(i>0 && rowcount<=AUTO_LARGE_ROW_Y_MAX && [row.children count]<=AUTO_LARGE_ROW_X_MAX)
+            row.myAssetType = @"Large";
         
         [row setupDraw];
         
@@ -380,10 +390,10 @@
         }
     }
     
-    if(!gotPickerObject && !CGRectContainsPoint(CGRectMake(700,600,324,308), location)){
+    if((!gotPickerObject || !isHoldingObject) && !CGRectContainsPoint(CGRectMake(680,500,344,308), location)){
         toolHost.CurrentBTXE=nil;
         if(toolHost.pickerView)
-            [toolHost tearDownNumberPicker];
+            [toolHost disableWheel];
     }
 }
 
@@ -431,19 +441,21 @@
                     [o activate];
                 }
                 
-                if([o conformsToProtocol:@protocol(BtxeMount)] && [BLMath DistanceBetween:o.worldPosition and:location]<=pickupProximity)
+                if([o conformsToProtocol:@protocol(BtxeMount)])
                 {
                     id<BtxeMount, Interactive> pho=(id<BtxeMount, Interactive>)o;
+                    CGRect objRect=[pho returnBoundingBox];
                     
+                    if(CGRectContainsPoint(objRect, location))
+                        [pho duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)heldObject];
                     //mount the object on the place holder
-                    [pho duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)heldObject];
                 }
             }
         }
 
         if([heldObject.mount isKindOfClass:[SGBtxePlaceholder class]])
         {
-            [(SGBtxePlaceholder*)heldObject.mount setContainerVisible:YES];
+            //[(SGBtxePlaceholder*)heldObject.mount setContainerVisible:YES];
             [heldObject destroy];
         }
         else

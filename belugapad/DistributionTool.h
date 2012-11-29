@@ -44,6 +44,7 @@ typedef enum
     // common touch interactions
     BOOL isTouching;
     CGPoint lastTouch;
+    CGPoint touchStart;
     
     // standard to move between problems
     float timeToAutoMoveToNextProblem;
@@ -86,13 +87,14 @@ typedef enum
     NSMutableArray *inactiveArea;
     NSMutableArray *activeRects;
     CGRect inactiveRect;
+    CCDrawNode *drawNode;
 }
 
 -(id)initWithToolHost:(ToolHost *)host andProblemDef:(NSDictionary *)pdef;
 -(void)populateGW;
 -(void)readPlist:(NSDictionary*)pdef;
 -(void)doUpdateOnTick:(ccTime)delta;
--(void)draw;
+-(void)drawConnections;
 -(void)createEvalAreas;
 -(NSArray*)evalUniqueShapes;
 -(BOOL)evalExpression;

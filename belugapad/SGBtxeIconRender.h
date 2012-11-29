@@ -15,7 +15,7 @@
 }
 
 @property (retain) CCSprite *sprite;
-@property BOOL useLargeAssets;
+@property (retain) NSString *assetType;
 
 -(void)setupDraw;
 -(void)updatePosition:(CGPoint)position;

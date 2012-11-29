@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PROBLEM_DESCRIPTION</key>
+	<string>{@subtract} {$x} from {$y} to make {$z}.</string>
+	<key>TOOL_KEY</key>
+	<string>FloatingBlock</string>
+	<key>EVAL_MODE</key>
+	<integer>0</integer>
+	<key>SOLUTION</key>
+	<string>{$z}</string>
+	<key>INIT_BUBBLES</key>
+	<integer>2</integer>
+	<key>BUBBLE_AUTO_OPERATE</key>
+	<false/>
+	<key>DEFAULT_BLOCKS_FROM_PIPE</key>
+	<string>{$y}</string>
+	<key>INIT_OBJECTS</key>
+	<array>
+		<dict>
+			<key>NUMBER</key>
+			<string>{$x}</string>
+		</dict>
+	</array>
+	<key>SUPPORTED_OPERATORS</key>
+	<array>
+		<string>-</string>
+	</array>
+	<key>SHOW_MULTIPLE_CONTROLS</key>
+	<true/>
+	<key>SHOW_SOLUTION_ON_PIPE</key>
+	<true/>
+	<key>DVARS</key>
+	<array>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$x</string>
+			<key>MIN</key>
+			<string>4</string>
+			<key>MAX</key>
+			<string>7</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$y</string>
+			<key>MIN</key>
+			<string>9</string>
+			<key>MAX</key>
+			<string>16</string>
+		</dict>
+		<dict>
+			<key>VAR_NAME</key>
+			<string>$z</string>
+			<key>VALUE</key>
+			<string>{$y-$x}</string>
+		</dict>
+	</array>
+	<key>MIN_BLOCKS_FROM_PIPE</key>
+	<string>{$z+1}</string>
+	<key>MAX_BLOCKS_FROM_PIPE</key>
+	<string>16</string>
+	<key>DSTRINGS</key>
+	<dict>
+		<key>@subtract</key>
+		<dict>
+			<key>MODE</key>
+			<string>RANDOM</string>
+			<key>DATA</key>
+			<array>
+				<string>Take away</string>
+				<string>Subtract</string>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

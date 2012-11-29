@@ -8,6 +8,7 @@
 
 #import "SGBtxeText.h"
 #import "SGBtxeTextRender.h"
+#import "global.h"
 
 @implementation SGBtxeText
 
@@ -60,7 +61,6 @@
     
     //update positioning in text render
     [self.textRenderComponent updatePosition:position];
-    
 }
 
 -(void)tagMyChildrenForIntro
@@ -80,7 +80,7 @@
         myText=@"minus";
     if([self.text isEqualToString:@"x"])
         myText=@"times by";
-    if([self.text isEqualToString:@"%"])
+    if([self.text isEqualToString:@"÷"])
         myText=@"divided by";
     if([self.text isEqualToString:@"="])
         myText=@"equals";

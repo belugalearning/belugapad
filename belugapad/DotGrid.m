@@ -183,7 +183,7 @@
             int ftmax=[ft intValue];
             NSMutableArray *reqdFactorShapes=[[NSMutableArray alloc] init];
             
-            for(int i=1; i<ftmax; i++)
+            for(int i=1; i<=ftmax; i++)
             {
                 if(!(ftmax % i))
                 {
@@ -271,6 +271,15 @@
         doNotSimplifyFractions=NO;
         showDraggableBlock=YES;
     }
+    
+    if(showDraggableBlock)
+        [usersService notifyStartingFeatureKey:@"DOTGRID_DRAG_TO_CREATE_BLOCK"];
+        
+    [usersService notifyStartingFeatureKey:@"DOTGRID_TAP_TO_COUNT"];
+    [usersService notifyStartingFeatureKey:@"DOTGRID_ALLOW_RESIZE_SHAPE"];
+    
+    if(evalType==kProblemSumOfFractions)
+        [usersService notifyStartingFeatureKey:@"DOTGRID_EVAL_SUM_FRACTIONS"];
 
 }
 
@@ -2167,6 +2176,7 @@
 -(BOOL)checkForCorrectShapeSizes
 {
     int correctShapes=0;
+    int shapesOnGrid=0;
     NSMutableArray *matchShapes=[[NSMutableArray alloc]init];
     NSMutableArray *matchObjects=[[NSMutableArray alloc]init];
     //for each object that conforms to being a shapegroup
@@ -2174,6 +2184,7 @@
     {
         if([[gw.AllGameObjects objectAtIndex:i]isKindOfClass:[DWDotGridShapeGameObject class]])
         {
+            shapesOnGrid++;
             DWDotGridShapeGameObject *sg=[gw.AllGameObjects objectAtIndex:i];
             DWDotGridAnchorGameObject *fa=nil;
             DWDotGridAnchorGameObject *la=nil;
@@ -2223,7 +2234,7 @@
         }
     }
     
-    if(correctShapes==[reqShapes count])
+    if(correctShapes==[reqShapes count] && shapesOnGrid==correctShapes)
     {
         for(DWDotGridShapeGameObject *s in matchObjects)
         {

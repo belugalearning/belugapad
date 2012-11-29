@@ -51,12 +51,6 @@
             if(!gameWorld.Blackboard.DropObject || gameWorld.Blackboard.DropObjectDistance > dist)
             {
                 //NSLog(@"(#%d) obj Value %f, col Value %f, MountedObject? %@, CancellingObject? %@", [gameWorld.AllGameObjects indexOfObject:n], addO.ObjectValue, n.ColumnValue, n.MountedObject? @"YES":@"NO", n.CancellingObject? @"YES":@"NO");
-                
-                if(!gameWorld.Blackboard.PriorityDropObject && n.AllowMultipleMount && n.MountedObject && !n.CancellingObject && ((DWPlaceValueBlockGameObject*)n.MountedObject).ObjectValue==-addO.ObjectValue)
-                {
-                    gameWorld.Blackboard.PriorityDropObject=gameObject;
-                    gameWorld.Blackboard.DropObject=gameObject;
-                }
 
                 if(!n.MountedObject||(n.MountedObject && n.AllowMultipleMount && !n.CancellingObject && ((DWPlaceValueBlockGameObject*)n.MountedObject).ObjectValue==-addO.ObjectValue))
                 {
@@ -66,8 +60,13 @@
                     //NSLog(@"net sets droptarget dist %f val %f", dist, n.ColumnValue);
                 }
             }
+            if(!gameWorld.Blackboard.PriorityDropObject && n.AllowMultipleMount && n.MountedObject && !n.CancellingObject && ((DWPlaceValueBlockGameObject*)n.MountedObject).ObjectValue==-addO.ObjectValue)
+            {
+                gameWorld.Blackboard.PriorityDropObject=gameObject;
+                gameWorld.Blackboard.DropObject=gameObject;
+            }
         }
-            
+        
         
             
     

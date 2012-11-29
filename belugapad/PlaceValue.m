@@ -34,9 +34,9 @@
 
 @end
 
-static float kPropXNetSpace=0.087890625f;
-static float kPropYColumnOrigin=0.75f;
-static float kCageYOrigin=0.06f;
+static float kPropXNetSpace=0.0625f;
+static float kPropYColumnOrigin=0.63f;
+static float kCageYOrigin=0.05f;
 static float kPropYColumnHeader=0.85f;
 static float kPropYColumnTotalCount=0.15f;
 static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
@@ -261,7 +261,18 @@ static float kTimeToCageShake=7.0f;
             
         }
     }
-    
+    if(showColumnTotalCount)
+    {
+        for(int i=0;i<numberOfColumns;i++)
+        {
+            float v=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
+            CCSprite *s=[totalCountSprites objectAtIndex:i];
+            CCLabelTTF *l=[s.children objectAtIndex:0];
+            
+            [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];
+        }
+        
+    }
     
 //    if(showMoreOrLess && [solutionType isEqualToString:TOTAL_COUNT])
 //    {
@@ -581,7 +592,7 @@ static float kTimeToCageShake=7.0f;
                 totalCountSprites=[[[NSMutableArray alloc]init]retain];
             
             CCSprite *totalCountSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/total_count_bg.png")];
-            [totalCountSprite setPosition:ccp(i*(kPropXColumnSpacing*lx), 23+(ly*kPropYColumnOrigin)-(currentColumnRows*(lx*kPropXNetSpace)))];
+            [totalCountSprite setPosition:ccp(i*(kPropXColumnSpacing*lx), 5+(ly*kPropYColumnOrigin)-(currentColumnRows*(lx*kPropXNetSpace)))];
             [totalCountSprite setOpacity:0];
             [totalCountSprite setTag:2];
             [renderLayer addChild:totalCountSprite];
@@ -1101,13 +1112,6 @@ static float kTimeToCageShake=7.0f;
     else negCageSprite=BUNDLE_FULL_PATH(@"/images/placevalue/cage-neg.png");
     
     [negCageSprite retain];
-        
-    // and do we have a separate pickup sprite?
-    if([pdef objectForKey:PICKUP_SPRITE_FILENAME]) 
-        pickupSprite = [pdef objectForKey:PICKUP_SPRITE_FILENAME];
-    
-    [pickupSprite retain];
-    
 
     // check for custom column ropes/rows
     if([pdef objectForKey:COLUMN_ROPES]) 
@@ -1319,6 +1323,26 @@ static float kTimeToCageShake=7.0f;
         currentBlockValues=[[NSMutableArray alloc]init];
         blockLabels=[[NSMutableArray alloc]init];
     }
+    
+    if(expectedCount<lastCount && evalMode==kProblemEvalAuto)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_AUTO_REMOVE_BLOCKS"];
+    if(expectedCount>lastCount && evalMode==kProblemEvalAuto)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_AUTO_ADD_BLOCKS"];
+    
+    if(expectedCount<lastCount && evalMode==kProblemEvalOnCommit)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_COMMIT_REMOVE_BLOCKS"];
+    if(expectedCount>lastCount && evalMode==kProblemEvalOnCommit)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_COMMIT_ADD_BLOCKS"];
+    
+    if(allowCondensing)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_ALLOW_CONDENSING"];
+    
+    if(allowMulching)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_ALLOW_MULCHING"];
+    
+    if(showMultipleControls||multipleBlockPickup)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_MULTIPLE_BLOCK"];
+
 }
 
 #pragma mark - status messages
@@ -1370,19 +1394,6 @@ static float kTimeToCageShake=7.0f;
                 }   
             }
         }
-    }
-    
-    if(showColumnTotalCount)
-    {
-        for(int i=0;i<numberOfColumns;i++)
-        {
-            float v=[[[columnInfo objectAtIndex:i] objectForKey:COL_VALUE] floatValue];
-            CCSprite *s=[totalCountSprites objectAtIndex:i];
-            CCLabelTTF *l=[s.children objectAtIndex:0];
-            
-            [l setString:[NSString stringWithFormat:@"%g", [self usedSpacesOnGrid:i]*v]];
-        }
-        
     }
     
     // define our solution type to check against
@@ -1514,26 +1525,27 @@ static float kTimeToCageShake=7.0f;
         [renderLayer addChild:l z:10000];
         [l runAction:[CCFadeOut actionWithDuration:1.0]];
         
-        if(amountAdded>0)
+        if(amountAdded>0 && shouldUpdateLabels)
         {
             if([(DWPlaceValueBlockGameObject*)gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
-                [l setString:[NSString stringWithFormat:@"+ %g", amountAdded]];
+                [l setString:[NSString stringWithFormat:@"+ %g", amountAdded*lastPickedUpBlockCount]];
             if([(DWPlaceValueBlockGameObject*)gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
-                [l setString:[NSString stringWithFormat:@"- %g", amountAdded]];
+                [l setString:[NSString stringWithFormat:@"- %g", amountAdded*lastPickedUpBlockCount]];
         }
 //        if(valueOnGridNow==initedValueOnGrid)
 //        {
 //            [l setString:[NSString stringWithFormat:@"%g", ([[initBlockValueForColumn objectAtIndex:i]floatValue])]];
 //        }
-        if(amountAdded<0)
+        if(amountAdded<0 && shouldUpdateLabels)
         {
-            [l setString:[NSString stringWithFormat:@"%g", amountAdded]];
+            [l setString:[NSString stringWithFormat:@"%g", amountAdded*lastPickedUpBlockCount]];
             if([(DWPlaceValueBlockGameObject*)gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]])
-                [l setString:[NSString stringWithFormat:@"%g", amountAdded]];
+                [l setString:[NSString stringWithFormat:@"%g", amountAdded*lastPickedUpBlockCount]];
             if([(DWPlaceValueBlockGameObject*)gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueCageGameObject class]])
-                [l setString:[NSString stringWithFormat:@"+ %g", fabsf(amountAdded)]];
+                [l setString:[NSString stringWithFormat:@"+ %g", fabsf(amountAdded*lastPickedUpBlockCount)]];
             
         }
+        shouldUpdateLabels=YES;
         
 //        [userAddedBlocksLastCount replaceObjectAtIndex:currentColumnIndex withObject:[NSNumber numberWithInt:thisNumber]];
         
@@ -3002,7 +3014,7 @@ static float kTimeToCageShake=7.0f;
                 {
                     if([pickupObjects count]>0)
                     {
-                        NSArray *thesePositions=[NumberLayout physicalLayoutUpToNumber:[pickupObjects count] withSpacing:85.0f];
+                        NSArray *thesePositions=[NumberLayout physicalLayoutUpToNumber:[pickupObjects count] withSpacing:60.0f];
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
                             CGPoint thisPos=[[thesePositions objectAtIndex:[pickupObjects indexOfObject:go]] CGPointValue];
@@ -3047,6 +3059,9 @@ static float kTimeToCageShake=7.0f;
     
     if(debugLogging)
         NSLog(@"THIS TOUCH END CONSISTS (%d touches)", [touches count]);
+    
+    
+    lastPickedUpBlockCount=[pickupObjects count];
     
     // set the touch end position for evaluation
     touchEndPos = location;
@@ -3306,6 +3321,7 @@ static float kTimeToCageShake=7.0f;
                         for(DWPlaceValueBlockGameObject *go in pickupObjects){
                             [go handleMessage:kDWresetToMountPositionAndDestroy];
                         }
+                        shouldUpdateLabels=NO;
                         [loggingService logEvent:BL_PA_PV_TOUCH_END_MULTIPLE_BLOCKS_NOT_ENOUGH_SPACE withAdditionalData:nil];
                         [self setTouchVarsToOff];
                         return;

@@ -16,8 +16,8 @@
 
 @property (retain) CCLabelTTF *label;
 @property (retain) CCLabelTTF *label0;
-@property bool useAlternateFont;
-@property BOOL useLargeAssets;
+@property BOOL useAlternateFont;
+@property (retain) NSString *useTheseAssets;
 
 -(void)setupDraw;
 -(void)updatePosition:(CGPoint)position;

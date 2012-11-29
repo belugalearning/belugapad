@@ -36,7 +36,8 @@
 
 @property (retain) CCLayer *renderLayer;
 @property (retain) CCNode *baseNode;
-@property BOOL isLarge;
+//@property BOOL isLarge;
+@property (retain) NSString *myAssetType;
 @property BOOL forceVAlignTop;
 
 
@@ -115,7 +116,8 @@
 @property CGPoint originalPosition;
 @property (retain) id mount;
 @property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;
-@property BOOL isLargeObject;
+//@property BOOL isLargeObject;
+@property (retain) NSString *assetType;
 
 -(void)returnToBase;
 -(id<MovingInteractive>)createADuplicate;
@@ -133,6 +135,7 @@
 @property (retain) id<Interactive, NSObject> mountedObject;
 
 -(void)duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)mountObject;
+-(CGRect)returnBoundingBox;
 
 @end
 

@@ -28,7 +28,7 @@
 @synthesize mount;
 @synthesize hidden;
 
-@synthesize isLargeObject;
+@synthesize assetType;
 
 @synthesize targetNumber, usePicker;
 
@@ -78,7 +78,7 @@
     dupe.prefixText=[[self.prefixText copy] autorelease];
     dupe.numberText=[[self.numberText copy] autorelease];
     dupe.suffixText=[[self.suffixText copy] autorelease];
-    dupe.isLargeObject=self.isLargeObject;
+    dupe.assetType=self.assetType;
     dupe.renderAsDots=self.renderAsDots;
     
     return (id<MovingInteractive>)dupe;
@@ -121,7 +121,8 @@
 
 -(NSNumber*)value
 {
-    return numberValue;
+    if(numberValue)return numberValue;
+    else return @0;
 }
 
 
@@ -222,6 +223,7 @@
     [nf setNumberStyle:NSNumberFormatterDecimalStyle];
     self.numberValue=[nf numberFromString:numberText];
     
+    [self redrawBkg];
     
     [nf release];
     
@@ -346,7 +348,7 @@
 {
     if(self.hidden)return;
     
-    textRenderComponent.useLargeAssets=self.isLargeObject;
+    textRenderComponent.useTheseAssets=self.assetType;
     
     // text mode
     self.textRenderComponent.useAlternateFont=YES;
@@ -374,6 +376,13 @@
 
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];
+}
+
+-(void)redrawBkg
+{
+    CGSize toThisSize=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
+    
+    [textBackgroundRenderComponent redrawBkgWithSize:toThisSize];
 }
 
 -(void)destroy

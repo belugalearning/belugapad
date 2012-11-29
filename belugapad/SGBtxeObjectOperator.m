@@ -24,7 +24,7 @@
 @synthesize mount;
 @synthesize hidden;
 
-@synthesize isLargeObject;
+@synthesize assetType;
 
 -(SGBtxeObjectOperator*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -37,6 +37,7 @@
         enabled=YES;
         interactive=YES;
         valueOperator=@"";
+        assetType=@"Small";
         
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
         textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
@@ -52,7 +53,7 @@
     dupe.text=[[self.text copy] autorelease];
     dupe.position=self.position;
     dupe.tag=[[self.tag copy] autorelease];
-    dupe.isLargeObject=self.isLargeObject;
+    dupe.assetType=self.assetType;
     dupe.enabled=self.enabled;
     dupe.valueOperator=[[self.valueOperator copy] autorelease];
     
@@ -84,7 +85,7 @@
     
     self.text=theValueOperator;
     if([theValueOperator isEqualToString:@"/"])
-        self.text=@"%";
+        self.text=@"÷";
 }
 
 -(NSString*)returnMyText
@@ -181,7 +182,7 @@
 -(void)setupDraw
 {
     if(self.hidden)return;
-    textRenderComponent.useLargeAssets=self.isLargeObject;
+    textRenderComponent.useTheseAssets=self.assetType;
     //text render to create it's label
     [textRenderComponent setupDraw];
     

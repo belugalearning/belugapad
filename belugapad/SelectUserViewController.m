@@ -162,6 +162,12 @@
     [selectUserView addSubview:mask];
 }
 
+-(void)enablePlayButton
+{
+    [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_enabled.png"] forState:UIControlStateNormal];
+    [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_enabled.png"] forState:UIControlStateHighlighted];
+}
+
 #pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -181,27 +187,28 @@
     
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil)
+    if (!cell)
     {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.backgroundColor = [UIColor clearColor];
         cell.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:indexPath.row % 2 == 0 ? @"/login-images/table_cell_black.png" : @"/login-images/table_cell_transparent"]] autorelease];
         cell.selectionStyle = UITableViewCellSeparatorStyleNone;
-        if (!nickName)
-        {
-            // just a placeholder cell to maintain the alternating cell background look
-            cell.selectedBackgroundView = nil;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        else
-        {
-            cell.selectedBackgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/table_cell_orange.png"]] autorelease];
-            cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        }
         cell.backgroundView.contentMode = UIViewContentModeLeft;
         cell.textLabel.contentMode = UIViewContentModeLeft;
         cell.textLabel.font = [UIFont fontWithName:@"Chango" size:24];
         cell.textLabel.textColor = [UIColor whiteColor];
+    }
+    
+    if (!nickName)
+    {
+        // just a placeholder cell to maintain the alternating cell background look
+        cell.selectedBackgroundView = nil;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    else
+    {
+        cell.selectedBackgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/table_cell_orange.png"]] autorelease];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
     cell.textLabel.text = nickName ? nickName : @"";
@@ -220,11 +227,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *user = deviceUsers[indexPath.row];
-    if (user[@"nickName"]) // i.e. a real user, not empty one 
-    {
-        [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_enabled.png"] forState:UIControlStateNormal];
-        [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_enabled.png"] forState:UIControlStateHighlighted];
-    }
+    if (user[@"nickName"]) [self enablePlayButton];// i.e. a real user, not empty one
 }
 
 #pragma mark interactions
@@ -263,7 +266,7 @@
 
 -(void)buildEditUserView
 {    
-    newUserNameTF = [[[UITextField alloc] initWithFrame:CGRectMake(334.0f, 276.0f, 360.0f, 42.0f)] autorelease];
+    newUserNameTF = [[[UITextField alloc] initWithFrame:CGRectMake(334.0f, 278.0f, 360.0f, 42.0f)] autorelease];
     newUserNameTF.delegate = self;
     newUserNameTF.font = [UIFont fontWithName:@"Chango" size:24];
     //newUserNameTF.placeholder = @"name";
@@ -277,6 +280,7 @@
     [editUserView addSubview:newUserNameTF];
     
     newUserPassCodeView = [[[PassCodeView alloc] initWithFrame:CGRectMake(390.0f, 334.0f, 255.0f, 46.0f)] autorelease];
+    newUserPassCodeView.delegate = self;
     [editUserView addSubview:newUserPassCodeView];
     
     cancelNewUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -292,16 +296,16 @@
     [editUserView addSubview:saveNewUserButton];
 }
 
--(void)handleCancelNewUserClicked:(id*)button
+-(void)handleCancelNewUserClicked:(id)button
 {
     newUserNameTF.text = @"";
-    newUserPassCodeView.text = @"";
+    [newUserPassCodeView clearText];
     [newUserNameTF resignFirstResponder];
     [newUserPassCodeView resignFirstResponder];
     [self setActiveView:selectUserView];
 }
 
--(void)handleSaveNewUserClicked:(id*)button
+-(void)handleSaveNewUserClicked:(id)button
 {
     if (!newUserNameTF.text || !newUserNameTF.text.length)
     {
@@ -309,8 +313,7 @@
         return;
     }
     
-    
-    if (!newUserPassCodeView.text || !newUserPassCodeView.text.length)
+    if (!newUserPassCodeView.isValid)
     {
         [newUserPassCodeView becomeFirstResponder];
         return;
@@ -331,7 +334,7 @@
         else if (BL_USER_CREATION_SUCCESS_NICK_AVAILABLE == status || BL_USER_CREATION_SUCCESS_NICK_AVAILABILITY_UNCONFIRMED == status)
         {
             newUserNameTF.text = @"";
-            newUserPassCodeView.text = @"";
+            [newUserPassCodeView clearText];
             
             [bself loadDeviceUsers];
             [bself->selectUserTableView reloadData];
@@ -342,6 +345,7 @@
                     NSUInteger indexPath[] = {0,i};
                     NSIndexPath *ip = [NSIndexPath indexPathWithIndexes:indexPath length:2];
                     [bself->selectUserTableView selectRowAtIndexPath:ip animated:NO scrollPosition:UITableViewScrollPositionNone];
+                    [bself enablePlayButton];
                     break;
                 }
             }
@@ -373,6 +377,7 @@
     [loadExistingUserView addSubview:existingUserNameTF];
     
     downloadUserPassCodeView = [[[PassCodeView alloc] initWithFrame:CGRectMake(390.0f, 334.0f, 255.0f, 46.0f)] autorelease];
+    downloadUserPassCodeView.delegate = self;
     [loadExistingUserView addSubview:downloadUserPassCodeView];
     
     cancelExistingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -388,16 +393,16 @@
     [loadExistingUserView addSubview:loadExistingUserButton];
 }
 
--(void)handleCancelExistingUserClicked:(id*)button
+-(void)handleCancelExistingUserClicked:(id)button
 {
     existingUserNameTF.text = @"";
-    downloadUserPassCodeView.text = @"";
+    [downloadUserPassCodeView clearText];
     [existingUserNameTF resignFirstResponder];
     [downloadUserPassCodeView resignFirstResponder];
     [self setActiveView:selectUserView];
 }
 
--(void)handleLoadExistingUserClicked:(id*)button
+-(void)handleLoadExistingUserClicked:(id)button
 {
     __block typeof(self) bself = self;
     void (^callback)() = ^(NSDictionary *ur) {
@@ -423,9 +428,48 @@
         return;
     }
     
+    if (!downloadUserPassCodeView.isValid)
+    {
+        [downloadUserPassCodeView becomeFirstResponder];
+        return;
+    }
+    
     [usersService downloadUserMatchingNickName:existingUserNameTF.text
                                    andPassword:downloadUserPassCodeView.text
                                       callback:callback];
+}
+
+
+#pragma mark -
+#pragma mark PassCodeViewDelegate
+-(void)passCodeBecameInvalid:(PassCodeView*)passCodeView
+{
+}
+
+-(void)passCodeBecameValid:(PassCodeView*)passCodeView
+{
+}
+
+#pragma mark -
+#pragma mark lose keyboard focus when tapping outside textfield
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UIView *firstResponder = [self findFirstResponderWithin:self.view];
+    if (firstResponder && ([firstResponder isKindOfClass:[UITextField class]] || [firstResponder isKindOfClass:[PassCodeView class]]))
+    {
+        [firstResponder resignFirstResponder];
+    }
+}
+
+-(UIView*)findFirstResponderWithin:(UIView*)view
+{
+    if (view.isFirstResponder) return view;
+    for (UIView *subView in view.subviews)
+    {
+        UIView *firstResponder = [self findFirstResponderWithin:subView];
+        if (firstResponder) return firstResponder;
+    }
+    return nil;
 }
 
 

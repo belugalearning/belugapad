@@ -115,8 +115,8 @@
     [dupe.textBackgroundRenderComponent setColourOfBackgroundTo:[mountObject.textBackgroundRenderComponent returnColourOfBackground]];
     
     //put on position of self
-    dupe.position=self.position;
-    dupe.originalPosition=self.position;
+    dupe.position=ccp(self.position.x, self.position.y-2);
+    dupe.originalPosition=dupe.position;
     
     //attach to same row as me
     [dupe attachToRenderBase:((SGBtxeRow*)self.container).baseNode];

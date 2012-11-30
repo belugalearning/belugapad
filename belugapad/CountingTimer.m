@@ -233,8 +233,10 @@
             countMin=countMax-4;
     }
     
-
-
+    if(trackNumber==0)
+        [usersService notifyStartingFeatureKey:@"COUNTINGTIMER_COUNT_START_0"];
+    else if(trackNumber>0)
+        [usersService notifyStartingFeatureKey:@"COUNTINGTIMER_COUNT_START_GREATER_0"];
 }
 
 -(void)populateGW

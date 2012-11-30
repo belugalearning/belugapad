@@ -250,6 +250,11 @@
 #endif
 }
 
+-(void)stopAllSpeaking
+{
+    [self.acaSpeech stopSpeaking];
+}
+
 -(void)tearDownUI
 {
     if(searchBar.superview)

@@ -85,7 +85,7 @@
     
     self.text=theValueOperator;
     if([theValueOperator isEqualToString:@"/"])
-        self.text=@"%";
+        self.text=@"÷";
 }
 
 -(NSString*)returnMyText

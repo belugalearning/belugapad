@@ -36,6 +36,8 @@
 		0C92B2541515702700342094 /* ContentService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C92B2531515702700342094 /* ContentService.m */; };
 		0C993CFB163842CE0079A647 /* Problems in Resources */ = {isa = PBXBuildFile; fileRef = 0C993CFA163842CE0079A647 /* Problems */; };
 		0C9FEFF614F572FB00E64138 /* pipeline-testing in Resources */ = {isa = PBXBuildFile; fileRef = 0C9FEFF514F572FB00E64138 /* pipeline-testing */; };
+		0CA32F10166506DD00FC5423 /* NumpadInputController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA32F0E166506DD00FC5423 /* NumpadInputController.m */; };
+		0CA32F11166506DD00FC5423 /* NumpadInputController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CA32F0F166506DD00FC5423 /* NumpadInputController.xib */; };
 		0CB7A51B164DFF96005FC7B1 /* NSData+GzipExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB7A51A164DFF96005FC7B1 /* NSData+GzipExtension.m */; };
 		0CD565921647F23E00D9EA30 /* UserNodeState.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD565911647F23E00D9EA30 /* UserNodeState.m */; };
 		0CDECB5E15920C27004DE20D /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDECB4A15920C27004DE20D /* AFHTTPClient.m */; };
@@ -504,6 +506,9 @@
 		0C92B2531515702700342094 /* ContentService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentService.m; sourceTree = "<group>"; };
 		0C993CFA163842CE0079A647 /* Problems */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Problems; sourceTree = SOURCE_ROOT; };
 		0C9FEFF514F572FB00E64138 /* pipeline-testing */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "pipeline-testing"; sourceTree = SOURCE_ROOT; };
+		0CA32F0D166506DD00FC5423 /* NumpadInputController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumpadInputController.h; sourceTree = "<group>"; };
+		0CA32F0E166506DD00FC5423 /* NumpadInputController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumpadInputController.m; sourceTree = "<group>"; };
+		0CA32F0F166506DD00FC5423 /* NumpadInputController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NumpadInputController.xib; sourceTree = "<group>"; };
 		0CB7A519164DFF96005FC7B1 /* NSData+GzipExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+GzipExtension.h"; sourceTree = "<group>"; };
 		0CB7A51A164DFF96005FC7B1 /* NSData+GzipExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GzipExtension.m"; sourceTree = "<group>"; };
 		0CD565901647F23E00D9EA30 /* UserNodeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserNodeState.h; sourceTree = "<group>"; };
@@ -2766,6 +2771,9 @@
 				0CB7A51A164DFF96005FC7B1 /* NSData+GzipExtension.m */,
 				0CF05AA216521E6A008C2DD5 /* PassCodeView.h */,
 				0CF05AA316521E6A008C2DD5 /* PassCodeView.m */,
+				0CA32F0D166506DD00FC5423 /* NumpadInputController.h */,
+				0CA32F0E166506DD00FC5423 /* NumpadInputController.m */,
+				0CA32F0F166506DD00FC5423 /* NumpadInputController.xib */,
 			);
 			name = Users;
 			sourceTree = "<group>";
@@ -3130,6 +3138,7 @@
 				558ADA3616611B250000C448 /* tts-objects.plist in Resources */,
 				33FF5F15166133860077EEA3 /* tts-replace.plist in Resources */,
 				7F43B0FA1661616000CD9B8D /* hqm-ref-USEnglish-WillLittleCreature-22khz in Resources */,
+				0CA32F11166506DD00FC5423 /* NumpadInputController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3550,6 +3559,7 @@
 				7F98458D164E5F300081BE39 /* AcapelaSetup.m in Sources */,
 				7F98458E164E5F300081BE39 /* force_cpp.cpp in Sources */,
 				7F43B0EE165FF02000CD9B8D /* SGBtxeNumberDotRender.m in Sources */,
+				0CA32F10166506DD00FC5423 /* NumpadInputController.m in Sources */,
 				558ADA49166515700000C448 /* SGBtxeLineBreak.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

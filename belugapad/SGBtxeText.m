@@ -80,7 +80,7 @@
         myText=@"minus";
     if([self.text isEqualToString:@"x"])
         myText=@"times by";
-    if([self.text isEqualToString:@"%"])
+    if([self.text isEqualToString:@"÷"])
         myText=@"divided by";
     if([self.text isEqualToString:@"="])
         myText=@"equals";

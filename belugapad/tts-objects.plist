@@ -32,6 +32,10 @@
 	<string>block</string>
 	<key>30_pv_block_p</key>
 	<string>blocks</string>
+	<key>30_PV_Block_Neg_s</key>
+	<string>block</string>
+	<key>30_PV_Block_Neg_p</key>
+	<string>blocks</string>
 	<key>30_pv_grid</key>
 	<string>container</string>
 	<key>30_pv_dock_with_block</key>

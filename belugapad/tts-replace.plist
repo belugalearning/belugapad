@@ -32,7 +32,5 @@
 	<string>hundreds</string>
 	<key>1000s</key>
 	<string>thousands</string>
-	<key>a</key>
-	<string>, a</string>
 </dict>
 </plist>

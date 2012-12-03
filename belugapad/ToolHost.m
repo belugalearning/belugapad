@@ -882,11 +882,6 @@ static float kTimeToHintToolTray=7.0f;
     
     evalShowCommit=YES;
     
-    readProblemDesc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/speakdesc.png")];
-    [readProblemDesc setPosition:ccp(cx*2-70,630)];
-    [problemDefLayer addChild:readProblemDesc];
-    readProblemDesc.opacity=0;
-    
     if(!thisProblemDescription)
         self.thisProblemDescription=[descRow returnRowStringForSpeech];
     
@@ -2250,6 +2245,10 @@ static float kTimeToHintToolTray=7.0f;
     
     questionSeparatorSprite.position=ccpAdd(row.position, ccp(0, -(row.size.height) - QUESTION_SEPARATOR_PADDING));
     
+    readProblemDesc=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/ui/Question_tray_play.png")];
+//    [readProblemDesc setOpacity:0];
+//    [readProblemDesc setTag:2];
+    
     qTrayTop=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Top.png")];
     qTrayMid=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Middle.png")];
     qTrayBot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Bottom.png")];
@@ -2259,9 +2258,13 @@ static float kTimeToHintToolTray=7.0f;
     [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+(qTrayTop.contentSize.height/2)+qTrayMid.contentSize.height/2)];
     [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-(qTrayBot.contentSize.height/2)-(qTrayMid.contentSize.height/2))];
     
+    [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayMid.position.y-(qTrayBot.contentSize.height/1.1)-(qTrayMid.contentSize.height/2))];
+    
+    [backgroundLayer addChild:readProblemDesc];
     [backgroundLayer addChild:qTrayTop];
-    [backgroundLayer addChild:qTrayMid];
     [backgroundLayer addChild:qTrayBot];
+    [backgroundLayer addChild:qTrayMid];
+    
     
     //show and hide separator for exprbuilder
     questionSeparatorSprite.visible= ![currentTool isKindOfClass:[ExprBuilder class]];

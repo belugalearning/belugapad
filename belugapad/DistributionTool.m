@@ -738,6 +738,12 @@ static float kDistanceBetweenBlocks=70.0f;
     return totalValue;
 }
 
+-(void)removePickupFromContainer
+{
+    if(currentPickupObject.MyContainer)
+        [(id<ShapeContainer>)currentPickupObject.MyContainer removeBlockFromMe:currentPickupObject];
+}
+
 -(void)removeBlockByCage
 {
     if([dockType isEqualToString:@"15"])return;
@@ -756,9 +762,6 @@ static float kDistanceBetweenBlocks=70.0f;
         id<Pairable>thisGO=currentPickupObject;
         CCSprite *s=currentPickupObject.mySprite;
         [s setZOrder:100];
-        
-        if(currentPickupObject.MyContainer)
-            [(id<ShapeContainer>)currentPickupObject.MyContainer removeBlockFromMe:currentPickupObject];
         
         CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:cage.MySprite.position];
         CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.1f];
@@ -1527,6 +1530,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
     if(location.y<cage.MySprite.contentSize.height && problemHasCage)
     {
+        [self removePickupFromContainer];
         [self removeBlockByCage];
         
         [self setTouchVarsToOff];

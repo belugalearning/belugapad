@@ -220,6 +220,7 @@ static float kDistanceBetweenBlocks=70.0f;
                     id<ShapeContainer>theRightContainer=((id<Moveable>)nearestObject).MyContainer;
                     id<Moveable>theRightBlock=[theRightContainer.BlocksInShape objectAtIndex:[theRightContainer.BlocksInShape count]-1];
                     [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)theRightBlock).mySprite.position];
+                    lastNewBondObject=nearestObject;
                 }
                 else{
                     [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)nearestObject).mySprite.position];
@@ -738,6 +739,12 @@ static float kDistanceBetweenBlocks=70.0f;
     return totalValue;
 }
 
+-(void)removePickupFromContainer
+{
+    if(currentPickupObject.MyContainer)
+        [(id<ShapeContainer>)currentPickupObject.MyContainer removeBlockFromMe:currentPickupObject];
+}
+
 -(void)removeBlockByCage
 {
     if([dockType isEqualToString:@"15"])return;
@@ -756,9 +763,6 @@ static float kDistanceBetweenBlocks=70.0f;
         id<Pairable>thisGO=currentPickupObject;
         CCSprite *s=currentPickupObject.mySprite;
         [s setZOrder:100];
-        
-        if(currentPickupObject.MyContainer)
-            [(id<ShapeContainer>)currentPickupObject.MyContainer removeBlockFromMe:currentPickupObject];
         
         CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:cage.MySprite.position];
         CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.1f];
@@ -784,11 +788,11 @@ static float kDistanceBetweenBlocks=70.0f;
             if([thisBlock amIProximateTo:thisLocation]&&thisBlock.MyContainer)
             {
                 id<ShapeContainer>thisCont=(SGDtoolContainer*)thisBlock.MyContainer;
-                if(!thisCont.BTXERow)
-                {
+                //if(!thisCont.BTXERow)
+                //{
                     [thisCont setGroupBTXELabel:[iBTXE createADuplicateIntoGameWorld:gw]];
                     break;
-                }
+                //}
             }
         }
     }
@@ -1527,6 +1531,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
     if(location.y<cage.MySprite.contentSize.height && problemHasCage)
     {
+        [self removePickupFromContainer];
         [self removeBlockByCage];
         
         [self setTouchVarsToOff];

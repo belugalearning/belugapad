@@ -102,6 +102,8 @@
         myText=@"times by";
     if([self.text isEqualToString:@"%"])
         myText=@"divided by";
+    if([self.text isEqualToString:@"÷"])
+        myText=@"divided by";
     if([self.text isEqualToString:@"="])
         myText=@"equals";
     

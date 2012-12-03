@@ -174,7 +174,11 @@
         
         if([c isKindOfClass:[SGBtxeObjectNumber class]])
         {
-            rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectNumber*)c numberText]];
+            
+            if([[(SGBtxeObjectNumber*)c numberText]floatValue]<0)
+                rowString=[NSString stringWithFormat:@"%@ negative %g", rowString, fabsf([[(SGBtxeObjectNumber*)c numberText]floatValue])];
+            else
+                rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectNumber*)c numberText]];
         }
         
         if([c isKindOfClass:[SGBtxeObjectIcon class]])

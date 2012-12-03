@@ -788,11 +788,11 @@ static float kDistanceBetweenBlocks=70.0f;
             if([thisBlock amIProximateTo:thisLocation]&&thisBlock.MyContainer)
             {
                 id<ShapeContainer>thisCont=(SGDtoolContainer*)thisBlock.MyContainer;
-                if(!thisCont.BTXERow)
-                {
+                //if(!thisCont.BTXERow)
+                //{
                     [thisCont setGroupBTXELabel:[iBTXE createADuplicateIntoGameWorld:gw]];
                     break;
-                }
+                //}
             }
         }
     }

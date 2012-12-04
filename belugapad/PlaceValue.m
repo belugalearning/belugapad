@@ -1342,6 +1342,12 @@ static float kTimeToCageShake=7.0f;
     
     if(showMultipleControls||multipleBlockPickup)
         [usersService notifyStartingFeatureKey:@"PLACEVALUE_MULTIPLE_BLOCK"];
+    
+    if(isNegativeProblem)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_NEGATIVE_PROBLEM"];
+    
+    if(isNegativeProblem && explodeMode)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_EXPLODE_MODE"];
 
 }
 

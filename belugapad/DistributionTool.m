@@ -347,6 +347,18 @@ static float kDistanceBetweenBlocks=70.0f;
     
 
     usedShapeTypes=[[NSMutableArray alloc]init];
+    
+    if([initObjects count]==1 && !problemHasCage)
+        [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_SPLIT_INIT_OBJECT"];
+    
+    if([initAreas count]>0 && evalType)
+        [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_EVAL_AREAS"];
+    
+    if(evalType==kCheckTaggedGroups)
+        [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_BTXE_LABELLING"];
+    
+    if(evalType==kCheckContainerValues||evalType==kCheckEvalAreaValues)
+        [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_VALUES"];
 }
 
 -(void)populateGW

@@ -82,7 +82,7 @@
     for(id<Bounding, NSObject> c in ParentGo.children)
     {
         NSLog(@"heady %f", headYPos);
-        
+
         //if this element takes the line past lineW, flow to next line (only if item W is < lineW -- else just stick it on)
         if(((headXPos + c.size.width) > (lineW / 2.0f)) && c.size.width<lineW)
         {
@@ -110,8 +110,12 @@
             NSLog(@"pos set to %@", NSStringFromCGPoint(thisMIo.position));
             
             thisMIo.originalPosition=c.position;
-            [thisMIo.textBackgroundRenderComponent setColourOfBackgroundTo:kBTXEColour[colourIndex]];
-            colourIndex++;
+            
+            if(ParentGo.tintMyChildren){
+                [thisMIo.textBackgroundRenderComponent setColourOfBackgroundTo:kBTXEColour[colourIndex]];
+                colourIndex++;
+            }
+            
             if(colourIndex>7)colourIndex=0;
         }
         

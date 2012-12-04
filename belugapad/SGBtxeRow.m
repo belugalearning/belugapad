@@ -29,6 +29,8 @@
 @synthesize baseNode;
 @synthesize myAssetType;
 @synthesize defaultNumbermode;
+@synthesize tintMyChildren;
+
 
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget
 {
@@ -39,6 +41,7 @@
         position=CGPointZero;
         forceVAlignTop=NO;
 //        isLarge=NO;
+        tintMyChildren=YES;
         myAssetType=@"Small";
         self.defaultNumbermode=@"number";
         containerMgrComponent=[[SGBtxeContainerMgr alloc] initWithGameObject:(SGGameObject*)self];

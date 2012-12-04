@@ -30,6 +30,7 @@
 @synthesize myAssetType;
 @synthesize defaultNumbermode;
 @synthesize tintMyChildren;
+@synthesize backgroundType;
 
 
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget
@@ -42,6 +43,7 @@
         forceVAlignTop=NO;
 //        isLarge=NO;
         tintMyChildren=YES;
+        backgroundType=@"Tile";
         myAssetType=@"Small";
         self.defaultNumbermode=@"number";
         containerMgrComponent=[[SGBtxeContainerMgr alloc] initWithGameObject:(SGGameObject*)self];
@@ -94,6 +96,10 @@
         
         if([((id<NSObject>)c) isKindOfClass:[SGBtxePlaceholder class]])
             ((SGBtxePlaceholder*)c).assetType=self.myAssetType;
+        
+        if([((id<NSObject>)c) conformsToProtocol:@protocol(MovingInteractive)])
+            ((id<MovingInteractive>)c).backgroundType=self.backgroundType;
+
         
         [c setupDraw];
         

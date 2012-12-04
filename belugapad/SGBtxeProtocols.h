@@ -39,6 +39,7 @@
 //@property BOOL isLarge;
 @property (retain) NSString *myAssetType;
 @property BOOL tintMyChildren;
+@property (retain) NSString *backgroundType;
 @property BOOL forceVAlignTop;
 
 

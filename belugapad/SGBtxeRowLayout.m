@@ -30,6 +30,8 @@
 {
     float totalW=0, maxH=0;
     
+    BOOL tintingOn=ParentGo.tintMyChildren;
+    
     //get max height, total width
     for(id<Bounding> c in ParentGo.children)
     {
@@ -107,11 +109,9 @@
             if(!thisMIo.interactive)
                 thisMIo.position=ccp(thisMIo.position.x,thisMIo.position.y+1);
             
-            NSLog(@"pos set to %@", NSStringFromCGPoint(thisMIo.position));
-            
             thisMIo.originalPosition=c.position;
             
-            if(ParentGo.tintMyChildren){
+            if(tintingOn){
                 [thisMIo.textBackgroundRenderComponent setColourOfBackgroundTo:kBTXEColour[colourIndex]];
                 colourIndex++;
             }

@@ -1720,7 +1720,7 @@ static float kTimeToHintToolTray=7.0f;
         metaQuestionForceComplete=YES;
     }
     
-    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_correct_answer.wav")];
+    //[[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_correct_answer.wav")];
     [self showProblemCompleteMessage];
     currentTool.ProblemComplete=YES;
 }

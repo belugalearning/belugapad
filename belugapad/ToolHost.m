@@ -296,7 +296,7 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)playAudioFlourish
 {
-    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/integrated/blpress-flourish.wav")];
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_correct_answer_1.wav")];
 }
 
 #pragma mark draw and ticks

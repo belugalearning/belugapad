@@ -37,7 +37,7 @@ const uint labelSpacing = 67;
         labels = [NSMutableArray array];
         for (uint i=0; i<numLabels; i++)
         {
-            UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(firstLabelX + i * labelSpacing, 9, 24, 24)] autorelease];
+            UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(firstLabelX + i * labelSpacing, 11, 24, 24)] autorelease];
             [label setTextColor:[UIColor whiteColor]];
             [label setBackgroundColor:[UIColor clearColor]];
             [label setFont:[UIFont fontWithName:@"Chango" size:24]];

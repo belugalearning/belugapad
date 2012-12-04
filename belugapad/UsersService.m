@@ -206,7 +206,7 @@ NSString * const kUsersWSCheckNickAvailablePath = @"app-users/check-nick-availab
     [rs close];
     [allUsersDatabase close];
     
-    NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"interest"  ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)] autorelease];
+    NSSortDescriptor *descriptor = [[[NSSortDescriptor alloc] initWithKey:@"nick" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)] autorelease];
     [users sortedArrayUsingDescriptors:[NSArray arrayWithObject:descriptor]];
     return users;
 }

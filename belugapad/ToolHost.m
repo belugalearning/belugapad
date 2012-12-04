@@ -1751,6 +1751,7 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)setupNumberPicker:(NSDictionary *)pdefNP
 {
+    [usersService notifyStartingFeatureKey:@"NUMBERPICKER_PROBLEM"];
     numberPickerForThisProblem=YES;
     toolCanEval=NO;
     shownProblemStatusFor=0;

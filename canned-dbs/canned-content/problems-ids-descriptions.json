@@ -1,0 +1,4258 @@
+[
+  [
+    "J8WAAPM5-DVOO-CWYJ-L50Q-WXUKPTT046MC",
+    null
+  ],
+  [
+    "FMXH9VCT-N2MU-BFGW-C4TC-6LUIADXJ45OJ",
+    null
+  ],
+  [
+    "RXZ69389-GMLQ-6T9Z-TGAL-NR5X6FLVB9TX",
+    "<b:t>Count {$x}</b:t><b:oi tag=\"30_pv_block\"/><b:t>.</b:t>"
+  ],
+  [
+    "9BFEWTIL-8I39-2XSB-ZXGB-XXQV6CF9HLQG",
+    null
+  ],
+  [
+    "WZW8DNJ5-8Q8Q-JP91-Y8LM-P5T1MPYV4BF6",
+    null
+  ],
+  [
+    "VTWE4PVV-6B4F-VS2D-K9U3-GV5BPTCFDSJD",
+    null
+  ],
+  [
+    "6XHEWY93-Z0NI-51WL-NT9V-MDHL7GT0XS2K",
+    "<b:t>Count 10</b:t><b:oi tag=\"30_pv_block_p\"/><b:t>.</b:t>"
+  ],
+  [
+    "E3SKHFUD-CJ0Z-90QL-B793-LDM8JP4EQ05A",
+    "<b:t>Count {$x}</b:t><b:oi tag=\"30_pv_block_p\"/><b:t>.</b:t>"
+  ],
+  [
+    "F7IMMEH0-P9YQ-PP79-99MM-8RSEJNEZJ9G9",
+    "Start at 0, and count up to 10."
+  ],
+  [
+    "58QJF863-5QX8-SBQC-W1RG-F5OXJFWD2IWG",
+    "Starting at 0, count up to {$y}."
+  ],
+  [
+    "1Q832QML-9GWP-33RW-FL1K-RCN4A2FUP2SA",
+    "Starting at 0, count up to {$y}."
+  ],
+  [
+    "87U392RL-TLZC-I8CH-33G3-EOER4B8YPR83",
+    "Start at 0, count up to 20."
+  ],
+  [
+    "MAI1LQBK-L4VP-USQN-ZN09-1TAJE33VY1TP",
+    "<b:t>Press the</b:t><b:oi tag=\"30_Counter_Stop\"/><b:t>at {$x}.</b:t>"
+  ],
+  [
+    "EAXUCEFC-KXMH-WRMD-90MJ-T0BJRDYUXJHO",
+    "<b:t>Press the</b:t><b:oi tag=\"30_Counter_Stop\"/><b:t>at {$x}.</b:t>"
+  ],
+  [
+    "YTQNY4GB-J98Z-VPJW-Q1NZ-6VZDP4AVDHGS",
+    "<b:t>Press the</b:t><b:oi tag=\"30_Counter_Stop\"/><b:t>at {$x}.</b:t>"
+  ],
+  [
+    "XSPEQP72-RH1E-9BJB-CPIZ-X1BF0ECXSOQ2",
+    "How many objects are there in total?"
+  ],
+  [
+    "RY1Q27LE-FI01-YHUO-E3XM-AFHAOXNM5QII",
+    "Starting at {$x}, count forward {$y}."
+  ],
+  [
+    "905CT8IB-5RXH-T06A-OFLF-DN5T6NA0W9O5",
+    "How many objects are there in total?"
+  ],
+  [
+    "1KVH293A-9ODY-HEK3-QOGL-PC5YH8O60E7S",
+    "Start at {$x}, and count forward {$y}."
+  ],
+  [
+    "Q9FLYV88-ZWB2-DLRM-S0BW-0PLRGZRTG32V",
+    "Start at {$x}, and count on {$y}."
+  ],
+  [
+    "F90YYS8G-YD9F-3OZH-1KPZ-STP4M6YP4Z8A",
+    "Start at {$x}, and count on {$y}."
+  ],
+  [
+    "C1DNHB8G-2YRP-ZKJ5-O2G1-F8Z3VOEBN682",
+    "Start at {$x}, and count on {$y}."
+  ],
+  [
+    "JU5JD9NW-0P6U-8XOG-GDK6-YUQQKDK2V257",
+    "Start at {$x}, and count on {$y}."
+  ],
+  [
+    "XGVJ0GCE-S3HE-JMKB-RH0L-EWHHY8ZK7BFY",
+    "<b:t>You start with {$x}</b:t><b:obj count=\"{$x}\"/><b:t>. Add more to make {$y}</b:t><b:obj count=\"{$y}\"/><b:t>.</b:t>"
+  ],
+  [
+    "GT4M3TAM-GA7D-Y0N9-NI44-LPIEVL54OBOH",
+    "Starting at {$x}, count {@forward} {$y}. What number are you on now? "
+  ],
+  [
+    "KENOR5X4-A9YZ-CDP6-DT58-QU5E431H8Z2M",
+    "<b:t>You start with {$x}</b:t><b:obj count=\"{$x}\"/><b:t>. Add more to make {$y}</b:t><b:obj count=\"{$y}\"/><b:t>.</b:t>"
+  ],
+  [
+    "SBQHVF6Z-61HQ-ZR0C-N5E2-8OLUF8DJG94P",
+    null
+  ],
+  [
+    "PQETAITB-7U20-FU62-4R9P-PAYER4VBZ800",
+    "Jump in twos to 6."
+  ],
+  [
+    "ZIBOROPG-KUZI-7SRH-5NVG-CLD3ZU7HKTW7",
+    "Jump in threes to 9."
+  ],
+  [
+    "5L99OSAS-R7YF-37ZN-ORWB-LVKW09PS7M9S",
+    "Jump in twos to 10."
+  ],
+  [
+    "MV6PWWHR-ZCY4-NUKZ-6S5H-O0QJFXZOAQ4P",
+    "Jump in threes to 12."
+  ],
+  [
+    "O4MGJ701-XVAW-Q36W-69EE-24VBOZYANINL",
+    "Jump in fives to 20."
+  ],
+  [
+    "PR9QJYKE-6EX1-M3AU-VRKB-YSWXD8HYR8IV",
+    "Jump in fives to 15."
+  ],
+  [
+    "6NQ2CR51-2LUU-9ZD4-1XOM-EKWX5QURLWRM",
+    "Starting at 0, jump {$x} times in fives. Which number are you on?"
+  ],
+  [
+    "FT9NEQ9L-RPH1-TSJ2-72BP-MUC1ZVPTTGLD",
+    "Starting at 0, jump {$x} times in twos. What number have you landed on?"
+  ],
+  [
+    "6XPXU4MI-J7DK-IKHG-XFWB-QN2PQ2RZAEH2",
+    "Starting at 0, jump {$x} times in threes. Which number are you on?"
+  ],
+  [
+    "NJI6XP9G-0LWU-9RIJ-1OT2-ZHBXFV6JAZ75",
+    "<b:t>Starting at 3, press the</b:t><b:oi tag=\"30_Counter_Stop\"/><b:t>when it counts to {$x} in threes.</b:t>"
+  ],
+  [
+    "KGT6KKZZ-TDBW-C0K7-Z7CM-LSWZ03BGGTG5",
+    "<b:t>Starting at 2, press the</b:t><b:oi tag=\"30_Counter_Stop\"/><b:t>when it counts to {$x} in twos.</b:t>"
+  ],
+  [
+    "0QQRDPSF-V559-QVMZ-BEGL-ZSCX80Z36K7U",
+    "<b:t>Starting at 2, press the</b:t><b:oi tag=\"30_Counter_Stop\"/><b:t>when it counts to {$x} in twos.</b:t>"
+  ],
+  [
+    "VCD8CJYC-Q4C7-JDVA-T5GM-BSXJPB87P9RI",
+    "<b:t>Starting at 5, press the</b:t><b:oi tag=\"30_Counter_Stop\"/><b:t>when it counts to {$x} in fives.</b:t>"
+  ],
+  [
+    "OG9UT21W-UJ4P-YKMD-GQID-HYM6FKTX3995",
+    "<b:oi tag=\"thing_3\"/> <b:t>starts at 0 and counts forward in twos.</b:t> <b:oi tag=\"thing_3\"/> <b:t>stops at {$x}. How many twos did</b:t> <b:oi tag=\"thing_3\"/> <b:t>count?</b:t>"
+  ],
+  [
+    "KZ7HB909-2NDX-9OY5-6JAY-NIQJFABZRRMK",
+    "<b:oi tag=\"thing_4\"/> <b:t>starts at 0 and counts forward in threes.</b:t> <b:oi tag=\"thing_4\"/> <b:t>stops at {$x}. How many threes did</b:t> <b:oi tag=\"thing_4\"/> <b:t>count?</b:t>"
+  ],
+  [
+    "9GDZ1VJS-VVII-P2RE-6B7P-SC8BAW8LGHQF",
+    "<b:oi tag=\"thing_2\"/> <b:t>starts at 0 and counts forward in fives.</b:t> <b:oi tag=\"thing_2\"/> <b:t>stops at {$x}. How many fives did</b:t> <b:oi tag=\"thing_2\"/> <b:t>count?</b:t>"
+  ],
+  [
+    "PHOX1UUU-4PFT-HF4Z-76XA-DFRVCEBDJ869",
+    "Make 10."
+  ],
+  [
+    "IMQG9UAQ-KXH1-CLTU-12AE-G71YM246VW4G",
+    "Make {$ten}."
+  ],
+  [
+    "OFNRLS3A-6F63-785W-O4OC-TQAF31AA3UNE",
+    "Start at 0 and jump forward {$x} tens."
+  ],
+  [
+    "4JRIVVA3-LA5V-35XM-3BRY-CK93UX1WXXP0",
+    "Make 40."
+  ],
+  [
+    "JN3OFBYM-CWS4-6M8P-2U9J-DUSQZVSV1WG8",
+    "Start at 0 and count forward {$x} tens."
+  ],
+  [
+    "YHKQJ30R-CXHZ-UF0A-U5YM-IY1BJM9GQHHM",
+    "Start at {$y} and jump forward {$x} tens."
+  ],
+  [
+    "1WRN1G0F-LAGL-V3N1-2UJ5-CWZRXVQXN1C9",
+    "<b:t>Place the</b:t><b:oi tag=\"30_bubble\"/><b:t>on {$x}.</b:t>"
+  ],
+  [
+    "59H8UUYT-C38K-W4NB-PU31-CVYG70SD2VZC",
+    "Start at {$y} and jump forward {$x} tens."
+  ],
+  [
+    "48GT0EZZ-72P3-KH9L-5F3G-Q3Z79XAU6E6W",
+    "How many tens are there between {$x} and {$y}?"
+  ],
+  [
+    "MZ18PEXW-XSOH-H1QO-MVJM-Y1YV2GYRVTMZ",
+    null
+  ],
+  [
+    "44XBB9UR-2CSG-4O1J-SMWG-UCFEWJPG1SE3",
+    "Start at {$x}, and count up to {$z}."
+  ],
+  [
+    "V2KJHSEX-A053-VO3A-2290-6DBVG3GSAE6X",
+    null
+  ],
+  [
+    "I3ZHKXM9-Q1QF-9J2U-29CK-8RN0LNS4MU2K",
+    "Starting at {$x}, count on to {$z}."
+  ],
+  [
+    "S7FGSA48-8WTL-IWBK-9AJK-RCDUC0MAF23A",
+    "Start at {$x}, then count on to {$z}."
+  ],
+  [
+    "4ZFRTLA5-U55C-2N39-SVTD-ADJIZUQHVON9",
+    "Starting at {$x}, count on to {$z}."
+  ],
+  [
+    "7ORUQZAJ-U483-N4T6-7SFP-IV30G3KLI9PE",
+    "Starting at {$x}, count on to {$z}."
+  ],
+  [
+    "ILDWRJER-1GX1-MNJY-9B43-I8T0H3L8270K",
+    "Start at {$x}, and count on to {$z}."
+  ],
+  [
+    "ADIV6NGO-RHFU-L4AI-GQ57-UHUMN80KVXKI",
+    "Count up to {$z} from {$x}."
+  ],
+  [
+    "1F8PIWN1-552A-35AP-R9PV-TPE7JNY8VDC8",
+    "{@start} at {$x}. How many {@ones} does it take to get to {$z}?"
+  ],
+  [
+    "2B1M7PVK-WKT4-RUMU-L6HC-JP91RI094CG2",
+    "{@start} at {$x}, how many {@ones} do you count to get to {$z}?"
+  ],
+  [
+    "WM6NBQ5M-EV1H-ZMJA-OT07-UL27Z8XKZX2V",
+    "{@start} at {$x}. How many {@ones} do you count to get to {$z}?"
+  ],
+  [
+    "DW8YO27R-KQRP-VKJQ-1NB9-R4C6FMO9UMFT",
+    "Jump back in twos to 0."
+  ],
+  [
+    "DISDUBSB-SZGM-9TNB-VGE0-NDY76T82K80D",
+    "Jump back in threes to 0."
+  ],
+  [
+    "IF2YIBWB-PATR-6XK9-3XHP-PZYZBCVT325C",
+    "Starting at 40, jump back {$x} times in fives. What number are you on?"
+  ],
+  [
+    "J2NMCB9M-TL0Y-11JJ-IY2C-F6U2VR6IJ9NN",
+    "Count back to 0 in jumps of five."
+  ],
+  [
+    "ZMW8GXJG-6OK1-FMQQ-6XKC-46IG3AXYSGXQ",
+    "Starting at {$x}, jump back {$y} times in twos. Which number do you land on?"
+  ],
+  [
+    "ZVHPG8R2-PWVS-GPZ8-K9IJ-0JBJCFCVT0F6",
+    "Starting at {$x}, jump back {$y} times in threes. What is the number?"
+  ],
+  [
+    "X5QRSB6Z-34EA-SX01-0014-L3DZHTKADIGL",
+    "Starting at 20, press the</b:t><b:oi tag=\"30_Counter_Stop\"/><b:t>when it counts back to {$x} in twos. "
+  ],
+  [
+    "V48GLI5C-P5IK-MKRP-2WHB-6N72SKW1B4T2",
+    "Starting at 20, press the </b:t><b:oi tag=\"30_Counter_Stop\"/><b:t> when it counts back to {$x} in twos. "
+  ],
+  [
+    "TFZTDTIE-OTTE-M6JV-TRVV-138OTOFY9884",
+    "Starting at 18, press the </b:t><b:oi tag=\"30_Counter_Stop\"/><b:t> when it counts back to {$x} in threes. "
+  ],
+  [
+    "HHHC6XHP-H0L9-C7KG-CFAA-PVKPUMAIGCYY",
+    "Starting at 30, press the </b:t><b:oi tag=\"30_Counter_Stop\"/><b:t> when it counts back to {$x} in fives. "
+  ],
+  [
+    "B95J1WKX-PZ6M-04OP-HEDP-W294LPQ4EE32",
+    "<b:oi tag=\"thing_4\"/> <b:t>starts at {$x} and counts backwards in threes.</b:t> <b:oi tag=\"thing_4\"/> <b:t>stops at {$y}. How many threes did</b:t> <b:oi tag=\"thing_4\"/> <b:t>count?</b:t>"
+  ],
+  [
+    "63DE8X92-NARM-PSO9-TXSK-23OUGWZF7DHQ",
+    "<b:oi tag=\"thing_3\"/> <b:t>starts at {$x} and counts backwards in twos.</b:t> <b:oi tag=\"thing_3\"/> <b:t>stops at {$y}. How many twos did</b:t> <b:oi tag=\"thing_3\"/> <b:t>count?</b:t>"
+  ],
+  [
+    "1V83KLVP-XWNZ-PVAT-FG9A-OFNGZ1PYZCMB",
+    "<b:oi tag=\"thing_2\"/> <b:t>starts at {$x} and counts backwards in fives.</b:t> <b:oi tag=\"thing_2\"/> <b:t>stops at {$y}. How many fives did</b:t> <b:oi tag=\"thing_2\"/> <b:t>count?</b:t>"
+  ],
+  [
+    "XHWQ5IHC-IS11-8K0I-71KT-GFGW8B8UJFLH",
+    "Start at {$x}, jump backward {$y} ones."
+  ],
+  [
+    "U1SY4ER0-7HIF-35FY-VPGT-ZZOWUTN6C88S",
+    "Start at {$x}, jump backward {$y} ones."
+  ],
+  [
+    "CRXR6964-HD55-3KQF-SDJM-7JTRDBBE5O2B",
+    "Start at {$x}, jump backward {$y} ones."
+  ],
+  [
+    "QAIXBPD3-MXGM-ABE1-D0FC-VZYI3DUBC5HW",
+    "Start at {$x}, count back {$y}."
+  ],
+  [
+    "L0XN4T2N-R2TR-IFO3-MA8H-VQGHEL6MGYAS",
+    "<b:t>You start with {$y}</b:t><b:obj count=\"{$y}\"/><b:t>. Take away {$x} of the</b:t><b:obj count=\"{$x}\"/><b:t>.</b:t>"
+  ],
+  [
+    "EUM5I6RU-RJCN-HQLT-I0NQ-M82QBB9KKO9J",
+    "<b:t>You start with {$y}</b:t><b:obj count=\"{$y}\"/><b:t>. Take away {$x} of the</b:t><b:obj count=\"{$x}\"/><b:t>.</b:t>"
+  ],
+  [
+    "35E9E7HD-5HAP-QD24-7T7I-MIK606CK3GED",
+    "You start at {$x}, and count back {$y}. What number are you on now? "
+  ],
+  [
+    "5STCYKRE-WYKS-OK49-M0NL-RNWW60LNO0HC",
+    "You count back {$y} from {$x}. What number are you on now? "
+  ],
+  [
+    "A464REAM-Z8DB-GPYC-9I0Z-V334RKTH2OR9",
+    "Starting at {$x}, count back {$y}. What number are you on now? "
+  ],
+  [
+    "21LALTMI-XNXT-RGDS-U575-NGP7NT7846M4",
+    "Starting at {$x}, count back to {$y}."
+  ],
+  [
+    "W20UAY3K-MW65-52QQ-AJ4L-LPANUL3NWK45",
+    "Beginning at {$x}, count backwards to {$y}."
+  ],
+  [
+    "LBDNF1M0-ZESC-XKQE-UOJ0-GDD13RLX1K6H",
+    "Starting at 12, count back to 6."
+  ],
+  [
+    "N1RAYGBZ-DN5C-TKI2-0SO3-07VW1SLZC8MP",
+    "Start at {$x}, and count back to {$y}."
+  ],
+  [
+    "80TE8KVD-V4LT-LKLG-PF51-6SK86MSJG852",
+    "Count back to {$y} from {$x}."
+  ],
+  [
+    "JO40ABW5-P2V6-GC1K-25VD-HJ6GRQCMZ663",
+    "Counting down from {$x}, press the </b:t><b:oi tag=\"30_Counter_Stop\"/><b:t>at {$y}."
+  ],
+  [
+    "FDVTL8Z3-3FGF-WJ4A-V8JY-O8F8Z07GHTAC",
+    "Counting down from {$x}, press the</b:t><b:oi tag=\"30_Counter_Stop\"/><b:t>at {$y}."
+  ],
+  [
+    "2IUTWD56-M6FB-ZLTQ-0R2J-R18851H6USKY",
+    "Counting down from {$x}, press the</b:t><b:oi tag=\"30_Counter_Stop\"/><b:t>at {$y}."
+  ],
+  [
+    "GRVUXRBS-YYE9-1CK4-92B8-BSNI94306O0O",
+    "<b:t>You start with {$y}</b:t><b:obj count=\"{$y}\"/><b:t>. Take away</b:t><b:obj count=\"2\"/><b:t>until {$x} are left.</b:t>"
+  ],
+  [
+    "FDQFKK7X-IHS9-IGY9-O5JR-N3AVY56PD8D7",
+    "<b:t>You start with {$y}</b:t><b:obj count=\"{$y}\"/><b:t>. Take away</b:t><b:obj count=\"2\"/><b:t>until {$x} are left.</b:t>"
+  ],
+  [
+    "XFF820Q0-M8MW-LF6I-VJW8-1Y3J26UCM3AQ",
+    "{@start} at {$x}. How many {@ones} do you count back to get to {$y}?"
+  ],
+  [
+    "CW4RLVE4-I554-Q6J1-G9Z6-FLHJ0JW861OP",
+    "{@start} at {$x}. How many {@ones} do you count back to get to {$y}?"
+  ],
+  [
+    "9X9N7U0S-HYSV-4PC7-CIXN-FY66EFJZBVPK",
+    null
+  ],
+  [
+    "LRQ1YRJD-SLY7-5765-MYRC-3FMTEIHSP902",
+    "How many objects are there?"
+  ],
+  [
+    "JNKM11DJ-NNWN-XK9I-UF1Z-2AIGSXCNUPNO",
+    "How many objects are there?"
+  ],
+  [
+    "TKSR46X5-D64D-Z5K1-O28U-SNAEZYBHB1AH",
+    "How many objects are there?"
+  ],
+  [
+    "24CL6OA6-JD51-UQJB-S8G6-543DNH0DXM85",
+    "Build an equivalent set."
+  ],
+  [
+    "68WWRL6R-4QB6-3QTH-L8O2-YOOAOTTMWPGU",
+    null
+  ],
+  [
+    "SHXZFNB0-AONV-AIJN-879S-5BOK146SCG6M",
+    "How many square goo are there?"
+  ],
+  [
+    "BFGG61IO-3E8A-Q28V-YMPO-L8G28DTVYDTF",
+    "How many circle goo are there?"
+  ],
+  [
+    "P5MA5PAN-CPW2-5B6K-JRBE-MVYX4GM1EOXX",
+    "How many square goo are there?"
+  ],
+  [
+    "OZWFIHD1-W1VR-NHQF-UF7R-ES4DI7LJ0XU6",
+    null
+  ],
+  [
+    "JN0Y2N7P-Z9RA-NDOJ-4XVZ-ITZK3UP67RY8",
+    null
+  ],
+  [
+    "DRVYYT5M-SUC3-EY4Z-EPHS-EPWBCUV86U78",
+    "Create a set of 5."
+  ],
+  [
+    "CK0VBE3O-YVTQ-MRVY-E049-VYJJ5MEWTQ78",
+    "Create a set of {$number}."
+  ],
+  [
+    "FCHK8CEJ-91ZY-F5FF-ZSM1-UJ5YDUD4BFZ2",
+    "Create a set of {$number}."
+  ],
+  [
+    "O85V3XIN-S7WA-3F2H-RCDS-UFMQ5SRAPYOP",
+    "Create a set of {$x}."
+  ],
+  [
+    "ADD36MT1-2YGE-55L0-5F9R-FPWNV7V05US2",
+    "Create a set of {$x}."
+  ],
+  [
+    "OCI5OWZL-5KZE-LLCU-O6SP-VP53YHAW9W04",
+    "Create a set of {$x}."
+  ],
+  [
+    "2B7KNMJM-Z6W6-OX9V-IN9C-RBV8OUT39UGJ",
+    "Create a set of eleven."
+  ],
+  [
+    "ZD2VGBXS-5F2R-OBSW-VG38-44V9Q2O1EGKA",
+    "Create a set of twelve."
+  ],
+  [
+    "3OCUVPOF-I2LW-CVFJ-5EPN-ACCFPQ4IBMGL",
+    "Create a set of {$x}, and a set of {$y}."
+  ],
+  [
+    "S8SEM1KF-NA2D-WGQ1-F2BB-P9N6UB2YLK2A",
+    "Create a set of {$x}, a set of {$y} and a set of {$z}."
+  ],
+  [
+    "LAF5APNN-USV1-YKVV-QMBM-1Y4EVOWXN4YX",
+    "This is a set of {$x}. Build a set of the same shape and size."
+  ],
+  [
+    "N7LEXAJU-YINX-KDR8-A5C0-SNFIVNZOOGI8",
+    "This is a set of {$x}. Build a set of the same shape and size."
+  ],
+  [
+    "07U4G197-GJLW-7O52-HMGY-VJAJXU7PXVJA",
+    "This is a set of {$x}. Build a set of the same shape and size."
+  ],
+  [
+    "SYH5J3GI-665S-Q1R7-OF8F-3W6OWKMI5IUM",
+    "This is a set of {$x}. Build a set of the same shape and size."
+  ],
+  [
+    "CLMNJRE2-WV3P-45J2-72S0-OOYSU6ROO4GU",
+    "Make a set that has the same size but different shape."
+  ],
+  [
+    "C3ELTWO5-F5AN-6FQE-0NU1-NBY611VA64KV",
+    "<b:t>Create a set that has the same number of </b:t><b:oi tag=\"30_pv_block\"/><b:t>but a different shape.</b:t>"
+  ],
+  [
+    "3IQPK0YT-QLUO-Y2SE-5H1O-E44MVB2QZKRI",
+    "<b:t>Add</b:t><b:oi tag=\"30_pv_block_p\"/><b:t> to make the two </b:t><b:oi tag=\"30_pv_grid\"/> <b:t>the same size.</b:t>"
+  ],
+  [
+    "1OPIB3XN-7JOX-SBDO-C9P7-2UPYXFBFYQX0",
+    "<b:t>I have {$x}</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>. Add some more to make a total of {$x+$y}. </b:t>"
+  ],
+  [
+    "I0B1LEUU-J0R9-ZN67-ROBP-YO89XP0A1F94",
+    "<b:t>I have {$x} </b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>. Add some more to make a total of {$x+$y}. </b:t>"
+  ],
+  [
+    "40H6SB5E-DSRE-PXE0-NT11-9TKHZD8634A8",
+    "<b:t>I have {$x} </b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>. Add some more to make a total of {$x+$y}. </b:t>"
+  ],
+  [
+    "RF2VKXDM-59FU-8EI2-C6AU-D9QKM63AQIG8",
+    "<b:t>I have {$x}</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>. Add some more so I have {$y} altogether.</b:t>"
+  ],
+  [
+    "V8AIW65M-Y095-Q0BP-PT5W-3819H2JI5RJP",
+    "<b:t>I have {$x}</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>. Add some more so I have {$y} altogether.</b:t>"
+  ],
+  [
+    "U9YV5W3N-CIMT-HZ9I-8HRX-7DF0PA1XC6CM",
+    "<b:t>I have {$x}</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>. Add some more so I have {$y} altogether.</b:t>"
+  ],
+  [
+    "CJKF8VR8-HG25-EX04-XYJ2-MZ4N618H3VU0",
+    "<b:t>Add</b:t><b:oi tag=\"30_pv_block_p\"/><b:t> to {$number1} to make {2*$number2}.</b:t>"
+  ],
+  [
+    "2IVA38VN-BPZC-HQQB-R7DW-HHI5TYH2098U",
+    "<b:t>Add</b:t><b:oi tag=\"30_pv_block_p\"/><b:t> to {$number1} to make {$x*$y}.</b:t>"
+  ],
+  [
+    "SEKNI1MQ-Y1LA-8Q26-O1B5-IUH1EF4RH68M",
+    "<b:t>Add</b:t><b:oi tag=\"30_pv_block_p\"/><b:t> to {$number1} to make {$number2}.</b:t>"
+  ],
+  [
+    "G4O6R1QB-3GZ2-E7G5-0U02-E33JVBOGIBZD",
+    "<b:t>How many</b:t><b:oi tag=\"30_pv_block_p\"/><b:t> must be added to {$x} to make {$y}?</b:t>"
+  ],
+  [
+    "G87DEUZ2-HV6N-IG4Q-7Q4J-8UOFXRVDMRKS",
+    "<b:t>I have {$x}</b:t><b:oi tag=\"30_pv_block_p\"/><b:t>. Add some more to make {$y}. </b:t>"
+  ],
+  [
+    "Y30AIUBH-Q51R-UCVT-Y3P4-7VOA55P73IWH",
+    "How many ones must be added to {$number1} to make {$number2}?"
+  ],
+  [
+    "MSDFM9CY-TGZ3-GSBP-RSH2-43WALQZ4MM3L",
+    null
+  ],
+  [
+    "TIKVSBIS-50IN-MQIC-CKVO-KP10KZA55UV7",
+    null
+  ],
+  [
+    "35JC25NV-F7NX-P8SO-CMHY-8S0XZMLK43D8",
+    null
+  ],
+  [
+    "M8GG7PAV-8411-4OQ1-TTWW-5YLAH3DLHD7S",
+    null
+  ],
+  [
+    "0K7HS2R2-YMJX-HJGB-K2OQ-UMCAB04S8AQ3",
+    null
+  ],
+  [
+    "QRGGG10Y-4V8Y-HLZZ-V0O8-PEGF119AUOIA",
+    "Which is larger?"
+  ],
+  [
+    "QQ1CHMUE-K4WO-MWOB-OR0D-O5C334JKTSKT",
+    "Which is larger?"
+  ],
+  [
+    "ETHD8SRB-F1YL-BXRW-V03V-WL9S3JKRMIXJ",
+    "Which is larger?"
+  ],
+  [
+    "UR7PSO5C-6AO5-E524-ZXV6-HSP856PTPYFC",
+    "Which is larger?"
+  ],
+  [
+    "6DBE6MJO-J8YJ-ZSVG-XOSG-FO7GLVFLCVNV",
+    "Which is largest?"
+  ],
+  [
+    "9KVDBTGM-JFF7-NIX2-Y4CX-GGH2AJUHYZVX",
+    "Which is largest?"
+  ],
+  [
+    "WMH6YG14-YWXE-X4TU-WK5G-TZ91TPLH6NOE",
+    "Which is largest?"
+  ],
+  [
+    "5CSR2531-3GZV-DYYN-ZZIX-9KDE02JP8AI6",
+    "Which is largest?"
+  ],
+  [
+    "GNRYE312-INV3-QVPH-FQ55-IGUEPOEOIMS7",
+    null
+  ],
+  [
+    "YJF2FPYT-H71M-FGHB-1FXD-T925CCZG9TMK",
+    "Which is larger?"
+  ],
+  [
+    "MN8LFRBI-T98K-LRMI-LHCY-BA2DAUL02U36",
+    "Which is larger?"
+  ],
+  [
+    "2Y29I1O7-7NIU-FY7Q-LUQ5-S672XRKN9FLW",
+    "Which is larger?"
+  ],
+  [
+    "B90W5AK0-Q02R-9QT7-AGSK-893HWT6J7BRK",
+    "<b:t>Which set has more</b:t><b:oi tag=\"30_pv_block_p\"/><b:t>?</b:t>"
+  ],
+  [
+    "D9BYHBD4-MWPA-VG44-18JT-UG848EGX8PNK",
+    "Which is largest?"
+  ],
+  [
+    "LBKLJB6P-C51N-J8PK-K9RP-KITS0VSL4UD9",
+    "Which is largest?"
+  ],
+  [
+    "30VTAE84-Y5J1-Q5EL-YDEI-V2S9SNI8KKA4",
+    "Make a set which is larger than {$x-1} and smaller than {$x+1}."
+  ],
+  [
+    "EO0HZ9WT-ZAWO-QYJY-LG2Q-C9E6UTZYLT3S",
+    "Which number is larger?"
+  ],
+  [
+    "17DQXWGX-QJF1-NLG9-PA9V-Y7CJU8BEW386",
+    "Which number is smaller?"
+  ],
+  [
+    "KMXVIXM5-N3OK-45EI-FGJ1-WD1NJ529JG5W",
+    "Which number is larger?"
+  ],
+  [
+    "WCIJRK17-IKCF-ONKV-9OYI-E903A2HVEBSF",
+    "Which number is larger?"
+  ],
+  [
+    "6XAW5K3T-T5WO-4E0X-7ZBE-SA5M0XK5UB4C",
+    "Which numbers are larger than 10?"
+  ],
+  [
+    "XMLHA0GV-2UE1-ASMQ-AV6E-J6FJRMBFSLDW",
+    "Which numbers are smaller than 10?"
+  ],
+  [
+    "2Y4GB4AE-VLSN-82MC-77UB-T069MMJESCJ9",
+    "Which numbers are smaller than 12?"
+  ],
+  [
+    "FI2TVNA9-TPUR-H37B-EBZJ-BTBDTTNBFR3L",
+    null
+  ],
+  [
+    "8DVDU63N-DNV6-WEIB-KORF-HTIIWH8KPZW0",
+    null
+  ],
+  [
+    "JUWGXYYZ-ZZ67-7GU6-IPY2-RTM81KD6QMQ9",
+    null
+  ],
+  [
+    "FS2HJOP3-1ELA-QRR0-NJEY-OT3QDMZVKMM8",
+    null
+  ],
+  [
+    "I0571YWP-LE60-5VXN-92W8-QA6GJW3RWGTT",
+    null
+  ],
+  [
+    "YZMXKQRK-XYLT-RKUV-6KNY-5MLOH8RLBMRG",
+    null
+  ],
+  [
+    "2MM7TRSR-HLHU-NJ3T-ITFZ-OJUAVG1II69H",
+    null
+  ],
+  [
+    "1WC8MV8I-NYZY-WZS5-BNZD-LE391JJR1FUX",
+    "What is 1 {@more} than 5?"
+  ],
+  [
+    "Z7WSQGOP-VZRY-CUPA-MAX0-P5TYGDGGVP7A",
+    "What is number 1 {@more} than 6?"
+  ],
+  [
+    "B5256Q2M-MWJC-O7IZ-R04Y-FD8XKIT6PKIR",
+    "Show that 8 is one more than 7."
+  ],
+  [
+    "553DY946-IN63-0X6V-GYPZ-FBOWIMMGZANN",
+    "What is number is 1 {@more} than 7?"
+  ],
+  [
+    "DS5SZJUV-U54H-ZJX6-4NZY-7ELSBOR5XVRP",
+    "<b:t>Move the</b:t><b:oi tag=\"30_bubble\"/><b:t>to the number that is 1 larger than 7.</b:t>"
+  ],
+  [
+    "83RACML6-T6OQ-VY3K-2OMC-4MJYXGMPHZ57",
+    "<b:t>Move the</b:t><b:oi tag=\"30_bubble\"/><b:t> to the number that is 1 larger than 10.</b:t>"
+  ],
+  [
+    "PR658YWJ-UMJQ-2AZW-N8VE-IOBO211WKSYF",
+    "<b:t>Move the</b:t><b:oi tag=\"30_bubble\"/><b:t> to the number that is 1 larger than 15.</b:t>"
+  ],
+  [
+    "AI4C7SDZ-6H2M-ERCA-PISP-IB6YC01J8RL5",
+    null
+  ],
+  [
+    "WTZSWVWQ-BLVB-PMYC-3HDU-DATB50GKV2TL",
+    null
+  ],
+  [
+    "LLY2A3CD-5SIS-H81T-7IBU-1HSJ18Y6S2UZ",
+    "Show how much {@larger} 6 is compared to both 2 and 4. "
+  ],
+  [
+    "NTWQ7G82-4BIO-XWJB-0ZH3-MQLFDIR1JYLL",
+    "Show that 6 is {@larger} than 3, by 3."
+  ],
+  [
+    "3ANZ764N-XUZ6-Y6Z0-HGIX-ODG5DGY8LOT5",
+    "Show how much {@larger} 5 is. "
+  ],
+  [
+    "XTY7PNGE-1C3Z-M1MQ-1CM3-I4L87GUJSE8Q",
+    "Show how much {@larger} 8 is compared to both 5 and 3."
+  ],
+  [
+    "G8GTN8SW-BV4S-WDP6-TP2D-PZ8DJJSYODQE",
+    "Show how much {@larger} 8 is than both 6 and 2."
+  ],
+  [
+    "FWFO3IAU-HTD8-V0RS-XF1D-HH0ZRWSSFLYW",
+    "Show how much {@larger} 10 is. "
+  ],
+  [
+    "CMQRCBAH-QNXL-DX44-NJ68-HC6HTW5R2AJW",
+    "Show how much {@larger} 10 is. "
+  ],
+  [
+    "NCNI4YRH-ZYK2-184V-8BDJ-N97YZQ5AYQYE",
+    "How much {@larger} is 6 compared to 4?"
+  ],
+  [
+    "L7DS52AB-5PHJ-98YA-IAJ7-K7G6U47KXVXN",
+    "How much larger is 10 than 5?"
+  ],
+  [
+    "KKP5TQSX-9EIT-WVWY-RL21-CZTZZBWRF6M1",
+    "How much larger is 8 than 2?"
+  ],
+  [
+    "QKXDFA2G-62ZB-CJ8X-P1VA-IT55QCVSDUFT",
+    null
+  ],
+  [
+    "6HZ7BVYM-A1FE-D4UE-XQGD-ST8Y5MAUK0G8",
+    null
+  ],
+  [
+    "1QWSHE3S-ZLFD-JQY1-SEHK-3BO3L3F26H93",
+    "10/5"
+  ],
+  [
+    "BGZ0IHBU-E6AD-JEE5-1TAW-YE8CXRFLZ2C1",
+    null
+  ],
+  [
+    "8UTKKQ1Z-C1L5-O6CR-DUJ9-Y3LAUEGVHFXV",
+    "10/5"
+  ],
+  [
+    "RW2PJ352-NWDF-PEHW-R3S0-1IQRQGBZ6MN4",
+    "10/5"
+  ],
+  [
+    "50OB8758-HMRW-ZSWK-72E2-KE7713CHVP20",
+    "10/5"
+  ],
+  [
+    "FDZC6915-Z38A-QKGZ-VGXQ-Y50CMQYH10IT",
+    "10/5"
+  ],
+  [
+    "6V0D3HHN-ZP7F-BYCB-92TB-DKI0NMDXY81V",
+    null
+  ],
+  [
+    "7ILH9USV-ZD8F-60KN-RRH8-FH3VFYJA11UT",
+    "10/5"
+  ],
+  [
+    "9BRYK0Q0-TTWJ-HAOG-IWW7-39YYPIF7GOX9",
+    null
+  ],
+  [
+    "ZVXO93R4-5OA7-VKT2-R0U7-3R1SLUPU1FOD",
+    null
+  ],
+  [
+    "FSCR9812-S9BP-PL6Q-149E-WZ2H3D5U0QF8",
+    null
+  ],
+  [
+    "6ZLSRV56-QH1V-873V-9KNH-A0NZP73G06O2",
+    null
+  ],
+  [
+    "V5OL3Y6V-AQSR-YF3N-WS8E-PPHSDZOW68MX",
+    null
+  ],
+  [
+    "L694U5NX-X0Y7-8INX-K3AG-SO73Y9M47GQI",
+    "6 AND 2"
+  ],
+  [
+    "L1G0X5WR-5D5X-SW8F-MW5V-PWDPLDAIKTJT",
+    null
+  ],
+  [
+    "A4SY0H7X-NKXQ-VHKT-G79L-ZEUAZRXO0LKL",
+    "6 AND 2"
+  ],
+  [
+    "7ULFHQTI-63JQ-JZ1K-NH98-7ABWIENWDXT6",
+    "6 AND 2"
+  ],
+  [
+    "EXOU8IUF-D8FI-LSHF-K2AI-JIJSL9SW191J",
+    "9 and 3"
+  ],
+  [
+    "7A625KOE-8RLV-15TR-7FKE-L4P229JFF2IR",
+    "8 AND 5"
+  ],
+  [
+    "32WVV15G-YP6F-WD3A-85ML-VRXUQYZ77VVC",
+    null
+  ],
+  [
+    "73PQPQNK-7F89-NLOW-H3R0-O7CDEOMSOSIT",
+    null
+  ],
+  [
+    "VJ49DLBG-FPCM-F667-RCN2-2ABYX31SBQ80",
+    null
+  ],
+  [
+    "UF1OBL9T-LMKJ-KFFZ-WIUQ-NL7LJ7I8DLVU",
+    null
+  ],
+  [
+    "4RKY6PNP-9N71-KDAP-ZW7V-ZO3I5HXIMDNJ",
+    null
+  ],
+  [
+    "WD4NV5E5-KLC0-IXZL-40TN-AL11EUI68T3F",
+    null
+  ],
+  [
+    "EH75BDG3-U1SE-62JT-T4HS-Q4UXE5CEW2UH",
+    "<b:oi tag=\"{@thing_1}\"/><b:t>has {$x}</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>. Give it {$y} more. How many does</b:t><b:oi tag=\"{@thing_1}\"/><b:t>have now?</b:t> "
+  ],
+  [
+    "T9OIVFLA-LA6X-LLPK-D3HG-2Q4GWFR4BEPF",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>has {$x}</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>. Give it {$y} more.</b:t>"
+  ],
+  [
+    "9DTWGI19-3FY0-CNUW-NV1N-KP6L75ZYHKEP",
+    "<b:oi tag=\"{@thing_1}\"/><b:t>has {$x}</b:t><b:oi tag=\"30_DT_Shape_Circle\"/></b:t>. Give it {$y} more. How many does</b:t><b:oi tag=\"{@thing_1}\"/><b:t>have now?</b:t> "
+  ],
+  [
+    "EYUQ3H8S-WML1-TO3L-UBJ5-V1WNNKR6R6GV",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>has {$x} objects and is given {$y} more. Complete the equation. {$x} + {$y} = </b:t><b:oi tag=\"30_Q\"/>"
+  ],
+  [
+    "GB7CCX45-NBC2-N830-NJHW-SZ7OOKFBYOVX",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>has {$x} objects and is given {$y} more. Complete the equation. {$x} + {$y} = </b:t><b:oi tag=\"30_Q\"/>"
+  ],
+  [
+    "077MU4F6-0Q3P-W712-Y3SH-BNVT383G1F5B",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>has {$x} objects and is given {$y} more. Complete the equation. {$x} + {$y} = </b:t><b:oi tag=\"30_Q\"/>"
+  ],
+  [
+    "JDYFIYEP-7GWW-9DK4-XFZ6-K66KUQB5QSO4",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>has {$x} objects and is given {$y} more. How many objects does</b:t><b:oi tag=\"{@thing_1}\"/><b:t>have?</b:t>"
+  ],
+  [
+    "K8IX6ODJ-6K7Z-IMIQ-7E7I-9SWAMT87XXKW",
+    null
+  ],
+  [
+    "WRLRVDAO-2H67-WMPZ-XEI3-MT6NQMT6GR9R",
+    "<b:t>There are 8</b:t> <b:oi tag=\"30_DT_Shape_Circle\"/><b:t>, 3</b:t><b:oi tag=\"30_DT_Shape_Square\"/><b:t>and 4</b:t> <b:oi tag=\"30_DT_Shape_Ellipse\"/><b:t>. Show there are 15</b:t><b:obj count=\"2\"/><b:t>in total.</b:t>"
+  ],
+  [
+    "D9Z6H9SS-PC64-SJ5V-1IKZ-B8IKDVLGD4UT",
+    "<b:oi tag=\"{@thing_1}\"/><b:t>has {$x} </b:t><b:oi tag=\"30_DT_Shape_Diamond\"/><b:t>, {$y} </b:t><b:oi tag=\"30_DT_Shape_Square\"/><b:t>and {$z} </b:t><b:oi tag=\"30_DT_Shape_Ellipse\"/><b:obj count=\"2\"/><b:t>. How many</b:t><b:obj count=\"2\"/><b:t>does</b:t><b:oi tag=\"{@thing_1}\"/><b:t>have altogether?</b:t>"
+  ],
+  [
+    "ARMLY9QS-I6SU-AA06-3DFP-WX2CRIIYLHH7",
+    "<b:oi tag=\"{@thing_1}\"/><b:t>has {$x}</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>.</b:t><b:oi tag=\"{@thing_1}\"/><b:t>gets {$y} more from</b:t><b:oi tag=\"{@thing_2}\"/><b:t>and {$z} more from</b:t><b:oi tag=\"{@thing_3}\"/><b:t>. How many </b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t> does</b:t><b:oi tag=\"{@thing_1}\"/><b:t>have now?</b:t>"
+  ],
+  [
+    "0BCROERM-276S-NUBO-1V4Z-N0XAT8WQ30JA",
+    "<b:oi tag=\"{@thing_1}\"/><b:t>has {$z}</b:t><b:obj count=\"{$z}\"/><b:t>. It is given {$y} more and then given another {$x}. How many</b:t><b:obj count=\"2\"/><b:t>does</b:t><b:oi tag=\"{@thing_1}\"/><b:t>have altogether?</b:t>"
+  ],
+  [
+    "UVTSHURK-M6T7-58GL-4JQ3-3H6UAYM3BZCE",
+    "<b:oi tag=\"{@thing_1}\"/><b:t>has {$y}</b:t><b:obj count=\"{$y}\"/><b:t>.</b:t><b:oi tag=\"{@thing_1}\"/><b:t>is given {$z} more</b:t><b:obj count=\"{$z}\"/><b:t>and then given another {$x}. Use the numberline to show how many</b:t><b:obj count=\"2\"/><b:oi tag=\"{@thing_1}\"/><b:t>has in total.</b:t>"
+  ],
+  [
+    "ZSY7N555-BXIR-7I6F-0NX1-DORLLH20UMK6",
+    null
+  ],
+  [
+    "YNKZ4R4T-20GN-9N3W-LDYG-8AL7H8SWYOMX",
+    "<b:oi tag=\"{@thing_1}\"/><b:t>has {$z} objects. It is given {$y} more and then given another {$x}. How many objects does</b:t><b:oi tag=\"{@thing_1}\"/><b:t>have altogether?</b:t>"
+  ],
+  [
+    "E30OXJ8K-PNK5-YNBW-ZETM-O7YV4FXBLFFN",
+    "<b:oi tag=\"{@thing_1}\"/><b:t>has {$x} </b:t><b:oi tag=\"30_DT_Shape_Diamond\"/><b:t>, and {$y} </b:t><b:oi tag=\"30_DT_Shape_Square\"/><b:t>. Show that</b:t><b:oi tag=\"{@thing_1}\"/><b:t>has {$x+$y}</b:t><b:obj count=\"{$x+$y} \"/><b:t>in total.</b:t>"
+  ],
+  [
+    "FL29ELP1-K2EV-0SUN-BXXJ-XXQ26NBYUNFX",
+    "<b:oi tag=\"{@thing_1}\"/><b:t>has {$x} </b:t><b:oi tag=\"30_DT_Shape_Ellipse\"/><b:t>, and {$y} </b:t><b:oi tag=\"30_DT_Shape_Square\"/><b:t>. How many</b:t><b:obj count=\"{$x+$y}\"/><b:t>does</b:t><b:oi tag=\"{@thing_1}\"/><b:t>have in total?</b:t>"
+  ],
+  [
+    "TIDOEJTT-CDC4-1ZDY-HINI-ER911S13TYRS",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>has {$x}</b:t><b:oi tag=\"30_DT_Shape_{@shape}\"/><b:t>. Add {$y} more</b:t><b:oi tag=\"30_DT_Shape_{@shape}\"/><b:t>.</b:t>"
+  ],
+  [
+    "B5TF0QZF-6GCU-D93S-37UI-QH6EP7S2FBG7",
+    "<b:oi tag=\"{@thing_1}\"/><b:t>has {$x} </b:t><b:oi tag=\"30_DT_Shape_House\"/><b:t>, and {$y} </b:t><b:oi tag=\"30_DT_Shape_Diamond\"/><b:t>. How many</b:t><b:obj count=\"{$x+$y}\"/><b:t>does</b:t><b:oi tag=\"{@thing_1}\"/><b:t>have in total?</b:t>"
+  ],
+  [
+    "Y0ED9XXD-72Z2-OAQY-M8P3-62HD4E6VBSBB",
+    null
+  ],
+  [
+    "869KN1H5-IFTM-WKCD-JQ16-9D5U5GRBEJTL",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>has {$x}</b:t><b:obj count=\"{$x}\"/><b:t>to begin with.</b:t> <b:oi tag=\"{@thing_2}\"/> <b:t>gives</b:t><b:oi tag=\"{@thing_1}\"/><b:t>another {$y}</b:t><b:obj count=\"{$y}\"/><b:t>. Use the numberline to show how many</b:t><b:obj count=\"2\"/><b:oi tag=\"{@thing_1}\"/><b:t>has in total.</b:t>"
+  ],
+  [
+    "XAYS9Z3U-CV7N-DWXT-63AG-8B19MIH2TI6N",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>has {$x}</b:t><b:oi tag=\"30_DT_Shape_{@shape}\"/><b:t>. Add {$y} more</b:t><b:oi tag=\"30_DT_Shape_{@shape}\"/><b:t>.</b:t>"
+  ],
+  [
+    "4HTTKG7W-A2SW-GP37-2FDU-OMSLR5GJTPU1",
+    null
+  ],
+  [
+    "RJUTT9SK-20HK-2RRA-OBTB-9W9090NXE8R2",
+    null
+  ],
+  [
+    "8NISIPE8-WVE6-4Q2E-Q71D-CCX3TNJ7UWL0",
+    null
+  ],
+  [
+    "26G5FERO-EP3I-OBVS-6QLA-Z2JL00IS7HV3",
+    null
+  ],
+  [
+    "7JZOJ9S3-EU3J-4SIJ-HDH0-9M8XYF0AD2R9",
+    null
+  ],
+  [
+    "SVG08T9P-2QI5-APYV-ODK2-46FP41WEFVUS",
+    null
+  ],
+  [
+    "UNXODFHR-7A1T-HVM0-9IT7-78EJN3U0GC8E",
+    null
+  ],
+  [
+    "BCJB316S-051D-U9YD-EYVK-7W5JP2RVZW57",
+    null
+  ],
+  [
+    "BHAWDN4W-AN2N-WZLV-PMSP-UPA6JW2MKJX1",
+    null
+  ],
+  [
+    "VATZY5OI-15L8-U965-ED84-I86YXOAZJI8T",
+    null
+  ],
+  [
+    "21Z50P0V-ZQ0J-R6IT-KL68-FTELDRCB2PGF",
+    null
+  ],
+  [
+    "NNJ8KURW-GC9Y-JZ38-OQ1P-MUEK7NVWO8DM",
+    null
+  ],
+  [
+    "GNGHZQSH-3LU9-8SHF-Q6IC-XAWDSWRSA9EM",
+    null
+  ],
+  [
+    "4HX7NWHE-BU3X-CSXI-1KN4-YTUGTI62C3U9",
+    null
+  ],
+  [
+    "H3SQGZGW-WYE3-PTYQ-E6X9-4AXQUIS6X6QE",
+    null
+  ],
+  [
+    "DQWJ368P-313A-LW2H-EQ2U-9O4KECPHQW2N",
+    null
+  ],
+  [
+    "T3BSLM0F-ZM3D-CA5T-TQMP-LAAFO9FMG1V4",
+    null
+  ],
+  [
+    "PN8DPGAR-0L74-809V-6IRT-GUKOP3K6J8V8",
+    null
+  ],
+  [
+    "1T7W69VM-WXPM-131A-CIWR-KP76CLNIQTKT",
+    null
+  ],
+  [
+    "9UC4ZOYJ-C7Z0-IF06-D3GB-7I0IGGJ071K7",
+    null
+  ],
+  [
+    "YV3XO5XA-9O39-O6NN-5XVA-VQO3A2NVQIU9",
+    null
+  ],
+  [
+    "MBWDXC13-Y1VJ-HQ0G-AUSG-657ZG63LNTWK",
+    null
+  ],
+  [
+    "GNYNTJBZ-ZGH3-2TFA-3U1E-71K21WZ867AZ",
+    null
+  ],
+  [
+    "MB5UJJIH-UHFS-7PN9-CGAT-HREWPNSQXNVA",
+    null
+  ],
+  [
+    "VXJ86JJG-RRAR-6M1Y-AL13-FXZSSYRDLVUZ",
+    null
+  ],
+  [
+    "ASKPRP8H-JKRH-4ROX-D83C-OA9BB9CZQUT0",
+    null
+  ],
+  [
+    "P70IELJA-WXFL-3504-WV0E-PEGXBVVOBASE",
+    null
+  ],
+  [
+    "T5T3YNTI-EA4J-PZYU-DL6K-FCIFTW8LKFGT",
+    null
+  ],
+  [
+    "PUZH60E2-M6ZA-8P0U-DIW2-S6KCJ4BRK98E",
+    null
+  ],
+  [
+    "2BP29CLM-6C24-1S4J-TKU9-ULRC2B07CGFI",
+    null
+  ],
+  [
+    "Z97JEKZ9-9KG0-D67H-9H6F-C0U1OXH1C73L",
+    null
+  ],
+  [
+    "5IMYW8YF-5SCI-BIVU-SER5-QP6KDHW6FO0G",
+    null
+  ],
+  [
+    "99L7DINI-C4XF-EC2I-RD1R-1UK51SJHYQ3G",
+    null
+  ],
+  [
+    "DSPRUCNJ-JVXZ-R0LF-SNGT-QC8V3N12L8ID",
+    "{@gname} <b:t>has {$addend}</b:t><b:obj count=\"{$addend}\"/><b:t>. If</b:t> {@bname}<b:t> gives</b:t> {@gname} <b:t> {$augend} more</b:t><b:obj count=\"{$augend}\"/><b:t>. How many</b:t><b:obj count=\"2\"/><b:t> will</b:t>{@gname}<b:t> have?</b:t>"
+  ],
+  [
+    "UCDS180C-QRF4-A41Y-61QA-FDBFF3HLUCFS",
+    null
+  ],
+  [
+    "4LVR88KF-QLG8-L3UA-J5O9-5H3G8XWWBU60",
+    null
+  ],
+  [
+    "LN25QVK1-1Y4R-ZST6-AEM6-F487ZCSPO9GV",
+    null
+  ],
+  [
+    "JUM5T5TB-KSKO-AWJR-9FAN-4935OS6P8VF3",
+    null
+  ],
+  [
+    "J709IAIH-6J27-GC08-NY3G-VGM5H9BRZCZ8",
+    null
+  ],
+  [
+    "WC4IGSH3-FBRE-H3MI-2ODD-KJ7WC44O2YRC",
+    "A takes B's goo."
+  ],
+  [
+    "4KNZ75F3-JIBZ-5GQ3-AR7W-6U9MNTGY5QD7",
+    null
+  ],
+  [
+    "1LZNMHYV-DZ3F-10UZ-AY07-ROKVKAEAO71A",
+    "A has less goo than B"
+  ],
+  [
+    "5LBLXUIW-RYQC-WTMO-H9MU-LM8DDG9FHRRU",
+    "Difference between A and B"
+  ],
+  [
+    "KZL4SK3J-S0KA-OBD4-D6KL-0UASBTF2VXDV",
+    "A and B's goo together"
+  ],
+  [
+    "21MA94PV-KRJW-S9C5-NS50-1XSGL1JOW6MT",
+    "A has less goo than B"
+  ],
+  [
+    "ZUDB98MQ-ATGK-JWZO-JE2E-3KJKOHY5POMY",
+    "Starting at {$y}, jump back {$x} in ones. "
+  ],
+  [
+    "SNLTI5SU-2BBF-4C0W-CYBX-LEKFEBTQO525",
+    "Starting at {$y}, jump back {$x} in ones. "
+  ],
+  [
+    "63J7UVIG-WUO1-PE7F-6T5Y-ST2CJ4R22S1Q",
+    "Starting at {$y}, jump back {$x} in ones. "
+  ],
+  [
+    "C6CE8NA2-PAB7-TOPT-43GU-2YN4E3REMGSY",
+    "Starting at {$y}, jump back {$x} in ones. "
+  ],
+  [
+    "YBZ53L6Z-Z6OU-UI72-NJNK-8MHEHRWIDXNN",
+    "Starting at {$y}, jump back {$x} in ones. "
+  ],
+  [
+    "M0I2V9NE-ONH4-YYJ1-QOV1-QLZPBT4VG3WW",
+    "Starting at {$y}, jump back {$x} in ones. "
+  ],
+  [
+    "DCHEWRZP-JG7P-9I9K-2ZPF-O3BKLDI1ARF2",
+    "<b:t>Here are {$y}</b:t><b:obj count=\"{$y}\"/><b:t>. Subtract {$x}</b:t><b:obj count=\"{$x}\"/><b:t>.</b:t>"
+  ],
+  [
+    "ZDDP4YEN-DSZ0-DD5P-YG6U-5QYC1WUT6TPV",
+    "<b:t>Here are {$y}</b:t><b:obj count=\"{$y}\"/><b:t>. Subtract {$x}</b:t><b:obj count=\"{$x}\"/><b:t>.</b:t>"
+  ],
+  [
+    "L6K35N7V-L840-9Z9N-B7HX-QRCS80K5SUZ4",
+    "Starting at {$y}, subtract {$x}. What is the number now?"
+  ],
+  [
+    "2UH5I542-OKYS-R0QP-XVJ1-543T1Q4YOABK",
+    "Starting at {$y}, subtract {$x}. What is the number now?"
+  ],
+  [
+    "68WCIG6M-T321-DQ0P-SK93-B2TK2RX0QG5H",
+    null
+  ],
+  [
+    "LB8E0JT5-2FDC-ZJX0-LY1V-JWK9KSBJ4PSQ",
+    null
+  ],
+  [
+    "7LH393NN-76IM-I7L9-ICFE-MODQKWWM5EY9",
+    null
+  ],
+  [
+    "HVP7ICSW-MIHP-57YP-1P7N-DZZWNM4TYD2O",
+    "Starting at {$x} ,  jump forwards {$y} in ones. "
+  ],
+  [
+    "9PMIYRY8-DZFW-JKUG-GSWP-7DTJU51L8EL1",
+    "Starting at {$x} ,  jump forwards {$y} in ones. "
+  ],
+  [
+    "GUUWWWBP-SP0G-M3DX-07JB-X8V0O00OYUQB",
+    "Starting at {$x} ,  jump forwards {$y} in ones. "
+  ],
+  [
+    "UTQPT903-D6AG-PE5T-1T8J-LLSQQ6GEM7Q7",
+    "Starting at {$x} ,  jump forwards {$y} in ones. "
+  ],
+  [
+    "MYL95NAG-BREE-TSII-5DOU-MTU5D706WKZA",
+    "Starting at {$x} ,  jump forwards {$y} in ones. "
+  ],
+  [
+    "YKAK24QA-83UU-IF96-YQUH-27RVRJXH26TI",
+    "Starting at {$x} ,  jump forwards {$y} in ones. "
+  ],
+  [
+    "SO43WQ0P-MJ5O-M1YB-U3ZJ-66CYD6G5X958",
+    "<b:t>Here are {$x}</b:t><b:obj count=\"{$x}\"/><b:t>. Add {$y} more</b:t><b:obj count=\"{$y}\"/><b:t>.</b:t>"
+  ],
+  [
+    "Z3N80B3J-HE8D-64CN-ADCL-VOV0CK8C7HQC",
+    "<b:t>Here are {$x}</b:t><b:obj count=\"{$x}\"/><b:t>. Add {$y} more</b:t><b:obj count=\"{$y}\"/><b:t>.</b:t>"
+  ],
+  [
+    "2ZFAEBH1-7I1F-X3V4-UBWT-9EOM2G4QLUZC",
+    "What is {$x} + {$y}?"
+  ],
+  [
+    "Q9XO4MQX-KFS6-K58V-OJPA-3S4NL9PUSLOA",
+    "What is {$x} + {$y}?"
+  ],
+  [
+    "ZG00CQ06-ZEJN-45NI-LPRD-H7AGDFLIW80A",
+    null
+  ],
+  [
+    "LH4PJVRO-ZGKM-GS5V-JQLR-8DN243N6Q49H",
+    null
+  ],
+  [
+    "J5PLK34G-15OI-XDRP-HLV0-DD6I3EVSKN5X",
+    null
+  ],
+  [
+    "UH46SFMB-FCGI-SO0J-D4QI-6EJ7OK9NDTNU",
+    "<b:t>Share the</b:t><b:obj count=\"2\"/><b:t>fairly between</b:t> <b:oi tag=\"thing_3\"/> <b:t>and </b:t><b:oi tag=\"thing_1\"/><b:t>. Label each group with a person.</b:t>"
+  ],
+  [
+    "VX3GGP4R-EU5D-BY5O-M3M7-D9HW6S8XA0SO",
+    "<b:t>Share the</b:t><b:obj count=\"2\"/><b:t>fairly between</b:t> <b:oi tag=\"thing_3\"/> <b:t>and </b:t><b:oi tag=\"thing_1\"/><b:t>. Label each group with a person.</b:t>"
+  ],
+  [
+    "Y7CPQL1G-L6P8-DUOS-J5DE-AMI29K96VKWM",
+    "<b:t>Split the shaped</b:t><b:obj count=\"2\"/><b:t>equally into the 2 containers, so that</b:t> <b:oi tag=\"thing_3\"/> <b:t>and </b:t><b:oi tag=\"thing_1\"/><b:t>receive the same assortment of shaped</b:t><b:obj count=\"2\"/><b:t>.</b:t>"
+  ],
+  [
+    "D7U2FUT8-VD65-PCE8-XWEO-TCRV17JW4PFN",
+    "<b:t>Split the shaped</b:t><b:obj count=\"2\"/><b:t>equally into the 2 containers, so that</b:t> <b:oi tag=\"thing_3\"/> <b:t>and </b:t><b:oi tag=\"thing_1\"/><b:t>receive the same assortment of shaped</b:t><b:obj count=\"2\"/><b:t>.</b:t>"
+  ],
+  [
+    "FJ0GU8MF-6P13-3XV8-Z0SS-LPXDJL1YS1WZ",
+    "<b:t>Share the</b:t><b:obj count=\"2\"/><b:t>equally between</b:t> <b:oi tag=\"thing_3\"/> <b:t>and </b:t><b:oi tag=\"thing_1\"/><b:t>. Label each group.</b:t>"
+  ],
+  [
+    "221L85S1-6O5I-AQK7-BDT0-YUW9AZ2V99QM",
+    "<b:t>Share the</b:t><b:obj count=\"2\"/><b:t>equally between</b:t><b:oi tag=\"thing_3\"/> <b:t>and </b:t><b:oi tag=\"thing_1\"/><b:t>. Label each group.</b:t>"
+  ],
+  [
+    "C1ZBZLBS-BYEJ-903M-4N28-AWYSV1CESY6O",
+    "9/3"
+  ],
+  [
+    "TWAWD8W3-L5AA-UFMR-HMMY-4UJWXHXKRGZN",
+    "<b:t>Share {$var3}</b:t><b:obj count=\"2\"/><b:t>equally between 3</b:t><b:oi tag=\"thing_p\"/><b:t>.</b:t>"
+  ],
+  [
+    "X06QHCX8-C1J3-QKUA-P5JS-DE52S4IFDDO3",
+    "6/2"
+  ],
+  [
+    "YXRF65BP-4NJU-RUXV-IFXS-TC7NR44KUFPD",
+    "10/5"
+  ],
+  [
+    "CN9VPHC9-LS23-IGY4-WWNQ-LX3P6EAC279V",
+    "9/3"
+  ],
+  [
+    "U8Q55J3P-S2M3-PHSD-3IW6-AUNP9GT2XENS",
+    "28/4"
+  ],
+  [
+    "G3RF3EU8-B9QH-MSBU-TWLA-AFQV3JUNXV9O",
+    null
+  ],
+  [
+    "PG6T4MBU-QT9P-NRZ1-TACW-79MDHS1MQ9V0",
+    null
+  ],
+  [
+    "INDCVQ7M-020Z-8E6J-25WJ-7S42J5TJZXSE",
+    "<b:oi tag=\"thing_4\"/> <b:t>and</b:t> <b:oi tag=\"thing_1\"/> <b:t>share 6</b:t><b:obj count=\"2\"/><b:t>fairly. Show that they get 3 each and label each group. </b:t>"
+  ],
+  [
+    "U42GUGLS-5HXT-GPDY-4JI6-SJZNNJB1ZMPM",
+    "<b:t>10</b:t><b:obj count=\"2\"/><b:t>are split equally between</b:t><b:oi tag=\"thing_1\"/><b:t>and</b:t><b:oi tag=\"thing_3\"/> <b:t>. Show that they get 5 each and label each group.</b:t>"
+  ],
+  [
+    "B6EM5CMM-3B1D-N6SM-QHXN-073MKBMH8O1B",
+    "<b:t>8</b:t><b:obj count=\"2\"/><b:t>are shared between 4 </b:t><b:oi tag=\"thing_p\"/><b:t>. Show that each</b:t><b:oi tag=\"thing_s\"/><b:t>receive 2.</b:t>"
+  ],
+  [
+    "LID2Y8V3-CGG0-I09K-3O7W-KQMRRHNTDVVK",
+    "<b:oi tag=\"thing_5\"/><b:t>,</b:t> <b:oi tag=\"thing_2\"/> <b:t>and</b:t> <b:oi tag=\"thing_3\"/> <b:t>share 9</b:t><b:obj count=\"2\"/><b:t>equally. Share the</b:t><b:obj count=\"2\"/><b:t>and label each group.</b:t>"
+  ],
+  [
+    "99PXN1B7-L1GI-0TGH-ZI63-SC0RLKPA89IP",
+    "<b:t>8</b:t><b:obj count=\"2\"/><b:t>are shared equally between</b:t> <b:oi tag=\"thing_1\"/> <b:t>and</b:t> <b:oi tag=\"thing_4\"/><b:t>. How many does </b:t><b:oi tag=\"thing_1\"/><b:t> get compared to </b:t><b:oi tag=\"thing_4\"/><b:t>?</b:t>"
+  ],
+  [
+    "VGQW09MH-IKHN-SHEL-9BZ6-PCLFOCX5C95C",
+    "10 goo are shared equally between 5 people. How many does each person get?"
+  ],
+  [
+    "ET41G9QQ-S0DM-HX77-0T2S-N6IKODXGD7O3",
+    "9 {@item} are split equally between Sophie, Emily and Kate. Who gets the least?"
+  ],
+  [
+    "F7XSJ2LL-87YJ-L3C5-E865-XWNYYWLS1HAT",
+    "12 {@item} are shared fairly between Sarah, Jo and Nick. Who gets the least?"
+  ],
+  [
+    "Z8WAREXX-JNK9-7XA3-RLFK-RZEUU6T0SMJL",
+    "<b:t>{@split} 8</b:t><b:obj count=\"8\"/><b:t>into 4 groups.</b:t>"
+  ],
+  [
+    "XTH9OSBC-9PIH-VC4X-IEZ2-XHXJN6S9VYT7",
+    "<b:t>{@split} 6</b:t><b:obj count=\"6\"/><b:t>into 2 groups.</b:t>"
+  ],
+  [
+    "HQF2DN47-QMU4-6XGI-QKBG-YX4TF2EW8DHQ",
+    "<b:t>{@split} 6</b:t><b:obj count=\"6\"/><b:t>into 3 groups.</b:t>"
+  ],
+  [
+    "QXYNU9WY-UAIT-RYHL-RQNA-IE73EY526KB0",
+    "dt_8_2"
+  ],
+  [
+    "FQY9E6O6-JLEI-M8L4-8GPC-027NFVFBP2B8",
+    "<b:t>{@split} 10 </b:t><b:obj count=\"10\"/><b:t>into 2 groups.</b:t>"
+  ],
+  [
+    "CP15HAPE-NJ4B-1RWG-OFCW-IFLZEBQJY6ZP",
+    "<b:t>{$a}</b:t><b:obj count=\"9\"/><b:t> are {@split} into 3 groups. How many</b:t><b:obj count=\"2\"/><b:t>are in each group?</b:t>"
+  ],
+  [
+    "UFI5VP2Z-2X0F-2B2K-R4FK-A9MKWW8GGQ8N",
+    "<b:t>24 </b:t><b:obj count=\"24\"/><b:t>are {@split} equally into 3 groups. Are there any left?</b:t>"
+  ],
+  [
+    "SGU2M0H9-QHT4-M5FF-W90K-GJ3E5Q6OYTGL",
+    "<b:t>24</b:t> <b:obj count=\"24\"/><b:t>are {@split} equally into 5 groups. Are there any left?</b:t>"
+  ],
+  [
+    "XSYYWMA0-9XZJ-1U4L-WARG-P08OI0FHQBHX",
+    "<b:t>24</b:t><b:obj count=\"24\"/><b:t>are {@split} equally into 7 groups. Are there any left?</b:t>"
+  ],
+  [
+    "A98IL8C2-M200-0O13-9DOA-894KRM6D0NDB",
+    "<b:t>20</b:t><b:obj count=\"24\"/><b:t>are {@split} equally into 5 groups. Are there any left?</b:t>"
+  ],
+  [
+    "T9NN6UU3-QJ2Z-98IM-SAZ5-OTS08J32UGCJ",
+    "<b:t>20</b:t><b:obj count=\"24\"/><b:t>are {@split} equally into 6 groups. Are there any left?</b:t>"
+  ],
+  [
+    "6J5UOR57-01WK-YOZ1-277A-JMV8OHETFLYE",
+    "<b:t>3</b:t><b:obj count=\"3\"/><b:t>are shared equally between some</b:t><b:oi tag=\"thing_p\"/><b:t>. Each</b:t><b:oi tag=\"thing_s\"/><b:t>gets 1 </b:t><b:obj/><b:t>. Show that 3</b:t><b:oi tag=\"thing_p\"/><b:t>shared the</b:t><b:obj count=\"2\"/><b:t>.</b:t> "
+  ],
+  [
+    "49J5LRC3-T2F8-ZQHS-XQGW-RNH5269XSC16",
+    "<b:t>{$no}</b:t><b:obj count=\"{$no}\"/><b:t>are shared equally between some</b:t><b:oi tag=\"thing_p\"/><b:t>. Each</b:t><b:oi tag=\"thing_s\"/><b:t>gets 2</b:t><b:obj count=\"2\"/><b:t>. How many</b:t><b:oi tag=\"thing_p\"/><b:t>are there?</b:t>"
+  ],
+  [
+    "WM6KW1L8-9Q2R-HMZP-FZUW-EGZWCR4SCAO2",
+    "<b:t>12</b:t><b:obj count=\"12\"/><b:t> are split equally between some containers. One container has 3. How many containers are there?</b:t>"
+  ],
+  [
+    "48M6TRHW-IB1S-L9VY-ZNKV-Z5YSI5R1OYKP",
+    "<b:t>18</b:t><b:obj count=\"18\"/><b:t> are shared equally between some containers. One container has 3. How many containers are there?</b:t>"
+  ],
+  [
+    "EHVK9H1G-KERO-GNYQ-2M4U-2LVREG612TMF",
+    "<b:t>12</b:t><b:obj count=\"12\"/><b:t>are shared equally between some containers. One container gets 2. How many containers are there?</b:t>"
+  ],
+  [
+    "EWRWUIL7-IYK4-MY0J-T79L-SVVZBIF21KP6",
+    "<b:t>12</b:t><b:obj count=\"12\"/><b:t>are divided equally between some</b:t><b:oi tag=\"thing_p\"/><b:t>. Each</b:t><b:oi tag=\"thing_s\"/><b:t>gets 3</b:t><b:obj count=\"2\"/><b:t>. Show that there are 4</b:t><b:oi tag=\"thing_p\"/><b:t> sharing the</b:t><b:obj count=\"2\"/><b:t>.</b:t>"
+  ],
+  [
+    "56QMIJ2N-13OW-RFFS-S6IH-3TW2DW42Y4SU",
+    "<b:t>A bag of 14</b:t><b:obj count=\"14\"/><b:t>is divided equally between some</b:t><b:oi tag=\"thing_p\"/><b:t>. Each</b:t><b:oi tag=\"thing_s\"/><b:t>receives 7</b:t><b:obj count=\"2\"/><b:t>, show that there are 2</b:t><b:oi tag=\"thing_p\"/><b:t>.</b:t>"
+  ],
+  [
+    "0AIDBY3Z-WKUG-TVQU-VB3A-J3CUPQV49Y75",
+    "<b:t>A bag of {$no}</b:t><b:obj count=\"{$no}\"/><b:t>is divided equally between some</b:t><b:oi tag=\"thing_p\"/><b:t>. Each</b:t><b:oi tag=\"thing_s\"/><b:t>receives 2</b:t><b:obj count=\"2\"/><b:t>. How many</b:t><b:oi tag=\"thing_p\"/><b:t>are there?</b:t>"
+  ],
+  [
+    "8A2INM8G-QMQW-E1FO-JMX4-PC5YFT0JL26Q",
+    "<b:t>A bag of {$no}</b:t><b:obj count=\"{$no}\"/><b:t>is divided equally between some</b:t><b:oi tag=\"thing_p\"/><b:t>. Each</b:t><b:oi tag=\"thing_s\"/><b:t>receives 3</b:t><b:obj count=\"3\"/>. How many</b:t><b:oi tag=\"thing_p\"/><b:t>are there?</b:t>"
+  ],
+  [
+    "OA2FKC3Y-XF2G-BOMM-0RNE-FJN87LDYNVLA",
+    "<b:t>{$no}<b:t><b:obj count=\"{$no}\"/><b:t>are {@split} between some</b:t><b:oi tag=\"thing_p\"/><b:t>. They each</b:t><b:oi tag=\"thing_s\"/><b:t>receive 5</b:t><b:obj count=\"{$no}\"/><b:t>. How many</b:t><b:oi tag=\"thing_p\"/><b:t>are there?</b:t>"
+  ],
+  [
+    "K8YVS1AR-YS33-N5HX-4BNS-ZHPN6HNX3E5G",
+    "<b:t>{$no}</b:t><b:obj count=\"{$no}\"/><b:t>are {@split} between some</b:t><b:oi tag=\"thing_p\"/><b:t>. They each</b:t><b:oi tag=\"thing_s\"/><b:t>receives 6</b:t><b:obj count=\"{$no}\"/><b:t>. How many</b:t><b:oi tag=\"thing_p\"/><b:t>are there?</b:t>"
+  ],
+  [
+    "4YEORPNR-SYQB-EU59-W9TT-FYIDLYAIO5XG",
+    "Add {$x}</b:t> <b:oi tag=\"30_pv_block_p\"/> <b:t> to {$y} to make {$z}. "
+  ],
+  [
+    "YOHVM0C5-QL56-VVQX-48BU-9EJQDHASI57F",
+    "Add </b:t> <b:oi tag=\"30_pv_block_p\"/> <b:t> to {$y} to make {$z}. "
+  ],
+  [
+    "GEFA2XR0-SCID-GG8R-L8ZP-D5DBA12AG2QU",
+    "Add </b:t> <b:oi tag=\"30_pv_block_p\"/> <b:t> to {$y} to make {$z}."
+  ],
+  [
+    "T84MS6JX-57TN-RYCM-654T-B2ATZ7C6K6U0",
+    "How many ones are added to {$y} to make {$z}?"
+  ],
+  [
+    "9QCX77KA-LBU9-FYG7-PMUG-6FDG9YSDW475",
+    "How many ones are added to {$y} to make {$z}?"
+  ],
+  [
+    "H62O9ZXY-03FV-BPII-E927-VC4Y8JIJULZ7",
+    "<b:t>Add more</b:t><b:obj count=\"2\"/><b:t>to {$x} to make {$z}.</b:t> "
+  ],
+  [
+    "EDZRCENI-YEFK-3KYQ-J466-1USJZ3VTXFNL",
+    "<b:t>Add more</b:t><b:obj count=\"2\"/><b:t>to {$x} to make {$z}.</b:t> "
+  ],
+  [
+    "Q4L5ELNM-STXY-FEYW-QG3K-QMTCUOPSBNT7",
+    "How many ones are added to {$x} to make {$z}?"
+  ],
+  [
+    "7KQQX8IA-PZKR-RVQ8-EBGY-XGLFQHTMZJMG",
+    "How many ones are added to {$x} to make {$z}?"
+  ],
+  [
+    "Q9DL6QB7-36P8-1K4R-8X5A-KK4VMFY9SIYP",
+    null
+  ],
+  [
+    "CTUYXBGK-TC6G-5S7F-J9VP-SYY86RFQUYQI",
+    "Add 2 groups of 3 to make 9."
+  ],
+  [
+    "NZT4CW29-VY4P-3O16-LY2P-8I4B570BOGBV",
+    "Add 2 groups of 4 together to make 8."
+  ],
+  [
+    "U9G5P1KC-9A9R-J7YC-43SG-SOVK2RQ60TBP",
+    "Add 2 groups of 5 to make 15."
+  ],
+  [
+    "0241RJQC-S2C1-FWC9-NLVQ-KY9XH1Y7M9H9",
+    "Add groups of {$w} together to make {$y*$w}."
+  ],
+  [
+    "DHRWKLM2-88YP-1YLW-OPNZ-TS3KR2161H3A",
+    "Add groups of {$w} to make {$y*$w}."
+  ],
+  [
+    "YE1B6U7P-MGCF-WLUA-U4I1-BCJOPT0OS9BH",
+    "Add groups of {$x} to make {$y*$x}."
+  ],
+  [
+    "4LNAASN2-EAFD-WFHR-JKWU-TKFYIU45N4WT",
+    "Add groups of {$h} to make {$y*$h}."
+  ],
+  [
+    "NOP6SY3A-GIG8-Y44W-U3WF-JW8RR4S8AN5M",
+    "How many groups of 7 are added to make 21?"
+  ],
+  [
+    "E15ZLGIV-VH9C-N2QH-B31J-RA1MLN8733F6",
+    "How many groups of 3 are added together to make 12?"
+  ],
+  [
+    "CE1I73S7-N9J9-O61C-8R3K-87D4ZMVTV2W5",
+    "How many groups of 2 are added together to make 14?"
+  ],
+  [
+    "GA7063MH-IE9L-OU0X-HQ7G-OGJBVO64MJ9D",
+    "How many groups of 3 are added to make 18?"
+  ],
+  [
+    "9G1U1XPA-YLHN-E56V-OSXA-NEUT59QP9PLV",
+    null
+  ],
+  [
+    "AGXLU0F1-VR8H-M7YL-I9ZV-QD7YIZ72D9Y7",
+    "Take {$x} away from {$y} to make {$z}."
+  ],
+  [
+    "W5GWO61K-M2Y7-R4RF-U3RS-OTFWKFB8KH4J",
+    "{@subtract} {$x} from {$y} to make {$z}."
+  ],
+  [
+    "R71TZ1QT-4UJT-SI6F-IUGR-2V3977UWSWS7",
+    "Show that {$y} - {$x} = {$z}"
+  ],
+  [
+    "QES1FQCR-AN3A-HHH8-ACL7-XKXBH7HPX6CE",
+    "Show that {$y} - {$x} = {$z}"
+  ],
+  [
+    "UXVZNM68-77L7-O3XO-TDKI-4KG6JPJTP9TY",
+    "Subtract 4 from 12 to make 8."
+  ],
+  [
+    "TZOO2EEP-SKA7-3Z8J-IE5C-G6JFLQCLHN9G",
+    "{@subtract} {$x} from {$z} to make {$y}."
+  ],
+  [
+    "1PTLFZKE-M2N0-76AV-ML7L-J0EGDW3FPNHM",
+    "Show that 14 - 9 = 5."
+  ],
+  [
+    "WM7I0VOU-IJ1S-8M3O-9IAY-PD7QJKSSEEWI",
+    "Take away {$x} from {$y} to make {$z}."
+  ],
+  [
+    "2ANNY6JP-SAKB-V7OH-8R0T-0DVIBYT2AEFL",
+    "{@subtract} {$x} from {$y} to make {$z}."
+  ],
+  [
+    "6L04VM1P-YQKQ-S3NF-ZK94-V72XQOXKKTRU",
+    "Show that 18 - 7 = 11."
+  ],
+  [
+    "1UA89LVH-2T40-R3VO-1YJJ-QCQ20XOZ9DXQ",
+    "Show that 16 - 10 = 6."
+  ],
+  [
+    "HRVB7DTA-2Y0Y-7HVW-62O6-7K6LQIZFMHLM",
+    "<b:oi tag=\"thing_1\"/> <b:t>has 16</b:t><b:obj count=\"15\"/><b:oi tag=\"thing_1\"/> <b:t>gives away 4 of them. How many does</b:t><b:oi tag=\"thing_1\"/><b:t>have now?</b:t>"
+  ],
+  [
+    "J3RFRFYG-0960-OAYE-OZ4B-W1HF8STSZZ6H",
+    "<b:oi tag=\"thing_3\"/> <b:t>has 13</b:t> <b:obj count=\"13\"/><b:oi tag=\"thing_3\"/><b:t> gives away 5 of them. How many does </b:t><b:oi tag=\"thing_3\"/><b:t> have now?</b:t>"
+  ],
+  [
+    "EFO3Y1OY-LXDX-TUJ3-CHFO-QCIJNV3CVDEE",
+    null
+  ],
+  [
+    "N3FKU34M-W98D-II5E-GA5S-6WYW16U9EVT8",
+    "<b:t>Take</b:t> <b:oi tag=\"30_pv_block\"/> <b:t>away from 8 to leave 3</b:t> <b:oi tag=\"30_pv_block\"/> <b:t>.</b:t>"
+  ],
+  [
+    "SS4AC5R6-OZYJ-R430-JN3C-PPW0MJXZCTWB",
+    "<b:t>Subtract</b:t> <b:oi tag=\"30_pv_block\"/> <b:t>from {$x} to leave {$y}</b:t> <b:oi tag=\"30_pv_block\"/> <b:t>.</b:t>"
+  ],
+  [
+    "9ELKYVQ0-E98G-X7KT-YYZR-5FB9YETIFZ3I",
+    "Start at 8, and count back to 3."
+  ],
+  [
+    "MMUOMT30-VM1O-PB7S-BDTR-4KU3DUZKO89U",
+    "Start at {$x}.How many ones do you need to subtract to get {$y}?"
+  ],
+  [
+    "IQXKLFAI-CETJ-ANSO-NU9K-8TDW7MN0UAIM",
+    "<b:oi tag=\"thing_3\"/> <b:t>had {$x}</b:t><b:obj count=\"{$x}\"/><b:t>. </b:t><b:oi tag=\"thing_3\"/><b:t> gave some to </b:t><b:oi tag=\"thing_4\"/><b:t>, now </b:t><b:oi tag=\"thing_3\"/><b:t> has {$y}</b:t><b:obj count=\"{$y}\"/><b:t>. How many were given away?</b:t>"
+  ],
+  [
+    "7R9FXVWZ-QE3B-PVZ5-4WRV-RIC7AGKZNN2K",
+    "<b:oi tag=\"thing_1\"/> <b:t>has {$x} </b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>and </b:t><b:oi tag=\"thing_3\"/> <b:t>has {$y} </b:t><b:oi tag=\"30_DT_Shape_Diamond\"/><b:t>.</b:t><b:oi tag=\"thing_1\"/><b:t> gives some</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>to</b:t><b:oi tag=\"thing_3\"/><b:t>, and is left with {$z} </b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>. How many</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>were given away?</b:t>"
+  ],
+  [
+    "6XWFB0Q0-CY99-5WY6-J4IO-VCHF67NSBEUA",
+    null
+  ],
+  [
+    "10JQ82MN-Z057-HF5N-0NB0-EMPAS23CBTDX",
+    null
+  ],
+  [
+    "BHT2SBOI-F3GV-0TNT-5SGQ-CJGW4CBUM2MV",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>is standing on this line.</b:t><b:oi tag=\"{@thing_1}\"/> <b:t>takes {$y} steps forward from his position and lands on {$z}. What number did</b:t><b:oi tag=\"{@thing_1}\"/><b:t>start on?</b:t>"
+  ],
+  [
+    "4STBASYJ-BDLH-BB86-K5QA-KOR27OVJ30ZY",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>has some</b:t><b:obj count=\"2\"/><b:t>. He gives {$x}</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>to</b:t><b:oi tag=\"{@thing_2}\"/> <b:t>.</b:t><b:oi tag=\"{@thing_1}\"/><b:t>now has {$y}</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>altogether. How many</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>did</b:t><b:oi tag=\"{@thing_2}\"/> <b:t>have {@first}?</b:t>"
+  ],
+  [
+    "EPENI451-Z3VG-NGF0-H2DA-QB9NR79JKNMX",
+    null
+  ],
+  [
+    "Q2RCQTGL-V7R7-YNX1-UW6U-1IC8N2UK3WHD",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>thinks of a number.</b:t><b:oi tag=\"{@thing_1}\"/><b:t>subtracts 5 from the number and gets 3. What number was</b:t><b:oi tag=\"{@thing_1}\"/><b:t>thinking of?</b:t>"
+  ],
+  [
+    "X9YQC672-FRKE-D389-JLJ1-WNPW2QVRUPS8",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>thinks of a number.</b:t><b:oi tag=\"{@thing_1}\"/><b:t>subtracts 6 from the number and gets 14. What number was</b:t><b:oi tag=\"{@thing_1}\"/><b:t>thinking of?</b:t>"
+  ],
+  [
+    "IHFRIQQ1-17N0-4F6Y-H0RD-IM11DQSC18Q6",
+    "Complete the statement."
+  ],
+  [
+    "GJ94ADW4-NW19-4EC5-LASU-7K4I4JI4T3CO",
+    "Complete the statement."
+  ],
+  [
+    "QLE6N3BL-I55J-0CEI-BRI8-1CFIW1WXXXN8",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>thinks of a number.</b:t><b:oi tag=\"{@thing_1}\"/><b:t>subtracts {$x} from the number and gets 7. What number was</b:t><b:oi tag=\"{@thing_1}\"/><b:t>thinking of?</b:t>"
+  ],
+  [
+    "O3TTLJ6G-FOIW-JEO0-Y2YY-NJKNN3MUCUJ2",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>has 3</b:t><b:obj count=\"2\"/><b:t>to begin with. </b:t><b:oi tag=\"{@thing_1}\"/> <b:t>is then given some more, and now has 4. Add</b:t><b:obj count=\"2\"/><b:t>to the </b:t><b:oi tag=\"30_pv_grid\"/><b:t>and show that</b:t> <b:oi tag=\"{@thing_1}\"/> <b:t>was given 1</b:t><b:obj/><b:t>. </b:t>"
+  ],
+  [
+    "CAOG2X6L-3Q4G-5A9Y-DGTM-GS1IXL6BQ43V",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>has 2</b:t><b:obj count=\"2\"/><b:t>and is given some more. </b:t><b:oi tag=\"{@thing_1}\"/> <b:t>now has 5. Add</b:t><b:obj count=\"2\"/><b:t>to the</b:t><b:oi tag=\"30_pv_grid\"/><b:t> and show that </b:t><b:oi tag=\"{@thing_1}\"/> <b:t>was given 3</b:t><b:obj count=\"2\"/><b:t>. </b:t>"
+  ],
+  [
+    "6SC5IZ2M-NCGX-IUKI-Z04A-YZQFCMOHZL0C",
+    "<b:oi tag=\"{@thing_1}\"/><b:t> has 5</b:t><b:obj count=\"2\"/><b:t>and is given some more. </b:t><b:oi tag=\"{@thing_1}\"/> <b:t>now has 13. Add</b:t><b:obj count=\"2\"/><b:t>to the</b:t><b:oi tag=\"30_pv_grid\"/><b:t> and show that </b:t><b:oi tag=\"{@thing_1}\"/> <b:t>was given 8</b:t><b:obj count=\"2\"/><b:t>.</b:t> "
+  ],
+  [
+    "KEWTX52L-X8EO-XMS2-PQT3-1Q6RC0HK3KR3",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>has 14</b:t><b:obj count=\"2\"/><b:t>and is given some more.</b:t> <b:oi tag=\"{@thing_1}\"/> <b:t>now has 19. Add</b:t><b:obj count=\"2\"/><b:t>to the</b:t><b:oi tag=\"30_pv_grid\"/><b:t> and show that </b:t><b:oi tag=\"{@thing_1}\"/> <b:t>was given 5</b:t><b:obj count=\"2\"/><b:t>. </b:t>"
+  ],
+  [
+    "XC1SRD7A-AF3B-758T-GNR4-BVZAH3OZ7H19",
+    "<b:oi tag=\"{@thing_1}\"/><b:t>has 1<b:t><b:obj/></b:t>and is given some more.</b:t><b:oi tag=\"{@thing_1}\"/><b:t> now has 7. How many<b:t><b:obj count=\"2\"/></b:t>was </b:t><b:oi tag=\"{@thing_1}\"/><b:t> given?</b:t>"
+  ],
+  [
+    "9U97T389-QA45-3B29-05L8-XY0FPTDGM1TZ",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>has 5 goo and is given some more. </b:t><b:oi tag=\"{@thing_1}\"/><b:t> now has 9. How many goo was </b:t><b:oi tag=\"{@thing_1}\"/><b:t> given?</b:t>"
+  ],
+  [
+    "OASP45LU-R5HK-VW5C-08X1-8Z1DCEKM4JYU",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>has 2 goo and is given some more. </b:t><b:oi tag=\"{@thing_1}\"/> <b:t>now has 9. How many goo was </b:t><b:oi tag=\"{@thing_1}\"/><b:t> given?</b:t>"
+  ],
+  [
+    "FD8U5JQK-PECM-7BXO-0SVE-GXBHKOZ29ZJ2",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>has 9<b:t><b:obj count=\"2\"/></b:t>and is given some more. </b:t><b:oi tag=\"{@thing_1}\"/> <b:t>now has 11. How many<b:t><b:obj count=\"2\"/></b:t>was </b:t><b:oi tag=\"{@thing_1}\"/><b:t> given?</b:t>"
+  ],
+  [
+    "UN9A132R-IFAB-GQ23-UDNE-76EMTJDNCGL3",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>has 11 goo and is given some more. </b:t><b:oi tag=\"{@thing_1}\"/> <b:t>now has 14. How many goo was </b:t><b:oi tag=\"{@thing_1}\"/> <b:t>given?</b:t>"
+  ],
+  [
+    "G69KHGUV-2TKP-CD5H-X0MH-TJAGPCTO1LNE",
+    "Complete the statement."
+  ],
+  [
+    "0U1MBGR2-IGUP-D6Y9-GOJW-F84L1GFUECJ0",
+    null
+  ],
+  [
+    "RRJU9XIQ-BLCK-W5VT-NFL2-IM2TEDZT5LW3",
+    null
+  ],
+  [
+    "O7C1FNXM-JASK-1UBP-ES9T-IRK5LBXZA498",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>is standing on this line.</b:t><b:oi tag=\"{@thing_1}\"/> <b:t>adds 3 and lands on 7. What number does</b:t><b:oi tag=\"{@thing_1}\"/><b:t>start on?</b:t>"
+  ],
+  [
+    "J4WO64C3-AZVN-HPG4-4Q8J-ZZW53C2SRV8O",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>is standing on this line.</b:t><b:oi tag=\"{@thing_1}\"/> <b:t>adds 6 and lands on 9. What number does</b:t><b:oi tag=\"{@thing_1}\"/><b:t>start on?</b:t>"
+  ],
+  [
+    "M73TYU4Y-159U-TPOO-SFI6-3Z95W3FWCLP5",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>is standing on this line.</b:t><b:oi tag=\"{@thing_1}\"/> <b:t>adds 7 and lands on 8. What number does</b:t><b:oi tag=\"{@thing_1}\"/><b:t>start on?</b:t>"
+  ],
+  [
+    "A4IL2M51-238N-0PAR-0VZF-J5Z8KJECC2FQ",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>has some</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>. </b:t><b:oi tag=\"{@thing_2}\"/> <b:t>gives </b:t><b:oi tag=\"{@thing_1}\"/><b:t>5</b:t><b:oi tag=\"30_DT_Shape_Circle\"/> <b:t>.</b:t><b:oi tag=\"{@thing_1}\"/><b:t>now has 7</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>. How many did </b:t><b:oi tag=\"{@thing_1}\"/><b:t> have {@first}?</b:t>"
+  ],
+  [
+    "HPMLYUA4-YJRC-Q99A-JZMA-L0D5DLNJ0LLD",
+    null
+  ],
+  [
+    "E6AQTV8B-L4P7-9OPZ-VFV6-LPUKGVSH14M6",
+    "<b:oi tag=\"{@thing_1}\"/><b:t>thinks of a number.</b:t><b:oi tag=\"{@thing_1}\"/><b:t>adds {$x} to the number and gets {$z}. What number was</b:t><b:oi tag=\"{@thing_1}\"/><b:t>thinking of?</b:t>"
+  ],
+  [
+    "MMXOI104-RWU8-XK0Y-9RJJ-4R0TRAVZH9RS",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>thinks of a number.</b:t><b:oi tag=\"{@thing_1}\"/><b:t>adds 6 to the number and gets 14. What number was</b:t><b:oi tag=\"{@thing_1}\"/><b:t>thinking of?</b:t>"
+  ],
+  [
+    "HV9AHIAZ-EW31-LJL4-96Y5-BDN1JY5GPFWT",
+    "Complete the statement."
+  ],
+  [
+    "DOJW1BG5-VTOP-4CKZ-L8KI-U2WPEUZ3VFKF",
+    "Complete the statement."
+  ],
+  [
+    "ODOIDYL2-LLG0-3LX1-3SZL-B0X67GNUEORT",
+    "<b:oi tag=\"{@thing_1}\"/> <b:t>thinks of a number.</b:t><b:oi tag=\"{@thing_1}\"/><b:t>adds {$x} to the number and gets 17. What number was</b:t><b:oi tag=\"{@thing_1}\"/><b:t>thinking of?</b:t>"
+  ],
+  [
+    "7JT1LSRQ-1KNI-SMKV-2OV9-84OG6QM7L1QR",
+    "Show that {$a} - {$b} = {$z}."
+  ],
+  [
+    "O5LMC96Y-OX6Z-Y5VV-3YZ6-MRECT8S1IRI2",
+    "What number can be added to {$b} to make {$a}?"
+  ],
+  [
+    "Q3WXBFNC-DOGL-H1KC-LLOC-RIBJRXMIKUC5",
+    "Show that {$c} - {$d} = {$z}."
+  ],
+  [
+    "CGXXIRBR-J24R-4AHV-G94S-M0NGZMTO1CKY",
+    "What number can be added to {$d} to make {$c}?"
+  ],
+  [
+    "UYGL74N5-Z16C-JJOT-JYJV-SITTC7XC5672",
+    "Show that {$e} - {$f} = {$z}."
+  ],
+  [
+    "E479SUDI-PEUC-QFKA-2TNG-HAL57JFFSL3P",
+    "What number can be added to {$f} to make {$e}?"
+  ],
+  [
+    "0AQKLXK6-64YA-8CAM-X2CF-T0S2NMNT0ULP",
+    "Show that {$x} - {$y} = {$z}."
+  ],
+  [
+    "DNWO7OG9-US8L-VNA8-LLG4-OY12IGW0SWOH",
+    "What number can be added to {$y} to make {$x}?"
+  ],
+  [
+    "MU26K9TO-0IJW-0768-FY3A-R4B7U57XI0MH",
+    null
+  ],
+  [
+    "V2V1FXPL-DRSX-JGT4-0RJN-FH7LG4QZPBJG",
+    null
+  ],
+  [
+    "JQA2JVM3-TCB5-IC5V-23DE-L21UFF1QSDI9",
+    null
+  ],
+  [
+    "PSQZTD6H-FB3J-B6GD-LX3L-GWW89GLCRV6E",
+    "What is 2 x 8?"
+  ],
+  [
+    "UM6G48OZ-8C3Z-9E8Y-0WLC-E85X51H36V2J",
+    "What is 8 x 2?"
+  ],
+  [
+    "Y85KT5QU-MC1X-3ENI-IOS8-IMODGQ11XQQJ",
+    "What is 3 x 3?"
+  ],
+  [
+    "2NST2OCH-2CXH-TUTJ-OF36-OI7TGSG1ZGGR",
+    "What is 4 x 5?"
+  ],
+  [
+    "EGS7228X-TL72-JKGQ-SHIG-RVLUJIKBTHUA",
+    "What is 5 x 4?"
+  ],
+  [
+    "JVHV963V-OQCS-TBC3-ZUKZ-27EVZ1L8E6FX",
+    "What is 4 x 8?"
+  ],
+  [
+    "PPR1ULVY-QL1A-LLQI-59A4-DVWOPHNBQUR6",
+    "What is 8 x 4?"
+  ],
+  [
+    "M58TOASK-PKMY-CSOP-TONT-QXIKSWUCL598",
+    "Find solutions for 6 x 2 and 2 x 6. "
+  ],
+  [
+    "5XZBRU7Z-ZUO5-G3TC-SO6L-68NYOWJ4LBAP",
+    null
+  ],
+  [
+    "DM3G6PQQ-T6TT-BO89-3AO2-5KMV6C2ZKK3K",
+    "Find solutions for 7 x 3 and 3 x 7. "
+  ],
+  [
+    "SNB7ELQL-QYY7-XMGH-XVHM-ZU3QDGKDJBMA",
+    null
+  ],
+  [
+    "6HK1OI3U-AQ0G-218I-LA6N-XZ4P98T8KHR7",
+    "Find both solutions for 5 x 8."
+  ],
+  [
+    "HYR1R404-HDNT-P6NF-0EBH-GEECVPCE9CSX",
+    "Find both solutions for 7 x 4."
+  ],
+  [
+    "NLS2YEGS-EXZ8-PY2G-WLEQ-XWISJXV0ULGQ",
+    "Find both solutions for 6 x 9."
+  ],
+  [
+    "3VI7YEUC-KFL9-DZRK-KCMO-R2DVUWZP94O1",
+    "Find both solutions for 8 x 3."
+  ],
+  [
+    "TSNAZSZO-GOM8-OR6W-E5XS-2JOVD914G3AU",
+    "Find both solutions for 9 x 2."
+  ],
+  [
+    "XIP61P4V-TAE6-55U5-INKL-K67M2KLOQ5AZ",
+    "Find both solutions for 8 x 6."
+  ],
+  [
+    "EO6JP2WK-1J0I-196K-JNHJ-1A8HE2JDTFTN",
+    "What is 9 x 9?"
+  ],
+  [
+    "MUQWQL1R-8LHW-AH40-4PUZ-JXO5KKSOLZ41",
+    "Is the number 2 even or odd?"
+  ],
+  [
+    "8NSZCC8F-HGJZ-LGSV-VXTQ-SJ3VBTK96UYH",
+    "Is the number 3 even or odd?"
+  ],
+  [
+    "76H9OL0Z-WJDF-F9K0-BZBP-E9DJP46B3W91",
+    "Is the number 5 even or odd?"
+  ],
+  [
+    "M1RBZPPV-WPKS-STFB-UIZM-ZXVIFJXVSYBM",
+    "Is the number 4 even or odd?"
+  ],
+  [
+    "WY3YP1U7-VE12-HVK2-SG4R-F2TA2A9VY923",
+    "Is the number 11 even or odd?"
+  ],
+  [
+    "4XX4CWKF-2I89-JRVZ-1QFX-09O335NXDZ5D",
+    "Is the number 16 even or odd?"
+  ],
+  [
+    "FBZOSZTC-5MKG-O5VY-96IM-QEHOR4SMHAPE",
+    "Is the number 19 even or odd?"
+  ],
+  [
+    "A6GYAOBJ-0V3G-OB6Z-C1D1-SAHEFL0ZQBYR",
+    "Is the number 495 even or odd?"
+  ],
+  [
+    "P53WMJZU-KEO2-YZRZ-O8TY-YRCV37DKK6LR",
+    null
+  ],
+  [
+    "7PTUS9DF-YHDM-KO32-UTGG-OEH1O46U7PC8",
+    "<b:t>Is the total number of squares inside</b:t><b:oi tag=\"30_DG_sq\"/><b:t> even or odd?</b:t>"
+  ],
+  [
+    "IXA3X7W6-KMV8-9DNV-XH51-N5BQPSYOQBUL",
+    "<b:t>Is the total number of squares inside</b:t><b:oi tag=\"30_DG_sq\"/><b:t> even or odd?</b:t>"
+  ],
+  [
+    "LYNYT3UV-7QDY-2R78-OHNQ-1TSBLJHQIUUP",
+    "<b:t>5 is an odd number. Split the 5 </b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>into as many groups of 2 as you can.</b:t>"
+  ],
+  [
+    "GDOI2X1F-C79D-9XGE-M0VL-FKSI61D00W8I",
+    "Try splitting 7 into as many groups of 2 as possible. Is the number 7 even or odd?"
+  ],
+  [
+    "MH6ZTOSJ-8EVT-ZDJS-JO2L-RP84USDBZ2VU",
+    "Is the number 9 even or odd?"
+  ],
+  [
+    "4MNQXUYC-T4UN-0W76-U0B4-PI6H0OUJDVC4",
+    "3_odd"
+  ],
+  [
+    "PLDU5MQ3-2UVG-IKKO-T9NA-JN7R29T9EQCR",
+    "<b:t>4 is an even number. Split the 4</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t> into groups of 2.</b:t>"
+  ],
+  [
+    "3KUK52I0-K5JY-AGFI-CBYZ-F7BGXC8NGE9Z",
+    "Is 2 even or odd?"
+  ],
+  [
+    "L6HOBK08-GMTD-JM5N-1HZG-SB1PV8M5Y3H0",
+    null
+  ],
+  [
+    "6DA3826K-A2H1-O54J-WQHI-5GPE9PY3DYJI",
+    "Is the number 6 even or odd?"
+  ],
+  [
+    "LG2C7C3F-6DAD-3Y2H-3ZB0-CWB2TULMSIAX",
+    "Is the number 13 even or odd?"
+  ],
+  [
+    "4F1WVQFR-O9C0-S0U8-FDKC-DWLZRFJ97EI2",
+    null
+  ],
+  [
+    "VGB5JB5B-W639-EILE-GAUZ-1EZ6114383OP",
+    null
+  ],
+  [
+    "E0RCZ6EK-FT01-3CTL-LEFT-NU4SB623TBKX",
+    null
+  ],
+  [
+    "Y2T74XGT-ILUN-FHGS-ORGK-GEBC3ZX95FB0",
+    null
+  ],
+  [
+    "UVSW70IL-4S7P-RAMY-8OZM-HZ9YI7SLHA2N",
+    null
+  ],
+  [
+    "008GM8B1-OVT9-4IYA-16GQ-046H66JGZ4W4",
+    null
+  ],
+  [
+    "UE16B00V-VLYG-JQPO-3UK3-A2U7W6DBDBG9",
+    "<b:t>{@split} 6</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>between 3</b:t><b:oi tag=\"thing_p\"/><b:t>.</b:t>"
+  ],
+  [
+    "D9K0T858-1XZA-SU6P-I3MJ-BN3N0N9QQV2V",
+    "<b:t>{@split} 15</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>between 3</b:t><b:oi tag=\"thing_p\"/><b:t>.</b:t>"
+  ],
+  [
+    "U00EHKMU-XMYB-0FLG-SBXV-EIKFR8LJQB6E",
+    "<b:t>{@split} 18</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>between 3</b:t><b:oi tag=\"thing_1\"/><b:t>.</b:t>"
+  ],
+  [
+    "2ZZM9LNJ-BKKT-NB4U-3KGV-XIK1DH9EHCOA",
+    "<b:t>{@split} {$x} lots of</b:t><b:oi tag=\"30_DT_Shape_Circle\"/><b:t>{@even} between {$y}</b:t><b:oi tag=\"thing_3\"/><b:t>. How many does each</b:t><b:oi tag=\"thing_3\"/><b:t>receive?</b:t>"
+  ],
+  [
+    "Y2GOS26N-HWT7-HI7D-J2Z8-NIF88Z9MTKOU",
+    "What is {$x} divided by {$y}?"
+  ],
+  [
+    "BHHNU9K8-YQO7-MWXB-4S50-GUQ1V44F2DNC",
+    null
+  ],
+  [
+    "WUOVBMBP-BRC1-8ZCY-2YDD-3FAF5IIQBBHW",
+    null
+  ],
+  [
+    "C6OR1XVW-LXHG-6K78-KYL5-AC3YM738HKHB",
+    null
+  ],
+  [
+    "T8A5UFS4-2FVX-713X-8F1V-HEW7ECTEC6IL",
+    "Find both solutions to make 21. "
+  ],
+  [
+    "4RN7022Q-PS3V-5UF3-M594-ARI7J6Z92U7I",
+    "<b:t>21</b:t><b:obj count=\"21\"/><b:t>are shared equally between 3</b:t>{@bname}<b:t>. How many</b:t><b:obj count=\"35\"/><b:t>does each</b:t>{@bname}<b:t>receive?</b:t>"
+  ],
+  [
+    "M2L2FSXX-NOE2-DAL2-KEZI-9E58IO79Z4P1",
+    "How many 3s are there in 21?"
+  ],
+  [
+    "PNR0F0YG-59FX-GXLG-LP35-FG1HWU7IBKVO",
+    "Make {$x}. "
+  ],
+  [
+    "2YH44OVQ-R7US-Z73J-ODVI-AISDNA991JT1",
+    "Make 21. "
+  ],
+  [
+    "FP2DOWUP-BDMF-0CEC-T87M-I6R6F6916SCF",
+    "Find all solutions to make 24. "
+  ],
+  [
+    "G9EFMC2Z-8KV7-BDDO-WHKK-9JWAZWKU7DV0",
+    "How many 4s are there in 24?"
+  ],
+  [
+    "S8X98H59-YE0L-2XY1-ZMSU-H08KE5NGDTCK",
+    "<b:t>24 </b:t><b:obj count=\"56\"/><b:t> are shared equally between</b:t>{@bname}<b:t> and 5 brothers. How many </b:t><b:obj count=\"56\"/><b:t> does</b:t>{@bname}<b:t> receive?</b:t>"
+  ],
+  [
+    "YD5BV7XW-3FVR-TRWH-PR06-1OQTX785WDSE",
+    "Make {$x}. "
+  ],
+  [
+    "WQ0ARF80-L9N5-X2LU-J4IJ-6EYB478GUYUT",
+    "Make 24. "
+  ],
+  [
+    "NJE7Z60F-WUBY-09FE-4E9C-0EGZ93L2TGXZ",
+    "How many 3s are there in 18?"
+  ],
+  [
+    "70VUU8SS-DJIQ-ZEVW-0ZZD-YIESMQ719ACH",
+    "Find both solutions to make 21. "
+  ],
+  [
+    "AKDQVA4P-9JIH-I5P4-XRU5-SKE759DBA86B",
+    null
+  ],
+  [
+    "9P5D87PZ-Y6YD-SKVS-ULZD-86ARKJXW6PA0",
+    "Make {$x}. "
+  ],
+  [
+    "KZY3G6ST-OM03-G85V-G6LC-1I2V5ESJCORU",
+    "Make 18. "
+  ],
+  [
+    "7WKSMH3S-QHZG-B84C-E7IL-X8XQMKXAU9WG",
+    null
+  ],
+  [
+    "UC9AFI79-P5E1-0ORG-0CFM-AZCE1AORY5QD",
+    null
+  ],
+  [
+    "MAAC3MLH-5PD4-CO21-4F4G-NJ5F439RV6CS",
+    null
+  ],
+  [
+    "R32XPWNZ-H97N-QYPJ-3F6S-47RD0NSFPOFN",
+    "How many {$y}s are there in {$x}?"
+  ],
+  [
+    "DZEA3LKM-N63A-BNE4-KS6Q-JB6CBCJII5S4",
+    "Make {$x}. "
+  ],
+  [
+    "UQLHXCEI-HCTD-W1TC-8IVZ-SXH8TWN0IS1F",
+    "Make {$x}. "
+  ],
+  [
+    "MYWS0E93-ZGOL-FJZB-MNEK-VRURB6NEJALP",
+    "Make {$x}. "
+  ],
+  [
+    "G65VIYX1-N3D4-1ZJE-1PVR-YCPNUYY3X2BS",
+    "Make {$x}. "
+  ],
+  [
+    "P2B3ZPEQ-9QBF-HBNO-O3ZD-R941NAQB34TX",
+    "Make {$x}. "
+  ],
+  [
+    "F955J1MD-USKR-31ET-IHA5-Q6A7RKJ1WYI8",
+    "Make {$x}. "
+  ],
+  [
+    "AQOZFZMC-J8AD-DJOX-2D9P-Y0X8JBXV4MZH",
+    "What is {$x} divided by {$y} ?"
+  ],
+  [
+    "NWCV2SNG-OK7W-4KGA-M2DS-JE7FNW0ID6QU",
+    null
+  ],
+  [
+    "C15EH1IB-WMBO-X0CI-ZJZI-6Z7KF5NB2I10",
+    null
+  ],
+  [
+    "MRMQ7QBE-KOC4-LTCB-3XAY-3XOLM1RG7YSY",
+    null
+  ],
+  [
+    "UBX2T9NQ-WP4H-6AEU-EZ6T-RKD0QEULX51B",
+    null
+  ],
+  [
+    "ZC6W27FL-4UI2-EYTI-53UG-J5BJ3WGUKN0B",
+    null
+  ],
+  [
+    "ARZHKIA9-GUSI-CJ5V-UJOU-GZ1G4UKREE1J",
+    null
+  ],
+  [
+    "OJESEWN7-OENG-M9FM-O2WB-T9PB6R68KFC4",
+    null
+  ],
+  [
+    "LBO616U1-5UO4-IKY4-6XXY-4I6LFAF8Z30K",
+    null
+  ],
+  [
+    "8XSCQ0LT-BNNV-FE3X-W20R-S7RLLGB0Q52L",
+    null
+  ],
+  [
+    "VWK27UFU-ICEF-NDM2-Z86W-2DJ2Q0KXFV6W",
+    null
+  ],
+  [
+    "OQXTBTGU-EVXE-8IY7-Q5XE-IXVE2T31UNMW",
+    null
+  ],
+  [
+    "BCTX8CYW-A14B-CXTY-0CTA-EC7QVA0ODNQU",
+    null
+  ],
+  [
+    "T43PUM75-RQQ0-FQZZ-RTVL-Z6OP09H07CSF",
+    null
+  ],
+  [
+    "0EFAJDS3-6VXT-4NXI-E1ZA-0ULVEMCNXOER",
+    null
+  ],
+  [
+    "MHVC0UT8-PPVS-EQG5-M49L-NXDC64O5OGXE",
+    null
+  ],
+  [
+    "4TGGI293-66FA-7I3K-U5W0-CJVK61KWIDXG",
+    null
+  ],
+  [
+    "SOVN8ICC-Q8E3-23TV-SFX5-KAEEG1EJM4WI",
+    null
+  ],
+  [
+    "SFNR14LE-ZGBP-6C1J-5HAU-38C0DRWRSGEL",
+    null
+  ],
+  [
+    "GNLG5MKG-UYBA-JVUJ-DIX9-H51CKKLGQMQ9",
+    null
+  ],
+  [
+    "VHE4WT4K-H0JZ-96JJ-I5WE-EZROEAE0EX09",
+    null
+  ],
+  [
+    "TEI8I3VS-261I-8INJ-4IFR-TNBJG95CI89P",
+    null
+  ],
+  [
+    "FV4VM9LA-6N0N-XB6G-HE8E-4JUHOUKF69RG",
+    null
+  ],
+  [
+    "5VMGT64V-PYJ0-RGUM-ILXG-MYKPFP6HZZGG",
+    "Show that 10 + 3 = 3 + 10."
+  ],
+  [
+    "QBSLDQRC-5C9M-SJZE-L04F-IL1LVG41V75F",
+    "Show that 2 + 8 = 8 + 2."
+  ],
+  [
+    "2F7QWLTT-EBHO-II71-DJPI-HBX5YIJAZI7S",
+    "Show that {$augend} + {$addend} = {$addend} + {$augend}."
+  ],
+  [
+    "986AP2Q3-XS3B-YQZ2-3P2X-PSBJ57WVOZIP",
+    "Which of these is bigger?"
+  ],
+  [
+    "NB6QAQIK-YE0Z-GSG7-GIJE-ICLSTRHTWQ1H",
+    null
+  ],
+  [
+    "JL6GFQNS-UU07-JX5Z-QQX3-K7UNEO3NC8VW",
+    null
+  ],
+  [
+    "VINFS2EP-0VSR-T5A3-OUHQ-BV4VDXHN5NKN",
+    "Make 10."
+  ],
+  [
+    "I0Q85UYQ-00OG-VH0W-J9B5-SQKMAKI1LNON",
+    "Make 10."
+  ],
+  [
+    "OBSC1MRW-IX3C-U6R1-HM30-BXYJNM1UPPBZ",
+    "Make ten."
+  ],
+  [
+    "F14CDW34-T17X-KIYU-WEPB-EUVMXA1ATYHL",
+    "Make 10."
+  ],
+  [
+    "M6BMB5X5-0U33-HHC0-H5UH-D405L8K2JW2H",
+    "Make 10."
+  ],
+  [
+    "LWTADAGS-HY2X-VCOE-A6Y9-WTKJNUJ67YNP",
+    "Make 10."
+  ],
+  [
+    "RBXMZ5Q2-AFWC-WKYX-VTC6-3Q9E9OGOVHY1",
+    "Make 10."
+  ],
+  [
+    "VFGNO393-5835-RTMA-0O1X-F73UKTD3PG1D",
+    "<b:t>Starting with {$x}, make 10 by adding the correct</b:t> <b:oi tag=\"30_pv_block\" /><b:t>.</b:t>"
+  ],
+  [
+    "J2JZ83K4-LGL8-40G6-2DX1-6JYGPE3MFDLY",
+    "Make 10."
+  ],
+  [
+    "66PKZSZ3-ZTP0-VECG-L2IU-U2AKS8W9OTPW",
+    "<b:t>Starting with {$x}, make 10 by adding the correct</b:t> <b:oi tag=\"30_pv_block\"/><b:t>.</b:t>"
+  ],
+  [
+    "DO32ACW7-85R9-BVCX-R4VE-RI3U6TA6PCAC",
+    null
+  ],
+  [
+    "BLSE2LGI-L5PO-3S80-G2AY-YQ89SLOHT6DS",
+    "Show that 4 = 2 + 2."
+  ],
+  [
+    "LM2X2D7T-68XT-G7UP-9TIW-79Z1VXE1IR20",
+    "Show that 1 + 3 = 4"
+  ],
+  [
+    "B3FFTRBR-42DX-JF86-GT6B-VQM3ZZIV8M5Z",
+    "Find two different ways to make 5."
+  ],
+  [
+    "8TJXDJ0Y-XFD4-RBBT-5BOV-ERUKHKY04SJC",
+    "What is {$x} add {$y}?"
+  ],
+  [
+    "SYOC8GPR-SZ8D-JT7G-3U0H-CDH3CKK0R92T",
+    "Find three unique ways to make 7."
+  ],
+  [
+    "QQ8EEYLJ-NJUK-B5DI-T5PO-VZV7H2AH6KSU",
+    "Find four unique ways to make 8."
+  ],
+  [
+    "V8FQBHW7-050C-GPN1-4QAQ-T6HQ66A3GQ5U",
+    "Find four unique ways to make {$x}."
+  ],
+  [
+    "DLV4Z3FK-KRMD-Z5M1-SXU6-9JYU4C12HGLS",
+    "Find five unique ways that two numbers equal 10."
+  ],
+  [
+    "DV2BIJMS-OBQQ-65ZB-VVD7-MBHK50Q3EHRX",
+    "Make 11."
+  ],
+  [
+    "2VXM43VF-51XM-HD62-CTQP-7GQ6T9BZ7LX6",
+    "Make 11 in two ways."
+  ],
+  [
+    "BP1ID531-TS8Q-D6T7-T7IN-6VRDRXWO6MDI",
+    "Make 13 in two different ways."
+  ],
+  [
+    "1LBBWMZ3-NPF3-CXFV-IXBH-OGOKCNO3SSID",
+    null
+  ],
+  [
+    "3PPSQUQ8-5GUH-CDNK-LE8F-TFPI129KZZZH",
+    null
+  ],
+  [
+    "82WLM7YW-C4NA-Q2E7-1AF7-CBLNB714A3JX",
+    null
+  ],
+  [
+    "A7PJ2XCR-FMMO-WZUX-TZYA-Y5G0CZX2TWAQ",
+    null
+  ],
+  [
+    "80OMHOFU-LH4Y-DH5R-MRF6-IOSZW49MHE18",
+    "Use all of the number bonds to make 10."
+  ],
+  [
+    "BBYVZNEN-DIFT-KPQC-GKBC-SGY1FPR94Z67",
+    null
+  ],
+  [
+    "VANJISS4-J8HZ-DP8N-KAAP-EP1N1TVNWK0Y",
+    null
+  ],
+  [
+    "ZAYG2DCV-SC3Q-U29X-6S5B-JNXE33984T3O",
+    null
+  ],
+  [
+    "J7PA81BK-R5LY-S6U1-47RP-1YSETJ0DKMP9",
+    null
+  ],
+  [
+    "WDTCSCCA-GPLC-5QIJ-XDDM-LDYKT99PAROE",
+    null
+  ],
+  [
+    "GFM09D7M-W9JB-5HO7-O60B-Y5E4GRC20C5U",
+    "Split 11 into groups of tens and units."
+  ],
+  [
+    "WUS241ZL-R7D9-GR4B-KUZ0-UUE6ZMCV6ES7",
+    "Here is 12. How many tens and how many ones are there?"
+  ],
+  [
+    "GKHLC8BU-7AGI-XQTI-GQWE-P76319K1FBGE",
+    "Split 12 into groups of tens and ones."
+  ],
+  [
+    "9YLC6SZ9-AHJC-X85I-FW2U-DMPV28MSOALE",
+    "Here is 13. How many tens and how many ones are there?"
+  ],
+  [
+    "9XTQQSPI-LTEW-HTHT-CZYX-5FHYYIMZDE4C",
+    "Split 13 into groups of tens and units."
+  ],
+  [
+    "O51L2SPW-XWNO-TBHN-YJQE-FTFAJVQD4PGX",
+    "How many tens and how many ones do you need to make 15?"
+  ],
+  [
+    "6BH80UKR-UOG5-QU1T-39FZ-R77EMHHCYHDQ",
+    "Split 15 into groups of tens and units."
+  ],
+  [
+    "BW4NZCR4-1SFR-4A3B-G9QD-CMI7QGCBSMZ6",
+    "Split 16 into groups of tens and units."
+  ],
+  [
+    "00YDAXJ8-Y0AM-0BEP-5271-NAG4FOZS2WAM",
+    "Starting at 10, count to 16 in jumps of 1s."
+  ],
+  [
+    "EK1UU97S-E206-3USV-5SEN-LM8S47WLD7Q7",
+    "Make 16."
+  ],
+  [
+    "ZWVGIY0J-SRDM-XANF-1YYN-CWV9L49CDPV3",
+    "Starting at 10, press  </b:t> <b:oi tag=\"30_Counter_Stop\"/> <b:t> when it reaches 16."
+  ],
+  [
+    "LSWDBU94-A32Q-EB8W-6B1L-N6GXL8EFGB4C",
+    "Starting at 10, count to 14 in ones."
+  ],
+  [
+    "WGPQOINC-65MS-Y2DS-W64V-KQ6CQE6V6MEA",
+    "Make 14."
+  ],
+  [
+    "MPVEAQIX-WVV9-BH6T-R5O9-3HIEBIR4GDNS",
+    "Starting at 10, press </b:t><b:oi tag=\"30_Counter_Start\"/><b:t>when it reaches 14."
+  ],
+  [
+    "ULGP0DM7-92E8-9O3G-N1P4-BWSP50X5WTKX",
+    "<b:t>Put 10 ones into the</b:t><b:oi tag=\"30_pv_grid\"/><b:t>.</b:t>"
+  ],
+  [
+    "8S0SYOUW-5AQ0-P680-G43Q-YEWNCY452QPT",
+    "<b:t>Put 1 ten into the</b:t><b:oi tag=\"30_pv_grid\"/><b:t>.</b:t>"
+  ],
+  [
+    "YEKV3RCD-S03R-56FZ-C51J-M9ITISG5LG2B",
+    "Show that 1 ten is equal to 10 ones."
+  ],
+  [
+    "BO2NLIFD-4KBM-DC2G-FKKN-KZQ0FSFGD1J0",
+    "Count from 0 to 10 using jumps of 1."
+  ],
+  [
+    "91BL6C30-N4I3-HRC6-OVIX-NZE2SLMW17T4",
+    null
+  ],
+  [
+    "B6OI7U3J-LT8Y-DF7N-FCW8-8BCV8QJZ81DW",
+    "Make 10 using 1s."
+  ],
+  [
+    "UN4VMBBH-KIZO-PQ27-UVIC-PQXH0SV2N7GC",
+    "<b:t>Starting from 0, press</b:t><b:oi tag=\"30_Counter_Stop\"/><b:t> at 10.</b:t>"
+  ],
+  [
+    "NTD70XE1-9UTJ-ZVF1-KHZU-MQQ4HSNLNSGO",
+    "Split 11 into groups of tens and units."
+  ],
+  [
+    "VSOCS4BH-1M8K-5L5M-5Z0I-ML5M9JXYSS9J",
+    "Split 12 into groups of tens and ones."
+  ],
+  [
+    "Y9B4YVVI-9RDA-Y1RL-MZH0-4VYUNSH42BXH",
+    "Split 13 into groups of tens and units."
+  ],
+  [
+    "P7T7N1ZG-3CRH-BC69-O7O0-R07NK82MDQDV",
+    "Split {$x} into groups of tens and units."
+  ],
+  [
+    "Y1HHO324-2FHL-EFLP-3Z7P-C5Y64HE3Q2VK",
+    "Split 16 into groups of tens and units."
+  ],
+  [
+    "NVF3PGG0-26GX-0NMW-UJN9-JUA0WICBWITY",
+    "Make {$x}."
+  ],
+  [
+    "FPB99L2L-758G-CROO-K1PJ-OVXS46DZTNAU",
+    "Make 18."
+  ],
+  [
+    "2OBOWQ8G-HL42-LSV7-JPTX-0XTOYMKCNMOA",
+    "Split 18 into groups of tens and units."
+  ],
+  [
+    "9WESQ6CQ-W4SU-QQHN-5FFN-AOWT5CFZLUAR",
+    "Make 19."
+  ],
+  [
+    "L1U0SXJ3-W8JA-UPA6-7TP8-3BR9M981OPRD",
+    null
+  ],
+  [
+    "9CV0O24X-A828-8UDZ-6RHG-7XCFCOOME13N",
+    "Jump forward 3 tens."
+  ],
+  [
+    "7LF4Q31I-JG97-PVQI-CC42-W7XD0CAGI7P3",
+    "Count forward {$x} tens."
+  ],
+  [
+    "U0PWZ0XW-FQTX-JT08-9NV9-UZ19TT58L3T8",
+    "Make {$x*$t}."
+  ],
+  [
+    "DUYBLYNI-2BLT-XL8I-9L2K-IR3B6Y947ARQ",
+    "Press </b:t> <b:oi tag=\"30_Counter_Stop\"/> <b:t> when it has counted forward {$b} tens."
+  ],
+  [
+    "RMKIRQBR-MXMQ-4QTS-5KGV-MXRO4JIG89O4",
+    "How many tens are there in {$x*$t}?"
+  ],
+  [
+    "6ZTV9A2D-MF1N-DQJM-F923-KMCQ62U4YUXW",
+    "Jump forward 3 tens."
+  ],
+  [
+    "33DHAZQT-R17M-BT0D-O2I9-H5UY47VCVRS3",
+    "Count forward {$z} tens."
+  ],
+  [
+    "YD9I06A0-L16S-MSAG-5NGF-U8YMJPZ3APBW",
+    "Make {$z*$t}."
+  ],
+  [
+    "05FBV1V9-TK3H-USNV-2XIA-UE1RLLWBVUM1",
+    "Press  </b:t> <b:oi tag=\"30_Counter_Stop\"/> <b:t> when it has counted forward {$b} tens."
+  ],
+  [
+    "5NXSJM81-B0CG-3OHS-MNFP-XK8YTAW9VBA6",
+    "How many tens are there in {$z*$t}?"
+  ],
+  [
+    "U63EDKV9-SJ3R-1EXX-YIVM-GEA8VR0HGQYZ",
+    "Make 15."
+  ],
+  [
+    "A2LEGT4V-Q3FH-SGAK-D8F4-QGFHYKK8B5IB",
+    "Here is {$var1}{$var2}. How many tens are there?"
+  ],
+  [
+    "J6CM8PWM-DJH7-MSEZ-UMQN-12XZMJHQ3QV1",
+    "Make 1{$var2}."
+  ],
+  [
+    "H26I8WTZ-MRKE-5F2S-3XAK-TZB7O0OY4A49",
+    "What number is this?"
+  ],
+  [
+    "NZ9IGBWD-DCPO-10MG-EAM8-WS8L1F6XNTWE",
+    "Here is {$var1}{$var2}. How many ones are there?"
+  ],
+  [
+    "2EMNTI6G-NM7Z-Z3OZ-53Y5-JUS2ISMZQPZJ",
+    "Make {$var1}{$var2}."
+  ],
+  [
+    "6VCQB6A6-SE8B-QWIO-M0RV-VW6CSAAJS00Z",
+    null
+  ],
+  [
+    "TVOZEGQ7-SCO9-AD0M-WUW0-MULEVMC53NRU",
+    "What number is this?"
+  ],
+  [
+    "JHI4CNUH-6TIA-0O0K-6HPS-G980PHJZ2IQ3",
+    null
+  ],
+  [
+    "9WDH2SQQ-USX6-OBNA-IGS9-TNLGUKBXQ0WL",
+    null
+  ],
+  [
+    "4F7JORB2-NYWI-6W3O-CQCP-50GGBSL0F7PB",
+    "Which number is bigger?"
+  ],
+  [
+    "ONIHQ9Y3-88O6-LCPJ-OG99-F0J6ZUYLKZU6",
+    "Which number is smaller?"
+  ],
+  [
+    "KGHRJSAB-1EBS-O5Y8-9E7T-NFO7JGSYT8JY",
+    "Which number is smaller?"
+  ],
+  [
+    "SOF36GEF-TQZA-M3KK-A5CL-SZNG1XP1JT12",
+    "Which number is smaller?"
+  ],
+  [
+    "PRHI81SA-UDBC-UF15-6D4F-KS903L0YXDSY",
+    "Which number is bigger?"
+  ],
+  [
+    "B3JM2OFD-KLXD-MFID-75BH-BVAKDKYFYYPH",
+    null
+  ],
+  [
+    "6WH5LQFW-6K2J-1B8H-UFEU-9NAQQTNFGKGP",
+    null
+  ],
+  [
+    "J4ML6BIA-F9G6-XCX1-WEKS-0GYNGVFZKETN",
+    "Which of these are true?"
+  ],
+  [
+    "4MAAJV3N-UGJN-QFF1-O6EE-A4OD5GZ1QYF6",
+    "Which of these are true?"
+  ],
+  [
+    "4ZQRA5Z8-RH1D-H2BP-PWP8-OVRQTL47A3AB",
+    null
+  ],
+  [
+    "D3CN9KCU-NHGX-BPY2-M0AQ-Q174N8D9KUI1",
+    null
+  ],
+  [
+    "8PMEA31V-0MEN-48EF-1X1V-PZC77ZY2M9QZ",
+    "Make 100 using tens."
+  ],
+  [
+    "QA9A2KQ5-AT00-HFJ3-6Y0S-7SME8KAVFF8X",
+    "Make {$hundred}."
+  ],
+  [
+    "0AJ3Y5LM-Q59E-F67M-X20U-MCJ2749W01WC",
+    "Show 100 is made of ten 10s."
+  ],
+  [
+    "TC7G89V4-9LCK-ES61-7K7N-XAUK948DB6A8",
+    "Count from 0 to 100 in tens."
+  ],
+  [
+    "UZ879ZUS-Y3KN-DFT3-HE35-7MOWG2IU877Y",
+    null
+  ],
+  [
+    "FMOGHIBD-D2TP-Y74M-IIB6-OYUBFK9OXJGP",
+    "Count how many 10 blocks make 100."
+  ],
+  [
+    "E13NTY6P-E771-6ZH3-E8XP-JV4HMSFW4OTK",
+    "Counting up in 10s from 0, press</b:t> <b:oi tag=\"30_Counter_Stop\"/> <b:t>at 100."
+  ],
+  [
+    "Z9STU9J9-EHLE-XL52-HWC1-R6THETIH148Q",
+    "Count forward 3 hundreds."
+  ],
+  [
+    "59ZBGQMF-BW7Q-56H5-2LSU-Y5UINY57RIKQ",
+    "Count forward {$x} hundreds."
+  ],
+  [
+    "LI0LG8JO-WJH5-TB2S-N37F-CCXOP0G7LKXL",
+    "Count forward {$x} hundreds."
+  ],
+  [
+    "S0Z9P866-BRF6-XROQ-O087-QXNFCW2NYPNZ",
+    "Make {$x*100}."
+  ],
+  [
+    "5FI6JMW6-N2VW-MTYF-AWO9-7WHXSCO10E3J",
+    "Make {$x*100}."
+  ],
+  [
+    "P2UCIXOF-ABUY-6I6Z-E8W3-0BYHBQU4BXYH",
+    "Make {$x*100}."
+  ],
+  [
+    "MJNKIH7U-TSTF-5QWS-9JDR-6TJ0WIEFASMJ",
+    "Press </b:t> <b:oi tag=\"30_Counter_Stop\"/> <b:t> when it has counted forward {$b} hundreds."
+  ],
+  [
+    "LHFZWIV0-0SG7-1DIW-5TU4-OO8FCWN1BF03",
+    "Press </b:t> <b:oi tag=\"30_Counter_Stop\"/> <b:t> when it has counted forward {$b} hundreds."
+  ],
+  [
+    "AYGAA32L-LUJO-EG4F-MNYC-QNAW871V3C3W",
+    "How many hundreds are there in {$x*$t}?"
+  ],
+  [
+    "G59KVE8X-FF3Q-JCG0-VRJT-IE066GAD800A",
+    "Count forward 4 hundreds."
+  ],
+  [
+    "NKUSMB35-K53K-T78I-JBW2-7WWBA8W87KN2",
+    "Count forward {$z} hundreds."
+  ],
+  [
+    "K4CEU5Y3-073G-KOPP-558P-Z3XXB5D53QY8",
+    "Make {$z*100}."
+  ],
+  [
+    "TJYGV7Y5-D766-0UYM-I87R-5MZZ5RBS9S72",
+    "Press </b:t> <b:oi tag=\"30_Counter_Stop\"/> <b:t> when it has counted forward {$b} hundreds."
+  ],
+  [
+    "CGFT1JYI-GXA2-LF1U-38XY-RB6SRHNGVQUN",
+    "How many hundreds are there in {$z*$t}?"
+  ],
+  [
+    "PLVTGXQO-AO2Y-993G-TMLN-N3F0HD9E2KYH",
+    "Here is {$x}. How many ten blocks are there?"
+  ],
+  [
+    "RVBWSJKW-FDDL-LN9Q-JDAO-4D3IHGMGY9T6",
+    "What number is this?"
+  ],
+  [
+    "WPDP89AT-8V9Q-O0P8-ENCK-JWVGQ7PNE5E6",
+    "Here is {$x}. How many hundred blocks are there?"
+  ],
+  [
+    "M3JDTW4K-8NSS-08RX-7ONA-VAFXVV8AR3PH",
+    "Make {$x}."
+  ],
+  [
+    "4UKQ6511-9F54-BAJU-9Q8R-HK9QYYAYF9QZ",
+    "Make {$x}."
+  ],
+  [
+    "1PAKMR42-0OAV-JZVC-U53D-PQ16NWOUWM8P",
+    "Make {$x} using the fewest number of hundreds, tens and ones."
+  ],
+  [
+    "J8Z6LJVX-ZECW-HZDB-GX3O-R08V5XQQH53C",
+    "Make {$x} using the fewest number of hundreds, tens and ones."
+  ],
+  [
+    "KZ6E5HMN-MZQ3-P6SU-GANL-KY24LNHEWCRX",
+    "Make {$x} using the fewest number of hundreds, tens and ones."
+  ],
+  [
+    "QBEEC3S0-FF2V-36C6-OHNO-JNG2P0315XJH",
+    "How many hundred blocks would you need to make {$x}?"
+  ],
+  [
+    "GW8O10US-WTYH-IDAL-Q1YW-58SWKCZ38MJF",
+    "<b:oi tag=\"thing_3\"/><b:t> has {$h} hundreds blocks and {$t} tens blocks. How many ones blocks does</b:t><b:oi tag=\"thing_3\"/><b:t>need to make {$x}?</b:t>"
+  ],
+  [
+    "BS0SVMKP-M2B6-S316-88H5-JYO126GTI94H",
+    "<b:oi tag=\"thing_3\"/><b:t> has {$h} hundred blocks. How many ten blocks does</b:t><b:oi tag=\"thing_3\"/><b:t> need to make {$x}?</b:t>"
+  ],
+  [
+    "DSSIKDC2-BAH9-0GNM-G5ZM-FPQ23QGK5XD9",
+    null
+  ],
+  [
+    "B5VJT18U-LBIE-YJ2W-65HZ-7G12G1DXNE36",
+    null
+  ],
+  [
+    "H8Y5JKE1-KSC4-ZZGD-VWTH-3L1YAUXMD8XH",
+    null
+  ],
+  [
+    "BALAJJJH-EDS5-4YUN-V0XN-O94YGU0RE5B0",
+    "How far is 13 from {$x}0?"
+  ],
+  [
+    "391FQRH8-YI57-BMCH-UH1G-YWSS2JA3P5FJ",
+    "How far is 13 from 20?"
+  ],
+  [
+    "1O2A78QG-PSAV-ZGXO-CI1C-5ZIHZZ772UG8",
+    "Is 13 nearer to 10 or 20?"
+  ],
+  [
+    "C7TH4K0T-CPFG-05VY-ANN1-9LAWVV5UN6AE",
+    "How far is 53 from 50?"
+  ],
+  [
+    "0FP894LI-KYYN-87K9-7PC0-7BYCFX240NBX",
+    "How far is 53 from 60?"
+  ],
+  [
+    "K9LW78A1-6ZBQ-1ASZ-D4AE-9HJPDJ7QOOC8",
+    "Is 53 nearer to 50 or 60?"
+  ],
+  [
+    "38K79KK7-UJZZ-O6D5-L87T-VV3MASO5S97I",
+    "How far is 66 from 60?"
+  ],
+  [
+    "CI6NSICF-FKUM-4D9U-9L2E-DGZH8D3XU9BH",
+    "How far is 66 from 70?"
+  ],
+  [
+    "ZYM282XH-M5HI-QA2U-OBTI-B99HPM7C87PQ",
+    "Round sixty-six to the nearest 10."
+  ],
+  [
+    "ZTVK46NG-PUSY-19ZY-GLLR-E2FKUHU6JK45",
+    "Round 123 to the nearest 10."
+  ],
+  [
+    "2F1UUI81-BTIA-D5IB-F25E-NX7HBO6A1JVF",
+    "Round 206 to the nearest ten."
+  ],
+  [
+    "J2GYTSIS-NB8M-9WXQ-6Z8K-3Y1ITXEOAHD7",
+    "I start at 54. What is the nearest multiple of 10?"
+  ],
+  [
+    "Q7RYRANB-Q744-ATY1-O872-LTGVCGXRQWXK",
+    "I start at 88. What is the nearest multiple of 10?"
+  ],
+  [
+    "OK46JX5N-K51A-MWA9-OTJP-2WGBR6W5BZDU",
+    "I start at {$x}. What is the nearest multiple of 10?"
+  ],
+  [
+    "61P36NHE-7FEG-XBYO-ZMO1-SBM5H7E6XUI2",
+    "What is 50 + 10?"
+  ],
+  [
+    "WUHFKXYN-PIK9-SJJY-F1VU-6GI7S8LDFEJ8",
+    "What is 30 - 10?"
+  ],
+  [
+    "X75EPPL8-E9S1-F9D4-SU7C-ELS7S2AQZQQL",
+    "What is 80 + 20?"
+  ],
+  [
+    "T0UWLSHV-1OSN-HX33-2SXN-UD0NRYR63A8E",
+    "What is 80 - 20?"
+  ],
+  [
+    "CJV12HIQ-AUWS-7WYJ-ZP8Z-VA72ZKKEHP9P",
+    "what number is the bubble on?"
+  ],
+  [
+    "YDXNORC4-JFRK-J4TH-PY6V-94KYATQ94SKH",
+    "What is {$multiple} + 10?"
+  ],
+  [
+    "87AD6MCS-PGI3-G6OD-3JI0-KB8BK2RUH4GZ",
+    "What is {$multiple} - 10?"
+  ],
+  [
+    "UMNU3DSG-9YWR-JNLB-VXFJ-RJ2IRT8D7QS7",
+    null
+  ],
+  [
+    "J5T0SJY8-X4JA-Q7UA-5RFM-A00X0J53V7IE",
+    null
+  ],
+  [
+    "WZ0N7IWC-F6S4-1ZKS-R880-AGUA53ILWSMS",
+    "Place </b:t> <b:oi tag=\"30_bubble\"/> <b:t> on {$answer+40} - 40."
+  ],
+  [
+    "JOEJC8Q0-HCW2-YR6Z-YH4Z-FHIYRDDML1T9",
+    "What is {$multiple1*10} - {$multiple2*10}?"
+  ],
+  [
+    "H7OVP4D0-61JH-PP8L-A022-8ZRNSYGT64K2",
+    "What is {$multiple1*10} - {$multiple2*10}?"
+  ],
+  [
+    "HXWX9R6P-4OOG-RZLB-1RTS-I49UJ2WSV40W",
+    "what number is the bubble on?"
+  ],
+  [
+    "11WNS7TG-A42Z-56TB-EQPO-3RJS4CGJ6QOQ",
+    "This is 7. Add 10 to get 17."
+  ],
+  [
+    "FIWBFM2B-A9VP-9IFM-6X6V-05BK0A5C1RQH",
+    "This is 13. Add 10."
+  ],
+  [
+    "ENAKUT1F-SQ49-WYHG-206D-TAYJ4KQHZP2Y",
+    "This is 13. Add 10."
+  ],
+  [
+    "YL8731KE-YHBT-JZH7-S1FW-NX0PQ9356XOJ",
+    "This is {$var1}{$var2}. {@name} 10."
+  ],
+  [
+    "LINBWF3S-DX1E-NVHL-YOFH-5DFTFF5BSUFA",
+    "This is {$begin}. {@name} 10."
+  ],
+  [
+    "QN26FQUP-SWE6-UFWX-65Z2-ZGL5GE4DL0C9",
+    "This is {$var11}{$var22}. {@name1} 10."
+  ],
+  [
+    "27MKO045-R5QV-9TAE-HTFO-W84K0BY2KDC6",
+    "This is {$begin1}. {@name1} 10."
+  ],
+  [
+    "C24SE0BW-0PLF-G3F4-XYMP-NZQY2YAM3I91",
+    "What is 63 add 10?"
+  ],
+  [
+    "UDYXVIVY-5CSJ-85ZN-4Q8F-H1CGCRY1JB9V",
+    "What is 37 take 10?"
+  ],
+  [
+    "G7OVWEJ3-PKLK-VJD5-5C0Q-N1SLBJ7LJDN6",
+    null
+  ],
+  [
+    "XL6SEE9H-DA2L-H90S-XF58-ZWDCQC01FVSB",
+    null
+  ],
+  [
+    "7DJPMDDC-IKSL-R5YA-8E3F-BIRTEOW5EAYP",
+    "This is {$var1}{$var2}{$var3}. {@name} 10."
+  ],
+  [
+    "1UPGAHS9-J3ZV-IS6X-LIM4-ZFU0433QPDLB",
+    "Starting on {$actual} , {@name} 10."
+  ],
+  [
+    "OTOH08KL-HF6A-8VWA-1L9U-PS2YGX8RNWDN",
+    "This is {$var1}{$var2}{$var3}. {@name} 10."
+  ],
+  [
+    "GMA675FI-E86D-DK0D-TJF5-PEULVVBTG0WU",
+    "Beginning at {$actual}, {@name} 100."
+  ],
+  [
+    "56T7OX5D-21HN-UI35-LQ8L-5O5OXYXRYUN9",
+    "This is {$avar1}{$avar2}{$avar3}. {@aname} 10."
+  ],
+  [
+    "YKTDF93B-UZRV-GWHK-XHCU-N8269FYULV7U",
+    "Beginning at {$aactual}. {@aname} 10."
+  ],
+  [
+    "K9CXY4WQ-8JU7-0QKT-2AZD-58Q7SFGO36LF",
+    "This is {$aactual}. {@aname} 100."
+  ],
+  [
+    "IQ2KFZ1E-09L7-MZQ2-W3SB-OASJ2L7OQHES",
+    "Beginning at {$aactual}. {@aname} 100."
+  ],
+  [
+    "Z6N0WJLO-1Y2G-BYL4-271F-8SFJDCXF6LIE",
+    "This is 193. Add 10."
+  ],
+  [
+    "WX9LMCGR-E13K-KNKZ-7UQ4-9CJ3T0ZDYVHR",
+    "This is {$ran1}{$ran2}{$ran3}. {@name1} 10."
+  ],
+  [
+    "WRCCONG3-SILF-SS2X-8D4C-84HC6TA2FRUD",
+    "Beginning at {$actual9}, {@name2} 10."
+  ],
+  [
+    "K522JNDF-S88L-XDGP-VDRN-LEV0ELIOTJ60",
+    "This is 407. Subtract 10."
+  ],
+  [
+    "MH8LXERM-ACZ6-BEWQ-14QQ-324HPMRJ96WU",
+    "This is {$ram1}{$ram2}{$ram3}. {@name2} 10."
+  ],
+  [
+    "QJ81E2KX-NWSY-6WIP-W9WO-OFME8JM1UAW2",
+    "Beginning at {$actual8}. Subtract 10."
+  ],
+  [
+    "WTXU4L4I-5224-FTW4-R48S-NBET3Y0ZFOW9",
+    "This is {$var1}{$var2}{$var3}. Add {$n} tens."
+  ],
+  [
+    "MIZNLCA3-FD1D-LVTO-VEFU-ZM2HQM2L92JX",
+    "This is {$beginning}. Count forward {$n} tens."
+  ],
+  [
+    "Y00N3FKO-JIRO-UAIH-S0U2-KFQEOFM7YGP6",
+    "Each click represents 10. Starting at {$beginning} press </b:t> <b:oi tag=\"30_Counter_Stop\"/> <b:t> when you have counted on {$n} tens."
+  ],
+  [
+    "A9GP90QO-W1H2-RVBH-H4CA-NOF80IHI8ZGI",
+    "This is {$hundredsandtens+$var3}. Add {$n} hundreds."
+  ],
+  [
+    "MVBEVB4M-H0MK-IAFS-CF2H-8V77AMFIXS9N",
+    "This is {$beginning}. Jump forward {$n} hundreds."
+  ],
+  [
+    "QI8C9F7H-4AHL-BQPK-GCRD-JMQ8G0I5IS31",
+    "Each click represents 100. Starting at {$beginning} press </b:t> <b:oi tag=\"30_Counter_Stop\"/> <b:t> when you have counted on {$n} hundreds."
+  ],
+  [
+    "VGSRRJQ5-UX6M-TFUY-DNQX-BOMZR135ATBS",
+    "This is {$var1}{$var2}{$var3}. Subtract {$n} tens."
+  ],
+  [
+    "KIQ9AHRL-ARPW-LVU2-6O51-A78M3S1F0RN9",
+    "This is {$beginning}. Jump back {$n} tens."
+  ],
+  [
+    "K7ALCQ5E-RZRH-CDCS-UQRZ-5UH9I81SJHZY",
+    "Each click represents -10. Starting at {$beginning}, press </b:t> <b:oi tag=\"30_Counter_Stop\"/> <b:t> when you have counted back {$n} tens."
+  ],
+  [
+    "VN1WIMH0-VTCP-KFFA-2GNZ-X9EU8LMZV6KX",
+    "This is {$var1}{$var2}{$var3}. Subtract {$n} hundreds."
+  ],
+  [
+    "R8JW2VSP-XJXL-SEXX-RVRY-X4CL7QW0G8MI",
+    "This is {$beginning}. Jump backward {$n} hundreds."
+  ],
+  [
+    "W5NNWCWH-67ZJ-831B-LLI8-YSBPWK1Q4EKT",
+    "<b:t>Each click represents -100. Starting at {$beginning}, press </b:t> <b:oi tag=\"30_Counter_Stop\"/> <b:t>when you have counted back {$n} hundreds.</b:t>"
+  ],
+  [
+    "H4YY074G-DIOH-S9AX-U2N9-SSOEBR6JO2F3",
+    null
+  ],
+  [
+    "7357PI27-SFZY-IWN2-SMVU-0683XQEMVUGK",
+    null
+  ],
+  [
+    "XFCA0CR2-H26Z-FCAB-1219-DT2ADWTPJ8HY",
+    null
+  ],
+  [
+    "49PMNER2-P3FN-TM6X-Z2Z9-IHC3FO97H2QC",
+    null
+  ],
+  [
+    "4LF4Z0TF-RPYW-V89J-CCKT-99HAUR0R5L6T",
+    "Which of these is true?"
+  ],
+  [
+    "FKF1GY4K-3AJI-BUHE-2FRH-GLWEKM6L1FFN",
+    "Which of these is true?"
+  ],
+  [
+    "WMOK14YT-QXIN-PVQU-A4C0-GHTFPQHXDG7P",
+    "Which of these is true?"
+  ],
+  [
+    "TT03Q004-G7RU-Q9FK-N5XL-0MS6529Y2X48",
+    null
+  ],
+  [
+    "DYUV9J7O-25IE-SZ79-GZWA-081LBK6G35PE",
+    "Which of these is true?"
+  ],
+  [
+    "Z414PRFU-BCAC-D2ZD-JPYR-VGFBQDKS1RHV",
+    "Which of these is true?"
+  ],
+  [
+    "8FTCW8X8-7CXT-PW8J-L6H0-ZRX6894PKJ7I",
+    "Which of these is true?"
+  ],
+  [
+    "71445N1M-3YJ6-T4HO-PFQT-W9TSMGGW1F5E",
+    null
+  ],
+  [
+    "OEV1OTXO-2FAK-FL08-ZGVQ-BZFNDXTZJ07T",
+    null
+  ],
+  [
+    "250MKA2S-7B4N-2GAE-E0Z4-B42QJKGU3K54",
+    null
+  ],
+  [
+    "DDQSXHBX-FNOO-MPYW-UBTI-BHYLZ5UEX37H",
+    "Which of these is true?"
+  ],
+  [
+    "JBPMVDR9-R5C8-Q7KC-XGIV-CMOPWHPFP0H5",
+    "Which of these is true?"
+  ],
+  [
+    "K0UA3LHQ-0VSI-UN9K-CJ0U-JCV6C5AUS9QX",
+    "Which of these is true?"
+  ],
+  [
+    "5JD5HVHZ-JV5L-J6QF-8O1G-A3FU0I8B66KS",
+    null
+  ],
+  [
+    "FO3GABBT-RRS6-CYFA-C31I-0LKFL6OSV6PD",
+    null
+  ],
+  [
+    "5SAR1J7B-GPJA-R93Q-4OZ5-IFVWFK7LAJOA",
+    null
+  ],
+  [
+    "6Z2PEQWK-UZ80-66R2-KN1F-NBVH9QCK92LE",
+    null
+  ],
+  [
+    "8541DOHY-M15U-PGOY-9558-WDNZQ1XH06BR",
+    null
+  ],
+  [
+    "Q0AC6858-FYVF-M1V0-X5BP-OQLNHSWKLC51",
+    null
+  ],
+  [
+    "26QV0P2X-SA0L-N094-Z0EX-CW30CBJCHLXS",
+    null
+  ],
+  [
+    "9FRP037E-8X9N-1HV8-KOUJ-QBL6W0F18DX5",
+    null
+  ],
+  [
+    "WKMQX4XJ-JY0T-CZGE-9UOC-DOSCUOL3UFOE",
+    "Which of these is true?"
+  ],
+  [
+    "2CS7B74Y-4M4E-ZFAX-YZJV-U25YNU4MY44D",
+    "Which of these is true?"
+  ],
+  [
+    "175F6QW9-3JVA-86Z9-K7PK-6E4SGVAQEQ06",
+    "Which of these is true?"
+  ],
+  [
+    "H4TVMSP4-11EL-TVI8-J2UM-WT8RDB7N4NMG",
+    null
+  ],
+  [
+    "6KBK59V7-WMBE-POWK-KXDP-Z0J30BXYQJJL",
+    "Show that 21 + {$x} = {21+$x}."
+  ],
+  [
+    "2CKNMCIF-K5DS-M9UO-J3L5-V79QQQCA9C9Z",
+    "Show that {$x+5} + 5 = {$x+10}."
+  ],
+  [
+    "S416N42R-01W3-EA2X-ISTR-1O9VUHU341XQ",
+    "What is {$x+$y} + {$z}?"
+  ],
+  [
+    "GQXDHA8R-WO0W-F3ON-1NQQ-EQJ379Y8EHXC",
+    null
+  ],
+  [
+    "M94ZZ0H8-0VGE-3ZSS-UQK8-S4LGBT7U1310",
+    "Show that 19 + {$x} = {19+$x}."
+  ],
+  [
+    "67IHSDBA-Z2A5-K431-NA3I-X8YOXSI9I8E2",
+    "What is {$x+$y} + {$z}?"
+  ],
+  [
+    "3BP0F0IJ-WXGD-TQHH-62TU-KK4UJJGC7YEX",
+    null
+  ],
+  [
+    "TNUS9WFN-RXB3-WFRG-B7D3-BFFN2RNFWRGB",
+    "Show that 32 + {$y} = {32+$y}."
+  ],
+  [
+    "2QRKJ08U-MR44-AAAM-QQ6B-18RNPX5KITVZ",
+    "Show that {$x} + {$y} = {$x+$y}."
+  ],
+  [
+    "NOI48OSE-YJU0-26D5-NAKP-VY9WWDM1PHBD",
+    null
+  ],
+  [
+    "LQCKMICH-EQEP-SLO3-1JHX-E4YBU5TXQ7II",
+    "Show that 23 + 13 = 36."
+  ],
+  [
+    "9BAUQGDU-NI86-Q9DO-I8E2-NXA70EE1EKOU",
+    null
+  ],
+  [
+    "1UH45R2W-BU8X-PG3Q-N0KS-45UU6H3CGDA2",
+    "Show that 47 + 14 = 61."
+  ],
+  [
+    "5H4ZAQ5R-Z4B6-69N5-VP52-KOBNQDDX9GON",
+    "63 + 18 = ?"
+  ],
+  [
+    "1G72UA0Z-OZW7-9JYL-AAJ6-H2KIC7NLF5BM",
+    "Show that the total of {$wx} and {$yz} is {$wx+$yz}."
+  ],
+  [
+    "IFY7IPBV-ATC4-N57K-KPW9-USVNIFZ948JK",
+    "<b:t>Show that {$wx} + {$yz} =</b:t><b:oi tag=\"30_Q\"/><b:t>.</b:t>"
+  ],
+  [
+    "M0R6TD7G-1WRN-1EQI-WMDJ-XS93JLCV4SGJ",
+    "Show that the sum of {$wx} and {$yz} is {$wx+$yz}."
+  ],
+  [
+    "JQCU4XFJ-5XOW-TR5E-0CJE-7VISK1WNMUXI",
+    "<b:t>Show that {$wx} + {$yz} =</b:t><b:oi tag=\"30_Q\"/><b:t>.</b:t>"
+  ],
+  [
+    "423W0W13-Q4SC-SD2C-PE2A-45ZYL85TGXU1",
+    "Show the difference between {$wx} and {$wx-$yz}."
+  ],
+  [
+    "CA0LJL5Q-D4MM-6SMB-JPO5-YQ3JK78G5L2G",
+    "<b:t>Show that {$wx} - {$yz} =</b:t><b:oi tag=\"30_Q\"/><b:t>.</b:t>"
+  ],
+  [
+    "D2DB8NBJ-DOYB-R4G0-5LTM-ENRWG8U1NZOV",
+    "Show the difference between {$wx} and {$wx-$yz}."
+  ],
+  [
+    "OUM8VKRJ-6EQR-O3WR-4R5J-QQ9PFECIFKUZ",
+    "<b:t>Show that {$wx} - {$yz} =</b:t><b:oi tag=\"30_Q\"/><b:t>.</b:t>"
+  ],
+  [
+    "AWAPO4R5-VIPA-ROKC-ED8F-B1R8ZR8EQV0D",
+    "Show that {$wx} - {$yz} = {$wx-$yz}."
+  ],
+  [
+    "ZNC6HJX9-U0TO-M6D8-0JD7-HBQWP7PQ6Q8A",
+    "Show that {$wx} - {$yz} = {$wx-$yz}."
+  ],
+  [
+    "E2VZG2UC-7GEP-EKHV-V63E-Z74BBIQJKLEV",
+    "Show that {$wx} + {$yz} = {$wx+$yz}."
+  ],
+  [
+    "Y5SJ3WXL-R85P-WOID-6URC-BZALUGO9WZCN",
+    "Show that the sum of {$wx} and {$yz} is {$wx+$yz}."
+  ],
+  [
+    "ETDFIK7R-VXIY-BVN1-BH2K-HQJ7TM4CRTBH",
+    "Show that {$wx} - {$yz} = {$wx-$yz}."
+  ],
+  [
+    "3XCYZUOI-AHNN-7NAT-8FBC-ZI5LZMNBM3R4",
+    "Show that {$wx} - {$yz} = {$wx-$yz}."
+  ],
+  [
+    "371Y9G3C-63ZK-4III-DOF4-3E3X8J989BVG",
+    "Show that {$ab} + {$cd} + {$ef} = {$t}."
+  ],
+  [
+    "JWRGAYJW-ZJ7W-VIQO-BHH2-SNI20RV1FMD7",
+    "Show that {$ab} + {$cd} + {$ef} = {$t}."
+  ],
+  [
+    "SIDGNA5U-TXEH-6RC8-ZKHH-MSTIEXUJAMQS",
+    "Show that {$ab} + {$cd} + {$ef} + {$gh} = {$t}."
+  ],
+  [
+    "XU78D3SI-L59Y-K94E-IIGW-Y9YDXQPOY4GU",
+    "Show that {$ab} + {$cd} + {$ef} + {$gh} = {$t}."
+  ],
+  [
+    "1M49QSQZ-Y5J0-MWSS-4UJI-LNTZT4R69OOV",
+    "Show that {$ab} + {$cd} + {$ef} = {$t}."
+  ],
+  [
+    "20YQY86Q-75F7-3J3O-BYBN-AUFG53UODQN9",
+    "Show that {$ab} + {$cd} + {$ef} = {$t}."
+  ],
+  [
+    "RLHD0TE9-6861-9MWY-QXLP-F2SMDWWYFN25",
+    "Show that {$ab} + {$cd} + {$ef} + {$gh} = {$t}."
+  ],
+  [
+    "AICIQCPX-OPHT-DERL-88TH-3Z1SR9ORXDWV",
+    "Show that {$ab} +{$cd}+{$ef}+{$gh}={$t}."
+  ],
+  [
+    "290VZY4E-1IJQ-HT51-H6NQ-UUDJPLOVJKST",
+    "23+14+36+12"
+  ],
+  [
+    "XJLAF2N8-K539-89AU-EV5D-D9X0YN3ZTSVF",
+    null
+  ],
+  [
+    "S1Z8R10S-D1NV-3MIX-ONDK-CR5L32ORDP3R",
+    "<b:t>There are {$ab}</b:t>{@w} <b:t>in Class A and {$cd} </b:t>{@w}<b:t>in Class B. How many </b:t>{@w} <b:t> are there altogether?</b:t>"
+  ],
+  [
+    "OH3YTAV4-3N19-DGQ0-RW0C-X2SL3D5EZKXR",
+    "{@w}<b:t> has 65</b:t><b:obj count=\"65\"/><b:t>, and gives 24</b:t><b:obj count=\"24\"/><b:t>to </b:t>{@q}<b:t>. How many</b:t><b:obj count=\"41\"/><b:t>is </b:t>{@w} <b:t>left with?</b:t>"
+  ],
+  [
+    "WG3XXSYA-7M8C-5WL5-YU4W-XXRM2UL6ZME5",
+    "{@w}<b:t>scores {$ab} points in Round 1 of a competition.</b:t>{@w}<b:t>then scores {$d} points in Round 2, and {$c} in Round 3. How many points does</b:t>{@w}<b:t>score altogether?</b:t>"
+  ],
+  [
+    "HT8H2XF3-DZGY-N5CW-2HO5-9KTWMVLL8RIY",
+    "There are {$ab} seats on a coach, {$c}</b:t>{@w}<b:t>s and {$d}</b:t>{@q}<b:t>s are also sitting in the coach. How many seats are empty?"
+  ],
+  [
+    "WEEOY61D-9XLK-Q2H7-JNX1-NB7NRP38ANEO",
+    null
+  ],
+  [
+    "6UGF08RE-2SFD-03E5-64XL-4J3RKJA731WS",
+    "<b:t>There are four classes in a school. The classes contain {$a}, {$b}, {$c} and {$d}</b:t>{@w}<b:t> s. There are 60 </b:t><b:obj count=\"60\"/><b:t> in the hall. How many more </b:t><b:obj count=\"60\"/><b:t> are needed?"
+  ],
+  [
+    "87WFHJMX-VABX-WT7U-6SCB-W56J15D1W2GE",
+    "{@q}<b:t>is taking part in a cycle race. His lap times in minutes are {$a} , {$b} , {$c} and {$d}. What is his total time?</b:t>"
+  ],
+  [
+    "GI64SETX-P194-JF2T-CF7V-C2BJOOHL9GHH",
+    "Show that {$x} + {$y} = {$x+$y}."
+  ],
+  [
+    "4CCTROS0-54WA-RNA3-YIZ3-JJLZWE16AW2I",
+    "Show that {$x} + {$y} = {$x+$y}."
+  ],
+  [
+    "8UGF61ZX-5H1I-TIVO-WVZV-IG3PRLZN6R4X",
+    "Find the total of {$wx} and {$yz}."
+  ],
+  [
+    "KULOV8ZT-LENA-G22A-2VFJ-HLYHWV9IXBYD",
+    "Show that {$wx} + {$yz} = {$wx+$yz}."
+  ],
+  [
+    "HHBNHWNH-0EDQ-IR7P-QK41-J3B812LVIZOH",
+    "Find the sum of {$wx} and {$yz}."
+  ],
+  [
+    "I249HEDU-RNBU-LAZU-CMLK-LFF6XPMLL00R",
+    "What is {$wx} + {$yz}?"
+  ],
+  [
+    "EYA2SI0R-ZUCR-RJG5-HNTN-624Z9GEQD686",
+    "Find the difference between {$wx} and {$wx-$yz}."
+  ],
+  [
+    "3DY9JJIE-WJ5Y-2E1Z-R1BD-MV5KHO24JHW8",
+    "What is {$wx} - {$yz}?"
+  ],
+  [
+    "K5QZK2CK-35D1-0Y3U-1IY0-J54R4WHMTUFN",
+    "Find the difference between {$wx} and {$wx-$yz}."
+  ],
+  [
+    "NR8OCPVN-YQZ1-Y1V9-ADI2-Z2KN004FKYS7",
+    "What is {$wx} - {$yz}?"
+  ],
+  [
+    "FM32FE54-O488-O9EK-SLGF-D0E8FNNQWHME",
+    "Show that {$wx} - {$yz} = {$wx-$yz}."
+  ],
+  [
+    "58DWKK87-3NX9-W8XY-WVHV-K2463E89WOED",
+    "Show that the sum of {$wx} and {$yz} is {$wx+$yz}."
+  ],
+  [
+    "LLLGCDNH-31UU-5OIU-BWJZ-7454HFAJHGCW",
+    "Show that {$wx} + {$yz} = {$wx+$yz}."
+  ],
+  [
+    "DOQHOE2V-I855-8F05-X1BW-ZQ7WIK7Q0T8G",
+    "What is {$wx} - {$yz} ?"
+  ],
+  [
+    "SACMFGR9-PPA3-A06P-4LE0-0PDXKX6CJBUX",
+    "Show that {$ans1} + {$ans2} = {$ans3}"
+  ],
+  [
+    "0FGJ09LY-TFSF-PU33-R0TZ-QSBSER1IJ303",
+    "Work out {$ans1} + {$ans2}."
+  ],
+  [
+    "68A3D0F4-J3JT-JRTJ-T52F-7TYUUKTLQNZM",
+    "What is {$ans1} + {$ans2}?"
+  ],
+  [
+    "ZY8C1MPX-TQHG-UMIJ-EREW-P3SEQA51X0XH",
+    "Work out {$ans1} + {$ans2}."
+  ],
+  [
+    "8B8EVYIH-82S3-J4S0-NO7L-8UBKC0FO9QGV",
+    "What is {$ans1} + {$ans2}?"
+  ],
+  [
+    "KPILCN7P-1DZL-K5O6-EWJK-MQLETHABK0MH",
+    "Show that 237 + 185 = 422."
+  ],
+  [
+    "ER6MGB2W-3MHZ-0Z9H-WGGH-L0B0GP5VMOG5",
+    "Show that {$ans1} - {$ans2} = {$ans1-$ans2}"
+  ],
+  [
+    "MXUCVIPA-8C5R-FZFO-23W7-JVHAVMJFIVPP",
+    "Work out {$ans1} - {$ans2}."
+  ],
+  [
+    "XWGBF12X-V3RW-ZUJB-Q8A1-6IDVCAXGYF3J",
+    "What is {$ans1} - {$ans2}?"
+  ],
+  [
+    "0GS1ZMMI-M9C1-C2IL-C50S-8M8L39IS7JK8",
+    "What is {$ans1} - {$ans2}?"
+  ],
+  [
+    "2YTAGECQ-E1LV-4UA0-YLK7-SDOTLM962TKG",
+    null
+  ],
+  [
+    "UETFROM1-FI2X-L0SR-BL91-XLLJYT021OPK",
+    null
+  ],
+  [
+    "DG0OPKUI-Z6M7-IK97-L5SN-VE2GC9E6PYMW",
+    null
+  ],
+  [
+    "UBY5MVTQ-7H4X-AZQ0-WZ43-3CAW22RXU4EJ",
+    null
+  ],
+  [
+    "G185YZFY-HL36-9PNH-YMSZ-4ZFVDQRWBWVH",
+    "What is {$x} + {$y} ?"
+  ],
+  [
+    "F8IUGJMC-DXM8-FORA-MFBZ-7ID3XZNZDH4H",
+    "What is {$y} + {$x} ?"
+  ],
+  [
+    "63I897VG-RP0X-C2F9-H1PZ-LHJ1NWBKQYG3",
+    "What is {$x} - {$y} ?"
+  ],
+  [
+    "AW5VUVQM-CFZI-WS2Y-87SR-DWHYXQ2AL669",
+    null
+  ],
+  [
+    "CVNDTP9L-6NXF-YOOP-AUFM-MKO6U7Z0WNQ8",
+    null
+  ],
+  [
+    "3ANV4B72-T0X7-5PB9-HU3M-L6N9IAZQ09CR",
+    null
+  ],
+  [
+    "WRGQVZ04-Y21Q-D3SS-YZMQ-6YGNVZ9Z0YLF",
+    "Start at 20 and count forward in tens to {$x}."
+  ],
+  [
+    "P7ZCN5X5-KY87-CW4T-1GAJ-XQUWI6Y0P1C7",
+    "Count to 10 in 5s."
+  ],
+  [
+    "SUNBYZTB-6NI6-H337-DPM9-TWZJWOEPTU60",
+    "Start at {$start} and count forward to {$x} in fives."
+  ],
+  [
+    "Q4A3FM8Z-PRP3-JSPW-XM27-E12ACE0GOJA2",
+    "Count to 40 in 5s."
+  ],
+  [
+    "MD877B84-BM7C-NC7S-6N7Q-6YR3OE0G3FLA",
+    "Start at {$start} and count forward to {$x} in hundreds."
+  ],
+  [
+    "IEHZJ04B-93RA-SWPW-C65V-XJXSU3HS9FWT",
+    "Count to {$y+$z} in 5s."
+  ],
+  [
+    "5FKXNWPO-HAUP-3B4I-2FTC-YDCK71V1M572",
+    "Start at {$start} and count forward to {$x} in tens."
+  ],
+  [
+    "LW49QWSV-VFS7-C8CC-C76A-BAN1VSNM5VG4",
+    "Start at {$start} and count forward to {$x} in hundreds."
+  ],
+  [
+    "DQEHBTQG-UL0X-EIQB-W815-C5RDADOVOLQC",
+    null
+  ],
+  [
+    "YLZIDRY9-4DV4-24I5-I0S1-E3EG1BHJURKL",
+    null
+  ],
+  [
+    "79A3EO1W-PN01-NDOA-6W85-71PV4KTMW941",
+    null
+  ],
+  [
+    "Y53KNKZM-BFLE-C94Y-0IXX-AY270359GLY2",
+    "Make {$x-$y}."
+  ],
+  [
+    "EUDCN49D-5EZQ-N0X1-WMSP-2PUO87WVTUQ7",
+    null
+  ],
+  [
+    "QPBDIOCY-CFKO-59WT-LALO-IIHRF9MCJCBJ",
+    "Make {$x-$y}."
+  ],
+  [
+    "9BAF5W24-W5CD-3PUH-Y67G-PQNJALGUMXTR",
+    null
+  ],
+  [
+    "D8XACPEZ-J08I-XHE6-XT0D-XAXKY3WWI58J",
+    "<b:t>Use one</b:t><b:oi tag=\"30_NB_Block\"/><b:t> to make {$addend+$augend}.</b:t>"
+  ],
+  [
+    "JFACTPW0-23KK-P66G-PXMZ-F892M28J63S0",
+    "Make {$addend+$augend}."
+  ],
+  [
+    "DEEXWYEU-I5PZ-GQNM-9AYL-BHIHBUXS8L3H",
+    null
+  ],
+  [
+    "P4F45ZLW-T8MI-YKNG-1L49-5TLMDD21YFBY",
+    "{@gname} <b:t>started at a number, then jumped back {$addend}.</b:t> {@gname}<b:t>is now at {$augend}. What number did</b:t>{@gname}<b:t>start at?</b:t>"
+  ],
+  [
+    "YN2AO8Y5-0G1H-2VXN-6TDC-47OIFIQNCXXS",
+    null
+  ],
+  [
+    "DL76ZU0V-YF8S-PPDB-1YMY-TJJMWW5UCQGY",
+    null
+  ],
+  [
+    "KJ51AP6O-NSUC-3YL4-ZTXH-BHYCQ71XQ46Q",
+    null
+  ],
+  [
+    "EHVECJ9F-79CK-1PLX-FEJB-XGL6HZOEQ0UU",
+    "Break into groups of 5."
+  ],
+  [
+    "63A8LHOP-IYP6-BPKH-WSWT-ELTQHPQ9S0QI",
+    "Make 15."
+  ],
+  [
+    "PAM4VSM2-SEG3-1KTO-8DNI-WGPOLZ1D7QZT",
+    "Make 15 using addition."
+  ],
+  [
+    "DRFMAD05-DSWK-SFZU-5OGE-2U9ER4YKKO60",
+    "Make 15."
+  ],
+  [
+    "T8451B7A-BJ39-D8ZY-XYLE-UHLK5ITWR2OK",
+    "Count in 3s to 15."
+  ],
+  [
+    "W2P8QDIR-A5FA-1X6V-47TI-0A2CX93YNL0W",
+    "Break into groups of 6."
+  ],
+  [
+    "FU58OS88-APVK-WLLQ-16EF-5QWTT90IK17K",
+    "Make 12."
+  ],
+  [
+    "SBTCUPX7-63MG-J7JQ-6QQO-B9CT5R8HJSHO",
+    "Make 12."
+  ],
+  [
+    "18IWNYDH-I77A-5D6V-MPG9-90TJ9KPNTR3V",
+    "Count in 2s to 12."
+  ],
+  [
+    "JKUH14HA-LMAI-6PQC-XPYG-L43OXTP1M09J",
+    "What does this show?"
+  ],
+  [
+    "MSPFK8LI-Q3EO-NAT8-JD9Q-DB9JCQU0VG0O",
+    "What does this show?"
+  ],
+  [
+    "L75CP5QE-V4UH-AW54-G1HJ-4HE3KYNGUO5R",
+    "<b:oi tag=\"30_Q\"/> <b:t>+</b:t><b:oi tag=\"30_Q\"/><b:t>+</b:t><b:oi tag=\"30_Q\"/> <b:t>+</b:t><b:oi tag=\"30_Q\"/><b:t> = 20. What number is </b:t><b:oi tag=\"30_Q\"/><b:t>?</b:t>"
+  ],
+  [
+    "0053OWQW-RDMP-8HHU-5M31-CQT7WEF8L1C2",
+    "<b:oi tag=\"30_Q\"/> <b:t>+</b:t><b:oi tag=\"30_Q\"/> <b:t>+</b:t><b:oi tag=\"30_Q\"/><b:t>+</b:t><b:oi tag=\"30_Q\"/> <b:t>+</b:t><b:oi tag=\"30_Q\"/><b:t> = 20. What number is </b:t><b:oi tag=\"30_Q\"/><b:t>?</b:t>"
+  ],
+  [
+    "25KXRBYJ-LCVO-ML00-5AMY-HLZRCRY9A77T",
+    "<b:oi tag=\"30_Q\"/> <b:t>+</b:t><b:oi tag=\"30_Q\"/><b:t> = 10. What number is </b:t><b:oi tag=\"30_Q\"/><b:t>?</b:t>"
+  ],
+  [
+    "LDWGQ8G9-8LF3-AQN7-3SKI-F66NG1H4SWNP",
+    "Show that 2 + 2 = 4."
+  ],
+  [
+    "KKHQ9VOE-1YHE-WI54-CRQN-BOW0A1IMSJA4",
+    "Show that 3 + 3 = 6."
+  ],
+  [
+    "KQ8XLKTB-M4QL-U3T7-L9ZT-TYS9GN1BM3MH",
+    "<b:t>Make 10 using 2</b:t><b:oi tag=\"30_NB_Block\"/><b:t> of the same size.</b:t>"
+  ],
+  [
+    "WKRXVHTI-SCGZ-08AE-0KKB-PEWPYHTFPVZL",
+    "<b:t>Make 12 using 2</b:t><b:oi tag=\"30_NB_Block\"/><b:t> of the same size.</b:t>"
+  ],
+  [
+    "9FKJTGS9-A6J1-FXKJ-1HYF-3J418E2SOGPG",
+    null
+  ],
+  [
+    "P14UCUTB-WTOP-XCS6-QJKA-YJ5SB1JSY8GO",
+    "<b:t>Make 8 using 2</b:t><b:oi tag=\"30_NB_Block\"/><b:t> of the same size.</b:t>"
+  ],
+  [
+    "OI29S5O6-QODL-Q8LZ-RSTN-8WO9688KN11T",
+    null
+  ],
+  [
+    "Y0E8SEFY-QH42-ZYNZ-2IUH-E0KPK3Z1L6MB",
+    null
+  ],
+  [
+    "WWNWGWUJ-9Y0U-ISNZ-BIPR-BVEMFPQ48TF0",
+    null
+  ],
+  [
+    "5JL6XHN8-C492-Z5YT-0Z90-I7TA8A7KPHK9",
+    null
+  ],
+  [
+    "8DNMUPTY-11ZZ-UVHZ-E0LT-LTU0XNZAI7X4",
+    null
+  ],
+  [
+    "7JC2NSG7-TX8I-ZIA6-62OO-5FEI4ECNQ5MD",
+    "Start at 1. Count forward to 16 in jumps of three. "
+  ],
+  [
+    "V77YHBS0-GV7A-3NU5-THJZ-5IZFVEXT9JDM",
+    "Start at 1. Count forward to 26 in jumps of five. "
+  ],
+  [
+    "I6CDQ6Y1-UA5U-H4PV-GRA0-HDC5YXDYLU4G",
+    "Start at 1. Count forward to 21 in jumps of four. "
+  ],
+  [
+    "1LVBDIHK-AVU3-9IT3-Z4XC-I0LD38SEX2O9",
+    "Start at {$n}. Count forward to {$end} in jumps of {$var1}. "
+  ],
+  [
+    "KCOCB2XO-FHA1-AAQ4-5I78-AZ49EG7XHI4E",
+    "TimesTables problem"
+  ],
+  [
+    "CORKNK5H-VM9W-YRY7-U1NJ-7LCDWYX4EVKD",
+    null
+  ],
+  [
+    "RQQ5A9AY-ZYFZ-FHJ5-8O8E-45EBNXNK0R24",
+    "TimesTables problem"
+  ],
+  [
+    "PLVKGB57-5U37-TFER-2KN2-MRIHBZG16KVX",
+    "{@name} <b:t> starts at 7 and counts forwards in jumps of 3s. Which of these will </b:t> {@name}<b:t> land on?</b:t>"
+  ],
+  [
+    "55H8QETT-QFN2-O3JQ-U4IZ-5MB86UT83TKK",
+    "TimesTables problem"
+  ],
+  [
+    "KV36MHNP-AZR3-3M2R-0RZQ-M3DN4TUWZRGC",
+    "{@name} <b:t> starts at 6 and counts forwards in jumps of 5s. How many jumps does it take for</b:t> {@name}<b:t> to reach 121?</b:t>"
+  ],
+  [
+    "IA2MWMB9-NMX2-L5VJ-8STM-05OMB1DHWPKQ",
+    "Starting at 1, count forward to 16 in jumps of 3."
+  ],
+  [
+    "G3I0F3XZ-WXJ4-JGI7-R71W-U10UQKYQU0EK",
+    "Starting at {$n}. Count to {$xy+$n} in {$x}s."
+  ],
+  [
+    "C9QHV180-8E96-13LT-SBTB-JEMVRFAFLMUQ",
+    null
+  ],
+  [
+    "TMM11GVX-5OTU-W22X-LAU5-RZ4D4I98B9OM",
+    null
+  ],
+  [
+    "3669RTE0-QAG6-TXDY-X7SW-DM7GNJSUG0CZ",
+    "<b:t>Start at 28 and count backwards in 3s. Press</b:t><b:oi tag=\"30_Counter_Stop\"/><b:t> when it reaches 16.</b:t>"
+  ],
+  [
+    "28AU7JKT-GRDG-CK0K-JGH6-P1Z3PKZ8NYTD",
+    "<b:t>Start at 16 and count forward in 3s. Press </b:t><b:oi tag=\"30_Counter_Stop\"/><b:t> when it reaches {$x}.</b:t>"
+  ],
+  [
+    "1JIVTRL2-RI60-MMPP-SQW3-ZVPMVTHQTJKE",
+    "<b:t>Start at 34 and count backwards in 3s. Press </b:t><b:oi tag=\"30_Counter_Stop\"/><b:t> when it reaches {$x}.</b:t>"
+  ],
+  [
+    "G42MTNIE-FA9Y-8X76-1TIT-VH6PU47PHN58",
+    null
+  ],
+  [
+    "NX6VJOE0-MGS1-JGOD-TU56-L7HWK1RBQ1CO",
+    null
+  ],
+  [
+    "ASFNSMII-T84B-K2E4-MR5H-1OE7SFHHKEX8",
+    null
+  ],
+  [
+    "K2N4X5R9-5IEE-OROG-4T0X-D9S63R44FZHB",
+    null
+  ],
+  [
+    "8K2VLE9N-118S-DGJA-JDMS-70S798STMBID",
+    null
+  ],
+  [
+    "Z7NO27OE-5VSU-T168-DT0R-0BXBHSU34K0S",
+    null
+  ],
+  [
+    "9VJK04XQ-AHG6-VQ2D-FUCE-JGPPHVH4EONC",
+    null
+  ],
+  [
+    "IKAGZ0T5-7KQK-B6HD-FRW6-9I3QYE46JNIT",
+    null
+  ],
+  [
+    "8Y7J8AS9-HG6E-3JEN-BUON-3DAF4GZ3J6RK",
+    null
+  ],
+  [
+    "DHEFA6TJ-N127-0ZGU-YSK5-7Y3S1IL0C1OH",
+    null
+  ],
+  [
+    "DYTF5ZQS-ZQI0-C9RA-UT1H-UQJE07NC6CP3",
+    null
+  ],
+  [
+    "VKY6GAFB-RT8P-ZY4L-923C-9YKZ8A3R63NF",
+    null
+  ],
+  [
+    "IVV3LIVH-CEPC-Y5QG-08GK-1UQS03A9GTY6",
+    null
+  ],
+  [
+    "1O6VEAGG-5V9P-O3XB-S7IM-VQ042U2M29B3",
+    "<b:oi tag=\"{@thing_1}\"/><b:t>has {$x}</b:t><b:obj count=\"2\"/><b:t>.</b:t><b:oi tag=\"{@thing_2}\"/><b:t>has {$m} times as many</b:t><b:obj count=\"2\"/><b:t>as</b:t><b:oi tag=\"{@thing_1}\"/><b:t>. How many</b:t><b:obj count=\"2\"/><b:t>do they have in total?</b:t>"
+  ],
+  [
+    "BIUHP0PV-T15E-PBC7-7O0I-XPJRV75I1K49",
+    "<b:t>All</b:t><b:obj count=\"2\"/><b:t>costs {$x} goobles each.</b:t><b:oi tag=\"{@thing_1}\"/><b:t>buys {$m} </b:t><b:oi tag=\"30_DT_Shape_Diamond\"/><b:t> and {$n} </b:t><b:oi tag=\"30_DT_Shape_Square\"/><b:t>. How much does</b:t><b:oi tag=\"{@thing_1}\"/><b:t>spend?</b:t>"
+  ],
+  [
+    "6RD6XPRC-P3Z0-RLAO-BZRR-IJAKR85X0BUM",
+    "<b:t>All shapes of goo cost {$x} goobles.</b:t><b:oi tag=\"{@thing_1}\"/><b:t>buys {$m} </b:t><b:oi tag=\"30_DT_Shape_Ellipse\"/><b:t> and some </b:t><b:oi tag=\"30_DT_Shape_RoundedSquare\"/><b:t>goo.</b:t><b:oi tag=\"{@thing_1}\"/><b:t>spends {$z} gobbles. How many </b:t><b:oi tag=\"30_DT_Shape_RoundedSquare\"/><b:t> goo does</b:t><b:oi tag=\"{@thing_1}\"/><b:t>buy?</b:t>"
+  ],
+  [
+    "0I7R37TY-40A5-HR5D-JK9O-U94CZXQPP69B",
+    "<b:oi tag=\"{@thing_1}\"/><b:t>has {$x} goo.</b:t><b:oi tag=\"{@thing_2}\"/><b:t>has {$m} times as many goo as</b:t><b:oi tag=\"{@thing_1}\"/><b:t>. How many goo do they have altogether?</b:t>"
+  ],
+  [
+    "70J5F8DN-DE56-QZPC-EP5H-J8GNG6E9HA7B",
+    "<b:oi tag=\"thing_1\"/><b:t>has {$x} goo.</b:t><b:oi tag=\"thing_1\"/><b:t>eats {$m} of the goo and shares the rest equally between</b:t><b:oi tag=\"thing_2\"/><b:t>,</b:t><b:oi tag=\"thing_3\"/><b:t>,</b:t><b:oi tag=\"thing_4\"/><b:t>and</b:t><b:oi tag=\"thing_5\"/><b:t>. How many goo does each get?</b:t>"
+  ],
+  [
+    "SGY1AV2W-0TV9-RCB2-1CRK-7GSU8QQ11K1P",
+    null
+  ],
+  [
+    "SCD8FSIY-DEPN-3AMB-SZ3G-CZ6QHMYT4FKQ",
+    "<b:oi tag=\"30_DT_Shape_Square\"/><b:t> goo comes in packs of {$x}.</b:t><b:oi tag=\"30_DT_Shape_Diamond\"/><b:t>goo comes in packs of {$y}.</b:t><b:oi tag=\"{@thing_1}\"/><b:t>has {$m} packs of </b:t><b:oi tag=\"30_DT_Shape_Diamond\"/><b:t> and {$n} packs of </b:t><b:oi tag=\"30_DT_Shape_Square\"/><b:t> goo. How many goo does</b:t><b:oi tag=\"{@thing_1}\"/><b:t>have in total?</b:t>"
+  ],
+  [
+    "08CUDSJB-NG4J-CEEO-9V53-FIQVGYGOC8QR",
+    "<b:t>Goo comes in packs of {$m}.</b:t><b:oi tag=\"{@thing_1}\"/><b:t>has {$x} packs of goo and eats {$n} goo from each pack. how many goo does</b:t><b:oi tag=\"{@thing_1}\"/><b:t>have left?</b:t>"
+  ],
+  [
+    "2VZ0NPSH-2MUB-22JN-N0EM-8BVA1BT7MNFA",
+    "<b:oi tag=\"{@thing_1}\"/><b:t>has 5</b:t><b:obj count=\"2\"/><b:t>.</b:t><b:oi tag=\"{@thing_2}\"/><b:t>has 9</b:t><b:obj count=\"2\"/><b:t>.</b:t><b:oi tag=\"{@thing_1}\"/><b:t>,</b:t><b:oi tag=\"{@thing_2}\"/><b:t> and</b:t><b:oi tag=\"thing_3\"/><b:t> share the</b:t><b:obj count=\"2\"/><b:t>equally. How many</b:t><b:obj count=\"2\"/><b:t>are left over?</b:t>"
+  ],
+  [
+    "AJUJRXGN-WI18-2H8L-7Y8N-RBXVZR8JUJUS",
+    "<b:t>Move the</b:t><b:oi tag=\"30_bubble\"/><b:t>to 3.</b:t>"
+  ],
+  [
+    "8Q8A262C-W9JV-2944-ZDP8-130NI38BL5MN",
+    "<b:t>Move the</b:t><b:oi tag=\"30_bubble\"/><b:t>to -3.</b:t>"
+  ],
+  [
+    "43WG8LHJ-6U5F-F4BE-FE5D-WO1DU3TIJLEQ",
+    "<b:t>Move the</b:t><b:oi tag=\"30_bubble\"/><b:t>to {$var1}.</b:t>"
+  ],
+  [
+    "GDWPGFLI-IDGD-QVA6-5O1D-64ARVV2DYLR3",
+    "<b:t>Move the</b:t><b:oi tag=\"30_bubble\"/><b:t>to -{$var1}.</b:t>"
+  ],
+  [
+    "X0BPIJQN-YU1O-6OIS-Q9FI-QN10WFCRT2Y1",
+    "How far apart are -2 and 2?"
+  ],
+  [
+    "SJH7S0QH-CEMD-ZQ2D-JPYE-R51ZJZT75RLD",
+    "How far apart are -{$var1} and {$var1}?"
+  ],
+  [
+    "73EU8JGG-LJZC-RAPL-1Y2G-NT5G9HAWAPYU",
+    null
+  ],
+  [
+    "H9MQIGP1-AQ33-OYIX-EWS3-CMVU5WYSLQ9F",
+    "How far away is each marker from 0?"
+  ],
+  [
+    "CJMN04D7-A0HQ-NY68-A15S-17MLCX0P4F5Y",
+    "How far away is each marker from 0?"
+  ],
+  [
+    "QI8IZKUJ-AWVN-Q2R4-L3BL-SXKYEAH8WMR4",
+    "This is 35. There is a second </b:t><b:oi tag=\"30_NL_Yellow\" /><b:t>which is the same distance from 0 but negative. What number is the marker on?"
+  ],
+  [
+    "51Z9RK0L-LHFZ-6UPZ-LKOC-TWGTGQPSJZGC",
+    "How far away is each marker from 0?"
+  ],
+  [
+    "NDWN7462-10MS-W7UJ-A85O-FMGUHQ3CNWXS",
+    "How far away is each marker from 0?"
+  ],
+  [
+    "83FYIM3W-7T3P-WL6J-HAHI-YKUTN4Y3GCUG",
+    "Which of these is true?"
+  ],
+  [
+    "K3BM0UA7-90MX-4AWV-TG42-TBZ0Y2YSKH3Y",
+    null
+  ],
+  [
+    "QL7812NT-4NML-95MO-EGCW-UBIT2ESZQ066",
+    "Which of these is true?"
+  ],
+  [
+    "ZWPRD13Q-212W-D58E-SV8W-3OTWNJX9A6G8",
+    null
+  ],
+  [
+    "OSKC0S6Y-E697-IW0W-TVOV-PQ5WHU75S36Z",
+    "Which of these is true?"
+  ],
+  [
+    "VQZO547M-ITV8-LDIM-SC4G-X4XFVD8P1TO7",
+    null
+  ],
+  [
+    "I57BSIK4-KD0V-7AFB-75PA-HLI11PGEU1XI",
+    "Which of these are correct?"
+  ],
+  [
+    "AZ2I1YW1-1XS8-5K1P-KOVW-LLQQX7ZRB2N9",
+    "Which of these are correct?"
+  ],
+  [
+    "LJNWO57A-ATM8-B7PG-7G20-97YQCVH3IQZ1",
+    "Which of these are correct?"
+  ],
+  [
+    "DP58X44I-FVC0-3YT5-18U0-684LJC77L2Q5",
+    null
+  ],
+  [
+    "EH20GG6E-V7M5-V0UI-CQS8-B92H3OFSFEW7",
+    null
+  ],
+  [
+    "RDVRDIQJ-858X-FU0U-BI3M-PZMUYZ0K56WL",
+    null
+  ],
+  [
+    "EI69QK9V-M4Q5-HECK-MBT2-182C9PUYNRPE",
+    null
+  ],
+  [
+    "CWC0ILMX-2HD7-WKF3-WNYL-J081OEGAH39M",
+    null
+  ],
+  [
+    "PG55YLZ8-A2D6-AYDL-WHNA-LZR60ORMD5WR",
+    null
+  ],
+  [
+    "FQHF86DP-34MT-A2ET-BYQJ-1QYPKBXBJV5J",
+    null
+  ],
+  [
+    "Z6RBJMBQ-LTVE-BK89-3T1U-SQLXWGRTSXW3",
+    null
+  ],
+  [
+    "ZRDI16L0-JHX2-F05N-EGYW-YN9RASWXMJWD",
+    null
+  ],
+  [
+    "0OBE1H81-SF50-M3DT-XAK9-M9B898DS3I0T",
+    null
+  ],
+  [
+    "VGIXDEH0-8Z8O-AQJS-2K3F-CFR5RS0Z1NDO",
+    "Which of these show the order of numbers of increasing size?"
+  ],
+  [
+    "F0WUFX64-Z72C-D1GZ-WBCK-I963EVJMMS6G",
+    "Which of these show the order of numbers of increasing size?"
+  ],
+  [
+    "29DIXN00-E61A-W393-1ZBF-LAK21C6AKWHW",
+    "Which of these show the order of numbers of increasing size?"
+  ],
+  [
+    "QNB0AASM-4A3X-9GTM-97I0-7ZFLXB3LTN88",
+    "-{$x} degrees is {$x} degrees less than 0 degrees. What is {$x} degrees more than 0 degrees?"
+  ],
+  [
+    "PTFK502Z-UQ3N-LGV7-KP6V-TDT2DUP1QSJ8",
+    "What is the opposite of {$x}?"
+  ],
+  [
+    "XJRNH4VE-G7QE-BFZV-MLND-UATA4OSACJO0",
+    "-{$x} metres is {$x} metres below sea level. What is {$x} metres above sea level?"
+  ],
+  [
+    "5DG43X5E-C7ET-5ULE-J78V-DNFMR4A2YZXO",
+    "What is the opposite of {$x}?"
+  ],
+  [
+    "SWEJL007-5YUH-JKSS-YRKH-JL551MJ2PG0L",
+    null
+  ],
+  [
+    "6LGP49NT-WHX4-Q8ST-9HQF-FU46YYDSUCS6",
+    null
+  ],
+  [
+    "0A2F0JDV-48GM-W6JB-G1J6-AREXTWIM2PTP",
+    null
+  ],
+  [
+    "GR003VSF-3DCI-4O73-KMEJ-UWCW9X86UINE",
+    null
+  ],
+  [
+    "ISNRA9GO-694T-YK5L-CLSU-WWJ8B914FMD4",
+    null
+  ],
+  [
+    "ZPE5CR53-XIAK-2D1Y-F8PC-VE4LMYSVHNMR",
+    null
+  ],
+  [
+    "OPP6N2MK-7YKU-LSWY-BB1K-2ME0BAG32BQ9",
+    null
+  ],
+  [
+    "HGPUO4UC-9UWR-SNRL-KFA9-IQ427YN33LZG",
+    null
+  ],
+  [
+    "5T16LJX4-9042-ZHYK-FG4T-SH5JFJOCFB7B",
+    null
+  ],
+  [
+    "047I61XI-2VFU-2NYR-EEOS-H9TXDJXJLQMK",
+    null
+  ],
+  [
+    "2TS8ZWB9-8H9D-3FO0-HPQU-8EQAR5W5IOP8",
+    null
+  ],
+  [
+    "TYWRVUBK-1QH8-GF2N-AUVP-075F1X7J3JTK",
+    null
+  ],
+  [
+    "KXM96FJM-613R-L151-WJTI-CH9ULE1TB5YF",
+    null
+  ],
+  [
+    "X5S82LAA-IXA4-BSUJ-1ID4-SW03LQ8QDWNY",
+    "This is 3. Make 2."
+  ],
+  [
+    "U3DWL3ZQ-C45N-2FD8-7WP5-XE007OOE8ACE",
+    "This is 3. Make 2 using negative blocks."
+  ],
+  [
+    "YRWCSY87-HLQJ-N8QU-D666-RNCL7QGT79B2",
+    "3-1"
+  ],
+  [
+    "ZPDBXIDG-E1YR-57TH-L6Q2-XRCVV4VGT29N",
+    "This is {$a}. Make {$ab}."
+  ],
+  [
+    "3VYPTUCE-ECMS-XADJ-XL6Y-QJ93W4RJIU5Q",
+    "3-1"
+  ],
+  [
+    "6VVI8VAX-MU2B-MTN4-KS68-N7SRH31T10QT",
+    "This is {$a}. Make {$ab}."
+  ],
+  [
+    "NWZCEFA9-2FXH-SVRQ-CK5Y-4B35D4QT47GI",
+    "Show that {$a} + {$b} = {$ab}."
+  ],
+  [
+    "AMN5TX2X-VGWF-H8KD-XXGM-O0T7CMF7UAMT",
+    "This is 5 + -1. Make 5."
+  ],
+  [
+    "GTV0FMQI-0WO4-KSJ4-IWRE-B5QIBWQ1GETY",
+    "This is 4. Make 5."
+  ],
+  [
+    "TUJ2LCN7-TZGU-6NW3-EYJ3-1V9RBKEPIV7R",
+    "Show that 4 - -1 = 5."
+  ],
+  [
+    "EXR7FBU2-V2XO-II7W-B76F-G33XC951FPCR",
+    "This is {$a} + -{$b}. Make {$a}."
+  ],
+  [
+    "G03SXCHD-T551-E7TK-KHDQ-ZJ8T2FJT2TKQ",
+    "This is -5. Show that -5 - 3  = -8."
+  ],
+  [
+    "VE6X4B9Z-E3VH-7PQK-GUU0-3MPUEOQ3C36R",
+    "Show that {$a} - {$b} = {$a-$b}."
+  ],
+  [
+    "4V7M9Z37-BKMQ-1XIO-8TFJ-1X7XPBFQE7ZN",
+    "This is -3. Show that -3 - 2  = -5."
+  ],
+  [
+    "VBY0AUQT-CALS-CNW4-PK79-034D2PQ9Y34U",
+    "Show that {$a} - {$b} = {$a-$b}."
+  ],
+  [
+    "DTIS5L15-OB98-CC5V-W5ST-8EH8O143AHVM",
+    "What is {$a} + {$b}?"
+  ],
+  [
+    "7RYZWNNO-9TFZ-M4O1-53EK-FCDD85HOGJ3C",
+    "What is 3 more positive than 6?"
+  ],
+  [
+    "TAMDA8DQ-Q01S-6YBG-R44Q-CO1WSHVH4NNA",
+    null
+  ],
+  [
+    "AIN2KZDU-8HQF-UFOV-UUT5-K4LI4E8G6YTW",
+    "What is 3 more negative than 6?"
+  ],
+  [
+    "N4KV9I8X-0Z5V-Q2ZA-YZPG-VER97DCCW7CQ",
+    null
+  ],
+  [
+    "QRCJ0D12-VMHN-EGNO-695M-D3BRSIPZ6RWH",
+    "What is {$x} more positive than {$y}?"
+  ],
+  [
+    "MVQYFQ42-TSVL-E62S-I48C-KQFZM80U0B2H",
+    "What is {$x} more negative than {$y}?"
+  ],
+  [
+    "OB1TBMPW-TMOD-2O48-JYKA-GCHLEWRGDOBA",
+    null
+  ],
+  [
+    "75N54Z4T-U0UY-2C7V-N5UU-P7PMVO1Y9MLJ",
+    null
+  ],
+  [
+    "04Q6OW66-PQ2X-9X2W-3UWB-GNYSROHM3YGZ",
+    null
+  ],
+  [
+    "F2P10BZQ-ACW3-EEUA-1Y5X-XTCMR9KTJIRP",
+    null
+  ],
+  [
+    "GIHVU4DG-WOQW-2W69-26WD-X1WBRAOZWFT3",
+    null
+  ],
+  [
+    "IZ263QE3-BP0T-K8Z6-XPLA-JI6R9GY3A1TV",
+    "Make {$answer}."
+  ],
+  [
+    "XYJ78DKD-OJI9-J8WO-Z69H-S3811P47GAC0",
+    "Make {$answer}."
+  ],
+  [
+    "A4VZGLJK-R05G-DOWN-8JKI-MEB9Q0F01FZO",
+    "What is {$x} - {$a}?"
+  ],
+  [
+    "YX4IVYN7-MOX5-5W1L-RPPQ-5FZQ31M5178Z",
+    "What is {$x} + {0-$a}?"
+  ],
+  [
+    "ORKM5NNO-A7YW-JSXZ-RD9H-8500KYWL5E1Z",
+    null
+  ],
+  [
+    "MRN4Y30V-RW9L-U09I-8BNH-3B9QDBLMG1TW",
+    "Make {$answer}."
+  ],
+  [
+    "B9JF1ZPT-T3LY-FN8L-TPGW-W5HXZ31QFFZZ",
+    "Make {$answer}."
+  ],
+  [
+    "6ZGQCB6Y-R7E1-OVVX-JGGK-MG1SPY3V3JP4",
+    null
+  ],
+  [
+    "YYB7ZUPF-FLZ0-ENQN-AN71-795SZAED0UFL",
+    "Make {$answer}."
+  ],
+  [
+    "X1MENVKC-GSK4-3TJD-I1AA-TDWS7RVAMSLN",
+    "Make {$answer}."
+  ],
+  [
+    "VU3YM259-OG11-BA28-GE48-GCCSY1NDI33I",
+    null
+  ],
+  [
+    "P2MWCX35-Z1J8-62Z1-G4LN-GHT226DKVF9X",
+    "What is {$x} - {$a} ?"
+  ],
+  [
+    "5D6ERKFE-6EM5-6PU9-BRHP-U1VMINNI4Z02",
+    "What is {$x} + {0-$a} ?"
+  ],
+  [
+    "JZGFPP43-763T-6RGW-BT8B-97AEJKQZMGKP",
+    null
+  ],
+  [
+    "QU32XM65-6AH1-2Y9I-0DFF-ZSGLSXI678NT",
+    "What is 3 more positive than 6?"
+  ],
+  [
+    "VF2T4VJW-AL8X-INJS-LRXB-4AB9VOZN6V0F",
+    "What is 3 more positive than 6?"
+  ],
+  [
+    "VVSSNI93-1X62-B3NL-0E5M-96GZ56TWG7WP",
+    "What is 3 more positive than 6?"
+  ],
+  [
+    "QZO91BY8-C165-HCWU-VR2I-5DWODQD366VL",
+    "What is 3 more positive than 6?"
+  ],
+  [
+    "IGIUF48Z-W1TM-V0AR-NOE4-2W5QBWYSNQDA",
+    "What is 3 more positive than 6?"
+  ],
+  [
+    "7KVWYFAU-MOME-1TGE-TL85-V54L73V0PH1K",
+    "What is 3 more positive than 6?"
+  ],
+  [
+    "UU4EGJO7-GZ2N-1R2E-19SM-0MSFXQC5EORQ",
+    null
+  ],
+  [
+    "Y00KAAD2-A4AV-ZZSA-0KQD-0BSSXDC74CHR",
+    null
+  ],
+  [
+    "3V8V01VJ-E0HF-SNTM-D3D3-E3Z92DS841CA",
+    "Make 12 using only multiplication."
+  ],
+  [
+    "QEVRA5EG-G4HL-22OI-MQB3-Y687484GD6LN",
+    "Make 12 in six ways."
+  ],
+  [
+    "OBAKJ3A5-7IN5-BORS-HFXC-XLPAU283FYJH",
+    null
+  ],
+  [
+    "SUG07P1L-0GHE-ULME-Z9QO-SHOBSR4736HS",
+    "Make 6 using only multiplication."
+  ],
+  [
+    "4ND0MLPZ-1JDP-HSSK-TSM6-X24FE78HA3TZ",
+    "Make 6 in four ways."
+  ],
+  [
+    "A80ACTXQ-RYUK-JGVS-H6ET-XR93KE1N8KT3",
+    null
+  ],
+  [
+    "UR9OZSA5-1544-0ELH-WCBH-AR491I3NZMNO",
+    null
+  ],
+  [
+    "MNOSBBFQ-FLL4-LUEV-EFJP-NFAJRYEDDTFP",
+    null
+  ],
+  [
+    "MRSH6ADT-G73X-OV4U-E4GT-I5WLARKPNFLC",
+    null
+  ],
+  [
+    "VP3Z2D0B-EOLK-PHUI-KQ5U-BHKKOJRX4S3U",
+    null
+  ],
+  [
+    "L8YTSSP8-TGEM-VTQM-322M-Z5DLDFA7MAT1",
+    null
+  ],
+  [
+    "GYHVBUZC-B0V2-R3NS-RLZK-BUKMIM2TV7XY",
+    null
+  ],
+  [
+    "POZLGNLG-H81O-BGA9-CJ46-74IDG0TOU0NF",
+    null
+  ],
+  [
+    "3FJIN0JU-AE5P-0OAB-AQDL-I2L2SLKOTWPJ",
+    null
+  ],
+  [
+    "S4H2HREE-UQUT-JGBU-0DG3-A0HL5ZRXYB65",
+    "A prime number has exactly 2 positive factors, 1 and itself. 3 is a prime number. How many ways are there of making 3?"
+  ],
+  [
+    "BYJPODHB-Q8Z3-ZRMN-RMUE-EHJZUJ4I9HDY",
+    "Select all the ways to make 3 on a times table grid. "
+  ],
+  [
+    "MUQXMNQJ-U7P9-W9QC-YT9A-GENKTKBARQLV",
+    "7 is a prime number and only has the factors 1 and 7. Draw all the possible ways to make a rectangle consisting of 7 squares. "
+  ],
+  [
+    "T84OSIB0-JJOG-5FW7-KGQM-U8O5ZVC1OKSV",
+    "Select all the ways to make 7 on a times table grid. "
+  ],
+  [
+    "1I66Q3KG-E1AU-UNSM-GP8S-CA4FO5W8D6CD",
+    "Draw all the possible ways to make a rectangle consisting of 5 squares. "
+  ],
+  [
+    "PA69WDUV-3BWA-86TB-JWA0-Y711FF4BPAV9",
+    "Select all the ways to make 5 on a times table grid. "
+  ],
+  [
+    "GQJVYNF0-CJSY-PFCY-NLQV-9L7BHPUFQEZE",
+    null
+  ],
+  [
+    "AUNQPV9L-N562-M31T-6ADN-I7ZCWMATA6PM",
+    "Select all the ways to make 4 on a times table grid. "
+  ],
+  [
+    "S17TWR3A-I6QM-8IHA-LPGL-ORLZENFWOAQC",
+    "Draw all the possible ways to make a rectangle consisting of 4 squares. "
+  ],
+  [
+    "SVIVTWQA-SYLH-0NEF-DIKB-1QK5BJXJF7XK",
+    null
+  ],
+  [
+    "FX9R5B2S-YT4O-F2Z1-I5DQ-5RL6UXC9RERO",
+    "Is {$x} a prime number?"
+  ],
+  [
+    "3H4L5MO8-IK9Q-ELDZ-2N8J-3865HL949OID",
+    "Is {$x} a prime number?"
+  ],
+  [
+    "UWJTT28W-BXLC-340T-97TP-V2YO5EF5WVUC",
+    "Is {$x} a prime number?"
+  ],
+  [
+    "8MFCOQCE-3MZP-IPI0-KO3W-5DSP1TI84WPA",
+    "Is {$x} a prime number?"
+  ],
+  [
+    "E2BOC7ZR-WAV6-CD18-T09D-D3YGS5TE2F3J",
+    "Is {$x} a prime number?"
+  ],
+  [
+    "YUCYYKY1-WV8G-122P-ZY6I-ESM6PJGPCQ6M",
+    null
+  ]
+]

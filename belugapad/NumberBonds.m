@@ -200,8 +200,8 @@ static float kNBFontSizeLarge=35.0f;
 {
 
     int dockSize=12;
-    float dockPieceYPos=582.0f;
-    float initBarStartYPos=582.0f;
+    float initBarStartYPos=532.0f;
+    float dockPieceYPos=initBarStartYPos;
     float initCageStartYPos=0.0f;
     
     if(useBlockScaling)

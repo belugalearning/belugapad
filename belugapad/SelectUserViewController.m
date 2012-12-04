@@ -26,8 +26,11 @@
     UIButton *playButton;
     UIButton *joinClassButton;
     
-    UIImageView *modalPassCodeImageBgView;
-    PassCodeView *modalPassCodeView;
+    UIImageView *selectUserModalUnderlay;
+    UIImageView *selectUserModalBgView;
+    PassCodeView *selectUserPassCodeModalView;
+    UIButton *backToSelectUserButton;
+    UIButton *loginButton;
     
     UITextField *newUserNameTF;
     PassCodeView *newUserPassCodeView;
@@ -122,14 +125,27 @@
     [panel setCenter:CGPointMake(511.0f, 377.0f)];
     [selectUserView addSubview:panel];
     
+    selectUserTableView = [[[UITableView alloc] initWithFrame:CGRectMake(322.0f,244.0f,378.0f,140.0f) style:UITableViewStylePlain] autorelease];
+    selectUserTableView.backgroundColor = [UIColor clearColor];
+    selectUserTableView.opaque = YES;
+    selectUserTableView.backgroundView = nil;
+    selectUserTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    selectUserTableView.dataSource = self;
+    selectUserTableView.delegate = self;
+    [selectUserView addSubview:selectUserTableView];
+    
+    UIImageView *mask = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/table-mask.png"]] autorelease];
+    mask.frame = CGRectMake(320.0f,243.0f,381.0f,146.0f);
+    [selectUserView addSubview:mask];
+    
     UIButton *newUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    newUserButton.frame = CGRectMake(331.0f, 393.0f, 131.0f, 51.0f);
+    newUserButton.frame = CGRectMake(331.0f, 403.0f, 131.0f, 51.0f);
     [newUserButton setImage:[UIImage imageNamed:@"/login-images/new_button.png"] forState:UIControlStateNormal];
     [newUserButton addTarget:self action:@selector(handleNewUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [selectUserView addSubview:newUserButton];
     
     UIButton *existingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    existingUserButton.frame = CGRectMake(559.0f, 394.0f, 131.0f, 51.0f);
+    existingUserButton.frame = CGRectMake(559.0f, 404.0f, 131.0f, 51.0f);
     [existingUserButton setImage:[UIImage imageNamed:@"/login-images/download_button.png"] forState:UIControlStateNormal];
     [existingUserButton addTarget:self action:@selector(handleExistingUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [selectUserView addSubview:existingUserButton];
@@ -145,21 +161,7 @@
     joinClassButton.frame = CGRectMake(220.0f, 447.0f, 100.0f, 95.0f);
     [joinClassButton setImage:[UIImage imageNamed:@"/login-images/join_class_button_disabled.png"] forState:UIControlStateNormal];
     [joinClassButton setImage:[UIImage imageNamed:@"/login-images/join_class_button_disabled.png"] forState:UIControlStateHighlighted];
-    //[joinClassButton addTarget:self action:@selector(handleExistingUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [selectUserView addSubview:joinClassButton];
-    
-    selectUserTableView = [[[UITableView alloc] initWithFrame:CGRectMake(322.0f,234.0f,378.0f,140.0f) style:UITableViewStylePlain] autorelease];
-    selectUserTableView.backgroundColor = [UIColor clearColor];
-    selectUserTableView.opaque = YES;
-    selectUserTableView.backgroundView = nil;
-    selectUserTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    selectUserTableView.dataSource = self;
-    selectUserTableView.delegate = self;
-    [selectUserView addSubview:selectUserTableView];
-    
-    UIImageView *mask = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/table-mask.png"]] autorelease];
-    mask.frame = CGRectMake(320.0f,233.0f,381.0f,146.0f);
-    [selectUserView addSubview:mask];
 }
 
 -(void)enablePlayButton
@@ -235,19 +237,69 @@
 {
     NSIndexPath *ip = [selectUserTableView indexPathForSelectedRow];
     if (ip)
+    {        
+        if (selectUserModalBgView) return;
+        
+        selectUserModalUnderlay = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/BG_Shade.png"]];
+        [self.view addSubview:selectUserModalUnderlay];
+        
+        CGPoint p = CGPointMake(512.0f, 354.0f);
+        
+        selectUserModalBgView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/passcode_modal.png"]] autorelease];
+        selectUserModalBgView.center = p;
+        [self.view addSubview:selectUserModalBgView];
+        
+        selectUserPassCodeModalView = [[[PassCodeView alloc] initWithFrame:CGRectMake(387.0f, 327.0f, 245.0f, 46.0f)] autorelease];
+        [self.view addSubview:selectUserPassCodeModalView];
+        
+        backToSelectUserButton = [[[UIButton alloc] init] autorelease];
+        backToSelectUserButton.frame = CGRectMake(322.0f, 394.0f, 131.0f, 51.0f);
+        [backToSelectUserButton setImage:[UIImage imageNamed:@"/login-images/back_button.png"] forState:UIControlStateNormal];
+        [backToSelectUserButton addTarget:self action:@selector(handleBackToSelectUserClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:backToSelectUserButton];
+        
+        loginButton = [[[UIButton alloc] init] autorelease];
+        loginButton.frame = CGRectMake(577.0f, 394.0f, 131.0f, 51.0f);
+        [loginButton setImage:[UIImage imageNamed:@"/login-images/login_button_grey.png"] forState:UIControlStateNormal];
+        [loginButton addTarget:self action:@selector(handleLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:loginButton];
+    }
+}
+
+-(void)handleBackToSelectUserClicked:(id)button
+{
+    [selectUserModalUnderlay removeFromSuperview];
+    selectUserModalUnderlay = nil;
+    [selectUserModalBgView removeFromSuperview];
+    selectUserModalBgView = nil;
+    [selectUserPassCodeModalView removeFromSuperview];
+    selectUserPassCodeModalView = nil;
+    [backToSelectUserButton removeFromSuperview];
+    backToSelectUserButton = nil;
+    [loginButton removeFromSuperview];
+    loginButton = nil;
+}
+
+-(void)handleLoginButtonClicked:(id)button
+{
+    if (!selectUserPassCodeModalView.isValid)
     {
-        NSDictionary *ur = [deviceUsers objectAtIndex:ip.row];
-        [usersService setCurrentUserToUserWithId:[ur objectForKey:@"id"]];
+        [selectUserPassCodeModalView becomeFirstResponder];
+        return;
+    }
+    
+    NSIndexPath *ip = [selectUserTableView indexPathForSelectedRow];
+    NSDictionary *ur = deviceUsers[ip.row];
+    
+    if ([ur[@"password"] isEqualToString:selectUserPassCodeModalView.text])
+    {
+        [usersService setCurrentUserToUserWithId:ur[@"id"]];
         [self.view removeFromSuperview];
         [app proceedFromLoginViaIntro:NO];
-        
-        
-        
-        /*modalPassCodeImageBgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/passcode_modal.png"]];
-        modalPassCodeImageBgView.center = CGPointMake(512.0f, 354.0f);
-        [self.view addSubview:modalPassCodeImageBgView];
-        
-        [modalPassCodeImageBgView registerForDragAndLog];*/
+    }
+    else
+    {
+        [selectUserPassCodeModalView clearText];
     }
 }
 
@@ -265,7 +317,7 @@
 #pragma mark EditUserView
 
 -(void)buildEditUserView
-{    
+{
     newUserNameTF = [[[UITextField alloc] initWithFrame:CGRectMake(334.0f, 278.0f, 360.0f, 42.0f)] autorelease];
     newUserNameTF.delegate = self;
     newUserNameTF.font = [UIFont fontWithName:@"Chango" size:24];
@@ -279,7 +331,7 @@
     [newUserNameTF setBorderStyle:UITextBorderStyleNone];
     [editUserView addSubview:newUserNameTF];
     
-    newUserPassCodeView = [[[PassCodeView alloc] initWithFrame:CGRectMake(390.0f, 334.0f, 255.0f, 46.0f)] autorelease];
+    newUserPassCodeView = [[[PassCodeView alloc] initWithFrame:CGRectMake(390.0f, 332.0f, 245.0f, 46.0f)] autorelease];
     newUserPassCodeView.delegate = self;
     [editUserView addSubview:newUserPassCodeView];
     
@@ -291,7 +343,7 @@
     
     saveNewUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
     saveNewUserButton.frame = CGRectMake(591.0f, 397.0f, 103.0f, 49.0f);
-    [saveNewUserButton setImage:[UIImage imageNamed:@"/login-images/save_button.png"] forState:UIControlStateNormal];;
+    [saveNewUserButton setImage:[UIImage imageNamed:@"/login-images/save_button.png"] forState:UIControlStateNormal];
     [saveNewUserButton addTarget:self action:@selector(handleSaveNewUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [editUserView addSubview:saveNewUserButton];
 }
@@ -471,7 +523,6 @@
     }
     return nil;
 }
-
 
 #pragma mark -
 #pragma mark Destruction

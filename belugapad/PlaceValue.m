@@ -3029,10 +3029,13 @@ static float kTimeToCageShake=7.0f;
                 {
                     if([pickupObjects count]>0)
                     {
+                        NSArray *thesePositions=[NumberLayout physicalLayoutUpToNumber:[pickupObjects count] withSpacing:60.0f];
+                        
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
-                            go.PosX=posX;
-                            go.PosY=posY+85 *[pickupObjects indexOfObject:go];
+                            CGPoint thisPos=[[thesePositions objectAtIndex:[pickupObjects indexOfObject:go]] CGPointValue];
+                            go.PosX=posX+thisPos.x+diff.x;
+                            go.PosY=posY+thisPos.y+diff.y;
                             [go handleMessage:kDWupdateSprite andPayload:nil withLogLevel:-1];
                         }
                     }

@@ -1703,6 +1703,9 @@ static float kTimeToCageShake=7.0f;
 -(int)freeSpacesOnGrid:(int)thisGrid
 {
     int freeSpace=0;
+//    int curNum=[[blocksToCreate objectAtIndex:thisGrid]intValue];
+    int curBlockValue=[[currentBlockValues objectAtIndex:thisGrid]intValue];
+    DWPlaceValueCageGameObject *cage=[allCages objectAtIndex:thisGrid];
     
     for (int r=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] count]-1; r>=0; r--) {
         NSMutableArray *row=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] objectAtIndex:r];
@@ -1717,7 +1720,11 @@ static float kTimeToCageShake=7.0f;
             {
                 freeSpace++;
             }
-            else if(co.MountedObject && !co.CancellingObject && explodeMode)
+            else if(co.MountedObject && cage.ObjectValue<0 && ((DWPlaceValueBlockGameObject*)co.MountedObject).ObjectValue>0 && !co.CancellingObject && explodeMode)
+            {
+                freeSpace++;
+            }
+            else if(co.MountedObject && cage.ObjectValue>0 && ((DWPlaceValueBlockGameObject*)co.MountedObject).ObjectValue<0 && !co.CancellingObject && explodeMode)
             {
                 freeSpace++;
             }

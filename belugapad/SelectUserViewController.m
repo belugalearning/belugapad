@@ -31,6 +31,7 @@
     PassCodeView *selectUserPassCodeModalView;
     UIButton *backToSelectUserButton;
     UIButton *loginButton;
+    UIImageView *tickCrossImg;
     
     UITextField *newUserNameTF;
     PassCodeView *newUserPassCodeView;
@@ -251,12 +252,14 @@
         [self.view addSubview:selectUserModalBgView];
         
         selectUserPassCodeModalView = [[[PassCodeView alloc] initWithFrame:CGRectMake(387.0f, 327.0f, 245.0f, 46.0f)] autorelease];
+        selectUserPassCodeModalView.delegate = self;
         [self.view addSubview:selectUserPassCodeModalView];
         
         backToSelectUserButton = [[[UIButton alloc] init] autorelease];
         backToSelectUserButton.frame = CGRectMake(322.0f, 394.0f, 131.0f, 51.0f);
         [backToSelectUserButton setImage:[UIImage imageNamed:@"/login-images/back_button.png"] forState:UIControlStateNormal];
         [backToSelectUserButton addTarget:self action:@selector(handleBackToSelectUserClicked:) forControlEvents:UIControlEventTouchUpInside];
+        
         [self.view addSubview:backToSelectUserButton];
         
         loginButton = [[[UIButton alloc] init] autorelease];
@@ -264,6 +267,10 @@
         [loginButton setImage:[UIImage imageNamed:@"/login-images/login_button_grey.png"] forState:UIControlStateNormal];
         [loginButton addTarget:self action:@selector(handleLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:loginButton];
+        
+        tickCrossImg = [[[UIImageView alloc] initWithFrame:CGRectMake(651, 344, 22, 17)] autorelease];
+        [self.view addSubview:tickCrossImg];
+        
     }
 }
 
@@ -279,12 +286,16 @@
     backToSelectUserButton = nil;
     [loginButton removeFromSuperview];
     loginButton = nil;
+    [tickCrossImg removeFromSuperview];
+    tickCrossImg = nil;
 }
 
 -(void)handleLoginButtonClicked:(id)button
 {
     if (!selectUserPassCodeModalView.isValid)
     {
+        [tickCrossImg setImage:[UIImage imageNamed:@"/login-images/wrong_cross.png"]];
+        tickCrossImg.alpha = 1;
         [selectUserPassCodeModalView becomeFirstResponder];
         return;
     }
@@ -294,14 +305,25 @@
     
     if ([ur[@"password"] isEqualToString:selectUserPassCodeModalView.text])
     {
-        [usersService setCurrentUserToUserWithId:ur[@"id"]];
-        [self.view removeFromSuperview];
-        [app proceedFromLoginViaIntro:NO];
+        [tickCrossImg setImage:[UIImage imageNamed:@"/login-images/correct_tick.png"]];
+        tickCrossImg.alpha = 1;
+        [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(loginUser:) userInfo:@{ @"urId":ur[@"id"] } repeats:NO];
+        [backToSelectUserButton removeTarget:self action:@selector(handleBackToSelectUserClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [loginButton removeTarget:self action:@selector(handleLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
     else
     {
+        [tickCrossImg setImage:[UIImage imageNamed:@"/login-images/wrong_cross.png"]];
+        tickCrossImg.alpha = 1;
         [selectUserPassCodeModalView clearText];
     }
+}
+
+-(void)loginUser:(NSTimer*)timer
+{
+    [usersService setCurrentUserToUserWithId:[timer userInfo][@"urId"]];
+    [self.view removeFromSuperview];
+    [app proceedFromLoginViaIntro:NO];
 }
 
 -(void)handleNewUserClicked:(id)button
@@ -495,6 +517,11 @@
 
 #pragma mark -
 #pragma mark PassCodeViewDelegate
+-(void)passCodeWasEdited:(PassCodeView*)passCodeView
+{
+    if (passCodeView == selectUserPassCodeModalView) tickCrossImg.alpha = 0;
+}
+
 -(void)passCodeBecameInvalid:(PassCodeView*)passCodeView
 {
 }

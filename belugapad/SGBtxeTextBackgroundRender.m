@@ -59,11 +59,14 @@
 -(void)setupDrawWithSize:(CGSize)size
 {
     NSString *assetType=nil;
+    NSString *backgroundType=nil;
     
     if([((id<NSObject>)ParentGO) conformsToProtocol:@protocol(MovingInteractive)])
     {
         if(!((id<MovingInteractive>)ParentGO).interactive)return;
         assetType=((id<MovingInteractive>)ParentGO).assetType;
+        
+        backgroundType=((id<MovingInteractive>)ParentGO).backgroundType;
     }
     
     BOOL isPlaceholder=NO;
@@ -82,9 +85,17 @@
     }
     if(isPlaceholder)
     {
-        lhFile=[NSString stringWithFormat:@"/images/btxe/SB_Holder_%@_Left.png", assetType];
-        mFile=[NSString stringWithFormat:@"/images/btxe/SB_Holder_%@_Middle.png", assetType];
-        rhFile=[NSString stringWithFormat:@"/images/btxe/SB_Holder_%@_Right.png", assetType];
+        if([backgroundType isEqualToString:@"Tile"]){
+            lhFile=[NSString stringWithFormat:@"/images/btxe/SB_Holder_%@_Left.png", assetType];
+            mFile=[NSString stringWithFormat:@"/images/btxe/SB_Holder_%@_Middle.png", assetType];
+            rhFile=[NSString stringWithFormat:@"/images/btxe/SB_Holder_%@_Right.png", assetType];
+        }
+        else
+        {
+            lhFile=[NSString stringWithFormat:@"/images/btxe/SQ_Holder_%@_Left.png", assetType];
+            mFile=[NSString stringWithFormat:@"/images/btxe/SQ_Holder_%@_Middle.png", assetType];
+            rhFile=[NSString stringWithFormat:@"/images/btxe/SQ_Holder_%@_Right.png", assetType];
+        }
         
         lh=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(lhFile)];
         m=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(mFile)];
@@ -92,10 +103,17 @@
     }
     else
     {
-        lhFile=[NSString stringWithFormat:@"/images/btxe/SB_Block_%@_Left.png", assetType];
-        mFile=[NSString stringWithFormat:@"/images/btxe/SB_Block_%@_Middle.png", assetType];
-        rhFile=[NSString stringWithFormat:@"/images/btxe/SB_Block_%@_Right.png", assetType];
-        
+        if([backgroundType isEqualToString:@"Tile"]){
+            lhFile=[NSString stringWithFormat:@"/images/btxe/SB_Block_%@_Left.png", assetType];
+            mFile=[NSString stringWithFormat:@"/images/btxe/SB_Block_%@_Middle.png", assetType];
+            rhFile=[NSString stringWithFormat:@"/images/btxe/SB_Block_%@_Right.png", assetType];
+        }
+        else
+        {
+            lhFile=[NSString stringWithFormat:@"/images/btxe/SQ_Block_%@_Left.png", assetType];
+            mFile=[NSString stringWithFormat:@"/images/btxe/SQ_Block_%@_Middle.png", assetType];
+            rhFile=[NSString stringWithFormat:@"/images/btxe/SQ_Block_%@_Right.png", assetType];
+        }
         lh=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(lhFile)];
         m=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(mFile)];
         rh=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(rhFile)];

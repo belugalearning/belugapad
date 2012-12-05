@@ -220,6 +220,7 @@ static float kDistanceBetweenBlocks=70.0f;
                     id<ShapeContainer>theRightContainer=((id<Moveable>)nearestObject).MyContainer;
                     id<Moveable>theRightBlock=[theRightContainer.BlocksInShape objectAtIndex:[theRightContainer.BlocksInShape count]-1];
                     [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)theRightBlock).mySprite.position];
+                    lastNewBondObject=nearestObject;
                 }
                 else{
                     [self drawBondLineFrom:currentPickupObject.mySprite.position to:((id<Moveable>)nearestObject).mySprite.position];
@@ -346,6 +347,24 @@ static float kDistanceBetweenBlocks=70.0f;
     
 
     usedShapeTypes=[[NSMutableArray alloc]init];
+    
+    if(problemHasCage)
+    {
+        [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_ADD_FROM_CAGE"];
+        [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_REMOVE_TO_CAGE"];
+    }
+    
+    if([initObjects count]==1 && !problemHasCage)
+        [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_SPLIT_INIT_OBJECT"];
+    
+    if([initAreas count]>0 && evalType)
+        [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_EVAL_AREAS"];
+    
+    if(evalType==kCheckTaggedGroups)
+        [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_BTXE_LABELLING"];
+    
+    if(evalType==kCheckContainerValues||evalType==kCheckEvalAreaValues)
+        [usersService notifyStartingFeatureKey:@"DISTRIBUTIONTOOL_VALUES"];
 }
 
 -(void)populateGW
@@ -738,6 +757,12 @@ static float kDistanceBetweenBlocks=70.0f;
     return totalValue;
 }
 
+-(void)removePickupFromContainer
+{
+    if(currentPickupObject.MyContainer)
+        [(id<ShapeContainer>)currentPickupObject.MyContainer removeBlockFromMe:currentPickupObject];
+}
+
 -(void)removeBlockByCage
 {
     if([dockType isEqualToString:@"15"])return;
@@ -756,9 +781,6 @@ static float kDistanceBetweenBlocks=70.0f;
         id<Pairable>thisGO=currentPickupObject;
         CCSprite *s=currentPickupObject.mySprite;
         [s setZOrder:100];
-        
-        if(currentPickupObject.MyContainer)
-            [(id<ShapeContainer>)currentPickupObject.MyContainer removeBlockFromMe:currentPickupObject];
         
         CCMoveTo *moveAct=[CCMoveTo actionWithDuration:0.3f position:cage.MySprite.position];
         CCFadeOut *fadeAct=[CCFadeOut actionWithDuration:0.1f];
@@ -784,11 +806,11 @@ static float kDistanceBetweenBlocks=70.0f;
             if([thisBlock amIProximateTo:thisLocation]&&thisBlock.MyContainer)
             {
                 id<ShapeContainer>thisCont=(SGDtoolContainer*)thisBlock.MyContainer;
-                if(!thisCont.BTXERow)
-                {
+                //if(!thisCont.BTXERow)
+                //{
                     [thisCont setGroupBTXELabel:[iBTXE createADuplicateIntoGameWorld:gw]];
                     break;
-                }
+                //}
             }
         }
     }
@@ -1527,6 +1549,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
     if(location.y<cage.MySprite.contentSize.height && problemHasCage)
     {
+        [self removePickupFromContainer];
         [self removeBlockByCage];
         
         [self setTouchVarsToOff];
@@ -1988,7 +2011,7 @@ static float kDistanceBetweenBlocks=70.0f;
     
     else if(evalType==kCheckTaggedGroups)
     {
-        NSDictionary *d=[solutionsDef objectAtIndex:0];
+        NSMutableDictionary *d=[solutionsDef objectAtIndex:0];
         int solutionsExpected=[d count];
         int solutionsFound=0;
         
@@ -2007,7 +2030,7 @@ static float kDistanceBetweenBlocks=70.0f;
                     int thisVal=[[d objectForKey:((SGBtxeObjectIcon*)thisCont.BTXELabel).tag] intValue];
                     if([thisCont.BlocksInShape count]==thisVal)
                         solutionsFound++;
-                    
+                    [d removeObjectForKey:((SGBtxeObjectIcon*)thisCont.BTXELabel).tag];
                 }
             }
         }

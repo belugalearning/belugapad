@@ -25,6 +25,7 @@
 @synthesize hidden;
 
 @synthesize assetType;
+@synthesize backgroundType;
 
 -(SGBtxeObjectOperator*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -38,6 +39,7 @@
         interactive=YES;
         valueOperator=@"";
         assetType=@"Small";
+        backgroundType=@"Tile";
         
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
         textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
@@ -56,7 +58,7 @@
     dupe.assetType=self.assetType;
     dupe.enabled=self.enabled;
     dupe.valueOperator=[[self.valueOperator copy] autorelease];
-    
+    dupe.backgroundType=self.backgroundType;
     
     return (id<MovingInteractive>)dupe;
 }
@@ -101,6 +103,8 @@
     if([self.text isEqualToString:@"x"])
         myText=@"times by";
     if([self.text isEqualToString:@"%"])
+        myText=@"divided by";
+    if([self.text isEqualToString:@"÷"])
         myText=@"divided by";
     if([self.text isEqualToString:@"="])
         myText=@"equals";

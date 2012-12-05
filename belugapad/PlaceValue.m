@@ -37,7 +37,7 @@
 static float kPropXNetSpace=0.0625f;
 static float kPropYColumnOrigin=0.63f;
 static float kCageYOrigin=0.05f;
-static float kPropYColumnHeader=0.85f;
+static float kPropYColumnHeader=0.7f;
 static float kPropYColumnTotalCount=0.15f;
 static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 static float kTimeToCageShake=7.0f;
@@ -480,11 +480,11 @@ static float kTimeToCageShake=7.0f;
             if([showCustomColumnHeader objectForKey:[NSString stringWithFormat:@"%g", currentColumnValue]])
             {
                 NSString *columnHeaderText = [showCustomColumnHeader objectForKey:[NSString stringWithFormat:@"%g", currentColumnValue]];
-                columnHeader = [CCLabelTTF labelWithString:columnHeaderText fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+                columnHeader = [CCLabelTTF labelWithString:columnHeaderText fontName:CHANGO fontSize:30.0f];
             }
             else
             {
-                columnHeader = [CCLabelTTF labelWithString:[currentColumnInfo objectForKey:COL_LABEL] fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+                columnHeader = [CCLabelTTF labelWithString:[currentColumnInfo objectForKey:COL_LABEL] fontName:CHANGO fontSize:30.0f];
             }
             if(gw.Blackboard.inProblemSetup)
             {
@@ -662,9 +662,9 @@ static float kTimeToCageShake=7.0f;
             cge.mySprite=cageContainer;
             
             if(isNegativeProblem)
-                cge.ObjectValue=cageDefaultValue*currentColumnValue;
+                cge.ObjectValue=-currentColumnValue;
             else
-                cge.ObjectValue=[[currentColumnInfo objectForKey:COL_VALUE]floatValue];
+                cge.ObjectValue=currentColumnValue;
             
             // set our column specific options on the store
             
@@ -1342,6 +1342,12 @@ static float kTimeToCageShake=7.0f;
     
     if(showMultipleControls||multipleBlockPickup)
         [usersService notifyStartingFeatureKey:@"PLACEVALUE_MULTIPLE_BLOCK"];
+    
+    if(isNegativeProblem)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_NEGATIVE_PROBLEM"];
+    
+    if(isNegativeProblem && explodeMode)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_EXPLODE_MODE"];
 
 }
 
@@ -1703,6 +1709,9 @@ static float kTimeToCageShake=7.0f;
 -(int)freeSpacesOnGrid:(int)thisGrid
 {
     int freeSpace=0;
+//    int curNum=[[blocksToCreate objectAtIndex:thisGrid]intValue];
+    int curBlockValue=[[currentBlockValues objectAtIndex:thisGrid]intValue];
+    DWPlaceValueCageGameObject *cage=[allCages objectAtIndex:thisGrid];
     
     for (int r=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] count]-1; r>=0; r--) {
         NSMutableArray *row=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] objectAtIndex:r];
@@ -1717,7 +1726,11 @@ static float kTimeToCageShake=7.0f;
             {
                 freeSpace++;
             }
-            else if(co.MountedObject && !co.CancellingObject && explodeMode)
+            else if(co.MountedObject && cage.ObjectValue<0 && ((DWPlaceValueBlockGameObject*)co.MountedObject).ObjectValue>0 && !co.CancellingObject && explodeMode)
+            {
+                freeSpace++;
+            }
+            else if(co.MountedObject && cage.ObjectValue>0 && ((DWPlaceValueBlockGameObject*)co.MountedObject).ObjectValue<0 && !co.CancellingObject && explodeMode)
             {
                 freeSpace++;
             }
@@ -3029,10 +3042,13 @@ static float kTimeToCageShake=7.0f;
                 {
                     if([pickupObjects count]>0)
                     {
+                        NSArray *thesePositions=[NumberLayout physicalLayoutUpToNumber:[pickupObjects count] withSpacing:60.0f];
+                        
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
-                            go.PosX=posX;
-                            go.PosY=posY+85 *[pickupObjects indexOfObject:go];
+                            CGPoint thisPos=[[thesePositions objectAtIndex:[pickupObjects indexOfObject:go]] CGPointValue];
+                            go.PosX=posX+thisPos.x+diff.x;
+                            go.PosY=posY+thisPos.y+diff.y;
                             [go handleMessage:kDWupdateSprite andPayload:nil withLogLevel:-1];
                         }
                     }
@@ -3294,13 +3310,15 @@ static float kTimeToCageShake=7.0f;
                     {
                         
                         gw.Blackboard.DropObject=nil;
-                        [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:0];
-                        [loggingService logEvent:BL_PA_PV_TOUCH_END_MULTIPLE_BLOCKS_DROPPED withAdditionalData:nil];
+                        
                         if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && !hasModifiedTestLocation && [pickupObjects count]>1)
                         {
                             gw.Blackboard.TestTouchLocation=ccp(n.PosX,n.PosY+ly);
                             hasModifiedTestLocation=YES;
                         }
+                        
+                        [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:0];
+                        [loggingService logEvent:BL_PA_PV_TOUCH_END_MULTIPLE_BLOCKS_DROPPED withAdditionalData:nil];
                         
                     }
                     else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count])

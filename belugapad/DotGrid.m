@@ -406,7 +406,7 @@
     if(showDraggableBlock)
     {
         dragBlock=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/dotgrid/DG_Sq40.png")];
-        [dragBlock setPosition:ccp(55,650)];
+        [dragBlock setPosition:ccp(55,550)];
         [renderLayer addChild:dragBlock];
     }
 

@@ -35,6 +35,7 @@
 @synthesize numberDotRenderComponent;
 @synthesize renderAsDots;
 @synthesize numberMode;
+@synthesize backgroundType;
 
 -(SGBtxeObjectNumber*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -53,6 +54,7 @@
         
         size=CGSizeZero;
         position=CGPointZero;
+        backgroundType=@"Tile";
         
         renderAsDots=NO;
         
@@ -80,6 +82,7 @@
     dupe.suffixText=[[self.suffixText copy] autorelease];
     dupe.assetType=self.assetType;
     dupe.renderAsDots=self.renderAsDots;
+    dupe.backgroundType=self.backgroundType;
     
     return (id<MovingInteractive>)dupe;
 }

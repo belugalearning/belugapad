@@ -21,6 +21,7 @@
 @synthesize mount;
 @synthesize hidden;
 @synthesize assetType;
+@synthesize backgroundType;
 
 -(SGBtxeObjectIcon*)initWithGameWorld:(SGGameWorld*) aGameWorld
 {

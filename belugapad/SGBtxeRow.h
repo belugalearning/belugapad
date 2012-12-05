@@ -18,7 +18,6 @@
 
 @property (retain) SGBtxeRowLayout *rowLayoutComponent;
 
-
 -(SGBtxeRow*) initWithGameWorld:(SGGameWorld*)aGameWorld andRenderLayer:(CCLayer*)renderLayerTarget;
 
 -(void)tagMyChildrenForIntro;

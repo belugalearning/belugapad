@@ -191,6 +191,8 @@ static float kTimeToHintToolTray=7.0f;
         [self schedule:@selector(doUpdateOnQuarterSecond:) interval:1.0f/40.0f];
         
         [TestFlight passCheckpoint:@"STARTED_TOOLHOST"];
+    
+        doPlaySound=YES;
     }
     
     return self;
@@ -294,7 +296,7 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)playAudioFlourish
 {
-    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/integrated/blpress-flourish.wav")];
+    [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_state_correct_answer_1.wav")];
 }
 
 #pragma mark draw and ticks
@@ -1749,6 +1751,7 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)setupNumberPicker:(NSDictionary *)pdefNP
 {
+    [usersService notifyStartingFeatureKey:@"NUMBERPICKER_PROBLEM"];
     numberPickerForThisProblem=YES;
     toolCanEval=NO;
     shownProblemStatusFor=0;
@@ -2398,8 +2401,10 @@ static float kTimeToHintToolTray=7.0f;
     
     if (CGRectContainsPoint(kRectButtonCommit, location) && evalMode==kProblemEvalOnCommit && !metaQuestionForThisProblem && !numberPickerForThisProblem && !isAnimatingIn && commitBtn.visible)
     {
+        doPlaySound=NO;
         //remove any trays
         [self removeAllTrays];
+        doPlaySound=YES;
         
         //user pressed commit button
         [self checkUserCommit];
@@ -2731,7 +2736,9 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)hideCalc
 {
-    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_calculator_tool_disappears.wav")];
+    if(doPlaySound)
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_calculator_tool_disappears.wav")];
+    
     trayLayerCalc.visible=NO;
     trayCalcShowing=NO;
     
@@ -2756,7 +2763,8 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)hideMq
 {
-    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_tool_disappears.wav")];
+    if(doPlaySound)
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_mq_tool_disappears.wav")];
     [commitBtn setVisible:NO];
     trayLayerMq.visible=NO;
     trayMqShowing=NO;
@@ -2811,7 +2819,9 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)hideWheel
 {
-    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_number_wheel_tool_disappears.wav")];
+    if(doPlaySound)
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_number_wheel_tool_disappears.wav")];
+
     trayLayerWheel.visible=NO;
     trayWheelShowing=NO;
 //    [traybtnWheel setColor:ccc3(255,255,255)];
@@ -2843,7 +2853,9 @@ static float kTimeToHintToolTray=7.0f;
 
 -(void)hidePad
 {
-    [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_disappears.wav")];
+    if(doPlaySound)
+        [[SimpleAudioEngine sharedEngine]playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_tray_notepad_tool_disappears.wav")];
+
     trayLayerPad.visible=NO;
     trayPadShowing=NO;
 //    [traybtnPad setColor:ccc3(255,255,255)];

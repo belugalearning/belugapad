@@ -38,6 +38,8 @@
 @property (retain) CCNode *baseNode;
 //@property BOOL isLarge;
 @property (retain) NSString *myAssetType;
+@property BOOL tintMyChildren;
+@property (retain) NSString *backgroundType;
 @property BOOL forceVAlignTop;
 
 
@@ -118,6 +120,7 @@
 @property (retain) SGBtxeTextBackgroundRender *textBackgroundRenderComponent;
 //@property BOOL isLargeObject;
 @property (retain) NSString *assetType;
+@property (retain) NSString *backgroundType;
 
 -(void)returnToBase;
 -(id<MovingInteractive>)createADuplicate;

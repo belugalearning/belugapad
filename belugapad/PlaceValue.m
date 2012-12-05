@@ -1342,6 +1342,12 @@ static float kTimeToCageShake=7.0f;
     
     if(showMultipleControls||multipleBlockPickup)
         [usersService notifyStartingFeatureKey:@"PLACEVALUE_MULTIPLE_BLOCK"];
+    
+    if(isNegativeProblem)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_NEGATIVE_PROBLEM"];
+    
+    if(isNegativeProblem && explodeMode)
+        [usersService notifyStartingFeatureKey:@"PLACEVALUE_EXPLODE_MODE"];
 
 }
 
@@ -1703,6 +1709,9 @@ static float kTimeToCageShake=7.0f;
 -(int)freeSpacesOnGrid:(int)thisGrid
 {
     int freeSpace=0;
+//    int curNum=[[blocksToCreate objectAtIndex:thisGrid]intValue];
+    int curBlockValue=[[currentBlockValues objectAtIndex:thisGrid]intValue];
+    DWPlaceValueCageGameObject *cage=[allCages objectAtIndex:thisGrid];
     
     for (int r=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] count]-1; r>=0; r--) {
         NSMutableArray *row=[[gw.Blackboard.AllStores objectAtIndex:thisGrid] objectAtIndex:r];
@@ -1717,7 +1726,11 @@ static float kTimeToCageShake=7.0f;
             {
                 freeSpace++;
             }
-            else if(co.MountedObject && !co.CancellingObject && explodeMode)
+            else if(co.MountedObject && cage.ObjectValue<0 && ((DWPlaceValueBlockGameObject*)co.MountedObject).ObjectValue>0 && !co.CancellingObject && explodeMode)
+            {
+                freeSpace++;
+            }
+            else if(co.MountedObject && cage.ObjectValue>0 && ((DWPlaceValueBlockGameObject*)co.MountedObject).ObjectValue<0 && !co.CancellingObject && explodeMode)
             {
                 freeSpace++;
             }
@@ -3029,10 +3042,13 @@ static float kTimeToCageShake=7.0f;
                 {
                     if([pickupObjects count]>0)
                     {
+                        NSArray *thesePositions=[NumberLayout physicalLayoutUpToNumber:[pickupObjects count] withSpacing:60.0f];
+                        
                         for(DWPlaceValueBlockGameObject *go in pickupObjects)
                         {
-                            go.PosX=posX;
-                            go.PosY=posY+85 *[pickupObjects indexOfObject:go];
+                            CGPoint thisPos=[[thesePositions objectAtIndex:[pickupObjects indexOfObject:go]] CGPointValue];
+                            go.PosX=posX+thisPos.x+diff.x;
+                            go.PosY=posY+thisPos.y+diff.y;
                             [go handleMessage:kDWupdateSprite andPayload:nil withLogLevel:-1];
                         }
                     }

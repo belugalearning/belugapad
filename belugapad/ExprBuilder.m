@@ -201,6 +201,13 @@
         else
             row.myAssetType=@"Medium";
         
+        
+        if([evalType isEqualToString:@"SEQUENCE_ASC"] || [evalType isEqualToString:@"SEQUENCE_DESC"])
+        {
+            row.backgroundType=@"Card";
+            row.tintMyChildren=NO;
+        }
+        
         if(numberMode)
             row.defaultNumbermode=numberMode;
         
@@ -218,6 +225,7 @@
         
         if(i>0 && rowcount<=AUTO_LARGE_ROW_Y_MAX && [row.children count]<=AUTO_LARGE_ROW_X_MAX)
             row.myAssetType = @"Large";
+        
         
         [row setupDraw];
         
@@ -237,6 +245,12 @@
             if(presentNumberCardRow)
             {
                 ncardRow=[[SGBtxeRow alloc] initWithGameWorld:gw andRenderLayer:self.ForeLayer];
+                
+                if([evalType isEqualToString:@"SEQUENCE_ASC"] || [evalType isEqualToString:@"SEQUENCE_DESC"])
+                {
+                    ncardRow.backgroundType=@"Card";
+                    ncardRow.tintMyChildren=NO;
+                }
                 
                 NSMutableArray *cardAddBuffer=[[NSMutableArray alloc] init];
                 

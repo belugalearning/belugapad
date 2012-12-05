@@ -85,9 +85,17 @@
     }
     if(isPlaceholder)
     {
-        lhFile=[NSString stringWithFormat:@"/images/btxe/SB_Holder_%@_Left.png", assetType];
-        mFile=[NSString stringWithFormat:@"/images/btxe/SB_Holder_%@_Middle.png", assetType];
-        rhFile=[NSString stringWithFormat:@"/images/btxe/SB_Holder_%@_Right.png", assetType];
+        if([backgroundType isEqualToString:@"Tile"]){
+            lhFile=[NSString stringWithFormat:@"/images/btxe/SB_Holder_%@_Left.png", assetType];
+            mFile=[NSString stringWithFormat:@"/images/btxe/SB_Holder_%@_Middle.png", assetType];
+            rhFile=[NSString stringWithFormat:@"/images/btxe/SB_Holder_%@_Right.png", assetType];
+        }
+        else
+        {
+            lhFile=[NSString stringWithFormat:@"/images/btxe/SQ_Holder_%@_Left.png", assetType];
+            mFile=[NSString stringWithFormat:@"/images/btxe/SQ_Holder_%@_Middle.png", assetType];
+            rhFile=[NSString stringWithFormat:@"/images/btxe/SQ_Holder_%@_Right.png", assetType];
+        }
         
         lh=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(lhFile)];
         m=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(mFile)];

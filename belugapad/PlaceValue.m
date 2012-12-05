@@ -662,9 +662,9 @@ static float kTimeToCageShake=7.0f;
             cge.mySprite=cageContainer;
             
             if(isNegativeProblem)
-                cge.ObjectValue=cageDefaultValue*currentColumnValue;
+                cge.ObjectValue=-currentColumnValue;
             else
-                cge.ObjectValue=[[currentColumnInfo objectForKey:COL_VALUE]floatValue];
+                cge.ObjectValue=currentColumnValue;
             
             // set our column specific options on the store
             
@@ -3310,13 +3310,15 @@ static float kTimeToCageShake=7.0f;
                     {
                         
                         gw.Blackboard.DropObject=nil;
-                        [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:0];
-                        [loggingService logEvent:BL_PA_PV_TOUCH_END_MULTIPLE_BLOCKS_DROPPED withAdditionalData:nil];
+                        
                         if([gw.Blackboard.DropObject isKindOfClass:[DWPlaceValueNetGameObject class]] && !hasModifiedTestLocation && [pickupObjects count]>1)
                         {
                             gw.Blackboard.TestTouchLocation=ccp(n.PosX,n.PosY+ly);
                             hasModifiedTestLocation=YES;
                         }
+                        
+                        [gw handleMessage:kDWareYouADropTarget andPayload:nil withLogLevel:0];
+                        [loggingService logEvent:BL_PA_PV_TOUCH_END_MULTIPLE_BLOCKS_DROPPED withAdditionalData:nil];
                         
                     }
                     else if([self freeSpacesOnGrid:currentColumnIndex]<[pickupObjects count])

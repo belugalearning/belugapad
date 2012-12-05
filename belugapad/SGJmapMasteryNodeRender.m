@@ -281,10 +281,17 @@ static int shadowSteps=5;
     if(iCount==0)iCount=1; // handle islands with no nodes
 
     //get an island selection base
-    self.islandShapeIdx=(arc4random()%10) + 1;
+//    self.islandShapeIdx=(arc4random()%10) + 1;
+  
+    //fix this to first base for now
+    self.islandShapeIdx=1;
     
     //get island data base
-    self.islandLayoutIdx=(arc4random()%gameWorld.Blackboard.islandData.count);
+//    self.islandLayoutIdx=(arc4random()%gameWorld.Blackboard.islandData.count);
+
+    //fix this to first layout for now
+    self.islandLayoutIdx=1;
+    
 
     //island stage
     self.islandStage=1;
@@ -358,7 +365,7 @@ static int shadowSteps=5;
 {
 
     NSString *baseSpriteName=[NSString stringWithFormat:@"Sand_%d_Yellow.png", self.islandShapeIdx];
-
+    
     if(self.islandStage>2)
     {
         baseSpriteName=[NSString stringWithFormat:@"Sand_%d_Green.png", self.islandShapeIdx];

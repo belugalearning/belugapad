@@ -193,13 +193,14 @@
     {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.backgroundColor = [UIColor clearColor];
-        cell.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:indexPath.row % 2 == 0 ? @"/login-images/table_cell_black.png" : @"/login-images/table_cell_transparent"]] autorelease];
         cell.selectionStyle = UITableViewCellSeparatorStyleNone;
         cell.backgroundView.contentMode = UIViewContentModeLeft;
         cell.textLabel.contentMode = UIViewContentModeLeft;
         cell.textLabel.font = [UIFont fontWithName:@"Chango" size:24];
         cell.textLabel.textColor = [UIColor whiteColor];
     }
+    
+    cell.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:indexPath.row % 2 == 0 ? @"/login-images/table_cell_black.png" : @"/login-images/table_cell_transparent"]] autorelease];
     
     if (!nickName)
     {

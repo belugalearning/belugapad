@@ -167,13 +167,18 @@ const uint labelSpacing = 67;
     
     [self setNeedsDisplay];
     
-    if (!validBefore)
+    if (self.delegate)
     {
-        if (self.isValid && self.delegate) [self.delegate passCodeBecameValid:self];
-    }
-    else
-    {
-        if (!self.isValid && self.delegate) [self.delegate passCodeBecameInvalid:self];
+        [self.delegate passCodeWasEdited:self];
+        
+        if (!validBefore)   
+        {
+            if (self.isValid) [self.delegate passCodeBecameValid:self];
+        }
+        else
+        {
+            if (!self.isValid) [self.delegate passCodeBecameInvalid:self];
+        }
     }
 }
 

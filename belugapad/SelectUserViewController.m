@@ -266,7 +266,7 @@
         return;
     }
     
-    selectUserModalUnderlay = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/BG_Shade.png"]];
+    selectUserModalUnderlay = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/BG_Shade.png"]] autorelease];
     selectUserModalUnderlay.userInteractionEnabled = YES; // prevents buttons behind modal view from receiving touch events
     [self.view addSubview:selectUserModalUnderlay];
     

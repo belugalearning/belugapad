@@ -136,7 +136,7 @@
     [panel setCenter:CGPointMake(511.0f, 377.0f)];
     [selectUserView addSubview:panel];
     
-    selectUserTableView = [[[UITableView alloc] initWithFrame:CGRectMake(322.0f,244.0f,378.0f,140.0f) style:UITableViewStylePlain] autorelease];
+    selectUserTableView = [[[UITableView alloc] initWithFrame:CGRectMake(322.0f,247.0f,378.0f,137.0f) style:UITableViewStylePlain] autorelease];
     selectUserTableView.backgroundColor = [UIColor clearColor];
     selectUserTableView.opaque = YES;
     selectUserTableView.backgroundView = nil;

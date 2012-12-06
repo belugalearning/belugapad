@@ -75,6 +75,9 @@
     [self buildLoadExistingUserView];
     
     [self setActiveView:selectUserView];
+    
+    UIImageView *bgOverlay = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/BG_Shade.png"]] autorelease];
+    [self.view insertSubview:bgOverlay aboveSubview:backgroundImageView];
 }
 
 -(void)viewWillAppear:(BOOL)animated

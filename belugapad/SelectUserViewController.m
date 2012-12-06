@@ -75,6 +75,9 @@
     [self buildLoadExistingUserView];
     
     [self setActiveView:selectUserView];
+    
+    UIImageView *bgOverlay = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/BG_Shade.png"]] autorelease];
+    [self.view insertSubview:bgOverlay aboveSubview:backgroundImageView];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -155,8 +158,12 @@
     playButton.frame = CGRectMake(698.0f, 502.0f, 138.0f, 66.0f);
     [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_disabled.png"] forState:UIControlStateNormal];
     [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_disabled.png"] forState:UIControlStateHighlighted];
+    [playButton addTarget:self action:@selector(handlePlayButtonTouchDown:) forControlEvents:UIControlEventTouchDown];
+    [playButton addTarget:self action:@selector(handlePlayButtonTouchEnd:) forControlEvents:UIControlEventTouchUpOutside];
+    [playButton addTarget:self action:@selector(handlePlayButtonTouchEnd:) forControlEvents:UIControlEventTouchUpInside];
     [playButton addTarget:self action:@selector(handlePlayButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [selectUserView addSubview:playButton];
+    playButton.enabled = NO;
     
     joinClassButton = [UIButton buttonWithType:UIButtonTypeCustom];
     joinClassButton.frame = CGRectMake(220.0f, 447.0f, 100.0f, 95.0f);
@@ -167,6 +174,7 @@
 
 -(void)enablePlayButton
 {
+    playButton.enabled = YES;
     [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_enabled.png"] forState:UIControlStateNormal];
     [playButton setImage:[UIImage imageNamed:@"/login-images/play_button_enabled.png"] forState:UIControlStateHighlighted];
 }
@@ -235,53 +243,61 @@
 }
 
 #pragma mark interactions
+-(void)handlePlayButtonTouchDown:(id)button
+{
+    ((UIButton*)button).transform = CGAffineTransformMakeScale(1.2, 1.2);
+}
+
+-(void)handlePlayButtonTouchEnd:(id)button
+{
+    ((UIButton*)button).transform = CGAffineTransformIdentity;
+}
+
 -(void)handlePlayButtonClicked:(id)button
 {
     NSIndexPath *ip = [selectUserTableView indexPathForSelectedRow];
-    if (ip)
-    {        
-        if (selectUserModalBgView) return;
-        
-        // TEMP
-        // N.B. Next few lines are a temp way of allowing users who don't yet have valid passcodes to continue to login (i.e. we don't ask them for their passcode)
-        NSDictionary *ur = deviceUsers[ip.row];
-        NSRegularExpression *m = [[NSRegularExpression alloc] initWithPattern:@"^\\d{4}$" options:0 error:nil];
-        if (![m numberOfMatchesInString:ur[@"password"] options:NSMatchingWithoutAnchoringBounds range:NSMakeRange(0, [ur[@"password"] length])])
-        {
-            [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(loginUser:) userInfo:@{ @"urId":ur[@"id"] } repeats:NO];
-            return;
-        }
-        
-        selectUserModalUnderlay = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/BG_Shade.png"]];
-        [self.view addSubview:selectUserModalUnderlay];
-        
-        CGPoint p = CGPointMake(512.0f, 354.0f);
-        
-        selectUserModalBgView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/passcode_modal.png"]] autorelease];
-        selectUserModalBgView.center = p;
-        [self.view addSubview:selectUserModalBgView];
-        
-        selectUserPassCodeModalView = [[[PassCodeView alloc] initWithFrame:CGRectMake(387.0f, 327.0f, 245.0f, 46.0f)] autorelease];
-        selectUserPassCodeModalView.delegate = self;
-        [self.view addSubview:selectUserPassCodeModalView];
-        
-        backToSelectUserButton = [[[UIButton alloc] init] autorelease];
-        backToSelectUserButton.frame = CGRectMake(322.0f, 394.0f, 131.0f, 51.0f);
-        [backToSelectUserButton setImage:[UIImage imageNamed:@"/login-images/back_button.png"] forState:UIControlStateNormal];
-        [backToSelectUserButton addTarget:self action:@selector(handleBackToSelectUserClicked:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [self.view addSubview:backToSelectUserButton];
-        
-        loginButton = [[[UIButton alloc] init] autorelease];
-        loginButton.frame = CGRectMake(577.0f, 394.0f, 131.0f, 51.0f);
-        [loginButton setImage:[UIImage imageNamed:@"/login-images/login_button_grey.png"] forState:UIControlStateNormal];
-        [loginButton addTarget:self action:@selector(handleLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:loginButton];
-        
-        tickCrossImg = [[[UIImageView alloc] initWithFrame:CGRectMake(651, 344, 22, 17)] autorelease];
-        [self.view addSubview:tickCrossImg];
-        
+
+    if (selectUserModalBgView) return;
+    
+    // TEMP
+    // N.B. Next few lines are a temp way of allowing users who don't yet have valid passcodes to continue to login (i.e. we don't ask them for their passcode)
+    NSDictionary *ur = deviceUsers[ip.row];
+    NSRegularExpression *m = [[NSRegularExpression alloc] initWithPattern:@"^\\d{4}$" options:0 error:nil];
+    if (![m numberOfMatchesInString:ur[@"password"] options:NSMatchingWithoutAnchoringBounds range:NSMakeRange(0, [ur[@"password"] length])])
+    {
+        [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(loginUser:) userInfo:@{ @"urId":ur[@"id"] } repeats:NO];
+        return;
     }
+    
+    selectUserModalUnderlay = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/BG_Shade.png"]] autorelease];
+    selectUserModalUnderlay.userInteractionEnabled = YES; // prevents buttons behind modal view from receiving touch events
+    [self.view addSubview:selectUserModalUnderlay];
+    
+    CGPoint p = CGPointMake(512.0f, 354.0f);
+    
+    selectUserModalBgView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/passcode_modal.png"]] autorelease];
+    selectUserModalBgView.center = p;
+    [self.view addSubview:selectUserModalBgView];
+    
+    selectUserPassCodeModalView = [[[PassCodeView alloc] initWithFrame:CGRectMake(387.0f, 327.0f, 245.0f, 46.0f)] autorelease];
+    selectUserPassCodeModalView.delegate = self;
+    [self.view addSubview:selectUserPassCodeModalView];
+    
+    backToSelectUserButton = [[[UIButton alloc] init] autorelease];
+    backToSelectUserButton.frame = CGRectMake(322.0f, 394.0f, 131.0f, 51.0f);
+    [backToSelectUserButton setImage:[UIImage imageNamed:@"/login-images/back_button.png"] forState:UIControlStateNormal];
+    [backToSelectUserButton addTarget:self action:@selector(handleBackToSelectUserClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:backToSelectUserButton];
+    
+    loginButton = [[[UIButton alloc] init] autorelease];
+    loginButton.frame = CGRectMake(577.0f, 394.0f, 131.0f, 51.0f);
+    [loginButton setImage:[UIImage imageNamed:@"/login-images/login_button_grey.png"] forState:UIControlStateNormal];
+    [loginButton addTarget:self action:@selector(handleLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:loginButton];
+    
+    tickCrossImg = [[[UIImageView alloc] initWithFrame:CGRectMake(651, 344, 22, 17)] autorelease];
+    [self.view addSubview:tickCrossImg];
 }
 
 -(void)handleBackToSelectUserClicked:(id)button

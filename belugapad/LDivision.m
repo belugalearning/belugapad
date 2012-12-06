@@ -118,11 +118,20 @@
     // then update the actual text of it
     [lblCurrentTotal setString:[NSString stringWithFormat:@"%g", currentTotal]];
     
+    [self removeCurrentLabels];
     [self drawState];
 
     if(evalMode==kProblemEvalAuto && !hasEvaluated)
         [self evalProblem];
     
+}
+
+-(void)removeCurrentLabels
+{
+    for(CCLabelTTF *l in allLabels)
+    {
+        [l removeFromParentAndCleanup:YES];
+    }
 }
 
 -(void)drawState
@@ -137,9 +146,13 @@
     float barW=824.0f;
     float barH=100.0f;
     float startBarPos=xInset;
+    
+    float red=0.9f;
+    float green=0.7f;
+    float blue=0.7f;
 
     ccColor4F lineCol=ccc4f(1, 1, 1, 1);
-    ccColor4F boxCol=ccc4f(1, 1, 1, 0.5f);
+//    ccColor4F boxCol=ccc4f(1, 1, 1, 0.5f);
     float lineRad=3.0f;
     
     [drawNode clear];
@@ -179,7 +192,7 @@
         else
         {
             
-            float endBarPos=startBarPos+((divisor*magMult)*[c floatValue]/dividend*barW)/3;
+            float endBarPos=startBarPos+((divisor*magMult)*[c floatValue]/dividend*barW);
             
             CGPoint block[4];
             block[0]=ccp(startBarPos,yInset);
@@ -189,16 +202,29 @@
             
             startBarPos=startBarPos+(endBarPos-startBarPos);
             
+            CCLabelTTF *u=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", ([c floatValue]*divisor)*magMult] fontName:CHANGO fontSize:30.0f];
+            [u setPosition:ccp(endBarPos,yInset+barH+20)];
+            [renderLayer addChild:u];
+            [allLabels addObject:u];
+            
             CGPoint *firstCo=&block[0];
             
-            [drawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4f(1, 1, 1, 0.5f) borderWidth:3 borderColor:ccc4f(1, 1, 1, 1)];
+            [drawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4f(red, green, blue, 0.5f) borderWidth:3 borderColor:ccc4f(1, 1, 1, 1)];
+            
+            red*=0.9;
+            green*=0.7;
+            blue*=0.3;
             
             
-            NSLog(@"%@ x %f x pval", c, magMult);
+            //NSLog(@"%@ x %f x pval", c, magMult);
             sigFigs++;
             magMult=magMult / 10.0f;
         }
     }
+    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", [nWheel.StrOutputValue floatValue]*divisor] fontName:CHANGO fontSize:30.0f];
+    [l setPosition:ccp(startBarPos,yInset-40)];
+    [renderLayer addChild:l];
+    [allLabels addObject:l];
 }
 
 #pragma mark - gameworld setup and population
@@ -227,6 +253,7 @@
 {
 //
     renderedBlocks=[[NSMutableArray alloc]init];
+    allLabels=[[NSMutableArray alloc]init];
     
     
     // add the big multiplier behind the numbers

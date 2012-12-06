@@ -363,7 +363,6 @@
 		7FA38AA61545322E0031E59D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38AA51545322E0031E59D /* SystemConfiguration.framework */; };
 		7FA38AA8154532370031E59D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA38AA7154532360031E59D /* libz.dylib */; };
 		7FA38AB91545334B0031E59D /* SelectUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38AB71545334B0031E59D /* SelectUserViewController.m */; };
-		7FA38ABA1545334B0031E59D /* SelectUserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FA38AB81545334B0031E59D /* SelectUserViewController.xib */; };
 		7FA38AC01545335A0031E59D /* UsersService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA38ABE1545335A0031E59D /* UsersService.m */; };
 		7FA84BC516107569001FEA82 /* SGBtxeObjectNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA84BC416107569001FEA82 /* SGBtxeObjectNumber.m */; };
 		7FAB4B57165F8DC9003D219A /* babbelu.lic in Resources */ = {isa = PBXBuildFile; fileRef = 7FAB4B54165F8DC9003D219A /* babbelu.lic */; };
@@ -1205,7 +1204,6 @@
 		7FA38AA7154532360031E59D /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		7FA38AB61545334B0031E59D /* SelectUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectUserViewController.h; sourceTree = "<group>"; };
 		7FA38AB71545334B0031E59D /* SelectUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectUserViewController.m; sourceTree = "<group>"; };
-		7FA38AB81545334B0031E59D /* SelectUserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectUserViewController.xib; sourceTree = "<group>"; };
 		7FA38ABD1545335A0031E59D /* UsersService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersService.h; sourceTree = "<group>"; };
 		7FA38ABE1545335A0031E59D /* UsersService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersService.m; sourceTree = "<group>"; };
 		7FA84BC316107569001FEA82 /* SGBtxeObjectNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGBtxeObjectNumber.h; sourceTree = "<group>"; };
@@ -2762,7 +2760,6 @@
 			children = (
 				7FA38AB61545334B0031E59D /* SelectUserViewController.h */,
 				7FA38AB71545334B0031E59D /* SelectUserViewController.m */,
-				7FA38AB81545334B0031E59D /* SelectUserViewController.xib */,
 				7FA38ABD1545335A0031E59D /* UsersService.h */,
 				7FA38ABE1545335A0031E59D /* UsersService.m */,
 				0CD565901647F23E00D9EA30 /* UserNodeState.h */,
@@ -3117,7 +3114,6 @@
 				7F5005CC1522478C0038D251 /* fps_images-ipadhd.png in Resources */,
 				7F5005CD1522478C0038D251 /* fps_images.png in Resources */,
 				552478661536BF5C00BA5C4E /* tooldef.plist in Resources */,
-				7FA38ABA1545334B0031E59D /* SelectUserViewController.xib in Resources */,
 				7FBE969C15498F3700D993AC /* Icon.png in Resources */,
 				0C35A9F81576272500D47517 /* canned-dbs in Resources */,
 				0C712C0D1580C392004B716F /* CHANGELOG.md in Resources */,

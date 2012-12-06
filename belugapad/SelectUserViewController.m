@@ -21,8 +21,9 @@
     AppController *app;
     UsersService *usersService;
     
-    NSMutableArray *deviceUsers;
-    IBOutlet UITableView *selectUserTableView;
+    // select user
+    UIView *selectUserView;
+    UITableView *selectUserTableView;
     UIButton *playButton;
     UIButton *joinClassButton;
     
@@ -33,11 +34,17 @@
     UIButton *loginButton;
     UIImageView *tickCrossImg;
     
+    NSMutableArray *deviceUsers;
+    
+    // new user
+    UIView *editUserView;
     UITextField *newUserNameTF;
     PassCodeView *newUserPassCodeView;
     UIButton *cancelNewUserButton;
     UIButton *saveNewUserButton;
     
+    // sync user
+    UIView *loadExistingUserView;
     UITextField *existingUserNameTF;
     PassCodeView *downloadUserPassCodeView;
     UIButton *cancelExistingUserButton;
@@ -70,14 +77,27 @@
     
     [self loadDeviceUsers];
     
+    backgroundImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"/login-images/Island_BG.png")]] autorelease];
+    [self.view addSubview:backgroundImageView];
+    
+    UIImageView *bgOverlay = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/BG_Shade.png"]] autorelease];
+    [self.view addSubview:bgOverlay];
+    
+    CGRect frame = self.view.frame;
+    
+    selectUserView = [[[UIView alloc] initWithFrame:frame] autorelease];
+    [self.view addSubview:selectUserView];
     [self buildSelectUserView];
+    
+    editUserView = [[[UIView alloc] initWithFrame:frame] autorelease];
+    [self.view addSubview:editUserView];
     [self buildEditUserView];
+    
+    loadExistingUserView = [[[UIView alloc] initWithFrame:frame] autorelease];
+    [self.view addSubview:loadExistingUserView];
     [self buildLoadExistingUserView];
     
     [self setActiveView:selectUserView];
-    
-    UIImageView *bgOverlay = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/BG_Shade.png"]] autorelease];
-    [self.view insertSubview:bgOverlay aboveSubview:backgroundImageView];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -94,22 +114,9 @@
 
 -(void)setActiveView:(UIView *)view
 {
-    NSAssert(view == selectUserView || view == editUserView || view == loadExistingUserView, @"bad args: method requires either selectUserView or editUserView");
     [selectUserView setHidden:(view != selectUserView)];
     [editUserView setHidden:(view != editUserView)];
     [loadExistingUserView setHidden:(view != loadExistingUserView)];
-    if (view == selectUserView)
-    {
-        [backgroundImageView setImage:[UIImage imageNamed:(@"/login-images/Island_BG.png")]];
-    }
-    else if (view == editUserView)
-    {
-        [backgroundImageView setImage:[UIImage imageNamed:(@"/login-images/New.png")]];
-    }
-    else
-    {
-        [backgroundImageView setImage:[UIImage imageNamed:(@"/login-images/Sync.png")]];
-    }
 }
 
 #pragma mark -
@@ -367,7 +374,11 @@
 
 -(void)buildEditUserView
 {
-    newUserNameTF = [[[UITextField alloc] initWithFrame:CGRectMake(334.0f, 278.0f, 360.0f, 42.0f)] autorelease];
+    UIImageView *panel = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/sign_up_BG.png"]] autorelease];
+    [panel setCenter:CGPointMake(511.0f, 377.0f)];
+    [editUserView addSubview:panel];
+    
+    newUserNameTF = [[[UITextField alloc] initWithFrame:CGRectMake(334.0f, 288.0f, 360.0f, 42.0f)] autorelease];
     newUserNameTF.delegate = self;
     newUserNameTF.font = [UIFont fontWithName:@"Chango" size:24];
     //newUserNameTF.placeholder = @"name";
@@ -380,18 +391,19 @@
     [newUserNameTF setBorderStyle:UITextBorderStyleNone];
     [editUserView addSubview:newUserNameTF];
     
-    newUserPassCodeView = [[[PassCodeView alloc] initWithFrame:CGRectMake(390.0f, 332.0f, 245.0f, 46.0f)] autorelease];
+    newUserPassCodeView = [[[PassCodeView alloc] initWithFrame:CGRectMake(389.0f, 341.0f, 245.0f, 46.0f)] autorelease];
     newUserPassCodeView.delegate = self;
     [editUserView addSubview:newUserPassCodeView];
+    [newUserPassCodeView registerForDragAndLog];
     
     cancelNewUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelNewUserButton.frame = CGRectMake(330.0f, 397.0f, 103.0f, 49.0f);
+    cancelNewUserButton.frame = CGRectMake(330.0f, 407.0f, 103.0f, 49.0f);
     [cancelNewUserButton setImage:[UIImage imageNamed:@"/login-images/cancel_button.png"] forState:UIControlStateNormal];
     [cancelNewUserButton addTarget:self action:@selector(handleCancelNewUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [editUserView addSubview:cancelNewUserButton];
     
     saveNewUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    saveNewUserButton.frame = CGRectMake(591.0f, 397.0f, 103.0f, 49.0f);
+    saveNewUserButton.frame = CGRectMake(591.0f, 407.0f, 103.0f, 49.0f);
     [saveNewUserButton setImage:[UIImage imageNamed:@"/login-images/save_button.png"] forState:UIControlStateNormal];
     [saveNewUserButton addTarget:self action:@selector(handleSaveNewUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [editUserView addSubview:saveNewUserButton];
@@ -464,7 +476,11 @@
 
 -(void)buildLoadExistingUserView
 {
-    existingUserNameTF = [[[UITextField alloc] initWithFrame:CGRectMake(334.0f, 276.0f, 360.0f, 42.0f)] autorelease];
+    UIImageView *panel = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/sync_account_BG.png"]] autorelease];
+    [panel setCenter:CGPointMake(511.0f, 377.0f)];
+    [loadExistingUserView addSubview:panel];
+    
+    existingUserNameTF = [[[UITextField alloc] initWithFrame:CGRectMake(334.0f, 288.0f, 360.0f, 42.0f)] autorelease];
     existingUserNameTF.delegate = self;
     existingUserNameTF.font = [UIFont fontWithName:@"Chango" size:24];
     //existingUserNameTF.placeholder = @"name";
@@ -477,18 +493,18 @@
     [existingUserNameTF setBorderStyle:UITextBorderStyleNone];
     [loadExistingUserView addSubview:existingUserNameTF];
     
-    downloadUserPassCodeView = [[[PassCodeView alloc] initWithFrame:CGRectMake(390.0f, 334.0f, 255.0f, 46.0f)] autorelease];
+    downloadUserPassCodeView = [[[PassCodeView alloc] initWithFrame:CGRectMake(388.0f, 344.0f, 255.0f, 46.0f)] autorelease];
     downloadUserPassCodeView.delegate = self;
     [loadExistingUserView addSubview:downloadUserPassCodeView];
     
     cancelExistingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelExistingUserButton.frame = CGRectMake(330.0f, 392.0f, 131.0f, 51.0f);
+    cancelExistingUserButton.frame = CGRectMake(330.0f, 402.0f, 131.0f, 51.0f);
     [cancelExistingUserButton setImage:[UIImage imageNamed:@"/login-images/cancel_button_2.png"] forState:UIControlStateNormal];
     [cancelExistingUserButton addTarget:self action:@selector(handleCancelExistingUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [loadExistingUserView addSubview:cancelExistingUserButton];
     
     loadExistingUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    loadExistingUserButton.frame = CGRectMake(563.0f, 391.0f, 131.0f, 51.0f);
+    loadExistingUserButton.frame = CGRectMake(563.0f, 401.0f, 131.0f, 51.0f);
     [loadExistingUserButton setImage:[UIImage imageNamed:@"/login-images/download_button.png"] forState:UIControlStateNormal];
     [loadExistingUserButton addTarget:self action:@selector(handleLoadExistingUserClicked:) forControlEvents:UIControlEventTouchUpInside];
     [loadExistingUserView addSubview:loadExistingUserButton];
@@ -584,11 +600,6 @@
 -(void)dealloc
 {
     if (deviceUsers)[deviceUsers release];
-    if (backgroundImageView)[backgroundImageView release];
-    if (editUserView)[editUserView release];
-    if (selectUserView)[selectUserView release];
-    if (selectUserTableView)[selectUserTableView release];
-    if (loadExistingUserView)[loadExistingUserView release];
     [super dealloc];
 }
 @end

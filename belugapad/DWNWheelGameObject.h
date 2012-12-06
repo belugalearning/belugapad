@@ -14,6 +14,7 @@
 
 @property (retain) CCSprite  *mySprite;
 @property (retain) NSString *SpriteFileName;
+@property (retain) NSString *UnderlaySpriteFileName;
 @property (retain) CCLayer *RenderLayer;
 @property CGPoint Position;
 @property (retain) NSMutableArray *pickerViewSelection;
@@ -32,4 +33,8 @@
 @property BOOL Locked;
 @property BOOL HasDecimals;
 @property BOOL HasNegative;
+@property int ComponentWidth;
+@property int ComponentHeight;
+@property int ComponentSpacing;
+
 @end

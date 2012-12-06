@@ -20,11 +20,6 @@
 #import "DWDotGridShapeGameObject.h"
 #import "DWDotGridTileGameObject.h"
 
-//CCPickerView
-#define kComponentWidth 54
-#define kComponentHeight 32
-#define kComponentSpacing 0
-
 @interface BNWheelObjectRender()
 {
 @private
@@ -45,6 +40,9 @@
     AppController *ac = (AppController*)[[UIApplication sharedApplication] delegate];
     contentService = ac.contentService;
     usersService = ac.usersService;
+    w.ComponentHeight=32;
+    w.ComponentWidth=54;
+    w.ComponentSpacing=0;
     
     //init pos x & y in case they're not set elsewhere
     
@@ -299,11 +297,11 @@
 }
 
 - (CGFloat)pickerView:(CCPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
-    return kComponentHeight;
+    return w.ComponentHeight;
 }
 
 - (CGFloat)pickerView:(CCPickerView *)pickerView widthForComponent:(NSInteger)component {
-    return kComponentWidth;
+    return w.ComponentWidth;
 }
 
 - (NSString *)pickerView:(CCPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
@@ -372,13 +370,18 @@
 }
 
 - (CGFloat)spaceBetweenComponents:(CCPickerView *)pickerView {
-    return kComponentSpacing;
+    return w.ComponentSpacing;
 }
 
 - (CGSize)sizeOfPickerView:(CCPickerView *)pickerView {
     CGSize size = CGSizeMake(42, 100);
     
     return size;
+}
+
+- (CCNode *)underlayImage:(CCPickerView *)pickerView {
+    CCSprite *sprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(w.UnderlaySpriteFileName)];
+    return sprite;
 }
 
 - (CCNode *)overlayImage:(CCPickerView *)pickerView {

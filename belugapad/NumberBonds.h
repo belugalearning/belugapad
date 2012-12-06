@@ -55,6 +55,7 @@ typedef enum {
     NSMutableArray *mountedObjects;
     NSMutableArray *mountedObjectLabels;
     NSMutableArray *mountedObjectBadges;
+    NSMutableArray *allRows;
     
     ProblemRejectMode rejectMode;
     ProbjemRejectType rejectType;

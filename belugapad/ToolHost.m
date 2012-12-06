@@ -2803,7 +2803,7 @@ static float kTimeToHintToolTray=7.0f;
         
         for(int i=0;i<pickerCols;i++)
         {
-            [pickerView spinComponent:i speed:15 easeRate:15 repeat:2 stopRow:0];
+            [pickerView spinComponent:i speed:50 easeRate:5 repeat:2 stopRow:0];
         }
         
         //CCLabelTTF *lbl=[CCLabelTTF labelWithString:@"Wheel" fontName:@"Source Sans Pro" fontSize:24.0f];
@@ -2903,9 +2903,9 @@ static float kTimeToHintToolTray=7.0f;
     if(self.pickerView) return;
     
     NSString *strSprite=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_bg.png",[self numberOfComponentsInPickerView:self.pickerView]];
-    NSString *strULSprite=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png",[self numberOfComponentsInPickerView:self.pickerView]];
+//    NSString *strULSprite=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png",[self numberOfComponentsInPickerView:self.pickerView]];
     CCSprite *ovSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strSprite)];
-    CCSprite *ulSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strULSprite)];
+//    CCSprite *ulSprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strULSprite)];
     
     self.pickerView = [CCPickerView node];
     if(currentTool)
@@ -2914,19 +2914,20 @@ static float kTimeToHintToolTray=7.0f;
         pickerView.position=ccp(cx,cy);
     pickerView.dataSource = self;
     pickerView.delegate = self;
+
     
     if(CurrentBTXE && ([((id<Text>)CurrentBTXE).text floatValue]>0 || [((id<Text>)CurrentBTXE).text floatValue]<0))
         [self updatePickerNumber:((id<Text>)CurrentBTXE).text];
     
 
     
-    [ulSprite setPosition:pickerView.position];
+//    [ulSprite setPosition:pickerView.position];
 
     
     
     [ovSprite setPosition:pickerView.position];
     [trayLayerWheel addChild:ovSprite z:18];
-    [trayLayerWheel addChild:ulSprite z:19];
+//    [trayLayerWheel addChild:ulSprite z:19];
     [trayLayerWheel addChild:self.pickerView z:20];
 }
 
@@ -3051,6 +3052,13 @@ static float kTimeToHintToolTray=7.0f;
     CGSize size = CGSizeMake(200, 100);
     
     return size;
+}
+
+- (CCNode *)underlayImage:(CCPickerView *)pickerView {
+    
+    NSString *strSprite=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png",[self numberOfComponentsInPickerView:self.pickerView]];
+    CCSprite *sprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(strSprite)];
+    return sprite;
 }
 
 - (CCNode *)overlayImage:(CCPickerView *)pickerView {

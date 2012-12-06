@@ -54,6 +54,7 @@
 - (CGFloat)spaceBetweenComponents:(CCPickerView *)pickerView;
 - (CGSize)sizeOfPickerView:(CCPickerView *)pickerView; 
 - (CCNode *)overlayImage:(CCPickerView *)pickerView;
+- (CCNode *)underlayImage:(CCPickerView *)pickerView;
 @optional
 - (void)onDoneSpinning:(CCPickerView *)pickerView component:(NSInteger)component;
 @end

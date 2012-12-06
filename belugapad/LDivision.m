@@ -118,11 +118,20 @@
     // then update the actual text of it
     [lblCurrentTotal setString:[NSString stringWithFormat:@"%g", currentTotal]];
     
+    [self removeCurrentLabels];
     [self drawState];
 
     if(evalMode==kProblemEvalAuto && !hasEvaluated)
         [self evalProblem];
     
+}
+
+-(void)removeCurrentLabels
+{
+    for(CCLabelTTF *l in allLabels)
+    {
+        [l removeFromParentAndCleanup:YES];
+    }
 }
 
 -(void)drawState
@@ -143,7 +152,7 @@
     float blue=0.7f;
 
     ccColor4F lineCol=ccc4f(1, 1, 1, 1);
-    ccColor4F boxCol=ccc4f(1, 1, 1, 0.5f);
+//    ccColor4F boxCol=ccc4f(1, 1, 1, 0.5f);
     float lineRad=3.0f;
     
     [drawNode clear];
@@ -193,6 +202,12 @@
             
             startBarPos=startBarPos+(endBarPos-startBarPos);
             
+            CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", ([c floatValue]*3)*magMult] fontName:CHANGO fontSize:30.0f];
+            [l setPosition:ccp(endBarPos,yInset+barH+20)];
+            [renderLayer addChild:l];
+            
+            [allLabels addObject:l];
+            
             CGPoint *firstCo=&block[0];
             
             [drawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4f(red, green, blue, 0.5f) borderWidth:3 borderColor:ccc4f(1, 1, 1, 1)];
@@ -235,6 +250,7 @@
 {
 //
     renderedBlocks=[[NSMutableArray alloc]init];
+    allLabels=[[NSMutableArray alloc]init];
     
     
     // add the big multiplier behind the numbers

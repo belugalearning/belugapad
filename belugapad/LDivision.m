@@ -202,11 +202,10 @@
             
             startBarPos=startBarPos+(endBarPos-startBarPos);
             
-            CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", ([c floatValue]*3)*magMult] fontName:CHANGO fontSize:30.0f];
-            [l setPosition:ccp(endBarPos,yInset+barH+20)];
-            [renderLayer addChild:l];
-            
-            [allLabels addObject:l];
+            CCLabelTTF *u=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", ([c floatValue]*divisor)*magMult] fontName:CHANGO fontSize:30.0f];
+            [u setPosition:ccp(endBarPos,yInset+barH+20)];
+            [renderLayer addChild:u];
+            [allLabels addObject:u];
             
             CGPoint *firstCo=&block[0];
             
@@ -222,6 +221,10 @@
             magMult=magMult / 10.0f;
         }
     }
+    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", [nWheel.StrOutputValue floatValue]*divisor] fontName:CHANGO fontSize:30.0f];
+    [l setPosition:ccp(startBarPos,yInset-40)];
+    [renderLayer addChild:l];
+    [allLabels addObject:l];
 }
 
 #pragma mark - gameworld setup and population

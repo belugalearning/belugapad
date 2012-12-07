@@ -37,7 +37,7 @@ const uint labelSpacing = 67;
         labels = [NSMutableArray array];
         for (uint i=0; i<numLabels; i++)
         {
-            UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(firstLabelX + i * labelSpacing, 9, 24, 24)] autorelease];
+            UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(firstLabelX + i * labelSpacing, 11, 24, 24)] autorelease];
             [label setTextColor:[UIColor whiteColor]];
             [label setBackgroundColor:[UIColor clearColor]];
             [label setFont:[UIFont fontWithName:@"Chango" size:24]];
@@ -167,13 +167,18 @@ const uint labelSpacing = 67;
     
     [self setNeedsDisplay];
     
-    if (!validBefore)
+    if (self.delegate)
     {
-        if (self.isValid && self.delegate) [self.delegate passCodeBecameValid:self];
-    }
-    else
-    {
-        if (!self.isValid && self.delegate) [self.delegate passCodeBecameInvalid:self];
+        [self.delegate passCodeWasEdited:self];
+        
+        if (!validBefore)   
+        {
+            if (self.isValid) [self.delegate passCodeBecameValid:self];
+        }
+        else
+        {
+            if (!self.isValid) [self.delegate passCodeBecameInvalid:self];
+        }
     }
 }
 

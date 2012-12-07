@@ -25,6 +25,7 @@
 
 
 @protocol PassCodeViewDelegate
+-(void)passCodeWasEdited:(PassCodeView*)pcv;
 -(void)passCodeBecameValid:(PassCodeView*)pcv;
 -(void)passCodeBecameInvalid:(PassCodeView*)pcv;
 @end

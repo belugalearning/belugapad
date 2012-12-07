@@ -14,9 +14,6 @@
 @interface SelectUserViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, PassCodeViewDelegate>
 {
     IBOutlet UIImageView *backgroundImageView;
-    IBOutlet UIView *selectUserView;
-    IBOutlet UIView *editUserView;
-    IBOutlet UIView *loadExistingUserView;
 }
 -(void)passCodeBecameInvalid:(PassCodeView*)passCodeView;
 -(void)passCodeBecameValid:(PassCodeView*)passCodeView;

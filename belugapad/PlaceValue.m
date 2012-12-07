@@ -37,7 +37,7 @@
 static float kPropXNetSpace=0.0625f;
 static float kPropYColumnOrigin=0.63f;
 static float kCageYOrigin=0.05f;
-static float kPropYColumnHeader=0.85f;
+static float kPropYColumnHeader=0.7f;
 static float kPropYColumnTotalCount=0.15f;
 static NSString *kDefaultSprite=@"/images/placevalue/obj-placevalue-unit.png";
 static float kTimeToCageShake=7.0f;
@@ -480,11 +480,11 @@ static float kTimeToCageShake=7.0f;
             if([showCustomColumnHeader objectForKey:[NSString stringWithFormat:@"%g", currentColumnValue]])
             {
                 NSString *columnHeaderText = [showCustomColumnHeader objectForKey:[NSString stringWithFormat:@"%g", currentColumnValue]];
-                columnHeader = [CCLabelTTF labelWithString:columnHeaderText fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+                columnHeader = [CCLabelTTF labelWithString:columnHeaderText fontName:CHANGO fontSize:30.0f];
             }
             else
             {
-                columnHeader = [CCLabelTTF labelWithString:[currentColumnInfo objectForKey:COL_LABEL] fontName:TITLE_FONT fontSize:PROBLEM_DESC_FONT_SIZE];
+                columnHeader = [CCLabelTTF labelWithString:[currentColumnInfo objectForKey:COL_LABEL] fontName:CHANGO fontSize:30.0f];
             }
             if(gw.Blackboard.inProblemSetup)
             {

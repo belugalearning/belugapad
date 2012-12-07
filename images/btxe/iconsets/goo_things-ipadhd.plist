@@ -212,6 +212,19 @@
                 <key>sourceSize</key>
                 <string>{466,60}</string>
             </dict>
+            <key>30_NB_grid_p.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,2},{466,60}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{466,60}}</string>
+                <key>sourceSize</key>
+                <string>{466,60}</string>
+            </dict>
             <key>30_NL_Yellow.png</key>
             <dict>
                 <key>frame</key>
@@ -524,6 +537,19 @@
                 <key>sourceSize</key>
                 <string>{119,60}</string>
             </dict>
+            <key>30_pv_grid_p.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{274,126},{119,60}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{119,60}}</string>
+                <key>sourceSize</key>
+                <string>{119,60}</string>
+            </dict>
             <key>4.png</key>
             <dict>
                 <key>frame</key>
@@ -703,7 +729,7 @@
             <key>size</key>
             <string>{512,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:bac587ff0f55411e4a505611b755855d$</string>
+            <string>$TexturePacker:SmartUpdate:7dfaed968f9bcb766b8604248b4ce291$</string>
             <key>textureFileName</key>
             <string>goo_things-ipadhd.png</string>
         </dict>

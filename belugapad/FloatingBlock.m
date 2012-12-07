@@ -789,6 +789,12 @@
     return sprite;
 }
 
+- (CCNode *)underlayImage:(CCPickerView *)pickerView {
+    CCSprite *sprite = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/numberwheel/FB_OutPut_Pipe__Picker_Overlay.png")];
+    [sprite setOpacity:0];
+    return sprite;
+}
+
 - (void)onDoneSpinning:(CCPickerView *)pickerView component:(NSInteger)component {
 
     NSLog(@"Component %d stopped spinning.", component);

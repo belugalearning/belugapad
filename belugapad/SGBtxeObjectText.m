@@ -23,6 +23,7 @@
 @synthesize hidden;
 @synthesize assetType;
 @synthesize container;
+@synthesize backgroundType;
 
 -(SGBtxeObjectText*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -35,6 +36,7 @@
         enabled=YES;
         interactive=YES;
         usePicker=NO;
+        backgroundType=@"Tile";
         textRenderComponent=[[SGBtxeTextRender alloc] initWithGameObject:(SGGameObject*)self];
         textBackgroundRenderComponent=[[SGBtxeTextBackgroundRender alloc] initWithGameObject:(SGGameObject*)self];
     }
@@ -54,6 +56,7 @@
     dupe.enabled=self.enabled;
     dupe.assetType=self.assetType;
     dupe.usePicker=self.usePicker;
+    dupe.backgroundType=self.backgroundType;
     
     return (id<MovingInteractive>)dupe;
     

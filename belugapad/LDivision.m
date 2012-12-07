@@ -118,6 +118,7 @@
     // then update the actual text of it
     [lblCurrentTotal setString:[NSString stringWithFormat:@"%g", currentTotal]];
     
+    [self removeCurrentLabels];
     [self drawState];
 
     if(evalMode==kProblemEvalAuto && !hasEvaluated)
@@ -125,15 +126,33 @@
     
 }
 
+-(void)removeCurrentLabels
+{
+    for(CCLabelTTF *l in allLabels)
+    {
+        [l removeFromParentAndCleanup:YES];
+    }
+}
+
 -(void)drawState
 {
+    
+    
+//    [curBlock setPosition:ccp(line.position.x+((curBlock.contentSize.width*curBlock.scaleX)/2-(line.contentSize.width/2))+cumulativeTotal, line.position.y+15)];
+//    [curBlock setScaleX:(divisor*myBase/dividend*line.contentSize.width)/curBlock.contentSize.width];
+    
     float xInset=100.0f;
-    float yInset=350.0f;
+    float yInset=400.0f;
     float barW=824.0f;
     float barH=100.0f;
+    float startBarPos=xInset;
+    
+    float red=0.9f;
+    float green=0.7f;
+    float blue=0.7f;
 
     ccColor4F lineCol=ccc4f(1, 1, 1, 1);
-    ccColor4F boxCol=ccc4f(1, 1, 1, 0.5f);
+//    ccColor4F boxCol=ccc4f(1, 1, 1, 0.5f);
     float lineRad=3.0f;
     
     [drawNode clear];
@@ -141,10 +160,10 @@
     [drawNode drawSegmentFrom:ccp(xInset, yInset-25.0f) to:ccp(xInset+barW, yInset-25.0f) radius:lineRad color:lineCol];
     
     CGPoint verts[4];
-    verts[0]=ccp(100,350);
-    verts[1]=ccp(100,450);
-    verts[2]=ccp(924,450);
-    verts[3]=ccp(924,350);
+    verts[0]=ccp(100,yInset);
+    verts[1]=ccp(100,yInset+barH);
+    verts[2]=ccp(924,yInset+barH);
+    verts[3]=ccp(924,yInset);
     
     CGPoint *firstVert=&verts[0];
     
@@ -172,11 +191,40 @@
         }
         else
         {
-            NSLog(@"%@ x %f x pval", c, magMult);
+            
+            float endBarPos=startBarPos+((divisor*magMult)*[c floatValue]/dividend*barW);
+            
+            CGPoint block[4];
+            block[0]=ccp(startBarPos,yInset);
+            block[1]=ccp(startBarPos,yInset+barH);
+            block[2]=ccp(endBarPos,yInset+barH);
+            block[3]=ccp(endBarPos,yInset);
+            
+            startBarPos=startBarPos+(endBarPos-startBarPos);
+            
+            CCLabelTTF *u=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", ([c floatValue]*divisor)*magMult] fontName:CHANGO fontSize:30.0f];
+            [u setPosition:ccp(endBarPos,yInset+barH+20)];
+            [renderLayer addChild:u];
+            [allLabels addObject:u];
+            
+            CGPoint *firstCo=&block[0];
+            
+            [drawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4f(red, green, blue, 0.5f) borderWidth:3 borderColor:ccc4f(1, 1, 1, 1)];
+            
+            red*=0.9;
+            green*=0.7;
+            blue*=0.3;
+            
+            
+            //NSLog(@"%@ x %f x pval", c, magMult);
             sigFigs++;
             magMult=magMult / 10.0f;
         }
     }
+    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", [nWheel.StrOutputValue floatValue]*divisor] fontName:CHANGO fontSize:30.0f];
+    [l setPosition:ccp(startBarPos,yInset-40)];
+    [renderLayer addChild:l];
+    [allLabels addObject:l];
 }
 
 #pragma mark - gameworld setup and population
@@ -205,6 +253,7 @@
 {
 //
     renderedBlocks=[[NSMutableArray alloc]init];
+    allLabels=[[NSMutableArray alloc]init];
     
     
     // add the big multiplier behind the numbers
@@ -227,9 +276,13 @@
     DWNWheelGameObject *w=[DWNWheelGameObject alloc];
     [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
     w.Components=columnsInPicker;
-    w.Position=ccp(lx-150,580);
+    w.Position=ccp(300,200);
+    w.ComponentHeight=50;
+    w.ComponentWidth=70;
+    w.ComponentSpacing=7;
     w.RenderLayer=renderLayer;
     w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png", w.Components];
+    w.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", w.Components];
     w.HasDecimals=YES;
     w.HasNegative=YES;
     [w handleMessage:kDWsetupStuff];

@@ -202,6 +202,13 @@ static float kTimeToHeaderBounce=7.0f;
     [revealCols retain];
     [revealTiles retain];
     [solutionsDef retain];
+
+    [usersService notifyStartingFeatureKey:@"TIMESTABLES_SELECT_TILE"];
+    
+    if(showXAxis)
+        [usersService notifyStartingFeatureKey:@"TIMESTABLES_HIGHLIGHT_X"];
+    if(showYAxis)
+        [usersService notifyStartingFeatureKey:@"TIMESTABLES_HIGHLIGHT_Y"];
 }
 
 -(void)populateGW
@@ -226,7 +233,7 @@ static float kTimeToHeaderBounce=7.0f;
     float yPos=(amtForY+1.5)*spaceBetweenAnchors;
     [operator setTag:1];
     [operator setOpacity:0];
-    [operator setPosition:ccp(xStartPos-spaceBetweenAnchors,yPos+40)];
+    [operator setPosition:ccp(xStartPos-spaceBetweenAnchors,yPos+15)];
     [self.ForeLayer addChild:operator];
     
     NSMutableArray *xHeaders=[[NSMutableArray alloc]init];
@@ -254,7 +261,7 @@ static float kTimeToHeaderBounce=7.0f;
         {
             // create our start position and gameobject
             float yStartPos=(iCol+1.5)*spaceBetweenAnchors;
-            yStartPos+=40;
+            yStartPos+=15;
             
             DWTTTileGameObject *tile = [DWTTTileGameObject alloc];
             [gw populateAndAddGameObject:tile withTemplateName:@"TtimestablesTile"];

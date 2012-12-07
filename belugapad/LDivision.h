@@ -35,6 +35,7 @@
     
     NSMutableArray *numberRows;
     NSMutableArray *numberLayers;
+    NSMutableArray *allLabels;
     NSArray *solutionsDef;
     
     DWNWheelGameObject *nWheel;
@@ -90,13 +91,7 @@
 }
 
 -(void)readPlist:(NSDictionary*)pdef;
--(void)updateLabels:(CGPoint)position;
 -(void)populateGW;
--(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
--(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
--(void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
--(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
--(BOOL)evalExpression;
 -(void)evalProblem;
 -(float)metaQuestionTitleYLocation;
 -(float)metaQuestionAnswersYLocation;

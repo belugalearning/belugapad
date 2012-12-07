@@ -16,6 +16,7 @@
 #import "SGBtxeProtocols.h"
 #import "SGBtxeContainerMgr.h"
 #import "SGBtxeRow.h"
+#import "SGBtxeObjectIcon.h"
 
 @implementation SGDtoolContainer
 
@@ -222,10 +223,18 @@
 
 -(void)setGroupBTXELabel:(id)thisLabel
 {
-    BTXELabel=thisLabel;
-    
-    if(!BTXERow)
+    if(BTXERow)
     {
+        if([BTXELabel isKindOfClass:[SGBtxeObjectIcon class]])
+           [(SGBtxeObjectIcon*)BTXELabel destroy];
+        
+        BTXERow=nil;
+        BTXELabel=nil;
+        
+    }
+        BTXELabel=thisLabel;
+//    else
+//    {
         SGBtxeRow *row=[[SGBtxeRow alloc] initWithGameWorld:gameWorld andRenderLayer:self.RenderLayer];
         row.forceVAlignTop=NO;
         SGBtxeContainerMgr *rowContMgr=row.containerMgrComponent;
@@ -235,7 +244,7 @@
         [row setupDraw];
         BTXERow=row;
         
-    }
+//    }
     [self repositionLabel];
 }
 

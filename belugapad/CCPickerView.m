@@ -25,6 +25,9 @@
 -(void)initialLoad {
 
     CCNode *overlayImage = [delegate overlayImage:self];
+    CCNode *underlayImage = [delegate underlayImage:self];
+    
+    [self addChild:underlayImage z:0];
     [self addChild:overlayImage z:10];
     
 //    CGSize size = [delegate sizeOfPickerView:self];

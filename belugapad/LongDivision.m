@@ -156,11 +156,11 @@
 //    [curBlock setScaleX:(divisor*myBase/dividend*line.contentSize.width)/curBlock.contentSize.width];
     
     float xInset=100.0f;
-    float yInset=255.0f;
+    float yInset=360.0f;
     float barW=824.0f;
     float barH=80.0f;
     float startBarPos=xInset;
-    float lblStartYPos=yInset-60;
+    float lblStartYPos=yInset-80;
     
     int colIndex=nWheel.Components;
 
@@ -266,12 +266,14 @@
                 [renderLayer addChild:s];
                 [allSprites addObject:s];
                 
-                CCLabelTTF *l=[CCLabelTTF labelWithString:str fontName:CHANGO fontSize:30.0f];
+                //CCLabelTTF *l=[CCLabelTTF labelWithString:str fontName:CHANGO fontSize:30.0f];
+                CCLabelTTF *l=[CCLabelTTF labelWithString:str fontName:CHANGO fontSize:26.0f dimensions:CGSizeMake(s.contentSize.width-8,s.contentSize.height) hAlignment:UITextAlignmentRight vAlignment:UIBaselineAdjustmentAlignCenters];
+                [l setAnchorPoint:ccp(0.5,0.5)];
                 [l setPosition:ccp(lblStartXPos, lblStartYPos)];
                 [renderLayer addChild:l];
                 [allLabels addObject:l];
                 
-                lblStartXPos=lblStartXPos+(s.contentSize.width*1.1);
+                lblStartXPos=lblStartXPos+(s.contentSize.width*1.03);
             }
             
             lblStartYPos=lblStartYPos-(s.contentSize.height*1.05);
@@ -290,12 +292,15 @@
     if(currentTotal>0){
     
         CCSprite *tot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Table_Total.png")];
-        [tot setPosition:ccp(xInset+((tot.contentSize.width*1.1)*3), lblStartYPos)];
+        [tot setPosition:ccp(xInset+((tot.contentSize.width*1.03)*3), lblStartYPos)];
         [renderLayer addChild:tot];
         [allSprites addObject:tot];
         
-        CCLabelTTF *lTot=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", currentTotal] fontName:CHANGO fontSize:30.0f];
-        [lTot setPosition:ccp(xInset+((tot.contentSize.width*1.1)*3), lblStartYPos)];
+//        CCLabelTTF *lTot=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", currentTotal*divisor] fontName:CHANGO fontSize:30.0f];
+        CCLabelTTF *lTot=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", currentTotal*divisor] fontName:CHANGO fontSize:26.0f dimensions:CGSizeMake(tot.contentSize.width-8,tot.contentSize.height) hAlignment:UITextAlignmentRight vAlignment:UIBaselineAdjustmentAlignCenters];
+
+        [lTot setAnchorPoint:ccp(0.5,0.5)];
+        [lTot setPosition:ccp(xInset+((tot.contentSize.width*1.03)*3), lblStartYPos)];
         [renderLayer addChild:lTot];
         [allLabels addObject:lTot];
     }
@@ -338,14 +343,18 @@
 //    [multiplier setOpacity:25];
 //    [renderLayer addChild:multiplier];
     
+    CCSprite *barBg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Bar_Background.png")];
+    [barBg setPosition:ccp(cx,400)];
+    [renderLayer addChild:barBg];
+    
     lblCurrentTotal=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
     [lblCurrentTotal setPosition:ccp(cx,50)];
     [renderLayer addChild:lblCurrentTotal];
 
-    CCLabelTTF *questionLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g = %g x ", dividend, divisor] fontName:CHANGO fontSize:60.0f dimensions:CGSizeMake(lx-400,100) hAlignment:UITextAlignmentRight vAlignment:UIBaselineAdjustmentAlignCenters];
-    [questionLabel setAnchorPoint:ccp(0,0.5)];
-    [questionLabel setPosition:ccp(20,ly-320)];
-    [renderLayer addChild:questionLabel];
+//    CCLabelTTF *questionLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g = %g x ", dividend, divisor] fontName:CHANGO fontSize:60.0f dimensions:CGSizeMake(lx-400,100) hAlignment:UITextAlignmentRight vAlignment:UIBaselineAdjustmentAlignCenters];
+//    [questionLabel setAnchorPoint:ccp(0,0.5)];
+//    [questionLabel setPosition:ccp(20,ly-320)];
+//    [renderLayer addChild:questionLabel];
     
     [self setupNumberWheel];
 }
@@ -355,7 +364,7 @@
     DWNWheelGameObject *w=[DWNWheelGameObject alloc];
     [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
     w.Components=columnsInPicker;
-    w.Position=ccp(lx-190,ly-320);
+    w.Position=ccp(lx-188,ly-150);
     w.ComponentHeight=50;
     w.ComponentWidth=70;
     w.ComponentSpacing=7;

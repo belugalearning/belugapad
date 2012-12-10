@@ -38,6 +38,8 @@
 	<string>blocks</string>
 	<key>30_pv_grid</key>
 	<string>container</string>
+	<key>30_pv_grid_p</key>
+	<string>containers</string>
 	<key>30_pv_dock_with_block</key>
 	<string>dock</string>
 	<key>30_Counter_Start</key>
@@ -78,6 +80,8 @@
 	<string>output pipe</string>
 	<key>30_NB_grid</key>
 	<string>container</string>
+	<key>30_NB_grid_p</key>
+	<string>containers</string>
 	<key>30_TT_Tile_Black</key>
 	<string>black square</string>
 	<key>30_NB_Block</key>

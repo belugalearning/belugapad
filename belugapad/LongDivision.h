@@ -39,6 +39,7 @@
     NSArray *solutionsDef;
     
     DWNWheelGameObject *nWheel;
+
     
     CGPoint lastTouch;
     CGPoint touchStart;
@@ -71,8 +72,11 @@
     int currentNumberPos;
     int previousNumberPos;
     float currentTotal;
+    float lastTotal;
     float rowMultiplier;
     int startColValue;
+    
+    BOOL renderingChanges;
     
     NSMutableArray *drawnObjects;
     

@@ -70,13 +70,15 @@
         [self readPlist:pdef];
         [self populateGW];
         
+        renderingChanges=YES;
+        
         [gw handleMessage:kDWsetupStuff andPayload:nil withLogLevel:0];
     
         gw.Blackboard.inProblemSetup = NO;
         
         drawNode=[[CCDrawNode alloc] init];
         [self.ForeLayer addChild:drawNode];
-        
+        //[self createClippingNode];
     }
     
     return self;
@@ -89,6 +91,12 @@
     // work out the current total
     //    currentTotal=nWheel.OutputValue/(pow((double)startColValue,-1));
     currentTotal=[nWheel.StrOutputValue floatValue];
+    
+    if(lastTotal!=currentTotal)
+    {
+        lastTotal=currentTotal;
+        renderingChanges=YES;
+    }
     
     //effective 4-digit precision evaluation test
     int prec=10000;
@@ -118,9 +126,10 @@
     // then update the actual text of it
     [lblCurrentTotal setString:[NSString stringWithFormat:@"%g", currentTotal]];
     
-    [self removeCurrentLabels];
-    [self drawState];
-
+    if(renderingChanges){
+        [self removeCurrentLabels];
+        [self drawState];
+    }
     if(evalMode==kProblemEvalAuto && !hasEvaluated)
         [self evalProblem];
     
@@ -142,9 +151,9 @@
 //    [curBlock setScaleX:(divisor*myBase/dividend*line.contentSize.width)/curBlock.contentSize.width];
     
     float xInset=100.0f;
-    float yInset=400.0f;
+    float yInset=255.0f;
     float barW=824.0f;
-    float barH=100.0f;
+    float barH=80.0f;
     float startBarPos=xInset;
     
     float red=0.9f;
@@ -157,7 +166,7 @@
     
     [drawNode clear];
     
-    [drawNode drawSegmentFrom:ccp(xInset, yInset-25.0f) to:ccp(xInset+barW, yInset-25.0f) radius:lineRad color:lineCol];
+//    [drawNode drawSegmentFrom:ccp(xInset, yInset-25.0f) to:ccp(xInset+barW, yInset-25.0f) radius:lineRad color:lineCol];
     
     CGPoint verts[4];
     verts[0]=ccp(100,yInset);
@@ -222,9 +231,11 @@
         }
     }
     CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", [nWheel.StrOutputValue floatValue]*divisor] fontName:CHANGO fontSize:30.0f];
-    [l setPosition:ccp(startBarPos,yInset-40)];
+    [l setPosition:ccp(startBarPos,yInset-20)];
     [renderLayer addChild:l];
     [allLabels addObject:l];
+    
+    renderingChanges=NO;
 }
 
 #pragma mark - gameworld setup and population
@@ -276,7 +287,7 @@
     DWNWheelGameObject *w=[DWNWheelGameObject alloc];
     [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
     w.Components=columnsInPicker;
-    w.Position=ccp(300,200);
+    w.Position=ccp(lx-190,ly-320);
     w.ComponentHeight=50;
     w.ComponentWidth=70;
     w.ComponentSpacing=7;
@@ -303,7 +314,28 @@
     return mag;
 }
 
-
+-(void)createClippingNode
+{
+    CCClippingNode *clipper = [CCClippingNode clippingNode];
+//    clipper.tag = kTagClipperNode;
+    clipper.contentSize = CGSizeMake(200, 200);
+    clipper.anchorPoint = ccp(0.5, 0.5);
+    clipper.position = ccp(800,500);
+    //[clipper runAction:[CCRepeatForever actionWithAction:[CCRotateBy actionWithDuration:1 angle:45]]];
+    [renderLayer addChild:clipper];
+    
+    CCDrawNode *stencil = [CCDrawNode node];
+    CGPoint rectangle[] = {{0, 0}, {clipper.contentSize.width, 0}, {clipper.contentSize.width, clipper.contentSize.height}, {0, clipper.contentSize.height}};
+    ccColor4F white = {1, 1, 1, 1};
+    [stencil drawPolyWithVerts:rectangle count:4 fillColor:white borderWidth:1 borderColor:white];
+    clipper.stencil = stencil;
+    
+    CCSprite *content = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Magnify_Glass.png")];
+//    content.tag = kTagContentNode;
+    content.anchorPoint = ccp(0.5, 0.5);
+    content.position = ccp(clipper.contentSize.width / 2, clipper.contentSize.height / 2);
+    [clipper addChild:content];
+}
 
 #pragma mark - touches events
 

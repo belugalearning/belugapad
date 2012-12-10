@@ -36,6 +36,7 @@
     NSMutableArray *numberRows;
     NSMutableArray *numberLayers;
     NSMutableArray *allLabels;
+    NSMutableArray *allSprites;
     NSArray *solutionsDef;
     
     DWNWheelGameObject *nWheel;

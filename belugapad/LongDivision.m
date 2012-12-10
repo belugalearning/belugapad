@@ -141,6 +141,11 @@
     {
         [l removeFromParentAndCleanup:YES];
     }
+    
+    for(CCSprite *s in allSprites)
+    {
+        [s removeFromParentAndCleanup:YES];
+    }
 }
 
 -(void)drawState
@@ -155,14 +160,13 @@
     float barW=824.0f;
     float barH=80.0f;
     float startBarPos=xInset;
+    float lblStartYPos=yInset-60;
     
-    float red=0.9f;
-    float green=0.7f;
-    float blue=0.7f;
+    int colIndex=nWheel.Components;
 
-    ccColor4F lineCol=ccc4f(1, 1, 1, 1);
+//    ccColor4F lineCol=ccc4f(1, 1, 1, 1);
 //    ccColor4F boxCol=ccc4f(1, 1, 1, 0.5f);
-    float lineRad=3.0f;
+//    float lineRad=3.0f;
     
     [drawNode clear];
     
@@ -200,31 +204,79 @@
         }
         else
         {
-            
+            // declare our positional variables for drawing
             float endBarPos=startBarPos+((divisor*magMult)*[c floatValue]/dividend*barW);
+            float sectionSize=(endBarPos-startBarPos)/[c floatValue];
+            float sectionStartPos=startBarPos;
             
+            // and out points for drawing
             CGPoint block[4];
             block[0]=ccp(startBarPos,yInset);
             block[1]=ccp(startBarPos,yInset+barH);
             block[2]=ccp(endBarPos,yInset+barH);
             block[3]=ccp(endBarPos,yInset);
             
+            // for our labels
+            float lblStartXPos=xInset;
+            
+            // change the startbar pos
             startBarPos=startBarPos+(endBarPos-startBarPos);
             
+            // draw the upper label
             CCLabelTTF *u=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", ([c floatValue]*divisor)*magMult] fontName:CHANGO fontSize:30.0f];
             [u setPosition:ccp(endBarPos,yInset+barH+20)];
             [renderLayer addChild:u];
             [allLabels addObject:u];
             
             CGPoint *firstCo=&block[0];
+            ccColor3B curCol=ccc3(0,0,0);
             
-            [drawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4f(red, green, blue, 0.5f) borderWidth:3 borderColor:ccc4f(1, 1, 1, 1)];
+            if(currentTotal>(dividend/divisor))
+                curCol=ccc3(255,0,0);
+            else
+                curCol=kBTXEColour[colIndex];
             
-            red*=0.9;
-            green*=0.7;
-            blue*=0.3;
+            // draw the current block
+            [drawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4FFromccc3B(curCol) borderWidth:3 borderColor:ccc4f(1, 1, 1, 1)];
             
+            // and all of it's separators
+            for(int i=0;i<[c intValue];i++)
+            {
+                [drawNode drawSegmentFrom:ccp(sectionStartPos,block[0].y) to:ccp(sectionStartPos,block[1].y) radius:2.0f color:ccc4f(1,1,1,1)];
+                sectionStartPos+=sectionSize;
+            }
+
+            // and the labelling stuffs
+            CCSprite *s=nil;
+            for(int i=0;i<4;i++)
+            {
+                NSString *str=nil;
+                
+                if(i==0)
+                    str=[NSString stringWithFormat:@"%g", [c floatValue]*magMult];
+                else if(i==1)
+                    str=@"x";
+                else if(i==2)
+                    str=[NSString stringWithFormat:@"%g", divisor];
+                else if(i==3)
+                    str=[NSString stringWithFormat:@"%g", ([c floatValue]*magMult)*divisor];
+                
+                s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Table_Item.png")];
+                [s setPosition:ccp(lblStartXPos, lblStartYPos)];
+                [renderLayer addChild:s];
+                [allSprites addObject:s];
+                
+                CCLabelTTF *l=[CCLabelTTF labelWithString:str fontName:CHANGO fontSize:30.0f];
+                [l setPosition:ccp(lblStartXPos, lblStartYPos)];
+                [renderLayer addChild:l];
+                [allLabels addObject:l];
+                
+                lblStartXPos=lblStartXPos+(s.contentSize.width*1.1);
+            }
             
+            lblStartYPos=lblStartYPos-(s.contentSize.height*1.05);
+            
+            colIndex--;
             //NSLog(@"%@ x %f x pval", c, magMult);
             sigFigs++;
             magMult=magMult / 10.0f;
@@ -235,6 +287,18 @@
     [renderLayer addChild:l];
     [allLabels addObject:l];
     
+    if(currentTotal>0){
+    
+        CCSprite *tot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Table_Total.png")];
+        [tot setPosition:ccp(xInset+((tot.contentSize.width*1.1)*3), lblStartYPos)];
+        [renderLayer addChild:tot];
+        [allSprites addObject:tot];
+        
+        CCLabelTTF *lTot=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", currentTotal] fontName:CHANGO fontSize:30.0f];
+        [lTot setPosition:ccp(xInset+((tot.contentSize.width*1.1)*3), lblStartYPos)];
+        [renderLayer addChild:lTot];
+        [allLabels addObject:lTot];
+    }
     renderingChanges=NO;
 }
 
@@ -265,19 +329,23 @@
 //
     renderedBlocks=[[NSMutableArray alloc]init];
     allLabels=[[NSMutableArray alloc]init];
+    allSprites=[[NSMutableArray alloc]init];
     
     
     // add the big multiplier behind the numbers
-    CCLabelTTF *multiplier=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"x%g",divisor] fontName:SOURCE fontSize:200.0f];
-    [multiplier setPosition:ccp(820,202)];
-    [multiplier setOpacity:25];
-    [renderLayer addChild:multiplier];
+//    CCLabelTTF *multiplier=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"x%g",divisor] fontName:SOURCE fontSize:200.0f];
+//    [multiplier setPosition:ccp(820,202)];
+//    [multiplier setOpacity:25];
+//    [renderLayer addChild:multiplier];
     
     lblCurrentTotal=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
     [lblCurrentTotal setPosition:ccp(cx,50)];
     [renderLayer addChild:lblCurrentTotal];
 
-
+    CCLabelTTF *questionLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g = %g x ", dividend, divisor] fontName:CHANGO fontSize:60.0f dimensions:CGSizeMake(lx-400,100) hAlignment:UITextAlignmentRight vAlignment:UIBaselineAdjustmentAlignCenters];
+    [questionLabel setAnchorPoint:ccp(0,0.5)];
+    [questionLabel setPosition:ccp(20,ly-320)];
+    [renderLayer addChild:questionLabel];
     
     [self setupNumberWheel];
 }

@@ -2803,7 +2803,7 @@ static float kTimeToHintToolTray=7.0f;
         
         for(int i=0;i<pickerCols;i++)
         {
-            [pickerView spinComponent:i speed:50 easeRate:5 repeat:2 stopRow:0];
+            [pickerView spinComponent:i speed:40 easeRate:5 repeat:2 stopRow:0];
         }
         
         //CCLabelTTF *lbl=[CCLabelTTF labelWithString:@"Wheel" fontName:@"Source Sans Pro" fontSize:24.0f];

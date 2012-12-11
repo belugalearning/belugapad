@@ -361,7 +361,7 @@
         CCLabelTTF *lTot=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", currentTotal*divisor] fontName:CHANGO fontSize:labelFontSize dimensions:CGSizeMake(tot.contentSize.width-8,tot.contentSize.height) hAlignment:UITextAlignmentRight vAlignment:UIBaselineAdjustmentAlignCenters];
 
         [lTot setAnchorPoint:ccp(0.5,0.5)];
-        [lTot setPosition:ccp(xInset+((tot.contentSize.width*1.03)*3), lblStartYPos)];
+        [lTot setPosition:ccp(xInset+tblSpriteSize+((tot.contentSize.width*1.03)*3), lblStartYPos)];
         [renderLayer addChild:lTot];
         [allLabels addObject:lTot];
     }

@@ -158,7 +158,7 @@
     float xInset=100.0f;
     float yInset=365.0f;
     float barW=824.0f;
-    float barH=80.0f;
+    float barH=60.0f;
     float startBarPos=xInset;
     float lblStartYPos=yInset-80;
     float labelFontSize=26.0f;
@@ -225,13 +225,18 @@
             
             // draw the upper label
             
-            if(fabsf([c intValue]-([c floatValue]*magMult))==0)
-            {
+            //if(fabsf([c intValue]-([c floatValue]*magMult))==0)
+            //{
+                CCSprite *m=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Label_Line.png")];
+                [m setPosition:ccp(endBarPos,yInset+barH+15)];
+                [renderLayer addChild:m];
+                [allSprites addObject:m];
+                
                 CCLabelTTF *u=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", ([c floatValue]*divisor)*magMult] fontName:CHANGO fontSize:labelFontSize*0.9];
-                [u setPosition:ccp(endBarPos,yInset+barH+20)];
+                [u setPosition:ccp(endBarPos,yInset+barH+m.contentSize.height+15)];
                 [renderLayer addChild:u];
                 [allLabels addObject:u];
-            }
+            //}
             
             CGPoint *firstCo=&block[0];
             ccColor3B curCol=ccc3(0,0,0);
@@ -366,6 +371,14 @@
 //    [renderLayer addChild:questionLabel];
     
     [self setupNumberWheel];
+    
+    for(int i=0;i<nWheel.Components;i++)
+    {
+        CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_NW_Label.png")];
+        [s setPosition:ccp(715+(i*(nWheel.ComponentWidth+(nWheel.ComponentSpacing+2))),570)];
+        [s setColor:kBTXEColour[i]];
+        [renderLayer addChild:s z:50];
+    }
 }
 
 -(void)setupNumberWheel

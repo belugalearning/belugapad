@@ -160,8 +160,12 @@
     float barW=824.0f;
     float barH=60.0f;
     float startBarPos=xInset;
+    float endBarPos=startBarPos;
     float lblStartYPos=yInset-80;
     float labelFontSize=26.0f;
+    float lineSize=0.0f;
+    float tblSpriteSize=50;
+    float lblStartXPos=xInset+tblSpriteSize;
     
     int colIndex=nWheel.Components;
 
@@ -173,26 +177,67 @@
     
 //    [drawNode drawSegmentFrom:ccp(xInset, yInset-25.0f) to:ccp(xInset+barW, yInset-25.0f) radius:lineRad color:lineCol];
     
-    CGPoint verts[4];
-    verts[0]=ccp(100,yInset);
-    verts[1]=ccp(100,yInset+barH);
-    verts[2]=ccp(924,yInset+barH);
-    verts[3]=ccp(924,yInset);
+//    CGPoint verts[4];
+//    verts[0]=ccp(100,yInset);
+//    verts[1]=ccp(100,yInset+barH);
+//    verts[2]=ccp(924,yInset+barH);
+//    verts[3]=ccp(924,yInset);
+//    
+//    CGPoint *firstVert=&verts[0];
+//    
+//    [drawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4f(1, 1, 1, 0.5f) borderWidth:3 borderColor:ccc4f(1, 1, 1, 1)];
     
-    CGPoint *firstVert=&verts[0];
-    
-    [drawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4f(1, 1, 1, 0.5f) borderWidth:3 borderColor:ccc4f(1, 1, 1, 1)];
-    
-    
+
     int magOrder=[self magnitudeOf:(int)currentTotal];
     int sigFigs=0;
     float magMult=pow(10, magOrder-1);
     NSString *digits=[NSString stringWithFormat:@"%f", currentTotal];
+    BOOL gotZeroRow=NO;
     for(int i=0; i<digits.length && sigFigs<columnsInPicker; i++)
     {
         NSString *c=[[digits substringFromIndex:i] substringToIndex:1];
         if([c isEqualToString:@"0"])
         {
+            if(currentTotal==0 && !gotZeroRow)
+            {
+                gotZeroRow=YES;
+                CCSprite *s=nil;
+                for(int i=0;i<4;i++)
+                {
+                    NSString *str=nil;
+                    
+                    if(i==0)
+                        str=[NSString stringWithFormat:@"%g", [c floatValue]*magMult];
+                    else if(i==1)
+                        str=@"x";
+                    else if(i==2)
+                        str=[NSString stringWithFormat:@"%g", divisor];
+                    else if(i==3)
+                        str=[NSString stringWithFormat:@"%g", ([c floatValue]*magMult)*divisor];
+                    
+                    s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Table_Item.png")];
+                    [s setPosition:ccp(lblStartXPos, lblStartYPos)];
+                    [renderLayer addChild:s];
+                    [allSprites addObject:s];
+                    
+                    //CCLabelTTF *l=[CCLabelTTF labelWithString:str fontName:CHANGO fontSize:30.0f];
+                    CCLabelTTF *l=[CCLabelTTF labelWithString:str fontName:CHANGO fontSize:labelFontSize dimensions:CGSizeMake(s.contentSize.width-8,s.contentSize.height) hAlignment:UITextAlignmentRight vAlignment:UIBaselineAdjustmentAlignCenters];
+                    [l setAnchorPoint:ccp(0.5,0.5)];
+                    [l setPosition:ccp(lblStartXPos, lblStartYPos)];
+                    [renderLayer addChild:l];
+                    [allLabels addObject:l];
+                    
+                    lblStartXPos=lblStartXPos+(s.contentSize.width*1.03);
+                }
+                
+                lblStartYPos=lblStartYPos-(s.contentSize.height*1.05);
+                
+                colIndex--;
+                //NSLog(@"%@ x %f x pval", c, magMult);
+                sigFigs++;
+                magMult=magMult / 10.0f;
+            }
+            
             if(sigFigs)
             {
                 magMult=magMult / 10.0f;
@@ -205,10 +250,13 @@
         }
         else
         {
+            gotZeroRow=YES;
             // declare our positional variables for drawing
-            float endBarPos=startBarPos+((divisor*magMult)*[c floatValue]/dividend*barW);
+            endBarPos=startBarPos+((divisor*magMult)*[c floatValue]/dividend*barW);
             float sectionSize=(endBarPos-startBarPos)/[c floatValue];
-            float sectionStartPos=startBarPos;
+            float sectionStartPos=startBarPos+sectionSize;
+            lineSize+=((divisor*magMult)*[c floatValue]/dividend*barW);
+            lblStartXPos=xInset+tblSpriteSize;
             
             // and out points for drawing
             CGPoint block[4];
@@ -216,9 +264,6 @@
             block[1]=ccp(startBarPos,yInset+barH);
             block[2]=ccp(endBarPos,yInset+barH);
             block[3]=ccp(endBarPos,yInset);
-            
-            // for our labels
-            float lblStartXPos=xInset;
             
             // change the startbar pos
             startBarPos=startBarPos+(endBarPos-startBarPos);
@@ -240,6 +285,8 @@
             
             CGPoint *firstCo=&block[0];
             ccColor3B curCol=ccc3(0,0,0);
+            ccColor3B sepLine=ccc3(68,71,72);
+            
             
             if(currentTotal>(dividend/divisor))
                 curCol=ccc3(255,0,0);
@@ -247,12 +294,12 @@
                 curCol=kBTXEColour[colIndex];
             
             // draw the current block
-            [drawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4FFromccc3B(curCol) borderWidth:3 borderColor:ccc4f(1, 1, 1, 1)];
+            [drawNode drawPolyWithVerts:firstCo count:4 fillColor:ccc4FFromccc3B(curCol) borderWidth:1 borderColor:ccc4FFromccc3B(curCol)];
             
             // and all of it's separators
-            for(int i=0;i<[c intValue];i++)
+            for(int i=0;i<[c intValue]-1;i++)
             {
-                [drawNode drawSegmentFrom:ccp(sectionStartPos,block[0].y) to:ccp(sectionStartPos,block[1].y) radius:2.0f color:ccc4f(1,1,1,1)];
+                [drawNode drawSegmentFrom:ccp(sectionStartPos,block[0].y) to:ccp(sectionStartPos,block[1].y) radius:0.5f color:ccc4FFromccc3B(sepLine)];
                 sectionStartPos+=sectionSize;
             }
 
@@ -263,11 +310,11 @@
                 NSString *str=nil;
                 
                 if(i==0)
-                    str=[NSString stringWithFormat:@"%g", [c floatValue]*magMult];
+                    str=[NSString stringWithFormat:@"%g", [c floatValue]];
                 else if(i==1)
                     str=@"x";
                 else if(i==2)
-                    str=[NSString stringWithFormat:@"%g", divisor];
+                    str=[NSString stringWithFormat:@"%g", magMult*divisor];
                 else if(i==3)
                     str=[NSString stringWithFormat:@"%g", ([c floatValue]*magMult)*divisor];
                 
@@ -294,6 +341,10 @@
             magMult=magMult / 10.0f;
         }
     }
+    
+    
+    [drawNode drawSegmentFrom:ccp(xInset,yInset+1) to:ccp(xInset+lineSize,yInset+1) radius:2.0f color:ccc4FFromccc4B(ccc4(22, 22, 22, 100))];
+    
     CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", [nWheel.StrOutputValue floatValue]*divisor] fontName:CHANGO fontSize:labelFontSize];
     [l setPosition:ccp(startBarPos,yInset-27)];
     [renderLayer addChild:l];
@@ -302,7 +353,7 @@
     if(currentTotal>0){
     
         CCSprite *tot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Table_Total.png")];
-        [tot setPosition:ccp(xInset+((tot.contentSize.width*1.03)*3), lblStartYPos)];
+        [tot setPosition:ccp(xInset+tblSpriteSize+((tot.contentSize.width*1.03)*3), lblStartYPos)];
         [renderLayer addChild:tot];
         [allSprites addObject:tot];
         
@@ -310,7 +361,7 @@
         CCLabelTTF *lTot=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", currentTotal*divisor] fontName:CHANGO fontSize:labelFontSize dimensions:CGSizeMake(tot.contentSize.width-8,tot.contentSize.height) hAlignment:UITextAlignmentRight vAlignment:UIBaselineAdjustmentAlignCenters];
 
         [lTot setAnchorPoint:ccp(0.5,0.5)];
-        [lTot setPosition:ccp(xInset+((tot.contentSize.width*1.03)*3), lblStartYPos)];
+        [lTot setPosition:ccp(xInset+tblSpriteSize+((tot.contentSize.width*1.03)*3), lblStartYPos)];
         [renderLayer addChild:lTot];
         [allLabels addObject:lTot];
     }

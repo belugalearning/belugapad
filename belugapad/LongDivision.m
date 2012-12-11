@@ -193,6 +193,7 @@
     float magMult=pow(10, magOrder-1);
     NSString *digits=[NSString stringWithFormat:@"%f", currentTotal];
     BOOL gotZeroRow=NO;
+    BOOL drawShadow=NO;
     for(int i=0; i<digits.length && sigFigs<columnsInPicker; i++)
     {
         NSString *c=[[digits substringFromIndex:i] substringToIndex:1];
@@ -251,6 +252,7 @@
         else
         {
             gotZeroRow=YES;
+            drawShadow=YES;
             // declare our positional variables for drawing
             endBarPos=startBarPos+((divisor*magMult)*[c floatValue]/dividend*barW);
             float sectionSize=(endBarPos-startBarPos)/[c floatValue];
@@ -342,16 +344,16 @@
         }
     }
     
-    
-    CGPoint verts[4];
-    verts[0]=ccp(xInset-1,yInset-1);
-    verts[1]=ccp(xInset-1,yInset+1);
-    verts[2]=ccp(xInset+lineSize,yInset+1);
-    verts[3]=ccp(xInset+lineSize,yInset-1);
-    
-    CGPoint *firstVert=&verts[0];
-    [drawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100)) borderWidth:0 borderColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100))];
-    
+    if(drawShadow){
+        CGPoint verts[4];
+        verts[0]=ccp(xInset-1,yInset-1);
+        verts[1]=ccp(xInset-1,yInset+1);
+        verts[2]=ccp(xInset+lineSize,yInset+1);
+        verts[3]=ccp(xInset+lineSize,yInset-1);
+        
+        CGPoint *firstVert=&verts[0];
+        [drawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100)) borderWidth:0 borderColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100))];
+    }
 //    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", [nWheel.StrOutputValue floatValue]*divisor] fontName:CHANGO fontSize:labelFontSize];
 //    [l setPosition:ccp(startBarPos,yInset-27)];
 //    [renderLayer addChild:l];

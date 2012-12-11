@@ -156,11 +156,12 @@
 //    [curBlock setScaleX:(divisor*myBase/dividend*line.contentSize.width)/curBlock.contentSize.width];
     
     float xInset=100.0f;
-    float yInset=360.0f;
+    float yInset=365.0f;
     float barW=824.0f;
-    float barH=80.0f;
+    float barH=60.0f;
     float startBarPos=xInset;
     float lblStartYPos=yInset-80;
+    float labelFontSize=26.0f;
     
     int colIndex=nWheel.Components;
 
@@ -223,10 +224,19 @@
             startBarPos=startBarPos+(endBarPos-startBarPos);
             
             // draw the upper label
-            CCLabelTTF *u=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", ([c floatValue]*divisor)*magMult] fontName:CHANGO fontSize:30.0f];
-            [u setPosition:ccp(endBarPos,yInset+barH+20)];
-            [renderLayer addChild:u];
-            [allLabels addObject:u];
+            
+            //if(fabsf([c intValue]-([c floatValue]*magMult))==0)
+            //{
+                CCSprite *m=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Label_Line.png")];
+                [m setPosition:ccp(endBarPos,yInset+barH+15)];
+                [renderLayer addChild:m];
+                [allSprites addObject:m];
+                
+                CCLabelTTF *u=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", ([c floatValue]*divisor)*magMult] fontName:CHANGO fontSize:labelFontSize*0.9];
+                [u setPosition:ccp(endBarPos,yInset+barH+m.contentSize.height+15)];
+                [renderLayer addChild:u];
+                [allLabels addObject:u];
+            //}
             
             CGPoint *firstCo=&block[0];
             ccColor3B curCol=ccc3(0,0,0);
@@ -267,7 +277,7 @@
                 [allSprites addObject:s];
                 
                 //CCLabelTTF *l=[CCLabelTTF labelWithString:str fontName:CHANGO fontSize:30.0f];
-                CCLabelTTF *l=[CCLabelTTF labelWithString:str fontName:CHANGO fontSize:26.0f dimensions:CGSizeMake(s.contentSize.width-8,s.contentSize.height) hAlignment:UITextAlignmentRight vAlignment:UIBaselineAdjustmentAlignCenters];
+                CCLabelTTF *l=[CCLabelTTF labelWithString:str fontName:CHANGO fontSize:labelFontSize dimensions:CGSizeMake(s.contentSize.width-8,s.contentSize.height) hAlignment:UITextAlignmentRight vAlignment:UIBaselineAdjustmentAlignCenters];
                 [l setAnchorPoint:ccp(0.5,0.5)];
                 [l setPosition:ccp(lblStartXPos, lblStartYPos)];
                 [renderLayer addChild:l];
@@ -284,8 +294,8 @@
             magMult=magMult / 10.0f;
         }
     }
-    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", [nWheel.StrOutputValue floatValue]*divisor] fontName:CHANGO fontSize:30.0f];
-    [l setPosition:ccp(startBarPos,yInset-20)];
+    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", [nWheel.StrOutputValue floatValue]*divisor] fontName:CHANGO fontSize:labelFontSize];
+    [l setPosition:ccp(startBarPos,yInset-27)];
     [renderLayer addChild:l];
     [allLabels addObject:l];
     
@@ -297,7 +307,7 @@
         [allSprites addObject:tot];
         
 //        CCLabelTTF *lTot=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", currentTotal*divisor] fontName:CHANGO fontSize:30.0f];
-        CCLabelTTF *lTot=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", currentTotal*divisor] fontName:CHANGO fontSize:26.0f dimensions:CGSizeMake(tot.contentSize.width-8,tot.contentSize.height) hAlignment:UITextAlignmentRight vAlignment:UIBaselineAdjustmentAlignCenters];
+        CCLabelTTF *lTot=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", currentTotal*divisor] fontName:CHANGO fontSize:labelFontSize dimensions:CGSizeMake(tot.contentSize.width-8,tot.contentSize.height) hAlignment:UITextAlignmentRight vAlignment:UIBaselineAdjustmentAlignCenters];
 
         [lTot setAnchorPoint:ccp(0.5,0.5)];
         [lTot setPosition:ccp(xInset+((tot.contentSize.width*1.03)*3), lblStartYPos)];
@@ -347,6 +357,10 @@
     [barBg setPosition:ccp(cx,400)];
     [renderLayer addChild:barBg];
     
+    CCSprite *barUnderneathThing=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Bar.png")];
+    [barUnderneathThing setPosition:ccp(cx, 355)];
+    [renderLayer addChild:barUnderneathThing];
+    
     lblCurrentTotal=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
     [lblCurrentTotal setPosition:ccp(cx,50)];
     [renderLayer addChild:lblCurrentTotal];
@@ -357,6 +371,14 @@
 //    [renderLayer addChild:questionLabel];
     
     [self setupNumberWheel];
+    
+    for(int i=0;i<nWheel.Components;i++)
+    {
+        CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_NW_Label.png")];
+        [s setPosition:ccp(715+(i*(nWheel.ComponentWidth+(nWheel.ComponentSpacing+2))),570)];
+        [s setColor:kBTXEColour[i]];
+        [renderLayer addChild:s z:50];
+    }
 }
 
 -(void)setupNumberWheel

@@ -164,7 +164,8 @@
     float lblStartYPos=yInset-80;
     float labelFontSize=26.0f;
     float lineSize=0.0f;
-    float lblStartXPos=xInset;
+    float tblSpriteSize=50;
+    float lblStartXPos=xInset+tblSpriteSize;
     
     int colIndex=nWheel.Components;
 
@@ -255,7 +256,7 @@
             float sectionSize=(endBarPos-startBarPos)/[c floatValue];
             float sectionStartPos=startBarPos+sectionSize;
             lineSize+=((divisor*magMult)*[c floatValue]/dividend*barW);
-            lblStartXPos=xInset;
+            lblStartXPos=xInset+tblSpriteSize;
             
             // and out points for drawing
             CGPoint block[4];
@@ -352,7 +353,7 @@
     if(currentTotal>0){
     
         CCSprite *tot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_Table_Total.png")];
-        [tot setPosition:ccp(xInset+((tot.contentSize.width*1.03)*3), lblStartYPos)];
+        [tot setPosition:ccp(xInset+tblSpriteSize+((tot.contentSize.width*1.03)*3), lblStartYPos)];
         [renderLayer addChild:tot];
         [allSprites addObject:tot];
         

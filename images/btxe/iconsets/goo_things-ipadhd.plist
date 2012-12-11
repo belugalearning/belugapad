@@ -199,6 +199,19 @@
                 <key>sourceSize</key>
                 <string>{148,60}</string>
             </dict>
+            <key>30_NB_Block_p.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{190,64},{148,60}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{148,60}}</string>
+                <key>sourceSize</key>
+                <string>{148,60}</string>
+            </dict>
             <key>30_NB_grid.png</key>
             <dict>
                 <key>frame</key>
@@ -729,7 +742,7 @@
             <key>size</key>
             <string>{512,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:7dfaed968f9bcb766b8604248b4ce291$</string>
+            <string>$TexturePacker:SmartUpdate:ceb534c8a40ecbe749afef55b32923aa$</string>
             <key>textureFileName</key>
             <string>goo_things-ipadhd.png</string>
         </dict>

@@ -86,6 +86,8 @@
 	<string>black square</string>
 	<key>30_NB_Block</key>
 	<string>bar</string>
+	<key>30_NB_Block_p</key>
+	<string>bars</string>
 	<key>30_NL_Yellow</key>
 	<string>yellow marker</string>
 	<key>30_SB_Drop</key>

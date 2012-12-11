@@ -423,7 +423,7 @@
     [zeroLabel setPosition:ccp(barUnderneathThing.position.x-barUnderneathThing.contentSize.width/2, barUnderneathThing.position.y-20)];
     [renderLayer addChild:zeroLabel];
     
-    CCLabelTTF *expectedLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g",dividend/divisor] fontName:CHANGO fontSize:26.0f];
+    CCLabelTTF *expectedLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g",dividend] fontName:CHANGO fontSize:26.0f];
     [expectedLabel setPosition:ccp(barUnderneathThing.position.x+barUnderneathThing.contentSize.width/2, barUnderneathThing.position.y-20)];
     [renderLayer addChild:expectedLabel];
 

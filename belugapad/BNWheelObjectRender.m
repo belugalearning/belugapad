@@ -312,20 +312,20 @@
     
     if(row<10)
     {
-        CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", row]fontName:@"Chango" fontSize:24];
+        CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", row]fontName:@"Chango" fontSize:32];
         [l setColor:ccc3(68,68,68)];
         
         return l;
     }
     else if(row==10)
     {
-        CCLabelTTF *l=[CCLabelTTF labelWithString:@"." fontName:@"Chango" fontSize:24];
+        CCLabelTTF *l=[CCLabelTTF labelWithString:@"." fontName:@"Chango" fontSize:32];
         [l setColor:ccc3(68,68,68)];
         return l;
     }
     else if(row==11)
     {
-        CCLabelTTF *l=[CCLabelTTF labelWithString:@"-" fontName:@"Chango" fontSize:24];
+        CCLabelTTF *l=[CCLabelTTF labelWithString:@"-" fontName:@"Chango" fontSize:32];
         [l setColor:ccc3(68,68,68)];
         return l;
     }

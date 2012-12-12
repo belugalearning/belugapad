@@ -311,8 +311,10 @@
             {
                 NSString *str=nil;
                 
-                if(i==0)
+                if(i==0 && magMult>=1)
                     str=[NSString stringWithFormat:@"%g", [c floatValue]];
+                else if(i==0 && magMult<1)
+                    str=[NSString stringWithFormat:@"%g", [c floatValue]*magMult];
                 else if(i==1)
                     str=@"x";
                 else if(i==2)

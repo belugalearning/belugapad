@@ -99,7 +99,9 @@
         
         if([((id<NSObject>)c) conformsToProtocol:@protocol(MovingInteractive)])
             ((id<MovingInteractive>)c).backgroundType=self.backgroundType;
-
+        
+        if([((id<NSObject>)c) isKindOfClass:[SGBtxePlaceholder class]])
+            ((SGBtxePlaceholder*)c).backgroundType=self.backgroundType;
         
         [c setupDraw];
         

@@ -446,7 +446,7 @@
     for(int i=0;i<nWheel.Components;i++)
     {
         CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_NW_Label.png")];
-        [s setPosition:ccp(715+(i*(nWheel.ComponentWidth+(nWheel.ComponentSpacing+2))),570)];
+        [s setPosition:ccp(732.5+(i*(nWheel.ComponentWidth+(nWheel.ComponentSpacing))),538)];
         [s setColor:kBTXEColour[i]];
         [renderLayer addChild:s z:50];
     }
@@ -457,17 +457,21 @@
     DWNWheelGameObject *w=[DWNWheelGameObject alloc];
     [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
     w.Components=columnsInPicker;
-    w.Position=ccp(lx-188,ly-150);
+    w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png", w.Components];
+    w.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", w.Components];
+    
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(w.SpriteFileName)];
+    
     w.ComponentHeight=62;
     w.ComponentWidth=71;
     w.ComponentSpacing=6;
+    w.Position=ccp(lx-w.ComponentSpacing-(s.contentSize.width/2),ly-180);
     w.RenderLayer=renderLayer;
-    w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png", w.Components];
-    w.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", w.Components];
     w.HasDecimals=YES;
     w.HasNegative=YES;
     [w handleMessage:kDWsetupStuff];
     nWheel=w;
+
 }
 
 -(int)magnitudeOf:(int)thisNo

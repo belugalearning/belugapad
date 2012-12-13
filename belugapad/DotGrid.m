@@ -1496,6 +1496,7 @@
                 w.AssociatedGO=s;
                 w.Components=numberWheelComponents;
                 w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",w.Components];
+                w.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", w.Components];
                 w.HasCountBubble=showCountBubble;
                 w.CountBubbleRenderLayer=anchorLayer;
                 
@@ -1540,6 +1541,7 @@
     w.Components=numberWheelComponents;
     w.Position=ccp(lx-140,(ly-120)-200*[numberWheels count]);
     w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png",w.Components];
+    w.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", w.Components];
     w.HasCountBubble=NO;
     w.Label=[CCLabelTTF labelWithString:@"Total" fontName:SOURCE fontSize:20.0f];
     [w.RenderLayer addChild:w.Label];

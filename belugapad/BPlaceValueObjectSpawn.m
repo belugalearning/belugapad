@@ -35,6 +35,9 @@
 
 -(void)spawnObject
 {
+    if(c.DisableAdd && c.ObjectValue>0)return;
+    if(c.DisableAddNeg && c.ObjectValue<0)return;
+    
     DWPlaceValueBlockGameObject *block = [DWPlaceValueBlockGameObject alloc];
     [gameWorld populateAndAddGameObject:block withTemplateName:@"TplaceValueObject"];
 

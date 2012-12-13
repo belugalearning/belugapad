@@ -192,7 +192,8 @@
             NSString *str = [nf stringFromNumber:thisNumber];
             [nf release];
             
-            if([[(SGBtxeObjectNumber*)c numberText]floatValue]<0){
+            if([[(SGBtxeObjectNumber*)c numberText]floatValue]<0)
+            {
                 str=[str stringByReplacingOccurrencesOfString:@"-" withString:@""];
                 rowString=[NSString stringWithFormat:@"%@ negative %@", rowString, str];
             }

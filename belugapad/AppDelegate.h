@@ -44,7 +44,7 @@
 
 @property BOOL ReleaseMode;
 @property BOOL AuthoringMode;
-
+@property BOOL IsMuted;
 @property BOOL IsIpad1;
 
 //uikit gubbins

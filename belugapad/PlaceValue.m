@@ -167,7 +167,17 @@ static float kTimeToCageShake=7.0f;
         [self checkAndChangeCageSpritesForMultiple];
         for(int i=0;i<[multipleLabels count];i++)
         {
+            DWPlaceValueCageGameObject *c=[allCages objectAtIndex:i];
+            
             CCLabelTTF *l=[multipleLabels objectAtIndex:i];
+            
+            if(c.DisableAdd && c.ObjectValue>0)
+                [l setVisible:NO];
+            else if(c.DisableAddNeg && c.ObjectValue<0)
+                [l setVisible:NO];
+            else
+                [l setVisible:YES];
+            
             [l setString:[NSString stringWithFormat:@"%d", [[blocksToCreate objectAtIndex:i]intValue]]];
         }
     }
@@ -177,7 +187,16 @@ static float kTimeToCageShake=7.0f;
         [self checkAndChangeCageSpritesForNegative];
         for(int i=0;i<[blockLabels count];i++)
         {
+            DWPlaceValueCageGameObject *c=[allCages objectAtIndex:i];
             CCLabelTTF *l=[blockLabels objectAtIndex:i];
+            
+            if(c.DisableAdd && c.ObjectValue>0)
+                [l setVisible:NO];
+            else if(c.DisableAddNeg && c.ObjectValue<0)
+                [l setVisible:NO];
+            else
+                [l setVisible:YES];
+            
             [l setString:[NSString stringWithFormat:@"%d", [[currentBlockValues objectAtIndex:i]intValue]]];
         }
     }
@@ -2024,10 +2043,13 @@ static float kTimeToCageShake=7.0f;
             DWPlaceValueCageGameObject *cge=[allCages objectAtIndex:i];
             
             int curNum=[[blocksToCreate objectAtIndex:i]intValue];
+            NSString *ccvKey=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]stringValue];
+            int maxNo=[[multipleBlockMax objectForKey:ccvKey]intValue];
+            int minNo=[[multipleBlockMin objectForKey:ccvKey]intValue];
             
-            if(curNum==10)
+            if(curNum==maxNo)
                 [cge.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage_variable_down_only.png")]];
-            else if(curNum==1)
+            else if(curNum==minNo)
                 [cge.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage_variable_up_only.png")]];
             else
                 [cge.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage-variable.png")]];
@@ -2049,9 +2071,13 @@ static float kTimeToCageShake=7.0f;
             int curNum=[[currentBlockValues objectAtIndex:i]intValue];
             float colVal=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]floatValue];
             
-            if(curNum==10*colVal)
+            NSString *ccvKey=[[[columnInfo objectAtIndex:currentColumnIndex] objectForKey:COL_VALUE]stringValue];
+            int maxNo=[[multipleBlockMax objectForKey:ccvKey]intValue];
+            int minNo=[[multipleBlockMin objectForKey:ccvKey]intValue];
+            
+            if(curNum==maxNo*colVal)
                 [cge.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage_variable_down_only.png")]];
-            else if(curNum==-10*colVal)
+            else if(curNum==minNo*colVal)
                 [cge.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage_variable_up_only.png")]];
             else
                 [cge.mySprite setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/placevalue/cage-variable.png")]];

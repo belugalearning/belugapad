@@ -77,6 +77,7 @@
 		551815811526210D0097E259 /* BNBondRowRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 5518157E1526210C0097E259 /* BNBondRowRender.m */; };
 		551815821526210D0097E259 /* BNBondStoreRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 551815801526210C0097E259 /* BNBondStoreRender.m */; };
 		552478661536BF5C00BA5C4E /* tooldef.plist in Resources */ = {isa = PBXBuildFile; fileRef = 552478651536BF5C00BA5C4E /* tooldef.plist */; };
+		5526EEE0167A1314001A683D /* ClippingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5526EEDF167A1314001A683D /* ClippingTest.m */; };
 		5529F4D11529EA940085492E /* BNBondStoreDropTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D01529EA940085492E /* BNBondStoreDropTarget.m */; };
 		5529F4D4152A04320085492E /* BNBondMount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D3152A04310085492E /* BNBondMount.m */; };
 		5529F4D7152A05EB0085492E /* BNBondMountable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5529F4D6152A05EB0085492E /* BNBondMountable.m */; };
@@ -578,6 +579,8 @@
 		5518157F1526210C0097E259 /* BNBondStoreRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondStoreRender.h; sourceTree = "<group>"; };
 		551815801526210C0097E259 /* BNBondStoreRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondStoreRender.m; sourceTree = "<group>"; };
 		552478651536BF5C00BA5C4E /* tooldef.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tooldef.plist; sourceTree = "<group>"; };
+		5526EEDE167A1314001A683D /* ClippingTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClippingTest.h; sourceTree = "<group>"; };
+		5526EEDF167A1314001A683D /* ClippingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClippingTest.m; sourceTree = "<group>"; };
 		5529F4CF1529EA940085492E /* BNBondStoreDropTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondStoreDropTarget.h; sourceTree = "<group>"; };
 		5529F4D01529EA940085492E /* BNBondStoreDropTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNBondStoreDropTarget.m; sourceTree = "<group>"; };
 		5529F4D2152A04310085492E /* BNBondMount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNBondMount.h; sourceTree = "<group>"; };
@@ -666,8 +669,8 @@
 		55C5F7391538A8F2009D8906 /* BDotGridTileObjectRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDotGridTileObjectRender.m; sourceTree = "<group>"; };
 		55C908CE15F62BD800BD64F2 /* SGFBlockOpBubble.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGFBlockOpBubble.h; sourceTree = "<group>"; };
 		55C908CF15F62BD900BD64F2 /* SGFBlockOpBubble.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGFBlockOpBubble.m; sourceTree = "<group>"; };
-		55CD0505165AC11F0040630A /* LongDivision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LongDivision.h; path = belugapad/LongDivision.h; sourceTree = "<group>"; };
-		55CD0506165AC1200040630A /* LongDivision.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LongDivision.m; path = belugapad/LongDivision.m; sourceTree = "<group>"; };
+		55CD0505165AC11F0040630A /* LongDivision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LongDivision.h; sourceTree = "<group>"; };
+		55CD0506165AC1200040630A /* LongDivision.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LongDivision.m; sourceTree = "<group>"; };
 		55E7CBD8157FC82400A399CF /* DWPieSplitterPieGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPieSplitterPieGameObject.h; sourceTree = "<group>"; };
 		55E7CBD9157FC82400A399CF /* DWPieSplitterPieGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWPieSplitterPieGameObject.m; sourceTree = "<group>"; };
 		55E7CBDD157FC85200A399CF /* DWPieSplitterSliceGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWPieSplitterSliceGameObject.h; sourceTree = "<group>"; };
@@ -1778,6 +1781,8 @@
 		7F2317CB1572B23300E2C941 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				55CD0505165AC11F0040630A /* LongDivision.h */,
+				55CD0506165AC1200040630A /* LongDivision.m */,
 				7F96BDED1621886E00351CA0 /* GooTool.h */,
 				7F96BDEE1621886E00351CA0 /* GooTool.m */,
 				55FDAEDD157F7CBB00943176 /* ToolTemplate.h */,
@@ -1810,6 +1815,8 @@
 				559846651627095B00554E8A /* MQDisplay.m */,
 				55984668162732CA00554E8A /* RatioTool.h */,
 				55984669162732CA00554E8A /* RatioTool.m */,
+				5526EEDE167A1314001A683D /* ClippingTest.h */,
+				5526EEDF167A1314001A683D /* ClippingTest.m */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -1985,8 +1992,6 @@
 			children = (
 				339804861661157A00589106 /* 144_icon.png */,
 				339804831661157300589106 /* 72_icon.png */,
-				55CD0505165AC11F0040630A /* LongDivision.h */,
-				55CD0506165AC1200040630A /* LongDivision.m */,
 				3395A5FD164F092500492FC2 /* Default-Landscape@2x~ipad.png */,
 				3395A5FB164F050300492FC2 /* Icon_black_144.png */,
 				3395A5F8164F050000492FC2 /* Icon_black_72.png */,
@@ -3551,6 +3556,7 @@
 				7F43B0EE165FF02000CD9B8D /* SGBtxeNumberDotRender.m in Sources */,
 				0CA32F10166506DD00FC5423 /* NumpadInputController.m in Sources */,
 				558ADA49166515700000C448 /* SGBtxeLineBreak.m in Sources */,
+				5526EEE0167A1314001A683D /* ClippingTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

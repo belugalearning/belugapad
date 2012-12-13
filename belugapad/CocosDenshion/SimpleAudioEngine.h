@@ -24,6 +24,7 @@
 
 
 #import "CDAudioManager.h"
+@class AppController;
 
 /**
  A wrapper to the CDAudioManager object.
@@ -41,6 +42,7 @@
 
 	BOOL	mute_;
 	BOOL	enabled_;
+    AppController *ac;
 }
 
 /** Background music volume. Range is 0.0f to 1.0f. This will only have an effect if willPlayBackgroundMusic returns YES */

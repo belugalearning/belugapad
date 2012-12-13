@@ -120,6 +120,7 @@ typedef enum {
     
     CCSprite *hostBackground;
     CCSprite *pauseMenu;
+    CCSprite *muteBtn;
     CCSprite *problemComplete;
     CCSprite *problemIncomplete;
     CCSprite *pbtn;

@@ -482,7 +482,7 @@
 #define BTXE_COMMOT @"b:commot"
 
 
-#define QUESTION_SEPARATOR_PADDING -15.0f
+#define QUESTION_SEPARATOR_PADDING -0.0f
 
 
 //scoring

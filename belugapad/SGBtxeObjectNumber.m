@@ -374,8 +374,15 @@
     else
     {
         //set size to size of cclabelttf plus the background overdraw size (the background itself is currently stretchy)
-        self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
+        if(self.interactive)
+            self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+BTXE_OTBKG_WIDTH_OVERDRAW_PAD, self.textRenderComponent.label.contentSize.height);
+        else
+            self.size=CGSizeMake(self.textRenderComponent.label.contentSize.width+(BTXE_OTBKG_WIDTH_OVERDRAW_PAD/3), self.textRenderComponent.label.contentSize.height);
+
     }
+    
+    if([self.backgroundType isEqualToString:@"Card"] && [self.assetType isEqualToString:@"Large"] && size.width<170)
+        size.width=170;
 
     //background sprite to text (using same size)
     [textBackgroundRenderComponent setupDrawWithSize:self.size];

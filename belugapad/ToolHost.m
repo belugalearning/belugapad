@@ -42,6 +42,8 @@
 #define TRAY_BUTTON_SPACE 80.0f
 #define TRAY_BUTTON_INSET -35.0f
 #define HD_SCORE_INSET 40.0f
+#define BACKGROUND_MUSIC_FILE_NAME @"/sfx/go/sfx_journey_map_general_background_score.mp3"
+#define PAUSE_MENU_BACKGROUND_MUSIC_FILE_NAME @"/sfx/go/sfx_journey_map_general_muffled_background_score_for_pause_menu.mp3"
 
 //CCPickerView
 //#define kComponentWidth 54
@@ -889,7 +891,7 @@ static float kTimeToHintToolTray=7.0f;
     
     [self readOutProblemDescription];
     
-    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_background_score.mp3") loop:YES];
+    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(BACKGROUND_MUSIC_FILE_NAME) loop:YES];
 }
 -(void)addCommitButton
 {
@@ -939,11 +941,18 @@ static float kTimeToHintToolTray=7.0f;
     [self addCommitButton];
 }
 
--(void)readOutProblemDescription
+-(void)readOutProblemDescriptionAndForce:(BOOL)forceRead
 {
+    if(ac.IsMuted && !forceRead)return;
+    
     NSString *readString=[[thisProblemDescription copy] autorelease];
     
     [ac speakString:readString];
+}
+
+-(void)readOutProblemDescription
+{
+    [self readOutProblemDescriptionAndForce:NO];
 }
 
 -(void)stopAllSpeaking
@@ -1108,7 +1117,7 @@ static float kTimeToHintToolTray=7.0f;
 {
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_pause_tap.wav")];
     [[SimpleAudioEngine sharedEngine]stopBackgroundMusic];
-    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_muffled_background_score_for_pause_menu.mp3") loop:YES];
+    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(PAUSE_MENU_BACKGROUND_MUSIC_FILE_NAME) loop:YES];
     isPaused = YES;
     
     if(!pauseMenu)
@@ -1116,6 +1125,10 @@ static float kTimeToHintToolTray=7.0f;
         pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
         [pauseMenu setPosition:ccp(cx, cy)];
         [pauseLayer addChild:pauseMenu z:10];
+        
+        muteBtn = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause_sound.png")];
+        [muteBtn setPosition:ccp(250,250)];
+        [pauseLayer addChild:muteBtn z:20];
         
         if(contentService.pathToTestDef)
         {
@@ -1148,7 +1161,7 @@ static float kTimeToHintToolTray=7.0f;
 -(void)hidePauseMenu
 {
     [[SimpleAudioEngine sharedEngine]stopBackgroundMusic];
-    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_background_score.mp3") loop:YES];
+    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(BACKGROUND_MUSIC_FILE_NAME) loop:YES];
     [pauseLayer setVisible:NO];
     isPaused=NO;
     
@@ -1179,6 +1192,22 @@ static float kTimeToHintToolTray=7.0f;
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self stopAllSpeaking];
         [self returnToMap];
+    }
+    if(CGRectContainsPoint(muteBtn.boundingBox, location))
+    {
+        if(ac.IsMuted)
+        {
+            ac.IsMuted=NO;
+            [muteBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/menu/pause_sound.png")]];
+            
+            [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(PAUSE_MENU_BACKGROUND_MUSIC_FILE_NAME) loop:YES];
+        }
+        else
+        {
+            ac.IsMuted=YES;
+            [[SimpleAudioEngine sharedEngine]stopBackgroundMusic];
+            [muteBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/menu/pause_mute.png")]];
+        }
     }
 //    if(CGRectContainsPoint(kPauseMenuLogOut, location))
 //    {
@@ -2364,7 +2393,7 @@ static float kTimeToHintToolTray=7.0f;
     }
     else if(CGRectContainsPoint(readProblemDesc.boundingBox, location))
     {
-        [self readOutProblemDescription];
+        [self readOutProblemDescriptionAndForce:YES];
         return;
     }
     else

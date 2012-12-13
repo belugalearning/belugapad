@@ -22,7 +22,8 @@ typedef enum
     kCheckEvalAreasForTypes=5,
     kCheckGroupsForTypes=6,
     kCheckContainerValues=7,
-    kCheckEvalAreaValues=8
+    kCheckEvalAreaValues=8,
+    kCheckSelectedGroupEvalTarget=9
 }DistributionEvalType;
 
 @interface DistributionTool : ToolScene

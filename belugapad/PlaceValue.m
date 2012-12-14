@@ -1324,8 +1324,10 @@ static float kTimeToCageShake=7.0f;
             [self.NoScaleLayer addChild:countBg z:9];
             sumLabel=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:25.0f];
             [sumLabel setTag:3];
+            [sumLabel setRotation:180.0f];
+            
             [sumLabel setOpacity:0];
-            [sumLabel setPosition:ccp(countBg.contentSize.width/2,countBg.contentSize.height/2)];
+            [sumLabel setPosition:ccp(countBg.contentSize.width/2,countBg.contentSize.height/2.4)];
             //[countLabel setPosition:ccp(lx-(kPropXCountLabelPadding*lx), kPropYCountLabelPadding*ly)];
 
             [countBg addChild:sumLabel z:10];

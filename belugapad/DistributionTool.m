@@ -1482,7 +1482,7 @@ static float kDistanceBetweenBlocks=70.0f;
             [loggingService logEvent:BL_PA_DT_TOUCH_MOVE_MOVE_BLOCK withAdditionalData:nil];
             hasLoggedMovedBlock=YES;
         }
-        if((location.x>=80.0f&&location.x<=lx-80.0f) && (location.y>=60.0f&&location.y<=ly-80.0f) && [BLMath DistanceBetween:touchStart and:location]>8.0f)
+        if((location.x>=80.0f&&location.x<=lx-80.0f) && (location.y>=60.0f&&location.y<=ly-200.0f) && [BLMath DistanceBetween:touchStart and:location]>8.0f)
         {
             // set it's position and move it!
             currentPickupObject.Position=location;

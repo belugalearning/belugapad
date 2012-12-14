@@ -69,8 +69,9 @@
 {
     for(id<Rendered,Moveable>block in MyBlocks)
     {
+        NSLog(@"inflated from zIndex %d to 999", block.MySprite.zOrder);
         block.zIndex=[block.MySprite zOrder];
-        [block.MySprite setZOrder:99999];
+        [block.MySprite setZOrder:999];
     }
 }
 
@@ -78,8 +79,8 @@
 {
     for(id<Rendered,Moveable>block in MyBlocks)
     {
-        block.zIndex=[block.MySprite zOrder];
         [block.MySprite setZOrder:block.zIndex];
+        NSLog(@"deflated from zIndex %d to %d", block.MySprite.zOrder, block.zIndex);
     }
 }
 

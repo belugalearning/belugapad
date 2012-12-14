@@ -186,10 +186,21 @@
         if([c isKindOfClass:[SGBtxeObjectNumber class]])
         {
             
+            NSNumberFormatter *nf = [NSNumberFormatter new];
+            nf.numberStyle = NSNumberFormatterDecimalStyle;
+            NSNumber *thisNumber=[NSNumber numberWithFloat:[[(SGBtxeObjectNumber*)c numberText]floatValue]];
+            NSString *str = [nf stringFromNumber:thisNumber];
+            [nf release];
+            
             if([[(SGBtxeObjectNumber*)c numberText]floatValue]<0)
-                rowString=[NSString stringWithFormat:@"%@ negative %g", rowString, fabsf([[(SGBtxeObjectNumber*)c numberText]floatValue])];
+            {
+                str=[str stringByReplacingOccurrencesOfString:@"-" withString:@""];
+                rowString=[NSString stringWithFormat:@"%@ negative %@", rowString, str];
+            }
             else
-                rowString=[NSString stringWithFormat:@"%@ %@", rowString, [(SGBtxeObjectNumber*)c numberText]];
+            {
+                rowString=[NSString stringWithFormat:@"%@ %@", rowString, str];
+            }
         }
         
         if([c isKindOfClass:[SGBtxeObjectIcon class]])

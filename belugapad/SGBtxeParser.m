@@ -78,10 +78,11 @@ const NSString *matchNumbers=@"0123456789";
             {
                 //create object number, have it parsed
                 SGBtxeObjectNumber *on=[[SGBtxeObjectNumber alloc] initWithGameWorld:gameWorld];
+                
                 on.text=s;
                 on.enabled=YES;
                 on.interactive=NO;
-                
+
                 [ParentGO.containerMgrComponent addObjectToContainer:on];
             }
             else

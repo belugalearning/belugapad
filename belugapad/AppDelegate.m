@@ -49,6 +49,7 @@
 @synthesize LocalSettings;
 @synthesize ReleaseMode;
 @synthesize AuthoringMode;
+@synthesize IsMuted;
 @synthesize IsIpad1;
 
 @synthesize searchBar, searchList;
@@ -154,6 +155,8 @@
 	director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
     
 	director_.wantsFullScreenLayout = YES;
+    
+    self.IsMuted = NO;
     
 	// Display FSP and SPF
     [director_ setDisplayStats:!self.ReleaseMode];

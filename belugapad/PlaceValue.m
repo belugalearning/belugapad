@@ -1317,8 +1317,9 @@ static float kTimeToCageShake=7.0f;
         if(showValue)
         {
             CCSprite *countBg=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/pv_counter_total.png")];
-            [countBg setPosition:ccp(lx-60,ly-85)];
+            [countBg setPosition:ccp(lx-60,40)];
             [countBg setTag:3];
+            [countBg setRotation:180.0f];
             [countBg setOpacity:0];
             [self.NoScaleLayer addChild:countBg z:9];
             sumLabel=[CCLabelTTF labelWithString:@"" fontName:CHANGO fontSize:25.0f];
@@ -2249,8 +2250,8 @@ static float kTimeToCageShake=7.0f;
         DWPlaceValueBlockGameObject *go=[DWPlaceValueBlockGameObject alloc];
         [gw populateAndAddGameObject:go withTemplateName:@"TplaceValueObject"];
         
-        CGPoint locationToAnimateFrom=[renderLayer convertToNodeSpace:gw.Blackboard.TestTouchLocation];
-        
+        //CGPoint locationToAnimateFrom=[renderLayer convertToNodeSpace:gw.Blackboard.TestTouchLocation];
+        CGPoint locationToAnimateFrom=gw.Blackboard.TestTouchLocation;
         go.PosX=locationToAnimateFrom.x;
         go.PosY=locationToAnimateFrom.y;
         
@@ -2303,6 +2304,8 @@ static float kTimeToCageShake=7.0f;
 //            }
 //        }
 
+//        DWPlaceValueNetGameObject *newMount=nil;
+        
         for (int r=0; r<[gw.Blackboard.CurrentStore count]; r++) {
             if(stop)break;
             
@@ -2322,6 +2325,7 @@ static float kTimeToCageShake=7.0f;
                     go.Mount=co;
                     go.AnimateMe=YES;
                     co.MountedObject=go;
+//                    newMount=co;
                     go.PosX=co.PosX;
                     go.PosY=co.PosY;
                     //                    [go handleMessage:kDWsetMount];
@@ -2331,6 +2335,23 @@ static float kTimeToCageShake=7.0f;
                 }
             }
         }
+        
+//        if (incr>0) {
+//            [gw.Blackboard.PickupObject handleMessage:kDWdismantle andPayload:nil withLogLevel:0];
+//            [gw delayRemoveGameObject:gw.Blackboard.PickupObject];
+//            gw.Blackboard.PickupObject=nil;
+//        }
+//        else
+//        {
+//            for (int i=0; i<[gw.Blackboard.SelectedObjects count]; i++) {
+//                DWPlaceValueBlockGameObject *go=[gw.Blackboard.SelectedObjects objectAtIndex:i];
+//                go.Mount=newMount;
+//                
+//                [go handleMessage:kDWresetToMountPositionAndDestroy andPayload:nil withLogLevel:0];
+//            }
+//            [gw.Blackboard.SelectedObjects removeAllObjects];
+//            
+//        }
 
         
         [go release];

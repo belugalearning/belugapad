@@ -680,9 +680,9 @@ static float kTimeToCageShake=7.0f;
             
             cge.mySprite=cageContainer;
             
-            if(isNegativeProblem)
-                cge.ObjectValue=-currentColumnValue;
-            else
+//            if(isNegativeProblem)
+//                cge.ObjectValue=-currentColumnValue;
+//            else
                 cge.ObjectValue=currentColumnValue;
             
             // set our column specific options on the store

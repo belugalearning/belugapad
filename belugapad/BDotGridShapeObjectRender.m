@@ -143,14 +143,14 @@
             NSString *strHeight=[NSString stringWithFormat:@"%d", height];
             
             float yPosForHeightLabel=halfWayHeight;
-            float xPosForHeightLabel=leftMostX-50;
+            float xPosForHeightLabel=leftMostX-30;
             
             // width label
             
             int width=fabsf(fa.myXpos-la.myXpos);
             NSString *strWidth=[NSString stringWithFormat:@"%d", width];
             
-            float yPosForWidthLabel=topMostY+50;
+            float yPosForWidthLabel=topMostY+30;
             float xPosForWidthLabel=halfWayWidth;
             
             if(!s.myHeight)

@@ -49,6 +49,10 @@
     PassCodeView *downloadUserPassCodeView;
     UIButton *cancelExistingUserButton;
     UIButton *loadExistingUserButton;
+    
+    UIImageView *loadingImg;
+    
+    BOOL freezeUI;
 }
 -(void) loadDeviceUsers;
 -(void) buildSelectUserView;
@@ -98,11 +102,24 @@
     [self buildLoadExistingUserView];
     
     [self setActiveView:selectUserView];
+    
+    loadingImg = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"/login-images/loadwheel.png"]] autorelease];
+    [loadingImg setCenter:CGPointMake(706,429)];
+    [self.view addSubview:loadingImg];
+    loadingImg.alpha = 0;
+    
+    CABasicAnimation* rotationAnimation;
+    double secsPerRev = 1;
+    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0];
+    rotationAnimation.duration = secsPerRev;
+    rotationAnimation.cumulative = YES;
+    rotationAnimation.repeatCount = HUGE_VALF;
+    [loadingImg.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    //DLog(@"viewWillAppear");
     [super viewWillAppear:animated];
 }
 
@@ -252,16 +269,20 @@
 #pragma mark interactions
 -(void)handlePlayButtonTouchDown:(id)button
 {
+    if (freezeUI) return;
     ((UIButton*)button).transform = CGAffineTransformMakeScale(1.2, 1.2);
 }
 
 -(void)handlePlayButtonTouchEnd:(id)button
 {
+    if (freezeUI) return;
     ((UIButton*)button).transform = CGAffineTransformIdentity;
 }
 
 -(void)handlePlayButtonClicked:(id)button
 {
+    if (freezeUI) return;
+    
     NSIndexPath *ip = [selectUserTableView indexPathForSelectedRow];
 
     if (selectUserModalBgView) return;
@@ -309,6 +330,8 @@
 
 -(void)handleBackToSelectUserClicked:(id)button
 {
+    if (freezeUI) return;
+    
     [selectUserModalUnderlay removeFromSuperview];
     selectUserModalUnderlay = nil;
     [selectUserModalBgView removeFromSuperview];
@@ -325,6 +348,8 @@
 
 -(void)handleLoginButtonClicked:(id)button
 {
+    if (freezeUI) return;
+    
     if (!selectUserPassCodeModalView.isValid)
     {
         [tickCrossImg setImage:[UIImage imageNamed:@"/login-images/wrong_cross.png"]];
@@ -361,11 +386,13 @@
 
 -(void)handleNewUserClicked:(id)button
 {
+    if (freezeUI) return;
     [self setActiveView:editUserView];
 }
 
 -(void)handleExistingUserClicked:(id)button
 {
+    if (freezeUI) return;
     [self setActiveView:loadExistingUserView];
 }
 
@@ -411,6 +438,7 @@
 
 -(void)handleCancelNewUserClicked:(id)button
 {
+    if (freezeUI) return;
     newUserNameTF.text = @"";
     [newUserPassCodeView clearText];
     [newUserNameTF resignFirstResponder];
@@ -420,6 +448,8 @@
 
 -(void)handleSaveNewUserClicked:(id)button
 {
+    if (freezeUI) return;
+    
     if (!newUserNameTF.text || !newUserNameTF.text.length)
     {
         [newUserNameTF becomeFirstResponder];
@@ -435,9 +465,12 @@
     __block typeof(self) bself = self;
     __block NSString *bnick = newUserNameTF.text;
     void (^createSetUrCallback)() = ^(BL_USER_CREATION_STATUS status) {
+        bself->loadingImg.alpha = 0;
+        bself->freezeUI = NO;
+        
         if (BL_USER_CREATION_FAILURE_NICK_UNAVAILABLE == status)
         {
-            UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
+            UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
                                                                  message:@"This nickname is already in use. Please try another one."
                                                                 delegate:bself
                                                        cancelButtonTitle:@"OK"
@@ -465,6 +498,9 @@
             [bself setActiveView:selectUserView];
         }
     };
+    
+    loadingImg.alpha = 1;
+    freezeUI = YES;
     
     [usersService createNewUserWithNick:newUserNameTF.text
                             andPassword:newUserPassCodeView.text
@@ -512,6 +548,7 @@
 
 -(void)handleCancelExistingUserClicked:(id)button
 {
+    if (freezeUI) return;
     existingUserNameTF.text = @"";
     [downloadUserPassCodeView clearText];
     [existingUserNameTF resignFirstResponder];
@@ -521,18 +558,25 @@
 
 -(void)handleLoadExistingUserClicked:(id)button
 {
+    UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
+                                 message:@"We could not find a match for those login details. Please double-check and try again."
+                                delegate:nil
+                       cancelButtonTitle:@"OK"
+                       otherButtonTitles:nil] autorelease];
+    
+    if (freezeUI) return;
+    
     __block typeof(self) bself = self;
     void (^callback)() = ^(NSDictionary *ur) {
-        if (ur == nil)
+        bself->loadingImg.alpha = 0;
+        bself->freezeUI = NO;
+        
+        if (!ur)
         {
-            UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Sorry"
-                                                                 message:@"We could not find a match for those login details. Please double-check and try again."
-                                                                delegate:bself 
-                                                       cancelButtonTitle:@"OK"
-                                                       otherButtonTitles:nil] autorelease];
             [alertView show];
             return;
-        }        
+
+        }
         
         [bself->usersService setCurrentUserToUserWithId:[ur objectForKey:@"id"]];        
         [self.view removeFromSuperview];
@@ -550,6 +594,9 @@
         [downloadUserPassCodeView becomeFirstResponder];
         return;
     }
+    
+    loadingImg.alpha = 1;    
+    freezeUI = YES;
     
     [usersService downloadUserMatchingNickName:existingUserNameTF.text
                                    andPassword:downloadUserPassCodeView.text

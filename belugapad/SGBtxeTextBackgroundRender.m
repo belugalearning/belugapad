@@ -82,6 +82,7 @@
     {
         isPlaceholder=YES;
         assetType=((SGBtxePlaceholder*)ParentGO).assetType;
+        backgroundType=((SGBtxePlaceholder*)ParentGO).backgroundType;
     }
     if(isPlaceholder)
     {
@@ -95,6 +96,7 @@
             lhFile=[NSString stringWithFormat:@"/images/btxe/SQ_Holder_%@_Left.png", assetType];
             mFile=[NSString stringWithFormat:@"/images/btxe/SQ_Holder_%@_Middle.png", assetType];
             rhFile=[NSString stringWithFormat:@"/images/btxe/SQ_Holder_%@_Right.png", assetType];
+            
         }
         
         lh=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(lhFile)];
@@ -113,12 +115,14 @@
             lhFile=[NSString stringWithFormat:@"/images/btxe/SQ_Block_%@_Left.png", assetType];
             mFile=[NSString stringWithFormat:@"/images/btxe/SQ_Block_%@_Middle.png", assetType];
             rhFile=[NSString stringWithFormat:@"/images/btxe/SQ_Block_%@_Right.png", assetType];
+            
         }
         lh=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(lhFile)];
         m=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(mFile)];
         rh=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(rhFile)];
 //        [rh setPosition:ccp(m.contentSize.width/2+(rh.contentSize.width/2), 0)];
     }
+    
     
     m.scaleX=(size.width-BTXE_OTBKG_WIDTH_OVERDRAW_PAD) / m.contentSize.width;
     //m.scaleY=size.height / m.contentSize.height;

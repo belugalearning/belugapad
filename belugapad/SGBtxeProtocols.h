@@ -136,6 +136,7 @@
 @protocol BtxeMount
 
 @property (retain) id<Interactive, NSObject> mountedObject;
+@property (retain) NSString *backgroundType;
 
 -(void)duplicateAndMountThisObject:(id<MovingInteractive, NSObject>)mountObject;
 -(CGRect)returnBoundingBox;

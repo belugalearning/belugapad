@@ -20,6 +20,7 @@
 @synthesize targetTag;
 @synthesize assetType;
 @synthesize mountedObject;
+@synthesize backgroundType;
 
 -(SGBtxePlaceholder*)initWithGameWorld:(SGGameWorld*)aGameWorld
 {
@@ -65,6 +66,11 @@
     
     else
         size=CGSizeMake(50, 40);
+    
+    if([self.backgroundType isEqualToString:@"Card"])
+        size.width=170;
+    
+
     //background sprite to text (using same size)
     [textBackgroundComponent setupDrawWithSize:self.size];
     
@@ -170,6 +176,11 @@
 }
 
 -(void)activate
+{
+    
+}
+
+-(void)destroy
 {
     
 }

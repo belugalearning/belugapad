@@ -23,6 +23,7 @@
  */
 
 #import "SimpleAudioEngine.h"
+#import "AppDelegate.h"
 
 @implementation SimpleAudioEngine
 
@@ -58,6 +59,7 @@ static CDBufferManager *bufferManager = nil;
 		bufferManager = [[CDBufferManager alloc] initWithEngine:soundEngine];
 		mute_ = NO;
 		enabled_ = YES;
+        ac = (AppController*)[[UIApplication sharedApplication] delegate];
 	}
 	return self;
 }
@@ -88,11 +90,13 @@ static CDBufferManager *bufferManager = nil;
 
 -(void) playBackgroundMusic:(NSString*) filePath
 {
+    if(ac.IsMuted)return;
 	[am playBackgroundMusic:filePath loop:TRUE];
 }
 
 -(void) playBackgroundMusic:(NSString*) filePath loop:(BOOL) loop
 {
+    if(ac.IsMuted)return;
 #if !(TARGET_IPHONE_SIMULATOR)
 	[am playBackgroundMusic:filePath loop:loop];
 #endif
@@ -127,11 +131,13 @@ static CDBufferManager *bufferManager = nil;
 
 -(ALuint) playEffect:(NSString*) filePath
 {
+    if(ac.IsMuted)return [self playEffect:nil pitch:1.0f pan:0.0f gain:0.0f];
 	return [self playEffect:filePath pitch:1.0f pan:0.0f gain:1.0f];
 }
 
 -(ALuint) playEffect:(NSString*) filePath pitch:(Float32) pitch pan:(Float32) pan gain:(Float32) gain
 {
+    if(ac.IsMuted)return CD_MUTE;
 	int soundId = [bufferManager bufferForFile:filePath create:YES];
 	if (soundId != kCDNoBuffer) {
 		return [soundEngine playSound:soundId sourceGroupId:0 pitch:pitch pan:pan gain:gain loop:false];

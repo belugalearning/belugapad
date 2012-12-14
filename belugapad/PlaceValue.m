@@ -753,6 +753,7 @@ static float kTimeToCageShake=7.0f;
             if(defaultBlocksToMake>maxBlocks)
                 defaultBlocksToMake=maxBlocks;
             
+            
             [blocksToCreate addObject:[NSNumber numberWithInt:defaultBlocksToMake]];
             
             //CCSprite *minusSprite=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/placevalue/minus40.png")];
@@ -783,10 +784,6 @@ static float kTimeToCageShake=7.0f;
         }
         else if(isNegativeProblem && (!([columnCages objectForKey:currentColumnValueKey]) || ([[columnCages objectForKey:currentColumnValueKey] boolValue]==YES)))
         {
-            [currentBlockValues addObject:[NSNumber numberWithInt:cageDefaultValue]];
-            
-            CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", cageDefaultValue] fontName:@"Chango" fontSize:PROBLEM_DESC_FONT_SIZE];
-            
             float PosX=i*(kPropXColumnSpacing*lx)-120;
             float PosY=(ly*kCageYOrigin)-41;
             
@@ -799,11 +796,9 @@ static float kTimeToCageShake=7.0f;
             
             //[minusSprite setPosition:ccp(PosX,PosY-25)];
             //[posiSprite setPosition:ccp(PosX,PosY+25)];
-            [label setPosition:ccp(PosX+120,PosY+61)];
             
             [multipleMinusSprites addObject:[NSValue valueWithCGRect:minus]];
             [multiplePlusSprites addObject:[NSValue valueWithCGRect:plus]];
-            [blockLabels addObject:label];
             
             
             if(![multipleBlockMax objectForKey:currentColumnValueKey])
@@ -818,14 +813,23 @@ static float kTimeToCageShake=7.0f;
             
             if([multipleBlockPickupDefaults objectForKey:currentColumnValueKey])
                 defaultBlocksToMake=[[multipleBlockPickupDefaults objectForKey:currentColumnValueKey]intValue];
+            else if(cageDefaultValue!=1)
+                defaultBlocksToMake=cageDefaultValue;
             else
                 defaultBlocksToMake=1;
             
+            if(defaultBlocksToMake<0){
+                DWPlaceValueCageGameObject *myCage=[allCages objectAtIndex:[allCages count]-1];
+                myCage.ObjectValue=-myCage.ObjectValue;
+            }
             
             if(debugLogging)
                 NSLog(@"currentBlockValues count %d, minusSprites count %d, plusSprites count %d, blockLabels count %d", [currentBlockValues count], [multipleMinusSprites count], [multiplePlusSprites count], [blockLabels count]);
-
-        
+            
+            [currentBlockValues addObject:[NSNumber numberWithInt:defaultBlocksToMake]];
+            CCLabelTTF *label=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", defaultBlocksToMake] fontName:@"Chango" fontSize:PROBLEM_DESC_FONT_SIZE];
+            [label setPosition:ccp(PosX+120,PosY+61)];
+            [blockLabels addObject:label];
             [label setTag:3];
             [label setOpacity:0];
             [label setColor:ccc3(0,0,0)];

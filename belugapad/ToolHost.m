@@ -1041,6 +1041,11 @@ static float kTimeToHintToolTray=7.0f;
     
     TFLog(@"resetting problem");
     
+    [qTrayTop removeFromParentAndCleanup:YES];
+    [qTrayMid removeFromParentAndCleanup:YES];
+    [qTrayBot removeFromParentAndCleanup:YES];
+    [readProblemDesc removeFromParentAndCleanup:YES];
+    
     [self tearDownNumberPicker];
     [self tearDownMetaQuestion];
 
@@ -1102,6 +1107,10 @@ static float kTimeToHintToolTray=7.0f;
 {
     [problemDefLayer removeAllChildrenWithCleanup:YES];
     [btxeDescLayer removeAllChildrenWithCleanup:YES];
+    [qTrayTop removeFromParentAndCleanup:YES];
+    [qTrayMid removeFromParentAndCleanup:YES];
+    [qTrayBot removeFromParentAndCleanup:YES];
+    [readProblemDesc removeFromParentAndCleanup:YES];
     
     [descGw release];
     descGw=nil;
@@ -2285,12 +2294,18 @@ static float kTimeToHintToolTray=7.0f;
     qTrayMid=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Middle.png")];
     qTrayBot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Bottom.png")];
     
-    [qTrayMid setPosition:row.position];
+    [qTrayMid setPosition:ccp(row.position.x,row.position.y+200)];
     
     [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+(qTrayTop.contentSize.height/2)+qTrayMid.contentSize.height/2)];
     [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-(qTrayBot.contentSize.height/2)-(qTrayMid.contentSize.height/2))];
     
     [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayMid.position.y-(qTrayBot.contentSize.height/1.1)-(qTrayMid.contentSize.height/2))];
+    
+    [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x, qTrayTop.position.y-200)]];
+    [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x, qTrayMid.position.y-200)]];
+    [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x, qTrayBot.position.y-200)]];
+    [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x, readProblemDesc.position.y-200)]];
+    
     
     [backgroundLayer addChild:readProblemDesc];
     [backgroundLayer addChild:qTrayTop];

@@ -2722,13 +2722,13 @@ static float kTimeToHintToolTray=7.0f;
         
         [descRow relayoutChildrenToWidth:625];
         
-        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.5f scaleX:0.7f scaleY:qTrayTop.scaleY]];
-        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.5f scaleX:0.7f scaleY:qTrayMid.scaleY]];
-        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.5f scaleX:0.7f scaleY:qTrayBot.scaleY]];
+        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.7f scaleY:qTrayTop.scaleY]];
+        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.7f scaleY:qTrayMid.scaleY]];
+        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.7f scaleY:qTrayBot.scaleY]];
         
-        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.3f position:ccp(qTrayTop.position.x-(cx/3.1), qTrayTop.position.y)]];
-        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.3f position:ccp(qTrayMid.position.x-(cx/3.1), qTrayMid.position.y)]];
-        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.3f position:ccp(qTrayBot.position.x-(cx/3.1), qTrayBot.position.y)]];
+        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x-(cx/3.1), qTrayTop.position.y)]];
+        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x-(cx/3.1), qTrayMid.position.y)]];
+        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x-(cx/3.1), qTrayBot.position.y)]];
         
 //        [qTrayTop setScaleX:0.7];
 //        [qTrayMid setScaleX:0.7];
@@ -2759,13 +2759,13 @@ static float kTimeToHintToolTray=7.0f;
 //        [qTrayMid setPosition:ccp(qTrayTop.position.x, qTrayMid.position.y)];
 //        [qTrayBot setPosition:ccp(qTrayTop.position.x, qTrayBot.position.y)];
 
-        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.5f scaleX:1.0f scaleY:qTrayTop.scaleY]];
-        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.5f scaleX:1.0f scaleY:qTrayMid.scaleY]];
-        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.5f scaleX:1.0f scaleY:qTrayBot.scaleY]];
+        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:1.0f scaleY:qTrayTop.scaleY]];
+        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:1.0f scaleY:qTrayMid.scaleY]];
+        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:1.0f scaleY:qTrayBot.scaleY]];
         
-        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.3f position:ccp(qTrayTop.position.x+(cx/3.1), qTrayTop.position.y)]];
-        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.3f position:ccp(qTrayMid.position.x+(cx/3.1), qTrayMid.position.y)]];
-        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.3f position:ccp(qTrayBot.position.x+(cx/3.1), qTrayBot.position.y)]];
+        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x+(cx/3.1), qTrayTop.position.y)]];
+        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x+(cx/3.1), qTrayMid.position.y)]];
+        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x+(cx/3.1), qTrayBot.position.y)]];
         
         [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 130)];
         

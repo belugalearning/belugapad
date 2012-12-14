@@ -156,7 +156,7 @@
 //    [curBlock setScaleX:(divisor*myBase/dividend*line.contentSize.width)/curBlock.contentSize.width];
     
     float xInset=100.0f;
-    float yInset=365.0f;
+    float yInset=362.0f;
     float barW=824.0f;
     float barH=60.0f;
     float startBarPos=xInset;
@@ -193,6 +193,7 @@
     float magMult=pow(10, magOrder-1);
     NSString *digits=[NSString stringWithFormat:@"%f", currentTotal];
     BOOL gotZeroRow=NO;
+    BOOL drawShadow=NO;
     for(int i=0; i<digits.length && sigFigs<columnsInPicker; i++)
     {
         NSString *c=[[digits substringFromIndex:i] substringToIndex:1];
@@ -251,6 +252,7 @@
         else
         {
             gotZeroRow=YES;
+            drawShadow=YES;
             // declare our positional variables for drawing
             endBarPos=startBarPos+((divisor*magMult)*[c floatValue]/dividend*barW);
             float sectionSize=(endBarPos-startBarPos)/[c floatValue];
@@ -299,7 +301,7 @@
             // and all of it's separators
             for(int i=0;i<[c intValue]-1;i++)
             {
-                [drawNode drawSegmentFrom:ccp(sectionStartPos,block[0].y) to:ccp(sectionStartPos,block[1].y) radius:0.5f color:ccc4FFromccc3B(sepLine)];
+                [drawNode drawSegmentFrom:ccp(sectionStartPos,block[0].y-1) to:ccp(sectionStartPos,block[1].y+1) radius:0.5f color:ccc4FFromccc3B(sepLine)];
                 sectionStartPos+=sectionSize;
             }
 
@@ -309,8 +311,10 @@
             {
                 NSString *str=nil;
                 
-                if(i==0)
+                if(i==0 && magMult>=1)
                     str=[NSString stringWithFormat:@"%g", [c floatValue]];
+                else if(i==0 && magMult<1)
+                    str=[NSString stringWithFormat:@"%g", [c floatValue]*magMult];
                 else if(i==1)
                     str=@"x";
                 else if(i==2)
@@ -342,13 +346,20 @@
         }
     }
     
-    
-    [drawNode drawSegmentFrom:ccp(xInset,yInset+1) to:ccp(xInset+lineSize,yInset+1) radius:2.0f color:ccc4FFromccc4B(ccc4(22, 22, 22, 100))];
-    
-    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", [nWheel.StrOutputValue floatValue]*divisor] fontName:CHANGO fontSize:labelFontSize];
-    [l setPosition:ccp(startBarPos,yInset-27)];
-    [renderLayer addChild:l];
-    [allLabels addObject:l];
+    if(drawShadow){
+        CGPoint verts[4];
+        verts[0]=ccp(xInset-1,yInset-1);
+        verts[1]=ccp(xInset-1,yInset+1);
+        verts[2]=ccp(xInset+lineSize,yInset+1);
+        verts[3]=ccp(xInset+lineSize,yInset-1);
+        
+        CGPoint *firstVert=&verts[0];
+        [drawNode drawPolyWithVerts:firstVert count:4 fillColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100)) borderWidth:0 borderColor:ccc4FFromccc4B(ccc4(22, 22, 22, 100))];
+    }
+//    CCLabelTTF *l=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g", [nWheel.StrOutputValue floatValue]*divisor] fontName:CHANGO fontSize:labelFontSize];
+//    [l setPosition:ccp(startBarPos,yInset-27)];
+//    [renderLayer addChild:l];
+//    [allLabels addObject:l];
     
     if(currentTotal>0){
     
@@ -412,6 +423,15 @@
     [barUnderneathThing setPosition:ccp(cx, 355)];
     [renderLayer addChild:barUnderneathThing];
     
+    CCLabelTTF *zeroLabel=[CCLabelTTF labelWithString:@"0" fontName:CHANGO fontSize:26.0f];
+    [zeroLabel setPosition:ccp(barUnderneathThing.position.x-barUnderneathThing.contentSize.width/2, barUnderneathThing.position.y-20)];
+    [renderLayer addChild:zeroLabel];
+    
+    CCLabelTTF *expectedLabel=[CCLabelTTF labelWithString:[NSString stringWithFormat:@"%g",dividend] fontName:CHANGO fontSize:26.0f];
+    [expectedLabel setPosition:ccp(barUnderneathThing.position.x+barUnderneathThing.contentSize.width/2, barUnderneathThing.position.y-20)];
+    [renderLayer addChild:expectedLabel];
+
+    
     lblCurrentTotal=[CCLabelTTF labelWithString:@"" fontName:SOURCE fontSize:PROBLEM_DESC_FONT_SIZE];
     [lblCurrentTotal setPosition:ccp(cx,50)];
     [renderLayer addChild:lblCurrentTotal];
@@ -426,7 +446,7 @@
     for(int i=0;i<nWheel.Components;i++)
     {
         CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/longdivision/LD_NW_Label.png")];
-        [s setPosition:ccp(715+(i*(nWheel.ComponentWidth+(nWheel.ComponentSpacing+2))),570)];
+        [s setPosition:ccp(963.5-(i*(nWheel.ComponentWidth+(nWheel.ComponentSpacing))),538)];
         [s setColor:kBTXEColour[i]];
         [renderLayer addChild:s z:50];
     }
@@ -437,17 +457,21 @@
     DWNWheelGameObject *w=[DWNWheelGameObject alloc];
     [gw populateAndAddGameObject:w withTemplateName:@"TnumberWheel"];
     w.Components=columnsInPicker;
-    w.Position=ccp(lx-188,ly-150);
-    w.ComponentHeight=50;
-    w.ComponentWidth=70;
-    w.ComponentSpacing=7;
-    w.RenderLayer=renderLayer;
     w.SpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ov.png", w.Components];
     w.UnderlaySpriteFileName=[NSString stringWithFormat:@"/images/numberwheel/NW_%d_ul.png", w.Components];
+    
+    CCSprite *s=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(w.SpriteFileName)];
+    
+    w.ComponentHeight=62;
+    w.ComponentWidth=71;
+    w.ComponentSpacing=6;
+    w.Position=ccp(lx-w.ComponentSpacing-(s.contentSize.width/2),ly-180);
+    w.RenderLayer=renderLayer;
     w.HasDecimals=YES;
     w.HasNegative=YES;
     [w handleMessage:kDWsetupStuff];
     nWheel=w;
+
 }
 
 -(int)magnitudeOf:(int)thisNo

@@ -42,12 +42,14 @@
 #define TRAY_BUTTON_SPACE 80.0f
 #define TRAY_BUTTON_INSET -35.0f
 #define HD_SCORE_INSET 40.0f
+#define BACKGROUND_MUSIC_FILE_NAME @"/sfx/go/sfx_journey_map_general_background_score.mp3"
+#define PAUSE_MENU_BACKGROUND_MUSIC_FILE_NAME @"/sfx/go/sfx_journey_map_general_muffled_background_score_for_pause_menu.mp3"
 
 //CCPickerView
 //#define kComponentWidth 54
-#define kComponentWidth 70
-#define kComponentHeight 50
-#define kComponentSpacing 7
+#define kComponentWidth 71
+#define kComponentHeight 62
+#define kComponentSpacing 6
 
 #define CORNER_TRAY_POS_X 700.0f
 #define CORNER_TRAY_POS_Y 460.0f
@@ -889,7 +891,7 @@ static float kTimeToHintToolTray=7.0f;
     
     [self readOutProblemDescription];
     
-    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_background_score.mp3") loop:YES];
+    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(BACKGROUND_MUSIC_FILE_NAME) loop:YES];
 }
 -(void)addCommitButton
 {
@@ -939,11 +941,18 @@ static float kTimeToHintToolTray=7.0f;
     [self addCommitButton];
 }
 
--(void)readOutProblemDescription
+-(void)readOutProblemDescriptionAndForce:(BOOL)forceRead
 {
+    if(ac.IsMuted && !forceRead)return;
+    
     NSString *readString=[[thisProblemDescription copy] autorelease];
     
     [ac speakString:readString];
+}
+
+-(void)readOutProblemDescription
+{
+    [self readOutProblemDescriptionAndForce:NO];
 }
 
 -(void)stopAllSpeaking
@@ -1032,6 +1041,11 @@ static float kTimeToHintToolTray=7.0f;
     
     TFLog(@"resetting problem");
     
+    [qTrayTop removeFromParentAndCleanup:YES];
+    [qTrayMid removeFromParentAndCleanup:YES];
+    [qTrayBot removeFromParentAndCleanup:YES];
+    [readProblemDesc removeFromParentAndCleanup:YES];
+    
     [self tearDownNumberPicker];
     [self tearDownMetaQuestion];
 
@@ -1093,6 +1107,10 @@ static float kTimeToHintToolTray=7.0f;
 {
     [problemDefLayer removeAllChildrenWithCleanup:YES];
     [btxeDescLayer removeAllChildrenWithCleanup:YES];
+    [qTrayTop removeFromParentAndCleanup:YES];
+    [qTrayMid removeFromParentAndCleanup:YES];
+    [qTrayBot removeFromParentAndCleanup:YES];
+    [readProblemDesc removeFromParentAndCleanup:YES];
     
     [descGw release];
     descGw=nil;
@@ -1108,7 +1126,7 @@ static float kTimeToHintToolTray=7.0f;
 {
     [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/go/sfx_generic_tool_scene_header_pause_tap.wav")];
     [[SimpleAudioEngine sharedEngine]stopBackgroundMusic];
-    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_muffled_background_score_for_pause_menu.mp3") loop:YES];
+    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(PAUSE_MENU_BACKGROUND_MUSIC_FILE_NAME) loop:YES];
     isPaused = YES;
     
     if(!pauseMenu)
@@ -1116,6 +1134,10 @@ static float kTimeToHintToolTray=7.0f;
         pauseMenu = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause-overlay.png")];
         [pauseMenu setPosition:ccp(cx, cy)];
         [pauseLayer addChild:pauseMenu z:10];
+        
+        muteBtn = [CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/menu/pause_sound.png")];
+        [muteBtn setPosition:ccp(250,250)];
+        [pauseLayer addChild:muteBtn z:20];
         
         if(contentService.pathToTestDef)
         {
@@ -1148,7 +1170,7 @@ static float kTimeToHintToolTray=7.0f;
 -(void)hidePauseMenu
 {
     [[SimpleAudioEngine sharedEngine]stopBackgroundMusic];
-    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(@"/sfx/go/sfx_journey_map_general_background_score.mp3") loop:YES];
+    [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(BACKGROUND_MUSIC_FILE_NAME) loop:YES];
     [pauseLayer setVisible:NO];
     isPaused=NO;
     
@@ -1179,6 +1201,22 @@ static float kTimeToHintToolTray=7.0f;
         [[SimpleAudioEngine sharedEngine] playEffect:BUNDLE_FULL_PATH(@"/sfx/menutap.wav")];
         [self stopAllSpeaking];
         [self returnToMap];
+    }
+    if(CGRectContainsPoint(muteBtn.boundingBox, location))
+    {
+        if(ac.IsMuted)
+        {
+            ac.IsMuted=NO;
+            [muteBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/menu/pause_sound.png")]];
+            
+            [[SimpleAudioEngine sharedEngine]playBackgroundMusic:BUNDLE_FULL_PATH(PAUSE_MENU_BACKGROUND_MUSIC_FILE_NAME) loop:YES];
+        }
+        else
+        {
+            ac.IsMuted=YES;
+            [[SimpleAudioEngine sharedEngine]stopBackgroundMusic];
+            [muteBtn setTexture:[[CCTextureCache sharedTextureCache] addImage: BUNDLE_FULL_PATH(@"/images/menu/pause_mute.png")]];
+        }
     }
 //    if(CGRectContainsPoint(kPauseMenuLogOut, location))
 //    {
@@ -2256,12 +2294,18 @@ static float kTimeToHintToolTray=7.0f;
     qTrayMid=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Middle.png")];
     qTrayBot=[CCSprite spriteWithFile:BUNDLE_FULL_PATH(@"/images/questiontray/Question_tray_Bottom.png")];
     
-    [qTrayMid setPosition:row.position];
+    [qTrayMid setPosition:ccp(row.position.x,row.position.y+200)];
     
     [qTrayTop setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y+(qTrayTop.contentSize.height/2)+qTrayMid.contentSize.height/2)];
     [qTrayBot setPosition:ccp(qTrayMid.position.x,qTrayMid.position.y-(qTrayBot.contentSize.height/2)-(qTrayMid.contentSize.height/2))];
     
     [readProblemDesc setPosition:ccp(qTrayMid.position.x+(qTrayMid.contentSize.width/2)-readProblemDesc.contentSize.width,qTrayMid.position.y-(qTrayBot.contentSize.height/1.1)-(qTrayMid.contentSize.height/2))];
+    
+    [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x, qTrayTop.position.y-200)]];
+    [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x, qTrayMid.position.y-200)]];
+    [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x, qTrayBot.position.y-200)]];
+    [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x, readProblemDesc.position.y-200)]];
+    
     
     [backgroundLayer addChild:readProblemDesc];
     [backgroundLayer addChild:qTrayTop];
@@ -2364,7 +2408,7 @@ static float kTimeToHintToolTray=7.0f;
     }
     else if(CGRectContainsPoint(readProblemDesc.boundingBox, location))
     {
-        [self readOutProblemDescription];
+        [self readOutProblemDescriptionAndForce:YES];
         return;
     }
     else
@@ -2692,6 +2736,23 @@ static float kTimeToHintToolTray=7.0f;
         [descRow animateAndMoveToPosition:ccp(360.0f, (cy*2)-130)];
         
         [descRow relayoutChildrenToWidth:625];
+        
+        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.7f scaleY:qTrayTop.scaleY]];
+        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.7f scaleY:qTrayMid.scaleY]];
+        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:0.7f scaleY:qTrayBot.scaleY]];
+        
+        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x-(cx/3.1), qTrayTop.position.y)]];
+        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x-(cx/3.1), qTrayMid.position.y)]];
+        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x-(cx/3.1), qTrayBot.position.y)]];
+        
+//        [qTrayTop setScaleX:0.7];
+//        [qTrayMid setScaleX:0.7];
+//        [qTrayBot setScaleX:0.7];
+        
+//        [qTrayTop setPosition:ccp(qTrayTop.position.x-(cx/3.1), qTrayTop.position.y)];
+//        [qTrayMid setPosition:ccp(qTrayTop.position.x, qTrayMid.position.y)];
+//        [qTrayBot setPosition:ccp(qTrayTop.position.x, qTrayBot.position.y)];
+        
         [questionSeparatorSprite runAction:[CCFadeOut actionWithDuration:0.25f]];
         
         trayCornerShowing=YES;
@@ -2704,6 +2765,22 @@ static float kTimeToHintToolTray=7.0f;
     {
         //do stuff
         //descRow.position=ccp(cx, (cy*2) - 95);
+
+//        [qTrayTop setScaleX:1.0];
+//        [qTrayMid setScaleX:1.0];
+//        [qTrayBot setScaleX:1.0];
+//        
+//        [qTrayTop setPosition:ccp(qTrayTop.position.x+(cx/3.1), qTrayTop.position.y)];
+//        [qTrayMid setPosition:ccp(qTrayTop.position.x, qTrayMid.position.y)];
+//        [qTrayBot setPosition:ccp(qTrayTop.position.x, qTrayBot.position.y)];
+
+        [qTrayTop runAction:[CCScaleTo actionWithDuration:0.2f scaleX:1.0f scaleY:qTrayTop.scaleY]];
+        [qTrayMid runAction:[CCScaleTo actionWithDuration:0.2f scaleX:1.0f scaleY:qTrayMid.scaleY]];
+        [qTrayBot runAction:[CCScaleTo actionWithDuration:0.2f scaleX:1.0f scaleY:qTrayBot.scaleY]];
+        
+        [qTrayTop runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayTop.position.x+(cx/3.1), qTrayTop.position.y)]];
+        [qTrayMid runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayMid.position.x+(cx/3.1), qTrayMid.position.y)]];
+        [qTrayBot runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(qTrayBot.position.x+(cx/3.1), qTrayBot.position.y)]];
         
         [descRow animateAndMoveToPosition:ccp(cx, (cy*2) - 130)];
         

@@ -2093,6 +2093,38 @@ static float kDistanceBetweenBlocks=70.0f;
         return [self evalValueOfEvalAreas];
     }
     
+    else if(evalType==kCheckSelectedGroupEvalTarget)
+    {
+        int selectCount=0;
+        int reqCount=0;
+        int selectEval=0;
+        BOOL gotTarget=NO;
+        
+        for(NSDictionary *d in initObjects)
+            if([[d objectForKey:IS_EVAL_TARGET]boolValue])reqCount++;
+        
+        for(id<NSObject,ShapeContainer> cont in gw.AllGameObjects)
+        {
+            if([cont conformsToProtocol:@protocol(ShapeContainer)])
+            {
+                if(cont.Selected)
+                {
+                    selectCount++;
+                }
+                if(cont.IsEvalTarget && cont.Selected)
+                {
+                    selectEval++;
+                    gotTarget=YES;
+                }
+            }
+        }
+        
+        if(selectCount==reqCount && selectEval==reqCount && gotTarget)
+            return YES;
+        else
+            return NO;
+    }
+    
 
 return NO;
 }

@@ -411,8 +411,8 @@ static float kTimeToHintToolTray=7.0f;
         
         if(timeToReturnToJmap>3.1f)
         {
-            [self showCompleteAndReturnToMap];
             countUpToJmap=NO;
+            [self showCompleteAndReturnToMap];
         }
     }
     
@@ -2303,10 +2303,10 @@ static float kTimeToHintToolTray=7.0f;
     [readProblemDesc runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(readProblemDesc.position.x, readProblemDesc.position.y-200)]];
     
     
-    [problemDefLayer addChild:readProblemDesc];
-    [problemDefLayer addChild:qTrayTop];
-    [problemDefLayer addChild:qTrayBot];
-    [problemDefLayer addChild:qTrayMid];
+    [backgroundLayer addChild:readProblemDesc];
+    [backgroundLayer addChild:qTrayTop];
+    [backgroundLayer addChild:qTrayBot];
+    [backgroundLayer addChild:qTrayMid];
     
     
     //show and hide separator for exprbuilder
